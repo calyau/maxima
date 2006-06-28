@@ -1,6 +1,6 @@
 /*               COPYRIGHT NOTICE
 
-Copyright (C) 2005 Mario Rodriguez Riotorto
+Copyright (C) 2005-2006 Mario Rodriguez Riotorto
 
 This program is free software; you can redistribute
 it and/or modify it under the terms of the
@@ -57,8 +57,8 @@ These are the functions implemented in this library,
 
 
 Data manipulation 
-   cfrec: frequencies for continuous data
-   dfrec: frequencies for discrete data
+   continuous_freq: frequencies for continuous data
+   discrete_freq: frequencies for discrete data
    subsample: subsample extraction
 
 Univariate descriptive statistics:
@@ -66,8 +66,8 @@ Univariate descriptive statistics:
    mini: minimum value
    maxi: maximum value
    range: the range
-   ncmoment: non central moment
-   cmoment: central moment
+   noncentral_moment: non central moment
+   central_moment: central moment
    var: variance (divided by n)
    std: standard deviation based on var
    var1: variance (divided by n-1)
@@ -77,26 +77,26 @@ Univariate descriptive statistics:
    qrange: interquartilic range
    skewness: skewness coefficient
    kurtosis: kurtosis coefficient
-   harmean: harmonic mean
-   geomean: geometric mean
-   vc: variation coefficient
-   meandev: mean deviation
-   mediandev: median deviation
-   pearskewness: Pearson's skewness coefficient
-   quarskewness: quartilic skewness coefficient
+   harmonic_mean: harmonic mean
+   geometric_mean: geometric mean
+   cv: variation coefficient
+   mean_deviation: mean deviation
+   median_deviation: median deviation
+   pearson_skewness: Pearson's skewness coefficient
+   quartile_skewness: quartilic skewness coefficient
 
 Multivariate descriptive statistics:
    cov: covariance matrix (divided by n)
    cov1: covariance matrix (divided by n-1)
    cor: correlation matrix
-   listvar: gives a list with: 
+   global_variances: gives a list with
       total variance
       mean variance
       generalized variance
       generalized standard deviation
       efective variance
       efective standard deviation
-   listdep: gives a list with: 
+   list_correlations: gives a list with
       precision matrix
       multiple correlation coefficients
       partial correlation coefficients
@@ -110,7 +110,7 @@ Statistical diagrams
 References:
    Johnson, A.J., Wichern, D.W. (1998) Applied Multivariate Statistical
       Analysis. Prentice Hall.
-   Peña, D. (2002) Análisis de datos multivariantes. McGraw-Hill.
+   Pe~na, D. (2002) An'alisis de datos multivariantes. McGraw-Hill.
 
 Thanks to Robert Dodier and Barton Willis for their help.
 
@@ -123,6 +123,20 @@ www.biomates.net
 2005, june: first release
 2005, november: definition of function 'floor' removed
 2006, march: joining 3d points 
+2006, june: renamed the following functions:
+               cfrec           => continuous_freq
+               dfrec           => discrete_freq
+               ncmoment        => noncentral_moment
+               cmoment         => central_moment
+               vc              => cv
+               meandev         => mean_deviation
+               mediandev       => median_deviation
+               harmean         => harmonic_mean
+               geomean         => geometric_mean
+               pearskewness    => pearson_skewness
+               quarskewness    => quartile_skewness
+               listvar         => global_variances
+               listdep         => list_correlations
 */
 
 
@@ -185,7 +199,7 @@ subsample(mat,cond,[cols]):=block([subm:matrix(),subv],
 /* are inside them. The second argument is optional and      */
 /* equals the number of classes we want; 10 by default.      */
 /* Argument 'lis' must be a list of real numbers.            */
-cfrec(lis,[opt]):=block([numer:true,nc,mini,lim,amp,fr,ult,n,k],
+continuous_freq(lis,[opt]):=block([numer:true,nc,mini,lim,amp,fr,ult,n,k],
    if length(opt)=1
       then nc:opt[1]
       else nc:10,   /* default number of classes */
@@ -207,7 +221,7 @@ cfrec(lis,[opt]):=block([numer:true,nc,mini,lim,amp,fr,ult,n,k],
 
 /* Counts the frequency of each element in 'lis', its elements */
 /* can be numbers, Maxima expressions or strings.              */
-dfrec(lis):=block([n:length(lis),fr:[],sum,val,set:[],c],
+discrete_freq(lis):=block([n:length(lis),fr:[],sum,val,set:[],c],
    lis: sort(lis),
    c:1,
    while c<=n do(
@@ -262,23 +276,23 @@ range(x):=block([t],
 
 
 /* Non central moment of order m */
-ncmoment(x,m) := block([listarith:true],
+noncentral_moment(x,m) := block([listarith:true],
    if listofexpr(x) or matrixp(x)
       then apply("+", args(x)^m) / length(x)
-      else error("Input to 'ncmoment' must be a list of expressions or a matrix"))$
+      else error("Input to 'noncentral_moment' must be a list of expressions or a matrix"))$
 
 
 /* Central moment of order m */
-cmoment(x,m):=block([n:length(x),listarith:true,me:mean(x)],
+central_moment(x,m):=block([n:length(x),listarith:true,me:mean(x)],
    if matrixp(x)
       then apply("+",makelist((x[i]-me)^m,i,1,n)) / n
       else if listofexpr(x)
            then apply("+",(x-me)^m) / n
-           else error("Input to 'cmoment' must be a list of expressions or a matrix"))$
+           else error("Input to 'central_moment' must be a list of expressions or a matrix"))$
 
 
 /* Maximum likelihood estimator of variance */
-var(x):=cmoment(x,2)$
+var(x):=central_moment(x,2)$
 
 
 /* Standard deviation as the root square of var */
@@ -337,72 +351,72 @@ qrange(x):=block([t],
 
 
 /* Skewness coefficient */
-skewness(x):=block([listarith:true],cmoment(x,3)/std(x)^3)$
+skewness(x):=block([listarith:true],central_moment(x,3)/std(x)^3)$
 
 
 /* Kurtosis coefficient, sometimes called kurtosis excess (see the -3) */
-kurtosis(x):=block([listarith:true],cmoment(x,4)/var(x)^2 - 3)$
+kurtosis(x):=block([listarith:true],central_moment(x,4)/var(x)^2 - 3)$
 
 
 /* Harmonic mean */
-harmean(x):=block([listarith:true],
+harmonic_mean(x):=block([listarith:true],
    if listofexpr(x) or matrixp(x)
       then length(x) / apply("+", 1/args(x))
-      else error("Input to 'harmean' must be a list of expressions or a matrix"))$
+      else error("Input to 'harmonic_mean' must be a list of expressions or a matrix"))$
 
 
 /* Geometric mean */
-geomean(x):=block([listarith:true],
+geometric_mean(x):=block([listarith:true],
    if listofexpr(x) or matrixp(x)
       then apply("*", args(x))^(1/length(x))
-      else error("Input to 'geomean' must be a list of expressions or a matrix"))$
+      else error("Input to 'geometric_mean' must be a list of expressions or a matrix"))$
 
 
 /* Variation coefficient */
-vc(x):=block([listarith:true],std1(x) / mean(x))$
+cv(x):=block([listarith:true],std1(x) / mean(x))$
 
 
 /* Mean deviation */
-meandev(x):=block([t,listarith:true],
+mean_deviation(x):=block([t,listarith:true],
    if matrixp(x)
       then (t:transpose(x),
             makelist(mean(abs(t[i]-mean(t[i]))),i,1,length(t)))
       else if listofexpr(x)
            then mean(abs(x-mean(x)))
-           else error("Input to 'meandev' must be a list of expressions or a matrix"))$
+           else error("Input to 'mean_deviation' must be a list of expressions or a matrix"))$
 
 
 /* Median deviation */
-mediandev(x):=block([t,listarith:true],
+median_deviation(x):=block([t,listarith:true],
    if matrixp(x)
       then (t:transpose(x),
             makelist(median(abs(t[i]-median(t[i]))),i,1,length(t)))
       else if listofexpr(x)
            then median(abs(x-median(x)))
-           else error("Input to 'mediandev' must be a list of expressions or a matrix"))$
+           else error("Input to 'median_deviation' must be a list of expressions or a matrix"))$
 
 
 /* Pearson's skewness */
-pearskewness(x):=block([t,listarith:true],
+pearson_skewness(x):=block([t,listarith:true],
    if matrixp(x)
       then (t:transpose(x),
             3*makelist((mean(t[i])-median(t[i]))/std1(t[i]),i,1,length(t)))
       else if listofexpr(x)
            then 3*(mean(x)-median(x))/std1(x)
-           else error("Input to 'pearskewness' must be a list of expressions or a matrix"))$
+           else error("Input to 'pearson_skewness' must be a list of expressions or a matrix"))$
 
 
 /* Quartile skewness */
-quarskewness(x):=block([q1,q2,q3,t],
+quartile_skewness(x):=block([q1,q2,q3,t],
    if matrixp(x)
       then (t:transpose(x),
-            makelist(quarskewness(t[i]),i,1,length(t)))
+            makelist(quartile_skewness(t[i]),i,1,length(t)))
       else if listofexpr(x)
            then (q1:quantile(x,1/4),
                  q2:quantile(x,1/2),
                  q3:quantile(x,3/4),
                  (q3-2*q2+q1)/(q3-q1))
-           else error("Input to 'quarskewness' must be a list of expressions or a matrix"))$
+           else error("Input to 'quartile_skewness' must be a list of expressions or a matrix"))$
 
 
 /*       MULTIVARIATE DESCRIPTIVE STATISTICS         */
@@ -425,20 +439,20 @@ cov(x):=block([n:length(x),dim,m,xi,sum],
 cov1(x):=block([n:length(x)], cov(x)*n/(n-1))$
 
 
-/* A list of global variation measures:                 */
-/*  1) total variance                                   */
-/*  2) mean variance                                    */
-/*  3) generalized variance                             */
-/*  4) generalized standard deviation                   */
-/*  5) efective variance                                */
-/*  6) efective standard deviation                      */
-/* The argument x must be a matrix:                     */
-/* listvar(x,false)==> x is the covariance matrix and   */
-/*                 'cov1' is not recalculated           */
-/* listvar(x,true) or listvar(x)==> means that x stores */
-/*                 sampled data and the covariance      */
-/*                 matrix 'cov1' must be computed       */
-listvar(x,[aredata]):=block([s,p,len,aux,out:[]],
+/* A list of global variation measures:                                   */
+/*  1) total variance                                                     */
+/*  2) mean variance                                                      */
+/*  3) generalized variance                                               */
+/*  4) generalized standard deviation                                     */
+/*  5) efective variance                                                  */
+/*  6) efective standard deviation                                        */
+/* The argument x must be a matrix:                                       */
+/* global_variances(x,false)==> x is the covariance matrix and            */
+/*                 'cov1' is not recalculated                             */
+/* global_variances(x,true) or global_variances(x)==> means that x stores */
+/*                 sampled data and the covariance                        */
+/*                 matrix 'cov1' must be computed                         */
+global_variances(x,[aredata]):=block([s,p,len,aux,out:[]],
 	if matrixp(x)
 		then(len:length(aredata),
 		     if len<1 or aredata[1]=true
@@ -464,7 +478,7 @@ listvar(x,[aredata]):=block([s,p,len,aux,out:[]],
 /* cor(x,true) or cor(x)==> means that x stores sampled */
 /*                 data and the covariance matrix 'cov1'*/
 /*                 must be computed                     */
-/* Ref. Peña, p.86                                      */
+/* Ref. Pe~na, p.86                                      */
 cor(x,[aredata]):=block([m,s,d,len],
 	if matrixp(x)
 		then(len:length(aredata),
@@ -476,17 +490,17 @@ cor(x,[aredata]):=block([m,s,d,len],
 		     d.s.d)  )$
 
 
-/* A list of dependence measures:                       */
-/*  1) precision matrix                                 */
-/*  2) multiple correlation                             */
-/*  3) partial correlation                              */
-/* The argument x must be a matrix:                     */
-/* listdep(x,false)==> x is the covariance matrix and   */
-/*                 'cov1' is not recalculated           */
-/* listdep(x,true) or listdep(x)==> means that x stores */
-/*                 sampled data and the covariance      */
-/*                 matrix 'cov1' must be computed       */
-listdep(x,[aredata]):=block([s,p,len,s1,d,out:[],listarith:true],
+/* A list of dependence measures:                                           */
+/*  1) precision matrix                                                     */
+/*  2) multiple correlation                                                 */
+/*  3) partial correlation                                                  */
+/* The argument x must be a matrix:                                         */
+/* list_correlations(x,false)==> x is the covariance matrix and             */
+/*                 'cov1' is not recalculated                               */
+/* list_correlations(x,true) or list_correlations(x)==> means that x stores */
+/*                 sampled data and the covariance                          */
+/*                 matrix 'cov1' must be computed                           */
+list_correlations(x,[aredata]):=block([s,p,len,s1,d,out:[],listarith:true],
 	if matrixp(x)
 		then(len:length(aredata),
 		     if len<1 or aredata[1]=true
@@ -630,7 +644,7 @@ dataplot(m,[select]):=
                   y: ampy*(dim-j),
                   print("set size",ampx,",",ampy),
                   print("set origin",x,",",y),
-                  fr: cfrec(m[i],defaults[8]),
+                  fr: continuous_freq(m[i],defaults[8]),
                   if i=j then (   /* plot histogram */
                      print("set offsets 0, 0, 0, 0"),
                      print("plot '-' with boxes fill solid 0.3"),
@@ -648,7 +662,7 @@ dataplot(m,[select]):=
       else error("sorry, can't plot these data") )$
 
 
-/* Plots histograms, argument 'm' must be a list, a one column matrix or a     */
+/* Plots histograms, argument 'm' must be a list, a one column matrix or a    */
 /* one row matrix.                                                             */
 /* Admits the following options:                                               */
 /*   'outputdev="x": output device, correct values are "x", "eps" and "png",   */
@@ -702,7 +716,7 @@ histogram(m,[select]):=
                   then if length(m)=1
                           then m: m[1]
                           else m: transpose(m)[1],
-               fr: cfrec(m,defaults[5]),
+               fr: continuous_freq(m,defaults[5]),
                amp: fr[1][2]-fr[1][1],
                print("set xrange [",fr[1][1]-amp/2,":",fr[1][defaults[5]+1]+amp/2,"]"),
                print("set xtics ", fr[1][1], ",", amp),
@@ -768,7 +782,7 @@ barsplot(m,[select]):=
                   then if length(m)=1
                           then m: m[1]
                           else m: transpose(m)[1],
-               fr: dfrec(m),
+               fr: discrete_freq(m),
                aux: length(fr[2]),
                str: sconcat("set xtics(\"",fr[1][1],"\" ",1),
                for k:2 thru aux do

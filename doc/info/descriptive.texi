@@ -176,24 +176,22 @@ One must take care when working with categorical data. In the next example, symb
 @node Definitions for data manipulation, Definitions for descriptive statistics, Introduction to descriptive, descriptive
 @section Definitions for data manipulation
 
-@deffn {Function} cfrec (@var{list})
-@deffnx {Function} cfrec (@var{list}, @var{m})
-The argument of @code{cfrec} must be a list of numbers, which will be then grouped in intervals and counted how many of them belong to each group. Optionally, function @code{cfrec} admits a second argument indicating the number of classes, 10 is default,
+@deffn {Function} continuous_freq (@var{list})
+@deffnx {Function} continuous_freq (@var{list}, @var{m})
+The argument of @code{continuous_freq} must be a list of numbers, which will be then grouped in intervals and counted how many of them belong to each group. Optionally, function @code{continuous_freq} admits a second argument indicating the number of classes, 10 is default,
 
 @c ===beg===
 @c load (numericalio)$
+@c load (descriptive)$
 @c s1 : read_list (file_search ("pidigits.data"))$
-@c cfrec (s1, 5);
+@c continuous_freq (s1, 5);
 @c ===end===
 @example
 (%i1) load (numericalio)$
-(%i2) s1 : read_list (file_search ("pidigits.data"))$
-(%i3) cfrec (s1, 5);
-(%o3) cfrec([3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5, 8, 9, 7, 9, 3, 2, 
-3, 8, 4, 6, 2, 6, 4, 3, 3, 8, 3, 2, 7, 9, 5, 0, 2, 8, 8, 4, 1, 
-9, 7, 1, 6, 9, 3, 9, 9, 3, 7, 5, 1, 0, 5, 8, 2, 0, 9, 7, 4, 9, 
-4, 4, 5, 9, 2, 3, 0, 7, 8, 1, 6, 4, 0, 6, 2, 8, 6, 2, 0, 8, 9, 
-9, 8, 6, 2, 8, 0, 3, 4, 8, 2, 5, 3, 4, 2, 1, 1, 7, 0, 6, 7], 5)
+(%i2) load (descriptive)$
+(%i3) s1 : read_list (file_search ("pidigits.data"))$
+(%i4) continuous_freq (s1, 5);
+(%o4) [[0, 1.8, 3.6, 5.4, 7.2, 9.0], [16, 24, 18, 17, 25]]
 @end example
 
 The first list contains the interval limits and the second the corresponding counts: there are 16 digits inside the interval @code{[0, 1.8]}, that is 0's and 1's, 24 digits in @code{(1.8, 3.6]}, that is 2's and 3's, and so on.
@@ -201,15 +199,14 @@ The first list contains the interval limits and the second the corresponding cou
 
 
 
-@deffn {Function} dfrec (@var{list})
+@deffn {Function} discrete_freq (@var{list})
 Counts absolute frequencies in discrete samples, both numeric and categorical. Its unique argument is a list,
 
 @c ===beg===
 @c load (descriptive)$
 @c load (numericalio)$
 @c s1 : read_list (file_search ("pidigits.data"));
-@c dfrec (s1);
-@c dfrec (transpose (col (s3, 1)) [1]);
+@c discrete_freq (s1);
 @c ===end===
 @example
 (%i1) load (descriptive)$
@@ -220,13 +217,9 @@ Counts absolute frequencies in discrete samples, both numeric and categorical. I
 1, 6, 9, 3, 9, 9, 3, 7, 5, 1, 0, 5, 8, 2, 0, 9, 7, 4, 9, 4, 4, 
 5, 9, 2, 3, 0, 7, 8, 1, 6, 4, 0, 6, 2, 8, 6, 2, 0, 8, 9, 9, 8, 
 6, 2, 8, 0, 3, 4, 8, 2, 5, 3, 4, 2, 1, 1, 7, 0, 6, 7]
-(%i4) dfrec (s1);
+(%i4) discrete_freq (s1);
 (%o4) [[0, 1, 2, 3, 4, 5, 6, 7, 8, 9], 
                              [8, 8, 12, 12, 10, 8, 9, 8, 12, 13]]
-(%i5) dfrec (transpose (col (s3, 1)) [1]);
-Not matrix:
-s3
- -- an error.  Quitting.  To debug this try debugmode(true);
 @end example
 
 The first list gives the sample values and the second their absolute frequencies. Commands @code{? col} and @code{? transpose} should help you to understand the last input.
@@ -425,7 +418,7 @@ Example:
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c mean (s1);
 @c %, numer;
-@c s2 : read_list (file_search ("wind.data"))$
+@c s2 : read_matrix (file_search ("wind.data"))$
 @c mean (s2);
 @c ===end===
 @example
@@ -438,9 +431,9 @@ Example:
                                100
 (%i5) %, numer;
 (%o5)                         4.71
-(%i6) s2 : read_list (file_search ("wind.data"))$
+(%i6) s2 : read_matrix (file_search ("wind.data"))$
 (%i7) mean (s2);
-(%o7)                       12.30768
+(%o7)     [9.9485, 10.1607, 10.8685, 15.7166, 14.8441]
 @end example
 @end deffn
 
@@ -614,8 +607,8 @@ See also functions @code{var1} and @code{std}.
 
 
 
-@deffn {Function} ncmoment (@var{list}, @var{k})
-@deffnx {Function} ncmoment (@var{matrix}, @var{k})
+@deffn {Function} noncentral_moment (@var{list}, @var{k})
+@deffnx {Function} noncentral_moment (@var{matrix}, @var{k})
 The non central moment of order @math{k}, defined as
 @ifhtml
 @example
@@ -649,29 +642,29 @@ Example:
 @c load (descriptive)$
 @c load (numericalio)$
 @c s1 : read_list (file_search ("pidigits.data"))$
-@c ncmoment (s1, 1), numer; /* the mean */
+@c noncentral_moment (s1, 1), numer; /* the mean */
 @c s2 : read_matrix (file_search ("wind.data"))$
-@c ncmoment (s2, 5);
+@c noncentral_moment (s2, 5);
 @c ===end===
 @example
 (%i1) load (descriptive)$
 (%i2) load (numericalio)$
 (%i3) s1 : read_list (file_search ("pidigits.data"))$
-(%i4) ncmoment (s1, 1), numer; /* the mean */
+(%i4) noncentral_moment (s1, 1), numer; /* the mean */
 (%o4)                         4.71
 (%i6) s2 : read_matrix (file_search ("wind.data"))$
-(%o6) [319793.8724761506, 320532.1923892463, 391249.5621381556, 
+(%i7) noncentral_moment (s2, 5);
+(%o7) [319793.8724761506, 320532.1923892463, 391249.5621381556, 
                             2502278.205988911, 1691881.797742255]
-(%i7) ncmoment (s2, 5);
 @end example
 
-See also function @code{cmoment}.
+See also function @code{central_moment}.
 @end deffn
 
 
 
-@deffn {Function} cmoment (@var{list}, @var{k})
-@deffnx {Function} cmoment (@var{matrix}, @var{k})
+@deffn {Function} central_moment (@var{list}, @var{k})
+@deffnx {Function} central_moment (@var{matrix}, @var{k})
 The central moment of order @math{k}, defined as
 @ifhtml
 @example
@@ -705,47 +698,47 @@ Example:
 @c load (descriptive)$
 @c load (numericalio)$
 @c s1 : read_list (file_search ("pidigits.data"))$
-@c cmoment (s1, 2), numer; /* the variance */
+@c central_moment (s1, 2), numer; /* the variance */
 @c s2 : read_matrix (file_search ("wind.data"))$
-@c cmoment (s2, 3);
+@c central_moment (s2, 3);
 @c ===end===
 @example
 (%i1) load (descriptive)$
 (%i2) load (numericalio)$
 (%i3) s1 : read_list (file_search ("pidigits.data"))$
-(%i4) cmoment (s1, 2), numer; /* the variance */
+(%i4) central_moment (s1, 2), numer; /* the variance */
 (%o4)                   8.425899999999999
 (%i6) s2 : read_matrix (file_search ("wind.data"))$
-(%o6) [11.29584771375004, 16.97988248298583, 5.626661952750102, 
+(%i7) central_moment (s2, 3);
+(%o7) [11.29584771375004, 16.97988248298583, 5.626661952750102, 
                              37.5986572057918, 25.85981904394192]
-(%i7) cmoment (s2, 3);
 @end example
 
-See also functions @code{cmoment} and @code{mean}.
+See also functions @code{central_moment} and @code{mean}.
 @end deffn
 
 
 
-@deffn {Function} vc (@var{list})
-@deffnx {Function} vc (@var{matrix})
+@deffn {Function} cv (@var{list})
+@deffnx {Function} cv (@var{matrix})
 The variation coefficient is the quotient between the sample standard deviation (@code{std}) and the @code{mean},
 
 @c ===beg===
 @c load (descriptive)$
 @c load (numericalio)$
 @c s1 : read_list (file_search ("pidigits.data"))$
-@c vc (s1), numer;
+@c cv (s1), numer;
 @c s2 : read_matrix (file_search ("wind.data"))$
-@c vc (s2);
+@c cv (s2);
 @c ===end===
 @example
 (%i1) load (descriptive)$
 (%i2) load (numericalio)$
 (%i3) s1 : read_list (file_search ("pidigits.data"))$
-(%i4) vc (s1), numer;
+(%i4) cv (s1), numer;
 (%o4)                   .6193977819764815
 (%i5) s2 : read_matrix (file_search ("wind.data"))$
-(%i6) vc (s2);
+(%i6) cv (s2);
 (%o6) [.4192426091090204, .3829365309260502, 0.363779605385983, 
                             .3627381836021478, .3346021393989506]
 @end example
@@ -933,8 +926,8 @@ See also function @code{quantile}.
 
 
 
-@deffn {Function} meandev (@var{list})
-@deffnx {Function} meandev (@var{list})
+@deffn {Function} mean_deviation (@var{list})
+@deffnx {Function} mean_deviation (@var{list})
 The mean deviation, defined as
 @ifhtml
 @example
@@ -968,20 +961,20 @@ Example:
 @c load (descriptive)$
 @c load (numericalio)$
 @c s1 : read_list (file_search ("pidigits.data"))$
-@c meandev (s1);
+@c mean_deviation (s1);
 @c s2 : read_matrix (file_search ("wind.data"))$
-@c meandev (s2);
+@c mean_deviation (s2);
 @c ===end===
 @example
 (%i1) load (descriptive)$
 (%i2) load (numericalio)$
 (%i3) s1 : read_list (file_search ("pidigits.data"))$
-(%i4) meandev (s1);
+(%i4) mean_deviation (s1);
                                51
 (%o4)                          --
                                20
 (%i5) s2 : read_matrix (file_search ("wind.data"))$
-(%i6) meandev (s2);
+(%i6) mean_deviation (s2);
 (%o6) [3.287959999999999, 3.075342, 3.23907, 4.715664000000001, 
                                                4.028546000000002]
 @end example
@@ -991,8 +984,8 @@ See also function @code{mean}.
 
 
 
-@deffn {Function} mediandev (@var{list})
-@deffnx {Function} mediandev (@var{matrix})
+@deffn {Function} median_deviation (@var{list})
+@deffnx {Function} median_deviation (@var{matrix})
 The median deviation, defined as
 @ifhtml
 @example
@@ -1027,20 +1020,20 @@ Example:
 @c load (descriptive)$
 @c load (numericalio)$
 @c s1 : read_list (file_search ("pidigits.data"))$
-@c mediandev (s1);
+@c median_deviation (s1);
 @c s2 : read_matrix (file_search ("wind.data"))$
-@c mediandev (s2);
+@c median_deviation (s2);
 @c ===end===
 @example
 (%i1) load (descriptive)$
 (%i2) load (numericalio)$
 (%i3) s1 : read_list (file_search ("pidigits.data"))$
-(%i4) mediandev (s1);
+(%i4) median_deviation (s1);
                                 5
 (%o4)                           -
                                 2
 (%i5) s2 : read_matrix (file_search ("wind.data"))$
-(%i6) mediandev (s2);
+(%i6) median_deviation (s2);
 (%o6)           [2.75, 2.755, 3.08, 4.315, 3.31]
 @end example
 
@@ -1049,8 +1042,8 @@ See also function @code{mean}.
 
 
 
-@deffn {Function} harmean (@var{list})
-@deffnx {Function} harmean (@var{list})
+@deffn {Function} harmonic_mean (@var{list})
+@deffnx {Function} harmonic_mean (@var{list})
 The harmonic mean, defined as
 @ifhtml
 @example
@@ -1088,29 +1081,29 @@ Example:
 @c load (descriptive)$
 @c load (numericalio)$
 @c y : [5, 7, 2, 5, 9, 5, 6, 4, 9, 2, 4, 2, 5]$
-@c harmean (y), numer;
+@c harmonic_mean (y), numer;
 @c s2 : read_matrix (file_search ("wind.data"))$
-@c harmean (s2);
+@c harmonic_mean (s2);
 @c ===end===
 @example
 (%i1) load (descriptive)$
 (%i2) load (numericalio)$
 (%i3) y : [5, 7, 2, 5, 9, 5, 6, 4, 9, 2, 4, 2, 5]$
-(%i4) harmean (y), numer;
+(%i4) harmonic_mean (y), numer;
 (%o4)                   3.901858027632205
 (%i5) s2 : read_matrix (file_search ("wind.data"))$
-(%i6) harmean (s2);
+(%i6) harmonic_mean (s2);
 (%o6) [6.948015590052786, 7.391967752360356, 9.055658197151745, 
                             13.44199028193692, 13.01439145898509]
 @end example
 
-See also functions @code{mean} and @code{geomean}.
+See also functions @code{mean} and @code{geometric_mean}.
 @end deffn
 
 
 
-@deffn {Function} geomean (@var{list})
-@deffnx {Function} geomean (@var{matrix})
+@deffn {Function} geometric_mean (@var{list})
+@deffnx {Function} geometric_mean (@var{matrix})
 The geometric mean, defined as
 @ifhtml
 @example
@@ -1144,23 +1137,23 @@ Example:
 @c load (descriptive)$
 @c load (numericalio)$
 @c y : [5, 7, 2, 5, 9, 5, 6, 4, 9, 2, 4, 2, 5]$
-@c geomean (y), numer;
+@c geometric_mean (y), numer;
 @c s2 : read_matrix (file_search ("wind.data"))$
-@c geomean (s2);
+@c geometric_mean (s2);
 @c ===end===
 @example
 (%i1) load (descriptive)$
 (%i2) load (numericalio)$
 (%i3) y : [5, 7, 2, 5, 9, 5, 6, 4, 9, 2, 4, 2, 5]$
-(%i4) geomean (y), numer;
+(%i4) geometric_mean (y), numer;
 (%o4)                   4.454845412337012
 (%i5) s2 : read_matrix (file_search ("wind.data"))$
-(%i6) geomean (s2);
+(%i6) geometric_mean (s2);
 (%o6) [8.82476274347979, 9.22652604739361, 10.0442675714889, 
                             14.61274126349021, 13.96184163444275]
 @end example
 
-See also functions @code{mean} and @code{harmean}.
+See also functions @code{mean} and @code{harmonic_mean}.
 @end deffn
 
 
@@ -1277,8 +1270,8 @@ See also functions @code{mean}, @code{var} and @code{kurtosis}.
 
 
 
-@deffn {Function} pearskewness (@var{list})
-@deffnx {Function} pearskewness (@var{matrix})
+@deffn {Function} pearson_skewness (@var{list})
+@deffnx {Function} pearson_skewness (@var{matrix})
 Pearson's skewness coefficient, defined as 
 @ifhtml
 @example
@@ -1307,18 +1300,18 @@ Example:
 @c load (descriptive)$
 @c load (numericalio)$
 @c s1 : read_list (file_search ("pidigits.data"))$
-@c pearskewness (s1), numer;
+@c pearson_skewness (s1), numer;
 @c s2 : read_matrix (file_search ("wind.data"))$
-@c pearskewness (s2);
+@c pearson_skewness (s2);
 @c ===end===
 @example
 (%i1) load (descriptive)$
 (%i2) load (numericalio)$
 (%i3) s1 : read_list (file_search ("pidigits.data"))$
-(%i4) pearskewness (s1), numer;
+(%i4) pearson_skewness (s1), numer;
 (%o4)                   .2159484029093895
 (%i5) s2 : read_matrix (file_search ("wind.data"))$
-(%i6) pearskewness (s2);
+(%i6) pearson_skewness (s2);
 (%o6) [- .08019976629211892, .2357036272952649, 
          .1050904062491204, .1245042340592368, .4464181795804519]
 @end example
@@ -1328,8 +1321,8 @@ See also functions @code{mean}, @code{var} and @code{median}.
 
 
 
-@deffn {Function} quarskewness (@var{list})
-@deffnx {Function} quarskewness (@var{matrix})
+@deffn {Function} quartile_skewness (@var{list})
+@deffnx {Function} quartile_skewness (@var{matrix})
 The quartile skewness coefficient, defined as 
 @ifhtml
 @example
@@ -1361,18 +1354,18 @@ Example:
 @c load (descriptive)$
 @c load (numericalio)$
 @c s1 : read_list (file_search ("pidigits.data"))$
-@c quarskewness (s1), numer;
+@c quartile_skewness (s1), numer;
 @c s2 : read_matrix (file_search ("wind.data"))$
-@c quarskewness (s2);
+@c quartile_skewness (s2);
 @c ===end===
 @example
 (%i1) load (descriptive)$
 (%i2) load (numericalio)$
 (%i3) s1 : read_list (file_search ("pidigits.data"))$
-(%i4) quarskewness (s1), numer;
+(%i4) quartile_skewness (s1), numer;
 (%o4)                  .04761904761904762
 (%i5) s2 : read_matrix (file_search ("wind.data"))$
-(%i6) quarskewness (s2);
+(%i6) quartile_skewness (s2);
 (%o6) [- 0.0408542246982353, .1467025572005382, 
        0.0336239103362392, .03780068728522298, 0.210526315789474]
 @end example
@@ -1430,6 +1423,7 @@ Example:
 (%i2) load (numericalio)$
 (%i3) s2 : read_matrix (file_search ("wind.data"))$
 (%i4) fpprec : 7$  /* change precision for pretty output */
+(%i5) cov (s2);
       [ 17.22191  13.61811  14.37217  19.39624  15.42162 ]
       [                                                  ]
       [ 13.61811  14.98774  13.30448  15.15834  14.9711  ]
@@ -1439,7 +1433,6 @@ Example:
       [ 19.39624  15.15834  17.32544  32.17651  20.44685 ]
       [                                                  ]
       [ 15.42162  14.9711   16.18171  20.44685  24.42308 ]
-(%i6) cov (s2);
 @end example
 
 See also function @code{cov1}.
@@ -1490,6 +1483,7 @@ Example:
 (%i2) load (numericalio)$
 (%i3) s2 : read_matrix (file_search ("wind.data"))$
 (%i4) fpprec : 7$ /* change precision for pretty output */
+(%i5) cov1 (s2);
       [ 17.39587  13.75567  14.51734  19.59216  15.5774  ]
       [                                                  ]
       [ 13.75567  15.13913  13.43887  15.31145  15.12232 ]
@@ -1499,7 +1493,6 @@ Example:
       [ 19.59216  15.31145  17.50044  32.50153  20.65338 ]
       [                                                  ]
       [ 15.5774   15.12232  16.34516  20.65338  24.66977 ]
-(%i6) cov1 (s2);
 @end example
 
 See also function @code{cov}.
@@ -1507,9 +1500,9 @@ See also function @code{cov}.
 
 
 
-@deffn {Function} listvar (@var{matrix})
-@deffnx {Function} listvar (@var{matrix}, @var{logical_value})
-Function @code{listvar} returns a list of global variance measures:
+@deffn {Function} global_variances (@var{matrix})
+@deffnx {Function} global_variances (@var{matrix}, @var{logical_value})
+Function @code{global_variances} returns a list of global variance measures:
 
 @itemize @bullet
 @item
@@ -1533,32 +1526,32 @@ Example:
 @c load (descriptive)$
 @c load (numericalio)$
 @c s2 : read_matrix (file_search ("wind.data"))$
-@c listvar (s2);
+@c global_variances (s2);
 @c ===end===
 @example
 (%i1) load (descriptive)$
 (%i2) load (numericalio)$
 (%i3) s2 : read_matrix (file_search ("wind.data"))$
-(%i4) listvar (s2);
+(%i4) global_variances (s2);
 (%o4) [105.338342060606, 21.06766841212119, 12874.34690469686, 
          113.4651792608502, 6.636590811800794, 2.576158149609762]
 @end example
 
-Function @code{listvar} has an optional logical argument: @code{listvar(x,true)} tells Maxima that @code{x} is the data matrix, making the same as @code{listvar(x)}. On the other hand, @code{listvar(x,false)} means that @code{x} is not the data matrix, but the covariance matrix, avoiding its recalculation,
+Function @code{global_variances} has an optional logical argument: @code{global_variances(x,true)} tells Maxima that @code{x} is the data matrix, making the same as @code{global_variances(x)}. On the other hand, @code{global_variances(x,false)} means that @code{x} is not the data matrix, but the covariance matrix, avoiding its recalculation,
 
 @c ===beg===
 @c load (descriptive)$
 @c load (numericalio)$
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c s : cov1 (s2)$
-@c listvar (s, false);
+@c global_variances (s, false);
 @c ===end===
 @example
 (%i1) load (descriptive)$
 (%i2) load (numericalio)$
 (%i3) s2 : read_matrix (file_search ("wind.data"))$
 (%i4) s : cov1 (s2)$
-(%i5) listvar (s, false);
+(%i5) global_variances (s, false);
 (%o5) [105.338342060606, 21.06766841212119, 12874.34690469686, 
          113.4651792608502, 6.636590811800794, 2.576158149609762]
 @end example
@@ -1577,41 +1570,25 @@ Example:
 @c ===beg===
 @c load (descriptive)$
 @c load (numericalio)$
+@c fpprec:7$
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c cor (s2);
 @c ===end===
 @example
 (%i1) load (descriptive)$
 (%i2) load (numericalio)$
-(%i3) s2 : read_matrix (file_search ("wind.data"))$
-(%i4) cor (s2);
-               [ .9999999999999999 ]
-               [                   ]
-               [ .8476338537640531 ]
-               [                   ]
-(%o4)  Col 1 = [ .8803514956141142 ]
-               [                   ]
-               [ .8239623533344873 ]
-               [                   ]
-               [ .7519506093997078 ]
-         [ .8476338537640531 ]         [ .8803514956141143 ]
-         [                   ]         [                   ]
-         [        1.0        ]         [ .8735833741501071 ]
-         [                   ]         [                   ]
- Col 2 = [ .8735833741501071 ] Col 3 = [        1.0        ]
-         [                   ]         [                   ]
-         [ .6902622161735915 ]         [ .7764065117828751 ]
-         [                   ]         [                   ]
-         [ .7825019890410442 ]         [ .8323358495832834 ]
-         [ .8239623533344873 ]         [ .7519506093997077 ]
-         [                   ]         [                   ]
-         [ .6902622161735915 ]         [ .7825019890410442 ]
-         [                   ]         [                   ]
- Col 4 = [ .7764065117828751 ] Col 5 = [ .8323358495832834 ]
-         [                   ]         [                   ]
-         [        1.0        ]         [ .7293847728156051 ]
-         [                   ]         [                   ]
-         [ .7293847728156051 ]         [ .9999999999999999 ]
+(%i3) fpprec:7$
+(%i4) s2 : read_matrix (file_search ("wind.data"))$
+(%i5) cor (s2);
+      [   1.0     .8476339  .8803515  .8239624  .7519506 ]
+      [                                                  ]
+      [ .8476339    1.0     .8735834  .6902622  0.782502 ]
+      [                                                  ]
+(%o5) [ .8803515  .8735834    1.0     .7764065  .8323358 ]
+      [                                                  ]
+      [ .8239624  .6902622  .7764065    1.0     .7293848 ]
+      [                                                  ]
+      [ .7519506  0.782502  .8323358  .7293848    1.0    ]
 @end example
 
 Function @code{cor} has an optional logical argument: @code{cor(x,true)} tells Maxima that @code{x} is the data matrix, making the same as @code{cor(x)}. On the other hand, @code{cor(x,false)} means that @code{x} is not the data matrix, but the covariance matrix, avoiding its recalculation,
@@ -1619,6 +1596,7 @@ Function @code{cor} has an optional logical argument: @code{cor(x,true)} tells M
 @c ===beg===
 @c load (descriptive)$
 @c load (numericalio)$
+@c fpprec:7$
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c s : cov1 (s2)$
 @c cor (s, false); /* this is faster */
@@ -1626,36 +1604,19 @@ Function @code{cor} has an optional logical argument: @code{cor(x,true)} tells M
 @example
 (%i1) load (descriptive)$
 (%i2) load (numericalio)$
-(%i3) s2 : read_matrix (file_search ("wind.data"))$
-(%i4) s : cov1 (s2)$
-(%i5) cor (s, false); /* this is faster */
-               [ .9999999999999999 ]
-               [                   ]
-               [ .8476338537640531 ]
-               [                   ]
-(%o5)  Col 1 = [ .8803514956141142 ]
-               [                   ]
-               [ .8239623533344873 ]
-               [                   ]
-               [ .7519506093997078 ]
-         [ .8476338537640531 ]         [ .8803514956141143 ]
-         [                   ]         [                   ]
-         [        1.0        ]         [ .8735833741501071 ]
-         [                   ]         [                   ]
- Col 2 = [ .8735833741501071 ] Col 3 = [        1.0        ]
-         [                   ]         [                   ]
-         [ .6902622161735915 ]         [ .7764065117828751 ]
-         [                   ]         [                   ]
-         [ .7825019890410442 ]         [ .8323358495832834 ]
-         [ .8239623533344873 ]         [ .7519506093997077 ]
-         [                   ]         [                   ]
-         [ .6902622161735915 ]         [ .7825019890410442 ]
-         [                   ]         [                   ]
- Col 4 = [ .7764065117828751 ] Col 5 = [ .8323358495832834 ]
-         [                   ]         [                   ]
-         [        1.0        ]         [ .7293847728156051 ]
-         [                   ]         [                   ]
-         [ .7293847728156051 ]         [ .9999999999999999 ]
+(%i3) fpprec:7$
+(%i4) s2 : read_matrix (file_search ("wind.data"))$
+(%i5) s : cov1 (s2)$
+(%i6) cor (s, false); /* this is faster */
+      [   1.0     .8476339  .8803515  .8239624  .7519506 ]
+      [                                                  ]
+      [ .8476339    1.0     .8735834  .6902622  0.782502 ]
+      [                                                  ]
+(%o6) [ .8803515  .8735834    1.0     .7764065  .8323358 ]
+      [                                                  ]
+      [ .8239624  .6902622  .7764065    1.0     .7293848 ]
+      [                                                  ]
+      [ .7519506  0.782502  .8323358  .7293848    1.0    ]
 @end example
 
 See also @code{cov} and @code{cov1}.
@@ -1663,9 +1624,9 @@ See also @code{cov} and @code{cov1}.
 
 
 
-@deffn {Function} listdep (@var{matrix})
-@deffnx {Function} listdep (@var{matrix}, @var{logical_value})
-Function @code{listdep} returns a list of correlation measures:
+@deffn {Function} list_correlations (@var{matrix})
+@deffnx {Function} list_correlations (@var{matrix}, @var{logical_value})
+Function @code{list_correlations} returns a list of correlation measures:
 
 @itemize @bullet
 
@@ -1712,7 +1673,7 @@ $${S_{1}^{-1}}={\left(s^{ij}\right)_{i,j=1,2,\ldots, p}}$$
 @tex
 $${R_{i}^{2}}={1-{{1}\over{s^{ii}s_{ii}}}}$$
 @end tex
-being an indicatior of the goodness of fit of the linear multivariate regression model on @math{X_i} when the rest of variables are used as regressors.
+being an indicator of the goodness of fit of the linear multivariate regression model on @math{X_i} when the rest of variables are used as regressors.
 
 @item
 @var{partial correlation matrix}: with element @math{(i, j)} being
@@ -1748,7 +1709,7 @@ Example:
 @c load (descriptive)$
 @c load (numericalio)$
 @c s2 : read_matrix (file_search ("wind.data"))$
-@c z : listdep (s2)$
+@c z : list_correlations (s2)$
 @c fpprec : 5$ /* for pretty output */
 @c z[1];  /* precision matrix */
 @c z[2];  /* multiple correlation vector */
@@ -1758,8 +1719,9 @@ Example:
 (%i1) load (descriptive)$
 (%i2) load (numericalio)$
 (%i3) s2 : read_matrix (file_search ("wind.data"))$
-(%i4) z : listdep (s2)$
+(%i4) z : list_correlations (s2)$
 (%i5) fpprec : 5$ /* for pretty output */
+(%i6) z[1];  /* precision matrix */
       [  .38486   - .13856   - .15626   - .10239    .031179  ]
       [                                                      ]
       [ - .13856   .34107    - .15233    .038447   - .052842 ]
@@ -1769,7 +1731,9 @@ Example:
       [ - .10239   .038447   - .024816   .10937    - .034033 ]
       [                                                      ]
       [ .031179   - .052842  - .10054   - .034033   .14834   ]
+(%i7) z[2];  /* multiple correlation vector */
 (%o7)       [.85063, .80634, .86474, .71867, .72675]
+(%i8) z[3];  /* partial correlation matrix */
        [  - 1.0     .38244   .36627   .49908   - .13049 ]
        [                                                ]
        [  .38244    - 1.0    .37927  - .19907   .23492  ]
@@ -1781,7 +1745,7 @@ Example:
        [ - .13049   .23492   .37956   .26719    - 1.0   ]
 @end example
 
-Function @code{listdep} also has an optional logical argument: @code{listdep(x,true)} tells Maxima that @code{x} is the data matrix, making the same as @code{listdep(x)}. On the other hand, @code{listdep(x,false)} means that @code{x} is not the data matrix, but the covariance matrix, avoiding its recalculation.
+Function @code{list_correlations} also has an optional logical argument: @code{list_correlations(x,true)} tells Maxima that @code{x} is the data matrix, making the same as @code{list_correlations(x)}. On the other hand, @code{list_correlations(x,false)} means that @code{x} is not the data matrix, but the covariance matrix, avoiding its recalculation.
 
 See also @code{cov} and @code{cov1}.
 @end deffn
@@ -1836,14 +1800,13 @@ For example, with the following input a simple plot of the first twenty digits o
 @c load (descriptive)$
 @c load (numericalio)$
 @c s1 : read_list (file_search ("pidigits.data"))$
-@c dataplot (makelist (s1[k], k, 1, 20), 'pointstyle = 3);
+@c dataplot (makelist (s1[k], k, 1, 20), 'pointstyle = 3)$
 @c ===end===
 @example
 (%i1) load (descriptive)$
 (%i2) load (numericalio)$
 (%i3) s1 : read_list (file_search ("pidigits.data"))$
-(%i4) dataplot (makelist (s1[k], k, 1, 20), 'pointstyle = 3);
-(%o4)                           0
+(%i4) dataplot (makelist (s1[k], k, 1, 20), 'pointstyle = 3)$
 @end example
 
 Note that one dimensional data are plotted as a time series. In the next case, same more data with different settings,
@@ -1983,7 +1946,7 @@ In the next two examples, histograms are requested for the first 100 digits of n
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c histogram (s1, 'maintitle = "pi digits", 'axisnames = ["", "Absolute frequency"],
 @c  'relbarwidth = 0.2, 'barcolor = 3, 'colorintensity = 0.6)$
-@c  s2 : read_matrix (file_search ("wind.data"))$
+@c s2 : read_matrix (file_search ("wind.data"))$
 @c histogram (col (s2, 3), 'colorintensity = 0.3)$
 @c ===end===
 @example
@@ -1992,8 +1955,8 @@ In the next two examples, histograms are requested for the first 100 digits of n
 (%i3) s1 : read_list (file_search ("pidigits.data"))$
 (%i4) histogram (s1, 'maintitle = "pi digits", 'axisnames = ["", "Absolute frequency"],
  'relbarwidth = 0.2, 'barcolor = 3, 'colorintensity = 0.6)$
- s2 : read_matrix (file_search ("wind.data"))$
-(%i5) histogram (col (s2, 3), 'colorintensity = 0.3)$
+(%i5) s2 : read_matrix (file_search ("wind.data"))$
+(%i6) histogram (col (s2, 3), 'colorintensity = 0.3)$
 @end example
 Note that in the first case, @code{s1} is a list and in the second example, @code{col(s2,3)} is a matrix.
 
@@ -2105,7 +2068,7 @@ Examples:
 @c A :
 @c  [[6, 4, 6, 2, 4, 8, 6, 4, 6, 4, 3, 2],
 @c   [8, 10, 7, 9, 12, 8, 10],
-@c   [16, 13, 17, 12, 11, 18, 13, 18, 14, 12]];
+@c   [16, 13, 17, 12, 11, 18, 13, 18, 14, 12]]$
 @c boxplot (A)$
 @c ===end===
 @example
@@ -2117,10 +2080,7 @@ Examples:
 (%i5) A :
  [[6, 4, 6, 2, 4, 8, 6, 4, 6, 4, 3, 2],
   [8, 10, 7, 9, 12, 8, 10],
-  [16, 13, 17, 12, 11, 18, 13, 18, 14, 12]];
-(%o5) [[6, 4, 6, 2, 4, 8, 6, 4, 6, 4, 3, 2], 
-[8, 10, 7, 9, 12, 8, 10], [16, 13, 17, 12, 11, 18, 13, 18, 14, 
-12]]
+  [16, 13, 17, 12, 11, 18, 13, 18, 14, 12]]$
 (%i6) boxplot (A)$
 @end example
 @end deffn
