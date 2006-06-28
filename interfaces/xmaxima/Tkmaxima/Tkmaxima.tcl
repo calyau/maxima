@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Tkmaxima.tcl,v 1.4 2006-06-27 14:02:57 villate Exp $
+#       $Id: Tkmaxima.tcl,v 1.5 2006-06-28 09:12:26 villate Exp $
 #
 
 #mike The following files are prepended, and could be sourced instead.
@@ -146,20 +146,12 @@ object_class MAXTkmaxima {
 	    return
 	}
 	after idle focus $maxima_priv(cConsoleText)
-
     }
 
     method exit {{text ""} {val "0"}} {
 	global maxima_priv
-	
-# jfa: We don't need to ask about saving preferences every single time.
-# 	set retval [tide_yesnocancel [mc "Exiting Maxima. Save Preferences?"]]
-# 	switch -exact -- $retval "1" {
-# 	    catch {savePreferences}
-# 	} -1 {
-# 	    return
-# 	}
-	
+	# save user settings for future sessions
+	catch {savePreferences}
 	update
 	if {$text == ""} {
 	    if {[info exists maxima_priv(cConsoleText)]} {
@@ -172,7 +164,6 @@ object_class MAXTkmaxima {
 		tide_failure $err
 	    }
 	}
-
 	tkexit $val
     }
 
