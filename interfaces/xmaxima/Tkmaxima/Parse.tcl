@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Parse.tcl,v 1.4 2004-10-13 12:08:58 vvzhy Exp $
+#       $Id: Parse.tcl,v 1.5 2006-06-29 13:15:29 villate Exp $
 #
 ###### Parse.tcl ######
 ############################################################
@@ -224,7 +224,8 @@ proc getExpr120 { } {
 	    parseMatch $Parser(lookahead)
 	    break;
 	} else {
-	    error [mc "syntax error"]
+	    bgerror [mc "syntax error"]
+	    break;
 	}
     }
 }
