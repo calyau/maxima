@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Constants.tcl,v 1.19 2006-06-27 13:50:59 villate Exp $
+#       $Id: Constants.tcl,v 1.20 2006-06-29 13:13:36 villate Exp $
 #
 
 proc cMAXINITBeforeIni {} {
@@ -141,6 +141,8 @@ set maxima_priv(urlHandlers) {
     text/html  netmath
     text/plain netmath
     image/gif  netmath
+    image/png  netmath
+    image/jpeg netmath
     application/postscript "ghostview -safer %s"
     application/pdf "acroread %s"
     application/x-dvi "xdvi %s"
