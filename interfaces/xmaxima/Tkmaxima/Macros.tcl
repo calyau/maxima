@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Macros.tcl,v 1.5 2006-06-27 13:44:51 villate Exp $
+#       $Id: Macros.tcl,v 1.6 2006-06-29 13:09:58 villate Exp $
 #
 ###### Macros.tcl ######
 ############################################################
@@ -41,6 +41,7 @@ proc assoc { key lis args } {
 #-----------------------------------------------------------------------
 #
 proc delassoc { key lis } {
+    set new {}
     foreach { k val } $lis {
 	if { "$k" != "$key" } { lappend new $k $val}
     }
