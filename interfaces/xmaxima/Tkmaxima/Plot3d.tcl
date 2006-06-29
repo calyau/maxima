@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Plot3d.tcl,v 1.8 2004-10-13 12:08:58 vvzhy Exp $
+#       $Id: Plot3d.tcl,v 1.9 2006-06-29 12:57:18 villate Exp $
 #
 ###### Plot3d.tcl ######
 ############################################################
@@ -398,16 +398,20 @@ proc replot3d { win } {
 	    oset $win [lindex $v 0] [lindex $v 1]
 	}
     }
+
+    set sliders [string trim $sliders]
     if { "$sliders" != "" && ![winfo exists $c.sliders] } {
 	addSliders $win
     }
 
+    set zfun [string trim $zfun]
     if { "$zfun" != "" } {
 	proc _xf {  x  y } "return \[expr { [sparseWithParams $zfun {x y} $parameters ] } \]"
 	addOnePlot3d $win [calculatePlot3data $win _xf  [lindex $nsteps 0] [lindex $nsteps 1]]
 	# calculatePlot3d $win _xf [lindex $nsteps 0] [lindex $nsteps 1]
     }
 
+    set data [string trim $data]
     if { "$data" != "" } {
 	if { 0 } {
 	    puts "here"
