@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: xmaxima-trailer.tcl,v 1.11 2006-06-28 12:15:27 villate Exp $
+#       $Id: xmaxima-trailer.tcl,v 1.12 2006-06-29 12:58:27 villate Exp $
 #
 # Attach this at the bottom of the xmaxima code to start up the interface.
 
@@ -17,9 +17,14 @@ cMAXINITAfterIni
 
 if { [llength $maxima_priv(plotfile)] > 0 } {
     set fptr [open [lindex $maxima_priv(plotfile) 0] r]
-    regsub -all {[\n\r]} [read $fptr] " " inputdata
+    regsub -all -- {/\*.*?\*/} [read $fptr] {} inputdata
     close $fptr
-    eval $inputdata
+    regsub -all -- {[[:space:]]+} $inputdata { } inputdata
+    string trim $inputdata
+     if {[catch {eval $inputdata}]} {
+	 bgerror "Input file has syntax errors"
+	 exit
+     }
 } else {
     MAXTkmaxima tkmaxima
     rename exit tkexit
