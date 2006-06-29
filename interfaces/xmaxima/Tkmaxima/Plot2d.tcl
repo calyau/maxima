@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Plot2d.tcl,v 1.9 2006-06-22 10:16:45 villate Exp $
+#       $Id: Plot2d.tcl,v 1.10 2006-06-29 12:56:34 villate Exp $
 #
 ###### Plot2d.tcl ######
 ############################################################
@@ -365,7 +365,7 @@ proc replot2d {win } {
     # in case only functions and no y autoscale dont bother.
     if { "$data" != "" || [lsearch $autoscale y]>=0  } {
 	set ranges [plot2dGetDataRange [concat $data $xfundata]]
-	#	puts ranges=$ranges
+	      puts ranges=$ranges
 	foreach {v k} [eval plot2dRangesToRadius $ranges] {
 	    if { [lsearch $autoscale [string index $v 1] ] >= 0 } {
 		oset $win [string range $v 1 end] $k
@@ -485,14 +485,16 @@ proc plot2dGetDataRange { data } {
 
 
 		    if { [lsearch {xradius yradius xcenter ycenter } $vv] >= 0 } {
-			lappend extra -$vv [list [lindex $d 1]]
+			# these arguments must have numerical values
+			lappend extra -$vv [expr {1*[lindex $d 1]}]
 		    }
 
 		}
 	    }
 	} errmsg ] } {
-	    set com [list error "bad data: [string range $d 0 200].." $errmsg]
-	    after 1 $com
+	    bgerror "bad data: [string range $d 0 2].."
+# 	    set com [list error "bad data: [string range $d 0 200].." $errmsg]
+# 	    after 1 $com
 	}
     }
 
