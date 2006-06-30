@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: NConsole.tcl,v 1.5 2002-09-19 16:24:37 mikeclarkson Exp $
+#       $Id: NConsole.tcl,v 1.6 2006-06-30 15:04:12 villate Exp $
 #
 ###### NConsole.tcl ######
 ############################################################
@@ -65,7 +65,7 @@ proc CNinsertPrompt { w } {
 }
 
 proc CNeval { w } {
-    linkLocal $w inputs
+    linkLocal $w inputs inputIndex
     set prev ""
     if { [$w compare insert < lastStart] } {
 	set this [thisRange $w input insert]
@@ -79,6 +79,7 @@ proc CNeval { w } {
     }
     set expr [string trimright [$w get lastStart end] \n]
     $w tag add input lastStart end
+    set inputIndex [llength $inputs]
     lappend inputs $expr
     set tag ""
     #puts "sendind <$expr>"
