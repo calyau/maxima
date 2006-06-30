@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Plotdf.tcl,v 1.9 2006-06-22 10:24:43 villate Exp $
+#       $Id: Plotdf.tcl,v 1.10 2006-06-30 16:07:03 villate Exp $
 #
 ###### Plotdf.tcl ######
 #######################################################################
@@ -433,7 +433,8 @@ proc parseOdeArg {  s } {
 	set s [string range $s [lindex $junk 1] end]
     }
     if { ![info exists ans] || ([llength $ans] == 2 && "[lindex $ans 0]" != "-dydx") } {
-	error [concat [mc "bad -ode argument:"] "$orig" [mc "\nwant d(y,x)=f(x,y) \n   OR d(x,t)=f(x,y) d(y,t)=g(x,y)"]]
+	error [mc "bad -ode argument:\n$orig\nShould be d(y,x)=f(x,y)
+       OR d(x,t)=f(x,y) d(y,t)=g(x,y)"]
     }
     return $ans
 }
