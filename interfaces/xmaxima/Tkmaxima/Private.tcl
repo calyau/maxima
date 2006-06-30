@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Private.tcl,v 1.2 2002-09-07 05:21:42 mikeclarkson Exp $
+#       $Id: Private.tcl,v 1.3 2006-06-30 15:04:58 villate Exp $
 #
 ###### private.tcl ######
 ############################################################
@@ -27,7 +27,6 @@ proc linkLocal { win args } {
 proc clearLocal { win } {
     global _WinInfo$win
     # puts "clearing info for $win in [info level 1]"
-
     catch { unset _WinInfo$win }
 }
 
@@ -52,9 +51,7 @@ proc oarray { win  } {
 
 proc oget { win var } {
     global _WinInfo$win
-    #mike FIXME: This errors if it does not exist
     return [set _WinInfo[set win]($var)]
 }
-
 
 ## endsource private.tcl
