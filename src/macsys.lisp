@@ -117,7 +117,8 @@
 	 (d-tag))
 	(nil)
       (catch 'return-from-debugger
-	(when (not (checklabel $inchar))
+	(when (or (not (checklabel $inchar))
+              (not (checklabel $outchar)))
 	  (setq $linenum (f1+ $linenum)))
 	#+akcl(si::reset-stack-limits)
 	(setq c-tag (makelabel $inchar))
