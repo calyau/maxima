@@ -44,12 +44,12 @@
 ;;	    (dpb (byte-in *primechannel*) 2211
 ;;		 (dpb (byte-in *primechannel*) 1111 (byte-in *primechannel*)))))
 
-(defmfun $prime (i)
-  (declare (ignore i))
-  (merror "`prime' doesn't work yet."))
-
-
-(defmvar $maxprime 489318.)
+;; (defmfun $prime (i)
+;;   (declare (ignore i))
+;;   (merror "`prime' doesn't work yet."))
+;; 
+;; 
+;; (defmvar $maxprime 489318.)
 
 ;;#-(or cl NIL)
 ;;(unless (boundp '*primechannel*)
