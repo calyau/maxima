@@ -541,7 +541,7 @@
   (cond ((not ($listp a))
 	 (merror "Arg to `cfdisrep' not a list: ~M" a))
 	((null (cddr a)) (cadr a))
-	((zerop (cadr a))
+	((equal (cadr a) 0)
 	 (list '(mexpt) (cfdisrep1 (cddr a)) -1))
 	((cfdisrep1 (cdr a)))))
 
