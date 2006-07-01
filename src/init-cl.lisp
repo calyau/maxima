@@ -517,6 +517,9 @@
 			   :action #'(lambda (file)
 				       (load file))
 			   :help-string "Preload <lisp-file>.")
+       (make-cl-option :names '("-q" "--quiet")
+               :action #'(lambda () (declare (special *maxima-quiet*)) (setq *maxima-quiet* t))
+               :help-string "Suppress Maxima start-up message.")
 	   (make-cl-option :names '("--disable-readline")
 			   :action #'(lambda ()
 				       #+gcl

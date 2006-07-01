@@ -386,6 +386,8 @@
 (defvar *maxima-prolog* "")
 (defvar *maxima-epilog* "")
 
+(defvar *maxima-quiet* nil)
+
 #-lispm
 (defun macsyma-top-level (&optional (input-stream *standard-input*)
 			  batch-flag)
@@ -393,20 +395,7 @@
     (if *maxima-started*
 	(format t "Maxima restarted.~%")
 	(progn
-	  (format t *maxima-prolog*)
-	  (format t "~&Maxima ~a http://maxima.sourceforge.net~%"
-		  *autoconf-version*)
-	  (format t "Using Lisp ~a ~a" (lisp-implementation-type)
-		  #-clisp (lisp-implementation-version)
-		  #+clisp (subseq (lisp-implementation-version)
-				  0 (+ 1 (search
-					  ")" (lisp-implementation-version)))))
-	  #+gcl (format t " (aka GCL)")
-	  (format t "~%")
-	  (format t "Distributed under the GNU Public License. See the file COPYING.~%")
-	  (format t "Dedicated to the memory of William Schelter.~%")
-	  (format t "This is a development version of Maxima. The function bug_report()~%")
-	  (format t "provides bug reporting information.~%")
+      (if (not *maxima-quiet*) (maxima-banner))
 	  (setq *maxima-started* t)))
     (if ($file_search "maxima-init.lisp") ($load ($file_search "maxima-init.lisp")))
     (if ($file_search "maxima-init.mac") ($batchload ($file_search "maxima-init.mac")))
@@ -420,6 +409,22 @@
 		(continue input-stream batch-flag)
 		(format t *maxima-epilog*)
 		(bye)))))))
+
+(defun maxima-banner ()
+  (format t *maxima-prolog*)
+  (format t "~&Maxima ~a http://maxima.sourceforge.net~%"
+      *autoconf-version*)
+  (format t "Using Lisp ~a ~a" (lisp-implementation-type)
+      #-clisp (lisp-implementation-version)
+      #+clisp (subseq (lisp-implementation-version)
+              0 (+ 1 (search
+                  ")" (lisp-implementation-version)))))
+  #+gcl (format t " (aka GCL)")
+  (format t "~%")
+  (format t "Distributed under the GNU Public License. See the file COPYING.~%")
+  (format t "Dedicated to the memory of William Schelter.~%")
+  (format t "This is a development version of Maxima. The function bug_report()~%")
+  (format t "provides bug reporting information.~%"))
 
 #-lispm
 (progn 
