@@ -1024,18 +1024,30 @@ One extra decimal digit in actual representation for rounding purposes.")
 	(t (bcons (fpexpt (cdr p) n)))))
 
 (defun fproot (a n)  ; computes a^(1/n)  see Fitch, SIGSAM Bull Nov 74
-  (let* ((ofprec fpprec) (fpprec (f+ fpprec 2))	;assumes a>0 n>=2
-	 (bk (fpexpt (intofp 2)
-		     (add1 (quotient (cadr (setq a (cdr (bigfloatp a)))) n)))))
-    (do ((x bk
-	    (fpdifference
-	     x (setq bk (fpquotient (fpdifference
-				     x (fpquotient a (fpexpt x n1))) n))))
-	 (n1 (sub1 n))
-	 (n (intofp n)))
-	((or (equal bk '(0 0))
-	     (greaterp (difference (cadr x) (cadr bk)) ofprec)) (setq a x))))
-  (list (fpround (car a)) (plus -2 *m (cadr a))))
+
+  ; Special case for a = 0b0. General algorithm loops endlessly in that case.
+
+  ; Unlike many or maybe all of the other functions named FP-something,
+  ; FPROOT assumes it is called with an argument like
+  ; '((BIGFLOAT ...) FOO BAR) instead of '(FOO BAR).
+  ; However FPROOT does return something like '(FOO BAR).
+
+  (if (eq (cadr a) 0)
+    '(0 0)
+
+    (progn
+      (let* ((ofprec fpprec) (fpprec (f+ fpprec 2)) ;assumes a>0 n>=2
+         (bk (fpexpt (intofp 2)
+                 (add1 (quotient (cadr (setq a (cdr (bigfloatp a)))) n)))))
+        (do ((x bk
+            (fpdifference
+             x (setq bk (fpquotient (fpdifference
+                         x (fpquotient a (fpexpt x n1))) n))))
+         (n1 (sub1 n))
+         (n (intofp n)))
+        ((or (equal bk '(0 0))
+             (greaterp (difference (cadr x) (cadr bk)) ofprec)) (setq a x))))
+      (list (fpround (car a)) (plus -2 *m (cadr a))))))
 
 (defun timesbigfloat (h) 
   (prog (fans r nfans) 
