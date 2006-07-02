@@ -133,21 +133,21 @@ See also @code{bfloat} and @code{fpprintprec}.
 @defvr {Option variable} fpprintprec
 Default value: 0
 
-@code{fpprintprec} is the number of digits to print when
-printing a bigfloat number, making it possible to compute with a large
-number of digits of precision, but have the answer printed out with a
-smaller number of digits.
+@code{fpprintprec} is the number of digits to print when printing an ordinary float or bigfloat number.
 
-When @code{fpprintprec} is 0, or greater than or equal to
-@code{fpprec}, then the value of @code{fpprec} controls the number of digits used
-for printing.
+For ordinary floating point numbers,
+when @code{fpprintprec} has a value between 2 and 16 (inclusive),
+the number of digits printed is equal to @code{fpprintprec}.
+Otherwise, @code{fpprintprec} is 0, or greater than 16,
+and the number of digits printed is 16.
 
-When @code{fpprintprec} has a value between 2 and
-@code{fpprec - 1}, then it controls the number of digits used.  (The minimal
-number of digits used is 2, one to the left of the point and one to
-the right.
+For bigfloat numbers,
+when @code{fpprintprec} has a value between 2 and @code{fpprec} (inclusive),
+the number of digits printed is equal to @code{fpprintprec}.
+Otherwise, @code{fpprintprec} is 0, or greater than @code{fpprec},
+and the number of digits printed is equal to @code{fpprec}.
 
-The value 1 for @code{fpprintprec} is illegal.
+@code{fpprintprec} cannot be 1.
 
 @end defvr
 

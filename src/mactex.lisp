@@ -175,9 +175,8 @@
 
 (defun myprinc (chstr)
   (prog (chlst)
-     (cond ((greaterp (plus (length (setq chlst (exploden chstr)))
-			    ccol)
-		      70.)
+     (cond ((and (greaterp (plus (length (setq chlst (exploden chstr))) ccol) 70.)
+                 (or (stringp chstr) (equal chstr '| |)))
 	    (terpri texport)      ;would have exceeded the line length
 	    (setq ccol 1.)
 	    (myprinc " ")	    ; lead off with a space for safety
@@ -287,7 +286,7 @@
     (cond ((integerp atom)
 	   atom)
 	  (t
-	   (setq r (explode atom))
+	   (setq r (exploden atom))
 	   (setq exponent (member 'e r :test #'string-equal)) ;; is it ddd.ddde+EE
 	   (cond ((null exponent)
 		  ;; it is not. go with it as given

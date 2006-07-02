@@ -1415,14 +1415,14 @@ Example:
 @c load (descriptive)$
 @c load (numericalio)$
 @c s2 : read_matrix (file_search ("wind.data"))$
-@c fpprec : 7$  /* change precision for pretty output */
+@c fpprintprec : 7$  /* change precision for pretty output */
 @c cov (s2);
 @c ===end===
 @example
 (%i1) load (descriptive)$
 (%i2) load (numericalio)$
 (%i3) s2 : read_matrix (file_search ("wind.data"))$
-(%i4) fpprec : 7$  /* change precision for pretty output */
+(%i4) fpprintprec : 7$  /* change precision for pretty output */
 (%i5) cov (s2);
       [ 17.22191  13.61811  14.37217  19.39624  15.42162 ]
       [                                                  ]
@@ -1475,14 +1475,14 @@ Example:
 @c load (descriptive)$
 @c load (numericalio)$
 @c s2 : read_matrix (file_search ("wind.data"))$
-@c fpprec : 7$ /* change precision for pretty output */
+@c fpprintprec : 7$ /* change precision for pretty output */
 @c cov1 (s2);
 @c ===end===
 @example
 (%i1) load (descriptive)$
 (%i2) load (numericalio)$
 (%i3) s2 : read_matrix (file_search ("wind.data"))$
-(%i4) fpprec : 7$ /* change precision for pretty output */
+(%i4) fpprintprec : 7$ /* change precision for pretty output */
 (%i5) cov1 (s2);
       [ 17.39587  13.75567  14.51734  19.59216  15.5774  ]
       [                                                  ]
@@ -1570,14 +1570,14 @@ Example:
 @c ===beg===
 @c load (descriptive)$
 @c load (numericalio)$
-@c fpprec:7$
+@c fpprintprec:7$
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c cor (s2);
 @c ===end===
 @example
 (%i1) load (descriptive)$
 (%i2) load (numericalio)$
-(%i3) fpprec:7$
+(%i3) fpprintprec:7$
 (%i4) s2 : read_matrix (file_search ("wind.data"))$
 (%i5) cor (s2);
       [   1.0     .8476339  .8803515  .8239624  .7519506 ]
@@ -1596,7 +1596,7 @@ Function @code{cor} has an optional logical argument: @code{cor(x,true)} tells M
 @c ===beg===
 @c load (descriptive)$
 @c load (numericalio)$
-@c fpprec:7$
+@c fpprintprec:7$
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c s : cov1 (s2)$
 @c cor (s, false); /* this is faster */
@@ -1604,7 +1604,7 @@ Function @code{cor} has an optional logical argument: @code{cor(x,true)} tells M
 @example
 (%i1) load (descriptive)$
 (%i2) load (numericalio)$
-(%i3) fpprec:7$
+(%i3) fpprintprec:7$
 (%i4) s2 : read_matrix (file_search ("wind.data"))$
 (%i5) s : cov1 (s2)$
 (%i6) cor (s, false); /* this is faster */
@@ -1710,7 +1710,7 @@ Example:
 @c load (numericalio)$
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c z : list_correlations (s2)$
-@c fpprec : 5$ /* for pretty output */
+@c fpprintprec : 5$ /* for pretty output */
 @c z[1];  /* precision matrix */
 @c z[2];  /* multiple correlation vector */
 @c z[3];  /* partial correlation matrix */
@@ -1720,7 +1720,7 @@ Example:
 (%i2) load (numericalio)$
 (%i3) s2 : read_matrix (file_search ("wind.data"))$
 (%i4) z : list_correlations (s2)$
-(%i5) fpprec : 5$ /* for pretty output */
+(%i5) fpprintprec : 5$ /* for pretty output */
 (%i6) z[1];  /* precision matrix */
       [  .38486   - .13856   - .15626   - .10239    .031179  ]
       [                                                      ]

@@ -480,7 +480,9 @@ values")
     (cond ((symbolp symb)
 	   (setq string (print-invert-case symb)))
 	  ((floatp symb)
-	   (let ((a (abs symb)))
+	   (let
+         ((a (abs symb))
+          (effective-printprec (if (or (= $fpprintprec 0) (> $fpprintprec 16)) 16 $fpprintprec)))
 	     ;; When printing out something for Fortran, we want to be
 	     ;; sure to print the exponent marker so that Fortran
 	     ;; knows what kind of number it is.  It turns out that
@@ -489,7 +491,7 @@ values")
 	     ;; printed.
 	     ;;
 	     ;; Also, for normal output, we basically want to use
-	     ;; prin1, but we can't because we want fpprec to control
+	     ;; prin1, but we can't because we want fpprintprec to control
 	     ;; how many digits are printed.  So we have to check for
 	     ;; the size of the number and use ~e or ~f appropriately.
 	     (if *fortran-print*
@@ -497,16 +499,16 @@ values")
 		 (multiple-value-bind (form width)
 		     (cond ((or (zerop a)
 				(<= 1 a 1d7))
-			    (values "~vf" (+ 1 $fpprec)))
+			    (values "~vf" (+ 1 effective-printprec)))
 			   ((<= 0.001d0 a 1)
-			    (values "~vf" (+ $fpprec
+			    (values "~vf" (+ effective-printprec
 					     (cond ((< a 0.01d0)
 						    3)
 						   ((< a 0.1d0)
 						    2)
 						   (t 1)))))
 			   (t
-			    (values "~ve" (+ 5 $fpprec))))
+			    (values "~ve" (+ 5 effective-printprec))))
 		   (setq string (format nil form width symb))))
 	     (setq string (string-trim " " string))))
 	  #+(and gcl (not gmp))
