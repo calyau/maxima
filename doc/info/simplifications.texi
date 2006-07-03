@@ -266,15 +266,6 @@ Otherwise, @code{linear} returns @var{expr}.
 To use this function write first @code{load(functs)}.
 @end deffn
 
-@deffn {Function} quadratic (@var{expr}, @var{x})
-When @var{expr} is an expression quadratic in variable @var{x},
-@code{quadratic} returns @code{@var{a}*@var{x}^2 + @var{b}*x + @var{c}} where @var{a} is nonzero,
-and @var{a}, @var{b}, and @var{c} are free of @var{x}.
-Otherwise, @code{quadratic} returns @var{expr}.
-
-To use this function write first @code{load(functs)}.
-@end deffn
-
 @deffn {Function} gcdivide (@var{p}, @var{q})
 When @code{takegcd} is @code{true},
 @code{gcdivide} divides the polynomials @var{p} and @var{q} by their greatest common divisor
