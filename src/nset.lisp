@@ -850,7 +850,7 @@ a positive integer; instead found ~:M" n))))
 	     `(($num_partitions simp) ,n)))))
 
 (defun $num_distinct_partitions (n &optional lst)
-  (cond ((= n 0) 0)
+  (cond ((eq n 0) 0)
 	((and (integerp n) (> n -1))
 	 (let ((p (make-array (+ n 1)))
 	       (s (make-array (+ n 1)))
