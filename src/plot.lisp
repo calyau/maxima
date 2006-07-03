@@ -1273,10 +1273,16 @@ setrgbcolor} def
 	(setf i 0)
 	(dolist (v (cdr fun))
 	  (incf i)
-	  (setq plot-name
-		(let ((string (coerce (mstring v) 'string)))
-		  (cond ((< (length string) 20) string)
-			(t (format nil "Fun~a" i)))))
+
+      ; Assign PLOT-NAME only if not already assigned.
+      ; I (Robert Dodier) would just cut it, but it's not clear
+      ; that it is always assigned by the time we arrive here.
+      (if (null plot-name)
+	    (setq plot-name
+		  (let ((string (coerce (mstring v) 'string)))
+		    (cond ((< (length string) 20) string)
+			  (t (format nil "Fun~a" i))))))
+
 	  (case plot-format
 	    ($xgraph
 	     (format st "~%~% \"~a\"~%" plot-name))
