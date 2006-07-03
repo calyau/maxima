@@ -137,14 +137,18 @@ endpoints is often needed.
 
 @end defvr
 
+@c NEEDS EXAMPLES
 @defvr {Option variable} logarc
-Default value: @code{false}
+@defvrx {Function} logarc (@var{expr})
 
-If @code{true} will cause the inverse circular and
-hyperbolic functions to be converted into logarithmic form.
-@code{logarc(@var{exp})} will cause this conversion for a particular
-expression @var{exp} without setting the switch or having to
-re-evaluate the expression with @code{ev}.
+When the global variable @code{logarc} is @code{true},
+inverse circular and hyperbolic functions are replaced by
+equivalent logarithmic functions.
+The default value of @code{logarc} is @code{false}.
+
+The function @code{logarc(@var{expr})} carries out that replacement for
+an expression @var{expr}
+without setting the global variable @code{logarc}.
 
 @end defvr
 
