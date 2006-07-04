@@ -155,6 +155,8 @@
      (if (not (or (= (length args) 1)
 		  (and (eq (caar fn) '$matrix) (= (length args) 2))))
 	 (merror "Wrong number of indices:~%~M" (cons '(mlist) args)))
+     (if (memq 0 args)
+       (merror "No such ~M element: ~M~%" (if (eq (caar fn) 'mlist) "list" "matrix") `((mlist) ,@args)))
      (do ((args1 args (cdr args1)))
 	 ((null args1) (let (($piece $piece) ($partswitch 'mapply))
 			 (apply #'$inpart (cons fn args))))
