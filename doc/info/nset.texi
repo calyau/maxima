@@ -1077,9 +1077,6 @@ Examples:
 
 To find all partitions that satisfy a condition, use the function @code{subset};
 here is an example that finds all partitions of 10 that consist of prime numbers.
-@c SEE SF BUG REPORT # 779053
-(Notice that @code{primep(1)} is @code{true} in Maxima. This disagrees with
-most definitions of prime.)
 
 @c ===beg===
 @c s: integer_partitions (10)$
