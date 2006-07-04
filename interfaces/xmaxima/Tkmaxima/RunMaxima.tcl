@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: RunMaxima.tcl,v 1.20 2006-07-04 08:15:15 villate Exp $
+#       $Id: RunMaxima.tcl,v 1.21 2006-07-04 13:58:19 villate Exp $
 #
 proc textWindowWidth { w } {
     set font [$w cget -font]
@@ -245,6 +245,9 @@ proc maximaFilter { win sock } {
 
 	}
     }
+
+    # Make sure Maxima's output starts on a new line
+    if {[string index $it 0] != "\n"} {set it "\n$it"}
 
     $win insert end $it "output"
     $win mark set  lastStart "end -1char"
