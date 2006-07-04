@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: NConsole.tcl,v 1.6 2006-06-30 15:04:12 villate Exp $
+#       $Id: NConsole.tcl,v 1.7 2006-07-04 08:18:39 villate Exp $
 #
 ###### NConsole.tcl ######
 ############################################################
@@ -79,8 +79,8 @@ proc CNeval { w } {
     }
     set expr [string trimright [$w get lastStart end] \n]
     $w tag add input lastStart end
-    set inputIndex [llength $inputs]
     lappend inputs $expr
+    set inputIndex [expr {[llength $inputs] - 1}]
     set tag ""
     #puts "sendind <$expr>"
     set res [sendOneWait [oget $w program] $expr]
@@ -118,13 +118,14 @@ proc CNpreviousInput { w direction } {
     if { [$w compare insert < lastStart ] } { return }
 
     set last [lindex [peekLastCommand $w] 1]
-
     if {  ("[lindex $last 2]" != "ALT_p" && "[lindex $last 2]" != "ALT_n") || \
 	      ![info exists inputIndex] } {
 	set inputIndex [expr {$direction < 0 ? [llength $inputs] : -1}]
 	set matching [string trim [$w get lastStart end] " \n"]
     }
-    lappend inputs $matching
+    if {[info exists $matching]} {
+	lappend inputs $matching
+    }
     set n [llength $inputs]
     set j 0
     set matchRegexp "^[quoteForRegexp $matching]"
