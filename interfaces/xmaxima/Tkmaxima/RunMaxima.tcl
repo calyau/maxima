@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: RunMaxima.tcl,v 1.19 2004-10-13 12:08:58 vvzhy Exp $
+#       $Id: RunMaxima.tcl,v 1.20 2006-07-04 08:15:15 villate Exp $
 #
 proc textWindowWidth { w } {
     set font [$w cget -font]
@@ -24,7 +24,7 @@ proc packBoth {fr browser} {
 }
 
 proc CMeval { w } {
-    linkLocal $w inputs
+    linkLocal $w inputs inputIndex
     set prev ""
     #puts "CMeval $w, [$w compare insert < lastStart]"
     if { [$w compare insert < lastStart] } {
@@ -54,6 +54,10 @@ proc CMeval { w } {
     $w tag add input lastStart "end -1char"
     $w mark set  lastStart "end -1char"
     lappend inputs $expr
+
+    set inputIndex [expr {[llength $inputs] - 1}]
+    openMathAnyKey $w [string index $expr end] [string index $expr end]
+
     set tag ""
     #    puts "sending <$expr>"
     # set res [sendMaxima $w $expr ]
@@ -61,7 +65,6 @@ proc CMeval { w } {
     # set res [sendMaxima $w $expr ]
     # puts "[$w dump -all "lastStart linestart" end]"
     #message "send form"
-
 }
 
 proc acceptMaxima { win port filter } {
@@ -262,6 +265,8 @@ proc maximaFilter { win sock } {
 	
     }
     $win see end
+    #moves the cursor to the end
+    $win mark set insert output.last
     return
 }
 
