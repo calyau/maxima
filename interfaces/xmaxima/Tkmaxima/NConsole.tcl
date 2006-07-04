@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: NConsole.tcl,v 1.7 2006-07-04 08:18:39 villate Exp $
+#       $Id: NConsole.tcl,v 1.8 2006-07-04 14:07:22 villate Exp $
 #
 ###### NConsole.tcl ######
 ############################################################
@@ -134,8 +134,8 @@ proc CNpreviousInput { w direction } {
 	# [string match "$matching*" [lindex $inputs $inputIndex]]
     	if { [regexp -- $matchRegexp [lindex $inputs $inputIndex]] } {
 	    $w delete lastStart end
-	    $w insert insert [lindex $inputs $inputIndex] input
-	    $w see end
+	    $w insert insert [lindex $inputs $inputIndex]
+	    $w see insert
 	    break
 	}
     }
