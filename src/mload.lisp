@@ -848,10 +848,14 @@
 		       (or recursive ($simple_equal result $functions)))
 		      (batch-equal-check (meval* next-result) result t)))
 	       (and (not ($bfloatp result))
-		    (let (($fpprec 12))
-		      (declare (special $fpprec))
+            ; Next test succeeds when floats are same to $FPPRINTPREC digits.
+            ; Not sure about effect on non-floats.
+		    (let (($fpprintprec 12))
+		      (declare (special $fpprintprec))
 		      (equal (mstring result) (mstring next-result))))
 	       (cond ((not  (appears-in result 'factored))
+              ; Next test succeeds when floats are same within $RATEPSILON.
+              ; Not sure about effect on non-floats.
 		      (like ($ratsimp next-result)
 			    ($ratsimp result))))
 	       (equal 0 ($ratsimp `((mplus) ,next-result 
