@@ -485,3 +485,9 @@ bfloat(%pi/2);
 
 asin(-1b0);
 -bfloat(%pi/2);
+
+/* li[2](1.0) stack overflow (bug report # 1514861)
+ */
+
+li[2](1.0);
+ev (%pi^2/6, numer);

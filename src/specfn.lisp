@@ -110,7 +110,7 @@
   ;; Spence's function can be used to compute li[2] for 0 <= x <= 1.
   ;; To compute the rest, we need the following identities:
   ;;
-  ;; li[2](x) = -li[2](1/x)-log(-x)^2/2+%pi^2/6
+  ;; li[2](x) = -li[2](1/x)-log(-x)^2/2-%pi^2/6
   ;; li[2](x) = li[2](1/(1-x)) + log(1-x)*log((1-x)/x^2)/2 - %pi^2/6
   ;;
   ;; The first tells us how to compute li[2] for x > 1.  The result is complex.
@@ -124,8 +124,10 @@
 		       (- (/ (cl:expt (coerce pi 'double-float) 2) 6))))
 		   ((< x 1)
 		    (slatec:dspenc x))
+           ((= x 1)
+            (/ (cl:expt (coerce pi 'double-float) 2) 6))
 		   (t
-		    ;; li[2](x) = -li[2](1/x)-log(-x)^2/2+%pi^2/6
+		    ;; li[2](x) = -li[2](1/x)-log(-x)^2/2-%pi^2/6
 		    (- (+ (li2 (/ x))
 			  (/ (cl:expt (cl:log (- x)) 2) 2)
 			  (/ (cl:expt (coerce pi 'double-float) 2) 6)))))))
