@@ -1,42 +1,83 @@
+@c english version 1.3
 @menu
+* Introducci@'on a plotdf::
 * Definiciones para plotdf::
 @end menu
 
-@node Definiciones para plotdf,  , plotdf, plotdf
-@section Definiciones para plotdf
+@node Introducci@'on a plotdf, Definiciones para plotdf, plotdf, plotdf
+@section Introducci@'on a plotdf
 
-@deffn {Function} plotdf (@var{expr},...options...)
-@deffnx {Function} plotdf (@code{[}@var{expr1},@var{expr1}@code{]},...options...)
-Plots the direction field of a first-order ordinary equation (ODE) or a system of two autonomous ODE's.
+La funci@'on @code{plotdf} crea un gr@'afico del campo de direcciones para una
+Ecuaci@'on Diferencial Ordinaria (EDO) de primer orden, o para un sistema de
+dos EDO's aut@'onomas, de primer orden.
 
-In  Maxima 5.9.0, plotdf will only work from xmaxima and you cannot use
-the option "trajectory_at". In Maxima 5.9.1, in addition to those two
-limitations there will also be two options missing from the plot menu:
-"Integrate" and "Plot vs t". To solve those problems see
-http://fisica.fe.up.pt/maxima/plotdf/download.html
-
-In recent CVS versions plotdf should work fine both from xmaxima and maxima.
-
-For one ODE use @code{plotdf (expr,...,options,..)}, where @var{expr} is an expression depending on @var{x} and @var{y}, which represents the right-hand side of the ODE:
+Para dibujar el campo de direcciones de una @'unica EDO, esa ecuci@'on deber@'a
+escribirse en la forma siguiente:
+@ifnottex
 @example
        dy
-       -- = expr
+       -- = F(x,y)
        dx
 @end example
-@var{expr} can also depend on a set of parameters that must be given numerical
-values with the "parameters" option and those parameters can be changed
-interactively with the "sliders" option (see "PLOTDF OPTIONS" below).
+@end ifnottex
+@tex
+$${{dy}\over{dx}} = F(x,y)$$
+@end tex
 
-For numerical values of @var{x}, @var{y}, and the parameters, @code{float(ev(expr, numer))} must return a number.
+y la funci@'on @var{F} ser@'a dada como argumento para el comando
+@code{plotdf}. La variable independiente tiene que ser siempre @var{x} y la
+variable dependiente @var{y}. A esas dos variables no podr@'a estar asociado
+ning@'un valor num@'erico.
 
-For a system of two autonomous, first-order ODE's, use @code{plotdf ([expr1,expr2],...,options,..)}, Where @var{expr1} and @var{expr2} are two expressions that depend on @var{x} and @var{y} (but not on @var{t}), and represent the right-hand side of the ODE's:
+Para dibujar el campo de direcciones de un sistema aut@'onomo de dos EDO's,
+Las dos ecuaciones deben ser escritas en la forma siguiente
+@ifnottex
 @example
        dx             dy
-       -- = expr1     -- = expr2 
+       -- = G(x,y)    -- = F(x,y) 
        dt             dt
 @end example
-as in the first case, options "parameters" and "sliders" can be used.
+@end ifnottex
+@tex
+$${{dx}\over{dt}} = G(x,y) \qquad {{dy}\over{dt}} = F(x,y)$$
+@end tex
 
+y el argumento para el comando @code{plotdf} ser@'a una lista con dos
+expresiones para las funciones @var{F} y @var{G}.
+
+Cuando se trabaja con una @'unica ecuaci@'on, @code{plotdf} asume
+impl@'{@dotless{i}}citamente que @code{x=t} y @code{G(x,y)=1}, transformando la
+ecuaci@'on en un sistema aut@'onomo con dos ecuaciones.
+
+@node Definiciones para plotdf,  , Introducci@'on a plotdf, plotdf
+@section Definiciones para plotdf
+
+@deffn {Function} plotdf (@var{dydx},...opciones...)
+@deffnx {Function} plotdf (@code{[}@var{dxdt},@var{dydt}@code{]},...opciones...)
+
+Dibuja un campo de direcciones en dos dimensiones @var{x} and @var{y}.
+
+@var{dydx}, @var{dxdt} y @var{dydt} son expresiones que dependen de @var{x} y
+@var{y}. Adem@'as de esas dos variables, las dos expresiones pueden depender de
+un conjunto de par@'ametros, con valores num@'ericos que son dados por medio
+de la opci@'on @code{parameters} (la sintaxis de esa opci@'on se explica mas al
+frente), o con un rango de posibles valores definidos con la opci@'on
+@var{sliders}.
+
+Varias otras opciones se pueden incluir dentro del comando, o en el men@'u que
+aparece cuando se hace click en la esquina superior izquierda de la ventana del
+gr@'afico. Haciendo click en un punto del gr@'afico se puede hacer que sea
+dibujada la curva integral que pasa por ese punto; lo mismo puede ser hecho
+dando las coordenadas del punto con la opci@'on @code{trajectory_at} dentro del
+comando plotdf. La direcci@'on de integraci@'on se puede controlar con la
+opci@'on @code{direction}, que acepta valores de "forward", "backward" o
+"both". El n@'umero de pasos realizado en la integraci@'on num@'erica se
+controla con la opci@'on @code{nsteps} y el incremento del tiempo en cada paso
+con la opci@'on @code{tstep}. Se usa el m@'etodo de Adams Moulton para hacer la
+integraci@'on num@'erica; tambi@'en es posible cambiar para el m@'etodo de
+Runge-Kutta de cuarto orden con ajuste de pasos.
+
+@b{Men@'u de la ventana del gr@'afico:}
 
 The menu in the plot window has the following options: "Zoom", will
 change the behavior of the mouse so that it will allow you to zoom in
@@ -46,159 +87,238 @@ you clicked. Holding the SHIFT key while clicking, zooms out to the
 previous magnification. To resume computing trajectories when you
 click on a point, select "Integrate" from the menu.
 
-To change the ODE(s) in use, or change other settings, select "Config"
-in the menu, enter new values in the dialog window, and then click on
-"Replot" in the main menu bar. If you enter a pair of coordinates in
-the field "Trajectory at" in the Config dialog menu, and press the
-"enter" key, a new integral curve will be shown, in addition to the
-ones already shown. You can change the color before you enter the
-point coordinates. When you select "Replot" all integral curves, except
-the last one, will erased.
+The option "Config" in the menu can be used to change the ODE(s) in use
+and various other settings. After configuration changes are made, the
+menu option "Replot" should be selected, to activate the new settings.
+If a pair of coordinates are entered in the field "Trajectory at" in the
+"Config" dialog menu, and the "enter" key is pressed, a new integral
+curve will be shown, in addition to the ones already shown. When
+"Replot" is selected, only the last integral curve entered will be
+shown.
 
-Holding the right mouse button down while you move the cursor allows
-you to drag (translate) the plot sideways or up and down. Additional
-parameters such as the number of steps (nsteps), the initial t value
-(tinitial), and the x and y centers and radii, may be set in the
-Config menu.
+Holding the right mouse button down while the cursor is moved, can be
+used to drag the plot sideways or up and down. Additional
+parameters such as the number of steps, the initial value of @var{t}
+and the x and y centers and radii, may be set in the Config menu.
 
-You may print to a Postscript printer, or save the plot as a
-postscript file, with the menu option "Save". To switch between
-printing and saving to a Postscript file, select the "Print Options"
-in the dialog window of "Config", change the settings, go back to
-the main menu ("OK" twice) and select "Save".
+A copy of the plot can be printed to a Postscript printer, or saved as a
+postscript file, using the menu option "Save". To switch between
+printing and saving to a Postscript file, "Print Options" should be
+selected in the dialog window of "Config". After the settings in the
+"Save" dialog window are entered, "Save'' must be selected in the first
+menu, to create the file or print the plot.
 
-Options for @code{plotdf}:
+@b{Plot options:}
+
+The @code{plotdf} command may include several commands, each command is
+a list of two or more items.  The first item is the name of the option,
+and the remainder comprises the value or values assigned to the option.
+
+The options which are recognized by @code{plotdf} are the following:
+
 @itemize @bullet
 @item
-[xradius,12.0]
-
-Determines the width in x direction of the x values shown by plotdf.
-
-@item
-[yradius,10.5]
-
-Defines the height in y direction of the y values shown by plotdf.
-
-@item
-[xcenter,0.0],[ycenter,0.0]
-
-(xcenter,ycenter) is the origin of the window shown by plotdf.
-
-@item
-[width,500]
-
-Width of plotdf's canvas in pixels.
-
-@item
-[height,500]
-
-Height of plotdf's canvas in pixels.
-
-@item
-[bbox, -2, -1.2, 3.5, 6]
-
-Bounding box (xmin ymin xmax ymax) of the region shown by plotdf. It
-will override the values o xcenter, ycenter, xradius, yradius.
-
-@item
-[tinitial,0.0]
-
-The intial value of the t variable used by plotdf to compute integral
-curves.
-
-@item
-[nsteps,100]
-
-Number of steps to do in one pass by the integrator of plotdf.
-
-@item
+Option: @code{tstep} defines the length of the increments on the
+independent variable @var{t}, used to compute an integral curve. If only
+one expression @var{dydx} is given to @code{plotdf}, the @var{x}
+variable will be directly proportional to @var{t}: @code{x - xinitial =
+t - tinitial}.
+@example
 [tstep,0.01]
-
-t step size used by plotdf's integrator.
-
-@item
-[xfun,"x^2;sin(x);exp(x)"]
-
-A semicolon separated list of functions that plotdf will plot on top
-of the direction field.
+@end example
+The default value is 0.1.
 
 @item
+Option: @code{nsteps} defines the number of steps of length @code{tstep}
+that will be used for the independent variable, to compute an integral
+curve.
+@example
+[nsteps,500]
+@end example
+The default value is 100.
+
+@item
+Option: @code{direction} defines the direction of the independent
+variable that will be followed to compute an integral curve. Possible
+values are @code{forward}, to make the independent variable increase
+@code{nsteps} times, with increments @code{tstep}, @code{backward}, to
+make the independent variable decrease, or @code{both} that will lead to
+an integral curve that extends @code{nsteps} forward, and @code{nsteps}
+backward. The keywords @code{right} and @code{left} can be used as
+synonyms for @code{forward} and @code{backward}.
+@example
 [direction,forward]
-
-The direction (in time) that the integral curves will follow in a
-direction field produced by plotdf. It may be "forward",
-"backward" or "both".
+@end example
+The defaul value is @code{both}.
 
 @item
+Option: @code{tinitial} defines the initial value of variable @var{t} used
+to compute integral curves. Since the differential equations are
+autonomous, that setting will only appear in the plot of the curves as
+functions of @var{t}. 
+@example
+[tinitial,6.7]
+@end example
+The default value is 0.
+
+@item
+Option: @code{versus_t} is used to create a second plot window, with a
+plot of an integral curve, as two functions @var{x}, @var{y}, of the
+independent variable @var{t}. If @code{versus_t} is given any value
+different from 0, the second plot window will be displayed. The second
+plot window includes another menu, similar to the menu of the main plot
+window.
+@example
 [versus_t,1]
-
-Any value different from zero will make plotdf open a window showing
-the time dependence of the independent variables in the last integral
-curve computed.
+@end example
+The default value is 0.
 
 @item
+Option: @code{trajectory_at} defines the coordinates @var{xinitial} and
+@var{yinitial} for the starting point of an integral curve.
+@example
 [trajectory_at,0.1,3.2]
-
-(x,y) coordinates of a point through which an integral curve
-should be shown by plotdf.
+@end example
+The option is empty by default.
 
 @item
+Option @code{parameters} defines a list of parameters, and their
+numerical values, used in the definition of the differential
+equations. The name and values of the parameters must be given in a
+string with a comma-separated sequence of pairs @code{name=value}.
+@example
 [parameters,"k=1.1,m=2.5"]
-
-List of parameters, and their numerical values, used in the
-differential equation(s) given to plotdf.
+@end example
 
 @item
+Option: @code{sliders} defines a list o parameters that will be changed
+interactively using slider buttons, and the range of variation of those
+parameters. The names and ranges of the parameters must be given in a
+string with a comma-separated sequence of elements @code{name=min:max}
+@example
 [sliders,"k=0:4,m=1:3"]
+@end example
 
-Ranges of the parameters that plotdf will use to put sliders to
-accept interactive change of the equations parameters.
+@item
+Option: @code{xfun} defines a string with semi-colon-separated sequence
+of functions of @var{x} to be displayed, on top of the direction field.
+Those functions will be parsed by Tcl and not by Maxima.
+@example 
+[xfun,"x^2;sin(x);exp(x)"]
+@end example
 
+@item
+Option: @code{xradius} is half of the length of the range of values that
+will be shown in the x direction.
+@example
+[xradius,12.5]
+@end example
+the default value is 10.
+
+@item
+Option: @code{yradius} is half of the length of the range of values that
+will be shown in the y direction.
+@example
+[yradius,15]
+@end example
+the default value is 10.
+
+@item
+Option: @code{xcenter} is the x coordinate of the point at the center of
+the plot.
+@example
+[xcenter,3.45]
+@end example
+The default value is 0.
+
+@item
+Option: @code{ycenter} is the y coordinate of the point at the center of
+the plot.
+@example
+[ycenter,4.5]
+@end example
+The default value is 0.
+
+@item
+Option: @code{width} defines the width of the plot window, in pixels.
+@example
+[width,800]
+@end example
+The default value is 500.
+
+@item
+Option: @code{height} defines the height of the plot window, in pixels.
+@example
+[width,600]
+@end example
+The default value is 500.
 @end itemize
 
-Examples:
+@b{Examples:}
+
+NOTE: Due to a bug in @code{openmath}, all commands that use it, in particular
+@code{plotdf}, must end with a semicolon and not with a dollar sign. The
+dollar sign might work in some of the graphical interfaces to Maxima, but
+to avoid problems we will use a semicolon in all the examples below.
+  
 @itemize @bullet
 @item
 To show the direction field of the differential equation @math{y' = exp(-x) + y} and the solution that goes through @math{(2, -0.1)}:
 @example
 (%i1) load("plotdf")$
 
-(%i2) plotdf(exp(-x)+y,[trajectory_at,2,-0.1])$
+(%i2) plotdf(exp(-x)+y,[trajectory_at,2,-0.1]);
 @end example
+
+@ifnotinfo
+@image{../figures/plotdf1,8cm}
+@end ifnotinfo
 
 @item
 To obtain the direction field for the equation @math{diff(y,x) = x - y^2} and the solution with initial condition @math{y(-1) = 3}, we can use the command:
 @example
 (%i3) plotdf(x-y^2,[xfun,"sqrt(x);-sqrt(x)"],
-                   [trajectory_at,-1,3],
-                   [direction,forward],
-                   [yradius,5],[xcenter,6])$
+          [trajectory_at,-1,3], [direction,forward],
+          [yradius,5],[xcenter,6]);
 @end example
+The graph also shows the function @math{y = sqrt(x)}. 
+
+@ifnotinfo
+@image{../figures/plotdf2,8cm}
+@end ifnotinfo
 
 @item
 The following example shows the direction field of a harmonic oscillator,
+defined by the two equations @math{dx/dt = y} and @math{dy/dt = -k*x/m},
 and the integral curve through @math{(x,y) = (6,0)}, with a slider that
-will allow you to change the value of m interactively (@math{k} is fixed at
-2):
+will allow you to change the value of @math{m} interactively (@math{k} is
+fixed at 2):
 @example
 (%i4) plotdf([y,-k*x/m],[parameters,"m=2,k=2"],
-                        [sliders,"m=1:5"],
-                        [trajectory_at,6,0])$
+            [sliders,"m=1:5"], [trajectory_at,6,0]);
 @end example
 
+@ifnotinfo
+@image{../figures/plotdf3,8cm}
+@end ifnotinfo
+
 @item
-The direction field of a Duffing equation:
+To plot the direction field of the Duffing equation, @math{m*x''+c*x'+k*x+b*x^3 = 0}, we introduce the variable @math{y=x'} and use:
 @example
-(%i5) plotdf([y,-(k*x + c*y + l*x^3)/m],
-                 [parameters,"k=-1,m=1.0,c=0,l=1"],
-                 [sliders,"k=-2:2,m=-1:1"],
-                 [bbox,-3,-3,3,3],[tstep,0.1])$
+(%i5) plotdf([y,-(k*x + c*y + b*x^3)/m],
+              [parameters,"k=-1,m=1.0,c=0,b=1"],
+              [sliders,"k=-2:2,m=-1:1"],[tstep,0.1]);
 @end example
+
+@ifnotinfo
+@image{../figures/plotdf4,8cm}
+@end ifnotinfo
 
 @item
 The direction field for a damped pendulum, including the
-solution for the given initial conditions, and with a slider that
-can be used to change the value of the mass m:
+solution for the given initial conditions, with a slider that
+can be used to change the value of the mass @math{m}, and with a plot of
+the two state variables as a function of time:
 
 @example
 (%i6) plotdf([y,-g*sin(x)/l - b*y/m/l],
@@ -206,8 +326,13 @@ can be used to change the value of the mass m:
          [trajectory_at,1.05,-9],[tstep,0.01],
          [xradius,6],[yradius,14],
          [xcenter,-4],[direction,forward],[nsteps,300],
-         [sliders,"m=0.1:1"])$
+         [sliders,"m=0.1:1"], [versus_t,1]);
 @end example
+
+@ifnotinfo
+@image{../figures/plotdf5,8cm}@image{../figures/plotdf6,8cm}
+@end ifnotinfo
+
 @end itemize
 
 To use this function write first @code{load("plotdf")}.
