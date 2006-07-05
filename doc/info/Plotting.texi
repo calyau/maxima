@@ -760,8 +760,8 @@ The same graph can be plotted using openmath:
 @end ifnotinfo
 
 @noindent
-in this case the mouse can be used to rotate the plot to look at surface from
-different sides.
+in this case the mouse can be used to rotate the plot to look at the surface
+from different sides.
 
 An example of the third pattern of arguments is
 
