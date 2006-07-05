@@ -41,7 +41,7 @@ $(MAXIMAESHTML): maxima.texi $(maxima_TEXINFOS)
 include $(top_srcdir)/common.mk
 genericdir = $(dochtmldir)/es
 genericdirDATA = $(MAXIMAESHTML)\
-contents.hhc index.hhk
+contents.hhc index.hhk header.hhp
 
 clean-local: clean-info clean-html
 
@@ -53,7 +53,7 @@ clean-html:
 	rm -f contents.hhc
 	rm -f index.hhk
 
-EXTRA_DIST = maximahtml.es.mk
+EXTRA_DIST = maximahtml.es.mk header.hhp
 
 install-info-am: $(INFO_DEPS)
 	test -z "$(infodir)$(langsdir)" || mkdir -p -- "$(DESTDIR)$(infodir)$(langsdir)"

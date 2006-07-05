@@ -26,7 +26,7 @@ $(MAXIMAESHTML): maxima.texi $(maxima_TEXINFOS)
 include $(top_srcdir)/common.mk
 genericdir = $(dochtmldir)/es.utf8
 genericdirDATA = $(MAXIMAESHTML)\
-contents.hhc index.hhk
+contents.hhc index.hhk header.hhp
 
 clean-local: clean-info clean-html
 
@@ -38,7 +38,7 @@ clean-html:
 	rm -f contents.hhc
 	rm -f index.hhk
 
-EXTRA_DIST = maximahtml.es.mk
+EXTRA_DIST = maximahtml.es.mk header.hhp
 
 maxima.info: maxima.texi
 	@rm -f $@ $@-[0-9] $@-[0-9][0-9]
