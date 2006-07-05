@@ -4,18 +4,77 @@ langsdir = /pt
 
 info_TEXINFOS = maxima.texi
 maxima_TEXINFOS = \
-Affine.texi           Equations.texi     Lists.texi          Rules.texi \
-Arrays.texi           Expressions.texi   Logarithms.texi     Runtime.texi \
-Atensor.texi          Floating.texi      Matrices.texi       Series.texi \
-Bugs.texi             Function.texi      Simplification.texi \
-Command.texi          Groups.texi        Miscellaneous.texi  SpecfunII.texi \
-Constants.texi        Help.texi          nset.texi           Special.texi \
-Contexts.texi         Indices.texi       Number.texi         Statistics.texi \
-Ctensor.texi          Input.texi         Numerical.texi      Symmetries.texi \
-Debugging.texi        Integration.texi   Operators.texi      Trigonometric.texi \
-Differential.texi     Introduction.texi  Plotting.texi \
-Differentiation.texi  Itensor.texi       Polynomials.texi \
-Elliptic.texi         Limits.texi        Program.texi
+Affine.texi \
+Arrays.texi \
+Atensor.texi \
+augmented_lagrangian.texi \
+bode.texi \
+Bugs.texi \
+cholesky.texi \
+Command.texi \
+Constants.texi \
+Contexts.texi \
+Ctensor.texi \
+Debugging.texi \
+descriptive.texi \
+diag.texi \
+Differential.texi \
+Differentiation.texi \
+distrib.texi \
+Elliptic.texi \
+Equations.texi \
+eval_string.texi \
+Expressions.texi \
+f90.texi \
+Floating.texi \
+Function.texi \
+ggf.texi \
+Groups.texi \
+Help.texi \
+impdiff.texi \
+Indices.texi \
+Input.texi \
+Integration.texi \
+interpol.texi \
+Introduction.texi \
+Itensor.texi \
+Limits.texi \
+lindstedt.texi \
+linearalgebra.texi \
+Lists.texi \
+Logarithms.texi \
+lsquares.texi \
+makeOrders.texi \
+Matrices.texi \
+Miscellaneous.texi \
+mnewton.texi \
+nset.texi \
+Number.texi \
+numericalio.texi \
+Numerical.texi \
+Operators.texi \
+opsubst.texi \
+orthopoly.texi \
+plotdf.texi \
+Plotting.texi \
+Polynomials.texi \
+Program.texi \
+Rules.texi \
+Runtime.texi \
+Series.texi \
+simplex.texi \
+simplifications.texi \
+Simplification.texi \
+solve_rec.texi \
+SpecfunII.texi \
+Special.texi \
+Statistics.texi \
+stirling.texi \
+stringproc.texi \
+Symmetries.texi \
+Trigonometric.texi \
+unit.texi \
+zeilberger.texi
 
 maximahtml_pt.mk:
 	../texi2html -split_chapter --lang=pt --output=. maxima.texi

@@ -188,7 +188,7 @@ Pacotes Adicionais
 @'Indice
 
 @c * @'Indice de Fun@value{cedilha}@~ao e Vari@'avel:: @'Indice.
-* @'Indice de Fun@value{cedilha}@~ao e Vari@'avel::
+* @'Indice de Fun@value{cedilha}@~oes e Vari@'aveis::
 
 @comment @detailmenu
  --- Listagem de Nodos Detalhada ---
@@ -811,12 +811,12 @@ zeilberger
 @chapter unit
 @include unit.texi
 
-@node zeilberger, @'Indice de Fun@value{cedilha}@~ao e Vari@'avel, unit, Top
+@node zeilberger, @'Indice de Fun@value{cedilha}@~oes e Vari@'aveis, unit, Top
 @chapter zeilberger
 @include zeilberger.texi
 
-@node @'Indice de Fun@value{cedilha}@~ao e Vari@'avel,  , zeilberger, Top
-@chapter @'Indice de Fun@value{cedilha}@~ao e Vari@'avel
+@node @'Indice de Fun@value{cedilha}@~oes e Vari@'aveis,  , zeilberger, Top
+@chapter @'Indice de Fun@value{cedilha}@~oes e Vari@'aveis
 @include Indices.texi
 
 @c end includes

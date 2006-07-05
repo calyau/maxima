@@ -1,6 +1,6 @@
 @c Language: Portuguese, Encoding: iso-8859-1
 @c /Indices.texi/1.2/Mon May  8 18:13:06 2000/-ko/
-@appendix @value{I_agu}ndice de Fun@value{cedilha}@value{a_til}o e Vari@value{a_agu}vel
+@appendix @'Indice de Fun@value{cedilha}@~oes e Vari@'aveis
 
 @printindex fn
 
