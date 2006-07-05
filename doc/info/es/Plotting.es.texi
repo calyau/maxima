@@ -553,7 +553,7 @@ Ejemplo:
 
 @end itemize
 
-@{Ejemplos:}
+@b{Ejemplos:}
 
 @itemize @bullet
 @item
@@ -752,7 +752,7 @@ y un toro:
 @end example
 
 @ifnotinfo
-@image{figures/plotting23,8cm}
+@image{../figures/plotting23,8cm}
 @end ifnotinfo
 
 En ocasiones puede ser necesario definir una funci@'on para representarla. Todos los argumentos de @code{plot3d} se eval@'uan, de manera que puede ser dif@'{@dotless{i}}cil escribir una expresi@'on que haga lo que el usuario realmente quiere; en tales casos facilita las cosas definir previamente la funci@'on.   
