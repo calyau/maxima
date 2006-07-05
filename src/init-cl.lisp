@@ -62,7 +62,7 @@
   (format t "maxima-layout-autotools=~a~%" *maxima-layout-autotools*)
   (format t "maxima-userdir=~a~%" *maxima-userdir*)
   (format t "maxima-tempdir=~a~%" *maxima-tempdir*)
-  (format t "maxima-lang-subpdir=~a~%" *maxima-lang-subdir*)
+  (format t "maxima-lang-subdir=~a~%" *maxima-lang-subdir*)
   ($quit))
 
 (defvar *maxima-lispname* #+clisp "clisp"
