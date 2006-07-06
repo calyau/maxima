@@ -276,7 +276,6 @@ binary-acl6/maxima.dxl : pois2.lisp
 binary-acl6/maxima.dxl : pois3.lisp
 binary-acl6/maxima.dxl : desoln.lisp
 binary-acl6/maxima.dxl : elim.lisp
-binary-acl6/maxima.dxl : trgsmp.lisp
 binary-acl6/maxima.dxl : ode2.lisp
 binary-acl6/maxima.dxl : invert.lisp
 binary-acl6/maxima.dxl : hypgeo.lisp
