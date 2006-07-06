@@ -34,7 +34,7 @@ Barton Willis of the University of Nebraska at Kearney (UNK) wrote
 the @code{orthopoly} package and its documentation. The package 
 is released under the GNU General Public License (GPL).
 
-@subsubsection Getting Started with orthopoly
+@subsection Getting Started with orthopoly
 
 @code{load (orthopoly)} loads the @code{orthopoly} package.
 
@@ -237,7 +237,7 @@ $$P_@{n@}^@{\left(a,a-b\right)@}\left(@{@{x@}\over@{2@}@}\right)$$
 (%o4)                         false
 @end example
 
-@subsubsection Limitations
+@subsection Limitations
 
 When an expression involves several orthogonal polynomials with
 symbolic orders, it's possible that the expression actually
@@ -404,7 +404,7 @@ a Legendre polynomial that is orthogonal on @math{(0, 1)}, define
 @end example
 
 @anchor{Floating point Evaluation}
-@subsubsection Floating point Evaluation
+@subsection Floating point Evaluation
 
 Most functions in orthopoly use a running error analysis to 
 estimate the error in floating point evaluation; the 
@@ -516,7 +516,7 @@ and the final result is a double.
 (%o1) interval(- 0.043009481257265, 3.3750051301228864E-14)
 @end example
 
-@subsubsection Graphics and orthopoly
+@subsection Graphics and orthopoly
 
 To plot expressions that involve the orthogonal polynomials, you 
 must do two things:
@@ -539,10 +539,14 @@ a Legendre polynomial.
 (%o1)
 @end example
 
+@ifnotinfo
+@image{../figures/orthopoly1,8cm}
+@end ifnotinfo
+
 The @i{entire} expression @code{legendre_p (5, x)} is quoted; this is 
 different than just quoting the function name using @code{'legendre_p (5, @var{x})}.
 
-@subsubsection Miscellaneous Functions
+@subsection Miscellaneous Functions
 
 The @code{orthopoly} package defines the
 Pochhammer symbol and a unit step function. @code{orthopoly} uses 
@@ -647,7 +651,7 @@ at zero, define your own using signum; for example,
 Do not redefine @code{unit_step} itself; some code in @code{orthopoly}
 requires that the unit step function be left-continuous.
 
-@subsubsection Algorithms
+@subsection Algorithms
 
 Generally, @code{orthopoly} does symbolic evaluation by using a hypergeometic 
 representation of the various orthogonal polynomials. The hypergeometic 

@@ -32,7 +32,7 @@ Barton Willis de la Universidad de Nebraska en Kearney. El paquete se
 distribuye con la licencia GNU General Public License (GPL).
 
 
-@subsubsection Inici@'andose con orthopoly
+@subsection Inici@'andose con orthopoly
 
 @code{load (orthopoly)} carga el paquete @code{orthopoly}.
 
@@ -239,7 +239,7 @@ $$P_@{n@}^@{\left(a,a-b\right)@}\left(@{@{x@}\over@{2@}@}\right)$$
 (%o4)                         false
 @end example
 
-@subsubsection Limitaciones
+@subsection Limitaciones
 
 Cuando una expresi@'on contenga varios polinomios ortogonales
 con @'ordenes simb@'olicos, es posible que aunque la expresi@'on sea
@@ -408,7 +408,7 @@ def@'{@dotless{i}}nase
 @end example
 
 @anchor{Evaluaci@'on num@'erica}
-@subsubsection Evaluaci@'on num@'erica
+@subsection Evaluaci@'on num@'erica
 
 La mayor parte de las funciones de @code{orthopoly} realizan an@'alisis de
 errores en tiempo de ejecuci@'on para estimar el error en la evaluaci@'on
@@ -522,7 +522,7 @@ los resultados.
 (%o1) interval(- 0.043009481257265, 3.3750051301228864E-14)
 @end example
 
-@subsubsection Gr@'aficos y orthopoly
+@subsection Gr@'aficos y orthopoly
 
 Para representar gr@'aficamente expresiones que contengan polinomios
 ortogonales se deben hacer dos cosas:
@@ -546,11 +546,15 @@ contiene un polinomio de Legendre:
 (%o1)
 @end example
 
+@ifnotinfo
+@image{../figures/orthopoly1,8cm}
+@end ifnotinfo
+
 La expresi@'on @code{legendre_p (5, x)} se comenta @i{completamente}, que no es 
 lo mismo que comentar el nombre de la funci@'on, como en
 @code{'legendre_p (5, @var{x})}.
 
-@subsubsection Miscel@'anea de funciones
+@subsection Miscel@'anea de funciones
 
 El paquete @code{orthopoly} define el s@'{@dotless{i}}mbolo de Pochhammer y
 la funci@'on de escal@'on unidad en sentencias gradef.
@@ -656,7 +660,7 @@ No se debe redefinir la funci@'on @code{unit_step}, ya que parte del
 c@'odigo de @code{orthopoly} requiere que la funci@'on escal@'on sea
 continua por la izquierda.
 
-@subsubsection Algoritmos
+@subsection Algoritmos
 
 En general, el paquete @code{orthopoly} gestiona la evaluaci@'on
 simb@'olica a trav@'es de la representaci@'on hipergeom@'etrica de 
