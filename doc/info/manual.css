@@ -79,3 +79,10 @@ div.spacerbox
     padding-top: 2em;
     padding-bottom: 2em
 }
+
+div.image
+{
+    margin: 0;
+    padding: 1em;
+    text-align: center;
+}
