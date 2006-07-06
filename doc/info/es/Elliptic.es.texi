@@ -22,7 +22,7 @@ En particular, todas las funciones e integrales el@'{@dotless{i}}pticas utilizan
 @math{m = k^2} y @math{k = sin(alfa)}.
 @end ifinfo
 @tex
-$$m = k^2$$ y $$k = \sin\alfa. $$
+$$m = k^2$$ y $$k = \sin\alpha $$
 @end tex
 
 Las funciones e integrales el@'{@dotless{i}}pticas en Maxima tienen como objetivo primordial dar soporte al c@'alculo simb@'olico, de ah@'{@dotless{i}} que tambi@'en est@'en incluidas la mayor@'{@dotless{i}}a de las derivadas e integrales asociadas a estas funciones. No obstante lo anterior, si los argumentos dados a las funciones son decimales en coma flotante, los resultados tambi@'en ser@'an decimales.
