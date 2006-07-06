@@ -111,16 +111,16 @@ listtoprod(list) :=
   apply("*",list)$
 
 /* The following mimics the behaviour of APPEND.  Note, however, that
-   INTERSECTION takes exactly two arguments */
+   INTERSECT_LIST takes exactly two arguments */
 
-intersection(exp1,exp2) :=
+intersect_list(exp1,exp2) :=
   (if atom(exp1)
-  then error(concat("argument value `", exp1, "' to INTERSECTION was atomic")),
+  then error(concat("argument value `", exp1, "' to `intersect_list' was atomic")),
   if atom(exp2)
-  then error(concat("argument value `", exp2, "' to INTERSECTION was atomic")),
+  then error(concat("argument value `", exp2, "' to `intersect_list' was atomic")),
   block([op:inpart(exp1,0)],
   if op#inpart(exp2,0)
-  then error("Arguments to INTERSECTION are not compatible."),
+  then error("Arguments to `intersect_list' are not compatible."),
   block([inflag:true,cap:[]],
     for term in exp1 do
       if member(term,exp2)
