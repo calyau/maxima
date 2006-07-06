@@ -1,50 +1,20 @@
-;;
-;;  string processing
+;;;;
+;;;;                              ~*~  STRINGPROC  ~*~
+;;;;
+;;;;  Maxima string processing package.
+;;;;
+;;;;  Version       : 1.2 (march 2006)
+;;;;  Copyright     : 2005-2006 Volker van Nek
+;;;;  Licence       : GPL2
+;;;;
+;;;;  Test file     : rteststringproc.mac
+;;;;  Documentation : stringproc.texi
+;;;;
 
-;;  Author: Volker van Nek, Aachen, van.Nek@gmx.net
 
-;;  Written for Maxima 5.9.2 .
-
-;;  Test file: rteststringproc.mac
-;;  Info file: stringproc.texi
-
-;;  This program is free software; you can redistribute it and/or
-;;  modify it under the terms of the GNU General Public License,
-;;  http://www.gnu.org/copyleft/gpl.html.
-
-;;  This program has NO WARRANTY, not even the implied warranty of
-;;  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-
-;;  If you use this software for education, please let me know. 
-
-;;  Date: 05-10-31
-;;        05-11-03  fixed: $ssort (case inversion), $smismatch (1-indexed) 
-;;                  new functions: invert-string-case, $sinvertcase
-;;        05-11-09  fixed: $ssubst (test,s,e in recursive call) 
-;;        05-11-12  new file-header 
-;;        05-11-20  fixed: $cunlisp (Variable naming error) 
-;;                  $sremove (unnecessary line deleted)
-;;        05-11-27  fixed: $ascii (src/commac.lisp/ascii doesn't work with clisp) 
-;;        06-01-06  commented out: $sprint (again in plot.lisp)
-;;        06-01-10  fixed: m-string (make-symbol replaced by intern)
-;;        06-02-22  fixed: strip&$ (problems with empty string)
-;;                  fixed: $simplode (empty string: "&")
-;;                  fixed: $ssubst (case inversion problem)
-;;        06-03-11  fixed: $charlist (call to $charat removed)
-;;                  fixed: invert-string-case (call to implode removed;
-;;                            src/commac.lisp/implode doesn't work with clisp's sort)
-;;                            (str is already at Lisp-level, call to l-string removed)
-;;                            (helper: invert-char)
-;;                  fixed: $ssort (call to invert-string-case removed) 
-;;                  fixed: $ssubst (call to $ssubst and $ssubstfirst with mstrings) 
-;;                  new: character test functions at Lisp level
-;;                  new: string test functions at Lisp level
-;;                  modified: $printf, $ssort, $ssubst, $ssubstfirst, $sremovefirst,
-;;                            $sremove, $smismatch, $ssearch
-;;                         (call to test functions at Lisp level) 
-;;                  renaming: strip&$ -> strip&
-;;                  cleaned out: formerly uncommented 5.9.1 code
-;;	06-03-12    fixed: $split (returns Maxima strings now)
+;;  1. I/O
+;;  2. characters 
+;;  3. strings 
 
 (in-package "MAXIMA")
 
@@ -146,7 +116,7 @@
     (if (= (length smch) 1)
       (character smch)
       (merror 
-        "stringproc2.lisp: ~:M cannot be converted into a character." 
+        "stringproc: ~:M cannot be converted into a character." 
           mch))))
 
 ;;  converts a lisp-character into a maxima-string of length 1
@@ -202,7 +172,7 @@
 |#
            
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;  3.  strings 
+;;  3. strings 
 
 (defmfun strip& (str) 
    (let ((c1 (string (getcharn str 1))))
