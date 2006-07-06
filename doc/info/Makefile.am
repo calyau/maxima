@@ -65,7 +65,8 @@ figures/plotting21.gif\
 figures/plotting22.gif\
 figures/plotting23.gif\
 figures/plotting24.gif\
-figures/plotting25.gif
+figures/plotting25.gif\
+figures/orthopoly1.gif
 
 maximahtml.mk:
 	./texi2html -split_chapter --lang=en --output=. maxima.texi
