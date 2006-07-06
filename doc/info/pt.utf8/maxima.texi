@@ -14,6 +14,7 @@
 
 @c %**start of header
 @setfilename  maxima.info
+@synindex vr fn
 @c @documentencoding ISO-8859-15
 @documentencoding ISO-8859-1
 @set cedilha @,{c}
@@ -23,7 +24,6 @@
 @set a_agu @'a
 @set o_til @~o
 @set mail <maxima at math dot utexas dot edu>
-@synindex vr fn
 @settitle Manual do Maxima
 @c %**end of header
 @setchapternewpage odd
@@ -49,12 +49,8 @@ END-INFO-DIR-ENTRY
 @sp 10
 @comment The title is printed in a large font.
 @center @titlefont{Manual do Maxima}
-@end titlepage
-
-
-@node Top, Introdu@value{cedilha}@~ao ao Maxima, (dir), (dir)
-@top
-
+@page
+@vskip 0pt plus 1filll
 Maxima @'e um sistema de @'algebra computacional, implementado em Lisp.
 
 Maxima @'e derivado do sistema Macsyma,
@@ -70,33 +66,90 @@ e desenvolver o Macsyma DOE, agora chamado Maxima.
 
 Notas de tradu@,{c}@~ao:
 
+O c@'odigo fonte deste documento encontra-se no formato texinfo.  Para
+contribuir com a equipe do Maxima na tarefa de manter a tradu@,{c}@~ao para o
+portugu@^es sempre atualizada envie um e-mail para @value{mail}.
+
+Em caso de d@'uvida sobre algum trecho deste manual consulte o original
+ingl@^es.
+
+A se@,{c}@~ao "Pacotes adicionais" foi anexada ao manual recentemente
+(fevereiro/2006) e possui partes a serem traduzidas.
+
+Caso sua d@'uvida persista ou tenha alguma sugest@~ao/aperfei@,{c}oamento/
+cr@'{@dotless{i}}tica mande por e-mail para Jorge Barros de Abreu <ficmatin01 at solar dot
+com dot br>
+	
+Mantenedores:
+@itemize @bullet
+@item
+Jaime E. Villate
+@item
+Mario Rodriguez
+@item
+Jorge Barros de Abreu
+@end itemize
+@end titlepage
+
+@summarycontents
+@contents
+
+@ifnottex
+@node Top, Introdu@value{cedilha}@~ao ao Maxima, (dir), (dir)
+@top
+
+@i{Maxima @'e um sistema de @'algebra computacional, implementado em Lisp.}
+
+Maxima @'e derivado do sistema Macsyma,
+desenvolvido no MIT nos anos de 1968 a 1982 como parte do Projeto MAC.
+MIT remanejou uma c@'opia do c@'odigo fonte do Macsyma para o Departamento de Energia
+em 1982; aquela vers@~ao @'e agora conhecida como Macsyma DOE.
+Uma c@'opia do Macsyma DOE foi mantida pelo Professor William F. Schelter
+da Universidade do Texas de 1982 at@'e sua morte em 2001.
+Em 1998, Schelter obteve permiss@~ao do Departamento de Energia
+para liberar o c@'odigo fonte do Macsyma DOE sob a Licen@value{cedilha}a P@'ublica GNU,
+e em 2000 ele iniciou o projeto Maxima no SourceForge para manter
+e desenvolver o Macsyma DOE, agora chamado Maxima.
+
+@i{Notas de tradu@,{c}@~ao:}
+
     O c@'odigo fonte deste documento encontra-se no formato texinfo.
 	Para contribuir com a equipe do Maxima na tarefa de manter a 
 	tradu@,{c}@~ao para o portugu@^es sempre atualizada envie um 
 	e-mail para @value{mail}.
 
-    A parte do manual intitulada "Simetrias" encontra-se atualmente em 
-	franc@^es e aguardando uma vers@~ao em ingl@^es para ser traduzida.
-
     Em caso de d@'uvida sobre algum trecho deste manual consulte o 
 	original ingl@^es.
+
+    A se@,{c}@~ao "Pacotes adicionais" foi anexada ao manual recentemente
+        (fevereiro/2006) e possui partes a serem traduzidas.
 
     Caso sua d@'uvida persista ou tenha alguma sugest@~ao/aperfei@,{c}oamen-
 	to/cr@'itica mande por e-mail para Jorge Barros de Abreu 
 	<ficmatin01 at solar dot com dot br>
 	
+Mantenedores:
+@itemize @bullet
+@item
+Jaime E. Villate
+@item
+Mario Rodriguez
+@item
+Jorge Barros de Abreu
+@end itemize
+@end ifnottex
 @c includes
 
 @menu
 Infraestrutura do Maxima
 
-* Introdu@value{cedilha}@~ao ao Maxima::  Exemplo de sess@~oes do Maxima.
-* Detec@value{cedilha}@~ao e Relato de Erros::  Encontrando e relatando erros no Maxima.
+* Introdu@value{cedilha}@~ao ao Maxima:: Exemplo de sess@~oes do Maxima.
+* Detec@value{cedilha}@~ao e Relato de Erros:: Encontrando e relatando erros no Maxima.
 * Ajuda::                       Solicitando ajuda de dentro de uma 
                                 sess@~ao do Maxima.
 * Linha de Comando::            Sintaxe de linha de comando do Maxima.
 * Operadores::                  Operadores usados em express@~oes do Maxima.
-* Express@~oes::                  Express@~oes no Maxima.
+* Express@~oes::                Express@~oes no Maxima.
 * Simplifica@value{cedilha}@~ao::               Simplificando express@~oes.
 * Montando Gr@'aficos::           Sa@'idas gr@'aficas em 2D e 3D.
 * Entrada e Sa@'ida::             Entrada e sa@'ida de arquivos.
@@ -113,8 +166,6 @@ Suporte a @'areas espec@'ificas da matem@'atica
 * Trigonometria::               Manipulando express@~oes com trigonometria e
                                 Fun@value{cedilha}@~oes trigonom@'etricas inversas.
 * Fun@value{cedilha}@value{o_til}es Especiais::           Fun@value{cedilha}@~oes especiais
-* Polin@^omios Ortogonais::       Polin@^omios Ortogonais e Fun@value{cedilha}@~oes Especiais
-
 * Fun@value{cedilha}@~oes El@'ipticas::           Fun@value{cedilha}@~oes El@'ipticas e Integrais
 * Limites::                     Limites de express@~oes.
 * Diferencia@value{cedilha}@~ao::               C@'alculo diferencial.
@@ -132,15 +183,14 @@ Suporte a @'areas espec@'ificas da matem@'atica
 * Pacote atensor::              Manipula@value{cedilha}@~ao de Tensores Alg@'ebricos.
 * S@'eries::                      Taylor e s@'eries de pot@^encia.
 * Teoria dos N@'umeros::          Teoria dos n@'umeros.
-* Simetrias::                  Reflex@~oes, rota@value{cedilha}@~oes, transla@value{cedilha}@~oes, etc
+* Simetrias::                   Polin@^omios sim@'etricos
 * Grupos::                      @'Algebra Abstrata.
 
 Facilidades avan@value{cedilha}adas e programa@value{cedilha}@~ao
 
-* Ambiente em Tempo de Execu@value{cedilha}@~ao::           Customiza@value{cedilha}@~ao do ambiente Maxima.
-* Op@value{cedilha}@~oes Diversas::             Op@value{cedilha}@~oes com efeito global sobre o Maxima.
-* Regras e Modelos::            Coincid@^encia de express@~oes definidas pelo 
-                                usu@'ario e regras de simplifica@value{cedilha}@~ao.
+* Ambiente em Tempo de Execu@value{cedilha}@~ao:: Customiza@value{cedilha}@~ao do ambiente Maxima.
+* Op@value{cedilha}@~oes Diversas:: Op@value{cedilha}@~oes com efeito global sobre o Maxima.
+* Regras e Modelos::            Coincid@^encia de express@~oes definidas pelo utilizador e regras de simplifica@value{cedilha}@~ao.
 * Listas::                      Manipula@value{cedilha}@~ao de listas.
 * Conjuntos::                   Manipula@value{cedilha}@~ao de conjuntos.
 * Defini@value{cedilha}@~ao de Fun@value{cedilha}@~ao::         Definindo fun@value{cedilha}@~oes.
@@ -150,37 +200,37 @@ Facilidades avan@value{cedilha}adas e programa@value{cedilha}@~ao
 Pacotes Adicionais
 
 * augmented_lagrangian::        augmented_lagrangian package.
-* bode::                        Bode gain and phase plots.
-* cholesky::                    Cholesky decomposition.
-* descriptive::                 Descriptive statistics.
-* diag::                        Jordan matrices.
-* distrib::                     Probability distributions.
-* eval_string::                 Maxima expressions as strings.
+* bode::                        Gr@'aficos de ganho e fase de Bode.
+* cholesky::                    Decomposi@,{c}@~ao de Cholesky.
+* descriptive::                 Estat@'istica descriptiva.
+* diag::                        Matrizes de Jordan.
+* distrib::                     Distribui@,{c}@~oes de probabilidade.
+* eval_string::                 Express@~oes do Maxima como cadeias de texto.
 * f90::                         Tradutor do Maxima para o fortran.
-* ggf::                         Generating function of sequences.
+* ggf::                         Fun@,{c}@~ao geradora para sequ@^encias.
 * impdiff::                     Derivadas impl@'icitas.
-* interpol::                    Interpolation package.
+* interpol::                    Pacote de interpola@,{c}@~ao.
 * lindstedt::                   Pacote Lindstedt.
-* linearalgebra::               Functions for linear algebra.
-* lsquares::                    Least squares.
+* linearalgebra::               Fun@,{c}@~oes de algebra linear.
+* lsquares::                    M@'etodo dos m@'inimos quadrados.
 * makeOrders::                  Expoentes de polin@^omios.
-* mnewton::                     Newton's method.
-* numericalio::                 Reading and writing files.
-* opsubst::                     Substitutions utility.
-* orthopoly::                   Orthogonal polynomials.
-* plotdf::                      Direction fields plots.
-* simplex::                     Linear programming.
-* simplification::              Simplification rules and functions.
-* solve_rec::                   Linear recurrences.
-* stirling::                    Stirling formula.
-* stringproc::                  String processing.
-* unit::                        Units and dimensions package.
-* zeilberger::                  Functions for hypergeometric summation.
+* mnewton::                     M@'etodo de Newton.
+* numericalio::                 Leitura e escritura de ficheiros.
+* opsubst::                     Comandos para subsitui@,{c}@~oes.
+* orthopoly::                   Polin@'omios ortogonais.
+* plotdf::                      Gr@'aficos de campos de direc@,{c}@~oes.
+* simplex::                     Programa@,{c}@~ao linear.
+* simplification::              Fun@,{c}@~oes e regras de simplifica@,{c}@~ao.
+* solve_rec::                   Rela@,{c}@~oes de recorr@^encia lineares.
+* stirling::                    F@'ormula de Stirling.
+* stringproc::                  Processamento de cadeias de texto.
+* unit::                        Pacote de unidades e dimens@~oes.
+* zeilberger::                  Fun@,{c}@~oes para somat@'orios hipergeom@'etricos.
 
 
 @'Indice
 
-* @'Indice de Fun@value{cedilha}@~oes e Vari@'aveis:: @'Indice.
+* @'Indice de Fun@value{cedilha}@~oes e Vari@'aveis:: @'Indice
 
 @comment @detailmenu
  --- Listagem de Nodos Detalhada ---
@@ -265,11 +315,6 @@ Fun@value{cedilha}@value{o_til}es Especiais
 * Introdu@value{cedilha}@~ao a Fun@value{cedilha}@value{o_til}es Especiais::  
 * specint::                     
 * Defini@value{cedilha}@value{o_til}es para Fun@value{cedilha}@value{o_til}es Especiais::  
-
-Polin@^omios Ortogonais
-
-* Introdu@value{cedilha}@~ao a Polin@^omios Ortogonais::
-* Defini@value{cedilha}@~oes para Polin@^omios Ortogonais::
 
 Fun@value{cedilha}@~oes El@'ipticas
 
@@ -594,15 +639,11 @@ zeilberger
 @chapter Trigonometria
 @include ../pt/Trigonometric.texi
 
-@node Fun@value{cedilha}@value{o_til}es Especiais, Polin@^omios Ortogonais, Trigonometria, Top
+@node Fun@value{cedilha}@value{o_til}es Especiais, Fun@value{cedilha}@~oes El@'ipticas, Trigonometria, Top
 @chapter Fun@value{cedilha}@value{o_til}es Especiais
 @include ../pt/Special.texi
 
-@node Polin@^omios Ortogonais, Fun@value{cedilha}@~oes El@'ipticas, Fun@value{cedilha}@value{o_til}es Especiais, Top
-@chapter Polin@^omios Ortogonais
-@include ../pt/SpecfunII.texi
-
-@node Fun@value{cedilha}@~oes El@'ipticas, Limites, Polin@^omios Ortogonais, Top
+@node Fun@value{cedilha}@~oes El@'ipticas, Limites, Fun@value{cedilha}@value{o_til}es Especiais, Top
 @chapter Fun@value{cedilha}@~oes El@'ipticas
 @include ../pt/Elliptic.texi
 
@@ -626,7 +667,7 @@ zeilberger
 @chapter Equa@value{cedilha}@~oes Diferenciais
 @include ../pt/Differential.texi
 
-@c @include NonCommutative.texi
+@c @include ../pt/NonCommutative.texi
 
 @node Num@'erico, Estat@'istica, Equa@value{cedilha}@~oes Diferenciais, Top
 @chapter Num@'erico
@@ -677,7 +718,7 @@ zeilberger
 @include ../pt/Groups.texi
 
 @node Ambiente em Tempo de Execu@value{cedilha}@~ao, Op@value{cedilha}@~oes Diversas, Grupos, Top
-@chapter Tempo de Execu@value{cedilha}@~ao
+@chapter Ambiente em Tempo de Execu@value{cedilha}@~ao
 @include ../pt/Runtime.texi
 
 @node Op@value{cedilha}@~oes Diversas, Regras e Modelos, Ambiente em Tempo de Execu@value{cedilha}@~ao, Top
@@ -687,7 +728,6 @@ zeilberger
 @node Regras e Modelos, Listas, Op@value{cedilha}@~oes Diversas, Top
 @chapter Regras e Modelos
 @include ../pt/Rules.texi
-
 
 @node Listas, Conjuntos, Regras e Modelos, Top
 @chapter Listas
@@ -823,9 +863,6 @@ zeilberger
 
 @c end includes
 
-
-@summarycontents
-@contents
 @bye
 
 
