@@ -3196,8 +3196,8 @@
 (defun tay-error (msg exp)
   (if silent-taylor-flag (throw 'taylor-catch ())
       (if exp
-	  (merror "`taylor'~a~%~%~m" msg exp)
-	  (merror "`taylor'~a" msg))))
+	  (merror "`taylor'~A~%~%~M" msg exp)
+	  (merror "`taylor'~A" msg))))
 
 (defun exp-pt-err ()
        (tay-err " unable to expand at a point specified in:"))
