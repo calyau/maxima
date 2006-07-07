@@ -192,7 +192,6 @@
 			      (copy-top-level '(#\% #\d #\i #\f #\f))
 			      (exploden x)))))
 	   ((char= #\$ (car y)) (setq y (slash (cdr y))))
-	   ((char= #\% (car y)) (setq y (slash (cdr y))))
 	   ((char= #\& (car y))
 	    (do ((l (cdr y) (cdr l))) ((null l))
 	      (cond ((or (zl-member (car l)
@@ -214,6 +213,7 @@
 (defun slash (x)
   (do ((l (cdr x) (cdr l))) ((null l))
     (if (or (alphanumericp (car l))
+	    (eql (car l) #\%)
 	    (eql (car l) #\_))
 	nil
 	(progn (rplacd l (cons (car l) (cdr l)))
