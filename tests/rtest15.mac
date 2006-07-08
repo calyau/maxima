@@ -491,3 +491,10 @@ asin(-1b0);
 
 li[2](1.0);
 ev (%pi^2/6, numer);
+
+/* bug report [ 782046 ] limit(abs(x),x,0) fails
+ * appears to be fixed in 5.9.3cvs -- verify
+ */
+
+limit (abs(x), x, 0);
+0;
