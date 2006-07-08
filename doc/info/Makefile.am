@@ -98,4 +98,4 @@ clean-html:
 	rm -f contents.hhc
 	rm -f index.hhk
 
-EXTRA_DIST = texi2html maximahtml.mk manual.css texi2html.init $(genericdirDATA) header.hhp
+EXTRA_DIST = texi2html maximahtml.mk manual.css texi2html.init $(genericdirDATA) crate_index header.hhp
