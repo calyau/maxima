@@ -30,14 +30,16 @@ Name: "custom"; Description: "Custom installation"; Flags: iscustom
 
 [Components]
 Name: "core"; Description: "Maxima core with command line interface"; Types: full compact custom; Flags: fixed
-Name: "xmaxima"; Description: "XMaxima graphic shell"; Types: full compact custom
+Name: "wxmaxima"; Description: "wxMaxima graphic shell"; Types: full custom
+Name: "xmaxima"; Description: "XMaxima graphic shell"; Types: full custom
 Name: "lang"; Description: "Maxima language packs"; Types: full custom
 Name: "lang\spanish"; Description: "Spanish"; Types: full custom
 Name: "lang\portuguese"; Description: "Portuguese"; Types: full custom
 
 
 [Tasks]
-Name: "desktopicon"; Description: "Create a &desktop icon"; GroupDescription: "Additional icons:"; MinVersion: 4,4;  Components: "xmaxima"
+Name: "wxmdesktopicon"; Description: "Create a &wxMaxima desktop icon"; GroupDescription: "Additional icons:"; MinVersion: 4,4;  Components: "wxmaxima"
+Name: "xmdesktopicon"; Description: "Create a &XMaxima desktop icon"; GroupDescription: "Additional icons:"; Flags: unchecked; MinVersion: 4,4;  Components: "xmaxima"
 
 
 [Files]
@@ -45,6 +47,8 @@ Source: "@prefix@\bin\maxima-command.ico"; DestDir: "{app}\bin\"; Flags: ignorev
 Source: "@prefix@\bin\maxima.bat"; DestDir: "{app}\bin\"; Flags: ignoreversion; AfterInstall: ReplaceLine({app}); Components: "core" 
 Source: "@prefix@\readme.txt"; DestDir: "{app}"; Flags: isreadme; Components: "core"
 Source: "@prefix@\*.*"; Excludes: "\bin\xmaxima.*,\bin\xmaxima,\info\es\*.*,\info\pt\*.*,\share\maxima\@VERSION@\doc\html\es\*.*,\share\maxima\@VERSION@\doc\html\pt\*.*"; DestDir: "{app}\";  Flags: recursesubdirs; Components: "core"
+
+Source: "@prefix@\wxMaxima\*.*"; DestDir: "{app}\wxMaxima\"; Flags: ignoreversion recursesubdirs; Components: "wxmaxima"
 
 Source: "@prefix@\bin\xmaxima.*"; DestDir: "{app}\bin\"; Flags: ignoreversion; Components: "xmaxima"
 Source: "@prefix@\bin\xmaxima"; DestDir: "{app}\bin\"; Flags: ignoreversion; Components: "xmaxima"
@@ -61,8 +65,13 @@ Name: "{group}\Introduction"; Filename: "{app}\share\maxima\@VERSION@\doc\html\i
 Name: "{group}\Reference Manual"; Filename: "{app}\share\maxima\@VERSION@\doc\html\maxima_toc.html"; WorkingDir: "{app}\share\maxima\@VERSION@";  Components: "core"
 Name: "{group}\README"; Filename: "{app}\readme.txt"; Components: "core"
 
-Name: "{userdesktop}\XMaxima"; Filename: "{app}\bin\xmaxima.exe"; MinVersion: 4,4; Tasks: desktopicon; IconFilename: "{app}\share\maxima\@VERSION@\xmaxima\maxima-icon.ico";  Components: "xmaxima"
+Name: "{group}\wxMaxima"; Filename: "{app}\wxMaxima\wxMaxima.exe"; WorkingDir: "{app}";  Components: "wxmaxima"
+Name: "{group}\wxMaxima on the Web"; Filename: "{app}\wxMaxima\wxMaxima.url";  Components: "wxmaxima"
+Name: "{group}\wxMaxima Online Forum"; Filename: "{app}\wxMaxima\Forum.url";  Components: "wxmaxima"
+Name: "{userdesktop}\wxMaxima"; Filename: "{app}\wxMaxima\wxMaxima.exe"; MinVersion: 4,4; Tasks: wxmdesktopicon; WorkingDir: "{app}\wxMaxima";  Components: "wxmaxima"
+
 Name: "{group}\XMaxima @VERSION@"; Filename: "{app}\bin\xmaxima.exe"; IconFilename: "{app}\share\maxima\@VERSION@\xmaxima\maxima-icon.ico";  Components: "xmaxima"
+Name: "{userdesktop}\XMaxima"; Filename: "{app}\bin\xmaxima.exe"; MinVersion: 4,4; Tasks: xmdesktopicon; IconFilename: "{app}\share\maxima\@VERSION@\xmaxima\maxima-icon.ico";  Components: "xmaxima"
 
 Name: "{group}\Uninstall"; Filename:"{uninstallexe}"
 
@@ -70,8 +79,9 @@ Name: "{group}\Reference Manual (Spanish)"; Filename: "{app}\share\maxima\@VERSI
 Name: "{group}\Reference Manual (Portuguese)"; Filename: "{app}\share\maxima\@VERSION@\doc\html\pt\maxima_toc.html"; WorkingDir: "{app}\share\maxima\@VERSION@";  Components: "lang\portuguese"
 
 
-[Run]
-Filename: "{app}\bin\xmaxima.exe"; Description: "Launch XMaxima"; Flags: postinstall skipifsilent skipifdoesntexist
+;[Run]
+;Filename: "{app}\bin\xmaxima.exe"; Description: "Launch XMaxima"; Flags: postinstall skipifsilent skipifdoesntexist
+;Filename: "{app}\wxMaxima\wxMaxima.exe"; Description: "Launch wxMaxima"; Flags: postinstall skipifsilent skipifdoesntexist
 
 
 [Code]

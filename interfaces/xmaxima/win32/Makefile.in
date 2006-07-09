@@ -10,6 +10,7 @@ TCLKITSH = tclkitsh.exe
 TCLKITDIR = ../../../../programs/star
 SDXDIR = $(TCLKITDIR)
 GNUPLOTDIR = ../../../../programs/gnuplot
+WXMAXIMADIR = ../../../../programs/wxMaxima
 
 GCCPREFIX=/mingw
 GCCVER=3.3.1
@@ -73,6 +74,10 @@ gnuplot:
 	cp $(GNUPLOTDIR)/bin/wgnuplot.hlp $(prefix)/bin
 	cp $(GNUPLOTDIR)/bin/wgnuplot.mnu $(prefix)/bin
 
+# Install wxMaxima
+wxmaxima:
+	cp -r $(WXMAXIMADIR) $(prefix)/wxMaxima
+
 # Some little hacks for Windows
 fixes: fix_maxima_bat
 
@@ -80,6 +85,6 @@ fixes: fix_maxima_bat
 fix_maxima_bat: 
 		unix2dos "@prefix@/bin/maxima.bat"
 
-install: xmaxima.exe winkill.exe tclwinkill.dll gnuplot fixes
+install: xmaxima.exe winkill.exe tclwinkill.dll gnuplot wxmaxima fixes
 	cp xmaxima.exe winkill.exe tclwinkill.dll "@prefix@/bin"
 	cp readme.txt "@prefix@"
