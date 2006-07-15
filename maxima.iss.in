@@ -70,7 +70,7 @@ Name: "{group}\wxMaxima on the Web"; Filename: "{app}\wxMaxima\wxMaxima.url";  C
 Name: "{group}\wxMaxima Online Forum"; Filename: "{app}\wxMaxima\Forum.url";  Components: "wxmaxima"
 Name: "{userdesktop}\wxMaxima"; Filename: "{app}\wxMaxima\wxMaxima.exe"; MinVersion: 4,4; Tasks: wxmdesktopicon; WorkingDir: "{app}\wxMaxima";  Components: "wxmaxima"
 
-Name: "{group}\XMaxima @VERSION@"; Filename: "{app}\bin\xmaxima.exe"; IconFilename: "{app}\share\maxima\@VERSION@\xmaxima\maxima-icon.ico";  Components: "xmaxima"
+Name: "{group}\XMaxima"; Filename: "{app}\bin\xmaxima.exe"; IconFilename: "{app}\share\maxima\@VERSION@\xmaxima\maxima-icon.ico";  Components: "xmaxima"
 Name: "{userdesktop}\XMaxima"; Filename: "{app}\bin\xmaxima.exe"; MinVersion: 4,4; Tasks: xmdesktopicon; IconFilename: "{app}\share\maxima\@VERSION@\xmaxima\maxima-icon.ico";  Components: "xmaxima"
 
 Name: "{group}\Uninstall"; Filename:"{uninstallexe}"
