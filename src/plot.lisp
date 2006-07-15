@@ -1119,11 +1119,7 @@ setrgbcolor} def
                                "\"~a\" -"
                                "-persist \"~a\""))
 
-(defvar $viewtext_command "cat \"~a\"")
-
-;(defvar $viewtext_command (if (string= *autoconf-win32* "true")
-;                              "type \"~a\""   ;; command `type' doesn't work in win32 xMaxima
-;                              "cat \"~a\""))
+(defvar $gnuplot_file_args "\"~a\"")
 
 (defvar $mgnuplot_command "mgnuplot")
 (defvar $geomview_command "geomview")
@@ -1141,6 +1137,12 @@ setrgbcolor} def
         (format dest "set pm3d~%"))
     (if ($get_plot_option '$gnuplot_out_file 2)
         (setf gnuplot-out-file (get-plot-option-string '$gnuplot_out_file)))
+    ;; default output file name for gnuplot dumb or ps terminals
+    (if (and (member ($get_plot_option '$gnuplot_term 2) '($dumb $ps)) 
+             (null gnuplot-out-file))
+      (setq gnuplot-out-file 
+        (plot-temp-file (format nil "maxplot.~(~a~)" 
+	                   (stripdollar ($get_plot_option '$gnuplot_term 2)))) ))
     (case ($get_plot_option '$gnuplot_term 2)
       ($default
        (format dest "~a~%" 
@@ -1167,7 +1169,14 @@ setrgbcolor} def
         (gnuplot-out-file ($get_plot_option '$gnuplot_out_file 2))
         (gnuplot-out-file-string (get-plot-option-string '$gnuplot_out_file))
         (run-viewer ($get_plot_option '$run_viewer 2))
+	(gnuplot-preamble (string-downcase (get-plot-option-string '$gnuplot_preamble)))
         (view-file))
+    ;; default output file name for gnuplot dumb or ps terminals
+    (when (and (member gnuplot-term '($dumb $ps)) 
+               (null gnuplot-out-file))
+      (setq gnuplot-out-file 
+        (plot-temp-file (format nil "maxplot.~(~a~)" (stripdollar gnuplot-term))))
+      (setq gnuplot-out-file-string gnuplot-out-file)) 
     ;; run gnuplot in batch mode if necessary before viewing
     (if (and gnuplot-out-file (not (eq gnuplot-term '$default)))
         ($system (format nil "~a \"~a\"" $gnuplot_command file)))
@@ -1178,22 +1187,14 @@ setrgbcolor} def
       (case gnuplot-term
         ($default
          ($system (format nil "~a ~a" $gnuplot_command
-                          (format nil $gnuplot_view_args view-file))))
-        ($ps
-         (if gnuplot-out-file
-             (if (string/= *autoconf-win32* "true")
-                ($system (format nil $viewps_command view-file)))
-             (if (string= *autoconf-win32* "true")
-                (merror "Plot option `gnuplot_out_file' not defined.")
-                ($system (format nil "~a \"~a\"" $gnuplot_command file)))))
+                          (format nil (if (search "set out " gnuplot-preamble) 
+			                 $gnuplot_file_args 
+					 $gnuplot_view_args)
+				      view-file))))
         ($dumb
          (if gnuplot-out-file
-             (if (string= *autoconf-win32* "true")
-                ($printfile view-file)
-                ($system (format nil $viewtext_command view-file)))
-             (if (string= *autoconf-win32* "true")
-                (merror "Plot option `gnuplot_out_file' not defined.")
-                ($system (format nil "~a \"~a\"" $gnuplot_command file))))) ))
+             ($printfile view-file)
+             (merror "Plot option `gnuplot_out_file' not defined."))))) 
     (if gnuplot-out-file
         (format t "Output file \"~a\".~%" gnuplot-out-file-string))))
 
