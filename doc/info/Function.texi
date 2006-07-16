@@ -266,15 +266,17 @@ and their values on the right-hand side.
 @c ===beg===
 @c show_values ([L]) ::= buildq ([L], map ("=", 'L, L));
 @c (a: 17, b: 29, c: 1729)$
-@c macroexpand (show_values (a, b, c - a - b));
 @c show_values (a, b, c - a - b);
+@c macroexpand (show_values (a, b, c - a - b));
 @c ===end===
 @example
 (%i1) show_values ([L]) ::= buildq ([L], map ("=", 'L, L));
 (%o1)   show_values([L]) ::= buildq([L], map("=", 'L, L))
 (%i2) (a: 17, b: 29, c: 1729)$
 (%i3) show_values (a, b, c - a - b);
-(%o3)              [a = 17, b = 29, c = 1729]
+(%o3)          [a = 17, b = 29, c - b - a = 1683]
+(%i4) macroexpand (show_values (a, b, c - a - b));
+(%o4)    map(=, '([a, b, c - b - a]), [a, b, c - b - a])
 @end example
 
 @end deffn
