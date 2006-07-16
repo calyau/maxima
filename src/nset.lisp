@@ -333,7 +333,7 @@
 
 (defun $permutations (a)
   (cond (($listp a) 
-	 (setq a (sort (cdr a) '$orderlessp)))
+	 (setq a (sort (copy-list (cdr a)) '$orderlessp)))
 	(t
 	 (setq a (require-set a "$permutations"))))
   
