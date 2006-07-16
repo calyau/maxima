@@ -147,10 +147,9 @@
                                                     ))
                             (merror "plot_format: only [gnuplot,mgnuplot,openmath,ps,geomview] are available"))
                         value)
-          ($gnuplot_term (or (member (nth 2 value)
-                                     '($default $ps $dumb))
-                             (merror "gnuplot_term: only [default,ps,dumb] are available"))
-                         value)
+          ($gnuplot_term (or (symbolp (nth 2 value)) (stringp (nth 2 value))
+                             (merror "gnuplot_term: must be symbol or string"))
+	                value)
           ($gnuplot_out_file value)
           ($gnuplot_curve_titles (if ($listp value)
                                      value
@@ -173,6 +172,13 @@
          do (setf (car v) value))
   $plot_options
   )
+
+(defun get-gnuplot-term (term)
+  (let* ((sterm (string-downcase (format nil "~a" (stripdollar term))))
+	 (pos   (search " " sterm)))
+    (if pos  
+      (subseq sterm 0 pos)
+      sterm)))
   
 (defvar $pstream nil)
 
@@ -1137,12 +1143,12 @@ setrgbcolor} def
         (format dest "set pm3d~%"))
     (if ($get_plot_option '$gnuplot_out_file 2)
         (setf gnuplot-out-file (get-plot-option-string '$gnuplot_out_file)))
-    ;; default output file name for gnuplot dumb or ps terminals
-    (if (and (member ($get_plot_option '$gnuplot_term 2) '($dumb $ps)) 
+    ;; default output file name for for all formats except default
+    (if (and (not (eq ($get_plot_option '$gnuplot_term 2) '$default)) 
              (null gnuplot-out-file))
       (setq gnuplot-out-file 
         (plot-temp-file (format nil "maxplot.~(~a~)" 
-	                   (stripdollar ($get_plot_option '$gnuplot_term 2)))) ))
+	                   (get-gnuplot-term ($get_plot_option '$gnuplot_term 2)))) ))
     (case ($get_plot_option '$gnuplot_term 2)
       ($default
        (format dest "~a~%" 
@@ -1156,7 +1162,12 @@ setrgbcolor} def
        (format dest "~a~%" 
                (get-plot-option-string '$gnuplot_dumb_term_command))
        (if gnuplot-out-file
-           (format dest "set out '~a'~%" gnuplot-out-file))))
+           (format dest "set out '~a'~%" gnuplot-out-file)))
+      (t
+       (format dest "set term ~a~%" 
+               (get-plot-option-string '$gnuplot_term))
+       (if gnuplot-out-file
+           (format dest "set out '~a'~%" gnuplot-out-file))) )
     (when log-x
       (format dest "set log x~%"))
     (when log-y
@@ -1171,11 +1182,11 @@ setrgbcolor} def
         (run-viewer ($get_plot_option '$run_viewer 2))
 	(gnuplot-preamble (string-downcase (get-plot-option-string '$gnuplot_preamble)))
         (view-file))
-    ;; default output file name for gnuplot dumb or ps terminals
-    (when (and (member gnuplot-term '($dumb $ps)) 
+    ;; default output file name for for all formats except default
+    (when (and (not (eq ($get_plot_option '$gnuplot_term 2) '$default)) 
                (null gnuplot-out-file))
       (setq gnuplot-out-file 
-        (plot-temp-file (format nil "maxplot.~(~a~)" (stripdollar gnuplot-term))))
+        (plot-temp-file (format nil "maxplot.~(~a~)" (get-gnuplot-term gnuplot-term))))
       (setq gnuplot-out-file-string gnuplot-out-file)) 
     ;; run gnuplot in batch mode if necessary before viewing
     (if (and gnuplot-out-file (not (eq gnuplot-term '$default)))
