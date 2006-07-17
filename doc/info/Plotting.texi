@@ -16,7 +16,6 @@ Default value: @code{false}
 When @code{in_netmath} is @code{true},
 @code{plot3d} prints OpenMath output to the console if @code{plot_format} is @code{openmath};
 otherwise @code{in_netmath} (even if @code{true}) has no effect.
-
 @code{in_netmath} has no effect on @code{plot2d}.
 
 @end defvr
@@ -418,7 +417,22 @@ Value: @code{ps}
 Gnuplot generates commands in the PostScript page description language.
 If the option
 @code{gnuplot_out_file} is set to @var{filename}, gnuplot writes the PostScript commands to @var{filename}.
-Otherwise, the commands are printed to the Maxima console.
+Otherwise, it is saved as @code{maxplot.ps} file.
+
+@item
+Value: any other valid gnuplot term specification
+Gnuplot can generate output in many other graphical formats such
+as png, jpeg, svg etc.  To create plot in all these formats the
+@code{gnuplot_term} can be set to any supported gnuplot term name (symbol) 
+or even full gnuplot term specification with any valid options (string).
+For example @code{[gnuplot_term,png]} creates output in PNG (Portable
+Network Graphics) format while @code{[gnuplot_term,"png size 1000,1000"]}
+creates PNG of 1000x1000 pixels size. 
+If the option @code{gnuplot_out_file} is set to @var{filename}, gnuplot 
+writes the output to @var{filename}. Otherwise, it is saved as 
+@code{maxplot.@var{term}} file, where @var{term} is gnuplot 
+terminal name.
+
 @end itemize
 
 @item
