@@ -40,14 +40,14 @@ sSubResNumberOfRoots(p,var) :=
 numberOfRoots(p,var) :=
   sSubResNumberOfRoots(p,var);
 
-/* --------------------------------------------------- */
-/* Real root isolation */
+
 
 findRoots(pol,var,threshold) :=
   deCasteljauFindRoots(pol,var,threshold);
 
 findRootsVerbose(pol,var,threshold,verbosity) :=
   deCasteljauFindRootsVerbose(pol,var,threshold,verbosity);
+
 
 isolateRoots(pol,var) :=
   deCasteljauIsolateRoots(pol,var);
@@ -74,6 +74,8 @@ compareRoots(p,q,var) :=
 signDetermination(polList,ptSet,sqAlg,var) :=
   smartSignDetermination(polList,ptSet,sqAlg,var);
 
+signDeterminationVerbose(polList,ptSet,sqAlg,var,verbosity) :=
+  smartSignDeterminationVerbose(polList,ptSet,sqAlg,var,verbosity);
 
 
 /* --------------------------------------------------- */

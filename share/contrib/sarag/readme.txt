@@ -4,7 +4,7 @@
 
        SOME ALGORITHMS IN REAL ALGEBRAIC GEOMETRY
 
-                    ALPHA Version 0.1
+                    BETA Version 0.1
 
 ---------------------------------------------------------------
 developed by Fabrizio Caruso 
@@ -53,12 +53,19 @@ REQUIREMENTS
 
 ---------------------------------------------------------------
 
+- MAXIMA (5.9.2 or above)
 The library has been developed and tested 
-with Maxima version 5.9.1.
-Some tests show that the library should work
-with Maxima version 5.9.2, as well.
+with Maxima version 5.9.2 and 5.9.3.
+SARAG with the only exception of plotting 
+(e.g., "drawTopology") also works on Maxima 5.9.1.
 The latest version of Maxima is available on line at
 http://maxima.sourceforge.net/
+
+- GNUPLOT (3.7.x, 4.0.x or above)
+The library uses Gnuplot for plotting graphs
+and it has been tested successfully on Gnuplot 3.7.x 
+and 4.0.x.
+
 
 ---------------------------------------------------------------
 ---------------------------------------------------------------
@@ -138,15 +145,25 @@ Prime used in some modular tests.
 - NORM_ALGORITHM [lambda([x],ratexpand)]
 Normal form computed in "sSubRes" and related algorithms
 
-- ASSUME_EXPANDED [FALSE]
+- ASSUME_EXPANDED [false]
 Assunption on whether the polynomial input of the main functions
 is in expanded form
 
-- WARNINGS [TRUE]
+- WARNINGS [true]
 Warnings
 
-- PLOT_STYLE ["unset xtics; unset ytics;"]
+- ASSUME_GENERIC_POSITION  [false];
+Assumption on the generic position of curves 
+
+- PLOT_STYLE ["set noxtics; set noytics; set nokey;"]
 Preamble to be fed to gnuplot to set its style
+
+- PS_OUTPUT  [false]
+Printable file output for "drawTopology"
+
+- PS_OUTPUT_FILE_NAME  ["test.eps"]
+Name of the postscript file output for "drawTopology"
+
 
 ---------------------------------------------------------------
 ---------------------------------------------------------------
@@ -174,6 +191,10 @@ When no prefix or no suffix is used the
 default version of function with the
 default method/algorithm will be called
 as set in the file: "aliases.mac"
+
+NOTE:
+In this manual some possible modifiers will appear
+in brackets.
 
 Examples:
 
@@ -543,11 +564,13 @@ in the Bernstein basis for (l+r)/2,r of 2^deg(P) P
 -----------------------------------------------------------------
 Main functions
 
-- isolateRoots(pol,x)
+- isolateRoots[withZ](pol,x)
 INPUT : polynomial pol in x
 METHOD:
 -- deCasteljau [De Casteljau method for root isolation]
 -- monomial [root isolation in the monomial basis] (**)
+MODIFIER: 
+-- withZ : it only computes integer Bernstein coefficients
 OUTPUT : list of elements  
 of the form either
 a) [pt]
@@ -555,6 +578,60 @@ describing the real root pt
 or 
 b) [a,b]
 describing the open interval "]a,b["   
+
+
+- isolateRootsBetween[withZ](pol,x,search_interval)
+INPUT : polynomial pol in x, the open interval search_interval
+METHOD:
+-- deCasteljau [De Casteljau method for root isolation]
+-- monomial [root isolation in the monomial basis] (**)
+MODIFIER: 
+-- withZ : it only computes integer Bernstein coefficients
+OUTPUT : list of elements
+describing roots in the interval search_interval  
+of the form either
+a) [pt]
+describing the real root pt 
+or 
+b) [a,b]
+describing the open interval "]a,b["  
+
+
+
+
+
+- findRoots[withZ](pol,x,threshold)
+INPUT : polynomial pol in x, theshold for the intervals
+METHOD:
+-- deCasteljau [De Casteljau method for root isolation]
+-- monomial [root isolation in the monomial basis] (**)
+MODIFIER: 
+-- withZ : it only computes integer Bernstein coefficients 
+OUTPUT : list of elements  
+of the form either
+a) [pt]
+describing the real root pt 
+or 
+b) [a,b]
+describing the open interval "]a,b[" smaller then threshold
+
+
+- findRootsBetween[withZ](pol,x,threshold)
+INPUT : polynomial pol in x, theshold for the intervals
+METHOD:
+-- deCasteljau [De Casteljau method for root isolation]
+-- monomial [root isolation in the monomial basis] (**)
+MODIFIER: 
+-- withZ : it only computes integer Bernstein coefficients 
+OUTPUT : list of elements describing roots in the 
+open interval search_interval
+of the form either
+a) [pt]
+describing the real root pt 
+or 
+b) [a,b]
+describing the open interval "]a,b[" smaller then threshold
+
 
 - rootsSign(isInt,p,q,x)
 INPUT : polynomials p,q in x,
@@ -724,7 +801,7 @@ that has the same input/output format as
 -----------------------------------------------------------------
 Main functions
 
-- archimedianTopology(P,isolAlg,x,y) 
+- archimedianTopology(P,isolAlg,x,y)
 INPUT : a square free polynomial P in x and y, 
 algorithm "isolAlg" for the
 isolation of real roots in an archimedian real closed field
@@ -754,8 +831,8 @@ ii.2.2) the position of the critical on the projection
 -drawTopology(tpg) (*)
 INPUT : the topology of the curve (as in the second
 element of the output of archimedian topology)
-OUTPUT : none 
-EFFECT: it uses gnuplot to draw the topological graph
+OUTPUT : number of critical points 
+EFFECT: it uses gnuplot (3.7.x, 4.0.x or above) to draw the topological graph
 corresponding to description in tpg
 
 

@@ -5,6 +5,8 @@ dir : "./sarag/";
 modLoad(modName) :=
   load(concat(dir,modName));
 
+modLoad("sarag_initialization.mac");
+
 modLoad("settings.mac");
 
 modLoad("aliases.mac");
@@ -24,9 +26,4 @@ modLoad("signDetermination.mac");
 modLoad("intervalArithmetic.mac");
 
 modLoad("topology.mac");
-
-modLoad("examples.mac");
-
-modLoad("topology_examples.mac");
-
 

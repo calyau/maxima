@@ -98,17 +98,12 @@ gaussElimArray(m) :=
   k : 0, /* index of the row of the pivot */
   r : 0, /* index of the column of the pivot */
 
-  while r<= nCols-2 and k <= nRows-2 do
+  while r<= nCols-1 and k <= nRows-1 do
     (
 
     /* Test for zero row */    
     flag : true,
     j : r+1,
-    print("-------BEGIN-------------------"),
-    print("r : ", r),
-    print("nCols-2 : ", nCols-2),
-    print("k : ", k),
-    print("nRows-1 : ", nRows-1),
     while flag and j <= nCols do
       if not(g[k+1-1,j-1]=0) then
          flag : false
@@ -117,47 +112,73 @@ gaussElimArray(m) :=
     if flag then 
       (
       zeroRows : endcons(k,zeroRows),
-      offset : offset + 1,
-      print("offset : ", offset)
+      offset : offset + 1
       ),
    
     if not(j=r+1) and not(flag) then
       (
-
-      print("exchanging cols : ", r+1, " with ", j),
       colExList : endcons([r+1-1,j-1],colExList),
       exchangeCol(g,r+1-1,j-1)
       ),    
-
-    print("pivot col : ", r+1),
     if not(flag) then
       (
-      print("no zero row above"),
       for i : k+2 thru nRows do
         (
-
-        print("Pivot at row : ", k+1, " and col : ", r+1),
         for j : r+2 thru nCols do
           (
-          print("Processing row : ", i, " and col : ", j),
           g[i-1,j-1] : 
                 g[i-1,j-1] - g[i-1,r+1-1]*
                              g[k+1-1,j-1]/g[k+1-1,r+1-1]
           ),
-        print("-----------"),
      
-        print("Zeroing row : ", i, " and col : ", r+1),
         g[i-1,r+1-1] : 0
 
         ),
-      r : r + 1,
-      print("partial : ", array2list(g))
+      r : r + 1
       ),
-    k : k +1,
-    print("-----------------------------")
-    ),
-  
+    k : k +1
+    ), /* end main while loop */
 
+
+
+/* check if the last row in the triangulized part is zero */
+/*
+flag : true,
+  j : r+1,
+  while flag and j <= nCols do
+    if not(g[k+1-1,j-1]=0) then
+       flag : false
+    else  
+       j : j+1,
+  if flag then
+    (
+    zeroRows : endcons(k,zeroRows)
+
+/*
+,       print("last row is zero : ", k)
+*/
+    ),
+*/
+
+/* add zero rows below the upper square part to zeroRows*/
+/*
+  print("nRows : ", nRows),
+  print("nCols : ", nCols),
+  
+  print("detected zero rows in triangulized part square part : ", zeroRows),
+ 
+  print("pivot at row : ", k),
+  print("pivot at column : ", r),
+  
+  for i : k thru nRows-1 do
+    print("row ", i, " should be zero"),
+  print("zero rows below the triangulized part : ", nRows-k),
+  */
+  if k<=nRows-1 then
+     zeroRows : append(zeroRows, makelist(i,i,k,nRows-1)),
+     /*
+  print("all detected zero rows : ", zeroRows),
+  */
   return([g,colExList,zeroRows])
   );
 
@@ -296,17 +317,43 @@ extractRow(m,i,size) :=
 
 /* Linear algebra support routines */
 solveSys(mat,vec,solver) :=
-  block([unk,i,j,sys,nRows,nCols,newEq],
+  block([sol,unk,i,j,sys,nRows,nCols,newEq],
   sys : [],
   nRows : length(mat),
   nCols : length(mat[1]),
+
   for i : 1 thru nRows do
     (
     newEq : sum(mat[i][j]*unk[j],j,1,nCols)-vec[i]=0,
     sys : endcons(newEq,sys)
     ),
-  return(map(second,solver(sys,makelist(unk[i],i,1,nCols))))
+  sol : solver(sys,makelist(unk[i],i,1,nCols)),
+
+  if sol = [] then
+    return([])
+  else
+    return(map(second,sol))
   );
+
+
+
+newtonFromPoly(pol,var) :=
+  array2singleList(newtonArrFromPoly(pol,var));
+
+newtonArrFromPoly(pol,var) :=
+  block([newtonRes,degPol,i,j],
+    degPol : degree(pol,var),
+    newtonRes : make_array('any,degPol+1),
+
+    newtonRes[0] : degPol,
+
+    for i : 1 thru degPol do
+      (
+      newtonRes[i] : (degPol-i)*ratcoeff(pol,var,degPol-i)-
+                     sum(ratcoeff(pol,var,degPol-j)*newtonRes[i-j],j,1,i)
+      ),
+    return(newtonRes)
+    );
 
 
 polyFromNewton(ns,var) :=
@@ -378,7 +425,14 @@ matrixTrace(A) :=
 discreteSquareRoot(n) :=
  block([i,res],
  res : 1,
+ /* after 5.9.2 */
+ /*
  for i : 1 thru ceiling(bfloat(n/2)) do
+   if i*i >= n then
+     return(i)
+ */
+ /* before 5.9.2 but also forwards-compatible*/
+ for i : 1 thru comp_ceiling(bfloat(n/2)) do
    if i*i >= n then
      return(i)
  );
@@ -396,6 +450,31 @@ babyGiantCharPolAuxVerbose(A,var,verbosity) :=
   list2poly(array2singleList(getCoeffFromNewtonArray(
          getNewtonFromMatrixVerbose(A,verbosity))),
         var);  
+
+
+matrixMinus(A,B) :=
+  makelist(
+    makelist(A[i][j]-B[i][j],j,1,length(A[1])),
+    i,1,length(A));
+
+diagonal(elem,len) :=
+  makelist(
+    makelist(if(i=j) then elem else 0,j,1,len),
+    i,1,len);
+
+gaussCharPol(A,var) :=
+  gaussCharPolVerbose(A,var,DEFAULT_VERBOSITY);
+
+gaussCharPolVerbose(A,var,verbosity) :=
+  expandIf(gaussDet(matrixMinus(A,diagonal(var,length(A)))));
+
+bareissCharPol(A,var) :=
+  bareissCharPolVerbose(A,var,DEFAULT_VERBOSITY);
+
+bareissCharPolVerbose(A,var,verbosity) :=
+  expandIf(bareissDet(matrixMinus(A,diagonal(var,length(A)))));
+
+
 
 getNewtonFromMatrix(A) :=
   getNewtonFromMatrixVerbose(A,DEFAULT_VERBOSITY);
@@ -489,6 +568,51 @@ companionArray(pol,var) :=
     return(m)
     );
 
+
 /* This should be changed with the algorithm shown in Proposition 4.7 */
-poly2Newton(pol,var) :=
+companionPoly2Newton(pol,var) :=
   array2singleList(getNewtonFromMatrix(companionArray(pol,var)));
+
+newton2Poly(newtonLst) :=
+  array2singleList(newtonArr2Poly(singleList2array(newtonLst)));
+
+newtonArr2Poly(newtonArr) :=
+   block([res,i,j,degP],
+   degP : arrayLength(newtonArr)-1,
+   
+   res : make_array('any,degP+1),
+   res[degP] : 1, 
+   for i : 1 thru degP do
+     (
+     
+     for j : 1 thru i do
+       res[degP-i] : sum(res[degP-i+j]*newtonArr[j],j,1,i)*(-1/i)
+       
+     ),
+   return(res)
+   );
+     
+
+descartesSignature(mtx) :=
+  descartesSignatureVerbose(mtx,DEFAULT_VERBOSITY);
+
+/* Descartes Signature */
+descartesSignatureVerbose(mtx,verbosity) :=
+  block([charP,x,revCoeffList,charPDeg,i],
+    charP : babyGiantCharPol(mtx,x), /* DEBUGGING */
+    charPDeg : length(mtx),
+    revCoeffList :  reverse(poly2list(charP,x)),
+
+    if verbosity>= NORMAL then
+      (
+      print("charP : ", charP),
+      print("revCoeffList : ", revCoeffList),
+      print("signed coeff list : ", makelist((-1)^(charPDeg-i)*revCoeffList[i+1],i,0,charPDeg))
+      ),
+
+    return(signChanges(revCoeffList)-
+           signChanges(
+             makelist((-1)^(charPDeg-i)*revCoeffList[i+1],i,0,
+                                                        charPDeg)))
+
+    );

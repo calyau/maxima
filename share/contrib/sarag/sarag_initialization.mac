@@ -1,0 +1,15 @@
+
+/* Inconsistent system should NOT produce an error */
+solve_inconsistent_error : false;
+
+/* It makes the linear solver non-verbose */
+linsolvewarn : false;
+
+/* Necessary to use "lcm" */
+load("functs"); 
+
+/* Fix for the wrong redefinition of "evenp" and "oddp" */
+/* introduced in Maxima 5.9.3-3 */
+evenp(i) := is(mod(i,2)=0);
+oddp(i) := is(mod(i,2)=1);
+
