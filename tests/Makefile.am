@@ -88,6 +88,7 @@ rtest_zeta.mac \
 rtest_diff_invtrig.mac \
 rtest_scalarp.mac \
 rtest_everysome.mac \
+rtestint.mac \
 rtestifactor.mac \
 testsuite.lisp
 

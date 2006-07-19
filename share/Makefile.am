@@ -41,8 +41,6 @@ algebra/charsets/flatten.lisp\
 algebra/charsets/rtestflatten.mac\
 algebra/charsets/set.lisp\
 algebra/charsets/test1.mac\
-algebra/differ.dem\
-algebra/differ.mac\
 algebra/gcdex.mac\
 algebra/grob1.lisp\
 algebra/nusum.mac\
@@ -64,7 +62,6 @@ calculus/cartan.dem\
 calculus/cartan.lisp\
 calculus/fourie.dem\
 calculus/fourie.mac\
-calculus/gendif.mac\
 calculus/optmiz.dem\
 calculus/optmiz.mac\
 calculus/optmiz.transcript\
@@ -284,6 +281,7 @@ contrib/pdiff/pdiff-doc.tex\
 contrib/pdiff/pdiff.lisp\
 contrib/plotdf.lisp\
 contrib/plsquares.mac\
+contrib/powers.lisp\
 contrib/rand/Avg3.mac\
 contrib/rand/Demo.bk1\
 contrib/rand/Ima\

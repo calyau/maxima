@@ -384,7 +384,6 @@ plot.lisp \
 pois2.lisp \
 pois3.lisp \
 polyrz.lisp \
-powers.lisp \
 procs.lisp \
 psolve.lisp \
 rand-mt19937.lisp \
