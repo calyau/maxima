@@ -7,11 +7,8 @@
 /* Backward compatibility issues since 5.9.2 */
 
 /* Auxiliary floor function */
-/* unsed */
-/*
 comp_floor(x) :=
   fix(x);
-*/
 
 /* Auxiliary ceiling function */
 comp_ceiling(x) :=

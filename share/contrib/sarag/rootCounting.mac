@@ -1226,11 +1226,11 @@ hankelMatrix(seq) :=
 
 evenPart(pol,var) :=
   sum(ratcoeff(pol,var,i*2)*var^i,
-      i,0,floor(degree(pol,var)/2));
+      i,0,comp_floor(degree(pol,var)/2));
 
 oddPart(pol,var) :=
   sum(ratcoeff(pol,var,i*2+1)*var^i,
-      i,0,ceiling(degree(pol,var)/2));
+      i,0,comp_ceiling(degree(pol,var)/2));
 
 lienardChipartConditions(pol,var) :=
   block([F,G,SR,degP,m],
