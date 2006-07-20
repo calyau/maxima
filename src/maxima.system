@@ -86,6 +86,7 @@
                         :components ((:file "numerm")))
                #+gcl (:file "optimize") ; jfa check this
                (:module utilities :source-pathname ""
+			:depends-on (utility-macros)
                         :components ((:file "opers")
                                      (:file "utils") 
                                      (:file "sumcon") 

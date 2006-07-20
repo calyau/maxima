@@ -142,10 +142,10 @@
 (defmacro mformat-dispatch-on-char (type)
   `(progn (cond ,@(mapcar #'(lambda (pair)
 			      `(,(if (atom (car pair))
-				     `(char= char ,(car pair))
+				     `(char-equal char ,(car pair))
 				     `(or-1 ,@(mapcar
 					       #'(lambda (c)
-						   `(char= char,c))
+						   `(char-equal char,c))
 					       (car pair))))
 				,@(cdr pair)))
 			  (get type 'mformat-ops))
@@ -169,7 +169,6 @@
 (defmacro white-space-p (x)
   `(member ,x '(#\linefeed #\return #\space #\tab #\page #-(or clisp gcl openmcl) #\vt #+clisp #\code11)
     :test #'char=))
-
 
 
 (defmacro +mformat-loop (type &rest end-code)
@@ -252,7 +251,7 @@
 (def-mformat-op-c (#\A #\S)
     (cond (want-open-compiled-mformat
 	   (push-text-temp-c)
-	   (emitc `(,(if (char= char #\A) 'princ 'prin1)
+	   (emitc `(,(if (char-equal char #\A) 'princ 'prin1)
 		    ,(pop-mformat-arg)
 		    ,stream)))
 	  (t (pop-mformat-arg))))
