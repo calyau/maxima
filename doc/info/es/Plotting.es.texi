@@ -99,7 +99,7 @@ valores por defecto a menos que se especifiquen de otra manera con
 
 La funci@'on a representar puede ser identificada por medio del nombre de un
 operador o funci@'on de Maxima o Lisp, con una expresi@'on lambda, o con una
-expresión de Maxima. Cuando se use un nombre o expresi@'on lambda, la funci@'on
+expresi@'on de Maxima. Cuando se use un nombre o expresi@'on lambda, la funci@'on
 a la que se refiere debe depender de un @'unico argumento.
 
 @b{Ejemplos:}
