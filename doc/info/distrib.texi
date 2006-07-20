@@ -302,18 +302,19 @@ $$KU\left[X\right]={{\sum_{x_{i}}{f\left(x\right)\,
 @end tex
 respectively.
 
-Package @code{distrib} includes functions for simulating random variates. Some of these functions make use of optional variables indicating the algorithm to be used. The general inverse method (based on the fact that if @var{u} is an uniform random number in @math{(0,1)}, then @var{F^(-1)(u)} is a random variate with distribution @math{F}) is implemented in most cases; this is a suboptimal method in terms of timing, but useful for comparing with other algorithms. In this example, the performance of algorithms @code{ahrens_cheng} and @code{inverse} for simulating chi-square variates are compared by means of their histograms:
+Package @code{distrib} includes functions for simulating random variates. Some of these functions make use of optional variables indicating the algorithm to be used. The general inverse method (based on the fact that if @var{u} is an uniform random number in @math{(0,1)}, then @var{F^(-1)(u)} is a random variate with distribution @math{F}) is implemented in most cases; this is a suboptimal method in terms of timing, but useful for comparing with other algorithms. In this example, the perandom_formance of algorithms @code{ahrens_cheng} and @code{inverse} for simulating chi-square variates are compared by means of their histograms:
 
 @example
-(%i1) load(descriptive)$
-(%i2) showtime:true$
-Evaluation took 0.00 seconds (0.00 elapsed) using 80 bytes.
-(%i3) rchi2_algorithm: 'ahrens_cheng$ histogram(rchi2(10,500))$
-Evaluation took 0.00 seconds (0.00 elapsed) using 80 bytes.
-Evaluation took 0.70 seconds (0.77 elapsed) using 5.517 MB.
-(%i5) rchi2_algorithm: 'inverse$ histogram(rchi2(10,500))$
-Evaluation took 0.00 seconds (0.00 elapsed) using 80 bytes.
-Evaluation took 10.37 seconds (10.45 elapsed) using 321.278 MB.
+(%i1) load(distrib)$
+(%i2) load(descriptive)$
+(%i3) showtime: true$
+Evaluation took 0.00 seconds (0.00 elapsed) using 32 bytes.
+(%i4) random_chi2_algorithm: 'ahrens_cheng$ histogram(random_chi2(10,500))$
+Evaluation took 0.00 seconds (0.00 elapsed) using 40 bytes.
+Evaluation took 0.69 seconds (0.71 elapsed) using 5.694 MB.
+(%i6) random_chi2_algorithm: 'inverse$ histogram(random_chi2(10,500))$
+Evaluation took 0.00 seconds (0.00 elapsed) using 32 bytes.
+Evaluation took 10.15 seconds (10.17 elapsed) using 322.098 MB.
 @end example
 
 In order to make visual comparisons among algorithms for a discrete variate, function @code{barsplot} of the @code{descriptive} package should be used.
@@ -325,30 +326,30 @@ Please, consult an introductory manual on probability and statistics for more in
 There is a naming convention in package @code{distrib}. Every function name has two parts, the first one makes reference to the function or parameter we want to calculate,
 @example
 Functions:
-   Density function            (den*)
-   Distribution function       (dis*)
-   Quantile                    (q*)
-   Mean                        (mean*)
-   Variance                    (var*)
-   Standard deviation          (std*)
-   Skewness coefficient        (skw*)
-   Kurtosis coefficient        (kur*)
-   Random variate              (r*)
+   Density function            (pdf_*)
+   Distribution function       (cdf_*)
+   Quantile                    (quantile_*)
+   Mean                        (mean_*)
+   Variance                    (var_*)
+   Standard deviation          (std_*)
+   Skewness coefficient        (skewness_*)
+   Kurtosis coefficient        (kurtosis_*)
+   Random variate              (random_*)
 @end example
 
 The second part is an explicit reference to the probabilistic model,
 @example
 Continuous distributions:
    Normal              (*normal)
-   Student             (*student)
+   Student             (*student_t)
    Chi^2               (*chi2)
    F                   (*f)
    Exponential         (*exp)
-   Lognormal           (*logn)
+   Lognormal           (*lognormal)
    Gamma               (*gamma)
    Beta                (*beta)
-   Continuous uniform  (*contu)
-   Logistic            (*log)
+   Continuous uniform  (*continuous_uniform)
+   Logistic            (*logistic)
    Pareto              (*pareto)
    Weibull             (*weibull)
    Rayleigh            (*rayleigh)
@@ -360,13 +361,13 @@ Discrete distributions:
    Binomial             (*binomial)
    Poisson              (*poisson)
    Bernoulli            (*bernoulli)
-   Geometric            (*geo)
-   Discrete uniform     (*discu)
-   Hypergeometric       (*hypergeo)
-   Negative binomial    (*negbinom)
+   Geometric            (*geometric)
+   Discrete uniform     (*discrete_uniform)
+   hypergeometric       (*hypergeometric)
+   Negative binomial    (*negative_binomial)
 @end example
 
-For example, @code{denstudent(x,n)} is the density function of the Student distribution with @var{n} degrees of freedom, @code{stdpareto(a,b)} is the standard deviation of the Pareto distribution with parameters @var{a} and @var{b} and @code{kurpoisson(m)} is the kurtosis coefficient of the Poisson distribution with mean @var{m}.
+For example, @code{pdf_student_t(x,n)} is the density function of the Student distribution with @var{n} degrees of freedom, @code{std_pareto(a,b)} is the standard deviation of the Pareto distribution with parameters @var{a} and @var{b} and @code{kurtosis_poisson(m)} is the kurtosis coefficient of the Poisson distribution with mean @var{m}.
 
 
 In order to make use of package @code{distrib} you need first to load it by typing
@@ -385,141 +386,157 @@ For comments, bugs or suggestions, please contact the author at @var{'mario AT e
 @section Definitions for continuous distributions
 
 
-@deffn {Function} dennormal (@var{x},@var{m},@var{s})
-Returns the value at @var{x} of the density function of a normal random variable @math{N(m,s)}, with @math{s>0}.
+@deffn {Function} pdf_normal (@var{x},@var{m},@var{s})
+Returns the value at @var{x} of the density function of a @math{Normal(m,s)} random variable, with @math{s>0}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} disnormal (@var{x},@var{m},@var{s})
-Returns the value at @var{x} of the distribution function of a normal random variable @math{N(m,s)}, with @math{s>0}. This function is defined in terms of Maxima's built-in error function @code{erf}.
+@deffn {Function} cdf_normal (@var{x},@var{m},@var{s})
+Returns the value at @var{x} of the distribution function of a @math{Normal(m,s)} random variable, with @math{s>0}. This function is defined in terms of Maxima's built-in error function @code{erf}.
 
+@c ===beg===
+@c load (distrib)$
+@c assume(s>0)$ cdf_normal(x,m,s);
+@c ===end===
 @example
-(%i1) assume(s>0)$ disnormal(x,m,s);
-                         x - m
-                   erf(---------)
-                       sqrt(2) s    1
-(%o2)              -------------- + -
-                         2          2
+(%i1) load (distrib)$
+(%i2) assume(s>0)$ cdf_normal(x,m,s);
+                             x - m
+                       erf(---------)
+                           sqrt(2) s    1
+(%o3)                  -------------- + -
+                             2          2
 @end example
 
 See also @code{erf}.
 @end deffn
 
 
-@deffn {Function} qnormal (@var{q},@var{m},@var{s})
-Returns the @var{q}-quantile of a normal random variable @math{N(m,s)}, with @math{s>0}; in other words, this is the inverse of @code{disnormal}. Argument @var{q} must be an element of @math{[0,1]}.
+@deffn {Function} quantile_normal (@var{q},@var{m},@var{s})
+Returns the @var{q}-quantile of a @math{Normal(m,s)} random variable, with @math{s>0}; in other words, this is the inverse of @code{cdf_normal}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} meannormal (@var{m},@var{s})
-Returns the mean of a normal random variable @math{N(m,s)}, with @math{s>0}, namely @var{m}.
+@deffn {Function} mean_normal (@var{m},@var{s})
+Returns the mean of a @math{Normal(m,s)} random variable, with @math{s>0}, namely @var{m}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} varnormal (@var{m},@var{s})
-Returns the variance of a normal random variable @math{N(m,s)}, with @math{s>0}, namely @var{s^2}.
+@deffn {Function} var_normal (@var{m},@var{s})
+Returns the variance of a @math{Normal(m,s)} random variable, with @math{s>0}, namely @var{s^2}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
-@deffn {Function} stdnormal (@var{m},@var{s})
-Returns the standard deviation of a normal random variable @math{N(m,s)}, with @math{s>0}, namely @var{s}.
-@end deffn
-
-
-@deffn {Function} skwnormal (@var{m},@var{s})
-Returns the skewness coefficient of a normal random variable @math{N(m,s)}, with @math{s>0}, which is always equal to 0.
+@deffn {Function} std_normal (@var{m},@var{s})
+Returns the standard deviation of a @math{Normal(m,s)} random variable, with @math{s>0}, namely @var{s}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} kurnormal (@var{m},@var{s})
-Returns the kurtosis coefficient of a normal random variable @math{N(m,s)}, with @math{s>0}, which is always equal to 0.
+@deffn {Function} skewness_normal (@var{m},@var{s})
+Returns the skewness coefficient of a @math{Normal(m,s)} random variable, with @math{s>0}, which is always equal to 0. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@defvr {Option variable} rnormal_algorithm
+@deffn {Function} kurtosis_normal (@var{m},@var{s})
+Returns the kurtosis coefficient of a @math{Normal(m,s)} random variable, with @math{s>0}, which is always equal to 0. To make use of this function, write first @code{load(distrib)}.
+@end deffn
+
+
+@defvr {Option variable} random_normal_algorithm
 Default value: @code{box_mueller}
 
 This is the selected algorithm for simulating random normal variates. Implemented algorithms are @code{box_mueller} and @code{inverse}:
 @itemize @bullet
 @item
-@code{box_mueller}, based on algorithm described in Knuth, D.E. (1981) @var{Seminumerical Algorithms. The Art of Computer Programming.}. Addison-Wesley.
+@code{box_mueller}, based on algorithm described in Knuth, D.E. (1981) @var{Seminumerical Algorithms. The Art of Computer Programming.} Addison-Wesley.
 
 @item
 @code{inverse}, based on the general inverse method.
 @end itemize
 
-See also @code{rnormal}.
+See also @code{random_normal}.
 @end defvr
 
 
-@deffn {Function} rnormal (@var{m},@var{s})
-@deffnx {Function} rnormal (@var{m},@var{s},@var{n})
-Returns a normal random variate @math{N(m,s)}, with @math{s>0}. Calling @code{rnormal} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
+@deffn {Function} random_normal (@var{m},@var{s})
+@deffnx {Function} random_normal (@var{m},@var{s},@var{n})
+Returns a @math{Normal(m,s)} random variate, with @math{s>0}. Calling @code{random_normal} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
 
-There are two algorithms implemented for this function, the one to be used can be selected giving a certain value to the global variable @code{rnormal_algorithm}, which defaults to @code{box_mueller}.
+There are two algorithms implemented for this function, the one to be used can be selected giving a certain value to the global variable @code{random_normal_algorithm}, which defaults to @code{box_mueller}.
 
 There is also a built-in Maxima function for simulating random normal variates based on the so called Marsaglia's Ziggurat method.
 
-See also @code{rnormal_algorithm} and @code{gauss}.
+See also @code{random_normal_algorithm} and @code{gauss}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} denstudent (@var{x},@var{n})
-Returns the value at @var{x} of the density function of a Student random variable @math{t(n)}, with @math{n>0}.
+@deffn {Function} pdf_student_t (@var{x},@var{n})
+Returns the value at @var{x} of the density function of a Student random variable @math{t(n)}, with @math{n>0}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} disstudent (@var{x},@var{n})
+@deffn {Function} cdf_student_t (@var{x},@var{n})
 Returns the value at @var{x} of the distribution function of a Student random variable @math{t(n)}, with @math{n>0}. This function has no closed form and it is numerically computed if the global variable @code{numer} equals @code{true},  otherwise it returns a nominal expression.
 
+@c ===beg===
+@c load (distrib)$
+@c cdf_student_t(1/2, 7/3);
+@c %,numer;
+@c ===end===
 @example
-(%i1) disstudent(1/2, 7/3);
-                                 1  7
-(%o1)                 disstudent(-, -)
-                                 2  3
-(%i2) %,numer;
-(%o2)                .6698450596140417
+(%i1) load (distrib)$
+(%i2) cdf_student_t(1/2, 7/3);
+                                     1  7
+(%o2)                  cdf_student_t(-, -)
+                                     2  3
+(%i3) %,numer;
+(%o3)                   .6698450596140417
 @end example
 @end deffn
 
 
-@deffn {Function} qstudent (@var{q},@var{n})
-Returns the @var{q}-quantile of a Student random variable @math{t(n)}, with @math{n>0}; in other words, this is the inverse of @code{disstudent}. Argument @var{q} must be an element of @math{[0,1]}.
+@deffn {Function} quantile_student_t (@var{q},@var{n})
+Returns the @var{q}-quantile of a Student random variable @math{t(n)}, with @math{n>0}; in other words, this is the inverse of @code{cdf_student_t}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} meanstudent (@var{n})
-Returns the mean of a Student random variable @math{t(n)}, with @math{n>0}, which is always equal to 0.
+@deffn {Function} mean_student_t (@var{n})
+Returns the mean of a Student random variable @math{t(n)}, with @math{n>0}, which is always equal to 0. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} varstudent (@var{n})
+@deffn {Function} var_student_t (@var{n})
 Returns the variance of a Student random variable @math{t(n)}, with @math{n>2}.
 
+@c ===beg===
+@c load (distrib)$
+@c assume(n>2)$  var_student_t(n);
+@c ===end===
 @example
-(%i1) assume(n>2)$  varstudent(n);
-                            n
-(%o2)                     -----
-                          n - 2
+(%i1) load (distrib)$
+(%i2) assume(n>2)$  var_student_t(n);
+                                n
+(%o3)                         -----
+                              n - 2
 @end example
 @end deffn
 
 
-@deffn {Function} stdstudent (@var{n})
-Returns the standard deviation of a Student random variable @math{t(n)}, with @math{n>2}.
+@deffn {Function} std_student_t (@var{n})
+Returns the standard deviation of a Student random variable @math{t(n)}, with @math{n>2}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} skwstudent (@var{n})
-Returns the skewness coefficient of a Student random variable @math{t(n)}, with @math{n>3}, which is always equal to 0.
+@deffn {Function} skewness_student_t (@var{n})
+Returns the skewness coefficient of a Student random variable @math{t(n)}, with @math{n>3}, which is always equal to 0. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} kurstudent (@var{n})
-Returns the kurtosis coefficient of a Student random variable @math{t(n)}, with @math{n>4}.
+@deffn {Function} kurtosis_student_t (@var{n})
+Returns the kurtosis coefficient of a Student random variable @math{t(n)}, with @math{n>4}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@defvr {Option variable} rstudent_algorithm
+@defvr {Option variable} random_student_t_algorithm
 Default value: @code{ratio}
 
 This is the selected algorithm for simulating random Student variates. Implemented algorithms are @code{inverse} and @code{ratio}:
@@ -556,244 +573,304 @@ $$X={{Z}\over{\sqrt{{S^2}\over{n}}}}$$
 is a Student random variable with @var{n} degrees of freedom, @math{t(n)}.
 @end itemize
 
-See also @code{rstudent}.
+See also @code{random_student_t}.
 @end defvr
 
 
-@deffn {Function} rstudent (@var{n})
-@deffnx {Function} rstudent (@var{n},@var{m})
-Returns a Student random variate @math{t(n)}, with @math{n>0}. Calling @code{rstudent} with a second argument @var{m}, a random sample of size @var{m} will be simulated.
+@deffn {Function} random_student_t (@var{n})
+@deffnx {Function} random_student_t (@var{n},@var{m})
+Returns a Student random variate @math{t(n)}, with @math{n>0}. Calling @code{random_student_t} with a second argument @var{m}, a random sample of size @var{m} will be simulated.
 
-There are two algorithms implemented for this function, the one to be used can be selected giving a certain value to the global variable @code{rstudent_algorithm}, which defaults to @code{ratio}.
+There are two algorithms implemented for this function, the one to be used can be selected giving a certain value to the global variable @code{random_student_t_algorithm}, which defaults to @code{ratio}.
 
-See also @code{rstudent_algorithm}.
+See also @code{random_student_t_algorithm}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} denchi2 (@var{x},@var{n})
+@deffn {Function} pdf_chi2 (@var{x},@var{n})
 Returns the value at @var{x} of the density function of a Chi-square random variable @math{Chi^2(n)}, with @math{n>0}.
 
 The @math{Chi^2(n)} random variable is equivalent to the @math{Gamma(n/2,2)}, therefore when Maxima has not enough information to get the result, a nominal form based on the gamma density is returned.
 
+@c ===beg===
+@c load (distrib)$
+@c pdf_chi2(x,n);
+@c assume(x>0, n>0)$  pdf_chi2(x,n);
+@c ===end===
 @example
-(%i1) denchi2(x,n);
-                                 n
-(%o1)                dengamma(x, -, 2)
-                                 2
-(%i2) assume(x>0, n>0)$  denchi2(x,n);
-                       n/2 - 1   - x/2
-                      x        %e
-(%o2)                 ----------------
-                        n/2       n
-                       2    gamma(-)
-                                  2
+(%i1) load (distrib)$
+(%i2) pdf_chi2(x,n);
+                                    n
+(%o2)                  pdf_gamma(x, -, 2)
+                                    2
+(%i3) assume(x>0, n>0)$  pdf_chi2(x,n);
+                         n/2 - 1   - x/2
+                        x        %e
+(%o4)                   ----------------
+                          n/2       n
+                         2    gamma(-)
+                                    2
 @end example
 @end deffn
 
 
-@deffn {Function} dischi2 (@var{x},@var{n})
+@deffn {Function} cdf_chi2 (@var{x},@var{n})
 Returns the value at @var{x} of the distribution function of a Chi-square random variable @math{Chi^2(n)}, with @math{n>0}.
 
 This function has no closed form and it is numerically computed if the global variable @code{numer} equals @code{true},  otherwise it returns a nominal expression based on the gamma distribution, since the @math{Chi^2(n)} random variable is equivalent to the @math{Gamma(n/2,2)}.
 
+@c ===beg===
+@c load (distrib)$
+@c cdf_chi2(3,4);
+@c cdf_chi2(3,4),numer;
+@c ===end===
 @example
-(%i1) dischi2(3,4);
-(%o1)               disgamma(3, 2, 2)
-(%i2) dischi2(3,4),numer;
-(%o2)               .4421745996289249
+(%i1) load (distrib)$
+(%i2) cdf_chi2(3,4);
+(%o2)                  cdf_gamma(3, 2, 2)
+(%i3) cdf_chi2(3,4),numer;
+(%o3)                   .4421745996289249
 @end example
 @end deffn
 
 
-@deffn {Function} qchi2 (@var{q},@var{n})
-Returns the @var{q}-quantile of a Chi-square random variable @math{Chi^2(n)}, with @math{n>0}; in other words, this is the inverse of @code{dischi2}. Argument @var{q} must be an element of @math{[0,1]}.
+@deffn {Function} quantile_chi2 (@var{q},@var{n})
+Returns the @var{q}-quantile of a Chi-square random variable @math{Chi^2(n)}, with @math{n>0}; in other words, this is the inverse of @code{cdf_chi2}. Argument @var{q} must be an element of @math{[0,1]}.
 
 This function has no closed form and it is numerically computed if the global variable @code{numer} equals @code{true},  otherwise it returns a nominal expression based on the gamma quantile function, since the @math{Chi^2(n)} random variable is equivalent to the @math{Gamma(n/2,2)}.
 
+@c ===beg===
+@c load (distrib)$
+@c quantile_chi2(0.99,9);
+@c quantile_chi2(0.99,n);
+@c ===end===
 @example
-(%i1) qchi2(0.99,9);
-(%o1)               21.66599433346194
-(%i2) qchi2(0.99,n);
-                                 n
-(%o2)               qgamma(0.99, -, 2)
-                                 2
+(%i1) load (distrib)$
+(%i2) quantile_chi2(0.99,9);
+(%o2)                   21.66599433346194
+(%i3) quantile_chi2(0.99,n);
+                                        n
+(%o3)              quantile_gamma(0.99, -, 2)
+                                        2
 @end example
 @end deffn
 
 
-@deffn {Function} meanchi2 (@var{n})
+@deffn {Function} mean_chi2 (@var{n})
 Returns the mean of a Chi-square random variable @math{Chi^2(n)}, with @math{n>0}.
 
 The @math{Chi^2(n)} random variable is equivalent to the @math{Gamma(n/2,2)}, therefore when Maxima has not enough information to get the result, a nominal form based on the gamma mean is returned.
 
+@c ===beg===
+@c load (distrib)$
+@c mean_chi2(n);
+@c assume(n>0)$ mean_chi2(n);
+@c ===end===
 @example
-(%i1) meanchi2(n);
-                                 n
-(%o1)                  meangamma(-, 2)
-                                 2
-(%i2) assume(n>0)$ meanchi2(n);
-(%o3)                        n
+(%i1) load (distrib)$
+(%i2) mean_chi2(n);
+                                   n
+(%o2)                   mean_gamma(-, 2)
+                                   2
+(%i3) assume(n>0)$ mean_chi2(n);
+(%o4)                           n
 @end example
 @end deffn
 
 
-@deffn {Function} varchi2 (@var{n})
+@deffn {Function} var_chi2 (@var{n})
 Returns the variance of a Chi-square random variable @math{Chi^2(n)}, with @math{n>0}.
 
 The @math{Chi^2(n)} random variable is equivalent to the @math{Gamma(n/2,2)}, therefore when Maxima has not enough information to get the result, a nominal form based on the gamma variance is returned.
 
+@c ===beg===
+@c load (distrib)$
+@c var_chi2(n);
+@c assume(n>0)$ var_chi2(n);
+@c ===end===
 @example
-(%i1) varchi2(n);
-                               n
-(%o1)                 vargamma(-, 2)
-                               2
-(%i2) assume(n>0)$ varchi2(n);
-(%o3)                      2 n
+(%i1) load (distrib)$
+(%i2) var_chi2(n);
+                                   n
+(%o2)                    var_gamma(-, 2)
+                                   2
+(%i3) assume(n>0)$ var_chi2(n);
+(%o4)                          2 n
 @end example
 @end deffn
 
 
-@deffn {Function} stdchi2 (@var{n})
+@deffn {Function} std_chi2 (@var{n})
 Returns the standard deviation of a Chi-square random variable @math{Chi^2(n)}, with @math{n>0}.
 
 The @math{Chi^2(n)} random variable is equivalent to the @math{Gamma(n/2,2)}, therefore when Maxima has not enough information to get the result, a nominal form based on the gamma standard deviation is returned.
 
+@c ===beg===
+@c load (distrib)$
+@c std_chi2(n);
+@c assume(n>0)$ std_chi2(n);
+@c ===end===
 @example
-(%i1) stdchi2(n);
-                               n
-(%o1)                 stdgamma(-, 2)
-                               2
-(%i2) assume(n>0)$ stdchi2(n);
-(%o3)                sqrt(2) sqrt(n)
+(%i1) load (distrib)$
+(%i2) std_chi2(n);
+                                   n
+(%o2)                    std_gamma(-, 2)
+                                   2
+(%i3) assume(n>0)$ std_chi2(n);
+(%o4)                    sqrt(2) sqrt(n)
 @end example
 @end deffn
 
 
-@deffn {Function} skwchi2 (@var{n})
+@deffn {Function} skewness_chi2 (@var{n})
 Returns the skewness coefficient of a Chi-square random variable @math{Chi^2(n)}, with @math{n>0}.
 
 The @math{Chi^2(n)} random variable is equivalent to the @math{Gamma(n/2,2)}, therefore when Maxima has not enough information to get the result, a nominal form based on the gamma skewness coefficient is returned.
 
+@c ===beg===
+@c load (distrib)$
+@c skewness_chi2(n);
+@c assume(n>0)$ skewness_chi2(n);
+@c ===end===
 @example
-(%i1) skwchi2(n);
-                               n
-(%o1)                 skwgamma(-, 2)
-                               2
-(%i2) assume(n>0)$ skwchi2(n);
-                        2 sqrt(2)
-(%o3)                   ---------
-                         sqrt(n)
+(%i1) load (distrib)$
+(%i2) skewness_chi2(n);
+                                     n
+(%o2)                 skewness_gamma(-, 2)
+                                     2
+(%i3) assume(n>0)$ skewness_chi2(n);
+                            2 sqrt(2)
+(%o4)                       ---------
+                             sqrt(n)
 @end example
 @end deffn
 
 
-@deffn {Function} kurchi2 (@var{n})
+@deffn {Function} kurtosis_chi2 (@var{n})
 Returns the kurtosis coefficient of a Chi-square random variable @math{Chi^2(n)}, with @math{n>0}.
 
 The @math{Chi^2(n)} random variable is equivalent to the @math{Gamma(n/2,2)}, therefore when Maxima has not enough information to get the result, a nominal form based on the gamma kurtosis coefficient is returned.
 
+@c ===beg===
+@c load (distrib)$
+@c kurtosis_chi2(n);
+@c assume(n>0)$ kurtosis_chi2(n);
+@c ===end===
 @example
-(%i1) kurchi2(n);
+(%i1) load (distrib)$
+(%i2) kurtosis_chi2(n);
+                                     n
+(%o2)                 kurtosis_gamma(-, 2)
+                                     2
+(%i3) assume(n>0)$ kurtosis_chi2(n);
+                               12
+(%o4)                          --
                                n
-(%o1)                 kurgamma(-, 2)
-                               2
-(%i2) assume(n>0)$ kurchi2(n);
-                            12
-(%o3)                       --
-                            n
 @end example
 @end deffn
 
 
-@defvr {Option variable} rchi2_algorithm
+@defvr {Option variable} random_chi2_algorithm
 Default value: @code{ahrens_cheng}
 
 This is the selected algorithm for simulating random Chi-square variates. Implemented algorithms are @code{ahrens_cheng} and @code{inverse}:
 @itemize @bullet
 
 @item
-@code{ahrens_cheng}, based on the random simulation of gamma variates. See @code{rgamma_algorithm} for details.
+@code{ahrens_cheng}, based on the random simulation of gamma variates. See @code{random_gamma_algorithm} for details.
 
 @item
 @code{inverse}, based on the general inverse method.
 
 @end itemize
 
-See also @code{rchi2}.
+See also @code{random_chi2}.
 @end defvr
 
 
-@deffn {Function} rchi2 (@var{n})
-@deffnx {Function} rchi2 (@var{n},@var{m})
-Returns a Chi-square random variate @math{Chi^2(n)}, with @math{n>0}. Calling @code{rchi2} with a second argument @var{m}, a random sample of size @var{m} will be simulated.
+@deffn {Function} random_chi2 (@var{n})
+@deffnx {Function} random_chi2 (@var{n},@var{m})
+Returns a Chi-square random variate @math{Chi^2(n)}, with @math{n>0}. Calling @code{random_chi2} with a second argument @var{m}, a random sample of size @var{m} will be simulated.
 
-There are two algorithms implemented for this function, the one to be used can be selected giving a certain value to the global variable @code{rchi2_algorithm}, which defaults to @code{ahrens_cheng}.
+There are two algorithms implemented for this function, the one to be used can be selected giving a certain value to the global variable @code{random_chi2_algorithm}, which defaults to @code{ahrens_cheng}.
 
-See also @code{rchi2_algorithm}.
+See also @code{random_chi2_algorithm}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} denf (@var{x},@var{m},@var{n})
-Returns the value at @var{x} of the density function of a F random variable @math{F(m,n)}, with @math{m,n>0}.
+@deffn {Function} pdf_f (@var{x},@var{m},@var{n})
+Returns the value at @var{x} of the density function of a F random variable @math{F(m,n)}, with @math{m,n>0}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} disf (@var{x},@var{m},@var{n})
+@deffn {Function} cdf_f (@var{x},@var{m},@var{n})
 Returns the value at @var{x} of the distribution function of a F random variable @math{F(m,n)}, with @math{m,n>0}. This function has no closed form and it is numerically computed if the global variable @code{numer} equals @code{true},  otherwise it returns a nominal expression.
 
+@c ===beg===
+@c load (distrib)$
+@c cdf_f(2,3,9/4);
+@c %,numer;
+@c ===end===
 @example
-(%i1) disf(2,3,9/4);
-                                 9
-(%o1)                 disf(2, 3, -)
-                                 4
-(%i2) %,numer;
-(%o2)                0.66756728179008
+(%i1) load (distrib)$
+(%i2) cdf_f(2,3,9/4);
+                                     9
+(%o2)                    cdf_f(2, 3, -)
+                                     4
+(%i3) %,numer;
+(%o3)                   0.66756728179008
 @end example
 @end deffn
 
 
-@deffn {Function} qf (@var{q},@var{m},@var{n})
-Returns the @var{q}-quantile of a F random variable @math{F(m,n)}, with @math{m,n>0}; in other words, this is the inverse of @code{disf}. Argument @var{q} must be an element of @math{[0,1]}.
+@deffn {Function} quantile_f (@var{q},@var{m},@var{n})
+Returns the @var{q}-quantile of a F random variable @math{F(m,n)}, with @math{m,n>0}; in other words, this is the inverse of @code{cdf_f}. Argument @var{q} must be an element of @math{[0,1]}.
 
 This function has no closed form and it is numerically computed if the global variable @code{numer} equals @code{true},  otherwise it returns a nominal expression.
 
+@c ===beg===
+@c load (distrib)$
+@c quantile_f(2/5,sqrt(3),5);
+@c %,numer;
+@c ===end===
 @example
-(%i1) qf(2/5,sqrt(3),5);
-                       2
-(%o1)               qf(-, sqrt(3), 5)
-                       5
-(%i2) %,numer;
-(%o2)               0.518947838573693
+(%i1) load (distrib)$
+(%i2) quantile_f(2/5,sqrt(3),5);
+                               2
+(%o2)               quantile_f(-, sqrt(3), 5)
+                               5
+(%i3) %,numer;
+(%o3)                   0.518947838573693
 @end example
 @end deffn
 
 
-@deffn {Function} meanf (@var{m},@var{n})
-Returns the mean of a F random variable @math{F(m,n)}, with @math{m>0, n>2}.
+@deffn {Function} mean_f (@var{m},@var{n})
+Returns the mean of a F random variable @math{F(m,n)}, with @math{m>0, n>2}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} varf (@var{m},@var{n})
-Returns the variance of a F random variable @math{F(m,n)}, with @math{m>0, n>4}.
+@deffn {Function} var_f (@var{m},@var{n})
+Returns the variance of a F random variable @math{F(m,n)}, with @math{m>0, n>4}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} stdf (@var{m},@var{n})
-Returns the standard deviation of a F random variable @math{F(m,n)}, with @math{m>0, n>4}.
+@deffn {Function} std_f (@var{m},@var{n})
+Returns the standard deviation of a F random variable @math{F(m,n)}, with @math{m>0, n>4}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} skwf (@var{m},@var{n})
-Returns the skewness coefficient of a F random variable @math{F(m,n)}, with @math{m>0, n>6}.
+@deffn {Function} skewness_f (@var{m},@var{n})
+Returns the skewness coefficient of a F random variable @math{F(m,n)}, with @math{m>0, n>6}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} kurf (@var{m},@var{n})
-Returns the kurtosis coefficient of a F random variable @math{F(m,n)}, with @math{m>0, n>8}.
+@deffn {Function} kurtosis_f (@var{m},@var{n})
+Returns the kurtosis coefficient of a F random variable @math{F(m,n)}, with @math{m>0, n>8}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@defvr {Option variable} rf_algorithm
+@defvr {Option variable} random_f_algorithm
 Default value: @code{inverse}
 
 This is the selected algorithm for simulating random F variates. Implemented algorithms are @code{ratio} and @code{inverse}:
@@ -825,158 +902,206 @@ is a F random variable with @var{m} and @var{n} degrees of freedom, @math{F(m,n)
 
 @end itemize
 
-See also @code{rf}.
+See also @code{random_f}.
 @end defvr
 
 
-@deffn {Function} rf (@var{m},@var{n})
-@deffnx {Function} rf (@var{m},@var{n},@var{k})
-Returns a F random variate @math{F(m,n)}, with @math{m,n>0}. Calling @code{rf} with a third argument @var{k}, a random sample of size @var{k} will be simulated.
+@deffn {Function} random_f (@var{m},@var{n})
+@deffnx {Function} random_f (@var{m},@var{n},@var{k})
+Returns a F random variate @math{F(m,n)}, with @math{m,n>0}. Calling @code{random_f} with a third argument @var{k}, a random sample of size @var{k} will be simulated.
 
-There are two algorithms implemented for this function, the one to be used can be selected giving a certain value to the global variable @code{rf_algorithm}, which defaults to @code{inverse}.
+There are two algorithms implemented for this function, the one to be used can be selected giving a certain value to the global variable @code{random_f_algorithm}, which defaults to @code{inverse}.
 
-See also @code{rf_algorithm}.
+See also @code{random_f_algorithm}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} denexp (@var{x},@var{m})
-Returns the value at @var{x} of the density function of an exponential random variable @math{Exp(m)}, with @math{m>0}.
+@deffn {Function} pdf_exp (@var{x},@var{m})
+Returns the value at @var{x} of the density function of an @math{Exponential(m)} random variable, with @math{m>0}.
 
-The @math{Exp(m)} random variable is equivalent to the Weibull @math{Wei(1,1/m)}, therefore when Maxima has not enough information to get the result, a nominal form based on the Weibull density is returned.
+The @math{Exponential(m)} random variable is equivalent to the @math{Weibull(1,1/m)}, therefore when Maxima has not enough information to get the result, a nominal form based on the Weibull density is returned.
 
+@c ===beg===
+@c load (distrib)$
+@c pdf_exp(x,m);
+@c assume(x>0,m>0)$  pdf_exp(x,m);
+@c ===end===
 @example
-(%i1) denexp(x,m);
-                                    1
-(%o1)              denweibull(x, 1, -)
-                                    m
-(%i2) assume(x>0,m>0)$  denexp(x,m);
-                            - m x
-(%o3)                   m %e
+(%i1) load (distrib)$
+(%i2) pdf_exp(x,m);
+                                        1
+(%o2)                 pdf_weibull(x, 1, -)
+                                        m
+(%i3) assume(x>0,m>0)$  pdf_exp(x,m);
+                                - m x
+(%o4)                       m %e
 @end example
 @end deffn
 
 
-@deffn {Function} disexp (@var{x},@var{m})
-Returns the value at @var{x} of the distribution function of an exponential random variable @math{Exp(m)}, with @math{m>0}.
+@deffn {Function} cdf_exp (@var{x},@var{m})
+Returns the value at @var{x} of the distribution function of an @math{Exponential(m)} random variable, with @math{m>0}.
 
-The @math{Exp(m)} random variable is equivalent to the Weibull @math{Wei(1,1/m)}, therefore when Maxima has not enough information to get the result, a nominal form based on the Weibull distribution is returned.
+The @math{Exponential(m)} random variable is equivalent to the @math{Weibull(1,1/m)}, therefore when Maxima has not enough information to get the result, a nominal form based on the Weibull distribution is returned.
 
+@c ===beg===
+@c load (distrib)$
+@c cdf_exp(x,m);
+@c assume(x>0,m>0)$  cdf_exp(x,m);
+@c ===end===
 @example
-(%i1) disexp(x,m);
-                                    1
-(%o1)              disweibull(x, 1, -)
-                                    m
-(%i2) assume(x>0,m>0)$  disexp(x,m);
-                             - m x
-(%o3)                  1 - %e
+(%i1) load (distrib)$
+(%i2) cdf_exp(x,m);
+                                        1
+(%o2)                 cdf_weibull(x, 1, -)
+                                        m
+(%i3) assume(x>0,m>0)$  cdf_exp(x,m);
+                                 - m x
+(%o4)                      1 - %e
 @end example
 @end deffn
 
 
-@deffn {Function} qexp (@var{q},@var{m})
-Returns the @var{q}-quantile of an exponential random variable @math{Exp(m)}, with @math{m>0}; in other words, this is the inverse of @code{disexp}. Argument @var{q} must be an element of @math{[0,1]}.
+@deffn {Function} quantile_exp (@var{q},@var{m})
+Returns the @var{q}-quantile of an @math{Exponential(m)} random variable, with @math{m>0}; in other words, this is the inverse of @code{cdf_exp}. Argument @var{q} must be an element of @math{[0,1]}.
 
-The @math{Exp(m)} random variable is equivalent to the Weibull @math{Wei(1,1/m)}, therefore when Maxima has not enough information to get the result, a nominal form based on the Weibull quantile is returned.
+The @math{Exponential(m)} random variable is equivalent to the @math{Weibull(1,1/m)}, therefore when Maxima has not enough information to get the result, a nominal form based on the Weibull quantile is returned.
 
+@c ===beg===
+@c load (distrib)$
+@c quantile_exp(0.56,5);
+@c quantile_exp(0.56,m);
+@c ===end===
 @example
-(%i51) qexp(0.56,5);
-(%o1)               .1641961104139661
-(%i2) qexp(0.56,m);
-                                     1
-(%o2)              qweibull(0.56, 1, -)
-                                     m
+(%i1) load (distrib)$
+(%i2) quantile_exp(0.56,5);
+(%o2)                   .1641961104139661
+(%i3) quantile_exp(0.56,m);
+                                            1
+(%o3)             quantile_weibull(0.56, 1, -)
+                                            m
 @end example
 @end deffn
 
 
-@deffn {Function} meanexp (@var{m})
-Returns the mean of an exponential random variable @math{Exp(m)}, with @math{m>0}.
+@deffn {Function} mean_exp (@var{m})
+Returns the mean of an @math{Exponential(m)} random variable, with @math{m>0}.
 
-The @math{Exp(m)} random variable is equivalent to the Weibull @math{Wei(1,1/m)}, therefore when Maxima has not enough information to get the result, a nominal form based on the Weibull mean is returned.
+The @math{Exponential(m)} random variable is equivalent to the @math{Weibull(1,1/m)}, therefore when Maxima has not enough information to get the result, a nominal form based on the Weibull mean is returned.
 
+@c ===beg===
+@c load (distrib)$
+@c mean_exp(m);
+@c assume(m>0)$  mean_exp(m);
+@c ===end===
 @example
-(%i1) meanexp(m);
-                                   1
-(%o1)               meanweibull(1, -)
-                                   m
-(%i2) assume(m>0)$  meanexp(m);
-                            1
-(%o3)                       -
-                            m
+(%i1) load (distrib)$
+(%i2) mean_exp(m);
+                                       1
+(%o2)                  mean_weibull(1, -)
+                                       m
+(%i3) assume(m>0)$  mean_exp(m);
+                                1
+(%o4)                           -
+                                m
 @end example
 @end deffn
 
 
-@deffn {Function} varexp (@var{m})
-Returns the variance of an exponential random variable @math{Exp(m)}, with @math{m>0}.
+@deffn {Function} var_exp (@var{m})
+Returns the variance of an @math{Exponential(m)} random variable, with @math{m>0}.
 
-The @math{Exp(m)} random variable is equivalent to the Weibull @math{Wei(1,1/m)}, therefore when Maxima has not enough information to get the result, a nominal form based on the Weibull variance is returned.
+The @math{Exponential(m)} random variable is equivalent to the @math{Weibull(1,1/m)}, therefore when Maxima has not enough information to get the result, a nominal form based on the Weibull variance is returned.
 
+@c ===beg===
+@c load (distrib)$
+@c var_exp(m);
+@c assume(m>0)$  var_exp(m);
+@c ===end===
 @example
-(%i1) varexp(m);
-                                   1
-(%o2)                varweibull(1, -)
-                                   m
-(%i3) assume(m>0)$  varexp(m);
-                            1
-(%o4)                       --
-                             2
-                            m
+(%i1) load (distrib)$
+(%i2) var_exp(m);
+                                       1
+(%o2)                   var_weibull(1, -)
+                                       m
+(%i3) assume(m>0)$  var_exp(m);
+                               1
+(%o4)                          --
+                                2
+                               m
 @end example
 @end deffn
 
 
-@deffn {Function} stdexp (@var{m})
-Returns the standard deviation of an exponential random variable @math{Exp(m)}, with @math{m>0}.
+@deffn {Function} std_exp (@var{m})
+Returns the standard deviation of an @math{Exponential(m)} random variable, with @math{m>0}.
 
-The @math{Exp(m)} random variable is equivalent to the Weibull @math{Wei(1,1/m)}, therefore when Maxima has not enough information to get the result, a nominal form based on the Weibull standard deviation is returned.
+The @math{Exponential(m)} random variable is equivalent to the @math{Weibull(1,1/m)}, therefore when Maxima has not enough information to get the result, a nominal form based on the Weibull standard deviation is returned.
 
+@c ===beg===
+@c load (distrib)$
+@c std_exp(m);
+@c assume(m>0)$  std_exp(m);
+@c ===end===
 @example
-(%i1) stdexp(m);
-                                   1
-(%o1)                stdweibull(1, -)
-                                   m
-(%i2) assume(m>0)$  stdexp(m);
-                            1
-(%o3)                       -
-                            m
+(%i1) load (distrib)$
+(%i2) std_exp(m);
+                                       1
+(%o2)                   std_weibull(1, -)
+                                       m
+(%i3) assume(m>0)$  std_exp(m);
+                                1
+(%o4)                           -
+                                m
 @end example
 @end deffn
 
 
-@deffn {Function} skwexp (@var{m})
-Returns the skewness coefficient of an exponential random variable @math{Exp(m)}, with @math{m>0}.
+@deffn {Function} skewness_exp (@var{m})
+Returns the skewness coefficient of an @math{Exponential(m)} random variable, with @math{m>0}.
 
-The @math{Exp(m)} random variable is equivalent to the Weibull @math{Wei(1,1/m)}, therefore when Maxima has not enough information to get the result, a nominal form based on the Weibull skewness coefficient is returned.
+The @math{Exponential(m)} random variable is equivalent to the @math{Weibull(1,1/m)}, therefore when Maxima has not enough information to get the result, a nominal form based on the Weibull skewness coefficient is returned.
 
+@c ===beg===
+@c load (distrib)$
+@c skewness_exp(m);
+@c assume(m>0)$  skewness_exp(m);
+@c ===end===
 @example
-(%i1) skwexp(m);
-                                   1
-(%o1)                skwweibull(1, -)
-                                   m
-(%i2) assume(m>0)$  skwexp(m);
-(%o3)                       2
+(%i1) load (distrib)$
+(%i2) skewness_exp(m);
+                                         1
+(%o2)                skewness_weibull(1, -)
+                                         m
+(%i3) assume(m>0)$  skewness_exp(m);
+(%o4)                           2
 @end example
 @end deffn
 
 
-@deffn {Function} kurexp (@var{m})
-Returns the kurtosis coefficient of an exponential random variable @math{Exp(m)}, with @math{m>0}.
+@deffn {Function} kurtosis_exp (@var{m})
+Returns the kurtosis coefficient of an @math{Exponential(m)} random variable, with @math{m>0}.
 
-The @math{Exp(m)} random variable is equivalent to the Weibull @math{Wei(1,1/m)}, therefore when Maxima has not enough information to get the result, a nominal form based on the Weibull kurtosis coefficient is returned.
+The @math{Exponential(m)} random variable is equivalent to the @math{Weibull(1,1/m)}, therefore when Maxima has not enough information to get the result, a nominal form based on the Weibull kurtosis coefficient is returned.
 
+@c ===beg===
+@c load (distrib)$
+@c kurtosis_exp(m);
+@c assume(m>0)$  kurtosis_exp(m);
+@c ===end===
 @example
-(%i1) kurexp(m);
-                                   1
-(%o1)                kurweibull(1, -)
-                                   m
-(%i2) assume(m>0)$  kurexp(m);
-(%o3)                       6
+(%i1) load (distrib)$
+(%i2) kurtosis_exp(m);
+                                         1
+(%o2)                kurtosis_weibull(1, -)
+                                         m
+(%i3) assume(m>0)$  kurtosis_exp(m);
+(%o4)                           6
 @end example
 @end deffn
 
 
-@defvr {Option variable} rexp_algorithm
+@defvr {Option variable} random_exp_algorithm
 Default value: @code{inverse}
 
 This is the selected algorithm for simulating random exponential variates. Implemented algorithms are @code{inverse}, @code{ahrens_cheng} and @code{ahrens_dieter}
@@ -986,136 +1111,147 @@ This is the selected algorithm for simulating random exponential variates. Imple
 @code{inverse}, based on the general inverse method.
 
 @item
-@code{ahrens_cheng}, based on the fact that the @math{Exp(m)} random variable is equivalent to the @math{Gamma(1,1/m)}. See @code{rgamma_algorithm} for details.
+@code{ahrens_cheng}, based on the fact that the @math{Exp(m)} random variable is equivalent to the @math{Gamma(1,1/m)}. See @code{random_gamma_algorithm} for details.
 
 @item
-@code{ahrens_dieter}, based on algorithm described in Ahrens, J.H. and Dieter, U. (1972) @var{Computer methods for sampling from the exponential and normal distributions.}. Comm, ACM, 15, Oct.,  873-882.
+@code{ahrens_dieter}, based on algorithm described in Ahrens, J.H. and Dieter, U. (1972) @var{Computer methods for sampling from the exponential and normal distributions.} Comm, ACM, 15, Oct.,  873-882.
 
 @end itemize
 
-See also @code{rexp}.
+See also @code{random_exp}.
 @end defvr
 
 
-@deffn {Function} rexp (@var{m})
-@deffnx {Function} rexp (@var{m},@var{k})
-Returns an exponential random variate @math{Exp(m)}, with @math{m>0}. Calling @code{rexp2} with a second argument @var{k}, a random sample of size @var{k} will be simulated.
+@deffn {Function} random_exp (@var{m})
+@deffnx {Function} random_exp (@var{m},@var{k})
+Returns an @math{Exponential(m)} random variate, with @math{m>0}. Calling @code{random_exp} with a second argument @var{k}, a random sample of size @var{k} will be simulated.
 
-There are three algorithms implemented for this function, the one to be used can be selected giving a certain value to the global variable @code{rexp_algorithm}, which defaults to @code{inverse}.
+There are three algorithms implemented for this function, the one to be used can be selected giving a certain value to the global variable @code{random_exp_algorithm}, which defaults to @code{inverse}.
 
-See also @code{rexp_algorithm}.
+See also @code{random_exp_algorithm}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} denlogn (@var{x},@var{m},@var{s})
-Returns the value at @var{x} of the density function of a log-normal random variable @math{log-N(m,s)}, with @math{s>0}.
+@deffn {Function} pdf_lognormal (@var{x},@var{m},@var{s})
+Returns the value at @var{x} of the density function of a @math{Lognormal(m,s)} random variable, with @math{s>0}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} dislogn (@var{x},@var{m},@var{s})
-Returns the value at @var{x} of the distribution function of a log-normal random variable @math{log-N(m,s)}, with @math{s>0}. This function is defined in terms of Maxima's built-in error function @code{erf}.
+@deffn {Function} cdf_lognormal (@var{x},@var{m},@var{s})
+Returns the value at @var{x} of the distribution function of a @math{Lognormal(m,s)} random variable, with @math{s>0}. This function is defined in terms of Maxima's built-in error function @code{erf}.
 
+@c ===beg===
+@c load (distrib)$
+@c assume(x>0, s>0)$  cdf_lognormal(x,m,s);
+@c ===end===
 @example
-(%i1) assume(s>0)$  dislogn(x,m,s);
-                        log(x) - m
-                    erf(----------)
-                        sqrt(2) s     1
-(%o2)               --------------- + -
-                           2          2
+(%i1) load (distrib)$
+(%i2) assume(x>0, s>0)$  cdf_lognormal(x,m,s);
+                           log(x) - m
+                       erf(----------)
+                           sqrt(2) s     1
+(%o3)                  --------------- + -
+                              2          2
 @end example
 
 See also @code{erf}.
 @end deffn
 
 
-@deffn {Function} qlogn (@var{q},@var{m},@var{s})
-Returns the @var{q}-quantile of a log-normal random variable @math{log-N(m,s)}, with @math{s>0}; in other words, this is the inverse of @code{dislogn}. Argument @var{q} must be an element of @math{[0,1]}.
+@deffn {Function} quantile_lognormal (@var{q},@var{m},@var{s})
+Returns the @var{q}-quantile of a @math{Lognormal(m,s)} random variable, with @math{s>0}; in other words, this is the inverse of @code{cdf_lognormal}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} meanlogn (@var{m},@var{s})
-Returns the mean of a log-normal random variable @math{log-N(m,s)}, with @math{s>0}.
+@deffn {Function} mean_lognormal (@var{m},@var{s})
+Returns the mean of a @math{Lognormal(m,s)} random variable, with @math{s>0}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} varlogn (@var{m},@var{s})
-Returns the variance of a log-normal random variable @math{log-N(m,s)}, with @math{s>0}.
+@deffn {Function} var_lognormal (@var{m},@var{s})
+Returns the variance of a @math{Lognormal(m,s)} random variable, with @math{s>0}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
-@deffn {Function} stdlogn (@var{m},@var{s})
-Returns the standard deviation of a log-normal random variable @math{log-N(m,s)}, with @math{s>0}.
-@end deffn
-
-
-@deffn {Function} skwlogn (@var{m},@var{s})
-Returns the skewness coefficient of a log-normal random variable @math{log-N(m,s)}, with @math{s>0}.
+@deffn {Function} std_lognormal (@var{m},@var{s})
+Returns the standard deviation of a @math{Lognormal(m,s)} random variable, with @math{s>0}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} kurlogn (@var{m},@var{s})
-Returns the kurtosis coefficient of a log-normal random variable @math{log-N(m,s)}, with @math{s>0}.
+@deffn {Function} skewness_lognormal (@var{m},@var{s})
+Returns the skewness coefficient of a @math{Lognormal(m,s)} random variable, with @math{s>0}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} rlogn (@var{m},@var{s})
-@deffnx {Function} rlogn (@var{m},@var{s},@var{n})
-Returns a log-normal random variate @math{log-N(m,s)}, with @math{s>0}. Calling @code{rlogn} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
-
-Log-normal variates are simulated by means of random normal variates. There are two algorithms implemented for this function, the one to be used can be selected giving a certain value to the global variable @code{rnormal_algorithm}, which defaults to @code{box_mueller}.
-
-See also @code{rnormal_algorithm}.
+@deffn {Function} kurtosis_lognormal (@var{m},@var{s})
+Returns the kurtosis coefficient of a @math{Lognormal(m,s)} random variable, with @math{s>0}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} dengamma (@var{x},@var{a},@var{b})
-Returns the value at @var{x} of the density function of a gamma random variable @math{Gamma(a,b)}, with @math{a,b>0}.
+@deffn {Function} random_lognormal (@var{m},@var{s})
+@deffnx {Function} random_lognormal (@var{m},@var{s},@var{n})
+Returns a @math{Lognormal(m,s)} random variate, with @math{s>0}. Calling @code{random_lognormal} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
+
+Log-normal variates are simulated by means of random normal variates. There are two algorithms implemented for this function, the one to be used can be selected giving a certain value to the global variable @code{random_normal_algorithm}, which defaults to @code{box_mueller}.
+
+See also @code{random_normal_algorithm}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} disgamma (@var{x},@var{a},@var{b})
-Returns the value at @var{x} of the distribution function of a gamma random variable @math{Gamma(a,b)}, with @math{a,b>0}. 
+@deffn {Function} pdf_gamma (@var{x},@var{a},@var{b})
+Returns the value at @var{x} of the density function of a @math{Gamma(a,b)} random variable, with @math{a,b>0}. To make use of this function, write first @code{load(distrib)}.
+@end deffn
+
+
+@deffn {Function} cdf_gamma (@var{x},@var{a},@var{b})
+Returns the value at @var{x} of the distribution function of a @math{Gamma(a,b)} random variable, with @math{a,b>0}. 
 
 This function has no closed form and it is numerically computed if the global variable @code{numer} equals @code{true},  otherwise it returns a nominal expression.
 
+@c ===beg===
+@c load (distrib)$
+@c cdf_gamma(3,5,21);
+@c %,numer;
+@c ===end===
 @example
-(%i1) disgamma(3,5,21);
-(%o1)                disgamma(3, 5, 21)
-(%i2) %,numer;
-(%o2)               4.402663157135039E-7
+(%i1) load (distrib)$
+(%i2) cdf_gamma(3,5,21);
+(%o2)                  cdf_gamma(3, 5, 21)
+(%i3) %,numer;
+(%o3)                 4.402663157135039E-7
 @end example
 @end deffn
 
 
-@deffn {Function} qgamma (@var{q},@var{a},@var{b})
-Returns the @var{q}-quantile of a gamma random variable @math{Gamma(a,b)}, with @math{a,b>0}; in other words, this is the inverse of @code{disgamma}. Argument @var{q} must be an element of @math{[0,1]}.
+@deffn {Function} quantile_gamma (@var{q},@var{a},@var{b})
+Returns the @var{q}-quantile of a @math{Gamma(a,b)} random variable, with @math{a,b>0}; in other words, this is the inverse of @code{cdf_gamma}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} meangamma (@var{a},@var{b})
-Returns the mean of a gamma random variable @math{Gamma(a,b)}, with @math{a,b>0}.
+@deffn {Function} mean_gamma (@var{a},@var{b})
+Returns the mean of a @math{Gamma(a,b)} random variable, with @math{a,b>0}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} vargamma (@var{a},@var{b})
-Returns the variance of a gamma random variable @math{Gamma(a,b)}, with @math{a,b>0}.
+@deffn {Function} var_gamma (@var{a},@var{b})
+Returns the variance of a @math{Gamma(a,b)} random variable, with @math{a,b>0}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
-@deffn {Function} stdgamma (@var{a},@var{b})
-Returns the standard deviation of a gamma random variable @math{Gamma(a,b)}, with @math{a,b>0}.
-@end deffn
-
-
-@deffn {Function} skwgamma (@var{a},@var{b})
-Returns the skewness coefficient of a gamma random variable @math{Gamma(a,b)}, with @math{a,b>0}.
+@deffn {Function} std_gamma (@var{a},@var{b})
+Returns the standard deviation of a @math{Gamma(a,b)} random variable, with @math{a,b>0}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} kurgamma (@var{a},@var{b})
-Returns the kurtosis coefficient of a gamma random variable @math{Gamma(a,b)}, with @math{a,b>0}.
+@deffn {Function} skewness_gamma (@var{a},@var{b})
+Returns the skewness coefficient of a @math{Gamma(a,b)} random variable, with @math{a,b>0}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@defvr {Option variable} rgamma_algorithm
+@deffn {Function} kurtosis_gamma (@var{a},@var{b})
+Returns the kurtosis coefficient of a @math{Gamma(a,b)} random variable, with @math{a,b>0}. To make use of this function, write first @code{load(distrib)}.
+@end deffn
+
+
+@defvr {Option variable} random_gamma_algorithm
 Default value: @code{ahrens_cheng}
 
 This is the selected algorithm for simulating random gamma variates. Implemented algorithms are @code{ahrens_cheng} and @code{inverse}
@@ -1126,79 +1262,85 @@ This is the selected algorithm for simulating random gamma variates. Implemented
 
 For @math{a>=1}, Cheng, R.C.H. and Feast, G.M. (1979). @var{Some simple gamma variate generators}. Appl. Stat., 28, 3, 290-295.
 
-For @math{0<a<1}, Ahrens, J.H. and Dieter, U. (1974). @var{Computer methods for sampling from gamma, beta, poisson and binomial distributions}. Computing, 12, 223-246.
+For @math{0<a<1}, Ahrens, J.H. and Dieter, U. (1974). @var{Computer methods for sampling from gamma, beta, poisson and binomial cdf_tributions}. Computing, 12, 223-246.
 
 @item
 @code{inverse}, based on the general inverse method.
 
 @end itemize
 
-See also @code{rgamma}.
+See also @code{random_gamma}.
 @end defvr
 
 
-@deffn {Function} rgamma (@var{a},@var{b})
-@deffnx {Function} rgamma (@var{a},@var{b},@var{n})
-Returns a gamma random variate @math{Gamma(a,b)}, with @math{a,b>0}. Calling @code{rgamma} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
+@deffn {Function} random_gamma (@var{a},@var{b})
+@deffnx {Function} random_gamma (@var{a},@var{b},@var{n})
+Returns a @math{Gamma(a,b)} random variate, with @math{a,b>0}. Calling @code{random_gamma} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
 
-There are two algorithms implemented for this function, the one to be used can be selected giving a certain value to the global variable @code{rgamma_algorithm}, which defaults to @code{ahrens_cheng}.
+There are two algorithms implemented for this function, the one to be used can be selected giving a certain value to the global variable @code{random_gamma_algorithm}, which defaults to @code{ahrens_cheng}.
 
-See also @code{rgamma_algorithm}.
+See also @code{random_gamma_algorithm}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} denbeta (@var{x},@var{a},@var{b})
-Returns the value at @var{x} of the density function of a beta random variable @math{Beta(a,b)}, with @math{a,b>0}.
+@deffn {Function} pdf_beta (@var{x},@var{a},@var{b})
+Returns the value at @var{x} of the density function of a @math{Beta(a,b)} random variable, with @math{a,b>0}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
 
-@deffn {Function} disbeta (@var{x},@var{a},@var{b})
-Returns the value at @var{x} of the distribution function of a beta random variable @math{Beta(a,b)}, with @math{a,b>0}. 
+@deffn {Function} cdf_beta (@var{x},@var{a},@var{b})
+Returns the value at @var{x} of the distribution function of a @math{Beta(a,b)} random variable, with @math{a,b>0}. 
 
 This function has no closed form and it is numerically computed if the global variable @code{numer} equals @code{true},  otherwise it returns a nominal expression.
 
+@c ===beg===
+@c load (distrib)$
+@c cdf_beta(1/3,15,2);
+@c %,numer;
+@c ===end===
 @example
-(%i1) disgamma(1/3,15,2);
-                             1
-(%o1)               disgamma(-, 15, 2)
-                             3
-(%i2) %,numer;
-(%o2)             1.391214268475648E-24
+(%i1) load (distrib)$
+(%i2) cdf_beta(1/3,15,2);
+                                 1
+(%o2)                   cdf_beta(-, 15, 2)
+                                 3
+(%i3) %,numer;
+(%o3)                 7.666089131388224E-7
 @end example
 @end deffn
 
 
-@deffn {Function} qbeta (@var{q},@var{a},@var{b})
-Returns the @var{q}-quantile of a beta random variable @math{Beta(a,b)}, with @math{a,b>0}; in other words, this is the inverse of @code{disbeta}. Argument @var{q} must be an element of @math{[0,1]}.
+@deffn {Function} quantile_beta (@var{q},@var{a},@var{b})
+Returns the @var{q}-quantile of a @math{Beta(a,b)} random variable, with @math{a,b>0}; in other words, this is the inverse of @code{cdf_beta}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} meanbeta (@var{a},@var{b})
-Returns the mean of a beta random variable @math{Beta(a,b)}, with @math{a,b>0}.
+@deffn {Function} mean_beta (@var{a},@var{b})
+Returns the mean of a @math{Beta(a,b)} random variable, with @math{a,b>0}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} varbeta (@var{a},@var{b})
-Returns the variance of a beta random variable @math{Beta(a,b)}, with @math{a,b>0}.
+@deffn {Function} var_beta (@var{a},@var{b})
+Returns the variance of a @math{Beta(a,b)} random variable, with @math{a,b>0}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
-@deffn {Function} stdbeta (@var{a},@var{b})
-Returns the standard deviation of a beta random variable @math{Beta(a,b)}, with @math{a,b>0}.
-@end deffn
-
-
-@deffn {Function} skwbeta (@var{a},@var{b})
-Returns the skewness coefficient of a beta random variable @math{Beta(a,b)}, with @math{a,b>0}.
+@deffn {Function} std_beta (@var{a},@var{b})
+Returns the standard deviation of a @math{Beta(a,b)} random variable, with @math{a,b>0}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} kurbeta (@var{a},@var{b})
-Returns the kurtosis coefficient of a beta random variable @math{Beta(a,b)}, with @math{a,b>0}.
+@deffn {Function} skewness_beta (@var{a},@var{b})
+Returns the skewness coefficient of a @math{Beta(a,b)} random variable, with @math{a,b>0}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@defvr {Option variable} rbeta_algorithm
+@deffn {Function} kurtosis_beta (@var{a},@var{b})
+Returns the kurtosis coefficient of a @math{Beta(a,b)} random variable, with @math{a,b>0}. To make use of this function, write first @code{load(distrib)}.
+@end deffn
+
+
+@defvr {Option variable} random_beta_algorithm
 Default value: @code{cheng}
 
 This is the selected algorithm for simulating random beta variates. Implemented algorithms are @code{cheng}, @code{inverse} and @code{ratio}
@@ -1215,516 +1357,575 @@ This is the selected algorithm for simulating random beta variates. Implemented 
 
 @end itemize
 
-See also @code{rbeta}.
+See also @code{random_beta}.
 @end defvr
 
 
-@deffn {Function} rbeta (@var{a},@var{b})
-@deffnx {Function} rbeta (@var{a},@var{b},@var{n})
-Returns a beta random variate @math{Beta(a,b)}, with @math{a,b>0}. Calling @code{rbeta} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
+@deffn {Function} random_beta (@var{a},@var{b})
+@deffnx {Function} random_beta (@var{a},@var{b},@var{n})
+Returns a @math{Beta(a,b)} random variate, with @math{a,b>0}. Calling @code{random_beta} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
 
-There are three algorithms implemented for this function, the one to be used can be selected giving a certain value to the global variable @code{rbeta_algorithm}, which defaults to @code{cheng}.
+There are three algorithms implemented for this function, the one to be used can be selected giving a certain value to the global variable @code{random_beta_algorithm}, which defaults to @code{cheng}.
 
-See also @code{rbeta_algorithm}.
+See also @code{random_beta_algorithm}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
-@deffn {Function} dencontu (@var{x},@var{a},@var{b})
-Returns the value at @var{x} of the density function of a continuous uniform random variable @math{cUnif(a,b)}, with @math{a<b}.
-@end deffn
-
-
-@deffn {Function} discontu (@var{x},@var{a},@var{b})
-Returns the value at @var{x} of the distribution function of a continuous uniform random variable @math{cUnif(a,b)}, with @math{a<b}.
+@deffn {Function} pdf_continuous_uniform (@var{x},@var{a},@var{b})
+Returns the value at @var{x} of the density function of a @math{Continuous Uniform(a,b)} random variable, with @math{a<b}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} qcontu (@var{q},@var{a},@var{b})
-Returns the @var{q}-quantile of a continuous uniform random variable @math{cUnif(a,b)}, with @math{a<b}; in other words, this is the inverse of @code{discontu}. Argument @var{q} must be an element of @math{[0,1]}.
+@deffn {Function} cdf_continuous_uniform (@var{x},@var{a},@var{b})
+Returns the value at @var{x} of the distribution function of a @math{Continuous Uniform(a,b)} random variable, with @math{a<b}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} meancontu (@var{a},@var{b})
-Returns the mean of a continuous uniform random variable @math{cUnif(a,b)}, with @math{a<b}.
+@deffn {Function} quantile_continuous_uniform (@var{q},@var{a},@var{b})
+Returns the @var{q}-quantile of a @math{Continuous Uniform(a,b)} random variable, with @math{a<b}; in other words, this is the inverse of @code{cdf_continuous_uniform}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} varcontu (@var{a},@var{b})
-Returns the variance of a continuous uniform random variable @math{cUnif(a,b)}, with @math{a<b}.
-@end deffn
-
-@deffn {Function} stdcontu (@var{a},@var{b})
-Returns the standard deviation of a continuous uniform random variable @math{cUnif(a,b)}, with @math{a<b}.
+@deffn {Function} mean_continuous_uniform (@var{a},@var{b})
+Returns the mean of a @math{Continuous Uniform(a,b)} random variable, with @math{a<b}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} skwcontu (@var{a},@var{b})
-Returns the skewness coefficient of a continuous uniform random variable @math{cUnif(a,b)}, with @math{a<b}.
+@deffn {Function} var_continuous_uniform (@var{a},@var{b})
+Returns the variance of a @math{Continuous Uniform(a,b)} random variable, with @math{a<b}. To make use of this function, write first @code{load(distrib)}.
+@end deffn
+
+@deffn {Function} std_continuous_uniform (@var{a},@var{b})
+Returns the standard deviation of a @math{Continuous Uniform(a,b)} random variable, with @math{a<b}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} kurcontu (@var{a},@var{b})
-Returns the kurtosis coefficient of a continuous uniform random variable @math{cUnif(a,b)}, with @math{a<b}.
+@deffn {Function} skewness_continuous_uniform (@var{a},@var{b})
+Returns the skewness coefficient of a @math{Continuous Uniform(a,b)} random variable, with @math{a<b}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} rcontu (@var{a},@var{b})
-@deffnx {Function} rcontu (@var{a},@var{b},@var{n})
-Returns a continuous uniform random variate @math{cUnif(a,b)}, with @math{a<b}. Calling @code{rcontu} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
+@deffn {Function} kurtosis_continuous_uniform (@var{a},@var{b})
+Returns the kurtosis coefficient of a @math{Continuous Uniform(a,b)} random variable, with @math{a<b}. To make use of this function, write first @code{load(distrib)}.
+@end deffn
+
+
+@deffn {Function} random_continuous_uniform (@var{a},@var{b})
+@deffnx {Function} random_continuous_uniform (@var{a},@var{b},@var{n})
+Returns a @math{Continuous Uniform(a,b)} random variate, with @math{a<b}. Calling @code{random_continuous_uniform} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
 
 This is a direct application of the @code{random} built-in Maxima function.
 
-See also @code{random}.
+See also @code{random}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} denlog (@var{x},@var{a},@var{b})
-Returns the value at @var{x} of the density function of a logistic random variable @math{log(a,b)}, with @math{b>0}.
+@deffn {Function} pdf_logistic (@var{x},@var{a},@var{b})
+Returns the value at @var{x} of the density function of a @math{Logistic(a,b)} random variable , with @math{b>0}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} dislog (@var{x},@var{a},@var{b})
-Returns the value at @var{x} of the distribution function of a logistic random variable @math{log(a,b)}, with @math{b>0}.
+@deffn {Function} cdf_logistic (@var{x},@var{a},@var{b})
+Returns the value at @var{x} of the distribution function of a @math{Logistic(a,b)} random variable , with @math{b>0}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} qlog (@var{q},@var{a},@var{b})
-Returns the @var{q}-quantile of a logistic random variable @math{log(a,b)}, with @math{b>0}; in other words, this is the inverse of @code{dislog}. Argument @var{q} must be an element of @math{[0,1]}.
+@deffn {Function} quantile_logistic (@var{q},@var{a},@var{b})
+Returns the @var{q}-quantile of a @math{Logistic(a,b)} random variable , with @math{b>0}; in other words, this is the inverse of @code{cdf_logistic}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Function} meanlog (@var{a},@var{b})
-Returns the mean of a logistic random variable @math{log(a,b)}, with @math{b>0}.
+Returns the mean of a @math{Logistic(a,b)} random variable , with @math{b>0}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} varlog (@var{a},@var{b})
-Returns the variance of a logistic random variable @math{log(a,b)}, with @math{b>0}.
+@deffn {Function} var_logistic (@var{a},@var{b})
+Returns the variance of a @math{Logistic(a,b)} random variable , with @math{b>0}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} stdlog (@var{a},@var{b})
-Returns the standard deviation of a logistic random variable @math{log(a,b)}, with @math{b>0}.
+@deffn {Function} std_logistic (@var{a},@var{b})
+Returns the standard deviation of a @math{Logistic(a,b)} random variable , with @math{b>0}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} skwlog (@var{a},@var{b})
-Returns the skewness coefficient of a logistic random variable @math{log(a,b)}, with @math{b>0}.
+@deffn {Function} skewness_logistic (@var{a},@var{b})
+Returns the skewness coefficient of a @math{Logistic(a,b)} random variable , with @math{b>0}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} kurlog (@var{a},@var{b})
-Returns the kurtosis coefficient of a logistic random variable @math{log(a,b)}, with @math{b>0}.
+@deffn {Function} kurtosis_logistic (@var{a},@var{b})
+Returns the kurtosis coefficient of a @math{Logistic(a,b)} random variable , with @math{b>0}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} rlog (@var{a},@var{b})
-@deffnx {Function} rlog (@var{a},@var{b},@var{n})
-Returns a logistic random variate @math{log(a,b)}, with @math{b>0}. Calling @code{rlog} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
+@deffn {Function} random_logistic (@var{a},@var{b})
+@deffnx {Function} random_logistic (@var{a},@var{b},@var{n})
+Returns a @math{Logistic(a,b)} random variate, with @math{b>0}. Calling @code{random_logistic} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
 
-Only the inverse method is implemented.
+Only the inverse method is implemented. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} denpareto (@var{x},@var{a},@var{b})
-Returns the value at @var{x} of the density function of a Pareto random variable @math{Par(a,b)}, with @math{a,b>0}.
+@deffn {Function} pdf_pareto (@var{x},@var{a},@var{b})
+Returns the value at @var{x} of the density function of a @math{Pareto(a,b)} random variable, with @math{a,b>0}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} dispareto (@var{x},@var{a},@var{b})
-Returns the value at @var{x} of the distribution function of a Pareto random variable @math{Par(a,b)}, with @math{a,b>0}.
+@deffn {Function} cdf_pareto (@var{x},@var{a},@var{b})
+Returns the value at @var{x} of the distribution function of a @math{Pareto(a,b)} random variable, with @math{a,b>0}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} qpareto (@var{q},@var{a},@var{b})
-Returns the @var{q}-quantile of a Pareto random variable @math{Par(a,b)}, with @math{a,b>0}; in other words, this is the inverse of @code{dispareto}. Argument @var{q} must be an element of @math{[0,1]}.
+@deffn {Function} quantile_pareto (@var{q},@var{a},@var{b})
+Returns the @var{q}-quantile of a @math{Pareto(a,b)} random variable, with @math{a,b>0}; in other words, this is the inverse of @code{cdf_pareto}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} meanpareto (@var{a},@var{b})
-Returns the mean of a Pareto random variable @math{Par(a,b)}, with @math{a>1,b>0}.
+@deffn {Function} mean_pareto (@var{a},@var{b})
+Returns the mean of a @math{Pareto(a,b)} random variable, with @math{a>1,b>0}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} varpareto (@var{a},@var{b})
-Returns the variance of a Pareto random variable @math{Par(a,b)}, with @math{a>2,b>0}.
+@deffn {Function} var_pareto (@var{a},@var{b})
+Returns the variance of a @math{Pareto(a,b)} random variable, with @math{a>2,b>0}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
-@deffn {Function} stdpareto (@var{a},@var{b})
-Returns the standard deviation of a Pareto random variable @math{Par(a,b)}, with @math{a>2,b>0}.
-@end deffn
-
-
-
-@deffn {Function} skwpareto (@var{a},@var{b})
-Returns the skewness coefficient of a Pareto random variable @math{Par(a,b)}, with @math{a>3,b>0}.
-@end deffn
-
-
-@deffn {Function} kurpareto (@var{a},@var{b})
-Returns the kurtosis coefficient of a Pareto random variable @math{Par(a,b)}, with @math{a>4,b>0}.
-@end deffn
-
-
-@deffn {Function} rpareto (@var{a},@var{b})
-@deffnx {Function} rpareto (@var{a},@var{b},@var{n})
-Returns a Pareto random variate @math{Par(a,b)}, with @math{a>0,b>0}. Calling @code{rpareto} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
-
-Only the inverse method is implemented.
-@end deffn
-
-
-@deffn {Function} denweibull (@var{x},@var{a},@var{b})
-Returns the value at @var{x} of the density function of a Weibull random variable @math{Wei(a,b)}, with @math{a,b>0}.
-@end deffn
-
-
-@deffn {Function} disweibull (@var{x},@var{a},@var{b})
-Returns the value at @var{x} of the distribution function of a Weibull random variable @math{Wei(a,b)}, with @math{a,b>0}.
-@end deffn
-
-
-@deffn {Function} qweibull (@var{q},@var{a},@var{b})
-Returns the @var{q}-quantile of a Weibull random variable @math{Wei(a,b)}, with @math{a,b>0}; in other words, this is the inverse of @code{disweibull}. Argument @var{q} must be an element of @math{[0,1]}.
-@end deffn
-
-
-@deffn {Function} meanweibull (@var{a},@var{b})
-Returns the mean of a Weibull random variable @math{Wei(a,b)}, with @math{a,b>0}.
-@end deffn
-
-
-@deffn {Function} varweibull (@var{a},@var{b})
-Returns the variance of a Weibull random variable @math{Wei(a,b)}, with @math{a,b>0}.
-@end deffn
-
-@deffn {Function} stdweibull (@var{a},@var{b})
-Returns the standard deviation of a Weibull random variable @math{Wei(a,b)}, with @math{a,b>0}.
+@deffn {Function} std_pareto (@var{a},@var{b})
+Returns the standard deviation of a @math{Pareto(a,b)} random variable, with @math{a>2,b>0}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
 
-@deffn {Function} skwweibull (@var{a},@var{b})
-Returns the skewness coefficient of a Weibull random variable @math{Wei(a,b)}, with @math{a,b>0}.
+@deffn {Function} skewness_pareto (@var{a},@var{b})
+Returns the skewness coefficient of a @math{Pareto(a,b)} random variable, with @math{a>3,b>0}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} kurweibull (@var{a},@var{b})
-Returns the kurtosis coefficient of a Weibull random variable @math{Wei(a,b)}, with @math{a,b>0}.
+@deffn {Function} kurtosis_pareto (@var{a},@var{b})
+Returns the kurtosis coefficient of a @math{Pareto(a,b)} random variable, with @math{a>4,b>0}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} rweibull (@var{a},@var{b})
-@deffnx {Function} rweibull (@var{a},@var{b},@var{n})
-Returns a Weibull random variate @math{Wei(a,b)}, with @math{a,b>0}. Calling @code{rweibull} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
+@deffn {Function} random_pareto (@var{a},@var{b})
+@deffnx {Function} random_pareto (@var{a},@var{b},@var{n})
+Returns a @math{Pareto(a,b)} random variate, with @math{a>0,b>0}. Calling @code{random_pareto} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
 
-Only the inverse method is implemented.
+Only the inverse method is implemented. To make use of this function, write first @code{load(distrib)}.
+@end deffn
+
+
+@deffn {Function} pdf_weibull (@var{x},@var{a},@var{b})
+Returns the value at @var{x} of the density function of a @math{Weibull(a,b)} random variable, with @math{a,b>0}. To make use of this function, write first @code{load(distrib)}.
+@end deffn
+
+
+@deffn {Function} cdf_weibull (@var{x},@var{a},@var{b})
+Returns the value at @var{x} of the distribution function of a @math{Weibull(a,b)} random variable, with @math{a,b>0}. To make use of this function, write first @code{load(distrib)}.
+@end deffn
+
+
+@deffn {Function} quantile_weibull (@var{q},@var{a},@var{b})
+Returns the @var{q}-quantile of a @math{Weibull(a,b)} random variable, with @math{a,b>0}; in other words, this is the inverse of @code{cdf_weibull}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load(distrib)}.
+@end deffn
+
+
+@deffn {Function} mean_weibull (@var{a},@var{b})
+Returns the mean of a @math{Weibull(a,b)} random variable, with @math{a,b>0}. To make use of this function, write first @code{load(distrib)}.
+@end deffn
+
+
+@deffn {Function} var_weibull (@var{a},@var{b})
+Returns the variance of a @math{Weibull(a,b)} random variable, with @math{a,b>0}. To make use of this function, write first @code{load(distrib)}.
+@end deffn
+
+@deffn {Function} std_weibull (@var{a},@var{b})
+Returns the standard deviation of a @math{Weibull(a,b)} random variable, with @math{a,b>0}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
 
-@deffn {Function} denrayleigh (@var{x},@var{b})
-Returns the value at @var{x} of the density function of a Rayleigh random variable @math{Ray(b)}, with @math{b>0}.
+@deffn {Function} skewness_weibull (@var{a},@var{b})
+Returns the skewness coefficient of a @math{Weibull(a,b)} random variable, with @math{a,b>0}. To make use of this function, write first @code{load(distrib)}.
+@end deffn
 
-The @math{Ray(b)} random variable is equivalent to the @math{Wei(2,1/b)}, therefore when Maxima has not enough information to get the result, a nominal form based on the Weibull density is returned.
 
+@deffn {Function} kurtosis_weibull (@var{a},@var{b})
+Returns the kurtosis coefficient of a @math{Weibull(a,b)} random variable, with @math{a,b>0}. To make use of this function, write first @code{load(distrib)}.
+@end deffn
+
+
+@deffn {Function} random_weibull (@var{a},@var{b})
+@deffnx {Function} random_weibull (@var{a},@var{b},@var{n})
+Returns a @math{Weibull(a,b)} random variate, with @math{a,b>0}. Calling @code{random_weibull} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
+
+Only the inverse method is implemented. To make use of this function, write first @code{load(distrib)}.
+@end deffn
+
+
+
+@deffn {Function} pdf_rayleigh (@var{x},@var{b})
+Returns the value at @var{x} of the density function of a @math{Rayleigh(b)} random variable, with @math{b>0}.
+
+The @math{Rayleigh(b)} random variable is equivalent to the @math{Weibull(2,1/b)}, therefore when Maxima has not enough information to get the result, a nominal form based on the Weibull density is returned.
+
+@c ===beg===
+@c load (distrib)$
+@c pdf_rayleigh(x,b);
+@c assume(x>0,b>0)$ pdf_rayleigh(x,b);
+@c ===end===
 @example
-(%i1) denrayleigh(x,b);
-                                    1
-(%o1)              denweibull(x, 2, -)
-                                    b
-(%i2) assume(x>0,b>0)$ denrayleigh(x,b);
-                                 2  2
-                        2     - b  x
-(%o3)                2 b  x %e
+(%i1) load (distrib)$
+(%i2) pdf_rayleigh(x,b);
+                                        1
+(%o2)                 pdf_weibull(x, 2, -)
+                                        b
+(%i3) assume(x>0,b>0)$ pdf_rayleigh(x,b);
+                                    2  2
+                           2     - b  x
+(%o4)                   2 b  x %e
 @end example
 @end deffn
 
 
-@deffn {Function} disrayleigh (@var{x},@var{b})
-Returns the value at @var{x} of the distribution function of a Rayleigh random variable @math{Ray(b)}, with @math{b>0}.
+@deffn {Function} cdf_rayleigh (@var{x},@var{b})
+Returns the value at @var{x} of the distribution function of a @math{Rayleigh(b)} random variable, with @math{b>0}.
 
-The @math{Ray(b)} random variable is equivalent to the @math{Wei(2,1/b)}, therefore when Maxima has not enough information to get the result, a nominal form based on the Weibull distribution is returned.
+The @math{Rayleigh(b)} random variable is equivalent to the @math{Weibull(2,1/b)}, therefore when Maxima has not enough information to get the result, a nominal form based on the Weibull distribution is returned.
 
+@c ===beg===
+@c load (distrib)$
+@c cdf_rayleigh(x,b);
+@c assume(x>0,b>0)$ cdf_rayleigh(x,b);
+@c ===end===
 @example
-(%i1) disrayleigh(x,b);
-                                    1
-(%o1)              disweibull(x, 2, -)
-                                    b
-(%i2) assume(x>0,b>0)$ disrayleigh(x,b);
-                               2  2
-                            - b  x
-(%o3)                 1 - %e
+(%i1) load (distrib)$
+(%i2) cdf_rayleigh(x,b);
+                                        1
+(%o2)                 cdf_weibull(x, 2, -)
+                                        b
+(%i3) assume(x>0,b>0)$ cdf_rayleigh(x,b);
+                                   2  2
+                                - b  x
+(%o4)                     1 - %e
 @end example
 @end deffn
 
 
-@deffn {Function} qrayleigh (@var{q},@var{b})
-Returns the @var{q}-quantile of a Rayleigh random variable @math{Ray(b)}, with @math{b>0}; in other words, this is the inverse of @code{disrayleigh}. Argument @var{q} must be an element of @math{[0,1]}.
+@deffn {Function} quantile_rayleigh (@var{q},@var{b})
+Returns the @var{q}-quantile of a @math{Rayleigh(b)} random variable, with @math{b>0}; in other words, this is the inverse of @code{cdf_rayleigh}. Argument @var{q} must be an element of @math{[0,1]}.
 
-The @math{Ray(b)} random variable is equivalent to the @math{Wei(2,1/b)}, therefore when Maxima has not enough information to get the result, a nominal form based on the Weibull quantile is returned.
+The @math{Rayleigh(b)} random variable is equivalent to the @math{Weibull(2,1/b)}, therefore when Maxima has not enough information to get the result, a nominal form based on the Weibull quantile is returned.
 
+@c ===beg===
+@c load (distrib)$
+@c quantile_rayleigh(0.99,b);
+@c assume(x>0,b>0)$ quantile_rayleigh(0.99,b);
+@c ===end===
 @example
-(%i1) qrayleigh(0.99,b);
-                                     1
-(%o1)              qweibull(0.99, 2, -)
-                                     b
-(%i2) assume(x>0,b>0)$ qrayleigh(0.99,b);
-                    2.145966026289347
-(%o3)               -----------------
-                            b
+(%i1) load (distrib)$
+(%i2) quantile_rayleigh(0.99,b);
+                                            1
+(%o2)             quantile_weibull(0.99, 2, -)
+                                            b
+(%i3) assume(x>0,b>0)$ quantile_rayleigh(0.99,b);
+                        2.145966026289347
+(%o4)                   -----------------
+                                b
 @end example
 @end deffn
 
 
-@deffn {Function} meanrayleigh (@var{b})
-Returns the mean of a Rayleigh random variable @math{Ray(b)}, with @math{b>0}.
+@deffn {Function} mean_rayleigh (@var{b})
+Returns the mean of a @math{Rayleigh(b)} random variable, with @math{b>0}.
 
-The @math{Ray(b)} random variable is equivalent to the @math{Wei(2,1/b)}, therefore when Maxima has not enough information to get the result, a nominal form based on the Weibull mean is returned.
+The @math{Rayleigh(b)} random variable is equivalent to the @math{Weibull(2,1/b)}, therefore when Maxima has not enough information to get the result, a nominal form based on the Weibull mean is returned.
 
+@c ===beg===
+@c load (distrib)$
+@c mean_rayleigh(b);
+@c assume(b>0)$ mean_rayleigh(b);
+@c ===end===
 @example
-(%i1) meanrayleigh(b);
-                                   1
-(%o1)               meanweibull(2, -)
-                                   b
-(%i2) assume(b>0)$ meanrayleigh(b);
-                        sqrt(%pi)
-(%o3)                   ---------
-                           2 b
+(%i1) load (distrib)$
+(%i2) mean_rayleigh(b);
+                                       1
+(%o2)                  mean_weibull(2, -)
+                                       b
+(%i3) assume(b>0)$ mean_rayleigh(b);
+                            sqrt(%pi)
+(%o4)                       ---------
+                               2 b
 @end example
 @end deffn
 
 
-@deffn {Function} varrayleigh (@var{b})
-Returns the variance of a Rayleigh random variable @math{Ray(b)}, with @math{b>0}.
+@deffn {Function} var_rayleigh (@var{b})
+Returns the variance of a @math{Rayleigh(b)} random variable, with @math{b>0}.
 
-The @math{Ray(b)} random variable is equivalent to the @math{Wei(2,1/b)}, therefore when Maxima has not enough information to get the result, a nominal form based on the Weibull variance is returned.
+The @math{Rayleigh(b)} random variable is equivalent to the @math{Weibull(2,1/b)}, therefore when Maxima has not enough information to get the result, a nominal form based on the Weibull variance is returned.
 
+@c ===beg===
+@c load (distrib)$
+@c var_rayleigh(b);
+@c assume(b>0)$ var_rayleigh(b);
+@c ===end===
 @example
-(%i1) varrayleigh(b);
-                                  1
-(%o1)               varweibull(2, -)
-                                  b
-(%i2) assume(b>0)$ varrayleigh(b);
-                             %pi
-                         1 - ---
-                              4
-(%o3)                    -------
-                            2
-                           b
+(%i1) load (distrib)$
+(%i2) var_rayleigh(b);
+                                       1
+(%o2)                   var_weibull(2, -)
+                                       b
+(%i3) assume(b>0)$ var_rayleigh(b);
+                                 %pi
+                             1 - ---
+                                  4
+(%o4)                        -------
+                                2
+                               b
 @end example
 @end deffn
 
 
-@deffn {Function} stdrayleigh (@var{b})
-Returns the standard deviation of a Rayleigh random variable @math{Ray(b)}, with @math{b>0}.
+@deffn {Function} std_rayleigh (@var{b})
+Returns the standard deviation of a @math{Rayleigh(b)} random variable, with @math{b>0}.
 
-The @math{Ray(b)} random variable is equivalent to the @math{Wei(2,1/b)}, therefore when Maxima has not enough information to get the result, a nominal form based on the Weibull standard deviation is returned.
+The @math{Rayleigh(b)} random variable is equivalent to the @math{Weibull(2,1/b)}, therefore when Maxima has not enough information to get the result, a nominal form based on the Weibull standard deviation is returned.
 
+@c ===beg===
+@c load (distrib)$
+@c std_rayleigh(b);
+@c assume(b>0)$ std_rayleigh(b);
+@c ===end===
 @example
-(%i1) stdrayleigh(b);
-                                  1
-(%o1)               stdweibull(2, -)
-                                  b
-(%i2) assume(b>0)$ stdrayleigh(b);
-                               %pi
-                      sqrt(1 - ---)
+(%i1) load (distrib)$
+(%i2) std_rayleigh(b);
+                                       1
+(%o2)                   std_weibull(2, -)
+                                       b
+(%i3) assume(b>0)$ std_rayleigh(b);
+                                   %pi
+                          sqrt(1 - ---)
+                                    4
+(%o4)                     -------------
+                                b
+@end example
+@end deffn
+
+
+@deffn {Function} skewness_rayleigh (@var{b})
+Returns the skewness coefficient of a @math{Rayleigh(b)} random variable, with @math{b>0}.
+
+The @math{Rayleigh(b)} random variable is equivalent to the @math{Weibull(2,1/b)}, therefore when Maxima has not enough information to get the result, a nominal form based on the Weibull skewness coefficient is returned.
+
+@c ===beg===
+@c load (distrib)$
+@c skewness_rayleigh(b);
+@c assume(b>0)$ skewness_rayleigh(b);
+@c ===end===
+@example
+(%i1) load (distrib)$
+(%i2) skewness_rayleigh(b);
+                                         1
+(%o2)                skewness_weibull(2, -)
+                                         b
+(%i3) assume(b>0)$ skewness_rayleigh(b);
+                         3/2
+                      %pi      3 sqrt(%pi)
+                      ------ - -----------
+                        4           4
+(%o4)                 --------------------
+                               %pi 3/2
+                          (1 - ---)
                                 4
-(%o3)                 -------------
-                            b
 @end example
 @end deffn
 
 
-@deffn {Function} skwrayleigh (@var{b})
-Returns the skewness coefficient of a Rayleigh random variable @math{Ray(b)}, with @math{b>0}.
+@deffn {Function} kurtosis_rayleigh (@var{b})
+Returns the kurtosis coefficient of a @math{Rayleigh(b)} random variable, with @math{b>0}.
 
-The @math{Ray(b)} random variable is equivalent to the @math{Wei(2,1/b)}, therefore when Maxima has not enough information to get the result, a nominal form based on the Weibull skewness coefficient is returned.
+The @math{Rayleigh(b)} random variable is equivalent to the @math{Weibull(2,1/b)}, therefore when Maxima has not enough information to get the result, a nominal form based on the Weibull kurtosis coefficient is returned.
 
+@c ===beg===
+@c load (distrib)$
+@c kurtosis_rayleigh(b);
+@c assume(b>0)$ kurtosis_rayleigh(b);
+@c ===end===
 @example
-(%i1) skwrayleigh(b);
-                                  1
-(%o1)               skwweibull(2, -)
-                                  b
-(%i2) assume(b>0)$ skwrayleigh(b);
-                      3/2
-                   %pi      3 sqrt(%pi)
-                   ------ - -----------
-                     4           4
-(%o3)              --------------------
-                            %pi 3/2
-                       (1 - ---)
-                             4
+(%i1) load (distrib)$
+(%i2) kurtosis_rayleigh(b);
+                                         1
+(%o2)                kurtosis_weibull(2, -)
+                                         b
+(%i3) assume(b>0)$ kurtosis_rayleigh(b);
+                                  2
+                             3 %pi
+                         2 - ------
+                               16
+(%o4)                    ---------- - 3
+                              %pi 2
+                         (1 - ---)
+                               4
 @end example
 @end deffn
 
 
-@deffn {Function} kurrayleigh (@var{b})
-Returns the kurtosis coefficient of a Rayleigh random variable @math{Ray(b)}, with @math{b>0}.
+@deffn {Function} random_rayleigh (@var{b})
+@deffnx {Function} random_rayleigh (@var{b},@var{n})
+Returns a @math{Rayleigh(b)} random variate, with @math{b>0}. Calling @code{random_rayleigh} with a second argument @var{n}, a random sample of size @var{n} will be simulated.
 
-The @math{Ray(b)} random variable is equivalent to the @math{Wei(2,1/b)}, therefore when Maxima has not enough information to get the result, a nominal form based on the Weibull kurtosis coefficient is returned.
+Only the inverse method is implemented. To make use of this function, write first @code{load(distrib)}.
+@end deffn
 
+
+
+@deffn {Function} pdf_laplace (@var{x},@var{a},@var{b})
+Returns the value at @var{x} of the density function of a @math{Laplace(a,b)} random variable, with @math{b>0}. To make use of this function, write first @code{load(distrib)}.
+@end deffn
+
+
+@deffn {Function} cdf_laplace (@var{x},@var{a},@var{b})
+Returns the value at @var{x} of the distribution function of a @math{Laplace(a,b)} random variable, with @math{b>0}. To make use of this function, write first @code{load(distrib)}.
+@end deffn
+
+
+@deffn {Function} quantile_laplace (@var{q},@var{a},@var{b})
+Returns the @var{q}-quantile of a @math{Laplace(a,b)} random variable, with @math{b>0}; in other words, this is the inverse of @code{cdf_laplace}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load(distrib)}.
+@end deffn
+
+
+@deffn {Function} mean_laplace (@var{a},@var{b})
+Returns the mean of a @math{Laplace(a,b)} random variable, with @math{b>0}. To make use of this function, write first @code{load(distrib)}.
+@end deffn
+
+
+@deffn {Function} var_laplace (@var{a},@var{b})
+Returns the variance of a @math{Laplace(a,b)} random variable, with @math{b>0}. To make use of this function, write first @code{load(distrib)}.
+@end deffn
+
+
+@deffn {Function} std_laplace (@var{a},@var{b})
+Returns the standard deviation of a @math{Laplace(a,b)} random variable, with @math{b>0}. To make use of this function, write first @code{load(distrib)}.
+@end deffn
+
+
+@deffn {Function} skewness_laplace (@var{a},@var{b})
+Returns the skewness coefficient of a @math{Laplace(a,b)} random variable, with @math{b>0}. To make use of this function, write first @code{load(distrib)}.
+@end deffn
+
+
+@deffn {Function} kurtosis_laplace (@var{a},@var{b})
+Returns the kurtosis coefficient of a @math{Laplace(a,b)} random variable, with @math{b>0}. To make use of this function, write first @code{load(distrib)}.
+@end deffn
+
+
+@deffn {Function} random_laplace (@var{a},@var{b})
+@deffnx {Function} random_laplace (@var{a},@var{b},@var{n})
+Returns a @math{Laplace(a,b)} random variate, with @math{b>0}. Calling @code{random_laplace} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
+
+Only the inverse method is implemented. To make use of this function, write first @code{load(distrib)}.
+@end deffn
+
+
+
+@deffn {Function} pdf_cauchy (@var{x},@var{a},@var{b})
+Returns the value at @var{x} of the density function of a @math{Cauchy(a,b)} random variable, with @math{b>0}. To make use of this function, write first @code{load(distrib)}.
+@end deffn
+
+
+@deffn {Function} cdf_cauchy (@var{x},@var{a},@var{b})
+Returns the value at @var{x} of the distribution function of a @math{Cauchy(a,b)} random variable, with @math{b>0}. To make use of this function, write first @code{load(distrib)}.
+@end deffn
+
+
+@deffn {Function} quantile_cauchy (@var{q},@var{a},@var{b})
+Returns the @var{q}-quantile of a @math{Cauchy(a,b)} random variable, with @math{b>0}; in other words, this is the inverse of @code{cdf_cauchy}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load(distrib)}.
+@end deffn
+
+
+@deffn {Function} random_cauchy (@var{a},@var{b})
+@deffnx {Function} random_cauchy (@var{a},@var{b},@var{n})
+Returns a @math{Cauchy(a,b)} random variate, with @math{b>0}. Calling @code{random_cauchy} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
+
+Only the inverse method is implemented. To make use of this function, write first @code{load(distrib)}.
+@end deffn
+
+
+
+@deffn {Function} pdf_gumbel (@var{x},@var{a},@var{b})
+Returns the value at @var{x} of the density function of a @math{Gumbel(a,b)} random variable, with @math{b>0}. To make use of this function, write first @code{load(distrib)}.
+@end deffn
+
+
+@deffn {Function} cdf_gumbel (@var{x},@var{a},@var{b})
+Returns the value at @var{x} of the distribution function of a @math{Gumbel(a,b)} random variable, with @math{b>0}. To make use of this function, write first @code{load(distrib)}.
+@end deffn
+
+
+@deffn {Function} quantile_gumbel (@var{q},@var{a},@var{b})
+Returns the @var{q}-quantile of a @math{Gumbel(a,b)} random variable, with @math{b>0}; in other words, this is the inverse of @code{cdf_gumbel}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load(distrib)}.
+@end deffn
+
+
+@deffn {Function} mean_gumbel (@var{a},@var{b})
+Returns the mean of a @math{Gumbel(a,b)} random variable, with @math{b>0}.
+
+@c ===beg===
+@c load (distrib)$
+@c assume(b>0)$  mean_gumbel(a,b);
+@c ===end===
 @example
-(%i1) kurrayleigh(b);
-                                  1
-(%o1)               kurweibull(2, -)
-                                  b
-(%i2) assume(b>0)$ kurrayleigh(b);
-                               2
-                          3 %pi
-                      2 - ------
-                            16
-(%o3)                 ---------- - 3
-                           %pi 2
-                      (1 - ---)
-                            4
-@end example
-@end deffn
-
-
-@deffn {Function} rrayleigh (@var{b})
-@deffnx {Function} rrayleigh (@var{b},@var{n})
-Returns a Rayleigh random variate @math{Ray(b)}, with @math{b>0}. Calling @code{rrayleigh} with a second argument @var{n}, a random sample of size @var{n} will be simulated.
-
-Only the inverse method is implemented.
-@end deffn
-
-
-
-@deffn {Function} denlaplace (@var{x},@var{a},@var{b})
-Returns the value at @var{x} of the density function of a Laplace random variable @math{Lap(a,b)}, with @math{b>0}.
-@end deffn
-
-
-@deffn {Function} dislaplace (@var{x},@var{a},@var{b})
-Returns the value at @var{x} of the distribution function of a Laplace random variable @math{Lap(a,b)}, with @math{b>0}.
-@end deffn
-
-
-@deffn {Function} qlaplace (@var{q},@var{a},@var{b})
-Returns the @var{q}-quantile of a Laplace random variable @math{Lap(a,b)}, with @math{b>0}; in other words, this is the inverse of @code{dislaplace}. Argument @var{q} must be an element of @math{[0,1]}.
-@end deffn
-
-
-@deffn {Function} meanlaplace (@var{a},@var{b})
-Returns the mean of a Laplace random variable @math{Lap(a,b)}, with @math{b>0}.
-@end deffn
-
-
-@deffn {Function} varlaplace (@var{a},@var{b})
-Returns the variance of a Laplace random variable @math{Lap(a,b)}, with @math{b>0}.
-@end deffn
-
-
-@deffn {Function} stdlaplace (@var{a},@var{b})
-Returns the standard deviation of a Laplace random variable @math{Lap(a,b)}, with @math{b>0}.
-@end deffn
-
-
-@deffn {Function} skwlaplace (@var{a},@var{b})
-Returns the skewness coefficient of a Laplace random variable @math{Lap(a,b)}, with @math{b>0}.
-@end deffn
-
-
-@deffn {Function} kurlaplace (@var{a},@var{b})
-Returns the kurtosis coefficient of a Laplace random variable @math{Lap(a,b)}, with @math{b>0}.
-@end deffn
-
-
-@deffn {Function} rlaplace (@var{a},@var{b})
-@deffnx {Function} rlaplace (@var{a},@var{b},@var{n})
-Returns a Laplace random variate @math{Lap(a,b)}, with @math{b>0}. Calling @code{rlaplace} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
-
-Only the inverse method is implemented.
-@end deffn
-
-
-
-@deffn {Function} dencauchy (@var{x},@var{a},@var{b})
-Returns the value at @var{x} of the density function of a Cauchy random variable @math{Cau(a,b)}, with @math{b>0}.
-@end deffn
-
-
-@deffn {Function} discauchy (@var{x},@var{a},@var{b})
-Returns the value at @var{x} of the distribution function of a Cauchy random variable @math{Cau(a,b)}, with @math{b>0}.
-@end deffn
-
-
-@deffn {Function} qcauchy (@var{q},@var{a},@var{b})
-Returns the @var{q}-quantile of a Cauchy random variable @math{Cau(a,b)}, with @math{b>0}; in other words, this is the inverse of @code{discauchy}. Argument @var{q} must be an element of @math{[0,1]}.
-@end deffn
-
-
-@deffn {Function} rcauchy (@var{a},@var{b})
-@deffnx {Function} rcauchy (@var{a},@var{b},@var{n})
-Returns a Cauchy random variate @math{Cau(a,b)}, with @math{b>0}. Calling @code{rcauchy} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
-
-Only the inverse method is implemented.
-@end deffn
-
-
-
-@deffn {Function} dengumbel (@var{x},@var{a},@var{b})
-Returns the value at @var{x} of the density function of a Gumbel random variable @math{Gum(a,b)}, with @math{b>0}.
-@end deffn
-
-
-@deffn {Function} disgumbel (@var{x},@var{a},@var{b})
-Returns the value at @var{x} of the distribution function of a Gumbel random variable @math{Gum(a,b)}, with @math{b>0}.
-@end deffn
-
-
-@deffn {Function} qgumbel (@var{q},@var{a},@var{b})
-Returns the @var{q}-quantile of a Gumbel random variable @math{Gum(a,b)}, with @math{b>0}; in other words, this is the inverse of @code{disgumbel}. Argument @var{q} must be an element of @math{[0,1]}.
-@end deffn
-
-
-@deffn {Function} meangumbel (@var{a},@var{b})
-Returns the mean of a Gumbel random variable @math{Gum(a,b)}, with @math{b>0}.
-
-@example
-(%i1) assume(b>0)$  meangumbel(a,b);
-(%o2)                  %gamma b + a
+(%i1) load (distrib)$
+(%i2) assume(b>0)$  mean_gumbel(a,b);
+(%o3)                     %gamma b + a
 @end example
 where symbol @code{%gamma} stands for the Euler-Mascheroni constant. See also @code{%gamma}.
 @end deffn
 
 
-@deffn {Function} vargumbel (@var{a},@var{b})
-Returns the variance of a Gumbel random variable @math{Gum(a,b)}, with @math{b>0}.
+@deffn {Function} var_gumbel (@var{a},@var{b})
+Returns the variance of a @math{Gumbel(a,b)} random variable, with @math{b>0}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} stdgumbel (@var{a},@var{b})
-Returns the standard deviation of a Gumbel random variable @math{Gum(a,b)}, with @math{b>0}.
+@deffn {Function} std_gumbel (@var{a},@var{b})
+Returns the standard deviation of a @math{Gumbel(a,b)} random variable, with @math{b>0}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} skwgumbel (@var{a},@var{b})
-Returns the skewness coefficient of a Gumbel random variable @math{Gum(a,b)}, with @math{b>0}.
+@deffn {Function} skewness_gumbel (@var{a},@var{b})
+Returns the skewness coefficient of a @math{Gumbel(a,b)} random variable, with @math{b>0}.
 
+@c ===beg===
+@c load (distrib)$
+@c assume(b>0)$ skewness_gumbel(a,b);
+@c numer:true$ skewness_gumbel(a,b);
+@c ===end===
 @example
-(%i1) assume(b>0)$  skwgumbel(a,b);
-                    12 sqrt(6) zeta(3)
-(%o2)               ------------------
-                              3
-                           %pi
-(%i3) numer:true$ skwgumbel(a,b);
-(%o4)               1.139547099404649
+(%i1) load (distrib)$
+(%i2) assume(b>0)$ skewness_gumbel(a,b);
+                       12 sqrt(6) zeta(3)
+(%o3)                  ------------------
+                                 3
+                              %pi
+(%i4) numer:true$ skewness_gumbel(a,b);
+(%o5)                   1.139547099404649
 @end example
 where @code{zeta} stands for the Riemann's zeta function.
 @end deffn
 
 
-@deffn {Function} kurgumbel (@var{a},@var{b})
-Returns the kurtosis coefficient of a Gumbel random variable @math{Gum(a,b)}, with @math{b>0}.
+@deffn {Function} kurtosis_gumbel (@var{a},@var{b})
+Returns the kurtosis coefficient of a @math{Gumbel(a,b)} random variable, with @math{b>0}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} rgumbel (@var{a},@var{b})
-@deffnx {Function} rgumbel (@var{a},@var{b},@var{n})
-Returns a Gumbel random variate @math{Gum(a,b)}, with @math{b>0}. Calling @code{rgumbel} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
+@deffn {Function} random_gumbel (@var{a},@var{b})
+@deffnx {Function} random_gumbel (@var{a},@var{b},@var{n})
+Returns a @math{Gumbel(a,b)} random variate, with @math{b>0}. Calling @code{random_gumbel} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
 
-Only the inverse method is implemented.
+Only the inverse method is implemented. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
@@ -1732,58 +1933,64 @@ Only the inverse method is implemented.
 @section Definitions for discrete distributions
 
 
-@deffn {Function} denbinomial (@var{x},@var{n},@var{p})
-Returns the value at @var{x} of the probability function of a binomial random variable @math{B(n,p)}, with @math{0<p<1} and @math{n} a positive integer.
+@deffn {Function} pdf_binomial (@var{x},@var{n},@var{p})
+Returns the value at @var{x} of the probability function of a @math{Binomial(n,p)} random variable, with @math{0<p<1} and @math{n} a positive integer. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} disbinomial (@var{x},@var{n},@var{p})
-Returns the value at @var{x} of the distribution function of a binomial random variable @math{B(n,p)}, with @math{0<p<1} and @math{n} a positive integer.
+@deffn {Function} cdf_binomial (@var{x},@var{n},@var{p})
+Returns the value at @var{x} of the distribution function of a @math{Binomial(n,p)} random variable, with @math{0<p<1} and @math{n} a positive integer.
 
 This function is numerically computed if the global variable @code{numer} equals @code{true},  otherwise it returns a nominal expression.
 
+@c ===beg===
+@c load (distrib)$
+@c cdf_binomial(5,7,1/6);
+@c cdf_binomial(5,7,1/6), numer;
+@c ===end===
 @example
-(%i1) disbinomial(5,7,1/6);
-                                     1
-(%o1)              disbinomial(5, 7, -)
-                                     6
-(%i2) disbinomial(5,7,1/6),numer;
-(%o2)               .9998713991769548
+(%i1) load (distrib)$
+(%i2) cdf_binomial(5,7,1/6);
+                                         1
+(%o2)                 cdf_binomial(5, 7, -)
+                                         6
+(%i3) cdf_binomial(5,7,1/6), numer;
+(%o3)                   .9998713991769548
 @end example
 @end deffn
 
 
-@deffn {Function} qbinomial (@var{q},@var{n},@var{p})
-Returns the @var{q}-quantile of a binomial random variable @math{B(n,p)}, with @math{0<p<1} and @math{n} a positive integer; in other words, this is the inverse of @code{disbinomial}. Argument @var{q} must be an element of @math{[0,1]}.
+@deffn {Function} quantile_binomial (@var{q},@var{n},@var{p})
+Returns the @var{q}-quantile of a @math{Binomial(n,p)} random variable, with @math{0<p<1} and @math{n} a positive integer; in other words, this is the inverse of @code{cdf_binomial}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} meanbinomial (@var{n},@var{p})
-Returns the mean of a binomial random variable @math{B(n,p)}, with @math{0<p<1} and @math{n} a positive integer.
+@deffn {Function} mean_binomial (@var{n},@var{p})
+Returns the mean of a @math{Binomial(n,p)} random variable, with @math{0<p<1} and @math{n} a positive integer. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} varbinomial (@var{n},@var{p})
-Returns the variance of a binomial random variable @math{B(n,p)}, with @math{0<p<1} and @math{n} a positive integer.
+@deffn {Function} var_binomial (@var{n},@var{p})
+Returns the variance of a @math{Binomial(n,p)} random variable, with @math{0<p<1} and @math{n} a positive integer. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} stdbinomial (@var{n},@var{p})
-Returns the standard deviation of a binomial random variable @math{B(n,p)}, with @math{0<p<1} and @math{n} a positive integer.
+@deffn {Function} std_binomial (@var{n},@var{p})
+Returns the standard deviation of a @math{Binomial(n,p)} random variable, with @math{0<p<1} and @math{n} a positive integer. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} skwbinomial (@var{n},@var{p})
-Returns the skewness coefficient of a binomial random variable @math{B(n,p)}, with @math{0<p<1} and @math{n} a positive integer.
+@deffn {Function} skewness_binomial (@var{n},@var{p})
+Returns the skewness coefficient of a @math{Binomial(n,p)} random variable, with @math{0<p<1} and @math{n} a positive integer. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} kurbinomial (@var{n},@var{p})
-Returns the kurtosis coefficient of a binomial random variable  @math{B(n,p)}, with @math{0<p<1} and @math{n} a positive integer.
+@deffn {Function} kurtosis_binomial (@var{n},@var{p})
+Returns the kurtosis coefficient of a @math{Binomial(n,p)} random variable, with @math{0<p<1} and @math{n} a positive integer. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@defvr {Option variable} rbinomial_algorithm
+@defvr {Option variable} random_binomial_algorithm
 Default value: @code{kachit}
 
 This is the selected algorithm for simulating random binomial variates. Implemented algorithms are @code{kachit}, @code{bernoulli} and @code{inverse}:
@@ -1800,71 +2007,77 @@ This is the selected algorithm for simulating random binomial variates. Implemen
 
 @end itemize
 
-See also @code{rbinomial}.
+See also @code{random_binomial}.
 @end defvr
 
 
-@deffn {Function} rbinomial (@var{n},@var{p})
-@deffnx {Function} rbinomial (@var{n},@var{p},@var{m})
-Returns a binomial random variate @math{B(n,p)}, with @math{0<p<1} and @math{n} a positive integer. Calling @code{rbinomial} with a third argument @var{m}, a random sample of size @var{m} will be simulated.
+@deffn {Function} random_binomial (@var{n},@var{p})
+@deffnx {Function} random_binomial (@var{n},@var{p},@var{m})
+Returns a @math{Binomial(n,p)} random variate, with @math{0<p<1} and @math{n} a positive integer. Calling @code{random_binomial} with a third argument @var{m}, a random sample of size @var{m} will be simulated.
 
-There are three algorithms implemented for this function, the one to be used can be selected giving a certain value to the global variable @code{rbinomial_algorithm}, which defaults to @code{kachit}.
+There are three algorithms implemented for this function, the one to be used can be selected giving a certain value to the global variable @code{random_binomial_algorithm}, which defaults to @code{kachit}.
 
-See also @code{rbinomial_algorithm}.
+See also @code{random_binomial_algorithm}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} denpoisson (@var{x},@var{m})
-Returns the value at @var{x} of the probability function of a Poisson random variable @math{Poi(m)}, with @math{m>0}.
+@deffn {Function} pdf_poisson (@var{x},@var{m})
+Returns the value at @var{x} of the probability function of a @math{Poisson(m)} random variable, with @math{m>0}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} dispoisson (@var{x},@var{m})
-Returns the value at @var{x} of the distribution function of a Poisson random variable @math{Poi(m)}, with @math{m>0}.
+@deffn {Function} cdf_poisson (@var{x},@var{m})
+Returns the value at @var{x} of the distribution function of a @math{Poisson(m)} random variable, with @math{m>0}.
 
 This function is numerically computed if the global variable @code{numer} equals @code{true},  otherwise it returns a nominal expression.
 
+@c ===beg===
+@c load (distrib)$
+@c cdf_poisson(3,5);
+@c cdf_poisson(3,5), numer;
+@c ===end===
 @example
-(%i1) dispoisson(3,5);
-(%o1)                dispoisson(3, 5)
-(%i2) dispoisson(3,5),numer;
-(%o2)               .2650259152973617
+(%i1) load (distrib)$
+(%i2) cdf_poisson(3,5);
+(%o2)                   cdf_poisson(3, 5)
+(%i3) cdf_poisson(3,5), numer;
+(%o3)                   .2650259152973617
 @end example
 @end deffn
 
 
-@deffn {Function} qpoisson (@var{q},@var{m})
-Returns the @var{q}-quantile of a Poisson random variable @math{Poi(m)}, with @math{m>0}; in other words, this is the inverse of @code{dispoisson}. Argument @var{q} must be an element of @math{[0,1]}.
+@deffn {Function} quantile_poisson (@var{q},@var{m})
+Returns the @var{q}-quantile of a @math{Poisson(m)} random variable, with @math{m>0}; in other words, this is the inverse of @code{cdf_poisson}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} meanpoisson (@var{m})
-Returns the mean of a Poisson random variable @math{Poi(m)}, with  @math{m>0}.
+@deffn {Function} mean_poisson (@var{m})
+Returns the mean of a @math{Poisson(m)} random variable, with  @math{m>0}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} varpoisson (@var{m})
-Returns the variance of a Poisson random variable @math{Poi(m)}, with  @math{m>0}.
+@deffn {Function} var_poisson (@var{m})
+Returns the variance of a @math{Poisson(m)} random variable, with  @math{m>0}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} stdpoisson (@var{m})
-Returns the standard deviation of a Poisson random variable @math{Poi(m)}, with @math{m>0}.
+@deffn {Function} std_poisson (@var{m})
+Returns the standard deviation of a @math{Poisson(m)} random variable, with @math{m>0}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} skwpoisson (@var{m})
-Returns the skewness coefficient of a Poisson random variable @math{Poi(m)}, with @math{m>0}.
+@deffn {Function} skewness_poisson (@var{m})
+Returns the skewness coefficient of a @math{Poisson(m)} random variable, with @math{m>0}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} kurpoisson (@var{m})
-Returns the kurtosis coefficient of a Poisson random variable  @math{Poi(m)}, with @math{m>0}.
+@deffn {Function} kurtosis_poisson (@var{m})
+Returns the kurtosis coefficient of a Poisson random variable  @math{Poi(m)}, with @math{m>0}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@defvr {Option variable} rpoisson_algorithm
-Default value: @code{kachit}
+@defvr {Option variable} random_poisson_algorithm
+Default value: @code{ahrens_dieter}
 
 This is the selected algorithm for simulating random Poisson variates. Implemented algorithms are @code{ahrens_dieter} and @code{inverse}:
 @itemize @bullet
@@ -1877,169 +2090,205 @@ This is the selected algorithm for simulating random Poisson variates. Implement
 
 @end itemize
 
-See also @code{rpoisson}.
+See also @code{random_poisson}.
 @end defvr
 
 
-@deffn {Function} rpoisson (@var{m})
-@deffnx {Function} rpoisson (@var{m},@var{n})
-Returns a Poisson random variate @math{Poi(m)}, with @math{m>0}. Calling @code{rpoisson} with a second argument @var{n}, a random sample of size @var{n} will be simulated.
+@deffn {Function} random_poisson (@var{m})
+@deffnx {Function} random_poisson (@var{m},@var{n})
+Returns a @math{Poisson(m)} random variate, with @math{m>0}. Calling @code{random_poisson} with a second argument @var{n}, a random sample of size @var{n} will be simulated.
 
-There are two algorithms implemented for this function, the one to be used can be selected giving a certain value to the global variable @code{rpoisson_algorithm}, which defaults to @code{ahrens_dieter}.
+There are two algorithms implemented for this function, the one to be used can be selected giving a certain value to the global variable @code{random_poisson_algorithm}, which defaults to @code{ahrens_dieter}.
 
-See also @code{rpoisson_algorithm}.
+See also @code{random_poisson_algorithm}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} denbernoulli (@var{x},@var{p})
-Returns the value at @var{x} of the probability function of a Bernoulli random variable @math{Ber(p)}, with @math{0<p<1}.
+@deffn {Function} pdf_bernoulli (@var{x},@var{p})
+Returns the value at @var{x} of the probability function of a @math{Bernoulli(p)} random variable, with @math{0<p<1}.
 
-The @math{Ber(p)} random variable is equivalent to the binomial @math{B(1,p)}, therefore when Maxima has not enough information to get the result, a nominal form based on the binomial probability function is returned.
+The @math{Bernoulli(p)} random variable is equivalent to the @math{Binomial(1,p)}, therefore when Maxima has not enough information to get the result, a nominal form based on the binomial probability function is returned.
 
+@c ===beg===
+@c load (distrib)$
+@c pdf_bernoulli(1,p);
+@c assume(0<p,p<1)$ pdf_bernoulli(1,p);
+@c ===end===
 @example
-(%i1) denbernoulli(1,p);
-(%o1)              denbinomial(1, 1, p)
-(%i2) assume(0<p,p<1)$ denbernoulli(1,p);
-(%o3)                       p
+(%i1) load (distrib)$
+(%i2) pdf_bernoulli(1,p);
+(%o2)                 pdf_binomial(1, 1, p)
+(%i3) assume(0<p,p<1)$ pdf_bernoulli(1,p);
+(%o4)                           p
 @end example
 @end deffn
 
 
-@deffn {Function} disbernoulli (@var{x},@var{p})
-Returns the value at @var{x} of the distribution function of a Bernoulli random variable @math{Ber(p)}, with @math{0<p<1}.
+@deffn {Function} cdf_bernoulli (@var{x},@var{p})
+Returns the value at @var{x} of the distribution function of a @math{Bernoulli(p)} random variable, with @math{0<p<1}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} qbernoulli (@var{q},@var{p})
-Returns the @var{q}-quantile of a Bernoulli random variable @math{Ber(p)}, with @math{0<p<1}; in other words, this is the inverse of @code{disbernoulli}. Argument @var{q} must be an element of @math{[0,1]}.
+@deffn {Function} quantile_bernoulli (@var{q},@var{p})
+Returns the @var{q}-quantile of a @math{Bernoulli(p)} random variable, with @math{0<p<1}; in other words, this is the inverse of @code{cdf_bernoulli}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} meanbernoulli (@var{p})
-Returns the mean of a Bernoulli random variable @math{Ber(p)}, with @math{0<p<1}.
+@deffn {Function} mean_bernoulli (@var{p})
+Returns the mean of a @math{Bernoulli(p)} random variable, with @math{0<p<1}.
 
-The @math{Ber(p)} random variable is equivalent to the binomial @math{B(1,p)}, therefore when Maxima has not enough information to get the result, a nominal form based on the binomial mean is returned.
+The @math{Bernoulli(p)} random variable is equivalent to the @math{Binomial(1,p)}, therefore when Maxima has not enough information to get the result, a nominal form based on the binomial mean is returned.
 
+@c ===beg===
+@c load (distrib)$
+@c mean_bernoulli(p);
+@c assume(0<p,p<1)$ mean_bernoulli(p);
+@c ===end===
 @example
-(%i1) meanbernoulli(p);
-(%o1)               meanbinomial(1, p)
-(%i2) assume(0<p,p<1)$ meanbernoulli(p);
-(%o3)                       p
+(%i1) load (distrib)$
+(%i2) mean_bernoulli(p);
+(%o2)                  mean_binomial(1, p)
+(%i3) assume(0<p,p<1)$ mean_bernoulli(p);
+(%o4)                           p
 @end example
 @end deffn
 
 
-@deffn {Function} varbernoulli (@var{p})
-Returns the variance of a Bernoulli random variable @math{Ber(p)}, with @math{0<p<1}.
+@deffn {Function} var_bernoulli (@var{p})
+Returns the variance of a @math{Bernoulli(p)} random variable, with @math{0<p<1}.
 
-The @math{Ber(p)} random variable is equivalent to the binomial @math{B(1,p)}, therefore when Maxima has not enough information to get the result, a nominal form based on the binomial variance is returned.
+The @math{Bernoulli(p)} random variable is equivalent to the @math{Binomial(1,p)}, therefore when Maxima has not enough information to get the result, a nominal form based on the binomial variance is returned.
 
+@c ===beg===
+@c load (distrib)$
+@c var_bernoulli(p);
+@c assume(0<p,p<1)$ var_bernoulli(p);
+@c ===end===
 @example
-(%i1) varbernoulli(p);
-(%o1)               varbinomial(1, p)
-(%i2) assume(0<p,p<1)$ varbernoulli(p);
-(%o3)                   (1 - p) p
+(%i1) load (distrib)$
+(%i2) var_bernoulli(p);
+(%o2)                  var_binomial(1, p)
+(%i3) assume(0<p,p<1)$ var_bernoulli(p);
+(%o4)                       (1 - p) p
 @end example
 @end deffn
 
 
-@deffn {Function} stdbernoulli (@var{p})
-Returns the standard deviation of a Bernoulli random variable @math{Ber(p)}, with @math{0<p<1}.
+@deffn {Function} std_bernoulli (@var{p})
+Returns the standard deviation of a @math{Bernoulli(p)} random variable, with @math{0<p<1}.
 
-The @math{Ber(p)} random variable is equivalent to the binomial @math{B(1,p)}, therefore when Maxima has not enough information to get the result, a nominal form based on the binomial standard deviation is returned.
+The @math{Bernoulli(p)} random variable is equivalent to the @math{Binomial(1,p)}, therefore when Maxima has not enough information to get the result, a nominal form based on the binomial standard deviation is returned.
 
+@c ===beg===
+@c load (distrib)$
+@c std_bernoulli(p);
+@c assume(0<p,p<1)$ std_bernoulli(p);
+@c ===end===
 @example
-(%i1) stdbernoulli(p);
-(%o1)              stdbinomial(1, p)
-(%i2) assume(0<p,p<1)$ stdbernoulli(p);
-(%o3)             sqrt(1 - p) sqrt(p)
+(%i1) load (distrib)$
+(%i2) std_bernoulli(p);
+(%o2)                  std_binomial(1, p)
+(%i3) assume(0<p,p<1)$ std_bernoulli(p);
+(%o4)                  sqrt(1 - p) sqrt(p)
 @end example
 @end deffn
 
 
-@deffn {Function} skwbernoulli (@var{p})
-Returns the skewness coefficient of a Bernoulli random variable @math{Ber(p)}, with @math{0<p<1}.
+@deffn {Function} skewness_bernoulli (@var{p})
+Returns the skewness coefficient of a @math{Bernoulli(p)} random variable, with @math{0<p<1}.
 
-The @math{Ber(p)} random variable is equivalent to the binomial @math{B(1,p)}, therefore when Maxima has not enough information to get the result, a nominal form based on the binomial skewness coefficient is returned.
+The @math{Bernoulli(p)} random variable is equivalent to the @math{Binomial(1,p)}, therefore when Maxima has not enough information to get the result, a nominal form based on the binomial skewness coefficient is returned.
 
+@c ===beg===
+@c load (distrib)$
+@c skewness_bernoulli(p);
+@c assume(0<p,p<1)$ skewness_bernoulli(p);
+@c ===end===
 @example
-(%i1) skwbernoulli(p);
-(%o1)              skwbinomial(1, p)
-(%i2) assume(0<p,p<1)$ skwbernoulli(p);
-                        1 - 2 p
-(%o3)             -------------------
-                  sqrt(1 - p) sqrt(p)
+(%i1) load (distrib)$
+(%i2) skewness_bernoulli(p);
+(%o2)                skewness_binomial(1, p)
+(%i3) assume(0<p,p<1)$ skewness_bernoulli(p);
+                             1 - 2 p
+(%o4)                  -------------------
+                       sqrt(1 - p) sqrt(p)
 @end example
 @end deffn
 
 
-@deffn {Function} kurbernoulli (@var{p})
-Returns the kurtosis coefficient of a Bernoulli random variable  @math{Ber(p)}, with @math{0<p<1}.
+@deffn {Function} kurtosis_bernoulli (@var{p})
+Returns the kurtosis coefficient of a @math{Bernoulli(p)} random variable, with @math{0<p<1}.
 
-The @math{Ber(p)} random variable is equivalent to the binomial @math{B(1,p)}, therefore when Maxima has not enough information to get the result, a nominal form based on the binomial kurtosis coefficient is returned.
+The @math{Bernoulli(p)} random variable is equivalent to the @math{Binomial(1,p)}, therefore when Maxima has not enough information to get the result, a nominal form based on the binomial kurtosis coefficient is returned.
 
+@c ===beg===
+@c load (distrib)$
+@c kurtosis_bernoulli(p);
+@c assume(0<p,p<1)$ kurtosis_bernoulli(p);
+@c ===end===
 @example
-(%i1) kurbernoulli(p);
-(%o1)              kurbinomial(1, p)
-(%i2) assume(0<p,p<1)$ kurbernoulli(p);
-                    1 - 6 (1 - p) p
-(%o3)               ---------------
-                       (1 - p) p
+(%i1) load (distrib)$
+(%i2) kurtosis_bernoulli(p);
+(%o2)                kurtosis_binomial(1, p)
+(%i3) assume(0<p,p<1)$ kurtosis_bernoulli(p);
+                         1 - 6 (1 - p) p
+(%o4)                    ---------------
+                            (1 - p) p
 @end example
 @end deffn
 
 
-@deffn {Function} rbernoulli (@var{p})
-@deffnx {Function} rbernoulli (@var{p},@var{n})
-Returns a Bernoulli random variate @math{Ber(p)}, with @math{0<p<1}. Calling @code{rbernoulli} with a second argument @var{n}, a random sample of size @var{n} will be simulated.
+@deffn {Function} random_bernoulli (@var{p})
+@deffnx {Function} random_bernoulli (@var{p},@var{n})
+Returns a @math{Bernoulli(p)} random variate, with @math{0<p<1}. Calling @code{random_bernoulli} with a second argument @var{n}, a random sample of size @var{n} will be simulated.
 
 This is a direct application of the @code{random} built-in Maxima function.
 
-See also @code{random}.
+See also @code{random}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} dengeo (@var{x},@var{p})
-Returns the value at @var{x} of the probability function of a geometric random variable @math{Geo(p)}, with @math{0<p<1}.
+@deffn {Function} pdf_geometric (@var{x},@var{p})
+Returns the value at @var{x} of the probability function of a @math{Geometric(p)} random variable, with @math{0<p<1}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} disgeo (@var{x},@var{p})
-Returns the value at @var{x} of the distribution function of a geometric random variable @math{Geo(p)}, with @math{0<p<1}.
+@deffn {Function} cdf_geometric (@var{x},@var{p})
+Returns the value at @var{x} of the distribution function of a @math{Geometric(p)} random variable, with @math{0<p<1}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} qgeo (@var{q},@var{p})
-Returns the @var{q}-quantile of a geometric random variable @math{Geo(p)}, with @math{0<p<1}; in other words, this is the inverse of @code{disgeo}. Argument @var{q} must be an element of @math{[0,1]}.
+@deffn {Function} quantile_geometric (@var{q},@var{p})
+Returns the @var{q}-quantile of a @math{Geometric(p)} random variable, with @math{0<p<1}; in other words, this is the inverse of @code{cdf_geometric}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} meangeo (@var{p})
-Returns the mean of a geometric random variable @math{Geo(p)}, with @math{0<p<1}.
+@deffn {Function} mean_geometric (@var{p})
+Returns the mean of a @math{Geometric(p)} random variable, with @math{0<p<1}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} vargeo (@var{p})
-Returns the variance of a geometric random variable @math{Geo(p)}, with @math{0<p<1}.
+@deffn {Function} var_geometric (@var{p})
+Returns the variance of a @math{Geometric(p)} random variable, with @math{0<p<1}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} stdgeo (@var{p})
-Returns the standard deviation of a geometric random variable @math{Geo(p)}, with @math{0<p<1}.
+@deffn {Function} std_geometric (@var{p})
+Returns the standard deviation of a @math{Geometric(p)} random variable, with @math{0<p<1}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} skwgeo (@var{p})
-Returns the skewness coefficient of a geometric random variable @math{Geo(p)}, with @math{0<p<1}.
+@deffn {Function} skewness_geometric (@var{p})
+Returns the skewness coefficient of a @math{Geometric(p)} random variable, with @math{0<p<1}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} kurgeo (@var{p})
-Returns the kurtosis coefficient of a geometric random variable  @math{Geo(p)}, with @math{0<p<1}.
+@deffn {Function} kurtosis_geometric (@var{p})
+Returns the kurtosis coefficient of a geometric random variable  @math{Geo(p)}, with @math{0<p<1}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@defvr {Option variable} rgeo_algorithm
+@defvr {Option variable} random_geometric_algorithm
 Default value: @code{bernoulli}
 
 This is the selected algorithm for simulating random geometric variates. Implemented algorithms are @code{bernoulli}, @code{devroye} and @code{inverse}:
@@ -2056,110 +2305,110 @@ This is the selected algorithm for simulating random geometric variates. Impleme
 
 @end itemize
 
-See also @code{rgeo}.
+See also @code{random_geometric}.
 @end defvr
 
 
-@deffn {Function} rgeo (@var{p})
-@deffnx {Function} rgeo (@var{p},@var{n})
-Returns a geometric random variate @math{Geo(p)}, with @math{0<p<1}. Calling @code{rgeo} with a second argument @var{n}, a random sample of size @var{n} will be simulated.
+@deffn {Function} random_geometric (@var{p})
+@deffnx {Function} random_geometric (@var{p},@var{n})
+Returns a @math{Geometric(p)} random variate, with @math{0<p<1}. Calling @code{random_geometric} with a second argument @var{n}, a random sample of size @var{n} will be simulated.
 
-There are three algorithms implemented for this function, the one to be used can be selected giving a certain value to the global variable @code{rgeo_algorithm}, which defaults to @code{bernoulli}.
+There are three algorithms implemented for this function, the one to be used can be selected giving a certain value to the global variable @code{random_geometric_algorithm}, which defaults to @code{bernoulli}.
 
-See also @code{rgeo_algorithm}.
+See also @code{random_geometric_algorithm}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} dendiscu (@var{x},@var{n})
-Returns the value at @var{x} of the probability function of a discrete uniform random variable @math{dUnif(n)}, with @math{n} a strictly positive integer.
+@deffn {Function} pdf_discrete_uniform (@var{x},@var{n})
+Returns the value at @var{x} of the probability function of a @math{Discrete Uniform(n)} random variable, with @math{n} a strictly positive integer. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} disdiscu (@var{x},@var{n})
-Returns the value at @var{x} of the distribution function of a discrete uniform random variable @math{dUnif(n)}, with @math{n} a strictly positive integer.
+@deffn {Function} cdf_discrete_uniform (@var{x},@var{n})
+Returns the value at @var{x} of the distribution function of a @math{Discrete Uniform(n)} random variable, with @math{n} a strictly positive integer. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} qdiscu (@var{q},@var{n})
-Returns the @var{q}-quantile of a discrete uniform random variable @math{dUnif(n)}, with @math{n} a strictly positive integer; in other words, this is the inverse of @code{disdiscu}. Argument @var{q} must be an element of @math{[0,1]}.
+@deffn {Function} quantile_discrete_uniform (@var{q},@var{n})
+Returns the @var{q}-quantile of a @math{Discrete Uniform(n)} random variable, with @math{n} a strictly positive integer; in other words, this is the inverse of @code{cdf_discrete_uniform}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} meandiscu (@var{n})
-Returns the mean of a discrete uniform random variable @math{dUnif(n)}, with @math{n} a strictly positive integer.
+@deffn {Function} mean_discrete_uniform (@var{n})
+Returns the mean of a @math{Discrete Uniform(n)} random variable, with @math{n} a strictly positive integer. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} vardiscu (@var{n})
-Returns the variance of a discrete uniform random variable @math{dUnif(n)}, with @math{n} a strictly positive integer.
+@deffn {Function} var_discrete_uniform (@var{n})
+Returns the variance of a @math{Discrete Uniform(n)} random variable, with @math{n} a strictly positive integer. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} stddiscu (@var{n})
-Returns the standard deviation of a discrete uniform random variable @math{dUnif(n)}, with @math{n} a strictly positive integer.
+@deffn {Function} std_discrete_uniform (@var{n})
+Returns the standard deviation of a @math{Discrete Uniform(n)} random variable, with @math{n} a strictly positive integer. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} skwdiscu (@var{n})
-Returns the skewness coefficient of a discrete uniform random variable @math{dUnif(n)}, with @math{n} a strictly positive integer.
+@deffn {Function} skewness_discrete_uniform (@var{n})
+Returns the skewness coefficient of a @math{Discrete Uniform(n)} random variable, with @math{n} a strictly positive integer. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} kurdiscu (@var{n})
-Returns the kurtosis coefficient of a discrete uniform random variable @math{dUnif(n)}, with @math{n} a strictly positive integer.
+@deffn {Function} kurtosis_discrete_uniform (@var{n})
+Returns the kurtosis coefficient of a @math{Discrete Uniform(n)} random variable, with @math{n} a strictly positive integer. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} rdiscu (@var{n})
-@deffnx {Function} rdiscu (@var{n},@var{m})
-Returns a uniform random variable @math{dUnif(n)}, with @math{n} a strictly positive integer. Calling @code{rdiscu} with a second argument @var{m}, a random sample of size @var{m} will be simulated.
+@deffn {Function} random_discrete_uniform (@var{n})
+@deffnx {Function} random_discrete_uniform (@var{n},@var{m})
+Returns a @math{Discrete Uniform(n)} random variate, with @math{n} a strictly positive integer. Calling @code{random_discrete_uniform} with a second argument @var{m}, a random sample of size @var{m} will be simulated.
 
 This is a direct application of the @code{random} built-in Maxima function.
 
-See also @code{random}.
+See also @code{random}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} denhypergeo (@var{x},@var{n1},@var{n2},@var{n})
-Returns the value at @var{x} of the probability function of a hypergeometric random variable @math{Hyp(n1,n2,n)}, with @var{n1}, @var{n2} and @var{n} non negative integers and @math{n<=n1+n2}.
+@deffn {Function} pdf_hypergeometric (@var{x},@var{n1},@var{n2},@var{n})
+Returns the value at @var{x} of the probability function of a @math{Hypergeometric(n1,n2,n)} random variable, with @var{n1}, @var{n2} and @var{n} non negative integers and @math{n<=n1+n2}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} dishypergeo (@var{x},@var{n1},@var{n2},@var{n})
-Returns the value at @var{x} of the distribution function of a hypergeometric random variable @math{Hyp(n1,n2,n)}, with @var{n1}, @var{n2} and @var{n} non negative integers and @math{n<=n1+n2}.
+@deffn {Function} cdf_hypergeometric (@var{x},@var{n1},@var{n2},@var{n})
+Returns the value at @var{x} of the distribution function of a @math{Hypergeometric(n1,n2,n)} random variable, with @var{n1}, @var{n2} and @var{n} non negative integers and @math{n<=n1+n2}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} qhypergeo (@var{q},@var{n1},@var{n2},@var{n})
-Returns the @var{q}-quantile of a hypergeometric random variable @math{Hyp(n1,n2,n)}, with @var{n1}, @var{n2} and @var{n} non negative integers and @math{n<=n1+n2}; in other words, this is the inverse of @code{dishypergeo}. Argument @var{q} must be an element of @math{[0,1]}.
+@deffn {Function} quantile_hypergeometric (@var{q},@var{n1},@var{n2},@var{n})
+Returns the @var{q}-quantile of a @math{Hypergeometric(n1,n2,n)} random variable, with @var{n1}, @var{n2} and @var{n} non negative integers and @math{n<=n1+n2}; in other words, this is the inverse of @code{cdf_hypergeometric}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} meanhypergeo (@var{n1},@var{n2},@var{n})
-Returns the mean of a discrete uniform random variable @math{Hyp(n1,n2,n)}, with @var{n1}, @var{n2} and @var{n} non negative integers and @math{n<=n1+n2}.
+@deffn {Function} mean_hypergeometric (@var{n1},@var{n2},@var{n})
+Returns the mean of a discrete uniform random variable @math{Hyp(n1,n2,n)}, with @var{n1}, @var{n2} and @var{n} non negative integers and @math{n<=n1+n2}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} varhypergeo (@var{n1},@var{n2},@var{n})
-Returns the variance of a hypergeometric  random variable @math{Hyp(n1,n2,n)}, with @var{n1}, @var{n2} and @var{n} non negative integers and @math{n<=n1+n2}.
+@deffn {Function} var_hypergeometric (@var{n1},@var{n2},@var{n})
+Returns the variance of a hypergeometric  random variable @math{Hyp(n1,n2,n)}, with @var{n1}, @var{n2} and @var{n} non negative integers and @math{n<=n1+n2}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} stdhypergeo (@var{n1},@var{n2},@var{n})
-Returns the standard deviation of a hypergeometric random variable @math{Hyp(n1,n2,n)}, with @var{n1}, @var{n2} and @var{n} non negative integers and @math{n<=n1+n2}.
+@deffn {Function} std_hypergeometric (@var{n1},@var{n2},@var{n})
+Returns the standard deviation of a @math{Hypergeometric(n1,n2,n)} random variable, with @var{n1}, @var{n2} and @var{n} non negative integers and @math{n<=n1+n2}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} skwhypergeo (@var{n1},@var{n2},@var{n})
-Returns the skewness coefficient of a hypergeometric random variable @math{Hyp(n1,n2,n)}, with @var{n1}, @var{n2} and @var{n} non negative integers and @math{n<=n1+n2}.
+@deffn {Function} skewness_hypergeometric (@var{n1},@var{n2},@var{n})
+Returns the skewness coefficient of a @math{Hypergeometric(n1,n2,n)} random variable, with @var{n1}, @var{n2} and @var{n} non negative integers and @math{n<=n1+n2}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} kurhypergeo (@var{n1},@var{n2},@var{n})
-Returns the kurtosis coefficient of a hypergeometric random variable @math{Hyp(n1,n2,n)}, with @var{n1}, @var{n2} and @var{n} non negative integers and @math{n<=n1+n2}.
+@deffn {Function} kurtosis_hypergeometric (@var{n1},@var{n2},@var{n})
+Returns the kurtosis coefficient of a @math{Hypergeometric(n1,n2,n)} random variable, with @var{n1}, @var{n2} and @var{n} non negative integers and @math{n<=n1+n2}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
-@defvr {Option variable} rhypergeo_algorithm
+@defvr {Option variable} random_hypergeometric_algorithm
 Default value: @code{kachit}
 
 This is the selected algorithm for simulating random hypergeometric variates. Implemented algorithms are @code{kachit} and @code{inverse}:
@@ -2173,72 +2422,78 @@ This is the selected algorithm for simulating random hypergeometric variates. Im
 
 @end itemize
 
-See also @code{rhypergeo}.
+See also @code{random_hypergeometric}.
 @end defvr
 
 
-@deffn {Function} rhypergeo (@var{n1},@var{n2},@var{n})
-@deffnx {Function} rhypergeo (@var{n1},@var{n2},@var{n},@var{m})
-Returns a hypergeometric random variate @math{Hyp(n1,n2,n)}, with @var{n1}, @var{n2} and @var{n} non negative integers and @math{n<=n1+n2}. Calling @code{rhypergeo} with a fourth argument @var{m}, a random sample of size @var{m} will be simulated.
+@deffn {Function} random_hypergeometric (@var{n1},@var{n2},@var{n})
+@deffnx {Function} random_hypergeometric (@var{n1},@var{n2},@var{n},@var{m})
+Returns a @math{Hypergeometric(n1,n2,n)} random variate, with @var{n1}, @var{n2} and @var{n} non negative integers and @math{n<=n1+n2}. Calling @code{random_hypergeometric} with a fourth argument @var{m}, a random sample of size @var{m} will be simulated.
 
-There are two algorithms implemented for this function, the one to be used can be selected giving a certain value to the global variable @code{rhypergeo_algorithm}, which defaults to @code{kachit}.
+There are two algorithms implemented for this function, the one to be used can be selected giving a certain value to the global variable @code{random_hypergeometric_algorithm}, which defaults to @code{kachit}.
 
-See also @code{rhypergeo_algorithm}.
+See also @code{random_hypergeometric_algorithm}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} dennegbinom (@var{x},@var{n},@var{p})
-Returns the value at @var{x} of the probability function of a negative binomial random variable @math{NB(n,p)}, with @math{0<p<1} and @math{n} a positive integer.
+@deffn {Function} pdf_negative_binomial (@var{x},@var{n},@var{p})
+Returns the value at @var{x} of the probability function of a @math{Negative Binomial(n,p)} random variable, with @math{0<p<1} and @math{n} a positive integer. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} disnegbinom (@var{x},@var{n},@var{p})
-Returns the value at @var{x} of the distribution function of a negative binomial random variable @math{NB(n,p)}, with @math{0<p<1} and @math{n} a positive integer.
+@deffn {Function} cdf_negative_binomial (@var{x},@var{n},@var{p})
+Returns the value at @var{x} of the distribution function of a @math{Negative Binomial(n,p)} random variable, with @math{0<p<1} and @math{n} a positive integer.
 
 This function is numerically computed if the global variable @code{numer} equals @code{true},  otherwise it returns a nominal expression.
 
+@c ===beg===
+@c load (distrib)$
+@c cdf_negative_binomial(3,4,1/8);
+@c cdf_negative_binomial(3,4,1/8), numer;
+@c ===end===
 @example
-(%i1) disnegbinom(3,4,1/8);
-                                     1
-(%o1)              disnegbinom(3, 4, -)
-                                     8
-(%i2) disnegbinom(3,4,1/8),numer;
-(%o2)              .006238937377929698
+(%i1) load (distrib)$
+(%i2) cdf_negative_binomial(3,4,1/8);
+                                             1
+(%o2)            cdf_negative_binomial(3, 4, -)
+                                             8
+(%i3) cdf_negative_binomial(3,4,1/8), numer;
+(%o3)                  .006238937377929698
 @end example
 @end deffn
 
 
-@deffn {Function} qnegbinom (@var{q},@var{n},@var{p})
-Returns the @var{q}-quantile of a negative binomial random variable @math{NB(n,p)}, with @math{0<p<1} and @math{n} a positive integer; in other words, this is the inverse of @code{disnegbinom}. Argument @var{q} must be an element of @math{[0,1]}.
+@deffn {Function} quantile_negative_binomial (@var{q},@var{n},@var{p})
+Returns the @var{q}-quantile of a @math{Negative Binomial(n,p)} random variable, with @math{0<p<1} and @math{n} a positive integer; in other words, this is the inverse of @code{cdf_negative_binomial}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} meannegbinom (@var{n},@var{p})
-Returns the mean of a negative binomial random variable @math{NB(n,p)}, with @math{0<p<1} and @math{n} a positive integer.
+@deffn {Function} mean_negative_binomial (@var{n},@var{p})
+Returns the mean of a @math{Negative Binomial(n,p)} random variable, with @math{0<p<1} and @math{n} a positive integer. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} varnegbinom (@var{n},@var{p})
-Returns the variance of a negative binomial random variable @math{NB(n,p)}, with @math{0<p<1} and @math{n} a positive integer.
+@deffn {Function} var_negative_binomial (@var{n},@var{p})
+Returns the variance of a @math{Negative Binomial(n,p)} random variable, with @math{0<p<1} and @math{n} a positive integer. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} stdnegbinom (@var{n},@var{p})
-Returns the standard deviation of a negative binomial random variable @math{NB(n,p)}, with @math{0<p<1} and @math{n} a positive integer.
+@deffn {Function} std_negative_binomial (@var{n},@var{p})
+Returns the standard deviation of a @math{Negative Binomial(n,p)} random variable, with @math{0<p<1} and @math{n} a positive integer. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} skwnegbinom (@var{n},@var{p})
-Returns the skewness coefficient of a negative binomial random variable @math{NB(n,p)}, with @math{0<p<1} and @math{n} a positive integer.
+@deffn {Function} skewness_negative_binomial (@var{n},@var{p})
+Returns the skewness coefficient of a @math{Negative Binomial(n,p)} random variable, with @math{0<p<1} and @math{n} a positive integer. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Function} kurnegbinom (@var{n},@var{p})
-Returns the kurtosis coefficient of a negative binomial random variable  @math{NB(n,p)}, with @math{0<p<1} and @math{n} a positive integer.
+@deffn {Function} kurtosis_negative_binomial (@var{n},@var{p})
+Returns the kurtosis coefficient of a @math{Negative Binomial(n,p)} random variable, with @math{0<p<1} and @math{n} a positive integer. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 
-@defvr {Option variable} rnegbinom_algorithm
+@defvr {Option variable} random_negative_binomial_algorithm
 Default value: @code{bernoulli}
 
 This is the selected algorithm for simulating random negative binomial variates. Implemented algorithms are @code{devroye}, @code{bernoulli} and @code{inverse}:
@@ -2255,15 +2510,15 @@ This is the selected algorithm for simulating random negative binomial variates.
 
 @end itemize
 
-See also @code{rnegbinom}.
+See also @code{random_negative_binomial}.
 @end defvr
 
 
-@deffn {Function} rnegbinoml (@var{n},@var{p})
-@deffnx {Function} rnegbinom (@var{n},@var{p},@var{m})
-Returns a negative binomial random variate @math{NB(n,p)}, with @math{0<p<1} and @math{n} a positive integer. Calling @code{rnegbinoml} with a third argument @var{m}, a random sample of size @var{m} will be simulated.
+@deffn {Function} random_negative_binomial (@var{n},@var{p})
+@deffnx {Function} random_negative_binomial (@var{n},@var{p},@var{m})
+Returns a @math{Negative Binomial(n,p)} random variate, with @math{0<p<1} and @math{n} a positive integer. Calling @code{random_negative_binomial} with a third argument @var{m}, a random sample of size @var{m} will be simulated.
 
-There are three algorithms implemented for this function, the one to be used can be selected giving a certain value to the global variable @code{rnegbinom_algorithm}, which defaults to @code{bernoulli}.
+There are three algorithms implemented for this function, the one to be used can be selected giving a certain value to the global variable @code{random_negative_binomial_algorithm}, which defaults to @code{bernoulli}.
 
-See also @code{rnegbinom_algorithm}.
+See also @code{random_negative_binomial_algorithm}. To make use of this function, write first @code{load(distrib)}.
 @end deffn

@@ -22,17 +22,17 @@ http://www.gnu.org/copyleft/gpl.html
 This is a set of Maxima functions for univariate probability distributions,
 both continuous and discrete.
 
-Continuous distributions:                Discrete distributions:
-   Normal              (*normal)            Binomial             (*binomial)
-   Student             (*student)           Poisson              (*poisson)
-   Chi^2               (*chi2)              Bernoulli            (*bernoulli)
-   F                   (*f)                 Geometric            (*geo)
-   Exponential         (*exp)               Discrete uniform     (*discu)
-   Lognormal           (*logn)              Hypergeometric       (*hypergeo)
-   Gamma               (*gamma)             Negative binomial    (*negbinom)
+Continuous distributions:                   Discrete distributions:
+   Normal              (*normal)              Binomial             (*binomial)
+   Student             (*student_t)           Poisson              (*poisson)
+   Chi^2               (*chi2)                Bernoulli            (*bernoulli)
+   F                   (*f)                   Geometric            (*geometric)
+   Exponential         (*exp)                 Discrete uniform     (*discrete_uniform)
+   Lognormal           (*lognormal)           Hypergeometric       (*hypergeometric)
+   Gamma               (*gamma)               Negative binomial    (*negative_binomial)
    Beta                (*beta)
-   Continuous uniform  (*contu)
-   Logistic            (*log)
+   Continuous uniform  (*continuous_uniform)
+   Logistic            (*logistic)
    Pareto              (*pareto)
    Weibull             (*weibull)
    Rayleigh            (*rayleigh)
@@ -41,26 +41,26 @@ Continuous distributions:                Discrete distributions:
    Gumbel              (*gumbel)
 
 Functions:
-   Density function            (den*)
-   Distribution function       (dis*)
-   Quantile                    (q*)
-   Mean                        (mean*)
-   Variance                    (var*)
-   Standard deviation          (std*)
-   Skewness coefficient        (skw*)
-   Kurtosis coefficient        (kur*)
-   Random variate              (r*)
+   Density function            (pdf_*)
+   Distribution function       (cdf_*)
+   Quantile                    (quantile_*)
+   Mean                        (mean_*)
+   Variance                    (var_*)
+   Standard deviation          (std_*)
+   Skewness coefficient        (skewness_*)
+   Kurtosis coefficient        (kurtosis_*)
+   Random variate              (random_*)
 
 For example,
-   denstudent(x,n) is the density function of the Student distribution
+   pdf_student_t(x,n) is the density function of the Student distribution
                    with n degrees of freedom
-   stdpareto(a,b)  is the standard deviation of the Pareto distribution
+   std_pareto(a,b) is the standard deviation of the Pareto distribution
                    with parameters a and b
-   kurpoisson(m)   is the kurtosis coefficient of the Poisson distribution
+   kurtosis_poisson(m) is the kurtosis coefficient of the Poisson distribution
                    with mean m
 
 Note: the Cauchy model has no moments, in this case only the density and
-      the distribution functions, 'dencauchy' and 'discauchy', are defined.
+      the distribution functions, 'pdf_cauchy' and 'cdf_cauchy', are defined.
 
    
 Code tested with Maxima 5.9.2
@@ -82,7 +82,8 @@ www.biomates.net
       The documentation has been rewritten in texi format (distrib.texi)
 2006, january: some code cleaning in rcauchy (compiling problems with tan(3.1415), now tan(float(%pi))),
       denlogn, dislogn, dencontu and rdiscu.
-2006, january: some corrections so that with float arguments functions give float results
+2006, january: some corrections so that with float arguments, functions give float results
+2006, july: renamed some functions.
 */
 
 /* Sets the random state according to the computer clock time */
@@ -192,58 +193,58 @@ controliii(n1,n2,n):=block([t:n1+n2],
 
 
 
-dennormal(x,m,s):=block([cp:control1(s)],
+pdf_normal(x,m,s):=block([cp:control1(s)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('dennormal,[x,m,s])),
+   if cp=0 then return(funmake('pdf_normal,[x,m,s])),
    exp(-(x-m)^2/(2*s^2))/(sqrt(2*%pi)*s)  )$
 
-disnormal(x,m,s):=block([cp:control1(s)],
+cdf_normal(x,m,s):=block([cp:control1(s)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('disnormal,[x,m,s])),
+   if cp=0 then return(funmake('cdf_normal,[x,m,s])),
    1/2+erf((x-m)/(s*sqrt(2)))/2  )$
 
-qnormal(q,m,s):=block([cp:control1(s), fq:float(q), cq:controlq(q)],
+quantile_normal(q,m,s):=block([cp:control1(s), fq:float(q), cq:controlq(q)],
    if cp=-1 or cq=-1 then error("Illegal parameter"),
-   if cp=0 or cq=0 then return(funmake('qnormal,[q,m,s])),
+   if cp=0 or cq=0 then return(funmake('quantile_normal,[q,m,s])),
    if fq=0.0 then return('minf),
    if fq=1.0 then return('inf),
    if numberp(q) and numberp(m) and numberp(s) and
       (numer or ?floatp(q) or ?floatp(m) or ?floatp(s))
       then return(m + s * ?ppnd16(fq)),
-   funmake('qnormal,[q,m,s]))$
+   funmake('quantile_normal,[q,m,s]))$
 
-meannormal(m,s):=block([cp:control1(s)],
+mean_normal(m,s):=block([cp:control1(s)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('meannormal,[m,s])),
+   if cp=0 then return(funmake('mean_normal,[m,s])),
    m  )$
 
-varnormal(m,s):=block([cp:control1(s)],
+var_normal(m,s):=block([cp:control1(s)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('varnormal,[m,s])),
+   if cp=0 then return(funmake('var_normal,[m,s])),
    s^2  )$
 
-stdnormal(m,s):=block([cp:control1(s)],
+std_normal(m,s):=block([cp:control1(s)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('stdnormal,[m,s])),
+   if cp=0 then return(funmake('std_normal,[m,s])),
    s  )$
 
-skwnormal(m,s):=block([cp:control1(s)],
+skewness_normal(m,s):=block([cp:control1(s)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('skwnormal,[m,s])),
+   if cp=0 then return(funmake('skewness_normal,[m,s])),
    0  )$
 
-kurnormal(m,s):=block([cp:control1(s)],
+kurtosis_normal(m,s):=block([cp:control1(s)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('kurnormal,[m,s])),
+   if cp=0 then return(funmake('kurtosis_normal,[m,s])),
    0  )$
 
 /* Implemented algorithms: box_mueller, inverse.
    More info in numdistrib.lisp */
-rnormal(m,s,[num]):=block([cp:control1(s),cn,no],
+random_normal(m,s,[num]):=block([cp:control1(s),cn,no],
    if length(num) = 0 then no: 0 else no: num[1],
    cn: controlib(no),
    if cp=-1 or cn=-1 then error("Illegal parameter"),
-   if cp=0 or cn=0 then return(funmake('rnormal,append([m,s],num))),
+   if cp=0 or cn=0 then return(funmake('random_normal,append([m,s],num))),
    m + s * ?rndnormal(no) )$
 
 
@@ -252,15 +253,15 @@ rnormal(m,s,[num]):=block([cp:control1(s),cn,no],
 
 
 
-denstudent(x,n):=block([cp:control1(n),fn,fx],
+pdf_student_t(x,n):=block([cp:control1(n),fn,fx],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('denstudent,[x,n])),
+   if cp=0 then return(funmake('pdf_student_t,[x,n])),
    gamma((n+1)/2) * (1+x*x/n)^(-(n+1)/2) / (sqrt(n*%pi) * gamma(n/2)) )$
 
 /* R: pt(x,n) */
-disstudent(x,n):=block([cp:control1(n),fn,fx],
+cdf_student_t(x,n):=block([cp:control1(n),fn,fx],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('disstudent,[x,n])),
+   if cp=0 then return(funmake('cdf_student_t,[x,n])),
    if sign(x)='zero then return(1/2),
    if numberp(x) and numberp(n) and 
       (numer or ?floatp(x) or ?floatp(n))
@@ -269,12 +270,12 @@ disstudent(x,n):=block([cp:control1(n),fn,fx],
             if x>0
               then return(1.0 - ?ibeta(fn/(fn+fx*fx),fn/2,0.5) / 2)
               else return(?ibeta(fn/(fn+fx*fx),fn/2,0.5) / 2)  ),
-   funmake('disstudent,[x,n]) )$
+   funmake('cdf_student_t,[x,n]) )$
 
 /* R: qt(q,n) */
-qstudent(q,n):=block([cp:control1(n), cq:controlq(q), fq:float(q), aux, sgn],
+quantile_student_t(q,n):=block([cp:control1(n), cq:controlq(q), fq:float(q), aux, sgn],
    if cp=-1 or cq=-1 then error("Illegal parameter"),
-   if cp=0 or cq=0 then return(funmake('qstudent,[q,n])),
+   if cp=0 or cq=0 then return(funmake('quantile_student_t,[q,n])),
    if fq=0.0 then return('minf),
    if fq=1.0 then return('inf),
    if fq=0.5 then return(0),
@@ -286,48 +287,48 @@ qstudent(q,n):=block([cp:control1(n), cq:controlq(q), fq:float(q), aux, sgn],
               else (aux : 2*(1-fq),
                     sgn : 1),
            sgn*sqrt(n*(1 / ?iibeta(aux,float(n/2),0.5)-1))  )
-      else funmake('qstudent,[q,n]) )$
+      else funmake('quantile_student_t,[q,n]) )$
 
-meanstudent(n):=block([cp:control1(n)],
+mean_student_t(n):=block([cp:control1(n)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('meanstudent,[n])),
+   if cp=0 then return(funmake('mean_student_t,[n])),
    0  )$
 
-varstudent(n):=block([cp:control1(n)],
+var_student_t(n):=block([cp:control1(n)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('varstudent,[n])),
+   if cp=0 then return(funmake('var_student_t,[n])),
    if sign(n-2)='pos
       then return(n / (n-2))
       else if member(sign(n-2),['nz,'neg,'zero])
               then error("Illegal parameter"),
-   funmake('varstudent,[n])  )$
+   funmake('var_student_t,[n])  )$
 
-stdstudent(n):=block([cp:control1(n-2)],
+std_student_t(n):=block([cp:control1(n-2)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('stdstudent,[n])),
+   if cp=0 then return(funmake('std_student_t,[n])),
    sqrt(n / (n-2))  )$
 
-skwstudent(n):=block([cp:control1(n-3)],
+skewness_student_t(n):=block([cp:control1(n-3)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('skwstudent,[n])),
+   if cp=0 then return(funmake('skewness_student_t,[n])),
    0  )$
 
-kurstudent(n):=block([cp:control1(n-4)],
+kurtosis_student_t(n):=block([cp:control1(n-4)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('kurstudent,[n])),
+   if cp=0 then return(funmake('kurtosis_student_t,[n])),
    6/(n-4)  )$
 
 /* Implemented algorithms: ratio, inverse.
    More info in numdistrib.lisp */
-rstudent(n,[num]):=block([cp:control1(n),cn,no,fn],
+random_student_t(n,[num]):=block([cp:control1(n),cn,no,fn],
    if length(num) = 0 then no: 0 else no: num[1],
    cn: controlib(no),
    if cp=-1 or cn=-1 then error("Illegal parameter"),
-   if cp=0 or cn=0 then return(funmake('rstudent,append([n],num))),
+   if cp=0 or cn=0 then return(funmake('random_student_t,append([n],num))),
    fn: float(n),
    if numberp(fn)
       then return(?rndstudent(fn,no)),
-   funmake('rstudent,append([n],num)) )$
+   funmake('random_student_t,append([n],num)) )$
 
 
 /*         CHI-SQUARE (OR PEARSON'S)  DISTRIBUTION          */
@@ -335,33 +336,33 @@ rstudent(n,[num]):=block([cp:control1(n),cn,no,fn],
 
 
 
-denchi2(x,n):=dengamma(x,n/2,2)$
+pdf_chi2(x,n):=pdf_gamma(x,n/2,2)$
 
-dischi2(x,n):=disgamma(x,n/2,2)$
+cdf_chi2(x,n):=cdf_gamma(x,n/2,2)$
 
-qchi2(q,n):=qgamma(q,n/2,2)$
+quantile_chi2(q,n):=quantile_gamma(q,n/2,2)$
 
-meanchi2(n):=meangamma(n/2,2)$
+mean_chi2(n):=mean_gamma(n/2,2)$
 
-varchi2(n):=vargamma(n/2,2)$
+var_chi2(n):=var_gamma(n/2,2)$
 
-stdchi2(n):=stdgamma(n/2,2)$
+std_chi2(n):=std_gamma(n/2,2)$
 
-skwchi2(n):=skwgamma(n/2,2)$
+skewness_chi2(n):=skewness_gamma(n/2,2)$
 
-kurchi2(n):=kurgamma(n/2,2)$
+kurtosis_chi2(n):=kurtosis_gamma(n/2,2)$
 
 /* Implemented algorithms: ahrens_cheng, inverse.
    More info in numdistrib.lisp */
-rchi2(n,[num]):=block([cp:control1(n),cn,no,fn],
+random_chi2(n,[num]):=block([cp:control1(n),cn,no,fn],
    if length(num) = 0 then no: 0 else no: num[1],
    cn: controlib(no),
    if cp=-1 or cn=-1 then error("Illegal parameter"),
-   if cp=0 or cn=0 then return(funmake('rchi2,append([n],num))),
+   if cp=0 or cn=0 then return(funmake('random_chi2,append([n],num))),
    fn: float(n),
    if numberp(fn)
       then return(?rndchi2(fn,no)),
-   funmake('rchi2,append([n],num)) )$
+   funmake('random_chi2,append([n],num)) )$
 
 
 
@@ -369,96 +370,96 @@ rchi2(n,[num]):=block([cp:control1(n),cn,no,fn],
 
 
 
-denf(x,m,n):=block([cp:control2(m,n)],
+pdf_f(x,m,n):=block([cp:control2(m,n)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('denf,[x,m,n])),
+   if cp=0 then return(funmake('pdf_f,[x,m,n])),
    if member(sign(x), ['nz,'neg,'zero])
       then 0
       else if sign(x)='pos
               then gamma((m+n)/2)*(m/n)^(m/2)*x^(m/2-1)*(1+m*x/n)^(-(m+n)/2) /
                     (gamma(m/2)*gamma(n/2))
-              else funmake('denf,[x,m,n]) )$
+              else funmake('pdf_f,[x,m,n]) )$
 
-disf(x,m,n):=block([cp:control2(m,n)],
+cdf_f(x,m,n):=block([cp:control2(m,n)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('disf,[x,m,n])),
+   if cp=0 then return(funmake('cdf_f,[x,m,n])),
    if member(sign(x), ['nz,'neg,'zero])
       then return(0)
       else if numberp(x) and x>0 and numberp(m) and numberp(n) and 
               (numer or ?floatp(x) or ?floatp(m) or ?floatp(n))
               then return(1-?ibeta(float(n/(n+m*x)),float(n/2),float(m/2))),
-   funmake('disf,[x,m,n]) )$
+   funmake('cdf_f,[x,m,n]) )$
 
 /* R: qf(q,m,n) */
-qf(q,m,n):=block([cp:control2(m,n), cq:controlq(q), fq:float(q)],
+quantile_f(q,m,n):=block([cp:control2(m,n), cq:controlq(q), fq:float(q)],
    if cp=-1 or cq=-1 then error("Illegal parameter"),
-   if cp=0 or cq=0 then return(funmake('qf,[q,m,n])),
+   if cp=0 or cq=0 then return(funmake('quantile_f,[q,m,n])),
    if fq=0.0 then return(0),
    if fq=1.0 then return('inf),
    if numberp(q) and numberp(m) and numberp(n) and
       (numer or ?floatp(q) or ?floatp(m) or ?floatp(n))
       then n * (1 / ?iibeta(1-fq, float(n/2), float(m/2)) - 1) / m
-      else funmake('qf,[q,m,n]) )$
+      else funmake('quantile_f,[q,m,n]) )$
 
-meanf(m,n):=block([cp:control2(m,n)],
+mean_f(m,n):=block([cp:control2(m,n)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('meanf,[m,n])),
+   if cp=0 then return(funmake('mean_f,[m,n])),
    if sign(n-2)='pos
       then return(n/(n-2))
       else if member(sign(n-2),['nz,'neg,'zero])
               then error("Illegal parameter"),
-   funmake('meanf,[m,n])  )$
+   funmake('mean_f,[m,n])  )$
 
-varf(m,n):=block([cp:control2(m,n)],
+var_f(m,n):=block([cp:control2(m,n)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('varf,[m,n])),
+   if cp=0 then return(funmake('var_f,[m,n])),
    if sign(n-4)='pos
       then return(2*n*n*(m+n-2)/(m*(n-2)*(n-2)*(n-4)))
       else if member(sign(n-4),['nz,'neg,'zero])
               then error("Illegal parameter"),
-   funmake('varf,[m,n])  )$
+   funmake('var_f,[m,n])  )$
 
-stdf(m,n):=block([cp:control2(m,n)],
+std_f(m,n):=block([cp:control2(m,n)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('stdf,[m,n])),
+   if cp=0 then return(funmake('std_f,[m,n])),
    if sign(n-4)='pos
       then return(sqrt(2*n*n*(m+n-2)/(m*(n-2)*(n-2)*(n-4))))
       else if member(sign(n-4),['nz,'neg,'zero])
               then error("Illegal parameter"),
-   funmake('stdf,[m,n])  )$
+   funmake('std_f,[m,n])  )$
 
-skwf(m,n):=block([cp:control2(m,n)],
+skewness_f(m,n):=block([cp:control2(m,n)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('skwf,[m,n])),
+   if cp=0 then return(funmake('skewness_f,[m,n])),
    if sign(n-6)='pos
       then return((2*m+n-2)*sqrt(8*(n-4))/(sqrt(m*(m+n-2))*(n-6)))
       else if member(sign(n-6),['nz,'neg,'zero])
               then error("Illegal parameter"),
-   funmake('skwf,[m,n])  )$
+   funmake('skewness_f,[m,n])  )$
 
-kurf(m,n):=block([cp:control2(m,n)],
+kurtosis_f(m,n):=block([cp:control2(m,n)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('kurf,[m,n])),
+   if cp=0 then return(funmake('kurtosis_f,[m,n])),
    if sign(n-8)='pos
       then return(12*((n-2)*(n-2)*(n-4)+m*(m+n-2)*(5*n-22)) /
                   (m*(n-6)*(n-8)*(m+n-2)))
       else if member(sign(n-8),['nz,'neg,'zero])
               then error("Illegal parameter"),
-   funmake('kurf,[m,n])  )$
+   funmake('kurtosis_f,[m,n])  )$
 
 
 /* Implemented algorithms: ratio, inverse.
    More info in numdistrib.lisp */
-rf(m,n,[num]):=block([cp:control2(m,n),cn,no,fm,fn],
+random_f(m,n,[num]):=block([cp:control2(m,n),cn,no,fm,fn],
    if length(num) = 0 then no: 0 else no: num[1],
    cn: controlib(no),
    if cp=-1 or cn=-1 then error("Illegal parameter"),
-   if cp=0 or cn=0 then return(funmake('rf,append([m,n],num))),
+   if cp=0 or cn=0 then return(funmake('random_f,append([m,n],num))),
    fm: float(m),
    fn: float(n),
    if numberp(fm) and numberp(fn)
       then return(?rndf(fm,fn,no)),
-   funmake('rf,append([m,n],num)) )$
+   funmake('random_f,append([m,n],num)) )$
 
 
 
@@ -467,33 +468,33 @@ rf(m,n,[num]):=block([cp:control2(m,n),cn,no,fm,fn],
 
 
 
-denexp(x,m):=denweibull(x,1,1/m)$
+pdf_exp(x,m):=pdf_weibull(x,1,1/m)$
 
-disexp(x,m):=disweibull(x,1,1/m)$
+cdf_exp(x,m):=cdf_weibull(x,1,1/m)$
 
-qexp(q,m):=qweibull(q,1,1/m)$
+quantile_exp(q,m):=quantile_weibull(q,1,1/m)$
 
-meanexp(m):=meanweibull(1,1/m)$
+mean_exp(m):=mean_weibull(1,1/m)$
 
-varexp(m):=varweibull(1,1/m)$
+var_exp(m):=var_weibull(1,1/m)$
 
-stdexp(m):=stdweibull(1,1/m)$
+std_exp(m):=std_weibull(1,1/m)$
 
-skwexp(m):=skwweibull(1,1/m)$
+skewness_exp(m):=skewness_weibull(1,1/m)$
 
-kurexp(m):=kurweibull(1,1/m)$
+kurtosis_exp(m):=kurtosis_weibull(1,1/m)$
 
 /* Implemented algorithms: ahrens_cheng, ahrens_dieter, inverse.
    More info in numdistrib.lisp */
-rexp(m,[num]):=block([cp:control1(m),cn,no,fm],
+random_exp(m,[num]):=block([cp:control1(m),cn,no,fm],
    if length(num) = 0 then no: 0 else no: num[1],
    cn: controlib(no),
    if cp=-1 or cn=-1 then error("Illegal parameter"),
-   if cp=0 or cn=0 then return(funmake('rexp,append([m],num))),
+   if cp=0 or cn=0 then return(funmake('random_exp,append([m],num))),
    fm: float(m),
    if numberp(fm)
       then return(?rndexp(fm,no)),
-   funmake('rexp,append([m],num)) )$
+   funmake('random_exp,append([m],num)) )$
 
 
 
@@ -501,69 +502,69 @@ rexp(m,[num]):=block([cp:control1(m),cn,no,fm],
 
 
 
-denlogn(x,m,s):=block([cp:control1(s)],
+pdf_lognormal(x,m,s):=block([cp:control1(s)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('denlogn,[x,m,s])),
+   if cp=0 then return(funmake('pdf_lognormal,[x,m,s])),
    if member(sign(x), ['nz,'neg,'zero])
       then 0
       else if sign(x)='pos
               then exp(-(log(x)-m)^2/(2*s^2))/(sqrt(2*%pi)*s*x)
-              else funmake('denlogn,[x,m,s]) )$
+              else funmake('pdf_lognormal,[x,m,s]) )$
 
-dislogn(x,m,s):=block([cp:control1(s)],
+cdf_lognormal(x,m,s):=block([cp:control1(s)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('dislogn,[x,m,s])),
+   if cp=0 then return(funmake('cdf_lognormal,[x,m,s])),
    if member(sign(x), ['nz,'neg,'zero])
       then 0
       else if sign(x)='pos
               then 1/2+erf((log(x)-m)/(s*sqrt(2)))/2
-              else funmake('dislogn,[x,m,s])  )$
+              else funmake('cdf_lognormal,[x,m,s])  )$
 
 /* R: qlnorm(p,m,s)*/
-qlogn(q,m,s):=block([cp:control1(s), cq:controlq(q), fq:float(q)],
+quantile_lognormal(q,m,s):=block([cp:control1(s), cq:controlq(q), fq:float(q)],
    if cp=-1 or cq=-1 then error("Illegal parameter"),
-   if cp=0 or cq=0 then return(funmake('qlogn,[q,m,s])),
+   if cp=0 or cq=0 then return(funmake('quantile_lognormal,[q,m,s])),
    if fq=0.0 then return(0),
    if fq=1.0 then return('inf),
    if numberp(q) and numberp(m) and numberp(s) and
       (numer or ?floatp(q) or ?floatp(m) or ?floatp(s))
       then return(exp(m + s * ?ppnd16(float(q)))),
-   funmake('qlogn,[q,m,s]))$
+   funmake('quantile_lognormal,[q,m,s]))$
 
-meanlogn(m,s):=block([cp:control1(s)],
+mean_lognormal(m,s):=block([cp:control1(s)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('meanlogn,[m,s])),
+   if cp=0 then return(funmake('mean_lognormal,[m,s])),
    exp(m+s^2/2)  )$
 
-varlogn(m,s):=block([cp:control1(s)],
+var_lognormal(m,s):=block([cp:control1(s)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('varlogn,[m,s])),
+   if cp=0 then return(funmake('var_lognormal,[m,s])),
    exp(2*m+s^2)*(exp(s^2)-1)  )$
 
-stdlogn(m,s):=block([cp:control1(s)],
+std_lognormal(m,s):=block([cp:control1(s)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('stdlogn,[m,s])),
+   if cp=0 then return(funmake('std_lognormal,[m,s])),
    exp(m+s^2/2)*sqrt(exp(s^2)-1)  )$
 
-skwlogn(m,s):=block([cp:control1(s)],
+skewness_lognormal(m,s):=block([cp:control1(s)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('skwlogn,[m,s])),
+   if cp=0 then return(funmake('skewness_lognormal,[m,s])),
    (exp(s^2)+2)*sqrt(exp(s^2)-1)  )$
 
-kurlogn(m,s):=block([cp:control1(s)],
+kurtosis_lognormal(m,s):=block([cp:control1(s)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('kurlogn,[m,s])),
+   if cp=0 then return(funmake('kurtosis_lognormal,[m,s])),
    exp(4*s^2)+2*exp(3*s^2)+3*exp(2*s^2)-3  )$
 
 /* Implemented algorithms: box_mueller, inverse.
    To select the algorithm, use the global variable
-   'rnormal_algorithm'.
+   'random_normal_algorithm'.
    More info in numdistrib.lisp */
-rlogn(m,s,[num]):=block([cp:control1(s),cn,no],
+random_lognormal(m,s,[num]):=block([cp:control1(s),cn,no],
    if length(num) = 0 then no: 0 else no: num[1],
    cn: controlib(no),
    if cp=-1 or cn=-1 then error("Illegal parameter"),
-   if cp=0 or cn=0 then return(funmake('rlogn,append([m,s],num))),
+   if cp=0 or cn=0 then return(funmake('random_lognormal,append([m,s],num))),
    exp(m + s * ?rndnormal(no)) )$
 
 
@@ -572,74 +573,74 @@ rlogn(m,s,[num]):=block([cp:control1(s),cn,no],
 
 
 
-dengamma(x,a,b):=block([cp:control2(a,b)],
+pdf_gamma(x,a,b):=block([cp:control2(a,b)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('dengamma,[x,a,b])),
+   if cp=0 then return(funmake('pdf_gamma,[x,a,b])),
    if member(sign(x), ['nz,'neg,'zero])
       then return(0)
       else if sign(x)='pos
               then return(x^(a-1)*exp(-x/b)/(b^a*gamma(a))),
-   funmake('dengamma,[x,a,b]) )$
+   funmake('pdf_gamma,[x,a,b]) )$
 
 /* R: pgamma(x,a,1/b) */
-disgamma(x,a,b):=block([cp:control2(a,b)],
+cdf_gamma(x,a,b):=block([cp:control2(a,b)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('disgamma,[x,a,b])),
+   if cp=0 then return(funmake('cdf_gamma,[x,a,b])),
    if member(sign(x), ['nz,'neg,'zero])
       then return(0)
       else if numberp(x) and numberp(a) and numberp(b) and
               (numer or ?floatp(x) or ?floatp(a) or ?floatp(b))
               then return(?igamma(float(x/b),float(a))),
-   funmake('disgamma,[x,a,b])  )$
+   funmake('cdf_gamma,[x,a,b])  )$
 
 /* R: qgamma(q,a,1/b) */
-qgamma(q,a,b):=block([cp:control2(a,b), cq:controlq(q), fq:float(q)],
+quantile_gamma(q,a,b):=block([cp:control2(a,b), cq:controlq(q), fq:float(q)],
    if cp=-1 or cq=-1 then error("Illegal parameter"),
-   if cp=0 or cq=0 then return(funmake('qgamma,[q,a,b])),
+   if cp=0 or cq=0 then return(funmake('quantile_gamma,[q,a,b])),
    if fq=0.0 then return(0),
    if fq=1.0 then return('inf),
    if numberp(q) and numberp(a) and numberp(b) and
       (numer or ?floatp(q) or ?floatp(a) or ?floatp(b))
       then return(b * ?iigamma(fq, float(a))),
-   funmake('qgamma,[q,a,b])  )$
+   funmake('quantile_gamma,[q,a,b])  )$
 
-meangamma(a,b):=block([cp:control2(a,b)],
+mean_gamma(a,b):=block([cp:control2(a,b)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('meangamma,[a,b])),
+   if cp=0 then return(funmake('mean_gamma,[a,b])),
    a*b  )$
 
-vargamma(a,b):=block([cp:control2(a,b)],
+var_gamma(a,b):=block([cp:control2(a,b)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('vargamma,[a,b])),
+   if cp=0 then return(funmake('var_gamma,[a,b])),
    a*b*b  )$
 
-stdgamma(a,b):=block([cp:control2(a,b)],
+std_gamma(a,b):=block([cp:control2(a,b)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('stdgamma,[a,b])),
+   if cp=0 then return(funmake('std_gamma,[a,b])),
    sqrt(a*b*b)  )$
 
-skwgamma(a,b):=block([cp:control2(a,b)],
+skewness_gamma(a,b):=block([cp:control2(a,b)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('skwgamma,[a,b])),
+   if cp=0 then return(funmake('skewness_gamma,[a,b])),
    2/sqrt(a)  )$
 
-kurgamma(a,b):=block([cp:control2(a,b)],
+kurtosis_gamma(a,b):=block([cp:control2(a,b)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('kurgamma,[a,b])),
+   if cp=0 then return(funmake('kurtosis_gamma,[a,b])),
    6/a  )$
 
 /* Implemented algorithms: ahrens_cheng, inverse.
    More info in numdistrib.lisp */
-rgamma(a,b,[num]):=block([cp:control2(a,b),cn,no,fa,fb],
+random_gamma(a,b,[num]):=block([cp:control2(a,b),cn,no,fa,fb],
    if length(num) = 0 then no: 0 else no: num[1],
    cn: controlib(no),
    if cp=-1 or cn=-1 then error("Illegal parameter"),
-   if cp=0 or cn=0 then return(funmake('rgamma,append([a,b],num))),
+   if cp=0 or cn=0 then return(funmake('random_gamma,append([a,b],num))),
    fa: float(a),
    fb: float(b),
    if numberp(fa) and numberp(fb)
       then return(?rndgamma(fa,fb,no)),
-   funmake('rgamma,append([a,b],num)) )$
+   funmake('random_gamma,append([a,b],num)) )$
 
 
 
@@ -647,19 +648,19 @@ rgamma(a,b,[num]):=block([cp:control2(a,b),cn,no,fa,fb],
 
 
 
-denbeta(x,a,b):=block([cp:control2(a,b)],
+pdf_beta(x,a,b):=block([cp:control2(a,b)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('denbeta,[x,a,b])),
+   if cp=0 then return(funmake('pdf_beta,[x,a,b])),
    if member(sign(x), ['nz,'neg,'zero]) or member(sign(x-1), ['pos,'pz,'zero])
       then return(0)
       else if sign(x)='pos and sign(x-1)='neg
               then return(x^(a-1)*(1-x)^(b-1)/beta(a,b)),
-   funmake('denbeta,[x,a,b]) )$
+   funmake('pdf_beta,[x,a,b]) )$
 
 /* R: pbeta(x,a,b) */
-disbeta(x,a,b):=block([cp:control2(a,b)],
+cdf_beta(x,a,b):=block([cp:control2(a,b)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('disbeta,[x,a,b])),
+   if cp=0 then return(funmake('cdf_beta,[x,a,b])),
    if member(sign(x-1), ['pos,'pz,'zero])
       then return(1)
       else if member(sign(x), ['nz,'neg,'zero])
@@ -667,56 +668,56 @@ disbeta(x,a,b):=block([cp:control2(a,b)],
               else if numberp(x) and numberp(a) and numberp(b) and
                       (numer or ?floatp(x) or ?floatp(a) or ?floatp(b))
                       then return(?ibeta(float(x),float(a),float(b))),
-   funmake('disbeta,[x,a,b])  )$
+   funmake('cdf_beta,[x,a,b])  )$
 
 /* R: qbeta(q,a,b) */
-qbeta(q,a,b):=block([cp:control2(a,b), cq:controlq(q), fq:float(q)],
+quantile_beta(q,a,b):=block([cp:control2(a,b), cq:controlq(q), fq:float(q)],
    if cp=-1 or cq=-1 then error("Illegal parameter"),
-   if cp=0 or cq=0 then return(funmake('qbeta,[q,a,b])),
+   if cp=0 or cq=0 then return(funmake('quantile_beta,[q,a,b])),
    if fq=0.0 then return(0),
    if fq=1.0 then return(1),
    if numberp(q) and numberp(a) and numberp(b) and
       (numer or ?floatp(q) or ?floatp(a) or ?floatp(b))
       then return(?iibeta(fq, float(a), float(b))),
-   funmake('qbeta,[q,a,b])  )$
+   funmake('quantile_beta,[q,a,b])  )$
 
-meanbeta(a,b):=block([cp:control2(a,b)],
+mean_beta(a,b):=block([cp:control2(a,b)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('meanbeta,[a,b])),
+   if cp=0 then return(funmake('mean_beta,[a,b])),
    a/(a+b)  )$
 
-varbeta(a,b):=block([cp:control2(a,b)],
+var_beta(a,b):=block([cp:control2(a,b)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('varbeta,[a,b])),
+   if cp=0 then return(funmake('var_beta,[a,b])),
    a*b/((a+b)^2*(a+b+1))  )$
 
-stdbeta(a,b):=block([cp:control2(a,b)],
+std_beta(a,b):=block([cp:control2(a,b)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('stdbeta,[a,b])),
+   if cp=0 then return(funmake('std_beta,[a,b])),
    sqrt(a*b/((a+b)^2*(a+b+1)))  )$
 
-skwbeta(a,b):=block([cp:control2(a,b)],
+skewness_beta(a,b):=block([cp:control2(a,b)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('skwbeta,[a,b])),
+   if cp=0 then return(funmake('skewness_beta,[a,b])),
    2*(b-a)*sqrt(a+b+1)/(sqrt(a*b)*(a+b+2))  )$
 
-kurbeta(a,b):=block([cp:control2(a,b)],
+kurtosis_beta(a,b):=block([cp:control2(a,b)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('kurbeta,[a,b])),
+   if cp=0 then return(funmake('kurtosis_beta,[a,b])),
    3*(a+b+1)*(2*(a+b)^2+a*b*(a+b-6)) / (a*b*(a+b+2)*(a+b+3)) - 3  )$
 
 /* Implemented algorithms: cheng, ratio, inverse.
    More info in numdistrib.lisp */
-rbeta(a,b,[num]):=block([cp:control2(a,b),cn,no,fa,fb],
+random_beta(a,b,[num]):=block([cp:control2(a,b),cn,no,fa,fb],
    if length(num) = 0 then no: 0 else no: num[1],
    cn: controlib(no),
    if cp=-1 or cn=-1 then error("Illegal parameter"),
-   if cp=0 or cn=0 then return(funmake('rbeta,append([a,b],num))),
+   if cp=0 or cn=0 then return(funmake('random_beta,append([a,b],num))),
    fa: float(a),
    fb: float(b),
    if numberp(fa) and numberp(fb)
       then return(?rndbeta(fa,fb,no)),
-   funmake('rbeta,append([a,b],num)) )$
+   funmake('random_beta,append([a,b],num)) )$
 
 
 
@@ -724,227 +725,227 @@ rbeta(a,b,[num]):=block([cp:control2(a,b),cn,no,fa,fb],
 
 
 
-dencontu(x,a,b):=block([cp:control1(b-a)],
+pdf_continuous_uniform(x,a,b):=block([cp:control1(b-a)],
    if cp=-1 then error("Illegal parameter"),
    if cp=0 or sign(x-a)='pnz or sign(x-b)='pnz
-      then return(funmake('dencontu,[x,a,b])),
+      then return(funmake('pdf_continuous_uniform,[x,a,b])),
    if member(sign(x-a), ['nz,'neg,'zero]) or member(sign(x-b), ['pos,'pz,'zero])
       then 0
       else if sign(x-a) = 'pos and sign(x-b) = 'pos
               then 1/(b-a)
-              else funmake('dencontu,[x,a,b]) )$
+              else funmake('pdf_continuous_uniform,[x,a,b]) )$
 
-discontu(x,a,b):=block([cp:control1(b-a)],
+cdf_continuous_uniform(x,a,b):=block([cp:control1(b-a)],
    if cp=-1 then error("Illegal parameter"),
    if cp=0 or sign(x-a)='pnz or sign(x-b)='pnz
-      then return(funmake('discontu,[x,a,b])),
+      then return(funmake('cdf_continuous_uniform,[x,a,b])),
    if member(sign(x-a), ['neg,'nz,'zero])
       then return(0)
       else if member(sign(x-b), ['neg,'nz,'zero])
               then return((x-a)/(b-a))
               else if sign(x-b)='pos
                       then return(1),
-   funmake('discontu,[x,a,b])  )$
+   funmake('cdf_continuous_uniform,[x,a,b])  )$
 
-qcontu(q,a,b):=block([cp:control1(b-a), cq:controlq(q), fq:float(q)],
+quantile_continuous_uniform(q,a,b):=block([cp:control1(b-a), cq:controlq(q), fq:float(q)],
    if cp=-1 or cq=-1 then error("Illegal parameter"),
    if cp=0 or cq=0
-      then return(funmake('qcontu,[q,a,b])),
+      then return(funmake('quantile_continuous_uniform,[q,a,b])),
    a + q * (b-a)  )$
 
-meancontu(a,b):=block([cp:control1(b-a)],
+mean_continuous_uniform(a,b):=block([cp:control1(b-a)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('meancontu,[a,b])),
+   if cp=0 then return(funmake('mean_continuous_uniform,[a,b])),
    (a+b)/2  )$
 
-varcontu(a,b):=block([cp:control1(b-a)],
+var_continuous_uniform(a,b):=block([cp:control1(b-a)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('varcontu,[a,b])),
+   if cp=0 then return(funmake('var_continuous_uniform,[a,b])),
    (b-a)^2/12  )$
 
-stdcontu(a,b):=block([cp:control1(b-a)],
+std_continuous_uniform(a,b):=block([cp:control1(b-a)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('stdcontu,[a,b])),
+   if cp=0 then return(funmake('std_continuous_uniform,[a,b])),
    (b-a)/(2*sqrt(3))  )$
 
-skwcontu(a,b):=block([cp:control1(b-a)],
+skewness_continuous_uniform(a,b):=block([cp:control1(b-a)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('skwcontu,[a,b])),
+   if cp=0 then return(funmake('skewness_continuous_uniform,[a,b])),
    0  )$
 
-kurcontu(a,b):=block([cp:control1(b-a)],
+kurtosis_continuous_uniform(a,b):=block([cp:control1(b-a)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('kurcontu,[a,b])),
+   if cp=0 then return(funmake('kurtosis_continuous_uniform,[a,b])),
    -6/5  )$
 
 /* This is a direct application of the maxima
    random function. Make describe(random) for details */
-rcontu(a,b,[num]):=block([cp:control1(b-a),cn,no,f,listarith:true],
+random_continuous_uniform(a,b,[num]):=block([cp:control1(b-a),cn,no,f,listarith:true],
    if length(num) = 0 then no: 0 else no: num[1],
    cn: controlib(no),
    if cp=-1 or cn=-1 then error("Illegal parameter"),
-   if cp=0 or cn=0 then return(funmake('rcontu,append([a,b],num))),
+   if cp=0 or cn=0 then return(funmake('random_continuous_uniform,append([a,b],num))),
    f: float(b-a),
    if numberp(f)
       then if no=0
               then return(a + random(f))
               else return(a + makelist(random(f),k,1,no)),
-   funmake('rcontu,append([a,b],num)) )$
+   funmake('random_continuous_uniform,append([a,b],num)) )$
 
 
 /*         LOGISTIC DISTRIBUTION          */
 
 
 
-denlog(x,a,b):=block([cp:control1(b),y],
+pdf_logistic(x,a,b):=block([cp:control1(b),y],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('denlog,[x,a,b])),
+   if cp=0 then return(funmake('pdf_logistic,[x,a,b])),
    y:exp((a-x)/b),
    y/(b*(1+y)^2) )$
 
-dislog(x,a,b):=block([cp:control1(b)],
+cdf_logistic(x,a,b):=block([cp:control1(b)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('dislog,[x,a,b])),
+   if cp=0 then return(funmake('cdf_logistic,[x,a,b])),
    1/(1+exp((a-x)/b))  )$
 
-qlog(q,a,b):=block([cp:control1(b), cq:controlq(q), fq:float(q)],
+quantile_logistic(q,a,b):=block([cp:control1(b), cq:controlq(q), fq:float(q)],
    if cp=-1 or cq=-1 then error("Illegal parameter"),
    if cp=0 or cq=0
-      then return(funmake('qlog,[q,a,b])),
+      then return(funmake('quantile_logistic,[q,a,b])),
    if fq=0.0 then return('minf),
    if fq=1.0 then return('inf),
    a - b * log(1/q-1)  )$
 
-meanlog(a,b):=block([cp:control1(b)],
+mean_logistic(a,b):=block([cp:control1(b)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('meanlog,[a,b])),
+   if cp=0 then return(funmake('mean_logistic,[a,b])),
    a  )$
 
-varlog(a,b):=block([cp:control1(b)],
+var_logistic(a,b):=block([cp:control1(b)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('varlog,[a,b])),
+   if cp=0 then return(funmake('var_logistic,[a,b])),
    b*b*%pi*%pi/3  )$
 
-stdlog(a,b):=block([cp:control1(b)],
+std_logistic(a,b):=block([cp:control1(b)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('stdlog,[a,b])),
+   if cp=0 then return(funmake('std_logistic,[a,b])),
    b*%pi/sqrt(3)  )$
 
-skwlog(a,b):=block([cp:control1(b)],
+skewness_logistic(a,b):=block([cp:control1(b)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('skwlog,[a,b])),
+   if cp=0 then return(funmake('skewness_logistic,[a,b])),
    0  )$
 
-kurlog(a,b):=block([cp:control1(b)],
+kurtosis_logistic(a,b):=block([cp:control1(b)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('kurlog,[a,b])),
+   if cp=0 then return(funmake('kurtosis_logistic,[a,b])),
    6/5  )$
 
 /* Only the inverse method is implemented; there
    is no global variable */
-rlog(a,b,[num]):=block([cp:control1(b),cn,no,fa,fb,listarith:true],
+random_logistic(a,b,[num]):=block([cp:control1(b),cn,no,fa,fb,listarith:true],
    if length(num) = 0 then no: 0 else no: num[1],
    cn: controlib(no),
    if cp=-1 or cn=-1 then error("Illegal parameter"),
-   if cp=0 or cn=0 then return(funmake('rlog,append([a,b],num))),
+   if cp=0 or cn=0 then return(funmake('random_logistic,append([a,b],num))),
    fa: float(a),
    fb: float(b),
    if numberp(fa) and numberp(fb)
       then if no=0
               then return(a - b * log(1/random(1.0) - 1.0))
               else return(a - b * map('log,1/makelist(random(1.0),k,1,no) - 1.0)),
-   funmake('rlog,append([a,b],num)) )$
+   funmake('random_logistic,append([a,b],num)) )$
 
 
 /*         PARETO DISTRIBUTION          */
 
 
 
-denpareto(x,a,b):=block([cp:control2(a,b)],
+pdf_pareto(x,a,b):=block([cp:control2(a,b)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('denpareto,[x,a,b])),
+   if cp=0 then return(funmake('pdf_pareto,[x,a,b])),
    if sign(x-b)='pos
       then return(a*b^a*x^(-a-1))
       else if member(sign(x-b), ['nz,'neg,'zero])
               then return(0),
-   funmake('denpareto,[x,a,b]) )$
+   funmake('pdf_pareto,[x,a,b]) )$
 
-dispareto(x,a,b):=block([cp:control2(a,b)],
+cdf_pareto(x,a,b):=block([cp:control2(a,b)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('dispareto,[x,a,b])),
+   if cp=0 then return(funmake('cdf_pareto,[x,a,b])),
    if sign(x-b)='pos
       then return(1-(b/x)^a)
       else if member(sign(x-b), ['nz,'neg,'zero])
               then return(0),
-   funmake('dispareto,[x,a,b])  )$
+   funmake('cdf_pareto,[x,a,b])  )$
 
-qpareto(q,a,b):=block([cp:control2(a,b), cq:controlq(q), fq:float(q)],
+quantile_pareto(q,a,b):=block([cp:control2(a,b), cq:controlq(q), fq:float(q)],
    if cp=-1 or cq=-1 then error("Illegal parameter"),
    if cp=0 or cq=0
-      then return(funmake('qpareto,[q,a,b])),
+      then return(funmake('quantile_pareto,[q,a,b])),
    if fq=0.0 then return(b),
    if fq=1.0 then return('inf),
    b / (1-q)^(1/a)  )$
 
-meanpareto(a,b):=block([cp:control2(a,b)],
+mean_pareto(a,b):=block([cp:control2(a,b)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('meanpareto,[a,b])),
+   if cp=0 then return(funmake('mean_pareto,[a,b])),
    if sign(a-1)='pos
       then return(a*b/(a-1))
       else if member(sign(a-1),['nz,'neg,'zero])
               then error("Illegal parameter"),
-   funmake('meanpareto,[a,b]) )$
+   funmake('mean_pareto,[a,b]) )$
 
-varpareto(a,b):=block([cp:control2(a,b)],
+var_pareto(a,b):=block([cp:control2(a,b)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('varpareto,[a,b])),
+   if cp=0 then return(funmake('var_pareto,[a,b])),
    if sign(a-2)='pos
       then return(a*b*b/((a-2)*(a-1)^2))
       else if member(sign(a-2),['nz,'neg,'zero])
               then error("Illegal parameter"),
-   funmake('varpareto,[a,b]) )$
+   funmake('var_pareto,[a,b]) )$
 
-stdpareto(a,b):=block([cp:control2(a,b)],
+std_pareto(a,b):=block([cp:control2(a,b)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('stdpareto,[a,b])),
+   if cp=0 then return(funmake('std_pareto,[a,b])),
    if sign(a-2)='pos
       then return(b*sqrt(a/(a-2))/(a-1))
       else if member(sign(a-2),['nz,'neg,'zero])
               then error("Illegal parameter"),
-   funmake('stdpareto,[a,b]) )$
+   funmake('std_pareto,[a,b]) )$
 
-skwpareto(a,b):=block([cp:control2(a,b)],
+skewness_pareto(a,b):=block([cp:control2(a,b)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('skwpareto,[a,b])),
+   if cp=0 then return(funmake('skewness_pareto,[a,b])),
    if sign(a-3)='pos
       then return(2*(a+1)*sqrt(a-2)/((a-3)*sqrt(a)))
       else if member(sign(a-3),['nz,'neg,'zero])
               then error("Illegal parameter"),
-   funmake('skwpareto,[a,b]) )$
+   funmake('skewness_pareto,[a,b]) )$
 
-kurpareto(a,b):=block([cp:control2(a,b)],
+kurtosis_pareto(a,b):=block([cp:control2(a,b)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('kurpareto,[a,b])),
+   if cp=0 then return(funmake('kurtosis_pareto,[a,b])),
    if sign(a-4)='pos
       then return((6*(a^3+a^2-6*a-2)) / (a*(a^2-7*a+12)) - 3)
       else if member(sign(a-4),['nz,'neg,'zero])
               then error("Illegal parameter"),
-   funmake('kurpareto,[a,b]) )$
+   funmake('kurtosis_pareto,[a,b]) )$
 
 /* Only the inverse method is implemented; there
    is no global variable */
-rpareto(a,b,[num]):=block([cp:control2(a,b),cn,no,fa,fb,listarith:true],
+random_pareto(a,b,[num]):=block([cp:control2(a,b),cn,no,fa,fb,listarith:true],
    if length(num) = 0 then no: 0 else no: num[1],
    cn: controlib(no),
    if cp=-1 or cn=-1 then error("Illegal parameter"),
-   if cp=0 or cn=0 then return(funmake('rpareto,append([a,b],num))),
+   if cp=0 or cn=0 then return(funmake('random_pareto,append([a,b],num))),
    fa: float(a),
    fb: float(b),
    if numberp(fa) and numberp(fb)
       then if no=0
               then return(b / (1-random(1.0))^(1.0/a))
               else return(b / (1-makelist(random(1.0),k,1,no))^(1.0/a)),
-   funmake('rpareto,append([a,b],num)) )$
+   funmake('random_pareto,append([a,b],num)) )$
 
 
 
@@ -952,74 +953,74 @@ rpareto(a,b,[num]):=block([cp:control2(a,b),cn,no,fa,fb,listarith:true],
 
 
 
-denweibull(x,a,b):=block([cp:control2(a,b)],
+pdf_weibull(x,a,b):=block([cp:control2(a,b)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('denweibull,[x,a,b])),
+   if cp=0 then return(funmake('pdf_weibull,[x,a,b])),
    if member(sign(x), ['nz,'neg,'zero])
       then return(0)
       else if sign(x)='pos
               then return(a/b*(x/b)^(a-1)*exp(-(x/b)^a)),
-   funmake('denweibull,[x,a,b])  )$
+   funmake('pdf_weibull,[x,a,b])  )$
 
-disweibull(x,a,b):=block([cp:control2(a,b)],
+cdf_weibull(x,a,b):=block([cp:control2(a,b)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('disweibull,[x,a,b])),
+   if cp=0 then return(funmake('cdf_weibull,[x,a,b])),
    if member(sign(x), ['nz,'neg,'zero])
       then return(0)
       else if sign(x)='pos
               then return(1-exp(-(x/b)^a)),
-   funmake('disweibull,[x,a,b]) )$
+   funmake('cdf_weibull,[x,a,b]) )$
 
 /* R: qweibull(q,a,b) */
-qweibull(q,a,b):=block([cp:control2(a,b), cq:controlq(q), fq:float(q)],
+quantile_weibull(q,a,b):=block([cp:control2(a,b), cq:controlq(q), fq:float(q)],
    if cp=-1 or cq=-1 then error("Illegal parameter"),
-   if cp=0 or cq=0 then return(funmake('qweibull,[q,a,b])),
+   if cp=0 or cq=0 then return(funmake('quantile_weibull,[q,a,b])),
    if fq=0.0 then return(0),
    if fq=1.0 then return('inf),
    b * (-log(1-q))^(1/a))$
 
-meanweibull(a,b):=block([cp:control2(a,b)],
+mean_weibull(a,b):=block([cp:control2(a,b)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('meanweibull,[a,b])),
+   if cp=0 then return(funmake('mean_weibull,[a,b])),
    gamma(1/a+1)*b   )$
 
-varweibull(a,b):=block([cp:control2(a,b)],
+var_weibull(a,b):=block([cp:control2(a,b)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('varweibull,[a,b])),
+   if cp=0 then return(funmake('var_weibull,[a,b])),
    (gamma(2/a+1)-gamma(1/a+1)^2)*b^2   )$
 
-stdweibull(a,b):=block([cp:control2(a,b)],
+std_weibull(a,b):=block([cp:control2(a,b)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('stdweibull,[a,b])),
+   if cp=0 then return(funmake('std_weibull,[a,b])),
    sqrt((gamma(2/a+1)-gamma(1/a+1)^2))*b  )$
 
-skwweibull(a,b):=block([cp:control2(a,b)],
+skewness_weibull(a,b):=block([cp:control2(a,b)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('skwweibull,[a,b])),
+   if cp=0 then return(funmake('skewness_weibull,[a,b])),
    (gamma(3/a+1)-3*gamma(1/a+1)*gamma(2/a+1)+2*gamma(1/a+1)^3)  /
         (gamma(2/a+1)-gamma(1/a+1)^2)^(3/2)  )$
 
-kurweibull(a,b):=block([cp:control2(a,b)],
+kurtosis_weibull(a,b):=block([cp:control2(a,b)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('kurweibull,[a,b])),
+   if cp=0 then return(funmake('kurtosis_weibull,[a,b])),
    (gamma(4/a+1)-4*gamma(1/a+1)*gamma(3/a+1)+
                        6*gamma(1/a+1)^2*gamma(2/a+1)-3*gamma(1/a+1)^4) /
           (gamma(2/a+1)-gamma(1/a+1)^2)^2 - 3  )$
 
 /* Only the inverse method is implemented; there
    is no global variable */
-rweibull(a,b,[num]):=block([cp:control2(a,b),cn,no,fa,fb,listarith:true],
+random_weibull(a,b,[num]):=block([cp:control2(a,b),cn,no,fa,fb,listarith:true],
    if length(num) = 0 then no: 0 else no: num[1],
    cn: controlib(no),
    if cp=-1 or cn=-1 then error("Illegal parameter"),
-   if cp=0 or cn=0 then return(funmake('rweibull,append([a,b],num))),
+   if cp=0 or cn=0 then return(funmake('random_weibull,append([a,b],num))),
    fa: float(a),
    fb: float(b),
    if numberp(fa) and numberp(fb)
       then if no=0
               then return(b * (-log(random(1.0)))^(1.0/a))
               else return(b * (-map('log,makelist(random(1.0),k,1,no)))^(1.0/a)),
-   funmake('rweibull,append([a,b],num)) )$
+   funmake('random_weibull,append([a,b],num)) )$
 
 
 
@@ -1028,35 +1029,35 @@ rweibull(a,b,[num]):=block([cp:control2(a,b),cn,no,fa,fb,listarith:true],
 
 
 
-denrayleigh(x,b):=denweibull(x,2,1/b)$
+pdf_rayleigh(x,b):=pdf_weibull(x,2,1/b)$
 
-disrayleigh(x,b):=disweibull(x,2,1/b)$
+cdf_rayleigh(x,b):=cdf_weibull(x,2,1/b)$
 
-qrayleigh(q,b):=qweibull(q,2,1/b)$
+quantile_rayleigh(q,b):=quantile_weibull(q,2,1/b)$
 
-meanrayleigh(b):=meanweibull(2,1/b)$
+mean_rayleigh(b):=mean_weibull(2,1/b)$
 
-varrayleigh(b):=varweibull(2,1/b)$
+var_rayleigh(b):=var_weibull(2,1/b)$
 
-stdrayleigh(b):=stdweibull(2,1/b)$
+std_rayleigh(b):=std_weibull(2,1/b)$
 
-skwrayleigh(b):=skwweibull(2,1/b)$
+skewness_rayleigh(b):=skewness_weibull(2,1/b)$
 
-kurrayleigh(b):=kurweibull(2,1/b)$
+kurtosis_rayleigh(b):=kurtosis_weibull(2,1/b)$
 
 /* Only the inverse method is implemented; there
    is no global variable */
-rrayleigh(b,[num]):=block([cp:control1(b),cn,no,fb,listarith:true],
+random_rayleigh(b,[num]):=block([cp:control1(b),cn,no,fb,listarith:true],
    if length(num) = 0 then no: 0 else no: num[1],
    cn: controlib(no),
    if cp=-1 or cn=-1 then error("Illegal parameter"),
-   if cp=0 or cn=0 then return(funmake('rrayleigh,append([b],num))),
+   if cp=0 or cn=0 then return(funmake('random_rayleigh,append([b],num))),
    fb: float(b),
    if numberp(fb)
       then if no=0
               then return(sqrt(-log(random(1.0))) / b)
               else return(sqrt(-map('log,makelist(random(1.0),k,1,no))) / b),
-   funmake('rrayleigh,append([b],num)) )$
+   funmake('random_rayleigh,append([b],num)) )$
 
 
 
@@ -1064,67 +1065,67 @@ rrayleigh(b,[num]):=block([cp:control1(b),cn,no,fb,listarith:true],
 
 
 
-denlaplace(x,a,b):=block([cp:control1(b)],
+pdf_laplace(x,a,b):=block([cp:control1(b)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('denlaplace,[x,a,b])),
+   if cp=0 then return(funmake('pdf_laplace,[x,a,b])),
    exp(-abs(x-a)/b)/(2*b)  )$
 
-dislaplace(x,a,b):=block([cp:control1(b)],
+cdf_laplace(x,a,b):=block([cp:control1(b)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('dislaplace,[x,a,b])),
+   if cp=0 then return(funmake('cdf_laplace,[x,a,b])),
    if member(sign(x-a), ['nz,'neg,'zero])
       then return(1/2*exp((x-a)/b))
       else if sign(x-a)='pos
               then return(1-1/2*exp((a-x)/b)),
-   funmake('dislaplace,[x,a,b]) )$
+   funmake('cdf_laplace,[x,a,b]) )$
 
-qlaplace(q,a,b):=block([cp:control1(b), cq:controlq(q), fq:float(q)],
+quantile_laplace(q,a,b):=block([cp:control1(b), cq:controlq(q), fq:float(q)],
    if cp=-1 or cq=-1 then error("Illegal parameter"),
    if cp=0 or cq=0
-      then return(funmake('qlaplace,[q,a,b])),
+      then return(funmake('quantile_laplace,[q,a,b])),
    if fq=0.0 then return('minf),
    if fq=1.0 then return('inf),
    a - b * signum(2*q-1) * log(1 - signum(2*q-1) * (2*q-1)))$
 
-meanlaplace(a,b):=block([cp:control1(b)],
+mean_laplace(a,b):=block([cp:control1(b)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('meanlaplace,[a,b])),
+   if cp=0 then return(funmake('mean_laplace,[a,b])),
    a   )$
 
-varlaplace(a,b):=block([cp:control1(b)],
+var_laplace(a,b):=block([cp:control1(b)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('varlaplace,[a,b])),
+   if cp=0 then return(funmake('var_laplace,[a,b])),
    2*b*b   )$
 
-stdlaplace(a,b):=block([cp:control1(b)],
+std_laplace(a,b):=block([cp:control1(b)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('stdlaplace,[a,b])),
+   if cp=0 then return(funmake('std_laplace,[a,b])),
    sqrt(2)*b  )$
 
-skwlaplace(a,b):=block([cp:control1(b)],
+skewness_laplace(a,b):=block([cp:control1(b)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('skwlaplace,[a,b])),
+   if cp=0 then return(funmake('skewness_laplace,[a,b])),
    0  )$
 
-kurlaplace(a,b):=block([cp:control1(b)],
+kurtosis_laplace(a,b):=block([cp:control1(b)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('kurlaplace,[a,b])),
+   if cp=0 then return(funmake('kurtosis_laplace,[a,b])),
    3  )$
 
 /* Only the inverse method is implemented; there
    is no global variable */
-rlaplace(a,b,[num]):=block([cp:control1(b),cn,no,fa,fb,listarith:true],
+random_laplace(a,b,[num]):=block([cp:control1(b),cn,no,fa,fb,listarith:true],
    if length(num) = 0 then no: 0 else no: num[1],
    cn: controlib(no),
    if cp=-1 or cn=-1 then error("Illegal parameter"),
-   if cp=0 or cn=0 then return(funmake('rlaplace,append([a,b],num))),
+   if cp=0 or cn=0 then return(funmake('random_laplace,append([a,b],num))),
    fa: float(a),
    fb: float(b),
    if numberp(fa) and numberp(fb)
       then if no=0
-              then return(qlaplace(random(1.0),a,b))
-              else return(makelist(qlaplace(random(1.0),a,b),k,1,no)),
-   funmake('rlaplace,append([a,b],num)) )$
+              then return(quantile_laplace(random(1.0),a,b))
+              else return(makelist(quantile_laplace(random(1.0),a,b),k,1,no)),
+   funmake('random_laplace,append([a,b],num)) )$
 
 
 
@@ -1132,20 +1133,20 @@ rlaplace(a,b,[num]):=block([cp:control1(b),cn,no,fa,fb,listarith:true],
 
 
 
-dencauchy(x,a,b):=block([cp:control1(b)],
+pdf_cauchy(x,a,b):=block([cp:control1(b)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('dencauchy,[x,a,b])),
+   if cp=0 then return(funmake('pdf_cauchy,[x,a,b])),
    b/(%pi*((x-a)^2+b^2))  )$
 
-discauchy(x,a,b):=block([cp:control1(b)],
+cdf_cauchy(x,a,b):=block([cp:control1(b)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('discauchy,[x,a,b])),
+   if cp=0 then return(funmake('cdf_cauchy,[x,a,b])),
    1/2+atan((x-a)/b)/%pi )$
 
-qcauchy(q,a,b):=block([cp:control1(b), cq:controlq(q), fq:float(q)],
+quantile_cauchy(q,a,b):=block([cp:control1(b), cq:controlq(q), fq:float(q)],
    if cp=-1 or cq=-1 then error("Illegal parameter"),
    if cp=0 or cq=0
-      then return(funmake('qcauchy,[q,a,b])),
+      then return(funmake('quantile_cauchy,[q,a,b])),
    if fq=0.0 then return('minf),
    if fq=1.0 then return('inf),
    a + b * tan(%pi * (q - 1/2)) )$
@@ -1154,18 +1155,18 @@ qcauchy(q,a,b):=block([cp:control1(b), cq:controlq(q), fq:float(q)],
 
 /* Only the inverse method is implemented; there
    is no global variable */
-rcauchy(a,b,[num]):=block([cp:control1(b),cn,no,fa,fb,listarith:true],
+random_cauchy(a,b,[num]):=block([cp:control1(b),cn,no,fa,fb,listarith:true],
    if length(num) = 0 then no: 0 else no: num[1],
    cn: controlib(no),
    if cp=-1 or cn=-1 then error("Illegal parameter"),
-   if cp=0 or cn=0 then return(funmake('rcauchy,append([a,b],num))),
+   if cp=0 or cn=0 then return(funmake('random_cauchy,append([a,b],num))),
    fa: float(a),
    fb: float(b),
    if numberp(fa) and numberp(fb)
       then if no=0
               then return( tan (float(%pi) * (random(1.0)-0.5))*fb+fa)
               else return(fa + fb * map('tan, 3.141592653589793 * (makelist(random(1.0),k,1,no)-0.5))),
-   funmake('rcauchy,append([a,b],num)) )$
+   funmake('random_cauchy,append([a,b],num)) )$
 
 
 
@@ -1173,65 +1174,65 @@ rcauchy(a,b,[num]):=block([cp:control1(b),cn,no,fa,fb,listarith:true],
 
 
 
-dengumbel(x,a,b):=block([cp:control1(b)],
+pdf_gumbel(x,a,b):=block([cp:control1(b)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('dengumbel,[x,a,b])),
+   if cp=0 then return(funmake('pdf_gumbel,[x,a,b])),
    exp((a-x)/b-exp((a-x)/b))/b  )$
 
-disgumbel(x,a,b):=block([cp:control1(b)],
+cdf_gumbel(x,a,b):=block([cp:control1(b)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('disgumbel,[x,a,b])),
+   if cp=0 then return(funmake('cdf_gumbel,[x,a,b])),
    exp(-exp((a-x)/b)) )$
 
-qgumbel(q,a,b):=block([cp:control1(b), cq:controlq(q), fq:float(q)],
+quantile_gumbel(q,a,b):=block([cp:control1(b), cq:controlq(q), fq:float(q)],
    if cp=-1 or cq=-1 then error("Illegal parameter"),
    if cp=0 or cq=0
-      then return(funmake('qgumbel,[q,a,b])),
+      then return(funmake('quantile_gumbel,[q,a,b])),
    if fq=0.0 then return('minf),
    if fq=1.0 then return('inf),
    a - b * log(-log(q)) )$
 
-meangumbel(a,b):=block([cp:control1(b)],
+mean_gumbel(a,b):=block([cp:control1(b)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('meangumbel,[a,b])),
+   if cp=0 then return(funmake('mean_gumbel,[a,b])),
    a+b*%gamma  /* %gamma=Euler-Mascheroni constant */  )$
 
-vargumbel(a,b):=block([cp:control1(b)],
+var_gumbel(a,b):=block([cp:control1(b)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('vargumbel,[a,b])),
+   if cp=0 then return(funmake('var_gumbel,[a,b])),
    b*b*%pi*%pi/6   )$
 
-stdgumbel(a,b):=block([cp:control1(b)],
+std_gumbel(a,b):=block([cp:control1(b)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('stdgumbel,[a,b])),
+   if cp=0 then return(funmake('std_gumbel,[a,b])),
    b*%pi/sqrt(6)  )$
 
-skwgumbel(a,b):=block([cp:control1(b)],
+skewness_gumbel(a,b):=block([cp:control1(b)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('skwgumbel,[a,b])),
+   if cp=0 then return(funmake('skewness_gumbel,[a,b])),
    if numer
       then 1.139547099404649
       else 12*sqrt(6)*zeta(3)/%pi^3 )$
 
-kurgumbel(a,b):=block([cp:control1(b)],
+kurtosis_gumbel(a,b):=block([cp:control1(b)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('kurgumbel,[a,b])),
+   if cp=0 then return(funmake('kurtosis_gumbel,[a,b])),
    12/5  )$
 
 /* Only the inverse method is implemented; there
    is no global variable */
-rgumbel(a,b,[num]):=block([cp:control1(b),cn,no,fa,fb,listarith:true],
+random_gumbel(a,b,[num]):=block([cp:control1(b),cn,no,fa,fb,listarith:true],
    if length(num) = 0 then no: 0 else no: num[1],
    cn: controlib(no),
    if cp=-1 or cn=-1 then error("Illegal parameter"),
-   if cp=0 or cn=0 then return(funmake('rgumbel,append([a,b],num))),
+   if cp=0 or cn=0 then return(funmake('random_gumbel,append([a,b],num))),
    fa: float(a),
    fb: float(b),
    if numberp(fa) and numberp(fb)
       then if no=0
               then return(a - b * log(-log(random(1.0))))
               else return(a - b * map('log,-map('log,makelist(random(1.0),k,1,no)))),
-   funmake('rgumbel,append([a,b],num)) )$
+   funmake('random_gumbel,append([a,b],num)) )$
 
 
 
@@ -1239,19 +1240,19 @@ rgumbel(a,b,[num]):=block([cp:control1(b),cn,no,fa,fb,listarith:true],
 
 
 
-denbinomial(x,n,p):=block([cp:controlip(n,p)],
+pdf_binomial(x,n,p):=block([cp:controlip(n,p)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('denbinomial,[x,n,p])),
+   if cp=0 then return(funmake('pdf_binomial,[x,n,p])),
    if sign(n)='pos and integerp(n) and sign(p)='pos and sign(1-p)='pos
       then if sign(x)='neg or numberp(x) and not integerp(x) or sign(x-n)='pos
               then return(0)
               else if integerp(x)
                       then return(binomial(n,x)*p^x*(1-p)^(n-x)),
-   funmake('denbinomial,[x,n,p]) )$
+   funmake('pdf_binomial,[x,n,p]) )$
 
-disbinomial(x,n,p):=block([cp:controlip(n,p),xx],
+cdf_binomial(x,n,p):=block([cp:controlip(n,p),xx],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('disbinomial,[x,n,p])),
+   if cp=0 then return(funmake('cdf_binomial,[x,n,p])),
    if sign(n)='pos and integerp(n) and sign(p)='pos and sign(1-p)='pos
       then if sign(x)='neg
               then return(0)
@@ -1261,63 +1262,63 @@ disbinomial(x,n,p):=block([cp:controlip(n,p),xx],
                               (numer or ?floatp(x) or ?floatp(p) or ?floatp(n))
                               then (xx: floor(x),
                                     return(?ibeta(float(1-p),float(n-xx),float(xx+1)))),
-   funmake('disbinomial,[x,n,p])  )$
+   funmake('cdf_binomial,[x,n,p])  )$
 
 /* R: qbinom(q,n,p) */
-qbinomial(q,n,p):=block([cp:controlip(n,p), cq:controlq(q), fq:float(q),
+quantile_binomial(q,n,p):=block([cp:controlip(n,p), cq:controlq(q), fq:float(q),
                          a, b, m],
    if cp=-1 or cq=-1 then error("Illegal parameter"),
    if cp=0 or cq=0
-      then return(funmake('qbinomial,[q,n,p])),
+      then return(funmake('quantile_binomial,[q,n,p])),
    if fq <= float((1-p)^n) then return(0),
    if fq=1.0 then return(n),
    if not numberp(q) or not numberp(n) or not numberp(p)
-      then return(funmake('qbinomial,[q,n,p])),
+      then return(funmake('quantile_binomial,[q,n,p])),
    /* let's use the partition method */
    a:0, b:n,
    while (b-a>1) do(
       m: 0.5*(a+b),
-      if disbinomial(m,n,p) < q
+      if cdf_binomial(m,n,p) < q
          then a: m
          else b: m ),
    floor(b) )$
 
-meanbinomial(n,p):=block([cp:controlip(n,p)],
+mean_binomial(n,p):=block([cp:controlip(n,p)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('meanbinomial,[n,p])),
+   if cp=0 then return(funmake('mean_binomial,[n,p])),
    n*p  )$
 
-varbinomial(n,p):=block([cp:controlip(n,p)],
+var_binomial(n,p):=block([cp:controlip(n,p)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('varbinomial,[n,p])),
+   if cp=0 then return(funmake('var_binomial,[n,p])),
    n*p*(1-p)  )$
 
-stdbinomial(n,p):=block([cp:controlip(n,p)],
+std_binomial(n,p):=block([cp:controlip(n,p)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('stdbinomial,[n,p])),
+   if cp=0 then return(funmake('std_binomial,[n,p])),
    sqrt(n*p*(1-p))  )$
 
-skwbinomial(n,p):=block([cp:controlip(n,p)],
+skewness_binomial(n,p):=block([cp:controlip(n,p)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('skwbinomial,[n,p])),
+   if cp=0 then return(funmake('skewness_binomial,[n,p])),
    return((1-2*p)/sqrt(n*p*(1-p)))  )$
 
-kurbinomial(n,p):=block([cp:controlip(n,p)],
+kurtosis_binomial(n,p):=block([cp:controlip(n,p)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('kurbinomial,[n,p])),
+   if cp=0 then return(funmake('kurtosis_binomial,[n,p])),
    (1-6*p*(1-p))/(n*p*(1-p))  )$
 
 /* Implemented algorithms: kachit, bernoulli, inverse.
    More info in numdistrib.lisp */
-rbinomial(n,p,[num]):=block([cp:controlip(n,p),cn,no,fp],
+random_binomial(n,p,[num]):=block([cp:controlip(n,p),cn,no,fp],
    if length(num) = 0 then no: 0 else no: num[1],
    cn: controlib(no),
    if cp=-1 or cn=-1 then error("Illegal parameter"),
-   if cp=0 or cn=0 then return(funmake('rbinomial,append([n,p],num))),
+   if cp=0 or cn=0 then return(funmake('random_binomial,append([n,p],num))),
    fp: float(p),
    if integerp(n) and numberp(fp)
       then return(?rndbinomial(n,fp,no)),
-   funmake('rbinomial,append([n,p],num)) )$
+   funmake('random_binomial,append([n,p],num)) )$
 
 
 
@@ -1326,85 +1327,85 @@ rbinomial(n,p,[num]):=block([cp:controlip(n,p),cn,no,fp],
 
 
 /* R: dpois(x,m) */
-denpoisson(x,m):=block([cp:control1(m)],
+pdf_poisson(x,m):=block([cp:control1(m)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('denpoisson,[x,m])),
+   if cp=0 then return(funmake('pdf_poisson,[x,m])),
    if sign(m)='pos
       then if sign(x)='neg or numberp(x) and not integerp(x)
               then return(0)
               else if integerp(x)
                       then return(exp(-m)*m^x/x!),
-   funmake('denpoisson,[x,m]) )$
+   funmake('pdf_poisson,[x,m]) )$
 
 /* R: ppois(q,m) */
-dispoisson(x,m):=block([cp:control1(m)],
+cdf_poisson(x,m):=block([cp:control1(m)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('dispoisson,[x,m])),
+   if cp=0 then return(funmake('cdf_poisson,[x,m])),
    if sign(m)='pos
       then if sign(x)='neg
               then return(0)
               else if numberp(x) and numberp(m) and
                       (numer or ?floatp(x) or ?floatp(m))
                       then return(1-?igamma(float(m), float(floor(x)+1))),
-   funmake('dispoisson,[x,m])  )$
+   funmake('cdf_poisson,[x,m])  )$
 
 /* R: qpois(q,m) */
-qpoisson(q,m):=block([cp:control1(m), cq:controlq(q), fq:float(q),
+quantile_poisson(q,m):=block([cp:control1(m), cq:controlq(q), fq:float(q),
                          a, b, mm],
    if cp=-1 or cq=-1 then error("Illegal parameter"),
    if cp=0 or cq=0
-      then return(funmake('qpoisson,[q,m])),
+      then return(funmake('quantile_poisson,[q,m])),
    if fq <= float(exp(-m)) then return(0),
    if fq=1.0 then return('inf),
    if not numberp(q) or not numberp(m)
-      then return(funmake('qpoisson,[q,m])),
+      then return(funmake('quantile_poisson,[q,m])),
    /* let's use the partition method */
    b:1.0,
-   while (dispoisson(b,m) < q) do b : 2.0*b,
+   while (cdf_poisson(b,m) < q) do b : 2.0*b,
    a: b/2.0,
    while (b-a>1) do(
       mm: 0.5*(a+b),
-      if dispoisson(mm,m) < q
+      if cdf_poisson(mm,m) < q
          then a: mm
          else b: mm ),
    floor(b) )$
 
-meanpoisson(m):=block([cp:control1(m)],
+mean_poisson(m):=block([cp:control1(m)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('meanpoisson,[m])),
+   if cp=0 then return(funmake('mean_poisson,[m])),
    m  )$
 
-varpoisson(m):=block([cp:control1(m)],
+var_poisson(m):=block([cp:control1(m)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('varpoisson,[m])),
+   if cp=0 then return(funmake('var_poisson,[m])),
    m  )$
 
-stdpoisson(m):=block([cp:control1(m)],
+std_poisson(m):=block([cp:control1(m)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('stdpoisson,[m])),
+   if cp=0 then return(funmake('std_poisson,[m])),
    sqrt(m)  )$
 
-skwpoisson(m):=block([cp:control1(m)],
+skewness_poisson(m):=block([cp:control1(m)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('skwpoisson,[m])),
+   if cp=0 then return(funmake('skewness_poisson,[m])),
    1/sqrt(m)  )$
 
-kurpoisson(m):=block([cp:control1(m)],
+kurtosis_poisson(m):=block([cp:control1(m)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('kurpoisson,[m])),
+   if cp=0 then return(funmake('kurtosis_poisson,[m])),
    1/m  )$
 
 /* Implemented algorithms: ahrens_dieter, inverse.
    More info in numdistrib.lisp */
-rpoisson(m,[num]):=block([cp:control1(m),cn,no,fm],
+random_poisson(m,[num]):=block([cp:control1(m),cn,no,fm],
    if length(num) = 0 then no: 0 else no: num[1],
    cn: controlib(no),
    if cp=-1 or cn=-1 then error("Illegal parameter"),
-   if cp=0 or cn=0 then return(funmake('rpoisson,append([m],num))),
+   if cp=0 or cn=0 then return(funmake('random_poisson,append([m],num))),
    fm: float(m),
    if numberp(fm)
       then return(?rndpoisson(fm,no)),
-   funmake('rpoisson,append([m],num)) )$
+   funmake('random_poisson,append([m],num)) )$
 
 
 
@@ -1413,50 +1414,50 @@ rpoisson(m,[num]):=block([cp:control1(m),cn,no,fm],
 
 
 
-denbernoulli(x,p):=denbinomial(x,1,p)$
+pdf_bernoulli(x,p):=pdf_binomial(x,1,p)$
 
-disbernoulli(x,p):=block([cp:controlip(1,p),xx],
+cdf_bernoulli(x,p):=block([cp:controlip(1,p),xx],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('disbernoulli,[x,p])),
+   if cp=0 then return(funmake('cdf_bernoulli,[x,p])),
    if sign(x)='neg
       then return(0)
       else if member(sign(x-1),['pos,'pz,'zero])
               then return(1)
               else if not sign(x)='pnz
                       then return(1-p),
-   funmake('disbernoulli,[x,p])  )$
+   funmake('cdf_bernoulli,[x,p])  )$
 
-qbernoulli(q,p):=block([cp:controlip(1,p), cq:controlq(q)],
+quantile_bernoulli(q,p):=block([cp:controlip(1,p), cq:controlq(q)],
    if cp=-1 or cq=-1 then error("Illegal parameter"),
    if cp=0 or cq=0
-      then return(funmake('qbernoulli,[q,p])),
+      then return(funmake('quantile_bernoulli,[q,p])),
    if member(sign(1-p-q),['pos,'zero])
       then return(0)
       else return(1) )$
 
-meanbernoulli(p):=meanbinomial(1,p)$
+mean_bernoulli(p):=mean_binomial(1,p)$
 
-varbernoulli(p):=varbinomial(1,p)$
+var_bernoulli(p):=var_binomial(1,p)$
 
-stdbernoulli(p):=stdbinomial(1,p)$
+std_bernoulli(p):=std_binomial(1,p)$
 
-skwbernoulli(p):=skwbinomial(1,p)$
+skewness_bernoulli(p):=skewness_binomial(1,p)$
 
-kurbernoulli(p):=kurbinomial(1,p)$
+kurtosis_bernoulli(p):=kurtosis_binomial(1,p)$
 
 /* This is a direct application of the maxima
    random function. Make describe(random) for details */
-rbernoulli(p,[num]):=block([cp:controlq(p),cn,no,f,listarith:true],
+random_bernoulli(p,[num]):=block([cp:controlq(p),cn,no,f,listarith:true],
    if length(num) = 0 then no: 0 else no: num[1],
    cn: controlib(no),
    if cp=-1 or cn=-1 then error("Illegal parameter"),
-   if cp=0 or cn=0 then return(funmake('rbernoulli,append([p],num))),
+   if cp=0 or cn=0 then return(funmake('random_bernoulli,append([p],num))),
    f: float(p),
    if numberp(f)
       then if no=0
               then return(if random(1.0)<=f then 1 else 0)
               else return(makelist(if random(1.0)<=f then 1 else 0,k,1,no)),
-   funmake('rbernoulli,append([p],num)) )$
+   funmake('random_bernoulli,append([p],num)) )$
 
 
 
@@ -1464,69 +1465,69 @@ rbernoulli(p,[num]):=block([cp:controlq(p),cn,no,f,listarith:true],
 
 
 
-dengeo(x,p):=block([cp:controlp(p)],
+pdf_geometric(x,p):=block([cp:controlp(p)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('dengeo,[x,p])),
+   if cp=0 then return(funmake('pdf_geometric,[x,p])),
    if sign(p)='pos and sign(1-p)='pos
       then if sign(x)='neg or numberp(x) and not integerp(x)
               then return(0)
               else if numberp(x)
                       then return(p*(1-p)^x),
-   funmake('dengeo,[x,p]) )$
+   funmake('pdf_geometric,[x,p]) )$
 
-disgeo(x,p):=block([cp:controlp(p)],
+cdf_geometric(x,p):=block([cp:controlp(p)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('disgeo,[x,p])),
+   if cp=0 then return(funmake('cdf_geometric,[x,p])),
    if sign(p)='pos and sign(1-p)='pos
       then if sign(x)='neg
               then return(0)
               else if member(sign(x),['pos,'zero,'pz])
                       then return(1-(1-p)^(floor(x)+1)),
-   funmake('disgeo,[x,p])  )$
+   funmake('cdf_geometric,[x,p])  )$
 
 /* R: pgeom(q,p) */
-qgeo(q,p):=block([cp:controlp(p), cq:controlq(q)],
+quantile_geometric(q,p):=block([cp:controlp(p), cq:controlq(q)],
    if cp=-1 or cq=-1 then error("Illegal parameter"),
    if cp=0 or cq=0
-      then return(funmake('qgeo,[q,p])),
+      then return(funmake('quantile_geometric,[q,p])),
    ceiling(log(1-q)/log(1-p)-1) )$
 
-meangeo(p):=block([cp:controlp(p)],
+mean_geometric(p):=block([cp:controlp(p)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('meangeo,[p])),
+   if cp=0 then return(funmake('mean_geometric,[p])),
    1/p-1  )$
 
-vargeo(p):=block([cp:controlp(p)],
+var_geometric(p):=block([cp:controlp(p)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('vargeo,[p])),
+   if cp=0 then return(funmake('var_geometric,[p])),
    (1-p)/p^2  )$
 
-stdgeo(p):=block([cp:controlp(p)],
+std_geometric(p):=block([cp:controlp(p)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('stdgeo,[p])),
+   if cp=0 then return(funmake('std_geometric,[p])),
    sqrt(1-p)/p  )$
 
-skwgeo(p):=block([cp:controlp(p)],
+skewness_geometric(p):=block([cp:controlp(p)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('skwgeo,[p])),
+   if cp=0 then return(funmake('skewness_geometric,[p])),
    (2-p)/sqrt(1-p)  )$
 
-kurgeo(p):=block([cp:controlp(p)],
+kurtosis_geometric(p):=block([cp:controlp(p)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('kurgeo,[p])),
+   if cp=0 then return(funmake('kurtosis_geometric,[p])),
    (p^2+6-6*p)/(1-p)  )$
 
 /* Implemented algorithms: bernoulli, devroye, inverse.
    More info in numdistrib.lisp */
-rgeo(p,[num]):=block([cp:controlp(p),cn,no,fp],
+random_geometric(p,[num]):=block([cp:controlp(p),cn,no,fp],
    if length(num) = 0 then no: 0 else no: num[1],
    cn: controlib(no),
    if cp=-1 or cn=-1 then error("Illegal parameter"),
-   if cp=0 or cn=0 then return(funmake('rgeo,append([p],num))),
+   if cp=0 or cn=0 then return(funmake('random_geometric,append([p],num))),
    fp: float(p),
    if numberp(fp)
       then return(?rndgeo(fp,no)),
-   funmake('rgeo,append([p],num)) )$
+   funmake('random_geometric,append([p],num)) )$
 
 
 
@@ -1534,19 +1535,19 @@ rgeo(p,[num]):=block([cp:controlp(p),cn,no,fp],
 
 
 
-dendiscu(x,n):=block([cp:controli(n)],
+pdf_discu(x,n):=block([cp:controli(n)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('dendiscu,[x,n])),
+   if cp=0 then return(funmake('pdf_discu,[x,n])),
    if sign(n)='pos and integerp(n)
       then if sign(x-1)='neg or sign(x-n)='pos or
               numberp(x) and not integerp(x)
               then return(0)
               else return(1/n),
-   funmake('dendiscu,[x,n]) )$
+   funmake('pdf_discu,[x,n]) )$
 
-disdiscu(x,n):=block([cp:controli(n)],
+cdf_discu(x,n):=block([cp:controli(n)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('disdiscu,[x,n])),
+   if cp=0 then return(funmake('cdf_discu,[x,n])),
    if sign(n)='pos and integerp(n)
       then if sign(x-1)='neg
               then return(0)
@@ -1555,37 +1556,37 @@ disdiscu(x,n):=block([cp:controli(n)],
                       else if member(sign(x-1),['pos,'pz,'zero]) and
                               member(sign(n-x),['pos,'pz,'zero])
                               then return(floor(x)/n),
-   funmake('disdiscu,[x,n])   )$
+   funmake('cdf_discu,[x,n])   )$
 
-qdiscu(q,n):=block([cp:controli(n), cq:controlq(q)],
+quantile_discu(q,n):=block([cp:controli(n), cq:controlq(q)],
    if cp=-1 or cq=-1 then error("Illegal parameter"),
    if cp=0 or cq=0
-      then return(funmake('qdiscu,[q,n])),
+      then return(funmake('quantile_discu,[q,n])),
    max(ceiling(q*n), 1) )$
 
-meandiscu(n):=block([cp:controli(n)],
+mean_discu(n):=block([cp:controli(n)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('meandiscu,[n])),
+   if cp=0 then return(funmake('mean_discu,[n])),
    (1+n)/2  )$
 
-vardiscu(n):=block([cp:controli(n)],
+var_discu(n):=block([cp:controli(n)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('vardiscu,[n])),
+   if cp=0 then return(funmake('var_discu,[n])),
    (n^2-1)/12  )$
 
-stddiscu(n):=block([cp:controli(n)],
+std_discu(n):=block([cp:controli(n)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('stddiscu,[n])),
+   if cp=0 then return(funmake('std_discu,[n])),
    sqrt((n^2-1)/12)  )$
 
-skwdiscu(n):=block([cp:controli(n)],
+skewness_discu(n):=block([cp:controli(n)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('skwdiscu,[n])),
+   if cp=0 then return(funmake('skewness_discu,[n])),
    0  )$
 
-kurdiscu(n):=block([cp:controli(n)],
+kurtosis_discu(n):=block([cp:controli(n)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('kurdiscu,[n])),
+   if cp=0 then return(funmake('kurtosis_discu,[n])),
    -6/5-12/(5*(n^2-1)))$
 
 /* This is a direct application of the maxima
@@ -1605,20 +1606,20 @@ rdiscu(n,[num]):=block([cp:controli(n),cn,no,listarith:true],
 /*         HYPERGEOMETRIC DISTRIBUTION          */
 
 
-denhypergeo(x,n1,n2,n):=block([cp:controliii(n1,n2,n)],
+pdf_hypergeometric(x,n1,n2,n):=block([cp:controliii(n1,n2,n)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('denhypergeo,[x,n1,n2,n])),
+   if cp=0 then return(funmake('pdf_hypergeometric,[x,n1,n2,n])),
    if sign(x-max(0,n-n2))='neg or
       sign(min(n1,n)-x)='neg or
       numberp(x) and not integerp(x)
       then return(0)
       else if numberp(x)
               then return(binomial(n1,x)*binomial(n2,n-x)/binomial(n1+n2,n))
-              else return(funmake('denhypergeo,[x,n1,n2,n])) )$
+              else return(funmake('pdf_hypergeometric,[x,n1,n2,n])) )$
 
-dishypergeo(x,n1,n2,n):=block([cp:controliii(n1,n2,n),listarith:true],
+cdf_hypergeometric(x,n1,n2,n):=block([cp:controliii(n1,n2,n),listarith:true],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('dishypergeo,[x,n1,n2,n])),
+   if cp=0 then return(funmake('cdf_hypergeometric,[x,n1,n2,n])),
    if sign(x-max(0,n-n2))='neg
       then return(0)
       else if member(sign(min(n1,n)-x),['neg,'zero,'nz])
@@ -1627,150 +1628,150 @@ dishypergeo(x,n1,n2,n):=block([cp:controliii(n1,n2,n),listarith:true],
                    then return(apply("+",
                                    makelist(binomial(n1,k)*binomial(n2,n-k) / 
                                             binomial(n1+n2,n),k,0,floor(x))))
-                   else return(funmake('dishypergeo,[x,n1,n2,n])) )$
+                   else return(funmake('cdf_hypergeometric,[x,n1,n2,n])) )$
 
 /* R: qhyper(q,n1,n2,n) */
-qhypergeo(q,n1,n2,n):=block([cp:controliii(n1,n2,n), cq:controlq(q), fq:float(q),
+quantile_hypergeometric(q,n1,n2,n):=block([cp:controliii(n1,n2,n), cq:controlq(q), fq:float(q),
                          rmin, rmax, aux, a, b, m],
    if cp=-1 or cq=-1 then error("Illegal parameter"),
    if cp=0 or cq=0
-      then return(funmake('qhypergeo,[q,n1,n2,n])),
+      then return(funmake('quantile_hypergeometric,[q,n1,n2,n])),
    rmin: max(0, n-n2),
    rmax: min(n1,n),
-   aux: denhypergeo(rmin,n1,n2,n),
+   aux: pdf_hypergeometric(rmin,n1,n2,n),
    if fq <= float(aux) then return(rmin),
    if fq=1.0 then return(rmax),
    if not numberp(q) or not numberp(n1) or not numberp(n2) or not numberp(n)
-      then return(funmake('qhypergeo,[q,n1,n2,n])),
+      then return(funmake('quantile_hypergeometric,[q,n1,n2,n])),
    /* let's use the partition method */
    a: rmin,
    b: rmax,
    while (b-a > 1) do(
       m: floor(0.5*(a+b)),
-      if dishypergeo(m,n1,n2,n) < q
+      if cdf_hypergeometric(m,n1,n2,n) < q
          then a: m
          else b: m ),
    b )$
 
-meanhypergeo(n1,n2,n):=block([cp:controliii(n1,n2,n)],
+mean_hypergeometric(n1,n2,n):=block([cp:controliii(n1,n2,n)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('meanhypergeo,[n1,n2,n])),
+   if cp=0 then return(funmake('mean_hypergeometric,[n1,n2,n])),
    n*n1/(n1+n2)  )$
 
-varhypergeo(n1,n2,n):=block([cp:controliii(n1,n2,n),t],
+var_hypergeometric(n1,n2,n):=block([cp:controliii(n1,n2,n),t],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('varhypergeo,[n1,n2,n])),
+   if cp=0 then return(funmake('var_hypergeometric,[n1,n2,n])),
    t:n1+n2,
    n*n1*n2*(t-n)/(t*t*(t-1))  )$
 
-stdhypergeo(n1,n2,n):=block([cp:controliii(n1,n2,n),t],
+std_hypergeometric(n1,n2,n):=block([cp:controliii(n1,n2,n),t],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('stdhypergeo,[n1,n2,n])),
+   if cp=0 then return(funmake('std_hypergeometric,[n1,n2,n])),
    t:n1+n2,
    sqrt(n*n1*n2*(t-n)/(t-1))/t  )$
 
-skwhypergeo(n1,n2,n):=block([cp:controliii(n1,n2,n),t],
+skewness_hypergeometric(n1,n2,n):=block([cp:controliii(n1,n2,n),t],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('skwhypergeo,[n1,n2,n])),
+   if cp=0 then return(funmake('skewness_hypergeometric,[n1,n2,n])),
    t:n1+n2,
    (n2-n1)*(t-2*n)*sqrt((t-1)/(n*n1*n2*(t-n)))/(t-2)  )$
 
-kurhypergeo(n1,n2,n):=block([cp:controliii(n1,n2,n),t],
+kurtosis_hypergeometric(n1,n2,n):=block([cp:controliii(n1,n2,n),t],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('kurhypergeo,[n1,n2,n])),
+   if cp=0 then return(funmake('kurtosis_hypergeometric,[n1,n2,n])),
    t:n1+n2,
    t*t*(t-1)/((t-2)*(t-3)*n*n1*n2*(t-n)) * 
      (t*(t+1)-6*n*(t-n)+3*n1*n2*(t*t*(n-2)-t*n*n+6*n*(t-n))/t^2) - 3  )$
 
 /* Implemented algorithms: kachit, inverse.
    More info in numdistrib.lisp */
-rhypergeo(n1,n2,n,[num]):=block([cp:controliii(n1,n2,n),cn,no],
+random_hypergeometric(n1,n2,n,[num]):=block([cp:controliii(n1,n2,n),cn,no],
    if length(num) = 0 then no: 0 else no: num[1],
    cn: controlib(no),
    if cp=-1 or cn=-1 then error("Illegal parameter"),
-   if cp=0 or cn=0 then return(funmake('rhypergeo,append([n1,n2,n],num))),
+   if cp=0 or cn=0 then return(funmake('random_hypergeometric,append([n1,n2,n],num))),
    if numberp(n1) and numberp(n2) and numberp(n)
       then return(?rndhypergeo(n1,n2,n,no)),
-   funmake('rhypergeo,append([n1,n2,n],num)) )$
+   funmake('random_hypergeometric,append([n1,n2,n],num)) )$
 
 
 /*         NEGATIVE BINOMIAL DISTRIBUTION          */
 
 
 
-dennegbinom(x,n,p):=block([cp:controlip(n,p)],
+pdf_negative_binomial(x,n,p):=block([cp:controlip(n,p)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('dennegbinom,[x,n,p])),
+   if cp=0 then return(funmake('pdf_negative_binomial,[x,n,p])),
    if sign(x)='neg or numberp(x) and not integerp(x)
       then return(0)
       else if numberp(x) and integerp(x)
               then binomial(x+n-1,x)*p^n*(1-p)^x
-              else funmake('dennegbinom,[x,n,p]) )$
+              else funmake('pdf_negative_binomial,[x,n,p]) )$
 
-disnegbinom(x,n,p):=block([cp:controlip(n,p)],
+cdf_negative_binomial(x,n,p):=block([cp:controlip(n,p)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('disnegbinom,[x,n,p])),
+   if cp=0 then return(funmake('cdf_negative_binomial,[x,n,p])),
    if sign(x)='neg
       then return(0)
       else if numberp(x) and numberp(n) and numberp(p) and
               (numer or ?floatp(x) or ?floatp(n) or ?floatp(p))
               then ?ibeta(float(p),float(n),float(floor(x)+1))
-              else funmake('disnegbinom,[x,n,p]) )$
+              else funmake('cdf_negative_binomial,[x,n,p]) )$
 
 /* R: qnbinom(q,n,p) */
-qnegbinom(q,n,p):=block([cp:controlip(n,p), cq:controlq(q), fq:float(q),
+quantile_negative_binomial(q,n,p):=block([cp:controlip(n,p), cq:controlq(q), fq:float(q),
                          a, b, m],
    if cp=-1 or cq=-1 then error("Illegal parameter"),
    if cp=0 or cq=0
-      then return(funmake('qnegbinom,[q,n,p])),
+      then return(funmake('quantile_negative_binomial,[q,n,p])),
    if fq <= float(p^n) then return(0),
    if fq=1.0 then return('inf),
    if not numberp(q) or not numberp(n) or not numberp(p)
-      then return(funmake('qnegbinom,[q,n,p])),
+      then return(funmake('quantile_negative_binomial,[q,n,p])),
    /* let's use the partition method */
    b: 1,
-   while (disnegbinom(b,n,p) < q) do b: b*2,
+   while (cdf_negative_binomial(b,n,p) < q) do b: b*2,
    a: b/2,
    while (b-a > 1) do(
       m: floor(0.5*(a+b)),
-      if disnegbinom(m,n,p) < q
+      if cdf_negative_binomial(m,n,p) < q
          then a: m
          else b: m ),
    b )$
 
-meannegbinom(n,p):=block([cp:controlip(n,p)],
+mean_negative_binomial(n,p):=block([cp:controlip(n,p)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('meannegbinom,[n,p])),
+   if cp=0 then return(funmake('mean_negative_binomial,[n,p])),
    n*(1-p)/p )$
 
-varnegbinom(n,p):=block([cp:controlip(n,p)],
+var_negative_binomial(n,p):=block([cp:controlip(n,p)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('varnegbinom,[n,p])),
+   if cp=0 then return(funmake('var_negative_binomial,[n,p])),
    n*(1-p)/p^2 )$
 
-stdnegbinom(n,p):=block([cp:controlip(n,p)],
+std_negative_binomial(n,p):=block([cp:controlip(n,p)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('stdnegbinom,[n,p])),
+   if cp=0 then return(funmake('std_negative_binomial,[n,p])),
    sqrt(n*(1-p))/p )$
 
-skwnegbinom(n,p):=block([cp:controlip(n,p)],
+skewness_negative_binomial(n,p):=block([cp:controlip(n,p)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('skwnegbinom,[n,p])),
+   if cp=0 then return(funmake('skewness_negative_binomial,[n,p])),
    (2-p)/sqrt(n*(1-p)) )$
 
-kurnegbinom(n,p):=block([cp:controlip(n,p)],
+kurtosis_negative_binomial(n,p):=block([cp:controlip(n,p)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('kurnegbinom,[n,p])),
+   if cp=0 then return(funmake('kurtosis_negative_binomial,[n,p])),
    (p*p+6-6*p)/(n*(1-p)) )$
 
 /* Implemented algorithms: devroye, bernoulli, inverse.
    More info in numdistrib.lisp */
-rnegbinom(n,p,[num]):=block([cp:controlip(n,p),cn,no,fp],
+random_negative_binomial(n,p,[num]):=block([cp:controlip(n,p),cn,no,fp],
    if length(num) = 0 then no: 0 else no: num[1],
    cn: controlib(no),
    if cp=-1 or cn=-1 then error("Illegal parameter"),
-   if cp=0 or cn=0 then return(funmake('rnegbinom,append([n,p],num))),
+   if cp=0 or cn=0 then return(funmake('random_negative_binomial,append([n,p],num))),
    fp: float(p),
    if integerp(n) and numberp(fp)
       then return(?rndnegbinom(n,fp,no)),
-   funmake('rnegbinom,append([n,p],num)) )$
+   funmake('random_negative_binomial,append([n,p],num)) )$

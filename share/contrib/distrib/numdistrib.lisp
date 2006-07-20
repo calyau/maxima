@@ -435,9 +435,9 @@
 ;;  The sample size ss must be a non negative integer.
 ;;  If ss=0, returns a number, otherwise a maxima list
 ;;  of length ss
-(defvar $rnormal_algorithm '$box_mueller)
+(defvar $random_normal_algorithm '$box_mueller)
 (defun rndnormal (ss &aux sample)
-   (cond ((= ss 0) (case $rnormal_algorithm
+   (cond ((= ss 0) (case $random_normal_algorithm
                          ('$box_mueller  (rndnormal-box))
                          ('$inverse      (rndnormal-inverse))))
          (t (setf sample nil)
@@ -528,9 +528,9 @@
 ;;  The sample size ss must be a non negative integer.
 ;;  If ss=0, returns a number, otherwise a maxima list
 ;;  of length ss
-(defvar $rexp_algorithm '$inverse)
+(defvar $random_exp_algorithm '$inverse)
 (defun rndexp (m ss &aux sample)
-   (cond ((= ss 0) (case $rexp_algorithm
+   (cond ((= ss 0) (case $random_exp_algorithm
                          ('$ahrens_dieter  (rndexp-ahrens-dieter m))
                          ('$ahrens_cheng   (rndexp-ahrens-cheng m))
                          ('$inverse        (rndexp-inverse m))))
@@ -611,9 +611,9 @@
 ;;  The sample size ss must be a non negative integer.
 ;;  If ss=0, returns a number, otherwise a maxima list
 ;;  of length ss
-(defvar $rgamma_algorithm '$ahrens_cheng)
+(defvar $random_gamma_algorithm '$ahrens_cheng)
 (defun rndgamma (a b ss &aux sample)
-   (cond ((= ss 0) (case $rgamma_algorithm
+   (cond ((= ss 0) (case $random_gamma_algorithm
                          ('$ahrens_cheng   (rndgamma-ahrens-cheng a b))
                          ('$inverse        (rndgamma-inverse a b))))
          (t (setf sample nil)
@@ -642,9 +642,9 @@
 ;;  The sample size ss must be a non negative integer.
 ;;  If ss=0, returns a number, otherwise a maxima list
 ;;  of length ss
-(defvar $rchi2_algorithm '$ahrens_cheng)
+(defvar $random_chi2_algorithm '$ahrens_cheng)
 (defun rndchi2 (n ss &aux sample)
-   (cond ((= ss 0) (case $rchi2_algorithm
+   (cond ((= ss 0) (case $random_chi2_algorithm
                          ('$ahrens_cheng   (rndgamma-ahrens-cheng (* n 0.5d0) 2.0d0))
                          ('$inverse        (rndchi2-inverse n))))
          (t (setf sample nil)
@@ -690,9 +690,9 @@
 ;;  The sample size ss must be a non negative integer.
 ;;  If ss=0, returns a number, otherwise a maxima list
 ;;  of length ss
-(defvar $rstudent_algorithm '$ratio)
+(defvar $random_student_t_algorithm '$ratio)
 (defun rndstudent (n ss &aux sample)
-   (cond ((= ss 0) (case $rstudent_algorithm
+   (cond ((= ss 0) (case $random_student_t_algorithm
                          ('$ratio    (rndstudent-ratio n))
                          ('$inverse  (rndstudent-inverse n))))
          (t (setf sample nil)
@@ -733,9 +733,9 @@
 ;;  The sample size ss must be a non negative integer.
 ;;  If ss=0, returns a number, otherwise a maxima list
 ;;  of length ss
-(defvar $rf_algorithm '$inverse)
+(defvar $random_f_algorithm '$inverse)
 (defun rndf (m n ss &aux sample)
-   (cond ((= ss 0) (case $rf_algorithm
+   (cond ((= ss 0) (case $random_f_algorithm
                          ('$ratio    (rndf-ratio m n))
                          ('$inverse  (rndf-inverse m n))))
          (t (setf sample nil)
@@ -910,9 +910,9 @@
 ;;  The sample size ss must be a non negative integer.
 ;;  If ss=0, returns a number, otherwise a maxima list
 ;;  of length ss
-(defvar $rbeta_algorithm '$cheng)
+(defvar $random_beta_algorithm '$cheng)
 (defun rndbeta (a b ss &aux sample)
-   (cond ((= ss 0) (case $rbeta_algorithm
+   (cond ((= ss 0) (case $random_beta_algorithm
                          ('$cheng    (rndbeta-cheng a b))
                          ('$ratio    (rndbeta-ratio a b))
                          ('$inverse  (rndbeta-inverse a b))))
@@ -1151,9 +1151,9 @@
 ;;  The sample size ss must be a non negative integer.
 ;;  If ss=0, returns a number, otherwise a maxima list
 ;;  of length ss
-(defvar $rbinomial_algorithm '$kachit)
+(defvar $random_binomial_algorithm '$kachit)
 (defun rndbinomial (n p ss &aux sample)
-   (cond ((= ss 0) (case $rbinomial_algorithm
+   (cond ((= ss 0) (case $random_binomial_algorithm
                          ('$kachit     (rndbinomial-kachit n p))
                          ('$bernoulli  (rndbinomial-ber n p))
                          ('$inverse    (rndbinomial-inverse n p))))
@@ -1390,11 +1390,11 @@
 ;;  The sample size ss must be a non negative integer.
 ;;  If ss=0, returns a number, otherwise a maxima list
 ;;  of length ss
-(defvar $rpoisson_algorithm '$ahrens_dieter)
+(defvar $random_poisson_algorithm '$ahrens_dieter)
 (defun rndpoisson (m ss &aux sample)
    (declare (type double-float m))
    (declare (type integer ss))
-   (cond ((= ss 0) (case $rpoisson_algorithm
+   (cond ((= ss 0) (case $random_poisson_algorithm
                          ('$ahrens_dieter (rndpoisson-ahrens m))
                          ('$inverse       (rndpoisson-inverse m))))
          (t (setf sample nil)
@@ -1446,11 +1446,11 @@
 ;;  The sample size ss must be a non negative integer.
 ;;  If ss=0, returns a number, otherwise a maxima list
 ;;  of length ss
-(defvar $rgeo_algorithm '$bernoulli)
+(defvar $random_geometric_algorithm '$bernoulli)
 (defun rndgeo (p ss &aux sample)
    (declare (type double-float p))
    (declare (type integer ss))
-   (cond ((= ss 0) (case $rgeo_algorithm
+   (cond ((= ss 0) (case $random_geometric_algorithm
                          ('$bernoulli (rndgeo-trials p))
                          ('$devroye (rndgeo-devroye p))
                          ('$inverse       (rndgeo-inverse p))))
@@ -1740,10 +1740,10 @@
 ;;  The sample size ss must be a non negative integer.
 ;;  If ss=0, returns a number, otherwise a maxima list
 ;;  of length ss
-(defvar $rhypergeo_algorithm '$kachit)
+(defvar $random_hypergeometric_algorithm '$kachit)
 (defun rndhypergeo (n1 n2 n ss &aux sample)
    (declare (type integer n1 n2 n ss))
-   (cond ((= ss 0) (case $rhypergeo_algorithm
+   (cond ((= ss 0) (case $random_hypergeometric_algorithm
                          ('$kachit   (rndhypergeo-kachit n1 n2 n))
                          ('$inverse  (rndhypergeo-inverse n1 n2 n))))
          (t (setf sample nil)
@@ -1798,9 +1798,9 @@
 ;;  The sample size ss must be a non negative integer.
 ;;  If ss=0, returns a number, otherwise a maxima list
 ;;  of length ss
-(defvar $rnegbinom_algorithm '$bernoulli)
+(defvar $random_negative_binomial_algorithm '$bernoulli)
 (defun rndnegbinom (n p ss &aux sample)
-   (cond ((= ss 0) (case $rnegbinom_algorithm
+   (cond ((= ss 0) (case $random_negative_binomial_algorithm
                          ('$devroye    (rndnegbinom-devroye n p))
                          ('$bernoulli  (rndnegbinom-ber n p))
                          ('$inverse    (rndnegbinom-inverse n p))))
