@@ -1,4 +1,4 @@
-@c english version 1.26
+@c english version 1.27
 @menu
 * Definiciones para Gr@'aficos::    
 @end menu
