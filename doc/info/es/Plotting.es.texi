@@ -1,4 +1,4 @@
-@c english version 1.24
+@c english version 1.26
 @menu
 * Definiciones para Gr@'aficos::    
 @end menu
@@ -99,7 +99,7 @@ valores por defecto a menos que se especifiquen de otra manera con
 
 La funci@'on a representar puede ser identificada por medio del nombre de un
 operador o funci@'on de Maxima o Lisp, con una expresi@'on lambda, o con una
-expresiÃ³n de Maxima. Cuando se use un nombre o expresi@'on lambda, la funci@'on
+expresión de Maxima. Cuando se use un nombre o expresi@'on lambda, la funci@'on
 a la que se refiere debe depender de un @'unico argumento.
 
 @b{Ejemplos:}
@@ -381,8 +381,26 @@ GLa salidad de gnuplot se muestra en la consola de Maxima con caracteres ASCII.
 
 @item
 Valor: @code{ps}
-Gnuplot genera comandos en lenguaje PostScript. Si la opci@'on @code{gnuplot_out_file} vale @var{filename}, gnuplot escribe los comandos PostScript en @var{filename}.
-En otro caso, los comandos se imprimen en la consola de Maxima.
+Gnuplot genera comandos en lenguaje PostScript.
+Si la opci@'on @code{gnuplot_out_file} vale @var{filename},
+gnuplot escribe los comandos PostScript en @var{filename};
+en caso contrario, los almacena en el fichero @code{maxplot.ps}.
+
+@item
+Valor: cualquier especificaci@'on v@'alida de terminal admitida por gnuplot.
+Gnuplot puede generar salidas en otros muchos formatos gr@'aficos,
+como png, jpeg, svg, etc. Para crear una figura en cualquiera de estos
+formatos, se debe asignar a la opci@'on @code{gnuplot_term} el nombre
+(en forma de s@'{@dotless{i}}mbolo) de cualquiera de los terminales que soporta
+gnuplot, o la especificaci@'on completa del terminal con cualquiera de
+las opciones v@'alidas (en forma de cadena). Por ejemplo, 
+code{[gnuplot_term,png]} crea una salida en formato PNG (Portable Network Graphics),
+mientras que @code{[gnuplot_term,"png size 1000,1000"]} crea un PNG de tama@~no 
+1000x1000 pixels. Si la opci@'on @code{gnuplot_out_file} se ajusta a @var{filename},
+gnuplot almacena la salida en el fichero @var{filename}; en caso contrario,
+se guarda en el fichero @code{maxplot.@var{term}}, siendo @var{term} el nombre
+del terminal de gnuplot.
+
 @end itemize
 
 @item
@@ -660,9 +678,9 @@ Un gr@'afico en el que el eje z s@'olo se representa por el color.
 @end defvr
 
 @deffn {Funci@'on} plot3d (@var{expr}, @var{x_range}, @var{y_range}, ..., @var{options}, ...)
-@deffnx {Funci@'on} plot3d ([@var{expr_1}, @var{expr_2}, @var{expr_3}], @var{x_range}, @var{y_range}, ..., @var{options}, ...)
-@deffnx {Function} plot3d ([@var{expr_1}, @var{expr_2}, @var{expr_3}], @var{x_rge}, @var{y_rge})
-@deffnx {Function} plot3d ([@var{name_1}, @var{name_2}, @var{name_3}], @var{x_range}, @var{y_range}, ..., @var{options}, ...)
+@deffnx {Funci@'on} plot3d (@var{name}, @var{x_range}, @var{y_range}, ..., @var{options}, ...)
+@deffnx {Funci@'on} plot3d ([@var{expr_1}, @var{expr_2}, @var{expr_3}], @var{x_rge}, @var{y_rge})
+@deffnx {Funci@'on} plot3d ([@var{name_1}, @var{name_2}, @var{name_3}], @var{x_range}, @var{y_range}, ..., @var{options}, ...)
 
 Representa gr@'aficamente una o tres expresiones como funciones de dos variables.
 
