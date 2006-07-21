@@ -1,4 +1,4 @@
-@c english version: 1.6
+@c english version: 1.7
 @menu
 * Introducci@'on a descriptive::
 * Definiciones para el tratamiento de datos::
@@ -1411,14 +1411,14 @@ Ejemplo:
 @c load (descriptive)$
 @c load (numericalio)$
 @c s2 : read_matrix (file_search ("wind.data"))$
-@c fpprec : 7$  /* cambia precision */
+@c fpprintprec : 7$  /* cambia precision */
 @c cov (s2);
 @c ===end===
 @example
 (%i1) load (descriptive)$
 (%i2) load (numericalio)$
 (%i3) s2 : read_matrix (file_search ("wind.data"))$
-(%i4) fpprec : 7$  /* cambia precision */
+(%i4) fpprintprec : 7$  /* cambia precision */
 (%i5) cov (s2);
       [ 17.22191  13.61811  14.37217  19.39624  15.42162 ]
       [                                                  ]
@@ -1471,14 +1471,14 @@ Ejemplo:
 @c load (descriptive)$
 @c load (numericalio)$
 @c s2 : read_matrix (file_search ("wind.data"))$
-@c fpprec : 7$ /* cambia precision */
+@c fpprintprec : 7$ /* cambia precision */
 @c cov1 (s2);
 @c ===end===
 @example
 (%i1) load (descriptive)$
 (%i2) load (numericalio)$
 (%i3) s2 : read_matrix (file_search ("wind.data"))$
-(%i4) fpprec : 7$ /* cambia precision */
+(%i4) fpprintprec : 7$ /* cambia precision */
 (%i5) cov1 (s2);
       [ 17.39587  13.75567  14.51734  19.59216  15.5774  ]
       [                                                  ]
@@ -1566,14 +1566,14 @@ Ejemplo:
 @c ===beg===
 @c load (descriptive)$
 @c load (numericalio)$
-@c fpprec: 7$
+@c fpprintprec: 7$
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c cor (s2);
 @c ===end===
 @example
 (%i1) load (descriptive)$
 (%i2) load (numericalio)$
-(%i3) fpprec: 7$
+(%i3) fpprintprec: 7$
 (%i4) s2 : read_matrix (file_search ("wind.data"))$
 (%i5) cor (s2);
       [   1.0     .8476339  .8803515  .8239624  .7519506 ]
@@ -1592,7 +1592,7 @@ La funci@'on @code{cor} tiene un argumento l@'ogico opcional: @code{cor(x,true)}
 @c ===beg===
 @c load (descriptive)$
 @c load (numericalio)$
-@c fpprec: 7$
+@c fpprintprec: 7$
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c s : cov1 (s2)$
 @c cor (s, false); /* mas rapido */
@@ -1600,7 +1600,7 @@ La funci@'on @code{cor} tiene un argumento l@'ogico opcional: @code{cor(x,true)}
 @example
 (%i1) load (descriptive)$
 (%i2) load (numericalio)$
-(%i3) fpprec: 7$
+(%i3) fpprintprec: 7$
 (%i4) s2 : read_matrix (file_search ("wind.data"))$
 (%i5) s : cov1 (s2)$
 (%i6) cor (s, false); /* mas rapido */
@@ -1706,7 +1706,7 @@ Ejemplo:
 @c load (numericalio)$
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c z : list_correlations (s2)$
-@c fpprec : 5$ /* cambia precision */
+@c fpprintprec : 5$ /* cambia precision */
 @c z[1];  /* matriz de precision */
 @c z[2];  /* vector de correlacion multiple */
 @c z[3];  /* matriz de correlaciones parciales */
@@ -1716,7 +1716,7 @@ Ejemplo:
 (%i2) load (numericalio)$
 (%i3) s2 : read_matrix (file_search ("wind.data"))$
 (%i4) z : list_correlations (s2)$
-(%i5) fpprec : 5$ /* cambia precision */
+(%i5) fpprintprec : 5$ /* cambia precision */
 (%i6) z[1];  /* matriz de precision */
       [  .38486   - .13856   - .15626   - .10239    .031179  ]
       [                                                      ]

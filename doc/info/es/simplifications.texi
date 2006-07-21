@@ -1,4 +1,4 @@
-@c english version 1.2
+@c english version 1.3
 @menu
 * Introducci@'on a simplification::
 * Definiciones para simplification::
@@ -277,15 +277,6 @@ Si @var{expr} es una expresi@'on lineal respecto de la variable @var{x},
 @code{linear} devuelve @code{@var{a}*@var{x} + @var{b}}, siendo @var{a}
 no nula y, junto con @var{b}, no incluye a @var{x}. En otro caso, 
 @code{linear} devuelve @var{expr}.
-
-Para hacer uso de esta funci@'on ejecutar @code{load(functs)}.
-@end deffn
-
-@deffn {Funci@'on} quadratic (@var{expr}, @var{x})
-Si @var{expr} es una funci@'on cuadr@'atica respecto de la variable @var{x},
-@code{quadratic} devuelve @code{@var{a}*@var{x}^2 + @var{b}*x + @var{c}}, siendo
-@var{a} no nula y, junto con @var{b} y @var{c}, no incluye a @var{x}. En otro caso, 
-@code{quadratic} devuelve @var{expr}.
 
 Para hacer uso de esta funci@'on ejecutar @code{load(functs)}.
 @end deffn

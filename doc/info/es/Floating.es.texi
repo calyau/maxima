@@ -1,4 +1,4 @@
-@c version 1.17
+@c version 1.18
 @menu
 * Definiones para aritm@'etica de punto flotante::
 @end menu
@@ -110,14 +110,24 @@ V@'eanse tambi@'en @code{bfloat} y @code{fpprintprec}.
 @defvr {Variable optativa} fpprintprec
 Valor por defecto: 0
 
-La variable @code{fpprintprec} guarda el n@'umero de d@'{@dotless{i}}gitos a imprimir cuando se muestren por terminal n@'umeros decimales de punto flotante grandes, haciendo as@'{@dotless{i}} que sea posible realizar c@'alculos con gran precisi@'on pero mostrando los resultados con menor n@'umero de d@'{@dotless{i}}gitos.
+La variable @code{fpprintprec} guarda el n@'umero de d@'{@dotless{i}}gitos
+a imprimir de los n@'umeros decimales en coma flotante, tanto los ordinarios
+como los de precisi@'on ilimitada (@i{bigfloats}).
 
-Si @code{fpprintprec} vale 0, o es mayor o igual que @code{fpprec}, entonces ser@'a el valor de @code{fpprec} el que controle el n@'umero de d@'{@dotless{i}}gitos a presentar.
+En el caso de los decimales ordinarios, si @code{fpprintprec} toma un valor
+entre 2 y 16 (inclusive), el n@'umero de d@'{@dotless{i}}gitos que se 
+imprimen es igual a @code{fpprintprec}. En caso contrario, @code{fpprintprec} es 0
+o mayor que 16, siendo el n@'umero de d@'{@dotless{i}}gitos
+a imprimir en todos loa casos igual a 16.
 
-Si @code{fpprintprec} toma un valor entre 2 y @code{fpprec - 1}, entonces controlar@'a el n@'umero de d@'{@dotless{i}}gitos a utilizar.  (El n@'umero m@'{@dotless{i}}nimo de d@'{@dotless{i}}gitos es 2, uno a la izquierda del punto decimal y otro a la derecha.)
+En el caso de los decimales de precisi@'on ilimitada (@i{bigfloats}),
+si @code{fpprintprec} toma un valor entre 2 y 16 (inclusive),
+el n@'umero de d@'{@dotless{i}}gitos que se imprimen es igual a 
+@code{fpprintprec}. En caso contrario, @code{fpprintprec} es 0
+o mayor que @code{fpprec}, siendo el n@'umero de d@'{@dotless{i}}gitos
+a imprimir igual a @code{fpprec}.
 
-No se admite el valor 1 para @code{fpprintprec}.
-
+La variable @code{fpprintprec} no admite el valor 1.
 @end defvr
 
 @deffn {Funci@'on Lisp} ?round (@var{x})

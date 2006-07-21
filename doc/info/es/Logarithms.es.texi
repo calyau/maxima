@@ -1,4 +1,4 @@
-@c english version 1.15
+@c english version 1.16
 @menu
 * Definiciones para Logaritmos::  
 @end menu
@@ -118,10 +118,18 @@ Cuando se calculan integrales indefinidas en las que se generan logaritmos, como
 
 @end defvr
 
+@c NEEDS EXAMPLES
 @defvr {Variable opcional} logarc
-Valor por defecto: @code{false}
+@defvrx {Funci@'on} logarc (@var{expr})
 
-Si @code{logarc} vale @code{true} har@'a que las funciones circulares e hiperb@'olicas inversas se conviertan a la forma logar@'{@dotless{i}}tmica. La instrucci@'on @code{logarc(@var{exp})} har@'a esta conversi@'on s@'olo en la expresi@'on @var{exp} sin cambiar el valor de la variable global ni tener que volver a evaluar la expresi@'on con @code{ev}.
+Si la variable global @code{logarc} toma el valor @code{true},
+las funciones circulares e hiperb@'olicas inversas se 
+reemplazan por funciones logar@'{@dotless{i}}tmicas equivalentes.
+El valor por defecto de @code{logarc} es @code{false}.
+
+La funci@'on @code{logarc(@var{expr})} realiza la anterior transformaci@'on
+en la expresi@'on @var{expr} sin necesidad de alterar el valor de la
+variable global @code{logarc}.
 
 @end defvr
 
