@@ -12,7 +12,7 @@ tex_text (s) := block ([linel: 2^16], print (s));
 /* These declarations must precede the first expression in which they occur.
  * Maxima doesn't know how to parse "a foo b" in with_stdout (... infix("foo"), a foo b, ...).
  */
-(infix ("implies"), infix ("iff"));
+(infix ("implies"), infix ("iff"), matchfix ("<<", ">>"));
 
 '((aa or bb) and not (cc or dd));
 
@@ -123,11 +123,30 @@ a newline."),
      * See note near top of file.
      */
 
-    texput ("implies", "\\Rightarrow", infix),
-    tex ('((foo or bar) implies (baz or quux))),
+    tex_text ("\\def\\sgn{\\mathop{\\rm sgn}}"),
+    tex ('("Before texput" : signum(x))),
+    texput (signum, "\\sgn"),
+    tex ('("After texput" : signum(x))),
+    
+    tex ('("Before texput" : grad(x))),
+    texput (grad, "\\nabla ", prefix),
+    tex ('("After texput" : grad(x))),
 
+    tex ('("Before texput" : degrees_F(85))),
+    texput (degrees_F, "^o {\\rm F}", postfix),
+    tex ('("After texput" : degrees_F(85))),
+    
+    tex ('("Before texput" : <<x, y>>)),
+    texput ("<<", [" \\langle ", " \\rangle "], matchfix),
+    tex ('("After texput" : <<x, y>>)),
+
+    tex ('("Before texput" : ((foo or bar) implies (baz or quux)))),
+    texput ("implies", "\\Rightarrow", infix),
+    tex ('("After texput" : ((foo or bar) implies (baz or quux)))),
+
+    tex ('("Before texput" : ((foo or bar) iff (baz or quux)))),
     texput ("iff", "\\Leftrightarrow", infix),
-    tex ('((foo or bar) iff (baz or quux))),
+    tex ('("After texput" : ((foo or bar) iff (baz or quux)))),
 
     tex_text ("\\subsection*{Miscellany}"),
 

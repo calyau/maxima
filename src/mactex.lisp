@@ -318,7 +318,7 @@
 ;; operator
 
 (defun tex-function (x l r op) op
-       (setq l (tex (texword (caar x)) l nil 'mparen 'mparen)
+       (setq l (tex (caar x) l nil 'mparen 'mparen)
 	     r (tex (cons '(mprogn) (cdr x)) nil r 'mparen 'mparen))
        (nconc l r))
 
