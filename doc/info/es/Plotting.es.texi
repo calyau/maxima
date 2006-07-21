@@ -394,7 +394,7 @@ formatos, se debe asignar a la opci@'on @code{gnuplot_term} el nombre
 (en forma de s@'{@dotless{i}}mbolo) de cualquiera de los terminales que soporta
 gnuplot, o la especificaci@'on completa del terminal con cualquiera de
 las opciones v@'alidas (en forma de cadena). Por ejemplo, 
-code{[gnuplot_term,png]} crea una salida en formato PNG (Portable Network Graphics),
+@code{[gnuplot_term,png]} crea una salida en formato PNG (Portable Network Graphics),
 mientras que @code{[gnuplot_term,"png size 1000,1000"]} crea un PNG de tama@~no 
 1000x1000 pixels. Si la opci@'on @code{gnuplot_out_file} se ajusta a @var{filename},
 gnuplot almacena la salida en el fichero @var{filename}; en caso contrario,
