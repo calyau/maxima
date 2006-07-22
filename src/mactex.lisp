@@ -82,7 +82,7 @@
 
 (defun quote-% (sym)
   (let* ((strsym (string sym))
-         (pos (position-if #'(lambda (c) (find c "%_")) strsym)))
+         (pos (position-if #'(lambda (c) (find c "$%&_")) strsym)))
     (if pos
       (concatenate 'string (subseq strsym 0 pos) "\\" (subseq strsym pos (1+ pos))
                            (quote-% (subseq strsym (1+ pos))))
@@ -213,14 +213,10 @@
                       ((stringp x) (tex-string x))
                       ((mstringp x)
                        (let ((s (maybe-invert-string-case (symbol-name (stripdollar x)))))
-                         (tex-string (tex-sanitize (if stringdisp (concatenate 'string "``" s "''") s)))))
+                         (tex-string (quote-% (if stringdisp (concatenate 'string "``" s "''") s)))))
                       ((characterp x) (tex-char x))
 		      (t (tex-stripdollar x))))
 	  r))
-
-;; THIS FUNCTION SHOULD LOOK FOR CHARACTERS SPECIAL TO TEX AND ESCAPE THEM WITH BACKSLASH
-;; LAZINESS HAS GOTTEN THE BEST OF ME, SORRY
-(defun tex-sanitize (s) s)
 
 (defun tex-string (x)
   (cond ((equal x "") "")
@@ -248,7 +244,7 @@
 
 (defun tex-stripdollar0 (sym &aux )
   (or (symbolp sym) (return-from tex-stripdollar0  sym))
-  (let* ((pname (quote-% sym))
+  (let* ((pname (quote-% (stripdollar sym)))
 	 (l (length pname))
 	 (begin-sub
 	  (loop for i downfrom (1- l)
@@ -269,8 +265,7 @@
 		  (unless (eql i (- l 1))
 		    (vector-push #\{ tem)
 		    (setq begin-sub t))))
-	   (cond ((not (and (eql i 0) (eql (aref pname i) #\$)))
-		  (vector-push (aref pname i) tem)))
+		  (vector-push (aref pname i) tem)
 	   finally
 	   (cond ((eql begin-sub t)
 		  (vector-push #\} tem))))

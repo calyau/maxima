@@ -34,9 +34,10 @@ with_stdout ("tmp.tex",
     tex (Foo[1] + BAR[2] + baz[3]),
     tex (Mumble[i,j] + blurf[a][b]),
     tex (\2F1 + ?lisp_symbol),
+    tex (embedded\$dollar + embedded%percent + embedded_underscore + embedded\&ampersand),
 
-    /* tex doesn't escape special characters in symbol names,
-     * so don't bother with these unless tex is revised.
+    /* Maxima tex function doesn't escape special characters in symbol names,
+     * so don't bother with these unless TEX-STRIPDOLLAR is revised or something like that.
      * tex (int\+float + int\*float + int\@float),
      * tex (?\*lisp\-symbol\-2\*),
      */
@@ -51,8 +52,8 @@ with_stdout ("tmp.tex",
     tex ("String containing
 a newline."),
     tex ("String containing \\ldots \\\"Oyster sh\\'ell \\ldots some \\TeX\\ commands."),
-    tex ("Some characters \\{ \\ \\^ \\% \\$ \\# \\~ \\& \\} which might be special to \\TeX\\ and \\LaTeX."),
-    tex_text ("String containing \\ldots \\\"Oyster sh\\'ell \\ldots some \\TeX\\ commands. Some characters \\{ \\ \\^ \\% \\$ \\# \\~ \\& \\} which might be special to \\TeX\\ and \\LaTeX. (Same as the preceding example, but output {\\it via} {\\bf print} instead of {\\bf tex}; should make a paragraph instead of an equation.)"),
+    tex ("Some characters \\{ \\ \\^ % _ $ \\# \\~ & \\} which might be special to \\TeX\\ and \\LaTeX."),
+    tex_text ("String containing \\ldots \\\"Oyster sh\\'ell \\ldots some \\TeX\\ commands. Some characters \\{ \\ \\^ \\% \\_ \\$ \\# \\~ \\& \\} which might be special to \\TeX\\ and \\LaTeX. (Same as the preceding example, but output {\\it via} {\\bf print} instead of {\\bf tex}; should make a paragraph instead of an equation.)"),
 
     tex_text ("\\subsection*{Different kinds of numbers}"),
     ev (tex (1 + 1/1 + 1.0 + 1e0 + 1b0), simp=false),
