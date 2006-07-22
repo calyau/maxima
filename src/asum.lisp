@@ -434,13 +434,15 @@ summation when necessary."
       lo 
 
       (setq u
-        (resimplify
-          (list (if sump '(mplus) '(mtimes))
-                (let*
-                  ((foo (mbinding (lind l*i) (meval expr)))
-                   (bar (subst-if-not-freeof *i ind foo)))
-                  bar)
-                u)))
+            (if sump
+              (add u (resimplify (let*
+                                   ((foo (mbinding (lind l*i) (meval expr)))
+                                    (bar (subst-if-not-freeof *i ind foo)))
+                                   bar)))
+              (mul u (resimplify (let*
+                                   ((foo (mbinding (lind l*i) (meval expr)))
+                                    (bar (subst-if-not-freeof *i ind foo)))
+                                   bar)))))
 
       (if (= *hl 0) (return u))
 
