@@ -769,7 +769,7 @@ O mesmo gr@'afico pode ser visualizado usando openmath:
 @end example
 
 @ifnotinfo
-@image{figures/plotting25,8cm}
+@image{../figures/plotting25,8cm}
 @end ifnotinfo
 
 @noindent

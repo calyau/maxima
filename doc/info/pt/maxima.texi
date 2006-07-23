@@ -175,7 +175,7 @@ Suporte a @'areas espec@'ificas da matem@'atica
 * Num@'erico::                    Integra@value{cedilha}@~ao num@'erica, transforma@value{cedilha}@~oes
                                 de Fourier, etc.
 * Estat@'istica::                 Fun@value{cedilha}@~oes estat@'isticas.
-* Arrays e Tabelas::            Criando e trabalhando com arrays.
+* Arrays ::                     Criando e trabalhando com arrays.
 * Matrizes e @'Algebra Linear::   Opera@value{cedilha}@~oes com Matrizes.
 * Fun@value{cedilha}@~oes Afins::                        
 * itensor::                     Manipula@value{cedilha}@~ao de @'indice de Tensores.
@@ -354,9 +354,9 @@ Estatistica
 
 * Defini@value{cedilha}@~oes para Estat@'istica::  
 
-Arrays e Tabelas
+Arrays
 
-* Defini@value{cedilha}@~oes para Arrays e Tabelas::  
+* Defini@value{cedilha}@~oes para Arrays::  
 
 Matrizes e @'Algebra Linear
 
@@ -673,15 +673,15 @@ zeilberger
 @chapter Num@'erico
 @include Numerical.texi
 
-@node Estat@'istica, Arrays e Tabelas, Num@'erico, Top
+@node Estat@'istica, Arrays, Num@'erico, Top
 @chapter Estat@'istica
 @include Statistics.texi
 
-@node Arrays e Tabelas, Matrizes e @'Algebra Linear, Estat@'istica, Top
-@chapter Arrays e Tabelas
+@node Arrays, Matrizes e @'Algebra Linear, Estat@'istica, Top
+@chapter Arrays
 @include Arrays.texi
 
-@node Matrizes e @'Algebra Linear, Fun@value{cedilha}@~oes Afins, Arrays e Tabelas, Top
+@node Matrizes e @'Algebra Linear, Fun@value{cedilha}@~oes Afins, Arrays, Top
 @chapter Matrizes e @'Algebra Linear
 @include Matrices.texi
 
