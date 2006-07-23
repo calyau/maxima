@@ -273,8 +273,8 @@ To reenable the Lisp debugger set *debugger-hook* to nil.
 @end deffn
 
 @c NEEDS WORK
-@deffn {Function} find_root (@var{f}(@var{x}), @var{x}, @var{a}, @var{b})
-@deffnx {Function} find_root (@var{f}, @var{a}, @var{b})
+@deffn {Fun@value{cedilha}@~ao} find_root (@var{f}(@var{x}), @var{x}, @var{a}, @var{b})
+@deffnx {Fun@value{cedilha}@~ao} find_root (@var{f}, @var{a}, @var{b})
 Encontra a ra@'iz da fun@value{cedilha}@~ao @var{f} com a vari@'avel @var{x} percorrendo o intervalo @code{[@var{a}, @var{b}]}.
 A fun@value{cedilha}@~ao deve ter um
 sinal diferente em cada ponto final.  Se essa condi@,{c}@~ao n@~ao for alcan@,{c}ada, a

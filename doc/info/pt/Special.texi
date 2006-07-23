@@ -610,8 +610,8 @@ necess@'ario.
 
 @c NEED INFO HERE ABOUT THE SUBSCRIPTED FORM psi[n](x)
 @c I (rtoy) don't think there is a plain psi(x) function anymore.
-@c @deffn {Function} psi (@var{x})
-@c @deffnx {Function} psi [@var{n}](@var{x})
+@c @deffn {Fun@value{cedilha}@value{a_til}o} psi (@var{x})
+@c @deffnx {Fun@value{cedilha}@value{a_til}o} psi [@var{n}](@var{x})
 @deffn {Fun@value{cedilha}@value{a_til}o} psi [@var{n}](@var{x})
 
 A derivada de @code{log (gamma (@var{x}))} de ordem @code{@var{n}+1}.

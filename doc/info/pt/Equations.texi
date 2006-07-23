@@ -478,7 +478,7 @@ dados para @code{ieqn} se ocorrer um erro evita a gera@,{c}@~ao de termos adicio
 
 @end defvr
 
-@deffn {Function} lhs (@var{expr})
+@deffn {Fun@,{c}@~ao} lhs (@var{expr})
 Retorna o lado esquerdo (isto @'e, o primeiro argumento)
 da express@~ao @var{expr},
 quando o operador de @var{expr}

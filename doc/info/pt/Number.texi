@@ -374,7 +374,7 @@ Retorna a parte inteira da @var{n}'@'esima ra@'iz do valor absoluto de @var{x}.
 
 @end deffn
 
-@deffn {Function} inv_mod (@var{n}, @var{m})
+@deffn {Fun@value{cedilha}@~ao} inv_mod (@var{n}, @var{m})
 Calcula o  inverso de @var{n} m@'odulo @var{m}. 
 @code{inv_mod (n,m)} retorna @code{false}, 
 se @var{n} modulo @var{m} for zero.

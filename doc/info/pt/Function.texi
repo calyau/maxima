@@ -424,7 +424,7 @@ Exemplos
 @node Defini@value{cedilha}@~oes para Defini@value{cedilha}@~ao de Fun@value{cedilha}@~ao,  , Macros, Defini@value{cedilha}@~ao de Fun@value{cedilha}@~ao
 @section Defini@value{cedilha}@~oes para Defini@value{cedilha}@~ao de Fun@value{cedilha}@~ao
 
-@deffn {Function} apply (@var{F}, [@var{x_1}, ..., @var{x_n}])
+@deffn {Fun@,{c}@~ao} apply (@var{F}, [@var{x_1}, ..., @var{x_n}])
 Constr@'oi e avalia uma express@~ap @code{@var{F}(@var{arg_1}, ..., @var{arg_n})}.
 
 @code{apply} n@~ao tenta distinguir fun@,{c}@~oes de array de fun@,{c}@~oes comuns;
@@ -1013,7 +1013,7 @@ e atribui a defini@,{c}@~ao para o r@'otulo.
 @c PROBABLY NEED SOME EXAMPLES HERE
 @end deffn
 
-@deffn {Function} funmake (@var{F}, [@var{arg_1}, ..., @var{arg_n}])
+@deffn {Fun@,{c}@~ao} funmake (@var{F}, [@var{arg_1}, ..., @var{arg_n}])
 Retorna uma express@~ao @code{@var{F}(@var{arg_1}, ..., @var{arg_n})}.
 O valor de retorno @'e simplificado, mas n@~ao avaliado,
 ent@~ao a fun@,{c}@~ao @var{F} n@~ao @'e chamada, mesmo se essa fun@,{c}@~ao @var{F} existir.
