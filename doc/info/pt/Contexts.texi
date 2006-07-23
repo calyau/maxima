@@ -19,7 +19,7 @@ de contextos que est@~ao ativos pelo caminho da fun@,{c}@~ao @code{activate}.
 
 @end deffn
 
-@defvr {vari@'avel de sistema} activecontexts
+@defvr {Vari@'avel de sistema} activecontexts
 Valor padr@~ao: @code{[]}
 
 @code{activecontexts} @'e a lista de contextos que est@~ao ativos
