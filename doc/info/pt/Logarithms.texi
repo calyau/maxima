@@ -137,9 +137,9 @@ extremos @'e muitas vezes necess@'aria.
 
 @end defvr
 
-+@c NEEDS EXAMPLES
+@c NEEDS EXAMPLES
 @defvr {Vari@'avel de op@,{c}@~ao} logarc
-+@defvrx {Fun@value{cedilha}@~ao} logarc (@var{expr})
+@defvrx {Fun@value{cedilha}@~ao} logarc (@var{expr})
 
 Se @code{true} ir@'a fazer com que as fun@,{c}@~oes circularee inversas e
 hiperb@'olicas sejam convertidas em formas logar@'itimicas.
