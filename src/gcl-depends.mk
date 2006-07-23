@@ -249,7 +249,6 @@ binary-gcl/maxima : mat.lisp
 binary-gcl/maxima : matrix.lisp
 binary-gcl/maxima : sprdet.lisp
 binary-gcl/maxima : newinv.lisp
-binary-gcl/maxima : linnew.lisp
 binary-gcl/maxima : newdet.lisp
 binary-gcl/maxima : schatc.lisp
 binary-gcl/maxima : matcom.lisp

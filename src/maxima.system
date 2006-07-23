@@ -484,7 +484,6 @@
 	       (:module determinants :source-pathname ""
 			:components ((:file "sprdet") 
 				     (:file "newinv") 
-				     (:file "linnew") 
 				     (:file "newdet")))
 	       (:module pattern-matching :source-pathname ""
 			:components ((:file "schatc") 

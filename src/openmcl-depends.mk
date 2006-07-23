@@ -200,7 +200,6 @@ binary-openmcl/maxima.image : mat.lisp
 binary-openmcl/maxima.image : matrix.lisp
 binary-openmcl/maxima.image : sprdet.lisp
 binary-openmcl/maxima.image : newinv.lisp
-binary-openmcl/maxima.image : linnew.lisp
 binary-openmcl/maxima.image : newdet.lisp
 binary-openmcl/maxima.image : schatc.lisp
 binary-openmcl/maxima.image : matcom.lisp

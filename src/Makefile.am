@@ -327,7 +327,6 @@ ldisp.lisp \
 lesfac.lisp \
 letmac.lisp \
 limit.lisp \
-linnew.lisp \
 lmdcls.lisp \
 logarc.lisp \
 macdes.lisp \

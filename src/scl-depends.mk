@@ -243,7 +243,6 @@ binary-scl/maxima.core : mat.lisp
 binary-scl/maxima.core : matrix.lisp
 binary-scl/maxima.core : sprdet.lisp
 binary-scl/maxima.core : newinv.lisp
-binary-scl/maxima.core : linnew.lisp
 binary-scl/maxima.core : newdet.lisp
 binary-scl/maxima.core : schatc.lisp
 binary-scl/maxima.core : matcom.lisp

@@ -240,7 +240,6 @@ binary-acl6/maxima.dxl : mat.lisp
 binary-acl6/maxima.dxl : matrix.lisp
 binary-acl6/maxima.dxl : sprdet.lisp
 binary-acl6/maxima.dxl : newinv.lisp
-binary-acl6/maxima.dxl : linnew.lisp
 binary-acl6/maxima.dxl : newdet.lisp
 binary-acl6/maxima.dxl : schatc.lisp
 binary-acl6/maxima.dxl : matcom.lisp
