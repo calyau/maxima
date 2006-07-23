@@ -1,5 +1,5 @@
 @c Language: Portuguese, Encoding: iso-8859-1
-@c /Plotting.texi/1.26/Sat Jul  8 08:15:01 2006/-ko/
+@c /Plotting.texi/1.27/Sat Jul 22 19:24:04 2006/-ko/
 @menu
 * Defini@value{cedilha}@~oes para Montagem de Gr@'aficos::    
 @end menu
@@ -18,7 +18,6 @@ Valor padr@~ao: @code{false}
 Quando @code{in_netmath} @'e @code{true},
 @code{plot3d} imprime uma sa@'ida OpenMath para o console se @code{plot_format} @'e @code{openmath};
 caso contr@'ario @code{in_netmath} (mesmo se @code{true}) n@~ao tem efeito.
-
 @code{in_netmath} n@~ao tem efeito sobre @code{plot2d}.
 
 @end defvr
@@ -416,8 +415,23 @@ A sa@'ida do Gnuplot @'e mostrada no console do Maxima como uma aproxima@,{c}@~a
 Valor: @code{ps}
 Gnuplot gera comandos na linguagem PostScript de descri@,{c}@~ao de p@'aginas.
 Se a op@,{c}@~ao
-@code{gnuplot_out_file} est@'a escolhida para @var{filename}, gnuplot escreve os comandos PostScript para @var{filename}.
-De outra forma, os comandos s@~ao mostrados no console Maxima.
+@code{gnuplot_out_file} est@'a escolhida para @var{nomearquivo}, gnuplot escreve os comandos PostScript para @var{nomearquivo}.
+De outra forma, os comandos PostScript ser@~ao gravados no arquivo @code{maxplot.ps}.
+
+@item
+Valor: qualquer outro especifica@,{c}@~ao v@'alida para o gnuplot term
+Gnuplot pode gerar em muitos outros formatos gr@'aficos tais como
+png, jpeg, svg etc.  Para criar gr@'aficos em todos esses formatos o
+@code{gnuplot_term} pode ser escolhido para quaisquer nome (s@'imbolo) de term suportado pelo gnuplot  
+ou mesmo especifica@,{c}@~ao de term do gnuplot com quaisquer op@,{c}@~oes v@'alidas (seq@"u@^encia de caracteres).
+Por exemplo @code{[gnuplot_term,png]} cria sa@'idas no formato PNG (Portable
+Network Graphics) enquanto @code{[gnuplot_term,"png size 1000,1000"]}
+cria arquivos no formato PNG com tamanho de 1000x1000 pixels. 
+Se a op@,{c}@~ao @code{gnuplot_out_file} for escolhida para @var{nomearquivo}, gnuplot 
+escreve a sa@'ida para @var{nomearquivo}. De outra forma, a saida @'e gravada no
+no arquivo @code{maxplot.@var{term}}, onde @var{term} @'e um nome de
+terminal do gnuplot.
+
 @end itemize
 
 @item

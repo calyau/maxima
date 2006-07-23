@@ -1,5 +1,5 @@
 @c Language: Portuguese, Encoding: iso-8859-1
-@c /Lists.texi/1.26/Sat Jun 24 06:45:39 2006/-ko/
+@c /Lists.texi/1.27/Sat Jul  8 08:14:46 2006/-ko/
 @menu
 * Introdu@value{cedilha}@~ao a Listas::
 * Defini@value{cedilha}@~oes para Listas::
@@ -348,10 +348,10 @@ de outra forma retorna @code{false}.
 
 @code{expr_2} @'e tipicamente uma lista,
 nesse caso @code{args(@var{expr_2}) = @var{expr_2}}
-e @code{is(@var{expr} = @var{a})} para algum elemento @var{a} em @code{expr_2} @'e o teste a ser feito.
+e @code{is(@var{expr_1} = @var{a})} para algum elemento @var{a} em @code{expr_2} @'e o teste.
 
-@code{member} n@~ao inspeciona partes dos argumentos de @var{expr_2},
-ent@~ao @code{member} pode retornar @code{false} mesmo se @var{expr_1} for parte de algum argumento de @var{expr_2}.
+@code{member} n@~ao inspeciona partes dos argumentos de @code{expr_2},
+ent@~ao @code{member} pode retornar @code{false} mesmo se @code{expr_1} for uma parte de algum argumento de @code{expr_2}.
 
 Veja tamb@'em @code{elementp}.
 
