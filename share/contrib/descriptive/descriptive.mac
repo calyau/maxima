@@ -534,7 +534,7 @@ list_correlations(x,[aredata]):=block([s,p,len,s1,d,out:[],listarith:true],
 /*               degrees of rotation for x-axis, and the second number the    */
 /*               degrees for z-axis (see gnuplot docs)                        */
 /*   'nclasses=10: number of classes for the histograms in the diagonal       */
-/*   'pointstyle=0: an integer to indicate how to display points              */
+/*   'pointstyle=1: an integer to indicate how to display points              */
 /*                                                                            */
 /* Examples:                                                                  */
 /*   dataplot([3,4,....],'outputdev="eps",'pointstyle=3)$                     */
@@ -544,7 +544,7 @@ dataplot(m,[select]):=
 
       /* updating options */
       options: ['outputdev, 'maintitle, 'axisnames, 'joined, 'picturescales, 'threedim, 'axisrot, 'nclasses, 'pointstyle],
-      defaults: ["x", "", ["x","y","z"], false, [1.0, 1.0], true, [60, 30], 10, 0],
+      defaults: ["x", "", ["x","y","z"], false, [1.0, 1.0], true, [60, 30], 10, 1],
       for i in select do(
          aux: ?position(lhs(i),options),
          if numberp(aux) and aux <= length(options) and aux >= 1
