@@ -1,5 +1,5 @@
 @c Language: Portuguese, Encoding: iso-8859-1
-@c /Floating.texi/1.17/Tue Aug 23 09:18:26 2005/-ko/
+@c /Floating.texi/1.18/Sat Jul  8 08:14:21 2006/-ko/
 @c ITEMS IN THIS FILE ARE IN NEED OF EXPANSION, CLARIFICATION, AND EXAMPLES
 
 @menu
@@ -135,21 +135,21 @@ Veja tamb@'em @code{bfloat} e @code{fpprintprec}.
 @defvr {Vari@'avel de Op@value{cedilha}@~ao} fpprintprec
 Valor padr@~ao: 0
 
-@code{fpprintprec} @'e o n@'umero de d@'igitos para impress@~ao quando
-imprimindo um grande n@'umero em ponto flutuante, tornando poss@'ivel calcular com grande
-n@'umero de d@'igitos de precis@~ao, mas ter na resposta impressa com um
-pequeno n@'umero de d@'igitos.
+@code{fpprintprec} @'e o n;umero de d@'igitos a serem mostrados na tela quando no caso de nu@'umeros em ponto flutuante e no caso de grandes n@'umeros em ponto flutuante.
 
-Quando @code{fpprintprec} for 0, ou maior que ou igual a
-@code{fpprec}, ent@~ao o valor de @code{fpprec} controla o n@'umero de d@'igitos usado
-para imprimir.
+Para n@'umeros em ponto flutuante comuns,
+quando @code{fpprintprec} tiver um valor entre 2 e 16  (inclusive),
+o n;umero de d@'igitos mostrado na tela @'e igual a @code{fpprintprec}.
+De outra forma, @code{fpprintprec} @'e 0, ou maior que 16,
+e o n@'umero de d@'igitos mostrados @'e 16.
 
-Quando @code{fpprintprec} tem um valor entre 2 e
-@code{fpprec - 1}, ent@~ao @code{fpprintprec} controla o n@'umero de d@'igitos usado.  (O menor
-n@'umero de d@'igitos usado @'e 2, um do lado esquerdo do ponto e um do
-lado direito.
+Para grandes n@'umeros em ponto flutuante,
+quando @code{fpprintprec} tiver um valor entre 2 e @code{fpprec} (inclusive),
+o n;umero de d@'igitos mostrados @'e giaul a @code{fpprintprec}.
+De outra forma, @code{fpprintprec} @'e 0, ou maior que @code{fpprec},
+e o n;umero de d@'igitos mostrados @'e igual a @code{fpprec}.
 
-O valor 1 para @code{fpprintprec} @'e ilegal.
+@code{fpprintprec} n@~ao pode ser 1.
 
 @end defvr
 

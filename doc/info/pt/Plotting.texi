@@ -1,5 +1,5 @@
 @c Language: Portuguese, Encoding: iso-8859-1
-@c /Plotting.texi/1.24/Sat Apr  1 08:13:16 2006/-ko/
+@c /Plotting.texi/1.26/Sat Jul  8 08:15:01 2006/-ko/
 @menu
 * Defini@value{cedilha}@~oes para Montagem de Gr@'aficos::    
 @end menu
@@ -736,18 +736,18 @@ Uma montagem de gr@'afico onde o eixo z @'e representado apenas por cores.
 Mostra um gr@'afico de uma ou tr@^es express@~oes como fun@,{c}@~oes de duas vari@'aveis.
 
 @example
-(%i1) plot3d (2^(-u^2 + v^2), [u, -3, 3], [v, -2, 2]);
+(%i1) plot3d (2^(-u^2 + v^2), [u, -3, 3], [v, -7, 7]);
 @end example
 
 @ifnotinfo
 @image{../figures/plotting19,8cm}
 @end ifnotinfo
 
-monta o gr@'afico @code{z = 2^(-u^2+v^2)} com @code{u} e @code{v} variando em
-[-5,5] e [-7,7] respectivamente, e com @var{u} sobre o eixo x, e @code{v} sobre
-o eixo y.
+monta o gr@'afico de @code{z = 2^(-u^2+v^2)} com @code{u} e @code{v} variando no intervalo fechado [-3,3] e
+no intervalo fechado de [-2,2] respectivamente, e com @var{u} sobre o eixo x, e @code{v} sobre o eixo
+y.
 
-O mesmo gr@'afico pode ser desenhado usando openmath:
+O mesmo gr@'afico pode ser visualizado usando openmath:
 
 @example
 (%i2)  plot3d (2^(-u^2 + v^2), [u, -3, 3], [v, -2, 2],
@@ -755,14 +755,14 @@ O mesmo gr@'afico pode ser desenhado usando openmath:
 @end example
 
 @ifnotinfo
-@image{../figures/plotting25,8cm}
+@image{figures/plotting25,8cm}
 @end ifnotinfo
 
 @noindent
-neste caso, o rato (mouse) permite rodar o gr@'afico para ver a superf@'icie
-desde diferentes lados.
+nesse caso o mouse pode ser usado para rotacionar a visualiza@,{c}@~ao para olhar na superf@'icie
+de diferentes ângulos.
 
-Um terceiro exemplo de modelo de argumento @'e
+Um exemplo do terceiro modelo de argumento @'e
 
 @example
 (%i3) plot3d ([cos(x)*(3 + y*cos(x/2)), sin(x)*(3 + y*cos(x/2)),
@@ -803,7 +803,7 @@ mas paralelo @`a linha de @code{view_direction} para a or@'igem.  Isso @'e
 correntemente usado somente em plot_format @code{ps}, uma vez que outros visualizadores
 permitem rota@,{c}@~ao interativa do objeto.
 
-Outros exemplos s@~a a superf@'icie (garrafa) de Klein:
+Outro exemplo @'e uma superf@'icie de Klein:
 
 @example
 (%i5) expr_1: 5*cos(x)*(cos(x/2)*cos(y) + sin(x/2)*sin(2*y)
@@ -820,25 +820,23 @@ Outros exemplos s@~a a superf@'icie (garrafa) de Klein:
 @image{../figures/plotting22,8cm}
 @end ifnotinfo
 
-e um toro:
+e um toro
 
 @example
-(%i9) expr_1: cos(y)*(10.0+6*cos(x))$
-(%i10) expr_2: sin(y)*(10.0+6*cos(x))$
-(%i11) expr_3: -6*sin(x)$
-(%i12) plot3d ([expr_1, expr_2, expr_3], [x, 0, 2*%pi],
-       [y, 0, 2*%pi], ['grid, 40, 40]);
++(%i9) expr_1: cos(y)*(10.0+6*cos(x))$
++(%i10) expr_2: sin(y)*(10.0+6*cos(x))$
++(%i11) expr_3: -6*sin(x)$
++(%i12) plot3d ([expr_1, expr_2, expr_3], [x, 0, 2*%pi],       [y, 0, 2*%pi], ['grid, 40, 40]);
 @end example
 
 @ifnotinfo
 @image{../figures/plotting23,8cm}
 @end ifnotinfo
 
-Algumas vezes ser@'a necess@'ario definir uma fun@,{c}@~ao para montar o
-grafico da express@~ao. Todos os argumentos para plot3d s@~ao avaliados antes
-de serem passados para plot3d, e ent@~ao tentando fazer um express@~ao que faz
-apenas o que @'e preciso pode ser dif@'icil, e @'e apenas mais f@'acil fazer
-uma fun@,{c}@~ao.
+Algumas vezes isso @'e necess@'ario para definir uma fun@,{c}@~ao para montar o graico da express@~ao. Todos
+os argumentos para plot3d s@~ao avaliados antes de serem passados para plot3d, e
+ent@~ao tentando fazer um express@~ao que faz apenas o que @'e preciso pode ser 
+dif@'icil, e @'e apenas mais f@'acil fazer uma fun@,{c}@~ao.   
 
 @example
 (%i13) M: matrix([1, 2, 3, 4], [1, 2, 3, 2], [1, 2, 3, 4],

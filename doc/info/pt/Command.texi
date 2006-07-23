@@ -1,5 +1,5 @@
 @c Language: Portuguese, Encoding: iso-8859-1
-@c /Command.texi/1.40/Fri Jun  9 07:49:22 2006/-ko/
+@c /Command.texi/1.41/Sat Jul  8 08:14:19 2006/-ko/
 @iftex
 @hyphenation{si-na-li-za-do-res}
 @hyphenation{de-mo-ra-da-men-te}
@@ -749,18 +749,20 @@ inclua @code{X='X} como um argumento para @code{ev}.  Certamente express@~oes ta
 @c REVIEW FOR ACCURACY AND COMPLETENESS
 @c THIS ITEM IS VERY IMPORTANT !!
 @c NEEDS EXAMPLES
-@deffn {Fun@,{c}@~ao} kill (@var{s@'imbolo_1}, ..., @var{s@'imbolo_n})
+@deffn {Fun@,{c}@~ao} kill (@var{a_1}, ..., @var{a_n})
 @deffnx {Fun@,{c}@~ao} kill (labels)
 @deffnx {Fun@,{c}@~ao} kill (inlabels, outlabels, linelabels)
 @deffnx {Fun@,{c}@~ao} kill (@var{n})
 @deffnx {Fun@,{c}@~ao} kill ([@var{m}, @var{n}])
 @deffnx {Fun@,{c}@~ao} kill (values, functions, arrays, ...)
 @deffnx {Fun@,{c}@~ao} kill (all)
-@deffnx {Fun@,{c}@~ao} kill (allbut (@var{s@'imbolo_1}, ..., @var{s@'imbolo_n}))
+@deffnx {Fun@,{c}@~ao} kill (allbut (@var{a_1}, ..., @var{a_n}))
 
 Remove todas as associa@,{c}@~oes (valor, fun@,{c}@~oes, array, ou regra) dos argumentos
-@var{s@'imbolo_1}, ..., @var{s@'imbolo_n}.
-Um argumento pode ser um elemento simples de um array ou uma fun@,{c}@~ao subscrita.
+@var{a_1}, ..., @var{a_n}.
+Um argumento @var{a_k} pode ser um s@'imbolo ou um elemento de array simples.
+Quando @var{a_k} for um elemento de array simples, @code{kill} remove a associa@,{c}@~ao daquele elemento
+sem afetar qualquer outro elemento do array.
 
 Muitos argumentos especiais s@~ao reconhecidos.  
 Diferentes fam@'ilias de argumentos 
@@ -789,8 +791,8 @@ Veja tamb@'em @code{infolists}.
 @code{kill (all)} n@~ao retorna vari@'aveis globais para seus valores padr@~oes;
 Veja @code{reset} sobre esse ponto.
 
-@code{kill (allbut (@var{s@'imbolo_1}, ..., @var{s@'imbolo_n}))}
-libera todos os @'itens em todas as infolists exceto para @var{s@'imbolo_1}, ..., @var{s@'imbolo_n}.
+@code{kill (allbut (@var{a_1}, ..., @var{a_n}))}
+remove a associa@,{c}@~ao de todos os itens sobre todas as infolistas exceto para @var{a_1}, ..., @var{a_n}.
 @code{kill (allbut (@var{infolist}))} libera todos os @'itens exceto para si pr@'oprio em @var{infolist},
 onde @var{infolist} @'e @code{values}, @code{functions}, @code{arrays}, etc.
 

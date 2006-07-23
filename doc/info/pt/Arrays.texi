@@ -1,12 +1,11 @@
 @c Language: Portuguese, Encoding: iso-8859-1
-@c /Arrays.texi/1.12/Thu Dec 29 07:02:41 2005/-ko/
+@c /Arrays.texi/1.13/Sat Jul  8 08:14:09 2006/-ko/
 @menu
-* Defini@value{cedilha}@~oes para Arrays e Tabelas::  
+* Defini@value{cedilha}@~oes para Arrays::  
 @end menu
 
-@node Defini@value{cedilha}@~oes para Arrays e Tabelas,  , Arrays e Tabelas, Arrays e Tabelas
-
-@section Defini@value{cedilha}@~oes para Arrays e Tabelas
+@node Defini@value{cedilha}@~oes para Arrays,  , Arrays, Arrays
+@section Defini@value{cedilha}@~oes para Arrays
 
 @deffn {Fun@,{c}@~ao} array (@var{name}, @var{dim_1}, ..., @var{dim_n})
 @deffnx {Fun@,{c}@~ao} array (@var{name}, @var{type}, @var{dim_1}, ..., @var{dim_n})
@@ -53,13 +52,132 @@ Ela @'e remanescente de @code{apply}, exceto o primeiro argumento que @'e um arr
 @end deffn
 
 @deffn {Fun@,{c}@~ao} arrayinfo (@var{A})
-Retorna uma lista de informa@,{c}@~oes sobre o array @var{A}.  Para
-arrays desordenados ela retorna uma lista de @code{hashed}, o n@'umeros de subscritos,
-e os subscritos de cada elemento que tem um valor.  Para arrays
-declarados ela retorna uma lista de @code{declared}, o n@'umero de subscritos, e
-os limites que foram dados @`a fun@,{c}@~ao @code{array} quando ela foi chamada
-sobre @var{A}.  Fazer @code{example(arrayinfo);} por exemplo.
+Retorna informa@,{c}@~oes sobre o array @var{A}.
+O argumento @var{A} pode ser um array declarado, uma array n@~ao declarado ( que sofreu um hash),
+uma fun@,{c}@~ao de array, ou uma fun@,{c}@~ao que possui subscrito.
 
+Para arrays declarados, @code{arrayinfo} retorna uma lista
+compreendendo o @'atomo @code{declared}, o n;umero de dimens@~oes, e o tamanho de cada dimens@~ao.
+Os elementos do array, ambos associados e n@~ao associados, s@~ao retornados por @code{listarray}.
+
+Para arrays n@~ao declarados (arrays que sofreram um hash),
+@code{arrayinfo} retorna uma lista compreendendo o @'atomo @code{hashed}, o n@'umero de subscritos,
+e os subscritos de de todo elemento que tiver um valor.
+Os valores s@~ao retornados por meio de @code{listarray}.
+
+Para fun@,{c}@~oes de array,
+@code{arrayinfo} retretorna uma lista compreendendo o @'atomo @code{hashed}, o n@'umero de subscritos,
+e quaisquer valores de subscritos para os quais exista valores funcionais armazenados.
+Os valores funcionais armazenados s@~ao retornados atrav@'es de @code{listarray}.
+
+Para fun@,{c}@~oes que possuem subscritos,
+@code{arrayinfo} retorna uma lista compreendendo o @'atomo @code{hashed}, o n@'umero de subscritos,
+e qualquer valores subscritos para os quais existe uma express@~oes lambda.
+As express@~oes lambda s@~ao retornadas por @code{listarray}.
+
+Examples:
+
+@code{arrayinfo} e @code{listarray} aplicado a um array declarado.
+
+@c ===beg===
+@c array (aa, 2, 3);
+@c aa [2, 3] : %pi;
+@c aa [1, 2] : %e;
+@c arrayinfo (aa);
+@c listarray (aa);
+@c ===end===
+@example
+(%i1) array (aa, 2, 3);
+(%o1)                          aa
+(%i2) aa [2, 3] : %pi;
+(%o2)                          %pi
+(%i3) aa [1, 2] : %e;
+(%o3)                          %e
+(%i4) arrayinfo (aa);
+(%o4)                 [declared, 2, [2, 3]]
+(%i5) listarray (aa);
+(%o5) [#####, #####, #####, #####, #####, #####, %e, #####, 
+                                        #####, #####, #####, %pi]
+@end example
+
+@code{arrayinfo} e @code{listarray} aplicado a um array n@~ao declarado (no qual foi aplicado um hash).
+
+@c ===beg===
+@c bb [FOO] : (a + b)^2;
+@c bb [BAR] : (c - d)^3;
+@c arrayinfo (bb);
+@c listarray (bb);
+@c ===end===
+@example
+(%i1) bb [FOO] : (a + b)^2;
+                                   2
+(%o1)                       (b + a)
+(%i2) bb [BAR] : (c - d)^3;
+                                   3
+(%o2)                       (c - d)
+(%i3) arrayinfo (bb);
+(%o3)               [hashed, 1, [BAR], [FOO]]
+(%i4) listarray (bb);
+                              3         2
+(%o4)                 [(c - d) , (b + a) ]
+@end example
+
+@code{arrayinfo} e @code{listarray} aplicado a uma fun@,{c}@~ao de array.
+
+@c ===beg===
+@c cc [x, y] := y / x;
+@c cc [u, v];
+@c cc [4, z];
+@c arrayinfo (cc);
+@c listarray (cc);
+@c ===end===
+@example
+(%i1) cc [x, y] := y / x;
+                                     y
+(%o1)                      cc     := -
+                             x, y    x
+(%i2) cc [u, v];
+                                v
+(%o2)                           -
+                                u
+(%i3) cc [4, z];
+                                z
+(%o3)                           -
+                                4
+(%i4) arrayinfo (cc);
+(%o4)              [hashed, 2, [4, z], [u, v]]
+(%i5) listarray (cc);
+                              z  v
+(%o5)                        [-, -]
+                              4  u
+@end example
+
+@code{arrayinfo} e @code{listarray} aplicadas a fun@,{c}@~oes com subscritos.
+
+@c ===beg===
+@c dd [x] (y) := y ^ x;
+@c dd [a + b];
+@c dd [v - u];
+@c arrayinfo (dd);
+@c listarray (dd);
+@c ===end===
+@example
+(%i1) dd [x] (y) := y ^ x;
+                                     x
+(%o1)                     dd (y) := y
+                            x
+(%i2) dd [a + b];
+                                    b + a
+(%o2)                  lambda([y], y     )
+(%i3) dd [v - u];
+                                    v - u
+(%o3)                  lambda([y], y     )
+(%i4) arrayinfo (dd);
+(%o4)             [hashed, 1, [b + a], [v - u]]
+(%i5) listarray (dd);
+                         b + a                v - u
+(%o5)      [lambda([y], y     ), lambda([y], y     )]
+@end example
 @end deffn
 
 @deffn {Fun@,{c}@~ao} arraymake (@var{name}, [@var{i_1}, ..., @var{i_n}])
@@ -74,13 +192,41 @@ ao inv@'es de uma chamada de fun@,{c}@~ao n@~ao avaliada.
 @defvr {Vari@'avel de sistema} arrays
 Valor padr@~ao: @code{[]}
 
-@code{arrays} @'e uma lista de todas os arrays que foram alocadas,
-tanto declarados como n@~ao declarados.
+@code{arrays} @'e uma lista dos arrays que tiverem sido alocados.
+Essa lista compreende arrays declarados atrav@'es de @code{array},
+arrays desordenados (hashed) constru@'idos atrav@'es de defini@,{c}@~ao impl@'icita (atribuindo alguma coisa a um elemento de array),
+e fun@,{c}@~oes de array definidas por meio de @code{:=} e @code{define}.
+Arrays definidos por meio de @code{make_array} n@~ao est@~ao inclu@'idos.
 
 Veja tamb@'em
 @code{array}, @code{arrayapply}, @code{arrayinfo}, @code{arraymake}, 
-@code{fillarray}, @code{listarray}, and @code{rearray}.
+@code{fillarray}, @code{listarray}, e @code{rearray}.
 @c IS THIS AN EXHAUSTIVE LIST ??
+
+Exemplos:
+
+@c ===beg===
+@c array (aa, 5, 7);
+@c bb [FOO] : (a + b)^2;
+@c cc [x] := x/100;
+@c dd : make_array ('any, 7);
+@c arrays;
+@c ===end===
+@example
+(%i1) array (aa, 5, 7);
+(%o1)                          aa
+(%i2) bb [FOO] : (a + b)^2;
+                                   2
+(%o2)                       (b + a)
+(%i3) cc [x] := x/100;
+                                   x
+(%o3)                      cc  := ---
+                             x    100
+(%i4) dd : make_array ('any, 7);
+(%o4)       @{Array:  #(NIL NIL NIL NIL NIL NIL NIL)@}
+(%i5) arrays;
+(%o5)                     [aa, bb, cc]
+@end example
 
 @end defvr
 
@@ -113,9 +259,127 @@ descartados.
 @end deffn
 
 @deffn {Fun@,{c}@~ao} listarray (@var{A})
-Retorna uma lista dos elementos  de um array declarado ou 
-desordenado @var{A}.  A ordem @'e da maior-linha.  Elementos que n@~ao est@~ao ainda
-definidos s@~ao representados por @code{#####}.
+Retorna uma lista dos elementos do array @var{A}.
+O argumento @var{A} pode ser um array declarado, um array n@~ao declarado (desordenado - hashed),
+uma fun@,{c}@~ao de array, ou uma fun@,{c}@~ao com subscritos.
+
+Elementos s@~ao listados em ordem de linha maior.
+Isto @'e, elementos s@~ao ordenados conforme o primeiro @'indice, en seguida conforme o segundo @'indice, e assim sucessivamente.
+A sequ@"u@^encia de ordena@,{c}@~ao por meio dos valores dos @'indices @'e a mesma ordem estabelecida por meio de @code{orderless}.
+
+Para arrays n@~ao declarados , fun@,{c}@~oes de arrays, e fun@,{c}@~oes com subscritos,
+os elementos correspondem aos valores de @'indice retornados atrav@'es de @code{arrayinfo}.
+
+Elemetos n@~ao associados de arrays gen@'ericos declarados (isto @'e, n@~ao @code{fixnum} e n@~ao @code{flonum})
+s@~ao retornados como @code{#####}.
+Elementos n@~ao associados de arrays declarados @code{fixnum} ou @code{flonum}
+s@~ao retornados como 0 ou 0.0, respectivamente.
+Elementos n@~ao associados de arrays n@~ao declarados, fun@,{c}@~oes de array,
+e fun@,{c}@~oes subscritas n@~ao s@~ao retornados.
+
+Exemplos:
+
+@code{listarray} e @code{arrayinfo} aplicados a um array declarado.
+
+@c ===beg===
+@c array (aa, 2, 3);
+@c aa [2, 3] : %pi;
+@c aa [1, 2] : %e;
+@c listarray (aa);
+@c arrayinfo (aa);
+@c ===end===
+@example
+(%i1) array (aa, 2, 3);
+(%o1)                          aa
+(%i2) aa [2, 3] : %pi;
+(%o2)                          %pi
+(%i3) aa [1, 2] : %e;
+(%o3)                          %e
+(%i4) listarray (aa);
+(%o4) [#####, #####, #####, #####, #####, #####, %e, #####, 
+                                        #####, #####, #####, %pi]
+(%i5) arrayinfo (aa);
+(%o5)                 [declared, 2, [2, 3]]
+@end example
+
+@code{listarray} e @code{arrayinfo} aplicadas a arrays n@~ao declarados (hashed - desordenados).
+
+@c ===beg===
+@c bb [FOO] : (a + b)^2;
+@c bb [BAR] : (c - d)^3;
+@c listarray (bb);
+@c arrayinfo (bb);
+@c ===end===
+@example
+(%i1) bb [FOO] : (a + b)^2;
+                                   2
+(%o1)                       (b + a)
+(%i2) bb [BAR] : (c - d)^3;
+                                   3
+(%o2)                       (c - d)
+(%i3) listarray (bb);
+                              3         2
+(%o3)                 [(c - d) , (b + a) ]
+(%i4) arrayinfo (bb);
+(%o4)               [hashed, 1, [BAR], [FOO]]
+@end example
+
+@code{listarray} e @code{arrayinfo} aplicada a uma fun@,{c}@~ao de array.
+
+@c ===beg===
+@c cc [x, y] := y / x;
+@c cc [u, v];
+@c cc [4, z];
+@c listarray (cc);
+@c arrayinfo (cc);
+@c ===end===
+@example
+(%i1) cc [x, y] := y / x;
+                                     y
+(%o1)                      cc     := -
+                             x, y    x
+(%i2) cc [u, v];
+                                v
+(%o2)                           -
+                                u
+(%i3) cc [4, z];
+                                z
+(%o3)                           -
+                                4
+(%i4) listarray (cc);
+                              z  v
+(%o4)                        [-, -]
+                              4  u
+(%i5) arrayinfo (cc);
+(%o5)              [hashed, 2, [4, z], [u, v]]
+@end example
+
+@code{listarray} e @code{arrayinfo} aplicadas a fun@,{c}@~oes com subscritos.
+
+@c ===beg===
+@c dd [x] (y) := y ^ x;
+@c dd [a + b];
+@c dd [v - u];
+@c listarray (dd);
+@c arrayinfo (dd);
+@c ===end===
+@example
+(%i1) dd [x] (y) := y ^ x;
+                                     x
+(%o1)                     dd (y) := y
+                            x
+(%i2) dd [a + b];
+                                    b + a
+(%o2)                  lambda([y], y     )
+(%i3) dd [v - u];
+                                    v - u
+(%o3)                  lambda([y], y     )
+(%i4) listarray (dd);
+                         b + a                v - u
+(%o4)      [lambda([y], y     ), lambda([y], y     )]
+(%i5) arrayinfo (dd);
+(%o5)             [hashed, 1, [b + a], [v - u]]
+@end example
 
 @end deffn
 
@@ -134,10 +398,14 @@ que ocupa espa@,{c}o, mas depois de @code{y: false}, @code{y} n@~ao mais
 aponta para aquele objeto, ent@~ao o objeto pode ser descartado.  
 
 @c NEEDS CLARIFICATION HERE
-@code{y: make_array ('functional, 'f, 'hashed, 1)} - o segundo argumento para
-@code{make_array} nesse caso @'e a fun@,{c}@~ao que chama o c@'alculo dos elementos
-do array, e os argumentos restantes s@~ao passados recursivamente a
-@code{make_array} para gerar a "memoria" para a fun@,{c}@~ao array objeto.
+@c 'FUNCTIONAL ARGUMENT IN MAKE_ARRAY APPEARS TO BE BROKEN
+@c EVEN AFTER READING THE CODE (SRC/AR.LISP) I CAN'T TELL HOW THIS IS SUPPOSED TO WORK
+@c COMMENTING OUT THIS STUFF TO PREVENT CONFUSION AND HEARTBREAK
+@c RESTORE IT WHEN MAKE_ARRAY ('FUNCTIONAL, ...) IS FIXED
+@c @code{y: make_array ('functional, 'f, 'hashed, 1)} - the second argument to
+@c @code{make_array} in this case is the function to call to calculate array
+@c elements, and the rest of the arguments are passed recursively to
+@c @code{make_array} to generate the "memory" for the array function object.
 
 @end deffn
 
@@ -157,6 +425,7 @@ alterado.
 @deffnx {Fun@,{c}@~ao} remarray (all)
 Remove arrays e fun@,{c}@~oes associadas
 a arrays e libera o espa@,{c}o ocupado.
+Os argumentos podem ser arrays declarados, arrays n@~ao declarados (dsordenados - hashed), fun@,{c}@~oes de array functions, e fun@,{c}@~oes com subscritos.
 
 @code{remarray (all)} remove todos os @'itens na lista global @code{arrays}.
 

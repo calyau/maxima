@@ -1,5 +1,5 @@
 @c Language: Portuguese, Encoding: iso-8859-1
-@c /Function.texi/1.40/Sat Jun 24 06:45:17 2006/-ko/
+@c /Function.texi/1.42/Sat Jul 22 19:23:54 2006/-ko/
 @menu
 * Introdu@value{cedilha}@~ao a Defini@value{cedilha}@~ao de Fun@value{cedilha}@~ao::  
 * Fun@value{cedilha}@~ao::                    
@@ -138,16 +138,12 @@ Uma fun@,{c}@~ao de Array armazena o valor da fun@,{c}@~ao na primeira vez que e
 e retorna o valor armazenado, sem recalcular esse valor, quando o mesmo argumento for fornecido.
 De modo que uma fun@,{c}@~ao @'e muitas vezes chamada uma @i{fun@,{c}@~ao de memoriza@,{c}@~ao}.
 
-@c MENTION IN DESCRIPTION OF GLOBAL LIST ARRAYS
-@c MENTION IN DESCRIPTION OF GLOBAL LIST FUNCTIONS THAT IT DOESN'T APPLY TO ARRAY FUNCTIONS ??
 Nomes de fun@,{c}@~oes de Array s@~ao anexados ao final da lista global @code{arrays}
 (n@~ao na lista global @code{functions}).
-@c MENTION IN ARRAYINFO AND LISTARRAY THAT THEY APPLY TO ARRAY FUNCTIONS
 O comando @code{arrayinfo} retorna a lista de argumentos para os quais exite valores armazenados,
 e @code{listarray} retorna os valores armazenados. 
 Os comandos @code{dispfun} e @code{fundef} retornam a defini@,{c}@~ao da fun@,{c}@~ao de array.
 
-@c MENTION IN FUNMAKE, APPLY THAT THEY DON'T APPLY TO ARRAY FUNCTIONS ??
 O comando @code{arraymake} contr@'oi uma chamada de fun@,{c}@~ao de array,
 an@'alogamente a @code{funmake} para fun@,{c}@~oes comuns.
 O comando @code{arrayapply} aplica uma fun@,{c}@~ao de array a seus argmentos,
@@ -157,11 +153,9 @@ embora @code{map(lambda([@var{x}], @var{a}[@var{x}]), @var{L})} ou
 @code{makelist(@var{a}[@var{x}], @var{x}, @var{L})}, onde @var{L} @'e uma lista,
 n@~ao estejam t@~ao longe disso.
 
-@c MENTION IN REMFUNCTION THAT IT DOESN'T APPLY TO ARRAY FUNCTIONS ??
 O comando @code{remarray} remove uma defini@,{c}@~ao de fun@,{c}@~ao de array (incluindo qualquer valor armazenado pela fun@,{c}@~ao removida),
 an@'alogo a @code{remfunction} para fun@,{c}@~oes comuns.
 
-@c MENTION IN KILL THAT KILL(A[X]) KILLS ONE VALUE OF HASH ARRAY
 o comando @code{kill(@var{a}[@var{x}])} remove o valor da fun@,{c}@~ao de array @var{a}
 armazenado para o argumento @var{x};
 a pr@'oxima vez que @var{a} foor chamada com o argumento @var{x},
@@ -429,24 +423,87 @@ Exemplos
 @c end concepts Defini@value{cedilha}@~ao de Fun@value{cedilha}@~ao
 @node Defini@value{cedilha}@~oes para Defini@value{cedilha}@~ao de Fun@value{cedilha}@~ao,  , Macros, Defini@value{cedilha}@~ao de Fun@value{cedilha}@~ao
 @section Defini@value{cedilha}@~oes para Defini@value{cedilha}@~ao de Fun@value{cedilha}@~ao
-@c NEEDS CLARIFICATION AND EXAMPLES
-@c IMPORTANT TOPIC
-@deffn {Fun@,{c}@~ao} apply (@var{f}, [@var{x_1}, ..., @var{x_n}])
-Retorna o resultado da aplica@,{c}@~ao da fun@,{c}@~ao @var{f} para a lista de argumentos @var{x_1}, ..., @var{x_n}.
-@var{f} @'e o nome de uma fun@value{cedilha}@~ao ou uma express@~ao lambda.
 
-Isso @'e @'util quando @'e desejado
-calcular os argumentos para uma fun@,{c}@~ao antes de aplicar aquela fun@,{c}@~ao.
-Por exemplo, se @code{l} @'e a lista @code{[1, 5, -10.2, 4, 3]}, ent@~ao @code{apply (min, l)}
-resulta -10.2.  @code{apply} @'e tamb@'em @'util quando chama fun@,{c}@~oes que n@~ao
-possuem seus argumentos avaliados e @'e desej@'avel fazer a avalia@,{c}@~ao
-deles.  Por exemplo, se @code{filespec} @'e uma vari@'avel associada @`a lista @code{[test,
-case]} ent@~ao @code{apply (closefile, filespec)} @'e equivalente a
-@code{closefile (test, case)}.  Em geral o primeiro argumento para @code{apply} ser@'a
-processado por um ' (ap@'ostrofo) para fazer isso avaliar para si mesmo.  Uma vez que algumas vari@'aveis
-at@^omicas possuem o mesmo nome que certas fun@,{c}@~oes os valores da
-vari@'avel poder@~ao ser usados em lugar da fun@,{c}@~ao porque @code{apply} teve seu
-primeiro argumento avaliado assim como seu segundo.
+@deffn {Function} apply (@var{F}, [@var{x_1}, ..., @var{x_n}])
+Constr@'oi e avalia uma express@~ap @code{@var{F}(@var{arg_1}, ..., @var{arg_n})}.
+
+@code{apply} n@~ao tenta distinguir fun@,{c}@~oes de array de fun@,{c}@~oes comuns;
+quando @var{F} for o nome de uma fun@,{c}@~ao de array,
+@code{apply} avalia @code{@var{F}(...)}
+(isto @'e, uma chamada de fun@,{c}@~ao com par@^entesis em lugar de colch@^etes).
+@code{arrayapply} avalia uma chamada de fun@,{c}@~ao com colch@^etes nesse caso.
+
+Exemplos:
+
+@code{apply} avalia seus argumentos.
+Nesse exemplo, @code{min} @'e aplicado a @code{L}.
+
+@c ===beg===
+@c L : [1, 5, -10.2, 4, 3];
+@c apply (min, L);
+@c ===end===
+@example
+(%i1) L : [1, 5, -10.2, 4, 3];
+(%o1)                 [1, 5, - 10.2, 4, 3]
+(%i2) apply (min, L);
+(%o2)                        - 10.2
+@end example
+
+@code{apply} avalia argumentos, mesmo se a fun@,{c}@~ao @var{F} disser que os argumentos n@~ao devem ser avaliados.
+
+@c ===beg===
+@c F (x) := x / 1729;
+@c fname : F;
+@c dispfun (F);
+@c dispfun (fname);
+@c apply (dispfun, [fname]);
+@c ===end===
+@example
+(%i1) F (x) := x / 1729;
+                                   x
+(%o1)                     F(x) := ----
+                                  1729
+(%i2) fname : F;
+(%o2)                           F
+(%i3) dispfun (F);
+                                   x
+(%t3)                     F(x) := ----
+                                  1729
+
+(%o3)                         [%t3]
+(%i4) dispfun (fname);
+fname is not the name of a user function.
+ -- an error.  Quitting.  To debug this try debugmode(true);
+(%i5) apply (dispfun, [fname]);
+                                   x
+(%t5)                     F(x) := ----
+                                  1729
+
+(%o5)                         [%t5]
+@end example
+
+@code{apply} avalia o nome de fun@,{c}@~ao @var{F}.
+Ap@'ostrofo @code{'} evita avalia@,{c}@~ao.
+@code{demoivre} @'e o nome de uma vari@'avel global e tamb@'em de uma fun@,{c}@~ao.
+
+@c ===beg===
+@c demoivre;
+@c demoivre (exp (%i * x));
+@c apply (demoivre, [exp (%i * x)]);
+@c apply ('demoivre, [exp (%i * x)]);
+@c ===end===
+@example
+(%i1) demoivre;
+(%o1)                         false
+(%i2) demoivre (exp (%i * x));
+(%o2)                  %i sin(x) + cos(x)
+(%i3) apply (demoivre, [exp (%i * x)]);
+demoivre evaluates to false
+Improper name or value in functional position.
+ -- an error.  Quitting.  To debug this try debugmode(true);
+(%i4) apply ('demoivre, [exp (%i * x)]);
+(%o4)                  %i sin(x) + cos(x)
+@end example
 
 @end deffn
 
@@ -876,13 +933,60 @@ Exemplos:
 @defvr {Vari@'avel de sistema} functions
 Valor padr@~ao: @code{[]}
 
-@code{functions} @'e uma lista de todas as fun@,{c}@~oes Maxima definidas pelo usu@'ario
+@code{functions} @'e uma lista de todas as fun@,{c}@~oes comuns do Maxima
 na sess@~ao corrente.
-Um fun@,{c}@~ao definida pelo usu@'ario @'e uma fun@,{c}@~ao constru@'ida por
-@code{define} or @code{:=}.
+Uma fun@,{c}@~ao comum @'e uma fun@,{c}@~ao constru@'ida atrav@'es de
+@code{define} ou de @code{:=} e chamada com par@^entesis @code{()}.
 Uma fun@,{c}@~ao pode ser definida pela linha de comando do Maxima de forma interativa com o usu@'ario
 ou em um arquivo Maxima chamado por @code{load} ou @code{batch}.
-Fun@,{c}@~oes Lisp, todavia, n@~ao s@~ao adicinadas @`a lista @code{functions}.
+
+Fun@,{c}@~oes de array (chamadas com colch@^etes, e.g., @code{F[x]})
+e fun@,{c}@~oes com subscritos (chamadas com colch@^etes e par@^entesis, e.g., @code{F[x](y)})
+s@~ao lsitados atrav@'es da vari@'avel global @code{arrays}, e n@~ao por meio de @code{functions}.
+
+Fun@,{c}@~oes Lisp n@~ao s@~ao mantidas em nenhuma lista.
+
+Exemplos:
+
+@c ===beg===
+@c F_1 (x) := x - 100;
+@c F_2 (x, y) := x / y;
+@c define (F_3 (x), sqrt (x));
+@c G_1 [x] := x - 100;
+@c G_2 [x, y] := x / y;
+@c define (G_3 [x], sqrt (x));
+@c H_1 [x] (y) := x^y;
+@c functions;
+@c arrays;
+@c ===end===
+@example
+(%i1) F_1 (x) := x - 100;
+(%o1)                   F_1(x) := x - 100
+(%i2) F_2 (x, y) := x / y;
+                                      x
+(%o2)                    F_2(x, y) := -
+                                      y
+(%i3) define (F_3 (x), sqrt (x));
+(%o3)                   F_3(x) := sqrt(x)
+(%i4) G_1 [x] := x - 100;
+(%o4)                    G_1  := x - 100
+                            x
+(%i5) G_2 [x, y] := x / y;
+                                     x
+(%o5)                     G_2     := -
+                             x, y    y
+(%i6) define (G_3 [x], sqrt (x));
+(%o6)                    G_3  := sqrt(x)
+                            x
+(%i7) H_1 [x] (y) := x^y;
+                                      y
+(%o7)                     H_1 (y) := x
+                             x
+(%i8) functions;
+(%o8)              [F_1(x), F_2(x, y), F_3(x)]
+(%i9) arrays;
+(%o9)                 [G_1, G_2, G_3, H_1]
+@end example
 
 @end defvr
 
@@ -909,36 +1013,131 @@ e atribui a defini@,{c}@~ao para o r@'otulo.
 @c PROBABLY NEED SOME EXAMPLES HERE
 @end deffn
 
-@deffn {Fun@,{c}@~ao} funmake (@var{name}, [@var{arg_1}, ..., @var{arg_n}])
-Retorna uma express@~ao @code{@var{name} (@var{arg_1}, ..., @var{arg_n})}.
+@deffn {Function} funmake (@var{F}, [@var{arg_1}, ..., @var{arg_n}])
+Retorna uma express@~ao @code{@var{F}(@var{arg_1}, ..., @var{arg_n})}.
 O valor de retorno @'e simplificado, mas n@~ao avaliado,
-ent@~ao a fun@,{c}@~ao n@~ao @'e chamada.
+ent@~ao a fun@,{c}@~ao @var{F} n@~ao @'e chamada, mesmo se essa fun@,{c}@~ao @var{F} existir.
+
+@code{funmake} n@~ao tenta distinguir fun@,{c}@~oes de array de fun@,{c}@~oes comuns;
+quando @var{F} for o nome de uma fun@,{c}@~ao de array,
+@code{funmake} retorna @code{@var{F}(...)}
+(isto @'e, uma chamada de fun@,{c}@~ao com par@^entesis em lugar de colch@^etes).
+@code{arraymake} retorna uma chamada de fun@,{c}@~ao com colch@^etes nesse caso.
 
 @code{funmake} avalia seus argumentos.
 
 Exemplos:
 
-@itemize @bullet
-@item
-@code{funmake} avalia seus argumentos, mas n@~ao o valor de retorno.
+@code{funmake} aplicada a uma fun@,{c}@~ao comum do Maxima.
+
+@c ===beg===
+@c F (x, y) := y^2 - x^2;
+@c funmake (F, [a + 1, b + 1]);
+@c ''%;
+@c ===end===
 @example
-(%i1) det(a,b,c) := b^2 -4*a*c$
-(%i2) x: 8$
-(%i3) y: 10$
-(%i4) z: 12$
-(%i5) f: det$
-(%i6) funmake (f, [x, y, z]);
-(%o6)                    det(8, 10, 12)
-(%i7) ''%;
-(%o7)                         - 284
+(%i1) F (x, y) := y^2 - x^2;
+                                   2    2
+(%o1)                  F(x, y) := y  - x
+(%i2) funmake (F, [a + 1, b + 1]);
+(%o2)                    F(a + 1, b + 1)
+(%i3) ''%;
+                              2          2
+(%o3)                  (b + 1)  - (a + 1)
 @end example
-@item
-Maxima simplifica o valor de retorno de @code{funmake}.
+
+@code{funmake} aplicada a uma macro.
+
+@c ===beg===
+@c G (x) ::= (x - 1)/2;
+@c funmake (G, [u]);
+@c ''%;
+@c ===end===
 @example
-(%i1) funmake (sin, [%pi/2]);
+(%i1) G (x) ::= (x - 1)/2;
+                                  x - 1
+(%o1)                    G(x) ::= -----
+                                    2
+(%i2) funmake (G, [u]);
+(%o2)                         G(u)
+(%i3) ''%;
+                              u - 1
+(%o3)                         -----
+                                2
+@end example
+
+@code{funmake} aplicada a uma fun@,{c}@~ao subscrita.
+
+@c ===beg===
+@c H [a] (x) := (x - 1)^a;
+@c funmake (H [n], [%e]);
+@c ''%;
+@c funmake ('(H [n]), [%e]);
+@c ''%;
+@c ===end===
+@example
+(%i1) H [a] (x) := (x - 1)^a;
+                                        a
+(%o1)                   H (x) := (x - 1)
+                         a
+(%i2) funmake (H [n], [%e]);
+                                       n
+(%o2)               lambda([x], (x - 1) )(%e)
+(%i3) ''%;
+                                    n
+(%o3)                       (%e - 1)
+(%i4) funmake ('(H [n]), [%e]);
+(%o4)                        H (%e)
+                              n
+(%i5) ''%;
+                                    n
+(%o5)                       (%e - 1)
+@end example
+
+@code{funmake} aplicada a um s@'imbolo que n@~ao @'e uma fun@,{c}@~ao definida de qualquer tipo.
+
+@c ===beg===
+@c funmake (A, [u]);
+@c ''%;
+@c ===end===
+@example
+(%i1) funmake (A, [u]);
+(%o1)                         A(u)
+(%i2) ''%;
+(%o2)                         A(u)
+@end example
+
+ @code{funmake} avalia seus argumentos, mas n@~ao o valor de retorno.
+
+@c ===beg===
+@c det(a,b,c) := b^2 -4*a*c;
+@c (x : 8, y : 10, z : 12);
+@c f : det;
+@c funmake (f, [x, y, z]);
+@c ''%;
+@c ===end===
+@example
+(%i1) det(a,b,c) := b^2 -4*a*c;
+                                    2
+(%o1)              det(a, b, c) := b  - 4 a c
+(%i2) (x : 8, y : 10, z : 12);
+(%o2)                          12
+(%i3) f : det;
+(%o3)                          det
+(%i4) funmake (f, [x, y, z]);
+(%o4)                    det(8, 10, 12)
+(%i5) ''%;
+(%o5)                         - 284
+@end example
+Maxima simplifica o valor de retorno de @code{funmake}.
+
+@c ===beg===
+@c funmake (sin, [%pi / 2]);
+@c ===end===
+@example
+(%i1) funmake (sin, [%pi / 2]);
 (%o1)                           1
 @end example
-@end itemize
 
 @end deffn
 

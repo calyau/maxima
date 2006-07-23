@@ -1,5 +1,5 @@
 @c Language: Portuguese, Encoding: iso-8859-1
-@c /Runtime.texi/1.17/Mon May 15 07:54:22 2006/-ko/
+@c /Runtime.texi/1.18/Sat Jul  8 08:15:05 2006/-ko/
 @menu
 * Introdu@value{cedilha}@~ao a Ambiente em Tempo de Execu@value{cedilha}@~ao::  
 * Interrup@value{cedilha}@~oes::                  
@@ -14,7 +14,7 @@
 @code{maxima-init.mac} @'e um arquivo que @'e chamado automaticamente quando o Maxima inicia.
 Voc@^e pode usar @code{maxima-init.mac} para personalizar seu ambiente Maxima.
 @code{maxima-init.mac}, se existir, @'e tipicamente colocado no
-diret@'orio chamado por @code{:lisp (default-userdir)},
+diret@'orio chamado por @code{maxima_userdir},
 embora possa estar em qualquer outro diret@'orio procurado pela fun@value{cedilha}@~ao @code{file_search}.
 
 Aqui est@'a um exemplo do arquivo @code{maxima-init.mac}:
@@ -101,6 +101,34 @@ Veja tamb@'em @code{declare} e @code{features}.
 @end example
 
 @end deffn
+
+@defvr {Vari@'avel de sistema} maxima_tempdir
+
+@code{maxima_tempdir} nomeia o diret@'orio no qual Maxima cria alguns arquivos tempor@'arios.
+Em particular, arquivos tempor@'arios para impress@~ao s@~ao criados no @code{maxima_tempdir}.
+
+O valor inicial de @code{maxima_tempdir} @'e o diret@'orio do usu@'ario,
+se o maxima puder localiz@'a-lo; de outra forma Maxima sup@~oe um diret@'orio adequado.
+
+A @code{maxima_tempdir} pode ser atribu@'ido uma seq@"u@^encia de caracteres que corresponde a um diret@'orio.
+
+@end defvr
+
+@defvr {Vari@'avel de sistema} maxima_userdir
+
+@code{maxima_userdir} nomeia um diret@'orio no qual Maxima espera encontrar seus pr@'oprios arquivos e os do arquivos do Lisp.
+(Maxima procura em alguns outros diret@'orios tamb@'em;
+@code{file_search_maxima} e @code{file_search_lisp} possuem a lista completa.)
+
+O valor inicial de @code{maxima_userdir} @'e um subdiret@'orio do diret@'orio do usu@'ario,
+se Maxima puder localiz@'a-lo; de outra forma Maxima sup@~oe um diret@'orio adequado.
+
+A @code{maxima_userdir} pode ser atribu@'ido uma seq@"u@^encia de caracteres que corresponde a um diret@'orio.
+Todavia, fazendo uma atribui@,{c}@~ao a @code{maxima_userdir} n@~ao muda automaticamente o valor de
+@code{file_search_maxima} e de @code{file_search_lisp};
+Essas vari@'aveis devem ser modificadas separadamente.
+
+@end defvr
 
 @deffn {Fun@value{cedilha}@~ao} room ()
 @deffnx {Fun@value{cedilha}@~ao} room (true)
