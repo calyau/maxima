@@ -477,7 +477,7 @@ distrib
 
 eval_string
 
-* Definitions for eval_string::
+* Defini@value{cedilha}@~oes para eval_string::
 
 f90
 
