@@ -156,17 +156,19 @@ Represents the negation of syntactic equality @code{=}.
 
 Note that because of the rules for evaluation of predicate expressions
 (in particular because @code{not @var{expr}} causes evaluation of @var{expr}),
-@code{not @var{a} = @var{b}} is not equivalent to @code{@var{a} # @var{b}} in some cases.
+@code{not @var{a} = @var{b}} is equivalent to @code{is(@var{a} # @var{b})},
+instead of @code{@var{a} # @var{b}}.
 
 Examples:
-@c GENERATED FROM:
+
+@c ===beg===
 @c a = b;
 @c is (a = b);
 @c a # b;
 @c not a = b;
 @c is (a # b);
 @c is (not a = b);
-
+@c ===end===
 @example
 (%i1) a = b;
 (%o1)                         a = b
@@ -341,14 +343,91 @@ a function @code{f}.
 @end deffn
 
 @deffn {Operator} =
-denotes an equation to Maxima.  To the pattern matcher in
-Maxima it denotes a total relation that holds between two expressions
-if and only if the expressions are syntactically identical.
+
+The equation operator.
+
+An expression @code{@var{a} = @var{b}}, by itself, represents
+an unevaluated equation, which might or might not hold.
+Unevaluated equations may appear as arguments to @code{solve} and @code{algsys}
+or some other functions.
+
+The function @code{is} evaluates @code{=} to a Boolean value.
+@code{is(@var{a} = @var{b})} evaluates @code{@var{a} = @var{b}} to @code{true} when @var{a} and @var{b}
+are identical. That is, @var{a} and @var{b} are atoms which are identical,
+or they are not atoms and their operators are identical and their arguments are identical.
+Otherwise, @code{is(@var{a} = @var{b})} evaluates to @code{false};
+it never evaluates to @code{unknown}.
+When @code{is(@var{a} = @var{b})} is @code{true}, @var{a} and @var{b} are said to be syntactically equal,
+in contrast to equivalent expressions, for which @code{is(equal(@var{a}, @var{b}))} is @code{true}.
+Expressions can be equivalent and not syntactically equal.
 
 The negation of @code{=} is represented by @code{#}.
+As with @code{=}, an expression @code{@var{a} # @var{b}}, by itself, is not evaluated.
+@code{is(@var{a} # @var{b})} evaluates @code{@var{a} # @var{b}} to
+@code{true} or @code{false}.
+
+In addition to @code{is},
+some other operators evaluate @code{=} and @code{#} to @code{true} or @code{false},
+namely @code{if}, @code{and}, @code{or}, and @code{not}.
+
 Note that because of the rules for evaluation of predicate expressions
 (in particular because @code{not @var{expr}} causes evaluation of @var{expr}),
-@code{not @var{a} = @var{b}} is not equivalent to @code{@var{a} # @var{b}} in some cases.
+@code{not @var{a} = @var{b}} is equivalent to @code{is(@var{a} # @var{b})},
+instead of @code{@var{a} # @var{b}}.
+
+@code{rhs} and @code{lhs} return the right-hand and left-hand sides,
+respectively, of an equation or inequation.
+
+See also @code{equal} and @code{notequal}.
+
+Examples:
+
+An expression @code{@var{a} = @var{b}}, by itself, represents
+an unevaluated equation, which might or might not hold.
+
+@c ===beg===
+@c eq_1 : a * x - 5 * y = 17;
+@c eq_2 : b * x + 3 * y = 29;
+@c solve ([eq_1, eq_2], [x, y]);
+@c subst (%, [eq_1, eq_2]);
+@c ratsimp (%);
+@c ===end===
+@example
+@end example
+
+@code{is(@var{a} = @var{b})} evaluates @code{@var{a} = @var{b}} to @code{true} when @var{a} and @var{b}
+are syntactically equal (that is, identical).
+Expressions can be equivalent and not syntactically equal.
+
+@c ===beg===
+@c a : (x + 1) * (x - 1);
+@c b : x^2 - 1;
+@c [is (a = b), is (a # b)];
+@c [is (equal (a, b)), is (notequal (a, b))];
+@c ===end===
+@example
+@end example
+
+Some operators evaluate @code{=} and @code{#} to @code{true} or @code{false}.
+
+@c ===beg===
+@c if expand ((x + y)^2) = x^2 + 2 * x * y + y^2 then FOO else BAR;
+@c eq_3 : 2 * x = 3 * x;
+@c eq_4 : exp (2) = %e^2;
+@c [eq_3 and eq_4, eq_3 or eq_4, not eq_3];
+@c ===end===
+@example
+@end example
+
+Because @code{not @var{expr}} causes evaluation of @var{expr},
+@code{not @var{a} = @var{b}} is equivalent to @code{is(@var{a} # @var{b})}.
+
+@c ===beg===
+@c [2 * x # 3 * x, not (2 * x = 3 * x)];
+@c is (2 * x # 3 * x);
+@c ===end===
+@example
+@end example
 
 @end deffn
 
@@ -635,36 +714,102 @@ Returns the largest integer less than or equal to @var{x} where @var{x} is numer
 
 @end deffn
 
-@c NEEDS CLARIFICATION
-@deffn {Function} equal (@var{expr_1}, @var{expr_2})
-Used with an @code{is}, returns @code{true} (or @code{false}) if
-and only if @var{expr_1} and @var{expr_2} are equal (or not equal) for all possible
-values of their variables (as determined by @code{ratsimp}).  Thus
-@code{is (equal ((x + 1)^2, x^2 + 2*x + 1))} returns @code{true} whereas if @code{x} is unbound
-@code{is ((x + 1)^2 = x^2 + 2*x + 1)} returns @code{false}.  Note also that @code{is(rat(0)=0)}
-yields @code{false} but @code{is (equal (rat(0), 0))} yields @code{true}.
+@deffn {Function} equal (@var{a}, @var{b})
 
-If a determination
-can't be made, then @code{is (equal (a, b))} returns a simplified but equivalent expression, 
-whereas @code{is (a=b)} always returns either @code{true} or @code{false}.
+Represents equivalence, that is, equal value.
 
-All variables occurring in @var{expr_1} and @var{expr_2} are presumed to be real valued.
+By itself, @code{equal} does not evaluate or simplify.
+The function @code{is} attempts to evaluate @code{equal} to a Boolean value.
+@code{is(equal(@var{a}, @var{b}))} 
+returns @code{true} (or @code{false}) if
+and only if @var{a} and @var{b} are equal (or not equal) for all possible
+values of their variables, as determined by evaluating @code{ratsimp(@var{a} - @var{b})};
+if @code{ratsimp} returns 0, the two expressions are considered equivalent.
+Two expressions may be equivalent even if they are not syntactically equal (i.e., identical).
+
+When @code{is} fails to reduce @code{equal} to @code{true} or @code{false},
+the result is governed by the global flag @code{prederror}.
+When @code{prederror} is @code{true},
+@code{is} complains with an error message.
+Otherwise, @code{is} returns @code{unknown}.
+
+In addition to @code{is},
+some other operators evaluate @code{equal} and @code{notequal} to @code{true} or @code{false},
+namely @code{if}, @code{and}, @code{or}, and @code{not}.
+
+@c FOLLOWING STATEMENT IS MORE OR LESS TRUE BUT I DON'T THINK THE DETAILS ARE CORRECT
+@c Declarations (integer, complex, etc)
+@c for variables appearing in @var{a} and @var{b} are ignored by @code{equal}.
+@c All variables are effectively assumed to be real-valued.
 
 The negation of @code{equal} is @code{notequal}.
 Note that because of the rules for evaluation of predicate expressions
 (in particular because @code{not @var{expr}} causes evaluation of @var{expr}),
-@code{notequal} is not equivalent to @code{not equal} in some cases.
+@code{not equal(@var{a}, @var{b})}
+is equivalent to @code{is(notequal(@var{a}, @var{b}))}
+instead of @code{notequal(@var{a}, @var{b})}.
 
-@c COPY THIS TO DESCRIPTION OF is
-@code{ev (@var{expr}, pred)} is equivalent to @code{is (@var{expr})}.
+Examples:
 
+By itself, @code{equal} does not evaluate or simplify.
+
+@c ===beg===
+@c equal (x^2 - 1, (x + 1) * (x - 1));
+@c equal (x, x + 1);
+@c equal (x, y);
+@c ===end===
 @example
-(%i1) is (x^2 >= 2*x - 1);
-(%o1)                         true
-(%i2) assume (a > 1);
-(%o2)                        [a > 1]
-(%i3) is (log (log (a+1) + 1) > 0 and a^2 + 1 > 2*a);
-(%o3)                         true
+@end example
+
+The function @code{is} attempts to evaluate @code{equal} to a Boolean value.
+@code{is(equal(@var{a}, @var{b}))} returns @code{true} when @code{ratsimp(@var{a} - @var{b})} returns 0.
+Two expressions may be equivalent even if they are not syntactically equal (i.e., identical).
+
+@c ===beg===
+@c ratsimp (x^2 - 1 - (x + 1) * (x - 1));
+@c is (equal (x^2 - 1, (x + 1) * (x - 1)));
+@c is (x^2 - 1 = (x + 1) * (x - 1));
+@c ratsimp (x - (x + 1));
+@c is (equal (x, x + 1));
+@c is (x = x + 1);
+@c ratsimp (x - y);
+@c is (equal (x, y));
+@c is (x = y);
+@c ===end===
+@example
+@end example
+
+When @code{is} fails to reduce @code{equal} to @code{true} or @code{false},
+the result is governed by the global flag @code{prederror}.
+
+@c ===beg===
+@c [aa : x^2 + 2*x + 1, bb : x^2 - 2*x - 1];
+@c ratsimp (aa - bb);
+@c prederror : true;
+@c is (equal (aa, bb));
+@c prederror : false;
+@c is (equal (aa, bb));
+@c ===end===
+
+Some operators evaluate @code{equal} and @code{notequal} to @code{true} or @code{false}.
+
+@c ===beg===
+@c if equal (a, b) then FOO else BAR;
+@c eq_1 : equal (x, x + 1);
+@c eq_2 : equal (y^2 + 2*y + 1, (y + 1)^2);
+@c [eq_1 and eq_2, eq_1 or eq_2, not eq_1];
+@c ===end===
+@example
+@end example
+
+Because @code{not @var{expr}} causes evaluation of @var{expr},
+@code{not equal(@var{a}, @var{b})} is equivalent to @code{is(notequal(@var{a}, @var{b}))}.
+
+@c ===beg===
+@c [notequal (2*z, 2*z - 1), not equal (2*z, 2*z - 1)];
+@c is (notequal (2*z, 2*z - 1));
+@c ===end===
+@example
 @end example
 
 @end deffn
@@ -733,15 +878,18 @@ can use this information; for example:
 
 @end deffn
 
-@deffn {Function} notequal (@var{expr_1}, @var{expr_2})
-Represents the negation of @code{equal (@var{expr_1}, @var{expr_2})}.
+@deffn {Function} notequal (@var{a}, @var{b})
+Represents the negation of @code{equal(@var{a}, @var{b})}.
 
 Note that because of the rules for evaluation of predicate expressions
 (in particular because @code{not @var{expr}} causes evaluation of @var{expr}),
-@code{notequal} is not equivalent to @code{not equal} in some cases.
+@code{not equal(@var{a}, @var{b})}
+is equivalent to @code{is(notequal(@var{a}, @var{b}))}
+instead of @code{notequal(@var{a}, @var{b})}.
 
 Examples:
-@c GENERATED FROM:
+
+@c ===beg===
 @c equal (a, b);
 @c maybe (equal (a, b));
 @c notequal (a, b);
@@ -755,7 +903,7 @@ Examples:
 @c not equal (a, b);
 @c maybe (notequal (a, b));
 @c maybe (not equal (a, b));
-
+@c ===end===
 @example
 (%i1) equal (a, b);
 (%o1)                      equal(a, b)
@@ -848,20 +996,25 @@ is provable from the facts in the @code{assume} database.
 
 If the predicate is provably @code{true} or @code{false},
 @code{is} returns @code{true} or @code{false}, respectively.
-Otherwise, the return value is controlled by the global flag @code{prederror}.
-When @code{prederror} is @code{false}, @code{is} returns @code{unknown} for
-a predicate which cannot be proven nor disproven,
-and reports an error otherwise.
+Otherwise, the return value is governed by the global flag @code{prederror}.
+When @code{prederror} is @code{true},
+@code{is} complains with an error message.
+Otherwise, @code{is} returns @code{unknown}.
+
+@code{ev(@var{expr}, pred)}
+(which can be written  @code{@var{expr}, pred} at the interactive prompt)
+is equivalent to @code{is(@var{expr})}.
 
 See also @code{assume}, @code{facts}, and @code{maybe}.
 
 Examples:
 
 @code{is} causes evaluation of predicates.
-@c GENERATED FROM:
+
+@c ===beg===
 @c %pi > %e;
 @c is (%pi > %e);
-
+@c ===end===
 @example
 (%i1) %pi > %e;
 (%o1)                       %pi > %e
@@ -870,13 +1023,14 @@ Examples:
 @end example
 
 @code{is} attempts to derive predicates from the @code{assume} database.
-@c GENERATED FROM:
+
+@c ===beg===
 @c assume (a > b);
 @c assume (b > c);
 @c is (a < b);
 @c is (a > c);
 @c is (equal (a, c));
-
+@c ===end===
 @example
 (%i1) assume (a > b);
 (%o1)                        [a > b]
@@ -892,13 +1046,14 @@ Examples:
 
 If @code{is} can neither prove nor disprove a predicate from the @code{assume} database,
 the global flag @code{prederror} governs the behavior of @code{is}.
-@c GENERATED FROM:
+
+@c ===beg===
 @c assume (a > b);
 @c prederror: true$
 @c is (a > 0);
 @c prederror: false$
 @c is (a > 0);
-
+@c ===end===
 @example
 (%i1) assume (a > b);
 (%o1)                        [a > b]
@@ -928,11 +1083,12 @@ but the result is computed without actually assigning a value to @code{prederror
 See also @code{assume}, @code{facts}, and @code{is}.
 
 Examples:
-@c GENERATED FROM:
+
+@c ===beg===
 @c maybe (x > 0);
 @c assume (x > 1);
 @c maybe (x > 0);
-
+@c ===end===
 @example
 (%i1) maybe (x > 0);
 (%o1)                        unknown
