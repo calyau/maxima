@@ -82,11 +82,13 @@ are varieties of the gamma function.
 
 See also @code{binomial}.
 
-@itemize @bullet
-@item
 The factorial of an integer, half-integer, or floating point argument is simplified
 unless the operand is greater than @code{factlim}.
 
+@c ===beg===
+@c factlim : 10;
+@c [0!, (7/2)!, 4.77!, 8!, 20!];
+@c ===end===
 @example
 (%i1) factlim: 10$
 (%i2) [0!, (7/2)!, 4.77!, 8!, 20!];
@@ -95,10 +97,13 @@ unless the operand is greater than @code{factlim}.
                16
 @end example
 
-@item
 The factorial of a complex number, known constant, or general expression is not simplified.
 Even so it may be possible simplify the factorial after evaluating the operand.
 
+@c ===beg===
+@c [(%i + 1)!, %pi!, %e!, (cos(1) + sin(1))!];
+@c ev (%, numer, %enumer);
+@c ===end===
 @example
 (%i1) [(%i + 1)!, %pi!, %e!, (cos(1) + sin(1))!];
 (%o1)    [(%i + 1)!, %pi!, %e!, (sin(1) + cos(1))!]
@@ -108,26 +113,30 @@ Even so it may be possible simplify the factorial after evaluating the operand.
                                           1.227580202486819]
 @end example
 
-@item
 The factorial of an unbound symbol is not simplified.
 
+@c ===beg===
+@c kill (foo);
+@c foo!;
+@c ===end===
 @example
 (%i1) kill (foo)$
 (%i2) foo!;
 (%o2)                       foo!
 @end example
 
-@item
 Factorials are simplified, not evaluated.
 Thus @code{x!} may be replaced even in a quoted expression.
 
+@c ===beg===
+@c '([0!, (7/2)!, 4.77!, 8!, 20!]);
+@c ===end===
 @example
 (%i1) '([0!, (7/2)!, 4.77!, 8!, 20!]);
           105 sqrt(%pi)
 (%o1) [1, -------------, 81.44668037931193, 40320, 20!]
                16
 @end example
-@end itemize
 
 @end deffn
 
@@ -315,6 +324,7 @@ when @code{foo} is a macro function.
 @c macroexpand (g (y - z));
 @c ''%;
 @c g (y - z);
+@c ===end===
 @example
 (%i1) x: %pi;
 (%o1)                          %pi
@@ -515,10 +525,16 @@ the form @code{sum(x[i],i,lower-limit,upper-limit)}.
 
 @end defvr
 
+@c NEEDS TO BE REWORKED. NOT CONVINCED THIS SYMBOL NEEDS ITS OWN ITEM
+@c (SHOULD BE DESCRIBED IN CONTEXT OF EACH FUNCTION WHICH RECOGNIZES IT)
 @defvr {Keyword} allbut
 works with the @code{part} commands (i.e. @code{part}, @code{inpart}, @code{substpart},
 @code{substinpart}, @code{dpart}, and @code{lpart}).  For example,
 
+@c ===beg===
+@c expr : e + d + c + b + a;
+@c part (expr, [2, 5]);
+@c ===end===
 @example
 (%i1) expr: e+d+c+b+a$
 (%i2) part (expr, [2, 5]);
@@ -527,21 +543,28 @@ works with the @code{part} commands (i.e. @code{part}, @code{inpart}, @code{subs
 
 while
 
+@c ===beg===
+@c expr : e + d + c + b + a;
+@c part (expr, allbut (2, 5));
+@c ===end===
 @example
 (%i3) part (expr, allbut (2, 5));
 (%o3)                       e + c + b
 @end example
 
-It also works with the @code{kill} command,
+@code{allbut} is also recognized by @code{kill}.
 
+@c ===beg===
+@c [aa : 11, bb : 22, cc : 33, dd : 44, ee : 55];
+@c kill (allbut (cc, dd));
+@c [aa, bb, cc, dd];
+@c ===end===
 @example
 kill (allbut (name_1, ..., name_k))
 @end example
 
-will do a @code{kill (all)} except it will not
-@code{kill} the names specified.  Note: @code{name_i} means a name such as function
-name such as @code{u}, @code{f}, @code{foo}, or @code{g}, not an infolist such as @code{functions}.
-
+@code{kill(allbut(@var{a_1}, @var{a_2}, ...))} has the effect of @code{kill(all)}
+except that it does not kill the symbols @var{a_1}, @var{a_2}, ... .
 
 @end defvr
 
@@ -790,6 +813,8 @@ the result is governed by the global flag @code{prederror}.
 @c prederror : false;
 @c is (equal (aa, bb));
 @c ===end===
+@example
+@end example
 
 Some operators evaluate @code{equal} and @code{notequal} to @code{true} or @code{false}.
 
@@ -969,6 +994,13 @@ simplifier for certain matrix manipulations; thus, Maxima sometimes generates
 an error message concerning @code{fullmap} even though @code{fullmap} was not
 explicitly called by the user.
 
+Examples:
+
+@c ===beg===
+@c a + b * c;
+@c fullmap (g, %);
+@c map (g, %th(2));
+@c ===end===
 @example
 (%i1) a + b*c$
 (%i2) fullmap (g, %);
@@ -983,6 +1015,11 @@ explicitly called by the user.
 Similar to @code{fullmap}, but @code{fullmapl} only maps onto
 lists and matrices.
 
+Example:
+
+@c ===beg===
+@c fullmapl ("+", [3, [4, 5]], [[a, 1], [0, -1.5]]);
+@c ===end===
 @example
 (%i1) fullmapl ("+", [3, [4, 5]], [[a, 1], [0, -1.5]]);
 (%o1)                [[a + 3, 4], [4, 3.5]]
@@ -1260,7 +1297,8 @@ maintain the state of the random number generator.
 The Maxima random number generator is an implementation of the Mersenne twister MT 19937.
 
 Examples:
-@c GENERATED FROM THE FOLLOWING
+
+@c ===beg===
 @c s1: make_random_state (654321)$
 @c set_random_state (s1);
 @c random (1000);
@@ -1274,7 +1312,7 @@ Examples:
 @c random (1.0);
 @c random (10.0);
 @c random (100.0);
-
+@c ===end===
 @example
 (%i1) s1: make_random_state (654321)$
 (%i2) set_random_state (s1);
@@ -1489,6 +1527,9 @@ The variable @code{sublis_apply_lambda} controls simplification after
 
 Example:
 
+@c ===beg===
+@c sublis ([a=b, b=a], sin(a) + cos(b));
+@c ===end===
 @example
 (%i1) sublis ([a=b, b=a], sin(a) + cos(b));
 (%o1)                    sin(b) + cos(a)
@@ -1502,6 +1543,10 @@ predicate @code{p} returns @code{true}.
 
 Example:
 
+@c ===beg===
+@c L: [1, 2, 3, 4, 5, 6];
+@c sublist (L, evenp);
+@c ===end===
 @example
 (%i1) L: [1, 2, 3, 4, 5, 6]$
 (%i2) sublist (L, evenp);
@@ -1551,6 +1596,10 @@ E.g. @code{(opsubst: false, subst (x^2, r, r+r[0]))} will work.
 
 Examples:
 
+@c ===beg===
+@c subst (a, x+y, x + (x+y)^2 + y);
+@c subst (-%i, %i, a + b*%i);
+@c ===end===
 @example
 (%i1) subst (a, x+y, x + (x+y)^2 + y);
                                     2
@@ -1569,6 +1618,13 @@ For further examples, do @code{example (subst)}.
 Similar to @code{substpart}, but @code{substinpart} works on the
 internal representation of @var{expr}.
 
+Examples:
+
+@c ===beg===
+@c x . 'diff (f(x), x, 2);
+@c substinpart (d^2, %, 2);
+@c substinpart (f1, f[1](x + 1), 0);
+@c ===end===
 @example
 (%i1) x . 'diff (f(x), x, 2);
                               2
@@ -1587,6 +1643,9 @@ If the last argument to a part function is a list of indices then
 several subexpressions are picked out, each one corresponding to an
 index of the list.  Thus
 
+@c ===beg===
+@c part (x + y + z, [1, 3]);
+@c ===end===
 @example
 (%i1) part (x+y+z, [1, 3]);
 (%o1)                         z + x
@@ -1599,6 +1658,14 @@ If @code{partswitch} is set to @code{true} then @code{end} is returned when a
 selected part of an expression doesn't exist, otherwise an error
 message is given.
 
+@c ===beg===
+@c expr: 27*y^3 + 54*x*y^2 + 36*x^2*y + y + 8*x^3 + x + 1;
+@c part (expr, 2, [1, 3]);
+@c sqrt (piece/54);
+@c substpart (factor (piece), expr, [1, 2, 3, 5]);
+@c expr: 1/x + y/x - 1/z;
+@c substpart (xthru (piece), expr, [2, 3]);
+@c ===end===
 @example
 (%i1) expr: 27*y^3 + 54*x*y^2 + 36*x^2*y + y + 8*x^3 + x + 1;
               3         2       2            3
@@ -1634,6 +1701,12 @@ new value of @var{expr}.  @var{x} may be some operator to be substituted for an
 operator of @var{expr}.  In some cases @var{x} needs to be enclosed in double-quotes @code{"}
 (e.g.  @code{substpart ("+", a*b, 0)} yields @code{b + a}).
 
+@c ===beg===
+@c 1/(x^2 + 2);
+@c substpart (3/2, %, 2, 1, 2);
+@c a*x + f(b, y);
+@c substpart ("+", %, 1, 0);
+@c ===end===
 @example
 (%i1) 1/(x^2 + 2);
                                1
@@ -1679,7 +1752,17 @@ commands @code{ordergreat} and @code{orderless}. @code{ordergreat} and @code{ord
 be used more than one time each without calling @code{unorder}. 
 See also @code{ordergreat} and @code{orderless}.
 
+Examples:
+
 @c HMM, IN THIS EXAMPLE, WHY ISN'T %o5 EQUAL TO ZERO ???
+@c ===beg===
+@c unorder();
+@c b*x + a^2;
+@c ordergreat (a);
+@c b*x + a^2;
+@c  %th(1) - %th(3);
+@c unorder();
+@c ===end===
 @example
 (%i1) unorder();
 (%o1)                          []
@@ -1724,6 +1807,10 @@ expression in order to cause explicit factors of the gcd of the
 numerator and denominator to be canceled thus simplifying the
 expression to be @code{ratsimp}ed.
 
+@c ===beg===
+@c ((x+2)^20 - 2*y)/(x+y)^20 + (x+y)^(-19) - x/(x+y)^20;
+@c  xthru (%);
+@c ===end===
 @example
 (%i1) ((x+2)^20 - 2*y)/(x+y)^20 + (x+y)^(-19) - x/(x+y)^20;
                                 20
