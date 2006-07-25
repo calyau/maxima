@@ -6,7 +6,7 @@
 @section Definitions for ggf
 
 @defvr {Option variable} GGFINFINITY
-Default variable: 3
+Default value: 3
 
 This is an option variable for function @code{ggf}.
 
