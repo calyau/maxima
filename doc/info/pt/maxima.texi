@@ -515,7 +515,7 @@ makeOrders
 
 mnewton
 
-* Definitions for mnewton::
+* Defini@value{cedilha}@~oes para mnewton::
 
 numericalio
 
