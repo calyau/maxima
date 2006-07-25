@@ -1,54 +1,54 @@
+@c Language: Portuguese, Encoding: iso-8859-1
+@c /ggf.texi/1.3/Tue Jul 25 12:01:54 2006//
 @menu
-* Definitions for ggf::
+* Defini@value{cedilha}@~oes para ggf::
 @end menu
 
-@node Definitions for ggf,  , ggf, ggf
-@section Definitions for ggf
+@node Defini@value{cedilha}@~oes para ggf,  , ggf, ggf
+@section Defini@value{cedilha}@~oes para ggf
 
-@defvr {Option variable} GGFINFINITY
-Default variable: 3
+@defvr {Vari@'avel de Op@value{cedilha}@~ao} GGFINFINITY
+Valor padr@~ao: 3
 
-This is an option variable for function @code{ggf}.
+Essa @'e uma vari@'avel de op@,{c}@~ao para a fun@,{c}@~ao @code{ggf}.
 
-When computing the continued fraction of the
-generating function, a partial quotient having a degree
-(strictly) greater than @var{GGFINFINITY} will be discarded and
-the current convergent will be considered as the exact value
-of the generating function; most often the degree of all
-partial quotients will be 0 or 1; if you use a greater value,
-then you should give enough terms in order to make the
-computation accurate enough.
+Quando calculando a fra@,{c}@~ao cont@'inua da
+fun@,{c}@~ao geradora, um quociente parcial tendo um grau
+(estritamente) maior que @var{GGFINFINITY} ir@'a ser descartado e
+o convergente atual ir@'a ser considerado com o valor exato
+da fun@,{c}@~ao geradora; na grande mioria dos casos o grau de todos
+os quocientes parciais ser@~ao 0 ou 1; se voc@^e usar um valor muito grande,
+ent@~ao voc@^e poder@'a fornecer termos suficientes com o objetivo de fazer o
+c@'alculo preciso o suficiente.
 
-
-See also @code{ggf}.
+Veja tamb@'em @code{ggf}.
 @end defvr
 
+@defvr {Vari@'avel de op@,{c}@~ao} GGFCFMAX
+Valor padr@~ao: 3
 
-@defvr {Option variable} GGFCFMAX
-Default variable: 3
+Essa @'e uma vari@'avel de op@,{c}@~ao para a fun@,{c}@~ao @code{ggf}.
 
-This is an option variable for function @code{ggf}.
+Quando calculando a fra@,{c}@~ao cont@'inua da
+fun@,{c}@~ao geradora, se nenhum bom resultado for encontrado (veja
+o sinalizador @var{GGFINFINITY}) ap@'os se ter calculado uma quantidade de @var{GGFCFMAX} quocientes
+parciais, a fun@,{c}@~ao geradora ir@'a ser considerada como
+n@~ao sendo uma fra@,{c}@~ao de dois polin@^omios e a fun@,{c}@~ao ir@'a
+terminar. Coloque livemente um valor muito grande para fun@,{c}@~oes geradoras
+mais complicadas.
 
-When computing the continued fraction of the
-generating function, if no good result has been found (see
-the @var{GGFINFINITY} flag) after having computed @var{GGFCFMAX} partial
-quotients, the generating function will be considered as
-not being a fraction of two polynomials and the function will
-exit. Put freely a greater value for more complicated
-generating functions.
-
-See also @code{ggf}.
+Veja tamb@'em @code{ggf}.
 @end defvr
 
-@deffn {Function} ggf (@var{l})
-Compute the generating function (if it is a fraction of two
-polynomials) of a sequence, its first terms being given. @var{l}
-is a list of numbers.
+@deffn {Fun@value{cedilha}@~ao} ggf (@var{l})
+Calcula a fun@,{c}@~ao geradora (se for uma fra@,{c}@~ao de dois
+polin@^omios) de uma seq@"u@^encia, sendo dados seus primeiros termos. @var{l}
+@'e uma lista de n@'umeros.
 
-The solution is returned as a fraction of two polynomials.
-If no solution has been found, it returns with @code{done}.
+A solu@,{c}@~ao @'e retornada como uma fra@,{c}@~ao de dois polin@^omios.
+Se nenhuma solu@,{c}@~ao tiver sido encontrada, @'e retornado @code{done}.
 
-This function is controlled by global variables @var{GGFINFINITY} and @var{GGFCFMAX}. See also @var{GGFINFINITY} and @var{GGFCFMAX}.
+Essa fun@,{c}@~ao @'e controlada attrav@'es das vari@'aveis globais @var{GGFINFINITY} e @var{GGFCFMAX}. Veja tamb@'em @var{GGFINFINITY} e @var{GGFCFMAX}.
 
-To use this function write first @code{load("ggf")}.
+Para usar essa fun@,{c}@~ao primeiro escreva @code{load("ggf")}.
 @end deffn
