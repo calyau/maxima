@@ -988,7 +988,7 @@ list of y's and splicing them together.
 
 @c ?DRAW2D  may also be used to produce a list
 @c @example
-@c  points1:?draw2d(1/x,[.05,10],.03) 
+@c  points1:?draw2d(1/x,[.05,10],.03)
 @c @end example
 
 

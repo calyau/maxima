@@ -467,7 +467,7 @@ Examples:
 @c lu_factor (M, complexfield)$
 @c lu_factor (M, generalring)$
 @c showtime : false$
-@c M : matrix ([1 - z, 3], [3, 8 - z]); 
+@c M : matrix ([1 - z, 3], [3, 8 - z]);
 @c lu_factor (M, generalring);
 @c get_lu_factors (%);
 @c %[1] . %[2] . %[3];

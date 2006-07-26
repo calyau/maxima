@@ -1915,7 +1915,7 @@ The cardinality of the set of partitions of a set can be found using @code{stirl
 
 @c ===beg===
 @c s: {0, 1, 2, 3, 4, 5}$
-@c p: set_partitions (s, 3)$ 
+@c p: set_partitions (s, 3)$
 @c cardinality(p) = stirling2 (6, 3);
 @c ===end===
 @example
@@ -1929,7 +1929,7 @@ Each member of @code{p} should have @var{n} = 3 members; let's check.
 
 @c ===beg===
 @c s: {0, 1, 2, 3, 4, 5}$
-@c p: set_partitions (s, 3)$ 
+@c p: set_partitions (s, 3)$
 @c map (cardinality, p);
 @c ===end===
 @example
@@ -1944,7 +1944,7 @@ equal @code{s}; again let's check.
 
 @c ===beg===
 @c s: {0, 1, 2, 3, 4, 5}$
-@c p: set_partitions (s, 3)$ 
+@c p: set_partitions (s, 3)$
 @c map (lambda ([x], apply (union, listify (x))), p);
 @c ===end===
 @example
