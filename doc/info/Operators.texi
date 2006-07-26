@@ -983,8 +983,8 @@ knows about:
 (%i5) assume (x > 0, x < 1)$
 (%i6) floor (x);
 (%o6)                           0
-(%i7) tex (floor (a);
-stdin:161:Incorrect syntax: Missing )
+(%i7) $$\left \lfloor a \right \rfloor$$tex (floor (a));
+(%o7)                         false
 @end example
 
 The function @code{floor} does not automatically map over lists or matrices.
@@ -1501,7 +1501,7 @@ Example use:
 @c     while r # 0 do (
 @c         uf : cons(q : 1/ceiling(1/r), uf),
 @c         r : r - q),
-@c     reverse(uf)); 
+@c     reverse(uf));
 @c unitfrac (9/10);
 @c apply ("+", %);
 @c unitfrac (-9/10);
@@ -1515,7 +1515,7 @@ Example use:
     while r # 0 do (
         uf : cons(q : 1/ceiling(1/r), uf),
         r : r - q),
-    reverse(uf)); 
+    reverse(uf));
 (%o1) unitfrac(r) := block([uf : [], q], 
 if not ratnump(r) then error("The input to 'unitfrac' must be a rational number"
                                      1
@@ -1524,30 +1524,30 @@ if not ratnump(r) then error("The input to 'unitfrac' must be a rational number"
                                  ceiling(-)
                                          r
 reverse(uf))
+(%i2) unitfrac (9/10);
                             1  1  1
 (%o2)                      [-, -, --]
                             2  3  15
-(%i3) unitfrac (9/10);
+(%i3) apply ("+", %);
                                9
 (%o3)                          --
                                10
-(%i4) apply ("+", %);
+(%i4) unitfrac (-9/10);
                                   1
 (%o4)                       [- 1, --]
                                   10
-(%i5) unitfrac (-9/10);
+(%i5) apply ("+", %);
                                 9
 (%o5)                         - --
                                 10
-(%i6) apply ("+", %);
+(%i6) unitfrac (36/37);
                         1  1  1  1    1
 (%o6)                  [-, -, -, --, ----]
                         2  3  8  69  6808
-(%i7) unitfrac (36/37);
+(%i7) apply ("+", %);
                                36
 (%o7)                          --
                                37
-(%i8) apply ("+", %);
 @end example
 
 @end deffn
@@ -1950,12 +1950,17 @@ expression to be @code{ratsimp}ed.
 @c ===end===
 @example
 (%i1) ((x+2)^20 - 2*y)/(x+y)^20 + (x+y)^(-19) - x/(x+y)^20;
- xthru (%);
                                 20
                  1       (x + 2)   - 2 y       x
 (%o1)        --------- + --------------- - ---------
                     19             20             20
              (y + x)        (y + x)        (y + x)
+(%i2) xthru (%);
+                                 20
+                          (x + 2)   - y
+(%o2)                     -------------
+                                   20
+                            (y + x)
 @end example
 
 @end deffn
