@@ -1,13 +1,54 @@
 @menu
 * Introduction to Input and Output::  
+* Comments::
 * Files::                       
 * Definitions for Input and Output::  
 @end menu
 
-@node Introduction to Input and Output, Files, Input and Output, Input and Output
+@node Introduction to Input and Output, Comments, Input and Output, Input and Output
 @section Introduction to Input and Output
 
-@node Files, Definitions for Input and Output, Introduction to Input and Output, Input and Output
+@node Comments, Files, Introduction to Input and Output, Input and Output
+@section Comments
+
+A comment in Maxima input is any text between @code{/*} and @code{*/}.
+
+The Maxima parser treats a comment as whitespace for the purpose of
+finding tokens in the input stream;
+a token always ends at a comment.
+An input such as @code{a/* foo */b} contains two tokens, @code{a} and @code{b},
+and not a single token @code{ab}.
+Comments are otherwise ignored by Maxima;
+neither the content nor the location of comments is stored in parsed input expressions.
+
+Comments can be nested to arbitrary depth.
+The @code{/*} and @code{*/} delimiters form matching pairs.
+There must be the same number of @code{/*} as there are @code{*/}.
+
+Examples:
+
+@c ===beg===
+@c /* aa is a variable of interest */  aa : 1234;
+@c /* Value of bb depends on aa */  bb : aa^2;
+@c /* User-defined infix operator */  infix ("b");
+@c /* Parses same as a b c, not abc */  a/* foo */b/* bar */c;
+@c /* Comments /* can be nested /* to arbitrary depth */ */ */  1 + xyz;
+@c ===end===
+@example
+(%i1) /* aa is a variable of interest */  aa : 1234;
+(%o1)                         1234
+(%i2) /* Value of bb depends on aa */  bb : aa^2;
+(%o2)                        1522756
+(%i3) /* User-defined infix operator */  infix ("b");
+(%o3)                           b
+(%i4) /* Parses same as a b c, not abc */  a/* foo */b/* bar */c;
+(%o4)                         a b c
+(%i5) /* Comments /* can be nested /* to arbitrary depth */ */ */  1 + xyz;
+(%o5)                        xyz + 1
+@end example
+
+
+@node Files, Definitions for Input and Output, Comments, Input and Output
 @section Files
 A file is simply an area on a particular storage device which contains data or text.
 Files on the disks are figuratively grouped into "directories".
