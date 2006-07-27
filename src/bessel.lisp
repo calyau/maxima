@@ -299,14 +299,14 @@
 ;; gn(x,n) = exp(-x)*I[n](x), based on some simple numerical
 ;; evaluations.
 
-(defun $g0 ($x)
+(defun $bessel_g0 ($x)
   (cond ((numberp $x)
 	 (slatec:dbsi0e (float $x)))
 	(t
 	 (mul `((mexpt) $%e ,(neg $x))
 	      `((%bessel_i) 0 $x)))))
 
-(defun $g1 ($x)
+(defun $bessel_g1 ($x)
   (cond ((numberp $x)
 	 (slatec:dbsi1e (float $x)))
 	(t
@@ -316,7 +316,7 @@
 
 (declare-top (fixnum i n) (flonum x q1 q0 fn fi b1 b0 b an a1 a0 a)) 
 
-(defun $gn ($x $n)
+(defun $bessel_gn ($x $n)
   (cond ((and (numberp $x) (integerp $n))
 	 (multiple-value-bind (n alpha)
 	     (floor (float $n))
