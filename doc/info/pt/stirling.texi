@@ -1,17 +1,19 @@
+@c Language: Portuguese, Encoding: iso-8859-1
+@c /stirling.texi/1.1/Mon Feb 27 22:09:17 2006//
 @menu
-* Definitions for stirling::
+* Defini@value{cedilha}@~oes para stirling::
 @end menu
 
-@node Definitions for stirling,  , stirling, stirling
-@section Definitions for stirling
+@node Defini@value{cedilha}@~oes para stirling,  , stirling, stirling
+@section Defini@value{cedilha}@~oes para stirling
 
-@deffn {Function} stirling (@var{z},@var{n})
-Replace @code{gamma(x)} with the @math{O(1/x^(2n-1))} Stirling formula. when @var{n} isn't
-a nonnegative integer, signal an error.
+@deffn {Fun@value{cedilha}@~ao} stirling (@var{z},@var{n})
+Substitui @code{gamma(x)} pela f@'ormula de Stirling @math{O(1/x^(2n-1))}. Quando @var{n} n@~ao for
+um inteiro n@~ao negativo, sinaliza um erro.
 
-Reference: Abramowitz & Stegun, " Handbook of mathematical functions", 6.1.40.
+Refer@^encia: Abramowitz & Stegun, " Handbook of mathematical functions", 6.1.40.
 
-Examples:
+Exemplos:
 @example
 (%i1) load (stirling)$
 
@@ -34,8 +36,8 @@ Examples:
                                   2
 @end example
 
-The function @code{stirling} knows the difference between the variable 'gamma' and
-the function gamma:
+A fun@,{c}@~ao @code{stirling} conhece a diferen@,{c}a entre a vari@'avel @var{gamma} e
+a fun@,{c}@~ao @code{gamma}:
 
 @example
 (%i5) stirling(gamma + gamma(x),0);
@@ -48,5 +50,5 @@ the function gamma:
                          + sqrt(2) sqrt(%pi) x        %e
 @end example
 
-To use this function write first @code{load("stirling")}.
+Para usar essa fun@,{c}@~ao escreva primeiro @code{load("stirling")}.
 @end deffn
