@@ -36,7 +36,7 @@
 	 ((not (eql ($length (setq $ovar (maref $vars 1)))
 		    1))
 	  (simplify ($error $ovar
-			    '|&contains more than one independent variable.|))))
+			    (make-mstring "contains more than one independent variable.")))))
        (setq $ovar (simplify ($inpart $ovar 1)))
        (setq $dispflag nil)
        (setq
@@ -66,7 +66,7 @@
 	 nil))
        (cond ((or (like $teqns '((mlist)))
 		  (like $teqns (list '(mlist) '((mlist)))))
-	      (simplify ($error '|&`desolve' can't handle this case.|)))
+	      (simplify ($error (make-mstring "`desolve' can't handle this case."))))
 	     (t (setq $teqns (simplify ($first $teqns)))))
        (cond ((not (like $flag t))
 	      (setq $teqns (simplify ($first $teqns)))))

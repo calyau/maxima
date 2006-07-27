@@ -78,7 +78,7 @@
 		     (append (list '(mtext) pat '| --> | )
 			     (cond ((cddr l)
 				    (list (cadr l)
-					  '| WHERE | 
+					  '#.(intern (format nil " ~A " 'where))
 					  (cons (list (caddr l))
 						(cdddr l))))
 				   (t replacement))))

@@ -166,20 +166,19 @@
   #-(or cl nil)
   (if (eq stream nil)
       (displa object)
-      (let ((|^R| t)
-	    (|^W| t)
-	    (outfiles (ncons stream))
-	    )
+      (let ((^r t)
+	    (^w t)
+	    (outfiles (ncons stream)))
 	(displa object)))
   #+(or cl nil)
-  ;; a bit of a kludge here. ^R and ^W still communicate something
+  ;; a bit of a kludge here. ^r and ^w still communicate something
   ;; to the displa package, but OUTFILES has not been implemented/hacked.
   (if (or (eq stream nil)
 	  (eq stream *standard-output*))
       (displa object)
       (let ((*standard-output* stream)
-	    (|^R| t)
-	    (|^W| t))
+	    (^r t)
+	    (^w t))
 	(displa object))))
 
 (defmfun mtell (&rest l)

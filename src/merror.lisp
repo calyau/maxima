@@ -18,7 +18,7 @@
 
 (defvar *mdebug* t "Enter the lisp debugger on an error if this is true")
 
-(defmvar $error '((mlist simp) |&No error.|)
+(defmvar $error `((mlist simp) ,(make-mstring "No error."))
   "During an MAXIMA-ERROR break this is bound to a list
   of the arguments to the call to MAXIMA-ERROR, with the message
   text in a compact format.")

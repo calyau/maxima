@@ -517,7 +517,7 @@
 	  ((eq (caar option) keyword)
 	   (let ((return-to-trace-handle $trace_safety))
 	     (return (mapply (cadr option) predicate-arglist
-			     '|&A trace option predicate|)))))))
+			     (make-mstring "A trace option predicate"))))))))
 			
 
 (defun trace-enter-print (fun lev largs &aux (mlargs `((mlist) ,@largs)))
@@ -549,7 +549,7 @@
   (if (trace-option-p fun '$break)
       (do ((return-to-trace-handle nil)
 	   ($trace_break_arg `((mlist) ,@largs)))(nil)
-	($break '|&Trace entering| fun '|&level| lev)
+	($break (make-mstring "Trace entering") fun (make-mstring "level") lev)
 	(cond (($listp $trace_break_arg)
 	       (return (cdr $trace_break_arg)))
 	      (t
@@ -561,7 +561,7 @@
   (if (trace-option-p fun '$break)
       (let (($trace_break_arg ret-val)
 	    (return-to-trace-handle nil))
-	($break '|&Trace exiting| fun '|&level| lev)
+	($break (make-mstring "Trace exiting") fun (make-mstring "level") lev)
 	$trace_break_arg)
       ret-val))
 
@@ -705,7 +705,7 @@
 	(return-to-trace-handle nil))
     (case type
       ((mexpr)
-       (mapply prop largs '|&A traced function|))
+       (mapply prop largs (make-mstring "A traced function")))
       ((expr)
        (apply prop largs))
       ((subr lsubr)

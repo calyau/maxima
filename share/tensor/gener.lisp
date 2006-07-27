@@ -23,34 +23,34 @@
 ;   ($IMETRIC must be bound) with 2 covariant indices to LG and with 2
 ;   contravariant indices to UG.
 
-(defun $IC_CONVERT (e)
+(defun $ic_convert (e)
        (prog (free lhs rhs)
-	     (cond ((or (atom e) (not (eq (caar e) 'MEQUAL)))
+	     (cond ((or (atom e) (not (eq (caar e) 'mequal)))
 		    (merror "IC_CONVERT requires an equation as an argument"))
 		   ((equal (setq free ($indices e)) empty)
-		    (return (cons '(MSETQ) (cdr e))))
-		   ((or (eq (ml-typep (cadr e)) 'SYMBOL)           ;If a symbol or
+		    (return (cons '(msetq) (cdr e))))
+		   ((or (eq (ml-typep (cadr e)) 'symbol)           ;If a symbol or
 			(and (rpobj (cadr e))  ;an indexed object with no dummy
 			     (null (cdaddr ($indices2 (cadr e))))))    ;indices
 		    (setq lhs (cadr e) rhs (caddr e)))
-		   ((or (eq (ml-typep (caddr e)) 'SYMBOL)
+		   ((or (eq (ml-typep (caddr e)) 'symbol)
 			(and (rpobj (caddr e))
 			     (null (cdaddr ($indices2 (caddr e))))))
 		    (setq lhs (caddr e) rhs (cadr e)))
 		   (t (merror "At least one side of the equation must be a~
 			      ~%symbol or a single indexed object")))
-	     (cond ((and (not (eq (ml-typep lhs) 'SYMBOL))
+	     (cond ((and (not (eq (ml-typep lhs) 'symbol))
 			 (not (null (cdddr lhs))))
 		    (merror "Cannot assign to indexed objects with derivative ~
 			    indices:~%~M"
 			    (ishow lhs))))
 	     (setq free (nreverse (itensor-sort (cdadr free)))  ;Set FREE to just the
 		   indlist nil)                           ;free indices
-	     (and $METRICCONVERT (boundp '$IMETRIC)
-		  (setq lhs (changename $IMETRIC t 0 2 '$UG
-					(changename $IMETRIC t 2 0 '$LG lhs))
-			rhs (changename $IMETRIC t 0 2 '$UG
-					(changename $IMETRIC t 2 0 '$LG rhs))))
+	     (and $metricconvert (boundp '$imetric)
+		  (setq lhs (changename $imetric t 0 2 '$ug
+					(changename $imetric t 2 0 '$lg lhs))
+			rhs (changename $imetric t 0 2 '$ug
+					(changename $imetric t 2 0 '$lg rhs))))
 	     (tabulate rhs)
 	     (setq indlist (unique indlist))
 	     (do ((q (mapcar 'car indlist) (cdr q)))
@@ -60,7 +60,7 @@
 IC_CONVERT cannot currently handle indexed objects of the same name~
 ~%with different numbers of covariant and//or contravariant indices:~%~M"
 				(car q)))))
-	     (cond ((not (eq (ml-typep lhs) 'SYMBOL))
+	     (cond ((not (eq (ml-typep lhs) 'symbol))
 		    (do ((test) (flag) (name))
 			(flag)
 			(setq test (list (caar lhs) (length (cdadr lhs))
@@ -78,46 +78,46 @@ IC_CONVERT cannot currently handle indexed objects of the same name~
                                (cond ((not (eq (ml-typep
 						(setq name
 						      (retrieve nil nil)))
-					       'SYMBOL))
+					       'symbol))
 				      (merror "Name not an atom")))
 			       (setq lhs (cons (ncons name) (cdr lhs))))))))
 	     (return (do ((free free (cdr free))
-			  (equ (cons '(MSETQ) (list (changeform lhs)
+			  (equ (cons '(msetq) (list (changeform lhs)
 						    (t-convert
 						     (summer1 rhs))))))
 			 ((null free) equ)
-			 (setq equ (append '((MDO)) (ncons (car free))
-					   '(1 1 NIL $DIM NIL)
+			 (setq equ (append '((mdo)) (ncons (car free))
+					   '(1 1 nil $dim nil)
 					   (ncons equ)))))))
 
-(defun TABULATE (e)        ;For each indexed object in E, appends a list of the
+(defun tabulate (e)        ;For each indexed object in E, appends a list of the
        (cond ((atom e))    ;name of that object and the number of covariant and
 	     ((rpobj e)    ;contravariant indices to the global list INDLIST
 	      (setq indlist (cons (list (caar e) (length (cdadr e))
 					(length (cdaddr e)))
 				  indlist)))
-	     ((or (eq (caar e) 'MPLUS) (eq (caar e) 'MTIMES))
+	     ((or (eq (caar e) 'mplus) (eq (caar e) 'mtimes))
 	      (mapcar 'tabulate (cdr e)))))
 
-(defun UNIQUE (l)                   ;Returns a list of the unique elements of L
+(defun unique (l)                   ;Returns a list of the unique elements of L
        (do ((a l (cdr a)) (b))
 	   ((null a) b)
 	   (cond ((not (zl-member (car a) b))
 		  (setq b (cons (car a) b))))))
 
-(defun SUMMER1 (e)     ;Applies SUMMER to the products and indexed objects in E
+(defun summer1 (e)     ;Applies SUMMER to the products and indexed objects in E
        (cond ((atom e) e)
-	     ((eq (caar e) 'MPLUS)
+	     ((eq (caar e) 'mplus)
   	      (cons (car e) (mapcar 'summer1 (cdr e))))
-	     ((or (eq (caar e) 'MTIMES) (rpobj e))
+	     ((or (eq (caar e) 'mtimes) (rpobj e))
 	      (summer e (cdaddr ($indices e))))
 	     (t e)))
 
-(defun SUMMER (p dummy) ;Makes implicit sums explicit in the product or indexed
+(defun summer (p dummy) ;Makes implicit sums explicit in the product or indexed
                         ;object P where DUMMY is the list of dummy indices of P
        (prog (dummy2 scalars indexed s dummy3)                   ;at this level
 	     (setq dummy2 (intersect (all ($indices2 p)) dummy))
-	     (do ((p (cond ((eq (caar p) 'MTIMES) (cdr p))
+	     (do ((p (cond ((eq (caar p) 'mtimes) (cdr p))
 			   (t (ncons p))) (cdr p))
 		  (obj))
 		 ((null p))
@@ -128,7 +128,7 @@ IC_CONVERT cannot currently handle indexed objects of the same name~
 			(cond ((null (intersect dummy2 (all ($indices2 obj))))
 			       (setq scalars (cons obj scalars)))
 			      (t (setq indexed (cons obj indexed)))))
-		       ((eq (caar obj) 'MPLUS)
+		       ((eq (caar obj) 'mplus)
 			(setq s t)
 			(cond ((null (intersect dummy (all ($indices obj))))
 			       (setq scalars
@@ -141,7 +141,7 @@ IC_CONVERT cannot currently handle indexed objects of the same name~
 					 (setq s
 					       (cdaddr
 						($indices
-						 (append '((MTIMES))
+						 (append '((mtimes))
 							 scalars indexed)))))))
 		    (setq dummy3 s
 			  s scalars
@@ -154,32 +154,32 @@ IC_CONVERT cannot currently handle indexed objects of the same name~
 			      (t (setq indexed (cons obj indexed)))))))
 	     (return
 	      (simptimes
-	       (nconc (ncons '(MTIMES))
+	       (nconc (ncons '(mtimes))
 		      scalars
 		      (cond ((not (null indexed))
-		             (do ((indxd (simptimes (cons '(MTIMES) indexed)
+		             (do ((indxd (simptimes (cons '(mtimes) indexed)
 						    1 nil))
 			          (dummy (itensor-sort dummy2) (cdr dummy)))
 			         ((null dummy) (ncons indxd))
-			         (setq indxd (nconc (ncons '($SUM))
+			         (setq indxd (nconc (ncons '($sum))
 						    (ncons indxd)
 						    (ncons (car dummy))
-						    '(1 $DIM)))))
+						    '(1 $dim)))))
 			    (t nil)))
 	       1 nil))))
 
-(defun ALL (l)                        ;Converts [[A, B], [C, D]] into (A B C D)
+(defun all (l)                        ;Converts [[A, B], [C, D]] into (A B C D)
        (append (cdadr l) (cdaddr l)))
 
-(defun T-CONVERT (e)        ;Applies CHANGEFORM to each individual object in an
+(defun t-convert (e)        ;Applies CHANGEFORM to each individual object in an
        (cond ((atom e) e)   ;expression
-	     ((or (eq (caar e) 'MPLUS) (eq (caar e) 'MTIMES))
+	     ((or (eq (caar e) 'mplus) (eq (caar e) 'mtimes))
 	      (cons (car e) (mapcar 't-convert (cdr e))))
-	     ((eq (caar e) '$SUM)
+	     ((eq (caar e) '$sum)
 	      (append (ncons (car e)) (ncons (t-convert (cadr e))) (cddr e)))
 	     (t (changeform e))))
 
-(defun CHANGEFORM (e)           ;Converts a single object from ITENSOR format to
+(defun changeform (e)           ;Converts a single object from ITENSOR format to
        (cond ((atom e) e)       ;ETENSR format
 	     ((rpobj e)
 	      (do ((deriv (cdddr e) (cdr deriv))
@@ -187,121 +187,121 @@ IC_CONVERT cannot currently handle indexed objects of the same name~
 		   (new (cond ((and (null (covi e)) (null (conti e)))
 			       (caar e))     ;If no covariant and contravariant
 			                     ;indices then make into an atom
-			      (t (cons (cons (equiv-table (caar e)) '(ARRAY))
+			      (t (cons (cons (equiv-table (caar e)) '(array))
 ;				       (append (cdadr e) (cdaddr e)))))))
 				       (append (covi e) (conti e)))))))
 		  ((null deriv) new)
-		  (setq new (append '(($DIFF)) (ncons new)
-				    (ncons (cons '($CT_COORDS ARRAY)
+		  (setq new (append '(($diff)) (ncons new)
+				    (ncons (cons '($ct_coords array)
 						 (ncons (car deriv))))))))
 	     (t e)))
 
-(defun EQUIV-TABLE (a)                ;Makes appropiate name changes converting
-       (cond ((memq a '($ICHR1 %ICHR1)) '$LCS)            ;from ITENSOR to ETENSR
-	     ((memq a '($ICHR2 %ICHR2)) '$MCS)
+(defun equiv-table (a)                ;Makes appropiate name changes converting
+       (cond ((memq a '($ichr1 %ichr1)) '$lcs)            ;from ITENSOR to ETENSR
+	     ((memq a '($ichr2 %ichr2)) '$mcs)
 	     (t a)))
 
 (declare-top (unspecial indlist))
 
-(declare-top (special SMLIST $FUNCS))
-(setq $funcs '((MLIST)))
+(declare-top (special smlist $funcs))
+(setq $funcs '((mlist)))
 
-(DEFUN $MAKEBOX (E NAME)
-       (COND ((ATOM E) E)
-	     ((MTIMESP E) (MAKEBOX E NAME))
-	     ((MPLUSP E)
-	      (MYSUBST0 (SIMPLIFYA (CONS '(MPLUS)
-					 (MAPCAR
-					  (FUNCTION
-					   (LAMBDA (Q) ($MAKEBOX Q NAME)))
-					  (CDR E)))
-				   NIL)
-			E))
-	     ((MEXPTP E) (LIST (CAR E) ($MAKEBOX (CADR E) NAME) (CADDR E)))
-	     (T E))) 
+(defun $makebox (e name)
+       (cond ((atom e) e)
+	     ((mtimesp e) (makebox e name))
+	     ((mplusp e)
+	      (mysubst0 (simplifya (cons '(mplus)
+					 (mapcar
+					  (function
+					   (lambda (q) ($makebox q name)))
+					  (cdr e)))
+				   nil)
+			e))
+	     ((mexptp e) (list (car e) ($makebox (cadr e) name) (caddr e)))
+	     (t e))) 
 
-(DEFUN MAKEBOX (E NAME)
-       (PROG (L1 L2 X L3 L) 
-	     (SETQ L (CDR E))
-	AGAIN(SETQ X (CAR L))
-	     (COND ((RPOBJ X)
-		    (COND ((AND (EQ (CAAR X) NAME) (NULL (CDDDR X))
-				(NULL (CDADR X)) (= (LENGTH (CDADDR X)) 2))
-			   (SETQ L1 (CONS X L1)))
-			  ((CDDDR X) (SETQ L2 (CONS X L2)))
-			  (T (SETQ L3 (CONS X L3)))))
-		   (T (SETQ L3 (CONS X L3))))
-	     (AND (SETQ L (CDR L)) (GO AGAIN))
-	     (COND ((OR (NULL L1) (NULL L2)) (RETURN E)))
-	     (DO ((L2 L2 (CDR L2)))
-		 ((NULL L2) )
-		 (SETQ L L1)
-;	     (DO L2 L2 (CDR L2)
-;	      (NULL L2)
-;	      (SETQ L L1)..)
+(defun makebox (e name)
+       (prog (l1 l2 x l3 l) 
+	     (setq l (cdr e))
+	again(setq x (car l))
+	     (cond ((rpobj x)
+		    (cond ((and (eq (caar x) name) (null (cdddr x))
+				(null (cdadr x)) (= (length (cdaddr x)) 2))
+			   (setq l1 (cons x l1)))
+			  ((cdddr x) (setq l2 (cons x l2)))
+			  (t (setq l3 (cons x l3)))))
+		   (t (setq l3 (cons x l3))))
+	     (and (setq l (cdr l)) (go again))
+	     (cond ((or (null l1) (null l2)) (return e)))
+	     (do ((l2 l2 (cdr l2)))
+		 ((null l2) )
+		 (setq l l1)
+;	     (do l2 l2 (cdr l2)
+;	      (null l2)
+;	      (setq l l1)..)
 
 	     (tagbody
-	      LOOP
-	      (SETQ X (CAR L))
-	      (COND
-	       ((AND (MEMQ (CAR (CDADDR X)) (CDDDAR L2))
-		     (MEMQ (CADR (CDADDR X))(CDDDAR L2)))
-		(SETQ 
-		 L3
-		 (CONS (NCONC
-		  (LIST
-		   (NCONS
-		    (IMPLODE (APPEND '([ ])
-				    (CDR (EXPLODEC (CAAAR L2))))))
-		   (CADAR L2)
-		   (CADDAR L2)) (SETDIFF (CDDDAR L2)(CDADDR X)))
-		  L3))
-		(SETQ L1 (ZL-DELETE X L1 1.)))
-	       ((SETQ L (CDR L)) (GO LOOP))
-	       (T (SETQ L3 (CONS (CAR L2) L3))))))
-	     (RETURN (SIMPTIMES (CONS '(MTIMES) (NCONC L1 L3))
+	      loop
+	      (setq x (car l))
+	      (cond
+	       ((and (memq (car (cdaddr x)) (cdddar l2))
+		     (memq (cadr (cdaddr x))(cdddar l2)))
+		(setq 
+		 l3
+		 (cons (nconc
+		  (list
+		   (ncons
+		    (implode (append '([ ])
+				    (cdr (explodec (caaar l2))))))
+		   (cadar l2)
+		   (caddar l2)) (setdiff (cdddar l2)(cdaddr x)))
+		  l3))
+		(setq l1 (zl-delete x l1 1.)))
+	       ((setq l (cdr l)) (go loop))
+	       (t (setq l3 (cons (car l2) l3))))))
+	     (return (simptimes (cons '(mtimes) (nconc l1 l3))
 				1.
-				NIL)))) 
+				nil)))) 
 
-(DECLARE-TOP (SPECIAL TENSR))
+(declare-top (special tensr))
 
-(DEFmfUN $AVERAGE N ((LAMBDA (TENSR) (SIMPLIFYA (AVERAGE (ARG 1)) NIL))
-		   (AND (= N 2) (ARG 2))))
+(defmfun $average n ((lambda (tensr) (simplifya (average (arg 1)) nil))
+		   (and (= n 2) (arg 2))))
 
-(DEFUN AVERAGE (E)
-       (COND ((ATOM E ) E)
-	     ((RPOBJ E) (COND ((OR (NOT TENSR) (EQ (CAAR E) TENSR))
-			       (AVERAGE1 E))
-			      (T E)))
-	     (T (CONS (NCONS (CAAR E)) (MAPCAR (FUNCTION AVERAGE) (CDR E))))))
+(defun average (e)
+       (cond ((atom e ) e)
+	     ((rpobj e) (cond ((or (not tensr) (eq (caar e) tensr))
+			       (average1 e))
+			      (t e)))
+	     (t (cons (ncons (caar e)) (mapcar (function average) (cdr e))))))
 
-(DEFUN AVERAGE1 (E)
-       (COND ((= (LENGTH (CDADR E)) 2)
-	      (SETQ E (LIST '(MTIMES) '((RAT SIMP) 1 2)
-			    (LIST '(MPLUS)
-				  (CONS (CAR E)
-					(CONS (AREV (CADR E)) (CDDR E))) E))))
-	     ((= (LENGTH (CDADDR E)) 2)
-	      (SETQ E (LIST '(MTIMES) '((RAT SMP) 1 2)
-			    (LIST '(MPLUS)
-				  (CONS (CAR E)
-					(CONS (CADR E)
-					      (CONS (AREV (CADDR E))
-						    (CDDDR E)))) E)))))
-       E)
+(defun average1 (e)
+       (cond ((= (length (cdadr e)) 2)
+	      (setq e (list '(mtimes) '((rat simp) 1 2)
+			    (list '(mplus)
+				  (cons (car e)
+					(cons (arev (cadr e)) (cddr e))) e))))
+	     ((= (length (cdaddr e)) 2)
+	      (setq e (list '(mtimes) '((rat smp) 1 2)
+			    (list '(mplus)
+				  (cons (car e)
+					(cons (cadr e)
+					      (cons (arev (caddr e))
+						    (cdddr e)))) e)))))
+       e)
 
-(DEFUN AREV (L) (LIST (CAR L) (CADDR L) (CADR L)))
+(defun arev (l) (list (car l) (caddr l) (cadr l)))
 
-(DECLARE-TOP (UNSPECIAL TENSR))
-(add2lnc '(($AVERAGE) $TENSOR) $funcs)
+(declare-top (unspecial tensr))
+(add2lnc '(($average) $tensor) $funcs)
 
-(defun $CONMETDERIV (e g)
-       (cond ((not (eq (ml-typep g) 'SYMBOL))
+(defun $conmetderiv (e g)
+       (cond ((not (eq (ml-typep g) 'symbol))
 	      (merror "Invalid metric name: ~M" g))
 	     (t (conmetderiv e g ((lambda (l) (append (cdadr l) (cdaddr l)))
 				  ($indices e))))))
 
-(defun CONMETDERIV (e g indexl)
+(defun conmetderiv (e g indexl)
        (cond ((atom e) e)
 	     ((rpobj e)
 	      (cond ((and (eq (caar e) g) (null (cdadr e))
@@ -320,28 +320,28 @@ IC_CONVERT cannot currently handle indexed objects of the same name~
 						   (conmetderiv q g indexl)))
 				 (cdr e))) e))))
 
-(defun CMDEXPAND (g i j k indexl)
+(defun cmdexpand (g i j k indexl)
        (do ((dummy) (flag))
-	   (flag (list '(MPLUS SIMP)
-		       (list '(MTIMES SIMP) -1
-			     (list g (ncons SMLIST) (list SMLIST dummy i))
-			     (list '($ICHR2 SIMP) (list SMLIST dummy k)
-				   (list SMLIST j)))
-		       (list '(MTIMES SIMP) -1
-			     (list g (ncons SMLIST) (list SMLIST dummy j))
-			     (list '($ICHR2 SIMP) (list SMLIST dummy k)
-				   (list SMLIST i)))))
+	   (flag (list '(mplus simp)
+		       (list '(mtimes simp) -1
+			     (list g (ncons smlist) (list smlist dummy i))
+			     (list '($ichr2 simp) (list smlist dummy k)
+				   (list smlist j)))
+		       (list '(mtimes simp) -1
+			     (list g (ncons smlist) (list smlist dummy j))
+			     (list '($ichr2 simp) (list smlist dummy k)
+				   (list smlist i)))))
 	   (setq dummy ($idummy))
 	   (and (not (memq dummy indexl)) (setq flag t))))
 
-(add2lnc '(($CONMETDERIV) $EXP $NAME) $funcs)
+(add2lnc '(($conmetderiv) $exp $name) $funcs)
 
-(defun $FLUSH1DERIV (e g)
-       (cond ((not (eq (ml-typep g) 'SYMBOL))
+(defun $flush1deriv (e g)
+       (cond ((not (eq (ml-typep g) 'symbol))
 	      (merror "Invalid metric name: ~M" g))
 	     (t (flush1deriv e g))))
 
-(defun FLUSH1DERIV (e g)
+(defun flush1deriv (e g)
        (cond ((atom e) e)
 	     ((rpobj e)
 	      (cond ((and (eq (caar e) g) (equal (length (cdddr e)) 1)
@@ -356,11 +356,11 @@ IC_CONVERT cannot currently handle indexed objects of the same name~
 			       (function (lambda (q) (flush1deriv q g)))
 			       (cdr e))) e))))
 
-(add2lnc '(($FLUSH1DERIV) $EXP $NAME) $funcs)
+(add2lnc '(($flush1deriv) $exp $name) $funcs)
 
-(defun $IGEODESIC_COORDS (exp g)
-       ($flush1deriv ($flush exp '$ICHR2 '%ICHR2) g))
+(defun $igeodesic_coords (exp g)
+       ($flush1deriv ($flush exp '$ichr2 '%ichr2) g))
 
-(add2lnc '(($IGEODESIC_COORDS) $EXP $NAME) $funcs)
+(add2lnc '(($igeodesic_coords) $exp $name) $funcs)
 
 

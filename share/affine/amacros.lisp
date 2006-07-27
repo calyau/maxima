@@ -255,27 +255,27 @@
 
 
 (defun user-supply1 (var val)
-  (LET (#-cl(*PRINT-LEVEL* 3)
-	#-cl(PRINLENGTH 3)
-	.NEW.
-	.CH.)
-    (SLOOP DO
-	  (FORMAT T "~%The value of ~A is ~A ." VAR val)
+  (let (#-cl(*print-level* 3)
+	#-cl(prinlength 3)
+	.new.
+	.ch.)
+    (sloop do
+	  (format t "~%The value of ~A is ~A ." var val)
 	  
-	  (FORMAT T
+	  (format t
 		  "~%Supply a form to evaluate to use for ~A or hit return to keep same :"
-		  VAR)
-	  (SETQ .CH. (read-char *standard-input*))
-	  (COND ((EQl .CH. #\newline)
-		 (RETURN val))
-		(T (unread-char .ch. *standard-input*)))
-	  (SETQ .NEW. (EVAL (READ)))
-	  (COND ((EQ .NEW. 'KEEP)
-		 (RETURN VAR))
-		(T
-		 (FORMAT T "~%Use ~A?" .NEW.)
-		 (COND ((Y-OR-N-P)
-			(RETURN (SETQ VAR .NEW.)))))))))
+		  var)
+	  (setq .ch. (read-char *standard-input*))
+	  (cond ((eql .ch. #\newline)
+		 (return val))
+		(t (unread-char .ch. *standard-input*)))
+	  (setq .new. (eval (read)))
+	  (cond ((eq .new. 'keep)
+		 (return var))
+		(t
+		 (format t "~%Use ~A?" .new.)
+		 (cond ((y-or-n-p)
+			(return (setq var .new.)))))))))
 
 (defvar  *timed-process-priority* 1)
 
@@ -292,7 +292,7 @@
 						      time-difference
 						      #-symbolics -
 						       (get-internal-run-time) short-time)
-						     (float INTERNAL-TIME-UNITS-PER-SECOND)))
+						     (float internal-time-units-per-second)))
 ;		  (show short-elapsed-time short-time
 ;			(f- (get-internal-run-time) short-time)
 ;			(time-difference
@@ -336,10 +336,10 @@
 			(return (cons `(iassert (equal .ansa. .ansb.)) tem)))))
     (check-arg defa (eq (car defa) 'defun) "Should be a defun")
     (cond ((atom defb)
-	   (setq defb `(defun ,(string-append defb "-COMPARE") (&rest .l.)
+	   (setq defb `(defun ,(string-append defb (symbol-name '#:-compare)) (&rest .l.)
 			 (apply ',defb .l.)))))
-    (setq .fa. (intern (string-append (second defa) "-A")))
-    (setq .fb. (intern (string-append (second defb) "-B")))
+    (setq .fa. (intern (string-append (second defa) (symbol-name '#:-a))))
+    (setq .fb. (intern (string-append (second defb) (symbol-name '#:-b))))
     (setq .boda. (subst .fa. (second defa) (cdddr defa)))
     (setq .bodb. (subst .fb. (second defb) (cdddr defb)))
     `(progn 'compile
@@ -367,8 +367,8 @@
 	 ,fn-a
 	 ,fn-b
   , `(compare-functions
-	(defun ,(intern (string-append (second fn-a) "-COMPARE")) ,@ (cddr fn-a))
-	(defun ,(intern (string-append (second fn-b) "-COMPARE")) ,@ (cddr fn-b))
+	(defun ,(intern (string-append (second fn-a) (symbol-name '#:-compare))) ,@ (cddr fn-a))
+	(defun ,(intern (string-append (second fn-b) (symbol-name '#:-compare))) ,@ (cddr fn-b))
 	,@ assertions))) 
 
 

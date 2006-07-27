@@ -947,7 +947,7 @@
 ;; This stuff handles setting of LET rules
 
 (defprop | --> | "\\longrightarrow " texsym)
-(defprop | WHERE | "\\;\\mathbf{where}\\;" texsym)
+(defprop #.(intern (format nil " ~A " 'where)) "\\;\\mathbf{where}\\;" texsym)
 
 (defprop &>= ("\\ge ") texsym)
 (defprop &>= tex-infix tex)

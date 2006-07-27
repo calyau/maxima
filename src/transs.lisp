@@ -84,7 +84,7 @@
   '`,(pathname (stripdollar $tr_output_file_default))) 
 
 (defmacro trlisp-outputname () 
-  '`,(make-pathname :type "LISP"))
+  '`,(make-pathname :type "LISP" :case :common))
 
 (defmacro trlisp-outputname-temp ()
   '`,(pathname "_trli_"))
@@ -232,7 +232,7 @@
   (and bin-file(setq  bin-file (maxima-string bin-file)))
   (and translation-output-file
        (setq  translation-output-file (maxima-string translation-output-file)))
-  (cond ((string-equal (pathname-type input-file) "LISP")
+  (cond ((string-equal (pathname-type input-file :case :common) "LISP")
 	 (setq result (list '(mlist) input-file)))
 	(t (setq result (translate-file input-file translation-output-file))
 	   (setq input-file (third result))))
@@ -330,7 +330,12 @@
 	(*print-pprint-dispatch* (copy-pprint-dispatch)))
     #-gcl
     (progn
+      #-(or scl allegro)
       (setf (readtable-case *readtable*) :invert)
+      #+(or scl allegro)
+      (unless #+scl (eq ext:*case-mode* :lower)
+	      #+allegro (eq excl:*current-case-mode* :case-sensitive-lower)
+	(setf (readtable-case *readtable*) :invert))
       (set-pprint-dispatch '(cons (member maxima::defmtrfun))
 			   #'pprint-defmtrfun))
     (loop while (and (setq expr (mread in-stream)) (consp expr))
@@ -373,7 +378,7 @@
 ;;       (OPEN-OUT-DSK X))
 
 (defun alter-pathname (pathname &rest options)
-  (apply 'make-pathname :defaults (pathname  pathname)  options))
+  (apply 'make-pathname :defaults (pathname  pathname) :case :common options))
 
 (defun delete-with-side-effects-if (test list)
   "Rudimentary DELETE-IF which, however, is guaranteed to call

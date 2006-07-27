@@ -171,7 +171,7 @@ multiplication A^m <--- A^n:B    Bv<----|v"
   (setq pars (cdr ($list_variables expr "par")))
   (setq olds ($list_variables expr prefix))
   (sloop for i from 0 while pars
-	when (not (zl-MEMBER (setq tem ($concat prefix i)) olds))
+	when (not (zl-member (setq tem ($concat prefix i)) olds))
 	  collecting (cons (car pars) tem) into repl
 	and
 	do (setq pars (cdr pars))
@@ -211,7 +211,7 @@ multiplication A^m <--- A^n:B    Bv<----|v"
         (setq condition (new-rat-dotsimp (cons condition 1)))
 	(displa condition)
 	(setq condition ($totaldisrep ($numerator condition)))
-	(setq eqns ($extract_Linear_equations (list '(mlist) condition)))
+	(setq eqns ($extract_linear_equations (list '(mlist) condition)))
 	(setq vari ($list_variables eqns "bbb" "ccc" ))
 	(setq solns ($fast_linsolve eqns vari))
 	(setq newh ($ratsimp($sublis solns h)))
@@ -239,7 +239,7 @@ multiplication A^m <--- A^n:B    Bv<----|v"
 		  do (setq eqn (sub* eqn (ncmul* acof lin)))
 		  finally (loop-return eqn))))
   (setq eqns (sloop for v in eqns collecting ($ratdisrep ($dotsimp v))))
-  (setq cof-eqns ($extract_Linear_equations (cons '(mlist) eqns) ($mono $current_variables deg)))
+  (setq cof-eqns ($extract_linear_equations (cons '(mlist) eqns) ($mono $current_variables deg)))
   (mshow cof-eqns)
   (setq answ ($fast_linsolve cof-eqns ($list_variables cof-eqns "cc")))
   (setq det (sp-determinant (pv-the-sparse-matrix $poly_vector)))
@@ -301,7 +301,7 @@ multiplication A^m <--- A^n:B    Bv<----|v"
 	       with leng =  (length monom)
 	       with leng-first-v
 	       when
-		 (or (and (zl-LISTP (car v))
+		 (or (and (zl-listp (car v))
 			  (>= leng (setq leng-first-v(length (car v))))
 			  (equal (nthcdr (f- leng leng-first-v) (cdr monom)) (cdar v)))
 		     (eql (car v) (nth (sub1 (length monom)) monom)))
@@ -447,14 +447,14 @@ multiplication A^m <--- A^n:B    Bv<----|v"
   "nil-->1, '(a) -->a '(x y z) --> x.y.z , x.y--> x.y"
 	 (cond ((null a)
                    1)
-	       ((zl-LISTP a)
+	       ((zl-listp a)
 	       
-		(cond ((zl-LISTP (car a))
+		(cond ((zl-listp (car a))
 		       (cond ((eql (caar a) 'mnctimes)
 			      (cond ((null (cdr a)) 1)
 				    ((cddr a) a)
 				    (t (second a))))
-			     (t (fsignal "what am I like?"))))
+			     (t (fsignal "what am i like?"))))
 		      ((not (cdr a))
 		       (first a))
 		      (t  (cons '(mnctimes) a))))
@@ -507,8 +507,8 @@ multiplication A^m <--- A^n:B    Bv<----|v"
 	    (cond((and a-lap
 		 (or
 		   (equal a-lap right)
-		   (cond ((zl-LISTP right)
-			  (cond ((zl-LISTP a-lap)
+		   (cond ((zl-listp right)
+			  (cond ((zl-listp a-lap)
 				 (initial-seg (cdr a-lap) (cdr right)))
 				(t (equal (second right) a-lap)))))))
 		   (list ($firstn_ncdegree left (f- ld size-lap))
@@ -526,9 +526,9 @@ multiplication A^m <--- A^n:B    Bv<----|v"
 ;	    (setq b-lap ($firstn_ncdegree right size-lap))))
 	   (cond ((and a-lap  ;;have match
 		    (cond ((equal a-lap right))
-			  ((and (zl-LISTP a-lap) (zl-LISTP right)
+			  ((and (zl-listp a-lap) (zl-listp right)
 			      (initial-seg (cdr a-lap) (cdr right))))
-			  ((and (atom a-lap) (zl-LISTP right)
+			  ((and (atom a-lap) (zl-listp right)
 				(equal (second right) a-lap)))))
 		(list ($firstn_ncdegree left (f- ld size-lap))
 		      a-lap
@@ -628,7 +628,7 @@ multiplication A^m <--- A^n:B    Bv<----|v"
   (declare (special present-deg))
   (user-supply *module-overlaps-checked*)
   (sloop	do (setq changed nil)
-	   (sloop for f in '(type-I-simp type-II-simp)
+	   (sloop for f in '(type-i-simp type-ii-simp)
 		 do
 	     (multiple-value-setq
 	       (new-simps changed)
@@ -638,7 +638,7 @@ multiplication A^m <--- A^n:B    Bv<----|v"
 	while changed
 	finally (loop-return $module_simplifications)))
 
-(defun type-I-simp (&rest ignore &aux old-simps relat new-relat)
+(defun type-i-simp (&rest ignore &aux old-simps relat new-relat)
   "eliminate simps such that one leading term is a left multiple of another, ie common right overlap"
   (setq old-simps (setq $module_simplifications (sort-simps-by-degree $module_simplifications)))
   (sloop named sue for tail-simps on (cdr old-simps) by 'cddr
@@ -648,7 +648,7 @@ multiplication A^m <--- A^n:B    Bv<----|v"
       (sloop for  (mon repl) on (cddr tail-simps) by 'cddr
 	    for jj from (f+ i 2) by 2
 	    when (or  (module-monom-must-replacep mon)
-		      (and (zl-LISTP repl)
+		      (and (zl-listp repl)
 			   (module-must-replacep (function-numerator (cdr repl)))))
 	      do (setq relat  (make-relation mon repl))
 ;		 (show mon repl i jj (firstn i old-simps) (nthcdr jj old-simps))
@@ -674,13 +674,13 @@ multiplication A^m <--- A^n:B    Bv<----|v"
 	 number-or-rational-function)
 	((rational-functionp number-or-rational-function)
 	 number-or-rational-function)
-	((and (zl-LISTP number-or-rational-function)
-	      (zl-LISTP (setq tem (car number-or-rational-function)))
+	((and (zl-listp number-or-rational-function)
+	      (zl-listp (setq tem (car number-or-rational-function)))
 	      (eql (car tem) 'mrat))
 	 (cdr number-or-rational-function))
 	(t (fsignal "not right type"))))
 
-(defun type-II-simp (from-deg to-deg &aux old-simps new-repl tem  tem1  a b c)
+(defun type-ii-simp (from-deg to-deg &aux old-simps new-repl tem  tem1  a b c)
   "checks overlaps of type (a b c) where a.b is a dotsimp and b.c is a modsimp and deg(a.b.c)<=i
    then replacement(a.b).c is a module relation to be added."
   (declare (special present-deg))
@@ -696,7 +696,7 @@ multiplication A^m <--- A^n:B    Bv<----|v"
 			 ;;should really use
 			 ;;(setq tem (list mon monmod i)) ;but only maximal overlaps need to be checked and since we go up in degree
 			 (setq tem1 (cons mon monmod)) 
-			 (cond ((not (zl-MEMBER tem1 *module-overlaps-checked*))
+			 (cond ((not (zl-member tem1 *module-overlaps-checked*))
 				(push tem1 *module-overlaps-checked*)
 				(iassert (nc-equal (ncmul* (first tem) (second tem)) mon))
 				(iassert (nc-equal (ncmul* (second tem) (third tem)) monmod))
@@ -759,7 +759,7 @@ multiplication A^m <--- A^n:B    Bv<----|v"
 
 (defremember  cyclic-module-basis (variables deg  dot-replacements module-replacements &aux tem
 					     (default-cons-area working-storage-area))
-  (cond ((eql deg 0)(cond ((not (or (zl-MEMBER 1 dot-replacements) (zl-MEMBER 1 module-replacements)))
+  (cond ((eql deg 0)(cond ((not (or (zl-member 1 dot-replacements) (zl-member 1 module-replacements)))
 			   '((mlist) 1))
 			  (t '((mlist)))))
 	(t
@@ -824,7 +824,7 @@ multiplication A^m <--- A^n:B    Bv<----|v"
  (setq simp (simplify-ldata ld))
  (des simp)
  (setq syst (sloop for u in simp collecting (cons '(mlist) (mapcar 'new-disrep (ldata-eqns u)))))
- (setq solns (sloop for v in syst collecting ($append try  ($fast_Linsolve v ($list_variables v)))))
+ (setq solns (sloop for v in syst collecting ($append try  ($fast_linsolve v ($list_variables v)))))
  (cons '(mlist) solns))
 
 
@@ -833,7 +833,7 @@ multiplication A^m <--- A^n:B    Bv<----|v"
   (setq fac2 ($scalar_sum '$cc ($mono $current_variables (f- deg 1))))
   (setq result (sub* pol (ncmul* lin fac2)))
   (setq result ($dotsimp result))
-  (setq eqns  ($extract_Linear_equations (list '(mlist) result)))
+  (setq eqns  ($extract_linear_equations (list '(mlist) result)))
   (mshow eqns)
   (setq answ
 	(sloop

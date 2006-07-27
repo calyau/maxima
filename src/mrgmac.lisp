@@ -210,9 +210,9 @@
   
   (prog (c s a)
      (setq
-      c (intern (format nil "C-~A" name)) 
-      s (intern (format nil "S-~A" name)) 
-      a (intern (format nil "A-~A" name)))
+      c (intern (format nil "~A-~A" '#:c name))
+      s (intern (format nil "~A-~A" '#:s name)) 
+      a (intern (format nil "~A-~A" '#:a name)))
 					;(setq silly `    (DEFINE-MACRO ,C ,(DEFC DESC))	)
      (define-macro c (defc desc))
      (define-macro s (defs desc))

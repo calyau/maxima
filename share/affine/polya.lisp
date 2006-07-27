@@ -170,7 +170,7 @@
 (defun make-premonomial (monomial)
   (cond ((atom monomial) monomial)
 	(t
-	 (zl-DELETE '(mtimes simp) monomial))))
+	 (zl-delete '(mtimes simp) monomial))))
 (defun macsyma-list (&rest l)
   (cons '(mlist simp) (copy-list l)))
 (defun show-coeff (poly )
@@ -181,7 +181,7 @@
 		     (make-monomial guts-monomial))
 	     (displa (macsyma-list u coefficient (make-monomial guts-monomial))))))
 ;(setf (function $tee) (function convert-polynomial-to-vector)) 
-(defvar *one-dimensional-array* (MAKE-ARRAY 100 :fill-pointer 0 :adjustable t) "A temporary one dimensional array")
+(defvar *one-dimensional-array* (make-array 100 :fill-pointer 0 :adjustable t) "A temporary one dimensional array")
 (defun convert-polynomial-to-vector (polynomial hash-table &optional last-column-number parts-of-monomial)
   "Returns the row corresponding to the polynomial and the new last-column-number.
    The first argument is a regualar macsyma polynomial in expanded form as returned
@@ -192,7 +192,7 @@
 ; 	(last-column-number (send hash-table :filled-elements))
 	(a-table hash-table)	     
 	 col)
-    (setq answer (MAKE-ARRAY (f* 2 (length terms)) :fill-pointer 0 :adjustable t))
+    (setq answer (make-array (f* 2 (length terms)) :fill-pointer 0 :adjustable t))
     (cond ((null last-column-number)
 	   (setq last-column-number
 		 #-cl(send hash-table :filled-elements)
@@ -279,7 +279,7 @@
 
 (defun make-one-dimensional (an-array)
   (cond ((eq (array-rank an-array) 1) an-array)
-	(t (MAKE-ARRAY (apply '* (array-dimensions an-array)) :adjustable t :displaced-to an-array))))
+	(t (make-array (apply '* (array-dimensions an-array)) :adjustable t :displaced-to an-array))))
 
 (defun total-dimension (an-array)
   (apply '* (array-dimensions an-array)))
@@ -292,7 +292,7 @@
 	   (self equations				; &optional variables
 	     &aux tem temp-array )		;  corresponding-variables-column)
   (check-arg equations $listp "Macsyma list")
-  (setq temp-array (MAKE-ARRAY (length equations) :fill-pointer 0 :adjustable t))
+  (setq temp-array (make-array (length equations) :fill-pointer 0 :adjustable t))
   (sloop for u in (cdr equations)
 	do
 	(setq tem (bring-to-left-side u))
@@ -383,13 +383,13 @@
 		       (setq parameter
 			       (get-key (pv-table self)
 				      corresponding-variables-column))))
-		(setq val (SP-mul*  tem
+		(setq val (sp-mul*  tem
 				    parameter))
-		(setq answer (SP-add* answer val)))
+		(setq answer (sp-add* answer val)))
 	  (cond (the-special-solution
 		 (setq special-contribution
 		       (poly-identity (row-entry the-special-solution i)))))
-	  (setq answer (SP-add* answer special-contribution))
+	  (setq answer (sp-add* answer special-contribution))
 	  collecting
 	  (list '(mequal simp)
 		(get-key (pv-table self)  i)
@@ -399,7 +399,7 @@
 
 (defun  pv-get-rows-from-list-of-polynomials 
 	   (self mac-list &optional parts-of-monomial &aux ar)
-  (setq ar (MAKE-ARRAY (length (cdr mac-list)) :adjustable t))
+  (setq ar (make-array (length (cdr mac-list)) :adjustable t))
   (fillarray ar (cdr mac-list))
   ( pv-get-rows-from-array-of-polynomials self  ar parts-of-monomial))
 (defun $find_rank_of_list_of_polynomials (a-list &aux cols)
@@ -428,7 +428,7 @@
 	    (t (setf (pv-type-of-polynomials self) :polynomial)
 	       (cond (( pv-table self) (clrhash (pv-table self) ))
 		     (t  ( pv-set-up-hash-tables self )))))
-      (setf (pv-rows self) (MAKE-ARRAY number-of-rows :adjustable t))
+      (setf (pv-rows self) (make-array number-of-rows :adjustable t))
       
       (setf (pv-array-of-polynomials self) an-array)
       (case
@@ -493,7 +493,7 @@
 	  (sloop for i below (length (the cl:array a-row)) by 2
 		when (and (aref a-row i) (not (numberp (aref a-row (f1+ i)))))
 		do (setf (pv-type-of-entries self) ':any-macsyma)
-		(throw 'Done 'done))))
+		(throw 'done 'done))))
   (format t "~%Using entry type ~A." (pv-type-of-entries self)))
 
 (defun  pv-set-up-hash-tables  (self)
@@ -502,7 +502,7 @@
     (:polynomial-vectors
      (setf (pv-last-column-number self) 0)
      (setf (pv-array-of-tables self)
-	   (MAKE-ARRAY (pv-length-of-array-of-tables self) :fill-pointer 0 :adjustable t))
+	   (make-array (pv-length-of-array-of-tables self) :fill-pointer 0 :adjustable t))
      (sloop for i below (pv-length-of-array-of-tables self)
 	   do
 	   (vector-push  (make-hash-table :test 'equal) (pv-array-of-tables self))))))
@@ -542,7 +542,7 @@
 			      (apply 'create-list1
 				     form l)
 			      ))
-		      (T (MAXIMA-ERROR "BAD ARG")))))))
+		      (t (maxima-error "Bad Arg")))))))
 	
 (defun $my_sum (quote-form quote-index  start  &optional end &aux answer)
   (setq quote-form  (subst 'ind quote-index quote-form))
@@ -560,7 +560,7 @@
   (setq answer (meval* (cons '(mplus) answer)))
    answer)
 
-;(defun $Create_list (quote-form quote-index  start  &optional end &aux answer)
+;(defun $create_list (quote-form quote-index  start  &optional end &aux answer)
 ;  (setq quote-form  (subst 'ind quote-index quote-form))
 ;  (setq start (meval start))
 ;  (setq end (meval end))
@@ -590,7 +590,7 @@
 	      (sloop for v in a-list
 		    appending
 		    (sloop for perm in answer
-			  when (not (zl-MEMBER v perm))
+			  when (not (zl-member v perm))
 			  collecting (cons v perm)))))
 	
   answer)
@@ -605,7 +605,7 @@
 	(t (nsubst tem sub1-leng perm)
 	   (minus (nsign-of-permutation (nbutlast perm)))))))
 (defun $make_art_q (&rest indices)
-  (MAKE-ARRAY indices :adjustable t))
+  (make-array indices :adjustable t))
 
 (defun $first_variable (monomial )
   (cond ((numberp monomial) nil)
@@ -613,10 +613,10 @@
 	(t (sloop for u in monomial do (print u)
 		 (cond ((numberp u) nil)
 		       ((atom u) (return u))
-		       ((zl-MEMBER u '((mtimes simp) (mtimes)
+		       ((zl-member u '((mtimes simp) (mtimes)
 				    (mexpt simp) (mncexpt simp) (mncexpt)
 				    (mnctimes simp)(mnctimes))) nil)
-		       ((zl-MEMBER (car u)'((mtimes simp) (mtimes)
+		       ((zl-member (car u)'((mtimes simp) (mtimes)
 				
 				    (mnctimes simp)(mnctimes)))
 			(return ($first_variable (cdr u))))
@@ -763,7 +763,7 @@ dot_products, much the same as can be obtained by doing $dotsimp")
 		     when (eq w v) do (setq answer (1+ answer))))
 	 (cond ((zerop answer) nil)
 	       (t answer))))))
-(defun In-nth-power-radical  (monom n &aux tem)
+(defun in-nth-power-radical  (monom n &aux tem)
   (cond ((setq tem (nil-radicalp monom))(> tem (f1- n)))))
 
 
@@ -879,7 +879,7 @@ dot_products, much the same as can be obtained by doing $dotsimp")
      (cond ($new_fast_dotsimp      (setq answer (new-rat-dotsimp (cdr expr))))
 	   (t  (setq answer (rat-dotsimp  expr)))))
     ((mbagp expr)(setq answer (cons (car expr) (mapcar #'$dotsimp (cdr expr)))))
-    ((zl-MEMBER(caar expr) '(mtimes mnctimes))
+    ((zl-member(caar expr) '(mtimes mnctimes))
      (setq answer(apply 'dotsimp-one-term
 				(multiple-value-list (find-worst-nc-monomial expr))))
      (cond (($must_replacep answer)
@@ -993,14 +993,14 @@ dot_products, much the same as can be obtained by doing $dotsimp")
 			(setq monom (cdr monom))
 			(sloop while tem 
 			      when (and $new_fast_dotsimp
-					(OR (EQ 0 (SECOND TEM))
-					    (EQ (RZERO) (CDR (SECOND TEM)))))
+					(or (eq 0 (second tem))
+					    (eq (rzero) (cdr (second tem)))))
 ;					    ($zerop (second tem)))
 			      do (setq tem (cddr tem))
 			      else
 			      do
 			      (cond ((atom (setq pattern (car tem)))
-				     (cond ((zl-MEMBER pattern monom)
+				     (cond ((zl-member pattern monom)
 					    ;;we have to handle
 					    ;;the case of an atomic pattern by making
 					    ;;it a standard list '(nonsense)
@@ -1076,8 +1076,8 @@ dot_products, much the same as can be obtained by doing $dotsimp")
   (cond ((atom f)(cond ((equal f x) 1)
 		       (t 0)))
 	((equal f x) 1)
-	((eq (caar f) 'mtimes)(cond ((zl-MEMBER  x f)
-				     (zl-DELETE x (copy-list f)))
+	((eq (caar f) 'mtimes)(cond ((zl-member  x f)
+				     (zl-delete x (copy-list f)))
 				    ((and (equal x 1) ($scalarp f)) f)
 				    (t 0)))
 	((memq  (caar f) '(mplus mlist mequal))
@@ -1306,7 +1306,7 @@ dot_products, much the same as can be obtained by doing $dotsimp")
  The latter works only for number coefficients, while the former works using rattimes, etc.")
 (defun $setfy (a-list)
   (sloop for v in a-list
-	when (not (zl-MEMBER v tem))
+	when (not (zl-member v tem))
 	collecting v into tem
 	finally (return tem)))
 (defun $list_nc_monomials (expr &aux answer )
@@ -1316,10 +1316,10 @@ dot_products, much the same as can be obtained by doing $dotsimp")
 	 (sloop for u in (cdr expr)
 	       appending (cdr ($list_nc_monomials u)) into a-list
 	       finally (return (cons '(mlist simp) ($setfy a-list)))))
-	(T  (setq expr ($expand expr))
-	    (COND ((eq (caar expr) 'mplus)
+	(t  (setq expr ($expand expr))
+	    (cond ((eq (caar expr) 'mplus)
 		   (sloop for u in (cdr expr)
-			 when (not (zl-MEMBER (setq answer (extract_nc_and_sc_parts u))
+			 when (not (zl-member (setq answer (extract_nc_and_sc_parts u))
 					   a-list))
 			 collecting answer into a-list
 			 finally (return (cons '(mlist simp) a-list))))
@@ -1388,7 +1388,7 @@ dot_products, much the same as can be obtained by doing $dotsimp")
 		(rplacd vv (funcall h (cdr vv)))))
        (cond ((atom vv) vv)
 	     (t (rplaca vv (mysub1 (car vv) h))
-		(cond ((not (eq (car vv) 'mrat)) ( Rplacd vv (mysub1 (cdr vv) h)))
+		(cond ((not (eq (car vv) 'mrat)) ( rplacd vv (mysub1 (cdr vv) h)))
 		      (t vv)))))
 	      
 (defun max-for-pred (a-list pred)
@@ -1589,7 +1589,7 @@ dot_products, much the same as can be obtained by doing $dotsimp")
 					do
 					(return
 					  (apply 'mul*
-						 (cdr (zl-DELETE monom (copy-list expr)))))
+						 (cdr (zl-delete monom (copy-list expr)))))
 					when (and ($sump u)
 						  (setq tem1 ($nc_coeff u monom))
 						  (not (number-and-zerop tem1)))
@@ -1597,7 +1597,7 @@ dot_products, much the same as can be obtained by doing $dotsimp")
 					(return
 					  (apply 'mul*
 							 tem1
-							 (zl-DELETE u (copy-list (cdr expr)))))
+							 (zl-delete u (copy-list (cdr expr)))))
 					finally (return 0)))
 			  (mplus (sloop named sue for v in (cdr expr)
 				       do (setq tem1 ($nc_coeff v monom))
@@ -1633,7 +1633,7 @@ dot_products, much the same as can be obtained by doing $dotsimp")
 
 
 
-(defun $Independent_linsolve (eqns independent-monomials &optional unknowns &aux equations)
+(defun $independent_linsolve (eqns independent-monomials &optional unknowns &aux equations)
   (setq equations ($extract_linear_equations eqns independent-monomials))
   (cond ($fast_solve ($fast_linsolve equations unknowns))
 	(t
@@ -1645,14 +1645,14 @@ dot_products, much the same as can be obtained by doing $dotsimp")
   (setq equations ($extract_linear_equations eqns independent-monomials))
   (cond ((null unknowns)(setq unknowns ($list_of_variables equations))))
   (macsyma-list equations unknowns))
-(defun $Nc_coefficients (eqns &aux ans)
+(defun $nc_coefficients (eqns &aux ans)
   (let (vars (rat-subs ($tellrat)))
   (setq ans ($extr_eqns eqns ($list_nc_monomials eqns)))
        (setq vars (third ans))
        (sloop for v in (cdr vars)
 	     when (or ($constantp v)
 		       (appears-in rat-subs v))
-	     do (setq vars (zl-DELETE v vars)))
+	     do (setq vars (zl-delete v vars)))
        (list '(mlist simp) (second ans) vars)))
 ;
 ;(defmacro add-if-variable-if-new (l var1)
@@ -1813,12 +1813,12 @@ dot_products, much the same as can be obtained by doing $dotsimp")
 ;  (displa tem)
 ;  tem)
 
-(defvar $Sparse_matrix nil)
+(defvar $sparse_matrix nil)
 
 (defun  pv-get-rows-from-macsyma-equations-and-variables
 	   (self equations the-variables &aux (eqn-no -1) rat-vars rat-eqn
 	    constants-column const  cof a-row)
-  (setf (pv-rows self) (MAKE-ARRAY (length equations) :fill-pointer 0 :adjustable t))
+  (setf (pv-rows self) (make-array (length equations) :fill-pointer 0 :adjustable t))
   (cond (( pv-table self)(clrhash (pv-table self) ))
 	(t (setf (pv-table self) (make-hash-table :test 'equal))))
   (setf (pv-type-of-entries self) :rational)
@@ -1835,7 +1835,7 @@ dot_products, much the same as can be obtained by doing $dotsimp")
 	  (cond (($zerop eqn) (format t "~%Eliminating Trivial Equation."))
 		(($numberp eqn) (error "~%Inconsistent equation ~A" eqn))
 		(t (incf eqn-no 1)
-		   (setq a-row (MAKE-ARRAY (f* 2 (equation-length eqn)) :fill-pointer 0 :adjustable t))
+		   (setq a-row (make-array (f* 2 (equation-length eqn)) :fill-pointer 0 :adjustable t))
 		   (vector-push-extend  a-row (pv-rows self))
 		    (setq rat-eqn (function-numerator (st-rat eqn)))
 		   (sloop for v in rat-vars
@@ -1855,7 +1855,7 @@ dot_products, much the same as can be obtained by doing $dotsimp")
 				(setf (pv-type-of-entries self) ':any-macsyma)))
 			  (cond (constants-column nil)
 				(t (setq constants-column
-					 (MAKE-ARRAY (length equations)
+					 (make-array (length equations)
 						     :fill-pointer
 						     (length equations)
 						     :adjustable t
@@ -1871,7 +1871,7 @@ dot_products, much the same as can be obtained by doing $dotsimp")
     (cond (constants-column (setf (pv-constants-column-number self) 0)
 			    (adjust-array
 			      constants-column
-			      (MAX (length (the cl:array (pv-rows self))) 1)
+			      (max (length (the cl:array (pv-rows self))) 1)
 
 			      :fill-pointer
 			      (fill-pointer (pv-rows self)))
@@ -1994,7 +1994,7 @@ dot_products, much the same as can be obtained by doing $dotsimp")
 
 (defvar *start-dot-replace* nil)
 
-(defun Replace-dot-simplifications (expr)
+(defun replace-dot-simplifications (expr)
   (let ((dot-simps $dot_simplifications) (answer expr) )
     (cond ((and dot-simps *start-dot-replace*)
 	   (setf dot-simps (cdr dot-simps))
@@ -2050,7 +2050,7 @@ dot_products, much the same as can be obtained by doing $dotsimp")
         (cond (($listp tem)(setf tem (cdr tem)))
 	      (t (setf tem (list tem))))
 
-	(setf answer (zl-UNION answer tem)))
+	(setf answer (zl-union answer tem)))
   answer)
 
 
@@ -2092,7 +2092,7 @@ dot_products, much the same as can be obtained by doing $dotsimp")
 
 
 (defvar $free_monomials nil)
-(defvar $Do_not_change_free_monomials nil)
+(defvar $do_not_change_free_monomials nil)
 
 (defun $generate_array_of_relations (variables degree relations
 				     &aux left-times-gen
@@ -2100,7 +2100,7 @@ dot_products, much the same as can be obtained by doing $dotsimp")
 				     ($dot_simplifications nil))
   
   (setf
-    answer (MAKE-ARRAY 64 :fill-pointer 0 :adjustable t))
+    answer (make-array 64 :fill-pointer 0 :adjustable t))
 	(sloop for gen in (cdr relations)
 	      do
 	      (setf additional-degree (f- degree ($nc_degree gen)))
@@ -2127,26 +2127,26 @@ dot_products, much the same as can be obtained by doing $dotsimp")
 
 ;(defun $tes (n  relations &aux tem)
 ;  (setf tem ($generate_array_of_relations '((mlist simp) $x $y) n relations))
-;  ( pv-GET-ROWS-FROM-ARRAY-OF-POLYNOMIALS $POLY_VECTOR  TEM 'SC_AND_NC_PARTS)
+;  ( pv-get-rows-from-array-of-polynomials $poly_vector  tem 'sc_and_nc_parts)
 ;  ( pv-set-up-sparse-matrix-from-rows $poly_vector  )
 ;  ( pv-reduce $poly_vector ))
 (defvar $poly_vector1  (make-polynomial-vectors))
 (defun $find_rank (nc-polynomials )
-  ( pv-GET-ROWS-FROM-ARRAY-OF-POLYNOMIALS
-   $POLY_VECTOR1  nc-polynomials 'SC_AND_NC_PARTS)
+  ( pv-get-rows-from-array-of-polynomials
+   $poly_vector1  nc-polynomials 'sc_and_nc_parts)
   ( pv-set-up-sparse-matrix-from-rows $poly_vector1  )
   ( pv-reduce $poly_vector1 )
   (   sp-number-of-pivots ( pv-the-sparse-matrix $poly_vector1 )))
 
 
-(defun $Find_simplifications (nc-polynomial-relations)
-   ( pv-GET-ROWS-FROM-ARRAY-OF-POLYNOMIALS $POLY_VECTOR  nc-polynomial-relations
-	 'SC_AND_NC_PARTS)
+(defun $find_simplifications (nc-polynomial-relations)
+   ( pv-get-rows-from-array-of-polynomials $poly_vector  nc-polynomial-relations
+	 'sc_and_nc_parts)
   ( pv-set-up-sparse-matrix-from-rows $poly_vector  )
   ( pv-solve-suitable-to-sublis $poly_vector ))
 
 (defun join-arrays (&rest l &aux answer)
-  (setf answer (MAKE-ARRAY 100 :fill-pointer 0 :adjustable t))
+  (setf answer (make-array 100 :fill-pointer 0 :adjustable t))
   (sloop for u in l
 	do
 	(sloop for i below (length (the cl:array u))
@@ -2172,7 +2172,7 @@ dot_products, much the same as can be obtained by doing $dotsimp")
 (defvar $graded_relations nil)
 (defun set-up-graded-relations (the-variables deg new-relations
 				&aux poly-vectors nc-polynomials finished)
-  (cond ((not (ml-typep $graded_relations :array))(setf $graded_relations (MAKE-ARRAY 25 :adjustable t))))
+  (cond ((not (ml-typep $graded_relations :array))(setf $graded_relations (make-array 25 :adjustable t))))
   (cond ((null (aref $graded_relations deg))
 	(setf (aref  $graded_relations deg)  (make-polynomial-vectors))))
   (setf poly-vectors (aref $graded_relations deg))
@@ -2186,8 +2186,8 @@ dot_products, much the same as can be obtained by doing $dotsimp")
 	 (setf  ( pv-variables poly-vectors) the-variables)
 	 (setf nc-polynomials ($generate_array_of_relations
 				the-variables deg new-relations))
-	 ( pv-GET-ROWS-FROM-ARRAY-OF-POLYNOMIALS POLY-VECTORS  nc-polynomials
-	       'SC_AND_NC_PARTS)
+	 ( pv-get-rows-from-array-of-polynomials poly-vectors  nc-polynomials
+	       'sc_and_nc_parts)
 	 ( pv-set-up-sparse-matrix-from-rows poly-vectors  )
 	 (setf finished t))
 	   (cond (finished nil)
@@ -2382,7 +2382,7 @@ dot_products, much the same as can be obtained by doing $dotsimp")
 ;				 (adjust-array-size $current_monomials (+ n 10)))))
 ;     (sloop for v in (cdr variables)
 ;	   when ($must_replacep v)
-;	   do (setq variables (zl-DELETE v variables )))
+;	   do (setq variables (zl-delete v variables )))
 ;     (cond  
 ;       ((setq answer (aref $current_monomials n)) answer)
 ;	   ((eq n 0) (aset '((mlist simp) 1) $current_monomials 0)
@@ -2405,7 +2405,7 @@ dot_products, much the same as can be obtained by doing $dotsimp")
 ;		   
 ;		   
 ;		    (aset answer
-;			  $Current_monomials n)(return answer)))))))
+;			  $current_monomials n)(return answer)))))))
 ;
 ;
 ;(defun check-current-variables (variables n &aux deg )
@@ -2422,10 +2422,10 @@ dot_products, much the same as can be obtained by doing $dotsimp")
 ;;		     (t  (set arr (make-array 35 :fill-pointer 0 adjustable t :leader-length 2 )))))
 ;	 (cond ((arrayp $current_monomials)(fillarray  $current_monomials   nil))
 ;	       (t (setq $current_monomials
-;			(ZL-MAKE-ARRAY 35 :fill-pointer 0 :adjustable t :leader-length 2 ))))
+;			(zl-make-array 35 :fill-pointer 0 :adjustable t :leader-length 2 ))))
 ;	 (cond ((arrayp $current_replacements)(fillarray   $current_replacements nil))
 ;	       (t (setq $current_replacements
-;			(MAKE-ARRAY 35 :fill-pointer 0 :adjustable t :leader-length 2 ))))
+;			(make-array 35 :fill-pointer 0 :adjustable t :leader-length 2 ))))
 ;	 (sloop for u in (cdr $dot_simplifications)
 ;	       by 'cddr
 ;	       do
@@ -2452,7 +2452,7 @@ dot_products, much the same as can be obtained by doing $dotsimp")
 ;			     (setq deg ($nc_degree u)) n)
 ;		      count 1 into num-repl
 ;		      and do
-;		      (cond ((not (zl-MEMBER u(aref $current_replacements deg)))
+;		      (cond ((not (zl-member u(aref $current_replacements deg)))
 ;				    (return nil)))
 ;		      finally (cond ((not (eq num-repl
 ;					      (sloop for i to n summing
@@ -2551,7 +2551,7 @@ dot_products, much the same as can be obtained by doing $dotsimp")
   (setf answer ($sublis answer  gen-sum)))
 (defvar *show-entry-type* t)
 
-(defun $Determinant_of_equations (eqn &optional variables &aux answer )
+(defun $determinant_of_equations (eqn &optional variables &aux answer )
   (cond ((ml-typep $poly_vector 'polynomial-vectors) nil)
 	(t (setq $poly_vector (make-polynomial-vectors))))
   (setf (pv-type-of-entries $poly_vector) $type_of_entries_for_poly_vector)
@@ -2601,7 +2601,7 @@ dot_products, much the same as can be obtained by doing $dotsimp")
 
 
 (defun $solve_nc_coefficients ($list-eqns &rest variable-strings)
-  ($fast_Linsolve ($extract_linear_equations $list-eqns ($list_nc_monomials $list-eqns))
+  ($fast_linsolve ($extract_linear_equations $list-eqns ($list_nc_monomials $list-eqns))
 		  (apply '$list_variables $list-eqns  variable-strings)))
 
 
@@ -2632,7 +2632,7 @@ dot_products, much the same as can be obtained by doing $dotsimp")
 			 collecting
 			   (sloop for v in mat-polys
 				 with tem
-				 do (setq tem (zl-UNION (list-variables (nth i v)) tem))
+				 do (setq tem (zl-union (list-variables (nth i v)) tem))
 				 when (and (not (memq 1 tem)) (not (pzerop (gencoeff (nth i v) 1 tem))))
 				   do (setq tem (cons 1 tem))
 				 finally (return 				    
@@ -2644,11 +2644,11 @@ dot_products, much the same as can be obtained by doing $dotsimp")
  (setq the-segment (sloop for v in monoms-in-each-column
 	collecting all
 	summing v into all))
-  (setq rows (MAKE-ARRAY (length mat-polys) :fill-pointer (length mat-polys)))
+  (setq rows (make-array (length mat-polys) :fill-pointer (length mat-polys)))
   (sloop for ro in mat-polys
 	for ii from 0
 	do
-    (setq a-row (MAKE-ARRAY 10 :fill-pointer 0 :adjustable t))
+    (setq a-row (make-array 10 :fill-pointer 0 :adjustable t))
     (setf (aref rows ii) a-row)
     (sloop for pol in ro
       	for monoms in monom-vector

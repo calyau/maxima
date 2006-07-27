@@ -1,6 +1,6 @@
 ;;; -*- Mode:Lisp; Package:CL-MAXIMA; Syntax:COMMON-LISP; Base:10 -*-;;;
 
-(in-package "MAXIMA")
+(in-package :maxima)
 
 (defvar *maxima-affinedir*
   (combine-path (list *maxima-sharedir* "affine")))

@@ -58,9 +58,9 @@
 	  ((and x (not (eq (car x) 'err))) x)
 	  ($verbose
 	   (mtell "Unable to expand for the following reason:")
-	   (cond ((null x) (mtell "~%no reason given") '|&Unable to expand|)
+	   (cond ((null x) (mtell "~%no reason given") (make-mstring "Unable to expand"))
 		 (t (cdr x))))
-	  (t '|&Unable to expand|))))
+	  (t (make-mstring "Unable to expand")))))
 
 (defun out-of (e)
   (let  ((e      (cond ((and (boundp '*var) *var)

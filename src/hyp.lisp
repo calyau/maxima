@@ -3272,7 +3272,7 @@
 (defun step4-int (a b c)
   (if (> a b)
       (step4-int b a c)
-      (let* ((s (gensym "STEP4_VAR_"))
+      (let* ((s (gensym (symbol-name '#:step4-var-)))
 	     (m (1- a))
 	     (n (1- b))
 	     (ell (sub c 3//2))
@@ -3571,7 +3571,7 @@
   ;; derive the remaining forms by differentiating this enough times.
   ;;
   ;; FIXME:  Do we need to assume z > 0?  We do that anyway, here.
-  (let* ((s (gensym "HYP_ATANH_"))
+  (let* ((s (gensym (symbol-name '#:hyp-atanh-)))
 	 (n (add a 1//2))
 	 (m (sub b 1))
 	 (ell (sub c 1//2))

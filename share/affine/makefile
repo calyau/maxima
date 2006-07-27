@@ -36,7 +36,7 @@ saved_affine:	$(OBJS)
 	if [ -f init.lsp ] ; then  mv init.lsp xinit.lsp ; fi
 	echo 'to_lisp();(load "sysdef.lisp")(make:make     :affine )' \
 	'(setq $$file_search '  "\"$(MAXDIR)/src/foo.o\")" \
-	'#+sgc(si::sgc-on nil)(gbc nil)(in-package "MAXIMA")(load "dim4-help.lisp")($$batchload "macbasic.mac")(gbc nil) #+sgc #+no(si::sgc-on t)(si::save-system "saved_affine")' | ${MAXIMA}
+	'#+sgc(si::sgc-on nil)(gbc nil)(in-package :maxima)(load "dim4-help.lisp")($$batchload "macbasic.mac")(gbc nil) #+sgc #+no(si::sgc-on t)(si::save-system "saved_affine")' | ${MAXIMA}
 	if [ -f xinit.lsp ] ;then mv xinit.lsp init.lsp ; fi
 
 	

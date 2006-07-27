@@ -1324,9 +1324,9 @@ nil
 	  (cond
 	    ((not (or (like $intp '$y)
 		      (like $intp '$n)))
-	     (setq $intp (simplify ($readonly '|&Is|
+	     (setq $intp (simplify ($readonly (make-mstring "Is")
 					      $nu
-					      '|&an integer?  Type Y or N.|)))
+					      (make-mstring "an integer?  Type Y or N."))))
 	     (go $loop)))
 	  (cond
 	    ((like $intp '$y)
@@ -1518,7 +1518,7 @@ nil
 					     0))
 			  '&=)))
 	   (display-for-tr nil nil (trd-msymeval $x '$x))
-	   (display-for-tr nil nil '|&Not an equation|)
+	   (display-for-tr nil nil (make-mstring "Not an equation"))
 	   (simplify ($error))))))
 (eval-when (compile eval load)
   (defprop $boundtest t translated)
@@ -1529,7 +1529,7 @@ nil
     (cond ((not (like (trd-msymeval $x '$x)
 		      (trd-msymeval $y '$y)))
 	   (display-for-tr nil nil (trd-msymeval $x '$x))
-	   (display-for-tr nil nil '|&Must not be bound|)
+	   (display-for-tr nil nil (make-mstring "Must not be bound"))
 	   (simplify ($error))))))
 (eval-when (compile eval load)
   (defprop $failure t translated)
@@ -1553,5 +1553,5 @@ nil
 	 nil))
      '$ynew)))
 (eval-when (load compile) (meval '(($remove) $x $special $y $special)))
-(setq $msg1 '|&Not a proper differential equation|)
-(setq $msg2 '|&First order equation not linear in y'|)
+(setq $msg1 (make-mstring "Not a proper differential equation"))
+(setq $msg2 (make-mstring "First order equation not linear in y'"))

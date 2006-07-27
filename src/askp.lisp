@@ -95,8 +95,8 @@
 ;;; Asks the user a question about the property of an object.
 ;;; Returns only $yes, $no or $unknown.
   (do ((end-flag) (answer))
-      (end-flag (cond ((memq answer '($yes $y |$y|)) '$yes)
-		      ((memq answer '($no $n |$n|)) '$no)
+      (end-flag (cond ((memq answer '($yes |$Y| |$y|)) '$yes)
+		      ((memq answer '($no |$N| |$n|)) '$no)
 		      ((memq answer '($unknown $uk)) '$unknown)))
     (setq answer (retrieve
 		  `((mtext) |Is  | ,object 
@@ -108,7 +108,7 @@
 		    ,property ,@fun-or-number |?|)
 		  nil))
     (cond 
-      ((memq answer '($yes $y |$y| |$n| $no $n $unknown $uk))
+      ((memq answer '($yes |$Y| |$y| |$N| |$n| $no $unknown $uk))
        (setq end-flag t))
       (t (mtell
 	  "~%Acceptable answers are Yes, Y, No, N, Unknown, Uk~%")))))

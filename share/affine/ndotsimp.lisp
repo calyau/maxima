@@ -74,7 +74,7 @@
 	     (format t "~%Final answer:") (sh answer)
 			       (loop-return answer))
 	    (($must_replacep (setq mon (get (p-var num) 'disrep)))
-	     (cond (*VERBOSE-CHECK-OVERLAPS* 
+	     (cond (*verbose-check-overlaps* 
 		     (format t "~%Simplifying the worst monomial ")
 		     (dot-show mon)))
 	     (setq repl (simp-once-monomial mon))
@@ -88,7 +88,7 @@
 		   (split-numerator 0 num)
 		 (setq answer (n+ (nred reduced den) answer))
 		 (setq expr (nred rest den))
-		 (cond (*VERBOSE-CHECK-OVERLAPS* 
+		 (cond (*verbose-check-overlaps* 
 			 (format t "~%Simplifying the worst monomial ")
 			 (dot-show mon) (format t " adding  to the answer" )))
 		 )))
@@ -146,7 +146,7 @@
 
 
 (defun $dotsimp (expr)
-  (declare (special $NEW_FAST_DOTSIMP))
+  (declare (special $new_fast_dotsimp))
   (cond (($listp expr) (cons '(mlist) (mapcar '$dotsimp (cdr expr))))
 	(t
 	 (cond ((or (rational-functionp expr)(polynomialp expr)) nil)

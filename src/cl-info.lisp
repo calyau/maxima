@@ -788,7 +788,7 @@ the general info file.  The search goes over all files."
 	     :if-exists :append
 	     :if-does-not-exist :create)
        (cond ((< (file-position st) 10)
-	      (princ  #u"\nFile:\thotlist\tNode: Top\n\n* Menu: Hot list of favrite info items.\n\n" st)))
+	      (princ  #u"\nFile:\thotlist\tNode: Top\n\n* Menu: Hot list of favorite info items.\n\n" st)))
        (format st "* (~a)~a::~%" 
 	       (node file node)(node name node))))))
 

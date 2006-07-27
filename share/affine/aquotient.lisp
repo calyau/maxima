@@ -175,20 +175,20 @@
 	     do 
 	 (setq terms-g g-orig)
 	 (prog ()
-	    FIRST-PRODUCT
+	    first-product
 	       (cond ((null terms-g)(return nil)))
 	       (setq prod-exp (f+ f-exp (term-deg terms-g)))
 	       (setq prod-cof (afp-times(term-cof terms-g) f-cof))
-	       (cond ((pzerop prod-cof) (setq terms-g (cddr terms-g)) (GO FIRST-PRODUCT))
+	       (cond ((pzerop prod-cof) (setq terms-g (cddr terms-g)) (go first-product))
 		     ((or (null answ) (> prod-exp (term-deg answ)))
 		      (setq answ (cons prod-exp (cons prod-cof answ)))
-		      (setq tail (cdr answ))                   (GO NEXT-PRODUCT))
+		      (setq tail (cdr answ))                   (go next-product))
 		     ((eql prod-exp (term-deg answ))
 		      (setq prod-cof (pplus (term-cof answ) prod-cof))
 		      (cond ((pzerop prod-cof) (setq answ (cddr answ))
-			     (setq terms-g (cddr terms-g))          (GO FIRST-PRODUCT))
+			     (setq terms-g (cddr terms-g))          (go first-product))
 			    (t (setf (term-cof answ) prod-cof)
-			       (setq tail (cdr answ))        (GO NEXT-PRODUCT)))))
+			       (setq tail (cdr answ))        (go next-product)))))
 	       ;;below here assume answ not empty and (term-deg answ)
 	       ;;greater any possible future prod-exp (until next
 	       ;;f-exp,f-cof)  Once below this point we stay below,
@@ -196,22 +196,22 @@
 	       ;;coefficient whose corresponding degree is definitely
 	       ;;higher than any prod-exp to be encountered.
 	       (setq tail (cdr answ))
-	    TAIL-CERTAIN 
+	    tail-certain 
 	       (cond ((and (cdr tail)(> (second tail) prod-exp))
-		      (setq tail (cddr tail))               (GO TAIL-CERTAIN)))
+		      (setq tail (cddr tail))               (go tail-certain)))
 	       (cond ((or (null (cdr tail))(< (second tail) prod-exp))
 		      (setf (cdr tail) (cons prod-exp (cons prod-cof (cdr tail))))
-		      (setq tail (cddr tail))                (GO NEXT-PRODUCT)))
+		      (setq tail (cddr tail))                (go next-product)))
 	       (cond ((pzerop (setq prod-cof (pplus (third tail) prod-cof)))
 		      (setf (cdr tail) (cdddr tail)))
 		     (t (setf (third tail) prod-cof) (setq  tail (cddr tail))))
-	    NEXT-PRODUCT 
+	    next-product 
 	       (setq terms-g (cddr terms-g))
 	       (cond ((null terms-g) (return nil)))
 	       (setq prod-exp (f+ f-exp (car terms-g)))
 	       (setq prod-cof (afp-times (second terms-g) f-cof))
-	       (cond ((pzerop prod-cof)                    (GO NEXT-PRODUCT)))
-	       (GO TAIL-CERTAIN)))))
+	       (cond ((pzerop prod-cof)                    (go next-product)))
+	       (go tail-certain)))))
   answ)
 
 ;;;destructive:
@@ -1197,11 +1197,11 @@
 	 (cond ((zerop g)(values f 1 0))
 	       (t (values 1 0  (crecip g)))))
 	((not (eql (p-var g) (p-var f)))(ferror 'not-function-of-one-variable))
-	(t(multiple-value-bind (quot zl-REM creqd)
+	(t(multiple-value-bind (quot zl-rem creqd)
 	      (afp-pseudo-quotient f g)
 	    creqd ;;ignore
 	    (multiple-value-bind (gcd a b)
-		(recursive-ideal-gcd1 g zl-REM)
+		(recursive-ideal-gcd1 g zl-rem)
 	      (values gcd b (pdifference a (ptimes quot b))))))))
 
 
@@ -1245,7 +1245,7 @@
 		 when (equal u v)
 		   collecting 1 into cof
 		 else
-		 when (and (LISTP v) (MEMBER u  (cdr v) :test 'equal))
+		 when (and (listp v) (member u  (cdr v) :test 'equal))
 		  collecting
 		    (cond ((eql (length v) 3)
 			   (sloop for vv in (cdr v )
@@ -1374,10 +1374,10 @@
 	  do (return k)
        do (setq u u2 v v2 k (f1+ k)))
   (prog ()
-     B2
+     b2
 	(cond ((oddp u) (setq tt (- v)))
 	      (t(setq tt (ash u -1))))
-     B3B4
+     b3b4
         (sloop  do (setq t2 (ash tt -1))
 	       when  (eql (ash t2 1) tt)
                do (setq tt t2)
@@ -1399,7 +1399,7 @@
   (cond (row (cond ((< (array-total-size row)
 		       (length poly))(adjust-array row (f+ 10 (poly-length poly))
 						   :fill-pointer (fill-pointer  row)))))
-	(t (setq row (MAKE-ARRAY (f+ 10 (setq leng (poly-length poly))) :fill-pointer 0 :adjustable t))))
+	(t (setq row (make-array (f+ 10 (setq leng (poly-length poly))) :fill-pointer 0 :adjustable t))))
   (cond ((numberp poly)(vector-push  0 row)
 	 (vector-push  poly row))
 	(t (sloop for u in (cdr poly)
@@ -1481,10 +1481,10 @@
 	      (t (return nil)))
      tail-certain ;;add in term to tail
 	(cond ((and (cdr tail)(> (second tail) prod-exp))
-	       (setq tail (cddr tail))               (GO TAIL-CERTAIN)))
+	       (setq tail (cddr tail))               (go tail-certain)))
 	(cond ((or (null (cdr tail))(< (second tail) prod-exp))
 	       (setf (cdr tail) (cons prod-exp (cons prod-cof (cdr tail))))
-	       (setq tail (cddr tail))                (GO NEXT-DOUBLE-PRODUCT)))
+	       (setq tail (cddr tail))                (go next-double-product)))
 	(cond ((pzerop (setq prod-cof (pplus (third tail) prod-cof)))
 	       (setf (cdr tail) (cdddr tail)))
 	      (t (setf (third tail) prod-cof) (setq  tail (cddr tail))))
@@ -1509,7 +1509,7 @@
 
 
 (defmacro def-test (f1 f2)
-  `(defun ,(intern (format nil "TEST-~A" f1)) (&rest rest-args)
+  `(defun ,(intern (format nil "~A-~A" '#:test f1)) (&rest rest-args)
      (let (empty (*print-level* 2)(*print-length* 3) ansa ansb)
        
        
@@ -1611,7 +1611,7 @@
 
   ;;want to find sol'ns of v^p-v=0 (mod u)
 (defun berlekamp-set-up-and-reduce-matrix ( u p &aux rows powers estimated-size  sp)
-  (setq rows (MAKE-ARRAY (p-deg u) :fill-pointer (p-deg u)))
+  (setq rows (make-array (p-deg u) :fill-pointer (p-deg u)))
   
   (let ((modulus p)(tellratlist (list u)))
     (working-modulo (list u)
@@ -1629,7 +1629,7 @@
 	  summing (or (and (atom vv) 0) (length vv)) into count
 	  finally (setq estimated-size (f+ 10 (quotient count 5))))
     (sloop for i below (fill-pointer rows)
-	  do (setf (aref rows i) (MAKE-ARRAY estimated-size :fill-pointer 0 :adjustable t)))
+	  do (setf (aref rows i) (make-array estimated-size :fill-pointer 0 :adjustable t)))
     ;;putting the entries in the sparse matrix.  Each polynomial is a column.
     (sloop for vv  in (cdr powers)
 	  for i from 1
@@ -1695,7 +1695,7 @@
 			(setq factor-list (cons tem
 						(cons (afp-quotient u-fact
 								    tem)
-						      (zl-DELETE u-fact factor-list))))
+						      (zl-delete u-fact factor-list))))
 			when (eql (length factor-list) number-of-factors)
 			  do (return-from sue factor-list)))))))
 
@@ -1850,7 +1850,7 @@
 	  (sloop named sue for i from 1
 		do
 	    (sloop  do (setq tt (generate-t-for-one-degree-factors u deg p i))
-		   unless (or  (numberp tt) (zl-MEMBER tt used-tt))
+		   unless (or  (numberp tt) (zl-member tt used-tt))
 		     do (push tt used-tt) (return tt))
 	    (working-modulo (list u)
 	      (setq tt  (afp-expt tt pow) ))
@@ -1864,7 +1864,7 @@
 			    (push (afp-make-monic tem) answ))
 ;			   ((numberp tem))
 			   (t (push tem facts)))
-		     (setq facts(zl-DELETE v facts))))
+		     (setq facts(zl-delete v facts))))
 		  when (null facts) do (return-from sue answ)))))
   (cond ((memq 1 answ) (fsignal 'bad)))
   (iassert (eql (p-deg  u)
@@ -1929,7 +1929,7 @@
 
 
 (defun gen-afp-times (&rest lis)
-  (setq lis (zl-DELETE 1 (copy-list lis)))
+  (setq lis (zl-delete 1 (copy-list lis)))
   (cond ((null lis) 1)
 	((null (cdr lis))(car lis))
 	(t (afp-times (car lis) (cond ((cddr lis)
@@ -1957,7 +1957,7 @@
 				    prime up-to-size))
 	    (cons (car lift) (hensel-lift-list (second lift) (cdr factor-list) prime up-to-size)))))
 
-(defun hensel-lift1 (product ve we prev-modulus prime  &optional a b &aux dif h kk   quot zl-REM creqd new-modulus gcd)
+(defun hensel-lift1 (product ve we prev-modulus prime  &optional a b &aux dif h kk   quot zl-rem creqd new-modulus gcd)
   "lifts u=ve*we mod (p^e) to u=ve+1*we+1 mod (p^e+1) with ve=ve+1 and we=we+1 mod (p^e+1)
   and deg(ve+1)<=deg(ve) deg(we+1)<=deg(we)  and returns the list of  ve+1 and we+1"
 ;  (declare (values (list ve+1 we+1)))
@@ -1973,9 +1973,9 @@
     (setq h (ptimes b dif))
     (setq kk (ptimes a dif))
     (let ((modulus new-modulus))
-      (multiple-value-setq ( quot zl-REM creqd)
+      (multiple-value-setq ( quot zl-rem creqd)
 			   (afp-pseudo-quotient h ve)))
-    (setq h zl-REM)
+    (setq h zl-rem)
     (setq kk (pplus kk (ptimes quot we)))
     (list (pplus ve h) (pplus we kk))))))
    ;(let ((modulus (expt  prime (f1+ e)))) (values (pplus ve h) (pplus we kk))))
@@ -2056,7 +2056,7 @@
 	(cond ((> (* d 2) (length factors))
 	       (push pol answ) (return answ)))
 	(sloop for v in (sub-lists d factors)
-	      when (zl-MEMBER v tried)
+	      when (zl-member v tried)
 		do nil
 	      else
 		do (push v tried)
@@ -2066,7 +2066,7 @@
 			  (setq pol quot)
 			  (push prod answ)
 			  (sloop for vv in v
-				do (setq factors (zl-DELETE vv factors 1)))
+				do (setq factors (zl-delete vv factors 1)))
 			  (go look-for-factors)))
 	      finally (incf d)
 		      (go look-for-factors))))
@@ -2111,8 +2111,8 @@
 	(t  (setq case0 (express-x^i f g 0))
 	    (setq a (ptimes (car case0) (setq mon (list (car f) k 1))))
 	    (setq b (ptimes (second case0) mon))
-	    (multiple-value-setq (quot zl-REM cre) (afp-pseudo-quotient a g))
-	    (setq a zl-REM)
+	    (multiple-value-setq (quot zl-rem cre) (afp-pseudo-quotient a g))
+	    (setq a zl-rem)
 	    (setq b (pplus b
 			   (ptimes quot f)))
 	    ;;(iassert (equal mon (afp-plus (afp-times f a) (afp-times g b))))
@@ -2132,7 +2132,7 @@
 (defun wr-lift (u fi gi up-to-k big-mod  point &aux (modulus big-mod)(main-var (p-var u))tem fi+1 gi+1 v f0 g0 varl w
 		aw bw )
   (setq v (psublis (subs-translate-sublis point) 1  u))
-  (setq varl (zl-DELETE (car u) (list-variables u)))
+  (setq varl (zl-delete (car u) (list-variables u)))
   (setq f0 fi )
   (setq g0 gi )
   (sloop for i from 1 to up-to-k

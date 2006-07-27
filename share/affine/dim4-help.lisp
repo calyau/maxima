@@ -10,7 +10,7 @@
 
 
 (defun $complexity(v &optional sum)
-  (cond ((eql v 0)(if sum -1 '$Z))
+  (cond ((eql v 0)(if sum -1 '$z))
 	((mbagp v)
 	 (cond (sum
 		(loop for u in  (cdr v)
@@ -35,7 +35,7 @@
 	 (complexity-difference1 y x)))))
 
 (defun $pdegree(v va)
-  (cond ((eql v 0) '$Z)
+  (cond ((eql v 0) '$z)
 	((mbagp v)
 	 (cons (car v)
 	       (loop for w in (cdr v) collect ($pdegree w va))))
@@ -126,7 +126,7 @@
 
 (defun $row_less (a b) (> (number_zeros a) (number_zeros b)))
 
-(defun $Row_sort(mat pred)
+(defun $row_sort (mat pred)
   (cons '($matrix) (sort (copy-list (cdr mat)) pred)))
 
 (defun $reorder_matrix(mat &aux rows)

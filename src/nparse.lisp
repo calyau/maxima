@@ -1530,29 +1530,29 @@ entire input string to be printed out when an MAXIMA-ERROR occurs."
 (def-lpos	|$<=| $expr)
 (def-mheader	|$<=| (mleqp))
 
-(def-nud-equiv	|$NOT| parse-prefix)
+(def-nud-equiv	$not parse-prefix)
 ;LBP not needed
-(def-rbp	|$NOT| 70.)
-(def-pos	|$NOT| $clause)
-(def-rpos	|$NOT| $clause)
-(def-lpos	|$NOT| $clause)
-(def-mheader	|$NOT| (mnot))
+(def-rbp	$not 70.)
+(def-pos	$not $clause)
+(def-rpos	$not $clause)
+(def-lpos	$not $clause)
+(def-mheader	$not (mnot))
 
-(def-led-equiv	|$AND| parse-nary)
-(def-lbp	|$AND| 65.)
+(def-led-equiv	$and parse-nary)
+(def-lbp	$and 65.)
 ;RBP not needed
-(def-pos	|$AND| $clause)
+(def-pos	$and $clause)
 ;RPOS not needed
-(def-lpos	|$AND| $clause)
-(def-mheader	|$AND| (mand))
+(def-lpos	$and $clause)
+(def-mheader	$and (mand))
 
-(def-led-equiv	|$OR| parse-nary)
-(def-lbp	|$OR| 60.)
+(def-led-equiv	$or parse-nary)
+(def-lbp	$or 60.)
 ;RBP not needed
-(def-pos	|$OR| $clause)
+(def-pos	$or $clause)
 ;RPOS not needed
-(def-lpos	|$OR| $clause)
-(def-mheader	|$OR| (mor))
+(def-lpos	$or $clause)
+(def-mheader	$or (mor))
 
 (def-led-equiv	|$,| parse-nary)
 (def-lbp	|$,| 10.)
@@ -1562,19 +1562,19 @@ entire input string to be printed out when an MAXIMA-ERROR occurs."
 (def-lpos	|$,| $any)
 (def-mheader	|$,| ($ev))
 
-(def-nud-equiv |$THEN| delim-err)
-(def-lbp |$THEN| 5.)
-(def-rbp |$THEN| 25.)
+(def-nud-equiv $then delim-err)
+(def-lbp $then 5.)
+(def-rbp $then 25.)
 
-(def-nud-equiv |$ELSE| delim-err)
-(def-lbp |$ELSE| 5.)
-(def-rbp |$ELSE| 25.)
+(def-nud-equiv $else delim-err)
+(def-lbp $else 5.)
+(def-rbp $else 25.)
 
-(def-nud-equiv |$ELSEIF| delim-err)
-(def-lbp  |$ELSEIF| 5.)
-(def-rbp  |$ELSEIF| 45.)
-(def-pos  |$ELSEIF| $any)
-(def-rpos |$ELSEIF| $clause)
+(def-nud-equiv $elseif delim-err)
+(def-lbp  $elseif 5.)
+(def-rbp  $elseif 45.)
+(def-pos  $elseif $any)
+(def-rpos $elseif $clause)
 
 ;No LBP - Default as high as possible
 (def-rbp     $if 45.)
@@ -1583,7 +1583,7 @@ entire input string to be printed out when an MAXIMA-ERROR occurs."
 ;No LPOS
 (def-mheader $if (mcond))
 
-(def-nud (|$IF|) (op)
+(def-nud ($if) (op)
   (list* (pos op)
 	 (mheader op)
 	 (parse-condition op)))
@@ -1596,7 +1596,7 @@ entire input string to be printed out when an MAXIMA-ERROR occurs."
 	 (case (first-c)
 	   (($else)   (list t (parse '$any (rbp (pop-c)))))
 	   (($elseif) (parse-condition (pop-c)))
-	   (t ; Note: $FALSE instead of () makes DISPLA suppress display!
+	   (t ; Note: $false instead of () makes DISPLA suppress display!
 	    (list t '$false)))))
 
 (def-mheader $do (mdo))

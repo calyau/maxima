@@ -51,7 +51,7 @@
 	do (setq tem (sub*  (ncmul* v elmt)
 			    (ncmul*  elmt (setq oth ($general_sum $current_variables $aaaa )))))
 	(setq answ ($totaldisrep ($numerator ($dotsimp tem))))
-	(setq eqns ($extract_Linear_equations  (list '(mlist)answ)))
+	(setq eqns ($extract_linear_equations  (list '(mlist) answ)))
 	(setq solns ($fast_linsolve eqns (firstn (length $current_variables) $aaaa)))
 	collecting ($sublis solns oth) into final
 	do (mshow (cons '(mlist)final))
@@ -75,7 +75,7 @@
 	(t (collect-atoms1 (cdr tree) pred))))
 
   
-(defun $Find_coefficients_for_linear_combination( items in-terms-of monoms &optional (cofs $aaaa)
+(defun $find_coefficients_for_linear_combination( items in-terms-of monoms &optional (cofs $aaaa)
 		 &aux (gen-sum 0) rest-monoms final-answ answ tem dif)
    (setq monoms (nreverse (st-rat  monoms)))
   (while (setq in-terms-of (cdr in-terms-of))
@@ -338,7 +338,7 @@
   (mshow tem)
   (setq tem ($dotsimp tem))
   (mshow tem)
-  (setq eqns ($extract_Linear_equations ($totaldisrep ($numerator tem))))
+  (setq eqns ($extract_linear_equations ($totaldisrep ($numerator tem))))
   (cond (auto-data (sloop for v in (cdr auto-data )
 			 collecting ($maybe_ldata_solve ($append v eqns) :yes t ) into all
 			 finally (return (apply '$append all))))
@@ -603,11 +603,11 @@
 
 
 (defvar *nvars* 6)
-(defun LIST-ORDERED-PAIRS-WITH-REPEAT-COUNT(i j n nrepeats)
+(defun list-ordered-pairs-with-repeat-count(i j n nrepeats)
   ;; return the list of 2*n integers all less than i
   ;; such that there are no more than NREPEATS.
   (let ((*nvars* i))
-    (LIST-ORDERED-PAIRS-WITH-REPEAT-COUNT1 i j n nrepeats)))
+    (list-ordered-pairs-with-repeat-count1 i j n nrepeats)))
 
 (defun repeat-ok1 (i j lis nrepeats &aux (n 0))
   
@@ -622,17 +622,17 @@
 		 (t t)))))
   
 (defun list-ordered-pairs-with-repeat-count1 (i j number-pairs number-repeats)
-  (COND ((<= Number-pairs 0) (list NIL))
-	(T
+  (cond ((<= number-pairs 0) (list nil))
+	(t
 	 (sloop for ii to i
 		when ( < ii *nvars*)
 		append
 		(sloop for jj below (if (eql ii i) j *nvars* )
-		       APPEND
-		       (SLOOP FOR U IN (LIST-ORDERED-PAIRS-WITH-REPEAT-COUNT1
-					II JJ (- Number-pairs 1) number-repeats)
+		       append
+		       (sloop for u in (list-ordered-pairs-with-repeat-count1
+					ii jj (- number-pairs 1) number-repeats)
 			      when (repeat-ok1 ii jj u number-repeats)
-				      COLLECT (APPEND (LIST II JJ) U)))))))
+				      collect (append (list ii jj) u)))))))
 
 
 

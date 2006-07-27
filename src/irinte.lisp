@@ -286,10 +286,8 @@
 		(intira (distrexpandroot
 			 (cdr ($substitute
 			       (mul (power f -1)
-				    (add (setq met
-					       (make-symbol
-						"YANNIS")
-					       )
+				    (add (setq met (make-symbol
+						    (symbol-name '#:yannis)))
 					 (mul -1 e)))
 			       x funct)))
 			met)))

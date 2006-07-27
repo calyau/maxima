@@ -1390,7 +1390,7 @@ APPLY means like APPLY.")
 
 (defun new-end-symbol ( &aux tem)
   (loop for i from 0
-	 do (setq tem (intern (format nil "test-~A" i)))
+	 do (setq tem (intern (format nil "~A-~A" '#:test i)))
 	 when (null (symbol-plist tem))
 	 do (return tem)))
 

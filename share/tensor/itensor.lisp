@@ -95,20 +95,20 @@
       $itorsion_flag nil
 )
 
-;(DEFUN IFNOT MACRO (CLAUSE) (CONS 'OR (CDR CLAUSE)))
-(DEFmacro IFNOT  (&rest CLAUSE) `(or ,@ clause))
+;(defun ifnot macro (clause) (cons 'or (cdr clause)))
+(defmacro ifnot  (&rest clause) `(or ,@ clause))
 
-;(DEFUN M+OR*OR^P MACRO (CL)
-(defmacro M+OR*OR^P (&whole cl &rest ign) ign
-       (SUBST (CADR CL)
-	      'X
-	      '(MEMQ (CAAR X) '(MTIMES MPLUS MEXPT))))
+;(defun m+or*or^p macro (cl)
+(defmacro m+or*or^p (&whole cl &rest ign) ign
+       (subst (cadr cl)
+	      'x
+	      '(memq (caar x) '(mtimes mplus mexpt))))
 
-(DEFMFUN $IDUMMY nil                              ;Sets arguments to dummy indices
-       (progn (setq $ICOUNTER (1+ $ICOUNTER))
-              (concat $IDUMMYX $ICOUNTER)))
+(defmfun $idummy nil                              ;Sets arguments to dummy indices
+       (progn (setq $icounter (1+ $icounter))
+              (concat $idummyx $icounter)))
 
-(DEFPROP $KDELTA ((/  . / )) CONTRACTIONS)
+(defprop $kdelta ((/  . / )) contractions)
 
 (defun isprod (x) (or (equal x '(mtimes)) (equal x '(mtimes simp))
                       (equal x '(mtimes simp ratsimp)))
@@ -169,71 +169,71 @@
 ;KDELTA has special contraction property because it contracts with any indexed
 ;object.
 
-(meval '(($DECLARE) %KDELTA $CONSTANT))          ;So derivative will be zero
-(meval '(($DECLARE) $KDELTA $CONSTANT))          ;So derivative will be zero
-(meval '(($DECLARE) %LEVI_CIVITA $CONSTANT))
-(meval '(($DECLARE) $LEVI_CIVITA $CONSTANT))
+(meval '(($declare) %kdelta $constant))          ;So derivative will be zero
+(meval '(($declare) $kdelta $constant))          ;So derivative will be zero
+(meval '(($declare) %levi_civita $constant))
+(meval '(($declare) $levi_civita $constant))
 
-(SETQ $DIM 4. $CONTRACTIONS '((MLIST SIMP))) 
+(setq $dim 4. $contractions '((mlist simp))) 
 
-(DEFMFUN $DEFCON N            ;Defines contractions: A contracts with B to form C
-       ((LAMBDA (A)
-	 (ADD2LNC A $CONTRACTIONS)
-	 (PUTPROP
-	  A
-	  (CONS (COND ((= N 1.) '(/  . / ))
-		      ((= N 3.) (CONS (ARG 2.) (ARG 3.)))
-		      (T (merror "DEFCON takes 1 or 3 arguments")))
-		(ZL-GET A 'CONTRACTIONS))
-	  'CONTRACTIONS)
-	 '$DONE)
-	(ARG 1.))) 
+(defmfun $defcon n            ;Defines contractions: A contracts with B to form C
+       ((lambda (a)
+	 (add2lnc a $contractions)
+	 (putprop
+	  a
+	  (cons (cond ((= n 1.) '(/  . / ))
+		      ((= n 3.) (cons (arg 2.) (arg 3.)))
+		      (t (merror "DEFCON takes 1 or 3 arguments")))
+		(zl-get a 'contractions))
+	  'contractions)
+	 '$done)
+	(arg 1.))) 
 
-(DEFMSPEC $DISPCON (A) (SETQ A (CDR A))
+(defmspec $dispcon (a) (setq a (cdr a))
   ;;Displays contraction definitions
-       ((LAMBDA (TMP) 
-	 (AND (EQ (CAR A) '$ALL) (SETQ A (CDR $CONTRACTIONS)))
-	 (CONS
-	  SMLIST
-	  (MAPCAR 
-	   #'(LAMBDA (E) 
-	     (COND ((SETQ TMP (ZL-GET E 'CONTRACTIONS))
-		    (CONS SMLIST
-			  (MAPCAR #'(LAMBDA (Z) 
-					   (COND ((EQ (CAR Z)
+       ((lambda (tmp) 
+	 (and (eq (car a) '$all) (setq a (cdr $contractions)))
+	 (cons
+	  smlist
+	  (mapcar 
+	   #'(lambda (e) 
+	     (cond ((setq tmp (zl-get e 'contractions))
+		    (cons smlist
+			  (mapcar #'(lambda (z) 
+					   (cond ((eq (car z)
 						      '/ )
-						  (LIST SMLIST E))
-						 (T (LIST SMLIST
-							  E
-							  (CAR Z)
-							  (CDR Z)))))
-				  TMP)))
-		   (T '((MLIST SIMP)))))
-	   A)))
-	NIL)) 
+						  (list smlist e))
+						 (t (list smlist
+							  e
+							  (car z)
+							  (cdr z)))))
+				  tmp)))
+		   (t '((mlist simp)))))
+	   a)))
+	nil)) 
 
-(DEFMSPEC $REMCON (A) (SETQ A (CDR A))
+(defmspec $remcon (a) (setq a (cdr a))
   ;;Removes contraction definitions
-       (AND (EQ (CAR A) '$ALL) (SETQ A (CDR $CONTRACTIONS)))
-       (CONS SMLIST (MAPC (FUNCTION (LAMBDA (E) (ZL-REMPROP E 'CONTRACTIONS)
-					    (DELQ E $CONTRACTIONS)))
-			  A)))
+       (and (eq (car a) '$all) (setq a (cdr $contractions)))
+       (cons smlist (mapc (function (lambda (e) (zl-remprop e 'contractions)
+					    (delq e $contractions)))
+			  a)))
 
-(DEFUN GETCON (E)
+(defun getcon (e)
   ;; Helper to obtain contractions on both the noun and verb form of E
-	(COND ((AND (SYMBOLP E) (EQ (GETCHAR E 1) '%))  (ZL-GET ($VERBIFY E) 'CONTRACTIONS))
-		(T (ZL-GET E 'CONTRACTIONS))
+	(cond ((and (symbolp e) (eq (getchar e 1) '%))  (zl-get ($verbify e) 'contractions))
+		(t (zl-get e 'contractions))
 	)
 )
 
-(DEFUN RPOBJ (E)                  ;"True" if an indexed object and not a matrix
-       (COND ((AND (NOT (ATOM E)) (EQ (CAAR E) 'MQAPPLY)) (RPOBJ (CDR E)))
-	     (T 
-       (AND (NOT (ATOM E))
-	    (NOT (EQ (CAAR E) '$MATRIX))
-	    ($LISTP (CADR E))
-	    (COND ((CDDR E) ($LISTP (CADDR E)))
-		  (T (NCONC E '(((MLIST SIMP))))  T  ))))))
+(defun rpobj (e)                  ;"True" if an indexed object and not a matrix
+       (cond ((and (not (atom e)) (eq (caar e) 'mqapply)) (rpobj (cdr e)))
+	     (t 
+       (and (not (atom e))
+	    (not (eq (caar e) '$matrix))
+	    ($listp (cadr e))
+	    (cond ((cddr e) ($listp (caddr e)))
+		  (t (nconc e '(((mlist simp))))  t  ))))))
                                           ;Transforms F([...]) into F([...],[])
 
 ;RPOBJ is the predicate for indexed objects. In the case of no contravariant
@@ -241,35 +241,35 @@
 
 (deff $tenpr #'rpobj)
 
-(DEFMFUN $IMETRIC (V) (SETQ $IMETRIC V) ($DEFCON V) ($DEFCON V V '$KDELTA))
+(defmfun $imetric (v) (setq $imetric v) ($defcon v) ($defcon v v '$kdelta))
 
-(DEFUN MYSUBST0 (NEW OLD)                  ;To reuse subparts of old expression
-       (COND ((ALIKE1 NEW OLD) OLD) (T NEW))) 
+(defun mysubst0 (new old)                  ;To reuse subparts of old expression
+       (cond ((alike1 new old) old) (t new))) 
 
-(DEFUN COV (A B)                            ;COV gives covariant form of metric
-       (COND ((BOUNDP '$IMETRIC)
-	      (MEVAL (LIST (NCONS $IMETRIC)
-			   (LIST SMLIST A B)
-			   '((MLIST SIMP)))))
-	     (T (merror "Name of metric must be specified"))))
+(defun cov (a b)                            ;COV gives covariant form of metric
+       (cond ((boundp '$imetric)
+	      (meval (list (ncons $imetric)
+			   (list smlist a b)
+			   '((mlist simp)))))
+	     (t (merror "Name of metric must be specified"))))
 
-(DEFUN CONTR (A B)                      ;CONTR gives contraviant form of metric
-       (COND ((BOUNDP '$IMETRIC)
-	      (MEVAL (LIST (NCONS $IMETRIC)
-			   '((MLIST SIMP))
-			   (LIST SMLIST A B))))
-	     (T (merror "Name of metric must be specified"))))
+(defun contr (a b)                      ;contr gives contraviant form of metric
+       (cond ((boundp '$imetric)
+	      (meval (list (ncons $imetric)
+			   '((mlist simp))
+			   (list smlist a b))))
+	     (t (merror "Name of metric must be specified"))))
 
-(DEFUN DIFFCOV (A B D)
-	(COND ((BOUNDP '$IMETRIC)
-		(MEVAL (LIST (NCONS $IMETRIC)
-			   (LIST SMLIST A B)
-			   '((MLIST SIMP))
-				D
+(defun diffcov (a b d)
+	(cond ((boundp '$imetric)
+		(meval (list (ncons $imetric)
+			   (list smlist a b)
+			   '((mlist simp))
+				d
 			)
 
 		))
-		(T (merror "Name of metric must be specified"))))
+		(t (merror "Name of metric must be specified"))))
 
 (defmfun $ichr1 nargs                   ; Christoffel-symbol of the first kind
   (prog (a b c)
@@ -390,17 +390,17 @@
   )
 ) 
 
-(DEFUN COVSUBST (X Y RP)       ;Substitutes X for Y in the covariant part of RP
-       (CONS (CAR RP) (CONS (SUBST X Y (CADR RP)) (CDDR RP)))) 
+(defun covsubst (x y rp)       ;Substitutes X for Y in the covariant part of RP
+       (cons (car rp) (cons (subst x y (cadr rp)) (cddr rp)))) 
 
-(DEFUN CONSUBST (X Y RP)   ;Substitutes X for Y in the contravariant part of RP
-       (CONS (CAR RP)
-	     (CONS (CADR RP)
-		   (CONS (SUBST X Y (CADDR RP)) (CDDDR RP))))) 
+(defun consubst (x y rp)   ;Substitutes X for Y in the contravariant part of RP
+       (cons (car rp)
+	     (cons (cadr rp)
+		   (cons (subst x y (caddr rp)) (cdddr rp))))) 
 
-(DEFUN DERSUBST (X Y RP)   ;Substitutes X for Y in the derivative indices of RP
-       (NCONC (LIST (CAR RP) (CADR RP) (CADDR RP))
-	      (SUBST X Y (CDDDR RP)))) 
+(defun dersubst (x y rp)   ;Substitutes X for Y in the derivative indices of RP
+       (nconc (list (car rp) (cadr rp) (caddr rp))
+	      (subst x y (cdddr rp)))) 
 
 ;; COVARIANT DIFFERENTIATION
 ;; As of November, 2004, COVDIFF now takes into account the value of
@@ -503,8 +503,8 @@
     (
       (eq (caar e) 'mtimes)     ; (a*b)'
       (simplus
-        (covdifftimes (cdr e) X)
-        1 T
+        (covdifftimes (cdr e) x)
+        1 t
       )
     )
     (
@@ -775,7 +775,7 @@
 
 
 
-(DEFMFUN $LORENTZ_GAUGE n
+(defmfun $lorentz_gauge n
        (cond ((equal n 0) (merror "LORENTZ_GAUGE requires at least one argument"))
 	     ((equal n 1) (lorentz (arg 1) nil))
 	     (t (lorentz (arg 1)
@@ -789,7 +789,7 @@
 ;contravariant index become 0. If L is NIL then do this for all indexed objects
 ;otherwise do this only for those indexed objects whose names are members of L.
 
-(defun LORENTZ (e l)
+(defun lorentz (e l)
        (cond ((atom e) e)
 	     ((rpobj e)
 	      (cond ((and (or (null l) (memq (caar e) l))
@@ -803,12 +803,12 @@
 				(cdr e)))
 		  t) e))))
 
-(DEFUN LESS (X Y)                                         ;Alphanumeric compare
-       (COND ((NUMBERP X)
-	      (COND ((NUMBERP Y) (< X Y))
-		    (T (ALPHALESSP (ASCII X) Y))))
-	     (T (COND ((NUMBERP Y) (ALPHALESSP X (ASCII Y)))
-		      (T (ALPHALESSP X Y)))))) 
+(defun less (x y)                                         ;alphanumeric compare
+       (cond ((numberp x)
+	      (cond ((numberp y) (< x y))
+		    (t (alphalessp (ascii x) y))))
+	     (t (cond ((numberp y) (alphalessp x (ascii y)))
+		      (t (alphalessp x y)))))) 
 
 ;; Christoffels contains all Christoffel-like symbols: i.e., symbols
 ;; that make sense only with certain index patterns. These symbols are
@@ -947,50 +947,50 @@
   )
 )
 
-(DEFUN CONTRACT3 (IT LST)      ;Tries to contract IT with some element of LST.
-       (PROG (FRST R REST)     ;If none occurs then return NIL otherwise return
+(defun contract3 (it lst)      ;Tries to contract IT with some element of LST.
+       (prog (frst r rest)     ;If none occurs then return NIL otherwise return
 			       ;a list whose first member is the result of
 			       ;contraction and whose cdr is a top-level copy
 		               ;of LST with the element which contracted
 			       ;removed.
-	LOOP (SETQ FRST (CAR LST) LST (CDR LST))
-;;	     (AND (EQ (CAAR FRST) '%KDELTA) (GO SKIP))
-	     (AND (SETQ R (CONTRACT1 IT FRST))
-		  (RETURN (CONS R (NCONC (NREVERSE REST) LST))))
+	loop (setq frst (car lst) lst (cdr lst))
+;;	     (and (eq (caar frst) '%kdelta) (go skip))
+	     (and (setq r (contract1 it frst))
+		  (return (cons r (nconc (nreverse rest) lst))))
 			       ;Try contraction in reverse order since the
 			       ;operation is commutative.
-;;	SKIP (AND (ZL-GET (CAAR FRST) 'CONTRACTIONS)
-	SKIP (AND (GETCON (CAAR FRST))
-		  (SETQ R (CONTRACT1 FRST IT))
-		  (RETURN (CONS R (NCONC (NREVERSE REST) LST))))
-	     (AND (NULL LST) (RETURN NIL))
-	     (SETQ REST (CONS FRST REST))
-	     (GO LOOP))) 
+;;	skip (and (zl-get (caar frst) 'contractions)
+	skip (and (getcon (caar frst))
+		  (setq r (contract1 frst it))
+		  (return (cons r (nconc (nreverse rest) lst))))
+	     (and (null lst) (return nil))
+	     (setq rest (cons frst rest))
+	     (go loop))) 
 
-(DEFUN CONTRACT4 (L)                                        ;Contracts products
-       (PROG (L1 L2 L3 F CL SF)
-	     (SETQ CL (CDR L)) ;Following loop sets up 3 lists from the factors
+(defun contract4 (l)                                        ;contracts products
+       (prog (l1 l2 l3 f cl sf)
+	     (setq cl (cdr l)) ;Following loop sets up 3 lists from the factors
 		               ;on L: L1 - atoms or the contraction of non
 		               ;indexed objects (the contraction is to handle
 			       ;sub-expressions in case E is not fully expanded
 			       ;as in A*B*(C*D+E*F). ), L2 - indexed objects in
 	                       ;L with contraction property, L3 - indexed
                                ;objects in L without contraction property
-	AGAIN(SETQ F (CAR CL) CL (CDR CL))
-	     (COND ((ATOM F) (SETQ L1 (CONS F L1)))
-		   ((RPOBJ F)
+	again(setq f (car cl) cl (cdr cl))
+	     (cond ((atom f) (setq l1 (cons f l1)))
+		   ((rpobj f)
 ;;*** contract5 may return a negative result
-		    (SETQ F (CONTRACT5 F))
+		    (setq f (contract5 f))
 (cond (
  (and (or (eq (car f) '(mtimes)) (eq (car f) '(mtimes simp))) (eq (cadr f) -1))
  (setq l1 (cons -1 l1) f (caddr f)) ))
-		    (COND ((GETCON (CAAR F))
-			   (SETQ L2 (CONS F L2)))
-			  (T (SETQ L3 (CONS F L3)))))
-		   (T (SETQ L1 (CONS ($CONTRACT F) L1))))
-	     (AND CL (GO AGAIN))
-	     (AND (NULL L2) (RETURN (NCONC L1 L3)))
-	     (AND (NULL (CDR L2)) (SETQ CL L2) (GO LOOP2+1))
+		    (cond ((getcon (caar f))
+			   (setq l2 (cons f l2)))
+			  (t (setq l3 (cons f l3)))))
+		   (t (setq l1 (cons ($contract f) l1))))
+	     (and cl (go again))
+	     (and (null l2) (return (nconc l1 l3)))
+	     (and (null (cdr l2)) (setq cl l2) (go loop2+1))
                                ;If L2 is empty then no more contractions are
                                ;needed. If L2 has only 1 member then just
 	                       ;contract it with L3 otherwise contract the
@@ -1003,10 +1003,10 @@
 		               ;by CONTRACT3). If it doesn't then add it to CL.
 		               ;If it does then take result of contraction and
 			       ;add to L1, L2, or L3 as above.
-	LOOP1(SETQ F (CAR L2) L2 (CDR L2))
-	     (COND ((NULL (SETQ SF (CONTRACT3 F L2)))
-		    (SETQ CL (CONS F CL)))
-		   (T
+	loop1(setq f (car l2) l2 (cdr l2))
+	     (cond ((null (setq sf (contract3 f l2)))
+		    (setq cl (cons f cl)))
+		   (t
 ;;*** contract3 may also return a negative result
 (setq sf (mapcar #'(lambda (x)
 (cond ((atom x) x) (
@@ -1014,26 +1014,26 @@
  (setq l1 (cons -1 l1)) (caddr x)) (t x))
 ) sf ) )
 
- (SETQ L2 (CDR SF) SF (CAR SF))
-		      (COND ((ATOM SF) (SETQ L1 (CONS SF L1)))
-			    ((RPOBJ SF)
-;;			     (COND ((ZL-GET (CAAR SF)
-;;					 'CONTRACTIONS)
-			     (COND ((GETCON (CAAR SF))
-				    (SETQ L2 (CONS SF L2)))
-				   (T (SETQ L3 (CONS SF L3)))))
-			    (T (SETQ L1 (CONS SF L1))))))
+ (setq l2 (cdr sf) sf (car sf))
+		      (cond ((atom sf) (setq l1 (cons sf l1)))
+			    ((rpobj sf)
+;;			     (cond ((zl-get (caar sf)
+;;					 'contractions)
+			     (cond ((getcon (caar sf))
+				    (setq l2 (cons sf l2)))
+				   (t (setq l3 (cons sf l3)))))
+			    (t (setq l1 (cons sf l1))))))
 			       ;If L2 has at least 2 elements left then
 		               ;continue loop. If L2 has 1 element and CL
 			       ;is not empty and there were some contractions
 			       ;performed last time then add CL to L2 and try
 	                       ;again. Otherwise add L2 to CL and quit.
-	     (AND L2
-		  (COND ((CDR L2) (GO LOOP1))
-			((AND CL SF)
-			 (SETQ SF NIL L2 (CONS (CAR L2) CL) CL NIL)
-			 (GO LOOP1))
-			(T (SETQ CL (NCONC L2 CL)))))
+	     (and l2
+		  (cond ((cdr l2) (go loop1))
+			((and cl sf)
+			 (setq sf nil l2 (cons (car l2) cl) cl nil)
+			 (go loop1))
+			(t (setq cl (nconc l2 cl)))))
 			       ;The following loop goes down CL trying to
 	                       ;contract each member with some member in L3. If
 		               ;there is not a contraction then the element
@@ -1044,11 +1044,11 @@
 			       ;CONTRACT3 here if CL is known not to be null.
 			       ;If L3 is empty then there is nothing left to
 			       ;contract.
-	LOOP2(AND (NULL CL) (RETURN (NCONC L1 L3)))
-	LOOP2+1
-	     (AND (NULL L3) (RETURN (NCONC L1 CL)))
-	     (SETQ F (CAR CL) CL (CDR CL))
-	     (COND ((SETQ SF (CONTRACT3 F L3))
+	loop2(and (null cl) (return (nconc l1 l3)))
+	loop2+1
+	     (and (null l3) (return (nconc l1 cl)))
+	     (setq f (car cl) cl (cdr cl))
+	     (cond ((setq sf (contract3 f l3))
 ;;*** contract3 may also return a negative result
 (setq sf (mapcar #'(lambda (x)
 (cond ((atom x) x) (
@@ -1056,9 +1056,9 @@
  (setq l1 (cons -1 l1)) (caddr x)) (t x))
 ) sf ) )
 
- (SETQ L3 SF))
-		   (T (SETQ L3 (CONS F L3))))
-	     (GO LOOP2))) 
+ (setq l3 sf))
+		   (t (setq l3 (cons f l3))))
+	     (go loop2))) 
 
 ;; Create a 'normalized' (i.e., old-style) rpobj
 (defmfun $renorm (e &optional (force nil))
@@ -1257,7 +1257,7 @@
 
     ;If g matches an a then use the b for name of result. If an a is a space
     ;use name of G for result.
-    MORE
+    more
     (cond
       (
         (eq (caar cf) '/ )
@@ -1269,7 +1269,7 @@
       )
       (t
         (or (setq cf (cdr cf)) (return nil))
-        (go MORE)
+        (go more)
       )
     )
     (setq c (cdr c) d (cdr d))
@@ -1457,165 +1457,165 @@
 
 ;kdels defines the symmetric combination of the Kronecker symbols
 
-(DEFMFUN $KDELS (L1 L2)
-       (COND ((NULL (AND ($LISTP L1)
-			 ($LISTP L2)
-			 (= (LENGTH L1) (LENGTH L2))))
+(defmfun $kdels (l1 l2)
+       (cond ((null (and ($listp l1)
+			 ($listp l2)
+			 (= (length l1) (length l2))))
 	      (merror "Improper arg to DELTA: ~M"
-		      (LIST '(%KDELS) L1 L2)
+		      (list '(%kdels) l1 l2)
 		      ))
-	     (T (DELTA (CDR L1) (CDR L2) 1)))) 
+	     (t (delta (cdr l1) (cdr l2) 1)))) 
 ;;
-;;(DECLARE-TOP (FIXNUM I)) 
+;;(declare-top (fixnum i)) 
 ;;
-;;(DEFUN DELTA (LOWER UPPER &optional (eps -1))
-;;       (COND ((NULL LOWER) $DIM)
-;;	     ((NULL (CDR LOWER))
-;;	      (COND ((EQUAL (CAR UPPER) (CAR LOWER))
-;;		     (COND ((NUMBERP (CAR UPPER)) 1.) (T $DIM)))
-;;		    ((AND (NUMBERP (CAR UPPER)) (NUMBERP (CAR LOWER))) 0.)
-;;		    (T (LIST '(%KDELTA)
-;;			     (CONS SMLIST LOWER)
-;;			     (CONS SMLIST UPPER)))))
-;;	     (T (DO ((I (LENGTH LOWER) (1- I))
-;;		     (SL LOWER)
-;;		     (TERM)
-;;		     (RESULT)
-;;		     (F (NCONS (CAR UPPER)))
-;;		     (R (CDR UPPER))
-;;		     (SIGN (ODDP (LENGTH LOWER))))
-;;		    ((= I 0.)
-;;		     (SIMPLUS (CONS '(MPLUS) RESULT) 1. T))
-;;		    (SETQ TERM (LIST (DELTA (NCONS (CAR SL)) F eps)
-;;				     (DELTA (CDR SL) R eps)))
-;;		    (SETQ SL (CDR (APPEND SL (NCONS (CAR SL)))))
-;;		    (SETQ RESULT
-;;			  (CONS (SIMPTIMES (CONS '(MTIMES)
-;;						 (COND ((OR SIGN
-;;							    (ODDP I))
-;;							(CONS eps
-;;							      TERM))
-;;						       (T TERM)))
+;;(defun delta (lower upper &optional (eps -1))
+;;       (cond ((null lower) $dim)
+;;	     ((null (cdr lower))
+;;	      (cond ((equal (car upper) (car lower))
+;;		     (cond ((numberp (car upper)) 1.) (t $dim)))
+;;		    ((and (numberp (car upper)) (numberp (car lower))) 0.)
+;;		    (t (list '(%kdelta)
+;;			     (cons smlist lower)
+;;			     (cons smlist upper)))))
+;;	     (t (do ((i (length lower) (1- i))
+;;		     (sl lower)
+;;		     (term)
+;;		     (result)
+;;		     (f (ncons (car upper)))
+;;		     (r (cdr upper))
+;;		     (sign (oddp (length lower))))
+;;		    ((= i 0.)
+;;		     (simplus (cons '(mplus) result) 1. t))
+;;		    (setq term (list (delta (ncons (car sl)) f eps)
+;;				     (delta (cdr sl) r eps)))
+;;		    (setq sl (cdr (append sl (ncons (car sl)))))
+;;		    (setq result
+;;			  (cons (simptimes (cons '(mtimes)
+;;						 (cond ((or sign
+;;							    (oddp i))
+;;							(cons eps
+;;							      term))
+;;						       (t term)))
 ;;					   1.
-;;					   NIL)
-;;				RESULT)))))) 
-(DEFUN DELTA (LOWER UPPER &optional (eps -1))
-  (COND ((NULL LOWER) $DIM)
-        ((NULL (CDR LOWER))
-         (COND ((EQUAL (CAR UPPER) (CAR LOWER))
-                (COND ((NUMBERP (CAR UPPER)) 1.) (T $DIM)))
-               ((AND (NUMBERP (CAR UPPER)) (NUMBERP (CAR LOWER))) 0.)
-               (T (LIST '(%KDELTA) (CONS SMLIST LOWER) (CONS SMLIST UPPER)))))
-        (T (DO ((LEFT NIL (APPEND LEFT (NCONS (CAR RIGHT))))
-		(RIGHT LOWER (CDR RIGHT))
-                (RESULT))
-               ((NULL RIGHT) (SIMPLUS (CONS '(MPLUS) RESULT) 1. T))
-               (SETQ RESULT (CONS (SIMPTIMES
-                                   (LIST '(MTIMES) (DELTA (NCONS (CAR RIGHT)) (NCONS (CAR UPPER)) eps)
-                                         (DELTA (APPEND LEFT (CDR RIGHT)) (CDR UPPER) eps)
-                                         (COND ((ODDP (LENGTH LEFT)) eps) (T 1))
-                                   ) 1. T
-                                  ) RESULT)
+;;					   nil)
+;;				result)))))) 
+(defun delta (lower upper &optional (eps -1))
+  (cond ((null lower) $dim)
+        ((null (cdr lower))
+         (cond ((equal (car upper) (car lower))
+                (cond ((numberp (car upper)) 1.) (t $dim)))
+               ((and (numberp (car upper)) (numberp (car lower))) 0.)
+               (t (list '(%kdelta) (cons smlist lower) (cons smlist upper)))))
+        (t (do ((left nil (append left (ncons (car right))))
+		(right lower (cdr right))
+                (result))
+               ((null right) (simplus (cons '(mplus) result) 1. t))
+               (setq result (cons (simptimes
+                                   (list '(mtimes) (delta (ncons (car right)) (ncons (car upper)) eps)
+                                         (delta (append left (cdr right)) (cdr upper) eps)
+                                         (cond ((oddp (length left)) eps) (t 1))
+                                   ) 1. t
+                                  ) result)
               )))))
 
-(DECLARE-TOP (NOTYPE I))
+(declare-top (notype i))
 
-(DECLARE-TOP (SPECIAL $OUTCHAR $DISPFLAG LINELABLE FOOBAR DERIVLIST))
+(declare-top (special $outchar $dispflag linelable foobar derivlist))
 
 
 ;Displays P([L1],[L2],I1,I2,...) by making the elements of L2 into a single
 ;atom which serves as the exponent and the elements of L1 and I1,I2,... into a
 ;single atom with a comma in between which serves as the subscript.
 
-(DEFMFUN $ISHOW (f)
-       (progn (makelabel $LINECHAR)
-              (cond ($DISPFLAG
-                     (displa (list '(MLABLE) LINELABLE (ishow (specrepcheck (derat f)))))
-;                     (setq $DISPFLAG nil)
+(defmfun $ishow (f)
+       (progn (makelabel $linechar)
+              (cond ($dispflag
+                     (displa (list '(mlable) linelable (ishow (specrepcheck (derat f)))))
+;                     (setq $dispflag nil)
 ))
-              (SET LINELABLE f)))
+              (set linelable f)))
 
-(DEFUN ISHOW (F) 
-       ((LAMBDA (FOOBAR)                              ;FOOBAR intialized to NIL
-		(COND ((ATOM F) F)
-		      ((RPOBJ F)                      ;If an indexed object ...
-		       (SETQ FOOBAR
-			     (COND ((OR (COVI F) (CDDDR F))   ;If covariant or
-				    (CONS (LIST (CAAR F)    ;derivative indices
-						'ARRAY)
-					  (NCONS (MAKNAM (CONS '$ (SPLICE (COVI F)
-							 (CDDDR F)))))))
-				   (T (CAAR F))))
-		       (COND ((CONTI F)              ;If contravariant indices
-			      (LIST '(MEXPT SIMP)
-				    FOOBAR
-				     (CONS '(MTIMES SIMP)  ;Make indices appear
-					  (CONTI F))))    ;as exponents for
-			     (T FOOBAR)))                  ;proper display
-		      (T
-		       (CONS (CAR F) (MAPCAR 'ISHOW (CDR F))))))
-	NIL))                                           ;Map onto subparts of F
+(defun ishow (f) 
+       ((lambda (foobar)                              ;FOOBAR intialized to NIL
+		(cond ((atom f) f)
+		      ((rpobj f)                      ;If an indexed object ...
+		       (setq foobar
+			     (cond ((or (covi f) (cdddr f))   ;If covariant or
+				    (cons (list (caar f)    ;derivative indices
+						'array)
+					  (ncons (maknam (cons '$ (splice (covi f)
+							 (cdddr f)))))))
+				   (t (caar f))))
+		       (cond ((conti f)              ;If contravariant indices
+			      (list '(mexpt simp)
+				    foobar
+				     (cons '(mtimes simp)  ;Make indices appear
+					  (conti f))))    ;as exponents for
+			     (t foobar)))                  ;proper display
+		      (t
+		       (cons (car f) (mapcar 'ishow (cdr f))))))
+	nil))                                           ;Map onto subparts of F
 
-(DEFUN SPLICE (L1 L2) 
-       (COND (L2 (SETQ L2 (CONS '|,| (SPLICE1 L2)))
-		 (AND L1 (SETQ L2 (NCONC (SPLICE1 L1) L2)))
-		 L2)
-	     (T (SPLICE1 L1)))) 
+(defun splice (l1 l2) 
+       (cond (l2 (setq l2 (cons '|,| (splice1 l2)))
+		 (and l1 (setq l2 (nconc (splice1 l1) l2)))
+		 l2)
+	     (t (splice1 l1)))) 
 
-(DEFUN SPLICE1 (L)
-  (COND ((NULL (CDR L))(SPLICE2 (CAR L)))
-	(T (NCONC (SPLICE2 (CAR L))(CONS '| | (SPLICE1 (CDR L)))))))
+(defun splice1 (l)
+  (cond ((null (cdr l))(splice2 (car l)))
+	(t (nconc (splice2 (car l))(cons '| | (splice1 (cdr l)))))))
 
-(DEFUN SPLICE2 (X)
-  (COND ((FIXP X)(EXPLODE X))
-	(T (CDR (EXPLODEc X)))))
-;	(T (CDR (EXPLODEc (print-invert-case X))))))
+(defun splice2 (x)
+  (cond ((fixp x)(explode x))
+	(t (cdr (explodec x)))))
+;	(t (cdr (explodec (print-invert-case x))))))
 
-(DEFUN DERIV (E) 
-       (PROG (EXP Z COUNT V) 
-	     (COND ((NULL (CDR E)) (RETURN (STOTALDIFF (CAR E))))
-		   ((NULL (CDDR E)) (NCONC E '(1.))))
-	     (SETQ EXP (CAR E) Z (SETQ E (APPEND E NIL)))
-	LOOP (COND ((OR (NULL DERIVLIST) (ZL-MEMBER (CADR Z) DERIVLIST))
-		    (GO DOIT)))
+(defun deriv (e) 
+       (prog (exp z count v) 
+	     (cond ((null (cdr e)) (return (stotaldiff (car e))))
+		   ((null (cddr e)) (nconc e '(1.))))
+	     (setq exp (car e) z (setq e (append e nil)))
+	loop (cond ((or (null derivlist) (zl-member (cadr z) derivlist))
+		    (go doit)))
 						       ;DERIVLIST is set by $EV
-	     (SETQ Z (CDR Z))
-	LOOP2(COND ((CDR Z) (GO LOOP))
-		   ((NULL (CDR E)) (RETURN EXP))
-		   (T (GO NOUN)))
-	DOIT (COND ((NULL (CDDR Z))
+	     (setq z (cdr z))
+	loop2(cond ((cdr z) (go loop))
+		   ((null (cdr e)) (return exp))
+		   (t (go noun)))
+	doit (cond ((null (cddr z))
 		    (merror "Wrong number of args to DERIVATIVE"))
-		   ((NOT (FIXP (SETQ COUNT (CADDR Z)))) (GO NOUN))
-		   ((< COUNT 0.)
+		   ((not (fixp (setq count (caddr z)))) (go noun))
+		   ((< count 0.)
 		    (merror "Improper count to DIFF: ~M"
-			    COUNT)))
-	LOOP1(SETQ V (CADR Z))
-	     (AND (FIXP V)
-		  $VECT_COORDS
-		  (> V 0.)
-		  (NOT (> V $DIM))
-		  (SETQ V
-			(COND ((ATOM $VECT_COORDS)
-			       (MEVAL1 (LIST (LIST $VECT_COORDS 'SIMP 'ARRAY)
-					     V)))
-			      ((EQ (CAAR $VECT_COORDS) 'MLIST)
-			       (COND ((NOT (< V
-					      (LENGTH $VECT_COORDS)))
+			    count)))
+	loop1(setq v (cadr z))
+	     (and (fixp v)
+		  $vect_coords
+		  (> v 0.)
+		  (not (> v $dim))
+		  (setq v
+			(cond ((atom $vect_coords)
+			       (meval1 (list (list $vect_coords 'simp 'array)
+					     v)))
+			      ((eq (caar $vect_coords) 'mlist)
+			       (cond ((not (< v
+					      (length $vect_coords)))
 				      (merror
 "Coordinate list too short for derivative index"))
-				     (T (NTH V $VECT_COORDS))))
-			      (T V))))
-	     (COND ((ZEROP COUNT) (RPLACD Z (CDDDR Z)) (GO LOOP2))
-		   ((ZEROP1 (SETQ EXP (SDIFF EXP V))) (RETURN 0.)))
-	     (SETQ COUNT (1- COUNT))
-	     (GO LOOP1)
-	NOUN (RETURN (DIFF%DERIV (CONS EXP (CDR E))))))
+				     (t (nth v $vect_coords))))
+			      (t v))))
+	     (cond ((zerop count) (rplacd z (cdddr z)) (go loop2))
+		   ((zerop1 (setq exp (sdiff exp v))) (return 0.)))
+	     (setq count (1- count))
+	     (go loop1)
+	noun (return (diff%deriv (cons exp (cdr e))))))
 
-(DEFUN CHAINRULE1 (E X)					; --YS 15.02.02
-	(PROG (Y)
-		(COND ((AND (ATOM E) (EQ (SETQ Y (CAR (MGET E 'DEPENDS)))
-			(CADR $COORD))) (RETURN (SUBST X Y (CHAINRULE E Y))))
-		(T (RETURN (CHAINRULE E X))))))
+(defun chainrule1 (e x)					; --ys 15.02.02
+	(prog (y)
+		(cond ((and (atom e) (eq (setq y (car (mget e 'depends)))
+			(cadr $coord))) (return (subst x y (chainrule e y))))
+		(t (return (chainrule e x))))))
 
 (defun diffexpt1 (e x)
 ;; RETURN: n*v^n*rename(v'/v) where e=v^n
@@ -1633,64 +1633,64 @@
 ;constant in which case 0 is returned.
 #+Franz (sstatus translink nil) ; make sdiff take hold
 #+Franz (sstatus translink t)
-(DEFUN SDIFF (E X) 
-       (COND ((MNUMP E) 0.)
-	     ((ALIKE1 E X) 1.)
-	     ((OR (ATOM E) (MEMQ 'ARRAY (CDAR E)))
-	      (CHAINRULE1 E X))
-	     ((MGET (CAAR E) '$CONSTANT) 0.)                    ;New line added
-	     ((EQ (CAAR E) 'MRAT) (RATDX E X))
-	     ((EQ (CAAR E) 'MPLUS)
-	      (SIMPLUS (CONS '(MPLUS) (SDIFFMAP (CDR E) X))
+(defun sdiff (e x) 
+       (cond ((mnump e) 0.)
+	     ((alike1 e x) 1.)
+	     ((or (atom e) (memq 'array (cdar e)))
+	      (chainrule1 e x))
+	     ((mget (caar e) '$constant) 0.)                    ;New line added
+	     ((eq (caar e) 'mrat) (ratdx e x))
+	     ((eq (caar e) 'mplus)
+	      (simplus (cons '(mplus) (sdiffmap (cdr e) x))
 		       1.
-		       T))
-	     ((EQ (CAAR E) 'MEQUAL)
-	      (LIST (CAR E) (SDIFF (CADR E) X) (SDIFF (CADDR E) X)))
-	     ((EQ (CAAR E) '$MATRIX)
-	      (CONS (CAR E)
-		    (MAPCAR 
-		     (FUNCTION (LAMBDA (Y) 
-				       (CONS (CAR Y)
-					     (SDIFFMAP (CDR Y) X))))
-		     (CDR E))))
-	     ((EQ (CAAR E) 'MTIMES)
- 	      (ADDN (SDIFFTIMES (CDR E) X) T))
-	     ((EQ (CAAR E) 'MEXPT) (DIFFEXPT1 E X))
-;;	     ((RPOBJ E) (DIFFRPOBJ E X))                        ;New line added
-;;	     ((AND (BOUNDP '$IMETRIC) (EQ (CAAR E) '%DETERMINANT);New line added
-;;		   (EQ (CADR E) $IMETRIC))
-;;	      ((LAMBDA (DUMMY)
+		       t))
+	     ((eq (caar e) 'mequal)
+	      (list (car e) (sdiff (cadr e) x) (sdiff (caddr e) x)))
+	     ((eq (caar e) '$matrix)
+	      (cons (car e)
+		    (mapcar 
+		     (function (lambda (y) 
+				       (cons (car y)
+					     (sdiffmap (cdr y) x))))
+		     (cdr e))))
+	     ((eq (caar e) 'mtimes)
+ 	      (addn (sdifftimes (cdr e) x) t))
+	     ((eq (caar e) 'mexpt) (diffexpt1 e x))
+;;	     ((rpobj e) (diffrpobj e x))                        ;New line added
+;;	     ((and (boundp '$imetric) (eq (caar e) '%determinant);New line added
+;;		   (eq (cadr e) $imetric))
+;;	      ((lambda (dummy)
 ;;		       (setq dummy ($idummy))
-;;		       (COND ((EQ DUMMY X) (setq dummy ($idummy))))
-;;		       (LIST '(MTIMES SIMP) 2. E
-;;			     (LIST '($ICHR2 SIMP) (CONS SMLIST (LIST DUMMY X))
-;;				   (CONS SMLIST (NCONS DUMMY)))))
-;;	       NIL))
-	     ((NOT (DEPENDS E X))
-	      (COND ((FIXP X) (LIST '(%DERIVATIVE) E X))
-		    ((ATOM X) 0.)
-		    (T (LIST '(%DERIVATIVE) E X))))
+;;		       (cond ((eq dummy x) (setq dummy ($idummy))))
+;;		       (list '(mtimes simp) 2. e
+;;			     (list '($ichr2 simp) (cons smlist (list dummy x))
+;;				   (cons smlist (ncons dummy)))))
+;;	       nil))
+	     ((not (depends e x))
+	      (cond ((fixp x) (list '(%derivative) e x))
+		    ((atom x) 0.)
+		    (t (list '(%derivative) e x))))
 							  ;This line moved down
-	     ((EQ (CAAR E) 'MNCTIMES)
-	      (SIMPLUS (LIST '(MPLUS)
-			     (LIST '(MNCTIMES)
-				   (SDIFF (CADR E) X)
-				   (CADDR E))
-			     (LIST '(MNCTIMES)
-				   (CADR E)
-				   (SDIFF (CADDR E) X)))
+	     ((eq (caar e) 'mnctimes)
+	      (simplus (list '(mplus)
+			     (list '(mnctimes)
+				   (sdiff (cadr e) x)
+				   (caddr e))
+			     (list '(mnctimes)
+				   (cadr e)
+				   (sdiff (caddr e) x)))
 		       1.
-		       NIL))
-	     ((EQ (CAAR E) 'MNCEXPT) (DIFFNCEXPT E X))
-	     ((EQ (CAAR E) '%INTEGRATE) (DIFFINT E X))
-	     ((EQ (CAAR E) '%DERIVATIVE)
-	      (COND ((OR (ATOM (CADR E))
-			 (MEMQ 'ARRAY (CDAADR E)))
-		     (CHAINRULE1 E X))
-		    ((FREEL (CDR E) X) 0.)
-		    (T (DIFF%DERIV (LIST E X 1.)))))
-	     ((MEMQ (CAAR E) '(%SUM %PRODUCT)) (DIFFSUMPROD E X))
-	     (T (SDIFFGRAD E X)))) 
+		       nil))
+	     ((eq (caar e) 'mncexpt) (diffncexpt e x))
+	     ((eq (caar e) '%integrate) (diffint e x))
+	     ((eq (caar e) '%derivative)
+	      (cond ((or (atom (cadr e))
+			 (memq 'array (cdaadr e)))
+		     (chainrule1 e x))
+		    ((freel (cdr e) x) 0.)
+		    (t (diff%deriv (list e x 1.)))))
+	     ((memq (caar e) '(%sum %product)) (diffsumprod e x))
+	     (t (sdiffgrad e x)))) 
 
 ; VTT: several of these functions have been copied verbatim from comm.lisp and
 ; comm2.lisp, in order to implement indicial differentiation as distinct from
@@ -1838,64 +1838,64 @@
 
 (defmfun $idiff n (let (derivlist) (ideriv (listify n))))
 
-(DEFMFUN IDIFF (E X)
-  (COND
-         (($constantp E) 0.)
-	     ((ALIKE1 E X) 1.)
-	     ((OR (ATOM E) (MEMQ 'ARRAY (CDAR E)))
-;;	      (ICHAINRULE E X))
+(defmfun idiff (e x)
+  (cond
+         (($constantp e) 0.)
+	     ((alike1 e x) 1.)
+	     ((or (atom e) (memq 'array (cdar e)))
+;;	      (ichainrule e x))
 ;;        (idiff%deriv (list e x 1)))
           0)
-	     ((MGET (CAAR E) '$CONSTANT) 0.)                    ;New line added
-	     ((EQ (CAAR E) 'MRAT) (RATDX E X))
-	     ((EQ (CAAR E) 'MPLUS)
-	      (SIMPLUS (CONS '(MPLUS) (IDIFFMAP (CDR E) X))
+	     ((mget (caar e) '$constant) 0.)                    ;New line added
+	     ((eq (caar e) 'mrat) (ratdx e x))
+	     ((eq (caar e) 'mplus)
+	      (simplus (cons '(mplus) (idiffmap (cdr e) x))
 		       1.
-		       T))
-	     ((EQ (CAAR E) 'MEQUAL)
-	      (LIST (CAR E) ($IDIFF (CADR E) X) ($IDIFF (CADDR E) X)))
-	     ((EQ (CAAR E) '$MATRIX)
-	      (CONS (CAR E)
-		    (MAPCAR 
-		     (FUNCTION (LAMBDA (Y) 
-				       (CONS (CAR Y)
-					     (IDIFFMAP (CDR Y) X))))
-		     (CDR E))))
-	     ((EQ (CAAR E) 'MTIMES)
- 	      (ADDN (IDIFFTIMES (CDR E) X) T))
-	     ((EQ (CAAR E) 'MEXPT) (IDIFFEXPT1 E X))
-	((RPOBJ E) (DIFFRPOBJ E X))
-    ((AND (BOUNDP '$IMETRIC) (EQ (CAAR E) '%DETERMINANT)
-      (EQ (CADR E) $IMETRIC))
-      ((LAMBDA (DUMMY)
+		       t))
+	     ((eq (caar e) 'mequal)
+	      (list (car e) ($idiff (cadr e) x) ($idiff (caddr e) x)))
+	     ((eq (caar e) '$matrix)
+	      (cons (car e)
+		    (mapcar 
+		     (function (lambda (y) 
+				       (cons (car y)
+					     (idiffmap (cdr y) x))))
+		     (cdr e))))
+	     ((eq (caar e) 'mtimes)
+ 	      (addn (idifftimes (cdr e) x) t))
+	     ((eq (caar e) 'mexpt) (idiffexpt1 e x))
+	((rpobj e) (diffrpobj e x))
+    ((and (boundp '$imetric) (eq (caar e) '%determinant)
+      (eq (cadr e) $imetric))
+      ((lambda (dummy)
        (setq dummy ($idummy))
-       (COND ((EQ DUMMY X) (setq dummy ($idummy))))
-       (LIST '(MTIMES SIMP) 2. E
-       (LIST '($ICHR2 SIMP) (CONS SMLIST (LIST DUMMY X))
-       (CONS SMLIST (NCONS DUMMY)))))
-       NIL))
-	     ((EQ (CAAR E) 'MNCTIMES)
-	      (SIMPLUS (LIST '(MPLUS)
-			     (LIST '(MNCTIMES)
-				   ($IDIFF (CADR E) X)
-				   (CADDR E))
-			     (LIST '(MNCTIMES)
-				   (CADR E)
-				   ($IDIFF (CADDR E) X)))
+       (cond ((eq dummy x) (setq dummy ($idummy))))
+       (list '(mtimes simp) 2. e
+       (list '($ichr2 simp) (cons smlist (list dummy x))
+       (cons smlist (ncons dummy)))))
+       nil))
+	     ((eq (caar e) 'mnctimes)
+	      (simplus (list '(mplus)
+			     (list '(mnctimes)
+				   ($idiff (cadr e) x)
+				   (caddr e))
+			     (list '(mnctimes)
+				   (cadr e)
+				   ($idiff (caddr e) x)))
 		       1.
-		       NIL))
-	     ((EQ (CAAR E) 'MNCEXPT) (IDIFFNCEXPT E X))
-	     ((EQ (CAAR E) '%INTEGRATE) (IDIFFINT E X))
-	     ((EQ (CAAR E) '%DERIVATIVE)
-	      (COND ((OR (ATOM (CADR E))
-			 (MEMQ 'ARRAY (CDAADR E)))
-;;		     (ICHAINRULE E X))
+		       nil))
+	     ((eq (caar e) 'mncexpt) (idiffncexpt e x))
+	     ((eq (caar e) '%integrate) (idiffint e x))
+	     ((eq (caar e) '%derivative)
+	      (cond ((or (atom (cadr e))
+			 (memq 'array (cdaadr e)))
+;;		     (ichainrule e x))
 ;;           (idiff%deriv (list e x 1)))
              0)
-;;		    ((FREEL (CDR E) X) 0.)
-		    (T (IDIFF%DERIV (LIST E X 1.)))))
-	     ((MEMQ (CAAR E) '(%SUM %PRODUCT)) (IDIFFSUMPROD E X))
-	     (T (IDIFFGRAD E X))
+;;		    ((freel (cdr e) x) 0.)
+		    (t (idiff%deriv (list e x 1.)))))
+	     ((memq (caar e) '(%sum %product)) (idiffsumprod e x))
+	     (t (idiffgrad e x))
   )
 )
 
@@ -1903,7 +1903,7 @@
   (cond
     (               ; Special case: functions declared with coord()
       (and
-        (memq (caar e) $COORD) (null (cdadr e))
+        (memq (caar e) $coord) (null (cdadr e))
         (equal (length (cdaddr e)) 1) (null (cdddr e))
       )
       (delta (ncons x) (cdaddr e))
@@ -1930,103 +1930,103 @@
 )
 
 
-(DEFMFUN $LC0 (L1) 
-       (PROG (A B C SIGN) 
-	     (SETQ A (CDR L1))
-	     (IFNOT (AND A (CDR A)) (RETURN (LIST '(%Levi_Civita) L1)))
-	     (SETQ B A)
-	LOOP1(IFNOT (FIXP (CAR A)) (RETURN (LIST '(%Levi_Civita) L1)))
-	     (AND (SETQ A (CDR A)) (GO LOOP1))
-	LOOP3(SETQ A (CAR B) B (CDR B) C B)
-	LOOP2(COND ((= (CAR C) A) (RETURN 0.))
-		   ((< (CAR C) A) (SETQ SIGN (NOT SIGN))))
-	     (AND (SETQ C (CDR C)) (GO LOOP2))
-	     (AND (CDR B) (GO LOOP3))
-	     (RETURN (COND (SIGN -1.) (T 1.))))) 
-(DEFMFUN $Levi_Civita (L1 &optional (L2 nil))
-	(COND
-		((EQ L2 nil) ($LC0 L1))
-		((LIKE L1 '((MLIST)))
-		(PROG (l) (SETQ l nil)
-		  (DO ((I ($LENGTH L2) (1- I))) ((< I 1)) (SETQ l (CONS I l)))
-		  (RETURN (LIST '($KDELTA SIMP) (CONS SMLIST l) L2))
+(defmfun $lc0 (l1) 
+       (prog (a b c sign) 
+	     (setq a (cdr l1))
+	     (ifnot (and a (cdr a)) (return (list '(%levi_civita) l1)))
+	     (setq b a)
+	loop1(ifnot (fixp (car a)) (return (list '(%levi_civita) l1)))
+	     (and (setq a (cdr a)) (go loop1))
+	loop3(setq a (car b) b (cdr b) c b)
+	loop2(cond ((= (car c) a) (return 0.))
+		   ((< (car c) a) (setq sign (not sign))))
+	     (and (setq c (cdr c)) (go loop2))
+	     (and (cdr b) (go loop3))
+	     (return (cond (sign -1.) (t 1.))))) 
+(defmfun $levi_civita (l1 &optional (l2 nil))
+	(cond
+		((eq l2 nil) ($lc0 l1))
+		((like l1 '((mlist)))
+		(prog (l) (setq l nil)
+		  (do ((i ($length l2) (1- i))) ((< i 1)) (setq l (cons i l)))
+		  (return (list '($kdelta simp) (cons smlist l) l2))
 		 ))
-		((LIKE L2 '((MLIST)))
-		(PROG (l) (SETQ l nil)
-		  (DO ((I ($LENGTH L1) (1- I))) ((< I 1)) (SETQ l (CONS I l)))
-		  (RETURN (LIST '($KDELTA SIMP) L1 (CONS SMLIST l)))
+		((like l2 '((mlist)))
+		(prog (l) (setq l nil)
+		  (do ((i ($length l1) (1- i))) ((< i 1)) (setq l (cons i l)))
+		  (return (list '($kdelta simp) l1 (cons smlist l)))
 		))
-		(T (MERROR "Mixed-index Levi-Civita symbols not supported"))
+		(t (merror "Mixed-index Levi-Civita symbols not supported"))
 	)
 )
 
 ;; simplification rules for the totally antisymmetric LC symbol
-(DEFUN $LC_L (E)
-    (PROG (L1 L2 L NN)
-	(CATCH 'MATCH
-	  (COND ((ATOM E) (MATCHERR)))
-	  (COND ((ATOM (CAR E)) (MATCHERR)))
-	  (COND ((NOT (OR (EQ (CAAR E) '$levi_civita) (EQ (CAAR E) '%levi_civita))) (MATCHERR)))
-	  (COND ((NOT ($LISTP (SETQ L1 ($COVI E)))) (MATCHERR)))
-	  (COND ((NOT (ALIKE1 '((MLIST SIMP)) (SETQ L2 ($CONTI E)))) (MATCHERR)))
-	  (COND ((CDDDR E) (MATCHERR)))
-	  (SETQ NN ($LENGTH L1))
-	  (SETQ L NIL)
-	  (DO ((I NN (1- I))) ((< I 1)) (SETQ L (CONS ($IDUMMY) L) N $ICOUNTER))
-	  (RETURN (values (LIST '(MTIMES SIMP) ($KDELTA L1 (CONS SMLIST L))
-	        (LIST (CONS (CAAR E) '(SIMP)) (CONS SMLIST L) (NCONS SMLIST))
-	        (LIST '(MEXPT SIMP) (MEVAL (LIST 'MFACTORIAL NN)) -1)) t)
+(defun $lc_l (e)
+    (prog (l1 l2 l nn)
+	(catch 'match
+	  (cond ((atom e) (matcherr)))
+	  (cond ((atom (car e)) (matcherr)))
+	  (cond ((not (or (eq (caar e) '$levi_civita) (eq (caar e) '%levi_civita))) (matcherr)))
+	  (cond ((not ($listp (setq l1 ($covi e)))) (matcherr)))
+	  (cond ((not (alike1 '((mlist simp)) (setq l2 ($conti e)))) (matcherr)))
+	  (cond ((cdddr e) (matcherr)))
+	  (setq nn ($length l1))
+	  (setq l nil)
+	  (do ((i nn (1- i))) ((< i 1)) (setq l (cons ($idummy) l) n $icounter))
+	  (return (values (list '(mtimes simp) ($kdelta l1 (cons smlist l))
+	        (list (cons (caar e) '(simp)) (cons smlist l) (ncons smlist))
+	        (list '(mexpt simp) (meval (list 'mfactorial nn)) -1)) t)
 	  )
 	)
     )
 )
 
-(DEFUN $LC_U (E)
-    (PROG (L1 L2 L NN)
-	(CATCH 'MATCH
-	  (COND ((ATOM E) (MATCHERR)))
-	  (COND ((ATOM (CAR E)) (MATCHERR)))
-	  (COND ((NOT (OR (EQ (CAAR E) '$levi_civita) (EQ (CAAR E) '%levi_civita))) (MATCHERR)))
-	  (COND ((NOT (ALIKE1 '((MLIST SIMP)) (SETQ L1 ($COVI E)))) (MATCHERR)))
-	  (COND ((NOT ($LISTP (SETQ L2 ($CONTI E)))) (MATCHERR)))
-	  (COND ((CDDDR E) (MATCHERR)))
-	  (SETQ NN ($LENGTH L2))
-	  (SETQ L NIL)
-	  (DO ((I NN (1- I))) ((< I 1)) (SETQ L (CONS ($IDUMMY) L) N $ICOUNTER))
-	  (RETURN (values (LIST '(MTIMES SIMP) ($KDELTA (CONS SMLIST L) L2)
-	        (LIST (CONS (CAAR E) '(SIMP)) (NCONS SMLIST) (CONS SMLIST L))
-	        (LIST '(MEXPT SIMP) (MEVAL (LIST 'MFACTORIAL NN)) -1)) t)
+(defun $lc_u (e)
+    (prog (l1 l2 l nn)
+	(catch 'match
+	  (cond ((atom e) (matcherr)))
+	  (cond ((atom (car e)) (matcherr)))
+	  (cond ((not (or (eq (caar e) '$levi_civita) (eq (caar e) '%levi_civita))) (matcherr)))
+	  (cond ((not (alike1 '((mlist simp)) (setq l1 ($covi e)))) (matcherr)))
+	  (cond ((not ($listp (setq l2 ($conti e)))) (matcherr)))
+	  (cond ((cdddr e) (matcherr)))
+	  (setq nn ($length l2))
+	  (setq l nil)
+	  (do ((i nn (1- i))) ((< i 1)) (setq l (cons ($idummy) l) n $icounter))
+	  (return (values (list '(mtimes simp) ($kdelta (cons smlist l) l2)
+	        (list (cons (caar e) '(simp)) (ncons smlist) (cons smlist l))
+	        (list '(mexpt simp) (meval (list 'mfactorial nn)) -1)) t)
 	  )
 	)
     )
 )
 
-(ADD2LNC '$LC_L $RULES)
-(ADD2LNC '$LC_U $RULES)
+(add2lnc '$lc_l $rules)
+(add2lnc '$lc_u $rules)
 
-(DECLARE-TOP (SPECIAL E EMPTY $FLIPFLAG))
+(declare-top (special e empty $flipflag))
 
-(SETQ $FLIPFLAG NIL EMPTY '((MLIST SIMP) ((MLIST SIMP)) ((MLIST SIMP)))) 
+(setq $flipflag nil empty '((mlist simp) ((mlist simp)) ((mlist simp)))) 
 
-(DEFUN NONUMBER (L)
-	(COND
-		((NUMBERP (CAR L)) (NONUMBER (CDR L)))
-		((EQ L NIL) ())
-		(T (CONS (CAR L) (NONUMBER (CDR L))))
+(defun nonumber (l)
+	(cond
+		((numberp (car l)) (nonumber (cdr l)))
+		((eq l nil) ())
+		(t (cons (car l) (nonumber (cdr l))))
 	)
 )
 
-(DEFUN REMOVEINDEX (E L)
- (COND	((NULL L) NIL)
-	((ATOM E)
-         (COND ((EQ E (CAR L)) (CDR L))
-              (T (CONS (CAR L) (REMOVEINDEX E (CDR L))))
+(defun removeindex (e l)
+ (cond	((null l) nil)
+	((atom e)
+         (cond ((eq e (car l)) (cdr l))
+              (t (cons (car l) (removeindex e (cdr l))))
         ))
-	(T (REMOVEINDEX (CDR E) (REMOVEINDEX (CAR E) L)))
+	(t (removeindex (cdr e) (removeindex (car e) l)))
  )
 )
 
-(defun indices (E)
+(defun indices (e)
   (prog (top bottom x y p q r)
     (setq top nil bottom nil)
     (cond
@@ -2103,26 +2103,26 @@
   )
 )
 
-(DEFMFUN $INDICES (E)
- (PROG (TOP BOTTOM X)
-;;	(SETQ TOP (INDICES E) BOTTOM (CADR TOP) TOP (CAR TOP) X (INTERSECT TOP BOTTOM))
-	(SETQ TOP (INDICES E) BOTTOM (CADR TOP) TOP (CAR TOP) X (COND ($FLIPFLAG (INTERSECT BOTTOM TOP)) (T (INTERSECT TOP BOTTOM))))
-	(SETQ TOP (REMOVEINDEX X TOP) BOTTOM (REMOVEINDEX X BOTTOM))
-	(RETURN (CONS SMLIST (LIST (CONS SMLIST (APPEND TOP BOTTOM)) (CONS SMLIST X))))
+(defmfun $indices (e)
+ (prog (top bottom x)
+;;	(setq top (indices e) bottom (cadr top) top (car top) x (intersect top bottom))
+	(setq top (indices e) bottom (cadr top) top (car top) x (cond ($flipflag (intersect bottom top)) (t (intersect top bottom))))
+	(setq top (removeindex x top) bottom (removeindex x bottom))
+	(return (cons smlist (list (cons smlist (append top bottom)) (cons smlist x))))
  )
 )
 
-(DEFUN SAMELISTS (A B)       ;"True" if A and B have the same distinct elements
-       (AND (= (LENGTH A) (LENGTH B))
-	    (DO ((L
-		A
-		(CDR L)))
-		(NIL)
-		(COND ((NULL L) (RETURN T))
-		      ((MEMQ (CAR L) B))
-		      (T (RETURN NIL)))))) 
+(defun samelists (a b)       ;"True" if A and B have the same distinct elements
+       (and (= (length a) (length b))
+	    (do ((l
+		a
+		(cdr l)))
+		(nil)
+		(cond ((null l) (return t))
+		      ((memq (car l) b))
+		      (t (return nil)))))) 
 
-(DEFMFUN $FLUSH n           ;Replaces the given (as arguments to FLUSH) indexed
+(defmfun $flush n           ;Replaces the given (as arguments to FLUSH) indexed
        (prog (l)          ;objects by zero if they have no derivative indices.
 	     (cond ((< n 2) (merror "FLUSH takes at least 2 arguments"))
 		   ((not
@@ -2133,7 +2133,7 @@
 		    (merror "All arguments but the first must be names of
 indexed objects")) (t (return (flush (arg 1) l t))))))
 
-(DEFMFUN $FLUSHD n          ;Replaces the given (as arguments to FLUSHD) indexed
+(defmfun $flushd n          ;Replaces the given (as arguments to FLUSHD) indexed
        (prog (l)          ;objects by zero if they have any derivative indices.
 	     (cond ((< n 2) (merror "FLUSH takes at least 2 arguments"))
 		   ((not
@@ -2145,7 +2145,7 @@ indexed objects")) (t (return (flush (arg 1) l t))))))
 		    (merror "All arguments but the first must be names of
 indexed objects")) (t (return (flush (arg 1) l nil))))))
 
-(defun FLUSH (e l flag)
+(defun flush (e l flag)
        (cond ((atom e) e)
 	     ((rpobj e)
 	      (cond ((not (memq (caar e) l)) e)
@@ -2158,7 +2158,7 @@ indexed objects")) (t (return (flush (arg 1) l nil))))))
 			      (mapcar (function (lambda (q) (flush q l flag)))
 				      (cdr e))) e))))
 
-(DEFMFUN $FLUSHND (e name n)              ;Replaces by zero all indexed objects
+(defmfun $flushnd (e name n)              ;Replaces by zero all indexed objects
        (cond ((atom e) e)               ;that have n or more derivative indices
 	     ((rpobj e)
 	      (cond ((and (equal (caar e) name)
@@ -2170,124 +2170,124 @@ indexed objects")) (t (return (flush (arg 1) l nil))))))
 				       (lambda (q) ($flushnd q name n)))
 				      (cdr e))) e))))
 
-(DECLARE-TOP (FIXNUM INDEX N) (SPECIAL INDEX N DUMX))
+(declare-top (fixnum index n) (special index n dumx))
 
-(DEFMFUN $RENAME NARGS
- (cond ((= NARGS 1) (setq INDEX 1)) (t (setq INDEX (arg 2)))) (rename (arg 1)))
+(defmfun $rename nargs
+ (cond ((= nargs 1) (setq index 1)) (t (setq index (arg 2)))) (rename (arg 1)))
 
-(DEFUN RENAME (E)                           ;Renames dummy indices consistently
-       (COND
-	((ATOM E) E)
-	((OR (RPOBJ E) (EQ (CAAR E) 'MTIMES););If an indexed object or a product
+(defun rename (e)                           ;Renames dummy indices consistently
+       (cond
+	((atom e) e)
+	((or (rpobj e) (eq (caar e) 'mtimes););If an indexed object or a product
         (and (memq (caar e) '(%derivative $diff)) ; or a derivative expression
              (or (eq (length e) 3) (eq (cadddr e) 1)))
     )
-	 ((LAMBDA  (L) 
-	(SIMPTIMES (REORDER (COND (L (SUBLIS (itensor-CLEANUP L (SETQ N INDEX)) E))(T E))) 1 T))
-	  (CDADDR ($INDICES E))                     ;Gets list of dummy indices
+	 ((lambda  (l) 
+	(simptimes (reorder (cond (l (sublis (itensor-cleanup l (setq n index)) e))(t e))) 1 t))
+	  (cdaddr ($indices e))                     ;Gets list of dummy indices
 	  ))
-	(T            ;Otherwise map $RENAME on each of the subparts e.g. a sum
-	 (MYSUBST0 (SIMPLIFYA  (CONS (NCONS (CAAR E))
-				  (MAPCAR 'RENAME (CDR E)))
-			    T)
-		   E))
+	(t            ;Otherwise map $RENAME on each of the subparts e.g. a sum
+	 (mysubst0 (simplifya  (cons (ncons (caar e))
+				  (mapcar 'rename (cdr e)))
+			    t)
+		   e))
 	))
 
-(DEFUN REORDER (E)       ;Reorders contravariant, covariant, derivative indices
-       (MYSUBST0         ;Example: F([A,B],[C,D],E,F)
-	(CONS
-	 '(MTIMES)
-	 (MAPCAR
-	  #'(LAMBDA (X) 
-	    (COND ((RPOBJ X)
+(defun reorder (e)       ;Reorders contravariant, covariant, derivative indices
+       (mysubst0         ;Example: F([A,B],[C,D],E,F)
+	(cons
+	 '(mtimes)
+	 (mapcar
+	  #'(lambda (x) 
+	    (cond ((rpobj x)
            (setq x ($renorm x))
-		   (NCONC (LIST (CAR X)                              ;($F SIMP)
-				(CONS SMLIST
-				      (COND ($ALLSYM (itensor-SORT (COPY (CDADR X))))
-					    (T (CDADR X))))          ;($A $B)
-				(CONS SMLIST
-				      (COND ($ALLSYM
-					     (itensor-SORT (COPY (CDADDR X))))
-					    (T (CDADDR X)))))        ;($C $D)
+		   (nconc (list (car x)                              ;($f simp)
+				(cons smlist
+				      (cond ($allsym (itensor-sort (copy (cdadr x))))
+					    (t (cdadr x))))          ;($a $b)
+				(cons smlist
+				      (cond ($allsym
+					     (itensor-sort (copy (cdaddr x))))
+					    (t (cdaddr x)))))        ;($c $d)
               (cond ($iframe_flag (cdddr x))
-			   (t (itensor-SORT (COPY (CDDDR X)))))))                ;($E $F)
-		  (T X)))
-	  (COND ((EQ (CAAR E) 'MTIMES) (CDR E))
-		(T (NCONS E)))))
-	E))
+			   (t (itensor-sort (copy (cdddr x)))))))                ;($e $f)
+		  (t x)))
+	  (cond ((eq (caar e) 'mtimes) (cdr e))
+		(t (ncons e)))))
+	e))
 
-;;(DEFUN itensor-CLEANUP (A N)((LAMBDA (DUMX)(CLEANUP1 A)) NIL))        ;Sets DUMX to NIL
-(DEFUN itensor-CLEANUP (A NN) (SETQ N NN DUMX NIL) (CLEANUP1 A))
+;;(defun itensor-cleanup (a n)((lambda (dumx)(cleanup1 a)) nil))        ;Sets DUMX to NIL
+(defun itensor-cleanup (a nn) (setq n nn dumx nil) (cleanup1 a))
  
-(DEFUN CLEANUP1 (A)
-  (AND A (SETQ DUMX (IMPLODE (NCONC (EXPLODEN $IDUMMYX)    ;Keep proper order of
-				    (EXPLODEN N))) N (1+ N))          ;indices
-	(COND ((EQ DUMX (CAR A)) (CLEANUP1 (CDR A)))
-	      (T (CONS (CONS (CAR A) DUMX) (CLEANUP1 (CDR A)))))))
-;Make list of dotted pairs indicating substitutions i.e. ((A . #1) (B . #2))
+(defun cleanup1 (a)
+  (and a (setq dumx (implode (nconc (exploden $idummyx)    ;Keep proper order of
+				    (exploden n))) n (1+ n))          ;indices
+	(cond ((eq dumx (car a)) (cleanup1 (cdr a)))
+	      (t (cons (cons (car a) dumx) (cleanup1 (cdr a)))))))
+;Make list of dotted pairs indicating substitutions i.e. ((a . #1) (b . #2))
 
-(DECLARE-TOP (NOTYPE N INDEX)(UNSPECIAL N DUMX INDEX))
+(declare-top (notype n index)(unspecial n dumx index))
 
-(DEFUN itensor-SORT (L) (COND ((CDR L) (SORT L 'LESS)) (T L)))
+(defun itensor-sort (l) (cond ((cdr l) (sort l 'less)) (t l)))
 ;Sort into ascending order
 
-(DEFMFUN $REMCOMPS (TENSOR)
-       (ZL-REMPROP TENSOR 'EXPR) (ZL-REMPROP TENSOR 'CARRAYS)
-       (ZL-REMPROP TENSOR 'TEXPRS) (ZL-REMPROP TENSOR 'INDEXED)
-       (ZL-REMPROP TENSOR 'INDEXED) (ZL-REMPROP TENSOR 'TSUBR)
+(defmfun $remcomps (tensor)
+       (zl-remprop tensor 'expr) (zl-remprop tensor 'carrays)
+       (zl-remprop tensor 'texprs) (zl-remprop tensor 'indexed)
+       (zl-remprop tensor 'indexed) (zl-remprop tensor 'tsubr)
        (and (functionp tensor) (fmakunbound tensor))
-       '$DONE)
+       '$done)
 
-(DEFMFUN $INDEXED_TENSOR (TENSOR)
-  (LET (FP NEW)
-    (AND (ZL-GET TENSOR 'EXPR) 
+(defmfun $indexed_tensor (tensor)
+  (let (fp new)
+    (and (zl-get tensor 'expr) 
 	 (merror "~M has expr" tensor))
-    (ARGS TENSOR  NIL)
-    (AND (SETQ FP (ZL-GET TENSOR 'SUBR))
-	 (PROGN (SETQ NEW (GENSYM))(PUTPROP NEW FP 'SUBR)
-		(ZL-REMPROP TENSOR 'SUBR)(PUTPROP TENSOR NEW 'TSUBR)))
-    (PUTPROP TENSOR T 'INDEXED)
-    (PUTPROP TENSOR (SUBST TENSOR 'G '(LAMBDA NN (TENSOREVAL (QUOTE G)(LISTIFY NN)))) 'EXPR)
+    (args tensor  nil)
+    (and (setq fp (zl-get tensor 'subr))
+	 (progn (setq new (gensym))(putprop new fp 'subr)
+		(zl-remprop tensor 'subr)(putprop tensor new 'tsubr)))
+    (putprop tensor t 'indexed)
+    (putprop tensor (subst tensor 'g '(lambda nn (tensoreval (quote g)(listify nn)))) 'expr)
 		(eval (subst tensor 'g (quote (defmfun g nn (tensoreval 'g (listify nn))))))
-    '$DONE))
+    '$done))
 
 
-(DEFUN ALLFIXED (L) 
-       (AND L (FIXP (CAR L)) (OR (NULL (CDR L)) (ALLFIXED (CDR L))))) 
+(defun allfixed (l) 
+       (and l (fixp (car l)) (or (null (cdr l)) (allfixed (cdr l))))) 
 
-(DEFUN TENSOREVAL (TENSOR INDXS)
-  ((LAMBDA (DER CON)
-    (AND (CDR INDXS) (SETQ CON (CDADR INDXS) DER (CDDR INDXS)))
-  (SETQ TENSOR (SELECT TENSOR (CDAR INDXS) CON DER))
-  ) NIL NIL))
+(defun tensoreval (tensor indxs)
+  ((lambda (der con)
+    (and (cdr indxs) (setq con (cdadr indxs) der (cddr indxs)))
+  (setq tensor (select tensor (cdar indxs) con der))
+  ) nil nil))
 
-(DEFMFUN $COMPONENTS (TENSOR COMP)
-  ((LAMBDA (LEN1 LEN2 LEN3 NAME PROP)
-    (COND ((NOT (RPOBJ TENSOR))
+(defmfun $components (tensor comp)
+  ((lambda (len1 len2 len3 name prop)
+    (cond ((not (rpobj tensor))
 	   (merror "Improper 1st arg to COMPONENTS: ~M"
-		   TENSOR
+		   tensor
 		   )))
-;    (SETQ LEN1 (LENGTH (CDADR TENSOR)) LEN2 (LENGTH (CDADDR TENSOR)) LEN3 (LENGTH (CDDDR TENSOR)))
-    (SETQ LEN1 (LENGTH (COVI TENSOR)) LEN2 (LENGTH (CONTI TENSOR)) LEN3 (LENGTH (DERI TENSOR)))
-    (AND (NOT (ATOM COMP))(EQ (CAAR COMP) '$MATRIX)
-	 (COND ((= (f+ (f+ LEN1 LEN2) LEN3) 2)(SETQ NAME (GENSYM))
-		(SET NAME COMP)(SETQ COMP NAME))
-	       (T 
+;    (setq len1 (length (cdadr tensor)) len2 (length (cdaddr tensor)) len3 (length (cdddr tensor)))
+    (setq len1 (length (covi tensor)) len2 (length (conti tensor)) len3 (length (deri tensor)))
+    (and (not (atom comp))(eq (caar comp) '$matrix)
+	 (cond ((= (f+ (f+ len1 len2) len3) 2)(setq name (gensym))
+		(set name comp)(setq comp name))
+	       (t 
 		(merror "Needs two indices for COMPONENTS from matrix:~%~M"
-			TENSOR))))
-    (COND ((AND (EQ (ML-TYPEP COMP) 'SYMBOL) (> (f+ (f+ LEN1 LEN2) LEN3) 0))
-	   (SETQ PROP 'CARRAYS))
-;	  ((SAMELISTS (SETQ NAME (APPEND (CDADR TENSOR) (CDADDR TENSOR) (CDDDR TENSOR)))
-	  ((SAMELISTS (SETQ NAME (APPEND (COVI TENSOR) (CONTI TENSOR) (DERI TENSOR)))
-		      (CDADR ($INDICES COMP)))
-	   (SETQ PROP 'TEXPRS COMP (CONS COMP NAME)))
-	  (T (merror "Args to COMPONENTS do not have the same free indices")))
-    (SETQ TENSOR (CAAR TENSOR) LEN1 (LIST LEN1 LEN2 LEN3))
-    (COND ((AND (SETQ NAME (ZL-GET TENSOR PROP))
-		(SETQ LEN2 (ZL-ASSOC LEN1 NAME))) (RPLACD LEN2 COMP))
-	  (T (PUTPROP TENSOR (CONS (CONS LEN1 COMP) NAME) PROP)))
-    (OR (ZL-GET TENSOR 'INDEXED) ($INDEXED_TENSOR TENSOR))
-    '$DONE) NIL NIL NIL NIL NIL))
+			tensor))))
+    (cond ((and (eq (ml-typep comp) 'symbol) (> (f+ (f+ len1 len2) len3) 0))
+	   (setq prop 'carrays))
+;	  ((samelists (setq name (append (cdadr tensor) (cdaddr tensor) (cdddr tensor)))
+	  ((samelists (setq name (append (covi tensor) (conti tensor) (deri tensor)))
+		      (cdadr ($indices comp)))
+	   (setq prop 'texprs comp (cons comp name)))
+	  (t (merror "Args to COMPONENTS do not have the same free indices")))
+    (setq tensor (caar tensor) len1 (list len1 len2 len3))
+    (cond ((and (setq name (zl-get tensor prop))
+		(setq len2 (zl-assoc len1 name))) (rplacd len2 comp))
+	  (t (putprop tensor (cons (cons len1 comp) name) prop)))
+    (or (zl-get tensor 'indexed) ($indexed_tensor tensor))
+    '$done) nil nil nil nil nil))
 
 (defun select (tensor l1 l2 l3)
   (prog
@@ -2387,32 +2387,32 @@ indexed objects")) (t (return (flush (arg 1) l nil))))))
   )
 )
 
-(defun CHECKINDEX (e f)
+(defun checkindex (e f)
   (cond ((and (atom e) (not (eq e f))) e)
-	((and (eq (caar e) 'MLIST)
+	((and (eq (caar e) 'mlist)
 	      (sloop for v in (cdr e) always (atom v))
 ;	      (apply 'and (mapcar 'atom (cdr e)))
 	      (not (memq f e))) e)
 	(t (merror "Indices must be atoms different from the tensor name"))))
 
-(defun MEMBERL (a b)
+(defun memberl (a b)
   (do ((l a (cdr l))
        (carl))
       ((null l) nil)
     (setq carl (car l))
-    (cond ((and (eq (ml-typep carl) 'SYMBOL)
+    (cond ((and (eq (ml-typep carl) 'symbol)
 		(zl-member carl b)) (return t)))))
 
-(defun CONSMLIST (l) (cons smlist l))			;Converts from Lisp list to Macsyma list
+(defun consmlist (l) (cons smlist l))			;Converts from Lisp list to Macsyma list
 
 ;$INDICES2 is similar to $INDICES except that here dummy indices are picked off
 ;as they first occur in going from left to right through the product or indexed
 ;object. Also, $INDICES2 works only on the top level of a product and will
 ;miss indices for products of sums (which is used to advantage by $IC_CONVERT).
 
-(DEFMFUN $INDICES2 (e)
+(defmfun $indices2 (e)
   (cond ((atom e) empty)
-	((not (or (memq (caar e) '(MTIMES MNCTIMES)) (rpobj e)))
+	((not (or (memq (caar e) '(mtimes mnctimes)) (rpobj e)))
 	 ($indices e))
 	(t ((lambda (indices)
 	      (do ((ind indices) (free) (dummy) (index))
@@ -2429,7 +2429,7 @@ indexed objects")) (t (return (flush (arg 1) l nil))))))
 					 1)))
 		      (t (setq free (cons index free)
 			       ind (cdr ind))))))
-	    (do ((e (cond ((memq (caar e) '(MTIMES MNCTIMES)) (cdr e))
+	    (do ((e (cond ((memq (caar e) '(mtimes mnctimes)) (cdr e))
 			  (t (ncons e))) (cdr e))
 		 (a) (l))
 		((null e) l)
@@ -2437,21 +2437,21 @@ indexed objects")) (t (return (flush (arg 1) l nil))))))
 	      (and (rpobj a) (setq l (append l (covi a) (conti a)
 					     (cdddr a)))))))))
 
-(DEFMFUN $CHANGENAME (a b e)				;Change the name of the indexed object A to B in E
+(defmfun $changename (a b e)				;Change the name of the indexed object A to B in E
   (prog (old indspec ncov ncontr)			;INDSPEC is INDex SPECification flag
-    (cond ((not (or (and (eq (ml-typep a) 'SYMBOL) (setq old a))
+    (cond ((not (or (and (eq (ml-typep a) 'symbol) (setq old a))
 		    (and ($listp a) (equal (length (cdr a)) 3)
-			 (eq (ml-typep (setq old (cadr a))) 'SYMBOL)
-			 (eq (ml-typep (setq ncov (caddr a))) 'FIXNUM)
-			 (eq (ml-typep (setq ncontr (cadddr a))) 'FIXNUM)
+			 (eq (ml-typep (setq old (cadr a))) 'symbol)
+			 (eq (ml-typep (setq ncov (caddr a))) 'fixnum)
+			 (eq (ml-typep (setq ncontr (cadddr a))) 'fixnum)
 			 (setq indspec t))))
 	   (merror "Improper first argument to CHANGENAME: ~M" a))
-	  ((not (eq (ml-typep b) 'SYMBOL))
+	  ((not (eq (ml-typep b) 'symbol))
 	   (merror "Second argument to CHANGENAME must be a symbol"))
 	  (t (return (changename old indspec ncov ncontr b e))))))
 
-(defun CHANGENAME (a indspec ncov ncontr b e)
-  (cond ((or (atom e) (eq (caar e) 'RAT)) e)
+(defun changename (a indspec ncov ncontr b e)
+  (cond ((or (atom e) (eq (caar e) 'rat)) e)
 	((rpobj e)
 	 (cond ((and (eq (caar e) a)
 		     (cond (indspec (and (equal (length (cdadr e)) ncov)
@@ -2467,66 +2467,66 @@ indexed objects")) (t (return (flush (arg 1) l nil))))))
 						  ncontr b q)))
 				   (cdr e))) e))))
 
-(DEFMFUN $COORD n
+(defmfun $coord n
   (do ((l (listify n) (cdr l)) (a))
-      ((null l) '$DONE)
+      ((null l) '$done)
     (setq a (car l))
-    (cond ((not (eq (ml-typep a) 'SYMBOL))
+    (cond ((not (eq (ml-typep a) 'symbol))
 	   (merror "~M is not a valid name." a))
-	  (t (add2lnc a $COORD)))))
+	  (t (add2lnc a $coord)))))
 
-(DEFMFUN $REMCOORD n
-  (cond ((and (equal n 1) (eq (arg 1) '$ALL))
-	 (setq $COORD '((MLIST))) '$DONE)
+(defmfun $remcoord n
+  (cond ((and (equal n 1) (eq (arg 1) '$all))
+	 (setq $coord '((mlist))) '$done)
 	(t (do ((l (listify n) (cdr l)))
-	       ((null l) '$DONE)
-	     (delq (car l) $COORD)))))
+	       ((null l) '$done)
+	     (delq (car l) $coord)))))
 
 
 ;; Additions on 5/19/2004 -- VTT
 
-(DEFUN MEMBERLIST (E L)
-	(COND ((NULL L) NIL)
-	      ((EQUAL E (CAR L)) T)
-	      (T (MEMBERLIST E (CDR L)))
+(defun memberlist (e l)
+	(cond ((null l) nil)
+	      ((equal e (car l)) t)
+	      (t (memberlist e (cdr l)))
 	)
 )
 
-(DEFUN UNIONLIST (L1 L2)
-	(COND ((NULL L1) L2)
-	      ((MEMBERLIST (CAR L1) L2) (UNIONLIST (CDR L1) L2))
-	      (T (CONS (CAR L1) (UNIONLIST (CDR L1) L2)))
+(defun unionlist (l1 l2)
+	(cond ((null l1) l2)
+	      ((memberlist (car l1) l2) (unionlist (cdr l1) l2))
+	      (t (cons (car l1) (unionlist (cdr l1) l2)))
 	)
 )
 
-(DEFMFUN $LISTOFTENS (E) (itensor-sort (CONS SMLIST (LISTOFTENS E))))
-(DEFUN LISTOFTENS (E)
-	(COND
-	  ((ATOM E) NIL)
-	  ((RPOBJ E) (LIST E))
-	  (T (PROG (L) (SETQ L NIL)
-		(MAPCAR (LAMBDA (X) (SETQ L (UNIONLIST L (LISTOFTENS X)))) (CDR E))
-		(RETURN L)
+(defmfun $listoftens (e) (itensor-sort (cons smlist (listoftens e))))
+(defun listoftens (e)
+	(cond
+	  ((atom e) nil)
+	  ((rpobj e) (list e))
+	  (t (prog (l) (setq l nil)
+		(mapcar (lambda (x) (setq l (unionlist l (listoftens x)))) (cdr e))
+		(return l)
 	     )
 	  )
 	)
 )
 
-(DEFUN NUMLIST (&optional (n '1)) (COND ((>= n $DIM) (LIST n)) (T (CONS n (NUMLIST (1+ n))))))
+(defun numlist (&optional (n '1)) (cond ((>= n $dim) (list n)) (t (cons n (numlist (1+ n))))))
 
-;;SHOWCOMPS(tensor):=BLOCK([i1,i2,ind:INDICES(tensor)[1]],
-;;	IF LENGTH(ind)=0 THEN ISHOW(EV(tensor))
-;;	ELSE IF LENGTH(ind)=1 THEN ISHOW(MAKELIST(EV(tensor,ind[1]=i1),i1,1,DIM))
-;;	ELSE IF LENGTH(ind)=2 THEN ISHOW(tensor=APPLY('MATRIX,MAKELIST(MAKELIST(EV(tensor,[ind[1]=i1,ind[2]=i2]),i1,1,DIM),i2,1,DIM)))
-;;	ELSE FOR i1 THRU DIM DO (SHOWCOMPS(SUBST(i1,LAST(ind),tensor)),IF LENGTH(ind)=3 AND i1<DIM THEN LINENUM:LINENUM+1)
+;;showcomps(tensor):=block([i1,i2,ind:indices(tensor)[1]],
+;;	if length(ind)=0 then ishow(ev(tensor))
+;;	else if length(ind)=1 then ishow(makelist(ev(tensor,ind[1]=i1),i1,1,dim))
+;;	else if length(ind)=2 then ishow(tensor=apply('matrix,makelist(makelist(ev(tensor,[ind[1]=i1,ind[2]=i2]),i1,1,dim),i2,1,dim)))
+;;	else for i1 thru dim do (showcomps(subst(i1,last(ind),tensor)),if length(ind)=3 and i1<dim then linenum:linenum+1)
 ;;);
-(DEFMFUN $SHOWCOMPS (E)
- (PROG (IND)
-  (SETQ IND (CDADR ($INDICES E)))
-  (COND ((> 1 (LENGTH IND)) ($ISHOW (MEVAL (LIST '($EV) E))))
-	((> 2 (LENGTH IND)) ($ISHOW (CONS SMLIST (MAPCAR (LAMBDA (I) (MEVAL (LIST '($EV) E (LIST '(MEQUAL) (CAR IND) I)))) (NUMLIST)))))
-	((> 3 (LENGTH IND)) ($ISHOW (LIST '(MEQUAL) E (CONS '($MATRIX SIMP) (MAPCAR (LAMBDA (J) (CONS SMLIST (MAPCAR (LAMBDA (I) (MEVAL (LIST '($EV) E (LIST '(MEQUAL) (CAR IND) I) (LIST '(MEQUAL) (CADR IND) J)))) (NUMLIST)))) (NUMLIST))))))
-	(T (MAPCAR (LAMBDA (I)  ($SHOWCOMPS ($SUBSTITUTE I (CAR (LAST IND)) E)) (AND (> 4 (LENGTH IND)) (< I $DIM) (SETQ $LINENUM (1+ $LINENUM)))) (NUMLIST)))
+(defmfun $showcomps (e)
+ (prog (ind)
+  (setq ind (cdadr ($indices e)))
+  (cond ((> 1 (length ind)) ($ishow (meval (list '($ev) e))))
+	((> 2 (length ind)) ($ishow (cons smlist (mapcar (lambda (i) (meval (list '($ev) e (list '(mequal) (car ind) i)))) (numlist)))))
+	((> 3 (length ind)) ($ishow (list '(mequal) e (cons '($matrix simp) (mapcar (lambda (j) (cons smlist (mapcar (lambda (i) (meval (list '($ev) e (list '(mequal) (car ind) i) (list '(mequal) (cadr ind) j)))) (numlist)))) (numlist))))))
+	(t (mapcar (lambda (i)  ($showcomps ($substitute i (car (last ind)) e)) (and (> 4 (length ind)) (< i $dim) (setq $linenum (1+ $linenum)))) (numlist)))
   )
  )
 )
