@@ -8,8 +8,8 @@
 @section Defini@value{cedilha}@~oes para stirling
 
 @deffn {Fun@value{cedilha}@~ao} stirling (@var{z},@var{n})
-Substitui @code{gamma(x)} pela f@'ormula de Stirling @math{O(1/x^(2n-1))}. Quando @var{n} n@~ao for
-um inteiro n@~ao negativo, sinaliza um erro.
+Substitui @code{gamma(x)} pela f@'ormula de Stirling @math{O(1/x^(2n-1))}. Quando @var{n} for
+um inteiro estritamente negativo, sinaliza um erro.
 
 Refer@^encia: Abramowitz & Stegun, " Handbook of mathematical functions", 6.1.40.
 
