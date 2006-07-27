@@ -1,5 +1,5 @@
 @c Language: Portuguese, Encoding: iso-8859-1
-@c /nset.texi/1.15/Sat Jul  8 08:15:51 2006//
+@c /nset.texi/1.16/Wed Jul 26 08:58:56 2006//
 @menu
 * Introdu@value{cedilha}@~ao a Conjuntos::       
 * Defini@value{cedilha}@~oes para Conjuntos::       
@@ -1917,7 +1917,7 @@ A cardinalidade do conjunto de parti@,{c}@~oes de um conjunto pode ser encontrad
 
 @c ===beg===
 @c s: {0, 1, 2, 3, 4, 5}$
-@c p: set_partitions (s, 3)$ 
+@c p: set_partitions (s, 3)$
 @c cardinality(p) = stirling2 (6, 3);
 @c ===end===
 @example
@@ -1931,7 +1931,7 @@ Cada elemento de @code{p} pode ter @var{n} = 3 elementos; vamos verificar.
 
 @c ===beg===
 @c s: {0, 1, 2, 3, 4, 5}$
-@c p: set_partitions (s, 3)$ 
+@c p: set_partitions (s, 3)$
 @c map (cardinality, p);
 @c ===end===
 @example
@@ -1946,7 +1946,7 @@ igua a @code{s}; novamente vamos comprovar.
 
 @c ===beg===
 @c s: {0, 1, 2, 3, 4, 5}$
-@c p: set_partitions (s, 3)$ 
+@c p: set_partitions (s, 3)$
 @c map (lambda ([x], apply (union, listify (x))), p);
 @c ===end===
 @example

@@ -1,15 +1,56 @@
 @c Language: Portuguese, Encoding: iso-8859-1
-@c /Input.texi/1.45/Mon May 15 07:52:54 2006/-ko/
+@c /Input.texi/1.46/Wed Jul 26 08:57:57 2006/-ko/
 @menu
 * Introdu@value{cedilha}@~ao a Entrada e Sa@'ida::  
+* Coment@'arios::
 * Arquivos::                       
 * Defini@value{cedilha}@~oes para Entrada e Sa@'ida::  
 @end menu
 
-@node Introdu@value{cedilha}@~ao a Entrada e Sa@'ida, Arquivos, Entrada e Sa@'ida, Entrada e Sa@'ida
+@node Introdu@value{cedilha}@~ao a Entrada e Sa@'ida, Coment@'arios, Entrada e Sa@'ida, Entrada e Sa@'ida
 @section Introdu@value{cedilha}@~ao a Entrada e Sa@'ida
 
-@node Arquivos, Defini@value{cedilha}@~oes para Entrada e Sa@'ida, Introdu@value{cedilha}@~ao a Entrada e Sa@'ida, Entrada e Sa@'ida
+@node Coment@'arios, Arquivos, Introdu@value{cedilha}@~ao a Entrada e Sa@'ida, Entrada e Sa@'ida
+@section Coment@'arios
+
+Um coment@'ario na entrada do Maxima @'e qualquer texto entre @code{/*} e @code{*/}.
+
+O analisador do Maxima trata um coment@'ario como espa@,{c}@~ao em branco para o prop@'osito de
+encontrar indica@,{c}@~oes no fluxo de entrada;
+uma indica@,{c}@~ao sempre termina um coment@'ario.
+Uma entrada tal como @code{a/* foo */b} cont@'em duas indica@,{c}@~oes, @code{a} e @code{b},
+e n@~ao uma indica@,{c}@~ao simples @code{ab}.
+Coment@'arios s@~ao de outra Comments are otherwise ignored by Maxima;
+nem o conte@'udo nem a localiza@,{c}@~ao dos coment@'arios s@~ao armazenados pelo analisador de express@~oes de entrada.
+
+Coment@'arios podem ser aninhados de forma a terem um n@'ivel de estratifica@,{c}@~ao arbitrario.
+O delimitador @code{/*} e o delimitador @code{*/} formam pares.
+A quantidade de @code{/*} deve ser a mesma quantidade de @code{*/}.
+
+Exemplos:
+
+@c ===beg===
+@c /* aa is a variable of interest */  aa : 1234;
+@c /* Value of bb depends on aa */  bb : aa^2;
+@c /* User-defined infix operator */  infix ("b");
+@c /* Parses same as a b c, not abc */  a/* foo */b/* bar */c;
+@c /* Comments /* can be nested /* to arbitrary depth */ */ */  1 + xyz;
+@c ===end===
+@example
+(%i1) /* aa is a variable of interest */  aa : 1234;
+(%o1)                         1234
+(%i2) /* Value of bb depends on aa */  bb : aa^2;
+(%o2)                        1522756
+(%i3) /* User-defined infix operator */  infix ("b");
+(%o3)                           b
+(%i4) /* Parses same as a b c, not abc */  a/* foo */b/* bar */c;
+(%o4)                         a b c
+(%i5) /* Comments /* can be nested /* to arbitrary depth */ */ */  1 + xyz;
+(%o5)                        xyz + 1
+@end example
+
+
+@node Arquivos, Defini@value{cedilha}@~oes para Entrada e Sa@'ida, Introdu@value{cedilha}@~ao a Entrada e Sa@'ida
 @section Arquivos
 Um arquivo @'e simplesmente uma @'area sobre um dispositivo particular de armazenagem que cont@'em dados ou texto.
 Arquivos em disco s@~ao figurativamente agrupados dentro de "diret@'orios".
@@ -23,7 +64,7 @@ Comandos que lidam com arquivos s@~ao:
 @code{demo},
 @code{writefile},
 @code{closefile},
-and
+e
 @code{appendfile}.
 
 @node Defini@value{cedilha}@~oes para Entrada e Sa@'ida,  , Arquivos, Entrada e Sa@'ida
@@ -1858,4 +1899,3 @@ qualquer sa@'ida gerada por uma declara@,{c}@~ao de impress@~ao em uma fun@,{c}@
 @code{closefile} fecha o arquivo transcrito aberto por @code{writefile} ou @code{appendfile}.
 
 @end deffn
-

@@ -1,5 +1,5 @@
 @c Language: Portuguese, Encoding: iso-8859-1
-@c /Operators.texi/1.30/Mon Jul 24 10:59:23 2006/-ko/
+@c /Operators.texi/1.31/Wed Jul 26 08:58:15 2006/-ko/
 @iftex
 @hyphenation{con-se-cu-ti-vos}
 @hyphenation{u-san-do}
@@ -992,8 +992,8 @@ conhece:
 (%i5) assume (x > 0, x < 1)$
 (%i6) floor (x);
 (%o6)                           0
-(%i7) tex (floor (a);
-stdin:161:Incorrect syntax: Missing )
+(%i7) $$\left \lfloor a \right \rfloor$$tex (floor (a));
+(%o7)                         false
 @end example
 
 A fun@,{c}@~ao @code{floor} n@~ao mapeia automaticamente sobre listas ou matrizes.
@@ -1531,30 +1531,30 @@ if not ratnump(r) then error("The input to 'unitfrac' must be a rational number"
                                  ceiling(-)
                                          r
 reverse(uf))
+(%i2) unitfrac (9/10);
                             1  1  1
 (%o2)                      [-, -, --]
                             2  3  15
-(%i3) unitfrac (9/10);
+(%i3) apply ("+", %);
                                9
 (%o3)                          --
                                10
-(%i4) apply ("+", %);
+(%i4) unitfrac (-9/10);
                                   1
 (%o4)                       [- 1, --]
                                   10
-(%i5) unitfrac (-9/10);
+(%i5) apply ("+", %);
                                 9
 (%o5)                         - --
                                 10
-(%i6) apply ("+", %);
+(%i6) unitfrac (36/37);
                         1  1  1  1    1
 (%o6)                  [-, -, -, --, ----]
                         2  3  8  69  6808
-(%i7) unitfrac (36/37);
+(%i7) apply ("+", %);
                                36
 (%o7)                          --
                                37
-(%i8) apply ("+", %);
 @end example
 
 @end deffn
@@ -1950,12 +1950,17 @@ express@~ao a ser aplicado o @code{ratsimp}.
 @c ===end===
 @example
 (%i1) ((x+2)^20 - 2*y)/(x+y)^20 + (x+y)^(-19) - x/(x+y)^20;
- xthru (%);
                                 20
                  1       (x + 2)   - 2 y       x
 (%o1)        --------- + --------------- - ---------
                     19             20             20
              (y + x)        (y + x)        (y + x)
+(%i2) xthru (%);
+                                 20
+                          (x + 2)   - y
+(%o2)                     -------------
+                                   20
+                            (y + x)
 @end example
 
 @end deffn
