@@ -50,7 +50,7 @@ Exemplos:
 @end example
 
 
-@node Arquivos, Defini@value{cedilha}@~oes para Entrada e Sa@'ida, Introdu@value{cedilha}@~ao a Entrada e Sa@'ida
+@node Arquivos, Defini@value{cedilha}@~oes para Entrada e Sa@'ida, Coment@'arios, Entrada e Sa@'ida
 @section Arquivos
 Um arquivo @'e simplesmente uma @'area sobre um dispositivo particular de armazenagem que cont@'em dados ou texto.
 Arquivos em disco s@~ao figurativamente agrupados dentro de "diret@'orios".

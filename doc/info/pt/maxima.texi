@@ -552,7 +552,7 @@ solve_rec
 
 stirling
 
-* Definitions for stirling::
+* Defini@value{cedilha}@~oes para stirling::
 
 stringproc
 
