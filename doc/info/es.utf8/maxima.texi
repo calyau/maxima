@@ -1,6 +1,6 @@
 \input texinfo
+@c english version 1.29
 @c -*-texinfo-*-
-@c english version 1.32
 
 @c 2000-04-17 Jim Van Zandt <jrv@vanzandt.mv.com> Added header,
 @c info directory entry, reference to introduction chapter, and menu
@@ -22,7 +22,7 @@
 @ifinfo
 Este es el Manual de Maxima en versi@'on Texinfo
 
-Copyright 1994, 2001 William F. Schelter
+Copyright 1994,2001 William F. Schelter
 
 @format
 START-INFO-DIR-ENTRY
@@ -40,30 +40,9 @@ END-INFO-DIR-ENTRY
 @titlepage
 @sp 10
 @center @titlefont{Manual de Maxima}
-@page
-@vskip 0pt plus 1filll
-@i{Maxima es un sistema de c@'alculo simb@'olico escrito en Lisp.}
-
-Maxima desciende del sistema Macsyma, desarrollado en el MIT (Massachusetts Institute of Technology) entre los a@~nos 1968 y 1982 como parte del proyecto MAC. El MIT pas@'o una copia del c@'odigo fuente al DOE (Department of Energy) en 1982, en una versi@'on conocida como DOE-Macsyma. Una de estas copias fue mantenida por el Profesor William F. Schelter de la Universidad de Texas desde el a@~no 1982 hasta su fallecimiento en 2001. En 1998 Schelter hab@'{@dotless{i}}a obtenido del Departamento de Energ@'{@dotless{i}}a permiso para distribuir el c@'odigo fuente de DOE-Macsyma bajo licencia GNU-GPL, iniciando en el a@~no 2000 el proyecto Maxima en SourceForge con el fin de mantener y seguir desarrollando DOE-Macsyma, ahora con el nombre de Maxima.
-
-@i{Notas de la traducci@'on espa@~nola.}
-
-La versi@'on espa@~nola del manual de Maxima la mantienen Mario
-Rodr@'{@dotless{i}}guez y Jaime Villate; para comentarios, sugerencias y
-colaboraciones, cont@'actese mediante cualquiera de las siguientes
-direcciones de correo electr@'onico:
-
-@itemize @bullet
-@item mario ARROBA edu PUNTO xunta PUNTO es
-
-@item villate ARROBA fe PUNTO up PUNTO pt
-@end itemize
 @end titlepage
 
-@summarycontents
-@contents
 
-@ifnottex
 @node Top, Introducci@'on a Maxima, (dir), (dir)
 @top
 
@@ -83,7 +62,6 @@ direcciones de correo electr@'onico:
 
 @item villate ARROBA fe PUNTO up PUNTO pt
 @end itemize
-@end ifnottex
 
 @c includes
 
@@ -171,7 +149,6 @@ Paquetes adicionales
 * unit::                        Unidades f@'{@dotless{i}}sicas y dimensiones.
 * zeilberger::                  Funciones para series hipergeom@'etricas.
 
-
 @'Indice
         
 * @'Indice de Funciones y Variables::  @'Indice.
@@ -226,7 +203,8 @@ Gr@'aficos
 
 Entrada y Salida
 
-* Introducci@'on a  Entrada y Salida:: 
+* Introducci@'on a  Entrada y Salida::
+* Comentarios::
 * Archivos::
 * Definiciones para Entrada y Salida:: 
 
@@ -807,6 +785,10 @@ zeilberger
 @chapter @'Indice de Funciones y Variables
 @include ../es/Indices.es.texi
 
+
 @c end includes
 
+
+@summarycontents
+@contents
 @bye
