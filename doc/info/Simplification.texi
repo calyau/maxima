@@ -400,7 +400,7 @@ evaluates them.  See also @code{noun}, @code{nounify}, @code{verb}, and @code{ve
 @defvr {Special symbol} numer
 @code{numer} causes some mathematical functions (including exponentiation)
 with numerical arguments to be evaluated in floating point. It causes
-variables in @code{expr} which have been given numervals to be replaced by
+variables in @code{expr} which have been given numerals to be replaced by
 their values.  It also sets the @code{float} switch on.
 
 @end defvr
