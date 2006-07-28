@@ -1,14 +1,55 @@
 @c english version 1.45
 @menu
-* Introducci@'on a  Entrada y Salida:: 
+* Introducci@'on a  Entrada y Salida::
+* Comentarios::
 * Archivos::
 * Definiciones para Entrada y Salida::
 @end menu
 
-@node Introducci@'on a Entrada y Salida, Archivos, Entrada y Salida, Entrada y Salida
+@node Introducci@'on a Entrada y Salida, Comentarios, Entrada y Salida, Entrada y Salida
 @section Introducci@'on a Entrada y Salida
 
-@node Archivos, Definiciones para Entrada y Salida, Introducci@'on a Entrada y Salida, Entrada y Salida
+@node Comentarios, Archivos, Introducci@'on a Entrada y Salida, Entrada y Salida
+@section Comentarios
+
+En Maxima, un comentario es cualquier texto encerrado entre las
+marcas @code{/*} y @code{*/}.
+
+El analizador sint@'actico de Maxima trata los comentarios como
+espacios en blanco a efectos de encontrar @i{tokens} en el flujo
+de entrada. Una entrada tal como @code{a/* foo */b} contiene dos
+@i{tokens}, @code{a} y @code{b}, no un @'unico @i{token} @code{ab}.
+En cualquier otro contexto, los comentarios son ignorados por Maxima;
+no se almacenan ni sus contenidos ni sus localizaciones.
+
+Los comentarios pueden anidarse hasta una profundidad arbitraria.
+Las marcas  @code{/*} y @code{*/} deben emparejarse y debe haber igual n@'umero
+de ambos.
+
+Ejemplos:
+
+@c ===beg===
+@c /* aa is a variable of interest */  aa : 1234;
+@c /* Value of bb depends on aa */  bb : aa^2;
+@c /* User-defined infix operator */  infix ("b");
+@c /* Parses same as a b c, not abc */  a/* foo */b/* bar */c;
+@c /* Comments /* can be nested /* to arbitrary depth */ */ */  1 + xyz;
+@c ===end===
+@example
+(%i1) /* aa is a variable of interest */  aa : 1234;
+(%o1)                         1234
+(%i2) /* Value of bb depends on aa */  bb : aa^2;
+(%o2)                        1522756
+(%i3) /* User-defined infix operator */  infix ("b");
+(%o3)                           b
+(%i4) /* Parses same as a b c, not abc */  a/* foo */b/* bar */c;
+(%o4)                         a b c
+(%i5) /* Comments /* can be nested /* to arbitrary depth */ */ */  1 + xyz;
+(%o5)                        xyz + 1
+@end example
+
+
+@node Archivos, Definiciones para Entrada y Salida, Comentarios, Entrada y Salida
 @section Archivos
 
 Un archivo no es m@'as que una @'area de un cierto dispositivo de almacenamiento que contiene datos o texto.

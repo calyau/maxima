@@ -1,6 +1,6 @@
 \input texinfo
 @c -*-texinfo-*-
-@c english version 1.32
+@c english version 1.34
 
 @c 2000-04-17 Jim Van Zandt <jrv@vanzandt.mv.com> Added header,
 @c info directory entry, reference to introduction chapter, and menu
@@ -226,7 +226,8 @@ Gr@'aficos
 
 Entrada y Salida
 
-* Introducci@'on a  Entrada y Salida:: 
+* Introducci@'on a  Entrada y Salida::
+* Comentarios::
 * Archivos::
 * Definiciones para Entrada y Salida:: 
 

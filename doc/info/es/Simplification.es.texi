@@ -1,4 +1,4 @@
-@c version 1.15
+@c version 1.16
 @menu
 * Definiciones para Simplificaci@'on::  
 @end menu
@@ -257,8 +257,12 @@ El s@'{@dotless{i}}mbolo @code{nouns} es una @code{evflag}, lo que significa que
 @end defvr
 
 @defvr {S@'{@dotless{i}}mbolo especial} numer
-El s@'{@dotless{i}}mbolo @code{numer} hace que algunas funciones matem@'aticas, incluida la exponenciaci@'on, con argumentos num@'ericos se eval@'uen como decimales de punto flotante. Tambi@'en reemplaza las variables que haya en @code{expr}, y a las cuales se les ha asignado previamente un valor, por estos mismo valores. Adem@'as, activa la variable @code{float}.
 
+El s@'{@dotless{i}}mbolo @code{numer} hace algunas funciones matem@'aticas
+con argumentos num@'ericos se eval@'uen como decimales de punto flotante.
+Tambi@'en hace que las variables de una expresi@'on a las cuales se les ha
+asignado un n@'umero sean sustituidas por sus valores.
+Adem@'as, activa la variable @code{float}.
 @end defvr
 
 @deffn {Funci@'on} numerval (@var{x_1}, @var{expr_1}, ..., @var{var_n}, @var{expr_n})
