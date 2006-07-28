@@ -1,4 +1,4 @@
-@c english version 1.13
+@c english version 1.16
 @menu
 * Introducci@'on a los conjuntos::       
 * Definiciones para los conjuntos::       
@@ -16,7 +16,8 @@ Adem@'as de funciones para operar con conjuntos finitos, Maxima dispone tambi@'e
 
 Para construir un conjunto cuyos elementos sean @code{a_1, ..., a_n}, se utiliza la instrucci@'on  @code{set(a_1, ..., a_n)} o @code{@{a_1, ..., a_n@}}; para formar un conjunto vac@'{@dotless{i}}o, basta con hacer @code{set()} o @code{@{@}}. Para introducir conjuntos en Maxima, @code{set (...)} y @code{@{ ... @}} son equivalentes. Los conjuntos se muestran siempre con llave.
 
-Si un elemento se indica m@'as de una vez, el proceso de simplificaci@'on elimina los elementos redundantes.
+Si un elemento se indica m@'as de una vez, el proceso 
+de simplificaci@'on elimina los elementos redundantes.
 
 @c ===beg===
 @c set();
@@ -65,7 +66,7 @@ considerar@'{@dotless{i}}an distintos.
 @c is (equal (y, z));
 @c y - z;
 @c ratsimp (%);
-@c set (x, y, z);
+@c {x, y, z};
 @c ===end===
 @example
 (%i1) x: a/c + b/c;
@@ -92,7 +93,7 @@ considerar@'{@dotless{i}}an distintos.
                              c     c   c
 (%i8) ratsimp (%);
 (%o8)                           0
-(%i9) set (x, y, z);
+(%i9) @{x, y, z@};
                           b + a  b   a
 (%o9)                    @{-----, - + -@}
                             c    c   c
@@ -112,20 +113,20 @@ Para formar un conjunto a partir de los miembros de una lista @'usese @code{seti
 Los elementos @code{x} e @code{y} de un conjunto se consideran iguales si @code{is(x = y)} devuelve el valor @code{true}. As@'{@dotless{i}}, @code{rat(x)} y @code{x} se consideran el mismo elemento de un conjunto; consecuentemente, 
 
 @c ===beg===
-@c set(x, rat(x));
+@c {x, rat(x)};
 @c ===end===
 @example
-(%i1) set(x, rat(x));
+(%i1) @{x, rat(x)@};
 (%o1)                          @{x@}
 @end example
 
 Adem@'as, puesto que  @code{is((x-1)*(x+1) = x^2 - 1)} devuelve @code{false},  @code{(x-1)*(x+1)} y @code{x^2-1} se consideran elementos diferentes; as@'{@dotless{i}}
 
 @c ===beg===
-@c set((x - 1)*(x + 1), x^2 - 1);
+@c {(x - 1)*(x + 1), x^2 - 1};
 @c ===end===
 @example
-(%i1) set((x - 1)*(x + 1), x^2 - 1);
+(%i1) @{(x - 1)*(x + 1), x^2 - 1@};
                                        2
 (%o1)               @{(x - 1) (x + 1), x  - 1@}
 @end example
@@ -133,14 +134,14 @@ Adem@'as, puesto que  @code{is((x-1)*(x+1) = x^2 - 1)} devuelve @code{false},  @
 Para reducir este conjunto a otro unitario, aplicar @code{rat} a cada elemento del conjunto:
 
 @c ===beg===
-@c set((x - 1)*(x + 1), x^2 - 1);
-@c map(rat, %);
+@c {(x - 1)*(x + 1), x^2 - 1};
+@c map (rat, %);
 @c ===end===
 @example
-(%i1) set((x - 1)*(x + 1), x^2 - 1);
+(%i1) @{(x - 1)*(x + 1), x^2 - 1@};
                                        2
 (%o1)               @{(x - 1) (x + 1), x  - 1@}
-(%i2) map(rat, %);
+(%i2) map (rat, %);
                               2
 (%o2)/R/                    @{x  - 1@}
 @end example
@@ -148,14 +149,14 @@ Para reducir este conjunto a otro unitario, aplicar @code{rat} a cada elemento d
 Para eliminar redundancias con otros conjuntos, ser@'a necesario utilizar otras funciones de simplificaci@'on. He aqu@'{@dotless{i}} un ejemplo que utiliza  @code{trigsimp}:
 
 @c ===beg===
-@c set(1, cos(x)^2 + sin(x)^2);
-@c map(trigsimp, %);
+@c {1, cos(x)^2 + sin(x)^2};
+@c map (trigsimp, %);
 @c ===end===
 @example
-(%i1) set(1, cos(x)^2 + sin(x)^2);
+(%i1) @{1, cos(x)^2 + sin(x)^2@};
                             2         2
 (%o1)                @{1, sin (x) + cos (x)@}
-(%i2) map(trigsimp, %);
+(%i2) map (trigsimp, %);
 (%o2)                          @{1@}
 @end example
 
@@ -164,13 +165,13 @@ Se entiende que un conjunto est@'a simplificado cuando entre sus elementos no ha
 Algunas operaciones con conjuntos, tales como la sustituci@'on, fuerzan autom@'aticamente una re-simplificaci@'on; por ejemplo,
 
 @c ===beg===
-@c s: set (a, b, c)$
+@c s: {a, b, c}$
 @c subst (c=a, s);
 @c subst ([a=x, b=x, c=x], s);
 @c map (lambda ([x], x^2), set (-1, 0, 1));
 @c ===end===
 @example
-(%i1) s: set (a, b, c)$
+(%i1) s: @{a, b, c@}$
 (%i2) subst (c=a, s);
 (%o2)                        @{a, b@}
 (%i3) subst ([a=x, b=x, c=x], s);
@@ -179,28 +180,32 @@ Algunas operaciones con conjuntos, tales como la sustituci@'on, fuerzan autom@'a
 (%o4)                        @{0, 1@}
 @end example
 
-@c NAME HERE ANY FUNCTIONS WHICH AUTOMATICALLY COERCE SETS TO LISTS OR VV
-Maxima considera a las listas y conjuntos como objetos diferentes; funciones tales como @code{union} y @code{intersection} provocar@'an un error si alguno de sus argumentos es una lista. Si se necesita aplicar una funci@'on de conjunto a una lista, se deber@'a utilizar la funci@'on @code{setify} para convertirla previamente en conjunto. As@'{@dotless{i}},
+Maxima considera a las listas y conjuntos como objetos diferentes;
+funciones tales como @code{union} y @code{intersection} emitir@'an
+un error si alguno de sus argumentos no es un conjunto. Si se 
+necesita aplicar una funci@'on de conjunto a una lista, se deber@'a 
+utilizar la funci@'on @code{setify} para convertirla previamente en conjunto. 
+As@'{@dotless{i}},
 
 @c ===beg===
-@c union ([1, 2], set (a, b));
-@c union (setify ([1, 2]), set (a, b));
+@c union ([1, 2], {a, b});
+@c union (setify ([1, 2]), {a, b});
 @c ===end===
 @example
-(%i1) union ([1, 2], set (a, b));
+(%i1) union ([1, 2], @{a, b@});
 Function union expects a set, instead found [1,2]
  -- an error.  Quitting.  To debug this try debugmode(true);
-(%i2) union (setify ([1, 2]), set (a, b));
+(%i2) union (setify ([1, 2]), @{a, b@});
 (%o2)                     @{1, 2, a, b@}
 @end example
 
 Para extraer todos los elementos de un conjunto @code{s} que satisfagan un predicado @code{f}, @'usese @code{subset(s,f)}. (Un @i{predicado} es una funci@'on booleana.) Por ejemplo, para encontrar las ecuaciones en un conjunto dado que no dependan de la variable @code{z}, se har@'a
 
 @c ===beg===
-@c subset (set (x + y + z, x - y + 4, x + y - 5), lambda ([e], freeof (z, e)));
+@c subset ({x + y + z, x - y + 4, x + y - 5}, lambda ([e], freeof (z, e)));
 @c ===end===
 @example
-(%i1) subset (set (x + y + z, x - y + 4, x + y - 5), lambda ([e], freeof (z, e)));
+(%i1) subset (@{x + y + z, x - y + 4, x + y - 5@}, lambda ([e], freeof (z, e)));
 (%o1)               @{- y + x + 4, y + x - 5@}
 @end example
 
@@ -211,21 +216,21 @@ La secci@'on @code{Definiciones para los conjuntos} incluye una lista completa d
 Hay dos formas para operar iterativamente sobre los elementos de un conjunto. Una es utilizar @code{map}; por ejemplo:
 
 @c ===beg===
-@c map (f, set (a, b, c));
+@c map (f, {a, b, c});
 @c ===end===
 @example
-(%i1) map (f, set (a, b, c));
+(%i1) map (f, @{a, b, c@});
 (%o1)                  @{f(a), f(b), f(c)@}
 @end example
 
 La otra forma consiste en hacer uso de la construcci@'on @code{for @var{x} in @var{s} do}
 
 @c ===beg===
-@c s: set (a, b, c);
+@c s: {a, b, c};
 @c for si in s do print (concat (si, 1));
 @c ===end===
 @example
-(%i1) s: set (a, b, c);
+(%i1) s: @{a, b, c@};
 (%o1)                       @{a, b, c@}
 (%i2) for si in s do print (concat (si, 1));
 a1 
@@ -238,22 +243,30 @@ Las funciones de Maxima  @code{first} y @code{rest} funcionan tambi@'en con conj
 
 @subsection Fallos
 
-Las funciones para operar con conjuntos utilizan la funci@'on @code{orderlessp} de Maxima para ordenar los elementos de los conjuntos, as@'{@dotless{i}} como la funci@'on @code{like} de Lisp para decidir sobre la igualdad de dichos elementos. Ambas funciones tienen fallos que son conocidos y que pueden aflorar si se trabaja con conjuntos que tengan elementos en formato de listas o matrices y que contengan expresiones CRE. Un ejemplo es
+Las funciones para operar con conjuntos utilizan la funci@'on @code{orderlessp}
+de Maxima para ordenar los elementos de los conjuntos, as@'{@dotless{i}}
+como la funci@'on @code{like} de Lisp para decidir sobre la igualdad de dichos
+elementos. Ambas funciones tienen fallos que son conocidos y que pueden
+aflorar si se trabaja con conjuntos que tengan elementos en formato de
+listas o matrices y que contengan expresiones racionales can@'onicas (CRE).
+Un ejemplo es
 
 @c ===beg===
-@c set ([x], [rat (x)]);
+@c {[x], [rat (x)]};
 @c ===end===
 @example
-(%i1) set ([x], [rat (x)]);
+(%i1) @{[x], [rat (x)]@};
 Maxima encountered a Lisp error:
 
- CAR: #:X13129 is not a LIST
+  The value #:X1440 is not of type LIST.
 
 Automatically continuing.
 To reenable the Lisp debugger set *debugger-hook* to nil.
 @end example
 
-Esta instrucci@'on provoca una parada de Maxima junto con la emisi@'on de un mensaje de error, el cual depender@'a de la versi@'on de Lisp que utilice Maxima. Otro ejemplo es
+Esta expresi@'on provoca una parada de Maxima junto con la 
+emisi@'on de un mensaje de error, el cual depender@'a de 
+la versi@'on de Lisp que utilice Maxima. Otro ejemplo es
 
 @c ===beg===
 @c setify ([[rat(a)], [rat(b)]]);
@@ -262,13 +275,15 @@ Esta instrucci@'on provoca una parada de Maxima junto con la emisi@'on de un men
 (%i1) setify ([[rat(a)], [rat(b)]]);
 Maxima encountered a Lisp error:
 
- CAR: #:A13129 is not a LIST
+  The value #:A1440 is not of type LIST.
 
 Automatically continuing.
 To reenable the Lisp debugger set *debugger-hook* to nil.
 @end example
 
-Estos fallos son causados por fallos en  @code{orderlessp} y @code{like}, no por fallos cuyo origen se encuentre en las funciones para conjuntos. Para ilustrarlo, se pueden ejecutar las siguientes instrucciones
+Estos fallos son causados por fallos en  @code{orderlessp} y @code{like},
+no por fallos cuyo origen se encuentre en las funciones para conjuntos.
+Para ilustrarlo, se pueden ejecutar las siguientes expresiones
 
 @c ===beg===
 @c orderlessp ([rat(a)], [rat(b)]);
@@ -278,7 +293,7 @@ Estos fallos son causados por fallos en  @code{orderlessp} y @code{like}, no por
 (%i1) orderlessp ([rat(a)], [rat(b)]);
 Maxima encountered a Lisp error:
 
- CAR: #:B13130 is not a LIST
+  The value #:B1441 is not of type LIST.
 
 Automatically continuing.
 To reenable the Lisp debugger set *debugger-hook* to nil.
@@ -289,10 +304,10 @@ To reenable the Lisp debugger set *debugger-hook* to nil.
 Hasta que estos errores no se corrijan, no es aconsejable construir conjuntos que tengan por elementos listas o matrices que contengan expresiones en forma CRE; sin embargo, un conjunto con elementos de la forma CRE no deber@'{@dotless{i}}an dar problemas:
 
 @c ===beg===
-@c set (x, rat (x));
+@c {x, rat (x)};
 @c ===end===
 @example
-(%i1) set (x, rat (x));
+(%i1) @{x, rat (x)@};
 (%o1)                          @{x@}
 @end example
 
@@ -318,33 +333,19 @@ La funci@'on @code{orderlessp} de Maxima tiene otro fallo que puede causar probl
 (%o6)                         false
 @end example
 
-El fallo puede causar problemas con todas las funciones para conjuntos, as@'{@dotless{i}} como tambi@'en con otras funciones de Maxima. Es probable, pero no seguro, que si todos los elementos del conjunto est@'an en la forma CRE o han sido simplificados con @code{ratsimp}, entonces el fallo no se manifiesta.
+El fallo puede causar problemas con todas las funciones para conjuntos,
+as@'{@dotless{i}} como tambi@'en con otras funciones de Maxima.
+Es probable, pero no seguro, que este fallo se puede evitar si todos 
+los elementos del conjunto est@'an en la forma de expresi@'on racional
+can@'onica (CRE) o han sido simplificados con @code{ratsimp}.
 
 @c WHAT EXACTLY IS THE EFFECT OF ordergreat AND orderless ON THE SET FUNCTIONS ??
-Los mecanismos @code{orderless} y @code{ordergreat} de Maxima son incompatibles con las funciones para conjuntos. Si se necesitan utilizar @code{orderless} o @code{ordergreat}, h@'agase antes de construir los conjuntos y no se utilice la instrucci@'on @code{unorder}.
-
-La funci@'on @code{sign} de Maxima tiene un fallo que puede causar que la funci@'on delta de Kronecker trabaje incorrectamente; por ejemplo:
-
-@c ===beg===
-@c kron_delta (1/sqrt(2), sqrt(2)/2);
-@c ===end===
-@example
-(%i1) kron_delta (1/sqrt(2), sqrt(2)/2);
-(%o1)                           0
-@end example
-
-El valor correcto es 1. El fallo est@'a causado por el de la funci@'on @code{sign}
-
-@c ===beg===
-@c sign (1/sqrt(2) - sqrt(2)/2);
-@c ===end===
-@example
-(%i1) sign (1/sqrt(2) - sqrt(2)/2);
-(%o1)                          pos
-@end example
+Los mecanismos @code{orderless} y @code{ordergreat} de Maxima son incompatibles
+con las funciones para conjuntos. Si se necesitan utilizar @code{orderless} o
+@code{ordergreat}, h@'agase antes de construir los conjuntos y no se utilice 
+la instrucci@'on @code{unorder}.
 
 Se ruega a todo usuario que crea haber encontrado un fallo en las funciones para conjuntos que lo comunique en la base de datos de Maxima. V@'ease @code{bug_report}.
-
 
 @subsection Autores
 
@@ -356,39 +357,59 @@ Stavros Macrakis de Cambridge, Massachusetts y Barton Willis de la University of
 
 @deffn {Funci@'on} adjoin (@var{x}, @var{a}) 
 
-Incorpora @var{x} al conjunto @var{a} y devuelve el nuevo conjunto. As@'{@dotless{i}},  @code{adjoin(@var{x}, @var{a})} 
-y @code{union(set(x),a)} son equivalentes; sin embargo, haciendo @code{adjoin} puede ser algo m@'as r@'apido que utilizando @code{union}. Si @var{a} no es un conjunto, se emite un error.
+Calcula la uni@'on del conjunto @var{a} y @code{@{@var{x}@}}.
+
+La funci@'on @code{adjoin} emite un mensaje de error si @var{a}
+no es un conjunto literal.
+
+Las sentencias @code{adjoin(@var{x}, @var{a})} y 
+@code{union(set(@var{x}), @var{a})} son equivalentes, aunque
+@code{adjoin} puede ser algo m@'as r@'apida que @code{union}.
+
+V@'ease tambi@'en @code{disjoin}.
+
+Ejemplos:
 
 @c ===beg===
-@c adjoin (c, set (a, b));
-@c adjoin (a, set (a, b));
+@c adjoin (c, {a, b});
+@c adjoin (a, {a, b});
 @c ===end===
 @example
-(%i1) adjoin (c, set (a, b));
+(%i1) adjoin (c, @{a, b@});
 (%o1)                       @{a, b, c@}
-(%i2) adjoin (a, set (a, b));
+(%i2) adjoin (a, @{a, b@});
 (%o2)                        @{a, b@}
 @end example
 
-V@'ease tambi@'en @code{disjoin}.
 @end deffn
 
 
 @deffn {Funci@'on} belln (@var{n})
 
-Para el entero no negativo integers @var{n}, devuelve el n-@'esimo n@'umero de Bell. Si @code{s} es un conjunto con @code{n} elementos,  @code{belln(n)} es el n@'umero de particiones de @code{s}. Por ejemplo:
+Representa el @math{n}-@'esimo n@'umero de Bell, de
+modo que @code{belln(n)} es el n@'umero de particiones de un conjunto de 
+@var{n} elementos.
+
+El argumento @var{n} debe ser un entero no negativo.
+
+La funci@'on @code{belln} se distribuye sobre ecuaciones, listas,
+matrices y conjuntos.
+
+Ejemplos:
+
+@code{belln} se aplica a enteros no negativos,
 
 @c ===beg===
 @c makelist (belln (i), i, 0, 6);
-@c is (cardinality (set_partitions (set ())) = belln (0));
-@c is (cardinality (set_partitions (set (1, 2, 3, 4, 5, 6))) = belln (6));
+@c is (cardinality (set_partitions ({})) = belln (0));
+@c is (cardinality (set_partitions ({1, 2, 3, 4, 5, 6})) = belln (6));
 @c ===end===
 @example
 (%i1) makelist (belln (i), i, 0, 6);
 (%o1)               [1, 1, 2, 5, 15, 52, 203]
-(%i2) is (cardinality (set_partitions (set ())) = belln (0));
+(%i2) is (cardinality (set_partitions (@{@})) = belln (0));
 (%o2)                         true
-(%i3) is (cardinality (set_partitions (set (1, 2, 3, 4, 5, 6))) = belln (6));
+(%i3) is (cardinality (set_partitions (@{1, 2, 3, 4, 5, 6@})) = belln (6));
 (%o3)                         true
 @end example
 
@@ -406,44 +427,58 @@ Si @var{n} no es un entero no negativo, la funci@'on @code{belln(n)} no hace c@'
 
 @deffn {Funci@'on} cardinality (@var{a})
 
-Devuelve el n@'umero de elementos del conjunto @var{a}. 
+Devuelve el n@'umero de elementos del conjunto @var{a}.
+
+La funci@'on @code{cardinality} ignora los elementos
+redundantes, incluso cuando la simplificaci@'on est@'a
+desabilitada.
+
+Ejemplos:
 
 @c ===beg===
-@c cardinality (set ());
-@c cardinality (set (a, a, b, c));
-@c cardinality (set (a, a, b, c)), simp: false;
+@c cardinality ({});
+@c cardinality ({a, a, b, c});
+@c simp : false;
+@c cardinality ({a, a, b, c});
 @c ===end===
 @example
-(%i1) cardinality (set ());
+(%i1) cardinality (@{@});
 (%o1)                           0
-(%i2) cardinality (set (a, a, b, c));
+(%i2) cardinality (@{a, a, b, c@});
 (%o2)                           3
-(%i3) cardinality (set (a, a, b, c)), simp: false;
-(%o3)                           3
+(%i3) simp : false;
+(%o3)                         false
+(%i4) cardinality (@{a, a, b, c@});
+(%o4)                           3
 @end example
-
-En la salida (%o3) se observa que la cardinalidad trabaja correctamente incluso cuando la simplificaci@'on se ha desactivado. 
 @end deffn
 
 
 @deffn {Funci@'on} cartesian_product (@var{b_1}, ... , @var{b_n})
 
-Devuelve un conjunto formado por listas de la forma @code{[@var{x_1}, ..., @var{x_n}]}, donde @code{@var{x_1} in @var{b_1}}, ..., @code{@var{x_n} in @var{b_n}}. Env@'{@dotless{i}}a un error si cualquiera de los @var{b_k} no es un conjunto.
+Devuelve un conjunto formado por listas de la forma @code{[@var{x_1}, ..., @var{x_n}]},
+siendo @var{x_1}, ..., @var{x_n} elementos de los conjuntos @var{b_1}, ... , @var{b_n},
+respectivamente.
+
+La funci@'on @code{cartesian_product} emite un mensaje de error si alguno
+de sus argumentos no es un conjunto literal.
+
+Ejemplos:
 
 @c ===beg===
-@c cartesian_product (set (0, 1));
-@c cartesian_product (set (0, 1), set (0, 1));
-@c cartesian_product (set (x), set (y), set (z));
-@c cartesian_product (set (x), set (-1, 0, 1));
+@c cartesian_product ({0, 1});
+@c cartesian_product ({0, 1}, {0, 1});
+@c cartesian_product ({x}, {y}, {z});
+@c cartesian_product ({x}, {-1, 0, 1});
 @c ===end===
 @example
-(%i1) cartesian_product (set (0, 1));
+(%i1) cartesian_product (@{0, 1@});
 (%o1)                      @{[0], [1]@}
-(%i2) cartesian_product (set (0, 1), set (0, 1));
+(%i2) cartesian_product (@{0, 1@}, @{0, 1@});
 (%o2)           @{[0, 0], [0, 1], [1, 0], [1, 1]@}
-(%i3) cartesian_product (set (x), set (y), set (z));
+(%i3) cartesian_product (@{x@}, @{y@}, @{z@});
 (%o3)                      @{[x, y, z]@}
-(%i4) cartesian_product (set (x), set (-1, 0, 1));
+(%i4) cartesian_product (@{x@}, @{-1, 0, 1@});
 (%o4)              @{[x, - 1], [x, 0], [x, 1]@}
 @end example
 @end deffn
@@ -451,22 +486,75 @@ Devuelve un conjunto formado por listas de la forma @code{[@var{x_1}, ..., @var{
 
 @deffn {Funci@'on} disjoin (@var{x}, @var{a})
 
-Elimina @var{x} del conjunto @var{a} y devuelve un conjunto. Si @var{x} no es elemento de @var{a}, devuelve @var{a}. Cada una de las siguientes llamadas hace lo mismo: @code{disjoin(@var{x}, @var{a})}, @code{delete(@var{x}, @var{a})} y
-@code{setdifference(@var{a},set(@var{x}))}; sin embargo, @code{disjoin} es generalmente el m@'etodo m@'as r@'apido para eliminar un elemento de un conjunto. Devuelve un error en caso de que @var{a} no sea un conjunto.
+Devuelve el conjunto @var{a} sin el elemento @var{x}.
+Si @var{x} no es elemento de @var{a}, entonces el
+resultado es el propio @var{a}.
+
+La funci@'on @code{disjoin} emite un mensaje de error si
+@var{a} no es un conjunto literal.
+
+Las sentencias @code{disjoin(@var{x}, @var{a})}, @code{delete(@var{x}, @var{a})}
+y @code{setdifference(@var{a}, set(@var{x}))} son todas ellas equivalentes;
+pero en general, @code{disjoin} ser@'a m@'as r@'apida que las otras.
+
+Ejemplos:
+
+@c ===beg===
+@c disjoin (a, {a, b, c, d});
+@c disjoin (a + b, {5, z, a + b, %pi});
+@c disjoin (a - b, {5, z, a + b, %pi});
+@c ===end===
+@example
+(%i1) disjoin (a, @{a, b, c, d@});
+(%o1)                       @{b, c, d@}
+(%i2) disjoin (a + b, @{5, z, a + b, %pi@});
+(%o2)                      @{5, %pi, z@}
+(%i3) disjoin (a - b, @{5, z, a + b, %pi@});
+(%o3)                  @{5, %pi, b + a, z@}
+@end example
 @end deffn
 
 
 @deffn {Funci@'on} disjointp (@var{a}, @var{b}) 
 
-Devuelve @code{true} si los conjuntos @var{a} y @var{b} son disjuntos. Env@'{@dotless{i}}a un mensaje de error si bien @var{a} o bien @var{b} no son conjuntos.
+Devuelve @code{true} si y s@'olo si los conjuntos  @var{a} y @var{b}
+son disjuntos.
+
+La funci@'on @code{disjointp} emite un mensaje de error si
+@var{a} o @var{b} no son conjuntos literales.
+
+Ejemplos:
+
+@c ===beg===
+@c disjointp ({a, b, c}, {1, 2, 3});
+@c disjointp ({a, b, 3}, {1, 2, 3});
+@c ===end===
+@example
+(%i1) disjointp (@{a, b, c@}, @{1, 2, 3@});
+(%o1)                         true
+(%i2) disjointp (@{a, b, 3@}, @{1, 2, 3@});
+(%o2)                         false
+@end example
 @end deffn
 
 
 @deffn {Funci@'on} divisors (@var{n})
 
-Si @var{n} es un entero no nulo, devuelve el conjunto de sus divisores.  El conjunto de divisores incluye los elementos  1 y @var{n}. Los divisores de un entero negativo son los divisores de su valor absoluto. 
+Calcula el conjunto de divisores de @var{n}.
 
-Se puede comprobar que 28 es un n@'umero perfecto.
+La sentencia @code{divisors(@var{n})} devuelve un conjunto
+de enteros si @var{n} es un entero no nulo.
+El conjunto de divisores incluye los elementos 1 y @var{n}.
+Los divisores de un entero negativo son los divisores de su
+valor absoluto.
+
+La funci@'on @code{divisors} se distribuye sobre las ecuaciones,
+listas, matrices y conjuntos.
+
+Ejemplos:
+
+Se puede comprobar que 28 es un n@'umero perfecto:
+la suma de sus divisores (excepto @'el mismo) es 28.
 
 @c ===beg===
 @c s: divisors(28);
@@ -479,7 +567,9 @@ Se puede comprobar que 28 es un n@'umero perfecto.
 (%o2)                          28
 @end example
 
-La funci@'on @code{divisors} opera por simplificaci@'on; no es necesario volver a evaluar tras una sustituci@'on. Por ejemplo:
+La funci@'on @code{divisors} es simplificadora.
+Haciendo la sustituci@'on de @code{a} por 8 en @code{divisors(a)}
+devuelve los divisores sin tener que reevaluar @code{divisors(8)},
 
 @c ===beg===
 @c divisors (a);
@@ -492,121 +582,296 @@ La funci@'on @code{divisors} opera por simplificaci@'on; no es necesario volver 
 (%o2)                     @{1, 2, 4, 8@}
 @end example
 
-@c WHAT DOES "THREADING" MEAN IN THIS CONTEXT ??
-La funci@'on @code{divisors} se distribuye respecto de igualdades, listas, matrices y conjuntos.  He aqu@'{@dotless{i}} un ejemplo de distribuci@'on sobre una lista y una igualdad.
+La funci@'on @code{divisors} se distribuye sobre ecuaciones, listas,
+matrices y conjuntos.
 
 @c ===beg===
-@c divisors ([a, b, c=d]);
+@c divisors (a = b);
+@c divisors ([a, b, c]);
+@c divisors (matrix ([a, b], [c, d]));
+@c divisors ({a, b, c});
 @c ===end===
 @example
-(%i1) divisors ([a, b, c=d]);
-(%o1) [divisors(a), divisors(b), divisors(c) = divisors(d)]
+(%i1) divisors (a = b);
+(%o1)               divisors(a) = divisors(b)
+(%i2) divisors ([a, b, c]);
+(%o2)        [divisors(a), divisors(b), divisors(c)]
+(%i3) divisors (matrix ([a, b], [c, d]));
+                  [ divisors(a)  divisors(b) ]
+(%o3)             [                          ]
+                  [ divisors(c)  divisors(d) ]
+(%i4) divisors (@{a, b, c@});
+(%o4)        @{divisors(a), divisors(b), divisors(c)@}
 @end example
 @end deffn
 
 
 @deffn {Funci@'on} elementp (@var{x}, @var{a})
-Devuelve @code{true} si y s@'olo si @var{x} es un elemento del conjunto @var{a}.  Env@'{@dotless{i}}a un error si @var{a} no es un conjunto.  
+
+Devuelve @code{true} si y s@'olo si @var{x} es miembro del
+conjunto @var{a}.
+
+La funci@'on @code{elementp} emite un mensaje de error si 
+@var{a} no es un conjunto literal.
+
+Ejemplos: 
+
+@c ===beg===
+@c elementp (sin(1), {sin(1), sin(2), sin(3)});
+@c elementp (sin(1), {cos(1), cos(2), cos(3)});
+@c ===end===
+@example
+(%i1) elementp (sin(1), @{sin(1), sin(2), sin(3)@});
+(%o1)                         true
+(%i2) elementp (sin(1), @{cos(1), cos(2), cos(3)@});
+(%o2)                         false
+@end example
 @end deffn
 
 
 @deffn {Funci@'on} emptyp (@var{a})
 Devuelve @code{true} si y s@'olo si @var{a} es el conjunto vac@'{@dotless{i}}o o la lista vac@'{@dotless{i}}a.
 
+Ejemplos:
+
 @c ===beg===
-@c map (emptyp, [set (), []]);
-@c map (emptyp, [a + b, set (set ()), %pi]);
+@c map (emptyp, [{}, []]);
+@c map (emptyp, [a + b, {{}}, %pi]);
 @c ===end===
 @example
-(%i1) map (emptyp, [set (), []]);
+(%i1) map (emptyp, [@{@}, []]);
 (%o1)                     [true, true]
-(%i2) map (emptyp, [a + b, set (set ()), %pi]);
+(%i2) map (emptyp, [a + b, @{@{@}@}, %pi]);
 (%o2)                 [false, false, false]
 @end example
 @end deffn
        
 
-@deffn {Funci@'on} equiv_classes (@var{s}, @var{f})
-Devuelve el conjunto de las clases de equivalencia de  @var{s} respecto de la relaci@'on de equivalencia @var{f}. La funci@'on @var{f} debe ser booleana y definida sobre el producto cartesiano de @var{s} por @var{s}. Adem@'as, la funci@'on @var{f} debe ser una relaci@'on de equivalencia, debi@'endose tener en cuenta que @code{equiv_classes} no chequea esta propiedad. 
+@deffn {Funci@'on} equiv_classes (@var{s}, @var{F})
+
+Devuelve el conjunto de las clases de equivalencia del conjunto @var{s}
+respecto de la relaci@'on de equivalencia @var{F}.
+
+El argumento @var{F} es una funci@'on de dos variables definida sobre
+el producto cartesiano @var{s} por @var{s}.
+El valor devuelto por @var{F} debe ser @code{true} o @code{false},
+o bien una expresi@'on @var{expr} tal que @code{is(@var{expr})}
+tome el valor @code{true} o @code{false}.
+
+Si @var{F} no es una relaci@'on de equivalencia, @code{equiv_classes}
+la acepta sin emitir ning@'un mensaje de error, pero el resultado
+ser@'a incorrecto en general.
+
+Ejemplos:
+
+La relaci@'on de equivalencia es una expresi@'on lambda que devuelve 
+@code{true} o @code{false},
 
 @c ===beg===
-@c equiv_classes (set (a, b, c), lambda ([x, y], is (x=y)));
+@c equiv_classes ({1, 1.0, 2, 2.0, 3, 3.0}, lambda ([x, y], is (equal (x, y))));
 @c ===end===
 @example
-(%i1) equiv_classes (set (a, b, c), lambda ([x, y], is (x=y)));
-(%o1)                    @{@{a@}, @{b@}, @{c@}@}
+(%i1) equiv_classes (@{1, 1.0, 2, 2.0, 3, 3.0@}, lambda ([x, y], is (equal (x, y))));
+(%o1)            @{@{1, 1.0@}, @{2, 2.0@}, @{3, 3.0@}@}
 @end example
 
-En este momento, @code{equiv_classes (@var{s}, @var{f})} aplica autom@'aticamente la funci@'on @code{is} de Maxima despu@'es de aplicar la funci@'on @var{f}; por lo tanto, se puede volver a hacer el ejemplo anterior de forma m@'as breve.
+La relaci@'on de equivalencia es el nombre de una funci@'on relacional
+en la que @code{is} eval@'ua a @code{true} o @code{false},
 
 @c ===beg===
-@c equiv_classes (set (a, b, c), "=");
+@c equiv_classes ({1, 1.0, 2, 2.0, 3, 3.0}, equal);
 @c ===end===
 @example
-(%i1) equiv_classes (set (a, b, c), "=");
-(%o1)                    @{@{a@}, @{b@}, @{c@}@}
+(%i1) equiv_classes (@{1, 1.0, 2, 2.0, 3, 3.0@}, equal);
+(%o1)            @{@{1, 1.0@}, @{2, 2.0@}, @{3, 3.0@}@}
 @end example
 
-Aqu@'{@dotless{i}} otro ejemplo.
+Las clases de equivalencia son n@'umeros que difieren en un m@'ultiplo de 3.
 
 @c ===beg===
-@c equiv_classes (set (1, 2, 3, 4, 5, 6, 7), lambda ([x, y], remainder (x - y, 3) = 0));
+@c equiv_classes ({1, 2, 3, 4, 5, 6, 7}, lambda ([x, y], remainder (x - y, 3) = 0));
 @c ===end===
 @example
-(%i1) equiv_classes (set (1, 2, 3, 4, 5, 6, 7), lambda ([x, y], remainder (x - y, 3) = 0));
+(%i1) equiv_classes (@{1, 2, 3, 4, 5, 6, 7@}, lambda ([x, y], remainder (x - y, 3) = 0));
 (%o1)              @{@{1, 4, 7@}, @{2, 5@}, @{3, 6@}@}
 @end example
 @end deffn
 
 
-@deffn {Funci@'on} every (@var{f}, @var{a})
+@deffn {Funci@'on} every (@var{f}, @var{s})
 @deffnx {Funci@'on} every (@var{f}, @var{L_1}, ..., @var{L_n})
 
-El primer argumento @var{f} debe ser un predicado (es decir, una funci@'on que toma cualquiera de los valores @code{true}, @code{false}, or @code{unknown}). 
+Devuelve @code{true} si el predicado @var{f} vale @code{true}
+para todos los argumentos dados.
 
-Dado un conjunto como segundo argumento, @code{every (@var{f}, @var{a})} devuelve @code{true} si @code{@var{f}(@var{a_i})} devuelve tambi@'en @code{true} para todo @var{a_i} de @var{a}. Puesto que los conjuntos no est@'an ordenados, @code{every} puede evaluar @code{@var{f}(@var{a_i})} en cualquier orden. La funci@'on @code{every} puede que no eval@'ue @var{f} para todo @var{a_i} de @var{a}. Devido a que el orden de evaluaci@'on no est@'a especificado, el predicado @var{f} no debe tener efectos secundarios ni emitir se@~nales de error para ninguna entrada. 
+Dado un conjunto como segundo argumento,
+@code{every(@var{f}, @var{s})} devuelve @code{true}
+si @code{is(@var{f}(@var{a_i}))} devuelve @code{true} para todos los
+@var{a_i} pertenecientes @var{s}.
+La funci@'on @code{every} puede evaluar o no @var{f} para todos los
+@var{a_i} pertenecientes @var{s}.
+Puesto que los conjuntos no est@'an ordenados, @code{every}
+puede evaluar @code{@var{f}(@var{a_i})} en cualquier orden.
 
-Dada una o m@'as listas como argumentos, @code{every (@var{f}, @var{L_1}, ..., @var{L_n})} devuelve @code{true}
-si @code{@var{f}(@var{x_1}, ..., @var{x_n})} devuelve @code{true} para cada @var{x_1}, ..., @var{x_n} de @var{L_1}, ..., @var{L_n}, respectivamente. La funci@'on @code{every} puede que no eval@'ue @var{f} para todas las combinaciones @var{x_1}, ..., @var{x_n}. Puesto que las listas est@'an ordenadas, @code{every} eval@'ua en el orden del @'{@dotless{i}}ndice creciente.
+Dada una o m@'as listas como argumentos,
+@code{every(@var{f}, @var{L_1}, ..., @var{L_n})} devuelve @code{true}
+si @code{is(@var{f}(@var{x_1}, ..., @var{x_n}))} devuelve @code{true} 
+para todo @var{x_1}, ..., @var{x_n} en @var{L_1}, ..., @var{L_n}, respectivamente.
+La funci@'on @code{every} puede evaluar o no 
+@var{f} para cualquier combinaci@'on de @var{x_1}, ..., @var{x_n}; adem@'as,
+@code{every} eval@'ua las listas en el orden creciente del @'{@dotless{i}}ndice.
 
-Para usar @code{every} con m@'ultiples conjuntos como argumentos, deber@'{@dotless{i}}an convertirse primero en una secuencia ordenada, de manera que su alineaci@'on relativa quede bien definida.
+Dado un conjunto vac@'{@dotless{i}}o @code{@{@}} o lista vac@'{@dotless{i}}a 
+@code{[]} como argumentos, @code{every} devuelve @code{false}.
 
-Si la variable global @code{maperror} vale @code{true} (su valor por defecto), todas las listas @var{L_1}, ..., @var{L_n} deben tener igual n@'umero de miembros; en otro caso, @code{every} envia un mensaje de error. Cuando @code{maperror} vale @code{false}, las listas son truncadas cada una a la longitud de la lista m@'as corta.
+Si la variable global @code{maperror} vale @code{true}, todas las listas
+@var{L_1}, ..., @var{L_n} deben ser de igual longitud.
+Si @code{maperror} vale @code{false}, los argumentos en forma de listas
+se truncan para igualar sus longitudes a la de la lista m@'as corta.
 
-La funci@'on  @code{is} se aplica autom@'aticamente tras cada evaluaci@'on del predicado @var{f}.
+Los valores que devuelve el predicado @var{f} cuando toman 
+(mediante @code{is}) un valor diferente a @code{true} y @code{false}
+se controlan con la variable global @code{prederror}.
+Si @code{prederror} vale @code{true}, tales valores se
+consideran como @code{false} y la respuesta de @code{every} es @code{false}.
+Si @code{prederror} vale @code{false}, tales valores se
+consideran como desconocidos (@code{unknown}) y la respuesta de 
+@code{every} es @code{unknown}.
+
+Ejemplos:
+
+Se aplica @code{every} a un @'unico conjunto.
+El predicado es una funci@'on de un argumento.
 
 @c ===beg===
-@c every ("=", [a, b], [a, b]);
-@c every ("#", [a, b], [a, b]);
+@c every (integerp, {1, 2, 3, 4, 5, 6});
+@c every (atom, {1, 2, sin(3), 4, 5 + y, 6});
 @c ===end===
 @example
-(%i1) every ("=", [a, b], [a, b]);
+(%i1) every (integerp, @{1, 2, 3, 4, 5, 6@});
 (%o1)                         true
-(%i2) every ("#", [a, b], [a, b]);
+(%i2) every (atom, @{1, 2, sin(3), 4, 5 + y, 6@});
 (%o2)                         false
+@end example
+
+Se aplica @code{every} a dos listas.
+El predicado es una funci@'on de dos argumentos.
+
+@c ===beg===
+@c every ("=", [a, b, c], [a, b, c]);
+@c every ("#", [a, b, c], [a, b, c]);
+@c ===end===
+@example
+(%i1) every ("=", [a, b, c], [a, b, c]);
+(%o1)                         true
+(%i2) every ("#", [a, b, c], [a, b, c]);
+(%o2)                         false
+@end example
+
+Las respuestas del predicado @var{f} que se eval@'uan 
+a cualquier cosa diferente de @code{true} y @code{false}
+est@'an controlados por la variable global @code{prederror}.
+
+@c ===beg===
+@c prederror : false;
+@c map (lambda ([a, b], is (a < b)), [x, y, z], [x^2, y^2, z^2]);
+@c every ("<", [x, y, z], [x^2, y^2, z^2]);
+@c prederror : true;
+@c every ("<", [x, y, z], [x^2, y^2, z^2]);
+@c ===end===
+@example
+(%i1) prederror : false;
+(%o1)                         false
+(%i2) map (lambda ([a, b], is (a < b)), [x, y, z], [x^2, y^2, z^2]);
+(%o2)              [unknown, unknown, unknown]
+(%i3) every ("<", [x, y, z], [x^2, y^2, z^2]);
+(%o3)                        unknown
+(%i4) prederror : true;
+(%o4)                         true
+(%i5) every ("<", [x, y, z], [x^2, y^2, z^2]);
+(%o5)                         false
 @end example
 @end deffn
  
 
 @deffn {Funci@'on} extremal_subset (@var{s}, @var{f}, max)
 @deffnx {Funci@'on} extremal_subset (@var{s}, @var{f}, min)
-Cuando el tercer argumento es @code{max}, devuelve el subconjunto del conjunto o lista @var{s} para cuyos elementos la funci@'on real  @var{f} toma su valor mayor; cuando el tercer argumento es @code{min}, devuelve el subconjunto para el cual @var{f} toma su valor menor.
+
+Calcula el subconjunto de @var{s} para el cual la funci@'on @var{f}
+toma sus valores mayor y menor.
+
+La sentencia @code{extremal_subset(@var{s}, @var{f}, max)}
+devuelve el subconjunto del conjunto o lista @var{s} para el cual
+la funci@'on real @var{f} toma su valor m@'aximo.
+
+La sentencia @code{extremal_subset(@var{s}, @var{f}, min)}
+devuelve el subconjunto del conjunto o lista @var{s} para el cual
+la funci@'on real @var{f} toma su valor m@'{@dotless{i}}nimo.
+
+Ejemplos
 
 @c ===beg===
-@c extremal_subset (set (-2, -1, 0, 1, 2), abs, max);
-@c extremal_subset (set (sqrt(2), 1.57, %pi/2), sin, min);
+@c extremal_subset ({-2, -1, 0, 1, 2}, abs, max);
+@c extremal_subset ({sqrt(2), 1.57, %pi/2}, sin, min);
 @c ===end===
 @example
-(%i1) extremal_subset (set (-2, -1, 0, 1, 2), abs, max);
+(%i1) extremal_subset (@{-2, -1, 0, 1, 2@}, abs, max);
 (%o1)                       @{- 2, 2@}
-(%i2) extremal_subset (set (sqrt(2), 1.57, %pi/2), sin, min);
+(%i2) extremal_subset (@{sqrt(2), 1.57, %pi/2@}, sin, min);
 (%o2)                       @{sqrt(2)@}
 @end example
 @end deffn
 
 
-@deffn {Funci@'on} flatten (@var{e})
-La funci@'on @code{flatten} eval@'ua una expresi@'on como si su operador principal hubiese sido declarado n-ario; hay sin embargo una diferencia, @code{flatten} no es recursiva para otros argumentos de la funci@'on. Por ejemplo:
+@deffn {Funci@'on} flatten (@var{expr})
+
+Recoge los argumentos de subexpresiones con el mismo operador que @var{expr}
+y construye con ellas otra expresi@'on a partir de estos argumentos.
+
+Aquellas subexpresiones en las que el operador es diferente del operador
+principal de @code{expr} se copian sin modificarse, incluso cuando ellas
+mismas contengan subexpresiones en las que el operador sea el mismo 
+que el de @code{expr}.
+
+Es posible que @code{flatten} construya expresiones en las que el n@'umero
+de argumentos difiera del n@'umero admitido por el operador, lo cual
+har@'a que se emita un mensaje de error. La funci@'on @code{flatten}
+no intentar@'a detectar estas situaciones.
+
+Las expresiones que tengan representaciones especiales, por ejemplo las racionales
+can@'onicas (CRE), no admiten que se aplique sobre ellas la funci@'on @code{flatten};
+en tales casos se devuelve el argumento sin modificaci@'on.
+
+Ejemplos:
+
+Aplicada a una lista, @code{flatten} reune todos los elementos que son a su vez listas.
+
+@c ===beg===
+@c flatten ([a, b, [c, [d, e], f], [[g, h]], i, j]);
+@c ===end===
+@example
+(%i1) flatten ([a, b, [c, [d, e], f], [[g, h]], i, j]);
+(%o1)            [a, b, c, d, e, f, g, h, i, j]
+@end example
+
+Aplicado a un conjunto, @code{flatten} reune todos los elementos que son a su vez conjuntos.
+
+@c ===beg===
+@c flatten ({a, {b}, {{c}}});
+@c flatten ({a, {[a], {a}}});
+@c ===end===
+@example
+(%i1) flatten (@{a, @{b@}, @{@{c@}@}@});
+(%o1)                       @{a, b, c@}
+(%i2) flatten (@{a, @{[a], @{a@}@}@});
+(%o2)                       @{a, [a]@}
+@end example
+
+La funci@'on @code{flatten} es similar a la declaraci@'on del operador
+principal como n-ario. Sin embargo, @code{flatten} no tiene efecto alguno
+sobre subexpresiones que tengan un operador diferente del principal, mientras
+que s@'{@dotless{i}} lo tiene una declaraci@'on n-aria.
+
 
 @c ===beg===
 @c expr: flatten (f (g (f (f (x)))));
@@ -622,43 +887,77 @@ La funci@'on @code{flatten} eval@'ua una expresi@'on como si su operador princip
 (%o3)                      f(g(f(x)))
 @end example
 
-Aplicada a un conjunto, @code{flatten} reune todos los elementos de los conjuntos que son a su vez elementos; por ejemplo:
+La funci@'on @code{flatten} trata las funciones subindicadas como
+a cualquier otro operador.
 
 @c ===beg===
-@c flatten (set (a, set (b), set (set (c))));
-@c flatten (set (a, set ([a], set (a))));
+@c flatten (f[5] (f[5] (x, y), z));
 @c ===end===
 @example
-(%i1) flatten (set (a, set (b), set (set (c))));
-(%o1)                       @{a, b, c@}
-(%i2) flatten (set (a, set ([a], set (a))));
-(%o2)                       @{a, [a]@}
+(%i1) flatten (f[5] (f[5] (x, y), z));
+(%o1)                      f (x, y, z)
+                            5
 @end example
 
-La funci@'on @code{flatten} trabaja correctamente cuando el operador principal es una funci@'on con sub@'{@dotless{i}}ndices
+Es posible que @code{flatten} construya expresiones en las que el n@'umero
+de argumentos difiera del n@'umero admitido por el operador.
 
 @c ===beg===
-@c flatten (f[5] (f[5] (x)));
+@c 'mod (5, 'mod (7, 4));
+@c flatten (%);
+@c ''%, nouns;
 @c ===end===
 @example
-(%i1) flatten (f[5] (f[5] (x)));
-(%o1)                         f (x)
-                               5
+(%i1) 'mod (5, 'mod (7, 4));
+(%o1)                   mod(5, mod(7, 4))
+(%i2) flatten (%);
+(%o2)                     mod(5, 7, 4)
+(%i3) ''%, nouns;
+Wrong number of arguments to mod
+ -- an error.  Quitting.  To debug this try debugmode(true);
 @end example
-
-Para alisar (flatten) una expresi@'on, el operador principal debe estar definido para cero o m@'as argumentos; si no es @'este el caso, Maxima se detendr@'a con un error. Expresiones con representaciones especiales, como expresiones CRE, no pueden ser alisadas; en este caso, @code{flatten} devuelve su argumento sin cambios.
 @end deffn
 
 
 @deffn {Funci@'on} full_listify (@var{a})
-Si @var{a} es un conjunto, convierte @var{a} en una lista y aplica @code{full_listify} a cada miembro de la lista.
 
-Para convertir s@'olo el operador de mayor nivel de un conjunto a una lista, v@'ease @code{listify}.
+Sustituye los operadores de conjunto presentes en @var{a}
+por operadores de listas, devolviendo el resultado.
+La funci@'on @code{full_listify} sustituye operadores de 
+conjuntos en subexpresiones anidadas, incluso cuando
+el operador principal no es @code{set}.
+
+La funci@'on @code{listify} sustituye @'unicamente el
+operador principal.
+
+Ejemplos:
+
+@c ===beg===
+@c full_listify ({a, b, {c, {d, e, f}, g}});
+@c full_listify (F (G ({a, b, H({c, d, e})})));
+@c ===end===
+@example
+(%i1) full_listify (@{a, b, @{c, @{d, e, f@}, g@}@});
+(%o1)               [a, b, [c, [d, e, f], g]]
+(%i2) full_listify (F (G (@{a, b, H(@{c, d, e@})@})));
+(%o2)              F(G([a, b, H([c, d, e])]))
+@end example
 @end deffn
 
 
 @deffn {Funci@'on} fullsetify (@var{a})
-Si @var{a} es una lista, convierte @var{a} en un conjunto y aplica @code{fullsetify} a cada elemento del conjunto. 
+
+Si @var{a} es una lista, sustituye el operador de lista por el
+de conjunto, aplicando posteriormente @code{fullsetify} a todos
+los elementos que son a su vez conjuntos.
+Si @var{a} no es una lista, se devuelve sin cambio alguno.
+
+La funci@'on @code{setify} sustituye solamente el operador principal.
+
+Ejemplos:
+
+En la salida (%o2) el argumento de @code{f} no se convierte en
+conjunto porque el operador principal de @code{f([b])} no es una lista.
 
 @c ===beg===
 @c fullsetify ([a, [a]]);
@@ -670,16 +969,17 @@ Si @var{a} es una lista, convierte @var{a} en un conjunto y aplica @code{fullset
 (%i2) fullsetify ([a, f([b])]);
 (%o2)                      @{a, f([b])@}
 @end example
-
-En la salida (%o2) el argumento de @code{f} no se convierte en conjunto porque el operador principal de @code{f([b])} no es una lista.
-
-Para convertir el operador de mayor nivel de una lista a un conjunto v@'ease @code{setify}.
 @end deffn
 
 
 @deffn {Funci@'on} identity (@var{x})
 
-La funci@'on @code{identity} devuelve su argumento cualquiera que sea @'este.  Para determinar si todos los elementos de un conjunto son @code{true}, se puede hacer lo siguiente
+La funci@'on @code{identity} devuelve su argumento cualquiera que sea @'este.
+
+Ejemplos:
+
+La funci@'on @code{identity} puede utilizarse como predicado cuando
+los argumentos ya son valores booleanos.
 
 @c ===beg===
 @c every (identity, [true, true]);
@@ -693,9 +993,25 @@ La funci@'on @code{identity} devuelve su argumento cualquiera que sea @'este.  P
 
 @deffn {Funci@'on} integer_partitions (@var{n})
 @deffnx {Funci@'on} integer_partitions (@var{n}, @var{len})
-Si el segundo argumento opcional @var{len} no se especifica, devuelve el conjunto de todas las particiones del entero @var{n}. Cuando se especifica @var{len}, devuelve todas las particiones de longitud  @var{len} o menor; en este caso, se a@~naden ceros a cada partici@'on con menos de  @var{len} t@'erminos, a fin de que cada partici@'on tenga exactamente los  @var{len} t@'erminos. En cualquier caso las particiones son listas ordenadas de mayor a menor.
 
-Se dice que la lista @math{[a_1, ..., a_m]} es una partici@'on del entero no negativo @math{n} si (1) cada @math{a_i} es un entero no nulo y (2) @math{a_1 + ... + a_m  = n.}  De donde se deduce que 0 carece de particiones.  
+Devuelve particiones enteras de @var{n}, esto es,
+listas de enteros cuyas sumas son @var{n}.
+
+La sentencia @code{integer_partitions(@var{n})}
+devuelve el conjunto de todas las particiones del entero @var{n}.
+Cada partici@'on es una lista ordenada de mayor a menor.
+
+La sentencia @code{integer_partitions(@var{n}, @var{len})}
+devuelve todas las particiones de longitud @var{len} o menor;
+en este caso, se a@~naden ceros a cada partici@'on con menos
+de @var{len} t@'erminos para que todas ellas sean de longitud
+@var{len}. Las particiones son listas ordenadas de mayor a menor.
+
+Una lista @math{[a_1, ..., a_m]} es una partici@'on de un entero no
+negativo @math{n} si (1) cada @math{a_i} es entero no nulo y (2)
+@math{a_1 + ... + a_m = n.} As@'{@dotless{i}}, 0 no tiene particiones.
+
+Ejemplos:
 
 @c ===beg===
 @c integer_partitions (3);
@@ -719,20 +1035,25 @@ Se dice que la lista @math{[a_1, ..., a_m]} es una partici@'on del entero no neg
 (%o6)               @{[3, 2], [4, 1], [5, 0]@}
 @end example
 
-Para encontrar todas las particiones que satisfagan cierta condici@'on, util@'{@dotless{i}}cese la funci@'on @code{subset}; he aqu@'{@dotless{i}} un ejemplo que encuentra todas las particiones de 10 formadas por n@'umeros primos.
+Para encontrar todas las particiones que satisfagan cierta
+condici@'on, util@'{@dotless{i}}cese la funci@'on @code{subset};
+he aqu@'{@dotless{i}} un ejemplo que encuentra todas las
+particiones de 10 formadas por n@'umeros primos.
 
 @c ===beg===
 @c s: integer_partitions (10)$
+@c cardinality (s);
 @c xprimep(x) := integerp(x) and (x > 1) and primep(x)$
 @c subset (s, lambda ([x], every (xprimep, x)));
 @c ===end===
 @example
 (%i1) s: integer_partitions (10)$
-(%i2) xprimep(x) := integerp(x) and (x > 1) and primep(x)$
-(%i3) subset (s, lambda ([x], every (xprimep, x)));
-(%o3) @{[2, 2, 2, 2, 2], [3, 3, 2, 2], [5, 3, 2], [5, 5], [7, 3]@}
+(%i2) cardinality (s);
+(%o2)                          42
+(%i3) xprimep(x) := integerp(x) and (x > 1) and primep(x)$
+(%i4) subset (s, lambda ([x], every (xprimep, x)));
+(%o4) @{[2, 2, 2, 2, 2], [3, 3, 2, 2], [5, 3, 2], [5, 5], [7, 3]@}
 @end example
-
 @end deffn
 
 
@@ -742,91 +1063,246 @@ Es una forma abreviada de la funci@'on @code{intersection}.
 
 
 @deffn {Funci@'on} intersection (@var{a_1}, ..., @var{a_n})
-Devuelve el conjunto de todos los elementos que son comunes a los conjuntos  @var{a_1} a @var{a_n}. La funci@'on  @code{intersect} debe recibir uno o m@'as argumentos. Muestra un mensaje de error en caso de que cualquiera de los 
-@var{a_i} no sea un conjunto.  V@'ease tambi@'en @code{intersection}.
+
+Devuelve el conjunto de todos los elementos que son
+comunes a los conjuntos  @var{a_1} a @var{a_n}.
+
+Emite un mensaje de error en caso de que cualquiera de los 
+@var{a_i} no sea un conjunto.
+
+Ejemplos:
+
+@c ===beg===
+@c S_1 : {a, b, c, d};
+@c S_2 : {d, e, f, g};
+@c S_3 : {c, d, e, f};
+@c S_4 : {u, v, w};
+@c intersection (S_1, S_2);
+@c intersection (S_2, S_3);
+@c intersection (S_1, S_2, S_3);
+@c intersection (S_1, S_2, S_3, S_4);
+@c ===end===
+@example
+(%i1) S_1 : @{a, b, c, d@};
+(%o1)                     @{a, b, c, d@}
+(%i2) S_2 : @{d, e, f, g@};
+(%o2)                     @{d, e, f, g@}
+(%i3) S_3 : @{c, d, e, f@};
+(%o3)                     @{c, d, e, f@}
+(%i4) S_4 : @{u, v, w@};
+(%o4)                       @{u, v, w@}
+(%i5) intersection (S_1, S_2);
+(%o5)                          @{d@}
+(%i6) intersection (S_2, S_3);
+(%o6)                       @{d, e, f@}
+(%i7) intersection (S_1, S_2, S_3);
+(%o7)                          @{d@}
+(%i8) intersection (S_1, S_2, S_3, S_4);
+(%o8)                          @{@}
+@end example
 @end deffn
 
 @deffn {Funci@'on} kron_delta (@var{x}, @var{y})
-Es la funci@'on delta de Kronecker; la llamada  @code{kron_delta (@var{x}, @var{y})} devuelve la unidad cuando @code{is(x = y)} es verdadero y cero cuando @code{sign (|@var{x} - @var{y}|)} vale @code{pos} (es decir, cuando es positivo).  Si @code{sign (|@var{x} - @var{y}|)} es nulo y @code{@var{x} - @var{y}} no es un n@'umero en coma flotante (ni de doble precisi@'on ni del tipo @code{bfloat}), devuleve 0. En otro caso devuelve una forma nominal.
 
-La funci@'on @code{kron_delta} es sim@'etrica; as@'{@dotless{i}} por ejemplo,  @code{kron_delta(x, y) - kron_delta(y, x)} 
-devuelve cero.
+Es la funci@'on delta de Kronecker.
 
-A continuaci@'on algunos ejemplos.
+La funci@'on @code{kron_delta} devuelve 1 cuando @var{x} e
+@var{y} son id@'enticos o equivalentes, devolviendo 0 si @var{x} e
+@var{y} no son id@'enticos. Cuando no est@'a claro si ambas
+expresiones son equivalentes, @code{kron_delta} devuelve una
+forma nominal. Si la diferencia @code{@var{x} - @var{y}} es un n@'umero
+decimal en coma flotante, @code{kron_delta} dar@'a como resultado una
+expresi@'on nominal, a@'un cuando @var{x} e @var{y} sean aparentemente
+equivalentes.
+
+Concretando, 
+@code{kron_delta(@var{x}, @var{y})} devuelve 1 si 
+@code{is(x = y)} retorna @code{true};
+@code{kron_delta} tambi@'en devuelve 1 si 
+@code{sign(abs(@var{x} - @var{y}))} retorna @code{zero}
+y @code{@var{x} - @var{y}} no es un decimal en coma
+flotante (ni ordinario ni @i{bigfloat});
+@code{kron_delta} devuelve 0 si 
+@code{sign(abs(@var{x} - @var{y}))} retorna @code{pos}.
+
+Cuando @code{sign(abs(@var{x} - @var{y}))} es cualquier
+otra cosa diferente a @code{pos} o @code{zero},
+o si es @code{zero} siendo @code{@var{x} - @var{y}}
+un decimal en coma flotante, entonces @code{kron_delta}
+devuelve una expresi@'on nominal.
+
+La funci@'on @code{kron_delta} est@'a declarada como sim@'etrica,
+esto es, @code{kron_delta(@var{x}, @var{y})} es igual a
+@code{kron_delta(@var{y}, @var{x})}.
+
+Ejemplos:
+
+Si los argumentos de @code{kron_delta} son id@'enticos,
+@code{kron_delta} devuelve 1,
 
 @c ===beg===
-@c [kron_delta (a, a), kron_delta (a + 1, a)];
-@c kron_delta (a, b);
+@c kron_delta (a, a);
+@c kron_delta (x^2 - y^2, x^2 - y^2);
+@c float (kron_delta (1/10, 0.1));
 @c ===end===
 @example
-(%i1) [kron_delta (a, a), kron_delta (a + 1, a)];
-(%o1)                        [1, 0]
-(%i2) kron_delta (a, b);
-(%o2)                   kron_delta(a, b)
+(%i1) kron_delta (a, a);
+(%o1)                           1
+(%i2) kron_delta (x^2 - y^2, x^2 - y^2);
+(%o2)                           1
+(%i3) float (kron_delta (1/10, 0.1));
+(%o3)                           1
 @end example
 
-Bajo la hip@'otesis @code{a > b} se obtiene que  @code{sign (|a - b|)} sea @code{pos} (positivo),
+Si los argumentos de @code{kron_delta} son equivalentes y
+su diferencia no es un decimal en coma flotante, 
+@code{kron_delta} devuelve 1,
 
 @c ===beg===
+@c assume (equal (x, y));
+@c kron_delta (x, y);
+@c ===end===
+@example
+(%i1) assume (equal (x, y));
+(%o1)                     [equal(x, y)]
+(%i2) kron_delta (x, y);
+(%o2)                           1
+@end example
+
+Si los argumentos de @code{kron_delta} no son equivalentes,
+@code{kron_delta} devuelve 0,
+
+@c ===beg===
+@c kron_delta (a + 1, a);
 @c assume (a > b)$
 @c kron_delta (a, b);
+@c kron_delta (1/5, 0.7);
 @c ===end===
 @example
-(%i1) assume (a > b)$
-(%i2) kron_delta (a, b);
-(%o2)                           0
+(%i1) kron_delta (a + 1, a);
+(%o1)                           0
+(%i2) assume (a > b)$
+(%i3) kron_delta (a, b);
+(%o3)                           0
+(%i4) kron_delta (1/5, 0.7);
+(%o4)                           0
 @end example
 
-Si se da por v@'alida la hip@'otesis @code{x >= y}, entonces @code{sign (|x - y|)} se vuelve @code{pz} (es decir, cero o positivo); en este caso,  @code{kron_delta (x, y)} no devuelve resultado alguno,
+Si no es posible determinar la equivalencia de los argumentos
+de @code{kron_delta}, @'esta devuelve una forma
+nominal,
 
 @c ===beg===
+@c kron_delta (a, b);
 @c assume(x >= y)$
 @c kron_delta (x, y);
 @c ===end===
 @example
-(%i1) assume(x >= y)$
-(%i2) kron_delta (x, y);
-(%o2)                   kron_delta(x, y)
+(%i1) kron_delta (a, b);
+(%o1)                   kron_delta(a, b)
+(%i2) assume(x >= y)$
+(%i3) kron_delta (x, y);
+(%o3)                   kron_delta(x, y)
 @end example
 
-Por @'ultimo, puesto que @code{1/10 - 0.1} devuelve un n@'umero en coma flotante, se tiene 
+Si los argumentos de @code{kron_delta} son equivalentes,
+pero su diferencia es un decimal en coma flotante,
+@code{kron_delta} devuelve forma nominal,
 
 @c ===beg===
+@c 1/4 - 0.25;
+@c 1/10 - 0.1;
+@c 0.25 - 0.25b0;
+@c kron_delta (1/4, 0.25);
 @c kron_delta (1/10, 0.1);
+@c kron_delta (0.25, 0.25b0);
 @c ===end===
 @example
-(%i1) kron_delta (1/10, 0.1);
+(%i1) 1/4 - 0.25;
+(%o1)                          0.0
+(%i2) 1/10 - 0.1;
+(%o2)                          0.0
+(%i3) Warning:  Float to bigfloat conversion of 0.250.25 - 0.25b0;
+(%o3)                         0.0b0
+(%i4) kron_delta (1/4, 0.25);
                                   1
-(%o1)                  kron_delta(--, 0.1)
+(%o4)                  kron_delta(-, 0.25)
+                                  4
+(%i5) kron_delta (1/10, 0.1);
+                                  1
+(%o5)                  kron_delta(--, 0.1)
                                   10
+(%i6) Warning:  Float to bigfloat conversion of 0.25kron_delta (0.25, 0.25b0);
+(%o6)               kron_delta(0.25, 2.5b-1)
 @end example
 
-Si se quiere que @code{kron_delta (1/10, 0.1)} devuelva la unidad, h@'agase uso de @code{float}.
+La funci@'on @code{kron_delta} es sim@'etrica.
 
 @c ===beg===
-@c float (kron_delta (1/10, 0.1));
+@c kron_delta (x, y);
+@c kron_delta (y, x);
+@c kron_delta (x, y) - kron_delta (y, x);
+@c is (equal (kron_delta (x, y), kron_delta (y, x)));
+@c is (kron_delta (x, y) = kron_delta (y, x));
 @c ===end===
 @example
-(%i1) float (kron_delta (1/10, 0.1));
-(%o1)                           1
+(%i1) kron_delta (x, y);
+(%o1)                   kron_delta(x, y)
+(%i2) kron_delta (y, x);
+(%o2)                   kron_delta(x, y)
+(%i3) kron_delta (x, y) - kron_delta (y, x);
+(%o3)                           0
+(%i4) is (equal (kron_delta (x, y), kron_delta (y, x)));
+(%o4)                         true
+(%i5) is (kron_delta (x, y) = kron_delta (y, x));
+(%o5)                         true
 @end example
 @end deffn
 
 
 @deffn {Funci@'on} listify (@var{a})
-Si @var{a} es un conjunto, devuelve una lista con los elementos de @var{a}; si  @var{a} no es un conjunto, devuelve @var{a}.  Para convertir un conjunto y todos sus elementos a listas, v@'ease  @code{full_listify}.
 
-@c NEED TO PUT SOMETHING HERE
+Si @var{a} es un conjunto, devuelve una lista con los elementos de @var{a};
+si  @var{a} no es un conjunto, devuelve @var{a}.
+
+La funci@'on @code{full_listify} sustituye todos los operadores
+de conjunto en @var{a} por operadores de lista.
+
+Ejemplos:
+
 @c ===beg===
+@c listify ({a, b, c, d});
+@c listify (F ({a, b, c, d}));
 @c ===end===
 @example
+(%i1) listify (@{a, b, c, d@});
+(%o1)                     [a, b, c, d]
+(%i2) listify (F (@{a, b, c, d@}));
+(%o2)                    F(@{a, b, c, d@})
 @end example
 @end deffn
 
 
 @deffn {Funci@'on} lreduce (@var{f}, @var{s})
 @deffnx {Funci@'on} lreduce (@var{f}, @var{s}, @var{init})
-La funci@'on  @code{lreduce} (left reduce, o reducir por la izquierda) convierte una funci@'on binaria en  n-aria por composici@'on; un ejemplo har@'a esto m@'as claro. Cuando no se define el argumento opcional @var{init} se tiene
+
+Ampl@'{@dotless{i}}a la funci@'on binaria @var{F} a n-aria mediante
+composici@'on, siendo @var{s} una lista.
+
+La sentencia  @code{lreduce(@var{F}, @var{s})} devuelve
+@code{F(... F(F(s_1, s_2), s_3), ... s_n)}.
+Si se incluye el argumento opcional @var{s_0},
+el resultado equivale a @code{lreduce(@var{F}, cons(@var{s_0}, @var{s}))}.
+
+La funci@'on @var{F} se aplica primero a los elementos del
+extremo izquierdo de la lista, de ah@'{@dotless{i}} el nombre
+@code{lreduce}, (@i{left reduce}).
+
+V@'eanse tambi@'en @code{rreduce}, @code{xreduce} y @code{tree_reduce}.
+
+Ejemplos:
+
+La funci@'on @code{lreduce} sin el argumento opcional,
 
 @c ===beg===
 @c lreduce (f, [1, 2, 3]);
@@ -839,7 +1315,7 @@ La funci@'on  @code{lreduce} (left reduce, o reducir por la izquierda) convierte
 (%o2)                  f(f(f(1, 2), 3), 4)
 @end example
 
-N@'otese que la funci@'on @var{f} se aplica en primer lugar a los elementos que est@'an m@'as a la izquierda (de ah@'{@dotless{i}} el nombre @code{lreduce}).  Cuando se define @var{init}, se tiene
+La funci@'on @code{lreduce} con el argumento opcional,
 
 @c ===beg===
 @c lreduce (f, [1, 2, 3], 4);
@@ -849,53 +1325,146 @@ N@'otese que la funci@'on @var{f} se aplica en primer lugar a los elementos que 
 (%o1)                  f(f(f(4, 1), 2), 3)
 @end example
 
-La funci@'on @code{lreduce} facilita calcular el producto o suma de los miembros de una lista.
+La funci@'on @code{lreduce} aplicada a operadores binarios de Maxima.
+El s@'{@dotless{i}}mbolo @code{//} es el operador divisi@'on.
 
 @c ===beg===
-@c lreduce ("+", args (set (a, b)));
-@c lreduce ("*", args (set (1, 2, 3, 4, 5)));
+@c lreduce ("^", args ({a, b, c, d}));
+@c lreduce ("//", args ({a, b, c, d}));
 @c ===end===
 @example
-(%i1) lreduce ("+", args (set (a, b)));
-(%o1)                         b + a
-(%i2) lreduce ("*", args (set (1, 2, 3, 4, 5)));
-(%o2)                          120
+(%i1) lreduce ("^", args (@{a, b, c, d@}));
+                               b c d
+(%o1)                       ((a ) )
+(%i2) lreduce ("//", args (@{a, b, c, d@}));
+                                a
+(%o2)                         -----
+                              b c d
 @end example
 
-V@'eanse tambi@'en @code{rreduce}, @code{xreduce} y @code{tree_reduce}.
 @end deffn
 
 
-@deffn {Funci@'on} makeset (@var{e}, @var{v}, @var{s})
-Esta funci@'on es similar a  @code{makelist}, con la salvedad de que @code{makeset} permite sustituciones m@'ultiples. El primer argumento  @var{e} es una expresi@'on, el segundo argumento @var{v} es una lista de variables y  @var{s} es una lista o conjunto de valores para las variables  @var{v}. Cada miembro de  @var{s} debe tener la misma longitud que  @var{v}. As@'{@dotless{i}} se tiene que  @code{makeset (@var{e}, @var{v}, @var{s})} es el conjunto @code{@{z | z = substitute(v -> s_i) and s_i in s@}}.
+@deffn {Funci@'on} makeset (@var{expr}, @var{x}, @var{s})
+
+Genera un conjunto cuyos miembros se generan a partir de la
+expresi@'on @var{expr}, siendo @var{x} una lista de variables de
+@var{expr} y @var{s} un conjunto o lista de listas.
+Para generar los elementos del conjunto, se eval@'ua @var{expr}
+asignando a las variables de @var{x} los elementos de @var{s}
+en paralelo.
+
+Los elementos de @var{s} deben tener la misma longitud que @var{x}.
+La lista de variables @var{x} debe ser una lista de s@'{@dotless{i}}mbolos
+sin sub@'{@dotless{i}}ndices. Cuando se trate de un @'unico s@'{@dotless{i}}mbolo,
+@var{x} debe expresarse como una lista de un elemento y cada elemento de @var{s}
+debe ser una lista de un s@'olo elemento.
+
+@c FOLLOWING EQUIVALENT EXPRESSION IS REALLY TOO COMPLICATED, JUST SKIP IT FOR NOW
+@c @code{makeset(@var{expr}, @var{x}, @var{s})} returns the same result as
+@c @code{setify(map(lambda([L], sublis(map("=", ''@var{x}, L), ''@var{expr})), args(@var{s})))}.
+
+V@'ease tambi@'en @code{makelist}.
+
+Ejemplos:
 
 @c ===beg===
-@c makeset (i/j, [i, j], [[a, b], [c, d]]);
-@c ind: set (0, 1, 2, 3)$
-@c makeset (i^2 + j^2 + k^2, [i, j, k], cartesian_product (ind, ind, ind));
+@c makeset (i/j, [i, j], [[1, a], [2, b], [3, c], [4, d]]);
+@c S : {x, y, z}$
+@c S3 : cartesian_product (S, S, S);
+@c makeset (i + j + k, [i, j, k], S3);
+@c makeset (sin(x), [x], {[1], [2], [3]});
 @c ===end===
 @example
-(%i1) makeset (i/j, [i, j], [[a, b], [c, d]]);
-                              a  c
-(%o1)                        @{-, -@}
-                              b  d
-(%i2) ind: set (0, 1, 2, 3)$
-(%i3) makeset (i^2 + j^2 + k^2, [i, j, k], cartesian_product (ind, ind, ind));
-(%o3) @{0, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13, 14, 17, 18, 
-                                                      19, 22, 27@}
+(%i1) makeset (i/j, [i, j], [[1, a], [2, b], [3, c], [4, d]]);
+                           1  2  3  4
+(%o1)                     @{-, -, -, -@}
+                           a  b  c  d
+(%i2) S : @{x, y, z@}$
+(%i3) S3 : cartesian_product (S, S, S);
+(%o3) @{[x, x, x], [x, x, y], [x, x, z], [x, y, x], [x, y, y], 
+[x, y, z], [x, z, x], [x, z, y], [x, z, z], [y, x, x], 
+[y, x, y], [y, x, z], [y, y, x], [y, y, y], [y, y, z], 
+[y, z, x], [y, z, y], [y, z, z], [z, x, x], [z, x, y], 
+[z, x, z], [z, y, x], [z, y, y], [z, y, z], [z, z, x], 
+[z, z, y], [z, z, z]@}
+(%i4) makeset (i + j + k, [i, j, k], S3);
+(%o4) @{3 x, 3 y, y + 2 x, 2 y + x, 3 z, z + 2 x, z + y + x, 
+                                       z + 2 y, 2 z + x, 2 z + y@}
+(%i5) makeset (sin(x), [x], @{[1], [2], [3]@});
+(%o5)               @{sin(1), sin(2), sin(3)@}
 @end example
 @end deffn
 
 
 @deffn {Funci@'on} moebius (@var{n})
-Es la funci@'on de Moebius; si @var{n} es el producto de @math{k} primos diferentes, @code{moebius(@var{n})} devuelve @math{(-1)^k}, retornando 1 si @math{@var{n} = 1} 0 para cualesquiera otros enteros positivos. La funci@'on de Moebius se distribuye respecto de igualdades, listas, matrices y conjuntos.
+
+Representa la funci@'on de Moebius.
+
+Si @var{n} es el producto de @math{k} n@'umeros primos diferentes,
+@code{moebius(@var{n})} devuelve @math{(-1)^k}, retornando 1 si 
+@math{@var{n} = 1} y 0 para cualesquiera otros enteros positivos.
+
+
+La funci@'on de Moebius se distribuye respecto de ecuaciones,
+listas, matrices y conjuntos.
+
+Ejemplos:
+
+@c ===beg===
+@c moebius (1);
+@c moebius (2 * 3 * 5);
+@c moebius (11 * 17 * 29 * 31);
+@c moebius (2^32);
+@c moebius (n);
+@c moebius (n = 12);
+@c moebius ([11, 11 * 13, 11 * 13 * 15]);
+@c moebius (matrix ([11, 12], [13, 14]));
+@c moebius ({21, 22, 23, 24});
+@c ===end===
+@example
+(%i1) moebius (1);
+(%o1)                           1
+(%i2) moebius (2 * 3 * 5);
+(%o2)                          - 1
+(%i3) moebius (11 * 17 * 29 * 31);
+(%o3)                           1
+(%i4) moebius (2^32);
+(%o4)                           0
+(%i5) moebius (n);
+(%o5)                      moebius(n)
+(%i6) moebius (n = 12);
+(%o6)                    moebius(n) = 0
+(%i7) moebius ([11, 11 * 13, 11 * 13 * 15]);
+(%o7)                      [- 1, 1, 1]
+(%i8) moebius (matrix ([11, 12], [13, 14]));
+                           [ - 1  0 ]
+(%o8)                      [        ]
+                           [ - 1  1 ]
+(%i9) moebius (@{21, 22, 23, 24@});
+(%o9)                      @{- 1, 0, 1@}
+@end example
 @end deffn
  
 
 @deffn {Funci@'on} multinomial_coeff (@var{a_1}, ..., @var{a_n})
 @deffnx {Funci@'on} multinomial_coeff ()
-Devuelve el coeficiente multinomial. Si todos los @var{a_k} son enteros no negativos, el coeficiente multinomial es el n@'umero de formas de colocar  @code{@var{a_1} + ... + @var{a_n}} objetos diferentes en  @math{n} cajas con @var{a_k} elementos en la @math{k}-@'esima caja. En general, @code{multinomial (@var{a_1}, ..., @var{a_n})} calcula  @code{(@var{a_1} + ... + @var{a_n})!/(@var{a_1}! ... @var{a_n}!)}. Si no se dan argumentos,  @code{multinomial()} devuelve 1. Se puede usar 
-@code{minfactorial} para simplificar el valor devuelto por @code{multinomial_coeff}; por ejemplo, 
+
+Calcula el coeficiente multinomial.
+
+Si todos los @var{a_k} son enteros no negativos, el coeficiente multinomial
+es el n@'umero de formas de colocar  @code{@var{a_1} + ... + @var{a_n}}
+objetos diferentes en  @math{n} cajas con @var{a_k} elementos en la
+@math{k}-@'esima caja. En general,
+@code{multinomial_coeff (@var{a_1}, ..., @var{a_n})} calcula
+@code{(@var{a_1} + ... + @var{a_n})!/(@var{a_1}! ... @var{a_n}!)}.
+
+Si no se dan argumentos, @code{multinomial_coeff()} devuelve 1.
+
+Se puede usar @code{minfactorial} para simplificar el valor
+devuelto por @code{multinomial_coeff}.
+
+Ejemplos:
 
 @c ===beg===
 @c multinomial_coeff (1, 2, x);
@@ -923,19 +1492,54 @@ Devuelve el coeficiente multinomial. Si todos los @var{a_k} son enteros no negat
 
 
 @deffn {Funci@'on} num_distinct_partitions (@var{n})
-@deffnx {Funci@'on} num_distinct_partitions (@var{n}, @var{a})
+@deffnx {Funci@'on} num_distinct_partitions (@var{n}, @var{list})
 
-Si @var{n} es un entero no negativo, devuelve el n@'umero de particiones enteras diferentes de @var{n}.
+Si @var{n} es un entero no negativo, devuelve el n@'umero de
+particiones enteras distintas de @var{n}, en caso contrario
+@code{num_distinct_partitions} devuelve una forma nominal.
 
-Si el argumento opcional  @var{a} es @code{list}, devuelve a su vez una lista del n@'umero de particiones de  1,2,3, ... , n. Si @var{n} no es un entero no negativo, devuelve una forma nominal.
+La sentencia @code{num_distinct_partitions(@var{n}, list)}
+devuelve una lista con el n@'umero de particiones distintas
+de 1, 2, 3, ..., @var{n}.
 
-Definici@'on: si @math{@var{n} = k_1 + ... + k_m}, siendo los @math{k_1} a  @math{k_m} enteros positivos distintos, se llama a @math{k_1 + ... + k_m} una partici@'on de @var{n}.
+Una partici@'on distinta de @var{n} es una lista de n@'umeros
+enteros positivos distintos @math{k_1}, ..., @math{k_m}
+tales que @math{@var{n} = k_1 + ... + k_m}.
+
+Ejemplos:
+
+@c ===beg===
+@c num_distinct_partitions (12);
+@c num_distinct_partitions (12, list);
+@c num_distinct_partitions (n);
+@c ===end===
+@example
+(%i1) num_distinct_partitions (12);
+(%o1)                          15
+(%i2) num_distinct_partitions (12, list);
+(%o2)      [1, 1, 1, 2, 2, 3, 4, 5, 6, 8, 10, 12, 15]
+(%i3) num_distinct_partitions (n);
+(%o3)              num_distinct_partitions(n)
+@end example
 @end deffn
 
 
 @deffn {Funci@'on} num_partitions (@var{n})
-@deffnx {Funci@'on} num_partitions (@var{n}, @var{a})
-Si @var{n} es un entero no negativo, devuelve el n@'umero de particiones de @var{n}. Si el argumento opcional  @var{a} es @code{list}, devuelve a su vez otra lista con los n@'umeros de particiones de  1,2,3, ... , n.  Si @var{n} no es un entero no negativo, devuelve una forma nominal.
+@deffnx {Funci@'on} num_partitions (@var{n}, @var{list})
+
+Si @var{n} es un entero no negativo, devuelve el n@'umero de
+particiones enteras de @var{n}, en caso contrario @code{num_partitions}
+devuelve una expresi@'on nominal.
+
+La sentencia @code{num_partitions(@var{n}, list)} devuelve una lista
+con los n@'umeros de particiones enteras de 1, 2, 3, ..., @var{n}.
+
+Siendo @var{n} un entero no negativo, @code{num_partitions(@var{n})}
+es igual a @code{cardinality(integer_partitions(@var{n}))}; sin
+embargo, @code{num_partitions} no construye el conjunto de 
+particiones, por lo que es m@'as r@'apido.
+
+Ejemplos:
 
 @c ===beg===
 @c num_partitions (5) = cardinality (integer_partitions (5));
@@ -950,29 +1554,53 @@ Si @var{n} es un entero no negativo, devuelve el n@'umero de particiones de @var
 (%i3) num_partitions (n);
 (%o3)                   num_partitions(n)
 @end example
-
-Para un entero no negativo @var{n}, @code{num_partitions (@var{n})} equivale a @code{cardinality (integer_partitions (@var{n}))}; sin embargo, @code{num_partitions}  es m@'as r@'apido.
 @end deffn
 
 
 @deffn {Funci@'on} partition_set (@var{a}, @var{f})
-Devuelve una lista con dos conjuntos; el primer conjunto es el subconjunto de @var{a} para el cual el predicado  @var{f} devuelve @code{false} y el segundo es el subconjunto de @var{a} para el cual @var{f} devuelve @code{true}. Si  @var{a} no es un conjunto, se env@'{@dotless{i}}a un mensaje de error. V@'ease tambi@'en @code{subset}.
+
+Particiona el conjunto @var{a} respecto del predicado @var{f}.
+
+La funci@'on @code{partition_set} devuelve una lista con dos conjuntos;
+el primer conjunto es el subconjunto de @var{a} para el cual el predicado
+@var{f} devuelve @code{false} y el segundo contiene al resto de elementos de @var{a}.
+
+La funci@'on @code{partition_set} no aplica @code{is} al valor devuelto
+por @var{f}.
+
+La funci@'on @code{partition_set} emite un mensaje de error si @var{a}
+no es un conjunto literal.
+
+V@'ease tambi@'en @code{subset}.
+
+Ejemplos:
 
 @c ===beg===
-@c partition_set (set (2, 7, 1, 8, 2, 8), evenp);
-@c partition_set (set (x, rat(y), rat(y) + z, 1), lambda ([x], ratp(x)));
+@c partition_set ({2, 7, 1, 8, 2, 8}, evenp);
+@c partition_set ({x, rat(y), rat(y) + z, 1}, lambda ([x], ratp(x)));
 @c ===end===
 @example
-(%i1) partition_set (set (2, 7, 1, 8, 2, 8), evenp);
+(%i1) partition_set (@{2, 7, 1, 8, 2, 8@}, evenp);
 (%o1)                   [@{1, 7@}, @{2, 8@}]
-(%i2) partition_set (set (x, rat(y), rat(y) + z, 1), lambda ([x], ratp(x)));
+(%i2) partition_set (@{x, rat(y), rat(y) + z, 1@}, lambda ([x], ratp(x)));
 (%o2)/R/              [@{1, x@}, @{y, y + z@}]
 @end example
 @end deffn
 
 
 @deffn {Funci@'on} permutations (@var{a})
-Devuelve un conjunto con todas las permutaciones distintas de los miembros de la lista o conjunto  @var{a}. (Cada permutaci@'on es una lista, no un conjunto.)  Si @var{a} es una lista, sus miembros duplicados no son eliminados antes de buscar sus permutaciones. As@'{@dotless{i}},
+
+Devuelve un conjunto con todas las permutaciones distintas
+de los miembros de la lista o conjunto  @var{a}. Cada permutaci@'on
+es una lista, no un conjunto.
+
+Si @var{a} es una lista, sus miembros duplicados no son eliminados
+antes de buscar sus permutaciones.
+
+Si @var{a} no es una lista o conjunto, @code{permutations} emite
+un mensaje de error.
+
+Ejemplos:
 
 @c ===beg===
 @c permutations ([a, a]);
@@ -984,23 +1612,72 @@ Devuelve un conjunto con todas las permutaciones distintas de los miembros de la
 (%i2) permutations ([a, a, b]);
 (%o2)           @{[a, a, b], [a, b, a], [b, a, a]@}
 @end example
-
-Si @var{a} no es una lista o conjunto, se muestra un mensaje de error.
 @end deffn
 
 
 @deffn {Funci@'on} powerset (@var{a})
 @deffnx {Funci@'on} powerset (@var{a}, @var{n})
-Si no se define el segundo argumento opcional @var{n}, devuelve el conjunto de todos los subconjuntos del conjunto @var{a}.
-La llamada @code{powerset(@var{a})} tiene @code{2^cardinality(@var{a})} miembros. Dado un segundo argumento, 
-@code{powerset(@var{a},@var{n})} devuelve el conjunto de todos los subconjuntos de  @var{a} que tienen cardinalidad @var{n}. Muestra un error si @var{a} no es un conjunto; muestra otro error si  @var{n} no es un positivo entero.
-@end deffn
 
+Devuelve el conjunto de todos los subconjuntos del conjunto @var{a}
+o un sunconjunto de ellos.
+
+La sentencia @code{powerset(@var{a})} devuelve el conjunto de todos
+los subconjuntos de @var{a}, que contendr@'a @code{2^cardinality(@var{a})}
+elementos.
+
+La sentencia @code{powerset(@var{a}, @var{n})} devuelve el conjunto de todos
+los subconjuntos de @var{a} de cardinalidad @var{n}.
+
+La funci@'on @code{powerset} emite un mensaje de error si @var{a} no
+es un conjunto literal o si @var{n} no es un entero no negativo.
+
+Ejemplos:
+
+@c ===beg===
+@c powerset ({a, b, c});
+@c powerset ({w, x, y, z}, 4);
+@c powerset ({w, x, y, z}, 3);
+@c powerset ({w, x, y, z}, 2);
+@c powerset ({w, x, y, z}, 1);
+@c powerset ({w, x, y, z}, 0);
+@c ===end===
+@example
+(%i1) powerset (@{a, b, c@});
+(%o1) @{@{@}, @{a@}, @{a, b@}, @{a, b, c@}, @{a, c@}, @{b@}, @{b, c@}, @{c@}@}
+(%i2) powerset (@{w, x, y, z@}, 4);
+(%o2)                    @{@{w, x, y, z@}@}
+(%i3) powerset (@{w, x, y, z@}, 3);
+(%o3)     @{@{w, x, y@}, @{w, x, z@}, @{w, y, z@}, @{x, y, z@}@}
+(%i4) powerset (@{w, x, y, z@}, 2);
+(%o4)   @{@{w, x@}, @{w, y@}, @{w, z@}, @{x, y@}, @{x, z@}, @{y, z@}@}
+(%i5) powerset (@{w, x, y, z@}, 1);
+(%o5)                 @{@{w@}, @{x@}, @{y@}, @{z@}@}
+(%i6) powerset (@{w, x, y, z@}, 0);
+(%o6)                         @{@{@}@}
+@end example
+@end deffn
 
 
 @deffn {Funci@'on} rreduce (@var{f}, @var{s})
 @deffnx {Funci@'on} rreduce (@var{f}, @var{s}, @var{init})
-La funci@'on  @code{rreduce} (right reduce, reducir por la derecha) extiende una funci@'on binaria a n-aria por composici@'on; un ejemplo har@'a esto m'as claro. Si el argumento opcional @var{init} no est@'a definido, se tiene
+
+Ampl@'{@dotless{i}}a la funci@'on binaria @var{F} a n-aria mediante
+composici@'on, siendo @var{s} una lista.
+
+La sentencia  @code{rreduce(@var{F}, @var{s})} devuelve
+@code{F(s_1, ... F(s_@{n - 2@}, F(s_@{n - 1@}, s_n)))}.
+Si se incluye el argumento opcional @var{s_@{n + 1@}},
+el resultado equivale a @code{rreduce(@var{F}, endcons(@var{s_@{n + 1@}}, @var{s}))}.
+
+La funci@'on @var{F} se aplica primero a los elementos del
+extremo derecho de la lista, de ah@'{@dotless{i}} el nombre
+@code{rreduce}, (@i{right reduce}).
+
+V@'eanse tambi@'en @code{lreduce}, @code{xreduce} y @code{tree_reduce}.
+
+Ejemplos:
+
+La funci@'on @code{rreduce} sin el argumento opcional,
 
 @c ===beg===
 @c rreduce (f, [1, 2, 3]);
@@ -1013,7 +1690,7 @@ La funci@'on  @code{rreduce} (right reduce, reducir por la derecha) extiende una
 (%o2)                  f(1, f(2, f(3, 4)))
 @end example
 
-N@'otese que la funci@'on @var{f} se aplica en primer lugar al elemento que est@'a m@'as a la derecha en la lista, de ah@'{@dotless{i}} el nombre @code{rreduce}. Si @var{init} est@'a definido,
+La funci@'on @code{rreduce} con el argumento opcional,
 
 @c ===beg===
 @c rreduce (f, [1, 2, 3], 4);
@@ -1023,32 +1700,67 @@ N@'otese que la funci@'on @var{f} se aplica en primer lugar al elemento que est@
 (%o1)                  f(1, f(2, f(3, 4)))
 @end example
 
-La funci@'on @code{rreduce} permite calcular f@'acilmente el producto o suma de los miembros de una lista.
+La funci@'on @code{rreduce} aplicada a operadores binarios de Maxima.
+El s@'{@dotless{i}}mbolo @code{//} es el operador divisi@'on.
 
 @c ===beg===
-@c rreduce ("+", args (set (a, b)));
-@c rreduce ("*", args (set (1, 2, 3, 4, 5)));
+@c rreduce ("^", args ({a, b, c, d}));
+@c rreduce ("//", args ({a, b, c, d}));
 @c ===end===
 @example
-(%i1) rreduce ("+", args (set (a, b)));
-(%o1)                         b + a
-(%i2) rreduce ("*", args (set (1, 2, 3, 4, 5)));
-(%o2)                          120
+(%i1) rreduce ("^", args (@{a, b, c, d@}));
+                                 d
+                                c
+                               b
+(%o1)                         a
+(%i2) rreduce ("//", args (@{a, b, c, d@}));
+                               a c
+(%o2)                          ---
+                               b d
 @end example
-
-V@'eanse tambi@'en @code{lreduce}, @code{tree_reduce} y @code{xreduce}.
 @end deffn
 
 
 @deffn {Funci@'on}  setdifference (@var{a}, @var{b})
-Devuelve in conjunto con los elementos del conjunto @var{a} que
-no pertenecen al conjunto @var{b}. Env@'{@dotless{i}}a un mensaje 
-de error si  @var{a} o @var{b} no son conjuntos.
 
+Devuelve el conjunto con los elementos del conjunto @var{a} que
+no pertenecen al conjunto @var{b}.
+
+La funci@'on @code{setdifference} emite un mensaje de error si
+@var{a} o @var{b} no son conjuntos.
+
+Ejemplos:
+
+@c ===beg===
+@c S_1 : {a, b, c, x, y, z};
+@c S_2 : {aa, bb, c, x, y, zz};
+@c setdifference (S_1, S_2);
+@c setdifference (S_2, S_1);
+@c setdifference (S_1, S_1);
+@c setdifference (S_1, {});
+@c setdifference ({}, S_1);
+@c ===end===
+@example
+(%i1) S_1 : @{a, b, c, x, y, z@};
+(%o1)                  @{a, b, c, x, y, z@}
+(%i2) S_2 : @{aa, bb, c, x, y, zz@};
+(%o2)                 @{aa, bb, c, x, y, zz@}
+(%i3) setdifference (S_1, S_2);
+(%o3)                       @{a, b, z@}
+(%i4) setdifference (S_2, S_1);
+(%o4)                     @{aa, bb, zz@}
+(%i5) setdifference (S_1, S_1);
+(%o5)                          @{@}
+(%i6) setdifference (S_1, @{@});
+(%o6)                  @{a, b, c, x, y, z@}
+(%i7) setdifference (@{@}, S_1);
+(%o7)                          @{@}
+@end example
 @end deffn
 
 
 @deffn {Funci@'on} setequalp (@var{a}, @var{b})
+
 Devuelve  @code{true} si los conjuntos @var{a} y @var{b} tienen
 el mismo n@'umero de elementos
 @c $SETEQUALP CALLS THE LISP FUNCTION LIKE,
@@ -1060,38 +1772,95 @@ considerados en el orden que determina la funci@'on
 @code{listify}. En caso contrario, @code{setequalp}
 devuelve @code{false}.
 
-La funci@'on @code{setequalp} muestra un mensaje de error si cualquiera de
-las expresiones @var{a} o @var{b} no es conjunto.
+Ejemplos:
 
+@c ===beg===
+@c setequalp ({1, 2, 3}, {1, 2, 3});
+@c setequalp ({a, b, c}, {1, 2, 3});
+@c setequalp ({x^2 - y^2}, {(x + y) * (x - y)});
+@c ===end===
+@example
+(%i1) setequalp (@{1, 2, 3@}, @{1, 2, 3@});
+(%o1)                         true
+(%i2) setequalp (@{a, b, c@}, @{1, 2, 3@});
+(%o2)                         false
+(%i3) setequalp (@{x^2 - y^2@}, @{(x + y) * (x - y)@});
+(%o3)                         false
+@end example
 @end deffn
 
 
 @deffn {Funci@'on} setify (@var{a})
-Construye un conjunto con los miembros de la lista @var{a}.  Los elementos duplicados de la lista @var{a} son borrados y lordenados de acuerdo con el predicado @code{orderlessp}.  Env@'{@dotless{i}}a un mensaje de error si @code{a} no es una lista. 
+
+Construye un conjunto con los miembros de la lista @var{a}.
+Los elementos duplicados de la lista @var{a} son borrados
+y ordenados de acuerdo con el predicado @code{orderlessp}.
+
+La funci@'on @code{setify} emite un mensaje de error si
+@var{a} no es un conjunto literal.
+
+Ejemplos:
+
+@c ===beg===
+@c setify ([1, 2, 3, a, b, c]);
+@c setify ([a, b, c, a, b, c]);
+@c setify ([7, 13, 11, 1, 3, 9, 5]);
+@c ===end===
+@example
+(%i1) setify ([1, 2, 3, a, b, c]);
+(%o1)                  @{1, 2, 3, a, b, c@}
+(%i2) setify ([a, b, c, a, b, c]);
+(%o2)                       @{a, b, c@}
+(%i3) setify ([7, 13, 11, 1, 3, 9, 5]);
+(%o3)                @{1, 3, 5, 7, 9, 11, 13@}
+@end example
 @end deffn
 
 
 @deffn {Funci@'on} setp (@var{a})
-Devuelve @code{true} si y s@'olo si @var{a} es un conjunto de Maxima. La funci@'on @code{setp} chequea si el operador de su argumento es el de los conjuntos; no chequea si el argumento es un conjunto simplificado. As@'{@dotless{i}},
+
+Devuelve @code{true} si y s@'olo si @var{a} es un conjunto de Maxima.
+
+La funci@'on @code{setp} devuelve @code{true} tanto cuando el conjunto
+tiene como cuando no tiene elementos repetidos.
+
+@c NOT SURE WE NEED TO MENTION THIS. OK FOR NOW
+La funci@'on @code{setp} is equivalent to the Maxima function
+@code{setp(a) := not atom(a) and op(a) = 'set}.
+
+Ejemplos:
 
 @c ===beg===
-@c setp (set (a, a)), simp: false;
+@c simp : false;
+@c {a, a, a};
+@c setp (%);
 @c ===end===
 @example
-(%i1) setp (set (a, a)), simp: false;
-(%o1)                         true
+(%i1) simp : false;
+(%o1)                         false
+(%i2) @{a, a, a@};
+(%o2)                       @{a, a, a@}
+(%i3) setp (%);
+(%o3)                         true
 @end example
-
-@c IF THE FOLLOWING STATEMENT IMPLIES setp IS EQUIVALENT TO setp(a) := is (inpart (a, 0) = set), SAY SO.
-@c OTHERWISE THIS IS JUST A DISTRACTION SO CUT IT.
-La funci@'on @code{setp} podr@'{@dotless{i}}a haberse programado en Maxima como @code{setp(a) := is (inpart (a, 0) = set)}.
-
 @end deffn
 
 
 @deffn {Funci@'on} set_partitions (@var{a})
 @deffnx {Funci@'on} set_partitions (@var{a}, @var{n})
-Si est'a definido el argumento opcional @var{n}, devuelve el conjunto de todas las descomposiciones de @var{a} en @var{n} subconjuntos disjuntos no vac@'{@dotless{i}}os. Si @var{n} no est@'a definido, devuelve el conjunto de todas las particiones.
+
+Devuelve el conjunto de todas las particiones de @var{a} o
+un subconjunto de ellas.
+
+La sentencia @code{set_partitions(@var{a}, @var{n})}
+devuelve un conjunto con todas las descomposiciones de @var{a}
+en @var{n} conjuntos no vac@'{@dotless{i}}os disjuntos.
+
+La sentencia @code{set_partitions(@var{a})} devuelve el
+conjunto de todas las particiones.
+
+La funci@'on @code{stirling2} devuelve la cardinalidad del conjunto
+de las particiones de un conjunto.
 
 Se dice que un conjunto @math{P} es una partici@'on del conjunto @math{S} si verifica
 
@@ -1101,56 +1870,59 @@ cada elemento de @math{P} es un conjunto no vac@'{@dotless{i}}o,
 @item
 los elementos de @math{P} son disjuntos,
 @item
-la uni@'on de elementos de @math{P} es igual a  @math{S}.
+la uni@'on de los elementos de @math{P} es igual a  @math{S}.
 @end enumerate
 
-El conjunto vac@'{@dotless{i}}o forma una partici@'on de s@'{@dotless{i}} mismo, as@'{@dotless{i}}, 
+Ejemplos:
+
+El conjunto vac@'{@dotless{i}}o forma una partici@'on de s@'{@dotless{i}} mismo,
 
 @c ===beg===
-@c set_partitions (set ());
+@c set_partitions ({});
 @c ===end===
 @example
-(%i1) set_partitions (set ());
+(%i1) set_partitions (@{@});
 (%o1)                         @{@{@}@}
 @end example
 
-El cardinal del conjunto de particiones de un conjunto puede calcularse con @code{stirling2}; as@'{@dotless{i}}
+La cardinalidad del conjunto de particiones de un conjunto puede calcularse con @code{stirling2},
 
 @c ===beg===
-@c s: set (0, 1, 2, 3, 4, 5)$
+@c s: {0, 1, 2, 3, 4, 5}$
 @c p: set_partitions (s, 3)$ 
 @c cardinality(p) = stirling2 (6, 3);
 @c ===end===
 @example
-(%i1) s: set (0, 1, 2, 3, 4, 5)$
+(%i1) s: @{0, 1, 2, 3, 4, 5@}$
 (%i2) p: set_partitions (s, 3)$ 
 (%o3)                        90 = 90
 (%i4) cardinality(p) = stirling2 (6, 3);
 @end example
 
-Cada elemento de @code{p} deber@'{@dotless{i}}a tener 3 miembros:
+Cada elemento de @code{p} deber@'{@dotless{i}}a tener @var{n} = 3 miembros,
 
 @c ===beg===
-@c s: set (0, 1, 2, 3, 4, 5)$
+@c s: {0, 1, 2, 3, 4, 5}$
 @c p: set_partitions (s, 3)$ 
 @c map (cardinality, p);
 @c ===end===
 @example
-(%i1) s: set (0, 1, 2, 3, 4, 5)$
+(%i1) s: @{0, 1, 2, 3, 4, 5@}$
 (%i2) p: set_partitions (s, 3)$ 
 (%o3)                          @{3@}
 (%i4) map (cardinality, p);
 @end example
 
-Por @'ultimo, para cada elemento de @code{p}, la uni@'on de sus miembros debe ser igual a @code{s}:
+Por @'ultimo, para cada miembro de @code{p}, la uni@'on de sus elementos
+debe ser igual a @code{s},
 
 @c ===beg===
-@c s: set (0, 1, 2, 3, 4, 5)$
+@c s: {0, 1, 2, 3, 4, 5}$
 @c p: set_partitions (s, 3)$ 
 @c map (lambda ([x], apply (union, listify (x))), p);
 @c ===end===
 @example
-(%i1) s: set (0, 1, 2, 3, 4, 5)$
+(%i1) s: @{0, 1, 2, 3, 4, 5@}$
 (%i2) p: set_partitions (s, 3)$ 
 (%o3)                 @{@{0, 1, 2, 3, 4, 5@}@}
 (%i4) map (lambda ([x], apply (union, listify (x))), p);
@@ -1161,39 +1933,147 @@ Por @'ultimo, para cada elemento de @code{p}, la uni@'on de sus miembros debe se
 @deffn {Funci@'on} some (@var{f}, @var{a})
 @deffnx {Funci@'on} some (@var{f}, @var{L_1}, ..., @var{L_n})
 
-El primer argumento de @var{f} debe ser un predicado (esto es, una funci@'on que devuelve @code{true}, @code{false}, or @code{unknown}). 
+Devuelve @code{true} si el predicado @var{f} devuelve @code{true}
+para al menos uno de sus argumentos.
+Si el segundo argumento es un conjunto, @code{some (@var{f}, @var{a})}
+devuelve @code{true} si @code{@var{f}(@var{a_i})} devuelve tambi@'en
+@code{true} para alguno de los @var{a_i} en @var{a}; puede ser que
+@code{some} no eval@'ue @var{f} para todos los @var{a_i} de @var{s}.
+Puesto que los conjuntos no est@'an ordenados, @code{some} puede evaluar
+@code{@var{f}(@var{a_i})} en cualquier orden.
 
-Si el segundo argumento es un conjunto, @code{some (@var{f}, @var{a})} devuelve @code{true}
-si @code{@var{f}(@var{a_i})} devuelve tambi@'en @code{true} para alguno de los @var{a_i} en @var{a}.
-Puesto que los conjuntos no est@'an ordenados, @code{some} puede evaluar  @code{@var{f}(@var{a_i})} en cualquier orden. La funci@'on @code{some} puede que no eval@'ue @var{f} para todos los @var{a_i} de @var{a}. Devido a que el orden de evaluaci@'on no est@'a especificado, el predicado @var{f} no deber@'{@dotless{i}}a tener efectos secundarios ni mostrar mensajes de error.
+Dada una o m@'as listas como argumentos,
+@code{some (@var{f}, @var{L_1}, ..., @var{L_n})} devuelve @code{true}
+si @code{@var{f}(@var{x_1}, ..., @var{x_n})} devuelve tambi@'en
+@code{true} para al menos un  @var{x_1}, ..., @var{x_n} de
+@var{L_1}, ..., @var{L_n}, respectivamente; puede ser que
+@code{some} no eval@'ue @var{f} para todos las combinaciones
+@var{x_1}, ..., @var{x_n}. La funci@'on @code{some} eval@'ua
+las listas en el orden creciente de su @'{@dotless{i}}ndice
 
-Dada una o m@'as listas como argumentos, @code{some (@var{f}, @var{L_1}, ..., @var{L_n})} devuelve @code{true}
-si @code{@var{f}(@var{x_1}, ..., @var{x_n})} devuelve tambi@'en @code{true} para al menos un  @var{x_1}, ..., @var{x_n} de @var{L_1}, ..., @var{L_n}, respectivamente. La funci@'on @code{some} puede que no eval@'ue @var{f} para todas las combinaciones @var{x_1}, ..., @var{x_n}.
+Dado un conjunto vac@'{@dotless{i}}o @code{@{@}} o una lista
+vac@'{@dotless{i}}a como argumentos, @code{some} devuelve @code{false}.
 
-Si la variable global @code{maperror} vale @code{true} (su valor por defecto), todas las listas @var{L_1}, ..., @var{L_n} deben tener igual n@'umero de elementos, en caso contrario, @code{some} muestra un error.
-Si @code{maperror} vale @code{false}, los argumentos se truncan para tener todos el n@'umero de elementos de la lista m@'as corta. 
+Si la variable global @code{maperror} vale @code{true},
+todas las listas @var{L_1}, ..., @var{L_n} deben tener
+igual n@'umero de elementos. Si @code{maperror} vale
+@code{false}, los argumentos se truncan para tener todos
+el n@'umero de elementos de la lista m@'as corta. 
 
-La funci@'on @code{is} de Maxima se aplica autom@'aticamente tras la evaluaci@'on del predicado @var{f}.
+Los valores que devuelve el predicado @var{f} cuando toman 
+(mediante @code{is}) un valor diferente a @code{true} y @code{false}
+se controlan con la variable global @code{prederror}.
+Si @code{prederror} vale @code{true}, tales valores se
+consideran como @code{false}.
+Si @code{prederror} vale @code{false}, tales valores se
+consideran como desconocidos (@code{unknown}).
+
+Ejemplos:
+
+La funci@'on @code{some} aplicada a un @'unico conjunto.
+El predicado es una funci@'on de un argumento,
 
 @c ===beg===
-@c some ("<", [a, b, 5], [1, 2, 8]);
-@c some ("=", [2, 3], [2, 7]);
+@c some (integerp, {1, 2, 3, 4, 5, 6});
+@c some (atom, {1, 2, sin(3), 4, 5 + y, 6});
 @c ===end===
 @example
-(%i1) some ("<", [a, b, 5], [1, 2, 8]);
+(%i1) some (integerp, @{1, 2, 3, 4, 5, 6@});
 (%o1)                         true
-(%i2) some ("=", [2, 3], [2, 7]);
+(%i2) some (atom, @{1, 2, sin(3), 4, 5 + y, 6@});
 (%o2)                         true
+@end example
+
+La funci@'on @code{some} aplicada a dos listas.
+El predicado es una funci@'on de dos argumentos,
+
+@c ===beg===
+@c some ("=", [a, b, c], [a, b, c]);
+@c some ("#", [a, b, c], [a, b, c]);
+@c ===end===
+@example
+(%i1) some ("=", [a, b, c], [a, b, c]);
+(%o1)                         true
+(%i2) some ("#", [a, b, c], [a, b, c]);
+(%o2)                         false
+@end example
+
+Las respuestas del predicado @var{f} que se eval@'uan 
+a cualquier cosa diferente de @code{true} y @code{false}
+est@'an controlados por la variable global @code{prederror}.
+
+@c ===beg===
+@c prederror : false;
+@c map (lambda ([a, b], is (a < b)), [x, y, z], [x^2, y^2, z^2]);
+@c some ("<", [x, y, z], [x^2, y^2, z^2]);
+@c some ("<", [x, y, z], [x^2, y^2, z + 1]);
+@c prederror : true;
+@c some ("<", [x, y, z], [x^2, y^2, z^2]);
+@c some ("<", [x, y, z], [x^2, y^2, z + 1]);
+@c ===end===
+@example
+(%i1) prederror : false;
+(%o1)                         false
+(%i2) map (lambda ([a, b], is (a < b)), [x, y, z], [x^2, y^2, z^2]);
+(%o2)              [unknown, unknown, unknown]
+(%i3) some ("<", [x, y, z], [x^2, y^2, z^2]);
+(%o3)                        unknown
+(%i4) some ("<", [x, y, z], [x^2, y^2, z + 1]);
+(%o4)                         true
+(%i5) prederror : true;
+(%o5)                         true
+(%i6) some ("<", [x, y, z], [x^2, y^2, z^2]);
+(%o6)                         false
+(%i7) some ("<", [x, y, z], [x^2, y^2, z + 1]);
+(%o7)                         true
 @end example
 @end deffn
 
 
 @deffn {Funci@'on} stirling1 (@var{n}, @var{m})
-Es el n@'umero de Stirling de primera especie. Si tanto @var{n} como @var{m} son enteros no negativos, el valor que toma @code{stirling1 (@var{n}, @var{m})} es el n@'umero de permutaciones de un conjunto de  @var{n} elementos con @var{m} ciclos.
-Para m@'as detalles, v@'ease Graham, Knuth and Patashnik @i{Concrete Mathematics}. Se utiliza una relaci@'on recursiva para definir @code{stirling1 (@var{n}, @var{m})} para @var{m} menor que 0; no est@'a definida para @var{n} menor que 0 ni para argumentos no enteros.
 
-La funci@'on @code{stirling1} opera por simplificaci@'on, utilizando valores b@'asicos especiales (v@'ease Donald Knuth, @i{The Art of Computer Programming,} tercera edici@'on, Volumen 1,  Secci@'on 1.2.6, ecuaciones 48, 49 y 50).  
-Para que Maxima aplique estas reglas, los argumentos deben declararse como enteros y el primer argumento debe ser no negativo. Por ejemplo:
+Es el n@'umero de Stirling de primera especie.
+
+Si tanto @var{n} como @var{m} son enteros no negativos,
+el valor que toma @code{stirling1 (@var{n}, @var{m})}
+es el n@'umero de permutaciones de un conjunto de
+@var{n} elementos con @var{m} ciclos. Para m@'as detalles,
+v@'ease Graham, Knuth and Patashnik @i{Concrete Mathematics}.
+Maxima utiliza una relaci@'on recursiva para definir
+@code{stirling1 (@var{n}, @var{m})} para @var{m} menor
+que 0; no est@'a definida para @var{n} menor que 0 ni
+para argumentos no enteros.
+
+La funci@'on @code{stirling1} es simplificadora. Maxima
+reconoce las siguientes identidades:
+
+@c COPIED VERBATIM FROM SRC/NSET.LISP
+@enumerate
+@item
+@math{stirling1(0, n) = kron_delta(0, n)} (Ref. [1])
+@item
+@math{stirling1(n, n) = 1} (Ref. [1])
+@item
+@math{stirling1(n, n - 1) = binomial(n, 2)} (Ref. [1])
+@item
+@math{stirling1(n + 1, 0) = 0} (Ref. [1])
+@item
+@math{stirling1(n + 1, 1) = n!} (Ref. [1])
+@item
+@math{stirling1(n + 1, 2) = 2^n  - 1} (Ref. [1])
+@end enumerate
+
+Estas identidades se aplican cuando los argumentos son enteros
+literales o s@'{@dotless{i}}mbolos declarados como enteros y
+el primer argumento es no negativo. La funci@'on @code{stirling1}
+no simplifica para argumentos no enteros.
+
+Referencias:
+
+[1] Donald Knuth, @i{The Art of Computer Programming,}
+Tercera Edici@'on, Volumen 1, Secci@'on 1.2.6, Ecuaciones 48, 49 y 50.
+
+Ejemplos:
 
 @c ===beg===
 @c declare (n, integer)$
@@ -1207,7 +2087,7 @@ Para que Maxima aplique estas reglas, los argumentos deben declararse como enter
 (%o3)                           1
 @end example
 
-La funci@'on @code{stirling1} no se eval@'ua para argumentos no enteros.
+La funci@'on @code{stirling1} no simplifica en caso de argumentos no enteros,
 
 @c ===beg===
 @c stirling1 (sqrt(2), sqrt(2));
@@ -1217,7 +2097,7 @@ La funci@'on @code{stirling1} no se eval@'ua para argumentos no enteros.
 (%o1)              stirling1(sqrt(2), sqrt(2))
 @end example
 
-Maxima conoce algunos valores especiales,
+Maxima aplicas algunas identidades a @code{stirling1},
 
 @c ===beg===
 @c declare (n, integer)$
@@ -1239,11 +2119,57 @@ Maxima conoce algunos valores especiales,
 
 
 @deffn {Funci@'on} stirling2 (@var{n}, @var{m})
-Es el n@'umero de Stirling de segunda especia. Si @var{n} y @var{m} son enteros no negativos,  @code{stirling2 (@var{n}, @var{m})} es el n@'umero de formas en las que se puede particionar un conjunto de cardinal @var{n} en @var{m} subconjuntos disjuntos. Se utiliza una relaci@'on recursiva para definir  @code{stirling2 (@var{n}, @var{m})} con
-@var{m} menor que 0; la funci@'on no est@'a definida para  @var{n} menor que 0  ni para argumentos no enteros.
 
-La funci@'on @code{stirling1} opera por simplificaci@'on, utilizando valores b@'asicos especiales (v@'ease Donald Knuth, @i{The Art of Computer Programming,} tercera edici@'on, Volumen 1,  Secci@'on 1.2.6, ecuaciones 48, 49 y 50).  
-Para que Maxima aplique estas reglas, los argumentos deben declararse como enteros y el primer argumento debe ser no negativo. Por ejemplo:
+Es el n@'umero de Stirling de segunda especie.
+
+Si @var{n} y @var{m} son enteros no negativos,
+@code{stirling2 (@var{n}, @var{m})} es el n@'umero
+de formas en las que se puede particionar un conjunto
+de cardinal @var{n} en @var{m} subconjuntos disjuntos.
+Maxima utiliza una relaci@'on recursiva para definir
+@code{stirling2 (@var{n}, @var{m})} con @var{m} menor
+que 0; la funci@'on no est@'a definida para  @var{n}
+menor que 0  ni para argumentos no enteros.
+
+La funci@'on @code{stirling2} es simplificadora. Maxima
+reconoce las siguientes identidades:
+
+@c COPIED VERBATIM FROM SRC/NSET.LISP
+@enumerate
+@item
+@math{stirling2(0, n) = kron_delta(0, n)} (Ref. [1])
+@item
+@math{stirling2(n, n) = 1} (Ref. [1])
+@item
+@math{stirling2(n, n - 1) = binomial(n, 2)} (Ref. [1])
+@item
+@math{stirling2(n + 1, 1) = 1} (Ref. [1])
+@item
+@math{stirling2(n + 1, 2) = 2^n  - 1} (Ref. [1])
+@item
+@math{stirling2(n, 0) = kron_delta(n, 0)} (Ref. [2])
+@item
+@math{stirling2(n, m) = 0} when @math{m > n} (Ref. [2])
+@item
+@math{stirling2(n, m) = sum((-1)^(m - k) binomial(m k) k^n,i,1,m) / m!}
+si @math{m} y @math{n} son enteros y @math{n} no negativo. (Ref. [3])
+@end enumerate
+
+Estas identidades se aplican cuando los argumentos son enteros
+literales o s@'{@dotless{i}}mbolos declarados como enteros y
+el primer argumento es no negativo. La funci@'on @code{stirling2}
+no simplifica para argumentos no enteros.
+
+Referencias:
+
+[1] Donald Knuth. @i{The Art of Computer Programming},
+Tercera Edici@'on, Volumen 1, Secci@'on 1.2.6, Ecuaciones 48, 49 y 50.
+
+[2] Graham, Knuth y Patashnik. @i{Concrete Mathematics}, Tabla 264.
+
+[3] Abramowitz y Stegun. @i{Handbook of Mathematical Functions}, Secci@'on 24.1.4.
+
+Ejemplos:
 
 @c ===beg===
 @c declare (n, integer)$
@@ -1257,7 +2183,7 @@ Para que Maxima aplique estas reglas, los argumentos deben declararse como enter
 (%o3)                           1
 @end example
 
-La funci@'on @code{stirling2} no se eval@'ua para argumentos no enteros.
+La funci@'on @code{stirling2} no simplifica en caso de argumentos no enteros,
 
 @c ===beg===
 @c stirling2 (%pi, %pi);
@@ -1267,7 +2193,7 @@ La funci@'on @code{stirling2} no se eval@'ua para argumentos no enteros.
 (%o1)                  stirling2(%pi, %pi)
 @end example
 
-Maxima conoce algunos valores especiales,
+Maxima aplicas algunas identidades a @code{stirling2},
 
 @c ===beg===
 @c declare (n, integer)$
@@ -1290,39 +2216,129 @@ Maxima conoce algunos valores especiales,
 
 
 @deffn {Funci@'on} subset (@var{a}, @var{f})
-Devuelve el subconjunto del conjunto @var{a} que satisface el predicado @var{f}. 
-Por ejemplo:
+
+Devuelve el subconjunto del conjunto @var{a} que satisface el predicado @var{f}.
+
+La funci@'on @code{subset} devuelve el conjunto que contiene a los
+elementos de @var{a} para los cuales @var{f} devuelve un resultado
+diferente de @code{false}. La funci@'on @code{subset} no aplica
+@code{is} al valor retornado por @var{f}.
+
+La funci@'on @code{subset} emite un mensaje de error si @var{a}
+no es un conjunto literal.
+
+V@'ease tambi@'en @code{partition_set}.
+
+Ejemplos:
 
 @c ===beg===
-@c subset (set (1, 2, x, x + y, z, x + y + z), atom);
-@c subset (set (1, 2, 7, 8, 9, 14), evenp);
+@c subset ({1, 2, x, x + y, z, x + y + z}, atom);
+@c subset ({1, 2, 7, 8, 9, 14}, evenp);
 @c ===end===
 @example
-(%i1) subset (set (1, 2, x, x + y, z, x + y + z), atom);
+(%i1) subset (@{1, 2, x, x + y, z, x + y + z@}, atom);
 (%o1)                     @{1, 2, x, z@}
-(%i2) subset (set (1, 2, 7, 8, 9, 14), evenp);
+(%i2) subset (@{1, 2, 7, 8, 9, 14@}, evenp);
 (%o2)                      @{2, 8, 14@}
 @end example
-
-El segundo argumento de @code{subset} debe ser un predicado (una funci@'on booleana con un argumento); si el primer argumento de @code{subset} no es un conjunto, env@'{@dotless{i}}a un mensaje de error. V@'ease tambi@'en @code{partition_set}.
 @end deffn
 
 
 @deffn {Funci@'on} subsetp (@var{a}, @var{b})
-Devuelve @code{true} si y s@'olo si el conjunto @var{a} es un subconjunto de @var{b}. Muestra un mensaje de error si  @var{a} o @var{b} no son conjuntos.
+
+Devuelve @code{true} si y s@'olo si el conjunto @var{a} es un subconjunto de @var{b}.
+
+La funci@'on @code{subsetp} emite un mensaje de error si
+cualesquiera @var{a} o @var{b} no es un conjunto literal.
+
+Ejemplos:
+
+@c ===beg===
+@c subsetp ({1, 2, 3}, {a, 1, b, 2, c, 3});
+@c subsetp ({a, 1, b, 2, c, 3}, {1, 2, 3});
+@c ===end===
+@example
+(%i1) subsetp (@{1, 2, 3@}, @{a, 1, b, 2, c, 3@});
+(%o1)                         true
+(%i2) subsetp (@{a, 1, b, 2, c, 3@}, @{1, 2, 3@});
+(%o2)                         false
+@end example
 @end deffn
 
 
 
 @deffn {Funci@'on} symmdifference (@var{a_1}, ..., @var{a_n})
-Devuelve el conjunto de elementos que pertenecen a un @'unico conjunto de los  @var{a_k}. Muestra un mensaje de error si cualquiera de los argumentos @var{a_k} no es un conjunto. Con dos argumentos, @code{symmdifference (@var{a}, @var{b})} equivale a @code{union (setdifference (@var{a}, @var{b}), setdifference (@var{b}, @var{a}))}.
+
+Devuelve el conjunto de elementos que pertenecen a un
+@'unico conjunto de los  @var{a_k}.
+
+Dados dos argumentos, @code{symmdifference (@var{a}, @var{b})} equivale a
+@code{union (setdifference (@var{a}, @var{b}), setdifference (@var{b}, @var{a}))}.
+
+La funci@'on @code{symmdifference} emite un mensaje de error si alguno de
+su argumentos no es un conjunto literal.
+
+Ejemplos:
+
+@c ===beg===
+@c S_1 : {a, b, c};
+@c S_2 : {1, b, c};
+@c S_3 : {a, b, z};
+@c symmdifference ();
+@c symmdifference (S_1);
+@c symmdifference (S_1, S_2);
+@c symmdifference (S_1, S_2, S_3);
+@c symmdifference ({}, S_1, S_2, S_3);
+@c ===end===
+@example
+(%i1) S_1 : @{a, b, c@};
+(%o1)                       @{a, b, c@}
+(%i2) S_2 : @{1, b, c@};
+(%o2)                       @{1, b, c@}
+(%i3) S_3 : @{a, b, z@};
+(%o3)                       @{a, b, z@}
+(%i4) symmdifference ();
+(%o4)                          @{@}
+(%i5) symmdifference (S_1);
+(%o5)                       @{a, b, c@}
+(%i6) symmdifference (S_1, S_2);
+(%o6)                        @{1, a@}
+(%i7) symmdifference (S_1, S_2, S_3);
+(%o7)                        @{1, z@}
+(%i8) symmdifference (@{@}, S_1, S_2, S_3);
+(%o8)                        @{1, z@}
+@end example
 @end deffn
 
-@c tree_reduce ACCEPTS A SET OR LIST AS AN ARGUMENT, BUT rreduce AND lreduce WANT ONLY LISTS; STRANGE
-@deffn {Funci@'on} tree_reduce (@var{f}, @var{s})
-@deffnx {Funci@'on} tree_reduce (@var{f}, @var{s}, @var{init})
+@c TREE_REDUCE ACCEPTS A SET OR LIST AS AN ARGUMENT, BUT RREDUCE AND LREDUCE WANT ONLY LISTS; STRANGE
+@deffn {Funci@'on} tree_reduce (@var{F}, @var{s})
+@deffnx {Funci@'on} tree_reduce (@var{F}, @var{s}, @var{s_0})
 
-La funci@'on @code{tree_reduce} ampl@'{@dotless{i}}a un operador binario asociativo @math{f : S x S -> S} a otro de cualquier n@'umero de argumentos utilizando un @'arbol de m@'{@dotless{i}}nima profundidad. Un ejemplo aclarar@'a esto,
+
+Ampl@'{@dotless{i}}a la funci@'on binaria @var{F} a n-aria, siendo @var{s} una lista.
+
+La funci@'on @code{tree_reduce} equivale a lo suguiente:
+Aplicar @var{F} a pares sucesivos de elementos para formar
+una nueva lista @code{[@var{F}(@var{s_1}, @var{s_2}), @var{F}(@var{s_3}, @var{s_4}), ...]},
+llevando el elemento final sin cambiar si el n@'umero de elementos es impar;
+despu@'es repetir hasta que la lista se reduzca a un @'unico elemento,
+que es el valor de retorno.
+
+Cuando est@'a presente el argumento opcional @var{s_0},
+el resultado equivale a @code{tree_reduce(@var{F}, cons(@var{s_0}, @var{s})}.
+
+Para la suma de n@'umeros decimales en coma flotante,
+@code{tree_reduce} puede devolver una suma que tenga un error
+de redondeo menor que el conseguido por @code{rreduce} o @code{lreduce}.
+
+Los elementos de @var{s} y los resultados parciales pueden colocarse
+en un @'arbol binario de m@'{@dotless{i}}nima profundidad, de ah@'{@dotless{i}}
+el nombre de @i{tree_reduce}.
+
+Ejemplos:
+
+La funci@'on @code{tree_reduce} aplicada a una lista con un n@'umero
+par de elementos,
 
 @c ===beg===
 @c tree_reduce (f, [a, b, c, d]);
@@ -1332,7 +2348,8 @@ La funci@'on @code{tree_reduce} ampl@'{@dotless{i}}a un operador binario asociat
 (%o1)                  f(f(a, b), f(c, d))
 @end example
 
-Dado un n@'umero impar de argumentos, @code{tree_reduce} favorecer@'a la parte izquierda del @'arbol; por ejemplo,
+La funci@'on @code{tree_reduce} aplicada a una lista con un n@'umero
+impar de elementos,
 
 @c ===beg===
 @c tree_reduce (f, [a, b, c, d, e]);
@@ -1341,26 +2358,111 @@ Dado un n@'umero impar de argumentos, @code{tree_reduce} favorecer@'a la parte i
 (%i1) tree_reduce (f, [a, b, c, d, e]);
 (%o1)               f(f(f(a, b), f(c, d)), e)
 @end example
-
-Para la suma de n@'umeros en coma flotante, la utilizaci@'on de @code{tree_reduce} puede redundar en una disminuci@'on del error de redondeo frente a funciones como @code{rreduce} o @code{lreduce}.
 @end deffn
 
 
 @deffn {Function} union (@var{a_1}, ..., @var{a_n})
-Return the union of the sets @var{a_1} through @var{a_n}. 
-When @code{union} receives no arguments, it returns the
-empty set. Signal an error when one or more arguments to 
-@code{union} is not a set.
+
+Devuelve la uni@'on de los conjuntos @var{a_1} hasta @var{a_n}.
+
+La sentencia @code{union()} (sin argumentos) devuelve el
+conjunto vac@'{@dotless{i}}o.
+
+La funci@'on @code{union} emite un mensaje de error si alguno
+de sus argumentos no es un conjunto literal.
+
+Ejemplos:
+
+@c ===beg===
+@c S_1 : {a, b, c + d, %e};
+@c S_2 : {%pi, %i, %e, c + d};
+@c S_3 : {17, 29, 1729, %pi, %i};
+@c union ();
+@c union (S_1);
+@c union (S_1, S_2);
+@c union (S_1, S_2, S_3);
+@c union ({}, S_1, S_2, S_3);
+@c ===end===
+@example
+(%i1) S_1 : @{a, b, c + d, %e@};
+(%o1)                   @{%e, a, b, d + c@}
+(%i2) S_2 : @{%pi, %i, %e, c + d@};
+(%o2)                 @{%e, %i, %pi, d + c@}
+(%i3) S_3 : @{17, 29, 1729, %pi, %i@};
+(%o3)                @{17, 29, 1729, %i, %pi@}
+(%i4) union ();
+(%o4)                          @{@}
+(%i5) union (S_1);
+(%o5)                   @{%e, a, b, d + c@}
+(%i6) union (S_1, S_2);
+(%o6)              @{%e, %i, %pi, a, b, d + c@}
+(%i7) union (S_1, S_2, S_3);
+(%o7)       @{17, 29, 1729, %e, %i, %pi, a, b, d + c@}
+(%i8) union (@{@}, S_1, S_2, S_3);
+(%o8)       @{17, 29, 1729, %e, %i, %pi, a, b, d + c@}
+@end example
 @end deffn
 
 
-@deffn {Funci@'on} xreduce (@var{f}, @var{s})
-@deffnx {Funci@'on} xreduce (@var{f}, @var{s}, @var{init})
+@deffn {Funci@'on} xreduce (@var{F}, @var{s})
+@deffnx {Funci@'on} xreduce (@var{F}, @var{s}, @var{s_0})
 
-Esta funci@'on es similar a  @code{lreduce} y a @code{rreduce}, excepto que @code{xreduce} puede utilizar tanto la asociatividad por la izquierda como por la derecha; en particular, si @var{f} es una funci@'on asociativa y Maxima la tiene implementada, @code{xreduce} puede utilizar la funci@'on n-aria, como la suma @code{+}, la multiplicaci@'on @code{*}, @code{and}, @code{or}, @code{max}, @code{min} y @code{append}. Para estos operadores, se espera que en general que @code{xreduce} sea mas r@'apida que  @code{rreduce} o @code{lreduce}.  Si @var{f} no es n-aria, @code{xreduce} utiliza la asociatividad por la izquierda.
 
-La suma de n@'umeros en coma flotante no es asociativa; sin embargo, @code{xreduce} utiliza la suma n-aria de Maxima cuando el conjunto o lista @var{s} contiene n@'umeros en coma flotante.
 
+Ampl@'{@dotless{i}}a la funci@'on @var{F} a n-aria mediante
+composici@'on; si @var{F} ya es n-aria, aplica @var{F} a @var{s}.
+Si @var{F} no es n-aria, @code{xreduce} equivale a @code{lreduce}.
+El argumento @var{s} debe ser una lista.
+
+Funciones n-arias reconocidas por Maxima son la suma @code{+}, la
+multiplicaci@'on @code{*}, @code{and}, @code{or}, @code{max},
+@code{min} y @code{append}. Las funciones tambi@'en se pueden
+declarar n-arias mediante @code{declare(@var{F}, nary)};
+para estas funciones, @code{xreduce} ser@'a m@'as r@'apida que
+@code{rreduce} o @code{lreduce}.
+
+Cuando est@'a presente el argumento opcional @var{s_0},
+el resultado equivale a @code{xreduce(@var{s}, cons(@var{s_0}, @var{s}))}.
+
+La suma de n@'umeros decimales en coma flotante no es exactamente asociativa;
+a@'un as@'{@dotless{i}}, @code{xreduce} aplica la suma n-aria cuando @var{s}
+contiene n@'umeros en coma flotante.
+
+Ejemplos:
+
+La funci@'on @code{xreduce} aplicada a una funci@'on n-aria;
+@code{F} es invocada una s@'ola vez, con todos sus argumentos,
+
+@c ===beg===
+@c declare (F, nary);
+@c F ([L]) := L;
+@c xreduce (F, [a, b, c, d, e]);
+@c ===end===
+@example
+(%i1) declare (F, nary);
+(%o1)                         done
+(%i2) F ([L]) := L;
+(%o2)                      F([L]) := L
+(%i3) xreduce (F, [a, b, c, d, e]);
+(%o3)         [[[[[("[", simp), a], b], c], d], e]
+@end example
+
+La funci@'on @code{xreduce} aplicada a una funci@'on que se desconoce si
+es n-aria; @code{G} es invocada varias veces, con dos argumentos de cada vez,
+
+@c ===beg===
+@c G ([L]) := L;
+@c xreduce (G, [a, b, c, d, e]);
+@c lreduce (G, [a, b, c, d, e]);
+@c ===end===
+@example
+(%i1) G ([L]) := L;
+(%o1)                      G([L]) := L
+(%i2) xreduce (G, [a, b, c, d, e]);
+(%o2)         [[[[[("[", simp), a], b], c], d], e]
+(%i3) lreduce (G, [a, b, c, d, e]);
+(%o3)                 [[[[a, b], c], d], e]
+@end example
 @end deffn
 
 

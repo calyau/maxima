@@ -1,4 +1,4 @@
-@c english version 1.30
+@c english version 1.31
 @menu
 * n-arios::                        
 * no-fijos::                       
@@ -734,7 +734,7 @@ ser sint@'acticamente iguales (es decir, id@'enticas).
 Si @code{is} no consigue reducir @code{equal} a @code{true} o @code{false},
 el resultado est@'a controlado por la variable global @code{prederror}.
 Si @code{prederror} vale @code{true}, @code{is} emite un mensaje
-de error; en caso contrario, code{is} devuelve @code{unknown}.
+de error; en caso contrario, @code{is} devuelve @code{unknown}.
 
 Adem@'as de @code{is}, otros operadores eval@'uan @code{equal} y @code{notequal}
 a  @code{true} o @code{false}; a saber, @code{if}, @code{and}, @code{or} y @code{not}.
