@@ -1,4 +1,4 @@
-@c english version 1.22
+@c english version 1.23
 @menu
 * Definiciones para Ecuaciones::
 @end menu
@@ -68,16 +68,16 @@ Ocasionalmente, @code{radcan} puede introducir la unidad imaginaria @code{%i} en
 
 Ejemplos:
 
-@c FOLLOWING EXAMPLES GENERATED FROM THIS CODE, ADAPTED FROM example(algsys)
+@c ===beg===
 @c e1: 2*x*(1 - a1) - 2*(x - 1)*a2;
-@c e2: a2 - a1; 
-@c e3: a1*(-y - x^2 + 1); 
+@c e2: a2 - a1;
+@c e3: a1*(-y - x^2 + 1);
 @c e4: a2*(y - (x - 1)^2);
 @c algsys ([e1, e2, e3, e4], [x, y, a1, a2]);
 @c e1: x^2 - y^2;
 @c e2: -1 - y + 2*y^2 - x + x^2;
 @c algsys ([e1, e2], [x, y]);
-
+@c ===end===
 @example
 (%i1) e1: 2*x*(1 - a1) - 2*(x - 1)*a2;
 (%o1)              2 (1 - a1) x - 2 a2 (x - 1)
