@@ -244,5 +244,31 @@ done;
 conjugate (p0 + q1 + pq + qp + rr + ii);
 p0 + q1 + pq + qp + rr - ii;
 
+/* Test for bug 1491486 */
+
+conjugate((1+%i)^%i);
+1/(1-%i)^%i$
+
+(declare(z,complex),0);
+0$
+
+/* Test for bug 1489285 */
+
+is(imagpart(conjugate(z)) # z);
+true$
+
+(forget(z,complex),0);
+0$
+
+/* Test for bug 1488344 */
+
+matrixp(conjugate(genmatrix(a,100,100)));
+true$
+
+/* Test for bug 1488359 */
+
+is(op(conjugate(f[6](x))) = 'conjugate);
+true$
+
 kill (values);
 done;
