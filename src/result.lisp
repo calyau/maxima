@@ -19,6 +19,7 @@
 
 (defmfun $poly_discriminant (poly var)
   (let* ((varlist (list var))
+	 ($ratfac nil)
 	 (genvar ()) 
 	 (rform (rform poly))
 	 (rvar (car (last genvar)))
@@ -26,7 +27,7 @@
 	
     (cond ((= n 1) 1)
 	  ((or (= n 0) (not (atom  (cdr rform))))
-	   (merror "Arg. must be a polynomial in var"))
+	   (merror "The first argument to 'poly_discriminant' must be a polynomial in ~:M" var))
 	  (t (pdis (presign
 		    (// (f* n (f1- n)) 2)
 		    (pquotient (resultant poly (pderivative poly rvar))
