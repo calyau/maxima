@@ -1,5 +1,5 @@
 @c Language: Portuguese, Encoding: iso-8859-1
-@c /Equations.texi/1.22/Wed Jan 25 08:23:51 2006/-ko/
+@c /Equations.texi/1.23/Wed Jul 26 08:57:39 2006/-ko/
 @c end concepts Equations
 @menu
 * Defini@value{cedilha}@~oes para Equa@value{cedilha}@~oes::   
@@ -120,16 +120,17 @@ Ocasionalmente, @code{radcan} pode introduzir uma unidade imagin@'aria
 @code{%i} dentro de uma solu@,{c}@~ao que @'e atualmente avaliada como real.
 
 Exemplos:
-@c FOLLOWING EXAMPLES GENERATED FROM THIS CODE, ADAPTED FROM example(algsys)
+
+@c ===beg===
 @c e1: 2*x*(1 - a1) - 2*(x - 1)*a2;
-@c e2: a2 - a1; 
-@c e3: a1*(-y - x^2 + 1); 
++@c e2: a2 - a1;
++@c e3: a1*(-y - x^2 + 1);
 @c e4: a2*(y - (x - 1)^2);
 @c algsys ([e1, e2, e3, e4], [x, y, a1, a2]);
 @c e1: x^2 - y^2;
 @c e2: -1 - y + 2*y^2 - x + x^2;
 @c algsys ([e1, e2], [x, y]);
-
+@c ===end===
 @example
 (%i1) e1: 2*x*(1 - a1) - 2*(x - 1)*a2;
 (%o1)              2 (1 - a1) x - 2 a2 (x - 1)

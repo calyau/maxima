@@ -1,5 +1,5 @@
 @c Language: Portuguese, Encoding: iso-8859-1
-@c /Simplification.texi/1.15/Sat Dec  3 08:56:57 2005/-ko/
+@c /Simplification.texi/1.16/Sat Jul 29 08:36:54 2006/-ko/
 @c end concepts Simplification
 @iftex
 @hyphenation{di-fe-ren-te-men-te}
@@ -405,8 +405,8 @@ avalia essas express@~oes.  Veja tamb@'em @code{noun}, @code{nounify}, @code{ver
 @defvr {S@'imbolo especial} numer
 @code{numer} faz com que algumas fun@,{c}@~oes matem@'aticas (incluindo exponencia@,{c}@~ao)
 com argumentos num@'ericos sejam avaliados em ponto flutuante. Isso faz com que
-vari@'aveis em @code{expr} que tenham sido dados valores num@'ericos a elas (@code{numerval}) sejam substitu@'idas pelos
-seus valores.  @code{numer} tamb@'em escolhe o sinalizador @code{float} para @code{on}.
+vari@'aveis em @code{expr} @`as quais tenham sido dados valores num@'ericos a elas sejam substitu@'idas pelos
+seus valores correspondentes.  @code{numer} tamb@'em escolhe o sinalizador @code{float} para @code{on}.
 
 @end defvr
 
