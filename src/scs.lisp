@@ -55,5 +55,5 @@
     (setq nl (cons (mul x (car l)) nl) l (cdr l))))
 
 (defmfun $facout (x y)
-  (ifn (eq 'mplus (caar y)) y
-       (mul x (addn (mapcar #'(lambda (l) (div l x)) (cdr y)) t))))
+  (if (mplusp y) (mul x (addn (mapcar #'(lambda (l) (div l x)) (cdr y)) t)) y))
+ 
