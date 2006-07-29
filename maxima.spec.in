@@ -38,7 +38,7 @@ Group: Development/Languages
 URL: http://maxima.sourceforge.net
 Source0: %{name}-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-buildroot
-Requires: maxima_exec
+Requires: maxima-exec = %{version}
 
 %description
 
@@ -53,7 +53,7 @@ It comes with hundreds of self tests.
 %package xmaxima
 Summary: Tcl/Tk interface to Maxima
 Group: Development/Languages
-Requires: maxima tk
+Requires: maxima = %{version}, tk
 Provides: xmaxima
 %description xmaxima
 Tcl/Tk interface to Maxima.
@@ -62,8 +62,8 @@ Tcl/Tk interface to Maxima.
 %package exec-clisp
 Summary: Maxima compiled with clisp
 Group: Development/Languages
-Requires: maxima
-Provides: maxima_exec
+Requires: maxima = %{version}
+Provides: maxima-exec
 %description exec-clisp
 Maxima compiled with clisp.
 %endif
@@ -72,8 +72,8 @@ Maxima compiled with clisp.
 %package exec-cmucl
 Summary: Maxima compiled with CMUCL
 Group: Development/Languages
-Requires: maxima
-Provides: maxima_exec
+Requires: maxima = %{version}
+Provides: maxima-exec
 %description exec-cmucl
 Maxima compiled with CMUCL.
 %endif
@@ -82,8 +82,8 @@ Maxima compiled with CMUCL.
 %package exec-sbcl
 Summary: Maxima compiled with SBCL
 Group: Development/Languages
-Requires: sbcl maxima
-Provides: maxima_exec
+Requires: maxima = %{version}
+Provides: maxima-exec
 %description exec-sbcl
 Maxima compiled with SBCL.
 %endif
@@ -92,8 +92,8 @@ Maxima compiled with SBCL.
 %package exec-gcl
 Summary: Maxima compiled with GCL
 Group: Development/Languages
-Requires: maxima
-Provides: maxima_exec
+Requires: maxima = %{version}
+Provides: maxima-exec
 %description exec-gcl
 Maxima compiled with Gnu Common Lisp.
 %endif
@@ -102,7 +102,7 @@ Maxima compiled with Gnu Common Lisp.
 %package lang-es
 Summary: Maxima Spanish language pack
 Group: Development/Languages
-Requires: maxima
+Requires: maxima = %{version}
 %description lang-es
 Maxima Spanish lagnuage support.
 %endif
@@ -111,7 +111,7 @@ Maxima Spanish lagnuage support.
 %package lang-es-utf8
 Summary: Maxima Spanish UTF-8 language pack
 Group: Development/Languages
-Requires: maxima
+Requires: maxima = %{version}
 %description lang-es-utf8
 Maxima Spanish lagnuage support (UTF-8).
 %endif
@@ -120,7 +120,7 @@ Maxima Spanish lagnuage support (UTF-8).
 %package lang-pt
 Summary: Maxima Portuguese language pack
 Group: Development/Languages
-Requires: maxima
+Requires: maxima = %{version}
 %description lang-pt
 Maxima Portuguese lagnuage support.
 %endif
@@ -129,7 +129,7 @@ Maxima Portuguese lagnuage support.
 %package lang-pt-utf8
 Summary: Maxima Portuguese UTF-8 language pack
 Group: Development/Languages
-Requires: maxima
+Requires: maxima = %{version}
 %description lang-pt-utf8
 Maxima Portuguese lagnuage support (UTF-8).
 %endif
