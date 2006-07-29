@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Constants.tcl,v 1.20 2006-06-29 13:13:36 villate Exp $
+#       $Id: Constants.tcl,v 1.21 2006-07-29 09:27:34 villate Exp $
 #
 
 proc cMAXINITBeforeIni {} {
@@ -81,7 +81,7 @@ proc cMAXINITAfterIni {} {
 
 # Constants
 global maxima_priv
-set maxima_priv(date) 04/28/2002
+set maxima_priv(date) 29/07/2006
 
 # from
 if { ![info exists maxima_priv(date)] } {
