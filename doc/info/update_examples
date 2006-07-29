@@ -59,7 +59,7 @@ sub r_trim {
     
     $res = $_[0];
 
-    $res =~ s/[\s\t]+$/\n/;
+    $res =~ s/\s+$/\n/;
 
     return $res;
 
@@ -132,12 +132,16 @@ while (<STDIN>) {
 			};
 			
 			if ($#example_input_buf != -1) { 
-			    print rem_codes(substr($example_result_buf[0],0,-1)) . rem_codes(substr($example_input_buf[0],0,-1)) . "\n";
+			    print rem_codes(substr(substr($example_result_buf[0],0,index($example_result_buf[0],"\cE")+1),0,-1)) . rem_codes(substr($example_input_buf[0],0,-1)) . "\n";
 			    shift(@example_input_buf);
-			    shift(@example_result_buf); 
+			    if (($example_result_buf[0] =~ /\cE/) and (not ($example_result_buf[0] =~ /\cE$/))) {
+				$example_result_buf[0] = substr($example_result_buf[0],index($example_result_buf[0],"\cE"));
+			    } else {
+				shift(@example_result_buf); 
+			    };
 			};
 			
-			until (($#example_input_buf == -1) or ($example_input_buf[0] =~ /^[^ \t]/)) { 
+			until (($#example_input_buf == -1) or ($example_input_buf[0] =~ /^[\S]/)) { 
 			    print rem_codes(substr($example_input_buf[0],0,-1)) . "\n";
 			    shift(@example_input_buf); 
 			};
