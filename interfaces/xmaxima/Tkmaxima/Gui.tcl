@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Gui.tcl,v 1.2 2004-10-31 16:55:26 vvzhy Exp $
+#       $Id: Gui.tcl,v 1.3 2006-07-29 09:26:59 villate Exp $
 #
 
 object_class MAXGui {
@@ -84,8 +84,13 @@ object_class MAXGui {
 	$w mark gravity lastStart left
 	bind $w <Configure> "resizeSubPlotWindows $w %w %h; resizeMaxima $w %w %h"
 
+	$w configure -foreground {#009900}
 	$w tag configure input -foreground blue
+	$w tag configure output -foreground black
 
+	# binding order will be: window bindings, CNtext bindings,
+	# OpenMathText bindings and default bindings (usually Text . all)
+	# CNtext ans OpenMathText bindings are set up in Bindings.tcl
 	bindtags $w [linsert [bindtags $w] 1 CNtext OpenMathText ]
 
 	if {![regexp -- input $maxima_priv(sticky)] } {
@@ -97,7 +102,7 @@ object_class MAXGui {
 	wm protocol . WM_DELETE_WINDOW [list tkmaxima exit $fr.text]
 
 	if {0} {
-	    # Simple apporach won't work with plotting
+	    # Simple approach won't work with plotting
 
 	    $fr.text configure \
 		-height $maxima_default(iConsoleHeight) \
