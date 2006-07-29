@@ -393,7 +393,7 @@ each of the components will also be factored.
 
 If the variable @code{cframe_flag} is @code{false}, the Riemann tensor is
 computed directly from the Christoffel-symbols. If @code{cframe_flag} is
-@code{false}, the covariant Riemann-tensor is computed first from the
+@code{true}, the covariant Riemann-tensor is computed first from the
 frame field coefficients.
 
 @end deffn
