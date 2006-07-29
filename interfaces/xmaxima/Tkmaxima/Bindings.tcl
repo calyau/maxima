@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Bindings.tcl,v 1.3 2004-10-13 12:08:57 vvzhy Exp $
+#       $Id: Bindings.tcl,v 1.4 2006-07-29 09:26:15 villate Exp $
 #
 ###### Bindings.tcl ######
 ############################################################
@@ -11,23 +11,88 @@
 global NCtextHelp
 set NCtextHelp [mc "
 Bindings:
-<Return>   This sends the current expression (ie where the insert
-cursor is)  for evaluation.
-<Linefeed> (Control-j) This inserts a newline, and is useful
-for entering multiline input.
+<Return>    This sends the current expression (ie where the insert
+            cursor is)  for evaluation.
+<Linefeed>  (Control-j) This inserts a newline, and is useful
+            for entering multiline input.
 <Control-k> Kills the current line and puts it in kill ring.
-Successive control-k's append their output together.
-<Control-y> Yank out the last kill, Meta-y cycles thru previous
-kills.
-<Control-g> Interrupt the current computation.
-<Alt-p>   Previous input, or if repeated cycle through the previous
-inputs.  If the current input is not empty, then
-match only inputs which begin with the current input.
-<Alt-n>   Like Previous input, but in opposite direction.
+            Successive control-k's append their output together.
+<Control-y> Yank out the last kill, Meta-y cycles through previous
+            kills.
+<Control-g> Interrupts the current computation.
+<Alt-p>     Previous input, or if repeated cycle through the previous
+            inputs.  If the current input is not empty, then
+            match only inputs which begin with the current input.
+<Alt-n>     Like Previous input, but in opposite direction.
+<Alt-s>     Print again the Maxima input prompt.
 "]
 
 proc vMAXSetCNTextBindings {w} {
-    bind CNtext <Return> "CMeval %W  ; break"
+    # Disable default keyboard bindings in output fields 
+    bind CNtext <Key> {
+	if {[lsearch [%W tag names [%W index insert]] output] >= 0} break
+    }
+
+    # Keep only default bindings for the cursor movement keys
+    bind CNtext <Left> {
+	if {[lsearch [%W tag names [%W index insert]] bold] >= 0} {
+	    tk::TextSetCursor %W insert-1c
+	    break
+	}
+    }
+    bind CNtext <Right> {
+	if {[lsearch [%W tag names [%W index insert]] bold] >= 0} {
+	    tk::TextSetCursor %W insert+1c
+	    break
+	}
+    }
+    bind CNtext <Up> {
+	if {[lsearch [%W tag names [%W index insert]] bold] >= 0} {
+	    tk::TextSetCursor %W [tk::TextUpDownLine %W -1]
+	    break
+	}
+    }
+    bind CNtext <Down> {
+	if {[lsearch [%W tag names [%W index insert]] bold] >= 0} {
+	    tk::TextSetCursor %W [tk::TextUpDownLine %W 1]
+	    break
+	}
+    }
+    bind CNtext <Shift-Left> {
+	if {[lsearch [%W tag names [%W index insert]] bold] >= 0} {
+	    tk::TextKeySelect %W [%W index {insert-1c}]
+	    break
+	}
+    }
+    bind CNtext <Shift-Right> {
+	if {[lsearch [%W tag names [%W index insert]] bold] >= 0} {
+	    tk::TextKeySelect %W [%W index {insert+1c}]
+	    break
+	}
+    }
+    bind CNtext <Shift-Up> {
+	if {[lsearch [%W tag names [%W index insert]] bold] >= 0} {
+	    tk::TextKeySelect %W [tk::TextUpDownLine %W -1]; break
+	}
+    }
+    bind CNtext <Shift-Down> {
+	if {[lsearch [%W tag names [%W index insert]] bold] >= 0} {
+	    tk::TextKeySelect %W [tk::TextUpDownLine %W 1]
+	    break
+	}
+    }
+
+    # The "Return" key is bound to command evaluation, except in output tags
+    bind CNtext <Return> {
+	if {[lsearch [%W tag names [%W index insert]] output] >= 0} {
+	    break
+	} else {
+	    CMeval %W
+	    break
+	}
+    }
+
+    # Special keys (see NCtextHelp above for explanation)
     bind CNtext <Control-g> "CMinterrupt %W "
     bind CNtext <Control-u> "CNclearinput %W "
     bind CNtext "\)"  "CNblinkMatchingParen %W %A"
@@ -40,7 +105,6 @@ proc vMAXSetCNTextBindings {w} {
     bind CNtext <Control-Key-c>  {tk_textCopy %W ;break}
     bind CNtext <Control-Key-x>  {tk_textCut %W ;break}
     bind CNtext <Control-Key-v>  {tk_textPaste %W ;break}
-
 }
 
 
