@@ -683,19 +683,19 @@ Examples:
 
 @example
 (%i1) constantp (7 * sin(2));
-(%o1) 				     true
+(%o1)                                true
 (%i2) constantp (rat (17/29));
-(%o2) 				     true
+(%o2)                                true
 (%i3) constantp (%pi * sin(%e));
-(%o3) 				     true
+(%o3)                                true
 (%i4) constantp (exp (x));
-(%o4) 				     false
+(%o4)                                false
 (%i5) declare (x, constant);
-(%o5) 				     done
+(%o5)                                done
 (%i6) constantp (exp (x));
-(%o6) 				     true
+(%o6)                                true
 (%i7) constantp (foo (x) + bar (%e) + baz (2));
-(%o7) 				     false
+(%o7)                                false
 (%i8) 
 @end example
 

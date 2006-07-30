@@ -507,7 +507,7 @@ La llamada @code{remrule (@var{function}, all)} borra todas las reglas para el o
 V@'ease tambi@'en @code{remlet}, que elimina una regla definida mediante @code{let}.
 
 Ejemplos:
-  	 
+         
 @c ===beg===
 @c tellsimp (foo (aa, bb), bb - aa);
 @c tellsimpafter (aa + bb, special_add (aa, bb));

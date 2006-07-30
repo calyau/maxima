@@ -256,18 +256,18 @@ are zero matrices of the appropriate size; for example:
 
 (%i2) diag_matrix(diag_matrix(1,2),diag_matrix(3,4));
 
-			    [ [ 1  0 ]  [ 0  0 ] ]
-			    [ [      ]  [      ] ]
-			    [ [ 0  2 ]  [ 0  0 ] ]
-(%o2) 			    [ 			 ]
-			    [ [ 0  0 ]  [ 3  0 ] ]
-			    [ [      ]  [      ] ]
-			    [ [ 0  0 ]  [ 0  4 ] ]
+                            [ [ 1  0 ]  [ 0  0 ] ]
+                            [ [      ]  [      ] ]
+                            [ [ 0  2 ]  [ 0  0 ] ]
+(%o2)                       [                    ]
+                            [ [ 0  0 ]  [ 3  0 ] ]
+                            [ [      ]  [      ] ]
+                            [ [ 0  0 ]  [ 0  4 ] ]
 (%i3) diag_matrix(p,q);
 
-				   [ p  0 ]
-(%o3) 				   [ 	  ]
-				   [ 0  q ]
+                                   [ p  0 ]
+(%o3)                              [      ]
+                                   [ 0  q ]
 @end example
 @end deffn
 
@@ -803,16 +803,16 @@ default for @var{row} is complex conjugate of @var{col}. Example:
 
 (%i2)  toeplitz([1,2,3],[x,y,z]);
 
-				  [ 1  y  z ]
-				  [	    ]
-(%o2) 				  [ 2  1  y ]
-				  [	    ]
-				  [ 3  2  1 ]
+                                  [ 1  y  z ]
+                                  [         ]
+(%o2)                             [ 2  1  y ]
+                                  [         ]
+                                  [ 3  2  1 ]
 (%i3)  toeplitz([1,1+%i]);
 
-			      [	  1     1 - %I ]
-(%o3) 			      [ 	       ]
-			      [ %I + 1	  1    ]
+                              [   1     1 - %I ]
+(%o3)                         [                ]
+                              [ %I + 1    1    ]
 @end example
 
 @end deffn

@@ -154,8 +154,8 @@ Bajo un sistema X window, (es decir que poseea interfaz gr@'afica), Maxima puede
 @c Moviendo el cursor hacia la esquina superior izquierda de la ventana que contiene la gr@'afica, se generar@'a un men@'u que, entre otras cosas, permitir@'a exportar la gr@'afica a formato Postscript. (Por defecto el archivo es puesto en el directorio de usuario). Tambi@'en existe la posibilidad de rotar con el puntero del rat@'on una gr@'afica en tres dimensiones. 
 
 @c Traducido por: Juan Pablo Romero Bernal
-@c Revisado por	: Juan Pablo Romero Bernal
-@c correo-e	: jpromerobx@linuxmail.org
+@c Revisado por : Juan Pablo Romero Bernal
+@c correo-e     : jpromerobx@linuxmail.org
 @c Grupo Linux Universidad Distrital
 @c http://glud.udistrital.edu.co
 @c Proyecto GLUD-CLog

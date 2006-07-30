@@ -1518,9 +1518,9 @@ n@~ao devem ser redefinidos:
   Name         Description
   ---------------------------------------
   _lg()        Avalia para @code{lfg} se a moldura m@'etrica for usada,
-		    para @code{lg} de outra forma
+                    para @code{lg} de outra forma
   _ug()        Avalia para @code{ufg} se a moldura m@'etrica for usada,
-		    para @code{ug} de outra forma
+                    para @code{ug} de outra forma
   cleanup()    Remove @'itens da lista @code{deindex}
   contract4()  Usado por psi()
   filemet()    Usado por csetup() quando lendo a m@'etrica de um arquivo
@@ -1529,21 +1529,21 @@ n@~ao devem ser redefinidos:
   findde3()    Usado por findde()
   kdelt()      Delta de Kronecker (n@~ao generalizado)
   newmet()     Usado por csetup() para escolher uma m@'etrica
-		    interativamente
+                    interativamente
   setflags()   Usado por init_ctensor()
   readvalue()
   resimp()
   sermet()     Usado por csetup() para informar uma m@'etricacom s@'erie
-		    de Taylor
+                    de Taylor
   txyzsum()
   tmetric()    Moldura m@'etrica, usado por cmetric() quando
-		    cframe_flag:true
+                    cframe_flag:true
   triemann()   Tensor de Riemann em base de moldura, usado quando
-		    cframe_flag:true
+                    cframe_flag:true
   tricci()     Tensor de Ricci em base de moldura, usada quando
-		    cframe_flag:true
+                    cframe_flag:true
   trrc()       Coeficientes de rota@,{c}@~ao de Ricci, usado por
-		    christof()
+                    christof()
   yesp()
 @end example
 

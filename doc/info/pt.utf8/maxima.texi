@@ -79,7 +79,7 @@ A se@,{c}@~ao "Pacotes adicionais" foi anexada ao manual recentemente
 Caso sua d@'uvida persista ou tenha alguma sugest@~ao/aperfei@,{c}oamento/
 cr@'{@dotless{i}}tica mande por e-mail para Jorge Barros de Abreu <ficmatin01 at solar dot
 com dot br>
-	
+        
 Mantenedores:
 @itemize @bullet
 @item
@@ -114,20 +114,20 @@ e desenvolver o Macsyma DOE, agora chamado Maxima.
 @i{Notas de tradu@,{c}@~ao:}
 
     O c@'odigo fonte deste documento encontra-se no formato texinfo.
-	Para contribuir com a equipe do Maxima na tarefa de manter a 
-	tradu@,{c}@~ao para o portugu@^es sempre atualizada envie um 
-	e-mail para @value{mail}.
+        Para contribuir com a equipe do Maxima na tarefa de manter a 
+        tradu@,{c}@~ao para o portugu@^es sempre atualizada envie um 
+        e-mail para @value{mail}.
 
     Em caso de d@'uvida sobre algum trecho deste manual consulte o 
-	original ingl@^es.
+        original ingl@^es.
 
     A se@,{c}@~ao "Pacotes adicionais" foi anexada ao manual recentemente
         (fevereiro/2006) e possui partes a serem traduzidas.
 
     Caso sua d@'uvida persista ou tenha alguma sugest@~ao/aperfei@,{c}oamen-
-	to/cr@'itica mande por e-mail para Jorge Barros de Abreu 
-	<ficmatin01 at solar dot com dot br>
-	
+        to/cr@'itica mande por e-mail para Jorge Barros de Abreu 
+        <ficmatin01 at solar dot com dot br>
+        
 Mantenedores:
 @itemize @bullet
 @item
