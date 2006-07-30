@@ -1,5 +1,5 @@
 @c Language: Portuguese, Encoding: iso-8859-1
-@c /Ctensor.texi/1.30/Wed Nov 30 10:57:39 2005/-ko/
+@c /Ctensor.texi/1.31/Sun Jul 30 08:49:51 2006/-ko/
 @menu
 * Introdu@value{cedilha}@~ao a ctensor::     
 * Defini@value{cedilha}@~oes para ctensor::     
@@ -389,7 +389,7 @@ cada uma das componentes ir@'a tamb@'em ser fatorada.
 
 Se a vari@'avel @code{cframe_flag} for @code{false}, o tensor de Riemann @'e
 calculado diretamente dos s@'imbolos de Christoffel. Se @code{cframe_flag} for
-@code{false}, o tensor covariante de Riemann @'e calculado primeiro dos
+@code{true}, o tensor covariante de Riemann @'e calculado primeiro dos
 coeficientes de campo da moldura.
 
 @end deffn
