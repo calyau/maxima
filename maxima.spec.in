@@ -34,7 +34,7 @@ Name: maxima
 Version: @VERSION@
 Release: 1
 License: GPL
-Group: Development/Languages
+Group: Sciences/Mathematics
 URL: http://maxima.sourceforge.net
 Source0: %{name}-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-buildroot
