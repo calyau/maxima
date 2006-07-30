@@ -1,0 +1,6 @@
+#!/bin/sh
+
+BADFILES=`find . -name '*.texi' -print | xargs grep -l $'\t'`
+
+echo $BADFILES
+

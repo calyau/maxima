@@ -1,0 +1,13 @@
+#!/bin/sh
+
+BADFILES=`find . -name '*.texi' -print | xargs grep -l $'\t'`
+
+[[ "x$BADFILES" == "x" ]] && exit 0
+
+for f in $BADFILES; do
+    echo "Fixing TAB in $f"
+    rm -rf foo
+    expand $f > foo
+    mv -f foo $f
+done
+

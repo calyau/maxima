@@ -1,0 +1,13 @@
+#!/bin/sh
+
+BADFILES=`find . -name '*.texi' -print | xargs grep -l $'\x0D$'`
+
+[[ "x$BADFILES" == "x" ]] && exit 0
+
+for f in $BADFILES; do
+    echo "Fixing CR-LF in $f"
+    rm -rf foo
+    perl -p -e 's/\r\n/\n/' < $f > foo
+    mv -f foo $f
+done
+
