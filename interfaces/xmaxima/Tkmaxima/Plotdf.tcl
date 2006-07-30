@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Plotdf.tcl,v 1.10 2006-06-30 16:07:03 villate Exp $
+#       $Id: Plotdf.tcl,v 1.11 2006-07-30 19:27:22 villate Exp $
 #
 ###### Plotdf.tcl ######
 #######################################################################
@@ -59,22 +59,12 @@ proc makeFrameDf { win } {
 	wm iconname $top "plotdf"
 	#    wm geometry $top 750x700-0+20
     }
-    set wb $w.plotmenu
+    set wb $w.menubar
     makeLocal $win buttonFont
-    label $w.msg  -wraplength 600 -justify left -text [mc "A direction field plotter by William Schelter"] -font $buttonFont
-
-    $wb.m add command -label [mc "Integrate"] -command "setForIntegrate $w" -font $buttonFont
-    ## setBalloonhelp $win $wb.integrate [mc "Causes clicking on the  plot with the left mouse button at a point, to draw a trajectory passing through that point.   Under Config there is an entry box which allows entering exact x,y coordinates, and which also records the place of the last trajectory computed."]
-
-    $wb.m add command -label [mc "Plot Versus t"] -command "plotVersusT $w" -font $buttonFont
-    ## setBalloonhelp $win $wb.plotversust [mc "Plot the x and y values for the  last trajectory versus t."]
-
-
+    button $wb.integrate -text [mc "Integrate"] -command "setForIntegrate $w" -font $buttonFont
+    button $wb.versust -text [mc "Plot Versus t"] -command "plotVersusT $w" -font $buttonFont
+    pack $wb.integrate $wb.versust -side left
     setForIntegrate $w
-    # pack $w.msg -side top
-    pack $w
-    place $wb -in $w -x 2 -y 2 -anchor nw
-    raise $wb
     return $win
 }
 
@@ -98,41 +88,32 @@ proc doHelpdf { win } {
     global Parser
     doHelp $win [join [list \
 			 [mc  {
-			       William Schelter's solver/plotter for ode systems.
+SOLVER/PLOTTER FOR SYSTEMS OF DIFFERENTIAL EQUAITONS
 
-			       To QUIT this HELP click here.
+To quit this help click anywhere on this text.
 
-			       Clicking at a point computes the trajectory
-			       (x(t),y(t)) starting at that point, and satisfying
-			       the differential equation
-			
-			       dx/dt = dxdt
-			       dy/dt = dydt
+Clicking at a point computes the trajectory (x(t),y(t)) starting at that \
+point, and satisfying the differential equations		
+      dx/dt = dxdt       dy/dt = dydt
 
-			       By clicking on Zoom, the mouse now allows you to zoom
-			       in on a region of the plot.  Each click near a point
-			       magnifies the plot, keeping the center at the point
-			       you clicked.  Depressing the SHIFT key while clicking
-			       zooms in the opposite direction.
+By clicking on Zoom, the mouse will allow you to zoom in on a region \
+of the plot. Each click near a point magnifies the plot, keeping the center \
+at the point you clicked. Depressing the SHIFT key while clicking \
+zooms in the opposite direction. To resume computing trajectories click \
+on Integrate.
 
-			       To resume computing trajectories click on Integrate.
+Clicking on Config will open a menu where several settings can be changed, \
+such as the differential equations being solved, the intial point for the \
+trajectory to be computed, the direction of integration for that trajectory, \
+the time step for each integration interval and the number of integration \
+steps (nsteps). Replot is used to update the plot with the \
+changes made in the Config menu.
 
-			       To change the differential equation, click on Config and
-			       enter new values in the entry windows, and then click on
-			       Replot in the main menu bar.
+Holding the right mouse button down while moving the mouse will drag \
+(translate) the plot sideways or up and down.
 
-			       Holding the right mouse button down allows you to drag
-			       (translate) the plot sideways or up and down.
-
-			       Additional parameters such as the number of steps (nsteps),
-			       the initial t value (tinitial), and the x and y centers
-			       and radii, may be set under the  Config menu.
-
-			       You may print to a postscript printer, or save the plot 
-				   as a postscript file, by clicking on save.   To change 
-				   between printing and saving see the Print Options under Config.
-			
-			   } ] $Parser(help)]]
+The plot can be saved as a postscript file, by clicking on Save.
+} ] $Parser(help)]]
 }
 
 proc setForIntegrate { win} {
@@ -532,8 +513,6 @@ proc doConfigdf { win } {
     if { "[oget $win dydx]" != "" } { swapChoose $win dydx $frdydx }
     setForIntegrate $win
 }
-
-
 
 proc sliderCommandDf { win var val } {
     linkLocal $win recompute

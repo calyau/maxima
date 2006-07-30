@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Plotconf.tcl,v 1.13 2006-06-27 13:41:41 villate Exp $
+#       $Id: Plotconf.tcl,v 1.14 2006-07-30 19:27:22 villate Exp $
 #
 ###### plotconf.tcl ######
 ############################################################
@@ -46,38 +46,18 @@ proc makeFrame { w type } {
     set buttonFont $buttonfont
     oset $win buttonFont $buttonfont
 
-    menubutton $w.plotmenu -text [mc "Menu Here"] -direction below -menu $w.plotmenu.m  -relief flat -borderwidth 0 -background white -font $buttonFont
-    menu $w.plotmenu.m -tearoff 0
-
-    #    puts "children wb=[winfo children $w]"
-    set wb $w.buttons
-    frame $wb
+    label $w.position -text [mc "Cursor Position"] -background white -font $buttonFont
     set dismiss [concat $dismiss "; clearLocal $win "]
-
-    $w.plotmenu.m add command -label [mc "Dismiss"] -command $dismiss -font $buttonFont
-    ##setBalloonhelp $win $wb.dismiss {Close this plot window}
-    $w.plotmenu.m add command -label [mc "Zoom"] -command "showZoom $w" -font $buttonFont
-    ##setBalloonhelp $win $wb.zoom {Magnify the plot.  Causes clicking with the left mouse button on the plot, to magnify (zoom in) the plot where you click.  Also causes Shift+Click to  it to unmagnify (zoom out) at that point}
-    ##oset $w position ""
-    #    button $w.position -textvariable [oloc $w position] -font $buttonFont -width 10
-    ##label $w.position  -textvariable [oloc $w position] -font $buttonFont -width 10
-    ##setBalloonhelp $win $w.position {Position of the pointer in real x y coordinates.  For 3d it is the position of the nearest vertex of the polygon the pointer is over.}
-    $w.plotmenu.m add command -label [mc "Help"] -command "doHelp$type $win" -font $buttonFont
-    ##setBalloonhelp $win $wb.help {Give more help about this plot window}
-    $w.plotmenu.m add command -label [mc "Save"] -command "writePostscript $w" -font $buttonFont
-    ##setBalloonhelp $win $wb.postscript {Prints or Saves the plot in postscript format.  The region to be printed is marked using Mark.   Other print options can be obtained by using "Print Options" in the Config menu }
-#    $w.plotmenu.m add command -label [mc "Mark"] -command "markToPrint $c printrectangle \[eval \[oget $win maintitle\]\]" -font $buttonFont
-    ##setBalloonhelp $win $wb.markrect {Mark the region to be printed.  Causes the left mouse button to allow marking of a rectangle by clicking at the upper left corner, and dragging the mouse to the lower right corner.  The title can be set under "Print Options" under Config}
-    $w.plotmenu.m add command -label [mc "Replot"] -command "replot$type $win" -font $buttonFont
-    ##setBalloonhelp $win $wb.replot {Use the current settings and recompute the plot.  The settings may be altered in Config}
-    $w.plotmenu.m add command -label [mc "Config"] -command "doConfig$type $win" -font $buttonFont
-    ##setBalloonhelp $win $wb.config {Configure various options about the plot window.  After doing this one may do replot.  Hint: you may leave the config menu on the screen and certain actions take place immediately, such as rotating or computing a trajectory at a point.  To make room for the window you might slide the graph to the right, and possibly shrink it using the unzoom feature}
-
-    #mike FIXME: this is a wrong use of after cancel
-    ##bind $win.position <Enter> "+place $win.buttons -in $win.position -x 0 -rely 1.0 ;  after cancel lower $win.position ; raise $win.buttons "
-    ##bind $win.buttons <Leave> "deleteBalloon $c ; place forget $win.buttons"
-
-    # pack $wb
+    set mb [frame $w.menubar]
+    pack $mb -fill x
+    button $mb.close -text [mc "Close"] -command $dismiss -font $buttonFont
+    button $mb.config -text [mc "Config"] -command "doConfig$type $win" -font $buttonFont
+    button $mb.replot -text [mc "Replot"] -command "replot$type $win" -font $buttonFont
+    button $mb.zoom -text [mc "Zoom"] -command "showZoom $w" -font $buttonFont
+    button $mb.save -text [mc "Save"] -command "mkPrintDialog .dial -canvas $c -buttonfont $buttonFont " -font $buttonFont
+    button $mb.help -text [mc "Help"] -command "doHelp$type $win" -font $buttonFont
+    pack $mb.close $mb.config $mb.replot $mb.zoom $mb.save -side left
+    pack $mb.help -side right
     scrollbar $w.hscroll -orient horiz -command "$c xview"
     scrollbar $w.vscroll -command "$c yview"
     # -relief sunken
@@ -102,8 +82,8 @@ proc makeFrame { w type } {
     bind $c <Configure> "reConfigure $c %w %h"
     ##bind $c <Enter> "raise $win.position"
     ##bind $c <Leave> "after 200 lower $win.position"
-    $w.plotmenu config -background [$c cget -background]
 
+    $w.position config -background [$c cget -background]
 
     ##pack  $wb.dismiss $wb.help $wb.zoom   \
     ##	$wb.postscript $wb.markrect $wb.replot $wb.config -side top -expand 1 -fill x
@@ -114,32 +94,20 @@ proc makeFrame { w type } {
     pack $w.c -side right -expand 1 -fill both
 
     pack $w
-    place $w.plotmenu -in $w -x 2 -y 2 -anchor nw
-    
-#     if { ![info exists maxima_priv(showedplothelp)] ||
-# 	 [llength $maxima_priv(showedplothelp)] < 2 } {
-# 	lappend maxima_priv(showedplothelp) 1
-	
-# 	after 200 balloonhelp $w $w.plotmenu [list \
-# 	    [mc "Clicking the left mouse button on the plot menu \
-# 		(top left corner), will bring up a menu.  Holding down \
-# 		right mouse button and dragging will translate the plot."]]
-# 	after 6000 $w.c delete balloon
-#     }
 
-    raise $w.plotmenu
-
-    pack [winfo parent $wb]
     # update
     #    set wid [ winfo width $win]
     #    if { $wid > [      $c cget -width ] } {
     #    $c config -width $wid
     #	    oset $win width $wid
     #    }
-
-    addSliders $w
-
+    place $w.position -in $w.c -x 2 -y 2 -anchor nw
+    raise $w.position
+    focus $w
     bind $w <Configure> "resizePlotWindow $w %w %h"
+    bind $w <Control-w> $dismiss
+    bind $w <Configure> "resizePlotWindow $w %w %h"
+    addSliders $w
     return $w
 }
 
@@ -208,15 +176,15 @@ proc showPosition { win x y } {
     makeLocal $win c
     # we catch so that in case have no functions or data..
     catch {
-	$win.plotmenu config -text \
-	    "[format {(%.2f,%.2f)}  [storx$win [$c canvasx $x]] [story$win [$c canvasy $y]]]"
+	$win.position config -text \
+	    "[format {(%.3f,%.3f)}  [storx$win [$c canvasx $x]] [story$win [$c canvasy $y]]]"
     }
 }
 
 proc showZoom  { win } {
     #  global c position
     makeLocal $win c
-    $win.plotmenu config -text [mc "Click to Zoom\nShift+Click Unzoom"]
+    $win.position config -text [mc "Click to Zoom\nShift+Click Unzoom"]
 
     bind $c <1> "doZoom $win %x %y 1"
     bind $c  <Shift-1> "doZoom $win %x %y -1"
@@ -350,33 +318,9 @@ proc writePostscript { win } {
 
     #puts com=$com
     set output [eval $com]
-    switch -- $printOption(tofile) {
-	0 { global tcl_platform
-	    set usegsview 0
-	    if { "$tcl_platform(platform)" == "windows" } {
-		set usegsview 1
-	    }
-	    if { $usegsview } {
-		set fi [open $printOption(psfilename) w]
-		puts $fi $output
-		close $fi
-		exec "$printOption(gsview) /S $printOption(psfilename)"
-	    } else {
-		set fi [open "|lpr -P[set printOption(printer)]" w]
-		puts $fi $output
-		close $fi
-	    }
-	} 1 {
-	    set fi [open $printOption(psfilename) w]
-	    puts $fi $output
-	    close $fi
-	}
-    }
-    #    if { $printOption(tofile) } {
-    #	set fi [open $printOption(psfilename) w]
-    #    } else { set fi [open "|lpr -P[set printOption(printer)]" w] }
-    #   puts $fi $output
-    #    close $fi
+    set fi [open $printOption(psfilename) w]
+    puts $fi $output
+    close $fi
 }
 
 
@@ -972,9 +916,9 @@ proc doConfig { win }  {
     pack $wb1 $wb2 -side left -fill x -pady 2m
     set item [$canv create window [$canv canvasx 10] [$canv canvasy  10] -window $w -anchor nw -tags configoptions]
     button $wb1.dismiss -command  "$canv delete $item; destroy $w " -text "ok" -font $buttonFont
-    button $wb1.printoptions -text [mc "Print Options"] -command "mkPrintDialog .dial -canvas $c -buttonfont $buttonFont " -font $buttonFont
+#    button $wb1.printoptions -text [mc "Print Options"] -command "mkPrintDialog .dial -canvas $c -buttonfont $buttonFont " -font $buttonFont
 
-    pack $wb1.dismiss  $wb1.printoptions -side top
+    pack $wb1.dismiss -side top
     return "$wb1 $wb2"
 }
 # mkentry { newframe textvar text }
