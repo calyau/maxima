@@ -247,6 +247,7 @@
 	 (cond ((complexp e) (conjugate e)) ;; never happens, but might someday.
 	       ((manifestly-real-p e) e)
 	       ((manifestly-pure-imaginary-p e) (mul -1 e))
+	       (($mapatom e) `(($conjugate simp) ,e))
 	       ((op-equalp e '$conjugate) (car (margs e)))
 		 
 	       ((and (symbolp (mop e)) (get (mop e) 'real-valued)) e)
