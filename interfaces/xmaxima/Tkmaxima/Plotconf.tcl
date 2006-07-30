@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Plotconf.tcl,v 1.14 2006-07-30 19:27:22 villate Exp $
+#       $Id: Plotconf.tcl,v 1.15 2006-07-30 23:32:11 villate Exp $
 #
 ###### plotconf.tcl ######
 ############################################################
@@ -46,7 +46,7 @@ proc makeFrame { w type } {
     set buttonFont $buttonfont
     oset $win buttonFont $buttonfont
 
-    label $w.position -text [mc "Cursor Position"] -background white -font $buttonFont
+    label $w.position -text [mc "Pointer Coordinates"] -background white -font $buttonFont
     set dismiss [concat $dismiss "; clearLocal $win "]
     set mb [frame $w.menubar]
     pack $mb -fill x
