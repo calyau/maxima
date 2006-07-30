@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Plot3d.tcl,v 1.10 2006-07-30 20:03:28 villate Exp $
+#       $Id: Plot3d.tcl,v 1.11 2006-07-30 23:33:27 villate Exp $
 #
 ###### Plot3d.tcl ######
 ############################################################
@@ -670,7 +670,9 @@ proc mkPlot3d { win  args } {
     oset $win noaxisticks 1
 
     makeLocal $win buttonFont c
-    bind $c <Motion> "showPosition3d $win %x %y"
+    [winfo parent $c].position config -text {}
+    bind $c <Motion> ""
+#   bind $c <Motion> "showPosition3d $win %x %y"
     button $wb.rotate -text [mc "Rotate"] -command "setForRotate $win" -font $buttonFont
 #    setBalloonhelp $win $wb.rotate [mc {Dragging the mouse with the left button depressed will cause the object to rotate.  The rotation keeps the z axis displayed in an upright position (ie parallel to the sides of the screen), but changes the viewpoint.   Moving right and left changes the azimuth (rotation about the z axis), and up and down changes the elevation (inclination of z axis).   The red,blue and green sides of the bounding box are parallel to the X, Y and Z axes, and are on the smaller side.}]
 
@@ -735,7 +737,7 @@ proc showPosition3d { win x y } {
 	set ll [lindex $mesh $at]
 	set pt [lrange [oget $win points] $ll [expr {$ll + 2}]]
 	# puts pt=$pt
-	catch { $win.plotmenu config -text [eval [concat "format {(%.2f %.2f %.2f)}" $pt]] }	
+	catch { $win.position config -text [eval [concat "format {(%.2f %.2f %.2f)}" $pt]] }	
     }
     #    oset $win position [format {(%.1f %.1f)} $x $y]
     #    oset $win position \
@@ -772,8 +774,6 @@ proc rotateRelative { win x1 x2 y1 y2 } {
     oset $win az [reduceMode360 [expr   {round($az + $fac *  $xx /2.0) }]]
     oset $win el [reduceMode360 [expr   {round($el -  $yy /2.0) }]]
     setView $win ignore
-
-
 }
 
 proc reduceMode360 { n } {
@@ -792,8 +792,6 @@ proc doRotateScreen { win x y } {
     oset $win lastx $x
     oset $win lasty $y
     bind $c <B1-Motion> "doRotateScreenMotion $win %x %y"
-
-
 }
 
 proc doRotateScreenMotion {win x y } {
@@ -804,7 +802,10 @@ proc doRotateScreenMotion {win x y } {
     rotateRelative $win $lastx $x $lasty $y
     oset $win lastx $x
     oset $win lasty $y
-
+    # show values of azimuth and elevation angles
+    set az [oget $win az]
+    set el [oget $win el]
+    catch { $win.position config -text [eval [concat "format {Azimuth: %.2f, Elevation: %.2f}" $az $el]] }
 }
 
 
