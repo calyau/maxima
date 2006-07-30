@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Plot3d.tcl,v 1.9 2006-06-29 12:57:18 villate Exp $
+#       $Id: Plot3d.tcl,v 1.10 2006-07-30 20:03:28 villate Exp $
 #
 ###### Plot3d.tcl ######
 ############################################################
@@ -614,35 +614,29 @@ proc doHelp3d { win } {
     doHelp $win [join [list \
 			[mc {
 
-			       William Schelter's plotter for three dimensional graphics.
+XMAXIMA'S PLOTTER FOR THREE-DIMENSIONAL GRAPHICS
 
-			       To QUIT this HELP click here.
+To quit this help click anywhere on this text.
 
-			       By clicking on Zoom, the mouse now allows you \
-				   to zoom in on a region of the plot.  Each click \
-				   near a point magnifies the plot, keeping the \
-				   center at the point you clicked.  Depressing \
-				   the SHIFT key while clicking zooms in the \
-				   opposite direction.
+Clicking on Config will open a menu where several settings can be changed, \
+such as the function being plotted, the azimuth and elevation angles, \
+and the x and y centers and radii. Replot is used to update the plot with \
+the changes made in the Config menu.
 
-			       Clicking on Rotate, makes the left mouse button  \
-				   cause rotation of the image.   The current position \
-				   can be determined by azimuth and elevation angles \
-				   which are given under the Config menu.   They may also \
-				   be specified on the command line.
+By clicking on Zoom, the mouse will allow you to zoom in on a region \
+of the plot. Each click near a point magnifies the plot, keeping the center \
+at the point you clicked. Depressing the SHIFT key while clicking \
+zooms in the opposite direction.
 
-			       To change the equations enter in the entry \
-				   windows, and click on replot.
+Clicking on Rotate will return the mouse to its default behavior, namely, \
+pressing the left mouse button while the mouse is moved will rotate the \
+graph.
 
-			       You may print to a postscript printer, or save the plot \
-				   as a postscript file, by clicking on save.   To change \
-				   between printing and saving see the Print Options under Config.
+Holding the right mouse button down while moving the mouse will drag \
+(translate) the plot sideways or up and down.
 
-			       Clicking with the right mouse button and dragging may be used \
-				   instead of the scroll bars to slide the plot \
-				   around.
-
-			   } ] $Parser(help)]]
+The plot can be saved as a postscript file, by clicking on Save.
+} ] $Parser(help)]]
 }
 
 proc     makeFrame3d { win } {
@@ -668,7 +662,7 @@ proc mkPlot3d { win  args } {
     #puts "$win width=[oget $win width],args=$args"
     setPrintOptions $args
     set printOption(maintitle) ""
-    set wb $win.buttons
+    set wb $win.menubar
     setupCanvas $win
     # catch { destroy $win }
     makeFrame3d $win
@@ -678,13 +672,11 @@ proc mkPlot3d { win  args } {
     makeLocal $win buttonFont c
     bind $c <Motion> "showPosition3d $win %x %y"
     button $wb.rotate -text [mc "Rotate"] -command "setForRotate $win" -font $buttonFont
-    setBalloonhelp $win $wb.rotate [mc {Dragging the mouse with the left button depressed will cause the object to rotate.  The rotation keeps the z axis displayed in an upright position (ie parallel to the sides of the screen), but changes the viewpoint.   Moving right and left changes the azimuth (rotation about the z axis), and up and down changes the elevation (inclination of z axis).   The red,blue and green sides of the bounding box are parallel to the X, Y and Z axes, and are on the smaller side.}]
+#    setBalloonhelp $win $wb.rotate [mc {Dragging the mouse with the left button depressed will cause the object to rotate.  The rotation keeps the z axis displayed in an upright position (ie parallel to the sides of the screen), but changes the viewpoint.   Moving right and left changes the azimuth (rotation about the z axis), and up and down changes the elevation (inclination of z axis).   The red,blue and green sides of the bounding box are parallel to the X, Y and Z axes, and are on the smaller side.}]
 
     #$win.position config -width 15
-    pack $wb.rotate -expand 1 -fill x
+    pack $wb.rotate -side left
     setForRotate $win
-
-
 }
 
 proc doConfig3d { win } {
