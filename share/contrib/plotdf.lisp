@@ -22,7 +22,7 @@
 ;; See plotdf.usg (which should come together with this program) for
 ;; a usage summary
 ;;
-;; $Id: plotdf.lisp,v 1.4 2006-06-27 14:16:44 villate Exp $
+;; $Id: plotdf.lisp,v 1.5 2006-07-31 13:33:10 villate Exp $
 
 (in-package :maxima)
 
@@ -69,16 +69,17 @@
 
 ;; parses a plotdf option into a command-line option for tcl scripts
 (defun tcl-get-plotdf-option (name)
-  (with-output-to-string (st)
-			 (sloop for v in (rest $plotdf_options)
-				when (eq (second v) name)
-				do (setq vv (mapcar #'stripdollar (rest v)))
-				(format st "-~(~a~) " (first vv))
-				(format st "{~{~(~a~)~^ ~}}" (rest vv)))))
+  (let (vv)
+    (with-output-to-string (st)
+			   (sloop for v in (rest $plotdf_options)
+				  when (eq (second v) name)
+				  do (setq vv (mapcar #'stripdollar (rest v)))
+				  (format st "-~(~a~) " (first vv))
+				  (format st "{~{~(~a~)~^ ~}}" (rest vv))))))
 
 ;; changes the value of a plotdf option
 (defun $set_plotdf_option ( value)
-  (setq $plodft_options ($copylist $plotdf_options))
+  (setq $plotdf_options ($copylist $plotdf_options))
   (unless (and  ($listp value)
 		(symbolp (setq name (second value))))
     (merror "~M is not a plotdf option.  Must be [symbol,..data]" value))
@@ -111,31 +112,30 @@
  
 ;; applies float(ev(expression, numer)) to an expression, and return a string
 
-(defun expr_to_str(fun)
-  (string-downcase
-   (coerce (mstring (mfuncall '$float (mfuncall '$ev fun '$numer))) 'string)))
+(defun expr_to_str (fun)
+  (mstring (mfuncall '$float (mfuncall '$ev fun '$numer))))
 
 ;; plots the direction field for an ODE  dy/dx = f(x,y), or for an autonomous
 ;; system of 2 equations dx/dt = f(x,y), dy/dt = g(x,y) 
 ;;
-(defun $plotdf(ode &rest options)
-  ;; parse argument ode and prepare string cmd with the equation(s)
-  (if ($listp ode)
-      (if (= (length ode) 3)
-	   (setq cmd (concatenate 'string " -dxdt \""
-				  (expr_to_str (second ode)) "\" -dydt \""
-				  (expr_to_str (third ode)) "\""))
-	(merror "Argument must be either dydx or [dxdt, dydt]"))
-    (setq cmd (concatenate 'string " -dydx \"" (expr_to_str ode) "\"")))
-
-  ;; parse options and copy them to string opts
-  (setq opts " ")
-  (cond (options
-	 (dolist (v options) 
-	   ($set_plotdf_option v)
-	   (setq opts (concatenate 'string opts " "
-				   (tcl-get-plotdf-option (second v)))))))
-  (show-open-plot
-   (with-output-to-string (st)
-     (cond ($show_openplot (format st "plotdf ~a ~a~%" cmd opts))
-	   (t (format st "{plotdf ~a ~a}" cmd opts))))))
+(defun $plotdf (ode &rest options)
+  (let (cmd (opts " "))
+    ;; parse argument ode and prepare string cmd with the equation(s)
+    (if ($listp ode)
+	(if (= (length ode) 3)
+	    (setq cmd (concatenate 'string " -dxdt \""
+				   (expr_to_str (second ode)) "\" -dydt \""
+				   (expr_to_str (third ode)) "\""))
+	  (merror "Argument must be either dydx or [dxdt, dydt]"))
+      (setq cmd (concatenate 'string " -dydx \"" (expr_to_str ode) "\"")))
+    
+    ;; parse options and copy them to string opts
+    (cond (options
+	   (dolist (v options) 
+	     ($set_plotdf_option v)
+	     (setq opts (concatenate 'string opts " "
+				     (tcl-get-plotdf-option (second v)))))))
+    (show-open-plot
+     (with-output-to-string (st)
+		  (cond ($show_openplot (format st "plotdf ~a ~a~%" cmd opts))
+			      (t (format st "{plotdf ~a ~a}" cmd opts)))))))
