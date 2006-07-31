@@ -1,0 +1,362 @@
+/************************************************************************
+    Copyright (C) 2003, 2004, 2006 Jaime E. Villate <villate@gnu.org>
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, write to the Free Software
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+    MA  02111-1307  USA
+
+$Id: dynamics.mac,v 1.1 2006-07-31 17:35:17 villate Exp $
+***********************************************************************/
+
+
+/************************************************************************
+ Function evolution
+
+    Description: Maxima program to draw orbits of one-dimensional mappings
+    Usage:
+      evolution(f, y0, n, [options]);
+    f must be an expression which depends only on the variable y.
+    y0 is the initial value for y, and n the number of steps.
+*/
+
+evolution(f, y0, n, [options]) :=
+  block
+  ([y:y0, data: [0, y0], numer: true,
+    ostr: "{plotpoints 1} {nolines} {labelposition {-1000 -1000}}"],
+    o[pointsize]: "pointsize",
+    o[xcenter]: "xcenter", 
+    o[xradius]: "xradius",
+    o[ycenter]: "ycenter", 
+    o[yradius]: "yradius",
+    o[xaxislabel]: "xaxislabel",
+    o[yaxislabel]: "yaxislabel",
+    for i thru length(options) do
+      (if atom(o[options[i][1]]) then
+          ostr: concat(ostr," {",o[options[i][1]]," {",options[i][2],"}}")
+    ),
+    remarray(o),
+    for i thru n do
+      (y: ev(f),
+       data: cons([i, y], data)
+    ),
+    openplot_curves([[ostr], data])
+  )$
+
+/************************************************************************
+ Function staircase
+
+    Description: Maxima program to draw staircase diagrams of
+                 one-dimensional mappings
+    Usage:
+      staircase(f, y0, n, [options]);
+    f must be an expression which depends only on the variable y.
+    y0 is the initial value for y, and n the number of steps.
+*/
+
+staircase(f, y0, n, [options]) :=
+  block
+  ([yf, y:y0, ymax:y0, ymin:y0, ym, h, yfun:[], stair:[y0,y0], numer: true,
+    ostr: "{labelposition {-1000 -1000}}"],
+    o[xcenter]: "xcenter", 
+    o[xradius]: "xradius",
+    o[ycenter]: "ycenter", 
+    o[yradius]: "yradius",
+    o[xaxislabel]: "xaxislabel",
+    o[yaxislabel]: "yaxislabel",
+    o[domain]: "domain",
+    for i thru n do
+      (yf: ev(f),
+       stair: append(stair, [y, yf, yf, yf]),
+       y: yf,
+       if y < ymin then ymin: y,
+       if y > ymax then ymax: y
+      ),
+    for i thru length(options) do
+      (if atom(o[options[i][1]]) then
+          if (o[options[i][1]] = "domain")
+           then
+             (ymin: options[i][2],
+              ymax: options[i][3])
+           else
+             ostr: concat(ostr," {",o[options[i][1]]," {",options[i][2],"}}")
+      ),
+    remarray(o),
+    h: (ymax - ymin)/200,
+    y: ymin,
+    for i thru 200 do
+        (yfun: append(yfun, [y, ev(f)]), y: y + h),
+    ym: (ymax + ymin)/2,
+    openplot_curves([[ostr], stair, [ymin,ymin,ym,ym,ymax,ymax], yfun])
+  )$
+
+/************************************************************************
+ Function evolution2d
+
+    Description: Maxima program to show the evolution of a two-dimensional
+                 discrete dynamical system
+    Usage:
+      evolution2d([f, g], [x0, y0], n, [options]);
+
+    f and g must be expressions which depend only on the variables x and
+    y. x0 and y0 are the initial values for the 2 state variables, and
+    n the number of points to be shown.
+*/
+
+evolution2d(f, p0, n, [options]) :=
+  block
+  ([x: p0[1], y: p0[2], xaux, data: [], numer: true,
+    xc, xr, yc, yr, fx: 0 , fy: 0,
+    ostr: "{plotpoints 1} {nolines} {labelposition {-1000 -1000}}"],
+    o[pointsize]: "pointsize",
+    o[xcenter]: "xcenter", 
+    o[xradius]: "xradius",
+    o[ycenter]: "ycenter", 
+    o[yradius]: "yradius",
+    o[xaxislabel]: "xaxislabel",
+    o[yaxislabel]: "yaxislabel",
+    for i thru length(options) do
+      (if atom(o[options[i][1]]) then
+         (ostr: concat(ostr," {",o[options[i][1]]," {",options[i][2],"}}"),
+          if (o[options[i][1]] = "xcenter") then
+            (xc: options[i][2], fx: fx+1),
+          if (o[options[i][1]] = "xradius") then
+            (xr: options[i][2], fx: fx+1),
+          if (o[options[i][1]] = "ycenter") then
+            (yc: options[i][2], fy: fy+1),
+          if (o[options[i][1]] = "yradius") then
+            (yr: options[i][2], fy: fy+1)
+         )
+      ),
+    remarray(o),
+    for i thru n do
+      (
+       if ((fx = 2) and (fy = 2))
+        then
+          (if ((y >= (yc-yr)) and (y <= (yc+yr)) and
+                (x >= (xc-xr)) and (x <= (xc+xr))) then
+                (data: cons(y, data), data: cons(x, data)))
+        else
+          (data: cons(y, data), data: cons(x, data)),
+       xaux: ev(first(f), numer),
+       y: ev(second(f), numer),
+       x: xaux
+      ),
+    openplot_curves([[ostr], data])
+  )$
+
+/************************************************************************
+ Function chaosgame
+
+    Description: Maxima program to play the "chaos game".
+    Usage:
+      chaosgame([[x1,y1]...[xm,ym]], [x0,y0], beta, n, [options]);
+
+    where [x0,y0] are the coordinates of the initial point, [x1,y1]
+    ... [xm,ym] are the attarcting points, beta is the ratio of the
+    final to initial distance from the attracting point, and n the
+    number of points to show.
+*/
+
+chaosgame(point,p0,b,n,[options]) :=
+block
+  ([p:ev(p0,numer), j, m:length(point), data:p0, numer:true,
+    ostr: "{plotpoints 1} {nolines} {labelposition {-1000 -1000}}"],
+    o[pointsize]: "pointsize",
+    o[xcenter]: "xcenter", 
+    o[xradius]: "xradius",
+    o[ycenter]: "ycenter", 
+    o[yradius]: "yradius",
+    o[xaxislabel]: "xaxislabel",
+    o[yaxislabel]: "yaxislabel",
+    for i thru n do
+       (j: random(m) + 1,
+        p: ev(point[j] + b*(p-point[j]), numer),
+	data: cons(p, data)
+    ),
+    for i thru length(options) do
+      (if atom(o[options[i][1]]) then
+          ostr: concat(ostr," {",o[options[i][1]]," {",options[i][2],"}}")
+    ),
+    remarray(o),
+    openplot_curves([[ostr], data])
+  )$
+
+/************************************************************************
+ Function ifs
+
+    Description: Maxima program to create 2-d fractals using Barnley's
+                 IFS (Iterated Function Systems) method.
+    Usage:
+      ifs([r1,...,rm], [A1,...,Am], [p1,...,pm]], p0, n, [options]);
+
+    where r1,...,rm are cummulative weights for the attracting points.
+    For instance if there are 3 points with probabilities 0.2, 0.5 and
+    0.3, you can use [2,7,10].
+    A1,...,Am, are the matrices for the m attracting points and
+    p1,...,pm are the 2D coordinates of those points. p0 are the 2D
+    coordinates of the initial point and n the number of points to be
+    shown.
+*/
+
+ifs(prob, mat, point, p0, n, [options]) :=
+block 
+  ([p:ev(p0,numer), s, r, m:last(prob), data:p0, numer:true,
+    ostr: "{plotpoints 1} {nolines} {labelposition {-1000 -1000}}"],
+    o[pointsize]: "pointsize",
+    o[xcenter]: "xcenter", 
+    o[xradius]: "xradius",
+    o[ycenter]: "ycenter", 
+    o[yradius]: "yradius",
+    o[xaxislabel]: "xaxislabel",
+    o[yaxislabel]: "yaxislabel",
+    for i thru n do
+      (r: random(m) + 1,
+       s: 0,
+       for j while (r-prob[j]) > 0 do s:j,
+          p: ev(mat[s+1].p + point[s+1], numer),
+          data: cons(first(transpose(p)), data)
+    ),
+    for i thru length(options) do
+      (if atom(o[options[i][1]]) then
+          ostr: concat(ostr," {",o[options[i][1]]," {",options[i][2],"}}")
+    ),
+    remarray(o),
+    openplot_curves([[ostr], data])
+  )$
+
+/************************************************************************
+ Function orbits
+
+    Description: Maxima program to draw orbit diagrams (also dubbed as
+                 bifurcation diagrams) for first-order discrete
+                 dynamical systems
+    Usage:
+      list: orbits(f, y0, n1, n2, [x, x0, xf, xstep], [options])
+
+    It will plot the orbits diagram for
+      y(n+1) = f(y(n))
+    f must be an expression which depends only on the variable y and
+    one parameter x. The parameter x will vary between x0 and xf with
+    steps equal to xstep. y0 is an initial value for y, n1, the number
+    of initial time steps to let the transient response disappear, and
+    n2 is the number of points to be shown for each value of the
+    parameter x.
+
+*/
+
+orbits(f, y0, n1, n2, domain, [options]) :=
+block
+ ([x, y, x0, s, n, data: [], flag: 0, yc, yr, numer:true,
+    ostr: "{plotpoints 1} {nolines} {labelposition {-1000 -1000}}"],
+    o[pointsize]: "pointsize",
+    o[ycenter]: "ycenter", 
+    o[yradius]: "yradius",
+    o[xaxislabel]: "xaxislabel",
+    o[yaxislabel]: "yaxislabel",
+    for i thru length(options) do
+      (if atom(o[options[i][1]]) then
+         (ostr: concat(ostr," {",o[options[i][1]]," {",options[i][2],"}}"),
+          if (o[options[i][1]] = "ycenter") then
+            (yc: options[i][2],
+             flag: flag + 1
+            ),
+          if (o[options[i][1]] = "yradius") then
+            (yr: options[i][2],
+             flag: flag + 1
+            )
+         )
+      ),
+    remarray(o),
+    s: domain[4],
+    n: entier((domain[3] - domain[2])/s),
+    x0: domain[2],
+    for i:0 thru n do
+      (x: x0+i*s, 
+       y: y0,
+       for j thru n1 do y: ev(f,numer),
+       for j thru n2 do
+         (y: ev(f,numer),
+          if (flag = 2)
+           then
+             (if ((y >= (yc-yr)) and (y <= (yc+yr))) then
+                                          data: cons([x,y], data))
+           else
+             data: cons([x,y], data)
+         )
+       ),
+    if (length(data) > 0) then openplot_curves([[ostr], data])
+  )$
+
+/************************************************************************
+    4th Order Runge-Kutta method for one or more ODE's
+
+    Sample usage:
+      (%i1) load("rk.mac")$
+      (%i2) results: rk(t-x^2,x,1,[t,0,8,0.1])$
+      (%i3) openplot_curves([results]);
+        (or plot2d([discrete, results]))
+      
+***********************************************************************/
+
+rk(odes, state, initial, domain) :=
+block (
+  [fff,vvv,xxx,i_1,i_2,i_3,nnn,k1,k2,k3,k4,ddd,ppp,sss:true,numer:true,
+  display2d:false],
+  nnn:   make_array(fixnum,2),
+  if listp(odes) then nnn[1]: length(odes)-1 else nnn[1]: 0,
+  k1:  make_array(flonum,nnn[1]+1),
+  k2:  make_array(flonum,nnn[1]+1),
+  k3:  make_array(flonum,nnn[1]+1),
+  k4:  make_array(flonum,nnn[1]+1), 
+  fff: make_array(any,nnn[1]+1),
+  vvv: make_array(any,nnn[1]+1),
+  xxx:  make_array(any,nnn[1]+1),
+  if listp(odes) then fillarray(fff,odes) else fillarray(fff,[odes]),
+  if listp(state) then fillarray(vvv,state) else fillarray(vvv,[state]),
+  if listp(initial) then fillarray(xxx,initial) else fillarray(xxx,[initial]),
+  nnn[0]: fix((domain[3] - domain[2])/domain[4]),
+  ppp: [xxx[nnn[1]]],
+  for i_2:(nnn[1]-1) step -1 thru 0 do ppp: cons(xxx[i_2], ppp),
+  ppp: cons(domain[2], ppp),
+  ddd: [ppp],
+  errcatch (
+    for i_1:0 thru nnn[0]-1 do (
+      if (sss) then (
+        for i_2:0 thru nnn[1] do (
+          k1[i_2]: ev(fff[i_2], domain[1] = domain[2]+i_1*domain[4]),
+          for i_3:0 thru nnn[1] do
+            k1[i_2]: ev(k1[i_2], vvv[i_3] = xxx[i_3])),
+        for i_2:0 thru nnn[1] do (
+          k2[i_2]: ev(fff[i_2], domain[1] = domain[2]+(i_1+0.5)*domain[4]),
+          for i_3:0 thru nnn[1] do
+            k2[i_2]: ev(k2[i_2], vvv[i_3] = xxx[i_3]+domain[4]*k1[i_3]/2)),
+        for i_2:0 thru nnn[1] do (
+          k3[i_2]: ev(fff[i_2], domain[1] = domain[2]+(i_1+0.5)*domain[4]),
+          for i_3:0 thru nnn[1] do
+            k3[i_2]: ev(k3[i_2], vvv[i_3] = xxx[i_3]+domain[4]*k2[i_3]/2)),
+        for i_2:0 thru nnn[1] do (
+          k4[i_2]: ev(fff[i_2], domain[1] = domain[2]+(i_1+1)*domain[4]),
+          for i_3:0 thru nnn[1] do
+            k4[i_2]: ev(k4[i_2], vvv[i_3] = xxx[i_3]+domain[4]*k3[i_3])),
+        for i_2:0 thru nnn[1] do (
+          xxx[i_2]: xxx[i_2]+domain[4]*(k1[i_2]+2*k2[i_2]+2*k3[i_2]+k4[i_2])/6,
+          if (abs(xxx[i_2]) > 1e100) then sss: false),
+        if (sss) then ( 
+          ppp: [xxx[nnn[1]]],
+          for i_2:(nnn[1]-1) step -1 thru 0 do
+            ppp: cons(xxx[i_2], ppp),
+          ppp: cons(domain[2]+(i_1+1)*domain[4], ppp),
+          ddd: cons(ppp, ddd))))),
+  reverse(ddd))$
+
