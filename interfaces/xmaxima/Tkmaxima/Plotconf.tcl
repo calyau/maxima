@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Plotconf.tcl,v 1.15 2006-07-30 23:32:11 villate Exp $
+#       $Id: Plotconf.tcl,v 1.16 2006-07-31 00:11:18 villate Exp $
 #
 ###### plotconf.tcl ######
 ############################################################
@@ -292,7 +292,11 @@ proc writePostscript { win } {
     makeLocal $win c transform transform0 xmin ymin xmax ymax
     set rtosx rtosx$win ; set rtosy rtosy$win
     drawPointsForPrint $c
-    # $c delete balloon
+    if { "[$c find withtag printrectangle]" == "" } {
+	$c create rectangle [$c canvasx 0] [$c canvasy 0] \
+          [$c canvasx [$c cget -width ]] [$c canvasy [$c cget -height ]] \
+          -tags printrectangle -outline white	
+    }
 
     set bbox [eval $c bbox [$c find withtag printrectangle]]
     desetq "x1 y1 x2 y2" $bbox
