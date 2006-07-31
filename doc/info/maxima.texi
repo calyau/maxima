@@ -144,6 +144,7 @@ Additional packages
 * descriptive::                 Descriptive statistics.
 * diag::                        Jordan matrices.
 * distrib::                     Probability distributions.
+* dynamics::                    Graphics for dynamical systems and fractals.
 * eval_string::                 Maxima expressions as strings.
 * f90::                         Maxima to fortran translator.
 * ggf::                         Generating function of sequences.
@@ -416,6 +417,11 @@ distrib
 * Definitions for continuous distributions::
 * Definitions for discrete distributions::
 
+dynamics
+
+* Introduction to dynamics::
+* Definitions for dynamics::
+
 eval_string
 
 * Definitions for eval_string::
@@ -474,6 +480,7 @@ orthopoly
 
 plotdf
 
+* Introduction to plotdf::
 * Definitions for plotdf::
 
 simplex
@@ -710,11 +717,15 @@ zeilberger
 @chapter diag
 @include diag.texi
 
-@node distrib, eval_string, diag, Top
+@node distrib, dynamics, diag, Top
 @chapter distrib
 @include distrib.texi
 
-@node eval_string, f90, distrib, Top
+@node dynamics, eval_string, distrib, Top
+@chapter dynamics
+@include dynamics.texi
+
+@node eval_string, f90, dynamics, Top
 @chapter eval_string
 @include eval_string.texi
 

@@ -1,0 +1,368 @@
+@menu
+* Introduction to dynamics::
+* Definitions for dynamics::
+@end menu
+
+@node Introduction to dynamics, Definitions for dynamics, dynamics, dynamics
+@section Introduction to dynamics
+
+The additional package @code{dynamicalsystems} includes several
+functions to create various graphical representations of discrete
+dynamical systems and fractals, and an implementation of the Runge-Kutta
+4th-order numerical method for solving systems of differential equations.
+
+To use the functions in this package you must first load it with
+@code{load("dynamics")}.
+
+@node Definitions for dynamics,  , Introduction to dynamics, dynamics
+@section Definitions for dynamics
+
+@deffn {Function} chaosgame (@code{[}@code{[}@var{x1}, @var{y1}@code{]}...@code{[}@var{xm}, @var{ym}@code{]}@code{]}, @code{[}@var{x0}, @var{y0}@code{]}, @var{b}, @var{n}...options...);
+
+Implements the so-called chaos game: the initial point (@var{x0},
+@var{y0}) is plotted and then one of the @var{m} points
+@code{[}@var{x1}, @var{y1}@code{]}...@code{[}@var{xm}, @var{ym}@code{]}
+will be selected at random. The next point plotted will be in the
+segment from the previous point to the point chosen randomly, at a
+fraction @var{b} of the distance from the random point. The procedure is
+repeated @var{n} times.
+
+@end deffn
+
+@deffn {Function} evolution (@var{F}, @var{y0}, @var{n}...options...);
+
+Draws @var{n+1} points in a two-dimensional graph, where the horizontal
+coordinates of the points are the integers 0, 1, 2, ..., @var{n}, and
+the vertical coordinates are the corresponding values @var{y(n)} of the
+sequence defined by the recurrence relation
+@ifnottex
+@example
+	y(n+1) = F(y(n))
+@end example
+@end ifnottex
+@tex
+$$y_{n+1} = F(y_n)$$
+@end tex
+
+With initial value @var{y(0)} equal to @var{y0}. @var{F} must be an
+expression that depends only on the variable @var{y} (and on @var{n}),
+@var{y0} must be a real number and @var{n} must be a positive integer.
+
+@end deffn
+
+@deffn {Function} evolution2d (@code{[}@var{F}, @var{G}@code{]}, @code{[}@var{x0}, @var{y0}@code{]}, @var{n}...options...);
+
+Shows, in a two-dimensional plot, the first @var{n+1} points in the
+sequence o points defined by the two-dimensional discrete dynamical
+system with recurrence relations
+@ifnottex
+@example
+	x(n+1) = F(x(n), y(n))    y(n+1) = G(x(n), y(n))
+@end example
+@end ifnottex
+@tex
+$$\cases{x_{n+1} = F(x_n, y_n) &\cr y_{n+1} = G(x_n, y_n)}$$
+@end tex
+
+With initial values @var{x0} and @var{y0}. @var{F} and @var{G} must be
+two expressions that depend just on @var{x} and @var{y}. 
+
+@end deffn
+
+@deffn {Function} ifs (@code{[}@var{r1},...,@var{rm}@code{]},
+@code{[}@var{A1},...,@var{Am}@code{]}, @var{y1}@code{]}...@code{[}@var{xm}, @var{ym}@code{]}@code{]}, @code{[}@var{x0},
+@var{y0}@code{]}, @var{n}...options...);
+
+Implements the Iterated Functions System method. This method is similar
+to the method described in the function @code{chaosgame}. But instead of
+shrinking the segment from the current point to the randomly chosen
+point, the 2 components of that segment will be multiplied by the 2 by 2
+matrix @var{Ai} that corresponds to the point chosen randomly.
+
+The @var{m} attractive points are not chosen randomly with a uniform
+probability but with probabilities defined bay the weights
+@var{r1},...,@var{rm}. Those weights are given in cumulative form, for instance if there are 3 points with probabilities 0.2, 0.5 and
+    0.3, you can @var{r1}, @var{r2} and @var{r3} could be 2, 7 and 10.
+
+@end deffn
+
+@deffn {Function} orbits (@var{F}, @var{y0}, @var{n1}, @var{n2},
+[@var{x}, @var{x0}, @var{xf}, @var{xstep}]...options...);
+
+Draws the orbits diagram for a family of one-dimensional
+discrete dynamical systems, with one parameter @var{x}; that kind of
+diagram is used to study the bifurcations of a one-dimensional discrete
+system.
+
+The function @var{F(y)} defines a sequence with a starting value of
+@var{y0}, as in the case of the function @code{evolution}, but in this
+case that function will also depend on a parameter @var{x} that will
+take values in the interval from @var{x0} to @var{xf} with increments of
+@var{xstep}. Each value used for the parameter @var{x} is shown on the
+horizontal axis; on the vertical axis will be shown the @var{n2} values
+of the sequence @var{y(n1+1)},..., @var{y(n1+n2+1)} obtained after the
+sequence is left to evolve during @var{n1} iterations.
+
+@end deffn
+
+@deffn {Function} rk (ODE, var, initial, domain)
+@deffnx {Function} rk ([ODE1,...,ODEm], [v1,...,vm], [init1,...,initm], domain)
+
+The first form solves numerically one first-order ordinary differential
+equation, and the second form solves a system of m of those equations,
+using the 4th order Runge-Kutta method. var represents the dependent
+variable. ODE must be an expression that depends only on the independent
+and dependent variables and represents the derivative of the dependent
+variable with respect to the independent variable.
+
+The independent variable is specified in domain, which must be a list
+with four elements such as:
+@example
+[t, 0, 10, 0.1]
+@end example
+the first element of the list identifies the independent variable, the
+second and third elements are the initial and final values for that
+variable, and the last element sets the increments that should be used
+within that interval.
+
+If m equations are going to be solved, there should be m dependent
+variables v1, v2, ..., vm. The initial values for those variables will
+be init1, init2, ..., initm. There will still be just one independent
+variable defined by domain, as in the previous case. ODE1, ..., ODEm
+are the expressions for the derivatives of each dependent variable in
+terms of the independent variable. Those expressions can depend on the
+independent variable and all of the dependent variables.
+
+The result will be a list of lists with m+1 elements. Those m+1 elements
+will be the values of the independent variable, followed by the
+dependent variables, at each of the points in the interval of
+integration. If at some point one of the variables becomes too large,
+the list will stop there. Otherwise, the list will extend until the last
+value of the independent variable specified by domain.
+
+@end deffn
+
+@deffn {Function} staircase (@var{F}, @var{y0}, @var{n}...options...);
+
+Draws a staircase diagram for the sequence defined by the recurrence
+relation
+@ifnottex
+@example
+	y(n+1) = F(y(n))
+@end example
+@end ifnottex
+@tex
+$$y_{n+1} = F(y_n)$$
+@end tex
+
+The interpretation and allowed values of the input parameters is the
+same as for the function @code{evolution}. A staircase diagram consists
+of a plot of the function @var{F(y)}, together with the line
+@var{G(y)} @code{=} @var{y}. A horizontal segment is drawn from the
+point (@var{y0}, @var{y0}) on that line until the point where it
+intersects the function @var{F}. From that point a vertical segment is
+drawn until it reaches the point (@var{y1}, @var{y1}) on the line, and
+the procedure is repeated until the point (@var{yn}, @var{yn}) is
+reached.
+
+@end deffn
+
+@b{Options}
+
+The options accepted by the functions that plot graphs are:
+
+@itemize @bullet
+@item
+Option: @code{domain} the minimum and maximum values for the plot of the
+function  @var{F} shown by @code{staircase}.
+@example
+[domain, -2, 3.5]
+@end example
+
+@item
+Option: @code{pointsize} radius of each point plotted, in units of points. 
+@example
+[pointsize, 1.5]
+@end example
+The default value is 1.
+
+@item
+Option: @code{xaxislabel} is a label to put on the horizontal axis.
+@example
+[xaxislabel, "time"]
+@end example
+
+@item
+Option: @code{xcenter} is the x coordinate of the point at the center of
+the plot. This option is not used by the function @code{orbits}.
+@example
+[xcenter,3.45]
+@end example
+
+@item
+Option: @code{xradius} is half of the length of the range of values that
+will be shown in the x direction. This option is not used by the
+function @code{orbits}.
+@example
+[xradius,12.5]
+@end example
+
+@item
+Option: @code{yaxislabel} is a label to put on the vertical axis.
+@example
+[yaxislabel, "temperature"]
+@end example
+
+@item
+Option: @code{ycenter} is the y coordinate of the point at the center of
+the plot.
+@example
+[ycenter,4.5]
+@end example
+
+@item
+Option: @code{yradius} is half of the length of the range of values that
+will be shown in the y direction.
+@example
+[yradius,15]
+@end example
+
+@end itemize
+
+@b{Examples}
+
+Graphical representation and staircase diagram for the sequence:
+2, cos(2), cos(cos(2)),...
+
+@example
+(%i1) load("dynamics")$
+(%i2) evolution(cos(y), 2, 11, [yaxislabel, "y"], [xaxislabel,"n"]);
+(%i3) staircase(cos(y), 1, 11, [domain, 0, 1.2]);
+@end example
+
+@ifnotinfo
+@image{figures/dynamics1,8cm}
+@image{figures/dynamics2,8cm}
+@end ifnotinfo
+
+If your system is slow, you'll have to reduce the number of iterations in
+the following examples. And the pointsize that gives the best results
+depends on the monitor and the resolution being used.
+
+Orbits diagram for the quadratic map
+@ifnottex
+@example
+	y(n+1) = x + y(n)^2
+@end example
+@end ifnottex
+@tex
+$$y_{n+1} = x + y_n^2$$
+@end tex
+
+@example
+(%i4) orbits(y^2+x, 0, 50, 200, [x, -2, 0.25, 0.01], [pointsize, 0.9]);
+@end example
+
+@ifnotinfo
+@image{figures/dynamics3,8cm}
+@end ifnotinfo
+
+To enlarge the region around the lower bifurcation near x @code{=} 1.25 use:
+@example
+(%i5) orbits(x+y^2, 0, 100, 400, [x,-1,-1.53,-0.001], [pointsize,0.9],
+             [ycenter,-1.2], [yradius,0.4]);
+@end example
+
+@ifnotinfo
+@image{figures/dynamics4,8cm}
+@end ifnotinfo
+
+Evolution of a two-dimensional system that leads to a fractal:
+
+@example
+(%i6) f: 0.6*x*(1+2*x)+0.8*y*(x-1)-y^2-0.9$
+(%i7) g: 0.1*x*(1-6*x+4*y)+0.1*y*(1+9*y)-0.4$
+(%i8) evolution2d([f,g],[-0.5,0],50000,[pointsize,0.7]);
+@end example
+
+@ifnotinfo
+@image{figures/dynamics5,8cm}
+@end ifnotinfo
+
+And an enlargement of a small region in that fractal:
+
+@example
+(%i9) evolution2d([f,g],[-0.5,0],300000,[pointsize,0.7], [xcenter,-0.7],
+                  [ycenter,-0.3],[xradius,0.1],[yradius,0.1]);
+@end example
+
+@ifnotinfo
+@image{figures/dynamics6,8cm}
+@end ifnotinfo
+
+A plot of Sierpinsky's triangle, obtained with the chaos game:
+
+@example
+(%i9) chaosgame([[0, 0], [1, 0], [0.5, sqrt(3)/2]], [0.1, 0.1], 1/2,
+                 30000, [pointsize,0.7]);
+@end example
+
+@ifnotinfo
+@image{figures/dynamics7,8cm}
+@end ifnotinfo
+
+Barnsley's fern, obtained with an Iterated Functions System:
+
+@example
+(%i10) a1: matrix([0.85,0.04],[-0.04,0.85])$
+(%i11) a2: matrix([0.2,-0.26],[0.23,0.22])$
+(%i12) a3: matrix([-0.15,0.28],[0.26,0.24])$
+(%i13) a4: matrix([0,0],[0,0.16])$
+(%i14) p1: [0,1.6]$
+(%i15) p2: [0,1.6]$
+(%i16) p3: [0,0.44]$
+(%i17) p4: [0,0]$
+(%i18) prob: [85,92,99,100]$
+(%i19) ifs(prob,[a1,a2,a3,a4],[p1,p1,p3,p4],[5,0],50000,[pointsize,0.9]);
+@end example
+
+@ifnotinfo
+@image{figures/dynamics8,8cm}
+@end ifnotinfo
+
+To solve numerically the differential equation
+
+@ifnottex
+@example
+          dx/dt = t - x^2
+@end example
+@end ifnottex
+@tex
+$${{dx}\over{dt}} = t - x^2$$ 
+@end tex
+
+With initial value x(t=0) = 1, in the interval of t from 0 to 8 and with
+increments of 0.1 for t, use:
+
+@example
+(%i20) results: rk(t-x^2,x,1,[t,0,8,0.1])$
+@end example
+
+the results will be saved in the list results.
+
+To solve numerically the system:
+
+@ifnottex
+@example
+        dx/dt = 4-x^2-4*y^2     dy/dt = y^2-x^2+1
+@end example
+@end ifnottex
+@tex
+$$\cases{{{dx}\over{dt}} = 4-x^2-4y^2 &\cr {{dy}\over{dt}} = y^2-x^2+1}$$
+@end tex
+
+for t between 0 and 4, and with values of -1.25 and 0.75 for x and y at t=0
+
+@example
+(%i21) sol: rk([4-x^2-4*y^2,y^2-x^2+1],[x,y],[-1.25,0.75],[t,0,4,0.02])$
+@end example

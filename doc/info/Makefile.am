@@ -35,6 +35,14 @@ maxima_TEXINFOS = Introduction.texi Help.texi Command.texi Operators.texi \
   bode.texi augmented_lagrangian.texi opsubst.texi stirling.texi interpol.texi
 
 figurefiles = \
+figures/dynamics1.gif\
+figures/dynamics2.gif\
+figures/dynamics3.gif\
+figures/dynamics4.gif\
+figures/dynamics5.gif\
+figures/dynamics6.gif\
+figures/dynamics7.gif\
+figures/dynamics8.gif\
 figures/plotdf1.gif\
 figures/plotdf2.gif\
 figures/plotdf3.gif\
