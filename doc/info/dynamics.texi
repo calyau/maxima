@@ -69,9 +69,7 @@ two expressions that depend just on @var{x} and @var{y}.
 
 @end deffn
 
-@deffn {Function} ifs (@code{[}@var{r1},...,@var{rm}@code{]},
-@code{[}@var{A1},...,@var{Am}@code{]}, @var{y1}@code{]}...@code{[}@var{xm}, @var{ym}@code{]}@code{]}, @code{[}@var{x0},
-@var{y0}@code{]}, @var{n}...options...);
+@deffn {Function} ifs (@code{[}@var{r1},...,@var{rm}@code{]},@code{[}@var{A1},...,@var{Am}@code{]}, @var{y1}@code{]}...@code{[}@var{xm}, @var{ym}@code{]}@code{]}, @code{[}@var{x0},@var{y0}@code{]}, @var{n}...options...);
 
 Implements the Iterated Functions System method. This method is similar
 to the method described in the function @code{chaosgame}. But instead of
@@ -86,8 +84,7 @@ probability but with probabilities defined bay the weights
 
 @end deffn
 
-@deffn {Function} orbits (@var{F}, @var{y0}, @var{n1}, @var{n2},
-[@var{x}, @var{x0}, @var{xf}, @var{xstep}]...options...);
+@deffn {Function} orbits (@var{F}, @var{y0}, @var{n1}, @var{n2}, [@var{x}, @var{x0}, @var{xf}, @var{xstep}]...options...);
 
 Draws the orbits diagram for a family of one-dimensional
 discrete dynamical systems, with one parameter @var{x}; that kind of
