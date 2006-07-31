@@ -669,7 +669,8 @@ knows about:
 (%i5) assume (x > 0, x < 1)$
 (%i6) ceiling (x);
 (%o6)                           1
-(%i7) $$\left \lceil a \right \rceil$$tex (ceiling (a));
+(%i7) tex (ceiling (a));
+$$\left \lceil a \right \rceil$$
 (%o7)                         false
 @end example
 
@@ -983,7 +984,8 @@ knows about:
 (%i5) assume (x > 0, x < 1)$
 (%i6) floor (x);
 (%o6)                           0
-(%i7) $$\left \lfloor a \right \rfloor$$tex (floor (a));
+(%i7) tex (floor (a));
+$$\left \lfloor a \right \rfloor$$
 (%o7)                         false
 @end example
 
