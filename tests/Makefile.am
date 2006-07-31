@@ -35,11 +35,11 @@ check-gcl:
 	$(MAXIMA) --lisp=gcl --batch-string="run_testsuite();" < /dev/null
 endif
 
-if ACL6
-check: check-acl6
-check-acl6:
-	echo "Running test suite with acl6..."; \
-	$(MAXIMA) --lisp=acl6 --batch-string="run_testsuite();" < /dev/null
+if ACL
+check: check-acl
+check-acl:
+	echo "Running test suite with acl..."; \
+	$(MAXIMA) --lisp=acl --batch-string="run_testsuite();" < /dev/null
 endif
 
 if OPENMCL

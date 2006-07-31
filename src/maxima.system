@@ -30,7 +30,7 @@
 			   :name "binary-sbcl"
 			   :directory (pathname-directory *load-truename*))
 		   #+gcl "binary-gcl"
-		   #+allegro "binary-acl6"
+		   #+allegro "binary-acl"
 		   #+openmcl "binary-openmcl"
 		   #-(or clisp cmu scl sbcl gcl allegro openmcl) "binary-unknownlisp"
   :components (#+gcl

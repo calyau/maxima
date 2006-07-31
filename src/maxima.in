@@ -129,10 +129,10 @@ elif [ "$MAXIMA_LISP" = "scl" ]; then
     fi
 elif [ "$MAXIMA_LISP" = "gcl" ]; then
     exec "$maxima_image_base" -eval '(cl-user::run)' -f -- "$arg1" "$arg2" "$arg3" "$arg4" "$arg5" "$arg6" "$arg7" "$arg8" "$arg9"
-elif [ "$MAXIMA_LISP" = "acl6" ]; then
+elif [ "$MAXIMA_LISP" = "acl" ]; then
 # FIXME: arguments need in a manner consistent with the way they are extracted
 #        in the function get-application-args in command-line.lisp
-    exec "@ACL6_NAME@" -I "$maxima_image_base.dxl" -e '(cl-user::run)' "$arg1" "$arg2" "$arg3" "$arg4" "$arg5" "$arg6" "$arg7" "$arg8" "$arg9"
+    exec "@ACL_NAME@" -I "$maxima_image_base.dxl" -e '(cl-user::run)' "$arg1" "$arg2" "$arg3" "$arg4" "$arg5" "$arg6" "$arg7" "$arg8" "$arg9"
 elif [ "$MAXIMA_LISP" = "openmcl" ]; then
 # FIXME: arguments need in a manner consistent with the way they are extracted
 #        in the function get-application-args in command-line.lisp

@@ -72,7 +72,7 @@
 	#+scl "scl"
 	#+sbcl "sbcl"
 	#+gcl "gcl"
-	#+allegro "acl6"
+	#+allegro "acl"
 	#+openmcl "openmcl"
 	#-(or clisp cmu scl sbcl gcl allegro openmcl) "unknownlisp")
 
@@ -83,7 +83,7 @@
 		  clisp-name
 		  cmucl-name
 		  scl-name
-		  acl6-name
+		  acl-name
 		  openmcl-name
 		  sbcl-name)
   (let ((prefix (if maxima-directory 
@@ -94,7 +94,7 @@
 	(clisp (if clisp-name clisp-name "clisp"))
 	(cmucl (if cmucl-name cmucl-name "lisp"))
 	(scl (if scl-name scl-name "lisp"))
-	(acl6 (if acl6-name acl6-name "acl"))
+	(acl (if acl-name acl-name "acl"))
 	(openmcl (if openmcl-name openmcl-name "mcl"))
 	(sbcl (if sbcl-name sbcl-name "sbcl"))
 	(files (list "maxima-local.in" "src/maxima.in" "src/maxima.bat.in"
@@ -116,9 +116,9 @@
 	  (setf scl 
 		(read-with-default "Name of the SCL executable (optional)"
 				   scl))
-	  (setf acl6 
+	  (setf acl 
 		(read-with-default "Name of the Allegro executable (optional)"
-				   acl6))
+				   acl))
 	  (setf openmcl 
 		(read-with-default "Name of the OpenMCL executable (optional)"
 				   openmcl))
@@ -138,7 +138,7 @@
 			      (cons "@CLISP_NAME@" clisp)
 			      (cons "@CMUCL_NAME@" cmucl)
 			      (cons "@SCL_NAME@" scl)
-			      (cons "@ACL6_NAME@" acl6)
+			      (cons "@ACL_NAME@" acl)
 			      (cons "@OPENMCL_NAME@" openmcl)
 			      (cons "@SBCL_NAME@" sbcl)))
     (if verbose

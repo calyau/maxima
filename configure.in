@@ -2,7 +2,7 @@ dnl Process this file with autoconf to produce a configure script.
 
 AC_INIT(src/macsys.lisp)
 
-AM_INIT_AUTOMAKE(maxima,5.9.3.1cvs)
+AM_INIT_AUTOMAKE(maxima,5.9.3.3cvs)
 AC_CANONICAL_HOST
 case "$host" in
         *mingw*)
@@ -198,40 +198,40 @@ if test x"${sbcl}" = xtrue ; then
 	fi
 fi
 	
-dnl n.b. acl6_default_name is hardcoded in "with" message
-acl6_default_name=lisp
-AC_ARG_ENABLE(acl6,[  --enable-acl6                    Use ACL 6],
+dnl n.b. acl_default_name is hardcoded in "with" message
+acl_default_name=lisp
+AC_ARG_ENABLE(acl,[  --enable-acl                     Use ACL],
      	[case "${enableval}" in
-       		yes) acl6=true 
+       		yes) acl=true 
                      explicit_lisp=true ;;
-       		no)  acl6=false ;;
-		*) AC_MSG_ERROR(bad value ${enableval} for --enable-acl6) ;;
+       		no)  acl=false ;;
+		*) AC_MSG_ERROR(bad value ${enableval} for --enable-acl) ;;
      	esac
 	explicit_lisp=true],
-	[acl6=false])
-AC_ARG_WITH(acl6,
-	[  --with-acl6=<prog>               Use ACL6 executable <prog> (default lisp)],
-	[acl6=true
+	[acl=false])
+AC_ARG_WITH(acl,
+	[  --with-acl=<prog>                Use ACL executable <prog> (default lisp)],
+	[acl=true
 	explicit_lisp=true
 	if test "$withval" = "yes"; then
-		ACL6_NAME="${acl6_default_name}"
+		ACL_NAME="${acl_default_name}"
 	else
-		ACL6_NAME="$withval"
+		ACL_NAME="$withval"
 	fi],
-	[ACL6_NAME=${acl6_default_name}])
-if test x"${acl6}" = xtrue ; then
-	if test `echo "$ACL6_NAME" | sed 's/\(.\).*/\1/'` = "/" ; then
-		if test -x "$ACL6_NAME" ; then
-			acl6_found=true
+	[ACL_NAME=${acl_default_name}])
+if test x"${acl}" = xtrue ; then
+	if test `echo "$ACL_NAME" | sed 's/\(.\).*/\1/'` = "/" ; then
+		if test -x "$ACL_NAME" ; then
+			acl_found=true
 		else
-			acl6_found=false
+			acl_found=false
 		fi
 	else
-		AC_CHECK_PROG(acl6_found,$ACL6_NAME,true,false)
+		AC_CHECK_PROG(acl_found,$ACL_NAME,true,false)
 	fi
-	AC_CHECK_PROG(acl6_found,$ACL6_NAME,true,false)
-	if test x"${acl6_found}" = xfalse ; then
-		AC_MSG_WARN(acl6 executable ${ACL6_NAME} not found in PATH)
+	AC_CHECK_PROG(acl_found,$ACL_NAME,true,false)
+	if test x"${acl_found}" = xfalse ; then
+		AC_MSG_WARN(acl executable ${ACL_NAME} not found in PATH)
 	fi
 fi
 
@@ -411,7 +411,7 @@ dnl  	fi
 	AC_CHECK_PROG(cmucl_found,$CMUCL_NAME,true,false)
 	AC_CHECK_PROG(scl_found,$SCL_NAME,true,false)
 	AC_CHECK_PROG(sbcl_found,$SBCL_NAME,true,false)
-	AC_CHECK_PROG(acl6_found,$ACL6_NAME,true,false)
+	AC_CHECK_PROG(acl_found,$ACL_NAME,true,false)
 	AC_CHECK_PROG(openmcl_found,$OPENMCL_NAME,true,false)
 
   	if test x"${clisp_found}" = xtrue ; then
@@ -424,12 +424,12 @@ dnl  	fi
 		scl=true
 	elif test x"${sbcl_found}" = xtrue ; then
 	   	sbcl=true
-	elif test x"${acl6_found}" = xtrue ; then
-		acl6=true
+	elif test x"${acl_found}" = xtrue ; then
+		acl=true
 	elif test x"${openmcl_found}" = xtrue ; then
 		openmcl=true
 	else
-		AC_MSG_ERROR(No lisp implementation specified and none of the default executables [${clisp_default_name}(clisp),${gcl_default_name}(GCL),${cmucl_default_name}(CMUCL),${scl_default_name}(SCL),${sbcl_default_name}(SBCL),${acl6_default_name}(ACL6),${openmcl_default_name}(OpenMCL)] were found in PATH)
+		AC_MSG_ERROR(No lisp implementation specified and none of the default executables [${clisp_default_name}(clisp),${gcl_default_name}(GCL),${cmucl_default_name}(CMUCL),${scl_default_name}(SCL),${sbcl_default_name}(SBCL),${acl_default_name}(ACL),${openmcl_default_name}(OpenMCL)] were found in PATH)
 	fi
 fi
 
@@ -438,7 +438,7 @@ AM_CONDITIONAL(GCL, test x$gcl = xtrue)
 AM_CONDITIONAL(CMUCL, test x$cmucl = xtrue)
 AM_CONDITIONAL(SCL, test x$scl = xtrue)
 AM_CONDITIONAL(SBCL, test x$sbcl = xtrue)
-AM_CONDITIONAL(ACL6, test x$acl6 = xtrue)
+AM_CONDITIONAL(ACL, test x$acl = xtrue)
 AM_CONDITIONAL(OPENMCL, test x$openmcl = xtrue)
 
 if test x"${clisp}" = xtrue; then
@@ -583,11 +583,11 @@ AC_ARG_WITH(default-lisp,
 				AC_MSG_ERROR(gcl not enabled)
 			fi
 			;;	
-		acl6)
-			if test x"${acl6}" = xtrue ; then
-				DEFAULTLISP=acl6
+		acl)
+			if test x"${acl}" = xtrue ; then
+				DEFAULTLISP=acl
 			else
-				AC_MSG_ERROR(acl6 not enabled)
+				AC_MSG_ERROR(acl not enabled)
 			fi
 			;;	
 		openmcl)
@@ -611,8 +611,8 @@ AC_ARG_WITH(default-lisp,
 	   	DEFAULTLISP=sbcl
 	elif test x"${gcl}" = xtrue ; then
 	   	DEFAULTLISP=gcl
-	elif test x"${acl6}" = xtrue ; then
-		DEFAULTLISP=acl6
+	elif test x"${acl}" = xtrue ; then
+		DEFAULTLISP=acl
 	elif test x"${openmcl}" = xtrue ; then
 		DEFAULTLISP=openmcl
 	else
@@ -630,7 +630,7 @@ AC_SUBST(SCL_RUNTIME)
 AC_SUBST(SCL_RUNTIME_PATH)
 AC_SUBST(SBCL_NAME)
 AC_SUBST(GCL_NAME)
-AC_SUBST(ACL6_NAME)
+AC_SUBST(ACL_NAME)
 AC_SUBST(OPENMCL_NAME)
 AC_SUBST(DEFAULTLISP)
 
@@ -728,8 +728,8 @@ if test x"${gcl}" = xtrue ; then
 		echo "    GCL alternative linking method enabled."
 	fi
 fi
-if test x"${acl6}" = xtrue ; then
-	echo "ACL6 enabled. Executable name: \"${ACL6_NAME}\""
+if test x"${acl}" = xtrue ; then
+	echo "ACL enabled. Executable name: \"${ACL_NAME}\""
 fi
 if test x"${openmcl}" = xtrue ; then
 	echo "OpenMCL enabled. Executable name: \"${OPENMCL_NAME}\""

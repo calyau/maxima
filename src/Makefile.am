@@ -117,36 +117,36 @@ include scl-depends.mk
 endif
 
 
-if ACL6
-EXECUTEACL6 = $(ACL6_NAME) -batch
-all-local: binary-acl6/maxima.dxl
-install-exec-local: install-acl6
-uninstall: uninstall-acl6
-clean: clean-acl6
-distclean: clean-acl6
+if ACL
+EXECUTEACL = $(ACL_NAME) -batch
+all-local: binary-acl/maxima.dxl
+install-exec-local: install-acl
+uninstall: uninstall-acl
+clean: clean-acl
+distclean: clean-acl
 
-acl6:binary-acl6/maxima.dxl
+acl:binary-acl/maxima.dxl
 
-binary-acl6/maxima.dxl:
-	test -d binary-acl6 || mkdir binary-acl6
-	test -d binary-acl6/numerical || mkdir binary-acl6/numerical
-	test -d binary-acl6/numerical/slatec || mkdir binary-acl6/numerical/slatec
-	(echo '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE))' | $(EXECUTEACL6)) && \
-	(echo '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMLOAD) (excl:dumplisp :name "binary-acl6/maxima.dxl"))' | $(EXECUTEACL6))
+binary-acl/maxima.dxl:
+	test -d binary-acl || mkdir binary-acl
+	test -d binary-acl/numerical || mkdir binary-acl/numerical
+	test -d binary-acl/numerical/slatec || mkdir binary-acl/numerical/slatec
+	(echo '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE))' | $(EXECUTEACL)) && \
+	(echo '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMLOAD) (excl:dumplisp :name "binary-acl/maxima.dxl"))' | $(EXECUTEACL))
 
-install-acl6:
-	$(mkinstalldirs) "$(DESTDIR)$(verpkglibdir)/binary-acl6"
-	$(INSTALL_DATA) binary-acl6/maxima.dxl "$(DESTDIR)$(verpkglibdir)/binary-acl6/maxima.dxl"
+install-acl:
+	$(mkinstalldirs) "$(DESTDIR)$(verpkglibdir)/binary-acl"
+	$(INSTALL_DATA) binary-acl/maxima.dxl "$(DESTDIR)$(verpkglibdir)/binary-acl/maxima.dxl"
 
-uninstall-acl6:
-	rm -f "$(DESTDIR)$(verpkglibdir)/binary-acl6/maxima.dxl"
+uninstall-acl:
+	rm -f "$(DESTDIR)$(verpkglibdir)/binary-acl/maxima.dxl"
 
-clean-acl6:
-	rm -rf binary-acl6
-acl6-depends.mk: maxima.system
-	test -d binary-acl6 || mkdir binary-acl6
-	echo '(progn $(LOADDEFSYSTEM) $(LOADMAKEDEPENDS) (funcall (intern "CREATE-DEPENDENCY-FILE" :mk) "binary-acl6/maxima.dxl" "acl6-depends.mk"))' | $(EXECUTEACL6)
-include acl6-depends.mk
+clean-acl:
+	rm -rf binary-acl
+acl-depends.mk: maxima.system
+	test -d binary-acl || mkdir binary-acl
+	echo '(progn $(LOADDEFSYSTEM) $(LOADMAKEDEPENDS) (funcall (intern "CREATE-DEPENDENCY-FILE" :mk) "binary-acl/maxima.dxl" "acl-depends.mk"))' | $(EXECUTEACL)
+include acl-depends.mk
 endif
 
 
@@ -574,4 +574,4 @@ numerical/slatec/zwrsk.lisp
 
 genericdirDATA = $(real_lisp_sources) autoconf-variables.lisp
 
-EXTRA_DIST = $(real_lisp_sources) maxima.system clisp-depends.mk  cmucl-depends.mk  scl-depends.mk  gcl-depends.mk acl6-depends.mk openmcl-depends.mk sbcl-depends.mk numerical/slatec/fortran maxima-build.lisp maxima-command.ico
+EXTRA_DIST = $(real_lisp_sources) maxima.system clisp-depends.mk  cmucl-depends.mk  scl-depends.mk  gcl-depends.mk acl-depends.mk openmcl-depends.mk sbcl-depends.mk numerical/slatec/fortran maxima-build.lisp maxima-command.ico
