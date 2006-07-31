@@ -1,17 +1,17 @@
 @c version 1.18
 @menu
-* Introducci@'on a Opciones Miscel@'aneas::  
+* Introducci@'on a la miscel@'anea de opciones::  
 * Share::  
-* Definiciones para Opciones Miscel@'aneas::
+* Definiciones para la miscel@'anea de opciones::
 @end menu
 
-@node Introducci@'on a Opciones Miscel@'aneas, Share, Opciones Miscel@'aneas, Opciones Miscel@'aneas
+@node Introducci@'on a la miscel@'anea de opciones, Share, Miscel@'anea de opciones, Miscel@'anea de opciones
 
-@section Introducci@'on a Opciones Miscel@'aneas::
+@section Introducci@'on a la miscel@'anea de opciones
 
 En esta secci@'on se comentan varias opciones que tienen un efecto global sobre le comportamiento de Maxima. Tambi@'en se comentan varias listas, como la de las funciones definidas por el usuario.
 
-@node Share, Definiciones para Opciones Miscel@'aneas, Introducci@'on a Opciones Miscel@'aneas, Opciones Miscel@'aneas
+@node Share, Definiciones para la miscel@'anea de opciones, Introducci@'on a la miscel@'anea de opciones, Miscel@'anea de opciones
 
 @section Share
 
@@ -21,8 +21,8 @@ La llamada @code{:lisp *maxima-sharedir*} muestra la localizaci@'on del director
 
 La llamada @code{printfile ("share.usg")} muestra una lista actualizada de paquetes en "share". Los usuarios pueden encontrar m@'as informaci@'on accediendo directamente a los contenidos del directorio "share".
 
-@node Definiciones para Opciones Miscel@'aneas,  , Share, Opciones Miscel@'aneas
-@section Definiciones para Opciones Miscel@'aneas
+@node Definiciones para la miscel@'anea de opciones,  , Share, Miscel@'anea de opciones
+@section Definiciones para la miscel@'anea de opciones
 
 @defvr {Variable del sistema} aliases
 Valor por defecto: @code{[]}

@@ -92,7 +92,7 @@ direcciones de correo electr@'onico:
 Infraestructura de Maxima
 
 * Introducci@'on a Maxima::            Muestra de sesiones con Maxima.
-* Reporte y Detecci@'on de Bugs::      Buscando y reportando bugs en Maxima
+* Detecci@'on e informe de fallos::    Gesti@'on de fallos en Maxima.
 * Ayuda::                              Solicitando ayuda desde una sesi@'on de Maxima.
 * L@'{@dotless{i}}nea de Comandos::    Sintaxis de los comandos de Maxima.
 * Operadores::                         Operadores utilizados en expresiones de Maxima.
@@ -132,7 +132,7 @@ Soporte para campos m@'as espec@'{@dotless{i}}ficos de las matem@'aticas
 Funcionalidades avanzadas y programaci@'on
 
 * Entorno de Ejecuci@'on::      Personalizaci@'on de Maxima.
-* Opciones Miscel@'aneas::      Opciones que afectan globalmente el comportamiento de Maxima.
+* Miscel@'anea de opciones::    Opciones que afectan globalmente el comportamiento de Maxima.
 * Reglas y patrones::           Patrones de definidos por el usuario y
                                 reglas de simplificaci@'on.
 * Listas::                      Manipulaci@'on de listas.
@@ -183,46 +183,51 @@ Introducci@'on
 
 * Introducci@'on a Maxima::
 
+Fallos
+
+* Introducci@'on a la detecci@'on e informe de fallos::
+* Definiciones para la detecci@'on e informe de fallos::
+
 Ayuda
 
-* Introducci@'on a la Ayuda::        
-* Lisp y Maxima::            
-* Recolector de Basura::          
-* Documentaci@'on::               
-* Definiciones para la Ayuda::        
+* Introducci@'on a la Ayuda::
+* Lisp y Maxima::
+* Recolector de Basura::
+* Documentaci@'on::
+* Definiciones para la Ayuda::
 
 L@'{@dotless{i}}nea de Comandos
 
-* Introducci@'on a la L@'{@dotless{i}}nea de Comandos::  
-* Definiciones para  la L@'{@dotless{i}}nea de Comandos:: 
+* Introducci@'on a la L@'{@dotless{i}}nea de Comandos::
+* Definiciones para  la L@'{@dotless{i}}nea de Comandos::
 
 Operadores
 
-* n-arios::                        
-* no-fijos::                       
-* operador::                    
-* postfijos::                     
-* prefijos::                      
-* Definiciones para Operadores::  
+* n-arios::
+* no-fijos::
+* operador::
+* postfijos::
+* prefijos::
+* Definiciones para Operadores::
 
 Expresiones
 
-* Introducci@'on a las Expresiones::  
+* Introducci@'on a las Expresiones::
 * Asignaci@'on::
 * Expresiones complejas::
 * Nombres y verbos::
 * Identificadores::
 * Desigualdades::
 * Sintaxis::
-* Definiciones para Expresiones::  
+* Definiciones para Expresiones::
 
 Simplificaci@'on
 
-* Definiciones para Simplificaci@'on::  
+* Definiciones para Simplificaci@'on::
 
 Gr@'aficos
 
-* Definiciones para Gr@'aficos::    
+* Definiciones para Gr@'aficos::
 
 Entrada y Salida
 
@@ -237,31 +242,31 @@ Aritm@'etica de punto flotante
 
 Contextos
 
-* Definiciones para Contextos::    
+* Definiciones para Contextos::
 
 Polinomios
 
-* Introducci@'on a los Polinomios::  
-* Definiciones para Polinomios::  
+* Introducci@'on a los Polinomios::
+* Definiciones para Polinomios::
 
 Constantes
 
-* Definiciones para Constantes::    
+* Definiciones para Constantes::
 
 Logaritmos
 
-* Definiciones para Logaritmos::  
+* Definiciones para Logaritmos::
 
 Trigonometr@'{@dotless{i}}a
 
-* Introducci@'on a la Trigonometr@'{@dotless{i}}a::  
-* Definiciones para Trigonometr@'{@dotless{i}}a::  
+* Introducci@'on a la Trigonometr@'{@dotless{i}}a::
+* Definiciones para Trigonometr@'{@dotless{i}}a::
 
 Funciones Especiales
 
-* Introducci@'on a las Funciones Especiales::  
-* specint::                     
-* Definiciones para las Funciones Especiales::  
+* Introducci@'on a las Funciones Especiales::
+* specint::
+* Definiciones para las Funciones Especiales::
 
 Funciones el@'{@dotless{i}}pticas
 
@@ -271,128 +276,128 @@ Funciones el@'{@dotless{i}}pticas
 
 L@'{@dotless{i}}mites
 
-* Definiciones para L@'{@dotless{i}}mites::     
+* Definiciones para L@'{@dotless{i}}mites::
 
 Diferenciaci@'on
 
-* Definiciones para Diferenciaci@'on::   
+* Definiciones para Diferenciaci@'on::
 
 Integraci@'on
 
 * Introducci@'on a la Integraci@'on::
-* Definiciones para Integraci@'on::  
+* Definiciones para Integraci@'on::
 
 Ecuaciones
 
-* Definiciones para Ecuaciones::   
+* Definiciones para Ecuaciones::
 
 Ecuaciones Diferenciales
 
-* Definiciones para Ecuaciones Diferenciales::   
+* Definiciones para Ecuaciones Diferenciales::
 
 M@'etodos num@'ericos
 
-* Introducci@'on a los m@'etodos num@'ericos::   
-* Series de Fourier::                     
-* Definiciones para los m@'etodos num@'ericos::   
+* Introducci@'on a los m@'etodos num@'ericos::
+* Series de Fourier::
+* Definiciones para los m@'etodos num@'ericos::
 * Definiciones para las series de Fourier::
 
 Estad@'{@dotless{i}}stica
 
-* Definiciones para Estad@'{@dotless{i}}stica::  
+* Definiciones para Estad@'{@dotless{i}}stica::
 
 Arrays
 
-* Definiciones para Arrays::  
+* Definiciones para Arrays::
 
 Matrices y @'Algebra Lineal
 
-* Introducci@'on a las Matrices y al @'Algebra Lineal::  
-* Operador punto::                         
-* Vectores::                     
+* Introducci@'on a las Matrices y al @'Algebra Lineal::
+* Operador punto::
+* Vectores::
 * Paquete eigen::
-* Definiciones para las Matrices y el @'Algebra Lineal::  
+* Definiciones para las Matrices y el @'Algebra Lineal::
 
 Afines
 
-* Definiciones para Afines::     
+* Definiciones para Afines::
 
 itensor
 
 * Introducci@'on a itensor::
-* Definiciones para itensor::      
+* Definiciones para itensor::
 
 ctensor
 
-* Introducci@'on a ctensor::     
-* Definiciones para ctensor::     
+* Introducci@'on a ctensor::
+* Definiciones para ctensor::
 
 atensor
 
 * Introducci@'on a atensor::
-* Definiciones para atensor::     
+* Definiciones para atensor::
 
 Series
 
-* Introducci@'on a las Series::      
-* Definiciones para las Series::      
+* Introducci@'on a las Series::
+* Definiciones para las Series::
 
 Teor@'{@dotless{i}}a de N@'umeros
 
-* Definiciones para Teor@'{@dotless{i}}a de N@'umeros::  
+* Definiciones para Teor@'{@dotless{i}}a de N@'umeros::
 
 Simetr@'{@dotless{i}}as
 
-* Definiciones para Simetr@'{@dotless{i}}as::  
+* Definiciones para Simetr@'{@dotless{i}}as::
 
 Grupos
 
-* Definiciones para Grupos::      
+* Definiciones para Grupos::
 
 Entorno de Ejecuci@'on
 
-* Introducci@'on al Entorno de Ejecuci@'on::   
-* Interrupciones::  
-* Definiciones para el Entorno de Ejecuci@'on::  
+* Introducci@'on al Entorno de Ejecuci@'on::
+* Interrupciones::
+* Definiciones para el Entorno de Ejecuci@'on::
 
-Opciones Miscel@'aneas
+Miscel@'anea de opciones
 
-* Introducci@'on a Opciones Miscel@'aneas::  
-* Share::  
-* Definiciones para Opciones Miscel@'aneas::  
+* Introducci@'on a la miscel@'anea de opciones::
+* Share::
+* Definiciones para la miscel@'anea de opciones::
 
 Reglas y patrones
 
-* Introducci@'on a reglas y patrones::  
-* Definiciones sobre reglas y patrones::  
+* Introducci@'on a reglas y patrones::
+* Definiciones sobre reglas y patrones::
 
 Listas
 
-* Introducci@'on a las listas::       
-* Definiciones para listas::       
+* Introducci@'on a las listas::
+* Definiciones para listas::
 
 Conjuntos
 
-* Introducci@'on a los conjuntos::       
-* Definiciones para los conjuntos::       
+* Introducci@'on a los conjuntos::
+* Definiciones para los conjuntos::
 
 Definici@'on de Funciones
 
-* Introducci@'on a la definici@'on de funciones::  
-* Funciones::                    
-* Macros::                       
-* Definiciones para la definici@'on de funciones::  
+* Introducci@'on a la definici@'on de funciones::
+* Funciones::
+* Macros::
+* Definiciones para la definici@'on de funciones::
 
 Programaci@'on
 
-* Introducci@'on a la Programaci@'on::  
-* Definiciones para la Programaci@'on:: 
+* Introducci@'on a la Programaci@'on::
+* Definiciones para la Programaci@'on::
 
 Depurado
 
 * Depuraci@'on del c@'odigo fuente::
 * Claves de depuraci@'on::
-* Definiciones para Depurado::   
+* Definiciones para Depurado::
 
 augmented_lagrangian
 
@@ -512,7 +517,7 @@ stringproc
 
 unit
 
-* Introducci@'on a Units::       
+* Introducci@'on a Units::
 * Definiciones para Units::
 
 zeilberger
@@ -528,15 +533,15 @@ zeilberger
 @c  nota bene: C-c C-u C-a and texinfo-multiple-files-update will delete
 @c  the detailed node listing!
 
-@node Introducci@'on a Maxima, Reporte y Detecci@'on de Bugs, Top, Top
+@node Introducci@'on a Maxima, Detecci@'on e informe de fallos, Top, Top
 @chapter Introducci@'on a Maxima
 @include Introduction.es.texi
 
-@node Reporte y Detecci@'on de Bugs, Ayuda, Introducci@'on a Maxima, Top
-@chapter Reporte y Detecci@'on de Bugs
+@node Detecci@'on e informe de fallos, Ayuda, Introducci@'on a Maxima, Top
+@chapter Detecci@'on e informe de fallos
 @include Bugs.es.texi
 
-@node Ayuda, L@'{@dotless{i}}nea de Comandos, Reporte y Detecci@'on de Bugs, Top
+@node Ayuda, L@'{@dotless{i}}nea de Comandos, Detecci@'on e informe de fallos, Top
 @chapter Ayuda
 @include Help.es.texi
 
@@ -664,15 +669,15 @@ zeilberger
 @chapter Grupos
 @include Groups.es.texi
 
-@node Entorno de Ejecuci@'on, Opciones Miscel@'aneas, Grupos, Top
+@node Entorno de Ejecuci@'on, Miscel@'anea de opciones, Grupos, Top
 @chapter Entorno de Ejecuci@'on
 @include Runtime.es.texi
 
-@node Opciones Miscel@'aneas, Reglas y patrones, Entorno de Ejecuci@'on, Top
-@chapter Opciones Miscel@'aneas
+@node Miscel@'anea de opciones, Reglas y patrones, Entorno de Ejecuci@'on, Top
+@chapter Miscel@'anea de opciones
 @include Miscellaneous.es.texi
 
-@node Reglas y patrones, Listas, Opciones Miscel@'aneas, Top
+@node Reglas y patrones, Listas, Miscel@'anea de opciones, Top
 @chapter Reglas y patrones
 @include Rules.es.texi
 

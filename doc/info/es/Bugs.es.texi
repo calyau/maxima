@@ -1,18 +1,18 @@
 @c version 1.9
 @menu
-* Introducci@'on a la detecci@'on de Bugs y su reporte::
-* Definiciones para la detecci@'on de Bugs y su reporte::
+* Introducci@'on a la detecci@'on e informe de fallos::
+* Definiciones para la detecci@'on e informe de fallos::
 @end menu
 
-@node Introducci@'on a la detecci@'on de Bugs y su reporte
-@section Introducci@'on a la detecci@'on de Bugs y su reporte
+@node Introducci@'on a la detecci@'on e informe de fallos
+@section Introducci@'on a la detecci@'on e informe de fallos
 Como todos los grandes programas, Maxima contiene tanto bugs conocidos
 como desconocidos. Este cap@'{@dotless{i}}tulo describe las facilidades internas para
 ejecutar la suite de evaluaci@'on de Maxima (Maxima test suite) adem@'as 
 de reportar nuevos bugs. 
 
-@node Definiciones para la detecci@'on de Bugs y su reporte
-@section Definiciones para la detecci@'on de Bugs y su reporte::
+@node Definiciones para la detecci@'on e informe de fallos
+@section Definiciones para la detecci@'on e informe de fallos
 @deffn {Funci@'on} run_testsuite ()
 @deffnx {Funci@'on} run_testsuite (@var{boolean})
 @deffnx {Funci@'on} run_testsuite (@var{boolean}, @var{boolean})
