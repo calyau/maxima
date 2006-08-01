@@ -69,5 +69,33 @@ map (rhs, [aa + bb, aa - bb, aa * bb, aa / bb, sin(aa), log(aa)]);
 kill ("@@");
 done;
 
+/* Verify that grind treats nouns correctly. string calls MSIZE in src/grind.lisp.
+ */
+
+kill (all);
+done;
+
+string ('(integrate(f(x), x) + integrate(g(x), x, minf, inf) + diff(u, x) + sum(h(x), x, 1, n)));
+"sum(h(x),x,1,n)+integrate(g(x),x,minf,inf)+integrate(f(x),x)+diff(u,x)";
+
+string ('integrate(f(x), x) + 'integrate(g(x), x, minf, inf) + 'diff(u, x) + 'sum(h(x), x, 1, n));
+"'sum(h(x),x,1,n)+'integrate(g(x),x,minf,inf)+'integrate(f(x),x)+'diff(u,x,1)";
+
+/* GREAT puts nounified atoms before others, it appears ... */
+string (%a%a + %b%b + nounify(%c%c) + nounify(%d%d) + %e%e + %f%f);
+"%d%d+%c%c+%f%f+%e%e+%b%b+%a%a";
+
+string (sin(x) * cos(x) + tan(x));
+"tan(x)+cos(x)*sin(x)";
+
+string ('foo(x, y, z) / bar(a, b, c) + 'baz(%pi - 'quux(%e ^ mumble(%i))));
+"'foo(x,y,z)/bar(a,b,c)+'baz(%pi-'quux(%e^mumble(%i)))";
+
+/* It's conceivable that someday nounified arithmetic operators would be treated differently by grind.
+ * If/when that happens, revise this example accordingly.
+ */
+string ('"+"(a, b, '"."(c, d), '"^"(e, f)));
+"'?mplus(a,b,'?mnctimes(c,d),'?mexpt(e,f))";
+
 end;
 end$
