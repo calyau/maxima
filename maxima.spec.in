@@ -42,17 +42,24 @@ Requires: maxima-exec = %{version}
 
 %description
 
-Maxima is a full symbolic computation program.  It is full featured
-doing symbolic manipulation of polynomials, matrices, rational
-functions, integration, Todd-coxeter, graphing, bigfloats.  It has a
-symbolic debugger source level debugger for maxima code.  Maxima is
-based on the original Macsyma developed at MIT in the 1970's.  It is
-quite reliable, and has good garbage collection, and no memory leaks.
-It comes with hundreds of self tests.
+Maxima is a system for the manipulation of
+symbolic and numerical expressions, including
+differentiation, integration, Taylor series, Laplace transforms,
+ordinary differential equations,
+systems of linear equations,
+polynomials,
+and sets, lists, vectors, matrices, and tensors.
+Maxima yields high precision numeric results
+by using exact fractions, arbitrary-precision integers, 
+and arbitrary-precision floating point numbers.
+Maxima can plot functions and data in two and three
+dimensions,
+and it comes with hundreds of self tests.
+Maxima is based on the original Macsyma developed at MIT in the 1970's.
 
 %package xmaxima
 Summary: Tcl/Tk interface to Maxima
-Group: Development/Languages
+Group: Sciences/Mathematics
 Requires: maxima = %{version}, tk
 Provides: xmaxima
 %description xmaxima
@@ -61,7 +68,7 @@ Tcl/Tk interface to Maxima.
 %if %{enable_clisp}
 %package exec-clisp
 Summary: Maxima compiled with clisp
-Group: Development/Languages
+Group: Sciences/Mathematics
 Requires: maxima = %{version}
 Provides: maxima-exec
 %description exec-clisp
@@ -71,7 +78,7 @@ Maxima compiled with clisp.
 %if %{enable_cmucl}
 %package exec-cmucl
 Summary: Maxima compiled with CMUCL
-Group: Development/Languages
+Group: Sciences/Mathematics
 Requires: maxima = %{version}
 Provides: maxima-exec
 %description exec-cmucl
@@ -81,7 +88,7 @@ Maxima compiled with CMUCL.
 %if %{enable_sbcl}
 %package exec-sbcl
 Summary: Maxima compiled with SBCL
-Group: Development/Languages
+Group: Sciences/Mathematics
 Requires: maxima = %{version}
 Provides: maxima-exec
 %description exec-sbcl
@@ -91,7 +98,7 @@ Maxima compiled with SBCL.
 %if %{enable_gcl}
 %package exec-gcl
 Summary: Maxima compiled with GCL
-Group: Development/Languages
+Group: Sciences/Mathematics
 Requires: maxima = %{version}
 Provides: maxima-exec
 %description exec-gcl
@@ -101,7 +108,7 @@ Maxima compiled with Gnu Common Lisp.
 %if %{enable_lang_es}
 %package lang-es
 Summary: Maxima Spanish language pack
-Group: Development/Languages
+Group: Sciences/Mathematics
 Requires: maxima = %{version}
 %description lang-es
 Maxima Spanish lagnuage support.
@@ -110,7 +117,7 @@ Maxima Spanish lagnuage support.
 %if %{enable_lang_es_utf}
 %package lang-es-utf8
 Summary: Maxima Spanish UTF-8 language pack
-Group: Development/Languages
+Group: Sciences/Mathematics
 Requires: maxima = %{version}
 %description lang-es-utf8
 Maxima Spanish lagnuage support (UTF-8).
@@ -119,7 +126,7 @@ Maxima Spanish lagnuage support (UTF-8).
 %if %{enable_lang_pt}
 %package lang-pt
 Summary: Maxima Portuguese language pack
-Group: Development/Languages
+Group: Sciences/Mathematics
 Requires: maxima = %{version}
 %description lang-pt
 Maxima Portuguese lagnuage support.
@@ -128,7 +135,7 @@ Maxima Portuguese lagnuage support.
 %if %{enable_lang_pt_utf}
 %package lang-pt-utf8
 Summary: Maxima Portuguese UTF-8 language pack
-Group: Development/Languages
+Group: Sciences/Mathematics
 Requires: maxima = %{version}
 %description lang-pt-utf8
 Maxima Portuguese lagnuage support (UTF-8).
