@@ -137,7 +137,7 @@ elements will be the value of the independent variable, followed by the
 values of the dependent variables corresponding to that point in the interval
 of integration. If at some point one of the variables becomes too large,
 the list will stop there. Otherwise, the list will extend until the last
-value of the independent variable specified by @cod{domain}.
+value of the independent variable specified by @code{domain}.
 
 @end deffn
 
