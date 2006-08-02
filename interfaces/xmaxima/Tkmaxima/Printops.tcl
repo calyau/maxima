@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Printops.tcl,v 1.9 2006-07-30 19:27:22 villate Exp $
+#       $Id: Printops.tcl,v 1.10 2006-08-02 18:16:21 vvzhy Exp $
 #
 ###### Printops.tcl ######
 ############################################################
@@ -207,7 +207,7 @@ proc mkPrintDialog { name args } {
     button $wb.cancel -text "Cancel" -font $buttonFont -command "destroy $name ; $canv delete printoptions"
     set writefile "Save"
     mkentryPr  $wb.psfilename printOption(psfilename) [mc "Postscript filename"] $buttonFont
-    mkentryPr  $wb.hoffset printOption(hoffset) [mc "Left margin(inches)"] $buttonFont
+    mkentryPr  $wb.hoffset printOption(hoffset) [mc "Left margin (inches)"] $buttonFont
     mkentryPr  $wb.voffset printOption(voffset) [mc "Top margin (inches)"] $buttonFont
     eval pack $topack -expand 1
 
