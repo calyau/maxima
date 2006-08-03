@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Browser.tcl,v 1.16 2006-06-28 12:15:27 villate Exp $
+#       $Id: Browser.tcl,v 1.17 2006-08-03 13:22:36 villate Exp $
 #
 ###### Browser.tcl ######
 ############################################################
@@ -1175,7 +1175,7 @@ proc fontDialog { top } {
 proc savePreferences {} {
     global maxima_default maxima_priv
 
-    if {[catch {open  "~/xmaxima.ini" w} fi]} {return}
+    if {[catch {open  "~/.xmaximarc" w} fi]} {return}
 
     puts $fi "array set maxima_default {"
     foreach {k v} [array get maxima_default *] {

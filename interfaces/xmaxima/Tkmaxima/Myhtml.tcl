@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Myhtml.tcl,v 1.12 2006-06-27 13:43:23 villate Exp $
+#       $Id: Myhtml.tcl,v 1.13 2006-08-03 13:22:36 villate Exp $
 #
 ###### Myhtml.tcl ######
 ############################################################
@@ -1083,7 +1083,7 @@ proc xHMsetDefaultPreferences {} {
 }
 
 xHMsetDefaultPreferences
-catch { source ~/xmaxima.ini }
+catch { source ~/.xmaximarc }
 
 proc dputs {x}  { puts $x ; flush stdout}
 proc xHMinit_state { win args } {

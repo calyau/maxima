@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Constants.tcl,v 1.21 2006-07-29 09:27:34 villate Exp $
+#       $Id: Constants.tcl,v 1.22 2006-08-03 13:22:36 villate Exp $
 #
 
 proc cMAXINITBeforeIni {} {
@@ -45,10 +45,10 @@ proc cMAXINITBeforeIni {} {
 }
 
 proc cMAXINITReadIni {} {
-    if {[file isfile ~/xmaxima.ini]} {
-	if {[catch {uplevel "#0" [list source ~/xmaxima.ini] } err]} {
+    if {[file isfile ~/.xmaximarc]} {
+	if {[catch {uplevel "#0" [list source ~/.xmaximarc] } err]} {
 	    tide_failure [M [mc "Error sourcing %s\n%s"] \
-			      [file native ~/xmaxima.ini] \
+			      [file native ~/.xmaximarc] \
 			      $err]
 	}
     }
