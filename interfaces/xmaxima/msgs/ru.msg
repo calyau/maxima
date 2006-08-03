@@ -58,40 +58,38 @@ mcset ru "not allowed, only" "недопустим, только"
 ### Bindings.tcl
 mcset ru "
 Bindings:
-<Return>   This sends the current expression (ie where the insert
-cursor is)  for evaluation.
-<Linefeed> (Control-j) This inserts a newline, and is useful
-for entering multiline input.
+<Return>    This sends the current expression (ie where the insert
+            cursor is)  for evaluation.
+<Linefeed>  (Control-j) This inserts a newline, and is useful
+            for entering multiline input.
 <Control-k> Kills the current line and puts it in kill ring.
-Successive control-k's append their output together.
-<Control-y> Yank out the last kill, Meta-y cycles thru previous
-kills.
-<Control-g> Interrupt the current computation.
-<Alt-p>   Previous input, or if repeated cycle through the previous
-inputs.  If the current input is not empty, then
-match only inputs which begin with the current input.
-<Alt-n>   Like Previous input, but in opposite direction.
+            Successive control-k's append their output together.
+<Control-y> Yank out the last kill, Meta-y cycles through previous
+            kills.
+<Control-g> Interrupts the current computation.
+<Alt-p>     Previous input, or if repeated cycle through the previous
+            inputs.  If the current input is not empty, then
+            match only inputs which begin with the current input.
+<Alt-n>     Like Previous input, but in opposite direction.
+<Alt-s>     Print again the Maxima input prompt.
 " "
 Клавиатурные привязки:
-<Return>   Вычисляет текущее выражение (находящееся в позиции
+<Return>   Вычислить текущее выражение (находящееся в позиции
 курсора).
-<Linefeed> (Control-j) Вставляет новую строку; полезно при
+<Linefeed> (Control-j) Вставить новую строку; полезно при
 многострочном вводе.
-<Control-c> Копирует выделенный фрагмент в буфер.
-<Control-x> Удаляет выделенный фрагмент в буфер.
-<Control-v> Вставляет фрагмент из буфер.
-<Control-u> Удаляет строку, добавляя ее в буфер удаленных строк.
-<Control-k> Удаляет строку, начиная с текущей позиции, добавляя
+<Control-k> Удалить строку, начиная с текущей позиции, добавляя
 ее в буфер удаленных строк. Последующие нажатия Control-k's
 соединяют их вместе.
-<Control-y> Возвращает последнюю удаленную строку, Meta-y 
+<Control-y> Возвратить последнюю удаленную строку, Meta-y 
 циклически перебирает предшествующие удаленные строки.
-<Control-g> Прерывает текущие вычисления.
+<Control-g> Прерывать текущие вычисления.
 <Alt-p>   Предыдущий ввод, при повторном нажатии выводит
 все предшествующие строки. Если текущая строка ввода не пуста,
 выводит только те строки, начало которых совпадает с текущей
 строкой.
 <Alt-n>   То же, что и предыдущий ввод, но в обратном направлении.
+<Alt-s>   Сновы вывести приглашение Maxima.
 "
 
 
@@ -285,18 +283,28 @@ mcset ru "A regexp to search for, to get an initial position" \
 
 ##### Parse.tcl
 mcset ru "parser unrecognized:" "parser не распознал:"
+
 mcset ru \
 {
-    The syntax is like C except that it is permitted to write x^n
-    instead of pow(x,n).
+The syntax for the definition of functions is like C, except that it is \
+permitted to write x^n instead of pow(x,n).
 } \
 {
-     Синтаксис похож на C, за исключением того, что вместо pow(x,n)
-     записывается x^n.
+Синтаксис похож на C, за исключением того, что вместо pow(x,n) записывается x^n.
 }
-mcset ru "Functions:" "Функции:"
-mcset ru "Operators:" "Операторы:"
+
+mcset ru {
+Functions:} {
+Функции:}
+
+mcset ru {
+
+Operators:} {
+
+Операторы:}
+
 mcset ru "syntax error" "синтаксическая ошибка"
+
 
 
 ##### NPlot3d.tcl
@@ -311,6 +319,11 @@ mcset ru "is required option for" "требует опцию для"
 
 
 ##### Printops.tcl
+mcset ru "Encapsulated PostScript File Options" "Настройки файла Encapsulated PostScript"
+mcset ru "Save" "Сохранить"
+mcset ru "Cancel" "Отменить"
+mcset ru "Left margin (inches)" "Левое поле (дюймы)"
+mcset ru "Top margin (inches)" "Верхнее поле (дюймы)"
 mcset ru "Printer Setup" "Установки печати"
 mcset ru "Save via ftp" "Сохранить по ftp"
 mcset ru "Save as Postscript File" "Сохранить как Postscript-файл"
@@ -341,80 +354,61 @@ mcset ru "X and Y versus t" "X и Y от t"
 mcset ru "bad -ode argument:" "неверный параметр -ode :"
 mcset ru "\nwant d(y,x)=f(x,y) \n   OR d(x,t)=f(x,y) d(y,t)=g(x,y)" "\nожидается d(y,x)=f(x,y) \n   или d(x,t)=f(x,y) d(y,t)=g(x,y)"
 mcset ru \
-			   {
-			       William Schelter's solver/plotter for ode systems.
+{
+SOLVER/PLOTTER FOR SYSTEMS OF DIFFERENTIAL EQUAITONS
 
-			       To QUIT this HELP click here.
+To quit this help click anywhere on this text.
 
-			       Clicking at a point computes the trajectory
-			       (x(t),y(t)) starting at that point, and satisfying
-			       the differential equation
-			
-			       dx/dt = dxdt
-			       dy/dt = dydt
+Clicking at a point computes the trajectory (x(t),y(t)) starting at that \
+point, and satisfying the differential equations		
+      dx/dt = dxdt       dy/dt = dydt
 
-			       By clicking on Zoom, the mouse now allows you to zoom
-			       in on a region of the plot.  Each click near a point
-			       magnifies the plot, keeping the center at the point
-			       you clicked.  Depressing the SHIFT key while clicking
-			       zooms in the opposite direction.
+By clicking on Zoom, the mouse will allow you to zoom in on a region \
+of the plot. Each click near a point magnifies the plot, keeping the center \
+at the point you clicked. Depressing the SHIFT key while clicking \
+zooms in the opposite direction. To resume computing trajectories click \
+on Integrate.
 
-			       To resume computing trajectories click on Integrate.
+Clicking on Config will open a menu where several settings can be changed, \
+such as the differential equations being solved, the intial point for the \
+trajectory to be computed, the direction of integration for that trajectory, \
+the time step for each integration interval and the number of integration \
+steps (nsteps). Replot is used to update the plot with the \
+changes made in the Config menu.
 
-			       To change the differential equation, click on Config and
-			       enter new values in the entry windows, and then click on
-			       Replot in the main menu bar.
+Holding the right mouse button down while moving the mouse will drag \
+(translate) the plot sideways or up and down.
 
-			       Holding the right mouse button down allows you to drag
-			       (translate) the plot sideways or up and down.
+The plot can be saved as a postscript file, by clicking on Save.
+} {
+ОКНО РЕШЕНИЯ И ПОСТРОЕНИЯ ГРАФИКОВ ДИФФЕРЕНЦИАЛЬНЫХ УРАВНЕНИЙ
 
-			       Additional parameters such as the number of steps (nsteps),
-			       the initial t value (tinitial), and the x and y centers
-			       and radii, may be set under the  Config menu.
+Для выхода из подсказки шелкните мышкой в любом месте этого текста.
 
-			       You may print to a postscript printer, or save the plot 
-				   as a postscript file, by clicking on save.   To change 
-				   between printing and saving see the Print Options under Config.
-			
-			   } \
-                           {
- 			       Вычислитель/построитель Вильяма Шелтера для систем ОДУ.
+При шелчке мышкой в некоторой точке вычисляется траектория (x(t),y(t)), \
+начинающаяся в данной точке и удовлетворяющая уравнениям
+      dx/dt = dxdt       dy/dt = dydt
 
- 			       Для выхода из этой подсказки нажмите здесь.
+Кнопка Масштабировать позволяет масштабировать график.  Щелчок мышью увеличивает \
+изображение, сохраняя центр в точке нажатия.  При удержании \
+клавиши SHIFT в момент щелчка изображение умньшается.
 
- 			       Нажатие в точке вычисляет траектория (x(t),y(t)),
- 			       начинающуюся с этой точки, и удовлетворяющей
- 			       дифференциальному уравнению
-
-			       dx/dt = dxdt
-			       dy/dt = dydt
-
- 			       При нажатии на Масштабировать, можно масштабировать 
- 			       мышью нарисованный участок. Каждый щелчок мышью
- 			       увеличивает изображение, сохраняя центр в точке
- 			       нажатия. Удержание клавиши SHIFT в момент щелчка
- 			       уменьшает изображение.
+При нажатии на Настройка, открывается окно, в котором можно \
+изменить некоторые установки, такие как: решаемое уравнение, \
+начальная точка и направление вычисляемой траектории, шаг интервала \
+интегрирования, количество интегралов интегрирования (nsteps). \
+После изменеия установок, для обновления изображения с новыми настройками \
+следует нажать Перерисовать.
  
- 			       Для продолжения вычисления выберите Интегрировать.
+Удержание правой кнопки мыши позволит перемещать \
+график вверх или вниз.
  
- 			       Для изменения дифференциальных уравнений выберите
- 			       Настройка и введите новые значения в поля ввода, после
- 			       чего выберите Перерисовать в главном меню.
- 
- 			       Перемещение мыши с нажатой правой кнопкой может
- 			       использоваться для перемещения графика.
- 
- 			       Дополнительные параметры, такие как число шагов (nsteps),
- 			       начальное значение t (tinitial), центры и радиусы x и y
- 			       могут быть установлены в меню Настройка.
- 
- 			       Вы можете распечатать на PostScript-принтере или сохранить 
- 				   график в PostScript-файле нажатием на Сохранить. Для выбора 
- 				   между печатью и сохранением воспользуйтесь Настройка печати в меню Настройка.
-                           }
+График может быть сохранен в PostScript файл при щелчке на Сохранить. 
+}
 
 
 ##### Plotconf.tcl
+mcset ru "Pointer Coordinates" "Координаты указателя"
 mcset ru "Menu Here" "Меню"
 mcset ru "Dismiss" "Закрыть"
 mcset ru "Zoom" "Маштабировать"
@@ -440,7 +434,7 @@ mcset ru "chapter " "раздел "
 mcset ru "section" "секция "
 mcset ru "Problem number" "Номер задачи "
 mcset ru "Send it" "Отослать"
-mcset ru "Cancel" "Прервать"
+mcset ru "Cancel" "Отменить"
 mcset ru "Failed to specify" "Не задано"
 mcset ru "The variable %s appeared in %s but was not in allowed variables: %s or in parameters: %s" \
          "Переменная %s присутствует в %s, но не является допустимой переменной: %s или параметром: %s"
@@ -456,60 +450,47 @@ mcset ru "Print Options" "Настройки Печати"
 mcset ru "Schelter's 2d Plot Window" "Окно 2D графики Вильяма Шелтера"
 mcset ru "Number of mesh grids" "Число делений сетки"
 mcset ru \
-			   {
+{
 
-			       William Schelter's plotter for two dimensional graphics.
+XMAXIMA'S PLOTTER FOR TWO-DIMENSIONAL GRAPHICS
 
-			       to QUIT this HELP click here.
+To quit this help click anywhere on this text.
 
-			       By clicking on Zoom, the mouse now allows you to zoom \
-				   in on a region of the plot.  Each click near a point \
-				   magnifies the plot, keeping the center at the point \
-				   you clicked.  Depressing the SHIFT key while clicking \
-				   zooms in the opposite direction.
+Clicking on Config will open a menu where several settings can be changed, \
+such as the function being plotted, the line width, and the \
+x and y centers and radii. Replot is used to update the plot with the \
+changes made in the Config menu.
 
-			       To change the functions plotted, click on Config and \
-				   enter new values in the entry windows, and then click on \
-				   Replot in the main menu bar.
+By clicking on Zoom, the mouse will allow you to zoom in on a region \
+of the plot. Each click near a point magnifies the plot, keeping the center \
+at the point you clicked. Depressing the SHIFT key while clicking \
+zooms in the opposite direction.
 
-			       Holding the right mouse button down allows you to drag
-			       (translate) the plot sideways or up and down.
+Holding the right mouse button down while moving the mouse will drag \
+(translate) the plot sideways or up and down.
 
-			       Additional parameters such as the number of steps (nsteps), \
-				   and the x and y centers and radii, may be set under the \
-				   Config menu.
+The plot can be saved as a postscript file, by clicking on Save.
+} \
+{
 
-			       You may print to a postscript printer, or save the plot \
-				   as a postscript file, by clicking on save.   To change \
-				   between printing and saving see the Print Options under Config.
-			
-			   } \
-			   {
+ОКНО 2-МЕРНОЙ ГРАФИКИ XMAXIMA.
 
- 			       Построитель двумерной графики Вильяма Шелтера.
+Для выхода из подсказки шелкните мышкой в любом месте этого текста.
 
- 			       Для выхода из этой подсказки нажмите здесь.
-
- 			       При нажатии на Масштабировать, можно масштабировать мышью \
- 				   нарисованный участок. Каждый щелчок мышью увеличивает\
- 				   изображение, сохраняя центр в точке нажатия. Удержание \
- 				   клавиши SHIFT в момент щелчка уменьшает изображение.
+При нажатии на Настройка, открывается окно, в котором можно \
+изменить некоторые установки, такие как: изображаемая функция, \
+толщина линий, центры и радиусы для x и y.  После изменеия установок, \
+для обновления изображения с новыми настройками следует нажать Перерисовать.
  
- 			       Для изменения рисуемой функции нажмите на Настройка и \
- 				   введите новые значения в поля ввода, а затем нажмите на \
- 				   Перерисовать в главном меню.
+Кнопка Масштабировать позволяет масштабировать график.  Щелчок мышью увеличивает \
+изображение, сохраняя центр в точке нажатия.  При удержании \
+клавиши SHIFT в момент щелчка изображение умньшается.
  
- 			       Удерживание правой кнопки мыши позволит Вам перенести \
- 			       (транслировать) график в стороны, вверх или вниз.
+Удержание правой кнопки мыши позволит перемещать \
+график вверх или вниз.
  
- 			       Дополнительные параметры, такие как количество шагов (nsteps), \
- 				   координаты центра и радиусы можно установить \
- 				   в меню Настройка.
- 
- 			       Вы можете распечатать на PostScript-принтере или сохранить \
- 				   график в PostScript-файле нажатием на Сохранить. Для выбора \
- 				   между печатью и сохранением воспользуйтесь Настройка печати в Настройка.
-			  }
+График может быть сохранен в PostScript файл при щелчке на Сохранить. 
+}
 
 mcset ru "Extra Plotting Information" "Дополнительная информация о графике"
 mcset ru "Plot Function f(x)" "Рисуемая функция f(x)"
@@ -518,64 +499,56 @@ mcset ru "plot color" "Цвет графика"
 
 ##### Plot3d.tcl
 mcset ru \
-			  {
+{
 
-			       William Schelter's plotter for three dimensional graphics.
+XMAXIMA'S PLOTTER FOR THREE-DIMENSIONAL GRAPHICS
 
-			       To QUIT this HELP click here.
+To quit this help click anywhere on this text.
 
-			       By clicking on Zoom, the mouse now allows you \
-				   to zoom in on a region of the plot.  Each click \
-				   near a point magnifies the plot, keeping the \
-				   center at the point you clicked.  Depressing \
-				   the SHIFT key while clicking zooms in the \
-				   opposite direction.
+Clicking on Config will open a menu where several settings can be changed, \
+such as the function being plotted, the azimuth and elevation angles, \
+and the x and y centers and radii. Replot is used to update the plot with \
+the changes made in the Config menu.
 
-			       Clicking on Rotate, makes the left mouse button  \
-				   cause rotation of the image.   The current position \
-				   can be determined by azimuth and elevation angles \
-				   which are given under the Config menu.   They may also \
-				   be specified on the command line.
+By clicking on Zoom, the mouse will allow you to zoom in on a region \
+of the plot. Each click near a point magnifies the plot, keeping the center \
+at the point you clicked. Depressing the SHIFT key while clicking \
+zooms in the opposite direction.
 
-			       To change the equations enter in the entry \
-				   windows, and click on replot.
+Clicking on Rotate will return the mouse to its default behavior, namely, \
+pressing the left mouse button while the mouse is moved will rotate the \
+graph.
 
-			       You may print to a postscript printer, or save the plot \
-				   as a postscript file, by clicking on save.   To change \
-				   between printing and saving see the Print Options under Config.
+Holding the right mouse button down while moving the mouse will drag \
+(translate) the plot sideways or up and down.
 
-			       Clicking with the right mouse button and dragging may be used \
-				   instead of the scroll bars to slide the plot \
-				   around.
+The plot can be saved as a postscript file, by clicking on Save.
+} \
+{
 
-			   } \
-			   {
+ОКНО 3-МЕРНОЙ ГРАФИКИ XMAXIMA.
 
- 			       Построитель Вильяма Шелтера для трехмерной графики.
+Для выхода из подсказки шелкните мышкой в любом месте этого текста.
 
- 			       Для выхода из этой подсказки нажмите здесь.
+При нажатии на Настройка, открывается окно, в котором можно \
+изменить некоторые установки, такие как: изображаемая функция, \
+азимут и угол места, центры и радиусы для x и y.  После изменеия установок, \
+для обновления изображения с новыми настройками следует нажать Перерисовать.
+ 
+Кнопка Масштабировать позволяет масштабировать график.  Щелчок мышью увеличивает \
+изображение, сохраняя центр в точке нажатия.  При удержании \
+клавиши SHIFT в момент щелчка изображение умньшается.
 
- 			       При нажатии на Масштабировать, можно масштабировать мышью \
- 				   нарисованный участок. Каждый щелчок мышью увеличивает \
- 				   изображение, сохраняя центр в точке нажатия. Удержание \
- 				   клавиши SHIFT в момент щелчка уменьшает изображение.
+Кнопка Вращение возвращает мыши поведение по умолчанию - \
+движение мыши при удерживаемой правой левой кнопке вызывает \
+вращение графика.
+ 
+Удержание правой кнопки мыши позволит перемещать \
+график вверх или вниз.
+ 
+График может быть сохранен в PostScript файл при щелчке на Сохранить. 
+}
 
- 			       При нажатии на Вращение, движение с нажатой левой кнопкой \
- 				   мыши вращает изображение. Текущую позицию можно \
- 				   задать углами азимута и склонения в меню Настройка. \
- 				   Также они могут быть заданы в командной строке.
-
- 			       Для изменения уравнений введите их в соответствующие строки \
- 				   ввода и нажмите Перерисовать.
-
- 			       Вы можете распечатать на PostScript-принтере или сохранить \
- 				   график в PostScript-файле нажатием на Сохранить. Для выбора \
- 				   между печатью и сохранением воспользуйтесь Настройка печати в Настройка.
-
- 			       Перемещение мыши с нажатой правой кнопкой может использоваться \
- 				   для перемещения графика (вместо использования полос прокрутки).
-
-			   }
 mcset ru "Schelter's 3d Plot Window" "Окно 3D графики Вильяма Шелтера"
 mcset ru "Rotate" "Вращение"
 mcset ru {Dragging the mouse with the left button depressed will cause the object to rotate.  The rotation keeps the z axis displayed in an upright position (ie parallel to the sides of the screen), but changes the viewpoint.   Moving right and left changes the azimuth (rotation about the z axis), and up and down changes the elevation (inclination of z axis).   The red,blue and green sides of the bounding box are parallel to the X, Y and Z axes, and are on the smaller side.} \
