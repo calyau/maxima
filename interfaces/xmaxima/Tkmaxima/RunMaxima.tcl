@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: RunMaxima.tcl,v 1.23 2006-07-30 19:23:35 villate Exp $
+#       $Id: RunMaxima.tcl,v 1.24 2006-08-03 13:08:19 villate Exp $
 #
 proc textWindowWidth { w } {
     set font [$w cget -font]
@@ -256,17 +256,18 @@ proc maximaFilter { win sock } {
     if {[string length $it] > 0} {
 	# Make sure Maxima's output starts on a new line but do not tag the
 	# new line as output
+        set it2 $it
 	if {$output == 0} {
 	    if {[string equal -length 1 $it "\n"]} {
-		set it [string range $it 1 end]
+		set it2 [string range $it 1 end]
 	    }
 	    $win insert end "\n" input
 	    set output 1
 	}
-	$win insert end $it output
+	$win insert end $it2 output
 	$win mark set lastStart "end -1char"
     }
-    if { [regexp {\(\(C|%i\)[0-9]+\) $|\(dbm:[0-9]+\) $|([A-Z]+>[>]*)$} $it junk lisp]  } {
+    if { [regexp {\((?:C|%i)[0-9]+\) $|\(dbm:[0-9]+\) $|([A-Z]+>[>]*)$} $it junk lisp]  } {
 	# puts "junk=$junk, lisp=$lisp,[expr { 0 == [string compare $lisp {}] }]"
 	# puts "it=<$it>,pdata={[array get pdata *]},[$win index end],[$win index insert]"
 
