@@ -46,7 +46,7 @@ Name: "xmdesktopicon"; Description: "Create a &XMaxima desktop icon"; GroupDescr
 Source: "@prefix@\bin\maxima-command.ico"; DestDir: "{app}\bin\"; Flags: ignoreversion; Components: "core"
 Source: "@prefix@\bin\maxima.bat"; DestDir: "{app}\bin\"; Flags: ignoreversion; AfterInstall: ReplaceLine({app}); Components: "core" 
 Source: "@prefix@\readme.txt"; DestDir: "{app}"; Flags: isreadme; Components: "core"
-Source: "@prefix@\*.*"; Excludes: "\bin\xmaxima.*,\bin\xmaxima,\info\es\*.*,\info\pt\*.*,\share\maxima\@VERSION@\doc\html\es\*.*,\share\maxima\@VERSION@\doc\html\pt\*.*"; DestDir: "{app}\";  Flags: recursesubdirs; Components: "core"
+Source: "@prefix@\*.*"; Excludes: "\bin\xmaxima.*,\bin\xmaxima,\wxMaxima,\info\es\*.*,\info\pt\*.*,\share\maxima\@VERSION@\doc\html\es\*.*,\share\maxima\@VERSION@\doc\html\pt\*.*"; DestDir: "{app}\";  Flags: recursesubdirs; Components: "core"
 
 Source: "@prefix@\wxMaxima\*.*"; DestDir: "{app}\wxMaxima\"; Flags: ignoreversion recursesubdirs; Components: "wxmaxima"
 
