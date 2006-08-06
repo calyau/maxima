@@ -58,6 +58,7 @@ gcccopy:
 	cp $(GCCPREFIX)/include/io.h $(prefix)/include
 	cp $(GCCPREFIX)/include/process.h $(prefix)/include
 	cp $(GCCPREFIX)/include/getopt.h $(prefix)/include
+	cp $(GCCPREFIX)/include/stdint.h $(prefix)/include
 	cp $(GCCPREFIX)/include/sys/*.h $(prefix)/include/sys
 	cp $(GCCPREFIX)/lib/gcc-lib/mingw32/$(GCCVER)/cc1.exe \
 		$(prefix)/lib/gcc-lib/mingw32/$(GCCVER)
