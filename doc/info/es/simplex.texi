@@ -7,7 +7,7 @@
 @node Introducci@'on a simplex, Definiciones para simplex, simplex, simplex
 @section Introducci@'on a simplex
 
-El paquete @code{simplex} utiliza el algoritmo simplex para programci@'on lineal.
+El paquete @code{simplex} utiliza el algoritmo simplex para programaci@'on lineal.
 
 Ejemplo:
 
