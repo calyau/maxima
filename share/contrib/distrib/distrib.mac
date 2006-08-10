@@ -72,18 +72,6 @@ mario @@@ edu DOT xunta DOT es
 www.biomates.net
 
 2005, march: first release
-2005, july: minor corrections
-2005, august: more minor corrections; denhypergeo, which was not in previous versions;
-      documentation in english (distrib_en.tex).
-2005, september: quantile functions.
-2005, november: functions 'floor' and 'ceiling' removed.
-2006, january: numerical algorithms ported to lisp (numdistrib.lisp); added random generators;
-      bug fixing in meanpareto, varpareto, stdpareto, skwpareto, kurpareto and some others. 
-      The documentation has been rewritten in texi format (distrib.texi)
-2006, january: some code cleaning in rcauchy (compiling problems with tan(3.1415), now tan(float(%pi))),
-      denlogn, dislogn, dencontu and rdiscu.
-2006, january: some corrections so that with float arguments, functions give float results
-2006, july: renamed some functions.
 */
 
 /* Sets the random state according to the computer clock time */
@@ -187,6 +175,8 @@ controliii(n1,n2,n):=block([t:n1+n2],
               member(sign(n),['neg,'zero,'nz]) or sign(t-n)='neg
               then -1
               else 0  )$
+
+
 
 
 /*         NORMAL (OR GAUSSIAN) DISTRIBUTION          */
@@ -1535,19 +1525,19 @@ random_geometric(p,[num]):=block([cp:controlp(p),cn,no,fp],
 
 
 
-pdf_discu(x,n):=block([cp:controli(n)],
+pdf_discrete_uniform(x,n):=block([cp:controli(n)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('pdf_discu,[x,n])),
+   if cp=0 then return(funmake('pdf_discrete_uniform,[x,n])),
    if sign(n)='pos and integerp(n)
       then if sign(x-1)='neg or sign(x-n)='pos or
               numberp(x) and not integerp(x)
               then return(0)
               else return(1/n),
-   funmake('pdf_discu,[x,n]) )$
+   funmake('pdf_discrete_uniform,[x,n]) )$
 
-cdf_discu(x,n):=block([cp:controli(n)],
+cdf_discrete_uniform(x,n):=block([cp:controli(n)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('cdf_discu,[x,n])),
+   if cp=0 then return(funmake('cdf_discrete_uniform,[x,n])),
    if sign(n)='pos and integerp(n)
       then if sign(x-1)='neg
               then return(0)
@@ -1556,51 +1546,51 @@ cdf_discu(x,n):=block([cp:controli(n)],
                       else if member(sign(x-1),['pos,'pz,'zero]) and
                               member(sign(n-x),['pos,'pz,'zero])
                               then return(floor(x)/n),
-   funmake('cdf_discu,[x,n])   )$
+   funmake('cdf_discrete_uniform,[x,n])   )$
 
-quantile_discu(q,n):=block([cp:controli(n), cq:controlq(q)],
+quantile_discrete_uniform(q,n):=block([cp:controli(n), cq:controlq(q)],
    if cp=-1 or cq=-1 then error("Illegal parameter"),
    if cp=0 or cq=0
-      then return(funmake('quantile_discu,[q,n])),
+      then return(funmake('quantile_discrete_uniform,[q,n])),
    max(ceiling(q*n), 1) )$
 
-mean_discu(n):=block([cp:controli(n)],
+mean_discrete_uniform(n):=block([cp:controli(n)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('mean_discu,[n])),
+   if cp=0 then return(funmake('mean_discrete_uniform,[n])),
    (1+n)/2  )$
 
-var_discu(n):=block([cp:controli(n)],
+var_discrete_uniform(n):=block([cp:controli(n)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('var_discu,[n])),
+   if cp=0 then return(funmake('var_discrete_uniform,[n])),
    (n^2-1)/12  )$
 
-std_discu(n):=block([cp:controli(n)],
+std_discrete_uniform(n):=block([cp:controli(n)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('std_discu,[n])),
+   if cp=0 then return(funmake('std_discrete_uniform,[n])),
    sqrt((n^2-1)/12)  )$
 
-skewness_discu(n):=block([cp:controli(n)],
+skewness_discrete_uniform(n):=block([cp:controli(n)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('skewness_discu,[n])),
+   if cp=0 then return(funmake('skewness_discrete_uniform,[n])),
    0  )$
 
-kurtosis_discu(n):=block([cp:controli(n)],
+kurtosis_discrete_uniform(n):=block([cp:controli(n)],
    if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('kurtosis_discu,[n])),
+   if cp=0 then return(funmake('kurtosis_discrete_uniform,[n])),
    -6/5-12/(5*(n^2-1)))$
 
 /* This is a direct application of the maxima
    random function. Make describe(random) for details */
-rdiscu(n,[num]):=block([cp:controli(n),cn,no,listarith:true],
+random_discrete_uniform(n,[num]):=block([cp:controli(n),cn,no,listarith:true],
    if length(num) = 0 then no: 0 else no: num[1],
    cn: controlib(no),
    if cp=-1 or cn=-1 then error("Illegal parameter"),
-   if cp=0 or cn=0 then return(funmake('rdiscu,append([n],num))),
+   if cp=0 or cn=0 then return(funmake('random_discrete_uniform,append([n],num))),
    if integerp(n)
       then if no=0 
               then 1+random(n)
               else 1+makelist(random(n),k,1,no)
-      else funmake('rdiscu,append([n],num)) )$
+      else funmake('random_discrete_uniform,append([n],num)) )$
 
 
 /*         HYPERGEOMETRIC DISTRIBUTION          */
@@ -1695,6 +1685,7 @@ random_hypergeometric(n1,n2,n,[num]):=block([cp:controliii(n1,n2,n),cn,no],
    funmake('random_hypergeometric,append([n1,n2,n],num)) )$
 
 
+
 /*         NEGATIVE BINOMIAL DISTRIBUTION          */
 
 
@@ -1775,3 +1766,4 @@ random_negative_binomial(n,p,[num]):=block([cp:controlip(n,p),cn,no,fp],
    if integerp(n) and numberp(fp)
       then return(?rndnegbinom(n,fp,no)),
    funmake('random_negative_binomial,append([n,p],num)) )$
+
