@@ -92,10 +92,32 @@
     (declare (ignore real1 real2 run1 run2 gc1 gc2 gccount))
     (dpb space1 (byte 24 24) space2)))
 
-#-(or lispm cmu scl sbcl clisp)
+
+#+allegro 
+(defun used-area (&optional unused)
+  (declare (ignore unused))
+  (declare (optimize (speed 3)))
+  (let ((.oldspace (make-array 4 :element-type
+			       #-64bit '(unsigned-byte 32)
+			       #+64bit '(unsigned-byte 64)))
+	)
+    (declare (type (simple-array #-64bit (unsigned-byte 32)
+				 #+64bit (unsigned-byte 64) (*))
+		   .oldspace))
+    
+    (multiple-value-bind (.olduser .oldsystem .oldgcu .oldgcs)
+	(excl::get-internal-run-times)
+      (sys::gsgc-totalloc .oldspace t)
+      ;;(list 'cons-cells  (aref .oldspace 0) 'other-bytes (aref .oldspace 2) 'static-bytes (aref .oldspace 3))
+      (list (aref .oldspace 0) (aref .oldspace 2) .oldgcu) ;; report just two kinds of space, cons-cells and other bytes, also report gc-user time
+      )))
+
+
+#-(or lispm cmu scl sbcl clisp allegro)
 (defun used-area (&optional unused)
   (declare (ignore unused))
   0)
+
 
 (defun continue (&optional (input-stream *standard-input*)
 		 batch-or-demo-flag)
@@ -177,7 +199,7 @@
 	(setq d-tag (makelabel $outchar))
 	(unless $nolabels (set d-tag $%))
 	(setq $_ $__)
-	(when $showtime
+	(when $showtime  ;; we don't distinguish showtime:all?? /RJF
 	  (format t "Evaluation took ~$ seconds (~$ elapsed)"
 		  time-used etime-used )  
           #+gcl 
@@ -190,11 +212,20 @@
 		  ((> total-bytes 1024)
 		   (format t " using ~,3F KB.~%" (/ total-bytes 1024.0)))
 		  (t
-		   (format t " using ~:D bytes.~%" total-bytes)))))
+		   (format t " using ~:D bytes.~%" total-bytes))))
+	  
+	  #+allegro
+	  (let ((conses (- (car area-after) (car area-before)))
+		(other (- (cadr area-after) (cadr area-before)))
+		(gctime (- (caddr area-after) (caddr area-before))))
+	    (if (= 0 gctime) nil (format t " including GC time  ~s sec ,"(* 0.001 gctime)))
+	    (format t " using ~s cons-cells and ~s other bytes.~%" conses other))
+	  
+	  )
 	(unless $nolabels
 	  (putprop d-tag (cons time-used  0) 'time))
 	(if (eq (caar r) 'displayinput)
-	    (displa `((mlable) ,d-tag ,$%)))
+	    (displa `((mlable) ,d-tag ,$%)))  ;; consistently misspelling label.
 	(when (eq batch-or-demo-flag ':demo)
 	  (mtell "~A_~A" *prompt-prefix* *prompt-suffix*)
 	  (let (quitting)	  
@@ -541,3 +572,4 @@
   (format t "~&Maxima encountered a Lisp error:~%~% ~A" condition)
   (format t "~&~%Automatically continuing.~%To reenable the Lisp debugger set *debugger-hook* to nil.~%")
   (throw 'return-from-debugger t))
+
