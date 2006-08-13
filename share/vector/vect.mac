@@ -237,12 +237,12 @@ vsimp(expn) :=
          if (expandall or expandgrad or expandgradprod or
             expandprod) and
             not mapatom(pv:inpart(expn,1)) and inpart(pv,0)="*"
-            then expn:apply("+", maplist(lambda([u],gradprod(u,pv)), pv)))
+            then expn:apply("+", maplist(lambda([u],\gradprod(u,pv)), pv)))
       else if piece="div" then(
          if (expandall or expanddiv or expanddivprod or
             expandprod) and not
             mapatom(pv:inpart(expn,1)) and inpart(pv,0)="*" then
-            expn: apply("+", maplist(lambda([u],divprod(u,pv)), pv)))
+            expn: apply("+", maplist(lambda([u],\divprod(u,pv)), pv)))
       else if piece="curl" then (
          if (expandall or expandcurl or expandcurlcurl) and not
             mapatom(pv:inpart(expn,1)) and inpart(pv,0)="curl"
@@ -322,9 +322,9 @@ pvcross(pv,rv,sv) := removecrosssc(pv~rv,pv,rv,sv) $
 
 crossrv(pv,rv,sv) := removecrosssc(pv~rv,pv,rv,sv) $
 
-gradprod(uu,pv) := delete(uu,pv)*grad(uu) $
+\gradprod(uu,pv) := delete(uu,pv)*grad(uu) $
 
-divprod(uu,pv) := block([dotscrules],
+\divprod(uu,pv) := block([dotscrules],
    dotscrules: false,
  
    if nonscalarp(uu) then delete(uu,pv)*div(uu)
