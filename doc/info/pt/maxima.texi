@@ -1,5 +1,5 @@
 @c Language: Portuguese, Encoding: iso-8859-1
-@c /maxima.texi/1.34/Sat Jul 29 08:36:59 2006/-ko/
+@c /maxima.texi/1.35/Sat Aug  5 08:20:49 2006/-ko/
 \input texinfo
 @c -*-texinfo-*-
 
@@ -209,6 +209,7 @@ Pacotes Adicionais
 * descriptive::                 Estat@'istica descriptiva.
 * diag::                        Matrizes de Jordan.
 * distrib::                     Distribui@,{c}@~oes de probabilidade.
+* dynamics::                    Gr@'aficos para sistemas din@^amicos e fractais.
 * eval_string::                 Express@~oes do Maxima como cadeias de texto.
 * f90::                         Tradutor do Maxima para o fortran.
 * ggf::                         Fun@,{c}@~ao geradora para sequ@^encias.
@@ -479,6 +480,11 @@ distrib
 * Definitions for continuous distributions::
 * Definitions for discrete distributions::
 
+dynamics
+
+* Introduction to dynamics::
+* Definitions for dynamics::
+
 eval_string
 
 * Defini@value{cedilha}@~oes para eval_string::
@@ -537,6 +543,7 @@ orthopoly
 
 plotdf
 
+* Introduction to plotdf::
 * Definitions for plotdf::
 
 simplex
@@ -773,15 +780,15 @@ zeilberger
 @chapter diag
 @include diag.texi
 
-@node distrib, eval_string, diag, Top
+@node distrib, dynamics, diag, Top
 @chapter distrib
 @include distrib.texi
 
-@node eval_string, f90, distrib, Top
-@chapter eval_string
-@include eval_string.texi
+@node dynamics, eval_string, distrib, Top
+@chapter dynamics
+@include dynamics.texi
 
-@node f90, ggf, eval_string, Top
+@node eval_string, f90, dynamics, Top
 @chapter f90
 @include f90.texi
 

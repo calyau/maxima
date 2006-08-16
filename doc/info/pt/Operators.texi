@@ -1,5 +1,5 @@
 @c Language: Portuguese, Encoding: iso-8859-1
-@c /Operators.texi/1.31/Wed Jul 26 08:58:15 2006/-ko/
+@c /Operators.texi/1.32/Sat Aug  5 08:20:37 2006/-ko/
 @iftex
 @hyphenation{con-se-cu-ti-vos}
 @hyphenation{u-san-do}
@@ -677,7 +677,8 @@ conhece:
 (%i5) assume (x > 0, x < 1)$
 (%i6) ceiling (x);
 (%o6)                           1
-(%i7) $$\left \lceil a \right \rceil$$tex (ceiling (a));
+(%i7) tex (ceiling (a));
+$$\left \lceil a \right \rceil$$
 (%o7)                         false
 @end example
 
@@ -992,7 +993,8 @@ conhece:
 (%i5) assume (x > 0, x < 1)$
 (%i6) floor (x);
 (%o6)                           0
-(%i7) $$\left \lfloor a \right \rfloor$$tex (floor (a));
+(%i7) tex (floor (a));
+$$\left \lfloor a \right \rfloor$$
 (%o7)                         false
 @end example
 
