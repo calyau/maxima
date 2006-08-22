@@ -129,7 +129,7 @@
  
 (defun $zeromatrixp (m)
   (if (or ($matrixp m) ($listp m)) (every '$zeromatrixp (cdr m))
-    (eq t (meqp 0 ($rectform m)))))
+    (eq '$zero (csign ($rectform m)))))
 	
 (eval-when (eval compile load)
   (mfuncall '$alias '$copylist '$copy '$copymatrix '$copy))
