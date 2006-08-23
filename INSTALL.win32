@@ -111,7 +111,8 @@ tclkitsh-win32.exe.gz from <http://www.equi4.com/pub/tk/>.
 Version 4.0 patchlevel 0 works for me. Install it. I use c:/programs/gnuplot.
 
 8) Download the wxMaxima windows binary from http://wxmaxima.sourceforge.net.
-Version 0.6.5 works for me. Install it.  I use c:/programs/wxmaxima.
+Use wxMaxima 0.6.5 with Maxima 5.9.3 or earlier and wxMaxima 0.7.0 (or later)
+with Maxima 5.10.0 (or later). Install it.  I use c:/programs/wxmaxima.
 
 9) Edit your MSYS startup paths in c:\msys\1.0\etc\profile to put gcl,
 tcltk and tclkitsh in your PATH. I did so by adding the following line
