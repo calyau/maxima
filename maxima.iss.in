@@ -1,3 +1,10 @@
+;--------------------------------------------------------
+;-- maxima.iss -- Maxima InnoSetup installation script --
+;--------------------------------------------------------
+;
+;   InnoSetup version 5.1.7 or above is recommended
+;
+
 [Setup]
 AppName=Maxima
 AppVerName=Maxima @VERSION@
@@ -18,8 +25,7 @@ Compression=lzma/ultra
 SolidCompression=yes
 Uninstallable=yes
 UninstallFilesDir={app}\uninst
-; uncomment the following line if you want your installation to run on NT 3.51 too.
-; MinVersion=4,3.51
+ShowLanguageDialog=yes
 
 
 [Types] 
@@ -33,7 +39,7 @@ Name: "en"; MessagesFile: "compiler:Default.isl"
 Name: "fr"; MessagesFile: "compiler:Languages\French.isl"
 Name: "ge"; MessagesFile: "compiler:Languages\German.isl"
 Name: "it"; MessagesFile: "compiler:Languages\Italian.isl"
-Name: "es"; MessagesFile: "compiler:Languages\SpanishStd.isl"
+Name: "es"; MessagesFile: "compiler:Languages\Spanish.isl"
 Name: "pt_BR"; MessagesFile: "compiler:Languages\BrazilianPortuguese.isl"
 Name: "ru"; MessagesFile: "compiler:Languages\Russian.isl"
 
@@ -54,7 +60,7 @@ Name: "xmdesktopicon"; Description: "Create a &XMaxima desktop icon"; GroupDescr
 
 [Files]
 Source: "@prefix@\bin\maxima-command.ico"; DestDir: "{app}\bin\"; Flags: ignoreversion; Components: "core"
-Source: "@prefix@\bin\maxima.bat"; DestDir: "{app}\bin\"; Flags: ignoreversion; AfterInstall: ReplaceLine({app}); Components: "core" 
+Source: "@prefix@\bin\maxima.bat"; DestDir: "{app}\bin\"; Flags: ignoreversion; AfterInstall: ReplaceApp(); Components: "core" 
 Source: "@prefix@\readme.txt"; DestDir: "{app}"; Flags: isreadme; Components: "core"
 Source: "@prefix@\*.*"; Excludes: "\bin\xmaxima.*,\bin\xmaxima,\wxMaxima,\info\es\*.*,\info\pt\*.*,\share\maxima\@VERSION@\doc\html\es\*.*,\share\maxima\@VERSION@\doc\html\pt\*.*"; DestDir: "{app}\";  Flags: recursesubdirs; Components: "core"
 
@@ -114,17 +120,19 @@ end;
 
 { Note: Functions called by AfterInstall can have maximum of one argument }
 
-procedure ReplaceLine(App : String);
+procedure ReplaceApp();
 var
   iLineCounter : Integer;
   a_strTextfile : TArrayOfString;
   strFilename : String;
   strFind : String;
   strNewLine : String;
+  strApp : String;
 begin
-  strFilename := App + '\bin\maxima.bat';
+  strApp := ExpandConstant('{app}');
+  strFilename := strApp + '\bin\maxima.bat';
   strFind := 'set maxima_prefix';
-  strNewLine := 'set maxima_prefix='+PathWithoutSpaces(App);
+  strNewLine := 'set maxima_prefix='+PathWithoutSpaces(strApp);
   
   { Load textfile into string array }
   LoadStringsFromFile(strFilename, a_strTextfile);
