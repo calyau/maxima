@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Printops.tcl,v 1.10 2006-08-02 18:16:21 vvzhy Exp $
+#       $Id: Printops.tcl,v 1.11 2006-08-24 07:03:23 vvzhy Exp $
 #
 ###### Printops.tcl ######
 ############################################################
@@ -203,8 +203,8 @@ proc mkPrintDialog { name args } {
     catch { set printOption(psfilename) \
 	    [file nativename $printOption(psfilename)]}
     set win [winfo parent $canv]
-    button $wb.save -text "Save" -font $buttonFont -command "destroy $name; writePostscript $win; $canv delete printoptions"
-    button $wb.cancel -text "Cancel" -font $buttonFont -command "destroy $name ; $canv delete printoptions"
+    button $wb.save -text [mc "Save"] -font $buttonFont -command "destroy $name; writePostscript $win; $canv delete printoptions"
+    button $wb.cancel -text [mc "Cancel"] -font $buttonFont -command "destroy $name ; $canv delete printoptions"
     set writefile "Save"
     mkentryPr  $wb.psfilename printOption(psfilename) [mc "Postscript filename"] $buttonFont
     mkentryPr  $wb.hoffset printOption(hoffset) [mc "Left margin (inches)"] $buttonFont

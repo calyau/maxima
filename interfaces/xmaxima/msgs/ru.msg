@@ -331,6 +331,7 @@ mcset ru "Print To Printer" "Печатать на принтер"
 mcset ru "Center on Page" "Выровнять по центру"
 mcset ru "Landscape Mode" "Альбомная ориентация"
 mcset ru "do margin" "делать отступ"
+mcset ru "Postscript filename" "Имя Postscript файла"
 
 
 ##### Paths.tcl
