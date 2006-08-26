@@ -1861,21 +1861,19 @@ entire input string to be printed out when an MAXIMA-ERROR occurs."
 ;; they are all generic common lisp and could be used by
 ;; any Common lisp implementation.
 
-
-#-gcl
 (eval-when (:compile-toplevel :execute :load-toplevel)
 
-  (defvar *stream-alist* nil)
+  #-gcl (defvar *stream-alist* nil)
 
-  (defun stream-name (path)
+  #-gcl (defun stream-name (path)
     (let ((tem (errset (namestring (pathname path)))))
       (car tem)))
 
-  (defun instream-name (instr)
+  #-gcl (defun instream-name (instr)
     (or (instream-stream-name instr)
 	(stream-name (instream-stream instr))))
 
-  (defstruct instream
+  #-gcl (defstruct instream
     stream
     (line 0 :type fixnum)
     stream-name)
@@ -1883,13 +1881,13 @@ entire input string to be printed out when an MAXIMA-ERROR occurs."
 ;; (closedp stream) checks if a stream is closed.
 ;; how to do this in common lisp!!
 
-  (defun cleanup ()
+  #-gcl (defun cleanup ()
     #+never-clean-up-dont-know-how-to-close
     (dolist (v *stream-alist*)
       (if (closedp (instream-stream v))
 	  (setq *stream-alist* (delete v *stream-alist*)))))
 
-  (defun get-instream (str)
+  #-gcl (defun get-instream (str)
     (or (dolist (v *stream-alist*)
 	  (cond ((eq str (instream-stream v))
 		 (return v))))
@@ -1907,10 +1905,7 @@ entire input string to be printed out when an MAXIMA-ERROR occurs."
 	;; if the next line begins with '(',
 	;; then record all cons's eg arglist )
 	;;(setq *at-newline*  (if (eql (peek-char nil str nil) #\() :all t))
-	 (values)))					; end #-gcl
-
-#+gcl
-(deff newline (symbol-function 'si::newline))
+	 (values)))
 
 (defun find-stream (stream)
    (dolist (v *stream-alist*)
