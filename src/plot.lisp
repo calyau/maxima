@@ -1938,7 +1938,9 @@ setrgbcolor} def
   (cond ($show_openplot
          (with-open-file (st1 (plot-temp-file "maxout.openmath") :direction :output :if-exists :supersede)
            (princ  ans st1))
-         ($system (concatenate 'string *maxima-prefix* "/bin/" $openmath_plot_command)
+         ($system (concatenate 'string *maxima-prefix* 
+	                               (if (string= *autoconf-win32* "true") "\\bin\\" "/bin/") 
+	                               $openmath_plot_command)
                   (format nil " \"~a\"" (plot-temp-file "maxout.openmath"))))
         (t (princ ans) "")))
 
@@ -2120,7 +2122,9 @@ setrgbcolor} def
                    ($zic ($view_zic))
                    ($ps ($viewps))
                    ($openmath
-                     ($system (concatenate 'string *maxima-prefix* "/bin/" $openmath_plot_command) 
+                     ($system (concatenate 'string *maxima-prefix* 
+		                                   (if (string= *autoconf-win32* "true") "\\bin\\" "/bin/")
+		                                   $openmath_plot_command) 
                               (format nil " \"~a\"" file)))
                    ($geomview 
                      ($system $geomview_command
