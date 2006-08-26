@@ -771,7 +771,7 @@
 		      (checkbreak result w)))))))
 
 (displa-def %sum   dim-%sum 110.)
-(displa-def %limit dim-%limit 90. 90.)
+(displa-def %limit dim-%limit 110. 110.)
 
 (displa-def %lsum   dim-%lsum 110.)
 (defun dim-%lsum (form result) (dsumprod form result '(d-sumsign) 4 3 2))
