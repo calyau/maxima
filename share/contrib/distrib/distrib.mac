@@ -141,7 +141,7 @@ controlip(n,p):=
    positive or non integer, it returns -1. If there is not enough
    information, the output is 0*/
 controli(n):=
-   if integerp(n) and sign(n-1)='pos
+   if integerp(n) and sign(n)='pos
       then 1
       else if member(sign(n-1), ['nz,'neg,'zero]) or
               numberp(n) and not integerp(n)
@@ -1577,6 +1577,7 @@ skewness_discrete_uniform(n):=block([cp:controli(n)],
 kurtosis_discrete_uniform(n):=block([cp:controli(n)],
    if cp=-1 then error("Illegal parameter"),
    if cp=0 then return(funmake('kurtosis_discrete_uniform,[n])),
+   if n=1 then return(0),
    -6/5-12/(5*(n^2-1)))$
 
 /* This is a direct application of the maxima
