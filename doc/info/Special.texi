@@ -410,6 +410,30 @@ This function is deprecated.  Write @code{bessel_i (1, @code{x})} instead.
 
 @end deffn
 
+@deffn {Function} scaled_bessel_i (@var{v}, @var{z}) 
+
+The scaled modified Bessel function of the first kind of order
+@math{v} and argument @math{z}.  That is, @math{scaled_bessel_i(v,z) =
+exp(-abs(z))*bessel_i(v, z)}.  This function is particularly useful
+for calculating @math{bessel_i} for large @math{z}, which is large.
+However, maxima does not otherwise know much about this function.  For
+symbolic work, it is probably preferable to work with the expression
+@code{exp(-abs(z))*bessel_i(v, z)}.
+
+@end deffn
+
+@deffn {Function} scaled_bessel_i0 (@var{z}) 
+
+Identical to @code{scaled_bessel_i(0,z)}.
+
+@end deffn
+
+@deffn {Function} scaled_bessel_i1 (@var{z}) 
+
+Identical to @code{scaled_bessel_i(1,z)}.
+
+@end deffn
+
 @deffn {Function} beta (@var{x}, @var{y})
 The beta function, defined as @code{gamma(x) gamma(y)/gamma(x + y)}.
 @c SEEMS LIKE THERE SHOULD BE MORE TO SAY HERE
