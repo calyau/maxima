@@ -77,6 +77,12 @@
 ;;
 ;; We only support computing this for real z.
 ;;
+
+;; rtoy: Commenting these out for now because they're deprecated and
+;; we have equivalent functionality in bessel_j and bessel_i.
+;;
+;; XXX  Remove these someday.
+#||
 (defun j[0]-bessel (x)
   (slatec:dbesj0 (float x 1d0)))
 
@@ -185,6 +191,7 @@
 	     (aref jvals n))))
 	(t (list '($in simp) $x $n))))
 
+||#
 (defun bessel-i (order arg)
   (cond ((zerop (imagpart arg))
 	 ;; We have numeric args and the first arg is purely
