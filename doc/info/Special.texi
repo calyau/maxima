@@ -371,44 +371,47 @@ the Bessel function is expanded.
 @end example
 @end defvr
 
+@c THESE ARE DEPRECATED, so remove them, because we've removed the
+@c corresponding code.
+@c Remove these someday.
 
-@deffn {Function} j0 (@var{x})
-The Bessel function of the first kind of order 0.
-
-This function is deprecated.  Write @code{bessel_j (0, @var{x})} instead.
-
-@end deffn
-
-
-@deffn {Function} j1 (@var{x})
-The Bessel function of the first kind of order 1.
-
-This function is deprecated.  Write @code{bessel_j (1, @var{x})} instead.
-
-@end deffn
-
-
-@deffn {Function} jn (@var{x}, @var{n})
-The Bessel function of the first kind of order @var{n}.
-
-This function is deprecated.  Write @code{bessel_j (@var{n}, @var{x})} instead.
-
-@end deffn
-
-@deffn {Function} i0 (@var{x})
-The modified Bessel function of the first kind of order 0.
-
-This function is deprecated.  Write @code{bessel_i (0, @var{x})} instead.
-
-@end deffn
-
-
-@deffn {Function} i1 (@var{x})
-The modified Bessel function of the first kind of order 1.
-
-This function is deprecated.  Write @code{bessel_i (1, @code{x})} instead.
-
-@end deffn
+@c @deffn {Function} j0 (@var{x})
+@c The Bessel function of the first kind of order 0.
+@c 
+@c This function is deprecated.  Write @code{bessel_j (0, @var{x})} instead.
+@c 
+@c @end deffn
+@c 
+@c 
+@c @deffn {Function} j1 (@var{x})
+@c The Bessel function of the first kind of order 1.
+@c 
+@c This function is deprecated.  Write @code{bessel_j (1, @var{x})} instead.
+@c 
+@c @end deffn
+@c 
+@c 
+@c @deffn {Function} jn (@var{x}, @var{n})
+@c The Bessel function of the first kind of order @var{n}.
+@c 
+@c This function is deprecated.  Write @code{bessel_j (@var{n}, @var{x})} instead.
+@c 
+@c @end deffn
+@c 
+@c @deffn {Function} i0 (@var{x})
+@c The modified Bessel function of the first kind of order 0.
+@c 
+@c This function is deprecated.  Write @code{bessel_i (0, @var{x})} instead.
+@c 
+@c @end deffn
+@c 
+@c 
+@c @deffn {Function} i1 (@var{x})
+@c The modified Bessel function of the first kind of order 1.
+@c 
+@c This function is deprecated.  Write @code{bessel_i (1, @code{x})} instead.
+@c 
+@c @end deffn
 
 @deffn {Function} scaled_bessel_i (@var{v}, @var{z}) 
 
