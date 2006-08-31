@@ -1,4 +1,4 @@
-@c version 1.22
+@c version 1.26
 @menu
 * Introducci@'on a las Funciones Especiales::  
 * specint::                     
@@ -312,40 +312,32 @@ Controla la expansi@'on de las funciones de Bessel cuando el orden es la mitad d
 @end example
 @end defvr
 
-@deffn {Funci@'on} j0 (@var{x})
-Funci@'on de Bessel de primera especie de orden 0.
 
-Ya no se recomienda su uso.  Util@'{@dotless{i}}cese @code{bessel_j (0, @var{x})} en su lugar.
+@deffn {Funci@'on} scaled_bessel_i (@var{v}, @var{z})
 
-@end deffn
-
-@deffn {Funci@'on} j1 (@var{x})
-Funci@'on de Bessel de primera especie de orden 1.
-
-Ya no se recomienda su uso.  Util@'{@dotless{i}}cese @code{bessel_j (1, @var{x})} en su lugar.
-
-@end deffn
-
-@deffn {Funci@'on} jn (@var{x}, @var{n})
-Funci@'on de Bessel de primera especie de orden @var{n}.
-
-Ya no se recomienda su uso.  Util@'{@dotless{i}}cese @code{bessel_j (@var{n}, @var{x})} en su lugar.
+Es la funci@'on de Bessel modificada de primera especie de
+orden @math{v} y argumento @math{z}, es decir
+@math{scaled_bessel_i(v,z) = exp(-abs(z))*bessel_i(v, z)}.
+Esta funci@'on es especialmente @'util para calcular @math{bessel_i}
+cuando @math{z} es grande. Sin embargo, Maxima no sabe mucho m@'as 
+sobre esta funci@'on. En c@'alculos simb@'olicos, quiz@'as sea
+preferible trabajar directamente con la expresi@'on 
+@code{exp(-abs(z))*bessel_i(v, z)}.
 
 @end deffn
 
-@deffn {Funci@'on} i0 (@var{x})
-Funci@'on modificada de Bessel de primera especie de orden 0.
+@deffn {Funci@'on} scaled_bessel_i0 (@var{z})
 
-Ya no se recomienda su uso.  Util@'{@dotless{i}}cese @code{bessel_i (0, @var{x})} en su lugar.
+Id@'entica a @code{scaled_bessel_i(0,z)}.
+
+@end deffn
+
+@deffn {Funci@'on} scaled_bessel_i1 (@var{z})
+
+Id@'entica a @code{scaled_bessel_i(1,z)}.
 
 @end deffn
 
-@deffn {Funci@'on} i1 (@var{x})
-Funci@'on modificada de Bessel de primera especie de orden 1.
-
-Ya no se recomienda su uso.  Util@'{@dotless{i}}cese @code{bessel_i (1, @code{x})} en su lugar.
-
-@end deffn
 
 @deffn {Funci@'on} beta (@var{x}, @var{y})
 Funci@'on beta, definida como @code{gamma(x) gamma(y)/gamma(x + y)}.
@@ -469,10 +461,64 @@ Presenta una serie de Poisson en un formato legible.  Conjuntamente con @code{ou
 
 @end deffn
 
-@deffn {Funci@'on} psi (@var{x})
-@deffnx {Funci@'on} psi [@var{n}](@var{x})
-Derivada de @code{log (gamma (x))}.
 
-Maxima no calcula el valor num@'erico de @code{psi}. Sin embargo, la funci@'on @code{bfpsi} del paquete @code{bffac} puede calcular valores num@'ericos.
+@deffn {Funci@'on} psi [@var{n}](@var{x})
+
+Es la derivada de @code{log (gamma (@var{x}))} de orden @code{@var{n}+1},
+de tal manera que @code{psi[0](@var{x})} es la primera derivada, 
+@code{psi[1](@var{x})} la segunda derivada y as@'{@dotless{i}} 
+sucesivamente.
+
+En general, Maxima no sabe c@'omo calcular valores num@'ericos de 
+@code{psi}, pero s@'{@dotless{i}} conoce el valor exacto para
+algunos argumentos racionales.
+Existen algunas variables globales para controlar en qu@'e rangos
+racionales debe devolver @code{psi} resultados exactos, si ello es posible.
+V@'eanse las descripciones de @code{maxpsiposint}, @code{maxpsinegint},
+@code{maxpsifracnum} y @code{maxpsifracnum}.
+En resumen, @var{x} debe alcanzar un valor entre @code{maxpsinegint} y
+@code{maxpsiposint}. Si el valor absoluto de la parte fraccional de
+@var{x} es racional y tiene un numerador menor que @code{maxpsifracnum}
+y un denominador menor que @code{maxpsifracdenom}, la funci@'on @code{psi}
+devolver@'a un valor exacto.
+
+La funci@'on @code{bfpsi} del paquete @code{bffac} puede calcular
+valores num@'ericos.
 
 @end deffn
+
+@defvr {Variable opcional} maxpsiposint
+Valor por defecto: 20
+
+La variable @code{maxpsiposint} guarda el mayor valor positivo para el 
+que @code{psi[n](x)} intentar@'a calcular un valor exacto.
+
+@end defvr
+
+@defvr {Variable opcional} maxpsinegint
+Valor por defecto: -10
+
+La variable @code{maxpsinegint} guarda el menor valor negativo para el
+que @code{psi[n](x)} intentar@'a calcular un valor exacto. Si
+@var{x} es menor que @code{maxnegint}, @code{psi[n](@var{x})} no devolver@'a
+una respuesta simplificada, aunque supiese c@'omo hacerlo.
+
+@end defvr
+
+@defvr {Variable opcional} maxpsifracnum
+Valor por defecto: 4
+
+Sea @var{x} un n@'umero racional menor que la unidad de la forma @code{p/q}.
+Si @code{p} es mayor que @code{maxpsifracnum}, entonces
+@code{psi[@var{n}](@var{x})} no devolver@'a una respuesta simplificada.
+
+@end defvr
+
+@defvr {Variable opcional} maxpsifracdenom
+Valor por defecto: 4
+
+Sea @var{x} un n@'umero racional menor que la unidad de la forma @code{p/q}.
+Si @code{q} es mayor que @code{maxpsifracnum}, entonces
+@code{psi[@var{n}](@var{x})} no devolver@'a una respuesta simplificada.
+
+@end defvr
