@@ -1920,6 +1920,25 @@
 (defun bata0 (e)
   (let (k c)
     (cond ((atom e) nil)
+	  ((mexptp e)
+	   ;; We have f(x)^y.  Look to see if f(x) has the desired
+	   ;; form.  Then f(x)^y has the desired form too, with
+	   ;; suitably modified values.
+	   ;;
+	   ;; XXX: Should we ask for the sign of f(x) if y is not an
+	   ;; integer?  This transformation we're going to do requires
+	   ;; that f(x)^y be real.
+	   (destructuring-bind (mexp base power)
+	       e
+	     (declare (ignore mexp))
+	     (multiple-value-bind (kk cc)
+		 (bata0 base)
+	       (when kk
+		 ;; Got a match.  Adjust kk and cc appropriately.
+		 (destructuring-bind (l a n b)
+		     cc
+		   (values (mul kk power)
+			   (list (mul l power) a n b)))))))
 	  ((and (mtimesp e)
 		(null (cdddr e))
 		(or (and (setq k (findp (cadr e)))
