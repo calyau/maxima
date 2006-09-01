@@ -498,3 +498,18 @@ ev (%pi^2/6, numer);
 
 limit (abs(x), x, 0);
 0;
+
+/* Related to Bug [1044318] defint(1/(sin(x)^2+1),x,0,3*%pi)
+ *
+ * integrate(1/(sin(x)^2+1),x,0,n*2*%pi) should be
+ * n*integrate(1/(sin(x)^2+1),x,0,2*%pi), for positive integer n.  We
+ * were just returning the same value.  
+ */
+integrate(1/(sin(x)^2+1),x,0,2*%pi);
+sqrt(2)*%pi;
+
+integrate(1/(sin(x)^2+1),x,0,4*%pi);
+2*sqrt(2)*%pi;
+
+integrate(1/(sin(x)^2+1),x,0,20*%pi);
+10*sqrt(2)*%pi;
