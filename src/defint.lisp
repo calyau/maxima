@@ -1726,10 +1726,13 @@
 		  (not (period %pi2 e var)))
 	      (return nil))
 	     ((not (equal a 0.))
+	      ;; Apply the substitution to make the lower limit 0.
 	      (setq e (maxima-substitute (m+ a var) var e))
 	      (setq a 0.)
 	      (setq b limit-diff)))
-;;;Multiples of 2*%pi in limits.
+       ;; At this point, we have an integral with limits 0 and b.
+       
+       ;; Multiples of 2*%pi in limits.
        (cond ((eq (ask-integer (setq d (let (($float nil))
 					 (m// limit-diff %pi2))) '$integer)
 		  '$yes)
@@ -1742,10 +1745,16 @@
 	      (cond ((setq ans (intsc e %pi2 var))
 		     (return (m* d ans)))
 		    (t (return nil)))))
+       ;; The integral is not over a full period (2*%pi) or multiple
+       ;; of a full period.  Need to do something special.
        (cond ((ratgreaterp %pi2 b)
+	      ;; Less than 1 full period, so intsc can integrate it.
 	      (return (intsc e b var)))
-	     (t (setq l a) 
-		(setq a 0.)))
+	     (t
+	      (setq l a) 
+	      ;; Why do we need this?  I think if we get here, a is
+	      ;; already 0.
+	      (setq a 0.)))
        (setq b (infr b))
        (cond ((null l) 
 	      (setq nzp2 (car b))
@@ -1768,6 +1777,8 @@
 			    limit-diff))
        (return ans))))
 
+;; integrate(sc, var, 0, b), where sc is f(sin(x), cos(x)).  I (rtoy)
+;; think this expects b to be less than 2*%pi.
 (defun intsc (sc b var)
   (cond ((eq ($sign b) '$neg)
 	 (setq b (m*t -1. b))
@@ -1776,42 +1787,61 @@
   (cond ((setq b (intsc0 (cdr sc) b var))
 	 (m* (resimplify (car sc)) b))))
 
+;; integrate(sc, var, 0, b), where sc is f(sin(x), cos(x)).
 (defun intsc0 (sc b var)
+  ;; Determine if sc is a product of sin's and cos's.
   (let ((nn* (scprod sc))
 	(dn* ()))
-    (cond (nn* (cond ((alike1 b half%pi)
-		      (bygamma (car nn*) (cadr nn*)))
-		     ((eq b '$%pi)
-		      (cond ((eq (real-branch (cadr nn*) -1.) '$yes)
-			     (m* (m+ 1. (m^ -1 (cadr nn*)))
-				 (bygamma (car nn*) (cadr nn*))))))
-		     ((alike1 b %pi2)
-		      (cond ((or (and (eq (ask-integer (car nn*) '$even)
-					  '$yes)
-				      (eq (ask-integer (cadr nn*) '$even)
-					  '$yes))
-				 (and (ratnump (car nn*))
-				      (eq (real-branch (car nn*) -1.)
-					  '$yes)
-				      (ratnump (cadr nn*))
-				      (eq (real-branch (cadr nn*) -1.)
-					  '$yes)))
-			     (m* 4.	(bygamma (car nn*) (cadr nn*))))
-			    ((or (eq (ask-integer (car nn*) '$odd) '$yes)
-				 (eq (ask-integer (cadr nn*) '$odd) '$yes))
-			     0.)
-			    (t nil)))
-		     ((alike1 b half%pi3)
-		      (m* (m+ 1. (m^ -1 (cadr nn*)) (m^ -1 (m+l nn*)))
-			  (bygamma (car nn*) (cadr nn*))))))
-	  (t (cond ((and (or (eq b '$%pi)
-			     (alike1 b %pi2)
-			     (alike1 b half%pi))
-			 (setq dn* (scrat sc b)))
-		    dn*)
-		   ((setq nn* (antideriv sc))
-		    (sin-cos-intsubs nn* var 0. b))
-		   (t ()))))))
+    (cond (nn*
+	   ;; We have a product of sin's and cos's.  We handle some
+	   ;; special cases here.
+	   (cond ((alike1 b half%pi)
+		  ;; Wang p. 110, formula (1):
+		  ;; integrate(sin(x)^m*cos(x)^n, x, 0, %pi/2) =
+		  ;;   gamma((m+1)/2)*gamma((n+1)/2)/2/gamma((n+m+2)/2)
+		  (bygamma (car nn*) (cadr nn*)))
+		 ((eq b '$%pi)
+		  ;; Wang p. 110, near the bottom, says
+		  ;;
+		  ;; int(f(sin(x),cos(x)), x, 0, %pi) =
+		  ;;   int(f(sin(x),cos(x)) + f(sin(x),-cos(x)),x,0,%pi/2)
+		  (cond ((eq (real-branch (cadr nn*) -1.) '$yes)
+			 (m* (m+ 1. (m^ -1 (cadr nn*)))
+			     (bygamma (car nn*) (cadr nn*))))))
+		 ((alike1 b %pi2)
+		  (cond ((or (and (eq (ask-integer (car nn*) '$even)
+				      '$yes)
+				  (eq (ask-integer (cadr nn*) '$even)
+				      '$yes))
+			     (and (ratnump (car nn*))
+				  (eq (real-branch (car nn*) -1.)
+				      '$yes)
+				  (ratnump (cadr nn*))
+				  (eq (real-branch (cadr nn*) -1.)
+				      '$yes)))
+			 (m* 4.	(bygamma (car nn*) (cadr nn*))))
+			((or (eq (ask-integer (car nn*) '$odd) '$yes)
+			     (eq (ask-integer (cadr nn*) '$odd) '$yes))
+			 0.)
+			(t nil)))
+		 ((alike1 b half%pi3)
+		  ;; Wang, p. 111 says
+		  ;;
+		  ;; int(f(sin(x),cos(x)),x,0,3*%pi/2) =
+		  ;;   int(f(sin(x),cos(x)),x,0,%pi)
+		  ;;   + int(f(-sin(x),-cos(x)),x,0,%pi/2)
+		  (m* (m+ 1. (m^ -1 (cadr nn*)) (m^ -1 (m+l nn*)))
+		      (bygamma (car nn*) (cadr nn*))))))
+	  (t
+	   ;; We don't have a product of sin's and cos's.
+	   (cond ((and (or (eq b '$%pi)
+			   (alike1 b %pi2)
+			   (alike1 b half%pi))
+		       (setq dn* (scrat sc b)))
+		  dn*)
+		 ((setq nn* (antideriv sc))
+		  (sin-cos-intsubs nn* var 0. b))
+		 (t ()))))))
 
 ;;;Is careful about substitution of limits where the denominator may be zero
 ;;;because of various assumptions made.
@@ -1840,6 +1870,8 @@
 	  (t (let (($%piargs ()))
 	       (intsubs exp ll ul))))))
 
+;; Determine whether E is of the form sin(x)^m*cos(x)^n and return the
+;; list (m n).
 (defun scprod (e)
   (let ((great-minus-1 #'(lambda (temp)
 			   (ratgreaterp temp -1)))
