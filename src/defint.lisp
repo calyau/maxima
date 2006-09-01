@@ -657,8 +657,14 @@
       (let ((trans (intcv3 (m// (m+t 'll (m*t 'ul var))
 				(m+t 1. var))
 			   nil 'yx)))
-	(setf trans (subst ll 'll trans))
-	(setf trans (subst ul 'ul trans))
+	;; If the limit is a number, use $substitute so we simplify
+	;; the result.  Do we really want to do this?
+	(setf trans (if (mnump ll)
+			($substitute ll 'll trans)
+			(subst ll 'll trans)))
+	(setf trans (if (mnump ul)
+			($substitute ul 'ul trans)
+			(subst ul 'ul trans)))
 	(method-by-limits trans var 0. '$inf))
       ()))
 
@@ -669,6 +675,9 @@
 	  (t (m+t (eezz (car e) ll ul)
 		  (cv (m// (cdr e) dn*)))))))
 
+;; I think this takes a rational expression E, and finds the
+;; polynomial part.  A cons is returned.  The car is the quotient and
+;; the cdr is the remainder.
 (defun pqr (e)
   (let ((varlist (list var)))
     (newvar e)
@@ -1724,9 +1733,15 @@
        (cond ((eq (ask-integer (setq d (let (($float nil))
 					 (m// limit-diff %pi2))) '$integer)
 		  '$yes)
+	      ;; This looks wrong.  We never multiply by d because of
+	      ;; the return!
+	      #+nil
 	      (setq ans (m* d (cond ((setq ans (intsc e %pi2 var))
 				     (return ans))
-				    (t (return nil)))))))
+				    (t (return nil)))))
+	      (cond ((setq ans (intsc e %pi2 var))
+		     (return (m* d ans)))
+		    (t (return nil)))))
        (cond ((ratgreaterp %pi2 b)
 	      (return (intsc e b var)))
 	     (t (setq l a) 
