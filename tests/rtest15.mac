@@ -513,3 +513,15 @@ integrate(1/(sin(x)^2+1),x,0,4*%pi);
 
 integrate(1/(sin(x)^2+1),x,0,20*%pi);
 10*sqrt(2)*%pi;
+
+/*
+ * Bug  1547769:  integrate(sqrt(x^3/(2*a-x)),x,0,2*a);
+ *
+ * We don't get an internal error, and we should be able to evaluate
+ * this.  defint.lisp, rev 1.27
+ */
+(assume(a > 0), 0);
+0;
+
+integrate(sqrt(x^3/(2*a-x)),x,0,2*a);
+3*%pi*a^2/2;
