@@ -77,8 +77,8 @@ figures/plotting25.gif\
 figures/orthopoly1.gif
 
 maximahtml.mk:
-	./texi2html -split_chapter --lang=en --output=. maxima.texi
-	rm -f maxima-html.mk
+	perl ./texi2html -split_chapter --lang=en --output=. --css-include=./manual.css --init-file ./texi2html.init maxima.texi 
+	rm -f maximahtml.mk
 	ls -1 maxima*.html | sed 's/\(.*\)/MAXIMAHTML += \1/' > maximahtml.mk
 
 MAXIMAHTML = 

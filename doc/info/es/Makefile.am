@@ -27,7 +27,7 @@ stringproc.texi     unit.texi                      zeilberger.texi
 
 
 maximahtml.es.mk:
-	../texi2html -split_chapter --lang=es --output=. maxima.texi
+	perl ../texi2html -split_chapter --lang=es --output=. --css-include=../manual.css --init-file ../texi2html.init maxima.texi 
 	rm -f maximahtml.es.mk
 	ls -1 maxima*.html | sed 's/\(.*\)/MAXIMAESHTML += \1/' > maximahtml.es.mk
 

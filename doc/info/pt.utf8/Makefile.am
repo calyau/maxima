@@ -12,7 +12,7 @@ fcharset = "ISO-8859-1"
 tcharset = "UTF-8"
 
 maximahtml_pt.mk:
-	../texi2html -split_chapter --lang=pt --output=. maxima.texi
+	perl ../texi2html -split_chapter --lang=pt --output=. --css-include=../manual.css --init-file ../texi2html.init maxima.texi 
 	rm -f maximahtml_pt.mk
 	ls -1 maxima*.html | sed 's/\(.*\)/MAXIMAHTML += \1/' > maximahtml_pt.mk
 
