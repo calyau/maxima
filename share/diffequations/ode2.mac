@@ -282,7 +282,7 @@ euler2(a,b):=block([dc,rp,ip,alpha,beta,sign,radexpand:false,%k1,%k2,pos,zero],
    dc: -dc, ip: sqrt(dc)/2,
    return(y = (x-pt)^rp * (%k1*sin(ip*log(x-pt)) + %k2*cos(ip*log(x-pt)))))$
 
-bessel2(a,b):=block([nu,b1,intp,radexpand:'all,%k1,%y,%k2,%j],
+bessel2(a,b):=block([nu,b1,intp,radexpand:'all,%k1,%k2],
    if not(freeof(x,y,b1: ratsimp((1-b)*(x-pt)^2))) then return(false),
    if ratsimp(a*(x-pt)) # 1 then return(false),
    nu: sqrt(b1), method: 'bessel,
@@ -291,8 +291,8 @@ bessel2(a,b):=block([nu,b1,intp,radexpand:'all,%k1,%y,%k2,%j],
  loop,
    if not(intp='y or intp='n)
      then (intp: readonly("is", nu, "an integer?  type y or n."), go(loop)),
-   if intp = 'y then return(y = %k1*%j[nu](x-pt) + %k2*%y[nu](x-pt)),
-   return(y = %k1*%j[nu](x-pt) + %k2*%j[-nu](x-pt)))$
+   if intp = 'y then return(y = %k1*bessel_j(nu,x-pt) + %k2*bessel_y(nu,x-pt)),
+   return(y = %k1*bessel_j(nu,x-pt) + %k2*bessel_j(-nu,x-pt)))$
 
 ic1(soln,xc,yc):=
    block([%c],

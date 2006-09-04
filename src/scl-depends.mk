@@ -278,7 +278,6 @@ binary-scl/maxima.core : pois2.lisp
 binary-scl/maxima.core : pois3.lisp
 binary-scl/maxima.core : desoln.lisp
 binary-scl/maxima.core : elim.lisp
-binary-scl/maxima.core : ode2.lisp
 binary-scl/maxima.core : invert.lisp
 binary-scl/maxima.core : hypgeo.lisp
 binary-scl/maxima.core : hyp.lisp

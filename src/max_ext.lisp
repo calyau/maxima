@@ -29,6 +29,10 @@
 ($auto_mexpr '$eigenvalues '|eigen|)
 
 ($auto_mexpr '$trigsimp "trgsmp.mac")
+($auto_mexpr '$ode2 "ode2.mac")
+($auto_mexpr '$ic1 "ode2.mac")
+($auto_mexpr '$ic2 "ode2.mac")
+($auto_mexpr '$bc2 "ode2.mac")
 
 (dolist (v       
 	  '($arite

@@ -531,7 +531,6 @@
 			:components
 			((:file "desoln")
 			 (:file "elim")
-			 (:file "ode2")
 			 (:file "invert")
 			 (:file "hypgeo")
 			 (:file "hyp")

@@ -371,7 +371,6 @@ numer.lisp \
 numerm.lisp \
 nummod.lisp \
 numth.lisp \
-ode2.lisp \
 opers.lisp \
 optim.lisp \
 optimize.lisp \

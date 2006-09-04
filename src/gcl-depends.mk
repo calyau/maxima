@@ -287,7 +287,6 @@ binary-gcl/maxima : pois2.lisp
 binary-gcl/maxima : pois3.lisp
 binary-gcl/maxima : desoln.lisp
 binary-gcl/maxima : elim.lisp
-binary-gcl/maxima : ode2.lisp
 binary-gcl/maxima : invert.lisp
 binary-gcl/maxima : hypgeo.lisp
 binary-gcl/maxima : hyp.lisp
