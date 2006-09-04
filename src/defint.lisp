@@ -668,12 +668,24 @@
 	(method-by-limits trans var 0. '$inf))
       ()))
 
+;; Integrate rational functions over a finite interval by doing the
+;; polynomial part directly, and converting the rational part to an
+;; integral from 0 to inf.  This is evaluated via residues.
 (defun ratfnt (exp)
   (let ((e (pqr exp)))
-    (cond ((equal 0. (car e))  (cv exp))
-	  ((equal 0. (cdr e))  (eezz (car e) ll ul))
-	  (t (m+t (eezz (car e) ll ul)
-		  (cv (m// (cdr e) dn*)))))))
+    ;; PQR divides the rational expression and returns the quotient
+    ;; and remainder
+    (cond ((equal 0. (car e))
+	   ;; No polynomial part
+	   (cv exp))
+	  ((equal 0. (cdr e))
+	   ;; Only polynomial part
+	   (eezz (car e) ll ul))
+	  (t
+	   ;; A non-zero quotient and remainder.  Combine the results
+	   ;; together.
+	   (m+t (eezz (car e) ll ul)
+		(cv (m// (cdr e) dn*)))))))
 
 ;; I think this takes a rational expression E, and finds the
 ;; polynomial part.  A cons is returned.  The car is the quotient and
