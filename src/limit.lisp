@@ -353,8 +353,22 @@ It appears in LIMIT and DEFINT.......")
   (let ((d (involve exp '(mabs))))
     (cond ((null d) exp)
 	  (t (cond
-	       ((not (and (equal ($imagpart (limit d var val 'think)) 0)
-			  (equal ($imagpart var) 0))) (throw 'mabs 'retn))
+	       ((not (and (equal ($imagpart (let ((v (limit-catch d var val)))
+					      ;; The above call might
+					      ;; throw 'limit, so we
+					      ;; need to catch it.  If
+					      ;; we can't find the
+					      ;; limit without ABS, we
+					      ;; assume the limit is
+					      ;; undefined.  Is this
+					      ;; right?  Anyway, this
+					      ;; fixes Bug 1548643.
+					      (unless v
+						(throw 'mabs '$und))
+					      v))
+				 0)
+			  (equal ($imagpart var) 0)))
+		(throw 'mabs 'retn))
 	       (t (do ((ans d (involve exp '(mabs))) (a () ()))
 		      ((null ans) exp)
 		    (setq a (mabs-subst ans var val))
@@ -363,16 +377,20 @@ It appears in LIMIT and DEFINT.......")
 		      ((or (null a) (null d))
 		       (if (not (or (eq val '$zeroa)
 				    (eq val '$zerob)
-				    (real-infinityp val)))  (throw 'mabs 'both)))
+				    (real-infinityp val)))
+			   (throw 'mabs 'both)))
 		      ((and a d)
-		       (cond ((zerop1 d)  (setq d (behavior a var val))
+		       (cond ((zerop1 d)
+			      (setq d (behavior a var val))
 			      (if (zerop1 d) (throw 'mabs 'retn))))
 		       (if (or (eq d '$zeroa) (eq d '$inf) (ratgreaterp d 0))
 			   (setq exp (maxima-substitute a `((mabs) ,ans) exp)))
 		       (if (or (eq d '$zerob) (eq d '$minf) (ratgreaterp 0 d))
 			   (setq exp (maxima-substitute (m* -1 a) `((mabs) ,ans) exp)))
-		       (if (eq d '$und) (throw 'mabs '$und)))
-		      (t (throw 'mabs 'retn))))))))))
+		       (if (eq d '$und)
+			   (throw 'mabs '$und)))
+		      (t
+		       (throw 'mabs 'retn))))))))))
 
 (defun infcount (exp)
   (cond ((atom exp)
