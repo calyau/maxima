@@ -525,3 +525,9 @@ integrate(1/(sin(x)^2+1),x,0,20*%pi);
 
 integrate(sqrt(x^3/(2*a-x)),x,0,2*a);
 3*%pi*a^2/2;
+
+/*
+ * Bug [ 1548643 ] limit with abs: tag LIMIT is undefined
+ */
+limit(abs(sqrt(1-1/x)-1),x,0);
+und;
