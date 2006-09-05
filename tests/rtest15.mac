@@ -531,3 +531,12 @@ integrate(sqrt(x^3/(2*a-x)),x,0,2*a);
  */
 limit(abs(sqrt(1-1/x)-1),x,0);
 und;
+
+/*
+ * Bug [1044318] defint(1/(sin(x)^2+1),x,0,3*%pi)
+ *
+ * But there are other bugs related to this one.
+ */
+integrate(1/(sin(x)^2+1),x,0,3*%pi);
+3*sqrt(2)*%pi/2;
+
