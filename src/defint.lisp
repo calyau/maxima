@@ -1785,26 +1785,56 @@
 	      ;; Why do we need this?  I think if we get here, a is
 	      ;; already 0.
 	      (setq a 0.)))
+       ;; Wang p. 111: The integral integrate(f(x),x,a,b) can be
+       ;; written as:
+       ;;
+       ;;   n * integrate(f,x,0,2*%pi) + integrate(f,x,0,c)
+       ;;     - integrate(f,x,0,d)
+       ;;
+       ;; for some integer n and d >= 0, c < 2*%pi because there exist
+       ;; integers p and q such that a = 2 * p *%pi + d and b = 2 * q
+       ;; * %pi + c.  Then n = q - p.
+
+       ;; Compute q and c for the upper limit b.
        (setq b (infr b))
        (cond ((null l) 
 	      (setq nzp2 (car b))
 	      (setq limit-diff 0.)
 	      (go out)))
+       ;; Compute p and d for the lower limit a.
        (setq l (infr l))
+       ;; Compute -integrate(f,x,0,d)
        (setq limit-diff
 	     (m*t -1. (cond ((setq ans (intsc e (cdr l) var)) 
 			     ans)
 			    (t (return nil)))))
+       ;; Compute n = q - p (stored in nzp2)
        (setq nzp2 (m+ (car b) (m- (car l))))
        out
-       (setq ans (add* (cond ((zerop1 nzp2) 0.)
+       ;; Compute n*integrate(f,x,0,2*%pi) + integrate(f,x,0,c) -
+       ;; integrate(f,x,0,d).
+       (setq ans (add* (cond ((zerop1 nzp2)
+			      ;; n = 0
+			      0.)
 			     ((setq ans (intsc e %pi2 var))
+			      ;; n is not zero, so compute
+			      ;; integrate(f,x,0,2*%pi)
 			      (m*t nzp2 ans))
-			     (t (return nil)))
-		       (cond ((zerop1 (cdr b)) 0.)
+			     (t
+			      ;; Unable to compute
+			      ;; integrate(f,x,0,2*%pi), so give up
+			      (return nil)))
+		       (cond ((zerop1 (cdr b))
+			      ;; c = 0 (stored in cdr of b), so
+			      ;; integral is zero.
+			      0.)
 			     ((setq ans (intsc e (cdr b) var))
+			      ;; integrate(f,x,0,c)
 			      ans)
-			     (t (return nil)))
+			     (t
+			      ;; Unable to compute integrate(f,x,0,c)
+			      ;; so give up.
+			      (return nil)))
 		       limit-diff))
        (return ans))))
 
@@ -1818,6 +1848,7 @@
   (setq sc (partition sc var 1))
   (cond ((setq b (intsc0 (cdr sc) b var))
 	 (m* (resimplify (car sc)) b))))
+
 (defun intsc (sc b var)
   (if (zerop1 b)
       0
