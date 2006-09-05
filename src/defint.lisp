@@ -1658,10 +1658,16 @@
 		   (m^t i -1.)
 		   (sinsp l j)))))))
 
+;; Returns the fractional part of a?  
 (defun fpart (a)
   (cond ((null a) 0.)
-	((numberp a) 0.)
+	((numberp a)
+	 ;; Why do we return 0 if a is a number?  Perhaps we really
+	 ;; mean integer?
+	 0.)
 	((mnump a)
+	 ;; If we're here, this basically assumes a is a rational.
+	 ;; Compute the remainder and return the result.
 	 (list (car a) (remainder (cadr a) (caddr a)) (caddr a)))
 	((and (atom a) (abless1 a)) a)
 	((and (mplusp a)
@@ -1688,7 +1694,9 @@
        ;; means there was no error
        (not (eq e t))))
 
+#+nil
 (defun infr (a)
+  ;; a is the upper limit of a trig integral.
   (let ((var '$%i)
 	(r (subin 0. a))
 	c)
@@ -1696,7 +1704,17 @@
     (setq a (igprt (m* '((rat) 1. 2.) c)))
     (cons a (m+ r (m*t (m+ c (m* -2. a)) '$%pi)))))
 
-(defun igprt (r) 
+(defun infr (a)
+  ;; I think we really want to compute how many full periods are in a
+  ;; and the remainder.
+  (let* ((q (igprt (div a (mul 2 '$%pi))))
+	 (r (add a (mul -1 (mul q 2 '$%pi)))))
+    (cons q r)))
+
+
+;; Return the integer part of r.
+(defun igprt (r)
+  ;; r - fpart(r)
   (m+ r (m* -1. (fpart r)))) 
 
 
@@ -1734,16 +1752,11 @@
 	($trigsign t)
 	(*sin-cos-recur* t))		;recursion stopper
     (prog (ans d nzp2 l) 
-       (cond ((or (not (mnump (m// limit-diff '$%pi)))
-		  (not (period %pi2 e var)))
-	      (return nil))
-	     ((not (equal a 0.))
-	      ;; Apply the substitution to make the lower limit 0.
-	      (setq e (maxima-substitute (m+ a var) var e))
-	      (setq a 0.)
-	      (setq b limit-diff)))
-       ;; At this point, we have an integral with limits 0 and b.
-       
+       (when (or (not (mnump (m// limit-diff '$%pi)))
+		 (not (period %pi2 e var)))
+	 ;; Exit if b-a is not a multiple of pi or if the integrand
+	 ;; doesn't appear to have a period of 2 pi.
+	 (return nil))
        ;; Multiples of 2*%pi in limits.
        (cond ((eq (ask-integer (setq d (let (($float nil))
 					 (m// limit-diff %pi2))) '$integer)
@@ -1759,6 +1772,11 @@
 		    (t (return nil)))))
        ;; The integral is not over a full period (2*%pi) or multiple
        ;; of a full period.  Need to do something special.
+       (when (not (equal a 0.))
+	 ;; Apply the substitution to make the lower limit 0.
+	 (setq e (maxima-substitute (m+ a var) var e))
+	 (setq a 0.)
+	 (setq b limit-diff))
        (cond ((ratgreaterp %pi2 b)
 	      ;; Less than 1 full period, so intsc can integrate it.
 	      (return (intsc e b var)))
@@ -1778,19 +1796,21 @@
 			     ans)
 			    (t (return nil)))))
        (setq nzp2 (m+ (car b) (m- (car l))))
-       out  (setq ans (add* (cond ((zerop1 nzp2) 0.)
-				  ((setq ans (intsc e %pi2 var))
-				   (m*t nzp2 ans))
-				  (t (return nil)))
-			    (cond ((zerop1 (cdr b)) 0.)
-				  ((setq ans (intsc e (cdr b) var))
-				   ans)
-				  (t (return nil)))
-			    limit-diff))
+       out
+       (setq ans (add* (cond ((zerop1 nzp2) 0.)
+			     ((setq ans (intsc e %pi2 var))
+			      (m*t nzp2 ans))
+			     (t (return nil)))
+		       (cond ((zerop1 (cdr b)) 0.)
+			     ((setq ans (intsc e (cdr b) var))
+			      ans)
+			     (t (return nil)))
+		       limit-diff))
        (return ans))))
 
 ;; integrate(sc, var, 0, b), where sc is f(sin(x), cos(x)).  I (rtoy)
 ;; think this expects b to be less than 2*%pi.
+#+nil
 (defun intsc (sc b var)
   (cond ((eq ($sign b) '$neg)
 	 (setq b (m*t -1. b))
@@ -1798,6 +1818,21 @@
   (setq sc (partition sc var 1))
   (cond ((setq b (intsc0 (cdr sc) b var))
 	 (m* (resimplify (car sc)) b))))
+(defun intsc (sc b var)
+  (if (zerop1 b)
+      0
+      (multiple-value-bind (b sc)
+	  (cond ((eq ($sign b) '$neg)
+		 (values (m*t -1. b)
+			 (m* -1. (subin (m*t -1. var) sc))))
+		(t
+		 (values b sc)))
+	;; Partition the integrand SC into the factors that do not
+	;; contain VAR (the car part) and the parts that do (the cdr
+	;; part).
+	(setq sc (partition sc var 1))
+	(cond ((setq b (intsc0 (cdr sc) b var))
+	       (m* (resimplify (car sc)) b))))))
 
 ;; integrate(sc, var, 0, b), where sc is f(sin(x), cos(x)).
 (defun intsc0 (sc b var)
