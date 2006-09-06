@@ -21,7 +21,7 @@
 		     intvar switch varlist nogood genvar $erfflag $liflag
 		     rischp $factorflag alphar m simp genpairs hypertrigint
 		     *mosesflag yyy *exp y $algebraic implicit-real
-		     errrjfflag $%e/_to/_numlog generate-atan2 context
+		     errrjfflag $%e_to_numlog generate-atan2 context
 		     bigfloatzero rp-polylogp)
 	    (*expr $exponentialize subfunsubs subfunname sratsimp partfrac mqapplyp)
 	    (*lexpr context polylogp)
@@ -104,7 +104,7 @@
 
 (defun rischint (exp intvar &aux ($logarc nil) ($exponentialize nil)
 		 ($gcd '$algebraic) ($algebraic t) (implicit-real t))
-  (prog ($%e/_to/_numlog $logsimp trigint operator y z var ratform liflag
+  (prog ($%e_to_numlog $logsimp trigint operator y z var ratform liflag
 	 mainvar varlist genvar hypertrigint $ratfac $ratalgdenom )
      (if (specrepp exp) (setq exp (specdisrep exp)))
      (if (specrepp intvar) (setq intvar (specdisrep intvar)))
@@ -129,7 +129,7 @@
      (setf (caddr ratform) varlist)
      (setf (cadddr ratform) genvar)
      (return (cond ((atom (cdr z)) (disrep (car z)))
-		   (t (let (($logsimp t) ($%e/_to/_numlog t))
+		   (t (let (($logsimp t) ($%e_to_numlog t))
 			(simplify (list* '(mplus)
 					 (disrep (car z))
 					 (cdr z)))))))
