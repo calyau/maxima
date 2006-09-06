@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: RunMaxima.tcl,v 1.24 2006-08-03 13:08:19 villate Exp $
+#       $Id: RunMaxima.tcl,v 1.25 2006-09-06 14:37:18 villate Exp $
 #
 proc textWindowWidth { w } {
     set font [$w cget -font]
@@ -46,13 +46,13 @@ proc CMeval { w } {
     set expr [string trimright [$w get lastStart end] \n]
     # puts "command-line: ([$w index lastStart], [$w index end])"
     # puts "command: $expr"
-    if { ![regexp "^\[ \n\t]*:|\[;\$]\$" $expr] } {
+    if { ![regexp {^[ \n\t]*:|[;\$]$|^\?[ \t]+[^ \t]} $expr] } {
 	$w insert insert "\n"
 	$w see insert
 	if { [catch {set atprompt [oget $w atMaximaPrompt]}] } {
 	    puts {atMaximaPrompt not defined}
 	} elseif { $atprompt } {
-	    puts "atMaximaPrompt=atprompt"
+	    # puts "atMaximaPrompt=$atprompt"
 	    return
 	}
     }
@@ -267,8 +267,8 @@ proc maximaFilter { win sock } {
 	$win insert end $it2 output
 	$win mark set lastStart "end -1char"
     }
-    if { [regexp {\((?:C|%i)[0-9]+\) $|\(dbm:[0-9]+\) $|([A-Z]+>[>]*)$} $it junk lisp]  } {
-	# puts "junk=$junk, lisp=$lisp,[expr { 0 == [string compare $lisp {}] }]"
+    if { [regexp {\((?:C|%i)[0-9]+\) $|\(dbm:[0-9]+\) $|(MAXIMA>? ?)$|(none'?:? ?)$} $it junk lisp describe]  } {
+	# puts "junk=$junk, lisp=$lisp,[expr {0 == [string compare $lisp {}]}]"
 	# puts "it=<$it>,pdata={[array get pdata *]},[$win index end],[$win index insert]"
 
 	if { [info exists pdata($sock,wait) ] && $pdata($sock,wait) > 0 } {
@@ -280,7 +280,7 @@ proc maximaFilter { win sock } {
 	}
 	$win mark set lastStart "end -1char"
 	$win tag add  input "end -1char" end
-	oset $win atMaximaPrompt [expr { 0 == [string compare $lisp ""] }]
+	oset $win atMaximaPrompt [expr { 0 == [string compare $lisp {}] && 0 == [string compare $describe {} ] } ]
 	
     }
     $win see end
