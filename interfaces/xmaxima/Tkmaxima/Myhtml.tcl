@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Myhtml.tcl,v 1.13 2006-08-03 13:22:36 villate Exp $
+#       $Id: Myhtml.tcl,v 1.14 2006-09-06 14:50:00 villate Exp $
 #
 ###### Myhtml.tcl ######
 ############################################################
@@ -379,7 +379,7 @@ defTag ul -alter {Aindent 1} -body { xHMlistEnter
 
 #defTag p -before "\n\n" -sbody {}
 #defTag p -before "\n\n" -sbody {}
-defTag p -body { xHMassureNewlines 1 } -sbody {}
+defTag p -before "\n" -body { xHMassureNewlines 1 } -sbody { xHMassureNewlines 1 }
 defTag blockquote -before "\n\n" -after "\n"
 defTag pre -alter {family fixed Cnowrap nowrap} -before "\n" /pre "\n"
 defTag samp -alter {family fixed}
@@ -900,8 +900,8 @@ proc xHMinsertBullet { win i } {
 }
 
 defTag th -body list
-defTag td -body list
-defTag tr -body list
+defTag td -body list -after "\t\t\t\t"
+defTag tr -body list -after "\n"
 
 
 
@@ -1395,20 +1395,27 @@ proc xHMparse_html {html {cmd HMtest_parse} {firstTag hmstart}} {
     #dputs "beginning parse"
 
      global meee ; set meee $html;
-	regsub -all \} <$firstTag>\n$html\n</$firstTag> {\&cb;} html
-        #dputs "beginning parse1"
-	regsub -all \{ $html {\&ob;} html
-        # prevent getting \} \{ or \\n in a braces expression.
-    	regsub -all "\\\\(\[\n<>])" $html "\\&#92;\\1" html
-	#regsub -all "<(/?)(\[^ \t\n\r>]+)\[ \t\n\r\]*(\[^>]*)>" $html \
-		"\}\n$cmd {\\2} {\\1} {\\3} \{" html
-    	regsub -all "<(\[^ \t\n\r>]+)\[ \t\n\r\]*(\[^>]*)>" $html \
-		"\}\n$cmd {\\1}  {\\2} \{" html
-        # puts "<html=$html>"
-        #dputs "beginning end splitparse1"
+     regsub -all {(['\"])\./\.\.} $html {\1..} html 
+     regsub -- "^.*<!DOCTYPE\[^>\]*>" $html {} html
+     regsub -all -- "--(\[ \t\n\]*)>" $html "\001\\1\002" html
+     regsub -all -- "<--(\[^\001\]*)\001(\[^\002\]*)\002" $html \
+	 {\&lt;--\1--\2\&gt;} html
+     regsub -all -- "<!--\[^\001\]*\001(\[^\002\]*)\002"  $html {} html
 
-        #dputs "list {$html}"
-	eval "list {$html}"
+     regsub -all \} <$firstTag>\n$html\n</$firstTag> {\&cb;} html
+     #dputs "beginning parse1"
+     regsub -all \{ $html {\&ob;} html
+     # prevent getting \} \{ or \\n in a braces expression.
+     regsub -all "\\\\(\[\n<>])" $html "\\&#92;\\1" html
+     #regsub -all "<(/?)(\[^ \t\n\r>]+)\[ \t\n\r\]*(\[^>]*)>" $html \
+	 "\}\n$cmd {\\2} {\\1} {\\3} \{" html
+     regsub -all "<(\[^ \t\n\r>]+)\[ \t\n\r\]*(\[^>]*)>" $html \
+	 "\}\n$cmd {\\1}  {\\2} \{" html
+     # puts "<html=$html>"
+     #dputs "beginning end splitparse1"
+
+     #dputs "list {$html}"
+     eval "list {$html}"
 
 }
 
