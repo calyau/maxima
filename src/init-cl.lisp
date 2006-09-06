@@ -607,9 +607,12 @@
   (format t "~&~%Automatically continuing.~%To reenable the Lisp debugger set *debugger-hook* to nil.~%")
   (throw 'to-maxima-repl t))
 
-(defvar $help "type describe(topic) or example(topic);")
+(defvar $help "type `describe(topic);' or `example(topic);' or `? topic'")
 
-(defun $help () $help)			;
+(defun $help (&rest args)
+  (declare (ignore args))
+  $help)
+
 
 ;;; Now that all of maxima has been loaded, define the various lists
 ;;; and hashtables of builtin symbols and values.
