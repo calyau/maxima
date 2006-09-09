@@ -218,7 +218,7 @@
                          (maxima-getenv "LC_MESSAGES")
                          (maxima-getenv "LANG")))
 	(cond
-	    ((null locale) 
+	    ((or (null locale) (equal locale ""))
 		(setq *maxima-lang-subdir* nil))
 	    ((zl-member locale '("C" "POSIX" "c" "posix")) 		 
 		(setq *maxima-lang-subdir* nil))
