@@ -109,6 +109,8 @@ contrib/Zeilberger/zeilberger_linear_algebra.mac\
 contrib/Zeilberger/zeilberger.mac\
 contrib/augmented_lagrangian.mac\
 contrib/bode.mac\
+contrib/boolsimp/boolsimp.lisp\
+contrib/boolsimp/rtest_boolsimp.mac\
 contrib/cholesky.mac\
 contrib/defstruct.lisp\
 contrib/descriptive/biomed.data\
@@ -139,6 +141,11 @@ contrib/diffequations/tests/rtestode_kamke_1_3.mac\
 contrib/diffequations/tests/rtestode_kamke_1_4.mac\
 contrib/diffequations/tests/rtestode_kamke_1_5.mac\
 contrib/diffequations/tests/rtestode_kamke_1_6.mac\
+contrib/diffequations/tests/rtestode_kamke_2_1.mac\
+contrib/diffequations/tests/rtestode_kamke_2_2.mac\
+contrib/diffequations/tests/rtestode_kamke_2_3.mac\
+contrib/diffequations/tests/rtestode_kamke_2_4.mac\
+contrib/diffequations/tests/rtestode_kamke_2_5.mac\
 contrib/diffequations/tests/rtestode_murphy_1_1.mac\
 contrib/diffequations/tests/rtestode_murphy_1_2.mac\
 contrib/diffequations/tests/rtestode_murphy_1_3.mac\
@@ -155,6 +162,9 @@ contrib/distrib/distrib.mac\
 contrib/distrib/numdistrib.lisp\
 contrib/dynamics.mac\
 contrib/eval_string.lisp\
+contrib/ezunits/ezunits.mac\
+contrib/ezunits/rtestezunits.mac\
+contrib/floatproperties.lisp\
 contrib/f90.lisp\
 contrib/format/README\
 contrib/format/autoload-m.macsyma\
@@ -284,6 +294,10 @@ contrib/pdiff/pdiff.lisp\
 contrib/plotdf.lisp\
 contrib/plsquares.mac\
 contrib/powers.lisp\
+contrib/prim/prim-ex.mac\
+contrib/prim/prim-ex1.mac\
+contrib/prim/prim.mac\
+contrib/prim/prim.txt\
 contrib/rand/Avg3.mac\
 contrib/rand/Demo.bk1\
 contrib/rand/Ima\
@@ -338,6 +352,7 @@ contrib/rand/twovar.mac\
 contrib/rand/twovar.usg\
 contrib/rand/vandpol.mac\
 contrib/rand/vandpol.usg\
+contrib/rtest_opproperties.mac\
 contrib/rtestdefstruct.mac\
 contrib/sarag/aliases.mac\
 contrib/sarag/constants.mac\
@@ -348,6 +363,7 @@ contrib/sarag/readme.txt\
 contrib/sarag/rootCounting.mac\
 contrib/sarag/rootIsolation.mac\
 contrib/sarag/sarag_linear_algebra.mac\
+contrib/sarag/sarag_initialization.mac\
 contrib/sarag/sarag.mac\
 contrib/sarag/settings.mac\
 contrib/sarag/signDetermination.mac\
@@ -393,6 +409,8 @@ contrib/unit/unit-functions.lisp\
 contrib/unit/unit.mac\
 contrib/opsubst.lisp\
 contrib/stirling.mac\
+contrib/tex2ooo.lisp\
+contrib/tocl.lisp\
 contrib/multiadditive.lisp\
 contrib/tocl.lisp\
 diffequations/abel.mac\
