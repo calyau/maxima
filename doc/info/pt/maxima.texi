@@ -1,6 +1,6 @@
-@c Language: Portuguese, Encoding: iso-8859-1
-@c /maxima.texi/1.35/Sat Aug  5 08:20:49 2006/-ko/
 \input texinfo
+@c /maxima.texi/1.35/Sat Aug  5 08:20:49 2006/-ko/
+@c Language: Portuguese, Encoding: iso-8859-1
 @c -*-texinfo-*-
 
 @c 2000-04-17 Jim Van Zandt <jrv@vanzandt.mv.com> Added header,
