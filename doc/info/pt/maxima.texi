@@ -789,6 +789,10 @@ zeilberger
 @include dynamics.texi
 
 @node eval_string, f90, dynamics, Top
+@chapter eval_string
+@include eval_string.texi
+
+@node f90, ggf, dynamics, Top
 @chapter f90
 @include f90.texi
 
