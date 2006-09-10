@@ -452,7 +452,7 @@ Depurando
 
 augmented_lagrangian
 
-* Definitions for augmented_lagrangian::
+* Defini@value{cedilha}@value{o_til}es para augmented_lagrangian::
 
 bode
 
@@ -792,7 +792,7 @@ zeilberger
 @chapter eval_string
 @include eval_string.texi
 
-@node f90, ggf, dynamics, Top
+@node f90, ggf, eval_string, Top
 @chapter f90
 @include f90.texi
 
