@@ -66,8 +66,8 @@
 
 ;;(DEFUN TEXT-OUT (TEXT STREAM)
 ;;  (DO ((A TEXT (CDR A))
-;;       (|^R| T)
-;;       (|^W| T)
+;;       (^R T)
+;;       (^W T)
 ;;       (LINEL 69.)
 ;;       (OUTFILES (NCONS STREAM)))
 ;;      ((NULL A))

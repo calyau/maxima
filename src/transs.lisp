@@ -609,7 +609,7 @@ translated."
 	(t
 	 (setq flag (and $tr_semicompile
 			 (not (memq (car p) '(eval-when includef)))))
-	 (when flag (princ* '|(PROGN|) (terpri*))
+	 (when flag (princ* '|(|) (princ* 'progn) (terpri*))
 	 (cond ($compgrind
 		(sprin1 p))
 	       (t

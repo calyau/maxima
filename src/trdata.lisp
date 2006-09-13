@@ -84,7 +84,7 @@
 ;;; consing involved. Above all, we must have correct code !!!
 
   (mapc #'(lambda (l) (putprop l t 'tr-nosimp))
-	'(				;$FIRST $REST $LAST
+	'(				;$first $rest $last
 	  $print
 	  $num $denom $lhs $rhs $part
 	  $cons $reverse $endcons $append

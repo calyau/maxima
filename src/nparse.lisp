@@ -259,9 +259,9 @@
 ;		  (READ-COMMAND-TOKEN-AUX ANSWER)))))))
 
 
-;(setq macsyma-operators '(NIL (ANS NIL) (#\a #\b #\c (ANS |$abc|))     (#\e (ANS |$e|) (#\f (ANS |$ef|) (#\g (ANS |$efg|))))     (#\; (ANS |$;|))))		      
-;;(NIL (ANS NIL) (#\a #\b #\c (ANS |$abc|))
-;;     (#\e (ANS |$e|) (#\f (ANS |$ef|) (#\g (ANS |$efg|)))))
+;(setq macsyma-operators '(NIL (ANS NIL) (#\a #\b #\c (ANS $abc))     (#\e (ANS $e) (#\f (ANS $ef) (#\g (ANS $efg))))     (#\; (ANS |$;|))))		      
+;;(NIL (ANS NIL) (#\a #\b #\c (ANS $abc))
+;;     (#\e (ANS $e) (#\f (ANS $ef) (#\g (ANS $efg)))))
 
 
 ;; list contains an atom, only check
@@ -332,7 +332,7 @@
 	   (parse-tyi)
 	   (cond ((atom (cadr lis))
 		  ;; INFIX("ABC"); puts into macsyma-operators
-		  ;;something like: (#\A #\B #\C (ANS |$ABC|))
+		  ;;something like: (#\A #\B #\C (ANS $abc))
 		  ;; ordinary things are like:
 		  ;; (#\< (ANS $<) (#\= (ANS $<=)))
 		  ;; where if you fail at the #\< #\X

@@ -15,9 +15,9 @@ eval_when(translate,
 
 put('stopex,15,'diageval_version)$
 /*
-EVAL_WHEN([BATCH,LOADFILE],
-	  IF GET('GNAUTO,'DIAGEVAL_VERSION)=FALSE
-	  THEN LOAD('[GNAUTO,FASL,DSK,DGVAL]))$
+eval_when([batch,loadfile],
+	  if get('gnauto,'diageval_version)=false
+	  then load('[gnauto,fasl,dsk,dgval]))$
 */
 
 /* GNU Maxima */

@@ -5,10 +5,10 @@ eval_when(batch,ttyoff:true)$
   Split off from FACEXP 15
 */
 /*
-EVAL_WHEN([TRANSLATE,BATCH,LOADFILE],
-	  IF GET('FACEXP,'VERSION)=FALSE
-	  THEN (LOAD('[FACEXP,FASL]),
-		LOAD('[GNDECL,FASL])))$
+eval_when([translate,batch,loadfile],
+	  if get('facexp,'version)=false
+	  then (load('[facexp,fasl]),
+		load('[gndecl,fasl])))$
 */
 eval_when(translate,
 	  transcompile:true,

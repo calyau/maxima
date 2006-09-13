@@ -1087,7 +1087,7 @@
 	 (return (setq terms (delq (lt terms*) terms))))))
 |#
 ;; Calculatest the limit of a series at the expansion point. Returns one of
-;; {$ZEROA, $ZEROB, $POS, $NEG, $INF, $MINF}.
+;; {$zeroa, $zerob, $pos, $neg, $inf, $minf}.
 
 (defvar tvar-limits ()
    "A list of the form ((gvar . limit(gvar)) ...)")
@@ -1098,7 +1098,7 @@
       ;; the expansion point is INF, MINF,etc.
       (let* ((lim (gvar-lim (gvar ps)))
 	     (strongest-term
-	      (if (memq lim '($INF $MINF)) (ps-gt ps) (ps-lt ps))))
+	      (if (memq lim '($inf $minf)) (ps-gt ps) (ps-lt ps))))
 	 (if (ezerop (e strongest-term)) (ps-lim (c strongest-term))
 	    (setq lim (lim-power lim (e strongest-term)))
 	    ;; It is assumed that gvars of coeff's are weaker than the gvar
@@ -1112,7 +1112,7 @@
       ;; the expansion point is INF, MINF,etc.
       (let* ((lim (gvar-lim (gvar ps)))
 	     (strongest-term
-	      (if (memq lim '($INF $MINF)) (ps-gt ps) (ps-lt ps))))
+	      (if (memq lim '($inf $minf)) (ps-gt ps) (ps-lt ps))))
 	 (if (ezerop (e strongest-term))
 	     (ps-lim-infp (c strongest-term))
 	     (progn
@@ -1510,7 +1510,7 @@
 	((or (eq (caar p) 'mplus) (eq (caar p) 'mtimes))
 	 (let ((e ($ratexpand p)) temp)
 	   (ifn (and (consp e) (memq (caar e) '(mplus mtimes)))
-		(psexpt-fn2 e);; handles things like '((MPLUS) $Y) --> $Y
+		(psexpt-fn2 e);; handles things like '((mplus) $y) --> $y
 		(if (eq (caar e) 'mplus)
 		    (do ((sumnds (cdr e) (cdr sumnds))
 			 (log-facs)
@@ -2782,8 +2782,8 @@
 ;				(psterm (terms ps) (rczero))))))
 ;	      ((null data) (setq ps (taylor2 expt)))
 ;	     (setq e (psfind-s (taylor2 (ratcoef const
-;						 (list '(%LOG) (caar data))))))
-;	     (when (memq (exp-pt (car data)) '($INF $MINF $INFINITY))
+;						 (list '(%log) (caar data))))))
+;	     (when (memq (exp-pt (car data)) '($inf $minf $infinity))
 ;		(setq e (e- e)))
 ;	     (push-pw (car data)
 ;		(e- (emax (current-trunc (car data)) (rczero)) e)))))
@@ -3088,7 +3088,7 @@
 
 (defun psdisrep+ (p plush &aux lowest-degree-term)
   (if;; An exact sum of one arg is just that arg.
-   (and (null (cdr p)) (eq (cadr plush) 'EXACT))
+   (and (null (cdr p)) (eq (cadr plush) 'exact))
    (car p)
    (progn
      ;; Since the DISPLAY package prints trunc'd sum's arguments

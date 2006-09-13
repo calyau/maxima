@@ -336,7 +336,7 @@
 
 #-franz	;; Franz uses a function definition in COMM.
 ;; For MLISTP its arg is known not to be an atom.
-;; Otherwise, just use $LISTP.
+;; Otherwise, just use $listp.
 ;; MLISTP exists just to support a Franz hack, so you can just 
 ;;   ignore it. - JPG
 (defmacro mlistp (x) `(eq (caar ,x) 'mlist))

@@ -1,7 +1,7 @@
 (kill (all), 0);
 0;
 
-(ZETA%PI : true,0);
+(zeta%pi : true,0);
 0$
 
 (chk(x) := zeta(1-x) - 2 * cos(x * %pi /2) * gamma(x) * zeta(x) / (2 * %pi)^x,0);

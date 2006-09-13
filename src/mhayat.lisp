@@ -266,7 +266,7 @@
 (defmacro merrcatch (form) `(catch 'errorsw ,form))
 
 ;;There is a duplicate version of this in MAXMAC
-;;(defmacro infinities () ''($INF $MINF $INFINITY))
+;;(defmacro infinities () ''($inf $minf $infinity))
 
 ;; Macros for manipulating expansion data in the expansion table.
 

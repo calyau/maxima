@@ -41,7 +41,7 @@
   (meval '(($matchfix) &{ &}))
   ; "{" ([L]) ::= buildq ([L], set (splice (L)));
   (let
-    ((new-defn (meval '((mdefmacro) ((${) ((mlist) $L)) (($buildq) ((mlist) $L) (($set) (($splice) $L)))))))
+    ((new-defn (meval '((mdefmacro) ((${) ((mlist) $l)) (($buildq) ((mlist) $l) (($set) (($splice) $l)))))))
     ; Simpler to patch up $MACROS here, than to replicate the functionality of MDEFMACRO.
     (zl-delete (cadr new-defn) $macros)))
 

@@ -271,7 +271,7 @@
 
 	  ;; ---- start pdiff stuff-----------------------------
 
-	  ((and $use_pdiff (eq fun 'mqapply) (eq (caaadr e) '%PDERIVOP))
+	  ((and $use_pdiff (eq fun 'mqapply) (eq (caaadr e) '%pderivop))
 	   (setq args (cddr e))
 	   (setq fun (cadadr e))
 	   (let ((de 0)

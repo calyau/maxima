@@ -36,13 +36,13 @@
 
 (declare-top (unspecial args))
 
-;;#-cl (proclaim ' (GENPREFIX %LS))
-;;#-cl(proclaim '	 (*EXPR RATF $FLOAT))
-;;#-cl(proclaim '	 (*LEXPR MAP1 MMAPCAR FMAPL1 OUTERMAP1 $INPART LINEL $DIFF $INTEGRATE
-;;		 $LDISP $RATVARS $RATWEIGHT))
+;;#-cl (proclaim ' (genprefix %ls))
+;;#-cl(proclaim '	 (*expr ratf $float))
+;;#-cl(proclaim '	 (*lexpr map1 mmapcar fmapl1 outermap1 $inpart linel $diff $integrate
+;;		 $ldisp $ratvars $ratweight))
 
-;;(declare-top	 (FIXNUM N I J NNEED NGIVEN NCELLS NITEMS LISPSUB INDX FMAPLVL EVFLG 
-;;			 LINEL SFINDEX #-cl (HASHER)))
+;;(declare-top	 (fixnum n i j nneed ngiven ncells nitems lispsub indx fmaplvl evflg 
+;;			 linel sfindex #-cl (hasher)))
 ;;  NNEED to be flushed
 
 (setq mspeclist nil bindlist nil loclist nil mproplist nil $%enumer nil
@@ -52,7 +52,7 @@
       $maperror t fmaplvl 0 $optionset nil 
       $setcheckbreak nil dsksetp nil aryp nil msump nil evarrp nil
       $infeval nil factlist nil $mapprint t fundefsimp nil
-      mfexprp t nounsflag nil opexprp nil ;$OPERATORS NIL
+      mfexprp t nounsflag nil opexprp nil ;$operators nil
       sfindex 1 mspeclist2 nil envlist nil transp nil noevalargs nil
       $piece '$piece $setval '$setval fexprerrp nil rulefcnl nil
       featurel (purcopy '($integer $noninteger $even $odd
@@ -1379,10 +1379,10 @@ wrapper for this."
 		   $parsewindow $ttyintnum))
 	 (if (not (fixnump y)) (mseterr x y))
 	 ;;	#+MacLisp
-	 ;;	(WHEN (EQ X '$LINEL)
-	 ;;	  (LINEL T (LINEL NIL Y))
-	 ;;	  (DOLIST (FILE OUTFILES) (LINEL FILE Y))
-	 ;;	  (SETQ LINEL Y))
+	 ;;	(when (eq x '$linel)
+	 ;;	  (linel t (linel nil y))
+	 ;;	  (dolist (file outfiles) (linel file y))
+	 ;;	  (setq linel y))
 	 (if (eq x '$linel) (setq linel y))
 	 (cond ((and (memq x '($fortindent $gensumnum $floatwidth $ttyintnum)) (< y 0))
 		(mseterr x y))
