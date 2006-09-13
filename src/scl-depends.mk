@@ -126,6 +126,8 @@ binary-scl/maxima.core : numerical/slatec/derfc.lisp
 binary-scl/maxima.core : numerical/slatec/derf.lisp
 binary-scl/maxima.core : numerical/slatec/de1.lisp
 binary-scl/maxima.core : numerical/slatec/dei.lisp
+binary-scl/maxima.core : numerical/slatec/d9upak.lisp
+binary-scl/maxima.core : numerical/slatec/dspenc.lisp
 binary-scl/maxima.core : numerical/slatec/dqwgtf.lisp
 binary-scl/maxima.core : numerical/slatec/dqcheb.lisp
 binary-scl/maxima.core : numerical/slatec/dqk15w.lisp
@@ -180,6 +182,7 @@ binary-scl/maxima.core : algfac.lisp
 binary-scl/maxima.core : nalgfa.lisp
 binary-scl/maxima.core : ufact.lisp
 binary-scl/maxima.core : result.lisp
+binary-scl/maxima.core : ifactor.lisp
 binary-scl/maxima.core : rat3a.lisp
 binary-scl/maxima.core : rat3b.lisp
 binary-scl/maxima.core : rat3d.lisp
@@ -207,6 +210,9 @@ binary-scl/maxima.core : fcall.lisp
 binary-scl/maxima.core : evalw.lisp
 binary-scl/maxima.core : trprop.lisp
 binary-scl/maxima.core : mdefun.lisp
+binary-scl/maxima.core : trigi.lisp
+binary-scl/maxima.core : trigo.lisp
+binary-scl/maxima.core : trgred.lisp
 binary-scl/maxima.core : bessel.lisp
 binary-scl/maxima.core : ellipt.lisp
 binary-scl/maxima.core : airy.lisp
@@ -225,9 +231,6 @@ binary-scl/maxima.core : macdes.lisp
 binary-scl/maxima.core : inmis.lisp
 binary-scl/maxima.core : db.lisp
 binary-scl/maxima.core : compar.lisp
-binary-scl/maxima.core : maxmin.lisp
-binary-scl/maxima.core : nummod.lisp
-binary-scl/maxima.core : conjugate.lisp
 binary-scl/maxima.core : askp.lisp
 binary-scl/maxima.core : sinint.lisp
 binary-scl/maxima.core : sin.lisp
@@ -235,9 +238,6 @@ binary-scl/maxima.core : risch.lisp
 binary-scl/maxima.core : hayat.lisp
 binary-scl/maxima.core : defint.lisp
 binary-scl/maxima.core : residu.lisp
-binary-scl/maxima.core : trigi.lisp
-binary-scl/maxima.core : trigo.lisp
-binary-scl/maxima.core : trgred.lisp
 binary-scl/maxima.core : specfn.lisp
 binary-scl/maxima.core : mat.lisp
 binary-scl/maxima.core : matrix.lisp
@@ -272,6 +272,9 @@ binary-scl/maxima.core : homog.lisp
 binary-scl/maxima.core : combin.lisp
 binary-scl/maxima.core : nset.lisp
 binary-scl/maxima.core : rand-mt19937.lisp
+binary-scl/maxima.core : maxmin.lisp
+binary-scl/maxima.core : nummod.lisp
+binary-scl/maxima.core : conjugate.lisp
 binary-scl/maxima.core : mstuff.lisp
 binary-scl/maxima.core : ratpoi.lisp
 binary-scl/maxima.core : pois2.lisp
