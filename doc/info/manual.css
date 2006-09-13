@@ -70,7 +70,7 @@ pre.example
     padding-right: 1em;
     background: rgb(247,242,180); /* kind of sandy */
     /* background: rgb(200,255,255); */ /* sky blue */
-    font-family: monospace
+    font-family: "Lucida Console", monospace
 }
 
 div.spacerbox
