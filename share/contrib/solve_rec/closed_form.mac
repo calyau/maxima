@@ -155,8 +155,8 @@ cf_zeilb(expr, %k%, lo, hi, [in_zr]) := block(
              if numberp(support[2]) then floor(support[2])   else support[2]],
 
   /* Let's check if bounds are implicit.                                 */
-  if lo<=support[1] then lower_bound_implicit : true,
-  if hi>=support[2] then upper_bound_implicit : true,
+  if cf_max(lo, support[1])=support[1] then lower_bound_implicit : true,
+  if cf_min(hi, support[2])=support[2] then upper_bound_implicit : true,
 
   if lo=-inf then lo : support[1],
   if hi=inf then hi : support[2],
@@ -165,7 +165,7 @@ cf_zeilb(expr, %k%, lo, hi, [in_zr]) := block(
 
   /* We don't handle sums over infinite support yet!                     */
   if (support[1]=-inf and lower_bound_implicit) or
-     (support[2]=-inf and upper_bound_implicit) then (
+     (support[2]=inf and upper_bound_implicit) then (
     cf_print_message(3, "Support not finite!"),
     return(false)
   ),
@@ -213,7 +213,7 @@ cf_zeilb(expr, %k%, lo, hi, [in_zr]) := block(
   eq_rhs : factor(minfactorial(factcomb((eq_rhs)))),
 
   if not freeof_sum(eq_rhs) then (
-    cf_print_message(3, "Recurrence contains sums!"),
+    cf_print_message(3, "Recurrence contains sums!", eq_rhs),
     return(false)
   ),
 
@@ -257,7 +257,7 @@ summand_to_rec(expr, k, n) := block(
 
   if errcatch(
     zr : cf_zeilb(expr, k, lo, hi, n)
-  ) = [] then zr : 'FAILED,
+  ) = [] then zr : 'failed,
 
   killcontext("cf_context"),
 
