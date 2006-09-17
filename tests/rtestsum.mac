@@ -774,3 +774,42 @@ sum (1/k^7, k, 1, 3);
 sum (1/k^7, k, 4, inf), simpsum;
 zeta (7) - 282251/279936;
 
+/* Tests for bug report [ 1550985 ] niceindices
+ * Test the cases mentioned in the bug report & some others for good measure
+ */
+
+(reset (niceindicespref), 0);
+0;
+
+niceindices (sum (1/kk, kk, 1, n) - sum (1/ii, ii, 1, n));
+0;
+
+niceindices (sum (1/k, k, 1, n) - sum(1/i, i, 1, n));
+0;
+
+niceindices (sum (F(foo), foo, 1, inf));
+'sum (F(i), i, 1, inf);
+
+(niceindicespref : '[foo, bar, baz, quux], 0);
+0;
+
+niceindices (sum (1/kk, kk, 1, n) - sum (1/ii, ii, 1, n));
+0;
+
+niceindices (sum (1/k, k, 1, n) - sum(1/i, i, 1, n));
+0;
+
+niceindices (sum (F(foo), foo, 1, inf));
+'sum (F(foo), foo, 1, inf);
+
+niceindices (product (sum (product (sum (product (m*F(i) + cos(G(j))^k/sin(l), m, 1, n5), l, 1, n4), k, 1, n3), j, 1, n2), i, 1, n1));
+'product ('sum ('product ('sum ('product (foo*F(foo0) + cos(G(quux))^baz/sin(bar), foo, 1, n5), bar, 1, n4), baz, 1, n3), quux, 1, n2), foo0, 1, n1);
+
+niceindices (sum (sum (foo/foo0, foo, 1, n), foo0, 1, m));
+('sum (1/foo, foo, 1, m)) * 'sum (foo, foo, 1, n);
+
+niceindices (sum (sum (1/(foo + foo0), foo, 1, n), foo0, 1, m));
+'sum ('sum (1/(foo + bar), foo, 1, n), bar, 1, m);
+
+(reset (niceindicespref), 0);
+0;

@@ -128,10 +128,12 @@
 
 (defmvar $niceindicespref '((mlist simp) $i $j $k $l $m $n))
 
-(defun get-free-index (llist)
+(defun get-free-index (llist &optional i)
   (or (do ((try-list (cdr $niceindicespref) (cdr try-list)))
 	  ((null try-list))
-	(if (free llist (car try-list)) (return (car try-list))))
+	(if (or (free llist (car try-list))
+		(eq i (car try-list)))
+	    (return (car try-list))))
       (do ((n 0 (f1+ n)) (try))
 	  (nil)
 	(setq try (concat (cadr $niceindicespref) n))
@@ -147,9 +149,10 @@
 (defmfun $niceindices (e)
   (if (atom e) e
       (let ((e (recur-apply #'$niceindices e)))
-	(if (memq (caar e) '(%sum %product))
-	    (sumconsimp (subst (get-free-index e) (caddr e) e))
-	    e))))
+	(cond ((atom e) e)
+	      ((memq (caar e) '(%sum %product))
+	       (sumconsimp (subst (get-free-index e (caddr e)) (caddr e) e)))
+	      (t e)))))
 
 (defun sumconsimp (e)
   (if (and (not (atom e)) (memq (caar e) '(%sum %product)))
