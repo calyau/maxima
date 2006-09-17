@@ -621,8 +621,8 @@ summation when necessary."
              (setq realp (mevalp `((mequal) 0 ,realp)))
              
              (cond ((eq t (mevalp `((mlessp) ,ex-mag 1))) 0)
-                   ((and (eq realp t) (eq t (mevalp `((mgrp) ,ex 1)))) '$inf)
-                   ((eq t (mevalp `((mgrp) ,ex-mag 1))) '$infinity)
+                   ((and (eq realp t) (eq t (mevalp `((mgreaterp) ,ex 1)))) '$inf)
+                   ((eq t (mevalp `((mgreaterp) ,ex-mag 1))) '$infinity)
                    ((eq t (mevalp `((mequal) 1 ,ex-mag))) '$und)
                    (t `((%product) ,e ,k ,lo ,hi))))
             

@@ -813,3 +813,13 @@ niceindices (sum (sum (1/(foo + foo0), foo, 1, n), foo0, 1, m));
 
 (reset (niceindicespref), 0);
 0;
+
+/* Test for bug report [ 1552710 ] product(sum(f(i),i,1,inf),j,1,inf) => inf (wrong) */
+
+/* Since sum(f(i), i, 1, inf) is free of j, another result
+ * such as limit(sum(f(i), i, 1, inf)^n, n, inf) would be OK, too.
+ * In any event, inf (observed in the bug report) is not OK.
+ */
+(kill(f), block ([x : product (sum (f(i), i, 1, inf), j, 1, inf)], block ([simp : false], is (x = 'product ('sum (f(i), i, 1, inf), j, 1, inf)))));
+
+true;
