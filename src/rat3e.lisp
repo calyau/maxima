@@ -972,11 +972,10 @@
 		  (cons num den))))))))
 
 (defun prepfloat (f)
-  (cond ((< (abs f) 1.0e-37) (setq f 0.0))) ;changed 38 to 37 --wfs
   (cond (modulus (merror "Floating point meaningless unless `modulus' = `false'"))
 	($ratprint (mtell "~&`rat' replaced ~A by" f)))
   (setq f (maxima-rationalize f))
-  (if $ratprint (mtell " ~A//~A = ~A~%"  (car f) (cdr f)
+  (if $ratprint (mtell " ~A/~A = ~A~%"  (car f) (cdr f)
 		       (fpcofrat1 (car f) (cdr f))))
   f)
 
