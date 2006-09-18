@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Menu.tcl,v 1.17 2005-09-30 15:23:11 robert_dodier Exp $
+#       $Id: Menu.tcl,v 1.18 2006-09-18 22:21:45 villate Exp $
 #
 
 proc pMAXSaveTexToFile {text} {
@@ -32,7 +32,7 @@ proc vMAXAddSystemMenu {fr text} {
     .menu add cascade -label [mc "File"] -menu $m -underline 0
 
     $m add command -underline 0 \
-	-accel {Ctrl+b} \
+	-accel {Alt+b} \
 	-label [set label [M [mc "Batch File"]]] \
 	-command [set command [cIDECreateEvent $text $label {
 	    set file [tide_openfile [M [mc "Open a file to Batch"]] "" *.mac]
@@ -40,10 +40,10 @@ proc vMAXAddSystemMenu {fr text} {
 		sendMaxima $maxima_priv(cConsoleText) "batch(\"$file\")\$\n"
 	    }
 	}]]
-    bind $text <Control-Key-b> $command
+    bind $text <Alt-Key-b> $command
 
     $m add command -underline 11 \
-	-accel {Ctrl+o} \
+	-accel {Alt+o} \
 	-label [set label [M [mc "Batch File Silently"]]] \
 	-command [set command [cIDECreateEvent $text $label {
 	    set file [tide_openfile [M [mc "Open a file to Batch Silently"]] "" *.mac]
@@ -51,7 +51,7 @@ proc vMAXAddSystemMenu {fr text} {
 		sendMaxima $maxima_priv(cConsoleText) "batchload(\"$file\")\$\n"
 	    }
 	}]]
-    bind $text <Control-Key-o> $command
+    bind $text <Alt-Key-o> $command
 
     $m add separator
     $m add command -underline 0 \
