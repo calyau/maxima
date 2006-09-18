@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: RunMaxima.tcl,v 1.25 2006-09-06 14:37:18 villate Exp $
+#       $Id: RunMaxima.tcl,v 1.26 2006-09-18 22:26:53 villate Exp $
 #
 proc textWindowWidth { w } {
     set font [$w cget -font]
@@ -46,7 +46,7 @@ proc CMeval { w } {
     set expr [string trimright [$w get lastStart end] \n]
     # puts "command-line: ([$w index lastStart], [$w index end])"
     # puts "command: $expr"
-    if { ![regexp {^[ \n\t]*:|[;\$]$|^\?[ \t]+[^ \t]} $expr] } {
+    if { ![regexp {^[ \n\t]*:|[;\$][ \t]*$|^\?[ \t]+[^ \t]} $expr] } {
 	$w insert insert "\n"
 	$w see insert
 	if { [catch {set atprompt [oget $w atMaximaPrompt]}] } {
