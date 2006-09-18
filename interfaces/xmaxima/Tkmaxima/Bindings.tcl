@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Bindings.tcl,v 1.5 2006-09-06 14:41:29 villate Exp $
+#       $Id: Bindings.tcl,v 1.6 2006-09-18 22:20:58 villate Exp $
 #
 ###### Bindings.tcl ######
 ############################################################
@@ -34,61 +34,15 @@ proc vMAXSetCNTextBindings {w} {
     }
 
     # Keep only default bindings for the cursor movement keys
-    bind CNtext <Left>  {tk::TextSetCursor %W insert-1c; break}
-    bind CNtext <Control-b> {if {!$tk_strictMotif} {
-        tk::TextSetCursor %W insert-1c}; break}
-
-    bind CNtext <Right> {tk::TextSetCursor %W insert+1c; break}
-    bind CNtext <Control-f> {if {!$tk_strictMotif} {
-        tk::TextSetCursor %W insert+1c}; break}
-
-    bind CNtext <Up> {tk::TextSetCursor %W [tk::TextUpDownLine %W -1]; break}
-    bind CNtext <Control-p> {if {!$tk_strictMotif} {
-        tk::TextSetCursor %W [tk::TextUpDownLine %W -1]}; break}
-
-    bind CNtext <Down> {tk::TextSetCursor %W [tk::TextUpDownLine %W 1]; break}
-    bind CNtext <Control-n> {if {!$tk_strictMotif} {
-        tk::TextSetCursor %W [tk::TextUpDownLine %W 1]}; break}
-
-    bind CNtext <Next> {tk::TextSetCursor %W [tk::TextScrollPages %W 1]; break}
-    bind CNtext <Prior> {tk::TextSetCursor %W [tk::TextScrollPages %W -1];
-	break}
-
-    bind CNtext <Home> {tk::TextSetCursor %W {insert linestart}; break}
-    bind CNtext <Control-a> {if {!$tk_strictMotif} {
-	tk::TextSetCursor %W {insert linestart}}; break}
-
-    bind CNtext <End> {tk::TextSetCursor %W {insert lineend}; break}
-    bind CNtext <Control-e> {if {!$tk_strictMotif} {
-        tk::TextSetCursor %W {insert lineend}}; break}
-
-    bind CNtext <Control-Home> {tk::TextSetCursor %W 1.0; break}
-    bind CNtext <Meta-less> {if {!$tk_strictMotif} {
-        tk::TextSetCursor %W 1.0}; break}
-
-    bind CNtext <Control-End> {tk::TextSetCursor %W {end - 1 char}; break}
-    bind CNtext <Meta-greater> {if {!$tk_strictMotif} {
-        tk::TextSetCursor %W end-1c}; break}
-
-    bind CNtext <Meta-f> {if {!$tk_strictMotif} {
-        tk::TextSetCursor %W [tk::TextNextWord %W insert]}; break}
-    bind CNtext <Meta-b> {if {!$tk_strictMotif} {
-        tk::TextSetCursor %W [tk::TextPrevPos %W insert
-			      tcl_startOfPreviousWord]}; break}
-
-    bind CNtext <Shift-Left> {tk::TextKeySelect %W [%W index {insert-1c}];
-	break}
-    bind CNtext <Shift-Right> {tk::TextKeySelect %W [%W index {insert+1c}];
-	break}
-    bind CNtext <Shift-Up> {tk::TextKeySelect %W [tk::TextUpDownLine %W -1];
-	break}
-    bind CNtext <Shift-Down> {tk::TextKeySelect %W [tk::TextUpDownLine %W 1];
-	break}
-    bind CNtext <Control-Shift-End> {tk::TextKeySelect %W {end - 1 char};break}
-    bind CNtext <Control-Shift-Home> {tk::TextKeySelect %W 1.0; break}
-    bind CNtext <Shift-End> {tk::TextKeySelect %W {insert lineend}; break}
-    bind CNtext <Shift-Home> {tk::TextKeySelect %W {insert linestart}; break}
-
+    foreach Key {<Left> <Right> <Up> <Down> <Next> <Prior> <Home> <End>
+	<Shift-Left> <Shift-Right> <Shift-Up> <Shift-Down> <Shift-Home>
+	<Shift-End> <Control-Shift-Home> <Control-Shift-End>
+	<Control-a> <Control-b> <Control-e> <Control-f> <Control-n> <Control-p>
+	<Control-Home> <Control-End> <Meta-less> <Meta-greater> <Meta-b>
+	<Meta-f>} {
+	bind CNtext $Key "# nothing"
+    }
+	
     # The "Return" key is bound to command evaluation, except in output tags
     bind CNtext <Return> {
 	if {[lsearch [%W tag names [%W index insert]] output] >= 0} {
