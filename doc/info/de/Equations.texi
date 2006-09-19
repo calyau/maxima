@@ -1,0 +1,1217 @@
+@c Language: German
+@c English original: Equations.texi CVS 1.23
+
+@c end concepts Equations
+@menu
+* Definitionen für Gleichungen::   
+@end menu
+
+@node Definitionen für Gleichungen,  , Gleichungen, Gleichungen
+@section Definitionen für Gleichungen
+
+@c NEED A DESCRIPTION OF %rnum AS WELL
+@defvr {Systemvariable} %rnum_list
+Standardwert: @code{[]}
+
+@code{%rnum_list} ist die Liste der Variablen, die von @code{algsys} 
+in Lösungen eingeführt werden. 
+@code{%r}-Variablen werden zu @code{%rnum_list} in Reihenfolge, in der sie erzeugt 
+werden, hinzugefügt. 
+Dies ist vorteilhaft, wenn man später Ersetzungen in den Lösungen vornehmen will.
+@c WHAT DOES THIS STATEMENT MEAN ??
+@c REVISION: (VvN)
+Es wird empfohlen, eher diese Liste zu verwenden, als ein benötigtes 
+Symbol mit @code{concat ('%r, j)} zu erzeugen.
+
+@c NEED EXAMPLE HERE
+@end defvr
+
+@defvr {Optionsvariable} algexact
+Standardwert: @code{false}
+
+@code{algexact} beeinflusst wie folgend beschrieben das Verhalten 
+von @code{algsys}:
+
+Wenn @code{algexact} @code{true} ist, ruft 
+@code{algsys} stets @code{solve} auf und verwendet dann @code{realroots}, 
+falls @code{solve} versagt.
+
+Wenn @code{algexact} @code{false} ist, wird @code{solve} nur aufgerufen, 
+wenn die Eliminante nicht univariat, quadratisch oder biquadratisch ist.
+
+@code{algexact: true} garantiert daher nicht nur exakte Lösungen, 
+sondern dass @code{algsys} zuerst alles versuchen wird, um zu exakten 
+Lösungen zu kommen, und dass Näherungen nur dann gesucht werden, 
+wenn all diese Bemühungen scheitern.
+
+@c ABOVE DESCRIPTION NOT TOO CLEAR -- MAYBE EXAMPLES WILL HELP
+@end defvr
+
+@deffn {Funktion} algsys ([@var{expr_1}, ..., @var{expr_m}], [@var{x_1}, ..., @var{x_n}])
+@deffnx {Funktion} algsys ([@var{eqn_1}, ..., @var{eqn_m}], [@var{x_1}, ..., @var{x_n}])
+Löst zusammenhängende Polynome @var{expr_1}, ..., @var{expr_m} oder Polynomgleichungen 
+@var{eqn_1}, ..., @var{eqn_m} für die Variablen @var{x_1}, ..., @var{x_n}. 
+Ein Ausdruck @var{expr} ist hierbei äquivalent zu einer Gleichung @code{@var{expr} = 0}. 
+Es kann mehr Gleichungen als Variablen geben, oder umgekehrt.
+
+@code{algsys} gibt eine Liste von Lösungen zurück, wobei jede Lösung 
+als eine Liste von Gleichungen gegeben ist, die 
+die Werte der Variablen @var{x_1}, ..., @var{x_n}, die das Gleichungssystem lösen, 
+angeben.
+
+Die Symbole @code{%r1}, @code{%r2}, ...  
+werden eingeführt, wenn es notwendig ist, freie Parameter 
+in der Lösung darzustellen; diese Variablen werden zusätzlich der 
+Liste @code{%rnum_list} hinzugefügt.
+Die Methode ist die folgende:
+
+(1) Zuerst werden die Gleichungen faktorisiert und in Subsysteme aufgeteilt. 
+
+(2) Für jedes Subsystem @var{S_i} werden eine Gleichung @var{E} 
+und eine Variable @var{x} ausgewählt. 
+Die Variable wird so gewählt, dass sie den niedrigsten von Null verschiedenen 
+Grad hat. 
+Dann wird die Resultante von @var{E} und @var{E_j} bezüglich der Variable @var{x} 
+für jede der verbleibenden Gleichungen @var{E_j} im Subsystem @var{S_i} berechnet. 
+Dies erzeugt ein neues Subsystem @var{S_i'} mit einer Variable weniger, 
+da @var{x} eliminiert wurde. 
+Der Prozess geht nun zu (1) zurück.
+
+(3) Möglicherweise wird ein Subsystem erzeugt, das aus nur einer 
+Gleichung besteht. Wenn die Gleichung multivariat ist, und keine 
+Approximationen in der Form von Fließkommazahlen eingeführt wurden, 
+dann wird @code{solve} aufgerufen, um eine exakte Lösung zu finden. 
+
+In einigen Fällen ist @code{solve} nicht in der Lage, eine Lösung zu finden, 
+oder falls doch, kann die Lösung ein sehr großer Ausdruck sein. 
+
+@c REMAINDER OF (3) IS PRETTY COMPLEX. HOW CAN IT BE CLARIFIED ??
+Wenn die Gleichung univariat ist und entweder linear, quadratisch oder 
+biquadratisch, wird wiederum @code{solve} aufgerufen, wenn keine 
+Approximationen durchgeführt wurden. 
+Wurden Approximationen durchgeführt, oder ist die Gleichung weder univariat, 
+noch linear, quadratisch oder biquadratisch, dann wird, falls der Schalter 
+@code{realonly} @code{true} ist, die Funktion @code{realroots} aufgerufen, 
+um rellwertige Lösungen zu finden. 
+Wenn @code{realonly} @code{false} ist, wird @code{allroots} aufgerufen, 
+welches nach reellen und komplexwertigen Lösungen sucht. 
+
+Wenn @code{algsys} eine Lösung erzeugt, die weniger signifikante Stellen hat 
+als gewünscht, kann der Benutzer den Wert von @code{algepsilon} erhöhen. 
+
+Wenn @code{algexact} @code{true} gesetzt ist, wird stets @code{solve} aufgerufen. 
+@c algepsilon IS IN Floating.texi -- MAY WANT TO BRING IT INTO THIS FILE
+
+(4) Schließlich werden die Lösungen, die in Schritt (3) erzielt wurden, 
+in die vorangegangenen Lösungsschritte eingesetzt und der Lösungsprozess geht zu (1) zurück. 
+@c "PREVIOUS LEVELS" -- WHAT ARE THOSE ??
+
+Trifft @code{algsys} eine multivariate Gleichung an, die Gleitkomma-Approximationen 
+enthält (normalerweise begründet dadurch, dass es in einem früheren Stadium nicht gelungen ist, 
+exakte Lösungen zu finden), dann wird nicht versucht, auf solche 
+Gleichungen exakte Methoden anzuwenden, stattdessen wird eine Meldung ausgegeben:
+"@code{algsys} cannot solve - system too complicated."
+
+Wechselwirkungen mit @code{radcan} können große und komplizierte Ausdrücke erzeugen. 
+In  diesem Fall kann es möglich sein, Teile des Ergebnisses mit 
+@code{pickapart} oder @code{reveal} zu isolieren.
+
+Gelegentlich kann @code{radcan} die imaginäre Einheit @code{%i} in eine Lösung 
+einführen, die tatsächlich reellwertig ist.
+
+Beispiele:
+
+@c ===beg===
+@c e1: 2*x*(1 - a1) - 2*(x - 1)*a2;
+@c e2: a2 - a1;
+@c e3: a1*(-y - x^2 + 1);
+@c e4: a2*(y - (x - 1)^2);
+@c algsys ([e1, e2, e3, e4], [x, y, a1, a2]);
+@c e1: x^2 - y^2;
+@c e2: -1 - y + 2*y^2 - x + x^2;
+@c algsys ([e1, e2], [x, y]);
+@c ===end===
+
+@example
+(%i1) e1: 2*x*(1 - a1) - 2*(x - 1)*a2;
+(%o1)              2 (1 - a1) x - 2 a2 (x - 1)
+(%i2) e2: a2 - a1; 
+(%o2)                        a2 - a1
+(%i3) e3: a1*(-y - x^2 + 1); 
+                                   2
+(%o3)                   a1 (- y - x  + 1)
+(%i4) e4: a2*(y - (x - 1)^2);
+                                       2
+(%o4)                   a2 (y - (x - 1) )
+(%i5) algsys ([e1, e2, e3, e4], [x, y, a1, a2]);
+(%o5) [[x = 0, y = %r1, a1 = 0, a2 = 0], 
+
+                                  [x = 1, y = 0, a1 = 1, a2 = 1]]
+(%i6) e1: x^2 - y^2;
+                              2    2
+(%o6)                        x  - y
+(%i7) e2: -1 - y + 2*y^2 - x + x^2;
+                         2        2
+(%o7)                 2 y  - y + x  - x - 1
+(%i8) algsys ([e1, e2], [x, y]);
+                 1            1
+(%o8) [[x = - -------, y = -------], 
+              sqrt(3)      sqrt(3)
+
+        1              1             1        1
+[x = -------, y = - -------], [x = - -, y = - -], [x = 1, y = 1]]
+     sqrt(3)        sqrt(3)          3        3
+@end example
+
+@end deffn
+
+@deffn {Funktion} allroots (@var{expr})
+@deffnx {Funktion} allroots (@var{eqn})
+Berechnet numerische Approximationen von reellen und komplexen Wurzeln 
+des Polynoms @var{expr} oder der Polynomgleichung @var{eqn} mit einer Variable. 
+
+@c polyfactor IS NOT OTHERWISE DOCUMENTED
+Das Flag @code{polyfactor} bewirkt, falls @code{true}, dass 
+@code{allroots} das Polynom über den reellen Zahlen faktorisiert, wenn 
+es reell ist, und über den komplexen Zahlen, wenn es komplex ist. 
+
+Im Falle mehrfacher Wurzeln kann @code{allroots} ungenaue Ergebnisse liefern. 
+Ist das Polynom reell, kann @code{allroots (%i*@var{p})}) genauere Approximationen 
+liefern als @code{allroots (@var{p})}, da @code{allroots} in diesem Fall einen 
+anderen Algorithmus verwendet. 
+
+@code{allroots} weist Nichtpolynome zurück. Es verlangt, dass der Zähler nach einer Anwendung 
+von @code{rat} ein Polynom ist, und weiter, dass der Nenner höchstens eine komplexe Zahl ist. 
+Hieraus folgt, dass @code{allroots} stets einen äquivalenten (jedoch faktorisierten) Ausdruck 
+zurückgibt, wenn @code{polyfactor} @code{true} ist.
+
+Für komplexe Polynome wird ein Algorithmus von Jenkins und Traub verwendet 
+(Algorithm 419, @i{Comm. ACM}, vol. 15, (1972), p. 97).
+Für reelle Polynome wird ein Algorithmus von Jenkins verwendet
+(Algorithm 493, @i{ACM TOMS},vol. 1, (1975), p.178).
+
+Beispiele:
+@c EXAMPLES GENERATED BY THESE INPUTS:
+@c ===beg===
+@c eqn: (1 + 2*x)^3 = 13.5*(1 + x^5);
+@c soln: allroots (eqn);
+@c for e in soln
+@c    do (e2: subst (e, eqn), disp (expand (lhs(e2) - rhs(e2))));
+@c polyfactor: true$
+@c allroots (eqn);
+@c ===end===
+
+@example
+(%i1) eqn: (1 + 2*x)^3 = 13.5*(1 + x^5);
+                            3          5
+(%o1)              (2 x + 1)  = 13.5 (x  + 1)
+(%i2) soln: allroots (eqn);
+(%o2) [x = 0.8296749902129361, x = - 1.015755543828121, 
+x = 0.9659625152196369 %i - 0.4069597231924075, 
+x = - 0.9659625152196369 %i - 0.4069597231924075, x = 1.0]
+(%i3) for e in soln
+        do (e2: subst (e, eqn), disp (expand (lhs(e2) - rhs(e2))));
+			   - 3.5527136788005009E-15
+
+			   - 5.3290705182007514E-15
+
+	      4.4408920985006262E-15 %i - 4.8849813083506888E-15
+
+	     - 4.4408920985006262E-15 %i - 4.8849813083506888E-15
+
+			    3.5527136788005009E-15
+
+(%o3)                         done
+(%i4) polyfactor: true$
+(%i5) allroots (eqn);
+(%o5) - 13.5 (x - 1.0) (x - 0.82967499021294) (x + 1.015755543828121)
+				    2
+				  (x  + 0.81391944638482 x + 1.098699797110288)
+@end example
+
+@end deffn
+
+@defvr {Optionsvariable} backsubst
+Standardwert: @code{true}
+
+@c WHAT IS THE CONTEXT HERE ?? (TO WHICH OTHER FUNCTION DOES THIS APPLY ??)
+Wenn @code{backsubst} @code{false} ist, verhindert dies die Rücksubstitution 
+nach der Triangularisierung der Gleichungen. Dies kann in sehr großen Problemen hilfreich sein, 
+wo Rücksubstitution die Erzeugung extrem großer Ausdrücke bewirken würde. 
+
+@end defvr
+
+@defvr {Optionsvariable} breakup
+Standardwert: @code{true}
+
+Wenn @code{breakup} @code{true} ist, drückt @code{solve} die Lösungen von 
+kubischen und quartischen Gleichungen durch Terme mit gemeinsamen Teilausdrücken aus, 
+die dabei Zwischenmarken (@code{%t1}, @code{%t2}, etc.) zugewiesen werden. 
+Andernfalls werden keine gemeinsamen Teilausdrücke ermittelt. 
+
+@code{breakup: true} wirkt sich nur aus, wenn @code{programmode} @code{false} ist.
+
+Beispiele:
+
+@c ===beg===
+@c programmode: false$
+@c breakup: true$
+@c solve (x^3 + x^2 - 1);
+@c breakup: false$
+@c solve (x^3 + x^2 - 1);
+@c ===end===
+
+@example
+(%i1) programmode: false$
+(%i2) breakup: true$
+(%i3) solve (x^3 + x^2 - 1);
+
+                        sqrt(23)    25 1/3
+(%t3)                  (--------- + --)
+                        6 sqrt(3)   54
+Solution:
+
+                                      sqrt(3) %i   1
+                                      ---------- - -
+                sqrt(3) %i   1            2        2   1
+(%t4)    x = (- ---------- - -) %t3 + -------------- - -
+                    2        2            9 %t3        3
+
+                                      sqrt(3) %i   1
+                                    - ---------- - -
+              sqrt(3) %i   1              2        2   1
+(%t5)    x = (---------- - -) %t3 + ---------------- - -
+                  2        2             9 %t3         3
+
+                                   1     1
+(%t6)                  x = %t3 + ----- - -
+                                 9 %t3   3
+(%o6)                    [%t4, %t5, %t6]
+(%i6) breakup: false$
+(%i7) solve (x^3 + x^2 - 1);
+Solution:
+
+             sqrt(3) %i   1
+             ---------- - -
+                 2        2        sqrt(23)    25 1/3
+(%t7) x = --------------------- + (--------- + --)
+             sqrt(23)    25 1/3    6 sqrt(3)   54
+          9 (--------- + --)
+             6 sqrt(3)   54
+
+                                              sqrt(3) %i   1    1
+                                           (- ---------- - -) - -
+                                                  2        2    3
+
+           sqrt(23)    25 1/3  sqrt(3) %i   1
+(%t8) x = (--------- + --)    (---------- - -)
+           6 sqrt(3)   54          2        2
+
+                                            sqrt(3) %i   1
+                                          - ---------- - -
+                                                2        2      1
+                                      + --------------------- - -
+                                           sqrt(23)    25 1/3   3
+                                        9 (--------- + --)
+                                           6 sqrt(3)   54
+
+            sqrt(23)    25 1/3             1             1
+(%t9)  x = (--------- + --)    + --------------------- - -
+            6 sqrt(3)   54          sqrt(23)    25 1/3   3
+                                 9 (--------- + --)
+                                    6 sqrt(3)   54
+(%o9)                    [%t7, %t8, %t9]
+@end example
+
+@end defvr
+
+@deffn {Funktion} dimension (@var{eqn})
+@deffnx {Funktion} dimension (@var{eqn_1}, ..., @var{eqn_n})
+@code{dimen} ist ein Paket für Dimensionsanalysis.
+@code{load ("dimen")} lädt dieses Paket.
+@code{demo ("dimen")} zeigt eine kleine Demonstration.
+@c I GUESS THIS SHOULD BE EXPANDED TO COVER EACH FUNCTION IN THE PACKAGE
+
+@end deffn
+
+@defvr {Optionsvariable} dispflag
+Standardwert: @code{true}
+
+@c WHAT DOES THIS MEAN ??
+@c If set to @code{false} within a @code{block} will inhibit
+@c the display of output generated by the solve functions called from
+@c within  the @code{block}.  Termination of the @code{block} with a dollar sign, $, sets
+@c @code{dispflag} to @code{false}. 
+@c REVISION: (VvN)
+Zu @code{false} gesetzt, unterbindet dieser Schalter die Anzeige von Ausgaben, 
+die von @code{solve}-Funktionen im Modus @code{programmode:false} erzeugt werden.
+
+
+@end defvr
+
+@c THIS COULD BENEFIT FROM REPHRASING
+@deffn {Funktion} funcsolve (@var{eqn}, @var{g}(@var{t}))
+Gibt @code{[@var{g}(@var{t}) = ...]}  oder @code{[]} zurück, abhängig davon, 
+ob es eine rationale Funktion @code{@var{g}(@var{t})} gibt, die @var{eqn} erfüllt, 
+welches ein Polynom erster Ordnung in @code{@var{g}(@var{t})} 
+und (in diesem Fall) @code{@var{g}(@var{t}+1)} sein muss. 
+
+@c ===beg===
+@c eqn: (n + 1)*f(n) - (n + 3)*f(n + 1)/(n + 1) = (n - 1)/(n + 2);
+@c funcsolve (eqn, f(n));
+@c ===end===
+
+@example
+(%i1) eqn: (n + 1)*f(n) - (n + 3)*f(n + 1)/(n + 1) = (n - 1)/(n + 2);
+                            (n + 3) f(n + 1)   n - 1
+(%o1)        (n + 1) f(n) - ---------------- = -----
+                                 n + 1         n + 2
+(%i2) funcsolve (eqn, f(n));
+
+Dependent equations eliminated:  (4 3)
+                                   n
+(%o2)                f(n) = ---------------
+                            (n + 1) (n + 2)
+@end example
+
+Warnung: Dies ist eine sehr rudimentäre Implementation -- viele Sicherheitsüberprüfungen 
+und offensichtliche Verallgemeinerungen fehlen.
+
+@end deffn
+
+@defvr {Optionsvariable} globalsolve
+Standardwert: @code{false}
+
+Wenn @code{globalsolve} @code{true} ist, werden bei der Lösung von zwei oder mehr 
+linearen Gleichungen den Variablen, für die eine Lösung gesucht wurde, 
+die durch @code{linsolve} und @code{solve} gefundenen Lösungswerte zugewiesen.
+
+Wenn @code{globalsolve} @code{false} ist, werden die bei der Lösung von zwei oder mehr 
+linearen Gleichungen durch @code{linsolve} und @code{solve} gefundenen Lösungen 
+in Form von Gleichungen ausgedrückt, und den Variablen, für die eine Lösung gesucht wurde, 
+werden keine Werte zugewiesen.
+
+Bei der Lösung von etwas Anderem als von zwei oder mehr linearen Gleichungen, 
+wird @code{globalsolve} von @code{solve} ignoriert. 
+Andere Funktionen, die Gleichungen lösen (z.B. @code{algsys}), ignorieren @code{globalsolve} 
+in jedem Fall.
+
+Beispiele:
+
+@c ===beg===
+@c globalsolve: true$
+@c solve ([x + 3*y = 2, 2*x - y = 5], [x, y]);
+@c x;
+@c y;
+@c kill (x, y)$
+@c globalsolve: false$
+@c solve ([x + 3*y = 2, 2*x - y = 5], [x, y]);
+@c x;
+@c y;
+@c ===end===
+
+@example
+(%i1) globalsolve: true$
+(%i2) solve ([x + 3*y = 2, 2*x - y = 5], [x, y]);
+				    17	      1
+(%o2) 			      [[x : --, y : - -]]
+				    7	      7
+(%i3) x;
+				      17
+(%o3) 				      --
+				      7
+(%i4) y;
+					1
+(%o4) 				      - -
+					7
+(%i5) globalsolve: false$
+(%i6) kill (x, y)$
+(%i7) solve ([x + 3*y = 2, 2*x - y = 5], [x, y]);
+				    17	      1
+(%o7) 			      [[x = --, y = - -]]
+				    7	      7
+(%i8) x;
+(%o8) 				       x
+(%i9) y;
+(%o9) 				       y
+@end example
+
+@end defvr
+
+@c THIS DESCRIPTION NEEDS WORK AND EXAMPLES
+@c MERGE IN TEXT FROM share/integequations/inteqn.usg
+@c AND EXAMPLES FROM .../intexs.mac
+@deffn {Funktion} ieqn (@var{ie}, @var{unk}, @var{tech}, @var{n}, @var{guess})
+@code{inteqn} ist ein Paket zur Lösung von Integralgleichungen der Form 
+
+@code{p(x) = q( x, p(x), 'integrate(w(x,u,p(x),p(u)),u,a(x),b(x)) )}  (zweiter Art, @code{secondkind})  und 
+
+@code{'integrate(w(x,u,p(u)),u,a(x),b(x)) = f(x)}  (erster Art, @code{firstkind}).
+@code{load ("inteqn")} lädt dieses Paket.
+
+@var{ie} ist die Integralgleichung; 
+@var{unk} ist die unbekannte Funktion einschließlich angegebener Abhängigkeit; 
+@var{tech} ist die Technik, die zur Lösung angewendet werden soll 
+(@var{tech} = @code{first} bedeutet, dass die verfügbaren Lösungstechniken der Reihe nach angewandt 
+werden und das Ergebnis der ersten erfolgreichen Lösung wird zurückgegeben;
+@var{tech} = @code{all} bedeutet, dass alle Techniken angewandt werden);
+@var{n} ist die maximale Anzahl an Termen, die für 
+@code{taylor}, @code{neumann}, @code{firstkindseries} oder @code{fredseries} 
+verwendet werden 
+(es ist ebenso die maximale Tiefe der Rekursion für die Differentiationsmethode); 
+@var{guess} ist der Startwert für @code{neumann} oder @code{firstkindseries}.
+
+Standardwerte für den 2ten bis 5ten Parameter sind:
+
+@var{unk}: @code{@var{p}(@var{x})}, wobei @var{p} die als erste im Integranden aufgefundene 
+Funktion ist, die für Maxima unbekannt ist, und @var{x} ist die Variable, die im Falle einer 
+@code{secondkind}-Gleichung als Argument des ersten @var{p} außerhalb des Integrals 
+vorgefunden wird, oder im Falle einer @code{firstkind}-Gleichung die einzige andere Variable 
+neben der Integrationsvariable. 
+Wenn der Versuch, @var{x} zu finden, fehlschlägt, wird der Benutzer gefragt, eine unabhängige 
+Variable anzugeben.
+
+@var{tech}: @code{first}
+
+@var{n}: 1
+
+@var{guess}: @code{none}, was bewirkt, dass @code{neumann} und @code{firstkindseries} 
+@code{@var{f}(@var{x})} als Startwert verwenden.
+
+Siehe share/integequations/inteqn.usg für weitere Informationen.
+
+Beispiel:
+
+@c ===beg===
+@c load("inteqn")$
+@c eq : p(t) = c * 'integrate(p(u),u,0,t);
+@c ieqn(eq,p(t));
+@c ===end===
+
+@example
+(%i1) load("inteqn")$
+(%i2) eq : p(t) = c * 'integrate(p(u),u,0,t);
+					t
+				       /
+				       [
+(%o2) 			      p(t) = c I  p(u) du
+				       ]
+				       /
+					0
+(%i3) ieqn(eq,p(t));
+default 3rd arg, technique:  first 
+default 4th arg, number of iterations or coll. parms.:  1 
+default 5th arg, initial guess:  none 
+
+				     c t
+(%t3) 			     [p(0) %e   , vlfrnk]
+(%o3) 				     [%t3]
+@end example
+
+@end deffn
+
+@defvr {Optionsvariable} ieqnprint
+Standardwert: @code{true}
+
+@code{ieqnprint} regelt die Darstellung des Ergebnisses, das durch den Befehl 
+@code{ieqn} zurück gegeben wird. 
+@c ERROR IN ENGLISH DOC: (VvN)
+Wenn @code{ieqnprint} @code{true} ist, 
+ist die von der @code{ieqn}-Funktion zurückgegebene Liste von der Form 
+
+   [@var{solution}, @var{technique used}, @var{nterms}, @var{flag}]
+
+wobei @var{flag} nicht vorkommt, wenn die Lösung exakt ist.
+
+Andernfalls ist @code{approximate} bzw. @code{incomplete} das Wort, das sich auf 
+eine nicht exakte bzw. nicht geschlossene Form der Lösung bezieht. 
+Wird eine Reihenmethode angewandt, gibt @var{nterms} die Anzahl der verwendeten Terme 
+(die kleiner als das in @code{ieqn} angegebene @var{n} sein kann, wenn ein Fehler die 
+Erzeugung weiterer Terme verhindert). 
+
+@end defvr
+
+@deffn {Funktion} lhs (@var{expr})
+Gibt die linke Seite (d.h. das erste Argument) des Ausdrucks @var{expr} zurück, 
+wenn der Operator von @var{expr} einer der relationalen Operatoren 
+@code{< <= = # equal notequal >= >} ist, 
+@c MENTION -> (MARROW) IN THIS LIST IF/WHEN THE PARSER RECOGNIZES IT
+einer der Zuweisungsoperatoren @code{:= ::= : ::}, 
+oder ein benutzerdefinierter binärer Infixoperator, deklariert durch @code{infix}.
+
+Wenn @var{expr} ein Atom ist oder sein Operator ein anderer als oben aufgelistet, 
+gibt @code{lhs} @var{expr} zurück.
+
+Siehe auch @code{rhs}.
+
+Beispiele:
+
+@c ===beg===
+@c e: aa + bb = cc;
+@c lhs (e);
+@c rhs (e);
+@c [lhs (aa < bb), lhs (aa <= bb), lhs (aa >= bb), lhs (aa > bb)];
+@c [lhs (aa = bb), lhs (aa # bb), lhs (equal (aa, bb)), lhs (notequal (aa, bb))];
+@c e1: '(foo(x) := 2*x);
+@c e2: '(bar(y) ::= 3*y);
+@c e3: '(x : y);
+@c e4: '(x :: y);
+@c [lhs (e1), lhs (e2), lhs (e3), lhs (e4)];
+@c infix ("][");
+@c lhs (aa ][ bb);
+@c ===end===
+@example
+(%i1) e: aa + bb = cc;
+(%o1)                     bb + aa = cc
+(%i2) lhs (e);
+(%o2)                        bb + aa
+(%i3) rhs (e);
+(%o3)                          cc
+(%i4) [lhs (aa < bb), lhs (aa <= bb), lhs (aa >= bb), lhs (aa > bb)];
+(%o4)                   [aa, aa, aa, aa]
+(%i5) [lhs (aa = bb), lhs (aa # bb), lhs (equal (aa, bb)), lhs (notequal (aa, bb))];
+(%o5)                   [aa, aa, aa, aa]
+(%i6) e1: '(foo(x) := 2*x);
+(%o6)                     foo(x) := 2 x
+(%i7) e2: '(bar(y) ::= 3*y);
+(%o7)                    bar(y) ::= 3 y
+(%i8) e3: '(x : y);
+(%o8)                         x : y
+(%i9) e4: '(x :: y);
+(%o9)                        x :: y
+(%i10) [lhs (e1), lhs (e2), lhs (e3), lhs (e4)];
+(%o10)               [foo(x), bar(y), x, x]
+(%i11) infix ("][");
+(%o11)                         ][
+(%i12) lhs (aa ][ bb);
+(%o12)                         aa
+@end example
+
+@end deffn
+
+@c REVISIT -- THERE'S PROBABLY MORE TO SAY HERE
+@deffn {Funktion} linsolve ([@var{expr_1}, ..., @var{expr_m}], [@var{x_1}, ..., @var{x_n}])
+Löst die Liste zusammenhängender linearer Gleichungen für die Liste der Variablen. 
+Jeder Ausdruck muss ein Polynom in den angegebenen Variablen sein und kann auch eine Gleichung sein. 
+
+Wenn @code{globalsolve} @code{true} ist, wird jede Variable, für die eine Lösung gesucht wurde, 
+an den entsprechenden Wert in der Lösung der Gleichung gebunden.
+
+Wenn @code{backsubst} @code{false} ist, führt @code{linsolve} keine Rücksubstitutionen aus, 
+nachdem die Gleichungen triangularisiert wurden. Dies kann in sehr großen Problemen hilfreich sein, 
+wo Rücksubstitution die Erzeugung extrem großer Ausdrücke bewirken würde. 
+
+Wenn @code{linsolve_params} @code{true} ist, erzeugt auch @code{linsolve} die @code{%r}-Symbole,  
+die verwendet werden, um freie Parameter darzustellen, wie im Handbuch unter @code{algsys} beschrieben. 
+Andernfalls löst @code{linsolve} ein unterbestimmtes Gleichungssystem, indem einige Variablen 
+durch Terme von anderen ausgedrückt werden.
+
+Wenn @code{programmode} @code{false} ist, gibt @code{linsolve} die Lösungen mit Hilfe von 
+Zwischenmarken (@code{%t}) aus und gibt die Liste der Marken zurück.
+
+@c ===beg===
+@c e1: x + z = y;
+@c e2: 2*a*x - y = 2*a^2;
+@c e3: y - 2*z = 2;
+@c [globalsolve: false, programmode: true];
+@c linsolve ([e1, e2, e3], [x, y, z]);
+@c [globalsolve: false, programmode: false];
+@c linsolve ([e1, e2, e3], [x, y, z]);
+@c ''%;
+@c [globalsolve: true, programmode: false];
+@c linsolve ([e1, e2, e3], [x, y, z]);
+@c ''%;
+@c [x, y, z];
+@c [globalsolve: true, programmode: true];
+@c linsolve ([e1, e2, e3], '[x, y, z]);
+@c [x, y, z];
+@c ===end===
+@example
+(%i1) e1: x + z = y;
+(%o1)                       z + x = y
+(%i2) e2: 2*a*x - y = 2*a^2;
+                                       2
+(%o2)                   2 a x - y = 2 a
+(%i3) e3: y - 2*z = 2;
+(%o3)                      y - 2 z = 2
+(%i4) [globalsolve: false, programmode: true];
+(%o4)                     [false, true]
+(%i5) linsolve ([e1, e2, e3], [x, y, z]);
+(%o5)            [x = a + 1, y = 2 a, z = a - 1]
+(%i6) [globalsolve: false, programmode: false];
+(%o6)                    [false, false]
+(%i7) linsolve ([e1, e2, e3], [x, y, z]);
+Solution
+
+(%t7)                       z = a - 1
+
+(%t8)                        y = 2 a
+
+(%t9)                       x = a + 1
+(%o9)                    [%t7, %t8, %t9]
+(%i9) ''%;
+(%o9)            [z = a - 1, y = 2 a, x = a + 1]
+(%i10) [globalsolve: true, programmode: false];
+(%o10)                    [true, false]
+(%i11) linsolve ([e1, e2, e3], [x, y, z]);
+Solution
+
+(%t11)                      z : a - 1
+
+(%t12)                       y : 2 a
+
+(%t13)                      x : a + 1
+(%o13)                 [%t11, %t12, %t13]
+(%i13) ''%;
+(%o13)           [z : a - 1, y : 2 a, x : a + 1]
+(%i14) [x, y, z];
+(%o14)                 [a + 1, 2 a, a - 1]
+(%i15) [globalsolve: true, programmode: true];
+(%o15)                    [true, true]
+(%i16) linsolve ([e1, e2, e3], '[x, y, z]);
+(%o16)           [x : a + 1, y : 2 a, z : a - 1]
+(%i17) [x, y, z];
+(%o17)                 [a + 1, 2 a, a - 1]
+@end example
+
+@end deffn
+
+@c DO ANY FUNCTIONS OTHER THAN linsolve RESPECT linsolvewarn ??
+@defvr {Optionsvariable} linsolvewarn
+Standardwert: @code{true}
+
+Wenn @code{linsolvewarn} @code{true} ist, gibt @code{linsolve} gegebenenfalls 
+die Meldung "Dependent equations eliminated" aus.
+
+@end defvr
+
+@defvr {Optionsvariable} linsolve_params
+Standardwert: @code{true}
+
+Wenn @code{linsolve_params} @code{true} ist, erzeugt auch @code{linsolve} die @code{%r}-Symbole,  
+die verwendet werden, um freie Parameter darzustellen, wie im Handbuch unter @code{algsys} beschrieben. 
+Andernfalls löst @code{linsolve} ein unterbestimmtes Gleichungssystem, indem einige Variablen 
+durch Terme von anderen ausgedrückt werden.
+
+@end defvr
+
+@defvr {Systemvariable} multiplicities
+Standardwert: @code{not_set_yet}
+
+@code{multiplicities} ist die Liste der Vielfachheiten der individuellen Lösungen, die von 
+@code{solve}, @code{realroots} oder @code{allroots} zurückgegeben werden.
+@c NEED AN EXAMPLE HERE
+
+@c ===beg===
+@c solve( (x-a)^2 * (x-b) * (x-c)^3 = 0, x );
+@c multiplicities;
+@c ===end===
+@example
+(%i1) solve( (x-a)^2 * (x-b) * (x-c)^3 = 0, x );
+(%o1) 			     [x = c, x = b, x = a]
+(%i2) multiplicities;
+(%o2) 				   [3, 1, 2]
+@end example
+
+@end defvr
+
+@deffn {Funktion} nroots (@var{p}, @var{low}, @var{high})
+Gibt die Anzahl der reellen Wurzeln des reellen univariaten Polynoms @var{p} im 
+halboffenen Intervall @code{(@var{low}, @var{high}]} zurück. 
+Die Grenzen des Intervalls können auch @code{minf} oder @code{inf} sein 
+(Minus bzw. Plus Unendlich).
+
+@code{nroots} verwendet die Methode der Sturm-Sequenzen.
+
+@example
+(%i1) p: x^10 - 2*x^4 + 1/2$
+(%i2) nroots (p, -6, 9.1);
+(%o2)                           4
+@end example
+
+@end deffn
+
+@c NEEDS WORK
+@deffn {Funktion} nthroot (@var{p}, @var{n})
+@var{p} ist hier ein Polynom mit ganzzahligen Koeffizienten und @var{n} eine positive 
+ganze Zahl. @code{nthroot} gibt ein Polynom q über den ganzen Zahlen zurück, so dass 
+q^n=p gilt, oder gibt eine Fehlermeldung aus, die besagt, dass @var{p} keine solche 
+perfekte n-te Potenz ist. Diese Routine ist wesentlich schneller als @code{factor} 
+oder sogar @code{sqfr}.
+
+@end deffn
+
+@defvr {Optionsvariable} programmode
+Standardwert: @code{true}
+
+Wenn @code{programmode} @code{true} ist,
+geben @code{solve}, @code{realroots}, @code{allroots} und @code{linsolve} 
+Lösungen als Elemente in einer Liste zurück. 
+@c WHAT DOES BACKSUBSTITUTION HAVE TO DO WITH RETURN VALUES ??
+@c (Except when @code{backsubst} is set to @code{false}, in which case
+@c @code{programmode: false} is assumed.)
+@c THIS SEEMS NOT TO BE TRUE ANYMORE (VvN)
+
+Wenn @code{programmode} @code{false} ist, erzeugen @code{solve}, etc.
+Zwischenmarken @code{%t1}, @code{%t2}, etc., und weisen diesen die Lösungen zu. 
+@c NEED AN EXAMPLE HERE
+
+@end defvr
+
+@defvr {Optionsvariable} realonly
+Standardwert: @code{false}
+
+Wenn @code{realonly} @code{true} ist, gibt @code{algsys} nur die Lösungen zurück, 
+die kein @code{%i} enthalten.
+
+@end defvr
+
+@c NEEDS WORK
+@deffn {Funktion} realroots (@var{poly}, @var{bound})
+Findet alle reellen Wurzeln des reellen univariaten Polynoms @var{poly} innerhalb der 
+Toleranz @var{bound}, welche, falls kleiner 1, bewirkt, dass alle ganzzahligen Wurzeln exakt 
+gefunden werden. 
+Der Parameter @var{bound} kann beliebig klein gewählt werden, um eine gewünschte 
+Genauigkeit zu erreichen. 
+Das erste Argument kann auch eine Gleichung sein. 
+@code{realroots} setzt @code{multiplicities}, welches im Falle vielfacher Wurzeln nützlich 
+sein kann. 
+@code{realroots (@var{p})} ist äquivalent zu @code{realroots (@var{p}, rootsepsilon)}. 
+@code{rootsepsilon} ist eine reelle Zahl, die verwendet wird, um den Vertrauensbereich 
+für die Wurzeln festzusetzen. 
+Gib @code{example (realroots)} für ein Beispiel ein.
+
+@end deffn
+
+@deffn {Funktion} rhs (@var{expr})
+Gibt die rechte Seite (d.h. das zweite Argument) des Ausdrucks @var{expr} zurück, 
+wenn der Operator von @var{expr} einer der relationalen Operatoren 
+@code{< <= = # equal notequal >= >} ist, 
+@c MENTION -> (MARROW) IN THIS LIST IF/WHEN THE PARSER RECOGNIZES IT
+einer der Zuweisungsoperatoren @code{:= ::= : ::}, 
+oder ein benutzerdefinierter binärer Infixoperator, deklariert durch @code{infix}.
+
+Wenn @var{expr} ein Atom ist oder sein Operator ein anderer als oben aufgelistet, 
+gibt @code{rhs} 0 zurück.
+
+Siehe auch @code{lhs}.
+
+Beispiele:
+
+@c ===beg===
+@c e: aa + bb = cc;
+@c lhs (e);
+@c rhs (e);
+@c [rhs (aa < bb), rhs (aa <= bb), rhs (aa >= bb), rhs (aa > bb)];
+@c [rhs (aa = bb), rhs (aa # bb), rhs (equal (aa, bb)), rhs (notequal (aa, bb))];
+@c e1: '(foo(x) := 2*x);
+@c e2: '(bar(y) ::= 3*y);
+@c e3: '(x : y);
+@c e4: '(x :: y);
+@c [rhs (e1), rhs (e2), rhs (e3), rhs (e4)];
+@c infix ("][");
+@c rhs (aa ][ bb);
+@c ===end===
+@example
+(%i1) e: aa + bb = cc;
+(%o1)                     bb + aa = cc
+(%i2) lhs (e);
+(%o2)                        bb + aa
+(%i3) rhs (e);
+(%o3)                          cc
+(%i4) [rhs (aa < bb), rhs (aa <= bb), rhs (aa >= bb), rhs (aa > bb)];
+(%o4)                   [bb, bb, bb, bb]
+(%i5) [rhs (aa = bb), rhs (aa # bb), rhs (equal (aa, bb)), rhs (notequal (aa, bb))];
+(%o5)                   [bb, bb, bb, bb]
+(%i6) e1: '(foo(x) := 2*x);
+(%o6)                     foo(x) := 2 x
+(%i7) e2: '(bar(y) ::= 3*y);
+(%o7)                    bar(y) ::= 3 y
+(%i8) e3: '(x : y);
+(%o8)                         x : y
+(%i9) e4: '(x :: y);
+(%o9)                        x :: y
+(%i10) [rhs (e1), rhs (e2), rhs (e3), rhs (e4)];
+(%o10)                  [2 x, 3 y, y, y]
+(%i11) infix ("][");
+(%o11)                         ][
+(%i12) rhs (aa ][ bb);
+(%o12)                         bb
+@end example
+
+@end deffn
+
+@defvr {Optionsvariable} rootsconmode
+Standardwert: @code{true}
+
+@code{rootsconmode} steuert das Verhalten des Befehls @code{rootscontract}.  
+Siehe @code{rootscontract} für Details.
+
+@end defvr
+
+@c NEEDS WORK
+@deffn {Funktion} rootscontract (@var{expr})
+Konvertiert Produkte von Wurzeln in  Wurzeln von Produkten. 
+Zum Beispiel erzeugt @code{rootscontract (sqrt(x)*y^(3/2))} den Ausdruck @code{sqrt(x*y^3)}.
+
+Wenn @code{radexpand} @code{true} ist und @code{domain} @code{real} (Standardeinstellung), 
+konvertiert @code{rootscontract} @code{abs} in @code{sqrt}, z.B. 
+erzeugt @code{rootscontract (abs(x)*sqrt(y))} den Ausdruck @code{sqrt(x^2*y)}.
+
+Es gibt die Option @code{rootsconmode}, die @code{rootscontract} wie folgt beeinflusst:
+
+@example
+Problem             Wert von     Ergebnis der Anwendung von
+                  rootsconmode         rootscontract
+      
+x^(1/2)*y^(3/2)      false           (x*y^3)^(1/2)
+x^(1/2)*y^(1/4)      false           x^(1/2)*y^(1/4)
+x^(1/2)*y^(1/4)      true            (x*y^(1/2))^(1/2)
+x^(1/2)*y^(1/3)      true            x^(1/2)*y^(1/3)
+x^(1/2)*y^(1/4)      all             (x^2*y)^(1/4)
+x^(1/2)*y^(1/3)      all             (x^3*y^2)^(1/6)
+@end example
+
+Wenn @code{rootsconmode} @code{false} ist, kontrahiert @code{rootscontract} nur 
+bezüglich rationaler Exponenten, deren Nenner gleich sind. 
+Der Schlüssel zu den Beispielen mit @code{rootsconmode: true} ist einfach, dass 
+die 2 die 4 teilt, aber nicht die 3.
+@code{rootsconmode: all} bezieht das kleinste gemeinsame Vielfache der Nenner 
+der Exponenten mit ein.
+
+@code{rootscontract} verwendet @code{ratsimp} in einer ähnlichen Weise wie @code{logcontract}.
+
+Beispiele:
+@c FOLLOWING ADAPTED FROM example (rootscontract)
+@c ===beg===
+@c rootsconmode: false$
+@c rootscontract (x^(1/2)*y^(3/2));
+@c rootscontract (x^(1/2)*y^(1/4));
+@c rootsconmode: true$
+@c rootscontract (x^(1/2)*y^(1/4));
+@c rootscontract (x^(1/2)*y^(1/3));
+@c rootsconmode: all$
+@c rootscontract (x^(1/2)*y^(1/4));
+@c rootscontract (x^(1/2)*y^(1/3));
+@c rootsconmode: false$
+@c rootscontract (sqrt(sqrt(x) + sqrt(1 + x))
+@c                     *sqrt(sqrt(1 + x) - sqrt(x)));
+@c rootsconmode: true$
+@c rootscontract (sqrt(5 + sqrt(5)) - 5^(1/4)*sqrt(1 + sqrt(5)));
+@c ===end===
+
+@example
+(%i1) rootsconmode: false$
+(%i2) rootscontract (x^(1/2)*y^(3/2));
+                                   3
+(%o2)                      sqrt(x y )
+(%i3) rootscontract (x^(1/2)*y^(1/4));
+                                   1/4
+(%o3)                     sqrt(x) y
+(%i4) rootsconmode: true$
+(%i5) rootscontract (x^(1/2)*y^(1/4));
+(%o5)                    sqrt(x sqrt(y))
+(%i6) rootscontract (x^(1/2)*y^(1/3));
+                                   1/3
+(%o6)                     sqrt(x) y
+(%i7) rootsconmode: all$
+(%i8) rootscontract (x^(1/2)*y^(1/4));
+                              2   1/4
+(%o8)                       (x  y)
+(%i9) rootscontract (x^(1/2)*y^(1/3));
+                             3  2 1/6
+(%o9)                      (x  y )
+(%i10) rootsconmode: false$
+(%i11) rootscontract (sqrt(sqrt(x) + sqrt(1 + x))
+                    *sqrt(sqrt(1 + x) - sqrt(x)));
+(%o11)                          1
+(%i12) rootsconmode: true$
+(%i13) rootscontract (sqrt(5 + sqrt(5)) - 5^(1/4)*sqrt(1 + sqrt(5)));
+(%o13)                          0
+@end example
+
+@end deffn
+
+@defvr {Optionsvariable} rootsepsilon
+Standardwert: 1.0e-7
+
+@code{rootsepsilon} ist die Toleranz, die den Vertrauensbereich für die von der 
+Funktion @code{realroots} gefundenen Wurzeln festsetzt. 
+@c IS IT GUARANTEED THAT |ACTUAL - ESTIMATE| < rootepsilon OR IS IT SOME OTHER NOTION ??
+@c NEED EXAMPLE HERE
+
+@end defvr
+
+@c NEEDS WORK
+@deffn {Funktion} solve (@var{expr}, @var{x})
+@deffnx {Funktion} solve (@var{expr})
+@deffnx {Funktion} solve ([@var{eqn_1}, ..., @var{eqn_n}], [@var{x_1}, ..., @var{x_n}])
+Löst eine algebraische Gleichung @var{expr} nach der Variable @var{x} auf und gibt
+eine Liste mit trivial lösbaren Gleichungen in @var{x} zurück. 
+Wenn @var{expr} keine Gleichung ist, wird statt dessen die Gleichung @code{@var{expr} = 0} angenommen.
+@var{x} kann eine Funktion sein (z.B. @code{f(x)}), oder außer einer Summe oder einem Produkt 
+ein anderer nichtatomischer Ausdruck. 
+@var{x} kann entfallen, wenn @var{expr} nur eine Variable enthält. 
+@var{expr} kann ein rationaler Ausdruck sein und trigonometrische Funktionen, Exponentiale, etc. 
+enthalten.
+
+Zur Lösung wird die folgende Methode verwendet:
+
+Sei @var{E} ein Ausdruck und @var{X} die Variable. Ist @var{E} linear in @var{X}, 
+dann ist es trivialer Weise nach @var{X} auflösbar. Wenn andernfalls @var{E} von der Form 
+@code{A*X^N + B} ist, dann ist das Ergebnis @code{(-B/A)^1/N)} mal die @code{N}-te 
+Einheitswurzel.
+
+@c REVISION: MERGED IN SOME ADVICES ABOUT solventh FROM solve.lisp  (VvN)
+Ist @var{E} nicht linear in @var{X}, wird mit Hilfe des ggT der Exponenten von @var{X} in @var{E} 
+ermittelt, ob eine Potenz von @var{X} in allen Termen enthalten ist. Ist dies der Fall, 
+wird sie durch eine neue Variable ersetzt und @code{solve} unter Berücksichtigung 
+der entsprechend angepassten Vielfachheit auf den vereinfachten Ausdruck angewandt. 
+Wenn @var{E} faktorisiert werden kann, wird @code{solve} auf jeden Faktor angewandt. 
+Schließlich wird @code{solve}, wenn nötig, quadratische, kubische oder quartische Formeln verwenden. 
+
+In dem Fall, dass @var{E} ein Polynom in einer Funktion von der Variable ist, für die eine 
+Lösung gesucht wird, sagen wir @code{F(X)}, dann wird zuerst nach @code{F(X)} aufgelöst (nennen wir 
+das Ergebnis @var{C}), und anschließend wird die Gleichung @code{F(X)=C} nach @var{X} aufgelöst, 
+vorausgesetzt, dass die Inverse der Funktion @var{F} bekannt ist. 
+
+@code{breakup} bewirkt, wenn @code{false}, dass @code{solve} die Lösungen von kubischen 
+oder quartischen Gleichungen jeweils als einen geschlossenen Ausdruck ausgibt, statt sie 
+aus mehreren gemeinsamen Teilausdrücken bestehen zu lassen, was die Standardeinstellung ist. 
+Die Einstellung von @code{breakup} wirkt sich jedoch nur dann aus, 
+wenn @code{programmode} @code{false} ist.
+
+@code{multiplicities} - ist die Liste der Vielfachheiten der individuellen Lösungen, die von 
+@code{solve}, @code{realroots} oder @code{allroots} zurückgegeben werden. 
+Um Informationen über die Schalter zu erhalten, die @code{solve} beeinflussen, 
+gib @code{apropos (solve)} ein. @code{describe} kann dann für die Namen 
+der einzelnen Schalter verwendet werden, falls ihre Bedeutung nicht klar ist. 
+
+@code{solve ([@var{eqn_1}, ..., @var{eqn_n}], [@var{x_1}, ..., @var{x_n}])} 
+löst ein System zusammenhängender (linearer oder nichtlinearer) Polynomgleichungen 
+durch einen Aufruf von @code{linsolve} oder @code{algsys} und gibt eine Liste von 
+Lösungslisten in diesen Variablen zurück. 
+Im Falle von @code{linsolve} enthält diese Liste eine einzige Liste mit Lösungen. 
+Beide Argumente sind Listen. Die erste Liste stellt die zu lösenden Gleichungen dar; 
+die zweite ist eine Liste mit den zu bestimmenden Unbekannten. 
+Sollte die gesamte Anzahl an Variablen in den Gleichungen gleich der Anzahl der Gleichungen sein, 
+kann die zweite Argumentliste entfallen. 
+Bei linearen Systemen wird die Meldung "Inconsistent equations" angezeigt, wenn die Gleichungen 
+inkompatibel sind (siehe auch @code{solve_inconsistent_error}); wenn keine einzige Lösung existiert, 
+wird "Singular" angezeigt. 
+
+Wenn @code{programmode} @code{false} ist, zeigt @code{solve} die Lösungen mit Hilfe 
+von Zwischenmarken (@code{%t}) an und gibt die Liste der Marken zurück. 
+
+Wenn @code{globalsolve} @code{true} ist, werden bei der Lösung von zwei oder mehr 
+linearen Gleichungen die Variablen, für die eine Lösung gesucht wurde, 
+an die Lösungen der Gleichungen gebunden.
+
+Beispiele:
+
+@c FOLLOWING ADAPTED FROM example (solve)
+@c ===beg===
+@c solve (asin (cos (3*x))*(f(x) - 1), x);
+@c ev (solve (5^f(x) = 125, f(x)), solveradcan);
+@c [4*x^2 - y^2 = 12, x*y - x = 2];
+@c solve (%, [x, y]);
+@c solve (1 + a*x + x^3, x);
+@c solve (x^3 - 1);
+@c solve (x^6 - 1);
+@c ev (x^6 - 1, %[1]);
+@c expand (%);
+@c x^2 - 1;
+@c solve (%, x);
+@c ev (%th(2), %[1]);
+@c ===end===
+@example
+(%i1) solve (asin (cos (3*x))*(f(x) - 1), x);
+
+SOLVE is using arc-trig functions to get a solution.
+Some solutions will be lost.
+                            %pi
+(%o1)                  [x = ---, f(x) = 1]
+                             6
+(%i2) ev (solve (5^f(x) = 125, f(x)), solveradcan);
+                                log(125)
+(%o2)                   [f(x) = --------]
+                                 log(5)
+(%i3) [4*x^2 - y^2 = 12, x*y - x = 2];
+                      2    2
+(%o3)             [4 x  - y  = 12, x y - x = 2]
+(%i4) solve (%, [x, y]);
+(%o4) [[x = 2, y = 2], [x = .5202594388652008 %i
+
+ - .1331240357358706, y = .0767837852378778
+
+ - 3.608003221870287 %i], [x = - .5202594388652008 %i
+
+ - .1331240357358706, y = 3.608003221870287 %i
+
+ + .0767837852378778], [x = - 1.733751846381093, 
+
+y = - .1535675710019696]]
+(%i5) solve (1 + a*x + x^3, x);
+                                       3
+              sqrt(3) %i   1   sqrt(4 a  + 27)   1 1/3
+(%o5) [x = (- ---------- - -) (--------------- - -)
+                  2        2      6 sqrt(3)      2
+
+        sqrt(3) %i   1
+       (---------- - -) a
+            2        2
+ - --------------------------, x = 
+              3
+      sqrt(4 a  + 27)   1 1/3
+   3 (--------------- - -)
+         6 sqrt(3)      2
+
+                          3
+ sqrt(3) %i   1   sqrt(4 a  + 27)   1 1/3
+(---------- - -) (--------------- - -)
+     2        2      6 sqrt(3)      2
+
+         sqrt(3) %i   1
+      (- ---------- - -) a
+             2        2
+ - --------------------------, x = 
+              3
+      sqrt(4 a  + 27)   1 1/3
+   3 (--------------- - -)
+         6 sqrt(3)      2
+
+         3
+ sqrt(4 a  + 27)   1 1/3               a
+(--------------- - -)    - --------------------------]
+    6 sqrt(3)      2                  3
+                              sqrt(4 a  + 27)   1 1/3
+                           3 (--------------- - -)
+                                 6 sqrt(3)      2
+(%i6) solve (x^3 - 1);
+             sqrt(3) %i - 1        sqrt(3) %i + 1
+(%o6)   [x = --------------, x = - --------------, x = 1]
+                   2                     2
+(%i7) solve (x^6 - 1);
+           sqrt(3) %i + 1      sqrt(3) %i - 1
+(%o7) [x = --------------, x = --------------, x = - 1, 
+                 2                   2
+
+                     sqrt(3) %i + 1        sqrt(3) %i - 1
+               x = - --------------, x = - --------------, x = 1]
+                           2                     2
+(%i8) ev (x^6 - 1, %[1]);
+                                      6
+                      (sqrt(3) %i + 1)
+(%o8)                 ----------------- - 1
+                             64
+(%i9) expand (%);
+(%o9)                           0
+(%i10) x^2 - 1;
+                              2
+(%o10)                       x  - 1
+(%i11) solve (%, x);
+(%o11)                  [x = - 1, x = 1]
+(%i12) ev (%th(2), %[1]);
+(%o12)                          0
+@end example
+
+@end deffn
+
+@defvr {Optionsvariable} solvedecomposes
+Standardwert: @code{true}
+
+Wenn @code{solvedecomposes} @code{true} ist, ruft @code{solve} 
+@code{polydecomp} auf, wenn es beauftragt wird, Polynome zu lösen.
+@c OTHERWISE WHAT HAPPENS -- CAN'T SOLVE POLYNOMIALS, OR SOME OTHER METHOD IS USED ??
+
+@end defvr
+
+@defvr {Optionsvariable} solveexplicit
+Standardwert: @code{false}
+
+Wenn @code{solveexplicit} @code{true} ist, verbietet dies @code{solve}, 
+implizite Lösungen zurückzugeben, d.h. Lösungen der Form @code{F(x) = 0}, wobei 
+@code{F} irgendeine Funktion ist. 
+@c NEED AN EXAMPLE HERE
+
+Beispiel:
+@c ===beg===
+@c solve(exp(x)+x-1);
+@c solveexplicit:true;
+@c solve(exp(x)+x-1);
+@c ===end===
+@example
+(%i1) solve(exp(x)+x-1);
+					    x
+(%o1) 				 [x = 1 - %e ]
+(%i2) solveexplicit:true;
+(%o2) 				     true
+(%i3) solve(exp(x)+x-1);
+(%o3) 				      []
+@end example
+
+@end defvr
+
+@defvr {Optionsvariable} solvefactors
+Standardwert: @code{true}
+
+@c WHAT IS THIS ABOUT EXACTLY ??
+Wenn @code{solvefactors} @code{false} ist, versucht @code{solve} nicht, den Ausdruck 
+zu faktorisieren. Dies kann in manchen Fällen wünschenswert sein, wenn Faktorisierung 
+nicht notwendig ist.
+@c NEED AN EXAMPLE HERE
+
+@end defvr
+
+@defvr {Optionsvariable} solvenullwarn
+Standardwert: @code{true}
+
+Wenn @code{solvenullwarn} @code{true} ist, gibt @code{solve} eine Warnmeldung aus, 
+wenn es von einer Liste mit null Gleichungen oder null Variablen aufgerufen wird. 
+Zum Beispiel würde @code{solve ([], [])} zwei Warnmeldungen ausgeben und @code{[]} zurückgeben.
+
+@end defvr
+
+@defvr {Optionsvariable} solveradcan
+Standardwert: @code{false}
+
+Wenn @code{solveradcan} @code{true} ist, ruft @code{solve} @code{radcan} auf, 
+was @code{solve} langsamer macht, aber erlaubt, bestimmte Probleme, 
+die Exponentiale und Logarithmen enthalten, zu lösen.
+@c NEED AN EXAMPLE HERE
+
+@end defvr
+
+@defvr {Optionsvariable} solvetrigwarn
+Standardwert: @code{true}
+
+@c MAYBE THIS CAN BE CLARIFIED
+Wenn @code{solvetrigwarn} @code{true} ist, wird @code{solve} gegebenenfalls 
+eine Meldung ausgeben, die besagt, dass inverse trigonometrische Funktionen 
+verwendet wurden und dadurch Lösungen verloren gingen. 
+@c NEED AN EXAMPLE HERE
+
+@end defvr
+
+@defvr {Optionsvariable} solve_inconsistent_error
+Standardwert: @code{true}
+
+Wenn @code{solve_inconsistent_error} @code{true} ist, geben @code{solve} und
+@code{linsolve} eine Fehlermeldung aus, wenn die zu lösenden Gleichungen inkonsistent sind. 
+
+Wenn @code{false}, geben @code{solve} und @code{linsolve} eine leere Liste @code{[]} zurück, 
+wenn die Gleichungen inkonsistent sind. 
+
+Beispiel:
+
+@example
+(%i1) solve_inconsistent_error: true$
+(%i2) solve ([a + b = 1, a + b = 2], [a, b]);
+Inconsistent equations:  (2)
+ -- an error.  Quitting.  To debug this try debugmode(true);
+(%i3) solve_inconsistent_error: false$
+(%i4) solve ([a + b = 1, a + b = 2], [a, b]);
+(%o4)                          []
+@end example
+
+@end defvr
