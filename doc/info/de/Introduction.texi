@@ -1,0 +1,183 @@
+@c Language: German
+@c English original: Introduction.texi CVS 1.5
+
+In einer Shell unter Linux wird Maxima durch das Kommando "maxima" gestartet. 
+Maxima zeigt dann eine Versionsinformation und stellt eine Eingabeaufforderung bereit. 
+Beende ein Kommando in Maxima mit einem Semikolon. 
+Beende die Sitzung in der Shell mit "quit();". Hier ist eine Beispielsitzung:
+
+@example
+[wfs@@chromium]$ maxima
+Maxima 5.10.0 http://maxima.sourceforge.net
+Using Lisp GNU Common Lisp (GCL) GCL 2.6.7 (aka GCL)
+Distributed under the GNU Public License. See the file COPYING.
+Dedicated to the memory of William Schelter.
+This is a development version of Maxima. The function bug_report()
+provides bug reporting information.
+(%i1) factor(10!);
+                            8  4  2
+(%o1)                      2  3  5  7
+(%i2) expand ((x + y)^6);
+       6        5       2  4       3  3       4  2      5      6
+(%o2) y  + 6 x y  + 15 x  y  + 20 x  y  + 15 x  y  + 6 x  y + x
+(%i3) factor (x^6 - 1);
+                              2            2
+(%o3)       (x - 1) (x + 1) (x  - x + 1) (x  + x + 1)
+(%i4) quit();
+[wfs@@chromium]$
+@end example
+
+Maxima kann die Informationsseiten durchsuchen. Verwende das Kommando @kbd{describe}, 
+um alle Kommandos und Variablen, die eine bestimmte Zeichenfolge enthalten, anzeigen zu lassen, 
+und optional ihre Dokumentation. Das Fragezeichen @code{?} ist eine Kurzschreibweise für @code{describe}: 
+
+@example
+(%i1) ? integ
+ 0: (maxima.info)Introduction to Elliptic Functions and Integrals.
+ 1: Definitions for Elliptic Integrals.
+ 2: Integration.
+ 3: Introduction to Integration.
+ 4: Definitions for Integration.
+ 5: askinteger :Definitions for Simplification.
+ 6: integer_partitions :Definitions for Sets.
+ 7: integerp :Definitions for Miscellaneous Options.
+ 8: integrate :Definitions for Integration.
+ 9: integrate_use_rootsof :Definitions for Integration.
+ 10: integration_constant_counter :Definitions for Integration.
+ 11: nonnegintegerp :Definitions for linearalgebra.
+Enter space-separated numbers, `all' or `none': 7 5
+
+Info from file /usr/local/info/maxima.info:
+
+ -- Function: integerp (<expr>)
+     Returns `true' if <expr> is a literal numeric integer, otherwise
+     `false'.
+
+     `integerp' returns false if its argument is a symbol, even if the
+     argument is declared integer.
+
+     Examples:
+
+          (%i1) integerp (0);
+          (%o1)                         true
+          (%i2) integerp (1);
+          (%o2)                         true
+          (%i3) integerp (-17);
+          (%o3)                         true
+          (%i4) integerp (0.0);
+          (%o4)                         false
+          (%i5) integerp (1.0);
+          (%o5)                         false
+          (%i6) integerp (%pi);
+          (%o6)                         false
+          (%i7) integerp (n);
+          (%o7)                         false
+          (%i8) declare (n, integer);
+          (%o8)                         done
+          (%i9) integerp (n);
+          (%o9)                         false
+
+
+ -- Function: askinteger (<expr>, integer)
+ -- Function: askinteger (<expr>)
+ -- Function: askinteger (<expr>, even)
+ -- Function: askinteger (<expr>, odd)
+     `askinteger (<expr>, integer)' attempts to determine from the
+     `assume' database whether <expr> is an integer.  `askinteger'
+     prompts the user if it cannot tell otherwise, and attempt to
+     install the information in the database if possible.  `askinteger
+     (<expr>)' is equivalent to `askinteger (<expr>, integer)'.
+
+     `askinteger (<expr>, even)' and `askinteger (<expr>, odd)'
+     likewise attempt to determine if <expr> is an even integer or odd
+     integer, respectively.
+
+(%o1)                         false
+@end example
+
+Um ein Ergebnis in späteren Berechnungen wiederverwenden zu können, kann man es einer 
+Variablen zuweisen oder man kann sich auf die automatisch bereitgestellte Marke beziehen. 
+Zusätzlich bezieht sich @kbd{%} auf das zuletzt berechnete Ergebnis. 
+
+@example
+(%i1) u: expand ((x + y)^6);
+       6        5       2  4       3  3       4  2      5      6
+(%o1) y  + 6 x y  + 15 x  y  + 20 x  y  + 15 x  y  + 6 x  y + x
+(%i2) diff (u, x);
+         5         4       2  3       3  2       4        5
+(%o2) 6 y  + 30 x y  + 60 x  y  + 60 x  y  + 30 x  y + 6 x
+(%i3) factor (%o2);
+                                    5
+(%o3)                      6 (y + x)
+@end example
+
+Maxima kennt komplexe Zahlen und numerische Konstanten:
+
+@example
+(%i1) cos(%pi);
+(%o1)                          - 1
+(%i2) exp(%i*%pi);
+(%o2)                          - 1
+@end example
+
+Maxima kann differenzieren und integrieren:
+
+@example
+(%i1) u: expand ((x + y)^6);
+       6        5       2  4       3  3       4  2      5      6
+(%o1) y  + 6 x y  + 15 x  y  + 20 x  y  + 15 x  y  + 6 x  y + x
+(%i2) diff (%, x);
+         5         4       2  3       3  2       4        5
+(%o2) 6 y  + 30 x y  + 60 x  y  + 60 x  y  + 30 x  y + 6 x
+(%i3) integrate (1/(1 + x^3), x);
+                                  2 x - 1
+                2            atan(-------)
+           log(x  - x + 1)        sqrt(3)    log(x + 1)
+(%o3)    - --------------- + ------------- + ----------
+                  6             sqrt(3)          3
+@end example
+
+Maxima kann lineare Gleichungssysteme und kubische Gleichungen lösen:
+
+@example
+(%i1) linsolve ([3*x + 4*y = 7, 2*x + a*y = 13], [x, y]);
+                        7 a - 52        25
+(%o1)              [x = --------, y = -------]
+                        3 a - 8       3 a - 8
+(%i2) solve (x^3 - 3*x^2 + 5*x = 15, x);
+(%o2)       [x = - sqrt(5) %i, x = sqrt(5) %i, x = 3]
+@end example
+
+Maxima kann nichtlineare Gleichungssysteme lösen. Will man sich ein Ergebnis nicht 
+ausgeben lassen, kann man statt mit @kbd{;} das Kommando mit @kbd{$} abschließen.
+
+@example
+(%i1) eq_1: x^2 + 3*x*y + y^2 = 0$
+(%i2) eq_2: 3*x + y = 1$
+(%i3) solve ([eq_1, eq_2]);
+              3 sqrt(5) + 7      sqrt(5) + 3
+(%o3) [[y = - -------------, x = -----------], 
+                    2                 2
+
+                               3 sqrt(5) - 7        sqrt(5) - 3
+                          [y = -------------, x = - -----------]]
+                                     2                   2
+@end example
+
+Maxima kann Schaubilder von einer oder mehreren Funktionen erzeugen:
+
+@example
+(%i1) plot2d (sin(x)/x, [x, -20, 20]);
+(%o1) 
+(%i2) plot2d ([atan(x), erf(x), tanh(x)], [x, -5, 5]);
+(%o2) 
+(%i3) plot3d (sin(sqrt(x^2 + y^2))/sqrt(x^2 + y^2), [x, -12, 12], [y, -12, 12]);
+(%o3) 
+@end example
+
+@c FOLLOWING TEXT DESCRIBES THE TCL/TK PLOT WINDOW WHICH IS NO LONGER THE DEFAULT
+@c Moving the cursor to the top left corner of the plot window will pop up
+@c a menu that will, among other things, let you generate a PostScript file
+@c of the plot.  (By default, the file is placed in your home directory.)
+@c You can rotate a 3D plot.
+
