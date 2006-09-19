@@ -1,0 +1,2607 @@
+@c Language: German
+@c English original: Expressions.texi CVS 1.49
+@c
+@c LINE 190, 195: @ref{Lisp and Maxima}
+
+@menu
+* Einführung in Ausdrücke::  
+* Zuweisung::                  
+* Komplex::                     
+* Substantive und Verben::
+* Bezeichner::
+* Zeichenketten::
+* Ungleichheit::                  
+* Syntax::                      
+* Definitionen für Ausdrücke::  
+@end menu
+
+@node Einführung in Ausdrücke, Zuweisung, , Ausdrücke
+@section Einführung in Ausdrücke
+
+Es gibt eine Anzahl an reservierten Bezeichnern, die nicht als Variablennamen 
+verwendet werden können. Ihre Verwendung würde möglicherweise kryptische
+Syntaxfehlermeldungen erzeugen.
+
+@example
+integrate            next           from                 diff            
+in                   at             limit                sum
+for                  and            elseif               then            
+else                 do             or                   if              
+unless               product        while                thru            
+step                                                                     
+@end example
+
+Die meisten Dinge in Maxima sind Ausdrücke. 
+Aus einer Abfolge von Ausdrücken kann man einen einzigen Ausdruck machen,
+indem man die einzelnen Ausdrücke durch Kommas getrennt in eine 
+runde Klammer schreibt. Dies ist mit der Verwendung des @i{Kommaoperators}
+in @b{C} vergleichbar.
+
+@example
+(%i1) x: 3$
+(%i2) (x: x+1, x: x^2);
+(%o2)                          16
+(%i3) (if (x > 17) then 2 else 4);
+(%o3)                           4
+(%i4) (if (x > 17) then x: 2 else y: 4, y+x);
+(%o4)                          20
+@end example
+
+In Maxima sind sogar Schleifen Ausdrücke, obwohl der Wert, den sie 
+zurückgeben, ist das nicht allzu nützliche @code{done}.
+
+@example
+(%i1) y: (x: 1, for i from 1 thru 10 do (x: x*i))$
+(%i2) y;
+(%o2)                         done
+@end example
+
+wobei das, was man hier wirklich möchte, wahrscheinlich das Einfügen 
+eines dritten Terms in den @i{Kommaausdruck} ist, welcher dann den 
+gewünschten Wert zurück gibt. 
+
+@example
+(%i3) y: (x: 1, for i from 1 thru 10 do (x: x*i), x)$
+(%i4) y;
+(%o4)                        3628800
+@end example
+
+@node Zuweisung, Komplex, Einführung in Ausdrücke, Ausdrücke
+@section Zuweisung
+Es gibt zwei Zuweisungsoperatoren in Maxima, @code{:} und @code{::}. 
+Z.B. setzt @code{a: 3} die Variable @code{a} auf 3. 
+@code{::} weist den Wert des Ausdrucks auf seiner Rechten dem Wert 
+der Größe auf seiner Linken zu, wobei diese den Wert 
+einer atomartigen oder indizierten Variable haben muss.
+
+@c THIS REALLY NEEDS EXPANSION
+@node Komplex, Substantive und Verben, Zuweisung, Ausdrücke
+@section Komplex
+Ein komplexer Ausdruck ist in Maxima durch die Addition 
+von Realteil und @code{%i} mal Imaginärteil des Ausdrucks gekennzeichnet.
+So sind @code{2 + 3*%i} und @code{2 - 3*%i} die Wurzeln der 
+Gleichung @code{x^2 - 4*x + 13 = 0}.
+Beachte, dass die Vereinfachung von Produkten von komplexen Ausdrücken 
+durch die Expansion des Produkts erreicht werden kann.
+Vereinfachungen von Quotienten, Wurzeln und anderen Funktionen von
+komplexen Ausdrücken können im Allgemeinen mit Hilfe der Funktionen  
+@code{realpart}, @code{imagpart}, @code{rectform}, @code{polarform}, 
+@code{abs}, @code{carg} bewerkstelligt werden.
+
+@node Substantive und Verben, Bezeichner, Komplex, Ausdrücke
+@section Substantive und Verben
+Maxima unterscheidet zwischen Operatoren, die Substantive ("nouns"), 
+und Operatoren, die Verben ("verbs") sind.
+Ein Verb ist ein Operator, der ausgeführt werden kann.
+Ein Substantiv ist ein Operator, der als Symbol in einem Ausdruck auftritt, 
+ohne ausgewertet zu werden.
+Funktionsnamen sind standardmäßig Verben.
+Ein Verb kann durch Quotierung (Operator @code{'}) oder durch Anwendung 
+der Funktion @code{nounify} in ein Substantiv verwandelt werden. 
+Der Auswertungsschalter @code{nouns} bewirkt, dass @code{ev} Substantive 
+in einem Ausdruck auswertet.
+
+Die Verbform ist durch ein führendes Dollarzeichen @code{$} am 
+entsprechenden Lisp-Symbol zu erkennen. Im Kontrast hierzu ist die 
+Substantivform durch ein führendes Prozentzeichen @code{%} am 
+entsprechenden Lisp-Symbol zu erkennen.
+Einige Substantive besitzen spezielle Darstellungseigenschaften, 
+so z.B. @code{'integrate} und @code{'derivative} (zurückgegeben durch @code{diff}), 
+die meisten jedoch nicht. 
+Substantiv- und Verbformen einer Funktion sind standardmäßig 
+identisch in der Ausgabe. Der globale Schalter @code{noundisp} bewirkt, 
+dass Maxima Substantive mit einem führenden Hochkomma @code{'} anzeigt. 
+
+Siehe auch @code{noun}, @code{nouns}, @code{nounify} und @code{verbify}.
+
+Beispiele:
+
+@c ===beg===
+@c foo (x) := x^2;
+@c foo (42);
+@c 'foo (42);
+@c 'foo (42), nouns;
+@c declare (bar, noun);
+@c bar (x) := x/17;
+@c bar (52);
+@c bar (52), nouns;
+@c integrate (1/x, x, 1, 42);
+@c 'integrate (1/x, x, 1, 42);
+@c ev (%, nouns);
+@c ===end===
+@example
+(%i1) foo (x) := x^2;
+                                     2
+(%o1)                     foo(x) := x
+(%i2) foo (42);
+(%o2)                         1764
+(%i3) 'foo (42);
+(%o3)                        foo(42)
+(%i4) 'foo (42), nouns;
+(%o4)                         1764
+(%i5) declare (bar, noun);
+(%o5)                         done
+(%i6) bar (x) := x/17;
+                                     x
+(%o6)                    ''bar(x) := --
+                                     17
+(%i7) bar (52);
+(%o7)                        bar(52)
+(%i8) bar (52), nouns;
+                               52
+(%o8)                          --
+                               17
+(%i9) integrate (1/x, x, 1, 42);
+(%o9)                        log(42)
+(%i10) 'integrate (1/x, x, 1, 42);
+                             42
+                            /
+                            [   1
+(%o10)                      I   - dx
+                            ]   x
+                            /
+                             1
+(%i11) ev (%, nouns);
+(%o11)                       log(42)
+@end example
+
+@node Bezeichner, Zeichenketten, Substantive und Verben, Ausdrücke
+@section Bezeichner
+Maxima Bezeichner können aus den Buchstaben des Alphabets, 
+den Zahlzeichen 0 bis 9, und irgend einem Sonderzeichen, welchem 
+ein Backslash @code{\} vorangestellt ist, bestehen.
+
+Ein Zahlzeichen kann der erste Buchstabe eines Bezeichners sein, 
+wenn ihm ein Backslash vorangestellt ist. 
+Zahlzeichen an zweiter oder späterer Stelle muss kein Backslash 
+vorangestellt sein.
+
+Ein Sonderzeichen kann durch die Funktion @code{declare} als alphabetisch 
+erklärt werden. Wenn so deklariert, muss ihm in einem Bezeichner kein 
+Backslash vorangestellt werden. 
+Die Buchstaben des Alphabets sind ursprünglich 
+@code{A} bis @code{Z}, @code{a} bis @code{z}, @code{%} und @code{_}.
+
+Maxima unterscheidet Groß- und Kleinschreibung.
+Die Bezeichner @code{foo}, @code{FOO} und @code{Foo} sind verschieden.
+Siehe @ref{Lisp and Maxima} für mehr zu diesem Punkt.
+
+Ein Maxima-Bezeichner ist ein Lisp-Symbol, das mit einem Dollarzeichen 
+@code{$} beginnt. Jedem anderen Lisp-Symbol ist ein Fragezeichen @code{?} 
+vorangestellt, wenn es in Maxima erscheint.
+Siehe @ref{Lisp and Maxima} für mehr zu diesem Punkt.
+
+Beispiele:
+
+@c ===beg===
+@c %an_ordinary_identifier42;
+@c embedded\ spaces\ in\ an\ identifier;
+@c symbolp (%);
+@c [foo+bar, foo\+bar];
+@c [1729, \1729];
+@c [symbolp (foo\+bar), symbolp (\1729)];
+@c [is (foo\+bar = foo+bar), is (\1729 = 1729)];
+@c baz\~quux;
+@c declare ("~", alphabetic);
+@c baz~quux;
+@c [is (foo = FOO), is (FOO = Foo), is (Foo = foo)];
+@c :lisp (defvar *my-lisp-variable* '$foo)
+@c ?\*my\-lisp\-variable\*;
+@c ===end===
+
+@example
+(%i1) %an_ordinary_identifier42;
+(%o1)               %an_ordinary_identifier42
+(%i2) embedded\ spaces\ in\ an\ identifier;
+(%o2)           embedded spaces in an identifier
+(%i3) symbolp (%);
+(%o3)                         true
+(%i4) [foo+bar, foo\+bar];
+(%o4)                 [foo + bar, foo+bar]
+(%i5) [1729, \1729];
+(%o5)                     [1729, 1729]
+(%i6) [symbolp (foo\+bar), symbolp (\1729)];
+(%o6)                     [true, true]
+(%i7) [is (foo\+bar = foo+bar), is (\1729 = 1729)];
+(%o7)                    [false, false]
+(%i8) baz\~quux;
+(%o8)                       baz~quux
+(%i9) declare ("~", alphabetic);
+(%o9)                         done
+(%i10) baz~quux;
+(%o10)                      baz~quux
+(%i11) [is (foo = FOO), is (FOO = Foo), is (Foo = foo)];
+(%o11)                [false, false, false]
+(%i12) :lisp (defvar *my-lisp-variable* '$foo)
+*MY-LISP-VARIABLE*
+(%i12) ?\*my\-lisp\-variable\*;
+(%o12)                         foo
+@end example
+
+@node Zeichenketten, Ungleichheit, Bezeichner, Ausdrücke
+@section Zeichenketten
+
+Zeichenketten ("strings"; quotierte Buchstabensequenzen) werden bei der Eingabe 
+in Anführungszeichen @code{"} gesetzt,
+ausgegeben jedoch mit oder ohne Anführungszeichen, 
+abhängig von der globalen Variable @code{?stringdisp}.
+
+Zeichenketten können jeden Buchstaben enthalten, einschließlich 
+eines eingebetteten Tabulators, Zeilenvorschubs und Wagenrücklaufs. 
+Die Sequenz @code{\"} wird erkannt als buchstäbliches Anführungszeichen, 
+und @code{\\} als buchstäblicher Backslash. 
+Wenn ein Backslash am Ende einer Zeile auftritt, werden der Backslash und 
+das Zeilenende (entweder Zeilenvorschub oder Wagenrücklauf und Zeilenvorschub) 
+ignoriert, so dass die Zeichenkette in der nächsten Zeile weiter geht.
+Keine andere spezielle Kombination von Backslash mit einem anderen 
+Buchstaben wird erkannt; wenn ein Backslash vor einem von @code{"} 
+und @code{\} verschiedenen Buchstaben auftritt, wird er ignoriert. 
+Es gibt keine Möglichkeit, ein Sonderzeichen (wie den Tabulator, 
+Zeilenvorschub oder Wagenrücklauf) darzustellen, außer durch 
+buchstäbliche Einbettung in eine Zeichenkette. 
+
+Es gibt in Maxima keinen Typ für einen Buchstaben ("character"); 
+ein einzelner Buchstabe wird durch eine Ein-Zeichen-Zeichenkette dargestellt. 
+
+Zeichenketten sind in Maxima als Lisp-Symbole und nicht als Lisp-Zeichenketten 
+(strings) implementiert, was in zukünftigen Maxima-Versionen 
+durchaus anders sein kann. 
+Maxima kann Lisp-Strings und Lisp-Characters darstellen, wobei 
+jedoch einige Operationen (z.B. Tests auf Gleichheit) fehlschlagen können.
+@c DISCOMFORT WITH LISP STRINGS AND CHARACTERS IS A BUG.
+
+Das Zusatzpaket @code{stringproc} enthält viele Funktionen zur Arbeit mit 
+Zeichenketten.
+
+Beispiele:
+
+@c ===beg===
+@c s_1 : "This is a Maxima string.";
+@c s_2 : "Embedded \"double quotes\" and backslash \\ characters.";
+@c s_3 : "Embedded line termination
+@c in this string.";
+@c s_4 : "Ignore the \
+@c line termination \
+@c characters in \
+@c this string.";
+@c ?stringdisp : false;
+@c s_1;
+@c ?stringdisp : true;
+@c s_1;
+@c ===end===
+@example
+(%i1) s_1 : "This is a Maxima string.";
+(%o1)               This is a Maxima string.
+(%i2) s_2 : "Embedded \"double quotes\" and backslash \\ characters.";
+(%o2) Embedded "double quotes" and backslash \ characters.
+(%i3) s_3 : "Embedded line termination
+in this string.";
+(%o3) Embedded line termination
+in this string.
+(%i4) s_4 : "Ignore the \
+line termination \
+characters in \
+this string.";
+(%o4) Ignore the line termination characters in this string.
+(%i5) ?stringdisp : false;
+(%o5)                         false
+(%i6) s_1;
+(%o6)               This is a Maxima string.
+(%i7) ?stringdisp : true;
+(%o7)                         true
+(%i8) s_1;
+(%o8)              "This is a Maxima string."
+@end example
+
+@node Ungleichheit, Syntax, Zeichenketten, Ausdrücke
+@section Ungleichheit
+Maxima hat die Operatoren @code{<}, @code{<=}, @code{>=}, @code{>}, 
+@code{#} und @code{notequal} zum Test auf Ungleichheit.
+Siehe @code{if} für eine Beschreibung der bedingten Ausdrücke.
+
+@node Syntax, Definitionen für Ausdrücke, Ungleichheit, Ausdrücke
+@section Syntax
+Es ist möglich, neue Operatoren mit einer bestimmten Präzedenz zu definieren, 
+existierende Operatoren umzudefinieren, 
+oder die Präzedenz existierender Operatoren zu ändern. 
+Ein Operator kann unär präfix oder unär postfix, binär infix, 
+n-är infix, matchfix oder nofix sein.
+"matchfix" meint ein Paar von Symbolen, die ihr Argument 
+oder ihre Argumente einschließen, und "nofix" meint einen Operator, 
+der keine Argumente besitzt.
+Im Folgenden findet man Beispiele für die verschiedenen Operatortypen.
+
+@table @asis
+@item unär präfix
+Negation @code{- a}
+@item unär postfix
+Fakultät @code{a!}
+@item binär infix
+Exponentiation @code{a^b}
+@item n-är infix
+Addition @code{a + b}
+@item matchfix
+Listenerzeugung @code{[a, b]}
+@end table
+
+(Es gibt keine eingebauten nofix-Operatoren;
+für ein Beispiel eines solchen Operators siehe @code{nofix}.)
+
+Der Mechanismus, einen neuen Operator zu definieren, ist recht einfach.
+Notwendig ist nur, eine Funktion als einen Operator zu definieren;
+die Operatorfunktion kann, aber muss nicht definiert sein.
+
+Ein Beispiel eines benutzerdefinierten Operators ist das folgende. 
+Beachte hierbei, dass der explizite Funktionsaufruf @code{"dd" (a)} 
+äquivalent ist zu @code{dd a}, so wie @code{"<-" (a, b)} äquivalent ist zu 
+@code{a <- b}. 
+Beachte auch, dass die Funktionen @code{"dd"} und @code{"<-"} in diesem 
+Beispiel undefiniert sind.
+
+@c ===beg===
+@c prefix ("dd");
+@c dd a;
+@c "dd" (a);
+@c infix ("<-");
+@c a <- dd b;
+@c "<-" (a, "dd" (b));
+@c ===end===
+@example
+(%i1) prefix ("dd");
+(%o1)                          dd
+(%i2) dd a;
+(%o2)                         dd a
+(%i3) "dd" (a);
+(%o3)                         dd a
+(%i4) infix ("<-");
+(%o4)                          <-
+(%i5) a <- dd b;
+(%o5)                      a <- dd b
+(%i6) "<-" (a, "dd" (b));
+(%o6)                      a <- dd b
+@end example
+
+Die Maxima-Funktionen, die neue Operatoren definieren, sind in der folgenden 
+Tabelle zusammengefasst, aufgeführt werden dabei ihre standardmäßige 
+linke und rechte Bindungskraft (@b{l}eft and @b{r}ight @b{b}inding @b{p}owers).
+@c REWORK FOLLOWING COMMENT. IT'S NOT CLEAR ENOUGH, GIVEN THAT IT'S FAIRLY IMPORTANT
+(Bindungskraft bestimmt die Operatorpräzedenz. Da jedoch die rechte und linke 
+Bindungskraft voneinander abweichen können, ist Bindungskraft etwas differenzierter 
+als Präzedenz.) 
+Einige der Operationen definierenden Funktionen haben zusätzliche Argumente; 
+siehe die Funktionsbeschreibungen für Details.
+
+@c MAKE ANCHORS FOR ALL 6 FUNCTIONS AND CHANGE @code TO @ref ACCORDINGLY
+@table @code
+@item prefix
+rbp=180
+@item postfix
+lbp=180
+@item infix
+lbp=180, rbp=180
+@item nary
+lbp=180, rbp=180
+@item matchfix
+(Bindungskraft nicht anwendbar)
+@item nofix
+(Bindungskraft nicht anwendbar)
+@end table
+
+Zum Vergleich sind hier einige eingebaute Operatoren und ihre 
+linke und rechte Bindungskraft.
+
+@example
+Operator   lbp     rbp
+
+  :        180     20 
+  ::       180     20 
+  :=       180     20 
+  ::=      180     20 
+  !        160
+  !!       160
+  ^        140     139 
+  .        130     129 
+  *        120
+  /        120     120 
+  +        100     100 
+  -        100     134 
+  =        80      80 
+  #        80      80 
+  >        80      80 
+  >=       80      80 
+  <        80      80 
+  <=       80      80 
+  not              70 
+  and      65
+  or       60
+  ,        10
+  $        -1
+  ;        -1
+@end example
+
+@code{remove} und @code{kill} entfernen Eigenschaften von Atomen. 
+@code{remove ("@var{a}", op)} entfernt nur die Operatoreigenschaften von @var{a}.
+@code{kill ("@var{a}")} entfernt sämtliche Eigenschaften von  @var{a}, 
+einschließlich der Operatoreigenschaften. 
+Beachte, dass der Name des Operators in Anführungszeichen eingeschlossen sein muss. 
+
+@c MAYBE COPY THIS EXAMPLE TO remove AND/OR kill
+@c ===beg===
+@c infix ("@");
+@c "@" (a, b) := a^b;
+@c 5 @ 3;
+@c remove ("@", op);
+@c 5 @ 3;
+@c "@" (5, 3);
+@c infix ("@");
+@c 5 @ 3;
+@c kill ("@");
+@c 5 @ 3;
+@c "@" (5, 3);
+@c ===end===
+@example
+(%i1) infix ("@@");
+(%o1)                           @@
+(%i2) "@@" (a, b) := a^b;
+                                      b
+(%o2)                      a @@ b := a
+(%i3) 5 @@ 3;
+(%o3)                          125
+(%i4) remove ("@@", op);
+(%o4)                         done
+(%i5) 5 @@ 3;
+Incorrect syntax: @@ is not an infix operator
+5 @@
+ ^
+(%i5) "@@" (5, 3);
+(%o5)                          125
+(%i6) infix ("@@");
+(%o6)                           @@
+(%i7) 5 @@ 3;
+(%o7)                          125
+(%i8) kill ("@@");
+(%o8)                         done
+(%i9) 5 @@ 3;
+Incorrect syntax: @@ is not an infix operator
+5 @@
+ ^
+(%i9) "@@" (5, 3);
+(%o9)                        @@(5, 3)
+@end example
+
+@node Definitionen für Ausdrücke,  , Syntax, Ausdrücke
+@section Definitionen für Ausdrücke
+
+@deffn {Funktion} at (@var{expr}, [@var{eqn_1}, ..., @var{eqn_n}])
+@deffnx {Funktion} at (@var{expr}, @var{eqn})
+Wertet den Ausdruck @var{expr} aus, wobei dessen Variablen die Werte annehmen, 
+die in der Liste der Gleichungen @code{[@var{eqn_1}, ..., @var{eqn_n}]} 
+oder in der einzelnen Gleichung @var{eqn} angegeben werden.
+
+Wenn ein Teilausdruck von einer Variablen abhängig ist, für die ein Wert 
+angegeben ist, aber kein @code{atvalue}, und er auch sonst nicht ausgewertet 
+werden kann, dann wird von @code{at} eine Substantiv-Form zurückgegeben, 
+dargestellt in einer zweidimensionalen Form. 
+
+@code{at} führt mehrfache Ersetzungen in Reihe durch, nicht parallel.
+
+Siehe auch @code{atvalue}.
+Für andere Funktionen, die Ersetzungen durchführen,
+siehe auch @code{subst} und @code{ev}.
+
+Beispiele:
+@c COPIED FROM example(atvalue)
+
+@c ===beg===
+@c atvalue (f(x,y), [x = 0, y = 1], a^2);
+@c atvalue ('diff (f(x,y), x), x = 0, 1 + y);
+@c printprops (all, atvalue);
+@c diff (4*f(x, y)^2 - u(x, y)^2, x);
+@c at (%, [x = 0, y = 1]);
+@c ===end===
+@example
+(%i1) atvalue (f(x,y), [x = 0, y = 1], a^2);
+                                2
+(%o1)                          a
+(%i2) atvalue ('diff (f(x,y), x), x = 0, 1 + y);
+(%o2)                        @@2 + 1
+(%i3) printprops (all, atvalue);
+                                !
+                  d             !
+                 --- (f(@@1, @@2))!       = @@2 + 1
+                 d@@1            !
+                                !@@1 = 0
+
+                                     2
+                          f(0, 1) = a
+
+(%o3)                         done
+(%i4) diff (4*f(x, y)^2 - u(x, y)^2, x);
+                  d                          d
+(%o4)  8 f(x, y) (-- (f(x, y))) - 2 u(x, y) (-- (u(x, y)))
+                  dx                         dx
+(%i5) at (%, [x = 0, y = 1]);
+                                         !
+              2              d           !
+(%o5)     16 a  - 2 u(0, 1) (-- (u(x, y))!            )
+                             dx          !
+                                         !x = 0, y = 1
+@end example
+
+@end deffn
+
+@deffn {Funktion} box (@var{expr})
+@deffnx {Funktion} box (@var{expr}, @var{a})
+Gibt @var{expr} zurück, eingeschlossen in einer Box. 
+Der Rückgabewert ist ein Ausdruck mit @code{box} als Operator und @var{expr} 
+als Argument. Wenn @code{display2d} @code{true} ist, 
+wird eine Box in der Anzeige gezeichnet.
+
+@code{box (@var{expr}, @var{a})}
+umschließt @var{expr} in einer durch das Symbol @var{a} gekennzeichneten Box. 
+Das Kennzeichen wird gekürzt, wenn es länger als die Box breit ist. 
+
+@code{box} wertet sein Argument aus. 
+Da jedoch ein eingerahmter Ausdruck nicht als sein Inhalt ausgewertet wird, 
+werden eingerahmte Ausdrücke im Endeffekt von Berechnungen ausgeschlossen. 
+
+@code{boxchar} ist der Buchstabe, der verwendet wird, um die Box in 
+@code{box} und in den Funktionen @code{dpart} und @code{lpart} zu zeichnen. 
+
+Beispiele:
+
+@c ===beg===
+@c box (a^2 + b^2);
+@c a : 1234;
+@c b : c - d;
+@c box (a^2 + b^2);
+@c box (a^2 + b^2, term_1);
+@c 1729 - box (1729);
+@c boxchar: "-";
+@c box (sin(x) + cos(y));
+@c ===end===
+@example
+(%i1) box (a^2 + b^2);
+                            """""""""
+                            " 2    2"
+(%o1)                       "b  + a "
+                            """""""""
+(%i2) a : 1234;
+(%o2)                         1234
+(%i3) b : c - d;
+(%o3)                         c - d
+(%i4) box (a^2 + b^2);
+                      """"""""""""""""""""
+                      "       2          "
+(%o4)                 "(c - d)  + 1522756"
+                      """"""""""""""""""""
+(%i5) box (a^2 + b^2, term_1);
+                      term_1""""""""""""""
+                      "       2          "
+(%o5)                 "(c - d)  + 1522756"
+                      """"""""""""""""""""
+(%i6) 1729 - box (1729);
+                                 """"""
+(%o6)                     1729 - "1729"
+                                 """"""
+(%i7) boxchar: "-";
+(%o7)                           -
+(%i8) box (sin(x) + cos(y));
+                        -----------------
+(%o8)                   -cos(y) + sin(x)-
+                        -----------------
+@end example
+
+@end deffn
+
+@defvr {Optionsvariable} boxchar
+Standardwert: @code{"}
+
+@code{boxchar} ist der Buchstabe, der verwendet wird, um die Box in 
+@code{box} und in den Funktionen @code{dpart} und @code{lpart} zu zeichnen. 
+
+Alle Boxen in einem Ausdruck werden mit dem aktuellen Wert von @code{boxchar} 
+gezeichnet; dieser Buchstabe wird nicht zusammen mit dem Box-Ausdruck gespeichert. 
+
+@end defvr
+
+@deffn {Funktion} carg (@var{z})
+Gibt das komplexe Argument von @var{z} zurück.
+Das komplexe Argument ist ein Winkel @code{theta} in @code{(-%pi, %pi]},  
+in der Weise, dass @code{r exp (theta %i) = @var{z}}, wobei @code{r} 
+der Betrag von @var{z} ist.
+@c ACTUALLY carg DOESN'T ALWAYS RETURN A VALUE IN (-%pi, %pi]; SEE SF BUG REPORT # 816166
+
+@code{carg} ist eine Funktion zur Berechnung, nicht zur Vereinfachung. 
+@c PROBABLY NEED TO EXPLAIN IMPLICATIONS OF ABOVE STATEMENT
+@c SEE ALSO SF BUG REPORT # 902290
+
+@code{carg} ignoriert die Deklaration @code{declare (@var{x}, complex)}, 
+und behandelt @var{x} als reelle Variable. Dies ist ein Bug.
+Dies ist ein Bug. @c SEE SF BUG REPORT # 620246
+
+Siehe auch @code{abs} (komplexer Betrag), @code{polarform}, @code{rectform},
+@code{realpart} und @code{imagpart}.
+
+Beispiele:
+
+@c ===beg===
+@c carg (1);
+@c carg (1 + %i);
+@c carg (exp (%i));
+@c carg (exp (%pi * %i));
+@c carg (exp (3/2 * %pi * %i));
+@c carg (17 * exp (2 * %i));
+@c ===end===
+
+@example
+(%i1) carg (1);
+(%o1)                           0
+(%i2) carg (1 + %i);
+                               %pi
+(%o2)                          ---
+                                4
+(%i3) carg (exp (%i));
+(%o3)                           1
+(%i4) carg (exp (%pi * %i));
+(%o4)                          %pi
+(%i5) carg (exp (3/2 * %pi * %i));
+                                %pi
+(%o5)                         - ---
+                                 2
+(%i6) carg (17 * exp (2 * %i));
+(%o6)                           2
+@end example
+
+@end deffn
+
+@c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
+@c CROSS REF declare, properties, ETC
+@deffn {Spezieller Operator} constant
+@code{declare (@var{a}, constant)} deklariert @var{a} als konstant.
+Siehe @code{declare}.
+@c WHAT EXACTLY ARE THE CONSEQUENCES OF DECLARING AN ATOM TO BE CONSTANT ??
+
+@end deffn
+
+@deffn {Funktion} constantp (@var{expr})
+Gibt @code{true} zurück, wenn @var{expr} ein konstanter Ausdruck ist,
+andernfalls @code{false}.
+@c WHAT DOES MAXIMA KNOW ABOUT CONSTANT EXPRESSIONS ??
+
+Ein Ausdruck wird als konstanter Ausdruck angesehen, wenn seine Argumente 
+Zahlen sind (einschließlich der rationalen Zahlen, angezeigt durch @code{/R/}), 
+symbolische Konstanten wie @code{%pi}, @code{%e} und @code{%i}, 
+Variablen, die an eine Konstante gebunden oder durch @code{declare} als konstant 
+erklärt sind, oder definierte Funktionen, dessen Argumente konstant sind. 
+@c THE EXAMPLE BELOW constantp (foo (x) + ... SHOWS, THAT THESE FUNCTIONS 
+@c NEED TO BE DEFINED. (VvN)
+
+@code{constantp} wertet seine Argumente aus.
+
+Beispiele:
+
+@c ===beg===
+@c constantp (7 * sin(2));
+@c constantp (rat (17/29));
+@c constantp (%pi * sin(%e));
+@c constantp (exp (x));
+@c declare (x, constant);
+@c constantp (exp (x));
+@c constantp (foo (x) + bar (%e) + baz (2));
+@c ===end===
+
+@example
+(%i1) constantp (7 * sin(2));
+(%o1)                                true
+(%i2) constantp (rat (17/29));
+(%o2)                                true
+(%i3) constantp (%pi * sin(%e));
+(%o3)                                true
+(%i4) constantp (exp (x));
+(%o4)                                false
+(%i5) declare (x, constant);
+(%o5)                                done
+(%i6) constantp (exp (x));
+(%o6)                                true
+(%i7) constantp (foo (x) + bar (%e) + baz (2));
+(%o7)                                false
+(%i8) 
+@end example
+
+@end deffn
+
+@c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
+@c THIS ITEM IS EXTREMELY IMPORTANT
+@c ENSURE THAT ALL KEYWORDS RECOGNIZED BY declare HAVE THEIR OWN DOCUMENTATION ITEMS !!
+@c ALSO: HOW TO FIND THE LIST OF ALL SYMBOLS WHICH HAVE A GIVEN PROPERTY ??
+@deffn {Funktion} declare (@var{a_1}, @var{p_1}, @var{a_2}, @var{p_2}, ...)
+Weist dem Atom oder der Liste von Atomen @var{a_i} die Eigenschaft 
+oder Liste von Eigenschaften (@code{properties}) @var{p_i} zu.
+Wenn @var{a_i} und/oder @var{p_i} Listen sind, 
+erhält jedes Atom diese Eigenschaft.
+
+@code{declare} quotiert (Operator @code{'}) seine Argumente.
+@code{declare} gibt stets @code{done} zurück.
+
+Wie in der Beschreibung jedes Deklarationsschalters bemerkt, 
+gibt @code{featurep(@var{object}, @var{feature})} für einige Schalter 
+@code{true} zurück, wenn erklärt wurde, dass @var{object} @var{feature} haben soll. 
+@code{featurep} erkennt jedoch einige Schalter nicht; dies ist ein Bug.
+
+Siehe auch @code{features}.
+
+@code{declare} erkennt die folgenden Eigenschaften (@code{properties}):
+
+@table @asis
+@item @code{evfun}
+Macht @code{ev} mit @var{a_i} bekannt, so dass die durch @var{a_i} 
+benannte Funktion angewandt wird, wenn @var{a_i} als Schalterargument von 
+@code{ev} erscheint.
+Siehe @code{evfun}.
+
+@item @code{evflag}
+Macht die @code{ev}-Funktion mit @var{a_i} bekannt, so dass 
+während der Ausführung von @code{ev} @var{a_i} an @code{true} gebunden ist, 
+wenn @var{a_i} als Schalterargument von @code{ev} erscheint.
+Siehe @code{evflag}.
+
+@c OBSOLETE @code{special} (RECOGNIZED BY DECLARE BUT NEVER USED ANYWHERE)
+@c ?? declare (name, special) IS EXPLAINED TO BE A TASK OF define_variable 
+@c SEE Functions.texi (VvN)
+
+@c OBSOLETE @code{nonarray} (RECOGNIZED BY DECLARE BUT NEVER USED ANYWHERE)
+
+@item @code{bindtest}
+Bringt Maxima dazu, einen Fehler auszulösen, wenn @var{a_i} 
+als ungebunden ausgewertet wird. 
+
+@item @code{noun}
+Bringt Maxima dazu, @var{a_i} als Substantiv anzusehen. 
+Der Effekt hiervon ist, dass Instanzen von @var{a_i} durch @code{'@var{a_i}} 
+oder @code{nounify(@var{a_i})} ersetzt werden, abhängig vom Zusammenhang. 
+
+@item @code{constant}
+Bringt Maxima dazu, @var{a_i} als symbolische Konstante anzusehen.
+@c WHAT MAXIMA KNOWS ABOUT SYMBOLIC CONSTANTS IS PRETTY LIMITED
+@c DUNNO IF WE WANT TO GET INTO DETAILS HERE. 
+@c MAYBE IN THE DOCUMENTATION FOR CONSTANT (IF THERE IS SUCH)
+
+@item @code{scalar}
+Bringt Maxima dazu, @var{a_i} als skalare Variable anzusehen.
+
+@item @code{nonscalar}
+Bringt Maxima dazu, @var{a_i} als nichtskalare Variable anzusehen.
+Die übliche Anwendung ist, eine Variable als symbolischen Vektor 
+oder symbolische Matrix zu erklären.
+
+@item @code{mainvar}
+Bringt Maxima dazu, @var{a_i} als Hauptvariable 
+(@code{mainvar}, "main variable") anzusehen.
+@code{ordergreatp} bestimmt wie folgt die Ordnung der Atome:
+
+Hauptvariablen > andere Variablen > skalare Variablen > Konstanten > Zahlen
+
+@item @code{alphabetic}
+Bringt Maxima dazu, @var{a_i} als einen Buchstaben des Alphabets zu erkennen.
+
+@item @code{feature}
+Bringt Maxima dazu, @var{a_i} als den Namen eines Merkmals (@code{feature}) 
+zu erkennen.
+Andere Atome können dann erklärt werden, die Eigenschaft @var{a_i} zu besitzen.
+
+@item @code{rassociative}, @code{lassociative}
+Bringt Maxima dazu, @var{a_i} als eine rechts-assoziative bzw. 
+links-assoziative Funktion anzusehen.
+
+@item @code{nary}
+Bringt Maxima dazu, @var{a_i} als eine n-äre Funktion zu erkennen.
+
+Die @code{nary}-Deklaration ist nicht dasselbe wie ein Aufruf der 
+@code{nary}-Funktion.
+Der einzige Effekt von @code{declare(foo, nary)} ist, dem Maxima-Simplifikator 
+anzuweisen, verschachtelte Ausdrücke zu ebnen (@code{flatten}), zum Beispiel, 
+@code{foo(x, foo(y, z))} zu @code{foo(x, y, z)} zu vereinfachen.
+
+@item @code{symmetric}, @code{antisymmetric}, @code{commutative}
+Bringt Maxima dazu, @var{a_i} als eine symmetrische bzw. antisymmetrische 
+Funktion zu erkennen.
+@code{commutative} ist dasselbe wie @code{symmetric}.
+
+@item @code{oddfun}, @code{evenfun}
+Bringt Maxima dazu, @var{a_i} als eine ungerade bzw. gerade Funktion zu erkennen.
+
+@item @code{outative}
+Bringt Maxima dazu, die Ausdrücke @var{a_i} durch Herausziehen konstanter Faktoren 
+aus dem ersten Argument zu vereinfachen.
+
+Hat @var{a_i} ein Argument, wird ein Faktor als konstant angesehen, 
+wenn er ein Buchstabe ist, oder als konstant erklärt.
+
+Hat @var{a_i} zwei oder mehr Argumente,
+wird ein Faktor als konstant angesehen, 
+wenn das zweite Argument ein Symbol und der Faktor vom zweiten Argument frei ist. 
+
+@item @code{multiplicative}
+Bringt Maxima dazu, die Ausdrücke @var{a_i} durch die Ersetzung 
+@code{@var{a_i}(x * y * z * ...)} @code{-->} 
+@code{@var{a_i}(x) * @var{a_i}(y) * @var{a_i}(z) * ...} zu vereinfachen. 
+Die Ersetzung wird nur im ersten Argument durchgeführt. 
+
+@item @code{additive}
+Bringt Maxima dazu, die Ausdrücke @var{a_i} durch die Ersetzung 
+@code{@var{a_i}(x + y + z + ...)} @code{-->}
+@code{@var{a_i}(x) + @var{a_i}(y) + @var{a_i}(z) + ...} zu vereinfachen. 
+Die Ersetzung wird nur im ersten Argument durchgeführt. 
+
+@item @code{linear}
+Equivalent to declaring @var{a_i} both @code{outative} and @code{additive}.
+
+@c OBSOLETE @code{analytic} (RECOGNIZED BY DECLARE BUT NEVER USED ANYWHERE)
+
+@item @code{integer}, @code{noninteger}
+Bringt Maxima dazu, @var{a_i} als ganzzahlige bzw. nichtganzzahlige 
+Variable anzusehen.
+
+@item @code{even}, @code{odd}
+Bringt Maxima dazu, @var{a_i} als gerade bzw. ungerade Variable anzusehen.
+
+@item @code{rational}, @code{irrational}
+Bringt Maxima dazu, @var{a_i} als rationale bzw. irrationale reelle 
+Variable anzusehen.
+
+@item @code{real}, @code{imaginary}, @code{complex}
+Bringt Maxima dazu, @var{a_i} als reelle, rein imaginäre bzw. 
+komplexe Variable anzusehen.
+
+@item @code{increasing}, @code{decreasing}
+Bringt Maxima dazu, @var{a_i} als eine steigende bzw. fallende Funktion anzusehen. 
+@c MAXIMA FAILS TO DEDUCE F(2) > F(1) FOR INCREASING FUNCTION F
+@c AND FAILS TO DEDUCE ANYTHING AT ALL ABOUT DECREASING FUNCTIONS
+@c REPORTED AS SF BUG # 1483194
+
+@item @code{posfun}
+Bringt Maxima dazu, @var{a_i} als eine positive Funktion anzusehen. 
+
+@item @code{integervalued}
+Bringt Maxima dazu, @var{a_i} als eine ganzzahlwertige Funktion anzusehen. 
+
+@end table
+
+Beispiele:
+
+@code{evfun}- und @code{evflag}-Deklarationen.
+@c ===beg===
+@c declare (expand, evfun);
+@c (a + b)^3;
+@c (a + b)^3, expand;
+@c declare (demoivre, evflag);
+@c exp (a + b*%i);
+@c exp (a + b*%i), demoivre;
+@c ===end===
+@example
+(%i1) declare (expand, evfun);
+(%o1)                         done
+(%i2) (a + b)^3;
+                                   3
+(%o2)                       (b + a)
+(%i3) (a + b)^3, expand;
+                     3        2      2      3
+(%o3)               b  + 3 a b  + 3 a  b + a
+(%i4) declare (demoivre, evflag);
+(%o4)                         done
+(%i5) exp (a + b*%i);
+                             %i b + a
+(%o5)                      %e
+(%i6) exp (a + b*%i), demoivre;
+                      a
+(%o6)               %e  (%i sin(b) + cos(b))
+@end example
+
+@code{bindtest}-Deklaration.
+@c ===beg===
+@c aa + bb;
+@c declare (aa, bindtest);
+@c aa + bb;
+@c aa : 1234;
+@c aa + bb;
+@c ===end===
+@example
+(%i1) aa + bb;
+(%o1)                        bb + aa
+(%i2) declare (aa, bindtest);
+(%o2)                         done
+(%i3) aa + bb;
+aa unbound variable
+ -- an error.  Quitting.  To debug this try debugmode(true);
+(%i4) aa : 1234;
+(%o4)                         1234
+(%i5) aa + bb;
+(%o5)                       bb + 1234
+@end example
+
+@code{noun}-Deklaration.
+@c ===beg===
+@c factor (12345678);
+@c declare (factor, noun);
+@c factor (12345678);
+@c ''%, nouns;
+@c ===end===
+@example
+(%i1) factor (12345678);
+                             2
+(%o1)                     2 3  47 14593
+(%i2) declare (factor, noun);
+(%o2)                         done
+(%i3) factor (12345678);
+(%o3)                   factor(12345678)
+(%i4) ''%, nouns;
+                             2
+(%o4)                     2 3  47 14593
+@end example
+
+@code{constant}-, @code{scalar}-, @code{nonscalar}- und @code{mainvar}-Deklarationen.
+@c ===beg===
+@c declare (bb, constant);
+@c declare (cc, scalar);
+@c declare (dd, nonscalar);
+@c declare (ee, mainvar);
+@c ===end===
+@example
+@end example
+
+@code{alphabetic}-Deklaration.
+@c ===beg===
+@c xx\~yy : 1729;
+@c declare ("~", alphabetic);
+@c xx~yy + yy~xx + ~xx~~yy~;
+@c ===end===
+@example
+(%i1) xx\~yy : 1729;
+(%o1)                         1729
+(%i2) declare ("~", alphabetic);
+(%o2)                         done
+(%i3) xx~yy + yy~xx + ~xx~~yy~;
+(%o3)                ~xx~~yy~ + yy~xx + 1729
+@end example
+
+@code{feature} Deklaration.
+@c ===beg===
+@c declare (FOO, feature);
+@c declare (x, FOO);
+@c featurep (x, FOO);
+@c ===end===
+@example
+(%i1) declare (FOO, feature);
+(%o1)                         done
+(%i2) declare (x, FOO);
+(%o2)                         done
+(%i3) featurep (x, FOO);
+(%o3)                         true
+@end example
+
+@code{rassociative}- und @code{lassociative}-Deklarationen.
+@c ===beg===
+@c declare (F, rassociative);
+@c declare (G, lassociative);
+@c ===end===
+@example
+@end example
+
+@code{nary}-Deklaration.
+@c ===beg===
+@c H (H (a, b), H (c, H (d, e)));
+@c declare (H, nary);
+@c H (H (a, b), H (c, H (d, e)));
+@c ===end===
+@example
+(%i1) H (H (a, b), H (c, H (d, e)));
+(%o1)               H(H(a, b), H(c, H(d, e)))
+(%i2) declare (H, nary);
+(%o2)                         done
+(%i3) H (H (a, b), H (c, H (d, e)));
+(%o3)                   H(a, b, c, d, e)
+@end example
+
+@code{symmetric}- und @code{antisymmetric}-Deklarationen.
+@c ===beg===
+@c S (b, a);
+@c declare (S, symmetric);
+@c S (b, a);
+@c S (a, c, e, d, b);
+@c T (b, a);
+@c declare (T, antisymmetric);
+@c T (b, a);
+@c T (a, c, e, d, b);
+@c ===end===
+@example
+(%i1) S (b, a);
+(%o1)                        S(b, a)
+(%i2) declare (S, symmetric);
+(%o2)                         done
+(%i3) S (b, a);
+(%o3)                        S(a, b)
+(%i4) S (a, c, e, d, b);
+(%o4)                   S(a, b, c, d, e)
+(%i5) T (b, a);
+(%o5)                        T(b, a)
+(%i6) declare (T, antisymmetric);
+(%o6)                         done
+(%i7) T (b, a);
+(%o7)                       - T(a, b)
+(%i8) T (a, c, e, d, b);
+(%o8)                   T(a, b, c, d, e)
+@end example
+
+@code{oddfun}- und @code{evenfun}-Deklarationen.
+@c ===beg===
+@c o (- u) + o (u);
+@c declare (o, oddfun);
+@c o (- u) + o (u);
+@c e (- u) - e (u);
+@c declare (e, evenfun);
+@c e (- u) - e (u);
+@c ===end===
+@example
+(%i1) o (- u) + o (u);
+(%o1)                     o(u) + o(- u)
+(%i2) declare (o, oddfun);
+(%o2)                         done
+(%i3) o (- u) + o (u);
+(%o3)                           0
+(%i4) e (- u) - e (u);
+(%o4)                     e(- u) - e(u)
+(%i5) declare (e, evenfun);
+(%o5)                         done
+(%i6) e (- u) - e (u);
+(%o6)                           0
+@end example
+
+@code{outative}-Deklaration.
+@c ===beg===
+@c F1 (100 * x);
+@c declare (F1, outative);
+@c F1 (100 * x);
+@c declare (zz, constant);
+@c F1 (zz * y);
+@c ===end===
+@example
+(%i1) F1 (100 * x);
+(%o1)                       F1(100 x)
+(%i2) declare (F1, outative);
+(%o2)                         done
+(%i3) F1 (100 * x);
+(%o3)                       100 F1(x)
+(%i4) declare (zz, constant);
+(%o4)                         done
+(%i5) F1 (zz * y);
+(%o5)                       zz F1(y)
+@end example
+
+@code{multiplicative}-Deklaration.
+@c ===beg===
+@c F2 (a * b * c);
+@c declare (F2, multiplicative);
+@c F2 (a * b * c);
+@c ===end===
+@example
+(%i1) F2 (a * b * c);
+(%o1)                       F2(a b c)
+(%i2) declare (F2, multiplicative);
+(%o2)                         done
+(%i3) F2 (a * b * c);
+(%o3)                   F2(a) F2(b) F2(c)
+@end example
+
+@code{additive}-Deklaration.
+@c ===beg===
+@c F3 (a + b + c);
+@c declare (F3, additive);
+@c F3 (a + b + c);
+@c ===end===
+@example
+(%i1) F3 (a + b + c);
+(%o1)                     F3(c + b + a)
+(%i2) declare (F3, additive);
+(%o2)                         done
+(%i3) F3 (a + b + c);
+(%o3)                 F3(c) + F3(b) + F3(a)
+@end example
+
+@code{linear}-Deklaration.
+@c ===beg===
+@c 'sum (F(k) + G(k), k, 1, inf);
+@c declare (nounify (sum), linear);
+@c 'sum (F(k) + G(k), k, 1, inf);
+@c ===end===
+@example
+(%i1) 'sum (F(k) + G(k), k, 1, inf);
+                       inf
+                       ====
+                       \
+(%o1)                   >    (G(k) + F(k))
+                       /
+                       ====
+                       k = 1
+(%i2) declare (nounify (sum), linear);
+(%o2)                         done
+(%i3) 'sum (F(k) + G(k), k, 1, inf);
+                     inf          inf
+                     ====         ====
+                     \            \
+(%o3)                 >    G(k) +  >    F(k)
+                     /            /
+                     ====         ====
+                     k = 1        k = 1
+@end example
+
+@end deffn
+
+@c NEEDS WORK
+@deffn {Funktion} disolate (@var{expr}, @var{x_1}, ..., @var{x_n})
+ist mit @code{isolate (@var{expr}, @var{x})} vergleichbar, 
+außer dass es dem Benutzer ermöglicht, mehr als eine Variable gleichzeitig 
+zu isolieren. 
+Dies kann nützlich sein, zum Beispiel, wenn man Variablen in einer 
+mehrfachen Integration tauschen möchte, und der Variablentausch zwei oder 
+mehrere Integrationsvariablen betrifft. 
+Diese Funktion wird automatisch aus @file{simplification/disol.mac} geladen.
+Eine Demonstration ist mit @code{demo("disol")$} erhältlich.
+
+@end deffn
+
+@c NEEDS WORK
+@deffn {Funktion} dispform (@var{expr})
+Gibt die externe Darstellung von @var{expr} bezüglich seines Hauptoperators 
+zurück. Dies sollte in Verbindung mit @code{part}, das auch mit der externen 
+Darstellung handelt, nützlich sein.
+Angenommen, @var{expr} ist -A . Dann ist die interne Darstellung von @var{expr} "*"(-1,A), 
+während die externe Darstellung "-"(A) ist. 
+@code{dispform (@var{expr}, all)} konvertiert den gesamten Ausdruck 
+(nicht nur die oberste Ebene) in das externe Format. 
+Wenn zum Beispiel @code{expr: sin (sqrt (x))}, dann ergeben 
+@code{freeof (sqrt, expr)} und @code{freeof (sqrt, dispform (expr))} beide @code{true}, 
+während @code{freeof (sqrt, dispform (expr, all))} @code{false} ergibt. 
+
+@end deffn
+
+@c NEEDS WORK
+@deffn {Funktion} distrib (@var{expr})
+Verteilt Produkte über Summen (distributiv). 
+@code{distrib} unterscheidet sich von @code{expand} dadurch, dass es nur auf 
+der obersten Ebene des Ausdrucks arbeitet, d.h. es rekursiert nicht und ist 
+schneller als @code{expand}. 
+Es unterscheidet sich von @code{multthru} dadurch, dass es auf dieser Ebene 
+alle Summen expandiert.
+
+Beispiele:
+
+@example
+(%i1) distrib ((a+b) * (c+d));
+(%o1)                 b d + a d + b c + a c
+(%i2) multthru ((a+b) * (c+d));
+(%o2)                 (b + a) d + (b + a) c
+(%i3) distrib (1/((a+b) * (c+d)));
+                                1
+(%o3)                    ---------------
+                         (b + a) (d + c)
+(%i4) expand (1/((a+b) * (c+d)), 1, 0);
+                                1
+(%o4)                 ---------------------
+                      b d + a d + b c + a c
+@end example
+
+@end deffn
+
+@c NEEDS WORK
+@deffn {Funktion} dpart (@var{expr}, @var{n_1}, ..., @var{n_k})
+Wählt dieselben Teilausdrücke aus wie @code{part}, 
+aber anstatt einfach nur diese Teilausdrücke als seinen Wert zurückzugeben, 
+gibt es den gesamten Ausdruck zurück, wobei die ausgewählten Teilausdrücke 
+jeweils in einer Box angezeigt werden. 
+Die Box ist dabei tatsächlich Teil des Ausdrucks. 
+
+Siehe auch @code{part}, @code{inpart} und @code{lpart}.
+
+@example
+(%i1) dpart (x+y/z^2, 1, 2, 1);
+                             y
+(%o1)                       ---- + x
+                               2
+                            """
+                            "z"
+                            """
+@end example
+
+@end deffn
+
+@c PROBABLY MORE TO BE SAID HERE
+@deffn {Funktion} exp (@var{x})
+Stellt die Exponentialfunktion dar. 
+Instanzen von @code{exp (@var{x})} in der Eingabe werden zu @code{%e^@var{x}} 
+vereinfacht; @code{exp} taucht in vereinfachten Ausdrücken nicht auf.
+
+@code{demoivre} bewirkt, falls @code{true}, dass @code{%e^(a + b %i)} zu 
+@code{%e^(a (cos(b) + %i sin(b)))} vereinfacht wird, wenn @code{b} 
+frei von @code{%i} ist. Siehe @code{demoivre}.
+
+@code{%emode} bewirkt, falls @code{true}, dass @code{%e^(%pi %i x)} 
+vereinfacht wird. See @code{%emode}. 
+
+@code{%enumer} bewirkt, falls @code{true}, dass @code{%e} durch 2.718... 
+ersetzt wird, wann immer @code{numer} @code{true} ist. See @code{%enumer}. 
+
+@c NEED EXAMPLES HERE
+@end deffn
+
+@defvr {Optionsvariable} %emode
+Standardwert: @code{true}
+
+Wenn @code{%emode} @code{true} ist, wird 
+@code{%e^(%pi %i x)} wie folgt vereinfacht. 
+
+@code{%e^(%pi %i x)} wird zu @code{cos (%pi x) + %i sin (%pi x)} vereinfacht, 
+falls @code{x} eine ganze Zahl oder ein Vielfaches von  1/2, 1/3, 1/4 oder 1/6 ist, 
+und dann noch weiter vereinfacht. 
+
+Für andere numerische @code{x} wird @code{%e^(%pi %i x)} zu @code{%e^(%pi %i y)} 
+vereinfacht, wobei @code{y} gleich @code{x - 2 k} ist, mit einer ganzen Zahl @code{k}, 
+so dass @code{abs(y) < 1}. 
+
+Wenn @code{%emode} @code{false} ist, werden keine speziellen Vereinfachungen 
+von @code{%e^(%pi %i x)} ausgeführt.
+
+@c NEED EXAMPLES HERE
+@end defvr
+
+@defvr {Optionsvariable} %enumer
+Standardwert: @code{false}
+
+Wenn @code{%enumer} @code{true} ist, 
+wird @code{%e} durch seinen numerischen Wert 2.718... ersetzt, 
+wann immer @code{numer} @code{true} ist. 
+
+Wenn @code{%enumer} @code{false} ist, 
+wird diese Substitution nur dann ausgeführt, wenn der Exponent in @code{%e^x} 
+als Zahl ausgewertet wird. 
+
+Siehe auch @code{ev} und @code{numer}.
+
+@c NEED EXAMPLES HERE
+@end defvr
+
+@defvr {Optionsvariable} exptisolate
+Standardwert: @code{false}
+
+@c WHAT DOES THIS MEAN EXACTLY ??
+
+@code{exptisolate} bewirkt, falls @code{true}, 
+dass @code{isolate (expr, var)} die Exponenten von Atomen (wie @code{%e}), 
+die @var{x} enthalten, untersucht. 
+
+@c NEED EXAMPLES HERE
+@end defvr
+
+@defvr {Optionsvariable} exptsubst
+Standardwert: @code{false}
+
+@code{exptsubst}, falls @code{true}, ermöglicht Substitutionen wie @code{y}
+für @code{%e^x} in @code{%e^(a x)}.
+
+@c NEED EXAMPLES HERE
+@end defvr
+
+@deffn {Funktion} freeof (@var{x_1}, ..., @var{x_n}, @var{expr})
+@code{freeof (@var{x_1}, @var{expr})} gibt @code{true} zurück, 
+wenn kein Teilausdruck von @var{expr} gleich @var{x_1} ist 
+oder gibt andernfalls @code{false} zurück.
+
+@code{freeof (@var{x_1}, ..., @var{x_n}, @var{expr})} ist äquivalent zu 
+@code{freeof (@var{x_1}, @var{expr}) und ... und freeof (@var{x_n}, @var{expr})}.
+
+Die Argumente @var{x_1}, ..., @var{x_n} können Namen von Funktionen 
+und Variablen sein, indizierte Namen, Operatoren (eingeschlossen in 
+Anführungszeichen) oder allgemeine Ausdrücke. 
+@code{freeof} wertet seine Argumente aus.
+
+@code{freeof} operiert nur mit dem gegebenen @var{expr} 
+(nach Vereinfachung und Auswertung) und versucht nicht herauszufinden, 
+ob ein äquivalenter Ausdruck ein anderes Ergebnis liefern würde. 
+Im Besonderen mag eine bestimmte Vereinfachung durchaus einen äquivalenten aber verschiedenen 
+Ausdruck liefern, der einige von der Originalform von @var{expr} verschiedene 
+Elemente enthält.
+
+Eine Variable ist eine Dummy-Variable in einem Ausdruck, 
+wenn sie außerhalb des Ausdrucks keine Bindung hat. 
+Der Index einer Summe oder eines Produkts, 
+die limit-Variable in @code{limit}, 
+die Integrationsvariable der bestimmten Integralform von @code{integrate},
+die Originalvariable in @code{laplace},
+formale Variablen in @code{at}-Ausdrücken, 
+und Argumente in @code{lambda}-Ausdrücken
+werden von @code{freeof} als Dummy-Variablen angesehen.
+Lokale Variablen in @code{block} werden von @code{freeof} nicht als Dummy-Variablen angesehen;
+dies ist ein Bug. 
+
+Die unbestimmte Form von @code{integrate} ist @i{nicht} frei von seinen Integrationsvariablen.
+
+@itemize @bullet
+@item
+Argumente sind Namen von Funktionen, Variablen, indizierte Namen, Operatoren und Ausdrücke.
+@code{freeof (a, b, expr)} ist äquivalent zu
+@code{freeof (a, expr) and freeof (b, expr)}.
+
+@example
+(%i1) expr: z^3 * cos (a[1]) * b^(c+d);
+                                 d + c  3
+(%o1)                   cos(a ) b      z
+                             1
+(%i2) freeof (z, expr);
+(%o2)                         false
+(%i3) freeof (cos, expr);
+(%o3)                         false
+(%i4) freeof (a[1], expr);
+(%o4)                         false
+(%i5) freeof (cos (a[1]), expr);
+(%o5)                         false
+(%i6) freeof (b^(c+d), expr);
+(%o6)                         false
+(%i7) freeof ("^", expr);
+(%o7)                         false
+(%i8) freeof (w, sin, a[2], sin (a[2]), b*(c+d), expr);
+(%o8)                         true
+@end example
+
+@item
+@code{freeof} wertet seine Argumente aus.
+
+@example
+(%i1) expr: (a+b)^5$
+(%i2) c: a$
+(%i3) freeof (c, expr);
+(%o3)                         false
+@end example
+
+@item
+@code{freeof} berücksichtigt keine äquivalenten Ausdrücke. 
+Bestimmte Vereinfachungen können durchaus äquivalente aber verschiedene Ausdrücke liefern.
+
+@example
+(%i1) expr: (a+b)^5$
+(%i2) expand (expr);
+          5        4       2  3       3  2      4      5
+(%o2)    b  + 5 a b  + 10 a  b  + 10 a  b  + 5 a  b + a
+(%i3) freeof (a+b, %);
+(%o3)                         true
+(%i4) freeof (a+b, expr);
+(%o4)                         false
+(%i5) exp (x);
+                                 x
+(%o5)                          %e
+(%i6) freeof (exp, exp (x));
+(%o6)                         true
+@end example
+
+@item Eine Summe oder bestimmtes Integral ist frei von seinen Dummy-Variablen.
+Ein unbestimmtes Integral ist nicht frei von seiner Integrationsvariablen.
+
+@example
+(%i1) freeof (i, 'sum (f(i), i, 0, n));
+(%o1)                         true
+(%i2) freeof (x, 'integrate (x^2, x, 0, 1));
+(%o2)                         true
+(%i3) freeof (x, 'integrate (x^2, x));
+(%o3)                         false
+@end example
+@end itemize
+
+@end deffn
+
+@c IS THIS DEFINITION CORRECT ??
+@deffn {Funktion} genfact (@var{x}, @var{y}, @var{z})
+Gibt die verallgemeinerte Fakultät zurück, welche als 
+@code{x (x-z) (x - 2 z) ... (x - (y - 1) z)} definiert ist.  
+Damit gilt für ein ganzzahliges @var{x},
+@code{genfact (x, x, 1) = x!} und @code{genfact (x, x/2, 2) = x!!}.
+
+@end deffn
+
+@deffn {Funktion} imagpart (@var{expr})
+Gibt den Imaginärteil des Ausdrucks @var{expr} zurück.
+
+@code{imagpart} ist eine Berechnungsfunktion, keine Vereinfachungsfunktion. 
+@c PROBABLY NEED TO EXPLAIN IMPLICATIONS OF ABOVE STATEMENT
+@c SEE ALSO SF BUG REPORT # 902290
+
+Siehe auch @code{abs}, @code{carg}, @code{polarform}, @code{rectform} 
+und @code{realpart}.
+
+@c NEED EXAMPLES HERE
+@end deffn
+
+@deffn {Funktion} infix (@var{op})
+@deffnx {Funktion} infix (@var{op}, @var{lbp}, @var{rbp})
+@deffnx {Funktion} infix (@var{op}, @var{lbp}, @var{rbp}, @var{lpos}, @var{rpos}, @var{pos})
+Erklärt @var{op} zu einem infix-Operator. 
+Ein infix-Operator ist eine Funktion mit zwei Argumenten, 
+wobei der Name der Funktion zwischen die Argumente geschrieben wird. 
+Zum Beispiel ist der Subtraktionsoperator @code{-} ein infix-Operator. 
+
+@code{infix (@var{op})} erklärt @var{op} zum infix-Operator 
+mit Standardbindungskräften (links und rechts, beide 180) und 
+Standardsprachbereichen ("@b{p}arts @b{o}f @b{s}peech"; 
+links, rechts und gesamt, alle @code{any}).
+@c HOW IS pos DIFFERENT FROM lpos AND rpos ??
+@c EXAMPLE: infix("<",80,80,expr,expr,clause)
+@c :lisp (get '$< 'lpos)
+@c $EXPR
+@c :lisp (get '$< 'pos)
+@c $CLAUSE
+
+@code{infix (@var{op}, @var{lbp}, @var{rbp})} erklärt @var{op} 
+zum infix-Operator mit den angegebenen Bindungskräften und
+Standardsprachbereichen (links, rechts und gesamt, alle @code{any}).
+
+@code{infix (@var{op}, @var{lbp}, @var{rbp}, @var{lpos}, @var{rpos}, @var{pos})} 
+erklärt @var{op} zum infix-Operator mit den angegebenen Bindungskräften 
+und Sprachbereichen.
+
+Die Präzendenz von @var{op} bezüglich anderer Operatoren wird von 
+der linken und rechten Bindungskraft der betreffenden Operatoren 
+abgeleitet. 
+Wenn die linke und rechte Bindungskraft von @var{op} beide größer sind als
+die linke und rechte Bindungskraft eines anderen Operators,
+hat @var{op} Vorrang vor dem anderen Operator. 
+Wenn die Bindungskräfte nicht beide größer oder kleiner sind,
+gilt eine etwas kompliziertere Beziehung. 
+
+Die Assoziativität von @var{op} hängt von seinen Bindungskräften ab. 
+Größere linke Bindungskraft (@var{lbp}) bedeutet, dass in einem Ausdruck 
+eine Instanz von @var{op} vor anderen Operatoren auf seiner Linken ausgewertet wird, 
+während größere rechte Bindungskraft (@var{rbp}) bedeutet, dass in einem Ausdruck 
+eine Instanz von @var{op} vor anderen Operatoren auf seiner Rechten ausgewertet wird. 
+So macht ein größeres @var{lbp} @var{op} rechts-assoziativ,
+während ein größeres @var{rbp} @var{op} links-assoziativ macht.
+Wenn @var{lbp} und @var{rbp} gleich sind, ist @var{op} links-assoziativ.
+
+@c TEXT INSERTED (VvN)
+Durch @var{lpos}, @var{rpos} und @var{pos} können die Sprachbereiche 
+des Operators angegeben werden. Maxima kennt die Bereiche 
+@code{expr} (ein mathematischer Ausdruck), 
+@code{clause} (ein mathematisches Prädikat oder ein Kommando) und @code{any}. 
+
+Siehe auch @code{Syntax}.
+
+Beispiele:
+
+@itemize @bullet
+@item
+Wenn die linke und rechte Bindungskraft von @var{op} beide größer sind als
+die linke und rechte Bindungskraft eines anderen Operators,
+hat @var{op} Vorrang vor dem anderen Operator. 
+@end itemize
+@example
+(%i1) "@@"(a, b) := sconcat("(", a, ",", b, ")")$
+(%i2) :lisp (get '$+ 'lbp)
+100
+(%i2) :lisp (get '$+ 'rbp)
+100
+(%i2) infix ("@@", 101, 101)$
+(%i3) 1 + a@@b + 2;
+(%o3)                       (a,b) + 3
+(%i4) infix ("@@", 99, 99)$
+(%i5) 1 + a@@b + 2;
+(%o5)                       (a+1,b+2)
+@end example
+
+@itemize @bullet
+@item
+Ein größeres @var{lbp} macht @var{op} rechts-assoziativ,
+während ein größeres @var{rbp} @var{op} links-assoziativ macht.
+@end itemize
+@example
+(%i1) "@@"(a, b) := sconcat("(", a, ",", b, ")")$
+(%i2) infix ("@@", 100, 99)$
+(%i3) foo @@ bar @@ baz;
+(%o3)                    (foo,(bar,baz))
+(%i4) infix ("@@", 100, 101)$
+(%i5) foo @@ bar @@ baz;
+(%o5)                    ((foo,bar),baz)
+@end example
+
+@c ITEM INSERTED (VvN)
+@itemize @bullet
+@item
+Maxima kennt die Sprachbereiche @code{expr}, @code{clause} und @code{any}.
+@end itemize
+@example
+(%i1) :lisp (get '$< 'lpos)
+$EXPR
+(%i2) :lisp (get '$< 'rpos)
+$EXPR
+(%i3) :lisp (get '$< 'pos)
+$CLAUSE
+@end example
+
+@end deffn
+
+@defvr {Optionsvariable} inflag
+Standardwert: @code{false}
+
+Wenn @code{inflag} @code{true} ist, betrachten die Funktionen 
+zur Extraktion von Teilausdrücken die interne Form von @code{expr}.
+
+Beachte, dass der Simplifikator die Ausdrücke wieder ordnet. 
+So gibt @code{first (x + y)} @code{x} zurück, wenn @code{inflag} 
+@code{true} ist und @code{y}, wenn @code{inflag} @code{false} ist.
+
+Ebenso ist das Setzen von @code{inflag} auf @code{true} und ein 
+Aufruf von @code{part} oder @code{substpart} dasselbe wie ein Aufruf von 
+@code{inpart} bzw. @code{substinpart}.
+
+Funktionen, die durch das Setzen von @code{inflag} beeinflusst werden, sind:
+@code{part}, @code{substpart}, @code{first}, @code{rest}, @code{last}, @code{length},
+das @code{for ... in}-Konstrukt,
+@code{map}, @code{fullmap}, @code{maplist}, @code{reveal} und @code{pickapart}.
+
+@c NEED EXAMPLES HERE
+@end defvr
+
+@c NEEDS WORK
+@deffn {Funktion} inpart (@var{expr}, @var{n_1}, ..., @var{n_k}) 
+ist zu @code{part} ähnlich, arbeitet aber eher mit der internen 
+Darstellung der Ausdrücke als mit der ausgegebenen Form und 
+kann, da keine Formatierung vorgenommen wird, schneller sein. 
+Man sollte bezüglich der Reihenfolge der Teilausdrücke in Summen 
+und Produkten vorsichtig sein (da die Reihenfolge der Variablen in 
+der internen Form oft von der angezeigten Form verschieden ist), 
+auch bezüglich des unären Minus, der Subtraktion und der Division 
+(da diese Operatoren von den Ausdrücken abgetrennt werden). 
+@code{part (x+y, 0)} oder @code{inpart (x+y, 0)} liefern @code{+}, 
+obwohl für einen Bezug auf den Operator dieser in Anführungszeichen 
+eingeschlossen sein muss. Zum Beispiel 
+@code{... if inpart (%o9,0) = "+" then ...}.
+
+@c MERGED IN FROM part (VvN)
+Wenn das letzte Argument einer @code{part}-Funktion eine Liste mit Indizes ist, 
+werden verschiedene Teilausdrücke herausgepickt, jeder entsprechend dem 
+Index der Liste. So ist @code{inpart (x + y + z, [1, 3])} dann @code{z+x}.
+
+Siehe auch @code{part}, @code{inpart} und @code{lpart}.
+
+Beispiele:
+
+@example
+(%i1) x + y + w*z;
+(%o1)                      w z + y + x
+(%i2) inpart (%, 3, 2);
+(%o2)                           z
+(%i3) part (%th (2), 1, 2);
+(%o3)                           z
+(%i4) 'limit (f(x)^g(x+1), x, 0, minus);
+                                  g(x + 1)
+(%o4)                 limit   f(x)
+                      x -> 0-
+(%i5) inpart (%, 1, 2);
+(%o5)                       g(x + 1)
+@end example
+
+@end deffn
+
+@c NEEDS WORK
+@deffn {Funktion} isolate (@var{expr}, @var{x})
+Gibt @var{expr} zurück, wobei Teilausdrücke, die Summen sind und 
+@var{x} nicht enthalten, durch Zwischenmarken 
+(atomische Symbole wie @code{%t1}, @code{%t2}, ...) ersetzt werden. 
+Das ist oft nützlich, um unnötige Expansionen von Teilausdrücken, 
+die die Variable des Interesses nicht enthalten, zu vermeiden. 
+Da die Zwischenmarken an die Teilausdrücke gebunden sind, können sie
+durch eine Auswertung des Ausdrucks, in dem sie vorkommen, 
+sämtlich wieder zurückersetzt werden. 
+
+@code{exptisolate} (Standardwert: @code{false}) bewirkt, falls @code{true}, 
+dass @code{isolate} die Exponenten von Atomen (wie @code{%e}), die @var{x} 
+enthalten, untersucht. 
+
+@code{isolate_wrt_times} bewirkt, falls @code{true}, dass @code{isolate} 
+auch bezüglich Produkten isoliert. Siehe @code{isolate_wrt_times}. 
+
+Gib @code{example (isolate)} für Beispiele ein.
+
+@end deffn
+
+@c NEEDS WORK
+@defvr {Optionsvariable} isolate_wrt_times
+Standardwert: @code{false}
+
+Wenn @code{isolate_wrt_times} @code{true} ist, wird @code{isolate}
+auch bezüglich Produkten isolieren. Zum Vergleich der beiden 
+Schalterstellungen:
+
+@example
+(%i1) isolate_wrt_times: true$
+(%i2) isolate (expand ((a+b+c)^2), c);
+
+(%t2)                          2 a
+
+
+(%t3)                          2 b
+
+
+                          2            2
+(%t4)                    b  + 2 a b + a
+
+                     2
+(%o4)               c  + %t3 c + %t2 c + %t4
+(%i4) isolate_wrt_times: false$
+(%i5) isolate (expand ((a+b+c)^2), c);
+                     2
+(%o5)               c  + 2 b c + 2 a c + %t4
+@end example
+
+@end defvr
+
+@c NEEDS EXAMPLES
+@defvr {Optionsvariable} listconstvars
+Standardwert: @code{false}
+
+Wenn @code{listconstvars} @code{true} ist, bewirkt dies, dass @code{%e}, 
+@code{%pi}, @code{%i} und jede als konstant erklärte Variable mit in der 
+von @code{listofvars} zurückgegebenen Liste aufgenommen werden, vorausgesetzt, 
+diese sind in dem Ausdruck, auf den @code{listofvars} angewandt wird, enthalten.
+Standardmäßig werden diese weggelassen. 
+
+@end defvr
+
+@defvr {Optionsvariable} listdummyvars
+Standardwert: @code{true}
+
+Wenn @code{listdummyvars} @code{false} ist, werden die "Dummy-Variablen" 
+eines Ausdrucks nicht in die von @code{listofvars} zurückgegebenen Liste 
+aufgenommen.
+(Die Bedeutung der "Dummy-Variablen" ist so wie in @code{freeof} gegeben. 
+"Dummy-Variablen" sind mathematische Dinge wie der Index einer Summe oder
+eines Produkts, eine Grenzwertvariable und die Variable eines bestimmten 
+Integrals.)
+Beispiel:
+
+@example
+(%i1) listdummyvars: true$
+(%i2) listofvars ('sum(f(i), i, 0, n));
+(%o2)                        [i, n]
+(%i3) listdummyvars: false$
+(%i4) listofvars ('sum(f(i), i, 0, n));
+(%o4)                          [n]
+@end example
+
+@end defvr
+
+@c NEEDS WORK
+@deffn {Funktion} listofvars (@var{expr})
+Gibt eine Liste der Variablen  in @var{expr} zurück.
+
+@code{listconstvars} bewirkt, falls @code{true}, dass @code{listofvars} 
+@code{%e}, @code{%pi}, @code{%i} und jede als konstant erklärte Variable 
+mit in die Liste aufnimmt, die es zurückgibt, 
+vorausgesetzt, diese sind in @code{expr} enthalten.
+Standardmäßig werden diese weggelassen. 
+
+@example
+(%i1) listofvars (f (x[1]+y) / g^(2+a));
+(%o1)                     [g, a, x , y]
+                                  1
+@end example
+
+@end deffn
+
+@c NEEDS WORK
+@c ENGLISH ORIGINAL DOC CONTAINS ERROR (VvN)
+@deffn {Funktion} lfreeof (@var{list}, @var{expr})
+Für jedes Element @var{m} der Liste wird @code{freeof (@var{m}, @var{expr})} 
+aufgerufen. @code{lfreeof} gibt @code{true} zurück, wenn jeder Aufruf von
+@code{freeof} dies auch tut und @code{false} andernfalls.
+@end deffn
+
+@deffn {Funktion} lopow (@var{expr}, @var{x})
+Gibt den kleinsten Exponenten von @var{x} zurück, der ausdrücklich 
+in @var{expr} erscheint. So
+
+@example
+(%i1) lopow ((x+y)^2 + (x+y)^a, x+y);
+(%o1)                       min(a, 2)
+@end example
+
+@end deffn
+
+@c NEEDS WORK
+@deffn {Funktion} lpart (@var{label}, @var{expr}, @var{n_1}, ..., @var{n_k})
+ist ähnlich zu @code{dpart}, verwendet aber eine gekennzeichnete Box. 
+Eine gekennzeichnete Box ist ähnlich zu der, die von @code{dpart} 
+erzeugt wird, hat jedoch einen Namen in der obersten Zeile.
+
+Siehe auch @code{part}, @code{inpart} und @code{dpart}.
+
+@end deffn
+
+@c NEEDS WORK
+@deffn {Funktion} multthru (@var{expr})
+@deffnx {Funktion} multthru (@var{expr_1}, @var{expr_2})
+Multipliziert einen Faktor (der eine Summe sein sollte) von @var{expr} 
+mit den anderen Faktoren von @var{expr}. 
+D.h. @var{expr} ist @code{@var{f_1} @var{f_2} ... @var{f_n}}, wobei 
+wenigstens ein Faktor, sagen wir @var{f_i}, eine Summe von Termen ist. 
+Jeder Term in dieser Summe wird mit den anderen Faktoren des Produkts 
+multipliziert. (Namentlich alle Faktoren außer @var{f_i}). 
+@code{multthru} expandiert keine exponentierten Summen. 
+Diese Funktion ist der schnellste Weg, um Produkte (kommutativ oder 
+nichtkommutativ) über Summen zu verteilen (distributiv). 
+Da Quotienten als Produkte dargestellt werden, kann @code{multthru} 
+verwendet genauso werden, um Summen durch Produkte zu teilen. 
+
+@code{multthru (@var{expr_1}, @var{expr_2})} multipliziert jeden Term
+in @var{expr_2} (der eine Summe oder eine Gleichung sein sollte) 
+mit @var{expr_1}. 
+Wenn @var{expr_2} keine Summe ist, 
+dann ist diese Form äquivalent zu @code{multthru (@var{expr_1}*@var{expr_2})}.
+@c ENGLISH ORIGINAL DOC CONTAINS ERROR (VvN)
+
+@example
+(%i1) x/(x-y)^2 - 1/(x-y) - f(x)/(x-y)^3;
+                      1        x         f(x)
+(%o1)             - ----- + -------- - --------
+                    x - y          2          3
+                            (x - y)    (x - y)
+(%i2) multthru ((x-y)^3, %);
+                           2
+(%o2)             - (x - y)  + x (x - y) - f(x)
+(%i3) ratexpand (%);
+                           2
+(%o3)                   - y  + x y - f(x)
+(%i4) ((a+b)^10*s^2 + 2*a*b*s + (a*b)^2)/(a*b*s^2);
+                        10  2              2  2
+                 (b + a)   s  + 2 a b s + a  b
+(%o4)            ------------------------------
+                                  2
+                             a b s
+(%i5) multthru (%);  /* note that this does not expand (b+a)^10 */
+                                        10
+                       2   a b   (b + a)
+(%o5)                  - + --- + ---------
+                       s    2       a b
+                           s
+(%i6) multthru (a.(b+c.(d+e)+f));
+(%o6)            a . f + a . c . (e + d) + a . b
+(%i7) expand (a.(b+c.(d+e)+f));
+(%o7)         a . f + a . c . e + a . c . d + a . b
+@end example
+
+@end deffn
+
+@c NEEDS WORK
+@deffn {Funktion} nounify (@var{f})
+Gibt die Substantivform des Funktionsnamens @var{f} zurück. 
+Dies ist nötig, wenn man sich auf den Namen einer Verbfunktion 
+beziehen möchte, als wäre es ein Substantiv. 
+Beachte, dass manche Verbfunktionen ihre Substantivform zurückgeben, 
+wenn sie für bestimmte Argumente nicht ausgewertet werden können. 
+Das ist dieselbe Form, die zurückgegeben wird, wenn einem 
+Funktionsaufruf ein einfaches Hochkomma vorangestellt wird. 
+
+@end deffn
+
+@c NEEDS WORK
+@deffn {Funktion} nterms (@var{expr})
+Gibt die Anzahl der Terme zurück, die @var{expr} haben würde, wenn 
+es vollständig expandiert wäre und dann keine Kürzungen oder Kombinationen 
+von Termen aufträten. 
+
+Beachte, dass Ausdrücke wie @code{sin (@var{expr})}, 
+@code{sqrt (@var{expr})}, @code{exp (@var{expr})}, etc. 
+als ein einziger Term gezählt werden, unabhängig davon, aus wie viel 
+Termen @var{expr} besteht (wenn es z.B. eine Summe ist).
+
+@end deffn
+
+@c NEEDS WORK
+@deffn {Funktion} op (@var{expr})
+Gibt den Hauptoperator des Ausdrucks @var{expr} zurück. 
+@code{op (@var{expr})} ist äquivalent zu @code{part (@var{expr}, 0)}. 
+
+@code{op} gibt eine Zeichenkette zurück, wenn der Hauptoperator 
+ein eingebauter oder benutzerdefinierter prefix-, binärer oder n-ärer infix-, 
+postfix-, matchfix- oder nofix-Operator ist. 
+Andernfalls gibt @code{op} ein Symbol zurück.
+
+@code{op} beachtet dabei den Wert des globalen Schalters @code{inflag}. 
+
+@code{op} wertet seine Argumente aus.
+
+Siehe auch @code{args}.
+
+Beispiele:
+
+@c ===beg===
+@c ?stringdisp: true$
+@c op (a * b * c);
+@c op (a * b + c);
+@c op ('sin (a + b));
+@c op (a!);
+@c op (-a);
+@c op ([a, b, c]);
+@c op ('(if a > b then c else d));
+@c op ('foo (a));
+@c prefix (foo);
+@c op (foo a);
+@c ===end===
+
+@example
+(%i1) ?stringdisp: true$
+(%i2) op (a * b * c);
+(%o2)                          "*"
+(%i3) op (a * b + c);
+(%o3)                          "+"
+(%i4) op ('sin (a + b));
+(%o4)                          sin
+(%i5) op (a!);
+(%o5)                          "!"
+(%i6) op (-a);
+(%o6)                          "-"
+(%i7) op ([a, b, c]);
+(%o7)                          "["
+(%i8) op ('(if a > b then c else d));
+(%o8)                         "if"
+(%i9) op ('foo (a));
+(%o9)                          foo
+(%i10) prefix (foo);
+(%o10)                        "foo"
+(%i11) op (foo a);
+(%o11)                        "foo"
+@end example
+
+@end deffn
+
+@c NEEDS WORK
+@deffn {Funktion} operatorp (@var{expr}, @var{op})
+@deffnx {Funktion} operatorp (@var{expr}, [@var{op_1}, ..., @var{op_n}])
+
+@code{operatorp (@var{expr}, @var{op})} gibt @code{true} zurück 
+wenn @var{op} gleich dem Operator von @var{expr} ist.
+
+@code{operatorp (@var{expr}, [@var{op_1}, ..., @var{op_n}])} gibt @code{true} 
+zurück, wenn eins der Elemente @var{op_1}, ..., @var{op_n} 
+gleich dem Operator von @var{expr} ist.
+
+@end deffn
+
+@c NEEDS WORK
+@deffn {Funktion} optimize (@var{expr})
+Gibt einen Ausdruck zurück, der denselben Wert und dieselben Seiteneffekte 
+erzeugt wie @var{expr}, dies aber wesentlich effizienter, dadurch 
+dass wiederholte Berechnungen gleicher Teilausdrücke vermieden werden. 
+
+@code{optimize} hat auch den Seiteneffekt, dass sein Argument durch die  
+Verwendung gemeinsamer Teilausdrücke kollabiert (@code{collapse}).
+
+@code{example (optimize)} zeigt ein Beispiel.
+
+@end deffn
+
+@defvr {Optionsvariable} optimprefix
+Standardwert: @code{%}
+
+@code{optimprefix} ist der Präfix, der von der Funktion @code{optimize} 
+für die erzeugten Symbole verwendet wird.
+
+@end defvr
+
+@c NEEDS WORK
+@c WHAT DOES ">" MEAN IN THIS CONTEXT ??
+@c TEXT INSERTED (VvN)
+@deffn {Funktion} ordergreat (@var{v_1}, ..., @var{v_n})
+Verwendet Aliasnamen für die Variablen @var{v_1}, ..., @var{v_n}, 
+so dass @var{v_1} > @var{v_2} > ...  > @var{v_n} (im Sinne von @code{ordergreatp}), 
+und @var{v_n} > als jede andere Variable, die nicht als Argument 
+genannt ist. 
+
+Durch einen Aufruf von @code{unorder()} wird dieser Vorgang der Aliasierung 
+wieder rückgängig gemacht. Erst danach kann durch @code{orderless} oder 
+@code{ordergreat} eine erneute Ordnung derselben Variablen vorgenommen werden.
+
+Siehe auch @code{orderless} und @code{mainvar}.
+
+Beispiele:
+@c EXAMPLE INSERTED (VvN)
+
+@c ===beg===
+@c kill (a,b,c,d,m,s,X,Y,Z)$
+@c unorder ()$
+@c l : [7,42,a,b,c,d,m,s,X,Y,Z]$
+@c :lisp $%
+@c declare (c,constant, s,scalar, m,mainvar)$
+@c orderless (b,a)$
+@c ordergreat (X,Y)$
+@c sort ([7,42,a,b,c,d,m,s,X,Y,Z], ordergreatp);
+@c sort ([7,42,a,b,c,d,m,s,X,Y,Z]);
+@c :lisp $%
+@c sort (l);
+@c :lisp $%
+@c ===end===
+
+@example
+(%i1) kill (a,b,c,d,m,s,X,Y,Z)$
+(%i2) unorder ()$
+(%i3) l : [7,42,a,b,c,d,m,s,X,Y,Z]$
+(%i4) :lisp $%
+((MLIST SIMP) 7 42 $A $B $C $D $M $S $x $y $z)
+(%i4) declare (c,constant, s,scalar, m,mainvar)$
+(%i5) orderless (b,a)$
+(%i6) ordergreat (X,Y)$
+(%i7) sort ([7,42,a,b,c,d,m,s,X,Y,Z], ordergreatp);
+(%o7)                 [m, X, Y, Z, d, a, b, s, c, 42, 7]
+(%i8) sort ([7,42,a,b,c,d,m,s,X,Y,Z]);
+(%o8)                 [7, 42, c, s, b, a, d, Z, Y, X, m]
+(%i9) :lisp $%
+((MLIST SIMP) 7 42 $C $S #101B #102A $D $z _101y _102x $M)
+(%i9) sort (l);
+(%o9)                 [7, 42, c, s, a, b, d, X, Y, Z, m]
+(%i10) :lisp $%
+((MLIST SIMP) 7 42 $C $S $A $B $D $x $y $z $M)
+@end example
+
+@end deffn
+
+@c NEEDS WORK
+@c WHAT DOES "PRECEDES" MEAN IN THIS CONTEXT ??
+@deffn {Funktion} ordergreatp (@var{expr_1}, @var{expr_2})
+Gibt @code{true} zurück, wenn sich @var{expr_2} vor @var{expr_1} 
+in der durch die @code{ordergreat}-Funktion erzeugten geordneten Menge befindet.
+
+@end deffn
+
+@c NEEDS WORK
+@c WHAT DOES "<" MEAN IN THIS CONTEXT ??
+@c TEXT INSERTED (VvN)
+@deffn {Funktion} orderless (@var{v_1}, ..., @var{v_n})
+Verwendet Aliasnamen für die Variablen @var{v_1}, ..., @var{v_n}, 
+so dass @var{v_1} < @var{v_2} < ...  < @var{v_n} (im Sinne von @code{orderlessp}), 
+und @var{v_n} < als jede andere Variable, die nicht als Argument 
+genannt ist. 
+
+Durch einen Aufruf von @code{unorder()} wird dieser Vorgang der Aliasierung 
+wieder rückgängig gemacht. Erst danach kann durch @code{orderless} oder 
+@code{ordergreat} eine erneute Ordnung derselben Variablen vorgenommen werden.
+
+@c EXPRESS THIS ORDER IN A MORE COMPREHENSIBLE FASHION
+Damit ergibt sich die vollständige Ordnungsskala für Atome: 
+Numerische Konstanten < deklarierte Konstanten < deklarierte Skalare < 
+erstes Argument von @code{orderless} < ... 
+letztes Argument von @code{orderless} < 
+Variablen beginnend mit a < ... < Variablen beginnend mit Z < 
+letztes Argument von @code{ordergreat} < ... 
+erstes Argument von @code{ordergreat} < deklarierte Hauptvariablen.
+
+Siehe auch @code{ordergreat} and @code{mainvar}.
+
+@end deffn
+
+@c NEEDS WORK
+@c WHAT DOES "PRECEDES" MEAN IN THIS CONTEXT ??
+@deffn {Funktion} orderlessp (@var{expr_1}, @var{expr_2})
+Gibt @code{true} zurück, wenn sich @var{expr_1} vor @var{expr_2} 
+in der durch die @code{orderless}-Funktion erzeugten geordneten Menge befindet.
+
+@end deffn
+
+@c NEEDS WORK
+@deffn {Funktion} part (@var{expr}, @var{n_1}, ..., @var{n_k})
+Gibt Teile der auf dem Display ausgegebenen Form von @code{expr} zurück. 
+Es enthält den durch die Indizes @var{n_1}, ..., @var{n_k} 
+spezifizierten Teil von @code{expr}.
+Zuerst wird der Teil @var{n_1} von @code{expr} gewonnen, dann hieraus 
+der Teil @var{n_2}, etc. Das Ergebnis ist 
+Teil @var{n_k} von ... Teil @var{n_2} von Teil @var{n_1} von @code{expr}.
+
+Man kann @code{part} verwenden, um ein Element einer Liste, eine Zeile 
+einer Matrix, etc, zu erhalten.
+
+@c "If the last argument to a part function" => FOLLOWING APPLIES TO OTHER FUNCTIONS ??
+@c ATTEMPT TO VERIFY; IF SO, COPY THIS COMMENTARY TO DESCRIPTIONS OF OTHER FUNCTIONS
+Wenn das letzte Argument einer @code{part}-Funktion eine Liste mit Indizes ist, 
+werden verschiedene Teilausdrücke herausgepickt, jeder entsprechend dem 
+Index der Liste. So ist @code{part (x + y + z, [1, 3])} dann @code{z+x}.
+
+@c REVISION: (VvN)
+@code{piece} enthält den letzten Ausdruck, der bei der Verwendung einer 
+@code{part}-Funktion ausgewählt wurde.
+Nachdem @code{piece} durch die erste Ausführung einer @code{part}-Funktion
+gesetzt wurde, kann es auch in einer solchen Funktion verwendet werden.
+
+Wenn @code{partswitch} @code{true} ist, wird @code{end} zurückgegeben, 
+wenn ein ausgewählter Teil (@code{part}) eines Ausdrucks nicht existiert, 
+andernfalls wird eine Fehlermeldung ausgegeben.
+
+@c NEED "SEE ALSO" POINTING TO ALL OTHER PART FUNCTIONS
+Siehe auch @code{inpart}, @code{dpart} und @code{lpart}.
+
+Beispiel: @code{part (z+2*y, 2, 1)} ergibt 2.
+
+@c MERGE IN example (part) OUTPUT HERE
+@code{example (part)} zeigt weitere Beispiele.
+
+@end deffn
+
+@c NEEDS WORK
+@deffn {Funktion} partition (@var{expr}, @var{x})
+Gibt eine Liste mit zwei Ausdrücken zurück. 
+Dies sind (1) die Faktoren von @var{expr} (falls ein Produkt), 
+die Terme von @var{expr} (falls eine Summe )  
+oder die Liste (falls eine Liste), die @var{x} nicht enthält, 
+und (2) die Faktoren, Terme oder die Liste, die dies tun. 
+
+@example
+(%i1) partition (2*a*x*f(x), x);
+(%o1)                     [2 a, x f(x)]
+(%i2) partition (a+b, x);
+(%o2)                      [b + a, 0]
+(%i3) partition ([a, b, f(a), c], a); 
+(%o3)                  [[b, c], [a, f(a)]]
+@end example
+
+@end deffn
+
+@c NEEDS EXAMPLE
+@defvr {Optionsvariable} partswitch
+Standardwert: @code{false}
+
+Wenn @code{partswitch} @code{true} ist, wird @code{end} zurückgegeben, 
+wenn ein ausgewählter Teil (@code{part}) eines Ausdrucks nicht existiert, 
+andernfalls wird eine Fehlermeldung ausgegeben.
+
+@end defvr
+
+@deffn {Funktion} pickapart (@var{expr}, @var{n})
+Weist den Teilausdrücken von @var{expr} in der Tiefe @var{n}, 
+einer ganzen Zahl, Zwischenmarken (@code{%t1}, @code{%t2}, ...) zu. 
+Teilausdrücken in einer größeren oder kleineren Tiefe werden keine Marken 
+zugewiesen.
+@code{pickapart} gibt einen Ausdruck in Termen von Zwischenmarken zurück, 
+äquivalent zum Originalausdruck @var{expr}. 
+
+Siehe auch @code{part}, @code{dpart}, @code{lpart}, @code{inpart} und @code{reveal}.
+
+Beispiele:
+
+@example
+(%i1) expr: (a+b)/2 + sin (x^2)/3 - log (1 + sqrt(x+1));
+                                          2
+                                     sin(x )   b + a
+(%o1)       - log(sqrt(x + 1) + 1) + ------- + -----
+                                        3        2
+(%i2) pickapart (expr, 0);
+
+                                          2
+                                     sin(x )   b + a
+(%t2)       - log(sqrt(x + 1) + 1) + ------- + -----
+                                        3        2
+
+(%o2)                          %t2
+(%i3) pickapart (expr, 1);
+
+(%t3)                - log(sqrt(x + 1) + 1)
+
+
+                                  2
+                             sin(x )
+(%t4)                        -------
+                                3
+
+
+                              b + a
+(%t5)                         -----
+                                2
+
+(%o5)                    %t5 + %t4 + %t3
+(%i5) pickapart (expr, 2);
+
+(%t6)                 log(sqrt(x + 1) + 1)
+
+
+                                  2
+(%t7)                        sin(x )
+
+
+(%t8)                         b + a
+
+                         %t8   %t7
+(%o8)                    --- + --- - %t6
+                          2     3
+(%i8) pickapart (expr, 3);
+
+(%t9)                    sqrt(x + 1) + 1
+
+
+                                2
+(%t10)                         x
+
+                  b + a              sin(%t10)
+(%o10)            ----- - log(%t9) + ---------
+                    2                    3
+(%i10) pickapart (expr, 4);
+
+(%t11)                     sqrt(x + 1)
+
+                      2
+                 sin(x )   b + a
+(%o11)           ------- + ----- - log(%t11 + 1)
+                    3        2
+(%i11) pickapart (expr, 5);
+
+(%t12)                        x + 1
+
+                   2
+              sin(x )   b + a
+(%o12)        ------- + ----- - log(sqrt(%t12) + 1)
+                 3        2
+(%i12) pickapart (expr, 6);
+                  2
+             sin(x )   b + a
+(%o12)       ------- + ----- - log(sqrt(x + 1) + 1)
+                3        2
+@end example
+
+@end deffn
+
+@c NEEDS WORK
+@defvr {Systemvariable} piece
+Enthält den letzten Ausdruck, der bei der Verwendung einer 
+@code{part}-Funktion ausgewählt wurde.
+@c WHAT DOES THIS MEAN EXACTLY ??
+@c REVISION: (VvN)
+Nachdem @code{piece} durch die erste Ausführung einer @code{part}-Funktion
+gesetzt wurde, kann es auch in einer solchen Funktion verwendet werden.
+
+@c NEED "SEE ALSO" TO POINT TO LIST OF ALL RELEVANT FUNCTIONS
+Siehe auch @code{part} und @code{inpart}.
+
+@end defvr
+
+@c NEEDS EXAMPLES
+@deffn {Funktion} polarform (@var{expr})
+Gibt einen zu @var{expr} äquivalenten Ausdruck @code{r %e^(%i theta)} zurück,
+wobei @code{r} und @code{theta} rein reell sind.
+
+@end deffn
+
+@c ISN'T THERE AN EQUIVALENT FUNCTION SOMEWHERE ??
+@c NEEDS WORK (IF KEPT)
+
+@c CUT OUT HERE AND MERGE INTO Polynomials.texi ??
+@c expr MUST BE POLYNOMIAL  (VvN)
+@deffn {Funktion} powers (@var{expr}, @var{x})
+Gibt für das Polynom @var{expr} eine Liste der Exponenten
+aller enthaltenden Potenzen von @var{x} zurück.
+Vor der Auswertung wird @var{expr} von @var{rat} expandiert.
+@c expr IS SIMPLIFIED BY rat (WITH ratfac:false) FIRST AND THEN EVALUATED (VvN)
+
+Diese Funktion hat viele Verwendungszwecke. Das folgende Beispiel zeigt, 
+wie man alle Koeffizienten von @var{x} in einem Polynom @var{poly} finden kann:
+@c EXAMPLE INSERTED (VvN)
+
+@c ===beg===
+@c load("powers")$
+@c poly : (2*x-a)^3-6*a^2*x;
+@c rat (poly);
+@c powers (poly,x);
+@c map (lambda([pow],coeff(ratexpand(poly),x,pow)), %);
+@c ===end===
+
+@example
+(%i1) load("powers")$
+(%i2) poly : (2*x-a)^3-6*a^2*x;
+                                        3      2
+(%o2)                          (2 x - a)  - 6 a  x
+(%i3) rat (poly);
+                                  3         2    3
+(%o3)/R/                       8 x  - 12 a x  - a
+(%i4) powers (poly,x);
+(%o4)                               [3, 2, 0]
+(%i5) map (lambda([pow],coeff(ratexpand(poly),x,pow)), %);
+                                               3
+(%o5)                           [8, - 12 a, - a ]
+@end example
+
+@code{load ("powers")} lädt diese Funktion.
+@c HMM, THERE'S A BUNCH OF MAXIMA FUNCTIONS IN src/powers.lisp ...
+@c FOR SOME REASON src/powers.lisp IS NOT PART OF THE USUAL BUILD -- STRANGE
+
+@c HERE IS THE TEXT FROM archive/share/unknown/powers.usg -- MERGE !!!
+@c THIS FUNCTION IS A GENERALISATION OF "HIPOW" AND "LOPOW"
+@c IN THAT IT RETURNS A LIST OF ALL THE POWERS OF VAR OCCURING
+@c IN EXPR. IT IS STILL NECESSARY TO EXPAND EXPR BEFORE APPLYING
+@c POWERS (ON PAIN OF GETTING THE WRONG ANSWER).
+@c
+@c THIS FUNCTION HAS MANY USES, E.G. IF YOU WANT TO FIND ALL
+@c THE COEFFICIENTS OF X IN A POLYNOMIAL POLY YOU CAN USE
+@c MAP(LAMBDA([POW],COEFF(POLY,X,POW)),POWERS(POLY,X));
+@c AND MANY OTHER SIMILAR USEFUL HACKS.
+
+@c REMARK: powers USES rat, WHICH DOES EXPANSION
+@c WHILE hipow AND lopow BOTH NEED EXPANSION (VvN)
+
+@end deffn
+
+@deffn {Funktion} product (@var{expr}, @var{i}, @var{i_0}, @var{i_1})
+Stellt das Produkt der Werte von @var{expr} dar, wobei der 
+Index @var{i} von @var{i_0} bis @var{i_1} läuft. 
+Die Substantivform @code{'product} wird mit einem großgeschriebenen Buchstaben 
+Pi dargestellt.
+
+@code{product} wertet @var{expr} aus, ebenso die untere und 
+obere Grenze @var{i_0} bzw. @var{i_1}, dagegen quotiert (keine Auswertung)
+@code{product} den Index @var{i}.
+
+Wenn die untere und obere Grenze sich durch eine ganze Zahl unterscheidet, 
+wird @var{expr} für jeden Wert des Index @var{i} ausgewertet, 
+und das Ergebnis ist ein explizites Produkt. 
+
+Andernfalls ist der Bereich des Index unbestimmt. 
+Einige Regeln werden angewandt, um das Produkt zu vereinfachen.
+Wenn die globale Variable @code{simpproduct} @code{true} ist, 
+werden zusätzliche Regeln angewandt.
+In einigen Fällen liefert die Vereinfachung ein Ergebnis, das kein Produkt ist; 
+andernfalls wird das Ergebnis in der Substantivform @code{'product} 
+angegeben.
+
+Siehe auch @code{nouns} und @code{evflag}.
+
+Beispiele:
+
+@c ===beg===
+@c product (x + i*(i+1)/2, i, 1, 4);
+@c product (i^2, i, 1, 7);
+@c product (a[i], i, 1, 7);
+@c product (a(i), i, 1, 7);
+@c product (a(i), i, 1, n);
+@c product (k, k, 1, n);
+@c product (k, k, 1, n), simpproduct;
+@c product (integrate (x^k, x, 0, 1), k, 1, n);
+@c product (if k <= 5 then a^k else b^k, k, 1, 10);
+@c ===end===
+
+@example
+(%i1) product (x + i*(i+1)/2, i, 1, 4);
+(%o1)           (x + 1) (x + 3) (x + 6) (x + 10)
+(%i2) product (i^2, i, 1, 7);
+(%o2)                       25401600
+(%i3) product (a[i], i, 1, 7);
+(%o3)                 a  a  a  a  a  a  a
+                       1  2  3  4  5  6  7
+(%i4) product (a(i), i, 1, 7);
+(%o4)          a(1) a(2) a(3) a(4) a(5) a(6) a(7)
+(%i5) product (a(i), i, 1, n);
+                             n
+                           /===\
+                            ! !
+(%o5)                       ! !  a(i)
+                            ! !
+                           i = 1
+(%i6) product (k, k, 1, n);
+                               n
+                             /===\
+                              ! !
+(%o6)                         ! !  k
+                              ! !
+                             k = 1
+(%i7) product (k, k, 1, n), simpproduct;
+(%o7)                          n!
+(%i8) product (integrate (x^k, x, 0, 1), k, 1, n);
+                             n
+                           /===\
+                            ! !    1
+(%o8)                       ! !  -----
+                            ! !  k + 1
+                           k = 1
+(%i9) product (if k <= 5 then a^k else b^k, k, 1, 10);
+                              15  40
+(%o9)                        a   b
+@end example
+
+@end deffn
+
+@c NEEDS EXAMPLES
+@deffn {Funktion} realpart (@var{expr})
+Gibt den Realteil von @var{expr} zurück. 
+@code{realpart} und @code{imagpart} können auch bei
+Ausdrücken, die trigonometrische und hyperbolische Funktionen,
+Quadratwurzeln, Logarithmen oder Potenzen enthalten, angewendet werden.
+
+@end deffn
+
+@c NEEDS EXAMPLES
+@deffn {Funktion} rectform (@var{expr})
+Gibt einen Ausdruck @code{a + b %i} zurück, der @var{expr} äquivalent ist, 
+wobei @var{a} und @var{b} rein reell sind.
+
+@end deffn
+
+@deffn {Funktion} rembox (@var{expr}, unlabelled)
+@deffnx {Funktion} rembox (@var{expr}, @var{label})
+@deffnx {Funktion} rembox (@var{expr})
+Entfernt Boxen von @var{expr}.
+
+@code{rembox (@var{expr}, unlabelled)} entfernt alle 
+nicht gekennzeichnete Boxen von @var{expr}.
+
+@code{rembox (@var{expr}, @var{label})} entfernt nur Boxen, 
+die mit der Marke @var{label} gekennzeichnet sind.
+
+@code{rembox (@var{expr})} entfernt alle Boxen, 
+gekennzeichnete und nicht gekennzeichnete.
+
+Boxen werden durch die Funktionen @code{box}, @code{dpart} 
+und @code{lpart} gezeichnet.
+
+Beispiele:
+
+@c ===beg===
+@c expr: (a*d - b*c)/h^2 + sin(%pi*x);
+@c dpart (dpart (expr, 1, 1), 2, 2);
+@c expr2: lpart (BAR, lpart (FOO, %, 1), 2);
+@c rembox (expr2, unlabelled);
+@c rembox (expr2, FOO);
+@c rembox (expr2, BAR);
+@c rembox (expr2);
+@c ===end===
+@example
+(%i1) expr: (a*d - b*c)/h^2 + sin(%pi*x);
+                                  a d - b c
+(%o1)                sin(%pi x) + ---------
+                                      2
+                                     h
+(%i2) dpart (dpart (expr, 1, 1), 2, 2);
+                        """""""    a d - b c
+(%o2)               sin("%pi x") + ---------
+                        """""""      """"
+                                     " 2"
+                                     "h "
+                                     """"
+(%i3) expr2: lpart (BAR, lpart (FOO, %, 1), 2);
+                  FOO"""""""""""   BAR""""""""
+                  "    """"""" "   "a d - b c"
+(%o3)             "sin("%pi x")" + "---------"
+                  "    """"""" "   "  """"   "
+                  """"""""""""""   "  " 2"   "
+                                   "  "h "   "
+                                   "  """"   "
+                                   """""""""""
+(%i4) rembox (expr2, unlabelled);
+                                  BAR""""""""
+                   FOO"""""""""   "a d - b c"
+(%o4)              "sin(%pi x)" + "---------"
+                   """"""""""""   "    2    "
+                                  "   h     "
+                                  """""""""""
+(%i5) rembox (expr2, FOO);
+                                  BAR""""""""
+                       """""""    "a d - b c"
+(%o5)              sin("%pi x") + "---------"
+                       """""""    "  """"   "
+                                  "  " 2"   "
+                                  "  "h "   "
+                                  "  """"   "
+                                  """""""""""
+(%i6) rembox (expr2, BAR);
+                   FOO"""""""""""
+                   "    """"""" "   a d - b c
+(%o6)              "sin("%pi x")" + ---------
+                   "    """"""" "     """"
+                   """"""""""""""     " 2"
+                                      "h "
+                                      """"
+(%i7) rembox (expr2);
+                                  a d - b c
+(%o7)                sin(%pi x) + ---------
+                                      2
+                                     h
+@end example
+
+@end deffn
+
+@deffn {Funktion} sum (@var{expr}, @var{i}, @var{i_0}, @var{i_1})
+Stellt die Summe der Werte von @var{expr} dar, wobei der Index @var{i} 
+von @var{i_0} bis @var{i_1} läuft. 
+Die Substantivform @code{'sum} wird als großgeschriebener Buchstabe Sigma angezeigt.
+
+@code{sum} wertet den Summanden @var{expr} aus, ebenso die untere und 
+obere Grenze @var{i_0} bzw. @var{i_1}, dagegen quotiert (keine Auswertung)
+@code{sum} den Index @var{i}.
+
+Wenn die untere und obere Grenze sich durch eine ganze Zahl unterscheidet, 
+wird der Summand @var{expr} für jeden Wert des Summationsindex @var{i} ausgewertet, 
+und das Ergebnis ist eine explizite Summe. 
+
+Andernfalls ist der Bereich des Index unbestimmt. 
+Einige Regeln werden angewandt, um die Summe zu vereinfachen.
+Wenn die globale Variable @code{simpsum} @code{true} ist, 
+werden zusätzliche Regeln angewandt.
+In einigen Fällen liefert die Vereinfachung ein Ergebnis, das keine Summe ist; 
+andernfalls wird das Ergebnis in der Substantivform @code{'sum} 
+angegeben.
+
+@c MODIFIED HERE. SEE cauchysum. (VvN)
+Wenn der @code{evflag} (Auswertungsschalter) @code{cauchysum} und die 
+Optionsvariable @code{sumexpand} beide @code{true} sind, 
+wird ein Produkt von Summen i.A. als Cauchy-Produkt ausgedrückt. 
+In dem Cauchy-Produkt ist der Index der inneren Summe eher eine Funktion 
+des Index der äußeren Summe, als dass beide unabhängig variieren.
+     
+Die globale Variable @code{genindex} ist der alphabetische Präfix, 
+der verwendet wird, um den nächsten Index einer Summe zu erzeugen, 
+falls ein automatisch erzeugter Index benötigt wird.
+
+@code{gensumnum} ist ein numerischer Suffix, der verwendet wird, 
+um den nächsten Index einer Summe zu erzeugen, 
+falls ein automatisch erzeugter Index benötigt wird. 
+Wird @code{gensumnum} @code{false} gesetzt, ist der automatisch erzeugte 
+Index nur @code{genindex} ohne numerischen Suffix. 
+
+Siehe auch @code{sumcontract},  @code{sumexpand}, @code{intosum},
+@code{bashindices}, @code{niceindices},
+@code{nouns}, @code{evflag}, @code{cauchysum} und @code{zeilberger}.
+
+Beispiele:
+
+@c ===beg===
+@c sum (i^2, i, 1, 7);
+@c sum (a[i], i, 1, 7);
+@c sum (a(i), i, 1, 7);
+@c sum (a(i), i, 1, n);
+@c sum (2^i + i^2, i, 0, n);
+@c sum (2^i + i^2, i, 0, n), simpsum;
+@c sum (1/3^i, i, 1, inf);
+@c sum (1/3^i, i, 1, inf), simpsum;
+@c sum (i^2, i, 1, 4) * sum (1/i^2, i, 1, inf);
+@c sum (i^2, i, 1, 4) * sum (1/i^2, i, 1, inf), simpsum;
+@c sum (integrate (x^k, x, 0, 1), k, 1, n);
+@c sum (if k <= 5 then a^k else b^k, k, 1, 10);
+@c ===end===
+
+@example
+(%i1) sum (i^2, i, 1, 7);
+(%o1)                          140
+(%i2) sum (a[i], i, 1, 7);
+(%o2)           a  + a  + a  + a  + a  + a  + a
+                 7    6    5    4    3    2    1
+(%i3) sum (a(i), i, 1, 7);
+(%o3)    a(7) + a(6) + a(5) + a(4) + a(3) + a(2) + a(1)
+(%i4) sum (a(i), i, 1, n);
+                            n
+                           ====
+                           \
+(%o4)                       >    a(i)
+                           /
+                           ====
+                           i = 1
+(%i5) sum (2^i + i^2, i, 0, n);
+                          n
+                         ====
+                         \       i    2
+(%o5)                     >    (2  + i )
+                         /
+                         ====
+                         i = 0
+(%i6) sum (2^i + i^2, i, 0, n), simpsum;
+                              3      2
+                   n + 1   2 n  + 3 n  + n
+(%o6)             2      + --------------- - 1
+                                  6
+(%i7) sum (1/3^i, i, 1, inf);
+                            inf
+                            ====
+                            \     1
+(%o7)                        >    --
+                            /      i
+                            ====  3
+                            i = 1
+(%i8) sum (1/3^i, i, 1, inf), simpsum;
+                                1
+(%o8)                           -
+                                2
+(%i9) sum (i^2, i, 1, 4) * sum (1/i^2, i, 1, inf);
+                              inf
+                              ====
+                              \     1
+(%o9)                      30  >    --
+                              /      2
+                              ====  i
+                              i = 1
+(%i10) sum (i^2, i, 1, 4) * sum (1/i^2, i, 1, inf), simpsum;
+                                  2
+(%o10)                       5 %pi
+(%i11) sum (integrate (x^k, x, 0, 1), k, 1, n);
+                            n
+                           ====
+                           \       1
+(%o11)                      >    -----
+                           /     k + 1
+                           ====
+                           k = 1
+(%i12) sum (if k <= 5 then a^k else b^k, k, 1, 10);
+          10    9    8    7    6    5    4    3    2
+(%o12)   b   + b  + b  + b  + b  + a  + a  + a  + a  + a
+@end example
+
+@end deffn
+
+@deffn {Funktion} lsum (@var{expr}, @var{x}, @var{L})
+Stellt die Summe von @var{expr} für jedes Element @var{x} in @var{L} dar.
+Die Substantivform @code{'lsum} wird zurückgegeben, wenn das 
+Argument @var{L} nicht als Liste ausgewertet werden kann.
+
+Beispiele:
+
+@c ===beg===
+@c lsum (x^i, i, [1, 2, 7]);
+@c lsum (i^2, i, rootsof (x^3 - 1));
+@c ===end===
+@example
+(%i1) lsum (x^i, i, [1, 2, 7]);
+                            7    2
+(%o1)                      x  + x  + x
+(%i2) lsum (i^2, i, rootsof (x^3 - 1));
+                     ====
+                     \      2
+(%o2)                 >    i
+                     /
+                     ====
+                                   3
+                     i in rootsof(x  - 1)
+@end example
+
+@end deffn
+
+@deffn {Funktion} verbify (@var{f})
+Gibt die Verbform des Funktionsnamens @var{f} zurück.
+
+Siehe auch @code{verb}, @code{noun} und @code{nounify}.
+
+Beispiele:
+
+@c ===beg===
+@c verbify ('foo);
+@c :lisp $%
+@c nounify (foo);
+@c :lisp $%
+@c ===end===
+@example
+(%i1) verbify ('foo);
+(%o1)                          foo
+(%i2) :lisp $%
+$FOO
+(%i2) nounify (foo);
+(%o2)                          foo
+(%i3) :lisp $%
+%FOO
+@end example
+
+@end deffn
