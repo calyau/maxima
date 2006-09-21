@@ -9,7 +9,7 @@
 ;(in-package 'climax)
 
 ;;; To run in Schelter's Maxima comment the above and uncomment these:
-(in-package 'maxima)
+(in-package :maxima)
 (defmacro mexp-lookup (item alist) `(assolike ,item ,alist))
 (defmacro mlist* (arg1 &rest more-args) `(list* '(mlist simp) ,arg1 ,@more-args))
 
