@@ -81,7 +81,7 @@ Name: "{group}\Introduction"; Filename: "{app}\share\maxima\@VERSION@\doc\html\i
 Name: "{group}\Reference Manual"; Filename: "{app}\share\maxima\@VERSION@\doc\html\maxima_toc.html"; WorkingDir: "{app}\share\maxima\@VERSION@";  Components: "core"
 Name: "{group}\README"; Filename: "{app}\readme.txt"; Components: "core"
 
-Name: "{group}\wxMaxima"; Filename: "{app}\wxMaxima\wxMaxima.exe"; WorkingDir: "{app}";  Components: "wxmaxima"
+Name: "{group}\wxMaxima"; Filename: "{app}\wxMaxima\wxMaxima.exe"; WorkingDir: "{app}\wxMaxima";  Components: "wxmaxima"
 Name: "{group}\wxMaxima on the Web"; Filename: "{app}\wxMaxima\wxMaxima.url";  Components: "wxmaxima"
 Name: "{group}\wxMaxima Online Forum"; Filename: "{app}\wxMaxima\Forum.url";  Components: "wxmaxima"
 Name: "{userdesktop}\wxMaxima"; Filename: "{app}\wxMaxima\wxMaxima.exe"; MinVersion: 4,4; Tasks: wxmdesktopicon; WorkingDir: "{app}\wxMaxima";  Components: "wxmaxima"
