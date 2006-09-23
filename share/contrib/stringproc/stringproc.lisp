@@ -25,6 +25,7 @@
    (open 
       (l-string file)
       :direction :output  
+      :if-exists :supersede
       :if-does-not-exist :create))
 
 (defun $opena (file) 
