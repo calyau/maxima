@@ -23,8 +23,8 @@ printf(false, control, 'true, [1, 2, 3], 42)$
   and a list:       one two three 
   and an integer:   42
 "$
-printf(false, "~s ~a ~4f ~a ~@r", "String", sym, bound, sqrt(8), 144), bound = 1.234;
-"String sym 1.23 2*sqrt(2) CXLIV"$
+printf(false, "~s ~a ~4f ~a ~@r", "String", sym, bound, sqrt(12), 144), bound = 1.234;
+"String sym 1.23 2*sqrt(3) CXLIV"$
 printf(false, "~{~a ~}", ["one", 2, "THREE"]);
 "one 2 THREE "$
 printf(false, "~{~{~9,1f ~}~%~}", mat), mat = args(matrix([1.1, 2, 3.33], [4, 5, 6], [7, 8.88, 9]))$
