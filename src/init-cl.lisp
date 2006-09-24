@@ -214,9 +214,11 @@
   (let (locale language territory codeset)
     (setq cl-info::*index-name* "index")
     (unless  (setq *maxima-lang-subdir* (maxima-getenv "MAXIMA_LANG_SUBDIR"))
-	(setq locale (or (maxima-getenv "LC_ALL")
-                         (maxima-getenv "LC_MESSAGES")
-                         (maxima-getenv "LANG")))
+      (setq locale
+            (or
+              (let ((x (maxima-getenv "LC_ALL"))) (if (and x (not (equal x ""))) x))
+              (let ((x (maxima-getenv "LC_MESSAGES"))) (if (and x (not (equal x ""))) x))
+              (let ((x (maxima-getenv "LANG"))) (if (and x (not (equal x ""))) x))))
 	(cond
 	    ((or (null locale) (equal locale ""))
 		(setq *maxima-lang-subdir* nil))
