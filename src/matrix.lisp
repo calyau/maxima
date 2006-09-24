@@ -678,7 +678,7 @@
 
 
 (defun $list_matrix_entries (m)
-  (or ($matrixp m) (error "not a matrix"))
+  (or ($matrixp m) (merror "The argument to 'list_matrix_entries' must be a matrix"))
   (cons (if (null (cdr m)) '(mlist) (caadr m))
 	(loop for row in (cdr m) append (cdr row))))
 
