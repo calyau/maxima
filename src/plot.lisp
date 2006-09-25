@@ -1137,10 +1137,20 @@ setrgbcolor} def
     (format nil "~a/~a" *maxima-tempdir* file)
     file))
 
-(defun gnuplot-print-header (dest &key log-x log-y)
+(defun gnuplot-print-header (dest &key log-x log-y const-expr)
   (let ((gnuplot-out-file nil))
-    (if ($get_plot_option '$gnuplot_pm3d 2)
-        (format dest "set pm3d~%"))
+
+    (when ($get_plot_option '$gnuplot_pm3d 2)
+        (format dest "set pm3d~%")
+        ; ----- BEGIN GNUPLOT 4.0 WORK-AROUND -----
+        ; When the expression to be plotted is a constant, Gnuplot fails with a division by 0.
+        ; Explicitly assigning cbrange prevents the error. Also set zrange to match cbrange.
+        ; When the bug is fixed in Gnuplot (maybe 4.1 ?) this hack can go away.
+        (when (floatp const-expr)
+          (format dest "set cbrange [~a : ~a]~%" (1- const-expr) (1+ const-expr))
+          (format dest "set zrange [~a : ~a]~%" (1- const-expr) (1+ const-expr))))
+        ; -----  END GNUPLOT 4.0 WORK-AROUND  -----
+
     (if ($get_plot_option '$gnuplot_out_file 2)
         (setf gnuplot-out-file (get-plot-option-string '$gnuplot_out_file)))
     ;; default output file name for for all formats except default
@@ -1953,6 +1963,7 @@ setrgbcolor} def
                 colour-z grid
                 plot-format gnuplot-term gnuplot-out-file file
                 orig-fun
+                const-expr
                 )
   (declare (special *original-points*))
   (setf orig-fun fun)
@@ -1987,8 +1998,21 @@ setrgbcolor} def
                       (nth 1 fun)
                       (nth 2 fun)
                       (nth 3 fun)))
+         ; ----- BEGIN GNUPLOT 4.0 WORK-AROUND -----
+         (when ($constantp (nth 3 fun))
+           (setq const-expr (let (($numer t)) (meval (nth 3 fun))))
+           (if ($numberp const-expr)
+             (setq const-expr ($float const-expr))))
+         ; -----  END GNUPLOT 4.0 WORK-AROUND  -----
          (setq fun '$zero_fun))
-        (t (setq fun (coerce-float-fun fun lvars))))
+        (t
+          ; ----- BEGIN GNUPLOT 4.0 WORK-AROUND -----
+          (when ($constantp fun)
+           (setq const-expr (let (($numer t)) (meval fun)))
+           (if ($numberp const-expr)
+             (setq const-expr ($float const-expr))))
+          ; -----  END GNUPLOT 4.0 WORK-AROUND  -----
+          (setq fun (coerce-float-fun fun lvars))))
   (let* ((pl (draw3d fun
                      (nth 2 xrange)
                      (nth 3 xrange)
@@ -2026,7 +2050,7 @@ setrgbcolor} def
                         )
                 (output-points pl nil)))
              ($gnuplot
-              (gnuplot-print-header $pstream)
+              (gnuplot-print-header $pstream :const-expr const-expr)
               (let ((title (get-plot-option-string '$gnuplot_curve_titles 1))
                     (plot-name
                      (let ((string (coerce (mstring orig-fun) 'string)))
