@@ -29,26 +29,24 @@ spar!malcolm@decwrl.dec.com (malcolm) sun/lucid
 raible@orville.nas.nasa.gov (Eric Raible on iris(kcl))
 fateman@peoplesparc.Berkeley.EDU (Richard Fateman)
 
-As of November, 2001, the Maxima project is now supported by the work
-of a team of people led by James Amundson and Richard Fateman.
+In November, 2001, the Maxima project moved to the Sourceforge
+project hosting site.
 
-The Maxima developers are:
+As of September 2006, the Maxima developers are:
 
 James Amundson
 Jorge Barros de Abreu
 Jay Belanger
 David Billinghurst
-Mike Clarkson
+Douglas Crosher
 Robert Dodier
-Steve Horne
+Andrey Grozin
+Yasuaki Honda
 Wolfgang Jenkner
 Stavros Macrakis
 Camm Maguire
-Judah Milgram
 Volker van Nek
-Paulo Ney de Souza
 Mario Rodriguez Riotorto
-Sergey Semerikov
 Dan Stanger
 Viktor Toth
 Raymond Toy
@@ -58,13 +56,20 @@ Barton Willis
 Cliff Yapp
 Vadim V. Zhytnikov
 
-Maxima include contributions from:
+Former developers as of September 2006:
+
+Mike Clarkson
+Steve Horne
+Judah Milgram
+Paulo Ney de Souza
+Sergey Semerikov
+
+Maxima also includes contributions from:
 
 Juan Pablo Hierro Álvarez
 Fedor Bezrukov
 Fabrizio Caruso
 Gosei Furuya
-Andrey Grozin
 Tim Moore
 Salvador Bosch Pérez
 Valerij Pipin
