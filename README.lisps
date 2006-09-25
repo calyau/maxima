@@ -7,6 +7,8 @@ been fully tested.
 Ports to other ANSI Common Lisps should be straightforward
 and are welcome; please post a message on the Maxima mailing list
 if you are interested in working on a port.
+See also the ports page at the Maxima wiki:
+http://maxima.sourceforge.net/wiki/index.php?Maxima%20ports
 
 When Maxima is recompiled, the Lisp implementation is selected by
 an argument of the form `--enable-foolisp' for the configure script.

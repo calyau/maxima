@@ -1,3 +1,57 @@
+Release notes for Maxima 5.10.0 (notes compiled 2006/09/10)
+See ChangeLog-5.10.0 for a more detailed list
+
+ * Expand and revise Maxima reference manual (all languages)
+
+ * Maxima Windows installer bundles wxMaxima user interface
+
+ * Fast integer factorization (function ifactors and friends)
+
+ * Improvements to plotting functions
+
+ * Improvements to Xmaxima user interface
+
+ * Several bug fixes to definite integral functions
+
+ * Several new add-on packages
+
+ * Many minor improvements
+
+ * Many bug fixes
+
+
+-----------------------------------------------------------
+Release notes for Maxima 5.9.3 (notes compiled 2006/03/22)
+See ChangeLog-5.9.3 for a more detailed list
+
+ * Expand build system to handle internationalization for Spanish
+   and Portuguese. UTF-8 and Latin-1 locales are supported by
+   Maxima if the underlying Lisp implementation supports the
+   locales. See README.i18n
+
+ * Revision and expansion of linear algebra functions
+   (share/linearalgebra)
+
+ * Revisions of floating-point function evaluation (sqrt,
+   trigonometric functions)
+
+ * Replace existing definition of conjugate with a much more
+   extensive implementation
+
+ * Revision of evaluation and simplification of sum and product
+
+ * Revision and expansion of reference manual (English, Spanish,
+   and Portuguese)
+
+ * Bring Spanish and Portuguese translations of reference manual
+   into the on-line help system
+
+ * New add-on packages
+
+ * Bug fixes 
+
+
+-----------------------------------------------------------
 Release notes for Maxima 5.9.2 (2005/10/11)
 See ChangeLog-5.9.2 for a more detailed list
 
@@ -22,6 +76,7 @@ See ChangeLog-5.9.2 for a more detailed list
 (9) Miscellaneous bug fixes
 
 (10) Various source code clean-ups
+
 
 -----------------------------------------------------------
 These are the release notes for Maxima 5.9.1. For a detailed list of
