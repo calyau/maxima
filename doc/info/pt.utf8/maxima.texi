@@ -451,7 +451,7 @@ Depurando
 
 augmented_lagrangian
 
-* Definitions for augmented_lagrangian::
+* Defini@value{cedilha}@value{o_til}es para augmented_lagrangian::
 
 bode
 
