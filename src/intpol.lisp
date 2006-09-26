@@ -31,6 +31,14 @@
 (or (boundp '$find_root_rel) (setq $find_root_rel 0.0))
 (or (boundp '$find_root_error) (setq $find_root_error t))
 
+(defmspec $interpolate (form)
+  (format t
+"NOTE: The interpolate function has been renamed to find_root.
+The variables intpolabs, intpolrel, and intpolerror have been renamed
+to find_root_abs, find_root_rel, and find_root_error, respectively.
+Perhaps you meant to enter `~a'.~%" (print-invert-case (implode (mstring `(($find_root) ,@ (cdr form))))))
+  '$done)
+
 (defun $find_root_subr (f left right)
   (bind-tramp1$
    f f
