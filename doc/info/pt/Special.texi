@@ -6,8 +6,7 @@
 * Defini@value{cedilha}@value{o_til}es para Fun@value{cedilha}@value{o_til}es Especiais::  
 @end menu
 
-@node Introdu@value{cedilha}@~ao a Fun@value{cedilha}@value{o_til}es Especiais, specint, Fun@value{cedilha}@value{o_til}es Especiais,
-Fun@value{cedilha}@value{o_til}es Especiais
+@node Introdu@value{cedilha}@~ao a Fun@value{cedilha}@value{o_til}es Especiais, specint, Fun@value{cedilha}@value{o_til}es Especiais, Fun@value{cedilha}@value{o_til}es Especiais
 @section Introdu@value{cedilha}@~ao a Fun@value{cedilha}@value{o_til}es Especiais
 
 @c CAN'T FIND ANY SIGN OF THIS FUNCTION 
@@ -18,8 +17,7 @@ Fun@value{cedilha}@value{o_til}es Especiais
 @c 
 @c @end deffn
 
-@node specint, Defini@value{cedilha}@value{o_til}es para Fun@value{cedilha}@value{o_til}es Especiais, Introdu@value{cedilha}@~ao a
-Fun@value{cedilha}@value{o_til}es Especiais, Fun@value{cedilha}@value{o_til}es Especiais
+@node specint, Defini@value{cedilha}@value{o_til}es para Fun@value{cedilha}@value{o_til}es Especiais, Introdu@value{cedilha}@~ao a Fun@value{cedilha}@value{o_til}es Especiais, Fun@value{cedilha}@value{o_til}es Especiais
 
 @c OK, THIS IS A BIT OF A COMPLICATED SITUATION:
 @c SOME SPECIAL FUNCTIONS ARE DEFINED IN src/hypgeo.lisp INCLUDING specint,
@@ -89,8 +87,7 @@ Esse @'e um trabalho em andamento.  Alguns nomes de fun@,{c}@~oes podem mudar.
 @c COPY SOME OF THOSE EXAMPLES INTO THIS DOCUMENT
 
 @c end concepts Fun@value{cedilha}@value{o_til}es Especiais
-@node Defini@value{cedilha}@value{o_til}es para Fun@value{cedilha}@value{o_til}es Especiais,  , specint, Fun@value{cedilha}@value{o_til}es
-Especiais
+@node Defini@value{cedilha}@value{o_til}es para Fun@value{cedilha}@value{o_til}es Especiais,  , specint, Fun@value{cedilha}@value{o_til}es Especiais
 @section Defini@value{cedilha}@value{o_til}es para Fun@value{cedilha}@value{o_til}es Especiais
 
 @c airy IS IN THE bessel PACKAGE. ai, bi, ETC ARE IN THE airy PACKAGE.
