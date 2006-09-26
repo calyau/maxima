@@ -37,7 +37,7 @@ the vertical coordinates are the corresponding values @var{y(n)} of the
 sequence defined by the recurrence relation
 @ifnottex
 @example
-	y(n+1) = F(y(n))
+        y(n+1) = F(y(n))
 @end example
 @end ifnottex
 @tex
@@ -57,7 +57,7 @@ sequence of points defined by the two-dimensional discrete dynamical
 system with recurrence relations
 @ifnottex
 @example
-	x(n+1) = F(x(n), y(n))    y(n+1) = G(x(n), y(n))
+        x(n+1) = F(x(n), y(n))    y(n+1) = G(x(n), y(n))
 @end example
 @end ifnottex
 @tex
@@ -147,7 +147,7 @@ Draws a staircase diagram for the sequence defined by the recurrence
 relation
 @ifnottex
 @example
-	y(n+1) = F(y(n))
+        y(n+1) = F(y(n))
 @end example
 @end ifnottex
 @tex
@@ -252,7 +252,7 @@ depends on the monitor and the resolution being used.
 Orbits diagram for the quadratic map
 @ifnottex
 @example
-	y(n+1) = x + y(n)^2
+        y(n+1) = x + y(n)^2
 @end example
 @end ifnottex
 @tex
