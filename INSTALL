@@ -1,11 +1,61 @@
+MAXIMA BUILD AND INSTALL INSTRUCTIONS
+
+INTRODUCTION
+============
+
 Maxima is written in Common Lisp. For details about supported Common
 Lisp implementations, please see the file README.lisps.
 
-Maxima has two options for building: a purely lisp-based system and
-GNU Autotools. The latter provides a standard unix-like build and
-install procedure. The former is more portable to non-unix-like
-systems, i.e., Windows. The purely lisp-based procedure is described
-in INSTALL.lisp. The GNU Autools system is described below.
+Maxima can be built in three ways.
+
+(1) Lisp-only build
+    
+    Lisp-only build is suitable for systems lacking GNU Autotools,
+    e.g. MS Windows systems. Lisp-only build creates a Maxima
+    executable image, but it does not create the Maxima texinfo
+    documentation, it does not adjust various pathnames and other
+    environmental variables in the maxima and xmaxima scripts,
+    it does not install Gnuplot, and it does not create an 
+    installer file (neither RPM or Windows installer).
+
+(2) Win32 build and install
+
+    Win32 build and install is suitable for MS Windows systems
+    with GNU Autotools (Mingw or otherwise).
+
+(3) Unix GNU Autotools build and install
+
+    Unix GNU Autotools build and install is suitable for Unix and
+    Unix-like systems (e.g. Linux) with GNU Autotools.
+
+
+LISP-ONLY BUILD
+===============
+
+See: INSTALL.lisp
+
+
+WIN32 BUILD AND INSTALL
+=======================
+
+See: INSTALL.win32
+
+
+UNIX GNU AUTOTOOLS BUILD AND INSTALL
+===============================
+
+CONFIGURE SCRIPT IS ABSENT
+--------------------------
+
+Execute ``sh bootstrap'' to create the Maxima configure script.
+(configure is absent if the source code is obtained directly
+from CVS instead of rpm or tar.gz release file.)
+
+
+CONFIGURE SCRIPT IS PRESENT
+---------------------------
+
+``./configure --help'' prints information about configuration options.
 
 To build with GNU Autotools using the default options, type
 	./configure
