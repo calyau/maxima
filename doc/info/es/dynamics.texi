@@ -134,7 +134,7 @@ iniciales para esas variables ser@'an @var{init1}, @var{init2}, ...,
 definida por la opci@'on @code{domain}, como en el caso
 anterior. @var{EDO1}, ..., @var{EDOm} son las expresiones que definen
 las derivadas de cada una de las variables dependientes en funci@'on de
-la variable independiente. Las @unicas variables que pueden aparecer en
+la variable independiente. Las @'unicas variables que pueden aparecer en
 cada una de esas expresiones son la variable independiente y cualquiera
 de las variables dependientes. Es importante que las derivadas
 @var{EDO1}, ..., @var{EDOm} sean colocadas en la lista en el mismo orden
