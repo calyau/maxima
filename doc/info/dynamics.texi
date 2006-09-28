@@ -22,10 +22,10 @@ To use the functions in this package you must first load it with
 Implements the so-called chaos game: the initial point (@var{x0},
 @var{y0}) is plotted and then one of the @var{m} points
 @code{[}@var{x1}, @var{y1}@code{]}...@code{[}@var{xm}, @var{ym}@code{]}
-will be selected at random. The next point plotted will be in the
-segment from the previous point to the point chosen randomly, at a
-fraction @var{b} of the distance from the random point. The procedure is
-repeated @var{n} times.
+will be selected at random. The next point plotted will be on the
+segment from the previous point plotted to the point chosen randomly, at a
+distance from the random point which will be @var{b} times that segment's
+length. The procedure is repeated @var{n} times.
 
 @end deffn
 
@@ -109,11 +109,11 @@ The first form solves numerically one first-order ordinary differential
 equation, and the second form solves a system of m of those equations,
 using the 4th order Runge-Kutta method. var represents the dependent
 variable. ODE must be an expression that depends only on the independent
-and dependent variables and represents the derivative of the dependent
+and dependent variables and defines the derivative of the dependent
 variable with respect to the independent variable.
 
 The independent variable is specified with @code{domain}, which must be a
-list of four elements such as:
+list of four elements as, for instance:
 @example
 [t, 0, 10, 0.1]
 @end example
@@ -126,18 +126,23 @@ If @var{m} equations are going to be solved, there should be @var{m}
 dependent variables @var{v1}, @var{v2}, ..., @var{vm}. The initial values
 for those variables will be @var{init1}, @var{init2}, ..., @var{initm}.
 There will still be just one independent variable defined by @code{domain},
-as in the previous case. @var{ODE1}, ..., @var{ODEm}
-are the expressions for the derivatives of each dependent variable in
+as in the previous case. @var{ODE1}, ..., @var{ODEm} are the expressions
+that define the derivatives of each dependent variable in
 terms of the independent variable. The only variables that may appear in
 those expressions are the independent variable and any of the dependent
-variables.
+variables. It is important to give the derivatives @var{ODE1}, ...,
+@var{ODEm} in the list in exactly the same order used for the dependent
+variables; for instance, the third element in the list will be interpreted
+as the derivative of the third dependent variable.
 
-The result will be a list of lists with @var{m}+1 elements. Those @var{m}+1
-elements will be the value of the independent variable, followed by the
-values of the dependent variables corresponding to that point in the interval
-of integration. If at some point one of the variables becomes too large,
-the list will stop there. Otherwise, the list will extend until the last
-value of the independent variable specified by @code{domain}.
+The program will try to integrate the equations from the initial value
+of the independent variable until its last value, using constant
+increments. If at some step one of the dependent variables takes an
+absolute value too large, the integration will be interrupted at that
+point. The result will be a list with as many elements as the number of
+iterations made. Each element in the results list is itself another list
+with @var{m}+1 elements: the value of the independent variable, followed
+by the values of the dependent variables corresponding to that point.
 
 @end deffn
 
@@ -168,12 +173,13 @@ is reached.
 
 @b{Options}
 
-The options accepted by the functions that plot graphs are:
+The options accepted by the functions in this package that plot graphs are:
 
 @itemize @bullet
 @item
-Option: @code{domain} sets the minimum and maximum values for the plot of the
-function  @var{F} shown by @code{staircase}.
+Option: @code{domain} sets the minimum and maximum values for the
+independent variable in the plot of the function @var{F} shown by
+@code{staircase}.
 @example
 [domain, -2, 3.5]
 @end example
@@ -193,14 +199,15 @@ Option: @code{xaxislabel} is a label to put on the horizontal axis.
 @end example
 
 @item
-Option: @code{xcenter} is the x coordinate of the point at the center of
-the plot. This option is not used by the function @code{orbits}.
+Option: @code{xcenter} is the x coordinate of the point that should
+appear at the center of the plot. This option is not used by the
+function @code{orbits}.
 @example
 [xcenter,3.45]
 @end example
 
 @item
-Option: @code{xradius} is half of the length of the range of values that
+Option: @code{xradius} is half of the length of the interval of values that
 will be shown in the x direction. This option is not used by the
 function @code{orbits}.
 @example
@@ -214,8 +221,8 @@ Option: @code{yaxislabel} is a label to put on the vertical axis.
 @end example
 
 @item
-Option: @code{ycenter} is the y coordinate of the point at the center of
-the plot.
+Option: @code{ycenter} is the y coordinate of the point that should
+appear at the center of the plot.
 @example
 [ycenter,4.5]
 @end example
@@ -247,7 +254,8 @@ Graphical representation and staircase diagram for the sequence:
 
 If your system is slow, you'll have to reduce the number of iterations in
 the following examples. And the pointsize that gives the best results
-depends on the monitor and the resolution being used.
+depends on the monitor and the resolution being used. You should
+experiment using different values.
 
 Orbits diagram for the quadratic map
 @ifnottex
@@ -361,7 +369,7 @@ To solve numerically the system:
 $$\cases{{\displaystyle{dx}\over\displaystyle{dt}} = 4-x^2-4y^2 &\cr &\cr {\displaystyle{dy}\over\displaystyle{dt}} = y^2-x^2+1}$$
 @end tex
 
-for t between 0 and 4, and with values of -1.25 and 0.75 for x and y at t=0
+for t between 0 and 4, and with values of -1.25 and 0.75 for x and y at t=0:
 
 @example
 (%i21) sol: rk([4-x^2-4*y^2,y^2-x^2+1],[x,y],[-1.25,0.75],[t,0,4,0.02])$
