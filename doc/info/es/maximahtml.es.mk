@@ -78,6 +78,7 @@ MAXIMAESHTML += maxima_7.html
 MAXIMAESHTML += maxima_80.html
 MAXIMAESHTML += maxima_81.html
 MAXIMAESHTML += maxima_82.html
+MAXIMAESHTML += maxima_83.html
 MAXIMAESHTML += maxima_8.html
 MAXIMAESHTML += maxima_9.html
 MAXIMAESHTML += maxima_abt.html
