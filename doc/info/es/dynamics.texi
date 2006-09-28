@@ -18,7 +18,7 @@ cargarlo con @code{load("dynamics")}.
 @node Definiciones para dynamics,  , Introducci@'on a dynamics, dynamics
 @section Definiciones para dynamics
 
-@deffn {Funci@'on} chaosgame (@code{[[}@var{x1}, @var{y1}@code{]}...@code{[}@var{xm}, @var{ym}@code{]]}, @code{[}@var{x0}, @var{y0}@code{]}, @var{b}, @var{n}, ...options...);
+@deffn {Funci@'on} chaosgame (@code{[[}@var{x1}, @var{y1}@code{]}...@code{[}@var{xm}, @var{ym}@code{]]}, @code{[}@var{x0}, @var{y0}@code{]}, @var{b}, @var{n}, ...opciones...);
 
 Usa el m@'etodo llamado juego del caos, para producir fractales: se dibuja
 un punto inicial (@var{x0}, @var{y0}) y luego se elije aleatoriamente uno
@@ -30,7 +30,7 @@ elegir aleatoriamente, a una distancia del punto elegido que ser@'a
 
 @end deffn
 
-@deffn {Funci@'on} evolution (@var{F}, @var{y0}, @var{n},...options...);
+@deffn {Funci@'on} evolution (@var{F}, @var{y0}, @var{n},...opciones...);
 
 Dibuja @var{n+1} puntos en una gr@'afica bidimensional (serie de
 tiempo), en que las coordenadas horizontales de los puntos son los
@@ -52,7 +52,7 @@ expresi@'on que dependa @'unicamente de la variable @var{y} (y no de @var{n}),
 
 @end deffn
 
-@deffn {Funci@'on} evolution2d (@code{[}@var{F}, @var{G}@code{]}, @code{[}@var{x0}, @var{y0}@code{]}, @var{n}, ...options...);
+@deffn {Funci@'on} evolution2d (@code{[}@var{F}, @var{G}@code{]}, @code{[}@var{x0}, @var{y0}@code{]}, @var{n}, ...opciones...);
 
 Muestra, en una gr@'afica bidimensional, los primeros @var{n+1} puntos de
 la sucesi@'on definida a partir del sistema din@'amico discreto con
@@ -71,7 +71,7 @@ expresiones que dependan @'unicamente de @var{x} y @var{y}.
 
 @end deffn
 
-@deffn {Funci@'on} ifs (@code{[}@var{r1},...,@var{rm}@code{]},@code{[}@var{A1},...,@var{Am}@code{]}, @code{[[}@var{x1},@var{y1}@code{]}...@code{[}@var{xm}, @var{ym}@code{]]}, @code{[}@var{x0},@var{y0}@code{]}, @var{n}, ...options...);
+@deffn {Funci@'on} ifs (@code{[}@var{r1},...,@var{rm}@code{]},@code{[}@var{A1},...,@var{Am}@code{]}, @code{[[}@var{x1},@var{y1}@code{]}...@code{[}@var{xm}, @var{ym}@code{]]}, @code{[}@var{x0},@var{y0}@code{]}, @var{n}, ...opciones...);
 
 Usa el m@'etodo del Sistema de Funciones Iteradas (IFS, en ingl@'es
 Iterated Function System). Ese m@'etodo es semejante al m@'etodo descrito
@@ -89,7 +89,7 @@ cualquier otro grupo de n@'umeros que tengan la misma proporci@'on.
 
 @end deffn
 
-@deffn {Funci@'on} orbits (@var{F}, @var{y0}, @var{n1}, @var{n2}, [@var{x}, @var{x0}, @var{xf}, @var{xstep}], ...options...);
+@deffn {Funci@'on} orbits (@var{F}, @var{y0}, @var{n1}, @var{n2}, [@var{x}, @var{x0}, @var{xf}, @var{xstep}], ...opciones...);
 
 Dibuja el diagrama de @'orbitas de una familia de sistemas din@'amicos
 discretos unidimensionales, con un par@'ametro @var{x}; ese tipo de diagrama
@@ -97,7 +97,7 @@ se usa para mostrar las bifurcaciones de un sistema discreto unidimensional.
 
 La funci@'on @var{F(y)} define una secuencia que comienza con un valor
 inicial @var{y0}, igual que en el caso de la funci@'on @code{evolution}, pero
-en este caso la funci@'on tambi@'en depender@'a del para@'ametro @var{x},
+en este caso la funci@'on tambi@'en depender@'a del par@'ametro @var{x},
 el cual tomar@'a valores comprendidos en el intervalo de @var{x0} a @var{xf},
 con incrementos @var{xstep}. Cada valor usado para el par@'ametro @var{x} se
 muestra en el eje horizontal. En el eje vertical se mostrar@'an @var{n2}
@@ -106,18 +106,18 @@ despu@'es de dejarla evolucionar durante @var{n1} iteraciones iniciales.
 
 @end deffn
 
-@deffn {Funci@'on} rk (EDO, var, initial, domain)
-@deffnx {Funci@'on} rk ([EDO1,...,EDOm], [v1,...,vm], [init1,...,initm], domain)
+@deffn {Funci@'on} rk (EDO, var, inicial, dominio)
+@deffnx {Funci@'on} rk ([EDO1,...,EDOm], [v1,...,vm], [inic1,...,inicm], dominio)
 
 La primera forma se usa para resolver num@'ericamente una ecuaci@'on
 diferencial ordinaria de primer orden (EDO), y la segunda forma resuelve
-num@'ericamente un sistema de m de esas ecuaciones, usando el m@'etodo
-de Runge-Kutta de cuarto orden. var representa la variable dependiente.
+num@'ericamente un sistema de @var{m} de esas ecuaciones, usando el m@'etodo
+de Runge-Kutta de cuarto orden. @var{var} representa la variable dependiente.
 EDO debe ser una expresi@'on que dependa @'unicamente de las variables
-independiente y dependente, y define la derivada de la variable dependente
+independiente y dependente, y define la derivada de la variable dependiente
 en funci@'on de la variable independiente.
 
-La variable independiente se representa con @code{domain}, que debe ser
+La variable independiente se representa con @var{dominio}, que debe ser
 una lista con cuatro elementos, como por ejemplo:
 @example
 [t, 0, 10, 0.1]
@@ -129,18 +129,18 @@ deber@'an ser usados dentro de ese intervalo.
 
 Si se van a resolver @var{m} ecuaciones, deber@'a haber @var{m}
 variables dependientes @var{v1}, @var{v2}, ..., @var{vm}. Los valores
-iniciales para esas variables ser@'an @var{init1}, @var{init2}, ...,
-@var{initm}. Continuar@'a existiendo apenas una variable independiente
-definida por la opci@'on @code{domain}, como en el caso
-anterior. @var{EDO1}, ..., @var{EDOm} son las expresiones que definen
-las derivadas de cada una de las variables dependientes en funci@'on de
-la variable independiente. Las @'unicas variables que pueden aparecer en
-cada una de esas expresiones son la variable independiente y cualquiera
-de las variables dependientes. Es importante que las derivadas
-@var{EDO1}, ..., @var{EDOm} sean colocadas en la lista en el mismo orden
-en que fueron agrupadas las variables dependientes; por ejemplo, el
-tercer elemento de la lista ser@'a interpretado como la derivada de la
-tercera variable dependiente.
+iniciales para esas variables ser@'an @var{inic1},
+@var{inic2}, ..., @var{inicm}. Continuar@'a existiendo apenas una
+variable independiente definida por la lista @var{domain}, como en
+el caso anterior. @var{EDO1}, ..., @var{EDOm} son las expresiones que
+definen las derivadas de cada una de las variables dependientes en
+funci@'on de la variable independiente. Las @'unicas variables que
+pueden aparecer en cada una de esas expresiones son la variable
+independiente y cualquiera de las variables dependientes. Es importante
+que las derivadas @var{EDO1}, ..., @var{EDOm} sean colocadas en la lista
+en el mismo orden en que fueron agrupadas las variables dependientes;
+por ejemplo, el tercer elemento de la lista ser@'a interpretado como la
+derivada de la tercera variable dependiente.
 
 El programa intenta integrar las ecuaciones desde el valor inicial de la
 variable independiente, hasta el valor final, usando incrementos
@@ -168,7 +168,7 @@ $$y_{n+1} = F(y_n)$$
 @end tex
 
 La interpretaci@'on y valores permitidos de los par@'ametros de entrada
-es la misma que para la fucnci@'on @code{evolution}. Un diagrama de
+es la misma que para la funci@'on @code{evolution}. Un diagrama de
 escalera consiste en una gr@'afica de la funci@'on @var{F(y)}, junto con
 la recta @var{G(y)} @code{=} @var{y}. Se comienza por dibujar un
 segmento vertical desde el punto (@var{y0}, @var{y0}) en la recta, hasta
@@ -187,7 +187,7 @@ gr@'aficas son:
 @itemize @bullet
 @item
 Opci@'on: @code{domain} especifica los valores m@'inimo y m@'aximo de la
-variable independiente para la gr@'afica de la funci@'on @var{F} shown 
+variable independiente para la gr@'afica de la funci@'on @var{F}
 representada por @code{staircase}.
 @example
 [domain, -2, 3.5]
@@ -249,7 +249,7 @@ valores de y que ser@'a representado.
 
 @b{Ejemplos}
 
-Representaci@'on gra@'afica y diagrama de escalera de la secuencia:
+Representaci@'on gr@'afica y diagrama de escalera de la secuencia:
 2, cos(2), cos(cos(2)),...
 
 @example
@@ -297,7 +297,7 @@ abajo, cerca de x @code{=} -1.25 use el comando:
 @image{../figures/dynamics4,8cm}
 @end ifnotinfo
 
-Evolucio@'n de un sistema en dos dimensiones, que conduce a un fractal:
+Evoluci@'on de un sistema en dos dimensiones, que conduce a un fractal:
 
 @example
 (%i6) f: 0.6*x*(1+2*x)+0.8*y*(x-1)-y^2-0.9$
