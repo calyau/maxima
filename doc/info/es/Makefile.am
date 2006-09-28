@@ -22,7 +22,7 @@ ggf.texi            impdiff.texi                   interpol.texi       lindstedt
 linearalgebra.texi  lsquares.texi                  makeOrders.texi     mnewton.texi \
 numericalio.texi    opsubst.texi                   orthopoly.texi      plotdf.texi \
 simplex.texi        simplifications.texi           solve_rec.texi      stirling.texi \
-stringproc.texi     unit.texi                      zeilberger.texi 
+stringproc.texi     unit.texi                      zeilberger.texi     dynamics.texi
 
 
 
