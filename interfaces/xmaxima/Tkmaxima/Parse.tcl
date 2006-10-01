@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Parse.tcl,v 1.6 2006-07-30 19:22:20 villate Exp $
+#       $Id: Parse.tcl,v 1.7 2006-10-01 23:58:30 villate Exp $
 #
 ###### Parse.tcl ######
 ############################################################
@@ -152,7 +152,9 @@ proc emit { s args } {
     }
 }
 
-proc getExpr { } { getExprn 0 }
+proc getExpr { } {
+    getExprn 0
+}
 
 proc getExprn { n } {
     global Parser

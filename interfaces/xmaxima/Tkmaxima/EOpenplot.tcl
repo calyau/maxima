@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: EOpenplot.tcl,v 1.5 2004-10-13 12:08:57 vvzhy Exp $
+#       $Id: EOpenplot.tcl,v 1.6 2006-10-01 23:58:29 villate Exp $
 #
 ###### EOpenplot.tcl ######
 ############################################################
@@ -143,7 +143,9 @@ proc getDimensions { w name } {
 }
 
 
-proc insertResult_openplot {w args } { puts "insert=[$w index insert]"  }
+proc insertResult_openplot {w args } {
+    puts "insert=[$w index insert]" 
+}
 
 proc ShowPlotWindow { w name thisRange resultRange desired } {
     if { "[winfo toplevel $w]" != "[winfo toplevel $name]" } {

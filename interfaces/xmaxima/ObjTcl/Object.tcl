@@ -1,6 +1,6 @@
 # -*- mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#	$Id: Object.tcl,v 1.2 2002-09-19 16:13:50 mikeclarkson Exp $
+#	$Id: Object.tcl,v 1.3 2006-10-01 23:59:47 villate Exp $
 #
 # Original Id: object.tcl,v 1.7 1995/02/10 08:32:50 sls Exp sls
 #
@@ -217,13 +217,17 @@ proc object_frame {name spec} {
     # need to transfer option database from Frame to widget?
     object_define_creator frame $name $spec
 }
-proc widget {args} {eval object_frame $args}
+proc widget {args} {
+    eval object_frame $args
+}
 
 proc object_toplevel {name spec} {
     # need to transfer option database from Toplevel to widget?
     object_define_creator toplevel $name $spec
 }
-proc dialog {args} {eval object_toplevel $args}
+proc dialog {args} {
+    eval object_toplevel $args
+}
 
 auto_load auto_reset
 set arglist {name args} 

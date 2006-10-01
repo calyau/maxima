@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Browser.tcl,v 1.18 2006-10-01 22:43:25 villate Exp $
+#       $Id: Browser.tcl,v 1.19 2006-10-01 23:58:29 villate Exp $
 #
 ###### Browser.tcl ######
 ############################################################
@@ -368,8 +368,9 @@ proc OpenMathGetWindow { commandPanel win } {
     }
 }
 
-
-proc getw { s  } { eval pack forget [winfo children . ] ; pack $s}
+proc getw { s } {
+    eval pack forget [winfo children . ] ; pack $s
+}
 
 proc try1 { file } {
     global ccc

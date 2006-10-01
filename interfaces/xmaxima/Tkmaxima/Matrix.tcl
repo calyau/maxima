@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Matrix.tcl,v 1.3 2002-09-08 01:48:26 mikeclarkson Exp $
+#       $Id: Matrix.tcl,v 1.4 2006-10-01 23:58:29 villate Exp $
 #
 ###### Matrix.tcl ######
 ############################################################
@@ -12,7 +12,8 @@
 # with an integer N giving the number of columns: {1 0 0 1} 2  would give
 # the two by two identity
 
-proc comment {args } { }
+proc comment {args } {
+}
 global mee
 set mee " } \] \[ expr { "
 
@@ -108,7 +109,10 @@ proc setMatFromList {name lis n} {
     }
 }
 
-proc matRef { mat cols i j } { [lindex $mat [expr {$i*$cols + $j}]] }
+proc matRef { mat cols i j } {
+    [lindex $mat [expr {$i*$cols + $j}]]
+}
+
 proc matTranspose { mat cols } {
     set j 0
     set m [expr {[llength $mat ] / $cols}]

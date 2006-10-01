@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Myhtml.tcl,v 1.14 2006-09-06 14:50:00 villate Exp $
+#       $Id: Myhtml.tcl,v 1.15 2006-10-01 23:58:29 villate Exp $
 #
 ###### Myhtml.tcl ######
 ############################################################
@@ -413,8 +413,10 @@ defTag font -body {
 	xHMalterFont $win adjust
     }
 
+proc notyet { args } {
+    puts [concat [mc "not yet"] "$args"]
+}
 
-proc notyet { args } 	{puts [concat [mc "not yet"] "$args"] }
 defTag isindex -body xHMdo_isindex -sbody {}
 defTag meta -body list -sbody list
 defTag form  -before "\n" -after "\n"  -body {
@@ -1085,7 +1087,10 @@ proc xHMsetDefaultPreferences {} {
 xHMsetDefaultPreferences
 catch { source ~/.xmaximarc }
 
-proc dputs {x}  { puts $x ; flush stdout}
+proc dputs {x} {
+    puts $x ; flush stdout
+}
+
 proc xHMinit_state { win args } {
     upvar #0 xHMvar$win wvar
     upvar #0 xHMtaglist$win taglist
