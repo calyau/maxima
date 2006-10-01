@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Browser.tcl,v 1.17 2006-08-03 13:22:36 villate Exp $
+#       $Id: Browser.tcl,v 1.18 2006-10-01 22:43:25 villate Exp $
 #
 ###### Browser.tcl ######
 ############################################################
