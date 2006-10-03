@@ -66,69 +66,67 @@
 (defprop $max simp-max operators)
 
 (defun simp-max (l tmp z)
-  (cond ((member 'simp (car l)) l)
-	(t
-	 (let ((limitp t) (acc) (sgn) (num-max '$minf) (issue-warning))
-	   (let (($simp nil)) (setq l ($flatten l)))
-	   (setq l (mapcar #'(lambda (x) (simplifya x z)) (cdr l)))
-	   (setq l (mapcar #'specrepcheck l))
+  (let ((limitp t) (acc) (sgn) (num-max '$minf) (issue-warning))
+    (let (($simp nil)) (setq l ($flatten l)))
+    (setq l (mapcar #'(lambda (x) (simplifya x z)) (cdr l)))
+    (setq l (mapcar #'specrepcheck l))
 	   
-	   ;; It's reasonable to map $limit onto l. But $limit makes a mess for
-	   ;; some (admittedly oddball) cases: try limit(true), limit(false), and
-	   ;; limit(?foo).
+    ;; It's reasonable to map $limit onto l. But $limit makes a mess for
+    ;; some (admittedly oddball) cases: try limit(true), limit(false), and
+    ;; limit(?foo).
 
-	   ;;(setq l (mapcar #'$limit l))
+    ;;(setq l (mapcar #'$limit l))
 	   		 
-	   ;; We begin by finding the largest number in l. Alternatively,
-	   ;; we could find the largest constant expression, but we'd need
-	   ;; to be careful to expunge complex valued constant expressions.
-	   ;; Notice that constantp(%i) --> true.  At least for now, (mnump '$%i) 
-	   ;; is false. If this changes, it will break this code.
+    ;; We begin by finding the largest number in l. Alternatively,
+    ;; we could find the largest constant expression, but we'd need
+    ;; to be careful to expunge complex valued constant expressions.
+    ;; Notice that constantp(%i) --> true.  At least for now, (mnump '$%i) 
+    ;; is false. If this changes, it will break this code.
 	  	    
+    (dolist (li l)
+      (if (mnump li) (setq num-max (if (mgrp li num-max) li num-max)) (push li acc)))
+    (setq l acc)
+    (setq acc (list num-max))
+
+    ;; When e and -e are members of l, replace e by |e|. Do this only when
+    ;; trylevel is 2 or higher.  
+	   
+    (cond ((eq t (mgrp ($get '$trylevel '$maxmin) 1))
+	   (setq sgn nil)
 	   (dolist (li l)
-	     (if (mnump li) (setq num-max (if (mgrp li num-max) li num-max)) (push li acc)))
-	   (setq l acc)
-	   (setq acc (list num-max))
-
-	   ;; When e and -e are members of l, replace e by |e|. Do this only when
-	   ;; trylevel is 2 or higher.  
-	   
-	   (cond ((eq t (mgrp ($get '$trylevel '$maxmin) 1))
-		  (setq sgn nil)
-		  (dolist (li l)
-		    (setq tmp (if (lenient-realp li) (member-if #'(lambda (s) (add-inversep li s)) sgn) nil))
-		    (if tmp (setf (car tmp) (simplify `((mabs) ,li))) (push li sgn)))
-		  (setq l sgn)))
+	     (setq tmp (if (lenient-realp li) (member-if #'(lambda (s) (add-inversep li s)) sgn) nil))
+	     (if tmp (setf (car tmp) (simplify `((mabs) ,li))) (push li sgn)))
+	   (setq l sgn)))
 		    
-	   (dolist (x l)
-	     (setq sgn (mapcar #'(lambda (s) (list ($compare s x) s)) acc))
-	     (setq sgn (delete-if #'(lambda (s) (member (car s) `(&< &= &<=))) sgn))
-	     (if (or (null sgn) 
-		     (and (not (member '&> (mapcar #'car sgn)))
-			  (not (member '&>= (mapcar #'car sgn)))))
-		 (push `('&= ,x) sgn))
-	     (setq acc (mapcar #'second sgn)))
+    (dolist (x l)
+      (setq sgn (mapcar #'(lambda (s) (list ($compare s x) s)) acc))
+      (setq sgn (delete-if #'(lambda (s) (member (car s) `(&< &= &<=))) sgn))
+      (if (or (null sgn) 
+	      (and (not (member '&> (mapcar #'car sgn)))
+		   (not (member '&>= (mapcar #'car sgn)))))
+	  (push `('&= ,x) sgn))
+      (setq acc (mapcar #'second sgn)))
 	   
-	   (setq issue-warning (member '$notcomparable (mapcar #'car sgn)))
+    (setq issue-warning (member '$notcomparable (mapcar #'car sgn)))
 
-	   ;; Skip the betweenp simplification when issue-warning is true.  
-	   ;; Try the betweenp simplification when trylevel is 3 or higher.
+    ;; Skip the betweenp simplification when issue-warning is true.  
+    ;; Try the betweenp simplification when trylevel is 3 or higher.
 
-	   (cond ((and (not issue-warning) (eq t (mgrp ($get '$trylevel '$maxmin) 2)))
-		  (setq l nil)
-		  (setq sgn (cdr acc))
-		  (dolist (ai acc)
-		    (if (not (betweenp ai sgn sgn)) (push ai l))
-		    (setq sgn `(,@(cdr sgn) ,ai)))
-		  (setq acc l)))
+    (cond ((and (not issue-warning) (eq t (mgrp ($get '$trylevel '$maxmin) 2)))
+	   (setq l nil)
+	   (setq sgn (cdr acc))
+	   (dolist (ai acc)
+	     (if (not (betweenp ai sgn sgn)) (push ai l))
+	     (setq sgn `(,@(cdr sgn) ,ai)))
+	   (setq acc l)))
 	   
-	   (cond ((null acc) '$minf)
-		 ((null (cdr acc)) (car acc))
-		 (t 
-		  (setq acc (delete '$minf acc))
-		  (if issue-warning 
-		      (mtell "Nonorderable argument(s) in 'max' or 'min.' Returning a noun form.~%"))
-		  `(($max simp) ,@(sort acc 'great))))))))
+    (cond ((null acc) '$minf)
+	  ((null (cdr acc)) (car acc))
+	  (t 
+	   (setq acc (delete '$minf acc))
+	   (if issue-warning 
+	       (mtell "Nonorderable argument(s) in 'max' or 'min.' Returning a noun form.~%"))
+	   `(($max simp) ,@(sort acc 'great))))))
 
 (defprop $min simp-min operators)
 
@@ -136,13 +134,11 @@
   (if ($freeof '$minf '$inf x) (neg x) ($limit (neg x))))
 
 (defun simp-min (l tmp z)
-  (cond ((member 'simp (car l)) l)
-	(t
-	 (let (($simp nil)) (setq l ($flatten l)))
-	 (setq l (mapcar #'limitneg (margs l)))
-	 (setq l (simp-max `(($max) ,@l) tmp z))
-	 (if (op-equalp l '$max)
-	     `(($min simp) ,@(mapcar #'limitneg (margs l))) (limitneg l)))))
+  (let (($simp nil)) (setq l ($flatten l)))
+  (setq l (mapcar #'limitneg (margs l)))
+  (setq l (simp-max `(($max) ,@l) tmp z))
+  (if (op-equalp l '$max)
+      `(($min simp) ,@(mapcar #'limitneg (margs l))) (limitneg l)))
 
 ;; Several functions (derivdegree for example) use the maximin function.  Here is 
 ;; a replacement that uses simp-min or simp-max.
