@@ -106,11 +106,9 @@
 
 (defun simp-set (a y z)
   (declare (ignore y))
-  (cond ((not (memq 'simp (car a)))
-	 (setq a (mapcar #'(lambda (x) (simplifya x z)) (cdr a)))
-	 (setq a (sorted-remove-duplicates (sort a '$orderlessp)))
-	 `(($set simp) ,@a))
-	(t a)))
+  (setq a (mapcar #'(lambda (x) (simplifya x z)) (cdr a)))
+  (setq a (sorted-remove-duplicates (sort a '$orderlessp)))
+  `(($set simp) ,@a))
 
 ;; Return true iff a is an empty set or list
 
