@@ -42,14 +42,12 @@
 (defun simp-charfun (e bool z) 
   (oneargcheck e)
   (setq e (specrepcheck e))  
-  (cond ((member 'simp (car e)) e)
-	(t
-	 (let (($prederror nil))
-	   (setq e (simplifya ($ratdisrep (nth 1 e)) z))
-	   (setq bool (mevalp (mfuncall '$ev e '$nouns)))
-	   (cond ((eq bool t) 1)
-		 ((eq bool nil) 0)
-		 (t `(($charfun simp) ,e)))))))
+  (let (($prederror nil))
+    (setq e (simplifya ($ratdisrep (nth 1 e)) z))
+    (setq bool (mevalp (mfuncall '$ev e '$nouns)))
+    (cond ((eq bool t) 1)
+	  ((eq bool nil) 0)
+	  (t `(($charfun simp) ,e)))))
 	     
 (defun integer-part-of-sum (e)
   (let ((i-sum 0) (n-sum 0) (o-sum 0) (n))
@@ -138,43 +136,42 @@
 (defun simp-floor (e e1 z)
   (oneargcheck e)
   (setq e (specrepcheck e))
-  (cond ((not (member 'simp (car e)))
-	 (setq e (simplifya ($ratdisrep (nth 1 e)) z))
-	 (if (ratnump e) (setq e (/ (cadr e) (caddr e))))
-	 (cond ((numberp e) (floor e))
+  (setq e (simplifya ($ratdisrep (nth 1 e)) z))
+  (if (ratnump e) (setq e (/ (cadr e) (caddr e))))
+  (cond ((numberp e) (floor e))
 
-	       (($bfloatp e)
-		(setq e1 (fpentier e))
-		(if (and (minusp (cadr e)) (not (zerop1 (sub e1 e))))
-		    (sub1 e1) e1))
+	(($bfloatp e)
+	 (setq e1 (fpentier e))
+	 (if (and (minusp (cadr e)) (not (zerop1 (sub e1 e))))
+	     (sub1 e1) e1))
 	
-	       (($orderlessp e (neg e))
-		(sub* 0 (simplifya `(($ceiling) ,(neg e)) nil)))
+	(($orderlessp e (neg e))
+	 (sub* 0 (simplifya `(($ceiling) ,(neg e)) nil)))
 
-	       ((maxima-integerp e) e)
+	((maxima-integerp e) e)
 
-	       ((and (setq e1 (mget e '$numer)) (floor e1)))
+	((and (setq e1 (mget e '$numer)) (floor e1)))
 	      
-	       ((or (member e infinities) (eq e '$und) (eq e '$ind)) '$und)
-	       ((or (like e '$zerob)) -1)
-	       ((or (like e '$zeroa)) 0)
+	((or (member e infinities) (eq e '$und) (eq e '$ind)) '$und)
+	((or (like e '$zerob)) -1)
+	((or (like e '$zeroa)) 0)
 	      	      
-	       ((and ($constantp e) (pretty-good-floor-or-ceiling e '$floor)))
+	((and ($constantp e) (pretty-good-floor-or-ceiling e '$floor)))
 
-	       ((mplusp e)
-		(let ((i-sum) (o-sum))
-		  (multiple-value-setq (i-sum o-sum) (integer-part-of-sum e))
-		  (setq o-sum (if (like i-sum 0) `(($floor simp) ,o-sum) 
-				(simplifya `(($floor) ,o-sum) nil)))
-		  (add i-sum o-sum)))
+	((mplusp e)
+	 (let ((i-sum) (o-sum))
+	   (multiple-value-setq (i-sum o-sum) (integer-part-of-sum e))
+	   (setq o-sum (if (like i-sum 0) `(($floor simp) ,o-sum) 
+			 (simplifya `(($floor) ,o-sum) nil)))
+	   (add i-sum o-sum)))
 	       
-	       ;; handle 0 < e < 1 implies floor(e) = 0 and 
-               ;; -1 < e < 0 implies floor(e) = -1.
+	;; handle 0 < e < 1 implies floor(e) = 0 and 
+	;; -1 < e < 0 implies floor(e) = -1.
 
-	       ((and (eq ($compare 0 e) '&<) (eq ($compare e 1) '&<)) 0)
-	       ((and (eq ($compare -1 e) '&<) (eq ($compare e 0) '&<)) -1)
-	       (t `(($floor simp) ,e))))
-	(t e)))
+	((and (eq ($compare 0 e) '&<) (eq ($compare e 1) '&<)) 0)
+	((and (eq ($compare -1 e) '&<) (eq ($compare e 0) '&<)) -1)
+	(t `(($floor simp) ,e))))
+	
 
 (defprop $ceiling simp-ceiling operators)
 
@@ -184,40 +181,39 @@
 (defun simp-ceiling (e e1 z)
   (oneargcheck e)
   (setq e ($ratdisrep e))  
-  (cond ((not (member 'simp (car e)))
-	 (setq e (simplifya ($ratdisrep (nth 1 e)) z))
-	 (if (ratnump e) (setq e (/ (cadr e) (caddr e))))
-	 (cond ((numberp e) (ceiling e))
-	       (($bfloatp e)
-		(sub 0 (simplify `(($floor) ,(sub 0 e)))))
+  (setq e (simplifya ($ratdisrep (nth 1 e)) z))
+  (if (ratnump e) (setq e (/ (cadr e) (caddr e))))
+  (cond ((numberp e) (ceiling e))
+	(($bfloatp e)
+	 (sub 0 (simplify `(($floor) ,(sub 0 e)))))
 
-	       (($orderlessp e (neg e))
-		(sub* 0 (simplifya `(($floor) ,(neg e)) nil)))
+	(($orderlessp e (neg e))
+	 (sub* 0 (simplifya `(($floor) ,(neg e)) nil)))
 	       
-	       ((maxima-integerp e) e)
-	       ((and (setq e1 (mget e '$numer)) (ceiling e1)))
+	((maxima-integerp e) e)
+	((and (setq e1 (mget e '$numer)) (ceiling e1)))
 	       
-	       ((or (member e infinities) (eq e '$und) (eq e '$ind)) '$und)
-	       ((or (like e '$zerob)) 0)
-	       ((or (like e '$zeroa)) 1)
+	((or (member e infinities) (eq e '$und) (eq e '$ind)) '$und)
+	((or (like e '$zerob)) 0)
+	((or (like e '$zeroa)) 1)
 
-	       ((and ($constantp e) (pretty-good-floor-or-ceiling e '$ceiling)))
+	((and ($constantp e) (pretty-good-floor-or-ceiling e '$ceiling)))
 	       
-	       ((mplusp e)
-		(let ((i-sum) (o-sum))
-		  (multiple-value-setq (i-sum o-sum) (integer-part-of-sum e))
-		  (setq o-sum (if (like i-sum 0) `(($ceiling simp) ,o-sum) 
-				(simplifya `(($ceiling) ,o-sum) nil)))
-		  (add i-sum o-sum)))
+	((mplusp e)
+	 (let ((i-sum) (o-sum))
+	   (multiple-value-setq (i-sum o-sum) (integer-part-of-sum e))
+	   (setq o-sum (if (like i-sum 0) `(($ceiling simp) ,o-sum) 
+			 (simplifya `(($ceiling) ,o-sum) nil)))
+	   (add i-sum o-sum)))
 	      
 
-	       ;; handle 0 < e < 1 implies ceiling(e) = 1 and 
-               ;; -1 < e < 0 implies ceiling(e) = 0.
+	;; handle 0 < e < 1 implies ceiling(e) = 1 and 
+	;; -1 < e < 0 implies ceiling(e) = 0.
 
-	       ((and (eq ($compare 0 e) '&<) (eq ($compare e 1) '&<)) 1)
-	       ((and (eq ($compare -1 e) '&<) (eq ($compare e 0) '&<)) 0)
-	       (t `(($ceiling simp) ,e))))		
-	 (t e)))
+	((and (eq ($compare 0 e) '&<) (eq ($compare e 1) '&<)) 1)
+	((and (eq ($compare -1 e) '&<) (eq ($compare e 0) '&<)) 0)
+	(t `(($ceiling simp) ,e))))		
+	 
 
 (defprop $mod simp-nummod operators)
 (defprop $mod tex-infix tex)
@@ -229,17 +225,15 @@
 
 (defun simp-nummod (e e1 z)
   (twoargcheck e)
-  (cond ((not (member 'simp (car e)))
-	 (setq e (mapcar #'specrepcheck (margs e)))
-	 (setq e (mapcar #'(lambda (s) (simplifya s z)) e))
-	 (let ((x (nth 0 e)) (y (nth 1 e)))
-	   (cond ((or (like 0 y) (like 0 x)) x) 
-		 ((like 1 y) (sub* x `(($floor) ,x)))
-		 ((and ($constantp x) ($constantp y) (not (like 0 y)))
-		  (sub* x (mul* y `(($floor) ,(div x y)))))
-		 ((not (like 1 (setq e1 ($gcd x y))))
-		  (mul* e1 `(($mod) ,(div* x e1) ,(div* y e1))))
+  (setq e (mapcar #'specrepcheck (margs e)))
+  (setq e (mapcar #'(lambda (s) (simplifya s z)) e))
+  (let ((x (nth 0 e)) (y (nth 1 e)))
+    (cond ((or (like 0 y) (like 0 x)) x) 
+	  ((like 1 y) (sub* x `(($floor) ,x)))
+	  ((and ($constantp x) ($constantp y) (not (like 0 y)))
+	   (sub* x (mul* y `(($floor) ,(div x y)))))
+	  ((not (like 1 (setq e1 ($gcd x y))))
+	   (mul* e1 `(($mod) ,(div* x e1) ,(div* y e1))))
+	  (t `(($mod simp) ,x ,y)))))
 	
-		 (t `(($mod simp) ,x ,y)))))
-	(t e)))
 
