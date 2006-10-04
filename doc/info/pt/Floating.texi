@@ -152,33 +152,3 @@ e o n;umero de d@'igitos mostrados @'e igual a @code{fpprec}.
 @code{fpprintprec} n@~ao pode ser 1.
 
 @end defvr
-
-@deffn {Fun@value{cedilha}@~ao Lisp} ?round (@var{x})
-@deffnx {Fun@value{cedilha}@~ao Lisp} ?round (@var{x}, @var{divisor})
-Arredonda o ponto flutuante @var{x} para o inteiro mais pr@'oximo.   O argumento
-obrigatoriamente deve ser um ponto flutuante comum, n@~ao um grandes n@'umeros em ponto flutuante.   A @code{?} come@value{cedilha}ando o nome
-indica que isso @'e uma fun@value{cedilha}@~ao Lisp.
-
-@example
-(%i1) ?round (-2.8);
-(%o1)                            - 3
-@end example
-
-@end deffn
-
-@deffn {Fun@value{cedilha}@~ao Lisp} ?truncate (@var{x})
-@deffnx {Fun@value{cedilha}@~ao Lisp} ?truncate (@var{x}, @var{divisor})
-Trunca o ponto flutuante @var{x} na dire@value{cedilha}@~ao do 0, para transormar-se em um inteiro.   O argumento
-deve ser um n@'umero em ponto flutuante comum, n@~ao um grandes n@'umeros em ponto flutuante.  A @code{?} come@value{cedilha}ando o nome
-indica que isso @'e uma fun@value{cedilha}@~ao Lisp.
-
-@example
-(%i1) ?truncate (-2.8);
-(%o1)                            - 2
-(%i2) ?truncate (2.4);
-(%o2)                             2
-(%i3) ?truncate (2.8);
-(%o3)                             2
-@end example
-
-@end deffn

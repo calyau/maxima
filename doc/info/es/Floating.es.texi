@@ -130,29 +130,3 @@ a imprimir igual a @code{fpprec}.
 La variable @code{fpprintprec} no admite el valor 1.
 @end defvr
 
-@deffn {Funci@'on Lisp} ?round (@var{x})
-@deffnx {Funci@'on Lisp} ?round (@var{x}, @var{divisor})
-Redondea el n@'umero decimal en punto flotante @var{x} al entero m@'as pr@'oximo. El argumento debe ser un decimal flotante ordinario, no grande ("bigfloat").   El s@'{@dotless{i}}mbolo @code{?} al comienzo indica que se trata de una funci@'on Lisp.
-
-@example
-(%i1) ?round (-2.8);
-(%o1)                            - 3
-@end example
-
-@end deffn
-
-@deffn {Funci@'on Lisp} ?truncate (@var{x})
-@deffnx {Funci@'on Lisp} ?truncate (@var{x}, @var{divisor})
-Trunca el n@'umero decimal en punto flotante @var{x} en direcci@'on al 0, para convertirlo en un entero. El argumento debe ser un decimal flotante ordinario, no grande ("bigfloat").   El s@'{@dotless{i}}mbolo @code{?} al comienzo indica que se trata de una funci@'on Lisp.
-
-@example
-(%i1) ?truncate (-2.8);
-(%o1)                            - 2
-(%i2) ?truncate (2.4);
-(%o2)                             2
-(%i3) ?truncate (2.8);
-(%o3)                             2
-@end example
-
-@end deffn
-
