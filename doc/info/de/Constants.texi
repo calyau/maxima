@@ -20,22 +20,22 @@ wird in Maxima dargestellt als @code{%e}.
 @end defvr
 
 @defvr {Konstante} inf
- - reell positiv Unendlich.
+ - Reell Positiv Unendlich.
 
 @end defvr
 
 @defvr {Konstante} infinity
- - komplex Unendlich.
+ - Komplex Unendlich.
 
 @end defvr
 
 @defvr {Konstante} minf
- - reell negativ Unendlich.
+ - Reell Negativ Unendlich.
 
 @end defvr
 
 @defvr {Konstante} %pi
- - "pi" wird in Maxima dargestellt als @code{%pi}.
+ - "Pi" wird in Maxima dargestellt als @code{%pi}.
 
 @end defvr
 
