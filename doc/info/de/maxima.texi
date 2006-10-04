@@ -50,8 +50,8 @@ diese Version ist heute bekannt als DOE Macsyma.
 Eine Kopie des DOE Macsyma wurde von Professor William F. Schelter 
 von der University of Texas von 1982 bis zu seinem Tod im Jahre 2001 gepflegt.
 Im Jahre 1998 erhielt Schelter vom Department of Energy die Erlaubnis, 
-den DOE Macsyma Quellcode unter der GNU Public License zu veröffentlichen, 
-und im Jahre 2000 initierte er das Maxima Projekt bei SourceForge, 
+den DOE Macsyma Quellcode unter der GNU Public License zu veröffentlichen 
+und im Jahre 2000 initiierte er das Maxima Projekt bei SourceForge, 
 um das DOE Macsyma, heute Maxima genannt, zu pflegen und weiterzuentwickeln.
 
 @end titlepage
@@ -72,8 +72,8 @@ diese Version ist heute bekannt als DOE Macsyma.
 Eine Kopie des DOE Macsyma wurde von Professor William F. Schelter 
 von der University of Texas von 1982 bis zu seinem Tod im Jahre 2001 gepflegt.
 Im Jahre 1998 erhielt Schelter vom Department of Energy die Erlaubnis, 
-den DOE Macsyma Quellcode unter der GNU Public License zu veröffentlichen, 
-und im Jahre 2000 initierte er das Maxima Projekt bei SourceForge, 
+den DOE Macsyma Quellcode unter der GNU Public License zu veröffentlichen 
+und im Jahre 2000 initiierte er das Maxima Projekt bei SourceForge, 
 um das DOE Macsyma, heute Maxima genannt, zu pflegen und weiterzuentwickeln.
 @end ifnottex
 
@@ -83,15 +83,15 @@ um das DOE Macsyma, heute Maxima genannt, zu pflegen und weiterzuentwickeln.
 Maxima Infrastruktur
 
 * Einführung in Maxima::        Beispiele für Sitzungen in Maxima. (Deutsch)
-* Bug Detection and Reporting:: Finding and reporting bugs in Maxima.
+* Erkennung und Meldung von Programmfehlern:: Programmfehler in Maxima finden und berichten. (Deutsch)
 * Help::                        Asking for help from within a Maxima session.
-* Command Line::                Maxima command line syntax.
+* Kommandozeile::               Syntax der Kommandozeile in Maxima. (Deutsch)
 * Operators::                   Operators used in Maxima expressions.
 * Ausdrücke::                   Ausdrücke in Maxima. (Deutsch)
 * Simplification::              Simplifying expressions.
 * Plotting::                    2D and 3D graphical output.
 * Input and Output::            File input and output.
-* Floating Point::              Low level numerical routines.
+* Gleitkommazahlen::            Einfachste numerische Routinen. (Deutsch)
 * Contexts::                    Sets of assumed facts.
 
 Hilfen für spezielle Gebiete der Mathematik
@@ -187,10 +187,10 @@ Help
 * Documentation::               
 * Definitions for Help::        
 
-Command Line
+Kommandozeile
 
-* Introduction to Command Line::  
-* Definitions for Command Line::  
+* Einführung in die Kommandozeile::  
+* Definitionen für die Kommandozeile::  
 
 Operators
 
@@ -228,9 +228,9 @@ Input and Output
 * Files::                       
 * Definitions for Input and Output::  
 
-Floating Point
+Gleitkommazahlen
 
-* Definitions for Floating Point::  
+* Definitionen für Gleitkommazahlen::  
 
 Contexts
 
@@ -530,23 +530,23 @@ zeilberger
 @c  nota bene: C-c C-u C-a and texinfo-multiple-files-update will delete
 @c  the detailed node listing!
 
-@node Einführung in Maxima, Bug Detection and Reporting, Top, Top
+@node Einführung in Maxima, Erkennung und Meldung von Programmfehlern, Top, Top
 @chapter Einführung in Maxima
 @include Introduction.texi
 
-@node Bug Detection and Reporting, Help, Einführung in Maxima, Top
-@chapter Bug Detection and Reporting
+@node Erkennung und Meldung von Programmfehlern, Help, Einführung in Maxima, Top
+@chapter Erkennung und Meldung von Programmfehlern
 @include Bugs.texi
 
-@node Help, Command Line, Bug Detection and Reporting, Top
+@node Help, Kommandozeile, Erkennung und Meldung von Programmfehlern, Top
 @chapter Help
 @include Help.texi
 
-@node Command Line, Operators, Help, Top
-@chapter Command Line
+@node Kommandozeile, Operators, Help, Top
+@chapter Kommandozeile
 @include Command.texi
 
-@node Operators, Ausdrücke, Command Line, Top
+@node Operators, Ausdrücke, Kommandozeile, Top
 @chapter Operators
 @include Operators.texi
 
@@ -562,15 +562,15 @@ zeilberger
 @chapter Plotting
 @include Plotting.texi
 
-@node Input and Output, Floating Point, Plotting, Top
+@node Input and Output, Gleitkommazahlen, Plotting, Top
 @chapter Input and Output
 @include Input.texi
 
-@node Floating Point, Contexts, Input and Output, Top
-@chapter Floating Point
+@node Gleitkommazahlen, Contexts, Input and Output, Top
+@chapter Gleitkommazahlen
 @include Floating.texi
 
-@node Contexts, Polynomials, Floating Point, Top
+@node Contexts, Polynomials, Gleitkommazahlen, Top
 @chapter Contexts
 @include Contexts.texi
 
