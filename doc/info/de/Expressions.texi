@@ -72,7 +72,7 @@ Es gibt zwei Zuweisungsoperatoren in Maxima, @code{:} und @code{::}.
 Z.B. setzt @code{a: 3} die Variable @code{a} auf 3. 
 @code{::} weist den Wert des Ausdrucks auf seiner Rechten dem Wert 
 der Größe auf seiner Linken zu, wobei diese den Wert 
-einer atomartigen oder indizierten Variable haben muss.
+einer atomaren oder indizierten Variable haben muss.
 
 @c THIS REALLY NEEDS EXPANSION
 @node Komplex, Substantive und Verben, Zuweisung, Ausdrücke
@@ -1612,7 +1612,7 @@ Beispiele:
 @deffn {Funktion} isolate (@var{expr}, @var{x})
 Gibt @var{expr} zurück, wobei Teilausdrücke, die Summen sind und 
 @var{x} nicht enthalten, durch Zwischenmarken 
-(atomische Symbole wie @code{%t1}, @code{%t2}, ...) ersetzt werden. 
+(atomare Symbole wie @code{%t1}, @code{%t2}, ...) ersetzt werden. 
 Das ist oft nützlich, um unnötige Expansionen von Teilausdrücken, 
 die die Variable des Interesses nicht enthalten, zu vermeiden. 
 Da die Zwischenmarken an die Teilausdrücke gebunden sind, können sie

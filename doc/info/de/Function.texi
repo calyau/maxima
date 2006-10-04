@@ -147,7 +147,7 @@ Eine Array-Funktion speichert bei einem gegebenen Argument
 den Funktionswert beim ersten Aufruf,  
 und gibt bei erneutem Aufruf mit dem gleichen Argument 
 den gespeicherten Wert zurück, ohne ihn neu zu berechnen. 
-So eine Funktion wird @i{memoizing function} genannt.
+So eine Funktion wird tabellenführend (@i{memoizing function}) genannt.
 
 Die Namen der Array-Funktionen werden der globalen Liste 
 @code{arrays} hinzugefügt (und nicht der globalen Liste 
@@ -605,7 +605,7 @@ die mit dem Argument von @code{go} markiert ist.
 Um eine Anweisung zu markieren, stellt man ihr ein Atom als eine
 zusätzliche Anweisung in @code{block} voran. Zum Beispiel:
 @code{block ([x], x:1, loop, x+1, ..., go(loop), ...)}
-Das Argument von @code{go} muss der Name einer Marke sein, die im gleichen
+Das Argument von @code{go} muss der Name einer Marke ("tag") sein, die im gleichen
 @code{block} steht. Man kann @code{go} nicht verwenden, um eine Marke
 in einem anderen @code{block} zu erreichen als den, der dieses @code{go}
 enthält.

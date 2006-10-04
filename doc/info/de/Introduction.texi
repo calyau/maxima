@@ -96,7 +96,7 @@ Info from file /usr/local/info/maxima.info:
 @end example
 
 Um ein Ergebnis in späteren Berechnungen wiederverwenden zu können, kann man es einer 
-Variablen zuweisen oder man kann sich auf die automatisch bereitgestellte Marke beziehen. 
+Variablen zuweisen oder man kann sich auf die automatisch bereitgestellte Marke ("label") beziehen. 
 Zusätzlich bezieht sich @kbd{%} auf das zuletzt berechnete Ergebnis. 
 
 @example

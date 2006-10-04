@@ -18,7 +18,7 @@ und mit @code{go} auch ein etwas primitiveres Konstrukt.
 
 @deffn {Funktion} backtrace ()
 @deffnx {Funktion} backtrace (@var{n})
-Gibt den Stapelspeicher aus, d.h. die Funktionen,
+Gibt den Stapelspeicher ("call stack") aus, d.h. die Funktionen,
 die die gerade aktive Funktion aufgerufen haben.
 
 Beispiele:
@@ -75,7 +75,7 @@ die analog zu der ist, die man in anderen Programmiersprachen findet
 (Fortran, Algol, PL/I, etc.).
 Anschließend werden dann weitere Möglichkeiten genannt.
 
-Es gibt drei Varianten, die sich nur in ihrer Endbedingung unterscheiden.  
+Es gibt drei Varianten, die sich nur in ihrer Terminierungsbedingung unterscheiden.  
 Sie sind:
 
 @itemize @bullet
@@ -91,34 +91,34 @@ Sie sind:
 @end itemize
 
 @c UGH. DO WE REALLY NEED TO MENTION THIS??
-(Alternativ kann @code{step} auch nach der Endbedingung angegeben werden.)
+(Alternativ kann @code{step} auch nach der Terminierungsbedingung angegeben werden.)
 
 @var{initial_value}, @var{increment}, @var{limit} und @var{body} kann jeder 
-Ausdruck sein. Ist @var{increment} 1, darf "@code{step 1}" auch weggelassen werden.
+Ausdruck sein. Ist @var{increment} 1, kann "@code{step 1}" auch entfallen.
 
 Bei der Ausführung der @code{do}-Anweisung wird zuerst @var{initial_value} 
-der Variablen (im folgenden Kontrollvariable genannt) zugewiesen.
+der Variablen (@var{variable}, im folgenden Kontrollvariable genannt) zugewiesen.
 Dann: (1) Wenn die Kontrollvariable den Wert @var{limit} der 
 @code{thru}-Spezifikation überschritten hat, oder wenn die Bedingung 
 @var{condition} von @code{unless} @code{true} ist, 
 oder wenn die Bedingung
 @var{condition} von @code{while} @code{false} ist, endet @code{do}.
-(2) @var{body} wird ausgewertet.
+(2) Der Schleifenrumpf (@var{body}) wird ausgewertet.
 (3) @var{increment} wird zur Kontrollvariable addiert.
 Die Schritte (1) bis (3) werden solange ausgeführt bis irgend eine 
-Endbedingung erfüllt ist.
+Terminierungsbedingung erfüllt ist.
 
-Der @code{thru}-Test ist erfüllt, wenn im Falle eines nicht-negativen 
+Der @code{thru}-Test ist erfüllt, wenn im Falle eines nichtnegativen 
 Inkrements die Kontrollvariable größer als @var{limit} ist, oder
 entsprechend bei negativem Inkrement die Kontrollvariable kleiner als 
 @var{limit} ist. @var{increment} und @var{limit} können auch
-nicht-numerische Ausdrücke sein, solange es möglich ist, die entsprechende 
+nichtnumerische Ausdrücke sein, solange es möglich ist, die entsprechende 
 Ungleichung auszuwerten. Wenn jedoch das Inkrement bei der Eingabe der
 @code{do}-Anweisung nicht syntaktisch negativ ist, dann nimmt Maxima bei der
-Ausführung der Schleife an, dass es positiv ist. Ist es das nicht, dann
-kann die Schleife eventuell nicht korrekt enden.
+Ausführung der Schleife an, dass es positiv ist. Ist es das nicht, 
+kann die Schleife eventuell nicht korrekt terminieren.
 
-Beachte, dass @var{increment}, @var{limit} und die Endbedingung
+Beachte, dass @var{increment}, @var{limit} und die Terminierungsbedingung
 in jedem Schleifendurchlauf ausgewertet werden. Benötigt einer dieser Ausdrücke
 viel Rechenzeit, ändert aber während des Schleifendurchlaufs nicht seinen
 Wert, ist es wesentlich effizienter, diesen Wert vor der @code{do}-Schleife einer
@@ -221,12 +221,12 @@ kann die Syntax @code{for @var{variable} from @var{value} ...do...}
 verwendet werden.
 Dies ermöglicht, dass @code{from @var{value}} auch hinter
 @code{step @var{increment}} oder @code{next @var{expression}}
-oder der Endbedingung platziert werden kann. Wenn @code{from @var{value}}
+oder der Terminierungsbedingung platziert werden kann. Wenn @code{from @var{value}}
 weggelassen wurde, wird 1 als Startwert verwendet.
 
 Manchmal wird man auch eine Iteration durchführen wollen, in der die
 Kontrollvariable gar nicht im Schleifenrumpf verwendet wird. 
-Dann genügt es, nur die Endbedingung anzugeben. Auf die Initialisierung 
+Dann genügt es, nur die Terminierungsbedingung anzugeben. Auf die Initialisierung 
 und die Angabe des Inkrements wird wie in dem folgenden Beispiel 
 verzichtet. Hier wird die Quadratwurzel von 5 mit einem mit einem 
 relativ schlechten Schätzwert berechnet.
@@ -240,7 +240,7 @@ relativ schlechten Schätzwert berechnet.
 (%o4)                   2.23606797749979
 @end example
 
-Wenn gewünscht, kann auch auf die Endbedingung verzichtet werden.
+Wenn gewünscht, kann auch auf die Terminierungsbedingung verzichtet werden.
 @code{do @var{body}} genügt.
 Der Schleifenrumpf wird dann endlos wiederholt ausgewertet.
 In diesem Fall sollte die Funktion @code{return} verwendet werden, 
@@ -271,7 +271,7 @@ for @var{variable} in @var{list} @var{end_tests} do @var{body}
 
 Die Elemente der Liste können beliebige Ausdrücke sein. Diese werden
 in jeder Iteration der Schleife sukzessive der Kontrollvariablen zugewiesen.
-Die optionale Endbedingung @var{end_tests} kann verwendet werden,
+Die optionale Terminierungsbedingung @var{end_tests} kann verwendet werden,
 um die Ausführung der @code{do}-Anweisung zu beenden.
 Andernfalls terminiert die Schleife, wenn die Liste erschöpft ist oder wenn
 im Schleifenrumpf @code{return} ausgeführt wurde.
@@ -344,7 +344,7 @@ zusätzliche Anweisung in @code{block} voran. Zum Beispiel:
 block ([x], x:1, loop, x+1, ..., go(loop), ...)
 @end example
 
-Das Argument von @code{go} muss der Name einer Marke sein, die im gleichen
+Das Argument von @code{go} muss der Name einer Marke ("tag") sein, die im gleichen
 @code{block} steht. Man kann @code{go} nicht verwenden, um eine Marke
 in einem anderen @code{block} zu erreichen als den, der dieses @code{go}
 enthält.

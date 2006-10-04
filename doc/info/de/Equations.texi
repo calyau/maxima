@@ -211,22 +211,22 @@ x = 0.9659625152196369 %i - 0.4069597231924075,
 x = - 0.9659625152196369 %i - 0.4069597231924075, x = 1.0]
 (%i3) for e in soln
         do (e2: subst (e, eqn), disp (expand (lhs(e2) - rhs(e2))));
-			   - 3.5527136788005009E-15
+            - 3.5527136788005009E-15
 
-			   - 5.3290705182007514E-15
+            - 5.3290705182007514E-15
 
-	      4.4408920985006262E-15 %i - 4.8849813083506888E-15
+         4.4408920985006262E-15 %i - 4.8849813083506888E-15
 
-	     - 4.4408920985006262E-15 %i - 4.8849813083506888E-15
+        - 4.4408920985006262E-15 %i - 4.8849813083506888E-15
 
-			    3.5527136788005009E-15
+             3.5527136788005009E-15
 
 (%o3)                         done
 (%i4) polyfactor: true$
 (%i5) allroots (eqn);
 (%o5) - 13.5 (x - 1.0) (x - 0.82967499021294) (x + 1.015755543828121)
-				    2
-				  (x  + 0.81391944638482 x + 1.098699797110288)
+                2
+              (x  + 0.81391944638482 x + 1.098699797110288)
 @end example
 
 @end deffn
@@ -413,27 +413,27 @@ Beispiele:
 @example
 (%i1) globalsolve: true$
 (%i2) solve ([x + 3*y = 2, 2*x - y = 5], [x, y]);
-				    17	      1
-(%o2) 			      [[x : --, y : - -]]
-				    7	      7
+                17         1
+(%o2)                [[x : --, y : - -]]
+                7       7
 (%i3) x;
-				      17
-(%o3) 				      --
-				      7
+                  17
+(%o3)                   --
+                  7
 (%i4) y;
-					1
-(%o4) 				      - -
-					7
+               1
+(%o4)                   - -
+               7
 (%i5) globalsolve: false$
 (%i6) kill (x, y)$
 (%i7) solve ([x + 3*y = 2, 2*x - y = 5], [x, y]);
-				    17	      1
-(%o7) 			      [[x = --, y = - -]]
-				    7	      7
+                17         1
+(%o7)                [[x = --, y = - -]]
+                7       7
 (%i8) x;
-(%o8) 				       x
+(%o8)                    x
 (%i9) y;
-(%o9) 				       y
+(%o9)                    y
 @end example
 
 @end defvr
@@ -491,21 +491,21 @@ Beispiel:
 @example
 (%i1) load("inteqn")$
 (%i2) eq : p(t) = c * 'integrate(p(u),u,0,t);
-					t
-				       /
-				       [
-(%o2) 			      p(t) = c I  p(u) du
-				       ]
-				       /
-					0
+               t
+                   /
+                   [
+(%o2)                p(t) = c I  p(u) du
+                   ]
+                   /
+               0
 (%i3) ieqn(eq,p(t));
 default 3rd arg, technique:  first 
 default 4th arg, number of iterations or coll. parms.:  1 
 default 5th arg, initial guess:  none 
 
-				     c t
-(%t3) 			     [p(0) %e   , vlfrnk]
-(%o3) 				     [%t3]
+                 c t
+(%t3)               [p(0) %e   , vlfrnk]
+(%o3)                  [%t3]
 @end example
 
 @end deffn
@@ -708,9 +708,9 @@ Standardwert: @code{not_set_yet}
 @c ===end===
 @example
 (%i1) solve( (x-a)^2 * (x-b) * (x-c)^3 = 0, x );
-(%o1) 			     [x = c, x = b, x = a]
+(%o1)               [x = c, x = b, x = a]
 (%i2) multiplicities;
-(%o2) 				   [3, 1, 2]
+(%o2)                [3, 1, 2]
 @end example
 
 @end defvr
@@ -950,7 +950,7 @@ Löst eine algebraische Gleichung @var{expr} nach der Variable @var{x} auf und gi
 eine Liste mit trivial lösbaren Gleichungen in @var{x} zurück. 
 Wenn @var{expr} keine Gleichung ist, wird statt dessen die Gleichung @code{@var{expr} = 0} angenommen.
 @var{x} kann eine Funktion sein (z.B. @code{f(x)}), oder außer einer Summe oder einem Produkt 
-ein anderer nichtatomischer Ausdruck. 
+ein anderer nichtatomarer Ausdruck. 
 @var{x} kann entfallen, wenn @var{expr} nur eine Variable enthält. 
 @var{expr} kann ein rationaler Ausdruck sein und trigonometrische Funktionen, Exponentiale, etc. 
 enthalten.
@@ -1142,12 +1142,12 @@ Beispiel:
 @c ===end===
 @example
 (%i1) solve(exp(x)+x-1);
-					    x
-(%o1) 				 [x = 1 - %e ]
+                   x
+(%o1)              [x = 1 - %e ]
 (%i2) solveexplicit:true;
-(%o2) 				     true
+(%o2)                  true
 (%i3) solve(exp(x)+x-1);
-(%o3) 				      []
+(%o3)                   []
 @end example
 
 @end defvr
