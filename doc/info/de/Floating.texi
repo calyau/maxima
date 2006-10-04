@@ -1,0 +1,150 @@
+@c Language: German
+@c English original: Floating.texi CVS 1.19
+
+@c ITEMS IN THIS FILE ARE IN NEED OF EXPANSION, CLARIFICATION, AND EXAMPLES
+
+@menu
+* Definitionen für Gleitkommazahlen::  
+@end menu
+
+@node Definitionen für Gleitkommazahlen,  , Gleitkommazahlen, Gleitkommazahlen
+@section Definitionen für Gleitkommazahlen
+
+@c FOLLOWING FUNCTIONS IN bffac.mac ARE NOT DESCRIBED IN .texi FILES: !!!
+@c obfac, azetb, vonschtoonk, divrlst, obzeta, bfhzeta, bfpsi0 !!!
+@c DON'T KNOW WHICH ONES ARE INTENDED FOR GENERAL USE !!!
+
+@c FOLLOWING FUNCTIONS IN bffac.mac ARE DESCRIBED IN Number.texi: !!!
+@c burn, bzeta, bfzeta !!!
+
+@c FOLLOWING FUNCTIONS IN bffac.mac ARE DESCRIBED HERE: !!!
+@c bfpsi, bffac, cbffac !!!
+
+@deffn {Funktion} bffac (@var{expr}, @var{n})
+Bigfloat-Version der Funktion @code{factorial}. 
+Das zweite Argument gibt an, wie viele Ziffern erhalten und ausgegeben werden,
+es ist immer gut, ein paar extra zu verlangen. 
+
+@code{load ("bffac")} lädt diese Funktion.
+
+@end deffn
+
+@defvr {Optionsvariable} algepsilon
+Standardwert: 10^8
+
+@c WHAT IS algepsilon, EXACTLY ??? describe ("algsys") IS NOT VERY INFORMATIVE !!!
+@code{algepsilon} wird von @code{algsys} verwendet.
+
+@end defvr
+
+@deffn {Funktion} bfloat (@var{expr})
+Konvertiert sämtliche Zahlen und Funktionen von Zahlen in @var{expr} in Zahlen vom Typ Bigfloat. 
+Die Anzahl der signifikanten Stellen in den resultierenden Bigfloats wird durch die 
+globale Variable @code{fpprec} angegeben.
+
+Wenn @code{float2bf} @code{false} ist, wird eine Warnmeldung ausgegeben, wenn 
+eine Zahl vom Typ Float in eine Zahl vom Typ Bigfloat umgewandelt wird 
+(da dies möglicherweise mit einem Verlust an Präzision verbunden ist). 
+
+@end deffn
+
+@deffn {Funktion} bfloatp (@var{expr})
+Gibt @code{true} zurück, wenn @var{expr} eine Zahl vom Typ Bigfloat ist und andernfalls @code{false}.
+
+@end deffn
+
+@deffn {Funktion} bfpsi (@var{n}, @var{z}, @var{fpprec})
+@deffnx {Function} bfpsi0 (@var{z}, @var{fpprec})
+@code{bfpsi} ist die Polygamma-Funktion 		
+des rellen Arguments @var{z} und der ganzzahligen Ordnung @var{n}.
+@code{bfpsi0} ist die Digamma-Funktion. 		
+@code{bfpsi0 (@var{z}, @var{fpprec})} ist äquivalent zu @code{bfpsi (0, @var{z}, @var{fpprec})}.
+
+Diese Funktionen geben Bigfloat-Werte zurück.
+@var{fpprec} ist die Bigfloat-Präzision des Rückgabewerts.
+
+@c psi0(1) = -%gamma IS AN INTERESTING PROPERTY BUT IN THE ABSENCE OF ANY OTHER
+@c DISCUSSION OF THE PROPERTIES OF THIS FUNCTION, THIS STATEMENT SEEMS OUT OF PLACE.
+@c Note @code{-bfpsi0 (1, fpprec)} provides @code{%gamma} (Euler's constant) as a bigfloat.
+
+@code{load ("bffac")} lädt diese Funktionen.
+
+@end deffn
+
+@defvr {Optionsvariable} bftorat
+Standardwert: @code{false}
+
+@code{bftorat} kontrolliert die Konversion von Bigfloats in rationale Zahlen. 
+Wenn @code{bftorat} @code{false} ist, wird @code{ratepsilon} verwendet, um die Umwandlung 
+zu beeinflussen (dies bewirkt relativ einfache rationale Zahlen). 
+Wenn @code{bftorat} @code{true} ist, wird die erzeugte rationale Zahl exakt der Bigfloat-Zahl entsprechen. 
+
+@end defvr
+
+@defvr {Optionsvariable} bftrunc
+Standardwert: @code{true}
+
+@code{bftrunc} bewirkt, dass anhängende Nullen in von Null verschiedenen Bigfloats nicht angezeigt werden. 
+Dementsprechend wird, falls @code{bftrunc} @code{false} ist, @code{bfloat (1)} als 
+@code{1.000000000000000B0} angezeigt. Andernfalls wird hier @code{1.0B0} angezeigt.
+
+@end defvr
+
+@deffn {Funktion} cbffac (@var{z}, @var{fpprec})
+Komplexes Bigfloat-@code{factorial}.
+
+@code{load ("bffac")} lädt diese Funktion.
+
+@end deffn
+
+@deffn {Funktion} float (@var{expr})
+Konvertiert ganze Zahlen, rationale Zahlen und Bigfloats in @var{expr} 
+in Zahlen vom Typ Float um. 
+Es ist auch ein @code{evflag} (Auswertungsschalter), 
+@code{float} bewirkt, dass nichtganzzahlige rationale Zahlen und Zahlen vom Typ Bigfloat 
+in Zahlen vom Typ Float umgewandelt werden.
+
+@end deffn
+
+@defvr {Optionsvariable} float2bf
+Standardwert: @code{false}
+ 
+Wenn @code{float2bf} @code{false} ist, wird eine Warnmeldung ausgegeben, wenn 
+eine Zahl vom Typ Float in eine Zahl vom Typ Bigfloat umgewandelt wird 
+(da dies möglicherweise mit einem Verlust an Präzision verbunden ist). 
+
+@end defvr
+
+@deffn {Funktion} floatnump (@var{expr})
+Gibt @code{true} zurück, falls @var{expr} eine Zahl vom Typ Float ist, andernfalls @code{false}.
+
+@end deffn
+
+@defvr {Optionsvariable} fpprec
+Standardwert: 16
+
+@code{fpprec} ist die Anzahl der signifikanten Stellen bei der Arithmetik auf Zahlen vom Typ Bigfloat.
+@code{fpprec} beeinflusst nicht die Berechnungen mit gewöhnlichen Gleitkommazahlen (Typ Float) .
+
+Siehe auch @code{bfloat} und @code{fpprintprec}.
+
+@end defvr
+
+@defvr {Optionsvariable} fpprintprec
+Standardwert: 0
+
+@code{fpprintprec} ist bei der Ausgabe von gewöhnlichen Gleitkommazahlen (Typ Float) 
+und Zahlen vom Typ Bigfloat die Anzahl der auszugebenden Stellen.
+
+Für gewöhnliche Gleitkommazahlen ist die Anzahl der ausgegebenen Ziffern gleich @code{fpprintprec}, 
+wenn @code{fpprintprec} einen Wert zwischen 2 und (jeweils einschließlich) 16 hat. 
+Wenn andernfalls @code{fpprintprec} 0 oder größer als 16 ist, ist 16 die Anzahl der ausgegebenen Ziffern. 
+
+Für Zahlen vom Typ Bigfloat ist die Anzahl der ausgegebenen Ziffern gleich @code{fpprintprec}, 
+wenn @code{fpprintprec} einen Wert zwischen 2 und (jeweils einschließlich) @code{fpprec} hat. 
+Wenn andernfalls @code{fpprintprec} 0 oder größer als @code{fpprec} ist, 
+ist @code{fpprec} die Anzahl der ausgegebenen Ziffern. 
+
+@code{fpprintprec} kann nicht 1 sein.
+
+@end defvr
