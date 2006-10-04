@@ -1,0 +1,76 @@
+@c Language: German
+@c English original: Bugs.texi CVS 1.9
+
+@menu
+* Einführung in die Erkennung und Meldung von Programmfehlern::
+* Definitionen für die Erkennung und Meldung von Programmfehlern::
+@end menu
+
+@node Einführung in die Erkennung und Meldung von Programmfehlern
+@section Einführung in die Erkennung und Meldung von Programmfehlern
+Wie alle größeren Programme enthält Maxima bekannte und nicht bekannte Programmfehler. 
+Dieses Kapitel beschreibt die eingebauten Möglichkeiten sowohl zur Ausführung einer 
+Folge von Tests als auch zur Meldung neuer von Programmfehler.
+
+@node Definitionen für die Erkennung und Meldung von Programmfehlern
+@section Definitionen für die Erkennung und Meldung von Programmfehlern
+@deffn {Funktion} run_testsuite ()
+@deffnx {Funktion} run_testsuite (@var{boolean})
+@deffnx {Funktion} run_testsuite (@var{boolean}, @var{boolean})
+@deffnx {Funktion} run_testsuite (@var{boolean}, @var{boolean}, @var{list})
+Führt die Maxima-Test-Suite aus. Tests, die die gewünschten Antworten liefern, 
+werden als ``passes'' bezeichnet, genauso Tests, die nicht die gewünschten Antworten liefern, 
+aber als bekannte Programmfehler gekennzeichnet sind. 
+
+@code{run_testsuite ()} zeigt nur Tests an, die nicht korrekt ablaufen.
+
+@code{run_testsuite (true)} zeigt Tests an, die als bekannte Programmfehler gekennzeichnet sind, 
+genauso wie Fehlschläge. 
+
+@code{run_testsuite (true, true)} zeigt sämtliche Tests an.
+
+Wenn das optionale dritte Argument angegeben ist, wird eine Teilmenge der Tests ausgeführt. 
+Die Teilmenge der Tests wird hierbei als Liste mit den Namen der Tests angegeben. 
+Die vollständige Menge der Tests wird durch @code{testsuite_files} angegeben.
+
+@code{run_testsuite} ändert die Maxima-Umgebung. 
+Typischerweise führt ein Testskript @code{kill} aus, um eine bekannte Umgebung zu erzeugen 
+(namentlich eine ohne benutzerdefinierte Funktionen und Variablen) 
+und definiert dann die Funktionen und Variablen passend zum Test.
+
+@code{run_testsuite} gibt @code{done} zurück.
+@end deffn
+
+@defvr {Optionsvariable} testsuite_files
+
+@code{testsuite_files} ist die Menge der Tests, die durch @code{run_testsuite} ausgeführt wird. 
+Es ist eine Liste mit den Namen der Dateien, die die auszuführenden Tests enthalten. 
+Wenn einige der Tests in einer Datei dafür bekannt sind, fehlzuschlagen, 
+dann wird statt der Auflistung des Dateinamens eine Liste verwendet, die den Dateinamen und 
+die Nummern der Tests, die fehlschlagen, enthält. 
+
+Zum Beispiel ist dies ein Teil der standardmäßigen Menge der Tests:
+
+@example
+ ["rtest13s", ["rtest14", 57, 63]]
+@end example
+
+Dies gibt an, dass die Testabfolge aus den Dateien "rtest13s" und "rtest14" besteht, 
+dass aber "rtest14" zwei Tests enthält, die bekanntlicherweise schief gehen: 57 und 63. 
+@end defvr
+
+@deffn {Funktion} bug_report ()
+Gibt die Maxima- und Lisp-Versionsnummern aus und gibt einen Link auf die Maxima-Webseite 
+für Fehlerberichte an. Die Versionsinformation ist dieselbe wie durch @code{build_info} ausgegeben.
+
+Wenn ein Programmfehler gemeldet wird, ist es hilfreich, die Maxima- und Lisp-Versionsinformationen 
+mit in der Meldung anzugeben.
+
+@code{bug_report} gibt die leere Zeichenkette @code{""} zurück.
+@end deffn
+
+@deffn {Funktion} build_info ()
+Gibt eine Zusammenfassung der Parameter der Maxima-Zusammenstellung (build).
+
+@code{build_info} gibt die leere Zeichenkette @code{""} zurück.
+@end deffn
