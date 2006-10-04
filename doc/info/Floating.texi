@@ -150,33 +150,3 @@ and the number of digits printed is equal to @code{fpprec}.
 @code{fpprintprec} cannot be 1.
 
 @end defvr
-
-@deffn {Lisp function} ?round (@var{x})
-@deffnx {Lisp function} ?round (@var{x}, @var{divisor})
-Round the floating point @var{x} to the nearest integer.   The argument
-must be an ordinary float, not a bigfloat.   The @code{?} beginning the name
-indicates this is a Lisp function.
-
-@example
-(%i1) ?round (-2.8);
-(%o1)                            - 3
-@end example
-
-@end deffn
-
-@deffn {Lisp function} ?truncate (@var{x})
-@deffnx {Lisp function} ?truncate (@var{x}, @var{divisor})
-Truncate the floating point @var{x} towards 0, to become an integer.   The argument
-must be an ordinary float, not a bigfloat.  The @code{?} beginning the name
-indicates this is a Lisp function.
-
-@example
-(%i1) ?truncate (-2.8);
-(%o1)                            - 2
-(%i2) ?truncate (2.4);
-(%o2)                             2
-(%i3) ?truncate (2.8);
-(%o3)                             2
-@end example
-
-@end deffn
