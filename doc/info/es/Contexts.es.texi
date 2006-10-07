@@ -218,10 +218,6 @@ Valor por defecto: @code{[initial, global]}
 
 La variable @code{contexts} es una lista que contiene los contextos existentes, incluyendo el actualmente activo.
 
-
-The context mechanism makes it possible for a user to bind together
-and name a collection of facts, called a context.
-
 El mecanismo que siguen los contextos permiten al usuario agrupar y nombrar un conjunto de hechos, que recibe el nombre de contexto. Una vez hecho esto, el usuario puede hacer que Maxima tenga en cuenta o que olvide cualquier n@'umero de hechos sin m@'as que activar o desactivar su contexto.
 
 Cualquier @'atomo simb@'olico puede ser el nombre de un contexto, y los hechos contenidos en tal contexto pueden ser almacenados hasta que se destruyan uno a uno mediante llamadas a la funci@'on @code{forget}, o que se destruyan conjuntamente invocando a @code{kill} para eliminar el contexto al que pertenecen.
