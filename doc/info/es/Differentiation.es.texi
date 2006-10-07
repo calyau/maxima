@@ -433,11 +433,9 @@ Si el nombre @code{diff} est@'a presente en una llamada a la funci@'on @code{ev}
 @c FALTA DESCRIPCION DE dscalar
 
 @deffn {Funci@'on} express (@var{expr})
-Transforma los nombres de operadores diferenciales en expresiones en t@'erminos de derivadas parciales. La funci@'on
-@code{express} reconoce los operadores @code{grad}, @code{div}, @code{curl} y @code{laplacian}, as@'{@dotless{i}} como el producto cruzado @code{~}.
+Transforma los nombres de los operadores diferenciales en expresiones que contienen derivadas parciales. Los operadores reconocidos por la funci@'on @code{express} son: @code{grad} (gradiente), @code{div} (divergencia), @code{curl} (rotacional), @code{laplacian} (laplaciano) y @code{~} (producto vectorial).
 
-Las derivadas simb@'olicas (es decir, las que incluyen la forma nominal @code{diff}) que aparecen el la expresi@'on devuelta por @code{express} se pueden calcular a@~nadi@'endole a @code{ev} el t@'ermino @code{diff}.
-En este contexto, @code{diff} sct@'ua como @code{evfun}.
+Las derivadas simb@'olicas (es decir, las que incluyen la forma nominal @code{diff}) que aparecen en la expresi@'on devuelta por @code{express}, se pueden calcular pas@'andole a @code{ev} el argumento @code{diff}, o escribi@'endolo directamente en la l@'{@dotless{i}}nea de comandos. En este contexto, @code{diff} act@'ua como @code{evfun}.
 
 Es necesario ejecutar @code{load ("vect")} para cargar esta funci@'on.
 
