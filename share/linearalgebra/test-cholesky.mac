@@ -115,12 +115,33 @@ true$
 checkcholesky(m,floatfield);
 true$
 
+(m : matrix([matrix([matrix([8,4],[4,13]),matrix([2,4],[7,9])],[matrix([2,7],[4,9]),matrix([10,6],[6,15])]),matrix([matrix([4,4],[12,5]),matrix([0,6],[6,8])],[matrix([8,3],[13,3]),matrix([6,5],[5,6])])],[matrix([matrix([4,12],[4,5]),matrix([8,13],[3,3])],[matrix([0,6],[6,8]),matrix([6,5],[5,6])]),matrix([matrix([18,5],[5,4]),matrix([5,9],[2,6])],[matrix([5,2],[9,6]),matrix([6,3],[3,11])])]),0);
+0$
+
+(matrix_element_transpose : 'transpose,0);
+0$
+
+(matrix_element_mult : ".",0);
+0$
+
+(m1 : cholesky(m.transpose(m), 'noncommutingring),0);
+0$
+
+zeromatrixp(m1.transpose(m1) - m.transpose(m));
+true$
+
 /*----clean up----*/
 
 (remfunction(checkcholesky),0);
 0$
 
-(remvalue(m,ok),0);
+(matrix_element_transpose : false,0);
+0$
+
+(matrix_element_mult : "*",0);
+0$
+
+(remvalue(m,m1,ok),0);
 0$
 
 (remarray(ma),0);

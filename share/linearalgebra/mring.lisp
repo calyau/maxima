@@ -290,9 +290,24 @@
    :abs #'(lambda (s) (simplify (mfuncall '$cabs s)))
    :great #'(lambda (a b) (like b 0))
    :add #'(lambda (a b) (add a b))
-   :div #'(lambda (a b) (simplify `((mnctimes) ,a ((mncexpt) ,b -1))))  
-   :rdiv #'(lambda (a b) (simplify `((mnctimes) ((mncexpt) ,b -1) ,a)))
-   :reciprocal #'(lambda (s) (simplify `((mncexpt) ,s -1)))
+   :div #'(lambda (a b) (progn
+			  (let (($matrix_element_mult '&.)
+				($matrix_element_transpose '$transpose))
+			    (simplify `((mnctimes) ,a 
+					,(if ($matrixp b) ($invert_by_lu b '$noncommutingring)(div 1 b)))))))
+   
+   :rdiv #'(lambda (a b) (progn
+			   (let (($matrix_element_mult '&.)
+				 ($matrix_element_transpose '$transpose))
+			     (simplify `((mnctimes) 
+					 ,(if ($matrixp b) ($invert_by_lu b '$noncommutingring) 
+					    (div 1 b)) ,a)))))
+
+   :reciprocal #'(lambda (s) (progn
+			       (let (($matrix_element_mult '&.)
+				     ($matrix_element_transpose '$transpose))
+				 (if ($matrixp s) ($invert_by_lu s '$noncommutingring) (div 1 s)))))
+
    :mult #'(lambda (a b) (simplify `((mnctimes) ,a ,b)))
    :sub #'(lambda (a b) (sub a b))
    :negate #'(lambda (a) (mult -1 a))
