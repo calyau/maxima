@@ -87,7 +87,8 @@ change_to_shift_op(expr, %f, %n) :=
   if atom(expr) then expr
   else if part(expr, 0)=%f then block(
     [k% : args(expr)],
-    funmake('shift_op, [%f, %n, k%[1]-%n])
+    if numberp(first(k%)) then expr
+    else funmake('shift_op, [%f, %n, k%[1]-%n])
   )
   else if member(part(expr, 0), ["+", "*", "//", "^", "-"]) then
     apply(part(expr, 0),
@@ -168,6 +169,8 @@ solve_rec(eq, fn, [cond]) := block(
   %f : part(fn, 0),
   %n : part(fn, 1),
   if not(atom(%f)) or not(atom(%n)) then return(false),
+  
+  std_form : subst(cond, eq),
 
   std_form : to_standard_form(eq, %f, %n),
   std_form : expand(num(ratsimp(std_form))),
