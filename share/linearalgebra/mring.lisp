@@ -293,22 +293,30 @@
    :div #'(lambda (a b) (progn
 			  (let (($matrix_element_mult '&.)
 				($matrix_element_transpose '$transpose))
-			    (simplify `((mnctimes) ,a 
-					,(if ($matrixp b) ($invert_by_lu b '$noncommutingring)(div 1 b)))))))
+			    (setq b (if ($matrixp b) ($invert_by_lu b '$noncommutingring)
+				      (simplify `((mncexpt) ,b -1))))
+			    (simplify `((mnctimes) ,a ,b)))))
+   
    
    :rdiv #'(lambda (a b) (progn
 			   (let (($matrix_element_mult '&.)
 				 ($matrix_element_transpose '$transpose))
 			     (simplify `((mnctimes) 
-					 ,(if ($matrixp b) ($invert_by_lu b '$noncommutingring) 
-					    (div 1 b)) ,a)))))
+					 ,(if ($matrixp b) ($invert_by_lu b $noncommutingring)
+					    ((mncexpt) b -1)) ,a)))))
 
    :reciprocal #'(lambda (s) (progn
 			       (let (($matrix_element_mult '&.)
 				     ($matrix_element_transpose '$transpose))
-				 (if ($matrixp s) ($invert_by_lu s '$noncommutingring) (div 1 s)))))
+				 (if ($matrixp s) ($invert_by_lu s '$noncommutingring) 
+				   (simplify `((mncexpt) s -1))))))
 
-   :mult #'(lambda (a b) (simplify `((mnctimes) ,a ,b)))
+   :mult #'(lambda (a b) (progn 
+			   (let (($matrix_element_mult '&.)
+				 ($matrix_element_transpose '$transpose))
+			     (simplify `((mnctimes) ,a ,b)))))
+
+
    :sub #'(lambda (a b) (sub a b))
    :negate #'(lambda (a) (mult -1 a))
    :add-id #'(lambda () 0)
