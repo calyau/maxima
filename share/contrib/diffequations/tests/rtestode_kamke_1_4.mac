@@ -335,10 +335,12 @@ false;
 [separable,0];
 
 /*  360  */ 
+/* FIXME:  This test now prompts - 2006-10-02 
 (pn_(360),ans:contrib_ode(eqn:'diff(y,x,1)*cos(a*y)-b*(1-c*cos(a*y))*sqrt(cos(a*y)^2+c*cos(a*y)-1),y,x));
 [-('integrate(cos(a*y)/((c*cos(a*y)-1)*sqrt(cos(a*y)^2+c*cos(a*y)-1)),y))/b=x+%c];
 [method,ode_check(eqn,ans[1])];
 [separable,0];
+*/
 
 /*  361  */ 
 (pn_(361),ans:contrib_ode(eqn:'diff(y,x,1)*(cos(y+x)+x*sin(x*y)-sin(y))+cos(y+x)+y*sin(x*y)+cos(x),y,x));

@@ -32,10 +32,12 @@ riccati;
 /* 333 Riccati 
       Solution should simplify to y=x*(%c*x+sin(x))/(%c*x-sin(x)) ?
 */
+/*  FIXME:  This test now prompts - 2006-10-02
 (pn_(333),ans:contrib_ode(eqn:2*x^2*'diff(y,x)=2*x*y+(1-x*cot(x))*(x^2-y^2),y,x));
 [y=sqrt(4*x^3*cot(x)-4*x^2)*sqrt(-x^3*cot(x)^3+3*x^2*cot(x)^2-3*x*cot(x)+1)*(%c*sin('integrate(sqrt(-x^3*cot(x)^3+3*x^2*cot(x)^2-3*x*cot(x)+1)/sqrt(4*x^3*cot(x)-4*x^2),x))-cos('integrate(sqrt(-x^3*cot(x)^3+3*x^2*cot(x)^2-3*x*cot(x)+1)/sqrt(4*x^3*cot(x)-4*x^2),x)))/((2*x^2*cot(x)^2-4*x*cot(x)+2)*sin('integrate(sqrt(-x^3*cot(x)^3+3*x^2*cot(x)^2-3*x*cot(x)+1)/sqrt(4*x^3*cot(x)-4*x^2),x))+(2*%c*x^2*cot(x)^2-4*%c*x*cot(x)+2*%c)*cos('integrate(sqrt(-x^3*cot(x)^3+3*x^2*cot(x)^2-3*x*cot(x)+1)/sqrt(4*x^3*cot(x)-4*x^2),x)))];
 [method,ode_check(eqn,ans[1])];
 [riccati,0];
+*/
 
 /* 336 Riccati */
 (pn_(336),ans:contrib_ode(eqn:x*(1-2*x)*'diff(y,x)=4*x-(1+4*x)*y+y^2,y,x));
