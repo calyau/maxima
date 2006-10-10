@@ -914,8 +914,19 @@ setrgbcolor} def
            ;; (fb,fb1) subinterval (using points a, a1, b, b1.
            ;;
            ;; quad-b is the Simpson quadrature for the (fb,f1) subinterval.
-           (<= (abs quad)
-               (* eps (- quad-b (min f-a f-a1 f-b f-b1 f-c))))))
+	   ;;
+	   ;; This used to test for diff <= 0.  But in some
+	   ;; situations, like plot2d(0.99,[x,0,5]), roundoff prevents
+	   ;; this from happening.  So we do diff < delta instead, for
+	   ;; some value of delta.
+	   ;;
+	   ;; XXX: What is the right value for delta?  Does this break
+	   ;; other things?  Simple tests thus far show that
+	   ;; 100*double-float-epsilon is ok.
+	   (let ((diff (- (abs quad)
+			  (* eps (- quad-b (min f-a f-a1 f-b f-b1 f-c)))))
+		 (delta (* 100 double-float-epsilon)))
+	     (<= diff delta))))
         (t
          ;; Something is not a number, so assume it's not smooth enough.
          nil)))
