@@ -563,6 +563,7 @@
 ; one2 j
 ; both k
 ; one2 k
+; one1 l
 ; nil
 
 (defun set-intersect (l1 l2)
@@ -1156,7 +1157,7 @@ a positive integer; instead found ~:M" n))))
 	   ;(print "...using nary function")
 	   (funcall (car id) s))
 	  (t
-	   (rl-reduce f `((mlist) ,@s) nil init "$xreduce")))))
+	   (rl-reduce f ($listify s) nil init "$xreduce")))))
 
 ;; Extend a function f : S x S -> S to n arguments using a minimum depth tree.
 ;; The function f should be nary (associative); otherwise, the result is somewhat 
