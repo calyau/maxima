@@ -55,9 +55,9 @@ Gibt @code{true} zurück, wenn @var{expr} eine Zahl vom Typ Bigfloat ist und ande
 
 @deffn {Funktion} bfpsi (@var{n}, @var{z}, @var{fpprec})
 @deffnx {Function} bfpsi0 (@var{z}, @var{fpprec})
-@code{bfpsi} ist die Polygamma-Funktion 		
+@code{bfpsi} ist die Polygamma-Funktion                 
 des rellen Arguments @var{z} und der ganzzahligen Ordnung @var{n}.
-@code{bfpsi0} ist die Digamma-Funktion. 		
+@code{bfpsi0} ist die Digamma-Funktion.                 
 @code{bfpsi0 (@var{z}, @var{fpprec})} ist äquivalent zu @code{bfpsi (0, @var{z}, @var{fpprec})}.
 
 Diese Funktionen geben Bigfloat-Werte zurück.

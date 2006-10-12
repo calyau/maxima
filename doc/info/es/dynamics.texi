@@ -39,7 +39,7 @@ son los valores @var{y(n)} correspondientes, obtenidos a partir de la
 relaci@'on de recurrencia
 @ifnottex
 @example
-	y(n+1) = F(y(n))
+        y(n+1) = F(y(n))
 @end example
 @end ifnottex
 @tex
@@ -59,7 +59,7 @@ la sucesi@'on definida a partir del sistema din@'amico discreto con
 relaciones de recurrencia:
 @ifnottex 
 @example
-	x(n+1) = F(x(n), y(n))    y(n+1) = G(x(n), y(n))
+        x(n+1) = F(x(n), y(n))    y(n+1) = G(x(n), y(n))
 @end example
 @end ifnottex
 @tex
@@ -160,7 +160,7 @@ Dibuja un diagrama de escalera (o diagrama de red) para la sucesi@'on
 definida por la ecuaci@'on de recurrencia
 @ifnottex
 @example
-	y(n+1) = F(y(n))
+        y(n+1) = F(y(n))
 @end example
 @end ifnottex
 @tex
@@ -271,7 +271,7 @@ resoluci@'on que use. Tendr@'a que experimentar con diferentes valores.
 Diagrama de @'orbitas para el mapa cuadr@'atico
 @ifnottex
 @example
-	y(n+1) = x + y(n)^2
+        y(n+1) = x + y(n)^2
 @end example
 @end ifnottex
 @tex
