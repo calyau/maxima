@@ -113,3 +113,38 @@ a[y+2];
 
 use_fast_arrays: false;
 false;
+
+/* ensure that matrix construction works as advertised */
+(L : makelist ([i], i, 1, 100), apply (matrix, L), [op (%%), args (%%)]);
+[matrix, L];
+
+(L : makelist ([i], i, 1, 100), apply (matrix, L), transpose (%%));
+matrix (tree_reduce (append, L));   /* call tree_reduce instead of append because GCL barfs ... */
+
+(matrix (), [op (%%), args (%%)]);
+[matrix, []];
+
+/* construct a matrix of modest size */
+(apply (matrix, makelist ([i], i, 1, 1000)), 0);
+0;
+
+/* construct a matrix of modest size */
+(apply (matrix, makelist ([i], i, 1, 10000)), 0);
+0;
+
+/* verify that arguments are evaluated exactly once */
+block ([a : b, b : c, c: d, d : 1], matrix ([a, b], [c, d]), [op (%%), args (%%)]);
+[matrix, '[[b, c], [d, 1]]];
+
+/* verify that arguments are evaluated exactly once */
+block ([a : b, b : c, c: d, d : 1, L1 : '[a, b], L2 : '[c, d]], matrix (L1, L2), [op (%%), args (%%)]);
+[matrix, '[[a, b], [c, d]]];
+
+/* should trigger an error */
+errcatch (matrix ([1], [1, 2]));
+[];
+
+/* should trigger an error */
+errcatch (matrix ([1], '(a + b)));
+[];
+

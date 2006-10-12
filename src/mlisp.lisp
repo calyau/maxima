@@ -1622,9 +1622,18 @@ wrapper for this."
 	  ((eq mpropp 'opers)
 	   (putprop (setq var (linchk var)) t prop) (putprop var t 'opers)
 	   (if (not (get var 'operators)) (putprop var 'simpargs1 'operators)))
+
 	  ((eq mpropp '$alphabetic)
-	   (putprop (setq val (stripdollar var)) t 'alphabet)
-	   (add2lnc (getcharn val 1) alphabet))
+       ; Explode var into characters and put each one on the alphabet list,
+       ; which is used by src/nparse.lisp .
+       (dolist (1-char (cdr (coerce (print-invert-case var) 'list)))
+         ; ALPHABET PROPERTY IS NOT USED ANYWHERE IN SRC/*.LISP SO FAR AS I CAN TELL
+         ; THERE ARE A FEW OTHER BOOKKEEPING OCCURRENCES
+         ; I BELIEVE ALL MENTIONS OF THE ALPHABET PROPERTY SHOULD BE CUT OUT
+         ; SRC/NPARSE.LISP USES THE ALPHABET LIST INSTEAD
+         ; (putprop (make-symbol (coerce (list 1-char) 'string)) t 'alphabet)
+         (add2lnc 1-char alphabet)))
+
 	  ((eq prop 'special)(proclaim (list 'special var))
 	   (fluidize var))
 	  (mpropp
@@ -1882,14 +1891,14 @@ wrapper for this."
 (defmfun mgetl (atom inds)
   (let ((props (get atom 'mprops))) (and props (getl props inds))))
 
-(defmfun $matrix n
-  (if (= n 0)
-      (ncons '($matrix))
-      (let ((l (listify n)))
-	(dolist (row l)
-	  (if (not ($listp row)) (merror "Invalid matrix row:~%~M" row)))
-	(matcheck l)
-	(cons '($matrix) l))))
+(defmspec $matrix (L)
+  (if (null (cdr L))
+    '(($matrix))
+    (let ((rows (mapcar #'meval (cdr L))))
+      (dolist (row rows)
+        (if (not ($listp row)) (merror "matrix: invalid row:~%~M" row)))
+      (matcheck rows)
+      (cons '($matrix) rows))))
 
 (defmfun matcheck (l)
   (do ((l1 (cdr l) (cdr l1)) (n (length (car l)))) ((null l1))
