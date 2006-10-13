@@ -475,6 +475,20 @@ The default range for the parameter in parametric plots.
 Sets the parametric variable range to [0, 10].
 
 @item
+Option: @code{plot_realpart}
+When @code{plot_realpart} is @code{true},
+the real part of a complex value @var{x} is plotted;
+this is equivalent to plotting @code{realpart(@var{x})} instead of @var{x}.
+Otherwise,
+only values with imaginary part equal to 0 are plotted,
+and complex values are ignored.
+@example
+plot2d (log(x), [x, -5, 5], [plot_realpart, false]);
+plot2d (log(x), [x, -5, 5], [plot_realpart, true]);
+@end example
+The default value is @code{false}.
+
+@item
 Option: @code{nticks}
 Initial number of points 
 used by the adaptive plotting routine.
