@@ -382,6 +382,50 @@ with the single precision arithmetic we have.
 
 @end defvr
 
+@deffn {Function} newton (@var{expr}, @var{x}, @var{x_0}, @var{eps})
+Returns an approximate solution of @code{@var{expr} = 0} by Newton's method,
+considering @var{expr} to be a function of one variable, @var{x}.
+The search begins with @code{@var{x} = @var{x_0}}
+and proceeds until @code{abs(@var{expr}) < @var{eps}}
+(with @var{expr} evaluated at the current value of @var{x}).
+
+@code{newton} allows undefined variables to appear in @var{expr},
+so long as the termination test @code{abs(@var{expr}) < @var{eps}} evaluates
+to @code{true} or @code{false}.
+Thus it is not necessary that @var{expr} evaluate to a number.
+
+@code{load(newton1)} loads this function.
+
+See also @code{realroots}, @code{allroots}, @code{find_root}, and @code{mnewton}.
+
+Examples:
+
+@c ===beg===
+@c load (newton1);
+@c newton (cos (u), u, 1, 1/100);
+@c ev (cos (u), u = %);
+@c assume (a > 0);
+@c newton (x^2 - a^2, x, a/2, a^2/100);
+@c ev (x^2 - a^2, x = %);
+@c ===end===
+@example
+(%i1) load (newton1);
+(%o1) /usr/share/maxima/5.10.0cvs/share/numeric/newton1.mac
+(%i2) newton (cos (u), u, 1, 1/100);
+(%o2)                   1.570675277161251
+(%i3) ev (cos (u), u = %);
+(%o3)                 1.2104963335033528E-4
+(%i4) assume (a > 0);
+(%o4)                        [a > 0]
+(%i5) newton (x^2 - a^2, x, a/2, a^2/100);
+(%o5)                  1.00030487804878 a
+(%i6) ev (x^2 - a^2, x = %);
+                                           2
+(%o6)                6.098490481853958E-4 a
+@end example
+
+@end deffn
+
 @node Definitions for Fourier Series, , Definitions for Numerical, Numerical
 @section Definitions for Fourier Series
 
