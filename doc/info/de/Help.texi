@@ -1,0 +1,396 @@
+@c Language: German
+@c English original: Help.texi CVS 1.19
+
+@menu
+* Einf@"uhrung in die Hilfe::        
+* Lisp und Maxima::            
+* Speicherbereinigung::          
+* Dokumentation::               
+* Definitionen f@"ur die Hilfe::        
+@end menu
+
+@node Einf@"uhrung in die Hilfe, Lisp und Maxima, Hilfe, Hilfe
+@section Einf@"uhrung in die Hilfe
+
+@c AS IT STANDS THIS IS JUST A REPEAT OF THE STUFF FOUND UNDER @defun describe.
+
+Die prim@"are Online-Hilfefunktion ist @code{describe}, 
+welche typischerweise durch ein Fragezeichen @code{?} in der interaktiven Eingabeaufforderung 
+aufgerufen wird. @code{? foo} (mit einem Leerzeichen zwischen @code{?} und @code{foo}) 
+ist @"aquivalent zu @code{describe ("foo")}, wobei @code{foo} der Name oder Teil eines Namens 
+einer Funktion oder eines Themas ist; 
+@code{describe} findet dann s@"amtliche dokumentierte Elemente, die die Zeichenkette @code{foo} 
+in ihrem Titel haben. 
+Gibt es mehr als einen solchen Eintrag, bittet Maxima den Benutzer, einen oder mehrere 
+Eintr@"age zur Anzeige auszuw@"ahlen. 
+
+@example
+(%i1) ? integ
+ 0: (maxima.info)Introduction to Elliptic Functions and Integrals.
+ 1: Definitions for Elliptic Integrals.
+ 2: Integration.
+ 3: Introduction to Integration.
+ 4: Definitions for Integration.
+ 5: askinteger :Definitions for Simplification.
+ 6: integer_partitions :Definitions for Sets.
+ 7: integerp :Definitions for Miscellaneous Options.
+ 8: integrate :Definitions for Integration.
+ 9: integrate_use_rootsof :Definitions for Integration.
+ 10: integration_constant_counter :Definitions for Integration.
+ 11: nonnegintegerp :Definitions for linearalgebra.
+Enter space-separated numbers, `all' or `none': 8 9
+
+ -- Function: integrate (<expr>, <x>)
+ -- Function: integrate (<expr>, <x>, <a>, <b>)
+     Attempts to symbolically compute the integral of <expr> with
+     respect to <x>.  `integrate (<expr>, <x>)' is an indefinite
+     integral, while `integrate (<expr>, <x>, <a>, <b>)' is a definite
+     integral, [...]
+@end example
+
+In diesem Beispiel wurden die Eintr@"age 8 und 9 ausgew@"ahlt. 
+Jeder oder kein Eintrag kann durch die Eingabe von @code{all} bzw. @code{none} 
+ausgew@"ahlt werden, abgek@"urzt durch @code{a} bzw. @code{n}.
+
+@node Lisp und Maxima, Speicherbereinigung, Einf@"uhrung in die Hilfe, Hilfe
+@section Lisp und Maxima
+Maxima ist in Lisp geschrieben und es ist leicht, von Maxima aus auf Lisp-Funktionen 
+und Variablen zuzugreifen und umgekehrt. 
+Lisp- und Maxima-Symbole unterscheiden sich in ihrer Namensgebung. 
+Ein Lisp-Symbol, das mit einem Dollarzeichen @code{$} beginnt, stimmt mit einem 
+Maxima-Symbol ohne Dollarzeichen @"uberein.
+@c NEED TO MENTION THIS OR IS IT JUST CLUTTERING ??
+@c This includes special Maxima variables such as @code{%} and input and output labels,
+@c which appear as @code{$%}, @code{$%i1}, @code{$%o1}, etc., in Lisp.
+Ein Maxima-Symbol, das mit einem Fragezeichen @code{?} beginnt, stimmt mit einem 
+Lisp-Symbol ohne Fragezeichen @"uberein.
+Zum Beispiel stimmt das Maxima-Symbol @code{foo} mit dem Lisp-Symbol @code{$foo} @"uberein, 
+w@"ahrend das Maxima-Symbol @code{?foo} mit dem Lisp-Symbol @code{foo} @"ubereinstimmt. 
+Beachte, dass @code{?foo} ohne Leerzeichen zwischen @code{?} und @code{foo} geschrieben wird; 
+andernfalls wird dies als @code{describe ("foo")} missverstanden.
+
+Bindestrich @code{-}, Stern @code{*} oder andere spezielle Zeichen in Lisp-Symbolen 
+m@"ussen, dort wo sie in Maxima-Code vorkommen, mit Hilfe eines Backslash @code{\} umgangen werden (escaped). 
+Zum Beispiel wird der Lisp-Bezeichner @code{*foo-bar*} in Maxima als @code{?\*foo\-bar\*} geschrieben. 
+
+Lisp-Code kann innerhalb einer Maxima-Sitzung ausgef@"uhrt werden. 
+Eine einzelne Zeile Lisp (die eine oder mehrere Formen enth@"alt) kann durch das spezielle Kommando 
+@code{:lisp} ausgef@"uhrt werden. Zum Beispiel ruft
+
+@example
+(%i1) :lisp (foo $x $y)
+@end example
+
+@noindent
+die Lisp-Funktion @code{foo} mit den Maxima-Variablen @code{x} und @code{y} als Argumenten auf. 
+Das @code{:lisp}-Konstrukt kann in der interaktiven Eingabeaufforderung oder in einer Datei auftreten, 
+die durch @code{batch} oder @code{demo} verarbeitet wird, jedoch nicht in einer Datei, 
+die durch @code{load}, @code{batchload}, @code{translate_file} oder @code{compile_file} verarbeitet wird. 
+
+Die Funktion @code{to_lisp()} @"offnet eine interaktive Lisp-Sitzung. 
+Die Eingabe von @code{(to-maxima)} schlie@ss{}t die Lisp-Sitzung und bewirkt die R@"uckkehr zu Maxima.  
+@c I DON'T EVEN WANT TO MENTION USING CTRL-C TO OPEN A LISP SESSION.
+@c (1) IT TAKES EXTRA SET UP TO GET STARTED NAMELY :lisp (setq *debugger-hook* nil)
+@c (2) IT GETS SCREWED UP EASILY -- TYPE SOMETHING WRONG AND YOU CAN'T GET BACK TO MAXIMA
+@c (3) IT DOESN'T OFFER FUNCTIONALITY NOT PRESENT IN THE to_lisp() SESSION
+
+Lisp-Funktionen und Variablen, die in Maxima als Funktionen und Variablen mit gew@"ohnlichen 
+Namen sichtbar sein sollen (ohne spezielle Zeichensetzung), m@"ussen Lisp-Namen besitzen, 
+die mit einem Dollarzeichen @code{$} beginnen. 
+
+Maxima unterscheidet Gro@ss{}- und Kleinschreibung in Bezeichnern, w@"ahrend Lisp dies nicht macht. 
+Es gibt einige Regeln, die die @"Ubersetzung von Namen zwischen Lisp und Maxima beherrschen.
+
+@enumerate
+@item
+Ein Lisp-Bezeichner, der nicht in senkrechte Striche eingeschlossen ist, entspricht einem 
+kleingeschriebenem Maxima-Bezeichner. 
+Ob der Lisp-Bezeichner gro@ss{}-, klein- oder gemischt gro@ss{}/kleingeschrieben ist, wird ignoriert. 
+Z.B. entsprechen Lisp @code{$foo}, @code{$FOO} und @code{$Foo} dem Maxima @code{foo}.
+@item
+Ein Lisp-Bezeichner, der vollst@"andig gro@ss{}- oder kleingeschrieben und in senkrechte Striche 
+eingeschlossen ist, entspricht einem Maxima-Bezeichner mit umgekehrter Gro@ss{}/Kleinschreibung. 
+Z.B. entsprechen Lisp @code{|$FOO|} und @code{|$foo|} dem Maxima @code{foo} bzw. @code{FOO}. 
+@item
+Ein Lisp-Bezeichner, der gemischt gro@ss{}/kleingeschrieben und in senkrechte Striche 
+eingeschlossen ist, entspricht einem Maxima-Bezeichner mit derselben Gro@ss{}/Kleinschreibung. 
+Z.B. entspricht Lisp @code{|$Foo|} dem Maxima @code{Foo}. 
+@end enumerate
+
+Das Lisp-Makro @code{#$} erlaubt die Verwendung von Maxima-Ausdr@"ucken in Lisp-Code. 
+@code{#$@var{expr}$} expandiert zu einem Lisp-Ausdruck, der zu dem Maxima-Ausdruck @var{expr} 
+@"aquivalent ist.
+
+@example
+(msetq $foo #$[x, y]$)
+@end example
+
+@noindent
+Dies hat die gleiche Auswirkung wie die Eingabe von
+
+@example
+(%i1) foo: [x, y];
+@end example
+
+@noindent
+Die Lisp-Funktion @code{displa} gibt einen Ausdruck in Maxima-Format aus.
+
+@example
+(%i1) :lisp #$[x, y, z]$ 
+((MLIST SIMP) $X $Y $Z)
+(%i1) :lisp (displa '((MLIST SIMP) $X $Y $Z))
+[x, y, z]
+NIL
+@end example
+
+In Maxima definierte Funktionen sind keine gew@"ohnlichen Lisp-Funktionen. 
+Die Lisp-Funktion @code{mfuncall} ruft Maxima-Funktionen auf. 
+Zum Beispiel:
+
+@example
+(%i1) foo(x,y) := x*y$
+(%i2) :lisp (mfuncall '$foo 'a 'b)
+((MTIMES SIMP) A B)
+@end example
+
+Einige Lisp-Funktionen sind im Maxima-Paket verschattet, namentlich die folgenden. 
+
+@code{complement},
+@code{continue},
+@code{//},
+@code{float},
+@code{functionp},
+@code{array},
+@code{exp},
+@code{listen},
+@code{signum},
+@code{atan},
+@code{asin},
+@code{acos},
+@code{asinh},
+@code{acosh},
+@code{atanh},
+@code{tanh},
+@code{cosh},
+@code{sinh},
+@code{tan},
+@code{break},
+and @code{gcd}.
+
+
+@node Speicherbereinigung, Dokumentation, Lisp und Maxima, Hilfe
+@section Speicherbereinigung
+Symbolische Berechnungen haben die Tendenz, eine Menge Abfall (garbage) zu erzeugen, 
+und ein effektiver Umgang hiermit kann entscheidend f@"ur den erfolgreichen Abschluss einiger Programme sein. 
+
+@c HOW MUCH OF THE FOLLOWING STILL HOLDS ??
+@c WHAT ABOUT GC IN GCL ON MS WINDOWS ??
+@c SHOULD WE SAY SOMETHING ABOUT GC FOR OTHER LISPS ??
+Unter GCL ist auf UNIX-Systemen, wo der mprotect-Systemaufruf zur Verf@"ugung steht
+(einschlie@ss{}lich SUN OS 4.0 und einigen BSD-Varianten), eine geschichtete Speicherbereinigung 
+(garbage collection) vorhanden. 
+Siehe GCL-Dokumentation unter ALLOCATE und GBC. 
+Auf der Lisp-Ebene hilft (setq si::*notify-gbc* t) bei der Bestimmung der Speicherbereiche, 
+die mehr Platz ben@"otigen. 
+
+@node Dokumentation, Definitionen f@"ur die Hilfe, Speicherbereinigung, Hilfe
+@section Dokumentation
+
+@c SHOULD TALK ABOUT OTHER FORMS OF DOCUMENTATION ASIDE FROM ON-LINE MANUAL.
+
+Das Maxima-Online-Benutzerhandbuch kann auf verschiedene Weisen eingesehen werden. 
+Von der interaktiven Eingabeaufforderung in Maxima aus wird das Benutzerhandbuch 
+durch das Kommando @code{?} (d.h. durch die Funktion @code{describe}) im Klartext einsehen. 
+Mit Hilfe des Anzeigeprogramms @code{info} (Linux) wird das Benutzerhandbuch als @code{info}-Hypertext 
+und mit einem gew@"ohnlichen Browser als Webseite einsehbar. 
+
+@code{example} zeigt Beispiele f@"ur viele Maxima-Funktionen.
+Zum Beispiel,
+
+@example
+(%i1) example (integrate);
+@end example
+
+ergibt
+
+@example
+(%i2) test(f):=block([u],u:integrate(f,x),ratsimp(f-diff(u,x)))
+(%o2) test(f) := block([u], u : integrate(f, x), 
+
+                                         ratsimp(f - diff(u, x)))
+(%i3) test(sin(x))
+(%o3)                           0
+(%i4) test(1/(x+1))
+(%o4)                           0
+(%i5) test(1/(x^2+1))
+(%o5)                           0
+@end example
+
+und zus@"atzliche Ausgaben.
+
+@node Definitionen f@"ur die Hilfe,  , Dokumentation, Hilfe
+@section Definitionen f@"ur die Hilfe
+
+@deffn {Funktion} demo (@var{filename})
+Wertet Maxima-Ausdr@"ucke in @var{filename} aus und zeigt die Ergebnisse an. 
+@code{demo} pausiert nach jeder Auswertung und f@"ahrt weiter, nachdem der Benutzer einen Zeilenumbruch 
+eingegeben hat. (In Xmaxima ausgef@"uhrt, ben@"otigt @code{demo} ein Semikolon @code{;} 
+und einen Zeilenumbruch.)
+
+@code{demo} durchsucht die Verzeichnisliste @code{file_search_demo}, um @code{filename} zu finden. 
+Hat die Datei die Erweiterung @code{dem}, kann die Erweiterung auch entfallen. 
+Siehe auch @code{file_search}.
+
+@code{demo} wertet seine Argument aus.
+@code{demo} gibt den Namen der Demonstrationsdatei zur@"uck.
+
+Beispiel:
+
+@example
+(%i1) demo ("disol");
+
+batching /home/wfs/maxima/share/simplification/disol.dem
+ At the _ prompt, type ';' followed by enter to get next demo
+(%i2)                      load(disol)
+
+_
+(%i3)           exp1 : a (e (g + f) + b (d + c))
+(%o3)               a (e (g + f) + b (d + c))
+
+_
+(%i4)                disolate(exp1, a, b, e)
+(%t4)                         d + c
+
+(%t5)                         g + f
+
+(%o5)                   a (%t5 e + %t4 b)
+
+_
+(%i5) demo ("rncomb");
+
+batching /home/wfs/maxima/share/simplification/rncomb.dem
+ At the _ prompt, type ';' followed by enter to get next demo
+(%i6)                     load(rncomb)
+
+_
+                             z         x
+(%i7)               exp1 : ----- + ---------
+                           y + x   2 (y + x)
+                          z         x
+(%o7)                   ----- + ---------
+                        y + x   2 (y + x)
+
+_
+(%i8)                     combine(exp1)
+                          z         x
+(%o8)                   ----- + ---------
+                        y + x   2 (y + x)
+
+_
+(%i9)                     rncombine(%)
+                             2 z + x
+(%o9)                       ---------
+                            2 (y + x)
+
+_
+                             d   c   b   a
+(%i10)                exp2 : - + - + - + -
+                             3   3   2   2
+                          d   c   b   a
+(%o10)                    - + - + - + -
+                          3   3   2   2
+
+_
+(%i11)                    combine(exp2)
+                      2 d + 2 c + 3 (b + a)
+(%o11)                ---------------------
+                                6
+
+_
+(%i12)                   rncombine(exp2)
+                      2 d + 2 c + 3 b + 3 a
+(%o12)                ---------------------
+                                6
+
+_
+(%i13) 
+@end example
+
+@end deffn
+
+@deffn {Funktion} describe (@var{string})
+Findet s@"amtliche dokumentierte Eintr@"age, die @var{string} in ihren Titeln enthalten. 
+Gibt es mehr als einen solchen Eintrag, bittet Maxima den Benutzer, einen oder mehrere Eintr@"age auszuw@"ahlen. 
+In der interaktiven Eingabeaufforderung ist @code{? foo} 
+(mit einem Leerzeichen zwischen @code{?} und @code{foo}) @"aquivalent zu @code{describe ("foo")}. 
+
+@code{describe ("")} ergibt eine Liste s@"amtlicher dokumentierter Themen im Online-Handbuch.
+
+@code{describe} quotiert (Operator @code{'}) seine Argumente. @code{describe} gibt stets @code{false} zur@"uck.
+
+Beispiel:
+
+@example
+(%i1) ? integ
+ 0: (maxima.info)Introduction to Elliptic Functions and Integrals.
+ 1: Definitions for Elliptic Integrals.
+ 2: Integration.
+ 3: Introduction to Integration.
+ 4: Definitions for Integration.
+ 5: askinteger :Definitions for Simplification.
+ 6: integer_partitions :Definitions for Sets.
+ 7: integerp :Definitions for Miscellaneous Options.
+ 8: integrate :Definitions for Integration.
+ 9: integrate_use_rootsof :Definitions for Integration.
+ 10: integration_constant_counter :Definitions for Integration.
+ 11: nonnegintegerp :Definitions for linearalgebra.
+Enter space-separated numbers, `all' or `none': 8 9
+
+ -- Function: integrate (<expr>, <x>)
+ -- Function: integrate (<expr>, <x>, <a>, <b>)
+     Attempts to symbolically compute the integral of <expr> with
+     respect to <x>.  `integrate (<expr>, <x>)' is an indefinite
+     integral, while `integrate (<expr>, <x>, <a>, <b>)' is a definite
+     integral, [...]
+@end example
+
+In diesem Beispiel wurden die Eintr@"age 8 und 9 ausgew@"ahlt. 
+Jeder oder kein Eintrag kann durch die Eingabe von @code{all} bzw. @code{none} 
+ausgew@"ahlt werden, abgek@"urzt durch @code{a} bzw. @code{n}.
+
+@c ERROR MESSAGE WHEN CONVERTING TO PDF (VvN)
+@c @pxref{Einf@"uhrung in die Hilfe} 
+
+@end deffn
+
+@deffn {Funktion} example (@var{topic})
+@deffnx {Funktion} example ()
+@code{example (@var{topic})} zeigt einige Beispiele von @var{topic} an, 
+welches ein Symbol ist (keine Zeichenkette). 
+Die meisten Themen sind Funktionsnamen. 
+@code{example ()} gibt die Liste aller erfassten Themen an.
+
+Der Name der Datei, die die Beispiele enth@"alt, ist durch die globale Variable @code{manual_demo} 
+gegeben, standardm@"a@ss{}ig durch @code{"manual.demo"}.
+
+@code{example} quotiert (Operator @code{'}) seine Argumente. 
+@code{example} gibt @code{done} zur@"uck, wenn kein Fehler auftritt oder 
+wenn @code{example} nicht ohne Argument aufgerufen wurde. 
+
+Beispiele:
+
+@example
+(%i1) example (append);
+(%i2) append([x+y,0,-3.2],[2.5E+20,x])
+(%o2)             [y + x, 0, - 3.2, 2.5E+20, x]
+(%o2)                         done
+(%i3) example (coeff);
+(%i4) coeff(b+tan(x)+2*a*tan(x) = 3+5*tan(x),tan(x))
+(%o4)                      2 a + 1 = 5
+(%i5) coeff(1+x*%e^x+y,x,0)
+(%o5)                         y + 1
+(%o5)                         done
+@end example
+
+@end deffn
+
