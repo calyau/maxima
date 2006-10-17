@@ -2,12 +2,12 @@
 @c English original: Command.texi CVS 1.41
 
 @menu
-* Einführung in die Kommandozeile::
-* Definitionen für die Kommandozeile::
+* Einf@"uhrung in die Kommandozeile::
+* Definitionen f@"ur die Kommandozeile::
 @end menu
 
-@node Einführung in die Kommandozeile, Definitionen für die Kommandozeile, Kommandozeile, Kommandozeile
-@section Einführung in die Kommandozeile
+@node Einf@"uhrung in die Kommandozeile, Definitionen f@"ur die Kommandozeile, Kommandozeile, Kommandozeile
+@section Einf@"uhrung in die Kommandozeile
 
 @c NEEDS EXAMPLES
 @c THIS ITEM IS VERY IMPORTANT !!
@@ -28,7 +28,7 @@ aller Symbole und Funktionsaufrufe in diesem Ausdruck.
 Z.B. bedeutet @code{'(f(x))}, dass der Ausdruck @code{f(x)} nicht ausgewertet wird.
 @code{'f(x)} (das Hochkomma angewandt auf @code{f} statt auf @code{f(x)}) 
 bedeutet, dass die Substantivform von @code{f} angewandt auf @code{[x]} 
-(im Sinne von @code{apply}) zurückgegeben wird.
+(im Sinne von @code{apply}) zur@"uckgegeben wird.
 
 Ein einzelnes Hochkomma verhindert keine Vereinfachungen.
 
@@ -133,21 +133,21 @@ Ein einzelnes Hochkomma verhindert keine Vereinfachungen.
 @end deffn
 
 @deffn {Operator} ''
-Der Quote-Quote-Operator @code{'@w{}'} (zwei einzelne Hochkommata) verändert 
-die Auswertung der eingegebenen Ausdrücke.
+Der Quote-Quote-Operator @code{'@w{}'} (zwei einzelne Hochkommata) ver@"andert 
+die Auswertung der eingegebenen Ausdr@"ucke.
 
 Auf einen allgemeinen Ausdruck @var{expr} angewandt, bewirkt Quote-Quote,
-dass der Wert von @var{expr} für @var{expr} in den eingegebenen Ausdruck eingesetzt wird.
+dass der Wert von @var{expr} f@"ur @var{expr} in den eingegebenen Ausdruck eingesetzt wird.
 
-Angewandt auf den Operator eines Ausdrucks, ändert Quote-Quote
+Angewandt auf den Operator eines Ausdrucks, @"andert Quote-Quote
 den Operator von einem Substantiv in ein Verb (sollte er nicht bereits ein Verb sein).
 
 Der Quote-Quote-Operator wird durch den Eingabeparser angewandt;
 er wird nicht als Teil des geparsten Eingabeausdrucks gespeichert.
 Quote-Quote wird stets angewandt, sobald er geparst wird, und kann nicht quotiert werden. 
 So bewirkt Quote-Quote eine Auswertung, auch wenn die Auswertung auf anderem Wege
-unterdrückt wird, so zum Beispiel in Funktionsdefinitionen, Lambda-Ausdrücken
-und Ausdrücken, die durch ein Hochkomma (Operator @code{'}) quotiert sind.
+unterdr@"uckt wird, so zum Beispiel in Funktionsdefinitionen, Lambda-Ausdr@"ucken
+und Ausdr@"ucken, die durch ein Hochkomma (Operator @code{'}) quotiert sind.
 
 Quote-Quote wird von @code{batch} und @code{load} erkannt.
 
@@ -156,7 +156,7 @@ Siehe auch den Quotierungsoperator @code{'} und @code{nouns}.
 Beispiele:
 
 Auf einen allgemeinen Ausdruck @var{expr} angewandt, bewirkt Quote-Quote,
-dass der Wert von @var{expr} für @var{expr} in den eingegebenen Ausdruck eingesetzt wird.
+dass der Wert von @var{expr} f@"ur @var{expr} in den eingegebenen Ausdruck eingesetzt wird.
 
 @c ===beg===
 @c expand ((a + b)^3);
@@ -208,7 +208,7 @@ dass der Wert von @var{expr} für @var{expr} in den eingegebenen Ausdruck eingese
 (%o14)                         x3
 @end example
 
-Angewandt auf den Operator eines Ausdrucks, ändert Quote-Quote
+Angewandt auf den Operator eines Ausdrucks, @"andert Quote-Quote
 den Operator von einem Substantiv in ein Verb (sollte er nicht bereits ein Verb sein).
 
 @c ===beg==
@@ -270,8 +270,8 @@ er wird nicht als Teil des geparsten Eingabeausdrucks gespeichert.
 @end example
 
 Quote-Quote bewirkt eine Auswertung, auch wenn die Auswertung auf anderem Wege
-unterdrückt wird, so zum Beispiel in Funktionsdefinitionen, Lambda-Ausdrücken
-und Ausdrücken, die durch ein Hochkomma (Operator @code{'}) quotiert sind.
+unterdr@"uckt wird, so zum Beispiel in Funktionsdefinitionen, Lambda-Ausdr@"ucken
+und Ausdr@"ucken, die durch ein Hochkomma (Operator @code{'}) quotiert sind.
 
 @c ===beg===
 @c foo_1a (x) := ''(integrate (log (x), x));
@@ -324,12 +324,12 @@ und Ausdrücken, die durch ein Hochkomma (Operator @code{'}) quotiert sind.
 @end deffn
 
 @c end concepts Command Line
-@node Definitionen für die Kommandozeile,  , Einführung in die Kommandozeile, Kommandozeile
-@section Definitionen für die Kommandozeile
+@node Definitionen f@"ur die Kommandozeile,  , Einf@"uhrung in die Kommandozeile, Kommandozeile
+@section Definitionen f@"ur die Kommandozeile
 
 @c NEEDS WORK, ESPECIALLY EXAMPLES
 @deffn {Funktion} alias (@var{new_name_1}, @var{old_name_1}, ..., @var{new_name_n}, @var{old_name_n})
-stellt einen alternativen Namen für eine (Benutzer- oder System-) Funktion, Variable, Array, etc. zur Verfügung. 
+stellt einen alternativen Namen f@"ur eine (Benutzer- oder System-) Funktion, Variable, Array, etc. zur Verf@"ugung. 
 Eine gerade Anzahl an Argumenten muss dabei verwendet werden. 
 
 @end deffn
@@ -340,12 +340,12 @@ Standardwert: @code{false}
 Wenn in Maxima ein Fehler auftritt, startet Maxima den Debugger, falls @code{debugmode} @code{true} ist. 
 Der Benutzer kann dann Kommandos eingeben, um den Stapelspeicher ("call stack") zu untersuchen, 
 Haltepunkte ("breakpoints") zu setzen, den Maxima-Quelltext durchzugehen, etc. 
-Siehe @code{debugging} für eine Liste der Kommandos für den Debugger.
+Siehe @code{debugging} f@"ur eine Liste der Kommandos f@"ur den Debugger.
 When a Maxima error occurs, Maxima will start the debugger if @code{debugmode} is @code{true}.
 The user may enter commands to examine the call stack, set breakpoints, step
 through Maxima code, and so on. See @code{debugging} for a list of debugger commands.
 
-@code{debugmode} ermöglicht nicht, Lisp-Fehler abzufangen. 
+@code{debugmode} erm@"oglicht nicht, Lisp-Fehler abzufangen. 
 @c DO WE WANT TO SAY MORE ABOUT DEBUGGING LISP ERRORS ???
 @c I'M NOT CONVINCED WE WANT TO OPEN THAT CAN OF WORMS !!!
 
@@ -357,18 +357,18 @@ through Maxima code, and so on. See @code{debugging} for a list of debugger comm
 Wertet den Ausdruck @var{expr} in einer Umgebung, die durch die Argumente @var{arg_1}, ..., @var{arg_n} 
 angegeben ist, aus. Die Argumente sind Boolesche Schalter ("Boolean flags"), Zuweisungen, 
 Gleichungen und Funktionen. @code{ev} gibt das Ergebnis (einen anderen Ausdruck) 
-der Auswertung zurück. 
+der Auswertung zur@"uck. 
 
-Die Auswertung wird in den folgenden Schritten durchgeführt. 
+Die Auswertung wird in den folgenden Schritten durchgef@"uhrt. 
 
 @enumerate
 @item
-Zuerst wird die Umgebung über eine Abfrage der Argumente eingerichtet, welche eins oder alle der 
-folgend genannten sein können.
+Zuerst wird die Umgebung @"uber eine Abfrage der Argumente eingerichtet, welche eins oder alle der 
+folgend genannten sein k@"onnen.
 
 @itemize @bullet
 @item
-@code{simp} bewirkt, dass @var{expr} vereinfacht wird, unabhängig von der 
+@code{simp} bewirkt, dass @var{expr} vereinfacht wird, unabh@"angig von der 
 Einstellung des Schalters @code{simp}, der, wenn @code{false}, Vereinfachungen verhindert.
 @item
 @code{noeval} unterbindet die Auswertungsphase von @code{ev} (siehe unten Schritt (4)).
@@ -385,91 +385,91 @@ in @var{expr}.
 @code{maxposex} und @code{maxnegex} zu @var{m} bzw. @var{n}.
 @item
 @code{detout} bewirkt, dass jede in @var{expr} enthaltende inverse Matrix 
-bei der Berechnung ihre Determinante eher als Vorfaktor festhält
+bei der Berechnung ihre Determinante eher als Vorfaktor festh@"alt
 als jeden Eintrag hierdurch zu teilen.
 @item
-@code{diff} bewirkt, dass jede in @var{expr} aufgeführte Differentiation ausgeführt wird.
+@code{diff} bewirkt, dass jede in @var{expr} aufgef@"uhrte Differentiation ausgef@"uhrt wird.
 @item
 @code{derivlist (@var{x}, @var{y}, @var{z}, ...)} bewirkt, dass Differentiationen 
-nur bezüglich der aufgeführten Variablen ausgeführt werden.
+nur bez@"uglich der aufgef@"uhrten Variablen ausgef@"uhrt werden.
 @item
 @code{float} bewirkt, dass nichtganzzahlige rationale Zahlen in Dezimalzahlen 
 umgewandelt werden.
 @item
-@code{numer} bewirkt, dass einige mathematische Funktionen (einschließlich 
+@code{numer} bewirkt, dass einige mathematische Funktionen (einschlie@ss{}lich 
 der Exponentiation) mit numerischen Argumenten in Dezimalzahlen ausgewertet werden.
 Es bewirkt, dass Variablen in @var{expr}, die Zahlenwerte erhalten haben, 
 durch ihre Werte ersetzt werden.
 Es schaltet auch den Schalter @code{float} an.
 @item
-@code{pred} bewirkt, dass Prädikate (Ausdrücke, die zu @code{true} oder @code{false} evaluieren)
+@code{pred} bewirkt, dass Pr@"adikate (Ausdr@"ucke, die zu @code{true} oder @code{false} evaluieren)
 ausgewertet werden.
 @item
-@code{eval} bewirkt eine zusätzliche Nachauswertung von @var{expr}. (Siehe unten Schritt (5).)
-@code{eval} kann mehrfach aufgeführt werden. Bei jedem Vorkommen von @code{eval} wir der 
+@code{eval} bewirkt eine zus@"atzliche Nachauswertung von @var{expr}. (Siehe unten Schritt (5).)
+@code{eval} kann mehrfach aufgef@"uhrt werden. Bei jedem Vorkommen von @code{eval} wir der 
 Ausdruck erneut ausgewertet.
 @item
-@code{A}, wobei @code{A} ein als Auswertungsschalter erklärtes Atom ist ("evaluation flag", siehe @code{evflag}),
-bewirkt, dass @code{A} während der Auswertung von @var{expr} an @code{true} gebunden ist.
+@code{A}, wobei @code{A} ein als Auswertungsschalter erkl@"artes Atom ist ("evaluation flag", siehe @code{evflag}),
+bewirkt, dass @code{A} w@"ahrend der Auswertung von @var{expr} an @code{true} gebunden ist.
 @item
 @code{V: expression} (oder alternativ @code{V=expression}) bewirkt, dass @code{V} 
-während der Auswertung von @var{expr} an den Wert von @code{expression} gebunden ist. 
+w@"ahrend der Auswertung von @var{expr} an den Wert von @code{expression} gebunden ist. 
 Beachte, dass wenn @code{V} eine Maxima-Option ist, wird @code{expression} 
-während der Auswertung von @var{expr} als Wert der Option verwendet. 
-Wenn mehr als ein Argument von @code{ev} von diesem Typ ist, wird diese Bindung parallel durchgeführt. 
-Wenn @code{V} nichtatomarer Ausdruck ist, wird eher eine Substitution als eine Bindung durchgeführt.
+w@"ahrend der Auswertung von @var{expr} als Wert der Option verwendet. 
+Wenn mehr als ein Argument von @code{ev} von diesem Typ ist, wird diese Bindung parallel durchgef@"uhrt. 
+Wenn @code{V} nichtatomarer Ausdruck ist, wird eher eine Substitution als eine Bindung durchgef@"uhrt.
 @item
-@code{F}, wobei @code{F} ein als Auswertungsfunktion erklärter Funktionsname ist 
+@code{F}, wobei @code{F} ein als Auswertungsfunktion erkl@"arter Funktionsname ist 
 ("evaluation function", siehe  @code{evfun}), bewirkt, dass @code{F} auf @var{expr} angewandt wird.
 @item
 Andere Funktionsnamen (z.B., @code{sum}) bewirken die Auswertung jedes Vorkommens dieser Namen 
-in @var{expr}, so als wären es Verben.
+in @var{expr}, so als w@"aren es Verben.
 @item
-Zusätzlich kann eine Funktion, die in @var{expr} vorkommt (sagen wir @code{F(x)}), 
+Zus@"atzlich kann eine Funktion, die in @var{expr} vorkommt (sagen wir @code{F(x)}), 
 durch die Eingabe von @code{F(x) := expression} als Argument von @code{ev} 
-allein für diese Auswertung von @var{expr} lokal definiert werden.
+allein f@"ur diese Auswertung von @var{expr} lokal definiert werden.
 @item
-Wenn ein oben nicht erwähntes Atom oder eine indizierte Variable oder ein indizierter Ausdruck 
+Wenn ein oben nicht erw@"ahntes Atom oder eine indizierte Variable oder ein indizierter Ausdruck 
 als Argument gegeben ist, wird es ausgewertet und wenn das Ergebnis eine Gleichung oder eine 
-Zuweisung ist, wird die aufgeführte Bindung oder Substitution durchgeführt. 
-Ist das Ergebnis eine Liste, dann werden die Elemente der Liste als zusätzliche Argumente 
+Zuweisung ist, wird die aufgef@"uhrte Bindung oder Substitution durchgef@"uhrt. 
+Ist das Ergebnis eine Liste, dann werden die Elemente der Liste als zus@"atzliche Argumente 
 von @code{ev} angesehen. 
 Dies erlaubt, eine Liste von Gleichungen zu verwenden (z.B. @code{[X=1, Y=A**2]}), oder 
 eine Liste von Namen von Gleichungen (z.B. @code{[%t1, %t2]}, wobei @code{%t1} und
-@code{%t2} an Gleichungen gebunden sind), wie sie beispielsweise von @code{solve} zurückgegeben wird.
+@code{%t2} an Gleichungen gebunden sind), wie sie beispielsweise von @code{solve} zur@"uckgegeben wird.
 @end itemize
 
-Die Argumente von @code{ev} können in beliebiger Reihenfolge angegeben werden, mit der Ausnahme, 
-dass die Substitution von Gleichungen der Reihe nach von links nach rechts durchgeführt wird,  
-und dass hintereinander aufgeführte Auswertungsfunktionen entsprechend verkettet werden, 
+Die Argumente von @code{ev} k@"onnen in beliebiger Reihenfolge angegeben werden, mit der Ausnahme, 
+dass die Substitution von Gleichungen der Reihe nach von links nach rechts durchgef@"uhrt wird,  
+und dass hintereinander aufgef@"uhrte Auswertungsfunktionen entsprechend verkettet werden, 
 z.B. wird @code{ev (@var{expr}, ratsimp, realpart)} zu @code{realpart (ratsimp (@var{expr}))} .
 
-Die Schalter @code{simp}, @code{numer}, @code{float} und @code{pred} können auch lokal in einem Block 
-gesetzt werden, oder global in Maxima, wodurch sie bis zur nächsten Setzung wirksam bleiben.
+Die Schalter @code{simp}, @code{numer}, @code{float} und @code{pred} k@"onnen auch lokal in einem Block 
+gesetzt werden, oder global in Maxima, wodurch sie bis zur n@"achsten Setzung wirksam bleiben.
 
-Ist @var{expr} ein kanonischer rationaler Ausdruck (CRE), ist der von @code{ev} zurückgegebene 
+Ist @var{expr} ein kanonischer rationaler Ausdruck (CRE), ist der von @code{ev} zur@"uckgegebene 
 Ausdruck ebenfalls CRE, vorausgesetzt dass die Schalter @code{numer} und @code{float} beide nicht 
 @code{true} sind.
 
 @item
-Während des Schritts (1) wird eine Liste der nicht indizierten Variablen erstellt, 
+W@"ahrend des Schritts (1) wird eine Liste der nicht indizierten Variablen erstellt, 
 die auf der linken Seite von unter den Argumenten befindlichen Gleichungen auftreten oder in den Werten 
 der Argumente, falls diese Werte Gleichungen sind. 
 Die Variablen in dem Ausdruck @var{expr} (nicht indizierten Variablen und auch indizierte Variablen, 
 die keine assoziierte Arrayfunktionen besitzen) 
 werden durch ihre globalen Werte ersetzt, es sei denn, sie sind in der gerade 
-genannten Liste aufgeführt. 
+genannten Liste aufgef@"uhrt. 
 Normalerweise ist @var{expr} eine Marke (Label) oder @code{%} (wie in @code{%i2} in dem Beispiel unten), 
 so dass in diesem Schritt einfach nur der durch die Marke benannte Ausdruck abfragt wird, 
 damit @code{ev} ihn dann bearbeiten kann.
 
 @item
-Wenn in den Argumenten irgendwelche Substitutionen aufgeführt sind, werden diese nun ausgeführt.
+Wenn in den Argumenten irgendwelche Substitutionen aufgef@"uhrt sind, werden diese nun ausgef@"uhrt.
 
 @item
 Der resultierende Ausdruck wird erneut ausgewertet (wenn nicht @code{noeval} unter den Argumente ist) 
-und gemäß der Argumente vereinfacht. Beachte, dass jeder Funktionsaufruf in @var{expr} 
-erst ausgeführt wird, nachdem die enthaltenden Variablen ausgewertet wurde und dass sich dadurch 
+und gem@"a@ss{} der Argumente vereinfacht. Beachte, dass jeder Funktionsaufruf in @var{expr} 
+erst ausgef@"uhrt wird, nachdem die enthaltenden Variablen ausgewertet wurde und dass sich dadurch 
 @code{ev(F(x))} wie @code{F(ev(x))} verhalten wird.
 
 @item
@@ -495,7 +495,7 @@ die Argumente ohne @code{ev()} eingeben kann. D.h. man kann einfach schreiben
 @var{expr}, @var{arg_1}, ..., @var{arg_n}
 @end example
 
-Diese Kurzschreibweise ist als Teil eines anderen Ausdrucks, z.B. in Funktionen, Blöcken, etc., 
+Diese Kurzschreibweise ist als Teil eines anderen Ausdrucks, z.B. in Funktionen, Bl@"ocken, etc., 
 nicht gestattet.
 
 Beachte im folgenden Beispiel den parallelen Bindungsprozess.
@@ -535,13 +535,13 @@ Solution
 @defvr {Eigenschaft} evflag
 Wenn ein Symbol @var{x} die Eigenschaft (@code{properties}) 
 @code{evflag} ("evaluation flag", Auswertungsschalter) 
-besitzt, sind die Ausdrücke @code{ev(@var{expr}, @var{x})} und @code{@var{expr}, @var{x}}
-(in der interaktiven Eingabe) äquivalent zu @code{ev(@var{expr}, @var{x} = true)}. 
-Das heißt, @var{x} ist während der Auswertung von @var{expr} an @code{true} gebunden. 
+besitzt, sind die Ausdr@"ucke @code{ev(@var{expr}, @var{x})} und @code{@var{expr}, @var{x}}
+(in der interaktiven Eingabe) @"aquivalent zu @code{ev(@var{expr}, @var{x} = true)}. 
+Das hei@ss{}t, @var{x} ist w@"ahrend der Auswertung von @var{expr} an @code{true} gebunden. 
 
 Der Ausdruck @code{declare(@var{x}, evflag)} verleiht der Variablen @var{x} die @code{evflag}-Eigenschaft.
 
-Schalter, die standardmäßig die @code{evflag}-Eigenschaft besitzen: 
+Schalter, die standardm@"a@ss{}ig die @code{evflag}-Eigenschaft besitzen: 
 @c FOLLOWING LIST CONSTRUCTED FROM LIST UNDER (prog1 '(evflag properties) ...)
 @c NEAR LINE 2649 OF mlisp.lisp AT PRESENT (2004/11).
 @code{algebraic},
@@ -637,15 +637,15 @@ Beispiele:
 @defvr {Eigenschaft} evfun
 Wenn eine Funktion @var{F} die Eigenschaft (@code{properties}) 
 @code{evfun} ("evaluation function", Auswertungsfunktion) 
-besitzt, sind die Ausdrücke @code{ev(@var{expr}, @var{F})} und @code{@var{expr}, @var{F}}
-(in der interaktiven Eingabe) äquivalent zu @code{@var{F}(ev(@var{expr}))}. 
+besitzt, sind die Ausdr@"ucke @code{ev(@var{expr}, @var{F})} und @code{@var{expr}, @var{F}}
+(in der interaktiven Eingabe) @"aquivalent zu @code{@var{F}(ev(@var{expr}))}. 
 
-Wenn zwei oder mehr @code{evfun}-Funktionen @var{F}, @var{G}, etc. aufgeführt werden, 
-werden die Funktionen in der aufgeführten Reihenfolge angewandt. 
+Wenn zwei oder mehr @code{evfun}-Funktionen @var{F}, @var{G}, etc. aufgef@"uhrt werden, 
+werden die Funktionen in der aufgef@"uhrten Reihenfolge angewandt. 
 
 Der Ausdruck @code{declare(@var{F}, evfun)} verleiht der Funktion @var{F} die @code{evfun}-Eigenschaft.
 
-Funktionen, die standardmäßig die @code{evfun}-Eigenschaft besitzen: 
+Funktionen, die standardm@"a@ss{}ig die @code{evfun}-Eigenschaft besitzen: 
 @c FOLLOWING LIST CONSTRUCTED FROM LIST UNDER (prog1 '(evfun properties) ...)
 @c NEAR LINE 2643 IN mlisp.lisp AT PRESENT (2004/11).
 @code{bfloat},
@@ -735,10 +735,10 @@ Beispiele:
 @c NEEDS WORK
 @defvr {Optionsvariable} infeval
 Erlaubt den Modus der endlosen Auswertung ("infinite evaluation"). 
-@code{ev} wertet einen Ausdruck solange wiederholt aus, bis dieser sich nicht mehr ändert. 
-Um zu verhindern, dass eine Variable, sagen wir @code{X}, in diesem Modus fortwährend 
-ausgewertet wird, kann man einfach @code{X='X} als Argument von @code{ev} einfügen. 
-Natürlich werden Ausdrücke wie @code{ev (X, X=X+1, infeval)} Endlosschleifen erzeugen. 
+@code{ev} wertet einen Ausdruck solange wiederholt aus, bis dieser sich nicht mehr @"andert. 
+Um zu verhindern, dass eine Variable, sagen wir @code{X}, in diesem Modus fortw@"ahrend 
+ausgewertet wird, kann man einfach @code{X='X} als Argument von @code{ev} einf@"ugen. 
+Nat@"urlich werden Ausdr@"ucke wie @code{ev (X, X=X+1, infeval)} Endlosschleifen erzeugen. 
 
 @end defvr
 
@@ -759,7 +759,7 @@ Entfernt alle Bindungen (Werte, Funktionen, Arrays oder Regeln) von den Argument
 Ist @var{a_k} ein einzelnes Arrayelement, entbindet @code{kill} dieses Element ohne dabei die 
 anderen Elemente des Array zu beeinflussen.
 
-Einige spezielle Argumente werden erkannt. Verschiedene Arten von Argumenten können kombiniert werden, 
+Einige spezielle Argumente werden erkannt. Verschiedene Arten von Argumenten k@"onnen kombiniert werden, 
 z.B. @code{kill (inlabels, functions, allbut (foo, bar))}.
 
 @code{kill (labels)} entbindet alle bis dahin erzeugten Eingabe-, Ausgabe- und Zwischenmarken 
@@ -777,15 +777,15 @@ entbindet die @var{n} letzten Eingabe- und Ausgabemarken
 
 @code{kill (@var{infolist})}, wobei @var{infolist} ein Eintrag aus @code{infolists} ist 
 (so wie @code{values}, @code{functions} oder @code{arrays}), 
-entbindet alle Einträge in @var{infolist}. Siehe auch @code{infolists}.
+entbindet alle Eintr@"age in @var{infolist}. Siehe auch @code{infolists}.
 
-@code{kill (all)} entbindet sämtliche Einträge in sämtlichen Infolisten. 
-@code{kill (all)} setzt keine globale Variablen auf ihre Standardwerte zurück; 
+@code{kill (all)} entbindet s@"amtliche Eintr@"age in s@"amtlichen Infolisten. 
+@code{kill (all)} setzt keine globale Variablen auf ihre Standardwerte zur@"uck; 
 siehe @code{reset} zu diesem Punkt. 
 
 @code{kill (allbut (@var{a_1}, ..., @var{a_n}))}
-entbindet außer @var{a_1}, ..., @var{a_n} sämtliche Einträge in sämtlichen Infolisten. 
-@code{kill (allbut (@var{infolist}))} entbindet alle Einträge außer denen in @var{infolist}, 
+entbindet au@ss{}er @var{a_1}, ..., @var{a_n} s@"amtliche Eintr@"age in s@"amtlichen Infolisten. 
+@code{kill (allbut (@var{infolist}))} entbindet alle Eintr@"age au@ss{}er denen in @var{infolist}, 
 wobei @var{infolist} entweder @code{values} oder @code{functions}, @code{arrays}, etc. ist.
 
 Der Speicherplatz, der durch eine bestimmte Bindungseigenschaft beansprucht wird, wird nicht eher  
@@ -796,43 +796,43 @@ die den gebundenen Wert zeigt, als auch das Symbol selbst entbunden.
 @code{kill} quotiert (Operator @code{'}) seine Argumente.
 Der Quote-Quote-Operator @code{'@w{}'} verhindert Quotierung. 
 
-@code{kill (@var{symbol})} entbindet @var{symbol} von sämtlichen Eigenschaften (@code{properties}). 
+@code{kill (@var{symbol})} entbindet @var{symbol} von s@"amtlichen Eigenschaften (@code{properties}). 
 Im Kontrast, @code{remvalue}, @code{remfunction}, @code{remarray} und @code{remrule} entbinden 
 jeweils eine spezielle Eigenschaft. 
 
-@code{kill} gibt stets @code{done} zurück, sogar wenn das Argument keine Bindung besaß.
+@code{kill} gibt stets @code{done} zur@"uck, sogar wenn das Argument keine Bindung besa@ss{}.
 
 @end deffn
 
 @deffn {Funktion} labels (@var{symbol})
 @deffnx {Systemvariable} labels
 Gibt die Liste der Eingabe-, Ausgabe- und Zwischenmarken 
-("input, output, and intermediate expression labels"), die mit @var{symbol} beginnen, zurück. 
+("input, output, and intermediate expression labels"), die mit @var{symbol} beginnen, zur@"uck. 
 Typischerweise ist @var{symbol} der Wert von @code{inchar}, @code{outchar} oder @code{linechar}. 
 Der Markenbuchstabe kann mit oder ohne Prozentzeichen angegeben werden, so ergeben 
 zum Beispiel @code{i} und @code{%i} dasselbe Ergebnis. 
 
-Wenn keine Marke mit @var{symbol} beginnt, gibt @code{labels} eine leere Liste zurück. 
+Wenn keine Marke mit @var{symbol} beginnt, gibt @code{labels} eine leere Liste zur@"uck. 
 
 Die Funktion @code{labels} quotiert (Operator @code{'}) seine Argumente.
 Der Quote-Quote-Operator @code{'@w{}'} verhindert Quotierung. 
-Zum Beispiel gibt @code{labels (''inchar)} die Eingabemarken zurück, die mit dem aktuellen 
+Zum Beispiel gibt @code{labels (''inchar)} die Eingabemarken zur@"uck, die mit dem aktuellen 
 Eingabemarkenbuchstaben beginnen.
 
 Die Variable @code{labels} ist die Liste der Eingabe-, Ausgabe- und Zwischenmarken, 
-einschließlich aller vorherigen Marken, falls @code{inchar}, @code{outchar} oder @code{linechar} 
+einschlie@ss{}lich aller vorherigen Marken, falls @code{inchar}, @code{outchar} oder @code{linechar} 
 neu definiert wurde. 
 
-Standardmäßig zeigt Maxima das Ergebnis jeder Benutzereingabe an, wobei dem Ergebnis eine Ausgabemarke 
-hinzugefügt wird. Die Anzeige der Ausgabe wird durch die Eingabe eines abschließenden 
-@code{$} (Dollarzeichen) statt eines @code{;} (Semikolon) unterdrückt. 
+Standardm@"a@ss{}ig zeigt Maxima das Ergebnis jeder Benutzereingabe an, wobei dem Ergebnis eine Ausgabemarke 
+hinzugef@"ugt wird. Die Anzeige der Ausgabe wird durch die Eingabe eines abschlie@ss{}enden 
+@code{$} (Dollarzeichen) statt eines @code{;} (Semikolon) unterdr@"uckt. 
 Dabei wird eine Ausgabemarke erzeugt und an das Ergebnis gebunden, jedoch nicht angezeigt, 
 die Marke kann aber in der gleichen Art und Weise wie bei angezeigten Ausgabemarken referenziert werden. 
 Siehe auch @code{%}, @code{%%} und @code{%th}.
 
-Zwischenmarken können durch einige Funktionen erzeugt werden. Der Schalter @code{programmode} 
+Zwischenmarken k@"onnen durch einige Funktionen erzeugt werden. Der Schalter @code{programmode} 
 bestimmt, ob @code{solve} und einige andere Funktionen Zwischenmarken erzeugen statt eine Liste 
-von Ausdrücken zurückzugeben. 
+von Ausdr@"ucken zur@"uckzugeben. 
 Einige andere Funktionen, wie z.B. @code{ldisplay}, erzeugen stets Zwischenmarken. 
 
 Siehe auch @code{inchar}, @code{outchar}, @code{linechar} und @code{infolists}.
@@ -850,7 +850,7 @@ Der Zeilenindex der aktuellen Ein- und Ausgabe.
 Standardwert: @code{[]}
 
 @code{myoptions} ist die Liste aller Optionen, die durch den Benutzer neu gesetzt 
-wurden, unabhängig davon, ob sie dabei wieder auf den Standardwert zurückgesetzt wurden, oder nicht. 
+wurden, unabh@"angig davon, ob sie dabei wieder auf den Standardwert zur@"uckgesetzt wurden, oder nicht. 
 
 @end defvr
 
@@ -860,15 +860,15 @@ Standardwert: @code{false}
 Wenn @code{nolabels} @code{true} ist, werden die Eingabe- und Ausgabemarken 
 ("label" @code{%i} bzw. @code{%o}) 
 angezeigt, die Marken jedoch nicht an die Ergebnisse gebunden, 
-und die Marken werden auch nicht der Liste @code{labels} hinzugefügt. 
+und die Marken werden auch nicht der Liste @code{labels} hinzugef@"ugt. 
 Da in diesem Fall keine Marken an Ergebnisse gebunden sind, kann die Speicherbereinigung 
 ("garbage collection") den durch die Ergebnisse beanspruchten Speicher wieder frei geben. 
 
-Andernfalls werden die Marken an die Ein- und Ausgabe gebunden und der Liste @code{labels} hinzugefügt. 
+Andernfalls werden die Marken an die Ein- und Ausgabe gebunden und der Liste @code{labels} hinzugef@"ugt. 
 
 Zwischenmarken (@code{%t}) werden durch @code{nolabels} nicht beeinflusst; 
-sie werden unabhängig davon, ob @code{nolabels} @code{true} ist, oder @code{false}, 
-gebunden und der Liste @code{labels} hinzugefügt. 
+sie werden unabh@"angig davon, ob @code{nolabels} @code{true} ist, oder @code{false}, 
+gebunden und der Liste @code{labels} hinzugef@"ugt. 
 
 Siehe auch @code{batch}, @code{load} und @code{labels}.
 
@@ -880,8 +880,8 @@ Standardwert: @code{false}
 
 Wenn @code{optionset} @code{true} ist, gibt Maxima eine Meldung aus, wenn eine 
 Maxima-Option neu gesetzt wird. 
-Das kann nützlich sein, wenn der Benutzer Zweifel an der Schreibweise einer Option hat und sicher 
-gehen möchte, dass er tatsächlich einer Optionsvariablen einen Wert zugewiesen hat.
+Das kann n@"utzlich sein, wenn der Benutzer Zweifel an der Schreibweise einer Option hat und sicher 
+gehen m@"ochte, dass er tats@"achlich einer Optionsvariablen einen Wert zugewiesen hat.
 
 @end defvr
 
@@ -893,8 +893,8 @@ gehen möchte, dass er tatsächlich einer Optionsvariablen einen Wert zugewiesen h
 @deffnx {Funktion} playback (slow)
 @deffnx {Funktion} playback (time)
 @deffnx {Funktion} playback (grind)
-Zeigt Eingabe-, Ausgabe- und Zwischenausdrücke ("input, output, and intermediate expressions") 
-an, ohne diese dabei neu zu berechnen. @code{playback} zeigt nur die Ausdrücke, 
+Zeigt Eingabe-, Ausgabe- und Zwischenausdr@"ucke ("input, output, and intermediate expressions") 
+an, ohne diese dabei neu zu berechnen. @code{playback} zeigt nur die Ausdr@"ucke, 
 die an die Marken ("label") gebunden sind; andere Ausgaben 
 (so wie z.B. durch @code{print}, @code{describe} oder Fehlermeldungen erzeugten Text) 
 werden nicht angezeigt.
@@ -902,39 +902,39 @@ Siehe auch @code{labels}.
 
 @code{playback} quotiert (Operator @code{'}) seine Argumente.
 Der Quote-Quote-Operator @code{'@w{}'} verhindert Quotierung. 
-@code{playback} gibt stets @code{done} zurück.
+@code{playback} gibt stets @code{done} zur@"uck.
 
-@code{playback ()} (ohne Argumente) zeigt sämtliche Eingabe-, Ausgabe- und Zwischenausdrücke an, 
+@code{playback ()} (ohne Argumente) zeigt s@"amtliche Eingabe-, Ausgabe- und Zwischenausdr@"ucke an, 
 die bis dahin erzeugt wurden.
 Ein bereits berechneter Ausgabeausdruck wird dabei auch dann angezeigt, 
-wenn er durch einen Abschluss mit @code{$} unterdrückt wurde.
+wenn er durch einen Abschluss mit @code{$} unterdr@"uckt wurde.
 
-@code{playback (@var{n})} zeigt die letzten @var{n} Ausdrücke an. 
-Jeder Eingabe-, Ausgabe- und Zwischenausdruck zählt dabei als einer.
+@code{playback (@var{n})} zeigt die letzten @var{n} Ausdr@"ucke an. 
+Jeder Eingabe-, Ausgabe- und Zwischenausdruck z@"ahlt dabei als einer.
 
-@code{playback ([@var{m}, @var{n}])} zeigt die Eingabe-, Ausgabe- und Zwischenausdrücke 
-mit den Zahlen von @var{m} bis einschließlich @var{n} an. 
+@code{playback ([@var{m}, @var{n}])} zeigt die Eingabe-, Ausgabe- und Zwischenausdr@"ucke 
+mit den Zahlen von @var{m} bis einschlie@ss{}lich @var{n} an. 
 
-@code{playback ([@var{m}])} ist äquivalent zu @code{playback ([@var{m}, @var{m}])}; 
-normalerweise gibt dies ein Paar von Ein- und Ausgabeausdrücken aus. 
+@code{playback ([@var{m}])} ist @"aquivalent zu @code{playback ([@var{m}, @var{m}])}; 
+normalerweise gibt dies ein Paar von Ein- und Ausgabeausdr@"ucken aus. 
 
-@code{playback (input)} zeigt sämtliche Eingabeausdrücke an, die bis dahin erzeugt wurden.
+@code{playback (input)} zeigt s@"amtliche Eingabeausdr@"ucke an, die bis dahin erzeugt wurden.
 
-@code{playback (slow)} pausiert zwischen den Ausdrücken und wartet darauf, dass der Benutzer  
-@code{enter} drückt. Dieses Verhalten ist @code{demo} ähnlich. 
+@code{playback (slow)} pausiert zwischen den Ausdr@"ucken und wartet darauf, dass der Benutzer  
+@code{enter} dr@"uckt. Dieses Verhalten ist @code{demo} @"ahnlich. 
 @c WHAT DOES THE FOLLOWING MEAN ??? 
-@code{playback (slow)} ist in Verbindung mit @code{save} oder @code{stringout} nützlich, 
-wenn man bei der Erzeugung einer sekundären Speicherdatei die verwendbaren Ausdrücke herauspicken möchte. 
+@code{playback (slow)} ist in Verbindung mit @code{save} oder @code{stringout} n@"utzlich, 
+wenn man bei der Erzeugung einer sekund@"aren Speicherdatei die verwendbaren Ausdr@"ucke herauspicken m@"ochte. 
 
-@code{playback (time)} zeigt für jeden Ausdruck die Berechnungszeit an.
+@code{playback (time)} zeigt f@"ur jeden Ausdruck die Berechnungszeit an.
 @c DON'T BOTHER TO MENTION OBSOLETE OPTIONS !!!
 @c The arguments @code{gctime} and @code{totaltime} have the same effect as @code{time}.
 
-@code{playback (grind)} zeigt die Eingabeausdrücke in dem gleichen Format an wie
-die Funktion @code{grind}. Ausgabeausdrücke werden von der Option @code{grind} nicht beeinflusst. 
+@code{playback (grind)} zeigt die Eingabeausdr@"ucke in dem gleichen Format an wie
+die Funktion @code{grind}. Ausgabeausdr@"ucke werden von der Option @code{grind} nicht beeinflusst. 
 Siehe @code{grind}.
 
-Die Argumente können kombiniert werden, z.B. @code{playback ([5, 10], grind, time, slow)}.
+Die Argumente k@"onnen kombiniert werden, z.B. @code{playback ([5, 10], grind, time, slow)}.
 @c APPEARS TO BE input INTERSECT (UNION OF ALL OTHER ARGUMENTS). CORRECT ???
 
 @end deffn
@@ -946,13 +946,13 @@ Die Argumente können kombiniert werden, z.B. @code{playback ([5, 10], grind, tim
 @deffnx {Funktion} printprops (all, @var{i})
 Zeigt die zum Indikator @var{i} assoziierte Eigenschaft (@code{properties}) des Atoms @var{a} an.
 @var{a} kann sowohl eine Liste von Atomen, als auch das Atom @code{all} sein, in welchem Fall 
-sämtliche Atome mit der gegebenen Eigenschaft aufgeführt werden. 
+s@"amtliche Atome mit der gegebenen Eigenschaft aufgef@"uhrt werden. 
 Zum Beispiel  @code{printprops ([f, g], atvalue)}.  
-@code{printprops} ist für Eigenschaften gedacht, 
-die auf andere Weise nicht angezeigt werden können, 
-z.B. für @code{atvalue}, @code{atomgrad}, @code{gradef} und @code{matchdeclare}.
+@code{printprops} ist f@"ur Eigenschaften gedacht, 
+die auf andere Weise nicht angezeigt werden k@"onnen, 
+z.B. f@"ur @code{atvalue}, @code{atomgrad}, @code{gradef} und @code{matchdeclare}.
 
-Für Beispiele siehe @code{atvalue}, @code{gradef} und @code{matchdeclare}.
+F@"ur Beispiele siehe @code{atvalue}, @code{gradef} und @code{matchdeclare}.
 
 @end deffn
 
@@ -971,8 +971,8 @@ nicht nur als @code{quit}.
 
 Um eine zu lang andauernde Berechnung zu stoppen, gib in der Shell oder Eingabeaufforderung 
 @code{control-C} und in XMaxima und wxMaxima @code{control-G} ein. 
-Standardmäßig wird dann wieder eine Eingabezeile bereitgestellt. 
-Ist @code{*debugger-hook*} @code{nil}, öffnet @code{control-C} bzw. @code{control-G} den 
+Standardm@"a@ss{}ig wird dann wieder eine Eingabezeile bereitgestellt. 
+Ist @code{*debugger-hook*} @code{nil}, @"offnet @code{control-C} bzw. @code{control-G} den 
 Lisp-Debugger. 
 Siehe auch @code{debugging}.
 
@@ -981,21 +981,21 @@ Siehe auch @code{debugging}.
 @deffn {Funktion} remfunction (@var{f_1}, ..., @var{f_n})
 @deffnx {Funktion} remfunction (all)
 Entbindet die Symbole @var{f_1}, ..., @var{f_n} von ihren Funktionsdefinitionen. 
-Die Argumente können die Namen von gewöhnlichen Funktionen (durch @code{:=} oder @code{define} erzeugt) 
+Die Argumente k@"onnen die Namen von gew@"ohnlichen Funktionen (durch @code{:=} oder @code{define} erzeugt) 
 oder Makrofunktionen (durch @code{::=} erzeugt) sein.
 
-@code{remfunction (all)} entbindet sämtliche Funktionsdefinitionen. 
+@code{remfunction (all)} entbindet s@"amtliche Funktionsdefinitionen. 
 
 @code{remfunction} quotiert (Operator @code{'}) seine Argumente.
 
-@code{remfunction} gibt eine Liste mit den Symbolen zurück, die von ihren Funktionsdefinitionen 
-entbunden wurden. @code{false} wird statt der Symbole zurückgegeben, für die es keine Funktionsdefinition 
+@code{remfunction} gibt eine Liste mit den Symbolen zur@"uck, die von ihren Funktionsdefinitionen 
+entbunden wurden. @code{false} wird statt der Symbole zur@"uckgegeben, f@"ur die es keine Funktionsdefinition 
 gibt.
 
 @end deffn
 
 @deffn {Funktion} reset ()
-Setzt viele globale Variablen, Optionen und einige andere Variablen auf ihre Standardwerte zurück. 
+Setzt viele globale Variablen, Optionen und einige andere Variablen auf ihre Standardwerte zur@"uck. 
 
 @code{reset} verarbeitet die Variablen der Lisp-Liste @code{*variable-initial-values*}. 
 Das Lisp-Makro @code{defmvar} setzt (unter anderem) Variablen auf diese Liste. 
@@ -1011,7 +1011,7 @@ Wenn @code{showtime} @code{true} ist, wird die Berechnungszeit und die verstrich
 zusammen mit jedem Ausgabeausdruck angezeigt.
 
 Die Berechnungszeit wird stets festgehalten, so dass @code{time} und @code{playback} 
-die Berechnungszeit auch dann anzeigen können, wenn @code{showtime} @code{false} ist.
+die Berechnungszeit auch dann anzeigen k@"onnen, wenn @code{showtime} @code{false} ist.
 
 Siehe auch @code{timer}.
 
@@ -1021,17 +1021,17 @@ Siehe auch @code{timer}.
 @c THIS REALLY SEEMS LIKE A HACK
 @deffn {Funktion} sstatus (@var{feature}, @var{package})
 Setzt den Status von @var{feature} in @var{package}. 
-Nachdem @code{sstatus (@var{feature}, @var{package})} ausgeführt wurde, gibt 
-@code{status (@var{feature}, @var{package})} @code{true} zurück. 
-Dies kann für das Schreiben eines Pakets nützlich sein, 
-um über die geladenen Merkmale (@code{features}) die Übersicht zu behalten. 
+Nachdem @code{sstatus (@var{feature}, @var{package})} ausgef@"uhrt wurde, gibt 
+@code{status (@var{feature}, @var{package})} @code{true} zur@"uck. 
+Dies kann f@"ur das Schreiben eines Pakets n@"utzlich sein, 
+um @"uber die geladenen Merkmale (@code{features}) die @"Ubersicht zu behalten. 
 
 @end deffn
 
 @c NEEDS EXPANSION, EXAMPLES
 @deffn {Funktion} to_lisp ()
 
-Betritt unter Maxima das Lisp-System. @code{(to-maxima)} geht zu Maxima zurück.
+Betritt unter Maxima das Lisp-System. @code{(to-maxima)} geht zu Maxima zur@"uck.
 
 @end deffn
 

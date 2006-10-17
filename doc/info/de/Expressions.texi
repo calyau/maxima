@@ -1,10 +1,8 @@
 @c Language: German
 @c English original: Expressions.texi CVS 1.49
-@c
-@c LINE 190, 195: @ref{Lisp and Maxima}
 
 @menu
-* Einführung in Ausdrücke::  
+* Einf@"uhrung in Ausdr@"ucke::  
 * Zuweisung::                  
 * Komplex::                     
 * Substantive und Verben::
@@ -12,14 +10,14 @@
 * Zeichenketten::
 * Ungleichheit::                  
 * Syntax::                      
-* Definitionen für Ausdrücke::  
+* Definitionen f@"ur Ausdr@"ucke::  
 @end menu
 
-@node Einführung in Ausdrücke, Zuweisung, , Ausdrücke
-@section Einführung in Ausdrücke
+@node Einf@"uhrung in Ausdr@"ucke, Zuweisung, , Ausdr@"ucke
+@section Einf@"uhrung in Ausdr@"ucke
 
 Es gibt eine Anzahl an reservierten Bezeichnern, die nicht als Variablennamen 
-verwendet werden können. Ihre Verwendung würde möglicherweise kryptische
+verwendet werden k@"onnen. Ihre Verwendung w@"urde m@"oglicherweise kryptische
 Syntaxfehlermeldungen erzeugen.
 
 @example
@@ -31,9 +29,9 @@ unless               product        while                thru
 step                                                                     
 @end example
 
-Die meisten Dinge in Maxima sind Ausdrücke. 
-Aus einer Abfolge von Ausdrücken kann man einen einzigen Ausdruck machen,
-indem man die einzelnen Ausdrücke durch Kommas getrennt in eine 
+Die meisten Dinge in Maxima sind Ausdr@"ucke. 
+Aus einer Abfolge von Ausdr@"ucken kann man einen einzigen Ausdruck machen,
+indem man die einzelnen Ausdr@"ucke durch Kommas getrennt in eine 
 runde Klammer schreibt. Dies ist mit der Verwendung des @i{Kommaoperators}
 in @b{C} vergleichbar.
 
@@ -47,8 +45,8 @@ in @b{C} vergleichbar.
 (%o4)                          20
 @end example
 
-In Maxima sind sogar Schleifen Ausdrücke, obwohl der Wert, den sie 
-zurückgeben, ist das nicht allzu nützliche @code{done}.
+In Maxima sind sogar Schleifen Ausdr@"ucke, obwohl der Wert, den sie 
+zur@"uckgeben, ist das nicht allzu n@"utzliche @code{done},
 
 @example
 (%i1) y: (x: 1, for i from 1 thru 10 do (x: x*i))$
@@ -56,9 +54,9 @@ zurückgeben, ist das nicht allzu nützliche @code{done}.
 (%o2)                         done
 @end example
 
-wobei das, was man hier wirklich möchte, wahrscheinlich das Einfügen 
+wobei das, was man hier wirklich m@"ochte, wahrscheinlich das Einf@"ugen 
 eines dritten Terms in den @i{Kommaausdruck} ist, welcher dann den 
-gewünschten Wert zurück gibt. 
+gew@"unschten Wert zur@"uck gibt. 
 
 @example
 (%i3) y: (x: 1, for i from 1 thru 10 do (x: x*i), x)$
@@ -66,51 +64,51 @@ gewünschten Wert zurück gibt.
 (%o4)                        3628800
 @end example
 
-@node Zuweisung, Komplex, Einführung in Ausdrücke, Ausdrücke
+@node Zuweisung, Komplex, Einf@"uhrung in Ausdr@"ucke, Ausdr@"ucke
 @section Zuweisung
 Es gibt zwei Zuweisungsoperatoren in Maxima, @code{:} und @code{::}. 
 Z.B. setzt @code{a: 3} die Variable @code{a} auf 3. 
 @code{::} weist den Wert des Ausdrucks auf seiner Rechten dem Wert 
-der Größe auf seiner Linken zu, wobei diese den Wert 
+der Gr@"o@ss{}e auf seiner Linken zu, wobei diese den Wert 
 einer atomaren oder indizierten Variable haben muss.
 
 @c THIS REALLY NEEDS EXPANSION
-@node Komplex, Substantive und Verben, Zuweisung, Ausdrücke
+@node Komplex, Substantive und Verben, Zuweisung, Ausdr@"ucke
 @section Komplex
 Ein komplexer Ausdruck ist in Maxima durch die Addition 
-von Realteil und @code{%i} mal Imaginärteil des Ausdrucks gekennzeichnet.
+von Realteil und @code{%i} mal Imagin@"arteil des Ausdrucks gekennzeichnet.
 So sind @code{2 + 3*%i} und @code{2 - 3*%i} die Wurzeln der 
 Gleichung @code{x^2 - 4*x + 13 = 0}.
-Beachte, dass die Vereinfachung von Produkten von komplexen Ausdrücken 
+Beachte, dass die Vereinfachung von Produkten von komplexen Ausdr@"ucken 
 durch die Expansion des Produkts erreicht werden kann.
 Vereinfachungen von Quotienten, Wurzeln und anderen Funktionen von
-komplexen Ausdrücken können im Allgemeinen mit Hilfe der Funktionen  
+komplexen Ausdr@"ucken k@"onnen im Allgemeinen mit Hilfe der Funktionen  
 @code{realpart}, @code{imagpart}, @code{rectform}, @code{polarform}, 
 @code{abs}, @code{carg} bewerkstelligt werden.
 
-@node Substantive und Verben, Bezeichner, Komplex, Ausdrücke
+@node Substantive und Verben, Bezeichner, Komplex, Ausdr@"ucke
 @section Substantive und Verben
 Maxima unterscheidet zwischen Operatoren, die Substantive ("nouns"), 
 und Operatoren, die Verben ("verbs") sind.
-Ein Verb ist ein Operator, der ausgeführt werden kann.
+Ein Verb ist ein Operator, der ausgef@"uhrt werden kann.
 Ein Substantiv ist ein Operator, der als Symbol in einem Ausdruck auftritt, 
 ohne ausgewertet zu werden.
-Funktionsnamen sind standardmäßig Verben.
+Funktionsnamen sind standardm@"a@ss{}ig Verben.
 Ein Verb kann durch Quotierung (Operator @code{'}) oder durch Anwendung 
 der Funktion @code{nounify} in ein Substantiv verwandelt werden. 
 Der Auswertungsschalter @code{nouns} bewirkt, dass @code{ev} Substantive 
 in einem Ausdruck auswertet.
 
-Die Verbform ist durch ein führendes Dollarzeichen @code{$} am 
+Die Verbform ist durch ein f@"uhrendes Dollarzeichen @code{$} am 
 entsprechenden Lisp-Symbol zu erkennen. Im Kontrast hierzu ist die 
-Substantivform durch ein führendes Prozentzeichen @code{%} am 
+Substantivform durch ein f@"uhrendes Prozentzeichen @code{%} am 
 entsprechenden Lisp-Symbol zu erkennen.
 Einige Substantive besitzen spezielle Darstellungseigenschaften, 
-so z.B. @code{'integrate} und @code{'derivative} (zurückgegeben durch @code{diff}), 
+so z.B. @code{'integrate} und @code{'derivative} (zur@"uckgegeben durch @code{diff}), 
 die meisten jedoch nicht. 
-Substantiv- und Verbformen einer Funktion sind standardmäßig 
+Substantiv- und Verbformen einer Funktion sind standardm@"a@ss{}ig 
 identisch in der Ausgabe. Der globale Schalter @code{noundisp} bewirkt, 
-dass Maxima Substantive mit einem führenden Hochkomma @code{'} anzeigt. 
+dass Maxima Substantive mit einem f@"uhrenden Hochkomma @code{'} anzeigt. 
 
 Siehe auch @code{noun}, @code{nouns}, @code{nounify} und @code{verbify}.
 
@@ -165,31 +163,31 @@ Beispiele:
 (%o11)                       log(42)
 @end example
 
-@node Bezeichner, Zeichenketten, Substantive und Verben, Ausdrücke
+@node Bezeichner, Zeichenketten, Substantive und Verben, Ausdr@"ucke
 @section Bezeichner
-Maxima Bezeichner können aus den Buchstaben des Alphabets, 
+Maxima Bezeichner k@"onnen aus den Buchstaben des Alphabets, 
 den Zahlzeichen 0 bis 9, und irgend einem Sonderzeichen, welchem 
 ein Backslash @code{\} vorangestellt ist, bestehen.
 
 Ein Zahlzeichen kann der erste Buchstabe eines Bezeichners sein, 
 wenn ihm ein Backslash vorangestellt ist. 
-Zahlzeichen an zweiter oder späterer Stelle muss kein Backslash 
+Zahlzeichen an zweiter oder sp@"aterer Stelle muss kein Backslash 
 vorangestellt sein.
 
 Ein Sonderzeichen kann durch die Funktion @code{declare} als alphabetisch 
-erklärt werden. Wenn so deklariert, muss ihm in einem Bezeichner kein 
+erkl@"art werden. Wenn so deklariert, muss ihm in einem Bezeichner kein 
 Backslash vorangestellt werden. 
-Die Buchstaben des Alphabets sind ursprünglich 
+Die Buchstaben des Alphabets sind urspr@"unglich 
 @code{A} bis @code{Z}, @code{a} bis @code{z}, @code{%} und @code{_}.
 
-Maxima unterscheidet Groß- und Kleinschreibung.
+Maxima unterscheidet Gro@ss{}- und Kleinschreibung.
 Die Bezeichner @code{foo}, @code{FOO} und @code{Foo} sind verschieden.
-Siehe @ref{Lisp and Maxima} für mehr zu diesem Punkt.
+Siehe @code{Lisp und Maxima} f@"ur mehr zu diesem Punkt.
 
 Ein Maxima-Bezeichner ist ein Lisp-Symbol, das mit einem Dollarzeichen 
 @code{$} beginnt. Jedem anderen Lisp-Symbol ist ein Fragezeichen @code{?} 
 vorangestellt, wenn es in Maxima erscheint.
-Siehe @ref{Lisp and Maxima} für mehr zu diesem Punkt.
+Siehe @code{Lisp und Maxima} f@"ur mehr zu diesem Punkt.
 
 Beispiele:
 
@@ -238,39 +236,39 @@ Beispiele:
 (%o12)                         foo
 @end example
 
-@node Zeichenketten, Ungleichheit, Bezeichner, Ausdrücke
+@node Zeichenketten, Ungleichheit, Bezeichner, Ausdr@"ucke
 @section Zeichenketten
 
 Zeichenketten ("strings"; quotierte Buchstabensequenzen) werden bei der Eingabe 
-in Anführungszeichen @code{"} gesetzt,
-ausgegeben jedoch mit oder ohne Anführungszeichen, 
-abhängig von der globalen Variable @code{?stringdisp}.
+in Anf@"uhrungszeichen @code{"} gesetzt,
+ausgegeben jedoch mit oder ohne Anf@"uhrungszeichen, 
+abh@"angig von der globalen Variable @code{?stringdisp}.
 
-Zeichenketten können jeden Buchstaben enthalten, einschließlich 
-eines eingebetteten Tabulators, Zeilenvorschubs und Wagenrücklaufs. 
-Die Sequenz @code{\"} wird erkannt als buchstäbliches Anführungszeichen, 
-und @code{\\} als buchstäblicher Backslash. 
+Zeichenketten k@"onnen jeden Buchstaben enthalten, einschlie@ss{}lich 
+eines eingebetteten Tabulators, Zeilenvorschubs und Wagenr@"ucklaufs. 
+Die Sequenz @code{\"} wird erkannt als buchst@"abliches Anf@"uhrungszeichen, 
+und @code{\\} als buchst@"ablicher Backslash. 
 Wenn ein Backslash am Ende einer Zeile auftritt, werden der Backslash und 
-das Zeilenende (entweder Zeilenvorschub oder Wagenrücklauf und Zeilenvorschub) 
-ignoriert, so dass die Zeichenkette in der nächsten Zeile weiter geht.
+das Zeilenende (entweder Zeilenvorschub oder Wagenr@"ucklauf und Zeilenvorschub) 
+ignoriert, so dass die Zeichenkette in der n@"achsten Zeile weiter geht.
 Keine andere spezielle Kombination von Backslash mit einem anderen 
 Buchstaben wird erkannt; wenn ein Backslash vor einem von @code{"} 
 und @code{\} verschiedenen Buchstaben auftritt, wird er ignoriert. 
-Es gibt keine Möglichkeit, ein Sonderzeichen (wie den Tabulator, 
-Zeilenvorschub oder Wagenrücklauf) darzustellen, außer durch 
-buchstäbliche Einbettung in eine Zeichenkette. 
+Es gibt keine M@"oglichkeit, ein Sonderzeichen (wie den Tabulator, 
+Zeilenvorschub oder Wagenr@"ucklauf) darzustellen, au@ss{}er durch 
+buchst@"abliche Einbettung in eine Zeichenkette. 
 
-Es gibt in Maxima keinen Typ für einen Buchstaben ("character"); 
+Es gibt in Maxima keinen Typ f@"ur einen Buchstaben ("character"); 
 ein einzelner Buchstabe wird durch eine Ein-Zeichen-Zeichenkette dargestellt. 
 
 Zeichenketten sind in Maxima als Lisp-Symbole und nicht als Lisp-Zeichenketten 
-(strings) implementiert, was in zukünftigen Maxima-Versionen 
+(strings) implementiert, was in zuk@"unftigen Maxima-Versionen 
 durchaus anders sein kann. 
 Maxima kann Lisp-Strings und Lisp-Characters darstellen, wobei 
-jedoch einige Operationen (z.B. Tests auf Gleichheit) fehlschlagen können.
+jedoch einige Operationen (z.B. Tests auf Gleichheit) fehlschlagen k@"onnen.
 @c DISCOMFORT WITH LISP STRINGS AND CHARACTERS IS A BUG.
 
-Das Zusatzpaket @code{stringproc} enthält viele Funktionen zur Arbeit mit 
+Das Zusatzpaket @code{stringproc} enth@"alt viele Funktionen zur Arbeit mit 
 Zeichenketten.
 
 Beispiele:
@@ -313,39 +311,39 @@ this string.";
 (%o8)              "This is a Maxima string."
 @end example
 
-@node Ungleichheit, Syntax, Zeichenketten, Ausdrücke
+@node Ungleichheit, Syntax, Zeichenketten, Ausdr@"ucke
 @section Ungleichheit
 Maxima hat die Operatoren @code{<}, @code{<=}, @code{>=}, @code{>}, 
 @code{#} und @code{notequal} zum Test auf Ungleichheit.
-Siehe @code{if} für eine Beschreibung der bedingten Ausdrücke.
+Siehe @code{if} f@"ur eine Beschreibung der bedingten Ausdr@"ucke.
 
-@node Syntax, Definitionen für Ausdrücke, Ungleichheit, Ausdrücke
+@node Syntax, Definitionen f@"ur Ausdr@"ucke, Ungleichheit, Ausdr@"ucke
 @section Syntax
-Es ist möglich, neue Operatoren mit einer bestimmten Präzedenz zu definieren, 
+Es ist m@"oglich, neue Operatoren mit einer bestimmten Pr@"azedenz zu definieren, 
 existierende Operatoren umzudefinieren, 
-oder die Präzedenz existierender Operatoren zu ändern. 
-Ein Operator kann unär präfix oder unär postfix, binär infix, 
-n-är infix, matchfix oder nofix sein.
+oder die Pr@"azedenz existierender Operatoren zu @"andern. 
+Ein Operator kann un@"ar pr@"afix oder un@"ar postfix, bin@"ar infix, 
+n-@"ar infix, matchfix oder nofix sein.
 "matchfix" meint ein Paar von Symbolen, die ihr Argument 
-oder ihre Argumente einschließen, und "nofix" meint einen Operator, 
+oder ihre Argumente einschlie@ss{}en, und "nofix" meint einen Operator, 
 der keine Argumente besitzt.
-Im Folgenden findet man Beispiele für die verschiedenen Operatortypen.
+Im Folgenden findet man Beispiele f@"ur die verschiedenen Operatortypen.
 
 @table @asis
-@item unär präfix
+@item un@"ar pr@"afix
 Negation @code{- a}
-@item unär postfix
-Fakultät @code{a!}
-@item binär infix
+@item un@"ar postfix
+Fakult@"at @code{a!}
+@item bin@"ar infix
 Exponentiation @code{a^b}
-@item n-är infix
+@item n-@"ar infix
 Addition @code{a + b}
 @item matchfix
 Listenerzeugung @code{[a, b]}
 @end table
 
 (Es gibt keine eingebauten nofix-Operatoren;
-für ein Beispiel eines solchen Operators siehe @code{nofix}.)
+f@"ur ein Beispiel eines solchen Operators siehe @code{nofix}.)
 
 Der Mechanismus, einen neuen Operator zu definieren, ist recht einfach.
 Notwendig ist nur, eine Funktion als einen Operator zu definieren;
@@ -353,7 +351,7 @@ die Operatorfunktion kann, aber muss nicht definiert sein.
 
 Ein Beispiel eines benutzerdefinierten Operators ist das folgende. 
 Beachte hierbei, dass der explizite Funktionsaufruf @code{"dd" (a)} 
-äquivalent ist zu @code{dd a}, so wie @code{"<-" (a, b)} äquivalent ist zu 
+@"aquivalent ist zu @code{dd a}, so wie @code{"<-" (a, b)} @"aquivalent ist zu 
 @code{a <- b}. 
 Beachte auch, dass die Funktionen @code{"dd"} und @code{"<-"} in diesem 
 Beispiel undefiniert sind.
@@ -382,14 +380,14 @@ Beispiel undefiniert sind.
 @end example
 
 Die Maxima-Funktionen, die neue Operatoren definieren, sind in der folgenden 
-Tabelle zusammengefasst, aufgeführt werden dabei ihre standardmäßige 
+Tabelle zusammengefasst, aufgef@"uhrt werden dabei ihre standardm@"a@ss{}ige 
 linke und rechte Bindungskraft (@b{l}eft and @b{r}ight @b{b}inding @b{p}owers).
 @c REWORK FOLLOWING COMMENT. IT'S NOT CLEAR ENOUGH, GIVEN THAT IT'S FAIRLY IMPORTANT
-(Bindungskraft bestimmt die Operatorpräzedenz. Da jedoch die rechte und linke 
-Bindungskraft voneinander abweichen können, ist Bindungskraft etwas differenzierter 
-als Präzedenz.) 
-Einige der Operationen definierenden Funktionen haben zusätzliche Argumente; 
-siehe die Funktionsbeschreibungen für Details.
+(Bindungskraft bestimmt die Operatorpr@"azedenz. Da jedoch die rechte und linke 
+Bindungskraft voneinander abweichen k@"onnen, ist Bindungskraft etwas differenzierter 
+als Pr@"azedenz.) 
+Einige der Operationen definierenden Funktionen haben zus@"atzliche Argumente; 
+siehe die Funktionsbeschreibungen f@"ur Details.
 
 @c MAKE ANCHORS FOR ALL 6 FUNCTIONS AND CHANGE @code TO @ref ACCORDINGLY
 @table @code
@@ -441,9 +439,9 @@ Operator   lbp     rbp
 
 @code{remove} und @code{kill} entfernen Eigenschaften von Atomen. 
 @code{remove ("@var{a}", op)} entfernt nur die Operatoreigenschaften von @var{a}.
-@code{kill ("@var{a}")} entfernt sämtliche Eigenschaften von  @var{a}, 
-einschließlich der Operatoreigenschaften. 
-Beachte, dass der Name des Operators in Anführungszeichen eingeschlossen sein muss. 
+@code{kill ("@var{a}")} entfernt s@"amtliche Eigenschaften von  @var{a}, 
+einschlie@ss{}lich der Operatoreigenschaften. 
+Beachte, dass der Name des Operators in Anf@"uhrungszeichen eingeschlossen sein muss. 
 
 @c MAYBE COPY THIS EXAMPLE TO remove AND/OR kill
 @c ===beg===
@@ -489,8 +487,8 @@ Incorrect syntax: @@ is not an infix operator
 (%o9)                        @@(5, 3)
 @end example
 
-@node Definitionen für Ausdrücke,  , Syntax, Ausdrücke
-@section Definitionen für Ausdrücke
+@node Definitionen f@"ur Ausdr@"ucke,  , Syntax, Ausdr@"ucke
+@section Definitionen f@"ur Ausdr@"ucke
 
 @deffn {Funktion} at (@var{expr}, [@var{eqn_1}, ..., @var{eqn_n}])
 @deffnx {Funktion} at (@var{expr}, @var{eqn})
@@ -498,15 +496,15 @@ Wertet den Ausdruck @var{expr} aus, wobei dessen Variablen die Werte annehmen,
 die in der Liste der Gleichungen @code{[@var{eqn_1}, ..., @var{eqn_n}]} 
 oder in der einzelnen Gleichung @var{eqn} angegeben werden.
 
-Wenn ein Teilausdruck von einer Variablen abhängig ist, für die ein Wert 
+Wenn ein Teilausdruck von einer Variablen abh@"angig ist, f@"ur die ein Wert 
 angegeben ist, aber kein @code{atvalue}, und er auch sonst nicht ausgewertet 
-werden kann, dann wird von @code{at} eine Substantiv-Form zurückgegeben, 
+werden kann, dann wird von @code{at} eine Substantiv-Form zur@"uckgegeben, 
 dargestellt in einer zweidimensionalen Form. 
 
-@code{at} führt mehrfache Ersetzungen in Reihe durch, nicht parallel.
+@code{at} f@"uhrt mehrfache Ersetzungen in Reihe durch, nicht parallel.
 
 Siehe auch @code{atvalue}.
-Für andere Funktionen, die Ersetzungen durchführen,
+F@"ur andere Funktionen, die Ersetzungen durchf@"uhren,
 siehe auch @code{subst} und @code{ev}.
 
 Beispiele:
@@ -552,18 +550,18 @@ Beispiele:
 
 @deffn {Funktion} box (@var{expr})
 @deffnx {Funktion} box (@var{expr}, @var{a})
-Gibt @var{expr} zurück, eingeschlossen in einer Box. 
-Der Rückgabewert ist ein Ausdruck mit @code{box} als Operator und @var{expr} 
+Gibt @var{expr} zur@"uck, eingeschlossen in einer Box. 
+Der R@"uckgabewert ist ein Ausdruck mit @code{box} als Operator und @var{expr} 
 als Argument. Wenn @code{display2d} @code{true} ist, 
 wird eine Box in der Anzeige gezeichnet.
 
 @code{box (@var{expr}, @var{a})}
-umschließt @var{expr} in einer durch das Symbol @var{a} gekennzeichneten Box. 
-Das Kennzeichen wird gekürzt, wenn es länger als die Box breit ist. 
+umschlie@ss{}t @var{expr} in einer durch das Symbol @var{a} gekennzeichneten Box. 
+Das Kennzeichen wird gek@"urzt, wenn es l@"anger als die Box breit ist. 
 
 @code{box} wertet sein Argument aus. 
 Da jedoch ein eingerahmter Ausdruck nicht als sein Inhalt ausgewertet wird, 
-werden eingerahmte Ausdrücke im Endeffekt von Berechnungen ausgeschlossen. 
+werden eingerahmte Ausdr@"ucke im Endeffekt von Berechnungen ausgeschlossen. 
 
 @code{boxchar} ist der Buchstabe, der verwendet wird, um die Box in 
 @code{box} und in den Funktionen @code{dpart} und @code{lpart} zu zeichnen. 
@@ -626,7 +624,7 @@ gezeichnet; dieser Buchstabe wird nicht zusammen mit dem Box-Ausdruck gespeicher
 @end defvr
 
 @deffn {Funktion} carg (@var{z})
-Gibt das komplexe Argument von @var{z} zurück.
+Gibt das komplexe Argument von @var{z} zur@"uck.
 Das komplexe Argument ist ein Winkel @code{theta} in @code{(-%pi, %pi]},  
 in der Weise, dass @code{r exp (theta %i) = @var{z}}, wobei @code{r} 
 der Betrag von @var{z} ist.
@@ -685,15 +683,15 @@ Siehe @code{declare}.
 @end deffn
 
 @deffn {Funktion} constantp (@var{expr})
-Gibt @code{true} zurück, wenn @var{expr} ein konstanter Ausdruck ist,
+Gibt @code{true} zur@"uck, wenn @var{expr} ein konstanter Ausdruck ist,
 andernfalls @code{false}.
 @c WHAT DOES MAXIMA KNOW ABOUT CONSTANT EXPRESSIONS ??
 
 Ein Ausdruck wird als konstanter Ausdruck angesehen, wenn seine Argumente 
-Zahlen sind (einschließlich der rationalen Zahlen, angezeigt durch @code{/R/}), 
+Zahlen sind (einschlie@ss{}lich der rationalen Zahlen, angezeigt durch @code{/R/}), 
 symbolische Konstanten wie @code{%pi}, @code{%e} und @code{%i}, 
 Variablen, die an eine Konstante gebunden oder durch @code{declare} als konstant 
-erklärt sind, oder definierte Funktionen, dessen Argumente konstant sind. 
+erkl@"art sind, oder definierte Funktionen, dessen Argumente konstant sind. 
 @c THE EXAMPLE BELOW constantp (foo (x) + ... SHOWS, THAT THESE FUNCTIONS 
 @c NEED TO BE DEFINED. (VvN)
 
@@ -739,14 +737,14 @@ Beispiele:
 Weist dem Atom oder der Liste von Atomen @var{a_i} die Eigenschaft 
 oder Liste von Eigenschaften (@code{properties}) @var{p_i} zu.
 Wenn @var{a_i} und/oder @var{p_i} Listen sind, 
-erhält jedes Atom diese Eigenschaft.
+erh@"alt jedes Atom diese Eigenschaft.
 
 @code{declare} quotiert (Operator @code{'}) seine Argumente.
-@code{declare} gibt stets @code{done} zurück.
+@code{declare} gibt stets @code{done} zur@"uck.
 
 Wie in der Beschreibung jedes Deklarationsschalters bemerkt, 
-gibt @code{featurep(@var{object}, @var{feature})} für einige Schalter 
-@code{true} zurück, wenn erklärt wurde, dass @var{object} @var{feature} haben soll. 
+gibt @code{featurep(@var{object}, @var{feature})} f@"ur einige Schalter 
+@code{true} zur@"uck, wenn erkl@"art wurde, dass @var{object} @var{feature} haben soll. 
 @code{featurep} erkennt jedoch einige Schalter nicht; dies ist ein Bug.
 
 Siehe auch @code{features}.
@@ -762,7 +760,7 @@ Siehe @code{evfun}.
 
 @item @code{evflag}
 Macht die @code{ev}-Funktion mit @var{a_i} bekannt, so dass 
-während der Ausführung von @code{ev} @var{a_i} an @code{true} gebunden ist, 
+w@"ahrend der Ausf@"uhrung von @code{ev} @var{a_i} an @code{true} gebunden ist, 
 wenn @var{a_i} als Schalterargument von @code{ev} erscheint.
 Siehe @code{evflag}.
 
@@ -773,13 +771,13 @@ Siehe @code{evflag}.
 @c OBSOLETE @code{nonarray} (RECOGNIZED BY DECLARE BUT NEVER USED ANYWHERE)
 
 @item @code{bindtest}
-Bringt Maxima dazu, einen Fehler auszulösen, wenn @var{a_i} 
+Bringt Maxima dazu, einen Fehler auszul@"osen, wenn @var{a_i} 
 als ungebunden ausgewertet wird. 
 
 @item @code{noun}
 Bringt Maxima dazu, @var{a_i} als Substantiv anzusehen. 
 Der Effekt hiervon ist, dass Instanzen von @var{a_i} durch @code{'@var{a_i}} 
-oder @code{nounify(@var{a_i})} ersetzt werden, abhängig vom Zusammenhang. 
+oder @code{nounify(@var{a_i})} ersetzt werden, abh@"angig vom Zusammenhang. 
 
 @item @code{constant}
 Bringt Maxima dazu, @var{a_i} als symbolische Konstante anzusehen.
@@ -792,8 +790,8 @@ Bringt Maxima dazu, @var{a_i} als skalare Variable anzusehen.
 
 @item @code{nonscalar}
 Bringt Maxima dazu, @var{a_i} als nichtskalare Variable anzusehen.
-Die übliche Anwendung ist, eine Variable als symbolischen Vektor 
-oder symbolische Matrix zu erklären.
+Die @"ubliche Anwendung ist, eine Variable als symbolischen Vektor 
+oder symbolische Matrix zu erkl@"aren.
 
 @item @code{mainvar}
 Bringt Maxima dazu, @var{a_i} als Hauptvariable 
@@ -808,19 +806,19 @@ Bringt Maxima dazu, @var{a_i} als einen Buchstaben des Alphabets zu erkennen.
 @item @code{feature}
 Bringt Maxima dazu, @var{a_i} als den Namen eines Merkmals (@code{feature}) 
 zu erkennen.
-Andere Atome können dann erklärt werden, die Eigenschaft @var{a_i} zu besitzen.
+Andere Atome k@"onnen dann erkl@"art werden, die Eigenschaft @var{a_i} zu besitzen.
 
 @item @code{rassociative}, @code{lassociative}
 Bringt Maxima dazu, @var{a_i} als eine rechts-assoziative bzw. 
 links-assoziative Funktion anzusehen.
 
 @item @code{nary}
-Bringt Maxima dazu, @var{a_i} als eine n-äre Funktion zu erkennen.
+Bringt Maxima dazu, @var{a_i} als eine n-@"are Funktion zu erkennen.
 
 Die @code{nary}-Deklaration ist nicht dasselbe wie ein Aufruf der 
 @code{nary}-Funktion.
 Der einzige Effekt von @code{declare(foo, nary)} ist, dem Maxima-Simplifikator 
-anzuweisen, verschachtelte Ausdrücke zu ebnen (@code{flatten}), zum Beispiel, 
+anzuweisen, verschachtelte Ausdr@"ucke zu ebnen (@code{flatten}), zum Beispiel, 
 @code{foo(x, foo(y, z))} zu @code{foo(x, y, z)} zu vereinfachen.
 
 @item @code{symmetric}, @code{antisymmetric}, @code{commutative}
@@ -832,27 +830,27 @@ Funktion zu erkennen.
 Bringt Maxima dazu, @var{a_i} als eine ungerade bzw. gerade Funktion zu erkennen.
 
 @item @code{outative}
-Bringt Maxima dazu, die Ausdrücke @var{a_i} durch Herausziehen konstanter Faktoren 
+Bringt Maxima dazu, die Ausdr@"ucke @var{a_i} durch Herausziehen konstanter Faktoren 
 aus dem ersten Argument zu vereinfachen.
 
 Hat @var{a_i} ein Argument, wird ein Faktor als konstant angesehen, 
-wenn er ein Buchstabe ist, oder als konstant erklärt.
+wenn er ein Buchstabe ist, oder als konstant erkl@"art.
 
 Hat @var{a_i} zwei oder mehr Argumente,
 wird ein Faktor als konstant angesehen, 
 wenn das zweite Argument ein Symbol und der Faktor vom zweiten Argument frei ist. 
 
 @item @code{multiplicative}
-Bringt Maxima dazu, die Ausdrücke @var{a_i} durch die Ersetzung 
+Bringt Maxima dazu, die Ausdr@"ucke @var{a_i} durch die Ersetzung 
 @code{@var{a_i}(x * y * z * ...)} @code{-->} 
 @code{@var{a_i}(x) * @var{a_i}(y) * @var{a_i}(z) * ...} zu vereinfachen. 
-Die Ersetzung wird nur im ersten Argument durchgeführt. 
+Die Ersetzung wird nur im ersten Argument durchgef@"uhrt. 
 
 @item @code{additive}
-Bringt Maxima dazu, die Ausdrücke @var{a_i} durch die Ersetzung 
+Bringt Maxima dazu, die Ausdr@"ucke @var{a_i} durch die Ersetzung 
 @code{@var{a_i}(x + y + z + ...)} @code{-->}
 @code{@var{a_i}(x) + @var{a_i}(y) + @var{a_i}(z) + ...} zu vereinfachen. 
-Die Ersetzung wird nur im ersten Argument durchgeführt. 
+Die Ersetzung wird nur im ersten Argument durchgef@"uhrt. 
 
 @item @code{linear}
 Equivalent to declaring @var{a_i} both @code{outative} and @code{additive}.
@@ -871,7 +869,7 @@ Bringt Maxima dazu, @var{a_i} als rationale bzw. irrationale reelle
 Variable anzusehen.
 
 @item @code{real}, @code{imaginary}, @code{complex}
-Bringt Maxima dazu, @var{a_i} als reelle, rein imaginäre bzw. 
+Bringt Maxima dazu, @var{a_i} als reelle, rein imagin@"are bzw. 
 komplexe Variable anzusehen.
 
 @item @code{increasing}, @code{decreasing}
@@ -1160,34 +1158,34 @@ aa unbound variable
 @c NEEDS WORK
 @deffn {Funktion} disolate (@var{expr}, @var{x_1}, ..., @var{x_n})
 ist mit @code{isolate (@var{expr}, @var{x})} vergleichbar, 
-außer dass es dem Benutzer ermöglicht, mehr als eine Variable gleichzeitig 
+au@ss{}er dass es dem Benutzer erm@"oglicht, mehr als eine Variable gleichzeitig 
 zu isolieren. 
-Dies kann nützlich sein, zum Beispiel, wenn man Variablen in einer 
-mehrfachen Integration tauschen möchte, und der Variablentausch zwei oder 
+Dies kann n@"utzlich sein, zum Beispiel, wenn man Variablen in einer 
+mehrfachen Integration tauschen m@"ochte, und der Variablentausch zwei oder 
 mehrere Integrationsvariablen betrifft. 
 Diese Funktion wird automatisch aus @file{simplification/disol.mac} geladen.
-Eine Demonstration ist mit @code{demo("disol")$} erhältlich.
+Eine Demonstration ist mit @code{demo("disol")$} erh@"altlich.
 
 @end deffn
 
 @c NEEDS WORK
 @deffn {Funktion} dispform (@var{expr})
-Gibt die externe Darstellung von @var{expr} bezüglich seines Hauptoperators 
-zurück. Dies sollte in Verbindung mit @code{part}, das auch mit der externen 
-Darstellung handelt, nützlich sein.
+Gibt die externe Darstellung von @var{expr} bez@"uglich seines Hauptoperators 
+zur@"uck. Dies sollte in Verbindung mit @code{part}, das auch mit der externen 
+Darstellung handelt, n@"utzlich sein.
 Angenommen, @var{expr} ist -A . Dann ist die interne Darstellung von @var{expr} "*"(-1,A), 
-während die externe Darstellung "-"(A) ist. 
+w@"ahrend die externe Darstellung "-"(A) ist. 
 @code{dispform (@var{expr}, all)} konvertiert den gesamten Ausdruck 
 (nicht nur die oberste Ebene) in das externe Format. 
 Wenn zum Beispiel @code{expr: sin (sqrt (x))}, dann ergeben 
 @code{freeof (sqrt, expr)} und @code{freeof (sqrt, dispform (expr))} beide @code{true}, 
-während @code{freeof (sqrt, dispform (expr, all))} @code{false} ergibt. 
+w@"ahrend @code{freeof (sqrt, dispform (expr, all))} @code{false} ergibt. 
 
 @end deffn
 
 @c NEEDS WORK
 @deffn {Funktion} distrib (@var{expr})
-Verteilt Produkte über Summen (distributiv). 
+Verteilt Produkte @"uber Summen (distributiv). 
 @code{distrib} unterscheidet sich von @code{expand} dadurch, dass es nur auf 
 der obersten Ebene des Ausdrucks arbeitet, d.h. es rekursiert nicht und ist 
 schneller als @code{expand}. 
@@ -1215,11 +1213,11 @@ Beispiele:
 
 @c NEEDS WORK
 @deffn {Funktion} dpart (@var{expr}, @var{n_1}, ..., @var{n_k})
-Wählt dieselben Teilausdrücke aus wie @code{part}, 
-aber anstatt einfach nur diese Teilausdrücke als seinen Wert zurückzugeben, 
-gibt es den gesamten Ausdruck zurück, wobei die ausgewählten Teilausdrücke 
+W@"ahlt dieselben Teilausdr@"ucke aus wie @code{part}, 
+aber anstatt einfach nur diese Teilausdr@"ucke als seinen Wert zur@"uckzugeben, 
+gibt es den gesamten Ausdruck zur@"uck, wobei die ausgew@"ahlten Teilausdr@"ucke 
 jeweils in einer Box angezeigt werden. 
-Die Box ist dabei tatsächlich Teil des Ausdrucks. 
+Die Box ist dabei tats@"achlich Teil des Ausdrucks. 
 
 Siehe auch @code{part}, @code{inpart} und @code{lpart}.
 
@@ -1239,7 +1237,7 @@ Siehe auch @code{part}, @code{inpart} und @code{lpart}.
 @deffn {Funktion} exp (@var{x})
 Stellt die Exponentialfunktion dar. 
 Instanzen von @code{exp (@var{x})} in der Eingabe werden zu @code{%e^@var{x}} 
-vereinfacht; @code{exp} taucht in vereinfachten Ausdrücken nicht auf.
+vereinfacht; @code{exp} taucht in vereinfachten Ausdr@"ucken nicht auf.
 
 @code{demoivre} bewirkt, falls @code{true}, dass @code{%e^(a + b %i)} zu 
 @code{%e^(a (cos(b) + %i sin(b)))} vereinfacht wird, wenn @code{b} 
@@ -1264,12 +1262,12 @@ Wenn @code{%emode} @code{true} ist, wird
 falls @code{x} eine ganze Zahl oder ein Vielfaches von  1/2, 1/3, 1/4 oder 1/6 ist, 
 und dann noch weiter vereinfacht. 
 
-Für andere numerische @code{x} wird @code{%e^(%pi %i x)} zu @code{%e^(%pi %i y)} 
+F@"ur andere numerische @code{x} wird @code{%e^(%pi %i x)} zu @code{%e^(%pi %i y)} 
 vereinfacht, wobei @code{y} gleich @code{x - 2 k} ist, mit einer ganzen Zahl @code{k}, 
 so dass @code{abs(y) < 1}. 
 
 Wenn @code{%emode} @code{false} ist, werden keine speziellen Vereinfachungen 
-von @code{%e^(%pi %i x)} ausgeführt.
+von @code{%e^(%pi %i x)} ausgef@"uhrt.
 
 @c NEED EXAMPLES HERE
 @end defvr
@@ -1282,7 +1280,7 @@ wird @code{%e} durch seinen numerischen Wert 2.718... ersetzt,
 wann immer @code{numer} @code{true} ist. 
 
 Wenn @code{%enumer} @code{false} ist, 
-wird diese Substitution nur dann ausgeführt, wenn der Exponent in @code{%e^x} 
+wird diese Substitution nur dann ausgef@"uhrt, wenn der Exponent in @code{%e^x} 
 als Zahl ausgewertet wird. 
 
 Siehe auch @code{ev} und @code{numer}.
@@ -1305,40 +1303,40 @@ die @var{x} enthalten, untersucht.
 @defvr {Optionsvariable} exptsubst
 Standardwert: @code{false}
 
-@code{exptsubst}, falls @code{true}, ermöglicht Substitutionen wie @code{y}
-für @code{%e^x} in @code{%e^(a x)}.
+@code{exptsubst}, falls @code{true}, erm@"oglicht Substitutionen wie @code{y}
+f@"ur @code{%e^x} in @code{%e^(a x)}.
 
 @c NEED EXAMPLES HERE
 @end defvr
 
 @deffn {Funktion} freeof (@var{x_1}, ..., @var{x_n}, @var{expr})
-@code{freeof (@var{x_1}, @var{expr})} gibt @code{true} zurück, 
+@code{freeof (@var{x_1}, @var{expr})} gibt @code{true} zur@"uck, 
 wenn kein Teilausdruck von @var{expr} gleich @var{x_1} ist 
-oder gibt andernfalls @code{false} zurück.
+oder gibt andernfalls @code{false} zur@"uck.
 
-@code{freeof (@var{x_1}, ..., @var{x_n}, @var{expr})} ist äquivalent zu 
+@code{freeof (@var{x_1}, ..., @var{x_n}, @var{expr})} ist @"aquivalent zu 
 @code{freeof (@var{x_1}, @var{expr}) und ... und freeof (@var{x_n}, @var{expr})}.
 
-Die Argumente @var{x_1}, ..., @var{x_n} können Namen von Funktionen 
+Die Argumente @var{x_1}, ..., @var{x_n} k@"onnen Namen von Funktionen 
 und Variablen sein, indizierte Namen, Operatoren (eingeschlossen in 
-Anführungszeichen) oder allgemeine Ausdrücke. 
+Anf@"uhrungszeichen) oder allgemeine Ausdr@"ucke. 
 @code{freeof} wertet seine Argumente aus.
 
 @code{freeof} operiert nur mit dem gegebenen @var{expr} 
 (nach Vereinfachung und Auswertung) und versucht nicht herauszufinden, 
-ob ein äquivalenter Ausdruck ein anderes Ergebnis liefern würde. 
-Im Besonderen mag eine bestimmte Vereinfachung durchaus einen äquivalenten aber verschiedenen 
+ob ein @"aquivalenter Ausdruck ein anderes Ergebnis liefern w@"urde. 
+Im Besonderen mag eine bestimmte Vereinfachung durchaus einen @"aquivalenten aber verschiedenen 
 Ausdruck liefern, der einige von der Originalform von @var{expr} verschiedene 
-Elemente enthält.
+Elemente enth@"alt.
 
 Eine Variable ist eine Dummy-Variable in einem Ausdruck, 
-wenn sie außerhalb des Ausdrucks keine Bindung hat. 
+wenn sie au@ss{}erhalb des Ausdrucks keine Bindung hat. 
 Der Index einer Summe oder eines Produkts, 
 die limit-Variable in @code{limit}, 
 die Integrationsvariable der bestimmten Integralform von @code{integrate},
 die Originalvariable in @code{laplace},
-formale Variablen in @code{at}-Ausdrücken, 
-und Argumente in @code{lambda}-Ausdrücken
+formale Variablen in @code{at}-Ausdr@"ucken, 
+und Argumente in @code{lambda}-Ausdr@"ucken
 werden von @code{freeof} als Dummy-Variablen angesehen.
 Lokale Variablen in @code{block} werden von @code{freeof} nicht als Dummy-Variablen angesehen;
 dies ist ein Bug. 
@@ -1347,8 +1345,8 @@ Die unbestimmte Form von @code{integrate} ist @i{nicht} frei von seinen Integrat
 
 @itemize @bullet
 @item
-Argumente sind Namen von Funktionen, Variablen, indizierte Namen, Operatoren und Ausdrücke.
-@code{freeof (a, b, expr)} ist äquivalent zu
+Argumente sind Namen von Funktionen, Variablen, indizierte Namen, Operatoren und Ausdr@"ucke.
+@code{freeof (a, b, expr)} ist @"aquivalent zu
 @code{freeof (a, expr) and freeof (b, expr)}.
 
 @example
@@ -1383,8 +1381,8 @@ Argumente sind Namen von Funktionen, Variablen, indizierte Namen, Operatoren und
 @end example
 
 @item
-@code{freeof} berücksichtigt keine äquivalenten Ausdrücke. 
-Bestimmte Vereinfachungen können durchaus äquivalente aber verschiedene Ausdrücke liefern.
+@code{freeof} ber@"ucksichtigt keine @"aquivalenten Ausdr@"ucke. 
+Bestimmte Vereinfachungen k@"onnen durchaus @"aquivalente aber verschiedene Ausdr@"ucke liefern.
 
 @example
 (%i1) expr: (a+b)^5$
@@ -1419,15 +1417,15 @@ Ein unbestimmtes Integral ist nicht frei von seiner Integrationsvariablen.
 
 @c IS THIS DEFINITION CORRECT ??
 @deffn {Funktion} genfact (@var{x}, @var{y}, @var{z})
-Gibt die verallgemeinerte Fakultät zurück, welche als 
+Gibt die verallgemeinerte Fakult@"at zur@"uck, welche als 
 @code{x (x-z) (x - 2 z) ... (x - (y - 1) z)} definiert ist.  
-Damit gilt für ein ganzzahliges @var{x},
+Damit gilt f@"ur ein ganzzahliges @var{x},
 @code{genfact (x, x, 1) = x!} und @code{genfact (x, x/2, 2) = x!!}.
 
 @end deffn
 
 @deffn {Funktion} imagpart (@var{expr})
-Gibt den Imaginärteil des Ausdrucks @var{expr} zurück.
+Gibt den Imagin@"arteil des Ausdrucks @var{expr} zur@"uck.
 
 @code{imagpart} ist eine Berechnungsfunktion, keine Vereinfachungsfunktion. 
 @c PROBABLY NEED TO EXPLAIN IMPLICATIONS OF ABOVE STATEMENT
@@ -1442,13 +1440,13 @@ und @code{realpart}.
 @deffn {Funktion} infix (@var{op})
 @deffnx {Funktion} infix (@var{op}, @var{lbp}, @var{rbp})
 @deffnx {Funktion} infix (@var{op}, @var{lbp}, @var{rbp}, @var{lpos}, @var{rpos}, @var{pos})
-Erklärt @var{op} zu einem infix-Operator. 
+Erkl@"art @var{op} zu einem infix-Operator. 
 Ein infix-Operator ist eine Funktion mit zwei Argumenten, 
 wobei der Name der Funktion zwischen die Argumente geschrieben wird. 
 Zum Beispiel ist der Subtraktionsoperator @code{-} ein infix-Operator. 
 
-@code{infix (@var{op})} erklärt @var{op} zum infix-Operator 
-mit Standardbindungskräften (links und rechts, beide 180) und 
+@code{infix (@var{op})} erkl@"art @var{op} zum infix-Operator 
+mit Standardbindungskr@"aften (links und rechts, beide 180) und 
 Standardsprachbereichen ("@b{p}arts @b{o}f @b{s}peech"; 
 links, rechts und gesamt, alle @code{any}).
 @c HOW IS pos DIFFERENT FROM lpos AND rpos ??
@@ -1458,37 +1456,37 @@ links, rechts und gesamt, alle @code{any}).
 @c :lisp (get '$< 'pos)
 @c $CLAUSE
 
-@code{infix (@var{op}, @var{lbp}, @var{rbp})} erklärt @var{op} 
-zum infix-Operator mit den angegebenen Bindungskräften und
+@code{infix (@var{op}, @var{lbp}, @var{rbp})} erkl@"art @var{op} 
+zum infix-Operator mit den angegebenen Bindungskr@"aften und
 Standardsprachbereichen (links, rechts und gesamt, alle @code{any}).
 
 @code{infix (@var{op}, @var{lbp}, @var{rbp}, @var{lpos}, @var{rpos}, @var{pos})} 
-erklärt @var{op} zum infix-Operator mit den angegebenen Bindungskräften 
+erkl@"art @var{op} zum infix-Operator mit den angegebenen Bindungskr@"aften 
 und Sprachbereichen.
 
-Die Präzendenz von @var{op} bezüglich anderer Operatoren wird von 
+Die Pr@"azendenz von @var{op} bez@"uglich anderer Operatoren wird von 
 der linken und rechten Bindungskraft der betreffenden Operatoren 
 abgeleitet. 
-Wenn die linke und rechte Bindungskraft von @var{op} beide größer sind als
+Wenn die linke und rechte Bindungskraft von @var{op} beide gr@"o@ss{}er sind als
 die linke und rechte Bindungskraft eines anderen Operators,
 hat @var{op} Vorrang vor dem anderen Operator. 
-Wenn die Bindungskräfte nicht beide größer oder kleiner sind,
+Wenn die Bindungskr@"afte nicht beide gr@"o@ss{}er oder kleiner sind,
 gilt eine etwas kompliziertere Beziehung. 
 
-Die Assoziativität von @var{op} hängt von seinen Bindungskräften ab. 
-Größere linke Bindungskraft (@var{lbp}) bedeutet, dass in einem Ausdruck 
+Die Assoziativit@"at von @var{op} h@"angt von seinen Bindungskr@"aften ab. 
+Gr@"o@ss{}ere linke Bindungskraft (@var{lbp}) bedeutet, dass in einem Ausdruck 
 eine Instanz von @var{op} vor anderen Operatoren auf seiner Linken ausgewertet wird, 
-während größere rechte Bindungskraft (@var{rbp}) bedeutet, dass in einem Ausdruck 
+w@"ahrend gr@"o@ss{}ere rechte Bindungskraft (@var{rbp}) bedeutet, dass in einem Ausdruck 
 eine Instanz von @var{op} vor anderen Operatoren auf seiner Rechten ausgewertet wird. 
-So macht ein größeres @var{lbp} @var{op} rechts-assoziativ,
-während ein größeres @var{rbp} @var{op} links-assoziativ macht.
+So macht ein gr@"o@ss{}eres @var{lbp} @var{op} rechts-assoziativ,
+w@"ahrend ein gr@"o@ss{}eres @var{rbp} @var{op} links-assoziativ macht.
 Wenn @var{lbp} und @var{rbp} gleich sind, ist @var{op} links-assoziativ.
 
 @c TEXT INSERTED (VvN)
-Durch @var{lpos}, @var{rpos} und @var{pos} können die Sprachbereiche 
+Durch @var{lpos}, @var{rpos} und @var{pos} k@"onnen die Sprachbereiche 
 des Operators angegeben werden. Maxima kennt die Bereiche 
 @code{expr} (ein mathematischer Ausdruck), 
-@code{clause} (ein mathematisches Prädikat oder ein Kommando) und @code{any}. 
+@code{clause} (ein mathematisches Pr@"adikat oder ein Kommando) und @code{any}. 
 
 Siehe auch @code{Syntax}.
 
@@ -1496,7 +1494,7 @@ Beispiele:
 
 @itemize @bullet
 @item
-Wenn die linke und rechte Bindungskraft von @var{op} beide größer sind als
+Wenn die linke und rechte Bindungskraft von @var{op} beide gr@"o@ss{}er sind als
 die linke und rechte Bindungskraft eines anderen Operators,
 hat @var{op} Vorrang vor dem anderen Operator. 
 @end itemize
@@ -1516,8 +1514,8 @@ hat @var{op} Vorrang vor dem anderen Operator.
 
 @itemize @bullet
 @item
-Ein größeres @var{lbp} macht @var{op} rechts-assoziativ,
-während ein größeres @var{rbp} @var{op} links-assoziativ macht.
+Ein gr@"o@ss{}eres @var{lbp} macht @var{op} rechts-assoziativ,
+w@"ahrend ein gr@"o@ss{}eres @var{rbp} @var{op} links-assoziativ macht.
 @end itemize
 @example
 (%i1) "@@"(a, b) := sconcat("(", a, ",", b, ")")$
@@ -1549,10 +1547,10 @@ $CLAUSE
 Standardwert: @code{false}
 
 Wenn @code{inflag} @code{true} ist, betrachten die Funktionen 
-zur Extraktion von Teilausdrücken die interne Form von @code{expr}.
+zur Extraktion von Teilausdr@"ucken die interne Form von @code{expr}.
 
-Beachte, dass der Simplifikator die Ausdrücke wieder ordnet. 
-So gibt @code{first (x + y)} @code{x} zurück, wenn @code{inflag} 
+Beachte, dass der Simplifikator die Ausdr@"ucke wieder ordnet. 
+So gibt @code{first (x + y)} @code{x} zur@"uck, wenn @code{inflag} 
 @code{true} ist und @code{y}, wenn @code{inflag} @code{false} ist.
 
 Ebenso ist das Setzen von @code{inflag} auf @code{true} und ein 
@@ -1569,22 +1567,22 @@ das @code{for ... in}-Konstrukt,
 
 @c NEEDS WORK
 @deffn {Funktion} inpart (@var{expr}, @var{n_1}, ..., @var{n_k}) 
-ist zu @code{part} ähnlich, arbeitet aber eher mit der internen 
-Darstellung der Ausdrücke als mit der ausgegebenen Form und 
+ist zu @code{part} @"ahnlich, arbeitet aber eher mit der internen 
+Darstellung der Ausdr@"ucke als mit der ausgegebenen Form und 
 kann, da keine Formatierung vorgenommen wird, schneller sein. 
-Man sollte bezüglich der Reihenfolge der Teilausdrücke in Summen 
+Man sollte bez@"uglich der Reihenfolge der Teilausdr@"ucke in Summen 
 und Produkten vorsichtig sein (da die Reihenfolge der Variablen in 
 der internen Form oft von der angezeigten Form verschieden ist), 
-auch bezüglich des unären Minus, der Subtraktion und der Division 
-(da diese Operatoren von den Ausdrücken abgetrennt werden). 
+auch bez@"uglich des un@"aren Minus, der Subtraktion und der Division 
+(da diese Operatoren von den Ausdr@"ucken abgetrennt werden). 
 @code{part (x+y, 0)} oder @code{inpart (x+y, 0)} liefern @code{+}, 
-obwohl für einen Bezug auf den Operator dieser in Anführungszeichen 
+obwohl f@"ur einen Bezug auf den Operator dieser in Anf@"uhrungszeichen 
 eingeschlossen sein muss. Zum Beispiel 
 @code{... if inpart (%o9,0) = "+" then ...}.
 
 @c MERGED IN FROM part (VvN)
 Wenn das letzte Argument einer @code{part}-Funktion eine Liste mit Indizes ist, 
-werden verschiedene Teilausdrücke herausgepickt, jeder entsprechend dem 
+werden verschiedene Teilausdr@"ucke herausgepickt, jeder entsprechend dem 
 Index der Liste. So ist @code{inpart (x + y + z, [1, 3])} dann @code{z+x}.
 
 Siehe auch @code{part}, @code{inpart} und @code{lpart}.
@@ -1610,23 +1608,23 @@ Beispiele:
 
 @c NEEDS WORK
 @deffn {Funktion} isolate (@var{expr}, @var{x})
-Gibt @var{expr} zurück, wobei Teilausdrücke, die Summen sind und 
+Gibt @var{expr} zur@"uck, wobei Teilausdr@"ucke, die Summen sind und 
 @var{x} nicht enthalten, durch Zwischenmarken 
 (atomare Symbole wie @code{%t1}, @code{%t2}, ...) ersetzt werden. 
-Das ist oft nützlich, um unnötige Expansionen von Teilausdrücken, 
+Das ist oft n@"utzlich, um unn@"otige Expansionen von Teilausdr@"ucken, 
 die die Variable des Interesses nicht enthalten, zu vermeiden. 
-Da die Zwischenmarken an die Teilausdrücke gebunden sind, können sie
+Da die Zwischenmarken an die Teilausdr@"ucke gebunden sind, k@"onnen sie
 durch eine Auswertung des Ausdrucks, in dem sie vorkommen, 
-sämtlich wieder zurückersetzt werden. 
+s@"amtlich wieder zur@"uckersetzt werden. 
 
 @code{exptisolate} (Standardwert: @code{false}) bewirkt, falls @code{true}, 
 dass @code{isolate} die Exponenten von Atomen (wie @code{%e}), die @var{x} 
 enthalten, untersucht. 
 
 @code{isolate_wrt_times} bewirkt, falls @code{true}, dass @code{isolate} 
-auch bezüglich Produkten isoliert. Siehe @code{isolate_wrt_times}. 
+auch bez@"uglich Produkten isoliert. Siehe @code{isolate_wrt_times}. 
 
-Gib @code{example (isolate)} für Beispiele ein.
+Gib @code{example (isolate)} f@"ur Beispiele ein.
 
 @end deffn
 
@@ -1635,7 +1633,7 @@ Gib @code{example (isolate)} für Beispiele ein.
 Standardwert: @code{false}
 
 Wenn @code{isolate_wrt_times} @code{true} ist, wird @code{isolate}
-auch bezüglich Produkten isolieren. Zum Vergleich der beiden 
+auch bez@"uglich Produkten isolieren. Zum Vergleich der beiden 
 Schalterstellungen:
 
 @example
@@ -1666,10 +1664,10 @@ Schalterstellungen:
 Standardwert: @code{false}
 
 Wenn @code{listconstvars} @code{true} ist, bewirkt dies, dass @code{%e}, 
-@code{%pi}, @code{%i} und jede als konstant erklärte Variable mit in der 
-von @code{listofvars} zurückgegebenen Liste aufgenommen werden, vorausgesetzt, 
+@code{%pi}, @code{%i} und jede als konstant erkl@"arte Variable mit in der 
+von @code{listofvars} zur@"uckgegebenen Liste aufgenommen werden, vorausgesetzt, 
 diese sind in dem Ausdruck, auf den @code{listofvars} angewandt wird, enthalten.
-Standardmäßig werden diese weggelassen. 
+Standardm@"a@ss{}ig werden diese weggelassen. 
 
 @end defvr
 
@@ -1677,7 +1675,7 @@ Standardmäßig werden diese weggelassen.
 Standardwert: @code{true}
 
 Wenn @code{listdummyvars} @code{false} ist, werden die "Dummy-Variablen" 
-eines Ausdrucks nicht in die von @code{listofvars} zurückgegebenen Liste 
+eines Ausdrucks nicht in die von @code{listofvars} zur@"uckgegebenen Liste 
 aufgenommen.
 (Die Bedeutung der "Dummy-Variablen" ist so wie in @code{freeof} gegeben. 
 "Dummy-Variablen" sind mathematische Dinge wie der Index einer Summe oder
@@ -1698,13 +1696,13 @@ Beispiel:
 
 @c NEEDS WORK
 @deffn {Funktion} listofvars (@var{expr})
-Gibt eine Liste der Variablen  in @var{expr} zurück.
+Gibt eine Liste der Variablen  in @var{expr} zur@"uck.
 
 @code{listconstvars} bewirkt, falls @code{true}, dass @code{listofvars} 
-@code{%e}, @code{%pi}, @code{%i} und jede als konstant erklärte Variable 
-mit in die Liste aufnimmt, die es zurückgibt, 
+@code{%e}, @code{%pi}, @code{%i} und jede als konstant erkl@"arte Variable 
+mit in die Liste aufnimmt, die es zur@"uckgibt, 
 vorausgesetzt, diese sind in @code{expr} enthalten.
-Standardmäßig werden diese weggelassen. 
+Standardm@"a@ss{}ig werden diese weggelassen. 
 
 @example
 (%i1) listofvars (f (x[1]+y) / g^(2+a));
@@ -1717,13 +1715,13 @@ Standardmäßig werden diese weggelassen.
 @c NEEDS WORK
 @c ENGLISH ORIGINAL DOC CONTAINS ERROR (VvN)
 @deffn {Funktion} lfreeof (@var{list}, @var{expr})
-Für jedes Element @var{m} der Liste wird @code{freeof (@var{m}, @var{expr})} 
-aufgerufen. @code{lfreeof} gibt @code{true} zurück, wenn jeder Aufruf von
+F@"ur jedes Element @var{m} der Liste wird @code{freeof (@var{m}, @var{expr})} 
+aufgerufen. @code{lfreeof} gibt @code{true} zur@"uck, wenn jeder Aufruf von
 @code{freeof} dies auch tut und @code{false} andernfalls.
 @end deffn
 
 @deffn {Funktion} lopow (@var{expr}, @var{x})
-Gibt den kleinsten Exponenten von @var{x} zurück, der ausdrücklich 
+Gibt den kleinsten Exponenten von @var{x} zur@"uck, der ausdr@"ucklich 
 in @var{expr} erscheint. So
 
 @example
@@ -1735,8 +1733,8 @@ in @var{expr} erscheint. So
 
 @c NEEDS WORK
 @deffn {Funktion} lpart (@var{label}, @var{expr}, @var{n_1}, ..., @var{n_k})
-ist ähnlich zu @code{dpart}, verwendet aber eine gekennzeichnete Box. 
-Eine gekennzeichnete Box ist ähnlich zu der, die von @code{dpart} 
+ist @"ahnlich zu @code{dpart}, verwendet aber eine gekennzeichnete Box. 
+Eine gekennzeichnete Box ist @"ahnlich zu der, die von @code{dpart} 
 erzeugt wird, hat jedoch einen Namen in der obersten Zeile.
 
 Siehe auch @code{part}, @code{inpart} und @code{dpart}.
@@ -1751,10 +1749,10 @@ mit den anderen Faktoren von @var{expr}.
 D.h. @var{expr} ist @code{@var{f_1} @var{f_2} ... @var{f_n}}, wobei 
 wenigstens ein Faktor, sagen wir @var{f_i}, eine Summe von Termen ist. 
 Jeder Term in dieser Summe wird mit den anderen Faktoren des Produkts 
-multipliziert. (Namentlich alle Faktoren außer @var{f_i}). 
+multipliziert. (Namentlich alle Faktoren au@ss{}er @var{f_i}). 
 @code{multthru} expandiert keine exponentierten Summen. 
 Diese Funktion ist der schnellste Weg, um Produkte (kommutativ oder 
-nichtkommutativ) über Summen zu verteilen (distributiv). 
+nichtkommutativ) @"uber Summen zu verteilen (distributiv). 
 Da Quotienten als Produkte dargestellt werden, kann @code{multthru} 
 verwendet genauso werden, um Summen durch Produkte zu teilen. 
 
@@ -1762,7 +1760,7 @@ verwendet genauso werden, um Summen durch Produkte zu teilen.
 in @var{expr_2} (der eine Summe oder eine Gleichung sein sollte) 
 mit @var{expr_1}. 
 Wenn @var{expr_2} keine Summe ist, 
-dann ist diese Form äquivalent zu @code{multthru (@var{expr_1}*@var{expr_2})}.
+dann ist diese Form @"aquivalent zu @code{multthru (@var{expr_1}*@var{expr_2})}.
 @c ENGLISH ORIGINAL DOC CONTAINS ERROR (VvN)
 
 @example
@@ -1799,38 +1797,38 @@ dann ist diese Form äquivalent zu @code{multthru (@var{expr_1}*@var{expr_2})}.
 
 @c NEEDS WORK
 @deffn {Funktion} nounify (@var{f})
-Gibt die Substantivform des Funktionsnamens @var{f} zurück. 
-Dies ist nötig, wenn man sich auf den Namen einer Verbfunktion 
-beziehen möchte, als wäre es ein Substantiv. 
-Beachte, dass manche Verbfunktionen ihre Substantivform zurückgeben, 
-wenn sie für bestimmte Argumente nicht ausgewertet werden können. 
-Das ist dieselbe Form, die zurückgegeben wird, wenn einem 
+Gibt die Substantivform des Funktionsnamens @var{f} zur@"uck. 
+Dies ist n@"otig, wenn man sich auf den Namen einer Verbfunktion 
+beziehen m@"ochte, als w@"are es ein Substantiv. 
+Beachte, dass manche Verbfunktionen ihre Substantivform zur@"uckgeben, 
+wenn sie f@"ur bestimmte Argumente nicht ausgewertet werden k@"onnen. 
+Das ist dieselbe Form, die zur@"uckgegeben wird, wenn einem 
 Funktionsaufruf ein einfaches Hochkomma vorangestellt wird. 
 
 @end deffn
 
 @c NEEDS WORK
 @deffn {Funktion} nterms (@var{expr})
-Gibt die Anzahl der Terme zurück, die @var{expr} haben würde, wenn 
-es vollständig expandiert wäre und dann keine Kürzungen oder Kombinationen 
-von Termen aufträten. 
+Gibt die Anzahl der Terme zur@"uck, die @var{expr} haben w@"urde, wenn 
+es vollst@"andig expandiert w@"are und dann keine K@"urzungen oder Kombinationen 
+von Termen auftr@"aten. 
 
-Beachte, dass Ausdrücke wie @code{sin (@var{expr})}, 
+Beachte, dass Ausdr@"ucke wie @code{sin (@var{expr})}, 
 @code{sqrt (@var{expr})}, @code{exp (@var{expr})}, etc. 
-als ein einziger Term gezählt werden, unabhängig davon, aus wie viel 
+als ein einziger Term gez@"ahlt werden, unabh@"angig davon, aus wie viel 
 Termen @var{expr} besteht (wenn es z.B. eine Summe ist).
 
 @end deffn
 
 @c NEEDS WORK
 @deffn {Funktion} op (@var{expr})
-Gibt den Hauptoperator des Ausdrucks @var{expr} zurück. 
-@code{op (@var{expr})} ist äquivalent zu @code{part (@var{expr}, 0)}. 
+Gibt den Hauptoperator des Ausdrucks @var{expr} zur@"uck. 
+@code{op (@var{expr})} ist @"aquivalent zu @code{part (@var{expr}, 0)}. 
 
-@code{op} gibt eine Zeichenkette zurück, wenn der Hauptoperator 
-ein eingebauter oder benutzerdefinierter prefix-, binärer oder n-ärer infix-, 
+@code{op} gibt eine Zeichenkette zur@"uck, wenn der Hauptoperator 
+ein eingebauter oder benutzerdefinierter prefix-, bin@"arer oder n-@"arer infix-, 
 postfix-, matchfix- oder nofix-Operator ist. 
-Andernfalls gibt @code{op} ein Symbol zurück.
+Andernfalls gibt @code{op} ein Symbol zur@"uck.
 
 @code{op} beachtet dabei den Wert des globalen Schalters @code{inflag}. 
 
@@ -1884,23 +1882,23 @@ Beispiele:
 @deffn {Funktion} operatorp (@var{expr}, @var{op})
 @deffnx {Funktion} operatorp (@var{expr}, [@var{op_1}, ..., @var{op_n}])
 
-@code{operatorp (@var{expr}, @var{op})} gibt @code{true} zurück 
+@code{operatorp (@var{expr}, @var{op})} gibt @code{true} zur@"uck 
 wenn @var{op} gleich dem Operator von @var{expr} ist.
 
 @code{operatorp (@var{expr}, [@var{op_1}, ..., @var{op_n}])} gibt @code{true} 
-zurück, wenn eins der Elemente @var{op_1}, ..., @var{op_n} 
+zur@"uck, wenn eins der Elemente @var{op_1}, ..., @var{op_n} 
 gleich dem Operator von @var{expr} ist.
 
 @end deffn
 
 @c NEEDS WORK
 @deffn {Funktion} optimize (@var{expr})
-Gibt einen Ausdruck zurück, der denselben Wert und dieselben Seiteneffekte 
+Gibt einen Ausdruck zur@"uck, der denselben Wert und dieselben Seiteneffekte 
 erzeugt wie @var{expr}, dies aber wesentlich effizienter, dadurch 
-dass wiederholte Berechnungen gleicher Teilausdrücke vermieden werden. 
+dass wiederholte Berechnungen gleicher Teilausdr@"ucke vermieden werden. 
 
 @code{optimize} hat auch den Seiteneffekt, dass sein Argument durch die  
-Verwendung gemeinsamer Teilausdrücke kollabiert (@code{collapse}).
+Verwendung gemeinsamer Teilausdr@"ucke kollabiert (@code{collapse}).
 
 @code{example (optimize)} zeigt ein Beispiel.
 
@@ -1909,8 +1907,8 @@ Verwendung gemeinsamer Teilausdrücke kollabiert (@code{collapse}).
 @defvr {Optionsvariable} optimprefix
 Standardwert: @code{%}
 
-@code{optimprefix} ist der Präfix, der von der Funktion @code{optimize} 
-für die erzeugten Symbole verwendet wird.
+@code{optimprefix} ist der Pr@"afix, der von der Funktion @code{optimize} 
+f@"ur die erzeugten Symbole verwendet wird.
 
 @end defvr
 
@@ -1918,13 +1916,13 @@ für die erzeugten Symbole verwendet wird.
 @c WHAT DOES ">" MEAN IN THIS CONTEXT ??
 @c TEXT INSERTED (VvN)
 @deffn {Funktion} ordergreat (@var{v_1}, ..., @var{v_n})
-Verwendet Aliasnamen für die Variablen @var{v_1}, ..., @var{v_n}, 
+Verwendet Aliasnamen f@"ur die Variablen @var{v_1}, ..., @var{v_n}, 
 so dass @var{v_1} > @var{v_2} > ...  > @var{v_n} (im Sinne von @code{ordergreatp}), 
 und @var{v_n} > als jede andere Variable, die nicht als Argument 
 genannt ist. 
 
 Durch einen Aufruf von @code{unorder()} wird dieser Vorgang der Aliasierung 
-wieder rückgängig gemacht. Erst danach kann durch @code{orderless} oder 
+wieder r@"uckg@"angig gemacht. Erst danach kann durch @code{orderless} oder 
 @code{ordergreat} eine erneute Ordnung derselben Variablen vorgenommen werden.
 
 Siehe auch @code{orderless} und @code{mainvar}.
@@ -1973,7 +1971,7 @@ Beispiele:
 @c NEEDS WORK
 @c WHAT DOES "PRECEDES" MEAN IN THIS CONTEXT ??
 @deffn {Funktion} ordergreatp (@var{expr_1}, @var{expr_2})
-Gibt @code{true} zurück, wenn sich @var{expr_2} vor @var{expr_1} 
+Gibt @code{true} zur@"uck, wenn sich @var{expr_2} vor @var{expr_1} 
 in der durch die @code{ordergreat}-Funktion erzeugten geordneten Menge befindet.
 
 @end deffn
@@ -1982,17 +1980,17 @@ in der durch die @code{ordergreat}-Funktion erzeugten geordneten Menge befindet.
 @c WHAT DOES "<" MEAN IN THIS CONTEXT ??
 @c TEXT INSERTED (VvN)
 @deffn {Funktion} orderless (@var{v_1}, ..., @var{v_n})
-Verwendet Aliasnamen für die Variablen @var{v_1}, ..., @var{v_n}, 
+Verwendet Aliasnamen f@"ur die Variablen @var{v_1}, ..., @var{v_n}, 
 so dass @var{v_1} < @var{v_2} < ...  < @var{v_n} (im Sinne von @code{orderlessp}), 
 und @var{v_n} < als jede andere Variable, die nicht als Argument 
 genannt ist. 
 
 Durch einen Aufruf von @code{unorder()} wird dieser Vorgang der Aliasierung 
-wieder rückgängig gemacht. Erst danach kann durch @code{orderless} oder 
+wieder r@"uckg@"angig gemacht. Erst danach kann durch @code{orderless} oder 
 @code{ordergreat} eine erneute Ordnung derselben Variablen vorgenommen werden.
 
 @c EXPRESS THIS ORDER IN A MORE COMPREHENSIBLE FASHION
-Damit ergibt sich die vollständige Ordnungsskala für Atome: 
+Damit ergibt sich die vollst@"andige Ordnungsskala f@"ur Atome: 
 Numerische Konstanten < deklarierte Konstanten < deklarierte Skalare < 
 erstes Argument von @code{orderless} < ... 
 letztes Argument von @code{orderless} < 
@@ -2007,15 +2005,15 @@ Siehe auch @code{ordergreat} and @code{mainvar}.
 @c NEEDS WORK
 @c WHAT DOES "PRECEDES" MEAN IN THIS CONTEXT ??
 @deffn {Funktion} orderlessp (@var{expr_1}, @var{expr_2})
-Gibt @code{true} zurück, wenn sich @var{expr_1} vor @var{expr_2} 
+Gibt @code{true} zur@"uck, wenn sich @var{expr_1} vor @var{expr_2} 
 in der durch die @code{orderless}-Funktion erzeugten geordneten Menge befindet.
 
 @end deffn
 
 @c NEEDS WORK
 @deffn {Funktion} part (@var{expr}, @var{n_1}, ..., @var{n_k})
-Gibt Teile der auf dem Display ausgegebenen Form von @code{expr} zurück. 
-Es enthält den durch die Indizes @var{n_1}, ..., @var{n_k} 
+Gibt Teile der auf dem Display ausgegebenen Form von @code{expr} zur@"uck. 
+Es enth@"alt den durch die Indizes @var{n_1}, ..., @var{n_k} 
 spezifizierten Teil von @code{expr}.
 Zuerst wird der Teil @var{n_1} von @code{expr} gewonnen, dann hieraus 
 der Teil @var{n_2}, etc. Das Ergebnis ist 
@@ -2027,17 +2025,17 @@ einer Matrix, etc, zu erhalten.
 @c "If the last argument to a part function" => FOLLOWING APPLIES TO OTHER FUNCTIONS ??
 @c ATTEMPT TO VERIFY; IF SO, COPY THIS COMMENTARY TO DESCRIPTIONS OF OTHER FUNCTIONS
 Wenn das letzte Argument einer @code{part}-Funktion eine Liste mit Indizes ist, 
-werden verschiedene Teilausdrücke herausgepickt, jeder entsprechend dem 
+werden verschiedene Teilausdr@"ucke herausgepickt, jeder entsprechend dem 
 Index der Liste. So ist @code{part (x + y + z, [1, 3])} dann @code{z+x}.
 
 @c REVISION: (VvN)
-@code{piece} enthält den letzten Ausdruck, der bei der Verwendung einer 
-@code{part}-Funktion ausgewählt wurde.
-Nachdem @code{piece} durch die erste Ausführung einer @code{part}-Funktion
+@code{piece} enth@"alt den letzten Ausdruck, der bei der Verwendung einer 
+@code{part}-Funktion ausgew@"ahlt wurde.
+Nachdem @code{piece} durch die erste Ausf@"uhrung einer @code{part}-Funktion
 gesetzt wurde, kann es auch in einer solchen Funktion verwendet werden.
 
-Wenn @code{partswitch} @code{true} ist, wird @code{end} zurückgegeben, 
-wenn ein ausgewählter Teil (@code{part}) eines Ausdrucks nicht existiert, 
+Wenn @code{partswitch} @code{true} ist, wird @code{end} zur@"uckgegeben, 
+wenn ein ausgew@"ahlter Teil (@code{part}) eines Ausdrucks nicht existiert, 
 andernfalls wird eine Fehlermeldung ausgegeben.
 
 @c NEED "SEE ALSO" POINTING TO ALL OTHER PART FUNCTIONS
@@ -2052,10 +2050,10 @@ Beispiel: @code{part (z+2*y, 2, 1)} ergibt 2.
 
 @c NEEDS WORK
 @deffn {Funktion} partition (@var{expr}, @var{x})
-Gibt eine Liste mit zwei Ausdrücken zurück. 
+Gibt eine Liste mit zwei Ausdr@"ucken zur@"uck. 
 Dies sind (1) die Faktoren von @var{expr} (falls ein Produkt), 
 die Terme von @var{expr} (falls eine Summe )  
-oder die Liste (falls eine Liste), die @var{x} nicht enthält, 
+oder die Liste (falls eine Liste), die @var{x} nicht enth@"alt, 
 und (2) die Faktoren, Terme oder die Liste, die dies tun. 
 
 @example
@@ -2073,19 +2071,19 @@ und (2) die Faktoren, Terme oder die Liste, die dies tun.
 @defvr {Optionsvariable} partswitch
 Standardwert: @code{false}
 
-Wenn @code{partswitch} @code{true} ist, wird @code{end} zurückgegeben, 
-wenn ein ausgewählter Teil (@code{part}) eines Ausdrucks nicht existiert, 
+Wenn @code{partswitch} @code{true} ist, wird @code{end} zur@"uckgegeben, 
+wenn ein ausgew@"ahlter Teil (@code{part}) eines Ausdrucks nicht existiert, 
 andernfalls wird eine Fehlermeldung ausgegeben.
 
 @end defvr
 
 @deffn {Funktion} pickapart (@var{expr}, @var{n})
-Weist den Teilausdrücken von @var{expr} in der Tiefe @var{n}, 
+Weist den Teilausdr@"ucken von @var{expr} in der Tiefe @var{n}, 
 einer ganzen Zahl, Zwischenmarken (@code{%t1}, @code{%t2}, ...) zu. 
-Teilausdrücken in einer größeren oder kleineren Tiefe werden keine Marken 
+Teilausdr@"ucken in einer gr@"o@ss{}eren oder kleineren Tiefe werden keine Marken 
 zugewiesen.
-@code{pickapart} gibt einen Ausdruck in Termen von Zwischenmarken zurück, 
-äquivalent zum Originalausdruck @var{expr}. 
+@code{pickapart} gibt einen Ausdruck in Termen von Zwischenmarken zur@"uck, 
+@"aquivalent zum Originalausdruck @var{expr}. 
 
 Siehe auch @code{part}, @code{dpart}, @code{lpart}, @code{inpart} und @code{reveal}.
 
@@ -2173,11 +2171,11 @@ Beispiele:
 
 @c NEEDS WORK
 @defvr {Systemvariable} piece
-Enthält den letzten Ausdruck, der bei der Verwendung einer 
-@code{part}-Funktion ausgewählt wurde.
+Enth@"alt den letzten Ausdruck, der bei der Verwendung einer 
+@code{part}-Funktion ausgew@"ahlt wurde.
 @c WHAT DOES THIS MEAN EXACTLY ??
 @c REVISION: (VvN)
-Nachdem @code{piece} durch die erste Ausführung einer @code{part}-Funktion
+Nachdem @code{piece} durch die erste Ausf@"uhrung einer @code{part}-Funktion
 gesetzt wurde, kann es auch in einer solchen Funktion verwendet werden.
 
 @c NEED "SEE ALSO" TO POINT TO LIST OF ALL RELEVANT FUNCTIONS
@@ -2187,7 +2185,7 @@ Siehe auch @code{part} und @code{inpart}.
 
 @c NEEDS EXAMPLES
 @deffn {Funktion} polarform (@var{expr})
-Gibt einen zu @var{expr} äquivalenten Ausdruck @code{r %e^(%i theta)} zurück,
+Gibt einen zu @var{expr} @"aquivalenten Ausdruck @code{r %e^(%i theta)} zur@"uck,
 wobei @code{r} und @code{theta} rein reell sind.
 
 @end deffn
@@ -2198,8 +2196,8 @@ wobei @code{r} und @code{theta} rein reell sind.
 @c CUT OUT HERE AND MERGE INTO Polynomials.texi ??
 @c expr MUST BE POLYNOMIAL  (VvN)
 @deffn {Funktion} powers (@var{expr}, @var{x})
-Gibt für das Polynom @var{expr} eine Liste der Exponenten
-aller enthaltenden Potenzen von @var{x} zurück.
+Gibt f@"ur das Polynom @var{expr} eine Liste der Exponenten
+aller enthaltenden Potenzen von @var{x} zur@"uck.
 Vor der Auswertung wird @var{expr} von @var{rat} expandiert.
 @c expr IS SIMPLIFIED BY rat (WITH ratfac:false) FIRST AND THEN EVALUATED (VvN)
 
@@ -2230,7 +2228,7 @@ wie man alle Koeffizienten von @var{x} in einem Polynom @var{poly} finden kann:
 (%o5)                           [8, - 12 a, - a ]
 @end example
 
-@code{load ("powers")} lädt diese Funktion.
+@code{load ("powers")} l@"adt diese Funktion.
 @c HMM, THERE'S A BUNCH OF MAXIMA FUNCTIONS IN src/powers.lisp ...
 @c FOR SOME REASON src/powers.lisp IS NOT PART OF THE USUAL BUILD -- STRANGE
 
@@ -2252,8 +2250,8 @@ wie man alle Koeffizienten von @var{x} in einem Polynom @var{poly} finden kann:
 
 @deffn {Funktion} product (@var{expr}, @var{i}, @var{i_0}, @var{i_1})
 Stellt das Produkt der Werte von @var{expr} dar, wobei der 
-Index @var{i} von @var{i_0} bis @var{i_1} läuft. 
-Die Substantivform @code{'product} wird mit einem großgeschriebenen Buchstaben 
+Index @var{i} von @var{i_0} bis @var{i_1} l@"auft. 
+Die Substantivform @code{'product} wird mit einem gro@ss{}geschriebenen Buchstaben 
 Pi dargestellt.
 
 @code{product} wertet @var{expr} aus, ebenso die untere und 
@@ -2261,14 +2259,14 @@ obere Grenze @var{i_0} bzw. @var{i_1}, dagegen quotiert (keine Auswertung)
 @code{product} den Index @var{i}.
 
 Wenn die untere und obere Grenze sich durch eine ganze Zahl unterscheidet, 
-wird @var{expr} für jeden Wert des Index @var{i} ausgewertet, 
+wird @var{expr} f@"ur jeden Wert des Index @var{i} ausgewertet, 
 und das Ergebnis ist ein explizites Produkt. 
 
 Andernfalls ist der Bereich des Index unbestimmt. 
 Einige Regeln werden angewandt, um das Produkt zu vereinfachen.
 Wenn die globale Variable @code{simpproduct} @code{true} ist, 
-werden zusätzliche Regeln angewandt.
-In einigen Fällen liefert die Vereinfachung ein Ergebnis, das kein Produkt ist; 
+werden zus@"atzliche Regeln angewandt.
+In einigen F@"allen liefert die Vereinfachung ein Ergebnis, das kein Produkt ist; 
 andernfalls wird das Ergebnis in der Substantivform @code{'product} 
 angegeben.
 
@@ -2330,16 +2328,16 @@ Beispiele:
 
 @c NEEDS EXAMPLES
 @deffn {Funktion} realpart (@var{expr})
-Gibt den Realteil von @var{expr} zurück. 
-@code{realpart} und @code{imagpart} können auch bei
-Ausdrücken, die trigonometrische und hyperbolische Funktionen,
+Gibt den Realteil von @var{expr} zur@"uck. 
+@code{realpart} und @code{imagpart} k@"onnen auch bei
+Ausdr@"ucken, die trigonometrische und hyperbolische Funktionen,
 Quadratwurzeln, Logarithmen oder Potenzen enthalten, angewendet werden.
 
 @end deffn
 
 @c NEEDS EXAMPLES
 @deffn {Funktion} rectform (@var{expr})
-Gibt einen Ausdruck @code{a + b %i} zurück, der @var{expr} äquivalent ist, 
+Gibt einen Ausdruck @code{a + b %i} zur@"uck, der @var{expr} @"aquivalent ist, 
 wobei @var{a} und @var{b} rein reell sind.
 
 @end deffn
@@ -2429,39 +2427,39 @@ Beispiele:
 
 @deffn {Funktion} sum (@var{expr}, @var{i}, @var{i_0}, @var{i_1})
 Stellt die Summe der Werte von @var{expr} dar, wobei der Index @var{i} 
-von @var{i_0} bis @var{i_1} läuft. 
-Die Substantivform @code{'sum} wird als großgeschriebener Buchstabe Sigma angezeigt.
+von @var{i_0} bis @var{i_1} l@"auft. 
+Die Substantivform @code{'sum} wird als gro@ss{}geschriebener Buchstabe Sigma angezeigt.
 
 @code{sum} wertet den Summanden @var{expr} aus, ebenso die untere und 
 obere Grenze @var{i_0} bzw. @var{i_1}, dagegen quotiert (keine Auswertung)
 @code{sum} den Index @var{i}.
 
 Wenn die untere und obere Grenze sich durch eine ganze Zahl unterscheidet, 
-wird der Summand @var{expr} für jeden Wert des Summationsindex @var{i} ausgewertet, 
+wird der Summand @var{expr} f@"ur jeden Wert des Summationsindex @var{i} ausgewertet, 
 und das Ergebnis ist eine explizite Summe. 
 
 Andernfalls ist der Bereich des Index unbestimmt. 
 Einige Regeln werden angewandt, um die Summe zu vereinfachen.
 Wenn die globale Variable @code{simpsum} @code{true} ist, 
-werden zusätzliche Regeln angewandt.
-In einigen Fällen liefert die Vereinfachung ein Ergebnis, das keine Summe ist; 
+werden zus@"atzliche Regeln angewandt.
+In einigen F@"allen liefert die Vereinfachung ein Ergebnis, das keine Summe ist; 
 andernfalls wird das Ergebnis in der Substantivform @code{'sum} 
 angegeben.
 
 @c MODIFIED HERE. SEE cauchysum. (VvN)
 Wenn der @code{evflag} (Auswertungsschalter) @code{cauchysum} und die 
 Optionsvariable @code{sumexpand} beide @code{true} sind, 
-wird ein Produkt von Summen i.A. als Cauchy-Produkt ausgedrückt. 
+wird ein Produkt von Summen i.A. als Cauchy-Produkt ausgedr@"uckt. 
 In dem Cauchy-Produkt ist der Index der inneren Summe eher eine Funktion 
-des Index der äußeren Summe, als dass beide unabhängig variieren.
+des Index der @"au@ss{}eren Summe, als dass beide unabh@"angig variieren.
      
-Die globale Variable @code{genindex} ist der alphabetische Präfix, 
-der verwendet wird, um den nächsten Index einer Summe zu erzeugen, 
-falls ein automatisch erzeugter Index benötigt wird.
+Die globale Variable @code{genindex} ist der alphabetische Pr@"afix, 
+der verwendet wird, um den n@"achsten Index einer Summe zu erzeugen, 
+falls ein automatisch erzeugter Index ben@"otigt wird.
 
 @code{gensumnum} ist ein numerischer Suffix, der verwendet wird, 
-um den nächsten Index einer Summe zu erzeugen, 
-falls ein automatisch erzeugter Index benötigt wird. 
+um den n@"achsten Index einer Summe zu erzeugen, 
+falls ein automatisch erzeugter Index ben@"otigt wird. 
 Wird @code{gensumnum} @code{false} gesetzt, ist der automatisch erzeugte 
 Index nur @code{genindex} ohne numerischen Suffix. 
 
@@ -2554,8 +2552,8 @@ Beispiele:
 @end deffn
 
 @deffn {Funktion} lsum (@var{expr}, @var{x}, @var{L})
-Stellt die Summe von @var{expr} für jedes Element @var{x} in @var{L} dar.
-Die Substantivform @code{'lsum} wird zurückgegeben, wenn das 
+Stellt die Summe von @var{expr} f@"ur jedes Element @var{x} in @var{L} dar.
+Die Substantivform @code{'lsum} wird zur@"uckgegeben, wenn das 
 Argument @var{L} nicht als Liste ausgewertet werden kann.
 
 Beispiele:
@@ -2581,7 +2579,7 @@ Beispiele:
 @end deffn
 
 @deffn {Funktion} verbify (@var{f})
-Gibt die Verbform des Funktionsnamens @var{f} zurück.
+Gibt die Verbform des Funktionsnamens @var{f} zur@"uck.
 
 Siehe auch @code{verb}, @code{noun} und @code{nounify}.
 

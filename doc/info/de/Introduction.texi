@@ -9,7 +9,7 @@ Beende die Sitzung in der Shell mit "quit();". Hier ist eine Beispielsitzung:
 @example
 [wfs@@chromium]$ maxima
 Maxima 5.10.0 http://maxima.sourceforge.net
-Using Lisp GNU Common Lisp (GCL) GCL 2.6.7 (aka GCL)
+Using Lisp GNU Common Lisp (GCL) GCL 2.6.8 (aka GCL)
 Distributed under the GNU Public License. See the file COPYING.
 Dedicated to the memory of William Schelter.
 This is a development version of Maxima. The function bug_report()
@@ -29,7 +29,7 @@ provides bug reporting information.
 
 Maxima kann die Informationsseiten durchsuchen. Verwende das Kommando @kbd{describe}, 
 um alle Kommandos und Variablen, die eine bestimmte Zeichenfolge enthalten, anzeigen zu lassen, 
-und optional ihre Dokumentation. Das Fragezeichen @code{?} ist eine Kurzschreibweise für @code{describe}: 
+und optional ihre Dokumentation. Das Fragezeichen @code{?} ist eine Kurzschreibweise f@"ur @code{describe}: 
 
 @example
 (%i1) ? integ
@@ -95,9 +95,9 @@ Info from file /usr/local/info/maxima.info:
 (%o1)                         false
 @end example
 
-Um ein Ergebnis in späteren Berechnungen wiederverwenden zu können, kann man es einer 
+Um ein Ergebnis in sp@"ateren Berechnungen wiederverwenden zu k@"onnen, kann man es einer 
 Variablen zuweisen oder man kann sich auf die automatisch bereitgestellte Marke ("label") beziehen. 
-Zusätzlich bezieht sich @kbd{%} auf das zuletzt berechnete Ergebnis. 
+Zus@"atzlich bezieht sich @kbd{%} auf das zuletzt berechnete Ergebnis. 
 
 @example
 (%i1) u: expand ((x + y)^6);
@@ -137,7 +137,7 @@ Maxima kann differenzieren und integrieren:
                   6             sqrt(3)          3
 @end example
 
-Maxima kann lineare Gleichungssysteme und kubische Gleichungen lösen:
+Maxima kann lineare Gleichungssysteme und kubische Gleichungen l@"osen:
 
 @example
 (%i1) linsolve ([3*x + 4*y = 7, 2*x + a*y = 13], [x, y]);
@@ -148,8 +148,8 @@ Maxima kann lineare Gleichungssysteme und kubische Gleichungen lösen:
 (%o2)       [x = - sqrt(5) %i, x = sqrt(5) %i, x = 3]
 @end example
 
-Maxima kann nichtlineare Gleichungssysteme lösen. Will man sich ein Ergebnis nicht 
-ausgeben lassen, kann man statt mit @kbd{;} das Kommando mit @kbd{$} abschließen.
+Maxima kann nichtlineare Gleichungssysteme l@"osen. Will man sich ein Ergebnis nicht 
+ausgeben lassen, kann man statt mit @kbd{;} das Kommando mit @kbd{$} abschlie@ss{}en.
 
 @example
 (%i1) eq_1: x^2 + 3*x*y + y^2 = 0$

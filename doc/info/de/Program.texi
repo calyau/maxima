@@ -2,19 +2,19 @@
 @c English original: Program.texi CVS 1.21
 
 @menu
-* Einführung in Steuerstrukturen::  
-* Definitionen für Steuerstrukturen::  
+* Einf@"uhrung in Steuerstrukturen::  
+* Definitionen f@"ur Steuerstrukturen::  
 @end menu
 
-@node Einführung in Steuerstrukturen, Definitionen für Steuerstrukturen, Steuerstrukturen, Steuerstrukturen
-@section Einführung in Steuerstrukturen
+@node Einf@"uhrung in Steuerstrukturen, Definitionen f@"ur Steuerstrukturen, Steuerstrukturen, Steuerstrukturen
+@section Einf@"uhrung in Steuerstrukturen
 
-Maxima stellt verschiedene @code{do}-Schleifen für die Iteration zur Verfügung, 
+Maxima stellt verschiedene @code{do}-Schleifen f@"ur die Iteration zur Verf@"ugung, 
 und mit @code{go} auch ein etwas primitiveres Konstrukt.
 
 @c end concepts Steuerstrukturen
-@node Definitionen für Steuerstrukturen,  , Einführung in Steuerstrukturen, Steuerstrukturen
-@section Definitionen für Steuerstrukturen
+@node Definitionen f@"ur Steuerstrukturen,  , Einf@"uhrung in Steuerstrukturen, Steuerstrukturen
+@section Definitionen f@"ur Steuerstrukturen
 
 @deffn {Funktion} backtrace ()
 @deffnx {Funktion} backtrace (@var{n})
@@ -45,7 +45,7 @@ Beispiele:
 
 @itemize @bullet
 @item
-@code{backtrace (@var{n})} gibt einschließlich der
+@code{backtrace (@var{n})} gibt einschlie@ss{}lich der
 gerade aktiven Funktion die @var{n} letzten Funktionen aus.
 
 @example
@@ -67,13 +67,13 @@ gerade aktiven Funktion die @var{n} letzten Funktionen aus.
 @end deffn
 
 @deffn {Spezieller Operator} do
-Die Anweisung @code{do} bewirkt die Ausführung der Iteration.
-Die vielfältigen Erscheinungsformen der @code{do}-Anweisung werden
+Die Anweisung @code{do} bewirkt die Ausf@"uhrung der Iteration.
+Die vielf@"altigen Erscheinungsformen der @code{do}-Anweisung werden
 folgend in mehreren Abschnitten beschrieben.
-Als erstes wird die gewöhnliche Form vorgestellt,
+Als erstes wird die gew@"ohnliche Form vorgestellt,
 die analog zu der ist, die man in anderen Programmiersprachen findet
 (Fortran, Algol, PL/I, etc.).
-Anschließend werden dann weitere Möglichkeiten genannt.
+Anschlie@ss{}end werden dann weitere M@"oglichkeiten genannt.
 
 Es gibt drei Varianten, die sich nur in ihrer Terminierungsbedingung unterscheiden.  
 Sie sind:
@@ -96,47 +96,47 @@ Sie sind:
 @var{initial_value}, @var{increment}, @var{limit} und @var{body} kann jeder 
 Ausdruck sein. Ist @var{increment} 1, kann "@code{step 1}" auch entfallen.
 
-Bei der Ausführung der @code{do}-Anweisung wird zuerst @var{initial_value} 
+Bei der Ausf@"uhrung der @code{do}-Anweisung wird zuerst @var{initial_value} 
 der Variablen (@var{variable}, im folgenden Kontrollvariable genannt) zugewiesen.
 Dann: (1) Wenn die Kontrollvariable den Wert @var{limit} der 
-@code{thru}-Spezifikation überschritten hat, oder wenn die Bedingung 
+@code{thru}-Spezifikation @"uberschritten hat, oder wenn die Bedingung 
 @var{condition} von @code{unless} @code{true} ist, 
 oder wenn die Bedingung
 @var{condition} von @code{while} @code{false} ist, endet @code{do}.
 (2) Der Schleifenrumpf (@var{body}) wird ausgewertet.
 (3) @var{increment} wird zur Kontrollvariable addiert.
-Die Schritte (1) bis (3) werden solange ausgeführt bis irgend eine 
-Terminierungsbedingung erfüllt ist.
+Die Schritte (1) bis (3) werden solange ausgef@"uhrt bis irgend eine 
+Terminierungsbedingung erf@"ullt ist.
 
-Der @code{thru}-Test ist erfüllt, wenn im Falle eines nichtnegativen 
-Inkrements die Kontrollvariable größer als @var{limit} ist, oder
+Der @code{thru}-Test ist erf@"ullt, wenn im Falle eines nichtnegativen 
+Inkrements die Kontrollvariable gr@"o@ss{}er als @var{limit} ist, oder
 entsprechend bei negativem Inkrement die Kontrollvariable kleiner als 
-@var{limit} ist. @var{increment} und @var{limit} können auch
-nichtnumerische Ausdrücke sein, solange es möglich ist, die entsprechende 
+@var{limit} ist. @var{increment} und @var{limit} k@"onnen auch
+nichtnumerische Ausdr@"ucke sein, solange es m@"oglich ist, die entsprechende 
 Ungleichung auszuwerten. Wenn jedoch das Inkrement bei der Eingabe der
 @code{do}-Anweisung nicht syntaktisch negativ ist, dann nimmt Maxima bei der
-Ausführung der Schleife an, dass es positiv ist. Ist es das nicht, 
+Ausf@"uhrung der Schleife an, dass es positiv ist. Ist es das nicht, 
 kann die Schleife eventuell nicht korrekt terminieren.
 
 Beachte, dass @var{increment}, @var{limit} und die Terminierungsbedingung
-in jedem Schleifendurchlauf ausgewertet werden. Benötigt einer dieser Ausdrücke
-viel Rechenzeit, ändert aber während des Schleifendurchlaufs nicht seinen
+in jedem Schleifendurchlauf ausgewertet werden. Ben@"otigt einer dieser Ausdr@"ucke
+viel Rechenzeit, @"andert aber w@"ahrend des Schleifendurchlaufs nicht seinen
 Wert, ist es wesentlich effizienter, diesen Wert vor der @code{do}-Schleife einer
 Variablen zuzuweisen und diese dann in der @code{do}-Anweisung zu verwenden.
 
-Der Wert, der normalerweise von einer @code{do}-Anweisung zurückgegeben
+Der Wert, der normalerweise von einer @code{do}-Anweisung zur@"uckgegeben
 wird, ist das Atom @code{done}.
 Die Funktion @code{return} kann jedoch im Inneren des Schleifenrumpfs
 verwendet werden, um die Schleife vorzeitig zu verlassen und
-einen beliebigen Rückgabewert festzulegen.
+einen beliebigen R@"uckgabewert festzulegen.
 Beachte hierbei, dass @code{return} in einer @code{do}-Anweisung, die
 innerhalb eines @code{block}-Konstrukts verwendet wird, nur @code{do}
 beenden kann, nicht aber @code{block}.
 Beachte auch, dass die Funktion @code{go} keinen Sprung aus einem @code{do}
-in einen umgebenden @code{block} ermöglicht.
+in einen umgebenden @code{block} erm@"oglicht.
 
 Die Kontrollvariable ist stets eine lokale Variable der @code{do}-Anweisung.
-Ihr Wert kann daher den Wert einer Variablen außerhalb des @code{do} mit 
+Ihr Wert kann daher den Wert einer Variablen au@ss{}erhalb des @code{do} mit 
 gleichem Namen nicht beeinflussen. Nach der Terminierung der Schleife ist 
 die Kontrollvariable ungebunden.
 
@@ -195,12 +195,12 @@ Das Beispiel zeigt 8 Terme der Taylorreihe von @code{e^sin(x)}.
 @end example
 
 In diesem Beispiel wird die negative Quadratwurzel von 10 mit Hilfe von 10
-Newton-Raphson-Iterationen berechnet. Wäre die Konvergenzbedingung nicht
-erfüllt, hätte die Schleife nur @code{done} zurückgegeben.
+Newton-Raphson-Iterationen berechnet. W@"are die Konvergenzbedingung nicht
+erf@"ullt, h@"atte die Schleife nur @code{done} zur@"uckgegeben.
 
 Anstatt stets eine bestimmte Einheit zur Kontrollvariable zu addieren,
-möchte man vielleicht die Kontrollvariable in jedem Schleifendurchlauf
-auf eine andere Art und Weise verändern.
+m@"ochte man vielleicht die Kontrollvariable in jedem Schleifendurchlauf
+auf eine andere Art und Weise ver@"andern.
 In diesem Fall kann man @code{next @var{expression}} anstelle von
 @code{step @var{increment}} verwenden.
 Die Kontrollvariable wird dadurch nach jedem Schleifendurchlauf auf den 
@@ -219,17 +219,17 @@ aktuellen Wert von @var{expression} gesetzt.
 Als Alternative zu @code{for @var{variable}: @var{value} ...do...}
 kann die Syntax @code{for @var{variable} from @var{value} ...do...} 
 verwendet werden.
-Dies ermöglicht, dass @code{from @var{value}} auch hinter
+Dies erm@"oglicht, dass @code{from @var{value}} auch hinter
 @code{step @var{increment}} oder @code{next @var{expression}}
 oder der Terminierungsbedingung platziert werden kann. Wenn @code{from @var{value}}
 weggelassen wurde, wird 1 als Startwert verwendet.
 
-Manchmal wird man auch eine Iteration durchführen wollen, in der die
+Manchmal wird man auch eine Iteration durchf@"uhren wollen, in der die
 Kontrollvariable gar nicht im Schleifenrumpf verwendet wird. 
-Dann genügt es, nur die Terminierungsbedingung anzugeben. Auf die Initialisierung 
+Dann gen@"ugt es, nur die Terminierungsbedingung anzugeben. Auf die Initialisierung 
 und die Angabe des Inkrements wird wie in dem folgenden Beispiel 
 verzichtet. Hier wird die Quadratwurzel von 5 mit einem mit einem 
-relativ schlechten Schätzwert berechnet.
+relativ schlechten Sch@"atzwert berechnet.
 
 @example
 (%i1) x: 1000$
@@ -240,8 +240,8 @@ relativ schlechten Schätzwert berechnet.
 (%o4)                   2.23606797749979
 @end example
 
-Wenn gewünscht, kann auch auf die Terminierungsbedingung verzichtet werden.
-@code{do @var{body}} genügt.
+Wenn gew@"unscht, kann auch auf die Terminierungsbedingung verzichtet werden.
+@code{do @var{body}} gen@"ugt.
 Der Schleifenrumpf wird dann endlos wiederholt ausgewertet.
 In diesem Fall sollte die Funktion @code{return} verwendet werden, 
 um die @code{do}-Schleife zu beenden.
@@ -260,22 +260,22 @@ um die @code{do}-Schleife zu beenden.
 @code{do}-Schleife beendet wird, da aber @code{do} die letzte Anweisung
 in @code{block} ist, wird der letzte aktuelle Wert von @code{x} dann
 sowohl von @code{do} als auch von der Funktion @code{newton}
-zurückgegeben.)
+zur@"uckgegeben.)
 
-Maxima verfügt noch über eine andere Form der @code{do}-Anweisung.
+Maxima verf@"ugt noch @"uber eine andere Form der @code{do}-Anweisung.
 Die Syntax ist:
 
 @example
 for @var{variable} in @var{list} @var{end_tests} do @var{body}
 @end example
 
-Die Elemente der Liste können beliebige Ausdrücke sein. Diese werden
+Die Elemente der Liste k@"onnen beliebige Ausdr@"ucke sein. Diese werden
 in jeder Iteration der Schleife sukzessive der Kontrollvariablen zugewiesen.
 Die optionale Terminierungsbedingung @var{end_tests} kann verwendet werden,
-um die Ausführung der @code{do}-Anweisung zu beenden.
-Andernfalls terminiert die Schleife, wenn die Liste erschöpft ist oder wenn
-im Schleifenrumpf @code{return} ausgeführt wurde.
-(Tatsächlich kann @var{list} jeder Ausdruck sein, der kein Atom ist.
+um die Ausf@"uhrung der @code{do}-Anweisung zu beenden.
+Andernfalls terminiert die Schleife, wenn die Liste ersch@"opft ist oder wenn
+im Schleifenrumpf @code{return} ausgef@"uhrt wurde.
+(Tats@"achlich kann @var{list} jeder Ausdruck sein, der kein Atom ist.
 Seine Teile werden dann sukzessive verwendet.)
 
 @example
@@ -293,13 +293,13 @@ Seine Teile werden dann sukzessive verwendet.)
 
 @deffn {Funktion} errcatch (@var{expr_1}, ..., @var{expr_n})
 Wertet @var{expr_1}, ..., @var{expr_n} nacheinander aus und
-gibt @code{[@var{expr_n}]} (eine Liste) zurück,
+gibt @code{[@var{expr_n}]} (eine Liste) zur@"uck,
 wenn kein Fehler auftritt. Sollte bei der Auswertung irgend eines Arguments
 ein Fehler auftreten, verhindert @code{errcatch} die Meldung des Fehlers
-und gibt ohne die Auswertung eines weiteren Arguments die leere Liste @code{[]} zurück.
+und gibt ohne die Auswertung eines weiteren Arguments die leere Liste @code{[]} zur@"uck.
 
-@code{errcatch} ist nützlich in @code{batch}-Dateien,
-in denen man einen Fehler vermutet, der dann @code{batch} beenden würde,
+@code{errcatch} ist n@"utzlich in @code{batch}-Dateien,
+in denen man einen Fehler vermutet, der dann @code{batch} beenden w@"urde,
 sollte der Fehler nicht aufgefangen werden.
 
 @end deffn
@@ -307,12 +307,12 @@ sollte der Fehler nicht aufgefangen werden.
 @deffn {Funktion} error (@var{expr_1}, ..., @var{expr_n})
 @deffnx {System variable} error
 Wertet und gibt @var{expr_1}, ..., @var{expr_n} aus,
-und bewirkt dann einen Fehlerrücksprung in den Maxima Top Level oder in
-das nächste umgebende @code{errcatch}.
+und bewirkt dann einen Fehlerr@"ucksprung in den Maxima Top Level oder in
+das n@"achste umgebende @code{errcatch}.
 
 Die Variable @code{error} ist eine Liste, die den Fehler beschreibt.
 Das erste Element von @code{error} ist ein Formatierungsstring,
-der alle Strings unter den @var{expr_1}, ..., @var{expr_n} enthält,
+der alle Strings unter den @var{expr_1}, ..., @var{expr_n} enth@"alt,
 und die restlichen Elemente sind die Werte der Nicht-String-Argumente.
 
 @code{errormsg()} gibt dann @code{error} formatiert aus.
@@ -322,7 +322,7 @@ Im Endeffekt ist dies dann eine erneute Ausgabe der letzten Fehlermeldung.
 
 @deffn {Funktion} errormsg ()
 Gibt erneut die letzte Fehlermeldung aus.
-Die Variable @code{error} enthält die Meldung,
+Die Variable @code{error} enth@"alt die Meldung,
 und @code{errormsg} gibt sie formatiert aus.
 
 @end deffn
@@ -336,9 +336,9 @@ der Iteration in Maxima.
 
 @deffn {Funktion} go (@var{tag})
 Wird in einem @code{block} verwendet, um die Programmkontrolle
-an eine Anweisung zu übergeben, die mit dem Argument von @code{go}
+an eine Anweisung zu @"ubergeben, die mit dem Argument von @code{go}
 markiert ist. Um eine Anweisung zu markieren, stellt man ihr ein Atom als eine
-zusätzliche Anweisung in @code{block} voran. Zum Beispiel:
+zus@"atzliche Anweisung in @code{block} voran. Zum Beispiel:
 
 @example
 block ([x], x:1, loop, x+1, ..., go(loop), ...)
@@ -347,14 +347,14 @@ block ([x], x:1, loop, x+1, ..., go(loop), ...)
 Das Argument von @code{go} muss der Name einer Marke ("tag") sein, die im gleichen
 @code{block} steht. Man kann @code{go} nicht verwenden, um eine Marke
 in einem anderen @code{block} zu erreichen als den, der dieses @code{go}
-enthält.
+enth@"alt.
 
 @end deffn
 
 @c NEEDS CLARIFICATION, EXPANSION, EXAMPLES
 @c THIS ITEM IS IMPORTANT
 @deffn {Spezieller Operator} if
-@code{if} wird für die bedingte Anweisung verwendet.
+@code{if} wird f@"ur die bedingte Anweisung verwendet.
 Die Syntax ist:
 
 @example
@@ -364,8 +364,8 @@ if <condition> then <expr_1> else <expr_2>
 Der Wert einer @code{if}-Anweisung ist @var{expr_1} wenn die Bedingung
 @var{condition} @code{true} ist, und @var{expr_2} im Falle von
 @code{false}.
-@var{expr_1} und @var{expr_2} sind beliebige Maxima Ausdrücke
-(einschließlich ineinander geschachtelter @code{if}-Anweisungen), 
+@var{expr_1} und @var{expr_2} sind beliebige Maxima Ausdr@"ucke
+(einschlie@ss{}lich ineinander geschachtelter @code{if}-Anweisungen), 
 und @var{condition} ist ein Ausdruck, der zu @code{true} oder @code{false}
 ausgewertet wird und mit Hilfe der folgenden vergleichenden und 
 logischen Operatoren zusammengesetzt ist:
@@ -381,11 +381,11 @@ gleich (syntaktisch)   =           vergleichend infix
 Negation von =         #           vergleichend infix
 gleich (Wert)          equal       vergleichend Funktion
 Negation von equal     notequal    vergleichend Funktion
-größer oder gleich     >=          vergleichend infix
-größer                 >           vergleichend infix
+gr@"o@ss{}er oder gleich     >=          vergleichend infix
+gr@"o@ss{}er                 >           vergleichend infix
 und                    and         logisch infix
 oder                   or          logisch infix
-nicht                  not         logisch präfix
+nicht                  not         logisch pr@"afix
 @end example
 
 @end deffn
@@ -393,27 +393,27 @@ nicht                  not         logisch präfix
 @c NEEDS CLARIFICATION
 @c THIS ITEM IS IMPORTANT
 @deffn {Funktion} map (@var{f}, @var{expr_1}, ..., @var{expr_n})
-Gibt einen Ausdruck zurück, dessen Hauptoperator derselbe ist wie
-in den Ausdrücken @var{expr_1}, ..., @var{expr_n},
+Gibt einen Ausdruck zur@"uck, dessen Hauptoperator derselbe ist wie
+in den Ausdr@"ucken @var{expr_1}, ..., @var{expr_n},
 dessen Teile aber das Ergebnis der Anwendung von @var{f} auf die einander
-entsprechenden Teile der Ausdrücke sind.
+entsprechenden Teile der Ausdr@"ucke sind.
 @var{f} ist entweder der Name einer Funktion mit @math{n} Argumenten
 oder eine @code{lambda}-Form  mit @math{n} Argumenten.
 
 Wird die Optionsvariable @code{maperror} auf @code{false} gesetzt,
 bewirkt dies, dass die map-Funktionen (1) in dem Fall, dass die
-Ausdrücke @var{expr_i} nicht alle die gleiche Länge besitzen, nach
-dem Erreichen des Endes des kürzesten @var{expr_i} endet und (2)
+Ausdr@"ucke @var{expr_i} nicht alle die gleiche L@"ange besitzen, nach
+dem Erreichen des Endes des k@"urzesten @var{expr_i} endet und (2)
 in dem Fall, dass die @var{expr_i} nicht alle vom gleichen Objekttyp sind,
 die Funktion @var{f} auf die Liste [@var{expr_1}, @var{expr_2}, ...]
 anwendet (im Sinne von @code{apply}).
 Ist @code{maperror} auf @code{true} gesetzt (Standardeinstellung),
-wird in den genannten Fällen eine Fehlermeldung ausgegeben.
+wird in den genannten F@"allen eine Fehlermeldung ausgegeben.
 
 Einer der Verwendungszwecke von @code{map} ist, eine Funktion
-(z.B. @code{partfrac}) auf jeden Term eines recht großen Ausdrucks
-anzuwenden, falls es nicht möglich ist, die Funktion auf den gesamten Ausdruck
-anzuwenden, bedingt durch ein Erschöpfen des Speicherplatzes während der
+(z.B. @code{partfrac}) auf jeden Term eines recht gro@ss{}en Ausdrucks
+anzuwenden, falls es nicht m@"oglich ist, die Funktion auf den gesamten Ausdruck
+anzuwenden, bedingt durch ein Ersch@"opfen des Speicherplatzes w@"ahrend der
 Auswertung.
 
 @c IN THESE EXAMPLES, SPELL OUT WHAT IS THE MAIN OPERATOR 
@@ -438,9 +438,9 @@ Auswertung.
 @end deffn
 
 @deffn {Funktion} mapatom (@var{expr})
-Gibt @code{true} zurück, genau dann wenn @var{expr}
+Gibt @code{true} zur@"uck, genau dann wenn @var{expr}
 von den map-Funktionen als Atom angesehen wird. "Mapatome" sind Atome,
-Zahlen (einschließlich der rationalen Zahlen) und indizierte Variablen.
+Zahlen (einschlie@ss{}lich der rationalen Zahlen) und indizierte Variablen.
 @c WHAT ARE "THE MAPPING ROUTINES", AND WHY DO THEY HAVE A SPECIALIZED NOTION OF ATOMS ??
 @c "MAPPING ROUTINES" HERE TRANSLATED AS "MAP FUNCTIONS" - VvN
 
@@ -458,27 +458,27 @@ map (f, expr_1, expr_2, ...))
 @end example
 
 (1) in dem Fall, dass die
-Ausdrücke @var{expr_i} nicht alle die gleiche Länge besitzen, nach
-dem Erreichen des Endes des kürzesten @var{expr_i} endet und (2)
+Ausdr@"ucke @var{expr_i} nicht alle die gleiche L@"ange besitzen, nach
+dem Erreichen des Endes des k@"urzesten @var{expr_i} endet und (2)
 in dem Fall, dass die @var{expr_i} nicht alle vom gleichen Objekttyp sind,
 die Funktion @var{f} auf die Liste [@var{expr_1}, @var{expr_2}, ...]
 anwendet (im Sinne von @code{apply}).
 
 Ist @code{maperror} auf @code{true} gesetzt,
-wird in den genannten Fällen eine Fehlermeldung ausgegeben.
+wird in den genannten F@"allen eine Fehlermeldung ausgegeben.
 
 @end defvr
 
 @c NEEDS CLARIFICATION
 @deffn {Funktion} maplist (@var{f}, @var{expr_1}, ..., @var{expr_n})
 Gibt eine Liste von Anwendungen von @var{f} auf die einander
-entsprechenden Teile der Ausdrücke @var{expr_1}, ..., @var{expr_n}
-zurück. @var{f} ist der Name einer Funktion oder eines Lambda-Ausdrucks.
+entsprechenden Teile der Ausdr@"ucke @var{expr_1}, ..., @var{expr_n}
+zur@"uck. @var{f} ist der Name einer Funktion oder eines Lambda-Ausdrucks.
 
 @code{maplist} ist zu unterscheiden von
 @code{map (@var{f}, @var{expr_1}, ..., @var{expr_n})},
 welches einen Ausdruck mit demselben Hauptoperator, den die @var{expr_i}
-besitzen, zurück gibt. (Ausnahmen bilden Vereinfachungen und der Fall,
+besitzen, zur@"uck gibt. (Ausnahmen bilden Vereinfachungen und der Fall,
 dass @code{map} @code{apply} anwendet.)
 
 @end deffn
@@ -487,25 +487,25 @@ dass @code{map} @code{apply} anwendet.)
 @defvr {Option variable} prederror
 Standardwert: @code{true}
 
-Ist @code{prederror} @code{true}, wird, wann immer das Prädikat
+Ist @code{prederror} @code{true}, wird, wann immer das Pr@"adikat
 einer @code{if}-Anweisung oder einer @code{is}-Funktion nicht zu
 @code{true} oder @code{false} ausgewertet werden kann,
 eine Fehlermeldung ausgegeben.
 
 Ist @code{prederror} @code{false}, wird statt dessen @code{unknown}
-zurückgegeben.
-Der Modus @code{prederror: false} wird nicht in übersetztem Code
-unterstützt. @code{maybe} wird dagegen in übersetztem Code
-unterstützt.
+zur@"uckgegeben.
+Der Modus @code{prederror: false} wird nicht in @"ubersetztem Code
+unterst@"utzt. @code{maybe} wird dagegen in @"ubersetztem Code
+unterst@"utzt.
 
 Siehe auch @code{is} und @code{maybe}.
 
 @end defvr
 
 @deffn {Funktion} return (value)
-Kann verwendet werden, um ausdrücklich einen Programmblock
-mit ihrem Argument als Rückgabewert zu verlassen.
-Siehe @code{block} für mehr Informationen.
+Kann verwendet werden, um ausdr@"ucklich einen Programmblock
+mit ihrem Argument als R@"uckgabewert zu verlassen.
+Siehe @code{block} f@"ur mehr Informationen.
 
 @end deffn
 
@@ -513,8 +513,8 @@ Siehe @code{block} für mehr Informationen.
 @deffn {Funktion} scanmap (@var{f}, @var{expr})
 @deffnx {Funktion} scanmap (@var{f}, @var{expr}, bottomup)
 Wendet @var{f} nach einer Top-down-Methode rekursiv auf @var{expr}
-an. Dies ist besonders nützlich, wenn eine vollständige Faktorisierung 
-gewünscht wird, zum Beispiel:
+an. Dies ist besonders n@"utzlich, wenn eine vollst@"andige Faktorisierung 
+gew@"unscht wird, zum Beispiel:
 
 @example
 (%i1) exp:(a^2+2*a+1)*y + x^2$
@@ -525,7 +525,7 @@ gewünscht wird, zum Beispiel:
 
 Beachte, in welcher Weise @code{scanmap} die gegebene Funktion @code{factor}
 auf die Bestandteile von @var{expr} anwendet.
-Wird @code{scanmap} eine andere Form von @var{expr} übergeben, kann
+Wird @code{scanmap} eine andere Form von @var{expr} @"ubergeben, kann
 das Resultat ein anderes sein.
 So ist @code{%o2} nicht wiederhergestellt, wenn @code{scanmap} auf
 die ausmultiplizierte Form von @var{exp} angewendet wird:
@@ -536,9 +536,9 @@ die ausmultiplizierte Form von @var{exp} angewendet wird:
 (%o3)                      a  y + 2 a y + y + x
 @end example
 
-Hier ist ein anderes Beispiel für die Art und Weise, in der @code{scanmap}
-rekursiv eine gegebene Funktion auf alle Teilausdrücke anwendet,
-einschließlich der Exponenten:
+Hier ist ein anderes Beispiel f@"ur die Art und Weise, in der @code{scanmap}
+rekursiv eine gegebene Funktion auf alle Teilausdr@"ucke anwendet,
+einschlie@ss{}lich der Exponenten:
 
 @example
 (%i4) expr : u*v^(a*x+b) + c$
@@ -549,7 +549,7 @@ einschließlich der Exponenten:
 
 @code{scanmap (@var{f}, @var{expr}, bottomup)} wendet @var{f}
 auf @var{expr} nach einer Bottom-up-Methode an.
-Z.B. für ein undefiniertes @code{f},
+Z.B. f@"ur ein undefiniertes @code{f},
 
 @example
 scanmap(f,a*x+b) ->
@@ -559,19 +559,19 @@ scanmap(f,a*x+b,bottomup) -> f(a)*f(x)+f(b)
      f(f(f(a)*f(x))+f(b))
 @end example
 
-In diesem Fall erhält man auf beiden Wegen dasselbe Ergebnis.
+In diesem Fall erh@"alt man auf beiden Wegen dasselbe Ergebnis.
 
 @end deffn
 
 @deffn {Funktion} throw (@var{expr})
 Wertet @var{expr} aus und wirft den Wert des letzten @code{catch} aus.
 @code{throw} wird zusammen mit @code{catch} als Mechanismus
-für einen nichtlokalen Rücksprung verwendet.
+f@"ur einen nichtlokalen R@"ucksprung verwendet.
 
 @end deffn
 
 @deffn {Funktion} outermap (@var{f}, @var{a_1}, ..., @var{a_n})
-Wendet die Funktion @var{f} auf jedes Element des äußeren
+Wendet die Funktion @var{f} auf jedes Element des @"au@ss{}eren
 Produkts @var{a_1} kreuz @var{a_2} ... kreuz @var{a_n} an.
 
 @var{f} ist der Name einer Funktion von @math{n} Argumenten
@@ -579,8 +579,8 @@ oder ein Lambda-Ausdruck von @math{n} Argumenten.
 Jedes Argument @var{a_k} kann eine Liste oder eine geschachtelte Liste,
 eine Matrix oder jede andere Art von Ausdruck sein.
 
-Der Rückgabewert von @code{outermap} ist eine geschachtelte Struktur.
-Sei @var{x} der Rückgabewert.
+Der R@"uckgabewert von @code{outermap} ist eine geschachtelte Struktur.
+Sei @var{x} der R@"uckgabewert.
 Dann hat @var{x} dieselbe Struktur wie das erste Listen-, geschachtelte 
 Listen- oder Matrix-Argument,
 @code{@var{x}[i_1]...[i_m]} hat dieselbe Struktur wie das zweite Listen-, 
@@ -588,17 +588,17 @@ geschachtelte Listen- oder Matrix-Argument,
 @code{@var{x}[i_1]...[i_m][j_1]...[j_n]}  hat dieselbe Struktur wie das 
 dritte Listen-, geschachtelte Listen- oder Matrix-Argument, u.s.w.,
 wobei @var{m}, @var{n}, ... die Anzahl der Indizes ist, die jeweils
-benötigt werden, um auf die Elemente des jeweiligen Arguments zugreifen zu können
-(Eins für eine Liste, zwei für eine Matrix und eins oder mehr für eine
+ben@"otigt werden, um auf die Elemente des jeweiligen Arguments zugreifen zu k@"onnen
+(Eins f@"ur eine Liste, zwei f@"ur eine Matrix und eins oder mehr f@"ur eine
 geschachtelte Liste).
 Argumente, die keine Listen oder Matrizen sind, haben auf die Struktur des
-Rückgabewertes keinen Einfluss.
+R@"uckgabewertes keinen Einfluss.
 
 Beachte, dass sich der Effekt von @code{outermap} von einer Anwendung von
 @var{f} auf jedes Element des vom @code{cartesian_product}
-zurückgegebenen äußeren Produkts unterscheidet.
-@code{outermap} hält die Struktur der Argumente im Rückgabewert aufrecht,
-während @code{cartesian_product} dies nicht tut.
+zur@"uckgegebenen @"au@ss{}eren Produkts unterscheidet.
+@code{outermap} h@"alt die Struktur der Argumente im R@"uckgabewert aufrecht,
+w@"ahrend @code{cartesian_product} dies nicht tut.
 
 @code{outermap} wertet seine Argumente aus.
 
@@ -608,7 +608,7 @@ Siehe auch @code{map}, @code{maplist}, und @code{apply}.
 Beispiele:
 
 Elementare Beispiele von @code{outermap}.
-Um die Kombination der Argumente klar zeigen zu können, bleibt @code{F}
+Um die Kombination der Argumente klar zeigen zu k@"onnen, bleibt @code{F}
 undefiniert.
 
 @c ===beg===
@@ -646,9 +646,9 @@ undefiniert.
                                            [c + 1, c + 2, c + 3]]
 @end example
 
-Eine nähere Betrachtung der Rückgabewerte von @code{outermap}.
+Eine n@"ahere Betrachtung der R@"uckgabewerte von @code{outermap}.
 Das erste, zweite und dritte Argument sind eine Matrix, eine Liste bzw. eine Matrix.
-Der Rückgabewert ist eine Matrix. Jedes Element dieser Matrix ist eine Liste,
+Der R@"uckgabewert ist eine Matrix. Jedes Element dieser Matrix ist eine Liste,
 und jedes Element jeder Liste ist eine Matrix.
 
 @c ===beg===
@@ -704,8 +704,8 @@ und jedes Element jeder Liste ist eine Matrix.
 (%o9)                  [matrix, [, matrix]
 @end example
 
-@code{outermap} hält die Struktur der Argumente im Rückgabewert aufrecht, 
-während @code{cartesian_product} dies nicht tut.
+@code{outermap} h@"alt die Struktur der Argumente im R@"uckgabewert aufrecht, 
+w@"ahrend @code{cartesian_product} dies nicht tut.
 
 @c ===beg===
 @c outermap (F, [a, b, c], [1, 2, 3]);

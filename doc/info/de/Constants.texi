@@ -2,14 +2,14 @@
 @c English original: Constants.texi CVS 1.11
 
 @menu
-* Definitionen für Konstanten::
+* Definitionen f@"ur Konstanten::
 @end menu
 
-@node Definitionen für Konstanten, , , Konstanten
-@section Definitionen für Konstanten
+@node Definitionen f@"ur Konstanten, , , Konstanten
+@section Definitionen f@"ur Konstanten
 
 @defvr {Konstante} %e
- - die Basis des natürlichen Logarithmus, @math{e}, 
+ - die Basis des nat@"urlichen Logarithmus, @math{e}, 
 wird in Maxima dargestellt als @code{%e}.
 
 @end defvr
