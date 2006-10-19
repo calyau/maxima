@@ -711,17 +711,64 @@ those solutions which are free of @code{%i}.
 
 @end defvr
 
-@c NEEDS WORK
-@deffn {Function} realroots (@var{poly}, @var{bound})
-Finds all of the real roots of the real
-univariate polynomial poly within a tolerance of bound which, if less
-than 1, causes all integral roots to be found exactly.  The parameter
-bound may be arbitrarily small in order to achieve any desired
-accuracy.  The first argument may also be an equation.  @code{realroots} sets
-@code{multiplicities}, useful in case of multiple roots.  @code{realroots (@var{p})} is
-equivalent to @code{realroots (@var{p}, rootsepsilon)}.  @code{rootsepsilon} is a
-real number used to establish the confidence interval for the roots.
-Do @code{example (realroots)} for an example.
+@deffn {Function} realroots (@var{expr}, @var{bound})
+@deffnx {Function} realroots (@var{eqn}, @var{bound})
+@deffnx {Function} realroots (@var{expr})
+@deffnx {Function} realroots (@var{eqn})
+Computes rational approximations of the real roots of the polynomial @var{expr}
+or polynomial equation @var{eqn} of one variable,
+to within a tolerance of @var{bound}.
+Coefficients of @var{expr} or @var{eqn} must be literal numbers;
+symbol constants such as @code{%pi} are rejected.
+
+@code{realroots} assigns the multiplicities of the roots it finds
+to the global variable @code{multiplicities}.
+
+@code{realroots} constructs a Sturm sequence to bracket each root,
+and then applies bisection to refine the approximations.
+All coefficients are converted to rational equivalents before searching for roots,
+and computations are carried out by exact rational arithmetic.
+Even if some coefficients are floating-point numbers,
+the results are rational (unless coerced to floats by the @code{float} or @code{numer} flags).
+
+When @var{bound} is less than 1, all integer roots are found exactly.
+When @var{bound} is unspecified, it is assumed equal to the global variable @code{rootsepsilon}.
+
+When the global variable @code{programmode} is @code{true},
+@code{realroots} returns a list of the form @code{[x = @var{x_1}, x = @var{x_2}, ...]}.
+When @code{programmode} is @code{false},
+@code{realroots} creates intermediate expression labels @code{%t1}, @code{%t2}, ...,
+assigns the results to them, and returns the list of labels.
+
+Examples:
+@c ===beg===
+@c realroots (-1 - x + x^5, 5e-6);
+@c ev (%[1], float);
+@c ev (-1 - x + x^5, %);
+@c ===end===
+
+@example
+(%i1) realroots (-1 - x + x^5, 5e-6);
+                               612003
+(%o1)                     [x = ------]
+                               524288
+(%i2) ev (%[1], float);
+(%o2)                 x = 1.167303085327148
+(%i3) ev (-1 - x + x^5, %);
+(%o3)                - 7.396496210176905E-6
+@end example
+
+@c ===beg===
+@c realroots (expand ((1 - x)^5 * (2 - x)^3 * (3 - x)), 1e-20);
+@c multiplicities;
+@c ===end===
+
+@example
+(%i1) realroots (expand ((1 - x)^5 * (2 - x)^3 * (3 - x)), 1e-20);
+(%o1)                 [x = 1, x = 2, x = 3]
+(%i2) multiplicities;
+(%o2)                       [5, 3, 1]
+@end example
 
 @end deffn
 
