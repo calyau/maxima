@@ -2431,7 +2431,7 @@ wrapper for this."
   
   (cond ((and (null args) (not mqdef)) (mputprop fun (mdefine1 subs body) 'aexpr))
 	((null (dolist (u subs)
-		 (if (not (or ($constantp u) (char= (getcharn u 1) #\&)))
+		 (if (not (or (consp u) ($constantp u) (char= (getcharn u 1) #\&)))
 		     (return t))))
  	 (arrstore (cons (ncons fun) subs) (mdefine1 args body)))
 	(t (mdefchk fun subs t nil)
