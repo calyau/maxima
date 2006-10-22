@@ -7,6 +7,8 @@
 @section Definitions for Constants
 
 @defvr {Constant} %e
+@vrindex e
+@vrindex Base of natural logarithm
  - the base of natural logarithms, @math{e}, is represented in Maxima
 as @code{%e}.
 
@@ -18,21 +20,26 @@ as @code{%e}.
 @end defvr
 
 @defvr {Constant} inf
+@vrindex Real infinity
  - real positive infinity.
 
 @end defvr
 
 @defvr {Constant}  infinity
+@vrindex Complex infinity
  - complex infinity.
 
 @end defvr
 
 @defvr {Constant} minf
+@vrindex Minus infinity
+@vrindex Negative infinity
  - real minus infinity.
 
 @end defvr
 
 @defvr {Constant} %pi
+@vrindex pi
  - "pi" is represented in Maxima as @code{%pi}.
 
 @end defvr

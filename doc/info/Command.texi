@@ -9,6 +9,7 @@
 @c NEEDS EXAMPLES
 @c THIS ITEM IS VERY IMPORTANT !!
 @deffn {Operator} '
+@fnindex Quote operator
 The single quote operator @code{'} prevents evaluation.
 
 Applied to a symbol,
@@ -130,6 +131,7 @@ The single quote does not prevent simplification.
 @end deffn
 
 @deffn {Operator} ''
+@fnindex Quote-quote operator
 The quote-quote operator @code{'@w{}'} (two single quote marks) modifies evaluation in input expressions.
 
 Applied to a general expression @var{expr}, quote-quote causes the value of @var{expr}

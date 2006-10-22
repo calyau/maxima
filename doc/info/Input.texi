@@ -69,6 +69,7 @@ and
 @section Definitions for Input and Output
 
 @defvr {System variable} __
+@vrindex Current input expression
 
 @code{__} is the input expression currently being evaluated.
 That is, while an input expression @var{expr} is being evaluated, @code{__} is @var{expr}.
@@ -120,6 +121,7 @@ Current input expression = --------------
 @end defvr
 
 @defvr {System variable} _
+@vrindex Previous input
 
 @code{_} is the most recent input expression (e.g., @code{%i1}, @code{%i2}, @code{%i3}, ...).
 
@@ -183,6 +185,7 @@ Examples:
 @end defvr
 
 @defvr {System variable} %
+@vrindex Previous output
 @code{%} is the output expression (e.g., @code{%o1}, @code{%o2}, @code{%o3}, ...)
 most recently computed by Maxima,
 whether or not it was displayed.
@@ -200,6 +203,7 @@ See also @code{_}, @code{%%}, and @code{%th}.
 @end defvr
 
 @defvr {System variable} %%
+@vrindex Previous result in compound expression
 In compound statements,
 namely @code{block}, @code{lambda}, or @code{(@var{s_1}, ..., @var{s_n})},
 @code{%%} is the value of the previous statement.
@@ -254,6 +258,7 @@ For example, @code{%e^-x} is displayed as @code{1/%e^x}.
 @end defvr
 
 @deffn {Function} %th (@var{i})
+@fnindex N'th previous output
 The value of the @var{i}'th previous output expression.
 That is, if the next expression to be computed is the @var{n}'th output,
 @code{%th (@var{m})} is the (@var{n} - @var{m})'th output.
@@ -280,6 +285,7 @@ See also @code{%}.
 @end deffn
 
 @deffn {Special symbol} ?
+@fnindex Fetch documentation
 As prefix to a function or variable name, @code{?} signifies that the
 name is a Lisp name, not a Maxima name.
 For example, @code{?round} signifies the Lisp function @code{ROUND}.
