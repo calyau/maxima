@@ -17,7 +17,7 @@
 ;;  Examples:                                                                ;;
 ;;   implicit_plot(y^2=x^3-2*x+1, [x,-4,4], [y,-4,4],                        ;;
 ;;                 [gnuplot_preamble, "set zeroaxis"])$                      ;;
-;;   implicit_plot([x^2-y^2/9=1,x^2/4+y^2/9=1], [x,-2.5,2.5], [x,-3.5,3.5]); ;;
+;;   implicit_plot([x^2-y^2/9=1,x^2/4+y^2/9=1], [x,-2.5,2.5], [y,-3.5,3.5]); ;;
 ;;   implicit_plot(x^2+2*y^3=15, [x,-10, 10], [y,-5,5])$                     ;;
 ;;   implicit_plot(x^2*y^2=(y+1)^2*(4-y^2), [x,-10, 10], [y,-3,3]);          ;;
 ;;   implicit_plot(x^3+y^3 = 3*x*y^2-x-1, [x,-4,4], [y,-4,4]);               ;;
