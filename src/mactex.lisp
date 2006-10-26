@@ -347,12 +347,12 @@
     (cond ((null y)       (tex-function x l r t)) ; this should not happen
           ((null (cdr y)) (tex-function x l r t)) ; this should not happen, too
           (t (do ((nl) (lop ext-lop op) (rop op (if (null (cdr y)) ext-rop op)))
-                 ((null (cdr y)) (setq nl (nconc nl (tex (car y)  l r lop rop))) nl)
-	       (setq nl (nconc nl (tex (car y)  l (list sym)   lop rop))
+                 ((null (cdr y)) (setq nl (append nl (tex (car y)  l r lop rop))) nl)
+	       (setq nl (append nl (tex (car y) l sym lop rop))
 		     y (cdr y)
 		     l nil))))))
 
-(defun tex-nofix (x l r) (tex (caar x) l r (caar x) rop))
+(defun tex-nofix (x l r) (tex (car (texsym (caar x))) l r (caar x) rop))
 
 (defun tex-matchfix (x l r)
   (setq l (append l (car (texsym (caar x))))
@@ -570,10 +570,10 @@
 (defprop mncexpt tex-mexpt tex)
 
 (defprop mnctimes tex-nary tex)
-(defprop mnctimes "\\cdot " texsym)
+(defprop mnctimes ("\\cdot ") texsym)
 
 (defprop mtimes tex-nary tex)
-(defprop mtimes "\\," texsym)
+(defprop mtimes ("\\,") texsym)
 
 (defprop %sqrt tex-sqrt tex)
 
@@ -753,10 +753,10 @@
 (defprop mnot ("\\neg ") texsym)
 
 (defprop mand tex-nary tex)
-(defprop mand "\\land " texsym)
+(defprop mand ("\\land ") texsym)
 
 (defprop mor tex-nary tex)
-(defprop mor "\\lor " texsym)
+(defprop mor ("\\lor ") texsym)
 
 ;; make sin(x) display as sin x , but sin(x+y) as sin(x+y)
 ;; etc
@@ -834,8 +834,6 @@
     (%acoth "{\\rm acoth}\\; ")
 
 	)) ;; etc
-
-(defprop mor tex-nary tex)
 
 (defprop mcond tex-mcond tex)
 (defprop %mcond tex-mcond tex)
@@ -1031,7 +1029,7 @@
 	(t
 	 (setq s (list s))))
   
-  (setq s (mapcar #'stripdollar s))
+  (setq s (mapcar #'(lambda (x) (maybe-invert-string-case (symbol-name (stripdollar x)))) s))
 
   (cond ((null tx)
 	 (putprop e (nth 0 s) 'texword))
@@ -1043,23 +1041,40 @@
 	       ((eq (length s) 2)
 		(putprop e (list (list (nth 0 s)) (nth 1 s)) 'texsym))
 	       (t
-		(putprop e (list (list (nth 0 s)) (nth 1 s) (nth 2 s)) 'texsym))))
+		(putprop e (list (list (nth 0 s)) (nth 1 s) (nth 2 s)) 'texsym)))
+     `((mlist) ,@s))
+
+    ((eq tx '$nofix)
+     (putprop e 'tex-nofix 'tex)
+     (putprop e s 'texsym)
+     (car s))
 
 	((eq tx '$prefix)
 	 (putprop e 'tex-prefix 'tex)
      (when (null (get e 'grind))
        (putprop e 180 'tex-rbp))
-	 (putprop e s 'texsym))
+	 (putprop e s 'texsym)
+     (car s))
 		
 	((eq tx '$infix)
 	 (putprop e 'tex-infix 'tex)
      (when (null (get e 'grind))
        (putprop e 180 'tex-lbp)
        (putprop e 180 'tex-rbp))
-	 (putprop e  s 'texsym))
+	 (putprop e  s 'texsym)
+     (car s))
+
+    ((eq tx '$nary)
+     (putprop e 'tex-nary 'tex)
+     (when (null (get e 'grind))
+       (putprop e 180 'tex-lbp)
+       (putprop e 180 'tex-rbp))
+     (putprop e s 'texsym)
+     (car s))
 
 	((eq tx '$postfix)
 	 (putprop e 'tex-postfix 'tex)
      (when (null (get e 'grind))
        (putprop e 180 'tex-lbp))
-	 (putprop e  s 'texsym))))
+	 (putprop e  s 'texsym)
+     (car s))))
