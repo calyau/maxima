@@ -33,6 +33,21 @@
 @node Definitions for MYTOPIC, Function and variable index, Introduction to MYTOPIC, Top
 @section Definitions for MYTOPIC
 
+@deffn {Function} transmogrify (@var{foo}, @var{bar})
+
+Returns the generalized transmogrificatin of @var{foo} and @var{bar}.
+See also @code{frotz}.
+
+@end deffn
+
+@defvr {Variable} frotz
+Default value: @code{true}
+
+When @code{frotz} is @code{true},
+@code{transmogrify} computes the transmogrification by Smith's algorithm.
+Otherwise, the transmogrification is computed by Jones' algorithm.
+
+@end defvr
 
 @node Function and variable index,  , Definitions for MYTOPIC, Top
 @appendix Function and variable index
