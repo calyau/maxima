@@ -179,7 +179,7 @@ rot(E)+1/c*d(B)/dt (Faraday's law),%o60 is equal div(B) (=0,nonexistence magneti
                            db3   db2   db1
 (%o60)                    (--- + --- + ---) Dx Dy Dz
                            dz    dy    dx
-(%i61) fstar_with_clf([x,y,z],[x,y,z],d(h_st(b1*Dx+b22*Dy+b3*Dz)));
+(%i61) fstar_with_clf([x,y,z],[x,y,z],d(h_st(b1*Dx+b2*Dy+b3*Dz)));
                   db3            db2            db1
 (%o61)            --- Dx Dy Dz + --- Dx Dy Dz + --- Dx Dy Dz
                   dz             dy             dx
