@@ -53,7 +53,7 @@ $EXT101 (($COEFF SIMP) $EXT103 (($BASIS SIMP ARRAY) $I)))
 	    ((MSETQ SIMP) $EXT102 $TRUE) 
 	    ((MSETQ SIMP) $EXT103 
 	     (($EXPAND SIMP) $F)) 
-	    ((MDO SIMP) $I $DIM -1 NIL 0 NIL 
+	    ((MDO SIMP) $I $DIM -1 NIL 1 NIL 
 	     ((MPROGN SIMP) 
 	      ((MSETQ SIMP) $EXT104 
 	       (($EXPAND SIMP) 
