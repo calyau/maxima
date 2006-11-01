@@ -610,12 +610,106 @@ Maybe you want to use `not equal'."))
 
 (defmfun like (x y) (alike1 (specrepcheck x) (specrepcheck y)))
 
-(defmfun meqp (x y)
-  (cond ((like x y))
-	(t (compare x y)
-	   (cond ((eq '$zero sign))
-		 ((memq sign '($pos $neg $pn)) nil)
-		 (t (c-$zero odds evens))))))
+(setf (get '$und 'sysconst) t)
+(setf (get '$ind 'sysconst) t)
+(setf (get '$zeroa 'sysconst) t)
+(setf (get '$zerob 'sysconst) t)
+
+;; There have been some conversations about NaN on the list, but
+;; the issue hasn't been settled.
+
+(defvar indefinites `($und $ind)) 
+
+;; Other than sums, products, and lambda forms, meqp knows nothing
+;; about dummy variables. Because of the way niceindices chooses names 
+;; for the sum indicies, it's necessary to locally assign a new value to 
+;; niceindicespref.
+
+(defun meqp-by-csign (z a b)
+  (let ((sgn) ($niceindicespref `((mlist) ,(gensym) ,(gensym) ,(gensym))))
+    (setq z ($niceindices z))
+    (setq sgn (csign z))
+    (cond ((eq '$zero sgn) t)
+
+	  ((eq sgn t)
+	   (setq z ($rectform z))
+	   (if (or (eq nil (meqp ($realpart z) 0)) (eq nil (meqp ($imagpart z) 0))) nil `(($equal) ,a ,b)))
+
+	  ((member sgn '($pos $neg $pn)) nil)
+	  
+	  (t `(($equal) ,a ,b)))))
+ 		 
+;; For each fact of the form equal(a,b) in the active context, do e : ratsubst(b,a,e).
+
+(defun equal-facts-simp (e)
+  (let ((f (margs ($facts))))
+    (dolist (fi f e) 
+      (if (op-equalp fi '$equal) (setq e ($ratsubst (nth 2 fi) (nth 1 fi) e))))))
+      
+(defun meqp (a b)
+  (let ((z))
+    (setq a (specrepcheck a))
+    (setq b (specrepcheck b))
+  
+    (cond ((or (like a b)) (not (member a indefinites)))
+	
+	  ((or (member a indefinites) (member b indefinites)
+	       (member a infinities) (member b infinities)) nil)
+	  
+	  ((and (symbolp a) (or (eq t a) (eq nil a) (get a 'sysconst))
+		(symbolp b) (or (eq t b) (eq nil b) (get b 'sysconst))) nil)
+	   
+	  ((or (mbagp a) (mrelationp a) (mbagp b) (mrelationp b)) 
+	   (cond ((and (or (and (mbagp a) (mbagp b)) (and (mrelationp a) (mrelationp b)))
+		       (eq (mop a) (mop b)) (= (length (margs a)) (length (margs b))))
+		  (setq z (list-meqp (margs a) (margs b)))
+		  (if (or (eq z t) (eq z nil)) z `(($equal) ,a ,b)))
+		 (t nil)))
+	  
+	  ((and (op-equalp a 'lambda) (op-equalp b 'lambda)) (lambda-meqp a b))
+	  (($setp a) (set-meqp a b))
+	  (t (meqp-by-csign (equal-facts-simp ($ratsimp (sub a b))) a b)))))
+  
+(defun list-meqp (p q)
+  (let ((z))
+    (cond ((or (null p) (null q)) (and (null p) (null q)))
+	  (t
+	   (setq z (meqp (car p) (car q)))
+	   (cond ((eq z nil) nil)
+		 ((or (eq z '$unknown) (op-equalp z '$equal)) z)
+		 (t (list-meqp (cdr p) (cdr q))))))))
+	   	 
+(defun lambda-meqp (a b)
+  (let ((z))
+    (cond ((= (length (second a)) (length (second b)))
+	   (let ((x) (n ($length (second a))))
+	     (dotimes (i n (push '(mlist) x)) (push (gensym) x))
+	     (setq z (meqp (mfuncall '$apply a x) (mfuncall '$apply b x)))
+	     (if (or (eq t z) (eq nil z)) z `(($equal) ,a ,b))))
+	  (t nil))))
+
+(defun set-meqp (a b)
+  (let ((aa) (bb))
+    (setq aa (equal-facts-simp a))
+    (setq bb (equal-facts-simp b))
+	   	     
+    (cond ((or (not ($setp bb)) (and ($emptyp aa) (not ($emptyp bb))) (and ($emptyp bb) (not ($emptyp aa))))
+	   nil)
+
+	  ((and (= (length aa) (length bb)) 
+		(every #'(lambda (p q) (eq t (meqp p q))) (margs aa) (margs bb))) t)
+	  
+	  ((set-not-eqp (margs aa) (margs bb)) nil)
+
+	  (t `(($equal ,a ,b))))))
+
+(defun set-not-eqp (a b)
+  (catch 'done
+    (dolist (ak a)
+      (if (every #'(lambda (s) (eq nil (meqp ak s))) b) (throw 'done t)))
+    (dolist (bk b)
+      (if (every #'(lambda (s) (eq nil (meqp bk s))) a) (throw 'done t)))
+    (throw 'done nil)))
 
 (defmfun mgrp (x y)
   (compare x y)
