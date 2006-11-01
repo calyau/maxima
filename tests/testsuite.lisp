@@ -27,4 +27,5 @@
     "rtest_everysome"
     "rtestint"
     "rtestifactor"
+    "rtest_equal"
     ))

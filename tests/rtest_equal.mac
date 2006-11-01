@@ -1,0 +1,484 @@
+(prederror : false,0);
+0$
+
+/* bug 1489164 */
+is(equal(%i,0));
+false$
+
+/* bug 1547584 */
+is(equal([a],[a,b]));
+false$
+
+/* bug 1435600 */
+is(equal(false,false));
+true$
+
+is(equal(false,true));
+false$
+
+is(equal(true,true));
+true$
+
+/* bug 1496329 */
+is(equal(rat(matrix([x])),matrix([x])));
+true$
+
+is (equal (ident (2), rat (ident (2))));
+true$
+
+/* bug 649669*/
+is(equal([x],[rat(x)]));
+true$
+ 
+/* bug 990924 */
+is(equal((%e^(%i*z)-%e^-(%i*z)), 0));
+'unknown$
+
+/* bug 851436 */
+
+is(equal(rat((x+y+a)^3,x),rat((x+y+a)^3,y)));
+true$
+
+/* bug 884947  */
+
+is(equal([1],[1]));
+true$
+
+is(equal([0],[1]));
+false$
+
+is(equal([a,0],[a,1]));
+false$
+
+is(equal([a,b],[a,c]));
+'unknown$
+
+/* bug 812968 */
+
+is(equal(x/(2*x*sqrt(2)) - 1/(2*x*sqrt(2)), (x-1)/(2*x*sqrt(2))));
+true$
+
+is(equal(1/sqrt(2),sqrt(2)/2));
+true$
+
+/* bug 902694 */
+
+is(equal(ind,ind));
+false$
+
+is(equal(und,und));
+false$
+
+/* bug 885795 */
+
+(assume(equal(i,j)),0);
+0$
+
+is(equal(x[i], x[j]));
+true$
+
+is(equal(f(i),f(j)));
+true$
+
+(forget(equal(i,j)),0);
+0$
+
+is(equal(inf,infinity));
+false$
+
+is(equal(minf,minf));
+true$
+
+is(equal(minf,infinity));
+false$
+
+is(equal(minf,und));
+false$
+
+is(equal(minf,ind));
+false$
+
+
+is(equal(%i,0));
+false$
+
+is(equal(%i, x));
+false$
+
+is(equal(%i,x + %i));
+'unknown$
+
+is(equal(und, x));
+false$
+
+is(equal(inf, x));
+false$
+
+is(equal(inf,0));
+false$
+
+is(equal(infinity,x));
+false$
+
+is(equal(0,1));
+false$
+
+is(equal(0.23, 9.78));
+false$
+
+is(equal(0.23, 9.78b0));
+false$
+
+is(equal(23/10, 9.78b0));
+false$
+
+is(equal(7,[1,2,3]));
+false$
+
+is(equal(%pi,22/7));
+false$
+
+is(equal(1/sqrt(2), sqrt(2)/2));
+true$
+
+is(equal(x,x));
+true$
+
+is(equal(x,x+%pi));
+false$
+
+is(equal((x+1)^2, x^2 + 2*x+1));
+true$
+
+is(equal(x,0));
+'unknown$
+
+is(equal(x,%i));
+false$
+
+is(equal(x + %i,x));
+false$
+
+is(equal(x^2+1,x^2/5));
+false$
+
+is(equal(%i*x,%i));
+'unknown$
+
+is(equal([a],[b]));
+'unknown$
+
+is(equal([a],[a,b]));
+false$
+
+is(equal([a],[a]));
+true$
+
+is(equal(a < b, a <= b));
+false$
+
+is(equal(a <= b, a <= b));
+true$
+
+is(equal(rat(x),x));
+true$
+
+is(equal(matrix([x]), rat(matrix([x]))));
+true$
+
+is(equal(matrix([x,y]), matrix([x,z])));
+'unknown$
+
+is(equal(matrix([x,y],[p,q]), matrix([p,q],[x,y])));
+'unknown$
+
+is(equal(matrix([x,y],[p,q]), matrix([p,q,s],[x,y,8])));
+false$
+
+is(equal(set(u,n,k), set(u,n,k,u,n,k)));
+true$
+
+is(equal(set(a,b,c), set(b,a,a)));
+'unknown$
+
+is(equal(abs(1 + %i*z), z - %i));
+false$
+
+
+(assume(equal(x,y),equal(y,z)),0);
+0$
+
+is(equal(x,z));
+true$
+
+is(equal([x],[z]));
+true$
+
+is(equal(f(x), f(z)));
+true$
+
+is(equal(f(x,y) + %pi, f(y,z) + %pi));
+true$
+
+is(equal(rat(x,y), rat(z,x)));
+true$
+
+is(equal(matrix([x,y],[4,5]), matrix([y,z],[4,5])));
+true$
+
+is(equal(matrix([x,y],[4,5]), matrix([y,z],[4,15])));
+false$
+
+is(equal(set(x,z),set(x)));
+true$
+
+is(equal(set(x,sqrt(2)), set(z,sqrt(2))));
+true$
+
+is(equal(x + %i * y, y + %i * z));
+true$
+
+is(equal(exp(%i * x), exp(%i * z)));
+true$
+
+is(equal([x,x],[y,z]));
+true$
+
+is(equal([y,y],[x,z]));
+true$
+
+is(equal(x+y,2*z));
+true$
+
+is(equal(x+y+z/3, 7*x/3));
+true$
+
+is(equal(max(x,a),max(y,a)));
+true$
+
+is(equal(max(x,y,z,8), max(x,8)));
+true$
+
+(forget(equal(x,y), equal(y,z)),0);
+0$
+
+is(equal(zeroa, zerob));
+false$
+
+is(equal([zeroa],[zerob]));
+false$
+
+is(equal(matrix(),matrix()));
+true$
+
+is(equal(matrix([]),matrix([])));
+true$
+
+is(equal(matrix([]),matrix([],[])));
+false$
+
+is(equal([],[]));
+true$
+
+is(equal(set(),set()));
+true$
+
+is(equal(a = b, a = b));
+true$
+
+is(equal(a = b, b = a));
+'unknown$
+
+is(equal(a < b, b < a));
+unknown$
+
+is(equal(7,[a,b]));
+false$
+
+is(equal([a,b],7));
+false$
+
+is(equal([a,b], a = b));
+false$
+
+is(equal(a=b,[a,b]));
+false$
+
+is(equal(a < b, b <= b))$
+false$
+
+is(equal([true], []));
+false$
+
+is(equal([true], [true]));
+true$
+
+is(equal([false], [true]));
+false$
+
+is(equal(false,[false]));
+false$
+
+(oak : set(macrocarpa, rubra, alba),0);
+0$
+
+is(equal([macrocarpa, rubra, alba],oak))	;
+false$
+
+is(equal(oak, [macrocarpa, rubra, alba]));
+false$
+
+is(equal(set(macrocarpa, rubra, alba),oak));
+true$
+
+is(equal(oak, set(macrocarpa, rubra, alba)));
+true$
+
+(assume(equal(macrocarpa, burr), equal(rubra,red), equal(alba,white)),0);
+0$
+
+is(equal(oak,set(burr,red,white)));
+true$
+
+(remvalue(oak),0);
+0$
+
+(forget(equal(macrocarpa, burr), equal(rubra,red), equal(alba,white)),0);
+0$
+
+(assume(equal(a,b),equal(b,c),equal(c,d)),0);
+0$
+
+is(equal(a*d,b*c));
+true$
+
+is(equal(a+b+c, 2*a+d));
+true$
+
+is(equal(a+b^2-c^3, b + a^2 - a^3));
+true$
+
+is(equal(f(a,b,c),f(d,b,a)));
+true$
+
+is(equal(set(1,a,d^2), set(1+a-d,d,a,b,c-a+d,a^2)));
+true$
+
+(forget(equal(a,b),equal(b,c),equal(c,d)),0);
+0$
+
+is(equal(lambda([], 9), lambda([], 9)));
+true$
+
+is(equal(lambda([], x), lambda([], y)));
+unknown$
+
+is(equal(lambda([x], x), lambda([z],z)));
+true$
+
+is(equal(lambda([x], x), lambda([z],z^2)));
+unknown$
+
+is(equal(lambda([x,y], x), lambda([z],z)));
+false$
+
+is(equal(lambda([x],true), lambda([z],false)));
+false$
+
+is(equal(lambda([x],false), lambda([z],false)));
+true$
+
+(assume(equal(p,0)),0);
+0$
+
+is(equal(lambda([x],x+p), lambda([y],y-p)));
+true$
+
+(forget(equal(p,0)),0);
+0$
+
+is(equal(sum(1/kk,kk,1,n), sum(1/ii,ii,1,n)));
+true$
+
+is(equal(sum(1/kk,kk,1,m), sum(1/ii,ii,1,n)));
+'unknown$
+
+is(equal(sqrt(5) - sum(%pi/kk,kk,1,n), sqrt(5) - sum(%pi/ii,ii,1,n)));
+true$
+
+is(equal(sqrt(5) - sum(%pi/kk,kk,1,m), sqrt(5) - sum(%pi/ii,ii,1,n)));
+'unknown$
+
+is(equal(sum(sqrt(2)/i^2,i,1,inf), sum(sqrt(2)/j^2,j,1,inf)));
+true$
+
+is(equal(sum(sum(1/(i+j),i,1,j),j,1,n), sum(sum(1/(ii+jj),ii,1,jj),jj,1,n)));
+true$
+
+is(equal(sum(product((ii+jj)^2,ii,1,42*jj),jj,-7,n), sum(product((i+j)^2,i,1,42*j),j,-7,n)));
+true$
+
+is(equal(set(a), set(inf)));
+false$
+
+is(equal([a], [inf]));
+false$
+
+is(equal(set(a,b,c), set(a,b,c,minf)));
+false$
+
+is(equal(set(a,b,c), set(a,b,c,d)));
+unknown$
+
+is(equal(set(a), set(und)));
+false$
+
+is(equal(set(inf,und), set(inf,und)));
+true$
+
+is(equal(set(a), set(a,inf)));
+false$
+
+is(equal(set(a,inf),set(a)));
+false$
+
+is(equal(set(a,b), set(a,inf)));
+false$
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
