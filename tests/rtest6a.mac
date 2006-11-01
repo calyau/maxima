@@ -113,8 +113,8 @@ subst(x = 0,diff(sin(x),x));
 1;
 errcatch(ev(diff(sin(x),x),x = 0));
 [];
-assume(not(equal(i,-1)));
-[not equal(i,-1)]$
+(assume(not(equal(i,-1))),0);
+0$
 ev(integrate(x^i,x),i = -1);
 log(x);
 errcatch(subst(-1,i,integrate(x^i,x)));
