@@ -8,8 +8,10 @@
 @section Defini@value{cedilha}@~oes para Constantes
 
 @defvr {Constante} %e
+@ifinfo
 @vrindex e
 @vrindex Base do logar@'itmo natural
+@end ifinfo
  - A base dos logar@'itmos naturais, @math{e}, @'e representada no Maxima
 como @code{%e}.
 
@@ -21,27 +23,34 @@ como @code{%e}.
 @end defvr
 
 @defvr {Constante} inf
+@ifinfo
 @vrindex Infinito Real
+@end ifinfo
  - infinito positivo real.
 
 @end defvr
 
 @defvr {Constante}  infinity
+@ifinfo
 @vrindex Infinito Complexo
+@end ifinfo
  - infinito complexo.
 
 @end defvr
 
 @defvr {Constante} minf
+@ifinfo
 @vrindex Menos infinito
 @vrindex Infinito negativo
-
+@end ifinfo
  - menos infinito real.
 
 @end defvr
 
 @defvr {Constante} %pi
+@ifinfo
 @vrindex pi
+@end ifinfo
  - "pi" @'e representado no Maxima como @code{%pi}.
 
 @end defvr

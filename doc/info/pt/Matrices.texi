@@ -1556,8 +1556,10 @@ Retorna um matriz @var{m} por @var{n}, com todos os elementos sendo zero.
 
 @defvr {S@'imbolo especial} [
 @defvrx {S@'imbolo especial} ]
+@ifinfo
 @fnindex Delimitador de Lista
 @fnindex Operador de Subscrito
+@end ifinfo
 @code{[} e @code{]} marcam o ome@,{c}o e o fim, respectivamente, de uma lista.
 
 @code{[} e @code{]} tamb@'em envolvem os subscritos de

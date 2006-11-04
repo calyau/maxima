@@ -1811,8 +1811,9 @@ implementado que controla o comportamento do produto cunha: se
 ser aplicada.
 
 @defvr {Operador} ~
+@ifinfo
 @fnindex Produto Externo
-
+@end ifinfo
 O operador do produto cunha @'e definido como sendo o acento til @code{~}. O til @'e
 um operador bin@'ario. Seus argumentos podem ser express@~oes envolvendo escalares,
 tensores covariantes de categoria 1, ou tensores covariantes de categoria @code{l} que
@@ -1849,8 +1850,9 @@ sinalizador @code{igeowedge_flag}, como no seguinte exemplo:
 @end defvr
 
 @defvr {Operator} |
+@ifinfo
 @fnindex Contra@,{c}@~ao com um vetor
-
+@end ifinfo
 A barra vertical @code{|} denota a opera@,{c}@~ao bin@'aria
 "contra@,{c}@~ao com um vetor". Quando um tensor covariante totalmente antisim@'etrico @'e contra@'ido
 com um vetor contravariante, o resultado @'e o mesmo independente de qual @'indice

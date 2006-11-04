@@ -121,7 +121,9 @@ Express@~ao atual de entrada = --------------
 @end defvr
 
 @defvr {Vari@'avel de sistema} _
+@ifinfo
 @vrindex Entrada anterior
+@end ifinfo
 
 @code{_} @'e a mais recente express@~ao de  entrada (e.g., @code{%i1}, @code{%i2}, @code{%i3}, ...).
 
@@ -185,7 +187,9 @@ Exemplos:
 @end defvr
 
 @defvr {Vari@'avel de sistema} %
+@ifinfo
 @vrindex Sa@'ida anterior
+@end ifinfo
 @code{%} @'e a express@~ao de sa@'ida (e.g., @code{%o1}, @code{%o2}, @code{%o3}, ...)
 mais recentemente calculada pelo Maxima,
 pode ou n@~ao ser mostrada.
@@ -203,7 +207,9 @@ Veja tamb@'em @code{_}, @code{%%}, e @code{%th}
 @end defvr
 
 @defvr {Vari@'avel de sistema} %%
+@ifinfo
 @vrindex Resultado anterior em express@~ao composta
+@end ifinfo
 Em declara@,{c}@~ao composta,
 a saber @code{block}, @code{lambda}, ou @code{(@var{s_1}, ..., @var{s_n})},
 @code{%%} @'e os valor da declara@,{c}@~ao anterior.
@@ -258,7 +264,9 @@ Por exemplo, @code{%e^-x} @'e mostrado como @code{1/%e^x}.
 @end defvr
 
 @deffn {Fun@,{c}@~ao} %th (@var{i})
+@ifinfo
 @fnindex N'@'esima sa@'ida anterior
+@end ifinfo
 O valor da @var{i}'@'esima express@~ao pr@'evia de sa@'ida.
 Isto @'e, se a pr@'oxima express@~ao a ser calculada for a @var{n}'@'esima sa@'ida,
 @code{%th (@var{m})} ser@'a a (@var{n} - @var{m})'@'esima sa@'ida.
@@ -285,7 +293,9 @@ Veja tamb@'em @code{%}.
 @end deffn
 
 @deffn {S@'imbolo especial} ?
+@ifinfo
 @fnindex Consulta documenta@,{c}@~ao
+@end ifinfo
 Como prefixo para uma fun@,{c}@~ao ou nome de vari@'avel, @code{?} significa que
 o nome @'e um nome Lisp, n@~ao um nome Maxima.
 Por exemplo, @code{?round} significa a fun@,{c}@~ao Lisp @code{ROUND}.

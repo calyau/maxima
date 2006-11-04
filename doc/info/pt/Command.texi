@@ -16,7 +16,9 @@
 @c NEEDS EXAMPLES
 @c THIS ITEM IS VERY IMPORTANT !!
 @deffn {Operador} '
+@ifinfo
 @fnindex Operador Ap@'ostrofo
+@end ifinfo
 O operador ap@'ostrofo @code{'} evita avalia@,{c}@~ao.
 
 Aplicado a um s@'imbolo,
@@ -138,7 +140,9 @@ O ap@'ostrofo n@~ao evita simplifica@,{c}@~ao.
 @end deffn
 
 @deffn {Operator} ''
+@ifinfo
 @fnindex Operador ap@'ostrofo-ap@'ostrofo
+@end ifinfo
 O operador ap@'ostrofo-ap@'ostrofo @code{'@w{}'} (dois ap@'ostrofost) modifica avalia@,{c}@~ao em express@~oes de entrada.
 
 Aplicado a uma express@~ao geral @var{expr}, ap@'ostrofo-ap@'ostrofo faz com que o valor de @var{expr}
