@@ -308,7 +308,7 @@ of the function arguments floating point numbers. By doing that,
 specialized floating point algorithms are used for evaluation.
 
 Maxima's @code{float} function is somewhat indiscriminant; if you apply 
-@code{float} to an an expression involving an orthogonal polynomial with a
+@code{float} to an expression involving an orthogonal polynomial with a
 symbolic degree or order parameter, these parameters may be 
 converted into floats; after that, the expression will not evaluate 
 fully. Consider
@@ -423,14 +423,14 @@ Intervals have the form @code{interval (@var{c}, @var{r})}, where @var{c} is the
 center of the interval and @var{r} is its radius. The 
 center of an interval can be a complex number, and the radius is always a positive real number.
 
-Here is an an example.
+Here is an example.
 
 @c ===beg===
 @c fpprec : 50$
 @c y0 : jacobi_p (100, 2, 3, 0.2);
 @c y1 : bfloat (jacobi_p (100, 2, 3, 1/5));
 @c ===end==
-=
+
 @example
 (%i1) fpprec : 50$
 

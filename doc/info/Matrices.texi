@@ -1555,8 +1555,10 @@ Returns an @var{m} by @var{n} matrix, all elements of which are zero.
 
 @defvr {Special symbol} [
 @defvrx {Special symbol} ]
+@ifinfo
 @fnindex List delimiters
 @fnindex Subscript operator
+@end ifinfo
 @code{[} and @code{]} mark the beginning and end, respectively, of a list.
 
 @code{[} and @code{]} also enclose the subscripts of
