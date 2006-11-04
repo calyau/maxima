@@ -1,5 +1,5 @@
 @c Language: Portuguese, Encoding: iso-8859-1
-@c /Constants.texi/1.11/Sun Nov 27 22:23:57 2005/-ko/
+@c /Constants.texi/1.12/Thu Nov  2 05:46:44 2006/-ko/
 @menu
 * Defini@value{cedilha}@~oes para Constantes::
 @end menu
@@ -8,6 +8,8 @@
 @section Defini@value{cedilha}@~oes para Constantes
 
 @defvr {Constante} %e
+@vrindex e
+@vrindex Base do logar@'itmo natural
  - A base dos logar@'itmos naturais, @math{e}, @'e representada no Maxima
 como @code{%e}.
 
@@ -19,21 +21,27 @@ como @code{%e}.
 @end defvr
 
 @defvr {Constante} inf
+@vrindex Infinito Real
  - infinito positivo real.
 
 @end defvr
 
 @defvr {Constante}  infinity
+@vrindex Infinito Complexo
  - infinito complexo.
 
 @end defvr
 
 @defvr {Constante} minf
+@vrindex Menos infinito
+@vrindex Infinito negativo
+
  - menos infinito real.
 
 @end defvr
 
 @defvr {Constante} %pi
+@vrindex pi
  - "pi" @'e representado no Maxima como @code{%pi}.
 
 @end defvr

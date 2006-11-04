@@ -1,5 +1,5 @@
 @c Language: Portuguese, Encoding: iso-8859-1
-@c /Command.texi/1.41/Sat Jul  8 08:14:19 2006/-ko/
+@c /Command.texi/1.42/Thu Nov  2 05:46:44 2006/-ko/
 @iftex
 @hyphenation{si-na-li-za-do-res}
 @hyphenation{de-mo-ra-da-men-te}
@@ -16,6 +16,7 @@
 @c NEEDS EXAMPLES
 @c THIS ITEM IS VERY IMPORTANT !!
 @deffn {Operador} '
+@fnindex Operador Ap@'ostrofo
 O operador ap@'ostrofo @code{'} evita avalia@,{c}@~ao.
 
 Aplicado a um s@'imbolo,
@@ -137,6 +138,7 @@ O ap@'ostrofo n@~ao evita simplifica@,{c}@~ao.
 @end deffn
 
 @deffn {Operator} ''
+@fnindex Operador ap@'ostrofo-ap@'ostrofo
 O operador ap@'ostrofo-ap@'ostrofo @code{'@w{}'} (dois ap@'ostrofost) modifica avalia@,{c}@~ao em express@~oes de entrada.
 
 Aplicado a uma express@~ao geral @var{expr}, ap@'ostrofo-ap@'ostrofo faz com que o valor de @var{expr}
@@ -404,7 +406,7 @@ sejam avaliadas.
 @code{eval} faz com que uma avalia@,{c}@~ao posterior de @var{expr} ocorra.  (Veja passo (5)
 adiante.)
 @code{eval} pode ocorrer multiplas vezes.
-Para cada instância de @code{eval}, a express@~ao @'e avaliada novamente.
+Para cada inst@^ancia de @code{eval}, a express@~ao @'e avaliada novamente.
 @item
 @code{A} onde @code{A} @'e um @'atomo declarado seja um sinalizador de avalia@,{c}@~ao (veja @code{evflag})
 faz com que @code{A} seja associado a
@@ -474,7 +476,7 @@ qualquer chamada de fun@,{c}@~ao em @var{expr} ser@'a completada depois das vari
 nela serem avalidas e que @code{ev(F(x))} dessa forma possa comportar-se como @code{F(ev(x))}.
 
 @item
-Para cada instância de @code{eval} nos argumentos, os passos (3) e (4) s@~ao repetidos.
+Para cada inst@^ancia de @code{eval} nos argumentos, os passos (3) e (4) s@~ao repetidos.
 @end enumerate
 
                      Exemplos

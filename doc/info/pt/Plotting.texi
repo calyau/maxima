@@ -1,5 +1,5 @@
 @c Language: Portuguese, Encoding: iso-8859-1
-@c /Plotting.texi/1.28/Wed Jul 26 08:58:24 2006/-ko/
+@c /Plotting.texi/1.29/Thu Nov  2 05:48:32 2006/-ko/
 @menu
 * Defini@value{cedilha}@~oes para Montagem de Gr@'aficos::    
 @end menu
@@ -474,6 +474,20 @@ A amplitude padr@~ao para o par@^ametro em montagem de gr@'aficos param@'etricos
 Especifica a amplitude da vari@'avel param@'etrica para [0, 10].
 
 @item
+Op@,{c}@~ao: @code{plot_realpart}
+Quando @code{plot_realpart} for @code{true},
+a parte real de um valor complexo @var{x} @'e mostrada;
+isso @'e equivalente a mostrar @code{realpart(@var{x})} em lugar de @var{x}.
+De outra forma,
+somente valores com a parte imagin@'aria igual a 0 s@~ao mostrados na tela,
+e valores complexos s@~ao ignorados.
+@example
+plot2d (log(x), [x, -5, 5], [plot_realpart, false]);
+plot2d (log(x), [x, -5, 5], [plot_realpart, true]);
+@end example
+O valor padr@~ao @'e @code{false}.
+
+@item
 Op@,{c}@~ao: @code{nticks}
 N@'umero de pontos iniciais 
 usado pela rotina adaptativa de montagem do gr@'afico.
@@ -774,7 +788,7 @@ O mesmo gr@'afico pode ser visualizado usando openmath:
 
 @noindent
 nesse caso o mouse pode ser usado para rotacionar a visualiza@,{c}@~ao para olhar na superf@'icie
-de diferentes ângulos.
+de diferentes @^angulos.
 
 Um exemplo do terceiro modelo de argumento @'e
 

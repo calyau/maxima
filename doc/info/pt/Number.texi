@@ -1,5 +1,5 @@
 @c Language: Portuguese, Encoding: iso-8859-1
-@c /Number.texi/1.18/Sat Jul  8 08:14:57 2006/-ko/
+@c /Number.texi/1.19/Thu Nov  2 05:48:00 2006/-ko/
 @c end concepts Number Theory
 @menu
 * Defini@value{cedilha}@~oes para Teoria dos N@'umeros::  
@@ -295,6 +295,7 @@ Para a constante de Euler-Mascheroni, veja @code{%gamma}.
 @end deffn
 
 @defvr {Constante} %gamma
+@vrindex Constante de Euler-Mascheroni
 A constante de Euler-Mascheroni, 0.5772156649015329 ....
 @c DOUBTLESS THERE IS MORE TO SAY HERE.
 

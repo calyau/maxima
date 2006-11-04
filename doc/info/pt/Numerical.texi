@@ -1,5 +1,5 @@
 @c Language: Portuguese, Encoding: iso-8859-1
-@c /Numerical.texi/1.21/Fri Jan 20 14:25:36 2006/-ko/
+@c /Numerical.texi/1.22/Thu Nov  2 05:48:05 2006/-ko/
 @menu
 * Introdu@value{cedilha}@value{a_til}o a Num@'erico::
 * Pacotes de Fourier::
@@ -382,6 +382,50 @@ Os valores padr@~ao de @code{find_root_labs} e
 com a precis@~ao aritm@'etica simples que tivermos.
 
 @end defvr
+
+@deffn {Fun@value{cedilha}@~ao} newton (@var{expr}, @var{x}, @var{x_0}, @var{eps})
+Retorna uma solu@,{c}@~ao aproximada de @code{@var{expr} = 0} atrav@'es do m@'etodo de Newton,
+considerando @var{expr} como sendo uma fun@,{c}@~ao de uma vari@'avel, @var{x}.
+A busca pela solu@,{c}@~ao come@,{c}a com @code{@var{x} = @var{x_0}}
+e prossegue at@'e @code{abs(@var{expr}) < @var{eps}}
+(com @var{expr} avaliada para o valor corrente de @var{x}).
+
+@code{newton} permite que vari@'aveis indefinidas apare@,{c}am em @var{expr},
+contanto que o teste de termina@,{c}@~ao @code{abs(@var{expr}) < @var{eps}} avalie
+para @code{true} ou @code{false}.
+Dessa forma n@~ao @'e necess@'ario que @var{expr} avalie para um n@'umero.
+
+@code{load(newton1)} chama essa fun@,{c}@~ao.
+
+Veja tamb@'em @code{realroots}, @code{allroots}, @code{find_root}, e @code{mnewton}.
+
+Exemplos:
+
+@c ===beg===
+@c load (newton1);
+@c newton (cos (u), u, 1, 1/100);
+@c ev (cos (u), u = %);
+@c assume (a > 0);
+@c newton (x^2 - a^2, x, a/2, a^2/100);
+@c ev (x^2 - a^2, x = %);
+@c ===end===
+@example
+(%i1) load (newton1);
+(%o1) /usr/share/maxima/5.10.0cvs/share/numeric/newton1.mac
+(%i2) newton (cos (u), u, 1, 1/100);
+(%o2)                   1.570675277161251
+(%i3) ev (cos (u), u = %);
+(%o3)                 1.2104963335033528E-4
+(%i4) assume (a > 0);
+(%o4)                        [a > 0]
+(%i5) newton (x^2 - a^2, x, a/2, a^2/100);
+(%o5)                  1.00030487804878 a
+(%i6) ev (x^2 - a^2, x = %);
+                                           2
+(%o6)                6.098490481853958E-4 a
+@end example
+
+@end deffn
 
 @node Defini@value{cedilha}@value{o_til}es para S@'eries de Fourier, , Defini@value{cedilha}@value{o_til}es para Num@'erico, Num@'erico
 @section Defini@value{cedilha}@value{o_til}es para S@'eries de Fourier

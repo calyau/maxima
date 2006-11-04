@@ -1,12 +1,11 @@
 @c Language: Portuguese, Encoding: iso-8859-1
-@c /Equations.texi/1.23/Wed Jul 26 08:57:39 2006/-ko/
+@c /Equations.texi/1.24/Thu Nov  2 05:46:56 2006/-ko/
 @c end concepts Equations
 @menu
 * Defini@value{cedilha}@~oes para Equa@value{cedilha}@~oes::   
 @end menu
 
 @node Defini@value{cedilha}@~oes para Equa@value{cedilha}@~oes,  , Equa@value{cedilha}@~oes, Equa@value{cedilha}@~oes
-
 @section Defini@value{cedilha}@~oes para Equa@value{cedilha}@~oes
 
 @c NEED A DESCRIPTION OF %rnum AS WELL
@@ -186,7 +185,7 @@ denominador seja quando muito um n@'umero complexo.  Com um resultado disso @cod
 ir@'a sempre retornar uma express@~ao equivalente (mas fatorada), se
 @code{polyfactor} for @code{true}.
 
-Para polin@^omios complexos um algor@'itmo por Jenkins and Traub @'e
+Para polin@^omios complexos um algor@'itmo por Jenkins e Traub @'e
 usado (Algorithm 419, @i{Comm.  ACM}, vol.  15, (1972), p.  97).
 Para polin@^omios reais o algor@'itmo usado @'e devido a Jenkins (Algorithm 493, @i{ACM TOMS},
 vol.  1, (1975), p.178).
@@ -554,19 +553,80 @@ as equa@,{c}@~oes terem sido triangularizadas.  Isso pode ser necess@'ario em pr
 muito grandes onde substitui@,{c}@~ao em equa@,{c}@~oes anteriores poder@'a causar a gera@,{c}@~ao de
 express@~oes extremamente largas.
 
-Quando @code{linsolve_params} @'e @code{true},
+Quando @code{linsolve_params} for @code{true},
 @code{linsolve} tamb@'em gera s@'imbolos @code{%r}
 usados para representar par@^ametros arbitr@'arios descritos no manual sob
 @code{algsys}.
 De outra forma, @code{linsolve} resolve um menor-determinado sistema de
 equa@,{c}@~oes com algumas vari@'aveis expressas em termos de outras.
 
+Quando @code{programmode} for @code{false},
+@code{linsolve} mostra a solu@,{c}@~ao com express@~oes intermedi@'arias com r@'otulos (@code{%t}),
+e retorna a lista de r@'otulos.
+
+@c ===beg===
+@c e1: x + z = y;
+@c e2: 2*a*x - y = 2*a^2;
+@c e3: y - 2*z = 2;
+@c [globalsolve: false, programmode: true];
+@c linsolve ([e1, e2, e3], [x, y, z]);
+@c [globalsolve: false, programmode: false];
+@c linsolve ([e1, e2, e3], [x, y, z]);
+@c ''%;
+@c [globalsolve: true, programmode: false];
+@c linsolve ([e1, e2, e3], [x, y, z]);
+@c ''%;
+@c [x, y, z];
+@c [globalsolve: true, programmode: true];
+@c linsolve ([e1, e2, e3], '[x, y, z]);
+@c [x, y, z];
+@c ===end===
 @example
-(%i1) e1: x + z = y$
-(%i2) e2: 2*a*x - y = 2*a^2$
-(%i3) e3: y - 2*z = 2$
-(%i4) linsolve ([e1, e2, e3], [x, y, z]);
-(%o4)            [x = a + 1, y = 2 a, z = a - 1]
+(%i1) e1: x + z = y;
+(%o1)                       z + x = y
+(%i2) e2: 2*a*x - y = 2*a^2;
+                                       2
+(%o2)                   2 a x - y = 2 a
+(%i3) e3: y - 2*z = 2;
+(%o3)                      y - 2 z = 2
+(%i4) [globalsolve: false, programmode: true];
+(%o4)                     [false, true]
+(%i5) linsolve ([e1, e2, e3], [x, y, z]);
+(%o5)            [x = a + 1, y = 2 a, z = a - 1]
+(%i6) [globalsolve: false, programmode: false];
+(%o6)                    [false, false]
+(%i7) linsolve ([e1, e2, e3], [x, y, z]);
+Solution
+
+(%t7)                       z = a - 1
+
+(%t8)                        y = 2 a
+
+(%t9)                       x = a + 1
+(%o9)                    [%t7, %t8, %t9]
+(%i9) ''%;
+(%o9)            [z = a - 1, y = 2 a, x = a + 1]
+(%i10) [globalsolve: true, programmode: false];
+(%o10)                    [true, false]
+(%i11) linsolve ([e1, e2, e3], [x, y, z]);
+Solution
+
+(%t11)                      z : a - 1
+
+(%t12)                       y : 2 a
+
+(%t13)                      x : a + 1
+(%o13)                 [%t11, %t12, %t13]
+(%i13) ''%;
+(%o13)           [z : a - 1, y : 2 a, x : a + 1]
+(%i14) [x, y, z];
+(%o14)                 [a + 1, 2 a, a - 1]
+(%i15) [globalsolve: true, programmode: true];
+(%o15)                    [true, true]
+(%i16) linsolve ([e1, e2, e3], '[x, y, z]);
+(%o16)           [x : a + 1, y : 2 a, z : a - 1]
+(%i17) [x, y, z];
+(%o17)                 [a + 1, 2 a, a - 1]
 @end example
 
 @end deffn
@@ -652,17 +712,64 @@ aquelas solu@,{c}@~oes que est@~ao livres de @code{%i}.
 
 @end defvr
 
-@c NEEDS WORK
-@deffn {Fun@,{c}@~ao} realroots (@var{poly}, @var{bound})
-Acha todas as ra@'izes reais de um polin@^omio tamb@'em real de
-uma @'unica vari@'avel poly dentro de uma toler@^ancia de limite que, se menor
-que 1, faz com que todas as ra@'izes da integral sejam achadas exatamente.  O par@^ametro
-limite pode ser arbitrariamente pequeno com o objetivo de encontrar qualquer precis@~ao
-desejada.  O primeiro argumento pode tamb@'em ser uma equa@,{c}@~ao.  @code{realroots} escolhe
-@code{multiplicities}, @'util em caso de multiplas ra@'izes.  @code{realroots (@var{p})} @'e
-equivalente a @code{realroots (@var{p}, rootsepsilon)}.  @code{rootsepsilon} @'e um
-n@'umero real usado para estabelecer um intervalo de confid@^encia para as ra@@'izes.
-Fa@,{c}a @code{example (realroots)} para um exemplo.
+@deffn {Fun@,{c}@~ao} realroots (@var{expr}, @var{bound})
+@deffnx {Fun@,{c}@~ao} realroots (@var{eqn}, @var{bound})
+@deffnx {Fun@,{c}@~ao} realroots (@var{expr})
+@deffnx {Fun@,{c}@~ao} realroots (@var{eqn})
+Calcula aproxima@,{c}@~oes racionais das ra@'izes reais da express@~ao polinomial @var{expr}
+ou da equa@,{c}@~ao polinomial @var{eqn} de uma vari@'avel,
+dentro de uma toler@^ancia de @var{bound}.
+coeficientes de @var{expr} ou de @var{eqn} devem ser n@'umeros literais;
+constantes s@'imbolo tais como @code{%pi} s@~ao rejeitadas.
+
+@code{realroots} atribui as multiplicidades das ra@'izes que encontrar
+para a vari@'avel global @code{multiplicities}.
+
+@code{realroots} constr@'oi uma seq@"u@^encia de Sturm para delimitar cada ra@'iz,
+e ent@~ao palica a bisec@,{c}@~ao para redefinir as aproxima@,{c}@~oes.
+Todos os coeficientes s@~ao convertidos para os equivalentes racionais antes da busca por ra@'izes,
+e c@'alculos s@~ao realizados por meio de aritm@'etica racional exata.
+Mesmo se alguns coeficientes forem n@'umeros em ponto flutuante,
+os resultados s@~ao racionais (a menos que for@,{c}ados a n@'umeros em ponto flutuante por @code{float} ou por @code{numer} flags).
+
+Quando @var{bound} for menor que 1, todas as ra@'izes inteiras s@~ao encontradas exatamente.
+Quando @var{bound} n@~ao for especificado, ser@'a assumido como sendo igual @`a vari@'avel globa @code{rootsepsilon}.
+
+Quando a var@'avel global @code{programmode} for @code{true},
+@code{realroots} retorna uma lista da forma @code{[x = @var{x_1}, x = @var{x_2}, ...]}.
+Quando @code{programmode} for @code{false},
+@code{realroots} cria r@'otulos de express@~oes intermedi@'arias @code{%t1}, @code{%t2}, ...,
+atribui os resultados a eles, e retorna a lista de r@'otulos.
+
+Exemplos:
+@c ===beg===
+@c realroots (-1 - x + x^5, 5e-6);
+@c ev (%[1], float);
+@c ev (-1 - x + x^5, %);
+@c ===end===
+
+@example
+(%i1) realroots (-1 - x + x^5, 5e-6);
+                               612003
+(%o1)                     [x = ------]
+                               524288
+(%i2) ev (%[1], float);
+(%o2)                 x = 1.167303085327148
+(%i3) ev (-1 - x + x^5, %);
+(%o3)                - 7.396496210176905E-6
+@end example
+
+@c ===beg===
+@c realroots (expand ((1 - x)^5 * (2 - x)^3 * (3 - x)), 1e-20);
+@c multiplicities;
+@c ===end===
+
+@example
+(%i1) realroots (expand ((1 - x)^5 * (2 - x)^3 * (3 - x)), 1e-20);
+(%o1)                 [x = 1, x = 2, x = 3]
+(%i2) multiplicities;
+(%o2)                       [5, 3, 1]
+@end example
 
 @end deffn
 

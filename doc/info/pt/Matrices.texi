@@ -1,6 +1,5 @@
-/Matrices.texi/1.24/Sat Jun 24 06:45:55 2006/-ko/
 @c Language: Portuguese, Encoding: iso-8859-1
-@c /Matrices.texi/1.23/Mon May 15 07:53:43 2006/-ko/
+@c /Matrices.texi/1.25/Thu Nov  2 05:47:56 2006/-ko/
 @menu
 * Introdu@value{cedilha}@~ao a Matrizes e @'Algebra Linear::  
 * Defini@value{cedilha}@~oes para Matrizes e @'Algebra Linear::  
@@ -1557,6 +1556,8 @@ Retorna um matriz @var{m} por @var{n}, com todos os elementos sendo zero.
 
 @defvr {S@'imbolo especial} [
 @defvrx {S@'imbolo especial} ]
+@fnindex Delimitador de Lista
+@fnindex Operador de Subscrito
 @code{[} e @code{]} marcam o ome@,{c}o e o fim, respectivamente, de uma lista.
 
 @code{[} e @code{]} tamb@'em envolvem os subscritos de
