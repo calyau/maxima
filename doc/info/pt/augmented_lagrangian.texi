@@ -12,7 +12,7 @@
  
 Retorna um m@'inimo aproximado da express@~ao @var{FOM}
 com rela@,{c}@~ao @`as vari@'aveis @var{xx},
-mantendo as constantes @var{C} iguais a zero.
+mantendo restrito o valor de @var{C} a zero.
 @var{yy} @'e uma lista de suposi@,{c}@~oes iniciais para @var{xx}.
 O m@'etodo utilizado @'e o m@'etodo do Lagrangiano aumentado (veja refer@^encias [1] e [2]).
 
