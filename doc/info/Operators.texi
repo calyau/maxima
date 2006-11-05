@@ -143,7 +143,9 @@ Thus @code{x!} may be replaced even in a quoted expression.
 @end deffn
 
 @deffn {Operator} !!
+@ifinfo
 @fnindex Double factorial
+@end ifinfo
 The double factorial operator.
 
 For an integer, float, or rational number @code{n},
@@ -164,7 +166,9 @@ For an argument @code{n} which is not an integer, float, or rational,
 @end deffn
 
 @deffn {Operator} #
+@ifinfo
 @fnindex Not equal (syntactic inequality)
+@end ifinfo
 Represents the negation of syntactic equality @code{=}.
 
 Note that because of the rules for evaluation of predicate expressions
@@ -200,7 +204,9 @@ Examples:
 @end deffn
 
 @deffn {Operator} .
+@ifinfo
 @fnindex Noncommutative multiplication
+@end ifinfo
 The dot operator, for matrix (non-commutative) multiplication.
 When "." is used in this way, spaces should be left on both sides of
 it, e.g. A . B.  This distinguishes it plainly from a decimal point in
@@ -222,13 +228,17 @@ and
 @end deffn
 
 @deffn {Operator} :
+@ifinfo
 @fnindex Assignment operator
+@end ifinfo
 The assignment operator.  E.g. A:3 sets the variable A to 3.
 
 @end deffn
 
 @deffn {Operator} ::
+@ifinfo
 @fnindex Assignment operator (evaluates left-hand side)
+@end ifinfo
 Assignment operator.  :: assigns the value of the expression
 on its right to the value of the quantity on its left, which must
 evaluate to an atomic variable or subscripted variable.
@@ -236,7 +246,9 @@ evaluate to an atomic variable or subscripted variable.
 @end deffn
 
 @deffn {Operator} ::=
+@ifinfo
 @fnindex Macro function definition operator
+@end ifinfo
 Macro function definition operator.
 @code{::=} defines a function (called a "macro" for historical reasons)
 which quotes its arguments,
@@ -355,15 +367,19 @@ x is equal to 1234 - 1729 w
 @end deffn
 
 @deffn {Operator} :=
+@ifinfo
 @fnindex Function definition operator
+@end ifinfo
 The function definition operator.  E.g. @code{f(x):=sin(x)} defines
 a function @code{f}.
 
 @end deffn
 
 @deffn {Operator} =
+@ifinfo
 @fnindex Equation operator
 @fnindex Equal (syntactic equality)
+@end ifinfo
 The equation operator.
 
 An expression @code{@var{a} = @var{b}}, by itself, represents
@@ -492,7 +508,9 @@ Because @code{not @var{expr}} causes evaluation of @var{expr},
 
 @c NEEDS EXAMPLES
 @deffn {Operator} and
+@ifinfo
 @fnindex Logical conjunction
+@end ifinfo
 The logical conjunction operator.
 @code{and} is an n-ary infix operator;
 its operands are Boolean expressions, and its result is a Boolean value.
@@ -517,7 +535,9 @@ Otherwise, @code{and} returns @code{unknown}.
 
 @c NEEDS EXAMPLES
 @deffn {Operator} or
+@ifinfo
 @fnindex Logical disjunction
+@end ifinfo
 The logical disjunction operator.
 @code{or} is an n-ary infix operator;
 its operands are Boolean expressions, and its result is a Boolean value.
@@ -542,7 +562,9 @@ Otherwise, @code{or} returns @code{unknown}.
 
 @c NEEDS EXAMPLES
 @deffn {Operator} not
+@ifinfo
 @fnindex Logical negation
+@end ifinfo
 The logical negation operator.
 @code{not} is a prefix operator;
 its operand is a Boolean expression, and its result is a Boolean value.
