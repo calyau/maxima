@@ -1,14 +1,7 @@
 
 @menu
-* Introduction to Bug Detection and Reporting::
 * Definitions for Bug Detection and Reporting::
 @end menu
-
-@node Introduction to Bug Detection and Reporting
-@section Introduction to Bug Detection and Reporting
-Like all large programs, Maxima contains both known and unknown
-bugs. This chapter describes the built-in facilities for running the
-Maxima test suite as well as reporting new bugs.
 
 @node Definitions for Bug Detection and Reporting
 @section Definitions for Bug Detection and Reporting
