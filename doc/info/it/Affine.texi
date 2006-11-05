@@ -1,0 +1,61 @@
+@menu
+* Definitions for Affine::
+@end menu
+
+@node Definitions for Affine,  , Affine, Affine
+@section Definitions for Affine
+
+@deffn {Function} fast_linsolve ([@var{expr_1}, ..., @var{expr_m}], [@var{x_1}, ..., @var{x_n}])
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} grobner_basis ([@var{expr_1}, ..., @var{expr_m}])
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} set_up_dot_simplifications (@var{eqns}, @var{check_through_degree})
+@deffnx {Function} set_up_dot_simplifications (@var{eqns})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} declare_weight (@var{x_1}, @var{w_1}, ..., @var{x_n}, @var{w_n})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} nc_degree (@var{p})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} dotsimp (@var{f})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} fast_central_elements ([@var{x_1}, ..., @var{x_n}], @var{n})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} check_overlaps (@var{n}, @var{add_to_simps})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} mono ([@var{x_1}, ..., @var{x_n}], @var{n})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} monomial_dimensions (@var{n})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} extract_linear_equations ([@var{p_1}, ..., @var{p_n}], [@var{m_1}, ..., @var{m_n}])
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} list_nc_monomials ([@var{p_1}, ..., @var{p_n}])
+@deffnx {Function} list_nc_monomials (@var{p})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Option variable} all_dotsimp_denoms
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+

@@ -1,0 +1,112 @@
+@menu
+* Introduction to Miscellaneous Options::  
+* Share::                       
+* Definitions for Miscellaneous Options::  
+@end menu
+
+@node Introduction to Miscellaneous Options, Share, Miscellaneous Options, Miscellaneous Options
+@section Introduction to Miscellaneous Options
+
+@node Share, Definitions for Miscellaneous Options, Introduction to Miscellaneous Options, Miscellaneous Options
+@section Share
+
+@node Definitions for Miscellaneous Options,  , Share, Miscellaneous Options
+@section Definitions for Miscellaneous Options
+
+@defvr {System variable} aliases
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Declaration} alphabetic
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} apropos (@var{string})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} args (@var{expr})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Option variable} genindex
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} gensumnum
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Constant} inf
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Constant} infinity
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {System variable} infolists
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} integerp (@var{expr})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Option variable} m1pbranch
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} numberp (@var{expr})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} properties (@var{a})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Special symbol} props
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} propvars (@var{prop})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} put (@var{atom}, @var{value}, @var{indicator})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} qput (@var{atom}, @var{value}, @var{indicator})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} rem (@var{atom}, @var{indicator})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} remove (@var{a_1}, @var{p_1}, ..., @var{a_n}, @var{p_n})
+@deffnx {Function} remove ([@var{a_1}, ..., @var{a_m}], [@var{p_1}, ..., @var{p_n}], ...)
+@deffnx {Function} remove ("@var{a}", operator)
+@deffnx {Function} remove (@var{a}, transfun)
+@deffnx {Function} remove (all, @var{p})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} remvalue (@var{name_1}, ..., @var{name_n})
+@deffnx {Function} remvalue (all)
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} rncombine (@var{expr})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} scalarp (@var{expr})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} setup_autoload (@var{filename}, @var{function_1}, ..., @var{function_n})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+

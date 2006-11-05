@@ -1,0 +1,92 @@
+@menu
+* Definitions for Differentiation::  
+@end menu
+
+@node Definitions for Differentiation,  , Differentiation, Differentiation
+@section Definitions for Differentiation
+
+@deffn {Function} antid (@var{expr}, @var{x}, @var{u(x)}) 
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} antidiff (@var{expr}, @var{x}, @var{u}(@var{x}))
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Property} atomgrad
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} atvalue (@var{expr}, [@var{x_1} = @var{a_1}, ..., @var{x_m} = @var{a_m}], @var{c})
+@deffnx {Function} atvalue (@var{expr}, @var{x_1} = @var{a_1}, @var{c})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} cartan  -
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} del (@var{x})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} delta (@var{t})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {System variable} dependencies
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} depends (@var{f_1}, @var{x_1}, ..., @var{f_n}, @var{x_n})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Option variable} derivabbrev
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} derivdegree (@var{expr}, @var{y}, @var{x})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} derivlist (@var{var_1}, ..., @var{var_k})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Option variable} derivsubst
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} diff (@var{expr}, @var{x_1}, @var{n_1}, ..., @var{x_m}, @var{n_m})
+@deffnx {Function} diff (@var{expr}, @var{x}, @var{n})
+@deffnx {Function} diff (@var{expr}, @var{x})
+@deffnx {Function} diff (@var{expr})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Special symbol} diff
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} dscalar (@var{f})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} express (@var{expr})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} gradef (@var{f}(@var{x_1}, ..., @var{x_n}), @var{g_1}, ..., @var{g_m})
+@deffnx {Function} gradef (@var{a}, @var{x}, @var{expr})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {System variable} gradefs
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} laplace (@var{expr}, @var{t}, @var{s})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+

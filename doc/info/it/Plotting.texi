@@ -1,0 +1,68 @@
+@menu
+* Definitions for Plotting::    
+@end menu
+
+@node Definitions for Plotting,  , Plotting, Plotting
+@section Definitions for Plotting
+
+@defvr {Option variable} in_netmath
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} openplot_curves (@var{list}, @var{rest_options})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} plot2d (@var{expr}, @var{range}, ..., @var{options}, ...)
+@deffnx {Function} plot2d (@var{parametric_expr})
+@deffnx {Function} plot2d (@var{discrete_expr})
+@deffnx {Function} plot2d ([@var{expr_1}, ..., @var{expr_n}], @var{x_range}, @var{y_range})
+@deffnx {Function} plot2d ([@var{expr_1}, ..., @var{expr_n}], @var{x_range})
+@deffnx {Function} plot2d (@var{expr}, @var{x_range}, @var{y_range})
+@deffnx {Function} plot2d (@var{expr}, @var{x_range})
+@deffnx {Function} plot2d ([@var{name_1}, ..., @var{name_n}], @var{x_range}, @var{y_range})
+@deffnx {Function} plot2d ([@var{name_1}, ..., @var{name_n}], @var{x_range})
+@deffnx {Function} plot2d (@var{name}, @var{x_range}, @var{y_range})
+@deffnx {Function} plot2d (@var{name}, @var{x_range})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} xgraph_curves (@var{list})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {System variable} plot_options
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} plot3d (@var{expr}, @var{x_range}, @var{y_range}, ..., @var{options}, ...)
+@deffnx {Function} plot3d (@var{name}, @var{x_range}, @var{y_range}, ..., @var{options}, ...)
+@deffnx {Function} plot3d ([@var{expr_1}, @var{expr_2}, @var{expr_3}], @var{x_rge}, @var{y_rge})
+@deffnx {Function} plot3d ([@var{name_1}, @var{name_2}, @var{name_3}], @var{x_range}, @var{y_range}, ..., @var{options}, ...)
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} make_transform (@var{vars}, @var{fx}, @var{fy}, @var{fz})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} plot2d_ps (@var{expr}, @var{range})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} closeps ()
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} set_plot_option (@var{option})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} psdraw_curve (@var{ptlist})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} pscom (@var{cmd})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+

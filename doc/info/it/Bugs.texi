@@ -1,0 +1,26 @@
+@menu
+* Definitions for Bug Detection and Reporting::
+@end menu
+
+@node Definitions for Bug Detection and Reporting
+@section Definitions for Bug Detection and Reporting
+
+@deffn {Function} run_testsuite ()
+@deffnx {Function} run_testsuite (@var{boolean})
+@deffnx {Function} run_testsuite (@var{boolean}, @var{boolean})
+@deffnx {Function} run_testsuite (@var{boolean}, @var{boolean}, @var{list})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Option variable} testsuite_files
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} bug_report ()
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} build_info ()
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+

@@ -1,0 +1,65 @@
+@menu
+* Source Level Debugging::
+* Keyword Commands::
+* Definitions for Debugging::   
+@end menu
+
+@node Source Level Debugging, Keyword Commands, , Debugging
+@section Source Level Debugging
+
+@node Keyword Commands, Definitions for Debugging, Source Level Debugging, Debugging
+@section Keyword Commands
+
+@node Definitions for Debugging, , Keyword Commands, Debugging
+@section Definitions for Debugging
+
+@defvr {Option variable} refcheck
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} setcheck
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} setcheckbreak
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {System variable} setval
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} timer (@var{f_1}, ..., @var{f_n})
+@deffnx {Function} timer ()
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} untimer (@var{f_1}, ..., @var{f_n})
+@deffnx {Function} untimer ()
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Option variable} timer_devalue
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} timer_info (@var{f_1}, ..., @var{f_n})
+@deffnx {Function} timer_info ()
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} trace (@var{f_1}, ..., @var{f_n})
+@deffnx {Function} trace ()
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} trace_options (@var{f}, @var{option_1}, ..., @var{option_n})
+@deffnx {Function} trace_options (@var{f})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} untrace (@var{f_1}, ..., @var{f_n})
+@deffnx {Function} untrace ()
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+

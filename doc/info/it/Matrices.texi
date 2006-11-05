@@ -1,0 +1,321 @@
+@menu
+* Introduction to Matrices and Linear Algebra::  
+* Definitions for Matrices and Linear Algebra::  
+@end menu
+
+@node Introduction to Matrices and Linear Algebra, Definitions for Matrices and Linear Algebra, Matrices and Linear Algebra, Matrices and Linear Algebra
+@section Introduction to Matrices and Linear Algebra
+
+@menu
+* Dot::                         
+* Vectors::                     
+* eigen::
+@end menu
+
+@node Dot, Vectors, Introduction to Matrices and Linear Algebra, Introduction to Matrices and Linear Algebra
+@node Vectors, eigen, Dot, Introduction to Matrices and Linear Algebra
+@node eigen, , Vectors, Introduction to Matrices and Linear Algebra
+@node Definitions for Matrices and Linear Algebra,  , Introduction to Matrices and Linear Algebra, Matrices and Linear Algebra
+@section Definitions for Matrices and Linear Algebra
+
+@deffn {Function} addcol (@var{M}, @var{list_1}, ..., @var{list_n})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} addrow (@var{M}, @var{list_1}, ..., @var{list_n})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} adjoint (@var{M})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} augcoefmatrix ([@var{eqn_1}, ..., @var{eqn_m}], [@var{x_1}, ..., @var{x_n}])
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} charpoly (@var{M}, @var{x})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} coefmatrix ([@var{eqn_1}, ..., @var{eqn_m}], [@var{x_1}, ..., @var{x_n}])
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} col (@var{M}, @var{i})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} columnvector (@var{L})
+@deffnx {Function} covect (@var{L})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} conjugate (@var{x})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} copymatrix (@var{M})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} determinant (@var{M})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Option variable} detout
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} diagmatrix (@var{n}, @var{x})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Option variable} doallmxops
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} domxexpt
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} domxmxops
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} domxnctimes
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} dontfactor
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} doscmxops
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} doscmxplus
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} dot0nscsimp
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} dot0simp
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} dot1simp
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} dotassoc
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} dotconstrules
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} dotdistrib
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} dotexptsimp
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} dotident
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} dotscrules
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} echelon (@var{M})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} eigenvalues (@var{M})
+@deffnx {Function} eivals (@var{M})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} eigenvectors (@var{M})
+@deffnx {Function} eivects (@var{M})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} ematrix (@var{m}, @var{n}, @var{x}, @var{i}, @var{j})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} entermatrix (@var{m}, @var{n})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} genmatrix (@var{a}, @var{i_2}, @var{j_2}, @var{i_1}, @var{j_1})
+@deffnx {Function} genmatrix (@var{a}, @var{i_2}, @var{j_2}, @var{i_1})
+@deffnx {Function} genmatrix (@var{a}, @var{i_2}, @var{j_2})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} gramschmidt (@var{x})
+@deffnx {Function} gschmit (@var{x})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} hach (@var{a}, @var{b}, @var{m}, @var{n}, @var{l})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} ident (@var{n})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} innerproduct (@var{x}, @var{y})
+@deffnx {Function} inprod (@var{x}, @var{y})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} invert (@var{M})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Option variable} lmxchar
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} matrix (@var{row_1}, ..., @var{row_n})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} matrixmap (@var{f}, @var{M})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} matrixp (@var{expr})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Option variable} matrix_element_add
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} matrix_element_mult
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} matrix_element_transpose
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} mattrace (@var{M})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} minor (@var{M}, @var{i}, @var{j})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} ncexpt (@var{a}, @var{b})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} ncharpoly (@var{M}, @var{x})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} newdet (@var{M}, @var{n})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Declaration} nonscalar
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} nonscalarp (@var{expr})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} permanent (@var{M}, @var{n})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} rank (@var{M})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Option variable} ratmx
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} row (@var{M}, @var{i})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Option variable} scalarmatrixp
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} scalefactors (@var{coordinatetransform})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} setelmx (@var{x}, @var{i}, @var{j}, @var{M})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} similaritytransform (@var{M})
+@deffnx {Function} simtran (@var{M})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Option variable} sparse
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} submatrix (@var{i_1}, ..., @var{i_m}, @var{M}, @var{j_1}, ..., @var{j_n})
+@deffnx {Function} submatrix (@var{i_1}, ..., @var{i_m}, @var{M})
+@deffnx {Function} submatrix (@var{M}, @var{j_1}, ..., @var{j_n})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} transpose (@var{M})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} triangularize (@var{M})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} uniteigenvectors (@var{M})
+@deffnx {Function} ueivects (@var{M})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} unitvector (@var{x})
+@deffnx {Function} uvect (@var{x})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} vectorsimp (@var{expr})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Option variable} vect_cross
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} zeromatrix (@var{m}, @var{n})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Special symbol} [
+@defvrx {Special symbol} ]
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+

@@ -1,0 +1,151 @@
+@menu
+* Definitions for Equations::   
+@end menu
+
+@node Definitions for Equations,  , Equations, Equations
+@section Definitions for Equations
+
+@defvr {System variable} %rnum_list
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} algexact
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} algsys ([@var{expr_1}, ..., @var{expr_m}], [@var{x_1}, ..., @var{x_n}])
+@deffnx {Function} algsys ([@var{eqn_1}, ..., @var{eqn_m}], [@var{x_1}, ..., @var{x_n}])
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} allroots (@var{expr})
+@deffnx {Function} allroots (@var{eqn})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Option variable} backsubst
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} breakup
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} dimension (@var{eqn})
+@deffnx {Function} dimension (@var{eqn_1}, ..., @var{eqn_n})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Option variable} dispflag
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} funcsolve (@var{eqn}, @var{g}(@var{t}))
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Option variable} globalsolve
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} ieqn (@var{ie}, @var{unk}, @var{tech}, @var{n}, @var{guess})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Option variable} ieqnprint
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} lhs (@var{expr})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} linsolve ([@var{expr_1}, ..., @var{expr_m}], [@var{x_1}, ..., @var{x_n}])
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Option variable} linsolvewarn
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} linsolve_params
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {System variable} multiplicities
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} nroots (@var{p}, @var{low}, @var{high})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} nthroot (@var{p}, @var{n})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Option variable} programmode
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} realonly
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} realroots (@var{expr}, @var{bound})
+@deffnx {Function} realroots (@var{eqn}, @var{bound})
+@deffnx {Function} realroots (@var{expr})
+@deffnx {Function} realroots (@var{eqn})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} rhs (@var{expr})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Option variable} rootsconmode
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} rootscontract (@var{expr})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Option variable} rootsepsilon
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} solve (@var{expr}, @var{x})
+@deffnx {Function} solve (@var{expr})
+@deffnx {Function} solve ([@var{eqn_1}, ..., @var{eqn_n}], [@var{x_1}, ..., @var{x_n}])
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Option variable} solvedecomposes
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} solveexplicit
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} solvefactors
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} solvenullwarn
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} solveradcan
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} solvetrigwarn
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} solve_inconsistent_error
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+

@@ -1,0 +1,46 @@
+@menu
+* Introduction to numericalio::
+* Definitions for numericalio::
+@end menu
+
+@node Introduction to numericalio, Definitions for numericalio, numericalio, numericalio
+@section Introduction to numericalio
+
+@node Definitions for numericalio,  , Introduction to numericalio, numericalio
+@section Definitions for numericalio
+
+@deffn {Function} read_matrix (@var{file_name})
+@deffnx {Function} read_matrix (@var{file_name}, @var{separator_flag})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} read_lisp_array (@var{file_name}, @var{A})
+@deffnx {Function} read_lisp_array (@var{file_name}, @var{A}, @var{separator_flag})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} read_maxima_array (@var{file_name}, @var{A})
+@deffnx {Function} read_maxima_array (@var{file_name}, @var{A}, @var{separator_flag})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} read_hashed_array (@var{file_name}, @var{A})
+@deffnx {Function} read_hashed_array (@var{file_name}, @var{A}, @var{separator_flag})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} read_nested_list (@var{file_name})
+@deffnx {Function} read_nested_list (@var{file_name}, @var{separator_flag})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} read_list (@var{file_name})
+@deffnx {Function} read_list (@var{file_name}, @var{separator_flag})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} write_data (@var{X}, @var{file_name})
+@deffnx {Function} write_data (@var{object}, @var{file_name}, @var{separator_flag})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+

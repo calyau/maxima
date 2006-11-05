@@ -1,0 +1,40 @@
+@menu
+* Introduction to solve_rec::
+* Definitions for solve_rec::
+@end menu
+
+@node Introduction to solve_rec, Definitions for solve_rec, solve_rec, solve_rec
+@section Introduction to solve_rec
+
+@node Definitions for solve_rec,  , Introduction to solve_rec, solve_rec
+@section Definitions for solve_rec
+
+@deffn {Function} closed_form (@var{expr})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} reduce_order (@var{rec}, @var{sol}, @var{var})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Option variable} simplify_products
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} solve_rec (@var{eqn}, @var{var}, [@var{init}])
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} solve_rec_rat (@var{eqn}, @var{var}, [@var{init}])
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Option variable} product_use_gamma
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} summand_to_rec (@var{summand}, @var{k}, @var{n})
+@deffnx {Function} summand_to_rec (@var{summand}, [@var{k}, @var{lo}, @var{hi}], @var{n})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+

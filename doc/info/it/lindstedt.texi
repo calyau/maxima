@@ -1,0 +1,11 @@
+@menu
+* Definitions for lindstedt::
+@end menu
+
+@node Definitions for lindstedt,  , lindstedt, lindstedt
+@section Definitions for lindstedt
+
+@deffn {Function} Lindstedt (@var{eq},@var{pvar},@var{torder},@var{ic})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+

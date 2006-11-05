@@ -1,0 +1,31 @@
+@menu
+* Introduction to simplex::
+* Definitions for simplex::
+@end menu
+
+@node Introduction to simplex, Definitions for simplex, simplex, simplex
+@section Introduction to simplex
+
+@node Definitions for simplex,  , Introduction to simplex, simplex
+@section Definitions for simplex
+
+@defvr {Option variable} epsilon_sx
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} linear_program (@var{A}, @var{b}, @var{c})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} maximize_sx (@var{obj}, @var{cond}, [@var{pos}])
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} minimize_sx (@var{obj}, @var{cond}, [@var{pos}])
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Option variable} nonegative_sx
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+

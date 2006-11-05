@@ -1,0 +1,101 @@
+@menu
+* Introduction to Rules and Patterns::  
+* Definitions for Rules and Patterns::  
+@end menu
+
+@node Introduction to Rules and Patterns, Definitions for Rules and Patterns, Rules and Patterns, Rules and Patterns
+@section Introduction to Rules and Patterns
+
+@node Definitions for Rules and Patterns,  , Introduction to Rules and Patterns, Rules and Patterns
+@section Definitions for Rules and Patterns
+
+@deffn {Function} apply1 (@var{expr}, @var{rule_1}, ..., @var{rule_n})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} apply2 (@var{expr}, @var{rule_1}, ..., @var{rule_n})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} applyb1 (@var{expr}, @var{rule_1}, ..., @var{rule_n})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Option variable} current_let_rule_package
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} default_let_rule_package
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} defmatch (@var{progname}, @var{pattern}, @var{x_1}, ..., @var{x_n})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} defrule (@var{rulename}, @var{pattern}, @var{replacement})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} disprule (@var{rulename_1}, ..., @var{rulename_2})
+@deffnx {Function} disprule (all)
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} let (@var{prod}, @var{repl}, @var{predname}, @var{arg_1}, ..., @var{arg_n})
+@deffnx {Function} let ([@var{prod}, @var{repl}, @var{predname}, @var{arg_1}, ..., @var{arg_n}], @var{package_name})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Option variable} letrat
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} letrules ()
+@deffnx {Function} letrules (@var{package_name})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} letsimp (@var{expr})
+@deffnx {Function} letsimp (@var{expr}, @var{package_name})
+@deffnx {Function} letsimp (@var{expr}, @var{package_name_1}, ..., @var{package_name_n})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Option variable} let_rule_packages
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} matchdeclare (@var{a_1}, @var{pred_1}, ..., @var{a_n}, @var{pred_n})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} matchfix (@var{ldelimiter}, @var{rdelimiter})
+@deffnx {Function} matchfix (@var{ldelimiter}, @var{rdelimiter}, @var{arg_pos}, @var{pos})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} remlet (@var{prod}, @var{name})
+@deffnx {Function} remlet ()
+@deffnx {Function} remlet (all)
+@deffnx {Function} remlet (all, @var{name})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} remrule (@var{op}, @var{rulename})
+@deffnx {Function} remrule (@var{op}, all)
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} tellsimp (@var{pattern}, @var{replacement})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} tellsimpafter (@var{pattern}, @var{replacement})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} clear_rules ()
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+

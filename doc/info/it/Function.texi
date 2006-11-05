@@ -1,0 +1,222 @@
+@menu
+* Introduction to Function Definition::  
+* Function::                    
+* Macros::                      
+* Definitions for Function Definition::  
+@end menu
+
+@node Introduction to Function Definition, Function, Function Definition, Function Definition
+@section Introduction to Function Definition
+
+@node Function, Macros, Introduction to Function Definition, Function Definition
+@section Function
+
+@node Macros, Definitions for Function Definition, Function, Function Definition
+@section Macros
+
+@deffn {Function} buildq (@var{L}, @var{expr})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} macroexpand (@var{expr})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} macroexpand1 (@var{expr})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Global variable} macros
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} splice (@var{a})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@node Definitions for Function Definition,  , Macros, Function Definition
+@section Definitions for Function Definition
+
+@deffn {Function} apply (@var{F}, [@var{x_1}, ..., @var{x_n}])
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} block ([@var{v_1}, ..., @var{v_m}], @var{expr_1}, ..., @var{expr_n})
+@deffnx {Function} block (@var{expr_1}, ..., @var{expr_n})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} break (@var{expr_1}, ..., @var{expr_n})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} catch (@var{expr_1}, ..., @var{expr_n})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} compfile (@var{filename}, @var{f_1}, ..., @var{f_n})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} compile (@var{f_1}, ..., @var{f_n})
+@deffnx {Function} compile (functions)
+@deffnx {Function} compile (all)
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} define (@var{f}(@var{x_1}, ..., @var{x_n}), @var{expr})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} define_variable (@var{name}, @var{default_value}, @var{mode})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} dispfun (@var{f_1}, ..., @var{f_n})
+@deffnx {Function} dispfun (all)
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {System variable} functions
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} fundef (@var{f})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} funmake (@var{F}, [@var{arg_1}, ..., @var{arg_n}])
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} lambda ([@var{x_1}, ..., @var{x_m}], @var{expr_1}, ..., @var{expr_n})
+@deffnx {Function} lambda ([[@var{L}]], @var{expr_1}, ..., @var{expr_n})
+@deffnx {Function} lambda ([@var{x_1}, ..., @var{x_m}, [@var{L}]], @var{expr_1}, ..., @var{expr_n})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} local (@var{v_1}, ..., @var{v_n})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Option variable} macroexpansion
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} mode_checkp
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} mode_check_errorp
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} mode_check_warnp
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} mode_declare (@var{y_1}, @var{mode_1}, ..., @var{y_n}, @var{mode_n})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} mode_identity (@var{arg_1}, @var{arg_2})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Option variable} transcompile
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} translate (@var{f_1}, ..., @var{f_n})
+@deffnx {Function} translate (functions)
+@deffnx {Function} translate (all)
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} translate_file (@var{maxima_filename})
+@deffnx {Function} translate_file (@var{maxima_filename}, @var{lisp_filename})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Option variable} transrun
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} tr_array_as_ref
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} tr_bound_function_applyp
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} tr_file_tty_messagesp
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} tr_float_can_branch_complex
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} tr_function_call_default
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} tr_numer
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} tr_optimize_max_loop
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} tr_semicompile
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {System variable} tr_state_vars
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} tr_warnings_get ()
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Option variable} tr_warn_bad_function_calls
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} tr_warn_fexpr
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} tr_warn_meval
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} tr_warn_mode
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} tr_warn_undeclared
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} tr_warn_undefined_variable
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} tr_windy
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} compile_file (@var{filename})
+@deffnx {Function} compile_file (@var{filename}, @var{compiled_filename})
+@deffnx {Function} compile_file (@var{filename}, @var{compiled_filename}, @var{lisp_filename})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} declare_translated (@var{f_1}, @var{f_2}, ...)
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+

@@ -1,0 +1,204 @@
+@menu
+* Introduction to Sets::       
+* Definitions for Sets::       
+@end menu
+
+@node Introduction to Sets, Definitions for Sets, Sets, Sets
+@section Introduction to Sets
+
+@node Definitions for Sets,  , Introduction to Sets, Sets
+@section Definitions for Sets
+
+@deffn {Function} adjoin (@var{x}, @var{a}) 
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} belln (@var{n})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} cardinality (@var{a})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} cartesian_product (@var{b_1}, ... , @var{b_n})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} disjoin (@var{x}, @var{a})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} disjointp (@var{a}, @var{b}) 
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} divisors (@var{n})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} elementp (@var{x}, @var{a})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} emptyp (@var{a})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} equiv_classes (@var{s}, @var{F})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} every (@var{f}, @var{s})
+@deffnx {Function} every (@var{f}, @var{L_1}, ..., @var{L_n})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} extremal_subset (@var{s}, @var{f}, max)
+@deffnx {Function} extremal_subset (@var{s}, @var{f}, min)
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} flatten (@var{expr})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} full_listify (@var{a})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} fullsetify (@var{a})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} identity (@var{x})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} integer_partitions (@var{n})
+@deffnx {Function} integer_partitions (@var{n}, @var{len})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} intersect (@var{a_1}, ..., @var{a_n})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} intersection (@var{a_1}, ..., @var{a_n})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} kron_delta (@var{x}, @var{y})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} listify (@var{a})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} lreduce (@var{F}, @var{s})
+@deffnx {Function} lreduce (@var{F}, @var{s}, @var{s_0})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} makeset (@var{expr}, @var{x}, @var{s})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} moebius (@var{n})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} multinomial_coeff (@var{a_1}, ..., @var{a_n})
+@deffnx {Function} multinomial_coeff ()
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} num_distinct_partitions (@var{n})
+@deffnx {Function} num_distinct_partitions (@var{n}, list)
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} num_partitions (@var{n})
+@deffnx {Function} num_partitions (@var{n}, list)
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} partition_set (@var{a}, @var{f})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} permutations (@var{a})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} powerset (@var{a})
+@deffnx {Function} powerset (@var{a}, @var{n})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} rreduce (@var{F}, @var{s})
+@deffnx {Function} rreduce (@var{F}, @var{s}, @var{s_@{n + 1@}})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function}  setdifference (@var{a}, @var{b})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} setequalp (@var{a}, @var{b})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} setify (@var{a})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} setp (@var{a})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} set_partitions (@var{a})
+@deffnx {Function} set_partitions (@var{a}, @var{n})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} some (@var{f}, @var{a})
+@deffnx {Function} some (@var{f}, @var{L_1}, ..., @var{L_n})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} stirling1 (@var{n}, @var{m})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} stirling2 (@var{n}, @var{m})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} subset (@var{a}, @var{f})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} subsetp (@var{a}, @var{b})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} symmdifference (@var{a_1}, ..., @var{a_n})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} tree_reduce (@var{F}, @var{s})
+@deffnx {Function} tree_reduce (@var{F}, @var{s}, @var{s_0})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} union (@var{a_1}, ..., @var{a_n})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} xreduce (@var{F}, @var{s})
+@deffnx {Function} xreduce (@var{F}, @var{s}, @var{s_0})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+

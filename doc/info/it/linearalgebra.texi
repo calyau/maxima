@@ -1,0 +1,191 @@
+@menu
+* Introduction to linearalgebra::
+* Definitions for linearalgebra::
+@end menu
+
+@node Introduction to linearalgebra, Definitions for linearalgebra, linearalgebra, linearalgebra
+@section Introduction to linearalgebra
+
+@node Definitions for linearalgebra,  , Introduction to linearalgebra, linearalgebra
+@section Definitions for linearalgebra
+
+@deffn {Function} addmatrices (@var{f}, @var{M_1}, ..., @var{M_n})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} blockmatrixp (@var{M})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} columnop (@var{M}, @var{i}, @var{j}, @var{theta})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} columnswap (@var{M}, @var{i}, @var{j})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} columnspace (@var{M})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} copy (@var{e})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} cholesky (@var{M})
+@deffnx {Function} cholesky (@var{M}, @var{field})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} ctranspose (@var{M})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} diag_matrix (@var{d_1}, @var{d_2},...,@var{d_n})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} dotproduct (@var{u}, @var{v})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} get_lu_factors (@var{x}) 
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} hankel (@var{col})
+@deffnx {Function} hankel (@var{col}, @var{row})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} hessian (@var{f},@var{vars})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} hilbert_matrix (@var{n})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} identfor (@var{M})
+@deffnx {Function} identfor (@var{M}, @var{fld})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} invert_by_lu (@var{M}, @var{(rng generalring)})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} kronecker_product (@var{A}, @var{B})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} listp (@var{e}, @var{p})
+@deffnx {Function} listp (@var{e})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} locate_matrix_entry (@var{M}, @var{r_1}, @var{c_1}, @var{r_2}, @var{c_2}, @var{f}, @var{rel})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} lu_backsub (@var{M}, @var{b})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} lu_factor (@var{M}, @var{field})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} mat_cond (@var{M}, 1)
+@deffnx {Function} mat_cond (@var{M}, inf)
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} mat_norm (@var{M}, 1)
+@deffnx {Function} mat_norm (@var{M}, inf)
+@deffnx {Function} mat_norm (@var{M}, frobenius)
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} matrixp (@var{e}, @var{p})
+@deffnx {Function} matrixp (@var{e})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} matrix_size (@var{M})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} mat_fullunblocker (@var{M})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} mat_trace (@var{M})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} mat_unblocker (@var{M})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} nonnegintegerp (@var{n})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} nullspace (@var{M})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} nullity (@var{M})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} orthogonal_complement (@var{v_1}, ..., @var{v_n})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} polynomialp (@var{p}, @var{L}, @var{coeffp}, @var{exponp})
+@deffnx {Function} polynomialp (@var{p}, @var{L}, @var{coeffp})
+@deffnx {Function} polynomialp (@var{p}, @var{L})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} polytocompanion (@var{p}, @var{x})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} ptriangularize (@var{M}, @var{v})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} rowop (@var{M}, @var{i}, @var{j}, @var{theta})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} rank (@var{M})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} rowswap (@var{M}, @var{i}, @var{j})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} toeplitz (@var{col})
+@deffnx {Function} toeplitz (@var{col}, @var{row})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} vandermonde_matrix ([@var{x_1}, ..., @var{x_n}])
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} zerofor (@var{M})
+@deffnx {Function}  zerofor (@var{M}, @var{fld})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} zeromatrixp (@var{M})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+

@@ -1,0 +1,15 @@
+@menu
+* Definitions for bode::
+@end menu
+
+@node Definitions for bode,  , bode, bode
+@section Definitions for bode
+
+@deffn {Function} bode_gain (@var{H}, @var{range}, ...@var{plot_opts}...)
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} bode_phase (@var{H}, @var{range}, ...@var{plot_opts}...)
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+

@@ -1,0 +1,40 @@
+@menu
+* Introduction to dynamics::
+* Definitions for dynamics::
+@end menu
+
+@node Introduction to dynamics, Definitions for dynamics, dynamics, dynamics
+@section Introduction to dynamics
+
+@node Definitions for dynamics,  , Introduction to dynamics, dynamics
+@section Definitions for dynamics
+
+@deffn {Function} chaosgame (@code{[[}@var{x1}, @var{y1}@code{]}...@code{[}@var{xm}, @var{ym}@code{]]}, @code{[}@var{x0}, @var{y0}@code{]}, @var{b}, @var{n}, ...options...);
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} evolution (@var{F}, @var{y0}, @var{n},...options...);
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} evolution2d (@code{[}@var{F}, @var{G}@code{]}, @code{[}@var{x0}, @var{y0}@code{]}, @var{n}, ...options...);
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} ifs (@code{[}@var{r1},...,@var{rm}@code{]},@code{[}@var{A1},...,@var{Am}@code{]}, @code{[[}@var{x1},@var{y1}@code{]}...@code{[}@var{xm}, @var{ym}@code{]]}, @code{[}@var{x0},@var{y0}@code{]}, @var{n}, ...options...);
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} orbits (@var{F}, @var{y0}, @var{n1}, @var{n2}, [@var{x}, @var{x0}, @var{xf}, @var{xstep}], ...options...);
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} rk (ODE, var, initial, domain)
+@deffnx {Function} rk ([ODE1,...,ODEm], [v1,...,vm], [init1,...,initm], domain)
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} staircase (@var{F}, @var{y0}, @var{n}, ...options...);
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+

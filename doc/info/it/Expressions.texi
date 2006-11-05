@@ -1,0 +1,267 @@
+@menu
+* Introduction to Expressions::  
+* Assignment::                  
+* Complex::                     
+* Nouns and Verbs::
+* Identifiers::
+* Strings::
+* Inequality::                  
+* Syntax::                      
+* Definitions for Expressions::  
+@end menu
+
+@node Introduction to Expressions, Assignment, Expressions, Expressions
+@section Introduction to Expressions
+
+@node Assignment, Complex, Introduction to Expressions, Expressions
+@section Assignment
+
+@node Complex, Nouns and Verbs, Assignment, Expressions
+@section Complex
+
+@node Nouns and Verbs, Identifiers, Complex, Expressions
+@section Nouns and Verbs
+
+@node Identifiers, Strings, Nouns and Verbs, Expressions
+@section Identifiers
+
+@node Strings, Inequality, Identifiers, Expressions
+@section Strings
+
+@node Inequality, Syntax, Strings, Expressions
+@section Inequality
+
+@node Syntax, Definitions for Expressions, Inequality, Expressions
+@section Syntax
+
+@node Definitions for Expressions,  , Syntax, Expressions
+@section Definitions for Expressions
+
+@deffn {Function} at (@var{expr}, [@var{eqn_1}, ..., @var{eqn_n}])
+@deffnx {Function} at (@var{expr}, @var{eqn})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} box (@var{expr})
+@deffnx {Function} box (@var{expr}, @var{a})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Option variable} boxchar
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} carg (@var{z})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Special operator} constant
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} constantp (@var{expr})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} declare (@var{a_1}, @var{p_1}, @var{a_2}, @var{p_2}, ...)
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} disolate (@var{expr}, @var{x_1}, ..., @var{x_n})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} dispform (@var{expr})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} distrib (@var{expr})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} dpart (@var{expr}, @var{n_1}, ..., @var{n_k})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} exp (@var{x})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Option variable} %emode
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} %enumer
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} exptisolate
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} exptsubst
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} freeof (@var{x_1}, ..., @var{x_n}, @var{expr})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} genfact (@var{x}, @var{y}, @var{z})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} imagpart (@var{expr})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} infix (@var{op})
+@deffnx {Function} infix (@var{op}, @var{lbp}, @var{rbp})
+@deffnx {Function} infix (@var{op}, @var{lbp}, @var{rbp}, @var{lpos}, @var{rpos}, @var{pos})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Option variable} inflag
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} inpart (@var{expr}, @var{n_1}, ..., @var{n_k})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} isolate (@var{expr}, @var{x})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Option variable} isolate_wrt_times
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} listconstvars
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} listdummyvars
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} listofvars (@var{expr})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} lfreeof (@var{list}, @var{expr})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} lopow (@var{expr}, @var{x})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} lpart (@var{label}, @var{expr}, @var{n_1}, ..., @var{n_k})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} multthru (@var{expr})
+@deffnx {Function} multthru (@var{expr_1}, @var{expr_2})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} nounify (@var{f})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} nterms (@var{expr})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} op (@var{expr})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} operatorp (@var{expr}, @var{op})
+@deffnx {Function} operatorp (@var{expr}, [@var{op_1}, ..., @var{op_n}])
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} optimize (@var{expr})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Option variable} optimprefix
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} ordergreat (@var{v_1}, ..., @var{v_n})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} ordergreatp (@var{expr_1}, @var{expr_2})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} orderless (@var{v_1}, ..., @var{v_n})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} orderlessp (@var{expr_1}, @var{expr_2})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} part (@var{expr}, @var{n_1}, ..., @var{n_k})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} partition (@var{expr}, @var{x})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Option variable} partswitch
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} pickapart (@var{expr}, @var{n})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {System variable} piece
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} polarform (@var{expr})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} powers (@var{expr}, @var{x})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} product (@var{expr}, @var{i}, @var{i_0}, @var{i_1})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} realpart (@var{expr})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} rectform (@var{expr})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} rembox (@var{expr}, unlabelled)
+@deffnx {Function} rembox (@var{expr}, @var{label})
+@deffnx {Function} rembox (@var{expr})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} sum (@var{expr}, @var{i}, @var{i_0}, @var{i_1})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} lsum (@var{expr}, @var{x}, @var{L})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} verbify (@var{f})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+

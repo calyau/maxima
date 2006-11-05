@@ -1,0 +1,103 @@
+@menu
+* Introduction to orthogonal polynomials::
+* Definitions for orthogonal polynomials::
+@end menu
+
+@node Introduction to orthogonal polynomials, Definitions for orthogonal polynomials, orthopoly, orthopoly
+@section Introduction to orthogonal polynomials
+
+@node Definitions for orthogonal polynomials,  , Introduction to orthogonal polynomials, orthopoly
+@section Definitions for orthogonal polynomials
+
+@deffn {Function} assoc_legendre_p (@var{n}, @var{m}, @var{x})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} assoc_legendre_q (@var{n}, @var{m}, @var{x})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} chebyshev_t (@var{n}, @var{x})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} chebyshev_u (@var{n}, @var{x})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} gen_laguerre (@var{n}, @var{a}, @var{x})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} hermite (@var{n}, @var{x})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} intervalp (@var{e})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} jacobi_p (@var{n}, @var{a}, @var{b}, @var{x})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} laguerre (@var{n}, @var{x})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} legendre_p (@var{n}, @var{x})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} legendre_q (@var{n}, @var{x})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} orthopoly_recur (@var{f}, @var{args})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Variable} orthopoly_returns_intervals
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} orthopoly_weight (@var{f}, @var{args})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} pochhammer (@var{n}, @var{x})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Variable} pochhammer_max_index
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} spherical_bessel_j (@var{n}, @var{x})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} spherical_bessel_y (@var{n}, @var{x})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} spherical_hankel1 (@var{n}, @var{x})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} spherical_hankel2 (@var{n}, @var{x})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} spherical_harmonic (@var{n}, @var{m}, @var{x}, @var{y})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} unit_step (@var{x})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} ultraspherical (@var{n}, @var{a}, @var{x})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+

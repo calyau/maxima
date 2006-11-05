@@ -1,0 +1,321 @@
+@menu
+* Introduction to itensor::
+* Definitions for itensor::
+@end menu
+
+@node Introduction to itensor, Definitions for itensor, itensor, itensor
+@section Introduction to itensor
+
+@node Definitions for itensor,  , Introduction to itensor, itensor
+@section Definitions for itensor
+
+@deffn {Function} entertensor (@var{name})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} changename (@var{old}, @var{new}, @var{expr})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} listoftens
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} ishow (@var{expr})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} indices (@var{expr})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} rename (@var{expr})
+@deffnx {Function} rename (@var{expr}, @var{count})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Option variable} flipflag
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} defcon (@var{tensor_1})
+@deffnx {Function} defcon (@var{tensor_1}, @var{tensor_2}, @var{tensor_3})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} remcon (@var{tensor_1}, ..., @var{tensor_n})
+@deffnx {Function} remcon (all)
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} contract (@var{expr})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} indexed_tensor (@var{tensor})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} components (@var{tensor}, @var{expr})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} remcomps (@var{tensor})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} showcomps (@var{tensor})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} idummy ()
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Option variable} idummyx
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} icounter
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} kdelta (@var{L1}, @var{L2})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} kdels (@var{L1}, @var{L2})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} levi_civita (@var{L})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} lc2kdt (@var{expr})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} lc_l
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} lc_u
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} canten (@var{expr})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} concan (@var{expr})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Option variable} allsym
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} decsym (@var{tensor}, @var{m}, @var{n}, [@var{cov_1}, @var{cov_2}, ...], [@var{contr_1}, @var{contr_2}, ...])
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} remsym (@var{tensor}, @var{m}, @var{n})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} canform (@var{expr})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} diff (@var{expr}, @var{v_1}, [@var{n_1}, [@var{v_2}, @var{n_2}] ...])
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} idiff (@var{expr}, @var{v_1}, [@var{n_1}, [@var{v_2}, @var{n_2}] ...])
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} liediff (@var{v}, @var{ten})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} rediff (@var{ten})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} undiff (@var{expr})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} evundiff (@var{expr})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} flush (@var{expr}, @var{tensor_1}, @var{tensor_2}, ...)
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} flushd (@var{expr}, @var{tensor_1}, @var{tensor_2}, ...)
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} flushnd (@var{expr}, @var{tensor}, @var{n})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} coord (@var{tensor_1}, @var{tensor_2}, ...)
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} remcoord (@var{tensor_1}, @var{tensor_2}, ...)
+@deffnx {Function} remcoord (all)
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} makebox (@var{expr})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} conmetderiv (@var{expr}, @var{tensor})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} simpmetderiv (@var{expr})
+@deffnx {Function} simpmetderiv (@var{expr}[, @var{stop}])
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} flush1deriv (@var{expr}, @var{tensor})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} imetric (@var{g})
+@deffnx {System variable} imetric
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} idim (@var{n})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} ichr1 ([@var{i}, @var{j}, @var{k}])
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} ichr2 ([@var{i}, @var{j}], [@var{k}])
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} icurvature ([@var{i}, @var{j}, @var{k}], [@var{h}])
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} covdiff (@var{expr}, @var{v_1}, @var{v_2}, ...)
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} lorentz_gauge (@var{expr})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} igeodesic_coords (@var{expr}, @var{name})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} iframes ()
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Variable} ifb
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Variable} icc1
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Variable} icc2
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Variable} ifc1
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Variable} ifc2
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Variable} ifr
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Variable} ifri
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Variable} ifg
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Variable} ifgi
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} iframe_bracket_form
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Variable} inm
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Variable} inmc1
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Variable} inmc2
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Variable} ikt1
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Variable} ikt2
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Variable} itr
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Operator} ~
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Operator} |
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} extdiff (@var{expr}, @var{i})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} hodge (@var{expr})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Option variable} igeowedge_flag
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} tentex (@var{expr})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} ic_convert (@var{eqn})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+

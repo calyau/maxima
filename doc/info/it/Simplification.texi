@@ -1,0 +1,196 @@
+@menu
+* Definitions for Simplification::  
+@end menu
+
+@node Definitions for Simplification,  , Simplification, Simplification
+@section Definitions for Simplification
+
+@menu
+@end menu
+
+@defvr {System variable} askexp
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} askinteger (@var{expr}, integer)
+@deffnx {Function} askinteger (@var{expr})
+@deffnx {Function} askinteger (@var{expr}, even)
+@deffnx {Function} askinteger (@var{expr}, odd)
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} asksign (@var{expr})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} demoivre (@var{expr})
+@deffnx {Option variable} demoivre
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Option variable} domain
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} expand (@var{expr})
+@deffnx {Function} expand (@var{expr}, @var{p}, @var{n})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} expandwrt (@var{expr}, @var{x_1}, ..., @var{x_n})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Option variable} expandwrt_denom
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} expandwrt_factored (@var{expr}, @var{x_1}, ..., @var{x_n})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Option variable} expon
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} exponentialize (@var{expr})
+@deffnx {Option variable} exponentialize
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Option variable} expop
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} factlim
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} intosum (@var{expr})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Declaration} lassociative
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Declaration} linear
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Declaration} mainvar
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} maxapplydepth
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} maxapplyheight
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} maxnegex
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} maxposex
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Declaration} multiplicative
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} negdistrib
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} negsumdispflag
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Special symbol} noeval
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Declaration} noun
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} noundisp
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Special symbol} nouns
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Special symbol} numer
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} numerval (@var{x_1}, @var{expr_1}, ..., @var{var_n}, @var{expr_n})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {System variable} opproperties
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} opsubst
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Declaration} outative
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Declaration} posfun
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} radcan (@var{expr})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Option variable} radexpand
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} radsubstflag
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Declaration} rassociative
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} scsimp (@var{expr}, @var{rule_1}, ..., @var{rule_n})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Option variable} simpsum
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} sumcontract (@var{expr})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Option variable} sumexpand
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} sumsplitfact
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Declaration} symmetric
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} unknown (@var{expr})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+

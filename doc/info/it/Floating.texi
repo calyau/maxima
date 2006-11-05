@@ -1,0 +1,60 @@
+@menu
+* Definitions for Floating Point::  
+@end menu
+
+@node Definitions for Floating Point,  , Floating Point, Floating Point
+@section Definitions for Floating Point
+
+@deffn {Function} bffac (@var{expr}, @var{n})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Option variable} algepsilon
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} bfloat (@var{expr})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} bfloatp (@var{expr})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} bfpsi (@var{n}, @var{z}, @var{fpprec})
+@deffnx {Function} bfpsi0 (@var{z}, @var{fpprec})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Option variable} bftorat
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} bftrunc
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} cbffac (@var{z}, @var{fpprec})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} float (@var{expr})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Option variable} float2bf
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} floatnump (@var{expr})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Option variable} fpprec
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} fpprintprec
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+

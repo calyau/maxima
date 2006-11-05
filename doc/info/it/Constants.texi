@@ -1,0 +1,35 @@
+@menu
+* Definitions for Constants::
+@end menu
+
+@node Definitions for Constants,  , Constants, Constants
+@section Definitions for Constants
+
+@defvr {Constant} %e
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Constant} false
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Constant} inf
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Constant}  infinity
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Constant} minf
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Constant} %pi
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Constant} true
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+

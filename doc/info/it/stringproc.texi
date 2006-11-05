@@ -1,0 +1,307 @@
+@menu
+* Introduction to string processing::
+* Definitions for input and output::
+* Definitions for characters::
+* Definitions for strings::
+@end menu
+
+@node Introduction to string processing, Definitions for input and output, stringproc, stringproc
+@section Introduction to string processing
+
+@node Definitions for input and output, Definitions for characters, Introduction to string processing, stringproc
+@section Definitions for input and output
+
+@deffn {Function} close (@var{stream}) 
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} flength (@var{stream})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} fposition (@var{stream})
+@deffnx {Function} fposition (@var{stream}, @var{pos})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} freshline () 
+@deffnx {Function} freshline (@var{stream}) 
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} newline () 
+@deffnx {Function} newline (@var{stream}) 
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} opena (@var{file}) 
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} openr (@var{file}) 
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} openw (@var{file}) 
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} printf (@var{dest}, @var{string})
+@deffnx {Function} printf (@var{dest}, @var{string}, @var{expr_1}, ..., @var{expr_n})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} readline (@var{stream}) 
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} sprint (@var{expr_1}, ..., @var{expr_n})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@node Definitions for characters, Definitions for strings, Definitions for input and output, stringproc
+@section Definitions for characters
+
+@deffn {Function} alphacharp (@var{char})    
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} alphanumericp (@var{char}) 
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} ascii (@var{int}) 
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} cequal (@var{char_1}, @var{char_2})          
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} cequalignore (@var{char_1}, @var{char_2})    
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} cgreaterp (@var{char_1}, @var{char_2})       
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} cgreaterpignore (@var{char_1}, @var{char_2})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} charp (@var{obj}) 
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} cint (@var{char}) 
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} clessp (@var{char_1}, @var{char_2})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} clesspignore (@var{char_1}, @var{char_2})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} constituent (@var{char})   
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} cunlisp (@var{lisp_char}) 
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} digitcharp (@var{char})    
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} lcharp (@var{obj}) 
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} lowercasep (@var{char})    
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Variable} newline 
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Variable} space   
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Variable} tab     
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} uppercasep (@var{char})    
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@node Definitions for strings,  , Definitions for characters, stringproc
+@section Definitions for strings
+
+@deffn {Function} sunlisp (@var{lisp_string}) 
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} lstringp (@var{obj}) 
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} stringp (@var{obj}) 
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} charat (@var{string}, @var{n}) 
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} charlist (@var{string}) 
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} parsetoken (@var{string})  
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} sconc (@var{expr_1}, ..., @var{expr_n})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} scopy (@var{string}) 
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} sdowncase (@var{string}) 
+@deffnx {Function} sdowncase (@var{string}, @var{start}) 
+@deffnx {Function} sdowncase (@var{string}, @var{start}, @var{end}) 
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} sequal (@var{string_1}, @var{string_2}) 
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} sequalignore (@var{string_1}, @var{string_2})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} sexplode (@var{string})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} simplode (@var{list})  
+@deffnx {Function} simplode (@var{list}, @var{delim})  
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} sinsert (@var{seq}, @var{string}, @var{pos})  
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} sinvertcase (@var{string})  
+@deffnx {Function} sinvertcase (@var{string}, @var{start})  
+@deffnx {Function} sinvertcase (@var{string}, @var{start}, @var{end})  
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} slength (@var{string}) 
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} smake (@var{num}, @var{char}) 
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} smismatch (@var{string_1}, @var{string_2}) 
+@deffnx {Function} smismatch (@var{string_1}, @var{string_2}, @var{test}) 
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} split (@var{string})  
+@deffnx {Function} split (@var{string}, @var{delim})  
+@deffnx {Function} split (@var{string}, @var{delim}, @var{multiple})  
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} sposition (@var{char}, @var{string}) 
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} sremove (@var{seq}, @var{string})  
+@deffnx {Function} sremove (@var{seq}, @var{string}, @var{test})  
+@deffnx {Function} sremove (@var{seq}, @var{string}, @var{test}, @var{start})  
+@deffnx {Function} sremove (@var{seq}, @var{string}, @var{test}, @var{start}, @var{end})  
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} sremovefirst (@var{seq}, @var{string})  
+@deffnx {Function} sremovefirst (@var{seq}, @var{string}, @var{test})  
+@deffnx {Function} sremovefirst (@var{seq}, @var{string}, @var{test}, @var{start})  
+@deffnx {Function} sremovefirst (@var{seq}, @var{string}, @var{test}, @var{start}, @var{end})  
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} sreverse (@var{string}) 
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} ssearch (@var{seq}, @var{string})  
+@deffnx {Function} ssearch (@var{seq}, @var{string}, @var{test})  
+@deffnx {Function} ssearch (@var{seq}, @var{string}, @var{test}, @var{start})  
+@deffnx {Function} ssearch (@var{seq}, @var{string}, @var{test}, @var{start}, @var{end})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} ssort (@var{string}) 
+@deffnx {Function} ssort (@var{string}, @var{test}) 
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} ssubst (@var{new}, @var{old}, @var{string}) 
+@deffnx {Function} ssubst (@var{new}, @var{old}, @var{string}, @var{test}) 
+@deffnx {Function} ssubst (@var{new}, @var{old}, @var{string}, @var{test}, @var{start}) 
+@deffnx {Function} ssubst (@var{new}, @var{old}, @var{string}, @var{test}, @var{start}, @var{end}) 
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} ssubstfirst (@var{new}, @var{old}, @var{string}) 
+@deffnx {Function} ssubstfirst (@var{new}, @var{old}, @var{string}, @var{test}) 
+@deffnx {Function} ssubstfirst (@var{new}, @var{old}, @var{string}, @var{test}, @var{start}) 
+@deffnx {Function} ssubstfirst (@var{new}, @var{old}, @var{string}, @var{test}, @var{start}, @var{end}) 
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} strim (@var{seq},@var{string}) 
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} striml (@var{seq}, @var{string}) 
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} strimr (@var{seq}, @var{string}) 
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} substring (@var{string}, @var{start})
+@deffnx {Function} substring (@var{string}, @var{start}, @var{end}) 
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} supcase (@var{string}) 
+@deffnx {Function} supcase (@var{string}, @var{start}) 
+@deffnx {Function} supcase (@var{string}, @var{start}, @var{end}) 
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} tokens (@var{string}) 
+@deffnx {Function} tokens (@var{string}, @var{test}) 
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+

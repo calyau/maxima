@@ -1,0 +1,79 @@
+@menu
+* Introduction to zeilberger::
+* Definitions for zeilberger::
+@end menu
+
+@node Introduction to zeilberger, Definitions for zeilberger, zeilberger, zeilberger
+@section Introduction to zeilberger
+
+@node Definitions for zeilberger, , Introduction to zeilberger, zeilberger
+@section Definitions for zeilberger
+
+@deffn {Function} AntiDifference (@var{F_k}, @var{k})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} Gosper (@var{F_k}, @var{k})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} GosperSum (@var{F_k}, @var{k}, @var{a}, @var{b}) 
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} parGosper (@var{F_@{n,k@}}, @var{k}, @var{n}, @var{d})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} Zeilberger (@var{F_@{n,k@}}, @var{k}, @var{n})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@section General global variables
+
+@defvr {Global variable} MAX_ORD
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Global variable} simplified_output
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Global variable} linear_solver
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Global variable} warnings
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Global variable} gosper_in_zeilberger
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Global variable} trivial_solutions
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@section Variables related to the modular test
+
+@defvr {Global variable} mod_test
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Global variable} modular_linear_solver
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Global variable} ev_point
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Global variable} mod_big_prime
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Global variable} mod_threshold
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+

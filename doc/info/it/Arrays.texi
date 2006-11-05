@@ -1,0 +1,62 @@
+@menu
+* Definitions for Arrays::  
+@end menu
+
+@node Definitions for Arrays,  , Arrays, Arrays
+@section Definitions for Arrays
+
+@deffn {Function} array (@var{name}, @var{dim_1}, ..., @var{dim_n})
+@deffnx {Function} array (@var{name}, @var{type}, @var{dim_1}, ..., @var{dim_n})
+@deffnx {Function} array ([@var{name_1}, ..., @var{name_m}], @var{dim_1}, ..., @var{dim_n})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} arrayapply (@var{A}, [@var{i_1}, ..., @var{i_n}])
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} arrayinfo (@var{A})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} arraymake (@var{name}, [@var{i_1}, ..., @var{i_n}])
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {System variable} arrays
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} bashindices (@var{expr})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} fillarray (@var{A}, @var{B})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} listarray (@var{A})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} make_array (@var{type}, @var{dim_1}, ..., @var{dim_n})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} rearray (@var{A}, @var{dim_1}, ..., @var{dim_n})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} remarray (@var{A_1}, ..., @var{A_n})
+@deffnx {Function} remarray (all)
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} subvar (@var{x}, @var{i})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Option variable} use_fast_arrays
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+

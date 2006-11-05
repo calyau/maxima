@@ -1,0 +1,19 @@
+@menu
+* Definitions for ggf::
+@end menu
+
+@node Definitions for ggf,  , ggf, ggf
+@section Definitions for ggf
+
+@defvr {Option variable} GGFINFINITY
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} GGFCFMAX
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} ggf (@var{l})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+

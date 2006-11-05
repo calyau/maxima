@@ -1,0 +1,280 @@
+@menu
+* nary::                        
+* nofix::                       
+* operator::                    
+* postfix::                     
+* prefix::                      
+* Definitions for Operators::   
+@end menu
+
+@node nary, nofix, Operators, Operators
+@section nary
+
+@node nofix, operator, nary, Operators
+@section nofix
+
+@node operator, postfix, nofix, Operators
+@section operator
+
+@node postfix, prefix, operator, Operators
+@section postfix
+
+@node prefix, Definitions for Operators, postfix, Operators
+@section prefix
+
+@node Definitions for Operators,  , prefix, Operators
+@section Definitions for Operators
+
+@deffn {Operator} !
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Operator} !!
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Operator} #
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Operator} .
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Operator} :
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Operator} ::
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Operator} ::=
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Operator} :=
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Operator} =
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Operator} and
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Operator} or
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Operator} not
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} abs (@var{expr})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Keyword} additive
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Keyword} allbut
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Declaration} antisymmetric
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} cabs (@var{expr})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} ceiling (@var{x})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} charfun (@var{p})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Declaration} commutative
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} compare (@var{x}, @var{y})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} entier (@var{x})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} equal (@var{a}, @var{b})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} floor (@var{x})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} notequal (@var{a}, @var{b})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Operator} eval
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} evenp (@var{expr})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} fix (@var{x})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} fullmap (@var{f}, @var{expr_1}, ...)
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} fullmapl (@var{f}, @var{list_1}, ...)
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} is (@var{expr})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} maybe (@var{expr})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} isqrt (@var{x})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} lmax (@var{L})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} lmin (@var{L})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} max (@var{x_1}, ..., @var{x_n})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} min (@var{x_1}, ..., @var{x_n})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} polymod (@var{p})
+@deffnx {Function} polymod (@var{p}, @var{m})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} mod (@var{x}, @var{y})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} oddp (@var{expr})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Operator} pred
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} make_random_state (@var{n})
+@deffnx {Function} make_random_state (@var{s})
+@deffnx {Function} make_random_state (true)
+@deffnx {Function} make_random_state (false)
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} set_random_state (@var{s})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} random (@var{x})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} rationalize (@var{expr})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} sign (@var{expr})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} signum (@var{x})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} sort (@var{L}, @var{P})
+@deffnx {Function} sort (@var{L})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} sqrt (@var{x})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Option variable} sqrtdispflag
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} sublis (@var{list}, @var{expr})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} sublist (@var{list}, @var{p})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Option variable} sublis_apply_lambda
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} subst (@var{a}, @var{b}, @var{c})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} substinpart (@var{x}, @var{expr}, @var{n_1}, ..., @var{n_k})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} substpart (@var{x}, @var{expr}, @var{n_1}, ..., @var{n_k})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} subvarp (@var{expr})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} symbolp (@var{expr})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} unorder ()
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} vectorpotential (@var{givencurl})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} xthru (@var{expr})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} zeroequiv (@var{expr}, @var{v})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+

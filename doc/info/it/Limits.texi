@@ -1,0 +1,31 @@
+@menu
+* Definitions for Limits::
+@end menu
+
+@node Definitions for Limits,  , Limits, Limits
+@section Definitions for Limits
+
+@defvr {Option variable} lhospitallim
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} limit (@var{expr}, @var{x}, @var{val}, @var{dir})
+@deffnx {Function} limit (@var{expr}, @var{x}, @var{val})
+@deffnx {Function} limit (@var{expr})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Option variable} limsubst
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} tlimit (@var{expr}, @var{x}, @var{val}, @var{dir})
+@deffnx {Function} tlimit (@var{expr}, @var{x}, @var{val})
+@deffnx {Function} tlimit (@var{expr})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Option variable} tlimswitch
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+

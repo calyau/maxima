@@ -1,0 +1,125 @@
+@menu
+* Introduction to Command Line::
+* Definitions for Command Line::
+@end menu
+
+@node Introduction to Command Line, Definitions for Command Line, Command Line, Command Line
+@section Introduction to Command Line
+
+@deffn {Operator} '
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Operator} ''
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@node Definitions for Command Line,  , Introduction to Command Line, Command Line
+@section Definitions for Command Line
+
+@deffn {Function} alias (@var{new_name_1}, @var{old_name_1}, ..., @var{new_name_n}, @var{old_name_n})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Option variable} debugmode
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} ev (@var{expr}, @var{arg_1}, ..., @var{arg_n})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Property} evflag
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Property} evfun
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} infeval
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} kill (@var{a_1}, ..., @var{a_n})
+@deffnx {Function} kill (labels)
+@deffnx {Function} kill (inlabels, outlabels, linelabels)
+@deffnx {Function} kill (@var{n})
+@deffnx {Function} kill ([@var{m}, @var{n}])
+@deffnx {Function} kill (values, functions, arrays, ...)
+@deffnx {Function} kill (all)
+@deffnx {Function} kill (allbut (@var{a_1}, ..., @var{a_n}))
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} labels (@var{symbol})
+@deffnx {System variable} labels
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {System variable} linenum
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {System variable} myoptions
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} nolabels
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} optionset
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} playback ()
+@deffnx {Function} playback (@var{n})
+@deffnx {Function} playback ([@var{m}, @var{n}])
+@deffnx {Function} playback ([@var{m}])
+@deffnx {Function} playback (input)
+@deffnx {Function} playback (slow)
+@deffnx {Function} playback (time)
+@deffnx {Function} playback (grind)
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} printprops (@var{a}, @var{i})
+@deffnx {Function} printprops ([@var{a_1}, ..., @var{a_n}], @var{i})
+@deffnx {Function} printprops (all, @var{i})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Option variable} prompt
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} quit ()
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} remfunction (@var{f_1}, ..., @var{f_n})
+@deffnx {Function} remfunction (all)
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} reset ()
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Option variable} showtime
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} sstatus (@var{feature}, @var{package})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} to_lisp ()
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {System variable} values
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+

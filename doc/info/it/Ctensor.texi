@@ -1,0 +1,305 @@
+@menu
+* Introduction to ctensor::
+* Definitions for ctensor::
+@end menu
+
+@node Introduction to ctensor, Definitions for ctensor, ctensor, ctensor
+@section Introduction to ctensor
+
+@node Definitions for ctensor,  , Introduction to ctensor, ctensor
+@section Definitions for ctensor
+
+@deffn {Function} csetup ()
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} cmetric (@var{dis})
+@deffnx {Function} cmetric ()
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} ct_coordsys (@var{coordinate_system}, @var{extra_arg})
+@deffnx {Function} ct_coordsys (@var{coordinate_system})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} init_ctensor ()
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} christof (@var{dis})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} ricci (@var{dis})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} uricci (@var{dis})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} scurvature ()
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} einstein (@var{dis})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} leinstein (@var{dis})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} riemann (@var{dis})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} lriemann (@var{dis})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} uriemann (@var{dis})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} rinvariant ()
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} weyl (@var{dis})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} ctaylor ()
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} frame_bracket (@var{fr}, @var{fri}, @var{diagframe})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} nptetrad ()
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} psi (@var{dis})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} petrov ()
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} contortion (@var{tr})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} nonmetricity (@var{nm})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} ctransform (@var{M})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} findde (@var{A}, @var{n})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} cograd ()
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} contragrad ()
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} dscalar ()
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} checkdiv ()
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} cgeodesic (@var{dis})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} bdvac (@var{f})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} invariant1 ()
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} invariant2 ()
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} bimetric ()
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} diagmatrixp (@var{M})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} symmetricp (@var{M})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} ntermst (@var{f})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} cdisplay (@var{ten})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} deleten (@var{L}, @var{n})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Option variable} dim
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} diagmetric
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} ctrgsimp
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} cframe_flag
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} ctorsion_flag
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} cnonmet_flag
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} ctayswitch
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} ctayvar
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} ctaypov
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} ctaypt
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {System variable} gdet
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} ratchristof
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} rateinstein
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} ratriemann
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} ratweyl
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Variable} lfg
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Variable} ufg
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Variable} riem
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Variable} lriem
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Variable} uriem
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Variable} ric
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Variable} uric
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Variable} lg
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Variable} ug
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Variable} weyl
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Variable} fb
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Variable} kinvariant
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Variable} np
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Variable} npi
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Variable} tr
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Variable} kt
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Variable} nm
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Variable} nmc
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {System variable} tensorkill
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} ct_coords
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+

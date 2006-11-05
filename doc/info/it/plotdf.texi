@@ -1,0 +1,16 @@
+@menu
+* Introduction to plotdf::
+* Definitions for plotdf::
+@end menu
+
+@node Introduction to plotdf, Definitions for plotdf, plotdf, plotdf
+@section Introduction to plotdf
+
+@node Definitions for plotdf,  , Introduction to plotdf, plotdf
+@section Definitions for plotdf
+
+@deffn {Function} plotdf (@var{dydx},...options...)
+@deffnx {Function} plotdf (@code{[}@var{dxdt},@var{dydt}@code{]},...options...)
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+

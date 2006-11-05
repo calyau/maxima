@@ -1,0 +1,11 @@
+@menu
+* Definitions for stirling::
+@end menu
+
+@node Definitions for stirling,  , stirling, stirling
+@section Definitions for stirling
+
+@deffn {Function} stirling (@var{z},@var{n})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+

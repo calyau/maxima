@@ -1,0 +1,52 @@
+@menu
+* Introduction to atensor::
+* Definitions for atensor::
+@end menu
+
+@node Introduction to atensor, Definitions for atensor, atensor, atensor
+@section Introduction to atensor
+
+@node Definitions for atensor,  , Introduction to atensor, atensor
+@section Definitions for atensor
+
+@deffn {Function} init_atensor (@var{alg_type}, @var{opt_dims})
+@deffnx {Function} init_atensor (@var{alg_type})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} atensimp (@var{expr})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} alg_type
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Variable} adim
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Variable} aform
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Variable} asymbol
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} sf (@var{u}, @var{v})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} af (@var{u}, @var{v})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} av (@var{u}, @var{v})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} abasep (@var{v})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+

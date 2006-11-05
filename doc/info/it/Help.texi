@@ -1,0 +1,36 @@
+@menu
+* Introduction to Help::        
+* Lisp and Maxima::            
+* Garbage Collection::          
+* Documentation::               
+* Definitions for Help::        
+@end menu
+
+@node Introduction to Help, Lisp and Maxima, Help, Help
+@section Introduction to Help
+
+@node Lisp and Maxima, Garbage Collection, Introduction to Help, Help
+@section Lisp and Maxima
+
+@node Garbage Collection, Documentation, Lisp and Maxima, Help
+@section Garbage Collection
+
+@node Documentation, Definitions for Help, Garbage Collection, Help
+@section Documentation
+
+@node Definitions for Help,  , Documentation, Help
+@section Definitions for Help
+
+@deffn {Function} demo (@var{filename})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} describe (@var{string})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} example (@var{topic})
+@deffnx {Function} example ()
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+

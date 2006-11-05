@@ -1,0 +1,300 @@
+@menu
+* Introduction to Input and Output::  
+* Comments::
+* Files::                       
+* Definitions for Input and Output::  
+@end menu
+
+@node Introduction to Input and Output, Comments, Input and Output, Input and Output
+@section Introduction to Input and Output
+
+@node Comments, Files, Introduction to Input and Output, Input and Output
+@section Comments
+
+@node Files, Definitions for Input and Output, Comments, Input and Output
+@section Files
+
+@node Definitions for Input and Output,  , Files, Input and Output
+@section Definitions for Input and Output
+
+@defvr {System variable} __
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {System variable} _
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {System variable} %
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {System variable} %%
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} %edispflag
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} %th (@var{i})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Special symbol} ?
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Option variable} absboxchar
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} file_output_append
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} appendfile (@var{filename})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} batch (@var{filename})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} batchload (@var{filename})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} closefile ()
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} collapse (@var{expr})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} concat (@var{arg_1}, @var{arg_2}, ...)
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} sconcat (@var{arg_1}, @var{arg_2}, ...)
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} disp (@var{expr_1}, @var{expr_2}, ...)
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} dispcon (@var{tensor_1}, @var{tensor_2}, ...)
+@deffnx {Function} dispcon (all)
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} display (@var{expr_1}, @var{expr_2}, ...)
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Option variable} display2d
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} display_format_internal
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} dispterms (@var{expr})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Option variable} error_size
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} error_syms
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} expt (@var{a}, @var{b})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Option variable} exptdispflag
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} filename_merge (@var{path}, @var{filename})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} file_search (@var{filename})
+@deffnx {Function} file_search (@var{filename}, @var{pathlist})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Option variable} file_search_maxima
+@defvrx {Option variable} file_search_lisp
+@defvrx {Option variable} file_search_demo
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} file_type (@var{filename})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} grind (@var{expr})
+@deffnx {Option variable} grind
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Option variable} ibase
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} inchar
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} ldisp (@var{expr_1}, ..., @var{expr_n})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} ldisplay (@var{expr_1}, ..., @var{expr_n})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Option variable} linechar
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} linel
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} lispdisp
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} load (@var{filename})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} loadfile (@var{filename})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Option variable} loadprint
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} obase
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} outchar
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} packagefile
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} pfeformat
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} print (@var{expr_1}, ..., @var{expr_n})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} tcl_output (@var{list}, @var{i0}, @var{skip})
+@deffnx {Function} tcl_output (@var{list}, @var{i0})
+@deffnx {Function} tcl_output ([@var{list_1}, ..., @var{list_n}], @var{i})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} read (@var{expr_1}, ..., @var{expr_n})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} readonly (@var{expr_1}, ..., @var{expr_n})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} reveal (@var{expr}, @var{depth})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Option variable} rmxchar
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} save (@var{filename}, @var{name_1}, @var{name_2}, @var{name_3}, ...)
+@deffnx {Function} save (@var{filename}, values, functions, labels, ...)
+@deffnx {Function} save (@var{filename}, [@var{m}, @var{n}])
+@deffnx {Function} save (@var{filename}, @var{name_1}=@var{expr_1}, ...)
+@deffnx {Function} save (@var{filename}, all)
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Option variable} savedef
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} show (@var{expr})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} showratvars (@var{expr})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Option variable} stardisp
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} string (@var{expr})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Lisp variable} stringdisp
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} stringout (@var{filename}, @var{expr_1}, @var{expr_2}, @var{expr_3}, ...)
+@deffnx {Function} stringout (@var{filename}, [@var{m}, @var{n}])
+@deffnx {Function} stringout (@var{filename}, input)
+@deffnx {Function} stringout (@var{filename}, functions)
+@deffnx {Function} stringout (@var{filename}, values)
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} tex (@var{expr})
+@deffnx {Function} tex (@var{label})
+@deffnx {Function} tex (@var{expr}, @var{filename})
+@deffnx {Function} tex (@var{label}, @var{filename})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} texput (@var{a}, @var{s})
+@deffnx {Function} texput (@var{a}, @var{s}, @var{operator_type})
+@deffnx {Function} texput (@var{a}, [@var{s_1}, @var{s_2}], matchfix)
+@deffnx {Function} texput (@var{a}, [@var{s_1}, @var{s_2}, @var{s_3}], matchfix)
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} system (@var{command})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Option variable} ttyoff
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} with_stdout (@var{filename}, @var{expr_1}, @var{expr_2}, @var{expr_3}, ...)
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} writefile (@var{filename})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+

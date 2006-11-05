@@ -1,0 +1,51 @@
+@menu
+* Introduction for Runtime Environment::  
+* Interrupts::                  
+* Definitions for Runtime Environment::  
+@end menu
+
+@node Introduction for Runtime Environment, Interrupts, Runtime Environment, Runtime Environment
+@section Introduction for Runtime Environment
+
+@node Interrupts, Definitions for Runtime Environment, Introduction for Runtime Environment, Runtime Environment
+@section Interrupts
+
+@node Definitions for Runtime Environment,  , Interrupts, Runtime Environment
+@section Definitions for Runtime Environment
+
+@defvr {Declaration} feature
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} featurep (@var{a}, @var{f})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {System variable} maxima_tempdir
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {System variable} maxima_userdir
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} room ()
+@deffnx {Function} room (true)
+@deffnx {Function} room (false)
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} status (feature)
+@deffnx {Function} status (feature, @var{putative_feature})
+@deffnx {Function} status (status)
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} time (%o1, %o2, %o3, ...)
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} timedate ()
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+

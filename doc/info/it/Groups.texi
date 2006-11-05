@@ -1,0 +1,12 @@
+@menu
+* Definitions for Groups::
+@end menu
+
+@node Definitions for Groups,  , Groups, Groups
+@section Definitions for Groups
+
+@deffn {Function} todd_coxeter (@var{relations}, @var{subgroup})
+@deffnx {Function} todd_coxeter (@var{relations})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+

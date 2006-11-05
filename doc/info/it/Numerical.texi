@@ -1,0 +1,140 @@
+@menu
+* Introduction to Numerical::   
+* Fourier packages::                     
+* Definitions for Numerical::   
+* Definitions for Fourier Series::
+@end menu
+
+@node Introduction to Numerical, Fourier packages, Numerical, Numerical
+@section Introduction to Numerical
+
+@node Fourier packages, Definitions for Numerical, Introduction to Numerical, Numerical
+@section Fourier packages
+
+@node Definitions for Numerical, Definitions for Fourier Series, Fourier packages, Numerical
+@section Definitions for Numerical
+
+@deffn {Function} polartorect (@var{magnitude_array}, @var{phase_array})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} recttopolar (@var{real_array}, @var{imaginary_array})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} ift (@var{real_array}, @var{imaginary_array})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} fft (@var{real_array}, @var{imaginary_array})
+@deffnx {Function} ift (@var{real_array}, @var{imaginary_array})
+@deffnx {Function} recttopolar (@var{real_array}, @var{imaginary_array})
+@deffnx {Function} polartorect (@var{magnitude_array}, @var{phase_array})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Option variable} fortindent
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} fortran (@var{expr})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Option variable} fortspaces
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} horner (@var{expr}, @var{x})
+@deffnx {Function} horner (@var{expr})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} find_root (@var{f}(@var{x}), @var{x}, @var{a}, @var{b})
+@deffnx {Function} find_root (@var{f}, @var{a}, @var{b})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Option variable} find_root_abs
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} find_root_error
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} find_root_rel
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} newton (@var{expr}, @var{x}, @var{x_0}, @var{eps})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@node Definitions for Fourier Series, , Definitions for Numerical, Numerical
+@section Definitions for Fourier Series
+
+@deffn {Function} equalp (@var{x}, @var{y})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} remfun (@var{f}, @var{expr})
+@deffnx {Function} remfun (@var{f}, @var{expr}, @var{x})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} funp (@var{f}, @var{expr})
+@deffnx {Function} funp (@var{f}, @var{expr}, @var{x})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} absint (@var{f}, @var{x}, @var{halfplane})
+@deffnx {Function} absint (@var{f}, @var{x})
+@deffnx {Function} absint (@var{f}, @var{x}, @var{a}, @var{b})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} fourier (@var{f}, @var{x}, @var{p})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} foursimp (@var{l})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@defvr {Option variable} sinnpiflag
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} cosnpiflag
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} fourexpand (@var{l}, @var{x}, @var{p}, @var{limit})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} fourcos (@var{f}, @var{x}, @var{p})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} foursin (@var{f}, @var{x}, @var{p})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} totalfourier (@var{f}, @var{x}, @var{p})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} fourint (@var{f}, @var{x})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} fourintcos (@var{f}, @var{x})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} fourintsin (@var{f}, @var{x})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+

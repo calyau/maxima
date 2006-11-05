@@ -1,0 +1,13 @@
+@menu
+* Definitions for opsubst::
+@end menu
+
+@node Definitions for opsubst,  , opsubst, opsubst
+@section Definitions for opsubst
+
+@deffn {Function} opsubst (@var{f},@var{g},@var{e})
+@deffnx {Function} opsubst (@var{g}=@var{f},@var{e})
+@deffnx {Function} opsubst ([@var{g1}=@var{f1},@var{g2}=@var{f2},..., @var{gn}=@var{fn}],@var{e})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+

@@ -1,0 +1,19 @@
+@menu
+* Definitions for mnewton::
+@end menu
+
+@node Definitions for mnewton,  , mnewton, mnewton
+@section Definitions for mnewton
+
+@defvr {Option variable} newtonepsilon
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@defvr {Option variable} newtonmaxiter
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end defvr
+
+@deffn {Function} mnewton (@var{FuncList},@var{VarList},@var{GuessList})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+

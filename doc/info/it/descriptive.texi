@@ -1,0 +1,196 @@
+@menu
+* Introduction to descriptive::
+* Definitions for data manipulation::
+* Definitions for descriptive statistics::
+* Definitions for specific multivariate descriptive statistics::
+* Definitions for statistical graphs::
+@end menu
+
+@node Introduction to descriptive, Definitions for data manipulation, descriptive, descriptive
+@section Introduction to descriptive
+
+@node Definitions for data manipulation, Definitions for descriptive statistics, Introduction to descriptive, descriptive
+@section Definitions for data manipulation
+
+@deffn {Function} continuous_freq (@var{list})
+@deffnx {Function} continuous_freq (@var{list}, @var{m})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} discrete_freq (@var{list})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} subsample (@var{data_matrix}, @var{logical_expression})
+@deffnx {Function} subsample (@var{data_matrix}, @var{logical_expression}, @var{col_num}, @var{col_num}, ...)
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@node Definitions for descriptive statistics, Definitions for specific multivariate descriptive statistics, Definitions for data manipulation, descriptive
+@section Definitions for descriptive statistics
+
+@deffn {Function} mean (@var{list})
+@deffnx {Function} mean (@var{matrix})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} var (@var{list})
+@deffnx {Function} var (@var{matrix})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} var1 (@var{list})
+@deffnx {Function} var1 (@var{matrix})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} std (@var{list})
+@deffnx {Function} std (@var{matrix})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} std1 (@var{list})
+@deffnx {Function} std1 (@var{matrix})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} noncentral_moment (@var{list}, @var{k})
+@deffnx {Function} noncentral_moment (@var{matrix}, @var{k})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} central_moment (@var{list}, @var{k})
+@deffnx {Function} central_moment (@var{matrix}, @var{k})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} cv (@var{list})
+@deffnx {Function} cv (@var{matrix})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} mini (@var{list})
+@deffnx {Function} mini (@var{matrix})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} maxi (@var{list})
+@deffnx {Function} maxi (@var{matrix})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} range (@var{list})
+@deffnx {Function} range (@var{matrix})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} quantile (@var{list}, @var{p})
+@deffnx {Function} quantile (@var{matrix}, @var{p})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} median (@var{list})
+@deffnx {Function} median (@var{matrix})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} qrange (@var{list})
+@deffnx {Function} qrange (@var{matrix})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} mean_deviation (@var{list})
+@deffnx {Function} mean_deviation (@var{matrix})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} median_deviation (@var{list})
+@deffnx {Function} median_deviation (@var{matrix})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} harmonic_mean (@var{list})
+@deffnx {Function} harmonic_mean (@var{matrix})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} geometric_mean (@var{list})
+@deffnx {Function} geometric_mean (@var{matrix})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} kurtosis (@var{list})
+@deffnx {Function} kurtosis (@var{matrix})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} skewness (@var{list})
+@deffnx {Function} skewness (@var{matrix})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} pearson_skewness (@var{list})
+@deffnx {Function} pearson_skewness (@var{matrix})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} quartile_skewness (@var{list})
+@deffnx {Function} quartile_skewness (@var{matrix})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@node Definitions for specific multivariate descriptive statistics, Definitions for statistical graphs, Definitions for descriptive statistics, descriptive
+@section Definitions for specific multivariate descriptive statistics
+
+@deffn {Function} cov (@var{matrix})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} cov1 (@var{matrix})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} global_variances (@var{matrix})
+@deffnx {Function} global_variances (@var{matrix}, @var{logical_value})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} cor (@var{matrix})
+@deffnx {Function} cor (@var{matrix}, @var{logical_value})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} list_correlations (@var{matrix})
+@deffnx {Function} list_correlations (@var{matrix}, @var{logical_value})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@node Definitions for statistical graphs,  , Definitions for specific multivariate descriptive statistics, descriptive
+@section Definitions for statistical graphs
+
+@deffn {Function} dataplot (@var{list})
+@deffnx {Function} dataplot (@var{list}, @var{option_1}, @var{option_2}, ...)
+@deffnx {Function} dataplot (@var{matrix})
+@deffnx {Function} dataplot (@var{matrix}, @var{option_1}, @var{option_2}, ...)
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} histogram (@var{list})
+@deffnx {Function} histogram (@var{list}, @var{option_1}, @var{option_2}, ...)
+@deffnx {Function} histogram (@var{one_column_matrix})
+@deffnx {Function} histogram (@var{one_column_matrix}, @var{option_1}, @var{option_2}, ...)
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} barsplot (@var{list})
+@deffnx {Function} barsplot (@var{list}, @var{option_1}, @var{option_2}, ...)
+@deffnx {Function} barsplot (@var{one_column_matrix})
+@deffnx {Function} barsplot (@var{one_column_matrix}, @var{option_1}, @var{option_2}, ...)
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} boxplot (@var{data})
+@deffnx {Function} boxplot (@var{data}, @var{option_1}, @var{option_2}, ...)
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
