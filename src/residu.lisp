@@ -190,18 +190,24 @@
 (setq sn* nil sd* nil) 
 
 (defmfun $residue (e var p)
-  (cond (($unknown e) ($nounify '$residue) (list '(%residue) e var p))
-	(t (let (sn* sd*)
-	     (if (and (mtimesp e) (andmapcar #'snumden (cdr e)))
-		 (setq nn* (m*l sn*) dn* (m*l sd*))
-		 (numden e)))
-	   (resm1 (div* nn* dn*) p))))
+  (cond (($unknown e)
+	 ($nounify '$residue)
+	 (list '(%residue) e var p))
+	(t
+	 (let (sn* sd*)
+	   (if (and (mtimesp e) (andmapcar #'snumden (cdr e)))
+	       (setq nn* (m*l sn*) dn* (m*l sd*))
+	       (numden e)))
+	 (resm1 (div* nn* dn*) p))))
 
 (defun resm1 (e pole)
-  (setq pole ($rectform pole))
-  (setq e (ratdisrep ($taylor e var pole
-			      0	;; things like residue(s/(s^2-a^2),s,a) fails if use -1
-			      ;;-1
-			      )))
-  (coeff e (m^ (m+ (m* -1 pole) var) -1) 1))
+  ;; Call $ratsimp to simplify pole.  Not sure if this is really
+  ;; necessary or desired, but it fixes bug 1504505.  It would be
+  ;; better to fix $taylor, but that seems much harder.
+  (let ((pole ($ratsimp ($rectform pole))))
+    (setq e (ratdisrep ($taylor e var pole
+				0 ;; things like residue(s/(s^2-a^2),s,a) fails if use -1
+				;;-1
+				)))
+    (coeff e (m^ (m+ (m* -1 pole) var) -1) 1)))
 

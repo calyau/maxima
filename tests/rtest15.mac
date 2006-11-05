@@ -540,3 +540,15 @@ und;
 integrate(1/(sin(x)^2+1),x,0,3*%pi);
 3*sqrt(2)*%pi/2;
 
+/*
+ * Bug [1504505] integrate( 1/(x^8-1),x,0,1/2) => internal error
+ *
+ * Fixed in residu.lisp, 1.5.
+ *
+ * The call to factor is to get rid of some numerical factors.
+ */
+factor(integrate(1/(x^8-1),x,0,1/2));
+-(2*sqrt(2)*atan((5*sqrt(2)+4)/(3*sqrt(2)+16))
+ -2*sqrt(2)*atan((5*sqrt(2)-4)/(3*sqrt(2)-16))+sqrt(2)*log(4*(2*sqrt(2)+5)/17)
+ -sqrt(2)*log(-4*(2*sqrt(2)-5)/17)+2*log(2)-2*log(2/3)+4*atan(1/2))
+ /16;
