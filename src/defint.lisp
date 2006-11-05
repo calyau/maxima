@@ -1502,19 +1502,27 @@
   (let ((rd* ())) 
     (radicalp e v)))
 
+;; Compute the integral(n/d,x,0,inf) by computing the negative of the
+;; sum of residues of log(-x)*n/d over the poles of n/d inside the
+;; keyhole contour.  This contour is basically an disk with a slit
+;; along the positive real axis.  n/d must be a rational function.
 (defun keyhole (n d var)
-  (let ((semirat* ()))
-    (setq n (res n d #'(lambda (j) 
-			 (or (not (equal ($imagpart j) 0))
-			     (eq ($asksign j) '$neg)))
-		 #'(lambda (j)
-		     (cond ((eq ($asksign j) '$pos)
-			    t)
-			   (t (diverg))))))
+  (let* ((semirat* ())
+	 (res (res n d
+		   #'(lambda (j)
+		       ;; Ok if not on the positive real axis.
+		       (or (not (equal ($imagpart j) 0))
+			   (eq ($asksign j) '$neg)))
+		   #'(lambda (j)
+		       (cond ((eq ($asksign j) '$pos)
+			      t)
+			     (t (diverg)))))))
     (let ((rsn* t))
-      ($rectform ($multthru (m+ (cond ((car n) (car n))
+      ($rectform ($multthru (m+ (cond ((car res)
+				       (car res))
 				      (t 0.))
-				(cond ((cadr n) (cadr n))
+				(cond ((cadr res)
+				       (cadr res))
 				      (t 0.))))))))
 
 ;; Look at an expression e of the form sin(r*x)^k, where k is an
@@ -2531,11 +2539,14 @@
 ;; the log function to have an imaginary part between 0 and 2*%pi
 ;; instead of -%pi to %pi.
 (defun rectzto%pi2 (p pe d)
+  ;; We have R(exp(x))*p(x) represented as p(x)*pe(exp(x))/d(exp(x)).
   (prog (dp n pl a b c denom-exponential)
      (if (not (and (setq denom-exponential (catch 'pin%ex (pin%ex d)))
 		   (%e-integer-coeff pe)
 		   (%e-integer-coeff d)))
 	 (return ()))
+     ;; At this point denom-exponential has converted d(exp(x)) to the
+     ;; polynomial d(z), where z = exp(x).
      (setq n (m* (cond ((null p) -1.)
 		       (t ($expand (m*t '$%i %pi2 (makpoly p)))))
 		 pe))
@@ -2565,13 +2576,18 @@
 	   ((or (cadr pl)
 		(caddr pl))
 	    (setq dp (sdiff d var))))
-     ;; Not sure what this does.
+     ;; The cadr of pl is the list of the (simple?) poles of the
+     ;; denom-exponential.  Take the log of them to find the poles of
+     ;; the original expression.  Then compute the residues at each of
+     ;; these poles and sum them up and put the result in B.  (If no
+     ;; simple poles set B to 0.)
      (cond ((cadr pl)
 	    (setq b (mapcar #'log-imag-0-2%pi (cadr pl)))
 	    (setq b (res1 n dp b))
 	    (setq b (m+l b)))
 	   (t (setq b 0.)))
-     ;; Not sure what this does either.
+     ;; I think this handles the case of the multiple poles of the
+     ;; denominator.  The sum of these residues are placed in C.
      (cond ((caddr pl)
 	    (let ((temp (mapcar #'log-imag-0-2%pi (caddr pl))))
 	      (setq c (append temp (mapcar #'(lambda (j) 
@@ -3167,16 +3183,21 @@
 
 ;;;Looks at the IMAGINARY part of a log and puts it in the interval 0 2*%pi.
 (defun log-imag-0-2%pi (x)
-  (let ((plog (simplify `((%plog) ,x))))
+  (let ((plog (simplify ($rectform `((%plog) ,x)))))
+    ;; We take the $rectform above to make sure that the log is
+    ;; expanded out for the situations where simplifying plog itself
+    ;; doesn't do it.  This should probably be considered a bug in the
+    ;; plog simplifier and should be fixed there.
     (cond ((not (free plog '%plog))
 	   (subst '%log '%plog plog))
-	  (t (destructuring-let (((real . imag) (trisplit plog)))
-	       (cond ((eq ($asksign imag) '$neg)
-		      (setq imag (m+ imag %pi2)))
-		     ((eq ($asksign (m- imag %pi2)) '$pos)
-		      (setq imag (m- imag %pi2)))
-		     (t t))
-	       (m+ real (m* '$%i imag)))))))
+	  (t
+	   (destructuring-let (((real . imag) (trisplit plog)))
+	     (cond ((eq ($asksign imag) '$neg)
+		    (setq imag (m+ imag %pi2)))
+		   ((eq ($asksign (m- imag %pi2)) '$pos)
+		    (setq imag (m- imag %pi2)))
+		   (t t))
+	     (m+ real (m* '$%i imag)))))))
 
 	    
 ;;; Temporary fix for a lacking in taylor, which loses with %i in denom.

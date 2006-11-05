@@ -552,3 +552,12 @@ factor(integrate(1/(x^8-1),x,0,1/2));
  -2*sqrt(2)*atan((5*sqrt(2)-4)/(3*sqrt(2)-16))+sqrt(2)*log(4*(2*sqrt(2)+5)/17)
  -sqrt(2)*log(-4*(2*sqrt(2)-5)/17)+2*log(2)-2*log(2/3)+4*atan(1/2))
  /16;
+
+/*
+ * Bug [ 1582625 ] integrate(t^2*log(t)/((t^2-1)*(t^4+1)), t, 0, 1) wrong?
+ *
+ * Fixed in defint.lisp
+ *
+ */
+integrate(t^2*log(t)/((t^2-1)*(t^4+1)), t, 0, 1);
+-(sqrt(2)-2)*%pi^2/32;
