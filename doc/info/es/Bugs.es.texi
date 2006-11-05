@@ -1,15 +1,8 @@
-@c version 1.9
+@c version 1.10
 @menu
-* Introducci@'on a la detecci@'on e informe de fallos::
 * Definiciones para la detecci@'on e informe de fallos::
 @end menu
 
-@node Introducci@'on a la detecci@'on e informe de fallos
-@section Introducci@'on a la detecci@'on e informe de fallos
-Como todos los grandes programas, Maxima contiene tanto bugs conocidos
-como desconocidos. Este cap@'{@dotless{i}}tulo describe las facilidades internas para
-ejecutar la suite de evaluaci@'on de Maxima (Maxima test suite) adem@'as 
-de reportar nuevos bugs. 
 
 @node Definiciones para la detecci@'on e informe de fallos
 @section Definiciones para la detecci@'on e informe de fallos
@@ -18,14 +11,14 @@ de reportar nuevos bugs.
 @deffnx {Funci@'on} run_testsuite (@var{boolean}, @var{boolean})
 @deffnx {Funci@'on} run_testsuite (@var{boolean}, @var{boolean}, @var{list})
 
-Ejecuta la suite de evaluaci@'on de Maxima. Los tests que producen las 
+Ejecuta el conjunto de pruebas de Maxima. Los tests que producen las 
 respuestas deseadas son considerados como ``pruebas superadas'', como
 los tests que no producen las respuestas deseadas, son marcados como
-bugs conocidos. 
+fallos conocidos. 
 
 @code{run_testsuite ()} muestra s@'olo los test que no pasaron la prueba.
 
-@code{run_testsuite (true)} muestra los tests que son marcados como bugs
+@code{run_testsuite (true)} muestra los tests que son marcados como fallos
 conocidos, adem@'as de fallos. 
 
 @code{run_testsuite (true, true)} muestra todos los tests. 
@@ -57,13 +50,13 @@ Con esto se especifica que el conjunto de tests est@'a formado por los ficheros 
 
 @deffn {Funci@'on} bug_report ()
 Imprime las versiones de Maxima y de Lisp y proporciona un enlace a la
-p@'agina web de reporte de bugs del proyecto Maxima. 
+p@'agina web sobre informe de fallos del proyecto Maxima. 
 La informaci@'on respecto a las versiones es la misma que reporta la 
 funci@'on @code{build_info}. 
 
-Cuando un bug es reportado, es de gran ayuda que se copie la
+Cuando se informa sobre un fallo, es de gran ayuda que se copie la
 informaci@'on relacionada con la versi@'on de Maxima y de Lisp usada,
-dentro del reporte de bug. 
+dentro del propio informe. 
 
 @code{bug_report} retorna una cadena vac@'{@dotless{i}}a @code{""}.
 @end deffn

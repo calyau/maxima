@@ -1,4 +1,4 @@
-@c english version 1.31
+@c english version 1.34
 @menu
 * n-arios::                        
 * no-fijos::                       
@@ -135,6 +135,9 @@ precedida por el operador comilla.
 @end deffn
 
 @deffn {Operador} !!
+@ifinfo
+@fnindex Doble factorial
+@end ifinfo
 El operador doble factorial.
 
 Para un n@'umero entero, de punto flotante o racional @code{n},
@@ -155,6 +158,9 @@ Para un argumento @code{n} el cual no es un n@'umero entero, punto flotante o ra
 @end deffn
 
 @deffn {Operador} #
+@ifinfo
+@fnindex Negaci@'on de la igualdad sint@'actica
+@end ifinfo
 Representa la negaci@'on de la igualdad sint@'actica @code{=}.
 
 N@'otese que debido a las reglas de evaluaci@'on de expresiones
@@ -191,6 +197,9 @@ Ejemplos:
 @end deffn
 
 @deffn {Operador} .
+@ifinfo
+@fnindex Multiplicaci@'on no conmutativa
+@end ifinfo
 El operador punto, para multiplicaci@'on de matrices (no-conmutativo). 
 Cuando "." se usa de esta forma, se dejar@'an espacios a
 ambos lados de @'este, como en @code{A . B}. As@'{@dotless{i}} se evita que se confunda con el punto decimal de los n@'umeros. 
@@ -211,10 +220,16 @@ y
 @end deffn
 
 @deffn {Operador} :
+@ifinfo
+@fnindex Operador de asignaci@'on
+@end ifinfo
 El operador de asignaci@'on. Por ejemplo, @code{A:3} se asigna a la variable @var{A} el valor de 3.
 @end deffn
 
 @deffn {Operador} ::
+@ifinfo
+@fnindex Operador de asignaci@'on (eval@'ua el miembro izquierdo)
+@end ifinfo
 Operador de asignaci@'on. :: asigna el valor de una expresi@'on
 en su derecha a el valor de la cantidad en su izquierda, la cual
 debe evaluarse a una variable de tipo at@'omica o una variable subindicada.
@@ -222,6 +237,9 @@ debe evaluarse a una variable de tipo at@'omica o una variable subindicada.
 @end deffn
 
 @deffn {Operador} ::=
+@ifinfo
+@fnindex Operador de definici@'on de funciones macro
+@end ifinfo
 El operador de definici@'on de macros @code{::=} define una funci@'on (llamada macro por razones hist@'oricas) que no eval@'ua sus argumentos, siendo la expresi@'on que retorna (llamada "macroexpansi@'on") evaluada dentro del contexto desde el cual se ha invocado la macro. En cualquier otro sentido, una funci@'on macro es igual que una funci@'on ordinaria.
 
 @code{macroexpand} devuelve la expresi@'on que a su vez fue devuelta por una macro (sin evaluar la expresi@'on);
@@ -325,12 +343,19 @@ x is equal to 1234 - 1729 w
 @end deffn
 
 @deffn {Operador} :=
+@ifinfo
+@fnindex Operador de definici@'on de funciones
+@end ifinfo
 El operador de definici@'on de funciones. Por ejemplo, @code{f(x):=sin(x)} define
  una funci@'on @code{f}. 
 
 @end deffn
 
 @deffn {Operador} =
+@ifinfo
+@fnindex Operador de ecuaci@'on
+@fnindex Igualdad sint@'actica
+@end ifinfo
 Operador de ecuaci@'on.
 
 La expresi@'on @code{@var{a} = @var{b}} representa una ecuaci@'on
@@ -467,7 +492,40 @@ obliga a la evaluaci@'on previa de @var{expr},
 
 @end deffn
 
+
+
+@deffn {Operador} and
+@ifinfo
+@fnindex Conjunci@'on l@'ogica
+@end ifinfo
+Operador de conjunci@'on l@'ogica.
+El operador @code{and} es un operador infijo @code{n}-ario;
+sus operandos son expresiones booleanas y su resultado es un valor l@'ogico.
+
+El operador @code{and} impone la evaluaci@'on (igual que @code{is}) de uno o m@'as operandos,
+y puede forzar la evaluaci@'on de todos los operandos.
+
+Los operandos se eval@'uan en el orden en el que aparecen; 
+s@'olo eval@'ua tantos operandos como sean necesarios para determinar el resultado.
+Si alg@'un operando vale @code{false},
+el resultado es @code{false} y ya no se eval@'uan m@'as operandos.
+
+La variable global @code{prederror} controla el comportamiento de @code{and}
+cuando la evaluaci@'on de un operando no da como resultado @code{true} o @code{false};
+@code{and} imprime un mensaje de error cuando @code{prederror} vale @code{true}.
+En caso contrario, @code{and} devuelve @code{unknown}.
+
+El operador @code{and} no es conmutativo:
+@code{a and b} puede no ser igual a @code{b and a} debido al tratamiento de operandos indeterminados.
+
+@end deffn
+
+
+
 @deffn {Operador} or
+@ifinfo
+@fnindex Disyunci@'on l@'ogica
+@end ifinfo
 Operador de disyunci@'on l@'ogica. El operador @code{or} es un operador infijo @code{n}-ario;
 sus operandos son expresiones booleanas y su resultado es un valor l@'ogico.
 
@@ -477,13 +535,16 @@ y puede forzar la evaluaci@'on de todos los operandos.
 Los operandos se eval@'uan en el orden en el que aparecen; @code{or} s@'olo eval@'ua tantos operandos como sean necesarios para determinar el resultado. Si un operando vale @code{true}, el resultado es @code{true} y ya no se eval@'uan m@'as operandos.
 
 La variable global @code{prederror} controla el comportamiento de @code{or} cuando la evaluaci@'on de un operando no da como resultado @code{true} o @code{false}; @code{or} imprime un mensaje de error cuando @code{prederror} vale @code{true}.
-En caso contrario, @code{and} devuelve @code{unknown}.
+En caso contrario, @code{or} devuelve @code{unknown}.
 
 El operador @code{or} no es conmutativo: @code{a or b} puede no ser igual a @code{b or a} debido al tratamiento de operandos indeterminados.
 
 @end deffn
 
 @deffn {Operador} not
+@ifinfo
+@fnindex Negaci@'on l@'ogica
+@end ifinfo
 Operador de negaci@'on l@'ogica. El operador @code{not} es un operador prefijo;
 su operando es una expresi@'on booleana y su resultado es un valor l@'ogico.
 

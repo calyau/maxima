@@ -1,4 +1,4 @@
-@c version 1.21
+@c version 1.22
 @menu
 * Introducci@'on a los m@'etodos num@'ericos::   
 * Series de Fourier::                     
@@ -299,6 +299,57 @@ La variable @code{find_root_rel} es la precisi@'on de la instrucci@'on @code{fin
 El valor por defecto de @code{find_root_abs} y @code{find_root_rel} es 0.0 en ambos casos, de forma que @code{find_root} obtiene la mejor aproximaci@'on posible para la aritm@'etica de simple precisi@'on de que se dispone.
 
 @end defvr
+
+
+@deffn {Funci@'on} newton (@var{expr}, @var{x}, @var{x_0}, @var{eps})
+Devuelve una soluci@'on aproximada de @code{@var{expr} = 0} obtenida
+por el m@'etodo de Newton, considerando @var{expr} como una funci@'on
+de una variable, @var{x}.
+La b@'usqueda comienza con @code{@var{x} = @var{x_0}} y contin@'ua
+hasta que se verifique @code{abs(@var{expr}) < @var{eps}}, donde
+@var{expr} se eval@'ua con el valor actual de @var{x}.
+
+La funci@'on @code{newton} permite que en @var{expr} haya variables
+no definidas, siempre y cuando la condici@'on de terminaci@'on
+@code{abs(@var{expr}) < @var{eps}} pueda reducirse a un valor
+l@'ogico @code{true} o @code{false}; de este modo, no es necesario
+que @var{expr} tome un valor num@'erico.
+
+Ejec@'utese @code{load(newton1)} para cargar esta funci@'on.
+
+V@'eanse tambi@'en @code{realroots}, @code{allroots}, @code{find_root} y @code{mnewton}.
+
+Ejemplos:
+
+@c ===beg===
+@c load (newton1);
+@c newton (cos (u), u, 1, 1/100);
+@c ev (cos (u), u = %);
+@c assume (a > 0);
+@c newton (x^2 - a^2, x, a/2, a^2/100);
+@c ev (x^2 - a^2, x = %);
+@c ===end===
+@example
+(%i1) load (newton1);
+(%o1) /usr/share/maxima/5.10.0cvs/share/numeric/newton1.mac
+(%i2) newton (cos (u), u, 1, 1/100);
+(%o2)                   1.570675277161251
+(%i3) ev (cos (u), u = %);
+(%o3)                 1.2104963335033528E-4
+(%i4) assume (a > 0);
+(%o4)                        [a > 0]
+(%i5) newton (x^2 - a^2, x, a/2, a^2/100);
+(%o5)                  1.00030487804878 a
+(%i6) ev (x^2 - a^2, x = %);
+                                           2
+(%o6)                6.098490481853958E-4 a
+@end example
+
+@end deffn
+
+
+
+
 
 
 @node Definiciones para las series de Fourier, , Definiciones para los m@'etodos num@'ericos, M@'etodos num@'ericos

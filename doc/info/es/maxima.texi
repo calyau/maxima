@@ -1,6 +1,6 @@
 \input texinfo
 @c -*-texinfo-*-
-@c english version 1.35
+@c english version 1.34
 
 @c 2000-04-17 Jim Van Zandt <jrv@vanzandt.mv.com> Added header,
 @c info directory entry, reference to introduction chapter, and menu
@@ -149,7 +149,6 @@ Paquetes adicionales
 * descriptive::                 Estad@'{@dotless{i}}stica descriptiva.
 * diag::                        Matrices de Jordan.
 * distrib::                     Distribuciones de probabilidad.
-* dynamics::                    Gr@'aficas de sistemas din@'amicos y fractales.
 * eval_string::                 Expresiones de Maxima en formato de cadena.
 * f90::                         Traductor de Maxima fortran.
 * ggf::                         Expresi@'on general de sucesiones.
@@ -186,7 +185,6 @@ Introducci@'on
 
 Fallos
 
-* Introducci@'on a la detecci@'on e informe de fallos::
 * Definiciones para la detecci@'on e informe de fallos::
 
 Ayuda
@@ -429,11 +427,6 @@ distrib
 * Introducci@'on a distrib::
 * Definiciones para distribuciones continuas::
 * Definiciones para distribuciones discretas::
-
-dynamics
-
-* Introducci@'on a dynamics::
-* Definiciones para dynamics::
 
 eval_string
 
@@ -727,15 +720,11 @@ zeilberger
 @chapter diag
 @include diag.texi
 
-@node distrib, dynamics, diag, Top
+@node distrib, eval_string, diag, Top
 @chapter distrib
 @include distrib.texi
 
-@node dynamics, eval_string, distrib, Top
-@chapter dynamics
-@include dynamics.texi
-
-@node eval_string, f90, dynamics, Top
+@node eval_string, f90, distrib, Top
 @chapter eval_string
 @include eval_string.texi
 

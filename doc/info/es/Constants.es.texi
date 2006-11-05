@@ -1,4 +1,4 @@
-@c version 1.11
+@c version 1.13
 @menu
 * Definiciones para Constantes::   
 @end menu
@@ -7,31 +7,47 @@
 @section Definiciones para Constantes
 
 @defvr {Constante} %e
+@ifinfo
+@vrindex e
+@vrindex Base de los logaritmos naturales
+@end ifinfo
 La base de los logaritmos naturales, @math{e}, se representa en Maxima como @code{%e}.
 
 @end defvr
 
 @defvr {Constante} false
 Constante l@'ogica para "falso". (NIL en Lisp)
-
 @end defvr
 
 @defvr {Constante} inf
+@ifinfo
+@vrindex M@'as infinito
+@end ifinfo
 M@'as infinito.
 
 @end defvr
 
 @defvr {Constante}  infinity
+@ifinfo
+@vrindex Infinito complejo
+@end ifinfo
 Infinito complejo.
 
 @end defvr
 
 @defvr {Constante} minf
+@ifinfo
+@vrindex Menos infinito
+@vrindex Infinito negativo
+@end ifinfo
 Menos infinito.
 
 @end defvr
 
 @defvr {Constante} %pi
+@ifinfo
+@vrindex pi
+@end ifinfo
 El valor "pi" se representa en Maxima como @code{%pi}.
 
 @end defvr
