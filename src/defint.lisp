@@ -55,7 +55,7 @@
 ;;
 ;;	dintrad- i(x^m/(a*x^2+b*x+c)^(n+3/2),x,0,inf) [wang, p 74]
 ;;
-;;	dintlog- i(log(g(x))*f(x),x,0,inf) = 0 (by symetry) or
+;;	dintlog- i(log(g(x))*f(x),x,0,inf) = 0 (by symmetry) or
 ;;		 tries an integration by parts.  (only routine to
 ;;		 try integration by parts) [wang, pp 93-95]
 ;;
@@ -1755,6 +1755,7 @@
 ;;; Do integrals of sin and cos. this routine makes sure lower limit
 ;;; is zero.
 (defun intsc1 (a b e)
+  ;; integrate(e,var,a,b)
   (let ((limit-diff (m+ b (m* -1 a)))
 	($%emode t)
 	($trigsign t)
