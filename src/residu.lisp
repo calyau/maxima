@@ -28,20 +28,21 @@
 ;; The regions are determined by functions REGION and REGION1, which
 ;; should return non-NIL if the root is in the given region.
 ;;
+;; The description below applies if *SEMIRAT* is NIL.  If *SEMIRAT* is
+;; non-NIL, somewhat different results are returned.  I (rtoy) am not
+;; exactly sure what *SEMIRAT* is intended to mean.
+;;
 ;; The first part of the list of the form ((r1 (x - r1)^d1) (r2 (x -
 ;; r2)^d2) ...) where r1, r2 are the roots, d1, d2 are the
 ;; multiplicity of each root, and x is the variable.
 ;;
-;; The second part is a list of the roots in region 1.  If the root is
-;; simple, then the item is the root.  If the root is a multiple root
-;; of order d, the item is (r d).
+;; The second part is a list of the repeated roots in REGION.  Each
+;; element of the list is of the form (r d) where r is the root and d
+;; is the multiplicity.
 ;;
-;; The third part is similar, except it is the list of the roots in
-;; region 2.
+;; The third part is a list of the simple roots in REGION.
 ;;
-;; Finally, the fourth part is either NIL if *SEMIRAT* is NIL.  If
-;; *SEMIRAT* is non-NIL, it is the list of roots outside of region and
-;; region1, in the same format as the second and third parts.
+;; Finally, the fourth part is NIL, unless *semirat* is T.
 (defun polelist (d region region1)
   (prog (roots $breakup r rr ss r1 s pole wflag cf) 
      (setq wflag t)

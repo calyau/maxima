@@ -2563,9 +2563,7 @@
        ;; It seems as if polelist returns a list of several items.
        ;; The first element is a list consisting of the pole and (z -
        ;; pole).  We don't care about this, so we take the rest of the
-       ;; result.  I think the second element of the list is an alist
-       ;; consisting of the pole and it's multiplicity.  I don't know
-       ;; what the rest of the list is.
+       ;; result.  
        (setq pl (cdr (polelist denom-exponential
 			       #'(lambda (j)
 				   ;; The imaginary part is nonzero,
@@ -2577,23 +2575,25 @@
 				   (not (eq ($asksign ($realpart j)) '$zero)))))))
      ;; Not sure what this does.
      (cond ((null pl)
+	    ;; No roots at all, so return
 	    (return nil))
 	   ((or (cadr pl)
 		(caddr pl))
+	    ;; We have simple roots or roots in REGION1
 	    (setq dp (sdiff d var))))
-     ;; The cadr of pl is the list of the (simple?) poles of the
-     ;; denom-exponential.  Take the log of them to find the poles of
-     ;; the original expression.  Then compute the residues at each of
-     ;; these poles and sum them up and put the result in B.  (If no
-     ;; simple poles set B to 0.)
      (cond ((cadr pl)
+	    ;; The cadr of pl is the list of the simple poles of
+	    ;; denom-exponential.  Take the log of them to find the
+	    ;; poles of the original expression.  Then compute the
+	    ;; residues at each of these poles and sum them up and put
+	    ;; the result in B.  (If no simple poles set B to 0.)
 	    (setq b (mapcar #'log-imag-0-2%pi (cadr pl)))
 	    (setq b (res1 n dp b))
 	    (setq b (m+l b)))
 	   (t (setq b 0.)))
-     ;; I think this handles the case of the multiple poles of the
-     ;; denominator.  The sum of these residues are placed in C.
      (cond ((caddr pl)
+	    ;; I think this handles the case of poles outside the
+	    ;; regions.  The sum of these residues are placed in C.
 	    (let ((temp (mapcar #'log-imag-0-2%pi (caddr pl))))
 	      (setq c (append temp (mapcar #'(lambda (j) 
 					       (m+ (m*t '$%i %pi2) j))
@@ -2602,9 +2602,9 @@
 	      (setq c (m+l c))))
 	   (t (setq c 0.)))
      (cond ((car pl)
-	    ;; We have the poles of deonom-exponential, so we need to
-	    ;; convert them to the actual pole values for R(exp(x)),
-	    ;; by taking the log of the value of poles.
+	    ;; We have the repeated poles of deonom-exponential, so we
+	    ;; need to convert them to the actual pole values for
+	    ;; R(exp(x)), by taking the log of the value of poles.
 	    (let ((poles (mapcar #'(lambda (p)
 				     (log-imag-0-2%pi (car p)))
 				 (car pl)))
