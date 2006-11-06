@@ -16,10 +16,9 @@
 (declare-top (*lexpr $diff $substitute $taylor $expand)
 	     (special $breakup $noprincipal varlist
 		      leadcoef var *roots *failures wflag nn*
-		      sn* sd* $tellratlist genvar semirat* dn* zn)
+		      sn* sd* $tellratlist genvar dn* zn)
 	     (genprefix res))
 
-(setq semirat* nil) 
 
 ;; Compute the poles (roots) of the polynomial D and return them.
 ;; Divide these roots into several parts: Those in REGION, REGION1,
@@ -40,8 +39,8 @@
 ;; The third part is similar, except it is the list of the roots in
 ;; region 2.
 ;;
-;; Finally, the fourth part is either NIL if SEMIRAT* is NIL.  If
-;; SEMIRAT* is non-NIL, it is the list of roots outside of region and
+;; Finally, the fourth part is either NIL if *SEMIRAT* is NIL.  If
+;; *SEMIRAT* is non-NIL, it is the list of roots outside of region and
 ;; region1, in the same format as the second and third parts.
 (defun polelist (d region region1)
   (prog (roots $breakup r rr ss r1 s pole wflag cf) 
@@ -56,14 +55,14 @@
      
    loop1
      (cond ((null roots)
-	    (cond ((and semirat*
+	    (cond ((and *semirat*
 			(> (f+ (length s) (length r))
 					;(LENGTH (APPEND S R))
 			   (f+ (length ss) (length rr))
 					;(LENGTH (APPEND SS RR))
 			   ))
-		   ;; Return CF, repeated roots (semirat*), simple
-		   ;; roots (semirat*), roots in region 1.
+		   ;; Return CF, repeated roots (*semirat*), simple
+		   ;; roots (*semirat*), roots in region 1.
 		   (return (list cf rr ss r1)))
 		  (t
 		   ;; Return CF, repeated roots, simple roots, roots in region 1.
@@ -99,8 +98,8 @@
 		  (t
 		   ;; Return NIL if we get here.  
 		   (return nil))))
-	   (semirat*
-	    ;; (What does SEMIRAT* mean?)  Anyway if we're here, the
+	   (*semirat*
+	    ;; (What does *SEMIRAT* mean?)  Anyway if we're here, the
 	    ;; pole is not in REGION or REGIOn1, so push the pole onto
 	    ;; SS or RR depending if the pole is repeated or not.
 	    (cond ((equal d 1)

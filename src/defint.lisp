@@ -150,7 +150,7 @@
 		   no-err-sub oscip %einvolve sin-sq-cos-sq-sub)
 		      
 ;;;rsn* is in comdenom. does a ratsimp of numerator.
-	    (special *def2* pcprntd *mtoinf* rsn* semirat*
+	    (special *def2* pcprntd *mtoinf* rsn*
 		     sn* sd* leadcoef checkfactors 
 		     *nodiverg rd* exp1
 		     *ul1* *ll1* *dflag bptu bptd plm* zn
@@ -201,6 +201,10 @@
 
 (defmvar nonintegerl nil
   "A non-integer-list for non-atoms found out to be `noninteger's")
+
+;; Not really sure what this is meant to do, but it's used by MTORAT,
+;; KEYHOLE, and POLELIST.
+(defvar *semirat* nil)
 
 (defun $defint (exp var ll ul)
   (let ((*global-defint-assumptions* ())
@@ -1390,7 +1394,7 @@
 		     (t nil)))))))
 
 (defun mtorat (n d s)
-  (let ((semirat* t)) 
+  (let ((*semirat* t)) 
     (cond ((and (null *dflag)
 		(setq s (difapply n d s #'mtorat)))
 	   s)
@@ -1507,7 +1511,7 @@
 ;; keyhole contour.  This contour is basically an disk with a slit
 ;; along the positive real axis.  n/d must be a rational function.
 (defun keyhole (n d var)
-  (let* ((semirat* ())
+  (let* ((*semirat* ())
 	 (res (res n d
 		   #'(lambda (j)
 		       ;; Ok if not on the positive real axis.
