@@ -2705,7 +2705,7 @@ The variable `tab-width' controls the spacing of tab stops."
 
 (defun inferior-maxima-wait-for-output ()
   "Wait for output from the Maxima process."
-  (while (and 
+  (when (and 
           inferior-maxima-waiting-for-output
           (inferior-maxima-running))
     (accept-process-output inferior-maxima-process))
@@ -2760,8 +2760,8 @@ The variable `tab-width' controls the spacing of tab stops."
                      'inferior-maxima-output-filter)
 ;        (add-to-list 'comint-output-filter-functions
 ;                     'inferior-maxima-replace-tabs-by-spaces)
-        (add-to-list 'comint-output-filter-functions
-                     'inferior-maxima-remove-double-input-prompt)
+;        (add-to-list 'comint-output-filter-functions
+;                     'inferior-maxima-remove-double-input-prompt)
 	(if maxima-fix-double-prompt
             (add-to-list 'comint-output-filter-functions
                          'inferior-maxima-remove-double-prompt))
