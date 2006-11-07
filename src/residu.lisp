@@ -133,16 +133,23 @@
 		  (caddr pl)) 
 	      (setq dp (sdiff d var))))
        (cond ((car pl)
-	      ;; Compute the sum of the residues of n/d for the roots in REGION.
+	      ;; Compute the sum of the residues of n/d for the
+	      ;; multiple roots in REGION.
 	      (setq a (m+l (residue n (cond (leadcoef factors)
 					    (t d))
 				    (car pl)))))
 	     (t (setq a 0.)))
        (cond ((cadr pl)
-	      ;; Compute the sum of the residues of n/d for the roots in REGION1.
+	      ;; Compute the sum of the residues of n/d for the simple
+	      ;; roots in REGION1.  Since the roots are simple, we can
+	      ;; use RES1 to compute the residues instead of the more
+	      ;; complicated $RESIDUE.  (This works around a bug
+	      ;; described in bug 1073338.)
+	      #+nil
 	      (setq b (m+l (mapcar #'(lambda (pole)
 				       ($residue (m// n d) var pole))
-				   (cadr pl)))))
+				   (cadr pl))))
+	      (setq b (m+l (res1 n dp (cadr pl)))))
 	     (t (setq b 0.)))
        (cond ((caddr pl)
 	      ;; Compute the sum of the residues of n/d for the roots
@@ -165,9 +172,20 @@
 		       (resm1 (div* zn factors) (car j)))
 		   pl))))
 
+;; Compute the residues of zn/d for the simple poles in the list PL1.
+;; The poles must be simple because ZD must be the derivative of
+;; denominator.  For simple poles the residue can be computed as
+;; limit(n(z)/d(z)*(z-a),z,a).  Since the pole is simple we have the
+;; indeterminate form (z-a)/d(z).  Use L'Hospital's rule to get
+;; 1/d'(z).  Hence, the residue is easily computed as n(a)/d'(a).
 (defun res1 (zn zd pl1)
   (setq zd (div* zn zd))
-  (mapcar #'(lambda (j) ($rectform ($expand (subin j zd)))) pl1))
+  (mapcar #'(lambda (j)
+	      ;; In case the pole is messy, call $RECTFORM.  This
+	      ;; works around some issues with gcd bugs in certain
+	      ;; cases.  (See bug 1073338.)
+	      ($rectform ($expand (subin ($rectform j) zd))))
+	  pl1))
 
 (defun resprog0 (f g n n2)
   (prog (a b c r) 
