@@ -1,7 +1,7 @@
 ;;; -*-  Mode: Lisp; Package: Maxima; Syntax: Common-Lisp; Base: 10 -*- 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;                                                                              
-;;;  $Id: grobner.lisp,v 1.1 2006-02-07 04:49:49 robert_dodier Exp $		 
+;;;  $Id: grobner.lisp,v 1.2 2006-11-08 03:40:02 dtc Exp $		 
 ;;;  Copyright (C) 1999, 2002 Marek Rychlik <rychlik@u.arizona.edu>		 
 ;;;  		       								 
 ;;;  This program is free software; you can redistribute it and/or modify	 
@@ -25,7 +25,7 @@
 
 (eval-when (load eval)
   (format t "~&Loading maxima-grobner ~a ~a~%"
-	  "$Revision: 1.1 $" "$Date: 2006-02-07 04:49:49 $"))
+	  "$Revision: 1.2 $" "$Date: 2006-11-08 03:40:02 $"))
 
 ;;FUNCTS is loaded because it contains the definition of LCM
 ($load "functs")
@@ -94,7 +94,7 @@
   "Type of monomial."
   `(simple-array exponent (,dim)))
 
-(declaim (optimize (speed 3) (safety 0)))
+(declaim (optimize (speed 3) (safety 1)))
 
 (declaim (ftype (function (monom) fixnum) monom-dimension monom-sugar)
 	 (ftype (function (monom &optional fixnum fixnum) fixnum) monom-total-degree)
@@ -242,7 +242,7 @@ of variables may be specified with arguments START and END."
 The second returned value is T if P=Q, otherwise it is NIL."
   (declare (type monom p q) (type fixnum start end))
   (do ((i start (1+ i)))
-      ((>= i end) (values NIL T))
+      ((>= i end) (values nil t))
     (declare (type fixnum i))
     (cond
      ((> (monom-elt p i) (monom-elt q i))
@@ -287,7 +287,7 @@ not have a minimal element. This order is useful in constructing other
 orders."
   (declare (type monom p q) (type fixnum start end))
   (do ((i (1- end) (1- i)))
-      ((< i start) (values NIL T))
+      ((< i start) (values nil t))
     (declare (type fixnum i))
     (cond
      ((< (monom-elt p i) (monom-elt q i))
@@ -301,7 +301,7 @@ orders."
 The second returned value is T if P=Q, otherwise it is NIL."
   (declare (type monom p q) (type fixnum start end))
   (do ((i (1- end) (1- i)))
-	((< i start) (values NIL T))
+      ((< i start) (values nil t))
     (declare (type fixnum i))
       (cond
 	 ((> (monom-elt p i) (monom-elt q i))
@@ -463,21 +463,21 @@ that will be used in grobner calculations. If not set, Maxima's
 general expression ring will be used. This variable may be set
 to RING_OF_INTEGERS if desired.")
 
-(defmvar $poly_primary_elimination_order NIL
+(defmvar $poly_primary_elimination_order nil
   "Name of the default order for eliminated variables in elimination-based functions.
 If not set, LEX will be used.")
 
-(defmvar $poly_secondary_elimination_order NIL
+(defmvar $poly_secondary_elimination_order nil
   "Name of the default order for kept variables in elimination-based functions.
 If not set, LEX will be used.")
 
-(defmvar $poly_elimination_order NIL
+(defmvar $poly_elimination_order nil
   "Name of the default elimination order used in elimination calculations.
 If set, it overrides the settings in variables POLY_PRIMARY_ELIMINATION_ORDER
 and SECONDARY_ELIMINATION_ORDER. The user must ensure that this is a true
 elimination order valid for the number of eliminated variables.")
 
-(defmvar $poly_return_term_list NIL
+(defmvar $poly_return_term_list nil
   "If set to T, all functions in this package will return each polynomial as a
 list of terms in the current monomial order rather than a Maxima general expression.")
 
@@ -487,7 +487,7 @@ list of terms in the current monomial order rather than a Maxima general express
 (defmvar $poly_grobner_algorithm '$buchberger
   "The name of the algorithm used to find grobner bases.")
 
-(defmvar $poly_top_reduction_only NIL
+(defmvar $poly_top_reduction_only nil
   "If not FALSE, use top reduction only whenever possible.
 Top reduction means that division algorithm stops after the first reduction.")
 
@@ -517,9 +517,9 @@ Top reduction means that division algorithm stops after the first reduction.")
   (ezgcd #'identity :type function)
   (gcd #'identity :type function))
 
-(declaim (type ring *RingOfIntegers* *FieldOfRationals*))
+(declaim (type ring *ring-of-integers* *FieldOfRationals*))
 
-(defparameter *RingOfIntegers*
+(defparameter *ring-of-integers*
     (make-ring
      :parse #'identity
      :unit #'(lambda () 1)
@@ -742,7 +742,7 @@ in the coefficient ring."
 				      (term-coeff term)))
 	  p))
 
-(defun termlist-extend (p &optional (m (list 0)))
+(defun termlist-extend (p &optional (m (make-monom 1 :initial-element 0)))
   "Extend every monomial in a polynomial P by inserting at the
 beginning of every monomial the list of powers M."
   (mapcar #'(lambda (term) (make-term (monom-append m (term-monom term))
@@ -861,7 +861,7 @@ at the beginning of each monomial."
 
 (declaim (ftype (function (poly &optional sequence)) poly-extend))
 
-(defun poly-extend (p &optional (m (list 0)))
+(defun poly-extend (p &optional (m (make-monom 1 :initial-element 0)))
   (make-poly-from-termlist
    (termlist-extend (poly-termlist p) m)
    (+ (poly-sugar p) (monom-sugar m))))
@@ -886,28 +886,28 @@ at the beginning of each monomial."
     (dotimes (i k plist)
       (incf-power (nth i plist) i))))
 
-(defun saturation-extension (ring F plist &aux (k (length plist)) (d (monom-dimension (poly-lm (car plist)))))
+(defun saturation-extension (ring f plist &aux (k (length plist)) (d (monom-dimension (poly-lm (car plist)))))
   "Calculate [F, U1*P1-1,U2*P2-1,...,UK*PK-1], where PLIST=[P1,P2,...,PK]."
-  (setf F (poly-list-add-variables F k)
+  (setf f (poly-list-add-variables f k)
 	plist (mapcar #'(lambda (x)
 			  (setf (poly-termlist x) (nconc (poly-termlist x)
 							 (list (make-term (make-monom d :initial-element 0)
 									  (funcall (ring-uminus ring) (funcall (ring-unit ring)))))))
 			  x)
 		      (poly-standard-extension plist)))
-  (append F plist))
+  (append f plist))
 
 
-(defun polysaturation-extension (ring F plist &aux (k (length plist))
+(defun polysaturation-extension (ring f plist &aux (k (length plist))
 						   (d (+ k (length (poly-lm (car plist))))))
   "Calculate [F, U1*P1+U2*P2+...+UK*PK-1], where PLIST=[P1,P2,...,PK]."
-  (setf F (poly-list-add-variables F k)
+  (setf f (poly-list-add-variables f k)
 	plist (apply #'poly-append (poly-standard-extension plist))
 	(cdr (last (poly-termlist plist))) (list (make-term (make-monom d :initial-element 0)
 							    (funcall (ring-uminus ring) (funcall (ring-unit ring))))))
-  (append F (list plist)))
+  (append f (list plist)))
 
-(defun saturation-extension-1 (ring F p) (polysaturation-extension ring F (list p)))
+(defun saturation-extension-1 (ring f p) (polysaturation-extension ring f (list p)))
 
 
 
@@ -975,14 +975,14 @@ at the beginning of each monomial."
 ;;All inline functions of this module
 (declaim (inline free-of-vars make-pair-queue pair-queue-insert
 		 pair-queue-remove pair-queue-empty-p
-		 pair-queue-remove pair-queue-size Criterion-1
-		 Criterion-2 grobner reduced-grobner sugar-pair-key
+		 pair-queue-remove pair-queue-size criterion-1
+		 criterion-2 grobner reduced-grobner sugar-pair-key
 		 sugar-order normal-form normal-form-step grobner-op spoly
 		 equal-test-p
 		 ))
 
 ;;Optimization options
-(declaim (optimize (speed 3) (safety 0)))
+(declaim (optimize (speed 3) (safety 1)))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1110,7 +1110,9 @@ with no remainder is possible. Returns the quotient."
   (multiple-value-bind (quot rem coeff division-count)
       (poly-pseudo-divide ring f (list g))
     (declare (ignore division-count coeff)
-	     (type poly quot rem) (type fixnum division-count))
+	     (list quot)
+	     (type poly rem)
+	     (type fixnum division-count))
     (unless (poly-zerop rem) (error "Exact division failed."))
     (car quot)))
 
@@ -1181,31 +1183,31 @@ with no remainder is possible. Returns the quotient."
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun buchberger-criterion (ring G)
+(defun buchberger-criterion (ring g)
   "Returns T if G is a Grobner basis, by using the Buchberger
 criterion: for every two polynomials h1 and h2 in G the S-polynomial
 S(h1,h2) reduces to 0 modulo G."
   (every
    #'poly-zerop
-   (makelist (normal-form ring (spoly ring (elt G i) (elt G j)) G nil)
-	     (i 0 (- (length G) 2))
-	     (j (1+ i) (1- (length G))))))
+   (makelist (normal-form ring (spoly ring (elt g i) (elt g j)) g nil)
+	     (i 0 (- (length g) 2))
+	     (j (1+ i) (1- (length g))))))
 
-(defun grobner-test (ring G F)
+(defun grobner-test (ring g f)
   "Test whether G is a Grobner basis and F is contained in G. Return T
 upon success and NIL otherwise."
   (debug-cgb "~&GROBNER CHECK: ")
   (let (($poly_grobner_debug nil)
-	(stat1 (buchberger-criterion ring G))
+	(stat1 (buchberger-criterion ring g))
 	(stat2
 	  (every #'poly-zerop
-		 (makelist (normal-form ring (copy-tree (elt F i)) G nil)
-			   (i 0 (1- (length F)))))))
+		 (makelist (normal-form ring (copy-tree (elt f i)) g nil)
+			   (i 0 (1- (length f)))))))
     (unless stat1 (error "~&Buchberger criterion failed."))
     (unless stat2
       (error "~&Original polys not in ideal spanned by Grobner.")))
   (debug-cgb "~&GROBNER CHECK END")
-  T)
+  t)
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1259,31 +1261,31 @@ in the pair queue.")
    :element-key #'(lambda (pair) (funcall *pair-key-function* (pair-first pair) (pair-second pair)))
    :test *pair-order*))
 
-(defun pair-queue-initialize (pq F start
+(defun pair-queue-initialize (pq f start
 			      &aux
-			      (s (1- (length F)))
-			      (B (nconc (makelist (make-pair (elt F i) (elt F j))
+			      (s (1- (length f)))
+			      (b (nconc (makelist (make-pair (elt f i) (elt f j))
 						 (i 0 (1- start)) (j start s))
-					(makelist (make-pair (elt F i) (elt F j))
+					(makelist (make-pair (elt f i) (elt f j))
 						 (i start (1- s)) (j (1+ i) s)))))
   "Initializes the priority for critical pairs. F is the initial list of polynomials.
 START is the first position beyond the elements which form a partial
 grobner basis, i.e. satisfy the Buchberger criterion."
   (declare (type priority-queue pq) (type fixnum start))
-  (dolist (pair B pq)
+  (dolist (pair b pq)
     (priority-queue-insert pq pair)))
 
-(defun pair-queue-insert (B pair)
-  (priority-queue-insert B pair))
+(defun pair-queue-insert (b pair)
+  (priority-queue-insert b pair))
 
-(defun pair-queue-remove (B)
-  (priority-queue-remove B))
+(defun pair-queue-remove (b)
+  (priority-queue-remove b))
 
-(defun pair-queue-size (B)
-  (priority-queue-size B))
+(defun pair-queue-size (b)
+  (priority-queue-size b))
 
-(defun pair-queue-empty-p (B)
-  (priority-queue-empty-p B))
+(defun pair-queue-empty-p (b)
+  (priority-queue-empty-p b))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
@@ -1291,139 +1293,138 @@ grobner basis, i.e. satisfy the Buchberger criterion."
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun buchberger (ring F start &optional (top-reduction-only $poly_top_reduction_only)
-		   &aux B B-done)
+(defun buchberger (ring f start &optional (top-reduction-only $poly_top_reduction_only))
   "An implementation of the Buchberger algorithm. Return Grobner basis
 of the ideal generated by the polynomial list F.  Polynomials 0 to
 START-1 are assumed to be a Grobner basis already, so that certain
 critical pairs will not be examined. If TOP-REDUCTION-ONLY set, top
 reduction will be preformed. This function assumes that all polynomials
 in F are non-zero."
-  (declare (type fixnum start) (type priority-queue B) (type hash-table B-done))
-  (when (endp F) (return-from buchberger F)) ;cut startup costs
+  (declare (type fixnum start))
+  (when (endp f) (return-from buchberger f)) ;cut startup costs
   (debug-cgb "~&GROBNER BASIS - BUCHBERGER ALGORITHM")
   (when (plusp start) (debug-cgb "~&INCREMENTAL:~d done" start))
   #+grobner-check  (when (plusp start)
-		     (grobner-test ring (subseq F 0 start) (subseq F 0 start)))
+		     (grobner-test ring (subseq f 0 start) (subseq f 0 start)))
   ;;Initialize critical pairs
-  (setf B (pair-queue-initialize (make-pair-queue)
-				 F start)
-	B-done (make-hash-table :test #'equal))
-  (dotimes (i (1- start))
-    (do ((j (1+ i) (1+ j))) ((>= j start))
-      (setf (gethash (list (elt F i) (elt F j)) B-done) t)))
-  (do ()
-      ((pair-queue-empty-p B)
-       #+grobner-check(grobner-test ring F F)
-       (debug-cgb "~&GROBNER END")
-       F)
-    (let ((pair (pair-queue-remove B)))
-      (declare (type pair pair))
-      (cond
-       ((Criterion-1 pair) nil)
-       ((Criterion-2 pair B-done F) nil)
-       (t 
-	(let ((SP (normal-form ring
-		   (spoly ring (pair-first pair) (pair-second pair))
-		   F top-reduction-only)))
-	  (declare (type poly SP))
-	  (cond
-	   ((poly-zerop SP)
-	    nil)
-	   (t
-	    (setf SP (poly-primitive-part ring SP)
-		  F (nconc F (list SP)))
-	    ;; Add new critical pairs
-	    (dolist (h F)
-	      (pair-queue-insert B (make-pair h SP)))
-	    (debug-cgb "~&Sugar: ~d Polynomials: ~d; Pairs left: ~d; Pairs done: ~d;"
-		       (pair-sugar pair) (length F) (pair-queue-size B)
-		       (hash-table-count B-done)))))))
-      (setf (gethash (list (pair-first pair) (pair-second pair)) B-done) t))))
+  (let ((b (pair-queue-initialize (make-pair-queue)
+				  f start))
+	(b-done (make-hash-table :test #'equal)))
+    (declare (type priority-queue b) (type hash-table b-done))
+    (dotimes (i (1- start))
+      (do ((j (1+ i) (1+ j))) ((>= j start))
+	(setf (gethash (list (elt f i) (elt f j)) b-done) t)))
+    (do ()
+	((pair-queue-empty-p b)
+	 #+grobner-check(grobner-test ring f f)
+	 (debug-cgb "~&GROBNER END")
+	 f)
+      (let ((pair (pair-queue-remove b)))
+	(declare (type pair pair))
+	(cond
+	  ((criterion-1 pair) nil)
+	  ((criterion-2 pair b-done f) nil)
+	  (t 
+	   (let ((sp (normal-form ring (spoly ring (pair-first pair)
+					      (pair-second pair))
+				  f top-reduction-only)))
+	     (declare (type poly sp))
+	     (cond
+	       ((poly-zerop sp)
+		nil)
+	       (t
+		(setf sp (poly-primitive-part ring sp)
+		      f (nconc f (list sp)))
+		;; Add new critical pairs
+		(dolist (h f)
+		  (pair-queue-insert b (make-pair h sp)))
+		(debug-cgb "~&Sugar: ~d Polynomials: ~d; Pairs left: ~d; Pairs done: ~d;"
+			   (pair-sugar pair) (length f) (pair-queue-size b)
+			   (hash-table-count b-done)))))))
+	(setf (gethash (list (pair-first pair) (pair-second pair)) b-done)
+	      t)))))
 
-(defun parallel-buchberger (ring F start &optional (top-reduction-only $poly_top_reduction_only)
-			    &aux B B-done)
+(defun parallel-buchberger (ring f start &optional (top-reduction-only $poly_top_reduction_only))
   "An implementation of the Buchberger algorithm. Return Grobner basis
 of the ideal generated by the polynomial list F.  Polynomials 0 to
 START-1 are assumed to be a Grobner basis already, so that certain
 critical pairs will not be examined. If TOP-REDUCTION-ONLY set, top
 reduction will be preformed."
   (declare (ignore top-reduction-only)
-	   (type fixnum start)
-	   (type priority-queue B)
-	   (type hash-table B-done))
-  (when (endp F) (return-from parallel-buchberger F)) ;cut startup costs
+	   (type fixnum start))
+  (when (endp f) (return-from parallel-buchberger f)) ;cut startup costs
   (debug-cgb "~&GROBNER BASIS - PARALLEL-BUCHBERGER ALGORITHM")
   (when (plusp start) (debug-cgb "~&INCREMENTAL:~d done" start))
   #+grobner-check  (when (plusp start)
-		     (grobner-test ring (subseq F 0 start) (subseq F 0 start)))
+		     (grobner-test ring (subseq f 0 start) (subseq f 0 start)))
   ;;Initialize critical pairs
-  (setf B (pair-queue-initialize (make-pair-queue)
-				 F start)
-	B-done (make-hash-table :test #'equal))
-  (dotimes (i (1- start))
-    (do ((j (1+ i) (1+ j))) ((>= j start))
-      (declare (type fixnum j))
-      (setf (gethash (list (elt F i) (elt F j)) B-done) t)))
-  (do ()
-      ((pair-queue-empty-p B)
-       #+grobner-check(grobner-test ring F F)
-       (debug-cgb "~&GROBNER END")
-       F)
-    (let ((pair (pair-queue-remove B)))
-      (when (null (pair-division-data pair))
-	(setf (pair-division-data pair) (list (spoly ring
-						     (pair-first pair)
-						     (pair-second pair))
-					      (make-poly-zero)
-					      (funcall (ring-unit ring))
-					      0)))
-      (cond
-       ((Criterion-1 pair) nil)
-       ((Criterion-2 pair B-done F) nil)
-       (t 
-	(let* ((dd (pair-division-data pair))
-	       (p (first dd))
-	       (SP (second dd))
-	       (c (third dd))
-	       (division-count (fourth dd)))
-	  (cond
-	   ((poly-zerop p)		;normal form completed
-	    (debug-cgb "~&~3T~d reduction~:p" division-count)
-	    (cond 
-	     ((poly-zerop SP)
-	      (debug-cgb " ---> 0")
-	      nil)
-	     (t
-	      (setf SP (poly-nreverse SP)
-		    SP (poly-primitive-part ring SP)
-		    F (nconc F (list SP)))
-	      ;; Add new critical pairs
-	      (dolist (h F)
-		(pair-queue-insert B (make-pair h SP)))
-	      (debug-cgb "~&Sugar: ~d Polynomials: ~d; Pairs left: ~d; Pairs done: ~d;"
-			 (pair-sugar pair) (length F) (pair-queue-size B)
-			 (hash-table-count B-done))))
-	    (setf (gethash (list (pair-first pair) (pair-second pair)) B-done) t))
-	   (t				;normal form not complete
-	    (do ()
-		((cond
-		  ((> (poly-sugar SP) (pair-sugar pair))
-		   (debug-cgb "(~a)?" (poly-sugar SP))
-		   t)
-		  ((poly-zerop p)
-		   (debug-cgb ".")
-		   t)
-		  (t nil))
-		 (setf (first dd) p
-		       (second dd) SP
-		       (third dd) c
-		       (fourth dd) division-count
-		       (pair-sugar pair) (poly-sugar SP))
-		 (pair-queue-insert B pair))
-	      (multiple-value-setq (p SP c division-count)
-		(normal-form-step ring F p SP c division-count)))))))))))
-
+  (let ((b (pair-queue-initialize (make-pair-queue) f start))
+	(b-done (make-hash-table :test #'equal)))
+    (declare (type priority-queue b)
+	     (type hash-table b-done))
+    (dotimes (i (1- start))
+      (do ((j (1+ i) (1+ j))) ((>= j start))
+	(declare (type fixnum j))
+	(setf (gethash (list (elt f i) (elt f j)) b-done) t)))
+    (do ()
+	((pair-queue-empty-p b)
+	 #+grobner-check(grobner-test ring f f)
+	 (debug-cgb "~&GROBNER END")
+	 f)
+      (let ((pair (pair-queue-remove b)))
+	(when (null (pair-division-data pair))
+	  (setf (pair-division-data pair) (list (spoly ring
+						       (pair-first pair)
+						       (pair-second pair))
+						(make-poly-zero)
+						(funcall (ring-unit ring))
+						0)))
+	(cond
+	  ((criterion-1 pair) nil)
+	  ((criterion-2 pair b-done f) nil)
+	  (t
+	   (let* ((dd (pair-division-data pair))
+		  (p (first dd))
+		  (sp (second dd))
+		  (c (third dd))
+		  (division-count (fourth dd)))
+	     (cond
+	       ((poly-zerop p)		;normal form completed
+		(debug-cgb "~&~3T~d reduction~:p" division-count)
+		(cond 
+		  ((poly-zerop sp)
+		   (debug-cgb " ---> 0")
+		   nil)
+		  (t
+		   (setf sp (poly-nreverse sp)
+			 sp (poly-primitive-part ring sp)
+			 f (nconc f (list sp)))
+		   ;; Add new critical pairs
+		   (dolist (h f)
+		     (pair-queue-insert b (make-pair h sp)))
+		   (debug-cgb "~&Sugar: ~d Polynomials: ~d; Pairs left: ~d; Pairs done: ~d;"
+			      (pair-sugar pair) (length f) (pair-queue-size b)
+			      (hash-table-count b-done))))
+		(setf (gethash (list (pair-first pair) (pair-second pair))
+			       b-done) t))
+	       (t				;normal form not complete
+		(do ()
+		    ((cond
+		       ((> (poly-sugar sp) (pair-sugar pair))
+			(debug-cgb "(~a)?" (poly-sugar sp))
+			t)
+		       ((poly-zerop p)
+			(debug-cgb ".")
+			t)
+		       (t nil))
+		     (setf (first dd) p
+			   (second dd) sp
+			   (third dd) c
+			   (fourth dd) division-count
+			   (pair-sugar pair) (poly-sugar sp))
+		     (pair-queue-insert b pair))
+		  (multiple-value-setq (p sp c division-count)
+		    (normal-form-step ring f p sp c division-count))))))))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
@@ -1431,16 +1432,18 @@ reduction will be preformed."
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun Criterion-1 (pair &aux (f (pair-first pair)) (g (pair-second pair)))
+(defun criterion-1 (pair)
   "Returns T if the leading monomials of the two polynomials
 in G pointed to by the integers in PAIR have disjoint (relatively prime)
 monomials. This test is known as the first Buchberger criterion."
   (declare (type pair pair))
-  (when (monom-rel-prime-p (poly-lm f) (poly-lm g))
-    (debug-cgb ":1")
-    (return-from Criterion-1 t)))
+  (let ((f (pair-first pair))
+	(g (pair-second pair)))
+    (when (monom-rel-prime-p (poly-lm f) (poly-lm g))
+      (debug-cgb ":1")
+      (return-from criterion-1 t))))
 
-(defun Criterion-2 (pair B-done partial-basis
+(defun criterion-2 (pair b-done partial-basis
 		    &aux (f (pair-first pair)) (g (pair-second pair))
 			 (place :before))
   "Returns T if the leading monomial of some element P of
@@ -1448,7 +1451,7 @@ PARTIAL-BASIS divides the LCM of the leading monomials of the two
 polynomials in the polynomial list PARTIAL-BASIS, and P paired with
 each of the polynomials pointed to by the the PAIR has already been
 treated, as indicated by the absence in the hash table B-done."
-  (declare (type pair pair) (type hash-table B-done)
+  (declare (type pair pair) (type hash-table b-done)
 	   (type poly f g))
   ;; In the code below we assume that pairs are ordered as follows: 
   ;; if PAIR is (I J) then I appears before J in the PARTIAL-BASIS.
@@ -1468,13 +1471,13 @@ treated, as indicated by the absence in the hash table B-done."
 	   (gethash (case place
 		      (:before (list h f))
 		      ((:in-the-middle :after) (list f h)))
-		    B-done)
+		    b-done)
 	   (gethash (case place
 		      ((:before :in-the-middle) (list h g))
 		      (:after (list g h)))
-		    B-done))
+		    b-done))
       (debug-cgb ":2")
-      (return-from Criterion-2 t)))))
+      (return-from criterion-2 t)))))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1484,110 +1487,107 @@ treated, as indicated by the absence in the hash table B-done."
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun gebauer-moeller (ring F start &optional (top-reduction-only $poly_top_reduction_only)
-			&aux B G F1)
+(defun gebauer-moeller (ring f start &optional (top-reduction-only $poly_top_reduction_only))
   "Compute Grobner basis by using the algorithm of Gebauer and
 Moeller.  This algorithm is described as BUCHBERGERNEW2 in the book by
 Becker-Weispfenning entitled ``Grobner Bases''. This function assumes
 that all polynomials in F are non-zero."
   (declare (ignore top-reduction-only)
-	   (type fixnum start)
-	   (type priority-queue B))
+	   (type fixnum start))
   (cond
-   ((endp F) (return-from gebauer-moeller nil))
-   ((endp (cdr F))
-    (return-from gebauer-moeller (list (poly-primitive-part ring (car F))))))
+   ((endp f) (return-from gebauer-moeller nil))
+   ((endp (cdr f))
+    (return-from gebauer-moeller (list (poly-primitive-part ring (car f))))))
    (debug-cgb "~&GROBNER BASIS - GEBAUER MOELLER ALGORITHM")
    (when (plusp start) (debug-cgb "~&INCREMENTAL:~d done" start))
   #+grobner-check  (when (plusp start)
-		     (grobner-test ring (subseq F 0 start) (subseq F 0 start)))
-  (setf B (make-pair-queue)
-	G (subseq F 0 start)
-	F1 (subseq F start))
-  (do () ((endp F1))
-    (multiple-value-setq (G B)
-      (gebauer-moeller-update G B (poly-primitive-part ring (pop F1)))))
-  (do () ((pair-queue-empty-p B))
-    (let* ((pair (pair-queue-remove B))
-	   (g1 (pair-first pair))
-	   (g2 (pair-second pair))
-	   (h (normal-form ring (spoly ring g1 g2)
-			   G
-			   nil #| Always fully reduce! |#
-			   )))
-      (unless (poly-zerop h)
-	(setf h (poly-primitive-part ring h))
-	(multiple-value-setq (G B)
-	  (gebauer-moeller-update G B h))
-	(debug-cgb "~&Sugar: ~d Polynomials: ~d; Pairs left: ~d~%"
-		   (pair-sugar pair) (length G) (pair-queue-size B))
-	)))
-  #+grobner-check(grobner-test ring G F)
-  (debug-cgb "~&GROBNER END")
-  G)
+		     (grobner-test ring (subseq f 0 start) (subseq f 0 start)))
+  (let ((b (make-pair-queue))
+	(g (subseq f 0 start))
+	(f1 (subseq f start)))
+    (do () ((endp f1))
+      (multiple-value-setq (g b)
+	(gebauer-moeller-update g b (poly-primitive-part ring (pop f1)))))
+    (do () ((pair-queue-empty-p b))
+      (let* ((pair (pair-queue-remove b))
+	     (g1 (pair-first pair))
+	     (g2 (pair-second pair))
+	     (h (normal-form ring (spoly ring g1 g2)
+			     g
+			     nil #| Always fully reduce! |#
+			     )))
+	(unless (poly-zerop h)
+	  (setf h (poly-primitive-part ring h))
+	  (multiple-value-setq (g b)
+	    (gebauer-moeller-update g b h))
+	  (debug-cgb "~&Sugar: ~d Polynomials: ~d; Pairs left: ~d~%"
+		     (pair-sugar pair) (length g) (pair-queue-size b))
+	  )))
+    #+grobner-check(grobner-test ring g f)
+    (debug-cgb "~&GROBNER END")
+    g))
 
-(defun gebauer-moeller-update (G B h
+(defun gebauer-moeller-update (g b h
 		 &aux
-		 C D E
-		 (B-new (make-pair-queue))
-		 G-new
-		 pair)
+		 c d e
+		 (b-new (make-pair-queue))
+		 g-new)
   "An implementation of the auxillary UPDATE algorithm used by the
 Gebauer-Moeller algorithm. G is a list of polynomials, B is a list of
 critical pairs and H is a new polynomial which possibly will be added
 to G. The naming conventions used are very close to the one used in
 the book of Becker-Weispfenning."
   (declare
-   #+allegro (dynamic-extent B)
+   #+allegro (dynamic-extent b)
    (type poly h)
-   (type priority-queue B)
-   (type pair pair))
-  (setf C G D nil) 
-  (do (g1) ((endp C))
-    (declare (type poly g1))
-    (setf g1 (pop C))
-    (when (or (monom-rel-prime-p (poly-lm h) (poly-lm g1))
-	      (and
-	       (notany #'(lambda (g2) (monom-lcm-divides-monom-lcm-p
-				       (poly-lm h) (poly-lm g2)
-				       (poly-lm h) (poly-lm g1)))
-		       C)
-	       (notany #'(lambda (g2) (monom-lcm-divides-monom-lcm-p
-				       (poly-lm h) (poly-lm g2)
-				       (poly-lm h) (poly-lm g1)))
-		       D)))
-      (push g1 D)))
-  (setf E nil)
-  (do (g1) ((endp D))
-    (declare (type poly g1))
-    (setf g1 (pop D))
-    (unless (monom-rel-prime-p (poly-lm h) (poly-lm g1))
-      (push g1 E)))
-  (do (g1 g2) ((pair-queue-empty-p B))
-    (declare (type poly g1 g2))
-    (setf pair (pair-queue-remove B)
-	  g1 (pair-first pair)
-	  g2 (pair-second pair))
-    (when (or (not (monom-divides-monom-lcm-p
-		    (poly-lm h)
-		    (poly-lm g1) (poly-lm g2)))
-	      (monom-lcm-equal-monom-lcm-p
-	       (poly-lm g1) (poly-lm h)
-	       (poly-lm g1) (poly-lm g2))
-	      (monom-lcm-equal-monom-lcm-p
-	       (poly-lm h) (poly-lm g2)
-	       (poly-lm g1) (poly-lm g2)))
-      (pair-queue-insert B-new (make-pair g1 g2))))
-  (dolist (g3 E)
-    (pair-queue-insert B-new (make-pair h g3)))
-  (setf G-new nil)
-  (do (g1) ((endp G))
-    (declare (type poly g1))
-    (setf g1 (pop G))
-    (unless (monom-divides-p (poly-lm h) (poly-lm g1))
-      (push g1 G-new)))
-  (push h G-new)
-  (values G-new B-new))
+   (type priority-queue b))
+  (setf c g d nil) 
+  (do () ((endp c))
+    (let ((g1 (pop c)))
+      (declare (type poly g1))
+      (when (or (monom-rel-prime-p (poly-lm h) (poly-lm g1))
+		(and
+		 (notany #'(lambda (g2) (monom-lcm-divides-monom-lcm-p
+					 (poly-lm h) (poly-lm g2)
+					 (poly-lm h) (poly-lm g1)))
+			 c)
+		 (notany #'(lambda (g2) (monom-lcm-divides-monom-lcm-p
+					 (poly-lm h) (poly-lm g2)
+					 (poly-lm h) (poly-lm g1)))
+			 d)))
+	(push g1 d))))
+  (setf e nil)
+  (do () ((endp d))
+    (let ((g1 (pop d)))
+      (declare (type poly g1))
+      (unless (monom-rel-prime-p (poly-lm h) (poly-lm g1))
+	(push g1 e))))
+  (do () ((pair-queue-empty-p b))
+    (let* ((pair (pair-queue-remove b))
+	   (g1 (pair-first pair))
+	   (g2 (pair-second pair)))
+      (declare (type pair pair)
+	       (type poly g1 g2))
+      (when (or (not (monom-divides-monom-lcm-p
+		      (poly-lm h)
+		      (poly-lm g1) (poly-lm g2)))
+		(monom-lcm-equal-monom-lcm-p
+		 (poly-lm g1) (poly-lm h)
+		 (poly-lm g1) (poly-lm g2))
+		(monom-lcm-equal-monom-lcm-p
+		 (poly-lm h) (poly-lm g2)
+		 (poly-lm g1) (poly-lm g2)))
+	(pair-queue-insert b-new (make-pair g1 g2)))))
+  (dolist (g3 e)
+    (pair-queue-insert b-new (make-pair h g3)))
+  (setf g-new nil)
+  (do () ((endp g))
+    (let ((g1 (pop g)))
+      (declare (type poly g1))
+      (unless (monom-divides-p (poly-lm h) (poly-lm g1))
+	(push g1 g-new))))
+  (push h g-new)
+  (values g-new b-new))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1600,38 +1600,38 @@ the book of Becker-Weispfenning."
   "Reduce a list of polynomials PLIST, so that non of the terms in any of
 the polynomials is divisible by a leading monomial of another
 polynomial.  Return the reduced list."
-  (do ((Q plist)
+  (do ((q plist)
        (found t))
       ((not found)
-       (mapcar #'(lambda (x) (poly-primitive-part ring x)) Q))
+       (mapcar #'(lambda (x) (poly-primitive-part ring x)) q))
     ;;Find p in Q such that p is reducible mod Q\{p}
     (setf found nil)
-    (dolist (x Q)
-      (let ((Q1 (remove x Q)))
+    (dolist (x q)
+      (let ((q1 (remove x q)))
 	(multiple-value-bind (h c div-count)
-	    (normal-form ring x Q1 nil #| not a top reduction! |# )
+	    (normal-form ring x q1 nil #| not a top reduction! |# )
 	  (declare (ignore c))
 	  (unless (zerop div-count)
-	    (setf found t Q Q1)
+	    (setf found t q q1)
 	    (unless (poly-zerop h)
-	      (setf Q (nconc Q1 (list h))))
+	      (setf q (nconc q1 (list h))))
 	    (return)))))))
 
-(defun minimization (P)
+(defun minimization (p)
   "Returns a sublist of the polynomial list P spanning the same
 monomial ideal as P but minimal, i.e. no leading monomial
 of a polynomial in the sublist divides the leading monomial
 of another polynomial."
-  (do ((Q P)
+  (do ((q p)
        (found t))
-      ((not found) Q)
+      ((not found) q)
     ;;Find p in Q such that lm(p) is in LM(Q\{p})
     (setf found nil
-	  Q (dolist (x Q Q)
-	      (let ((Q1 (remove x Q)))
-		(when (member-if #'(lambda (p) (monom-divides-p (poly-lm x) (poly-lm p))) Q1)
+	  q (dolist (x q q)
+	      (let ((q1 (remove x q)))
+		(when (member-if #'(lambda (p) (monom-divides-p (poly-lm x) (poly-lm p))) q1)
 		  (setf found t)
-		  (return Q1)))))))
+		  (return q1)))))))
 
 (defun poly-normalize (ring p &aux (c (poly-lc p)))
   "Divide a polynomial by its leading coefficient. It assumes
@@ -1664,14 +1664,14 @@ keywords."
     ((parallel-buchberger :parallel-buchberger $parallel_buchberger) #'parallel-buchberger)
     ((gebauer-moeller :gebauer_moeller $gebauer_moeller) #'gebauer-moeller)))
 
-(defun grobner (ring F &optional (start 0) (top-reduction-only nil))
+(defun grobner (ring f &optional (start 0) (top-reduction-only nil))
   ;;(setf F (sort F #'< :key #'sugar))
   (funcall
    (find-grobner-function $poly_grobner_algorithm)
-   ring F start top-reduction-only))
+   ring f start top-reduction-only))
 
-(defun reduced-grobner (ring F &optional (start 0) (top-reduction-only $poly_top_reduction_only))
-  (reduction ring (grobner ring F start top-reduction-only)))
+(defun reduced-grobner (ring f &optional (start 0) (top-reduction-only $poly_top_reduction_only))
+  (reduction ring (grobner ring f start top-reduction-only)))
 
 (defun set-pair-heuristic (method)
   "Sets up variables *PAIR-KEY-FUNCTION* and *PAIR-ORDER* used
@@ -1731,47 +1731,48 @@ it discards polynomials which depend on variables x[0], x[1], ..., x[k]."
 				    (elimination-order k))))
   (ring-intersection (reduced-grobner ring flist start top-reduction-only) k))
 
-(defun colon-ideal (ring F G &optional (top-reduction-only $poly_top_reduction_only))
+(defun colon-ideal (ring f g &optional (top-reduction-only $poly_top_reduction_only))
   "Returns the reduced Grobner basis of the colon ideal Id(F):Id(G),
 where F and G are two lists of polynomials. The colon ideal I:J is
 defined as the set of polynomials H such that for all polynomials W in
 J the polynomial W*H belongs to I."
   (cond
-   ((endp G)
+   ((endp g)
     ;;Id(G) consists of 0 only so W*0=0 belongs to Id(F)
-    (if (every #'poly-zerop F)
+    (if (every #'poly-zerop f)
 	(error "First ideal must be non-zero.")
       (list (make-poly
 	     (list (make-term
-		    (make-monom (monom-dimension (poly-lm (find-if-not #'poly-zerop F)))
+		    (make-monom (monom-dimension (poly-lm (find-if-not #'poly-zerop f)))
 				:initial-element 0)
 		    (funcall (ring-unit ring))))))))
-   ((endp (cdr G))
-    (colon-ideal-1 ring F (car G) top-reduction-only))
+   ((endp (cdr g))
+    (colon-ideal-1 ring f (car g) top-reduction-only))
    (t
     (ideal-intersection ring
-			(colon-ideal-1 ring F (car G) top-reduction-only)
-			(colon-ideal ring F (rest G) top-reduction-only)
+			(colon-ideal-1 ring f (car g) top-reduction-only)
+			(colon-ideal ring f (rest g) top-reduction-only)
 			top-reduction-only))))
 
-(defun colon-ideal-1 (ring F g &optional (top-reduction-only $poly_top_reduction_only))
+(defun colon-ideal-1 (ring f g &optional (top-reduction-only $poly_top_reduction_only))
   "Returns the reduced Grobner basis of the colon ideal Id(F):Id({G}), where
 F is a list of polynomials and G is a polynomial."
-  (mapcar #'(lambda (x) (poly-exact-divide ring x g)) (ideal-intersection ring F (list g) top-reduction-only)))
+  (mapcar #'(lambda (x) (poly-exact-divide ring x g)) (ideal-intersection ring f (list g) top-reduction-only)))
 
 
-(defun ideal-intersection (ring F G &optional (top-reduction-only $poly_top_reduction_only)
+(defun ideal-intersection (ring f g &optional (top-reduction-only $poly_top_reduction_only)
 			   &aux (*monomial-order* (or *elimination-order*
 						      #'elimination-order-1)))
   (mapcar #'poly-contract
 	  (ring-intersection
 	   (reduced-grobner
 	    ring
-	    (append (mapcar #'(lambda (p) (poly-extend p (list 1))) F)
+	    (append (mapcar #'(lambda (p) (poly-extend p (make-monom 1 :initial-element 1))) f)
 		    (mapcar #'(lambda (p)
-				(poly-append (poly-extend (poly-uminus ring p) (list 1))
+				(poly-append (poly-extend (poly-uminus ring p)
+							  (make-monom 1 :initial-element 1))
 					     (poly-extend p)))
-			    G))
+			    g))
 	    0
 	    top-reduction-only)
 	   1)))
@@ -1798,24 +1799,24 @@ defined in the COEFFICIENT-RING package."
 	  (poly-primitive-part ring (car (ideal-intersection ring (list f) (list g) nil)))))))))
 
 ;; Do two Grobner bases yield the same ideal?
-(defun grobner-equal (ring G1 G2)
+(defun grobner-equal (ring g1 g2)
   "Returns T if two lists of polynomials G1 and G2, assumed to be Grobner bases,
 generate  the same ideal, and NIL otherwise."
-  (and (grobner-subsetp ring G1 G2) (grobner-subsetp ring G2 G1)))
+  (and (grobner-subsetp ring g1 g2) (grobner-subsetp ring g2 g1)))
 
-(defun grobner-subsetp (ring G1 G2)
+(defun grobner-subsetp (ring g1 g2)
   "Returns T if a list of polynomials G1 generates
 an ideal contained in the ideal generated by a polynomial list G2,
 both G1 and G2 assumed to be Grobner bases. Returns NIL otherwise."
-  (every #'(lambda (p) (grobner-member ring p G2)) G1))
+  (every #'(lambda (p) (grobner-member ring p g2)) g1))
 
-(defun grobner-member (ring p G)
+(defun grobner-member (ring p g)
   "Returns T if a polynomial P belongs to the ideal generated by the
 polynomial list G, which is assumed to be a Grobner basis. Returns NIL otherwise."
-  (poly-zerop (normal-form ring p G nil)))
+  (poly-zerop (normal-form ring p g nil)))
 
 ;; Calculate F : p^inf
-(defun ideal-saturation-1 (ring F p start &optional (top-reduction-only $poly_top_reduction_only)
+(defun ideal-saturation-1 (ring f p start &optional (top-reduction-only $poly_top_reduction_only)
 			   &aux (*monomial-order* (or *elimination-order*
 						      #'elimination-order-1)))
   "Returns the reduced Grobner basis of the saturation of the ideal
@@ -1830,26 +1831,26 @@ vanish on the variety of P."
    (ring-intersection
     (reduced-grobner
      ring
-     (saturation-extension-1 ring F p)
+     (saturation-extension-1 ring f p)
      start top-reduction-only)
     1)))
 
 
 
 ;; Calculate F : p1^inf : p2^inf : ... : ps^inf
-(defun ideal-polysaturation-1 (ring F plist start &optional (top-reduction-only $poly_top_reduction_only))
+(defun ideal-polysaturation-1 (ring f plist start &optional (top-reduction-only $poly_top_reduction_only))
   "Returns the reduced Grobner basis of the ideal obtained by a
 sequence of successive saturations in the polynomials
 of the polynomial list PLIST of the ideal generated by the
 polynomial list F."
   (cond
-   ((endp plist) (reduced-grobner ring F start top-reduction-only))
-   (t (let ((G (ideal-saturation-1 ring F (car plist) start top-reduction-only)))
-	(ideal-polysaturation-1 ring G (rest plist) (length G) top-reduction-only)))))
+   ((endp plist) (reduced-grobner ring f start top-reduction-only))
+   (t (let ((g (ideal-saturation-1 ring f (car plist) start top-reduction-only)))
+	(ideal-polysaturation-1 ring g (rest plist) (length g) top-reduction-only)))))
 
-(defun ideal-saturation (ring F G start &optional (top-reduction-only $poly_top_reduction_only)
+(defun ideal-saturation (ring f g start &optional (top-reduction-only $poly_top_reduction_only)
 			 &aux
-			 (k (length G))
+			 (k (length g))
 			 (*monomial-order* (or *elimination-order*
 					       (elimination-order k))))
   "Returns the reduced Grobner basis of the saturation of the ideal
@@ -1864,19 +1865,19 @@ variety of G."
    #'(lambda (q) (poly-contract q k))
    (ring-intersection
     (reduced-grobner ring
-		     (polysaturation-extension ring F G)
+		     (polysaturation-extension ring f g)
 		     start
 		     top-reduction-only)
     k)))
 
-(defun ideal-polysaturation (ring F ideal-list start &optional (top-reduction-only $poly_top_reduction_only))
+(defun ideal-polysaturation (ring f ideal-list start &optional (top-reduction-only $poly_top_reduction_only))
     "Returns the reduced Grobner basis of the ideal obtained by a
 successive applications of IDEAL-SATURATION to F and lists of
 polynomials in the list IDEAL-LIST."
   (cond
-   ((endp ideal-list) F)
-   (t (let ((H (ideal-saturation ring F (car ideal-list) start top-reduction-only)))
-	(ideal-polysaturation ring H (rest ideal-list) (length H) top-reduction-only)))))
+   ((endp ideal-list) f)
+   (t (let ((h (ideal-saturation ring f (car ideal-list) start top-reduction-only)))
+	(ideal-polysaturation ring h (rest ideal-list) (length h) top-reduction-only)))))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1931,7 +1932,7 @@ polynomials in the list IDEAL-LIST."
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defparameter *ExpressionRing*
+(defparameter *expression-ring*
     (make-ring 
      ;;(defun coeff-zerop (expr) (meval1 `(($is) (($equal) ,expr 0))))
      :parse #'(lambda (expr)
@@ -1957,7 +1958,7 @@ polynomials in the list IDEAL-LIST."
      :ezgcd #'(lambda (x y) (apply #'values (cdr ($ezgcd x y))))
      :gcd #'(lambda (x y) (second ($ezgcd x y)))))
 
-(defvar *MaximaRing* *ExpressionRing*
+(defvar *maxima-ring* *expression-ring*
   "The ring of coefficients, over which all polynomials 
 are assumed to be defined.")
 
@@ -1972,7 +1973,7 @@ are assumed to be defined.")
   (alike1 expr1 expr2))
 
 (defun coerce-maxima-list (expr)
-  "Convert a Maxima list to Lisp list."
+  "convert a maxima list to lisp list."
   (cond
    ((and (consp (car expr)) (eql (caar expr) 'mlist)) (cdr expr))
    (t expr)))
@@ -1987,36 +1988,36 @@ are assumed to be defined.")
      ((eql expr 0) (make-poly-zero))
      ((member expr vars :test #'equal-test-p)
       (let ((pos (position expr vars :test #'equal-test-p)))
-	(make-variable *MaximaRing* (length vars) pos)))
+	(make-variable *maxima-ring* (length vars) pos)))
      ((free-of-vars expr vars)
       ;;This means that variable-free CRE and Poisson forms will be converted
       ;;to coefficients intact
-      (coerce-coeff *MaximaRing* expr vars))
+      (coerce-coeff *maxima-ring* expr vars))
      (t
       (case (caar expr)
-	(mplus (reduce #'(lambda (x y) (poly-add *MaximaRing* x y)) (parse-list (cdr expr))))
-	(mminus (poly-uminus *MaximaRing* (parse (cadr expr))))
+	(mplus (reduce #'(lambda (x y) (poly-add *maxima-ring* x y)) (parse-list (cdr expr))))
+	(mminus (poly-uminus *maxima-ring* (parse (cadr expr))))
 	(mtimes
 	 (if (endp (cddr expr))		;unary
 	     (parse (cdr expr))
-	   (reduce #'(lambda (p q) (poly-mul *MaximaRing* p q)) (parse-list (cdr expr)))))
+	   (reduce #'(lambda (p q) (poly-mul *maxima-ring* p q)) (parse-list (cdr expr)))))
 	(mexpt
 	 (cond
 	  ((member (cadr expr) vars :test #'equal-test-p)
 	   ;;Special handling of (expt var pow)
 	   (let ((pos (position (cadr expr) vars :test #'equal-test-p)))
-	     (make-variable *MaximaRing* (length vars) pos (caddr expr))))
+	     (make-variable *maxima-ring* (length vars) pos (caddr expr))))
 	  ((not (and (integerp (caddr expr)) (plusp (caddr expr))))
 	   ;; Negative power means division in coefficient ring
 	   ;; Non-integer power means non-polynomial coefficient
 	   (mtell "~%Warning: Expression ~%~M~%contains power which is not a positive integer. Parsing as coefficient.~%"
 		  expr)
-	   (coerce-coeff *MaximaRing* expr vars))
-	  (t (poly-expt *MaximaRing* (parse (cadr expr)) (caddr expr)))))
+	   (coerce-coeff *maxima-ring* expr vars))
+	  (t (poly-expt *maxima-ring* (parse (cadr expr)) (caddr expr)))))
 	(mrat (parse ($ratdisrep expr)))
 	(mpois (parse ($outofpois expr)))
 	(otherwise
-	 (coerce-coeff *MaximaRing* expr vars)))))))
+	 (coerce-coeff *maxima-ring* expr vars)))))))
 
 (defun parse-poly-list (expr vars)
   (case (caar expr)
@@ -2024,7 +2025,7 @@ are assumed to be defined.")
     (t (merror "Expression ~M is not a list of polynomials in variables ~M."
 	       expr vars))))
 (defun parse-poly-list-list (poly-list-list vars)
-  (mapcar #'(lambda (G) (parse-poly-list G vars)) (coerce-maxima-list poly-list-list)))
+  (mapcar #'(lambda (g) (parse-poly-list g vars)) (coerce-maxima-list poly-list-list)))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -2035,7 +2036,7 @@ are assumed to be defined.")
 (defun find-order (order)
   "This function returns the order function bases on its name."
   (cond
-   ((null order) NIL)
+   ((null order) nil)
    ((symbolp order)
     (case order
       ((lex :lex $lex) #'lex>) 
@@ -2047,21 +2048,21 @@ are assumed to be defined.")
        (mtell "~%Warning: Order ~M not found. Using default.~%" order))))
    (t
     (mtell "~%Order specification ~M is not recognized. Using default.~%" order)
-    NIL)))
+    nil)))
 
 (defun find-ring (ring)
   "This function returns the ring structure bases on input symbol."
   (cond
-   ((null ring) NIL)
+   ((null ring) nil)
    ((symbolp ring)
     (case ring
-      ((expression-ring :expression-ring $expression_ring) *ExpressionRing*) 
-      ((ring-of-integers :ring-of-integers $ring_of_integers) *RingOfIntegers*) 
+      ((expression-ring :expression-ring $expression_ring) *expression-ring*) 
+      ((ring-of-integers :ring-of-integers $ring_of_integers) *ring-of-integers*) 
       (otherwise
        (mtell "~%Warning: Ring ~M not found. Using default.~%" ring))))
    (t
     (mtell "~%Ring specification ~M is not recognized. Using default.~%" ring)
-    NIL)))
+    nil)))
 
 (defmacro with-monomial-order ((order) &body body)
   "Evaluate BODY with monomial order set to ORDER."
@@ -2070,7 +2071,7 @@ are assumed to be defined.")
 
 (defmacro with-coefficient-ring ((ring) &body body)
   "Evaluate BODY with coefficient ring set to RING."
-  `(let ((*MaximaRing* (or (find-ring ,ring) *MaximaRing*)))
+  `(let ((*maxima-ring* (or (find-ring ,ring) *maxima-ring*)))
      . ,body))
 
 (defmacro with-elimination-orders ((primary secondary elimination-order)
@@ -2152,7 +2153,7 @@ are assumed to be defined.")
 			     (vars (coerce-maxima-list vars))
 			     (p (parse-poly p vars)))
      ,@(when documentation-supplied-p (list documentation))
-     (coerce-to-maxima :polynomial (,fun-name *MaximaRing* p) vars)))
+     (coerce-to-maxima :polynomial (,fun-name *maxima-ring* p) vars)))
 
 (defmacro define-binop (maxima-name fun-name
 			&optional (documentation nil documentation-supplied-p))
@@ -2163,7 +2164,7 @@ are assumed to be defined.")
 			     (p (parse-poly p vars))
 			     (q (parse-poly q vars)))
      ,@(when documentation-supplied-p (list documentation))
-     (coerce-to-maxima :polynomial (,fun-name *MaximaRing* p q) vars)))
+     (coerce-to-maxima :polynomial (,fun-name *maxima-ring* p q) vars)))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -2207,18 +2208,18 @@ the result is an error."
 
 (defmfun $poly_expt (p n vars)
   (with-parsed-polynomials ((vars) :polynomials (p) :value-type :polynomial)
-    (poly-expt *MaximaRing* p n)))
+    (poly-expt *maxima-ring* p n)))
 
 (defmfun $poly_content (p vars)
   (with-parsed-polynomials ((vars) :polynomials (p))
-    (poly-content *MaximaRing* p)))
+    (poly-content *maxima-ring* p)))
 
 (defmfun $poly_pseudo_divide (f fl vars
 			    &aux (vars (coerce-maxima-list vars))
 				 (f (parse-poly f vars))
 				 (fl (parse-poly-list fl vars)))
   (multiple-value-bind (quot rem c division-count)
-      (poly-pseudo-divide *MaximaRing* f fl)
+      (poly-pseudo-divide *maxima-ring* f fl)
     `((mlist)
       ,(coerce-to-maxima :poly-list quot vars)
       ,(coerce-to-maxima :polynomial rem vars)
@@ -2227,26 +2228,26 @@ the result is an error."
 
 (defmfun $poly_exact_divide (f g vars)
   (with-parsed-polynomials ((vars) :polynomials (f g) :value-type :polynomial)
-    (poly-exact-divide *MaximaRing* f g)))
+    (poly-exact-divide *maxima-ring* f g)))
 
 (defmfun $poly_normal_form (f fl vars)
   (with-parsed-polynomials ((vars) :polynomials (f)
 				   :poly-lists (fl)
 				   :value-type :polynomial)
-    (normal-form *MaximaRing* f (remzero fl) nil)))
+    (normal-form *maxima-ring* f (remzero fl) nil)))
 
-(defmfun $poly_buchberger_criterion (G vars)
-  (with-parsed-polynomials ((vars) :poly-lists (G))
-    (buchberger-criterion *MaximaRing* G)))
+(defmfun $poly_buchberger_criterion (g vars)
+  (with-parsed-polynomials ((vars) :poly-lists (g))
+    (buchberger-criterion *maxima-ring* g)))
 
 (defmfun $poly_buchberger (fl vars)
   (with-parsed-polynomials ((vars) :poly-lists (fl) :value-type :poly-list)
-    (buchberger *MaximaRing*  (remzero fl) 0 nil)))
+    (buchberger *maxima-ring*  (remzero fl) 0 nil)))
 
 (defmfun $poly_reduction (plist vars)
   (with-parsed-polynomials ((vars) :poly-lists (plist)
 				   :value-type :poly-list)
-    (reduction *MaximaRing* plist)))
+    (reduction *maxima-ring* plist)))
 
 (defmfun $poly_minimization (plist vars)
   (with-parsed-polynomials ((vars) :poly-lists (plist)
@@ -2256,17 +2257,17 @@ the result is an error."
 (defmfun $poly_normalize_list (plist vars)
   (with-parsed-polynomials ((vars) :poly-lists (plist)
 				   :value-type :poly-list)
-    (poly-normalize-list *MaximaRing* plist)))
+    (poly-normalize-list *maxima-ring* plist)))
 
-(defmfun $poly_grobner (F vars)
-  (with-parsed-polynomials ((vars) :poly-lists (F)
+(defmfun $poly_grobner (f vars)
+  (with-parsed-polynomials ((vars) :poly-lists (f)
 				   :value-type :poly-list)
-    (grobner *MaximaRing* (remzero F))))
+    (grobner *maxima-ring* (remzero f))))
 
-(defmfun $poly_reduced_grobner (F vars)
-  (with-parsed-polynomials ((vars) :poly-lists (F)
+(defmfun $poly_reduced_grobner (f vars)
+  (with-parsed-polynomials ((vars) :poly-lists (f)
 				   :value-type :poly-list)
-    (reduced-grobner *MaximaRing* (remzero F))))
+    (reduced-grobner *maxima-ring* (remzero f))))
 
 (defmfun $poly_depends_p (p var mvars
 			&aux (vars (coerce-maxima-list mvars))
@@ -2278,65 +2279,65 @@ the result is an error."
 (defmfun $poly_elimination_ideal (flist k vars)
   (with-parsed-polynomials ((vars) :poly-lists (flist)
 				   :value-type :poly-list)
-    (elimination-ideal *MaximaRing* flist k nil 0)))
+    (elimination-ideal *maxima-ring* flist k nil 0)))
 
-(defmfun $poly_colon_ideal (F G vars)
-  (with-parsed-polynomials ((vars) :poly-lists (F G) :value-type :poly-list)
-    (colon-ideal *MaximaRing* F G nil)))
+(defmfun $poly_colon_ideal (f g vars)
+  (with-parsed-polynomials ((vars) :poly-lists (f g) :value-type :poly-list)
+    (colon-ideal *maxima-ring* f g nil)))
 
-(defmfun $poly_ideal_intersection (F G vars)
-  (with-parsed-polynomials ((vars) :poly-lists (F G) :value-type :poly-list)  
-    (ideal-intersection *MaximaRing* F G nil)))
+(defmfun $poly_ideal_intersection (f g vars)
+  (with-parsed-polynomials ((vars) :poly-lists (f g) :value-type :poly-list)  
+    (ideal-intersection *maxima-ring* f g nil)))
 
 (defmfun $poly_lcm (f g vars)
   (with-parsed-polynomials ((vars) :polynomials (f g) :value-type :polynomial)
-    (poly-lcm *MaximaRing* f g)))
+    (poly-lcm *maxima-ring* f g)))
 
 (defmfun $poly_gcd (f g vars)
   ($first ($divide (m* f g) ($poly_lcm f g vars))))
 
-(defmfun $poly_grobner_equal (G1 G2 vars)
-  (with-parsed-polynomials ((vars) :poly-lists (G1 G2))
-    (grobner-equal *MaximaRing* G1 G2)))
+(defmfun $poly_grobner_equal (g1 g2 vars)
+  (with-parsed-polynomials ((vars) :poly-lists (g1 g2))
+    (grobner-equal *maxima-ring* g1 g2)))
 
-(defmfun $poly_grobner_subsetp (G1 G2 vars)
-  (with-parsed-polynomials ((vars) :poly-lists (G1 G2))
-    (grobner-subsetp *MaximaRing* G1 G2)))
+(defmfun $poly_grobner_subsetp (g1 g2 vars)
+  (with-parsed-polynomials ((vars) :poly-lists (g1 g2))
+    (grobner-subsetp *maxima-ring* g1 g2)))
 
-(defmfun $poly_grobner_member (p G vars)
-  (with-parsed-polynomials ((vars) :polynomials (p) :poly-lists (G))
-    (grobner-member *MaximaRing* p G)))
+(defmfun $poly_grobner_member (p g vars)
+  (with-parsed-polynomials ((vars) :polynomials (p) :poly-lists (g))
+    (grobner-member *maxima-ring* p g)))
 
-(defmfun $poly_ideal_saturation1 (F p vars)
-  (with-parsed-polynomials ((vars) :poly-lists (F) :polynomials (p)
+(defmfun $poly_ideal_saturation1 (f p vars)
+  (with-parsed-polynomials ((vars) :poly-lists (f) :polynomials (p)
 				   :value-type :poly-list)
-    (ideal-saturation-1 *MaximaRing* F p)))
+    (ideal-saturation-1 *maxima-ring* f p 0)))
 
-(defmfun $poly_saturation_extension (F plist vars new-vars)
+(defmfun $poly_saturation_extension (f plist vars new-vars)
   (with-parsed-polynomials ((vars new-vars)
-			    :poly-lists (F plist)
+			    :poly-lists (f plist)
 			    :value-type :poly-list)
-    (saturation-extension *MaximaRing* F plist)))
+    (saturation-extension *maxima-ring* f plist)))
 
-(defmfun $poly_polysaturation_extension (F plist vars new-vars)
+(defmfun $poly_polysaturation_extension (f plist vars new-vars)
   (with-parsed-polynomials ((vars new-vars)
-			    :poly-lists (F plist)
+			    :poly-lists (f plist)
 			    :value-type :poly-list)
-    (polysaturation-extension *MaximaRing* F plist)))
+    (polysaturation-extension *maxima-ring* f plist)))
 
-(defmfun $poly_ideal_polysaturation1 (F plist vars)
-  (with-parsed-polynomials ((vars) :poly-lists (F plist)
+(defmfun $poly_ideal_polysaturation1 (f plist vars)
+  (with-parsed-polynomials ((vars) :poly-lists (f plist)
 				   :value-type :poly-list)
-    (ideal-polysaturation-1 *MaximaRing* F plist 0 nil)))
+    (ideal-polysaturation-1 *maxima-ring* f plist 0 nil)))
 
-(defmfun $poly_ideal_saturation (F G vars)
-  (with-parsed-polynomials ((vars) :poly-lists (F G)
+(defmfun $poly_ideal_saturation (f g vars)
+  (with-parsed-polynomials ((vars) :poly-lists (f g)
 				   :value-type  :poly-list)
-    (ideal-saturation *MaximaRing* F G 0 nil)))
+    (ideal-saturation *maxima-ring* f g 0 nil)))
 
-(defmfun $poly_ideal_polysaturation (F ideal-list vars)
-  (with-parsed-polynomials ((vars) :poly-lists (F)
+(defmfun $poly_ideal_polysaturation (f ideal-list vars)
+  (with-parsed-polynomials ((vars) :poly-lists (f)
 				   :poly-list-lists (ideal-list)
 				   :value-type :poly-list)
-    (ideal-polysaturation *MaximaRing* F ideal-list 0 nil)))
+    (ideal-polysaturation *maxima-ring* f ideal-list 0 nil)))
 
