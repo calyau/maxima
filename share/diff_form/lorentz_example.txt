@@ -4,9 +4,9 @@ Distributed under the GNU Public License. See the file COPYING.
 Dedicated to the memory of William Schelter.
 This is a development version of Maxima. The function bug_report()
 provides bug reporting information.
-(%i1) batch("new_cartan_test4.bat");
+(%i1) batch("new_cartan_test4.mac");
 
-batching #p/home/furuya/sagyo/new_cartan_test4.bat
+batching #p/home/furuya/sagyo/new_cartan_test4.mac
 (%i2)                        load(cartan_new.lisp)
 (%i3)                              infix(@)
 (%i4)                              infix(&)
