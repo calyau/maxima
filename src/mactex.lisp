@@ -383,12 +383,13 @@
     ; Play it safe -- check anyway.
     (if (or (find '|b| formatted) (find '|B| formatted))
       (let*
-        ((expt-symbols '(|_| |b| | | |\\| |T| |I| |M| |E| |S| | | |1| |0| |^| |{|))
-         (spell-out-expt
+        ((spell-out-expt
            (append
              (apply #'append
                     (mapcar
-                      #'(lambda (e) (if (or (eq e '|b|) (eq e '|B|)) expt-symbols (list e)))
+                     #'(lambda (e) (if (or (eq e '|b|) (eq e '|B|))
+                                       '("_B" | | "\\times" | | "10^{")
+                                       (list e)))
                       formatted))
              '(|}|))))
         (append l spell-out-expt r))
