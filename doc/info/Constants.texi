@@ -16,6 +16,15 @@ as @code{%e}.
 
 @end defvr
 
+@defvr {Constant} %i
+@ifinfo
+@vrindex i
+@vrindex Imaginary unit
+@end ifinfo
+@code{%i} represents the imaginary unit, @code{sqrt(- 1)}.
+
+@end defvr
+
 @defvr {Constant} false
  - the Boolean constant, false. (NIL in Lisp)
 
