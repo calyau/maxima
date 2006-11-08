@@ -15,7 +15,7 @@
 (in-package :maxima)
 (defmacro mlist* (arg1 &rest more-args) `(list* '(mlist simp) ,arg1 ,@more-args))
 (defun mrelationp (expr)
-  (and (listp expr)(member (caar expr) '(MEQUAL MNOTEQUAL MGREATERP MLESSP MGEQP MLEQP))))
+  (and (listp expr)(member (caar expr) '(mequal mnotequal mgreaterp mlessp mgeqp mleqp))))
 
 ;;;;******************************************************************************************
 ;;; format(expr,template,...)
@@ -88,10 +88,11 @@
 (defmacro def-formatter (names parms &body body)
   (let* ((names (if (listp names) names (list names)))
 	 (fmtr (if (atom parms) parms
-		   (make-symbol (concatenate 'string (string (car names)) "-FORMATTER")))))
+		   (make-symbol (concatenate 'string (string (car names))
+					     (symbol-name '#:-formatter))))))
     `(progn 
        ,(unless (atom parms) `(defun ,fmtr ,parms ,@body))
-       ,@(mapcar #'(lambda (name) `(setf (get ',name 'FORMATTER) ',fmtr)) names))))
+       ,@(mapcar #'(lambda (name) `(setf (get ',name 'formatter) ',fmtr)) names))))
 
 ;;;;******************************************************************************************
 ;;; Subtemplate aids.
@@ -239,29 +240,29 @@
 		       ($%trig (mapcar #'(lambda (l)(mlist* (mp1 (cdr l))))(cddr clist))))))))
 
 ;; %POLY(vars,...) : express EXPR as a polynomial in VARS, format the coeffs.
-(def-formatter ($%POLY $%P) (expr &rest vars)
+(def-formatter ($%poly $%p) (expr &rest vars)
   (autoldchk '$coeffs)
   (format-clist (apply #'$coeffs expr vars)))
 
 ;; %MONICPOLY : format leading coeff, then poly/lc.
-(def-formatter ($%MONICPOLY $%MP) (expr &rest vars)
+(def-formatter ($%monicpoly $%mp) (expr &rest vars)
   (autoldchk '$coeffs)
   (let* ((cl (apply #'$coeffs expr vars))
 	 (c0 (cadar (last cl))))
     (mul ($format_piece c0)(format-clist cl #'(lambda (c)($format_piece (div c c0)))))))
 
 ;; %TRIG(vars,...): express EXPR as trig. series in VARS, format the coeffs.
-(def-formatter ($%TRIG $%T) (expr &rest vars)
+(def-formatter ($%trig $%t) (expr &rest vars)
   (autoldchk '$trig_coeffs)
   (format-clist (apply #'$trig_coeffs expr vars)))
 
 ;; %SERIES(var,order), %TAYLOR(var,order): expand EXPR as series in VAR to order ORDER,
 ;; formats the coeffs.  %SERIES only expands arithmetic expressions. 
-(def-formatter ($%SERIES $%S) (expr var order)
+(def-formatter ($%series $%s) (expr var order)
   (autoldchk '$series_coeffs)
   (format-clist ($series_coeffs expr var order)))
 
-(def-formatter $%TAYLOR (expr var order)
+(def-formatter $%taylor (expr var order)
   (autoldchk '$taylor_coeffs)
   (format-clist ($taylor_coeffs expr var order)))
 
@@ -271,12 +272,12 @@
 (defun format-sum (sum)
   (cond ((atom sum)($format_piece sum))
 	((specrepp sum) (format-sum (specdisrep sum)))
-	((eq (caar sum) 'MPLUS)(simplify (map1 #'format-sum sum)))
-	((eq (caar sum) '%SUM) (cons (car sum) (cons ($format_piece (cadr sum))(cddr sum))))
+	((eq (caar sum) 'mplus)(simplify (map1 #'format-sum sum)))
+	((eq (caar sum) '%sum) (cons (car sum) (cons ($format_piece (cadr sum))(cddr sum))))
 	(t ($format_piece sum))))
 
-(def-formatter $%SUM format-sum)
-(def-formatter ($%PARTFRAC $%PF)(expr var)
+(def-formatter $%sum format-sum)
+(def-formatter ($%partfrac $%pf)(expr var)
   (format-sum ($partfrac expr var)))
 
 ;;;;******************************************************************************************
@@ -286,18 +287,18 @@
   (cond ((atom prod) ($format_piece prod))
 	((specrepp prod) (format-product (specdisrep prod)))
 	(t (case (caar prod)
-	     (MTIMES (simplify (map1 #'format-product prod)))
-	     (MEXPT (power (format-product (second prod))(third prod)))
+	     (mtimes (simplify (map1 #'format-product prod)))
+	     (mexpt (power (format-product (second prod))(third prod)))
 	     (%product (cons (car prod)(cons ($format_piece (cadr prod))(cddr prod))))
 	     (t ($format_piece prod))))))
 
-(def-formatter ($%PRODUCT $%PROD) format-product)
-(def-formatter ($%SQFR $%SF)(expr)
+(def-formatter ($%product $%prod) format-product)
+(def-formatter ($%sqfr $%sf)(expr)
   (format-product ($sqfr expr)))
-(def-formatter ($%FACTOR $%F) (expr &optional minpoly)
+(def-formatter ($%factor $%f) (expr &optional minpoly)
   (format-product (cond (($numberp expr) expr)
 			(minpoly ($factor expr minpoly))
-			(T ($factor expr)))))
+			(t ($factor expr)))))
 
 ;;;;******************************************************************************************
 ;;; Fractions
@@ -306,24 +307,24 @@
   (div ($format_piece ($num frac))
        ($format_piece ($denom frac))))
 
-(def-formatter $%FRAC format-fraction)
-(def-formatter ($%RATSIMP $%R) (expr)
+(def-formatter $%frac format-fraction)
+(def-formatter ($%ratsimp $%r) (expr)
   (format-fraction ($ratsimp expr)))
 
 ;;;;******************************************************************************************
 ;;; Complex number templates.
 
 ;; Express EXPR = A+%I*B; format A & B.
-(def-formatter ($%RECTFORM $%G) (expr)
+(def-formatter ($%rectform $%g) (expr)
   (let ((pair (trisplit expr)))
     (add ($format_piece (car pair))
-	 (mul ($format_piece (cdr pair)) '$%I))))
+	 (mul ($format_piece (cdr pair)) '$%i))))
 
 ;; Express EXPR = R*exp(%I*P); format R & P.
-(def-formatter $%POLARFORM (expr)
+(def-formatter $%polarform (expr)
   (let ((pair (absarg expr)))
     (mul ($format_piece (car pair))
-	 (power '$%E (mul '$%I ($format_piece (cdr pair)))))))
+	 (power '$%e (mul '$%i ($format_piece (cdr pair)))))))
 
 ;;;********************************************************************************
 ;;; Examples of user defined templates:

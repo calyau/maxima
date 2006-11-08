@@ -166,7 +166,7 @@
 (defun $list_factors(poly)
   (cond
     ((atom poly ) poly)
-    ((MBAGP poly) (CONS (CAR poly) (MAPCAR #'$list_factors (CDR poly))))
+    ((mbagp poly) (cons (car poly) (mapcar #'$list_factors (cdr poly))))
     ((eq (caar poly) 'mtimes)
      (cons '(mlist) (cdr poly)))
     (t poly)))
@@ -197,14 +197,14 @@
 
 
 (defun remove-from-*genpairs* (expr)
-  (setq *genvar* (zl-DELETE (get-genvar expr) *genvar*))
+  (setq *genvar* (zl-delete (get-genvar expr) *genvar*))
   (sloop for v in *genpairs*
 	for i from 0
 	when (equal (car v) expr)
 	do
 	(cond ((eq i 0)(setq *genpairs* (cdr *genpairs*)))
-	      (t (setq *genpairs* (zl-DELETE v *genpairs*)))))
-  (setq *varlist* (zl-DELETE expr *varlist*)))
+	      (t (setq *genpairs* (zl-delete v *genpairs*)))))
+  (setq *varlist* (zl-delete expr *varlist*)))
 
 ;
 ;(defmacro must-replacep (symbol-to-set rat-poly)
@@ -413,13 +413,13 @@
 	do (setq ind (quotient ind dimv))))
 
 
-(defun tensor-ind-to-list-ind (dimV &rest ll)
+(defun tensor-ind-to-list-ind (dimv &rest ll)
   (sloop for m in ll
 	for i from 0 
 	summing (f* (expt  dimv i) (f1- m)) into tem
 	finally (return (1+ tem))))
 
-(defun tensor-ind-to-list-ind (dimV &rest ll)
+(defun tensor-ind-to-list-ind (dimv &rest ll)
   (sloop for m in ll
 	for i to 0 downfrom (f1- (length ll))
 	summing (f* (expt  dimv i) (f1- m)) into tem
@@ -490,7 +490,7 @@
 	finally (return 
 		  ($transpose  (cons '($matrix simp) tem)))))
 
-(defun $Restriction_representation (repr elt-gln vector sub-basis)
+(defun $restriction_representation (repr elt-gln vector sub-basis)
   (let ((repr-of-p ($find_matrix_of_operator `(lambda (x) (mfuncall ',repr ',elt-gln x))
 					     sub-basis)))
     (ncmul* repr-of-p vector)))
@@ -564,7 +564,7 @@
 	(sloop for i from 1
 	      when (not (zerop (mod n (expt  u i))))
 	      do (return (f1- i)))))
-	((equal (caar n) 'Rat)(setq num (second n) denom (third n))
+	((equal (caar n) 'rat)(setq num (second n) denom (third n))
 	 (setq wnum (exponent-vector num length-vector))
 	 (setq wdnom (exponent-vector denom length-vector))
 	 (sloop for v in wnum
@@ -889,12 +889,12 @@
 			      (return 'bad-order))
 			(new-ratf expr))
 		       (t expr)))
-    ((mbagp expr) (CONS (CAR EXPr) (MAPCAR #'$new_RAT (CDR EXPr))) ($new_RAT EXPr))
+    ((mbagp expr) (cons (car expr) (mapcar #'$new_rat (cdr expr))) ($new_rat expr))
     ((and (not (atom expr))(not (atom (car expr))))(cond ((equal (caar expr) 'rat) expr)
 							 (t (new-ratf expr))))
 						       
     (t (new-ratf expr))))
-;(IF (MBAGP EXP) (CONS (CAR EXP) (MAPCAR #'RAT0 (CDR EXP))) (RATF EXP))) 
+;(if (mbagp exp) (cons (car exp) (mapcar #'rat0 (cdr exp))) (ratf exp))) 
 
 
 (defun $shift (expr &optional (variables $current_variables) &aux tem)
@@ -961,15 +961,15 @@
 	  (sloop for i from 1 to (length ind-used)
 		collecting (mul* (nth i vect)(nth (f1- i) relat-mat)) into tem
 		finally (return (meval* (cons '(mplus) tem)))))
-    (setq mat.rtx (ncmul* mat '(($MATRIX SIMP)
-				((MLIST SIMP) $X) ((MLIST SIMP) $Y) ((MLIST SIMP) $Z))))
+    (setq mat.rtx (ncmul* mat '(($matrix simp)
+				((mlist simp) $x) ((mlist simp) $y) ((mlist simp) $z))))
     
     (setq prod
 	  (ncmul*  ($transpose mat)
-		   ($sub_list `((MLIST SIMP) ((MEQUAL SIMP) (($MATRIX SIMP)
-							     ((MLIST SIMP) $X)
-							     ((MLIST SIMP) $Y)
-							     ((MLIST SIMP) $Z))
+		   ($sub_list `((mlist simp) ((mequal simp) (($matrix simp)
+							     ((mlist simp) $x)
+							     ((mlist simp) $y)
+							     ((mlist simp) $z))
 					      ,mat.rtx)) vmmm) mat))
     (setq answer (mfuncall '$cof prod))
     (sloop for i in ind-used

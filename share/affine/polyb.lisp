@@ -41,7 +41,7 @@
 			     collect w))))
 	#+lispm 
 	 (progn
-	   (setq tem (MAKE-ARRAY (length a-list)))
+	   (setq tem (make-array (length a-list)))
 	   (format t "~%Having to sort")
 	   (fillarray tem a-list)
 	   (sort-grouped-array tem group-size pred)
@@ -148,7 +148,7 @@
 		   do (return t)))
 	    (t (sloop for v on (cdr $dot_simplifications) by 'cddr
 		     when (eq 0 (second v))
-		     do (cond ((atom (setq u (car v)))(cond ((zl-MEMBER u form)(return t))))
+		     do (cond ((atom (setq u (car v)))(cond ((zl-member u form)(return t))))
 			      (t (cond ((ordered-sublist (cdr u) form)(return t))))))))))
 
 (defun	contains-a-replacement (form &aux tem1 u)
@@ -163,7 +163,7 @@
 	 (sloop while tem1
 	       do (setq u (car tem1))
 	       (setq tem1 (cddr tem1))
-	       (cond ((atom u)(cond ((zl-MEMBER u form)(return t))))
+	       (cond ((atom u)(cond ((zl-member u form)(return t))))
 		     (t (cond ((ordered-sublist (cdr u) form )(return t)))))))))
 
 
@@ -794,9 +794,9 @@ and modulo-p not prime gives false answer"
 
 
 ;; #+3600
-;; (DEFUN *RED (N D &aux tem )
-;;   (COND ((ZEROP N) 0)
-;; 	((EQUAL D 1) N)
+;; (defun *red (n d &aux tem )
+;;   (cond ((zerop n) 0)
+;; 	((equal d 1) n)
 ;; 	(t (setq n (/ n d))
 ;; 	   (cond ((integerp n) n)
 ;; 		 (t (list '(rat simp)
@@ -813,7 +813,7 @@ and modulo-p not prime gives false answer"
 	collecting v into tem
 	finally (return (cons '(mlist simp) (sort tem $order_function)))))
 
-(defun Parse-string (a-string)
+(defun parse-string (a-string)
   (cond ((null (or (string-search "$" a-string) (string-search ";" a-string)))
 	 (setq a-string  (string-append a-string "$"))))	
   (with-input-from-string (stream a-string)
@@ -1174,7 +1174,7 @@ and modulo-p not prime gives false answer"
 	       when (not (sloop for key in key-strings
 			       when  (string-search key string-v)
 			       do (return t)))
-	       do (setq tem (zl-DELETE v tem))
+	       do (setq tem (zl-delete v tem))
 	       finally (return tem)))))
 (defun $socle (variables deg &aux  f unknowns eqns tem1 parameters answer )
   (setq variables (cons '(mlist) (sort (cdr variables) $order_function)))
@@ -1252,7 +1252,7 @@ and modulo-p not prime gives false answer"
   	  (setq $centralizers (append `((mlist) ,v ,f) (cdr $centralizers)))
 	  (displa f)
 	  finally (return ($separate_parameters f)))))
-(Defun $fast_central_elements (variables deg  &aux  f unknowns eqns tem1 parameters answer )
+(defun $fast_central_elements (variables deg  &aux  f unknowns eqns tem1 parameters answer )
   (setq variables (cons '(mlist) (sort (cdr variables) $order_function)))
   (setq $commutators nil $centralizers nil)
   (let* ((monoms ($mono variables deg))
@@ -1299,9 +1299,9 @@ and modulo-p not prime gives false answer"
   (let ((linel (- linel 10)))
     (sloop for i from n below $linenum
 	  do  (format t "~% ~4A: ~A" (string-trim "$" (string (setq tem ($concat '$c i))))
-		      (string-GRIND (MEVAL* tem))))))
+		      (string-grind (meval* tem))))))
 
-(defvar *pbi-string* (MAKE-ARRAY '(64) :element-type 'standard-char
+(defvar *pbi-string* (make-array '(64) :element-type 'standard-char
 				 :fill-pointer 0 :adjustable t))
 
 (defun new-concat (a &rest b &aux me)
@@ -1321,7 +1321,7 @@ and modulo-p not prime gives false answer"
 
 #+lispm
 (progn
-(defvar *my-stream* (MAKE-ARRAY '(0) :element-type 'standard-char
+(defvar *my-stream* (make-array '(0) :element-type 'standard-char
 				:fill-pointer 0 :adjustable t))
 
 (defun my-stream (op &optional arg1 &rest rest)
@@ -1335,36 +1335,36 @@ and modulo-p not prime gives false answer"
      (stream-default-handler (function my-stream)
 			     op arg1 rest))))
   
-(defun my-displa (x &optional fromx fromy ($DISPLAY2D )&AUX ANSWER)
+(defun my-displa (x &optional fromx fromy ($display2d )&aux answer)
  
   (set-fill-pointer *my-stream* 0)
-  (let (($linedisp nil)(smart-tty)($cursordisp nil)($display2d T))
+  (let (($linedisp nil)(smart-tty)($cursordisp nil)($display2d t))
     (let ((*standard-output* 'my-stream))
       (displa x)))
-  (SETQ ANSWER  (string-trim '(141 #\space) *my-stream*))
-  (LET ((STREAM *standard-output*))
-    (MULTIPLE-VALUE-BIND (XPOS YPOS) (SEND STREAM :READ-CURSORPOS :CHARACTER)
+  (setq answer  (string-trim '(141 #\space) *my-stream*))
+  (let ((stream *standard-output*))
+    (multiple-value-bind (xpos ypos) (send stream :read-cursorpos :character)
       (cond ((null fromx)(setq fromx xpos fromy (f+ 2 ypos))))
-      (MY-DRAW-STRING ANSWER XPOS (F1+ YPOS)))))
+      (my-draw-string answer xpos (f1+ ypos)))))
 
-(DEFUN MY-DRAW-STRING ( A-STRING FROMX FROMY &OPTIONAL (STREAM *standard-output*))
-  (MULTIPLE-VALUE-BIND (X Y) (SEND STREAM :READ-CURSORPOS :CHARACTER)
-  (SEND STREAM :SET-CURSORPOS  (F1+ FROMX) FROMY :CHARACTER)
-  (SLOOP FOR I FROM 0 BELOW (length (the cl:array A-STRING))
-	UNLESS (EQ (AREF A-STRING I) 141)
-	DO (SEND STREAM :TYO (AREF A-STRING I))
-        ELSE  DO (INCF FROMY) (SEND STREAM :SET-CURSORPOS   FROMX FROMY :CHARACTER)
-	FINALLY (SEND STREAM :SET-CURSORPOS X (f+ 2 Y) :CHARACTER))))
+(defun my-draw-string ( a-string fromx fromy &optional (stream *standard-output*))
+  (multiple-value-bind (x y) (send stream :read-cursorpos :character)
+  (send stream :set-cursorpos  (f1+ fromx) fromy :character)
+  (sloop for i from 0 below (length (the cl:array a-string))
+	unless (eq (aref a-string i) 141)
+	do (send stream :tyo (aref a-string i))
+        else  do (incf fromy) (send stream :set-cursorpos   fromx fromy :character)
+	finally (send stream :set-cursorpos x (f+ 2 y) :character))))
 
 
 
-(defun string-displa (x &optional ($DISPLAY2D )&AUX ANSWER)
+(defun string-displa (x &optional ($display2d )&aux answer)
   "Converts the displa into a string"
   (setf (fill-pointer *my-stream* )0)
     (let (($linedisp nil)(smart-tty)($cursordisp nil))
-  (let ((*standard-output* 'my-stream)(LINEL 40))
+  (let ((*standard-output* 'my-stream)(linel 40))
     (displa x)
-   (SETQ ANSWER  (string-trim-replace '(#\newline) '#\space *my-stream*)))))
+   (setq answer  (string-trim-replace '(#\newline) '#\space *my-stream*)))))
 
 
 (defun string-trim-replace ( replace  replace-by sstring)

@@ -162,7 +162,7 @@
 ;;; are {list|array|equation}s
 
 (defun clist-mbag (op clists)
-  (let ((z (if (eq op '$MATRIX)			; the `zero' of a matrix is an mlist of 0's!!!
+  (let ((z (if (eq op '$matrix)			; the `zero' of a matrix is an mlist of 0's!!!
 	       (mlist* (make-list (length (cdaaar clists)) :initial-element 0))
 	       0)))
     (flet ((keylessp (l1 l2)			; does key l1 precede l2?
@@ -193,22 +193,22 @@
 		   (cdar (push (cons expr (gcf1 expr)) cache))))	; or compute & store
 	     (gcf1 (expr)
 	       (let ((op (and (listp expr)(caar expr))) x y)
-		 (cond ((MBAGp expr)    (clist-mbag op (mapcar #'gcf (cdr expr))))
+		 (cond ((mbagp expr)    (clist-mbag op (mapcar #'gcf (cdr expr))))
 		       ((or (null op)(not (dependsall expr vs))) `((,expr . ,zeros)))
-		       ((eq op 'MPLUS)  (cl-reduce #'clist-add (cdr expr) #'gcf))
-		       ((eq op 'MTIMES) (cl-reduce #'clist-mul (cdr expr) #'gcf))
-		       ((and (eq op 'MEXPT)	; Check that we can actually compute X^Y:
+		       ((eq op 'mplus)  (cl-reduce #'clist-add (cdr expr) #'gcf))
+		       ((eq op 'mtimes) (cl-reduce #'clist-mul (cdr expr) #'gcf))
+		       ((and (eq op 'mexpt)	; Check that we can actually compute X^Y:
 			     (setq x (gcf (second expr)) y (third expr))
 			     (or (and (integerp y)(plusp y))	; Either integer y > 0
 				 (and (null (cdr x))	; or x is a single monomial
 				      (not (dependsall y vs))	; w/ y must be free of vars
-				      (or (eql $RADEXPAND '$ALL) ; & dont care about cuts
+				      (or (eql $radexpand '$all) ; & dont care about cuts
 					  (integerp y)	; or y is an integer
 					  (every #'(lambda (p)(or (zerop1 p)(onep p)))
 						 (cdar x))))))	; or x is linear in vars.
 			(clist-pow x y))	; OK, so we CAN compute x^y (whew).
 		       (t `((,expr . ,zeros)))))))
-      (mlist* (mlist* '$%POLY vs)(map-mlist (gcf expr))))))
+      (mlist* (mlist* '$%poly vs)(map-mlist (gcf expr))))))
 
 ; Inverse of above: make an expression out of clist.
 ;;; Actually works for SERIES & Taylor too.
@@ -261,7 +261,7 @@
 		     (let ((pois (intopois expr)))
 		       (list (make1 (cadr pois)) (make1 (caddr pois)))))))
 	(let ((trig (makem expr)))
-	  (mlist* (mlist* '$%TRIG vars)
+	  (mlist* (mlist* '$%trig vars)
 		  (mlist* (map-mlist (car trig)))(mlist* (map-mlist (cadr trig))) nil))))))
 
 (defun untlist (tlist vars)
@@ -296,7 +296,7 @@
 						(cons-exp 'rat (caar p)(cdar p))))
 				      (cddddr r))
 			      (list (list (specdisrep (cons hdr (cdr r))) 0))))))))
-      (mlist* (mlist* '$%TAYLOR var order nil)(map-mlist (make1 expr))))))
+      (mlist* (mlist* '$%taylor var order nil)(map-mlist (make1 expr))))))
 
 ;;;;******************************************************************************************
 ;;;; SLIST Arithmetic.
@@ -338,21 +338,21 @@
 	       (let ((op (and (listp expr)(caar expr))))
 		 (cond ((like expr v)   1)	; Trivial case: expr is V itself
 		       ((or ($atom expr)(freeof v expr)) 0)	; `constant' case
-		       ((member op '(MPLUS MLIST MEQUAL $MATRIX))
+		       ((member op '(mplus mlist mequal $matrix))
 			(cl-reduce #'$min (cdr expr) #'mino))
-		       ((eq op 'MTIMES)  (cl-reduce #'add (cdr expr) #'mino))
-		       ((and (eq op 'MEXPT)($numberp (third expr)))	; can we compute?
+		       ((eq op 'mtimes)  (cl-reduce #'add (cdr expr) #'mino))
+		       ((and (eq op 'mexpt)($numberp (third expr)))	; can we compute?
 			(mul (mino (second expr)) (third expr)))
 		       (t 0))))			; oh, well, Treat it as constant.
 	     (gcf (expr order)
 	       (let ((op (and (listp expr)(caar expr))))
 		 (cond ((like expr v)   `((1 1)))	; Trivial case: expr is V itself
 		       ((or ($atom expr)(freeof v expr)) `((,expr 0)))	; `constant' case
-		       ((MBAGp expr)
+		       ((mbagp expr)
 			(clist-mbag op (mapcar #'(lambda (el)(gcf el order))(cdr expr))))
-		       ((eq op 'MPLUS)
+		       ((eq op 'mplus)
 			(cl-reduce #'clist-add (cdr expr) #'(lambda (el)(gcf el order))))
-		       ((eq op 'MTIMES)
+		       ((eq op 'mtimes)
 			(let* ((ms (mapcar #'mino (cdr expr)))
 			       (mtot (addn ms t))
 			       (prod '((1 0))))
@@ -362,10 +362,10 @@
 				((null terms) prod)
 			      (let ((term (gcf (car terms) (sub (add order (car m)) mtot))))
 				(setq prod (clist-mul term prod order)))))))
-		       ((and (eq op 'MEXPT)($numberp (third expr)))	; can we compute?
+		       ((and (eq op 'mexpt)($numberp (third expr)))	; can we compute?
 			(slist-pow (gcf (second expr) order)(third expr) order))
 		       (t `((,expr 0)))))))	; just treat it as constant.
-      (mlist* (mlist* '$%SERIES v order nil)(map-mlist (gcf expr order))))))
+      (mlist* (mlist* '$%series v order nil)(map-mlist (gcf expr order))))))
 
 (defun unslist (clist vars)
   ($trunc (unclist clist vars)))
@@ -375,10 +375,10 @@
 ;;; coefficient list clist.
 (defun $get_coef (clist &rest keys)
   (let ((sublist (case (and ($listp clist)($listp (cadr clist))(cadr (cadr clist)))
-		   (($%POLY $%SERIES $%TAYLOR) (cddr clist))
-		   ($%TRIG (case (car keys)
-			     (($SIN %SIN) (cdr (third clist)))
-			     (($COS %COS) (cdr (fourth clist)))
+		   (($%poly $%series $%taylor) (cddr clist))
+		   ($%trig (case (car keys)
+			     (($sin %sin) (cdr (third clist)))
+			     (($cos %cos) (cdr (fourth clist)))
 			     (otherwise (merror "First KEY must be SIN or COS"))))
 		   (otherwise (merror "Unknown coefficient list type: ~M" clist)))))
     (or (cadar (member keys sublist :test #'alike :key #'cddr)) 0)))
@@ -387,9 +387,9 @@
 (defun $uncoef (cl)
   (let ((spec (and ($listp cl)(second cl))))
     (case (and ($listp spec)(second spec))
-      ($%POLY  (unclist (cddr cl) (cddr spec)))
-      (($%SERIES $%TAYLOR) (unslist (cddr cl) (cddr spec)))
-      ($%TRIG   (untlist (mapcar #'cdr (cddr cl)) (cddr spec)))
+      ($%poly  (unclist (cddr cl) (cddr spec)))
+      (($%series $%taylor) (unslist (cddr cl) (cddr spec)))
+      ($%trig   (untlist (mapcar #'cdr (cddr cl)) (cddr spec)))
       (otherwise (merror "UNCOEF: Unrecognized COEFFS form: ~M" cl)))))
 
 ;;;********************************************************************************
@@ -400,7 +400,7 @@
 
 (defun partition-clist (list test)
   (cond ((null test) (values nil list))
-	((eq test T) (values list nil))
+	((eq test t) (values list nil))
 	(t  (let ((pass nil)(fail nil))
 	      (dolist (item list)
 		(if (is-boole-check (mapply test (cddr item) '$partition_test))
