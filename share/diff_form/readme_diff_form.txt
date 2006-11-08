@@ -1,12 +1,12 @@
                            PREFACE
 
 This is a differential form package slightly singular.
-This package is intended to provide a working konwledge
-through calulating differntial forms for students finished advanced calc.
-In short,not to gather formulars, but to calc and induce them from calculation.
+This package is intended to provide a working knowledge
+through calculating differential forms for students finished advanced calc.
+In short,not to gather formulas, but to calc and induce them from calculation.
 In this field we need various other knowledge about math and physics.
 I hope this package is useful for maxima people.
-In detail you shoud read nice books such that....
+In detail you should read nice books such that....
 
 Differential Forms with Applications to the Physical Sciences
 written by Harley Flanders ISBN 0-486-66169-5 Dover (reprint)
@@ -26,22 +26,22 @@ written by Bernand F.Schutz  Cambridge university Press
 I think this package is intermediate between vect package and tensor package 
 in maxima.  So in this time,I did not implement bundle spaces, though especially 
  need S1-bundle. I don't like too formalism such as other CAS's diff-form package.
-Because nonusability of these package prevents from using bundle spaces,as
+Because non-usability of these package prevents from using bundle spaces,as
 bundle is a natural tool for peoples using it for thinking.
 My todo-list is to implement bundles with natural usability.
-I welcome All coments, advices,bug reports.to maxima mailing list
+I welcome All comments, advices,bug reports.to maxima mailing list
 or me (go.maxima@gmail.com) 
 
 
 A little new thing I implemented is to use clifford operator for seeking integral factor.
-If exsist,(f^-1 is integral factor),d(w)=f^(-1)df @ w. then @--->&(clifford)
-d(w)/w is possible,becase we calculate w & w -->A (some numbers),in clifford algebra
+If exist,(f^-1 is integral factor),d(w)=f^(-1)df @ w. then @--->&(clifford)
+d(w)/w is possible,because we calculate w & w -->A (some numbers),in clifford algebra
 1/w=w/A. d(w)/w---> d(w)&w/A. when  &-->@,use some quantization,@ is independent from metric.
-when calculating with &,we introduce metric parameta automatically 
+when calculating with &,we introduce metric parameter automatically 
  for example u1,u2,u3,such that dx&dx=u1,...then u1-->0,u2-->0,u3=\=0,&-->@. 
 This calculation is illegal only within  differential forms,
-but regal clifford-grassman algebra. Usually in such a case we use an Ideal on differntial forms.
-But I think it is essential that limit of metric breakes clifford structure,but cannot affect
+but regal clifford-grassman algebra. Usually in such a case we use an Ideal on differential forms.
+But I think it is essential that limit of metric breaks clifford structure,but cannot affect
 grassman structure,so after this limit, we can change & to @ . 
 See example.txt.
 
@@ -50,13 +50,13 @@ recognize that. hodge star is named h_st().
 poisson braket with symplectic form is much useful,if you may explicitly  give hamilton 
 operator.
 To multiple unit pseudo scalar is almost same hodge star.(at most,differnt sign + or -)
-this J() is definded and used to define antidifferential operater antid().
+this J() is defined and used to define antidifferential operator antid().
 
 
                                  INTRODUCTION    
 
 There is two way for starting. 
-One way is batch("cartan_init.bat"). This mean to use no grobal coords,basis others.
+One way is load("diff_form.mac"). This mean to use no grobal coords,basis others.
 As it were clean start. All work may be done in f_star() or fstar_with_clf().
 you  can change coords freely.
 Other way is batch("new_cartan_test4.bat").This mean to use global coords,basis.
@@ -82,9 +82,9 @@ nest2([d,h_st,d],f*d(x)) is equal d(h_st(d(f*d(x))))
 d(x) is equal Dx,so Dx@Dy is d(x)@d(y),but internaly in d(x)@d(y) exterior derivative are done.
 
 ALL files
-cartan_init.bat one initial file ,(only local coordinate environment)
+diff_form.mac one initial file ,(only local coordinate environment)
 
-new_cartan_test4.bat another initial file,(global coordinate and local coords environment)
+new_cartan_test4.mac another initial file,(global coordinate and local coords environment)
 
 cartan_new.lisp 
 derived from share/calculus/cartan.lisp add & operator and others (for future use)
