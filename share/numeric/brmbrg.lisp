@@ -3,7 +3,7 @@
 		  $bfloat $float2bf)
 	 (fixnum m l i k $brombergit $brombergmin))
 
-#-NIL(declare (*expr $bfloat))
+#-nil(declare (*expr $bfloat))
 
 (defun fpscale (x m)
        (cond ((equal (car x) 0) x)

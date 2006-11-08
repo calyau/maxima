@@ -1,91 +1,91 @@
 
-#-NIL
-(DECLARE (*expr makestring1)(SPECIAL $FLOATFORMAT FLOATMAX FLOATMIN FLOATSMALL
-		  FLOATBIG FLOATBIGBIG FLOAT-ENOTE)) 
+#-nil
+(declare (*expr makestring1)(special $floatformat floatmax floatmin floatsmall
+		  floatbig floatbigbig float-enote)) 
 
 
-(defmvar $FLOATFORMAT T) 
+(defmvar $floatformat t) 
 
 ;;; defaults
 
-(defmvar FLOATMAX 6. )
-(defmvar FLOATMIN -4. )
-(defmvar FLOATBIG 2. )
-(defmvar FLOATBIGBIG 1. )
-(defmvar FLOATSMALL 3. )
-(defmvar FLOAT-ENOTE 2.) 
+(defmvar floatmax 6. )
+(defmvar floatmin -4. )
+(defmvar floatbig 2. )
+(defmvar floatbigbig 1. )
+(defmvar floatsmall 3. )
+(defmvar float-enote 2.) 
 
-(PUTPROP 'MAKESTRING1
-	 (GET 'MAKESTRING 'SUBR)
-	 'SUBR) 
+(putprop 'makestring1
+	 (get 'makestring 'subr)
+	 'subr) 
 
-(DEFUN MAKESTRING (FORM) 
-       (COND ((AND $FLOATFORMAT (FLOATP FORM)) (NICEFLOAT FORM))
-	     ((MAKESTRING1 FORM)))) 
+(defun makestring (form) 
+       (cond ((and $floatformat (floatp form)) (nicefloat form))
+	     ((makestring1 form)))) 
 
-(DEFUN NICEFLOAT (FLT) 
-       (DECLARE (FLONUM FLT))
-       (COND ((= FLT 0.0) (LIST 48. 46. 48.))
-	     ((< FLT 0.0) (CONS 45. (NICEFLT (ABS FLT))))
-	     ((NICEFLT (ABS FLT))))) 
+(defun nicefloat (flt) 
+       (declare (flonum flt))
+       (cond ((= flt 0.0) (list 48. 46. 48.))
+	     ((< flt 0.0) (cons 45. (niceflt (abs flt))))
+	     ((niceflt (abs flt))))) 
 
-(DEFUN NICEFLT (AFLT) 
-       (DECLARE (FIXNUM I) (FLONUM SIMFLT FAC AFLT))
-       (DO ((I 0.)
-	    (SIMFLT AFLT)
-	    (FAC (COND ((< AFLT 1.0) 10.0) (0.1)))
-	    (INC (COND ((< AFLT 1.0) -1.) (1.))))
-	   ((AND (< SIMFLT 10.0) (NOT (< SIMFLT 1.0)))
-	    (FLOATCHECK (EXPLODEN SIMFLT) I))
-	   (SETQ SIMFLT (TIMES SIMFLT FAC))
-	   (SETQ I (+ I INC)))) 
-(DEFUN FLOATCHECK (REPRES PWR) 
-       (DECLARE (FIXNUM PWR))
-       (COND
-	((OR (> PWR (1- FLOATMAX)) (< PWR FLOATMIN))
-	 (CONS (CAR REPRES)
-	       (CONS 46.
-		     (APPEND (FRACGEN (CDDR REPRES) FLOAT-ENOTE NIL)
-			     (CONS 69.(COND ((> PWR 0.)
-						(CONS 43.
-						      (EXPLODEN PWR)))
-					       ((EXPLODEN PWR))))))))
-	((< PWR 0.)
-	 ((LAMBDA (FRAC) 
-	   (CONS 48.
-		 (CONS 46.
-		       (COND ((EQUAL FRAC '(48.)) FRAC)
-			     ((APPEND (FRACZEROS (1- (ABS PWR)))
-				      FRAC))))))
-	  (FRACGEN (DELQ 46. REPRES) FLOATSMALL NIL)))
-	((CONS (CAR REPRES)
-	       (FLOATNONE (CDDR REPRES)
-			  PWR
-			  (COND ((< PWR 3.) FLOATBIG)
-				(FLOATBIGBIG))))))) 
+(defun niceflt (aflt) 
+       (declare (fixnum i) (flonum simflt fac aflt))
+       (do ((i 0.)
+	    (simflt aflt)
+	    (fac (cond ((< aflt 1.0) 10.0) (0.1)))
+	    (inc (cond ((< aflt 1.0) -1.) (1.))))
+	   ((and (< simflt 10.0) (not (< simflt 1.0)))
+	    (floatcheck (exploden simflt) i))
+	   (setq simflt (times simflt fac))
+	   (setq i (+ i inc)))) 
+(defun floatcheck (repres pwr) 
+       (declare (fixnum pwr))
+       (cond
+	((or (> pwr (1- floatmax)) (< pwr floatmin))
+	 (cons (car repres)
+	       (cons 46.
+		     (append (fracgen (cddr repres) float-enote nil)
+			     (cons 69.(cond ((> pwr 0.)
+						(cons 43.
+						      (exploden pwr)))
+					       ((exploden pwr))))))))
+	((< pwr 0.)
+	 ((lambda (frac) 
+	   (cons 48.
+		 (cons 46.
+		       (cond ((equal frac '(48.)) frac)
+			     ((append (fraczeros (1- (abs pwr)))
+				      frac))))))
+	  (fracgen (delq 46. repres) floatsmall nil)))
+	((cons (car repres)
+	       (floatnone (cddr repres)
+			  pwr
+			  (cond ((< pwr 3.) floatbig)
+				(floatbigbig))))))) 
 
-(DEFUN FRACZEROS (N) 
-       (DECLARE (FIXNUM N))
-       (COND ((= N 0.) NIL) ((CONS 48. (FRACZEROS (1- N)))))) 
+(defun fraczeros (n) 
+       (declare (fixnum n))
+       (cond ((= n 0.) nil) ((cons 48. (fraczeros (1- n)))))) 
 
-(DEFUN FLOATNONE (REPRES PWR FLOATFRAC) 
-       (DECLARE (FIXNUM PWR FLOATFRAC))
-       (COND ((= PWR 0.) (CONS 46. (FRACGEN REPRES FLOATFRAC NIL)))
-	     ((CONS (COND (REPRES (CAR REPRES)) (48.))
-		    (FLOATNONE (CDR REPRES) (1- PWR) FLOATFRAC))))) 
+(defun floatnone (repres pwr floatfrac) 
+       (declare (fixnum pwr floatfrac))
+       (cond ((= pwr 0.) (cons 46. (fracgen repres floatfrac nil)))
+	     ((cons (cond (repres (car repres)) (48.))
+		    (floatnone (cdr repres) (1- pwr) floatfrac))))) 
 
-(DEFUN FELIMIN (REVREP) 
-       (COND ((NULL REVREP) (NCONS 48.))
-	     ((= (CAR REVREP) 48.) (FELIMIN (CDR REVREP)))
-	     ((REVERSE REVREP)))) 
+(defun felimin (revrep) 
+       (cond ((null revrep) (ncons 48.))
+	     ((= (car revrep) 48.) (felimin (cdr revrep)))
+	     ((reverse revrep)))) 
 
-(DEFUN FRACGEN (REPRES FLOATFRAC RESULT) 
-       (DECLARE (FIXNUM FLOATFRAC))
-       (COND ((NULL REPRES) (FELIMIN RESULT))
-	     ((= FLOATFRAC 0.) (FELIMIN RESULT))
-	     ((FRACGEN (CDR REPRES)
-		       (1- FLOATFRAC)
-		       (CONS (CAR REPRES) RESULT))))) 
+(defun fracgen (repres floatfrac result) 
+       (declare (fixnum floatfrac))
+       (cond ((null repres) (felimin result))
+	     ((= floatfrac 0.) (felimin result))
+	     ((fracgen (cdr repres)
+		       (1- floatfrac)
+		       (cons (car repres) result))))) 
 
-#-NIL
+#-nil
 (sstatus uuolinks)

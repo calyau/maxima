@@ -18,15 +18,15 @@
 ;;; fixed an error in estimating TOLERR due to neglect of sub-interval size
 ;;; when abserr check is made.
 
-(DEFMVAR $QUANC8_FLAG 0.0
+(defmvar $quanc8_flag 0.0
   "integer part-how many regions failed to converge. fractional part-
   how much of the interval was left when it failed")
-(DEFMVAR $QUANC8_ERREST 0.0
+(defmvar $quanc8_errest 0.0
   "an estimated error based on the difference between one- and two-panel
   calculation of an interval, summed over the whole region")
-(DEFMVAR $QUANC8_ABSERR 1.0e-8
+(defmvar $quanc8_abserr 1.0e-8
   "absolute error tolerance for reasonable single-precision answers")
-(DEFMVAR $QUANC8_RELERR 1.0e-4
+(defmvar $quanc8_relerr 1.0e-4
   "relative error condition for reasonable run-times")	
 
 ;; (DEFUN ($QUANC8 TRANSLATED-MMACRO) (F A B &OPTIONAL (C NIL C-P))
@@ -49,35 +49,35 @@
 		  ((lambda) ((mlist) ,(cadr form)) ,(car form)) ,@(cddr form))
 		`((call-quanc8) ,@form)) nil))))
 
-(DEFVAR QUANC8-FREE-LIST ()
+(defvar quanc8-free-list ()
   "For efficient calls to quanc8 keep arrays we need on a free list.")
 
-(DEFVAR QUANC8-|^]| ())
-(DEFUN QUANC8-|^]| () (SETQ QUANC8-|^]| T))
+(defvar quanc8-|^]| ())
+(defun quanc8-|^]| () (setq quanc8-|^]| t))
 
-(DEFUN CALL-QUANC8 (FUN A B)
-  (BIND-TRAMP1$
-   FUN FUN
-   (LET ((VALS (IF QUANC8-FREE-LIST
-		   (POP QUANC8-FREE-LIST)
-		   (LIST (*array nil 'flonum 17.)
+(defun call-quanc8 (fun a b)
+  (bind-tramp1$
+   fun fun
+   (let ((vals (if quanc8-free-list
+		   (pop quanc8-free-list)
+		   (list (*array nil 'flonum 17.)
 			 (*array nil 'flonum 17.)
 			 (*array nil 'flonum 9. 31.)
 			 (*array nil 'flonum 9. 31.)
 			 (*array nil 'flonum 32.))))
-	 (USER-TIMESOFAR (CONS #'QUANC8-|^]| USER-TIMESOFAR))) 
-     (PROG1
-      (QUANC8 FUN
-	      (MTO-FLOAT A)
-	      (MTO-FLOAT B)
-	      (CAR VALS)
-	      (CAR (CDR VALS))
-	      (CAR (CDDR VALS))
-	      (CAR (CDDDR VALS))
-	      (CAR (CDDDDR VALS)))
-      (PUSH VALS QUANC8-FREE-LIST)))))
+	 (user-timesofar (cons #'quanc8-|^]| user-timesofar))) 
+     (prog1
+      (quanc8 fun
+	      (mto-float a)
+	      (mto-float b)
+	      (car vals)
+	      (car (cdr vals))
+	      (car (cddr vals))
+	      (car (cdddr vals))
+	      (car (cddddr vals)))
+      (push vals quanc8-free-list)))))
 
-(DEFUN QUANC8 (FUN A B X-ARR F-ARR XSAVE-ARR FSAVE-ARR QRIGHT-ARR)
+(defun quanc8 (fun a b x-arr f-arr xsave-arr fsave-arr qright-arr)
   (declare (type (simple-array cl:float)
 		 x-arr f-arr xsave-arr fsave-arr qright-arr))
   ;; local macros for typing convenience.
@@ -89,274 +89,274 @@
     ;; Rudimentary (non-ansi GCL compatible) error handling.
     (let (errset)
       (or (car (errset
-    (PROG ((LEVMIN 1.) (LEVMAX 30.) (LEVOUT 6.) (NOMAX 5000.) (NOFIN 0)
-	 (W0 (//$ 3956.0 14175.0)) (W1 (//$ 23552.0 14175.0))
-	 (W2 (//$ -3712.0 14175.0)) (W3 (//$ 41984.0 14175.0))
-	 (W4 (//$ -18160.0 14175.0))
-	 (RESULT 0.0) (COR11 0.0) (AREA 0.0)
-	 (NOFUN 0.) (LEV 0.) (NIM 1.) (QPREV 0.0)
-	 (STONE (//$ (-$ B A) 16.0))
-	 (I 0.)
-	 (STEP 0.0) (QLEFT 0.0) (QNOW 0.0) (QDIFF 0.0)
-	 (ESTERR 0.0) (TOLERR 0.0) (TEMP 0.0)
-	 ($NUMER t) ($FLOAT t))
+    (prog ((levmin 1.) (levmax 30.) (levout 6.) (nomax 5000.) (nofin 0)
+	 (w0 (//$ 3956.0 14175.0)) (w1 (//$ 23552.0 14175.0))
+	 (w2 (//$ -3712.0 14175.0)) (w3 (//$ 41984.0 14175.0))
+	 (w4 (//$ -18160.0 14175.0))
+	 (result 0.0) (cor11 0.0) (area 0.0)
+	 (nofun 0.) (lev 0.) (nim 1.) (qprev 0.0)
+	 (stone (//$ (-$ b a) 16.0))
+	 (i 0.)
+	 (step 0.0) (qleft 0.0) (qnow 0.0) (qdiff 0.0)
+	 (esterr 0.0) (tolerr 0.0) (temp 0.0)
+	 ($numer t) ($float t))
 	
-	(DECLARE (cl:float W0 W1 W2 W3 W4 RESULT COR11 AREA QPREV STONE STEP
-			 QLEFT QNOW QDIFF ESTERR TOLERR TEMP)
-		 (FIXNUM I LEVMIN LEVMAX LEVOUT NOMAX NOFIN NOFUN LEV NIM)
-		 (boolean $NUMER $FLOAT))
+	(declare (cl:float w0 w1 w2 w3 w4 result cor11 area qprev stone step
+			 qleft qnow qdiff esterr tolerr temp)
+		 (fixnum i levmin levmax levout nomax nofin nofun lev nim)
+		 (boolean $numer $float))
 
-	(SETQ
-	 $QUANC8_FLAG 0.0
-	 $QUANC8_ERREST 0.0
-	 NOFIN (- NOMAX (* 8 (+ LEVMAX (* -1. LEVOUT) (EXPT 2. (1+ LEVOUT))))))
+	(setq
+	 $quanc8_flag 0.0
+	 $quanc8_errest 0.0
+	 nofin (- nomax (* 8 (+ levmax (* -1. levout) (expt 2. (1+ levout))))))
 	      
-	(COND ((= A B)
-	       (RETURN 0.0)))
+	(cond ((= a b)
+	       (return 0.0)))
 
-	(SETF (X 0.)
-	      A)
+	(setf (x 0.)
+	      a)
 
-	(SETF (X 16.) 
-	      B)
+	(setf (x 16.) 
+	      b)
 
-	(SETF (X 8.)
-	      (*$ 0.5 (+$ (X 0.)
-			  (X 16.))))
+	(setf (x 8.)
+	      (*$ 0.5 (+$ (x 0.)
+			  (x 16.))))
 
-	(SETF (X 4.)
-	      (*$ 0.5 (+$ (X 0.)
-			  (X 8.))))
+	(setf (x 4.)
+	      (*$ 0.5 (+$ (x 0.)
+			  (x 8.))))
 
-	(SETF (X 12.)
-	      (*$ 0.5 (+$ (X 16.)
-			  (X 8.))))
+	(setf (x 12.)
+	      (*$ 0.5 (+$ (x 16.)
+			  (x 8.))))
 
-	(SETF (X 2.)
-	      (*$ 0.5 (+$ (X 0.)
-			  (X 4.))))
+	(setf (x 2.)
+	      (*$ 0.5 (+$ (x 0.)
+			  (x 4.))))
 
-	(SETF (X 6.)
-	      (*$ 0.5 (+$ (X 4.)
-			  (X 8.))))
+	(setf (x 6.)
+	      (*$ 0.5 (+$ (x 4.)
+			  (x 8.))))
 
-	(SETF (X 10.)
-	      (*$ 0.5 (+$ (X 12.)
-			  (X 8.))))
+	(setf (x 10.)
+	      (*$ 0.5 (+$ (x 12.)
+			  (x 8.))))
 
-	(SETF (X 14.)
-	      (*$ 0.5 (+$ (X 12.)
-			  (X 16.))))
+	(setf (x 14.)
+	      (*$ 0.5 (+$ (x 12.)
+			  (x 16.))))
 
 
-  DO-25
-        (WHEN QUANC8-|^]|
-	      (MTELL "QUANC8 calculating at X= ~S" (X I))
-	      (SETQ QUANC8-|^]| NIL))
+  do-25
+        (when quanc8-|^]|
+	      (mtell "QUANC8 calculating at X= ~S" (x i))
+	      (setq quanc8-|^]| nil))
 	      
-	(SETF (F I)
-	      (FCALL$ FUN (X I)))
+	(setf (f i)
+	      (fcall$ fun (x i)))
 	
-	(SETQ I (+ 2. I))
+	(setq i (+ 2. i))
 
-	(IF (> I 16.)
-	    (GO DO-25-DONE))
+	(if (> i 16.)
+	    (go do-25-done))
 
-	(GO DO-25)
+	(go do-25)
 
-DO-25-DONE
-	(SETQ NOFUN 9.)
+do-25-done
+	(setq nofun 9.)
 
- TAG-30
-	(SETQ I 1.)
+ tag-30
+	(setq i 1.)
 
-  DO-30
-	(SETF (X I)
-	      (*$ 0.5 (+$ (X (1- I))
-			  (X (1+ I)))))
-        (WHEN QUANC8-|^]|
-	      (MTELL "QUANC8 calculating at X= ~S" (X I))
-	      (SETQ QUANC8-|^]| NIL))
+  do-30
+	(setf (x i)
+	      (*$ 0.5 (+$ (x (1- i))
+			  (x (1+ i)))))
+        (when quanc8-|^]|
+	      (mtell "QUANC8 calculating at X= ~S" (x i))
+	      (setq quanc8-|^]| nil))
 
-	(SETF (F I)
-	      (FCALL$ FUN (X I)))
+	(setf (f i)
+	      (fcall$ fun (x i)))
 
-	(SETQ I (+ 2. I))
+	(setq i (+ 2. i))
 
-	(IF (> I 15.)
-	    (GO DO-30-DONE))
+	(if (> i 15.)
+	    (go do-30-done))
 
-	(GO DO-30)
+	(go do-30)
 
-DO-30-DONE
-	(SETQ NOFUN (+ 8. NOFUN))
+do-30-done
+	(setq nofun (+ 8. nofun))
 	
-	(SETQ STEP (//$ (-$ (X 16.)
-			    (X 0.))
+	(setq step (//$ (-$ (x 16.)
+			    (x 0.))
 			16.0))
 
-	(SETQ QLEFT (*$ STEP (+$ (*$ W0 (+$ (F 0.)
-					    (F 8.)))
-				 (*$ W1 (+$ (F 1.)
-					    (F 7.)))
-				 (*$ W2 (+$ (F 2.)
-					    (F 6.)))
-				 (*$ W3 (+$ (F 3.)
-					    (F 5.)))
-				 (*$ W4 (F 4.)))))
+	(setq qleft (*$ step (+$ (*$ w0 (+$ (f 0.)
+					    (f 8.)))
+				 (*$ w1 (+$ (f 1.)
+					    (f 7.)))
+				 (*$ w2 (+$ (f 2.)
+					    (f 6.)))
+				 (*$ w3 (+$ (f 3.)
+					    (f 5.)))
+				 (*$ w4 (f 4.)))))
 
-	(SETF (QRIGHT (1+ LEV))
-	      (*$ STEP (+$ (*$ W0 (+$ (F 8.)
-				      (F 16.)))
-			   (*$ W1 (+$ (F 9.)
-				      (F 15.)))
-			   (*$ W2 (+$ (F 10.)
-				      (F 14.)))
-			   (*$ W3 (+$ (F 11.)
-				      (F 13.)))
-			   (*$ W4 (F 12.)))))
+	(setf (qright (1+ lev))
+	      (*$ step (+$ (*$ w0 (+$ (f 8.)
+				      (f 16.)))
+			   (*$ w1 (+$ (f 9.)
+				      (f 15.)))
+			   (*$ w2 (+$ (f 10.)
+				      (f 14.)))
+			   (*$ w3 (+$ (f 11.)
+				      (f 13.)))
+			   (*$ w4 (f 12.)))))
 	
-	(SETQ QNOW (+$ QLEFT (QRIGHT (1+ LEV))))
+	(setq qnow (+$ qleft (qright (1+ lev))))
 
-	(SETQ QDIFF (-$ QNOW QPREV))
+	(setq qdiff (-$ qnow qprev))
 
-	(SETQ AREA (+$ AREA QDIFF))
+	(setq area (+$ area qdiff))
 
-	(SETQ ESTERR (//$ (ABS QDIFF)
+	(setq esterr (//$ (abs qdiff)
 			  1023.0))
 
-	(SETQ TOLERR (*$
-		      (//$ STEP STONE)
-		      (MAX $QUANC8_ABSERR
-			   (*$ (ABS AREA)
-			       $QUANC8_RELERR))))
+	(setq tolerr (*$
+		      (//$ step stone)
+		      (max $quanc8_abserr
+			   (*$ (abs area)
+			       $quanc8_relerr))))
 
-	(IF (< LEV LEVMIN)
-	    (GO TAG-50))
+	(if (< lev levmin)
+	    (go tag-50))
 
-	(IF (OR (> LEV LEVMAX)
-		(= LEV LEVMAX))
-	    (GO TAG-62))
+	(if (or (> lev levmax)
+		(= lev levmax))
+	    (go tag-62))
 
-	(IF (> NOFUN NOFIN)
-	    (GO TAG-60))
+	(if (> nofun nofin)
+	    (go tag-60))
 
-	(IF (< ESTERR TOLERR)
-	    (GO TAG-70))
+	(if (< esterr tolerr)
+	    (go tag-70))
 
- TAG-50
-	(SETQ NIM (* 2. NIM)
-	      LEV (1+ LEV))
+ tag-50
+	(setq nim (* 2. nim)
+	      lev (1+ lev))
 
-	(SETQ I 1.)
+	(setq i 1.)
 
-  DO-52
-	(SETF (FSAVE I LEV)
-	      (F (+ 8. I)))
+  do-52
+	(setf (fsave i lev)
+	      (f (+ 8. i)))
 
-	(SETF (XSAVE I LEV)
-	      (X (+ 8. I)))
+	(setf (xsave i lev)
+	      (x (+ 8. i)))
 
-	(SETQ I (1+ I))
+	(setq i (1+ i))
 
-	(IF (> I 8.)
-	    (GO DO-52-DONE))
+	(if (> i 8.)
+	    (go do-52-done))
 
-	(GO DO-52)
+	(go do-52)
 
-DO-52-DONE
-	(SETQ QPREV QLEFT)
+do-52-done
+	(setq qprev qleft)
 
-	(SETQ I 1.)
+	(setq i 1.)
 
-  DO-55
-	(SETF (F (+ 18. (* -2. I)))
-	      (F (+ 9. (* -1. I))))
+  do-55
+	(setf (f (+ 18. (* -2. i)))
+	      (f (+ 9. (* -1. i))))
 
-	(SETF (X (+ 18. (* -2. I)))
-	      (X (+ 9. (* -1. I))))
+	(setf (x (+ 18. (* -2. i)))
+	      (x (+ 9. (* -1. i))))
 
-	(SETQ I (1+ I))
+	(setq i (1+ i))
 
-	(IF (> I 8.)
-	    (GO tag-30))
+	(if (> i 8.)
+	    (go tag-30))
 
-	(GO DO-55)
+	(go do-55)
 
- TAG-60
-	(SETQ NOFIN (* 2. NOFIN))
+ tag-60
+	(setq nofin (* 2. nofin))
 
-	(SETQ LEVMAX LEVOUT)
+	(setq levmax levout)
 
-	(SETQ $QUANC8_FLAG (+$ $QUANC8_FLAG (//$ (-$ B (X 0.))
-				 (-$ B A))))
+	(setq $quanc8_flag (+$ $quanc8_flag (//$ (-$ b (x 0.))
+				 (-$ b a))))
 
-	(GO TAG-70)
+	(go tag-70)
 
- TAG-62
-	(SETQ $QUANC8_FLAG (+$ $QUANC8_FLAG 1.0))
+ tag-62
+	(setq $quanc8_flag (+$ $quanc8_flag 1.0))
 
- TAG-70
-	(SETQ RESULT (+$ RESULT QNOW)
-	      $QUANC8_ERREST (+$ $QUANC8_ERREST ESTERR)
-	      COR11 (+$ COR11 (//$ QDIFF 1023.0)))
+ tag-70
+	(setq result (+$ result qnow)
+	      $quanc8_errest (+$ $quanc8_errest esterr)
+	      cor11 (+$ cor11 (//$ qdiff 1023.0)))
 
- TAG-72
-	(IF (= NIM (* 2. (// NIM 2.)))
-	    (GO TAG-75))
+ tag-72
+	(if (= nim (* 2. (// nim 2.)))
+	    (go tag-75))
 
-	(SETQ NIM (// NIM 2.))
+	(setq nim (// nim 2.))
 
-	(SETQ LEV (1- LEV))
+	(setq lev (1- lev))
 
-	(GO TAG-72)
+	(go tag-72)
 
- TAG-75
-	(SETQ NIM (1+ NIM))
+ tag-75
+	(setq nim (1+ nim))
 
-	(IF (OR (< LEV 0.)
-		(= LEV 0.))
-	    (GO TAG-80))
+	(if (or (< lev 0.)
+		(= lev 0.))
+	    (go tag-80))
 
-	(SETQ QPREV (QRIGHT LEV))
+	(setq qprev (qright lev))
 
-	(SETQ I 1.)
+	(setq i 1.)
 
-	(SETF (X 0.)
-	      (X 16.))
+	(setf (x 0.)
+	      (x 16.))
 
-	(SETF (F 0.)
-	      (F 16.))
+	(setf (f 0.)
+	      (f 16.))
 
-  DO-78
-	(SETF (F (* 2. I))
-	      (FSAVE I LEV))
+  do-78
+	(setf (f (* 2. i))
+	      (fsave i lev))
 
-	(SETF (X (* 2. I))
-	      (XSAVE I LEV))
+	(setf (x (* 2. i))
+	      (xsave i lev))
 	
-	(SETQ I (1+ I))
+	(setq i (1+ i))
 
-	(IF (> I 8.)
-	    (GO tag-30))
+	(if (> i 8.)
+	    (go tag-30))
 	
-	(GO DO-78)
+	(go do-78)
 
- TAG-80
-	(SETQ RESULT (+$ RESULT COR11))
+ tag-80
+	(setq result (+$ result cor11))
 
-	(IF (= $QUANC8_ERREST 0.0)
-	    (RETURN RESULT))
+	(if (= $quanc8_errest 0.0)
+	    (return result))
 	
- TAG-82
-    (SETQ TEMP (+$ $QUANC8_ERREST (ABS RESULT)))
+ tag-82
+    (setq temp (+$ $quanc8_errest (abs result)))
 	
-	(IF (NOT (= TEMP (ABS RESULT)))
-	    (RETURN RESULT))
+	(if (not (= temp (abs result)))
+	    (return result))
 
-	(SETQ $QUANC8_ERREST (*$ 2.0 $QUANC8_ERREST))
+	(setq $quanc8_errest (*$ 2.0 $quanc8_errest))
 	
-	(GO TAG-82))))
+	(go tag-82))))
 
 	  ;; For whatever reason and with a suitable
 	  ;; discrete meaning of convergence...

@@ -18,7 +18,7 @@
 
 (defmvar pure-fortran nil "If T, separate FORTRAN output enabled." boolean)
 (defmvar comment-fortran nil "T for comments only." boolean)
-(defmvar fortran-wallpaper 'T "SFA file stream")
+(defmvar fortran-wallpaper 't "SFA file stream")
 (defmvar fort-line-width (- 72 6) "Max # of statement characters" fixnum)
 (defmvar allowed-length-floor 28 "Min # of characters in a subexpression" fixnum)
 (defmvar halfing-floor (* 2 allowed-length-floor) "See ALLOWED-LENGTH-FLOOR" fixnum)
@@ -106,16 +106,16 @@
 ;; symbol, and the symbol is bound to a matrix, then the matrix is printed
 ;; using an array assignment notation.
 
-(DEFMSPEC $CRAY_FORTRAN (L)
- (SETQ L (FEXPRCHECK L))
- (LET ((VALUE (STRMEVAL L)))
-      (COND ((MSETQP L) (SETQ VALUE `((MEQUAL) ,(CADR L) ,(MEVAL L)))))
-      (COND ((AND (SYMBOLP L) ($MATRIXP VALUE))
-             ($FORTMX L VALUE))
-            ((AND (NOT (ATOM VALUE)) (EQ (CAAR VALUE) 'MEQUAL)
-                  (SYMBOLP (CADR VALUE)) ($MATRIXP (CADDR VALUE)))
-             ($FORTMX (CADR VALUE) (CADDR VALUE)))
-            (T (FORTRAN-PRINT VALUE)))))
+(defmspec $cray_fortran (l)
+ (setq l (fexprcheck l))
+ (let ((value (strmeval l)))
+      (cond ((msetqp l) (setq value `((mequal) ,(cadr l) ,(meval l)))))
+      (cond ((and (symbolp l) ($matrixp value))
+             ($fortmx l value))
+            ((and (not (atom value)) (eq (caar value) 'mequal)
+                  (symbolp (cadr value)) ($matrixp (caddr value)))
+             ($fortmx (cadr value) (caddr value)))
+            (t (fortran-print value)))))
 
 ;; This function is called from Lisp programs.  It takes an expression and
 ;; a stream argument.  Default stream is NIL in MacLisp and STANDARD-OUTPUT
@@ -434,7 +434,7 @@
           (pre-compile x)))
    x)
 
-(DEFMACRO TABLEN () #-(or Franz LISPM) (STATUS TABSIZE) #+(or Franz LISPM) 8)
+(defmacro tablen () #-(or Franz LISPM) (status tabsize) #+(or Franz LISPM) 8)
 
 (defvar eliminate-space nil)
 
@@ -514,8 +514,8 @@
               (t (sfa-unclaimed-message self op arg)))))))
 
 (defun $open_fortran_file (file)
- (and (eq fortran-wallpaper 'T)
-      (status feature SFA)
+ (and (eq fortran-wallpaper 't)
+      (status feature sfa)
       (setq fortran-wallpaper
             (sfa-create 'pure-fortran-handler 1 'fortran-wallpaper)))
  (sfa-store fortran-wallpaper 0 (sfa-call fortran-wallpaper :open ($filename_merge file)))
