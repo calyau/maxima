@@ -20,6 +20,8 @@
    COMPILE_LISP_FILE("SHARE2\;DIFFEQ").
 */
 
+status([x]):='done$
+
 eval_when(translate,transcompile:true /* ,packagefile:true */)$
 
 /* HERALD_PACKAGE(DIFFEQ_RUNGE)$ */
