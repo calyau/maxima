@@ -97,5 +97,9 @@ string ('foo(x, y, z) / bar(a, b, c) + 'baz(%pi - 'quux(%e ^ mumble(%i))));
 string ('"+"(a, b, '"."(c, d), '"^"(e, f)));
 "'?mplus(a,b,'?mnctimes(c,d),'?mexpt(e,f))";
 
+/* Bug 626697 */
+limit(atan2(y,x),y,minf);
+-limit(atan2(y,x),y,inf);
+
 end;
 end$

@@ -1655,7 +1655,8 @@ It appears in LIMIT and DEFINT.......")
 	     (simplify (cons head
 			     (mapcar #'(lambda (a) 
 					 (limit a var val 'think))
-				     (cdr exp)))))))))
+				     (cdr exp)))))
+	   (nounlimit exp var val)))))
 
 (defun liminv (e)
   (setq e (resimplify (subst (m// 1 var) var e)))
