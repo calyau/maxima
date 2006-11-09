@@ -1,4 +1,4 @@
-@c english version 1.23
+@c english version 1.24
 @menu
 * Definiciones para Ecuaciones::
 @end menu
@@ -590,10 +590,72 @@ Si @code{realonly} vale @code{true}, @code{algsys} s@'olo devuelve aquellas solu
 
 @end defvr
 
-@deffn {Funci@'on} realroots (@var{poly}, @var{bound})
-Encuentra todas las ra@'{@dotless{i}}ces reales del polinomio real univariante con la tolerancia especificada por @code{bound}, que si es menor que 1, hace que se busquen las ra@'{@dotless{i}}ces enteras de forma exacta. El argumento @code{bound} puede ser arbitrariamente peque@~no a fin de conseguir la precisi@'on deseada. El primer argumento tambi@'en puede ser una ecuaci@'on. La funci@'on @code{realroots} asigna un valor a @code{multiplicities}, @'util en caso de ra@'{@dotless{i}}ces m@'ultiples. La llamada @code{realroots (@var{p})} equivale a @code{realroots (@var{p}, rootsepsilon)}. La variable @code{rootsepsilon} es un n@'umeroreal que establece los intervalos de confianza para las ra@'{@dotless{i}}ces. H@'agase @code{example (realroots)} para ver un ejemplo.
+
+@deffn {Funci@'on} realroots (@var{expr}, @var{bound})
+@deffnx {Funci@'on} realroots (@var{eqn}, @var{bound})
+@deffnx {Funci@'on} realroots (@var{expr})
+@deffnx {Funci@'on} realroots (@var{eqn})
+Calcula aproximaciones racionales de las ra@'{@dotless{i}}ces reales del
+polinomio @var{expr} o de la ecuaci@'on polin@'omica @var{eqn} de una variable,
+dentro de la tolerancia especificada por @var{bound}.
+Los coeficientes de @var{expr} o de @var{eqn} deben ser n@'umeros literales,
+por lo que las constantes simb@'olicas como @code{%pi} no son aceptadas.
+
+La funci@'on @code{realroots} guarda las multiplicidades de las
+ra@'{@dotless{i}}ces encontradas en la variable global @code{multiplicities}.
+
+La funci@'on @code{realroots} genera una secuencia de Sturm para acotar cada
+ra@'{@dotless{i}}z, aplicando despu@'es el m@'etodo de bisecci@'on para
+afinar las aproximaciones. Todos los coeficientes se convierten a formas
+racionales equivalentes antes de comenzar la b@'usqueda de las ra@'{@dotless{i}}ces,
+de modo que los c@'alculos se realizan con aritm@'etica exacta racional. Incluso en
+el caso de que algunos coeficientes sean n@'umeros decimales en coma flotante, los
+resultados son racionales, a menos que se les fuerce a ser decimales con las variables
+@code{float} o @code{numer}.
+
+Si @var{bound} es menor que la unidad, todas las ra@'{@dotless{i}}ces enteras se expresan
+en forma exacta. Si no se especifica @var{bound}, se le supone igual al valor de la
+variable global @code{rootsepsilon}.
+
+Si la variable global @code{programmode} vale @code{true}, la funci@'on 
+@code{realroots} devuelve una lista de la forma @code{[x = @var{x_1}, x = @var{x_2}, ...]}.
+Si @code{programmode} vale @code{false}, @code{realroots} crea etiquetas 
+@code{%t1}, @code{%t2}, ... para las expresiones intermedias, les asigna valores y, finalmente,
+devuelve la lista de etiquetas.
+
+Ejemplos:
+@c ===beg===
+@c realroots (-1 - x + x^5, 5e-6);
+@c ev (%[1], float);
+@c ev (-1 - x + x^5, %);
+@c ===end===
+
+@example
+(%i1) realroots (-1 - x + x^5, 5e-6);
+                               612003
+(%o1)                     [x = ------]
+                               524288
+(%i2) ev (%[1], float);
+(%o2)                 x = 1.167303085327148
+(%i3) ev (-1 - x + x^5, %);
+(%o3)                - 7.396496210176905E-6
+@end example
+
+@c ===beg===
+@c realroots (expand ((1 - x)^5 * (2 - x)^3 * (3 - x)), 1e-20);
+@c multiplicities;
+@c ===end===
+
+@example
+(%i1) realroots (expand ((1 - x)^5 * (2 - x)^3 * (3 - x)), 1e-20);
+(%o1)                 [x = 1, x = 2, x = 3]
+(%i2) multiplicities;
+(%o2)                       [5, 3, 1]
+@end example
 
 @end deffn
+
+
 
 @deffn {Funci@'on} rhs (@var{expr})
 Devuelve el miembro derecho (es decir, el segundo argumento)

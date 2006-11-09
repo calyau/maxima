@@ -1,4 +1,4 @@
-@c english version 1.24
+@c english version 1.26
 @menu
 * Introducci@'on a las Matrices y al @'Algebra Lineal::
 * Definiciones para las Matrices y el @'Algebra Lineal::
@@ -1340,6 +1340,10 @@ Devuelve una matriz rectangular @var{m} por @var{n} con todos sus elementos igua
 
 @defvr {S@'{@dotless{i}}mbolo especial} [
 @defvrx {S@'{@dotless{i}}mbolo especial} [
+@ifinfo
+@fnindex Delimitadores de listas
+@fnindex Operador de sub@'{@dotless{i}}ndice
+@end ifinfo
 Los s@'{@dotless{i}}mbolos @code{[} y @code{]} marcan el comienzo y final, respectivamente, de una lista.
 
 Los s@'{@dotless{i}}mbolos @code{[} y @code{]} tambi@'en se utilizan para indicar los sub@'{@dotless{i}}ndices de los elementos de una lista, arreglo o funci@'on arreglo.

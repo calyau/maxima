@@ -1,4 +1,4 @@
-@c version 1.13
+@c version 1.14
 @menu
 * Definiciones para Constantes::   
 @end menu
@@ -14,6 +14,17 @@
 La base de los logaritmos naturales, @math{e}, se representa en Maxima como @code{%e}.
 
 @end defvr
+
+
+@defvr {Constante} %i
+@ifinfo
+@vrindex i
+@vrindex Unidad imaginaria
+@end ifinfo
+El s@'{@dotless{i}}mbolo @code{%i} representa la unidad imaginaria, @code{sqrt(- 1)}.
+
+@end defvr
+
 
 @defvr {Constante} false
 Constante l@'ogica para "falso". (NIL en Lisp)

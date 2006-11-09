@@ -1,4 +1,4 @@
-@c english version 1.18
+@c english version 1.20
 @menu
 * Definiciones para Teor@'{@dotless{i}}a de N@'umeros::  
 @end menu
@@ -262,6 +262,9 @@ Para la constante de Euler-Mascheroni, v@'ease @code{%gamma}.
 @end deffn
 
 @defvr {Constante} %gamma
+@ifinfo
+@vrindex Constante de Euler-Mascheroni
+@end ifinfo
 Es la constante de Euler-Mascheroni, 0.5772156649015329 ....
 
 @end defvr

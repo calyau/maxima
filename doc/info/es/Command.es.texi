@@ -1,4 +1,4 @@
-@c english version 1.41
+@c english version 1.43
 @menu
 * Introducci@'on a la L@'{@dotless{i}}nea de Comandos::  
 * Definiciones para  la L@'{@dotless{i}}nea de Comandos::  
@@ -11,15 +11,17 @@
 @c NEEDS EXAMPLES
 @c THIS ITEM IS VERY IMPORTANT !!
 
-@deffn {Operador} "'"
-
-El operador comilla sencilla @code{'} evita la evaluaci@'on. 
+@deffn {Operador} '
+@ifinfo
+@fnindex Operador comilla
+@end ifinfo
+El operador comilla simple @code{'} evita la evaluaci@'on. 
 
 Aplicado a un s@'{@dotless{i}}mbolo, 
-la comilla sencilla evita la evaluaci@'on del s@'{@dotless{i}}mbolo. 
+la comilla simple evita la evaluaci@'on del s@'{@dotless{i}}mbolo. 
 
 Aplicado a la llamada de una funci@'on,
-la comilla sencilla evita la evaluaci@'on de la funci@'on llamada,
+la comilla simple evita la evaluaci@'on de la funci@'on llamada,
 aunque los argumentos de la funci@'on son evaluados (siempre y cuando 
 la evaluaci@'on no se evite de otra manera). 
 El resultado es una forma de nombre de la funci@'on llamada.  
@@ -43,7 +45,7 @@ Ver tambi@'en los operadores comilla-comilla @code{''} y @code{nouns}.
 Ejemplos:
 
 Aplicado a un s@'{@dotless{i}}mbolo, 
-la comilla sencilla evita la evaluaci@'on del s@'{@dotless{i}}mbolo. 
+la comilla simple evita la evaluaci@'on del s@'{@dotless{i}}mbolo. 
 
 @c ===beg===
 @c aa: 1024;
@@ -64,7 +66,7 @@ la comilla sencilla evita la evaluaci@'on del s@'{@dotless{i}}mbolo.
 @end example
 
 Aplicado a la llamada de una funci@'on,
-la comilla sencilla evita la evaluaci@'on de la funci@'on llamada,
+la comilla simple evita la evaluaci@'on de la funci@'on llamada,
 aunque los argumentos de la funci@'on son evaluados (siempre y cuando 
 la evaluaci@'on no se evite de otra manera). 
 El resultado es una forma de nombre de la funci@'on llamada.  
@@ -122,7 +124,7 @@ la comilla simple evita la evaluaci@'on de todos los s@'{@dotless{i}}mbolos y ll
 (%o5)                          51
 @end example
 
-La comilla sencilla no evita la simplificaci@'on. 
+La comilla simple no evita la simplificaci@'on. 
 
 @c ===beg===
 @c sin (17 * %pi) + cos (17 * %pi);
@@ -138,6 +140,9 @@ La comilla sencilla no evita la simplificaci@'on.
 @end deffn
 
 @deffn {Operador} "
+@ifinfo
+@fnindex Operador comilla-comilla
+@end ifinfo
 El operador comilla-comilla @code{'@w{}'} (dos comillas simples) modifica la evaluaci@'on
 en las expresiones de entrada.
 

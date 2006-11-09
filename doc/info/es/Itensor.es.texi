@@ -1,4 +1,4 @@
-@c version 1.38
+@c version 1.40
 @menu
 * Introducci@'on a itensor::
 * Definiciones para itensor::
@@ -1395,6 +1395,9 @@ A       /\ B       = ----- D              A       B
 Puesto que @code{itensor} un paquete de @'algebra tensorial, la primera de estas dos definiciones parece la m@'as natural. Sin embargo, muchas aplicaciones hacen uso de la segunda definici@'on. Para resolver el dilema, se define una variable que controla el comportamiento del producto exteriort: si @code{igeowedge_flag} vale @code{false} (el valor por defecto), se utiliza la primera definici@'on, si vale @code{true}, la segunda.
 
 @defvr {Operador} ~
+@ifinfo
+@fnindex Producto exterior
+@end ifinfo
 
 El operador del producto exterior se representa por el s@'{@dotless{i}}mbolo @code{~}. Este es un operador binario. Sus argumentos deben ser expresiones que tengan escalares, tensores covariantes de rango uno o tensores covariantes de rango @code{l} que hayan sido declarados antisim@'etricos en todos los @'{@dotless{i}}ndices covariantes.
 
@@ -1428,8 +1431,11 @@ El comportamiento del operador del producto exterior se controla con la variable
 @end defvr
 
 @defvr {Operador} |
+@ifinfo
+@fnindex Contracci@'on con vector
+@end ifinfo
 
-La barra vertical @code{|} representa la operaci@'on "contraci@'{@dotless{i}}on con un vector". Cuando un tensor covariante totalmente antisim@'etrico se contrae con un vector contravariante, el resultado no depende del @'{@dotless{i}}ndice utilizado para la contracci@'on. As@'{@dotless{i}}, es posible definir la operaci@'on de contracci@'on de forma que no se haga referencia al @'{@dotless{i}}ndice.
+La barra vertical @code{|} representa la operaci@'on "contracci@'on con un vector". Cuando un tensor covariante totalmente antisim@'etrico se contrae con un vector contravariante, el resultado no depende del @'{@dotless{i}}ndice utilizado para la contracci@'on. As@'{@dotless{i}}, es posible definir la operaci@'on de contracci@'on de forma que no se haga referencia al @'{@dotless{i}}ndice.
 
 En el paquete @code{itensor} la contracci@'on con un vector se realiza siempre respecto del primer @'{@dotless{i}}ndice de la ordenaci@'on literal. Ejemplo:
 
