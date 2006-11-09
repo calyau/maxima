@@ -17,7 +17,7 @@
   (cond ((atom exp) exp)
 	((arcp (caar exp)) (logarc (caar exp) ($logarc (cadr exp))))
 	((eq (caar exp) '$atan2)
-	 (logarc '%atan ($logarc (div (cadr exp) (caddr exp)))))
+	 (logarc '%atan2 (list ($logarc (second exp)) ($logarc (third exp)))))
 	(t (recur-apply #'$logarc exp))))
 
 (defmfun logarc (f x)
@@ -33,6 +33,14 @@
 	 ;; (log(1 + %i*x) - log(1 - %i*x)) /(2 %i)
 	 (div (sub (take '(%log) (add 1 (mul '$%i x))) (take '(%log) (sub 1 (mul '$%i x))))
 	      (mul 2 '$%i)))
+	((eq f '%atan2)
+	 ;; atan2(y,x) = -%i*log((x + %i*y)/sqrt(x^2+y^2))
+	 (destructuring-bind (y x)
+	     x
+	   (mul -1 '$%i
+		(take '(%log) (div (add x (mul '$%i y))
+				   (power (add (mul x x) (mul y y))
+					  1//2))))))
     	((eq f '%asinh)
 	 ;; log(sqrt(x^2+1)+x)
 	 (take '(%log) (add x (root (add 1 (power x 2)) 2))))
