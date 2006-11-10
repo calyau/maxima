@@ -494,13 +494,21 @@
 		collect (cons vv (or (get vv 'break-doc) "Undocumented"))
 		into all
 		finally (setq all (sort all 'alphalessp))
-		(format t "Break commands start with ':' Any unique substring may be used, eg :r :re :res all work for :resume.~%Command     Description~%
---------     --------------------------------------")   
+	      (format t "~
+Break commands start with ':' Any unique substring may be used,~%~
+eg :r :re :res all work for :resume.~2%~
+Command      Description~%~
+-----------  --------------------------------------")   
 		(loop for vv in all
-		       do (format t "~% ~(~s~)     ~a" (car vv) (cdr vv)))
+		   do (format t "~% ~(~12s~)" (car vv))
+		     (format t (cdr vv)))
+	        (finish-output)
 		))))
 
-(def-break :help 'break-help "Print help on a break command or with no arguments on all break commands")
+(def-break :help 'break-help
+  "Print help on a break command or with no arguments on
+             all break commands")
+;; What is this debug command for?
 (def-break :_none #'(lambda()) nil)
 (def-break :next  'step-next
   "Like :step, except that subroutine calls are stepped over")
@@ -699,10 +707,11 @@
   )
    
 (def-break :delete  #'(lambda (&rest l) (iterate-over-bkpts l :delete)(values))
-  "Delete all breakpoints, or if arguments are supplied delete the specified
-breakpoints" )
-(def-break :frame  '$frame "With an argument print the selected stack frame.
-Otherwise the current frame." )
+  "Delete all breakpoints, or if arguments are supplied delete the
+             specified breakpoints" )
+(def-break :frame  '$frame
+  "With an argument print the selected stack frame.
+             Otherwise the current frame." )
 (def-break :resume  #'(lambda () :resume) "Continue the computation." )
 (def-break :continue  #'(lambda () :resume)  "Continue the computation." )
 
@@ -717,9 +726,9 @@ Otherwise the current frame." )
 
 (def-break :break  'do-break
   "Set a breakpoint in the specified FUNCTION at the
-specified LINE offset from the beginning of the function.
-If FUNCTION is given as a string, then it is presumed to be
-a FILE and LINE is the offset from the beginning of the file." )
+             specified LINE offset from the beginning of the function.
+             If FUNCTION is given as a string, then it is presumed to be
+             a FILE and LINE is the offset from the beginning of the file." )
 
 ;; force the rest of the line to be broken at spaces,
 ;; and each item read as a maxima atom.

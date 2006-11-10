@@ -95,7 +95,8 @@
   (cond (*mdebug*
 	 (let ((dispflag t) ret)
 	   (declare (special $help dispflag))
-	   (format t " -- an error.  Entering the Maxima Debugger dbm")
+	   (format t " -- an error.  Entering the Maxima Debugger dbm~%~
+                       Enter `:h' for help~%")
 	   (progn
 	     (setq ret (break-dbm-loop nil))
 	     (cond ((eql ret :resume)
@@ -112,9 +113,9 @@
 	(t
 	 (fresh-line *standard-output*)
 	 ($backtrace 3)
-	 (format t "~& -- an error.  Quitting.  To debug this try debugmode(true);~%")
+	 (format t "~& -- an error.  To debug this try debugmode(true);~%")
 	 (throw 'macsyma-quit 'maxima-error)
-					;(if errcatch (error "macsyma error"))
+	 ;;(if errcatch (error "macsyma error"))
 	 )))
 
 (defmacro with-$error (&body body)
