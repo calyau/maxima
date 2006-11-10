@@ -72,10 +72,36 @@ trigsimp(x):=
                           trigrule1,trigrule2,trigrule3,trigrule4,
 			  htrigrule1,htrigrule2,htrigrule3,htrigrule4)))$
 
+/*
+ * Original version, left for posterity
+ */
+/*
 trigsimp3(expn):=
    (expn:totaldisrep(expn),
     ratsimp(trigsimp1(num(expn))/trigsimp1(denom(expn)))) $
+*/
 
+/*
+ * Like the original except that if expn is a list, we recurse over
+ * the list one at a time instead of doing it all at once.  This
+ * prevents quadratic (or exponential) behavior as the list gets
+ * longer.
+ *
+ * See bug 965926
+ */
+
+trigsimp3(expn):=
+   if listp(expn)
+   then
+     if expn = []
+     then 
+        []
+     else
+        cons(ratsimp(trigsimp1(num(expn[1]))/trigsimp1(denom(expn[1]))),
+             trigsimp3(rest(expn)))
+   else
+     ratsimp(trigsimp1(num(expn))/trigsimp1(denom(expn)))$
+          
 trigsimp1(expn):=block(
    [listoftrigsq, bestlength, trylength],
    listoftrigsq: listoftrigsq(expn),
@@ -87,7 +113,7 @@ trigsimp1(expn):=block(
 improve(expn,subsofar,listoftrigsq):=
   if listoftrigsq=[]
   then (if (trylength:expnlength(subsofar))<bestlength
-	then (bestlength:trylength,subsofar)
+        then (bestlength:trylength,subsofar)
         else expn)
   else (subsofar:improve(expn,subsofar,rest(listoftrigsq)),
 	for alt in first(listoftrigsq) do 
