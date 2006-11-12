@@ -1,9 +1,9 @@
-;--------------------------------------------------------
-;-- maxima.iss -- Maxima InnoSetup installation script --
-;--------------------------------------------------------
-;
-;   InnoSetup version 5.1.7 or above is recommended
-;
+;;---------------------------------------------------------;;
+;; -- maxima.iss --  Maxima InnoSetup installation script  ;;
+;;---------------------------------------------------------;;
+;;     InnoSetup version 5.1.7 or above is recommended     ;;
+;;---------------------------------------------------------;;
+
 
 [Setup]
 AppName=Maxima
@@ -59,40 +59,52 @@ Name: "xmdesktopicon"; Description: "Create a &XMaxima desktop icon"; GroupDescr
 
 
 [Files]
+; core
 Source: "@prefix@\bin\maxima-command.ico"; DestDir: "{app}\bin\"; Flags: ignoreversion; Components: "core"
 Source: "@prefix@\bin\maxima.bat"; DestDir: "{app}\bin\"; Flags: ignoreversion; AfterInstall: ReplaceApp(); Components: "core" 
 Source: "@prefix@\readme.txt"; DestDir: "{app}"; Flags: isreadme; Components: "core"
-Source: "@prefix@\*.*"; Excludes: "\bin\xmaxima.*,\bin\xmaxima,\wxMaxima,\info\es\*.*,\info\pt\*.*,\share\maxima\@VERSION@\doc\html\es\*.*,\share\maxima\@VERSION@\doc\html\pt\*.*"; DestDir: "{app}\";  Flags: recursesubdirs; Components: "core"
+Source: "@prefix@\*.*"; Excludes: "\bin\xmaxima.*,\bin\xmaxima,\wxMaxima,\info,\share\maxima\@VERSION@\doc\html,\share\maxima\@VERSION@\doc\chm"; DestDir: "{app}\";  Flags: recursesubdirs; Components: "core"
+Source: "@prefix@\share\maxima\@VERSION@\doc\html\intromax.html"; DestDir: "{app}\share\maxima\@VERSION@\doc\html\"; Flags: ignoreversion; Components: "core"
+Source: "@prefix@\share\maxima\@VERSION@\doc\chm\maxima.chm"; DestDir: "{app}\share\maxima\@VERSION@\doc\chm\"; Flags: ignoreversion; Components: "core"
+Source: "@prefix@\info\*.*"; DestDir: "{app}\info\";  Flags: ignoreversion;  Components: "core"
 
+; wmaxima
 Source: "@prefix@\wxMaxima\*.*"; DestDir: "{app}\wxMaxima\"; Flags: ignoreversion recursesubdirs; Components: "wxmaxima"
 
+; xmaxima
 Source: "@prefix@\bin\xmaxima.*"; DestDir: "{app}\bin\"; Flags: ignoreversion; Components: "xmaxima"
 Source: "@prefix@\bin\xmaxima"; DestDir: "{app}\bin\"; Flags: ignoreversion; Components: "xmaxima"
 
+; lang\spanish
 Source: "@prefix@\info\es\*.*"; DestDir: "{app}\info\es\";  Flags: recursesubdirs;  Components: "lang\spanish"
-Source: "@prefix@\share\maxima\@VERSION@\doc\html\es\*.*"; DestDir: "{app}\share\maxima\@VERSION@\doc\html\es\";  Flags: recursesubdirs;  Components: "lang\spanish"
-
+Source: "@prefix@\share\maxima\@VERSION@\doc\chm\es\maxima.chm"; DestDir: "{app}\share\maxima\@VERSION@\doc\chm\es\"; Components: "lang\spanish"
+; lang\portuguese
 Source: "@prefix@\info\pt\*.*"; DestDir: "{app}\info\pt\";  Flags: recursesubdirs;  Components: "lang\portuguese"
-Source: "@prefix@\share\maxima\@VERSION@\doc\html\pt\*.*"; DestDir: "{app}\share\maxima\@VERSION@\doc\html\pt\";  Flags: recursesubdirs;  Components: "lang\portuguese"
+Source: "@prefix@\share\maxima\@VERSION@\doc\chm\pt\maxima.chm"; DestDir: "{app}\share\maxima\@VERSION@\doc\chm\pt\"; Components: "lang\portuguese"
 
 [Icons]
+; core
 Name: "{group}\Command line Maxima"; Filename: "{app}\bin\maxima.bat"; IconFilename: "{app}\bin\maxima-command.ico";  Components: "core"
 Name: "{group}\Introduction"; Filename: "{app}\share\maxima\@VERSION@\doc\html\intromax.html"; WorkingDir: "{app}\share\maxima\@VERSION@";  Components: "core"
-Name: "{group}\Reference Manual"; Filename: "{app}\share\maxima\@VERSION@\doc\html\maxima_toc.html"; WorkingDir: "{app}\share\maxima\@VERSION@";  Components: "core"
+Name: "{group}\Reference Manual"; Filename: "{app}\share\maxima\@VERSION@\doc\chm\maxima.chm"; WorkingDir: "{app}\share\maxima\@VERSION@";  Components: "core"
 Name: "{group}\README"; Filename: "{app}\readme.txt"; Components: "core"
 
+; wxmaxima
 Name: "{group}\wxMaxima"; Filename: "{app}\wxMaxima\wxMaxima.exe"; WorkingDir: "{app}\wxMaxima";  Components: "wxmaxima"
 Name: "{group}\wxMaxima on the Web"; Filename: "{app}\wxMaxima\wxMaxima.url";  Components: "wxmaxima"
 Name: "{group}\wxMaxima Online Forum"; Filename: "{app}\wxMaxima\Forum.url";  Components: "wxmaxima"
 Name: "{userdesktop}\wxMaxima"; Filename: "{app}\wxMaxima\wxMaxima.exe"; MinVersion: 4,4; Tasks: wxmdesktopicon; WorkingDir: "{app}\wxMaxima";  Components: "wxmaxima"
 
+; xmaxima
 Name: "{group}\XMaxima"; Filename: "{app}\bin\xmaxima.exe"; IconFilename: "{app}\share\maxima\@VERSION@\xmaxima\maxima-icon.ico";  Components: "xmaxima"
 Name: "{userdesktop}\XMaxima"; Filename: "{app}\bin\xmaxima.exe"; MinVersion: 4,4; Tasks: xmdesktopicon; IconFilename: "{app}\share\maxima\@VERSION@\xmaxima\maxima-icon.ico";  Components: "xmaxima"
 
 Name: "{group}\Uninstall"; Filename:"{uninstallexe}"
 
-Name: "{group}\Reference Manual (Spanish)"; Filename: "{app}\share\maxima\@VERSION@\doc\html\es\maxima_toc.html"; WorkingDir: "{app}\share\maxima\@VERSION@";  Components: "lang\spanish"
-Name: "{group}\Reference Manual (Portuguese)"; Filename: "{app}\share\maxima\@VERSION@\doc\html\pt\maxima_toc.html"; WorkingDir: "{app}\share\maxima\@VERSION@";  Components: "lang\portuguese"
+; lang\spanish
+Name: "{group}\Reference Manual (Spanish)"; Filename: "{app}\share\maxima\@VERSION@\doc\chm\es\maxima.chm"; WorkingDir: "{app}\share\maxima\@VERSION@";  Components: "lang\spanish"
+; lang\portuguese
+Name: "{group}\Reference Manual (Portuguese)"; Filename: "{app}\share\maxima\@VERSION@\doc\chm\pt\maxima.chm"; WorkingDir: "{app}\share\maxima\@VERSION@";  Components: "lang\portuguese"
 
 
 ;[Run]
