@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Menu.tcl,v 1.18 2006-09-18 22:21:45 villate Exp $
+#       $Id: Menu.tcl,v 1.19 2006-11-12 18:22:43 vvzhy Exp $
 #
 
 proc pMAXSaveTexToFile {text} {
@@ -199,9 +199,15 @@ proc vMAXAddSystemMenu {fr text} {
     } else {
 	set state disabled
     }
-    $m add command -underline 7 -label [mc "Maxima Help"] \
-	-state $state \
-	-command "OpenMathOpenUrl \"file:/$file\""
+    if {$tcl_platform(platform) == "windows"} {
+        $m add command -underline 7 -label [mc "Maxima Help"] \
+        	-state $state \
+	        -command [list exec hh.exe $file]
+    } else {
+        $m add command -underline 7 -label [mc "Maxima Help"] \
+        	-state $state \
+	        -command "OpenMathOpenUrl \"file:/$file\""
+    }
     set browse {exec}
 
     # FIXME: get a browser object

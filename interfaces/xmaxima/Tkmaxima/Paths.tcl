@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Paths.tcl,v 1.22 2006-07-08 07:42:12 vvzhy Exp $
+#       $Id: Paths.tcl,v 1.23 2006-11-12 18:22:43 vvzhy Exp $
 #
 # Attach this near the bottom of the xmaxima code to find the paths needed
 # to start up the interface.
@@ -226,11 +226,20 @@ proc setMaxDir {} {
 	    [file join $dir maxima_toc.html]
     } elseif {[file isdir [set dir [file join  $maxima_priv(maxima_verpkgdatadir) doc]]]} {
 	# 5.9 and up
-	if { $maxima_priv(maxima_lang_subdir) != "" && \
-	     [file exists [file join $dir html $maxima_priv(maxima_lang_subdir) maxima_toc.html] ] } {
-	    set maxima_priv(pReferenceToc) [file join $dir html $maxima_priv(maxima_lang_subdir) maxima_toc.html]
+        if { $tcl_platform(platform) == "windows" } {
+	    if { $maxima_priv(maxima_lang_subdir) != "" && \
+		 [file exists [file join $dir chm $maxima_priv(maxima_lang_subdir) maxima.chm] ] } {
+		set maxima_priv(pReferenceToc) [file join $dir chm $maxima_priv(maxima_lang_subdir) maxima.chm]
+	    } else {
+		set maxima_priv(pReferenceToc) [file join $dir chm maxima.chm]
+	    }
 	} else {
-	    set maxima_priv(pReferenceToc) [file join $dir html maxima_toc.html]
+	    if { $maxima_priv(maxima_lang_subdir) != "" && \
+		 [file exists [file join $dir html $maxima_priv(maxima_lang_subdir) maxima_toc.html] ] } {
+		set maxima_priv(pReferenceToc) [file join $dir html $maxima_priv(maxima_lang_subdir) maxima_toc.html]
+	    } else {
+		set maxima_priv(pReferenceToc) [file join $dir html maxima_toc.html]
+	    }
 	}
     } else {
 	tide_notify [M [mc "Documentation not found in '%s'"] \
