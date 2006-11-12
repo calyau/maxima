@@ -93,7 +93,7 @@ genericdir = $(dochtmldir)
 genericdirDATA = \
 $(MAXIMAHTML)\
 $(figurefiles)\
-contents.hhc index.hhk header.hhp
+contents.hhc index.hhk header.hhp maxima.hhp
 
 clean-local: clean-info
 clean-local: clean-html
@@ -106,4 +106,4 @@ clean-html:
 	rm -f contents.hhc
 	rm -f index.hhk
 
-EXTRA_DIST = texi2html maximahtml.mk manual.css texi2html.init $(genericdirDATA) create_index header.hhp
+EXTRA_DIST = texi2html maximahtml.mk manual.css texi2html.init $(genericdirDATA) create_index header.hhp maxima.hhp
