@@ -60,7 +60,7 @@
 	  $loadprint ttyints opers
 	  *ratweights $ratweights quitmsg mquitmsg contmsg
 	  loadf display-file $grind scrollp $cursordisp
-	  stringdisp $lispdisp mexprp defaultf reading
+	  $stringdisp $lispdisp mexprp defaultf reading
 	  bporg gcsyml ^amsg ^bmsg ^hmsg
 	  state-pdl promptmsg gcprompt command printmsg mrg-punt
 	  new-c-line-hook transp $contexts $setcheck $macros
@@ -772,7 +772,9 @@
 (defmfun $print n
   (if (= n 0)
       '((mlist simp))
-      (let ((l (listify n)))
+      (let ((l (listify n))
+	    ;; Don't print out strings with quotation marks!
+	    $stringdisp)
 	(do ((l l (cddr l)))( (null l)) (rplacd l (cons '| | (cdr l))))
 	(displa (setq printmsg (cons '(mtext) l)))
 	(cadr (reverse l)))))
@@ -889,7 +891,7 @@
       (let ((u (assqr x aliaslist))) (if u (string*1 (car u))))
       (string*1 x)))
 
-(defun string*1 (x) (let (stringdisp $lispdisp) (makestring x)))
+(defun string*1 (x) (let ($stringdisp $lispdisp) (makestring x)))
 
 (defun makstring* (x)
   (setq x (string* x))

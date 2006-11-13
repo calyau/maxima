@@ -226,7 +226,7 @@ Examples:
 
 Strings (quoted character sequences) are enclosed in double quote marks @code{"} for input,
 and displayed with or without the quote marks, 
-depending on the global variable @code{?stringdisp}.
+depending on the global variable @code{stringdisp}.
 
 Strings may contain any characters,
 including embedded tab, newline, and carriage return characters.
@@ -266,9 +266,9 @@ Examples:
 @c line termination \
 @c characters in \
 @c this string.";
-@c ?stringdisp : false;
+@c stringdisp : false;
 @c s_1;
-@c ?stringdisp : true;
+@c stringdisp : true;
 @c s_1;
 @c ===end===
 @example
@@ -285,11 +285,11 @@ line termination \
 characters in \
 this string.";
 (%o4) Ignore the line termination characters in this string.
-(%i5) ?stringdisp : false;
+(%i5) stringdisp : false;
 (%o5)                         false
 (%i6) s_1;
 (%o6)               This is a Maxima string.
-(%i7) ?stringdisp : true;
+(%i7) stringdisp : true;
 (%o7)                         true
 (%i8) s_1;
 (%o8)              "This is a Maxima string."
@@ -1731,7 +1731,7 @@ See also @code{args}.
 Examples:
 
 @c ===beg===
-@c ?stringdisp: true$
+@c stringdisp: true$
 @c op (a * b * c);
 @c op (a * b + c);
 @c op ('sin (a + b));
@@ -1745,7 +1745,7 @@ Examples:
 @c ===end===
 
 @example
-(%i1) ?stringdisp: true$
+(%i1) stringdisp: true$
 (%i2) op (a * b * c);
 (%o2)                          "*"
 (%i3) op (a * b + c);

@@ -213,7 +213,7 @@
                       ((stringp x) (tex-string x))
                       ((mstringp x)
                        (let ((s (maybe-invert-string-case (symbol-name (stripdollar x)))))
-                         (tex-string (quote-% (if stringdisp (concatenate 'string "``" s "''") s)))))
+                         (tex-string (quote-% (if $stringdisp (concatenate 'string "``" s "''") s)))))
                       ((characterp x) (tex-char x))
 		      (t (tex-stripdollar x))))
 	  r))

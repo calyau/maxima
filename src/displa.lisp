@@ -64,7 +64,7 @@
 
 (defmvar $noundisp nil)
 
-(defmvar stringdisp nil
+(defmvar $stringdisp nil
   "Causes strings to be bracketed in double quotes when displayed.
 	 Normally this is off, but is turned on when a procedure definition is
 	 being displayed.")
@@ -326,7 +326,7 @@
 	       (cdr dummy)))
 	  (t (setq dummy (exploden atom))
 	     (cond ((char= #\$ (car dummy)) (cdr dummy))
-		   ((and stringdisp (char= #\& (car dummy)))
+		   ((and $stringdisp (char= #\& (car dummy)))
 		    (cons double-quote-char (nconc (cdr dummy) (list double-quote-char))))
 		   ((or (char= #\% (car dummy)) (char= #\& (car dummy))) (cdr dummy))
 		   ($lispdisp (cons #\? dummy))
@@ -549,7 +549,7 @@
 (displa-def mdefmacro dim-mdefine      " ::= ")
 
 (defun dim-mdefine (form result)
-  (let (($noundisp t) (stringdisp t))
+  (let (($noundisp t) ($stringdisp t))
     (dimension-infix (if (cdddr form)
 			 (list (car form) (cadr form) (cons '(mprogn) (cddr form)))
 			 form)

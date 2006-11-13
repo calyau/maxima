@@ -5,7 +5,7 @@
 (macsyma-module format)
 
 (declare (special $floatformat $floatint $floatfrac $floatprec $floatwidth
-		  $floatoptions $aliases stringdisp $lispdisp aliaslist)
+		  $floatoptions $aliases $stringdisp $lispdisp aliaslist)
 	 (*expr print-fixed-field-floating print-fixed-precision-floating
 		string*1 assqr))
 
@@ -51,7 +51,7 @@
 	   (exploden dummy))
 	  (t (setq dummy (exploden form))
 	     (cond ((= #$ (car dummy)) (cdr dummy))
-		   ((and stringdisp (= #& (car dummy))) (cons #" (nconc (cdr dummy) (list #"))))
+		   ((and $stringdisp (= #& (car dummy))) (cons #" (nconc (cdr dummy) (list #"))))
 		   ((or (= #% (car dummy)) (= #& (car dummy))) (cdr dummy))
 		   ($lispdisp (cons #? dummy))
 		   (t dummy)))))

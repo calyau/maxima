@@ -1564,37 +1564,34 @@ and thus it cannot be used in a computation.
 @end deffn
 
 @c SHOULD BE WRITTEN WITH LEADING ? BUT THAT CONFUSES CL-INFO SO WORK AROUND
-@c @defvr {Lisp variable} ?stringdisp
-@defvr {Lisp variable} stringdisp
+@c @defvr {Option variable} stringdisp
+@defvr {Option variable} stringdisp
 Default value: @code{false}
 
-When @code{?stringdisp} is @code{true},
+When @code{stringdisp} is @code{true},
 strings are displayed enclosed in double quote marks.
 Otherwise,
 quote marks are not displayed.
 
-@code{?stringdisp} is always @code{true} when displaying a function definition.
-
-@code{?stringdisp} is a Lisp variable,
-so it must be written with a leading question mark @code{?}.
+@code{stringdisp} is always @code{true} when displaying a function definition.
 
 Examples:
 
 @c ===beg===
-@c ?stringdisp: false$
+@c stringdisp: false$
 @c "This is an example string.";
 @c foo () := print ("This is a string in a function definition.");
-@c ?stringdisp: true$
+@c stringdisp: true$
 @c "This is an example string.";
 @c ===end===
 @example
-(%i1) ?stringdisp: false$
+(%i1) stringdisp: false$
 (%i2) "This is an example string.";
 (%o2)              This is an example string.
 (%i3) foo () := print ("This is a string in a function definition.");
 (%o3) foo() := 
               print("This is a string in a function definition.")
-(%i4) ?stringdisp: true$
+(%i4) stringdisp: true$
 (%i5) "This is an example string.";
 (%o5)             "This is an example string."
 @end example
