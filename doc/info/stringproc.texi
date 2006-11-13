@@ -392,7 +392,7 @@ d e f g h i j k l m n o p q r s t u v w x y z @{ | @} ~
 
 @deffn {Function} cunlisp (@var{lisp_char}) 
 Converts a Lisp-character into a Maxima-character.
-(You wont need it.)
+(You won't need it.)
 
 @end deffn
 
@@ -403,7 +403,7 @@ Returns @code{true} if @var{char} is a digit.
 
 @deffn {Function} lcharp (@var{obj}) 
 Returns @code{true} if @var{obj} is a Lisp-character.
-(You wont need it.)
+(You won't need it.)
 
 @end deffn
 
@@ -437,13 +437,13 @@ Returns @code{true} if @var{char} is an uppercase character.
 
 @deffn {Function} sunlisp (@var{lisp_string}) 
 Converts a Lisp-string into a Maxima-string.
-(In general you wont need it.)
+(In general you won't need it.)
 
 @end deffn
 
 @deffn {Function} lstringp (@var{obj}) 
 Returns @code{true} if @var{obj} is a Lisp-string.
-(In general you wont need it.)
+(In general you won't need it.)
 
 @end deffn
 
