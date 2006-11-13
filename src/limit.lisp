@@ -1248,7 +1248,7 @@ It appears in LIMIT and DEFINT.......")
 		     (t -1)))))))
 
 (defun try-lhospital (n d ind)
-;;;Make one catch for the whole bunch of lhospital trials.
+  ;;Make one catch for the whole bunch of lhospital trials.
   (let ((ans (lhospital-catch n d ind)))
     (cond ((null ans) ())
 	  ((not (free-infp ans)) (simpinf ans))
@@ -1307,7 +1307,7 @@ It appears in LIMIT and DEFINT.......")
 			  var val 'think)))
 		(if ans (m* const ans))))))))
 
-;;Hueristics for picking the right way to express a LHOSPITAL problem.
+;; Heuristics for picking the right way to express a LHOSPITAL problem.
 (defun lhop-numden (num denom)
   (declare (special var))
   (cond ((let ((log-num (involve num '(%log))))
@@ -1328,6 +1328,8 @@ It appears in LIMIT and DEFINT.......")
 	   (cond (exp-num
 		  (cond ((or (polyinx denom var nil)
 			     (%e-right-placep exp-num))
+			 ;; If the denominator is a polynomial, just
+			 ;; leave things as is.
 			 t)
 			(t (psetq num (m^ denom -1)
 				  denom (m^ num -1)) t)))
@@ -1336,6 +1338,8 @@ It appears in LIMIT and DEFINT.......")
 	   (cond (exp-den
 		  (cond ((or (polyinx num var nil)
 			     (%e-right-placep exp-den))
+			 ;; If the numerator is a polynomial, just
+			 ;; leave things as is.
 			 t)
 			(t (psetq num (m^ denom -1)
 				  denom (m^ num -1)) t)))
@@ -1353,7 +1357,9 @@ It appears in LIMIT and DEFINT.......")
 	((let ((scnum (involve num '(%asin %acos %atan))))
 	   ;; If the numerator contains an inverse trig and the
 	   ;; denominator or reciprocal of denominator is polynomial,
-	   ;; leave everthing as is.
+	   ;; leave everthing as is.  If the inverse trig is moved to
+	   ;; the denominator, things get messy, even if the numerator
+	   ;; becomes a polynomial.  This is not perfect.
 	   (cond ((and scnum (or (polyinx denom var ())
 				 (polyinx (m^ denom -1) var ())))
 		  t)
