@@ -1,4 +1,4 @@
-@c english version 1.27
+@c english version 1.29
 @menu
 * Definiciones para Gr@'aficos::    
 @end menu
@@ -440,6 +440,20 @@ El rango por defecto para el par@'ametro de las representaciones param@'etricas.
 [t, 0, 10]
 @end example
 Establece el rango de la variable param@'etrica como [0, 10].
+
+@item
+Opci@'on: @code{plot_realpart}
+Si @code{plot_realpart} vale @code{true},
+se representar@'a la parte real de un valor complejo @var{x},
+lo cual equivale a representar @code{realpart(@var{x})} en lugar de @var{x}.
+Si vale @code{false}, s@'olo se representar@'an aquellos valores con
+parte imaginaria nula, ignorando as@'{@dotless{i}} cualesquiera valores 
+complejos.
+@example
+plot2d (log(x), [x, -5, 5], [plot_realpart, false]);
+plot2d (log(x), [x, -5, 5], [plot_realpart, true]);
+@end example
+El valor por defecto es @code{false}.
 
 @item
 Opci@'on: @code{nticks}
@@ -888,7 +902,7 @@ La funci@'on @var{psdraw_curve} tan s@'olo llama a la funci@'on @var{pscurve}.  
 
 @c ?DRAW2D  may also be used to produce a list
 @c @example
-@c  points1:?draw2d(1/x,[.05,10],.03) 
+@c points1:?draw2d(1/x,[.05,10],.03) 
 @c @end example
 
 @end deffn

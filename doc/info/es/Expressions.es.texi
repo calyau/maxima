@@ -1,4 +1,4 @@
-@c english version 1.48
+@c english version 1.49
 @menu
 * Introducci@'on a las Expresiones::  
 * Asignaci@'on::
@@ -215,7 +215,7 @@ Ejemplos:
 
 Las cadenas de caracteres deben ir acotadas por comillas dobles (@code{"})
 al ser introducidas en Maxima, siendo luego mostradas con o sin ellas, 
-dependiendo del valor de la variable global @code{?stringdisp}.
+dependiendo del valor de la variable global @code{stringdisp}.
 
 Las cadenas pueden contener todo tipo de caracteres, incluyendo tabulaciones,
 caracteres de nueva l@'{@dotless{i}}nea y de retorno.
@@ -255,9 +255,9 @@ Ejemplos:
 @c line termination \
 @c characters in \
 @c this string.";
-@c ?stringdisp : false;
+@c stringdisp : false;
 @c s_1;
-@c ?stringdisp : true;
+@c stringdisp : true;
 @c s_1;
 @c ===end===
 @example
@@ -274,11 +274,11 @@ line termination \
 characters in \
 this string.";
 (%o4) Ignore the line termination characters in this string.
-(%i5) ?stringdisp : false;
+(%i5) stringdisp : false;
 (%o5)                         false
 (%i6) s_1;
 (%o6)               This is a Maxima string.
-(%i7) ?stringdisp : true;
+(%i7) stringdisp : true;
 (%o7)                         true
 (%i8) s_1;
 (%o8)              "This is a Maxima string."
@@ -1592,7 +1592,7 @@ V@'ease tambi@'en @code{args}.
 Ejemplos:
 
 @c ===beg===
-@c ?stringdisp: true$
+@c stringdisp: true$
 @c op (a * b * c);
 @c op (a * b + c);
 @c op ('sin (a + b));
@@ -1606,7 +1606,7 @@ Ejemplos:
 @c ===end===
 
 @example
-(%i1) ?stringdisp: true$
+(%i1) stringdisp: true$
 (%i2) op (a * b * c);
 (%o2)                          "*"
 (%i3) op (a * b + c);

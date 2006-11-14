@@ -1,4 +1,4 @@
-@c english version 1.45
+@c english version 1.49
 @menu
 * Introducci@'on a  Entrada y Salida::
 * Comentarios::
@@ -69,6 +69,9 @@ Instrucciones que operan con archivos son:
 @section Definiciones para Entrada y Salida
 
 @defvr {Variable del sistema} __
+@ifinfo
+@vrindex Expresi@'on actual de entrada
+@end ifinfo
 
 @code{__} es la expresi@'on de entrada que est@'a siendo actualmente evaluada.
 Esto es, mientras se est@'a evaluando una expresi@'on de entrada, 
@@ -123,6 +126,9 @@ Current input expression = --------------
 
 
 @defvr {Variable del sistema} _
+@ifinfo
+@vrindex Entrada anterior
+@end ifinfo
 
 El s@'{@dotless{i}}mbolo @code{_} representa la @'ultima expresi@'on de entrada (esto es, @code{%i1}, @code{%i2}, @code{%i3}, ...).
 
@@ -185,6 +191,10 @@ Ejemplos:
 @end defvr
 
 @defvr {Variable del sistema} %
+@ifinfo
+@vrindex Salida anterior
+@end ifinfo
+
 El s@'{@dotless{i}}mbolo @code{%} representa la expresi@'on de salida (esto es, @code{%o1}, @code{%o2}, @code{%o3}, ...)
 m@'as reciente calculada por Maxima, independientemente de que la haya mostrado o no.
 
@@ -201,6 +211,10 @@ V@'eanse tambi@'en @code{_}, @code{%%} y @code{%th}.
 @end defvr
 
 @defvr {Variable del sistema} %%
+@ifinfo
+@vrindex Resultado anterior en una sentencia compuesta
+@end ifinfo
+
 En una sentencia compuesta, como @code{block}, @code{lambda} o @code{(@var{s_1}, ..., @var{s_n})}, @code{%%} es el valor de la sentencia previa.
 Por ejemplo,
 
@@ -248,7 +262,11 @@ Por ejemplo, @code{%e^-x} se muestra como @code{1/%e^x}.
 @end defvr
 
 @deffn {Funci@'on} %th (@var{i})
-Es el valor de la expresi@'on de salida previa @var{i}-@'esima.
+@ifinfo
+@fnindex i-@'esima salida anterior
+@end ifinfo
+
+Es el valor de la expresi@'on de la @var{i}-@'esima salida anterior.
 Esto es, si la siguiente expresi@'on a calcular es la salida @var{n}-@'esima,
 @code{%th (@var{m})} es la salida  (@var{n} - @var{m})-@'esima.
 
@@ -274,6 +292,10 @@ V@'ease tambi@'en @code{%}.
 @end deffn
 
 @deffn {Special symbol} ?
+@ifinfo
+@fnindex Busca en la documentaci&oacute;n
+@end ifinfo
+
 Como prefijo de una funci@'on o nombre de variable, @code{?} significa que el nombre es de Lisp, no de Maxima.
 Por ejemplo, @code{?round} representa la funci@'on de Lisp @code{ROUND}.
 V@'ease @code{Lisp y Maxima} para m@'as informaci@'on.
@@ -1261,33 +1283,32 @@ El valor que retorna la funci@'on @code{string} es una cadena, por lo que no pue
 
 @end deffn
 
-@defvr {Variable de Lisp} stringdisp
+@defvr {Variable opcional} stringdisp
 Valor por defecto: @code{false}
 
-Si @code{?stringdisp} vale @code{true},
+Si @code{stringdisp} vale @code{true},
 las cadenas alfanum@'ericas se muestran encerradas entre comillas dobles. En caso contrario, no se nuestran las comillas.
 
-La variable @code{?stringdisp} vale siempre @code{true} cuando se muestra la definici@'on de una funci@'on.
+La variable @code{stringdisp} vale siempre @code{true} cuando se muestra la definici@'on de una funci@'on.
 
-La variable @code{?stringdisp} es una variable Lisp, por lo que debe ser escrita precedida de un signo de interrogaci@'on @code{?}.
 
 Ejemplos:
 
 @c ===beg===
-@c ?stringdisp: false$
+@c stringdisp: false$
 @c "This is an example string.";
 @c foo () := print ("This is a string in a function definition.");
-@c ?stringdisp: true$
+@c stringdisp: true$
 @c "This is an example string.";
 @c ===end===
 @example
-(%i1) ?stringdisp: false$
+(%i1) stringdisp: false$
 (%i2) "This is an example string.";
 (%o2)              This is an example string.
 (%i3) foo () := print ("This is a string in a function definition.");
 (%o3) foo() := 
               print("This is a string in a function definition.")
-(%i4) ?stringdisp: true$
+(%i4) stringdisp: true$
 (%i5) "This is an example string.";
 (%o5)             "This is an example string."
 @end example

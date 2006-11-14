@@ -1,3 +1,4 @@
+@c version 1.4
 @menu
 * Introducci@'on a polinomios ortogonales::
 * Definiciones para polinomios ortogonales::
@@ -281,11 +282,11 @@ apropiada para su evaluaci@'on num@'erica. Aqu@'{@dotless{i}} un ejemplo.
 @example 
 (%i1) p : jacobi_p (100, 2, 3, x)$
 (%i2) subst (0.2, x, p);
-(%o2) 3.444276702383359*10^+35
+(%o2)                3.4442767023833592E+35
 (%i3) jacobi_p (100, 2, 3, 0.2);
-(%o3) INTERVAL(0.1841360913516871,6.899030092581599*10^-12)
+(%o3)  interval(0.18413609135169, 6.8990300925815987E-12)
 (%i4) float(jacobi_p (100, 2, 3, 2/10));
-(%o4) 0.1841360913516856
+(%o4)                   0.18413609135169
 @end example
 
 Este resultado se puede mejorar expandiendo el polinomio y evaluando
@@ -434,14 +435,13 @@ He aqu@'{@dotless{i}} un ejemplo:
 @c fpprec : 50$
 @c y0 : jacobi_p (100, 2, 3, 0.2);
 @c y1 : bfloat (jacobi_p (100, 2, 3, 1/5));
-@c ===end==
-=
+@c ===end===
 @example
 (%i1) fpprec : 50$
 (%i2) y0 : jacobi_p (100, 2, 3, 0.2);
-(%o2) INTERVAL(0.1841360913516871,6.8990300925815987*10^-12)
+(%o2) interval(0.1841360913516871, 6.8990300925815987E-12)
 (%i3) y1 : bfloat (jacobi_p (100, 2, 3, 1/5));
-(%o3) 1.8413609135168563091370224958913493690868904463668B-1
+(%o3) 1.8413609135168563091370224958913493690868904463668b-1
 @end example
 
 Se comprueba que el error es menor que el estimado
