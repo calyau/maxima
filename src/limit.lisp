@@ -1326,20 +1326,14 @@ It appears in LIMIT and DEFINT.......")
 		 (t t))))
 	((let ((exp-num (%einvolve num)))
 	   (cond (exp-num
-		  (cond ((or (polyinx denom var nil)
-			     (%e-right-placep exp-num))
-			 ;; If the denominator is a polynomial, just
-			 ;; leave things as is.
+		  (cond ((%e-right-placep exp-num)
 			 t)
 			(t (psetq num (m^ denom -1)
 				  denom (m^ num -1)) t)))
 		 (t ()))))
 	((let ((exp-den (%einvolve denom)))
 	   (cond (exp-den
-		  (cond ((or (polyinx num var nil)
-			     (%e-right-placep exp-den))
-			 ;; If the numerator is a polynomial, just
-			 ;; leave things as is.
+		  (cond ((%e-right-placep exp-den)
 			 t)
 			(t (psetq num (m^ denom -1)
 				  denom (m^ num -1)) t)))
@@ -1398,8 +1392,18 @@ It appears in LIMIT and DEFINT.......")
 	   (polyinx (m^ denom -1) var ()))  ())
       ((let ((%e-arg-diff-lim (ridofab (limit %e-arg-diff var val 'think)))
 	     (%e-arg-exp-lim (ridofab (limit (m^ '$%e %e-arg) var val 'think))))
-	 (cond ((equal %e-arg-diff-lim %e-arg-exp-lim)  t)
-	       ((and (mnump %e-arg-diff-lim) (mnump %e-arg-exp-lim))  t)
+	 #+nil
+	 (progn
+	   (format t "%e-arg-dif-lim = ~A~%" %e-arg-diff-lim)
+	   (format t "%e-arg-exp-lim = ~A~%" %e-arg-exp-lim))
+	 (cond ((equal %e-arg-diff-lim %e-arg-exp-lim)
+		t)
+	       ((and (mnump %e-arg-diff-lim) (mnump %e-arg-exp-lim))
+		t)
+	       ((and (mnump %e-arg-diff-lim) (infinityp %e-arg-exp-lim))
+		;; This is meant to make maxima handle bug 1469411
+		;; correctly.  Undoubtedly, this needs work.
+		t)
 	       (t ())))))))
 
 (defun trig-right-placep (trig-type arg)

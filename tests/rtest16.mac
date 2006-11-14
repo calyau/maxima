@@ -137,6 +137,15 @@ rectform(ev(%,x=-1,y=1));
 limit(t^2*exp(-4*t/3-8*exp(-t)),t,inf);
 0;
 
+/*
+ * From bug 535363, but this isn't really fixed.  The fix for 1469411
+ * broke this test, so we're adding it to make sure we don't break it.
+ * 
+*/
+
+limit(exp(-1/x)/x^4,x,0,'plus);
+0;
+
 /* Bug 1594330 */
 limit(x*(atan(x)-%pi/2),x,inf);
 -1;
