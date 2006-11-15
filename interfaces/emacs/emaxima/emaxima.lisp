@@ -12,12 +12,17 @@
   (format () "(~A~D) "
     (print-invert-case (stripdollar $inchar)) $linenum))
 
-(defun tex-stripdollar (sym)
-  (or (symbolp sym) (return-from tex-stripdollar sym))
-  (let* ((name (quote-% (print-invert-case sym)))
-      (name1 (if (memq (elt name 0) '(#\$ #\&)) (subseq name 1) name))
-      (l (length name1)))
-    (if (eql l 1) name1 (concatenate 'string "\\mathrm{" name1 "}"))))
+(defun tex-stripdollar (x)
+  (let ((s (quote-% (maybe-invert-string-case (symbol-name (stripdollar x))))))
+    (if (> (length s) 1)
+        (concatenate 'string "\\mathrm{" s "}")
+      s)))
+;(defun tex-stripdollar (sym)
+;  (or (symbolp sym) (return-from tex-stripdollar sym))
+;  (let* ((name (quote-% (print-invert-case sym)))
+;      (name1 (if (memq (elt name 0) '(#\$ #\&)) (subseq name 1) name))
+;      (l (length name1)))
+;    (if (eql l 1) name1 (concatenate 'string "\\mathrm{" name1 "}"))))
 
 
 ;; Also, we should output f(x)^2, not f^2(x)
