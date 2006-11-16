@@ -150,6 +150,7 @@ Additional packages
 * ggf::                         Generating function of sequences.
 * impdiff::                     Implicit derivatives.
 * interpol::                    Interpolation package.
+* lbfgs::                       L-BFGS unconstrained minimization package.
 * lindstedt::                   Lindstedt package.
 * linearalgebra::               Functions for linear algebra.
 * lsquares::                    Least squares.
@@ -442,6 +443,11 @@ interpol
 
 * Introduction to interpol::
 * Definitions for interpol::
+
+lbfgs
+
+* Introduction to lbfgs::
+* Definitions for lbfgs::
 
 lindstedt
 
@@ -741,11 +747,15 @@ zeilberger
 @chapter impdiff
 @include impdiff.texi
 
-@node interpol, lindstedt, impdiff, Top
+@node interpol, lbfgs, impdiff, Top
 @chapter interpol
 @include interpol.texi
 
-@node lindstedt, linearalgebra, interpol, Top
+@node lbfgs, lindstedt, interpol, Top
+@chapter lbfgs
+@include lbfgs.texi
+
+@node lindstedt, linearalgebra, lbfgs, Top
 @chapter lindstedt
 @include lindstedt.texi
 
