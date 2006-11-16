@@ -95,6 +95,8 @@
 \setboolean{m@ximalistings}{false}
 \newboolean{m@ximalines}
 \setboolean{m@ximalines}{false}
+\newboolean{m@ximainline}
+\setboolean{m@ximainline}{false}
 
 %%%% Declaration of options
 \DeclareOption{preview}
@@ -108,6 +110,9 @@
 
 \DeclareOption{lines}
 {\setboolean{m@ximalines}{true}}
+
+\DeclareOption{inline}
+{\setboolean{m@ximainline}{true}}
 
 %%%% Execution of options
 \ProcessOptions
@@ -523,7 +528,7 @@
  {\maximasessionbottom
   \endgroup\par\noindent}  % verbatim output
  {\ifthenelse{\boolean{m@ximasessiontexoutput}}
-   {\maximasessionbottom
+   {\par\maximasessionbottom
     \endgroup\par\noindent}               % TeX output
    {}}}
 
@@ -538,15 +543,19 @@
  \maximasessiontop
  \m@ximastartwrite}
 
-\ifthenelse{\boolean{m@ximabreqn}}
-{\RequirePackage[cmbase]{flexisym}
- \RequirePackage{breqn}
- \newenvironment{em@ximam@th}
- {\begin{dmath*}}
- {\end{dmath*}}}
+\ifthenelse{\boolean{m@ximainline}}
 {\newenvironment{em@ximam@th}
- {\begin{displaymath}}
- {\end{displaymath}}}
+  {\hfil\(}
+  {\)\hfil}}
+{\ifthenelse{\boolean{m@ximabreqn}}
+  {\RequirePackage[cmbase]{flexisym}
+    \RequirePackage{breqn}
+    \newenvironment{em@ximam@th}
+    {\begin{dmath*}}
+      {\end{dmath*}}}
+  {\newenvironment{em@ximam@th}
+    {\begin{displaymath}}
+      {\end{displaymath}}}}
 
 \newcommand{\maximapromptcolor}{red}
 \newcommand{\maximainputcolor}{blue}
