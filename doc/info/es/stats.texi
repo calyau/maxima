@@ -1,0 +1,1353 @@
+@menu
+* Introducci@'on a stats::
+* Definiciones para inference_result::
+* Definiciones para stats::
+* Definiciones para distribuciones especiales::
+@end menu
+
+@node Introducci@'on a stats, Definiciones para inference_result, Top, Top
+@section Introducci@'on a stats
+
+El paquete @code{stats} contiene procedimientos cl@'asicos sobre inferencia
+estad@'{@dotless{i}}stica y contraste de hip@'otesis.
+
+Todas estas funciones devuelven un objeto Maxima de tipo @code{inference_result},
+el cual contiene los resultados necesarios para hacer inferencias sobre la 
+poblaci@'on y toma de decisiones.
+
+Por motivos pr@'acticos, cuando se carga este paquete, a la variable global
+@code{numer} se le asigna el valor @code{true}, mostr@'andose el siguiente
+mensaje:
+
+@example
+Warning: global variable 'numer' is set to 'true'.
+@end example
+
+Este comportamiento es normal. En caso de preferir los c@'alculos en su forma
+simb@'olica, as@'{@dotless{i}}gnesele el valor por defecto @code{false}.
+
+El paquete @code{descriptive} contiene algunas utilidades para manipular 
+estructuras de datos (listas y matrices); por ejemplo para extraer submuestras.
+Tambi@'en contiene algunos ejemplos sobre c@'omo utilizar el paquete
+@code{numericalio} para leer datos de ficheros en texto plano. V@'eanse
+@code{descriptive} y @code{numericalio} para m@'as detalles.
+
+El paquete @code{stats} carga en memoria los paquetes @code{descriptive},
+@code{distrib} y @code{inference_result}.
+
+Para comentarios, errores o sugerencias, cont@'actese con el autor en
+
+@var{'mario ARROBA edu PUNTO xunta PUNTO es'}.
+
+
+@node Definiciones para inference_result, Definiciones para stats, Introducci@'on a stats, Top
+@section Definiciones para inference_result
+
+
+@deffn {Funci@'on} inference_result (@var{title}, @var{values}, @var{numbers})
+
+Construye un objeto @code{inference_result} del tipo devuelto por las funciones
+estad@'{@dotless{i}}sticas. El argumento @var{title} es una cadena de Maxima con
+el nombre del procedimiento; @var{values} es una lista con elementos de la
+forma @code{symbol = value} y @var{numbers} es una lista con enteros positivos
+desde uno hasta @code{length(@var{values})}, que indican qu@'e valores ser@'an
+mostrados por defecto.
+
+Ejemplo:
+
+Este es un ejemplo que muestra los resultados asociados a un rect@'angulo. El
+t@'{@dotless{i}}tulo de este objeto es la cadena @code{"Rectangle"}, el cual
+almacena cinco resultados, a saber, @code{'base}, @code{'height}, 
+@code{'diagonal}, @code{'area} y @code{'perimeter}, pero s@'olo muestra
+el primero, segundo, quinto y cuarto. El resultado @code{'diagonal} tambi@'en
+se almacena en este objeto, pero no se muestra por defecto; para tener acceso
+a este valor, h@'agase uso de la funci@'on @code{take_inference}.
+
+@c ===beg===
+@c load (inference_result)$
+@c b: 3$ h: 2$
+@c inference_result("Rectangle",
+@c                  ['base=b,
+@c                   'height=h,
+@c                   'diagonal=sqrt(b^2+h^2),
+@c                   'area=b*h,
+@c                   'perimeter=2*(b+h)],
+@c                  [1,2,5,4] );
+@c take_inference('diagonal,%);
+@c ===end===
+@example
+(%i1) load(inference_result)$
+(%i2) b: 3$ h: 2$
+(%i3) inference_result("Rectangle",
+                        ['base=b,
+                         'height=h,
+                         'diagonal=sqrt(b^2+h^2),
+                         'area=b*h,
+                         'perimeter=2*(b+h)],
+                        [1,2,5,4] );
+                        |   Rectangle
+                        |
+                        |    base = 3
+                        |
+(%o3)                   |   height = 2
+                        |
+                        | perimeter = 10
+                        |
+                        |    area = 6
+(%i4) take_inference('diagonal,%);
+(%o4)                        sqrt(13)
+@end example
+
+V@'ease tambi@'en @code{take_inference}.
+@end deffn
+
+
+
+
+
+
+@deffn {Funci@'on} inferencep (@var{obj})
+
+Devuelve @code{true} o @code{false}, dependiendo de que @var{obj} sea un
+objeto de tipo @code{inference_result} o no.
+
+@end deffn
+
+
+
+
+
+
+@deffn {Funci@'on} items_inference (@var{obj})
+
+Devuelve una lista con los nombres de los elementos almacenados en
+@var{obj}, el cual debe ser un objeto de tipo @code{inference_result}.
+
+Ejemplo:
+
+El objeto @code{inference_result} almacena dos valores, cuyos nombres son @code{'pi} y @code{'e},
+pero s@'olo se muestra el segundo. La funci@'on @code{items_inference} devuelve los nombres de 
+todos los elementos almacenados, independientemente de que sean mostrados o no.
+
+@c ===beg===
+@c load (inference_result)$
+@c inference_result("Hi", ['pi=%pi,'e=%e],[2]);
+@c items_inference(%);
+@c ===end===
+@example
+(%i1) load(inference_result)$
+(%i2) inference_result("Hi", ['pi=%pi,'e=%e],[2]);
+                            |   Hi
+(%o2)                       |
+                            | e = %e
+(%i3) items_inference(%);
+(%o3)                        [pi, e]
+@end example
+@end deffn
+
+
+
+
+
+
+
+@deffn {Funci@'on} take_inference (@var{n}, @var{obj})
+@deffnx {Funci@'on} take_inference (@var{name}, @var{obj})
+@deffnx {Funci@'on} take_inference (@var{list}, @var{obj})
+
+Si @var{n} es un entero positivo, devuelve el @var{n}-@'esimo
+valor almacenado en @var{obj}; si el s@'{@dotless{i}}mbolo @var{name}
+es el nombre de uno de los elementos almacenados, tambi@'en
+devuelve su valor. Si el primer elemento es una lista de n@'umeros y/o 
+s@'{@dotless{i}}mbolos, la funci@'on @code{take_inference}
+devuelve una lista con los resultados correspondientes.
+
+Ejemplo:
+
+Dado un objeto @code{inference_result}, la funci@'on @code{take_inference}
+es invocada para extraer cierta informaci@'on almacenada en @'el.
+
+@c ===beg===
+@c load (inference_result)$
+@c b: 3$ h: 2$
+@c sol:inference_result("Rectangle",
+@c                      ['base=b,
+@c                       'height=h,
+@c                       'diagonal=sqrt(b^2+h^2),
+@c                       'area=b*h,
+@c                       'perimeter=2*(b+h)],
+@c                      [1,2,5,4] );
+@c take_inference('base,sol);
+@c take_inference(5,sol);
+@c take_inference([1,'diagonal],sol);
+@c take_inference(items_inference(sol),sol);
+@c ===end===
+@example
+(%i1) load(inference_result)$
+(%i2) b: 3$ h: 2$
+(%i3) sol: inference_result("Rectangle",
+                            ['base=b,
+                             'height=h,
+                             'diagonal=sqrt(b^2+h^2),
+                             'area=b*h,
+                             'perimeter=2*(b+h)],
+                            [1,2,5,4] );
+                        |   Rectangle
+                        |
+                        |    base = 3
+                        |
+(%o3)                   |   height = 2
+                        |
+                        | perimeter = 10
+                        |
+                        |    area = 6
+(%i4) take_inference('base,sol);
+(%o4)                           3
+(%i5) take_inference(5,sol);
+(%o5)                          10
+(%i6) take_inference([1,'diagonal],sol);
+(%o6)                     [3, sqrt(13)]
+(%i7) take_inference(items_inference(sol),sol);
+(%o7)                [3, 2, sqrt(13), 6, 10]
+@end example
+
+V@'eanse tambi@'en @code{inference_result} y @code{take_inference}.
+@end deffn
+
+
+
+
+
+
+
+@node Definiciones para stats, Definiciones para distribuciones especiales, Definiciones para inference_result, Top
+@section Definiciones para stats
+
+@deffn {Funci@'on} mean_test (@var{x})
+@deffnx {Funci@'on} mean_test (@var{x}, @var{option_1}, @var{option_2}, ...)
+
+Es el test @var{t} de la media. El argumento @var{x} es una lista o matriz
+columna con los datos de una muestra unidimensional. Tambi@'en realiza el
+test asint@'otico basado en el @i{Teorema Central del l@'{@dotless{i}}mite}
+si se le asigna a la opci@'on @code{'asymptotic} el valor @code{true}.
+
+Opciones:
+
+@itemize @bullet
+
+@item
+@code{'mean}, valor por defecto @code{0}, es el valor de la media a contrastar.
+
+@item
+@code{'alternative}, valor por defecto @code{'twosided}, es la hip@'otesis alternativa;
+valores v@'alidos son: @code{'twosided}, @code{'greater} y @code{'less}.
+
+@item
+@code{'dev}, valor por defecto @code{'unknown}, este es el valor de la desviaci@'on
+t@'{@dotless{i}}pica cuando se conoce; valores v@'alidos son: @code{'unknown} o una
+expresi@'on con valor positivo.
+
+@item
+@code{'conflevel}, valor por defecto @code{95/100}, nivel de confianza para el intervalo de confianza;
+debe ser una expresi@'on que tome un valor en el intervalo (0,1).
+
+@item
+@code{'asymptotic}, valor por defecto @code{false}, indica si debe realizar el test
+exacto basado en la @var{t} de Student, o el asint@'otico basado en el
+@i{Teorema Central del l@'{@dotless{i}}mite}; valores v@'alidos son @code{true} y @code{false}.
+
+@end itemize
+
+El resultado devuelto por la funci@'on  @code{mean_test} es un objeto
+@code{inference_result} con los siguientes resultados:
+
+@enumerate
+
+@item
+@code{'mean_estimate}: la media muestral.
+
+@item
+@code{'conf_level}: nivel de confianza seleccionado por el usuario.
+
+@item
+@code{'conf_interval}: intervalo de confianza para la media poblacional.
+
+@item
+@code{'method}: procedimiento de inferencia.
+
+@item
+@code{'hypotheses}: hip@'otesis nula y alternativa a ser contrastada.
+
+@item
+@code{'statistic}: valor del estad@'istico de contraste utilizado para probar la hip@'otesis.
+
+@item
+@code{'distribution}: distribuci@'on del estad@'{@dotless{i}}stico de contraste, junto con su(s) par@'ametro(s).
+
+@item
+@code{'p_value}: @math{p}-valor del test.
+
+@end enumerate
+
+Ejemplos:
+
+Realiza el contraste exacto @var{t} con varianza desconocida. La
+hip@'otesis nula es @math{H_0: mean=50}, frente a la alternativa
+unil@'atera @math{H_1: mean<50}; de acuerdo con los resultados,
+no hay evidencia para rechazar @math{H_0}, pues el @math{p}-valor
+es muy grande.
+
+@c ===beg===
+@c load (stats)$
+@c data: [78,64,35,45,45,75,43,74,42,42]$
+@c mean_test(data,'conflevel=0.9,'alternative='less,'mean=50);
+@c ===end===
+@example
+(%i1) load("stats")$
+Warning: global variable 'numer' is set to 'true'.
+Warning: global variable 'fpprintprec' is set to 7.
+(%i2) data: [78,64,35,45,45,75,43,74,42,42]$
+(%i3) mean_test(data,'conflevel=0.9,'alternative='less,'mean=50);
+          |                 MEAN TEST
+          |
+          |            mean_estimate = 54.3
+          |
+          |              conf_level = 0.9
+          |
+          |      conf_interval = [minf, 61.51314]
+          |
+(%o3)     |  method = Exact t-test. Unknown variance.
+          |
+          | hypotheses = H0: mean = 50 , H1: mean < 50
+          |
+          |            statistic = .8244705
+          |
+          |       distribution = [student_t, 9]
+          |
+          |             p_value = 0.78451
+@end example
+
+En esta ocasi@'on Maxima realiza un test asint@'otico. La hip@'otesis
+nula es @math{H_0: mean=50} frente a la alternativa bil@'atera @math{H_1: mean#50};
+de acuerdo con los resultados, @math{H_0} debe rechazarse en favor de
+la alternativa @math{H_1}, pues el @math{p}-valor es muy peque@~no. 
+N@'otese que, tal como indica la componente @code{Method}, este
+procedimiento s@'olo puede aplicarse en muestras grandes.
+
+@c ===beg===
+@c load (stats)$
+@c mean_test([36,118,52,87,35,256,56,178,57,57,89,34,25,98,35,
+@c         98,41,45,198,54,79,63,35,45,44,75,42,75,45,45,
+@c         45,51,123,54,151],
+@c         'asymptotic=true,'mean=50);
+@c ===end===
+@example
+(%i1) load("stats")$
+Warning: global variable 'numer' is set to 'true'.
+Warning: global variable 'fpprintprec' is set to 7.
+(%i2) mean_test([36,118,52,87,35,256,56,178,57,57,89,34,25,98,35,
+              98,41,45,198,54,79,63,35,45,44,75,42,75,45,45,
+              45,51,123,54,151],
+              'asymptotic=true,'mean=50);
+        |                    MEAN TEST
+        |
+        |            mean_estimate = 74.88571
+        |
+        |                conf_level = 0.95
+        |
+        |      conf_interval = [57.72849, 92.04294]
+        |
+(%o2)   | method = Large sample z-test. Unknown variance.
+        |
+        |   hypotheses = H0: mean = 50 , H1: mean # 50
+        |
+        |              statistic = 2.842831
+        |
+        |          distribution = [normal, 0, 1]
+        |
+        |              p_value = .004471475
+@end example
+
+@end deffn
+
+
+
+
+
+
+
+@deffn {Funci@'on} dif_means_test (@var{x1}, @var{x2})
+@deffnx {Funci@'on} dif_means_test (@var{x1}, @var{x2}, @var{option_1}, @var{option_2}, ...)
+
+Este es el test @var{t} para la diferencia de medias con muestras.
+Los argumentos @var{x1} y @var{x2} son listas o matrices columna
+que contienen dos muestras independientes. En caso de varianzas
+diferentes y desconocidas (v@'eanse las opciones @code{'dev1},
+@code{'dev2} y @code{'varequal} m@'as abajo) los grados de libertad
+se calculan mediante la aproximaci@'on de Welch.
+Tambi@'en realiza el test asint@'otico basado en el
+@i{Teorema Central del l@'{@dotless{i}}mite} si se le asigna a 
+la opci@'on @code{'asymptotic} el valor @code{true}.
+
+Opciones:
+
+@itemize @bullet
+
+@item
+
+@item
+@code{'alternative}, valor por defecto @code{'twosided}, es la hip@'otesis alternativa;
+valores v@'alidos son: @code{'twosided}, @code{'greater} y @code{'less}.
+
+@item
+@code{'dev1}, valor por defecto @code{'unknown}, es el valor de la desviaci@'on 
+t@'{@dotless{i}}pica de la muestra @var{x1} cuando se conoce; valores v@'alidos 
+son: @code{'unknown} o una expresi@'on positiva.
+
+@item
+@code{'dev2}, valor por defecto @code{'unknown}, es el valor de la desviaci@'on 
+t@'{@dotless{i}}pica de la muestra @var{x2} cuando se conoce; valores v@'alidos 
+son: @code{'unknown} o una expresi@'on positiva.
+
+@item
+@code{'varequal}, valor por defecto @code{false}, indica si las varianzas deben considerarse iguales o no; esta opci@'on s@'olo toma efecto cuando @code{'dev1} y/o @code{'dev2} tienen el valor @code{'unknown}.
+
+@item
+@code{'conflevel}, valor por defecto @code{95/100}, nivel de confianza para el
+intervalo de confianza; debe ser una expresi@'on que tome un valor en el intervalo (0,1).
+
+@item
+@code{'asymptotic}, valor por defecto @code{false}, indica si debe realizar el test
+exacto basado en la @var{t} de Student, o el asint@'otico basado en el
+@i{Teorema Central del l@'{@dotless{i}}mite}; valores v@'alidos son @code{true} y @code{false}.
+
+@end itemize
+
+El resultado devuelto por la funci@'on  @code{dif_means_test} es un objeto
+@code{inference_result} con los siguientes resultados:
+
+@enumerate
+
+@item
+@code{'diff_estimate}: el estimador de la diferencia de medias.
+
+@item
+@code{'conf_level}: nivel de confianza seleccionado por el usuario.
+
+@item
+@code{'conf_interval}: intervalo de confianza para la diferencia de medias.
+
+@item
+@code{'method}: procedimiento de inferencia.
+
+@item
+@code{'hypotheses}: hip@'otesis nula y alternativa a ser contrastada.
+
+@item
+@code{'statistic}: valor del estad@'istico de contraste utilizado para probar la hip@'otesis.
+
+@item
+@code{'distribution}: distribuci@'on del estad@'{@dotless{i}}stico de contraste, junto con su(s) par@'ametro(s).
+
+@item
+@code{'p_value}: @math{p}-valor del test.
+
+@end enumerate
+
+Ejemplos:
+
+La igualdad de medias se contrasta con dos peque@~nas muestras
+@var{x} y @var{y}, contra la alternativa @math{H_1: m_1>m_2},
+siendo @math{m_1} y @math{m_2} las medias poblacionales; las
+varianzas son desconocidas y se supone que diferentes.
+
+@c equivalent code for R:
+@c x <- c(20.4,62.5,61.3,44.2,11.1,23.7)
+@c y <- c(1.2,6.9,38.7,20.4,17.2)
+@c t.test(x,y,alternative="greater")
+
+@c ===beg===
+@c load (stats)$
+@c x: [20.4,62.5,61.3,44.2,11.1,23.7]$
+@c y: [1.2,6.9,38.7,20.4,17.2]$
+@c dif_means_test(x,y,'alternative='greater);
+@c ===end===
+@example
+(%i1) load("stats")$
+Warning: global variable 'numer' is set to 'true'.
+Warning: global variable 'fpprintprec' is set to 7.
+(%i2) x: [20.4,62.5,61.3,44.2,11.1,23.7]$
+(%i3) y: [1.2,6.9,38.7,20.4,17.2]$
+(%i4) dif_means_test(x,y,'alternative='greater);
+       |              DIFFERENCE OF MEANS TEST
+       |
+       |               diff_estimate = 20.32
+       |
+       |                 conf_level = 0.95
+       |
+       |         conf_interval = [- .04597418, inf]
+       |
+(%o4)  |        method = Exact t-test. Welch approx.
+       |
+       | hypotheses = H0: mean1 = mean2 , H1: mean1 > mean2
+       |
+       |                statistic = 1.838004
+       |
+       |        distribution = [student_t, 8.627587]
+       |
+       |                p_value = .05032747
+@end example
+
+El mismo test que antes, pero ahora se suponen las varianzas
+iguales.
+
+@c equivalent code for R:
+@c x <- c(20.4,62.5,61.3,44.2,11.1,23.7)
+@c y <- c(1.2,6.9,38.7,20.4,17.2)
+@c t.test(x,y,var.equal=T,alternative="greater")
+
+@c ===beg===
+@c load (stats)$
+@c x: [20.4,62.5,61.3,44.2,11.1,23.7]$
+@c y: [1.2,6.9,38.7,20.4,17.2]$
+@c dif_means_test(x,y,'alternative='greater,'varequal=true);
+@c ===end===
+@example
+(%i1) load("stats")$
+Warning: global variable 'numer' is set to 'true'.
+Warning: global variable 'fpprintprec' is set to 7.
+(%i2) x: [20.4,62.5,61.3,44.2,11.1,23.7]$
+(%i3) y: matrix([1.2],[6.9],[38.7],[20.4],[17.2])$
+(%i4) dif_means_test(x,y,'alternative='greater,'varequal=true);
+       |              DIFFERENCE OF MEANS TEST
+       |
+       |               diff_estimate = 20.32
+       |
+       |                 conf_level = 0.95
+       |
+       |         conf_interval = [- .7722628, inf]
+       |
+(%o4)  |   method = Exact t-test. Unknown equal variances
+       |
+       | hypotheses = H0: mean1 = mean2 , H1: mean1 > mean2
+       |
+       |                statistic = 1.765996
+       |
+       |           distribution = [student_t, 9]
+       |
+       |                p_value = .05560321
+@end example
+
+@end deffn
+
+
+
+
+
+
+
+@deffn {Funci@'on} variance_test (@var{x})
+@deffnx {Funci@'on} variance_test (@var{x}, @var{option_1}, @var{option_2}, ...)
+
+Este es el test @var{chi^2} de la varianza. El argumento @var{x}
+es una lista o matriz columna con los datos de una muestra unidimensional
+extra@'{@dotless{i}}da de una poblaci@'on normal.
+
+Opciones:
+
+@itemize @bullet
+
+@item
+@code{'mean}, valor por defecto @code{'unknown}, es la media de la poblaci@'on, si se conoce.
+
+@item
+@code{'alternative}, valor por defecto @code{'twosided}, es la hip@'otesis alternativa;
+valores v@'alidos son: @code{'twosided}, @code{'greater} y @code{'less}.
+
+@item
+@code{'variance}, valor por defecto @code{1}, este es el valor (positivo) de la varianza a contrastar.
+
+@item
+@code{'conflevel}, valor por defecto @code{95/100}, nivel de confianza para el intervalo de confianza;
+debe ser una expresi@'on que tome un valor en el intervalo (0,1).
+
+@end itemize
+
+El resultado devuelto por la funci@'on  @code{variance_test} es un objeto
+@code{inference_result} con los siguientes resultados:
+
+@enumerate
+
+@item
+@code{'var_estimate}: la varianza muestral.
+
+@item
+@code{'conf_level}: nivel de confianza seleccionado por el usuario.
+
+@item
+@code{'conf_interval}: intervalo de confianza para la varianza poblacional.
+
+@item
+@code{'method}: procedimiento de inferencia.
+
+@item
+@code{'hypotheses}: hip@'otesis nula y alternativa a ser contrastada.
+
+@item
+@code{'statistic}: valor del estad@'istico de contraste utilizado para probar la hip@'otesis.
+
+@item
+@code{'distribution}: distribuci@'on del estad@'{@dotless{i}}stico de contraste, junto con su par@'ametro.
+
+@item
+@code{'p_value}: @math{p}-valor del test.
+
+@end enumerate
+
+Ejemplos:
+
+Se contrasta si la varianza de una poblaci@'on de media desconocida
+es igual o mayor que 200.
+
+@c ===beg===
+@c load (stats)$
+@c x: [203,229,215,220,223,233,208,228,20]$
+@c variance_test(x,'alternative='greater,'variance=200);
+@c ===end===
+@example
+(%i1) load("stats")$
+Warning: global variable 'numer' is set to 'true'.
+Warning: global variable 'fpprintprec' is set to 7.
+(%i2) x: [203,229,215,220,223,233,208,228,209]$
+(%i3) variance_test(x,'alternative='greater,'variance=200);
+       |                  VARIANCE TEST
+       |
+       |              var_estimate = 110.75
+       |
+       |                conf_level = 0.95
+       |
+       |         conf_interval = [57.13433, inf]
+       |
+(%o3)  | method = Variance Chi-square test. Unknown mean.
+       |
+       |    hypotheses = H0: var = 200 , H1: var > 200
+       |
+       |                 statistic = 4.43
+       |
+       |             distribution = [chi2, 8]
+       |
+       |                p_value = .8163949
+@end example
+
+@end deffn
+
+
+
+
+
+
+
+@deffn {Funci@'on} variance_ratio_test (@var{x1}, @var{x2})
+@deffnx {Funci@'on} variance_ratio_test (@var{x1}, @var{x2}, @var{option_1}, @var{option_2}, ...)
+
+Este es el test @var{F} del cociente de las varianzas para dos
+poblaciones normales. Los argumentos @var{x1} y @var{x2} son listas
+o matrices columna que contienen los datos de dos muestras 
+independientes.
+
+Opciones:
+
+@itemize @bullet
+
+@item
+@code{'alternative}, valor por defecto @code{'twosided}, es la hip@'otesis alternativa;
+valores v@'alidos son: @code{'twosided}, @code{'greater} y @code{'less}.
+
+@item
+@code{'mean1}, valor por defecto @code{'unknown}, es la media de la poblaci@'on de la
+que procede @var{x1} cuando se conoce.
+
+@item
+@code{'mean2}, valor por defecto @code{'unknown}, es la media de la poblaci@'on de la
+que procede @var{x2} cuando se conoce.
+
+@item
+@code{'conflevel}, valor por defecto @code{95/100}, nivel de confianza para el intervalo
+de confianza del cociente; debe ser una expresi@'on que tome un valor en el intervalo (0,1).
+
+@end itemize
+
+El resultado devuelto por la funci@'on  @code{variance_ratio_test} es un objeto
+@code{inference_result} con los siguientes resultados
+
+@enumerate
+
+@item
+@code{'ratio_estimate}: el cociente de varianzas muestral.
+
+@item
+@code{'conf_level}: nivel de confianza seleccionado por el usuario.
+
+@item
+@code{'conf_interval}: intervalo de confianza para el cociente de varianzas.
+
+@item
+@code{'method}: procedimiento de inferencia.
+
+@item
+@code{'hypotheses}: hip@'otesis nula y alternativa a ser contrastada.
+
+@item
+@code{'statistic}: valor del estad@'istico de contraste utilizado para probar la hip@'otesis.
+
+@item
+@code{'distribution}: distribuci@'on del estad@'{@dotless{i}}stico de contraste, junto con sus par@'ametros.
+
+@item
+@code{'p_value}: @math{p}-valor del test.
+
+@end enumerate
+
+
+Ejemplos:
+
+Se contrasta la igualdad de varianzas de dos poblaciones normales frente
+a la alternativa de que la primera es mayor que la segunda.
+
+@c equivalent code for R:
+@c x <- c(20.4,62.5,61.3,44.2,11.1,23.7)
+@c y <- c(1.2,6.9,38.7,20.4,17.2)
+@c var.test(x,y,alternative="greater")
+
+@c ===beg===
+@c load (stats)$
+@c x: [20.4,62.5,61.3,44.2,11.1,23.7]$
+@c y: [1.2,6.9,38.7,20.4,17.2]$
+@c variance_ratio_test(x,y,'alternative='greater);
+@c ===end===
+@example
+(%i1) load("stats")$
+Warning: global variable 'numer' is set to 'true'.
+Warning: global variable 'fpprintprec' is set to 7.
+(%i2) x: [20.4,62.5,61.3,44.2,11.1,23.7]$
+(%i3) y: [1.2,6.9,38.7,20.4,17.2]$
+(%i4) variance_ratio_test(x,y,'alternative='greater);
+        |              VARIANCE RATIO TEST
+        |
+        |           ratio_estimate = 2.316933
+        |
+        |               conf_level = 0.95
+        |
+        |        conf_interval = [.3703505, inf]
+        |
+(%o4)   | method = Variance ratio F-test. Unknown means.
+        |
+        | hypotheses = H0: var1 = var2 , H1: var1 > var2
+        |
+        |              statistic = 2.316933
+        |
+        |            distribution = [f, 5, 4]
+        |
+        |               p_value = 0.217927
+@end example
+
+@end deffn
+
+
+
+
+
+
+@deffn {Funci@'on} sign_test (@var{x})
+@deffnx {Funci@'on} sign_test (@var{x}, @var{option_1}, @var{option_2}, ...)
+
+Este es el test no param@'etrico de los signos para contrastes
+sobre la mediana de una poblaci@'on continua. El argumento @var{x}
+es una lista o matriz columna que contiene los datos de una muestra
+unidimensional.
+
+Opciones:
+
+@itemize @bullet
+
+@item
+@code{'alternative}, valor por defecto @code{'twosided}, es la hip@'otesis alternativa;
+valores v@'alidos son: @code{'twosided}, @code{'greater} y @code{'less}.
+
+@item
+@code{'median}, valor por defecto @code{0}, es el valor de la mediana a contrastar.
+
+@end itemize
+
+El resultado devuelto por la funci@'on @code{sign_test} es un objeto
+@code{inference_result} con los siguientes resultados:
+
+@enumerate
+
+@item
+@code{'med_estimate}: la mediana muestral.
+
+@item
+@code{'method}: procedimiento de inferencia.
+
+@item
+@code{'hypotheses}: hip@'otesis nula y alternativa a ser contrastada.
+
+@item
+@code{'statistic}: valor del estad@'istico de contraste utilizado para probar la hip@'otesis.
+
+@item
+@code{'distribution}: distribuci@'on del estad@'{@dotless{i}}stico de contraste, junto con sus par@'ametros.
+
+@item
+@code{'p_value}: @math{p}-valor del test.
+
+@end enumerate
+
+Ejemplos:
+
+Contrasta si la mediana de la poblaci@'on de la que se ha extraido
+la muestra es 6, frente a la alternativa @math{H_1: median > 6}.
+
+@c ===beg===
+@c load (stats)$
+@c x: [2,0.1,7,1.8,4,2.3,5.6,7.4,5.1,6.1,6]$
+@c sign_test(x,'median=6,'alternative='greater);
+@c ===end===
+@example
+(%i1) load("stats")$
+Warning: global variable 'numer' is set to 'true'.
+Warning: global variable 'fpprintprec' is set to 7.
+(%i2) x: [2,0.1,7,1.8,4,2.3,5.6,7.4,5.1,6.1,6]$
+(%i3) sign_test(x,'median=6,'alternative='greater);
+         |                  SIGN TEST
+         |
+         |              med_estimate = 5.1
+         |
+         |      method = Non parametric sign test.
+         |
+(%o3)    | hypotheses = H0: median = 6 , H1: median > 6
+         |
+         |                statistic = 7
+         |
+         |      distribution = [binomial, 10, 0.5]
+         |
+         |             p_value = 0.0546875
+@end example
+
+@end deffn
+
+
+
+
+
+
+
+
+
+@deffn {Funci@'on} signed_rank_test (@var{x})
+@deffnx {Funci@'on} signed_rank_test (@var{x}, @var{option_1}, @var{option_2}, ...)
+
+Este el test de los rangos signados de Wilcoxon para hacer inferencias sobre
+la mediana de una poblaci@'on continua. El argumento @var{x} es una lista
+o matriz columna que contiene los datos de una muestra unidimensional.
+Realiza la aproximaci@'on normal si el tama@~no muestral es mayor que 20,
+o si en la muestra aparece alg@'un cero o hay empates.
+
+V@'eanse tambi@'en @code{pdf_rank_test} y @code{cdf_rank_test}.
+
+
+Opciones:
+
+@itemize @bullet
+
+@item
+@code{'median}, valor por defecto @code{0}, es el valor de la mediana a ser contrastado.
+
+@item
+@code{'alternative}, valor por defecto @code{'twosided}, es la hip@'otesis alternativa;
+valores v@'alidos son: @code{'twosided}, @code{'greater} y @code{'less}.
+
+@end itemize
+
+El resultado devuelto por la funci@'on  @code{signed_rank_test} es
+un objeto @code{inference_result} con los siguientes resultados:
+
+@enumerate
+
+@item
+@code{'med_estimate}: la mediana muestral.
+
+@item
+@code{'method}: procedimiento de inferencia.
+
+@item
+@code{'hypotheses}: hip@'otesis nula y alternativa a ser contrastada.
+
+@item
+@code{'statistic}: valor del estad@'istico de contraste utilizado para probar la hip@'otesis.
+
+@item
+@code{'distribution}: distribuci@'on del estad@'{@dotless{i}}stico de contraste, junto con su(s) par@'ametro(s).
+
+@item
+@code{'p_value}: @math{p}-valor del test.
+
+@end enumerate
+
+Ejemplos:
+
+Contrasta la hip@'otesis nula @math{H_0: median = 15} frente 
+a la alternativa @math{H_1: median > 15}. Este test es exacto, 
+puesto que no hay empates.
+
+
+@c equivalent code for R:
+@c x <- c(17.1,15.9,13.7,13.4,15.5,17.6)
+@c wilcox.test(x,mu=15,alternative="greater")
+
+@c ===beg===
+@c load (stats)$
+@c x: [17.1,15.9,13.7,13.4,15.5,17.6]$
+@c signed_rank_test(x,median=15,alternative=greater);
+@c ===end===
+@example
+(%i1) load("stats")$
+Warning: global variable 'numer' is set to 'true'.
+Warning: global variable 'fpprintprec' is set to 7.
+(%i2) x: [17.1,15.9,13.7,13.4,15.5,17.6]$
+(%i3) signed_rank_test(x,median=15,alternative=greater);
+           |             SIGNED RANK TEST
+           |
+           |           med_estimate = 15.7
+           |
+           |           method = Exact test
+           |
+(%o3)      | hypotheses = H0: med = 15 , H1: med > 15
+           |
+           |              statistic = 14
+           |
+           |     distribution = [signed_rank, 6]
+           |
+           |            p_value = 0.28125
+@end example
+
+Contrasta la hip@'otesis nula @math{H_0: median = 2.5} frente 
+a la alternativa @math{H_1: median # 2.5}. Este es un test asint@'otico,
+debido a la presencia de empates.
+
+@c equivalent code for R:
+@c y<-c(1.9,2.3,2.6,1.9,1.6,3.3,4.2,4,2.4,2.9,1.5,3,2.9,4.2,3.1)
+@c wilcox.test(y,mu=2.5)
+
+@c ===beg===
+@c load (stats)$
+@c y:[1.9,2.3,2.6,1.9,1.6,3.3,4.2,4,2.4,2.9,1.5,3,2.9,4.2,3.1]$
+@c signed_rank_test(y,median=2.5);
+@c ===end===
+@example
+(%i1) load("stats")$
+Warning: global variable 'numer' is set to 'true'.
+Warning: global variable 'fpprintprec' is set to 7.
+(%i2) y:[1.9,2.3,2.6,1.9,1.6,3.3,4.2,4,2.4,2.9,1.5,3,2.9,4.2,3.1]$
+(%i3) signed_rank_test(y,median=2.5);
+          |              SIGNED RANK TEST
+          |
+          |             med_estimate = 2.9
+          |
+          |       method = Asymptotic test. Ties
+          |
+(%o3)     | hypotheses = H0: med = 2.5 , H1: med # 2.5
+          |
+          |              statistic = 76.5
+          |
+          |  distribution = [normal, 60.5, 17.58195]
+          |
+          |             p_value = .3628098
+@end example
+
+@end deffn
+
+
+
+
+
+
+
+@deffn {Funci@'on} rank_sum_test (@var{x1}, @var{x2})
+@deffnx {Funci@'on} rank_sum_test (@var{x1}, @var{x2}, @var{option_1})
+
+Este es el test de Wilcoxon-Mann-Whitney para comparar las medianas
+de dos poblaciones continuas. Los dos primeros argumentos @var{x1}
+y @var{x2} son listas o matrices columna con los datos de dos
+muestras independientes. Realiza la aproximaci@'on normal si
+alguna de las muestras tiene tama@~no mayor que 10, o si hay
+empates.
+
+
+Opci@'on:
+
+@itemize @bullet
+
+@item
+@code{'alternative}, valor por defecto @code{'twosided}, es la hip@'otesis alternativa;
+valores v@'alidos son: @code{'twosided}, @code{'greater} y @code{'less}.
+
+@end itemize
+
+El resultado devuelto por la funci@'on  @code{rank_sum_test}
+es un objeto @code{inference_result} con los siguientes resultados:
+
+@enumerate
+
+@item
+@code{'method}: procedimiento de inferencia.
+
+@item
+@code{'hypotheses}: hip@'otesis nula y alternativa a ser contrastada.
+
+@item
+@code{'statistic}: valor del estad@'istico de contraste utilizado para probar la hip@'otesis.
+
+@item
+@code{'distribution}: distribuci@'on del estad@'{@dotless{i}}stico de contraste, junto con sus par@'ametros.
+
+@item
+@code{'p_value}: @math{p}-valor del test.
+
+@end enumerate
+
+Ejemplos:
+
+Contrasta si dos poblaciones tiene medianas similares. Al ser los tama@~nos
+muestrales peque@~nos, se realiza el test exacto.
+
+@c equivalent code for R:
+@c x <- c(12,15,17,38,42,10,23,35,28)
+@c y <- c(21,18,25,14,52,65,40,43)
+@c wilcox.test(x,y)
+
+@c ===beg===
+@c load (stats)$
+@c x:[12,15,17,38,42,10,23,35,28]$
+@c y:[21,18,25,14,52,65,40,43]$
+@c rank_sum_test(x,y);
+@c ===end===
+@example
+(%i1) load("stats")$
+Warning: global variable 'numer' is set to 'true'.
+Warning: global variable 'fpprintprec' is set to 7.
+(%i2) x:[12,15,17,38,42,10,23,35,28]$
+(%i3) y:[21,18,25,14,52,65,40,43]$
+(%i4) rank_sum_test(x,y);
+        |                 RANK SUM TEST
+        |
+        |              method = Exact test
+        |
+        | hypotheses = H0: med1 = med2 , H1: med1 # med2
+(%o4)   |
+        |                 statistic = 22
+        |
+        |        distribution = [rank_sum, 9, 8]
+        |
+        |               p_value = .1995886
+@end example
+
+Ahora, con muestras mayores y empates, el procedimiento
+realiza la aproximaci@'on normal. La hip@'otesis
+alternativa es @math{H_1: median1 < median2}.
+
+@c equivalent code for R:
+@c x <- c(39,42,35,13,10,23,15,20,17,27)
+@c y <- c(20,52,66,19,41,32,44,25,14,39,43,35,19,56,27,15)
+@c wilcox.test(x,y,alternative="less")
+
+@c ===beg===
+@c load (stats)$
+@c x: [39,42,35,13,10,23,15,20,17,27]$
+@c y: [20,52,66,19,41,32,44,25,14,39,43,35,19,56,27,15]$
+@c rank_sum_test(x,y,'alternative='less);
+@c ===end===
+@example
+(%i1) load("stats")$
+Warning: global variable 'numer' is set to 'true'.
+Warning: global variable 'fpprintprec' is set to 7.
+(%i2) x: [39,42,35,13,10,23,15,20,17,27]$
+(%i3) y: [20,52,66,19,41,32,44,25,14,39,43,35,19,56,27,15]$
+(%i4) rank_sum_test(x,y,'alternative='less);
+        |                 RANK SUM TEST
+        |
+        |         method = Asymptotic test. Ties
+        |
+        | hypotheses = H0: med1 = med2 , H1: med1 < med2
+(%o5)   |
+        |                statistic = 48.5
+        |
+        |     distribution = [normal, 79.5, 18.9542]
+        |
+        |              p_value = .05096986
+@end example
+
+@end deffn
+
+
+
+
+
+
+
+@deffn {Funci@'on} shapiro_wilk_test (@var{x})
+
+Test de Shapiro-Wilk para el contraste de normalidad. El argumento
+@var{x} es una lista de n@'umeros, con tama@~no muestral mayor que 2
+y menor o igual que 5000; bajo cualesquiera otras condiciones, la
+funci@'on @code{shapiro_wilk_test} emite un mensaje de error.
+
+Referencia:
+
+  [1] Algorithm AS R94, Applied Statistics (1995), vol.44, no.4, 547-551
+
+El resultado devuelto por la funci@'on @code{shapiro_wilk_test} es
+un objeto @code{inference_result} con los siguientes resultados:
+
+
+@enumerate
+
+@item
+@code{'statistic}: valor del estad@'{@dotless{i}}stico @var{W}.
+
+@item
+@code{'p_value}: @math{p}-valor bajo la hip@'otesis de normalidad.
+
+@end enumerate
+
+Ejemplos:
+
+Contrasta la normalidad de una poblaci@'on a partir de una muestra
+de tama@~no 9.
+
+@c equivalent code for R:
+@c x <- c(12,15,17,38,42,10,23,35,28)
+@c shapiro.test(x)
+
+@c ===beg===
+@c load (stats)$
+@c x:[12,15,17,38,42,10,23,35,28]$
+@c shapiro_wilk_test(x);
+@c ===end===
+@example
+(%i1) load("stats")$
+Warning: global variable 'numer' is set to 'true'.
+Warning: global variable 'fpprintprec' is set to 7.
+(%i2) x:[12,15,17,38,42,10,23,35,28]$
+(%i3) shapiro_wilk_test(x);
+                    | SHAPIRO - WILK TEST
+                    |
+(%o3)               | statistic = .9251056
+                    |
+                    |  p_value = .4361762
+@end example
+
+@end deffn
+
+
+
+
+
+
+
+
+
+@deffn {Funci@'on} simple_linear_reg (@var{x})
+@deffnx {Funci@'on} simple_linear_reg (@var{x} @var{option_1})
+
+Regresi@'on lineal simple, @math{y_i=a+b x_i+e_i}, donde las @math{e_i}
+son variables aleatorias independientes de distribuci@'on @math{N(0,sigma)}.
+El argumento @var{x} debe ser una matriz de dos columnas o una lista de pares
+de n@'umeros.
+
+Opciones:
+
+@itemize @bullet
+
+@item
+@code{'conflevel}, valor por defecto @code{95/100}, nivel de confianza para el intervalo de confianza;
+debe ser una expresi@'on que tome un valor en el intervalo (0,1).
+
+@item
+@code{'regressor}, valor por defecto @code{'x}, nombre de la variable independiente.
+
+@end itemize
+
+El resultado devuelto por la funci@'on  @code{simple_linear_reg} es un
+objeto @code{inference_result} con los siguientes resultados:
+
+@enumerate
+
+@item
+@code{'model}: la ecuaci@'on ajustada. @'Util para hacer predicciones.
+V@'eanse los ejemplos m@'as abajo.
+
+@item
+@code{'means}: media bivariante.
+
+@item
+@code{'variances}: varianzas de ambas variables.
+
+@item
+@code{'correlation}: coeficiente de correlaci@'on.
+
+@item
+@code{'adc}: coeficiente de determinaci@'on ajustado.
+
+@item
+@code{'a_estimation}: estimador del par@'ametro @var{b}.
+
+@item
+@code{'a_conf_int}: intervalo de confianza del par@'ametro @var{a}.
+
+@item
+@code{'b_estimation}: estimador del par@'ametro @var{b}.
+
+@item
+@code{'b_conf_int}: intervalo de confianza del par@'ametro @var{b}.
+
+@item
+@code{'hypotheses}: hip@'otesis nula y altenativa sobre el par@'ametro @var{b}.
+
+@item
+@code{'statistic}: valor del estad@'istico de contraste utilizado para probar la hip@'otesis.
+
+@item
+@code{'distribution}: distribuci@'on del estad@'{@dotless{i}}stico de contraste, junto con su par@'ametro.
+
+@item
+@code{'p_value}: @math{p}-valor del test sobre @var{b}.
+
+@item
+@code{'v_estimation}: estimador insesgado de la varianza, o varianza residual.
+
+@item
+@code{'v_conf_int}: intervalo de confianza de la varianza.
+
+@item
+@code{'cond_mean_conf_int}: intervalo de confianza para la media condicionada.
+V@'eanse los ejemplos m@'as abajo.
+
+@item
+@code{'new_pred_conf_int}: intervalo de confianza para una nueva predicci@'on.
+V@'eanse los ejemplos m@'as abajo.
+
+@item
+@code{'residuals}: lista de pares (predicci@'on, residuo), ordenado respecto de las predicciones.
+@'Util para el an@'alisis de la bondad de ajuste. V@'eanse los ejemplos m@'as abajo.
+
+@end enumerate
+
+S@'olo los elementos 1, 4, 14, 9, 10, 11, 12 y 13 de arriba, y en este orden,
+son mostrados por defecto. El resto permanecen ocultos hasta que el usuario haga uso de
+las funciones @code{items_inference} y @code{take_inference}.
+
+Ejemplo:
+
+Ajuste de un modelo lineal a una muestra bivariante. La entrada @code{%i4}
+representa gr@'aficamente la muestra junto con la recta de regresi@'on; la
+entrada @code{%i5} calcula @code{y} dado @code{x=113}; tambi@'en
+se calculan las medias y el intervalo de confianza para una nueva predicci@'on
+cuando @code{x=113}.
+
+
+@c ===beg===
+@c load (stats)$
+@c s:[[125,140.7],[130,155.1],[135,160.3],
+@c       [140,167.2],[145,169.8]]$
+@c z:simple_linear_reg(s,conflevel=0.99);
+@c plot2d([[discrete, s], take_inference(model,z)],
+@c           [x,120,150],
+@c           [gnuplot_curve_styles,
+@c              ["with points","with lines"]] )$
+@c take_inference(model,z), x=133;
+@c take_inference(means,z);
+@c take_inference(new_pred_conf_int,z), x=133;
+@c ===end===
+@example
+(%i1) load("stats")$
+Warning: global variable 'numer' is set to 'true'.
+Warning: global variable 'fpprintprec' is set to 7.
+(%i2) s:[[125,140.7],[130,155.1],[135,160.3],
+         [140,167.2],[145,169.8]]$
+(%i3) z:simple_linear_reg(s,conflevel=0.99);
+              |      SIMPLE LINEAR REGRESSION
+              |
+              |      model = 1.406 x - 31.19
+              |
+              |       correlation = .9611685
+              |
+              |      v_estimation = 13.57967
+              |
+(%o3)         | b_conf_int = [.04469634, 2.767304]
+              |
+              | hypotheses = H0: b = 0 ,H1: b # 0
+              |
+              |        statistic = 6.032687
+              |
+              |   distribution = [student_t, 3]
+              |
+              |        p_value = .003805955
+(%i4) plot2d([[discrete, s], take_inference(model,z)],
+              [x,120,150],
+              [gnuplot_curve_styles,
+                 ["with points","with lines"]] )$
+(%i5) take_inference(model,z), x=133;
+(%o5)                         155.808
+(%i6) take_inference(means,z);
+(%o6)                     [135.0, 158.62]
+(%i7) take_inference(new_pred_conf_int,z), x=133;
+(%o7)                  [132.0729, 179.5431]
+@end example
+
+@end deffn
+
+
+
+
+
+@node Definiciones para distribuciones especiales,  , Definiciones para stats, Top
+@section Definiciones para distribuciones especiales
+
+
+@deffn {Funci@'on} pdf_signed_rank (@var{x}, @var{n})
+Funci@'on de densidad de probabilidad de la distribuci@'on exacta
+del estad@'{@dotless{i}}stico de contraste del test de los
+rangos signados. El argumento @var{x} es un n@'umero real y
+@var{n} un entero positivo.
+
+V@'ease tambi@'en @code{signed_rank_test}.
+@end deffn
+
+@deffn {Funci@'on} cdf_signed_rank (@var{x}, @var{n})
+Funci@'on de probabilidad acumulada de la distribuci@'on exacta
+del estad@'{@dotless{i}}stico de contraste del test de los
+rangos signados. El argumento @var{x} es un n@'umero real y
+@var{n} un entero positivo.
+
+V@'ease tambi@'en @code{signed_rank_test}.
+@end deffn
+
+@deffn {Funci@'on} pdf_rank_sum (@var{x}, @var{n}, @var{m})
+Funci@'on de densidad de probabilidad de la distribuci@'on exacta
+del estad@'{@dotless{i}}stico de contraste de Wilcoxon-Mann-Whitney.
+El argumento @var{x} es un n@'umero real y
+@var{n} y @var{m} son ambos enteros positivos.
+
+V@'ease tambi@'en @code{rank_sum_test}.
+@end deffn
+
+@deffn {Funci@'on} cdf_rank_sum (@var{x}, @var{n}, @var{m})
+Funci@'on de probabilidad acumulada de la distribuci@'on exacta
+del estad@'{@dotless{i}}stico de contraste de Wilcoxon-Mann-Whitney.
+El argumento @var{x} es un n@'umero real y
+@var{n} y @var{m} son ambos enteros positivos.
+
+V@'ease tambi@'en @code{rank_sum_test}.
+@end deffn

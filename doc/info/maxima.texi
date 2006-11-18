@@ -163,6 +163,7 @@ Additional packages
 * simplex::                     Linear programming.
 * simplification::              Simplification rules and functions.
 * solve_rec::                   Linear recurrences.
+* stats::                       Statistical inference package.
 * stirling::                    Stirling formula.
 * stringproc::                  String processing.
 * unit::                        Units and dimensions package.
@@ -504,6 +505,13 @@ solve_rec
 * Introduction to solve_rec::
 * Definitions for solve_rec::
 
+stats
+
+* Introduction to stats::
+* Definitions for inference_result::
+* Definitions for stats::
+* Definitions for special distributions::
+
 stirling
 
 * Definitions for stirling::
@@ -799,11 +807,15 @@ zeilberger
 @chapter simplification
 @include simplifications.texi
 
-@node solve_rec, stirling, simplification, Top
+@node solve_rec, stats, simplification, Top
 @chapter solve_rec
 @include solve_rec.texi
 
-@node stirling, stringproc, solve_rec, Top
+@node stats, stirling, solve_rec, Top
+@chapter stats
+@include stats.texi
+
+@node stirling, stringproc, stats, Top
 @chapter stirling
 @include stirling.texi
 

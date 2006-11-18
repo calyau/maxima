@@ -404,6 +404,10 @@ contrib/state/readfile.lsp\
 contrib/state/sortem.mac\
 contrib/state/state.mac\
 contrib/state/tree.mac\
+contrib/stats/inference_result.lisp\
+contrib/stats/numstats.lisp\
+contrib/stats/rtest_stats.mac\
+contrib/stats/stats.mac\
 contrib/stringproc/rteststringproc.mac\
 contrib/stringproc/stringproc.lisp\
 contrib/unit/unit-functions.lisp\

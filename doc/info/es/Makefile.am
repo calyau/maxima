@@ -21,7 +21,7 @@ diag.texi           distrib.texi                   eval_string.texi    f90.texi 
 ggf.texi            impdiff.texi                   interpol.texi       lindstedt.texi \
 linearalgebra.texi  lsquares.texi                  makeOrders.texi     mnewton.texi \
 numericalio.texi    opsubst.texi                   orthopoly.texi      plotdf.texi \
-simplex.texi        simplifications.texi           solve_rec.texi      stirling.texi \
+simplex.texi        simplifications.texi           solve_rec.texi      stats.texi        stirling.texi \
 stringproc.texi     unit.texi                      zeilberger.texi     dynamics.texi
 
 

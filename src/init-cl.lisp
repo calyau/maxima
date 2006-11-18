@@ -338,6 +338,7 @@
          "contrib/simplex/Tests"
          "contrib/solve_rec"
          "contrib/state"
+         "contrib/stats"
          "contrib/stringproc"
          "contrib/unit"
          "contrib/Zeilberger"

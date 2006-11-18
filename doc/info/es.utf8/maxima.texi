@@ -167,6 +167,7 @@ Paquetes adicionales
 * simplex::                     Programaci@'on lineal.
 * simplification::              Reglas y funciones de simplificaci@'on.
 * solve_rec::                   Recurrencias lineales.
+* stats::                       Inferencia estad@'{@dotless{i}}stica.
 * stirling::                    F@'ormula de Stirling.
 * stringproc::                  Procesamiento de cadenas.
 * unit::                        Unidades f@'{@dotless{i}}sicas y dimensiones.
@@ -509,6 +510,13 @@ solve_rec
 * Introducci@'on a solve_rec::
 * Definiciones para solve_rec::
 
+stats
+
+* Introducci@'on a stats::
+* Definiciones para inference_result::
+* Definiciones para stats::
+* Definiciones para distribuciones especiales::
+
 stirling
 
 * Definiciones para stirling::
@@ -798,11 +806,15 @@ zeilberger
 @chapter simplification
 @include ../es/simplifications.texi
 
-@node solve_rec, stirling, simplification, Top
+@node solve_rec, stats, simplification, Top
 @chapter solve_rec
 @include ../es/solve_rec.texi
 
-@node stirling, stringproc, solve_rec, Top
+@node stats, stirling, solve_rec, Top
+@chapter stats
+@include ../es/stats.texi
+
+@node stirling, stringproc, stats, Top
 @chapter stirling
 @include ../es/stirling.texi
 
