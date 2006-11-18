@@ -186,7 +186,6 @@ Introducci@'on
 
 Fallos
 
-* Introducci@'on a la detecci@'on e informe de fallos::
 * Definiciones para la detecci@'on e informe de fallos::
 
 Ayuda
