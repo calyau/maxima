@@ -6,10 +6,10 @@
 ***************************************************************************/
 
 
-(kill(all),clear_rules(),matchdeclare(a,true));
+(kill(all),matchdeclare(a,true));
 done$
-tellsimp(sin(a)^2,1-cos(a)^2);
-["^rule1",?simpexpt]$
+(\^rule1_retval : tellsimp(sin(a)^2,1-cos(a)^2), 0);
+0;
 sin(y)^2;
 1-cos(y)^2$
 kill(rules);
@@ -45,22 +45,22 @@ false$
 done$
 %iargs:false;
 false$
-tellsimp(sin(%i*x),%i*sinh(x));
-[sinrule1,?simp\-%sin]$
+(sinrule_retval : tellsimp(sin(%i*x),%i*sinh(x)), 0);
+0;
 trigexpand(sin(x+%i*y));
 sin(x)*cos(%i*y)+%i*cos(x)*sinh(y)$
 %iargs:true;
 true$
 errcatch(0^0);
 []$
-ev(tellsimp(0^0,1),simp:false);
-["^rule2",?simpexpt]$
+ev((\^rule2_retval : tellsimp(0^0,1), 0),simp:false);
+0;
 0^0;
 1$
-remrule("^","^rule2");
+remrule ("^", first (\^rule2_retval));
 "^"$
-tellsimp(sin(x)^2,1-cos(x)^2);
-["^rule3",?simpexpt]$
+(\^rule3_retval : tellsimp(sin(x)^2,1-cos(x)^2), 0);
+0;
 (sin(x)+1)^2;
 (sin(x)+1)^2$
 expand(%);
@@ -71,8 +71,8 @@ kill(rules);
 done$
 matchdeclare(a,true);
 done$
-tellsimp(sin(a)^2,1-cos(a)^2);
-["^rule4",?simpexpt]$
+(\^rule4_retval : tellsimp(sin(a)^2,1-cos(a)^2), 0);
+0;
 sin(y)^2;
 1-cos(y)^2$
 kill(rules);
