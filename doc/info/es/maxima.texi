@@ -155,6 +155,7 @@ Paquetes adicionales
 * ggf::                         Expresi@'on general de sucesiones.
 * impdiff::                     Derivadas impl@'{@dotless{i}}citas.
 * interpol::                    Interpolaci@'on.
+* lbfgs::                       Paquete L-BFGS para minimizaci@'on sin restricciones.
 * lindstedt::                   Paquete Lindstedt.
 * linearalgebra::               Funciones de @'algebra lineal.
 * lsquares::                    M@'{@dotless{i}}nimos cuadrados.
@@ -455,6 +456,11 @@ interpol
 
 * Introducci@'on a interpol::
 * Definiciones para interpol::
+
+lbfgs
+
+* Introducci@'on a lbfgs::
+* Definiciones para lbfgs::
 
 lindstedt
 
@@ -758,11 +764,15 @@ zeilberger
 @chapter impdiff
 @include impdiff.texi
 
-@node interpol, lindstedt, impdiff, Top
+@node interpol, lbfgs, impdiff, Top
 @chapter interpol
 @include interpol.texi
 
-@node lindstedt, linearalgebra, interpol, Top
+@node lbfgs, lindstedt, interpol, Top
+@chapter lbfgs
+@include lbfgs.texi
+
+@node lindstedt, linearalgebra, lbfgs, Top
 @chapter lindstedt
 @include lindstedt.texi
 
