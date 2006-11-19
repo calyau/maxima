@@ -1,7 +1,8 @@
 ; Copyright 2006 by Robert Dodier
 ; Released under the terms of the GNU General Public License, version 2
 
-; Example:
+; Example 1:
+; This is the same FOM as computed by FGCOMPUTE in the program sdrive.f
 #|
 load (lbfgs);
 t1[j] := 1 - u[j];
@@ -20,6 +21,18 @@ lbfgs (FOM, '[u[1], u[2], u[3], u[4], u[5], u[6], u[7], u[8]],
 
 |#
 
+; Example 2:
+; This computes the least-squares fit to a function A/(1 + exp(-B * (x - C)))
+#|
+load (lbfgs);
+FOM : '((1/length(X))*sum((F(X[i]) - Y[i])^2, i, 1, length(X)));
+X : [1, 2, 3, 4, 5];
+Y : [0, 0.5, 1, 1.25, 1.5];
+F(x) := A/(1 + exp(-B*(x - C)));
+''FOM;
+estimates : lbfgs (FOM, '[A, B, C], [1, 1, 1], 1e-4, [1, 3]);
+plot2d ([F(x), [discrete, X, Y]], [x, -1, 6]), ''estimates;
+|#
 (in-package :maxima)
 
 (defmvar $lbfgs_nfeval_max 100)
