@@ -19,7 +19,7 @@
 	"rtestmt19937"
     "rtest_allnummod"
     "rtestconjugate"
-    ((mlist) "rtestsum" 3 4 5 18 44)
+    ((mlist) "rtestsum" 3 4 5 18)
     "rtest_trig"
     "rtest_zeta"
     "rtest_diff_invtrig"
