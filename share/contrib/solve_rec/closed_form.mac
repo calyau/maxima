@@ -82,10 +82,13 @@ closed_form(expr) :=
 
     /* Now let's try the Gosper algorithm                               */
     if errcatch(
-      if not(atom(sm1)) and not freeof_sum(sm1) and hi<inf and lo>-inf then (
+      if not(atom(sm1)) and not freeof_sum(sm1) then block(
+        [lo1: ?gensym(), hi1: ?gensym()],
         cf_print_message(1, "Trying with Gosper ..."),
-        sm1 : nusum(part(expr, 1), part(expr, 2), part(expr, 3), part(expr, 4)),
-        cf_print_message(1, "Gosper returns:", sm1)
+        sm1 : nusum(part(expr, 1), part(expr, 2), lo1, hi1),
+        cf_print_message(1, "Gosper returns:", sm1),
+        sm1 : limit(sm1, lo1, lo),
+        sm1 : limit(sm1, hi1, hi)
       )
     ) = [] then sm1 : expr,
 
