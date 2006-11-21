@@ -94,15 +94,15 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} power_mod (@var{a}, @var{n}, @var{m})
-THIS ITEM NEEDS TO BE TRANSLATED.
-@end deffn
-
 @deffn {Function} next_prime (@var{n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
 @deffn {Function} partfrac (@var{expr}, @var{var})
+THIS ITEM NEEDS TO BE TRANSLATED.
+@end deffn
+
+@deffn {Function} power_mod (@var{a}, @var{n}, @var{m})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 

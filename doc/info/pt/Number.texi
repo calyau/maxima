@@ -436,23 +436,6 @@ que diferem por um inteiro.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} power_mod (@var{a}, @var{n}, @var{m})
-Usa umalgor@'itmo modular para calcular @code{a^n mod m} 
-onde @var{a} e @var{n} s@~ao inteiros e @var{m} @'e um inteiro positivo. 
-Se @var{n} for negativo, @code{inv_mod} @'e usado para encontrar o inverso modular.
-
-@example
-(%o1)                          2
-(%i2) mod(3^15,5);
-(%o2)                          2
-(%i3) power_mod(2, -1, 5);
-(%o3)                          3
-(%i4) inv_mod(2,5);
-(%o4)                          3
-@end example
-
-@end deffn
-
 @deffn {Fun@value{cedilha}@~ao} next_prime (@var{n})
 Retorna o menor primo maior que @var{n}.
 
@@ -488,6 +471,23 @@ a expans@~ao acontece.
 (%o3)               ----- - ----- + --------
                     x + 2   x + 1          2
                                     (x + 1)
+@end example
+
+@end deffn
+
+@deffn {Fun@value{cedilha}@~ao} power_mod (@var{a}, @var{n}, @var{m})
+Usa umalgor@'itmo modular para calcular @code{a^n mod m} 
+onde @var{a} e @var{n} s@~ao inteiros e @var{m} @'e um inteiro positivo. 
+Se @var{n} for negativo, @code{inv_mod} @'e usado para encontrar o inverso modular.
+
+@example
+(%o1)                          2
+(%i2) mod(3^15,5);
+(%o2)                          2
+(%i3) power_mod(2, -1, 5);
+(%o3)                          3
+(%i4) inv_mod(2,5);
+(%o4)                          3
 @end example
 
 @end deffn
