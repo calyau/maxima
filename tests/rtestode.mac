@@ -157,3 +157,25 @@ eqn3: 'diff(f(x),x,2)+f(x)=2*x;
 'diff(f(x),x,2)+f(x)=2*x;
 desolve(eqn3,f(x));
 f(x) = sin(x)*(at('diff(f(x),x,1),x = 0)-2)+f(0)*cos(x)+2*x;
+
+/* Examples mentioned in bug report [ 1063454 ] bug in ode2
+ * First one was reported to fail in CMUCL with "run out of heap" message.
+ * Others were reported to be OK. Put them all here for good measure.
+ */
+
+(ode2 ('diff(y, t, 2) + 'diff(y, t) + y - sin(t), y, t),
+ rhs(%%), ratsimp (diff(%%, t, 2) + diff(%%, t) + %% - sin(t)));
+0;
+
+(ode2 ('diff(y, t, 2) + 'diff(y, t) + 2*y - sin(t), y, t),
+ rhs(%%), ratsimp (diff(%%, t, 2) + diff(%%, t) + 2*%% - sin(t)));
+0;
+
+(ode2 ('diff(y, t, 2) + 'diff(y, t) + y - exp(%i*t), y, t),
+ rhs(%%), ratsimp (diff(%%, t, 2) + diff(%%, t) + %% - exp(%i*t)));
+0;
+
+/* bug report 1063454 claims "maxima gets stuck" on the following */
+(integrate (my_integrand : exp(t/2) * sin(t) * sin(sqrt(3) * t/2), t),
+ ratsimp (exponentialize (diff (%%, t) - my_integrand)));
+0;
