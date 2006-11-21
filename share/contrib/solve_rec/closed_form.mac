@@ -87,8 +87,14 @@ closed_form(expr) :=
         cf_print_message(1, "Trying with Gosper ..."),
         sm1 : nusum(part(expr, 1), part(expr, 2), lo1, hi1),
         cf_print_message(1, "Gosper returns:", sm1),
-        sm1 : limit(sm1, lo1, lo),
-        sm1 : limit(sm1, hi1, hi)
+        if lo=minf or lo=-inf then
+          sm1 : limit(sm1, lo1, lo)
+        else
+          sm1 : subst(lo1=lo, sm1),
+        if hi=inf then
+          sm1 : limit(sm1, hi1, hi)
+        else
+          sm1 : subst(hi1=hi, sm1)
       )
     ) = [] then sm1 : expr,
 
