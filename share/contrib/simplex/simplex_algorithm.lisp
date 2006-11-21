@@ -244,8 +244,7 @@
             (progn
               (setq tmp (aref Tab (1- m) j))
               (setq jp j))))
-      (if (or (mlsp tmp $epsilon_sx)
-              (meqp tmp $epsilon_sx))
+      (if (mgqp $epsilon_sx tmp)
           (progn
             (setq is-bounded t)
             (setq have-solution t))
