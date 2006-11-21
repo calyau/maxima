@@ -407,13 +407,6 @@ Examples:
 
 @end deffn
 
-@c OBSOLETE AS ADVERTISED; NOT CALLED FROM ANY USER-LEVEL FILE (.mac OR .dem)
-@c CUT THIS OUT ON NEXT PASS
-@c @defun srrat (exp)
-@c this command has been renamed to @code{taytorat}.
-@c 
-@c @end defun
-
 @deffn {Function} taylor (@var{expr}, @var{x}, @var{a}, @var{n})
 @deffnx {Function} taylor (@var{expr}, [@var{x_1}, @var{x_2}, ...], @var{a}, @var{n})
 @deffnx {Function} taylor (@var{expr}, [@var{x}, @var{a}, @var{n}, 'asymp])
