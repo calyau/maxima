@@ -95,6 +95,9 @@ $(MAXIMAHTML)\
 $(figurefiles)\
 contents.hhc index.hhk header.hhp maxima.hhp
 
+all-local: check_texinfo
+dist-hook: check_texinfo
+
 clean-local: clean-info
 clean-local: clean-html
 
@@ -107,3 +110,12 @@ clean-html:
 	rm -f index.hhk
 
 EXTRA_DIST = texi2html maximahtml.mk manual.css texi2html.init $(genericdirDATA) create_index header.hhp maxima.hhp
+
+check_texinfo:
+	bad_files=`find . -name '*.texi' -print | xargs grep -l $$'\x0D$$'` ; \
+	[ -z  "$$bad_files" ] || ( echo "ERROR: The following files have DOS-style EOLs: $$bad_files" ; exit 1 )
+	bad_files=`find . -name '*.texi' -print | xargs grep -l $$'\t'` ; \
+	[ -z  "$$bad_files" ] || ( echo "ERROR: The following files have unexpanded Tabs: $$bad_files" ; exit 1 )
+
+.PHONY: check_texinfo
+
