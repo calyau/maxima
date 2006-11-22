@@ -103,7 +103,7 @@ clean-html:
 	rm -f contents.hhc
 	rm -f index.hhk
 
-EXTRA_DIST = maximahtml_pt.mk header.hhp maxima.hhp
+EXTRA_DIST = maximahtml_pt.mk header.hhp maxima.hhp $(genericdirDATA)
 
 install-info-am: $(INFO_DEPS)
 	test -z "$(infodir)$(langsdir)" || mkdir -p -- "$(DESTDIR)$(infodir)$(langsdir)"

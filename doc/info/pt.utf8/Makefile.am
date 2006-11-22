@@ -38,7 +38,7 @@ clean-html:
 	rm -f contents.hhc
 	rm -f index.hhk
 
-EXTRA_DIST = maximahtml_pt.mk header.hhp
+EXTRA_DIST = maximahtml_pt.mk header.hhp $(genericdirDATA)
 
 maxima.info: maxima.texi
 	@rm -f $@ $@-[0-9] $@-[0-9][0-9]
