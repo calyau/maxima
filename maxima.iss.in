@@ -1,8 +1,18 @@
-;;---------------------------------------------------------;;
-;; -- maxima.iss --  Maxima InnoSetup installation script  ;;
-;;---------------------------------------------------------;;
-;;     InnoSetup version 5.1.7 or above is recommended     ;;
-;;---------------------------------------------------------;;
+;;----------------------------------------------------------------;;
+;; -- maxima.iss --  Maxima InnoSetup installation script         ;;
+;;----------------------------------------------------------------;;
+;;                                                                ;;
+;;  * InnoSetup version 5.1.7 or above is recommended             ;;
+;;                                                                ;;
+;;----------------------------------------------------------------;;
+;;                                                                ;;
+;;  * IMPORTANT!                                                  ;;
+;;    Section [CustomMessages] below contains messages            ;;
+;;    in several 8-bit encodings (code pages 1251, 1252).         ;;
+;;    Don't use any encoding conversion tool (e.g. iconv,         ;;
+;;    recode) on this file directly!                              ;;
+;;                                                                ;;                                                      
+;;----------------------------------------------------------------;;
 
 
 [Setup]
@@ -18,7 +28,8 @@ AppVersion=@VERSION@
 OutputBaseFilename=maxima-@VERSION@
 DefaultDirName={pf}\Maxima-@VERSION@
 DefaultGroupName=Maxima-@VERSION@
-InfoBeforeFile=interfaces\xmaxima/win32\InfoBefore.txt
+InfoBeforeFile=interfaces\xmaxima\win32\InfoBefore.txt
+InfoAfterFile=interfaces\xmaxima\win32\readme_en.txt
 AllowNoIcons=yes
 LicenseFile=@prefix@\share\maxima\@VERSION@\doc\COPYING
 Compression=lzma/ultra
@@ -28,41 +39,41 @@ UninstallFilesDir={app}\uninst
 ShowLanguageDialog=yes
 
 
-[Types] 
-Name: "full"; Description: "Full installation" 
-Name: "compact"; Description: "Compact installation" 
-Name: "custom"; Description: "Custom installation"; Flags: iscustom
-
-
 [Languages]
 Name: "en"; MessagesFile: "compiler:Default.isl"
-Name: "fr"; MessagesFile: "compiler:Languages\French.isl"
-Name: "ge"; MessagesFile: "compiler:Languages\German.isl"
-Name: "it"; MessagesFile: "compiler:Languages\Italian.isl"
-Name: "es"; MessagesFile: "compiler:Languages\Spanish.isl"
-Name: "pt_BR"; MessagesFile: "compiler:Languages\BrazilianPortuguese.isl"
-Name: "ru"; MessagesFile: "compiler:Languages\Russian.isl"
+Name: "fr"; MessagesFile: "compiler:Languages\French.isl"; InfoBeforeFile: "interfaces\xmaxima\win32\InfoBefore_fr.txt"; InfoAfterFile: "interfaces\xmaxima\win32\readme_fr.txt"
+Name: "de"; MessagesFile: "compiler:Languages\German.isl"; InfoBeforeFile: "interfaces\xmaxima\win32\InfoBefore_de.txt"; InfoAfterFile: "interfaces\xmaxima\win32\readme_de.txt"
+Name: "it"; MessagesFile: "compiler:Languages\Italian.isl"; InfoBeforeFile: "interfaces\xmaxima\win32\InfoBefore.txt"; InfoAfterFile: "interfaces\xmaxima\win32\readme_en.txt"
+Name: "es"; MessagesFile: "compiler:Languages\Spanish.isl"; InfoBeforeFile: "interfaces\xmaxima\win32\InfoBefore.txt"; InfoAfterFile: "interfaces\xmaxima\win32\readme_en.txt"
+Name: "pt_BR"; MessagesFile: "compiler:Languages\BrazilianPortuguese.isl"; InfoBeforeFile: "interfaces\xmaxima\win32\InfoBefore.txt"; InfoAfterFile: "interfaces\xmaxima\win32\readme_en.txt"
+Name: "ru"; MessagesFile: "compiler:Languages\Russian.isl"; InfoBeforeFile: "interfaces\xmaxima\win32\InfoBefore_ru.txt"; InfoAfterFile: "interfaces\xmaxima\win32\readme_ru.txt"
+
+
+[Types] 
+Name: "full"; Description: "{cm:FullInstallation}" 
+Name: "compact"; Description: "{cm:CompactInstallation}" 
+Name: "custom"; Description: "{cm:CustomInstallation}"; Flags: iscustom
 
 
 [Components]
-Name: "core"; Description: "Maxima core with command line interface"; Types: full compact custom; Flags: fixed
-Name: "wxmaxima"; Description: "wxMaxima graphic shell"; Types: full custom
-Name: "xmaxima"; Description: "XMaxima graphic shell"; Types: full custom
-Name: "lang"; Description: "Maxima language packs"; Types: full custom
-Name: "lang\spanish"; Description: "Spanish"; Types: full custom
-Name: "lang\portuguese"; Description: "Portuguese"; Types: full custom
+Name: "core"; Description: "{cm:MaximaCore}"; Types: full compact custom; Flags: fixed
+Name: "wxmaxima"; Description: "{cm:wxMaximaGraphicShell}"; Types: full custom
+Name: "xmaxima"; Description: "{cm:XMaximaGraphicShell}"; Types: full custom
+Name: "lang"; Description: "{cm:MaximaLanguagePacks}"; Types: full custom
+Name: "lang\spanish"; Description: "{cm:Spanish}"; Types: full custom
+Name: "lang\portuguese"; Description: "{cm:Portuguese}"; Types: full custom
 
 
 [Tasks]
-Name: "wxmdesktopicon"; Description: "Create a &wxMaxima desktop icon"; GroupDescription: "Additional icons:"; MinVersion: 4,4;  Components: "wxmaxima"
-Name: "xmdesktopicon"; Description: "Create a &XMaxima desktop icon"; GroupDescription: "Additional icons:"; Flags: unchecked; MinVersion: 4,4;  Components: "xmaxima"
+Name: "wxmdesktopicon"; Description: "{cm:CreateMyDesktopIcon,wxMaxima}"; GroupDescription: "{cm:AdditionalIcons}"; MinVersion: 4,4;  Components: "wxmaxima"
+Name: "xmdesktopicon"; Description: "{cm:CreateMyDesktopIcon,XMaxima}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked; MinVersion: 4,4;  Components: "xmaxima"
 
 
 [Files]
 ; core
 Source: "@prefix@\bin\maxima-command.ico"; DestDir: "{app}\bin\"; Flags: ignoreversion; Components: "core"
 Source: "@prefix@\bin\maxima.bat"; DestDir: "{app}\bin\"; Flags: ignoreversion; AfterInstall: ReplaceApp(); Components: "core" 
-Source: "@prefix@\readme.txt"; DestDir: "{app}"; Flags: isreadme; Components: "core"
+Source: "@prefix@\readme_*.txt"; DestDir: "{app}"; Components: "core"
 Source: "@prefix@\*.*"; Excludes: "\bin\xmaxima.*,\bin\xmaxima,\wxMaxima,\info,\share\maxima\@VERSION@\doc\html,\share\maxima\@VERSION@\doc\chm"; DestDir: "{app}\";  Flags: recursesubdirs; Components: "core"
 Source: "@prefix@\share\maxima\@VERSION@\doc\html\intromax.html"; DestDir: "{app}\share\maxima\@VERSION@\doc\html\"; Flags: ignoreversion; Components: "core"
 Source: "@prefix@\share\maxima\@VERSION@\doc\chm\maxima.chm"; DestDir: "{app}\share\maxima\@VERSION@\doc\chm\"; Flags: ignoreversion; Components: "core"
@@ -82,34 +93,298 @@ Source: "@prefix@\share\maxima\@VERSION@\doc\chm\es\maxima.chm"; DestDir: "{app}
 Source: "@prefix@\info\pt\*.*"; DestDir: "{app}\info\pt\";  Flags: recursesubdirs;  Components: "lang\portuguese"
 Source: "@prefix@\share\maxima\@VERSION@\doc\chm\pt\maxima.chm"; DestDir: "{app}\share\maxima\@VERSION@\doc\chm\pt\"; Components: "lang\portuguese"
 
+
 [Icons]
 ; core
-Name: "{group}\Command line Maxima"; Filename: "{app}\bin\maxima.bat"; IconFilename: "{app}\bin\maxima-command.ico";  Components: "core"
-Name: "{group}\Introduction"; Filename: "{app}\share\maxima\@VERSION@\doc\html\intromax.html"; WorkingDir: "{app}\share\maxima\@VERSION@";  Components: "core"
-Name: "{group}\Reference Manual"; Filename: "{app}\share\maxima\@VERSION@\doc\chm\maxima.chm"; WorkingDir: "{app}\share\maxima\@VERSION@";  Components: "core"
-Name: "{group}\README"; Filename: "{app}\readme.txt"; Components: "core"
+Name: "{group}\{cm:CommandLineMaxima}"; Filename: "{app}\bin\maxima.bat"; IconFilename: "{app}\bin\maxima-command.ico";  Components: "core"
+Name: "{group}\{cm:Introduction}"; Filename: "{app}\share\maxima\@VERSION@\doc\html\intromax.html"; WorkingDir: "{app}\share\maxima\@VERSION@";  Components: "core"
+Name: "{group}\{cm:ReferenceManual}"; Filename: "{app}\share\maxima\@VERSION@\doc\chm\maxima.chm"; WorkingDir: "{app}\share\maxima\@VERSION@";  Components: "core"
+Name: "{group}\{cm:ReadmeMenuEntry}"; Filename: "{app}\readme_{language}.txt"; Components: "core"
 
 ; wxmaxima
 Name: "{group}\wxMaxima"; Filename: "{app}\wxMaxima\wxMaxima.exe"; WorkingDir: "{app}\wxMaxima";  Components: "wxmaxima"
-Name: "{group}\wxMaxima on the Web"; Filename: "{app}\wxMaxima\wxMaxima.url";  Components: "wxmaxima"
-Name: "{group}\wxMaxima Online Forum"; Filename: "{app}\wxMaxima\Forum.url";  Components: "wxmaxima"
+Name: "{group}\{cm:ProgramOnTheWeb,wxMaxima}"; Filename: "{app}\wxMaxima\wxMaxima.url";  Components: "wxmaxima"
+Name: "{group}\{cm:OnlineForum,wxMaxima}"; Filename: "{app}\wxMaxima\Forum.url";  Components: "wxmaxima"
 Name: "{userdesktop}\wxMaxima"; Filename: "{app}\wxMaxima\wxMaxima.exe"; MinVersion: 4,4; Tasks: wxmdesktopicon; WorkingDir: "{app}\wxMaxima";  Components: "wxmaxima"
 
 ; xmaxima
 Name: "{group}\XMaxima"; Filename: "{app}\bin\xmaxima.exe"; IconFilename: "{app}\share\maxima\@VERSION@\xmaxima\maxima-icon.ico";  Components: "xmaxima"
 Name: "{userdesktop}\XMaxima"; Filename: "{app}\bin\xmaxima.exe"; MinVersion: 4,4; Tasks: xmdesktopicon; IconFilename: "{app}\share\maxima\@VERSION@\xmaxima\maxima-icon.ico";  Components: "xmaxima"
 
-Name: "{group}\Uninstall"; Filename:"{uninstallexe}"
+Name: "{group}\{cm:Uninstall}"; Filename:"{uninstallexe}"
 
 ; lang\spanish
-Name: "{group}\Reference Manual (Spanish)"; Filename: "{app}\share\maxima\@VERSION@\doc\chm\es\maxima.chm"; WorkingDir: "{app}\share\maxima\@VERSION@";  Components: "lang\spanish"
+Name: "{group}\{cm:ReferenceManualSpanish}"; Filename: "{app}\share\maxima\@VERSION@\doc\chm\es\maxima.chm"; WorkingDir: "{app}\share\maxima\@VERSION@";  Components: "lang\spanish"
 ; lang\portuguese
-Name: "{group}\Reference Manual (Portuguese)"; Filename: "{app}\share\maxima\@VERSION@\doc\chm\pt\maxima.chm"; WorkingDir: "{app}\share\maxima\@VERSION@";  Components: "lang\portuguese"
+Name: "{group}\{cm:ReferenceManualPortuguese}"; Filename: "{app}\share\maxima\@VERSION@\doc\chm\pt\maxima.chm"; WorkingDir: "{app}\share\maxima\@VERSION@";  Components: "lang\portuguese"
 
 
 ;[Run]
-;Filename: "{app}\bin\xmaxima.exe"; Description: "Launch XMaxima"; Flags: postinstall skipifsilent skipifdoesntexist
-;Filename: "{app}\wxMaxima\wxMaxima.exe"; Description: "Launch wxMaxima"; Flags: postinstall skipifsilent skipifdoesntexist
+;Filename: "{app}\bin\xmaxima.exe"; Description: "{cm:LaunchProgram,XMaxima}"; Flags: postinstall skipifsilent skipifdoesntexist
+;Filename: "{app}\wxMaxima\wxMaxima.exe"; Description: "{cm:LaunchProgram,wxMaxima}"; Flags: postinstall skipifsilent skipifdoesntexist
+
+
+[CustomMessages]
+
+;=== English ===  LID=$0409  CodePage=0
+
+FullInstallation=Full installation
+CompactInstallation=Compact installation
+CustomInstallation=Custom istalation
+Uninstall=Uninstall
+
+MaximaCore=Maxima core with command line interface
+wxMaximaGraphicShell=wxMaxima graphic shell
+XMaximaGraphicShell=XMaxima graphic shell
+MaximaLanguagePacks=Maxima language packs
+
+German=German
+France=France
+Italian=Italian
+Portuguese=Portuguese
+Russian=Russian
+Spanish=Spanish
+
+CreateMyDesktopIcon=Create %1 desctop icon
+
+CommandLineMaxima=Command line Maxima
+Introduction=Introduction
+ReferenceManual=Reference Manual
+Readme=README
+ReadmeMenuEntry=README
+
+OnlineForum=%1 Online Forum
+
+ReferenceManualGerman=Reference Manual (German)
+ReferenceManualFrench=Reference Manual (French)
+ReferenceManualItalian=Reference Manual (Italian)
+ReferenceManualPortuguese=Reference Manual (Portuguese)
+ReferenceManualRussian=Reference Manual (Russian)
+ReferenceManualSpanish=Reference Manual (Spanish)
+
+
+;=== German ===  LID=$0407  CodePage=1252
+
+de.FullInstallation=Vollstдndige Installation
+de.CompactInstallation=Kompakte Installation
+de.CustomInstallation=Benutzerdefinierte Installation
+de.Uninstall=Deinstallation
+
+de.MaximaCore=Maxima-Programmkern mit Eingabeaufforderung 
+de.wxMaximaGraphicShell=wxMaxima (graphische Oberflдche)
+de.XMaximaGraphicShell=XMaxima (graphische Oberflдche)
+de.MaximaLanguagePacks=Maxima-Sprachpakete
+
+de.Germen=Deutsch
+de.France=Franzцsich
+de.Italian=Italienisch
+de.Portuguese=Portugiesisch
+de.Russian=Russisch
+de.Spanish=Spanisch
+
+de.CreateMyDesktopIcon=Erzeuge %1-Desktopsymbol
+
+de.CommandLineMaxima=Maxima-Eingabeaufforderung
+de.Introduction=Einfьhrung
+de.ReferenceManual=Referenzhandbuch
+de.Readme=LIESMICH
+de.ReadmeMenuEntry=LIESMICH
+
+de.OnlineForum=%1-Online-Forum
+
+de.ReferenceManualGerman=Referenzhandbuch (Deutsch)
+de.ReferenceManualFrench=Referenzhandbuch (Franzцsich)
+de.ReferenceManualItalian=Referenzhandbuch (Italienisch)
+de.ReferenceManualPortuguese=Referenzhandbuch (Portugiesisch)
+de.ReferenceManualRussian=Referenzhandbuch (Russisch)
+de.ReferenceManualSpanish=Referenzhandbuch (Spanisch)
+
+
+;=== French ===  LID=$040C  CodePage=1252
+
+fr.FullInstallation=Installation complиte
+fr.CompactInstallation=Installation compacte
+fr.CustomInstallation=Installation personnalisйe
+fr.Uninstall=Dйsinstallation
+
+fr.MaximaCore=Noyau Maxima avec interface en ligne de commande
+fr.wxMaximaGraphicShell=Interface graphique wxMaxima
+fr.XMaximaGraphicShell=Interface graphique XMaxima
+fr.MaximaLanguagePacks=Paquets de langues Maxima
+
+fr.Germen=Allemagne
+fr.France=France
+fr.Italian=Italy
+fr.Portuguese=Portugal
+fr.Russian=Russie
+fr.Spanish=Espagne
+
+fr.CreateMyDesktopIcon=Crйer un raccourci sur le bureau pour %1
+
+fr.CommandLineMaxima=Ligne de commande Maxima
+fr.Introduction=Introduction
+fr.ReferenceManual=Manuel de rйfйrence
+fr.Readme=LISEZMOI
+fr.ReadmeMenuEntry=README
+
+fr.OnlineForum=Forum en ligne %1
+
+fr.ReferenceManualGerman=Manuel de rйfйrence (Allemand)
+fr.ReferenceManualFrench=Manuel de rйfйrence (Franзais)
+fr.ReferenceManualItalian=Manuel de rйfйrence (Italien)
+fr.ReferenceManualPortuguese=Manuel de rйfйrence (Portugais)
+fr.ReferenceManualRussian=Manuel de rйfйrence (Russe)
+fr.ReferenceManualSpanish=Manuel de rйfйrence (Espagnol)
+
+
+;=== Italian ===  LID=$0410  CodePage=1252
+
+it.FullInstallation=Installazione completa
+it.CompactInstallation=Installazione compatta
+it.CustomInstallation=Installazione personalizzata
+it.Uninstall=Disinstallazione
+
+it.MaximaCore=Maxima core with command line interface
+it.wxMaximaGraphicShell=wxMaxima graphic shell
+it.XMaximaGraphicShell=XMaxima graphic shell
+it.MaximaLanguagePacks=Maxima language packs
+
+it.German=German
+it.France=France
+it.Italian=Italian
+it.Portuguese=Portuguese
+it.Russian=Russian
+it.Spanish=Spanish
+
+it.CreateMyDesktopIcon=Create %1 desctop icon
+
+it.CommandLineMaxima=Command line Maxima
+it.Introduction=Introduction
+it.ReferenceManual=Reference Manual
+it.Readme=README
+it.ReadmeMenuEntry=README
+
+it.OnlineForum=%1 Online Forum
+
+it.ReferenceManualGerman=Reference Manual (German)
+it.ReferenceManualFrench=Reference Manual (French)
+it.ReferenceManualItalian=Reference Manual (Italian)
+it.ReferenceManualPortuguese=Reference Manual (Portuguese)
+it.ReferenceManualRussian=Reference Manual (Russian)
+it.ReferenceManualSpanish=Reference Manual (Spanish)
+
+
+;=== Portuguese ===  LID=$0416  CodePage=1252
+
+pt_BR.FullInstallation=Full installation
+pt_BR.CompactInstallation=Compact installation
+pt_BR.CustomInstallation=Custom istalation
+pt_BR.Uninstall=Uninstall
+
+pt_BR.MaximaCore=Maxima core with command line interface
+pt_BR.wxMaximaGraphicShell=wxMaxima graphic shell
+pt_BR.XMaximaGraphicShell=XMaxima graphic shell
+pt_BR.MaximaLanguagePacks=Maxima language packs
+
+pt_BR.German=German
+pt_BR.France=France
+pt_BR.Italian=Italian
+pt_BR.Portuguese=Portuguese
+pt_BR.Russian=Russian
+pt_BR.Spanish=Spanish
+
+pt_BR.CreateMyDesktopIcon=Create %1 desctop icon
+
+pt_BR.CommandLineMaxima=Command line Maxima
+pt_BR.Introduction=Introduction
+pt_BR.ReferenceManual=Reference Manual
+pt_BR.Readme=README
+pt_BR.ReadmeMenuEntry=README
+
+pt_BR.OnlineForum=%1 Online Forum
+
+pt_BR.ReferenceManualGerman=Reference Manual (German)
+pt_BR.ReferenceManualFrench=Reference Manual (French)
+pt_BR.ReferenceManualItalian=Reference Manual (Italian)
+pt_BR.ReferenceManualPortuguese=Reference Manual (Portuguese)
+pt_BR.ReferenceManualRussian=Reference Manual (Russian)
+pt_BR.ReferenceManualSpanish=Reference Manual (Spanish)
+
+
+;=== Russian ===  LID=$0419  CodePage=1251
+
+ru.FullInstallation=Полная установка
+ru.CompactInstallation=Компактная установка
+ru.CustomInstallation=Выборочная установка
+ru.Uninstall=Деинсталляция
+
+ru.MaximaCore=Ядро Maxima с интерфейсом командной строки
+ru.wxMaximaGraphicShell=Графическая оболочка wxMaxima
+ru.XMaximaGraphicShell=Графическая оболочка XMaxima
+ru.MaximaLanguagePacks=Пакеты поддержки языков Maxima
+
+ru.German=Немецкий
+ru.France=Французский
+ru.Italian=Итальянский
+ru.Portuguese=Португальский
+ru.Russian=Русский
+ru.Spanish=Испанский
+
+ru.CreateMyDesktopIcon=Создать значек %1 на рабочем столе
+
+ru.CommandLineMaxima=Maxima в командной строке
+ru.Introduction=Введение
+ru.ReferenceManual=Справочное руководство
+ru.Readme=README
+ru.ReadmeMenuEntry=README
+
+ru.OnlineForum=Форум %1
+
+ru.ReferenceManualGerman=Справочное руководство (Немецкий)
+ru.ReferenceManualFrench=Справочное руководство (Французский)
+ru.ReferenceManualItalian=Справочное руководство (Итальянский)
+ru.ReferenceManualPortuguese=Справочное руководство (Португальский)
+ru.ReferenceManualRussian=Справочное руководство (Русский)
+ru.ReferenceManualSpanish=Справочное руководство (Испанский)
+
+
+;=== Spanish ===  LID=$0c0a  CodePage=1252
+
+es.FullInstallation=Full installation
+es.CompactInstallation=Compact installation
+es.CustomInstallation=Custom istalation
+es.Uninstall=Uninstall
+
+es.MaximaCore=Maxima core with command line interface
+es.wxMaximaGraphicShell=wxMaxima graphic shell
+es.XMaximaGraphicShell=XMaxima graphic shell
+es.MaximaLanguagePacks=Maxima language packs
+
+es.German=German
+es.France=France
+es.Italian=Italian
+es.Portuguese=Portuguese
+es.Russian=Russian
+es.Spanish=Spanish
+
+es.CreateMyDesktopIcon=Create %1 desctop icon
+
+es.CommandLineMaxima=Command line Maxima
+es.Introduction=Introduction
+es.ReferenceManual=Reference Manual
+es.Readme=README
+es.ReadmeMenuEntry=README
+
+es.OnlineForum=%1 Online Forum
+
+es.ReferenceManualGerman=Reference Manual (German)
+es.ReferenceManualFrench=Reference Manual (French)
+es.ReferenceManualItalian=Reference Manual (Italian)
+es.ReferenceManualPortuguese=Reference Manual (Portuguese)
+es.ReferenceManualRussian=Reference Manual (Russian)
+es.ReferenceManualSpanish=Reference Manual (Spanish)
+
+;=============
 
 
 [Code]
@@ -161,3 +436,4 @@ begin
   SaveStringsToFile(strFilename, a_strTextfile, False);
 
 end;
+

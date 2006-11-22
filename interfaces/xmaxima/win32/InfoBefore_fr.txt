@@ -1,0 +1,9 @@
+1. Les utilisateurs Windows 9x devraient lire la
+    section espace d'environnement du fichier
+    README.
+
+2. Si l'interface utilisateur (GUI) ne fonctionne pas
+    lisez la section du fichier README consacré
+    au pare-feux.
+
+

@@ -1,0 +1,9 @@
+1. Windows 9x-Benutzer werden gebeten, den
+   Abschnitt der Liesmich-Datei über den 
+   Umgebungsspeicher zu lesen. 
+
+2. Sollte die Maxima-GUI nicht funktionieren,
+   lesen Sie bitte in der Liesmich-Datei den 
+   Abschnitt über die Firewall.
+
+

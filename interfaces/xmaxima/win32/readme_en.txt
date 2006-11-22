@@ -4,7 +4,7 @@ This is the windows README file.
 Binary files included with this distribution
 --------------------------------------------
 
-The windows version package of maxima includes binary files 
+The Windows version package of Maxima includes binary files 
 from other Open Source projects also hosted on Sourceforge.
 
 gcc: 
@@ -29,7 +29,7 @@ Windows distribution of gnuplot from http://gnuplot.sourceforge.net
 wxMaxima:
 
 The files in the wxMaxima subdirectory are from the Windows distribution
-of wxMaxima available from http://wxmaxima.sourceforge.net.
+of wxMaxima available from http://wxmaxima.sourceforge.net
 
 
 Maxima GUI and firewall

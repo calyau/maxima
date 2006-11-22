@@ -114,4 +114,4 @@ fix_maxima_bat:
 
 install: xmaxima.exe winkill.exe tclwinkill.dll gnuplot wxmaxima chm fixes
 	cp xmaxima.exe winkill.exe tclwinkill.dll "@prefix@/bin"
-	cp readme.txt "@prefix@"
+	cp readme*.txt "@prefix@"
