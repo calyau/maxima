@@ -2,27 +2,25 @@ Executive Summary
 =================
 
 Maxima can now be built under Windows without recourse to any
-unix-like utilities. To do so, follow the purely lisp-based build
+Unix-like utilities. To do so, follow the purely lisp-based build
 procedure in INSTALL.lisp.
 
 Maxima can be simply compiled and installed under MSYS or Cygwin by
 following the GNU Autotools instructions in INSTALL. With a few more
 steps, Maxima will create a windows installer executable.  The
 instructions for doing so are contained in this file. Note, however,
-that this process is not as polished as the unix-like install process.
+that this process is not as polished as the Unix-like install process.
 
-In principle, creating a Windows (X)maxima installer executable is a
-straightforward exercise. In order to create the maxima windows
-installer from the maxima tarball distribution, I do the following in
-a msys window:
------------------------------
+In order to create the Maxima Windows installer from the maxima tarball 
+distribution, I do the following in a MSYS window:
+----------------------------------------------------
 ./configure  --with-wish=wish84 --prefix=c:/maxima \
     --enable-lang-es --enable-lang-pt
 make
 make install
 make iss
------------------------------
-I then run InnoSetup on the generated maxima.iss file. That is all it
+----------------------------------------------------
+Then run Inno Setup on the generated maxima.iss file. That is all it
 takes.
 
 
@@ -30,125 +28,118 @@ External Requirements
 =====================
 
 1) MSYS+MinGW
-2) GCL
-3) Tcl/SK
-4) Perl
-5) Starkit sdk, et. al.
+2) msysDTK
+3) GCL
+4) Tcl/Tk
+5) Starkit and TclKit
 6) InnoSetup
 7) gnuplot
 8) wxMaxima
+9) Microsoft HTML Help Workshop
 
 Detailed Instructions
 =====================
 
-I am posting my notes here in hopes that they will be corrected
-by people who know better. I don't know much about windows (and it
-shows.) Also, I am reconstructing these steps from memory, so I may be
-leaving out steps.
-
 The instructions below apply to the maxima release tarball. In order
 to build from the cvs repository, cvs, autoconf and automake are also
-required. Follow the directions in INSTALL.cvs before proceding.
+required. Follow the directions in INSTALL.cvs before proceeding.
 
 1) Get a working msys+mingw installation from www.mingw.org. At this
-time (June 2004) it is essential to install the versions of gcc and
+time (November 2006) it is essential to install the versions of gcc and
 binutils listed here to obtain a working gcl.  The files are available
 from <http://sourceforge.net/project/showfiles.php?group_id=2435>:
-   a) Get MinGW-3.1.0-1.exe. I installed it in c:\MinGW
-   b) Get MSYS-1.0.10.exe. I installed it in c:\msys\1.0. 
+   a) Get and install MinGW-3.1.0-1.exe
+   b) Install MSYS-1.0.10.exe 
       The installer should magically find your mingw installation
       and add it to your path.
    c) Install tcltk-8.4.1-1.exe
+      Install it into directory where MSYS/MinGW can find it,
+      for example mingw/bin directory.
    d) Install gcc-3.3.1
    e) Install binutils-2.14.90 from 
       ftp://ftp.sf.net/m/mi/mingw/binutils-2.14.90-20030807-1.tar.gz
+   f) Install msysDTK-1.0.1.exe
+      It provides Perl and autotools (autoconf/automake).
 
 NOTE: gcc 3.3.3 and gcc 3.4.0 do NOT work; likewise binutils 2.13.90
 and 2.15.90.
 
+This is output of msysinfo command for MSYS system with
+all required components:
+-----------------------------------------------------------------
+MSYS 1.0.10(0.46/3/2) 2004-03-15 07:17 i686 unknown; targ=MINGW32
+GNU bash, version 2.04.0(1)-release (i686-pc-msys); ENV=.profile
+GNU Make version 3.79.1,Built for i686-pc-msys; MAKE_MODE=unix
+gcc.exe (GCC) 3.3.1 (mingw special 20030804-1); targ=MINGW32
+GNU ld version 2.14.90 20040120
+   789320 Tue Mar 16 10:32:49 2004 /bin/msys-1.0.dll
+    52064 Thu Jan 02 05:05:27 2003 /bin/msysltdl-3.dll
+   135680 Tue Mar 16 10:32:48 2004 /bin/make.exe
+    84992 Thu Aug 07 23:29:00 2003 /mingw/bin/gcc.exe
+   617472 Tue Jan 20 21:57:52 2004 /mingw/bin/ld.exe
+-----------------------------------------------------------------
+
 2) Get a working GCL 
 
-Get the GCL 2.6.2 release tarball from any GNU mirror See
-<http://savannah.gnu.org/projects/gcl/>.  I installed it in the 
-mingw path /usr/local/src/gcl-2.6.2 == c:\msys\1.0\local\src\gcl-2.6.2
+Get the GCL 2.6.7 release tarball from any GNU mirror or 
+GCL 2.6.8pre from CVS.  CVS date must be November 2006 or later.  
+See  <http://savannah.gnu.org/projects/gcl/>. 
+Install GCL sources in your MSYS user home directory ~/gcl-2.6.8
 
-Once the gcl sources are available, compile it with
+Then compile and install it with
 
-./configure  --enable-ansi 
+cd ~/gcl-2.6.8
+./configure --enable-ansi --prefix="c:/gcl"
 make
 make install
 
-For extra portability, I do, instead,
+Exact value of --prefix does not matter but make sure that
+c:\gcl\bin is in the MSYS path.
 
-./configure --enable-ansi
-cd gmp3
-./configure --build=i486-unknown-linux-gnu
-cd ..
-make
-make install
+Check that gcl works by typing gcl at MSYS command line
+-----------------------------------------------------------------------
+$ gcl
+GCL (GNU Common Lisp)  2.6.8 ANSI    Nov 11 2006 23:08:49
+Source License: LGPL(gcl,gmp), GPL(unexec,bfd,xgcl)
+Binary License:  GPL due to GPL'ed components: (UNEXEC)
+Modifications of this banner must retain notice of a compatible license
+Dedicated to the memory of W. Schelter
 
-3) Install the msys tcltk-8.4
+Use (help) to get some basic information on how to use GCL.
+Temporary directory for compiler files set to C:/DOCUME~1/user/LOCALS~1/Temp/
 
-4) Get and install ActivePerl from
-<http://www.activestate.com>. Follow the download link at
-<http://www.activestate.com/Products/ActivePerl/>.
+>(quit)
+-----------------------------------------------------------------------
 
-5) Get and install TclKit and Starkit sdx from
-<http://www.equi4.com>. Frankly, I found this step confusing. Although
-Starkit are very simply to use, it took me quite a while to understand
-what needed to be download, installed etc. In the end, I have the
-following files installed in c:\star
+3) Get and install TclKit and Starkit sdx from <http://www.equi4.com>. 
+
+Download sdx.bat and sdx.kit from <http://www.equi4.com/pub/sk/>. 
+Download tclkit-win32.exe.gz and tclkitsh-win32.exe.gz from 
+<http://www.equi4.com/pub/tk/>.
+
+Install the following four files 
 	sdx.bat  sdx.kit  tclkit.exe  tclkitsh.exe
-
-Download sdx.bat and sdx.kit from
-<http://www.equi4.com/pub/sk/>. Download tclkit-win32.exe.gz and
-tclkitsh-win32.exe.gz from <http://www.equi4.com/pub/tk/>.
+in your MSYS user home directory in ~/programs/star 
 
 6) Get and install Inno Setup from
 <http://www.jrsoftware.org/isinfo.php>. 
 
-7) Download the gnuplot windows binary from http://gnuplot.sourceforge.net.
-Version 4.0 patchlevel 0 works for me. Install it. I use c:/programs/gnuplot.
+7) Download the gnuplot windows binary from <http://gnuplot.sourceforge.net>.
+Version 4.0 patchlevel 0 works. 
+Install in your MSYS user home directory in ~/programs/gnuplot 
 
-8) Download the wxMaxima windows binary from http://wxmaxima.sourceforge.net.
-Use wxMaxima 0.6.5 with Maxima 5.9.3 or earlier and wxMaxima 0.7.0 (or later)
-with Maxima 5.10.0 (or later). Install it.  I use c:/programs/wxmaxima.
+8) Download the wxMaxima windows binary from <http://wxmaxima.sourceforge.net>.
+Use wxMaxima 0.6.5 with Maxima 5.9.3 or earlier, 
+wxMaxima 0.7.0 with Maxima 5.10.0,
+and wxMaxima 0.7.1 with Maxima 5.11.0.
 
-9) Edit your MSYS startup paths in c:\msys\1.0\etc\profile to put gcl,
-tcltk and tclkitsh in your PATH. I did so by adding the following line
-after the initial setting of PATH:
-        export PATH="/c/gcl/bin:/c/tcltk/bin:/c/star:$PATH"
+Install it to default location, say C:\Program Files\wxMaxima. 
+Then copy contents of wxMaxima directory excluding \uninst subdirectory
+to your MSYS user home directory ~/programs/wxMaxima
 
-10) You should now be ready to compile and install maxima. configure
-maxima so that it will install in some sort of temporary
-directory. The directory does not need to exist ahead of time.
-
-./configure  --with-wish=wish84 --prefix=c:/maxima \
-  --enable-lang-es --enable-lang-pt
-make
-make check
-make install
-
-The "check" should pass all tests except those listed as known
-failures.
-
-11) The next step depends on the install locations of TCL/TK, sdx,
-tclkit, tclkitsh and gcc. The system for determining these locations
-is not as elegant as autoconf (configure). Instead, the system
-defaults to the directories on my build machine. However, all the
-defaults are override-able on the make command line. If you have all
-the files installed in the (my) default locations, the next step is
-simply
-
-make iss
-
-If, for example, you have sdx installed in d:\other\starkit, you would
-type
-
-make iss SDXDIR=/d/other/starkit
-
-The override-able variables and their defaults are:
-
+NOTE: Location of Starkit/TclKit, gnuplot and wxMaxima is controlled
+by the override-able variables and their defaults are:
+ 
 TCLKITSH = tclkitsh.exe
 TCLKITDIR = ../../../../programs/star
 SDXDIR = $(TCLKITDIR)
@@ -157,23 +148,52 @@ GNUPLOTDIR = ../../../../programs/gnuplot
 WXMAXIMADIR = ../../../../programs/wxMaxima
 
 To see how they are used, look in interfaces/xmaxima/win32/Makefile.in
-and Makefile.am in the top level maxima directory.
+and Makefile.am in the top level maxima directory.  You may change
+their values according to your preferences.
 
-12) Once "make iss" is complete, run Inno Setup on the maxima.iss
-file. I recommend completely removing the temporary maxima install
+9) Get Microsoft HTML Help Workshop from 
+<http://www.microsoft.com/downloads/details.aspx?familyid=00535334-c8a6-452f-9aa0-d597d16580cc&displaylang=en>
+and install it.  
+
+Add HHW installation directory to Windows or MSYS path
+to make HTML Help Workshop compiler command hhc.exe available
+in MSYS command prompt.
+
+10) Before compiling Maxima check that all required components
+    a) tcltk (e.g. wish84 command), 
+    b) gcl (gcl command),
+    c) HTML Help Workshop compiler (hhc command)
+are available in the MSYS command prompt.
+
+If this is not the case add required directories either to Windows
+or to MSYS path.  The latter can be done by editing c:\msys\1.0\etc\profile
+For example add the following line after the initial setting of PATH:
+    export PATH="/c/gcl/bin:$PATH"
+
+10) You should now be ready to compile and install maxima. 
+Configure maxima so that it will install in some sort of temporary
+directory. The directory does not need to exist ahead of time.
+
+./configure  --with-wish=wish84 --prefix="c:/maxima" \
+  --enable-lang-es --enable-lang-pt
+make
+make check
+make install
+make iss
+
+The "check" should pass all tests except those listed as known
+failures.
+
+11) Once "make iss" is complete, run Inno Setup on the maxima.iss
+file. It is recommended to remove the temporary maxima install
 directory (c:/maxima above) before testing the installation.
 
-13) Test the installed package.  For example
+12) Test the installed package.  For example
  o Run the maxima testsuite: run_testsuite()
- o Try compling a function.  This has been a problem in the past
+ o Try compiling a function.  This has been a problem in the past
     - f(x):=x+2;
     - compile(f);
     - f(2);
  o Plot something
- o try out the on-line help: describe(sin)
+ o Try out the on-line help: describe(sin)
 
- LocalWords:  iss Tcl mingw gmp linux
-
-Local Variables: ***
-mode: Text ***
-End: ***
