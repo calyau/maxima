@@ -326,14 +326,17 @@ the Fibonacci number preceding the last one computed.
 @end deffn
 
 @deffn {Function} fibtophi (@var{expr})
-Expresses Fibonacci numbers in terms of the constant @code{%phi},
+Expresses Fibonacci numbers in @var{expr} in terms of the constant @code{%phi},
 which is @code{(1 + sqrt(5))/2}, approximately 1.61803399.
 
-@c SEEMS MISPLACED -- THIS WANTS TO BE UNDER %phi !!!
-By default, Maxima does not know about @code{%phi}.
-After executing @code{tellrat (%phi^2 - %phi - 1)} and @code{algebraic: true},
-@code{ratsimp} can simplify some expressions containing @code{%phi}.
+Examples:
 
+@c ===beg===
+@c fibtophi (fib (n));
+@c fib (n-1) + fib (n) - fib (n+1);
+@c fibtophi (%);
+@c ratsimp (%);
+@c ===end===
 @example
 (%i1) fibtophi (fib (n));
                            n             n
@@ -342,8 +345,17 @@ After executing @code{tellrat (%phi^2 - %phi - 1)} and @code{algebraic: true},
                            2 %phi - 1
 (%i2) fib (n-1) + fib (n) - fib (n+1);
 (%o2)          - fib(n + 1) + fib(n) + fib(n - 1)
-(%i3) ratsimp (fibtophi (%));
-(%o3)                           0
+(%i3) fibtophi (%);
+            n + 1             n + 1       n             n
+        %phi      - (1 - %phi)        %phi  - (1 - %phi)
+(%o3) - --------------------------- + -------------------
+                2 %phi - 1                2 %phi - 1
+                                          n - 1             n - 1
+                                      %phi      - (1 - %phi)
+                                    + ---------------------------
+                                              2 %phi - 1
+(%i4) ratsimp (%);
+(%o4)                           0
 @end example
 
 @end deffn
