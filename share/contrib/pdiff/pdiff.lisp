@@ -22,11 +22,6 @@
 (in-package :maxima)
 ($put 'pdiff "1.3" 'version)
 
-;; This code modifies mactex's tex-mexpt function; to keep this modification
-;; from being overwritten when mactex is loaded, first load mactex.  
-
-($load "mactex")
-
 ;; When use_pdiff is true, use positional derivatives for unknown
 ;; non-subscripted functions. By unknown  function, I  mean a function 
 ;; that is not bound to a formula and that has a derivative that is not 
@@ -336,7 +331,7 @@
 (defmvar $tex_uses_prime_for_derivatives nil)
 (defmvar $tex_prime_limit 3)
 (defmvar $tex_uses_named_subscripts_for_derivatives nil)
-(defmvar $tex_diff_var_names (list '(mlist) '|$x| '|$y| '|$z|))
+(defmvar $tex_diff_var_names (list '(mlist) '$x '$y '$z))
 
 (setf (get '%pderivop 'tex) 'tex-pderivop)
 
@@ -395,11 +390,6 @@
 ;;  (c15) tex(diff(f(x,y),x,0,y,1));
 ;;            $$f_{\left(0,1\right)}(x,y)$$
 
-(defmvar $tex_uses_prime_for_derivatives t)
-(defmvar $tex_prime_limit 3)
-(defmvar $tex_uses_named_subscripts_for_derivatives t)
-(defmvar $tex_diff_var_names (list '(mlist) '$x '$y '$z))
-
 (defun tex-pderivop (x l r)
   ;(print `(lop = ,lop rop = ,rop x = ,x r = ,r l = ,l))
   (cond ((and $tex_uses_prime_for_derivatives (eq 3 (length x)))
@@ -443,7 +433,7 @@
 ;; The itensor package has a function that generates dummy variables; instead 
 ;; of loading itensor to access this function, we duplicate it here.
 
-(defmvar $dummy_char '$%\x)
+(defmvar $dummy_char '$%x)
 (defmvar $dummy_index -1)
 
 (defun $dummy_var ( )

@@ -9,6 +9,7 @@
  \author{Barton Willis \\
    University of Nebraska at Kearney \\
    Kearney Nebraska}
+\date{September 10, 2002\footnote{With minor updates November, 2006.}}
 
 \begin{document}
 
@@ -54,25 +55,16 @@ derivatives. The positional derivative package {\tt pdiff} gives
 an alternative to using {\tt gradef} when working with derivatives 
 of unknown functions.
 
-\subsection*{Installation}
-
-To install the positional derivative package, download {\tt pdiff.lisp}
-from  \\ \begin{verb} www.unk.edu/acad/math/people/willisb \end{verb}
-and place it in a directory that Maxima can find.
-
 \subsection*{Usage}
 
-To use the positional derivative package, you must load it from
-a Maxima prompt.  Assuming {\tt pdiff.lisp} is in a directory that 
-Maxima can find, this is done with the command
-
+To use the positional derivative package, first load it from the Maxima input prompt. 
 
 \begin{mcline}{c1}
-     load("pdiff.lisp")$
+     load(pdiff)$
 \end{mcline}
 
 
-\noindent Use the full pathname if Maxima can't find the file. Loading 
+\noindent Loading 
 {\tt pdiff.lisp} sets the option variable {\tt use\_pdiff} to true; 
 when {\tt use\_diff} is true, Maxima will 
 indicate derivatives of  unknown functions positionally. To illustrate, 
@@ -862,7 +854,7 @@ variable of the differential equation
 
 
 \begin{mcline}{c74}
-      de :  4*x^2*'DIFF(y,x,2) + 4*x*'DIFF(y,x,1) + (x-1)*y = 0;
+      de :  4*x^2*'diff(y,x,2) + 4*x*'diff(y,x,1) + (x-1)*y = 0;
 \end{mcline}
 
 
@@ -939,10 +931,6 @@ equation
   \item Derivatives of unknown functions with symbolic orders are not 
    computed positionally.
 
-  \item The positional derivative package has only been tested under 
-  Maxima 5.6 compiled with GCL 2.4; it has not been tested with any
-  other Maxima version.
-
   \item The {\tt pdiff.lisp} code alters the Maxima functions {\tt mqapply}
    and {\tt sdiffgrad} Although I'm unaware  of any problems associated 
    with these altered functions, there may be some.  Setting {\tt use\_pdiff} to
@@ -962,6 +950,3 @@ The {\tt pdiff} package could serve as a basis for a Maxima package
 differential and integral operators.
 
 \end{document}   
-
-(D79)                                DONE
-(C79) 
