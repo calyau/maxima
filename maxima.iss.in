@@ -46,6 +46,7 @@ Name: "de"; MessagesFile: "compiler:Languages\German.isl"; InfoBeforeFile: "inte
 Name: "it"; MessagesFile: "compiler:Languages\Italian.isl"; InfoBeforeFile: "interfaces\xmaxima\win32\InfoBefore.txt"; InfoAfterFile: "interfaces\xmaxima\win32\readme_en.txt"
 Name: "es"; MessagesFile: "compiler:Languages\Spanish.isl"; InfoBeforeFile: "interfaces\xmaxima\win32\InfoBefore.txt"; InfoAfterFile: "interfaces\xmaxima\win32\readme_en.txt"
 Name: "pt_BR"; MessagesFile: "compiler:Languages\BrazilianPortuguese.isl"; InfoBeforeFile: "interfaces\xmaxima\win32\InfoBefore.txt"; InfoAfterFile: "interfaces\xmaxima\win32\readme_en.txt"
+Name: "pt"; MessagesFile: "compiler:Languages\Portuguese.isl"; InfoBeforeFile: "interfaces\xmaxima\win32\InfoBefore_pt.txt"; InfoAfterFile: "interfaces\xmaxima\win32\readme_pt.txt"
 Name: "ru"; MessagesFile: "compiler:Languages\Russian.isl"; InfoBeforeFile: "interfaces\xmaxima\win32\InfoBefore_ru.txt"; InfoAfterFile: "interfaces\xmaxima\win32\readme_ru.txt"
 
 
@@ -126,6 +127,7 @@ Name: "{group}\{cm:ReferenceManualPortuguese}"; Filename: "{app}\share\maxima\@V
 
 [CustomMessages]
 
+
 ;=== English ===  LID=$0409  CodePage=0
 
 FullInstallation=Full installation
@@ -139,13 +141,13 @@ XMaximaGraphicShell=XMaxima graphic shell
 MaximaLanguagePacks=Maxima language packs
 
 German=German
-France=France
+French=French
 Italian=Italian
 Portuguese=Portuguese
 Russian=Russian
 Spanish=Spanish
 
-CreateMyDesktopIcon=Create %1 desctop icon
+CreateMyDesktopIcon=Create %1 desktop icon
 
 CommandLineMaxima=Command line Maxima
 Introduction=Introduction
@@ -175,8 +177,8 @@ de.wxMaximaGraphicShell=wxMaxima (graphische Oberfläche)
 de.XMaximaGraphicShell=XMaxima (graphische Oberfläche)
 de.MaximaLanguagePacks=Maxima-Sprachpakete
 
-de.Germen=Deutsch
-de.France=Französich
+de.German=Deutsch
+de.French=Französich
 de.Italian=Italienisch
 de.Portuguese=Portugiesisch
 de.Russian=Russisch
@@ -212,8 +214,8 @@ fr.wxMaximaGraphicShell=Interface graphique wxMaxima
 fr.XMaximaGraphicShell=Interface graphique XMaxima
 fr.MaximaLanguagePacks=Paquets de langues Maxima
 
-fr.Germen=Allemagne
-fr.France=France
+fr.German=Allemagne
+fr.French=French
 fr.Italian=Italy
 fr.Portuguese=Portugal
 fr.Russian=Russie
@@ -250,13 +252,13 @@ it.XMaximaGraphicShell=XMaxima graphic shell
 it.MaximaLanguagePacks=Maxima language packs
 
 it.German=German
-it.France=France
+it.French=French
 it.Italian=Italian
 it.Portuguese=Portuguese
 it.Russian=Russian
 it.Spanish=Spanish
 
-it.CreateMyDesktopIcon=Create %1 desctop icon
+it.CreateMyDesktopIcon=Create %1 desktop icon
 
 it.CommandLineMaxima=Command line Maxima
 it.Introduction=Introduction
@@ -274,7 +276,7 @@ it.ReferenceManualRussian=Reference Manual (Russian)
 it.ReferenceManualSpanish=Reference Manual (Spanish)
 
 
-;=== Portuguese ===  LID=$0416  CodePage=1252
+;=== Portuguese (Brazilian) ===  LID=$0416  CodePage=1252
 
 pt_BR.FullInstallation=Full installation
 pt_BR.CompactInstallation=Compact installation
@@ -287,13 +289,13 @@ pt_BR.XMaximaGraphicShell=XMaxima graphic shell
 pt_BR.MaximaLanguagePacks=Maxima language packs
 
 pt_BR.German=German
-pt_BR.France=France
+pt_BR.French=French
 pt_BR.Italian=Italian
 pt_BR.Portuguese=Portuguese
 pt_BR.Russian=Russian
 pt_BR.Spanish=Spanish
 
-pt_BR.CreateMyDesktopIcon=Create %1 desctop icon
+pt_BR.CreateMyDesktopIcon=Create %1 desktop icon
 
 pt_BR.CommandLineMaxima=Command line Maxima
 pt_BR.Introduction=Introduction
@@ -311,6 +313,43 @@ pt_BR.ReferenceManualRussian=Reference Manual (Russian)
 pt_BR.ReferenceManualSpanish=Reference Manual (Spanish)
 
 
+;=== Portuguese ===  LID=$0816  CodePage=1252
+
+pt.FullInstallation=InstalaÃ§Ã£o completa
+pt.CompactInstallation=InstalaÃ§Ã£o compacta
+pt.CustomInstallation=InstalaÃ§Ã£o personalizada
+pt.Uninstall=Desinstalar
+
+pt.MaximaCore=NÃºcleo do Maxima com interface de linha de comandos
+pt.wxMaximaGraphicShell=shell grÃ¡fica wxMaxima
+pt.XMaximaGraphicShell=shell grÃ¡fica XMaxima
+pt.MaximaLanguagePacks=pacotes linguÃ­sticas do Maxima
+
+pt.German=AlemÃ£o
+pt.French=FrancÃªs
+pt.Italian=Italiano
+pt.Portuguese=PortuguÃªs
+pt.Russian=Russo
+pt.Spanish=Espanhol
+
+pt.CreateMyDesktopIcon=Criar Ã­cone no escritÃ³rio para %1
+
+pt.CommandLineMaxima=Maxima em Linha de Comandos
+pt.Introduction=IntroduÃ§Ã£o 
+pt.ReferenceManual=Manual de ReferÃªncia
+pt.Readme=LEIAME
+pt.ReadmeMenuEntry=LEIAME
+
+pt.OnlineForum=FÃ³rum na rede para %1
+
+pt.ReferenceManualGerman=Manual de ReferÃªncia (AlemÃ£o)
+pt.ReferenceManualFrench=Manual de ReferÃªncia (FrancÃªs)
+pt.ReferenceManualItalian=Manual de ReferÃªncia (Italiano)
+pt.ReferenceManualPortuguese=Manual de ReferÃªncia (PortuguÃªs)
+pt.ReferenceManualRussian=Manual de ReferÃªncia (Russo)
+pt.ReferenceManualSpanish=Manual de ReferÃªncia (Espanhol)
+
+
 ;=== Russian ===  LID=$0419  CodePage=1251
 
 ru.FullInstallation=Ïîëíàÿ óñòàíîâêà
@@ -324,7 +363,7 @@ ru.XMaximaGraphicShell=Ãğàôè÷åñêàÿ îáîëî÷êà XMaxima
 ru.MaximaLanguagePacks=Ïàêåòû ïîääåğæêè ÿçûêîâ Maxima
 
 ru.German=Íåìåöêèé
-ru.France=Ôğàíöóçñêèé
+ru.French=Ôğàíöóçñêèé
 ru.Italian=Èòàëüÿíñêèé
 ru.Portuguese=Ïîğòóãàëüñêèé
 ru.Russian=Ğóññêèé
@@ -361,13 +400,13 @@ es.XMaximaGraphicShell=XMaxima graphic shell
 es.MaximaLanguagePacks=Maxima language packs
 
 es.German=German
-es.France=France
+es.French=French
 es.Italian=Italian
 es.Portuguese=Portuguese
 es.Russian=Russian
 es.Spanish=Spanish
 
-es.CreateMyDesktopIcon=Create %1 desctop icon
+es.CreateMyDesktopIcon=Create %1 desktop icon
 
 es.CommandLineMaxima=Command line Maxima
 es.Introduction=Introduction
