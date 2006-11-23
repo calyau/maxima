@@ -633,7 +633,7 @@ riccati;
 
 /* 184 Riccati */
 assume(not equal(m+n,0));
-[not equal(n+m,0)];
+'[not equal(n+m,0)];
 (pn_(184),ans:contrib_ode(eqn:x*'diff(y,x)+x^m+(n-m)*y/2+x^n*y^2=0,y,x));
 [y = -(%c*x^(n/2+m/2)*sin(2*x^(n/2+m/2)/(n+m))-x^(n/2+m/2)*cos(2*x^(n/2+m/2)/(n+m)))/(x^n*sin(2*x^(n/2+m/2)/(n+m))+%c*x^n*cos(2*x^(n/2+m/2)/(n+m)))];
 [method,ode_check(eqn,ans[1])];
