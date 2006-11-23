@@ -19,7 +19,7 @@ true;
 
 /* 1 */
 assume(not(equal(n,-2)));
-[not(equal(n, -2))];
+'[not(equal(n, -2))];
 (pn_(1),ans:contrib_ode(eqn:'diff(y,x)^2=a*x^n,y,x));
 [-((n+2)*y+2*x*sqrt(a*x^n))/(n+2)=%c];
 solve(ans[1],y); 
@@ -96,13 +96,13 @@ y=-sqrt(a^2-a^2*sin(x-%c)^2);
 
 /* 12 */
 assume(a>0,b>0);
-[a>0,b>0];
+'[a>0,b>0];
 (pn_(12),ans:contrib_ode(eqn:'diff(y,x)^2=a+b*y^2,y,x));
 [[x=%c-log(2*sqrt(%t^2-a)+2*%t)/sqrt(b),y=-sqrt(%t^2-a)/sqrt(b)],[x=log(2*sqrt(%t^2-a)+2*%t)/sqrt(b)+%c,y=sqrt(%t^2-a)/sqrt(b)]]; /* CHECKME */
 method;
 lagrange;
 forget(a>0,b>0);
-[a>0,b>0];
+'[a>0,b>0];
 
 /* 13 */
 (pn_(13),ans:contrib_ode(eqn:'diff(y,x)^2=x^2*y^2,y,x));
