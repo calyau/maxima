@@ -210,14 +210,6 @@
   "This is a key gotten from the infile name, in the interpreter
   other completely hackish things with FSUBRS will go on.")
  
-#+maclisp
-(defun gen-name ( &optional k &aux (n '#,(*array nil 'fixnum 1)))
-  (store (arraycall fixnum n 0) (f1+ (arraycall fixnum n 0)))
-  (and k (store (arraycall fixnum n 0) k))
-  (implode (append (exploden *infile-name-key*)
-		   (exploden '|-tr-gen-|)
-		   (exploden (arraycall fixnum n 0)))))
-
 #+(or cl nil)
 (progn 'compile
        (defvar a-random-counter-for-gen-name 0)
