@@ -1,6 +1,6 @@
 # -*-mode: makefile; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Makefile.am,v 1.41 2006-11-22 07:54:49 vvzhy Exp $
+#       $Id: Makefile.am,v 1.42 2006-11-23 14:48:29 vvzhy Exp $
 #
 
 include $(top_srcdir)/common.mk
@@ -80,8 +80,9 @@ WIN32_FILES = win32/ChangeLog win32/Makefile.in win32/tclwinkill.c win32/winkill
               win32/InfoBefore.txt    win32/readme_en.txt \
               win32/InfoBefore_ru.txt win32/readme_ru.txt \
               win32/InfoBefore_fr.txt win32/readme_fr.txt \
-              win32/InfoBefore_de.txt win32/readme_de.txt
-	      
+              win32/InfoBefore_de.txt win32/readme_de.txt \
+              win32/InfoBefore_pt.txt win32/readme_pt.txt
+      
 EXTRA_DIST = $(genericdirDATA) $(XMAXIMA_REAL_SOURCES) $(WIN32_FILES) Tkmaxima/Header.tcl.in maxima-icon.png
 
 

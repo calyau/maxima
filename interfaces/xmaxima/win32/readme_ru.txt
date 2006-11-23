@@ -63,7 +63,7 @@ wxMaxima, доступного на http://wxmaxima.sourceforge.net
 ѕри попытке запуска maxima на машине с Windows 9x возможно 
 получение сообщени€ об ошибке
 
-    Ќедостаточно пам€ти дл€ переменных среды
+    Ќедостаточно пам€ти дл€ переменных среды (Out of environment space)
 
 —тать€ 230205 из базы знаний Microsoft (Microsoft Knowledge Base)
 (http://support.microsoft.com/support/kb/articles/Q230/2/05.ASP)

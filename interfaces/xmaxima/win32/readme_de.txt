@@ -65,7 +65,7 @@ Zu wenig Umgebungsspeicher
 Wenn Sie versuchen, Maxima auf einer Windows 9x-Maschine laufen 
 zu lassen, erhalten sie eventuell die Fehlermeldung 
 
-    Zu wenig Umgebungsspeicher
+    Zu wenig Umgebungsspeicher (Out of environment space)
 
 Der folgende Hinweis des Artikels 230205 der Microsoft Knowledge Base 
 (http://support.microsoft.com/support/kb/articles/Q230/2/05.ASP)

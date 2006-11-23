@@ -61,7 +61,7 @@ Espace d'environnement insuffisant
 Lorsque vous essayez d'exécuter Maxima sur une machine Windows 9x,
 le message d'erreur suivant risque de s'afficher  :
 
-    Espace d'environnement insuffisant
+    Espace d'environnement insuffisant (Out of environment space)
 
 Le conseil suivant de la Base de Connaissance Microsoft, Article 230205
 (http://support.microsoft.com/support/kb/articles/Q230/2/05.ASP) 
