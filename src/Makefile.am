@@ -16,7 +16,7 @@ if CLISP
 EXECUTECLISP = $(CLISP_NAME) -norc -q -x
 all-local: binary-clisp/maxima.mem
 install-exec-local: install-clisp
-uninstall: uninstall-clisp
+uninstall-local: uninstall-clisp
 clean: clean-clisp
 distclean: clean-clisp
 
@@ -49,7 +49,7 @@ if CMUCL
 EXECUTECMUCL = $(CMUCL_NAME) -noinit -batch
 all-local: binary-cmucl/maxima.core
 install-exec-local: install-cmucl
-uninstall: uninstall-cmucl
+uninstall-local: uninstall-cmucl
 clean: clean-cmucl
 distclean: clean-cmucl
 
@@ -85,7 +85,7 @@ if SCL
 EXECUTESCL = $(SCL_NAME) -noinit -batch
 all-local: binary-scl/maxima.core
 install-exec-local: install-scl
-uninstall: uninstall-scl
+uninstall-local: uninstall-scl
 clean: clean-scl
 distclean: clean-scl
 
@@ -121,7 +121,7 @@ if ACL
 EXECUTEACL = $(ACL_NAME) -batch
 all-local: binary-acl/maxima.dxl
 install-exec-local: install-acl
-uninstall: uninstall-acl
+uninstall-local: uninstall-acl
 clean: clean-acl
 distclean: clean-acl
 
@@ -154,7 +154,7 @@ if SBCL
 EXECUTESBCL = $(SBCL_NAME) --noinform --noprint --eval
 all-local: binary-sbcl/maxima.core
 install-exec-local: install-sbcl
-uninstall: uninstall-sbcl
+uninstall-local: uninstall-sbcl
 clean: clean-sbcl
 distclean: clean-sbcl
 
@@ -187,7 +187,7 @@ if GCL
 EXECUTEGCL = $(GCL_NAME) -batch -eval
 all-local: binary-gcl/maxima
 install-exec-local: install-gcl
-uninstall: uninstall-gcl
+uninstall-local: uninstall-gcl
 clean: clean-gcl
 distclean: clean-gcl
 
@@ -239,7 +239,7 @@ if OPENMCL
 EXECUTEOPENMCL = $(OPENMCL_NAME) -e
 all-local: binary-openmcl/maxima.image
 install-exec-local: install-openmcl
-uninstall: uninstall-openmcl
+uninstall-local: uninstall-openmcl
 clean: clean-openmcl
 distclean: clean-openmcl
 
