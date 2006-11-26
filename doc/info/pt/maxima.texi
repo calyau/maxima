@@ -1,5 +1,5 @@
 \input texinfo
-@c /maxima.texi/1.35/Sat Aug  5 08:20:49 2006/-ko/
+@c /maxima.texi/1.37/Sat Nov 25 04:03:29 2006/-ko/
 @c Language: Portuguese, Encoding: iso-8859-1
 @c -*-texinfo-*-
 
@@ -81,7 +81,7 @@ A se@,{c}@~ao "Pacotes adicionais" foi anexada ao manual recentemente
 Caso sua d@'uvida persista ou tenha alguma sugest@~ao/aperfei@,{c}oamento/
 cr@'{@dotless{i}}tica mande por e-mail para Jorge Barros de Abreu <ficmatin01 at solar dot
 com dot br>
-        
+ 
 Mantenedores:
 @itemize @bullet
 @item
@@ -118,20 +118,20 @@ e desenvolver o Macsyma DOE, agora chamado Maxima.
 @i{Notas de tradu@,{c}@~ao:}
 
     O c@'odigo fonte deste documento encontra-se no formato texinfo.
-        Para contribuir com a equipe do Maxima na tarefa de manter a 
-        tradu@,{c}@~ao para o portugu@^es sempre atualizada envie um 
-        e-mail para @value{mail}.
+ Para contribuir com a equipe do Maxima na tarefa de manter a 
+ tradu@,{c}@~ao para o portugu@^es sempre atualizada envie um 
+ e-mail para @value{mail}.
 
     Em caso de d@'uvida sobre algum trecho deste manual consulte o 
-        original ingl@^es.
+ original ingl@^es.
 
     A se@,{c}@~ao "Pacotes adicionais" foi anexada ao manual recentemente
         (fevereiro/2006) e possui partes a serem traduzidas.
 
     Caso sua d@'uvida persista ou tenha alguma sugest@~ao/aperfei@,{c}oamen-
-        to/cr@'itica mande por e-mail para Jorge Barros de Abreu 
-        <ficmatin01 at solar dot com dot br>
-        
+ to/cr@'itica mande por e-mail para Jorge Barros de Abreu 
+ <ficmatin01 at solar dot com dot br>
+ 
 Mantenedores:
 @itemize @bullet
 @item
@@ -215,6 +215,7 @@ Pacotes Adicionais
 * ggf::                         Fun@,{c}@~ao geradora para sequ@^encias.
 * impdiff::                     Derivadas impl@'icitas.
 * interpol::                    Pacote de interpola@,{c}@~ao.
+* lbfgs::                       L-BFGS pacote de minimiza@,{c}@~ao n@~ao limitada.
 * lindstedt::                   Pacote Lindstedt.
 * linearalgebra::               Fun@,{c}@~oes de algebra linear.
 * lsquares::                    M@'etodo dos m@'inimos quadrados.
@@ -227,6 +228,7 @@ Pacotes Adicionais
 * simplex::                     Programa@,{c}@~ao linear.
 * simplification::              Fun@,{c}@~oes e regras de simplifica@,{c}@~ao.
 * solve_rec::                   Rela@,{c}@~oes de recorr@^encia lineares.
+* stats::                       Pacote de infer@^encias estat@'isticas.
 * stirling::                    F@'ormula de Stirling.
 * stringproc::                  Processamento de cadeias de texto.
 * unit::                        Pacote de unidades e dimens@~oes.
@@ -506,6 +508,11 @@ interpol
 * Introduction to interpol::
 * Definitions for interpol::
 
+lbfgs
+
+* Introduction to lbfgs::
+* Definitions for lbfgs::
+
 lindstedt
 
 * Defini@value{cedilha}@~oes para lindstedt::
@@ -560,6 +567,13 @@ solve_rec
 
 * Introduction to solve_rec::
 * Definitions for solve_rec::
+
+stats
+
+* Introduction to stats::
+* Definitions for inference_result::
+* Definitions for stats::
+* Definitions for special distributions::
 
 stirling
 
@@ -804,11 +818,15 @@ zeilberger
 @chapter impdiff
 @include impdiff.texi
 
-@node interpol, lindstedt, impdiff, Top
+@node interpol, lbfgs, impdiff, Top
 @chapter interpol
 @include interpol.texi
 
-@node lindstedt, linearalgebra, interpol, Top
+@node lbfgs, lindstedt, interpol, Top
+@chapter lbfgs
+@include lbfgs.texi
+
+@node lindstedt, linearalgebra, lbfgs, Top
 @chapter lindstedt
 @include lindstedt.texi
 
@@ -852,11 +870,15 @@ zeilberger
 @chapter simplification
 @include simplifications.texi
 
-@node solve_rec, stirling, simplification, Top
+@node solve_rec, stats, simplification, Top
 @chapter solve_rec
 @include solve_rec.texi
 
-@node stirling, stringproc, solve_rec, Top
+@node stats, stirling, solve_rec, Top
+@chapter stats
+@include stats.texi
+
+@node stirling, stringproc, stats, Top
 @chapter stirling
 @include stirling.texi
 

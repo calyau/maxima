@@ -1,5 +1,5 @@
 @c Language: Portuguese, Encoding: iso-8859-1
-@c /Series.texi/1.14/Tue Jan  3 06:29:26 2006/-ko/
+@c /Series.texi/1.15/Sat Nov 25 04:03:20 2006/-ko/
 @menu
 * Introdu@value{cedilha}@~ao a S@'eries::      
 * Defini@value{cedilha}@~oes para S@'eries::      
@@ -9,7 +9,8 @@
 @section Introdu@value{cedilha}@~ao a S@'eries
 Maxima cont@'em fun@value{cedilha}@~oes @code{taylor} e @code{powerseries} (s@'eries de pot@^encia) para encontrar as
 s@'eries de fun@value{cedilha}@~oes diferenci@'aveis.   Maxima tamb@'em tem ferramentas  tais como @code{nusum}
-capazes de encontrar a forma fechada de algumas s@'eries.   Opera@,{c}@~oes tais como adi@,{c}@~ao e multiplica@,{c}@~ao travalham da forma usual sobre s@'eries.  Essa se@,{c}@~ao apresenta as vari@'aveis globais que controlam a expans@~ao.
+capazes de encontrar a forma fechada de algumas s@'eries.   Opera@,{c}@~oes tais como adi@,{c}@~ao e multiplica@,{c}@~ao travalham da forma usual sobre s@'eries.  Essa se@,{c}@~ao apresenta as vari@'aveis globais que controlam a
+expans@~ao.
 @c end concepts Series
 @node Defini@value{cedilha}@~oes para S@'eries,  , Introdu@value{cedilha}@~ao a S@'eries, S@'eries
 @section Defini@value{cedilha}@~oes para S@'eries
@@ -408,13 +409,6 @@ Exemplos:
 @end example
 
 @end deffn
-
-@c OBSOLETE AS ADVERTISED; NOT CALLED FROM ANY USER-LEVEL FILE (.mac OR .dem)
-@c CUT THIS OUT ON NEXT PASS
-@c @defun srrat (exp)
-@c this command has been renamed to @code{taytorat}.
-@c 
-@c @end defun
 
 @deffn {Fun@value{cedilha}@~ao} taylor (@var{expr}, @var{x}, @var{a}, @var{n})
 @deffnx {Fun@value{cedilha}@~ao} taylor (@var{expr}, [@var{x_1}, @var{x_2}, ...], @var{a}, @var{n})

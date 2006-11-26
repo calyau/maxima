@@ -1,0 +1,155 @@
+@menu
+* Introduction to lbfgs::
+* Definitions for lbfgs::
+@end menu
+
+@node Introduction to lbfgs, Definitions for lbfgs, Top, Top
+@section Introduction to lbfgs
+
+@code{lbfgs} is an implementation of the L-BFGS algorithm [1]
+to solve unconstrained minimization problems via a limited-memory quasi-Newton (BFGS) algorithm.
+It is called a limited-memory method because a low-rank approximation of the
+Hessian matrix inverse is stored instead of the entire Hessian inverse.
+The program was originally written in Fortran [2] by Jorge Nocedal,
+incorporating some functions originally written by Jorge J. Mor@'{e} and David J. Thuente,
+and translated into Lisp automatically via the program @code{f2cl}.
+The Maxima package @code{lbfgs} comprises the translated code plus
+an interface function which manages some details.
+
+References:
+
+[1] D. Liu and J. Nocedal. "On the limited memory BFGS method for large
+scale optimization". @i{Mathematical Programming B} 45:503--528 (1989)
+
+[2] http://netlib.org/opt/lbfgs_um.shar
+
+@node Definitions for lbfgs, , Introduction to lbfgs, Top
+@section Definitions for lbfgs
+
+@deffn {Function} lbfgs (@var{FOM}, @var{X}, @var{X0}, @var{epsilon}, @var{iprint})
+
+Finds an approximate solution of the unconstrained minimization of the figure of merit @var{FOM}
+over the list of variables @var{X},
+starting from initial estimates @var{X0},
+such that @math{norm grad FOM < epsilon max(1, norm X)}.
+
+The algorithm applied is a limited-memory quasi-Newton (BFGS) algorithm [1].
+It is called a limited-memory method because a low-rank approximation of the
+Hessian matrix inverse is stored instead of the entire Hessian inverse.
+
+@var{iprint} controls progress messages printed by @code{lbfgs}.
+
+@table @code
+@item iprint[1]
+@code{@var{iprint}[1]} controls the frequency of progress messages.
+@table @code
+@item iprint[1] < 0
+No progress messages.
+@item iprint[1] = 0
+Messages at the first and last iterations.
+@item iprint[1] > 0
+Print a message every @code{@var{iprint}[1]} iterations.
+@end table
+@item iprint[2]
+@code{@var{iprint}[2]} controls the verbosity of progress messages.
+@table @code
+@item iprint[2] = 0
+Print out iteration count, number of evaluations of @var{FOM}, value of @var{FOM},
+norm of the gradient of @var{FOM}, and step length.
+@item iprint[2] = 1
+Same as @code{@var{iprint}[2] = 0}, plus @var{X0} and the gradient of @var{FOM} evaluated at @var{X0}.
+@item iprint[2] = 2
+Same as @code{@var{iprint}[2] = 1}, plus values of @var{X} at each iteration.
+@item iprint[2] = 3
+Same as @code{@var{iprint}[2] = 2}, plus the gradient of @var{FOM} at each iteration.
+@end table
+@end table
+
+See also @code{lbfgs_nfeval_max} and @code{lbfgs_ncorrections}.
+
+References:
+
+[1] D. Liu and J. Nocedal. "On the limited memory BFGS method for large
+scale optimization". @i{Mathematical Programming B} 45:503--528 (1989)
+
+Example:
+
+@c ===beg===
+@c load (lbfgs);
+@c FOM : '((1/length(X))*sum((F(X[i]) - Y[i])^2, i, 1, length(X)));
+@c X : [1, 2, 3, 4, 5];
+@c Y : [0, 0.5, 1, 1.25, 1.5];
+@c F(x) := A/(1 + exp(-B*(x - C)));
+@c ''FOM;
+@c estimates : lbfgs (FOM, '[A, B, C], [1, 1, 1], 1e-4, [1, 0]);
+@c plot2d ([F(x), [discrete, X, Y]], [x, -1, 6]), ''estimates;
+@c ===end===
+@example
+(%i1) load (lbfgs);
+(%o1)   /usr/share/maxima/5.10.0cvs/share/lbfgs/lbfgs.mac
+(%i2) FOM : '((1/length(X))*sum((F(X[i]) - Y[i])^2, i, 1, length(X)));
+                               2
+               sum((F(X ) - Y ) , i, 1, length(X))
+                       i     i
+(%o2)          -----------------------------------
+                            length(X)
+(%i3) X : [1, 2, 3, 4, 5];
+(%o3)                    [1, 2, 3, 4, 5]
+(%i4) Y : [0, 0.5, 1, 1.25, 1.5];
+(%o4)                [0, 0.5, 1, 1.25, 1.5]
+(%i5) F(x) := A/(1 + exp(-B*(x - C)));
+                                   A
+(%o5)            F(x) := ----------------------
+                         1 + exp((- B) (x - C))
+(%i6) ''FOM;
+                A               2            A                2
+(%o6) ((----------------- - 1.5)  + (----------------- - 1.25)
+          - B (5 - C)                  - B (4 - C)
+        %e            + 1            %e            + 1
+            A             2            A               2
+ + (----------------- - 1)  + (----------------- - 0.5)
+      - B (3 - C)                - B (2 - C)
+    %e            + 1          %e            + 1
+             2
+            A
+ + --------------------)/5
+      - B (1 - C)     2
+   (%e            + 1)
+(%i7) estimates : lbfgs (FOM, '[A, B, C], [1, 1, 1], 1e-4, [1, 0]);
+*************************************************
+  N=    3   NUMBER OF CORRECTIONS=25
+       INITIAL VALUES
+ F=  1.348738534246918D-01   GNORM=  2.000215531936760D-01
+*************************************************
+
+   I  NFN     FUNC                    GNORM                   STEPLENGTH
+
+   1    3     1.177820636622582D-01   9.893138394953992D-02   8.554435968992371D-01  
+   2    6     2.302653892214013D-02   1.180098521565904D-01   2.100000000000000D+01  
+   3    8     1.496348495303005D-02   9.611201567691633D-02   5.257340567840707D-01  
+   4    9     7.900460841091139D-03   1.325041647391314D-02   1.000000000000000D+00  
+   5   10     7.314495451266917D-03   1.510670810312237D-02   1.000000000000000D+00  
+   6   11     6.750147275936680D-03   1.914964958023047D-02   1.000000000000000D+00  
+   7   12     5.850716021108205D-03   1.028089194579363D-02   1.000000000000000D+00  
+   8   13     5.778664230657791D-03   3.676866074530332D-04   1.000000000000000D+00  
+   9   14     5.777818823650782D-03   3.010740179797255D-04   1.000000000000000D+00  
+
+ THE MINIMIZATION TERMINATED WITHOUT DETECTING ERRORS.
+ IFLAG = 0
+(%o7) [A = 1.461933911464101, B = 1.601593973254802, 
+                                           C = 2.528933072164854]
+(%i8) plot2d ([F(x), [discrete, X, Y]], [x, -1, 6]), ''estimates;
+(%o8) 
+@end example
+
+@end deffn
+
+@defvr {Variable} lbfgs_nfeval_max
+Default value: 100
+
+@end defvr
+
+@defvr {Variable} lbfgs_ncorrections
+Default value: 25
+
+@end defvr

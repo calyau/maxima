@@ -1,15 +1,8 @@
 @c Language: Portuguese, Encoding: iso-8859-1
-@c /Bugs.texi/1.9/Mon Nov 21 00:19:57 2005//
+@c /Bugs.texi/1.10/Sat Nov 25 04:02:06 2006//
 @menu
-* Introdu@value{cedilha}@~ao @`a Detec@value{cedilha}@~ao e Relato de Erros::  
 * Defini@value{cedilha}@~oes para Detec@value{cedilha}@~ao e Relato de Erros::  
 @end menu
-
-@node Introdu@value{cedilha}@~ao @`a Detec@value{cedilha}@~ao e Relato de Erros
-@section Introdu@value{cedilha}@~ao @`a Detec@value{cedilha}@~ao e Relato de Erros
-Como todos os grandes programas, Maxima cont@'em erros conhecidos e erros desconhecidos.
-Esse cap@'itulo descreve as facilidades internas para executar o conjunto de
-testes do Maxima bem como informar novos erros.
 
 @node Defini@value{cedilha}@~oes para Detec@value{cedilha}@~ao e Relato de Erros
 @section Defini@value{cedilha}@~oes para Detec@value{cedilha}@~ao e Relato de Erros

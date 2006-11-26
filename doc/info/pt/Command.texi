@@ -1,5 +1,5 @@
 @c Language: Portuguese, Encoding: iso-8859-1
-@c /Command.texi/1.42/Thu Nov  2 05:46:44 2006/-ko/
+@c /Command.texi/1.43/Sat Nov  4 16:10:35 2006/-ko/
 @iftex
 @hyphenation{si-na-li-za-do-res}
 @hyphenation{de-mo-ra-da-men-te}
@@ -163,6 +163,7 @@ Ap@'ostrofo-ap@'ostrofo @'e reconhecido por @code{batch} e @code{load}.
 Veja tamb@'em o operador ap@'ostrofo @code{'} e @code{nouns}.
 
 Exemplos:
+
 Aplicado a uma express@~ao geral @var{expr}, ap@'ostrofo-ap@'ostrofo fazem com que o valor de @var{expr}
 seja substituido por @var{expr} na express@~ao de entrada.
 

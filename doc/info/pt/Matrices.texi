@@ -1,5 +1,5 @@
 @c Language: Portuguese, Encoding: iso-8859-1
-@c /Matrices.texi/1.25/Thu Nov  2 05:47:56 2006/-ko/
+@c /Matrices.texi/1.26/Sat Nov  4 16:13:29 2006/-ko/
 @menu
 * Introdu@value{cedilha}@~ao a Matrizes e @'Algebra Linear::  
 * Defini@value{cedilha}@~oes para Matrizes e @'Algebra Linear::  

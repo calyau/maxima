@@ -1,5 +1,5 @@
 @c Language: Portuguese, Encoding: iso-8859-1
-@c /Operators.texi/1.32/Sat Aug  5 08:20:37 2006/-ko/
+@c /Operators.texi/1.34/Sat Nov 25 04:03:16 2006/-ko/
 @iftex
 @hyphenation{con-se-cu-ti-vos}
 @hyphenation{u-san-do}
@@ -148,6 +148,9 @@ Dessa forma @code{x!} pode ser substitu@'ido mesmo em uma express@~ao com ap@'os
 @end deffn
 
 @deffn {Operador} !!
+@ifinfo
+@fnindex Duplo fatorial
+@end ifinfo
 O operador de duplo fatorial.
 
 Para um n@'umero inteiro, n@'umero em ponto flutuante, ou n@'umero racional @code{n},
@@ -168,6 +171,9 @@ Para um argumento @code{n} que n@~ao @'e um n@'umero inteiro, um n@'umero em pon
 @end deffn
 
 @deffn {Operador} #
+@ifinfo
+@fnindex N@~ao igual (desigualdade sint@'atica)
+@end ifinfo
 Representa a nega@,{c}@~ao da igualdade sint@'atica @code{=}.
 
 Note que pelo fato de as regras de avalia@,{c}@~ao de express@~oes predicadas
@@ -206,6 +212,9 @@ Exemplos:
 @end deffn
 
 @deffn {Operador} .
+@ifinfo
+@fnindex Multiplica@,{c}@~ao n@~ao comutativa matricial
+@end ifinfo
 O operador ponto, para multiplica@,{c}@~ao (n@~ao comutativa) de matrizes.
 Quando "." @'e usado com essa finalidade, espa@,{c}os devem ser colocados em ambos os lados desse
 operador, e.g. A . B.  Isso disting@"ue o operador ponto plenamente de um ponto decimal em
@@ -227,11 +236,17 @@ e
 @end deffn
 
 @deffn {Operador} :
+@ifinfo
+@fnindex Operador de atribui@,{c}@~ao
+@end ifinfo
 O operador de atribui@,{c}@~ao.  E.g. A:3 escolhe a vari@'avel A para 3.
 
 @end deffn
 
 @deffn {Operador} ::
+@ifinfo
+@fnindex Operador de atribui@,{c}@~ao (avalia o lado esquerdo da igualdade)
+@end ifinfo
 Operador de atribui@,{c}@~ao.  :: atribui o valor da express@~ao
 em seu lado direito para o valor da quantidade na sua esquerda, que pode
 avaliar para uma vari@'avel at@^omica ou vari@'avel subscrita.
@@ -239,6 +254,9 @@ avaliar para uma vari@'avel at@^omica ou vari@'avel subscrita.
 @end deffn
 
 @deffn {Operador} ::=
+@ifinfo
+@fnindex Operador de defini@,{c}@~ao de fun@,{c}@~ao de macro
+@end ifinfo
 Operador de defini@,{c}@~ao de fun@,{c}@~ao de macro.
 @code{::=} define uma fun@,{c}@~ao (chamada uma "macro" por raz@~oes hist@'oricas)
 que coloca um ap@'ostrofo em seus argumentos (evitando avalia@,{c}@~ao),
@@ -357,13 +375,19 @@ x @'e igual a 1234 - 1729 w
 @end deffn
 
 @deffn {Operador} :=
+@ifinfo
+@fnindex Operador de defini@,{c}@~ao de fun@,{c}@~ao
+@end ifinfo
 O operador de defini@,{c}@~ao de fun@,{c}@~ao.  E.g. @code{f(x):=sin(x)} define
 uma fun@,{c}@~ao @code{f}.
 
 @end deffn
 
 @deffn {Operador} =
-
+@ifinfo
+@fnindex Operador de equa@,{c}@~ao
+@fnindex Igual (igualdade sint@'atica)
+@end ifinfo
 O operador de equa@,{c}@~ao.
 
 Uma express@~ao @code{@var{a} = @var{b}}, por si mesma, representa
@@ -492,6 +516,9 @@ Devido a @code{not @var{expr}} fazer com que a avalia@,{c}@~ao de @var{expr} oco
 
 @c NEEDS EXAMPLES
 @deffn {Operador} and
+@ifinfo
+@fnindex Conjun@,{c}@~ao l@'ogica
+@end ifinfo
 O operador l@'ogico de conjun@,{c}@~ao.
 @code{and} @'e um operador n-@'ario infixo;
 seus operandos s@~ao express@~oes Booleanas, e seu resultado @'e um valor Booleano.
@@ -516,6 +543,9 @@ De outra forma, @code{and} retorna @code{unknown} (desconhecido).
 
 @c NEEDS EXAMPLES
 @deffn {Operador} or
+@ifinfo
+@fnindex Disjun@,{c}@~ao l@'ogica
+@end ifinfo
 O operador l@'ogico de disjun@,{c}@~ao.
 @code{or} @'e um operador n-@'ario infixo;
 seus operandos s@~ao express@~oes Booleanas, e seu resultado @'e um valor Booleano.
@@ -540,6 +570,9 @@ De outra forma, @code{or} retorna @code{unknown}.
 
 @c NEEDS EXAMPLES
 @deffn {Operador} not
+@ifinfo
+@fnindex Nega@,{c}@~ao l@'ogica
+@end ifinfo
 O operador l@'ogico de nega@,{c}@~ao.
 @code{not} @'e operador prefixado;
 Seu operando @'e uma express@~ao Booleana, e seu resultado @'e um valor Booleano.

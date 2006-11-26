@@ -1,5 +1,5 @@
 @c Language: Portuguese, Encoding: iso-8859-1
-@c /Expressions.texi/1.49/Mon Jul 31 07:17:26 2006/-ko/
+@c /Expressions.texi/1.50/Sat Nov 25 04:02:28 2006/-ko/
 @menu
 * Introdu@value{cedilha}@~ao a Express@~oes::  
 * Atribui@value{cedilha}@~ao::                  
@@ -228,7 +228,7 @@ Exemplos:
 
 Strings (seq@"u@^encias de caracteres) s@~ao contidas entre aspas duplas @code{"} em entradas de dados usados pelo Maxima,
 e mostradas com ou sem as aspas duplas, 
-dependendo do valor escolhido para a vari@'avel global @code{?stringdisp}.
+dependendo do valor escolhido para a vari@'avel global @code{stringdisp}.
 
 Seq@"u@^encias de caracteres podem conter quaisquer caracteres,
 incluindo tabula@,{c}@~oes (tab), nova linha (ou fim de linha), e caracteres de retorno da cabe@,{c}a de impress@~ao (carriage return).
@@ -268,9 +268,9 @@ Exemplos:
 @c caractere de \
 @c fim de linha nessa \
 @c seq@"u@^encia de caracteres.";
-@c ?stringdisp : false;
+@c stringdisp : false;
 @c s_1;
-@c ?stringdisp : true;
+@c stringdisp : true;
 @c s_1;
 @c ===end===
 @example
@@ -287,11 +287,11 @@ caractere de \
 fim de linha nessa \
 seq@"u@^encia de caracteres.";
 (%o4) Ignore o caractere de fim de linha nessa seq@"u@^encia de caracteres.
-(%i5) ?stringdisp : false;
+(%i5) stringdisp : false;
 (%o5)                         false
 (%i6) s_1;
 (%o6)               Isso @'e uma seq@"u@^encia de caracteres  do Maxima.
-(%i7) ?stringdisp : true;
+(%i7) stringdisp : true;
 (%o7)                         true
 (%i8) s_1;
 (%o8)              "Isso @'e uma seq@"u@^encia de caracteres  do Maxima."
@@ -747,7 +747,7 @@ Diz ao Maxima para disparar um erro quando @var{a_i} for avaliado como sendo liv
 
 @item @code{noun}
 Diz ao Maxima para passar @var{a_i} como um substantivo. 
-O efeito disso @'e substituir intâncias de @var{a_i} com @code{'@var{a_i}}
+O efeito disso @'e substituir int@^ancias de @var{a_i} com @code{'@var{a_i}}
 ou @code{nounify(@var{a_i})}, ependendo do contexto.
 
 @item @code{constant}
@@ -1740,7 +1740,7 @@ Veja tamb@'em @code{args}.
 Exemplos:
 
 @c ===beg===
-@c ?stringdisp: true$
+@c stringdisp: true$
 @c op (a * b * c);
 @c op (a * b + c);
 @c op ('sin (a + b));
@@ -1754,7 +1754,7 @@ Exemplos:
 @c ===end===
 
 @example
-(%i1) ?stringdisp: true$
+(%i1) stringdisp: true$
 (%i2) op (a * b * c);
 (%o2)                          "*"
 (%i3) op (a * b + c);

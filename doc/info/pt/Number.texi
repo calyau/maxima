@@ -1,5 +1,5 @@
 @c Language: Portuguese, Encoding: iso-8859-1
-@c /Number.texi/1.19/Thu Nov  2 05:48:00 2006/-ko/
+@c /Number.texi/1.22/Sat Nov 25 04:02:55 2006/-ko/
 @c end concepts Number Theory
 @menu
 * Defini@value{cedilha}@~oes para Teoria dos N@'umeros::  
@@ -327,13 +327,17 @@ o n@'umero de Fibonacci anterior ao @'ultimo calculado.
 @end deffn
 
 @deffn {Fun@value{cedilha}@~ao} fibtophi (@var{expr})
-Expressa n@'umeros de Fibonacci em termos da constante @code{%phi},
+Expressa n@'umeros de Fibonacci que aparecem em @var{expr} em termos da constante @code{%phi},
 que @'e @code{(1 + sqrt(5))/2}, aproximadamente 1.61803399.
 
-@c SEEMS MISPLACED -- THIS WANTS TO BE UNDER %phi !!!
-Por padr@~ao, Maxima n@~ao conhece @code{%phi}.
-Ap@'os executar @code{tellrat (%phi^2 - %phi - 1)} e @code{algebraic: true},
-@code{ratsimp} pode simplificar algumas express@~oes contendo @code{%phi}.
+Exemplos:
+ 
+@c ===beg===
+@c fibtophi (fib (n));
+@c fib (n-1) + fib (n) - fib (n+1);
+@c fibtophi (%);
+@c ratsimp (%);
+@c ===end===
 
 @example
 (%i1) fibtophi (fib (n));
@@ -343,8 +347,17 @@ Ap@'os executar @code{tellrat (%phi^2 - %phi - 1)} e @code{algebraic: true},
                            2 %phi - 1
 (%i2) fib (n-1) + fib (n) - fib (n+1);
 (%o2)          - fib(n + 1) + fib(n) + fib(n - 1)
-(%i3) ratsimp (fibtophi (%));
-(%o3)                           0
+(%i3) fibtophi (%);
+            n + 1             n + 1       n             n
+        %phi      - (1 - %phi)        %phi  - (1 - %phi)
+(%o3) - --------------------------- + -------------------
+                2 %phi - 1                2 %phi - 1
+                                          n - 1             n - 1
+                                      %phi      - (1 - %phi)
+                                    + ---------------------------
+                                              2 %phi - 1
+(%i4) ratsimp (%);
+(%o4)                           0
 @end example
 
 @end deffn
@@ -475,12 +488,13 @@ a expans@~ao acontece.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} power_mod (@var{a}, @var{n}, @var{m})
-Usa umalgor@'itmo modular para calcular @code{a^n mod m} 
+@deffn {Fun@value{cedilha}@value{a_til}o} power_mod (@var{a}, @var{n}, @var{m})
+Usa um algor@'itmo modular para calcular @code{a^n mod m} 
 onde @var{a} e @var{n} s@~ao inteiros e @var{m} @'e um inteiro positivo. 
-Se @var{n} for negativo, @code{inv_mod} @'e usado para encontrar o inverso modular.
+Se @var{n} for negativo, @code{inv_mod} @'e usada para encontrar o inverso modular.
 
 @example
+(%i1) power_mod(3, 15, 5);
 (%o1)                          2
 (%i2) mod(3^15,5);
 (%o2)                          2
@@ -492,7 +506,6 @@ Se @var{n} for negativo, @code{inv_mod} @'e usado para encontrar o inverso modul
 
 @end deffn
 
-@c IS IT POSSIBLE TO MAKE A DECLARATION SUCH THAT primep RETURNS true ??
 @deffn {Fun@value{cedilha}@~ao} primep (@var{n})
 Teste de primalidade. Se @code{primep (n)} retornar @code{false}, @var{n} @'e um
 n@'umero compostro e se esse teste retornar @code{true}, @var{n} @'e um n@'umero primo

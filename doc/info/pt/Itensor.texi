@@ -1,5 +1,5 @@
 @c Language: Portuguese, Encoding: iso-8859-1
-@c /Itensor.texi/1.39/Thu Nov  2 05:47:38 2006//
+@c /Itensor.texi/1.40/Sat Nov  4 16:15:55 2006//
 @c RECOMMEND REVISE TEXT THROUGHOUT TO LOSE NOTION OF TIME RELATIVE TO PRESENT
 @c LOOK FOR "NOW", "OLD", "NEW", "RECENT", "EARLIER", DATES
 
