@@ -57,10 +57,12 @@
 (defun $newline (&optional (stream)) (terpri stream))
 
 
-;;  $printf covers most features of CL-function format
+;;  $printf makes almost all features of CL-function format available
 (defmacro $printf (stream mstring &rest args)
-  (let ((string (l-string ($ssubst "~a" "~s" (meval mstring) 'sequalignore)))
-        (listparanthesis ($ssearch "~{" (meval mstring)))
+  (let (;;(string (l-string ($ssubst "~a" "~s" (meval mstring) 'sequalignore))) 
+        ;; needs a fix for directives like ~20s
+        (string (l-string (meval mstring))) 
+        (bracket ($ssearch "~{" (meval mstring)))
         body)
     (dolist (arg args)
        (progn
@@ -71,7 +73,7 @@
                  ((and (symbolp arg) (not (boundp arg)))
                     `(quote ,(maybe-invert-string-case (subseq (string arg) 1)))) 
                  ((and (listp arg) (listp (car arg)) (mlistp arg))
-                    (if listparanthesis
+                    (if bracket
                        `(quote ,(cltree arg))
                        (merror 
                           "printf: For printing lists use ~M in the control string." 
