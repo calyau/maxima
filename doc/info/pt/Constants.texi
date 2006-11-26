@@ -13,7 +13,6 @@
 @vrindex Constante de Euler
 @vrindex Base do logar@'itmo natural
 @end ifinfo
-@end ifinfo
 @code{%e} representa a base do logar@'itmo natural, tamb@'em conhecido como constante de Euler.
 O valor num´erico de @code{%e} @'e um n@'umero em ponto flutuante de precis@~ao dupla 2.718281828459045d0.
 
