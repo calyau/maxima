@@ -215,6 +215,7 @@ Pacotes Adicionais
 * ggf::                         Fun@,{c}@~ao geradora para sequ@^encias.
 * impdiff::                     Derivadas impl@'icitas.
 * interpol::                    Pacote de interpola@,{c}@~ao.
+* lbfgs::                       L-BFGS pacote de minimiza@,{c}@~ao n@~ao limitada.
 * lindstedt::                   Pacote Lindstedt.
 * linearalgebra::               Fun@,{c}@~oes de algebra linear.
 * lsquares::                    M@'etodo dos m@'inimos quadrados.
@@ -227,6 +228,7 @@ Pacotes Adicionais
 * simplex::                     Programa@,{c}@~ao linear.
 * simplification::              Fun@,{c}@~oes e regras de simplifica@,{c}@~ao.
 * solve_rec::                   Rela@,{c}@~oes de recorr@^encia lineares.
+* stats::                       Pacote de infer@^encias estat@'isticas.
 * stirling::                    F@'ormula de Stirling.
 * stringproc::                  Processamento de cadeias de texto.
 * unit::                        Pacote de unidades e dimens@~oes.
@@ -506,6 +508,11 @@ interpol
 * Introduction to interpol::
 * Definitions for interpol::
 
+lbfgs
+
+* Introduction to lbfgs::
+* Definitions for lbfgs::
+
 lindstedt
 
 * Defini@value{cedilha}@~oes para lindstedt::
@@ -560,6 +567,13 @@ solve_rec
 
 * Introduction to solve_rec::
 * Definitions for solve_rec::
+
+stats
+
+* Introduction to stats::
+* Definitions for inference_result::
+* Definitions for stats::
+* Definitions for special distributions::
 
 stirling
 
@@ -804,11 +818,15 @@ zeilberger
 @chapter impdiff
 @include ../pt/impdiff.texi
 
-@node interpol, lindstedt, impdiff, Top
+@node interpol, lbfgs, impdiff, Top
 @chapter interpol
 @include ../pt/interpol.texi
 
-@node lindstedt, linearalgebra, interpol, Top
+@node lbfgs, lindstedt, interpol, Top
+@chapter lbfgs
+@include ../pt/lbfgs.texi
+
+@node lindstedt, linearalgebra, lbfgs, Top
 @chapter lindstedt
 @include ../pt/lindstedt.texi
 
@@ -852,11 +870,15 @@ zeilberger
 @chapter simplification
 @include ../pt/simplifications.texi
 
-@node solve_rec, stirling, simplification, Top
+@node solve_rec, stats, simplification, Top
 @chapter solve_rec
 @include ../pt/solve_rec.texi
 
-@node stirling, stringproc, solve_rec, Top
+@node stats, stirling, solve_rec, Top
+@chapter stats
+@include ../pt/stats.texi
+
+@node stirling, stringproc, stats, Top
 @chapter stirling
 @include ../pt/stirling.texi
 
