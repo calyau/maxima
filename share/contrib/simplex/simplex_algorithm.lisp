@@ -120,7 +120,8 @@
          (n ($length ($first A)))
          (Tab (make-array `(,(+ 2 m) ,(1+ n)))) ; Tableau
          (basis ())      ; which columns are in current basis
-         (sc-fac ()))    ; scaling factors
+         (sc-fac ())     ; scaling factors
+	 ($ratprint nil))
     
     (setq $pivot_count_sx 0)
 
