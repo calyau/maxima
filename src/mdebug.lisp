@@ -343,6 +343,14 @@
 				(subseq 
 				 (read-line stream eof-error-p eof-value) 1))))
 		    `((displayinput) nil (($describe) ,line))))
+         ((equal next #\!)
+          ;; We have "?!...". Assume it is "?! <stuff>",
+          ;; so invoke INFO-EXACT on <stuff>.
+		  (let* ((line (string-trim 
+				'(#\space #\tab #\; #\$)
+				(subseq 
+				 (read-line stream eof-error-p eof-value) 1))))
+		    `((displayinput) nil (($describe) ,line $exact))))
 		 (t
 		  ;; Got "?<stuff>" This means a call to a Lisp
 		  ;; function.  Pass this on to mread which can handle

@@ -10,8 +10,7 @@
    ))
 
 (defpackage :cl-info
-  (:use :common-lisp :maxima-nregex)
-  (:export #:info #:*info-paths*))
+  (:use :common-lisp))
 
 (defpackage :command-line
   (:use :common-lisp)

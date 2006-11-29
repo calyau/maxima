@@ -303,7 +303,21 @@ For example, @code{?round} signifies the Lisp function @code{ROUND}.
 See @ref{Lisp and Maxima} for more on this point.
 
 The notation @code{? word} (a question mark followed a word, separated by whitespace)
-is equivalent to @code{describe ("word")}.
+is equivalent to @code{describe("word")}.
+The question mark must occur at the beginning of an input line;
+otherwise it is not recognized as a request for documentation.
+
+@end deffn
+
+@deffn {Special symbol} ?!
+@ifinfo
+@fnindex Fetch documentation (exact search)
+@end ifinfo
+
+The notation @code{?! word} (@code{?!} followed a word, separated by whitespace)
+is equivalent to @code{describe("word", exact)}.
+The question mark must occur at the beginning of an input line;
+otherwise it is not recognized as a request for documentation.
 
 @end deffn
 

@@ -237,29 +237,12 @@
 		    ((equal language "en")
 			(setq *maxima-lang-subdir* nil))
 		    ;; Latin-1 aka iso-8859-1 languages 
-		    ((zl-member language '("es" "pt"))
+		    ((zl-member language '("es" "pt" "fr" "de" "it"))
 		      (if (zl-member codeset '("utf-8" "utf8"))
 		    	    (setq *maxima-lang-subdir* (concatenate 'string language ".utf8"))
 		    	    (setq *maxima-lang-subdir* language)))
 		    (t  (setq *maxima-lang-subdir* nil)))
-		;; Translation of the word "Index" to match node "Fuction and Variable Index"
-		(cond
-		    ((equal language "es")
-			(setq cl-info::*index-name* (format nil "~andice" (code-char #xCD))))
-		    ((equal language "pt")
-			(setq cl-info::*index-name* (format nil "~andice" (code-char #xCD)))) 
-		)
-		;; Additional language-dependent pattern to match nodes such as 
-		;;  -- Function: foo (x)
-		;; or
-		;;  -- Option variable: bar
-		(cond 
-		    ;; This pattern is suitable for all Latin-1 (aka ISO-8859-1) langages
-		    ((zl-member language '("es" "pt"))
-		        (setq cl-info::*extra-chars* (format nil "~a-~a" (code-char #xC0) (code-char #xFF))))
-		)
-	    )))
-   (setq cl-info::*lang-subdir* *maxima-lang-subdir*)))    
+	    )))))    
 
 (defun set-pathnames ()
   (let ((maxima-prefix-env (maxima-getenv "MAXIMA_PREFIX"))
@@ -397,19 +380,10 @@
 	  (list '(mlist)
 		(combine-path (list *maxima-symdir* lisp-patterns))
 		(combine-path (list *maxima-symdir* maxima-patterns))))
-    (setq cl-info::*info-paths* (list (concatenate 'string *maxima-infodir* "/")))
-    ;; Share subdirs are not required here since all .info files are installed
-    ;; in one directory *maxima-infodir* -- there is no info files in share.
-    ;; vvzhy Jan 2, 2006
-    ;(setq L (mapcar #'(lambda (x) (concatenate 'string *maxima-sharedir* "/" x "/")) share-subdirs-list))
-    ;(setq cl-info::*info-paths* (append cl-info::*info-paths* L))
-
-    ; Look for "foo.info" in share directory "foo".
-    (loop for d in share-subdirs-list do
-      (let ((name (if (find #\/ d) (unix-like-basename d) d)))
-        (when (cl-info::file-search name cl-info::*info-paths* '("info") nil)
-          #+debug (format t "SET-PATHNAMES: found an info file for share directory ~S~%" name)
-          (nconc cl-info::*default-info-files* `(,(concatenate 'string name ".info"))))))))
+    (let 
+      ((subdir-bit (if (null *maxima-lang-subdir*) "" (concatenate 'string "/" *maxima-lang-subdir*))))
+      (autof 'cl-info::cause-maxima-index-to-load
+             (concatenate 'string *maxima-infodir* subdir-bit "/maxima-index.lisp")))))
 
 (defun get-dirs (path)
   #+(or :clisp :sbcl)
@@ -587,8 +561,8 @@
       (setf *read-default-float-format* 'lisp::double-float))
     
     (catch 'to-lisp
-      (set-pathnames)
       (set-locale)
+      (set-pathnames)
       (setf (values input-stream batch-flag) 
 	    (process-maxima-args input-stream batch-flag))
       (progn

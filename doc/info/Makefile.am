@@ -76,6 +76,11 @@ figures/plotting24.gif\
 figures/plotting25.gif\
 figures/orthopoly1.gif
 
+all-local: maxima-index.lisp
+
+maxima-index.lisp: maxima.info
+	perl ./build_index.pl maxima.info ':crlf' > maxima-index.lisp
+
 maximahtml.mk:
 	perl ./texi2html -split_chapter --lang=en --output=. --css-include=./manual.css --init-file ./texi2html.init maxima.texi 
 	rm -f maximahtml.mk
@@ -98,18 +103,30 @@ contents.hhc index.hhk header.hhp maxima.hhp
 all-local: check_texinfo
 dist-hook: check_texinfo
 
+install-data-local: install-maxima-index
+uninstall-local: uninstall-maxima-index
+
+install-maxima-index: maxima-index.lisp
+	test -z "$(infodir)" || mkdir -p -- "$(DESTDIR)$(infodir)"
+	$(INSTALL_DATA) maxima-index.lisp "$(DESTDIR)$(infodir)/maxima-index.lisp"
+
+uninstall-maxima-index: maxima-index.lisp
+	rm -f "$(DESTDIR)$(infodir)/maxima-index.lisp"
+
 clean-local: clean-info
 clean-local: clean-html
 
 clean-info:
 	rm -f maxima.info*
+	rm -f maxima-index.lisp
 
 clean-html:
 	rm -f maxima*.html
 	rm -f contents.hhc
 	rm -f index.hhk
 
-EXTRA_DIST = texi2html maximahtml.mk manual.css texi2html.init $(genericdirDATA) create_index header.hhp maxima.hhp
+EXTRA_DIST = texi2html maximahtml.mk manual.css texi2html.init $(genericdirDATA) \
+    create_index header.hhp maxima.hhp maxima-index.lisp
 
 check_texinfo:
 	bad_files=`find . -name '*.texi' -print | xargs grep -l $$'\x0D$$'` ; \

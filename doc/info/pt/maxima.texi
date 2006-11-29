@@ -261,7 +261,7 @@ Linha de Comando
 
 Operadores
 
-* "N" Argumentos::                        
+* N-Argumentos::                        
 * Sem Argumentos::                       
 * Operador::                    
 * Operador P@'osfixado::                     

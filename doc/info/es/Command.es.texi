@@ -139,7 +139,7 @@ La comilla simple no evita la simplificaci@'on.
 
 @end deffn
 
-@deffn {Operador} "
+@deffn {Operador} ''
 @ifinfo
 @fnindex Operador comilla-comilla
 @end ifinfo

@@ -5,7 +5,7 @@
 @hyphenation{u-san-do}
 @end iftex
 @menu
-* "N" Argumentos::                        
+* N-Argumentos::                        
 * Sem Argumentos::                       
 * Operador::                    
 * Operador P@'osfixado::                     
@@ -14,8 +14,8 @@
 @end menu
 
 
-@node "N" Argumentos, Sem Argumentos, Operadores, Operadores
-@section "N" Argumentos
+@node N-Argumentos, Sem Argumentos, Operadores, Operadores
+@section N-Argumentos
 Um operador @code{nary} @'e usado para denotar uma fun@,{c}@~ao com qualquer n@'umero de
 argumentos, cada um dos quais @'e separado por uma ocorr@^encia do
 operador, e.g. A+B ou A+B+C.  A fun@,{c}@~ao @code{nary("x")}  @'e uma fun@,{c}@~ao
@@ -26,7 +26,7 @@ simplificar, e.g. @code{j(j(a,b),j(c,d))} para @code{j(a, b, c, d)}.
 
 Veja tamb@'em @code{syntax}.
 
-@node Sem Argumentos, Operador, "N" Argumentos, Operadores
+@node Sem Argumentos, Operador, N-Argumentos, Operadores
 @section Sem Argumentos
 Operadores @code{nofix} s@~ao usados para denotar fun@,{c}@~oes sem argumentos.
 A mera presen@,{c}a de tal operador em um comando far@'a com que a
