@@ -1254,7 +1254,7 @@ Devuelve el coeficiente de curtosis una variable aleatoria @math{Gamma(a,b)}, co
 @defvr {Variable opcional} random_gamma_algorithm
 Valor por defecto: @code{ahrens_cheng}
 
-Es el algoritmo seleccionado para simular random gamma variates. Algoritmos programados son @code{ahrens_cheng} y @code{inverse}
+Es el algoritmo seleccionado para simular variables aleatorias gamma. Algoritmos programados son @code{ahrens_cheng} y @code{inverse}
 @itemize @bullet
 
 @item
@@ -1343,7 +1343,7 @@ Devuelve el coeficiente de curtosis de una variable aleatoria @math{Beta(a,b)}, 
 @defvr {Variable opcional} random_beta_algorithm
 Valor por defecto: @code{cheng}
 
-Es el algoritmo seleccionado para simular random beta variates. Algoritmos programados son @code{cheng}, @code{inverse} y @code{ratio}
+Es el algoritmo seleccionado para simular variables aleatorias beta. Algoritmos programados son @code{cheng}, @code{inverse} y @code{ratio}
 @itemize @bullet
 
 @item
@@ -2496,7 +2496,7 @@ Devuelve el coeficiente de curtosis una variable aleatoria binomial negativa  @m
 @defvr {Variable opcional} random_negative_binomial_algorithm
 Valor por defecto: @code{bernoulli}
 
-Es el algoritmo seleccionado para simular variable binomiales negativas. Los algoritmos programados son @code{devroye}, @code{bernoulli} y @code{inverse}:
+Es el algoritmo seleccionado para simular variables aleatorias binomiales negativas. Los algoritmos programados son @code{devroye}, @code{bernoulli} y @code{inverse}:
 @itemize @bullet
 
 @item
