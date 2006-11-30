@@ -775,7 +775,7 @@
       (let ((l (listify n))
 	    ;; Don't print out strings with quotation marks!
 	    $stringdisp)
-	(do ((l l (cddr l)))( (null l)) (rplacd l (cons '| | (cdr l))))
+	(do ((l l (cddr l)))( (null l)) (rplacd l (cons " " (cdr l))))
 	(displa (setq printmsg (cons '(mtext) l)))
 	(cadr (reverse l)))))
 
