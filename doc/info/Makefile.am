@@ -1,16 +1,16 @@
-if LANG_ES
+if LANG_ES_TRUE
   ES_DIR = es
 endif
 
-if LANG_ES_UTF8
+if LANG_ES_UTF8_TRUE
   ES_DIR_UTF8 = es.utf8
 endif
 
-if LANG_PT
+if LANG_PT_TRUE
   PT_DIR = pt
 endif
 
-if LANG_PT_UTF8
+if LANG_PT_UTF8_TRUE
   PT_DIR_UTF8 = pt.utf8
 endif
 
@@ -43,6 +43,8 @@ figures/dynamics5.gif\
 figures/dynamics6.gif\
 figures/dynamics7.gif\
 figures/dynamics8.gif\
+figures/dynamics9.gif\
+figures/dynamics10.gif\
 figures/plotdf1.gif\
 figures/plotdf2.gif\
 figures/plotdf3.gif\
