@@ -36,6 +36,7 @@ External Requirements
 7) gnuplot
 8) wxMaxima
 9) Microsoft HTML Help Workshop
+10) ActivePerl
 
 Detailed Instructions
 =====================
@@ -60,6 +61,11 @@ from <http://sourceforge.net/project/showfiles.php?group_id=2435>:
       ftp://ftp.sf.net/m/mi/mingw/binutils-2.14.90-20030807-1.tar.gz
    f) Install msysDTK-1.0.1.exe
       It provides Perl and autotools (autoconf/automake).
+      Perl which comes with comes with msysDTK-1.0.1 is Perl 5.6
+      but Maxima 5.11 requires Perl 5.8.  So for Maxima 5.11 and above
+      get and install ActivePerl at <http://www.activestate.com>.
+      Follow the download link at 
+      <http://www.activestate.com/Products/ActivePerl/>.
 
 NOTE: gcc 3.3.3 and gcc 3.4.0 do NOT work; likewise binutils 2.13.90
 and 2.15.90.
