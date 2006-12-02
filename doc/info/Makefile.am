@@ -1,16 +1,16 @@
-if LANG_ES_TRUE
+if LANG_ES
   ES_DIR = es
 endif
 
-if LANG_ES_UTF8_TRUE
+if LANG_ES_UTF8
   ES_DIR_UTF8 = es.utf8
 endif
 
-if LANG_PT_TRUE
+if LANG_PT
   PT_DIR = pt
 endif
 
-if LANG_PT_UTF8_TRUE
+if LANG_PT_UTF8
   PT_DIR_UTF8 = pt.utf8
 endif
 
