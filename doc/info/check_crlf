@@ -1,6 +1,7 @@
 #!/bin/sh
 
-BADFILES=`find . -name '*.texi' -print | xargs grep -l $'\x0D$'`
+pattern=`printf "\r$"`
+bad_files=`find . -name '*.texi' -print | xargs grep -l -e "$pattern"`
 
-echo $BADFILES
+echo $bad_files
 

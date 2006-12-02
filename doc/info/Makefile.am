@@ -102,7 +102,6 @@ $(MAXIMAHTML)\
 $(figurefiles)\
 contents.hhc index.hhk header.hhp maxima.hhp
 
-all-local: check_texinfo
 dist-hook: check_texinfo
 
 install-data-local: install-maxima-index
@@ -128,13 +127,18 @@ clean-html:
 	rm -f index.hhk
 
 EXTRA_DIST = texi2html maximahtml.mk manual.css texi2html.init $(genericdirDATA) \
-    create_index header.hhp maxima.hhp maxima-index.lisp
+    create_index header.hhp maxima.hhp maxima-index.lisp \
+    check_crlf check_tab fix_crlf fix_tab
 
 check_texinfo:
-	bad_files=`find . -name '*.texi' -print | xargs grep -l $$'\x0D$$'` ; \
-	[ -z  "$$bad_files" ] || ( echo "ERROR: The following files have DOS-style EOLs: $$bad_files" ; exit 1 )
-	bad_files=`find . -name '*.texi' -print | xargs grep -l $$'\t'` ; \
-	[ -z  "$$bad_files" ] || ( echo "ERROR: The following files have unexpanded Tabs: $$bad_files" ; exit 1 )
+	pattern=`printf "\r$$"` ; \
+	bad_files=`find . -name '*.texi' -print | xargs grep -l -e "$$pattern"` ; \
+	[ -z  "$$bad_files" ] || ( echo "ERROR: The following files have DOS-style EOLs: $$bad_files" ; \
+	echo "Run make distclean and then /doc/info/fix_crlf to fix the problem." ; exit 1 )
+	pattern=`printf "\t"` ; \
+	bad_files=`find . -name '*.texi' -print | xargs grep -l -e "$$pattern"` ; \
+	[ -z  "$$bad_files" ] || ( echo "ERROR: The following files have unexpanded Tabs: $$bad_files" ; \
+	echo "Run make distclean and then /doc/info/fix_tab to fix the problem." ; exit 1 )
 
 .PHONY: check_texinfo
 
