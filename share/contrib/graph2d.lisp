@@ -21,9 +21,9 @@
 ;; See graph2d.usg (which should come together with this program) for
 ;; a usage summary, and graph2d.dem for examples.
 ;;
-;; $Id: graph2d.lisp,v 1.1 2006-07-31 17:35:17 villate Exp $
+;; $Id: graph2d.lisp,v 1.2 2006-12-02 02:12:15 villate Exp $
 
-(in-package "MAXIMA")
+(in-package :maxima)
 
 ;; default graph2d options
 (defvar $graph2d_options '((mlist)
