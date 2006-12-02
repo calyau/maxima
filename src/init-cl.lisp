@@ -304,6 +304,7 @@
          "contrib/diffequations"
          "contrib/diffequations/tests"
          "contrib/distrib"
+         "contrib/dynamics"
          "contrib/ezunits"
          "contrib/format"
          "contrib/gentran"

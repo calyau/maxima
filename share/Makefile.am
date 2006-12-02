@@ -161,7 +161,8 @@ contrib/diffequations/tests/rtestode_murphy_2_5.mac\
 contrib/diffequations/tests/testsuite.lisp\
 contrib/distrib/distrib.mac\
 contrib/distrib/numdistrib.lisp\
-contrib/dynamics.mac\
+contrib/dynamics/complex_dynamics.lisp\
+contrib/dynamics/dynamics.mac\
 contrib/eval_string.lisp\
 contrib/ezunits/ezunits.mac\
 contrib/ezunits/rtestezunits.mac\
