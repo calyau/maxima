@@ -3537,7 +3537,7 @@ after any occurrence of \" ==> \" will be deleted."
     (setq maxima-minor-mode-map map)))
 
 (unless (fboundp 'define-minor-mode)
-  (defalias 'easy-mmode-define-minor-mode 'define-minor-mode))
+  (defalias 'define-minor-mode 'easy-mmode-define-minor-mode))
 
 (define-minor-mode maxima-minor-mode
   "Toggle Maxima minor mode.
