@@ -107,7 +107,9 @@ print "(defvar *info-deffn-defvr-pairs* '(\n";
 print "; CONTENT: (<INDEX TOPIC> . (<FILENAME> <BYTE OFFSET> <LENGTH IN CHARACTERS> <NODE NAME>))\n";
 
 foreach $key (sort keys %topic_locator) {
-    print "(\"$key\" . (\"$topic_locator{$key}[1]\" $topic_locator{$key}[2] $topic_locator{$key}[3] \"$topic_locator{$key}[0]\"))\n";
+    my $sanitized_key = $key;
+    $sanitized_key =~ s/"/\\"/g;
+    print "(\"$sanitized_key\" . (\"$topic_locator{$key}[1]\" $topic_locator{$key}[2] $topic_locator{$key}[3] \"$topic_locator{$key}[0]\"))\n";
 }
 
 print "))\n";
@@ -186,7 +188,9 @@ print "; CONTENT: (<NODE NAME> . (<FILENAME> <BYTE OFFSET> <LENGTH IN CHARACTERS
 
 foreach $node_title (sort keys %node_locator) {
     ($filename, $begin_node_offset, $length) = @{$node_locator{$node_title}};
-    print "(\"$node_title\" . (\"$filename\" $begin_node_offset ", $length, "))\n";
+    my $sanitized_title = $node_title;
+    $sanitized_title =~ s/"/\\"/g;
+    print "(\"$sanitized_title\" . (\"$filename\" $begin_node_offset ", $length, "))\n";
 }
 
 print "))\n";
