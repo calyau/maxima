@@ -1,5 +1,5 @@
 @c Language: Portuguese, Encoding: iso-8859-1
-@c /Help.texi/1.19/Mon Jun 27 14:25:15 2005/-ko/
+@c /Help.texi/1.20/Sun Dec  3 09:51:33 2006/-ko/
 @iftex
 @hyphenation{cor-res-pon-de}
 @end iftex
@@ -326,16 +326,24 @@ _
 @end deffn
 
 @deffn {Fun@,{c}@~ao} describe (@var{string})
-Encontra todos os @'itens documentados que possuem @var{string} em seus t@'itulos.
+@deffnx {Fun@,{c}@~ao} describe (@var{string}, exact)
+@code{describe(@var{string})} encontra todos os itens documentados que contiverem @var{string} em seus t@'itulos.
 Se existe mais de um de tal item, Maxima solicita ao usu@'ario selecionar
 um item ou @'itens para mostrar.
+
+@code{describe(@var{string}, exact)} encontra um item com t@'itulo igual
+(case-insensitive)
+a @var{string}, se existir tal item.
+
 Na linha de comando interativa,
 @code{? foo} (com um espa@,{c}o entre @code{?} e @code{foo})
-@'e equivalente a @code{describe ("foo")}.
+@'e equivalente a @code{describe("foo")}.
+e @code{?! foo} @'e equivalente a @code{describe("foo", exact)}.
 
-@code{describe ("")} retorna uma lista de todos os t@'opicos documentados no manual on-line.
+@code{describe("")} retorna uma lista de todos os t@'opicos documentados no manual on-line.
 
-@code{describe} n@~ao avalia seu argumento. @code{describe} sempre retorna @code{false}.
+@code{describe} n@~ao avalia seu argumento.
+@code{describe} retorna @code{true} se alguma documenta@,{c}@~ao for encontrada, de outra forma retorna @code{false}.
 
 Exemplo:
 

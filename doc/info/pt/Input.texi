@@ -1,5 +1,5 @@
 @c Language: Portuguese, Encoding: iso-8859-1
-@c /Input.texi/1.49/Sat Nov 25 04:02:49 2006/-ko/
+@c /Input.texi/1.50/Sun Dec  3 09:51:52 2006/-ko/
 @menu
 * Introdu@value{cedilha}@~ao a Entrada e Sa@'ida::  
 * Coment@'arios::
@@ -303,8 +303,22 @@ o nome @'e um nome Lisp, n@~ao um nome Maxima.
 Por exemplo, @code{?round} significa a fun@,{c}@~ao Lisp @code{ROUND}.
 Veja @ref{Lisp e Maxima} para mais sobre esse ponto.
 
-A nota@,{c}@~ao @code{? word} (um ponto de interroga@,{c}@~ao seguido de uma palavra e separado desta por um espa@,{c}o em branco)
-@'e equivalente a @code{describe ("word")}.
+A nota@,{c}@~ao @code{? palavra} (um ponto de interroga@,{c}@~ao seguido de uma palavra e separado desta por um espa@,{c}o em branco)
+@'e equivalente a @code{describe("palavra")}.
+O ponto de interroga@,{c}@~ao deve aparecer no in@'icio de uma linha de entrada;
+de outra forma o ponto de interroga@,{c}@~ao n@~ao @'e reconhecido com um pedido de documenta@,{c}@~ao.
+
+@end deffn
+
+@deffn {S@'imbolo especial} ?!
+@ifinfo
+@fnindex Consulta adocumenta@,{c}@~ao (busca exata)
+@end ifinfo
+
+A nota@,{c}@~ao @code{?! palavra} (@code{?!} seguido de um espa@,{c}o em branco e uma palavra)
+@'e equivalente a @code{describe("palavra", exact)}.
+O ponto de interroga@,{c}@~ao deve ocorrer no in@'icio de uma linha de entrada;
+de outra forma n@~ao @'e reconhecido com um pedido de documenta@,{c}@~ao.
 
 @end deffn
 
