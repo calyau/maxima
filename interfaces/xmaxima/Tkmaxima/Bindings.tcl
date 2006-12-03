@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Bindings.tcl,v 1.6 2006-09-18 22:20:58 villate Exp $
+#       $Id: Bindings.tcl,v 1.7 2006-12-03 23:21:18 villate Exp $
 #
 ###### Bindings.tcl ######
 ############################################################
@@ -28,6 +28,11 @@ Bindings:
 "]
 
 proc vMAXSetCNTextBindings {w} {
+    # Prevent deleting output fields with BackSpace key
+    bind CNtext <Key-BackSpace> {
+	if {[lsearch [%W tag names [%W index insert-1c]] output] >= 0} break
+    }
+
     # Disable default keyboard bindings in output fields 
     bind CNtext <Key> {
 	if {[lsearch [%W tag names [%W index insert]] output] >= 0} break
