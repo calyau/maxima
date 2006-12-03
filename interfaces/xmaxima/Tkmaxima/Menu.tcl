@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Menu.tcl,v 1.20 2006-12-03 22:26:12 villate Exp $
+#       $Id: Menu.tcl,v 1.21 2006-12-03 22:38:15 villate Exp $
 #
 
 proc pMAXSaveTexToFile {text} {
@@ -74,6 +74,10 @@ proc vMAXAddSystemMenu {fr text} {
     $m add command -underline 0 \
 	-label [mc "Restart"] \
 	-command [list runOneMaxima $text]
+    $m add command -underline 0 \
+	-label [mc "Input prompt"] \
+	-accel {Alt+s} \
+	-command [list event generate $text <Alt-Key-s>]
 
     $m add separator
     $m add command -underline 1 \
@@ -223,7 +227,7 @@ proc vMAXAddSystemMenu {fr text} {
 	
 	set selectedbrowser mozilla
 
-	foreach b { galeon firefox mozilla konqueror epiphany amaya netscape } {
+	foreach b { firefox mozilla konqueror epiphany galeon amaya netscape } {
 	    if { ! [catch {exec which $b} ] } {
 		set selectedbrowser $b
 		break } }
