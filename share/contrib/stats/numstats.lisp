@@ -106,12 +106,13 @@
 ;;  is the number of uncensored observations; this option is not documented
 ;;  in Maxima at this moment, since I haven't checked it; in fact, the R 
 ;;  function 'shapiro.test' doesn't make use of this second argument (I don't know why).
-(defun $shapiro_wilk_test (x &optional n1)
+(defun $test_normality (x &optional n1)
    (if (not ($listp x))
-      (merror "First argument of 'shapiro_wilk_test' must be a Maxima list"))
+      (merror "First argument of 'test_normality' must be a Maxima list"))
    (setf x (sort (map 'list #'$float (rest x)) #'<))
    (if (null n1) (setf n1 (length x)))
-   (let* ((n (length x))
+   (let* (($numer $stats_numer)
+          (n (length x))
           (n2 (floor (/ n 2)))
           w pw  ; W statistic and its p-value
           ; initialized data

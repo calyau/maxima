@@ -50,7 +50,7 @@
 
 
 
-;; Functions d-matrixz, matoutz, coloutz and dim-$matriz are similar to
+;; Functions d-matrixz, matoutz, coloutz and dim-$inference_result are similar to
 ;; d-matrix, matout, colout and dim-$matrix, respectively, from displa.lisp.
 ;; The left and right characters ($lmxchar and $rmxchar in displa.lisp) are 
 ;; defined without additional global variables.
@@ -105,9 +105,9 @@
     (checkbreak result width))
   result)
 
-(displa-def $matriz dim-$matriz)
+(displa-def $inference_result dim-$inference_result)
 
-(defun dim-$matriz (form result)
+(defun dim-$inference_result (form result)
   (prog (dmstr rstr cstr consp)
      (if (or (null (cdr form))
 	     (not (memq 'simp (cdar form)))
@@ -157,13 +157,13 @@
             (cons (list '(mlist simp) (list '(mequal simp) (car aux) (cadr aux))) 
                   output)) )
    ; variable output has the following structure:
-   ; '(($matriz simp)
+   ; '(($inference_result simp)
    ;      ((mlist simp) ,title)
    ;      ((mlist) ((mequal simp) value_name1 value1))
    ;      ((mlist) ((mequal simp) value_name2 value2))
    ;      ((mlist) ((mequal simp) value_name3 value3)))
-   (setf output (append (list '($matriz simp) (list '(mlist simp) title)) output))
-   (dim-$matriz output result) ))
+   (setf output (append (list '($inference_result simp) (list '(mlist simp) title)) output))
+   (dim-$inference_result output result) ))
 
 
 

@@ -32,11 +32,7 @@ load("inference_result")$
 load("numstats")$
 
 
-numer : true$
-print("Warning: global variable 'numer' is set to 'true'.")$
-
-fpprintprec : 7$
-print("Warning: global variable 'fpprintprec' is set to 7.")$
+stats_numer : true$
 
 /* This is the mean test. The first argument 'x' is a list or a column matrix  */
 /* of expressions (one sample)                                                 */
@@ -62,8 +58,8 @@ print("Warning: global variable 'fpprintprec' is set to 7.")$
 /*   6. 'statistic= statistic used in the procedure                            */
 /*   7. 'distribution= distribution and its parameters                         */
 /*   8. 'p_value= p-value of the sample statistic                              */
-mean_test(x,[select]):= 
-block([options, defaults, m, n, coef, cinterval, aux,
+test_mean(x,[select]):= 
+block([numer:stats_numer, options, defaults, m, n, coef, cinterval, aux,
        statistic, method, distribution, hypo, pvalue, listarith:true],
 
   /* controlling sample format */
@@ -185,8 +181,8 @@ block([options, defaults, m, n, coef, cinterval, aux,
 /*   6. 'statistic: statistic used in the procedure                             */
 /*   7. 'distribution: distribution and its parameters                          */
 /*   8. 'p_value: p-value of the sample statistic                               */
-dif_means_test(x1,x2,[select]):= 
-block([options, defaults, dm, n1, n2, v1, v2, coef, cinterval, aux, df,
+test_means_difference(x1,x2,[select]):= 
+block([numer:stats_numer, options, defaults, dm, n1, n2, v1, v2, coef, cinterval, aux, df,
        statistic, method, distribution, hypo, pvalue, listarith:true],
 
   /* controlling sample format */
@@ -325,8 +321,8 @@ block([options, defaults, dm, n1, n2, v1, v2, coef, cinterval, aux, df,
 /*   6. 'statistic: statistic used in the procedure                             */
 /*   7. 'distribution: distribution and its parameters                          */
 /*   8. 'p_value: p-value of the sample statistic                               */
-variance_test(x,[select]):= 
-block([options, defaults, s2, n, coef, df, cinterval, aux,
+test_variance(x,[select]):= 
+block([numer:stats_numer, options, defaults, s2, n, coef, df, cinterval, aux,
        statistic, method, distribution, hypo, pvalue, listarith:true],
 
   /* controlling sample format */
@@ -427,8 +423,8 @@ block([options, defaults, s2, n, coef, df, cinterval, aux,
 /*   6. 'statistic: statistic used in the procedure                             */
 /*   7. 'distribution: distribution and its parameters                          */
 /*   8. 'p_value: p-value of the sample statistic                               */
-variance_ratio_test(x1,x2,[select]):= 
-block([options, defaults, vr, n1, n2, t1, t2, df1, df2, cinterval, aux,
+test_variance_ratio(x1,x2,[select]):= 
+block([numer:stats_numer, options, defaults, vr, n1, n2, t1, t2, df1, df2, cinterval, aux,
        statistic, method, distribution, hypo, pvalue, listarith:true],
 
   /* controlling sample format */
@@ -528,8 +524,8 @@ block([options, defaults, vr, n1, n2, t1, t2, df1, df2, cinterval, aux,
 /*   4. 'statistic= statistic used in the procedure                               */
 /*   5. 'distribution= distribution and its parameters                            */
 /*   6. 'p_value= p-value of the sample statistic                                 */
-sign_test(x,[select]):= 
-block([options, defaults, med, n, npos, aux, xm,
+test_sign(x,[select]):= 
+block([numer:stats_numer, options, defaults, med, n, npos, aux, xm,
        statistic, method, distribution, hypo, pvalue, listarith:true],
 
   /* controlling sample format */
@@ -607,8 +603,8 @@ block([options, defaults, med, n, npos, aux, xm,
 /*   4. 'statistic= statistic used in the procedure                             */
 /*   5. 'distribution= distribution and its parameters                          */
 /*   6. 'p_value= p-value of the sample statistic                               */
-signed_rank_test(x,[select]):= 
-block([options, defaults, n, aux, med, zeroes:false, pos, nequal, npositive, rank, ties:[],
+test_signed_rank(x,[select]):= 
+block([numer:stats_numer, options, defaults, n, aux, med, zeroes:false, pos, nequal, npositive, rank, ties:[],
        sigma, mu, noties, statistic, method, distribution, hypo, pvalue, listarith:true],
 
   /* controlling sample format */
@@ -724,8 +720,8 @@ block([options, defaults, n, aux, med, zeroes:false, pos, nequal, npositive, ran
 /*   3. 'statistic: statistic used in the procedure                              */
 /*   4. 'distribution: sample statistic distribution.                            */
 /*   5. 'p_value: p-value of the sample statistic                                */
-rank_sum_test(x1,x2,[select]):= 
-block([options, defaults, n1, n2, n, aux, ordered, pos, nequal, nfirst, rank, ties:[],
+test_rank_sum(x1,x2,[select]):= 
+block([numer:stats_numer, options, defaults, n1, n2, n, aux, ordered, pos, nequal, nfirst, rank, ties:[],
        sigma, mu, noties, statistic, method, distribution, hypo, pvalue, listarith:true],
 
   /* controlling sample format */
@@ -839,7 +835,7 @@ block([options, defaults, n1, n2, n, aux, ordered, pos, nequal, nfirst, rank, ti
 /* The output of this function is an 'inference_result' object                  */
 /* with the following results:                                                  */
 /*   1. 'model= the fitted equation. Useful to make new predictions:            */
-/*           take_inference(model,simple_linear_reg(data)), x=15;               */
+/*           take_inference(model,simple_linear_regression(data)), x=15;        */
 /* - 2. 'means= bivariate mean                                                  */
 /* - 3. 'variances= variances                                                   */
 /*   4. 'correlation= correlation coefficient                                   */
@@ -859,9 +855,9 @@ block([options, defaults, n1, n2, n, aux, ordered, pos, nequal, nfirst, rank, ti
 /* -18. 'residuals= list of pairs (prediction, residual), ordered wrt           */
 /*            predictions. This is useful for goodness of fit analysis. For     */
 /*            plotting residuals:                                               */
-/*      plot2d([discrete,take_inference(residuals,simple_linear_reg(data))]);   */
+/*      plot2d([discrete,take_inference(residuals,simple_linear_regression(data))]); */
 /* Items marked with the minus sign are kept hidden.                            */
-simple_linear_reg(dat,[select]):=block([options, defaults, n, aux, 
+simple_linear_regression(dat,[select]):=block([numer:stats_numer, options, defaults, n, aux, 
          means, covar, corr, resvar, adc, a, b, pred, res, sig2, aconfint,
          coef, bconfint, vconfint,
          statistic, distribution, hypo, pvalue, listarith:true],
@@ -961,9 +957,6 @@ simple_linear_reg(dat,[select]):=block([options, defaults, n, aux,
                     ['residuals, sort(args(transpose(matrix(pred,res))),
                                       lambda([x,y], orderlessp(x,y)) )] ],
                  [1,4,14,9,10,11,12,13])     )$
-
-
-
 
 
 

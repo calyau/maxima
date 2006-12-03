@@ -8,6 +8,7 @@
 @node Introducci@'on a stats, Definiciones para inference_result, Top, Top
 @section Introducci@'on a stats
 
+
 El paquete @code{stats} contiene procedimientos cl@'asicos sobre inferencia
 estad@'{@dotless{i}}stica y contraste de hip@'otesis.
 
@@ -15,16 +16,9 @@ Todas estas funciones devuelven un objeto Maxima de tipo @code{inference_result}
 el cual contiene los resultados necesarios para hacer inferencias sobre la 
 poblaci@'on y toma de decisiones.
 
-Por motivos pr@'acticos, cuando se carga este paquete, a la variable global
-@code{numer} se le asigna el valor @code{true}, mostr@'andose el siguiente
-mensaje:
-
-@example
-Warning: global variable 'numer' is set to 'true'.
-@end example
-
-Este comportamiento es normal. En caso de preferir los c@'alculos en su forma
-simb@'olica, as@'{@dotless{i}}gnesele el valor por defecto @code{false}.
+La variable global @code{stats_numer} controla si los resultados deben darse
+en formato decimal o simb@'olico y racional; su valor por defecto es @code{true},
+por lo que el formato de salida es decimal.
 
 El paquete @code{descriptive} contiene algunas utilidades para manipular 
 estructuras de datos (listas y matrices); por ejemplo para extraer submuestras.
@@ -223,8 +217,19 @@ V@'eanse tambi@'en @code{inference_result} y @code{take_inference}.
 @node Definiciones para stats, Definiciones para distribuciones especiales, Definiciones para inference_result, Top
 @section Definiciones para stats
 
-@deffn {Funci@'on} mean_test (@var{x})
-@deffnx {Funci@'on} mean_test (@var{x}, @var{option_1}, @var{option_2}, ...)
+
+@defvr {Variable opcional} stats_numer
+Valor por defecto: @code{true}
+
+Cuando @code{stats_numer} vale @code{true}, las funciones de inferencia
+estad@'{@dotless{i}}stica devuelven sus resultados en formato decimal de
+coma flotante. Cuando vale @code{false}, los resultados se devuelven en
+formato simb@'olico y racional.
+@end defvr
+
+
+@deffn {Funci@'on} test_mean (@var{x})
+@deffnx {Funci@'on} test_mean (@var{x}, @var{option_1}, @var{option_2}, ...)
 
 Es el test @var{t} de la media. El argumento @var{x} es una lista o matriz
 columna con los datos de una muestra unidimensional. Tambi@'en realiza el
@@ -258,7 +263,7 @@ exacto basado en la @var{t} de Student, o el asint@'otico basado en el
 
 @end itemize
 
-El resultado devuelto por la funci@'on  @code{mean_test} es un objeto
+El resultado devuelto por la funci@'on  @code{test_mean} es un objeto
 @code{inference_result} con los siguientes resultados:
 
 @enumerate
@@ -300,31 +305,29 @@ es muy grande.
 @c ===beg===
 @c load (stats)$
 @c data: [78,64,35,45,45,75,43,74,42,42]$
-@c mean_test(data,'conflevel=0.9,'alternative='less,'mean=50);
+@c test_mean(data,'conflevel=0.9,'alternative='less,'mean=50);
 @c ===end===
 @example
 (%i1) load("stats")$
-Warning: global variable 'numer' is set to 'true'.
-Warning: global variable 'fpprintprec' is set to 7.
 (%i2) data: [78,64,35,45,45,75,43,74,42,42]$
-(%i3) mean_test(data,'conflevel=0.9,'alternative='less,'mean=50);
+(%i3) test_mean(data,'conflevel=0.9,'alternative='less,'mean=50);
           |                 MEAN TEST
           |
           |            mean_estimate = 54.3
           |
           |              conf_level = 0.9
           |
-          |      conf_interval = [minf, 61.51314]
+          | conf_interval = [minf, 61.51314273502712]
           |
 (%o3)     |  method = Exact t-test. Unknown variance.
           |
           | hypotheses = H0: mean = 50 , H1: mean < 50
           |
-          |            statistic = .8244705
+          |       statistic = .8244705235071678
           |
           |       distribution = [student_t, 9]
           |
-          |             p_value = 0.78451
+          |        p_value = .7845100411786889
 @end example
 
 En esta ocasi@'on Maxima realiza un test asint@'otico. La hip@'otesis
@@ -336,36 +339,34 @@ procedimiento s@'olo puede aplicarse en muestras grandes.
 
 @c ===beg===
 @c load (stats)$
-@c mean_test([36,118,52,87,35,256,56,178,57,57,89,34,25,98,35,
+@c test_mean([36,118,52,87,35,256,56,178,57,57,89,34,25,98,35,
 @c         98,41,45,198,54,79,63,35,45,44,75,42,75,45,45,
 @c         45,51,123,54,151],
 @c         'asymptotic=true,'mean=50);
 @c ===end===
 @example
 (%i1) load("stats")$
-Warning: global variable 'numer' is set to 'true'.
-Warning: global variable 'fpprintprec' is set to 7.
-(%i2) mean_test([36,118,52,87,35,256,56,178,57,57,89,34,25,98,35,
+(%i2) test_mean([36,118,52,87,35,256,56,178,57,57,89,34,25,98,35,
               98,41,45,198,54,79,63,35,45,44,75,42,75,45,45,
               45,51,123,54,151],
               'asymptotic=true,'mean=50);
-        |                    MEAN TEST
-        |
-        |            mean_estimate = 74.88571
-        |
-        |                conf_level = 0.95
-        |
-        |      conf_interval = [57.72849, 92.04294]
-        |
-(%o2)   | method = Large sample z-test. Unknown variance.
-        |
-        |   hypotheses = H0: mean = 50 , H1: mean # 50
-        |
-        |              statistic = 2.842831
-        |
-        |          distribution = [normal, 0, 1]
-        |
-        |              p_value = .004471475
+          |                       MEAN TEST
+          |
+          |           mean_estimate = 74.88571428571429
+          |
+          |                   conf_level = 0.95
+          |
+          | conf_interval = [57.72848600856194, 92.04294256286663]
+          |
+(%o2)     |    method = Large sample z-test. Unknown variance.
+          |
+          |       hypotheses = H0: mean = 50 , H1: mean # 50
+          |
+          |             statistic = 2.842831192874313
+          |
+          |             distribution = [normal, 0, 1]
+          |
+          |             p_value = .004471474652002261
 @end example
 
 @end deffn
@@ -376,8 +377,8 @@ Warning: global variable 'fpprintprec' is set to 7.
 
 
 
-@deffn {Funci@'on} dif_means_test (@var{x1}, @var{x2})
-@deffnx {Funci@'on} dif_means_test (@var{x1}, @var{x2}, @var{option_1}, @var{option_2}, ...)
+@deffn {Funci@'on} test_means_difference (@var{x1}, @var{x2})
+@deffnx {Funci@'on} test_means_difference (@var{x1}, @var{x2}, @var{option_1}, @var{option_2}, ...)
 
 Este es el test @var{t} para la diferencia de medias con muestras.
 Los argumentos @var{x1} y @var{x2} son listas o matrices columna
@@ -423,7 +424,7 @@ exacto basado en la @var{t} de Student, o el asint@'otico basado en el
 
 @end itemize
 
-El resultado devuelto por la funci@'on  @code{dif_means_test} es un objeto
+El resultado devuelto por la funci@'on  @code{test_means_difference} es un objeto
 @code{inference_result} con los siguientes resultados:
 
 @enumerate
@@ -470,32 +471,30 @@ varianzas son desconocidas y se supone que diferentes.
 @c load (stats)$
 @c x: [20.4,62.5,61.3,44.2,11.1,23.7]$
 @c y: [1.2,6.9,38.7,20.4,17.2]$
-@c dif_means_test(x,y,'alternative='greater);
+@c test_means_difference(x,y,'alternative='greater);
 @c ===end===
 @example
 (%i1) load("stats")$
-Warning: global variable 'numer' is set to 'true'.
-Warning: global variable 'fpprintprec' is set to 7.
 (%i2) x: [20.4,62.5,61.3,44.2,11.1,23.7]$
 (%i3) y: [1.2,6.9,38.7,20.4,17.2]$
-(%i4) dif_means_test(x,y,'alternative='greater);
-       |              DIFFERENCE OF MEANS TEST
-       |
-       |               diff_estimate = 20.32
-       |
-       |                 conf_level = 0.95
-       |
-       |         conf_interval = [- .04597418, inf]
-       |
-(%o4)  |        method = Exact t-test. Welch approx.
-       |
-       | hypotheses = H0: mean1 = mean2 , H1: mean1 > mean2
-       |
-       |                statistic = 1.838004
-       |
-       |        distribution = [student_t, 8.627587]
-       |
-       |                p_value = .05032747
+(%i4) test_means_difference(x,y,'alternative='greater);
+            |              DIFFERENCE OF MEANS TEST
+            |
+            |         diff_estimate = 20.31999999999999
+            |
+            |                 conf_level = 0.95
+            |
+            |    conf_interval = [- .04597417812882298, inf]
+            |
+(%o4)       |        method = Exact t-test. Welch approx.
+            |
+            | hypotheses = H0: mean1 = mean2 , H1: mean1 > mean2
+            |
+            |           statistic = 1.838004300728477
+            |
+            |    distribution = [student_t, 8.62758740184604]
+            |
+            |            p_value = .05032746527991905
 @end example
 
 El mismo test que antes, pero ahora se suponen las varianzas
@@ -510,32 +509,30 @@ iguales.
 @c load (stats)$
 @c x: [20.4,62.5,61.3,44.2,11.1,23.7]$
 @c y: [1.2,6.9,38.7,20.4,17.2]$
-@c dif_means_test(x,y,'alternative='greater,'varequal=true);
+@c test_means_difference(x,y,'alternative='greater,'varequal=true);
 @c ===end===
 @example
 (%i1) load("stats")$
-Warning: global variable 'numer' is set to 'true'.
-Warning: global variable 'fpprintprec' is set to 7.
 (%i2) x: [20.4,62.5,61.3,44.2,11.1,23.7]$
 (%i3) y: matrix([1.2],[6.9],[38.7],[20.4],[17.2])$
-(%i4) dif_means_test(x,y,'alternative='greater,'varequal=true);
-       |              DIFFERENCE OF MEANS TEST
-       |
-       |               diff_estimate = 20.32
-       |
-       |                 conf_level = 0.95
-       |
-       |         conf_interval = [- .7722628, inf]
-       |
-(%o4)  |   method = Exact t-test. Unknown equal variances
-       |
-       | hypotheses = H0: mean1 = mean2 , H1: mean1 > mean2
-       |
-       |                statistic = 1.765996
-       |
-       |           distribution = [student_t, 9]
-       |
-       |                p_value = .05560321
+(%i4) test_means_difference(x,y,'alternative='greater,'varequal=true);
+            |              DIFFERENCE OF MEANS TEST
+            |
+            |         diff_estimate = 20.31999999999999
+            |
+            |                 conf_level = 0.95
+            |
+            |     conf_interval = [- .7722627696897568, inf]
+            |
+(%o4)       |   method = Exact t-test. Unknown equal variances
+            |
+            | hypotheses = H0: mean1 = mean2 , H1: mean1 > mean2
+            |
+            |           statistic = 1.765996124515009
+            |
+            |           distribution = [student_t, 9]
+            |
+            |            p_value = .05560320992529344
 @end example
 
 @end deffn
@@ -546,8 +543,8 @@ Warning: global variable 'fpprintprec' is set to 7.
 
 
 
-@deffn {Funci@'on} variance_test (@var{x})
-@deffnx {Funci@'on} variance_test (@var{x}, @var{option_1}, @var{option_2}, ...)
+@deffn {Funci@'on} test_variance (@var{x})
+@deffnx {Funci@'on} test_variance (@var{x}, @var{option_1}, @var{option_2}, ...)
 
 Este es el test @var{chi^2} de la varianza. El argumento @var{x}
 es una lista o matriz columna con los datos de una muestra unidimensional
@@ -573,7 +570,7 @@ debe ser una expresi@'on que tome un valor en el intervalo (0,1).
 
 @end itemize
 
-El resultado devuelto por la funci@'on  @code{variance_test} es un objeto
+El resultado devuelto por la funci@'on  @code{test_variance} es un objeto
 @code{inference_result} con los siguientes resultados:
 
 @enumerate
@@ -612,31 +609,29 @@ es igual o mayor que 200.
 @c ===beg===
 @c load (stats)$
 @c x: [203,229,215,220,223,233,208,228,20]$
-@c variance_test(x,'alternative='greater,'variance=200);
+@c test_variance(x,'alternative='greater,'variance=200);
 @c ===end===
 @example
 (%i1) load("stats")$
-Warning: global variable 'numer' is set to 'true'.
-Warning: global variable 'fpprintprec' is set to 7.
 (%i2) x: [203,229,215,220,223,233,208,228,209]$
-(%i3) variance_test(x,'alternative='greater,'variance=200);
-       |                  VARIANCE TEST
-       |
-       |              var_estimate = 110.75
-       |
-       |                conf_level = 0.95
-       |
-       |         conf_interval = [57.13433, inf]
-       |
-(%o3)  | method = Variance Chi-square test. Unknown mean.
-       |
-       |    hypotheses = H0: var = 200 , H1: var > 200
-       |
-       |                 statistic = 4.43
-       |
-       |             distribution = [chi2, 8]
-       |
-       |                p_value = .8163949
+(%i3) test_variance(x,'alternative='greater,'variance=200);
+             |                  VARIANCE TEST
+             |
+             |              var_estimate = 110.75
+             |
+             |                conf_level = 0.95
+             |
+             |     conf_interval = [57.13433376937479, inf]
+             |
+(%o3)        | method = Variance Chi-square test. Unknown mean.
+             |
+             |    hypotheses = H0: var = 200 , H1: var > 200
+             |
+             |                 statistic = 4.43
+             |
+             |             distribution = [chi2, 8]
+             |
+             |           p_value = .8163948512777689
 @end example
 
 @end deffn
@@ -647,8 +642,8 @@ Warning: global variable 'fpprintprec' is set to 7.
 
 
 
-@deffn {Funci@'on} variance_ratio_test (@var{x1}, @var{x2})
-@deffnx {Funci@'on} variance_ratio_test (@var{x1}, @var{x2}, @var{option_1}, @var{option_2}, ...)
+@deffn {Funci@'on} test_variance_ratio (@var{x1}, @var{x2})
+@deffnx {Funci@'on} test_variance_ratio (@var{x1}, @var{x2}, @var{option_1}, @var{option_2}, ...)
 
 Este es el test @var{F} del cociente de las varianzas para dos
 poblaciones normales. Los argumentos @var{x1} y @var{x2} son listas
@@ -677,7 +672,7 @@ de confianza del cociente; debe ser una expresi@'on que tome un valor en el inte
 
 @end itemize
 
-El resultado devuelto por la funci@'on  @code{variance_ratio_test} es un objeto
+El resultado devuelto por la funci@'on  @code{test_variance_ratio} es un objeto
 @code{inference_result} con los siguientes resultados
 
 @enumerate
@@ -723,32 +718,30 @@ a la alternativa de que la primera es mayor que la segunda.
 @c load (stats)$
 @c x: [20.4,62.5,61.3,44.2,11.1,23.7]$
 @c y: [1.2,6.9,38.7,20.4,17.2]$
-@c variance_ratio_test(x,y,'alternative='greater);
+@c test_variance_ratio(x,y,'alternative='greater);
 @c ===end===
 @example
 (%i1) load("stats")$
-Warning: global variable 'numer' is set to 'true'.
-Warning: global variable 'fpprintprec' is set to 7.
 (%i2) x: [20.4,62.5,61.3,44.2,11.1,23.7]$
 (%i3) y: [1.2,6.9,38.7,20.4,17.2]$
-(%i4) variance_ratio_test(x,y,'alternative='greater);
-        |              VARIANCE RATIO TEST
-        |
-        |           ratio_estimate = 2.316933
-        |
-        |               conf_level = 0.95
-        |
-        |        conf_interval = [.3703505, inf]
-        |
-(%o4)   | method = Variance ratio F-test. Unknown means.
-        |
-        | hypotheses = H0: var1 = var2 , H1: var1 > var2
-        |
-        |              statistic = 2.316933
-        |
-        |            distribution = [f, 5, 4]
-        |
-        |               p_value = 0.217927
+(%i4) test_variance_ratio(x,y,'alternative='greater);
+              |              VARIANCE RATIO TEST
+              |
+              |       ratio_estimate = 2.316933391522034
+              |
+              |               conf_level = 0.95
+              |
+              |    conf_interval = [.3703504689507268, inf]
+              |
+(%o4)         | method = Variance ratio F-test. Unknown means.
+              |
+              | hypotheses = H0: var1 = var2 , H1: var1 > var2
+              |
+              |         statistic = 2.316933391522034
+              |
+              |            distribution = [f, 5, 4]
+              |
+              |          p_value = .2179269692254457
 @end example
 
 @end deffn
@@ -758,8 +751,8 @@ Warning: global variable 'fpprintprec' is set to 7.
 
 
 
-@deffn {Funci@'on} sign_test (@var{x})
-@deffnx {Funci@'on} sign_test (@var{x}, @var{option_1}, @var{option_2}, ...)
+@deffn {Funci@'on} test_sign (@var{x})
+@deffnx {Funci@'on} test_sign (@var{x}, @var{option_1}, @var{option_2}, ...)
 
 Este es el test no param@'etrico de los signos para contrastes
 sobre la mediana de una poblaci@'on continua. El argumento @var{x}
@@ -779,7 +772,7 @@ valores v@'alidos son: @code{'twosided}, @code{'greater} y @code{'less}.
 
 @end itemize
 
-El resultado devuelto por la funci@'on @code{sign_test} es un objeto
+El resultado devuelto por la funci@'on @code{test_sign} es un objeto
 @code{inference_result} con los siguientes resultados:
 
 @enumerate
@@ -812,27 +805,25 @@ la muestra es 6, frente a la alternativa @math{H_1: median > 6}.
 @c ===beg===
 @c load (stats)$
 @c x: [2,0.1,7,1.8,4,2.3,5.6,7.4,5.1,6.1,6]$
-@c sign_test(x,'median=6,'alternative='greater);
+@c test_sign(x,'median=6,'alternative='greater);
 @c ===end===
 @example
 (%i1) load("stats")$
-Warning: global variable 'numer' is set to 'true'.
-Warning: global variable 'fpprintprec' is set to 7.
 (%i2) x: [2,0.1,7,1.8,4,2.3,5.6,7.4,5.1,6.1,6]$
-(%i3) sign_test(x,'median=6,'alternative='greater);
-         |                  SIGN TEST
-         |
-         |              med_estimate = 5.1
-         |
-         |      method = Non parametric sign test.
-         |
-(%o3)    | hypotheses = H0: median = 6 , H1: median > 6
-         |
-         |                statistic = 7
-         |
-         |      distribution = [binomial, 10, 0.5]
-         |
-         |             p_value = 0.0546875
+(%i3) test_sign(x,'median=6,'alternative='greater);
+               |                  SIGN TEST
+               |
+               |              med_estimate = 5.1
+               |
+               |      method = Non parametric sign test.
+               |
+(%o3)          | hypotheses = H0: median = 6 , H1: median > 6
+               |
+               |                statistic = 7
+               |
+               |      distribution = [binomial, 10, 0.5]
+               |
+               |         p_value = .05468749999999989
 @end example
 
 @end deffn
@@ -845,8 +836,8 @@ Warning: global variable 'fpprintprec' is set to 7.
 
 
 
-@deffn {Funci@'on} signed_rank_test (@var{x})
-@deffnx {Funci@'on} signed_rank_test (@var{x}, @var{option_1}, @var{option_2}, ...)
+@deffn {Funci@'on} test_signed_rank (@var{x})
+@deffnx {Funci@'on} test_signed_rank (@var{x}, @var{option_1}, @var{option_2}, ...)
 
 Este el test de los rangos signados de Wilcoxon para hacer inferencias sobre
 la mediana de una poblaci@'on continua. El argumento @var{x} es una lista
@@ -870,7 +861,7 @@ valores v@'alidos son: @code{'twosided}, @code{'greater} y @code{'less}.
 
 @end itemize
 
-El resultado devuelto por la funci@'on  @code{signed_rank_test} es
+El resultado devuelto por la funci@'on  @code{test_signed_rank} es
 un objeto @code{inference_result} con los siguientes resultados:
 
 @enumerate
@@ -909,27 +900,25 @@ puesto que no hay empates.
 @c ===beg===
 @c load (stats)$
 @c x: [17.1,15.9,13.7,13.4,15.5,17.6]$
-@c signed_rank_test(x,median=15,alternative=greater);
+@c test_signed_rank(x,median=15,alternative=greater);
 @c ===end===
 @example
 (%i1) load("stats")$
-Warning: global variable 'numer' is set to 'true'.
-Warning: global variable 'fpprintprec' is set to 7.
 (%i2) x: [17.1,15.9,13.7,13.4,15.5,17.6]$
-(%i3) signed_rank_test(x,median=15,alternative=greater);
-           |             SIGNED RANK TEST
-           |
-           |           med_estimate = 15.7
-           |
-           |           method = Exact test
-           |
-(%o3)      | hypotheses = H0: med = 15 , H1: med > 15
-           |
-           |              statistic = 14
-           |
-           |     distribution = [signed_rank, 6]
-           |
-           |            p_value = 0.28125
+(%i3) test_signed_rank(x,median=15,alternative=greater);
+                 |             SIGNED RANK TEST
+                 |
+                 |           med_estimate = 15.7
+                 |
+                 |           method = Exact test
+                 |
+(%o3)            | hypotheses = H0: med = 15 , H1: med > 15
+                 |
+                 |              statistic = 14
+                 |
+                 |     distribution = [signed_rank, 6]
+                 |
+                 |            p_value = 0.28125
 @end example
 
 Contrasta la hip@'otesis nula @math{H_0: median = 2.5} frente 
@@ -943,27 +932,25 @@ debido a la presencia de empates.
 @c ===beg===
 @c load (stats)$
 @c y:[1.9,2.3,2.6,1.9,1.6,3.3,4.2,4,2.4,2.9,1.5,3,2.9,4.2,3.1]$
-@c signed_rank_test(y,median=2.5);
+@c test_signed_rank(y,median=2.5);
 @c ===end===
 @example
 (%i1) load("stats")$
-Warning: global variable 'numer' is set to 'true'.
-Warning: global variable 'fpprintprec' is set to 7.
 (%i2) y:[1.9,2.3,2.6,1.9,1.6,3.3,4.2,4,2.4,2.9,1.5,3,2.9,4.2,3.1]$
-(%i3) signed_rank_test(y,median=2.5);
-          |              SIGNED RANK TEST
-          |
-          |             med_estimate = 2.9
-          |
-          |       method = Asymptotic test. Ties
-          |
-(%o3)     | hypotheses = H0: med = 2.5 , H1: med # 2.5
-          |
-          |              statistic = 76.5
-          |
-          |  distribution = [normal, 60.5, 17.58195]
-          |
-          |             p_value = .3628098
+(%i3) test_signed_rank(y,median=2.5);
+             |                 SIGNED RANK TEST
+             |
+             |                med_estimate = 2.9
+             |
+             |          method = Asymptotic test. Ties
+             |
+(%o3)        |    hypotheses = H0: med = 2.5 , H1: med # 2.5
+             |
+             |                 statistic = 76.5
+             |
+             | distribution = [normal, 60.5, 17.58195097251724]
+             |
+             |           p_value = .3628097734643669
 @end example
 
 @end deffn
@@ -974,8 +961,8 @@ Warning: global variable 'fpprintprec' is set to 7.
 
 
 
-@deffn {Funci@'on} rank_sum_test (@var{x1}, @var{x2})
-@deffnx {Funci@'on} rank_sum_test (@var{x1}, @var{x2}, @var{option_1})
+@deffn {Funci@'on} test_rank_sum (@var{x1}, @var{x2})
+@deffnx {Funci@'on} test_rank_sum (@var{x1}, @var{x2}, @var{option_1})
 
 Este es el test de Wilcoxon-Mann-Whitney para comparar las medianas
 de dos poblaciones continuas. Los dos primeros argumentos @var{x1}
@@ -995,7 +982,7 @@ valores v@'alidos son: @code{'twosided}, @code{'greater} y @code{'less}.
 
 @end itemize
 
-El resultado devuelto por la funci@'on  @code{rank_sum_test}
+El resultado devuelto por la funci@'on  @code{test_rank_sum}
 es un objeto @code{inference_result} con los siguientes resultados:
 
 @enumerate
@@ -1031,26 +1018,24 @@ muestrales peque@~nos, se realiza el test exacto.
 @c load (stats)$
 @c x:[12,15,17,38,42,10,23,35,28]$
 @c y:[21,18,25,14,52,65,40,43]$
-@c rank_sum_test(x,y);
+@c test_rank_sum(x,y);
 @c ===end===
 @example
 (%i1) load("stats")$
-Warning: global variable 'numer' is set to 'true'.
-Warning: global variable 'fpprintprec' is set to 7.
 (%i2) x:[12,15,17,38,42,10,23,35,28]$
 (%i3) y:[21,18,25,14,52,65,40,43]$
-(%i4) rank_sum_test(x,y);
-        |                 RANK SUM TEST
-        |
-        |              method = Exact test
-        |
-        | hypotheses = H0: med1 = med2 , H1: med1 # med2
-(%o4)   |
-        |                 statistic = 22
-        |
-        |        distribution = [rank_sum, 9, 8]
-        |
-        |               p_value = .1995886
+(%i4) test_rank_sum(x,y);
+              |                 RANK SUM TEST
+              |
+              |              method = Exact test
+              |
+              | hypotheses = H0: med1 = med2 , H1: med1 # med2
+(%o4)         |
+              |                 statistic = 22
+              |
+              |        distribution = [rank_sum, 9, 8]
+              |
+              |          p_value = .1995886466474702
 @end example
 
 Ahora, con muestras mayores y empates, el procedimiento
@@ -1066,26 +1051,24 @@ alternativa es @math{H_1: median1 < median2}.
 @c load (stats)$
 @c x: [39,42,35,13,10,23,15,20,17,27]$
 @c y: [20,52,66,19,41,32,44,25,14,39,43,35,19,56,27,15]$
-@c rank_sum_test(x,y,'alternative='less);
+@c test_rank_sum(x,y,'alternative='less);
 @c ===end===
 @example
 (%i1) load("stats")$
-Warning: global variable 'numer' is set to 'true'.
-Warning: global variable 'fpprintprec' is set to 7.
 (%i2) x: [39,42,35,13,10,23,15,20,17,27]$
 (%i3) y: [20,52,66,19,41,32,44,25,14,39,43,35,19,56,27,15]$
-(%i4) rank_sum_test(x,y,'alternative='less);
-        |                 RANK SUM TEST
-        |
-        |         method = Asymptotic test. Ties
-        |
-        | hypotheses = H0: med1 = med2 , H1: med1 < med2
-(%o5)   |
-        |                statistic = 48.5
-        |
-        |     distribution = [normal, 79.5, 18.9542]
-        |
-        |              p_value = .05096986
+(%i4) test_rank_sum(x,y,'alternative='less);
+             |                  RANK SUM TEST
+             |
+             |          method = Asymptotic test. Ties
+             |
+             |  hypotheses = H0: med1 = med2 , H1: med1 < med2
+(%o4)        |
+             |                 statistic = 48.5
+             |
+             | distribution = [normal, 79.5, 18.95419580097078]
+             |
+             |           p_value = .05096985666598441
 @end example
 
 @end deffn
@@ -1096,18 +1079,18 @@ Warning: global variable 'fpprintprec' is set to 7.
 
 
 
-@deffn {Funci@'on} shapiro_wilk_test (@var{x})
+@deffn {Funci@'on} test_normality (@var{x})
 
 Test de Shapiro-Wilk para el contraste de normalidad. El argumento
 @var{x} es una lista de n@'umeros, con tama@~no muestral mayor que 2
 y menor o igual que 5000; bajo cualesquiera otras condiciones, la
-funci@'on @code{shapiro_wilk_test} emite un mensaje de error.
+funci@'on @code{test_normality} emite un mensaje de error.
 
 Referencia:
 
   [1] Algorithm AS R94, Applied Statistics (1995), vol.44, no.4, 547-551
 
-El resultado devuelto por la funci@'on @code{shapiro_wilk_test} es
+El resultado devuelto por la funci@'on @code{test_normality} es
 un objeto @code{inference_result} con los siguientes resultados:
 
 
@@ -1133,19 +1116,17 @@ de tama@~no 9.
 @c ===beg===
 @c load (stats)$
 @c x:[12,15,17,38,42,10,23,35,28]$
-@c shapiro_wilk_test(x);
+@c test_normality(x);
 @c ===end===
 @example
 (%i1) load("stats")$
-Warning: global variable 'numer' is set to 'true'.
-Warning: global variable 'fpprintprec' is set to 7.
 (%i2) x:[12,15,17,38,42,10,23,35,28]$
-(%i3) shapiro_wilk_test(x);
-                    | SHAPIRO - WILK TEST
-                    |
-(%o3)               | statistic = .9251056
-                    |
-                    |  p_value = .4361762
+(%i3) test_normality(x);
+                       |      SHAPIRO - WILK TEST
+                       |
+(%o3)                  | statistic = .9251055695162436
+                       |
+                       |  p_value = .4361763918860381
 @end example
 
 @end deffn
@@ -1158,8 +1139,8 @@ Warning: global variable 'fpprintprec' is set to 7.
 
 
 
-@deffn {Funci@'on} simple_linear_reg (@var{x})
-@deffnx {Funci@'on} simple_linear_reg (@var{x} @var{option_1})
+@deffn {Funci@'on} simple_linear_regression (@var{x})
+@deffnx {Funci@'on} simple_linear_regression (@var{x} @var{option_1})
 
 Regresi@'on lineal simple, @math{y_i=a+b x_i+e_i}, donde las @math{e_i}
 son variables aleatorias independientes de distribuci@'on @math{N(0,sigma)}.
@@ -1179,7 +1160,7 @@ debe ser una expresi@'on que tome un valor en el intervalo (0,1).
 
 @end itemize
 
-El resultado devuelto por la funci@'on  @code{simple_linear_reg} es un
+El resultado devuelto por la funci@'on  @code{simple_linear_regression} es un
 objeto @code{inference_result} con los siguientes resultados:
 
 @enumerate
@@ -1261,7 +1242,7 @@ cuando @code{x=113}.
 @c load (stats)$
 @c s:[[125,140.7],[130,155.1],[135,160.3],
 @c       [140,167.2],[145,169.8]]$
-@c z:simple_linear_reg(s,conflevel=0.99);
+@c z:simple_linear_regression(s,conflevel=0.99);
 @c plot2d([[discrete, s], take_inference(model,z)],
 @c           [x,120,150],
 @c           [gnuplot_curve_styles,
@@ -1272,38 +1253,34 @@ cuando @code{x=113}.
 @c ===end===
 @example
 (%i1) load("stats")$
-Warning: global variable 'numer' is set to 'true'.
-Warning: global variable 'fpprintprec' is set to 7.
-(%i2) s:[[125,140.7],[130,155.1],[135,160.3],
-         [140,167.2],[145,169.8]]$
-(%i3) z:simple_linear_reg(s,conflevel=0.99);
-              |      SIMPLE LINEAR REGRESSION
-              |
-              |      model = 1.406 x - 31.19
-              |
-              |       correlation = .9611685
-              |
-              |      v_estimation = 13.57967
-              |
-(%o3)         | b_conf_int = [.04469634, 2.767304]
-              |
-              | hypotheses = H0: b = 0 ,H1: b # 0
-              |
-              |        statistic = 6.032687
-              |
-              |   distribution = [student_t, 3]
-              |
-              |        p_value = .003805955
+(%i2) s:[[125,140.7],[130,155.1],[135,160.3],[140,167.2],[145,169.8]]$
+(%i3) z:simple_linear_regression(s,conflevel=0.99);
+           |               SIMPLE LINEAR REGRESSION
+           |
+           |   model = 1.405999999999985 x - 31.18999999999804
+           |
+           |           correlation = .9611685255255155
+           |
+           |           v_estimation = 13.57966666666665
+           |
+(%o3)      | b_conf_int = [.04469633662525263, 2.767303663374718]
+           |
+           |          hypotheses = H0: b = 0 ,H1: b # 0
+           |
+           |            statistic = 6.032686683658114
+           |
+           |            distribution = [student_t, 3]
+           |
+           |             p_value = 0.0038059549413203
 (%i4) plot2d([[discrete, s], take_inference(model,z)],
               [x,120,150],
-              [gnuplot_curve_styles,
-                 ["with points","with lines"]] )$
+              [gnuplot_curve_styles, ["with points","with lines"]] )$
 (%i5) take_inference(model,z), x=133;
 (%o5)                         155.808
 (%i6) take_inference(means,z);
 (%o6)                     [135.0, 158.62]
 (%i7) take_inference(new_pred_conf_int,z), x=133;
-(%o7)                  [132.0729, 179.5431]
+(%o7)              [132.0728595995113, 179.5431404004887]
 @end example
 
 @end deffn
@@ -1312,7 +1289,34 @@ Warning: global variable 'fpprintprec' is set to 7.
 
 
 
-@node Definiciones para distribuciones especiales,  , Definiciones para stats, Top
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@node Definiciones para distribuciones especiales, , Definiciones para stats, Top
 @section Definiciones para distribuciones especiales
 
 
@@ -1322,7 +1326,7 @@ del estad@'{@dotless{i}}stico de contraste del test de los
 rangos signados. El argumento @var{x} es un n@'umero real y
 @var{n} un entero positivo.
 
-V@'ease tambi@'en @code{signed_rank_test}.
+V@'ease tambi@'en @code{test_signed_rank}.
 @end deffn
 
 @deffn {Funci@'on} cdf_signed_rank (@var{x}, @var{n})
@@ -1331,7 +1335,7 @@ del estad@'{@dotless{i}}stico de contraste del test de los
 rangos signados. El argumento @var{x} es un n@'umero real y
 @var{n} un entero positivo.
 
-V@'ease tambi@'en @code{signed_rank_test}.
+V@'ease tambi@'en @code{test_signed_rank}.
 @end deffn
 
 @deffn {Funci@'on} pdf_rank_sum (@var{x}, @var{n}, @var{m})
@@ -1340,7 +1344,7 @@ del estad@'{@dotless{i}}stico de contraste de Wilcoxon-Mann-Whitney.
 El argumento @var{x} es un n@'umero real y
 @var{n} y @var{m} son ambos enteros positivos.
 
-V@'ease tambi@'en @code{rank_sum_test}.
+V@'ease tambi@'en @code{test_rank_sum}.
 @end deffn
 
 @deffn {Funci@'on} cdf_rank_sum (@var{x}, @var{n}, @var{m})
@@ -1349,5 +1353,5 @@ del estad@'{@dotless{i}}stico de contraste de Wilcoxon-Mann-Whitney.
 El argumento @var{x} es un n@'umero real y
 @var{n} y @var{m} son ambos enteros positivos.
 
-V@'ease tambi@'en @code{rank_sum_test}.
+V@'ease tambi@'en @code{test_rank_sum}.
 @end deffn
