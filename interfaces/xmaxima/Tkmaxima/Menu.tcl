@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Menu.tcl,v 1.19 2006-11-12 18:22:43 vvzhy Exp $
+#       $Id: Menu.tcl,v 1.20 2006-12-03 22:26:12 villate Exp $
 #
 
 proc pMAXSaveTexToFile {text} {
@@ -200,11 +200,11 @@ proc vMAXAddSystemMenu {fr text} {
 	set state disabled
     }
     if {$tcl_platform(platform) == "windows"} {
-        $m add command -underline 7 -label [mc "Maxima Help"] \
+        $m add command -underline 7 -label [mc "Manual (Xmaxima browser)"] \
         	-state $state \
 	        -command [list exec hh.exe $file]
     } else {
-        $m add command -underline 7 -label [mc "Maxima Help"] \
+        $m add command -underline 7 -label [mc "Manual (Xmaxima browser)"] \
         	-state $state \
 	        -command "OpenMathOpenUrl \"file:/$file\""
     }
@@ -223,7 +223,7 @@ proc vMAXAddSystemMenu {fr text} {
 	
 	set selectedbrowser mozilla
 
-	foreach b { mozilla konqueror epiphany firefox netscape } {
+	foreach b { galeon firefox mozilla konqueror epiphany amaya netscape } {
 	    if { ! [catch {exec which $b} ] } {
 		set selectedbrowser $b
 		break } }
@@ -231,6 +231,8 @@ proc vMAXAddSystemMenu {fr text} {
 	lappend browse $selectedbrowser
     }
     $m add sep
+    $m add command -underline 0 -label [mc "Manual (web browser)"] \
+	-command [list eval $browse "file://$file" &]
     $m add command -underline 0 -label [mc "Maxima Homepage"] \
 	-command [list eval $browse http://maxima.sourceforge.net &]
     $m add command -underline 0 -label [mc "Project Page"] \
