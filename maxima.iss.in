@@ -4,14 +4,12 @@
 ;;                                                                ;;
 ;;  * InnoSetup version 5.1.7 or above is recommended             ;;
 ;;                                                                ;;
-;;----------------------------------------------------------------;;
-;;                                                                ;;
 ;;  * IMPORTANT!                                                  ;;
 ;;    Section [CustomMessages] below contains messages            ;;
 ;;    in several 8-bit encodings (code pages 1251, 1252).         ;;
 ;;    Don't use any encoding conversion tool (e.g. iconv,         ;;
 ;;    recode) on this file directly!                              ;;
-;;                                                                ;;                                                      
+;;                                                                ;;
 ;;----------------------------------------------------------------;;
 
 
@@ -44,7 +42,7 @@ Name: "en"; MessagesFile: "compiler:Default.isl"
 Name: "fr"; MessagesFile: "compiler:Languages\French.isl"; InfoBeforeFile: "interfaces\xmaxima\win32\InfoBefore_fr.txt"; InfoAfterFile: "interfaces\xmaxima\win32\readme_fr.txt"
 Name: "de"; MessagesFile: "compiler:Languages\German.isl"; InfoBeforeFile: "interfaces\xmaxima\win32\InfoBefore_de.txt"; InfoAfterFile: "interfaces\xmaxima\win32\readme_de.txt"
 Name: "it"; MessagesFile: "compiler:Languages\Italian.isl"; InfoBeforeFile: "interfaces\xmaxima\win32\InfoBefore.txt"; InfoAfterFile: "interfaces\xmaxima\win32\readme_en.txt"
-Name: "es"; MessagesFile: "compiler:Languages\Spanish.isl"; InfoBeforeFile: "interfaces\xmaxima\win32\InfoBefore.txt"; InfoAfterFile: "interfaces\xmaxima\win32\readme_en.txt"
+Name: "es"; MessagesFile: "compiler:Languages\Spanish.isl"; InfoBeforeFile: "interfaces\xmaxima\win32\InfoBefore_es.txt"; InfoAfterFile: "interfaces\xmaxima\win32\readme_es.txt"
 Name: "pt_BR"; MessagesFile: "compiler:Languages\BrazilianPortuguese.isl"; InfoBeforeFile: "interfaces\xmaxima\win32\InfoBefore.txt"; InfoAfterFile: "interfaces\xmaxima\win32\readme_en.txt"
 Name: "pt"; MessagesFile: "compiler:Languages\Portuguese.isl"; InfoBeforeFile: "interfaces\xmaxima\win32\InfoBefore_pt.txt"; InfoAfterFile: "interfaces\xmaxima\win32\readme_pt.txt"
 Name: "ru"; MessagesFile: "compiler:Languages\Russian.isl"; InfoBeforeFile: "interfaces\xmaxima\win32\InfoBefore_ru.txt"; InfoAfterFile: "interfaces\xmaxima\win32\readme_ru.txt"
@@ -389,39 +387,39 @@ ru.ReferenceManualSpanish=Ñïðàâî÷íîå ðóêîâîäñòâî (Èñïàíñêèé)
 
 ;=== Spanish ===  LID=$0c0a  CodePage=1252
 
-es.FullInstallation=Full installation
-es.CompactInstallation=Compact installation
-es.CustomInstallation=Custom istalation
-es.Uninstall=Uninstall
+es.FullInstallation=Instalación Completa
+es.CompactInstallation=Instalación Compacta
+es.CustomInstallation=Instalación Personalizada
+es.Uninstall=Desinstalar
 
-es.MaximaCore=Maxima core with command line interface
-es.wxMaximaGraphicShell=wxMaxima graphic shell
-es.XMaximaGraphicShell=XMaxima graphic shell
-es.MaximaLanguagePacks=Maxima language packs
+es.MaximaCore=Núcleo de Maxima e interfaz de línea de comandos
+es.wxMaximaGraphicShell=Entorno gráfico wxMaxima
+es.XMaximaGraphicShell=Entorno gráfico XMaxima
+es.MaximaLanguagePacks=Internacionalización de Maxima
 
-es.German=German
-es.French=French
-es.Italian=Italian
-es.Portuguese=Portuguese
-es.Russian=Russian
-es.Spanish=Spanish
+es.German=Alemán
+es.French=Francés
+es.Italian=Italiano
+es.Portuguese=Portugués
+es.Russian=Ruso
+es.Spanish=Español
 
-es.CreateMyDesktopIcon=Create %1 desktop icon
+es.CreateMyDesktopIcon=Crear icono de escritorio
 
-es.CommandLineMaxima=Command line Maxima
-es.Introduction=Introduction
-es.ReferenceManual=Reference Manual
-es.Readme=README
-es.ReadmeMenuEntry=README
+es.CommandLineMaxima=Línea de comandos de Maxima
+es.Introduction=Introducción
+es.ReferenceManual=Manual de Referencia
+es.Readme=LEAME
+es.ReadmeMenuEntry=LEAME
 
-es.OnlineForum=%1 Online Forum
+es.OnlineForum=Foro en línea para %1
 
-es.ReferenceManualGerman=Reference Manual (German)
-es.ReferenceManualFrench=Reference Manual (French)
-es.ReferenceManualItalian=Reference Manual (Italian)
-es.ReferenceManualPortuguese=Reference Manual (Portuguese)
-es.ReferenceManualRussian=Reference Manual (Russian)
-es.ReferenceManualSpanish=Reference Manual (Spanish)
+es.ReferenceManualGerman=Manual de Referencia (Alemán)
+es.ReferenceManualFrench=Manual de Referencia (Francés)
+es.ReferenceManualItalian=Manual de Referencia (Italiano)
+es.ReferenceManualPortuguese=Manual de Referencia (Portugués)
+es.ReferenceManualRussian=Manual de Referencia (Ruso)
+es.ReferenceManualSpanish=Manual de Referencia (Español)
 
 ;=============
 

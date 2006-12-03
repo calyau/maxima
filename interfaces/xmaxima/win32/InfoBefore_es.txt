@@ -1,0 +1,6 @@
+1. Los usuarios de Windows 9x deben leer la sección 
+   del fichero LEAME sobre el espacio de entorno.
+
+2. Si el entorno gráfico de Maxima no funciona,
+   léase la sección del fichero LEAME sobre
+   cortafuegos.
