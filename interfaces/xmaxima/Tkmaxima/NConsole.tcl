@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: NConsole.tcl,v 1.9 2006-12-04 10:20:35 villate Exp $
+#       $Id: NConsole.tcl,v 1.10 2006-12-04 10:45:46 villate Exp $
 #
 ###### NConsole.tcl ######
 ############################################################
@@ -127,7 +127,7 @@ proc CNpreviousInput { w direction } {
     }
     set n [llength $inputs]
     set j 0
-    set matchRegexp "^[quoteForRegexp $matching]"
+    set matchRegexp "[quoteForRegexp $matching]"
     while {[incr j] <= $n } {
 	set inputIndex [expr {($inputIndex + $direction+ $n)%$n}]
 	# [string match "$matching*" [lindex $inputs $inputIndex]]
