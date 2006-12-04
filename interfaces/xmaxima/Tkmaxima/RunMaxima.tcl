@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: RunMaxima.tcl,v 1.26 2006-09-18 22:26:53 villate Exp $
+#       $Id: RunMaxima.tcl,v 1.27 2006-12-04 01:21:16 villate Exp $
 #
 proc textWindowWidth { w } {
     set font [$w cget -font]
@@ -57,7 +57,7 @@ proc CMeval { w } {
 	}
     }
 
-    $w tag add input lastStart "end -1char"
+    $w tag add input lastStart-1c "end -1char"
     $w mark set  lastStart "end -1char"
     lappend inputs $expr
 
