@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Menu.tcl,v 1.22 2006-12-04 11:10:17 vvzhy Exp $
+#       $Id: Menu.tcl,v 1.23 2006-12-04 11:14:47 vvzhy Exp $
 #
 
 proc pMAXSaveTexToFile {text} {
@@ -204,7 +204,7 @@ proc vMAXAddSystemMenu {fr text} {
 	set state disabled
     }
     if {$tcl_platform(platform) == "windows"} {
-        $m add command -underline 7 -label [mc "Manual"] \
+        $m add command -underline 1 -label [mc "Manual"] \
         	-state $state \
 	        -command [list exec hh.exe $file]
     } else {
