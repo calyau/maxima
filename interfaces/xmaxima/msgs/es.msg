@@ -1,5 +1,5 @@
 # Spanish xmaxima translation by Juan Pablo Romero Bernal
-### $Id: es.msg,v 1.2 2006-12-04 12:55:28 villate Exp $
+### $Id: es.msg,v 1.3 2006-12-04 12:59:18 villate Exp $
 
 ### Menu.tcl
 mcset es "Edit" "Editar"
@@ -50,9 +50,9 @@ mcset es "Dependencies" "Dependencias"
 mcset es "Let_rule_packages" "Let_rule_packages"
 mcset es "Run Tests" "Ejecutar tests"
 mcset es "Help" "Ayuda"
-mcset ru "Manual" "Manual"
-mcset ru "Manual (Xmaxima browser)" "Manual (navegador Xmaxima)"
-mcset ru "Manual (web browser)" "Manual (navegador Web)"
+mcset es "Manual" "Manual"
+mcset es "Manual (Xmaxima browser)" "Manual (navegador Xmaxima)"
+mcset es "Manual (web browser)" "Manual (navegador Web)"
 mcset es "Maxima Homepage" "Página Web de Maxima"
 mcset es "Project Page" "Página del proyecto"
 mcset es "Bug Reports" "Reporte de bugs"
