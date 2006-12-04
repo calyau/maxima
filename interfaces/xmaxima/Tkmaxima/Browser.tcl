@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Browser.tcl,v 1.19 2006-10-01 23:58:29 villate Exp $
+#       $Id: Browser.tcl,v 1.20 2006-12-04 02:59:47 villate Exp $
 #
 ###### Browser.tcl ######
 ############################################################
@@ -851,6 +851,9 @@ proc ws_outputToTemp { string file ext encoding } {
 
 proc OpenMathOpenUrl { name args} {
     global maxima_priv
+    
+    # Removes any white spaces at the end of the Url given
+    set name [string trimright $name]
 
     gui status [concat [mc "Opening"] "$name"]
 
