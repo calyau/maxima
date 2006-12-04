@@ -34,6 +34,7 @@ mcset ru "Multiple" "Множественное"
 mcset ru "Preferences" "Настройки"
 mcset ru "Show Tcl Console" "Отобразить консоль Tcl"
 mcset ru "Clear Memory" "Очистить память"
+mcset ru "Input prompt" "Приглашение"
 mcset ru "Kill All" "Очистить всё"
 mcset ru "Run Tests" "Запуск тестов"
 mcset ru "Help" "Справка"
@@ -70,10 +71,14 @@ Bindings:
 <Control-y> Yank out the last kill, Meta-y cycles through previous
             kills.
 <Control-g> Interrupts the current computation.
-<Alt-p>     Previous input, or if repeated cycle through the previous
-            inputs.  If the current input is not empty, then
-            match only inputs which begin with the current input.
-<Alt-n>     Like Previous input, but in opposite direction.
+<Alt-p>     Gets the previous input in the history of inputs; if the
+            first input is reached, it proceeds to the last input. If
+            some characters are written before clicking on Alt-p, only
+            history items containing those characters will be considered.
+<Alt-n>     Gets the next input in the history of inputs; if the end is
+            reached, it proceeds to the first input. If some characters
+            are written before clicking on Alt-n, only history items
+            containing those characters will be considered.
 <Alt-s>     Print again the Maxima input prompt.
 " "
 Клавиатурные привязки:
