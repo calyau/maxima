@@ -27,10 +27,10 @@ stringproc.texi     unit.texi                      zeilberger.texi     dynamics.
 
 all-local: maxima-index.lisp
 
-maxima-index.lisp: maxima.info
+maxima-index.lisp: maxima.info ../build_index.pl
 	perl ../build_index.pl maxima.info ':crlf' > maxima-index.lisp
 
-maximahtml.es.mk:
+maximahtml.es.mk: ../texi2html
 	perl ../texi2html -split_chapter --lang=es --output=. --css-include=../manual.css --init-file ../texi2html.init maxima.texi 
 	rm -f maximahtml.es.mk
 	ls -1 maxima*.html | sed 's/\(.*\)/MAXIMAESHTML += \1/' > maximahtml.es.mk
