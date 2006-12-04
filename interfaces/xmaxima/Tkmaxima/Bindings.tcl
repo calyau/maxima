@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Bindings.tcl,v 1.8 2006-12-04 10:42:46 villate Exp $
+#       $Id: Bindings.tcl,v 1.9 2006-12-04 12:44:21 villate Exp $
 #
 ###### Bindings.tcl ######
 ############################################################
@@ -28,8 +28,7 @@ Bindings:
             reached, it proceeds to the first input. If some characters
             are written before clicking on Alt-n, only history items
             containing those characters will be considered.
-<Alt-s>     Print again the Maxima input prompt. If the current input is not empty, then cycle through
-            previous inputs containing the current input.
+<Alt-s>     Print again the Maxima input prompt.
 "]
 
 proc vMAXSetCNTextBindings {w} {
