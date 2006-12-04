@@ -102,6 +102,7 @@ $(MAXIMAHTML)\
 $(figurefiles)\
 contents.hhc index.hhk header.hhp maxima.hhp
 
+all-local: warn_texinfo
 dist-hook: check_texinfo
 
 install-data-local: install-maxima-index
@@ -140,5 +141,15 @@ check_texinfo:
 	[ -z  "$$bad_files" ] || ( echo "ERROR: The following files have unexpanded Tabs: $$bad_files" ; \
 	echo "Run make distclean and then /doc/info/fix_tab to fix the problem." ; exit 1 )
 
-.PHONY: check_texinfo
+warn_texinfo:
+	pattern=`printf "\r$$"` ; \
+	bad_files=`find . -name '*.texi' -print | xargs grep -l -e "$$pattern"` ; \
+	[ -z  "$$bad_files" ] || ( echo "WARNING: The following files have DOS-style EOLs: $$bad_files" ; \
+	echo "Run /doc/info/fix_crlf to fix the problem." )
+	pattern=`printf "\t"` ; \
+	bad_files=`find . -name '*.texi' -print | xargs grep -l -e "$$pattern"` ; \
+	[ -z  "$$bad_files" ] || ( echo "WARNING: The following files have unexpanded Tabs: $$bad_files" ; \
+	echo "Run /doc/info/fix_tab to fix the problem." )
+
+.PHONY: check_texinfo warn_texinfo
 
