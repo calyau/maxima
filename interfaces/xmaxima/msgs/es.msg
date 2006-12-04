@@ -1,5 +1,5 @@
 # Spanish xmaxima translation by Juan Pablo Romero Bernal
-### $Id: es.msg,v 1.1 2006-01-10 15:39:28 robert_dodier Exp $
+### $Id: es.msg,v 1.2 2006-12-04 12:55:28 villate Exp $
 
 ### Menu.tcl
 mcset es "Edit" "Editar"
@@ -26,7 +26,7 @@ mcset es "Next Input" "Entrada siguiente"
 mcset es "Clear input" "Limpiar entrada"
 mcset es "Save Console to File" "Guardar la terminal a un archivo"
 mcset es "Options" "Opciones"
-mcset es "Toggle Browser Visibility" "Alternar la visibilidad del browser"
+mcset es "Toggle Browser Visibility" "Alternar la visibilidad del navegador"
 mcset es "Plot Windows" "Ventanas de graficación"
 mcset es "Embedded" "Embebida"
 mcset es "Separate" "Separada"
@@ -50,7 +50,9 @@ mcset es "Dependencies" "Dependencias"
 mcset es "Let_rule_packages" "Let_rule_packages"
 mcset es "Run Tests" "Ejecutar tests"
 mcset es "Help" "Ayuda"
-mcset es "Maxima Help" "Ayuda de Maxima"
+mcset ru "Manual" "Manual"
+mcset ru "Manual (Xmaxima browser)" "Manual (navegador Xmaxima)"
+mcset ru "Manual (web browser)" "Manual (navegador Web)"
 mcset es "Maxima Homepage" "Página Web de Maxima"
 mcset es "Project Page" "Página del proyecto"
 mcset es "Bug Reports" "Reporte de bugs"
@@ -70,19 +72,24 @@ mcset es "not allowed, only" "no permitido, únicamente"
 ### Bindings.tcl
 mcset es "
 Bindings:
-<Return>   This sends the current expression (ie where the insert
+<Return>    This sends the current expression (ie where the insert
 cursor is)  for evaluation.
-<Linefeed> (Control-j) This inserts a newline, and is useful
+<Linefeed>  (Control-j) This inserts a newline, and is useful
 for entering multiline input.
 <Control-k> Kills the current line and puts it in kill ring.
 Successive control-k's append their output together.
-<Control-y> Yank out the last kill, Meta-y cycles thru previous
+<Control-y> Yank out the last kill, Meta-y cycles through previous
 kills.
-<Control-g> Interrupt the current computation.
-<Alt-p>   Previous input, or if repeated cycle through the previous
-inputs.  If the current input is not empty, then
-match only inputs which begin with the current input.
-<Alt-n>   Like Previous input, but in opposite direction.
+<Control-g> Interrupts the current computation.
+<Alt-p>     Gets the previous input in the history of inputs; if the
+first input is reached, it proceeds to the last input. If
+some characters are written before clicking on Alt-p, only
+history items containing those characters will be considered.
+<Alt-n>     Gets the next input in the history of inputs; if the end is
+reached, it proceeds to the first input. If some characters
+are written before clicking on Alt-n, only history items
+containing those characters will be considered.
+<Alt-s>     Print again the Maxima input prompt.
 " "
 Atajos:
 <Return>  Esto envia la expresión actual (ie es decir donde
@@ -94,8 +101,16 @@ Control-K's sucesivos borrarán las líneas posteriores, incluyendo salidas.
 <Control-y> Yank out the last kill, Meta-y cycles thru previous
 kills.
 <Control-g> Interrumpe el computo actual.
-<Alt-p>   Accede a la entrada previa, o al conjunto de entradas que han tenido lugar en la sesión. Si la entrada actual no es vacía, entonces sólo accederá a las entradas que comienzen con los caractéres de dicha entrada.
-<Alt-n>  Como <Alt-p> pero en dirección opuesta.
+<Alt-p> Accede a la entrada previa en la historia de entradas de la
+sesión; si se llega al comienzo, continuará en la última entrada.
+Si se escriben algunos caracteres antes de oprimir Alt-p, serán
+consideradas únicamente las entradas que contengan esos caractéres.
+<Alt-n> Accede a la próxima entrada en la historia de entradas de la
+sesión; si se llega al final, continuará en la primera entrada.
+Si se escriben algunos caracteres antes de oprimir Alt-n, serán
+consideradas únicamente las entradas que contengan esos caractéres.
+<Alt-s> Introduce nuevamente el indicador de entrada de datos de
+Maxima.
 "
 
 
