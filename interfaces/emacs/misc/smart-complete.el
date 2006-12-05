@@ -119,13 +119,13 @@
 
 ;; return a regexp for this prompt but with numbers replaced.
 
-(defun split-string (s bag)
+(defun smart-complete-split-string (s bag)
   (cond ((equal (length s) 0) '(""))
 	((string-match bag s)
 	 (if (= (match-beginning  0) 0)
-	    (cons "" (split-string (substring s (match-end 0)) bag))
+	    (cons "" (smart-complete-split-string (substring s (match-end 0)) bag))
 	   (cons (substring s 0 (match-beginning 0))
-		 (split-string (substring s (match-end 0)) bag))))
+		 (smart-complete-split-string (substring s (match-end 0)) bag))))
 	(t (cons s nil))))
 
 ;; Return a regexp which matches the current prompt, and which
@@ -137,7 +137,7 @@
 (defun regexp-for-this-prompt (prompt )
   (let ((wild (cond ((string-match "/" prompt) "[^ >#%()]+")
 		    (t "[0-9]+"))))
-  (let ((tem (split-string prompt wild)) (ans ""))
+  (let ((tem (smart-complete-split-string prompt wild)) (ans ""))
     (while tem
       (setq ans (concat ans (regexp-quote (car tem))))
       (cond ((cdr tem) (setq ans (concat ans wild))))
