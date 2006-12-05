@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Menu.tcl,v 1.23 2006-12-04 11:14:47 vvzhy Exp $
+#       $Id: Menu.tcl,v 1.24 2006-12-05 03:53:58 villate Exp $
 #
 
 proc pMAXSaveTexToFile {text} {
@@ -192,6 +192,15 @@ proc vMAXAddSystemMenu {fr text} {
     set m [menu .menu.help -tearoff 0]
     .menu add cascade -label [mc "Help"] -menu $m -underline 0
 
+    # Xmaxima manual
+    set xfile [file join $maxima_priv(maxima_verpkgdatadir) xmaxima html xmaxima.html]
+    if {[file isfile $xfile]} {
+	set xstate normal
+    } else {
+	set xstate disabled
+    }
+    
+    # Maxima manual
     set file $maxima_priv(pReferenceToc)
     if {[file isfile $file]} {
 	set state normal
@@ -204,13 +213,16 @@ proc vMAXAddSystemMenu {fr text} {
 	set state disabled
     }
     if {$tcl_platform(platform) == "windows"} {
-        $m add command -underline 1 -label [mc "Manual"] \
+        $m add command -underline 1 -label [mc "Maxima manual"] \
         	-state $state \
 	        -command [list exec hh.exe $file]
     } else {
-        $m add command -underline 7 -label [mc "Manual (Xmaxima browser)"] \
+        $m add command -underline 1 -label [mc "Maxima manual (xmaxima browser)"] \
         	-state $state \
 	        -command "OpenMathOpenUrl \"file:/$file\""
+        $m add command -underline 1 -label [mc "XMaxima manual (xmaxima browser)"] \
+        	-state $xstate \
+	        -command "OpenMathOpenUrl \"file:/$xfile\""
     }
     set browse {exec}
 
@@ -236,9 +248,11 @@ proc vMAXAddSystemMenu {fr text} {
     }
     $m add sep
     if {$tcl_platform(platform) != "windows"} {
-	$m add command -underline 0 -label [mc "Manual (web browser)"] \
+	$m add command -underline 0 -label [mc "Maxima Manual (web browser)"] \
 	    -command [list eval $browse "file://$file" &]
     }
+    $m add command -underline 0 -label [mc "Xmaxima Manual (web browser)"] \
+	-command [list eval $browse "file://$xfile" &]
     $m add command -underline 0 -label [mc "Maxima Homepage"] \
 	-command [list eval $browse http://maxima.sourceforge.net &]
     $m add command -underline 0 -label [mc "Project Page"] \
