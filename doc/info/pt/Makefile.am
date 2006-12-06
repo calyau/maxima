@@ -74,7 +74,8 @@ stringproc.texi \
 Symmetries.texi \
 Trigonometric.texi \
 unit.texi \
-zeilberger.texi
+zeilberger.texi \
+lbfgs.texi
 
 all-local: maxima-index.lisp
 
