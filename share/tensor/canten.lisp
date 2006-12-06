@@ -19,20 +19,20 @@
 
 
 
-(DECLARE-TOP (SPECIAL FREI BOUNI $CANTERM BREAKLIST SMLIST $IDUMMYX))
+(declare-top (special frei bouni $canterm breaklist smlist $idummyx))
 
-(SETQ NODOWN '($ICHR2 $ICHR1 %ICHR2 %ICHR1 $KDELTA %KDELTA))
+(setq nodown '($ichr2 $ichr1 %ichr2 %ichr1 $kdelta %kdelta))
 
-(DEFUN NDOWN (X) (PUTPROP X T 'NODOWN))
+(defun ndown (x) (putprop x t 'nodown))
 
-(DEFUN NDOWNL (L) (MAPCAR 'NDOWN L))
+(defun ndownl (l) (mapcar 'ndown l))
 
-(NDOWNL NODOWN)
+(ndownl nodown)
 
-(SETQ BREAKLIST NIL $CANTERM NIL)
+(setq breaklist nil $canterm nil)
 
 
-(DEFUN BREK (I) (COND  ((ZL-MEMBER I BREAKLIST) T) ))
+(defun brek (i) (cond  ((zl-member i breaklist) t) ))
 
 ; This package blindly rearranges the indices of RPOBJs, even those for
 ; which such index mangling is forbidden, like our special tensors. To
@@ -54,448 +54,448 @@
 ;L IS A LIST OF FACTORS WHICH RPOBS SEPARATES INTO A LIST OF TWO LISTS.  THE
 ;FIRST IS A LIST OF THE RPOBECTS IN L.  THE SECOND IS A LIST OF NON-RP OBJECTS
 
-(DEFUN RPOBS (L)
- (DO ( (X L (CDR X))
-       (Y NIL (COND ((reallyRPOBJ (CAR X)) (APPEND (LIST (CAR X)) Y) )
-                    (T  Y) )    )
-       (Z NIL (COND ((reallyRPOBJ (CAR X)) Z) 
-                    (T (APPEND (LIST (CAR X)) Z)) ) )    )
+(defun rpobs (l)
+ (do ( (x l (cdr x))
+       (y nil (cond ((reallyrpobj (car x)) (append (list (car x)) y) )
+                    (t  y) )    )
+       (z nil (cond ((reallyrpobj (car x)) z) 
+                    (t (append (list (car x)) z)) ) )    )
 
-     ( (NULL X) (CONS  Y (LIST Z)))  ))
+     ( (null x) (cons  y (list z)))  ))
      
-;(DEFUN NAME (RP) (COND ((RPOBJ RP) (CAAR RP) )
-;                        (T (MERROR "NOT RPOBJECT"))))
-;(DEFUN CONTI (RP) (COND ((RPOBJ RP) (CDADDR RP))
-;                       (T (MERROR "NOT RPOBJECT"))))
+;(defun name (rp) (cond ((rpobj rp) (caar rp) )
+;                        (t (merror "not rpobject"))))
+;(defun conti (rp) (cond ((rpobj rp) (cdaddr rp))
+;                       (t (merror "not rpobject"))))
 ;
-;(DEFUN COVI (RP) (COND ((RPOBJ RP) (CDADR RP))
-;                       (T (MERROR "NOT RPOBJECT"))))
+;(defun covi (rp) (cond ((rpobj rp) (cdadr rp))
+;                       (t (merror "not rpobject"))))
 ;
-;(DEFUN DERI (RP) (COND ((RPOBJ RP) (CDDDR RP))
-;                       (T (MERROR "NOT RPOBJECT"))))
+;(defun deri (rp) (cond ((rpobj rp) (cdddr rp))
+;                       (t (merror "not rpobject"))))
 ;
-;(DEFMFUN $NAME (RP) (COND (($TENPR RP) (CAAR RP) ) ;test the name of tensor
-;                        (T (MERROR "NOT TENPRECT"))))
-;(DEFMFUN $CONTI (RP) (COND (($TENPR RP) (cons SMLIST (CDADDR RP)))
-;                       (T (MERROR "NOT RPOBJECT")))) ;test the contravariant indices
+;(defmfun $name (rp) (cond (($tenpr rp) (caar rp) ) ;test the name of tensor
+;                        (t (merror "not tenprect"))))
+;(defmfun $conti (rp) (cond (($tenpr rp) (cons smlist (cdaddr rp)))
+;                       (t (merror "not rpobject")))) ;test the contravariant indices
 ;
-;(DEFMFUN $COVI (RP) (COND (($TENPR RP) (cons SMLIST (CDADR RP)))
-;                       (T (MERROR "NOT RPOBJECT")))) ;test the contravariant indices
+;(defmfun $covi (rp) (cond (($tenpr rp) (cons smlist (cdadr rp)))
+;                       (t (merror "not rpobject")))) ;test the contravariant indices
 ;
-;(DEFUN $DERI (RP) (COND (($TENPR RP) (cons SMLIST (CDDDR RP)))
-;                       (T (MERROR "NOT RPOBJECT"))))
+;(defun $deri (rp) (cond (($tenpr rp) (cons smlist (cdddr rp)))
+;                       (t (merror "not rpobject"))))
 
-(DEFUN FRE (L) (INTERSECT L FREI))
+(defun fre (l) (intersect l frei))
 
-(DEFUN BOUN (L) (INTERSECT L BOUNI))
+(defun boun (l) (intersect l bouni))
 
 
-(DEFUN GRADE (RP) (f+ (LENGTH (COVI RP))
-                   (f+ (LENGTH (CONTI RP)) (LENGTH (DERI RP))) ) )
+(defun grade (rp) (f+ (length (covi rp))
+                   (f+ (length (conti rp)) (length (deri rp))) ) )
 
 ;MON IS A MONOMIAL WHOSE "APPARENT" RANK IS ARANK
 
-(DEFUN ARANK (MON) 
-  (DO ( (I 0 (f+ (LENGTH (ALLIND (CAR L))) I))
-        (L (CDR MON) (CDR L) ) )
-        ((NULL L)  I)  ))
+(defun arank (mon) 
+  (do ( (i 0 (f+ (length (allind (car l))) i))
+        (l (cdr mon) (cdr l) ) )
+        ((null l)  i)  ))
 
-(DEFUN EQARANK (M1 M2) (= (ARANK M1) (ARANK M2)))
+(defun eqarank (m1 m2) (= (arank m1) (arank m2)))
 
 ;RP1 AND RP2 ARE RPOBJECTS WITH THE SAME GRADE
 
-(DEFUN ALPHADI (RP1 RP2)
-  (ALPHALESSP
-   (CATENATE (INDLIS RP1))
-   (CATENATE (INDLIS RP2))))
+(defun alphadi (rp1 rp2)
+  (alphalessp
+   (catenate (indlis rp1))
+   (catenate (indlis rp2))))
 
 
-(DEFUN CATENATE (LIS)  (IMPLODE (EXPLODEN LIS)))
+(defun catenate (lis)  (implode (exploden lis)))
 
-(DEFUN INDLIS (RP) (PROG (F1 F2 F3 B1 B2 B3)
- (SETQ F1 (FRE (COVI RP))
-       F2 (FRE (CONTI RP))
-       F3 (FRE (DERI RP))
-       B1 (BOUN (COVI RP))
-       B2 (BOUN (CONTI RP))
-       B3 (BOUN (DERI RP)))
-(RETURN
- (APPEND (SORT (APPEND F1 F2 F3 NIL) 'ALPHALESSP)
-	 (LIST (CAAR RP))
-	 (SORT (APPEND B1 B2 B3 NIL) 'ALPHALESSP)))))
+(defun indlis (rp) (prog (f1 f2 f3 b1 b2 b3)
+ (setq f1 (fre (covi rp))
+       f2 (fre (conti rp))
+       f3 (fre (deri rp))
+       b1 (boun (covi rp))
+       b2 (boun (conti rp))
+       b3 (boun (deri rp)))
+(return
+ (append (sort (append f1 f2 f3 nil) 'alphalessp)
+	 (list (caar rp))
+	 (sort (append b1 b2 b3 nil) 'alphalessp)))))
 
 ;HOW TO USE ARRAY NAME AS PROG VARIABLE?
 
-(DEFUN ASORT (L P ) (COND ((LESSP (LENGTH L) 2) L)
-(T 
-(PROG (I J K AZ) 
-   (SETQ I 0 J 0 K (LENGTH L) AZ (ARRAY NIL T K))
-   (FILLARRAY AZ L)
-A  (COND ((EQUAL J (f+ -1 K))
-           (RETURN (LISTARRAY AZ)))
-        ((EQUAL I (f- K 1)) (SETQ I 0) (GO A))
-        ((APPLY P (LIST (ARRAYCALL T AZ I) (ARRAYCALL T AZ (f+ 1 I)))) 
-            (SETQ I (f+ 1 I) J (f+ 1 J)) (GO A))
-        ((APPLY P (LIST (ARRAYCALL T AZ (f+ 1 I)) (ARRAYCALL T AZ I)))
-            (PERMUTE AZ I (f+ 1 I))
-            (SETQ I (f+ 1 I) J 0)  (GO A) ))   ))))
+(defun asort (l p ) (cond ((lessp (length l) 2) l)
+(t 
+(prog (i j k az) 
+   (setq i 0 j 0 k (length l) az (array nil t k))
+   (fillarray az l)
+a  (cond ((equal j (f+ -1 k))
+           (return (listarray az)))
+        ((equal i (f- k 1)) (setq i 0) (go a))
+        ((apply p (list (arraycall t az i) (arraycall t az (f+ 1 i)))) 
+            (setq i (f+ 1 i) j (f+ 1 j)) (go a))
+        ((apply p (list (arraycall t az (f+ 1 i)) (arraycall t az i)))
+            (permute az i (f+ 1 i))
+            (setq i (f+ 1 i) j 0)  (go a) ))   ))))
 
-(DEFUN PERMUTE (ARRA I J)  (PROG (X) (SETQ X (ARRAYCALL T ARRA I))
-       (STORE (ARRAYCALL T ARRA I) (ARRAYCALL T ARRA J)) 
-       (STORE (ARRAYCALL T ARRA J)  X)  ))
+(defun permute (arra i j)  (prog (x) (setq x (arraycall t arra i))
+       (store (arraycall t arra i) (arraycall t arra j)) 
+       (store (arraycall t arra j)  x)  ))
 
-(DEFUN PRANK (RP1 RP2) (COND
-    ((> (GRADE RP1) (GRADE RP2)) T)
-    ((EQUAL (GRADE RP1) (GRADE RP2)) (ALPHADI RP1 RP2))  ))
+(defun prank (rp1 rp2) (cond
+    ((> (grade rp1) (grade rp2)) t)
+    ((equal (grade rp1) (grade rp2)) (alphadi rp1 rp2))  ))
 
 
-(DEFUN SA (X) (SORT (APPEND X NIL) 'ALPHALESSP))
+(defun sa (x) (sort (append x nil) 'alphalessp))
 
-(DEFUN TOP (RP) (CDADDR RP))
-(DEFUN BOT (RP) (APPEND (CDADR RP) (CDDDR RP)))
-(DEFUN ALLIND (RP) (COND ((NOT (reallyRPOBJ RP)) NIL)
-            (T (APPEND (CDADR RP) (CDADDR RP) (CDDDR RP)))))
+(defun top (rp) (cdaddr rp))
+(defun bot (rp) (append (cdadr rp) (cdddr rp)))
+(defun allind (rp) (cond ((not (reallyrpobj rp)) nil)
+            (t (append (cdadr rp) (cdaddr rp) (cdddr rp)))))
 
 ;MON IS A MONOMIAL WHOSE FACTORS ARE ANYBODY
 ;$IRPMON AND IRPMON RETURN LIST IS FREE AND DUMMY INDICES
 
-(DEFUN $IRPMON (MON) (PROG (L CF DUM FREE CL CI)
- (SETQ L    (CDR MON)  
-       CF   (CAR L)  
-       DUM  NIL
-       FREE NIL
-       CL   (ALLIND CF)
-       CI   NIL )
- A  (COND ((NULL L) (when (eq T (BREK 19)) (break "19"))
-            (RETURN (APPEND (LIST SMLIST)
-                            (LA (LIST SMLIST) FREE)
-                            (LA (LIST SMLIST) DUM) ) ))
-          ((NULL CL) (when (eq T (BREK 18)) (break "18"))
-            (SETQ L (CDR L) CF (CAR L) CL (ALLIND CF))
-                     (GO A) )
-          (T (SETQ CI (CAR CL))
-             (COND ((NOT (MEMQ CI FREE)) (when (eq T (BREK 17)) (break "17"))
-                     (SETQ FREE (ENDCONS CI FREE)
-                           CL (CDR CL))  (GO A) )
-                   (T  (when (eq T (BREK 16)) (break "16"))
-                    (SETQ FREE (COMP FREE (LIST CI))          
-                           DUM (ENDCONS CI DUM) 
-                            CL (CDR CL))  (GO A) ) ) ))))
+(defun $irpmon (mon) (prog (l cf dum free cl ci)
+ (setq l    (cdr mon)  
+       cf   (car l)  
+       dum  nil
+       free nil
+       cl   (allind cf)
+       ci   nil )
+ a  (cond ((null l) (when (eq t (brek 19)) (break "19"))
+            (return (append (list smlist)
+                            (la (list smlist) free)
+                            (la (list smlist) dum) ) ))
+          ((null cl) (when (eq t (brek 18)) (break "18"))
+            (setq l (cdr l) cf (car l) cl (allind cf))
+                     (go a) )
+          (t (setq ci (car cl))
+             (cond ((not (memq ci free)) (when (eq t (brek 17)) (break "17"))
+                     (setq free (endcons ci free)
+                           cl (cdr cl))  (go a) )
+                   (t  (when (eq t (brek 16)) (break "16"))
+                    (setq free (comp free (list ci))          
+                           dum (endcons ci dum) 
+                            cl (cdr cl))  (go a) ) ) ))))
 
-(DEFUN IRPMON (MON) (PROG (L CF DUM FREE UNIO CL CI)
- (SETQ L    (CDR MON)
-       CF   (CAR L)  
-       DUM  NIL
-       FREE NIL
-       UNIO NIL
-       CL   (ALLIND CF)
-       CI   NIL )
- A  (COND ((NULL L) (when (eq T (BREK 15)) (break "15"))
-             (SETQ FREE (COMP UNIO DUM)
-                   DUM (COMP UNIO FREE))
-            (RETURN (APPEND (LIST FREE) (LIST DUM)) ))
+(defun irpmon (mon) (prog (l cf dum free unio cl ci)
+ (setq l    (cdr mon)
+       cf   (car l)  
+       dum  nil
+       free nil
+       unio nil
+       cl   (allind cf)
+       ci   nil )
+ a  (cond ((null l) (when (eq t (brek 15)) (break "15"))
+             (setq free (comp unio dum)
+                   dum (comp unio free))
+            (return (append (list free) (list dum)) ))
 
-          ((NULL CL) (when (eq T (BREK 14)) (break "14"))
-            (SETQ L (CDR L) CF (CAR L) CL (ALLIND CF))
-                     (GO A) )
-          (T (SETQ CI (CAR CL))
-             (COND ((NOT (MEMQ CI UNIO)) (when (eq T (BREK 13)) (break "13"))
-                     (SETQ UNIO (ENDCONS CI UNIO)
-                           CL (CDR CL))  (GO A) )
-                   (T  (when (eq T (BREK 12)) (break "12"))
-                    (SETQ DUM (ENDCONS CI DUM) 
-                            CL (CDR CL))  (GO A) ) ) ))))
+          ((null cl) (when (eq t (brek 14)) (break "14"))
+            (setq l (cdr l) cf (car l) cl (allind cf))
+                     (go a) )
+          (t (setq ci (car cl))
+             (cond ((not (memq ci unio)) (when (eq t (brek 13)) (break "13"))
+                     (setq unio (endcons ci unio)
+                           cl (cdr cl))  (go a) )
+                   (t  (when (eq t (brek 12)) (break "12"))
+                    (setq dum (endcons ci dum) 
+                            cl (cdr cl))  (go a) ) ) ))))
 
 ;THE ARGUMENT E IS A PRODUCT OF FACTORS SOME OF WHICH ARE NOT RPOBJECTS. THE
 ;FUNCTION RPOBS SEPARATES THESE AND PUTS THEM INTO NRPFACT.  THE RPFACTORS ARE
 ;SORTED AND PUT IN A
 
-(DEFUN REDCAN (E) 
-  (PROG (A B C D L NRPFACT CCI COI CT CIL OCIL)  (when (eq T (BREK 6)) (break "6"))
-    (SETQ NRPFACT  (CADR (RPOBS (CDR E)))
-          D (IRPMON E)
-	  FREI (CAR D) BOUNI (CADR D)
-          A (SORT (APPEND (CAR (RPOBS (CDR E))) NIL) 'PRANK)
-	  L (LENGTH A) 
-          B (ARRAY NIL T L)
-          C (ARRAY NIL T L 4))
-    (FILLARRAY B A) (when (eq T (BREK 7)) (break "7"))
-    (DO  ( (I 0 (f+ 1 I)) )
-         ( (EQUAL I L)    )
-         (STORE (ARRAYCALL T C I 0) (NAME (ARRAYCALL T B I)))
-         (STORE (ARRAYCALL T C I 1) (CONTI (ARRAYCALL T B I)))
-         (STORE (ARRAYCALL T C I 2) (COVI (ARRAYCALL T B I)))
-         (STORE (ARRAYCALL T C I 3) (DERI (ARRAYCALL T B I)))   )
+(defun redcan (e) 
+  (prog (a b c d l nrpfact cci coi ct cil ocil)  (when (eq t (brek 6)) (break "6"))
+    (setq nrpfact  (cadr (rpobs (cdr e)))
+          d (irpmon e)
+	  frei (car d) bouni (cadr d)
+          a (sort (append (car (rpobs (cdr e))) nil) 'prank)
+	  l (length a) 
+          b (array nil t l)
+          c (array nil t l 4))
+    (fillarray b a) (when (eq t (brek 7)) (break "7"))
+    (do  ( (i 0 (f+ 1 i)) )
+         ( (equal i l)    )
+         (store (arraycall t c i 0) (name (arraycall t b i)))
+         (store (arraycall t c i 1) (conti (arraycall t b i)))
+         (store (arraycall t c i 2) (covi (arraycall t b i)))
+         (store (arraycall t c i 3) (deri (arraycall t b i)))   )
 
 
-     (SETQ OCIL (DO  ((I 0 (f+ 1 I)) 
-		      (M NIL (APPEND (ARRAYCALL T C I 3) M) ) )
-		     ((EQUAL I L) M)    )
-           OCIL (APPEND OCIL (ARRAYCALL T C 0 2) (CAR D))
-           CT  0
-           CIL  (ARRAYCALL T C CT 1)
-           CCI  (CAR CIL)  )
-     (STORE (ARRAYCALL T C CT 1) NIL)
+     (setq ocil (do  ((i 0 (f+ 1 i)) 
+		      (m nil (append (arraycall t c i 3) m) ) )
+		     ((equal i l) m)    )
+           ocil (append ocil (arraycall t c 0 2) (car d))
+           ct  0
+           cil  (arraycall t c ct 1)
+           cci  (car cil)  )
+     (store (arraycall t c ct 1) nil)
 
- A (COND 
-    ((EQUAL CT (f+ -1 L))
-     (when (eq T (BREK 1)) (break "1"))
-     (STORE (ARRAYCALL T C CT 1) CIL)
-     (RETURN 
-      (APPEND NRPFACT 
-	      (DO ((I 0 (f+ 1 I))
-		   (LIS (APDVAL C 0) (APPEND LIS (APDVAL C (f+ 1 I))) ) )
-		  ((EQUAL I (f+ -1 L)) LIS ) ))) )     
+ a (cond 
+    ((equal ct (f+ -1 l))
+     (when (eq t (brek 1)) (break "1"))
+     (store (arraycall t c ct 1) cil)
+     (return 
+      (append nrpfact 
+	      (do ((i 0 (f+ 1 i))
+		   (lis (apdval c 0) (append lis (apdval c (f+ 1 i))) ) )
+		  ((equal i (f+ -1 l)) lis ) ))) )     
 
-    ((ZL-GET (ARRAYCALL T C CT 0) 'NODOWN)
-     (STORE (ARRAYCALL T C CT 1) CIL)
-     (SETQ CT (f+ 1 CT) CIL (ARRAYCALL T C CT 1)
-	   OCIL (APPEND (ARRAYCALL T C CT 2) OCIL))
-     (STORE (ARRAYCALL T C CT 1) NIL) (GO A))
+    ((zl-get (arraycall t c ct 0) 'nodown)
+     (store (arraycall t c ct 1) cil)
+     (setq ct (f+ 1 ct) cil (arraycall t c ct 1)
+	   ocil (append (arraycall t c ct 2) ocil))
+     (store (arraycall t c ct 1) nil) (go a))
 
-    ((NULL CIL) 
-     (when (eq T (BREK 2)) (break "2"))
-     (SETQ CT (f+ 1 CT) CIL (ARRAYCALL T C CT 1) 
-	   OCIL (APPEND (ARRAYCALL T C CT 2) OCIL) )
-     (STORE (ARRAYCALL T C CT 1) NIL) (GO A) )
+    ((null cil) 
+     (when (eq t (brek 2)) (break "2"))
+     (setq ct (f+ 1 ct) cil (arraycall t c ct 1) 
+	   ocil (append (arraycall t c ct 2) ocil) )
+     (store (arraycall t c ct 1) nil) (go a) )
 
-    (T (SETQ CCI (CAR CIL))  (when (eq T (BREK 5)) (break "5"))
-       (COND ((NOT (MEMQ CCI OCIL)) 
-	     (when (eq T (BREK 3)) (break "3"))
-	      (SETQ COI (DO  ((I (f+ 1 CT) (f+ 1 I) ) )
-			     ((MEMQ CCI (ARRAYCALL T C I 2)) I)))
+    (t (setq cci (car cil))  (when (eq t (brek 5)) (break "5"))
+       (cond ((not (memq cci ocil)) 
+	     (when (eq t (brek 3)) (break "3"))
+	      (setq coi (do  ((i (f+ 1 ct) (f+ 1 i) ) )
+			     ((memq cci (arraycall t c i 2)) i)))
  
-              (STORE (ARRAYCALL T C CT 2) 
-                    (CONS CCI (ARRAYCALL T C CT 2)))
-              (STORE (ARRAYCALL T C COI 1) 
-                    (CONS CCI (ARRAYCALL T C COI 1)))
-              (STORE (ARRAYCALL T C COI 2)
-                    (COMP (ARRAYCALL T C COI 2) (LIST CCI)))
-              (SETQ OCIL (CONS CCI OCIL)
-                     CIL (CDR CIL)       )  (GO A)   )
-         (T  (when (eq T (BREK 4)) (break "4"))
-             (STORE (ARRAYCALL T C CT 1) (CONS CCI (ARRAYCALL T C CT 1)) )
-             (SETQ CIL (CDR CIL)  ) (GO A) ) )) )   ) )
+              (store (arraycall t c ct 2) 
+                    (cons cci (arraycall t c ct 2)))
+              (store (arraycall t c coi 1) 
+                    (cons cci (arraycall t c coi 1)))
+              (store (arraycall t c coi 2)
+                    (comp (arraycall t c coi 2) (list cci)))
+              (setq ocil (cons cci ocil)
+                     cil (cdr cil)       )  (go a)   )
+         (t  (when (eq t (brek 4)) (break "4"))
+             (store (arraycall t c ct 1) (cons cci (arraycall t c ct 1)) )
+             (setq cil (cdr cil)  ) (go a) ) )) )   ) )
                      
-(DEFUN LA (X Y) (LIST (APPEND X Y)))
+(defun la (x y) (list (append x y)))
                                    
-(DEFUN APDVAL (C I) (LIST (APPEND (LIST (CONS (ARRAYCALL T C I 0)
-                                          (LIST 'SIMP)))
-                             (LA (LIST SMLIST)
-                                 (SA (ARRAYCALL T C I 2)))
-                             (LA (LIST SMLIST)
-                                 (SA (ARRAYCALL T C I 1)))
-                             (SA (ARRAYCALL T C I 3) ))))
-(DEFUN CANFORM (E)
-   (COND ((ATOM E) E)
-         ((RPOBJ E)   E)
-         ((AND (EQ (CAAR E) 'MTIMES) 
-               (= 0 (LENGTH (CAR (RPOBS (CDR E))))) )  E)
-         ((EQ (CAAR E) 'MTIMES)
-          (CONS '(MTIMES) (REDCAN E)) )
-         ((EQ (CAAR E) 'MPLUS)
-            (MYSUBST0
-             (SIMPLUS (CONS '(MPLUS) 
-              (MAPCAR #'(LAMBDA (V) (CONS '(MPLUS) (CANARANK V)))   
-		      (STRATA (CDR E) 'EQARANK) ))
-                1. NIL)              E)  )
-          (T E) ))
+(defun apdval (c i) (list (append (list (cons (arraycall t c i 0)
+                                          (list 'simp)))
+                             (la (list smlist)
+                                 (sa (arraycall t c i 2)))
+                             (la (list smlist)
+                                 (sa (arraycall t c i 1)))
+                             (sa (arraycall t c i 3) ))))
+(defun canform (e)
+   (cond ((atom e) e)
+         ((rpobj e)   e)
+         ((and (eq (caar e) 'mtimes) 
+               (= 0 (length (car (rpobs (cdr e))))) )  e)
+         ((eq (caar e) 'mtimes)
+          (cons '(mtimes) (redcan e)) )
+         ((eq (caar e) 'mplus)
+            (mysubst0
+             (simplus (cons '(mplus) 
+              (mapcar #'(lambda (v) (cons '(mplus) (canarank v)))   
+		      (strata (cdr e) 'eqarank) ))
+                1. nil)              e)  )
+          (t e) ))
 
 
-(DEFUN ENDCONS (X L) (REVERSE (CONS X (REVERSE L))))
+(defun endcons (x l) (reverse (cons x (reverse l))))
 
-(DEFUN COMP (X Y)
- (DO  ((Z  (COND ((ATOM Y) (NCONS Y)) (Y)));patch for case when Y is not a list
-       (L  X  (CDR L))
-       (A  NIL (COND ((ZL-MEMBER (CAR L) Z)  A)
-                     (T  (ENDCONS (CAR L) A)) )))
-      ((NULL L) A)  )  )
+(defun comp (x y)
+ (do  ((z  (cond ((atom y) (ncons y)) (y)));patch for case when Y is not a list
+       (l  x  (cdr l))
+       (a  nil (cond ((zl-member (car l) z)  a)
+                     (t  (endcons (car l) a)) )))
+      ((null l) a)  )  )
 
-(DEFUN APDUNION (X Y)
-(DO  ((L  Y  (CDR L))
-      (A  X  (COND ((ZL-MEMBER (CAR L) A)  A)
-                   (T (ENDCONS (CAR L) A))  )))
-     ((NULL L)  A) ))
+(defun apdunion (x y)
+(do  ((l  y  (cdr l))
+      (a  x  (cond ((zl-member (car l) a)  a)
+                   (t (endcons (car l) a))  )))
+     ((null l)  a) ))
 
 ;; Removed - duplicates INTERSECT function -- vtt
-;;(DEFUN INT (A B) (PROG (A1 B1 C)
-;;		       (SETQ A1 A B1 B C NIL)
-;;		  A    (COND ((NULL A1) (RETURN C))
-;;			     ((ZL-MEMBER (CAR A1) B1)
-;;			      (SETQ C (CONS (CAR A1) C))
-;;			      (SETQ B1 (COMP B1 (CAR A1)))
-;;			      (SETQ A1 (CDR A1))
-;;			      (GO B))
-;;			     (T (SETQ A1 (CDR A1)) (GO B)))
-;;		  B    (COND ((NULL B1) (RETURN C))
-;;			     ((ZL-MEMBER (CAR B1) A1)
-;;			      (SETQ C (CONS (CAR B1) C))
-;;			      (SETQ A1 (COMP A1 (CAR B1)))
-;;			      (SETQ B1 (CDR B1))
-;;			      (GO A))
-;;			     (T (SETQ B1 (CDR B1)) (GO A)))))
+;;(defun int (a b) (prog (a1 b1 c)
+;;		       (setq a1 a b1 b c nil)
+;;		  a    (cond ((null a1) (return c))
+;;			     ((zl-member (car a1) b1)
+;;			      (setq c (cons (car a1) c))
+;;			      (setq b1 (comp b1 (car a1)))
+;;			      (setq a1 (cdr a1))
+;;			      (go b))
+;;			     (t (setq a1 (cdr a1)) (go b)))
+;;		  b    (cond ((null b1) (return c))
+;;			     ((zl-member (car b1) a1)
+;;			      (setq c (cons (car b1) c))
+;;			      (setq a1 (comp a1 (car b1)))
+;;			      (setq b1 (cdr b1))
+;;			      (go a))
+;;			     (t (setq b1 (cdr b1)) (go a)))))
 
 ;LIST IS A LIST OF CANFORMED MONOMIALS OF THE SAME ARANK
 ;CANARANK FINDS THE EQUIVALENT ONES
 
-(DEFUN CANARANK (LIS) (PROG (A B C D CT CNT I)
-     (SETQ  A  LIS
-            B  NIL
-            C  (CDR A)
-            D  (ARRAY NIL T (LENGTH A))
-           CT  (CANFORM (CAR A))  
-          CNT  (CANFORM (CAR C))
-            I  1  )
-     (FILLARRAY D A)
+(defun canarank (lis) (prog (a b c d ct cnt i)
+     (setq  a  lis
+            b  nil
+            c  (cdr a)
+            d  (array nil t (length a))
+           ct  (canform (car a))  
+          cnt  (canform (car c))
+            i  1  )
+     (fillarray d a)
 
-A   (COND ((NULL A)   
-               (RETURN B))
+a   (cond ((null a)   
+               (return b))
          
-          ((AND (NULL (CDR A)) (NULL C))
-               (SETQ B (CONS CT B))
-               (RETURN B) )
+          ((and (null (cdr a)) (null c))
+               (setq b (cons ct b))
+               (return b) )
 
 
-          ((NULL C) (when (eq T (BREK 9)) (break "9"))
-             (SETQ B (CONS CT B))
-             (STORE (ARRAYCALL T D 0) NIL)
-             (SETQ A (COMP (LISTARRAY D) (LIST NIL))
-                   C (CDR A)
-                   I 1
-                  CT (CANFORM (CAR A))
-                 CNT (CANFORM (CAR C)) ) 
-            (COND ((NULL A) (RETURN B)) 
-                  (T (SETQ D (ARRAY NIL T (LENGTH A)))
-                     (FILLARRAY D A)))
-            (GO A))
+          ((null c) (when (eq t (brek 9)) (break "9"))
+             (setq b (cons ct b))
+             (store (arraycall t d 0) nil)
+             (setq a (comp (listarray d) (list nil))
+                   c (cdr a)
+                   i 1
+                  ct (canform (car a))
+                 cnt (canform (car c)) ) 
+            (cond ((null a) (return b)) 
+                  (t (setq d (array nil t (length a)))
+                     (fillarray d a)))
+            (go a))
 
-          ((SAMESTRUC CT CNT) (when (eq T (BREK 10)) (break "10"))
-             (SETQ B (CONS (CANFORM (TRANSFORM CNT CT)) B))
-             (STORE (ARRAYCALL T D I) NIL)
-             (SETQ C (CDR C)
-                 CNT (CANFORM (CAR C))
-                   I (f+ 1 I) )  (GO A) )
+          ((samestruc ct cnt) (when (eq t (brek 10)) (break "10"))
+             (setq b (cons (canform (transform cnt ct)) b))
+             (store (arraycall t d i) nil)
+             (setq c (cdr c)
+                 cnt (canform (car c))
+                   i (f+ 1 i) )  (go a) )
       
-           (T (when (eq T (BREK 11)) (break "11"))
-             (SETQ C (CDR C)
-                 CNT (CANFORM (CAR C))
-                   I (f+ 1 I)) (GO A)) )))
+           (t (when (eq t (brek 11)) (break "11"))
+             (setq c (cdr c)
+                 cnt (canform (car c))
+                   i (f+ 1 i)) (go a)) )))
 
 ;M1,M2 ARE (CANFORMED) MONOMIALS WHOSE INDEX STRUCTURE MAY BE THE SAME
 
-(DEFUN SAMESTRUC (M1 M2) (EQUAL (INDSTRUC M1) (INDSTRUC M2)))
+(defun samestruc (m1 m2) (equal (indstruc m1) (indstruc m2)))
      
 ;MON IS (MTIMES) A LIST OF RP AND NON-RP FACTORS IN A MONOMIAL.  THE NEXT
 ;FUNCTION RETURNS A LIST WHOSE ELEMENTS ARE 4-ELEMENT LISTS GIVING THE NAME
 ;(MON) AND THE LENGTHS OF THE COVARIANT,CONTRAVARIANT,DERIVATIVE INDICES.
 
-(DEFUN INDSTRUC (MON)
- (DO  ( (L (CDR MON) (CDR L))
-        (B NIL (COND ((reallyRPOBJ (CAR L)) 
-                       (APPEND B  (LIST (FINDSTRUC (CAR L))) ))
-                      (T  B) ))  )
-      ( (NULL L)  B)  )  )
+(defun indstruc (mon)
+ (do  ( (l (cdr mon) (cdr l))
+        (b nil (cond ((reallyrpobj (car l)) 
+                       (append b  (list (findstruc (car l))) ))
+                      (t  b) ))  )
+      ( (null l)  b)  )  )
 
 
  
 ;FACT IS AN RP  FACTOR IN MON. HERE WE FIND ITS INDEX STRUCTURE
 
-(DEFUN FINDSTRUC (FACT)
-       (APPEND (LIST (CAAR FACT) )
-               (LIST (LENGTH (CDADR FACT)))
-               (LIST (LENGTH (CDADDR FACT)))
-               (LIST (LENGTH (CDDDR FACT))) ))
+(defun findstruc (fact)
+       (append (list (caar fact) )
+               (list (length (cdadr fact)))
+               (list (length (cdaddr fact)))
+               (list (length (cdddr fact))) ))
 
 ;M1,M2 ARE MONOMIALS WITH THE SAMESTRUC TURE. THE NEXT FUNCTION TRANSFORMS
 ;(PERMUTES) THE FORM OF M1 INTO M2.
 
-(DEFUN TRANSFORM  (M1 M2)
-  (SUBLIS  (FINDPERM M1 M2) M1))
+(defun transform  (m1 m2)
+  (sublis  (findperm m1 m2) m1))
 
-(DEFUN STRATA (LIS P)
- (COND ((OR (NULL LIS) (NULL (CDR LIS))) (LIST LIS))
-       (T
+(defun strata (lis p)
+ (cond ((or (null lis) (null (cdr lis))) (list lis))
+       (t
 
-  (PROG  (L BL CS)   (SETQ L LIS CS NIL BL NIL)
+  (prog  (l bl cs)   (setq l lis cs nil bl nil)
 
-  A  (COND ((NULL L) (when (eq T (BREK 1)) (break "1"))
-                     (RETURN (COND ((NULL CS) BL)
-                                   (T (ENDCONS CS BL)))))
+  a  (cond ((null l) (when (eq t (brek 1)) (break "1"))
+                     (return (cond ((null cs) bl)
+                                   (t (endcons cs bl)))))
 
-           ((AND (NULL (CDR L)) (NULL CS)) (when (eq T (BREK 2)) (break "2"))
-                      (SETQ BL (ENDCONS (LIST (CAR L)) BL))
-                      (RETURN BL) )
-        ((AND (NULL (CDR L)) (NOT (NULL CS))) (when (eq T (BREK 3)) (break "3"))
-             (RETURN (COND ((FUNCALL P (CAR L) (CAR CS)) 
-                     (SETQ CS (CONS (CAR L) CS)
-                           BL (ENDCONS CS BL)))
-                   (T (SETQ BL (ENDCONS (LIST (CAR L)) (ENDCONS CS BL)))))))
+           ((and (null (cdr l)) (null cs)) (when (eq t (brek 2)) (break "2"))
+                      (setq bl (endcons (list (car l)) bl))
+                      (return bl) )
+        ((and (null (cdr l)) (not (null cs))) (when (eq t (brek 3)) (break "3"))
+             (return (cond ((funcall p (car l) (car cs)) 
+                     (setq cs (cons (car l) cs)
+                           bl (endcons cs bl)))
+                   (t (setq bl (endcons (list (car l)) (endcons cs bl)))))))
 
-           ((NULL CS) (when (eq T (BREK 4)) (break "4"))
- (SETQ CS (LIST (CAR L)) L (CDR L)) (GO A))
-           ((FUNCALL P (CAR L) (CAR CS)) (when (eq T (BREK 5)) (break "5"))
-             (SETQ CS (CONS (CAR L) CS)
-                   L (CDR L)) (GO A)   )
+           ((null cs) (when (eq t (brek 4)) (break "4"))
+ (setq cs (list (car l)) l (cdr l)) (go a))
+           ((funcall p (car l) (car cs)) (when (eq t (brek 5)) (break "5"))
+             (setq cs (cons (car l) cs)
+                   l (cdr l)) (go a)   )
 
-           (T   (when (eq T (BREK 6)) (break "6"))
- (SETQ BL (ENDCONS  CS BL)
-                    CS (LIST (CAR L))
-                    L  (CDR L) )  (GO A) ) ) ))))
-
-
-
-(DEFUN TINDSTRUC (MON)
- (DO ( (L (CDR MON) (CDR L))
-       (B NIL (COND ((reallyRPOBJ (CAR L))
-                     (APPEND B  (TFINDSTRUC (CAR L)) ))
-                    (T B) )))
-     ((NULL L) B)))
-
-(DEFUN TFINDSTRUC (FACT)
-     (APPEND (CDADR FACT) (CDADDR FACT) (CDDDR FACT) ))   
-
-(DEFUN DUMM (X)  (EQUAL (CADR (EXPLODEC X)) $IDUMMYX))
+           (t   (when (eq t (brek 6)) (break "6"))
+ (setq bl (endcons  cs bl)
+                    cs (list (car l))
+                    l  (cdr l) )  (go a) ) ) ))))
 
 
-(DEFUN FINDPERMUT (I1 I2) 
-  (COMP (MAPCAR 'PIJ I1 I2) (LIST NIL)))
 
-(DEFUN PIJ (X Y)
-  (COND ((AND (DUMM X) (DUMM Y) (NOT (EQ X Y))) (CONS X Y))))
+(defun tindstruc (mon)
+ (do ( (l (cdr mon) (cdr l))
+       (b nil (cond ((reallyrpobj (car l))
+                     (append b  (tfindstruc (car l)) ))
+                    (t b) )))
+     ((null l) b)))
+
+(defun tfindstruc (fact)
+     (append (cdadr fact) (cdaddr fact) (cdddr fact) ))   
+
+(defun dumm (x)  (equal (cadr (explodec x)) $idummyx))
+
+
+(defun findpermut (i1 i2) 
+  (comp (mapcar 'pij i1 i2) (list nil)))
+
+(defun pij (x y)
+  (cond ((and (dumm x) (dumm y) (not (eq x y))) (cons x y))))
      
 
 ;(SAMESTRUC M1 M2) IS  T  FOR THE ARGUMENTS BELOW
 ;THE RESULTING PERMUTATION IS GIVEN TO TRANSFORM
 
-(DEFUN FINDPERM (M1 M2)
-  (DO  ((D1 (CADR (IRPMON M1))    )
-        (D2 (CADR (IRPMON M2))    )
-        (I1 (TINDSTRUC M1) (CDR I1) )
-        (I2 (TINDSTRUC M2) (CDR I2) )  
-        (L NIL (COND ((AND (MEMQ (CAR I1) D1) (MEMQ (CAR I2) D2)
-                           (NOT (EQ (CAR I1) (CAR I2)))
-                           (NOT (MEMQ (CAR I1) (CAR L)))
-                           (NOT (MEMQ (CAR I2) (CADR L))) )
-                      (CONS (ENDCONS (CAR I1) (CAR L))
-                       (LIST (ENDCONS (CAR I2) (CADR L))) ) )
-		     (T L))))
+(defun findperm (m1 m2)
+  (do  ((d1 (cadr (irpmon m1))    )
+        (d2 (cadr (irpmon m2))    )
+        (i1 (tindstruc m1) (cdr i1) )
+        (i2 (tindstruc m2) (cdr i2) )  
+        (l nil (cond ((and (memq (car i1) d1) (memq (car i2) d2)
+                           (not (eq (car i1) (car i2)))
+                           (not (memq (car i1) (car l)))
+                           (not (memq (car i2) (cadr l))) )
+                      (cons (endcons (car i1) (car l))
+                       (list (endcons (car i2) (cadr l))) ) )
+		     (t l))))
   
-  ((NULL I1) (MAPCAR 'CONS
-                      (APPEND (CAR L) (COMP D1 (CAR L)))
-                      (APPEND (CADR L) (COMP D2 (CADR L)))))))
+  ((null i1) (mapcar 'cons
+                      (append (car l) (comp d1 (car l)))
+                      (append (cadr l) (comp d2 (cadr l)))))))
 
      
  
-(DEFUN $CANTEN (X)  (cond ((not $allsym) (merror "canten works only if allsym:true has been set")) (t  (DO ((I ($NTERMS X) ($NTERMS L))
-                      (L (CANFORM X) (CANFORM L)) )
-                     ((= I ($NTERMS L))  L) 
-		      (COND ((EQ $CANTERM T) (PRINT I))) ))
+(defun $canten (x)  (cond ((not $allsym) (merror "canten works only if allsym:true has been set")) (t  (do ((i ($nterms x) ($nterms l))
+                      (l (canform x) (canform l)) )
+                     ((= i ($nterms l))  l) 
+		      (cond ((eq $canterm t) (print i))) ))
                     ))
 
-(DEFUN $CONCAN (X) (cond ((not $allsym) (merror "concan works only if allsym:true has been set")) (t  (DO ((I ($NTERMS X) ($NTERMS L))
-			(L (CANFORM X) ($CONTRACT (CANFORM L))))
-		       ((= I ($NTERMS L)) L)
-		       (COND ((EQ $CANTERM T) (PRINT I))) ))
+(defun $concan (x) (cond ((not $allsym) (merror "concan works only if allsym:true has been set")) (t  (do ((i ($nterms x) ($nterms l))
+			(l (canform x) ($contract (canform l))))
+		       ((= i ($nterms l)) l)
+		       (cond ((eq $canterm t) (print i))) ))
                     ))
 
 
