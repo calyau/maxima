@@ -28,9 +28,9 @@
 (in-package :maxima)
 (macsyma-module implicit_plot)
 
-(defmvar $ip_grid `((mlist simp)  75  75)
+(defmvar $ip_grid `((mlist simp)  50  50)
   "Grid for the first sampling.")
-(defmvar $ip_grid_in `((mlist simp)  10  10)
+(defmvar $ip_grid_in `((mlist simp)  5  5)
   "Grid for the second sampling.")
 
 (defmvar $ip_epsilon  0.0000001
@@ -76,9 +76,9 @@
   (let* ((xdelta (/ (- xmax xmin) ($first grid)))
 	 (ydelta (/ (- ymax ymin) ($second grid))))
     (do ((i 0 (1+ i)))
-	((>= (+ i 2) ($first grid)))    
+	((= i ($first grid)))
       (do ((j 0 (1+ j)))
-	  ((>= (+ j 2) ($second grid)))
+	  ((= j ($second grid)))
 	(if (contains-zeros i j sample)
 	    (let ((points ()))
 	      (if (< (* (aref sample i j) (aref sample (1+ i) j)) 0)
@@ -199,14 +199,14 @@
 				    ,($first yrange))))
 	(sample-data e xmin xmax ymin ymax sample $ip_grid)
 	(do ((i 0 (1+ i)))
-	    ((= (1+ i) ($first $ip_grid)))
+	    ((= i ($first $ip_grid)))
 	  (do ((j 0 (1+ j)))
-	      ((= (1+ j) ($second $ip_grid)))
+	      ((= j ($second $ip_grid)))
 	    (if (contains-zeros i j sample)
 		(let* ((xxmin (+ xmin (* i xdelta)))
-		       (xxmax (+ xxmin xdelta xdelta))
+		       (xxmax (+ xxmin xdelta))
 		       (yymin (+ ymin (* j ydelta)))
-		       (yymax (+ yymin ydelta ydelta)))
+		       (yymax (+ yymin ydelta)))
 		  (sample-data e xxmin xxmax yymin yymax
 			       ssample $ip_grid_in)
 		  (print-square file xxmin xxmax yymin yymax
