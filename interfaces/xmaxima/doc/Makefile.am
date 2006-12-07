@@ -9,7 +9,7 @@ FIGURES      = figures/xmaxima.gif figures/plot2d.gif figures/plot3d.gif \
 EXTRA_DIST   = $(XMAXIMAHTML) $(FIGURES)
 
 htmldir      = $(xmaximadir)/html
-figuresdir   = $(xmaximadir)/html
+figuresdir   = $(xmaximadir)/html/figures
 html_DATA    = $(XMAXIMAHTML)
 figures_DATA = $(FIGURES)
 
