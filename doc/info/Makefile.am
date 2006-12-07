@@ -130,7 +130,7 @@ clean-html:
 
 EXTRA_DIST = texi2html maximahtml.mk manual.css texi2html.init $(genericdirDATA) \
     create_index header.hhp maxima.hhp maxima-index.lisp \
-    check_crlf check_tab fix_crlf fix_tab
+    check_crlf check_tab fix_crlf fix_tab build_index.pl
 
 check_texinfo:
 	pattern=`printf "\r$$"` ; \
