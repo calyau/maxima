@@ -1,4 +1,4 @@
-@c english version 1.2
+@c english version 1.5
 @menu
 * Introducci@'on al procesamiento de cadenas::
 * Definiciones para entrada y salida::
@@ -10,7 +10,12 @@
 @section Introducci@'on al procesamiento de cadenas
 
 El paquete @code{stringproc} ampl@'{@dotless{i}}a las capacidades de 
-Maxima para manipular cadenas de caracteres; para cargarlo basta con
+Maxima para manipular cadenas de caracteres, al tiempo que a@~nade algunas
+funciones @'utiles para la lectura y escritura de ficheros.
+
+Para dudas y fallos, por favor cont@'actese con van.nek at arcor.de .
+
+Para cargar este paquete basta con
 ejecutar la sentencia @code{load("stringproc")}.
 
 En Maxima, una cadena de caracteres se construye f@'acilmente 
@@ -19,7 +24,8 @@ cuenta que las cadenas de Maxima no son cadenas de Lisp,
 pudi@'endose ejecutar las funciones de chequeo @code{stringp}
 y @code{lstringp} con el fin de dilucidar qu@'e tipo de cadena
 es su argumento. Si por cualquier motivo el usuario tiene una
-cadena de Lisp y la quiere convertir a una cadena de Maxima habr@'a
+cadena de Lisp, quiz@'as por haber hecho uso de la funci@'on @code{sconcat},
+y la quiere convertir a una cadena de Maxima habr@'a
 de utilizar la funci@'on conversora @code{sunlisp}.
 
 
@@ -82,92 +88,99 @@ ocupa la posici@'on 1. Esto se ha dise@~nado as@'{@dotless{i}} para mantener
 la compatibilidad con las listas de Maxima. V@'eanse las definiciones de 
 @code{charat} y @code{charlist} para ver ejemplos.
 
-Las funciones de cadenas se utilizan frecuentemente cuando se trabaja con
-ficheros. El paquete @code{stringproc} dispone de algunas funciones de
-escritura que pueden ser @'utiles. Por ejemplo, si un fichero contiene
-instrucciones de entrada y salidas de Maxima, la funci@'on @code{extracti}
-extrae los valores de todas las etiquetas de entrada para un fichero que 
-puede ser le@'{@dotless{i}}do por Maxima y cuya ruta es devuelta por la
-funci@'on. El fichero podr@'a ser ejecutado inmediatamente con @code{batch(%)}.
-N@'otese que @code{extracti} falla si al menos una de las etiquetas est@'a
-da@~nada, quiz@'as debido a haber borrado @code{).}, o si algunas entradas
-proced@'{@dotless{i}}an de la lectura de ficheros externos (mediante @code{batch}),
-o si existen caracteres m@'as all@'a de los s@'{@dotless{i}}mbolos de terminaci@'on
-de sentencia @code{;} o @code{$}.
+Las funciones de cadena se utilizan frecuentemente cuando se trabaja con
+ficheros. El siguiente ejemplo muestra algunas de estas funciones en acci@'on.
+
+Ejemplo: 
+
+La funci@'on @code{openw} env@'{@dotless{i}}a un flujo de salida hacia
+un fichero, entonces @code{printf} permitir@'a formatera la escritura en
+este fichero. V@'ease @code{printf} para m@'as detalles.
 
 @example
-extracti(file):= block(
-   [ s1: openr(file), ifile: sconc(file,".in"), line, nl: false ],
-   s2: openw(ifile), 
-
-   while ( stringp(line: readline(s1)) ) do (
-      if ssearch( sconc("(",inchar),line ) = 1 then (
-         line: strim(" ",substring( line,ssearch(")",line)+1 )),
-         printf( s2,"~a~%",line ),
-         checklast(line) )
-      else if nl then (
-         line: strimr(" ",line),
-         printf( s2,"~a~%",line ),
-         checklast(line) )),
-         
-   close(s1), close(s2),
-   ifile)$
-      
-checklast(line):= block(
-   [ last: charat( line,slength(line) ) ],
-   if cequal(last,";") or cequal(last,"$") then 
-      nl:false else nl:true )$
+(%i1) load("stringproc")$
+(%i2) s: openw("E:/file.txt");
+(%o2)                    #<output stream E:/file.txt>
+(%i3) for n:0 thru 10 do printf( s, "~d ", fib(n) );
+(%o3)                                done
+(%i4) printf( s, "~%~d ~f ~a ~a ~f ~e ~a~%", 
+              42,1.234,sqrt(2),%pi,1.0e-2,1.0e-2,1.0b-2 );
+(%o4)                                false
+(%i5) close(s);
+(%o5)                                true
 @end example
 
-Contenido del fichero 'C:\home\maxima\test.out':
+Una vez cerrado el flujo, se podr@'a abrir nuevamente. La funci@'on @code{readline}
+devuelve el rengl@'on entero como una @'unica cadena. El paquete @code{stringproc}
+dispone de muchas funciones para manipular cadenas. La separaci@'on de palabras se
+puede hacer con @code{split} o @code{tokens}.
 
 @example
-(%i1) f(x):= sin(x)$
-(%i2) diff(f(x),x);
-(%o2)                               cos(x)
-(%i3) df(x):= ''%;
-(%o3)                           df(x) := cos(x)
-(%i4) df(0);
-(%o4)                                  1
+(%i6) s: openr("E:/file.txt");
+(%o6)                     #<input stream E:/file.txt>
+(%i7) readline(s);
+(%o7)                     0 1 1 2 3 5 8 13 21 34 55 
+(%i8) line: readline(s);
+(%o8)               42 1.234 sqrt(2) %pi 0.01 1.0E-2 1.0b-2
+(%i9) list: tokens(line);
+(%o9)           [42, 1.234, sqrt(2), %pi, 0.01, 1.0E-2, 1.0b-2]
+(%i10) map( parsetoken, list );
+(%o10)           [42, 1.234, false, false, 0.01, 0.01, false]
 @end example
 
-Ahora desde Maxima:
+La funci@'on @code{parsetoken} s@'olo analiza sint@'acticamente n@'umeros
+enteros y decimales. El an@'alisis de s@'{@dotless{i}}mbolos y n@'umeros
+decimales grandes (@i{big floats}) necesita @code{parse_string}, que puede
+cargarse desde @code{eval_string.lisp}.
 
-@example
-(%i11) extracti("C:\\home\\maxima\\test.out");
-(%o11)             C:\home\maxima\test.out.in
-(%i12) batch(%);
-
-batching #pC:/home/maxima/test.out.in
-(%i13)                          f(x) := sin(x)
-(%i14)                           diff(f(x), x)
-(%o14)                              cos(x)
-(%i15)                          df(x) := cos(x)
-(%o15)                          df(x) := cos(x)
-(%i16)                               df(0)
-(%o16)                                 1 
+@example 
+(%i11) load("eval_string")$
+(%i12) map( parse_string, list );
+(%o12)           [42, 1.234, sqrt(2), %pi, 0.01, 0.01, 1.0b-2]
+(%i13) float(%);
+(%o13) [42.0, 1.234, 1.414213562373095, 3.141592653589793, 0.01, 0.01, 0.01]
+(%i14) readline(s);
+(%o14)                               false
+(%i15) close(s)$
 @end example
+
+La funci@'on @code{readline} devuelve @code{false} cuando se alcanza el
+final del fichero.
+
 
 @node Definiciones para entrada y salida, Definiciones para caracteres, Introducci@'on al procesamiento de cadenas, stringproc
 @section Definiciones para entrada y salida
 
 Ejemplo: 
 
+@c ===beg===
+@c load("stringproc")$
+@c s: openw("E:/file.txt");
+@c control: 
+@c  "~2tAn atom: ~20t~a~%~2tand a list: ~20t~@{~r ~@}~%~2tand an integer: ~20t~d~%"$
+@c printf( s,control, 'true,[1,2,3],42 )$
+@c close(s);
+@c s: openr("E:/file.txt");
+@c while stringp( tmp:readline(s) ) do print(tmp)$
+@c close(s)$
+@c ===end===
 @example
-(%i1) s: openw("C:\\home\\file.txt");
-(%o1)                 #<output stream C:\home\file.txt>
-(%i2) control: "~2tAn atom: ~20t~a~%~2tand a list: ~20t~@{~r ~@}~%~2tand an integer: ~20t~d~%"$
-(%i3) printf( s,control, 'true,[1,2,3],42 )$
-(%o3)                                false
-(%i4) close(s);
-(%o4)                                true
-(%i5) s: openr("C:\\home\\file.txt");
-(%o5)                 #<input stream C:\home\file.txt>
-(%i6) while stringp( tmp:readline(s) ) do print(tmp)$
+(%i1) load("stringproc")$
+(%i2) s: openw("E:/file.txt");
+(%o2)                     #<output stream E:/file.txt>
+(%i3) control: 
+"~2tAn atom: ~20t~a~%~2tand a list: ~20t~@{~r ~@}~%~2tand an integer: ~20t~d~%"$
+(%i4) printf( s,control, 'true,[1,2,3],42 )$
+(%o4)                                false
+(%i5) close(s);
+(%o5)                                true
+(%i6) s: openr("E:/file.txt");
+(%o6)                     #<input stream E:/file.txt>
+(%i7) while stringp( tmp:readline(s) ) do print(tmp)$
   An atom:          true 
   and a list:       one two three  
   and an integer:   42 
-(%i7) close(s)$
+(%i8) close(s)$
 @end example
 
 
@@ -193,19 +206,21 @@ ocupando el primer elemento en @var{stream} la posici@'on 1.
 
 @deffn {Funci@'on} freshline () 
 @deffnx {Funci@'on} freshline (@var{stream}) 
-Escribe una nueva l@'{@dotless{i}}nea en el  flujo de datos @var{stream}
+Escribe una nueva l@'{@dotless{i}}nea (en el flujo de datos @var{stream})
 si la posici@'on actual no corresponde al inicio de la l@'{@dotless{i}}nea.
-La funci@'on @code{freshline} no trabaja correctamente con los flujos de datos  
-@code{true} y @code{false}. 
+
+V@'ease tambi@'en @code{newline}.
 
 @end deffn
 
 @deffn {Funci@'on} newline () 
 @deffnx {Funci@'on} newline (@var{stream}) 
-Escribe una nueva l@'{@dotless{i}}nea en el  flujo de datos  @var{stream}.
-La funci@'on @code{freshline} no trabaja correctamente con los flujos de datos 
-@code{true} y @code{false}.
-V@'ease @code{sprint} para un ejemplo de utilizaci@'on de @code{newline}.
+Escribe una nueva l@'{@dotless{i}}nea (en el flujo de datos  @var{stream}).
+
+V@'ease @code{sprint} para un ejemplo de uso de @code{newline()}.
+
+N@'otese que hay algunos casos en los que @code{newline} no trabaja
+seg@'un lo esperado.
 
 @end deffn
 
@@ -230,13 +245,11 @@ borrando el contenido anterior.
 
 @deffn {Funci@'on} printf (@var{dest}, @var{string})
 @deffnx {Funci@'on} printf (@var{dest}, @var{string}, @var{expr_1}, ..., @var{expr_n})
-La funci@'on @code{printf} se comporta de forma similar a la de FORMAT en Common Lisp.
-V@'eanse las referencias de Lisp para m@'as informaci@'on. T@'engase en cuenta que hay
-alhunas directivas que funcionan en Lisp, pero no en Maxima. Por ejemplo, @code{~:[}
-falla.
+Pone al alcance de Maxima la funci@'on FORMAT de Common Lisp.
 
-La funci@'on @code{printf} ha sido dise@~nada para que @code{~s} se interprete igual que
-@code{~a}. Adem@'as la directiva de selecci@'on @code{~[} se indexa a partir del cero.
+V@'eanse las referencias de Lisp para m@'as informaci@'on.
+
+La siguiente descripci@'on y los ejemplos pueden dar una idea de c@'omo usar @code{printf}.
 
 @example
    ~%       nueva l@'{@dotless{i}}nea
@@ -254,7 +267,7 @@ La funci@'on @code{printf} ha sido dise@~nada para que @code{~s} se interprete i
    ~e       notaci@'on cient@'{@dotless{i}}fica
    ~g       ~f o ~e, dependiendo de la magnitud
    ~a       tal como imprime la funci@'on de Maxima @code{print}
-   ~s       como ~a
+   ~s       cadenas limitadas por "comillas dobles"
    ~~       ~
    ~<       justificaci@'on, ~> termina
    ~(       conversor may@'uscula/min@'uscula, ~) termina 
@@ -262,20 +275,40 @@ La funci@'on @code{printf} ha sido dise@~nada para que @code{~s} se interprete i
    ~@{       iteraci@'on, ~@} termina
 @end example
 
+N@'otese que no hay un formato especificado para n@'umeros decimales
+grandes (@i{big floats}). Sin embargo, estos n@'umeros pueden escribirse
+utilizando simplemente la directiva @code{~a}. La directiva @code{~s}
+imprime cadenas encerradas entre "comillas dobles", lo cual se puede
+evitar utilizando @code{~a}.
+Por otro lado, la directiva @code{~[} est@'a indexada a partir del cero.
+Por @'ultimo, indicar que algunas directivas no funcionan en Maxima, como
+por ejemplo @code{~:[}.
+
+@c ===beg===
+@c load("stringproc")$
+@c printf( false, "~a ~a ~4f ~a ~@@r", 
+@c         "String",sym,bound,sqrt(12),144), bound = 1.234;
+@c printf( false,"~@{~a ~@}",["one",2,"THREE"] );
+@c printf( true,"~@{~@{~9,1f ~@}~%~@}",mat ),
+@c         mat = args( matrix([1.1,2,3.33],[4,5,6],[7,8.88,9]) )$
+@c control: "~:(~r~) bird~p ~[is~;are~] singing."$
+@c printf( false,control, n,n,if n=1 then 0 else 1 ), n=2;
+@c ===end===
 @example
-(%i1) printf( false, "~s ~a ~4f ~a ~@@r", 
-"String",sym,bound,sqrt(8),144), bound = 1.234;
-(%o1)                 String sym 1.23 2*sqrt(2) CXLIV
-(%i2) printf( false,"~@{~a ~@}",["one",2,"THREE"] );
-(%o2)                          one 2 THREE 
-(%i3) printf( true,"~@{~@{~9,1f ~@}~%~@}",mat ),
-mat = args( matrix([1.1,2,3.33],[4,5,6],[7,8.88,9]) )$
+(%i1) load("stringproc")$
+(%i2) printf( false, "~a ~a ~4f ~a ~@@r", 
+              "String",sym,bound,sqrt(12),144), bound = 1.234;
+(%o2)                 String sym 1.23 2*sqrt(3) CXLIV
+(%i3) printf( false,"~@{~a ~@}",["one",2,"THREE"] );
+(%o3)                          one 2 THREE 
+(%i4) printf( true,"~@{~@{~9,1f ~@}~%~@}",mat ),
+              mat = args( matrix([1.1,2,3.33],[4,5,6],[7,8.88,9]) )$
       1.1       2.0       3.3 
       4.0       5.0       6.0 
       7.0       8.9       9.0 
-(%i4) control: "~:(~r~) bird~p ~[is~;are~] singing."$
-(%i5) printf( false,control, n,n,if n=1 then 0 else 1 ), n=2;
-(%o5)                    Two birds are singing.
+(%i5) control: "~:(~r~) bird~p ~[is~;are~] singing."$
+(%i6) printf( false,control, n,n,if n=1 then 0 else 1 ), n=2;
+(%o6)                    Two birds are singing.
 @end example
 
 Si @var{dest} es un flujo de datos o @code{true}, entonces @code{printf}
@@ -290,19 +323,29 @@ si est@'a al final del fichero.
 @end deffn
 
 @deffn {Funci@'on} sprint (@var{expr_1}, ..., @var{expr_n})
-Eval@'ua y muestra sus argumentos uno tras otro en un rengl@'on comenzando en 
+Eval@'ua y muestra sus argumentos uno tras otro en un rengl@'on comenzando por 
 su extremo izquierdo. 
 
+La funci@'on @code{newline()}, que se puede cargar desde @code{stringproc.lisp},
+puede ser de utilidad si se quiere intercalar un salto de l@'{@dotless{i}}nea.
+
+@c ===beg===
+@c for n:0 thru 22 do sprint( fib(n) )$
+@c load("stringproc")$
+@c for n:0 thru 22 do ( 
+@c    sprint(fib(n)), if mod(n,10)=9 then newline() )$
+@c ===end===
 @example
-(%i1) load("stringproc")$
-(%i2) for n:0 thru 16 do sprint( fib(n) )$
-0 1 1 2 3 5 8 13 21 34 55 89 144 233 377 610 987
+(%i1) for n:0 thru 22 do sprint( fib(n) )$
+0 1 1 2 3 5 8 13 21 34 55 89 144 233 377 610 987 1597 2584 4181 6765 10946 17711 
+(%i2) load("stringproc")$
+(%i3) for n:0 thru 22 do ( 
+         sprint(fib(n)), if mod(n,10)=9 then newline() )$
+0 1 1 2 3 5 8 13 21 34 
+55 89 144 233 377 610 987 1597 2584 4181 
+6765 10946 17711 
 @end example
 
-Si se quiere un salto de l@'{@dotless{i}}nea antes de cada impresi@'on,
-a@~n@'adase @code{,newline()}.
-
-V@'ease @code{ascii} para un ejemplo.
 @end deffn
 
 @node Definiciones para caracteres, Definiciones para cadenas, Definiciones para entrada y salida, stringproc
@@ -321,11 +364,17 @@ un d@'{@dotless{i}}gito.
 Devuelve el car@'acter correspondiente al n@'umero ASCII @var{int},
 debiendo ser @math{-1 < int < 256}.
 
+@c ===beg===
+@c load("stringproc")$
+@c for n from 0 thru 255 do ( 
+@c    tmp: ascii(n), if alphacharp(tmp) then sprint(tmp), if n=96 then newline() )$
+@c ===end===
 @example
-(%i1) for n from 0 thru 255 do ( tmp: ascii(n),
-if alphacharp(tmp) then sprint(tmp) ), newline()$
-A B C D E F G H I J K L M N O P Q R S T U V W X Y Z a b c d e f g
-h i j k l m n o p q r s t u v w x y z
+(%i1) load("stringproc")$
+(%i2) for n from 0 thru 255 do ( 
+tmp: ascii(n), if alphacharp(tmp) then sprint(tmp), if n=96 then newline() )$
+A B C D E F G H I J K L M N O P Q R S T U V W X Y Z 
+a b c d e f g h i j k l m n o p q r s t u v w x y z
 @end example
 
 @end deffn
@@ -373,10 +422,15 @@ car@'acter espacio. Un car@'acter gr@'afico es el que se puede ver y con un
 espacio a@~nadido; @code{constituent} est@'a definido por Paul Graham,
 ANSI Common Lisp, 1996, page 67.
 
-
+@c ===beg===
+@c load("stringproc")$
+@c for n from 0 thru 255 do ( 
+@c    tmp: ascii(n), if constituent(tmp) then sprint(tmp) )$
+@c ===end===
 @example
-(%i1) for n from 0 thru 255 do ( tmp: ascii(n),
-if constituent(tmp) then sprint(tmp) ), newline()$
+(%i1) load("stringproc")$
+(%i2) for n from 0 thru 255 do ( 
+tmp: ascii(n), if constituent(tmp) then sprint(tmp) )$
 ! " #  %  ' ( ) * + , - . / 0 1 2 3 4 5 6 7 8 9 : ; < = > ? @@ A B
 C D E F G H I J K L M N O P Q R S T U V W X Y Z [ \ ] ^ _ ` a b c
 d e f g h i j k l m n o p q r s t u v w x y z @{ | @} ~

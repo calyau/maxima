@@ -1,4 +1,4 @@
-@c version 1.19
+@c version 1.20
 @menu
 * Introducci@'on a la Ayuda::        
 * Lisp y Maxima::            
@@ -44,7 +44,7 @@ Info from file /use/local/maxima/doc/info/maxima.info:
 @end example
 
 En este ejemplo las opciones 7 y 8 fueron seleccionadas. 
-Todas o ninguna de las opciones pueden ser seleccionadas escribiendo @code{all} o @code{none}, las cuales pueden ser abrevidas por @code{a} o @code{n}, respectivamente. 
+Todas o ninguna de las opciones pueden ser seleccionadas escribiendo @code{all} o @code{none}, las cuales pueden ser abreviadas por @code{a} o @code{n}, respectivamente. 
 
 @node Lisp y Maxima, Recolector de Basura, Introducci@'on a la Ayuda, Ayuda
 @section Lisp y Maxima
@@ -92,11 +92,14 @@ Existen algunas reglas que gobiernan la traducci@'on de nombres entre Lisp y Max
 
 @enumerate
 @item
-Un identificador Lisp que no se encuentra encerrado en barras verticales corresponde a un identificador Maxima in min@'uscula. 
-Que el idenficador Lisp este en may@'uscula, min@'uscula o una combinaci@'on de las dos, no afecta en nada. 
-E.g., los identificadores Lisp @code{$foo}, @code{$FOO}, y @code{$Foo}, todos corresponden al identificador Maxima @code{foo}. 
+Un identificador Lisp que no se encuentra encerrado en barras verticales
+corresponde a un identificador Maxima en min@'uscula. 
+Que el idenficador Lisp est@'e en may@'uscula, min@'uscula o una combinaci@'on
+de ambas, no afecta en nada. 
+Por ejemplo, los identificadores Lisp @code{$foo}, @code{$FOO}, y @code{$Foo},
+todos corresponden al identificador Maxima @code{foo}. 
 @item
-Unn identificador Lisp el cual se encuentre todo en may@'uscula o todo en min@'uscula y encerrado entre barras verticales corresponde a un identicador Maxima con el caso contrario. 
+Un identificador Lisp el cual se encuentre todo en may@'uscula o todo en min@'uscula y encerrado entre barras verticales corresponde a un identicador Maxima con el caso contrario. 
 Esto es, de may@'usculas cambia a min@'usculas y de min@'usculas cambia a may@'usculas. 
 E.g., el identificador Lisp @code{|$FOO|} y @code{|$foo|}
 corresponden los identificadores Maxima @code{foo} y @code{FOO}, respectivamente. 
@@ -168,7 +171,7 @@ y @code{gcd}.
 
 La computaci@'on simb@'olica tiende a crear una buena cantidad de basura, y un manejo efectivo de esto puede ser crucial para el t@'ermino exitoso de algunos programas. 
 
-Bajo GCL (GNU Common Lisp), en los sistemas UNIX donde la llamada al  sistema mprotect esta disponible (incluyendo SUN OS 4.0 y algunas variantes de BSD) un recolector de basura estratificado est@'a disponibe. Estos l@'{@dotless{i}}mites de colecci@'on para memoria virtual, han sido escritos recientemente. Mire la documentaci@'on de GCL bajo ALLOCATE y GBC.  En el nivel lisp haga (setq si::*notify-gbc* t) eso le ayudar@'a a determinar cuales @'areas necesitan m@'as espacio.
+Bajo GCL (GNU Common Lisp), en los sistemas UNIX donde la llamada al  sistema mprotect esta disponible (incluyendo SUN OS 4.0 y algunas variantes de BSD) un recolector de basura estratificado est@'a disponible. Estos l@'{@dotless{i}}mites de colecci@'on para memoria virtual, han sido escritos recientemente. Mire la documentaci@'on de GCL bajo ALLOCATE y GBC.  En el nivel lisp haga (setq si::*notify-gbc* t) eso le ayudar@'a a determinar cuales @'areas necesitan m@'as espacio.
 
 
 @node Documentaci@'on, Definiciones para la Ayuda, Recolector de Basura, Ayuda
@@ -296,19 +299,27 @@ _
 @end example
 @end deffn
 
-@deffn {Funci@'on} describe (@var{cadena})
-Encuentra todos los documentos los cuales contengan @var{cadena} es sus t@'{@dotless{i}}tulos y los despliega como opciones. 
+@deffn {Funci@'on} describe (@var{string})
+@deffnx {Funci@'on} describe (@var{string}, exact)
+La sentencia @code{describe(@var{string})} encuentra todos los elementos
+documentados que contengan @var{string} en sus t@'{@dotless{i}}tulos.
 Si hay m@'as de una opci@'on, Maxima preguntar@'a al usuario para que
 seleccione las opciones que desee consultar.
-En el prompt interactivo, 
-@code{? foo} (con espacio entre @code{?} y @code{foo})
-es equivalente a  @code{describe ("foo")}.
+
+La sentencia @code{describe(@var{string}, exact)} encuentra el elemento, si
+existe, cuyo t@'{@dotless{i}}tulo coincide exactamente con @var{string}
+(ignorando la diferencia entre may@'usculas y min@'usculas).
+
+La sentencia @code{? foo} (con espacio entre @code{?} y @code{foo})
+equivale a  @code{describe("foo")}, mientras que @code{?! foo}
+equivale a @code{describe("foo", exact)}.
 
 @code{describe ("")} produce una lista de todos los temas documentados en
 el manual en l@'{@dotless{i}}nea. 
 
-@code{describe} no evalua su argumento. 
-@code{describe} siempre retorna @code{false}.
+@code{describe} no eval@'ua su argumento. La funci@'on @code{describe} devuelve
+@code{true} si encuentra la documentaci@'on solicitada y @code{false} en caso
+contrario.
 
 Ejemplo:
 
@@ -335,8 +346,10 @@ Info from file /use/local/maxima/doc/info/maxima.info:
      integral, [...]
 @end example
 
-En este ejemplo las opciones 7 y 8 fueron seleccionadas. 
-Todas o ninguna de las opciones pueden ser seleccionadas escribiendo @code{all} o @code{none}, las cuales pueden ser abrevidas por @code{a} o @code{n}, respectivamente. 
+En este ejemplo fueron seleccionadas las opciones 7 y 8 . 
+Todas o ninguna de las opciones pueden ser seleccionadas escribiendo
+@code{all} o @code{none}, las cuales pueden ser abreviadas por
+@code{a} o @code{n}, respectivamente. 
 
 @c @pxref{Introducci@'on a la Ayuda}
 
@@ -356,7 +369,8 @@ variable global @code{manual_demo}, cuyo valor por defecto es
 
 @code{example} no evalua su argumento.
 @code{example} retorna @code{done}
-a menos que haya un error o que no haya argumento, en cuyo caso @code{example} retornar@'a la lista de todos los temas conocidos. 
+a menos que haya un error o que no haya argumento, en cuyo caso @code{example}
+devolver@'a la lista de todos los temas conocidos. 
 
 Ejemplos:
 
@@ -374,12 +388,3 @@ Ejemplos:
 @end example
 
 @end deffn
-
-@c Traducido por: Juan Pablo Romero Bernal y Oscar Diaz 
-@c Revisado por : Juan Pablo Romero Bernal
-@c correo-e     : jpromerobx@linuxmail.org
-@c Grupo Linux Universidad Distrital
-@c http://glud.udistrital.edu.co
-@c Proyecto GLUD-CLog
-@c http://glud.udistrital.edu.co/clog
-@c Bogota - Colombia

@@ -1,4 +1,4 @@
-@c english version 1.49
+@c english version 1.50
 @menu
 * Introducci@'on a  Entrada y Salida::
 * Comentarios::
@@ -291,7 +291,7 @@ V@'ease tambi@'en @code{%}.
 
 @end deffn
 
-@deffn {Special symbol} ?
+@deffn {S@'{@dotless{i}}mbolo especial} ?
 @ifinfo
 @fnindex Busca en la documentaci&oacute;n
 @end ifinfo
@@ -300,8 +300,25 @@ Como prefijo de una funci@'on o nombre de variable, @code{?} significa que el no
 Por ejemplo, @code{?round} representa la funci@'on de Lisp @code{ROUND}.
 V@'ease @code{Lisp y Maxima} para m@'as informaci@'on.
 
-La notaci@'on @code{? word} (un s@'{@dotless{i}}mbolo de interrogaci@'on seguido de una palabra y separados por un espacio)
+La notaci@'on @code{? word} (un s@'{@dotless{i}}mbolo de interrogaci@'on
+seguido de una palabra y separados por un espacio)
 equivale a @code{describe ("word")}.
+El s@'{@dotless{i}}mbolo de interrogaci@'on debe escribirse al
+comienzo de la l@'{@dotless{i}}nea de entrada; en caso contrario
+no se reconoce como una solicitud de documentaci@'on.
+
+@end deffn
+
+@deffn {S@'{@dotless{i}}mbolo especial} ?!
+@ifinfo
+@fnindex Busca coincidencias exactas en la documentaci&oacute;n
+@end ifinfo
+
+La notaci@'on @code{?! palabra} (@code{?!} seguido de un espacio
+y una palabra) equivale a @code{describe("palabra", exact)}.
+El s@'{@dotless{i}}mbolo de interrogaci@'on debe escribirse al
+comienzo de la l@'{@dotless{i}}nea de entrada; en caso contrario
+no se reconoce como una solicitud de documentaci@'on.
 
 @end deffn
 

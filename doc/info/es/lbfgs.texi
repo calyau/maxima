@@ -1,4 +1,4 @@
-@c english version 1.1
+@c english version 1.2
 @menu
 * Introducci@'on a lbfgs::
 * Definiciones para lbfgs::
@@ -38,9 +38,14 @@ variables @var{X}, partiendo de los estimadores iniciales @var{X0},
 de tal manera que @math{norm grad FOM < epsilon max(1, norm X)}.
 
 El algoritmo utilizado es una t@'ecnica @i{cuasi-Newton con memoria limitada}
-(BFGS) [1]. El t@'ermino memoria limitada procede del hecho de que se almacena
+(BFGS) [1]. El t@'ermino @i{memoria limitada} procede del hecho de que se almacena
 una aproximaci@'on de rango bajo de la inversa de la matriz hessiana, en lugar
 de la matriz completa.
+Cada iteraci@'on del algoritmo es una b@'usqueda a lo largo de una recta,
+cuya direcci@'on se calcula a partir de la matriz inversa aproximada del
+hessiano. La funci@'on objetivo decrece siempre tras cada b@'usqueda
+exitosa a lo largo de la recta; adem@'as, casi siempre decrece tambi@'en
+el m@'odulo del gradiente de la funci@'on.
 
 El argumento @var{iprint} controla los mensajes de progreso que env@'{@dotless{i}}a
 la funci@'on @code{lbfgs}.
@@ -72,6 +77,26 @@ Igual que @code{@var{iprint}[2] = 2}, incluyendo el gradiente de @var{FOM} en ca
 @end table
 @end table
 
+Las columnas devueltas por @code{lbfgs} son las siguientes:
+
+@table @code
+@item I
+N@'umero de iteraciones. Se incremente tras cada b@'usqueda a lo
+largo de una recta.
+@item NFN
+N@'umero de evaluaciones de la funci@'on objetivo.
+@item FUNC
+Valor de la funci@'on objetivo al final de cada iteraci@'on.
+@item GNORM
+M@'odulo del gradiente de la funci@'on objetivo al final de
+cada iteraci@'on.
+@item STEPLENGTH
+Un par@'ametro interno del algoritmo de b@'usqueda.
+@end table
+
+Para m@'as informaci@'on sobre el algoritmo se puede acudir a los
+comentarios en el c@'odigo original en Fortran [2].
+
 V@'eanse tambi@'en @code{lbfgs_nfeval_max} y @code{lbfgs_ncorrections}.
 
 Referencias:
@@ -79,7 +104,109 @@ Referencias:
 [1] D. Liu and J. Nocedal. "On the limited memory BFGS method for large
 scale optimization". @i{Mathematical Programming B} 45:503--528 (1989)
 
-Ejemplo:
+[2] http://netlib.org/opt/lbfgs_um.shar
+
+Ejemplos:
+
+La misma funci@'on objetivo utilizada por FGCOMPUTE en el programa 
+sdrive.f del paquete LBFGS de Netlib. N@'otese que las variables en
+cuesti@'on est@'an subindicadas. La funci@'on objetivo tiene un
+m@'{@dotless{i}}nimo exacto igual a cero en @math{u[k] = 1}, para
+@math{k = 1, ..., 8}.
+@c ===beg===
+@c load (lbfgs);
+@c t1[j] := 1 - u[j];
+@c t2[j] := 10*(u[j + 1] - u[j]^2);
+@c n : 8;
+@c FOM : sum (t1[2*j - 1]^2 + t2[2*j - 1]^2, j, 1, n/2);
+@c lbfgs (FOM, '[u[1], u[2], u[3], u[4], u[5], u[6], u[7], u[8]],
+@c        [-1.2, 1, -1.2, 1, -1.2, 1, -1.2, 1], 1e-3, [1, 0]);
+@c ===end===
+
+@example
+(%i1) load (lbfgs);
+(%o1)   /usr/share/maxima/5.10.0cvs/share/lbfgs/lbfgs.mac
+(%i2) t1[j] := 1 - u[j];
+(%o2)                     t1  := 1 - u
+                            j         j
+(%i3) t2[j] := 10*(u[j + 1] - u[j]^2);
+                                          2
+(%o3)                t2  := 10 (u      - u )
+                       j         j + 1    j
+(%i4) n : 8;
+(%o4)                           8
+(%i5) FOM : sum (t1[2*j - 1]^2 + t2[2*j - 1]^2, j, 1, n/2);
+                 2 2           2              2 2           2
+(%o5) 100 (u  - u )  + (1 - u )  + 100 (u  - u )  + (1 - u )
+            8    7           7           6    5           5
+                     2 2           2              2 2           2
+        + 100 (u  - u )  + (1 - u )  + 100 (u  - u )  + (1 - u )
+                4    3           3           2    1           1
+(%i6) lbfgs (FOM, '[u[1], u[2], u[3], u[4], u[5], u[6], u[7], u[8]],
+       [-1.2, 1, -1.2, 1, -1.2, 1, -1.2, 1], 1e-3, [1, 0]);
+*************************************************
+  N=    8   NUMBER OF CORRECTIONS=25
+       INITIAL VALUES
+ F=  9.680000000000000D+01   GNORM=  4.657353755084532D+02
+*************************************************
+
+   I  NFN     FUNC                    GNORM                   STEPLENGTH
+
+   1    3     1.651479526340304D+01   4.324359291335977D+00   7.926153934390631D-04  
+   2    4     1.650209316638371D+01   3.575788161060007D+00   1.000000000000000D+00  
+   3    5     1.645461701312851D+01   6.230869903601577D+00   1.000000000000000D+00  
+   4    6     1.636867301275588D+01   1.177589920974980D+01   1.000000000000000D+00  
+   5    7     1.612153014409201D+01   2.292797147151288D+01   1.000000000000000D+00  
+   6    8     1.569118407390628D+01   3.687447158775571D+01   1.000000000000000D+00  
+   7    9     1.510361958398942D+01   4.501931728123680D+01   1.000000000000000D+00  
+   8   10     1.391077875774294D+01   4.526061463810632D+01   1.000000000000000D+00  
+   9   11     1.165625686278198D+01   2.748348965356917D+01   1.000000000000000D+00  
+  10   12     9.859422687859137D+00   2.111494974231644D+01   1.000000000000000D+00  
+  11   13     7.815442521732281D+00   6.110762325766556D+00   1.000000000000000D+00  
+  12   15     7.346380905773160D+00   2.165281166714631D+01   1.285316401779533D-01  
+  13   16     6.330460634066370D+00   1.401220851762050D+01   1.000000000000000D+00  
+  14   17     5.238763939851439D+00   1.702473787613255D+01   1.000000000000000D+00  
+  15   18     3.754016790406701D+00   7.981845727704576D+00   1.000000000000000D+00  
+  16   20     3.001238402309352D+00   3.925482944716691D+00   2.333129631296807D-01  
+  17   22     2.794390709718290D+00   8.243329982546473D+00   2.503577283782332D-01  
+  18   23     2.563783562918759D+00   1.035413426521790D+01   1.000000000000000D+00  
+  19   24     2.019429976377856D+00   1.065187312346769D+01   1.000000000000000D+00  
+  20   25     1.428003167670903D+00   2.475962450826961D+00   1.000000000000000D+00  
+  21   27     1.197874264861340D+00   8.441707983493810D+00   4.303451060808756D-01  
+  22   28     9.023848941942773D-01   1.113189216635162D+01   1.000000000000000D+00  
+  23   29     5.508226405863770D-01   2.380830600326308D+00   1.000000000000000D+00  
+  24   31     3.902893258815567D-01   5.625595816584421D+00   4.834988416524465D-01  
+  25   32     3.207542206990315D-01   1.149444645416472D+01   1.000000000000000D+00  
+  26   33     1.874468266362791D-01   3.632482152880997D+00   1.000000000000000D+00  
+  27   34     9.575763380706598D-02   4.816497446154354D+00   1.000000000000000D+00  
+  28   35     4.085145107543406D-02   2.087009350166495D+00   1.000000000000000D+00  
+  29   36     1.931106001379290D-02   3.886818608498966D+00   1.000000000000000D+00  
+  30   37     6.894000721499670D-03   3.198505796342214D+00   1.000000000000000D+00  
+  31   38     1.443296033051864D-03   1.590265471025043D+00   1.000000000000000D+00  
+  32   39     1.571766603154336D-04   3.098257063980634D-01   1.000000000000000D+00  
+  33   40     1.288011776581970D-05   1.207784183577257D-02   1.000000000000000D+00  
+  34   41     1.806140173752971D-06   4.587890233385193D-02   1.000000000000000D+00  
+  35   42     1.769004645459358D-07   1.790537375052208D-02   1.000000000000000D+00  
+  36   43     3.312164100763217D-10   6.782068426119681D-04   1.000000000000000D+00  
+
+ THE MINIMIZATION TERMINATED WITHOUT DETECTING ERRORS.
+ IFLAG = 0
+(%o6) [u  = 1.000005339815974, u  = 1.000009942839805, 
+        1                       2
+u  = 1.000005339815974, u  = 1.000009942839805, 
+ 3                       4
+u  = 1.000005339815974, u  = 1.000009942839805, 
+ 5                       6
+u  = 1.000005339815974, u  = 1.000009942839805]
+ 7                       8
+@end example
+
+Un problema de regresi@'on. La funci@'on objetivo es el cuadrado medio
+de la diferencia entre la predicci@'on @math{F(X[i])} y el valor observado
+@math{Y[i]}. La funci@'on @math{F} es mon@'otona y acotada (llamada en ocasiones
+"sigmoidal"). En este ejemplo, @code{lbfgs} calcula valores aproximados para los
+par@'ametros de @math{F} y @code{plot2d} hace una representaci@'on gr@'afica
+comparativa de @math{F} junto con los datos observados.
 
 @c ===beg===
 @c load (lbfgs);
@@ -154,9 +281,18 @@ Ejemplo:
 @defvr {Variable} lbfgs_nfeval_max
 Valor por defecto: 100
 
+La variable @code{lbfgs_nfeval_max} almacena el n@'umero m@'aximo de
+evaluaciones de la funci@'on objetivo en @code{lbfgs}. Cuando se
+alcanza el valor @code{lbfgs_nfeval_max}, @code{lbfgs} devuelve
+el resultado logrado en la @'ultima iteraci@'on exitosa.
+
 @end defvr
 
 @defvr {Variable} lbfgs_ncorrections
 Valor por defecto: 25
+
+La variable @code{lbfgs_ncorrections} almacena el n@'umero de correcciones
+aplicadas a la matriz inversa aproximada del hessiano, la cual es gestionada
+por @code{lbfgs}.
 
 @end defvr

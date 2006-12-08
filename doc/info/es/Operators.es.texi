@@ -61,7 +61,7 @@ Si @code{x} es cualquier otra cosa, @code{x!} no se simplifica.
 Las variables 
 @code{factlim}, @code{minfactorial} y  @code{factcomb} controlan la simplificaci@'on de expresiones que contienen factoriales. 
 
-Las funciones @code{gamma}, @code{bffac} y @code{cbffac} son variaciones 
+Las funciones @code{gamma}, @code{bffac} y @code{cbffac} son variaciones de
 la funci@'on gamma. 
 @code{makegamma} substituye a @code{gamma} para factoriales y funciones relacionadas. 
 
@@ -563,12 +563,12 @@ el m@'odulo de @var{expr}.
 @end deffn
 
 @defvr {Clave} additive
-Si @code{declate(f,additive)} ha sido ejecutado, entonces: 
+Si @code{declare(f,additive)} ha sido ejecutado, entonces: 
 
 (1) Si @code{f} es univariado, cada vez que el simplificador encuentre
 @code{f} aplicada a una suma, @code{f} ser@'a distribuida bajo esta suma. Por ejemplo, @code{f(x+y)} se simplificar@'a a @code{f(x)+f(y)}. 
 
-(2) Si @code{f} es una funci@'on de 2 o m@'as argumentos, aditivamente es definida como aditiva en el primer argumento de @code{f}, como en el caso de @code{sum} o @code{integrate}. Por ejemplo, @code{f(h(x)+g(x),x)} se simplificar@'a a @code{f(h(x),x)+f(g(x),x)}. Esta simplificaci@'on no ocurre cuando @code{f} se aplia a expresiones de la forma @code{sum(x[i],i,lower-limit,upper-limit)}.
+(2) Si @code{f} es una funci@'on de 2 o m@'as argumentos, aditivamente es definida como aditiva en el primer argumento de @code{f}, como en el caso de @code{sum} o @code{integrate}. Por ejemplo, @code{f(h(x)+g(x),x)} se simplificar@'a a @code{f(h(x),x)+f(g(x),x)}. Esta simplificaci@'on no ocurre cuando @code{f} se aplica a expresiones de la forma @code{sum(x[i],i,lower-limit,upper-limit)}.
 
 @end defvr
 

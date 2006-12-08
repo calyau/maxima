@@ -1,4 +1,4 @@
-@c english version 1.14
+@c english version 1.15
 @menu
 * Introducci@'on a las Series::      
 * Definiciones para las Series::      

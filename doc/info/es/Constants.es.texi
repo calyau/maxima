@@ -1,4 +1,4 @@
-@c version 1.14
+@c version 1.15
 @menu
 * Definiciones para Constantes::   
 @end menu
@@ -9,9 +9,12 @@
 @defvr {Constante} %e
 @ifinfo
 @vrindex e
+@vrindex N@'umero de Euler
 @vrindex Base de los logaritmos naturales
 @end ifinfo
-La base de los logaritmos naturales, @math{e}, se representa en Maxima como @code{%e}.
+El s@'{@dotless{i}}mbolo @code{%e} representa a la base de los logaritmos
+naturales, tambi@'en conocido como n@'umero de Euler. El valor num@'erico
+de @code{%e} es el n@'umero decimal en coma flotante 2.718281828459045d0.
 
 @end defvr
 
@@ -21,29 +24,29 @@ La base de los logaritmos naturales, @math{e}, se representa en Maxima como @cod
 @vrindex i
 @vrindex Unidad imaginaria
 @end ifinfo
-El s@'{@dotless{i}}mbolo @code{%i} representa la unidad imaginaria, @code{sqrt(- 1)}.
+El s@'{@dotless{i}}mbolo @code{%i} representa la unidad imaginaria, @math{sqrt(- 1)}.
 
 @end defvr
 
 
 @defvr {Constante} false
-Constante l@'ogica para "falso". (NIL en Lisp)
+El s@'{@dotless{i}}mbolo @code{false} representa al valor l@'ogico
+"falso". Maxima implementa @code{false} con el valor @code{NIL} de
+Lisp.
 @end defvr
 
 @defvr {Constante} inf
 @ifinfo
 @vrindex M@'as infinito
 @end ifinfo
-M@'as infinito.
-
+El s@'{@dotless{i}}mbolo @code{inf} representa al infinito real positivo.
 @end defvr
 
 @defvr {Constante}  infinity
 @ifinfo
 @vrindex Infinito complejo
 @end ifinfo
-Infinito complejo.
-
+El s@'{@dotless{i}}mbolo @code{infinity} representa al infinito complejo.
 @end defvr
 
 @defvr {Constante} minf
@@ -51,19 +54,99 @@ Infinito complejo.
 @vrindex Menos infinito
 @vrindex Infinito negativo
 @end ifinfo
-Menos infinito.
+El s@'{@dotless{i}}mbolo @code{minf} representa al infinito real negativo.
+@end defvr
+
+@defvr {Constante} %phi
+@ifinfo
+@vrindex phi
+@vrindex Raz@'on @'aurea
+@end ifinfo
+
+El s@'{@dotless{i}}mbolo @code{%phi} representa a la llamada @i{raz@'on @'aurea},
+@math{(1 + sqrt(5))/2}.
+El valor num@'erico de @code{%phi} es el n@'umero decimal en coma flotante 1.618033988749895d0.
+
+La funci@'on @code{fibtophi} expresa los n@'umeros de Fibonacci @code{fib(n)} en
+t@'erminos de @code{%phi}.
+
+Por defecto, Maxima desconoce las propiedades algebraicas de @code{%phi}.
+Tras evaluar @code{tellrat(%phi^2 - %phi - 1)} y @code{algebraic: true},
+@code{ratsimp} puede simplificar algunas expresiones que contengan @code{%phi}.
+
+Ejemplos:
+
+La funci@'on @code{fibtophi} expresa los n@'umeros de Fibonacci @code{fib(n)} en
+t@'erminos de @code{%phi}.
+
+@c ===beg===
+@c fibtophi (fib (n));
+@c fib (n-1) + fib (n) - fib (n+1);
+@c fibtophi (%);
+@c ratsimp (%);
+@c ===end===
+@example
+(%i1) fibtophi (fib (n));
+                           n             n
+                       %phi  - (1 - %phi)
+(%o1)                  -------------------
+                           2 %phi - 1
+(%i2) fib (n-1) + fib (n) - fib (n+1);
+(%o2)          - fib(n + 1) + fib(n) + fib(n - 1)
+(%i3) fibtophi (%);
+            n + 1             n + 1       n             n
+        %phi      - (1 - %phi)        %phi  - (1 - %phi)
+(%o3) - --------------------------- + -------------------
+                2 %phi - 1                2 %phi - 1
+                                          n - 1             n - 1
+                                      %phi      - (1 - %phi)
+                                    + ---------------------------
+                                              2 %phi - 1
+(%i4) ratsimp (%);
+(%o4)                           0
+@end example
+
+Por defecto, Maxima desconoce las propiedades algebraicas de @code{%phi}.
+Tras evaluar @code{tellrat(%phi^2 - %phi - 1)} y @code{algebraic: true},
+@code{ratsimp} puede simplificar algunas expresiones que contengan @code{%phi}.
+
+@c ===beg===
+@c e : expand ((%phi^2 - %phi - 1) * (A + 1));
+@c ratsimp (e);
+@c tellrat (%phi^2 - %phi - 1);
+@c algebraic : true;
+@c ratsimp (e);
+@c ===end===
+@example
+(%i1) e : expand ((%phi^2 - %phi - 1) * (A + 1));
+                 2                      2
+(%o1)        %phi  A - %phi A - A + %phi  - %phi - 1
+(%i2) ratsimp (e);
+                  2                     2
+(%o2)        (%phi  - %phi - 1) A + %phi  - %phi - 1
+(%i3) tellrat (%phi^2 - %phi - 1);
+                            2
+(%o3)                  [%phi  - %phi - 1]
+(%i4) algebraic : true;
+(%o4)                         true
+(%i5) ratsimp (e);
+(%o5)                           0
+@end example
 
 @end defvr
+
 
 @defvr {Constante} %pi
 @ifinfo
 @vrindex pi
 @end ifinfo
-El valor "pi" se representa en Maxima como @code{%pi}.
-
+El s@'{@dotless{i}}mbolo @code{%pi} representa la raz@'on entre la longitud de
+una circunferencia y su radio. 
+El valor num@'erico de @code{%pi} es el n@'umero decimal en coma flotante 3.141592653589793d0.
 @end defvr
 
 @defvr {Constante} true
-Constante l@'ogica para "verdadero". (T en Lisp)
-
+El s@'{@dotless{i}}mbolo @code{true} representa al valor l@'ogico
+"verdadero". Maxima implementa @code{true} con el valor @code{T} de
+Lisp.
 @end defvr

@@ -1,4 +1,4 @@
-@c english version 1.20
+@c english version 1.22
 @menu
 * Definiciones para Teor@'{@dotless{i}}a de N@'umeros::  
 @end menu
@@ -289,12 +289,17 @@ Despu@'es de llamar a @code{fib}, la variable @code{prevfib} toma el valor @code
 @end deffn
 
 @deffn {Funci@'on} fibtophi (@var{expr})
-Expresa los n@'umeros de Fibonacci en t@'erminos de la raz@'on @'aurea @code{%phi}, que es @code{(1 + sqrt(5))/2}, aproximadamente 1.61803399.
+Expresa los n@'umeros de Fibonacci en @var{expr} en t@'erminos de la raz@'on @'aurea @code{%phi},
+que es @code{(1 + sqrt(5))/2}, aproximadamente 1.61803399.
 
-@c SEEMS MISPLACED -- THIS WANTS TO BE UNDER %phi !!!
-Por defecto, Maxima desconoce @code{%phi}. Tras ejecutar @code{tellrat (%phi^2 - %phi - 1)} y @code{algebraic: true},
-@code{ratsimp} puede simplificar algunas expresiones que contengan @code{%phi}.
+Ejemplos:
 
+@c ===beg===
+@c fibtophi (fib (n));
+@c fib (n-1) + fib (n) - fib (n+1);
+@c fibtophi (%);
+@c ratsimp (%);
+@c ===end===
 @example
 (%i1) fibtophi (fib (n));
                            n             n
@@ -303,8 +308,17 @@ Por defecto, Maxima desconoce @code{%phi}. Tras ejecutar @code{tellrat (%phi^2 -
                            2 %phi - 1
 (%i2) fib (n-1) + fib (n) - fib (n+1);
 (%o2)          - fib(n + 1) + fib(n) + fib(n - 1)
-(%i3) ratsimp (fibtophi (%));
-(%o3)                           0
+(%i3) fibtophi (%);
+            n + 1             n + 1       n             n
+        %phi      - (1 - %phi)        %phi  - (1 - %phi)
+(%o3) - --------------------------- + -------------------
+                2 %phi - 1                2 %phi - 1
+                                          n - 1             n - 1
+                                      %phi      - (1 - %phi)
+                                    + ---------------------------
+                                              2 %phi - 1
+(%i4) ratsimp (%);
+(%o4)                           0
 @end example
 
 @end deffn
@@ -373,7 +387,6 @@ Es necesario cargar en memoria esta funci@'on haciendo @code{load ("functs")}.
 
 @end deffn
 
-
 @deffn {Funci@'on} next_prime (@var{n})
 Devuelve el menor de los primos mayores que @var{n}.
 
@@ -427,7 +440,6 @@ inverso modular.
 
 @end deffn
 
-@c IS IT POSSIBLE TO MAKE A DECLARATION SUCH THAT primep RETURNS true ??
 @deffn {Funci@'on} primep (@var{n})
 Comprueba si el n@'umero entero @var{n} es o no primo, devolviendo @code{true}
 o @code{false} seg@'un el caso.

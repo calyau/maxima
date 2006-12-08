@@ -139,7 +139,7 @@ La comilla simple no evita la simplificaci@'on.
 
 @end deffn
 
-@deffn {Operador} ''
+@deffn {Operador} "
 @ifinfo
 @fnindex Operador comilla-comilla
 @end ifinfo
@@ -384,8 +384,9 @@ cuales pueden ser algunos o todos de la siguiente lista:
 @code{noeval} suprime la fase de evaluaci@'on de @code{ev} (Vea el paso (4) m@'as adelante). 
 Esto es muy @'util en conjunci@'on con otras variables interruptor y causan en @var{expr} que sea resimplificada sin ser reevaluada. 
 @item
-@code{nouns} causa que la evaluaci@'on de las formas de nombre
-(t@'{@dotless{i}}picamente funciones sin evaluar tales como @code{'integrate} or @code{'diff}) en @code{expr}. 
+@code{nouns} causa la evaluaci@'on de las formas nominales
+(t@'{@dotless{i}}picamente funciones sin evaluar tales como
+@code{'integrate} or @code{'diff}) en @code{expr}. 
 @item
 @code{expand} causa expansi@'on. 
 @item
@@ -394,7 +395,7 @@ Esto es muy @'util en conjunci@'on con otras variables interruptor y causan en @
 @item
 @code{detout} hace que cualesquiera matrices inversas calculadas en @var{expr} conserven su determinante fuera de la inversa, en vez de que divida a cada elemento.  
 @item
-@code{diif} realiza todas las diferenciaciones indicadas en @var{expr}. 
+@code{diff} realiza todas las diferenciaciones indicadas en @var{expr}. 
 @item
 @code{derivlist (@var{x}, @var{y}, @var{z}, ...)} realiza s@'olo las diferenciaciones con respecto a las variables indicadas. 
 @item
@@ -780,7 +781,7 @@ valor actual de @code{inchar}. Del mismo modo, @code{kill (outlabels)}
 elimina @'unicamente las asignaciones de las etiquetas de salida
 que comienzan con el valor actual de @code{outchar}. Finalmente,
 @code{kill (linelabels)} elimina @'unicamente las asignaciones
-las asignaciones de las etiquetas de las expresiones intermedias
+de las etiquetas de las expresiones intermedias
 que comienzan con el valor actual de @code{linechar}.
 
 La instrucci@'on @code{kill (@var{n})}, siendo @var{n} un entero,
@@ -821,7 +822,7 @@ Por el contrario, @code{remvalue}, @code{remfunction}, @code{remarray} y @code{r
 eliminan propiedades espec@'{@dotless{i}}ficas. 
 
 @code{kill} siempre devuelve @code{done}, incluso cuando alguno de sus 
-argumento carec@'{@dotless{i}}a de asignaci@'on previa. 
+argumentos carec@'{@dotless{i}}a de asignaci@'on previa. 
 
 @end deffn
 
@@ -844,7 +845,7 @@ La variable @code{labels} es una lista de las etiquetas de entrada, salida y exp
 
 Por defecto, Maxima muestra el resultado de cada expresi@'on introducida por el usuario, asignando al resultado una etiqueta de salida. 
 La salida (es decir el resultado) puede ser suprimida terminando la expresi@'on de entrada con un @code{$} (signo de d@'olar) en vez de un @code{;} (punto y coma). 
-En este caso, se crea la etiqueta de salida y se le asigna el resultado, aunque @'este no se muestre; a@'un as@'{@dotless{i}}, la etiqueta puede ser referenciada de la misma forma que se hace con aqu@'ellas cuyos resultados s@'{@dotless{i}} son muestrados.
+En este caso, se crea la etiqueta de salida y se le asigna el resultado, aunque @'este no se muestre; a@'un as@'{@dotless{i}}, la etiqueta puede ser referenciada de la misma forma que se hace con aqu@'ellas cuyos resultados s@'{@dotless{i}} son mostrados.
 
 V@'eanse tambi@'en: @code{%}, @code{%%} y @code{%th}. 
 
@@ -880,7 +881,7 @@ asignan los resultados; adem@'as, las etiquetas no se
 incorporan a la lista @code{labels}.
 Puesto que a las etiquetas no se les asignan resultados, 
 el colector de basura puede recuperar la memoria ocupada
-por los @'estos.
+por @'estos.
 
 En el caso contrario, a las etiquetas de entrada y salida se les asignan los resultados correspondientes y son a@~nadidas a la lista @code{labels}.
 
@@ -955,7 +956,7 @@ Las expresiones de salida no se ven afectadas por la opci@'on
 @code{grind}. 
 Vea @code{grind}. 
 
-Los argumentos pueden ser combinandos, e.g., 
+Los argumentos pueden ser combinados, por ejemplo, 
 @code{playback ([5, 10], grind, time, slow)}.
 @c APPEARS TO BE input INTERSECT (UNION OF ALL OTHER ARGUMENTS). CORRECT ???
 
@@ -965,7 +966,7 @@ Los argumentos pueden ser combinandos, e.g.,
 @deffnx {Funci@'on} printprops ([@var{a_1}, ..., @var{a_n}], @var{i})
 @deffnx {Funci@'on} printprops (all, @var{i})
 Muestra la propiedad con el indicador @var{i} asociado 
-con el @'atomo @var{a}. @var{a} pueder ser tambi@'en una lista de
+con el @'atomo @var{a}. @var{a} puede ser tambi@'en una lista de
 @'atomos o el @'atomo @code{all} en cuyo caso todos los @'atomos a los cuales se les haya dado esa propiedad ser@'an usados. 
 Por ejemplo, @code{printprops ([f, g], atvalue)}. @code{printprops} es 
 para propiedades que no pueden ser mostradas de otra manera, i.e. para

@@ -1,4 +1,4 @@
-@c english version 1.5
+@c english version 1.6
 @menu
 * Introducci@'on a solve_rec::
 * Definiciones para solve_rec::
@@ -166,7 +166,7 @@ Ejemplo de recurrencia lineal con coeficientes polinomiales:
 (%i7) 2*x*(x+1)*y[x] - (x^2+3*x-2)*y[x+1] + (x-1)*y[x+2];
                          2
 (%o7) (x - 1) y      - (x  + 3 x - 2) y      + 2 x (x + 1) y
-               x + 2                   x + 1                x                                                           
+               x + 2                   x + 1                x
 (%i8) solve_rec(%, y[x], y[1]=1, y[3]=3);
                               x
                            3 2    x!
