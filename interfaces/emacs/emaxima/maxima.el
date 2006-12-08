@@ -2635,6 +2635,20 @@ To get apropos with the symbol under point, use:
        (eq (process-status inferior-maxima-process) 'run)))
 
 ;;; Sending the information
+(defun inferior-maxima-get-old-input ()
+  (let (pt pt1)
+    (save-excursion
+      (if (re-search-forward 
+           (concat "\\(^(\\(" maxima-outchar "\\|" maxima-linechar "\\)[0-9]*) \\)")
+           nil 1)
+          (goto-char (match-beginning 0)))
+      (skip-chars-backward " \t\n")
+      (setq pt (point)))
+    (save-excursion
+      (re-search-backward inferior-maxima-prompt)
+      (setq pt1 (match-end 0)))
+    (buffer-substring-no-properties pt1 pt)))
+
 (defun inferior-maxima-comint-send-input (&optional query)
   "Take note of position, then send the input"
   (unless query
@@ -3172,7 +3186,7 @@ and such that no line contains an incomplete form."
 	(progn
 	  (save-excursion
 	    (re-search-backward inferior-maxima-prompt)
-	    (setq pt1 (point)))
+	    (setq pt1 (match-end 0)))
 	  (if (maxima-check-parens pt1 pt)
               (inferior-maxima-comint-send-input)))
       (inferior-maxima-comint-send-input))))
@@ -3229,6 +3243,7 @@ To scroll through previous commands,
 ;  (if maxima-use-full-color-in-process-buffer
 ;      (inferior-maxima-font-setup))
   (setq comint-prompt-regexp inferior-maxima-prompt)
+  (setq comint-get-old-input (function inferior-maxima-get-old-input))
   (setq mode-line-process '(": %s"))
   (maxima-mode-variables)
   (setq tab-width 8)
