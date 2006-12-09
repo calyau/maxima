@@ -79,6 +79,50 @@ figures/plotting24.gif\
 figures/plotting25.gif\
 figures/orthopoly1.gif
 
+pdffigures = \
+figures/dynamics1.pdf\
+figures/dynamics2.pdf\
+figures/dynamics3.pdf\
+figures/dynamics4.pdf\
+figures/dynamics5.pdf\
+figures/dynamics6.pdf\
+figures/dynamics7.pdf\
+figures/dynamics8.pdf\
+figures/dynamics9.pdf\
+figures/dynamics10.pdf\
+figures/plotdf1.pdf\
+figures/plotdf2.pdf\
+figures/plotdf3.pdf\
+figures/plotdf4.pdf\
+figures/plotdf5.pdf\
+figures/plotdf6.pdf\
+figures/plotting1.pdf\
+figures/plotting2.pdf\
+figures/plotting3.pdf\
+figures/plotting4.pdf\
+figures/plotting5.pdf\
+figures/plotting6.pdf\
+figures/plotting7.pdf\
+figures/plotting8.pdf\
+figures/plotting9.pdf\
+figures/plotting10.pdf\
+figures/plotting11.pdf\
+figures/plotting12.pdf\
+figures/plotting13.pdf\
+figures/plotting14.pdf\
+figures/plotting15.pdf\
+figures/plotting16.pdf\
+figures/plotting17.pdf\
+figures/plotting18.pdf\
+figures/plotting19.pdf\
+figures/plotting20.pdf\
+figures/plotting21.pdf\
+figures/plotting22.pdf\
+figures/plotting23.pdf\
+figures/plotting24.pdf\
+figures/plotting25.pdf\
+figures/orthopoly1.pdf
+
 all-local: maxima-index.lisp
 
 maxima-index.lisp: maxima.info build_index.pl
@@ -98,9 +142,7 @@ $(MAXIMAHTML): maxima.texi $(maxima_TEXINFOS)
 
 include $(top_srcdir)/common.mk
 genericdir = $(dochtmldir)
-genericdirDATA = \
-$(MAXIMAHTML)\
-$(figurefiles)\
+genericdirDATA = $(MAXIMAHTML) $(figurefiles) \
 contents.hhc index.hhk header.hhp maxima.hhp
 
 all-local: warn_texinfo
@@ -128,7 +170,8 @@ clean-html:
 	rm -f contents.hhc
 	rm -f index.hhk
 
-EXTRA_DIST = texi2html maximahtml.mk manual.css texi2html.init $(genericdirDATA) \
+EXTRA_DIST = texi2html maximahtml.mk manual.css texi2html.init \
+    $(genericdirDATA) $(pdffigures)\
     create_index header.hhp maxima.hhp maxima-index.lisp \
     check_crlf check_tab fix_crlf fix_tab build_index.pl
 
