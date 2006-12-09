@@ -1,78 +1,81 @@
+@c Language: Portuguese, Encoding: iso-8859-1
+@c /lbfgs.texi/1.2/Sat Dec  9 06:10:42 2006//
+
 @menu
-* Introduction to lbfgs::
-* Definitions for lbfgs::
+* Introdu@value{cedilha}@~ao a lbfgs::
+* Defini@value{cedilha}@~oes para lbfgs::
 @end menu
 
-@node Introduction to lbfgs, Definitions for lbfgs, Top, Top
-@section Introduction to lbfgs
+@node Introdu@value{cedilha}@~ao a lbfgs, Defini@value{cedilha}@~oes para lbfgs, Top, Top
+@section Introdu@value{cedilha}@~ao a lbfgs
 
-@code{lbfgs} is an implementation of the L-BFGS algorithm [1]
-to solve unconstrained minimization problems via a limited-memory quasi-Newton (BFGS) algorithm.
-It is called a limited-memory method because a low-rank approximation of the
-Hessian matrix inverse is stored instead of the entire Hessian inverse.
-The program was originally written in Fortran [2] by Jorge Nocedal,
-incorporating some functions originally written by Jorge J. Mor@'{e} and David J. Thuente,
-and translated into Lisp automatically via the program @code{f2cl}.
-The Maxima package @code{lbfgs} comprises the translated code plus
-an interface function which manages some details.
+@code{lbfgs} @'e uma implementa@,{c}@~ao do algor@'itmo[1] L-BFGS (Broyden-Fletcher-Goldfarb-Shanno)
+para resolver problemas de minimiza@,{c}@~ao n@~ao limitada atrav@'es de um algor@'itmo de mem@'oria limitada quasi-Newton (BFGS).
+Esse algor@'itmo @'e chamado de m@'etodo de mem@'oria limitada porque uma aproxima@,{c}@~ao de baixo ranque da
+inverso da matriz Hessiana @'e armazenado em lugar da inversa da matriz Hessiana completa.
+O programa foi escrito origin@'ariamente em Fortran [2] por Jorge Nocedal,
+incorporando algumas fun@,{c}@~oes originalmente escritas por Jorge J. Mor@'{e} e David J. Thuente,
+e traduzidas para Lisp automaticamente atrav@'es do programa @code{f2cl}.
+O pacote do Maxima @code{lbfgs} compreende o c@'odigo traduzido e adicionalmente
+uma interface de fun@,{c}@~ao que gerencia alguns detallhes.
 
-References:
+Refer@^encias:
 
 [1] D. Liu and J. Nocedal. "On the limited memory BFGS method for large
 scale optimization". @i{Mathematical Programming B} 45:503--528 (1989)
 
 [2] http://netlib.org/opt/lbfgs_um.shar
 
-@node Definitions for lbfgs, , Introduction to lbfgs, Top
-@section Definitions for lbfgs
+@node Defini@value{cedilha}@~oes para lbfgs, , Introdu@value{cedilha}@~ao a lbfgs, Top
+@section Defini@value{cedilha}@~oes para lbfgs
 
-@deffn {Function} lbfgs (@var{FOM}, @var{X}, @var{X0}, @var{epsilon}, @var{iprint})
+@deffn {Fun@value{cedilha}@~ao} lbfgs (@var{FOM}, @var{X}, @var{X0}, @var{epsilon}, @var{iprint})
 
-Finds an approximate solution of the unconstrained minimization of the figure of merit @var{FOM}
-over the list of variables @var{X},
-starting from initial estimates @var{X0},
-such that @math{norm grad FOM < epsilon max(1, norm X)}.
+Encontra uma solu@,{c}@~ao aproximada da minimiza@,{c}@~ao n@~ao limitada de n@'umero de m@'erito @var{FOM}
+sobre a lista de vari@'aveis @var{X},
+come@,{c}ando a partir da estimativa inicial @var{X0},
+tal que @math{norm grad FOM < epsilon max(1, norm X)}.
 
-The algorithm applied is a limited-memory quasi-Newton (BFGS) algorithm [1].
-It is called a limited-memory method because a low-rank approximation of the
-Hessian matrix inverse is stored instead of the entire Hessian inverse.
+O algor@'itmo aplicado @'e um algor@'itmo de mem@'oria limitada[1] quasi-Newton (BFGS).
+Esse algor@'itmo @'e chamado de m@'etodo de mem@'oria limitada porque uma aproxima@,{c}@~ao de baixo ranque da
+inverso da matriz Hessiana @'e armazenado em lugar da inversa da matriz Hessiana completa.
 
-@var{iprint} controls progress messages printed by @code{lbfgs}.
+@var{iprint} controla as messaens de progresso mostradas atrav@'es de @code{lbfgs}.
 
 @table @code
 @item iprint[1]
-@code{@var{iprint}[1]} controls the frequency of progress messages.
+@code{@var{iprint}[1]} controla a freq@"u@^encia das mensagens de progresso.
 @table @code
 @item iprint[1] < 0
-No progress messages.
+Nenhuma mensagem de progresso.
 @item iprint[1] = 0
-Messages at the first and last iterations.
+Messagens na primeira itera@,{c}@~ao e na @'ultima itera@,{c}@~ao.
 @item iprint[1] > 0
-Print a message every @code{@var{iprint}[1]} iterations.
+Mostra uma mensagem a cada @code{@var{iprint}[1]} itera@,{c}@~oes.
 @end table
 @item iprint[2]
-@code{@var{iprint}[2]} controls the verbosity of progress messages.
+@code{@var{iprint}[2]} controla a quantidade de informa@,{c}@~oes fornecidas pelas mensagens de progresso (verbosidade).
 @table @code
 @item iprint[2] = 0
-Print out iteration count, number of evaluations of @var{FOM}, value of @var{FOM},
-norm of the gradient of @var{FOM}, and step length.
+Mostra na tela o contador de itera@,{c}@~oes, o n@'umero de avalia@,{c}@~oes de @var{FOM}, o valor de @var{FOM},
+a norma do gradiente de @var{FOM}, e o comprimento do salto.
 @item iprint[2] = 1
-Same as @code{@var{iprint}[2] = 0}, plus @var{X0} and the gradient of @var{FOM} evaluated at @var{X0}.
+O mesmo que @code{@var{iprint}[2] = 0}, adicionando @var{X0} e o gradiente de @var{FOM} avaliado em @var{X0}.
 @item iprint[2] = 2
-Same as @code{@var{iprint}[2] = 1}, plus values of @var{X} at each iteration.
+O mesmo que @code{@var{iprint}[2] = 1}, adicionando valores de @var{X} a cada itera@,{c}@~ao.
 @item iprint[2] = 3
-Same as @code{@var{iprint}[2] = 2}, plus the gradient of @var{FOM} at each iteration.
+O mesmo que @code{@var{iprint}[2] = 2}, adicionando o gradiente de @var{FOM} a cada itera@,{c}@~ao.
 @end table
 @end table
 
-See also @code{lbfgs_nfeval_max} and @code{lbfgs_ncorrections}.
+Veja tamb@'em @code{lbfgs_nfeval_max} e @code{lbfgs_ncorrections}.
 
-References:
+Refer@^encias:
 
 [1] D. Liu and J. Nocedal. "On the limited memory BFGS method for large
 scale optimization". @i{Mathematical Programming B} 45:503--528 (1989)
 
-Example:
+Exemplo:
 
 @c ===beg===
 @c load (lbfgs);
@@ -144,12 +147,12 @@ Example:
 
 @end deffn
 
-@defvr {Variable} lbfgs_nfeval_max
-Default value: 100
+@defvr {Vari@value{a_til}vel} lbfgs_nfeval_max
+Valor padr@~ao: 100
 
 @end defvr
 
-@defvr {Variable} lbfgs_ncorrections
-Default value: 25
+@defvr {Vari@value{a_til}vel} lbfgs_ncorrections
+Valor padr@~ao: 25
 
 @end defvr

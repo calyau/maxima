@@ -261,7 +261,7 @@ Linha de Comando
 
 Operadores
 
-* N-Argumentos::                        
+* "N" Argumentos::                        
 * Sem Argumentos::                       
 * Operador::                    
 * Operador P@'osfixado::                     
@@ -458,7 +458,7 @@ augmented_lagrangian
 
 bode
 
-* Definitions for bode::
+* Defini@value{cedilha}@~oes para bode::
 
 cholesky
 
@@ -510,8 +510,8 @@ interpol
 
 lbfgs
 
-* Introduction to lbfgs::
-* Definitions for lbfgs::
+* Introdu@value{cedilha}@~ao a lbfgs::
+* Defini@value{cedilha}@~oes para lbfgs::
 
 lindstedt
 
@@ -541,7 +541,7 @@ numericalio
 
 opsubst
 
-* Definitions for opsubst::
+* Defini@value{cedilha}@~oes para opsubst::
 
 orthopoly
 
