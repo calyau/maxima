@@ -555,8 +555,8 @@ plotdf
 
 simplex
 
-* Introduction to simplex::
-* Definitions for simplex::
+* Introdu@value{cedilha}@~ao a simplex::
+* Defini@value{cedilha}@~oes para simplex::
 
 simplification
 
