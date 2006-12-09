@@ -261,7 +261,7 @@ Linha de Comando
 
 Operadores
 
-* "N" Argumentos::                        
+* N-Argumentos::                        
 * Sem Argumentos::                       
 * Operador::                    
 * Operador P@'osfixado::                     
@@ -555,8 +555,8 @@ plotdf
 
 simplex
 
-* Introduction to simplex::
-* Definitions for simplex::
+* Introdu@value{cedilha}@~ao a simplex::
+* Defini@value{cedilha}@~oes para simplex::
 
 simplification
 
