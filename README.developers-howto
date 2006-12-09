@@ -36,7 +36,8 @@
 
       --  Add / remove file name in maxima/src/maxima.system
 
-      --  Verify that "sh bootstrap; ./configure --enable-foolisp; make; make install"
+      --  Verify that
+          "sh bootstrap; ./configure --enable-foolisp; make; make install"
           and "run_testsuite();" all succeed
           
       --  Execute "cvs commit"
@@ -49,7 +50,8 @@
 
       --  Add / remove file name in maxima/share/Makefile.am
 
-      --  Verify that "sh bootstrap; ./configure --enable-foolisp; make; make install"
+      --  Verify that
+          "sh bootstrap; ./configure --enable-foolisp; make; make install"
           and "run_testsuite();" all succeed
 
       --  Execute "cvs commit"
@@ -61,7 +63,8 @@
 
       -- Naming conventions:
          
-         write_long_names_like_this, and NotLikeThisPlease, norlikethiseitherthanks
+         write_long_names_like_this, andNotLikeThisPlease,
+         norlikethiseitherthanks
 
          spell_out_names, dnt_try_sv_typng_w_abbrvs_tnx
 
@@ -75,17 +78,18 @@
       -- Create texinfo documentation file my_package.texi
          (PLEASE CREATE DOCUMENTATION, THANK YOU)
 
-         my_package.texi goes in maxima/doc/info (same as other texinfo files)
+         my_package.texi goes in maxima/doc/info
+         (same as other texinfo files)
 
-         Use other share texinfo in maxima/doc/info as a model for my_package.texi
-         (e.g. maxima/doc/info/ggf.texi, maxima/doc/info/solve_rec.texi)
+         Use maxima/share/template.texi as a template for my_package.texi
 
       -- Create test file rtest_my_package.mac
          (PLEASE CREATE A TEST FILE, THANK YOU)
 
-         Test file contains pairs of expressions: input expression, then expected result
+         Test file contains pairs of expressions:
+         input expression, then expected result
 
-         batch ("my_package/rtest_my_package.mac", test);
+         batch("my_package/rtest_my_package.mac", test);
          executes the test
 
 
@@ -109,12 +113,14 @@
 
       --  Move my_package.texi to maxima/doc/info
       
-          Put my_package.texi on the list of files in maxima/doc/info/Makefile.am
+          Put my_package.texi on the list of files in
+          maxima/doc/info/Makefile.am
 
           Put my_package on the list of topics in maxima/doc/info/maxima.texi
-          Probably best way to do that is to copy an existing item, e.g., mnewton
+          See instructions in comments at top of maxima/share/template.texi
 
-      --  Verify that "sh bootstrap; ./configure --enable-foolisp; make; make install"
+      --  Verify that
+          "sh bootstrap; ./configure --enable-foolisp; make; make install"
           and "run_testsuite();" all succeed
 
       --  Execute "cvs commit"
@@ -129,7 +135,8 @@
 
       --  Add / remove file name in maxima/tests/testsuite.lisp
 
-      --  Verify that "sh bootstrap; ./configure --enable-foolisp; make; make install"
+      --  Verify that
+          "sh bootstrap; ./configure --enable-foolisp; make; make install"
           and "run_testsuite();" all succeed
 
       --  Execute "cvs commit"
