@@ -90,6 +90,7 @@ rtest_scalarp.mac \
 rtest_everysome.mac \
 rtestint.mac \
 rtestifactor.mac \
+rtest_equal.mac \
 testsuite.lisp
 
 EXTRA_DIST = $(genericdirDATA)
