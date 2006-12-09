@@ -212,7 +212,6 @@
 
 (defun set-locale ()
   (let (locale language territory codeset)
-    (setq cl-info::*index-name* "index")
     (unless  (setq *maxima-lang-subdir* (maxima-getenv "MAXIMA_LANG_SUBDIR"))
       (setq locale
             (or
