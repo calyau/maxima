@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Menu.tcl,v 1.25 2006-12-05 04:02:24 villate Exp $
+#       $Id: Menu.tcl,v 1.26 2006-12-09 19:57:08 vvzhy Exp $
 #
 
 proc pMAXSaveTexToFile {text} {
@@ -196,6 +196,11 @@ proc vMAXAddSystemMenu {fr text} {
     set xfile [file join $maxima_priv(maxima_verpkgdatadir) xmaxima html xmaxima.html]
     if {[file isfile $xfile]} {
 	set xstate normal
+	if {$tcl_platform(platform) == "windows"} {
+	    # decodeURL is broken and needs fixing
+	    # This is a workaround
+	    set xfile [file attrib $xfile -shortname]
+	}
     } else {
 	set xstate disabled
     }
@@ -216,6 +221,9 @@ proc vMAXAddSystemMenu {fr text} {
         $m add command -underline 1 -label [mc "Maxima Manual"] \
         	-state $state \
 	        -command [list exec hh.exe $file]
+        $m add command -underline 4 -label [mc "Xmaxima Manual (xmaxima browser)"] \
+        	-state $xstate \
+	        -command "OpenMathOpenUrl \"file:/$xfile\""
     } else {
         $m add command -underline 1 -label [mc "Maxima Manual (xmaxima browser)"] \
         	-state $state \
