@@ -137,7 +137,7 @@ ode1_riccati_original(b,c,m,y,x) := block(
 
   which is the special Riccati equation with a=1 and n=m+2
   */
-  if ( not(equal(m,-2)) and integerp(k:m/(2*m+4)) ) then (
+  if ( asksign(m+2)#'zero and integerp(k:m/(2*m+4)) ) then (
     ode_disp("       Equation is integrable in finite terms"),
     ode_disp("       Transforming using y=w/x and calling ode1_riccati_special"),
     ans:ode1_riccati_special(1,b,c,m+2,w,x),
@@ -153,7 +153,7 @@ ode1_riccati_original(b,c,m,y,x) := block(
    for cases not integrable in finite terms
 */
 ode1_riccati_original_not_integrable(b,c,m,y,x) := block(
-  if is(equal(m,-2)) then
+  if (asksign(m+2)='zero)  then
     ode1_riccati_original_2(b,c,y,x)
   else
     ode1_riccati_original_3(b,c,m,y,x)
