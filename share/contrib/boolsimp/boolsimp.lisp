@@ -16,7 +16,7 @@
 ;  - flatten conditionals -- nested if --> if -- elseif -- elseif -- elseif -- else
 ;  - arithmetic on conditionals -- distribute arithmetic ops over if
 ;  - make up rules via tellsimp & friends for integrate / sum / diff applied to conditionals
-;  - knock out redundant clauses in simplification (i.e. if x => y then knock out y)
+;  - knock out redundant clauses in simplification (i.e. if x implies y then knock out y)
 
 ; Examples:
 ;
@@ -40,6 +40,11 @@
 ; (print, kill, save, quit, etc) may or may not actually have those side effects.
 ;
 ; Simplification of boolean expressions:
+;
+; and and or are declared nary. The sole effect of this is to allow Maxima to
+; flatten nested expressions, e.g., a and (b and c) => a and b and c
+; (The nary declaration does not make and and or commutative, and and and or
+; are not otherwise declared commutative.)
 ;
 ; and: if any argument simplifies to false, return false
 ;  otherwise omit arguments which simplify to true and simplify others
@@ -114,6 +119,15 @@
 ; with "if" being a noun iff the original "if" was a noun.
 
 (in-package :maxima)
+
+; Kill off translation properties of conditionals and Boolean operators.
+; Ideally we could avoid calling MEVAL when arguments are declared Boolean.
+; We're not there yet.
+
+(remprop 'mcond 'translate)
+(remprop 'mand 'translate)
+(remprop 'mor 'translate)
+(remprop 'mnot 'translate)
 
 ; It's OK for MEVALATOMS to evaluate the arguments of MCOND.
 ; %MCOND already has this property.
@@ -326,6 +340,36 @@
 ; which is no longer the case.
 
 (defun require-boolean (x) (cond ((or (not x) (eq x t)) x) (t nil)))
+
+; The presence of OPERS tells SIMPLIFYA to call OPER-APPLY,
+; which calls NARY1 to flatten nested "and" and "or" expressions
+; (due to $NARY property of MAND and MOR, declared elsewhere).
+
+(put 'mand t 'opers)
+(put 'mor t 'opers)
+
+; NARY EXPRESSIONS NOT FLATTENED COMPLETELY AT PRESENT
+; BUG IS DUE TO STRANGENESS OF SPECIAL VARIABLE OPERS-LIST
+; WHICH IS MAINTAINED BY OPER-APPLY AND SUBSIDIARIES INCLUDING NARY1
+; DO NOT ATTEMPT TO MODIFY OPER-APPLY -- CHANGE ONLY NARY1
+; EVENTUALLY MOVE THIS CODE INTO SRC/ASUM.LISP
+
+(defun nary1 (e z)
+  (do
+    ((l (cdr e) (cdr l)) (ans) (some-change))
+
+    ((null l)
+     (if some-change
+       (nary1 (cons (car e) (nreverse ans)) z)
+       (let ((w (get (caar e) 'operators)))
+         (if w (funcall w e 1 z) (simpargs e z)))))
+
+    (setq
+      ans (if (and (not (atom (car l))) (eq (caaar l) (caar e)))
+            (progn
+              (setq some-change t)
+              (nconc (reverse (cdar l)) ans))
+            (cons (car l) ans)))))
 
 (putprop 'mnot 'simp-mnot 'operators)
 (putprop 'mand 'simp-mand 'operators)

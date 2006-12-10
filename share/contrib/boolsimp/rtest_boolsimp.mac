@@ -94,6 +94,32 @@ true;
 '(not not not not a);
 'a;
 
+/* Flattening nested expressions.
+ * Maxima "and" and "or" are not commutative, so order of arguments should be preserved.
+ * Flattening is a simplification => should happen in both simplification and evaluation.
+ */
+
+kill (all);
+done;
+
+('(x and b and ((h and d) and c) and y), [op (%%), args (%%)]);
+["and", [x, b, h, d, c, y]];
+
+('(x or b or ((h or d) or c) or y), [op (%%), args (%%)]);
+["or", [x, b, h, d, c, y]];
+
+'(x and b and ((h or d) or c) and (y and q and e));
+x and b and (h or d or c) and y and q and e;
+
+(x and b and ((h and d) and c) and y, [op (%%), args (%%)]);
+["and", [x, b, h, d, c, y]];
+
+(x or b or ((h or d) or c) or y, [op (%%), args (%%)]);
+["or", [x, b, h, d, c, y]];
+
+x and b and ((h or d) or c) and (y and q and e);
+x and b and (h or d or c) and y and q and e;
+
 /* Side-effects shouldn't happen in simplification (since arguments are not evaluated).
  */
 
@@ -433,3 +459,81 @@ L;
 
 (L : [], (is(first (push (false, L))), if %% then %% else (is(first (push (true, L))), if %% then %% else (is(first (push (true, L))), if %% then %%))), [%%, L]);
 [true, [true, false]];
+
+/* Translation of conditionals and boolean expressions.
+ * Translating this file (rtest_boolsimp.mac) would be a good test,
+ * but the translator is too broken to translate all of the file.
+ */
+
+/* Leave this mode_declare for later.
+ * The effect which would be observable here would be
+ * to trigger an error if some argument is not true or false.
+ * But as it stands, the translation code doesn't exploit
+ * the boolean mode_declare in any way.
+mode_declare ([a%, b%, c%, d%], boolean);
+[[a%, b%, c%, d%]];
+ */
+
+/* Example from mailing list 2006/05/04, tnx Barton */
+
+(kill(f), f(x) := if x < 0 then -1 else 1, 0);
+0;
+
+f(a);
+'if a < 0 then -1 else 1;
+
+(translate(f), f(a));
+'if a < 0 then -1 else 1;
+
+/* Other examples of translated functions */
+
+(my_max (x, y, z) := if x > y and x > z then x elseif y > z then y else z, translate (my_max));
+[my_max];
+
+my_max (11, 33, 22);
+33;
+
+my_max (a + b, c, 1);
+'if a + b > c and a + b > 1 then a + b elseif c > 1 then c else 1;
+
+[assume (c < 1), my_max (a + b, c, 1), forget (c < 1)];
+[[c < 1], 'if a + b > c and a + b > 1 then a + b else 1, [c < 1]];
+
+(kill (aa, bb, cc, dd),
+ implies (a%, b%) := (not a%) or b%,
+ equivalent (a%, b%) := implies (a%, b%) and implies (b%, a%),
+ translate (implies, equivalent));
+[implies, equivalent];
+
+implies (aa and bb, cc or dd);
+not aa or not bb or cc or dd;
+
+implies (aa and bb, aa);
+not aa or not bb or aa;
+
+equivalent (aa, aa);
+(not aa or aa) and (not aa or aa);
+
+/* crime scene example from mailing list 2006/05/06 tnx Mario */
+
+(kill (all),
+ "=>" (r, s) := not r or s,
+ infix ("=>"),
+ implies (ante, conse, listvar) := block ([expr, npos, maxn, combis:[], bits, quot, div],
+    npos: length(listvar),
+    maxn: 2^npos - 1,
+    expr: not ante or conse,
+    for i:0 thru maxn do
+       (bits: [],
+        quot: i,
+        for j: 1 thru npos do
+           (div: divide (quot, 2),
+            quot: div[1],
+            bits: cons (listvar[j]=div[2], bits)),
+        combis: cons (subst ([1=true, 0=false], bits), combis)),
+    apply ("and", makelist (subst (k, expr), k, combis))), 0);
+0;
+
+implies ((p or q) and (q => r) and (p => s) and not r, s, [p, q, r, s]);
+true;
+
