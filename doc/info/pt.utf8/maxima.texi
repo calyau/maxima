@@ -462,7 +462,7 @@ bode
 
 cholesky
 
-* Definitions for cholesky::
+* Defini@value{cedilha}@~oes para cholesky::
 
 descriptive
 
