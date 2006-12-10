@@ -1,17 +1,19 @@
+@c Language: Portuguese, Encoding: iso-8859-1
+@c /cholesky.texi/1.1/Mon Feb 27 22:09:17 2006//
 @menu
-* Definitions for cholesky::
+* Defini@value{cedilha}@~oes para cholesky::
 @end menu
 
-@node Definitions for cholesky,  , cholesky, cholesky
-@section Definitions for cholesky
+@node Defini@value{cedilha}@~oes para cholesky,  , cholesky, cholesky
+@section Defini@value{cedilha}@~oes para cholesky
 
-@deffn {Function} cholesky (@var{A})
-Compute Cholesky decomposition of @var{A},
-a lower-triangular matrix @var{L} such that @code{L . transpose(L) = A}.
+@deffn {Fun@value{cedilha}@~ao} cholesky (@var{A})
+Calcula a decomposi@,{c}@~ao de Cholesky de @var{A},
+uma matriz triangular baixa @var{L} tal que @code{L . transpose(L) = A}.
 
-Some examples follow.
+Segue-se alguns exemplos.
 
-Example 1:
+Exemplo 1:
 @example
 (%i1) load("cholesky")$
 
@@ -40,7 +42,7 @@ Example 1:
                         [ 0  0  0 ]
 @end example
 
-Example 2:
+Exemplo 2:
 @example
 (%i6) A : matrix ([2, 3, 4], [-2, 2,- 3], [11, -2, 3]);
                     [  2    3    4  ]
@@ -72,5 +74,5 @@ Example 2:
                        [ 0  0  0 ]
 @end example
 
-To use this function write first @code{load("cholesky")}.
+Para usar essa fun@,{c}@~ao escreva primeiramente @code{load("cholesky")}.
 @end deffn
