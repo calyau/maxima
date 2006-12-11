@@ -29,7 +29,7 @@
 # files break maxima's internal help.
 %define __spec_install_post /bin/true
 
-Summary: Maxima Symbolic Computation Program
+Summary: Symbolic Computation Program
 Name: maxima
 Version: @VERSION@
 Release: 1.fedora2
@@ -42,28 +42,32 @@ Requires: maxima-exec = %{version}
 
 %description
 
-Maxima is a system for the manipulation of
-symbolic and numerical expressions, including
-differentiation, integration, Taylor series, Laplace transforms,
-ordinary differential equations,
-systems of linear equations,
-polynomials,
-and sets, lists, vectors, matrices, and tensors.
-Maxima yields high precision numeric results
-by using exact fractions, arbitrary-precision integers, 
-and arbitrary-precision floating point numbers.
+Maxima is a system for the manipulation of symbolic
+and numerical expressions, including differentiation,
+integration, Taylor series, Laplace transforms,
+ordinary differential equations, systems of linear
+equations, polynomials, sets, lists, vectors, matrices
+and tensors.
+Maxima yields high precision numeric results by using
+exact fractions, arbitrary-precision integers and
+arbitrary-precision floating point numbers.
 Maxima can plot functions and data in two and three
-dimensions,
-and it comes with hundreds of self tests.
-Maxima is based on the original Macsyma developed at MIT in the 1970's.
+dimensions, and it comes with hundreds of self tests.
+Maxima is based on the original Macsyma developed
+at MIT in the 1970's.
 
 %package xmaxima
-Summary: Tcl/Tk interface to Maxima
+Summary: Openmath graphics program and interface to Maxima
 Group: Sciences/Mathematics
 Requires: maxima = %{version}, tk
 Provides: xmaxima
 %description xmaxima
-Tcl/Tk interface to Maxima.
+
+A graphical interface to the Maxima symbolic computation
+program. It also provides Openmath, a graphics program
+that can be used from Maxima, and a Web browser that
+accepts a custom html tag to execute Maxima commands from
+an html page. Xmaxima is written in the Tcl/Tk language.
 
 %if %{enable_clisp}
 %package exec-clisp
@@ -180,12 +184,21 @@ if [ "$1" = 0 ]; then
 	/sbin/install-info --delete %{_infodir}/maxima.info %{_infodir}/dir
 fi
 
+%post xmaxima
+/sbin/install-info %{_infodir}/xmaxima.info %{_infodir}/dir
+
+%postun xmaxima
+if [ "$1" = 0 ]; then
+	/sbin/install-info --delete %{_infodir}/xmaxima.info %{_infodir}/dir
+fi
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root,-)
 %dir %{_datadir}/maxima
+%exclude %{_datadir}/maxima/%{version}/xmaxima
 %{_datadir}/maxima/%{version}
 %if %{enable_lang_es}
 %exclude %{_datadir}/maxima/%{version}/doc/html/es
@@ -202,6 +215,7 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_libexecdir}/maxima
 %{_libexecdir}/maxima/%{version}
 %{_infodir}/*
+%exclude %{_infodir}/xmaxima.info*
 %if %{enable_lang_es}
 %exclude %{_infodir}/es
 %endif
@@ -223,6 +237,7 @@ rm -rf $RPM_BUILD_ROOT
 %files xmaxima
 %{_bindir}/xmaxima
 %{_datadir}/maxima/%{version}/xmaxima
+%{_infodir}/xmaxima*
 
 %if %{enable_clisp}
 %files exec-clisp
@@ -272,6 +287,10 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Mon Dec 11 2006 Jaime Villate <villate@fe.up.pt>
+- Moved xmaxima files to the maxima-xmaxima package.
+- Updated description of Xmaxima.
+
 * Wed Dec 28 2005 Vadim Zhytnikov <vvzhy@natorn.ru>
 - Spanish and Portuguese language packs.
 - Package maxima subdirectories for clean uninstall.
