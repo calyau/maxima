@@ -586,3 +586,11 @@ factor(expand(sqrtdenest(integrate (1/((x-3)^4+1/2), x,0,1))));
  +log((2^(3/4)-12*sqrt(2)+73*2^(1/4)+2)/(33*2^(1/4)))
  -2*atan((sqrt(2)+4*2^(1/4)+8)/(-49*2^(3/4)+sqrt(2)-8)))
  /(2*2^(3/4))$
+
+/*
+ * Bug [ 1607567 ] trigreduce([atan(sin(a)/cos(a))]) => [ atan(tan(a)) ] (FIX)
+ */
+trigreduce(atan(sin(a)/cos(a)));
+a;
+trigreduce([atan(sin(a)/cos(a))]);
+[a];
