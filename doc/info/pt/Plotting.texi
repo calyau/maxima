@@ -1,5 +1,5 @@
 @c Language: Portuguese, Encoding: iso-8859-1
-@c /Plotting.texi/1.29/Thu Nov  2 05:48:32 2006/-ko/
+@c /Plotting.texi/1.30/Mon Dec 11 2006/
 @menu
 * Defini@value{cedilha}@~oes para Montagem de Gr@'aficos::    
 @end menu
@@ -24,7 +24,7 @@ caso contr@'ario @code{in_netmath} (mesmo se @code{true}) n@~ao tem efeito.
 
 @c THIS DESCRIPTION IS IN NEED OF HEAVY REVISION (BUT ONLY IF OPENPLOT IS STILL SUPPORTED)
 @deffn {Fun@,{c}@~ao} openplot_curves (@var{list}, @var{rest_options})
-Pega uma lista de curvas tais como
+Aceita uma lista de curvas tais como
 @example
 [[x1, y1, x2, y2, ...], [u1, v1, u2, v2, ...], ..]
 @end example
@@ -32,8 +32,10 @@ ou
 @example
 [[[x1, y1], [x2, y2], ...], ...]
 @end example
-e monta seus gr@'aficos.  Isso @'e similar a xgraph_curves, mas n@~ao usa as
-rotinas open plot.
+e desenha os seus gr@'aficos. S@'o funciona se Xmaxima estiver instalado.
+@'E similar a xgraph_curves, mas n@~ao usando as rotinas do
+@emph{openmath}.
+
 Argumentos adicionais de s@'imbolos podem ser dados tais como
 @code{"@{xrange -3 4@}"}.
 O exemplo adiante monta o gr@'afico de duas curvas, usando pontos grandes, rotulando-se o primeiro
@@ -378,8 +380,9 @@ texto.  Mgnuplot requer uma instala@,{c}@~ao externa do gnuplot e
 Tcl/Tk.
 @item
 Valor: @code{openmath}
-Openmath @'e um programa-GUI para montagem de gr@'afico baseado no Tcl/Tk.  Isso est@'a inclu@'ido na
-distribu@'i@,{c}@~ao do Maxima.
+Openmath @'e um programa gr@'afico escrito em Tcl/Tk. Este formato @'e
+fornecido pelo pacote Xmaxima, que @'e distribuido com Maxima. Se quiser
+usar este formato, dever@'a instalar Xmaxima.
 @item
 Valor: @code{ps}
 Gera arquivos Postscript simples diretamente do
@@ -775,7 +778,8 @@ monta o gr@'afico de @code{z = 2^(-u^2+v^2)} com @code{u} e @code{v} variando no
 no intervalo fechado de [-2,2] respectivamente, e com @var{u} sobre o eixo x, e @code{v} sobre o eixo
 y.
 
-O mesmo gr@'afico pode ser visualizado usando openmath:
+O mesmo gr@'afico pode ser visualizado usando openmath (se Xmaxima
+estiver instalado):
 
 @example
 (%i2)  plot3d (2^(-u^2 + v^2), [u, -3, 3], [v, -2, 2],

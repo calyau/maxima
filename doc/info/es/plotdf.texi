@@ -11,8 +11,13 @@ La funci@'on @code{plotdf} crea un gr@'afico del campo de direcciones para una
 Ecuaci@'on Diferencial Ordinaria (EDO) de primer orden, o para un sistema de
 dos EDO's aut@'onomas, de primer orden.
 
-Para dibujar el campo de direcciones de una @'unica EDO, esa ecuci@'on deber@'a
-escribirse en la forma siguiente:
+Como se trata de un paquete adicional, para poder usarlo debe cargarlo
+primero con el comando @code{load("plotdf")}. Tambi@'en es necesario que
+Xmaxima est@'e instalado, a pesar de que ejecute Maxima desde otra
+interface diferente.
+
+Para dibujar el campo de direcciones de una @'unica EDO, esa ecuaci@'on
+deber@'a escribirse en la forma siguiente:
 @ifnottex
 @example
        dy
@@ -356,5 +361,4 @@ de las dos variables de estado como funciones del tiempo:
 
 @end itemize
 
-Para hacer uso de esta funci@'on, ejec@'utese primero @code{load("plotdf")}.
 @end deffn

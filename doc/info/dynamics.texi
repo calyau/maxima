@@ -12,7 +12,8 @@ dynamical systems and fractals, and an implementation of the Runge-Kutta
 4th-order numerical method for solving systems of differential equations.
 
 To use the functions in this package you must first load it with
-@code{load("dynamics")}.
+@code{load("dynamics")}, and the functions that will create graphics
+require that Xmaxima be installed.
 
 @node Definitions for dynamics,  , Introduction to dynamics, dynamics
 @section Definitions for dynamics

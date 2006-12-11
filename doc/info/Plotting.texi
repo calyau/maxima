@@ -30,8 +30,9 @@ or
 @example
 [[[x1, y1], [x2, y2], ...], ...]
 @end example
-and plots them.  This is similar to xgraph_curves, but uses the
-open plot routines.
+and plots them. It will only work if Xmaxima is installed.  This is
+similar to xgraph_curves, but uses the openmath routines.
+ 
 Addtional symbol arguments may be given such as
 @code{"@{xrange -3 4@}"}
 The following plots two curves, using big points, labeling the first one
@@ -379,8 +380,9 @@ interface. Mgnuplot requires an external gnuplot installation and
 Tcl/Tk.
 @item
 Value: @code{openmath}
-Openmath is a Tcl/Tk GUI plotting program. It is included in the
-Maxima distribution.
+Openmath is a Tcl/Tk GUI plotting program. This format is provided by
+Xmaxima, which is distributed together with Maxima; you should install
+Xmaxima in order to use this format.
 @item
 Value: @code{ps}
 Generates simple PostScript files directly from
@@ -776,7 +778,7 @@ plots @code{z = 2^(-u^2+v^2)} with @code{u} and @code{v} varying in [-3,3] and
 [-2,2] respectively, and with @var{u} on the x axis, and @code{v} on the y
 axis.
 
-The same graph can be plotted using openmath:
+The same graph can be plotted using openmath (if Xmaxima is installed):
 
 @example
 (%i2)  plot3d (2^(-u^2 + v^2), [u, -3, 3], [v, -2, 2],

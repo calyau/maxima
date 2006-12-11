@@ -1,4 +1,4 @@
-@c english version 1.6
+@c english version 1.8
 @menu
 * Introducci@'on a dynamics::
 * Definiciones para dynamics::
@@ -13,7 +13,8 @@ y adem@'as una implementaci@'on del m@'etodo num@'erico de Runge-Kutta de
 cuarto orden, para resolver sistemas de ecuaciones diferenciales.
 
 Para usar las funciones en este paquete ser@'a necesario primero que todo
-cargarlo con @code{load("dynamics")}.
+cargarlo con @code{load("dynamics")}, y las funciones que crean
+gr@'aficas nesitan que Xmaxima est@'e instalado.
 
 @node Definiciones para dynamics,  , Introducci@'on a dynamics, dynamics
 @section Definiciones para dynamics

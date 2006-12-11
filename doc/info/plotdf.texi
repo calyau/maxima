@@ -10,6 +10,10 @@ The function @code{plotdf} creates a plot of the direction field of a
 first-order Ordinary Differential Equation (ODE) or a system of two
 autonomous first-order ODE's.
 
+Since this is an additional package, in order to use it you must first
+load it with @code{load("plotdf")}. You also need Xmaxima to be
+installed, even if you run Maxima from a different interface.
+
 To plot the direction field of a single ODE, the ODE must be written in
 the form:
 @ifnottex
@@ -332,6 +336,5 @@ the two state variables as a function of time:
 
 @end itemize
 
-To use this function write first @code{load("plotdf")}.
 @end deffn
 

@@ -1,4 +1,4 @@
-@c english version 1.29
+@c english version 1.30
 @menu
 * Definiciones para Gr@'aficos::    
 @end menu
@@ -26,7 +26,8 @@ o
 @example
 [[[x1, y1], [x2, y2], ...], ...]
 @end example
-y las dibuja. Es similar a xgraph_curves, pero utiliza las rutinas de "open plot".
+y las dibuja. Funcionar@'a @'unicamente si Xmaxima est@'a instalado. Es similar a xgraph_curves, pero utiliza las rutinas de @emph{openmath}.
+
 Se le puede dar argumentos adicionales como 
 @code{"@{xrange -3 4@}"}
 El siguiente ejemplo dibuja dos curvas con puntos grandes, etiquetando el primero con @code{jim} y el segundo con @code{jane}.   
@@ -348,7 +349,9 @@ Mgnuplot es una interface para gnuplot basada en Tk. Se incluye en la distribuci
 
 @item
 Valor: @code{openmath}
-Openmath es un programa gr@'afico escrito en Tcl/Tk. Se incluye en la distribuci@'on de Maxima.
+Openmath es un programa gr@'afico escrito en Tcl/Tk. Este formato lo
+suministra el paquete Xmaxima, que se distribuye junto con Maxima;
+deber@'a instalar Xmaxima si quiere usar este formato.
 
 @item
 Valor: @code{ps}
@@ -710,7 +713,8 @@ dibuja @code{z = 2^(-u^2+v^2)} con @code{u} y @code{v} variando en [-3,3] y
 [-2,2] respectivamente, y con @var{u} sobre el eje x, y con @code{v} sobre el
 eje y.
 
-El mismo gr@'afico se puede dibujar usando openmath:
+El mismo gr@'afico se puede dibujar usando openmath (si Xmaxima fu@'e
+instalado):
 
 @example
 (%i2)  plot3d (2^(-u^2 + v^2), [u, -3, 3], [v, -2, 2],
