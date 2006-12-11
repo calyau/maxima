@@ -84,8 +84,65 @@ La selecci@'on aleatoria de uno de los @var{m} puntos atractivos puede
 se realizada con una funci@'on de probabilidad no uniforme, definida
 con los pesos @var{r1},...,@var{rm}. Esos pesos deben ser dados en forma
 acumulada; por ejemplo, si se quieren 3 puntos con probabilidades 0.2, 0.5 y
-0.3, los pesos @var{r1}, @var{r2} y @var{r3} podr@'ian ser 2, 7 y 10, o
+0.3, los pesos @var{r1}, @var{r2} y @var{r3} podr@'{@dotless{i}}an ser 2, 7 y 10, o
 cualquier otro grupo de n@'umeros que tengan la misma proporci@'on.
+
+@end deffn
+
+@deffn {Funci@'on} julia (@var{x}, @var{y}, ...@var{opciones}...)
+
+Crea un fichero gr@'afico con la representaci@'on del conjunto de Julia
+del n@'umero complejo (@var{x} + i @var{y}). Los par@'ametros @var{x} y
+@var{y} deben ser reales. El fichero se crea en el direct@'orio actual o
+en el direct@'orio del usuario, usando el formato gr@'afico XPM. El
+programa puede demorar varios segundos a ser ejecutado y cuando termina
+imprime un mensaje con el nombre del fichero creado.
+
+Se asignan diferentes colores a los puntos que no pertenecen al conjunto
+de Julia, de acuerdo con el n@'umero de iteraciones que demore la
+secuencia, comenzando en ese punto, a salir fuera del
+c@'{@dotless{i}}rculo de convergencia con radio 2. El n@'umero m@'aximo
+de iteraciones se define con la opci@'on @var{levels}; despu@'es de
+ejecutadas ese n@'umero de iteraciones, si la secuencia aun est@'a
+dentro del c@'{@dotless{i}}rculo de convergencia, el punto ser@'a
+coloreado con el color definido por la opci@'on @var{color}.
+
+Todos los colores usados para los puntos que no pertenecen al conjunto
+de Julia tendr@'an los mismos valores de saturaci@'on (@var{saturation})
+y valor (@var{value}), pero con diferentes @'angulos de tonalidad,
+distribuidos uniformemente en el intervalo entre @var{hue} y (@var{hue}
++ @var{huerange}).
+
+Se puede dar a la funci@'on una secuencia de opciones. La lista de
+posibles opciones aparece en una secci@'on m@'as al frente.
+
+@end deffn
+
+@deffn {Funci@'on} mandelbrot (@var{options})
+
+Crea un fichero gr@'afico con la representaci@'on del conjunto de
+Mandelbrot. El fichero se crea en el direct@'orio actual o en el
+direct@'orio del usuario, usando el formato gr@'afico XPM. El programa
+puede demorar varios segundos a ser ejecutado y cuando termina imprime
+un mensaje con el nombre del fichero creado.
+
+Se asignan diferentes colores a los puntos que no pertenecen al conjunto
+de Mandelbrot, de acuerdo con el n@'umero de iteraciones que demore la
+secuencia generada por ese punto a salir fuera del c@'{@dotless{i}}rculo
+de convergencia con radio 2. El n@'umero m@'aximo de iteraciones se
+define con la opci@'on @var{levels}; despu@'es de ejecutadas ese
+n@'umero de iteraciones, si la secuencia aun est@'a dentro del
+c@'{@dotless{i}}rculo de convergencia, el punto ser@'a coloreado con el
+color definido por la opci@'on @var{color}.
+
+Todos los colores usados para los puntos que no pertenecen al conjunto
+de Mandelbrot tendr@'an los mismos valores de saturaci@'on
+(@var{saturation}) y valor (@var{value}), pero con diferentes @'angulos
+de tonalidad, distribuidos uniformemente en el intervalo entre @var{hue}
+y (@var{hue} + @var{huerange}).
+
+Se puede dar a la funci@'on una secuencia de opciones. La lista de
+posibles opciones aparece en una secci@'on m@'as al frente.
 
 @end deffn
 
@@ -181,69 +238,120 @@ repite @var{n} veces hasta alcanzar el punto (@var{yn}, @var{yn}).
 
 @b{Opciones}
 
-Las opciones aceptadas por las funcion@'es de este paquete que dibujan
-gr@'aficas son:
+Cada opci@'on es una lista con dos o m@'as elementos. El primer elemento
+en la lista es el nombre de la opci@'on y el resto consiste en los
+argumentos para esa opci@'on.
+
+Las opciones aceptadas por las funciones evolution, evolution2,
+staircase, orbits, ifs y chaosgame son las siguientes:
 
 @itemize @bullet
 @item
-Opci@'on: @code{domain} especifica los valores m@'inimo y m@'aximo de la
+@var{domain} especifica los valores m@'{@dotless{i}}nimo y m@'aximo de la
 variable independiente para la gr@'afica de la funci@'on @var{F}
 representada por @code{staircase}.
-@example
-[domain, -2, 3.5]
-@end example
 
 @item
-Opci@'on: @code{pointsize} define el radio de cada punto dibujado, en
-unidades de puntos. 
-@example
-[pointsize, 1.5]
-@end example
-El valor por omisi@'on es 1.
+@var{pointsize} define el radio de cada punto dibujado, en unidades de
+puntos.  El valor por omisi@'on es 1.
 
 @item
-Opci@'on: @code{xaxislabel} es la etiqueta que se escribir@'a en el eje
-horizontal.
-@example
-[xaxislabel, "tiempo"]
-@end example
+@var{xaxislabel} es la etiqueta que se escribir@'a en el eje horizontal.
 
 @item
-Opci@'on: @code{xcenter} es la coordenada x del punto que deber@'a
-aparecer en el centro de la gr@'afica. Esta opci@'on no es usada por la
-funci@'on  @code{orbits}.
-@example
-[xcenter,3.45]
-@end example
+@var{xcenter} es la coordenada x del punto que deber@'a aparecer en el
+centro de la gr@'afica. Esta opci@'on no es usada por la funci@'on
+@code{orbits}.
 
 @item
-Opci@'on: @code{xradius} es mitad de la longitud del intervalo de
-valores de x que ser@'a representado. Esta opci@'on no es usada por la
-funci@'on  @code{orbits}.
-@example
-[xradius,12.5]
-@end example
+@var{xradius} es mitad de la longitud del intervalo de valores de x que
+ser@'a representado. Esta opci@'on no es usada por la funci@'on
+@code{orbits}.
 
 @item
-Opci@'on: @code{yaxislabel} es la etiqueta que se escribir@'a en el eje
-vertical.
-@example
-[yaxislabel, "temperatura"]
-@end example
+@var{yaxislabel} es la etiqueta que se escribir@'a en el eje vertical.
 
 @item
-Opci@'on: @code{ycenter} es la coordenada y del punto que deber@'a
-aparecer en el centro de la gr@'afica.
-@example
-[ycenter,4.5]
-@end example
+@var{ycenter} es la coordenada y del punto que deber@'a aparecer en el
+centro de la gr@'afica.
 
 @item
-Opci@'on: @code{yradius} es mitad de la longitud del intervalo de
-valores de y que ser@'a representado.
-@example
-[yradius,15]
-@end example
+@var{yradius} es mitad de la longitud del intervalo de valores de y que
+ser@'a representado.
+
+@end itemize
+
+Las opciones aceptadas por los programas julia y mandelbrot son las
+siguientes:
+
+@itemize @bullet
+@item
+@var{size} acepta uno o dos argumentos. Si se da solo un argumento, el
+ancho y la altura del fichero gr@'afico creado ser@'an iguales a ese
+valor en pixels. Si se dan dos argumentos, esos dos valores ser@'an
+usados para el ancho y la altura. El valor por omisi@'on es 400 pixels
+tanto para el ancho como para la altura. Si los dos valores no son
+iguales, el conjunto aparecer@'a distorcionado.
+
+@item
+@var{levels} define el m@'umero m@'aximo de iteraciones, que es
+tambi@'en el n@'umero de colores usado para los puntos que no pertenecem
+al conjunto. el valor por omisi@'on es 12; valores mayores implican
+tiempos de procesamiento m@'as elevados.
+
+@item
+@var{huerange} define el intervalo de @'angulos usados para la tonalidad
+de los puntos que no pertenecen al conjunto. El valor por omisi@'on es
+360, que hace que los colores usados abarcar@'an todo el rango de
+tonalidades. Valores mayores que 360 implican repetición de algunos
+valores de la tonalidas, y pueden usarse valores negativos para que el
+@'angulo de tonalidad sea menor a medida que el n@'umero de iteraciones
+aumente.
+
+@item
+@var{hue} ajusta el valor de la tonalidad, en grados, del primer color
+usado para representar los puntos que no pertenecen al conjunto.
+Su valor por omisi@'on es 300 grados, que corresponde al color
+magenta; el color correspondiente para otros valores estandar
+es rojo 0, naranja 45, amarillo 60, verde 120, cian 180 y azul
+240. Consulte tambi@'en la opci@'on @var{hueturns}.
+
+@item
+@var{saturation} especifica el valor de la saturaci@'on que ser@'a usado
+para los puntos que no pertenecen al conjunto. Debe ser un valor entre 0
+y 1. El valor por omisi@'on es 0.46.
+
+@item
+@var{value} especifica el valor de los colores usados para puntos que no
+pertenezcan al conjunto. Debe estar comprendido entre 0 y 1; cuanto
+mayor sea, mas brilhantes ser@'an los colores. Su valor por omisi@'on es
+0.96.
+
+@item
+@var{color} debe ir seguido de tres par@'ametros que definen la
+tonalidad, saturaci@'on y valor del color que ser@'a usado para los
+puntos del conjunto. El valor por omisi@'on es 0 para los tres
+par@'ametros, que corresponde al negro. Consulte las explicaci@'on sobre
+el rango de valores aceptados en la explicaci@'on de las opciones
+@var{hue}, @var{saturation} y @var{value}.
+
+@item
+@var{center} deber@'a estar seguido por dos ar@'ametros reales que dan
+las coordenadas, en el plano complejo, del punto en el centro de la
+regi@'on representada. El valor por omisi@'on es 0 para las dos
+coordenadas (el origen).
+
+@item
+@var{radius} especifica el radio de el mayor c@'{@dotless{i}}rculo que
+cabe dentro de la rebi@'on quadrada que ser@'a representada. El valor
+por omisi@'on es 2.
+
+@item
+@var{filename} da el nombre del fichero donde se guardar@'a el gr@'afico
+producido. A ese nombre se le acrecentar@'a la terminaci@'on .xpm. Si el
+fichero ya existe, ser@'a substituido por el fichero producido por la
+funci@'on. El valor por omisi@'on es julia para el conjunto de Julia y
+mandelbrot para el conjunto de Mandelbrot.
 
 @end itemize
 
@@ -348,6 +456,33 @@ El helecho de Barnsley, obtenido con el Sistema de Funciones Iteradas:
 
 @ifnotinfo
 @image{../figures/dynamics8,8cm}
+@end ifnotinfo
+
+Para crear un fichero llamado @emph{dinamica9.xpm} con la
+representaci@'on gr@'afica del conjunto de Mandelbrot, con 12 colores,
+use el comando:
+
+@example
+mandelbrot([filename,"dinamica9"])$
+@end example
+
+@ifnotinfo
+@image{../figures/dynamics9,8cm}
+@end ifnotinfo
+
+y el conjunto de Julia del n@'umero (-0.55 + i 0.6) puede ser obtenido con:
+@example
+julia(-0.55, 0.6, [levels, 36], [center, 0, 0.6], [radius, 0.3],
+      [hue, 240], [huerange, -180], [filename, "dinamica10"])$
+@end example
+
+el gr@'afico se guardar@'a en el fichero @emph{dinamica10.xpm} y
+mostrar@'a la regi@'on desde -0.3 hasta 0.3 en la direcci@'on x, y desde
+0.3 hasta 0.9 en la direcci@'on y. Ser@'an usados 36 colores, comenzando
+con azul e terminando con amarillo.
+
+@ifnotinfo
+@image{../figures/dynamics10,8cm}
 @end ifnotinfo
 
 Para resolver num@'ericamente la ecuaci@'on diferencial
