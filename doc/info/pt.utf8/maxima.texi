@@ -87,7 +87,7 @@ Mantenedores:
 @item
 Vadim V. Zhytnikov (UTF-8)
 @item
-Jaime E. Villate (Gr@'aficos)
+Jaime E. Villate
 @item
 Mario Rodriguez
 @item
