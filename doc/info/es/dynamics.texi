@@ -1,4 +1,4 @@
-@c english version 1.8
+@c english version 1.10
 @menu
 * Introducci@'on a dynamics::
 * Definiciones para dynamics::
@@ -14,7 +14,7 @@ cuarto orden, para resolver sistemas de ecuaciones diferenciales.
 
 Para usar las funciones en este paquete ser@'a necesario primero que todo
 cargarlo con @code{load("dynamics")}, y las funciones que crean
-gr@'aficas nesitan que Xmaxima est@'e instalado.
+gr@'aficas necesitan que Xmaxima est@'e instalado.
 
 @node Definiciones para dynamics,  , Introducci@'on a dynamics, dynamics
 @section Definiciones para dynamics
@@ -82,7 +82,7 @@ se multiplican por una matriz 2 por 2 @var{Ai} correspondiente al punto
 que fue elegido aleatoriamente.
 
 La selecci@'on aleatoria de uno de los @var{m} puntos atractivos puede
-se realizada con una funci@'on de probabilidad no uniforme, definida
+ser realizada con una funci@'on de probabilidad no uniforme, definida
 con los pesos @var{r1},...,@var{rm}. Esos pesos deben ser dados en forma
 acumulada; por ejemplo, si se quieren 3 puntos con probabilidades 0.2, 0.5 y
 0.3, los pesos @var{r1}, @var{r2} y @var{r3} podr@'{@dotless{i}}an ser 2, 7 y 10, o
@@ -181,7 +181,7 @@ una lista con cuatro elementos, como por ejemplo:
 [t, 0, 10, 0.1]
 @end example
 el primer elemento de la lista identifica la variable independiente, el
-segundo y tercer elementos son los valores iniciales y finales para esa
+segundo y tercer elementos son los valores inicial y final para esa
 variable, y el @'ultimo elemento da el valor de los incrementos que
 deber@'an ser usados dentro de ese intervalo.
 
@@ -248,36 +248,36 @@ staircase, orbits, ifs y chaosgame son las siguientes:
 
 @itemize @bullet
 @item
-@var{domain} especifica los valores m@'{@dotless{i}}nimo y m@'aximo de la
+@dfn{domain} especifica los valores m@'{@dotless{i}}nimo y m@'aximo de la
 variable independiente para la gr@'afica de la funci@'on @var{F}
 representada por @code{staircase}.
 
 @item
-@var{pointsize} define el radio de cada punto dibujado, en unidades de
+@dfn{pointsize} define el radio de cada punto dibujado, en unidades de
 puntos.  El valor por omisi@'on es 1.
 
 @item
-@var{xaxislabel} es la etiqueta que se escribir@'a en el eje horizontal.
+@dfn{xaxislabel} es la etiqueta que se escribir@'a en el eje horizontal.
 
 @item
-@var{xcenter} es la coordenada x del punto que deber@'a aparecer en el
+@dfn{xcenter} es la coordenada x del punto que deber@'a aparecer en el
 centro de la gr@'afica. Esta opci@'on no es usada por la funci@'on
 @code{orbits}.
 
 @item
-@var{xradius} es mitad de la longitud del intervalo de valores de x que
+@dfn{xradius} es mitad de la longitud del intervalo de valores de x que
 ser@'a representado. Esta opci@'on no es usada por la funci@'on
 @code{orbits}.
 
 @item
-@var{yaxislabel} es la etiqueta que se escribir@'a en el eje vertical.
+@dfn{yaxislabel} es la etiqueta que se escribir@'a en el eje vertical.
 
 @item
-@var{ycenter} es la coordenada y del punto que deber@'a aparecer en el
+@dfn{ycenter} es la coordenada y del punto que deber@'a aparecer en el
 centro de la gr@'afica.
 
 @item
-@var{yradius} es mitad de la longitud del intervalo de valores de y que
+@dfn{yradius} es mitad de la longitud del intervalo de valores de y que
 ser@'a representado.
 
 @end itemize
@@ -287,7 +287,7 @@ siguientes:
 
 @itemize @bullet
 @item
-@var{size} acepta uno o dos argumentos. Si se da solo un argumento, el
+@dfn{size} acepta uno o dos argumentos. Si se da solo un argumento, el
 ancho y la altura del fichero gr@'afico creado ser@'an iguales a ese
 valor en pixels. Si se dan dos argumentos, esos dos valores ser@'an
 usados para el ancho y la altura. El valor por omisi@'on es 400 pixels
@@ -295,41 +295,41 @@ tanto para el ancho como para la altura. Si los dos valores no son
 iguales, el conjunto aparecer@'a distorcionado.
 
 @item
-@var{levels} define el m@'umero m@'aximo de iteraciones, que es
+@dfn{levels} define el n@'umero m@'aximo de iteraciones, que es
 tambi@'en el n@'umero de colores usado para los puntos que no pertenecem
-al conjunto. el valor por omisi@'on es 12; valores mayores implican
+al conjunto. El valor por omisi@'on es 12; valores mayores implican
 tiempos de procesamiento m@'as elevados.
 
 @item
-@var{huerange} define el intervalo de @'angulos usados para la tonalidad
+@dfn{huerange} define el intervalo de @'angulos usados para la tonalidad
 de los puntos que no pertenecen al conjunto. El valor por omisi@'on es
 360, que hace que los colores usados abarcar@'an todo el rango de
 tonalidades. Valores mayores que 360 implican repetición de algunos
-valores de la tonalidas, y pueden usarse valores negativos para que el
+valores de la tonalidad, y pueden usarse valores negativos para que el
 @'angulo de tonalidad sea menor a medida que el n@'umero de iteraciones
 aumente.
 
 @item
-@var{hue} ajusta el valor de la tonalidad, en grados, del primer color
-usado para representar los puntos que no pertenecen al conjunto.
-Su valor por omisi@'on es 300 grados, que corresponde al color
-magenta; el color correspondiente para otros valores estandar
-es rojo 0, naranja 45, amarillo 60, verde 120, cian 180 y azul
-240. Consulte tambi@'en la opci@'on @var{hueturns}.
+@dfn{hue} define la tonalidad, en grados, del primer color usado para
+representar los puntos que no pertenecen al conjunto.  Su valor por
+omisi@'on es 300 grados, que corresponde al color magenta; el color
+correspondiente para otros valores estandar es rojo 0, naranja 45,
+amarillo 60, verde 120, cian 180 y azul 240. Consulte tambi@'en la
+opci@'on @var{huerange}.
 
 @item
-@var{saturation} especifica el valor de la saturaci@'on que ser@'a usado
-para los puntos que no pertenecen al conjunto. Debe ser un valor entre 0
-y 1. El valor por omisi@'on es 0.46.
+@dfn{saturation} define el nivel de saturaci@'on que ser@'a usado para
+los colores de los puntos que no pertenecen al conjunto. Debe ser un valor
+entre 0 y 1. El valor por omisi@'on es 0.46.
 
 @item
-@var{value} especifica el valor de los colores usados para puntos que no
+@dfn{value} define el valor de los colores usados para puntos que no
 pertenezcan al conjunto. Debe estar comprendido entre 0 y 1; cuanto
 mayor sea, mas brilhantes ser@'an los colores. Su valor por omisi@'on es
 0.96.
 
 @item
-@var{color} debe ir seguido de tres par@'ametros que definen la
+@dfn{color} debe ir seguido de tres par@'ametros que definen la
 tonalidad, saturaci@'on y valor del color que ser@'a usado para los
 puntos del conjunto. El valor por omisi@'on es 0 para los tres
 par@'ametros, que corresponde al negro. Consulte las explicaci@'on sobre
@@ -337,19 +337,19 @@ el rango de valores aceptados en la explicaci@'on de las opciones
 @var{hue}, @var{saturation} y @var{value}.
 
 @item
-@var{center} deber@'a estar seguido por dos ar@'ametros reales que dan
-las coordenadas, en el plano complejo, del punto en el centro de la
-regi@'on representada. El valor por omisi@'on es 0 para las dos
-coordenadas (el origen).
+@dfn{center} deber@'a tener dos par@'ametros reales que dan las
+coordenadas, en el plano complejo, del punto en el centro de la regi@'on
+representada. El valor por omisi@'on es 0 para las dos coordenadas (el
+origen).
 
 @item
-@var{radius} especifica el radio de el mayor c@'{@dotless{i}}rculo que
-cabe dentro de la rebi@'on quadrada que ser@'a representada. El valor
+@dfn{radius} es el radio de el mayor c@'{@dotless{i}}rculo que
+cabe dentro de la regi@'on quadrada que ser@'a representada. El valor
 por omisi@'on es 2.
 
 @item
-@var{filename} da el nombre del fichero donde se guardar@'a el gr@'afico
-producido. A ese nombre se le acrecentar@'a la terminaci@'on .xpm. Si el
+@dfn{filename} da el nombre del fichero donde se guardar@'a la gr@'afica
+producida. A ese nombre se le acrecentar@'a la terminaci@'on .xpm. Si el
 fichero ya existe, ser@'a substituido por el fichero producido por la
 funci@'on. El valor por omisi@'on es julia para el conjunto de Julia y
 mandelbrot para el conjunto de Mandelbrot.
@@ -396,7 +396,7 @@ $$y_{n+1} = x + y_n^2$$
 @end ifnotinfo
 
 Para ampliar la regi@'on alrededor de la bifurcaci@'on en la parte de
-abajo, cerca de x @code{=} -1.25 use el comando:
+abajo, cerca de x @code{=} -1.25, use el comando:
 @example
 (%i5) orbits(x+y^2, 0, 100, 400, [x,-1,-1.53,-0.001], [pointsize,0.9],
              [ycenter,-1.2], [yradius,0.4]);
@@ -477,7 +477,7 @@ julia(-0.55, 0.6, [levels, 36], [center, 0, 0.6], [radius, 0.3],
       [hue, 240], [huerange, -180], [filename, "dinamica10"])$
 @end example
 
-el gr@'afico se guardar@'a en el fichero @emph{dinamica10.xpm} y
+la gr@'afica se guardar@'a en el fichero @emph{dinamica10.xpm} y
 mostrar@'a la regi@'on desde -0.3 hasta 0.3 en la direcci@'on x, y desde
 0.3 hasta 0.9 en la direcci@'on y. Ser@'an usados 36 colores, comenzando
 con azul e terminando con amarillo.

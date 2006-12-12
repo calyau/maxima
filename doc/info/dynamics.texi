@@ -235,36 +235,36 @@ orbits, ifs and chaosgame are:
 
 @itemize @bullet
 @item
-@var{domain} sets the minimum and maximum values for the
+@dfn{domain} sets the minimum and maximum values for the
 independent variable in the plot of the function @var{F} shown by
 @code{staircase}.
 
 @item
-@var{pointsize} defines the radius of each point plotted, in units of
+@dfn{pointsize} defines the radius of each point plotted, in units of
 points. The default value is 1.
 
 @item
-@var{xaxislabel} is a label to put on the horizontal axis.
+@dfn{xaxislabel} is a label to put on the horizontal axis.
 
 @item
-@var{xcenter} is the x coordinate of the point that should appear at the
+@dfn{xcenter} is the x coordinate of the point that should appear at the
 center of the plot. This option is not used by the function
 @code{orbits}.
 
 @item
-@var{xradius} is half of the length of the interval of values that will
+@dfn{xradius} is half of the length of the interval of values that will
 be shown in the x direction. This option is not used by the function
 @code{orbits}.
 
 @item
-@var{yaxislabel} is a label to put on the vertical axis.
+@dfn{yaxislabel} is a label to put on the vertical axis.
 
 @item
-@var{ycenter} is the y coordinate of the point that should
+@dfn{ycenter} is the y coordinate of the point that should
 appear at the center of the plot.
 
 @item
-@var{yradius} is half of the length of the range of values that will be
+@dfn{yradius} is half of the length of the range of values that will be
 shown in the y direction.
 
 @end itemize
@@ -273,20 +273,20 @@ The following options are accepted by the functions julia and mandelbrot:
 
 @itemize @bullet
 @item
-@var{size} takes either one or two arguments. If only one argument is
+@dfn{size} takes either one or two arguments. If only one argument is
 given, the width and height of the graphic file created will be equal to
 that value, in pixels. If two arguments are given, they will define the
 width and height. The default value is 400 pixels for both the width and
 height. If the two values are not equal, the set will appear distorted.
 
 @item
-@var{levels} defines the maximum number of iterations, which is also
+@dfn{levels} defines the maximum number of iterations, which is also
 equal to the number of colors used for points not belonging to the
 set. The default value is 12; larger values mean much longer processing
 times.
 
 @item
-@var{huerange} defines the range of hue angles used for the hue of
+@dfn{huerange} defines the range of hue angles used for the hue of
 points not belonging to the set. The default value is 360,
 which means that the colors will expand all the range of hues. Values
 bigger than 360, will mean repeated ranges of the hue, and negative
@@ -294,39 +294,39 @@ values can be used to make the hue angle decrease as the number of
 iterations increases.
 
 @item
-@var{hue} sets the hue, in degrees, of the first color used for the
+@dfn{hue} sets the hue, in degrees, of the first color used for the
 points which do not belong to the set. Its default value is 300 degrees,
 which corresponds to magenta; the values for other standard colors are 0
 for red, 45 for orange, 60 for yellow, 120 for green, 180 for cyan and
-240 for blue. See also option @var{hueturns}.
+240 for blue. See also option @var{huerange}.
 
 @item
-@var{saturation} sets the value of the saturation used for points not
+@dfn{saturation} sets the value of the saturation used for points not
 belonging to the set. It must be between 0 and 1. The default is 0.46.
 
 @item
-@var{value} sets the value of the colors used for points not belonging
+@dfn{value} sets the value of the colors used for points not belonging
 to the set. It must be between 0 and 1; the higher the value, the
 brighter the colors. The default is 0.96
 
 @item
-@var{color} must be followed by three parameters that define the hue,
+@dfn{color} must be followed by three parameters that define the hue,
 saturation and value, for the color used to represent the points of the
 set. The default value is 0 for the three parameters, which corresponds
 to black. For an explanation of the range of allowed values, see options
 @var{hue}, @var{saturation} and @var{value}.
 
 @item
-@var{center} must be followed by two real parameters, which give the
+@dfn{center} must be followed by two real parameters, which give the
 coordinates, on the complex plane, of the point in the center of the
 region shown. The default value is 0 for both coordinates (the origin).
 
 @item
-@var{radius} sets the radius of the biggest circle inside the square
+@dfn{radius} sets the radius of the biggest circle inside the square
 region that will be displayed. The default value is 2.
 
 @item
-@var{filename} gives the name of the file where the resulting graph will
+@dfn{filename} gives the name of the file where the resulting graph will
 be saved. The extension .xpm will be added to that name. If the file
 already exists, it will be replaced by the file generated by the
 function. The default values are julia for the Julia set, and mandelbrot
@@ -351,7 +351,7 @@ Graphical representation and staircase diagram for the sequence:
 @end ifnotinfo
 
 If your system is slow, you'll have to reduce the number of iterations in
-the following examples. And the pointsize that gives the best results
+the following examples. And the @var{pointsize} that gives the best results
 depends on the monitor and the resolution being used. You should
 experiment using different values.
 
