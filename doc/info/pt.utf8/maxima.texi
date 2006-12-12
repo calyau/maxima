@@ -484,8 +484,8 @@ distrib
 
 dynamics
 
-* Introduction to dynamics::
-* Definitions for dynamics::
+* Introdu@value{cedilha}@~ao a dynamics::
+* Defini@value{cedilha}@~oes para dynamics::
 
 eval_string
 
@@ -550,8 +550,8 @@ orthopoly
 
 plotdf
 
-* Introduction to plotdf::
-* Definitions for plotdf::
+* Introdu@value{cedilha}@~ao a plotdf::
+* Defini@value{cedilha}@~oes para plotdf::
 
 simplex
 

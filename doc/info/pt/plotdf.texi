@@ -1,17 +1,24 @@
+@c english version 1.4
 @menu
-* Introduction to plotdf::
-* Definitions for plotdf::
+* Introdu@value{cedilha}@~ao a plotdf::
+* Defini@value{cedilha}@~oes para plotdf::
 @end menu
 
-@node Introduction to plotdf, Definitions for plotdf, plotdf, plotdf
-@section Introduction to plotdf
+@node Introdu@value{cedilha}@~ao a plotdf, Defini@value{cedilha}@~oes para plotdf, plotdf, plotdf
+@section Introdu@value{cedilha}@~ao a plotdf
 
-The function @code{plotdf} creates a plot of the direction field of a
-first-order Ordinary Differential Equation (ODE) or a system of two
-autonomous first-order ODE's.
+A fun@value{cedilha}@~ao @code{plotdf} cria um gr@'afico do campo de
+direc@value{cedilha}@~oes para uma Equa@value{cedilha}@~ao Diferencial
+Ordin@'aria (EDO) de primeira ordem, ou para um sistema de duas EDO's
+aut@'onomas, de primeira ordem.
 
-To plot the direction field of a single ODE, the ODE must be written in
-the form:
+Por tratar-se de um pacote adicional, para poder us@'a-lo dever@'a
+primeiro carreg@'a-lo com o comando @code{load("plotdf")}. Tamb@'em @'e
+necess@'ario que Xmaxima esteja instalado, inclusivamente se executar o
+Maxima desde outra interface diferente.
+
+Para desenhar o campo de direc@value{cedilha}@~oes de uma @'unica EDO,
+essa equa@value{cedilha}@~ao dever@'a escrever-se na forma seguinte:
 @ifnottex
 @example
        dy
@@ -23,13 +30,14 @@ the form:
 $${{dy}\over{dx}} = F(x,y)$$
 @end tex
 
-and the function @var{F} should be given as the argument for
-@code{plotdf}. The independent variable is always identified as @var{x},
-and the dependent variable as @var{y}. Those two variables should not
-have any values assigned to them.
+e a fun@value{cedilha}@~ao @var{F} ser@'a dada como argumento para o
+comando @code{plotdf}. A vari@'avel independente tem que ser sempre
+@var{x} e a vari@'avel dependente @var{y}. A essas duas vari@'aveis
+n@~ao poder@'a estar associado nenhum valor num@'erico.
 
-To plot the direction field of a set of two autonomous ODE's, they must
-be written in the form
+Para desenhar o campo de direc@value{cedilha}@~oes de um sistema
+aut@'onomo de duas EDO's, as duas equa@value{cedilha}@~oes devem ser
+escritas na forma seguinte
 @ifnottex
 @example
        dx             dy
@@ -41,226 +49,210 @@ be written in the form
 $${{dx}\over{dt}} = G(x,y) \qquad {{dy}\over{dt}} = F(x,y)$$
 @end tex
 
-and the argument for @code{plotdf} should be a list with the two
-functions @var{F} and @var{G}, in any order.
+e o argumento para o comando @code{plotdf} ser@'a uma lista com duas
+express@~oes para as fun@value{cedilha}@~oes @var{F} e @var{G}.
 
-If only one ODE is given, @code{plotdf} will implicitly admit
-@code{x=t}, and @code{G(x,y)=1}, transforming the non-autonomous
-equation into a system of two autonomous equations.
+Quando se trabalha com uma @'unica equa@value{cedilha}@~ao,
+@code{plotdf} assume implicitamente que @code{x=t} e @code{G(x,y)=1},
+transformando a equa@value{cedilha}@~ao num sistema aut@'onomo com duas
+equa@value{cedilha}@~oes.
 
-@node Definitions for plotdf,  , Introduction to plotdf, plotdf
-@section Definitions for plotdf
+@node Defini@value{cedilha}@~oes para plotdf,  , Introdu@value{cedilha}@~ao a plotdf, plotdf
+@section Defini@value{cedilha}@~oes para plotdf
 
-@deffn {Function} plotdf (@var{dydx},...options...)
-@deffnx {Function} plotdf (@code{[}@var{dxdt},@var{dydt}@code{]},...options...)
+@deffn {Function} plotdf (@var{dydx},...op@value{cedilha}@~oes...)
+@deffnx {Function} plotdf (@code{[}@var{dxdt},@var{dydt}@code{]},...op@value{cedilha}@~oes...)
 
-Displays a direction field in two dimensions @var{x} and @var{y}.
+Desenha um campo de direc@value{cedilha}@~oes em duas
+dimens@~oes @var{x} e @var{y}.
 
-@var{dydx}, @var{dxdt} and @var{dydt} are expressions that depend
-on @var{x} and @var{y}. In addition to those two variables, the
-expressions can also depend on a set of parameters, with numerical
-values given with the @code{parameters} option (the option syntax is
-given below), or with an range of allowed values specified by a
-@var{sliders} option.
+@var{dydx}, @var{dxdt} e @var{dydt} s@~ao express@~oes que dependem de
+@var{x} e @var{y}. Para al@'em dessas duas vari@'aveis, as duas
+express@~oes podem depender de um conjunto de par@^ametros, com valores
+num@'ericos que s@~ao dados por meio da op@value{cedilha}@~ao
+@code{parameters} (a sintaxe dessa op@value{cedilha}@~ao explica-se mais
+para a frente), ou com um intervalo de poss@'{@dotless{i}}veis valores
+definidos com a op@value{cedilha}@~ao @var{sliders}.
 
-Several other options can be given within the command, or entered into
-the menu that will appear when the upper-left corner of the plot window
-is clicked. Integral curves can be obtained by clicking on the plot, or
-with the option @code{trajectory_at}. The direction of the integration
-can be controlled with the @code{direction} option, which can have values
-of "forward", "backward" or "both". The number of integration steps is
-given by @code{nsteps} and the time interval between them is set up with
-the @code{tstep} option. The Adams Moulton method is used for the
-integration; it is also possible to switch to an adaptive Runge-Kutta
-4th order method.
+V@'arias outras op@value{cedilha}@~oes podem incluirem-se dentro do
+comando, ou serem seleccionadas no men@'u.  Clicando num ponto do
+gr@'afico faz com que seja desenhada a curva integral que passa por esse
+ponto; o mesmo pode ser feito dando as coordenadas do ponto com a
+op@value{cedilha}@~ao @code{trajectory_at} dentro do comando plotdf. A
+direc@value{cedilha}@~ao de integra@value{cedilha}@~ao pode controlar-se
+com a op@value{cedilha}@~ao @code{direction}, que aceita valores de
+@emph{forward}, @emph{backward} ou @emph{both}. O n@'umero de passos
+realizados na integra@value{cedilha}@~ao num@'erica controla-se com a
+op@value{cedilha}@~ao @code{nsteps} e o incremento do tempo em cada
+passo com a op@value{cedilha}@~ao @code{tstep}. Usa-se o m@'etodo de
+Adams Moulton para fazer a integra@value{cedilha}@~ao num@'erica;
+tamb@'em @'e poss@'{@dotless{i}}vel mudar para o m@'etodo de Runge-Kutta
+de quarta ordem com ajuste de passos.
 
-@b{Plot window menu:}
+@b{Men@'u da janela do gr@'afico:}
 
-The menu in the plot window has the following options: "Zoom", will
-change the behavior of the mouse so that it will allow you to zoom in
-on a region of the plot by clicking with the left button. Each click
-near a point magnifies the plot, keeping the center at the point where
-you clicked. Holding the SHIFT key while clicking, zooms out to the
-previous magnification. To resume computing trajectories when you
-click on a point, select "Integrate" from the menu.
+O men@'u da janela gr@'afica inclui as seguintes op@value{cedilha}@~oes:
+@emph{Zoom}, que permite mudar o comportamento do rato, de maneira que
+servir@'a para fazer zoom na regi@~ao do gr@'afico clicando com o
+bot@~ao esquerdo. Cada clic alarga a imagem mantendo no centro dela o
+ponto onde se clicou.  Mantendo carregada a tecla @key{Shift} enquanto
+se faz clic, faz diminuir o tamanho. Para continuar a desenhar
+trayect@'orias com um clic, selecciona-se a op@value{cedilha}@~ao
+@emph{Integrate} do men@'u.
 
-The option "Config" in the menu can be used to change the ODE(s) in use
-and various other settings. After configuration changes are made, the
-menu option "Replot" should be selected, to activate the new settings.
-If a pair of coordinates are entered in the field "Trajectory at" in the
-"Config" dialog menu, and the "enter" key is pressed, a new integral
-curve will be shown, in addition to the ones already shown. When
-"Replot" is selected, only the last integral curve entered will be
-shown.
+A op@value{cedilha}@~ao @emph{Config} do men@'u pode usar-se para mudar
+a(s) EDO(S) e fazer alguns outros ajustes. Ap@'os ter feito alguma
+altera@value{cedilha}@~ao, dever@'a usar a op@value{cedilha}@~ao
+@emph{Replot} para activar as novas configura@value{cedilha}@~oes.  Se
+introduzir duas coordenadas no campo @emph{Trajectory at} do men@'u de
+di@'alogo do @emph{Config}, e a seguir carregar na tecla @key{Enter},
+ser@'a acrescentada mais uma curva integral.  Se seleccionar a
+op@value{cedilha}@~ao @emph{Replot}, s@'o ser@'a apresentada a @'ultima
+curva integral seleccionada.
 
-Holding the right mouse button down while the cursor is moved, can be
-used to drag the plot sideways or up and down. Additional
-parameters such as the number of steps, the initial value of @var{t}
-and the x and y centers and radii, may be set in the Config menu.
+Mantendo o bot@~ao direito carregado enquanto se desloca o cursor,
+poder@'a arrastar o gr@'afico na horizontal e na vertical.  Outros
+par@^ametros, por exemplo, o n@'umero de passos, o valor inicial de
+@var{t}, as coordenadas do centro e o raio, podem ser alterados no
+sub-men@'u da op@value{cedilha}@~ao @emph{Config}.
 
-A copy of the plot can be printed to a Postscript printer, or saved as a
-postscript file, using the menu option "Save". To switch between
-printing and saving to a Postscript file, "Print Options" should be
-selected in the dialog window of "Config". After the settings in the
-"Save" dialog window are entered, "Save'' must be selected in the first
-menu, to create the file or print the plot.
+Com a op@value{cedilha}@~ao @emph{Save}, pode imprimir-se o
+gr@'afico numa impressora Postscript ou gravar uma c@'opia num ficheiro
+Postscript. Para optar entre impress@~ao ou grava@value{cedilha}@~ao em
+ficheiro, selecciona-se @emph{Print Options} na janela de di@'alogo de
+@emph{Config}. Ap@'os ter preenchido os campos da janela de di@'alogo de
+@emph{Save}, ser@'a necess@'ario seleccionar a op@value{cedilha}@~ao
+@emph{Save} do primeiro men@'u para criar o ficheiro ou imprimir o
+gr@'afico.
 
-@b{Plot options:}
+@b{Op@value{cedilha}@~oes gr@'aficas:}
 
-The @code{plotdf} command may include several commands, each command is
-a list of two or more items.  The first item is the name of the option,
-and the remainder comprises the value or values assigned to the option.
+A fun@value{cedilha}@~ao @code{plotdf} admite varias
+op@value{cedilha}@~oes, cada uma sendo uma lista de duas ou mais
+elementos. O primeiro elemento @'e o nome da op@value{cedilha}@~ao, e o
+resto estar@'a formado pelos argumentos para essa op@value{cedilha}@~ao.
 
-The options which are recognized by @code{plotdf} are the following:
+A fun@value{cedilha}@~ao @code{plotdf} reconhece as seguintes
+op@value{cedilha}@~oes:
 
 @itemize @bullet
 @item
-Option: @code{tstep} defines the length of the increments on the
-independent variable @var{t}, used to compute an integral curve. If only
-one expression @var{dydx} is given to @code{plotdf}, the @var{x}
-variable will be directly proportional to @var{t}: @code{x - xinitial =
-t - tinitial}.
-@example
-[tstep,0.01]
-@end example
-The default value is 0.1.
+@dfn{tstep} estabelece a amplitude dos
+incrementos da vari@'avel independente @var{t}, utilizados para calcular
+as curvas integrais. Se for dada s@'o uma express@~ao @var{dydx}, a
+vari@'avel @var{x} ser@'a directamente proporcional a @var{t}.
+O valor por omiss@~ao @'e  0.1.
 
 @item
-Option: @code{nsteps} defines the number of steps of length @code{tstep}
-that will be used for the independent variable, to compute an integral
-curve.
-@example
-[nsteps,500]
-@end example
-The default value is 100.
+@dfn{nsteps} estabelece o n@'umero de passos de
+comprimento @code{tstep} que se utilizar@~ao na vari@'avel independente
+para calcular a curva integral.
+O valor por omiss@~ao @'e 100.
 
 @item
-Option: @code{direction} defines the direction of the independent
-variable that will be followed to compute an integral curve. Possible
-values are @code{forward}, to make the independent variable increase
-@code{nsteps} times, with increments @code{tstep}, @code{backward}, to
-make the independent variable decrease, or @code{both} that will lead to
-an integral curve that extends @code{nsteps} forward, and @code{nsteps}
-backward. The keywords @code{right} and @code{left} can be used as
-synonyms for @code{forward} and @code{backward}.
-@example
-[direction,forward]
-@end example
-The defaul value is @code{both}.
+@dfn{direction} estabelece a
+direc@value{cedilha}@~ao da vari@'avel independente que ser@'a seguida
+para calcular uma curva integral.  Os valores poss@'{@dotless{i}} s@~ao:
+@code{forward}, para fazer que a vari@'avel independente aumente
+@code{nsteps} vezes, com incrementos @code{tstep}; @code{backward}, para
+fazer que a vari@'avel independente diminua; @code{both}, para estender
+a curva integral @code{nsteps} passos para a frente e @code{nsteps}
+passos para atr@'as.  As palavras @code{right} e @code{left} podem serem
+usadas como sin@'onimos de @code{forward} e @code{backward}.
+O valor por omiss@~ao @'e @code{both}.
 
 @item
-Option: @code{tinitial} defines the initial value of variable @var{t} used
-to compute integral curves. Since the differential equations are
-autonomous, that setting will only appear in the plot of the curves as
-functions of @var{t}. 
-@example
-[tinitial,6.7]
-@end example
-The default value is 0.
+@dfn{tinitial} estabelece o valor inicial da
+vari@'avel @var{t} utilizado para calcular curvas integrais. J@'a que as
+equa@value{cedilha}@~oes diferenciais s@~ao aut@'onomas, esta
+op@value{cedilha}@~ao s@'o aparecer@'a nos gr@'aficos das curvas em
+fun@value{cedilha}@~ao de @var{t}.
+O valor por omiss@~ao @'e 0.
 
 @item
-Option: @code{versus_t} is used to create a second plot window, with a
-plot of an integral curve, as two functions @var{x}, @var{y}, of the
-independent variable @var{t}. If @code{versus_t} is given any value
-different from 0, the second plot window will be displayed. The second
-plot window includes another menu, similar to the menu of the main plot
-window.
-@example
-[versus_t,1]
-@end example
-The default value is 0.
+@dfn{versus_t} utiliza-se para criar uma segunda
+janela gr@'afica, com o gr@'afico de uma curva integral, como duas
+fun@value{cedilha}@~oes @var{x}, @var{y}, de vari@'avel independente
+@var{t}. Se for dado a @code{versus_t} qualquer valor diferente de 0,
+mostrar-se-@'a a segunda janela gr@'afica, que inclui outro men@'u,
+similar ao da janela principal.
+O valor por omiss@~ao @'e 0.
 
 @item
-Option: @code{trajectory_at} defines the coordinates @var{xinitial} and
-@var{yinitial} for the starting point of an integral curve.
-@example
-[trajectory_at,0.1,3.2]
-@end example
-The option is empty by default.
+@dfn{trajectory_at} estabelece as coordenadas
+@var{xinitial} e @var{yinitial} para o ponto inicial da curva integral.
+N@~ao tem atribu@'{@dotless{i}}do nenhum valor por omiss@~ao.
 
 @item
-Option @code{parameters} defines a list of parameters, and their
-numerical values, used in the definition of the differential
-equations. The name and values of the parameters must be given in a
-string with a comma-separated sequence of pairs @code{name=value}.
-@example
-[parameters,"k=1.1,m=2.5"]
-@end example
+@dfn{parameters} estabelece uma lista de
+par@^ametros, junto com os seus valores num@'ericos, que s@~ao
+utilizados na defini@value{cedilha}@~ao da equa@value{cedilha}@~ao
+diferencial. Os nomes dos par@^ametros e os seus valores devem
+escrever-se em formato de cadeia de caracteres como uma sequ@^encia de
+pares @code{nome=valor} separados por v@'{@dotless{i}}rgulas.
 
 @item
-Option: @code{sliders} defines a list o parameters that will be changed
-interactively using slider buttons, and the range of variation of those
-parameters. The names and ranges of the parameters must be given in a
-string with a comma-separated sequence of elements @code{name=min:max}
-@example
-[sliders,"k=0:4,m=1:3"]
-@end example
+@dfn{sliders} estabelece uma lista de
+par@^ametros que poder@~ao ser alterados interactivamente usando barras
+com sliders, assim como os intervalos de varia@value{cedilha}@~ao dos
+ditos par@^ametros.  Os nomes dos par@^ametros e os seus intervalos
+devem escrever-se em formato de cadeia de caracteres como uma
+sequ@^encia de pares @code{nome=min:max} separados por
+v@'{@dotless{i}}rgulas.
 
 @item
-Option: @code{xfun} defines a string with semi-colon-separated sequence
-of functions of @var{x} to be displayed, on top of the direction field.
-Those functions will be parsed by Tcl and not by Maxima.
-@example 
-[xfun,"x^2;sin(x);exp(x)"]
-@end example
+@dfn{xfun} estabelece uma cadeia de caracteres
+com fun@value{cedilha}@~oes de @var{x} separadas por ponto e
+v@'{@dotless{i}}rgula para ser representadas por cima do campo de
+direc@value{cedilha}@~oes. Essas fun@value{cedilha}@~oes ser@~ao
+interpretadas por Tcl, e n@~ao por Maxima.
 
 @item
-Option: @code{xradius} is half of the length of the range of values that
-will be shown in the x direction.
-@example
-[xradius,12.5]
-@end example
-the default value is 10.
+@dfn{xradius} @'e metade do comprimento do
+intervalo de valores a representar na direc@value{cedilha}@~ao x.
+O valor por omiss@~ao @'e 10.
 
 @item
-Option: @code{yradius} is half of the length of the range of values that
-will be shown in the y direction.
-@example
-[yradius,15]
-@end example
-the default value is 10.
+@dfn{yradius} @'e metade do comprimento do
+intervalo de valores a representar na direc@value{cedilha}@~ao y.
+O valor por omiss@~ao @'e 10.
 
 @item
-Option: @code{xcenter} is the x coordinate of the point at the center of
-the plot.
-@example
-[xcenter,3.45]
-@end example
-The default value is 0.
+@dfn{xcenter} @'e a coordenada x do ponto
+situado no centro do gr@'afico.
+O valor por omiss@~ao @'e 0.
 
 @item
-Option: @code{ycenter} is the y coordinate of the point at the center of
-the plot.
-@example
-[ycenter,4.5]
-@end example
-The default value is 0.
+@dfn{ycenter} @'e a coordenada y do ponto
+situado no centro do gr@'afico.
+O valor por omiss@~ao @'e 0.
 
 @item
-Option: @code{width} defines the width of the plot window, in pixels.
-@example
-[width,800]
-@end example
-The default value is 500.
+@dfn{width} estabelece a largura da janela gr@'afica em
+pixels.
+O valor por omiss@~ao @'e 500.
 
 @item
-Option: @code{height} defines the height of the plot window, in pixels.
-@example
-[width,600]
-@end example
-The default value is 500.
+@dfn{height} estabelece a altura da janela gr@'afica em
+pixels.
+O valor por omiss@~ao @'e 500.
+
 @end itemize
 
-@b{Examples:}
+@b{Exemplos:}
 
-NOTE: Due to a bug in @code{openmath}, all commands that use it, in particular
-@code{plotdf}, must end with a semicolon and not with a dollar sign. The
-dollar sign might work in some of the graphical interfaces to Maxima, but
-to avoid problems we will use a semicolon in all the examples below.
-  
+NOTA: Em alguns casos, dependendo da interface usada para executar o
+Maxima, as fun@value{cedilha}@~oes que usam @code{openmath}, em
+particular @code{plotdf}, podem desencadear um bug se terminarem em
+ponto e v@'{@dotless{i}}rgula, e n@~ao com o s@'{@dotless{i}}mbolo de
+d@'olar. Para evitar problemas, usaremos o s@'{@dotless{i}}mbolo de
+d@'ola nos exemplos a seguir.
+
 @itemize @bullet
 @item
-To show the direction field of the differential equation @math{y' = exp(-x) + y} and the solution that goes through @math{(2, -0.1)}:
+Para mostrar o campo de direc@value{cedilha}@~oes da
+equa@value{cedilha}@~ao diferencial @math{y' = exp(-x) + y} e a
+solu@value{cedilha}@~ao que passa por @math{(2, -0.1)}:
 @example
 (%i1) load("plotdf")$
 
@@ -272,24 +264,27 @@ To show the direction field of the differential equation @math{y' = exp(-x) + y}
 @end ifnotinfo
 
 @item
-To obtain the direction field for the equation @math{diff(y,x) = x - y^2} and the solution with initial condition @math{y(-1) = 3}, we can use the command:
+Para mostrar o campo de direc@value{cedilha}@~oes da
+equa@value{cedilha}@~ao @math{diff(y,x) = x - y^2} e a
+solu@value{cedilha}@~ao com condi@value{cedilha}@~ao inicial @math{y(-1)
+= 3}, pode utilizar-se o comando:
 @example
 (%i3) plotdf(x-y^2,[xfun,"sqrt(x);-sqrt(x)"],
           [trajectory_at,-1,3], [direction,forward],
           [yradius,5],[xcenter,6]);
 @end example
-The graph also shows the function @math{y = sqrt(x)}. 
+O gr@'afico tamb@'em mostra a fun@value{cedilha}@~ao @math{y = sqrt(x)}.
 
 @ifnotinfo
 @image{../figures/plotdf2,8cm}
 @end ifnotinfo
 
 @item
-The following example shows the direction field of a harmonic oscillator,
-defined by the two equations @math{dx/dt = y} and @math{dy/dt = -k*x/m},
-and the integral curve through @math{(x,y) = (6,0)}, with a slider that
-will allow you to change the value of @math{m} interactively (@math{k} is
-fixed at 2):
+O exemplo seguinte mostra o campo de direc@value{cedilha}@~oes de um
+oscilador harm@'onico, definido pelas equa@value{cedilha}@~oes
+@math{dx/dt = y} e @math{dy/dt = -k*x/m}, e a curva integral que passa
+por @math{(x,y) = (6,0)}, com uma barra de slider que permitir@'a mudar
+o valor de @math{m} interactivamente (@math{k} permanecer@'a fixo em 2):
 @example
 (%i4) plotdf([y,-k*x/m],[parameters,"m=2,k=2"],
             [sliders,"m=1:5"], [trajectory_at,6,0]);
@@ -300,7 +295,9 @@ fixed at 2):
 @end ifnotinfo
 
 @item
-To plot the direction field of the Duffing equation, @math{m*x''+c*x'+k*x+b*x^3 = 0}, we introduce the variable @math{y=x'} and use:
+Para representar o campo de direc@value{cedilha}@~oes da
+equa@value{cedilha}@~ao de Duffing, @math{m*x''+c*x'+k*x+b*x^3 = 0},
+introduz-se a vari@'avel @math{y=x'} e faz-se:
 @example
 (%i5) plotdf([y,-(k*x + c*y + b*x^3)/m],
               [parameters,"k=-1,m=1.0,c=0,b=1"],
@@ -312,10 +309,11 @@ To plot the direction field of the Duffing equation, @math{m*x''+c*x'+k*x+b*x^3 
 @end ifnotinfo
 
 @item
-The direction field for a damped pendulum, including the
-solution for the given initial conditions, with a slider that
-can be used to change the value of the mass @math{m}, and with a plot of
-the two state variables as a function of time:
+O campo de direc@value{cedilha}@~oes dum p@^endulo amortecido, incluindo
+a solu@value{cedilha}@~ao para condi@value{cedilha}@~oes iniciales
+dadas, com uma barra de slider que pode usar-se para mudar o valor da
+masa, @math{m}, e com o gr@'afico das duas vari@'aveis de estado em
+fun@value{cedilha}@~ao do tempo:
 
 @example
 (%i6) plotdf([y,-g*sin(x)/l - b*y/m/l],
@@ -332,6 +330,4 @@ the two state variables as a function of time:
 
 @end itemize
 
-To use this function write first @code{load("plotdf")}.
 @end deffn
-

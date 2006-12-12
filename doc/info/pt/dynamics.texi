@@ -1,40 +1,47 @@
+@c english version 1.10
 @menu
-* Introduction to dynamics::
-* Definitions for dynamics::
+* Introdu@value{cedilha}@~ao a dynamics::
+* Defini@value{cedilha}@~oes para dynamics::
 @end menu
 
-@node Introduction to dynamics, Definitions for dynamics, dynamics, dynamics
-@section Introduction to dynamics
+@node Introdu@value{cedilha}@~ao a dynamics, Defini@value{cedilha}@~oes para dynamics, dynamics, dynamics
+@section Introdu@value{cedilha}@~ao a dynamics
 
-The additional package @code{dynamics} includes several
-functions to create various graphical representations of discrete
-dynamical systems and fractals, and an implementation of the Runge-Kutta
-4th-order numerical method for solving systems of differential equations.
+O pacote adicional @code{dynamics} inclui v@'arias
+fun@value{cedilha}@~oes para criar diversas
+representa@value{cedilha}@~oes gr@'aficas de sistemas din@^amicos e
+fractais, para al@'em duma implementa@value{cedilha}@~o do m@'etodo
+num@'erico de Runge-Kutta de quarta ordem, para resolver sistemas de
+equa@value{cedilha}@~oes diferenciais.
 
-To use the functions in this package you must first load it with
-@code{load("dynamics")}.
+Para usar as fun@value{cedilha}@~oes neste pacote ser@'a necess@'ario
+primeiro que tudo carreg@'a-lo com @code{load("dynamics")}; as
+fun@value{cedilha}@~oes que criam gr@'aficos precisam que o Xmaxima
+esteja instalado.
 
-@node Definitions for dynamics,  , Introduction to dynamics, dynamics
-@section Definitions for dynamics
+@node Defini@value{cedilha}@~oes para dynamics,  , Introdu@value{cedilha}@~ao a dynamics, dynamics
+@section Defini@value{cedilha}@~oes para dynamics
 
-@deffn {Function} chaosgame (@code{[[}@var{x1}, @var{y1}@code{]}...@code{[}@var{xm}, @var{ym}@code{]]}, @code{[}@var{x0}, @var{y0}@code{]}, @var{b}, @var{n}, ...options...);
+@deffn {Fun@value{cedilha}@~ao} chaosgame (@code{[[}@var{x1}, @var{y1}@code{]}...@code{[}@var{xm}, @var{ym}@code{]]}, @code{[}@var{x0}, @var{y0}@code{]}, @var{b}, @var{n}, ...op@value{cedilha}@~oes...);
 
-Implements the so-called chaos game: the initial point (@var{x0},
-@var{y0}) is plotted and then one of the @var{m} points
-@code{[}@var{x1}, @var{y1}@code{]}...@code{[}@var{xm}, @var{ym}@code{]}
-will be selected at random. The next point plotted will be in the
-segment from the previous point to the point chosen randomly, at a
-fraction @var{b} of the distance from the random point. The procedure is
-repeated @var{n} times.
+Usa o m@'etodo designado de @emph{jogo do caos}, para produzir fractais:
+desenha-se um ponto inicial (@var{x0}, @var{y0}) e logo escolhe-se
+aleatoriamente um dos @var{m} pontos @code{[}@var{x1},
+@var{y1}@code{]}...@code{[}@var{xm}, @var{ym}@code{]}. A seguir,
+desenha-se um novo ponto que estar@'a no segmento entre o @'ultimo ponto
+desenhado e o ponto que se acabou de seleccionar aleatoriamente, a uma
+dist@^ancia do ponto seleccionado que ser@'a @var{b} vezes o comprimento
+do segmento. O processo repete-se @var{n} vezes.
 
 @end deffn
 
-@deffn {Function} evolution (@var{F}, @var{y0}, @var{n},...options...);
+@deffn {Fun@value{cedilha}@~ao} evolution (@var{F}, @var{y0}, @var{n},...op@value{cedilha}@~oes...);
 
-Draws @var{n+1} points in a two-dimensional graph, where the horizontal
-coordinates of the points are the integers 0, 1, 2, ..., @var{n}, and
-the vertical coordinates are the corresponding values @var{y(n)} of the
-sequence defined by the recurrence relation
+Desenha @var{n+1} pontos num gr@'afico bidimensional (s@'erie de tempo),
+onde as coordenadas horizontais dos pontos s@~ao os n@'umeros inteiros
+0, 1, 2, ..., @var{n}, e as coordenadas verticais s@~ao os valores
+@var{y(n)} correspondentes, obtidos a partir da rela@value{cedilha}@~ao
+de recorr@^encia
 @ifnottex
 @example
         y(n+1) = F(y(n))
@@ -44,18 +51,18 @@ sequence defined by the recurrence relation
 $$y_{n+1} = F(y_n)$$
 @end tex
 
-With initial value @var{y(0)} equal to @var{y0}. @var{F} must be an
-expression that depends only on the variable @var{y} (and not on @var{n}),
-@var{y0} must be a real number and @var{n} must be a positive integer.
+Com valor inicial @var{y(0)} igual a @var{y0}. @var{F} dever@'a ser uma
+express@~ao que dependa unicamente da vari@'avel @var{y} (e n@~ao de @var{n}),
+@var{y0} dever@'a ser um n@'umero real e @var{n} um n@'umero inteiro positivo.
 
 @end deffn
 
-@deffn {Function} evolution2d (@code{[}@var{F}, @var{G}@code{]}, @code{[}@var{x0}, @var{y0}@code{]}, @var{n}, ...options...);
+@deffn {Fun@value{cedilha}@~ao} evolution2d (@code{[}@var{F}, @var{G}@code{]}, @code{[}@var{x0}, @var{y0}@code{]}, @var{n}, ...op@value{cedilha}@~oes...);
 
-Shows, in a two-dimensional plot, the first @var{n+1} points in the
-sequence of points defined by the two-dimensional discrete dynamical
-system with recurrence relations
-@ifnottex
+Mostra, num gr@'afico bidimensional, os primeiros @var{n+1} pontos da
+sucess@~ao definida a partir do sistema din@^amico discreto com
+rela@value{cedilha}@~oes de recorr@^encia:
+@ifnottex 
 @example
         x(n+1) = F(x(n), y(n))    y(n+1) = G(x(n), y(n))
 @end example
@@ -64,87 +71,169 @@ system with recurrence relations
 $$\cases{x_{n+1} = F(x_n, y_n) &\cr y_{n+1} = G(x_n, y_n)}$$
 @end tex
 
-With initial values @var{x0} and @var{y0}. @var{F} and @var{G} must be
-two expressions that depend just on @var{x} and @var{y}. 
+Com valores iniciais @var{x0} e @var{y0}. @var{F} e @var{G} dever@~ao
+ser duas express@~oes que dependam unicamente de @var{x} e @var{y}.
 
 @end deffn
 
-@deffn {Function} ifs (@code{[}@var{r1},...,@var{rm}@code{]},@code{[}@var{A1},...,@var{Am}@code{]}, @code{[[}@var{x1},@var{y1}@code{]}...@code{[}@var{xm}, @var{ym}@code{]]}, @code{[}@var{x0},@var{y0}@code{]}, @var{n}, ...options...);
+@deffn {Fun@value{cedilha}@~ao} ifs (@code{[}@var{r1},...,@var{rm}@code{]},@code{[}@var{A1},...,@var{Am}@code{]}, @code{[[}@var{x1},@var{y1}@code{]}...@code{[}@var{xm}, @var{ym}@code{]]}, @code{[}@var{x0},@var{y0}@code{]}, @var{n}, ...op@value{cedilha}@~oes...);
 
-Implements the Iterated Function System method. This method is similar
-to the method described in the function @code{chaosgame}, but instead of
-shrinking the segment from the current point to the randomly chosen
-point, the 2 components of that segment will be multiplied by the 2 by 2
-matrix @var{Ai} that corresponds to the point chosen randomly.
+Usa o m@'etodo do Sistema de Fun@value{cedilha}@~oes Iteradas (IFS, em
+ingl@^es @emph{Iterated Function System}). Esse m@'etodo @'e semelhante
+ao m@'etodo descrito na fun@value{cedilha}@~ao @code{chaosgame}, mas em
+vez de aproximar o @'ultimo ponto para ponto seleccionado
+aleatoriamente, as duas coordenadas do @'ultimo ponto multiplicam-se por
+uma matriz 2 por 2 @var{Ai} correspondente ao ponto que tenha sido
+escolhido aleatoriamente.
 
-The random choice of one of the @var{m} attractive points can be made with
-a non-uniform probability distribution defined by the weights
-@var{r1},...,@var{rm}. Those weights are given in cumulative form; for instance if there are 3 points with probabilities 0.2, 0.5 and
-0.3, the weights @var{r1}, @var{r2} and @var{r3} could be 2, 7 and 10.
-
-@end deffn
-
-@deffn {Function} orbits (@var{F}, @var{y0}, @var{n1}, @var{n2}, [@var{x}, @var{x0}, @var{xf}, @var{xstep}], ...options...);
-
-Draws the orbits diagram for a family of one-dimensional
-discrete dynamical systems, with one parameter @var{x}; that kind of
-diagram is used to study the bifurcations of a one-dimensional discrete
-system.
-
-The function @var{F(y)} defines a sequence with a starting value of
-@var{y0}, as in the case of the function @code{evolution}, but in this
-case that function will also depend on a parameter @var{x} that will
-take values in the interval from @var{x0} to @var{xf} with increments of
-@var{xstep}. Each value used for the parameter @var{x} is shown on the
-horizontal axis. The vertical axis will show the @var{n2} values
-of the sequence @var{y(n1+1)},..., @var{y(n1+n2+1)} obtained after letting
-the sequence evolve @var{n1} iterations.
+A sele@value{cedilha}@~ao aleat@'oria de um dos @var{m} pontos
+atractivos pode se realizada com uma fun@value{cedilha}@~ao de
+probabilidade n@~ao uniforme, definida com os pesos
+@var{r1},...,@var{rm}. Pesos esses que dever@~ao ser dados em forma
+acumulada; por exemplo, se quiser usar 3 pontos com probabilidades
+0.2, 0.5 e 0.3, os pesos @var{r1}, @var{r2} e @var{r3} poderiam ser 2, 7
+e 10, ou qualquer outro grupo de n@'umeros que estejam na mesma
+propor@value{cedilha}@~ao.
 
 @end deffn
 
-@deffn {Function} rk (ODE, var, initial, domain)
-@deffnx {Function} rk ([ODE1,...,ODEm], [v1,...,vm], [init1,...,initm], domain)
+@deffn {Fun@value{cedilha}@~ao} julia (@var{x}, @var{y}, ...@var{op@value{cedilha}@~oes}...)
 
-The first form solves numerically one first-order ordinary differential
-equation, and the second form solves a system of m of those equations,
-using the 4th order Runge-Kutta method. var represents the dependent
-variable. ODE must be an expression that depends only on the independent
-and dependent variables and represents the derivative of the dependent
-variable with respect to the independent variable.
+Cria um ficheiro gr@'afico com a representa@value{cedilha}@~ao do
+conjunto de Julia do n@'umero complexo (@var{x} + i @var{y}). Os
+par@^ametros @var{x} e @var{y} dever@~ao ser reais. O ficheiro @'e
+criado no direct@'orio actual ou no direct@'orio do utilizador, usando o
+formato gr@'afico XPM. O programa pode demorar v@'arios segundos a ser
+executado e quando terminar imprime uma mensagem com o nome do ficheiro
+criado.
 
-The independent variable is specified with @code{domain}, which must be a
-list of four elements such as:
+Atribuem-se diferentes cores aos pontos que n@~ao pertencem ao conjunto
+de Julia, segundo o n@'umero de itera@value{cedilha}@~oes que demorar a
+sequ@^encia que come@value{cedilha}a nesse ponto, a sair fora do
+c@'{@dotless{i}}rculo de converg@^encia com raio 2. O n@'umero m@'aximo
+de itera@value{cedilha}@~oes define-se com a op@value{cedilha}@~ao
+@var{levels}; ap@'os conclu@'{@dotless{i}}do esse n@'umero de
+itera@value{cedilha}@~oes, se a sequ@^encia estiver ainda dentro do
+c@'{@dotless{i}}rculo de converg@^encia, o ponto ser@'a colorido com a
+cor definida pela op@value{cedilha}@~ao @var{color}.
+
+Todas as cores usadas para os pontos que n@~ao pertencerem ao conjunto
+de Julia ter@~ao os mesmos valores de satura@value{cedilha}@~ao
+(@var{saturation}) e valor (@var{value}), mas com diferentes @^angulos
+de tonalidade, distribu@'{@dotless{i}}dos uniformemente no intervalo
+entre @var{hue} e (@var{hue} + @var{huerange}).
+
+Podem ser dadas @`a fun@value{cedilha}@~ao uma sequ@^encia de
+op@value{cedilha}@~oes. A lista de poss@'{@dotless{i}}veis
+op@value{cedilha}@~oes aparece numa sec@value{cedilha}@~ao mais para a
+frente.
+
+@end deffn
+
+@deffn {Fun@value{cedilha}@~ao} mandelbrot (@var{options})
+
+Cria um ficheiro gr@'afico com a representa@value{cedilha}@~ao do
+conjunto de Mandelbrot. O ficheiro @'e criado no direct@'orio actual ou
+no direct@'orio do utilizador, usando o formato gr@'afico XPM. O
+programa pode demorar v@'arios segundos a ser executado e quando
+terminar imprime uma mensagem com o nome do ficheiro criado.
+
+Atribuem-se diferentes cores aos pontos que n@~ao pertencem ao conjunto
+de Mandelbrot, segundo o n@'umero de itera@value{cedilha}@~oes que
+demorar a sequ@^encia gerada por esse ponto a sair fora do
+c@'{@dotless{i}}rculo de converg@^encia com raio 2. O n@'umero m@'aximo
+de itera@value{cedilha}@~oes define-se com a op@value{cedilha}@~ao
+@var{levels}; ap@'os conclu@'{@dotless{i}}do esse n@'umero de
+itera@value{cedilha}@~oes, se a sequ@^encia estiver ainda dentro do
+c@'{@dotless{i}}rculo de converg@^encia, o ponto ser@'a colorido com a
+cor definida pela op@value{cedilha}@~ao @var{color}.
+
+Todas as cores usadas para os pontos que n@~ao pertencerem ao conjunto
+de Mandlebrot ter@~ao os mesmos valores de satura@value{cedilha}@~ao
+(@var{saturation}) e valor (@var{value}), mas com diferentes @^angulos
+de tonalidade, distribu@'{@dotless{i}}dos uniformemente no intervalo
+entre @var{hue} e (@var{hue} + @var{huerange}).
+
+Podem ser dadas @`a fun@value{cedilha}@~ao uma sequ@^encia de
+op@value{cedilha}@~oes. A lista de poss@'{@dotless{i}}veis
+op@value{cedilha}@~oes aparece numa sec@value{cedilha}@~ao mais para a
+frente.
+
+@end deffn
+
+@deffn {Fun@value{cedilha}@~ao} orbits (@var{F}, @var{y0}, @var{n1}, @var{n2}, [@var{x}, @var{x0}, @var{xf}, @var{xstep}], ...op@value{cedilha}@~oes...);
+
+Desenha o diagrama de @'orbitas duma fam@'{@dotless{i}}lia de sistemas
+din@^amicos discretos unidimensionais, com um par@^ametro @var{x}; esse
+tipo de diagrama usa-se para mostrar as bifurca@value{cedilha}@~oes dum
+sistema discreto unidimensional.
+
+A fun@value{cedilha}@~ao @var{F(y)} define uma sequ@^encia que
+come@value{cedilha}a com um valor inicial @var{y0}, igual que no caso da
+fun@value{cedilha}@~ao @code{evolution}, mas neste caso a
+fun@value{cedilha}@~ao tamb@'em depender@'a do par@^ametro @var{x}, o
+qual ter@'a valores compreendidos no intervalo de @var{x0} a @var{xf},
+com incrementos @var{xstep}. Cada valor usado para o par@^ametro @var{x}
+apresenta-se no eixo horizontal. No eixo vertical apresentam-se @var{n2}
+valores da sucess@~ao @var{y(n1+1)},..., @var{y(n1+n2+1)}, obtidos
+ap@'os deix@'a-la evoluir durante @var{n1} itera@value{cedilha}@~oes
+iniciais.
+
+@end deffn
+
+@deffn {Fun@value{cedilha}@~ao} rk (EDO, var, inicial, dominio)
+@deffnx {Fun@value{cedilha}@~ao} rk ([EDO1,...,EDOm], [v1,...,vm], [inic1,...,inicm], dom@'{@dotless{i}}nio)
+
+A primeira forma usa-se para resolver numericamente uma
+equa@value{cedilha}@~ao diferencial ordin@'aria de primeira ordem (EDO),
+e a segunda forma resolve numericamente um sistema de @var{m} dessas
+equa@value{cedilha}@~oes, usando o m@'etodo de Runge-Kutta de quarta
+ordem. @var{var} representa a vari@'avel dependente.  EDO dever@'a ser
+uma express@~ao que dependa unicamente das vari@'aveis independente e
+dependente, e define a derivada da vari@'avel dependente em
+fun@value{cedilha}@~ao da vari@'avel independente.
+
+A vari@'avel independente representa-se com @var{dom@'{@dotless{i}}nio},
+que dever@'a ser uma lista com quatro elementos, como, por exemplo:
 @example
 [t, 0, 10, 0.1]
 @end example
-the first element of the list identifies the independent variable, the
-second and third elements are the initial and final values for that
-variable, and the last element sets the increments that should be used
-within that interval.
+o primeiro elemento da lista identifica a vari@'avel independente, os
+segundo e terceiro elementos s@~ao os valores inicial e final para essa
+vari@'avel, e o @'ultimo elemento d@'a o valor dos incrementos que
+dever@~ao ser usados dentro desse intervalo.
 
-If @var{m} equations are going to be solved, there should be @var{m}
-dependent variables @var{v1}, @var{v2}, ..., @var{vm}. The initial values
-for those variables will be @var{init1}, @var{init2}, ..., @var{initm}.
-There will still be just one independent variable defined by @code{domain},
-as in the previous case. @var{ODE1}, ..., @var{ODEm}
-are the expressions for the derivatives of each dependent variable in
-terms of the independent variable. The only variables that may appear in
-those expressions are the independent variable and any of the dependent
-variables.
+Se se estiverem a resolver @var{m} equa@value{cedilha}@~oes, dever@'a
+haver @var{m} vari@'aveis dependentes @var{v1}, @var{v2}, ...,
+@var{vm}. Os valores iniciais para essas vari@'aveis ser@~ao
+@var{inic1}, @var{inic2}, ..., @var{inicm}. Continuar@'a existindo
+apenas uma vari@'avel independente, definida pela lista @var{domain},
+tal como no caso anterior. @var{EDO1}, ..., @var{EDOm} s@~ao as
+express@~oes que definem as derivadas de cada uma das vari@'aveis
+dependentes, em fun@value{cedilha}@~ao da vari@'avel independente. As
+@'unicas vari@'aveis que podem aparecer em cada uma dessas express@~oes
+s@~ao a vari@'avel independente e qualquer uma das vari@'aveis
+dependentes. @'E importante que as derivadas @var{EDO1}, ..., @var{EDOm}
+sejam colocadas na lista na mesma ordem em que forem agrupadas as
+vari@'aveis dependentes; por exemplo, o terceiro elemento da lista
+ser@'a interpretado como a derivada da terceira vari@'avel dependente.
 
-The result will be a list of lists with @var{m}+1 elements. Those @var{m}+1
-elements will be the value of the independent variable, followed by the
-values of the dependent variables corresponding to that point in the interval
-of integration. If at some point one of the variables becomes too large,
-the list will stop there. Otherwise, the list will extend until the last
-value of the independent variable specified by @code{domain}.
+O programa tenta integrar as equa@value{cedilha}@~oes desde o valor
+inicial da vari@'avel independente, at@'e o valor final, usando
+incrementos fixos. Se em algum passo uma das vari@'aveis dependentes
+atingir um valor absoluto muito elevado, a integra@value{cedilha}@~ao
+ser@'a interrompida nesse ponto. O resultado ser@'a uma lista com um
+n@'umero de elementos igual ao n@'umero de itera@value{cedilha}@~oes
+realizadas. Cada elemento na lista de resultados @'e tamb@'em uma lista
+com @var{m}+1 elementos: o valor da vari@'avel independente, seguido dos
+valores das vari@'aveis dependentes nesse ponto.
 
 @end deffn
 
-@deffn {Function} staircase (@var{F}, @var{y0}, @var{n}, ...options...);
+@deffn {Fun@value{cedilha}@~ao} staircase (@var{F}, @var{y0}, @var{n}, ...op@value{cedilha}@~oes...);
 
-Draws a staircase diagram for the sequence defined by the recurrence
-relation
+Desenha um diagrama de degraus (ou diagrama de teia de aranha) para a
+sucess@~ao definida pela equa@value{cedilha}@~ao de recorr@^encia
 @ifnottex
 @example
         y(n+1) = F(y(n))
@@ -154,84 +243,145 @@ relation
 $$y_{n+1} = F(y_n)$$
 @end tex
 
-The interpretation and allowed values of the input parameters is the
-same as for the function @code{evolution}. A staircase diagram consists
-of a plot of the function @var{F(y)}, together with the line
-@var{G(y)} @code{=} @var{y}. A vertical segment is drawn from the
-point (@var{y0}, @var{y0}) on that line until the point where it
-intersects the function @var{F}. From that point a horizontal segment is
-drawn until it reaches the point (@var{y1}, @var{y1}) on the line, and
-the procedure is repeated @var{n} times until the point (@var{yn}, @var{yn})
-is reached.
+A interpreta@value{cedilha}@~ao e valores permitidos dos par@^ametros de
+entrada @'e igual que para a fun@value{cedilha}@~ao @code{evolution}. Um
+diagrama de degraus consiste num gr@'afico da fun@value{cedilha}@~ao
+@var{F(y)}, junto com a recta @var{G(y)} @code{=}
+@var{y}. Come@value{cedilha}a-se por desenhar um segmento vertical desde
+o ponto (@var{y0}, @var{y0}) na recta, at@'e o ponto de
+intersec@value{cedilha}@~ao com a fun@value{cedilha}@~ao @var{F}. A
+seguir, desde esse ponto desenha-se um segmento horizontal at@'e o ponto
+de intersec@value{cedilha}@~ao com a recta, (@var{y1}, @var{y1}); o
+processo repete-se @var{n} vezes at@'e alcan@value{cedilha}ar o ponto
+(@var{yn}, @var{yn}).
 
 @end deffn
 
-@b{Options}
+@b{Op@value{cedilha}@~oes}
 
-The options accepted by the functions that plot graphs are:
+Cada op@value{cedilha}@~ao @'e uma lista com dois ou mais elementos. O
+primeiro elemento na lista @'e o nome da op@value{cedilha}@~ao e os
+restantes s@~ao os argumentos para essa op@value{cedilha}@~ao.
+
+As op@value{cedilha}@~oes aceites pelas fun@value{cedilha}@~oes
+evolution, evolution2, staircase, orbits, ifs e chaosgame s@~ao as
+seguintes:
 
 @itemize @bullet
 @item
-Option: @code{domain} sets the minimum and maximum values for the plot of the
-function  @var{F} shown by @code{staircase}.
-@example
-[domain, -2, 3.5]
-@end example
+@dfn{domain} especifica os valores m@'{@dotless{i}}nimo y m@'aximo da
+vari@'avel independente para o gr@'afico da fun@value{cedilha}@~ao @var{F}
+representada por @code{staircase}.
 
 @item
-Option: @code{pointsize} defines the radius of each point plotted, in units of
-points. 
-@example
-[pointsize, 1.5]
-@end example
-The default value is 1.
+@dfn{pointsize} define o raio de cada ponto desenhado, em unidades de
+pontos. O valor por omiss@~ao @'e 1.
 
 @item
-Option: @code{xaxislabel} is a label to put on the horizontal axis.
-@example
-[xaxislabel, "time"]
-@end example
+@dfn{xaxislabel} @'e o nome que ser@'a dado ao eixo horizontal.
 
 @item
-Option: @code{xcenter} is the x coordinate of the point at the center of
-the plot. This option is not used by the function @code{orbits}.
-@example
-[xcenter,3.45]
-@end example
+@dfn{xcenter} @'e a coordenada x do ponto que dever@'a aparecer no
+centro do gr@'afico. Esta op@value{cedilha}@~ao n@~ao @'e usada pela
+fun@value{cedilha}@~ao @code{orbits}.
 
 @item
-Option: @code{xradius} is half of the length of the range of values that
-will be shown in the x direction. This option is not used by the
-function @code{orbits}.
-@example
-[xradius,12.5]
-@end example
+@dfn{xradius} @'e metade do comprimento do intervalo de valores de x que
+ser@~ao representados. Esta op@value{cedilha}@~ao n@~ao @'e usada pela
+fun@value{cedilha}@~ao @code{orbits}.
 
 @item
-Option: @code{yaxislabel} is a label to put on the vertical axis.
-@example
-[yaxislabel, "temperature"]
-@end example
+@dfn{yaxislabel} @'e o nome que ser@'a dado ao eixo vertical.
 
 @item
-Option: @code{ycenter} is the y coordinate of the point at the center of
-the plot.
-@example
-[ycenter,4.5]
-@end example
+@dfn{ycenter} @'e a coordenada y do ponto que dever@'a aparecer no
+centro do gr@'afico.
 
 @item
-Option: @code{yradius} is half of the length of the range of values that
-will be shown in the y direction.
-@example
-[yradius,15]
-@end example
+@dfn{yradius} @'e metade do comprimento do intervalo de valores de y que
+ser@~ao representados.
 
 @end itemize
 
-@b{Examples}
+As op@value{cedilha}@~oes aceites pelos programas julia e mandelbrot
+s@~ao as seguintes:
 
-Graphical representation and staircase diagram for the sequence:
+@itemize @bullet
+@item
+@dfn{size} admite um ou dois argumentos. Se aparecer um s@'o argumento,
+a largura e a altura do ficheiro gr@'afico criado ser@~ao iguais a esse
+valor em pixels. Se forem dados dois argumentos, esses dois valores ser@~ao
+usados para a largura e a altura. O valor por omiss@~ao @'e 400 pixels
+para a largura e para a altura. Se os dois valores n@~ao forem iguais,
+o conjunto aparecer@'a alongado.
+
+@item
+@dfn{levels} define o n@'umero m@'aximo de itera@value{cedilha}@~oes, que @'e
+tamb@'em o n@'umero de cores usado para os pontos que n@~o pertencem
+ao conjunto. O valor por omiss@~ao @'e 12; valores mais elevados implicam
+tempos de processamento mais elevados.
+
+@item
+@dfn{huerange} define o intervalo de @^angulos usados para a tonalidade
+dos pontos que n@~o perten@value{cedilha}am ao conjunto. O valor por
+omiss@~ao @'e 360, que faz com que as cores usadas abranjam todas as
+tonalidades. Valores superiores a 360 implicam repeti@value{cedilha}@~ao de
+algumas tonalidades, e pode usar-se valores negativos para
+que o @^angulo de tonalidade seja menor @`a medida que o n@'umero de
+itera@value{cedilha}@~oes aumentar.
+
+@item
+@dfn{hue} define a tonalidade, em graus, da primeira cor usada para
+representar os pontos que n@~ao pertencem ao conjunto.  O seu valor por
+omiss@~ao @'e 300 graus, que corresponde @`a cor magenta; a cor
+correspondente a outros valores padr@~ao @'e vermelho 0, laranja 45,
+amarelo 60, verde 120, azul ciano 180 e azul 240. Consulte tamb@'em a
+op@value{cedilha}@~ao @var{huerange}.
+
+@item
+@dfn{saturation} define o n@'ivel de satura@value{cedilha}@~ao das cores
+usadas para os pontos que n@~ao perten@value{cedilha}am ao
+conjunto. Dever@'a ser um valor entre 0 e 1. O valor por omiss@~ao @'e
+0.46.
+
+@item
+@dfn{value} define o valor das cores usadas para pontos que n@~ao
+perten@value{cedilha}am ao conjunto. Dever@'a ser um n@'umero entre 0 e
+1; quanto maior for, mais intensas ser@~ao as cores. O seu valor por
+omiss@~ao @'e 0.96.
+
+@item
+@dfn{color} dever@'a ter tr@^es par@^ametros que definem a tonalidade,
+satura@value{cedilha}@~ao e valor da cor que ser@'a usada para os pontos
+do conjunto. O valor por omiss@~ao @'e 0 para os tr@^es par@^ametros,
+que corresponde @`a cor preta. Veja a explica@value{cedilha}@~ao sobre
+os valores aceites nas op@value{cedilha}@~oes @var{hue},
+@var{saturation} e @var{value}.
+
+@item
+@dfn{center} deber@'a ter dois par@^ametros reais que definem as
+coordenadas, no plano complexo, do ponto no centro da regi@~ao
+representada. O valor por omiss@~ao @'e 0 para as duas coordenadas (a
+origem).
+
+@item
+@dfn{radius} @'e o raio do maior c@'{@dotless{i}}rculo que
+cabe dentro da regi@~ao quadrada que ser@'a representada. O valor
+por omiss@~ao @'e 2.
+
+@item
+@dfn{filename} d@'a o nome do ficheiro onde ser@'a armazenado o
+gr@'afico produzido. A esse nome ser@'a acrescentada a
+termina@value{cedilha}@~ao .xpm. Se o ficheiro j@'a existir, ser@'a
+substitu@'{@dotless{i}}do pelo ficheiro produzido pela
+fun@value{cedilha}@~ao. O valor por omiss@~ao @'e julia para o conjunto
+de Julia e mandelbrot para o conjunto de Mandelbrot.
+
+@end itemize
+
+@b{Exemplos}
+
+Representa@value{cedilha}@~ao gr@'afica e diagrama de degraus da sequ@^encia:
 2, cos(2), cos(cos(2)),...
 
 @example
@@ -245,11 +395,13 @@ Graphical representation and staircase diagram for the sequence:
 @image{../figures/dynamics2,8cm}
 @end ifnotinfo
 
-If your system is slow, you'll have to reduce the number of iterations in
-the following examples. And the pointsize that gives the best results
-depends on the monitor and the resolution being used.
+Se o seu processador for lento, ter@'a que reduzir o n@'umero de
+itera@value{cedilha}@~oes usado nos exemplos seguintes. E o valor de
+@var{pointsize} que d@'a os melhores resultados depender@'a do monitor e
+da resolu@value{cedilha}@~ao usada. Ter@'a que experimentar com
+diferentes valores.
 
-Orbits diagram for the quadratic map
+Diagrama de @'orbitas para o mapa quadr@'atico
 @ifnottex
 @example
         y(n+1) = x + y(n)^2
@@ -267,7 +419,8 @@ $$y_{n+1} = x + y_n^2$$
 @image{../figures/dynamics3,8cm}
 @end ifnotinfo
 
-To enlarge the region around the lower bifurcation near x @code{=} -1.25 use:
+Para ampliar a regi@~ao @`a volta da bifurca@value{cedilha}@~ao na parte de
+baixo, perto de x @code{=} -1.25, use o comando:
 @example
 (%i5) orbits(x+y^2, 0, 100, 400, [x,-1,-1.53,-0.001], [pointsize,0.9],
              [ycenter,-1.2], [yradius,0.4]);
@@ -277,7 +430,8 @@ To enlarge the region around the lower bifurcation near x @code{=} -1.25 use:
 @image{../figures/dynamics4,8cm}
 @end ifnotinfo
 
-Evolution of a two-dimensional system that leads to a fractal:
+Evolu@value{cedilha}@~ao dum sistema em duas dimens@~oes, que conduz a
+um fractal:
 
 @example
 (%i6) f: 0.6*x*(1+2*x)+0.8*y*(x-1)-y^2-0.9$
@@ -289,7 +443,7 @@ Evolution of a two-dimensional system that leads to a fractal:
 @image{../figures/dynamics5,8cm}
 @end ifnotinfo
 
-And an enlargement of a small region in that fractal:
+E uma amplia@value{cedilha}@~ao de uma pequena regi@~ao no fractal:
 
 @example
 (%i9) evolution2d([f,g],[-0.5,0],300000,[pointsize,0.7], [xcenter,-0.7],
@@ -300,7 +454,7 @@ And an enlargement of a small region in that fractal:
 @image{../figures/dynamics6,8cm}
 @end ifnotinfo
 
-A plot of Sierpinsky's triangle, obtained with the chaos game:
+Um gr@'afico do tri@^angulo de Sierpinsky, obtido com o jogo do caos:
 
 @example
 (%i9) chaosgame([[0, 0], [1, 0], [0.5, sqrt(3)/2]], [0.1, 0.1], 1/2,
@@ -311,7 +465,8 @@ A plot of Sierpinsky's triangle, obtained with the chaos game:
 @image{../figures/dynamics7,8cm}
 @end ifnotinfo
 
-Barnsley's fern, obtained with an Iterated Function System:
+O feto de Barnsley, obtido com o Sistema de Fun@value{cedilha}@~oes
+Iteradas:
 
 @example
 (%i10) a1: matrix([0.85,0.04],[-0.04,0.85])$
@@ -330,7 +485,34 @@ Barnsley's fern, obtained with an Iterated Function System:
 @image{../figures/dynamics8,8cm}
 @end ifnotinfo
 
-To solve numerically the differential equation
+Para criar um ficheiro @emph{dinamica9.xpm} com a
+representa@value{cedilha}@~ao gr@'afica do conjunto de Mandelbrot, com
+12 colores, use o comando:
+
+@example
+mandelbrot([filename,"dinamica9"])$
+@end example
+
+@ifnotinfo
+@image{../figures/dynamics9,8cm}
+@end ifnotinfo
+
+e o conjunto de Julia do n@'umero (-0.55 + i 0.6) pode ser obtido com:
+@example
+julia(-0.55, 0.6, [levels, 36], [center, 0, 0.6], [radius, 0.3],
+      [hue, 240], [huerange, -180], [filename, "dinamica10"])$
+@end example
+
+o gr@'afico guardar-se-@'a no ficheiro @emph{dinamica10.xpm} e
+apresentar@'a a regi@~o desde -0.3 at@'e 0.3 na direc@value{cedilha}@~ao x, e desde
+0.3 at@'e 0.9 na direc@value{cedilha}@~ao y. Ser@~ao usadas 36 cores, comen@value{cedilha}ando
+com azul e terminando com amarelo.
+
+@ifnotinfo
+@image{../figures/dynamics10,8cm}
+@end ifnotinfo
+
+Para resolver numericamente a equa@value{cedilha}@~ao diferencial
 
 @ifnottex
 @example
@@ -341,16 +523,16 @@ To solve numerically the differential equation
 $${{dx}\over{dt}} = t - x^2$$ 
 @end tex
 
-With initial value x(t=0) = 1, in the interval of t from 0 to 8 and with
-increments of 0.1 for t, use:
+Com valor inicial x(t=0) = 1, no intervalo de t desde 0 at@'e 8, e
+com incrementos de 0.1, usa-se:
 
 @example
-(%i20) results: rk(t-x^2,x,1,[t,0,8,0.1])$
+(%i20) resultados: rk(t-x^2,x,1,[t,0,8,0.1])$
 @end example
 
-the results will be saved in the list results.
+os resultados ficar@~ao armazenados na lista resultados.
 
-To solve numerically the system:
+Para resolver numericamente o sistema:
 
 @ifnottex
 @example
@@ -361,7 +543,7 @@ To solve numerically the system:
 $$\cases{{\displaystyle{dx}\over\displaystyle{dt}} = 4-x^2-4y^2 &\cr &\cr {\displaystyle{dy}\over\displaystyle{dt}} = y^2-x^2+1}$$
 @end tex
 
-for t between 0 and 4, and with values of -1.25 and 0.75 for x and y at t=0
+para t entre 0 e 4, com valores iniciais -1.25 e 0.75 para (x, y) em t=0:
 
 @example
 (%i21) sol: rk([4-x^2-4*y^2,y^2-x^2+1],[x,y],[-1.25,0.75],[t,0,4,0.02])$
