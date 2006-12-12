@@ -1,4 +1,4 @@
-@c english version 1.3
+@c english version 1.4
 @menu
 * Introducci@'on a plotdf::
 * Definiciones para plotdf::
@@ -60,7 +60,7 @@ ecuaci@'on en un sistema aut@'onomo con dos ecuaciones.
 @deffn {Function} plotdf (@var{dydx},...opciones...)
 @deffnx {Function} plotdf (@code{[}@var{dxdt},@var{dydt}@code{]},...opciones...)
 
-Dibuja un campo de direcciones en dos dimensiones @var{x} and @var{y}.
+Dibuja un campo de direcciones en dos dimensiones @var{x} y @var{y}.
 
 @var{dydx}, @var{dxdt} y @var{dydt} son expresiones que dependen de @var{x} y
 @var{y}. Adem@'as de esas dos variables, las dos expresiones pueden depender de
@@ -69,52 +69,53 @@ de la opci@'on @code{parameters} (la sintaxis de esa opci@'on se explica mas al
 frente), o con un rango de posibles valores definidos con la opci@'on
 @var{sliders}.
 
-Varias otras opciones se pueden incluir dentro del comando, o en el men@'u que
-aparece cuando se hace click en la esquina superior izquierda de la ventana del
-gr@'afico. Haciendo click en un punto del gr@'afico se puede hacer que sea
-dibujada la curva integral que pasa por ese punto; lo mismo puede ser hecho
-dando las coordenadas del punto con la opci@'on @code{trajectory_at} dentro del
-comando plotdf. La direcci@'on de integraci@'on se puede controlar con la
-opci@'on @code{direction}, que acepta valores de "forward", "backward" o
-"both". El n@'umero de pasos realizado en la integraci@'on num@'erica se
-controla con la opci@'on @code{nsteps} y el incremento del tiempo en cada paso
-con la opci@'on @code{tstep}. Se usa el m@'etodo de Adams Moulton para hacer la
-integraci@'on num@'erica; tambi@'en es posible cambiar para el m@'etodo de
-Runge-Kutta de cuarto orden con ajuste de pasos.
+Varias otras opciones se pueden incluir dentro del comando, o
+seleccionadas en el men@'u.  Haciendo click en un punto del gr@'afico se
+puede hacer que sea dibujada la curva integral que pasa por ese punto;
+lo mismo puede ser hecho dando las coordenadas del punto con la opci@'on
+@code{trajectory_at} dentro del comando plotdf. La direcci@'on de
+integraci@'on se puede controlar con la opci@'on @code{direction}, que
+acepta valores de @emph{forward}, @emph{backward} ou @emph{both}. El
+n@'umero de pasos realizado en la integraci@'on num@'erica se controla
+con la opci@'on @code{nsteps} y el incremento del tiempo en cada paso
+con la opci@'on @code{tstep}. Se usa el m@'etodo de Adams Moulton para
+hacer la integraci@'on num@'erica; tambi@'en es posible cambiar para el
+m@'etodo de Runge-Kutta de cuarto orden con ajuste de pasos.
 
 @b{Men@'u de la ventana del gr@'afico:}
 
-El men@'u de la ventana gr@'afica dispone de las siguientes opciones: "Zoom",
-que permite cambiar el comportamiento del rat@'on, de manera que har@'a
-posible el hacer zoom en la regi@'on del gr@'afico haciendo clic con el
-bot@'on izquierdo. Cada clic agranda la imagen manteniendo como centro de
-la misma el punto sobre el cual se ha hecho clic. Manteniendo pulsada la
-tecla SHIFT mientras se hace clic, retrocede al tama@~no anterior. Para
-reanudar el c@'alculo de las trayectorias cuando se hace clic, selecci@'onese
-la opci@'on "Integrate" del men@'u.
+El men@'u de la ventana gr@'afica dispone de las siguientes opciones:
+@emph{Zoom}, que permite cambiar el comportamiento del rat@'on, de
+manera que har@'a posible el hacer zoom en la regi@'on del gr@'afico
+haciendo clic con el bot@'on izquierdo. Cada clic agranda la imagen
+manteniendo como centro de la misma el punto sobre el cual se ha hecho
+clic. Manteniendo pulsada la tecla @key{Shift} mientras se hace clic,
+retrocede al tama@~no anterior. Para reanudar el c@'alculo de las
+trayectorias cuando se hace clic, seleccine la opci@'on @emph{Integrate}
+del men@'u.
 
-La opci@'on "Config" del men@'u se puede utilizar para cambiar la(s)
-EDO(S) y algunos otros ajustes. Despu@'es de hacer los cambios, se debe
-utilizar la opci@'on "Replot" para activar los nuevos ajustes.
-Si en el campo "Trajectory at" del men@'u de di@'alogo de "Config" se 
-introducen un par de coordenadas y luego se pulsa la tecla "retorno",
-se mostrar@'a una nueva curva integral, adem@'as de las ya dibujadas.
-Si se selecciona la opci@'on "Replot", s@'olo se mostrar@'a la
-@'ultima curva integral seleccionada.
+La opci@'on @emph{Config} del men@'u se puede utilizar para cambiar
+la(s) EDO(S) y algunos otros ajustes. Despu@'es de hacer los cambios, se
+debe utilizar la opci@'on @emph{Replot} para activar los nuevos ajustes.
+Si en el campo @emph{Trajectory at} del men@'u de di@'alogo de
+@emph{Config} se introducen un par de coordenadas y luego se pulsa la
+tecla @key{retorno}, se mostrar@'a una nueva curva integral, adem@'as de
+las ya dibujadas.  Si se selecciona la opci@'on @emph{Replot}, s@'olo se
+mostrar@'a la @'ultima curva integral seleccionada.
 
-Manteniendo pulsado el bot@'on derecho del rat@'on mientras se mueve
-el cursor, se puede arrastrar el gr@'afico horizontal y verticalmente.
+Manteniendo pulsado el bot@'on derecho del rat@'on mientras se mueve el
+cursor, se puede arrastrar el gr@'afico horizontal y verticalmente.
 Otros par@'ametros, como pueden ser el n@'umero de pasos, el valor
 inicial de @var{t}, las coordenadas del centro y el radio, pueden
-cambiarse en el submen@'u de la opci@'on "Config".
+cambiarse en el submen@'u de la opci@'on @emph{Config}.
 
-Con la opci@'on "Save", se puede obtener una copia del gr@'afico en una
-impresora Postscript o guardarlo en un fichero Postscript. Para 
+Con la opci@'on @emph{Save}, se puede obtener una copia del gr@'afico en
+una impresora Postscript o guardarlo en un fichero Postscript. Para
 optar entre la impresi@'on o guardar en fichero, se debe seleccionar
-"Print Options" en la ventana de di@'alogo de "Config". Una vez cubiertos
-los campos de la ventana de di@'alogo de "Save", ser@'a necesario
-seleccionar la opci@'on "Save" del primer men@'u para crear el fichero
-o imprimir el gr@'afico.
+@emph{Print Options} en la ventana de di@'alogo de @emph{Config}. Una
+vez cubiertos los campos de la ventana de di@'alogo de @emph{Save},
+ser@'a necesario seleccionar la opci@'on @emph{Save} del primer men@'u
+para crear el fichero o imprimir el gr@'afico.
 
 @b{Opciones gr@'aficas:}
 
@@ -127,27 +128,20 @@ La funci@'on @code{plotdf} reconoce las siguientes opciones:
 
 @itemize @bullet
 @item
-Opci@'on: @code{tstep} establece la amplitud de los incrementos en la
+@dfn{tstep} establece la amplitud de los incrementos en la
 variable independiente @var{t}, utilizados para calcular la curva
-integral. Si se s@'olo se aporta una expresi@'on @var{dydx}, la 
-variable @var{x} ser@'a directamente proporcional a 
-@var{t}: @code{x - xinitial = t - tinitial}.
-@example
-[tstep,0.01]
-@end example
+integral. Si se aporta s@'olo una expresi@'on @var{dydx}, la variable
+@var{x} ser@'a directamente proporcional a @var{t}.
 El valor por defecto es 0.1.
 
 @item
-Opci@'on: @code{nsteps} establece el n@'umero de pasos de longitud
+@dfn{nsteps} establece el n@'umero de pasos de longitud
 @code{tstep} que se utilizar@'an en la variable independiente para
 calcular la curva integral.
-@example
-[nsteps,500]
-@end example
 El valor por defecto es 100.
 
 @item
-Opci@'on: @code{direction} establece la direcci@'on de la variable
+@dfn{direction} establece la direcci@'on de la variable
 independiente que ser@'a seguida para calcular una curva integral.
 Valores posibles son: @code{forward}, para hacer que la variable
 independiente aumente @code{nsteps} veces, con incrementos @code{tstep};
@@ -156,129 +150,90 @@ disminuya; @code{both}, para extender la curva integral @code{nsteps}
 pasos hacia adelante y @code{nsteps} pasos hacia atr@'as.
 Las palabras @code{right} y @code{left} se pueden utilizar como
 sin@'onimos de @code{forward} y @code{backward}.
-@example
-[direction,forward]
-@end example
 El valor por defecto es @code{both}.
 
 @item
-Opci@'on: @code{tinitial} establece el valor inicial de la variable
+@dfn{tinitial} establece el valor inicial de la variable
 @var{t} utilizado para calcular curvas integrales. Puesto que las
 ecuaciones diferenciales son aut@'onomas, esta opci@'on s@'olo
 aparecer@'a en los gr@'aficos de las curvas como funciones de @var{t}.
-@example
-[tinitial,6.7]
-@end example
 El valor por defecto es 0.
 
 @item
-Opci@'on: @code{versus_t} se utiliza para crear una segunda ventana
+@dfn{versus_t} se utiliza para crear una segunda ventana
 gr@'afica, con el gr@'afico de una curva integral, como dos funciones
 @var{x}, @var{y}, de variable independiente @var{t}. Si se le da a
 @code{versus_t} cualquier valor diferente de 0, se mostrar@'a la
 segunda ventana gr@'afica, la cual incluye otro men@'u, similar
 al de la ventana principal.
-@example
-[versus_t,1]
-@end example
 El valor por defecto es 0.
 
 @item
-Opci@'on: @code{trajectory_at} establece las coordenadas @var{xinitial}
+@dfn{trajectory_at} establece las coordenadas @var{xinitial}
 y @var{yinitial} para el extremo inicial de la curva integral.
-@example
-[trajectory_at,0.1,3.2]
-@end example
 No tiene asignado valor por defecto.
 
 @item
-Opci@'on: @code{parameters} establece una lista de par@'ametros,
+@dfn{parameters} establece una lista de par@'ametros,
 junto con sus valores num@'ericos, que son utilizados en la
 definici@'on de la ecuaci@'on diferencial. Los nombres de los
 par@'ametros y sus valores deben escribirse en formato de cadena
 de caracteres como una secuencia de pares @code{nombre=valor}
 separados por comas.
-@example
-[parameters,"k=1.1,m=2.5"]
-@end example
 
 @item
-Opci@'on: @code{sliders} establece una lista de par@'ametros que
+@dfn{sliders} establece una lista de par@'ametros que
 se cambiar@'an interactivamente utilizando barras de deslizamiento,
 as@'{@dotless{i}} como los rangos de variaci@'on de dichos par@'ametros.
 Los nombres de los par@'ametros y sus rangos deben escribirse en formato
 de cadena de caracteres como una secuencia de pares @code{nombre=min:max}
 separados por comas.
-@example
-[sliders,"k=0:4,m=1:3"]
-@end example
 
 @item
-Opci@'on: @code{xfun} establece una cadena de caracteres con funciones
+@dfn{xfun} establece una cadena de caracteres con funciones
 de @var{x} separadas por puntos y comas para ser representadas por
 encima del campo de direcciones. Estas funciones ser@'an interpretadas
 por Tcl, no por Maxima.
-@example 
-[xfun,"x^2;sin(x);exp(x)"]
-@end example
 
 @item
-Opci@'on: @code{xradius} es la mitad de la longitud del rango de valores
+@dfn{xradius} es la mitad de la longitud del rango de valores
 a representar en la direcci@'on x.
-@example
-[xradius,12.5]
-@end example
 El valor por defecto es 10.
 
 @item
-Opci@'on: @code{yradius} es la mitad de la longitud del rango de valores
+@dfn{yradius} es la mitad de la longitud del rango de valores
 a representar en la direcci@'on y.
-@example
-[yradius,15]
-@end example
 El valor por defecto es 10.
 
 @item
-Opci@'on: @code{xcenter} es la coordenada x del punto situado en el centro
+@dfn{xcenter} es la coordenada x del punto situado en el centro
 del gr@'afico.
-@example
-[xcenter,3.45]
-@end example
 El valor por defecto es 0.
 
 @item
-Opci@'on: @code{ycenter} es la coordenada y del punto situado en el centro
+@dfn{ycenter} es la coordenada y del punto situado en el centro
 del gr@'afico.
-@example
-[ycenter,4.5]
-@end example
 El valor por defecto es 0.
 
 @item
-Opci@'on: @code{width} establece el ancho de la ventana gr@'afica en
+@dfn{width} establece el ancho de la ventana gr@'afica en
 p@'{@dotless{i}}xeles.
-@example
-[width,800]
-@end example
 El valor por defecto es 500.
 
 @item
-Opci@'on: @code{height} establece la altura de la ventana gr@'afica en
+@dfn{height} establece la altura de la ventana gr@'afica en
 p@'{@dotless{i}}xeles.
-@example
-[width,600]
-@end example
 El valor por defecto es 500.
 
 @end itemize
 
 @b{Ejemplos:}
 
-NOTA: debido a un fallo en @code{openmath}, todas las funciones, 
-incluida @code{plotdf}, deben terminar en punto y coma, no con
-el s@'{@dotless{i}}mbolo de d@'olar, el cual puede ser v@'alido
-en otros contextos gr@'aficos; para evitar problemas, se usar@'a
-el punto y coma en los ejemplos.
+NOTA: Dependiendo de la interface que se use para Maxima, las funciones
+que usan @code{openmath}, incluida @code{plotdf}, pueden desencadenar un
+fallo si terminan en punto y coma, en vez del s@'{@dotless{i}}mbolo de
+d@'olar. Para evitar problemas, se usar@'a el s@'{@dotless{i}}mbolo de
+d@'olar en todos ejemplos.
 
 @itemize @bullet
 @item
@@ -315,7 +270,7 @@ arm@'onico, definido por las ecuaciones @math{dx/dt = y} y
 @math{dy/dt = -k*x/m}, y la curva integral que pasa por
 @math{(x,y) = (6,0)}, con una barra de deslizamiento que 
 permitir@'a cambiar el valor de @math{m} interactivamente
-(@math{k} est@'a permanece fijo a 2):
+(@math{k} permanece fijo a 2):
 @example
 (%i4) plotdf([y,-k*x/m],[parameters,"m=2,k=2"],
             [sliders,"m=1:5"], [trajectory_at,6,0]);
