@@ -42,7 +42,10 @@
                         ((mlist) $colour_z nil)
                         ((mlist) $transform_xy nil)
                         ((mlist) $run_viewer t)
-                        ((mlist) $plot_format $gnuplot)
+                        ((mlist) $plot_format
+			 ,(if (string= *autoconf-win32* "true")
+			      '$gnuplot
+			      '$gnuplot_pipes))
                         ((mlist) $gnuplot_term $default)
                         ((mlist) $gnuplot_out_file nil)
                         ;; With adaptive plotting, 100 is probably too
@@ -52,7 +55,8 @@
                         ;; Controls the number of splittings
                         ;; adaptive-plotting will do.
                         ((mlist) $adapt_depth 10)
-                        ((mlist) $gnuplot_pm3d ,(if (string= *autoconf-win32* "true") t nil))
+                        ((mlist) $gnuplot_pm3d
+			 ,(if (string= *autoconf-win32* "true") t nil))
                         ((mlist) $gnuplot_preamble "")
                         ((mlist) $gnuplot_curve_titles 
                          ((mlist) $default))
@@ -87,6 +91,80 @@
       (if (eq 0 ($imagpart x))
           x
           nil)))
+
+
+(defvar *gnuplot-stream* nil)
+(defvar *gnuplot-command* "")
+
+(defun start-gnuplot-process (path)
+  #+clisp (setq *gnuplot-stream*
+		(ext:make-pipe-output-stream path))
+  #+cmu (setq *gnuplot-stream*
+	      (ext:process-input (ext:run-program path nil :input :stream
+						  :output nil :wait nil)))
+  #+sbcl (setq *gnuplot-stream*
+	       (sb-ext:process-input (sb-ext:run-program path nil
+							 :input :stream
+							 :output nil :wait nil
+							 :search t)))
+;;  #+gcl (setq *gnuplot-stream*
+;;	      (si::fp-output-stream (si:run-process path nil)))
+  #+gcl (setq *gnuplot-stream*
+	      (open (concatenate 'string "| " path) :direction :output))
+  #-(or clisp cmu sbcl gcl)
+  (merror "Gnuplot not supported with your lisp!")
+  
+  ;; set mouse must be the first command send to gnuplot
+  (send-gnuplot-command "set mouse"))
+
+(defun check-gnuplot-process ()
+  (if (null *gnuplot-stream*)
+      (start-gnuplot-process $gnuplot_command)))
+
+(defun $gnuplot_close ()
+  (stop-gnuplot-process)
+  "")
+
+(defun $gnuplot_start ()
+  (check-gnuplot-process)
+  "")
+
+(defun $gnuplot_restart ()
+  ($gnuplot_close)
+  ($gnuplot_start))
+
+(defun stop-gnuplot-process ()
+  (unless (null *gnuplot-stream*)
+      (progn
+	(close *gnuplot-stream*)
+	(setq *gnuplot-stream* nil))))
+
+(defun send-gnuplot-command (command)
+  (if (null *gnuplot-stream*)
+      (start-gnuplot-process $gnuplot_command))
+  (format *gnuplot-stream* "~a ~%" command)
+  (force-output *gnuplot-stream*))
+
+(defvar $gnuplot_default_terminal "x11")
+
+(defun $gnuplot_reset ()
+  (send-gnuplot-command "unset output")
+  (send-gnuplot-command (format nil "set term ~a" $gnuplot_default_terminal))
+  (send-gnuplot-command "reset"))
+
+(defun $gnuplot_replot (&optional s)
+  (if (null *gnuplot-stream*)
+      (merror "Gnuplot is not running."))
+  (cond ((null s)
+	 (send-gnuplot-command "replot"))
+	((mstringp s)
+	 (send-gnuplot-command ($sconcat s))
+	 (send-gnuplot-command "replot"))
+	(t
+	 (merror "Input to 'gnuplot_replot' is not a string!")))
+  "")
+
+
 
 ;;(defvar $viewps_command  "(gs -I. -Q  ~a)")
 
@@ -140,12 +218,21 @@
           ($nticks  (check-list-items name (cddr value) 'fixnum 1))
           (($colour_z $run_viewer $transform_xy $gnuplot_pm3d)
            (check-list-items name (cddr value) 't 1))
-          ($plot_format (or (member (nth 2 value) '($zic $geomview $ps
-                                                    $gnuplot
-                                                    $mgnuplot
-                                                    $openmath
-                                                    ))
-                            (merror "plot_format: only [gnuplot,mgnuplot,openmath,ps,geomview] are available"))
+          ($plot_format (or (member (nth 2 value)
+				    (if (string= *autoconf-win32* "true")
+					'($zic $geomview $ps
+					      $gnuplot
+					      $mgnuplot
+					      $openmath
+					      )
+					'($zic $geomview $ps
+					      $gnuplot
+					      $gnuplot_pipes
+					      $mgnuplot
+					      $openmath
+					      )
+					))
+			    (merror "plot_format: only [gnuplot,mgnuplot,openmath,ps,geomview] are available"))
                         value)
           ($gnuplot_term (or (symbolp (nth 2 value)) (stringp (nth 2 value))
                              (merror "gnuplot_term: must be symbol or string"))
@@ -1196,7 +1283,7 @@ setrgbcolor} def
     (format dest "~a~%" (get-plot-option-string '$gnuplot_preamble))))
 
 
-(defun gnuplot-process (file)
+(defun gnuplot-process (&optional file)
   (let ((gnuplot-term ($get_plot_option '$gnuplot_term 2))
         (gnuplot-out-file ($get_plot_option '$gnuplot_out_file 2))
         (gnuplot-out-file-string (get-plot-option-string '$gnuplot_out_file))
@@ -1283,8 +1370,19 @@ setrgbcolor} def
         (case plot-format
           ($gnuplot
            (gnuplot-print-header st :log-x log-x :log-y log-y)
-           (format st "plot")))
+           (format st "plot"))
+	  ($gnuplot_pipes
+	   (check-gnuplot-process)
+	   ($gnuplot_reset)
+	   (gnuplot-print-header *gnuplot-stream* :log-x log-x :log-y log-y)
+	   (setq *gnuplot-command* "plot")))
         (dolist (v (cdr fun))
+	  (case plot-format
+	    ($gnuplot_pipes
+	     (if (> i 0)
+		 (setq *gnuplot-command* ($sconcat *gnuplot-command* ", ")))
+	     (setq *gnuplot-command* ($sconcat *gnuplot-command* 
+					       (format nil "'~a' index ~a " file i)))))
           (incf i)
           (setq plot-name
                 (let ((string ""))
@@ -1308,10 +1406,20 @@ setrgbcolor} def
                (if (equal title "default")
                    (setf title (format nil "title '~a'" plot-name)))
                (format st " '-' ~a ~a" title 
-                       (get-plot-option-string '$gnuplot_curve_styles i))))))
+                       (get-plot-option-string '$gnuplot_curve_styles i))))
+	    ($gnuplot_pipes
+	     (let ((title (get-plot-option-string '$gnuplot_curve_titles i)))
+               (if (equal title "default")
+                   (setf title (format nil "title '~a'" plot-name)))
+               (setq *gnuplot-command*
+		     ($sconcat *gnuplot-command*
+			       (format nil " ~a ~a" title 
+				       (get-plot-option-string '$gnuplot_curve_styles i))))))))
         (case plot-format
           ($gnuplot
-           (format st "~%")))
+           (format st "~%"))
+	  ($gnuplot_pipes
+	   (format st "~%")))
         (setf i 0)
         (dolist (v (cdr fun))
           (incf i)
@@ -1331,32 +1439,42 @@ setrgbcolor} def
             ($gnuplot
              (if (> i 1)
                  (format st "e~%")))
+	    ($gnuplot_pipes
+	     (if (> i 1)
+		 (format st "~%~%")))
             ($mgnuplot
              (format st "~%~%# \"~a\"~%" plot-name))
             )
-          (loop for (v w) on (cdr (draw2d v range log-x log-y)) by #'cddr
-             do
-             (cond ((eq v 'moveto)
-                    (cond 
-                      ((equal plot-format '$gnuplot)
-                       ;; A blank line means a discontinuity
-                       (format st "~%"))
-                      ((equal plot-format '$mgnuplot)
-                       ;; A blank line means a discontinuity
-                       (format st "~%"))
-                      (t
-                       (format st "move "))))
-                   (t  (format st "~g ~g ~%" v w))))))
+	  (let (in-discontinuity)
+	    (loop for (v w) on (cdr (draw2d v range log-x log-y)) by #'cddr
+		  do
+		  (cond ((eq v 'moveto)
+			 (cond 
+			   ((find plot-format '($gnuplot_pipes $gnuplot))
+			    ;; A blank line means a discontinuity
+			    (if (null in-discontinuity)
+				(progn
+				  (format st "~%")
+				  (setq in-discontinuity t))))
+			   ((equal plot-format '$mgnuplot)
+			    ;; A blank line means a discontinuity
+			    (format st "~%"))
+			   (t
+			    (format st "move "))))
+			(t  (format st "~g ~g ~%" v w)
+			    (setq in-discontinuity nil))))))))
       (case plot-format
         ($gnuplot 
          (gnuplot-process file))
+	($gnuplot_pipes
+	 (send-gnuplot-command *gnuplot-command*))
         ($mgnuplot 
          ($system (concatenate 'string *maxima-plotdir* "/" $mgnuplot_command) 
                   (format nil " -plot2d \"~a\" -title '~a'" file plot-name)))
         ($xgraph
          ($system (format nil "xgraph -t 'Maxima Plot' < \"~a\" &" file)))
         )
-      "")))
+      ""))
 
 ;;(defun maxima-bin-search (command)
 ;;  (or ($file_search command
@@ -2072,6 +2190,21 @@ setrgbcolor} def
                 (format $pstream "splot '-' ~a ~a~%" title 
                         (get-plot-option-string '$gnuplot_curve_styles 1)))
               (output-points pl (nth 2 grid)))
+             ($gnuplot_pipes
+	      (check-gnuplot-process)
+	      ($gnuplot_reset)
+              (gnuplot-print-header *gnuplot-stream* :const-expr const-expr)
+              (let ((title (get-plot-option-string '$gnuplot_curve_titles 1))
+                    (plot-name
+                     (let ((string (coerce (mstring orig-fun) 'string)))
+                       (cond ((< (length string) 20) string)
+                             (t (format nil "Function"))))))
+                (if (equal title "default")
+                    (setf title (format nil "title '~a'" plot-name)))
+                (setq *gnuplot-command*
+		      (format nil "splot '~a' ~a ~a~%" file title 
+			      (get-plot-option-string '$gnuplot_curve_styles 1))))
+              (output-points pl (nth 2 grid)))
              ($mgnuplot
               (output-points pl (nth 2 grid)))
              ($openmath
@@ -2164,6 +2297,8 @@ setrgbcolor} def
                    ($geomview 
                      ($system $geomview_command
                               (format nil " \"~a\"" file)))
+		   ($gnuplot_pipes
+		    (send-gnuplot-command *gnuplot-command*))
                    ($mgnuplot 
                      ($system (concatenate 'string *maxima-plotdir* "/" $mgnuplot_command)
                               (format nil " -parametric3d \"~a\"" file)))
