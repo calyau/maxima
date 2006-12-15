@@ -536,8 +536,8 @@ mnewton
 
 numericalio
 
-* Introduction to numericalio::
-* Definitions for numericalio::
+* Introdu@value{cedilha}@~ao numericalio::
+* Defini@value{cedilha}@~oes para numericalio::
 
 opsubst
 
