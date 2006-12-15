@@ -23,8 +23,29 @@ please contact me for updates to this code
    Solve_Inconsistent_Error is false, LinsolveWarn and Linsolve_Params,
    but acts as if Linsolve_Params is false */
 
+/*
+Added Solve_Inconsistent_Terms (December 2006, Andrej Vodopivec)
+
+Solve_Inconsistent_Terms is not defined anywhere in solver package or
+maxima. From how it is used I think it should be set in LinsolveM.
+When triangularizing the coeff matrix sometimes rhs will be 0 and lhs
+will be an expression in parameters. By setting Solve_Inconsistent_Terms
+to be the list of these expressions, the user will be asked if they are
+zero. If they are zero, the system can be solved (with the added
+assumption that the expressions in Solve_Inconsistent_Terms are zero)
+and if they are not zero, then the solver terminates - there are no
+solutions.
+
+With this change:
+(%i38) Solver([x+y=p1-p2, x+3*y=p2-p3, 3*x-y=p1+p2+p3], [x,y], [p1,p2,p3]);
+Is  -p3+8*p2-4*p1  positive, negative, or zero? zero;
+(%o38) [[x=-(-p3+4*p2-3*p1)/2,y=(-p3+2*p2-p1)/2]]
+which I think is correct behaviour. Previously this triggered an error.
+*/
+
 define_variable( Solve_Inconsistent_Error, false, any)$
 define_variable( Solve_Inconsistent_Eqn_Nos, false, any)$
+define_variable( Solve_Inconsistent_Terms, [], list)$
 
 LinsolveM(ees,vees):=block(
   [ne:length(ees),nv:length(vees),nvees,ns,am,tam,r,
@@ -45,10 +66,14 @@ LinsolveM(ees,vees):=block(
   r:col(tam,ns+1),
   tam:submatrix(tam,ns+1),
   ic:[],
+  Solve_Inconsistent_Terms:[],
   for i:ne thru 1 step -1 do block(
     [az:true],
     map(lambda([x],if x # 0 then az:false), tam[i]),
-    if az = true and r[i] # 0 then ic:endcons(i, ic)
+    if az = true and r[i] # 0 then (
+      ic:endcons(i, ic),
+      Solve_Inconsistent_Terms : cons(ees[i], Solve_Inconsistent_Terms)
+    )
   ),
   if ic # [] then ( /* equations are inconsistant */
     if Solve_Inconsistent_Error = false then (
