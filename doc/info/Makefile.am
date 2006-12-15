@@ -32,8 +32,8 @@ maxima_TEXINFOS = Introduction.texi Help.texi Command.texi Operators.texi \
   distrib.texi simplex.texi simplifications.texi unit.texi makeOrders.texi \
   mnewton.texi lsquares.texi plotdf.texi lindstedt.texi impdiff.texi \
   ggf.texi f90.texi eval_string.texi diag.texi cholesky.texi dynamics.texi\
-  bode.texi augmented_lagrangian.texi opsubst.texi stats.texi stirling.texi interpol.texi \
-  lbfgs.texi
+  bode.texi augmented_lagrangian.texi opsubst.texi stats.texi stirling.texi\
+  implicit_plot.texi interpol.texi lbfgs.texi
 
 figurefiles = \
 figures/dynamics1.gif\
@@ -46,6 +46,7 @@ figures/dynamics7.gif\
 figures/dynamics8.gif\
 figures/dynamics9.gif\
 figures/dynamics10.gif\
+figures/implicit_plot.gif\
 figures/plotdf1.gif\
 figures/plotdf2.gif\
 figures/plotdf3.gif\
@@ -90,6 +91,7 @@ figures/dynamics7.pdf\
 figures/dynamics8.pdf\
 figures/dynamics9.pdf\
 figures/dynamics10.pdf\
+figures/implicit_plot.pdf\
 figures/plotdf1.pdf\
 figures/plotdf2.pdf\
 figures/plotdf3.pdf\
