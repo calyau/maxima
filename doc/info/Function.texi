@@ -597,8 +597,16 @@ first negative element of @code{l} and "throws" it up.
 @end deffn
 
 @deffn {Function} compfile (@var{filename}, @var{f_1}, ..., @var{f_n})
-Translates Maxima functions @var{f_1}, ..., @var{f_n} into Lisp 
+@deffnx {Function} compfile (@var{filename}, functions)
+@deffnx {Function} compfile (@var{filename}, all)
+
+Translates Maxima functions into Lisp 
 and writes the translated code into the file @var{filename}.
+
+@code{compfile(@var{filename}, @var{f_1}, ..., @var{f_n})} translates the
+specified functions.
+@code{compfile(@var{filename}, functions)} and @code{compfile(@var{filename}, all)}
+translate all user-defined functions.
 
 The Lisp translations are not evaluated, nor is the output file processed by the Lisp compiler.
 @c SO LET'S CONSIDER GIVING THIS FUNCTION A MORE ACCURATE NAME.
