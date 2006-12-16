@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: RunMaxima.tcl,v 1.27 2006-12-04 01:21:16 villate Exp $
+#       $Id: RunMaxima.tcl,v 1.28 2006-12-16 01:59:30 villate Exp $
 #
 proc textWindowWidth { w } {
     set font [$w cget -font]
@@ -30,10 +30,10 @@ proc CMeval { w } {
     #puts "CMeval $w, [$w compare insert < lastStart]"
     if { [$w compare insert < lastStart] } {
 	set this [thisRange $w input insert]
-	if { "$this" != "" } {
-	    set code [eval $w get $this]
+	if { [llength $this] > 1 } {
+            set code [$w get [lindex $this 0]+1c [lindex $this 1]]
+	    set code [string trimright $code \n]
 	    set prev [string trimright [$w get lastStart end] \n]
-
 	    $w delete lastStart end
 	    $w insert lastStart $code input
 	}
