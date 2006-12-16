@@ -41,7 +41,7 @@ ShowLanguageDialog=yes
 Name: "en"; MessagesFile: "compiler:Default.isl"
 Name: "fr"; MessagesFile: "compiler:Languages\French.isl"; InfoBeforeFile: "interfaces\xmaxima\win32\InfoBefore_fr.txt"; InfoAfterFile: "interfaces\xmaxima\win32\readme_fr.txt"
 Name: "de"; MessagesFile: "compiler:Languages\German.isl"; InfoBeforeFile: "interfaces\xmaxima\win32\InfoBefore_de.txt"; InfoAfterFile: "interfaces\xmaxima\win32\readme_de.txt"
-Name: "it"; MessagesFile: "compiler:Languages\Italian.isl"; InfoBeforeFile: "interfaces\xmaxima\win32\InfoBefore.txt"; InfoAfterFile: "interfaces\xmaxima\win32\readme_en.txt"
+Name: "it"; MessagesFile: "compiler:Languages\Italian.isl"; InfoBeforeFile: "interfaces\xmaxima\win32\InfoBefore_it.txt"; InfoAfterFile: "interfaces\xmaxima\win32\readme_it.txt"
 Name: "es"; MessagesFile: "compiler:Languages\Spanish.isl"; InfoBeforeFile: "interfaces\xmaxima\win32\InfoBefore_es.txt"; InfoAfterFile: "interfaces\xmaxima\win32\readme_es.txt"
 Name: "pt_BR"; MessagesFile: "compiler:Languages\BrazilianPortuguese.isl"; InfoBeforeFile: "interfaces\xmaxima\win32\InfoBefore.txt"; InfoAfterFile: "interfaces\xmaxima\win32\readme_en.txt"
 Name: "pt"; MessagesFile: "compiler:Languages\Portuguese.isl"; InfoBeforeFile: "interfaces\xmaxima\win32\InfoBefore_pt.txt"; InfoAfterFile: "interfaces\xmaxima\win32\readme_pt.txt"
@@ -244,34 +244,34 @@ it.CompactInstallation=Installazione compatta
 it.CustomInstallation=Installazione personalizzata
 it.Uninstall=Disinstallazione
 
-it.MaximaCore=Maxima core with command line interface
-it.wxMaximaGraphicShell=wxMaxima graphic shell
-it.XMaximaGraphicShell=XMaxima graphic shell
-it.MaximaLanguagePacks=Maxima language packs
+it.MaximaCore=Nucleo di Maxima con interfaccia a riga di comando
+it.wxMaximaGraphicShell=Shell grafica wxMaxima
+it.XMaximaGraphicShell=Shell grafica XMaxima
+it.MaximaLanguagePacks=Pacchetti lingua di Maxima
 
-it.German=German
-it.French=French
-it.Italian=Italian
-it.Portuguese=Portuguese
-it.Russian=Russian
-it.Spanish=Spanish
+it.Germen=Tedesco
+it.French=Francese
+it.Italian=Italiano
+it.Portuguese=Portoghese
+it.Russian=Russo
+it.Spanish=Spagnolo
 
-it.CreateMyDesktopIcon=Create %1 desktop icon
+it.CreateMyDesktopIcon=Crea %1 icona sul desktop
 
-it.CommandLineMaxima=Command line Maxima
-it.Introduction=Introduction
-it.ReferenceManual=Reference Manual
-it.Readme=README
-it.ReadmeMenuEntry=README
+it.CommandLineMaxima=Maxima a riga di comando
+it.Introduction=Introduzione
+it.ReferenceManual=Manuale di riferimento
+it.Readme=LEGGIMI
+it.ReadmeMenuEntry=LEGGIMI
 
-it.OnlineForum=%1 Online Forum
+it.OnlineForum=%1 Forum online
 
-it.ReferenceManualGerman=Reference Manual (German)
-it.ReferenceManualFrench=Reference Manual (French)
-it.ReferenceManualItalian=Reference Manual (Italian)
-it.ReferenceManualPortuguese=Reference Manual (Portuguese)
-it.ReferenceManualRussian=Reference Manual (Russian)
-it.ReferenceManualSpanish=Reference Manual (Spanish)
+it.ReferenceManualGerman=Manuale di Riferimento (Tedesco)
+it.ReferenceManualFrench=Manuale di Riferimento (Francese)
+it.ReferenceManualItalian=Manuale di Riferimento (Italiano)
+it.ReferenceManualPortuguese=Manuale di Riferimento (Portoghese)
+it.ReferenceManualRussian=Manuale di Riferimento (Russo)
+it.ReferenceManualSpanish=Manuale di Riferimento (Spagnolo)
 
 
 ;=== Portuguese (Brazilian) ===  LID=$0416  CodePage=1252
