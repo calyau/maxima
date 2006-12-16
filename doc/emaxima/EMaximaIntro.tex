@@ -56,7 +56,7 @@ If this is the only way that \mx{} is to be used from within Emacs,
 then the \textsl{Imaxima} package should be considered.  It allows the
 user to work with \mx{} interactively, and produces the output in
 visually nice form.  It is available from
-\verb+http://www.ifa.au.dk/~harder/imaxima.html+.
+\verb+http://memberss3.jcom.home.ne.jp/imaxima/Site/Welcome.html+.
 
 \section{Running \mx{} from arbitrary buffers}
 
@@ -662,6 +662,36 @@ This can be done automatically everytime a file is put in
 \noindent
 somewhere in your \texttt{.emacs} file.
 
+
+\section{\mx{} help commands}
+
+The following commands can be used in any Maxima related buffer.  (For
+Maxima minor mode, replace \texttt{C-c C-d} with \texttt{C-= d}.)
+
+\smallskip
+
+\noindent
+\begin{tabular}{p{\firstcol}p{\secondcol}}
+\hline
+\textbf{Key} & \textbf{Description}\\
+\hline
+\texttt{C-c C-d h}
+%& \texttt{maxima-help}
+& Get help on a (prompted for) subject.\\
+\texttt{C-c C-d d} \\
+\texttt{C-c C-d C-d}
+%& \texttt{maxima-apropos}
+& Get help with the symbol under point.\\
+\texttt{C-c C-d a}\\
+\texttt{C-c C-d a} & Apropos.\\
+\texttt{C-c C-d p}\\
+\texttt{C-c C-d C-p} & Get apropos with the symbol under point.\\
+\texttt{C-c C-d m}\\
+\texttt{C-c C-d C-m}\\
+\texttt{C-c C-d i}\\
+\texttt{C-c C-d C-i} & Read the Maxima info manual.
+\end{tabular}
+
 \section{Interactive \mx{} commands}
 \label{app:intmx}
 
@@ -675,8 +705,6 @@ somewhere in your \texttt{.emacs} file.
      a completion buffer if there is more than one possible
      completion.\\
 \texttt{C-M-TAB} & Complete the input line, based on previous input lines.\\
-\texttt{C-c C-d} & Get help on a Maxima topic.\\
-\texttt{C-c C-m} & Bring up the Maxima info manual.\\
 \texttt{C-c C-k} & Kill the process and the buffer, after asking for
   confirmation.  To kill without confirmation, give \texttt{C-c C-k} an
   argument.\\
@@ -804,28 +832,6 @@ current buffer.
 \texttt{M-C-q} & Indent form.
 \end{tabular}
 
-
-\smallskip
-
-\noindent
-\textbf{\mx{} help}
-
-\smallskip
-
-\noindent
-\begin{tabular}{p{\firstcol}p{\secondcol}}
-\hline
-\textbf{Key} & \textbf{Description}\\
-\hline
-\texttt{C-c C-d}
-%& \texttt{maxima-help}
-& Get help on a (prompted for) subject.\\
-\texttt{C-c C-m}
-%& \texttt{maxima-apropos}
-& Read the manual.\\
-\texttt{C-c C-h} & Get help with the symbol under point.\\
-\texttt{C-c C-a} & Get apropos with the symbol under point.
-\end{tabular}
 
 \smallskip
 
