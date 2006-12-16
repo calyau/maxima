@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Plotconf.tcl,v 1.16 2006-07-31 00:11:18 villate Exp $
+#       $Id: Plotconf.tcl,v 1.17 2006-12-16 02:47:08 villate Exp $
 #
 ###### plotconf.tcl ######
 ############################################################
@@ -177,7 +177,7 @@ proc showPosition { win x y } {
     # we catch so that in case have no functions or data..
     catch {
 	$win.position config -text \
-	    "[format {(%.3f,%.3f)}  [storx$win [$c canvasx $x]] [story$win [$c canvasy $y]]]"
+	    "[format {(%.6g,%.6g)}  [storx$win [$c canvasx $x]] [story$win [$c canvasy $y]]]"
     }
 }
 
