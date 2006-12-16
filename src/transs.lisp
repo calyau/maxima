@@ -75,13 +75,13 @@
   '`,(pathname "_cmf_"))
 
 (defmacro compfile-outputname ()
-  '`,(pathname (stripdollar $tr_output_file_default)))
+  '`,(pathname (maybe-invert-string-case (symbol-name (stripdollar $tr_output_file_default)))))
 
 (defmacro trlisp-inputname-d1 () ;; so hacks on DEFAULTF will not
   '`,(pathname "")) ;; stray the target.
 
 (defmacro trlisp-outputname-d1 ()
-  '`,(pathname (stripdollar $tr_output_file_default))) 
+  '`,(pathname (maybe-invert-string-case (symbol-name (stripdollar $tr_output_file_default)))))
 
 (defmacro trlisp-outputname () 
   '`,(make-pathname :type "LISP"))
