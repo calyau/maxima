@@ -45,6 +45,31 @@
 ;;  (setq auto-mode-alist (cons '("\\.max" . maxima-mode) auto-mode-alist))
 ;; to your `.emacs' file.
 ;;
+;; In any of the Maxima modes, to get help on a prompted for Maxima topic,
+;; use
+;; C-c C-d h
+;; or
+;; f12.
+;; To get help with the symbol under point, use ("d" for describe): 
+;; C-c C-d d
+;; or
+;; C-c C-d C-d
+;; For apropos help, use:
+;; C-c C-d a
+;; or
+;; C-c C-d C-a
+;; To get apropos with the symbol under point, use:
+;; C-c C-d p
+;; C-c C-d C-p
+;; or M-f12.
+;; To read the Maxima info manual, use:
+;; C-c C-d m
+;; C-c C-d C-m
+;; C-c C-d i
+;; or
+;; C-c C-d C-i
+;; (For Maxima minor mode, replace C-cC-d by C-c=d.)
+
 ;; ** Maxima mode **
 ;; To put the current buffer into maxima-mode, type M-x maxima-mode
 
@@ -94,15 +119,6 @@
 ;; The default can be set by setting the value of the variable 
 ;; "maxima-indent-style" to either 'standard or 'perhaps-smart.
 ;; In both cases, M-x maxima-untab will remove a level of indentation.
-
-;; To get help on a Maxima topic, use:
-;; C-c C-d.
-;; To read the Maxima info manual, use:
-;; C-c C-m.
-;; To get help with the symbol under point, use:
-;; C-cC-h or f12.
-;; To get apropos with the symbol under point, use:
-;; C-cC-a or M-f12.
 
 ;; ** Maxima noweb mode **
 ;; maxima-noweb-mode is a modification of maxima-mode that will work
@@ -2037,6 +2053,25 @@ which is in a comment which begins on a previous line."
       (info "Maxima")
     (info-other-window "Maxima")))
 
+;;; The help map
+
+(defvar maxima-help-map nil)
+(if maxima-help-map
+    nil
+  (let ((map (make-sparse-keymap)))
+    (define-key map "h" 'maxima-help)
+    (define-key map "d" 'maxima-completion-help)
+    (define-key map "\C-d" 'maxima-completion-help)
+    (define-key map "i" 'maxima-info)
+    (define-key map "\C-i" 'maxima-info)
+    (define-key map "m" 'maxima-info)
+    (define-key map "\C-m" 'maxima-info)
+    (define-key map "a" 'maxima-apropos)
+    (define-key map "\C-a" 'maxima-apropos)
+    (define-key map "p"  'maxima-apropos-help)
+    (define-key map "\C-p"  'maxima-apropos-help)
+    (setq maxima-help-map map)))
+
 ;;;; Completion
 
 ;;; This next functions are from hippie-expand.el
@@ -2449,12 +2484,9 @@ if completion is ambiguous."
     (define-key map "\M-\C-q" 'maxima-indent-form)
 ;    (define-key map [(control tab)] 'maxima-untab)
     ;; Help
-    (define-key map "\C-c\C-d" 'maxima-help)
-    (define-key map "\C-c\C-m" 'maxima-info)
+    (define-key map "\C-c\C-d" maxima-help-map)
     (define-key map [(f12)] 'maxima-help)
-    (define-key map "\C-c\C-h" 'maxima-help)
     (define-key map [(meta f12)] 'maxima-apropos)
-    (define-key map "\C-c\C-a" 'maxima-apropos)
     ;; Minibuffer
     (define-key map "\C-c\C-nr" 'maxima-minibuffer-on-region)
     (define-key map "\C-c\C-nl" 'maxima-minibuffer-on-line)
@@ -3273,6 +3305,7 @@ To scroll through previous commands,
         (comint-read-input-ring t)
         (set-process-sentinel inferior-maxima-process
                               'inferior-maxima-sentinel)))
+  (set (make-local-variable 'comint-prompt-read-only) t)
   (run-hooks 'inferior-maxima-mode-hook))
 
 ;;;; Keymap
@@ -3286,12 +3319,9 @@ To scroll through previous commands,
 (define-key inferior-maxima-mode-map [(meta control tab)] 
   'inferior-maxima-input-complete)
 (define-key inferior-maxima-mode-map "\e\t" 'inferior-maxima-complete)
-(define-key inferior-maxima-mode-map "\C-c\C-d" 'maxima-help)
-(define-key inferior-maxima-mode-map "\C-c\C-h" 'maxima-help)
-(define-key inferior-maxima-mode-map "\C-c\C-a" 'maxima-apropos)
-(define-key inferior-maxima-mode-map "\C-c\C-m" 'maxima-info)
 (define-key inferior-maxima-mode-map "\177" 'backward-delete-char-untabify)
 (define-key inferior-maxima-mode-map "\C-c\C-k" 'maxima-stop)
+(define-key inferior-maxima-mode-map "\C-c\C-d" maxima-help-map)
 
 ;;;; Menu
 
@@ -3549,6 +3579,7 @@ after any occurrence of \" ==> \" will be deleted."
     (define-key map "\C-c=f" 'maxima-minibuffer-on-form)
     (define-key map "\C-c=o" 'maxima-insert-last-output)
     (define-key map "\C-c=t" 'maxima-insert-last-output-tex)
+    (define-key map "\C-c=d" maxima-help-map)
     (setq maxima-minor-mode-map map)))
 
 (unless (fboundp 'define-minor-mode)
