@@ -1,0 +1,194 @@
+@c Language: Portuguese, Encoding: iso-8859-1
+@c /Affine.texi/1.12/Sat Nov 19 06:51:23 2005/-ko/
+@c end concepts Affine
+@menu
+* Defini@value{cedilha}@~oes para Fun@value{cedilha}@~oes Afins::      
+@end menu
+
+@node Defini@value{cedilha}@~oes para Fun@value{cedilha}@~oes Afins,  , Fun@value{cedilha}@~oes Afins, Fun@value{cedilha}@~oes Afins
+@section Defini@value{cedilha}@~oes para Fun@value{cedilha}@~oes Afins
+
+@deffn {Fun@,{c}@~ao} fast_linsolve ([@var{expr_1}, ..., @var{expr_m}], [@var{x_1}, ..., @var{x_n}])
+Resolve equa@,{c}@~oes lineares simult@^aneas @var{expr_1}, ..., @var{expr_m}
+para as vari@'aveis @var{x_1}, ..., @var{x_n}.
+Cada @var{expr_i} pode ser uma equa@,{c}@~ao ou uma express@~ao geral;
+se dada como uma express@~ao geral, ela  tratada como uma equa@,{c}@~ao na forma @code{@var{expr_i} = 0}.
+
+O valor de retorno @'e uma lista de equa@,{c}@~oes da forma
+@code{[@var{x_1} = @var{a_1}, ..., @var{x_n} = @var{a_n}]}
+onde @var{a_1}, ..., @var{a_n} s@~ao todas livres de @var{x_1}, ..., @var{x_n}.
+
+@code{fast_linsolve} @'e mais r@'apido que @code{linsolve} para sistemas de equa@,{c}@~oes que
+s@~ao esparsas.
+
+@end deffn
+
+@deffn {Fun@,{c}@~ao} grobner_basis ([@var{expr_1}, ..., @var{expr_m}])
+Retorna uma base de Groebner para as equa@,{c}@~oes @var{expr_1}, ..., @var{expr_m}.
+A fun@,{c}@~a @code{polysimp} pode ent@~ao
+ser usada para simplificar outras fun@,{c}@~oes relativas @`as equa@,{c}@~oes.
+
+@example
+grobner_basis ([3*x^2+1, y*x])$
+
+polysimp (y^2*x + x^3*9 + 2) ==> -3*x + 2
+@end example
+
+@code{polysimp(f)} produz 0 se e somente se @var{f} est@'a no ideal gerado por
+@var{expr_1}, ..., @var{expr_m}, isto @'e,
+se e somente se @var{f} for uma combina@,{c}@~ao polinomial dos elementos de
+@var{expr_1}, ..., @var{expr_m}.
+
+@end deffn
+
+@c NEEDS CLARIFICATION IN A SERIOUS WAY
+@deffn {Fun@,{c}@~ao} set_up_dot_simplifications (@var{eqns}, @var{check_through_degree})
+@deffnx {Fun@,{c}@~ao} set_up_dot_simplifications (@var{eqns})
+As @var{eqns} s@~ao
+equa@,{c}@~oes polinomiais em vari@'aveis n@~ao comutativas.
+O valor de @code{current_variables}  @'e uma 
+lista de vari@'aveis usadas para calcular graus.  As equa@,{c}@~oes podem ser
+homog@^eneas, em ordem para o procedimento terminar.  
+
+Se voc@^e checou simplifica@,{c}@~oes de envolt@'orio em @code{dot_simplifications}
+acima do grau de @var{f}, ent@~ao o seguinte @'e verdadeiro:
+@code{dotsimp (@var{f})} retorna 0 se e somente se @var{f} est@'a no
+ideal gerado pelas equa@,{c}@~oes, i.e.,
+se e somente se @var{f} for uma combina@,{c}@~ao polinomial
+dos elementos das equa@,{c}@~oes.
+
+
+acima do grau de f, ent@~ao o seguinte @'e verdadeiro:
+@code{dotsimp (f)} retorna 0 se e somente se @var{f} est@'a no ideal gerado pelas equa@,{c}@~oes, i.e.,
+se e somente se @var{f} for uma combina@,{c}@~ao polinomial dos elementos das equa@,{c}@~oes.
+
+O grau @'e aquele retornado por @code{nc_degree}.   Isso por sua vez @'e nfluenciado pelos
+pesos das vari@'aveis individuais.
+
+@end deffn
+
+@deffn {Fun@,{c}@~ao} declare_weight (@var{x_1}, @var{w_1}, ..., @var{x_n}, @var{w_n})
+Atribui pesos @var{w_1}, ..., @var{w_n} to @var{x_1}, ..., @var{x_n}, respectivamente.
+Esses s@~ao pesos usados em c@'alculos @code{nc_degree}.
+
+@end deffn
+
+@deffn {Fun@,{c}@~ao} nc_degree (@var{p})
+Retorna o grau de um polin@^omio n@~ao comutativo @var{p}.  Veja @code{declare_weights}.
+
+@end deffn
+
+@c NEEDS CLARIFICATION -- TO WHICH EQUATIONS DOES THIS DESCRIPTION REFER ??
+@deffn {Fun@,{c}@~ao} dotsimp (@var{f})
+Retorna 0 se e somente se @var{f} for um ideal gerado pelas equa@,{c}@~oes, i.e.,
+se e somente se @var{f} for uma combina@,{c}@~ao polinomial dos elementos das equa@,{c}@~oes.
+
+@end deffn
+
+@deffn {Fun@,{c}@~ao} fast_central_elements ([@var{x_1}, ..., @var{x_n}], @var{n})
+Se @code{set_up_dot_simplifications} tiver sido feito previamente, ache o polin@^omio central
+nas vari@'aveis @var{x_1}, ..., @var{x_n} no grau dado, @var{n}.
+
+Por exemplo:
+@example
+set_up_dot_simplifications ([y.x + x.y], 3);
+fast_central_elements ([x, y], 2);
+[y.y, x.x];
+@end example
+
+@end deffn
+
+@c THIS IS NOT AT ALL CLEAR
+@deffn {Fun@,{c}@~ao} check_overlaps (@var{n}, @var{add_to_simps})
+Verifica as sobreposies atrav@'es do grau @var{n},
+tendo certeza que voc@^e tem regras de simplifica@,{c}@~o suficiente em cada
+grau, para @code{dotsimp} trabalhar corretamente.  Esse processo pode ter sua velocidade aumentada
+se voc@^e souber antes de come@,{c}ar souber de qual dimens@~ao do espa@,{c}o de mon@^omios @'e.
+Se ele for de dimens@~ao global finita, ent@~ao @code{hilbert} pode ser usada.  Se voc@^e
+n@~ao conhece as dimens@~oes monomiais, n@~ao especifique um @code{rank_function}.
+Um opcional terceiro argumento @code{reset}, @code{false} diz para n@~ao se incomodar em perguntar
+sobre resetar coisas.
+
+@end deffn
+
+@deffn {Fun@,{c}@~ao} mono ([@var{x_1}, ..., @var{x_n}], @var{n})
+Retorna a lista de mon@^omios independentes
+relativamente @`a simplifica@,{c}@~ao atual do grau @var{n}
+nas vari@'aveis @var{x_1}, ..., @var{x_n}.
+
+@end deffn
+
+@deffn {Fun@,{c}@~ao} monomial_dimensions (@var{n})
+Calcula a s@'erie de Hilbert atrav@'es do grau @var{n} para a algebra corrente.
+
+@end deffn
+
+@deffn {Fun@,{c}@~ao} extract_linear_equations ([@var{p_1}, ..., @var{p_n}], [@var{m_1}, ..., @var{m_n}])
+
+Faz uma lista dos coeficientes dos polin@^omios n@~ao comutativos @var{p_1}, ..., @var{p_n}
+dos monomios n@~ao comutatvos @var{m_1}, ..., @var{m_n}.
+Os coeficientes podem ser escalares.   Use @code{list_nc_monomials} para construir a lista dos
+mon@^omios.
+
+@end deffn
+
+@deffn {Fun@,{c}@~ao} list_nc_monomials ([@var{p_1}, ..., @var{p_n}])
+@deffnx {Fun@,{c}@~ao} list_nc_monomials (@var{p})
+
+Retorna uma lista de mon@^omios n@~ao comutativos que ocorrem em um polin@^omio @var{p}
+ou em uma lista de polin@^omios @var{p_1}, ..., @var{p_n}.
+
+@end deffn
+
+@c THIS FUNCTION DOESN'T SEEM TO BE APPROPRIATE IN USER-LEVEL DOCUMENTATION
+@c PRESERVE THIS DESCRIPTION PENDING FURTHER DECISION
+@c @defun pcoeff (poly monom [variables-to-exclude-from-cof (list-variables monom)])
+@c 
+@c This function is called from Lisp level, and uses internal poly format.
+@c @example
+@c 
+@c CL-MAXIMA>>(setq me (st-rat #$x^2*u+y+1$))
+@c (#:Y 1 1 0 (#:X 2 (#:U 1 1) 0 1))
+@c 
+@c CL-MAXIMA>>(pcoeff me (st-rat #$x^2$))
+@c (#:U 1 1)
+@c @end example
+@c @noindent
+@c 
+@c Rule: if a variable appears in monom it must be to the exact power,
+@c and if it is in variables to exclude it may not appear unless it was
+@c in monom to the exact power.  (pcoeff pol 1 ..) will exclude variables
+@c like substituting them to be zero.
+@c 
+@c @end defun
+
+@c THIS FUNCTION DOESN'T SEEM TO BE APPROPRIATE IN USER-LEVEL DOCUMENTATION
+@c PRESERVE THIS DESCRIPTION PENDING FURTHER DECISION
+@c @defun new-disrep (poly)
+@c 
+@c From Lisp this returns the general Maxima format for an arg which is
+@c in st-rat form:
+@c 
+@c @example
+@c (displa(new-disrep (setq me (st-rat #$x^2*u+y+1$))))
+@c 
+@c        2
+@c y + u x  + 1
+@c @end example
+@c 
+@c @end defun
+
+@defvr {Vari@'avel de op@,{c}@~ao} all_dotsimp_denoms
+Valor padr@~ao: @code{false}
+
+Quando @code{all_dotsimp_denoms} @'e uma lista,
+os denominadores encontrados por @code{dotsimp} s@~ao adicionados ao final da lista.
+@code{all_dotsimp_denoms} pode ser iniciado como uma lista vazia @code{[]}
+antes chamando @code{dotsimp}.
+
+Por padr@~ao, denominadores n@~ao s@~ao coletados por @code{dotsimp}.
+
+@end defvr
+
+
+

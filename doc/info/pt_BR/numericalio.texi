@@ -1,0 +1,147 @@
+@c Language: Portuguese, Encoding: iso-8859-1
+@c /numericalio.texi/1.1/Mon Feb 27 22:09:17 2006//
+@menu
+* Introdu@value{cedilha}@~ao a numericalio::
+* Defini@value{cedilha}@~oes para numericalio::
+@end menu
+
+@node Introdu@value{cedilha}@~ao a numericalio, Defini@value{cedilha}@~oes para numericalio, numericalio, numericalio
+@section Introdu@value{cedilha}@~ao a numericalio
+
+@code{numericalio} @'e uma cole@,{c}@~ao de fun@,{c}@~oes para ler e escrever arquivos de dados.
+O arquivo @'e lido completamente para construir um objeto;
+leituras parciais n@~o s@~ao suportadas.
+
+@'E assumido que cada item a ler ou escrever @'e at@^omico:
+um n@'umero inteiro, n@'umero em ponto flutuante, n@'umero grande em ponto flutuante, seq@"u@^encia de caracteres, ou s@'imbolo,
+e n@~ao um n@'umero racional ou um n@'umero complexo ou qualquer outro tipo de express@~ao n@~ao at@^omica.
+Essas fun@,{c}@~oes podem tentar fazer alguma coisa levemente parecidos com express@~oes n@~ao at@^omicas,
+mas os resultados n@~ao s@~ao especificasdos aqui e s@~ao sujeitos a mudan@,{c}as.
+
+@'Atomos em amboas os arquivos de entrada e sa@'ida possuem o mesmo formato que
+em arquivos de lote do Maxima ou no console interativo.
+Em particular, seq@"u@^encia de caracteres s@~ao contidas dentro de aspas duplas,
+contrabarra @code{\} evita qualquer interpreta@,{c}@~ao especial do caractere seguinte,
+e o pnto de interroga@,{c}@~ao @code{?} @'e reconhecido no in@'icio de um s@'imbolo
+para significar um s@'imbolo do Lisp (em oposi@,{c}@~ao a um s@'imbolo do Maxima).
+Nenhum caractere de continua@,{c}@~ao (para continuar linhas quebradas) @'e reconhecido.
+
+@var{separator_flag} diz que caracteres separa elementos.
+Isso @'e um argumento opcional para todas as fun@,{c}@~oes de leitura e escrita.
+
+Para entrada, os valores de @var{separator_flag} reconhecidos s@~ao:
+@code{comma} para valores separados por v@'irgula,
+@code{pipe} para valores separados pelo caractere barra vertical @code{|},
+@code{semicolon} para valores separados por ponto e v@'irgula @code{;}, 
+e @code{space} para valores separados pelos caracteres de espa@,{c}o e de tabula@,{c}@~ao.
+Se o nome do arquivo a ser lido/escrito termina em @code{.csv} e @var{separator_flag} n@~ao for especificado,
+@code{comma} @'e assumido.
+Se o nome do arquivo termina em alguma outra coisa que n@~ao @code{.csv} e @code{separator_flag} n@~ao for especificado,
+@code{space} @'e assumido.
+
+Para sa@'ida, os mesmos quatro sinalizadores s@~ao reconhecidos como na entrada,
+e tamb@'em @code{tab}, para valores separados pelo caractere de tabula@,{c}ao.
+
+Em entrada, m@'ultiplos espa@,{c}os e multiplas tabula@,{c}@~oes sucessivas contam como um separador simples.
+Todavia, m@'ultiplas v@'irgulas, barras verticais, ou ponto-e-v@'irgulas s@~ao significativos.
+Sucessivas v@'irgulas, barras verticais, ou ponto-e-v@'irgulas s@~ao (com ou sem intercala@,{c}@~ao de espa@,{c}os ou tabula@,{c}@~oes)
+s@~ao considerados como tendo @code{false} entre os separadores.
+Por exemplo, @code{1234,,Foo} @'e tratado da mesma forma que @code{1234,false,Foo}.
+Em sa@'idas, os @'atomos @code{false} s@~ao escritos como tais;
+uma lista @code{[1234, false, Foo]} @'e escrita @code{1234,false,Foo},
+e n@~ao @'e tentado colapsar a sa@'ida para @code{1234,,Foo}.
+
+@node Defini@value{cedilha}@~oes para numericalio,  , Introdu@value{cedilha}@~ao a numericalio, numericalio
+@section Defini@value{cedilha}@~oes para numericalio
+
+@deffn {Fun@value{cedilha}@~ao} read_matrix (@var{nome_arquivo})
+@deffnx {Fun@value{cedilha}@~ao} read_matrix (@var{nome_arquivo}, @var{separator_flag})
+Reads the file @var{nome_arquivo} and returns its entire content as a matrix.
+If @var{separator_flag} is not specified, the file is assumed space-delimited.
+
+@code{read_matrix} infers the size of the matrix from the input data.
+Each line of the file becomes one row of the matrix.
+If some lines have different lengths, @code{read_matrix} complains.
+
+@end deffn
+
+@deffn {Fun@value{cedilha}@~ao} read_lisp_array (@var{nome_arquivo}, @var{A})
+@deffnx {Fun@value{cedilha}@~ao} read_lisp_array (@var{nome_arquivo}, @var{A}, @var{separator_flag})
+
+@code{read_lisp_array} exige que o array
+seja declarado atrav@'es de @code{make_array} antes de chamar
+a fun@,{c}@~ao de leitura. (Isso obviamente @'e necess@'ario para inferir a dimens@~ao 
+do array, que pode ser uma hassle para arrays com m@'ultiplas dimens@~oes.)
+
+@code{read_lisp_array} n@~ao verifica para ver se o 
+arquivo de entrada est@'a de acordo com as dimens@~aoes do array; a entrada
+@'e lida como uma lista mon@'otona, ent@~ao o array @'e preenchido usando @code{fillarray}.
+
+@end deffn
+
+@deffn {Fun@value{cedilha}@~ao} read_maxima_array (@var{nome_arquivo}, @var{A})
+@deffnx {Fun@value{cedilha}@~ao} read_maxima_array (@var{nome_arquivo}, @var{A}, @var{separator_flag})
+
+@code{read_maxima_array} requer que o array
+seja declarado atrav@'es de @code{array} antes de chamar
+a fun@,{c}@~ao de leitura. (Isso obviamente @'e necess@'ario para inferir a dimens@~ao 
+do array, que pode ser uma hassle para arrays com m@'ultiplas dimens@~oes.)
+
+@code{read_maxima_array} n@~ao verifica para ver se o 
+arquivo de entrada est@'a de acordo com as dimens@~aoes do array; a entrada
+@'e lida como uma lista mon@'otona, ent@~ao o array @'e preenchido usando @code{fillarray}.
+
+@end deffn
+
+@deffn {Fun@value{cedilha}@~ao} read_hashed_array (@var{nome_arquivo}, @var{A})
+@deffnx {Fun@value{cedilha}@~ao} read_hashed_array (@var{nome_arquivo}, @var{A}, @var{separator_flag})
+
+@code{read_hashed_array} trata o primeiro item sobre uma linha como uma
+chave hash, e associa o restante da linha (como uma lista) com a chava.
+Por exemplo,
+a linha @code{567 12 17 32 55} @'e equivalente a @code{A[567]: [12, 17, 32, 55]$}.
+Linhas n@~ao precisam ter o mesmo n@'umero de elementos.
+
+@end deffn
+
+@deffn {Fun@value{cedilha}@~ao} read_nested_list (@var{nome_arquivo})
+@deffnx {Fun@value{cedilha}@~ao} read_nested_list (@var{nome_arquivo}, @var{separator_flag})
+
+@code{read_nested_list} retorna uma lista que tem uma sublista para cada
+linha de entrada. Linhas n@~ao precisam ter o mesmo n´umero de elementos.
+Linhas vazias @i{n@~ao} s@~ao ignoradas: uma linha vazia retorna uma sublista vazia.
+
+@end deffn
+
+@deffn {Fun@value{cedilha}@~ao} read_list (@var{nome_arquivo})
+@deffnx {Fun@value{cedilha}@~ao} read_list (@var{nome_arquivo}, @var{separator_flag})
+
+@code{read_list} l@^e todas as entradas em uma lista mon@'otona.
+@code{read_list} ignora o caractere de fim de linha.
+
+@end deffn
+
+@deffn {Fun@value{cedilha}@~ao} write_data (@var{X}, @var{nome_arquivo})
+@deffnx {Fun@value{cedilha}@~ao} write_data (@var{object}, @var{nome_arquivo}, @var{separator_flag})
+
+@code{write_data} escreve o objeto @var{X} no arquivo @var{nome_arquivo}.
+
+@code{write_data} escreve matrizes da forma usual,
+com uma linha por fileira.
+
+@code{write_data} escreve arrays declarados do Lisp e do Maxima da
+forma usual, com um caractere de nova linha no final de todo peda@,{c}o.
+Peda@,{c}os dimensionais muito grandes s@~ao separados por meio de novas linhas adicionais.
+
+@code{write_data} escreve arrays desordenados com uma chave seguida por
+a lista associada sobre cada linha.
+
+@code{write_data} escreve a lista seguinte com cada sublista em uma linha.
+
+@code{write_data} escreve uma lista mon@'otona toda em uma linha.
+
+Se @code{write_data} anexa ao final ou abandona os excessos em seus arquivos de sa@'ida
+@'e governado atrav@'es da vari@'avel global @code{file_output_append}.
+
+@end deffn
+
