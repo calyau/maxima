@@ -221,13 +221,13 @@ Pacotes Adicionais
 * lsquares::                    M@'etodo dos m@'inimos quadrados.
 * makeOrders::                  Expoentes de polin@^omios.
 * mnewton::                     M@'etodo de Newton.
-* numericalio::                 Leitura e escritura de ficheiros.
+* numericalio::                 Leitura e escritura de arquivos.
 * opsubst::                     Comandos para subsitui@,{c}@~oes.
 * orthopoly::                   Polin@'omios ortogonais.
 * plotdf::                      Gr@'aficos de campos de direc@,{c}@~oes.
 * simplex::                     Programa@,{c}@~ao linear.
 * simplification::              Fun@,{c}@~oes e regras de simplifica@,{c}@~ao.
-* solve_rec::                   Rela@,{c}@~oes de recorr@^encia lineares.
+* solve_rec::                   Rela@,{c}@~oes de recorr@^encias lineares.
 * stats::                       Pacote de infer@^encias estat@'isticas.
 * stirling::                    F@'ormula de Stirling.
 * stringproc::                  Processamento de cadeias de texto.
