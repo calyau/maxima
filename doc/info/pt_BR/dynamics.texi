@@ -1,4 +1,5 @@
-@c english version 1.10
+@c Language: Portuguese, Encoding: iso-8859-1
+@c /dynamics.texi/1.10/Tue Dec 12 04:06:49 2006//
 @menu
 * Introdu@value{cedilha}@~ao a dynamics::
 * Defini@value{cedilha}@~oes para dynamics::
@@ -76,7 +77,8 @@ ser duas express@~oes que dependam unicamente de @var{x} e @var{y}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} ifs (@code{[}@var{r1},...,@var{rm}@code{]},@code{[}@var{A1},...,@var{Am}@code{]}, @code{[[}@var{x1},@var{y1}@code{]}...@code{[}@var{xm}, @var{ym}@code{]]}, @code{[}@var{x0},@var{y0}@code{]}, @var{n}, ...op@value{cedilha}@~oes...);
+@deffn {Fun@value{cedilha}@~ao} ifs (@code{[}@var{r1},...,@var{rm}@code{]},@code{[}@var{A1},...,@var{Am}@code{]}, @code{[[}@var{x1},@var{y1}@code{]}...@code{[}@var{xm}, @var{ym}@code{]]}, @code{[}@var{x0},@var{y0}@code{]},
+@var{n}, ...op@value{cedilha}@~oes...);
 
 Usa o m@'etodo do Sistema de Fun@value{cedilha}@~oes Iteradas (IFS, em
 ingl@^es @emph{Iterated Function System}). Esse m@'etodo @'e semelhante
