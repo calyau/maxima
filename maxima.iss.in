@@ -43,7 +43,7 @@ Name: "fr"; MessagesFile: "compiler:Languages\French.isl"; InfoBeforeFile: "inte
 Name: "de"; MessagesFile: "compiler:Languages\German.isl"; InfoBeforeFile: "interfaces\xmaxima\win32\InfoBefore_de.txt"; InfoAfterFile: "interfaces\xmaxima\win32\readme_de.txt"
 Name: "it"; MessagesFile: "compiler:Languages\Italian.isl"; InfoBeforeFile: "interfaces\xmaxima\win32\InfoBefore_it.txt"; InfoAfterFile: "interfaces\xmaxima\win32\readme_it.txt"
 Name: "es"; MessagesFile: "compiler:Languages\Spanish.isl"; InfoBeforeFile: "interfaces\xmaxima\win32\InfoBefore_es.txt"; InfoAfterFile: "interfaces\xmaxima\win32\readme_es.txt"
-Name: "pt_BR"; MessagesFile: "compiler:Languages\BrazilianPortuguese.isl"; InfoBeforeFile: "interfaces\xmaxima\win32\InfoBefore.txt"; InfoAfterFile: "interfaces\xmaxima\win32\readme_en.txt"
+Name: "pt_BR"; MessagesFile: "compiler:Languages\BrazilianPortuguese.isl"; InfoBeforeFile: "interfaces\xmaxima\win32\InfoBefore_pt_BR.txt"; InfoAfterFile: "interfaces\xmaxima\win32\readme_pt_BR.txt"
 Name: "pt"; MessagesFile: "compiler:Languages\Portuguese.isl"; InfoBeforeFile: "interfaces\xmaxima\win32\InfoBefore_pt.txt"; InfoAfterFile: "interfaces\xmaxima\win32\readme_pt.txt"
 Name: "ru"; MessagesFile: "compiler:Languages\Russian.isl"; InfoBeforeFile: "interfaces\xmaxima\win32\InfoBefore_ru.txt"; InfoAfterFile: "interfaces\xmaxima\win32\readme_ru.txt"
 
@@ -276,76 +276,78 @@ it.ReferenceManualSpanish=Manuale di Riferimento (Spagnolo)
 
 ;=== Portuguese (Brazilian) ===  LID=$0416  CodePage=1252
 
-pt_BR.FullInstallation=Full installation
-pt_BR.CompactInstallation=Compact installation
-pt_BR.CustomInstallation=Custom istalation
-pt_BR.Uninstall=Uninstall
+pt_BR.FullInstallation=Instalação completa
+pt_BR.CompactInstallation=Instalação compacta
+pt_BR.CustomInstallation=Instalação personalizada
+pt_BR.Uninstall=Desinstalar
 
-pt_BR.MaximaCore=Maxima core with command line interface
-pt_BR.wxMaximaGraphicShell=wxMaxima graphic shell
-pt_BR.XMaximaGraphicShell=XMaxima graphic shell
-pt_BR.MaximaLanguagePacks=Maxima language packs
+pt_BR.MaximaCore=Núcleo do Maxima com interface de linha de comandos
+pt_BR.wxMaximaGraphicShell=shell gráfica wxMaxima
+pt_BR.XMaximaGraphicShell=shell gráfica XMaxima
+pt_BR.MaximaLanguagePacks=pacotes linguísticos do Maxima
 
-pt_BR.German=German
-pt_BR.French=French
-pt_BR.Italian=Italian
-pt_BR.Portuguese=Portuguese
-pt_BR.Russian=Russian
-pt_BR.Spanish=Spanish
+pt_BR.German=Alemão
+pt_BR.French=Francês
+pt_BR.Italian=Italiano
+pt_BR.Portuguese=Português
+pt_BR.PortugueseBrazil=Português do Brasil
+pt_BR.Russian=Russo
+pt_BR.Spanish=Espanhol
 
-pt_BR.CreateMyDesktopIcon=Create %1 desktop icon
+pt_BR.CreateMyDesktopIcon=Criar ícone na Área de Trabalho para %1
 
-pt_BR.CommandLineMaxima=Command line Maxima
-pt_BR.Introduction=Introduction
-pt_BR.ReferenceManual=Reference Manual
-pt_BR.Readme=README
-pt_BR.ReadmeMenuEntry=README
+pt_BR.CommandLineMaxima=Maxima em Linha de Comandos
+pt_BR.Introduction=Introdução 
+pt_BR.ReferenceManual=Manual de Referência
+pt_BR.Readme=LEIAME
+pt_BR.ReadmeMenuEntry=LEIAME
 
-pt_BR.OnlineForum=%1 Online Forum
+pt_BR.OnlineForum=Fórum na internet para %1
 
-pt_BR.ReferenceManualGerman=Reference Manual (German)
-pt_BR.ReferenceManualFrench=Reference Manual (French)
-pt_BR.ReferenceManualItalian=Reference Manual (Italian)
-pt_BR.ReferenceManualPortuguese=Reference Manual (Portuguese)
-pt_BR.ReferenceManualRussian=Reference Manual (Russian)
-pt_BR.ReferenceManualSpanish=Reference Manual (Spanish)
+pt_BR.ReferenceManualGerman=Manual de Referência (Alemão)
+pt_BR.ReferenceManualFrench=Manual de Referência (Francês)
+pt_BR.ReferenceManualItalian=Manual de Referência (Italiano)
+pt_BR.ReferenceManualPortuguese=Manual de Referência (Português)
+pt_BR.ReferenceManualPortugueseBrazil=Manual de Referência (Português do Brasil)
+pt_BR.ReferenceManualRussian=Manual de Referência (Russo)
+pt_BR.ReferenceManualSpanish=Manual de Referência (Espanhol)
 
 
 ;=== Portuguese ===  LID=$0816  CodePage=1252
 
-pt.FullInstallation=InstalaÃ§Ã£o completa
-pt.CompactInstallation=InstalaÃ§Ã£o compacta
-pt.CustomInstallation=InstalaÃ§Ã£o personalizada
+pt.FullInstallation=Instalação completa
+pt.CompactInstallation=Instalação compacta
+pt.CustomInstallation=Instalação personalizada
 pt.Uninstall=Desinstalar
 
-pt.MaximaCore=NÃºcleo do Maxima com interface de linha de comandos
-pt.wxMaximaGraphicShell=shell grÃ¡fica wxMaxima
-pt.XMaximaGraphicShell=shell grÃ¡fica XMaxima
-pt.MaximaLanguagePacks=pacotes linguÃ­sticas do Maxima
+pt.MaximaCore=Núcleo do Maxima com interface de linha de comandos
+pt.wxMaximaGraphicShell=shell gráfica wxMaxima
+pt.XMaximaGraphicShell=shell gráfica XMaxima
+pt.MaximaLanguagePacks=pacotes linguísticas do Maxima
 
-pt.German=AlemÃ£o
-pt.French=FrancÃªs
+pt.German=Alemão
+pt.French=Francês
 pt.Italian=Italiano
-pt.Portuguese=PortuguÃªs
+pt.Portuguese=Português
 pt.Russian=Russo
 pt.Spanish=Espanhol
 
-pt.CreateMyDesktopIcon=Criar Ã­cone no escritÃ³rio para %1
+pt.CreateMyDesktopIcon=Criar ícone no escritório para %1
 
 pt.CommandLineMaxima=Maxima em Linha de Comandos
-pt.Introduction=IntroduÃ§Ã£o 
-pt.ReferenceManual=Manual de ReferÃªncia
+pt.Introduction=Introdução 
+pt.ReferenceManual=Manual de Referência
 pt.Readme=LEIAME
 pt.ReadmeMenuEntry=LEIAME
 
-pt.OnlineForum=FÃ³rum na rede para %1
+pt.OnlineForum=Fórum na rede para %1
 
-pt.ReferenceManualGerman=Manual de ReferÃªncia (AlemÃ£o)
-pt.ReferenceManualFrench=Manual de ReferÃªncia (FrancÃªs)
-pt.ReferenceManualItalian=Manual de ReferÃªncia (Italiano)
-pt.ReferenceManualPortuguese=Manual de ReferÃªncia (PortuguÃªs)
-pt.ReferenceManualRussian=Manual de ReferÃªncia (Russo)
-pt.ReferenceManualSpanish=Manual de ReferÃªncia (Espanhol)
+pt.ReferenceManualGerman=Manual de Referência (Alemão)
+pt.ReferenceManualFrench=Manual de Referência (Francês)
+pt.ReferenceManualItalian=Manual de Referência (Italiano)
+pt.ReferenceManualPortuguese=Manual de Referência (Português)
+pt.ReferenceManualRussian=Manual de Referência (Russo)
+pt.ReferenceManualSpanish=Manual de Referência (Espanhol)
 
 
 ;=== Russian ===  LID=$0419  CodePage=1251
