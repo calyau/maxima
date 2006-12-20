@@ -1,5 +1,5 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2006/01/31 15:11:05 
-;;; Using Lisp CMU Common Lisp Snapshot 2006-01 (19C)
+;;; Compiled by f2cl version 2.0 beta Date: 2006/11/28 21:41:12 
+;;; Using Lisp CMU Common Lisp Snapshot 2006-12 (19D)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
@@ -10,11 +10,11 @@
 
 
 (let ((rttpi 0.398942280401433) (inlim 80))
-  (declare (type f2cl-lib:integer4 inlim) (type double-float rttpi))
+  (declare (type (f2cl-lib:integer4) inlim) (type (double-float) rttpi))
   (defun dbesi (x alpha kode n y nz)
     (declare (type (array double-float (*)) y)
-             (type f2cl-lib:integer4 nz n kode)
-             (type double-float alpha x))
+             (type (f2cl-lib:integer4) nz n kode)
+             (type (double-float) alpha x))
     (f2cl-lib:with-multi-array-data
         ((y double-float y-%data% y-%offset%))
       (prog ((temp (make-array 3 :element-type 'double-float)) (ain 0.0)
@@ -24,19 +24,17 @@
              (fnu 0.0) (gln 0.0) (ra 0.0) (s 0.0) (sx 0.0) (sxo2 0.0) (s1 0.0)
              (s2 0.0) (ta 0.0) (tb 0.0) (tfn 0.0) (tm 0.0) (tol 0.0) (trx 0.0)
              (t2 0.0) (xo2 0.0) (xo2l 0.0) (z 0.0) (i 0) (ialp 0) (in 0) (is 0)
-             (i1 0) (k 0) (kk 0) (km 0) (kt 0) (nn 0) (ns 0) (t$ 0.0)
-             (abs$ 0.0f0))
-        (declare (type single-float abs$)
-                 (type f2cl-lib:integer4 ns nn kt km kk k i1 is in ialp i)
+             (i1 0) (k 0) (kk 0) (km 0) (kt 0) (nn 0) (ns 0) (t$ 0.0))
+        (declare (type (f2cl-lib:integer4) ns nn kt km kk k i1 is in ialp i)
                  (type (array double-float (3)) temp)
-                 (type double-float t$ z xo2l xo2 t2 trx tol tm tfn tb ta s2 s1
-                                    sxo2 sx s ra gln fnu fnp1 fni fnf fn flgik
-                                    etx elim earg dx dtm dfn tolln atol arg ap
-                                    ans akm ak ain))
+                 (type (double-float) t$ z xo2l xo2 t2 trx tol tm tfn tb ta s2
+                                      s1 sxo2 sx s ra gln fnu fnp1 fni fnf fn
+                                      flgik etx elim earg dx dtm dfn tolln atol
+                                      arg ap ans akm ak ain))
         (setf nz 0)
         (setf kt 1)
         (setf ra (f2cl-lib:d1mach 3))
-        (setf tol (max ra 1.e-15))
+        (setf tol (max ra 1.0e-15))
         (setf i1 (f2cl-lib:int-sub (f2cl-lib:i1mach 15)))
         (setf gln (f2cl-lib:d1mach 5))
         (setf elim (* 2.303 (- (* i1 gln) 3.0)))
@@ -56,7 +54,7 @@
        label30
         (f2cl-lib:arithmetic-if alpha (go label580) (go label40) (go label50))
        label40
-        (f2cl-lib:fset (f2cl-lib:fref y-%data% (1) ((1 *)) y-%offset%) 1.0)
+        (setf (f2cl-lib:fref y-%data% (1) ((1 *)) y-%offset%) 1.0)
         (if (= n 1) (go end_label))
         (setf i1 2)
         (go label60)
@@ -66,7 +64,7 @@
         (f2cl-lib:fdo (i i1 (f2cl-lib:int-add i 1))
                       ((> i n) nil)
           (tagbody
-            (f2cl-lib:fset (f2cl-lib:fref y-%data% (i) ((1 *)) y-%offset%) 0.0)
+            (setf (f2cl-lib:fref y-%data% (i) ((1 *)) y-%offset%) 0.0)
            label70))
         (go end_label)
        label80
@@ -144,12 +142,12 @@
         (go label130)
        label160
         (if (/= km 0) (go label170))
-        (f2cl-lib:fset (f2cl-lib:fref y-%data% (1) ((1 *)) y-%offset%)
-                       (f2cl-lib:fref temp (3) ((1 3))))
+        (setf (f2cl-lib:fref y-%data% (1) ((1 *)) y-%offset%)
+                (f2cl-lib:fref temp (3) ((1 3))))
         (go end_label)
        label170
-        (f2cl-lib:fset (f2cl-lib:fref temp (1) ((1 3)))
-                       (f2cl-lib:fref temp (3) ((1 3))))
+        (setf (f2cl-lib:fref temp (1) ((1 3)))
+                (f2cl-lib:fref temp (3) ((1 3))))
         (setf in ns)
         (setf kt 1)
         (setf i1 0)
@@ -165,7 +163,7 @@
         (setf t$ (+ (* ra (- 1.0 etx)) (/ etx (+ z ra))))
         (setf arg (* fn (- t$ gln)))
        label190
-        (setf i1 (f2cl-lib:int (abs (f2cl-lib:int-sub 3 is))))
+        (setf i1 (abs (f2cl-lib:int-sub 3 is)))
         (setf i1 (max (the f2cl-lib:integer4 i1) (the f2cl-lib:integer4 1)))
         (setf flgik 1.0)
         (multiple-value-bind (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7)
@@ -199,7 +197,7 @@
             (setf s1 (+ s1 fn))
            label250))
        label260
-        (f2cl-lib:fset (f2cl-lib:fref temp (is) ((1 3))) (* s earg))
+        (setf (f2cl-lib:fref temp (is) ((1 3))) (* s earg))
         (f2cl-lib:computed-goto (label270 label350 label500) is)
        label270
         (setf earg (/ (* earg fn) xo2))
@@ -209,7 +207,7 @@
         (setf is 2)
         (go label240)
        label280
-        (f2cl-lib:fset (f2cl-lib:fref y-%data% (nn) ((1 *)) y-%offset%) 0.0)
+        (setf (f2cl-lib:fref y-%data% (nn) ((1 *)) y-%offset%) 0.0)
         (setf nn (f2cl-lib:int-sub nn 1))
         (setf fni (- fni 1.0))
         (setf dfn (+ fni fnf))
@@ -223,7 +221,7 @@
         (setf is 2)
         (go label130)
        label300
-        (f2cl-lib:fset (f2cl-lib:fref y-%data% (nn) ((1 *)) y-%offset%) 0.0)
+        (setf (f2cl-lib:fref y-%data% (nn) ((1 *)) y-%offset%) 0.0)
         (setf nn (f2cl-lib:int-sub nn 1))
         (setf fnp1 fn)
         (setf fni (- fni 1.0))
@@ -265,18 +263,22 @@
             (setf dtm (- dtm 1.0))
             (setf tm (* (+ dtm fnf) trx))
            label380))
-        (f2cl-lib:fset (f2cl-lib:fref y-%data% (nn) ((1 *)) y-%offset%) s1)
+        (setf (f2cl-lib:fref y-%data% (nn) ((1 *)) y-%offset%) s1)
         (if (= nn 1) (go end_label))
-        (f2cl-lib:fset
-         (f2cl-lib:fref y-%data% ((f2cl-lib:int-sub nn 1)) ((1 *)) y-%offset%)
-         s2)
+        (setf (f2cl-lib:fref y-%data%
+                             ((f2cl-lib:int-sub nn 1))
+                             ((1 *))
+                             y-%offset%)
+                s2)
         (if (= nn 2) (go end_label))
         (go label400)
        label390
-        (f2cl-lib:fset (f2cl-lib:fref y-%data% (nn) ((1 *)) y-%offset%) s1)
-        (f2cl-lib:fset
-         (f2cl-lib:fref y-%data% ((f2cl-lib:int-sub nn 1)) ((1 *)) y-%offset%)
-         s2)
+        (setf (f2cl-lib:fref y-%data% (nn) ((1 *)) y-%offset%) s1)
+        (setf (f2cl-lib:fref y-%data%
+                             ((f2cl-lib:int-sub nn 1))
+                             ((1 *))
+                             y-%offset%)
+                s2)
         (if (= nn 2) (go end_label))
        label400
         (setf k (f2cl-lib:int-add nn 1))
@@ -284,25 +286,24 @@
                       ((> i nn) nil)
           (tagbody
             (setf k (f2cl-lib:int-sub k 1))
-            (f2cl-lib:fset
-             (f2cl-lib:fref y-%data%
-                            ((f2cl-lib:int-sub k 2))
-                            ((1 *))
-                            y-%offset%)
-             (+
-              (* tm
-                 (f2cl-lib:fref y-%data%
-                                ((f2cl-lib:int-sub k 1))
-                                ((1 *))
-                                y-%offset%))
-              (f2cl-lib:fref y-%data% (k) ((1 *)) y-%offset%)))
+            (setf (f2cl-lib:fref y-%data%
+                                 ((f2cl-lib:int-sub k 2))
+                                 ((1 *))
+                                 y-%offset%)
+                    (+
+                     (* tm
+                        (f2cl-lib:fref y-%data%
+                                       ((f2cl-lib:int-sub k 1))
+                                       ((1 *))
+                                       y-%offset%))
+                     (f2cl-lib:fref y-%data% (k) ((1 *)) y-%offset%)))
             (setf dtm (- dtm 1.0))
             (setf tm (* (+ dtm fnf) trx))
            label410))
         (go end_label)
        label420
-        (f2cl-lib:fset (f2cl-lib:fref y-%data% (1) ((1 *)) y-%offset%)
-                       (f2cl-lib:fref temp (2) ((1 3))))
+        (setf (f2cl-lib:fref y-%data% (1) ((1 *)) y-%offset%)
+                (f2cl-lib:fref temp (2) ((1 3))))
         (go end_label)
        label430
         (setf earg (/ rttpi (f2cl-lib:fsqrt x)))
@@ -342,7 +343,7 @@
             (setf ak (+ ak 8.0))
            label470))
        label480
-        (f2cl-lib:fset (f2cl-lib:fref temp (is) ((1 3))) (* s earg))
+        (setf (f2cl-lib:fref temp (is) ((1 3))) (* s earg))
         (if (= is 2) (go label360))
         (setf is 2)
         (setf fni (- fni 1.0))
@@ -397,12 +398,12 @@
         (setf in ns)
         (if (/= ns 0) (go label530))
        label550
-        (f2cl-lib:fset (f2cl-lib:fref y-%data% (nn) ((1 *)) y-%offset%) tb)
+        (setf (f2cl-lib:fref y-%data% (nn) ((1 *)) y-%offset%) tb)
         (setf nz (f2cl-lib:int-sub n nn))
         (if (= nn 1) (go end_label))
         (setf tb (+ (* tm tb) ta))
         (setf k (f2cl-lib:int-sub nn 1))
-        (f2cl-lib:fset (f2cl-lib:fref y-%data% (k) ((1 *)) y-%offset%) tb)
+        (setf (f2cl-lib:fref y-%data% (k) ((1 *)) y-%offset%) tb)
         (if (= nn 2) (go end_label))
         (setf dtm (- dtm 1.0))
         (setf tm (* (+ dtm fnf) trx))
@@ -410,16 +411,15 @@
         (f2cl-lib:fdo (i 1 (f2cl-lib:int-add i 1))
                       ((> i km) nil)
           (tagbody
-            (f2cl-lib:fset
-             (f2cl-lib:fref y-%data%
-                            ((f2cl-lib:int-sub k 1))
-                            ((1 *))
-                            y-%offset%)
-             (+ (* tm (f2cl-lib:fref y-%data% (k) ((1 *)) y-%offset%))
-                (f2cl-lib:fref y-%data%
-                               ((f2cl-lib:int-add k 1))
-                               ((1 *))
-                               y-%offset%)))
+            (setf (f2cl-lib:fref y-%data%
+                                 ((f2cl-lib:int-sub k 1))
+                                 ((1 *))
+                                 y-%offset%)
+                    (+ (* tm (f2cl-lib:fref y-%data% (k) ((1 *)) y-%offset%))
+                       (f2cl-lib:fref y-%data%
+                                      ((f2cl-lib:int-add k 1))
+                                      ((1 *))
+                                      y-%offset%)))
             (setf dtm (- dtm 1.0))
             (setf tm (* (+ dtm fnf) trx))
             (setf k (f2cl-lib:int-sub k 1))
@@ -442,4 +442,17 @@
         (go end_label)
        end_label
         (return (values nil nil nil nil nil nz))))))
+
+(in-package #:cl-user)
+#+#.(cl:if (cl:find-package '#:f2cl) '(:and) '(:or))
+(eval-when (:load-toplevel :compile-toplevel :execute)
+  (setf (gethash 'fortran-to-lisp::dbesi fortran-to-lisp::*f2cl-function-info*)
+          (fortran-to-lisp::make-f2cl-finfo
+           :arg-types '((double-float) (double-float)
+                        (fortran-to-lisp::integer4) (fortran-to-lisp::integer4)
+                        (array double-float (*)) (fortran-to-lisp::integer4))
+           :return-values '(nil nil nil nil nil fortran-to-lisp::nz)
+           :calls '(fortran-to-lisp::xermsg fortran-to-lisp::dlngam
+                    fortran-to-lisp::dasyik fortran-to-lisp::i1mach
+                    fortran-to-lisp::d1mach))))
 

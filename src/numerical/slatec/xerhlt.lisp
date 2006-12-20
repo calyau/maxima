@@ -1,5 +1,5 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2006/01/31 15:11:05 
-;;; Using Lisp CMU Common Lisp Snapshot 2006-01 (19C)
+;;; Compiled by f2cl version 2.0 beta Date: 2006/11/28 21:41:12 
+;;; Using Lisp CMU Common Lisp Snapshot 2006-12 (19D)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -12,4 +12,14 @@
 (defun xerhlt (messg)
   (declare (type (simple-array character (*)) messg))
   (prog () (declare) (f2cl-lib::stop nil) end_label (return (values nil))))
+
+(in-package #:cl-user)
+#+#.(cl:if (cl:find-package '#:f2cl) '(:and) '(:or))
+(eval-when (:load-toplevel :compile-toplevel :execute)
+  (setf (gethash 'fortran-to-lisp::xerhlt
+                 fortran-to-lisp::*f2cl-function-info*)
+          (fortran-to-lisp::make-f2cl-finfo
+           :arg-types '((simple-array character (*)))
+           :return-values '(nil)
+           :calls 'nil)))
 

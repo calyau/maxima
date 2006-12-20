@@ -1,5 +1,5 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2006/01/31 15:11:05 
-;;; Using Lisp CMU Common Lisp Snapshot 2006-01 (19C)
+;;; Compiled by f2cl version 2.0 beta Date: 2006/11/28 21:41:12 
+;;; Using Lisp CMU Common Lisp Snapshot 2006-12 (19D)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -193,13 +193,13 @@
            (type (simple-array double-float (40)) bm02cs)
            (type (simple-array double-float (44)) bth0cs)
            (type (simple-array double-float (37)) bm0cs)
-           (type double-float pi4 xmax)
-           (type f2cl-lib:integer4 nbth0 nbm02 nbt02 nbm0))
+           (type (double-float) pi4 xmax)
+           (type (integer) nbth0 nbm02 nbt02 nbm0))
   (setq first$ f2cl-lib:%true%)
   (defun d9b0mp (x ampl theta)
-    (declare (type double-float theta ampl x))
+    (declare (type (double-float) theta ampl x))
     (prog ((z 0.0) (eta 0.0f0))
-      (declare (type single-float eta) (type double-float z))
+      (declare (type (single-float) eta) (type (double-float) z))
       (cond
         (first$
          (setf eta (* 0.1f0 (f2cl-lib:freal (f2cl-lib:d1mach 3))))
@@ -224,4 +224,15 @@
       (go end_label)
      end_label
       (return (values nil ampl theta)))))
+
+(in-package #:cl-user)
+#+#.(cl:if (cl:find-package '#:f2cl) '(:and) '(:or))
+(eval-when (:load-toplevel :compile-toplevel :execute)
+  (setf (gethash 'fortran-to-lisp::d9b0mp
+                 fortran-to-lisp::*f2cl-function-info*)
+          (fortran-to-lisp::make-f2cl-finfo
+           :arg-types '((double-float) (double-float) (double-float))
+           :return-values '(nil fortran-to-lisp::ampl fortran-to-lisp::theta)
+           :calls '(fortran-to-lisp::dcsevl fortran-to-lisp::xermsg
+                    fortran-to-lisp::initds fortran-to-lisp::d1mach))))
 

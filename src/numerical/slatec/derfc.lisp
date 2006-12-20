@@ -1,5 +1,5 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2006/01/31 15:11:05 
-;;; Using Lisp CMU Common Lisp Snapshot 2006-01 (19C)
+;;; Compiled by f2cl version 2.0 beta Date: 2006/11/28 21:41:12 
+;;; Using Lisp CMU Common Lisp Snapshot 2006-12 (19D)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -158,13 +158,13 @@
            (type (simple-array double-float (59)) erfccs)
            (type (simple-array double-float (49)) erc2cs)
            (type (simple-array double-float (21)) erfcs)
-           (type double-float sqrtpi sqeps xmax xsml)
-           (type f2cl-lib:integer4 nterc2 nterfc nterf))
+           (type (double-float) sqrtpi sqeps xmax xsml)
+           (type (integer) nterc2 nterfc nterf))
   (setq first$ f2cl-lib:%true%)
   (defun derfc (x)
-    (declare (type double-float x))
-    (prog ((txmax 0.0) (y 0.0) (derfc 0.0) (abs$ 0.0f0) (eta 0.0f0))
-      (declare (type single-float eta abs$) (type double-float derfc y txmax))
+    (declare (type (double-float) x))
+    (prog ((txmax 0.0) (y 0.0) (derfc 0.0) (eta 0.0f0))
+      (declare (type (single-float) eta) (type (double-float) derfc y txmax))
       (cond
         (first$
          (setf eta (* 0.1f0 (f2cl-lib:freal (f2cl-lib:d1mach 3))))
@@ -186,7 +186,7 @@
       (go end_label)
      label20
       (if (> x xmax) (go label40))
-      (setf y (coerce (abs x) 'double-float))
+      (setf y (abs x))
       (if (> y 1.0) (go label30))
       (if (< y sqeps) (setf derfc (+ 1.0 (/ (* -2.0 x) sqrtpi))))
       (if (>= y sqeps)
@@ -213,4 +213,15 @@
       (go end_label)
      end_label
       (return (values derfc nil)))))
+
+(in-package #:cl-user)
+#+#.(cl:if (cl:find-package '#:f2cl) '(:and) '(:or))
+(eval-when (:load-toplevel :compile-toplevel :execute)
+  (setf (gethash 'fortran-to-lisp::derfc fortran-to-lisp::*f2cl-function-info*)
+          (fortran-to-lisp::make-f2cl-finfo :arg-types '((double-float))
+                                            :return-values '(nil)
+                                            :calls '(fortran-to-lisp::xermsg
+                                                     fortran-to-lisp::dcsevl
+                                                     fortran-to-lisp::initds
+                                                     fortran-to-lisp::d1mach))))
 

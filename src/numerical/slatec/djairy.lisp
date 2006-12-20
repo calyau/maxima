@@ -1,5 +1,5 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2006/01/31 15:11:05 
-;;; Using Lisp CMU Common Lisp Snapshot 2006-01 (19C)
+;;; Compiled by f2cl version 2.0 beta Date: 2006/11/28 21:41:12 
+;;; Using Lisp CMU Common Lisp Snapshot 2006-12 (19D)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -250,17 +250,17 @@
            (type (simple-array double-float (19)) dajn dajp ajn ajp)
            (type (simple-array double-float (23)) ak2)
            (type (simple-array double-float (14)) dak3 dak1 ak3 ak1)
-           (type double-float con5 con4 con3 con2 fpi12)
-           (type f2cl-lib:integer4 m4d m3d m2d m1d n4d n3d n2d n1d m4 m3 m2 m1
-                                   n4 n3 n2 n1))
+           (type (double-float) con5 con4 con3 con2 fpi12)
+           (type (f2cl-lib:integer4) m4d m3d m2d m1d n4d n3d n2d n1d m4 m3 m2
+                                     m1 n4 n3 n2 n1))
   (defun djairy (x rx c ai dai)
-    (declare (type double-float dai ai c rx x))
+    (declare (type (double-float) dai ai c rx x))
     (prog ((ccv 0.0) (cv 0.0) (ec 0.0) (e1 0.0) (e2 0.0) (f1 0.0) (f2 0.0)
            (rtrx 0.0) (scv 0.0) (t$ 0.0) (temp1 0.0) (temp2 0.0) (tt 0.0) (i 0)
            (j 0))
-      (declare (type f2cl-lib:integer4 j i)
-               (type double-float tt temp2 temp1 t$ scv rtrx f2 f1 e2 e1 ec cv
-                                  ccv))
+      (declare (type (f2cl-lib:integer4) j i)
+               (type (double-float) tt temp2 temp1 t$ scv rtrx f2 f1 e2 e1 ec
+                                    cv ccv))
       (if (< x 0.0) (go label90))
       (if (> c 5.0) (go label60))
       (if (> x 1.2) (go label30))
@@ -454,4 +454,16 @@
       (go end_label)
      end_label
       (return (values nil nil nil ai dai)))))
+
+(in-package #:cl-user)
+#+#.(cl:if (cl:find-package '#:f2cl) '(:and) '(:or))
+(eval-when (:load-toplevel :compile-toplevel :execute)
+  (setf (gethash 'fortran-to-lisp::djairy
+                 fortran-to-lisp::*f2cl-function-info*)
+          (fortran-to-lisp::make-f2cl-finfo
+           :arg-types '((double-float) (double-float) (double-float)
+                        (double-float) (double-float))
+           :return-values '(nil nil nil fortran-to-lisp::ai
+                            fortran-to-lisp::dai)
+           :calls 'nil)))
 

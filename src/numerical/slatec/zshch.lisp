@@ -1,5 +1,5 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2006/01/31 15:11:05 
-;;; Using Lisp CMU Common Lisp Snapshot 2006-01 (19C)
+;;; Compiled by f2cl version 2.0 beta Date: 2006/11/28 21:41:12 
+;;; Using Lisp CMU Common Lisp Snapshot 2006-12 (19D)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -10,9 +10,9 @@
 
 
 (defun zshch (zr zi cshr cshi cchr cchi)
-  (declare (type double-float cchi cchr cshi cshr zi zr))
+  (declare (type (double-float) cchi cchr cshi cshr zi zr))
   (prog ((ch 0.0) (cn 0.0) (sh 0.0) (sn 0.0))
-    (declare (type double-float sn sh cn ch))
+    (declare (type (double-float) sn sh cn ch))
     (setf sh (sinh zr))
     (setf ch (cosh zr))
     (setf sn (sin zi))
@@ -24,4 +24,15 @@
     (go end_label)
    end_label
     (return (values nil nil cshr cshi cchr cchi))))
+
+(in-package #:cl-user)
+#+#.(cl:if (cl:find-package '#:f2cl) '(:and) '(:or))
+(eval-when (:load-toplevel :compile-toplevel :execute)
+  (setf (gethash 'fortran-to-lisp::zshch fortran-to-lisp::*f2cl-function-info*)
+          (fortran-to-lisp::make-f2cl-finfo
+           :arg-types '((double-float) (double-float) (double-float)
+                        (double-float) (double-float) (double-float))
+           :return-values '(nil nil fortran-to-lisp::cshr fortran-to-lisp::cshi
+                            fortran-to-lisp::cchr fortran-to-lisp::cchi)
+           :calls 'nil)))
 

@@ -1,5 +1,5 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2006/01/31 15:11:05 
-;;; Using Lisp CMU Common Lisp Snapshot 2006-01 (19C)
+;;; Compiled by f2cl version 2.0 beta Date: 2006/11/28 21:41:12 
+;;; Using Lisp CMU Common Lisp Snapshot 2006-12 (19D)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
@@ -14,13 +14,13 @@
         work)
   (declare (type (array double-float (*)) work)
            (type (array f2cl-lib:integer4 (*)) iwork)
-           (type f2cl-lib:integer4 last$ lenw limit ier neval)
-           (type double-float abserr result epsrel epsabs b a))
+           (type (f2cl-lib:integer4) last$ lenw limit ier neval)
+           (type (double-float) abserr result epsrel epsabs b a))
   (f2cl-lib:with-multi-array-data
       ((iwork f2cl-lib:integer4 iwork-%data% iwork-%offset%)
        (work double-float work-%data% work-%offset%))
     (prog ((lvl 0) (l1 0) (l2 0) (l3 0))
-      (declare (type f2cl-lib:integer4 l3 l2 l1 lvl))
+      (declare (type (f2cl-lib:integer4) l3 l2 l1 lvl))
       (setf ier 6)
       (setf neval 0)
       (setf last$ 0)
@@ -66,4 +66,22 @@
                last$
                nil
                nil)))))
+
+(in-package #:cl-user)
+#+#.(cl:if (cl:find-package '#:f2cl) '(:and) '(:or))
+(eval-when (:load-toplevel :compile-toplevel :execute)
+  (setf (gethash 'fortran-to-lisp::dqags fortran-to-lisp::*f2cl-function-info*)
+          (fortran-to-lisp::make-f2cl-finfo
+           :arg-types '(t (double-float) (double-float) (double-float)
+                        (double-float) (double-float) (double-float)
+                        (fortran-to-lisp::integer4) (fortran-to-lisp::integer4)
+                        (fortran-to-lisp::integer4) (fortran-to-lisp::integer4)
+                        (fortran-to-lisp::integer4)
+                        (array fortran-to-lisp::integer4 (*))
+                        (array double-float (*)))
+           :return-values '(nil nil nil nil nil fortran-to-lisp::result
+                            fortran-to-lisp::abserr fortran-to-lisp::neval
+                            fortran-to-lisp::ier nil nil fortran-to-lisp::last$
+                            nil nil)
+           :calls '(fortran-to-lisp::xermsg fortran-to-lisp::dqagse))))
 

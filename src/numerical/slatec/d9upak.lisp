@@ -1,5 +1,5 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2006/01/31 15:11:05 
-;;; Using Lisp CMU Common Lisp Snapshot 2006-01 (19C)
+;;; Compiled by f2cl version 2.0 beta Date: 2006/11/28 21:41:12 
+;;; Using Lisp CMU Common Lisp Snapshot 2006-12 (19D)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -10,9 +10,9 @@
 
 
 (defun d9upak (x y n)
-  (declare (type f2cl-lib:integer4 n) (type double-float y x))
+  (declare (type (integer) n) (type (double-float) y x))
   (prog ((absx 0.0))
-    (declare (type double-float absx))
+    (declare (type (double-float) absx))
     (setf absx (f2cl-lib:dabs x))
     (setf n 0)
     (setf y 0.0)
@@ -32,4 +32,14 @@
     (go end_label)
    end_label
     (return (values nil y n))))
+
+(in-package #:cl-user)
+#+#.(cl:if (cl:find-package '#:f2cl) '(:and) '(:or))
+(eval-when (:load-toplevel :compile-toplevel :execute)
+  (setf (gethash 'fortran-to-lisp::d9upak
+                 fortran-to-lisp::*f2cl-function-info*)
+          (fortran-to-lisp::make-f2cl-finfo
+           :arg-types '((double-float) (double-float) (integer))
+           :return-values '(nil fortran-to-lisp::y fortran-to-lisp::n)
+           :calls 'nil)))
 

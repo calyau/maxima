@@ -1,5 +1,5 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2006/01/31 15:11:05 
-;;; Using Lisp CMU Common Lisp Snapshot 2006-01 (19C)
+;;; Compiled by f2cl version 2.0 beta Date: 2006/11/28 21:41:12 
+;;; Using Lisp CMU Common Lisp Snapshot 2006-12 (19D)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -357,14 +357,13 @@
            (type (simple-array double-float (41)) ae12cs)
            (type (simple-array double-float (60)) ae11cs)
            (type (simple-array double-float (50)) ae13cs ae10cs)
-           (type double-float xmax)
-           (type f2cl-lib:integer4 ntae14 ntae13 nte12 nte11 ntae12 ntae11
-                                   ntae10))
+           (type (double-float) xmax)
+           (type (integer) ntae14 ntae13 nte12 nte11 ntae12 ntae11 ntae10))
   (setq first$ f2cl-lib:%true%)
   (defun de1 (x)
-    (declare (type double-float x))
-    (prog ((xmaxt 0.0) (de1 0.0) (abs$ 0.0f0) (eta 0.0f0))
-      (declare (type single-float eta abs$) (type double-float de1 xmaxt))
+    (declare (type (double-float) x))
+    (prog ((xmaxt 0.0) (de1 0.0) (eta 0.0f0))
+      (declare (type (single-float) eta) (type (double-float) de1 xmaxt))
       (cond
         (first$
          (setf eta (* 0.1f0 (f2cl-lib:freal (f2cl-lib:d1mach 3))))
@@ -425,4 +424,15 @@
       (go end_label)
      end_label
       (return (values de1 nil)))))
+
+(in-package #:cl-user)
+#+#.(cl:if (cl:find-package '#:f2cl) '(:and) '(:or))
+(eval-when (:load-toplevel :compile-toplevel :execute)
+  (setf (gethash 'fortran-to-lisp::de1 fortran-to-lisp::*f2cl-function-info*)
+          (fortran-to-lisp::make-f2cl-finfo :arg-types '((double-float))
+                                            :return-values '(nil)
+                                            :calls '(fortran-to-lisp::xermsg
+                                                     fortran-to-lisp::dcsevl
+                                                     fortran-to-lisp::initds
+                                                     fortran-to-lisp::d1mach))))
 

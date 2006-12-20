@@ -1,5 +1,5 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2006/01/31 15:11:05 
-;;; Using Lisp CMU Common Lisp Snapshot 2006-01 (19C)
+;;; Compiled by f2cl version 2.0 beta Date: 2006/11/28 21:41:12 
+;;; Using Lisp CMU Common Lisp Snapshot 2006-12 (19D)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -10,11 +10,11 @@
 
 
 (defun zabs (zr zi)
-  (declare (type double-float zi zr))
-  (prog ((u 0.0) (v 0.0) (q 0.0) (s 0.0) (zabs 0.0) (abs$ 0.0f0))
-    (declare (type single-float abs$) (type double-float zabs s q v u))
-    (setf u (coerce (abs zr) 'double-float))
-    (setf v (coerce (abs zi) 'double-float))
+  (declare (type (double-float) zi zr))
+  (prog ((u 0.0) (v 0.0) (q 0.0) (s 0.0) (zabs 0.0))
+    (declare (type (double-float) zabs s q v u))
+    (setf u (abs zr))
+    (setf v (abs zi))
     (setf s (+ u v))
     (setf s (* s 1.0))
     (if (= s 0.0) (go label20))
@@ -31,4 +31,13 @@
     (go end_label)
    end_label
     (return (values zabs nil nil))))
+
+(in-package #:cl-user)
+#+#.(cl:if (cl:find-package '#:f2cl) '(:and) '(:or))
+(eval-when (:load-toplevel :compile-toplevel :execute)
+  (setf (gethash 'fortran-to-lisp::zabs fortran-to-lisp::*f2cl-function-info*)
+          (fortran-to-lisp::make-f2cl-finfo
+           :arg-types '((double-float) (double-float))
+           :return-values '(nil nil)
+           :calls 'nil)))
 

@@ -1,5 +1,5 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2006/01/31 15:11:05 
-;;; Using Lisp CMU Common Lisp Snapshot 2006-01 (19C)
+;;; Compiled by f2cl version 2.0 beta Date: 2006/11/28 21:41:12 
+;;; Using Lisp CMU Common Lisp Snapshot 2006-12 (19D)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -16,18 +16,19 @@
   (declare (type (simple-array f2cl-lib:integer4 (2)) nulim))
   (defun dbesy (x fnu n y)
     (declare (type (simple-array double-float (*)) y)
-             (type f2cl-lib:integer4 n)
-             (type double-float fnu x))
+             (type (f2cl-lib:integer4) n)
+             (type (double-float) fnu x))
     (prog ((w (make-array 2 :element-type 'double-float))
            (wk (make-array 7 :element-type 'double-float)) (azn 0.0) (cn 0.0)
            (dnu 0.0) (elim 0.0) (flgjy 0.0) (fn 0.0) (ran 0.0) (s 0.0) (s1 0.0)
            (s2 0.0) (tm 0.0) (trx 0.0) (w2n 0.0) (xlim 0.0) (xxn 0.0) (i 0)
            (iflw 0) (j 0) (nb 0) (nd 0) (nn 0) (nud 0) (log$ 0))
-      (declare (type f2cl-lib:integer4 log$ nud nn nd nb j iflw i)
+      (declare (type (integer) log$)
+               (type (f2cl-lib:integer4) nud nn nd nb j iflw i)
                (type (simple-array double-float (7)) wk)
                (type (simple-array double-float (2)) w)
-               (type double-float xxn xlim w2n trx tm s2 s1 s ran fn flgjy elim
-                                  dnu cn azn))
+               (type (double-float) xxn xlim w2n trx tm s2 s1 s ran fn flgjy
+                                    elim dnu cn azn))
       (setf nn (f2cl-lib:int-sub (f2cl-lib:i1mach 15)))
       (setf elim (* 2.303 (- (* nn (f2cl-lib:d1mach 5)) 3.0)))
       (setf xlim (* (f2cl-lib:d1mach 1) 1000.0))
@@ -92,21 +93,17 @@
          label60))
       (if (= nd 1) (setf s1 s2))
      label70
-      (f2cl-lib:fset (f2cl-lib:fref y (1) ((1 *))) s1)
+      (setf (f2cl-lib:fref y (1) ((1 *))) s1)
       (if (= nd 1) (go end_label))
-      (f2cl-lib:fset (f2cl-lib:fref y (2) ((1 *))) s2)
+      (setf (f2cl-lib:fref y (2) ((1 *))) s2)
      label80
       (if (= nd 2) (go end_label))
       (f2cl-lib:fdo (i 3 (f2cl-lib:int-add i 1))
                     ((> i nd) nil)
         (tagbody
-          (f2cl-lib:fset (f2cl-lib:fref y (i) ((1 *)))
-                         (-
-                          (* tm
-                             (f2cl-lib:fref y
-                                            ((f2cl-lib:int-sub i 1))
-                                            ((1 *))))
-                          (f2cl-lib:fref y ((f2cl-lib:int-sub i 2)) ((1 *)))))
+          (setf (f2cl-lib:fref y (i) ((1 *)))
+                  (- (* tm (f2cl-lib:fref y ((f2cl-lib:int-sub i 1)) ((1 *))))
+                     (f2cl-lib:fref y ((f2cl-lib:int-sub i 2)) ((1 *)))))
           (setf tm (+ tm trx))
          label90))
       (go end_label)
@@ -121,11 +118,11 @@
       (setf j nud)
       (if (= j 1) (go label130))
       (setf j (f2cl-lib:int-add j 1))
-      (f2cl-lib:fset (f2cl-lib:fref y (j) ((1 *))) (dbesy0 x))
+      (setf (f2cl-lib:fref y (j) ((1 *))) (dbesy0 x))
       (if (= nd 1) (go end_label))
       (setf j (f2cl-lib:int-add j 1))
      label130
-      (f2cl-lib:fset (f2cl-lib:fref y (j) ((1 *))) (dbesy1 x))
+      (setf (f2cl-lib:fref y (j) ((1 *))) (dbesy1 x))
       (if (= nd 1) (go end_label))
       (setf trx (/ 2.0 x))
       (setf tm trx)
@@ -145,4 +142,18 @@
       (go end_label)
      end_label
       (return (values nil nil nil nil)))))
+
+(in-package #:cl-user)
+#+#.(cl:if (cl:find-package '#:f2cl) '(:and) '(:or))
+(eval-when (:load-toplevel :compile-toplevel :execute)
+  (setf (gethash 'fortran-to-lisp::dbesy fortran-to-lisp::*f2cl-function-info*)
+          (fortran-to-lisp::make-f2cl-finfo
+           :arg-types '((double-float) (double-float)
+                        (fortran-to-lisp::integer4)
+                        (simple-array double-float (*)))
+           :return-values '(nil nil nil nil)
+           :calls '(fortran-to-lisp::xermsg fortran-to-lisp::dbsynu
+                    fortran-to-lisp::dbesy1 fortran-to-lisp::dbesy0
+                    fortran-to-lisp::dasyjy fortran-to-lisp::d1mach
+                    fortran-to-lisp::i1mach))))
 

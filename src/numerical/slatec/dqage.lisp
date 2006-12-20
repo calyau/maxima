@@ -1,5 +1,5 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2006/01/31 15:11:05 
-;;; Using Lisp CMU Common Lisp Snapshot 2006-01 (19C)
+;;; Compiled by f2cl version 2.0 beta Date: 2006/11/28 21:41:12 
+;;; Using Lisp CMU Common Lisp Snapshot 2006-12 (19D)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
@@ -14,8 +14,8 @@
         elist iord last$)
   (declare (type (array f2cl-lib:integer4 (*)) iord)
            (type (array double-float (*)) elist rlist blist alist)
-           (type f2cl-lib:integer4 last$ ier neval limit key)
-           (type double-float abserr result epsrel epsabs b a))
+           (type (f2cl-lib:integer4) last$ ier neval limit key)
+           (type (double-float) abserr result epsrel epsabs b a))
   (f2cl-lib:with-multi-array-data
       ((alist double-float alist-%data% alist-%offset%)
        (blist double-float blist-%data% blist-%offset%)
@@ -26,12 +26,11 @@
            (area1 0.0) (area12 0.0) (area2 0.0) (a1 0.0) (a2 0.0) (b1 0.0)
            (b2 0.0) (defabs 0.0) (defab1 0.0) (defab2 0.0) (epmach 0.0)
            (errbnd 0.0) (errmax 0.0) (error1 0.0) (error2 0.0) (erro12 0.0)
-           (errsum 0.0) (resabs 0.0) (uflow 0.0) (abs$ 0.0f0))
-      (declare (type single-float abs$)
-               (type double-float uflow resabs errsum erro12 error2 error1
-                                  errmax errbnd epmach defab2 defab1 defabs b2
-                                  b1 a2 a1 area2 area12 area1 area)
-               (type f2cl-lib:integer4 nrmax maxerr keyf k iroff2 iroff1))
+           (errsum 0.0) (resabs 0.0) (uflow 0.0))
+      (declare (type (double-float) uflow resabs errsum erro12 error2 error1
+                                    errmax errbnd epmach defab2 defab1 defabs
+                                    b2 b1 a2 a1 area2 area12 area1 area)
+               (type (f2cl-lib:integer4) nrmax maxerr keyf k iroff2 iroff1))
       (setf epmach (f2cl-lib:d1mach 4))
       (setf uflow (f2cl-lib:d1mach 1))
       (setf ier 0)
@@ -39,14 +38,12 @@
       (setf last$ 0)
       (setf result 0.0)
       (setf abserr 0.0)
-      (f2cl-lib:fset (f2cl-lib:fref alist-%data% (1) ((1 *)) alist-%offset%) a)
-      (f2cl-lib:fset (f2cl-lib:fref blist-%data% (1) ((1 *)) blist-%offset%) b)
-      (f2cl-lib:fset (f2cl-lib:fref rlist-%data% (1) ((1 *)) rlist-%offset%)
-                     0.0)
-      (f2cl-lib:fset (f2cl-lib:fref elist-%data% (1) ((1 *)) elist-%offset%)
-                     0.0)
-      (f2cl-lib:fset (f2cl-lib:fref iord-%data% (1) ((1 *)) iord-%offset%) 0)
-      (if (and (<= epsabs 0.0) (< epsrel (max (* 50.0 epmach) 5.e-29)))
+      (setf (f2cl-lib:fref alist-%data% (1) ((1 *)) alist-%offset%) a)
+      (setf (f2cl-lib:fref blist-%data% (1) ((1 *)) blist-%offset%) b)
+      (setf (f2cl-lib:fref rlist-%data% (1) ((1 *)) rlist-%offset%) 0.0)
+      (setf (f2cl-lib:fref elist-%data% (1) ((1 *)) elist-%offset%) 0.0)
+      (setf (f2cl-lib:fref iord-%data% (1) ((1 *)) iord-%offset%) 0)
+      (if (and (<= epsabs 0.0) (< epsrel (max (* 50.0 epmach) 5.0e-29)))
           (setf ier 6))
       (if (= ier 6) (go label999))
       (setf keyf key)
@@ -102,11 +99,9 @@
             (setf defabs var-5)
             (setf resabs var-6)))
       (setf last$ 1)
-      (f2cl-lib:fset (f2cl-lib:fref rlist-%data% (1) ((1 *)) rlist-%offset%)
-                     result)
-      (f2cl-lib:fset (f2cl-lib:fref elist-%data% (1) ((1 *)) elist-%offset%)
-                     abserr)
-      (f2cl-lib:fset (f2cl-lib:fref iord-%data% (1) ((1 *)) iord-%offset%) 1)
+      (setf (f2cl-lib:fref rlist-%data% (1) ((1 *)) rlist-%offset%) result)
+      (setf (f2cl-lib:fref elist-%data% (1) ((1 *)) elist-%offset%) abserr)
+      (setf (f2cl-lib:fref iord-%data% (1) ((1 *)) iord-%offset%) 1)
       (setf errbnd (max epsabs (* epsrel (abs result))))
       (if (and (<= abserr (* 50.0 epmach defabs)) (> abserr errbnd))
           (setf ier 2))
@@ -255,18 +250,16 @@
              (abs
               (- (f2cl-lib:fref rlist-%data% (maxerr) ((1 *)) rlist-%offset%)
                  area12))
-             (* 1.e-5 (abs area12)))
+             (* 1.0e-5 (abs area12)))
             (>= erro12 (* 0.99 errmax)))
            (setf iroff1 (f2cl-lib:int-add iroff1 1)))
           (if (and (> last$ 10) (> erro12 errmax))
               (setf iroff2 (f2cl-lib:int-add iroff2 1)))
          label5
-          (f2cl-lib:fset
-           (f2cl-lib:fref rlist-%data% (maxerr) ((1 *)) rlist-%offset%)
-           area1)
-          (f2cl-lib:fset
-           (f2cl-lib:fref rlist-%data% (last$) ((1 *)) rlist-%offset%)
-           area2)
+          (setf (f2cl-lib:fref rlist-%data% (maxerr) ((1 *)) rlist-%offset%)
+                  area1)
+          (setf (f2cl-lib:fref rlist-%data% (last$) ((1 *)) rlist-%offset%)
+                  area2)
           (setf errbnd (max epsabs (* epsrel (abs area))))
           (if (<= errsum errbnd) (go label8))
           (if (or (>= iroff1 6) (>= iroff2 20)) (setf ier 2))
@@ -277,44 +270,28 @@
            (setf ier 3))
          label8
           (if (> error2 error1) (go label10))
-          (f2cl-lib:fset
-           (f2cl-lib:fref alist-%data% (last$) ((1 *)) alist-%offset%)
-           a2)
-          (f2cl-lib:fset
-           (f2cl-lib:fref blist-%data% (maxerr) ((1 *)) blist-%offset%)
-           b1)
-          (f2cl-lib:fset
-           (f2cl-lib:fref blist-%data% (last$) ((1 *)) blist-%offset%)
-           b2)
-          (f2cl-lib:fset
-           (f2cl-lib:fref elist-%data% (maxerr) ((1 *)) elist-%offset%)
-           error1)
-          (f2cl-lib:fset
-           (f2cl-lib:fref elist-%data% (last$) ((1 *)) elist-%offset%)
-           error2)
+          (setf (f2cl-lib:fref alist-%data% (last$) ((1 *)) alist-%offset%) a2)
+          (setf (f2cl-lib:fref blist-%data% (maxerr) ((1 *)) blist-%offset%)
+                  b1)
+          (setf (f2cl-lib:fref blist-%data% (last$) ((1 *)) blist-%offset%) b2)
+          (setf (f2cl-lib:fref elist-%data% (maxerr) ((1 *)) elist-%offset%)
+                  error1)
+          (setf (f2cl-lib:fref elist-%data% (last$) ((1 *)) elist-%offset%)
+                  error2)
           (go label20)
          label10
-          (f2cl-lib:fset
-           (f2cl-lib:fref alist-%data% (maxerr) ((1 *)) alist-%offset%)
-           a2)
-          (f2cl-lib:fset
-           (f2cl-lib:fref alist-%data% (last$) ((1 *)) alist-%offset%)
-           a1)
-          (f2cl-lib:fset
-           (f2cl-lib:fref blist-%data% (last$) ((1 *)) blist-%offset%)
-           b1)
-          (f2cl-lib:fset
-           (f2cl-lib:fref rlist-%data% (maxerr) ((1 *)) rlist-%offset%)
-           area2)
-          (f2cl-lib:fset
-           (f2cl-lib:fref rlist-%data% (last$) ((1 *)) rlist-%offset%)
-           area1)
-          (f2cl-lib:fset
-           (f2cl-lib:fref elist-%data% (maxerr) ((1 *)) elist-%offset%)
-           error2)
-          (f2cl-lib:fset
-           (f2cl-lib:fref elist-%data% (last$) ((1 *)) elist-%offset%)
-           error1)
+          (setf (f2cl-lib:fref alist-%data% (maxerr) ((1 *)) alist-%offset%)
+                  a2)
+          (setf (f2cl-lib:fref alist-%data% (last$) ((1 *)) alist-%offset%) a1)
+          (setf (f2cl-lib:fref blist-%data% (last$) ((1 *)) blist-%offset%) b1)
+          (setf (f2cl-lib:fref rlist-%data% (maxerr) ((1 *)) rlist-%offset%)
+                  area2)
+          (setf (f2cl-lib:fref rlist-%data% (last$) ((1 *)) rlist-%offset%)
+                  area1)
+          (setf (f2cl-lib:fref elist-%data% (maxerr) ((1 *)) elist-%offset%)
+                  error2)
+          (setf (f2cl-lib:fref elist-%data% (last$) ((1 *)) elist-%offset%)
+                  error1)
          label20
           (multiple-value-bind (var-0 var-1 var-2 var-3 var-4 var-5 var-6)
               (dqpsrt limit last$ maxerr errmax elist iord nrmax)
@@ -363,4 +340,27 @@
                nil
                nil
                last$)))))
+
+(in-package #:cl-user)
+#+#.(cl:if (cl:find-package '#:f2cl) '(:and) '(:or))
+(eval-when (:load-toplevel :compile-toplevel :execute)
+  (setf (gethash 'fortran-to-lisp::dqage fortran-to-lisp::*f2cl-function-info*)
+          (fortran-to-lisp::make-f2cl-finfo
+           :arg-types '(t (double-float) (double-float) (double-float)
+                        (double-float) (fortran-to-lisp::integer4)
+                        (fortran-to-lisp::integer4) (double-float)
+                        (double-float) (fortran-to-lisp::integer4)
+                        (fortran-to-lisp::integer4) (array double-float (*))
+                        (array double-float (*)) (array double-float (*))
+                        (array double-float (*))
+                        (array fortran-to-lisp::integer4 (*))
+                        (fortran-to-lisp::integer4))
+           :return-values '(nil nil nil nil nil nil nil fortran-to-lisp::result
+                            fortran-to-lisp::abserr fortran-to-lisp::neval
+                            fortran-to-lisp::ier nil nil nil nil nil
+                            fortran-to-lisp::last$)
+           :calls '(fortran-to-lisp::dqpsrt fortran-to-lisp::dqk61
+                    fortran-to-lisp::dqk51 fortran-to-lisp::dqk41
+                    fortran-to-lisp::dqk31 fortran-to-lisp::dqk21
+                    fortran-to-lisp::dqk15 fortran-to-lisp::d1mach))))
 

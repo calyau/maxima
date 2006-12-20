@@ -1,5 +1,5 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2006/01/31 15:11:05 
-;;; Using Lisp CMU Common Lisp Snapshot 2006-01 (19C)
+;;; Compiled by f2cl version 2.0 beta Date: 2006/11/28 21:41:12 
+;;; Using Lisp CMU Common Lisp Snapshot 2006-12 (19D)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
@@ -10,15 +10,15 @@
 
 
 (let ((p 0.9) (pi$ 3.141592653589793))
-  (declare (type double-float pi$ p))
+  (declare (type (double-float) pi$ p))
   (defun dqawfe
          (f a omega integr epsabs limlst limit maxp1 result abserr neval ier
           rslst erlst ierlst lst alist blist rlist elist iord nnlog chebmo)
     (declare (type (array f2cl-lib:integer4 (*)) nnlog iord ierlst)
              (type (array double-float (*)) chebmo elist rlist blist alist
                                             erlst rslst)
-             (type f2cl-lib:integer4 lst ier neval maxp1 limit limlst integr)
-             (type double-float abserr result epsabs omega a))
+             (type (f2cl-lib:integer4) lst ier neval maxp1 limit limlst integr)
+             (type (double-float) abserr result epsabs omega a))
     (f2cl-lib:with-multi-array-data
         ((rslst double-float rslst-%data% rslst-%offset%)
          (erlst double-float erlst-%data% erlst-%offset%)
@@ -35,14 +35,13 @@
              (l 0) (ll 0) (momcom 0) (nev 0) (nres 0) (numrl2 0) (abseps 0.0)
              (correc 0.0) (cycle 0.0) (c1 0.0) (c2 0.0) (dl 0.0) (drl 0.0)
              (ep 0.0) (eps 0.0) (epsa 0.0) (errsum 0.0) (fact 0.0) (p1 0.0)
-             (reseps 0.0) (uflow 0.0) (abs$ 0.0f0) (last$ 0))
-        (declare (type single-float abs$)
-                 (type (array double-float (3)) res3la)
+             (reseps 0.0) (uflow 0.0) (last$ 0))
+        (declare (type (array double-float (3)) res3la)
                  (type (array double-float (52)) psum)
-                 (type double-float uflow reseps p1 fact errsum epsa eps ep drl
-                                    dl c2 c1 cycle correc abseps)
-                 (type f2cl-lib:integer4 last$ numrl2 nres nev momcom ll l
-                                         ktmin))
+                 (type (double-float) uflow reseps p1 fact errsum epsa eps ep
+                                      drl dl c2 c1 cycle correc abseps)
+                 (type (f2cl-lib:integer4) last$ numrl2 nres nev momcom ll l
+                                           ktmin))
         (setf result 0.0)
         (setf abserr 0.0)
         (setf neval 0)
@@ -65,13 +64,9 @@
               (setf neval var-8)
               (setf ier var-9)
               (setf last$ var-15)))
-        (f2cl-lib:fset (f2cl-lib:fref rslst-%data% (1) ((1 *)) rslst-%offset%)
-                       result)
-        (f2cl-lib:fset (f2cl-lib:fref erlst-%data% (1) ((1 *)) erlst-%offset%)
-                       abserr)
-        (f2cl-lib:fset
-         (f2cl-lib:fref ierlst-%data% (1) ((1 *)) ierlst-%offset%)
-         ier)
+        (setf (f2cl-lib:fref rslst-%data% (1) ((1 *)) rslst-%offset%) result)
+        (setf (f2cl-lib:fref erlst-%data% (1) ((1 *)) erlst-%offset%) abserr)
+        (setf (f2cl-lib:fref ierlst-%data% (1) ((1 *)) ierlst-%offset%) ier)
         (setf lst 1)
         (go label999)
        label10
@@ -115,16 +110,13 @@
                                var-9 var-15 var-16 var-17 var-18 var-19 var-20
                                var-22))
               (setf integr var-4)
-              (f2cl-lib:fset
-               (f2cl-lib:fref rslst-%data% (lst) ((1 *)) rslst-%offset%)
-               var-10)
-              (f2cl-lib:fset
-               (f2cl-lib:fref erlst-%data% (lst) ((1 *)) erlst-%offset%)
-               var-11)
+              (setf (f2cl-lib:fref rslst-%data% (lst) ((1 *)) rslst-%offset%)
+                      var-10)
+              (setf (f2cl-lib:fref erlst-%data% (lst) ((1 *)) erlst-%offset%)
+                      var-11)
               (setf nev var-12)
-              (f2cl-lib:fset
-               (f2cl-lib:fref ierlst-%data% (lst) ((1 *)) ierlst-%offset%)
-               var-13)
+              (setf (f2cl-lib:fref ierlst-%data% (lst) ((1 *)) ierlst-%offset%)
+                      var-13)
               (setf last$ var-14)
               (setf momcom var-21))
             (setf neval (f2cl-lib:int-add neval nev))
@@ -159,19 +151,16 @@
                 (go label80))
             (setf numrl2 (f2cl-lib:int-add numrl2 1))
             (if (> lst 1) (go label20))
-            (f2cl-lib:fset (f2cl-lib:fref psum (1) ((1 52)))
-                           (f2cl-lib:fref rslst-%data%
-                                          (1)
-                                          ((1 *))
-                                          rslst-%offset%))
+            (setf (f2cl-lib:fref psum (1) ((1 52)))
+                    (f2cl-lib:fref rslst-%data% (1) ((1 *)) rslst-%offset%))
             (go label40)
            label20
-            (f2cl-lib:fset (f2cl-lib:fref psum (numrl2) ((1 52)))
-                           (+ (f2cl-lib:fref psum (ll) ((1 52)))
-                              (f2cl-lib:fref rslst-%data%
-                                             (lst)
-                                             ((1 *))
-                                             rslst-%offset%)))
+            (setf (f2cl-lib:fref psum (numrl2) ((1 52)))
+                    (+ (f2cl-lib:fref psum (ll) ((1 52)))
+                       (f2cl-lib:fref rslst-%data%
+                                      (lst)
+                                      ((1 *))
+                                      rslst-%offset%)))
             (if (= lst 2) (go label40))
             (if (= lst limlst) (setf ier 1))
             (multiple-value-bind (var-0 var-1 var-2 var-3 var-4 var-5)
@@ -244,4 +233,32 @@
                  nil
                  nil
                  nil))))))
+
+(in-package #:cl-user)
+#+#.(cl:if (cl:find-package '#:f2cl) '(:and) '(:or))
+(eval-when (:load-toplevel :compile-toplevel :execute)
+  (setf (gethash 'fortran-to-lisp::dqawfe
+                 fortran-to-lisp::*f2cl-function-info*)
+          (fortran-to-lisp::make-f2cl-finfo
+           :arg-types '(t (double-float) (double-float)
+                        (fortran-to-lisp::integer4) (double-float)
+                        (fortran-to-lisp::integer4) (fortran-to-lisp::integer4)
+                        (fortran-to-lisp::integer4) (double-float)
+                        (double-float) (fortran-to-lisp::integer4)
+                        (fortran-to-lisp::integer4) (array double-float (*))
+                        (array double-float (*))
+                        (array fortran-to-lisp::integer4 (*))
+                        (fortran-to-lisp::integer4) (array double-float (*))
+                        (array double-float (*)) (array double-float (*))
+                        (array double-float (*))
+                        (array fortran-to-lisp::integer4 (*))
+                        (array fortran-to-lisp::integer4 (*))
+                        (array double-float (*)))
+           :return-values '(nil nil nil fortran-to-lisp::integr nil nil nil nil
+                            fortran-to-lisp::result fortran-to-lisp::abserr
+                            fortran-to-lisp::neval fortran-to-lisp::ier nil nil
+                            nil fortran-to-lisp::lst nil nil nil nil nil nil
+                            nil)
+           :calls '(fortran-to-lisp::dqelg fortran-to-lisp::dqawoe
+                    fortran-to-lisp::d1mach fortran-to-lisp::dqagie))))
 

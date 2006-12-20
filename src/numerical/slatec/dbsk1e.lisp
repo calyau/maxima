@@ -1,5 +1,5 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2006/01/31 15:11:05 
-;;; Using Lisp CMU Common Lisp Snapshot 2006-01 (19C)
+;;; Compiled by f2cl version 2.0 beta Date: 2006/11/28 21:41:12 
+;;; Using Lisp CMU Common Lisp Snapshot 2006-12 (19D)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -112,13 +112,13 @@
            (type (simple-array double-float (33)) ak12cs)
            (type (simple-array double-float (38)) ak1cs)
            (type (simple-array double-float (16)) bk1cs)
-           (type double-float xsml xmin)
-           (type f2cl-lib:integer4 ntak12 ntak1 ntk1))
+           (type (double-float) xsml xmin)
+           (type (integer) ntak12 ntak1 ntk1))
   (setq first$ f2cl-lib:%true%)
   (defun dbsk1e (x)
-    (declare (type double-float x))
+    (declare (type (double-float) x))
     (prog ((y 0.0) (dbsk1e 0.0) (sqrt$ 0.0f0) (eta 0.0f0))
-      (declare (type single-float eta sqrt$) (type double-float dbsk1e y))
+      (declare (type (single-float) eta sqrt$) (type (double-float) dbsk1e y))
       (cond
         (first$
          (setf eta (* 0.1f0 (f2cl-lib:freal (f2cl-lib:d1mach 3))))
@@ -155,4 +155,17 @@
       (go end_label)
      end_label
       (return (values dbsk1e nil)))))
+
+(in-package #:cl-user)
+#+#.(cl:if (cl:find-package '#:f2cl) '(:and) '(:or))
+(eval-when (:load-toplevel :compile-toplevel :execute)
+  (setf (gethash 'fortran-to-lisp::dbsk1e
+                 fortran-to-lisp::*f2cl-function-info*)
+          (fortran-to-lisp::make-f2cl-finfo :arg-types '((double-float))
+                                            :return-values '(nil)
+                                            :calls '(fortran-to-lisp::dcsevl
+                                                     fortran-to-lisp::dbesi1
+                                                     fortran-to-lisp::xermsg
+                                                     fortran-to-lisp::initds
+                                                     fortran-to-lisp::d1mach))))
 

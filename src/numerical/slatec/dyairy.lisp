@@ -1,5 +1,5 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2006/01/31 15:11:05 
-;;; Using Lisp CMU Common Lisp Snapshot 2006-01 (19C)
+;;; Compiled by f2cl version 2.0 beta Date: 2006/11/28 21:41:12 
+;;; Using Lisp CMU Common Lisp Snapshot 2006-12 (19D)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -284,19 +284,18 @@
            (type (simple-array double-float (19)) dbjn dbjp bjn bjp)
            (type (simple-array double-float (14)) dbb daa dbk4 bb aa bk4)
            (type (simple-array double-float (20)) dbk3 dbk2 bk3 bk2 bk1)
-           (type double-float con3 con2 con1 spi12 fpi12)
-           (type f2cl-lib:integer4 m4d m3d m2d m1d n4d n3d n2d n1d m3 m2 m1 n3
-                                   n2 n1))
+           (type (double-float) con3 con2 con1 spi12 fpi12)
+           (type (f2cl-lib:integer4) m4d m3d m2d m1d n4d n3d n2d n1d m3 m2 m1
+                                     n3 n2 n1))
   (defun dyairy (x rx c bi dbi)
-    (declare (type double-float dbi bi c rx x))
+    (declare (type (double-float) dbi bi c rx x))
     (prog ((ax 0.0) (cv 0.0) (d1 0.0) (d2 0.0) (ex 0.0) (e1 0.0) (e2 0.0)
            (f1 0.0) (f2 0.0) (rtrx 0.0) (s1 0.0) (s2 0.0) (t$ 0.0) (tc 0.0)
-           (temp1 0.0) (temp2 0.0) (tt 0.0) (i 0) (j 0) (abs$ 0.0f0))
-      (declare (type single-float abs$)
-               (type f2cl-lib:integer4 j i)
-               (type double-float tt temp2 temp1 tc t$ s2 s1 rtrx f2 f1 e2 e1
-                                  ex d2 d1 cv ax))
-      (setf ax (coerce (abs x) 'double-float))
+           (temp1 0.0) (temp2 0.0) (tt 0.0) (i 0) (j 0))
+      (declare (type (f2cl-lib:integer4) j i)
+               (type (double-float) tt temp2 temp1 tc t$ s2 s1 rtrx f2 f1 e2 e1
+                                    ex d2 d1 cv ax))
+      (setf ax (abs x))
       (setf rx (f2cl-lib:fsqrt ax))
       (setf c (* con1 ax rx))
       (if (< x 0.0) (go label120))
@@ -518,4 +517,16 @@
       (go end_label)
      end_label
       (return (values nil rx c bi dbi)))))
+
+(in-package #:cl-user)
+#+#.(cl:if (cl:find-package '#:f2cl) '(:and) '(:or))
+(eval-when (:load-toplevel :compile-toplevel :execute)
+  (setf (gethash 'fortran-to-lisp::dyairy
+                 fortran-to-lisp::*f2cl-function-info*)
+          (fortran-to-lisp::make-f2cl-finfo
+           :arg-types '((double-float) (double-float) (double-float)
+                        (double-float) (double-float))
+           :return-values '(nil fortran-to-lisp::rx fortran-to-lisp::c
+                            fortran-to-lisp::bi fortran-to-lisp::dbi)
+           :calls 'nil)))
 

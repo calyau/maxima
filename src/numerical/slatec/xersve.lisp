@@ -1,5 +1,5 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2006/01/31 15:11:05 
-;;; Using Lisp CMU Common Lisp Snapshot 2006-01 (19C)
+;;; Compiled by f2cl version 2.0 beta Date: 2006/11/28 21:41:12 
+;;; Using Lisp CMU Common Lisp Snapshot 2006-12 (19D)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -10,7 +10,7 @@
 
 
 (let* ((lentab 10))
-  (declare (type f2cl-lib:integer4 lentab))
+  (declare (type (integer 10 10) lentab))
   (let ((libtab (f2cl-lib:f2cl-init-string ((+ 1 (- lentab 1))) (8) nil))
         (subtab (f2cl-lib:f2cl-init-string ((+ 1 (- lentab 1))) (8) nil))
         (mestab (f2cl-lib:f2cl-init-string ((+ 1 (- lentab 1))) (20) nil))
@@ -19,15 +19,13 @@
         (kount (make-array lentab :element-type 'f2cl-lib:integer4))
         (kountx 0)
         (nmsg 0))
-    (declare (type f2cl-lib:integer4 nmsg kountx)
+    (declare (type (integer) nmsg kountx)
              (type (simple-array f2cl-lib:integer4 (*)) kount levtab nertab)
              (type (simple-array (simple-array character (20)) (*)) mestab)
              (type (simple-array (simple-array character (8)) (*)) subtab
                                                                    libtab))
-    (setq kountx 0)
-    (setq nmsg 0)
     (defun xersve (librar subrou messg kflag nerr level icount)
-      (declare (type f2cl-lib:integer4 icount level nerr kflag)
+      (declare (type (integer) icount level nerr kflag)
                (type (simple-array character (*)) messg subrou librar))
       (prog ((mes
               (make-array '(20) :element-type 'character :initial-element #\ ))
@@ -37,7 +35,7 @@
               (make-array '(8) :element-type 'character :initial-element #\ ))
              (lun (make-array 5 :element-type 'f2cl-lib:integer4)) (i 0)
              (iunit 0) (kunit 0) (nunit 0))
-        (declare (type f2cl-lib:integer4 nunit kunit iunit i)
+        (declare (type (integer) nunit kunit iunit i)
                  (type (simple-array character (20)) mes)
                  (type (simple-array character (8)) lib sub)
                  (type (simple-array f2cl-lib:integer4 (5)) lun))
@@ -99,10 +97,10 @@
                                        (f2cl-lib:fref mestab (i) ((1 lentab))))
                    (= nerr (f2cl-lib:fref nertab (i) ((1 lentab))))
                    (= level (f2cl-lib:fref levtab (i) ((1 lentab)))))
-                  (f2cl-lib:fset (f2cl-lib:fref kount (i) ((1 lentab)))
-                                 (f2cl-lib:int-add
-                                  (f2cl-lib:fref kount (i) ((1 lentab)))
-                                  1))
+                  (setf (f2cl-lib:fref kount (i) ((1 lentab)))
+                          (f2cl-lib:int-add
+                           (f2cl-lib:fref kount (i) ((1 lentab)))
+                           1))
                   (setf icount (f2cl-lib:fref kount (i) ((1 lentab))))
                   (go end_label)))
               label30))
@@ -118,9 +116,9 @@
               (f2cl-lib:f2cl-set-string (f2cl-lib:fref mestab (i) ((1 lentab)))
                                         mes
                                         (string 20))
-              (f2cl-lib:fset (f2cl-lib:fref nertab (i) ((1 lentab))) nerr)
-              (f2cl-lib:fset (f2cl-lib:fref levtab (i) ((1 lentab))) level)
-              (f2cl-lib:fset (f2cl-lib:fref kount (i) ((1 lentab))) 1)
+              (setf (f2cl-lib:fref nertab (i) ((1 lentab))) nerr)
+              (setf (f2cl-lib:fref levtab (i) ((1 lentab))) level)
+              (setf (f2cl-lib:fref kount (i) ((1 lentab))) 1)
               (setf icount 1))
              (t
               (setf kountx (f2cl-lib:int-add kountx 1))
@@ -128,4 +126,15 @@
         (go end_label)
        end_label
         (return (values nil nil nil nil nil nil icount))))))
+
+(in-package #:cl-user)
+#+#.(cl:if (cl:find-package '#:f2cl) '(:and) '(:or))
+(eval-when (:load-toplevel :compile-toplevel :execute)
+  (setf (gethash 'fortran-to-lisp::xersve
+                 fortran-to-lisp::*f2cl-function-info*)
+          (fortran-to-lisp::make-f2cl-finfo
+           :arg-types '(#1=(simple-array character (*)) #1# #1# (integer)
+                        (integer) (integer) (integer))
+           :return-values '(nil nil nil nil nil nil fortran-to-lisp::icount)
+           :calls '(fortran-to-lisp::i1mach fortran-to-lisp::xgetua))))
 

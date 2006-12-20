@@ -1,5 +1,5 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2006/01/31 15:11:05 
-;;; Using Lisp CMU Common Lisp Snapshot 2006-01 (19C)
+;;; Compiled by f2cl version 2.0 beta Date: 2006/11/28 21:41:12 
+;;; Using Lisp CMU Common Lisp Snapshot 2006-12 (19D)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -10,10 +10,10 @@
 
 
 (defun zdiv (ar ai br bi cr ci)
-  (declare (type double-float ci cr bi br ai ar))
+  (declare (type (double-float) ci cr bi br ai ar))
   (prog ((bm 0.0) (ca 0.0) (cb 0.0) (cc 0.0) (cd 0.0))
-    (declare (type double-float cd cc cb ca bm))
-    (setf bm (/ 1.0 (zabs br bi)))
+    (declare (type (double-float) cd cc cb ca bm))
+    (setf bm (coerce (realpart (/ 1.0 (zabs br bi))) 'double-float))
     (setf cc (* br bm))
     (setf cd (* bi bm))
     (setf ca (* (+ (* ar cc) (* ai cd)) bm))
@@ -23,4 +23,15 @@
     (go end_label)
    end_label
     (return (values nil nil nil nil cr ci))))
+
+(in-package #:cl-user)
+#+#.(cl:if (cl:find-package '#:f2cl) '(:and) '(:or))
+(eval-when (:load-toplevel :compile-toplevel :execute)
+  (setf (gethash 'fortran-to-lisp::zdiv fortran-to-lisp::*f2cl-function-info*)
+          (fortran-to-lisp::make-f2cl-finfo
+           :arg-types '((double-float) (double-float) (double-float)
+                        (double-float) (double-float) (double-float))
+           :return-values '(nil nil nil nil fortran-to-lisp::cr
+                            fortran-to-lisp::ci)
+           :calls '(fortran-to-lisp::zabs))))
 

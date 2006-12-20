@@ -1,5 +1,5 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2006/01/31 15:11:05 
-;;; Using Lisp CMU Common Lisp Snapshot 2006-01 (19C)
+;;; Compiled by f2cl version 2.0 beta Date: 2006/11/28 21:41:12 
+;;; Using Lisp CMU Common Lisp Snapshot 2006-12 (19D)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -10,23 +10,22 @@
 
 
 (let ((hpi 1.5707963267948966))
-  (declare (type double-float hpi))
+  (declare (type (double-float) hpi))
   (defun zbesh (zr zi fnu kode m n cyr cyi nz ierr)
     (declare (type (simple-array double-float (*)) cyi cyr)
-             (type f2cl-lib:integer4 ierr nz n m kode)
-             (type double-float fnu zi zr))
+             (type (f2cl-lib:integer4) ierr nz n m kode)
+             (type (double-float) fnu zi zr))
     (prog ((i 0) (inu 0) (inuh 0) (ir 0) (k 0) (k1 0) (k2 0) (mm 0) (mr 0)
            (nn 0) (nuf 0) (nw 0) (aa 0.0) (alim 0.0) (aln 0.0) (arg 0.0)
            (az 0.0) (dig 0.0) (elim 0.0) (fmm 0.0) (fn 0.0) (fnul 0.0)
            (rhpi 0.0) (rl 0.0) (r1m5 0.0) (sgn 0.0) (str 0.0) (tol 0.0)
            (ufl 0.0) (zni 0.0) (znr 0.0) (zti 0.0) (bb 0.0) (ascle 0.0)
-           (rtol 0.0) (atol 0.0) (sti 0.0) (csgnr 0.0) (csgni 0.0)
-           (abs$ 0.0f0))
-      (declare (type single-float abs$)
-               (type double-float csgni csgnr sti atol rtol ascle bb zti znr
-                                  zni ufl tol str sgn r1m5 rl rhpi fnul fn fmm
-                                  elim dig az arg aln alim aa)
-               (type f2cl-lib:integer4 nw nuf nn mr mm k2 k1 k ir inuh inu i))
+           (rtol 0.0) (atol 0.0) (sti 0.0) (csgnr 0.0) (csgni 0.0))
+      (declare (type (double-float) csgni csgnr sti atol rtol ascle bb zti znr
+                                    zni ufl tol str sgn r1m5 rl rhpi fnul fn
+                                    fmm elim dig az arg aln alim aa)
+               (type (f2cl-lib:integer4) nw nuf nn mr mm k2 k1 k ir inuh inu
+                                         i))
       (setf ierr 0)
       (setf nz 0)
       (if (and (= zr 0.0) (= zi 0.0)) (setf ierr 1))
@@ -36,11 +35,13 @@
       (if (< n 1) (setf ierr 1))
       (if (/= ierr 0) (go end_label))
       (setf nn n)
-      (setf tol (max (f2cl-lib:d1mach 4) 1.e-18))
+      (setf tol (max (f2cl-lib:d1mach 4) 1.0e-18))
       (setf k1 (f2cl-lib:i1mach 15))
       (setf k2 (f2cl-lib:i1mach 16))
       (setf r1m5 (f2cl-lib:d1mach 5))
-      (setf k (f2cl-lib:int (min (abs k1) (abs k2))))
+      (setf k
+              (min (the f2cl-lib:integer4 (abs k1))
+                   (the f2cl-lib:integer4 (abs k2))))
       (setf elim (* 2.303 (- (* k r1m5) 3.0)))
       (setf k1 (f2cl-lib:int-sub (f2cl-lib:i1mach 14) 1))
       (setf aa (* r1m5 k1))
@@ -54,7 +55,7 @@
       (setf fmm (coerce (the f2cl-lib:integer4 mm) 'double-float))
       (setf znr (* fmm zi))
       (setf zni (* (- fmm) zr))
-      (setf az (zabs zr zi))
+      (setf az (coerce (realpart (zabs zr zi)) 'double-float))
       (setf aa (/ 0.5 tol))
       (setf bb (* (f2cl-lib:i1mach 9) 0.5))
       (setf aa (min aa bb))
@@ -154,8 +155,8 @@
          label135
           (setf str (- (* aa csgnr) (* bb csgni)))
           (setf sti (+ (* aa csgni) (* bb csgnr)))
-          (f2cl-lib:fset (f2cl-lib:fref cyr (i) ((1 n))) (* str atol))
-          (f2cl-lib:fset (f2cl-lib:fref cyi (i) ((1 n))) (* sti atol))
+          (setf (f2cl-lib:fref cyr (i) ((1 n))) (* str atol))
+          (setf (f2cl-lib:fref cyi (i) ((1 n))) (* sti atol))
           (setf str (* (- csgni) zti))
           (setf csgni (* csgnr zti))
           (setf csgnr str)
@@ -179,4 +180,23 @@
       (go end_label)
      end_label
       (return (values nil nil nil nil nil nil nil nil nz ierr)))))
+
+(in-package #:cl-user)
+#+#.(cl:if (cl:find-package '#:f2cl) '(:and) '(:or))
+(eval-when (:load-toplevel :compile-toplevel :execute)
+  (setf (gethash 'fortran-to-lisp::zbesh fortran-to-lisp::*f2cl-function-info*)
+          (fortran-to-lisp::make-f2cl-finfo
+           :arg-types '((double-float) (double-float) (double-float)
+                        (fortran-to-lisp::integer4) (fortran-to-lisp::integer4)
+                        (fortran-to-lisp::integer4)
+                        (simple-array double-float (*))
+                        (simple-array double-float (*))
+                        (fortran-to-lisp::integer4)
+                        (fortran-to-lisp::integer4))
+           :return-values '(nil nil nil nil nil nil nil nil fortran-to-lisp::nz
+                            fortran-to-lisp::ierr)
+           :calls '(fortran-to-lisp::zbunk fortran-to-lisp::zacon
+                    fortran-to-lisp::zbknu fortran-to-lisp::zuoik
+                    fortran-to-lisp::zabs fortran-to-lisp::i1mach
+                    fortran-to-lisp::d1mach))))
 

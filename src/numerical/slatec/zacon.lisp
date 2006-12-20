@@ -1,5 +1,5 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2006/01/31 15:11:05 
-;;; Using Lisp CMU Common Lisp Snapshot 2006-01 (19C)
+;;; Compiled by f2cl version 2.0 beta Date: 2006/11/28 21:41:12 
+;;; Using Lisp CMU Common Lisp Snapshot 2006-12 (19D)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -10,11 +10,11 @@
 
 
 (let ((pi$ 3.141592653589793) (zeror 0.0) (coner 1.0))
-  (declare (type double-float coner zeror pi$))
+  (declare (type (double-float) coner zeror pi$))
   (defun zacon (zr zi fnu kode mr n yr yi nz rl fnul tol elim alim)
     (declare (type (simple-array double-float (*)) yi yr)
-             (type f2cl-lib:integer4 nz n mr kode)
-             (type double-float alim elim tol fnul rl fnu zi zr))
+             (type (f2cl-lib:integer4) nz n mr kode)
+             (type (double-float) alim elim tol fnul rl fnu zi zr))
     (prog ((cyr (make-array 2 :element-type 'double-float))
            (cyi (make-array 2 :element-type 'double-float))
            (cssr (make-array 3 :element-type 'double-float))
@@ -27,16 +27,15 @@
            (pti 0.0) (ptr 0.0) (razn 0.0) (rzi 0.0) (rzr 0.0) (sc1i 0.0)
            (sc1r 0.0) (sc2i 0.0) (sc2r 0.0) (sgn 0.0) (spn 0.0) (sti 0.0)
            (str 0.0) (s1i 0.0) (s1r 0.0) (s2i 0.0) (s2r 0.0) (yy 0.0) (zni 0.0)
-           (znr 0.0) (abs$ 0.0f0))
-      (declare (type single-float abs$)
-               (type (simple-array double-float (2)) cyr cyi)
+           (znr 0.0))
+      (declare (type (simple-array double-float (2)) cyr cyi)
                (type (simple-array double-float (3)) cssr csrr bry)
-               (type double-float znr zni yy s2r s2i s1r s1i str sti spn sgn
-                                  sc2r sc2i sc1r sc1i rzr rzi razn ptr pti fn
-                                  fmr c2r c2i c1r c1m c1i csr cspnr cspni csgnr
-                                  csgni cscr cscl cpn ckr cki bscle azn as2
-                                  ascle arg)
-               (type f2cl-lib:integer4 nw nn kflag iuf inu i))
+               (type (double-float) znr zni yy s2r s2i s1r s1i str sti spn sgn
+                                    sc2r sc2i sc1r sc1i rzr rzi razn ptr pti fn
+                                    fmr c2r c2i c1r c1m c1i csr cspnr cspni
+                                    csgnr csgni cscr cscl cpn ckr cki bscle azn
+                                    as2 ascle arg)
+               (type (f2cl-lib:integer4) nw nn kflag iuf inu i))
       (setf nz 0)
       (setf znr (- zr))
       (setf zni (- zi))
@@ -115,8 +114,8 @@
         (declare (ignore var-0 var-1 var-2 var-3))
         (setf ptr var-4)
         (setf pti var-5))
-      (f2cl-lib:fset (f2cl-lib:fref yr (1) ((1 n))) (+ str ptr))
-      (f2cl-lib:fset (f2cl-lib:fref yi (1) ((1 n))) (+ sti pti))
+      (setf (f2cl-lib:fref yr (1) ((1 n))) (+ str ptr))
+      (setf (f2cl-lib:fref yi (1) ((1 n))) (+ sti pti))
       (if (= n 1) (go end_label))
       (setf cspnr (- cspnr))
       (setf cspni (- cspni))
@@ -151,12 +150,12 @@
         (declare (ignore var-0 var-1 var-2 var-3))
         (setf ptr var-4)
         (setf pti var-5))
-      (f2cl-lib:fset (f2cl-lib:fref yr (2) ((1 n))) (+ str ptr))
-      (f2cl-lib:fset (f2cl-lib:fref yi (2) ((1 n))) (+ sti pti))
+      (setf (f2cl-lib:fref yr (2) ((1 n))) (+ str ptr))
+      (setf (f2cl-lib:fref yi (2) ((1 n))) (+ sti pti))
       (if (= n 2) (go end_label))
       (setf cspnr (- cspnr))
       (setf cspni (- cspni))
-      (setf azn (zabs znr zni))
+      (setf azn (coerce (realpart (zabs znr zni)) 'double-float))
       (setf razn (/ 1.0 azn))
       (setf str (* znr razn))
       (setf sti (* (- zni) razn))
@@ -167,16 +166,16 @@
       (setf cki (* fn rzi))
       (setf cscl (/ 1.0 tol))
       (setf cscr tol)
-      (f2cl-lib:fset (f2cl-lib:fref cssr (1) ((1 3))) cscl)
-      (f2cl-lib:fset (f2cl-lib:fref cssr (2) ((1 3))) coner)
-      (f2cl-lib:fset (f2cl-lib:fref cssr (3) ((1 3))) cscr)
-      (f2cl-lib:fset (f2cl-lib:fref csrr (1) ((1 3))) cscr)
-      (f2cl-lib:fset (f2cl-lib:fref csrr (2) ((1 3))) coner)
-      (f2cl-lib:fset (f2cl-lib:fref csrr (3) ((1 3))) cscl)
-      (f2cl-lib:fset (f2cl-lib:fref bry (1) ((1 3))) ascle)
-      (f2cl-lib:fset (f2cl-lib:fref bry (2) ((1 3))) (/ 1.0 ascle))
-      (f2cl-lib:fset (f2cl-lib:fref bry (3) ((1 3))) (f2cl-lib:d1mach 2))
-      (setf as2 (zabs s2r s2i))
+      (setf (f2cl-lib:fref cssr (1) ((1 3))) cscl)
+      (setf (f2cl-lib:fref cssr (2) ((1 3))) coner)
+      (setf (f2cl-lib:fref cssr (3) ((1 3))) cscr)
+      (setf (f2cl-lib:fref csrr (1) ((1 3))) cscr)
+      (setf (f2cl-lib:fref csrr (2) ((1 3))) coner)
+      (setf (f2cl-lib:fref csrr (3) ((1 3))) cscl)
+      (setf (f2cl-lib:fref bry (1) ((1 3))) ascle)
+      (setf (f2cl-lib:fref bry (2) ((1 3))) (/ 1.0 ascle))
+      (setf (f2cl-lib:fref bry (3) ((1 3))) (f2cl-lib:d1mach 2))
+      (setf as2 (coerce (realpart (zabs s2r s2i)) 'double-float))
       (setf kflag 2)
       (if (> as2 (f2cl-lib:fref bry (1) ((1 3)))) (go label50))
       (setf kflag 1)
@@ -234,17 +233,17 @@
          label70
           (setf ptr (- (* cspnr c1r) (* cspni c1i)))
           (setf pti (+ (* cspnr c1i) (* cspni c1r)))
-          (f2cl-lib:fset (f2cl-lib:fref yr (i) ((1 n)))
-                         (- (+ ptr (* csgnr c2r)) (* csgni c2i)))
-          (f2cl-lib:fset (f2cl-lib:fref yi (i) ((1 n)))
-                         (+ pti (* csgnr c2i) (* csgni c2r)))
+          (setf (f2cl-lib:fref yr (i) ((1 n)))
+                  (- (+ ptr (* csgnr c2r)) (* csgni c2i)))
+          (setf (f2cl-lib:fref yi (i) ((1 n)))
+                  (+ pti (* csgnr c2i) (* csgni c2r)))
           (setf ckr (+ ckr rzr))
           (setf cki (+ cki rzi))
           (setf cspnr (- cspnr))
           (setf cspni (- cspni))
           (if (>= kflag 3) (go label80))
-          (setf ptr (coerce (abs c1r) 'double-float))
-          (setf pti (coerce (abs c1i) 'double-float))
+          (setf ptr (abs c1r))
+          (setf pti (abs c1i))
           (setf c1m (max ptr pti))
           (if (<= c1m bscle) (go label80))
           (setf kflag (f2cl-lib:int-add kflag 1))
@@ -267,4 +266,23 @@
      end_label
       (return
        (values nil nil nil nil nil nil nil nil nz nil nil nil nil nil)))))
+
+(in-package #:cl-user)
+#+#.(cl:if (cl:find-package '#:f2cl) '(:and) '(:or))
+(eval-when (:load-toplevel :compile-toplevel :execute)
+  (setf (gethash 'fortran-to-lisp::zacon fortran-to-lisp::*f2cl-function-info*)
+          (fortran-to-lisp::make-f2cl-finfo
+           :arg-types '((double-float) (double-float) (double-float)
+                        (fortran-to-lisp::integer4) (fortran-to-lisp::integer4)
+                        (fortran-to-lisp::integer4)
+                        (simple-array double-float (*))
+                        (simple-array double-float (*))
+                        (fortran-to-lisp::integer4) (double-float)
+                        (double-float) (double-float) (double-float)
+                        (double-float))
+           :return-values '(nil nil nil nil nil nil nil nil fortran-to-lisp::nz
+                            nil nil nil nil nil)
+           :calls '(fortran-to-lisp::zabs fortran-to-lisp::zs1s2
+                    fortran-to-lisp::d1mach fortran-to-lisp::zmlt
+                    fortran-to-lisp::zbknu fortran-to-lisp::zbinu))))
 

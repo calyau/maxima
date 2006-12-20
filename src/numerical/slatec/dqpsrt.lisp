@@ -1,5 +1,5 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2006/01/31 15:11:05 
-;;; Using Lisp CMU Common Lisp Snapshot 2006-01 (19C)
+;;; Compiled by f2cl version 2.0 beta Date: 2006/11/28 21:41:12 
+;;; Using Lisp CMU Common Lisp Snapshot 2006-12 (19D)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
@@ -12,18 +12,18 @@
 (defun dqpsrt (limit last$ maxerr ermax elist iord nrmax)
   (declare (type (array f2cl-lib:integer4 (*)) iord)
            (type (array double-float (*)) elist)
-           (type double-float ermax)
-           (type f2cl-lib:integer4 nrmax maxerr last$ limit))
+           (type (double-float) ermax)
+           (type (f2cl-lib:integer4) nrmax maxerr last$ limit))
   (f2cl-lib:with-multi-array-data
       ((elist double-float elist-%data% elist-%offset%)
        (iord f2cl-lib:integer4 iord-%data% iord-%offset%))
     (prog ((i 0) (ibeg 0) (ido 0) (isucc 0) (j 0) (jbnd 0) (jupbn 0) (k 0)
            (errmax 0.0) (errmin 0.0))
-      (declare (type double-float errmin errmax)
-               (type f2cl-lib:integer4 k jupbn jbnd j isucc ido ibeg i))
+      (declare (type (double-float) errmin errmax)
+               (type (f2cl-lib:integer4) k jupbn jbnd j isucc ido ibeg i))
       (if (> last$ 2) (go label10))
-      (f2cl-lib:fset (f2cl-lib:fref iord-%data% (1) ((1 *)) iord-%offset%) 1)
-      (f2cl-lib:fset (f2cl-lib:fref iord-%data% (2) ((1 *)) iord-%offset%) 2)
+      (setf (f2cl-lib:fref iord-%data% (1) ((1 *)) iord-%offset%) 1)
+      (setf (f2cl-lib:fref iord-%data% (2) ((1 *)) iord-%offset%) 2)
       (go label90)
      label10
       (setf errmax
@@ -42,9 +42,8 @@
            (<= errmax
                (f2cl-lib:fref elist-%data% (isucc) ((1 *)) elist-%offset%))
            (go label30))
-          (f2cl-lib:fset
-           (f2cl-lib:fref iord-%data% (nrmax) ((1 *)) iord-%offset%)
-           isucc)
+          (setf (f2cl-lib:fref iord-%data% (nrmax) ((1 *)) iord-%offset%)
+                  isucc)
           (setf nrmax (f2cl-lib:int-sub nrmax 1))
          label20))
      label30
@@ -63,26 +62,22 @@
            (>= errmax
                (f2cl-lib:fref elist-%data% (isucc) ((1 *)) elist-%offset%))
            (go label60))
-          (f2cl-lib:fset
-           (f2cl-lib:fref iord-%data%
-                          ((f2cl-lib:int-sub i 1))
-                          ((1 *))
-                          iord-%offset%)
-           isucc)
+          (setf (f2cl-lib:fref iord-%data%
+                               ((f2cl-lib:int-sub i 1))
+                               ((1 *))
+                               iord-%offset%)
+                  isucc)
          label40))
      label50
-      (f2cl-lib:fset (f2cl-lib:fref iord-%data% (jbnd) ((1 *)) iord-%offset%)
-                     maxerr)
-      (f2cl-lib:fset (f2cl-lib:fref iord-%data% (jupbn) ((1 *)) iord-%offset%)
-                     last$)
+      (setf (f2cl-lib:fref iord-%data% (jbnd) ((1 *)) iord-%offset%) maxerr)
+      (setf (f2cl-lib:fref iord-%data% (jupbn) ((1 *)) iord-%offset%) last$)
       (go label90)
      label60
-      (f2cl-lib:fset
-       (f2cl-lib:fref iord-%data%
-                      ((f2cl-lib:int-sub i 1))
-                      ((1 *))
-                      iord-%offset%)
-       maxerr)
+      (setf (f2cl-lib:fref iord-%data%
+                           ((f2cl-lib:int-sub i 1))
+                           ((1 *))
+                           iord-%offset%)
+              maxerr)
       (setf k jbnd)
       (f2cl-lib:fdo (j i (f2cl-lib:int-add j 1))
                     ((> j jbnd) nil)
@@ -92,28 +87,41 @@
            (< errmin
               (f2cl-lib:fref elist-%data% (isucc) ((1 *)) elist-%offset%))
            (go label80))
-          (f2cl-lib:fset
-           (f2cl-lib:fref iord-%data%
-                          ((f2cl-lib:int-add k 1))
-                          ((1 *))
-                          iord-%offset%)
-           isucc)
+          (setf (f2cl-lib:fref iord-%data%
+                               ((f2cl-lib:int-add k 1))
+                               ((1 *))
+                               iord-%offset%)
+                  isucc)
           (setf k (f2cl-lib:int-sub k 1))
          label70))
-      (f2cl-lib:fset (f2cl-lib:fref iord-%data% (i) ((1 *)) iord-%offset%)
-                     last$)
+      (setf (f2cl-lib:fref iord-%data% (i) ((1 *)) iord-%offset%) last$)
       (go label90)
      label80
-      (f2cl-lib:fset
-       (f2cl-lib:fref iord-%data%
-                      ((f2cl-lib:int-add k 1))
-                      ((1 *))
-                      iord-%offset%)
-       last$)
+      (setf (f2cl-lib:fref iord-%data%
+                           ((f2cl-lib:int-add k 1))
+                           ((1 *))
+                           iord-%offset%)
+              last$)
      label90
       (setf maxerr (f2cl-lib:fref iord-%data% (nrmax) ((1 *)) iord-%offset%))
       (setf ermax (f2cl-lib:fref elist-%data% (maxerr) ((1 *)) elist-%offset%))
       (go end_label)
      end_label
       (return (values nil nil maxerr ermax nil nil nrmax)))))
+
+(in-package #:cl-user)
+#+#.(cl:if (cl:find-package '#:f2cl) '(:and) '(:or))
+(eval-when (:load-toplevel :compile-toplevel :execute)
+  (setf (gethash 'fortran-to-lisp::dqpsrt
+                 fortran-to-lisp::*f2cl-function-info*)
+          (fortran-to-lisp::make-f2cl-finfo
+           :arg-types '((fortran-to-lisp::integer4) (fortran-to-lisp::integer4)
+                        (fortran-to-lisp::integer4) (double-float)
+                        (array double-float (*))
+                        (array fortran-to-lisp::integer4 (*))
+                        (fortran-to-lisp::integer4))
+           :return-values '(nil nil fortran-to-lisp::maxerr
+                            fortran-to-lisp::ermax nil nil
+                            fortran-to-lisp::nrmax)
+           :calls 'nil)))
 

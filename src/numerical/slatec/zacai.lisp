@@ -1,5 +1,5 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2006/01/31 15:11:05 
-;;; Using Lisp CMU Common Lisp Snapshot 2006-01 (19C)
+;;; Compiled by f2cl version 2.0 beta Date: 2006/11/28 21:41:12 
+;;; Using Lisp CMU Common Lisp Snapshot 2006-12 (19D)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -10,24 +10,24 @@
 
 
 (let ((pi$ 3.141592653589793))
-  (declare (type double-float pi$))
+  (declare (type (double-float) pi$))
   (defun zacai (zr zi fnu kode mr n yr yi nz rl tol elim alim)
     (declare (type (simple-array double-float (*)) yi yr)
-             (type f2cl-lib:integer4 nz n mr kode)
-             (type double-float alim elim tol rl fnu zi zr))
+             (type (f2cl-lib:integer4) nz n mr kode)
+             (type (double-float) alim elim tol rl fnu zi zr))
     (prog ((cyr (make-array 2 :element-type 'double-float))
            (cyi (make-array 2 :element-type 'double-float)) (inu 0) (iuf 0)
            (nn 0) (nw 0) (arg 0.0) (ascle 0.0) (az 0.0) (csgnr 0.0) (csgni 0.0)
            (cspnr 0.0) (cspni 0.0) (c1r 0.0) (c1i 0.0) (c2r 0.0) (c2i 0.0)
            (dfnu 0.0) (fmr 0.0) (sgn 0.0) (yy 0.0) (znr 0.0) (zni 0.0))
       (declare (type (simple-array double-float (2)) cyi cyr)
-               (type double-float zni znr yy sgn fmr dfnu c2i c2r c1i c1r cspni
-                                  cspnr csgni csgnr az ascle arg)
-               (type f2cl-lib:integer4 nw nn iuf inu))
+               (type (double-float) zni znr yy sgn fmr dfnu c2i c2r c1i c1r
+                                    cspni cspnr csgni csgnr az ascle arg)
+               (type (f2cl-lib:integer4) nw nn iuf inu))
       (setf nz 0)
       (setf znr (- zr))
       (setf zni (- zi))
-      (setf az (zabs zr zi))
+      (setf az (coerce (realpart (zabs zr zi)) 'double-float))
       (setf nn n)
       (setf dfnu (+ fnu (f2cl-lib:int-sub n 1)))
       (if (<= az 2.0) (go label10))
@@ -104,14 +104,11 @@
         (setf iuf var-9))
       (setf nz (f2cl-lib:int-add nz nw))
      label70
-      (f2cl-lib:fset (f2cl-lib:fref yr (1) ((1 n)))
-                     (- (+ (- (* cspnr c1r) (* cspni c1i)) (* csgnr c2r))
-                        (* csgni c2i)))
-      (f2cl-lib:fset (f2cl-lib:fref yi (1) ((1 n)))
-                     (+ (* cspnr c1i)
-                        (* cspni c1r)
-                        (* csgnr c2i)
-                        (* csgni c2r)))
+      (setf (f2cl-lib:fref yr (1) ((1 n)))
+              (- (+ (- (* cspnr c1r) (* cspni c1i)) (* csgnr c2r))
+                 (* csgni c2i)))
+      (setf (f2cl-lib:fref yi (1) ((1 n)))
+              (+ (* cspnr c1i) (* cspni c1r) (* csgnr c2i) (* csgni c2r)))
       (go end_label)
      label80
       (setf nz -1)
@@ -119,4 +116,23 @@
       (go end_label)
      end_label
       (return (values nil nil nil nil nil nil nil nil nz nil nil nil nil)))))
+
+(in-package #:cl-user)
+#+#.(cl:if (cl:find-package '#:f2cl) '(:and) '(:or))
+(eval-when (:load-toplevel :compile-toplevel :execute)
+  (setf (gethash 'fortran-to-lisp::zacai fortran-to-lisp::*f2cl-function-info*)
+          (fortran-to-lisp::make-f2cl-finfo
+           :arg-types '((double-float) (double-float) (double-float)
+                        (fortran-to-lisp::integer4) (fortran-to-lisp::integer4)
+                        (fortran-to-lisp::integer4)
+                        (simple-array double-float (*))
+                        (simple-array double-float (*))
+                        (fortran-to-lisp::integer4) (double-float)
+                        (double-float) (double-float) (double-float))
+           :return-values '(nil nil nil nil nil nil nil nil fortran-to-lisp::nz
+                            nil nil nil nil)
+           :calls '(fortran-to-lisp::zs1s2 fortran-to-lisp::d1mach
+                    fortran-to-lisp::zbknu fortran-to-lisp::zmlri
+                    fortran-to-lisp::zasyi fortran-to-lisp::zseri
+                    fortran-to-lisp::zabs))))
 

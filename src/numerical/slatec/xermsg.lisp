@@ -1,5 +1,5 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2006/01/31 15:11:05 
-;;; Using Lisp CMU Common Lisp Snapshot 2006-01 (19C)
+;;; Compiled by f2cl version 2.0 beta Date: 2006/11/28 21:41:12 
+;;; Using Lisp CMU Common Lisp Snapshot 2006-12 (19D)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -10,7 +10,7 @@
 
 
 (defun xermsg (librar subrou messg nerr level)
-  (declare (type f2cl-lib:integer4 level nerr)
+  (declare (type (integer) level nerr)
            (type (simple-array character (*)) messg subrou librar))
   (prog ((lfirst
           (make-array '(20) :element-type 'character :initial-element #\ ))
@@ -20,11 +20,10 @@
           (make-array '(8) :element-type 'character :initial-element #\ ))
          (xsubr
           (make-array '(8) :element-type 'character :initial-element #\ ))
-         (ltemp 0) (abs$ 0.0f0) (mkntrl 0) (llevel 0) (lerr 0) (kount 0) (i 0)
-         (kdummy 0) (f2cl-lib:f2cl-// 0.0f0) (maxmes 0) (lkntrl 0))
-    (declare (type single-float f2cl-lib:f2cl-// abs$)
-             (type f2cl-lib:integer4 lkntrl maxmes kdummy i kount lerr llevel
-                                     mkntrl ltemp)
+         (ltemp 0) (mkntrl 0) (llevel 0) (lerr 0) (kount 0) (i 0) (kdummy 0)
+         (maxmes 0) (lkntrl 0))
+    (declare (type (integer) lkntrl maxmes kdummy i kount lerr llevel mkntrl
+                             ltemp)
              (type (simple-array character (8)) xsubr xlibr)
              (type (simple-array character (72)) temp)
              (type (simple-array character (20)) lfirst))
@@ -65,7 +64,7 @@
                  (the f2cl-lib:integer4
                       (min (the f2cl-lib:integer4 2)
                            (the f2cl-lib:integer4 lkntrl)))))
-    (setf mkntrl (f2cl-lib:int (abs lkntrl)))
+    (setf mkntrl (abs lkntrl))
     (if (and (< level 2) (= lkntrl 0)) (go label30))
     (if (and (= level 0) (> kount maxmes)) (go label30))
     (if (and (= level 1) (> kount maxmes) (= mkntrl 1)) (go label30))
@@ -185,4 +184,17 @@
     (go end_label)
    end_label
     (return (values nil nil nil nil nil))))
+
+(in-package #:cl-user)
+#+#.(cl:if (cl:find-package '#:f2cl) '(:and) '(:or))
+(eval-when (:load-toplevel :compile-toplevel :execute)
+  (setf (gethash 'fortran-to-lisp::xermsg
+                 fortran-to-lisp::*f2cl-function-info*)
+          (fortran-to-lisp::make-f2cl-finfo
+           :arg-types '(#1=(simple-array character (*)) #1# #1# (integer)
+                        (integer))
+           :return-values '(nil nil nil nil nil)
+           :calls '(fortran-to-lisp::xercnt fortran-to-lisp::xerhlt
+                    fortran-to-lisp::xersve fortran-to-lisp::xerprn
+                    fortran-to-lisp::j4save))))
 

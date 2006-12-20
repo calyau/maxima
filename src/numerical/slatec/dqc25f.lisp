@@ -1,5 +1,5 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2006/01/31 15:11:05 
-;;; Using Lisp CMU Common Lisp Snapshot 2006-01 (19C)
+;;; Compiled by f2cl version 2.0 beta Date: 2006/11/28 21:41:12 
+;;; Using Lisp CMU Common Lisp Snapshot 2006-12 (19D)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
@@ -23,8 +23,8 @@
          (f a b omega integr nrmom maxp1 ksave result abserr neval resabs
           resasc momcom chebmo)
     (declare (type (array double-float (*)) chebmo)
-             (type f2cl-lib:integer4 momcom neval ksave maxp1 nrmom integr)
-             (type double-float resasc resabs abserr result omega b a))
+             (type (f2cl-lib:integer4) momcom neval ksave maxp1 nrmom integr)
+             (type (double-float) resasc resabs abserr result omega b a))
     (f2cl-lib:with-multi-array-data
         ((chebmo double-float chebmo-%data% chebmo-%offset%))
       (prog ((cheb12 (make-array 13 :element-type 'double-float))
@@ -39,16 +39,15 @@
              (cons$ 0.0) (cospar 0.0) (estc 0.0) (ests 0.0) (hlgth 0.0)
              (oflow 0.0) (parint 0.0) (par2 0.0) (par22 0.0) (p2 0.0) (p3 0.0)
              (p4 0.0) (resc12 0.0) (resc24 0.0) (ress12 0.0) (ress24 0.0)
-             (sinpar 0.0) (abs$ 0.0f0))
-        (declare (type single-float abs$)
-                 (type (array double-float (28)) v)
+             (sinpar 0.0))
+        (declare (type (array double-float (28)) v)
                  (type (array double-float (25)) fval d2 d1 d cheb24)
                  (type (array double-float (13)) cheb12)
-                 (type double-float sinpar ress24 ress12 resc24 resc12 p4 p3 p2
-                                    par22 par2 parint oflow hlgth ests estc
-                                    cospar cons$ conc centr ass asap as an2 an
-                                    ac)
-                 (type f2cl-lib:integer4 noeq1 noequ m k j isym iers i))
+                 (type (double-float) sinpar ress24 ress12 resc24 resc12 p4 p3
+                                      p2 par22 par2 parint oflow hlgth ests
+                                      estc cospar cons$ conc centr ass asap as
+                                      an2 an ac)
+                 (type (f2cl-lib:integer4) noeq1 noequ m k j isym iers i))
         (setf oflow (f2cl-lib:d1mach 2))
         (setf centr (* 0.5 (+ b a)))
         (setf hlgth (* 0.5 (- b a)))
@@ -82,19 +81,16 @@
         (setf par22 (+ par2 2.0))
         (setf sinpar (sin parint))
         (setf cospar (cos parint))
-        (f2cl-lib:fset (f2cl-lib:fref v (1) ((1 28)))
-                       (/ (* 2.0 sinpar) parint))
-        (f2cl-lib:fset (f2cl-lib:fref v (2) ((1 28)))
-                       (/
-                        (+ (* 8.0 cospar)
-                           (/ (* (- (+ par2 par2) 8.0) sinpar) parint))
-                        par2))
-        (f2cl-lib:fset (f2cl-lib:fref v (3) ((1 28)))
-                       (/
-                        (+ (* 32.0 (- par2 12.0) cospar)
-                           (/ (* 2.0 (+ (* (- par2 80.0) par2) 192.0) sinpar)
-                              parint))
-                        (* par2 par2)))
+        (setf (f2cl-lib:fref v (1) ((1 28))) (/ (* 2.0 sinpar) parint))
+        (setf (f2cl-lib:fref v (2) ((1 28)))
+                (/
+                 (+ (* 8.0 cospar) (/ (* (- (+ par2 par2) 8.0) sinpar) parint))
+                 par2))
+        (setf (f2cl-lib:fref v (3) ((1 28)))
+                (/
+                 (+ (* 32.0 (- par2 12.0) cospar)
+                    (/ (* 2.0 (+ (* (- par2 80.0) par2) 192.0) sinpar) parint))
+                 (* par2 par2)))
         (setf ac (* 8.0 cospar))
         (setf as (* 24.0 parint sinpar))
         (if (> (abs parint) 24.0) (go label30))
@@ -105,24 +101,24 @@
                       ((> k noeq1) nil)
           (tagbody
             (setf an2 (* an an))
-            (f2cl-lib:fset (f2cl-lib:fref d (k) ((1 25)))
-                           (* -2.0 (- an2 4.0) (- par22 an2 an2)))
-            (f2cl-lib:fset (f2cl-lib:fref d2 (k) ((1 25)))
-                           (* (- an 1.0) (- an 2.0) par2))
-            (f2cl-lib:fset (f2cl-lib:fref d1 ((f2cl-lib:int-add k 1)) ((1 25)))
-                           (* (+ an 3.0) (+ an 4.0) par2))
-            (f2cl-lib:fset (f2cl-lib:fref v ((f2cl-lib:int-add k 3)) ((1 28)))
-                           (- as (* (- an2 4.0) ac)))
+            (setf (f2cl-lib:fref d (k) ((1 25)))
+                    (* -2.0 (- an2 4.0) (- par22 an2 an2)))
+            (setf (f2cl-lib:fref d2 (k) ((1 25)))
+                    (* (- an 1.0) (- an 2.0) par2))
+            (setf (f2cl-lib:fref d1 ((f2cl-lib:int-add k 1)) ((1 25)))
+                    (* (+ an 3.0) (+ an 4.0) par2))
+            (setf (f2cl-lib:fref v ((f2cl-lib:int-add k 3)) ((1 28)))
+                    (- as (* (- an2 4.0) ac)))
             (setf an (+ an 2.0))
            label20))
         (setf an2 (* an an))
-        (f2cl-lib:fset (f2cl-lib:fref d (noequ) ((1 25)))
-                       (* -2.0 (- an2 4.0) (- par22 an2 an2)))
-        (f2cl-lib:fset (f2cl-lib:fref v ((f2cl-lib:int-add noequ 3)) ((1 28)))
-                       (- as (* (- an2 4.0) ac)))
-        (f2cl-lib:fset (f2cl-lib:fref v (4) ((1 28)))
-                       (+ (f2cl-lib:fref v (4) ((1 28)))
-                          (* -56.0 par2 (f2cl-lib:fref v (3) ((1 28))))))
+        (setf (f2cl-lib:fref d (noequ) ((1 25)))
+                (* -2.0 (- an2 4.0) (- par22 an2 an2)))
+        (setf (f2cl-lib:fref v ((f2cl-lib:int-add noequ 3)) ((1 28)))
+                (- as (* (- an2 4.0) ac)))
+        (setf (f2cl-lib:fref v (4) ((1 28)))
+                (+ (f2cl-lib:fref v (4) ((1 28)))
+                   (* -56.0 par2 (f2cl-lib:fref v (3) ((1 28))))))
         (setf ass (* parint sinpar))
         (setf asap
                 (/
@@ -145,10 +141,9 @@
                    an2)
                   cospar)
                  an2))
-        (f2cl-lib:fset (f2cl-lib:fref v ((f2cl-lib:int-add noequ 3)) ((1 28)))
-                       (+
-                        (f2cl-lib:fref v ((f2cl-lib:int-add noequ 3)) ((1 28)))
-                        (* -2.0 asap par2 (- an 1.0) (- an 2.0))))
+        (setf (f2cl-lib:fref v ((f2cl-lib:int-add noequ 3)) ((1 28)))
+                (+ (f2cl-lib:fref v ((f2cl-lib:int-add noequ 3)) ((1 28)))
+                   (* -2.0 asap par2 (- an 1.0) (- an 2.0))))
         (multiple-value-bind (var-0 var-1 var-2 var-3 var-4 var-5)
             (dgtsl noequ d1 d d2
              (f2cl-lib:array-slice v double-float (4) ((1 28))) iers)
@@ -161,43 +156,41 @@
                       ((> i 13) nil)
           (tagbody
             (setf an2 (* an an))
-            (f2cl-lib:fset (f2cl-lib:fref v (i) ((1 28)))
-                           (/
-                            (+
-                             (* (- an2 4.0)
-                                (-
-                                 (* 2.0
-                                    (- par22 an2 an2)
-                                    (f2cl-lib:fref v
-                                                   ((f2cl-lib:int-sub i 1))
-                                                   ((1 28))))
-                                 ac))
-                             as
-                             (* (- par2)
-                                (+ an 1.0)
-                                (+ an 2.0)
-                                (f2cl-lib:fref v
-                                               ((f2cl-lib:int-sub i 2))
-                                               ((1 28)))))
-                            (* par2 (- an 1.0) (- an 2.0))))
+            (setf (f2cl-lib:fref v (i) ((1 28)))
+                    (/
+                     (+
+                      (* (- an2 4.0)
+                         (-
+                          (* 2.0
+                             (- par22 an2 an2)
+                             (f2cl-lib:fref v
+                                            ((f2cl-lib:int-sub i 1))
+                                            ((1 28))))
+                          ac))
+                      as
+                      (* (- par2)
+                         (+ an 1.0)
+                         (+ an 2.0)
+                         (f2cl-lib:fref v ((f2cl-lib:int-sub i 2)) ((1 28)))))
+                     (* par2 (- an 1.0) (- an 2.0))))
             (setf an (+ an 2.0))
            label40))
        label50
         (f2cl-lib:fdo (j 1 (f2cl-lib:int-add j 1))
                       ((> j 13) nil)
           (tagbody
-            (f2cl-lib:fset
-             (f2cl-lib:fref chebmo-%data%
-                            (m (f2cl-lib:int-sub (f2cl-lib:int-mul 2 j) 1))
-                            ((1 maxp1) (1 25))
-                            chebmo-%offset%)
-             (f2cl-lib:fref v (j) ((1 28))))
+            (setf (f2cl-lib:fref chebmo-%data%
+                                 (m
+                                  (f2cl-lib:int-sub (f2cl-lib:int-mul 2 j) 1))
+                                 ((1 maxp1) (1 25))
+                                 chebmo-%offset%)
+                    (f2cl-lib:fref v (j) ((1 28))))
            label60))
-        (f2cl-lib:fset (f2cl-lib:fref v (1) ((1 28)))
-                       (/ (* 2.0 (- sinpar (* parint cospar))) par2))
-        (f2cl-lib:fset (f2cl-lib:fref v (2) ((1 28)))
-                       (+ (/ (* (+ 18.0 (/ -48.0 par2)) sinpar) par2)
-                          (/ (* (- (/ 48.0 par2) 2.0) cospar) parint)))
+        (setf (f2cl-lib:fref v (1) ((1 28)))
+                (/ (* 2.0 (- sinpar (* parint cospar))) par2))
+        (setf (f2cl-lib:fref v (2) ((1 28)))
+                (+ (/ (* (+ 18.0 (/ -48.0 par2)) sinpar) par2)
+                   (/ (* (- (/ 48.0 par2) 2.0) cospar) parint)))
         (setf ac (* -24.0 parint cospar))
         (setf as (* -8.0 sinpar))
         (if (> (abs parint) 24.0) (go label80))
@@ -206,24 +199,24 @@
                       ((> k noeq1) nil)
           (tagbody
             (setf an2 (* an an))
-            (f2cl-lib:fset (f2cl-lib:fref d (k) ((1 25)))
-                           (* -2.0 (- an2 4.0) (- par22 an2 an2)))
-            (f2cl-lib:fset (f2cl-lib:fref d2 (k) ((1 25)))
-                           (* (- an 1.0) (- an 2.0) par2))
-            (f2cl-lib:fset (f2cl-lib:fref d1 ((f2cl-lib:int-add k 1)) ((1 25)))
-                           (* (+ an 3.0) (+ an 4.0) par2))
-            (f2cl-lib:fset (f2cl-lib:fref v ((f2cl-lib:int-add k 2)) ((1 28)))
-                           (+ ac (* (- an2 4.0) as)))
+            (setf (f2cl-lib:fref d (k) ((1 25)))
+                    (* -2.0 (- an2 4.0) (- par22 an2 an2)))
+            (setf (f2cl-lib:fref d2 (k) ((1 25)))
+                    (* (- an 1.0) (- an 2.0) par2))
+            (setf (f2cl-lib:fref d1 ((f2cl-lib:int-add k 1)) ((1 25)))
+                    (* (+ an 3.0) (+ an 4.0) par2))
+            (setf (f2cl-lib:fref v ((f2cl-lib:int-add k 2)) ((1 28)))
+                    (+ ac (* (- an2 4.0) as)))
             (setf an (+ an 2.0))
            label70))
         (setf an2 (* an an))
-        (f2cl-lib:fset (f2cl-lib:fref d (noequ) ((1 25)))
-                       (* -2.0 (- an2 4.0) (- par22 an2 an2)))
-        (f2cl-lib:fset (f2cl-lib:fref v ((f2cl-lib:int-add noequ 2)) ((1 28)))
-                       (+ ac (* (- an2 4.0) as)))
-        (f2cl-lib:fset (f2cl-lib:fref v (3) ((1 28)))
-                       (+ (f2cl-lib:fref v (3) ((1 28)))
-                          (* -42.0 par2 (f2cl-lib:fref v (2) ((1 28))))))
+        (setf (f2cl-lib:fref d (noequ) ((1 25)))
+                (* -2.0 (- an2 4.0) (- par22 an2 an2)))
+        (setf (f2cl-lib:fref v ((f2cl-lib:int-add noequ 2)) ((1 28)))
+                (+ ac (* (- an2 4.0) as)))
+        (setf (f2cl-lib:fref v (3) ((1 28)))
+                (+ (f2cl-lib:fref v (3) ((1 28)))
+                   (* -42.0 par2 (f2cl-lib:fref v (2) ((1 28))))))
         (setf ass (* parint cospar))
         (setf asap
                 (/
@@ -245,10 +238,9 @@
                    an2)
                   sinpar)
                  an2))
-        (f2cl-lib:fset (f2cl-lib:fref v ((f2cl-lib:int-add noequ 2)) ((1 28)))
-                       (+
-                        (f2cl-lib:fref v ((f2cl-lib:int-add noequ 2)) ((1 28)))
-                        (* -2.0 asap par2 (- an 1.0) (- an 2.0))))
+        (setf (f2cl-lib:fref v ((f2cl-lib:int-add noequ 2)) ((1 28)))
+                (+ (f2cl-lib:fref v ((f2cl-lib:int-add noequ 2)) ((1 28)))
+                   (* -2.0 asap par2 (- an 1.0) (- an 2.0))))
         (multiple-value-bind (var-0 var-1 var-2 var-3 var-4 var-5)
             (dgtsl noequ d1 d d2
              (f2cl-lib:array-slice v double-float (3) ((1 28))) iers)
@@ -261,73 +253,69 @@
                       ((> i 12) nil)
           (tagbody
             (setf an2 (* an an))
-            (f2cl-lib:fset (f2cl-lib:fref v (i) ((1 28)))
-                           (/
-                            (+
-                             (* (- an2 4.0)
-                                (+
-                                 (* 2.0
-                                    (- par22 an2 an2)
-                                    (f2cl-lib:fref v
-                                                   ((f2cl-lib:int-sub i 1))
-                                                   ((1 28))))
-                                 as))
-                             ac
-                             (* (- par2)
-                                (+ an 1.0)
-                                (+ an 2.0)
-                                (f2cl-lib:fref v
-                                               ((f2cl-lib:int-sub i 2))
-                                               ((1 28)))))
-                            (* par2 (- an 1.0) (- an 2.0))))
+            (setf (f2cl-lib:fref v (i) ((1 28)))
+                    (/
+                     (+
+                      (* (- an2 4.0)
+                         (+
+                          (* 2.0
+                             (- par22 an2 an2)
+                             (f2cl-lib:fref v
+                                            ((f2cl-lib:int-sub i 1))
+                                            ((1 28))))
+                          as))
+                      ac
+                      (* (- par2)
+                         (+ an 1.0)
+                         (+ an 2.0)
+                         (f2cl-lib:fref v ((f2cl-lib:int-sub i 2)) ((1 28)))))
+                     (* par2 (- an 1.0) (- an 2.0))))
             (setf an (+ an 2.0))
            label90))
        label100
         (f2cl-lib:fdo (j 1 (f2cl-lib:int-add j 1))
                       ((> j 12) nil)
           (tagbody
-            (f2cl-lib:fset
-             (f2cl-lib:fref chebmo-%data%
-                            (m (f2cl-lib:int-mul 2 j))
-                            ((1 maxp1) (1 25))
-                            chebmo-%offset%)
-             (f2cl-lib:fref v (j) ((1 28))))
+            (setf (f2cl-lib:fref chebmo-%data%
+                                 (m (f2cl-lib:int-mul 2 j))
+                                 ((1 maxp1) (1 25))
+                                 chebmo-%offset%)
+                    (f2cl-lib:fref v (j) ((1 28))))
            label110))
        label120
         (if (< nrmom momcom) (setf m (f2cl-lib:int-add nrmom 1)))
         (if (and (< momcom (f2cl-lib:int-sub maxp1 1)) (>= nrmom momcom))
             (setf momcom (f2cl-lib:int-add momcom 1)))
-        (f2cl-lib:fset (f2cl-lib:fref fval (1) ((1 25)))
-                       (* 0.5 (funcall f (+ centr hlgth))))
-        (f2cl-lib:fset (f2cl-lib:fref fval (13) ((1 25)))
-                       (multiple-value-bind (ret-val var-0)
-                           (funcall f centr)
-                         (declare (ignore))
-                         (when var-0
-                           (setf centr var-0))
-                         ret-val))
-        (f2cl-lib:fset (f2cl-lib:fref fval (25) ((1 25)))
-                       (* 0.5 (funcall f (- centr hlgth))))
+        (setf (f2cl-lib:fref fval (1) ((1 25)))
+                (* 0.5 (funcall f (+ centr hlgth))))
+        (setf (f2cl-lib:fref fval (13) ((1 25)))
+                (multiple-value-bind (ret-val var-0)
+                    (funcall f centr)
+                  (declare (ignore))
+                  (when var-0
+                    (setf centr var-0))
+                  ret-val))
+        (setf (f2cl-lib:fref fval (25) ((1 25)))
+                (* 0.5 (funcall f (- centr hlgth))))
         (f2cl-lib:fdo (i 2 (f2cl-lib:int-add i 1))
                       ((> i 12) nil)
           (tagbody
             (setf isym (f2cl-lib:int-sub 26 i))
-            (f2cl-lib:fset (f2cl-lib:fref fval (i) ((1 25)))
-                           (funcall f
-                                    (+
-                                     (* hlgth
-                                        (f2cl-lib:fref x
-                                                       ((f2cl-lib:int-sub i 1))
-                                                       ((1 11))))
-                                     centr)))
-            (f2cl-lib:fset (f2cl-lib:fref fval (isym) ((1 25)))
-                           (funcall f
-                                    (- centr
-                                       (* hlgth
-                                          (f2cl-lib:fref x
-                                                         ((f2cl-lib:int-sub i
-                                                                            1))
-                                                         ((1 11)))))))
+            (setf (f2cl-lib:fref fval (i) ((1 25)))
+                    (funcall f
+                             (+
+                              (* hlgth
+                                 (f2cl-lib:fref x
+                                                ((f2cl-lib:int-sub i 1))
+                                                ((1 11))))
+                              centr)))
+            (setf (f2cl-lib:fref fval (isym) ((1 25)))
+                    (funcall f
+                             (- centr
+                                (* hlgth
+                                   (f2cl-lib:fref x
+                                                  ((f2cl-lib:int-sub i 1))
+                                                  ((1 11)))))))
            label130))
         (dqcheb x fval cheb12 cheb24)
         (setf resc12
@@ -367,9 +355,7 @@
                                   ((1 maxp1) (1 25))
                                   chebmo-%offset%)))
         (setf ress24 0.0)
-        (setf resabs
-                (coerce (abs (f2cl-lib:fref cheb24 (25) ((1 25))))
-                        'double-float))
+        (setf resabs (abs (f2cl-lib:fref cheb24 (25) ((1 25)))))
         (setf k 23)
         (f2cl-lib:fdo (j 1 (f2cl-lib:int-add j 1))
                       ((> j 12) nil)
@@ -400,20 +386,16 @@
                                        ((1 25))))))
             (setf k (f2cl-lib:int-sub k 2))
            label150))
-        (setf estc (coerce (abs (- resc24 resc12)) 'double-float))
-        (setf ests (coerce (abs (- ress24 ress12)) 'double-float))
+        (setf estc (abs (- resc24 resc12)))
+        (setf ests (abs (- ress24 ress12)))
         (setf resabs (* resabs (abs hlgth)))
         (if (= integr 2) (go label160))
         (setf result (- (* conc resc24) (* cons$ ress24)))
-        (setf abserr
-                (coerce (+ (abs (* conc estc)) (abs (* cons$ ests)))
-                        'double-float))
+        (setf abserr (+ (abs (* conc estc)) (abs (* cons$ ests))))
         (go label170)
        label160
         (setf result (+ (* conc ress24) (* cons$ resc24)))
-        (setf abserr
-                (coerce (+ (abs (* conc ests)) (abs (* cons$ estc)))
-                        'double-float))
+        (setf abserr (+ (abs (* conc ests)) (abs (* cons$ estc))))
        label170
         (go end_label)
        end_label
@@ -433,4 +415,26 @@
                  resasc
                  momcom
                  nil))))))
+
+(in-package #:cl-user)
+#+#.(cl:if (cl:find-package '#:f2cl) '(:and) '(:or))
+(eval-when (:load-toplevel :compile-toplevel :execute)
+  (setf (gethash 'fortran-to-lisp::dqc25f
+                 fortran-to-lisp::*f2cl-function-info*)
+          (fortran-to-lisp::make-f2cl-finfo
+           :arg-types '(t (double-float) (double-float) (double-float)
+                        (fortran-to-lisp::integer4) (fortran-to-lisp::integer4)
+                        (fortran-to-lisp::integer4) (fortran-to-lisp::integer4)
+                        (double-float) (double-float)
+                        (fortran-to-lisp::integer4) (double-float)
+                        (double-float) (fortran-to-lisp::integer4)
+                        (array double-float (*)))
+           :return-values '(nil nil nil fortran-to-lisp::omega
+                            fortran-to-lisp::integr nil nil nil
+                            fortran-to-lisp::result fortran-to-lisp::abserr
+                            fortran-to-lisp::neval fortran-to-lisp::resabs
+                            fortran-to-lisp::resasc fortran-to-lisp::momcom
+                            nil)
+           :calls '(fortran-to-lisp::dqcheb fortran-to-lisp::dgtsl
+                    fortran-to-lisp::dqk15w fortran-to-lisp::d1mach))))
 

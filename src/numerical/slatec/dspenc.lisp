@@ -1,5 +1,5 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2006/01/31 15:11:05 
-;;; Using Lisp CMU Common Lisp Snapshot 2006-01 (19C)
+;;; Compiled by f2cl version 2.0 beta Date: 2006/11/28 21:41:12 
+;;; Using Lisp CMU Common Lisp Snapshot 2006-12 (19D)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -52,14 +52,13 @@
       (pi26 1.6449340668482264)
       (nspenc 0)
       (xbig 0.0))
-  (declare (type f2cl-lib:integer4 nspenc)
-           (type double-float xbig pi26)
+  (declare (type (integer) nspenc)
+           (type (double-float) xbig pi26)
            (type (simple-array double-float (38)) spencs))
-  (setq nspenc 0)
   (defun dspenc (x)
-    (declare (type double-float x))
+    (declare (type (double-float) x))
     (prog ((aln 0.0) (dspenc 0.0))
-      (declare (type double-float dspenc aln))
+      (declare (type (double-float) dspenc aln))
       (if (/= nspenc 0) (go label10))
       (setf nspenc
               (initds spencs 38 (* 0.1f0 (f2cl-lib:sngl (f2cl-lib:d1mach 3)))))
@@ -126,4 +125,15 @@
       (go end_label)
      end_label
       (return (values dspenc nil)))))
+
+(in-package #:cl-user)
+#+#.(cl:if (cl:find-package '#:f2cl) '(:and) '(:or))
+(eval-when (:load-toplevel :compile-toplevel :execute)
+  (setf (gethash 'fortran-to-lisp::dspenc
+                 fortran-to-lisp::*f2cl-function-info*)
+          (fortran-to-lisp::make-f2cl-finfo :arg-types '((double-float))
+                                            :return-values '(nil)
+                                            :calls '(fortran-to-lisp::dcsevl
+                                                     fortran-to-lisp::initds
+                                                     fortran-to-lisp::d1mach))))
 

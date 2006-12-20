@@ -1,5 +1,5 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2006/01/31 15:11:05 
-;;; Using Lisp CMU Common Lisp Snapshot 2006-01 (19C)
+;;; Compiled by f2cl version 2.0 beta Date: 2006/11/28 21:41:12 
+;;; Using Lisp CMU Common Lisp Snapshot 2006-12 (19D)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -157,13 +157,13 @@
            (type (simple-array double-float (69)) ai02cs)
            (type (simple-array double-float (46)) ai0cs)
            (type (simple-array double-float (18)) bi0cs)
-           (type double-float xsml)
-           (type f2cl-lib:integer4 ntai02 ntai0 nti0))
+           (type (double-float) xsml)
+           (type (integer) ntai02 ntai0 nti0))
   (setq first$ f2cl-lib:%true%)
   (defun dbsi0e (x)
-    (declare (type double-float x))
-    (prog ((y 0.0) (dbsi0e 0.0) (sqrt$ 0.0f0) (abs$ 0.0f0) (eta 0.0f0))
-      (declare (type single-float eta abs$ sqrt$) (type double-float dbsi0e y))
+    (declare (type (double-float) x))
+    (prog ((y 0.0) (dbsi0e 0.0) (sqrt$ 0.0f0) (eta 0.0f0))
+      (declare (type (single-float) eta sqrt$) (type (double-float) dbsi0e y))
       (cond
         (first$
          (setf eta (* 0.1f0 (f2cl-lib:freal (f2cl-lib:d1mach 3))))
@@ -172,7 +172,7 @@
          (setf ntai02 (initds ai02cs 69 eta))
          (setf xsml (f2cl-lib:fsqrt (* 4.5 (f2cl-lib:d1mach 3))))))
       (setf first$ f2cl-lib:%false%)
-      (setf y (coerce (abs x) 'double-float))
+      (setf y (abs x))
       (if (> y 3.0) (go label20))
       (setf dbsi0e (- 1.0 x))
       (if (> y xsml)
@@ -192,4 +192,15 @@
       (go end_label)
      end_label
       (return (values dbsi0e nil)))))
+
+(in-package #:cl-user)
+#+#.(cl:if (cl:find-package '#:f2cl) '(:and) '(:or))
+(eval-when (:load-toplevel :compile-toplevel :execute)
+  (setf (gethash 'fortran-to-lisp::dbsi0e
+                 fortran-to-lisp::*f2cl-function-info*)
+          (fortran-to-lisp::make-f2cl-finfo :arg-types '((double-float))
+                                            :return-values '(nil)
+                                            :calls '(fortran-to-lisp::dcsevl
+                                                     fortran-to-lisp::initds
+                                                     fortran-to-lisp::d1mach))))
 

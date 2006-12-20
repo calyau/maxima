@@ -1,5 +1,5 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2006/01/31 15:11:05 
-;;; Using Lisp CMU Common Lisp Snapshot 2006-01 (19C)
+;;; Compiled by f2cl version 2.0 beta Date: 2006/11/28 21:41:12 
+;;; Using Lisp CMU Common Lisp Snapshot 2006-12 (19D)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -10,11 +10,11 @@
 
 
 (let ((zeror 0.0) (zeroi 0.0) (coner 1.0) (conei 0.0))
-  (declare (type double-float conei coner zeroi zeror))
+  (declare (type (double-float) conei coner zeroi zeror))
   (defun zmlri (zr zi fnu kode n yr yi nz tol)
     (declare (type (simple-array double-float (*)) yi yr)
-             (type f2cl-lib:integer4 nz n kode)
-             (type double-float tol fnu zi zr))
+             (type (f2cl-lib:integer4) nz n kode)
+             (type (double-float) tol fnu zi zr))
     (prog ((i 0) (iaz 0) (idum 0) (ifnu 0) (inu 0) (itime 0) (k 0) (kk 0)
            (km 0) (m 0) (ack 0.0) (ak 0.0) (ap 0.0) (at 0.0) (az 0.0) (bk 0.0)
            (cki 0.0) (ckr 0.0) (cnormi 0.0) (cnormr 0.0) (fkap 0.0) (fkk 0.0)
@@ -22,14 +22,14 @@
            (p2i 0.0) (p2r 0.0) (raz 0.0) (rho 0.0) (rho2 0.0) (rzi 0.0)
            (rzr 0.0) (scle 0.0) (sti 0.0) (str 0.0) (sumi 0.0) (sumr 0.0)
            (tfnf 0.0) (tst 0.0))
-      (declare (type double-float tst tfnf sumr sumi str sti scle rzr rzi rho2
-                                  rho raz p2r p2i p1r p1i ptr pti fnf flam fkk
-                                  fkap cnormr cnormi ckr cki bk az at ap ak
-                                  ack)
-               (type f2cl-lib:integer4 m km kk k itime inu ifnu idum iaz i))
+      (declare (type (double-float) tst tfnf sumr sumi str sti scle rzr rzi
+                                    rho2 rho raz p2r p2i p1r p1i ptr pti fnf
+                                    flam fkk fkap cnormr cnormi ckr cki bk az
+                                    at ap ak ack)
+               (type (f2cl-lib:integer4) m km kk k itime inu ifnu idum iaz i))
       (setf scle (/ (f2cl-lib:d1mach 1) tol))
       (setf nz 0)
-      (setf az (zabs zr zi))
+      (setf az (coerce (realpart (zabs zr zi)) 'double-float))
       (setf iaz (f2cl-lib:int az))
       (setf ifnu (f2cl-lib:int fnu))
       (setf inu (f2cl-lib:int-sub (f2cl-lib:int-add ifnu n) 1))
@@ -62,7 +62,7 @@
           (setf p1i pti)
           (setf ckr (+ ckr rzr))
           (setf cki (+ cki rzi))
-          (setf ap (zabs p2r p2i))
+          (setf ap (coerce (realpart (zabs p2r p2i)) 'double-float))
           (if (> ap (* tst ak ak)) (go label20))
           (setf ak (+ ak 1.0))
          label10))
@@ -94,12 +94,12 @@
           (setf p1i pti)
           (setf ckr (+ ckr rzr))
           (setf cki (+ cki rzi))
-          (setf ap (zabs p2r p2i))
+          (setf ap (coerce (realpart (zabs p2r p2i)) 'double-float))
           (if (< ap tst) (go label30))
           (if (= itime 2) (go label40))
-          (setf ack (zabs ckr cki))
+          (setf ack (coerce (realpart (zabs ckr cki)) 'double-float))
           (setf flam (+ ack (f2cl-lib:fsqrt (- (* ack ack) 1.0))))
-          (setf fkap (/ ap (zabs p1r p1i)))
+          (setf fkap (coerce (realpart (/ ap (zabs p1r p1i))) 'double-float))
           (setf rho (min flam fkap))
           (setf tst (* tst (f2cl-lib:fsqrt (/ rho (- (* rho rho) 1.0)))))
           (setf itime 2)
@@ -154,8 +154,8 @@
           (setf bk ack)
           (setf fkk (- fkk 1.0))
          label50))
-      (f2cl-lib:fset (f2cl-lib:fref yr (n) ((1 n))) p2r)
-      (f2cl-lib:fset (f2cl-lib:fref yi (n) ((1 n))) p2i)
+      (setf (f2cl-lib:fref yr (n) ((1 n))) p2r)
+      (setf (f2cl-lib:fref yi (n) ((1 n))) p2i)
       (if (= n 1) (go label70))
       (f2cl-lib:fdo (i 2 (f2cl-lib:int-add i 1))
                     ((> i n) nil)
@@ -173,8 +173,8 @@
           (setf bk ack)
           (setf fkk (- fkk 1.0))
           (setf m (f2cl-lib:int-add (f2cl-lib:int-sub n i) 1))
-          (f2cl-lib:fset (f2cl-lib:fref yr (m) ((1 n))) p2r)
-          (f2cl-lib:fset (f2cl-lib:fref yi (m) ((1 n))) p2i)
+          (setf (f2cl-lib:fref yr (m) ((1 n))) p2r)
+          (setf (f2cl-lib:fref yi (m) ((1 n))) p2i)
          label60))
      label70
       (if (<= ifnu 0) (go label90))
@@ -216,7 +216,7 @@
       (setf pti p1i)
       (setf p2r (+ p2r sumr))
       (setf p2i (+ p2i sumi))
-      (setf ap (zabs p2r p2i))
+      (setf ap (coerce (realpart (zabs p2r p2i)) 'double-float))
       (setf p1r (/ 1.0 ap))
       (multiple-value-bind (var-0 var-1 var-2 var-3)
           (zexp ptr pti str sti)
@@ -238,10 +238,10 @@
           (setf str
                   (- (* (f2cl-lib:fref yr (i) ((1 n))) cnormr)
                      (* (f2cl-lib:fref yi (i) ((1 n))) cnormi)))
-          (f2cl-lib:fset (f2cl-lib:fref yi (i) ((1 n)))
-                         (+ (* (f2cl-lib:fref yr (i) ((1 n))) cnormi)
-                            (* (f2cl-lib:fref yi (i) ((1 n))) cnormr)))
-          (f2cl-lib:fset (f2cl-lib:fref yr (i) ((1 n))) str)
+          (setf (f2cl-lib:fref yi (i) ((1 n)))
+                  (+ (* (f2cl-lib:fref yr (i) ((1 n))) cnormi)
+                     (* (f2cl-lib:fref yi (i) ((1 n))) cnormr)))
+          (setf (f2cl-lib:fref yr (i) ((1 n))) str)
          label100))
       (go end_label)
      label110
@@ -249,4 +249,20 @@
       (go end_label)
      end_label
       (return (values nil nil nil nil nil nil nil nz nil)))))
+
+(in-package #:cl-user)
+#+#.(cl:if (cl:find-package '#:f2cl) '(:and) '(:or))
+(eval-when (:load-toplevel :compile-toplevel :execute)
+  (setf (gethash 'fortran-to-lisp::zmlri fortran-to-lisp::*f2cl-function-info*)
+          (fortran-to-lisp::make-f2cl-finfo
+           :arg-types '((double-float) (double-float) (double-float)
+                        (fortran-to-lisp::integer4) (fortran-to-lisp::integer4)
+                        (simple-array double-float (*))
+                        (simple-array double-float (*))
+                        (fortran-to-lisp::integer4) (double-float))
+           :return-values '(nil nil nil nil nil nil nil fortran-to-lisp::nz
+                            nil)
+           :calls '(fortran-to-lisp::zmlt fortran-to-lisp::zexp
+                    fortran-to-lisp::zlog fortran-to-lisp::dgamln
+                    fortran-to-lisp::zabs fortran-to-lisp::d1mach))))
 

@@ -1,5 +1,5 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2006/01/31 15:11:05 
-;;; Using Lisp CMU Common Lisp Snapshot 2006-01 (19C)
+;;; Compiled by f2cl version 2.0 beta Date: 2006/11/28 21:41:12 
+;;; Using Lisp CMU Common Lisp Snapshot 2006-12 (19D)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -10,11 +10,11 @@
 
 
 (let ((zeror 0.0) (zeroi 0.0) (aic 1.2655121234846454))
-  (declare (type double-float aic zeroi zeror))
+  (declare (type (double-float) aic zeroi zeror))
   (defun zuoik (zr zi fnu kode ikflg n yr yi nuf tol elim alim)
     (declare (type (simple-array double-float (*)) yi yr)
-             (type f2cl-lib:integer4 nuf n ikflg kode)
-             (type double-float alim elim tol fnu zi zr))
+             (type (f2cl-lib:integer4) nuf n ikflg kode)
+             (type (double-float) alim elim tol fnu zi zr))
     (prog ((cwrkr (make-array 16 :element-type 'double-float))
            (cwrki (make-array 16 :element-type 'double-float)) (i 0) (idum 0)
            (iform 0) (init 0) (nn 0) (nw 0) (aarg 0.0) (aphi 0.0) (argi 0.0)
@@ -23,14 +23,14 @@
            (gnu 0.0) (phii 0.0) (phir 0.0) (rcz 0.0) (str 0.0) (sti 0.0)
            (sumi 0.0) (sumr 0.0) (zbi 0.0) (zbr 0.0) (zeta1i 0.0) (zeta1r 0.0)
            (zeta2i 0.0) (zeta2r 0.0) (zni 0.0) (znr 0.0) (zri 0.0) (zrr 0.0)
-           (log$ 0) (abs$ 0.0f0))
-      (declare (type single-float abs$)
+           (log$ 0))
+      (declare (type (integer) log$)
                (type (simple-array double-float (16)) cwrkr cwrki)
-               (type double-float zrr zri znr zni zeta2r zeta2i zeta1r zeta1i
-                                  zbr zbi sumr sumi sti str rcz phir phii gnu
-                                  gnn fnn czr czi bsumr bsumi ay ax ascle asumr
-                                  asumi argr argi aphi aarg)
-               (type f2cl-lib:integer4 log$ nw nn init iform idum i))
+               (type (double-float) zrr zri znr zni zeta2r zeta2i zeta1r zeta1i
+                                    zbr zbi sumr sumi sti str rcz phir phii gnu
+                                    gnn fnn czr czi bsumr bsumi ay ax ascle
+                                    asumr asumi argr argi aphi aarg)
+               (type (f2cl-lib:integer4) nw nn init iform idum i))
       (setf nuf 0)
       (setf nn n)
       (setf zrr zr)
@@ -42,7 +42,7 @@
       (setf zbr zrr)
       (setf zbi zri)
       (setf ax (* (abs zr) 1.7321))
-      (setf ay (coerce (abs zi) 'double-float))
+      (setf ay (abs zi))
       (setf iform 1)
       (if (> ay ax) (setf iform 2))
       (setf gnu (max fnu 1.0))
@@ -97,7 +97,7 @@
         (setf bsumi var-16))
       (setf czr (- zeta2r zeta1r))
       (setf czi (- zeta2i zeta1i))
-      (setf aarg (zabs argr argi))
+      (setf aarg (coerce (realpart (zabs argr argi)) 'double-float))
      label50
       (if (= kode 1) (go label60))
       (setf czr (- czr zbr))
@@ -107,7 +107,7 @@
       (setf czr (- czr))
       (setf czi (- czi))
      label70
-      (setf aphi (zabs phir phii))
+      (setf aphi (coerce (realpart (zabs phir phii)) 'double-float))
       (setf rcz czr)
       (if (> rcz elim) (go label210))
       (if (< rcz alim) (go label80))
@@ -125,8 +125,8 @@
       (f2cl-lib:fdo (i 1 (f2cl-lib:int-add i 1))
                     ((> i nn) nil)
         (tagbody
-          (f2cl-lib:fset (f2cl-lib:fref yr (i) ((1 n))) zeror)
-          (f2cl-lib:fset (f2cl-lib:fref yi (i) ((1 n))) zeroi)
+          (setf (f2cl-lib:fref yr (i) ((1 n))) zeror)
+          (setf (f2cl-lib:fref yi (i) ((1 n))) zeroi)
          label100))
       (setf nuf nn)
       (go end_label)
@@ -205,13 +205,13 @@
         (setf bsumi var-16))
       (setf czr (- zeta2r zeta1r))
       (setf czi (- zeta2i zeta1i))
-      (setf aarg (zabs argr argi))
+      (setf aarg (coerce (realpart (zabs argr argi)) 'double-float))
      label160
       (if (= kode 1) (go label170))
       (setf czr (- czr zbr))
       (setf czi (- czi zbi))
      label170
-      (setf aphi (zabs phir phii))
+      (setf aphi (coerce (realpart (zabs phir phii)) 'double-float))
       (setf rcz czr)
       (if (< rcz (- elim)) (go label180))
       (if (> rcz (- alim)) (go end_label))
@@ -219,8 +219,8 @@
       (if (= iform 2) (setf rcz (- rcz (* 0.25 (f2cl-lib:flog aarg)) aic)))
       (if (> rcz (- elim)) (go label190))
      label180
-      (f2cl-lib:fset (f2cl-lib:fref yr (nn) ((1 n))) zeror)
-      (f2cl-lib:fset (f2cl-lib:fref yi (nn) ((1 n))) zeroi)
+      (setf (f2cl-lib:fref yr (nn) ((1 n))) zeror)
+      (setf (f2cl-lib:fref yi (nn) ((1 n))) zeroi)
       (setf nn (f2cl-lib:int-sub nn 1))
       (setf nuf (f2cl-lib:int-add nuf 1))
       (if (= nn 0) (go end_label))
@@ -260,4 +260,22 @@
       (go end_label)
      end_label
       (return (values nil nil nil nil nil nil nil nil nuf nil nil nil)))))
+
+(in-package #:cl-user)
+#+#.(cl:if (cl:find-package '#:f2cl) '(:and) '(:or))
+(eval-when (:load-toplevel :compile-toplevel :execute)
+  (setf (gethash 'fortran-to-lisp::zuoik fortran-to-lisp::*f2cl-function-info*)
+          (fortran-to-lisp::make-f2cl-finfo
+           :arg-types '((double-float) (double-float) (double-float)
+                        (fortran-to-lisp::integer4) (fortran-to-lisp::integer4)
+                        (fortran-to-lisp::integer4)
+                        (simple-array double-float (*))
+                        (simple-array double-float (*))
+                        (fortran-to-lisp::integer4) (double-float)
+                        (double-float) (double-float))
+           :return-values '(nil nil nil nil nil nil nil nil
+                            fortran-to-lisp::nuf nil nil nil)
+           :calls '(fortran-to-lisp::zuchk fortran-to-lisp::zlog
+                    fortran-to-lisp::d1mach fortran-to-lisp::zabs
+                    fortran-to-lisp::zunhj fortran-to-lisp::zunik))))
 

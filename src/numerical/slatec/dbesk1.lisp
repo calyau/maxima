@@ -1,5 +1,5 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2006/01/31 15:11:05 
-;;; Using Lisp CMU Common Lisp Snapshot 2006-01 (19C)
+;;; Compiled by f2cl version 2.0 beta Date: 2006/11/28 21:41:12 
+;;; Using Lisp CMU Common Lisp Snapshot 2006-12 (19D)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -34,13 +34,13 @@
       (first$ nil))
   (declare (type f2cl-lib:logical first$)
            (type (simple-array double-float (16)) bk1cs)
-           (type double-float xmax xsml xmin)
-           (type f2cl-lib:integer4 ntk1))
+           (type (double-float) xmax xsml xmin)
+           (type (integer) ntk1))
   (setq first$ f2cl-lib:%true%)
   (defun dbesk1 (x)
-    (declare (type double-float x))
+    (declare (type (double-float) x))
     (prog ((xmaxt 0.0) (y 0.0) (dbesk1 0.0))
-      (declare (type double-float dbesk1 y xmaxt))
+      (declare (type (double-float) dbesk1 y xmaxt))
       (cond
         (first$
          (setf ntk1
@@ -75,4 +75,18 @@
       (go end_label)
      end_label
       (return (values dbesk1 nil)))))
+
+(in-package #:cl-user)
+#+#.(cl:if (cl:find-package '#:f2cl) '(:and) '(:or))
+(eval-when (:load-toplevel :compile-toplevel :execute)
+  (setf (gethash 'fortran-to-lisp::dbesk1
+                 fortran-to-lisp::*f2cl-function-info*)
+          (fortran-to-lisp::make-f2cl-finfo :arg-types '((double-float))
+                                            :return-values '(nil)
+                                            :calls '(fortran-to-lisp::dbsk1e
+                                                     fortran-to-lisp::dcsevl
+                                                     fortran-to-lisp::dbesi1
+                                                     fortran-to-lisp::xermsg
+                                                     fortran-to-lisp::initds
+                                                     fortran-to-lisp::d1mach))))
 

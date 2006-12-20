@@ -1,5 +1,5 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2006/01/31 15:11:05 
-;;; Using Lisp CMU Common Lisp Snapshot 2006-01 (19C)
+;;; Compiled by f2cl version 2.0 beta Date: 2006/11/28 21:41:12 
+;;; Using Lisp CMU Common Lisp Snapshot 2006-12 (19D)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -84,19 +84,18 @@
                                        4.887880647930793e14
                                        -2.1320333960919372e16)))
       (con 1.8378770664093456))
-  (declare (type double-float con)
+  (declare (type (double-float) con)
            (type (simple-array double-float (22)) cf)
            (type (simple-array double-float (100)) gln))
   (defun dgamln (z ierr)
-    (declare (type f2cl-lib:integer4 ierr) (type double-float z))
+    (declare (type (f2cl-lib:integer4) ierr) (type (double-float) z))
     (prog ((i 0) (i1m 0) (k 0) (mz 0) (nz 0) (fln 0.0) (fz 0.0) (rln 0.0)
            (s 0.0) (tlg 0.0) (trm 0.0) (tst 0.0) (t1 0.0) (wdtol 0.0)
            (zdmy 0.0) (zinc 0.0) (zm 0.0) (zmin 0.0) (zp 0.0) (zsq 0.0)
-           (dgamln 0.0) (abs$ 0.0f0))
-      (declare (type single-float abs$)
-               (type double-float dgamln zsq zp zmin zm zinc zdmy wdtol t1 tst
-                                  trm tlg s rln fz fln)
-               (type f2cl-lib:integer4 nz mz k i1m i))
+           (dgamln 0.0))
+      (declare (type (double-float) dgamln zsq zp zmin zm zinc zdmy wdtol t1
+                                    tst trm tlg s rln fz fln)
+               (type (f2cl-lib:integer4) nz mz k i1m i))
       (setf ierr 0)
       (if (<= z 0.0) (go label70))
       (if (> z 101.0) (go label10))
@@ -108,7 +107,7 @@
       (go end_label)
      label10
       (setf wdtol (f2cl-lib:d1mach 4))
-      (setf wdtol (max wdtol 5.e-19))
+      (setf wdtol (max wdtol 5.0e-19))
       (setf i1m (f2cl-lib:i1mach 14))
       (setf rln (* (f2cl-lib:d1mach 5) i1m))
       (setf fln (min rln 20.0))
@@ -160,4 +159,14 @@
       (go end_label)
      end_label
       (return (values dgamln nil ierr)))))
+
+(in-package #:cl-user)
+#+#.(cl:if (cl:find-package '#:f2cl) '(:and) '(:or))
+(eval-when (:load-toplevel :compile-toplevel :execute)
+  (setf (gethash 'fortran-to-lisp::dgamln
+                 fortran-to-lisp::*f2cl-function-info*)
+          (fortran-to-lisp::make-f2cl-finfo
+           :arg-types '((double-float) (fortran-to-lisp::integer4))
+           :return-values '(nil fortran-to-lisp::ierr)
+           :calls '(fortran-to-lisp::i1mach fortran-to-lisp::d1mach))))
 
