@@ -4,7 +4,7 @@ EXTRA_DIST = \
   README.lisps README.rpms README.i18n README.external \
   INSTALL.win32 INSTALL.lisp \
   configure.lisp  maxima-local.in xmaxima-local.in \
-  ChangeLog-5.9.2 ChangeLog-5.9.3 ChangeLog-5.10.0
+  ChangeLog-5.9.2 ChangeLog-5.9.3 ChangeLog-5.10.0 ChangeLog-5.11.0
 
 include common.mk
 
