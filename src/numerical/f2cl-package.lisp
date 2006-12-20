@@ -53,10 +53,10 @@
    ;; Utilities
    #:array-slice #:array-initialize
    ;; Intrinsic functions
-   #:abs #:acos #:aimag #:aint #:alog #:alog10 #:amax0 #:amax1
+   #:abs #:acos #:aimag #:dimag #:aint #:alog #:alog10 #:amax0 #:amax1
    #:amin1 #:amod #:anint #:asin #:atan #:atan2
-   #:cabs #:cexp #:fchar #:clog #:cmplx #:conjg #:ccos
-   #:csin #:csqrt #:dabs #:dacos #:dasin
+   #:cabs #:cexp #:fchar #:clog #:cmplx #:dcmplx #:conjg #:ccos
+   #:csin #:csqrt #:zsqrt #:dabs #:dacos #:dasin
    #:datan #:datan2 #:dble #:dcos #:dcosh #:dexp #:dim
    #:dint #:dlog #:dlog10 #:dmax1 #:dmin1 #:dmod
    #:dnint #:dprod #:dsign #:dsin #:dsinh #:dsqrt #:dtan
@@ -65,7 +65,8 @@
    #:lge #:lgt #:flog #:log10 #:lt #:max #:max0
    #:max1 #:min0 #:min1 #:nint #:freal
    #:sign #:sngl #:fsqrt
-   ;; Other functions
+   #:cdabs #:dconjg
+   ;; other functions
    #:d1mach #:r1mach #:i1mach
    ))
 
@@ -83,9 +84,12 @@
 ;;;-------------------------------------------------------------------------
 ;;; end of f2cl0.l
 ;;;
-;;; $Id: f2cl-package.lisp,v 1.8 2005-11-07 17:37:12 rtoy Exp $
+;;; $Id: f2cl-package.lisp,v 1.9 2006-12-20 18:13:05 rtoy Exp $
 ;;; $Log: f2cl-package.lisp,v $
-;;; Revision 1.8  2005-11-07 17:37:12  rtoy
+;;; Revision 1.9  2006-12-20 18:13:05  rtoy
+;;; Update to latest f2cl versions.
+;;;
+;;; Revision 1.8  2005/11/07 17:37:12  rtoy
 ;;; This large set of changes comes from Douglas Crosher adding support
 ;;; for SCL:
 ;;;
