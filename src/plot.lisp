@@ -629,10 +629,7 @@ setrgbcolor} def
          expr)
         ((and (symbolp expr) (not (member expr lvars)))
          (cond
-       ; expr is name of an Lisp function defined by defun or defmfun
-       ; Return #'$FOO only if Lisp is not GCL since
-       ; GCL (as of 2.6.7) barfs on (COMPILE NIL #'$FOO).
-       #-gcl ((fboundp expr)
+       ((fboundp expr)
         (symbol-function expr))
        ; expr is name of a Maxima function defined by := or define
        ((mget expr 'mexpr)
@@ -647,9 +644,6 @@ setrgbcolor} def
                                   nil)))
                           'function)))
        ((or
-          ; expr is name of an Lisp function defined by defun or defmfun
-          ; For GCL, handle this like other symbolic names (via $APPLY).
-          #+gcl (fboundp expr)
           ; expr is the name of a function defined by defmspec
           (get expr 'mfexpr*)
           ; expr is the name of a Maxima macro defined by ::=
