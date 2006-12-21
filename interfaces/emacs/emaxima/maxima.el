@@ -461,7 +461,7 @@ in maxima minor mode."
 
 (defvar inferior-maxima-prompt
   (concat "\\(^(" maxima-inchar 
-          "[0-9]*) \\)\\|\\(^MAXIMA>+\\)\\|\\(^(dbm:[0-9]*) \\)")
+          "[0-9]*) \\)\\|\\(^MAXIMA> \\)\\|\\(^(dbm:[0-9]*) \\)")
 					; \\(^[^#%)>]*[#%)>]+ *\\)"
   "*Regexp to recognize prompts from the inferior Maxima") ; or lisp")
 
