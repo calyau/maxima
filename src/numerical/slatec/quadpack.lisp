@@ -149,7 +149,7 @@
   (let* ((lenw (* 4 limit))
 	 (work (make-array lenw :element-type 'double-float))
 	 (iwork (make-array limit :element-type 'f2cl-lib:integer4))
-	 (f (get-integrand fun var))))
+	 (f (get-integrand fun var)))
     (multiple-value-bind (junk z-a z-b z-alfa z-beta z-int z-epsabs z-epsrel
 			       result abserr neval ier
 			       z-limit z-lenw last)
@@ -166,7 +166,7 @@
 		       limit lenw 0 iwork work)
       (declare (ignore junk z-a z-b z-alfa z-beta z-int z-epsabs z-epsrel
 		       z-limit z-lenw last))
-      (list '(mlist) result abserr neval ier)))
+      (list '(mlist) result abserr neval ier))))
 
 
 ;; Tests
