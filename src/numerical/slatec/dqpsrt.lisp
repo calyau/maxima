@@ -1,4 +1,4 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2006/11/28 21:41:12 
+;;; Compiled by f2cl version 2.0 beta Date: 2006/12/21 03:18:39 
 ;;; Using Lisp CMU Common Lisp Snapshot 2006-12 (19D)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
@@ -109,8 +109,8 @@
      end_label
       (return (values nil nil maxerr ermax nil nil nrmax)))))
 
-(in-package #:cl-user)
-#+#.(cl:if (cl:find-package '#:f2cl) '(:and) '(:or))
+(in-package #-gcl #:cl-user #+gcl "CL-USER")
+#+#.(cl:if (cl:find-package '#:f2cl) '(and) '(or))
 (eval-when (:load-toplevel :compile-toplevel :execute)
   (setf (gethash 'fortran-to-lisp::dqpsrt
                  fortran-to-lisp::*f2cl-function-info*)
