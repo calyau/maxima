@@ -2,11 +2,19 @@
 
 (in-package :maxima)
 
+#-gcl
+(defmacro get-integrand (fun var)
+  `(compile nil (coerce-float-fun ,fun `((mlist) ,,var))))
+
+#+gcl
+(defmacro get-integrand (fun var)
+  `(coerce-float-fun ,fun `((mlist) ,,var)))
+
 (defun $quad_qag (fun var a b key &optional (epsrel 1d-8) (limit 200))
   (let* ((lenw (* 4 limit))
 	 (work (make-array lenw :element-type 'double-float))
 	 (iwork (make-array limit :element-type 'f2cl-lib:integer4))
-	 (f (compile nil (coerce-float-fun fun `((mlist) ,var)))))
+	 (f (get-integrand fun var)))
     (multiple-value-bind (junk z-a z-b z-epsabs z-epsrel z-key result abserr neval ier
 			       z-limit z-lenw last)
 	(slatec:dqag #'(lambda (x)
@@ -24,7 +32,7 @@
   (let* ((lenw (* 4 limit))
 	 (work (make-array lenw :element-type 'double-float))
 	 (iwork (make-array limit :element-type 'f2cl-lib:integer4))
-	 (f (compile nil (coerce-float-fun fun `((mlist) ,var)))))
+	 (f (get-integrand fun var)))
     (multiple-value-bind (junk z-a z-b z-epsabs z-epsrel result abserr neval ier
 			       z-limit z-lenw last)
 	(slatec:dqags #'(lambda (x)
@@ -42,7 +50,7 @@
   (let* ((lenw (* 4 limit))
 	 (work (make-array lenw :element-type 'double-float))
 	 (iwork (make-array limit :element-type 'f2cl-lib:integer4))
-	 (f (compile nil (coerce-float-fun fun `((mlist) ,var))))
+	 (f (get-integrand fun var))
 	 (infinity (case inf-type
 		     ((1 $inf)
 		      ;; Interval is [bound, infinity]
@@ -57,7 +65,7 @@
 			       z-limit z-lenw last)
 	(slatec:dqagi #'(lambda (x)
 			   (float (funcall f x) 1d0))
-		       ($float bound)
+	       ($float bound)
 		       infinity
 		       0d0
 		       ($float epsrel)
@@ -70,7 +78,7 @@
   (let* ((lenw (* 4 limit))
 	 (work (make-array lenw :element-type 'double-float))
 	 (iwork (make-array limit :element-type 'f2cl-lib:integer4))
-	 (f (compile nil (coerce-float-fun fun `((mlist) ,var)))))
+	 (f (get-integrand fun var)))
     (multiple-value-bind (junk z-a z-b z-c z-epsabs z-epsrel result abserr neval ier
 			       z-limit z-lenw last)
 	(slatec:dqawc #'(lambda (x)
@@ -91,7 +99,7 @@
 	 (lenw (+ (* 2 leniw) (* 25 maxp1)))
 	 (work (make-array lenw :element-type 'double-float))
 	 (iwork (make-array leniw :element-type 'f2cl-lib:integer4))
-	 (f (compile nil (coerce-float-fun fun `((mlist) ,var))))
+	 (f (get-integrand fun var))
 	 (integr (ecase trig
 		   ((1 %cos $cos) 1)
 		   ((2 %sin $sin) 2))))
@@ -116,7 +124,7 @@
 	 (lenw (+ (* 2 leniw) (* 25 maxp1)))
 	 (work (make-array lenw :element-type 'double-float))
 	 (iwork (make-array leniw :element-type 'f2cl-lib:integer4))
-	 (f (compile nil (coerce-float-fun fun `((mlist) ,var))))
+	 (f (get-integrand fun var))
 	 (integr (ecase trig
 		   ((1 %cos $cos) 1)
 		   ((2 %sin $sin) 2))))
@@ -141,7 +149,7 @@
   (let* ((lenw (* 4 limit))
 	 (work (make-array lenw :element-type 'double-float))
 	 (iwork (make-array limit :element-type 'f2cl-lib:integer4))
-	 (f (compile nil (coerce-float-fun fun `((mlist) ,var)))))
+	 (f (get-integrand fun var))))
     (multiple-value-bind (junk z-a z-b z-alfa z-beta z-int z-epsabs z-epsrel
 			       result abserr neval ier
 			       z-limit z-lenw last)
