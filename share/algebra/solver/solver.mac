@@ -2252,7 +2252,9 @@ PostProcess( Solutions, UserVars, Expressions, PowerSubst ) := (
           UsrSolSet : endcons( UnsolvedEqs, UsrSolSet ),
 
         if Solver_RatSimp_Sols then
-          UsrSolSet : errcatch( fullratsimp( UsrSolSet ) ),
+          UsrSolSet : errcatch( fullratsimp( UsrSolSet ) )
+        else
+          UsrSolSet : [UsrSolSet],
 
         if UsrSolSet = [] then
           PrintMsg( 'SHORT, SolverMsg["SolSetDrp"] )
