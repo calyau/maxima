@@ -166,7 +166,7 @@
 		       limit lenw 0 iwork work)
       (declare (ignore junk z-a z-b z-alfa z-beta z-int z-epsabs z-epsrel
 		       z-limit z-lenw last))
-      (list '(mlist) result abserr neval ier))))
+      (list '(mlist) result abserr neval ier)))
 
 
 ;; Tests
