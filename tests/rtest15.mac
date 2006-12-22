@@ -594,3 +594,5 @@ trigreduce(atan(sin(a)/cos(a)));
 a;
 trigreduce([atan(sin(a)/cos(a))]);
 [a];
+trigreduce([sin(x)^2]);
+[(1-cos(2*x))/2];
