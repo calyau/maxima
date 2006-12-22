@@ -602,3 +602,9 @@ trigreduce([sin(x)^2]);
  */
 limit(5^n/(2^n*3^n),n,inf);
 0;
+
+/*
+ * Bug [ 1370433 ] trigsimp(sqrt(%i2)) != sqrt(trigsimp(%i2))
+ */
+trigsimp(sqrt(2*(cos(x)^2-sin(x)^2)+2));
+sqrt(trigsimp(2*(cos(x)^2-sin(x)^2)+2));

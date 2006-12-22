@@ -68,7 +68,7 @@ defrule(htrigrule4,coth(a),cosh(a)/sinh(a))$
 /* Functions */
 
 trigsimp(x):=
-  trigsimp3(radcan(apply1(x,
+  trigsimp3(ratsimp(apply1(x,
                           trigrule1,trigrule2,trigrule3,trigrule4,
 			  htrigrule1,htrigrule2,htrigrule3,htrigrule4)))$
 
