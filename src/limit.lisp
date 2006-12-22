@@ -516,6 +516,9 @@ It appears in LIMIT and DEFINT.......")
 		  (eq (caar x) '%cos))
 	      (not (free (cadr x) var)))
 	 ($trigexpand x))
+	((member 'array (car x))
+	 ;; Some kind of array reference.  Return it.
+	 x)
 	(t (simplify (cons (ncons (caar x))
 			   (mapcar #'(lambda (x)
 				       (expand-trigs x var))
@@ -2139,7 +2142,29 @@ It appears in LIMIT and DEFINT.......")
 	   (ratgreaterp (third (second a)) (third (second b))))
 	  ((memq ta (cdr (memq tb *limorder)))))))
 
-(defun ismax (l) 
+(defun ismax (l)
+  ;; Preprocess the list of products.  Separate the terms that
+  ;; exponentials and those that don't.  Actually multiply the
+  ;; exponential terms together to form a single term.  Pass this and
+  ;; the rest to ismax-core to find the max.
+  (let (exp-terms non-exp-terms)
+    (dolist (term l)
+      (if (eq 'exp (car term))
+	  (push term exp-terms)
+	  (push term non-exp-terms)))
+    ;; Multiply the exp-terms together
+    (if exp-terms
+	(let ((product 1))
+	  ;;(format t "exp-terms = ~A~%" exp-terms)
+	  (dolist (term exp-terms)
+	    (setf product (simplify (mul product (second term)))))
+	  ;;(format t "product = ~A~%" product)
+	  (setf product `(exp ,($logcontract product)))
+	  ;;(format t "product = ~A~%" product)
+	  (ismax-core (cons product non-exp-terms)))
+	(ismax-core l))))
+
+(defun ismax-core (l) 
   (cond ((null l)  ())
 	((atom l)   ())
 	((= (length l) 1)  (car l)) ;If there is only 1 thing give it back.

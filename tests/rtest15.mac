@@ -596,3 +596,9 @@ trigreduce([atan(sin(a)/cos(a))]);
 [a];
 trigreduce([sin(x)^2]);
 [(1-cos(2*x))/2];
+
+/*
+ * Bug [ 1620977 ] limit(5^n/(2^n*3^n),n,inf) is wrong
+ */
+limit(5^n/(2^n*3^n),n,inf);
+0;
