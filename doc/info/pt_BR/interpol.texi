@@ -1,42 +1,44 @@
+@c Language: Portuguese, Encoding: iso-8859-1
+@c /interpol.texi/1.1/Mon Feb 27 22:09:17 2006//
 @menu
-* Introduction to interpol::
-* Definitions for interpol::
+* Introdu@value{cedilha}@~ao a interpol::
+* Defini@value{cedilha}@~oes para interpol::
 @end menu
 
-@node Introduction to interpol, Definitions for interpol, interpol, interpol
-@section Introduction to interpol
+@node Introdu@value{cedilha}@~ao a interpol, Defini@value{cedilha}@~oes para interpol, interpol, interpol
+@section Introdu@value{cedilha}@~ao a interpol
 
-Package @code{interpol} defines de Lagrangian, the linear and the cubic 
-splines methods for polynomial interpolation.
-
-
-
-For comments, bugs or suggestions, please contact me at @var{'mario AT edu DOT xunta DOT es'}.
+Pacote @code{interpol} define os m@'etodos Lagrangiano, linear e o de
+splines c@'ubicos para interpola@,{c}@~ao polinomial.
 
 
 
-@node Definitions for interpol,  , Introduction to interpol, interpol
-@section Definitions for interpol
+Coment@'arios, corre@,{c}@~oes e sugest@~oes, por favor contacte-me em @var{'mario AT edu DOT xunta DOT es'}.
 
 
-@deffn {Function} lagrange (@var{points})
-@deffnx {Function} lagrange (@var{points}, @var{option})
-Computes the polynomial interpolation by the Lagrangian method. Argument @var{points} must be either:
+
+@node Defini@value{cedilha}@~oes para interpol,  , Introdu@value{cedilha}@~ao a interpol, interpol
+@section Defini@value{cedilha}@~oes para interpol
+
+
+@deffn {Fun@,{c}@~ao} lagrange (@var{pontos})
+@deffnx {Fun@,{c}@~ao} lagrange (@var{pontos}, @var{op@value{cedilha}@value{a_til}o})
+Calcula a interpola@,{c}@~ao polinomial atrav@'es do m@'etodo Lagrangiano. O argumento @var{pontos} deve ser um dos seguintes:
 
 @itemize @bullet
 @item
-a two column matrix, @code{p:matrix([2,4],[5,6],[9,3])},
+uma matriz de duas colunas, @code{p:matrix([2,4],[5,6],[9,3])},
 @item
-a list of pairs, @code{p: [[2,4],[5,6],[9,3]]},
+uma lista de pares, @code{p: [[2,4],[5,6],[9,3]]},
 @item
-a list of numbers, @code{p: [4,6,3]}, in which case the abscissas will be assigned automatically to 1, 2, 3, etc.
+uma lista de n@'umeros, @code{p: [4,6,3]}, e nesse caso as abcissas ir@~ao ser atribu@'idas automaticamente aos valores 1, 2, 3, etc.
 @end itemize
 
-In the first two cases the pairs are ordered with respect to the first coordinate before making computations.
+Nos dois primeiros casos os pares s@~ao ordenados em rela@,{c}@~ao @`a primeira coordenada antes de fazer os c@'alculos.
 
-With the @var{option} argument it is possible to select the name for the independent variable, which is @code{'x} by default; to define another one, write something like @code{varname='z}. 
+Com o argumento @var{op@value{cedilha}@value{a_til}o} @'e poss@'ivel escolher o nome da vari@'avel independente, o qual @'e @code{'x} por padr@~ao; para definir qualquer outra, z por exemplo, escreva @code{varname='z}. 
 
-Examples:
+Exemplos:
 
 @example
 (%i1) load("interpol")$
@@ -78,27 +80,27 @@ Examples:
 @end deffn
 
 
-@deffn {Function} charfun2 (@var{x}, @var{a}, @var{b})
-Returns @code{true} if number @var{x} belongs to the interval @math{[a, b)}, and @code{false} otherwise.
+@deffn {Fun@,{c}@~ao} charfun2 (@var{x}, @var{a}, @var{b})
+Retorna @code{true}, i. e., verdadeiro se o n@'umero @var{x} pertence ao intervalo @math{[a, b)}, e @code{false}, i. e., falsono caso contr@'ario.
 @end deffn
 
 
-@deffn {Function} linearinterpol (@var{points})
-@deffnx {Function} linearinterpol (@var{points}, @var{option})
-Computes the polynomial interpolation by the linear method. Argument @var{points} must be either:
+@deffn {Fun@,{c}@~ao} linearinterpol (@var{pontos})
+@deffnx {Fun@,{c}@~ao} linearinterpol (@var{pontos}, @var{op@value{cedilha}@value{a_til}o})
+Calcula a interpola@,{c}@~ao polinomial atrav@'es do m@'etodo linear. O argumento @var{pontos} deve ser um dos seguintes:
 
 @itemize @bullet
 @item
-a two column matrix, @code{p:matrix([2,4],[5,6],[9,3])},
+uma matriz de duas colunas, @code{p:matrix([2,4],[5,6],[9,3])},
 @item
-a list of pairs, @code{p: [[2,4],[5,6],[9,3]]},
+uma lista de pares, @code{p: [[2,4],[5,6],[9,3]]},
 @item
-a list of numbers, @code{p: [4,6,3]}, in which case the abscissas will be assigned automatically to 1, 2, 3, etc.
+uma lista de n@'umeros, @code{p: [4,6,3]}, e nesse caso as abcissas ir@~ao ser atribu@'idas automaticamente aos valores 1, 2, 3, etc.
 @end itemize
 
-In the first two cases the pairs are ordered with respect to the first coordinate before making computations.
+Nos dois primeiros casos os pares s@~ao ordenados em rela@,{c}@~ao @`a primeira coordenada antes de fazer os c@'alculos.
 
-With the @var{option} argument it is possible to select the name for the independent variable, which is @code{'x} by default; to define another one, write something like @code{varname='z}. 
+Com o argumento @var{op@value{cedilha}@value{a_til}o} @'e poss@'ivel escolher o nome da vari@'avel independente, o qual @'e @code{'x} por padr@~ao; para definir qualquer outra, z por exemplo, escreva @code{varname='z}. 
 
 Examples:
 @example
@@ -137,34 +139,39 @@ Examples:
 
 
 
-@deffn {Function} cspline (@var{points})
-@deffnx {Function} cspline (@var{points}, @var{option1}, @var{option2}, ...)
-Computes the polynomial interpolation by the cubic splines method. Argument @var{points} must be either:
+@deffn {Fun@,{c}@~ao} cspline (@var{pontos})
+@deffnx {Fun@,{c}@~ao} cspline (@var{pontos}, @var{op@value{cedilha}@value{a_til}o1}, @var{op@value{cedilha}@value{a_til}o2}, ...)
+Calcula a interpola@,{c}@~ao polnomial pelo m@'etodo de splines ( polin@^omios de ordem k que interpolam os dados e t@^em k-1 derivadas cont@'inuas em todo o intervalo ) c@'ubicos. O argumento @var{pontos} deve ser um dos
+seguintes:
 
 @itemize @bullet
 @item
-a two column matrix, @code{p:matrix([2,4],[5,6],[9,3])},
+uma matriz de duas colunas, @code{p:matrix([2,4],[5,6],[9,3])},
 @item
-a list of pairs, @code{p: [[2,4],[5,6],[9,3]]},
+uma lista de pares, @code{p: [[2,4],[5,6],[9,3]]},
 @item
-a list of numbers, @code{p: [4,6,3]}, in which case the abscissas will be assigned automatically to 1, 2, 3, etc.
+uma lista de n@'umeros, @code{p: [4,6,3]}, e nesse caso as abcissas ir@~ao ser atribu@'idas automaticamente aos valores 1, 2, 3, etc.
 @end itemize
 
-In the first two cases the pairs are ordered with respect to the first coordinate before making computations.
+Nos dois primeiros casos os pares s@~ao ordenados em rela@,{c}@~ao @`a primeira coordenada antes de fazer os c@'alculos.
 
-There are three options to fit specific needs:
+Existem tr@^es op@,{c}@~oes para ajustar necessidades espec@'ificas:
 @itemize @bullet
 @item
-@code{'d1}, default @code{'unknown}, is the first derivative at @math{x_1}; if it is @code{'unknown}, the second derivative at @math{x_1} is made equal to 0 (natural cubic spline); if it is equal to a number, the second derivative is calculated based on this number.
+@code{'d1}, o padr@~ao @'e @code{'unknown}, @'e a primeira derivada em @math{x_1}; se essa primeira derivada for desconhecida, @code{'unknown}, a segunda derivada em @math{x_1} @'e igualada a 0 (o spline c@'ubico natural); se
+essa primeira
+derivada for igual a um n@'umero, a segunda derivada @'e calculada baseando-se nesse n@'umero.
 
 @item
-@code{'dn}, default @code{'unknown}, is the first derivative at @math{x_n}; if it is @code{'unknown}, the second derivative at @math{x_n} is made equal to 0 (natural cubic spline); if it is equal to a number, the second derivative is calculated based on this number.
+@code{'dn}, o padr@~ao @'e @code{'unknown}, @'e a primeira derivada em @math{x_n}; se essa primeira derivada for desconhecida, @code{'unknown}, a segunda derivada em @math{x_n} @'e igualada a 0 (o spline c@'ubico natural); se
+essa primeira
+derivada for igual a um n@'umero, a segunda derivada @'e calculada baseando-se nesse n@'umero.
 
 @item
-@code{'varname}, default @code{'x}, is the name of the independent variable.
+@code{'nome_var}, o padr@~ao @'e @code{'x}, @'e o nome da vari@'avel independente.
 @end itemize
 
-Examples:
+Exemplos:
 @example
 (%i1) load("interpol")$
 (%i2) p:[[7,2],[8,2],[1,5],[3,2],[6,7]]$

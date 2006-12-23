@@ -214,6 +214,7 @@ Pacotes Adicionais
 * f90::                         Tradutor do Maxima para o fortran.
 * ggf::                         Fun@,{c}@~ao geradora para sequ@^encias.
 * impdiff::                     Derivadas impl@'icitas.
+* implicit_plot::               Gr@'aficos impl@'itos.
 * interpol::                    Pacote de interpola@,{c}@~ao.
 * lbfgs::                       L-BFGS pacote de minimiza@,{c}@~ao n@~ao limitada.
 * lindstedt::                   Pacote Lindstedt.
@@ -503,10 +504,15 @@ impdiff
 
 * Defini@value{cedilha}@~oes para impdiff::
 
+implicit_plot
+
+* Introdu@value{cedilha}@~ao a implicit_plot::
+* Defini@value{cedilha}@~oes para implicit_plot::
+
 interpol
 
-* Introduction to interpol::
-* Definitions for interpol::
+* Introdu@value{cedilha}@~ao interpol::
+* Defini@value{cedilha}@~oes para interpol::
 
 lbfgs
 
@@ -814,9 +820,13 @@ zeilberger
 @chapter ggf
 @include ggf.texi
 
-@node impdiff, interpol, ggf, Top
+@node impdiff, implicit_plot, ggf, Top
 @chapter impdiff
 @include impdiff.texi
+
+@node implicit_plot, interpol, impdiff, Top
+@chapter implicit_plot
+@include implicit_plot.texi
 
 @node interpol, lbfgs, impdiff, Top
 @chapter interpol
