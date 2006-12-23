@@ -506,12 +506,11 @@ impdiff
 
 implicit_plot
 
-* Introdu@value{cedilha}@~ao a implicit_plot::
-* Defini@value{cedilha}@~oes para implicit_plot::
+* Definitions for implicit_plot::
 
 interpol
 
-* Introdu@value{cedilha}@~ao interpol::
+* Introdu@value{cedilha}@~ao a interpol::
 * Defini@value{cedilha}@~oes para interpol::
 
 lbfgs
@@ -828,7 +827,7 @@ zeilberger
 @chapter implicit_plot
 @include implicit_plot.texi
 
-@node interpol, lbfgs, impdiff, Top
+@node interpol, lbfgs, implicit_plot, Top
 @chapter interpol
 @include interpol.texi
 
