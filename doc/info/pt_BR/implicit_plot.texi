@@ -1,4 +1,4 @@
-@c Language: Portuguese, Encoding: iso-8859-1
+@c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /implicit_plot.texi/1.1/Fri Dec 15 13:40:06 2006//
 @menu
 * Defini@value{cedilha}@value{o_til}es para implicit_plot::
@@ -10,7 +10,7 @@
 @deffn {Fun@value{cedilha}@value{a_til}o} implicit_plot (@var{expr}, @var{x_range}, @var{y_range})
 @deffnx {Fun@value{cedilha}@value{a_til}o} implicit_plot ([@var{expr_1}, ..., @var{expr_n}], @var{x_range}, @var{y_range})
 
-Mostra na tela um gr@'afico de um ou mais express@~oes na forma
+Mostra na tela um gr@'afico de uma ou mais express@~oes na forma
 impl@'icita. @var{expr} @'e a express@~ao a ser montado o gr@'afico, @var{x_range} o
 intervalo do eixo do eixo horizontal e @var{y_range} o intervalo do eixo
 vertical. @var{implicit_plot} somente trabalha com o driver do

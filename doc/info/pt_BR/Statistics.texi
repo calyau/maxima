@@ -1,4 +1,4 @@
-@c Language: Portuguese, Encoding: iso-8859-1
+@c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /Statistics.texi/1.4/Thu Apr 21 04:58:35 2005/-ko/
 @c end concepts Statistics
 @menu

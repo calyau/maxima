@@ -1,4 +1,4 @@
-@c Language: Portuguese, Encoding: iso-8859-1
+@c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /Symmetries.texi/1.9/Thu Apr 21 04:58:35 2005/-ko/
 @c arquivo gentilmente traduzido por Helciclever Barros da Silva
 @c end concepts Symmetries

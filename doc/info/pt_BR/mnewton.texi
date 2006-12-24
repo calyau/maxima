@@ -1,4 +1,4 @@
-@c Language: Portuguese, Encoding: iso-8859-1
+@c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /mnewton.texi/1.2/Mon May 15 07:54:51 2006//
 @menu
 * Defini@value{cedilha}@~oes para mnewton::

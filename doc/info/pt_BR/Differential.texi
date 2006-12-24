@@ -1,4 +1,4 @@
-@c Language: Portuguese, Encoding: iso-8859-1
+@c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /Differential.texi/1.8/Thu Apr 21 04:26:33 2005/-ko/
 @menu
 * Defini@value{cedilha}@~oes para Equa@value{cedilha}@~oes Diferenciais::  

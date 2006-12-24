@@ -8,10 +8,10 @@
 @node Introduction to string processing, Definitions for input and output, stringproc, stringproc
 @section Introduction to string processing
 
-@code{stringproc.lisp} enlarges Maximas capabilities of working with strings.
+@code{stringproc.lisp} enlarges Maximas capabilities of working with strings 
+and adds some useful functions for file in/output.
 
-Please note that for Maxima Version 5.9.1 you need a different file. 
-For questions and bugs mail to van.nek at arcor.de .
+For questions and bugs please mail to van.nek at arcor.de .
 
 Load @code{stringproc.lisp} by typing @code{load("stringproc");}.
 
@@ -19,7 +19,7 @@ In Maxima a string is easily constructed by typing "text".
 Note that Maxima-strings are no Lisp-strings and vice versa.
 Tests can be done with @code{stringp} respectively @code{lstringp}.
 If for some reasons you have a value,
-that is a Lisp-string, maybe when using Maxima-function sconcat, you can convert via @code{sunlisp}. 
+that is a Lisp-string, maybe when using Maxima-function @code{sconcat}, you can convert via @code{sunlisp}. 
 
 
 @c ===beg===
@@ -78,7 +78,7 @@ As seen, @code{supcase} is one example.
 It is important to know,
 that the first character in a Maxima-string is at position 1.
 This is designed due to the fact that the first element in a Maxima-list is at position 1 too.
-See definitions of charat and charlist for examples.
+See definitions of @code{charat} and @code{charlist} for examples.
 
 In applications string-functions are often used when working with files.
 You will find some useful stream- and print-functions in @code{stringproc.lisp}.
@@ -86,89 +86,89 @@ The following example shows some of the here introduced functions at work.
 
 Example: 
 
-Let file contain Maxima console I/O,
-saved with 'Save Console to File' or with copy and paste.
-@code{extracti} then extracts the values of all input labels to a batchable file,
-which path is the return value.
-The batch process can directly be started with @code{batch(%)}.
-Note that @code{extracti} fails if at least one label is damaged, maybe due to erasing the @code{).}
-Or if there are input lines from a batch process.
-In this case terminators are missing.
-It fails too, if there are some characters behind the terminators, maybe due to comment.
+@code{openw} returns an output stream to a file, @code{printf} then allows formatted writing 
+to this file. See @code{printf} for details.
 
 @example
-extracti(file):= block(
-   [ s1: openr(file), ifile: sconc(file,".in"), line, nl: false ],
-   s2: openw(ifile), 
-
-   while ( stringp(line: readline(s1)) ) do (
-      if ssearch( sconc("(",inchar),line ) = 1 then (
-         line: strim(" ",substring( line,ssearch(")",line)+1 )),
-         printf( s2,"~a~%",line ),
-         checklast(line) )
-      else if nl then (
-         line: strimr(" ",line),
-         printf( s2,"~a~%",line ),
-         checklast(line) )),
-         
-   close(s1), close(s2),
-   ifile)$
-      
-checklast(line):= block(
-   [ last: charat( line,slength(line) ) ],
-   if cequal(last,";") or cequal(last,"$") then 
-      nl:false else nl:true )$
+(%i1) load("stringproc")$
+(%i2) s: openw("E:/file.txt");
+(%o2)                    #<output stream E:/file.txt>
+(%i3) for n:0 thru 10 do printf( s, "~d ", fib(n) );
+(%o3)                                done
+(%i4) printf( s, "~%~d ~f ~a ~a ~f ~e ~a~%", 
+              42,1.234,sqrt(2),%pi,1.0e-2,1.0e-2,1.0b-2 );
+(%o4)                                false
+(%i5) close(s);
+(%o5)                                true
 @end example
 
-File 'C:\home\maxima\test.out':
+After closing the stream you can open it again, this time with input direction. 
+@code{readline} returns the entire line as one string. The @code{stringproc} package 
+now offers a lot of functions for manipulating strings. Tokenizing can be done by 
+@code{split} or @code{tokens}.
 
 @example
-(%i1) f(x):= sin(x)$
-(%i2) diff(f(x),x);
-(%o2)                               cos(x)
-(%i3) df(x):= ''%;
-(%o3)                           df(x) := cos(x)
-(%i4) df(0);
-(%o4)                                  1
+(%i6) s: openr("E:/file.txt");
+(%o6)                     #<input stream E:/file.txt>
+(%i7) readline(s);
+(%o7)                     0 1 1 2 3 5 8 13 21 34 55 
+(%i8) line: readline(s);
+(%o8)               42 1.234 sqrt(2) %pi 0.01 1.0E-2 1.0b-2
+(%i9) list: tokens(line);
+(%o9)           [42, 1.234, sqrt(2), %pi, 0.01, 1.0E-2, 1.0b-2]
+(%i10) map( parsetoken, list );
+(%o10)           [42, 1.234, false, false, 0.01, 0.01, false]
 @end example
 
-Maxima:
+@code{parsetoken} only parses integer and float numbers. Parsing symbols or bigfloats 
+needs @code{parse_string}, which can be loaded from @code{eval_string.lisp}.
 
-@example
-(%i11) extracti("C:\\home\\maxima\\test.out");
-(%o11)             C:\home\maxima\test.out.in
-(%i12) batch(%);
-
-batching #pC:/home/maxima/test.out.in
-(%i13)                          f(x) := sin(x)
-(%i14)                           diff(f(x), x)
-(%o14)                              cos(x)
-(%i15)                          df(x) := cos(x)
-(%o15)                          df(x) := cos(x)
-(%i16)                               df(0)
-(%o16)                                 1 
+@example 
+(%i11) load("eval_string")$
+(%i12) map( parse_string, list );
+(%o12)           [42, 1.234, sqrt(2), %pi, 0.01, 0.01, 1.0b-2]
+(%i13) float(%);
+(%o13) [42.0, 1.234, 1.414213562373095, 3.141592653589793, 0.01, 0.01, 0.01]
+(%i14) readline(s);
+(%o14)                               false
+(%i15) close(s)$
 @end example
+
+@code{readline} returns @code{false} when the end of file occurs.
 
 @node Definitions for input and output, Definitions for characters, Introduction to string processing, stringproc
 @section Definitions for input and output
 
 Example: 
 
+@c ===beg===
+@c load("stringproc")$
+@c s: openw("E:/file.txt");
+@c control: 
+@c  "~2tAn atom: ~20t~a~%~2tand a list: ~20t~@{~r ~@}~%~2tand an integer: ~20t~d~%"$
+@c printf( s,control, 'true,[1,2,3],42 )$
+@c close(s);
+@c s: openr("E:/file.txt");
+@c while stringp( tmp:readline(s) ) do print(tmp)$
+@c close(s)$
+@c ===end===
 @example
-(%i1) s: openw("C:\\home\\file.txt");
-(%o1)                 #<output stream C:\home\file.txt>
-(%i2) control: "~2tAn atom: ~20t~a~%~2tand a list: ~20t~@{~r ~@}~%~2tand an integer: ~20t~d~%"$
-(%i3) printf( s,control, 'true,[1,2,3],42 )$
-(%o3)                                false
-(%i4) close(s);
-(%o4)                                true
-(%i5) s: openr("C:\\home\\file.txt");
-(%o5)                 #<input stream C:\home\file.txt>
-(%i6) while stringp( tmp:readline(s) ) do print(tmp)$
+(%i1) load("stringproc")$
+(%i2) s: openw("E:/file.txt");
+(%o2)                     #<output stream E:/file.txt>
+(%i3) control: 
+"~2tAn atom: ~20t~a~%~2tand a list: ~20t~@{~r ~@}~%~2tand an integer: ~20t~d~%"$
+(%i4) printf( s,control, 'true,[1,2,3],42 )$
+(%o4)                                false
+(%i5) close(s);
+(%o5)                                true
+(%i6) s: openr("E:/file.txt");
+(%o6)                     #<input stream E:/file.txt>
+(%i7) while stringp( tmp:readline(s) ) do print(tmp)$
   An atom:          true 
   and a list:       one two three  
   and an integer:   42 
-(%i7) close(s)$
+(%i8) close(s)$
 @end example
 
 
@@ -194,17 +194,16 @@ the first element in @var{stream} is in position 1.
 
 @deffn {Function} freshline () 
 @deffnx {Function} freshline (@var{stream}) 
-Writes a new line to @var{stream},
+Writes a new line (to @var{stream}),
 if the position is not at the beginning of a line.
-@code{freshline} does not work properly with the streams @code{true} and @code{false}. 
-
+See also @code{newline}.
 @end deffn
 
 @deffn {Function} newline () 
 @deffnx {Function} newline (@var{stream}) 
-Writes a new line to @var{stream}.
-@code{newline} does not work properly with the streams @code{true} and @code{false}.
-See @code{sprint} for an example of using @code{newline}.
+Writes a new line (to @var{stream}).
+See @code{sprint} for an example of using @code{newline()}.
+Note that there are some cases, where @code{newline()} does not work as expected. 
 
 @end deffn
 
@@ -229,19 +228,16 @@ If an existing file is opened, @code{openw} destructively modifies @var{file}.
 
 @deffn {Function} printf (@var{dest}, @var{string})
 @deffnx {Function} printf (@var{dest}, @var{string}, @var{expr_1}, ..., @var{expr_n})
-@code{printf} is like FORMAT in Common Lisp. 
-(From gcl.info: "format produces formatted output by outputting the characters of control-string string and observing that a tilde introduces a directive.
+Makes the Common Lisp function FORMAT available in Maxima. 
+(From gcl.info: "format produces formatted output by outputting the characters of 
+control-string string and observing that a tilde introduces a directive.
 The character after the tilde,
 possibly preceded by prefix parameters and modifiers,
 specifies what kind of formatting is desired.
 Most directives use one or more elements of args to create their output.")
 
 The following description and the examples may give an idea of using @code{printf}.
-See Lisp reference for more information.
-Note that there are some directives, which do not work in Maxima.
-For example, @code{~:[} fails.
-@code{printf} is designed with the intention, that @code{~s} is read as @code{~a}.
-Also note that the selection directive @code{~[} is zero-indexed.
+See a Lisp reference for more information.
 
 @example
    ~%       new line
@@ -259,7 +255,7 @@ Also note that the selection directive @code{~[} is zero-indexed.
    ~e       scientific notation
    ~g       ~f or ~e, depending upon magnitude
    ~a       as printed by Maxima function print
-   ~s       like ~a
+   ~s       strings enclosed in "double quotes"
    ~~       ~
    ~<       justification, ~> terminates
    ~(       case conversion, ~) terminates 
@@ -267,20 +263,38 @@ Also note that the selection directive @code{~[} is zero-indexed.
    ~@{       iteration, ~@} terminates
 @end example
 
+Please note that there is no format specifier for bigfloats. However bigfloats can 
+simply be printed by using the @code{~a} directive. 
+@code{~s} prints strings enclosed in "double quotes", you can avoid this by using @code{~a}.
+Note that the selection directive @code{~[} is zero-indexed.
+Also note that there are some directives, which do not work in Maxima.
+For example, @code{~:[} fails.
+
+@c ===beg===
+@c load("stringproc")$
+@c printf( false, "~a ~a ~4f ~a ~@@r", 
+@c         "String",sym,bound,sqrt(12),144), bound = 1.234;
+@c printf( false,"~@{~a ~@}",["one",2,"THREE"] );
+@c printf( true,"~@{~@{~9,1f ~@}~%~@}",mat ),
+@c         mat = args( matrix([1.1,2,3.33],[4,5,6],[7,8.88,9]) )$
+@c control: "~:(~r~) bird~p ~[is~;are~] singing."$
+@c printf( false,control, n,n,if n=1 then 0 else 1 ), n=2;
+@c ===end===
 @example
-(%i1) printf( false, "~s ~a ~4f ~a ~@@r", 
-"String",sym,bound,sqrt(8),144), bound = 1.234;
-(%o1)                 String sym 1.23 2*sqrt(2) CXLIV
-(%i2) printf( false,"~@{~a ~@}",["one",2,"THREE"] );
-(%o2)                          one 2 THREE 
-(%i3) printf( true,"~@{~@{~9,1f ~@}~%~@}",mat ),
-mat = args( matrix([1.1,2,3.33],[4,5,6],[7,8.88,9]) )$
+(%i1) load("stringproc")$
+(%i2) printf( false, "~a ~a ~4f ~a ~@@r", 
+              "String",sym,bound,sqrt(12),144), bound = 1.234;
+(%o2)                 String sym 1.23 2*sqrt(3) CXLIV
+(%i3) printf( false,"~@{~a ~@}",["one",2,"THREE"] );
+(%o3)                          one 2 THREE 
+(%i4) printf( true,"~@{~@{~9,1f ~@}~%~@}",mat ),
+              mat = args( matrix([1.1,2,3.33],[4,5,6],[7,8.88,9]) )$
       1.1       2.0       3.3 
       4.0       5.0       6.0 
       7.0       8.9       9.0 
-(%i4) control: "~:(~r~) bird~p ~[is~;are~] singing."$
-(%i5) printf( false,control, n,n,if n=1 then 0 else 1 ), n=2;
-(%o5)                    Two birds are singing.
+(%i5) control: "~:(~r~) bird~p ~[is~;are~] singing."$
+(%i6) printf( false,control, n,n,if n=1 then 0 else 1 ), n=2;
+(%o6)                    Two birds are singing.
 @end example
 
 If @var{dest} is a stream or @code{true}, then @code{printf} returns @code{false}.
@@ -296,15 +310,25 @@ Returns a string containing the characters from the current position in @var{str
 @deffn {Function} sprint (@var{expr_1}, ..., @var{expr_n})
 Evaluates and displays its arguments one after the other `on a line' starting at the leftmost position.
 The numbers are printed with the '-' right next to the number,
-and it disregards line length.
+and it disregards line length. @code{newline()}, which can be loaded from @code{stringproc.lisp} 
+might be useful, if you whish to place intermediate line breaking.
 
+@c ===beg===
+@c for n:0 thru 22 do sprint( fib(n) )$
+@c load("stringproc")$
+@c for n:0 thru 22 do ( 
+@c    sprint(fib(n)), if mod(n,10)=9 then newline() )$
+@c ===end===
 @example
-(%i1) for n:0 thru 16 do sprint( fib(n) )$
-0 1 1 2 3 5 8 13 21 34 55 89 144 233 377 610 987 
+(%i1) for n:0 thru 22 do sprint( fib(n) )$
+0 1 1 2 3 5 8 13 21 34 55 89 144 233 377 610 987 1597 2584 4181 6765 10946 17711 
+(%i2) load("stringproc")$
+(%i3) for n:0 thru 22 do ( 
+         sprint(fib(n)), if mod(n,10)=9 then newline() )$
+0 1 1 2 3 5 8 13 21 34 
+55 89 144 233 377 610 987 1597 2584 4181 
+6765 10946 17711 
 @end example
-
-In xmaxima you might wish to add @code{,newline()}, if you prefer line breaking prior to printing.
-See @code{ascii} for an example.
 
 @end deffn
 
@@ -325,11 +349,17 @@ Returns @code{true} if @var{char} is an alphabetic character or a digit.
 Returns the character corresponding to the ASCII number @var{int}.
 ( -1 < int < 256 )
 
+@c ===beg===
+@c load("stringproc")$
+@c for n from 0 thru 255 do ( 
+@c    tmp: ascii(n), if alphacharp(tmp) then sprint(tmp), if n=96 then newline() )$
+@c ===end===
 @example
-(%i1) for n from 0 thru 255 do ( tmp: ascii(n),
-if alphacharp(tmp) then sprint(tmp) ), newline()$
-A B C D E F G H I J K L M N O P Q R S T U V W X Y Z a b c d e f g
-h i j k l m n o p q r s t u v w x y z
+(%i1) load("stringproc")$
+(%i2) for n from 0 thru 255 do ( 
+tmp: ascii(n), if alphacharp(tmp) then sprint(tmp), if n=96 then newline() )$
+A B C D E F G H I J K L M N O P Q R S T U V W X Y Z 
+a b c d e f g h i j k l m n o p q r s t u v w x y z
 @end example
 
 @end deffn
@@ -380,9 +410,15 @@ Returns @code{true} if @var{char} is a graphic character and not the space chara
 A graphic character is a character one can see, plus the space character.
 (@code{constituent} is defined by Paul Graham, ANSI Common Lisp, 1996, page 67.)
 
+@c ===beg===
+@c load("stringproc")$
+@c for n from 0 thru 255 do ( 
+@c    tmp: ascii(n), if constituent(tmp) then sprint(tmp) )$
+@c ===end===
 @example
-(%i1) for n from 0 thru 255 do ( tmp: ascii(n),
-if constituent(tmp) then sprint(tmp) ), newline()$
+(%i1) load("stringproc")$
+(%i2) for n from 0 thru 255 do ( 
+tmp: ascii(n), if constituent(tmp) then sprint(tmp) )$
 ! " #  %  ' ( ) * + , - . / 0 1 2 3 4 5 6 7 8 9 : ; < = > ? @@ A B
 C D E F G H I J K L M N O P Q R S T U V W X Y Z [ \ ] ^ _ ` a b c
 d e f g h i j k l m n o p q r s t u v w x y z @{ | @} ~
@@ -392,7 +428,7 @@ d e f g h i j k l m n o p q r s t u v w x y z @{ | @} ~
 
 @deffn {Function} cunlisp (@var{lisp_char}) 
 Converts a Lisp-character into a Maxima-character.
-(You wont need it.)
+(You won't need it.)
 
 @end deffn
 
@@ -403,7 +439,7 @@ Returns @code{true} if @var{char} is a digit.
 
 @deffn {Function} lcharp (@var{obj}) 
 Returns @code{true} if @var{obj} is a Lisp-character.
-(You wont need it.)
+(You won't need it.)
 
 @end deffn
 
@@ -413,17 +449,17 @@ Returns @code{true} if @var{char} is a lowercase character.
 @end deffn
 
 @defvr {Variable} newline 
-The character newline. 
+The newline character. 
 
 @end defvr
 
 @defvr {Variable} space   
-The character space.
+The space character.
 
 @end defvr
 
 @defvr {Variable} tab     
-The character tab.
+The tab character.
 
 @end defvr
 
@@ -437,13 +473,13 @@ Returns @code{true} if @var{char} is an uppercase character.
 
 @deffn {Function} sunlisp (@var{lisp_string}) 
 Converts a Lisp-string into a Maxima-string.
-(In general you wont need it.)
+(In general you won't need it.)
 
 @end deffn
 
 @deffn {Function} lstringp (@var{obj}) 
 Returns @code{true} if @var{obj} is a Lisp-string.
-(In general you wont need it.)
+(In general you won't need it.)
 
 @end deffn
 

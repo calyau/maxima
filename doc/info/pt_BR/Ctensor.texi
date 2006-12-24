@@ -1,4 +1,4 @@
-@c Language: Portuguese, Encoding: iso-8859-1
+@c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /Ctensor.texi/1.31/Sun Jul 30 08:49:51 2006/-ko/
 @menu
 * Introdu@value{cedilha}@~ao a ctensor::     

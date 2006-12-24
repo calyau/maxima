@@ -1,4 +1,4 @@
-@c Language: Portuguese, Encoding: iso-8859-1
+@c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /Lists.texi/1.27/Sat Jul  8 08:14:46 2006/-ko/
 @menu
 * Introdu@value{cedilha}@~ao a Listas::

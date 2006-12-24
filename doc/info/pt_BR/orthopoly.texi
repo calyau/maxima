@@ -540,7 +540,7 @@ a Legendre polynomial.
 @end example
 
 @ifnotinfo
-@image{../figures/orthopoly1,8cm}
+@image{figures/orthopoly1,8cm}
 @end ifnotinfo
 
 The @i{entire} expression @code{legendre_p (5, x)} is quoted; this is 

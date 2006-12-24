@@ -1,4 +1,4 @@
-@c Language: Portuguese, Encoding: iso-8859-1
+@c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /Atensor.texi/1.8/Mon Nov 21 00:19:56 2005//
 @menu
 * Introdu@value{cedilha}@~ao ao Pacote atensor::

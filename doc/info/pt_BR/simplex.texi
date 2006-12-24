@@ -1,4 +1,4 @@
-@c Language: Portuguese, Encoding: iso-8859-1
+@c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /simplex.texi/1.2/Mon May 15 07:55:16 2006//
 @menu
 * Introdu@value{cedilha}@~ao a simplex::

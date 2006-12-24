@@ -1,4 +1,4 @@
-@c Language: Portuguese, Encoding: iso-8859-1
+@c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /Contexts.texi/1.12/Thu Feb  9 00:55:29 2006/-ko/
 @c end concepts Contexts
 @menu

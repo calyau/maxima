@@ -1,4 +1,4 @@
-@c Language: Portuguese, Encoding: iso-8859-1
+@c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /Arrays.texi/1.13/Sat Jul  8 08:14:09 2006/-ko/
 @menu
 * Defini@value{cedilha}@~oes para Arrays::  

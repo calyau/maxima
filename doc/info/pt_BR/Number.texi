@@ -1,4 +1,4 @@
-@c Language: Portuguese, Encoding: iso-8859-1
+@c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /Number.texi/1.22/Sat Nov 25 04:02:55 2006/-ko/
 @c end concepts Number Theory
 @menu

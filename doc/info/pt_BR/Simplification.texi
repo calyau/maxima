@@ -1,4 +1,4 @@
-@c Language: Portuguese, Encoding: iso-8859-1
+@c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /Simplification.texi/1.16/Sat Jul 29 08:36:54 2006/-ko/
 @c end concepts Simplification
 @iftex

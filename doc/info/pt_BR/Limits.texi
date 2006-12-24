@@ -1,4 +1,4 @@
-@c Language: Portuguese, Encoding: iso-8859-1
+@c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /Limits.texi/1.10/Thu Jun 16 17:05:35 2005/-ko/
 @menu
 * Defini@value{cedilha}@~oes para Limites::

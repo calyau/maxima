@@ -1,4 +1,4 @@
-@c Language: Portuguese, Encoding: iso-8859-1
+@c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /Affine.texi/1.12/Sat Nov 19 06:51:23 2005/-ko/
 @c end concepts Affine
 @menu

@@ -1,4 +1,4 @@
-@c Language: Portuguese, Encoding: iso-8859-1
+@c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /Expressions.texi/1.50/Sat Nov 25 04:02:28 2006/-ko/
 @menu
 * Introdu@value{cedilha}@~ao a Express@~oes::  

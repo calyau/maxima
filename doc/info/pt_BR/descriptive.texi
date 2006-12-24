@@ -896,7 +896,7 @@ See also function @code{quantile}.
 
 
 @deffn {Function} qrange (@var{list})
-@deffnx {Function} qrange (@var{list})
+@deffnx {Function} qrange (@var{matrix})
 The interquartilic range is the difference between the third and first quartiles, @code{quantile(list,3/4) - quantile(list,1/4)},
 
 @c ===beg===
@@ -927,7 +927,7 @@ See also function @code{quantile}.
 
 
 @deffn {Function} mean_deviation (@var{list})
-@deffnx {Function} mean_deviation (@var{list})
+@deffnx {Function} mean_deviation (@var{matrix})
 The mean deviation, defined as
 @ifhtml
 @example
@@ -1043,7 +1043,7 @@ See also function @code{mean}.
 
 
 @deffn {Function} harmonic_mean (@var{list})
-@deffnx {Function} harmonic_mean (@var{list})
+@deffnx {Function} harmonic_mean (@var{matrix})
 The harmonic mean, defined as
 @ifhtml
 @example
@@ -1790,7 +1790,7 @@ Funtion @code{dataplot} permits direct visualization of sample data, both univar
 @code{'nclasses}, default @code{10}, is the number of classes for the histograms in the diagonal of multivariate scatterplots.
 
 @item
-@code{'pointstyle}, default @code{0}, is an integer to indicate how to display sample points.
+@code{'pointstyle}, default @code{1}, is an integer to indicate how to display sample points.
 
 @end itemize
 
@@ -1816,7 +1816,7 @@ Note that one dimensional data are plotted as a time series. In the next case, s
 @c load (numericalio)$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c dataplot (makelist (s1[k], k, 1, 50), 'maintitle = "First pi digits",
-@c  'axisnames = ["digit order", "digit value"], 'pointstyle = 1,
+@c  'axisnames = ["digit order", "digit value"], 'pointstyle = 2,
 @c  'joined = true)$
 @c ===end===
 @example
@@ -1824,7 +1824,7 @@ Note that one dimensional data are plotted as a time series. In the next case, s
 (%i2) load (numericalio)$
 (%i3) s1 : read_list (file_search ("pidigits.data"))$
 (%i4) dataplot (makelist (s1[k], k, 1, 50), 'maintitle = "First pi digits",
- 'axisnames = ["digit order", "digit value"], 'pointstyle = 1,
+ 'axisnames = ["digit order", "digit value"], 'pointstyle = 2,
  'joined = true)$
 @end example
 
@@ -1834,7 +1834,7 @@ Function @code{dataplot} can be used to plot points in the plane. The next examp
 @c load (descriptive)$
 @c load (numericalio)$
 @c s2 : read_matrix (file_search ("wind.data"))$
-@c dataplot (submatrix (s2, 2, 3, 4), 'pointstyle = 1,
+@c dataplot (submatrix (s2, 2, 3, 4), 'pointstyle = 2,
 @c  'maintitle = "Pairs of wind speeds measured in knots",
 @c  'axisnames = ["Wind speed in A", "Wind speed in E"])$
 @c ===end===
@@ -1842,7 +1842,7 @@ Function @code{dataplot} can be used to plot points in the plane. The next examp
 (%i1) load (descriptive)$
 (%i2) load (numericalio)$
 (%i3) s2 : read_matrix (file_search ("wind.data"))$
-(%i4) dataplot (submatrix (s2, 2, 3, 4), 'pointstyle = 1,
+(%i4) dataplot (submatrix (s2, 2, 3, 4), 'pointstyle = 2,
  'maintitle = "Pairs of wind speeds measured in knots",
  'axisnames = ["Wind speed in A", "Wind speed in E"])$
 @end example

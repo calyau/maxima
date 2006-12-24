@@ -1,4 +1,4 @@
-@c Language: Portuguese, Encoding: iso-8859-1
+@c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /Introduction.texi/1.5/Sun Apr  3 08:17:33 2005/-ko/
 Inicie o Maxima com o comando "maxima".  Maxima mostrar@'a a informa@,{c}@~ao
 de vers@~ao e uma linha de comando.  Termine cada comando Maxima com um ponto e v@'irgula.

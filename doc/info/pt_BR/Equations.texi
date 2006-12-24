@@ -1,4 +1,4 @@
-@c Language: Portuguese, Encoding: iso-8859-1
+@c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /Equations.texi/1.24/Thu Nov  2 05:46:56 2006/-ko/
 @c end concepts Equations
 @menu

@@ -1,4 +1,4 @@
-@c Language: Portuguese, Encoding: iso-8859-1
+@c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /lbfgs.texi/1.2/Sat Dec  9 06:10:42 2006//
 
 @menu
