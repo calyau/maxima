@@ -598,8 +598,8 @@ unit
 
 zeilberger
 
-* Introduction to zeilberger::
-* Definitions for zeilberger::
+* Introdu@value{cedilha}@~ao a zeilberger::
+* Defini@value{cedilha}@value{o_til}es para zeilberger::
 
 @comment @end detailmenu
 @end menu
