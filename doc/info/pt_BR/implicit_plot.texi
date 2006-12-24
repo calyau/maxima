@@ -29,7 +29,7 @@ Exemplo:
 @end example
 
 @ifnotinfo
-@image{figures/implicit_plot,8cm}
+@image{../figures/implicit_plot,8cm}
 @end ifnotinfo
 
 @end deffn
