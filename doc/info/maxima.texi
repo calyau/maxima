@@ -149,6 +149,7 @@ Additional packages
 * f90::                         Maxima to fortran translator.
 * ggf::                         Generating function of sequences.
 * impdiff::                     Implicit derivatives.
+* implicit_plot::               Implicit plots package.
 * interpol::                    Interpolation package.
 * lbfgs::                       L-BFGS unconstrained minimization package.
 * lindstedt::                   Lindstedt package.
@@ -439,6 +440,10 @@ ggf
 impdiff
 
 * Definitions for impdiff::
+
+implicit_plot
+
+* Definitions for implicit_plot::
 
 interpol
 
@@ -751,11 +756,15 @@ zeilberger
 @chapter ggf
 @include ggf.texi
 
-@node impdiff, interpol, ggf, Top
+@node impdiff, implicit_plot, ggf, Top
 @chapter impdiff
 @include impdiff.texi
 
-@node interpol, lbfgs, impdiff, Top
+@node implicit_plot, interpol, impdiff, Top
+@chapter implicit_plot
+@include implicit_plot.texi
+
+@node interpol, lbfgs, implicit_plot, Top
 @chapter interpol
 @include interpol.texi
 
