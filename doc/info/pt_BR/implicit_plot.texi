@@ -1,33 +1,35 @@
+@c Language: Portuguese, Encoding: iso-8859-1
+@c /implicit_plot.texi/1.1/Fri Dec 15 13:40:06 2006//
 @menu
-* Definitions for implicit_plot::
+* Defini@value{cedilha}@value{o_til}es para implicit_plot::
 @end menu
 
-@node Definitions for implicit_plot,  , implicit_plot, implicit_plot
-@section Definitions for implicit_plot
+@node Defini@value{cedilha}@value{o_til}es para implicit_plot,  , implicit_plot, implicit_plot
+@section Defini@value{cedilha}@value{o_til}es para implicit_plot
 
-@deffn {Function} implicit_plot (@var{expr}, @var{x_range}, @var{y_range})
-@deffnx {Function} implicit_plot ([@var{expr_1}, ..., @var{expr_n}], @var{x_range}, @var{y_range})
+@deffn {Fun@value{cedilha}@value{a_til}o} implicit_plot (@var{expr}, @var{x_range}, @var{y_range})
+@deffnx {Fun@value{cedilha}@value{a_til}o} implicit_plot ([@var{expr_1}, ..., @var{expr_n}], @var{x_range}, @var{y_range})
 
-Displays a plot of one or more expressions in implicit
-form. @var{expr} is the expression to be plotted, @var{x_range} the
-range of the horizontal axis and @var{y_range} the range of vertical
-axis. @var{implicit_plot} only works with the gnuplot
-driver. @var{implicit_plot} respects global setting for the gnuplot
-driver set by the @var{set_plot_option} function. Options can also be passed to
-@var{implicit_plot} function as optional arguments.
+Mostra na tela um gr@'afico de um ou mais express@~oes na forma
+impl@'icita. @var{expr} @'e a express@~ao a ser montado o gr@'afico, @var{x_range} o
+intervalo do eixo do eixo horizontal e @var{y_range} o intervalo do eixo
+vertical. @var{implicit_plot} somente trabalha com o driver do
+gnuplot. @var{implicit_plot} respeita as escolhas globais para o driver do
+gnuplot escolhidas por meio da fun@,{c}@~ao @var{set_plot_option}. Op@,{c}@~oes podem tamb;em serem passadas para
+a fun@,{c}@~ao @var{implicit_plot} como argumentos opcionais.
 
-@var{implicit_plot} works by tracking sign changes on the area
-given by @var{x_range} and @var{y_range} and can fail for complicated
-expressions.
+@var{implicit_plot} trabalha por meio de mudan@,{c}as de sinal de trilha sobre a @'area
+fornecida atrav@'es de @var{x_range} e @var{y_range} e pode falhar em express@~oes
+complicadas.
 
-Example:
+Exemplo:
 @example
 (%i1) implicit_plot (x^2 = y^3 - 3*y + 1, [x, -4, 4], [y, -4, 4],
  [gnuplot_preamble, "set zeroaxis"]);
 @end example
 
 @ifnotinfo
-@image{../figures/implicit_plot,8cm}
+@image{figures/implicit_plot,8cm}
 @end ifnotinfo
 
 @end deffn

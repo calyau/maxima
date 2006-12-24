@@ -1,5 +1,5 @@
 \input texinfo
-@c /maxima.texi/1.37/Sat Nov 25 04:03:29 2006/-ko/
+@c /maxima.texi/1.38/Sun Dec 24 05:28:50 2006/-ko/
 @c Language: Portuguese, Encoding: iso-8859-1
 @c -*-texinfo-*-
 
@@ -506,7 +506,7 @@ impdiff
 
 implicit_plot
 
-* Definitions for implicit_plot::
+* Defini@value{cedilha}@value{o_til}es para implicit_plot::
 
 interpol
 
