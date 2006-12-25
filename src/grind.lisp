@@ -320,6 +320,14 @@
 	r (msize-list (cddr x) nil (cons #. right-parentheses-char r)))
   (cons (f+ (car l) (car r)) (cons l (cdr r))))
 
+; SPACEOUT appears solely in trace output. See mtrace.lisp.
+
+(defprop spaceout msize-spaceout grind)
+
+(defun msize-spaceout (x l r)
+  (let ((n (cadr x)) l)
+    (dotimes (i n) (setq l (cons #\space l)))
+    (cons n l)))
 
 (defprop mquote msize-prefix grind)
 (defprop msetq msize-infix grind)
