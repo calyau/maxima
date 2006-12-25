@@ -1151,11 +1151,11 @@ a positive integer; instead found ~:M" n))))
 
 (defun $xreduce (f s &optional (init 'no-init))
   (let ((op (if (atom f) ($verbify f) nil)) (id))
-    (cond ((consp (setq id (get op '$nary)))
+    (cond ((get op '$nary)
 	   (setq s (require-list-or-set s "$xreduce"))
 	   (if (not (equal init 'no-init)) (setq s (cons init s)))
 	   ;(print "...using nary function")
-	   (funcall (car id) s))
+       (mapply1 op s f nil))
 	  (t
 	   (rl-reduce f ($listify s) nil init "$xreduce")))))
 
