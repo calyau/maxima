@@ -184,7 +184,8 @@ One extra decimal digit in actual representation for rounding purposes.")
 		    (t (mul2 temp (power 10. exp))))))))
 
 (defun dim-bigfloat (form result)
-  (dimension-atom (maknam (fpformat form)) result))
+  (let (($lispdisp nil))
+    (dimension-atom (maknam (fpformat form)) result)))
 
 (defun fpformat (l)
   (if (not (memq 'simp (cdar l)))
