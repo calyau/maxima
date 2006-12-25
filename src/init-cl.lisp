@@ -325,6 +325,7 @@
          "contrib/stringproc"
          "contrib/unit"
          "contrib/Zeilberger"
+         "diff_form"
          "diffequations"
          "lbfgs"
          "linearalgebra"
