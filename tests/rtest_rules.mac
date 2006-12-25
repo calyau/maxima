@@ -411,6 +411,21 @@ simp : true;
 true;
  */
 
+/* Examples of built-in and user-defined binary operators.
+ */
+
+(infix ("@@"),
+ "@@" (a, b) := FOO;
+
+(matchdeclare (aa, "<"(100), bb, ">"(100), cc, "="(100), dd, "#"(100)),
+ tellsimpafter (
+
+/* Arguments appearing in matched expressions should be evaluated just once
+ * (just as they would be if there were no matching).
+ */
+
+matchdeclare (aa, "<"(foo0), bb, ">"(foo0), cc, "="(foo0), dd, "#"(foo0));
+
 /* Additional miscellaneous examples.
  */
 (nzc (e) := constantp (e) and e # 0,
@@ -426,7 +441,8 @@ baz (%pi, %i);
 foo (%i, %pi);
 
 /* quux (73, C1) => foo (C1, 73), but q1: quux (73, C1) => bar (C1*73);
- * strangeness related to how Maxima applies multiple rules.
+ * strangeness related to how Maxima applies multiple rules,
+ * or is it due to resimplification at some step??
  */
 q1: quux (73, C1);
 bar (C1*73);
@@ -444,3 +460,15 @@ quux (73, C1);
 
 quux (73, C1);
 glurf (73^C1);
+
+/* For bug [ 1120546 ] defrule (a, b, c) (all atoms) confuses kill (rules)
+ */
+
+kill (all);
+done;
+
+(defrule (a, b, c), 0);
+0;
+
+kill (rules);
+done;
