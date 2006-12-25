@@ -331,7 +331,7 @@ es muy grande.
 @end example
 
 En esta ocasi@'on Maxima realiza un test asint@'otico. La hip@'otesis
-nula es @math{H_0: mean=50} frente a la alternativa bil@'atera @math{H_1: mean#50};
+nula es @math{H_0: equal(mean, 50)} frente a la alternativa bil@'atera @math{H_1: not equal(mean, 50)};
 de acuerdo con los resultados, @math{H_0} debe rechazarse en favor de
 la alternativa @math{H_1}, pues el @math{p}-valor es muy peque@~no. 
 N@'otese que, tal como indica la componente @code{Method}, este
@@ -921,8 +921,8 @@ puesto que no hay empates.
                  |            p_value = 0.28125
 @end example
 
-Contrasta la hip@'otesis nula @math{H_0: median = 2.5} frente 
-a la alternativa @math{H_1: median # 2.5}. Este es un test asint@'otico,
+Contrasta la hip@'otesis nula @math{H_0: equal(median, 2.5)} frente 
+a la alternativa @math{H_1: not equal(median, 2.5)}. Este es un test asint@'otico,
 debido a la presencia de empates.
 
 @c equivalent code for R:

@@ -320,7 +320,7 @@ Warning: global variable 'fpprintprec' is set to 7.
 @end example
 
 This time Maxima performs an asymptotic test, based on the @i{Central Limit Theorem}.
-The null hypothesis is @math{H_0: mean=50} against the two sided alternative @math{H_1: mean#50};
+The null hypothesis is @math{H_0: equal(mean, 50)} against the two sided alternative @math{H_1: not equal(mean, 50)};
 according to the results, the @math{p}-value is very small, @math{H_0} should be rejected in
 favor of the alternative @math{H_1}. Note that, as indicated by the @code{Method} component,
 this procedure should be applied to large samples.
@@ -913,8 +913,8 @@ Warning: global variable 'fpprintprec' is set to 7.
            |            p_value = 0.28125
 @end example
 
-Checks the null hypothesis @math{H_0: median = 2.5} against the 
-alternative @math{H_1: median # 2.5}. This is an approximated test,
+Checks the null hypothesis @math{H_0: equal(median, 2.5)} against the 
+alternative @math{H_1: not equal(median, 2.5)}. This is an approximated test,
 since there are ties.
 
 @c equivalent code for R:
