@@ -130,7 +130,7 @@ Name: "{group}\{cm:ReferenceManualPortuguese}"; Filename: "{app}\share\maxima\@V
 
 FullInstallation=Full installation
 CompactInstallation=Compact installation
-CustomInstallation=Custom istalation
+CustomInstallation=Custom installation
 Uninstall=Uninstall
 
 MaximaCore=Maxima core with command line interface
