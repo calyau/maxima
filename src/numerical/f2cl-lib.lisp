@@ -60,11 +60,12 @@ is not included")
 ;; If you change this, you may need to change some of the macros
 ;; below, such as INT and AINT!
 
-#+(or cmu scl)
+#+(or cmu scl sbcl)
 (deftype integer4 (&optional (low #x-80000000) (high #x7fffffff))
   `(integer ,low ,high))
-#-(or cmu scl)
-(deftype integer4 (&rest p)
+#-(or cmu scl sbcl)
+(deftype integer4 (&optional low high)
+  (declare (ignore low high))
   'fixnum)
 
 (deftype integer2 ()
@@ -1414,9 +1415,12 @@ causing all pending operations to be flushed"
 ;;;-------------------------------------------------------------------------
 ;;; end of macros.l
 ;;;
-;;; $Id: f2cl-lib.lisp,v 1.10 2006-12-20 18:13:05 rtoy Exp $
+;;; $Id: f2cl-lib.lisp,v 1.11 2006-12-26 14:53:47 rtoy Exp $
 ;;; $Log: f2cl-lib.lisp,v $
-;;; Revision 1.10  2006-12-20 18:13:05  rtoy
+;;; Revision 1.11  2006-12-26 14:53:47  rtoy
+;;; SBCL can handle integer4 types well, too.
+;;;
+;;; Revision 1.10  2006/12/20 18:13:05  rtoy
 ;;; Update to latest f2cl versions.
 ;;;
 ;;; Revision 1.9  2006/07/27 05:37:46  robert_dodier
