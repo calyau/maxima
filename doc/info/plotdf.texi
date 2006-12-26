@@ -169,7 +169,7 @@ equations. The name and values of the parameters must be given in a
 string with a comma-separated sequence of pairs @code{name=value}.
 
 @item
-@dfn{sliders} defines a list o parameters that will be changed
+@dfn{sliders} defines a list of parameters that will be changed
 interactively using slider buttons, and the range of variation of those
 parameters. The names and ranges of the parameters must be given in a
 string with a comma-separated sequence of elements @code{name=min:max}
