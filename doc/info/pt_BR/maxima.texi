@@ -529,7 +529,7 @@ linearalgebra
 
 lsquares
 
-* Definitions for lsquares::
+* Defini@value{cedilha}@~oes para lsquares::
 
 makeOrders
 
