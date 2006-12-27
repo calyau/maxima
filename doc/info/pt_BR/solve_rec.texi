@@ -1,3 +1,4 @@
+@c Language: Brazilian Portuguese, Encoding: iso-8859-1
 /solve_rec.texi/1.6/Sat Nov 25 04:03:29 2006//
 @menu
 * Introdu@value{cedilha}@~ao a solve_rec::
