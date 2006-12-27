@@ -415,16 +415,41 @@ true;
  */
 
 (infix ("@@"),
- "@@" (a, b) := FOO;
+ "@@" (a, b) := integerp(a) and integerp(b) and remainder(b, a) = 0,
+ matchdeclare (aa, "<"(100), bb, ">"(100), cc, "="(100), dd, "#"(100), ee, "@@"(100)),
+ tellsimpafter (FOO1 (aa, bb, cc, dd, ee), BAR1 (aa - 100, 100 - bb, cc - 100, dd - 100, ee / 100)),
+ 0);
+0;
 
-(matchdeclare (aa, "<"(100), bb, ">"(100), cc, "="(100), dd, "#"(100)),
- tellsimpafter (
+FOO1 (17, 29, 1729, 29, 17);
+FOO1 (17, 29, 1729, 29, 17);
+
+FOO1 (1729, 17, 100, 29, 172900);
+BAR1 (1729 - 100, 100 - 17, 0, 29 - 100, 1729);
+
+/* Undecided expressions should be treated as failed matches
+ * (i.e. without causing a predicate evaluation error,
+ * and without treating some non-false value as true)
+ */
+(matchdeclare (aa, "<"(foo0), bb, ">"(foo0), cc, "="(foo0), dd, "#"(foo0)),
+ tellsimpafter (BAZ1 (aa, bb, cc, dd), BLURF1 (aa - foo0, foo0 - bb, 0, dd - foo0)),
+ 0);
+0;
+
+(BAZ1 (1729, 17, 100, 29), [op (%%), args (%%)]);
+[BAZ1, [1729, 17, 100, 29]];
+
+foo0 : 100;
+100;
+
+BAZ1 (1729, 17, 100, 29);
+BLURF1 (1729 - 100, 100 - 17, 0, 29 - 100);
 
 /* Arguments appearing in matched expressions should be evaluated just once
  * (just as they would be if there were no matching).
  */
 
-matchdeclare (aa, "<"(foo0), bb, ">"(foo0), cc, "="(foo0), dd, "#"(foo0));
+/* NEED EXAMPLES HERE !! */
 
 /* Additional miscellaneous examples.
  */

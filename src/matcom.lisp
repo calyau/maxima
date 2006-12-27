@@ -608,11 +608,10 @@
 ; pattern-variable is the pattern variable (as declared by matchdeclare)
 ; match-against is the expression to match against
 
-; CALL $MAYBE INSTEAD OF IS IN THIS STUFF -- IS BINDS $PREDERROR TO T, WE REALLY DON'T WANT THAT
-; ACTUALLY ON SECOND THOUGHT WE DON'T WANT $MAYBE EITHER SINCE IT CAN
-; RETURN A NON-NIL VALUE WHICH IS NOT T (NAMELY $UNKNOWN).
-; HOW ABOUT CALLING DEFINITELY-SO WHERE
-; (DEFUN DEFINITELY-SO (E) (EQ ($MAYBE E) T))
+; Return T if $MAYBE returns T, otherwise NIL.
+; That makes all non-T values (e.g. $UNKNOWN or noun expressions) act like NIL.
+(defun definitely-so (e) (eq (mfuncall '$maybe e) t))
+
 (defun getdec (pattern-variable match-against)
   (let (p)
     (if (setq p (mget pattern-variable 'matchdeclare))
@@ -631,20 +630,22 @@
                 (if (atom p-op)
                   ; P-OP is the name of a function. Try to generate a Lisp function call.
                   (if (and (fboundp p-op) (not (get p-op 'translated)))   ; WHY THE TEST FOR TRANSLATED PROPERTY ??
-                    `(,p-op ,@(ncons match-against))
-                    `(is '((,p-op) ,@(ncons match-against))))
+                    `(eq t (,p-op ,@(ncons match-against)))
+                    `(definitely-so '((,p-op) ,@(ncons match-against))))
 
                   ; Otherwise P-OP is something like ((<op>) <args>).
                   (progn
                     (setq p-args (cdr p-op))
                     (cond
                       ((eq (caar p-op) 'lambda)
-                       `(is (mapply1 ',p-op (list ,match-against) t nil)))
+                       `(definitely-so (mapply1 ',p-op (list ,match-against) t nil)))
                       ((eq (caar p-op) 'mqapply)
-                       `(is (meval ',(append p-op (ncons match-against)))))
+                       `(definitely-so (meval ',(append p-op (ncons match-against)))))
                       ; Otherwise P-OP must be a function call with the last arg missing.
                       (t
-                        `(is (cons ',(car p-op) ',(append (mapcar 'memqargs p-args) (ncons match-against)))))))))
+                        (if (and (consp (car p-op)) (mget (caar p-op) 'mmacro))
+                          `(definitely-so (cons ',(car p-op) ,(append '(list) (mapcar 'memqargs p-args) (ncons match-against))))
+                          `(definitely-so (cons ',(car p-op) ',(append (mapcar 'memqargs p-args) (ncons match-against))))))))))
 
           `(cond
              (,test-expr (msetq ,pattern-variable ,match-against))
