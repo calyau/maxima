@@ -570,8 +570,8 @@ simplification
 
 solve_rec
 
-* Introduction to solve_rec::
-* Definitions for solve_rec::
+* Introdu@value{cedilha}@~ao a solve_rec::
+* Defini@value{cedilha}@~oes para solve_rec::
 
 stats
 
