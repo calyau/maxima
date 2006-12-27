@@ -475,7 +475,7 @@ descriptive
 
 diag
 
-* Definitions for diag::
+* Defini@value{cedilha}@~oes para diag::
 
 distrib
 
