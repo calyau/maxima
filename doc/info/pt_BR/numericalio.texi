@@ -10,24 +10,24 @@
 
 @code{numericalio} @'e uma cole@,{c}@~ao de fun@,{c}@~oes para ler e escrever arquivos de dados.
 O arquivo @'e lido completamente para construir um objeto;
-leituras parciais n@~o s@~ao suportadas.
+leituras parciais n@~ao s@~ao suportadas.
 
 @'E assumido que cada item a ler ou escrever @'e at@^omico:
-um n@'umero inteiro, n@'umero em ponto flutuante, n@'umero grande em ponto flutuante, seq@"u@^encia de caracteres, ou s@'imbolo,
+um n@'umero inteiro, n@'umero em ponto flutuante, grande n@'umero em ponto flutuante, seq@"u@^encia de caracteres, ou s@'imbolo,
 e n@~ao um n@'umero racional ou um n@'umero complexo ou qualquer outro tipo de express@~ao n@~ao at@^omica.
-Essas fun@,{c}@~oes podem tentar fazer alguma coisa levemente parecidos com express@~oes n@~ao at@^omicas,
-mas os resultados n@~ao s@~ao especificasdos aqui e s@~ao sujeitos a mudan@,{c}as.
+Essas fun@,{c}@~oes podem tentar fazer alguma coisa levemente parecida com express@~oes n@~ao at@^omicas,
+mas os resultados n@~ao s@~ao especificados aqui e s@~ao sujeitos a mudan@,{c}as.
 
-@'Atomos em amboas os arquivos de entrada e sa@'ida possuem o mesmo formato que
+@'Atomos em ambos os arquivos de entrada e sa@'ida possuem o mesmo formato que
 em arquivos de lote do Maxima ou no console interativo.
 Em particular, seq@"u@^encia de caracteres s@~ao contidas dentro de aspas duplas,
 contrabarra @code{\} evita qualquer interpreta@,{c}@~ao especial do caractere seguinte,
-e o pnto de interroga@,{c}@~ao @code{?} @'e reconhecido no in@'icio de um s@'imbolo
+e o ponto de interroga@,{c}@~ao @code{?} @'e reconhecido no in@'icio de um s@'imbolo
 para significar um s@'imbolo do Lisp (em oposi@,{c}@~ao a um s@'imbolo do Maxima).
 Nenhum caractere de continua@,{c}@~ao (para continuar linhas quebradas) @'e reconhecido.
 
 @var{separator_flag} diz que caracteres separa elementos.
-Isso @'e um argumento opcional para todas as fun@,{c}@~oes de leitura e escrita.
+@var{separator_flag} @'e um argumento opcional para todas as fun@,{c}@~oes de leitura e escrita.
 
 Para entrada, os valores de @var{separator_flag} reconhecidos s@~ao:
 @code{comma} para valores separados por v@'irgula,
@@ -44,7 +44,7 @@ e tamb@'em @code{tab}, para valores separados pelo caractere de tabula@,{c}ao.
 
 Em entrada, m@'ultiplos espa@,{c}os e multiplas tabula@,{c}@~oes sucessivas contam como um separador simples.
 Todavia, m@'ultiplas v@'irgulas, barras verticais, ou ponto-e-v@'irgulas s@~ao significativos.
-Sucessivas v@'irgulas, barras verticais, ou ponto-e-v@'irgulas s@~ao (com ou sem intercala@,{c}@~ao de espa@,{c}os ou tabula@,{c}@~oes)
+Sucessivas v@'irgulas, barras verticais, ou ponto-e-v@'irgulas (com ou sem intercala@,{c}@~ao de espa@,{c}os ou tabula@,{c}@~oes)
 s@~ao considerados como tendo @code{false} entre os separadores.
 Por exemplo, @code{1234,,Foo} @'e tratado da mesma forma que @code{1234,false,Foo}.
 Em sa@'idas, os @'atomos @code{false} s@~ao escritos como tais;
@@ -56,12 +56,12 @@ e n@~ao @'e tentado colapsar a sa@'ida para @code{1234,,Foo}.
 
 @deffn {Fun@value{cedilha}@~ao} read_matrix (@var{nome_arquivo})
 @deffnx {Fun@value{cedilha}@~ao} read_matrix (@var{nome_arquivo}, @var{separator_flag})
-Reads the file @var{nome_arquivo} and returns its entire content as a matrix.
-If @var{separator_flag} is not specified, the file is assumed space-delimited.
+L@^e o arquivo @var{nome_arquivo} e retorna seu conte@'udo completo como uma matriz.
+Se @var{separator_flag} n@~ao for especificado, o arquivo @'e assumido como delimitado por espa@,{c}os em branco.
 
-@code{read_matrix} infers the size of the matrix from the input data.
-Each line of the file becomes one row of the matrix.
-If some lines have different lengths, @code{read_matrix} complains.
+@code{read_matrix} infere o tamanho da matriz dos dados de entrada.
+Cada linha do arquivo inicia uma linha da matriz.
+Se algumas linhas possuirem diferentes comprimentos, @code{read_matrix} reclama.
 
 @end deffn
 
