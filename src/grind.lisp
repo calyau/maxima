@@ -47,7 +47,9 @@
 	  (let (y)
 	    #+nocp(fresh-line)
 	    #-nocp(if (not (zerop (charpos t))) (mterpri))
-	    (cond ((or (null x) (cdr x)) (wna-err '$grind))
+	    (cond
+          ((null x))
+          ((cdr x) (mapc #'(lambda (xx) (funcall (get '$grind 'mfexpr*) `(($grind) ,xx))) x))
 		  ((symbolp (setq x (strmeval (car x))))
 		   (unless (mstringp x) (setq x ($verbify x)))
 		   (cond ((setq y (mget x 'mexpr))
@@ -272,7 +274,8 @@
   (msize (cadr x) (reconc (strsym (caar x)) l) r (caar x) rop))
 
 (defun msize-infix (x l r)
-  (if (or (null (cddr x)) (cdddr x)) (wna-err (caar x)))
+  (if (not (= (length (cdr x)) 2))
+    (return-from msize-infix (msize-function x l r t)))
   (setq l (msize (cadr x) l nil lop (caar x))
 	r (msize (caddr x) (reverse (strsym (caar x))) r (caar x) rop))
   (list (f+ (car l) (car r)) l r))
