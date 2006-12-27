@@ -593,8 +593,8 @@ stringproc
 
 unit
 
-* Introduction to Units::       
-* Definitions for Units::
+* Introdu@value{cedilha}@~ao Units::       
+* Defini@value{cedilha}@~oes para Units::
 
 zeilberger
 
