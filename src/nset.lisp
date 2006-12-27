@@ -395,6 +395,22 @@
 	     (incf j))
 	   p))))
 
+(defun $random_permutation (a)
+  (if ($listp a)
+    (setq a (copy-list (cdr a)))
+    (setq a (copy-list (require-set a "$random_permutation"))))
+
+  (let ((n (length a)))
+    (dotimes (i n)
+      (let
+        ((j (+ i ($random (- n i))))
+         (tmp (nth i a)))
+        (setf (nth i a) (nth j a))
+        (setf (nth j a) tmp))))
+
+  `((mlist) ,@a))
+
+    
 #|
 ;;; Returns 3 values
 ;;; FOUND -- is X in L

@@ -1404,6 +1404,24 @@ false$
 xreduce("or",[true,true],false)$
 true$
 
+(nary ("@@@"), declare ("@@@", nary), "@@@" ([L]) := apply (FOO, L), kill (FOO));
+done;
+
+xreduce ("@@@", [a, e, c, b, d]);
+FOO (a, e, c, b, d);
+
+xreduce ("@@@", {a, e, c, b, d});
+FOO (a, b, c, d, e);
+
+(infix ("%%%"), "%%%" (aa, bb) := BAR (aa, bb), kill (BAR));
+done;
+
+xreduce ("%%%", [a, e, c, b, d]);
+BAR (BAR (BAR (BAR (a, e), c), b), d);
+
+xreduce ("%%%", {a, e, c, b, d});
+BAR (BAR (BAR (BAR (a, b), c), d), e);
+
 makeset(i,[i],set());
 set()$
 
@@ -1478,6 +1496,20 @@ every(is, makeset(moebius(i*j) = moebius(i) * moebius(j) * rprimep(i,j),[i,j],
 cartesian_product(setify(makelist(i,i,1,15)),setify(makelist(j,j,1,15)))));
 true$
 
+(set_random_state (make_random_state (1234)), 0);
+0;
+
+(L : '[a + 1, b - 2, c * d, %pi, %e], S : setify (L), 0);
+0;
+
+[random_permutation (L), random_permutation (L), random_permutation (L)];
+'[[a + 1, %e, c*d, b - 2, %pi], [b - 2, a + 1, c*d, %e, %pi], [a + 1, c*d, b - 2, %e, %pi]];
+
+[random_permutation (S), random_permutation (S), random_permutation (S)];
+'[[c*d, b - 2, a + 1, %pi, %e], [%pi, %e, a + 1, b - 2, c*d], [b - 2, %pi, a + 1, %e, c*d]];
+
+apply ("+", makelist (if random_permutation ([1, 2, 3, 4]) = [4,2,1,3] then 1 else 0, i, 1, 1000));
+41;
 
 (print("nset version ",get(nset,'version)),0);
 0$
