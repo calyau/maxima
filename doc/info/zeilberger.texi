@@ -141,7 +141,7 @@ Dependent equations eliminated:  (1)
 @end deffn
 
 @deffn {Function} parGosper (@var{F_@{n,k@}}, @var{k}, @var{n}, @var{d})
-Attempts to find a a @var{d}-th order recurrence for @var{F_@{n,k@}}.
+Attempts to find a @var{d}-th order recurrence for @var{F_@{n,k@}}.
 
 The algorithm yields a sequence
 @math{[s_1, s_2, ..., s_m]} of solutions.
