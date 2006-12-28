@@ -26,7 +26,7 @@ Nota -quando convers@~oes de unidade forem n@~ao exatas Maxima ir@'a fazer aprox
 em fra@,{c}@~oes. Esso @'e uma conceq@"u@^encia das t@'ecnicas usadas para simplificar unidades.
 A mensagem de alerta desse tipo de substitui@,{c}@~ao est@'a desabilitada por padr@~ao no
 caso de inidades (normalmente essas mensagens est@~ao habilitadas) uma vez que essa situa@,{c}@~ao de iemiss@~ao de mensagens de alerta ocorre freq@"u@^entemente
-e os alertas confundem a sa@'ida.  (O estado atual de @code(ratprint) @'e restabelecido
+e os alertas confundem a sa@'ida.  (O estado atual de @code{ratprint} @'e restabelecido
 ap@'os uma convers@~ao de unidades, de forma que modifica@,{c}@~oes de usu@'ario para aquela configura@,{c}@~ao ir@~ao ser preservadas 
 de outra forma.)  Se o usu@'ario precisar dessa informa@,{c}@~ao para @code{units}, ele pode escolher
 @emph{unitverbose:on} para reativar a impress@~ao de mensagens de alerta do
@@ -231,7 +231,7 @@ simples ou uma lista de unidades a serem usadas na convers@~ao.  Quando uma oper
 conclu@'ida, o sistema normal de avalia@,{c}@~ao global @'e contornado, com o objetivo de evitar que
 o resultado desejado seja convertido novamente.  Como conseq@"u@^encia, em c@'alculos aproximados
 alertas de "rat" ir@~ao ser vis@'iveis se o ambiente global que controla esse comportamento
-(@code{ratprint}) for @code {true}.  @code{convert} tamb@'em @'e @'util para uma verifica@,{c}@~ao pontual e imediata da
+(@code{ratprint}) for @code{true}.  @code{convert} tamb@'em @'e @'util para uma verifica@,{c}@~ao pontual e imediata da
 precis@~ao de uma convers@~ao global.  Outro recurso @'e que @code{convert} ir@'a permitir a um
 usu@'ario fazer um Base de Convers@~oes Dimensionais mesmo se o ambiente global for escolhido para
 simplificar par uma Dimens@~ao Derivada.
