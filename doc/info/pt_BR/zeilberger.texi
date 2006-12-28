@@ -1,5 +1,5 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
-@c /zeilberger.texi/1.4/Sat Jun 24 06:46:20 2006//
+@c /zeilberger.texi/1.5/Thu Dec 28 05:44:18 2006//
 @menu
 * Introdu@value{cedilha}@~ao a zeilberger::
 * Defini@value{cedilha}@value{o_til}es para zeilberger::

@@ -565,8 +565,8 @@ simplex
 
 simplification
 
-* Introduction to simplification::
-* Definitions for simplification::
+* Introdu@value{cedilha}@~ao a simplification::
+* Defini@value{cedilha}@value{o_til}es para simplification::
 
 solve_rec
 
