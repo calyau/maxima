@@ -1716,14 +1716,14 @@ $$-\cos x$$
 @deffnx {Function} texput (@var{a}, [@var{s_1}, @var{s_2}], matchfix)
 @deffnx {Function} texput (@var{a}, [@var{s_1}, @var{s_2}, @var{s_3}], matchfix)
 
-Set the TeX output for the atom @var{a},
+Assign the TeX output for the atom @var{a},
 which can be a symbol or the name of an operator.
 
 @code{texput (@var{a}, @var{s})} causes the @code{tex} function
 to interpolate the string @var{s} into the TeX output in place of @var{a}.
 
 @code{texput (@var{a}, @var{s}, @var{operator_type})},
-where @var{operator_type} is @code{prefix}, @code{infix}, or @code{postfix}
+where @var{operator_type} is @code{prefix}, @code{infix}, @code{postfix}, @code{nary}, or @code{nofix},
 causes the @code{tex} function to interpolate @var{s} into the TeX output in place of @var{a},
 and to place the interpolated text in the appropriate position.
 
@@ -1739,20 +1739,121 @@ with @var{s_3} separating the arguments.
 
 Examples:
 
+Assign TeX output for a variable.
 @c ===beg===
 @c texput (me,"\\mu_e");
 @c tex (me);
+@c ===end===
+
+@example
+(%i1) texput (me,"\\mu_e");
+(%o1)                         \mu_e
+(%i2) tex (me);
+$$\mu_e$$
+(%o2)                         false
+@end example
+
+Assign TeX output for an ordinary function (not an operator).
+@c ===beg===
 @c texput (lcm, "\\mathrm{lcm}");
 @c tex (lcm (a, b));
+@c ===end===
+
+@example
+(%i1) texput (lcm, "\\mathrm@{lcm@}");
+(%o1)                     \mathrm@{lcm@}
+(%i2) tex (lcm (a, b));
+$$\mathrm@{lcm@}\left(a , b\right)$$
+(%o2)                         false
+@end example
+
+Assign TeX output for a prefix operator.
+@c ===beg===
 @c prefix ("grad");
 @c texput ("grad", " \\nabla ", prefix);
 @c tex (grad f);
+@c ===end===
+
+@example
+(%i1) prefix ("grad");
+(%o1)                         grad
+(%i2) texput ("grad", " \\nabla ", prefix);
+(%o2)                        \nabla 
+(%i3) tex (grad f);
+$$ \nabla f$$
+(%o3)                         false
+@end example
+
+Assign TeX output for an infix operator.
+@c ===beg===
 @c infix ("~");
 @c texput ("~", " \\times ", infix);
 @c tex (a ~ b);
+@c ===end===
+
+@example
+(%i1) infix ("~");
+(%o1)                           ~
+(%i2) texput ("~", " \\times ", infix);
+(%o2)                        \times 
+(%i3) tex (a ~ b);
+$$a \times b$$
+(%o3)                         false
+@end example
+
+Assign TeX output for a postfix operator.
+@c ===beg===
 @c postfix ("@");
 @c texput ("@", "!!", postfix);
 @c tex (x @);
+@c ===end===
+
+@example
+(%i1) postfix ("@@");
+(%o1)                           @@
+(%i2) texput ("@@", "!!", postfix);
+(%o2)                          !!
+(%i3) tex (x @@);
+$$x!!$$
+(%o3)                         false
+@end example
+
+Assign TeX output for a nary operator.
+@c ===beg===
+@c nary ("@@");
+@c texput ("@@", " \\circ ", nary);
+@c tex (a @@ b @@ c @@ d);
+@c ===end===
+
+@example
+(%i1) nary ("@@@@");
+(%o1)                          @@@@
+(%i2) texput ("@@@@", " \\circ ", nary);
+(%o2)                         \circ 
+(%i3) tex (a @@@@ b @@@@ c @@@@ d);
+$$a \circ b \circ c \circ d$$
+(%o3)                         false
+@end example
+
+Assign TeX output for a nofix operator.
+@c ===beg===
+@c nofix ("foo");
+@c texput ("foo", "\\mathsc{foo}", nofix);
+@c tex (foo);
+@c ===end===
+
+@example
+(%i1) nofix ("foo");
+(%o1)                          foo
+(%i2) texput ("foo", "\\mathsc@{foo@}", nofix);
+(%o2)                     \mathsc@{foo@}
+(%i3) tex (foo);
+$$\mathsc@{foo@}$$
+(%o3)                         false
+@end example
+
+Assign TeX output for a matchfix operator.
+@c ===beg===
 @c matchfix ("<<", ">>");
 @c texput ("<<", [" \\langle ", " \\rangle "], matchfix);
 @c tex (<<a>>);
@@ -1761,56 +1862,26 @@ Examples:
 @c tex (<<a>>);
 @c tex (<<a, b>>);
 @c ===end===
+
 @example
-(%i1) texput (me,"\\mu_e");
-(%o1)                         \mu_e
-(%i2) tex (me);
-$$\mu_e$$
-(%o2)                         false
-(%i3) texput (lcm, "\\mathrm@{lcm@}");
-(%o3)                     \mathrm@{lcm@}
-(%i4) tex (lcm (a, b));
-$$\mathrm@{lcm@}\left(a , b\right)$$
-(%o4)                         false
-(%i5) prefix ("grad");
-(%o5)                         grad
-(%i6) texput ("grad", " \\nabla ", prefix);
-(%o6)                          180
-(%i7) tex (grad f);
-$$ \nabla f$$
-(%o7)                         false
-(%i8) infix ("~");
-(%o8)                           ~
-(%i9) texput ("~", " \\times ", infix);
-(%o9)                          180
-(%i10) tex (a ~ b);
-$$a \times b$$
-(%o10)                        false
-(%i11) postfix ("@@");
-(%o11)                          @@
-(%i12) texput ("@@", "!!", postfix);
-(%o12)                         160
-(%i13) tex (x @@);
-$$x!!$$
-(%o13)                        false
-(%i14) matchfix ("<<", ">>");
-(%o14)                         <<
-(%i15) texput ("<<", [" \\langle ", " \\rangle "], matchfix);
-(%o15)              \langle ( \rangle , false)
-(%i16) tex (<<a>>);
+(%i1) matchfix ("<<", ">>");
+(%o1)                          <<
+(%i2) texput ("<<", [" \\langle ", " \\rangle "], matchfix);
+(%o2)                [ \langle ,  \rangle ]
+(%i3) tex (<<a>>);
 $$ \langle a \rangle $$
-(%o16)                        false
-(%i17) tex (<<a, b>>);
+(%o3)                         false
+(%i4) tex (<<a, b>>);
 $$ \langle a , b \rangle $$
-(%o17)                        false
-(%i18) texput ("<<", [" \\langle ", " \\rangle ", " \\, | \\,"], matchfix);
-(%o18)            \langle ( \rangle ,  \, | \,)
-(%i19) tex (<<a>>);
+(%o4)                         false
+(%i5) texput ("<<", [" \\langle ", " \\rangle ", " \\, | \\,"], matchfix);
+(%o5)           [ \langle ,  \rangle ,  \, | \,]
+(%i6) tex (<<a>>);
 $$ \langle a \rangle $$
-(%o19)                        false
-(%i20) tex (<<a, b>>);
+(%o6)                         false
+(%i7) tex (<<a, b>>);
 $$ \langle a \, | \,b \rangle $$
-(%o20)                        false
+(%o7)                         false
 @end example
 
 @end deffn
