@@ -203,7 +203,7 @@ Facilidades avan@value{cedilha}adas e programa@value{cedilha}@~ao
 
 Pacotes Adicionais
 
-* augmented_lagrangian::        augmented_lagrangian package.
+* augmented_lagrangian::        Pacote augmented_lagrangian.
 * bode::                        Gr@'aficos de ganho e fase de Bode.
 * cholesky::                    Decomposi@,{c}@~ao de Cholesky.
 * descriptive::                 Estat@'istica descriptiva.
@@ -479,9 +479,9 @@ diag
 
 distrib
 
-* Introduction to distrib::
-* Definitions for continuous distributions::
-* Definitions for discrete distributions::
+* Introdu@value{cedilha}@~ao a distrib::
+* Defini@value{cedilha}@~oes para distribui@value{cedilha}@~oes cont@'inuas::
+* Defini@value{cedilha}@~oes para distribui@value{cedilha}@~oes discretas::
 
 dynamics
 
