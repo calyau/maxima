@@ -1,0 +1,42 @@
+kill(all);
+done$
+block([],load("levin.mac"),done);
+done$
+fpprec:16;
+16$
+is(bflevin_u_sum(1/n^2,n,1)-%pi^2/6<10^(-fpprec+1));
+true$
+fpprec:30;
+30$
+is(bflevin_u_sum(1/n^2,n,1)-%pi^2/6<10^(-fpprec+1))$
+true$
+pi_4(k):=(k-2*fix(k/2))*(-1)^((k-1)/2)/k;
+pi_4(k):=(k-2*fix(k/2))*(-1)^((k-1)/2)/k$
+is(bflevin_u_sum(pi_4(k),k,1)-%pi/4<10^(-fpprec+1));
+true$
+pi_4_alt1(k):=if oddp(k) then (-1)^((k-1)/2)/k else 0;
+pi_4_alt1(k):=if oddp(k) then (-1)^((k-1)/2)/k else 0$
+is(bflevin_u_sum(funmake(pi_4_alt1,[k]),k,1)-%pi/4<10^(-fpprec+1));
+true$
+pi_4_alt2(k):=if oddp(k) then (-1)^((k-1)/2)/k else if evenp(k) then 0 else funmake(pi_4_alt2,[k]);
+pi_4_alt2(k):=if oddp(k) then (-1)^((k-1)/2)/k else if evenp(k) then 0 else funmake(pi_4_alt2,[k])$
+is(bflevin_u_sum(pi_4_alt2(k),k,1)-%pi/4<10^(-fpprec+1));
+true$
+sort(listofvars(levin_u_sum(a[n],n,0,10)));
+[a[0],a[1],a[2],a[3],a[4],a[5],a[6],a[7],a[8],a[9]]$
+levin_zeta(s):=levin_u_sum(1/n^s,n,1,10);
+levin_zeta(s):=levin_u_sum(1/n^s,n,1,10)$
+block([],load("bffac"),done);
+done$
+fpprec:16$
+16;
+is(levin_zeta(1.1)-bfzeta(1.1,10)<10^-5);
+true$
+is(levin_zeta(1.01)-bfzeta(1.01,10)<10^-4);
+true$
+bflevin_u_sum(1/n-log(1+1/n),n,1);
+bflevin_u_sum_failed$
+fpprec:60;
+60$
+is(levin_u_sum(1/n-log(1+1/n),n,1,31)-%gamma<10^(-29));
+true$

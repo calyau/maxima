@@ -1,0 +1,42 @@
+fpprec:16$
+/* load necessary file */ 
+load("levin.mac")$
+/* do some random test */
+bfloat(bflevin_u_sum(1/n^2,n,1)-%pi^2/6);
+/* increase precision */ 
+fpprec:50$
+bfloat(bflevin_u_sum(1/n^2,n,1)-%pi^2/6);
+/* some series with zero terms */
+/* this is a bit of a hack */
+pi_4(k):=(k-2*fix(k/2))*(-1)^((k-1)/2)/k$
+bfloat(bflevin_u_sum(pi_4(k),k,1)-%pi/4);
+/* this one's more natural */
+pi_4_alt1(k):=if oddp(k) then (-1)^((k-1)/2)/k else 0$
+/* but now we need to protect pi_4_alt1(k) against premature evaluation */
+bfloat(bflevin_u_sum(funmake(pi_4_alt1,[k]),k,1)-%pi/4);
+/* this one works better but is more complicated */
+pi_4_alt2(k):=if oddp(k) then (-1)^((k-1)/2)/k else if evenp(k) then 0 else funmake(pi_4_alt2,[k])$
+bfloat(bflevin_u_sum(pi_4_alt2(k),k,1)-%pi/4);
+/* the following expression shows that we really use three values of a */ 
+ratsimp(levin_u_sum(a[n],n,0,3));
+/* approximation to the zeta function */
+levin_zeta(s):=levin_u_sum(1/n^s,n,1,5)$
+plot2d(levin_zeta,[s,1.1,2.0],[y,0.0,11.0])$
+/* The sum sum(1/n-log(1+1/n),n,1,inf)  computes the
+Euler-Mascheroni constant */
+bflevin_u_sum(1/n-log(1+1/n),n,1);
+/* oops, we need to use levin_u_sum. */
+/* set precision very high */
+fpprec:60$
+/* compute sum with 30 and 31 terms respectively */
+levin_gamma30:bfloat(levin_u_sum(1/n-log(1+1/n),n,1,30));
+levin_gamma31:bfloat(levin_u_sum(1/n-log(1+1/n),n,1,31));
+/* by the following computation we guess that levin_gamma31 is accurate
+up to 27 decimal places */
+bfloat(abs(levin_gamma31-levin_gamma30));
+/* this turns out to be correct */
+bfloat(levin_gamma31-%gamma);
+
+
+/* reset precision */
+fpprec:16$
