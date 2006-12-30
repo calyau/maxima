@@ -1,7 +1,30 @@
-/* levin.mac v0.2.1 (c) Michel Van den Bergh   Licence: GPL.
+/*               COPYRIGHT NOTICE
+ 
+Copyright (C) 2006-2007 Michel Van den Bergh
+ 
+This program is free software; you can redistribute
+it and/or modify it under the terms of the
+GNU General Public License as published by
+the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+ 
+This program is distributed in the hope that it
+will be useful, but WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY
+or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details at
+http://www.gnu.org/copyleft/gpl.html
+*/
+
+
+
+
+
+/*
 0.0->0.1 Some suggestions by Richard Fateman incorporated
 0.1->0.2 Now much faster. Zero entries are allowed.
 0.2->0.2.1 Disable bflevin_u_sum for series with non rational terms
+0.2->0.3 Argument treatment somewhat more robust. Added GPL header.
 */
 
 /* see:  "Mathematical Properties of a
@@ -41,25 +64,25 @@ levin(s,k,n,beta,omega):=block([i,j,numerator,denonimator],
    set beta=0 and n=1. Perhaps we should try several different values
    for beta in case division by zero occurs. */
 
-levin_u(a,terms):=block([i,j,l,n,beta,last,omega_,t_,b_],
-  local(omega_,t_,b_),
+levin_u(a,terms):=block([i,j,l,n,beta,last,omega__,t__,b__],
+  local(omega__,t__,b__),
   n:1,
   beta:0,
   /* remove zeros */
   j:0,
   for i:0 thru terms-1 do (
       if sign(abs(subvar(a,i)))#zero then (
-      b_[j]:subvar(a,i),
+      b__[j]:subvar(a,i),
       j:j+1
     ) else (
       if levin_debug then print("ommitting zero term with index ",i)
     )
   ),
   last:j-1,
-  omega_[l]:=l*b_[l],
-  t_[l]:=t_[l-1]+b_[l],
-  t_[-1]:0,
-  levin(t_,last-n,n,beta,omega_)
+  omega__[l]:=l*b__[l],
+  t__[l]:=t__[l-1]+b__[l],
+  t__[-1]:0,
+  levin(t__,last-n,n,beta,omega__)
 );
 
 /* User friendly version.
@@ -74,12 +97,18 @@ levin_u(a,terms):=block([i,j,l,n,beta,last,omega_,t_,b_],
 
    sum(1/n^2,n,1,inf) = %pi^2/6 = 1.644934066848226  */
 
-levin_u_sum(a_,index_var,start,terms):=block([n,c_,dummy],
-  local(c_),
+levin_u_sum(a,index_var,start,terms):=block([n,c__,a__,start__,index_var__],
+  local(c__),
+  a__:a,
+  start__:start,
+  index_var__:index_var,
+  remvalue(a,index_var,start), /* make sure things will be evaluated correctly
+                          in case a contains a parameter name */
   for n:0 thru terms-1 do (
-             dummy:subst(start+n,index_var,a_),
-             c_[n]:ev(dummy,eval) ),
-   levin_u(c_,terms) 
+             c__[n]:subst(start__+n,index_var__,a__),
+             c__[n]:ev(c__[n],eval) /* add evaluation round to tidy things up */
+   ) ,    
+   levin_u(c__,terms) 
 );
 
 /* Numerical version. This function makes a crude attempt to compute
@@ -90,15 +119,21 @@ levin_u_sum(a_,index_var,start,terms):=block([n,c_,dummy],
    If you suspect something is wrong put levin_debug:true.
 */
 
-bflevin_u_sum(a_,index_var,start):=block([n,fpprec_save,old,new,value,first_time,
-               count,terms,begin_term,end_term,dummy,non_rational,c_],
-  local(c_),
+bflevin_u_sum(a,index_var,start):=block([n,fpprec_save,old,new,value,first_time,
+               count,terms,begin_term,end_term,non_rational,c__,a__,start__,
+               index_var__],
+  local(c__),
   fpprec_save:fpprec,
   fpprec:fpprec+6,
   first_time:true,
   count:0,
   terms:5,
   non_rational:false,
+  a__:a,
+  start__:start,
+  index_var__:index_var,
+  remvalue(a,index_var,start), /* make sure things will be evaluated correctly
+                          in case a contains a parameter name */
   value:do (
     if first_time then (
       begin_term:0,
@@ -107,19 +142,19 @@ bflevin_u_sum(a_,index_var,start):=block([n,fpprec_save,old,new,value,first_time
       begin_term:terms/2,
       end_term:2*terms-1
     ),
-    for n:begin_term thru end_term do (
-                   dummy:subst(start+n,index_var,a_),
-                   c_[n]:ev(dummy,eval),
-                   if not(ratnump(c_[n])) and not(non_rational) then (
+   for n:begin_term thru end_term do (
+             c__[n]:subst(start__+n,index_var__,a__),
+             c__[n]:ev(c__[n],eval),
+             if not(ratnump(c__[n])) then (
                      print(
 "*** bflevin_u_sum does not work (yet) for series with non rational terms. ***"
                      ),
-                     non_rational:true,
-                     return(failed)
+                   non_rational:true,
+                   return(failed)
                    )
-               ),
+   ),
     if non_rational then return(bflevin_u_sum_failed),
-    new:levin_u(c_,terms),
+    new:levin_u(c__,terms),
     new:bfloat(new),
     if not(first_time) then (
       if levin_debug then print("terms=",terms, " approximation=",new),
