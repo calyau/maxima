@@ -97,7 +97,7 @@ servir@'a para fazer zoom na regi@~ao do gr@'afico clicando com o
 bot@~ao esquerdo. Cada clic alarga a imagem mantendo no centro dela o
 ponto onde se clicou.  Mantendo carregada a tecla @key{Shift} enquanto
 se faz clic, faz diminuir o tamanho. Para continuar a desenhar
-trayect@'orias com um clic, selecciona-se a op@value{cedilha}@~ao
+traject@'orias com um clic, selecciona-se a op@value{cedilha}@~ao
 @emph{Integrate} do men@'u.
 
 A op@value{cedilha}@~ao @emph{Config} do men@'u pode usar-se para mudar
