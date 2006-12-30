@@ -28,7 +28,7 @@
 	  $norepeat $detout $doallmxops $doscmxops opers factlist opexprp
 	  $translate $transrun $maperror outargs1 outargs2 fmaplvl mopl
 	  $powerdisp $subscrmap $dispflag $optionset dsksetp fexprerrp
-	  $features alphabet $%enumer $infeval $savedef $%% %e-val
+	  $features *alphabet* $%enumer $infeval $savedef $%% %e-val
 	  $mapprint featurel outfiles fundefsimp mfexprp transp
 	  sfindex mspeclist2 envlist $macros linel $ratfac $ratwtlvl
 	  $operators noevalargs $piece $partswitch *gcdl*
@@ -1605,13 +1605,13 @@ wrapper for this."
 		   (dolist (var vars) (alias (getopr var) ($nounify var))))
 		  ((memq (cadr l) '($constant $nonscalar $scalar $mainvar))
 		   (declare1 vars t (cadr l) t))
+		  ((eq (cadr l) '$alphabetic) (declare1 vars t t '$alphabetic))
 		  ((memq (cadr l) opers)
 		   (if (memq (cadr l) (cdr $features)) (declare1 vars t (cadr l) 'kind))
 		   (declare1 (mapcar #'getopr vars) t (cadr l) 'opers))
 		  ((memq (cadr l) (cdr $features)) (declare1 vars t (cadr l) 'kind))
 		  ((eq (cadr l) '$feature)
 		   (dolist (var vars) (nonsymchk var '$declare) (add2lnc var $features)))
-		  ((eq (cadr l) '$alphabetic) (declare1 vars t t '$alphabetic))
 		  (t (merror "Unknown property to `declare': ~:M" (cadr l))))))
 
 (defun declare1 (vars val prop mpropp)
@@ -1624,15 +1624,10 @@ wrapper for this."
 	   (if (not (get var 'operators)) (putprop var 'simpargs1 'operators)))
 
 	  ((eq mpropp '$alphabetic)
-       ; Explode var into characters and put each one on the alphabet list,
+       ; Explode var into characters and put each one on the *alphabet* list,
        ; which is used by src/nparse.lisp .
        (dolist (1-char (cdr (coerce (print-invert-case var) 'list)))
-         ; ALPHABET PROPERTY IS NOT USED ANYWHERE IN SRC/*.LISP SO FAR AS I CAN TELL
-         ; THERE ARE A FEW OTHER BOOKKEEPING OCCURRENCES
-         ; I BELIEVE ALL MENTIONS OF THE ALPHABET PROPERTY SHOULD BE CUT OUT
-         ; SRC/NPARSE.LISP USES THE ALPHABET LIST INSTEAD
-         ; (putprop (make-symbol (coerce (list 1-char) 'string)) t 'alphabet)
-         (add2lnc 1-char alphabet)))
+         (add2lnc 1-char *alphabet*)))
 
 	  ((eq prop 'special)(proclaim (list 'special var))
 	   (fluidize var))
@@ -1728,9 +1723,9 @@ wrapper for this."
 			     (if (mget var 'trace)
 				 (macsyma-untrace var))))
 		   ((eq prop '$op) (kill-operator var))
-		   ((eq prop '$alphabetic)
-		    (zl-remprop (setq prop (stripdollar var)) 'alphabet)
-		    (zl-delete (getcharn prop 1) alphabet 1))
+		   ((and (eq prop '$alphabetic) (mstringp var))
+            (dolist (1-char (cdr (coerce (print-invert-case var) 'list)))
+              (zl-delete 1-char *alphabet* 1)))
 		   ((eq prop '$transfun)
 		    (remove-transl-fun-props var)
 		    (remove-transl-array-fun-props var))
@@ -1774,7 +1769,7 @@ wrapper for this."
 			     matchdeclare $atomgrad atvalues t-mfexpr)))
 	   (not (getl var '(evfun evflag translated nonarray bindtest
 			    opr sp2 operators opers special data
-			    alphabet autoload mode)))
+			    autoload mode)))
 	   (not (memq var *builtin-$props*)))
       (delq var $props 1)))
 

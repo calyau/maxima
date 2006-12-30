@@ -120,7 +120,7 @@
   *transl-debug* *transl-file-debug* *warned-fexprs*
   *warned-mode-vars* *warned-un-declared-vars* *zexptsimp? |-1//2|
   -sqrt2//2 -sqrt3//2 |1//2| adn* aexprp algfac* algnotexact
-  aliaslist alpha alphabet arrays aryp assigns atp atvars baktrcl
+  aliaslist alpha *alphabet* arrays aryp assigns atp atvars baktrcl
   bfhalf bfmhalf bigfloat%e bigfloat%pi bigfloatone bigfloatzero
   bigprimes bindlist bvars *mdebug*
   declares defined_variables defintdebug derivflag derivlist

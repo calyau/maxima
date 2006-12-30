@@ -21,8 +21,6 @@
 
 (defun chrct* () (f- linel chrps))
 
-(defvar alphabet '(#\% #\_))
-
 (defvar fortranp nil)
 
 ;;(DEFMSPEC $GRIND (X) (SETQ X (CDR X))

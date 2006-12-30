@@ -541,7 +541,14 @@
 	   (nconc l (ncons '$activecontext)))
        (cond  ((null (symbol-plist x))
 	       (if (fboundp x) (nconc l (list (make-mstring "system function"))))))
+
+       (let ((s (if (mstringp x) (print-invert-case x))))
+         ; AT THIS POINT WE MIGHT WANT TO TRY TO TEST ALL CHARS IN STRING ...
+         (if (and s (> (length s) 1) (memq (char s 1) *alphabet*))
+           (nconc l (list '$alphabetic))))
+
        l)
+    
     ;; TOP-LEVEL PROPERTIES 
     (cond ((setq prop (assq (car y)
 			    `((bindtest . $bindtest)
@@ -549,7 +556,7 @@
 			      (assign . ,(make-mstring "assign property"))
 			      (nonarray . $nonarray) (grad . $gradef)
 			      (noun . $noun) (evfun . $evfun) (special . $special)
-			      (evflag . $evflag) (op . $operator) (alphabet . $alphabetic))))
+			      (evflag . $evflag) (op . $operator))))
 	   (nconc l (ncons (cdr prop))))
 	  ((setq prop (memq (car y) opers)) (nconc l (list (car prop))))
 	  ((and (eq (car y) 'operators) (not (eq (cadr y) 'simpargs1)))

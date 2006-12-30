@@ -56,7 +56,7 @@
 	  st1 stime0 $%% $error
 	  *in-$batchload* *in-translate-file*
 	  lessorder greatorder $errorfun mbreak reprint pos $strdisp
-	  $dskuse smart-tty rubout-tty more-^w oldst alphabet
+	  $dskuse smart-tty rubout-tty more-^w oldst *alphabet*
 	  $loadprint ttyints opers
 	  *ratweights $ratweights quitmsg mquitmsg contmsg
 	  loadf display-file $grind scrollp $cursordisp
@@ -475,10 +475,7 @@
 	    (remprop x 'operators)))
       (when (memq x (cdr $props))
 	(remprop x 'sp2) 
-	(killframe x)
-	(let ((y (stripdollar x)))
-	  (remprop y 'alphabet) 
-	  (zl-delete (getcharn y 1) alphabet 1)))
+	(killframe x))
       (let ((y (get x 'op)))
 	(when (and y (not (memq y mopl)) (memq y (cdr $props)))
 	  (kill-operator x)))

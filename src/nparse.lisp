@@ -14,9 +14,7 @@
 (load-macsyma-macros defcal mopers)
 
 (proclaim '(optimize (safety 2) (speed 2) (space 2)))
-(defmvar alphabet
-  '(#\_ #\%)
-  "alphabetic exceptions list")
+
 ;;;  Note: The following algorithms work only in environments where 
 ;;;        ascii codes for A,...,Z and 0,...,9 follow sequentially.
 ;;;	   Normal ASCII and LispM encoding makes this true. If we ever
@@ -33,7 +31,7 @@
 
 (progn
 
-  (defmvar alphabet '(#\_ #\%))
+  (defmvar *alphabet* '(#\_ #\%))
 
   (defmfun alphabetp (n)
     #-cl (declare (fixnum n))
@@ -41,7 +39,7 @@
 	 (or (and (char>= n #\A) (char<= n #\Z)) ; upper case
 	     (and (char>= n #\a) (char<= n #\z)) ; lower case
 	     (imember n '(#\_ #\%))
-	     (imember n alphabet))))
+	     (imember n *alphabet*))))
 ; test for %, _, or other declared
 					;    alphabetic characters.
   (defmfun ascii-numberp (num)
