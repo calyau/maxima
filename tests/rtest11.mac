@@ -204,3 +204,31 @@ lfreeof([x,y],y+z);
 false$
 use_fast_arrays: false;
 false;
+
+/* It would be nice to test foreign language characters here.
+ * Is there a way to make such tests independent of environment stuff like $LANG ??
+ */
+
+declare ("@~`", alphabetic);
+done;
+
+[member ('alphabetic, properties ("@")), member ('alphabetic, properties ("`")), member ('alphabetic, properties ("~"))];
+[true, true, true];
+
+~`@@`~ : ~@^`~ - @~^~`;
+~@^`~ - @~^~`;
+
+(kill (~`@@`~), ~`@@`~);
+'~`@@`~;
+
+(remove ("`~", alphabetic), remove ("@", alphabetic));
+done;
+
+[member ('alphabetic, properties ("@")), member ('alphabetic, properties ("`")), member ('alphabetic, properties ("~"))];
+[false, false, false];
+
+/* Verify that time functions are defined and return numbers.
+ * Don't bother trying to verify if the values are reasonable.
+ */
+[integerp (absolute_real_time ()), floatnump (elapsed_real_time ()), floatnump (elapsed_run_time ())];
+[true, true, true];
