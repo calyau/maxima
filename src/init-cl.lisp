@@ -563,6 +563,7 @@
       (setf *read-default-float-format* 'lisp::double-float))
     
     (catch 'to-lisp
+      (initialize-real-and-run-time)
       (set-locale)
       (set-pathnames)
       (setf (values input-stream batch-flag) 

@@ -573,3 +573,20 @@
   (format t "~&~%Automatically continuing.~%To reenable the Lisp debugger set *debugger-hook* to nil.~%")
   (throw 'return-from-debugger t))
 
+(let
+  ((t0-real 0) (t0-run 0)
+   (float-units (float internal-time-units-per-second 1d0)))
+
+  (defun initialize-real-and-run-time ()
+    (setq t0-real (get-internal-real-time))
+    (setq t0-run (get-internal-run-time)))
+
+  (defun $absolute_real_time () (get-universal-time))
+
+  (defun $elapsed_real_time ()
+    (let ((elapsed-real-time (- (get-internal-real-time) t0-real)))
+      (/ elapsed-real-time float-units)))
+
+  (defun $elapsed_run_time ()
+    (let ((elapsed-run-time (- (get-internal-run-time) t0-run)))
+      (/ elapsed-run-time float-units))))
