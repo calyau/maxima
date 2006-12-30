@@ -78,10 +78,6 @@ ingl@^es.
 A se@,{c}@~ao "Pacotes adicionais" foi anexada ao manual recentemente
 (fevereiro/2006) e possui partes a serem traduzidas.
 
-Caso sua d@'uvida persista ou tenha alguma sugest@~ao/aperfei@,{c}oamento/
-cr@'{@dotless{i}}tica mande por e-mail para Jorge Barros de Abreu <ficmatin01 at solar dot
-com dot br>
- 
 Mantenedores:
 @itemize @bullet
 @item
