@@ -1,5 +1,5 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
-@c /Input.texi/1.50/Sun Dec  3 09:51:52 2006/-ko/
+@c /Input.texi/1.51/Sat Dec 30 04:04:47 2006/-ko/
 @menu
 * Introdu@value{cedilha}@~ao a Entrada e Sa@'ida::  
 * Coment@'arios::
@@ -1717,14 +1717,14 @@ $$-\cos x$$
 @deffnx {Fun@value{cedilha}@~ao} texput (@var{a}, [@var{s_1}, @var{s_2}], matchfix)
 @deffnx {Fun@value{cedilha}@~ao} texput (@var{a}, [@var{s_1}, @var{s_2}, @var{s_3}], matchfix)
 
-Escolhe a sa@'ida TeX para o @'atomo @var{a},
+Atribui a sa@'ida TeX para o @'atomo @var{a},
 que pode ser um s@'imbolo ou o nome de um operador.
 
 @code{texput (@var{a}, @var{s})} faz com que a fun@,{c}@~ao @code{tex}
 interpole a seq@"u@^encia de caracteres @var{s} dentro da sa@'ida TeX em lugar de @var{a}.
 
 @code{texput (@var{a}, @var{s}, @var{operator_type})},
-onde @var{operator_type} @'e @code{prefix}, @code{infix}, ou @code{postfix}
+onde @var{operator_type} @'e @code{prefix}, @code{infix}, @code{postfix}, @code{nary}, ou @code{nofix},
 faz com que a fun@,{c}@~ao @code{tex} interpole @var{s} dentro da sa@'ida TeX em lugar de @var{a},
 e coloca o texto interpolado na posi@,{c}@~ao apropriada.
 
@@ -1740,20 +1740,121 @@ com @var{s_3} separando os argumentos.
 
 Exemplos:
 
+Atribui sa@'ida TeX a uma vari@'avel.
 @c ===beg===
 @c texput (me,"\\mu_e");
 @c tex (me);
+@c ===end===
+
+@example
+(%i1) texput (me,"\\mu_e");
+(%o1)                         \mu_e
+(%i2) tex (me);
+$$\mu_e$$
+(%o2)                         false
+@end example
+
+Atribui sa@'ida TeX a uma fun@,{c}@~ao comum (n@~ao a um operador).
+@c ===beg===
 @c texput (lcm, "\\mathrm{lcm}");
 @c tex (lcm (a, b));
+@c ===end===
+
+@example
+(%i1) texput (lcm, "\\mathrm@{lcm@}");
+(%o1)                     \mathrm@{lcm@}
+(%i2) tex (lcm (a, b));
+$$\mathrm@{lcm@}\left(a , b\right)$$
+(%o2)                         false
+@end example
+
+Atribui sa@'ida TeX a um operador prefixado.
+@c ===beg===
 @c prefix ("grad");
 @c texput ("grad", " \\nabla ", prefix);
 @c tex (grad f);
+@c ===end===
+
+@example
+(%i1) prefix ("grad");
+(%o1)                         grad
+(%i2) texput ("grad", " \\nabla ", prefix);
+(%o2)                        \nabla 
+(%i3) tex (grad f);
+$$ \nabla f$$
+(%o3)                         false
+@end example
+
+Atribui sa@'ida TeX a um operador infixado.
+@c ===beg===
 @c infix ("~");
 @c texput ("~", " \\times ", infix);
 @c tex (a ~ b);
+@c ===end===
+
+@example
+(%i1) infix ("~");
+(%o1)                           ~
+(%i2) texput ("~", " \\times ", infix);
+(%o2)                        \times 
+(%i3) tex (a ~ b);
+$$a \times b$$
+(%o3)                         false
+@end example
+
+Atribui sa@'ida TeX a um operadro p@'osfixado.
+@c ===beg===
 @c postfix ("@");
 @c texput ("@", "!!", postfix);
 @c tex (x @);
+@c ===end===
+
+@example
+(%i1) postfix ("@@");
+(%o1)                           @@
+(%i2) texput ("@@", "!!", postfix);
+(%o2)                          !!
+(%i3) tex (x @@);
+$$x!!$$
+(%o3)                         false
+@end example
+
+Atribui sa@'ida TeX a um operador n-@'ario.
+@c ===beg===
+@c nary ("@@");
+@c texput ("@@", " \\circ ", nary);
+@c tex (a @@ b @@ c @@ d);
+@c ===end===
+
+@example
+(%i1) nary ("@@@@");
+(%o1)                          @@@@
+(%i2) texput ("@@@@", " \\circ ", nary);
+(%o2)                         \circ 
+(%i3) tex (a @@@@ b @@@@ c @@@@ d);
+$$a \circ b \circ c \circ d$$
+(%o3)                         false
+@end example
+
+Atribui sa@'ida TeX a um operador nofix.
+@c ===beg===
+@c nofix ("foo");
+@c texput ("foo", "\\mathsc{foo}", nofix);
+@c tex (foo);
+@c ===end===
+
+@example
+(%i1) nofix ("foo");
+(%o1)                          foo
+(%i2) texput ("foo", "\\mathsc@{foo@}", nofix);
+(%o2)                     \mathsc@{foo@}
+(%i3) tex (foo);
+$$\mathsc@{foo@}$$
+(%o3)                         false
+@end example
+
+Atribui sa@'ida TeX a um operadro matchfix.
+@c ===beg===
 @c matchfix ("<<", ">>");
 @c texput ("<<", [" \\langle ", " \\rangle "], matchfix);
 @c tex (<<a>>);
@@ -1762,56 +1863,26 @@ Exemplos:
 @c tex (<<a>>);
 @c tex (<<a, b>>);
 @c ===end===
+
 @example
-(%i1) texput (me,"\\mu_e");
-(%o1)                         \mu_e
-(%i2) tex (me);
-$$\mu_e$$
-(%o2)                         false
-(%i3) texput (lcm, "\\mathrm@{lcm@}");
-(%o3)                     \mathrm@{lcm@}
-(%i4) tex (lcm (a, b));
-$$\mathrm@{lcm@}\left(a , b\right)$$
-(%o4)                         false
-(%i5) prefix ("grad");
-(%o5)                         grad
-(%i6) texput ("grad", " \\nabla ", prefix);
-(%o6)                          180
-(%i7) tex (grad f);
-$$ \nabla f$$
-(%o7)                         false
-(%i8) infix ("~");
-(%o8)                           ~
-(%i9) texput ("~", " \\times ", infix);
-(%o9)                          180
-(%i10) tex (a ~ b);
-$$a \times b$$
-(%o10)                        false
-(%i11) postfix ("@@");
-(%o11)                          @@
-(%i12) texput ("@@", "!!", postfix);
-(%o12)                         160
-(%i13) tex (x @@);
-$$x!!$$
-(%o13)                        false
-(%i14) matchfix ("<<", ">>");
-(%o14)                         <<
-(%i15) texput ("<<", [" \\langle ", " \\rangle "], matchfix);
-(%o15)              \langle ( \rangle , false)
-(%i16) tex (<<a>>);
+(%i1) matchfix ("<<", ">>");
+(%o1)                          <<
+(%i2) texput ("<<", [" \\langle ", " \\rangle "], matchfix);
+(%o2)                [ \langle ,  \rangle ]
+(%i3) tex (<<a>>);
 $$ \langle a \rangle $$
-(%o16)                        false
-(%i17) tex (<<a, b>>);
+(%o3)                         false
+(%i4) tex (<<a, b>>);
 $$ \langle a , b \rangle $$
-(%o17)                        false
-(%i18) texput ("<<", [" \\langle ", " \\rangle ", " \\, | \\,"], matchfix);
-(%o18)            \langle ( \rangle ,  \, | \,)
-(%i19) tex (<<a>>);
+(%o4)                         false
+(%i5) texput ("<<", [" \\langle ", " \\rangle ", " \\, | \\,"], matchfix);
+(%o5)           [ \langle ,  \rangle ,  \, | \,]
+(%i6) tex (<<a>>);
 $$ \langle a \rangle $$
-(%o19)                        false
-(%i20) tex (<<a, b>>);
+(%o6)                         false
+(%i7) tex (<<a, b>>);
 $$ \langle a \, | \,b \rangle $$
-(%o20)                        false
+(%o7)                         false
 @end example
 
 @end deffn

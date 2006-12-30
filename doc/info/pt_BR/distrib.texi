@@ -1,4 +1,5 @@
 /distrib.texi/1.2/Sat Jul 22 19:24:36 2006//
+/distrib.texi/1.2/Sat Jul 22 19:24:36 2006//
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /distrib.texi/1.2/Sat Jul 22 19:24:36 2006//
 @menu
@@ -156,7 +157,8 @@ $$KU\left[X\right]={{\int_{ -\infty }^{\infty }{f\left(x\right)\,
 @end tex
 Se @math{X} for gaussiana, @math{KU[X]=0}. De fato, ambos assimetria e curtose s@~ao par@^ametros de ajuste usados para medir a n@~ao gaussianidade de uma distribui@,{c}@~ao.
 
-Se a vari@'avel aleat@'oria @math{X} for discreta, a fun@,{c}@~ao densidade de probabilidade, ou simplesmente @var{probabilidade}, @math{f(x)} toma valores positivos dentro de certos conjuntos cont@'aveis de n@'umeros @math{x_i}, e zero em
+Se a vari@'avel aleat@'oria @math{X} for discreta, a fun@,{c}@~ao densidade de probabilidade, ou simplesmente @var{probabilidade}, @math{f(x)} toma valores positivos dentro de certos conjuntos cont@'aveis de n@'umeros @math{x_i},
+e zero em
 caso contr@'ario. Nesse caso, a fun@,{c}@~ao
 distribui@,{c}@~ao de probabilidade @'e
 @ifhtml
@@ -307,9 +309,11 @@ $$KU\left[X\right]={{\sum_{x_{i}}{f\left(x\right)\,
 @end tex
 respectively.
 
-O Pacote @code{distrib} inclui fun@,{c}@~oes para simula@,{c}@~ao de vari@'aveis aleat@'orias. Algumas dessas fun@,{c}@~oes fazem uso de vari@'aveis opcionais que indicam o algor@'itmo a ser usado. O m@'etodo inverso geral (baseado no fato que
+O Pacote @code{distrib} inclui fun@,{c}@~oes para simula@,{c}@~ao de vari@'aveis aleat@'orias. Algumas dessas fun@,{c}@~oes fazem uso de vari@'aveis opcionais que indicam o algor@'itmo a ser usado. O m@'etodo inverso geral
+(baseado no fato que
 se
-@var{u} for um n@'umero aleat@'orio uniforme no intervalo @math{(0,1)}, ent@~ao @var{F^(-1)(u)} @'e uma vari@'avel aleat@'oria com distribui@,{c}@~ao @math{F}) est@'a implementada para a maioria dos casos; isso @'e um m@'etodo sub@'otimo em termos de
+@var{u} for um n@'umero aleat@'orio uniforme no intervalo @math{(0,1)}, ent@~ao @var{F^(-1)(u)} @'e uma vari@'avel aleat@'oria com distribui@,{c}@~ao @math{F}) est@'a implementada para a maioria dos casos; isso @'e um m@'etodo
+sub@'otimo em termos de
 cronometragem, mas @'util para fazer compara@,{c}@~oes
 com outros algor@'itmos. Nesse exemplo, a @code{perandom_formance} dos algor@'itmos @code{ahrens_cheng} e @code{inverse} em simular  vari@'aveis chi-quadradas (letra grega "chi") S@`ao comparadas por meio de seus histogramas:
 
@@ -346,19 +350,19 @@ Fun@value{cedilha}@~oes:
    Vari@'avel aleat@'oria              (random_*)
 @end example
 
-The second part is an explicit reference to the probabilistic model,
+A segunda parte é uma referência explícita ao modelo probabilístico,
 @example
-Continuous distributions:
+Distribuíções contínuas:
    Normal              (*normal)
    Student             (*student_t)
    Chi^2               (*chi2)
    F                   (*f)
-   Exponential         (*exp)
+   Exponencial         (*exp)
    Lognormal           (*lognormal)
-   Gamma               (*gamma)
+   Gama               (*gamma)
    Beta                (*beta)
-   cont@'inua uniform  (*continuous_uniform)
-   Logistic            (*logistic)
+   cont@'inua uniforme  (*continuous_uniform)
+   Logística            (*logistic)
    Pareto              (*pareto)
    Weibull             (*weibull)
    Rayleigh            (*rayleigh)
@@ -366,26 +370,26 @@ Continuous distributions:
    Cauchy              (*cauchy)
    Gumbel              (*gumbel)
 
-Discrete distributions:
+Distribuições discretas:
    Binomial             (*binomial)
    Poisson              (*poisson)
    Bernoulli            (*bernoulli)
-   Geometric            (*geometric)
-   discreta uniform     (*discrete_uniform)
-   hypergeometric       (*hypergeometric)
-   Negative binomial    (*negative_binomial)
+   Geométrica            (*geometric)
+   discreta uniforme     (*discrete_uniform)
+   hipergeométrica       (*hypergeometric)
+   Binomial Negativa    (*negative_binomial)
 @end example
 
-For example, @code{pdf_student_t(x,n)} is the fun@,{c}@~ao densidade de probabilidade of the Student distribution with @var{n} degrees of freedom, @code{std_pareto(a,b)} is the standard deviation of the Pareto distribution with
-parameters @var{a} and @var{b} and @code{kurtosis_poisson(m)} is the kurtosis coefficient of the Poisson distribution with mean @var{m}.
+Por exemplo, @code{pdf_student_t(x,n)} é a fun@,{c}@~ao densidade de probabilidade da distribuição student com @var{n} graus de liberdade, @code{std_pareto(a,b)} é o desvio padrão da distribuição de Pareto com
+parâmetros @var{a} e @var{b} e @code{kurtosis_poisson(m)} é o coeficiente de curtose da distribuição de Poisson com média @var{m}.
 
 
-In order to make use of pacote @code{distrib} you need first to load it by typing
+Com o objetivo de fazer uso do pacote @code{distrib} você precisa primeiro tornar esse pacote disponível para uso escrevendo
 @example
 (%i1) load(distrib)$
 @end example
 
-For comments, bugs or suggestions, please contact the author at @var{'mario AT edu DOT xunta DOT es'}.
+Para comentários, melhorias ou sugestões, por favor contacte o autor em @var{'mario AT edu DOT xunta DOT es'}.
 
 
 
@@ -397,12 +401,12 @@ For comments, bugs or suggestions, please contact the author at @var{'mario AT e
 
 
 @deffn {Fun@value{cedilha}@~ao} pdf_normal (@var{x},@var{m},@var{s})
-Returns the value at @var{x} of the fun@,{c}@~ao densidade de probabilidade of a @math{Normal(m,s)} vari@'avel aleat@'oria, with @math{s>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna o valor em @var{x} da fun@,{c}@~ao densidade de probabilidade de uma  vari@'avel aleat@'oria @math{Normal(m,s)}, com @math{s>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} cdf_normal (@var{x},@var{m},@var{s})
-Returns the value at @var{x} of the fun@,{c}@~ao distribui@,{c}@~ao de probabilidade of a @math{Normal(m,s)} vari@'avel aleat@'oria, with @math{s>0}. This fun@,{c}@~ao is defined in terms of Maxima's built-in error fun@,{c}@~ao
+Retorna o valor em @var{x} da fun@,{c}@~ao distribui@,{c}@~ao de probabilidade de uma  vari@'avel aleat@'oria @math{Normal(m,s)}, com @math{s>0}. Essa fun@,{c}@~ao é definida em termos de funções de erro internas do Maxima,
 @code{erf}.
 
 @c ===beg===
@@ -419,78 +423,78 @@ Returns the value at @var{x} of the fun@,{c}@~ao distribui@,{c}@~ao de probabili
                              2          2
 @end example
 
-See also @code{erf}.
+Veja também @code{erf}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} quantile_normal (@var{q},@var{m},@var{s})
-Returns the @var{q}-quantile of a @math{Normal(m,s)} vari@'avel aleat@'oria, with @math{s>0}; in other words, this is the inverse of @code{cdf_normal}. Argument @var{q} must be an element of @math{[0,1]}. Para fazer uso dessa
+Retorna o @var{q}-quantil de uma vari@'avel aleat@'oria @math{Normal(m,s)}, com @math{s>0}; em outras palavras, isso é o inverso de @code{cdf_normal}. O argumento @var{q} deve ser um elemento de @math{[0,1]}. Para fazer uso dessa
 fun@,{c}@~ao,
 escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} mean_normal (@var{m},@var{s})
-Returns the mean of a @math{Normal(m,s)} vari@'avel aleat@'oria, with @math{s>0}, namely @var{m}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna a média de uma  vari@'avel aleat@'oria @math{Normal(m,s)}, com @math{s>0}, a saber @var{m}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} var_normal (@var{m},@var{s})
-Returns the variance of a @math{Normal(m,s)} vari@'avel aleat@'oria, with @math{s>0}, namely @var{s^2}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna a variância de uma  vari@'avel aleat@'oria @math{Normal(m,s)}, com @math{s>0}, a saber @var{s^2}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 @deffn {Fun@value{cedilha}@~ao} std_normal (@var{m},@var{s})
-Returns the standard deviation of a @math{Normal(m,s)} vari@'avel aleat@'oria, with @math{s>0}, namely @var{s}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna o desvio padrão de uma  vari@'avel aleat@'oria @math{Normal(m,s)}, com @math{s>0}, a saber @var{s}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} skewness_normal (@var{m},@var{s})
-Returns the skewness coefficient of a @math{Normal(m,s)} vari@'avel aleat@'oria, with @math{s>0}, which is always equal to 0. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna o coeficiente de assimetria de uma  vari@'avel aleat@'oria @math{Normal(m,s)}, com @math{s>0}, que é sempre igual  a 0. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} kurtosis_normal (@var{m},@var{s})
-Returns the kurtosis coefficient of a @math{Normal(m,s)} vari@'avel aleat@'oria, with @math{s>0}, which is always equal to 0. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna o coeficiente de curtose de uma  vari@'avel aleat@'oria @math{Normal(m,s)}, com @math{s>0}, que é sempre igual  a 0. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@defvr {Option variable} random_normal_algorithm
-Default value: @code{box_mueller}
+@defvr {Variável de opção} random_normal_algorithm
+Valor padrão: @code{box_mueller}
 
-This is the selected algorithm for simulating random normal variates. Implemented algorithms are @code{box_mueller} and @code{inverse}:
+Esse é o algorítmo selecionado para simular variáveis aleatórias normais. O algorítmos implementados são @code{box_mueller} e @code{inverse}:
 @itemize @bullet
 @item
-@code{box_mueller}, based on algorithm described in Knuth, D.E. (1981) @var{Seminumerical Algorithms. The Art of Computer Programming.} Addison-Wesley.
+@code{box_mueller}, Baseado no algorítmo descrito em Knuth, D.E. (1981) @var{Seminumerical Algorithms. The Art of Computer Programming.} Addison-Wesley.
 
 @item
-@code{inverse}, based on the general inverse method.
+@code{inverse}, baseado no método inverso genérico.
 @end itemize
 
-See also @code{random_normal}.
+Veja também @code{random_normal}.
 @end defvr
 
 
 @deffn {Fun@value{cedilha}@~ao} random_normal (@var{m},@var{s})
 @deffnx {Fun@value{cedilha}@~ao} random_normal (@var{m},@var{s},@var{n})
-Returns a @math{Normal(m,s)} random variate, with @math{s>0}. Calling @code{random_normal} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
+Retorna uma variável aleatória @math{Normal(m,s)}, com @math{s>0}. Chamando @code{random_normal} com um terceiro argumento @var{n}, uma amostra aleatória de tamanho @var{n} irá ser simulada.
 
-There are two algorithms implemented for this fun@,{c}@~ao, the one to be used can be selected giving a certain value to the global variable @code{random_normal_algorithm}, which defaults to @code{box_mueller}.
+Existem dois algorítmos implementados para essa fun@,{c}@~ao, e o algorítmo a ser usado pode ser selecionado fornecendo um certo valor para a variável global @code{random_normal_algorithm}, cujo valor padrão é @code{box_mueller}.
 
-There is also a built-in fun@,{c}@~ao do Maxima for simulating random normal variates based on the so called Marsaglia's Ziggurat method.
+Existe também uma função interna do Maxima para simulação de variáveis normais aleatórias baseada no então chamado método de Marsaglia Ziggurat.
 
-See also @code{random_normal_algorithm} and @code{gauss}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Veja também @code{random_normal_algorithm} e @code{gauss}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} pdf_student_t (@var{x},@var{n})
-Returns the value at @var{x} of the fun@,{c}@~ao densidade de probabilidade of a Student vari@'avel aleat@'oria @math{t(n)}, with @math{n>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna o valor em @var{x} da fun@,{c}@~ao densidade de probabilidade de uma vari@'avel aleat@'oria de Student @math{t(n)}, com @math{n>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} cdf_student_t (@var{x},@var{n})
-Returns the value at @var{x} of the fun@,{c}@~ao distribui@,{c}@~ao de probabilidade of a Student vari@'avel aleat@'oria @math{t(n)}, with @math{n>0}. This fun@,{c}@~ao has no closed form and it is numerically computed if the
-global variable
-@code{numer} equals @code{true},  otherwise it returns a nominal expression.
+Retorna o valor em @var{x} da fun@,{c}@~ao distribui@,{c}@~ao de probabilidade de uma vari@'avel aleat@'oria de Student @math{t(n)}, com @math{n>0}. Essa fun@,{c}@~ao não tem uma forma definitiva e é calculada numericamente se a
+variável global
+@code{numer} for igual a @code{true},  de outra froma @code{cdf_student_t} retorna uma expressão nominal.
 
 @c ===beg===
 @c load (distrib)$
@@ -510,18 +514,19 @@ global variable
 
 
 @deffn {Fun@value{cedilha}@~ao} quantile_student_t (@var{q},@var{n})
-Returns the @var{q}-quantile of a Student vari@'avel aleat@'oria @math{t(n)}, with @math{n>0}; in other words, this is the inverse of @code{cdf_student_t}. Argument @var{q} must be an element of @math{[0,1]}. Para fazer uso dessa
+Retorna o @var{q}-quantil de uma vari@'avel aleat@'oria de Student @math{t(n)}, com @math{n>0}; em outras palavras, @code{quantile_student_t} é o inverso de @code{cdf_student_t}. O argumento @var{q} deve ser um elemento de
+@math{[0,1]}. Para fazer uso dessa
 fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} mean_student_t (@var{n})
-Returns the mean of a Student vari@'avel aleat@'oria @math{t(n)}, with @math{n>0}, which is always equal to 0. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna a média de uma vari@'avel aleat@'oria de Student @math{t(n)}, com @math{n>0}, que é sempre igual a 0. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} var_student_t (@var{n})
-Returns the variance of a Student vari@'avel aleat@'oria @math{t(n)}, with @math{n>2}.
+Retorna a variância de uma vari@'avel aleat@'oria de Student @math{t(n)}, com @math{n>2}.
 
 @c ===beg===
 @c load (distrib)$
@@ -538,31 +543,31 @@ Returns the variance of a Student vari@'avel aleat@'oria @math{t(n)}, with @math
 
 
 @deffn {Fun@value{cedilha}@~ao} std_student_t (@var{n})
-Returns the standard deviation of a Student vari@'avel aleat@'oria @math{t(n)}, with @math{n>2}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna o desvio padrão de uma vari@'avel aleat@'oria de Student @math{t(n)}, com @math{n>2}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} skewness_student_t (@var{n})
-Returns the skewness coefficient of a Student vari@'avel aleat@'oria @math{t(n)}, with @math{n>3}, which is always equal to 0. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna o coeficiente de assimetria de uma vari@'avel aleat@'oria de Student @math{t(n)}, com @math{n>3}, que é sempre igual a 0. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} kurtosis_student_t (@var{n})
-Returns the kurtosis coefficient of a Student vari@'avel aleat@'oria @math{t(n)}, with @math{n>4}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna o coeficiente de curtose de uma vari@'avel aleat@'oria de Student @math{t(n)}, com @math{n>4}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@defvr {Option variable} random_student_t_algorithm
-Default value: @code{ratio}
+@defvr {Variável de opção} random_student_t_algorithm
+Valor padrão: @code{ratio}
 
-This is the selected algorithm for simulating random Student variates. Implemented algorithms are @code{inverse} and @code{ratio}:
+Esse é o  algorítmo selecionado para simular variáveis aleatórias de Student. Algorítmos implementados são @code{inverse} e @code{ratio}:
 @itemize @bullet
 @item
-@code{inverse}, based on the general inverse method.
+@code{inverse}, baseado no método inverso geral.
 
 
 @item
-@code{ratio}, based on the fact that if @var{Z} is a normal vari@'avel aleat@'oria @math{N(0,1)} and @math{S^2} is chi square  vari@'avel aleat@'oria with @var{n} degrees of freedom, @math{Chi^2(n)}, then
+@code{ratio}, baseado no fato que se @var{Z} for uma vari@'avel aleat@'oria normal @math{N(0,1)} e @math{S^2} for uma vari@'avel aleat@'oria chi quadrada com @var{n} graus de liberdade, @math{Chi^2(n)}, então
 @ifhtml
 @example
                            Z
@@ -586,27 +591,27 @@ This is the selected algorithm for simulating random Student variates. Implement
 @tex
 $$X={{Z}\over{\sqrt{{S^2}\over{n}}}}$$
 @end tex
-is a Student vari@'avel aleat@'oria with @var{n} degrees of freedom, @math{t(n)}.
+é uma vari@'avel aleat@'oria de Student com @var{n} graus de liberdade, @math{t(n)}.
 @end itemize
 
-See also @code{random_student_t}.
+Veja também @code{random_student_t}.
 @end defvr
 
 
 @deffn {Fun@value{cedilha}@~ao} random_student_t (@var{n})
 @deffnx {Fun@value{cedilha}@~ao} random_student_t (@var{n},@var{m})
-Returns a Student random variate @math{t(n)}, with @math{n>0}. Calling @code{random_student_t} with a second argument @var{m}, a random sample of size @var{m} will be simulated.
+Retorna uma vari@'avel aleat@'oria de Student @math{t(n)}, com @math{n>0}. Chamando @code{random_student_t} com um segundo argumento @var{m}, uma amostra aleatória de tamanho @var{m} irá ser simulada.
 
-There are two algorithms implemented for this fun@,{c}@~ao, the one to be used can be selected giving a certain value to the global variable @code{random_student_t_algorithm}, which defaults to @code{ratio}.
+Existem dois algorítmos implementados para essa fun@,{c}@~ao, se pode selecionar o algorítmo a ser usado fornecendo um certo valor à variável global @code{random_student_t_algorithm}, cujo valor padrão é @code{ratio}.
 
-See also @code{random_student_t_algorithm}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Veja também @code{random_student_t_algorithm}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} pdf_chi2 (@var{x},@var{n})
-Returns the value at @var{x} of the fun@,{c}@~ao densidade de probabilidade of a Chi-square vari@'avel aleat@'oria @math{Chi^2(n)}, with @math{n>0}.
+Retorna o valor em @var{x} da fun@,{c}@~ao densidade de probabilidade de uma vari@'avel aleat@'oria Chi-quadrada @math{Chi^2(n)}, com @math{n>0}.
 
-The @math{Chi^2(n)} vari@'avel aleat@'oria is equivalent to the @math{Gamma(n/2,2)}, therefore when Maxima has not enough information to get the result, a nominal form based on the gamma density is returned.
+A  vari@'avel aleat@'oria @math{Chi^2(n)} é equivalente a @math{Gamma(n/2,2)}, portanto quando Maxima não tiver informação para pegar o resultado, uma forma nomial baseada na função de densidade gama é retornada.
 
 @c ===beg===
 @c load (distrib)$
@@ -631,11 +636,11 @@ The @math{Chi^2(n)} vari@'avel aleat@'oria is equivalent to the @math{Gamma(n/2,
 
 
 @deffn {Fun@value{cedilha}@~ao} cdf_chi2 (@var{x},@var{n})
-Returns the value at @var{x} of the fun@,{c}@~ao distribui@,{c}@~ao de probabilidade of a Chi-square vari@'avel aleat@'oria @math{Chi^2(n)}, with @math{n>0}.
+Retorna o valor em @var{x} da fun@,{c}@~ao distribui@,{c}@~ao de probabilidade de uma vari@'avel aleat@'oria Chi-quadrada @math{Chi^2(n)}, com @math{n>0}.
 
-This fun@,{c}@~ao has no closed form and it is numerically computed if the global variable @code{numer} equals @code{true},  otherwise it returns a nominal expression based on the gamma distribution, since the @math{Chi^2(n)}
-vari@'avel
-aleat@'oria is equivalent to the @math{Gamma(n/2,2)}.
+Essa fun@,{c}@~ao não possui uma forma fechada e é calculada numericamante se a variável global @code{numer} for igual a @code{true},  de outra forma essa função retorna uma expressão nominal baseada na distribuição gama, uma vez
+que a vari@'avel aleat@'oria @math{Chi^2(n)}
+é equivalente a    é equivalente a @math{Gamma(n/2,2)}.
 
 @c ===beg===
 @c load (distrib)$
@@ -653,11 +658,13 @@ aleat@'oria is equivalent to the @math{Gamma(n/2,2)}.
 
 
 @deffn {Fun@value{cedilha}@~ao} quantile_chi2 (@var{q},@var{n})
-Returns the @var{q}-quantile of a Chi-square vari@'avel aleat@'oria @math{Chi^2(n)}, with @math{n>0}; in other words, this is the inverse of @code{cdf_chi2}. Argument @var{q} must be an element of @math{[0,1]}.
+Retorna o @var{q}-quantilede uma vari@'avel aleat@'oria Chi-quadrada @math{Chi^2(n)}, com @math{n>0}; em outras palavras, essa função é a inversa da função @code{cdf_chi2}. O argumento @var{q} deve ser um elemento de
+@math{[0,1]}.
 
-This fun@,{c}@~ao has no closed form and it is numerically computed if the global variable @code{numer} equals @code{true},  otherwise it returns a nominal expression based on the gamma quantile fun@,{c}@~ao, since the
+This fun@,{c}@~ao não possui uma forma fechada e é calculada numericamante se a variável global @code{numer} for igual a @code{true},  de outra forma essa função retorna uma expressão nominal baseada na gamma quantile fun@
+{c}@~ao, since the
 @math{Chi^2(n)}
-vari@'avel aleat@'oria is equivalent to the @math{Gamma(n/2,2)}.
+vari@'avel aleat@'oria é equivalente a @math{Gamma(n/2,2)}.
 
 @c ===beg===
 @c load (distrib)$
@@ -677,9 +684,9 @@ vari@'avel aleat@'oria is equivalent to the @math{Gamma(n/2,2)}.
 
 
 @deffn {Fun@value{cedilha}@~ao} mean_chi2 (@var{n})
-Returns the mean of a Chi-square vari@'avel aleat@'oria @math{Chi^2(n)}, with @math{n>0}.
+Retorna a média de uma vari@'avel aleat@'oria Chi-quadrada @math{Chi^2(n)}, com @math{n>0}.
 
-The @math{Chi^2(n)} vari@'avel aleat@'oria is equivalent to the @math{Gamma(n/2,2)}, therefore when Maxima has not enough information to get the result, a nominal form based on the gamma mean is returned.
+A vari@'avel aleat@'oria @math{Chi^2(n)} é equivalente a @math{Gamma(n/2,2)}, embora quando Maxima não tiver informação disponível para pegar o resultado, uma forma nominal baseada na média da função gama é retornada.
 
 @c ===beg===
 @c load (distrib)$
@@ -699,9 +706,9 @@ The @math{Chi^2(n)} vari@'avel aleat@'oria is equivalent to the @math{Gamma(n/2,
 
 
 @deffn {Fun@value{cedilha}@~ao} var_chi2 (@var{n})
-Returns the variance of a Chi-square vari@'avel aleat@'oria @math{Chi^2(n)}, with @math{n>0}.
+Retorna a variância de uma vari@'avel aleat@'oria Chi-quadrada @math{Chi^2(n)}, com @math{n>0}.
 
-The @math{Chi^2(n)} vari@'avel aleat@'oria is equivalent to the @math{Gamma(n/2,2)}, therefore when Maxima has not enough information to get the result, a nominal form based on the gamma variance is returned.
+A vari@'avel aleat@'oria @math{Chi^2(n)} é equivalente a @math{Gamma(n/2,2)}, embora quando Maxima não tiver informação disponível para pegar o resultado, uma forma nominal baseada na variância da função gama é retornada.
 
 @c ===beg===
 @c load (distrib)$
@@ -721,9 +728,9 @@ The @math{Chi^2(n)} vari@'avel aleat@'oria is equivalent to the @math{Gamma(n/2,
 
 
 @deffn {Fun@value{cedilha}@~ao} std_chi2 (@var{n})
-Returns the standard deviation of a Chi-square vari@'avel aleat@'oria @math{Chi^2(n)}, with @math{n>0}.
+Retorna o desvio padrão de uma vari@'avel aleat@'oria Chi-quadrada @math{Chi^2(n)}, com @math{n>0}.
 
-The @math{Chi^2(n)} vari@'avel aleat@'oria is equivalent to the @math{Gamma(n/2,2)}, therefore when Maxima has not enough information to get the result, a nominal form based on the gamma standard deviation is returned.
+A vari@'avel aleat@'oria @math{Chi^2(n)} é equivalente a @math{Gamma(n/2,2)}, embora quando Maxima não tiver informação disponível para pegar o resultado, uma forma nominal baseada no desvio padrão da função gama é retornada.
 
 @c ===beg===
 @c load (distrib)$
@@ -743,9 +750,10 @@ The @math{Chi^2(n)} vari@'avel aleat@'oria is equivalent to the @math{Gamma(n/2,
 
 
 @deffn {Fun@value{cedilha}@~ao} skewness_chi2 (@var{n})
-Returns the skewness coefficient of a Chi-square vari@'avel aleat@'oria @math{Chi^2(n)}, with @math{n>0}.
+Retorna o coeficiente de assimetria de uma vari@'avel aleat@'oria Chi-quadrada @math{Chi^2(n)}, com @math{n>0}.
 
-The @math{Chi^2(n)} vari@'avel aleat@'oria is equivalent to the @math{Gamma(n/2,2)}, therefore when Maxima has not enough information to get the result, a nominal form based on the gamma skewness coefficient is returned.
+A vari@'avel aleat@'oria @math{Chi^2(n)} é equivalente a @math{Gamma(n/2,2)}, embora quando Maxima não tiver informação disponível para pegar o resultado, uma forma nominal baseada no coeficiente de assimetria da função gama é
+retornada.
 
 @c ===beg===
 @c load (distrib)$
@@ -767,9 +775,10 @@ The @math{Chi^2(n)} vari@'avel aleat@'oria is equivalent to the @math{Gamma(n/2,
 
 
 @deffn {Fun@value{cedilha}@~ao} kurtosis_chi2 (@var{n})
-Returns the kurtosis coefficient of a Chi-square vari@'avel aleat@'oria @math{Chi^2(n)}, with @math{n>0}.
+Retorna o coeficiente de curtose de uma vari@'avel aleat@'oria Chi-quadrada @math{Chi^2(n)}, com @math{n>0}.
 
-The @math{Chi^2(n)} vari@'avel aleat@'oria is equivalent to the @math{Gamma(n/2,2)}, therefore when Maxima has not enough information to get the result, a nominal form based on the gamma kurtosis coefficient is returned.
+A vari@'avel aleat@'oria @math{Chi^2(n)} é equivalente a @math{Gamma(n/2,2)}, embora quando Maxima não tiver informação disponível para pegar o resultado, uma forma nominal baseada no coeficiente de curtose da função gama é
+retornada.
 
 @c ===beg===
 @c load (distrib)$
@@ -790,43 +799,43 @@ The @math{Chi^2(n)} vari@'avel aleat@'oria is equivalent to the @math{Gamma(n/2,
 @end deffn
 
 
-@defvr {Option variable} random_chi2_algorithm
-Default value: @code{ahrens_cheng}
+@defvr {Variável de opção} random_chi2_algorithm
+Valor padrão: @code{ahrens_cheng}
 
-This is the selected algorithm for simulating random Chi-square variates. Implemented algorithms are @code{ahrens_cheng} and @code{inverse}:
+Esse é o algorítmo selecionado para simular variáveis aleatórias Chi-quadradas. Os algorítmos implementados são @code{ahrens_cheng} e @code{inverse}:
 @itemize @bullet
 
 @item
-@code{ahrens_cheng}, based on the random simulation of gamma variates. See @code{random_gamma_algorithm} for details.
+@code{ahrens_cheng}, baseado na simulação aleatória de variáveis gama. Veja @code{random_gamma_algorithm} para mias detalhes.
 
 @item
-@code{inverse}, based on the general inverse method.
+@code{inverse}, baseado no método inverso geral.
 
 @end itemize
 
-See also @code{random_chi2}.
+Veja também @code{random_chi2}.
 @end defvr
 
 
 @deffn {Fun@value{cedilha}@~ao} random_chi2 (@var{n})
 @deffnx {Fun@value{cedilha}@~ao} random_chi2 (@var{n},@var{m})
-Returns a Chi-square random variate @math{Chi^2(n)}, with @math{n>0}. Calling @code{random_chi2} with a second argument @var{m}, a random sample of size @var{m} will be simulated.
+Retorna uma variável aleatória Chi-square @math{Chi^2(n)}, com @math{n>0}. Chamando @code{random_chi2} com um segundo argumento @var{m}, uma amostra aleatória de tamanho @var{m} será simulada.
 
-There are two algorithms implemented for this fun@,{c}@~ao, the one to be used can be selected giving a certain value to the global variable @code{random_chi2_algorithm}, which defaults to @code{ahrens_cheng}.
+Existem dois algorítmos implementados para essa fun@,{c}@~ao, se pode selecionar o algorítmo a ser usado fornecendo um certo valor à variável global @code{random_chi2_algorithm}, cujo valor padrão é @code{ahrens_cheng}.
 
-See also @code{random_chi2_algorithm}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Veja também @code{random_chi2_algorithm}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} pdf_f (@var{x},@var{m},@var{n})
-Returns the value at @var{x} of the fun@,{c}@~ao densidade de probabilidade of a F vari@'avel aleat@'oria @math{F(m,n)}, with @math{m,n>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna o valor em @var{x} da fun@,{c}@~ao densidade de probabilidade de uma vari@'avel aleat@'oria F, @math{F(m,n)}, com @math{m,n>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} cdf_f (@var{x},@var{m},@var{n})
-Returns the value at @var{x} of the fun@,{c}@~ao distribui@,{c}@~ao de probabilidade of a F vari@'avel aleat@'oria @math{F(m,n)}, with @math{m,n>0}. This fun@,{c}@~ao has no closed form and it is numerically computed if the
-global variable
-@code{numer} equals @code{true},  otherwise it returns a nominal expression.
+Retorna o valor em @var{x} da fun@,{c}@~ao distribui@,{c}@~ao de probabilidade de uma vari@'avel aleat@'oria F, @math{F(m,n)}, com @math{m,n>0}. Essa fun@,{c}@~ao não possui uma forma definitiva e é calculada numericamente se a
+variável global
+@code{numer} for igual a @code{true},  de outra forma retorna uma expressão nominal.
 
 @c ===beg===
 @c load (distrib)$
@@ -846,9 +855,9 @@ global variable
 
 
 @deffn {Fun@value{cedilha}@~ao} quantile_f (@var{q},@var{m},@var{n})
-Returns the @var{q}-quantile of a F vari@'avel aleat@'oria @math{F(m,n)}, with @math{m,n>0}; in other words, this is the inverse of @code{cdf_f}. Argument @var{q} must be an element of @math{[0,1]}.
+Retorna o @var{q}-quantil de uma vari@'avel aleat@'oria F, @math{F(m,n)}, com @math{m,n>0}; em outras palavras, essa função é o inverso de @code{cdf_f}. O argumento @var{q} deve ser um elemento de @math{[0,1]}.
 
-Essa fun@,{c}@~ao has no closed form and it is numerically computed if the global variable @code{numer} equals @code{true},  otherwise it returns a nominal expression.
+Essa fun@,{c}@~ao não possui uma forma fechada e é calculada numericamante se a variável global @code{numer} for igual a @code{true},  de outra forma essa função retorna uma expressão nominal.
 
 @c ===beg===
 @c load (distrib)$
@@ -868,38 +877,38 @@ Essa fun@,{c}@~ao has no closed form and it is numerically computed if the globa
 
 
 @deffn {Fun@value{cedilha}@~ao} mean_f (@var{m},@var{n})
-Returns the mean of a F vari@'avel aleat@'oria @math{F(m,n)}, with @math{m>0, n>2}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna a média de uma vari@'avel aleat@'oria F, @math{F(m,n)}, com @math{m>0, n>2}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} var_f (@var{m},@var{n})
-Returns the variance of a F vari@'avel aleat@'oria @math{F(m,n)}, with @math{m>0, n>4}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna a variância de uma vari@'avel aleat@'oria F, @math{F(m,n)}, com @math{m>0, n>4}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} std_f (@var{m},@var{n})
-Returns the standard deviation of a F vari@'avel aleat@'oria @math{F(m,n)}, with @math{m>0, n>4}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna o desvio padrão de uma vari@'avel aleat@'oria F, @math{F(m,n)}, com @math{m>0, n>4}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} skewness_f (@var{m},@var{n})
-Returns the skewness coefficient of a F vari@'avel aleat@'oria @math{F(m,n)}, with @math{m>0, n>6}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna o coeficiente de assimetria de uma vari@'avel aleat@'oria F, @math{F(m,n)}, com @math{m>0, n>6}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} kurtosis_f (@var{m},@var{n})
-Returns the kurtosis coefficient of a F vari@'avel aleat@'oria @math{F(m,n)}, with @math{m>0, n>8}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna o coeficiente de curtose de uma vari@'avel aleat@'oria F, @math{F(m,n)}, com @math{m>0, n>8}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@defvr {Option variable} random_f_algorithm
-Default value: @code{inverse}
+@defvr {Variável de opção} random_f_algorithm
+Valor padrão: @code{inverse}
 
-This is the selected algorithm for simulating random F variates. Implemented algorithms are @code{ratio} and @code{inverse}:
+Esse é o algorítmo selecionado para simular variáveis aleatórias F. Os algorítmos implementados são @code{ratio} e @code{inverse}:
 @itemize @bullet
 
 @item
-@code{ratio}, based on the fact that if @var{X} is a @math{Chi^2(m)} vari@'avel aleat@'oria and @math{Y} is a @math{Chi^2(n)} vari@'avel aleat@'oria, then
+@code{ratio}, baseado no fato de que se @var{X} for uma vari@'avel aleat@'oria @math{Chi^2(m)} e @math{Y} for uma vari@'avel aleat@'oria @math{Chi^2(n)}, então
 @ifhtml
 @example
                         n X
@@ -917,31 +926,32 @@ This is the selected algorithm for simulating random F variates. Implemented alg
 @tex
 $$F={{n X}\over{m Y}}$$
 @end tex
-is a F vari@'avel aleat@'oria with @var{m} and @var{n} degrees of freedom, @math{F(m,n)}.
+é uma vari@'avel aleat@'oria F com @var{m} e @var{n} graus de liberdade, @math{F(m,n)}.
 
 @item
-@code{inverse}, based on the general inverse method.
+@code{inverse}, baseado no método inverso geral.
 
 @end itemize
 
-See also @code{random_f}.
+Veja também @code{random_f}.
 @end defvr
 
 
 @deffn {Fun@value{cedilha}@~ao} random_f (@var{m},@var{n})
 @deffnx {Fun@value{cedilha}@~ao} random_f (@var{m},@var{n},@var{k})
-Returns a F random variate @math{F(m,n)}, with @math{m,n>0}. Calling @code{random_f} with a third argument @var{k}, a random sample of size @var{k} will be simulated.
+Retorna uma variável aleatória F, @math{F(m,n)}, com @math{m,n>0}. Chamando @code{random_f} com um terceiro argumento @var{k}, uma amostra aleatória de tamanho @var{k} irá ser simulada.
 
-There are two algorithms implemented for Essa fun@,{c}@~ao, the one to be used can be selected giving a certain value to the global variable @code{random_f_algorithm}, which defaults to @code{inverse}.
+Existem dois algorítmos implementados para essa fun@,{c}@~ao, se pode selecionar o algorítmo a ser usado fornecendo um certo valor à variável global @code{random_f_algorithm}, cujo valor padrão é @code{inverse}.
 
-See also @code{random_f_algorithm}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Veja também @code{random_f_algorithm}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} pdf_exp (@var{x},@var{m})
-Returns the value at @var{x} of the fun@,{c}@~ao densidade de probabilidade of an @math{Exponential(m)} vari@'avel aleat@'oria, with @math{m>0}.
+Retorna o valor em @var{x} da fun@,{c}@~ao densidade de probabilidade vari@'avel aleat@'oria @math{Exponential(m)}, com @math{m>0}.
 
-The @math{Exponential(m)} vari@'avel aleat@'oria is equivalent to the @math{Weibull(1,1/m)}, therefore when Maxima has not enough information to get the result, a nominal form based on the Weibull density is returned.
+A vari@'avel aleat@'oria @math{Exponential(m)} é equivalente a @math{Weibull(1,1/m)}, embora quando Maxima não tiver informação disponível para pegar o resultado, uma forma nominal baseada na função de densidade de Weibull
+éretornada.
 
 @c ===beg===
 @c load (distrib)$
@@ -962,9 +972,10 @@ The @math{Exponential(m)} vari@'avel aleat@'oria is equivalent to the @math{Weib
 
 
 @deffn {Fun@value{cedilha}@~ao} cdf_exp (@var{x},@var{m})
-Returns the value at @var{x} of the fun@,{c}@~ao distribui@,{c}@~ao de probabilidade of an @math{Exponential(m)} vari@'avel aleat@'oria, with @math{m>0}.
+Retorna o valor em @var{x} da fun@,{c}@~ao distribui@,{c}@~ao de probabilidade vari@'avel aleat@'oria @math{Exponential(m)}, com @math{m>0}.
 
-The @math{Exponential(m)} vari@'avel aleat@'oria is equivalent to the @math{Weibull(1,1/m)}, therefore when Maxima has not enough information to get the result, a nominal form based on the Weibull distribution is returned.
+A vari@'avel aleat@'oria @math{Exponential(m)} é equivalente a @math{Weibull(1,1/m)}, embora quando Maxima não tiver informação disponível para pegar o resultado, uma forma nominal baseada na distribuição de Weibull é
+retornadaretornada.
 
 @c ===beg===
 @c load (distrib)$
@@ -985,9 +996,9 @@ The @math{Exponential(m)} vari@'avel aleat@'oria is equivalent to the @math{Weib
 
 
 @deffn {Fun@value{cedilha}@~ao} quantile_exp (@var{q},@var{m})
-Returns the @var{q}-quantile of an @math{Exponential(m)} vari@'avel aleat@'oria, with @math{m>0}; in other words, this is the inverse of @code{cdf_exp}. Argument @var{q} must be an element of @math{[0,1]}.
+Retorna o @var{q}-quantil vari@'avel aleat@'oria @math{Exponential(m)}, com @math{m>0}; em outras palavras, essa função é inversa da função @code{cdf_exp}. O argumento @var{q} deve ser um elemento de @math{[0,1]}.
 
-The @math{Exponential(m)} vari@'avel aleat@'oria is equivalent to the @math{Weibull(1,1/m)}, therefore when Maxima has not enough information to get the result, a nominal form based on the Weibull quantile is returned.
+A vari@'avel aleat@'oria @math{Exponential(m)} é equivalente a @math{Weibull(1,1/m)}, embora quando Maxima não tiver informação disponível para pegar o resultado, uma forma nominal baseada no qualtil de Weibull é retornada.
 
 @c ===beg===
 @c load (distrib)$
@@ -1007,9 +1018,9 @@ The @math{Exponential(m)} vari@'avel aleat@'oria is equivalent to the @math{Weib
 
 
 @deffn {Fun@value{cedilha}@~ao} mean_exp (@var{m})
-Returns the mean of an @math{Exponential(m)} vari@'avel aleat@'oria, with @math{m>0}.
+Retorna a média de uma vari@'avel aleat@'oria @math{Exponential(m)}, com @math{m>0}.
 
-The @math{Exponential(m)} vari@'avel aleat@'oria is equivalent to the @math{Weibull(1,1/m)}, therefore when Maxima has not enough information to get the result, a nominal form based on the Weibull mean is returned.
+A vari@'avel aleat@'oria @math{Exponential(m)} é equivalente a @math{Weibull(1,1/m)}, embora quando Maxima não tiver informação disponível para pegar o resultado, uma forma nominal baseada na média de Weibull é reornada.
 
 @c ===beg===
 @c load (distrib)$
@@ -1031,9 +1042,9 @@ The @math{Exponential(m)} vari@'avel aleat@'oria is equivalent to the @math{Weib
 
 
 @deffn {Fun@value{cedilha}@~ao} var_exp (@var{m})
-Returns the variance of an @math{Exponential(m)} vari@'avel aleat@'oria, with @math{m>0}.
+Retorna a variância de uma vari@'avel aleat@'oria @math{Exponential(m)}, com @math{m>0}.
 
-The @math{Exponential(m)} vari@'avel aleat@'oria is equivalent to the @math{Weibull(1,1/m)}, therefore when Maxima has not enough information to get the result, a nominal form based on the Weibull variance is returned.
+A vari@'avel aleat@'oria @math{Exponential(m)} é equivalente a @math{Weibull(1,1/m)}, embora quando Maxima não tiver informação disponível para pegar o resultado, uma forma nominal baseada na variância de Weibull é retornada.
 
 @c ===beg===
 @c load (distrib)$
@@ -1056,9 +1067,9 @@ The @math{Exponential(m)} vari@'avel aleat@'oria is equivalent to the @math{Weib
 
 
 @deffn {Fun@value{cedilha}@~ao} std_exp (@var{m})
-Returns the standard deviation of an @math{Exponential(m)} vari@'avel aleat@'oria, with @math{m>0}.
+Retorna o desvio padrão de uma vari@'avel aleat@'oria @math{Exponential(m)}, com @math{m>0}.
 
-The @math{Exponential(m)} vari@'avel aleat@'oria is equivalent to the @math{Weibull(1,1/m)}, therefore when Maxima has not enough information to get the result, a nominal form based on the Weibull standard deviation is returned.
+A vari@'avel aleat@'oria @math{Exponential(m)} é equivalente a @math{Weibull(1,1/m)}, embora quando Maxima não tiver informação disponível para pegar o resultado, uma forma nominal baseada no desvio padrão de Weibull é retornada.
 
 @c ===beg===
 @c load (distrib)$
@@ -1080,10 +1091,10 @@ The @math{Exponential(m)} vari@'avel aleat@'oria is equivalent to the @math{Weib
 
 
 @deffn {Fun@value{cedilha}@~ao} skewness_exp (@var{m})
-Returns the skewness coefficient of an @math{Exponential(m)} vari@'avel aleat@'oria, with @math{m>0}.
+Retorna o coeficiente de assimetria de uma vari@'avel aleat@'oria @math{Exponential(m)}, com @math{m>0}.
 
-The @math{Exponential(m)} vari@'avel aleat@'oria is equivalent to the @math{Weibull(1,1/m)}, therefore when Maxima has not enough information to get the result, a nominal form based on the Weibull skewness coefficient is
-returned.
+A vari@'avel aleat@'oria @math{Exponential(m)} é equivalente a @math{Weibull(1,1/m)}, embora quando Maxima não tiver informação disponível para pegar o resultado, uma forma nominal baseada no coeficiente de assimetria de Weibull
+é retornada.
 
 @c ===beg===
 @c load (distrib)$
@@ -1103,10 +1114,10 @@ returned.
 
 
 @deffn {Fun@value{cedilha}@~ao} kurtosis_exp (@var{m})
-Returns the kurtosis coefficient of an @math{Exponential(m)} vari@'avel aleat@'oria, with @math{m>0}.
+Retorna o coeficiente de curtose de uma vari@'avel aleat@'oria @math{Exponential(m)}, com @math{m>0}.
 
-The @math{Exponential(m)} vari@'avel aleat@'oria is equivalent to the @math{Weibull(1,1/m)}, therefore when Maxima has not enough information to get the result, a nominal form based on the Weibull kurtosis coefficient is
-returned.
+A vari@'avel aleat@'oria @math{Exponential(m)} é equivalente a @math{Weibull(1,1/m)}, embora quando Maxima não tiver informação disponível para pegar o resultado, uma forma nominal baseada no coeficiente de curtose de Weibull é
+retornada.
 
 @c ===beg===
 @c load (distrib)$
@@ -1125,44 +1136,44 @@ returned.
 @end deffn
 
 
-@defvr {Option variable} random_exp_algorithm
-Default value: @code{inverse}
+@defvr {Variável de opção} random_exp_algorithm
+Valor padrão: @code{inverse}
 
-This is the selected algorithm for simulating random exponential variates. Implemented algorithms are @code{inverse}, @code{ahrens_cheng} and @code{ahrens_dieter}
+Esse é o algorítmo selecionado para simular variáveis exponenciais aleatórias. Os algorítmos implementados são @code{inverse}, @code{ahrens_cheng} e @code{ahrens_dieter}
 @itemize @bullet
 
 @item
-@code{inverse}, based on the general inverse method.
+@code{inverse}, baseado no método inverso geral.
 
 @item
-@code{ahrens_cheng}, based on the fact that the @math{Exp(m)} vari@'avel aleat@'oria is equivalent to the @math{Gamma(1,1/m)}. See @code{random_gamma_algorithm} for details.
+@code{ahrens_cheng}, baseado no fato de que a vari@'avel aleat@'oria @math{Exp(m)} é equivalente a @math{Gamma(1,1/m)}. Veja @code{random_gamma_algorithm} para maiores detalhes.
 
 @item
-@code{ahrens_dieter}, based on algorithm described in Ahrens, J.H. and Dieter, U. (1972) @var{Computer methods for sampling from the exponential and normal distributions.} Comm, ACM, 15, Oct.,  873-882.
+@code{ahrens_dieter}, baseado no algorítmo descrito em Ahrens, J.H. e Dieter, U. (1972) @var{Computer methods for sampling from the exponential and normal distributions.} Comm, ACM, 15, Oct.,  873-882.
 
 @end itemize
 
-See also @code{random_exp}.
+Veja também @code{random_exp}.
 @end defvr
 
 
 @deffn {Fun@value{cedilha}@~ao} random_exp (@var{m})
 @deffnx {Fun@value{cedilha}@~ao} random_exp (@var{m},@var{k})
-Returns an @math{Exponential(m)} random variate, with @math{m>0}. Calling @code{random_exp} with a second argument @var{k}, a random sample of size @var{k} will be simulated.
+Retorna uma variável aleatória @math{Exponential(m)}, com @math{m>0}. Chamando @code{random_exp} com um segundo argumento @var{k}, uma amostra aleatória de tamanho @var{k} irá ser simulada.
 
-There are three algorithms implemented for Essa fun@,{c}@~ao, the one to be used can be selected giving a certain value to the global variable @code{random_exp_algorithm}, which defaults to @code{inverse}.
+Existem três algorítmos implementados para essa fun@,{c}@~ao, se pode selecionar o algorítmo a ser usado fornecendo um certo valor à variável global @code{random_exp_algorithm}, cujo valor padrão é @code{inverse}.
 
-See also @code{random_exp_algorithm}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Veja também @code{random_exp_algorithm}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} pdf_lognormal (@var{x},@var{m},@var{s})
-Returns the value at @var{x} of the fun@,{c}@~ao densidade de probabilidade of a @math{Lognormal(m,s)} vari@'avel aleat@'oria, with @math{s>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna o valor em @var{x} da fun@,{c}@~ao densidade de probabilidade de uma vari@'avel aleat@'oria @math{Lognormal(m,s)}, com @math{s>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} cdf_lognormal (@var{x},@var{m},@var{s})
-Returns the value at @var{x} of the fun@,{c}@~ao distribui@,{c}@~ao de probabilidade of a @math{Lognormal(m,s)} vari@'avel aleat@'oria, with @math{s>0}. Essa fun@,{c}@~ao is defined in terms of Maxima's built-in error
+Retorna o valor em @var{x} da fun@,{c}@~ao distribui@,{c}@~ao de probabilidade de uma vari@'avel aleat@'oria @math{Lognormal(m,s)}, com @math{s>0}. Essa fun@,{c}@~ao é definida em termos de funções de erro internas do Maxima
 fun@,{c}@~ao @code{erf}.
 
 @c ===beg===
@@ -1179,61 +1190,62 @@ fun@,{c}@~ao @code{erf}.
                               2          2
 @end example
 
-See also @code{erf}.
+Veja também @code{erf}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} quantile_lognormal (@var{q},@var{m},@var{s})
-Returns the @var{q}-quantile of a @math{Lognormal(m,s)} vari@'avel aleat@'oria, with @math{s>0}; in other words, this is the inverse of @code{cdf_lognormal}. Argument @var{q} must be an element of @math{[0,1]}. Para fazer uso
+Retorna o @var{q}-quantil de uma vari@'avel aleat@'oria @math{Lognormal(m,s)}, com @math{s>0}; em outras palavras, essa função é a inversa da função @code{cdf_lognormal}. O argumento @var{q} deve ser um elemento de @math{[0,1]}.
+Para fazer uso
 dessa
 fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} mean_lognormal (@var{m},@var{s})
-Returns the mean of a @math{Lognormal(m,s)} vari@'avel aleat@'oria, with @math{s>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna a média de uma vari@'avel aleat@'oria @math{Lognormal(m,s)}, com @math{s>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} var_lognormal (@var{m},@var{s})
-Returns the variance of a @math{Lognormal(m,s)} vari@'avel aleat@'oria, with @math{s>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna a variância de uma vari@'avel aleat@'oria @math{Lognormal(m,s)}, com @math{s>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 @deffn {Fun@value{cedilha}@~ao} std_lognormal (@var{m},@var{s})
-Returns the standard deviation of a @math{Lognormal(m,s)} vari@'avel aleat@'oria, with @math{s>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna o desvio padrão de uma vari@'avel aleat@'oria @math{Lognormal(m,s)}, com @math{s>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} skewness_lognormal (@var{m},@var{s})
-Returns the skewness coefficient of a @math{Lognormal(m,s)} vari@'avel aleat@'oria, with @math{s>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna o coeficiente de assimetria de uma vari@'avel aleat@'oria @math{Lognormal(m,s)}, com @math{s>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} kurtosis_lognormal (@var{m},@var{s})
-Returns the kurtosis coefficient of a @math{Lognormal(m,s)} vari@'avel aleat@'oria, with @math{s>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna o coeficiente de curtose de uma vari@'avel aleat@'oria @math{Lognormal(m,s)}, com @math{s>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} random_lognormal (@var{m},@var{s})
 @deffnx {Fun@value{cedilha}@~ao} random_lognormal (@var{m},@var{s},@var{n})
-Returns a @math{Lognormal(m,s)} random variate, with @math{s>0}. Calling @code{random_lognormal} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
+Retorna uma variável aleatória @math{Lognormal(m,s)}, com @math{s>0}. Chamando @code{random_lognormal} com um terceiro argumento @var{n}, uma amostra aleatória de tamanho @var{n} irá ser simulada.
 
-Log-normal variates are simulated by means of random normal variates. There are two algorithms implemented for Essa fun@,{c}@~ao, the one to be used can be selected giving a certain value to the global variable
-@code{random_normal_algorithm}, which defaults to @code{box_mueller}.
+Variáveis Log-normal são simuladas por meio de variáveis normais aleatórias. Existem dois algorítmos implementados para essa fun@,{c}@~ao, se pode selecionar o algorítmo a ser usado fornecendo um certo valor à variável global
+@code{random_normal_algorithm}, cujo valor padrão é @code{box_mueller}.
 
-See also @code{random_normal_algorithm}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Veja também @code{random_normal_algorithm}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} pdf_gamma (@var{x},@var{a},@var{b})
-Returns the value at @var{x} of the fun@,{c}@~ao densidade de probabilidade of a @math{Gamma(a,b)} vari@'avel aleat@'oria, with @math{a,b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna o valor em @var{x} da fun@,{c}@~ao densidade de probabilidade de uma vari@'avel aleat@'oria @math{Gamma(a,b)}, com @math{a,b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} cdf_gamma (@var{x},@var{a},@var{b})
-Returns the value at @var{x} of the fun@,{c}@~ao distribui@,{c}@~ao de probabilidade of a @math{Gamma(a,b)} vari@'avel aleat@'oria, with @math{a,b>0}. 
+Retorna o valor em @var{x} da fun@,{c}@~ao distribui@,{c}@~ao de probabilidade de uma vari@'avel aleat@'oria @math{Gamma(a,b)}, com @math{a,b>0}. 
 
-Essa fun@,{c}@~ao has no closed form and it is numerically computed if the global variable @code{numer} equals @code{true},  otherwise it returns a nominal expression.
+Essa fun@,{c}@~ao não possui uma forma fechada e é calculada numericamante se a variável global @code{numer} for igual a @code{true},  de outra forma essa função retorna uma expressão nominal.
 
 @c ===beg===
 @c load (distrib)$
@@ -1251,78 +1263,79 @@ Essa fun@,{c}@~ao has no closed form and it is numerically computed if the globa
 
 
 @deffn {Fun@value{cedilha}@~ao} quantile_gamma (@var{q},@var{a},@var{b})
-Returns the @var{q}-quantile of a @math{Gamma(a,b)} vari@'avel aleat@'oria, with @math{a,b>0}; in other words, this is the inverse of @code{cdf_gamma}. Argument @var{q} must be an element of @math{[0,1]}. Para fazer uso dessa
+Retorna o @var{q}-quantil de uma vari@'avel aleat@'oria @math{Gamma(a,b)}, com @math{a,b>0}; em outras palavras, essa função é a inversa da função @code{cdf_gamma}. O argumento @var{q} deve ser um elemento de @math{[0,1]}. Para
+fazer uso dessa
 fun@,{c}@~ao,
 escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} mean_gamma (@var{a},@var{b})
-Returns the mean of a @math{Gamma(a,b)} vari@'avel aleat@'oria, with @math{a,b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna a média de uma vari@'avel aleat@'oria @math{Gamma(a,b)}, com @math{a,b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} var_gamma (@var{a},@var{b})
-Returns the variance of a @math{Gamma(a,b)} vari@'avel aleat@'oria, with @math{a,b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna a variância de uma vari@'avel aleat@'oria @math{Gamma(a,b)}, com @math{a,b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 @deffn {Fun@value{cedilha}@~ao} std_gamma (@var{a},@var{b})
-Returns the standard deviation of a @math{Gamma(a,b)} vari@'avel aleat@'oria, with @math{a,b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna o desvio padrão de uma vari@'avel aleat@'oria @math{Gamma(a,b)}, com @math{a,b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} skewness_gamma (@var{a},@var{b})
-Returns the skewness coefficient of a @math{Gamma(a,b)} vari@'avel aleat@'oria, with @math{a,b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna o coeficiente de assimetria de uma vari@'avel aleat@'oria @math{Gamma(a,b)}, com @math{a,b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} kurtosis_gamma (@var{a},@var{b})
-Returns the kurtosis coefficient of a @math{Gamma(a,b)} vari@'avel aleat@'oria, with @math{a,b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna o coeficiente de curtose de uma vari@'avel aleat@'oria @math{Gamma(a,b)}, com @math{a,b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@defvr {Option variable} random_gamma_algorithm
-Default value: @code{ahrens_cheng}
+@defvr {Variável de opção} random_gamma_algorithm
+Valor padrão: @code{ahrens_cheng}
 
-This is the selected algorithm for simulating random gamma variates. Implemented algorithms are @code{ahrens_cheng} and @code{inverse}
+Esse é o algorítmo selecionado para simular variáveis gama aleatórias. Os algorítmos implementados são @code{ahrens_cheng} e @code{inverse}
 @itemize @bullet
 
 @item
-@code{ahrens_cheng}, this is a combinantion of two procedures, depending on the value of parameter @var{a}:
+@code{ahrens_cheng}, essa é uma combinação de dois processos, dependendo do valor do parâmetro @var{a}:
 
-For @math{a>=1}, Cheng, R.C.H. and Feast, G.M. (1979). @var{Some simple gamma variate generators}. Appl. Stat., 28, 3, 290-295.
+For @math{a>=1}, Cheng, R.C.H. e Feast, G.M. (1979). @var{Some simple gamma variate generators}. Appl. Stat., 28, 3, 290-295.
 
-For @math{0<a<1}, Ahrens, J.H. and Dieter, U. (1974). @var{Computer methods for sampling from gamma, beta, poisson and binomial cdf_tributions}. Computing, 12, 223-246.
+For @math{0<a<1}, Ahrens, J.H. e Dieter, U. (1974). @var{Computer methods for sampling from gamma, beta, poisson and binomial cdf_tributions}. Computing, 12, 223-246.
 
 @item
-@code{inverse}, based on the general inverse method.
+@code{inverse}, baseado no método inverso geral.
 
 @end itemize
 
-See also @code{random_gamma}.
+Veja também @code{random_gamma}.
 @end defvr
 
 
 @deffn {Fun@value{cedilha}@~ao} random_gamma (@var{a},@var{b})
 @deffnx {Fun@value{cedilha}@~ao} random_gamma (@var{a},@var{b},@var{n})
-Returns a @math{Gamma(a,b)} random variate, with @math{a,b>0}. Calling @code{random_gamma} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
+Retorna uma variável aleatória @math{Gamma(a,b)}, com @math{a,b>0}. Chamando @code{random_gamma} com um terceiro argumento @var{n}, uma amostra aleatória de tamanho @var{n} irá ser simulada.
 
-There are two algorithms implemented for Essa fun@,{c}@~ao, the one to be used can be selected giving a certain value to the global variable @code{random_gamma_algorithm}, which defaults to @code{ahrens_cheng}.
+Existem dois algorítmos implementados para essa fun@,{c}@~ao, se pode selecionar o algorítmo a ser usado fornecendo um certo valor à variável global @code{random_gamma_algorithm}, cujo valor padrão é @code{ahrens_cheng}.
 
-See also @code{random_gamma_algorithm}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Veja também @code{random_gamma_algorithm}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} pdf_beta (@var{x},@var{a},@var{b})
-Returns the value at @var{x} of the fun@,{c}@~ao densidade de probabilidade of a @math{Beta(a,b)} vari@'avel aleat@'oria, with @math{a,b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna o valor em @var{x} da fun@,{c}@~ao densidade de probabilidade de uma vari@'avel aleat@'oria @math{Beta(a,b)}, com @math{a,b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 
 @deffn {Fun@value{cedilha}@~ao} cdf_beta (@var{x},@var{a},@var{b})
-Returns the value at @var{x} of the fun@,{c}@~ao distribui@,{c}@~ao de probabilidade of a @math{Beta(a,b)} vari@'avel aleat@'oria, with @math{a,b>0}. 
+Retorna o valor em @var{x} da fun@,{c}@~ao distribui@,{c}@~ao de probabilidade de uma vari@'avel aleat@'oria @math{Beta(a,b)}, com @math{a,b>0}. 
 
-Essa fun@,{c}@~ao has no closed form and it is numerically computed if the global variable @code{numer} equals @code{true},  otherwise it returns a nominal expression.
+Essa fun@,{c}@~ao não possui uma forma fechada e é calculada numericamante se a variável global @code{numer} for igual a @code{true},  de outra forma essa função retorna uma expressão nominal.
 
 @c ===beg===
 @c load (distrib)$
@@ -1342,265 +1355,270 @@ Essa fun@,{c}@~ao has no closed form and it is numerically computed if the globa
 
 
 @deffn {Fun@value{cedilha}@~ao} quantile_beta (@var{q},@var{a},@var{b})
-Returns the @var{q}-quantile of a @math{Beta(a,b)} vari@'avel aleat@'oria, with @math{a,b>0}; in other words, this is the inverse of @code{cdf_beta}. Argument @var{q} must be an element of @math{[0,1]}. Para fazer uso dessa
+Retorna o @var{q}-quantil de uma vari@'avel aleat@'oria @math{Beta(a,b)}, com @math{a,b>0}; em outras palavras, essa função é a inversa da função @code{cdf_beta}. O argumento @var{q} deve ser um elemento de @math{[0,1]}. Para
+fazer uso dessa
 fun@,{c}@~ao,
 escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} mean_beta (@var{a},@var{b})
-Returns the mean of a @math{Beta(a,b)} vari@'avel aleat@'oria, with @math{a,b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna a média de uma vari@'avel aleat@'oria @math{Beta(a,b)}, com @math{a,b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} var_beta (@var{a},@var{b})
-Returns the variance of a @math{Beta(a,b)} vari@'avel aleat@'oria, with @math{a,b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna a variância de uma vari@'avel aleat@'oria @math{Beta(a,b)}, com @math{a,b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 @deffn {Fun@value{cedilha}@~ao} std_beta (@var{a},@var{b})
-Returns the standard deviation of a @math{Beta(a,b)} vari@'avel aleat@'oria, with @math{a,b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna o desvio padrão de uma vari@'avel aleat@'oria @math{Beta(a,b)}, com @math{a,b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} skewness_beta (@var{a},@var{b})
-Returns the skewness coefficient of a @math{Beta(a,b)} vari@'avel aleat@'oria, with @math{a,b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna o coeficiente de assimetria de uma vari@'avel aleat@'oria @math{Beta(a,b)}, com @math{a,b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} kurtosis_beta (@var{a},@var{b})
-Returns the kurtosis coefficient of a @math{Beta(a,b)} vari@'avel aleat@'oria, with @math{a,b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna o coeficiente de curtose de uma vari@'avel aleat@'oria @math{Beta(a,b)}, com @math{a,b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@defvr {Option variable} random_beta_algorithm
-Default value: @code{cheng}
+@defvr {Variável de opção} random_beta_algorithm
+Valor padrão: @code{cheng}
 
-This is the selected algorithm for simulating random beta variates. Implemented algorithms are @code{cheng}, @code{inverse} and @code{ratio}
+Esse é o algorítmo selecionado para simular variáveis beta aleatórias. Os algorítmos implementados são @code{cheng}, @code{inverse} e @code{ratio}
 @itemize @bullet
 
 @item
-@code{cheng}, this is the algorithm defined in Cheng, R.C.H.  (1978). @var{Generating Beta Variates with Nonintegral Shape Parameters}. Communications of the ACM, 21:317-322
+@code{cheng}, esse é o algorítmo definido em Cheng, R.C.H.  (1978). @var{Generating Beta Variates with Nonintegral Shape Parameters}. Communications of the ACM, 21:317-322
 
 @item
-@code{inverse}, based on the general inverse method.
+@code{inverse}, baseado no método inverso geral.
 
 @item
-@code{ratio}, based on the fact that if @var{X} is a vari@'avel aleat@'oria @math{Gamma(a,1)} and @var{Y} is @math{Gamma(b,1)}, then the ratio @math{X/(X+Y)} is distributed as @math{Beta(a,b)}.
+@code{ratio}, baseado no fato de que se @var{X} for uma vari@'avel aleat@'oria @math{Gamma(a,1)} e @var{Y} for @math{Gamma(b,1)}, então a razão @math{X/(X+Y)} está distribuída como @math{Beta(a,b)}.
 
 @end itemize
 
-See also @code{random_beta}.
+Veja também @code{random_beta}.
 @end defvr
 
 
 @deffn {Fun@value{cedilha}@~ao} random_beta (@var{a},@var{b})
 @deffnx {Fun@value{cedilha}@~ao} random_beta (@var{a},@var{b},@var{n})
-Returns a @math{Beta(a,b)} random variate, with @math{a,b>0}. Calling @code{random_beta} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
+Retorna uma vari@'avel aleat@'oria @math{Beta(a,b)}, com @math{a,b>0}. Chamando @code{random_beta} com um terceiro argumento @var{n}, uma amostra aleatória de tamanho @var{n} irá ser simulada.
 
-There are three algorithms implemented for Essa fun@,{c}@~ao, the one to be used can be selected giving a certain value to the global variable @code{random_beta_algorithm}, which defaults to @code{cheng}.
+Existem três algorítmos implementados para essa fun@,{c}@~ao, se pode selecionar o algorítmo a ser usado fornecendo um certo valor à variável global @code{random_beta_algorithm}, cujo valor padrão é @code{cheng}.
 
-See also @code{random_beta_algorithm}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Veja também @code{random_beta_algorithm}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 @deffn {Fun@value{cedilha}@~ao} pdf_continuous_uniform (@var{x},@var{a},@var{b})
-Returns the value at @var{x} of the fun@,{c}@~ao densidade de probabilidade of a @math{Continuous Uniform(a,b)} vari@'avel aleat@'oria, with @math{a<b}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente
+Retorna o valor em @var{x} da fun@,{c}@~ao densidade de probabilidade de uma vari@'avel aleat@'oria @math{Continuous Uniform(a,b)}, com @math{a<b}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente
 @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} cdf_continuous_uniform (@var{x},@var{a},@var{b})
-Returns the value at @var{x} of the fun@,{c}@~ao distribui@,{c}@~ao de probabilidade of a @math{Continuous Uniform(a,b)} vari@'avel aleat@'oria, with @math{a<b}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente
+Retorna o valor em @var{x} da fun@,{c}@~ao distribui@,{c}@~ao de probabilidade de uma vari@'avel aleat@'oria @math{Continuous Uniform(a,b)}, com @math{a<b}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente
 @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} quantile_continuous_uniform (@var{q},@var{a},@var{b})
-Returns the @var{q}-quantile of a @math{Continuous Uniform(a,b)} vari@'avel aleat@'oria, with @math{a<b}; in other words, this is the inverse of @code{cdf_continuous_uniform}. Argument @var{q} must be an element of @math{[0,1]}.
+Retorna o @var{q}-quantil de uma vari@'avel aleat@'oria @math{Continuous Uniform(a,b)}, com @math{a<b}; em outras palavras, essa função é a inversa da função @code{cdf_continuous_uniform}. O argumento @var{q} deve ser um elemento
+de @math{[0,1]}.
 Para
 fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} mean_continuous_uniform (@var{a},@var{b})
-Returns the mean of a @math{Continuous Uniform(a,b)} vari@'avel aleat@'oria, with @math{a<b}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna a média de uma vari@'avel aleat@'oria @math{Continuous Uniform(a,b)}, com @math{a<b}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} var_continuous_uniform (@var{a},@var{b})
-Returns the variance of a @math{Continuous Uniform(a,b)} vari@'avel aleat@'oria, with @math{a<b}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna o variance of a vari@'avel aleat@'oria @math{Continuous Uniform(a,b)}, com @math{a<b}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 @deffn {Fun@value{cedilha}@~ao} std_continuous_uniform (@var{a},@var{b})
-Returns the standard deviation of a @math{Continuous Uniform(a,b)} vari@'avel aleat@'oria, with @math{a<b}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna o desvio padrão of a vari@'avel aleat@'oria @math{Continuous Uniform(a,b)}, com @math{a<b}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} skewness_continuous_uniform (@var{a},@var{b})
-Returns the skewness coefficient of a @math{Continuous Uniform(a,b)} vari@'avel aleat@'oria, with @math{a<b}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna o coeficiente de assimetria of a vari@'avel aleat@'oria @math{Continuous Uniform(a,b)}, com @math{a<b}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} kurtosis_continuous_uniform (@var{a},@var{b})
-Returns the kurtosis coefficient of a @math{Continuous Uniform(a,b)} vari@'avel aleat@'oria, with @math{a<b}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna o coeficiente de curtose of a vari@'avel aleat@'oria @math{Continuous Uniform(a,b)}, com @math{a<b}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} random_continuous_uniform (@var{a},@var{b})
 @deffnx {Fun@value{cedilha}@~ao} random_continuous_uniform (@var{a},@var{b},@var{n})
-Returns a @math{Continuous Uniform(a,b)} random variate, with @math{a<b}. Calling @code{random_continuous_uniform} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
+Retorna um @math{Continuous Uniform(a,b)} random variate, com @math{a<b}. Chamando @code{random_continuous_uniform} com um terceiro argumento @var{n}, uma amostra aleatória de tamanho @var{n} irá ser simulada.
 
 This is a direct application of the @code{random} built-in fun@,{c}@~ao do Maxima.
 
-See also @code{random}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Veja também @code{random}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} pdf_logistic (@var{x},@var{a},@var{b})
-Returns the value at @var{x} of the fun@,{c}@~ao densidade de probabilidade of a @math{Logistic(a,b)} vari@'avel aleat@'oria , with @math{b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna o valor em @var{x} da fun@,{c}@~ao densidade de probabilidade of a @math{Logistic(a,b)} vari@'avel aleat@'oria , com @math{b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} cdf_logistic (@var{x},@var{a},@var{b})
-Returns the value at @var{x} of the fun@,{c}@~ao distribui@,{c}@~ao de probabilidade of a @math{Logistic(a,b)} vari@'avel aleat@'oria , with @math{b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente
+Retorna o valor em @var{x} da fun@,{c}@~ao distribui@,{c}@~ao de probabilidade of a @math{Logistic(a,b)} vari@'avel aleat@'oria , com @math{b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente
 @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} quantile_logistic (@var{q},@var{a},@var{b})
-Returns the @var{q}-quantile of a @math{Logistic(a,b)} vari@'avel aleat@'oria , with @math{b>0}; in other words, this is the inverse of @code{cdf_logistic}. Argument @var{q} must be an element of @math{[0,1]}. Para fazer uso
+Retorna o @var{q}-quantile of a @math{Logistic(a,b)} vari@'avel aleat@'oria , com @math{b>0}; em outras palavras, essa função é a inversa da função @code{cdf_logistic}. O argumento @var{q} deve ser um elemento de @math{[0,1]}.
+Para fazer uso
 dessa
 fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} meanlog (@var{a},@var{b})
-Returns the mean of a @math{Logistic(a,b)} vari@'avel aleat@'oria , with @math{b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna a média de uma @math{Logistic(a,b)} vari@'avel aleat@'oria , com @math{b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} var_logistic (@var{a},@var{b})
-Returns the variance of a @math{Logistic(a,b)} vari@'avel aleat@'oria , with @math{b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna o variance of a @math{Logistic(a,b)} vari@'avel aleat@'oria , com @math{b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} std_logistic (@var{a},@var{b})
-Returns the standard deviation of a @math{Logistic(a,b)} vari@'avel aleat@'oria , with @math{b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna o desvio padrão of a @math{Logistic(a,b)} vari@'avel aleat@'oria , com @math{b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} skewness_logistic (@var{a},@var{b})
-Returns the skewness coefficient of a @math{Logistic(a,b)} vari@'avel aleat@'oria , with @math{b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna o coeficiente de assimetria of a @math{Logistic(a,b)} vari@'avel aleat@'oria , com @math{b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} kurtosis_logistic (@var{a},@var{b})
-Returns the kurtosis coefficient of a @math{Logistic(a,b)} vari@'avel aleat@'oria , with @math{b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna o coeficiente de curtose of a @math{Logistic(a,b)} vari@'avel aleat@'oria , com @math{b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} random_logistic (@var{a},@var{b})
 @deffnx {Fun@value{cedilha}@~ao} random_logistic (@var{a},@var{b},@var{n})
-Returns a @math{Logistic(a,b)} random variate, with @math{b>0}. Calling @code{random_logistic} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
+Retorna um @math{Logistic(a,b)} random variate, com @math{b>0}. Chamando @code{random_logistic} com um terceiro argumento @var{n}, uma amostra aleatória de tamanho @var{n} irá ser simulada.
 
 Only the inverse method is implemented. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} pdf_pareto (@var{x},@var{a},@var{b})
-Returns the value at @var{x} of the fun@,{c}@~ao densidade de probabilidade of a @math{Pareto(a,b)} vari@'avel aleat@'oria, with @math{a,b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna o valor em @var{x} da fun@,{c}@~ao densidade de probabilidade of a @math{Pareto(a,b)} vari@'avel aleat@'oria, com @math{a,b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} cdf_pareto (@var{x},@var{a},@var{b})
-Returns the value at @var{x} of the fun@,{c}@~ao distribui@,{c}@~ao de probabilidade of a @math{Pareto(a,b)} vari@'avel aleat@'oria, with @math{a,b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente
+Retorna o valor em @var{x} da fun@,{c}@~ao distribui@,{c}@~ao de probabilidade of a @math{Pareto(a,b)} vari@'avel aleat@'oria, com @math{a,b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente
 @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} quantile_pareto (@var{q},@var{a},@var{b})
-Returns the @var{q}-quantile of a @math{Pareto(a,b)} vari@'avel aleat@'oria, with @math{a,b>0}; in other words, this is the inverse of @code{cdf_pareto}. Argument @var{q} must be an element of @math{[0,1]}. Para fazer uso dessa
+Retorna o @var{q}-quantile of a @math{Pareto(a,b)} vari@'avel aleat@'oria, com @math{a,b>0}; em outras palavras, essa função é a inversa da função @code{cdf_pareto}. O argumento @var{q} deve ser um elemento de @math{[0,1]}. Para
+fazer uso dessa
 fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} mean_pareto (@var{a},@var{b})
-Returns the mean of a @math{Pareto(a,b)} vari@'avel aleat@'oria, with @math{a>1,b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna a média de uma @math{Pareto(a,b)} vari@'avel aleat@'oria, com @math{a>1,b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} var_pareto (@var{a},@var{b})
-Returns the variance of a @math{Pareto(a,b)} vari@'avel aleat@'oria, with @math{a>2,b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna o variance of a @math{Pareto(a,b)} vari@'avel aleat@'oria, com @math{a>2,b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 @deffn {Fun@value{cedilha}@~ao} std_pareto (@var{a},@var{b})
-Returns the standard deviation of a @math{Pareto(a,b)} vari@'avel aleat@'oria, with @math{a>2,b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna o desvio padrão of a @math{Pareto(a,b)} vari@'avel aleat@'oria, com @math{a>2,b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 
 @deffn {Fun@value{cedilha}@~ao} skewness_pareto (@var{a},@var{b})
-Returns the skewness coefficient of a @math{Pareto(a,b)} vari@'avel aleat@'oria, with @math{a>3,b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna o coeficiente de assimetria of a @math{Pareto(a,b)} vari@'avel aleat@'oria, com @math{a>3,b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} kurtosis_pareto (@var{a},@var{b})
-Returns the kurtosis coefficient of a @math{Pareto(a,b)} vari@'avel aleat@'oria, with @math{a>4,b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna o coeficiente de curtose of a @math{Pareto(a,b)} vari@'avel aleat@'oria, com @math{a>4,b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} random_pareto (@var{a},@var{b})
 @deffnx {Fun@value{cedilha}@~ao} random_pareto (@var{a},@var{b},@var{n})
-Returns a @math{Pareto(a,b)} random variate, with @math{a>0,b>0}. Calling @code{random_pareto} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
+Retorna um @math{Pareto(a,b)} random variate, com @math{a>0,b>0}. Chamando @code{random_pareto} com um terceiro argumento @var{n}, uma amostra aleatória de tamanho @var{n} irá ser simulada.
 
 Only the inverse method is implemented. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} pdf_weibull (@var{x},@var{a},@var{b})
-Returns the value at @var{x} of the fun@,{c}@~ao densidade de probabilidade of a @math{Weibull(a,b)} vari@'avel aleat@'oria, with @math{a,b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna o valor em @var{x} da fun@,{c}@~ao densidade de probabilidade of a @math{Weibull(a,b)} vari@'avel aleat@'oria, com @math{a,b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} cdf_weibull (@var{x},@var{a},@var{b})
-Returns the value at @var{x} of the fun@,{c}@~ao distribui@,{c}@~ao de probabilidade of a @math{Weibull(a,b)} vari@'avel aleat@'oria, with @math{a,b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente
+Retorna o valor em @var{x} da fun@,{c}@~ao distribui@,{c}@~ao de probabilidade of a @math{Weibull(a,b)} vari@'avel aleat@'oria, com @math{a,b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente
 @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} quantile_weibull (@var{q},@var{a},@var{b})
-Returns the @var{q}-quantile of a @math{Weibull(a,b)} vari@'avel aleat@'oria, with @math{a,b>0}; in other words, this is the inverse of @code{cdf_weibull}. Argument @var{q} must be an element of @math{[0,1]}. Para fazer uso dessa
+Retorna o @var{q}-quantile of a @math{Weibull(a,b)} vari@'avel aleat@'oria, com @math{a,b>0}; em outras palavras, essa função é a inversa da função @code{cdf_weibull}. O argumento @var{q} deve ser um elemento de @math{[0,1]}.
+Para fazer uso dessa
 fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} mean_weibull (@var{a},@var{b})
-Returns the mean of a @math{Weibull(a,b)} vari@'avel aleat@'oria, with @math{a,b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna a média de uma @math{Weibull(a,b)} vari@'avel aleat@'oria, com @math{a,b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} var_weibull (@var{a},@var{b})
-Returns the variance of a @math{Weibull(a,b)} vari@'avel aleat@'oria, with @math{a,b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna o variance of a @math{Weibull(a,b)} vari@'avel aleat@'oria, com @math{a,b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 @deffn {Fun@value{cedilha}@~ao} std_weibull (@var{a},@var{b})
-Returns the standard deviation of a @math{Weibull(a,b)} vari@'avel aleat@'oria, with @math{a,b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna o desvio padrão of a @math{Weibull(a,b)} vari@'avel aleat@'oria, com @math{a,b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 
 @deffn {Fun@value{cedilha}@~ao} skewness_weibull (@var{a},@var{b})
-Returns the skewness coefficient of a @math{Weibull(a,b)} vari@'avel aleat@'oria, with @math{a,b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna o coeficiente de assimetria of a @math{Weibull(a,b)} vari@'avel aleat@'oria, com @math{a,b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} kurtosis_weibull (@var{a},@var{b})
-Returns the kurtosis coefficient of a @math{Weibull(a,b)} vari@'avel aleat@'oria, with @math{a,b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna o coeficiente de curtose of a @math{Weibull(a,b)} vari@'avel aleat@'oria, com @math{a,b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} random_weibull (@var{a},@var{b})
 @deffnx {Fun@value{cedilha}@~ao} random_weibull (@var{a},@var{b},@var{n})
-Returns a @math{Weibull(a,b)} random variate, with @math{a,b>0}. Calling @code{random_weibull} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
+Retorna um @math{Weibull(a,b)} random variate, com @math{a,b>0}. Chamando @code{random_weibull} com um terceiro argumento @var{n}, uma amostra aleatória de tamanho @var{n} irá ser simulada.
 
 Only the inverse method is implemented. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
@@ -1608,9 +1626,9 @@ Only the inverse method is implemented. Para fazer uso dessa fun@,{c}@~ao, escre
 
 
 @deffn {Fun@value{cedilha}@~ao} pdf_rayleigh (@var{x},@var{b})
-Returns the value at @var{x} of the fun@,{c}@~ao densidade de probabilidade of a @math{Rayleigh(b)} vari@'avel aleat@'oria, with @math{b>0}.
+Retorna o valor em @var{x} da fun@,{c}@~ao densidade de probabilidade of a @math{Rayleigh(b)} vari@'avel aleat@'oria, com @math{b>0}.
 
-The @math{Rayleigh(b)} vari@'avel aleat@'oria is equivalent to the @math{Weibull(2,1/b)}, therefore when Maxima has not enough information to get the result, a nominal form based on the Weibull density is returned.
+The @math{Rayleigh(b)} vari@'avel aleat@'oria é equivalente a @math{Weibull(2,1/b)}, embora quando Maxima não tiver informação disponível para pegar o resultado, uma forma nominal baseada na Weibull density é retornada.
 
 @c ===beg===
 @c load (distrib)$
@@ -1632,9 +1650,9 @@ The @math{Rayleigh(b)} vari@'avel aleat@'oria is equivalent to the @math{Weibull
 
 
 @deffn {Fun@value{cedilha}@~ao} cdf_rayleigh (@var{x},@var{b})
-Returns the value at @var{x} of the fun@,{c}@~ao distribui@,{c}@~ao de probabilidade of a @math{Rayleigh(b)} vari@'avel aleat@'oria, with @math{b>0}.
+Retorna o valor em @var{x} da fun@,{c}@~ao distribui@,{c}@~ao de probabilidade of a @math{Rayleigh(b)} vari@'avel aleat@'oria, com @math{b>0}.
 
-The @math{Rayleigh(b)} vari@'avel aleat@'oria is equivalent to the @math{Weibull(2,1/b)}, therefore when Maxima has not enough information to get the result, a nominal form based on the Weibull distribution is returned.
+The @math{Rayleigh(b)} vari@'avel aleat@'oria é equivalente a @math{Weibull(2,1/b)}, embora quando Maxima não tiver informação disponível para pegar o resultado, uma forma nominal baseada na Weibull distribution é retornada.
 
 @c ===beg===
 @c load (distrib)$
@@ -1656,9 +1674,9 @@ The @math{Rayleigh(b)} vari@'avel aleat@'oria is equivalent to the @math{Weibull
 
 
 @deffn {Fun@value{cedilha}@~ao} quantile_rayleigh (@var{q},@var{b})
-Returns the @var{q}-quantile of a @math{Rayleigh(b)} vari@'avel aleat@'oria, with @math{b>0}; in other words, this is the inverse of @code{cdf_rayleigh}. Argument @var{q} must be an element of @math{[0,1]}.
+Retorna o @var{q}-quantile of a @math{Rayleigh(b)} vari@'avel aleat@'oria, com @math{b>0}; em outras palavras, essa função é a inversa da função @code{cdf_rayleigh}. O argumento @var{q} deve ser um elemento de @math{[0,1]}.
 
-The @math{Rayleigh(b)} vari@'avel aleat@'oria is equivalent to the @math{Weibull(2,1/b)}, therefore when Maxima has not enough information to get the result, a nominal form based on the Weibull quantile is returned.
+The @math{Rayleigh(b)} vari@'avel aleat@'oria é equivalente a @math{Weibull(2,1/b)}, embora quando Maxima não tiver informação disponível para pegar o resultado, uma forma nominal baseada na Weibull quantile é retornada.
 
 @c ===beg===
 @c load (distrib)$
@@ -1680,9 +1698,9 @@ The @math{Rayleigh(b)} vari@'avel aleat@'oria is equivalent to the @math{Weibull
 
 
 @deffn {Fun@value{cedilha}@~ao} mean_rayleigh (@var{b})
-Returns the mean of a @math{Rayleigh(b)} vari@'avel aleat@'oria, with @math{b>0}.
+Retorna a média de uma @math{Rayleigh(b)} vari@'avel aleat@'oria, com @math{b>0}.
 
-The @math{Rayleigh(b)} vari@'avel aleat@'oria is equivalent to the @math{Weibull(2,1/b)}, therefore when Maxima has not enough information to get the result, a nominal form based on the Weibull mean is returned.
+The @math{Rayleigh(b)} vari@'avel aleat@'oria é equivalente a @math{Weibull(2,1/b)}, embora quando Maxima não tiver informação disponível para pegar o resultado, uma forma nominal baseada na Weibull mean é retornada.
 
 @c ===beg===
 @c load (distrib)$
@@ -1704,9 +1722,9 @@ The @math{Rayleigh(b)} vari@'avel aleat@'oria is equivalent to the @math{Weibull
 
 
 @deffn {Fun@value{cedilha}@~ao} var_rayleigh (@var{b})
-Returns the variance of a @math{Rayleigh(b)} vari@'avel aleat@'oria, with @math{b>0}.
+Retorna o variance of a @math{Rayleigh(b)} vari@'avel aleat@'oria, com @math{b>0}.
 
-The @math{Rayleigh(b)} vari@'avel aleat@'oria is equivalent to the @math{Weibull(2,1/b)}, therefore when Maxima has not enough information to get the result, a nominal form based on the Weibull variance is returned.
+The @math{Rayleigh(b)} vari@'avel aleat@'oria é equivalente a @math{Weibull(2,1/b)}, embora quando Maxima não tiver informação disponível para pegar o resultado, uma forma nominal baseada na Weibull variance é retornada.
 
 @c ===beg===
 @c load (distrib)$
@@ -1731,9 +1749,9 @@ The @math{Rayleigh(b)} vari@'avel aleat@'oria is equivalent to the @math{Weibull
 
 
 @deffn {Fun@value{cedilha}@~ao} std_rayleigh (@var{b})
-Returns the standard deviation of a @math{Rayleigh(b)} vari@'avel aleat@'oria, with @math{b>0}.
+Retorna o desvio padrão of a @math{Rayleigh(b)} vari@'avel aleat@'oria, com @math{b>0}.
 
-The @math{Rayleigh(b)} vari@'avel aleat@'oria is equivalent to the @math{Weibull(2,1/b)}, therefore when Maxima has not enough information to get the result, a nominal form based on the Weibull standard deviation is returned.
+The @math{Rayleigh(b)} vari@'avel aleat@'oria é equivalente a @math{Weibull(2,1/b)}, embora quando Maxima não tiver informação disponível para pegar o resultado, uma forma nominal baseada na Weibull desvio padrão é retornada.
 
 @c ===beg===
 @c load (distrib)$
@@ -1757,9 +1775,10 @@ The @math{Rayleigh(b)} vari@'avel aleat@'oria is equivalent to the @math{Weibull
 
 
 @deffn {Fun@value{cedilha}@~ao} skewness_rayleigh (@var{b})
-Returns the skewness coefficient of a @math{Rayleigh(b)} vari@'avel aleat@'oria, with @math{b>0}.
+Retorna o coeficiente de assimetria of a @math{Rayleigh(b)} vari@'avel aleat@'oria, com @math{b>0}.
 
-The @math{Rayleigh(b)} vari@'avel aleat@'oria is equivalent to the @math{Weibull(2,1/b)}, therefore when Maxima has not enough information to get the result, a nominal form based on the Weibull skewness coefficient is returned.
+The @math{Rayleigh(b)} vari@'avel aleat@'oria é equivalente a @math{Weibull(2,1/b)}, embora quando Maxima não tiver informação disponível para pegar o resultado, uma forma nominal baseada na Weibull coeficiente de assimetria é
+retornada.
 
 @c ===beg===
 @c load (distrib)$
@@ -1786,9 +1805,10 @@ The @math{Rayleigh(b)} vari@'avel aleat@'oria is equivalent to the @math{Weibull
 
 
 @deffn {Fun@value{cedilha}@~ao} kurtosis_rayleigh (@var{b})
-Returns the kurtosis coefficient of a @math{Rayleigh(b)} vari@'avel aleat@'oria, with @math{b>0}.
+Retorna o coeficiente de curtose of a @math{Rayleigh(b)} vari@'avel aleat@'oria, com @math{b>0}.
 
-The @math{Rayleigh(b)} vari@'avel aleat@'oria is equivalent to the @math{Weibull(2,1/b)}, therefore when Maxima has not enough information to get the result, a nominal form based on the Weibull kurtosis coefficient is returned.
+The @math{Rayleigh(b)} vari@'avel aleat@'oria é equivalente a @math{Weibull(2,1/b)}, embora quando Maxima não tiver informação disponível para pegar o resultado, uma forma nominal baseada na Weibull coeficiente de curtose é
+retornada.
 
 @c ===beg===
 @c load (distrib)$
@@ -1816,7 +1836,7 @@ The @math{Rayleigh(b)} vari@'avel aleat@'oria is equivalent to the @math{Weibull
 
 @deffn {Fun@value{cedilha}@~ao} random_rayleigh (@var{b})
 @deffnx {Fun@value{cedilha}@~ao} random_rayleigh (@var{b},@var{n})
-Returns a @math{Rayleigh(b)} random variate, with @math{b>0}. Calling @code{random_rayleigh} with a second argument @var{n}, a random sample of size @var{n} will be simulated.
+Retorna um @math{Rayleigh(b)} random variate, com @math{b>0}. Chamando @code{random_rayleigh} com um segundo argumento @var{n}, uma amostra aleatória de tamanho @var{n} irá ser simulada.
 
 Only the inverse method is implemented. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
@@ -1824,49 +1844,50 @@ Only the inverse method is implemented. Para fazer uso dessa fun@,{c}@~ao, escre
 
 
 @deffn {Fun@value{cedilha}@~ao} pdf_laplace (@var{x},@var{a},@var{b})
-Returns the value at @var{x} of the fun@,{c}@~ao densidade de probabilidade of a @math{Laplace(a,b)} vari@'avel aleat@'oria, with @math{b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna o valor em @var{x} da fun@,{c}@~ao densidade de probabilidade of a @math{Laplace(a,b)} vari@'avel aleat@'oria, com @math{b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} cdf_laplace (@var{x},@var{a},@var{b})
-Returns the value at @var{x} of the fun@,{c}@~ao distribui@,{c}@~ao de probabilidade of a @math{Laplace(a,b)} vari@'avel aleat@'oria, with @math{b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna o valor em @var{x} da fun@,{c}@~ao distribui@,{c}@~ao de probabilidade of a @math{Laplace(a,b)} vari@'avel aleat@'oria, com @math{b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} quantile_laplace (@var{q},@var{a},@var{b})
-Returns the @var{q}-quantile of a @math{Laplace(a,b)} vari@'avel aleat@'oria, with @math{b>0}; in other words, this is the inverse of @code{cdf_laplace}. Argument @var{q} must be an element of @math{[0,1]}. Para fazer uso dessa
+Retorna o @var{q}-quantile of a @math{Laplace(a,b)} vari@'avel aleat@'oria, com @math{b>0}; em outras palavras, essa função é a inversa da função @code{cdf_laplace}. O argumento @var{q} deve ser um elemento de @math{[0,1]}. Para
+fazer uso dessa
 fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} mean_laplace (@var{a},@var{b})
-Returns the mean of a @math{Laplace(a,b)} vari@'avel aleat@'oria, with @math{b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna a média de uma @math{Laplace(a,b)} vari@'avel aleat@'oria, com @math{b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} var_laplace (@var{a},@var{b})
-Returns the variance of a @math{Laplace(a,b)} vari@'avel aleat@'oria, with @math{b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna o variance of a @math{Laplace(a,b)} vari@'avel aleat@'oria, com @math{b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} std_laplace (@var{a},@var{b})
-Returns the standard deviation of a @math{Laplace(a,b)} vari@'avel aleat@'oria, with @math{b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna o desvio padrão of a @math{Laplace(a,b)} vari@'avel aleat@'oria, com @math{b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} skewness_laplace (@var{a},@var{b})
-Returns the skewness coefficient of a @math{Laplace(a,b)} vari@'avel aleat@'oria, with @math{b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna o coeficiente de assimetria of a @math{Laplace(a,b)} vari@'avel aleat@'oria, com @math{b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} kurtosis_laplace (@var{a},@var{b})
-Returns the kurtosis coefficient of a @math{Laplace(a,b)} vari@'avel aleat@'oria, with @math{b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna o coeficiente de curtose of a @math{Laplace(a,b)} vari@'avel aleat@'oria, com @math{b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} random_laplace (@var{a},@var{b})
 @deffnx {Fun@value{cedilha}@~ao} random_laplace (@var{a},@var{b},@var{n})
-Returns a @math{Laplace(a,b)} random variate, with @math{b>0}. Calling @code{random_laplace} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
+Retorna um @math{Laplace(a,b)} random variate, com @math{b>0}. Chamando @code{random_laplace} com um terceiro argumento @var{n}, uma amostra aleatória de tamanho @var{n} irá ser simulada.
 
 Only the inverse method is implemented. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
@@ -1874,17 +1895,18 @@ Only the inverse method is implemented. Para fazer uso dessa fun@,{c}@~ao, escre
 
 
 @deffn {Fun@value{cedilha}@~ao} pdf_cauchy (@var{x},@var{a},@var{b})
-Returns the value at @var{x} of the fun@,{c}@~ao densidade de probabilidade of a @math{Cauchy(a,b)} vari@'avel aleat@'oria, with @math{b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna o valor em @var{x} da fun@,{c}@~ao densidade de probabilidade of a @math{Cauchy(a,b)} vari@'avel aleat@'oria, com @math{b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} cdf_cauchy (@var{x},@var{a},@var{b})
-Returns the value at @var{x} of the fun@,{c}@~ao distribui@,{c}@~ao de probabilidade of a @math{Cauchy(a,b)} vari@'avel aleat@'oria, with @math{b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna o valor em @var{x} da fun@,{c}@~ao distribui@,{c}@~ao de probabilidade of a @math{Cauchy(a,b)} vari@'avel aleat@'oria, com @math{b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} quantile_cauchy (@var{q},@var{a},@var{b})
-Returns the @var{q}-quantile of a @math{Cauchy(a,b)} vari@'avel aleat@'oria, with @math{b>0}; in other words, this is the inverse of @code{cdf_cauchy}. Argument @var{q} must be an element of @math{[0,1]}. Para fazer uso dessa
+Retorna o @var{q}-quantile of a @math{Cauchy(a,b)} vari@'avel aleat@'oria, com @math{b>0}; em outras palavras, essa função é a inversa da função @code{cdf_cauchy}. O argumento @var{q} deve ser um elemento de @math{[0,1]}. Para
+fazer uso dessa
 fun@,{c}@~ao,
 escreva primeiramente @code{load(distrib)}.
 @end deffn
@@ -1892,7 +1914,7 @@ escreva primeiramente @code{load(distrib)}.
 
 @deffn {Fun@value{cedilha}@~ao} random_cauchy (@var{a},@var{b})
 @deffnx {Fun@value{cedilha}@~ao} random_cauchy (@var{a},@var{b},@var{n})
-Returns a @math{Cauchy(a,b)} random variate, with @math{b>0}. Calling @code{random_cauchy} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
+Retorna um @math{Cauchy(a,b)} random variate, com @math{b>0}. Chamando @code{random_cauchy} com um terceiro argumento @var{n}, uma amostra aleatória de tamanho @var{n} irá ser simulada.
 
 Only the inverse method is implemented. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
@@ -1900,24 +1922,25 @@ Only the inverse method is implemented. Para fazer uso dessa fun@,{c}@~ao, escre
 
 
 @deffn {Fun@value{cedilha}@~ao} pdf_gumbel (@var{x},@var{a},@var{b})
-Returns the value at @var{x} of the fun@,{c}@~ao densidade de probabilidade of a @math{Gumbel(a,b)} vari@'avel aleat@'oria, with @math{b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna o valor em @var{x} da fun@,{c}@~ao densidade de probabilidade of a @math{Gumbel(a,b)} vari@'avel aleat@'oria, com @math{b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} cdf_gumbel (@var{x},@var{a},@var{b})
-Returns the value at @var{x} of the fun@,{c}@~ao distribui@,{c}@~ao de probabilidade of a @math{Gumbel(a,b)} vari@'avel aleat@'oria, with @math{b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna o valor em @var{x} da fun@,{c}@~ao distribui@,{c}@~ao de probabilidade of a @math{Gumbel(a,b)} vari@'avel aleat@'oria, com @math{b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} quantile_gumbel (@var{q},@var{a},@var{b})
-Returns the @var{q}-quantile of a @math{Gumbel(a,b)} vari@'avel aleat@'oria, with @math{b>0}; in other words, this is the inverse of @code{cdf_gumbel}. Argument @var{q} must be an element of @math{[0,1]}. Para fazer uso dessa
+Retorna o @var{q}-quantile of a @math{Gumbel(a,b)} vari@'avel aleat@'oria, com @math{b>0}; em outras palavras, essa função é a inversa da função @code{cdf_gumbel}. O argumento @var{q} deve ser um elemento de @math{[0,1]}. Para
+fazer uso dessa
 fun@,{c}@~ao,
 escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} mean_gumbel (@var{a},@var{b})
-Returns the mean of a @math{Gumbel(a,b)} vari@'avel aleat@'oria, with @math{b>0}.
+Retorna a média de uma @math{Gumbel(a,b)} vari@'avel aleat@'oria, com @math{b>0}.
 
 @c ===beg===
 @c load (distrib)$
@@ -1928,22 +1951,22 @@ Returns the mean of a @math{Gumbel(a,b)} vari@'avel aleat@'oria, with @math{b>0}
 (%i2) assume(b>0)$  mean_gumbel(a,b);
 (%o3)                     %gamma b + a
 @end example
-where symbol @code{%gamma} stands for the Euler-Mascheroni constant. See also @code{%gamma}.
+where symbol @code{%gamma} stands for the Euler-Mascheroni constant. Veja também @code{%gamma}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} var_gumbel (@var{a},@var{b})
-Returns the variance of a @math{Gumbel(a,b)} vari@'avel aleat@'oria, with @math{b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna o variance of a @math{Gumbel(a,b)} vari@'avel aleat@'oria, com @math{b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} std_gumbel (@var{a},@var{b})
-Returns the standard deviation of a @math{Gumbel(a,b)} vari@'avel aleat@'oria, with @math{b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna o desvio padrão of a @math{Gumbel(a,b)} vari@'avel aleat@'oria, com @math{b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} skewness_gumbel (@var{a},@var{b})
-Returns the skewness coefficient of a @math{Gumbel(a,b)} vari@'avel aleat@'oria, with @math{b>0}.
+Retorna o coeficiente de assimetria of a @math{Gumbel(a,b)} vari@'avel aleat@'oria, com @math{b>0}.
 
 @c ===beg===
 @c load (distrib)$
@@ -1965,13 +1988,13 @@ where @code{zeta} stands for the Riemann's zeta fun@,{c}@~ao.
 
 
 @deffn {Fun@value{cedilha}@~ao} kurtosis_gumbel (@var{a},@var{b})
-Returns the kurtosis coefficient of a @math{Gumbel(a,b)} vari@'avel aleat@'oria, with @math{b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna o coeficiente de curtose of a @math{Gumbel(a,b)} vari@'avel aleat@'oria, com @math{b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} random_gumbel (@var{a},@var{b})
 @deffnx {Fun@value{cedilha}@~ao} random_gumbel (@var{a},@var{b},@var{n})
-Returns a @math{Gumbel(a,b)} random variate, with @math{b>0}. Calling @code{random_gumbel} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
+Retorna um @math{Gumbel(a,b)} random variate, com @math{b>0}. Chamando @code{random_gumbel} com um terceiro argumento @var{n}, uma amostra aleatória de tamanho @var{n} irá ser simulada.
 
 Only the inverse method is implemented. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
@@ -1982,15 +2005,15 @@ Only the inverse method is implemented. Para fazer uso dessa fun@,{c}@~ao, escre
 
 
 @deffn {Fun@value{cedilha}@~ao} pdf_binomial (@var{x},@var{n},@var{p})
-Returns the value at @var{x} of the fun@,{c}@~ao de probabilidade of a @math{Binomial(n,p)} vari@'avel aleat@'oria, with @math{0<p<1} and @math{n} a positive integer. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente
+Retorna o valor em @var{x} da fun@,{c}@~ao de probabilidade of a @math{Binomial(n,p)} vari@'avel aleat@'oria, com @math{0<p<1} and @math{n} a positive integer. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente
 @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} cdf_binomial (@var{x},@var{n},@var{p})
-Returns the value at @var{x} of the fun@,{c}@~ao distribui@,{c}@~ao de probabilidade of a @math{Binomial(n,p)} vari@'avel aleat@'oria, with @math{0<p<1} and @math{n} a positive integer.
+Retorna o valor em @var{x} da fun@,{c}@~ao distribui@,{c}@~ao de probabilidade of a @math{Binomial(n,p)} vari@'avel aleat@'oria, com @math{0<p<1} and @math{n} a positive integer.
 
-Essa fun@,{c}@~ao is numerically computed if the global variable @code{numer} equals @code{true},  otherwise it returns a nominal expression.
+Essa fun@,{c}@~ao is numerically computed if the global variable @code{numer} for igual a @code{true},  de outra forma essa função retorna uma expressão nominal.
 
 @c ===beg===
 @c load (distrib)$
@@ -2010,76 +2033,77 @@ Essa fun@,{c}@~ao is numerically computed if the global variable @code{numer} eq
 
 
 @deffn {Fun@value{cedilha}@~ao} quantile_binomial (@var{q},@var{n},@var{p})
-Returns the @var{q}-quantile of a @math{Binomial(n,p)} vari@'avel aleat@'oria, with @math{0<p<1} and @math{n} a positive integer; in other words, this is the inverse of @code{cdf_binomial}. Argument @var{q} must be an element of
+Retorna o @var{q}-quantile of a @math{Binomial(n,p)} vari@'avel aleat@'oria, com @math{0<p<1} and @math{n} a positive integer; em outras palavras, essa função é a inversa da função @code{cdf_binomial}. O argumento @var{q} deve
+ser um elemento de
 @math{[0,1]}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} mean_binomial (@var{n},@var{p})
-Returns the mean of a @math{Binomial(n,p)} vari@'avel aleat@'oria, with @math{0<p<1} and @math{n} a positive integer. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna a média de uma @math{Binomial(n,p)} vari@'avel aleat@'oria, com @math{0<p<1} and @math{n} a positive integer. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} var_binomial (@var{n},@var{p})
-Returns the variance of a @math{Binomial(n,p)} vari@'avel aleat@'oria, with @math{0<p<1} and @math{n} a positive integer. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna o variance of a @math{Binomial(n,p)} vari@'avel aleat@'oria, com @math{0<p<1} and @math{n} a positive integer. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} std_binomial (@var{n},@var{p})
-Returns the standard deviation of a @math{Binomial(n,p)} vari@'avel aleat@'oria, with @math{0<p<1} and @math{n} a positive integer. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna o desvio padrão of a @math{Binomial(n,p)} vari@'avel aleat@'oria, com @math{0<p<1} and @math{n} a positive integer. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} skewness_binomial (@var{n},@var{p})
-Returns the skewness coefficient of a @math{Binomial(n,p)} vari@'avel aleat@'oria, with @math{0<p<1} and @math{n} a positive integer. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna o coeficiente de assimetria of a @math{Binomial(n,p)} vari@'avel aleat@'oria, com @math{0<p<1} and @math{n} a positive integer. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} kurtosis_binomial (@var{n},@var{p})
-Returns the kurtosis coefficient of a @math{Binomial(n,p)} vari@'avel aleat@'oria, with @math{0<p<1} and @math{n} a positive integer. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna o coeficiente de curtose of a @math{Binomial(n,p)} vari@'avel aleat@'oria, com @math{0<p<1} and @math{n} a positive integer. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@defvr {Option variable} random_binomial_algorithm
-Default value: @code{kachit}
+@defvr {Variável de opção} random_binomial_algorithm
+Valor padrão: @code{kachit}
 
-This is the selected algorithm for simulating random binomial variates. Implemented algorithms are @code{kachit}, @code{bernoulli} and @code{inverse}:
+Esse é o algorítmo selecionado para simular random binomial variates. Algorítmos implementados são @code{kachit}, @code{bernoulli} and @code{inverse}:
 @itemize @bullet
 
 @item
-@code{kachit}, based on algorithm described in Kachitvichyanukul, V. and Schmeiser, B.W. (1988) @var{Binomial Random Variate Generation}. Communications of the ACM, 31, Feb., 216.
+@code{kachit}, baseado no algorítmo descrito em Kachitvichyanukul, V. and Schmeiser, B.W. (1988) @var{Binomial Random Variate Generation}. Communications of the ACM, 31, Feb., 216.
 
 @item
 @code{bernoulli}, based on simulation of Bernoulli trials.
 
 @item
-@code{inverse}, based on the general inverse method.
+@code{inverse}, baseado no método inverso geral.
 
 @end itemize
 
-See also @code{random_binomial}.
+Veja também @code{random_binomial}.
 @end defvr
 
 
 @deffn {Fun@value{cedilha}@~ao} random_binomial (@var{n},@var{p})
 @deffnx {Fun@value{cedilha}@~ao} random_binomial (@var{n},@var{p},@var{m})
-Returns a @math{Binomial(n,p)} random variate, with @math{0<p<1} and @math{n} a positive integer. Calling @code{random_binomial} with a third argument @var{m}, a random sample of size @var{m} will be simulated.
+Retorna um @math{Binomial(n,p)} random variate, com @math{0<p<1} and @math{n} a positive integer. Chamando @code{random_binomial} com um terceiro argumento @var{m}, uma amostra aleatória de tamanho @var{m} irá ser simulada.
 
-There are three algorithms implemented for Essa fun@,{c}@~ao, the one to be used can be selected giving a certain value to the global variable @code{random_binomial_algorithm}, which defaults to @code{kachit}.
+Existem três algorítmos implementado for Essa fun@,{c}@~ao, se pode selecionar o algorítmo a ser usado fornecendo um certo valor à variável global @code{random_binomial_algorithm}, cujo valor padrão é @code{kachit}.
 
-See also @code{random_binomial_algorithm}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Veja também @code{random_binomial_algorithm}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} pdf_poisson (@var{x},@var{m})
-Returns the value at @var{x} of the fun@,{c}@~ao de probabilidade of a @math{Poisson(m)} vari@'avel aleat@'oria, with @math{m>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna o valor em @var{x} da fun@,{c}@~ao de probabilidade of a @math{Poisson(m)} vari@'avel aleat@'oria, com @math{m>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} cdf_poisson (@var{x},@var{m})
-Returns the value at @var{x} of the fun@,{c}@~ao distribui@,{c}@~ao de probabilidade of a @math{Poisson(m)} vari@'avel aleat@'oria, with @math{m>0}.
+Retorna o valor em @var{x} da fun@,{c}@~ao distribui@,{c}@~ao de probabilidade of a @math{Poisson(m)} vari@'avel aleat@'oria, com @math{m>0}.
 
-Essa fun@,{c}@~ao is numerically computed if the global variable @code{numer} equals @code{true},  otherwise it returns a nominal expression.
+Essa fun@,{c}@~ao is numerically computed if the global variable @code{numer} for igual a @code{true},  de outra forma essa função retorna uma expressão nominal.
 
 @c ===beg===
 @c load (distrib)$
@@ -2097,69 +2121,71 @@ Essa fun@,{c}@~ao is numerically computed if the global variable @code{numer} eq
 
 
 @deffn {Fun@value{cedilha}@~ao} quantile_poisson (@var{q},@var{m})
-Returns the @var{q}-quantile of a @math{Poisson(m)} vari@'avel aleat@'oria, with @math{m>0}; in other words, this is the inverse of @code{cdf_poisson}. Argument @var{q} must be an element of @math{[0,1]}. Para fazer uso dessa
+Retorna o @var{q}-quantile of a @math{Poisson(m)} vari@'avel aleat@'oria, com @math{m>0}; em outras palavras, essa função é a inversa da função @code{cdf_poisson}. O argumento @var{q} deve ser um elemento de @math{[0,1]}. Para
+fazer uso dessa
 fun@,{c}@~ao,
 escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} mean_poisson (@var{m})
-Returns the mean of a @math{Poisson(m)} vari@'avel aleat@'oria, with  @math{m>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna a média de uma @math{Poisson(m)} vari@'avel aleat@'oria, with  @math{m>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} var_poisson (@var{m})
-Returns the variance of a @math{Poisson(m)} vari@'avel aleat@'oria, with  @math{m>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna o variance of a @math{Poisson(m)} vari@'avel aleat@'oria, with  @math{m>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} std_poisson (@var{m})
-Returns the standard deviation of a @math{Poisson(m)} vari@'avel aleat@'oria, with @math{m>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna o desvio padrão of a @math{Poisson(m)} vari@'avel aleat@'oria, com @math{m>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} skewness_poisson (@var{m})
-Returns the skewness coefficient of a @math{Poisson(m)} vari@'avel aleat@'oria, with @math{m>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna o coeficiente de assimetria of a @math{Poisson(m)} vari@'avel aleat@'oria, com @math{m>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} kurtosis_poisson (@var{m})
-Returns the kurtosis coefficient of a Poisson vari@'avel aleat@'oria  @math{Poi(m)}, with @math{m>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna o coeficiente de curtose of a Poisson vari@'avel aleat@'oria  @math{Poi(m)}, com @math{m>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@defvr {Option variable} random_poisson_algorithm
-Default value: @code{ahrens_dieter}
+@defvr {Variável de opção} random_poisson_algorithm
+Valor padrão: @code{ahrens_dieter}
 
-This is the selected algorithm for simulating random Poisson variates. Implemented algorithms are @code{ahrens_dieter} and @code{inverse}:
+Esse é o algorítmo selecionado para simular random Poisson variates. Algorítmos implementados são @code{ahrens_dieter} and @code{inverse}:
 @itemize @bullet
 
 @item
-@code{ahrens_dieter}, based on algorithm described in Ahrens, J.H. and Dieter, U. (1982) @var{Computer Generation of Poisson Deviates From Modified Normal Distributions}. ACM Trans. Math. Software, 8, 2, June,163-179.
+@code{ahrens_dieter}, baseado no algorítmo descrito em Ahrens, J.H. and Dieter, U. (1982) @var{Computer Generation of Poisson Deviates From Modified Normal Distributions}. ACM Trans. Math. Software, 8, 2, June,163-179.
 
 @item
-@code{inverse}, based on the general inverse method.
+@code{inverse}, baseado no método inverso geral.
 
 @end itemize
 
-See also @code{random_poisson}.
+Veja também @code{random_poisson}.
 @end defvr
 
 
 @deffn {Fun@value{cedilha}@~ao} random_poisson (@var{m})
 @deffnx {Fun@value{cedilha}@~ao} random_poisson (@var{m},@var{n})
-Returns a @math{Poisson(m)} random variate, with @math{m>0}. Calling @code{random_poisson} with a second argument @var{n}, a random sample of size @var{n} will be simulated.
+Retorna um @math{Poisson(m)} random variate, com @math{m>0}. Chamando @code{random_poisson} com um segundo argumento @var{n}, uma amostra aleatória de tamanho @var{n} irá ser simulada.
 
-There are two algorithms implemented for Essa fun@,{c}@~ao, the one to be used can be selected giving a certain value to the global variable @code{random_poisson_algorithm}, which defaults to @code{ahrens_dieter}.
+Existem dois algorítmos implementado for Essa fun@,{c}@~ao, se pode selecionar o algorítmo a ser usado fornecendo um certo valor à variável global @code{random_poisson_algorithm}, cujo valor padrão é @code{ahrens_dieter}.
 
-See also @code{random_poisson_algorithm}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Veja também @code{random_poisson_algorithm}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} pdf_bernoulli (@var{x},@var{p})
-Returns the value at @var{x} of the fun@,{c}@~ao de probabilidade of a @math{Bernoulli(p)} vari@'avel aleat@'oria, with @math{0<p<1}.
+Retorna o valor em @var{x} da fun@,{c}@~ao de probabilidade of a @math{Bernoulli(p)} vari@'avel aleat@'oria, com @math{0<p<1}.
 
-The @math{Bernoulli(p)} vari@'avel aleat@'oria is equivalent to the @math{Binomial(1,p)}, therefore when Maxima has not enough information to get the result, a nominal form based on the binomial fun@,{c}@~ao de probabilidade is
+The @math{Bernoulli(p)} vari@'avel aleat@'oria é equivalente a @math{Binomial(1,p)}, embora quando Maxima não tiver informação disponível para pegar o resultado, uma forma nominal baseada na binomial fun@,{c}@~ao de probabilidade
+is
 returned.
 
 @c ===beg===
@@ -2178,22 +2204,23 @@ returned.
 
 
 @deffn {Fun@value{cedilha}@~ao} cdf_bernoulli (@var{x},@var{p})
-Returns the value at @var{x} of the fun@,{c}@~ao distribui@,{c}@~ao de probabilidade of a @math{Bernoulli(p)} vari@'avel aleat@'oria, with @math{0<p<1}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente
+Retorna o valor em @var{x} da fun@,{c}@~ao distribui@,{c}@~ao de probabilidade of a @math{Bernoulli(p)} vari@'avel aleat@'oria, com @math{0<p<1}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente
 @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} quantile_bernoulli (@var{q},@var{p})
-Returns the @var{q}-quantile of a @math{Bernoulli(p)} vari@'avel aleat@'oria, with @math{0<p<1}; in other words, this is the inverse of @code{cdf_bernoulli}. Argument @var{q} must be an element of @math{[0,1]}. Para fazer uso
+Retorna o @var{q}-quantile of a @math{Bernoulli(p)} vari@'avel aleat@'oria, com @math{0<p<1}; em outras palavras, essa função é a inversa da função @code{cdf_bernoulli}. O argumento @var{q} deve ser um elemento de @math{[0,1]}.
+Para fazer uso
 dessa
 fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} mean_bernoulli (@var{p})
-Returns the mean of a @math{Bernoulli(p)} vari@'avel aleat@'oria, with @math{0<p<1}.
+Retorna a média de uma @math{Bernoulli(p)} vari@'avel aleat@'oria, com @math{0<p<1}.
 
-The @math{Bernoulli(p)} vari@'avel aleat@'oria is equivalent to the @math{Binomial(1,p)}, therefore when Maxima has not enough information to get the result, a nominal form based on the binomial mean is returned.
+The @math{Bernoulli(p)} vari@'avel aleat@'oria é equivalente a @math{Binomial(1,p)}, embora quando Maxima não tiver informação disponível para pegar o resultado, uma forma nominal baseada na binomial mean é retornada.
 
 @c ===beg===
 @c load (distrib)$
@@ -2211,9 +2238,9 @@ The @math{Bernoulli(p)} vari@'avel aleat@'oria is equivalent to the @math{Binomi
 
 
 @deffn {Fun@value{cedilha}@~ao} var_bernoulli (@var{p})
-Returns the variance of a @math{Bernoulli(p)} vari@'avel aleat@'oria, with @math{0<p<1}.
+Retorna o variance of a @math{Bernoulli(p)} vari@'avel aleat@'oria, com @math{0<p<1}.
 
-The @math{Bernoulli(p)} vari@'avel aleat@'oria is equivalent to the @math{Binomial(1,p)}, therefore when Maxima has not enough information to get the result, a nominal form based on the binomial variance is returned.
+The @math{Bernoulli(p)} vari@'avel aleat@'oria é equivalente a @math{Binomial(1,p)}, embora quando Maxima não tiver informação disponível para pegar o resultado, uma forma nominal baseada na binomial variance é retornada.
 
 @c ===beg===
 @c load (distrib)$
@@ -2231,9 +2258,9 @@ The @math{Bernoulli(p)} vari@'avel aleat@'oria is equivalent to the @math{Binomi
 
 
 @deffn {Fun@value{cedilha}@~ao} std_bernoulli (@var{p})
-Returns the standard deviation of a @math{Bernoulli(p)} vari@'avel aleat@'oria, with @math{0<p<1}.
+Retorna o desvio padrão of a @math{Bernoulli(p)} vari@'avel aleat@'oria, com @math{0<p<1}.
 
-The @math{Bernoulli(p)} vari@'avel aleat@'oria is equivalent to the @math{Binomial(1,p)}, therefore when Maxima has not enough information to get the result, a nominal form based on the binomial standard deviation is returned.
+The @math{Bernoulli(p)} vari@'avel aleat@'oria é equivalente a @math{Binomial(1,p)}, embora quando Maxima não tiver informação disponível para pegar o resultado, uma forma nominal baseada na binomial desvio padrão é retornada.
 
 @c ===beg===
 @c load (distrib)$
@@ -2251,9 +2278,10 @@ The @math{Bernoulli(p)} vari@'avel aleat@'oria is equivalent to the @math{Binomi
 
 
 @deffn {Fun@value{cedilha}@~ao} skewness_bernoulli (@var{p})
-Returns the skewness coefficient of a @math{Bernoulli(p)} vari@'avel aleat@'oria, with @math{0<p<1}.
+Retorna o coeficiente de assimetria of a @math{Bernoulli(p)} vari@'avel aleat@'oria, com @math{0<p<1}.
 
-The @math{Bernoulli(p)} vari@'avel aleat@'oria is equivalent to the @math{Binomial(1,p)}, therefore when Maxima has not enough information to get the result, a nominal form based on the binomial skewness coefficient is returned.
+The @math{Bernoulli(p)} vari@'avel aleat@'oria é equivalente a @math{Binomial(1,p)}, embora quando Maxima não tiver informação disponível para pegar o resultado, uma forma nominal baseada na binomial coeficiente de assimetria é
+retornada.
 
 @c ===beg===
 @c load (distrib)$
@@ -2273,9 +2301,10 @@ The @math{Bernoulli(p)} vari@'avel aleat@'oria is equivalent to the @math{Binomi
 
 
 @deffn {Fun@value{cedilha}@~ao} kurtosis_bernoulli (@var{p})
-Returns the kurtosis coefficient of a @math{Bernoulli(p)} vari@'avel aleat@'oria, with @math{0<p<1}.
+Retorna o coeficiente de curtose of a @math{Bernoulli(p)} vari@'avel aleat@'oria, com @math{0<p<1}.
 
-The @math{Bernoulli(p)} vari@'avel aleat@'oria is equivalent to the @math{Binomial(1,p)}, therefore when Maxima has not enough information to get the result, a nominal form based on the binomial kurtosis coefficient is returned.
+The @math{Bernoulli(p)} vari@'avel aleat@'oria é equivalente a @math{Binomial(1,p)}, embora quando Maxima não tiver informação disponível para pegar o resultado, uma forma nominal baseada na binomial coeficiente de curtose é
+retornada.
 
 @c ===beg===
 @c load (distrib)$
@@ -2296,233 +2325,237 @@ The @math{Bernoulli(p)} vari@'avel aleat@'oria is equivalent to the @math{Binomi
 
 @deffn {Fun@value{cedilha}@~ao} random_bernoulli (@var{p})
 @deffnx {Fun@value{cedilha}@~ao} random_bernoulli (@var{p},@var{n})
-Returns a @math{Bernoulli(p)} random variate, with @math{0<p<1}. Calling @code{random_bernoulli} with a second argument @var{n}, a random sample of size @var{n} will be simulated.
+Retorna um @math{Bernoulli(p)} random variate, com @math{0<p<1}. Chamando @code{random_bernoulli} com um segundo argumento @var{n}, uma amostra aleatória de tamanho @var{n} irá ser simulada.
 
 This is a direct application of the @code{random} built-in fun@,{c}@~ao do Maxima.
 
-See also @code{random}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Veja também @code{random}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} pdf_geometric (@var{x},@var{p})
-Returns the value at @var{x} of the fun@,{c}@~ao de probabilidade of a @math{Geometric(p)} vari@'avel aleat@'oria, with @math{0<p<1}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna o valor em @var{x} da fun@,{c}@~ao de probabilidade of a @math{Geometric(p)} vari@'avel aleat@'oria, com @math{0<p<1}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} cdf_geometric (@var{x},@var{p})
-Returns the value at @var{x} of the fun@,{c}@~ao distribui@,{c}@~ao de probabilidade of a @math{Geometric(p)} vari@'avel aleat@'oria, with @math{0<p<1}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente
+Retorna o valor em @var{x} da fun@,{c}@~ao distribui@,{c}@~ao de probabilidade of a @math{Geometric(p)} vari@'avel aleat@'oria, com @math{0<p<1}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente
 @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} quantile_geometric (@var{q},@var{p})
-Returns the @var{q}-quantile of a @math{Geometric(p)} vari@'avel aleat@'oria, with @math{0<p<1}; in other words, this is the inverse of @code{cdf_geometric}. Argument @var{q} must be an element of @math{[0,1]}. Para fazer uso
+Retorna o @var{q}-quantile of a @math{Geometric(p)} vari@'avel aleat@'oria, com @math{0<p<1}; em outras palavras, essa função é a inversa da função @code{cdf_geometric}. O argumento @var{q} deve ser um elemento de @math{[0,1]}.
+Para fazer uso
 dessa
 fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} mean_geometric (@var{p})
-Returns the mean of a @math{Geometric(p)} vari@'avel aleat@'oria, with @math{0<p<1}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna a média de uma @math{Geometric(p)} vari@'avel aleat@'oria, com @math{0<p<1}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} var_geometric (@var{p})
-Returns the variance of a @math{Geometric(p)} vari@'avel aleat@'oria, with @math{0<p<1}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna o variance of a @math{Geometric(p)} vari@'avel aleat@'oria, com @math{0<p<1}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} std_geometric (@var{p})
-Returns the standard deviation of a @math{Geometric(p)} vari@'avel aleat@'oria, with @math{0<p<1}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna o desvio padrão of a @math{Geometric(p)} vari@'avel aleat@'oria, com @math{0<p<1}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} skewness_geometric (@var{p})
-Returns the skewness coefficient of a @math{Geometric(p)} vari@'avel aleat@'oria, with @math{0<p<1}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna o coeficiente de assimetria of a @math{Geometric(p)} vari@'avel aleat@'oria, com @math{0<p<1}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} kurtosis_geometric (@var{p})
-Returns the kurtosis coefficient of a geometric vari@'avel aleat@'oria  @math{Geo(p)}, with @math{0<p<1}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna o coeficiente de curtose of a geometric vari@'avel aleat@'oria  @math{Geo(p)}, com @math{0<p<1}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@defvr {Option variable} random_geometric_algorithm
-Default value: @code{bernoulli}
+@defvr {Variável de opção} random_geometric_algorithm
+Valor padrão: @code{bernoulli}
 
-This is the selected algorithm for simulating random geometric variates. Implemented algorithms are @code{bernoulli}, @code{devroye} and @code{inverse}:
+Esse é o algorítmo selecionado para simular random geometric variates. Algorítmos implementados são @code{bernoulli}, @code{devroye} and @code{inverse}:
 @itemize @bullet
 
 @item
 @code{bernoulli}, based on simulation of Bernoulli trials.
 
 @item
-@code{devroye}, based on algorithm described in Devroye, L. (1986) @var{Non-Uniform Random Variate Generation.} Springer Verlag, p. 480.
+@code{devroye}, baseado no algorítmo descrito em Devroye, L. (1986) @var{Non-Uniform Random Variate Generation.} Springer Verlag, p. 480.
 
 @item
-@code{inverse}, based on the general inverse method.
+@code{inverse}, baseado no método inverso geral.
 
 @end itemize
 
-See also @code{random_geometric}.
+Veja também @code{random_geometric}.
 @end defvr
 
 
 @deffn {Fun@value{cedilha}@~ao} random_geometric (@var{p})
 @deffnx {Fun@value{cedilha}@~ao} random_geometric (@var{p},@var{n})
-Returns a @math{Geometric(p)} random variate, with @math{0<p<1}. Calling @code{random_geometric} with a second argument @var{n}, a random sample of size @var{n} will be simulated.
+Retorna um @math{Geometric(p)} random variate, com @math{0<p<1}. Chamando @code{random_geometric} com um segundo argumento @var{n}, uma amostra aleatória de tamanho @var{n} irá ser simulada.
 
-There are three algorithms implemented for Essa fun@,{c}@~ao, the one to be used can be selected giving a certain value to the global variable @code{random_geometric_algorithm}, which defaults to @code{bernoulli}.
+Existem três algorítmos implementado for Essa fun@,{c}@~ao, se pode selecionar o algorítmo a ser usado fornecendo um certo valor à variável global @code{random_geometric_algorithm}, cujo valor padrão é @code{bernoulli}.
 
-See also @code{random_geometric_algorithm}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Veja também @code{random_geometric_algorithm}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} pdf_discrete_uniform (@var{x},@var{n})
-Returns the value at @var{x} of the fun@,{c}@~ao de probabilidade of a @math{Discrete Uniform(n)} vari@'avel aleat@'oria, with @math{n} a strictly positive integer. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente
+Retorna o valor em @var{x} da fun@,{c}@~ao de probabilidade of a @math{Discrete Uniform(n)} vari@'avel aleat@'oria, com @math{n} a strictly positive integer. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente
 @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} cdf_discrete_uniform (@var{x},@var{n})
-Returns the value at @var{x} of the fun@,{c}@~ao distribui@,{c}@~ao de probabilidade of a @math{Discrete Uniform(n)} vari@'avel aleat@'oria, with @math{n} a strictly positive integer. Para fazer uso dessa fun@,{c}@~ao, escreva
+Retorna o valor em @var{x} da fun@,{c}@~ao distribui@,{c}@~ao de probabilidade of a @math{Discrete Uniform(n)} vari@'avel aleat@'oria, com @math{n} a strictly positive integer. Para fazer uso dessa fun@,{c}@~ao, escreva
 primeiramente
 @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} quantile_discrete_uniform (@var{q},@var{n})
-Returns the @var{q}-quantile of a @math{Discrete Uniform(n)} vari@'avel aleat@'oria, with @math{n} a strictly positive integer; in other words, this is the inverse of @code{cdf_discrete_uniform}. Argument @var{q} must be an
+Retorna o @var{q}-quantile of a @math{Discrete Uniform(n)} vari@'avel aleat@'oria, com @math{n} a strictly positive integer; em outras palavras, essa função é a inversa da função @code{cdf_discrete_uniform}. O argumento @var{q}
+must be an
 element
 of @math{[0,1]}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} mean_discrete_uniform (@var{n})
-Returns the mean of a @math{Discrete Uniform(n)} vari@'avel aleat@'oria, with @math{n} a strictly positive integer. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna a média de uma @math{Discrete Uniform(n)} vari@'avel aleat@'oria, com @math{n} a strictly positive integer. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} var_discrete_uniform (@var{n})
-Returns the variance of a @math{Discrete Uniform(n)} vari@'avel aleat@'oria, with @math{n} a strictly positive integer. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna o variance of a @math{Discrete Uniform(n)} vari@'avel aleat@'oria, com @math{n} a strictly positive integer. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} std_discrete_uniform (@var{n})
-Returns the standard deviation of a @math{Discrete Uniform(n)} vari@'avel aleat@'oria, with @math{n} a strictly positive integer. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna o desvio padrão of a @math{Discrete Uniform(n)} vari@'avel aleat@'oria, com @math{n} a strictly positive integer. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} skewness_discrete_uniform (@var{n})
-Returns the skewness coefficient of a @math{Discrete Uniform(n)} vari@'avel aleat@'oria, with @math{n} a strictly positive integer. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna o coeficiente de assimetria of a @math{Discrete Uniform(n)} vari@'avel aleat@'oria, com @math{n} a strictly positive integer. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} kurtosis_discrete_uniform (@var{n})
-Returns the kurtosis coefficient of a @math{Discrete Uniform(n)} vari@'avel aleat@'oria, with @math{n} a strictly positive integer. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna o coeficiente de curtose of a @math{Discrete Uniform(n)} vari@'avel aleat@'oria, com @math{n} a strictly positive integer. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} random_discrete_uniform (@var{n})
 @deffnx {Fun@value{cedilha}@~ao} random_discrete_uniform (@var{n},@var{m})
-Returns a @math{Discrete Uniform(n)} random variate, with @math{n} a strictly positive integer. Calling @code{random_discrete_uniform} with a second argument @var{m}, a random sample of size @var{m} will be simulated.
+Retorna um @math{Discrete Uniform(n)} random variate, com @math{n} a strictly positive integer. Chamando @code{random_discrete_uniform} com um segundo argumento @var{m}, uma amostra aleatória de tamanho @var{m} irá ser simulada.
 
 This is a direct application of the @code{random} built-in fun@,{c}@~ao do Maxima.
 
-See also @code{random}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Veja também @code{random}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} pdf_hypergeometric (@var{x},@var{n1},@var{n2},@var{n})
-Returns the value at @var{x} of the fun@,{c}@~ao de probabilidade of a @math{Hypergeometric(n1,n2,n)} vari@'avel aleat@'oria, with @var{n1}, @var{n2} and @var{n} non negative integers and @math{n<=n1+n2}. Para fazer uso dessa
+Retorna o valor em @var{x} da fun@,{c}@~ao de probabilidade of a @math{Hypergeometric(n1,n2,n)} vari@'avel aleat@'oria, com @var{n1}, @var{n2} and @var{n} non negative integers and @math{n<=n1+n2}. Para fazer uso dessa
 fun@,{c}@~ao,
 escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} cdf_hypergeometric (@var{x},@var{n1},@var{n2},@var{n})
-Returns the value at @var{x} of the fun@,{c}@~ao distribui@,{c}@~ao de probabilidade of a @math{Hypergeometric(n1,n2,n)} vari@'avel aleat@'oria, with @var{n1}, @var{n2} and @var{n} non negative integers and @math{n<=n1+n2}. Para
+Retorna o valor em @var{x} da fun@,{c}@~ao distribui@,{c}@~ao de probabilidade of a @math{Hypergeometric(n1,n2,n)} vari@'avel aleat@'oria, com @var{n1}, @var{n2} and @var{n} non negative integers and @math{n<=n1+n2}. Para
 fazer uso dessa
 fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} quantile_hypergeometric (@var{q},@var{n1},@var{n2},@var{n})
-Returns the @var{q}-quantile of a @math{Hypergeometric(n1,n2,n)} vari@'avel aleat@'oria, with @var{n1}, @var{n2} and @var{n} non negative integers and @math{n<=n1+n2}; in other words, this is the inverse of
+Retorna o @var{q}-quantile of a @math{Hypergeometric(n1,n2,n)} vari@'avel aleat@'oria, com @var{n1}, @var{n2} and @var{n} non negative integers and @math{n<=n1+n2}; em outras palavras, essa função é a inversa da função
 @code{cdf_hypergeometric}.
-Argument @var{q} must be an element of @math{[0,1]}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Argument @var{q} deve ser um elemento de @math{[0,1]}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} mean_hypergeometric (@var{n1},@var{n2},@var{n})
-Returns the mean of a discreta uniform vari@'avel aleat@'oria @math{Hyp(n1,n2,n)}, with @var{n1}, @var{n2} and @var{n} non negative integers and @math{n<=n1+n2}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente
+Retorna a média de uma discreta uniform vari@'avel aleat@'oria @math{Hyp(n1,n2,n)}, com @var{n1}, @var{n2} and @var{n} non negative integers and @math{n<=n1+n2}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente
 @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} var_hypergeometric (@var{n1},@var{n2},@var{n})
-Returns the variance of a hypergeometric  vari@'avel aleat@'oria @math{Hyp(n1,n2,n)}, with @var{n1}, @var{n2} and @var{n} non negative integers and @math{n<=n1+n2}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente
+Retorna o variance of a hypergeometric  vari@'avel aleat@'oria @math{Hyp(n1,n2,n)}, com @var{n1}, @var{n2} and @var{n} non negative integers and @math{n<=n1+n2}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente
 @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} std_hypergeometric (@var{n1},@var{n2},@var{n})
-Returns the standard deviation of a @math{Hypergeometric(n1,n2,n)} vari@'avel aleat@'oria, with @var{n1}, @var{n2} and @var{n} non negative integers and @math{n<=n1+n2}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente
+Retorna o desvio padrão of a @math{Hypergeometric(n1,n2,n)} vari@'avel aleat@'oria, com @var{n1}, @var{n2} and @var{n} non negative integers and @math{n<=n1+n2}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente
 @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} skewness_hypergeometric (@var{n1},@var{n2},@var{n})
-Returns the skewness coefficient of a @math{Hypergeometric(n1,n2,n)} vari@'avel aleat@'oria, with @var{n1}, @var{n2} and @var{n} non negative integers and @math{n<=n1+n2}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente
+Retorna o coeficiente de assimetria of a @math{Hypergeometric(n1,n2,n)} vari@'avel aleat@'oria, com @var{n1}, @var{n2} and @var{n} non negative integers and @math{n<=n1+n2}. Para fazer uso dessa fun@,{c}@~ao, escreva
+primeiramente
 @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} kurtosis_hypergeometric (@var{n1},@var{n2},@var{n})
-Returns the kurtosis coefficient of a @math{Hypergeometric(n1,n2,n)} vari@'avel aleat@'oria, with @var{n1}, @var{n2} and @var{n} non negative integers and @math{n<=n1+n2}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente
+Retorna o coeficiente de curtose of a @math{Hypergeometric(n1,n2,n)} vari@'avel aleat@'oria, com @var{n1}, @var{n2} and @var{n} non negative integers and @math{n<=n1+n2}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente
 @code{load(distrib)}.
 @end deffn
 
-@defvr {Option variable} random_hypergeometric_algorithm
-Default value: @code{kachit}
+@defvr {Variável de opção} random_hypergeometric_algorithm
+Valor padrão: @code{kachit}
 
-This is the selected algorithm for simulating random hypergeometric variates. Implemented algorithms are @code{kachit} and @code{inverse}:
+Esse é o algorítmo selecionado para simular random hypergeometric variates. Algorítmos implementados são @code{kachit} and @code{inverse}:
 @itemize @bullet
 
 @item
-@code{kachit}, based on algorithm described in Kachitvichyanukul, V., Schmeiser, B.W. (1985) @var{Computer generation of hypergeometric random variates.} Journal of Statistical Computation and Simulation 22, 127-145.
+@code{kachit}, baseado no algorítmo descrito em Kachitvichyanukul, V., Schmeiser, B.W. (1985) @var{Computer generation of hypergeometric random variates.} Journal of Statistical Computation and Simulation 22, 127-145.
 
 @item
-@code{inverse}, based on the general inverse method.
+@code{inverse}, baseado no método inverso geral.
 
 @end itemize
 
-See also @code{random_hypergeometric}.
+Veja também @code{random_hypergeometric}.
 @end defvr
 
 
 @deffn {Fun@value{cedilha}@~ao} random_hypergeometric (@var{n1},@var{n2},@var{n})
 @deffnx {Fun@value{cedilha}@~ao} random_hypergeometric (@var{n1},@var{n2},@var{n},@var{m})
-Returns a @math{Hypergeometric(n1,n2,n)} random variate, with @var{n1}, @var{n2} and @var{n} non negative integers and @math{n<=n1+n2}. Calling @code{random_hypergeometric} with a fourth argument @var{m}, a random sample of size
-@var{m} will be simulated.
+Retorna um @math{Hypergeometric(n1,n2,n)} random variate, com @var{n1}, @var{n2} and @var{n} non negative integers and @math{n<=n1+n2}. Chamando @code{random_hypergeometric} with a fourth argument @var{m}, uma amostra aleatória
+de tamanho
+@var{m} irá ser simulada.
 
-There are two algorithms implemented for Essa fun@,{c}@~ao, the one to be used can be selected giving a certain value to the global variable @code{random_hypergeometric_algorithm}, which defaults to @code{kachit}.
+Existem dois algorítmos implementado for Essa fun@,{c}@~ao, se pode selecionar o algorítmo a ser usado fornecendo um certo valor à variável global @code{random_hypergeometric_algorithm}, cujo valor padrão é @code{kachit}.
 
-See also @code{random_hypergeometric_algorithm}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Veja também @code{random_hypergeometric_algorithm}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} pdf_negative_binomial (@var{x},@var{n},@var{p})
-Returns the value at @var{x} of the fun@,{c}@~ao de probabilidade of a @math{Negative Binomial(n,p)} vari@'avel aleat@'oria, with @math{0<p<1} and @math{n} a positive integer. Para fazer uso dessa fun@,{c}@~ao, escreva
+Retorna o valor em @var{x} da fun@,{c}@~ao de probabilidade of a @math{Negative Binomial(n,p)} vari@'avel aleat@'oria, com @math{0<p<1} and @math{n} a positive integer. Para fazer uso dessa fun@,{c}@~ao, escreva
 primeiramente
 @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} cdf_negative_binomial (@var{x},@var{n},@var{p})
-Returns the value at @var{x} of the fun@,{c}@~ao distribui@,{c}@~ao de probabilidade of a @math{Negative Binomial(n,p)} vari@'avel aleat@'oria, with @math{0<p<1} and @math{n} a positive integer.
+Retorna o valor em @var{x} da fun@,{c}@~ao distribui@,{c}@~ao de probabilidade of a @math{Negative Binomial(n,p)} vari@'avel aleat@'oria, com @math{0<p<1} and @math{n} a positive integer.
 
-Essa fun@,{c}@~ao is numerically computed if the global variable @code{numer} equals @code{true},  otherwise it returns a nominal expression.
+Essa fun@,{c}@~ao is numerically computed if the global variable @code{numer} for igual a @code{true},  de outra forma essa função retorna uma expressão nominal.
 
 @c ===beg===
 @c load (distrib)$
@@ -2542,63 +2575,65 @@ Essa fun@,{c}@~ao is numerically computed if the global variable @code{numer} eq
 
 
 @deffn {Fun@value{cedilha}@~ao} quantile_negative_binomial (@var{q},@var{n},@var{p})
-Returns the @var{q}-quantile of a @math{Negative Binomial(n,p)} vari@'avel aleat@'oria, with @math{0<p<1} and @math{n} a positive integer; in other words, this is the inverse of @code{cdf_negative_binomial}. Argument @var{q} must
+Retorna o @var{q}-quantile of a @math{Negative Binomial(n,p)} vari@'avel aleat@'oria, com @math{0<p<1} and @math{n} a positive integer; em outras palavras, essa função é a inversa da função @code{cdf_negative_binomial}. O
+argumento @var{q} must
 be
 an element of @math{[0,1]}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} mean_negative_binomial (@var{n},@var{p})
-Returns the mean of a @math{Negative Binomial(n,p)} vari@'avel aleat@'oria, with @math{0<p<1} and @math{n} a positive integer. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna a média de uma @math{Negative Binomial(n,p)} vari@'avel aleat@'oria, com @math{0<p<1} and @math{n} a positive integer. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} var_negative_binomial (@var{n},@var{p})
-Returns the variance of a @math{Negative Binomial(n,p)} vari@'avel aleat@'oria, with @math{0<p<1} and @math{n} a positive integer. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna o variance of a @math{Negative Binomial(n,p)} vari@'avel aleat@'oria, com @math{0<p<1} and @math{n} a positive integer. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} std_negative_binomial (@var{n},@var{p})
-Returns the standard deviation of a @math{Negative Binomial(n,p)} vari@'avel aleat@'oria, with @math{0<p<1} and @math{n} a positive integer. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna o desvio padrão of a @math{Negative Binomial(n,p)} vari@'avel aleat@'oria, com @math{0<p<1} and @math{n} a positive integer. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} skewness_negative_binomial (@var{n},@var{p})
-Returns the skewness coefficient of a @math{Negative Binomial(n,p)} vari@'avel aleat@'oria, with @math{0<p<1} and @math{n} a positive integer. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna o coeficiente de assimetria of a @math{Negative Binomial(n,p)} vari@'avel aleat@'oria, com @math{0<p<1} and @math{n} a positive integer. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@value{cedilha}@~ao} kurtosis_negative_binomial (@var{n},@var{p})
-Returns the kurtosis coefficient of a @math{Negative Binomial(n,p)} vari@'avel aleat@'oria, with @math{0<p<1} and @math{n} a positive integer. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Retorna o coeficiente de curtose of a @math{Negative Binomial(n,p)} vari@'avel aleat@'oria, com @math{0<p<1} and @math{n} a positive integer. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@defvr {Option variable} random_negative_binomial_algorithm
-Default value: @code{bernoulli}
+@defvr {Variável de opção} random_negative_binomial_algorithm
+Valor padrão: @code{bernoulli}
 
-This is the selected algorithm for simulating random negative binomial variates. Implemented algorithms are @code{devroye}, @code{bernoulli} and @code{inverse}:
+Esse é o algorítmo selecionado para simular random negative binomial variates. Algorítmos implementados são @code{devroye}, @code{bernoulli} and @code{inverse}:
 @itemize @bullet
 
 @item
-@code{devroye}, based on algorithm described in Devroye, L. (1986) @var{Non-Uniform Random Variate Generation}. Springer Verlag, p. 480.
+@code{devroye}, baseado no algorítmo descrito em Devroye, L. (1986) @var{Non-Uniform Random Variate Generation}. Springer Verlag, p. 480.
 
 @item
 @code{bernoulli}, based on simulation of Bernoulli trials.
 
 @item
-@code{inverse}, based on the general inverse method.
+@code{inverse}, baseado no método inverso geral.
 
 @end itemize
 
-See also @code{random_negative_binomial}.
+Veja também @code{random_negative_binomial}.
 @end defvr
 
 
 @deffn {Fun@value{cedilha}@~ao} random_negative_binomial (@var{n},@var{p})
 @deffnx {Fun@value{cedilha}@~ao} random_negative_binomial (@var{n},@var{p},@var{m})
-Returns a @math{Negative Binomial(n,p)} random variate, with @math{0<p<1} and @math{n} a positive integer. Calling @code{random_negative_binomial} with a third argument @var{m}, a random sample of size @var{m} will be simulated.
+Retorna um @math{Negative Binomial(n,p)} random variate, com @math{0<p<1} and @math{n} a positive integer. Chamando @code{random_negative_binomial} com um terceiro argumento @var{m}, uma amostra aleatória de tamanho @var{m} irá
+ser simulada.
 
-There are three algorithms implemented for Essa fun@,{c}@~ao, the one to be used can be selected giving a certain value to the global variable @code{random_negative_binomial_algorithm}, which defaults to @code{bernoulli}.
+Existem três algorítmos implementados para essa fun@,{c}@~ao, se pode selecionar o algorítmo a ser usado fornecendo um certo valor à variável global @code{random_negative_binomial_algorithm}, cujo valor padrão é @code{bernoulli}.
 
-See also @code{random_negative_binomial_algorithm}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
+Veja também @code{random_negative_binomial_algorithm}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
