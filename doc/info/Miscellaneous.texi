@@ -38,19 +38,31 @@ the @code{alias}, @code{ordergreat}, @code{orderless} functions or by declaring 
 
 
 @defvr {Declaration} alphabetic
-@code{declare (@var{char}, alphabetic)} adds @code{char} to Maxima's alphabet,
-which initially contains
-the letters @code{A} through @code{Z}, @code{a} through @code{z}, @code{%} and @code{_}.
-@var{char} is specified as a string of length 1, e.g., @code{"~"}.
+@code{alphabetic} is a declaration type recognized by @code{declare}.
+The expression @code{declare(@var{s}, alphabetic)} tells Maxima to recognize
+as alphabetic all of the characters in @var{s}, which must be a string.
 
+See also @ref{Identifiers}.
+
+Example:
+
+@c ===beg===
+@c xx\~yy\`\@ : 1729;
+@c declare ("~`@", alphabetic);
+@c xx~yy`@ + @yy`xx + `xx@@yy~;
+@c listofvars (%);
+@c ===end===
 @example
-(%i1) declare ("~", alphabetic);
-(%o1)                         done
-(%i2) foo~bar;  
-(%o2)                        foo~bar
-(%i3) atom (foo~bar);
-(%o3)                         true
+(%i1) xx\~yy\`\@@ : 1729;
+(%o1)                         1729
+(%i2) declare ("~`@@", alphabetic);
+(%o2)                         done
+(%i3) xx~yy`@@ + @@yy`xx + `xx@@@@yy~;
+(%o3)               `xx@@@@yy~ + @@yy`xx + 1729
+(%i4) listofvars (%);
+(%o4)                  [@@yy`xx, `xx@@@@yy~]
 @end example
+
 
 @end defvr
 

@@ -162,8 +162,8 @@ A numeral may be the first character of an identifier
 if it is preceded by a backslash.
 Numerals which are the second or later characters need not be preceded by a backslash.
 
-A special character may be declared alphabetic by the @code{declare} function.
-If so declared, it need not be preceded by a backslash in an identifier.
+Characters may be declared alphabetic by the @code{declare} function.
+If so declared, they need not be preceded by a backslash in an identifier.
 The alphabetic characters are initially 
 @code{A} through @code{Z}, @code{a} through @code{z}, @code{%}, and @code{_}.
 
@@ -767,7 +767,7 @@ Tells Maxima to consider @var{a_i} a "main variable" (@code{mainvar}).
 (main variables) > (other variables) > (scalar variables) > (constants) > (numbers)
 
 @item @code{alphabetic}
-Tells Maxima to recognize @var{a_i} as an alphabetic character.
+Tells Maxima to recognize all characters in @var{a_i} (which must be a string) as alphabetic characters.
 
 @item @code{feature}
 Tells Maxima to recognize @var{a_i} as the name of a feature.
@@ -930,17 +930,20 @@ aa unbound variable
 
 @code{alphabetic} declaration.
 @c ===beg===
-@c xx\~yy : 1729;
-@c declare ("~", alphabetic);
-@c xx~yy + yy~xx + ~xx~~yy~;
+@c xx\~yy\`\@ : 1729;
+@c declare ("~`@", alphabetic);
+@c xx~yy`@ + @yy`xx + `xx@@yy~;
+@c listofvars (%);
 @c ===end===
 @example
-(%i1) xx\~yy : 1729;
+(%i1) xx\~yy\`\@@ : 1729;
 (%o1)                         1729
-(%i2) declare ("~", alphabetic);
+(%i2) declare ("~`@@", alphabetic);
 (%o2)                         done
-(%i3) xx~yy + yy~xx + ~xx~~yy~;
-(%o3)                ~xx~~yy~ + yy~xx + 1729
+(%i3) xx~yy`@@ + @@yy`xx + `xx@@@@yy~;
+(%o3)               `xx@@@@yy~ + @@yy`xx + 1729
+(%i4) listofvars (%);
+(%o4)                  [@@yy`xx, `xx@@@@yy~]
 @end example
 
 @code{feature} declaration.
