@@ -279,6 +279,79 @@ column vectors.
 
 @end deffn
 
+@deffn {Function} eigens_by_jacobi (@var{A})
+@deffnx {Function} eigens_by_jacobi (@var{A}, @var{field_type})
+
+Computes the eigenvalues and eigenvectors of @var{A} by the method of Jacobi rotations.
+@var{A} must be a symmetric matrix (but it need not be positive definite nor positive semidefinite).
+@var{field_type} indicates the computational field, either @code{floatfield} or @code{bigfloatfield}.
+If @var{field_type} is not specified, it defaults to @code{floatfield}.
+
+The elements of @var{A} must be numbers or expressions which evaluate to numbers
+via @code{float} or @code{bfloat} (depending on @var{field_type}).
+
+Examples:
+@c ===beg===
+@c load (linearalgebra);
+@c S : matrix ([1/sqrt(2), 1/sqrt(2)], [- 1/sqrt(2), 1/sqrt(2)]);
+@c L : matrix ([sqrt(3), 0], [0, sqrt(5)]);
+@c M : S . L . transpose (S);
+@c eigens_by_jacobi (M);
+@c float ([[sqrt(3), sqrt(5)], S]);
+@c eigens_by_jacobi (M, bigfloatfield);
+@c ===end===
+
+@example
+(%i1) load (linearalgebra);
+(%o1) /home/robert/tmp/maxima-head/maxima/share/linearalgebra/li\
+nearalgebra.mac
+(%i2) S : matrix ([1/sqrt(2), 1/sqrt(2)], [- 1/sqrt(2), 1/sqrt(2)]);
+                     [     1         1    ]
+                     [  -------   ------- ]
+                     [  sqrt(2)   sqrt(2) ]
+(%o2)                [                    ]
+                     [      1        1    ]
+                     [ - -------  ------- ]
+                     [   sqrt(2)  sqrt(2) ]
+(%i3) L : matrix ([sqrt(3), 0], [0, sqrt(5)]);
+                      [ sqrt(3)     0    ]
+(%o3)                 [                  ]
+                      [    0     sqrt(5) ]
+(%i4) M : S . L . transpose (S);
+            [ sqrt(5)   sqrt(3)  sqrt(5)   sqrt(3) ]
+            [ ------- + -------  ------- - ------- ]
+            [    2         2        2         2    ]
+(%o4)       [                                      ]
+            [ sqrt(5)   sqrt(3)  sqrt(5)   sqrt(3) ]
+            [ ------- - -------  ------- + ------- ]
+            [    2         2        2         2    ]
+(%i5) eigens_by_jacobi (M);
+The largest percent change was 0.1454972243679
+The largest percent change was 0.0
+number of sweeps: 2
+number of rotations: 1
+(%o5) [[1.732050807568877, 2.23606797749979], 
+                        [  0.70710678118655   0.70710678118655 ]
+                        [                                      ]]
+                        [ - 0.70710678118655  0.70710678118655 ]
+(%i6) float ([[sqrt(3), sqrt(5)], S]);
+(%o6) [[1.732050807568877, 2.23606797749979], 
+                        [  0.70710678118655   0.70710678118655 ]
+                        [                                      ]]
+                        [ - 0.70710678118655  0.70710678118655 ]
+(%i7) eigens_by_jacobi (M, bigfloatfield);
+The largest percent change was 1.454972243679028b-1
+The largest percent change was 0.0b0
+number of sweeps: 2
+number of rotations: 1
+(%o7) [[1.732050807568877b0, 2.23606797749979b0], 
+                [  7.071067811865475b-1   7.071067811865475b-1 ]
+                [                                              ]]
+                [ - 7.071067811865475b-1  7.071067811865475b-1 ]
+@end example
+
+@end deffn
+
 @deffn {Function} get_lu_factors (@var{x}) 
 
 When @code{@var{x} = lu_factor (@var{A})}, then @code{get_lu_factors} returns a list of the 
