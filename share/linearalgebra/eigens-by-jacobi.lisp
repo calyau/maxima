@@ -111,11 +111,11 @@
 	  (setq change (fmax change (if (fgreat (fabs x) eps) (fabs (fdiv (fsub (aref d i) x) x)) zero)))
 	  (setf (aref d i) x))
 	
-	(inform '$debug '|$linearalgebra| "The largest percent change was ~:M~%" change)
+	(inform '$debug '$linearalgebra "The largest percent change was ~:M~%" change)
 	(setq continue (fgreat change eps)))
 	
-      (inform '$verbose '|$linearalgebra| "number of sweeps: ~:M~%" sweeps)
-      (inform '$verbose '|$linearalgebra| "number of rotations: ~:M~%" rotations)
+      (inform '$verbose '$linearalgebra "number of sweeps: ~:M~%" sweeps)
+      (inform '$verbose '$linearalgebra "number of rotations: ~:M~%" rotations)
       
       (setq mm nil)
       (loop for i from 0 to n do
