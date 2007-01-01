@@ -590,7 +590,7 @@ See also @code{random_student_t_algorithm}. To make use of this function, write 
 @deffn {Function} pdf_chi2 (@var{x},@var{n})
 Returns the value at @var{x} of the density function of a Chi-square random variable @math{Chi^2(n)}, with @math{n>0}.
 
-The @math{Chi^2(n)} random variable is equivalent to the @math{Gamma(n/2,2)}, therefore when Maxima has not enough information to get the result, a nominal form based on the gamma density is returned.
+The @math{Chi^2(n)} random variable is equivalent to the @math{Gamma(n/2,2)}, therefore when Maxima has not enough information to get the result, a noun form based on the gamma density is returned.
 
 @c ===beg===
 @c load (distrib)$
@@ -659,7 +659,7 @@ This function has no closed form and it is numerically computed if the global va
 @deffn {Function} mean_chi2 (@var{n})
 Returns the mean of a Chi-square random variable @math{Chi^2(n)}, with @math{n>0}.
 
-The @math{Chi^2(n)} random variable is equivalent to the @math{Gamma(n/2,2)}, therefore when Maxima has not enough information to get the result, a nominal form based on the gamma mean is returned.
+The @math{Chi^2(n)} random variable is equivalent to the @math{Gamma(n/2,2)}, therefore when Maxima has not enough information to get the result, a noun form based on the gamma mean is returned.
 
 @c ===beg===
 @c load (distrib)$
@@ -681,7 +681,7 @@ The @math{Chi^2(n)} random variable is equivalent to the @math{Gamma(n/2,2)}, th
 @deffn {Function} var_chi2 (@var{n})
 Returns the variance of a Chi-square random variable @math{Chi^2(n)}, with @math{n>0}.
 
-The @math{Chi^2(n)} random variable is equivalent to the @math{Gamma(n/2,2)}, therefore when Maxima has not enough information to get the result, a nominal form based on the gamma variance is returned.
+The @math{Chi^2(n)} random variable is equivalent to the @math{Gamma(n/2,2)}, therefore when Maxima has not enough information to get the result, a noun form based on the gamma variance is returned.
 
 @c ===beg===
 @c load (distrib)$
@@ -703,7 +703,7 @@ The @math{Chi^2(n)} random variable is equivalent to the @math{Gamma(n/2,2)}, th
 @deffn {Function} std_chi2 (@var{n})
 Returns the standard deviation of a Chi-square random variable @math{Chi^2(n)}, with @math{n>0}.
 
-The @math{Chi^2(n)} random variable is equivalent to the @math{Gamma(n/2,2)}, therefore when Maxima has not enough information to get the result, a nominal form based on the gamma standard deviation is returned.
+The @math{Chi^2(n)} random variable is equivalent to the @math{Gamma(n/2,2)}, therefore when Maxima has not enough information to get the result, a noun form based on the gamma standard deviation is returned.
 
 @c ===beg===
 @c load (distrib)$
@@ -725,7 +725,7 @@ The @math{Chi^2(n)} random variable is equivalent to the @math{Gamma(n/2,2)}, th
 @deffn {Function} skewness_chi2 (@var{n})
 Returns the skewness coefficient of a Chi-square random variable @math{Chi^2(n)}, with @math{n>0}.
 
-The @math{Chi^2(n)} random variable is equivalent to the @math{Gamma(n/2,2)}, therefore when Maxima has not enough information to get the result, a nominal form based on the gamma skewness coefficient is returned.
+The @math{Chi^2(n)} random variable is equivalent to the @math{Gamma(n/2,2)}, therefore when Maxima has not enough information to get the result, a noun form based on the gamma skewness coefficient is returned.
 
 @c ===beg===
 @c load (distrib)$
@@ -749,7 +749,7 @@ The @math{Chi^2(n)} random variable is equivalent to the @math{Gamma(n/2,2)}, th
 @deffn {Function} kurtosis_chi2 (@var{n})
 Returns the kurtosis coefficient of a Chi-square random variable @math{Chi^2(n)}, with @math{n>0}.
 
-The @math{Chi^2(n)} random variable is equivalent to the @math{Gamma(n/2,2)}, therefore when Maxima has not enough information to get the result, a nominal form based on the gamma kurtosis coefficient is returned.
+The @math{Chi^2(n)} random variable is equivalent to the @math{Gamma(n/2,2)}, therefore when Maxima has not enough information to get the result, a noun form based on the gamma kurtosis coefficient is returned.
 
 @c ===beg===
 @c load (distrib)$
@@ -919,7 +919,7 @@ See also @code{random_f_algorithm}. To make use of this function, write first @c
 @deffn {Function} pdf_exp (@var{x},@var{m})
 Returns the value at @var{x} of the density function of an @math{Exponential(m)} random variable, with @math{m>0}.
 
-The @math{Exponential(m)} random variable is equivalent to the @math{Weibull(1,1/m)}, therefore when Maxima has not enough information to get the result, a nominal form based on the Weibull density is returned.
+The @math{Exponential(m)} random variable is equivalent to the @math{Weibull(1,1/m)}, therefore when Maxima has not enough information to get the result, a noun form based on the Weibull density is returned.
 
 @c ===beg===
 @c load (distrib)$
@@ -942,7 +942,7 @@ The @math{Exponential(m)} random variable is equivalent to the @math{Weibull(1,1
 @deffn {Function} cdf_exp (@var{x},@var{m})
 Returns the value at @var{x} of the distribution function of an @math{Exponential(m)} random variable, with @math{m>0}.
 
-The @math{Exponential(m)} random variable is equivalent to the @math{Weibull(1,1/m)}, therefore when Maxima has not enough information to get the result, a nominal form based on the Weibull distribution is returned.
+The @math{Exponential(m)} random variable is equivalent to the @math{Weibull(1,1/m)}, therefore when Maxima has not enough information to get the result, a noun form based on the Weibull distribution is returned.
 
 @c ===beg===
 @c load (distrib)$
@@ -965,7 +965,7 @@ The @math{Exponential(m)} random variable is equivalent to the @math{Weibull(1,1
 @deffn {Function} quantile_exp (@var{q},@var{m})
 Returns the @var{q}-quantile of an @math{Exponential(m)} random variable, with @math{m>0}; in other words, this is the inverse of @code{cdf_exp}. Argument @var{q} must be an element of @math{[0,1]}.
 
-The @math{Exponential(m)} random variable is equivalent to the @math{Weibull(1,1/m)}, therefore when Maxima has not enough information to get the result, a nominal form based on the Weibull quantile is returned.
+The @math{Exponential(m)} random variable is equivalent to the @math{Weibull(1,1/m)}, therefore when Maxima has not enough information to get the result, a noun form based on the Weibull quantile is returned.
 
 @c ===beg===
 @c load (distrib)$
@@ -987,7 +987,7 @@ The @math{Exponential(m)} random variable is equivalent to the @math{Weibull(1,1
 @deffn {Function} mean_exp (@var{m})
 Returns the mean of an @math{Exponential(m)} random variable, with @math{m>0}.
 
-The @math{Exponential(m)} random variable is equivalent to the @math{Weibull(1,1/m)}, therefore when Maxima has not enough information to get the result, a nominal form based on the Weibull mean is returned.
+The @math{Exponential(m)} random variable is equivalent to the @math{Weibull(1,1/m)}, therefore when Maxima has not enough information to get the result, a noun form based on the Weibull mean is returned.
 
 @c ===beg===
 @c load (distrib)$
@@ -1011,7 +1011,7 @@ The @math{Exponential(m)} random variable is equivalent to the @math{Weibull(1,1
 @deffn {Function} var_exp (@var{m})
 Returns the variance of an @math{Exponential(m)} random variable, with @math{m>0}.
 
-The @math{Exponential(m)} random variable is equivalent to the @math{Weibull(1,1/m)}, therefore when Maxima has not enough information to get the result, a nominal form based on the Weibull variance is returned.
+The @math{Exponential(m)} random variable is equivalent to the @math{Weibull(1,1/m)}, therefore when Maxima has not enough information to get the result, a noun form based on the Weibull variance is returned.
 
 @c ===beg===
 @c load (distrib)$
@@ -1036,7 +1036,7 @@ The @math{Exponential(m)} random variable is equivalent to the @math{Weibull(1,1
 @deffn {Function} std_exp (@var{m})
 Returns the standard deviation of an @math{Exponential(m)} random variable, with @math{m>0}.
 
-The @math{Exponential(m)} random variable is equivalent to the @math{Weibull(1,1/m)}, therefore when Maxima has not enough information to get the result, a nominal form based on the Weibull standard deviation is returned.
+The @math{Exponential(m)} random variable is equivalent to the @math{Weibull(1,1/m)}, therefore when Maxima has not enough information to get the result, a noun form based on the Weibull standard deviation is returned.
 
 @c ===beg===
 @c load (distrib)$
@@ -1060,7 +1060,7 @@ The @math{Exponential(m)} random variable is equivalent to the @math{Weibull(1,1
 @deffn {Function} skewness_exp (@var{m})
 Returns the skewness coefficient of an @math{Exponential(m)} random variable, with @math{m>0}.
 
-The @math{Exponential(m)} random variable is equivalent to the @math{Weibull(1,1/m)}, therefore when Maxima has not enough information to get the result, a nominal form based on the Weibull skewness coefficient is returned.
+The @math{Exponential(m)} random variable is equivalent to the @math{Weibull(1,1/m)}, therefore when Maxima has not enough information to get the result, a noun form based on the Weibull skewness coefficient is returned.
 
 @c ===beg===
 @c load (distrib)$
@@ -1082,7 +1082,7 @@ The @math{Exponential(m)} random variable is equivalent to the @math{Weibull(1,1
 @deffn {Function} kurtosis_exp (@var{m})
 Returns the kurtosis coefficient of an @math{Exponential(m)} random variable, with @math{m>0}.
 
-The @math{Exponential(m)} random variable is equivalent to the @math{Weibull(1,1/m)}, therefore when Maxima has not enough information to get the result, a nominal form based on the Weibull kurtosis coefficient is returned.
+The @math{Exponential(m)} random variable is equivalent to the @math{Weibull(1,1/m)}, therefore when Maxima has not enough information to get the result, a noun form based on the Weibull kurtosis coefficient is returned.
 
 @c ===beg===
 @c load (distrib)$
@@ -1567,7 +1567,7 @@ Only the inverse method is implemented. To make use of this function, write firs
 @deffn {Function} pdf_rayleigh (@var{x},@var{b})
 Returns the value at @var{x} of the density function of a @math{Rayleigh(b)} random variable, with @math{b>0}.
 
-The @math{Rayleigh(b)} random variable is equivalent to the @math{Weibull(2,1/b)}, therefore when Maxima has not enough information to get the result, a nominal form based on the Weibull density is returned.
+The @math{Rayleigh(b)} random variable is equivalent to the @math{Weibull(2,1/b)}, therefore when Maxima has not enough information to get the result, a noun form based on the Weibull density is returned.
 
 @c ===beg===
 @c load (distrib)$
@@ -1591,7 +1591,7 @@ The @math{Rayleigh(b)} random variable is equivalent to the @math{Weibull(2,1/b)
 @deffn {Function} cdf_rayleigh (@var{x},@var{b})
 Returns the value at @var{x} of the distribution function of a @math{Rayleigh(b)} random variable, with @math{b>0}.
 
-The @math{Rayleigh(b)} random variable is equivalent to the @math{Weibull(2,1/b)}, therefore when Maxima has not enough information to get the result, a nominal form based on the Weibull distribution is returned.
+The @math{Rayleigh(b)} random variable is equivalent to the @math{Weibull(2,1/b)}, therefore when Maxima has not enough information to get the result, a noun form based on the Weibull distribution is returned.
 
 @c ===beg===
 @c load (distrib)$
@@ -1615,7 +1615,7 @@ The @math{Rayleigh(b)} random variable is equivalent to the @math{Weibull(2,1/b)
 @deffn {Function} quantile_rayleigh (@var{q},@var{b})
 Returns the @var{q}-quantile of a @math{Rayleigh(b)} random variable, with @math{b>0}; in other words, this is the inverse of @code{cdf_rayleigh}. Argument @var{q} must be an element of @math{[0,1]}.
 
-The @math{Rayleigh(b)} random variable is equivalent to the @math{Weibull(2,1/b)}, therefore when Maxima has not enough information to get the result, a nominal form based on the Weibull quantile is returned.
+The @math{Rayleigh(b)} random variable is equivalent to the @math{Weibull(2,1/b)}, therefore when Maxima has not enough information to get the result, a noun form based on the Weibull quantile is returned.
 
 @c ===beg===
 @c load (distrib)$
@@ -1639,7 +1639,7 @@ The @math{Rayleigh(b)} random variable is equivalent to the @math{Weibull(2,1/b)
 @deffn {Function} mean_rayleigh (@var{b})
 Returns the mean of a @math{Rayleigh(b)} random variable, with @math{b>0}.
 
-The @math{Rayleigh(b)} random variable is equivalent to the @math{Weibull(2,1/b)}, therefore when Maxima has not enough information to get the result, a nominal form based on the Weibull mean is returned.
+The @math{Rayleigh(b)} random variable is equivalent to the @math{Weibull(2,1/b)}, therefore when Maxima has not enough information to get the result, a noun form based on the Weibull mean is returned.
 
 @c ===beg===
 @c load (distrib)$
@@ -1663,7 +1663,7 @@ The @math{Rayleigh(b)} random variable is equivalent to the @math{Weibull(2,1/b)
 @deffn {Function} var_rayleigh (@var{b})
 Returns the variance of a @math{Rayleigh(b)} random variable, with @math{b>0}.
 
-The @math{Rayleigh(b)} random variable is equivalent to the @math{Weibull(2,1/b)}, therefore when Maxima has not enough information to get the result, a nominal form based on the Weibull variance is returned.
+The @math{Rayleigh(b)} random variable is equivalent to the @math{Weibull(2,1/b)}, therefore when Maxima has not enough information to get the result, a noun form based on the Weibull variance is returned.
 
 @c ===beg===
 @c load (distrib)$
@@ -1690,7 +1690,7 @@ The @math{Rayleigh(b)} random variable is equivalent to the @math{Weibull(2,1/b)
 @deffn {Function} std_rayleigh (@var{b})
 Returns the standard deviation of a @math{Rayleigh(b)} random variable, with @math{b>0}.
 
-The @math{Rayleigh(b)} random variable is equivalent to the @math{Weibull(2,1/b)}, therefore when Maxima has not enough information to get the result, a nominal form based on the Weibull standard deviation is returned.
+The @math{Rayleigh(b)} random variable is equivalent to the @math{Weibull(2,1/b)}, therefore when Maxima has not enough information to get the result, a noun form based on the Weibull standard deviation is returned.
 
 @c ===beg===
 @c load (distrib)$
@@ -1716,7 +1716,7 @@ The @math{Rayleigh(b)} random variable is equivalent to the @math{Weibull(2,1/b)
 @deffn {Function} skewness_rayleigh (@var{b})
 Returns the skewness coefficient of a @math{Rayleigh(b)} random variable, with @math{b>0}.
 
-The @math{Rayleigh(b)} random variable is equivalent to the @math{Weibull(2,1/b)}, therefore when Maxima has not enough information to get the result, a nominal form based on the Weibull skewness coefficient is returned.
+The @math{Rayleigh(b)} random variable is equivalent to the @math{Weibull(2,1/b)}, therefore when Maxima has not enough information to get the result, a noun form based on the Weibull skewness coefficient is returned.
 
 @c ===beg===
 @c load (distrib)$
@@ -1745,7 +1745,7 @@ The @math{Rayleigh(b)} random variable is equivalent to the @math{Weibull(2,1/b)
 @deffn {Function} kurtosis_rayleigh (@var{b})
 Returns the kurtosis coefficient of a @math{Rayleigh(b)} random variable, with @math{b>0}.
 
-The @math{Rayleigh(b)} random variable is equivalent to the @math{Weibull(2,1/b)}, therefore when Maxima has not enough information to get the result, a nominal form based on the Weibull kurtosis coefficient is returned.
+The @math{Rayleigh(b)} random variable is equivalent to the @math{Weibull(2,1/b)}, therefore when Maxima has not enough information to get the result, a noun form based on the Weibull kurtosis coefficient is returned.
 
 @c ===beg===
 @c load (distrib)$
@@ -2107,7 +2107,7 @@ See also @code{random_poisson_algorithm}. To make use of this function, write fi
 @deffn {Function} pdf_bernoulli (@var{x},@var{p})
 Returns the value at @var{x} of the probability function of a @math{Bernoulli(p)} random variable, with @math{0<p<1}.
 
-The @math{Bernoulli(p)} random variable is equivalent to the @math{Binomial(1,p)}, therefore when Maxima has not enough information to get the result, a nominal form based on the binomial probability function is returned.
+The @math{Bernoulli(p)} random variable is equivalent to the @math{Binomial(1,p)}, therefore when Maxima has not enough information to get the result, a noun form based on the binomial probability function is returned.
 
 @c ===beg===
 @c load (distrib)$
@@ -2137,7 +2137,7 @@ Returns the @var{q}-quantile of a @math{Bernoulli(p)} random variable, with @mat
 @deffn {Function} mean_bernoulli (@var{p})
 Returns the mean of a @math{Bernoulli(p)} random variable, with @math{0<p<1}.
 
-The @math{Bernoulli(p)} random variable is equivalent to the @math{Binomial(1,p)}, therefore when Maxima has not enough information to get the result, a nominal form based on the binomial mean is returned.
+The @math{Bernoulli(p)} random variable is equivalent to the @math{Binomial(1,p)}, therefore when Maxima has not enough information to get the result, a noun form based on the binomial mean is returned.
 
 @c ===beg===
 @c load (distrib)$
@@ -2157,7 +2157,7 @@ The @math{Bernoulli(p)} random variable is equivalent to the @math{Binomial(1,p)
 @deffn {Function} var_bernoulli (@var{p})
 Returns the variance of a @math{Bernoulli(p)} random variable, with @math{0<p<1}.
 
-The @math{Bernoulli(p)} random variable is equivalent to the @math{Binomial(1,p)}, therefore when Maxima has not enough information to get the result, a nominal form based on the binomial variance is returned.
+The @math{Bernoulli(p)} random variable is equivalent to the @math{Binomial(1,p)}, therefore when Maxima has not enough information to get the result, a noun form based on the binomial variance is returned.
 
 @c ===beg===
 @c load (distrib)$
@@ -2177,7 +2177,7 @@ The @math{Bernoulli(p)} random variable is equivalent to the @math{Binomial(1,p)
 @deffn {Function} std_bernoulli (@var{p})
 Returns the standard deviation of a @math{Bernoulli(p)} random variable, with @math{0<p<1}.
 
-The @math{Bernoulli(p)} random variable is equivalent to the @math{Binomial(1,p)}, therefore when Maxima has not enough information to get the result, a nominal form based on the binomial standard deviation is returned.
+The @math{Bernoulli(p)} random variable is equivalent to the @math{Binomial(1,p)}, therefore when Maxima has not enough information to get the result, a noun form based on the binomial standard deviation is returned.
 
 @c ===beg===
 @c load (distrib)$
@@ -2197,7 +2197,7 @@ The @math{Bernoulli(p)} random variable is equivalent to the @math{Binomial(1,p)
 @deffn {Function} skewness_bernoulli (@var{p})
 Returns the skewness coefficient of a @math{Bernoulli(p)} random variable, with @math{0<p<1}.
 
-The @math{Bernoulli(p)} random variable is equivalent to the @math{Binomial(1,p)}, therefore when Maxima has not enough information to get the result, a nominal form based on the binomial skewness coefficient is returned.
+The @math{Bernoulli(p)} random variable is equivalent to the @math{Binomial(1,p)}, therefore when Maxima has not enough information to get the result, a noun form based on the binomial skewness coefficient is returned.
 
 @c ===beg===
 @c load (distrib)$
@@ -2219,7 +2219,7 @@ The @math{Bernoulli(p)} random variable is equivalent to the @math{Binomial(1,p)
 @deffn {Function} kurtosis_bernoulli (@var{p})
 Returns the kurtosis coefficient of a @math{Bernoulli(p)} random variable, with @math{0<p<1}.
 
-The @math{Bernoulli(p)} random variable is equivalent to the @math{Binomial(1,p)}, therefore when Maxima has not enough information to get the result, a nominal form based on the binomial kurtosis coefficient is returned.
+The @math{Bernoulli(p)} random variable is equivalent to the @math{Binomial(1,p)}, therefore when Maxima has not enough information to get the result, a noun form based on the binomial kurtosis coefficient is returned.
 
 @c ===beg===
 @c load (distrib)$
