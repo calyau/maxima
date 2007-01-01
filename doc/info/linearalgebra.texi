@@ -437,7 +437,7 @@ Three cases:
 
 Scan the sub-matrix from left to right then top to bottom,
 and return the index of the first entry that satisfies the 
-predicate @var{f}. If no matrix entry satisfies @var{f}, return false.
+predicate @var{f}. If no matrix entry satisfies @var{f}, return @code{false}.
 
 (2) @code{@var{rel} = 'max} and @var{f} real-valued:
 
@@ -901,7 +901,7 @@ Return a @var{n} by @var{n} matrix whose @var{i}-th row is
 @deffnx {Function}  zerofor (@var{M}, @var{fld})
 
 Return a zero  matrix that has the same shape as the matrix
-@var{M}.  Every entry of the zero matrix matrix is the
+@var{M}.  Every entry of the zero matrix is the
 additive identity of the field @var{fld}; the default for
 @var{fld} is @var{generalring}.
 
