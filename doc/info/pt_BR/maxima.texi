@@ -218,7 +218,7 @@ Pacotes Adicionais
 * interpol::                    Pacote de interpola@,{c}@~ao.
 * lbfgs::                       L-BFGS pacote de minimiza@,{c}@~ao n@~ao limitada.
 * lindstedt::                   Pacote Lindstedt.
-* linearalgebra::               Fun@,{c}@~oes de algebra linear.
+* linearalgebra::               Fun@,{c}@~oes de @'algebra linear.
 * lsquares::                    M@'etodo dos m@'inimos quadrados.
 * makeOrders::                  Expoentes de polin@^omios.
 * mnewton::                     M@'etodo de Newton.
@@ -524,8 +524,8 @@ lindstedt
 
 linearalgebra
 
-* Introduction to linearalgebra::
-* Definitions for linearalgebra::
+* Introdu@value{cedilha}@~ao a linearalgebra::
+* Defini@value{cedilha}@~oes para linearalgebra::
 
 lsquares
 

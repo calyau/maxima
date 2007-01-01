@@ -1,5 +1,5 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
-@c /Expressions.texi/1.50/Sat Nov 25 04:02:28 2006/-ko/
+@c /Expressions.texi/1.51/Mon Jan  1 07:27:09 2007/-ko/
 @menu
 * Introdu@value{cedilha}@~ao a Express@~oes::  
 * Atribui@value{cedilha}@~ao::                  
@@ -164,8 +164,8 @@ Um numeral pode ser o primeiro caractere de um identificador
 se esse numeral for precedido por uma contra-barra.
 Numerais que forem o segundo ou o @'ultimo caractere n@~ao precisam ser precedidos por uma contra barra.
 
-Um caractere especial pode ser declarado alfab@'etico atrav@'es da fun@,{c}@~ao @code{declare}.
-Se isso ocorrer, esse caractere n@~ao precisa ser precedido por uma contra barra em um identificador.
+Caracteres podem ser declarados para serem alfab@'eticos por meio da fun@,{c}@~ao @code{declare}.
+Se ent@~ao declarados alfab@'eticos, eles n@~ao precisam serem precedidos de uma contrabarra em um identificador.
 Os caracteres alfab@'eticos v@~ao inicialmente 
 de @code{A} a @code{Z}, de @code{a} a @code{z}, @code{%}, e @code{_}.
 
@@ -770,7 +770,7 @@ Diz ao Maxima para considerar @var{a_i} uma "vari@'avel principal" (@code{mainva
 (vari@'aveis principais) > (outras vari@'aveis) > (vari@'aveis escalares) > (constantes) > (n@'umeros)
 
 @item @code{alphabetic}
-Diz ao Maxima para reconhecer @var{a_i} como um caractere alfab@'etico.
+Diz ao Maxima para reconhecer todos os caracteres em @var{a_i} (que deve ser uma seq@"u@^encia de caracteres) como caractere alfab@'etico.
 
 @item @code{feature}
 Diz ao Maxima para reconhecer @var{a_i} como nome de um recurso.
@@ -936,17 +936,20 @@ Declara@,{c}@~oes @code{constant}, @code{scalar}, @code{nonscalar}, e @code{main
 
 Declara@,{c}@~ao @code{alphabetic}.
 @c ===beg===
-@c xx\~yy : 1729;
-@c declare ("~", alphabetic);
-@c xx~yy + yy~xx + ~xx~~yy~;
+@c xx\~yy\`\@ : 1729;
+@c declare ("~`@", alphabetic);
+@c xx~yy`@ + @yy`xx + `xx@@yy~;
+@c listofvars (%);
 @c ===end===
 @example
-(%i1) xx\~yy : 1729;
+(%i1) xx\~yy\`\@@ : 1729;
 (%o1)                         1729
-(%i2) declare ("~", alphabetic);
+(%i2) declare ("~`@@", alphabetic);
 (%o2)                         done
-(%i3) xx~yy + yy~xx + ~xx~~yy~;
-(%o3)                ~xx~~yy~ + yy~xx + 1729
+(%i3) xx~yy`@@ + @@yy`xx + `xx@@@@yy~;
+(%o3)               `xx@@@@yy~ + @@yy`xx + 1729
+(%i4) listofvars (%);
+(%o4)                  [@@yy`xx, `xx@@@@yy~]
 @end example
 
 Declara@,{c}@~ao @code{feature}.

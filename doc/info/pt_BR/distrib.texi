@@ -1,6 +1,5 @@
-/distrib.texi/1.2/Sat Jul 22 19:24:36 2006//
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
-@c /distrib.texi/1.2/Sat Jul 22 19:24:36 2006//
+@c /distrib.texi/1.3/Mon Jan  1 07:18:27 2007//
 @menu
 * Introdu@value{cedilha}@~ao a distrib::
 * Defini@value{cedilha}@~oes para distribui@value{cedilha}@~oes cont@'inuas::
