@@ -71,7 +71,7 @@ Se algumas linhas possuirem diferentes comprimentos, @code{read_matrix} reclama.
 @code{read_lisp_array} exige que o array
 seja declarado atrav@'es de @code{make_array} antes de chamar
 a fun@,{c}@~ao de leitura. (Isso obviamente @'e necess@'ario para inferir a dimens@~ao 
-do array, que pode ser uma hassle para arrays com m@'ultiplas dimens@~oes.)
+do array, que pode ser um problema para arrays com m@'ultiplas dimens@~oes.)
 
 @code{read_lisp_array} n@~ao verifica para ver se o 
 arquivo de entrada est@'a de acordo com as dimens@~aoes do array; a entrada
