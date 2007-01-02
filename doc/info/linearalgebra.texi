@@ -363,7 +363,7 @@ ones on the diagonal, and @var{U} is upper triangular, and @code{@var{A} = @var{
 @deffn {Function} hankel (@var{col})
 @deffnx {Function} hankel (@var{col}, @var{row})
 
-Return a Hankel matrix @var{H}. The first first column of @var{H} is @var{col};
+Return a Hankel matrix @var{H}. The first column of @var{H} is @var{col};
 except for the first entry, the last row of @var{H} is @var{row}. The
 default for @var{row} is the zero vector with the same length as @var{col}.
 
