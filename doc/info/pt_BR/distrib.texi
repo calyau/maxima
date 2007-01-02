@@ -903,7 +903,7 @@ Chi-quadradas. Os algor@'itmos implementados s@~ao @code{ahrens_cheng} e @code{i
 
 @item
 @code{ahrens_cheng}, baseado na simula@,{c}@~ao aleat@'oria de vari@'aveis gama.
-Veja @code{random_gamma_algorithm} para mias detalhes.
+Veja @code{random_gamma_algorithm} para mais detalhes.
 
 @item
 @code{inverse}, baseado no m@'etodo inverso gen@'erico.

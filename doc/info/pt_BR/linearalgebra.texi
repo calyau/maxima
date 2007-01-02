@@ -1,5 +1,5 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
-@c /linearalgebra.texi/1.5/Mon Jan  1 07:45:21 2007//
+@c /linearalgebra.texi/1.7/Tue Jan  2 10:09:56 2007//
 @menu
 * Introdu@value{cedilha}@~ao a linearalgebra::
 * Defini@value{cedilha}@~oes para linearalgebra::
@@ -162,7 +162,7 @@ Retorna @code{true} se e somente se @var{M} for uma matriz e toda entrada de
 @deffn {Fun@value{cedilha}@~ao} columnop (@var{M}, @var{i}, @var{j}, @var{theta})
 
 Se @var{M} for uma matriz, retorna a matriz que resulta de fazer a  
-opera@,{c}@~ao de coluna @code{C_i <- C_i - @var{theta} * C_j}. Se @var{M} n@~ao tiver uma fileira
+opera@,{c}@~ao de coluna @code{C_i <- C_i - @var{theta} * C_j}. Se @var{M} n@~ao tiver uma linha
 @var{i} ou @var{j}, emite uma mensagem de erro.
 
 @end deffn
@@ -176,18 +176,18 @@ Se @var{M} for uma matriz, troca as colunas @var{i} e @var{j}.  Se @var{M} n@~ao
 
 @deffn {Fun@value{cedilha}@~ao} columnspace (@var{M})
 
-Se @var{M} for uma matriz, retorna @code{span (v_1, ..., v_n)}, where the set
-@code{@{v_1, ..., v_n@}} is a basis for the column space of @var{M}.  The span 
-of the empty set is @code{@{0@}}. Thus, when the column space has only 
-one member, retorna @code{span ()}.
+Se @var{M} for uma matriz, retorna @code{span (v_1, ..., v_n)}, onde o conjunto
+@code{@{v_1, ..., v_n@}} @'e uma base para o espa@,{c}o coluna de @var{M}.  A medida 
+de um conjunto vazio @'e @code{@{0@}}. Dessa forma, quando o espa@,{c}o coluna tiver somente 
+um membro, retorna @code{span ()}.
 
 @end deffn
 
 @deffn {Fun@value{cedilha}@~ao} copy (@var{e})
 
-Return a copy of the Maxima expression @var{e}. Although @var{e} can be any
-Maxima expression, the copy fun@,{c}@~ao is the most useful when @var{e} is either 
-a list or a matriz; consider:
+Retorna uma c@'opia da express@~ao @var{e} do Maxima. Embora @var{e} possa ser qualquer
+express@~ao do Maxima, Afun@,{c}@~ao @code{copy} @'e mais @'util quando @var{e} for ou
+uma lista ou uma matriz; considere:
 @c ===beg===
 load (linearalgebra);
 m : [1,[2,3]]$
@@ -206,7 +206,7 @@ mm;
 (%i6) mm;
 (%o6) [1,[x,3]]
 @end example
-Let's try the same experiment, but this time let @var{mm} be a copy of @var{m}
+Vamos tentar a mesma experi@^encia, mas dessa vez tomemos @var{mm} como sendo uma c@'opia de @var{m}
 @c ===beg===
 m : [1,[2,3]]$
 mm : copy(m)$
@@ -223,31 +223,31 @@ mm;
 (%i11) mm;
 (%o11) [1,[x,3]]
 @end example
-This time, the assignment to @var{mm} does not change the value of @var{m}.
+Dessa vez, a atribui@,{c}@~ao a @var{mm} n@~ao muda o valor de @var{m}.
 
 @end deffn
 
 @deffn {Fun@value{cedilha}@~ao} cholesky (@var{M})
-@deffnx {Fun@value{cedilha}@~ao} cholesky (@var{M}, @var{field})
+@deffnx {Fun@value{cedilha}@~ao} cholesky (@var{M}, @var{corpo})
 
-Return the Cholesky factorization da matriz selfadjoint (or hermitian) matriz 
-@var{M}. The second argument defaults to 'generalring.' For a description of the
-possible values for @var{field}, see @code{lu_factor}.
+Retorna fatoriza@,{c}@~ao de Cholesky da matriz hermitiana (or autoadjunta) 
+@var{M}. O valor padr@~ao para o segundo argumento @'e @code{generalring}. Para uma descri@,{c}@~ao dos
+poss@'iveis valores para @var{corpo}, veja @code{lu_factor}.
 
 @end deffn
 
 @deffn {Fun@value{cedilha}@~ao} ctranspose (@var{M})
 
-Return the complex conjugate transpose da matriz @var{M}. The function
-@code{ctranspose} uses @code{matrix_element_transpose} to transpose each elemento da matriz.
+Retorna a matriz transposta conjugada complexa da matriz @var{M}. A fun@,{c}@~ao
+@code{ctranspose} usa @code{matrix_element_transpose} para transpor cada elemento da matriz.
 
 @end deffn
 
 @deffn {Fun@value{cedilha}@~ao} diag_matrix (@var{d_1}, @var{d_2},...,@var{d_n})
 
-Return a diagonal matriz with diagonal entries @var{d_1}, @var{d_2},...,@var{d_n}.
-When the diagonal entries are matrizes, the zero entries of the returned matriz
-are zero matrizes of the appropriate size; for example:
+Retorna uma matriz diagonal matriz com entradas de diagonal @var{d_1}, @var{d_2},...,@var{d_n}.
+Quando as entradas de diagonal forem matrizes, as entradas zero da matriz retornada
+ser@~ao todas matrizes de tamanho apropriado; por exemplo:
 @c ===beg===
 @c load(linearalgebra)$
 @c diag_matrix(diag_matrix(1,2),diag_matrix(3,4));
@@ -275,24 +275,24 @@ are zero matrizes of the appropriate size; for example:
 
 @deffn {Fun@value{cedilha}@~ao} dotproduct (@var{u}, @var{v})
 
-Return the dotproduct of vectors @var{u} and @var{v}.  This is the same
-as @code{conjugate (transpose (@var{u})) . @var{v}}.  The arguments @var{u} and @var{v} must be
-column vectors.
+Retorna o produto do ponto (produto escalar) dos vetores @var{u} and @var{v}.  Isso @'e o mesmo
+que @code{conjugate (transpose (@var{u})) . @var{v}}.  Os argumentos @var{u} e @var{v} devem ser
+vetores coluna.
 
 @end deffn
 
-@deffn {Function} eigens_by_jacobi (@var{A})
-@deffnx {Function} eigens_by_jacobi (@var{A}, @var{field_type})
+@deffn {Fun@value{cedilha}@~ao} eigens_by_jacobi (@var{A})
+@deffnx {Fun@value{cedilha}@~ao} eigens_by_jacobi (@var{A}, @var{tipo_corpo})
 
-Computes the eigenvalues and eigenvectors of @var{A} by the method of Jacobi rotations.
-@var{A} must be a symmetric matrix (but it need not be positive definite nor positive semidefinite).
-@var{field_type} indicates the computational field, either @code{floatfield} or @code{bigfloatfield}.
-If @var{field_type} is not specified, it defaults to @code{floatfield}.
+Calculam os autovalores e autovetores de @var{A} pelo m@'etodo de rota@,{c}@~oes de Jacobi.
+@var{A} deve ser uma matriz sim@'etrica (mas essa matriz sim@'etrica precisa n@~ao ser nem definida positiva e nem semidefinida positiva).
+@var{tipo_corpo} indica o corpo computacional, pode ser ou @code{floatfield} ou @code{bigfloatfield}.
+Se @var{tipo_corpo} n@~ao for especificado, o padr@~ao @'e @code{floatfield}.
 
-The elements of @var{A} must be numbers or expressions which evaluate to numbers
-via @code{float} or @code{bfloat} (depending on @var{field_type}).
+Os elementos de @var{A} devem ser n@'umeros ou express@~oes que avaliam para n@'umeros
+via @code{float} ou @code{bfloat} (dependendo do valor de @var{tipo_corpo}).
 
-Examples:
+Exemplos:
 @c ===beg===
 @c load (linearalgebra);
 @c S : matrix ([1/sqrt(2), 1/sqrt(2)], [- 1/sqrt(2), 1/sqrt(2)]);
@@ -356,181 +356,180 @@ number of rotations: 1
 
 @deffn {Fun@value{cedilha}@~ao} get_lu_factors (@var{x}) 
 
-When @code{@var{x} = lu_factor (@var{A})}, then @code{get_lu_factors} returns a list of the 
-form @code{[P, L, U]}, where @var{P} is a permutation matriz, @var{L} is lower triangular with
-ones on the diagonal, and @var{U} is upper triangular, and @code{@var{A} = @var{P} @var{L} @var{U}}.
+Quando @code{@var{x} = lu_factor (@var{A})}, ent@~ao @code{get_lu_factors} retorna uma lista da 
+forma @code{[P, L, U]}, onde @var{P} @'e uma matriz de permuta@,{c}@~ao, @var{L} @'e triangular baixa com
+a diagonal preenchida com a unidade, e @var{U} @'e triangular alta, e @code{@var{A} = @var{P} @var{L} @var{U}}.
 
 @end deffn
 
 @deffn {Fun@value{cedilha}@~ao} hankel (@var{col})
-@deffnx {Fun@value{cedilha}@~ao} hankel (@var{col}, @var{row})
+@deffnx {Fun@value{cedilha}@~ao} hankel (@var{col}, @var{lin})
 
-Return a Hankel matriz @var{H}. The first first column of @var{H} is @var{col};
-except for the first entry, the last row of @var{H} is @var{row}. The
-default for @var{row} is the zero vector with the same length as @var{col}.
+Retorna uma matriz de Hankel @var{H}. A primeira coluna de @var{H} @'e @var{col};
+exceto para a primeira entrada, a @'ultima linha de @var{H} @'e @var{lin}. O
+valor padr@~ao para @var{lin} @'e o vetor nulo com o mesmo comprimento que @var{col}.
 
 @end deffn
 
 @deffn {Fun@value{cedilha}@~ao} hessian (@var{f},@var{vars})
 
-Return the hessian matriz of @var{f} with respect to the variables in the list
-@var{vars}.  The @var{i},@var{j} entry of the hessian matriz is 
+Retorna a matriz hessiana de @var{f} com rela@,{c}@~ao @`as vari@'aveis na lista
+@var{vars}.  As entradas @var{i},@var{j} da matriz hessiana s@~ao
 @var{diff(f vars[i],1,vars[j],1)}.
 
 @end deffn
 
 @deffn {Fun@value{cedilha}@~ao} hilbert_matrix (@var{n})
 
-Return the @var{n} by @var{n} Hilbert matriz. When @var{n} isn't a positive
-integer, emite uma mensagem de erro.
+Retorna the @var{n} by @var{n} matriz de Hilbert. Quando @var{n} n@~ao for um inteiro
+positivo, emite uma mensagem de erro.
 
 @end deffn
 
 @deffn {Fun@value{cedilha}@~ao} identfor (@var{M})
-@deffnx {Fun@value{cedilha}@~ao} identfor (@var{M}, @var{fld})
+@deffnx {Fun@value{cedilha}@~ao} identfor (@var{M}, @var{corpo})
 
-Return an identity matriz que has the same shape as a matriz
-@var{M}.  The diagonal entries of the identity matriz are the 
-multiplicative identity of the field @var{fld}; the default for
-@var{fld} is @var{generalring}.
+Retorna uma matriz identidade que tem o mesmo tamanho que a matriz
+@var{M}.  As entradas de diagonal da matriz identidade s@~ao a 
+identidade multiplicativa do corpo @var{corpo}; o padr@~ao para
+@var{corpo} @'e @var{generalring}.
 
-The first argument @var{M} should be a square matriz or a 
-n@~ao matriz. When @var{M} for uma matriz, each entry of @var{M} can be a
-square matriz -- thus @var{M} can be a blocked Maxima matriz. The
-matriz can be blocked to any (finite) depth.
+O primeiro argumento @var{M} pode ser uma  matriz quadrada ou um 
+n@~ao matriz. Quando @var{M} for uma matriz, cada entrada de @var{M} pode ser uma
+matriz quadrada -- dessa forma @var{M} pode ser uma matriz de bloco do Maxima. A
+matriz pode ser de bloco para qualquer (finita) quantidade de n@'iveis.
 
-See also @code{zerofor}
+Veja tamb@'em @code{zerofor}
 
 @end deffn
 
 @deffn {Fun@value{cedilha}@~ao} invert_by_lu (@var{M}, @var{(rng generalring)})
 
-Invert a matriz @var{M} by using the LU factorization.  The LU factorization
-is done using the ring @var{rng}.
+Inverte a matriz @var{M} atrav@'es de fatoriza@,{c}@~ao linear alta (LU).  A fatoriza@,{c}@~ao LU
+@'e conclu@'ida usando o anel @var{rng}.
 
 @end deffn
 
 @deffn {Fun@value{cedilha}@~ao} kronecker_product (@var{A}, @var{B})
 
-Return the Kronecker product da matrizes @var{A} and @var{B}.
+Retorna o produto de Kronecker das matrizes @var{A} e @var{B}.
 
 @end deffn
 
 @deffn {Fun@value{cedilha}@~ao} listp (@var{e}, @var{p})
 @deffnx {Fun@value{cedilha}@~ao} listp (@var{e})
 
-Given an optional argument @var{p}, retorna @code{true} if @var{e} is 
-a Maxima list and @var{p} evaluates to @code{true} for every list element.
-When @code{listp} is not given the optional argument, retorna @code{true} if @var{e} is 
-a Maxima list.  In all other cases, retorna @code{false}.
+Recebendo um argumento opcional @var{p}, retorna @code{true} se @var{e} for 
+uma lista do Maxima e @var{p} avalia para @code{true} para elemento da lista.
+Quando @code{listp} n@~ao recebe o argumento opcional, retorna @code{true} se @var{e} for 
+uma lista do Maxima.  em todos os outros casos, retorna @code{false}.
 
 @end deffn
 
 @deffn {Fun@value{cedilha}@~ao} locate_matrix_entry (@var{M}, @var{r_1}, @var{c_1}, @var{r_2}, @var{c_2}, @var{f}, @var{rel})
 
-The first argument must be a matriz; the arguments
-@var{r_1} through @var{c_2} determine a sub-matriz of @var{M} that consists of
-rows @var{r_1} through @var{r_2} and columns @var{c_1} through @var{c_2}. 
+O primeiro argumento deve ser uma matriz; os argumentos que v@~ao de
+@var{r_1} at@'e @var{c_2} determinam um sub-matriz de @var{M} que consiste de
+linhas que v@~ao de @var{r_1} at@'e @var{r_2} e colunas que v@~ao de @var{c_1} at@'e @var{c_2}. 
 
-Find a entry in the sub-matriz @var{M} that satisfies some property. 
-Three cases:
+Encontra uma entrada na sub-matriz @var{M} que satisfaz alguma propriedade. 
+Existem tr@^es casos:
 
-(1) @code{@var{rel} = 'bool} and @var{f} a predicate: 
+(1) @code{@var{rel} = 'bool} e @var{f} um predicado: 
 
-Scan the sub-matriz from left to right then top to bottom,
-and return the index of the first entry that satisfies the 
-predicate @var{f}. If no matriz entry satisfies @var{f}, retorna @code{false}.
+Examina a sub-matriz da esquerda para a direita e de cima para baixo,
+e retorna o @'indice da primeria entrada que satisfizer o 
+predicado @var{f}. Se nenhuma entrada da matriz satisfizer o predicado @var{f}, retorna @code{false}.
 
-(2) @code{@var{rel} = 'max} and @var{f} real-valued:
+(2) @code{@var{rel} = 'max} e @var{f} avaliar para um n@'umero real:
 
-Scan the sub-matriz looking for an entry that maximizes @var{f}.
-Return the index of a maximizing entry.
+Examina a sub-matriz procurando por uma entrada que maximize @var{f}.
+Retorna retorna o @'indice da entrada maximizada.
 
-(3) @code{@var{rel} = 'min} and @var{f} real-valued:
+(3) @code{@var{rel} = 'min} e @var{f} avaliar para um n@'umero real:
 
-Scan the sub-matriz looking for an entry that minimizes @var{f}. 
-Return the index of a minimizing entry.
+Examina a sub-matriz procurando por uma entrada que minimize @var{f}. 
+Retorna o @'indice de uma entrada minimizada.
 
 @end deffn
 
 @deffn {Fun@value{cedilha}@~ao} lu_backsub (@var{M}, @var{b})
 
-When @code{@var{M} = lu_factor (@var{A}, @var{field})},
-then @code{lu_backsub (@var{M}, @var{b})} solves the linear
-system @code{@var{A} @var{x} = @var{b}}.
+Quando @code{@var{M} = lu_factor (@var{A}, @var{corpo})},
+ent@~ao @code{lu_backsub (@var{M}, @var{b})} resolve o sistema
+linear @code{@var{A} @var{x} = @var{b}}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} lu_factor (@var{M}, @var{field})
+@deffn {Fun@value{cedilha}@~ao} lu_factor (@var{M}, @var{corpo})
 
-Return a list of the form @code{[@var{LU}, @var{perm}, @var{fld}]}, 
-or @code{[@var{LU}, @var{perm}, @var{fld}, @var{lower-cnd} @var{upper-cnd}]}, where
+Retorna uma lista da forma @code{[@var{LU}, @var{perm}, @var{corpo}]}, 
+ou da forma @code{[@var{LU}, @var{perm}, @var{cmp}, @var{baixo-cnd} @var{alto-cnd}]}, onde
 
-  (1) A matriz @var{LU} contains the factorization of @var{M} in a packed form. Packed
-      form means three things: First, the rows of @var{LU} are permuted according to the 
-      list @var{perm}.  If, for example, @var{perm} is the list @code{[3,2,1]}, the actual first row 
-      of the @var{LU} factorization is the third row da matriz @var{LU}. Second,
-      the lower triangular factor of m is the lower triangular part of @var{LU} with the
-      diagonal entries replaced by all ones. Third, the upper triangular factor of 
-      @var{M} is the upper triangular part of @var{LU}.  
+  (1) A matriz @var{LU} cont@'ea fatoriza@,{c}@~ao de @var{M} na forma enpacotada. Forma
+      empacotada significa tr@^es coisas: Primeiro, as linhas de @var{LU} s@~ao permutadas confirme a 
+      lista @var{perm}.  Se, por exemplo, @var{perm} for a lista list @code{[3,2,1]}, a primeira linha atual 
+      da fatoriza@,{c}@~ao @var{LU} ser@'a a terceira linha da matriz @var{LU}. Segundo,
+      o fator triangular baixo de m @'e a parte triangular baixa de @var{LU} com as
+      entradas de diagonal todas substitu@'idas pela unidade. Terceiro, o fator triangular alto de 
+      @var{M} @'e a parte triangular alta de @var{LU}.  
 
-  (2) When the field is either @code{floatfield} or @code{complexfield},
-      the numbers @var{lower-cnd} and @var{upper-cnd} are lower and upper bounds for the 
-      infinity norm condition number of @var{M}.  For all fields, the condition number 
-      might not be estimated; for such fields, @code{lu_factor} returns a two item list.
-      Both the lower and upper bounds can differ from their true values by 
-      arbitrarily large factors. (See also @code{mat_cond}.)
+  (2) Quando o corpo for ou @code{floatfield} ou @code{complexfield},
+      os n@'umeros @var{baixo-cnd} e @var{alto-cnd} ser@~ao associados baixo e alto para o 
+      n@'umero condicional de norma infinita de @var{M}.  Para todos os corpos (fields), o n@'umero condicional de norma infinita 
+      n@~ao pode ser estimado; para tais corpos, @code{lu_factor} retorna uma lista com dois itens.
+      Ambos o baixo e o alto associado  podem diferir de seus verdadeiros valores de 
+      fatores arbitr@'ariamente grandes. (Veja tamb@'em @code{mat_cond}.)
    
-  The argument @var{M} must be a square matriz.
+  O argumento @var{M} deve ser a matriz quadrada.
 
-  The optional argument @var{fld} must be a symbol that determines a ring or field. The pre-defined 
-  fields and rings are:
+  O argumento opcional @var{cmp} deve ser um s@'imbolo que determine um anel ou corpo. Os corpos e an@'eis 
+  predefinidos s@~ao:
 
-    (a) @code{generalring} -- the ring of Maxima expressions,
-    (b) @code{floatfield} --  the field of floating point numbers of the type double,
-    (c) @code{complexfield} --  the field of complex floating point numbers of the 
-        type double,
-    (d) @code{crering}  -- the ring of Maxima CRE expressions,
-    (e) @code{rationalfield} -- the field of rational numbers,
-    (f) @code{runningerror} -- track the all floating point rounding errors,
-     (g) @code{noncommutingring} -- the ring of Maxima expressions where multiplication is the
-        non-commutative dot operator.       
+    (a) @code{generalring} -- o anel de express@~oes do Maxima,
+    (b) @code{floatfield} --  o corpo dos n@'umeros em ponto flutuante do tipo de precis@~ao dupla,
+    (c) @code{complexfield} --  o corpo dos n@'umeros complexos em ponto flutuante do 
+        tipo de precis@~ao dupla,
+    (d) @code{crering}  -- o anel das express@~oes racionais can@^onicas (CRE) do Maxima,
+    (e) @code{rationalfield} -- o corpo dos n@'umeros racionais,
+    (f) @code{runningerror} -- rastro de todos os erros de arredondamento de n@'umeros em ponto flutuante,
+     (g) @code{noncommutingring} -- o anel de express@~oes do Maxima onde multiplica@,{c}@~ao for o
+        operador ponto n@~ao comutativo.       
 
-When the field is @code{floatfield}, @code{complexfield}, or
-@code{runningerror}, the algorithm uses partial pivoting; for all
-other fields, rows are switched only when needed to avoid a zero
-pivot.
+Quando o corpo for @code{floatfield}, @code{complexfield}, ou
+@code{runningerror}, o algor@'itmo usa pivotagem parcial; para todos
+os outros corpos, linhas s@~ao comutadas somente quando necess@'ario para evitar um piv@^o
+nulo.
 
-Floating point addition arithmetic isn't associative, so the meaning
-of 'field' differs from the mathematical definition.
+A adi@,{c}@~ao aritm@'etica em ponto flutuante n@~ao @'e associativa, ent@~ao o significado
+de 'corpo' difere da defini@,{c}@~ao matem@'atica.
 
-A member of the field @code{runningerror} is a two member Maxima list
-of the form @code{[x,n]},where @var{x} is a floating point number and
-@code{n} is an integer. The relative difference between the 'true'
-value of @code{x} and @code{x} is approximately bounded by the machine
-epsilon times @code{n}. The running error bound drops some terms that
-of the order the square of the machine epsilon.
+Um membro do corpo @code{runningerror} @'e uma lista do M@'axima de dois membros
+da forma @code{[x,n]},onde @var{x} @'e um n@'umero em onto flutuante e
+@code{n} @'e um inteiro. A diferen@,{c}a relativa entre o valor de
+'verdadeiro' de @code{x} e @code{x} @'e aproximadamente associado pelo @'epsilon da
+m@'aquina vezes @code{n}. O erro de execu@,{c}@~ao associado arrasta alguns termos
+da ordem do quadrado do @'epsilon da m@'aquina.
 
-There is no user-interface for defining a new field. A user that is
-familiar with Common Lisp should be able to define a new field.  To do
-this, a user must define fun@,{c}@~oes for the arithmetic operations and
-functions for converting from the field representation to Maxima and
-back. Additionally, for ordered fields (where partial pivoting will be
-used), a user must define fun@,{c}@~oes for the magnitude and for
-comparing field members.  After that all that remains is to define a
-Common Lisp structure @code{mring}.  The file @code{mring} has many
-examples.
+N@~ao existe interface de usu@'ario definida um novo anel. Um usu@'ario que estiver
+familiazrizado com o Lisp Comum est@'a apto para definir um novo corpo.  Para fazer
+isso, um usu@'ario deve definir fun@,{c}@~oes para as opera@,{c}@~oes aritm@'eticas e
+fun@,{c}@~oes para convers@~ao para a representa@,{c}@~ao de corpo do M@'axima e
+vice-versa. Adicionalmente, para corpos ordenados (onde a pivotagem parcial ir@'a ser
+usada), um udu@'ario deve definir fun@,{c}@~oes para m@'odulo e para
+comparar membros do corpo.  Ap@'os isso tudo que resta @'e definir uma
+estrutura de Lisp Comum @code{mring}.  O arquivo @code{mring} tem muitos
+exemplos.
  
-To compute the factorization, the first task is to convert cada matriz
-entry to a member of the indicated field. When conversion isn't
-possible, the factorization halts with an error message. Members of
-the field needn't be Maxima expressions.  Members of the
-@code{complexfield}, for example, are Common Lisp complex numbers. Thus
-after computing the factorization, as entradas da matriz must be
-converted to Maxima expressions.
+Para calcular a fatoriza@,{c}@~ao, a primeira tarefa @'e converter cada entrada de
+matriz para um elemento do corpo indicado. Quando a cnvers@~ao n@~ao for
+poss@'ivel, a fatoriza@,{c}@~ao encerra com uma mensagem de erro. Elementos do
+corpo n@~ao precisam ser express@~oes do Maxima.  Elementos do
+@code{complexfield}, por exemplo, s@~ao n@'umeros complexos do Lisp Comum. Dessa forma
+ap@'os calcular a fatoriza@,{c}@~ao, como entradas da matriz devem ser
+convertidas para express@~oes do Maxima.
 
-See also  @code{get_lu_factors}.
-
+Veja tamb@'em  @code{get_lu_factors}.
 
 Exemplos:
 @c ===beg===
@@ -592,13 +591,13 @@ Evaluation took 109.24 seconds (152.10 elapsed)
 @deffn {Fun@value{cedilha}@~ao} mat_cond (@var{M}, 1)
 @deffnx {Fun@value{cedilha}@~ao} mat_cond (@var{M}, inf)
 
-Return the @var{p}-norm matriz condition number da matriz
-@var{m}. The allowed values for @var{p} are 1 and @var{inf}.  This
-function uses the LU factorization to invert a matriz @var{m}. Thus
-the running time for @code{mat_cond} is proportional to the cube of
-the tamanho da matriz; @code{lu_factor} determines lower and upper bounds
-for the infinity norm condition number in time proportional to the
-square do tamanho da matriz.
+Retorna o n@'umero condiciona da norma de ordem @var{p} da matriz
+@var{m}. Os valores permitidos para @var{p} s@~ao 1 e @var{inf}.  Essa
+fun@,{c}@~ao utiliza a fatoriza@,{c}@~ao linear alta para inverter a matriz @var{m}. Dessa forma
+o tempode execu@,{c}@~ao para @code{mat_cond} @'e proporcional ao cubo do
+tamanho da matriz; @code{lu_factor} determina as associa@,{c}@~aoes baixa e alta
+para o n@'umero de condi@,{c}@~ao de norma infinita em tempo proporcional ao
+quadrado do tamanho da matriz.
 
 @end deffn
 
@@ -606,43 +605,45 @@ square do tamanho da matriz.
 @deffnx {Fun@value{cedilha}@~ao} mat_norm (@var{M}, inf)
 @deffnx {Fun@value{cedilha}@~ao} mat_norm (@var{M}, frobenius)
 
-Return a matriz @var{p}-norm da matriz @var{M}.  The allowed values for @var{p} are
-1, @code{inf}, and @code{frobenius} (the Frobenius matriz norm). A matriz @var{M} should be
-an unblocked matriz.
+Retorna a matriz de norma @var{p} da matriz @var{M}.  Os valores permitidos para @var{p} s@~ao
+1, @code{inf}, e @code{frobenius} (a norma da matriz de Frobenius). A matriz @var{M} pode ser
+uma matriz n@~ao de bloco.
 
 @end deffn
 
 @deffn {Fun@value{cedilha}@~ao} matrixp (@var{e}, @var{p})
 @deffnx {Fun@value{cedilha}@~ao} matrixp (@var{e})
 
-Given an optional argument @var{p}, retorna @code{true} if @var{e} is 
-a matriz and @var{p} evaluates to @code{true} for todo elemento da matriz.
-When @code{matrixp} is not given an optional argument, retorna @code{true} 
-if @code{e} for uma matriz.  In all other cases, retorna @code{false}.
+Fornecendo um argumento opcional @var{p}, @code{matrixp} retorna @code{true} se @var{e} for
+uma matriz e @var{p} avaliar para @code{true} para todo elemento da matriz.
+Quando a @code{matrixp} n@~ao for fornecido umargumento opcional, retorna @code{true} 
+se @code{e} for uma matriz.  em todos os outros casos, retorna @code{false}.
 
-See also @code{blockmatrixp}
+Veja tamb@'em @code{blockmatrixp}
 
 @end deffn
 
 @deffn {Fun@value{cedilha}@~ao} matrix_size (@var{M})
 
-Return a two member list that gives the number of rows and columns, respectively
+Retorna uma lista com dois elementos que fornecem o n@'umero de linhas e colunas, respectivamente
 da matriz @var{M}.
 
 @end deffn
 
 @deffn {Fun@value{cedilha}@~ao} mat_fullunblocker (@var{M})
 
-If @var{M} is a matriz de bloco, unblock a matriz to all levels. If @var{M} for uma matriz,
-return @var{M}; otherwise, emite uma mensagem de erro.  
+Se @var{M} for uma matriz de bloco, expande todos os blocos da matriz em todos os n@'iveis. Se @var{M} for uma matriz,
+retorna @var{M}; de outra forma, emite uma mensagem de erro. 
+
+@c precisa de exemplo aqui
 
 @end deffn
 
 @deffn {Fun@value{cedilha}@~ao} mat_trace (@var{M})
 
-Return the trace da matriz @var{M} If @var{M} isn't a matriz, retorna a
-noun form. When @var{M} is a matriz de bloco, @code{mat_trace(M)} returns
-the same value as does @code{mat_trace(mat_unblocker(m))}.
+Retorna o tra@,{c}o da matriz @var{M}. Se @var{M} isn't a matriz, retorna uma
+forma substantiva. Quando @var{M} for uma matriz de bloco, @code{mat_trace(M)} retorna
+o mesmo valor retornado por @code{mat_trace(mat_unblocker(m))}.
 
 @end deffn
 
@@ -695,7 +696,7 @@ Warning - you are redefining the Maxima function rank
 
 @deffn {Fun@value{cedilha}@~ao} nonnegintegerp (@var{n})
 
-Return @code{true} if and only if @code{@var{n} >= 0} and @var{n} is an integer.
+Retorna @code{true} if and only if @code{@var{n} >= 0} and @var{n} is an integer.
 
 @end deffn
 
@@ -715,10 +716,10 @@ If @var{M} for uma matriz, retorna the dimension of the nullspace of @var{M}.
 
 @deffn {Fun@value{cedilha}@~ao} orthogonal_complement (@var{v_1}, ..., @var{v_n})
 
-Return @code{span (u_1, ..., u_m)}, where the set @code{@{u_1, ..., u_m@}} is a 
+Retorna @code{span (u_1, ..., u_m)}, where the set @code{@{u_1, ..., u_m@}} is a 
 basis for the orthogonal complement of the set @code{(v_1, ..., v_n)}.
 
-Each vector @var{v_1} through @var{v_n} must be a column vector.
+Each vetor @var{v_1} through @var{v_n} deve ser a column vector.
 
 @end deffn
 
@@ -726,7 +727,7 @@ Each vector @var{v_1} through @var{v_n} must be a column vector.
 @deffnx {Fun@value{cedilha}@~ao} polynomialp (@var{p}, @var{L}, @var{coeffp})
 @deffnx {Fun@value{cedilha}@~ao} polynomialp (@var{p}, @var{L})
 
-Return true if @var{p} is a polynomial in the variables in the list @var{L},
+Retorna true if @var{p} is a polynomial in the variables in the list @var{L},
 The predicate @var{coeffp} must evaluate to @code{true} for each
 coefficient, and the predicate @var{exponp} must evaluate to @code{true} for all 
 exponents of the variables in @var{L}. If you want to use a non-default
@@ -836,7 +837,7 @@ row operation @code{R_i <- R_i - theta * R_j}. If @var{M} doesn't have a row
 
 @deffn {Fun@value{cedilha}@~ao} rank (@var{M})
 
-Return the rank of that matriz @var{M}. The rank is the dimension of the
+Retorna the rank of that matriz @var{M}. The rank is the dimension of the
 column space. Exemplo:
 @c ===beg===
 @c load (linearalgebra);
@@ -862,11 +863,11 @@ If @var{M} for uma matriz, swap rows @var{i} and @var{j}. If @var{M} doesn't hav
 @end deffn
 
 @deffn {Fun@value{cedilha}@~ao} toeplitz (@var{col})
-@deffnx {Fun@value{cedilha}@~ao} toeplitz (@var{col}, @var{row})
+@deffnx {Fun@value{cedilha}@~ao} toeplitz (@var{col}, @var{lin})
 
-Return a Toeplitz matriz @var{T}. The first first column of @var{T} is @var{col};
-except for the first entry, the first row of @var{T} is @var{row}. The
-default for @var{row} is complex conjugate of @var{col}. Exemplo:
+Retorna a Toeplitz matriz @var{T}. The first first column of @var{T} is @var{col};
+except for the first entry, the first row of @var{T} is @var{lin}. The
+default for @var{lin} is complex conjugate of @var{col}. Exemplo:
 @c ===beg===
 @c load(linearalgebra)$
 @c toeplitz([1,2,3],[x,y,z]);
@@ -893,7 +894,7 @@ default for @var{row} is complex conjugate of @var{col}. Exemplo:
 
 @deffn {Fun@value{cedilha}@~ao} vandermonde_matrix ([@var{x_1}, ..., @var{x_n}])
 
-Return a @var{n} by @var{n} matriz whose @var{i}-th row is 
+Retorna a @var{n} by @var{n} matriz whose @var{i}-th row is 
 @code{[1, @var{x_i}, @var{x_i}^2, ... @var{x_i}^(@var{n}-1)]}. 
 
 @end deffn
@@ -901,14 +902,14 @@ Return a @var{n} by @var{n} matriz whose @var{i}-th row is
 @deffn {Fun@value{cedilha}@~ao} zerofor (@var{M})
 @deffnx {Fun@value{cedilha}@~ao}  zerofor (@var{M}, @var{fld})
 
-Return a zero  matriz que has the same shape as a matriz
+Retorna a zero  matriz que has the same shape as a matriz
 @var{M}.  Every entry of the zero matriz matriz is the
 additive identity of the field @var{fld}; the default for
 @var{fld} is @var{generalring}.
 
-The first argument @var{M} should be a square matriz or a
+The primeiro argumento @var{M} should be a matriz quadrada or a
 n@~ao matriz. When @var{M} for uma matriz, each entry of @var{M} can be a
-square matriz -- thus @var{M} can be a blocked Maxima matriz. The
+matriz quadrada -- thus @var{M} can be a blocked Maxima matriz. The
 matriz can be blocked to any (finite) depth.
 
 See also @code{identfor}
