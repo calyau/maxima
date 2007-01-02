@@ -639,7 +639,7 @@ return @var{M}; otherwise, signal an error.
 
 @deffn {Function} mat_trace (@var{M})
 
-Return the trace of the matrix @var{M} If @var{M} isn't a matrix, return a
+Return the trace of the matrix @var{M}. If @var{M} isn't a matrix, return a
 noun form. When @var{M} is a block matrix, @code{mat_trace(M)} returns
 the same value as does @code{mat_trace(mat_unblocker(m))}.
 
