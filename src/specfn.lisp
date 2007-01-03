@@ -75,7 +75,7 @@
     (declare (flonum bn+1 bn+2))
     (do ((i (fix (arraycall flonum chebarr 0)) (f1- i)))
 	((< i 1) (-$ bn+1 (*$ bn+2 x)))
-      (setq bn+2
+     (setq bn+2
 	    (prog1 bn+1 (setq bn+1
 			      (+$ (arraycall flonum chebarr i)
 				  (-$ (*$ 2.0 x bn+1)
@@ -242,7 +242,7 @@
 (mapcar (function (lambda (var val)
 	  (and (not (boundp var)) (set var val))))
 	'($maxpsiposint $maxpsinegint $maxpsifracnum $maxpsifracdenom)
-	'(20. -10. 4 4))
+	'(20. -10. 6 6))
 
 (defun psisimp (exp a z)
   (let ((s (simpcheck (car (subfunsubs exp)) z)))
@@ -257,6 +257,10 @@
   (let ((*k*))
     (declare (special *k*))
     (or
+     (and (integerp s) (>= s 0) (mnumericalp a)
+	  (let (($float2bf t)) ($float (mfuncall '$bfpsi s a 18))))
+     (and (integerp s) (>= s 0) ($bfloatp a)
+	  (mfuncall '$bfpsi s a $fpprec))
      (and (not $numer) (not $float) (integerp s) (> s -1)
 	  (cond
 	    ((integerp a)
@@ -294,7 +298,13 @@
 				     (m- '$%gamma)))
 				((= q 4)
 				 (m+ (m* '((rat simp) -1 2) '$%pi)
-				     (m* -3 '((%log) 2)) (m- '$%gamma))))))
+				     (m* -3 '((%log) 2)) (m- '$%gamma)))
+				((= q 6)
+				 (m- (m+ (m* '((rat simp) 3 2) '((%log) 3))
+					 (m* 2 '((%log) 2))
+					 (m* '((rat simp) 1 2) '$%pi
+					     (m^t 3 '((rat simp) 1 2)))
+					 '$%gamma))))))
 		    ((and (= p 2) (= q 3))
 		     (m+ (m* '((rat simp) 1 2)
 			     (m^t 3 '((rat simp) -1 2)) '$%pi)
@@ -303,6 +313,12 @@
 		    ((and (= p 3) (= q 4))
 		     (m+ (m* '((rat simp) 1 2) '$%pi)
 			 (m* -3 '((%log) 2)) (m- '$%gamma)))
+		    ((and (= p 5) (= q 6))
+		     (m- (m* '((rat simp) 1 2) '$%pi
+			     (m^t 3 '((rat simp) 1 2)))
+			 (m+ (m* '((rat simp) 3 2) '((%log) 3))
+			     (m* 2 '((%log) 2))
+			     '$%gamma)))
 		    ;; Gauss's Formula
 		    ((let ((f (m* `((%cos) ,(m* 2 a '$%pi '*k*))
 				  `((%log) ,(m-t 2 (m* 2 `((%cos) 
@@ -325,7 +341,8 @@
 	     (m*t
 	      (^ -1 s)
 	      (m+t (m+t (psisimp1 s (m- a))
-			(let ((dif ($diff `((%cot) ,(m* '$%pi '$z)) '$z s))
+			(let ((dif (m* '$%pi
+				       ($diff `((%cot) ,(m* '$%pi '$z)) '$z s)))
 			      ($z (m-t a)))
 			  (declare (special $z))
 			  (meval dif)))
