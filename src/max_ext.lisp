@@ -5,6 +5,9 @@
 ($auto_mexpr '$unsum "nusum")
 ($auto_mexpr '$funcsolve "nusum")
 
+($auto_mexpr '$bfzeta "bffac")
+($auto_mexpr '$bfpsi "bffac")
+
 (auto-mexpr '$trigrat '|trigrat|)
 ($auto_mexpr '$gcdex '|gcdex|)
 ($auto_mexpr '$expandwrt "simplification/stopex")
