@@ -135,7 +135,7 @@ cbffac(z,fpprec):=rectform(
 					  *%e^((z+k)*(log(z+k)+x-1)))
 			     /m)));
 
-bfpsi0(z,fpprec):=if z < 0 then bfloat(%pi*cot(%pi*z))+bfpsi0(-z,fpprec)
+bfpsi0(z,fpprec):=if z < 0 then bfloat(%pi*cot(%pi*(-z)))+bfpsi0(1-z,fpprec)
         else block([k:2*(entier(0.41*fpprec)+1)],
 		   block([m:0,y:(z+k)^2,x:0.0b0],
 			 for i thru k/2 do
