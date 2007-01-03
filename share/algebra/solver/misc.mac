@@ -63,13 +63,23 @@ EquationP(eq) := part(eq,0)="="$
 /* Solver does not know maxima sets - workarounds for set functions.          */
 /******************************************************************************/
 
-Setify(lst) := listify(setify(lst))$
+Setify(lst) :=
+  if length(lst)=0 then []
+  else append([lst[1]], Setify(delete(lst[1], lst)))$
 
 DisjointP(l1, l2) := disjointp(setify(l1), setify(l2))$
 
-Intersection(l1, l2) := listify(intersection(setify(l1), setify(l2)))$
+Intersection(l1, l2) :=
+  if length(l1)=0 then []
+  else if member(l1[1], l2) then append([l1[1]], Intersection(rest(l1), l2))
+  else Intersection(rest(l1), l2)$
 
 SetDifference(l1, l2) := listify(setdifference(setify(l1), setify(l2)))$
 
-Union([l]) := listify(lreduce(union, map(setify, l)))$
+Union([l]) := lreduce(Union2, l)$
+
+Union2(l1, l2) :=
+  if length(l2)=0 then l1
+  else if not(member(l2[1], l1)) then Union2(append(l1, [l2[1]]), rest(l2))
+  else Union2(l1, rest(l2))$
 
