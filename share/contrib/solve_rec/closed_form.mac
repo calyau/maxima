@@ -71,8 +71,6 @@ closed_form(expr) :=
   else block(
     [lo : part(expr, 3), hi : part(expr, 4), sm1, linsolvewarn:false],
 
-    supcontext("cf_context"),
-
     /* Let's see if default maxima simplifications can handle this sum. */
     cf_print_message(1, "Trying with simpsum=true ..."),
     if errcatch(
@@ -98,6 +96,37 @@ closed_form(expr) :=
       )
     ) = [] then sm1 : expr,
 
+    /* Try converting the sum to finite sum of psi functions            */
+    if errcatch(
+      if not(atom(sm1)) and not( freeof_sum(sm1) ) and
+         ?ratp(ratsimp(part(expr, 1)), part(expr, 2))
+      then (
+        if part(expr, 4) = inf then block(
+          [lo1: part(expr, 3), hi1, ratfun, old_var: part(expr, 2),
+           var, expr1],
+          cf_print_message(1, "Trying ratfun -> psi ..."),
+          expr1 : intosum(changevar(expr, var=old_var-lo+1, var, old_var)),
+          ratfun : part(expr1, 1),
+          lo1 : part(expr1, 3),
+          hi1 : part(expr1, 4),
+          if hipow(num(ratfun), var) <= hipow(denom(ratfun), var)-2 then (
+            cf_print_message(2, "calling ratfun_to_psi"),
+            sm1 : ratfun_to_psi(ratfun, var),
+            cf_print_message(2, "ratfun -> psi returns", sm1)
+          )
+        )
+        else (
+          cf_print_message(2, "Splitting sum"),
+          sm1 : closed_form(
+            apply(sum, [part(expr, 1), part(expr, 2), lo, inf]) -
+            apply(sum, [part(expr, 1), part(expr, 2), hi+1, inf])
+          )
+        )
+      )
+    ) = [] then sm1 : expr,
+
+    supcontext("cf_context"),
+    
     /* If everything else fails let's try the Zeilberger algorithm .    */
     if errcatch(
       if not(atom(sm1)) and not freeof_sum(sm1) then (
@@ -181,6 +210,7 @@ cf_zeilb(expr, %k%, lo, hi, [in_zr]) := block(
 
   zb : Zeilberger(expr1, %k%, %n%),
   cf_print_message(3, "Zeilberger returns:", zb),
+  if not(listp(zb[1])) then error(),
   deg : length(part(zb, 1, 2)),
   cert : part(zb, 1, 1),
   eq : part(zb, 1, 2) . makelist(sm[%n%+%i%], %i%, 0, deg-1),
@@ -384,4 +414,66 @@ split_sum(expr) := block(
   [opsubst:true, s],
   s: subst(nounify(sum)=expand_sum, expr),
   ev(s, expand_sum)
+)$
+
+/*******************
+ *
+ * converts sum(ratfun, var, 1, inf) to psi functions when denom(ratfun)
+ * can be completely factored.
+ *
+ *******************/
+
+ratfun_to_psi(ratfun, var) := block(
+  [pf, sum: 0, denom_f : factor_with_solve(denom(ratfun), var)],
+
+  pf : partfrac(num(ratfun)/denom_f, var),
+  
+  if inpart(pf, 0)="+" then pf: args(pf)
+  else pf: [pf],
+
+  cf_print_message(2, "Partial fractions", pf),
+
+  for prt in pf do block(
+    [term: numfactor(prt), exponent, a, b],
+    
+    cf_print_message(3, "Working on term", prt),
+    
+    prt : prt/term,
+    term : term*num(prt),
+    prt : denom(prt),
+
+    if not(atom(prt)) and part(prt,0)="^" then (
+      exponent: part(prt, 2),
+      prt: part(prt, 1)
+    )
+    else
+      exponent: 1,
+
+    cf_print_message(3, "Linear part", prt),
+    
+    a: ratsimp(bothcoef(expand(prt), var)),
+    b: a[2], a: a[1],
+
+    if not( freeof(var, a) and freeof(var, b) ) then error()
+    else term:
+      (-1)^exponent/(exponent-1)!*term*psi[exponent-1](1+b/a)/a^exponent,
+
+    cf_print_message(3, "Corresponding term in sum", term),
+    
+    sum: sum+term
+  ),
+  
+  sum
+)$
+
+factor_with_solve(expr, n) := block(
+  [sol, fac, expr1],
+  sol : solve(expr, n),
+  expr : ratexpand(expr),
+  fac : ratcoef(expr, n, hipow(expr, n)),
+  for i:1 thru length(sol) do (
+    if not(freeof(n, rhs(sol[i]))) then error(),
+    fac : fac * (n - rhs(sol[i]))^multiplicities[i]
+  ),
+  fac
 )$
