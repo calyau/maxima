@@ -495,7 +495,9 @@
 
 (defmfun $zeta (s)
   (cond (($bfloatp s) (mfuncall '$bfzeta s $fpprec))
-	((floatp s) ($float (mfuncall '$bfzeta s 18)))
+	((or (floatp s) (and (or $numer $float) (integerp s)))
+	 (let (($float2bf t))
+	   ($float (mfuncall '$bfzeta s 18))))
 	((null (fixnump s)) (list '($zeta) s))
 	((oddp s)
 	 (cond ((greaterp s 1)
