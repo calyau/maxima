@@ -306,6 +306,7 @@
          "contrib/dynamics"
          "contrib/ezunits"
          "contrib/format"
+         "contrib/fractals"
          "contrib/gentran"
          "contrib/gentran/test"
          "contrib/Grobner"

@@ -181,6 +181,9 @@ contrib/format/format.lisp\
 contrib/format/format.ps\
 contrib/format/pois2.demo\
 contrib/format/pois2m.ps\
+contrib/fractals/fractals.mac\
+contrib/fractals/fractals.texi\
+contrib/fractals/rtest_fractals.mac\
 contrib/gentran/Makefile\
 contrib/gentran/convmac.lisp\
 contrib/gentran/fdata.lisp\
