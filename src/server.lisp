@@ -22,6 +22,7 @@
     (setq *standard-output* sock)
     (setq *error-output* sock)
     (setq *terminal-io* sock)
+    (setq *trace-output* sock)
     (format t "pid=~a~%"        (getpid))
     (force-output sock)
     (setq *debug-io* sock)
