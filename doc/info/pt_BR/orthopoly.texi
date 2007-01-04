@@ -1,3 +1,5 @@
+@c Language: Brazilian Portuguese, Encoding: iso-8859-1
+@c /orthopoly.texi/1.4/Sat Nov  4 18:04:23 2006//
 @menu
 * Introduction to orthogonal polynomials::
 * Definitions for orthogonal polynomials::
@@ -540,7 +542,7 @@ a Legendre polynomial.
 @end example
 
 @ifnotinfo
-@image{figures/orthopoly1,8cm}
+@image{../figures/orthopoly1,8cm}
 @end ifnotinfo
 
 The @i{entire} expression @code{legendre_p (5, x)} is quoted; this is 

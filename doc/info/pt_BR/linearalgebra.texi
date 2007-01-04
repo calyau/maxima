@@ -760,7 +760,7 @@ Warning - you are redefining the Maxima function rank
 (%o3)                         false
 @end example
 
-Um exemplo usando um valor personalizado para @code{coeffp) e para @code{exponp}:
+Um exemplo usando um valor personalizado para @code{coeffp} e para @code{exponp}:
 
 @c ===beg===
 @c load (linearalgebra);
@@ -853,7 +853,7 @@ WARNING: DEFUN/DEFMACRO: redefining function $COPY in
 (%i2) rank(matrix([1,2],[2,4]));
 (%o2)                                  1
 (%i3) rank(matrix([1,b],[c,d]));
-Proviso:  {d - b c # 0}
+Proviso:  @{d - b c # 0@}
 (%o3)                                  2
 @end example
 
