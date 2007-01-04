@@ -838,16 +838,21 @@ row operation @code{R_i <- R_i - theta * R_j}. If @var{M} doesn't have a row
 Return the rank of that matrix @var{M}. The rank is the dimension of the
 column space. Example:
 @c ===beg===
-@c load (linearalgebra);
-@c 
+@c load (linearalgebra)$
+@c rank(matrix([1,2],[2,4]));
+@c rank(matrix([1,b],[c,d]));
 @c ===end===
 @example
-(%i1) load(linearalgebra)$
+(%i1) load (linearalgebra)$
+WARNING: DEFUN/DEFMACRO: redefining function $COPY in
+         /share/maxima/5.11.0/share/linearalgebra/linalg-utilities.lisp,
+         was defined in
+         /maxima-5.11.0/src/binary-clisp/comm2.fas
 (%i2) rank(matrix([1,2],[2,4]));
-(%o2) 1
+(%o2)                                  1
 (%i3) rank(matrix([1,b],[c,d]));
-Proviso:  @{d-b*c # 0@}
-(%o3) 2
+Proviso:  {d - b c # 0}
+(%o3)                                  2
 @end example
 
 @end deffn
@@ -918,6 +923,6 @@ See also @code{identfor}
 
 If @var{M} is not a block matrix, return @code{true} if @code{is (equal (@var{e}, 0))} 
 is true for each element @var{e} of the matrix @var{M}.  If @var{M} is a block matrix, return
-@code{true} if @code{zeromatrixp} evaluates to true for each element of @var{e}.
+@code{true} if @code{zeromatrixp} evaluates to @code{true} for each element of @var{e}.
 
 @end deffn
