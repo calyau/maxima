@@ -725,7 +725,7 @@ Each vector @var{v_1} through @var{v_n} must be a column vector.
 @deffnx {Function} polynomialp (@var{p}, @var{L}, @var{coeffp})
 @deffnx {Function} polynomialp (@var{p}, @var{L})
 
-Return true if @var{p} is a polynomial in the variables in the list @var{L},
+Return @code{true} if @var{p} is a polynomial in the variables in the list @var{L},
 The predicate @var{coeffp} must evaluate to @code{true} for each
 coefficient, and the predicate @var{exponp} must evaluate to @code{true} for all 
 exponents of the variables in @var{L}. If you want to use a non-default
