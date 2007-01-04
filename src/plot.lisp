@@ -2077,6 +2077,89 @@ setrgbcolor} def
                   (format nil " \"~a\"" (plot-temp-file "maxout.openmath"))))
         (t (princ ans) "")))
 
+
+; contour_plot -- set some parameters for Gnuplot and punt to plot3d
+;
+; We go to some trouble here to avoid clobbering the Gnuplot preamble
+; specified by the user, either as a global option (via set_plot_option)
+; or specified in arguments to contour_plot. Just append or prepend
+; the parameters for contour plotting to the user-specified preamble.
+; Assume that arguments take precedence over global options.
+;
+; contour_plot knows how to set parameters only for Gnuplot.
+; If the plot_format is not a Gnuplot format, complain.
+;
+; Examples:
+;
+;   contour_plot (x^2 + y^2, [x, -4, 4], [y, -4, 4]);
+;   contour_plot (sin(y) * cos(x)^2, [x, -4, 4], [y, -4, 4]);
+;   F(x, y) := x^3 + y^2;
+;   contour_plot (F, [u, -4, 4], [v, -4, 4]);
+;   contour_plot (F, [u, -4, 4], [v, -4, 4], [gnuplot_preamble, "set size ratio -1"]);
+;   set_plot_option ([gnuplot_preamble, "set cntrparam levels 12"]);
+;   contour_plot (F, [u, -4, 4], [v, -4, 4]);
+;   set_plot_option ([plot_format, openmath]);
+;   contour_plot (F, [u, -4, 4], [v, -4, 4]); => error: must be gnuplot format
+;   contour_plot (F, [u, -4, 4], [v, -4, 4], [plot_format, gnuplot]);
+
+(defun $contour_plot (expr &rest optional-args)
+  (let*
+    ((plot-format-in-plot-options ($get_plot_option '$plot_format 2))
+     (plot-format-in-arguments
+       (let (($plot_options `((mlist) ,@optional-args))) ($get_plot_option '$plot_format 2)))
+
+     (preamble-in-plot-options ($get_plot_option '$gnuplot_preamble 2))
+     (preamble-in-arguments
+       (let (($plot_options `((mlist) ,@optional-args))) ($get_plot_option '$gnuplot_preamble 2)))
+
+     (contour-preamble "set contour; unset surface; set view map")
+     (gnuplot-formats '($gnuplot $mgnuplot $gnuplot_pipes)))
+
+    ; Ensure that plot_format is some gnuplot format.
+    ; Argument takes precedence over global option.
+
+    (if
+      (or
+        (and plot-format-in-arguments
+             (not (memq plot-format-in-arguments gnuplot-formats)))
+        (and (not plot-format-in-arguments)
+             (not (memq plot-format-in-plot-options gnuplot-formats))))
+
+      (merror "contour_plot: plot_format = ~a not understood; must be a gnuplot format."
+              (print-invert-case (stripdollar (or plot-format-in-arguments plot-format-in-plot-options))))
+
+      ; Prepend contour preamble to preamble in arguments (if given)
+      ; and pass concatenated preamble as an argument to plot3d.
+      ; Otherwise if there is a global option preamble, 
+      ; append contour preamble to global option preamble.
+      ; Otherwise just set global option preamble to the contour preamble.
+
+      ; All this complication is to avoid clobbering the preamble
+      ; if one was specified somehow (either global option or argument).
+
+      (if preamble-in-arguments
+        (let
+          ((args-sans-preamble
+             ($sublist `((mlist) ,@optional-args)
+                       '((lambda) ((mlist) e) (not (and ($listp e) (eq ($first e) '$gnuplot_preamble)))))))
+          (setq preamble-in-arguments
+                ($sconcat contour-preamble " ; " preamble-in-arguments))
+          (apply #'$plot3d
+                 (append (list expr)
+                         (cdr args-sans-preamble)
+                         (list `((mlist) $gnuplot_preamble ,preamble-in-arguments)))))
+
+        (let (($plot_options $plot_options))
+
+          (if preamble-in-plot-options
+            ($set_plot_option
+              `((mlist) $gnuplot_preamble
+                        ,($sconcat preamble-in-plot-options " ; " contour-preamble)))
+            ($set_plot_option `((mlist) $gnuplot_preamble ,contour-preamble)))
+
+          (apply #'$plot3d (cons expr optional-args)))))))
+ 
+
 (defun $plot3d ( fun &optional (xrange ($get_plot_option '$x))
                 (yrange ($get_plot_option '$y) y-supplied)
                 &rest options 
