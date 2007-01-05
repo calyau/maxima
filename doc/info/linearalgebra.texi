@@ -652,7 +652,7 @@ If @var{M} is a block matrix, unblock @var{M} one level. If @var{M} is a matrix,
 
 Thus if each entry of @var{M} is matrix, @code{mat_unblocker (M)} returns an 
 unblocked matrix, but if each entry of @var{M} is a block matrix, @code{mat_unblocker (M)} 
-returns a block matrix with on less level of blocking.
+returns a block matrix with one less level of blocking.
 
 If you use block matrices, most likely you'll want to set @code{matrix_element_mult} to 
 @code{"."} and @code{matrix_element_transpose} to @code{'transpose}. See also @code{mat_fullunblocker}.
