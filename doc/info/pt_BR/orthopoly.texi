@@ -1,12 +1,12 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /orthopoly.texi/1.4/Sat Nov  4 18:04:23 2006//
 @menu
-* Introduction to orthogonal polynomials::
-* Definitions for orthogonal polynomials::
+* Introdu@value{cedilha}@~ao a polin@^omios ortogonais::
+* Defini@value{cedilha}@~oes para polin@^omios ortogonais::
 @end menu
 
-@node Introduction to orthogonal polynomials, Definitions for orthogonal polynomials, orthopoly, orthopoly
-@section Introduction to orthogonal polynomials
+@node Introdu@value{cedilha}@~ao a polin@^omios ortogonais, Defini@value{cedilha}@~oes para polin@^omios ortogonais, orthopoly, orthopoly
+@section Introdu@value{cedilha}@~ao a polin@^omios ortogonais
 
 @code{orthopoly} is a package for symbolic and numerical evaluation of
 several kinds of orthogonal polynomials, including Chebyshev,
@@ -672,8 +672,8 @@ associated Legendre functions of the second kind is numerically evaluated using
 the same algorithm as its symbolic evaluation uses.
 
 
-@node Definitions for orthogonal polynomials,  , Introduction to orthogonal polynomials, orthopoly
-@section Definitions for orthogonal polynomials
+@node Defini@value{cedilha}@~oes para polin@^omios ortogonais,  , Introdu@value{cedilha}@~ao a polin@^omios ortogonais, orthopoly
+@section Defini@value{cedilha}@~oes para polin@^omios ortogonais
 
 @deffn {Function} assoc_legendre_p (@var{n}, @var{m}, @var{x})
 The associated Legendre function of the first kind. 

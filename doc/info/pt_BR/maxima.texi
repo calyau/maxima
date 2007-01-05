@@ -550,8 +550,8 @@ opsubst
 
 orthopoly
 
-* Introduction to orthogonal polynomials::
-* Definitions for orthogonal polynomials::
+* Introdu@value{cedilha}@~ao a polin@^omios ortogonais::
+* Defini@value{cedilha}@~oes para polin@^omios ortogonais::
 
 plotdf
 
