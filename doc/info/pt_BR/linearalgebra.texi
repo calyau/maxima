@@ -1,5 +1,5 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
-@c /linearalgebra.texi/1.8/Thu Jan  4 04:02:05 2007//
+@c /linearalgebra.texi/1.10/Thu Jan  4 07:59:33 2007//
 @menu
 * Introdu@value{cedilha}@~ao a linearalgebra::
 * Defini@value{cedilha}@~oes para linearalgebra::

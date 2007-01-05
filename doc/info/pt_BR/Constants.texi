@@ -18,7 +18,7 @@ O valor num´erico de @code{%e} @'e um n@'umero em ponto flutuante de precis@~ao 
 
 @end defvr
 
-@defvr {Constant} %i
+@defvr {Constante} %i
 @ifinfo
 @vrindex i
 @vrindex Unidade imagin@'aria

@@ -1849,7 +1849,7 @@ sinalizador @code{igeowedge_flag}, como no seguinte exemplo:
 
 @end defvr
 
-@defvr {Operator} |
+@defvr {Operador} |
 @ifinfo
 @fnindex Contra@,{c}@~ao com um vetor
 @end ifinfo

@@ -139,7 +139,7 @@ O ap@'ostrofo n@~ao evita simplifica@,{c}@~ao.
 
 @end deffn
 
-@deffn {Operator} ''
+@deffn {Operador} ''
 @ifinfo
 @fnindex Operador ap@'ostrofo-ap@'ostrofo
 @end ifinfo
