@@ -15,33 +15,18 @@
 
 (proclaim '(optimize (safety 2) (speed 2) (space 2)))
 
-;;;  Note: The following algorithms work only in environments where 
-;;;        ascii codes for A,...,Z and 0,...,9 follow sequentially.
-;;;	   Normal ASCII and LispM encoding makes this true. If we ever
-;;;	   bring this up on EBCDIC machines, we may lose.
-
 (defmacro imember (x l)
   `(member ,x ,l))
-
-;#-cl ;;defined in commac or via common
-;(cond ((not (fboundp 'char<=)))
-; (defun char<= (a b) (<= a b))
-; (defun char>= (a b) (>= a b)))
-
 
 (progn
 
   (defmvar *alphabet* '(#\_ #\%))
 
   (defmfun alphabetp (n)
-    #-cl (declare (fixnum n))
     (and (characterp n)
-	 (or (and (char>= n #\A) (char<= n #\Z)) ; upper case
-	     (and (char>= n #\a) (char<= n #\z)) ; lower case
-	     (imember n '(#\_ #\%))
+	 (or (alpha-char-p n)
 	     (imember n *alphabet*))))
-; test for %, _, or other declared
-					;    alphabetic characters.
+
   (defmfun ascii-numberp (num)
     (and (characterp num) (char<= num #\9) (char>= num #\0))))
 

@@ -211,9 +211,9 @@
 
 (defun slash (x)
   (do ((l (cdr x) (cdr l))) ((null l))
-    (if (or (alphanumericp (car l))
-	    (eql (car l) #\%)
-	    (eql (car l) #\_))
+    ; Following test is the same (except backslash is not included,
+    ; so backslash is preceded by backslash) as in SCAN-TOKEN (src/nparse.lisp).
+    (if (or (ascii-numberp (car l)) (alphabetp (car l)))
 	nil
 	(progn (rplacd l (cons (car l) (cdr l)))
 	       (rplaca l #. back-slash-char) (setq l (cdr l)))))
