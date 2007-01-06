@@ -8,17 +8,17 @@
 @node Introdu@value{cedilha}@~ao a polin@^omios ortogonais, Defini@value{cedilha}@~oes para polin@^omios ortogonais, orthopoly, orthopoly
 @section Introdu@value{cedilha}@~ao a polin@^omios ortogonais
 
-@code{orthopoly} is a package for symbolic and numerical evaluation of
-several kinds of orthogonal polynomials, including Chebyshev,
-Laguerre, Hermite, Jacobi, Legendre, and ultraspherical (Gegenbauer) 
-polynomials. Additionally, @code{orthopoly} includes support for the spherical Bessel, 
-spherical Hankel, and spherical harmonic functions.
+@code{orthopoly} @'e um pacote para avalia@,{c}@~ao simb@'olica e num@'erica de
+muitos tipos de polin@^omios ortogonais, incluindo polin@^omios de Chebyshev,
+Laguerre, Hermite, Jacobi, Legendre, e ultraesf@'erico
+(Gegenbauer). Adicionalmentey, @code{orthopoly} inclui suporte fun@,{c}@~oes esf@'ericas segundo o crit@'erio de
+Bessel, esf@'ericas segundo o crit@'erio de Hankel, e fun@,{c}@~oes harm@^onica esf@'ericas.
 
-For the most part, @code{orthopoly} follows the conventions of Abramowitz and Stegun
+Em sua maior parte, @code{orthopoly} segue as conven@,{c}@~oes de Abramowitz e Stegun
 @i{Handbook of Mathematical Functions}, Chapter 22 (10th printing, December 1972);
-additionally, we use Gradshteyn and Ryzhik, 
+adicionalmente, usamos Gradshteyn e Ryzhik, 
 @i{Table of Integrals, Series, and Products} (1980 corrected and 
-enlarged edition), and Eugen Merzbacher @i{Quantum Mechanics} (2nd edition, 1970).
+enlarged edition), e Eugen Merzbacher @i{Quantum Mechanics} (2nd edition, 1970).
 
 @c INSTALLATION INSTRUCTIONS NO LONGER RELEVANT
 @c BUT MAYBE SOME OF THESE FILES SHOULD BE MENTIONED IN ANOTHER CONTEXT
@@ -32,15 +32,15 @@ enlarged edition), and Eugen Merzbacher @i{Quantum Mechanics} (2nd edition, 1970
 @c 
 @c (c1) compile_file("orthopoly.lisp");
 
-Barton Willis of the University of Nebraska at Kearney (UNK) wrote
-the @code{orthopoly} package and its documentation. The package 
-is released under the GNU General Public License (GPL).
+Barton Willis da University de Nebraska e Kearney (UNK) escreveu
+o pacote @code{orthopoly} e sua documeta@,{c}@~ao. O pacote 
+@'e liberado segundo a licen@,{c}a p@'ublica geral GNU (GPL).
 
-@subsection Getting Started with orthopoly
+@subsection Iniciando com orthopoly
 
-@code{load (orthopoly)} loads the @code{orthopoly} package.
+@code{load (orthopoly)} torna o pacote @code{orthopoly} dispon@'ivel para uso.
 
-To find the third-order Legendre polynomial,
+Para encontrar o polin@^omio de Legendre de terceira ordem,
 
 @c ===beg===
 @c legendre_p (3, x);
@@ -53,8 +53,8 @@ To find the third-order Legendre polynomial,
                  2             2
 @end example
 
-To express this as a sum of powers of @var{x}, apply @var{ratsimp} or @var{rat}
-to the result.
+Para expressar esse polin@^omio como uma soma de pot@^encias de @var{x}, aplique @var{ratsimp} ou @var{rat}
+para o resultado anterior.
 
 @c CONTINUING PREVIOUS EXAMPLE HERE
 @c ===beg===
@@ -68,8 +68,8 @@ to the result.
                          2           2
 @end example
 
-Alternatively, make the second argument to @code{legendre_p} (its ``main'' variable) 
-a canonical rational expression (CRE).
+Alternativamente, fa@,{c}a o segundo argumento  para @code{legendre_p} (sua vari@'avel ``principal'') 
+uma express@~ao racional can@^onica (CRE)  usando @code{rat(x)} em lugar de somente @code{x}.
 
 @c ===beg===
 @c legendre_p (3, rat (x));
@@ -82,8 +82,8 @@ a canonical rational expression (CRE).
                                2
 @end example
 
-For floating point evaluation, @code{orthopoly} uses a running error analysis
-to estimate an upper bound for the error. For example,
+Para avalia@,{c}@~ao em ponto flutuante, @code{orthopoly} usa uma an@'alise de erro durante a execu@,{c}@~ao
+para estimar uma associa@,{c}@~ao superior para o erro. Por exemplo,
 
 @c ===beg===
 @c jacobi_p (150, 2, 3, 0.2);
@@ -93,12 +93,12 @@ to estimate an upper bound for the error. For example,
 (%o1) interval(- 0.062017037936715, 1.533267919277521E-11)
 @end example
 
-Intervals have the form @code{interval (@var{c}, @var{r})}, where @var{c} is the
-center and @var{r} is the radius of the interval. Since Maxima
-does not support arithmetic on intervals, in some situations, such
-as graphics, you want to suppress the error and output only the 
-center of the interval. To do this, set the option
-variable @code{orthopoly_returns_intervals} to @code{false}.
+intervalos possuem a forma @code{interval (@var{c}, @var{r})}, onde @var{c} @'e o
+centro e @var{r} @'e o raio do intervalo. Uma vez que Maxima
+n@~ao suporta aritm@'etica sobre intervalos, em algumas situa@,{c}@~oes, tais
+como em gr@'aficos, voc@^e vai querer suprimir o erro e sair somente com o
+centro do intervalo. Para fazer isso, escolha a vari@'avel de
+op@,{c}@~ao @code{orthopoly_returns_intervals} para @code{false}.
 
 @c ===beg===
 @c orthopoly_returns_intervals : false;
@@ -111,9 +111,9 @@ variable @code{orthopoly_returns_intervals} to @code{false}.
 (%o2)                  - 0.062017037936715
 @end example
 
-Refer to the section @pxref{Floating point Evaluation} for more information.
+Veja a se@,{c}@~ao @pxref{Avalia@,{c}@~ao em Ponto Flutuante} para maiores informa@,{c}@~oesfor more information.
 
-Most functions in @code{orthopoly} have a @code{gradef} property; thus
+Muitas fun@,{c}@~oes em @code{orthopoly} possuem uma propriedade @code{gradef}; dessa forma
 
 @c ===beg===
 @c diff (hermite (n, x), x);
@@ -131,8 +131,8 @@ Most functions in @code{orthopoly} have a @code{gradef} property; thus
                                x
 @end example
 
-The unit step function in the second example prevents an error that would
-otherwise arise by evaluating with @var{n} equal to 0.
+A fun@,{c}@~ao de um @'unico passo no segundo exemplo previne um erro que poderia
+de outra forma surgir atrav@'es da avalia@,{c}@~ao de @var{n} para 0.
 
 @c CONTINUING PREVIOUS EXAMPLE HERE
 @c ===beg===
@@ -143,8 +143,8 @@ otherwise arise by evaluating with @var{n} equal to 0.
 (%o3)                           0
 @end example
 
-The gradef property only applies to the ``main'' variable; derivatives with 
-respect other arguments usually result in an error message; for example
+A propriedade @code{gradef} somente aplica para a vari@'avel ``principal''; dderivadas com
+rela@,{c}@~ao a outros argumentos usualmente resultam em uma mensagem de erro; por exemplo
 
 @c ===beg===
 @c diff (hermite (n, x), x);
@@ -160,10 +160,10 @@ Maxima doesn't know the derivative of hermite with respect the first argument
  -- an error.  Quitting.  To debug this try debugmode(true);
 @end example
 
-Generally, functions in @code{orthopoly} map over lists and matrices. For
-the mapping to fully evaluate, the option variables 
-@code{doallmxops} and @code{listarith} must both be @code{true} (the defaults).
-To illustrate the mapping over matrices, consider
+Geralmente, fun@,{c}@~oes em @code{orthopoly} mapeiam sobre listas e matrizes. Para
+o mapeamento para avalia@,{c}@~ao total, as vari@'aveis de op@,{c}@~ao 
+@code{doallmxops} e @code{listarith} devem ambas serem @code{true} (o valor padr@~ao).
+Para ilustrar o mapeamento sobre matrizes, considere
 
 @c ===beg===
 @c hermite (2, x);
@@ -186,9 +186,9 @@ To illustrate the mapping over matrices, consider
                [ - 2 (1 - 2 y )       - 2       ]
 @end example
 
-In the second example, the @code{i, j} element of the value
-is @code{hermite (2, m[i,j])}; this is not the same as computing
-@code{-2 + 4 m . m}, as seen in the next example.
+No segundo exemplo, o elemento @code{i, j} do valor
+@'e @code{hermite (2, m[i,j])}; isso n@~ao @'e o mesmo que calcular
+@code{-2 + 4 m . m}, como visto no pr@'oximo exemplo.
 
 @c CONTINUING PREVIOUS EXAMPLE HERE
 @c ===beg===
@@ -201,8 +201,8 @@ is @code{hermite (2, m[i,j])}; this is not the same as computing
                     [     0      4 x y - 2 ]
 @end example
 
-If you evaluate a function at a point outside its domain, generally
-@code{orthopoly} returns the function unevaluated. For example,
+Se voc@^e avaliar uma fun@,{c}@~ao em um ponto fora do seu dom@'inio, geralmente
+@code{orthopoly} retorna uma fun@,{c}@~ao n@~ao avaliada. Por exemplo,
 
 @c ===beg===
 @c legendre_p (2/3, x);
@@ -213,8 +213,8 @@ If you evaluate a function at a point outside its domain, generally
                               2/3
 @end example
 
-@code{orthopoly} supports translation into TeX; it also does two-dimensional
-output on a terminal.
+@code{orthopoly} suporta tradu@,{c}@~ao em TeX; @code{orthopoly} tamb@'em faz sa@'idas
+bidimensionais em um terminal.
 
 @c ===beg===
 @c spherical_harmonic (l, m, theta, phi);
@@ -241,12 +241,12 @@ $$P_@{n@}^@{\left(a,a-b\right)@}\left(@{@{x@}\over@{2@}@}\right)$$
 
 @subsection Limitations
 
-When an expression involves several orthogonal polynomials with
-symbolic orders, it's possible that the expression actually
-vanishes, yet Maxima is unable to simplify it to zero. If you
-divide by such a quantity, you'll be in trouble. For example,
-the following expression vanishes for integers @var{n} greater than 1, yet Maxima
-is unable to simplify it to zero.
+Quando uma express@~ao envolve muitos polin@^omios ortogonais com
+ordens simb@'olicas, @'e poss@'ivel que a express@~ao atualmente
+tenda para zero, e ainda ocorre tamb@'em que Maxima estar incapacitado de simplificar essa express@~ao para zero. Se voc@^e
+faz uma divis@~ao por tal quantidade que tende a zero, voc@^e pode estar em apuros. Por exemplo,
+a seguinte express@~ao tende para zero para inteiros @var{n} maiores que 1, e ainda ocorre tamb@'em que  Maxima
+est@'a incapacitado de simplificar essa express@~ao para zero.
 
 @c ===beg===
 @c (2*n - 1) * legendre_p (n - 1, x) * x - n * legendre_p (n, x) + (1 - n) * legendre_p (n - 2, x);
@@ -257,7 +257,7 @@ is unable to simplify it to zero.
                   n - 1           n               n - 2
 @end example
 
-For a specific @var{n}, we can reduce the expression to zero.
+Para um @var{n} espec@'ifico, podemos reduzir a express@~ao a zero.
 
 @c CONTINUING PREVIOUS EXAMPLE HERE
 @c ===beg===
@@ -268,8 +268,8 @@ For a specific @var{n}, we can reduce the expression to zero.
 (%o2)                           0
 @end example
 
-Generally, the polynomial form of an orthogonal polynomial is ill-suited
-for floating point evaluation. Here's an example.
+Geralmente, a forma polinomial de um polin@^omio ortogonal esteja adequada de forma hostil
+para avalia@,{c}ao em ponto flutuante. Aqui est@'a um exemplo.
 
 @c ACTUALLY NEEDS load(orthopoly); BEFORE ANYTHING ELSE
 @c ===beg===
@@ -289,9 +289,9 @@ for floating point evaluation. Here's an example.
 (%o4)                   0.18413609135169
 @end example
 
-The true value is about 0.184; this calculation suffers from extreme
-subtractive cancellation error. Expanding the polynomial and then
-evaluating, gives a better result.
+O verdadeiro valor est@'a em torno de 0.184; ess calculo suporta erro de 
+cancelamento por extremo subtrativo.Expandindo o polin@^omio e ent@~ao
+avaliando, fornecendo um melhor resultado.
 @c CONTINUING PREVIOUS EXAMPLE HERE
 @c ===beg===
 @c p : expand (p)$
@@ -303,17 +303,17 @@ evaluating, gives a better result.
 (%o6) 0.18413609766122982
 @end example
 
-This isn't a general rule; expanding the polynomial does not always
-result in an expression that is better suited for numerical evaluation.
-By far, the best way to do numerical evaluation is to make one or more
-of the function arguments floating point numbers. By doing that, 
-specialized floating point algorithms are used for evaluation.
+Essa n@~ao @'e uma regra geral; expandindo o polin@^omio n@~ao resulta sempre 
+em express@~oes que s@~ao melhores adaptadas a avalia@,{c}@~ao num@'erica.
+Com grande folga, o melhor caminho para fazer avalia@,{c}@~ao num@'erica @'e fazer um ou mais
+argumentos da fun@,{c}@~ao serem n@'umeros em ponto flutuante. Em fun@,{c}@~ao disso, 
+algor@'itmos especializados em ponto flutuante s@~ao usados para avalia@,{c}@~ao.
 
-Maxima's @code{float} function is somewhat indiscriminant; if you apply 
-@code{float} to an expression involving an orthogonal polynomial with a
-symbolic degree or order parameter, these parameters may be 
-converted into floats; after that, the expression will not evaluate 
-fully. Consider
+A fun@,{c}@~ao @code{float} do Maxima @'e at@'e certo ponto indiscriminat@'oria; se voc@^e aplicar 
+@code{float} a uma express@~ao envolvendo um polin@^omio ortogonal com um
+grau simb@'olico ou um par@^ametro de ordem, esses par@^ametos (inteiros) podem ser 
+convertido em n@'umeros em ponto flutuante; ap@'os o que, a express@~ao n@~ao ir@'a avaliar 
+completamente. Considere
 
 @c ===beg===
 @c assoc_legendre_p (n, 1, x);
@@ -335,10 +335,10 @@ fully. Consider
                              2
 @end example
 
-The expression in (%o3) will not evaluate to a float; orthopoly doesn't
-recognize floating point values where it requires an integer. Similarly, 
-numerical evaluation of the @code{pochhammer} function for orders that
-exceed @code{pochhammer_max_index} can be troublesome; consider
+A express@~ao em (%o3) n@~ao ir@'a avaliar para um n@'umero em ponto flutuante; @code{orthopoly} n@~ao
+reconhece valores em ponto flutuante em lugares onde deve haver valores inteiros. Similarmente, 
+avalia@,{c}@~ao num@'erica da fun@,{c}@~ao @code{pochhammer} para ordens que
+excedam @code{pochhammer_max_index} pode ser perturbador; considere
 
 @c ===beg===
 @c x :  pochhammer (1, 10), pochhammer_max_index : 5;
@@ -349,7 +349,7 @@ exceed @code{pochhammer_max_index} can be troublesome; consider
                                  10
 @end example
 
-Applying @code{float} doesn't evaluate @var{x} to a float
+Aplicando @code{float} n@~ao avalia @var{x} para um n@'umero em ponto flutuante
 
 @c CONTINUING PREVIOUS EXAMPLE HERE
 @c ===beg===
@@ -361,8 +361,8 @@ Applying @code{float} doesn't evaluate @var{x} to a float
                                  10.0
 @end example
 
-To evaluate @var{x} to a float, you'll need to bind
-@code{pochhammer_max_index} to 11 or greater and apply @code{float} to @var{x}.
+Para avaliar @var{x} para um n@'umero em ponto flutuante, voc@^e ir@'a precisar associar
+@code{pochhammer_max_index} a 11 ou mais e aplicar @code{float} a @var{x}.
 
 @c CONTINUING PREVIOUS EXAMPLE HERE
 @c ===beg===
@@ -377,7 +377,7 @@ The default value of @code{pochhammer_max_index} is 100;
 change its value after loading @code{orthopoly}.
 
 Finally, be aware that reference books vary on the definitions of the 
-orthogonal polynomials; we've generally used the conventions 
+polin@^omios ortogonais; we've generally used the conventions 
 of conventions of Abramowitz and Stegun.
 
 Before you suspect a bug in orthopoly, check some special cases 
@@ -405,8 +405,8 @@ a Legendre polynomial that is orthogonal on @math{(0, 1)}, define
                                2
 @end example
 
-@anchor{Floating point Evaluation}
-@subsection Floating point Evaluation
+@anchor{Avalia@,{c}@~ao em Ponto Flutuante}
+@subsection Avalia@,{c}@~ao em Ponto Flutuante
 
 Most functions in orthopoly use a running error analysis to 
 estimate the error in floating point evaluation; the 
@@ -485,7 +485,7 @@ define interval addition, we can define
 @end example
 
 The special floating point routines get called when the arguments
-are complex.  For example,
+are complex.  Por exemplo,
 
 @c ===beg===
 @c legendre_p (10, 2 + 3.0*%i);
@@ -520,7 +520,7 @@ and the final result is a double.
 
 @subsection Graphics and orthopoly
 
-To plot expressions that involve the orthogonal polynomials, you 
+To plot expressions that involve the polin@^omios ortogonais, you 
 must do two things:
 @enumerate
 @item 
@@ -656,7 +656,7 @@ requires that the unit step function be left-continuous.
 @subsection Algorithms
 
 Generally, @code{orthopoly} does symbolic evaluation by using a hypergeometic 
-representation of the various orthogonal polynomials. The hypergeometic 
+representation of the various polin@^omios ortogonais. The hypergeometic 
 functions are evaluated using the (undocumented) functions @code{hypergeo11} 
 and @code{hypergeo21}. The exceptions are the half-integer Bessel functions 
 and the associated Legendre function of the second kind. The Bessel functions are
@@ -776,7 +776,7 @@ Function jacobi_p needs 4 arguments, instead it received 2
 @end example
 
 Additionally, when @var{f} isn't the name of one of the 
-families of orthogonal polynomials, an error is signalled.
+families of polin@^omios ortogonais, an error is signalled.
 
 @c ===beg===
 @c orthopoly_recur (foo, [n, x]);
@@ -804,7 +804,7 @@ Returns a three element list; the first element is
 the formula of the weight for the orthogonal polynomial family
 @var{f} with arguments given by the list @var{args}; the 
 second and third elements give the lower and upper endpoints
-of the interval of orthogonality. For example,
+of the interval of orthogonality. Por exemplo,
 
 @c ===beg===
 @c w : orthopoly_weight (hermite, [n, x]);
