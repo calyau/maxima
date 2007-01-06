@@ -1,9 +1,7 @@
 ; -*- Lisp -*-
-(declare (special $brombergit $brombergmin $brombergtol $brombergabs
+(declare-top (special $brombergit $brombergmin $brombergtol $brombergabs
 		  $bfloat $float2bf)
 	 (fixnum m l i k $brombergit $brombergmin))
-
-#-nil(declare (*expr $bfloat))
 
 (defun fpscale (x m)
        (cond ((equal (car x) 0) x)
@@ -11,7 +9,7 @@
 
 (defun bfmeval3 (x1) 
        (cond (($bfloatp (setq x1 ($bfloat (meval x1)))) (cdr x1))
-	     (t (displa x1) (error '|not big float|))))
+	     (t (displa x1) (merror "bromberg: encountered a non-bigfloat."))))
 
 (defun bqeval3 (y1 x1 z)
        (setq z (bcons z))
@@ -27,7 +25,7 @@
 
 (defun $bromberg (&rest l1) 
        (or (= (length l1) 4.) (= (length l1) 3.)
-	   (error '|wrong number of args to BROMBERG|))
+	   (merror "bromberg: wrong number of arguments."))
        ((lambda (fun var a b x $bfloat $float2bf lim limabs tt rr zero one three)
 		(setq var (= (length l1) 4.)) ;var=nil ==> first arg is function name 
 		(cond (var (setq fun (cond ((atom (car l1)) (meval (car l1)))
@@ -37,10 +35,8 @@
 		      (t (setq fun (car l1))
 			 (or (get fun 'expr) (get fun 'subr) 
 			     (get fun 'translated)
-			     (get fun 'compiler:flink-slots)
 			     (displa fun)
-			     (error
-			      '|first arg to BROMBERG not a TRANSLATEd function|))))
+			     (merror "bromberg: first argument doesn't appear to be a function."))))
 		(setq a (bfmeval3 (cadr l1)) 
 		      b (bfmeval3 (caddr l1))
 		      x (fpdifference b a))
@@ -51,7 +47,7 @@
 		(store (arraycall t rr 0.)
 		       (fptimes* x (bqeval3 fun var (fpscale (fpplus b a) -1))))
 		(do ((l 1. (1+ l)) (m 4. (* m 2.)) (y) (z) (cerr nil))
-		    ((= l $brombergit) (error '|failed to converge|))
+		    ((= l $brombergit) (merror "bromberg: failed to converge."))
 		    (setq y (intofp m) z (fpquotient x y))
 		    (store (arraycall t tt l)
 			   (fpscale (fpplus (arraycall t tt (1- l))
