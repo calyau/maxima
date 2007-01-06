@@ -1,0 +1,70 @@
+
+The file SHARE1;QQ FASL contains a function QUANC8 which can take either 
+3 or 4 arguments. The 3 arg version computes the integral of the function 
+specified as the first argument over the interval from lo to hi as in
+QUANC8('function name,lo,hi).  The function name should be quoted.
+The 4 arg version will compute the integral of the function or expression
+(first arg) with respect to the variable (second arg) over the interval 
+from lo to hi as in QUANC8(<f(x) or expression in x>,x,lo,hi).
+
+The method used is the Newton-Cotes 8th order polynomial quadrature, and 
+the routine is adaptive. It will thus spend time dividing the interval only 
+when necessary to achieve the error conditions specified by the global 
+variables QUANC8_RELERR (default value=1.0e-4) and QUANC8_ABSERR
+(default value=1.0e-8) which give
+the relative error test 
+|integral(function)-computed value|< quanc8_relerr*|integral(function)|
+and the absolute error test 
+|integral(function)-computed value|<quanc8_abserr. 
+
+The error from each subinterval is estimated and the contribution from a 
+subinterval is accepted only when the integral over the subinterval satisfies
+the error test over the subinterval. The total estimated error of the integral
+is contained in the global variable QUANC8_ERREST (default value=0.0). 
+
+The global variable QUANC8_FLAG (default value=0.0) will contain valuable 
+information if the computation fails to satisfy the error conditions. The 
+integer part will tell you how many subintervals failed to converge and the 
+fractional part will tell you where the singular behavior is, as follows: 
+singular point=lo+(1.-frac part)*(hi-lo).
+Thus quanc8(tan(x),x,1.57,1.6); gives frac=.97 so trouble is at 1.57+.03*.03=
+1.5709 (=half pi). If QUANC8_FLAG is not 0.0, you should be cautious in using 
+the return value, and should try ROMBERG or a Simpson method and see if the
+result checks. Analysis of possible singular behavior might be advisable. You
+may get QUANC8_FLAG=<integer>.0 and an error message (such as division by 0)
+when a singular point is hit in the interval. You will have to find the
+singularity and eliminate it before QUANC8 will get an answer. Functions 
+which have very large derivatives may throw the error estimate way off and
+cause the wrong points to be used, and a wrong answer returned. Try
+romberg(exp(-.002*x^2)*cos(x)^2,x,0.,100.); with the default tolerance, and
+quanc8(exp(-.002*x^2)*cos(x)^2,x,0.,100.); with quanc8_relerr=1.e-7 and 1.e-8.
+The last result is consistent with romberg while the previous one is off by
+a factor of 2! This is due to the bad behavior of the derivatives near
+x=10.0 which cause the adaptive routine to have trouble. If you use 
+quanc8('f,a,c)+quanc8('f,c,b) where a<c<b, you will do better in such cases.
+
+Typing a control-right-bracket (^]) will give a printout of where the 
+computation is at the moment, and how much time has been used.
+
+You can do batch("qq demo"); for some comparisons with the ROMBERG numerical
+integrator (which is not adaptive). Note that ROMBERG usually gives more 
+accurate answers for comparable tolerances, while QUANC8 will get the same 
+answer faster even with a smaller tolerance, because ROMBERG subdivides the
+whole interval if the total result is not within error tolerance, while QUANC8
+improves only where needed, thus saving many function calls. ROMBERG will also
+fail to converge when oscillatory behavior is overwhelming, while QUANC8 will 
+adapt in the regions as it sees fit. (The global variable ROMBERGMIN is 
+designed to allow you a minimum number of function calls in such cases, so 
+that exp(-x)*sin(12*x) can be integrated from 0 to 4*%pi without erroneously 
+giving 0. from the first few function calls.)
+
+To make your macsyma user function callable in the fastest way, you must use
+MODE_DECLARE and then translate and compile the function. Read TRANSL;TRANSL
+NEWS for info on this, or ask me for more info. The speed of the computation
+may be increased by well over an order of magnitude when compilation is used.
+If you do multiple integrals, it is really necessary to compile the function
+in order to avoid the time spent on function calls. A sample use of QUANC8
+for a double integral is in the batch("qq demo"); and compilation is nearly 
+a hundred times faster in doing the work!
+
+Comments, bugs, etc. should be sent to LPH@MIT-MC.
