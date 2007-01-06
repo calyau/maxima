@@ -40,8 +40,7 @@ compiled prior to calling DBLINT. This will result in orders of
 magnitude speed improvement over interpreted code in many cases! Ask
 LPH (or GJC) about using these numerical aids.  The file SHARE1;DBLINT
 DEMO can be run in batch or demo mode to illustrate the usage on a
-sample problem; the file SHARE1;DBLNT DEMO1 is an extension of the DEMO
-which also makes use of other numerical aids, FLOATDEFUNK and QUANC8.
+sample problem.
 Please send all bug notes and questions to LPH@MIT-MC.
 
 Note: Simpson's Rule specifies that

@@ -799,7 +799,6 @@ pui_direct
 puireduc
 put
 qput
-qq
 quad_qag
 quad_qagi
 quad_qags
@@ -807,7 +806,6 @@ quad_qawc
 quad_qawf
 quad_qawo
 quad_qaws
-quanc8
 quit
 qunit
 quotient

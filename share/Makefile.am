@@ -548,9 +548,6 @@ numeric/kach.dem\
 numeric/kach.mac\
 numeric/newton.mac\
 numeric/newton1.mac\
-numeric/qq.dem\
-numeric/qq.lisp\
-numeric/qq.usg\
 numeric/riemsum.mac\
 numeric/simpsn.dem\
 numeric/simpsn.mac\

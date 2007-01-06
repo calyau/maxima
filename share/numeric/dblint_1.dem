@@ -1,13 +1,10 @@
 /* a macro for floatdefunk, needed until optimu is used */
 load("fltdfnk.mc")$
 
-/* Example of use of double integrator (DBLINT), part 2, plus
-FLOATDEFUNK and QUANC8 */
+/* Example of use of double integrator (DBLINT), part 2 */
 
 /* Get the fasl file for DBLINT */ 
 load('dblint); 
-/* Get the fasl file for QUANC8 */
-load('qq);
 
 /* Use DBLINT to get the double integral of exp(x-y^2) over the region
 bounded by y=1 and y=2+x^(3/2) and x=0 to x=1 */
@@ -46,24 +43,4 @@ risch(xint,x);
 radcan(%);
 %,nouns;
 /* Still no luck with closed-form */
-/* The integral over x can't be done in closed-form, so let's use a
-one-dimensional integrator to do it numerically. First, we must
-define the integrand as a floating point function. FLOATDEFUNK
-does this very conveniently on the expression */
-
-floatdefunk(fun,[x],xint);
-
-/* Now translate the function fun */
-translate(fun);
-
-/* Now call QUANC8 on the translated function (see SHARE1;QQ USAGE for
-details) */
-
-quanc8_answer:quanc8(fun,0.0,1.0);
-
-/* Compare the answers from DBLINT and QUANC8 */
-
-(dblint_answer-quanc8_answer)/dblint_answer;
-
-/* It appears to be small enough relative error for most uses */
 "end of dblint.dm1"$

@@ -208,9 +208,6 @@ QUAL - does qualitative analysis, determining bounds, monotonicity,
      convexity, structure, periods, symmetries, poles, zeros, stationary
      points, and asymptotics of general expressions.
 
-QQ- (SHARE1;) Adaptive quadrature for fast numerical integrations. Has
-               3 and 4 arg versions of QUANC8. Written by LPH.
-
 RDUCON (SHARE1;) - A function which replaces constant subexpressions with
                    new generated constants.
 
