@@ -67,10 +67,8 @@ Some other special keywords are @code{xfun}, @code{color}, @code{plotpoints}, @c
 @deffnx {Function} plot2d ([@var{name_1}, ..., @var{name_n}], @var{x_range})
 @deffnx {Function} plot2d (@var{name}, @var{x_range}, @var{y_range})
 @deffnx {Function} plot2d (@var{name}, @var{x_range})
-@c TOO LONG !!! (TICKLES CL-INFO BUG)
-@c @defunx plot2d ([@var{expr_1}, ..., @var{expr_n}], @var{x_range}, ..., @var{options}, ...)
-@c TOO LONG !!! (TICKLES CL-INFO BUG)
-@c @defunx plot2d ([..., @var{expr}, ..., @var{parametric_expr}, ...], @var{x_range}, ..., @var{options})
+@deffnx {Function} plot2d ([@var{expr_1}, ..., @var{expr_n}], @var{x_range}, ..., @var{options}, ...)
+@deffnx {Function} plot2d ([..., @var{expr}, ..., @var{parametric_expr}, ...], @var{x_range}, ..., @var{options})
 
 Displays a plot of one or more expressions
 as a function of one variable.
@@ -757,9 +755,8 @@ A plot where the z-axis is represented by color only.
 
 @end defvr
 
-@c LONG LINE TICKLES CL-INFO BUG, COMMENT OUT TIL FIXED
-@c @deffnx {Function} plot3d ([@var{expr_1}, @var{expr_2}, @var{expr_3}], @var{x_range}, @var{y_range}, ..., @var{options}, ...)
-@deffn {Function} plot3d (@var{expr}, @var{x_range}, @var{y_range}, ..., @var{options}, ...)
+@deffn {Function} plot3d ([@var{expr_1}, @var{expr_2}, @var{expr_3}], @var{x_range}, @var{y_range}, ..., @var{options}, ...)
+@deffnx {Function} plot3d (@var{expr}, @var{x_range}, @var{y_range}, ..., @var{options}, ...)
 @deffnx {Function} plot3d (@var{name}, @var{x_range}, @var{y_range}, ..., @var{options}, ...)
 @deffnx {Function} plot3d ([@var{expr_1}, @var{expr_2}, @var{expr_3}], @var{x_rge}, @var{y_rge})
 @deffnx {Function} plot3d ([@var{name_1}, @var{name_2}, @var{name_3}], @var{x_range}, @var{y_range}, ..., @var{options}, ...)
