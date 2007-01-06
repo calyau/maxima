@@ -443,13 +443,13 @@
       (setf ilaenv 25)
       (go end_label)
      label1000
-      (setf ilaenv 1)
+      (setf ilaenv 0)
       (cond
         ((= ilaenv 1)
          (setf ilaenv (ieeeck 0 0.0f0 1.0f0))))
       (go end_label)
      label1100
-      (setf ilaenv 1)
+      (setf ilaenv 0)
       (cond
         ((= ilaenv 1)
          (setf ilaenv (ieeeck 1 0.0f0 1.0f0))))
