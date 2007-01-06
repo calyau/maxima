@@ -4,8 +4,8 @@
 
 ;; Author: Jay Belanger <belanger@truman.edu>
 ;; $Name:  $
-;; $Revision: 1.13 $
-;; $Date: 2005-01-10 22:57:35 $
+;; $Revision: 1.14 $
+;; $Date: 2007-01-06 19:19:30 $
 ;; Keywords: maxima, font-lock
 
 ;; This program is free software; you can redistribute it and/or
@@ -889,8 +889,6 @@
    "pui_direct"
    "put"
    "qput"
-   "qq"
-   "quanc8"
    "quit"
    "qunit"
    "quotient"))

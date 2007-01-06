@@ -56,14 +56,6 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} qq
-THIS ITEM NEEDS TO BE TRANSLATED.
-@end deffn
-
-@deffn {Function} quanc8 (@var{expr}, @var{a}, @var{b})
-THIS ITEM NEEDS TO BE TRANSLATED.
-@end deffn
-
 @deffn {Function} residue (@var{expr}, @var{z}, @var{z_0})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn

@@ -10,7 +10,7 @@
 
 @section Introducci@'on a la Integraci@'on   
 
-Maxima tiene varias rutinas para calcular integrales. La funci@'on @code{integrate} hace uso de la mayor parte de ellas.  Tambi@'en est@'a el paquete @code{antid}, que opera con funciones no especificadas y sus derivadas. Para usos num@'ericos se dispone de la funci@'on @code{romberg}, un integrador adaptativo que utiliza la regla de cuadratura de Newton-Cotes, llamada @code{quanc8} y una bater@'{@dotless{i}}a de integradores adaptativos de Quadpack, como @code{quad_qag}, @code{quad_qags}, etc., que se describen en la secci@'on @code{QUADPACK}.
+Maxima tiene varias rutinas para calcular integrales. La funci@'on @code{integrate} hace uso de la mayor parte de ellas.  Tambi@'en est@'a el paquete @code{antid}, que opera con funciones no especificadas y sus derivadas. Para usos num@'ericos se dispone de la funci@'on @code{romberg}, y una bater@'{@dotless{i}}a de integradores adaptativos de Quadpack, como @code{quad_qag}, @code{quad_qags}, etc., que se describen en la secci@'on @code{QUADPACK}.
 Tambi@'en se trabajan funciones hipergeom@'etricas, v@'ease @code{specint} para m@'as detalles. En t@'erminos generales, Maxima s@'olo opera con funciones que son integrables en t@'erminos de funciones elementales, como las racionales, trigonom@'etricas, logar@'{@dotless{i}}tmicas, exponenciales, radicales, etc., y unas pocas extensiones de @'estas, como la funci@'on de error o los dilogaritmos. No opera con integrales en t@'erminos de funciones desconocidas, como  @code{g(x)} o @code{h(x)}.
 
 @c end concepts Integration
@@ -377,23 +377,6 @@ mientras que @code{integrate} puede hacer uso de varias heur@'{@dotless{i}}stica
 
 
 @c FALTA DEFINICION SOBRE potential
-
-@c THIS ITEM IS A MESS BUT DON'T BOTHER TO FIX IT:
-@c THE GAUSS-KRONROD FUNCTIONS (QUADPACK) MAKE THIS OBSOLETE
-@deffn {Funci@'on} qq
-
-El paquete @code{qq}, que puede cargarse haciendo @code{load ("qq")}, contiene la funci@'on 
- @code{quanc8} que puede tomar 3 @'o 4 argumentos. La versi@'on para 3 argumentos calcula la integral de la funci@'on especificada en el primer argumento dentro del intervalo que va desde @code{lo} hasta @code{hi}, como en
-@code{quanc8 ('function, lo, hi)}.
-El nombre de la funci@'on debe ir precedido del ap@'ostrofo.  La versi@'on para 4 argumentos calcula la integral de la funci@'on especificada como primer argumento con respecto a la variable, que es el segundo argumento, en el intervalo que va desde @code{lo} hasta @code{hi}, como en @code{quanc8(<f(x) or expression in x>, x, lo, hi)}.
-El m@'etodo utilizado es el de cuadratura polinomial de octavo orden de Newton-Cotes.
-
-@end deffn
-
-@deffn {Funci@'on} quanc8 (@var{expr}, @var{a}, @var{b})
-Es un integrador adaptativo. Se incluyen ejemplos de uso. El m'etodo que sigue es el de cuadratura polinomial de octavo orden de Newton-Cotes, de ah@'{@dotless{i}} el nombre de la funci@'on @code{quanc8}, disponible para 3 y 4 argumentos. Se hace control de error absoluto y relativo. Se carga en memoria haciendo @code{load ("qq")}.  V@'ease tambi@'en @code{qq}.
-
-@end deffn
 
 @deffn {Funci@'on} residue (@var{expr}, @var{z}, @var{z_0})
 Calcula el residuo en el plano complejo de la expresi@'on  @var{expr} cuando la variable @var{z} toma el valor @var{z_0}.  El residuo es el coeficiente de @code{(@var{z} - @var{z_0})^(-1)} en el desarrollo de Laurent de @var{expr}.

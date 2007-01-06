@@ -14,9 +14,8 @@ Maxima tem muitas rotinas para manusear integra@,{c}@~ao.
 A fun@,{c}@~ao @code{integrate} faz uso de muitas dessas.  Exite tamb@'em o
 pacote @code{antid}, que manuseia uma fun@,{c}@~ao n@~ao especificada (e suas
 derivadas, certamente).  Para usos num@'ericos, existe a fun@,{c}@~ao 
-@code{romberg}; um
-integrador adaptativo que usa a regra da quadratura dos currais de Newton,
-chamada @code{quanc8}; e uma escolha de integradores adaptativos de Quadpack,
+@code{romberg};
+e uma escolha de integradores adaptativos de Quadpack,
 a saber @code{quad_qag}, @code{quad_qags}, etc., os quais s@~ao descritos sob o t@'opico @code{QUADPACK}.
 Fun@,{c}@~oes hipergeom@'etricas est@~ao sendo trabalhadas,
 veja @code{specint} for details.
@@ -503,49 +502,6 @@ depender de seus valores e de sua ordem.  @code{potentialzeroloc} @'e inicialmen
 para 0.
 
 @end deffn
-
-@c THIS ITEM IS A MESS BUT DON'T BOTHER TO FIX IT:
-@c THE GAUSS-KRONROD FUNCTIONS (QUADPACK) MAKE THIS OBSOLETE
-@deffn {Fun@,{c}@~ao} qq
-O pacote @code{qq} (que pode ser carregado com @code{load ("qq")})
-cont@'em uma fun@,{c}@~ao @code{quanc8} que pode pegar ou 3 ou 4 arguments.  A
-vers@~ao de 3 argumentos calcula a integral da fun@,{c}@~ao especificada como
-primeiro argumento sobre o intervalo de lo a hi como em
-@code{quanc8 ('fun@,{c}@~ao, lo, hi)}.
-o nome da fun@,{c}@~ao pode receber ap@'ostrofo.  A vers@~ao de 4 argumentos calcular@'a
-a integral da fun@,{c}@~ao ou express@~ao (primeiro argumento) em rela@,{c}@~ao
-@`a vari@'avel (segundo argumento) no intervalo de @code{lo} a @code{hi} como em
-@code{quanc8(<f(x) or express@~ao in x>, x, lo, hi)}.
-O m@'etodo usado @'e o da quadratura dos currais de Newton,
-e a rotina @'e adaptativa.  Isso ir@'a dessa forma gastar tempo dividindo o
-intervalo somente quando necess@'ario para completar as condi@,{c}@~oes de erro especificadas
-pelas vari@'aveis @code{quanc8_relerr} (valor padr@~ao=1.0e-4) e
-@code{quanc8_abserr} (valor padr@~ao=1.0e-8) que d@~ao o teste de erro
-relativo:
-
-@example
-|integral(fun@,{c}@~ao) - valor calculado| < quanc8_relerr*|integral(fun@,{c}@~ao)|
-@end example
-
-e o teste de erro absoluto:
-
-@example
-|integral(fun@,{c}@~ao) - valor calculado| < quanc8_abserr
-@end example
-
-@code{printfile ("qq.usg")} yields additional informa@,{c}@~ao.
-
-@end deffn
-
-@deffn {Fun@,{c}@~ao} quanc8 (@var{expr}, @var{a}, @var{b})
-Um integrador adaptativo.
-Demonstra@,{c}@~ao e arquivos de utiliza@,{c}@~ao s@~ao fornecidos.  O m@'etodo @'e para
-usar a regra da quadratura dos currais de Newton, da@'i o nome da fun@,{c}@~ao
-@code{quanc8}, dispon@'ivel em vers@~oes de 3 ou 4 argumentos.  Verifica@,{c}@~ao de erro absoluto e 
-erro relativo s@~ao usadas.  Para usar isso fa@,{c}a @code{load ("qq")}.  Veja tamb@'em @code{qq}.
-
-@end deffn
-
 @deffn {Fun@,{c}@~ao} residue (@var{expr}, @var{z}, @var{z_0})
 Calcula o res@'iduo no plano complexo da
 express@~ao @var{expr} quando a vari@'avel @var{z} assumes o valor @var{z_0}.  O

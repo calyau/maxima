@@ -12,9 +12,8 @@ Maxima has several routines for handling integration.
 The @code{integrate} function makes use of most of them.  There is also the
 @code{antid} package, which handles an unspecified function (and its
 derivatives, of course).  For numerical uses, there is the @code{romberg}
-function; an
-adaptave integrator which uses the Newton-Cotes 8 panel quadrature
-rule, called @code{quanc8}; and a set of adaptive integrators from Quadpack,
+function;
+and a set of adaptive integrators from Quadpack,
 named @code{quad_qag}, @code{quad_qags}, etc., which are described under the heading @code{QUADPACK}.
 Hypergeometric functions are being worked on,
 see @code{specint} for details.
@@ -501,48 +500,6 @@ sides in the latter.  The indicated right-hand sides are used as the
 lower limit of integration.  The success of the integrations may
 depend upon their values and order. @code{potentialzeroloc} is initially set
 to 0.
-
-@end deffn
-
-@c THIS ITEM IS A MESS BUT DON'T BOTHER TO FIX IT:
-@c THE GAUSS-KRONROD FUNCTIONS (QUADPACK) MAKE THIS OBSOLETE
-@deffn {Function} qq
-The package @code{qq} (which may be loaded with @code{load ("qq")})
-contains a function @code{quanc8} which can take either 3 or 4 arguments. The
-3 arg version computes the integral of the function specified as the
-first argument over the interval from lo to hi as in
-@code{quanc8 ('function, lo, hi)}.
-The function name should be quoted.  The 4 arg version will compute
-the integral of the function or expression (first arg) with respect to
-the variable (second arg) over the interval from @code{lo} to @code{hi} as in
-@code{quanc8(<f(x) or expression in x>, x, lo, hi)}.
-The method used is the Newton-Cotes 8th order polynomial quadrature,
-and the routine is adaptive. It will thus spend time dividing the
-interval only when necessary to achieve the error conditions specified
-by the global variables @code{quanc8_relerr} (default value=1.0e-4) and
-@code{quanc8_abserr} (default value=1.0e-8) which give the relative error
-test:
-
-@example
-|integral(function) - computed value| < quanc8_relerr*|integral(function)|
-@end example
-
-and the absolute error test:
-
-@example
-|integral(function) - computed value| < quanc8_abserr
-@end example
-
-@code{printfile ("qq.usg")} yields additional information.
-
-@end deffn
-
-@deffn {Function} quanc8 (@var{expr}, @var{a}, @var{b})
-An adaptive integrator.
-Demonstration and usage files are provided.  The method is to
-use Newton-Cotes 8-panel quadrature rule, hence the function name
-@code{quanc8}, available in 3 or 4 arg versions.  Absolute and relative error
-checks are used.  To use it do @code{load ("qq")}.  See also @code{qq}.
 
 @end deffn
 
