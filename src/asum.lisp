@@ -489,13 +489,6 @@ summation when necessary."
       (let (($simp nil))
         (setq summand ($substitute gensym-ind ind summand)))
 
-      (setq summand
-            (mbinding ((list ind) (list ind))
-                      (mevalatoms summand)))
-
-      (let (($simp nil))
-        (setq summand ($substitute gensym-ind ind summand)))
-
       (setq foo
             (mbinding ((list gensym-ind) (list gensym-ind))
                       (resimplify (meval summand))))

@@ -822,3 +822,9 @@ niceindices (sum (sum (1/(foo + foo0), foo, 1, n), foo0, 1, m));
 (kill(f), block ([x : product (sum (f(i), i, 1, inf), j, 1, inf)], block ([simp : false], is (x = 'product ('sum (f(i), i, 1, inf), j, 1, inf)))));
 
 true;
+
+/* Test for bug reported by Amit Aronovitch to mailing list 2006/01/06
+ */
+
+(kill(f), f(x) := sum (x^n/n!, n, 0, inf), f(2*x));
+'sum (2^n*x^n/n!, n, 0, inf);
