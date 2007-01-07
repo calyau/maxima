@@ -1,5 +1,5 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
-@c /Series.texi/1.15/Sat Nov 25 04:03:20 2006/-ko/
+@c /Series.texi/1.16/Sun Jan  7 05:49:50 2007/-ko/
 @menu
 * Introdu@value{cedilha}@~ao a S@'eries::      
 * Defini@value{cedilha}@~oes para S@'eries::      
@@ -414,11 +414,7 @@ Exemplos:
 @deffnx {Fun@value{cedilha}@~ao} taylor (@var{expr}, [@var{x_1}, @var{x_2}, ...], @var{a}, @var{n})
 @deffnx {Fun@value{cedilha}@~ao} taylor (@var{expr}, [@var{x}, @var{a}, @var{n}, 'asymp])
 @deffnx {Fun@value{cedilha}@~ao} taylor (@var{expr}, [@var{x_1}, @var{x_2}, ...], [@var{a_1}, @var{a_2}, ...], [@var{n_1}, @var{n_2}, ...])
-@c THIS ONE (above) IS LONG TOO, BUT APPARENTLY IT IS OK IF THE LAST @defunx IS LONG
-@c THIS NEXT ARGUMENT LIST TICKLES A BUG IN CL-INFO OR SOMETHING:
-@c APPARENTLY IF SOME ARGUMENT LIST IS LONGER THAN 1 LINE, REMAINDER OF THE DESCRIPTION IS LOST
-@c @defunx taylor (@var{expr}, [@var{x_1}, @var{a_1}, @var{n_1}], [@var{x_2}, @var{a_2}, @var{n_2}], ...)
-
+@deffnx {Fun@value{cedilha}@~ao} taylor (@var{expr}, [@var{x_1}, @var{a_1}, @var{n_1}], [@var{x_2}, @var{a_2}, @var{n_2}], ...)
 @code{taylor (@var{expr}, @var{x}, @var{a}, @var{n})} expande a express@~ao @var{expr}
 em uma s@'erie truncada de Taylor ou de Laurent na vari@'avel @var{x}
 em torno do ponto @var{a},

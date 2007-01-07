@@ -1,5 +1,5 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
-@c /Input.texi/1.51/Sat Dec 30 04:04:47 2006/-ko/
+@c /Input.texi/1.52/Sun Jan  7 05:49:17 2007/-ko/
 @menu
 * Introdu@value{cedilha}@~ao a Entrada e Sa@'ida::  
 * Coment@'arios::
@@ -1463,8 +1463,8 @@ Veja tamb@'em @code{lmxchar}.
 @deffnx {Fun@,{c}@~ao} save (@var{filename}, [@var{m}, @var{n}])
 @deffnx {Fun@,{c}@~ao} save (@var{filename}, @var{name_1}=@var{expr_1}, ...)
 @deffnx {Fun@,{c}@~ao} save (@var{filename}, all)
-@c @defunx save (@var{filename}, @var{name_1}=@var{expr_1},@var{name_2}=@var{expr_2}, ...)
-@c PRECEDING @defunx IS LONGER THAN 1 LINE, CAUSES cl-info.lisp TO STUMBLE; WORK AROUND IT
+@deffnx {Fun@,{c}@~ao} save (@var{filename}, @var{name_1}=@var{expr_1}, @var{name_2}=@var{expr_2}, ...)
+
 Armazena os valores correntes de @var{name_1}, @var{name_2}, @var{name_3}, ..., em @var{filename}.
 Os argumentos s@~ao os nomes das vari@'aveis, fun@,{c}@~oes, ou outros objetos.
 Se um nome n@~ao possui valore ou fun@,{c}@~ao associada a ele, esse nome sem nenhum valor ou fun@,{c}@~ao associado ser@'a ignorado.
