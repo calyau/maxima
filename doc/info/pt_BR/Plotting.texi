@@ -57,12 +57,12 @@ Algumas outras palavras chave especiais s@~ao @code{xfun}, @code{color}, @code{p
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao}  plot2d (@var{expr}, @var{range}, ..., @var{options}, ...)
-@deffnx {Fun@,{c}@~ao}  plot2d (@var{parametric_expr})
-@deffnx {Fun@,{c}@~ao}  plot2d ([@var{expr_1}, ..., @var{expr_n}], @var{x_range}, @var{y_range})
-@deffnx {Fun@,{c}@~ao}  plot2d ([@var{expr_1}, ..., @var{expr_n}], @var{x_range})
-@deffnx {Fun@,{c}@~ao}  plot2d (@var{expr}, @var{x_range}, @var{y_range})
-@deffnx {Fun@,{c}@~ao}  plot2d (@var{expr}, @var{x_range})
+@deffn {Fun@,{c}@~ao} plot2d (@var{expr}, @var{range}, ..., @var{options}, ...)
+@deffnx {Fun@,{c}@~ao} plot2d (@var{parametric_expr})
+@deffnx {Fun@,{c}@~ao} plot2d ([@var{expr_1}, ..., @var{expr_n}], @var{x_range}, @var{y_range})
+@deffnx {Fun@,{c}@~ao} plot2d ([@var{expr_1}, ..., @var{expr_n}], @var{x_range})
+@deffnx {Fun@,{c}@~ao} plot2d (@var{expr}, @var{x_range}, @var{y_range})
+@deffnx {Fun@,{c}@~ao} plot2d (@var{expr}, @var{x_range})
 @deffnx {Fun@,{c}@~ao} plot2d (@var{expr}, @var{x_range})
 @deffnx {Fun@,{c}@~ao} plot2d ([@var{name_1}, ..., @var{name_n}], @var{x_range}, @var{y_range})
 @deffnx {Fun@,{c}@~ao} plot2d ([@var{name_1}, ..., @var{name_n}], @var{x_range})
@@ -755,7 +755,8 @@ Uma montagem de gr@'afico onde o eixo z @'e representado apenas por cores.
 @end defvr
 
 @deffn {Fun@,{c}@~ao} plot3d ([@var{expr_1}, @var{expr_2}, @var{expr_3}], @var{x_range}, @var{y_range}, ..., @var{options}, ...)
-@deffnx {Fun@,{c}@~ao} plot3d (@var{expr}, @var{x_range}, @var{y_range}, ..., @var{options}, ...)@deffnx {Fun@value{cedilha}@~ao} plot3d (@var{name}, @var{x_range}, @var{y_range}, ..., @var{options}, ...)
+@deffnx {Fun@,{c}@~ao} plot3d (@var{expr}, @var{x_range}, @var{y_range}, ..., @var{options}, ...)
+@deffnx {Fun@,{c}@~ao} plot3d (@var{name}, @var{x_range}, @var{y_range}, ..., @var{options}, ...)
 @deffnx {Fun@,{c}@~ao} plot3d ([@var{expr_1}, @var{expr_2}, @var{expr_3}], @var{x_rge}, @var{y_rge})
 @deffnx {Fun@,{c}@~ao} plot3d ([@var{name_1}, @var{name_2}, @var{name_3}], @var{x_range}, @var{y_range}, ..., @var{options}, ...)
 
