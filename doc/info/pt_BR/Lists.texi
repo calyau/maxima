@@ -1,5 +1,5 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
-@c /Lists.texi/1.27/Sat Jul  8 08:14:46 2006/-ko/
+@c /Lists.texi/1.28/Mon Jan  8 04:17:44 2007/-ko/
 @menu
 * Introdu@value{cedilha}@~ao a Listas::
 * Defini@value{cedilha}@~oes para Listas::
@@ -429,6 +429,41 @@ Veja @code{first} para maiores detalhes.
 @deffn {Fun@,{c}@~ao} sixth (@var{expr})
 Retorna o sexto item da express@~ao ou lista @var{expr}.
 Veja @code{first} para maiores detalhes.
+
+@end deffn
+
+@deffn {Fun@,{c}@~ao} sublist_indices (@var{L}, @var{P})
+
+Retorna os @'indices dos elementos @code{x} da lista @var{L} para os quais
+o predicado @code{maybe(@var{P}(x))} retornar @code{true};
+isso inclui @code{unknown} bem como @code{false}.
+@var{P} pode ser um nome de fun@,{c}@~ao ou uma express@~ao lambda.
+@var{L} deve ser uma lista literal.
+
+Exemplos:
+@c ===beg===
+@c sublist_indices ('[a, b, b, c, 1, 2, b, 3, b], lambda ([x], x='b));
+@c sublist_indices ('[a, b, b, c, 1, 2, b, 3, b], symbolp);
+@c sublist_indices ([1 > 0, 1 < 0, 2 < 1, 2 > 1, 2 > 0], identity);
+@c assume (x < -1);
+@c map (maybe, [x > 0, x < 0, x < -2]);
+@c sublist_indices ([x > 0, x < 0, x < -2], identity);
+@c ===end===
+
+@example
+(%i1) sublist_indices ('[a, b, b, c, 1, 2, b, 3, b], lambda ([x], x='b));
+(%o1)                     [2, 3, 7, 9]
+(%i2) sublist_indices ('[a, b, b, c, 1, 2, b, 3, b], symbolp);
+(%o2)                  [1, 2, 3, 4, 7, 9]
+(%i3) sublist_indices ([1 > 0, 1 < 0, 2 < 1, 2 > 1, 2 > 0], identity);
+(%o3)                       [1, 4, 5]
+(%i4) assume (x < -1);
+(%o4)                       [x < - 1]
+(%i5) map (maybe, [x > 0, x < 0, x < -2]);
+(%o5)                [false, true, unknown]
+(%i6) sublist_indices ([x > 0, x < 0, x < -2], identity);
+(%o6)                          [2]
+@end example
 
 @end deffn
 

@@ -1,5 +1,5 @@
 \input texinfo
-@c /maxima.texi/1.38/Sun Dec 24 05:28:50 2006/-ko/
+@c /maxima.texi/1.39/Mon Jan  8 04:17:51 2007/-ko/
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c -*-texinfo-*-
 
@@ -226,6 +226,7 @@ Pacotes Adicionais
 * opsubst::                     Comandos para subsitui@,{c}@~oes.
 * orthopoly::                   Polin@'omios ortogonais.
 * plotdf::                      Gr@'aficos de campos de direc@,{c}@~oes.
+* romberg::                     M@'etodo de Romberg para integra@,{c}@~ao numerica.
 * simplex::                     Programa@,{c}@~ao linear.
 * simplification::              Fun@,{c}@~oes e regras de simplifica@,{c}@~ao.
 * solve_rec::                   Rela@,{c}@~oes de recorr@^encias lineares.
@@ -558,6 +559,10 @@ plotdf
 * Introdu@value{cedilha}@~ao a plotdf::
 * Defini@value{cedilha}@~oes para plotdf::
 
+romberg
+
+* Definitions for romberg::
+
 simplex
 
 * Introdu@value{cedilha}@~ao a simplex::
@@ -867,11 +872,15 @@ zeilberger
 @chapter orthopoly
 @include orthopoly.texi
 
-@node plotdf, simplex, orthopoly, Top
+@node plotdf, romberg, orthopoly, Top
 @chapter plotdf
 @include plotdf.texi
 
-@node simplex, simplification, plotdf, Top
+@node romberg, simplex, plotdf, Top
+@chapter romberg
+@include romberg.texi
+
+@node simplex, simplification, romberg, Top
 @chapter simplex
 @include simplex.texi
 
