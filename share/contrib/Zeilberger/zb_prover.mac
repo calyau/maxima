@@ -54,16 +54,16 @@ gs_prove(expr,k,cert) :=
 /* Routines related to the proof writer for Zeilberger's algoritm */
 
 zb_meaning(zb_in,k,n,zb_cert,zb_rec) :=
-  block([j],
+  block([j__],
 
-    print(sum(zb_rec[j]*subst(n+j-1,n,zb_in),j,1,length(zb_rec))," = "),
+    print(sum(zb_rec[j__]*subst(n+j__-1,n,zb_in),j__,1,length(zb_rec))," = "),
     print(subst(k+1,k,zb_cert*zb_in)-zb_cert*zb_in,";")
     );
 
 zb_reduced_meaning(zb_in,k,n,zb_cert,zb_rec) :=
-  block([i,j],
+  block([i__,j__],
 
-    return([sum(zb_rec[j]*product(subst(n+i-1,n,shiftQuo(zb_in,n)),i,1,j-1),j,1,length(zb_rec)),
+    return([sum(zb_rec[j__]*product(subst(n+i__-1,n,shiftQuo(zb_in,n)),i__,1,j__-1),j__,1,length(zb_rec)),
             subst(k+1,k,zb_cert)*shiftQuo(zb_in,k)-zb_cert])
     );
 

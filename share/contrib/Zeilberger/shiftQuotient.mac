@@ -128,7 +128,7 @@ shiftFactPoly(expr,k,j) :=
      shiftFactPoly(first(expr),k,j)*shiftFactPoly(second(expr),k,j)^(-1) 
   else
   if op(expr) = "*" then
-     product(shiftFactPoly(part(expr,i),k,j),i,1,length(expr)) 
+     product(shiftFactPoly(part(expr,i__),k,j),i__,1,length(expr)) 
   else
   if op(expr) = "^" then
      if integerp(second(expr)) then 
@@ -160,11 +160,11 @@ shiftQuoOnlyHyp(expr,k) :=
 
 
 isPolynomial(expr,k) :=
-  if freeof(k,expr) or expr=k or expr=-k then
+  if freeof(k,expr) or expr=k or expr=-k or constantp(expr) then
      true
   else
     if op(expr) = "^" then
-      freeof(k,second(expr)) and isPolynomial(first(expr),k)
+      ( freeof(k,second(expr)) and isPolynomial(first(expr),k) )
     else
       if op(expr) = "-" then
         isPolynomial(first(expr),k)
@@ -195,7 +195,7 @@ shiftQuoHypCheck(expr,k) :=
     xthru_expr : xthru(removeBinomial(expr)),
     sq_res : shiftQuoHypCheckAux(xthru_expr,k,HYP),
     
-    if ?ratp(sq_res[1],k) then
+    if rationalp(sq_res[1],k) then
       return(sq_res)
     else
       return([sq_res[1],NO_HYP])
@@ -215,8 +215,8 @@ block([sq_num,sq_den,sq_base,sq_exp],
        return([(k+1)/k,HYP])
      else
      if op(expr) = "*" then
-       return(product(shiftQuoHypCheckAux(part(expr,i),k,hyp_flag),
-              i,1,length(expr)))
+       return(product(shiftQuoHypCheckAux(part(expr,i__),k,hyp_flag),
+              i__,1,length(expr)))
      else
      if op(expr) = "//" then
        (
@@ -227,17 +227,19 @@ block([sq_num,sq_den,sq_base,sq_exp],
      else
      if op(expr) = "^" then
        (
-      
-       if freeof(k,first(expr)) then
-         sq_base : [first(expr),hyp_flag]
-       else
-         sq_base : shiftQuoHypCheckAux(first(expr),k,hyp_flag),
-       sq_exp : leadCoeff(second(expr),k),
-       if integerp(sq_exp) then
-         return([first(sq_base)^sq_exp,second(sq_base)])
-       else
-         return([first(sq_base)^sq_exp,NO_HYP])
-
+       if (freeof(k, second(expr))) then
+         (
+         sq_base : shiftQuoHypCheckAux(first(expr), k, hyp_flag),
+         if sq_base[2]=NO_HYP then return([expr, NO_HYP])
+         else return([sq_base[1]^second(expr), hyp_flag])
+         )
+       else if (freeof(k, first(expr))) then
+         (
+         sq_exp: bothcoef(second(expr), k),
+         if not(freeof(k, second(sq_exp))) then return([expr, NO_HYP])
+         else return([first(expr)^first(sq_exp), hyp_flag])
+         )
+       else return([expr, NO_HYP])
        )
      else
      if op(expr) = "!" then
@@ -246,12 +248,12 @@ block([sq_num,sq_den,sq_base,sq_exp],
         else
           if leadCoeff(first(expr),k)>0 then           
             return(
-                [product(factor(first(expr)+i),i,1,leadCoeff(first(expr),k)),
+                [product(factor(first(expr)+i__),i__,1,leadCoeff(first(expr),k)),
                 hyp_flag])
           else
              [
-             1/product(factor(first(expr)-i+1), 
-                     i,1,-leadCoeff(first(expr),k)),hyp_flag]
+             1/product(factor(first(expr)-i__+1), 
+                     i__,1,-leadCoeff(first(expr),k)),hyp_flag]
 /*
      else
      if op(expr) = binomial then
@@ -269,6 +271,10 @@ block([sq_num,sq_den,sq_base,sq_exp],
         )
 */
      else
+       if op(expr) = "-" then block(
+         return(shiftQuoHypCheckAux(-expr, k, hyp_flag))
+       )
+       else
        if op(expr) = "+" then
          return([shiftFactPoly(expr,k,1)/expr,hyp_flag])
        else

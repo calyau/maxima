@@ -114,7 +114,7 @@ makeGosperFormPrHypCheckVerboseOpt(expr,k,mode) :=
   /* Local variables */
   [num,den,numList,denList,lengthNumList,lengthDenList,
    test,
-   i,j,h,minExp,pulledPoly,pPoly,curExp,compPoly,formSign,
+   i__,j,h,minExp,pulledPoly,pPoly,curExp,compPoly,formSign,
    p,q,r,pList,qList,rList,
    negNumFlag,negDenFlag,
    intLinNum,nonIntLinNum,intLinDen,nonIntLinDen,
@@ -329,7 +329,7 @@ denList : second(candListSplit),
      ),
 
 /* end of inner loop */
-q : q * product(norm2polyPower(part(candNumList,i)),i,1,length(candNumList))
+q : q * product(norm2polyPower(part(candNumList,i__)),i__,1,length(candNumList))
 
   ),
 /* end of outer loop */
@@ -339,9 +339,9 @@ print("numList : ", numList),
 print("denList : ", denList)
 ),
 if numList # [] then
-  q : q * product(norm2polyPower(part(numList,i)),i,1,length(numList)),
+  q : q * product(norm2polyPower(part(numList,i__)),i__,1,length(numList)),
 if denList # [] then
-  r : r * product(norm2polyPower(part(denList,i)),i,1,length(denList)),
+  r : r * product(norm2polyPower(part(denList,i__)),i__,1,length(denList)),
 
 if mode>= verbose then
 (
@@ -446,7 +446,7 @@ unless ((candNumList = []) or (candDenList = [])) do
        denExp:second(first(candDenList)),
        minExp:min(numExp,denExp),
        
-       p : p * product(subst(k+i,k,norm2intLin(first(candDenList),k)^minExp),i,0,diff-1),
+       p : p * product(subst(k+i__,k,norm2intLin(first(candDenList),k)^minExp),i__,0,diff-1),
        if mode>= verbose then
           print("p computed : ", p),
        if(numExp>denExp) then
@@ -476,19 +476,19 @@ unless ((candNumList = []) or (candDenList = [])) do
 /* out of inner cycle */
   
 if (candNumList # []) then
- q : q * product(norm2polyPower(part(candNumList,i)),i,1,length(candNumList)),
+ q : q * product(norm2polyPower(part(candNumList,i__)),i__,1,length(candNumList)),
 
 
 if(candDenList # []) then
- r : r * product(norm2polyPower(part(candDenList,i)),i,1,length(candDenList))
+ r : r * product(norm2polyPower(part(candDenList,i__)),i__,1,length(candDenList))
 
  ), /* end unless */
 
 if (numList # []) then
-  q : q*product(norm2polyPower(part(numList,i)),i,1,length(numList)),
+  q : q*product(norm2polyPower(part(numList,i__)),i__,1,length(numList)),
 
 if (denList # []) then
-  r : r*product(norm2polyPower(part(denList,i)),i,1,length(denList)),
+  r : r*product(norm2polyPower(part(denList,i__)),i__,1,length(denList)),
 
 
 r : subst(k-1,k,r),
