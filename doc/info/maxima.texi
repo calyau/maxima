@@ -161,6 +161,7 @@ Additional packages
 * opsubst::                     Substitutions utility.
 * orthopoly::                   Orthogonal polynomials.
 * plotdf::                      Direction fields plots.
+* romberg::                     Romberg method for numerical integration.
 * simplex::                     Linear programming.
 * simplification::              Simplification rules and functions.
 * solve_rec::                   Linear recurrences.
@@ -495,6 +496,10 @@ plotdf
 * Introduction to plotdf::
 * Definitions for plotdf::
 
+romberg
+
+* Definitions for romberg::
+
 simplex
 
 * Introduction to simplex::
@@ -804,11 +809,15 @@ zeilberger
 @chapter orthopoly
 @include orthopoly.texi
 
-@node plotdf, simplex, orthopoly, Top
+@node plotdf, romberg, orthopoly, Top
 @chapter plotdf
 @include plotdf.texi
 
-@node simplex, simplification, plotdf, Top
+@node romberg, simplex, plotdf, Top
+@chapter romberg
+@include romberg.texi
+
+@node simplex, simplification, romberg, Top
 @chapter simplex
 @include simplex.texi
 

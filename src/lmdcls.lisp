@@ -91,8 +91,7 @@
   $poislim $powerdisp $prederror $programmode $props
   $radexpand $ratalgdenom $ratdenomdivide $ratepsilon $ratexpand
   $ratfac $ratmx $ratprint $ratsimpexpons $ratvars $ratweights
-  $ratwtlvl $realonly $refcheck $resultant $rmxchar $rombergabs
-  $rombergit $rombergit_used $rombergmin $rombergtol $rootsconmode
+  $ratwtlvl $realonly $refcheck $resultant $rmxchar $rootsconmode
   $rules $savedef $savefactors $scalarmatrixp $setcheck
   $setcheckbreak $setval $showtime $signbfloat $simp $simpsum
   $solvedecomposes $solveexplicit $solvefactors $solvenullwarn

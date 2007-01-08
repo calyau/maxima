@@ -147,3 +147,12 @@
 (def-translate-property $romberg (form)
   (let (($tr_numer t))
     (translate (romberg-macro form t))))
+
+; Following stuff (from here to end of file) is copied from src/trdata.lisp
+
+(def-autoload-translate $romberg)
+
+(eval-when (load)
+  (mapc #'(lambda (x) (putprop x '$float 'function-mode))
+	'($romberg_subr)))
+

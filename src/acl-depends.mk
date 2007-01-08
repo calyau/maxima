@@ -218,7 +218,6 @@ binary-acl/maxima.dxl : ellipt.lisp
 binary-acl/maxima.dxl : airy.lisp
 binary-acl/maxima.dxl : numer.lisp
 binary-acl/maxima.dxl : intpol.lisp
-binary-acl/maxima.dxl : rombrg.lisp
 binary-acl/maxima.dxl : nparse.lisp
 binary-acl/maxima.dxl : displa.lisp
 binary-acl/maxima.dxl : nforma.lisp

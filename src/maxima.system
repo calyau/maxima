@@ -442,8 +442,7 @@
 				     (:file "airy"
 					    :depends-on ("ellipt"))
 				     (:file "numer") 
-				     (:file "intpol") 
-				     (:file "rombrg")))
+				     (:file "intpol")))
 	       (:module reader :source-pathname ""
 			:depends-on (compatibility-macros)
 			:components ((:file "nparse")))

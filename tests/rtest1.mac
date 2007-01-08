@@ -70,5 +70,3 @@ g(fun,a,b):=print(fun," applied to ",a," and ",b," is ",fun(a,b));
 g(fun,a,b):=print(fun," applied to ",a," and ",b," is ",fun(a,b))$
 g(f[2,1],sin(%pi),2*c);
 2*c$
-romberg(sin(y),y,1,%pi);
-1.540302306426815$

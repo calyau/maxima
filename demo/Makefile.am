@@ -11,7 +11,7 @@ macro.dem\
 manual.demo\
 newfac.dem\
 plots.mac\
-rombrg.dem\
+romberg.dem\
 subscr.dem\
 sumcon.dem\
 trgsmp.dem

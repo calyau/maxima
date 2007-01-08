@@ -396,7 +396,6 @@ ratpoi.lisp \
 residu.lisp \
 result.lisp \
 risch.lisp \
-rombrg.lisp \
 rpart.lisp \
 runtim.lisp \
 rzmac.lisp \

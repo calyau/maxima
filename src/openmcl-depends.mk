@@ -169,7 +169,6 @@ binary-openmcl/maxima.image : bessel.lisp
 binary-openmcl/maxima.image : ellipt.lisp
 binary-openmcl/maxima.image : numer.lisp
 binary-openmcl/maxima.image : intpol.lisp
-binary-openmcl/maxima.image : rombrg.lisp
 binary-openmcl/maxima.image : nparse.lisp
 binary-openmcl/maxima.image : displa.lisp
 binary-openmcl/maxima.image : nforma.lisp

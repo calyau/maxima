@@ -26,7 +26,7 @@
 
 ;; this should go someplace else perhaps.
 
-(def-autoload-translate $romberg $find_root)
+(def-autoload-translate $find_root)
 
 ;;; MODEDECLARE(FUNCTION(LENGTH),FIXNUM)
 
@@ -37,11 +37,8 @@
 	'($length $nterms random $nroots $rank $polysign $time
 	  $array_dimension_n))
 
-;;; MODEDECLARE(FUNCTION(ROMBERG_SUBR),FLOAT)
-;;; ROMBERG is a macsyma macro.
-
   (mapc #'(lambda (x) (putprop x '$float 'function-mode))
-	'($romberg_subr $find_root_subr))
+	'($find_root_subr))
 
 ;;; Functions of BOOLEAN return VALUE. i.e. PREDICATES
 

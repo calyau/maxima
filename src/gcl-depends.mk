@@ -224,7 +224,6 @@ binary-gcl/maxima : ellipt.lisp
 binary-gcl/maxima : airy.lisp
 binary-gcl/maxima : numer.lisp
 binary-gcl/maxima : intpol.lisp
-binary-gcl/maxima : rombrg.lisp
 binary-gcl/maxima : nparse.lisp
 binary-gcl/maxima : displa.lisp
 binary-gcl/maxima : nforma.lisp
