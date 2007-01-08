@@ -7,25 +7,25 @@
  *   load("closed_form_test");
  *
  ***************************************/
-
-test_sum(s, ass, use_gamma, smp) := block(
-  [product_use_gamma : use_gamma, cs, f],
-  if length(ass)>0 then apply(assume, ass),
-  cs : closed_form(s),
-  for f in smp do cs : apply(f, [cs]),
-  print("|----------------------------------------------------------|"),
-  if length(ass)>0 then print("Assuming:", ass),
-  print(s = cs),
-  print("|----------------------------------------------------------|"),
-  if length(ass)>0 then apply(forget, ass)
-  )$
+(
+  test_sum(s, ass, use_gamma, smp) := block(
+    [product_use_gamma : use_gamma, cs, f],
+    if length(ass)>0 then apply(assume, ass),
+    cs : closed_form(s),
+    for f in smp do cs : apply(f, [cs]),
+    cs
+    ),
+  0
+);
+0;
 
 test_sum(
   sum(r/k*binom(n,r)*binom(m,k-r)/binom(n+m,k),r,0,k),
   [n>k, m>k-1],
   true,
   [makefact, minfactorial]
-)$
+);
+n/(n+m);
 
 test_sum(
   sum(binom(n,k)/(k+1), k, 0, n),
@@ -33,146 +33,167 @@ test_sum(
   true,
   []
 );
+(2^(n+1)-1)/(n+1);
 
 test_sum(
   sum((-1)^k * binomial(a+b, a+k) * binomial(b+c, b+k) * binomial(c+a, c+k), k, -a, a),
   [a<b, a<c],
   true,
   [factcomb]
-)$
+);
+(c+b+a)!/(a!*b!*c!);
 
 test_sum(
   sum((-1)^k * binom(n,k)*x/(x+k), k, 0, n),
   [],
   true,
   [factcomb]
-)$
+);
+(n!*x!)/(x+n)!;
 
 test_sum(
   sum((-1)^k * binomial(2*n, k)^2, k, 0, 2*n),
   [],
   false,
   []
-)$
+);
+((product(2*%l+1,%l,0,n-1))*(-1)^n*2^n)/n!;
 
 test_sum(
   sum((binom(3*k+1,k)*binom(3*(n-k),n-k))/(3*k+1), k, 0, n),
   [],
   false,
   []
-)$
+);
+((product(3*%j+2,%j,0,n-1))*(product(3*%j+4,%j,0,n-1))*3^n)/((product(2*%j+3,%j,0,n-1))*2^n*n!);
 
 test_sum(
   sum(binomial(n, k) * binomial(m, r - k), k, 0, r),
   [m>r, n>r],
   true,
   [factcomb]
-)$
+);
+(n+m)!/((-r+n+m)!*r!);
 
 test_sum(
   sum(binomial(2*n,2*k), k, 0, n),
   [],
   true,
   []
-)$
+);
+4^n/2;
 
 test_sum(
   sum((-1)^k*binom(x-2*k,n-k)*binom(x-k+1,k),k,0,n),
   [x>2*n, x>n-1],
   true,
   []
-)$
+);
+((-1)^n+1)/2;
 
 test_sum(
   sum((-1)^s*binom(2*m, s)^3, s, 0, 2*m),
   [],
   false,
   []
-)$
+);
+((product(3*%l+1,%l,0,m-1))*(product(3*%l+2,%l,0,m-1))*(-1)^m*3^m)/m!^2;
 
 test_sum(
   sum((-1)^k*binom(k,n-k), k, 0, n),
   [],
   true,
   [rectform, trigreduce]
-)$
+);
+(3*cos((2*%pi*n)/3)-sqrt(3)*sin((2*%pi*n)/3))/3;
 
 test_sum(
   sum(binom(n,k)^2*binom(3*n+k,2*n), k, -inf, inf),
   [n>0],
   false,
   []
-)$
+);
+((product(3*%l+1,%l,0,n-1))^2*(product(3*%l+2,%l,0,n-1))^2*9^n)/((product(2*%l+1,%l,0,n-1))^2*4^n*n!^2);
 
 test_sum(
   sum((-1)^k*binom(n-k,k)*2^(n-2*k), k, 0, n),
   [],
   true,
   []
-)$
+);
+n+1;
 
 test_sum(
   sum(binom(x,k)*binom(y,k), k, 0, y),
   [x>y],
   true,
   [factcomb]
-)$
+);
+(y+x)!/(x!*y!);
 
 test_sum(
   sum((-1)^(n-k)*binom(n,k)*binom(k+b,k), k, 0, n),
   [b>0],
   true,
   [factcomb]
-)$
+);
+b!/((b-n)!*n!);
 
 test_sum(
   sum(binom(n+k,k)/2^k,k,0,n),
   [],
   true,
   []
-)$
+);
+2^n;
 
 test_sum(
   sum((2^(4*k)*binom(2*n-2*k,n-k))/(2*k*(2*k+1)*binom(2*k,k)), k, 1, n),
   [],
   true,
   []
-)$
+);
+-(4*binom(-2*(1-n),n-1)*(1-2*n))/(2*n+1);
 
 test_sum(
   sum(k^2 * binomial(n, k), k, 1, n),
   [],
   true,
   []
-)$
+);
+((n^2+n)*2^n)/4;
 
 test_sum(
   sum(2^(n-k)*binom(n+k,2*k),k,-inf,inf),
   [n>0],
   true,
   []
-)$
+);
+(2*4^n+1)/3;
 
 test_sum(
   sum(((-1)^k*binom(2*k,k)*binom(n,k))/4^k,k,0,n),
   [],
   true,
   []
-)$
+);
+((2*n-1)/2)!/(sqrt(%pi)*n!);
 
 test_sum(
   sum((-1)^k*binom(2*k,k)*binom(2*n,k)*binom(4*n-2*k,2*n-k),k,0,2*n),
   [],
   true,
   []
-)$
+);
+(4^n*2^(2*n)*((2*n-1)/2)!^2)/(%pi*n!^2);
 
 test_sum(
   sum((n^2+n+1)/(n^4-2*n^2+1),n,2,inf),
   [],
   true,
   [ratsimp, multthru]
-)$
+);
+%pi^2/6-5/16;
 
 
 test_sum(
@@ -180,21 +201,24 @@ test_sum(
   [],
   true,
   [ratsimp, multthru]
-)$
+);
+2-2*log(2);
 
 test_sum(
   sum(1/(5*n^2-1),n,1,inf),
   [],
   true,
   [ratsimp, multthru]
-)$
+);
+(sqrt(5)*psi[0]((sqrt(5)+1)/sqrt(5)))/10-(sqrt(5)*psi[0]((sqrt(5)-1)/sqrt(5)))/10;
 
 test_sum(
   sum(1/(5*n^2-3),n,1,inf),
   [],
   true,
   [ratsimp, multthru]
-)$
+);
+(sqrt(3)*sqrt(5)*psi[0]((sqrt(3)*sqrt(5)+3)/(sqrt(3)*sqrt(5))))/30-(sqrt(3)*sqrt(5)*psi[0]((sqrt(3)*sqrt(5)-3)/(sqrt(3)*sqrt(5))))/30;
 
 
 test_sum(
@@ -202,11 +226,13 @@ test_sum(
   [],
   true,
   [ratsimp, multthru]
-)$
+);
+(%i*psi[0](1-%i))/2-(%i*psi[0](%i+1))/2;
 
 test_sum(
   sum(1/n/(n+a), n, 1, inf),
   [],
   true,
   [ratsimp, multthru]
-)$
+);
+psi[0](a+1)/a+%gamma/a;

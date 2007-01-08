@@ -65,7 +65,7 @@ cf_print_message(level, [mess]) :=
 
 closed_form(expr) :=
   /* Check if we have a sum - if not then simplify all arguments.       */
-  if atom(expr) then expr
+  if mapatom(expr) then expr
   else if part(expr, 0)#nounify(sum) then map(closed_form, expr)
 
   else block(
