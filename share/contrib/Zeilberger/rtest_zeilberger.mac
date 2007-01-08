@@ -4,6 +4,7 @@ done$
 done$
 
 
+/* New regression tests are at end */
 
 /*=================================================================*/
 /* converted from testZeilberger.mac (mvdb) */
@@ -162,16 +163,13 @@ ratsimp(AntiDifference(-1/(k*(k+1)),k));
 1/k$
 
 /* suggested by Andrej */
-/* currently failing */
 AntiDifference(2^(k^2), k);
 NON_HYPERGEOMETRIC$
 
-/* currently failing */
 AntiDifference(k^k, k);
 NON_HYPERGEOMETRIC$
 
-/* currently failing; works correctly with i replaced by j. */
-Zeilberger(binomial(n,i), n, i);
-[[(n-i)/(i+1),[1]]]$
-zb_prove(binomial(n,i),n,i,%);
+Zeilberger(binomial(n,i), i, n);
+[[i/(n-i+1), [2, -1]]]$
+zb_prove(binomial(n,i),i,n,%);
 true$
