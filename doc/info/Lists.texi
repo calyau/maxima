@@ -432,6 +432,41 @@ See @code{first} for more details.
 
 @end deffn
 
+@deffn {Function} sublist_indices (@var{L}, @var{P})
+
+Returns the indices of the elements @code{x} of the list @var{L} for which
+the predicate @code{maybe(@var{P}(x))} returns @code{true};
+this excludes @code{unknown} as well as @code{false}.
+@var{P} may be the name of a function or a lambda expression.
+@var{L} must be a literal list.
+
+Examples:
+@c ===beg===
+@c sublist_indices ('[a, b, b, c, 1, 2, b, 3, b], lambda ([x], x='b));
+@c sublist_indices ('[a, b, b, c, 1, 2, b, 3, b], symbolp);
+@c sublist_indices ([1 > 0, 1 < 0, 2 < 1, 2 > 1, 2 > 0], identity);
+@c assume (x < -1);
+@c map (maybe, [x > 0, x < 0, x < -2]);
+@c sublist_indices ([x > 0, x < 0, x < -2], identity);
+@c ===end===
+
+@example
+(%i1) sublist_indices ('[a, b, b, c, 1, 2, b, 3, b], lambda ([x], x='b));
+(%o1)                     [2, 3, 7, 9]
+(%i2) sublist_indices ('[a, b, b, c, 1, 2, b, 3, b], symbolp);
+(%o2)                  [1, 2, 3, 4, 7, 9]
+(%i3) sublist_indices ([1 > 0, 1 < 0, 2 < 1, 2 > 1, 2 > 0], identity);
+(%o3)                       [1, 4, 5]
+(%i4) assume (x < -1);
+(%o4)                       [x < - 1]
+(%i5) map (maybe, [x > 0, x < 0, x < -2]);
+(%o5)                [false, true, unknown]
+(%i6) sublist_indices ([x > 0, x < 0, x < -2], identity);
+(%o6)                          [2]
+@end example
+
+@end deffn
+
 @deffn {Function} tenth (@var{expr})
 Returns the 10'th item of expression or list @var{expr}.
 See @code{first} for more details.

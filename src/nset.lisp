@@ -1374,4 +1374,13 @@ a positive integer; instead found ~:M" n))))
 	 (thread y (cdr n) (caar n)))
 	(t `(($moebius simp) ,n))))
 
+; Find indices of elements which satisfy a predicate.
+; Thanks to Bill Wood (william.wood3@comcast.net) for his help.
+; Released under terms of GNU GPL v2 with Bill's approval.
 
+(defun $sublist_indices (items pred)
+  (let ((items (require-list items "$sublist_indices")))
+    (do ((i 0 (1+ i))
+         (xs items (cdr xs))
+         (acc '() (if (definitely-so (mfuncall pred (car xs))) (cons (1+ i) acc) acc)))
+      ((endp xs) `((mlist) ,@(nreverse acc))))))
