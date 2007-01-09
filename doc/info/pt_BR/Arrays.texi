@@ -9,7 +9,7 @@
 
 @deffn {Fun@,{c}@~ao} array (@var{name}, @var{dim_1}, ..., @var{dim_n})
 @deffnx {Fun@,{c}@~ao} array (@var{name}, @var{type}, @var{dim_1}, ..., @var{dim_n})
-@deffnx {Fun@,{c}@~ao} array ([@var{name_1}, ..., @var{name_m}], @var{dim_1}, ..., @var{dim_n})
+@deffnx {Fun@,{c}@~ao} array ([@var{nome_1}, ..., @var{nome_m}], @var{dim_1}, ..., @var{dim_n})
 
 Cria um array @math{n}-dimensional.  
 @math{n} pode ser menor ou igual a 5.
@@ -23,7 +23,7 @@ um array, com elementos de um tipo especificado.
 @var{type} pode ser @code{fixnum} para
 inteiros de tamanho limitado ou @code{flonum} para n@'umeros em ponto flutuante.
 
-@code{array ([@var{name_1}, ..., @var{name_m}], @var{dim_1}, ..., @var{dim_n})}
+@code{array ([@var{nome_1}, ..., @var{nome_m}], @var{dim_1}, ..., @var{dim_n})}
 cria @math{m} arrays, todos da mesma dimens@~ao.
 @c SAME TYPE AS WELL ??
 

@@ -57,8 +57,8 @@ aut@^onoma em um sistema de duas equa@,{c}@~oes aut@^onomas.
 @node Defini@value{cedilha}@~oes para plotdf,  , Introdu@value{cedilha}@~ao a plotdf, plotdf
 @section Defini@value{cedilha}@~oes para plotdf
 
-@deffn {Fun@value{cedilha}@~ao} plotdf (@var{dydx},...op@value{cedilha}@~oes...)
-@deffnx {Fun@value{cedilha}@~ao} plotdf (@code{[}@var{dxdt},@var{dydt}@code{]},...op@value{cedilha}@~oes...)
+@deffn {Fun@,{c}@~ao} plotdf (@var{dydx},...op@value{cedilha}@~oes...)
+@deffnx {Fun@,{c}@~ao} plotdf (@code{[}@var{dxdt},@var{dydt}@code{]},...op@value{cedilha}@~oes...)
 
 Mostra um campo de dire@,{c}@~ao em duas dimens@~oes @var{x} e @var{y}.
 

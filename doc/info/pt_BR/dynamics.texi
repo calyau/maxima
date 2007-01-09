@@ -23,7 +23,7 @@ esteja instalado.
 @node Defini@value{cedilha}@~oes para dynamics,  , Introdu@value{cedilha}@~ao a dynamics, dynamics
 @section Defini@value{cedilha}@~oes para dynamics
 
-@deffn {Fun@value{cedilha}@~ao} chaosgame (@code{[[}@var{x1}, @var{y1}@code{]}...@code{[}@var{xm}, @var{ym}@code{]]}, @code{[}@var{x0}, @var{y0}@code{]}, @var{b}, @var{n}, ...op@value{cedilha}@~oes...);
+@deffn {Fun@,{c}@~ao} chaosgame (@code{[[}@var{x1}, @var{y1}@code{]}...@code{[}@var{xm}, @var{ym}@code{]]}, @code{[}@var{x0}, @var{y0}@code{]}, @var{b}, @var{n}, ...op@value{cedilha}@~oes...);
 
 Usa o m@'etodo designado de @emph{jogo do caos}, para produzir fractais:
 desenha-se um ponto inicial (@var{x0}, @var{y0}) e logo escolhe-se
@@ -36,7 +36,7 @@ do segmento. O processo repete-se @var{n} vezes.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} evolution (@var{F}, @var{y0}, @var{n},...op@value{cedilha}@~oes...);
+@deffn {Fun@,{c}@~ao} evolution (@var{F}, @var{y0}, @var{n},...op@value{cedilha}@~oes...);
 
 Desenha @var{n+1} pontos num gr@'afico bidimensional (s@'erie de tempo),
 onde as coordenadas horizontais dos pontos s@~ao os n@'umeros inteiros
@@ -58,7 +58,7 @@ express@~ao que dependa unicamente da vari@'avel @var{y} (e n@~ao de @var{n}),
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} evolution2d (@code{[}@var{F}, @var{G}@code{]}, @code{[}@var{x0}, @var{y0}@code{]}, @var{n}, ...op@value{cedilha}@~oes...);
+@deffn {Fun@,{c}@~ao} evolution2d (@code{[}@var{F}, @var{G}@code{]}, @code{[}@var{x0}, @var{y0}@code{]}, @var{n}, ...op@value{cedilha}@~oes...);
 
 Mostra, num gr@'afico bidimensional, os primeiros @var{n+1} pontos da
 sucess@~ao definida a partir do sistema din@^amico discreto com
@@ -77,7 +77,7 @@ ser duas express@~oes que dependam unicamente de @var{x} e @var{y}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} ifs (@code{[}@var{r1},...,@var{rm}@code{]},@code{[}@var{A1},...,@var{Am}@code{]}, @code{[[}@var{x1},@var{y1}@code{]}...@code{[}@var{xm}, @var{ym}@code{]]}, @code{[}@var{x0},@var{y0}@code{]},
+@deffn {Fun@,{c}@~ao} ifs (@code{[}@var{r1},...,@var{rm}@code{]},@code{[}@var{A1},...,@var{Am}@code{]}, @code{[[}@var{x1},@var{y1}@code{]}...@code{[}@var{xm}, @var{ym}@code{]]}, @code{[}@var{x0},@var{y0}@code{]},
 @var{n}, ...op@value{cedilha}@~oes...);
 
 Usa o m@'etodo do Sistema de Fun@value{cedilha}@~oes Iteradas (IFS, em
@@ -99,7 +99,7 @@ propor@value{cedilha}@~ao.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} julia (@var{x}, @var{y}, ...@var{op@value{cedilha}@~oes}...)
+@deffn {Fun@,{c}@~ao} julia (@var{x}, @var{y}, ...@var{op@value{cedilha}@~oes}...)
 
 Cria um ficheiro gr@'afico com a representa@value{cedilha}@~ao do
 conjunto de Julia do n@'umero complexo (@var{x} + i @var{y}). Os
@@ -132,7 +132,7 @@ frente.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} mandelbrot (@var{options})
+@deffn {Fun@,{c}@~ao} mandelbrot (@var{options})
 
 Cria um ficheiro gr@'afico com a representa@value{cedilha}@~ao do
 conjunto de Mandelbrot. O ficheiro @'e criado no direct@'orio actual ou
@@ -163,7 +163,7 @@ frente.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} orbits (@var{F}, @var{y0}, @var{n1}, @var{n2}, [@var{x}, @var{x0}, @var{xf}, @var{xstep}], ...op@value{cedilha}@~oes...);
+@deffn {Fun@,{c}@~ao} orbits (@var{F}, @var{y0}, @var{n1}, @var{n2}, [@var{x}, @var{x0}, @var{xf}, @var{xstep}], ...op@value{cedilha}@~oes...);
 
 Desenha o diagrama de @'orbitas duma fam@'{@dotless{i}}lia de sistemas
 din@^amicos discretos unidimensionais, com um par@^ametro @var{x}; esse
@@ -183,8 +183,8 @@ iniciais.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} rk (EDO, var, inicial, dominio)
-@deffnx {Fun@value{cedilha}@~ao} rk ([EDO1,...,EDOm], [v1,...,vm], [inic1,...,inicm], dom@'{@dotless{i}}nio)
+@deffn {Fun@,{c}@~ao} rk (EDO, var, inicial, dominio)
+@deffnx {Fun@,{c}@~ao} rk ([EDO1,...,EDOm], [v1,...,vm], [inic1,...,inicm], dom@'{@dotless{i}}nio)
 
 A primeira forma usa-se para resolver numericamente uma
 equa@value{cedilha}@~ao diferencial ordin@'aria de primeira ordem (EDO),
@@ -232,7 +232,7 @@ valores das vari@'aveis dependentes nesse ponto.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} staircase (@var{F}, @var{y0}, @var{n}, ...op@value{cedilha}@~oes...);
+@deffn {Fun@,{c}@~ao} staircase (@var{F}, @var{y0}, @var{n}, ...op@value{cedilha}@~oes...);
 
 Desenha um diagrama de degraus (ou diagrama de teia de aranha) para a
 sucess@~ao definida pela equa@value{cedilha}@~ao de recorr@^encia
@@ -372,7 +372,7 @@ cabe dentro da regi@~ao quadrada que ser@'a representada. O valor
 por omiss@~ao @'e 2.
 
 @item
-@dfn{filename} d@'a o nome do ficheiro onde ser@'a armazenado o
+@dfn{nomearquivo} d@'a o nome do ficheiro onde ser@'a armazenado o
 gr@'afico produzido. A esse nome ser@'a acrescentada a
 termina@value{cedilha}@~ao .xpm. Se o ficheiro j@'a existir, ser@'a
 substitu@'{@dotless{i}}do pelo ficheiro produzido pela
@@ -492,7 +492,7 @@ representa@value{cedilha}@~ao gr@'afica do conjunto de Mandelbrot, com
 12 colores, use o comando:
 
 @example
-mandelbrot([filename,"dinamica9"])$
+mandelbrot([nomearquivo,"dinamica9"])$
 @end example
 
 @ifnotinfo
@@ -502,7 +502,7 @@ mandelbrot([filename,"dinamica9"])$
 e o conjunto de Julia do n@'umero (-0.55 + i 0.6) pode ser obtido com:
 @example
 julia(-0.55, 0.6, [levels, 36], [center, 0, 0.6], [radius, 0.3],
-      [hue, 240], [huerange, -180], [filename, "dinamica10"])$
+      [hue, 240], [huerange, -180], [nomearquivo, "dinamica10"])$
 @end example
 
 o gr@'afico guardar-se-@'a no ficheiro @emph{dinamica10.xpm} e

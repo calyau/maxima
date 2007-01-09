@@ -126,7 +126,7 @@ Warning - you are redefining the Maxima function rank
 @node Defini@value{cedilha}@~oes para linearalgebra,  , Introdu@value{cedilha}@~ao a linearalgebra, linearalgebra
 @section Defini@value{cedilha}@~oes para linearalgebra
 
-@deffn {Fun@value{cedilha}@~ao} addmatrices (@var{f}, @var{M_1}, ..., @var{M_n})
+@deffn {Fun@,{c}@~ao} addmatrices (@var{f}, @var{M_1}, ..., @var{M_n})
 
 @c REWORD -- THE RESULT IS NOT GENERALLY THE SUM OF M_1, ..., M_N
 Usando a fun@,{c}@~ao @var{f} como a fun@,{c}@~ao de adi@,{c}@~ao, retorne a adi@,{c}@~ao das
@@ -152,14 +152,14 @@ Exemplos:
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} blockmatrixp (@var{M})
+@deffn {Fun@,{c}@~ao} blockmatrixp (@var{M})
 
 Retorna @code{true} se e somente se @var{M} for uma matriz e toda entrada de
 @var{M} tamb@'em for uma matriz.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} columnop (@var{M}, @var{i}, @var{j}, @var{theta})
+@deffn {Fun@,{c}@~ao} columnop (@var{M}, @var{i}, @var{j}, @var{theta})
 
 Se @var{M} for uma matriz, retorna a matriz que resulta de fazer a  
 opera@,{c}@~ao de coluna @code{C_i <- C_i - @var{theta} * C_j}. Se @var{M} n@~ao tiver uma linha
@@ -167,14 +167,14 @@ opera@,{c}@~ao de coluna @code{C_i <- C_i - @var{theta} * C_j}. Se @var{M} n@~ao
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} columnswap (@var{M}, @var{i}, @var{j})
+@deffn {Fun@,{c}@~ao} columnswap (@var{M}, @var{i}, @var{j})
 
 Se @var{M} for uma matriz, troca as colunas @var{i} e @var{j}.  Se @var{M} n@~ao tiver uma coluna
 @var{i} ou @var{j}, emite uma mensagem de erro.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} columnspace (@var{M})
+@deffn {Fun@,{c}@~ao} columnspace (@var{M})
 
 Se @var{M} for uma matriz, retorna @code{span (v_1, ..., v_n)}, onde o conjunto
 @code{@{v_1, ..., v_n@}} @'e uma base para o espa@,{c}o coluna de @var{M}.  A diferen@,{c}a entre o maior elemento e o menor elemento do 
@@ -183,7 +183,7 @@ um membro, retorna @code{span ()}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} copy (@var{e})
+@deffn {Fun@,{c}@~ao} copy (@var{e})
 
 Retorna uma c@'opia da express@~ao @var{e} do Maxima. Embora @var{e} possa ser qualquer
 express@~ao do Maxima, Afun@,{c}@~ao @code{copy} @'e mais @'util quando @var{e} for ou
@@ -227,8 +227,8 @@ Dessa vez, a atribui@,{c}@~ao a @var{mm} n@~ao muda o valor de @var{m}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} cholesky (@var{M})
-@deffnx {Fun@value{cedilha}@~ao} cholesky (@var{M}, @var{corpo})
+@deffn {Fun@,{c}@~ao} cholesky (@var{M})
+@deffnx {Fun@,{c}@~ao} cholesky (@var{M}, @var{corpo})
 
 Retorna fatoriza@,{c}@~ao de Cholesky da matriz hermitiana (or autoadjunta) 
 @var{M}. O valor padr@~ao para o segundo argumento @'e @code{generalring}. Para uma descri@,{c}@~ao dos
@@ -236,14 +236,14 @@ poss@'iveis valores para @var{corpo}, veja @code{lu_factor}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} ctranspose (@var{M})
+@deffn {Fun@,{c}@~ao} ctranspose (@var{M})
 
 Retorna a matriz transposta conjugada complexa da matriz @var{M}. A fun@,{c}@~ao
 @code{ctranspose} usa @code{matrix_element_transpose} para transpor cada elemento da matriz.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} diag_matrix (@var{d_1}, @var{d_2},...,@var{d_n})
+@deffn {Fun@,{c}@~ao} diag_matrix (@var{d_1}, @var{d_2},...,@var{d_n})
 
 Retorna uma matriz diagonal matriz com entradas de diagonal @var{d_1}, @var{d_2},...,@var{d_n}.
 Quando as entradas de diagonal forem matrizes, as entradas zero da matriz retornada
@@ -273,7 +273,7 @@ ser@~ao todas matrizes de tamanho apropriado; por exemplo:
 @end example
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} dotproduct (@var{u}, @var{v})
+@deffn {Fun@,{c}@~ao} dotproduct (@var{u}, @var{v})
 
 Retorna o produto do ponto (produto escalar) dos vetores @var{u} and @var{v}.  Isso @'e o mesmo
 que @code{conjugate (transpose (@var{u})) . @var{v}}.  Os argumentos @var{u} e @var{v} devem ser
@@ -281,8 +281,8 @@ vetores coluna.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} eigens_by_jacobi (@var{A})
-@deffnx {Fun@value{cedilha}@~ao} eigens_by_jacobi (@var{A}, @var{tipo_corpo})
+@deffn {Fun@,{c}@~ao} eigens_by_jacobi (@var{A})
+@deffnx {Fun@,{c}@~ao} eigens_by_jacobi (@var{A}, @var{tipo_corpo})
 
 Calculam os autovalores e autovetores de @var{A} pelo m@'etodo de rota@,{c}@~oes de Jacobi.
 @var{A} deve ser uma matriz sim@'etrica (mas essa matriz sim@'etrica precisa n@~ao ser nem definida positiva e nem semidefinida positiva).
@@ -354,7 +354,7 @@ number of rotations: 1
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} get_lu_factors (@var{x}) 
+@deffn {Fun@,{c}@~ao} get_lu_factors (@var{x}) 
 
 Quando @code{@var{x} = lu_factor (@var{A})}, ent@~ao @code{get_lu_factors} retorna uma lista da 
 forma @code{[P, L, U]}, onde @var{P} @'e uma matriz de permuta@,{c}@~ao, @var{L} @'e triangular baixa com
@@ -362,8 +362,8 @@ a diagonal preenchida com a unidade, e @var{U} @'e triangular alta, e @code{@var
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} hankel (@var{col})
-@deffnx {Fun@value{cedilha}@~ao} hankel (@var{col}, @var{lin})
+@deffn {Fun@,{c}@~ao} hankel (@var{col})
+@deffnx {Fun@,{c}@~ao} hankel (@var{col}, @var{lin})
 
 Retorna uma matriz de Hankel @var{H}. A primeira coluna de @var{H} @'e @var{col};
 exceto para a primeira entrada, a @'ultima linha de @var{H} @'e @var{lin}. O
@@ -371,7 +371,7 @@ valor padr@~ao para @var{lin} @'e o vetor nulo com o mesmo comprimento que @var{
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} hessian (@var{f},@var{vars})
+@deffn {Fun@,{c}@~ao} hessian (@var{f},@var{vars})
 
 Retorna a matriz hessiana de @var{f} com rela@,{c}@~ao @`as vari@'aveis na lista
 @var{vars}.  As entradas @var{i},@var{j} da matriz hessiana s@~ao
@@ -379,15 +379,15 @@ Retorna a matriz hessiana de @var{f} com rela@,{c}@~ao @`as vari@'aveis na lista
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} hilbert_matrix (@var{n})
+@deffn {Fun@,{c}@~ao} hilbert_matrix (@var{n})
 
 Retorna the @var{n} by @var{n} matriz de Hilbert. Quando @var{n} n@~ao for um inteiro
 positivo, emite uma mensagem de erro.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} identfor (@var{M})
-@deffnx {Fun@value{cedilha}@~ao} identfor (@var{M}, @var{corpo})
+@deffn {Fun@,{c}@~ao} identfor (@var{M})
+@deffnx {Fun@,{c}@~ao} identfor (@var{M}, @var{corpo})
 
 Retorna uma matriz identidade que tem o mesmo tamanho que a matriz
 @var{M}.  As entradas de diagonal da matriz identidade s@~ao a 
@@ -403,21 +403,21 @@ Veja tamb@'em @code{zerofor}
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} invert_by_lu (@var{M}, @var{(rng generalring)})
+@deffn {Fun@,{c}@~ao} invert_by_lu (@var{M}, @var{(rng generalring)})
 
 Inverte a matriz @var{M} atrav@'es de fatoriza@,{c}@~ao linear alta (LU).  A fatoriza@,{c}@~ao LU
 @'e conclu@'ida usando o anel @var{rng}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} kronecker_product (@var{A}, @var{B})
+@deffn {Fun@,{c}@~ao} kronecker_product (@var{A}, @var{B})
 
 Retorna o produto de Kronecker das matrizes @var{A} e @var{B}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} listp (@var{e}, @var{p})
-@deffnx {Fun@value{cedilha}@~ao} listp (@var{e})
+@deffn {Fun@,{c}@~ao} listp (@var{e}, @var{p})
+@deffnx {Fun@,{c}@~ao} listp (@var{e})
 
 Recebendo um argumento opcional @var{p}, retorna @code{true} se @var{e} for 
 uma lista do Maxima e @var{p} avalia para @code{true} para elemento da lista.
@@ -426,7 +426,7 @@ uma lista do Maxima.  em todos os outros casos, retorna @code{false}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} locate_matrix_entry (@var{M}, @var{r_1}, @var{c_1}, @var{r_2}, @var{c_2}, @var{f}, @var{rel})
+@deffn {Fun@,{c}@~ao} locate_matrix_entry (@var{M}, @var{r_1}, @var{c_1}, @var{r_2}, @var{c_2}, @var{f}, @var{rel})
 
 O primeiro argumento deve ser uma matriz; os argumentos que v@~ao de
 @var{r_1} at@'e @var{c_2} determinam um sub-matriz de @var{M} que consiste de
@@ -453,7 +453,7 @@ Retorna o @'indice de uma entrada minimizada.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} lu_backsub (@var{M}, @var{b})
+@deffn {Fun@,{c}@~ao} lu_backsub (@var{M}, @var{b})
 
 Quando @code{@var{M} = lu_factor (@var{A}, @var{corpo})},
 ent@~ao @code{lu_backsub (@var{M}, @var{b})} resolve o sistema
@@ -461,7 +461,7 @@ linear @code{@var{A} @var{x} = @var{b}}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} lu_factor (@var{M}, @var{corpo})
+@deffn {Fun@,{c}@~ao} lu_factor (@var{M}, @var{corpo})
 
 Retorna uma lista da forma @code{[@var{LU}, @var{perm}, @var{corpo}]}, 
 ou da forma @code{[@var{LU}, @var{perm}, @var{cmp}, @var{baixo-cnd} @var{alto-cnd}]}, onde
@@ -588,8 +588,8 @@ Evaluation took 109.24 seconds (152.10 elapsed)
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} mat_cond (@var{M}, 1)
-@deffnx {Fun@value{cedilha}@~ao} mat_cond (@var{M}, inf)
+@deffn {Fun@,{c}@~ao} mat_cond (@var{M}, 1)
+@deffnx {Fun@,{c}@~ao} mat_cond (@var{M}, inf)
 
 Retorna o n@'umero condiciona da norma de ordem @var{p} da matriz
 @var{m}. Os valores permitidos para @var{p} s@~ao 1 e @var{inf}.  Essa
@@ -601,9 +601,9 @@ quadrado do tamanho da matriz.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} mat_norm (@var{M}, 1)
-@deffnx {Fun@value{cedilha}@~ao} mat_norm (@var{M}, inf)
-@deffnx {Fun@value{cedilha}@~ao} mat_norm (@var{M}, frobenius)
+@deffn {Fun@,{c}@~ao} mat_norm (@var{M}, 1)
+@deffnx {Fun@,{c}@~ao} mat_norm (@var{M}, inf)
+@deffnx {Fun@,{c}@~ao} mat_norm (@var{M}, frobenius)
 
 Retorna a matriz de norma @var{p} da matriz @var{M}.  Os valores permitidos para @var{p} s@~ao
 1, @code{inf}, e @code{frobenius} (a norma da matriz de Frobenius). A matriz @var{M} pode ser
@@ -611,8 +611,8 @@ uma matriz n@~ao de bloco.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} matrixp (@var{e}, @var{p})
-@deffnx {Fun@value{cedilha}@~ao} matrixp (@var{e})
+@deffn {Fun@,{c}@~ao} matrixp (@var{e}, @var{p})
+@deffnx {Fun@,{c}@~ao} matrixp (@var{e})
 
 Fornecendo um argumento opcional @var{p}, @code{matrixp} retorna @code{true} se @var{e} for
 uma matriz e @var{p} avaliar para @code{true} para todo elemento da matriz.
@@ -623,14 +623,14 @@ Veja tamb@'em @code{blockmatrixp}
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} matrix_size (@var{M})
+@deffn {Fun@,{c}@~ao} matrix_size (@var{M})
 
 Retorna uma lista com dois elementos que fornecem o n@'umero de linhas e colunas, respectivamente
 da matriz @var{M}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} mat_fullunblocker (@var{M})
+@deffn {Fun@,{c}@~ao} mat_fullunblocker (@var{M})
 
 Se @var{M} for uma matriz de bloco, expande todos os blocos da matriz em todos os n@'iveis. Se @var{M} for uma matriz,
 retorna @var{M}; de outra forma, emite uma mensagem de erro. 
@@ -639,7 +639,7 @@ retorna @var{M}; de outra forma, emite uma mensagem de erro.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} mat_trace (@var{M})
+@deffn {Fun@,{c}@~ao} mat_trace (@var{M})
 
 Retorna o tra@,{c}o da matriz @var{M}. Se @var{M} n@~ao for uma matriz, retorna uma
 forma substantiva. Quando @var{M} for uma matriz de bloco, @code{mat_trace(M)} retorna
@@ -647,7 +647,7 @@ o mesmo valor retornado por @code{mat_trace(mat_unblocker(m))}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} mat_unblocker (@var{M})
+@deffn {Fun@,{c}@~ao} mat_unblocker (@var{M})
 
 Se @var{M} for uma matriz de bloco, @code{mat_unbloker} desfaz o bloco de @var{M} um n@'ivel. Se @var{M} for uma matriz, 
 @code{mat_unblocker (M)} retorna @var{M}; de outra forma, emite uma mensagem de erro.
@@ -694,13 +694,13 @@ Warning - you are redefining the Maxima function rank
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} nonnegintegerp (@var{n})
+@deffn {Fun@,{c}@~ao} nonnegintegerp (@var{n})
 
 Retorna @code{true} se e somente se @code{@var{n} >= 0} e @var{n} for um inteiro.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} nullspace (@var{M})
+@deffn {Fun@,{c}@~ao} nullspace (@var{M})
 
 Se @var{M} for uma matriz, retorna @code{span (v_1, ..., v_n)}, onde o conjunto @code{@{v_1, ..., v_n@}}
 @'e uma base para o espa@,{c}o nulo de @var{M}.  A diferen@,{c}a entre o maior elemento e o menor elemento do conjunto vazio @'e  @code{@{0@}}.  
@@ -708,13 +708,13 @@ Dessa forma, quando o espa@,{c}o nulo tiver somente um membro, retorna @code{spa
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} nullity (@var{M})
+@deffn {Fun@,{c}@~ao} nullity (@var{M})
 
 Se @var{M} for uma matriz, retorna a dimens@~ao do espa@,{c}o nulo de @var{M}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} orthogonal_complement (@var{v_1}, ..., @var{v_n})
+@deffn {Fun@,{c}@~ao} orthogonal_complement (@var{v_1}, ..., @var{v_n})
 
 Retorna @code{span (u_1, ..., u_m)}, onde o conjunto @code{@{u_1, ..., u_m@}} @'e uma 
 base para o complemento ortogonal do conjunto @code{(v_1, ..., v_n)}.
@@ -723,9 +723,9 @@ Cada vetor no intervalo de @var{v_1} at@'e @var{v_n} deve ser um vetor coluna.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} polynomialp (@var{p}, @var{L}, @var{coeffp}, @var{exponp})
-@deffnx {Fun@value{cedilha}@~ao} polynomialp (@var{p}, @var{L}, @var{coeffp})
-@deffnx {Fun@value{cedilha}@~ao} polynomialp (@var{p}, @var{L})
+@deffn {Fun@,{c}@~ao} polynomialp (@var{p}, @var{L}, @var{coeffp}, @var{exponp})
+@deffnx {Fun@,{c}@~ao} polynomialp (@var{p}, @var{L}, @var{coeffp})
+@deffnx {Fun@,{c}@~ao} polynomialp (@var{p}, @var{L})
 
 Retorna @code{true} se @var{p} for um polin@^omio nas vari@'aveis da lista @var{L},
 O predicado @var{coeffp} deve avaliar para @code{true} para cada
@@ -800,7 +800,7 @@ Warning - you are redefining the Maxima function rank
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} polytocompanion (@var{p}, @var{x})
+@deffn {Fun@,{c}@~ao} polytocompanion (@var{p}, @var{x})
 
 Se @var{p} for um polin@^omio em @var{x}, retorna a atriz companheira de @var{p}. Para
 um polin@^omio m@^onico @var{p} de grau @var{n},
@@ -810,7 +810,7 @@ Quando @var{p} n@~ao for um polin@^omio em @var{x}, emite uma mensagem de erro.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} ptriangularize (@var{M}, @var{v})
+@deffn {Fun@,{c}@~ao} ptriangularize (@var{M}, @var{v})
 
 Se @var{M} for uma matriz onde cada entrada dessa matriz for um polin@^omio em @var{v}, retorna 
 a matriz @var{M2} tal que
@@ -827,7 +827,7 @@ Nota: Essa fun@,{c}@~ao n@~ao verifica se toda entrada @'e um polin@^omio em @va
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} rowop (@var{M}, @var{i}, @var{j}, @var{theta})
+@deffn {Fun@,{c}@~ao} rowop (@var{M}, @var{i}, @var{j}, @var{theta})
 
 Se @var{M} for uma matriz, retorna a matriz que resulta de se fazer a  
 opera@,{c}@~ao de linha @code{R_i <- R_i - theta * R_j}. Se @var{M} n@~ao tiver uma linha
@@ -835,7 +835,7 @@ opera@,{c}@~ao de linha @code{R_i <- R_i - theta * R_j}. Se @var{M} n@~ao tiver 
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} rank (@var{M})
+@deffn {Fun@,{c}@~ao} rank (@var{M})
 
 Retorna o ranque daquela matriz @var{M}. O rank @'e a dimens@~ao do
 espa@,{c}o coluna. Exemplo:
@@ -860,15 +860,15 @@ Proviso:  @{d - b c # 0@}
 @end deffn
 
 
-@deffn {Fun@value{cedilha}@~ao} rowswap (@var{M}, @var{i}, @var{j})
+@deffn {Fun@,{c}@~ao} rowswap (@var{M}, @var{i}, @var{j})
 
 Se @var{M} for uma matriz, permuta as linha @var{i} e @var{j}. Se @var{M} n@~ao tiver uma linha
 @var{i} ou @var{j}, emite uma mensagem de erro.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} toeplitz (@var{col})
-@deffnx {Fun@value{cedilha}@~ao} toeplitz (@var{col}, @var{lin})
+@deffn {Fun@,{c}@~ao} toeplitz (@var{col})
+@deffnx {Fun@,{c}@~ao} toeplitz (@var{col}, @var{lin})
 
 Retorna uma matriz de Toeplitz @var{T}. a primeira coluna de @var{T} @'e @var{col};
 exceto para a primeira entrada, a primeira linha de @var{T} @'e @var{lin}. O
@@ -897,15 +897,15 @@ padr@~ao para @var{lin} @'e o conjugado complexo de @var{col}. Exemplo:
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} vandermonde_matrix ([@var{x_1}, ..., @var{x_n}])
+@deffn {Fun@,{c}@~ao} vandermonde_matrix ([@var{x_1}, ..., @var{x_n}])
 
 Retorna uma matriz @var{n} por @var{n} cuja @var{i}-@'esima linha @'e 
 @code{[1, @var{x_i}, @var{x_i}^2, ... @var{x_i}^(@var{n}-1)]}. 
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} zerofor (@var{M})
-@deffnx {Fun@value{cedilha}@~ao}  zerofor (@var{M}, @var{fld})
+@deffn {Fun@,{c}@~ao} zerofor (@var{M})
+@deffnx {Fun@,{c}@~ao}  zerofor (@var{M}, @var{fld})
 
 Retorna uma matriz zero que tem o mesmo tamanho da matriz
 @var{M}.  Toda entrada da matriz zero @'e a
@@ -921,7 +921,7 @@ Veja tamb@'em @code{identfor}
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} zeromatrixp (@var{M})
+@deffn {Fun@,{c}@~ao} zeromatrixp (@var{M})
 
 Se @var{M} n@~ao for uma matriz de bloco, retorna @code{true} se @code{is (equal (@var{e}, 0))} 
 for verdadeiro para cada elemento @var{e} da matriz @var{M}.  Se @var{M} for uma matriz de bloco, retorna

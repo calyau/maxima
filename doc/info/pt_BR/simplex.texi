@@ -36,7 +36,7 @@ Veja tamb@'em: @code{linear_program}.
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~ao} linear_program (@var{A}, @var{b}, @var{c})
+@deffn {Fun@,{c}@~ao} linear_program (@var{A}, @var{b}, @var{c})
 
 @code{linear_program} @'e uma implementa@,{c}@~ao do algor@'itmo simplex.
 @code{linear_program(A, b, c)} calcula um vetor @var{x} para o qual @code{c.x} @'e o m@'inimo
@@ -71,7 +71,7 @@ Veja tamb@'em: @code{minimize_sx}, @code{scale_sx}, e @code{epsilon_sx}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} maximize_sx (@var{obj}, @var{cond}, [@var{pos}])
+@deffn {Fun@,{c}@~ao} maximize_sx (@var{obj}, @var{cond}, [@var{pos}])
 
 Maximiza a fun@,{c}@~ao linear objetiva @var{obj} submetida a alguma restri@,{c}@~ao linear
 @var{cond}. Veja @code{minimize_sx} para uma descri@,{c}@~ao detalhada de argumentos e valores de
@@ -82,7 +82,7 @@ Veja tamb@'em: @code{minimize_sx}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} minimize_sx (@var{obj}, @var{cond}, [@var{pos}])
+@deffn {Fun@,{c}@~ao} minimize_sx (@var{obj}, @var{cond}, [@var{pos}])
 
 Minimiza uma fun@,{c}@~ao linear objetiva @var{obj} submetida a alguma restri@,{c}@~ao
 linear @var{cond}. @var{cond} @'e uma lista de equa@,{c}@~oes lineares ou

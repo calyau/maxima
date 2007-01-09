@@ -32,7 +32,7 @@ Veja @code{Defini@value{cedilha}@~oes para S@'eries}.
 @c in this file. Otherwise DESCRIBE returns the FFT text (because
 @c POLARTORECT, etc are list in the heading of FFT with @defunx).
 
-@deffn {Fun@value{cedilha}@~ao} polartorect (@var{magnitude_array}, @var{phase_array})
+@deffn {Fun@,{c}@~ao} polartorect (@var{magnitude_array}, @var{phase_array})
 
 Traduz valores complexos da forma @code{r %e^(%i t)} para a forma @code{a + b %i}.
 @code{load ("fft")} chama essa fun@value{cedilha}@~ao dentro do Maxima. Veja tamb@'em @code{fft}.
@@ -54,7 +54,7 @@ O tamanho do array n@~ao deve ser uma pot@^encia de 2.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} recttopolar (@var{real_array}, @var{imaginary_array})
+@deffn {Fun@,{c}@~ao} recttopolar (@var{real_array}, @var{imaginary_array})
 
 Traduz valores complexos da forma @code{a + b %i} para a forma @code{r %e^(%i t)}.
 @code{load ("fft")} chama essa fun@value{cedilha}@~ao dentro do Maxima. Veja tamb@'em @code{fft}.
@@ -78,7 +78,7 @@ O tamanho do array n@~ao deve ser uma pot@^encia de 2.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} ift (@var{real_array}, @var{imaginary_array})
+@deffn {Fun@,{c}@~ao} ift (@var{real_array}, @var{imaginary_array})
 
 Transforma@,{c}@~ao r@'apida inversa discreta de Fourier . @code{load ("fft")} chama essa fun@value{cedilha}@~ao
 dentro do Maxima.
@@ -94,10 +94,10 @@ Veja @code{fft} para maiores detalhes.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} fft (@var{real_array}, @var{imaginary_array})
-@deffnx {Fun@value{cedilha}@~ao} ift (@var{real_array}, @var{imaginary_array})
-@deffnx {Fun@value{cedilha}@~ao} recttopolar (@var{real_array}, @var{imaginary_array})
-@deffnx {Fun@value{cedilha}@~ao} polartorect (@var{magnitude_array}, @var{phase_array})
+@deffn {Fun@,{c}@~ao} fft (@var{real_array}, @var{imaginary_array})
+@deffnx {Fun@,{c}@~ao} ift (@var{real_array}, @var{imaginary_array})
+@deffnx {Fun@,{c}@~ao} recttopolar (@var{real_array}, @var{imaginary_array})
+@deffnx {Fun@,{c}@~ao} polartorect (@var{magnitude_array}, @var{phase_array})
 
 Transforma@,{c}@~ao r@'apidada de Fourier e fun@value{cedilha}@~oes relacionadas. @code{load ("fft")}
 chama essas fun@value{cedilha}@~oes dentro do Maxima.
@@ -178,7 +178,7 @@ express@~oes sejam mostrados mais al@'em para a direita.
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~ao} fortran (@var{expr})
+@deffn {Fun@,{c}@~ao} fortran (@var{expr})
 Mostra @var{expr} como uma declara@,{c}@~ao Fortran.
 A linha de sa@'ida @'e indentada com espa@,{c}os.
 Se a linha for muito longa, @code{fortran} imprime linhas de continua@,{c}@~ao.
@@ -242,8 +242,8 @@ cada linha mostrada com espa@,{c}os em branco at@'e completar 80 columas.
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~ao} horner (@var{expr}, @var{x})
-@deffnx {Fun@value{cedilha}@~ao} horner (@var{expr})
+@deffn {Fun@,{c}@~ao} horner (@var{expr}, @var{x})
+@deffnx {Fun@,{c}@~ao} horner (@var{expr})
 Retorna uma representa@,{c}@~ao rearranjada de @var{expr} como
 na regra de Horner, usando @var{x} como vari@'avel principal se isso for especificado.
 @code{x} pode ser omitido e nesse caso a vari@'avel principal da forma de express@~ao racional
@@ -273,8 +273,8 @@ To reenable the Lisp debugger set *debugger-hook* to nil.
 @end deffn
 
 @c NEEDS WORK
-@deffn {Fun@value{cedilha}@~ao} find_root (@var{f}(@var{x}), @var{x}, @var{a}, @var{b})
-@deffnx {Fun@value{cedilha}@~ao} find_root (@var{f}, @var{a}, @var{b})
+@deffn {Fun@,{c}@~ao} find_root (@var{f}(@var{x}), @var{x}, @var{a}, @var{b})
+@deffnx {Fun@,{c}@~ao} find_root (@var{f}, @var{a}, @var{b})
 Encontra a ra@'iz da fun@value{cedilha}@~ao @var{f} com a vari@'avel @var{x} percorrendo o intervalo @code{[@var{a}, @var{b}]}.
 A fun@value{cedilha}@~ao deve ter um
 sinal diferente em cada ponto final.  Se essa condi@,{c}@~ao n@~ao for alcan@,{c}ada, a
@@ -383,7 +383,7 @@ com a precis@~ao aritm@'etica simples que tivermos.
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~ao} newton (@var{expr}, @var{x}, @var{x_0}, @var{eps})
+@deffn {Fun@,{c}@~ao} newton (@var{expr}, @var{x}, @var{x_0}, @var{eps})
 Retorna uma solu@,{c}@~ao aproximada de @code{@var{expr} = 0} atrav@'es do m@'etodo de Newton,
 considerando @var{expr} como sendo uma fun@,{c}@~ao de uma vari@'avel, @var{x}.
 A busca pela solu@,{c}@~ao come@,{c}a com @code{@var{x} = @var{x_0}}
@@ -431,15 +431,15 @@ Exemplos:
 @section Defini@value{cedilha}@value{o_til}es para S@'eries de Fourier
 
 @c REPHRASE
-@deffn {Fun@value{cedilha}@~ao} equalp (@var{x}, @var{y})
+@deffn {Fun@,{c}@~ao} equalp (@var{x}, @var{y})
 Retorna @code{true} se @code{equal (@var{x}, @var{y})} de outra forma @code{false} (n@~ao fornece uma
 mensagem de erro como @code{equal (x, y)} poderia fazer nesse caso).
 
 @c NEEDS EXAMPLES
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} remfun (@var{f}, @var{expr})
-@deffnx {Fun@value{cedilha}@~ao} remfun (@var{f}, @var{expr}, @var{x})
+@deffn {Fun@,{c}@~ao} remfun (@var{f}, @var{expr})
+@deffnx {Fun@,{c}@~ao} remfun (@var{f}, @var{expr}, @var{x})
 @code{remfun (@var{f}, @var{expr})}
 substitue todas as ocorr@^encias de @code{@var{f} (@var{arg})} por @var{arg} em @var{expr}.
 
@@ -450,8 +450,8 @@ somente se @var{arg} contiver a vari@'avel @var{x}.
 @c NEEDS EXAMPLES
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} funp (@var{f}, @var{expr})
-@deffnx {Fun@value{cedilha}@~ao} funp (@var{f}, @var{expr}, @var{x})
+@deffn {Fun@,{c}@~ao} funp (@var{f}, @var{expr})
+@deffnx {Fun@,{c}@~ao} funp (@var{f}, @var{expr}, @var{x})
 @code{funp (@var{f}, @var{expr})}
 retorna @code{true} se @var{expr} cont@'em a fun@value{cedilha}@~ao @var{f}.
 
@@ -462,9 +462,9 @@ retorna @code{true} se @var{expr} cont@'em a fun@value{cedilha}@~ao @var{f} e a 
 @c NEEDS EXAMPLES
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} absint (@var{f}, @var{x}, @var{halfplane})
-@deffnx {Fun@value{cedilha}@~ao} absint (@var{f}, @var{x})
-@deffnx {Fun@value{cedilha}@~ao} absint (@var{f}, @var{x}, @var{a}, @var{b})
+@deffn {Fun@,{c}@~ao} absint (@var{f}, @var{x}, @var{halfplane})
+@deffnx {Fun@,{c}@~ao} absint (@var{f}, @var{x})
+@deffnx {Fun@,{c}@~ao} absint (@var{f}, @var{x}, @var{a}, @var{b})
 @code{absint (@var{f}, @var{x}, @var{halfplane})}
 retorna a integral indefinida de @var{f} com rela@,{c}@~ao a
 @var{x} no dado semi-plano (@code{pos}, @code{neg}, ou @code{both}).
@@ -482,7 +482,7 @@ retorna a integral definida de @var{f} com rela@,{c}@~ao a @var{x} de @var{a} at
 @end deffn
 
 @c NEEDS EXPANSION. WHAT IS THE ARGUMENT p ??
-@deffn {Fun@value{cedilha}@~ao} fourier (@var{f}, @var{x}, @var{p})
+@deffn {Fun@,{c}@~ao} fourier (@var{f}, @var{x}, @var{p})
 Retorna uma lista de coeficientes de Fourier de @code{@var{f}(@var{x})} definidos
 sobre o intervalo @code{[-%pi, %pi]}.
 
@@ -490,7 +490,7 @@ sobre o intervalo @code{[-%pi, %pi]}.
 @end deffn
 
 @c NEES EXPANSION. WHAT IS THE ARGUMENT l ??
-@deffn {Fun@value{cedilha}@~ao} foursimp (@var{l})
+@deffn {Fun@,{c}@~ao} foursimp (@var{l})
 Simplifica @code{sin (n %pi)} para 0 se @code{sinnpiflag} for @code{true} e
 @code{cos (n %pi)} para @code{(-1)^n} se @code{cosnpiflag} for @code{true}.
 
@@ -512,7 +512,7 @@ Veja @code{foursimp}.
 @end defvr
 
 @c NEEDS EXPANSION. EXPLAIN x AND p HERE (DO NOT REFER SOMEWHERE ELSE)
-@deffn {Fun@value{cedilha}@~ao} fourexpand (@var{l}, @var{x}, @var{p}, @var{limit})
+@deffn {Fun@,{c}@~ao} fourexpand (@var{l}, @var{x}, @var{p}, @var{limit})
 Constr@'oi e retorna a s@'erie de Fourier partindo da lista de
 coeficientes de Fourier @var{l} at@'e (up through) @var{limit} termos (@var{limit}
 pode ser @code{inf}). @var{x} e @var{p} possuem o mesmo significado que em
@@ -522,28 +522,28 @@ pode ser @code{inf}). @var{x} e @var{p} possuem o mesmo significado que em
 @end deffn
 
 @c NEEDS EXPANSION. WHAT IS THE ARGUMENT p ??
-@deffn {Fun@value{cedilha}@~ao} fourcos (@var{f}, @var{x}, @var{p})
+@deffn {Fun@,{c}@~ao} fourcos (@var{f}, @var{x}, @var{p})
 Retorna os coeficientes do cosseno de Fourier para @code{@var{f}(@var{x})} definida sobre @code{[0, %pi]}.
 
 @c NEEDS EXAMPLES
 @end deffn
 
 @c NEEDS EXPANSION. WHAT IS THE ARGUMENT p ??
-@deffn {Fun@value{cedilha}@~ao} foursin (@var{f}, @var{x}, @var{p})
+@deffn {Fun@,{c}@~ao} foursin (@var{f}, @var{x}, @var{p})
 Retorna os coeficientes do seno de Fourier para @code{@var{f}(@var{x})} definida sobre @code{[0, %pi]}.
 
 @c NEEDS EXAMPLES
 @end deffn
 
 @c NEEDS EXPANSION. WHAT IS THE ARGUMENT p ??
-@deffn {Fun@value{cedilha}@~ao} totalfourier (@var{f}, @var{x}, @var{p})
+@deffn {Fun@,{c}@~ao} totalfourier (@var{f}, @var{x}, @var{p})
 Retorna @code{fourexpand (foursimp (fourier (@var{f}, @var{x}, @var{p})), @var{x}, @var{p}, 'inf)}.
 
 @c NEEDS EXAMPLES
 @end deffn
 
 @c NEEDS EXPANSION
-@deffn {Fun@value{cedilha}@~ao} fourint (@var{f}, @var{x})
+@deffn {Fun@,{c}@~ao} fourint (@var{f}, @var{x})
 Constr@'oi e retorna uma lista de coeficientes de integral de Fourier de @code{@var{f}(@var{x})}
 definida sobre @code{[minf, inf]}.
 
@@ -551,14 +551,14 @@ definida sobre @code{[minf, inf]}.
 @end deffn
 
 @c NEEDS EXPANSION
-@deffn {Fun@value{cedilha}@~ao} fourintcos (@var{f}, @var{x})
+@deffn {Fun@,{c}@~ao} fourintcos (@var{f}, @var{x})
 Retorna os coeficientes da integral do cosseno de Fourier para @code{@var{f}(@var{x})} on @code{[0, inf]}.
 
 @c NEEDS EXAMPLES
 @end deffn
 
 @c NEEDS EXPANSION
-@deffn {Fun@value{cedilha}@~ao} fourintsin (@var{f}, @var{x})
+@deffn {Fun@,{c}@~ao} fourintsin (@var{f}, @var{x})
 Retorna os coeficientes da integral do seno de Fourier para @code{@var{f}(@var{x})} on @code{[0, inf]}.
 
 @c NEEDS EXAMPLES

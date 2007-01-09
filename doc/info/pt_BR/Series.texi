@@ -54,7 +54,7 @@ Exemplo:
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~ao} deftaylor (@var{f_1}(@var{x_1}), @var{expr_1}, ..., @var{f_n}(@var{x_n}), @var{expr_n})
+@deffn {Fun@,{c}@~ao} deftaylor (@var{f_1}(@var{x_1}), @var{expr_1}, ..., @var{f_n}(@var{x_n}), @var{expr_n})
 Para cada fun@value{cedilha}@~ao @var{f_i} de uma vari@'avel @var{x_i}, 
 @code{deftaylor} define @var{expr_i} como a s@'eries de Taylor sobre zero.
 @var{expr_i} @'e tipicamente um polin@^omio em @var{x_i} ou um somat@'orio;
@@ -99,7 +99,7 @@ tantos termos quantos forem conhecidos serem corretos.
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~ao} niceindices (@var{expr})
+@deffn {Fun@,{c}@~ao} niceindices (@var{expr})
 Renomeia os @'indices de adi@,{c}@~oes e produtos em @var{expr}.
 @code{niceindices} tenta renomear cada @'indice para o valor de @code{niceindicespref[1]},
 a menos que o nome apare@,{c}a nas parcelas do somat@'orio ou produt@'orio,
@@ -170,7 +170,7 @@ Exemplo:
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~ao} nusum (@var{expr}, @var{x}, @var{i_0}, @var{i_1})
+@deffn {Fun@,{c}@~ao} nusum (@var{expr}, @var{x}, @var{i_0}, @var{i_1})
 Realiza o somat@'orio hipergeom@'etrico indefinido de @var{expr} com
 rela@,{c}@~ao a @var{x} usando um procedimento de decis@~ao devido a R.W. Gosper.
 @var{expr} e o resultado deve ser express@'avel como produtos de expoentes inteiros,
@@ -227,7 +227,7 @@ Dependent equations eliminated:  (2 3)
 @end deffn
 
 @c THIS ITEM NEEDS SERIOUS WORK
-@deffn {Fun@value{cedilha}@~ao} pade (@var{taylor_series}, @var{numer_deg_bound}, @var{denom_deg_bound})
+@deffn {Fun@,{c}@~ao} pade (@var{taylor_series}, @var{numer_deg_bound}, @var{denom_deg_bound})
 Retorna uma lista de
 todas as fun@value{cedilha}@~oes racionais que possuem a dada expans@~ao da s@'eries de Taylor
 onde a adi@,{c}@~ao dos graus do numerador e do denominador @'e
@@ -308,7 +308,7 @@ Por pad@~ao, termos de uma adi@value{cedilha}@~ao s@~ao mostrados em ordem do ex
 @c NEED AN EXAMPLE HERE
 @end defvr
 
-@deffn {Fun@value{cedilha}@~ao} powerseries (@var{expr}, @var{x}, @var{a})
+@deffn {Fun@,{c}@~ao} powerseries (@var{expr}, @var{x}, @var{a})
 Retorna a forma geral expans@~ao de s@'eries de pot@^encia para @var{expr}
 na vari@'avel @var{x} sobre o ponto @var{a} (o qual pode ser @code{inf} para infinito).
 
@@ -366,8 +366,8 @@ ent@~ao termos com o mesmo grau total nas vari@'aveis s@~ao agrupados juntos.
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~ao} revert (@var{expr}, @var{x})
-@deffnx {Fun@value{cedilha}@~ao} revert2 (@var{expr}, @var{x}, @var{n})
+@deffn {Fun@,{c}@~ao} revert (@var{expr}, @var{x})
+@deffnx {Fun@,{c}@~ao} revert2 (@var{expr}, @var{x}, @var{n})
 Essas fun@value{cedilha}@~oes retornam a revers@~ao de @var{expr}, uma s@'erie de Taylor sobre zero na vari@'avel @var{x}.
 @code{revert} retorna um polin@^omio de grau igual ao maior expoente em @var{expr}.
 @code{revert2} retorna um polin@^omio de grau @var{n},
@@ -410,11 +410,11 @@ Exemplos:
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} taylor (@var{expr}, @var{x}, @var{a}, @var{n})
-@deffnx {Fun@value{cedilha}@~ao} taylor (@var{expr}, [@var{x_1}, @var{x_2}, ...], @var{a}, @var{n})
-@deffnx {Fun@value{cedilha}@~ao} taylor (@var{expr}, [@var{x}, @var{a}, @var{n}, 'asymp])
-@deffnx {Fun@value{cedilha}@~ao} taylor (@var{expr}, [@var{x_1}, @var{x_2}, ...], [@var{a_1}, @var{a_2}, ...], [@var{n_1}, @var{n_2}, ...])
-@deffnx {Fun@value{cedilha}@~ao} taylor (@var{expr}, [@var{x_1}, @var{a_1}, @var{n_1}], [@var{x_2}, @var{a_2}, @var{n_2}], ...)
+@deffn {Fun@,{c}@~ao} taylor (@var{expr}, @var{x}, @var{a}, @var{n})
+@deffnx {Fun@,{c}@~ao} taylor (@var{expr}, [@var{x_1}, @var{x_2}, ...], @var{a}, @var{n})
+@deffnx {Fun@,{c}@~ao} taylor (@var{expr}, [@var{x}, @var{a}, @var{n}, 'asymp])
+@deffnx {Fun@,{c}@~ao} taylor (@var{expr}, [@var{x_1}, @var{x_2}, ...], [@var{a_1}, @var{a_2}, ...], [@var{n_1}, @var{n_2}, ...])
+@deffnx {Fun@,{c}@~ao} taylor (@var{expr}, [@var{x_1}, @var{a_1}, @var{n_1}], [@var{x_2}, @var{a_2}, @var{n_2}], ...)
 @code{taylor (@var{expr}, @var{x}, @var{a}, @var{n})} expande a express@~ao @var{expr}
 em uma s@'erie truncada de Taylor ou de Laurent na vari@'avel @var{x}
 em torno do ponto @var{a},
@@ -599,7 +599,7 @@ contanto que o grau da expans@~ao seja menor que ou igual a @code{@var{n} 2^tayl
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~ao} taylorinfo (@var{expr})
+@deffn {Fun@,{c}@~ao} taylorinfo (@var{expr})
 Retorna information about the s@'eries de Taylor @var{expr}.
 O valor de retorno @'e uma lista de listas.
 Cada lista compreende o nome de uma vari@'avel,
@@ -628,7 +628,7 @@ Exemplo:
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} taylorp (@var{expr})
+@deffn {Fun@,{c}@~ao} taylorp (@var{expr})
 Retorna @code{true} se @var{expr} for uma s@'eries de Taylor,
 e @code{false} de outra forma.
 
@@ -666,7 +666,7 @@ coeficientes da s@'eries de Taylor s@~ao ordenados canonicamente.
 @c NEED EXAMPLES HERE
 @end defvr
 
-@deffn {Fun@value{cedilha}@~ao} taylor_simplifier (@var{expr})
+@deffn {Fun@,{c}@~ao} taylor_simplifier (@var{expr})
 Simplifica coeficientes da s@'eries  de pot@^encia @var{expr}.
 @code{taylor} chama essa fun@value{cedilha}@~ao.
 
@@ -685,13 +685,13 @@ entrada de polin@^omios para @code{taylor} s@~ao consideradas terem precis@~ao i
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~ao} taytorat (@var{expr})
+@deffn {Fun@,{c}@~ao} taytorat (@var{expr})
 Converte @var{expr} da forma @code{taylor} para a forma de express@~ao racional can@^onica (CRE).
 O efeito @'e o mesmo que @code{rat (ratdisrep (@var{expr}))}, mas mais r@'apido.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} trunc (@var{expr})
+@deffn {Fun@,{c}@~ao} trunc (@var{expr})
 Coloca notas na representa@value{cedilha}@~ao interna da express@~ao geral @var{expr}
 de modo que isso @'e mostrado como se suas adi@value{cedilha}@~oes forem s@'eries de Taylor truncadas.
 @var{expr} is not otherwise modified.
@@ -711,7 +711,7 @@ Exemplo:
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} unsum (@var{f}, @var{n})
+@deffn {Fun@,{c}@~ao} unsum (@var{f}, @var{n})
 Retorna a primeira diferen@value{cedilha}@~a de tr@'as para frente @code{@var{f}(@var{n}) - @var{f}(@var{n} - 1)}.
 Dessa forma @code{unsum} logicamente @'e a inversa de @code{sum}.
 

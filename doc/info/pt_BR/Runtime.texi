@@ -82,7 +82,7 @@ Veja Tamb@'em @code{features} e @code{featurep} para informa@value{cedilha}@~oes
 
 @c NEEDS CLARIFICATION, ESPECIALLY WRT THE EXTENT OF THE FEATURE SYSTEM
 @c (I.E. WHAT KINDS OF THINGS ARE FEATURES ACCORDING TO featurep)
-@deffn {Fun@value{cedilha}@~ao} featurep (@var{a}, @var{f})
+@deffn {Fun@,{c}@~ao} featurep (@var{a}, @var{f})
 Tenta determinar se o objeto @var{a} tem o
 recurso @var{f} na base dos fatos dentro base de dados corrente.  Se possue,
 @'e retornado @code{true}, de outra forma @'e retornado @code{false}.
@@ -130,9 +130,9 @@ Essas vari@'aveis devem ser modificadas separadamente.
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~ao} room ()
-@deffnx {Fun@value{cedilha}@~ao} room (true)
-@deffnx {Fun@value{cedilha}@~ao} room (false)
+@deffn {Fun@,{c}@~ao} room ()
+@deffnx {Fun@,{c}@~ao} room (true)
+@deffnx {Fun@,{c}@~ao} room (false)
 Mostra uma descri@value{cedilha}@~ao do estado de armazenamento e
 gerenciamento de pilha no Maxima. @code{room} chama a fun@value{cedilha}@~ao Lisp de
 mesmo nome.
@@ -148,9 +148,9 @@ mesmo nome.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} status (feature)
-@deffnx {Fun@value{cedilha}@~ao} status (feature, @var{recurso_ativo})
-@deffnx {Fun@value{cedilha}@~ao} status (status)
+@deffn {Fun@,{c}@~ao} status (feature)
+@deffnx {Fun@,{c}@~ao} status (feature, @var{recurso_ativo})
+@deffnx {Fun@,{c}@~ao} status (status)
 Retorna informa@value{cedilha}@~oes sobre a presen@value{cedilha}a ou aus@^encia de certos
 recursos dependentes do sistema operacional.
 
@@ -177,7 +177,7 @@ express@~oes matem@'aticas. Veja @code{features} e @code{featurep} para maiores 
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} time (%o1, %o2, %o3, ...)
+@deffn {Fun@,{c}@~ao} time (%o1, %o2, %o3, ...)
 Retorna uma lista de tempos, em segundos, usados para calcular as linhas
 de sa@'ida @code{%o1}, @code{%o2}, @code{%o3}, .... O tempo retornado @'e uma estimativa do Maxima do
 tempo interno de computa@value{cedilha}@~ao, n@~ao do tempo decorrido. @code{time} pode somente
@@ -189,7 +189,7 @@ e o tempo decorrido a cada linha de sa@'ida.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} timedate ()
+@deffn {Fun@,{c}@~ao} timedate ()
 Retorna uma seq@"u@^encia de caracteres representando a data e hora atuais.
 A seq@"u@^encia de caracteres tem o formato @code{HH:MM:SS Dia, mm/dd/aaaa (GMT-n)},
 Onde os campos s@~ao

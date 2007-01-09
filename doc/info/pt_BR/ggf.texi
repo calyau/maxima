@@ -40,7 +40,7 @@ mais complicadas.
 Veja tamb@'em @code{ggf}.
 @end defvr
 
-@deffn {Fun@value{cedilha}@~ao} ggf (@var{l})
+@deffn {Fun@,{c}@~ao} ggf (@var{l})
 Calcula a fun@,{c}@~ao geradora (se for uma fra@,{c}@~ao de dois
 polin@^omios) de uma seq@"u@^encia, sendo dados seus primeiros termos. @var{l}
 @'e uma lista de n@'umeros.

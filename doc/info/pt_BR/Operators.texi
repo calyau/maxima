@@ -673,7 +673,7 @@ Retorna o valor absoluto complexo (o m@'odulo complexo) de
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} ceiling (@var{x})
+@deffn {Fun@,{c}@~ao} ceiling (@var{x})
 
 Quando @var{x} for um n@'umero real, retorna o @'ultimo inteiro que 
 @'e maior que ou igual a @var{x}.  
@@ -829,7 +829,7 @@ Retorna o @'ultimo inteiro menor que ou igual a @var{x} onde @var{x} @'e num@'er
 @end deffn
 
 @c NEEDS CLARIFICATION
-@deffn {Fun@value{cedilha}@~ao} equal (@var{a}, @var{b})
+@deffn {Fun@,{c}@~ao} equal (@var{a}, @var{b})
 
 Representa a equival@^encia, isto @'e, valor igual.
  
@@ -1054,7 +1054,7 @@ podem usar essa informa@,{c}@~ao; por exemplo:
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} notequal (@var{a}, @var{b})
+@deffn {Fun@,{c}@~ao} notequal (@var{a}, @var{b})
 Represents the negation of @code{equal(@var{a}, @var{b})}.
 
 Note que pelo fato de as regras de avalia@,{c}@~ao de express@~oes predicadas

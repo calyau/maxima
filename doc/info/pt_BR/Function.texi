@@ -167,7 +167,7 @@ o qual remove tamb@'em remove a defini@,{c}@~ao da fun@,{c}@~ao de array.
 @node Macros, Defini@value{cedilha}@~oes para Defini@value{cedilha}@~ao de Fun@value{cedilha}@~ao, Fun@value{cedilha}@~ao, Defini@value{cedilha}@~ao de Fun@value{cedilha}@~ao
 @section Macros
 
-@deffn {Fun@value{cedilha}@~ao} buildq (@var{L}, @var{expr})
+@deffn {Fun@,{c}@~ao} buildq (@var{L}, @var{expr})
 Substitue vari@'aveis nomeadas pela lista @var{L} dentro da express@~ao @var{expr},
 paralelamente,
 sem avaliar @var{expr}.
@@ -281,7 +281,7 @@ e seus valores sobre o lado direito.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} macroexpand (@var{expr})
+@deffn {Fun@,{c}@~ao} macroexpand (@var{expr})
 Retorna a expans@~ao da macro de @var{expr} sem avaliar a express@~ao,
 quando @code{expr} for uma chamada de fun@,{c}@~ao de macro.
 De outra forma, @code{macroexpand} retorna @var{expr}.
@@ -325,7 +325,7 @@ Exemplos
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} macroexpand1 (@var{expr})
+@deffn {Fun@,{c}@~ao} macroexpand1 (@var{expr})
 Retorna a expans@~ao de macro de @var{expr} sem avaliar a express@~ao,
 quando @code{expr} for uma chamada de fun@,{c}@~ao de macro.
 De outra forma, @code{macroexpand1} retorna @var{expr}.
@@ -378,7 +378,7 @@ Veja tamb@'em @code{infolists}.
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~ao} splice (@var{a})
+@deffn {Fun@,{c}@~ao} splice (@var{a})
 Une como se fosse um elo de liga@,{c}@~ao (interpola) a lista nomeada atrav@'es do @'atomo @var{a} em uma express@~ao,
 mas somente se @code{splice} aparecer dentro de @code{buildq};
 de outra forma, @code{splice} @'e tratada como uma fun@,{c}@~ao indefinida.
@@ -702,7 +702,7 @@ Exemplos:
 @end deffn
 
 @c SEE NOTE BELOW ABOUT THE DOCUMENTATION STRING
-@c @deffn {Fun@value{cedilha}@~ao} define_variable (@var{name}, @var{default_value}, @var{mode}, @var{documentation})
+@c @deffn {Fun@,{c}@~ao} define_variable (@var{name}, @var{default_value}, @var{mode}, @var{documentation})
 @deffn {Fun@,{c}@~ao} define_variable (@var{name}, @var{default_value}, @var{mode})
 
 Introduz uma vari@'avel global dentro do ambiente Maxima.

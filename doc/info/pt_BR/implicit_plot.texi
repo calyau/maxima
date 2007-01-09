@@ -7,8 +7,8 @@
 @node Defini@value{cedilha}@value{o_til}es para implicit_plot,  , implicit_plot, implicit_plot
 @section Defini@value{cedilha}@value{o_til}es para implicit_plot
 
-@deffn {Fun@value{cedilha}@value{a_til}o} implicit_plot (@var{expr}, @var{x_range}, @var{y_range})
-@deffnx {Fun@value{cedilha}@value{a_til}o} implicit_plot ([@var{expr_1}, ..., @var{expr_n}], @var{x_range}, @var{y_range})
+@deffn {Fun@,{c}@~ao} implicit_plot (@var{expr}, @var{x_range}, @var{y_range})
+@deffnx {Fun@,{c}@~ao} implicit_plot ([@var{expr_1}, ..., @var{expr_n}], @var{x_range}, @var{y_range})
 
 Mostra na tela um gr@'afico de uma ou mais express@~oes na forma
 impl@'icita. @var{expr} @'e a express@~ao a ser montado o gr@'afico, @var{x_range} o

@@ -28,7 +28,7 @@ Exemplo:
 @node Defini@value{cedilha}@~oes para solve_rec,  , Introdu@value{cedilha}@~ao a solve_rec, solve_rec
 @section Defini@value{cedilha}@~oes para solve_rec
 
-@deffn {Fun@value{cedilha}@~ao} closed_form (@var{expr})
+@deffn {Fun@,{c}@~ao} closed_form (@var{expr})
 
 Tenta simplificar todos os somat@'orios que aparecerem em @var{expr} para uma forma fechada.
 
@@ -58,7 +58,7 @@ Exemplo:
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} reduce_order (@var{rec}, @var{sol}, @var{var})
+@deffn {Fun@,{c}@~ao} reduce_order (@var{rec}, @var{sol}, @var{var})
 
 Reduz a ordem de recorr@^encia linear @var{rec} quando uma solu@,{c}@~ao particular
 @var{sol} for conhecida. A recorr@^encia reduzida pode ser usada para pegar outras solu@,{c}@~oes.
@@ -119,7 +119,7 @@ Veja tamb@'em: @code{solve_rec}.
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~ao} solve_rec (@var{eqn}, @var{var}, [@var{init}])
+@deffn {Fun@,{c}@~ao} solve_rec (@var{eqn}, @var{var}, [@var{init}])
 Encontra solu@,{c}@~oes hipergeom@'etricas para a recorr@^encia linear @var{eqn} com
 coeficientes polinomiais na vari@'avel @var{var}. Argumentos opcionais @var{init}
 s@~ao as condi@,{c}@~oes iniciais.
@@ -190,7 +190,7 @@ Veja tamb@'em: @code{solve_rec_rat}, @code{simplify_products}, e @code{product_u
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} solve_rec_rat (@var{eqn}, @var{var}, [@var{init}])
+@deffn {Fun@,{c}@~ao} solve_rec_rat (@var{eqn}, @var{var}, [@var{init}])
 
 Encontra solu@,{c}@~oes racionais para recorr@^encias lineares. Veja solve_rec para
 uma descri@,{c}@~ao dos argumentos.
@@ -228,8 +228,8 @@ Veja tamb@'em: @code{simplify_products}, @code{solve_rec}.
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~ao} summand_to_rec (@var{summand}, @var{k}, @var{n})
-@deffnx {Fun@value{cedilha}@~ao} summand_to_rec (@var{summand}, [@var{k}, @var{lo}, @var{hi}], @var{n})
+@deffn {Fun@,{c}@~ao} summand_to_rec (@var{summand}, @var{k}, @var{n})
+@deffnx {Fun@,{c}@~ao} summand_to_rec (@var{summand}, [@var{k}, @var{lo}, @var{hi}], @var{n})
 
 Retorna a recorr@^encia satisfeita pelo somat@'orio
 

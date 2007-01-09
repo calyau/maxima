@@ -65,14 +65,14 @@ Por exemplo:
 @node Defini@value{cedilha}@value{o_til}es para zeilberger, , Introdu@value{cedilha}@~ao a zeilberger, zeilberger
 @section Defini@value{cedilha}@value{o_til}es para zeilberger
 
-@deffn {Fun@value{cedilha}@value{a_til}o} AntiDifference (@var{F_k}, @var{k})
+@deffn {Fun@,{c}@~ao} AntiDifference (@var{F_k}, @var{k})
 
 Retorna a anti-diferen@,{c}a hipergeom@'etrica
 de @var{F_k}, se essa anti-diferen@,{c}a.
 De outra forma @code{AntiDifference} retorna @code{no_hyp_antidifference}.
 @end deffn
 
-@deffn {Fun@value{cedilha}@value{a_til}o} Gosper (@var{F_k}, @var{k})
+@deffn {Fun@,{c}@~ao} Gosper (@var{F_k}, @var{k})
 Retorna o certificado racional @var{R(k)} para @var{F_k}, isto @'e,
 uma fun@,{c}@~ao racional tal que
 
@@ -82,7 +82,7 @@ se essa fun@,{c}@~ao racional exitir.
 De outra forma, @code{Gosper} retorna @code{no_hyp_sol}.
 @end deffn
 
-@deffn {Fun@value{cedilha}@value{a_til}o} GosperSum (@var{F_k}, @var{k}, @var{a}, @var{b}) 
+@deffn {Fun@,{c}@~ao} GosperSum (@var{F_k}, @var{k}, @var{a}, @var{b}) 
 
 Retorna o somat@'orio de @var{F_k} de @math{@var{k} = @var{a}} a @math{@var{k} = @var{b}}
 se @var{F_k} tiver ma diferen@,{c}a hipergeom@'etrica.
@@ -142,7 +142,7 @@ Dependent equations eliminated:  (1)
 @end example
 @end deffn
 
-@deffn {Fun@value{cedilha}@value{a_til}o} parGosper (@var{F_@{n,k@}}, @var{k}, @var{n}, @var{d})
+@deffn {Fun@,{c}@~ao} parGosper (@var{F_@{n,k@}}, @var{k}, @var{n}, @var{d})
 Tenta encontrar uma recorr@^encia de @var{d}-@'esima ordem para @var{F_@{n,k@}}.
 
 O algor@'itmo retorna uma seq@"u@^encia
@@ -154,7 +154,7 @@ Cada solu@,{c}@~ao tem a forma
 @code{parGosper} retorna @code{[]} caso n@~ao consiga encontrar uma recorr@^encia.
 @end deffn
 
-@deffn {Fun@value{cedilha}@value{a_til}o} Zeilberger (@var{F_@{n,k@}}, @var{k}, @var{n})
+@deffn {Fun@,{c}@~ao} Zeilberger (@var{F_@{n,k@}}, @var{k}, @var{n})
 Tenta calcular o somat@'orio hipergeom@'etrico indefinido de @var{F_@{n,k@}}.
 
 @code{Zeilberger} primeiro invoca @code{Gosper}, e se @code{Gosper} n@~ao conseguir encontrar uma solu@,{c}@~ao, ent@~ao @code{Zeilberger} invoca

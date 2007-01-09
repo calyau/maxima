@@ -125,14 +125,14 @@ y;
 
 @subsection Inicializa@,{c}@~ao e configura@,{c}@~ao
 
-@deffn {Fun@value{cedilha}@~ao} csetup ()
+@deffn {Fun@,{c}@~ao} csetup ()
 @'E uma fun@,{c}@~ao no pacote @code{ctensor} (component tensor)
 que inicializa o pacote e permite ao usu@'ario inserir uma m@'etrica
 interativamente. Veja @code{ctensor} para mais detalhes.
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} cmetric (@var{dis})
-@deffnx {Fun@value{cedilha}@~ao} cmetric ()
+@deffn {Fun@,{c}@~ao} cmetric (@var{dis})
+@deffnx {Fun@,{c}@~ao} cmetric ()
 @'E uma fun@,{c}@~ao no pacote @code{ctensor}
 que calcula o inverso da m@'etrica e prepara o pacote para
 c@'alculos adiante.
@@ -152,8 +152,8 @@ inversa @code{ufg} s@~ao calculadas.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} ct_coordsys (@var{sistema_de_coordenadas}, @var{extra_arg})
-@deffnx {Fun@value{cedilha}@~ao} ct_coordsys (@var{sistema_de_coordenadas})
+@deffn {Fun@,{c}@~ao} ct_coordsys (@var{sistema_de_coordenadas}, @var{extra_arg})
+@deffnx {Fun@,{c}@~ao} ct_coordsys (@var{sistema_de_coordenadas})
 Escolhe um sistema de coordenadas predefinido e uma m@'etrica. O argumento
 @var{sistema_de_coordenadas} pode ser um dos seguintes s@'imbolos:
 
@@ -260,7 +260,7 @@ Se a vari@'avel global @code{verbose} for escolhida para @code{true}, @code{ct_c
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} init_ctensor ()
+@deffn {Fun@,{c}@~ao} init_ctensor ()
 Inicializa o pacote @code{ctensor}.
 
 A fun@,{c}@~ao @code{init_ctensor} reinicializa o pacote @code{ctensor}. Essa fun@,{c}@~ao remove todos os arrays e matrizes usados por @code{ctensor}, coloca todos os sinalizadores de volta a seus valores padr@~ao, retorna @code{dim} para 4, e retorna a m@'etrica da moldura para a m@'etrica da moldura de Lorentz.
@@ -308,7 +308,7 @@ escolhida para @code{true}, os seguintes tensores podem ser calculados:
 
 @end example
 
-@deffn {Fun@value{cedilha}@~ao} christof (@var{dis})
+@deffn {Fun@,{c}@~ao} christof (@var{dis})
 Uma fun@,{c}@~ao no pacote @code{ctensor}.
 Essa fun@,{c}@~ao calcula os s@'imbolos de Christoffel de ambos
 os tipos.  O argumento @var{dis} determina quais resultados s@~ao para serem imediatamente
@@ -323,14 +323,14 @@ n@~ao acontecer@'a. Os elementos do array @code{mcs[i,j,k]} s@~ao definidos de u
 maneira que o @'indice final @'e contravariante.
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} ricci (@var{dis})
+@deffn {Fun@,{c}@~ao} ricci (@var{dis})
 Uma fun@,{c}@~ao no pacote @code{ctensor}.
 @code{ricci} calcula as componentes contravariantes
 (sim@'etricas) @code{ric[i,j]} do tensor de Ricci.  Se o argumento @var{dis} for @code{true},
 ent@~ao as componentes n@~ao nulas s@~ao mostradas.
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} uricci (@var{dis})
+@deffn {Fun@,{c}@~ao} uricci (@var{dis})
 Essa fun@,{c}@~ao primeiro calcula as
 componentes contravariantes @code{ric[i,j]} do tensor de Ricci.
 Ent@~ao o tensor misto de Ricci @'e calculado usando o
@@ -341,13 +341,13 @@ diretamente.  De outra forma, @code{ricci(false)} ir@'a simplesmente calcular as
 do array @code{uric[i,j]} sem mostrar os resultados.
 
 @end deffn
-@deffn {Fun@value{cedilha}@~ao} scurvature ()
+@deffn {Fun@,{c}@~ao} scurvature ()
 
 Retorna a curvatura escalar (obtida atrav@'es da contra@,{c}@~ao
 do tensor de Ricci) do Riemaniano multiplicado com a m@'etrica dada.
 
 @end deffn
-@deffn {Fun@value{cedilha}@~ao} einstein (@var{dis})
+@deffn {Fun@,{c}@~ao} einstein (@var{dis})
 Uma fun@,{c}@~ao no pacote @code{ctensor}.
 @code{einstein} calcula o tensor misto de Einstein
 ap@'os os s@'imbolos de Christoffel e o tensor de Ricci terem sido obtidos
@@ -359,12 +359,12 @@ esses componentes. Se @code{ratfac} for @code{true} ent@~ao as componentes ir@~a
 tamb@'em ser fatoradas.
 
 @end deffn
-@deffn {Fun@value{cedilha}@~ao} leinstein (@var{dis})
+@deffn {Fun@,{c}@~ao} leinstein (@var{dis})
 Tensor covariante de Einstein. @code{leinstein} armazena o valor do tensor covariante de Einstein no array @code{lein}. O tensor covariante de Einstein @'e calculado a partir tensor misto de Einstein @code{ein} atrav@'es da multiplica@,{c}@~ao desse pelo tensor m@'etrico. Se o argumento @var{dis} for @code{true}, ent@~ao os valores n@~ao nulos do tensor covariante de Einstein s@~ao mostrados.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} riemann (@var{dis})
+@deffn {Fun@,{c}@~ao} riemann (@var{dis})
 Uma fun@,{c}@~ao no pacote @code{ctensor}.
 @code{riemann} calcula o tensor de curvatura de Riemann
 a partir da m@'etrica dada e correspondendo aos s@'imbolos de Christoffel. As seguintes
@@ -394,7 +394,7 @@ coeficientes de campo da moldura.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} lriemann (@var{dis})
+@deffn {Fun@,{c}@~ao} lriemann (@var{dis})
 Tensor covariante de Riemann (@code{lriem[]}).
 
 Calcula o tensor covariante de Riemann como o array @code{lriem}. Se o
@@ -408,14 +408,14 @@ Para informa@,{c}@~ao sobre a ordena@,{c}@~ao de @'indice, veja @code{riemann}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} uriemann (@var{dis})
+@deffn {Fun@,{c}@~ao} uriemann (@var{dis})
 Calcula as componentes contravariantes do tensor de curvatura
  de Riemann como elementos do array @code{uriem[i,j,k,l]}.  Esses s@~ao mostrados
 se @var{dis} for @code{true}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} rinvariant ()
+@deffn {Fun@,{c}@~ao} rinvariant ()
 Comp@~oe o invariante de Kretchmann (@code{kinvariant}) obtido atrav@'es da
 contra@,{c}@~ao dos tensores
 
@@ -427,7 +427,7 @@ Esse objeto n@~ao @'e automaticamente simplificado devido ao fato de poder ser m
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} weyl (@var{dis})
+@deffn {Fun@,{c}@~ao} weyl (@var{dis})
 Calcula o tensor conformal de Weyl.  Se o argumento @var{dis} for
 @code{true}, as componentes n@~ao nulas @code{weyl[i,j,k,l]} ir@~ao ser mostradas para o
 usu@'ario.  De outra forma, essas componentes ir@~ao simplesmente serem calculadas e armazenadas.
@@ -459,7 +459,7 @@ A fun@,{c}@~ao @code{ctaylor} @'e invocada pelas seguintes fun@,{c}@~oes de @cod
     checkdiv()
 @end example
 
-@deffn {Fun@value{cedilha}@~ao} ctaylor ()
+@deffn {Fun@,{c}@~ao} ctaylor ()
 
 A fun@,{c}@~ao @code{ctaylor} trunca seus argumentos atrav@'es da convers@~ao
 destes para uma s@'erie de Taylor usando @code{taylor}, e ent@~ao chamando
@@ -600,7 +600,7 @@ do campo fraco longe de uma fonte gravitacional.
 Quando a vari@'avel @code{cframe_flag} for escolhida para @code{true}, o pacote @code{ctensor}
 executa seus c@'alculos usando uma moldura m@'ovel.
 
-@deffn {Fun@value{cedilha}@~ao} frame_bracket (@var{fr}, @var{fri}, @var{diagframe})
+@deffn {Fun@,{c}@~ao} frame_bracket (@var{fr}, @var{fri}, @var{diagframe})
 O delimitador da moldura (@code{fb[]}).
 
 Calcula o delimitador da moldura conforme a seguinte defini@,{c}@~ao:
@@ -620,7 +620,7 @@ calcular a classifica@,{c}@~ao de Petrov de uma m@'etrica espa@,{c}o tempo tetra
 Para uma demonstra@,{c}@~ao dessa compatibilidade, veja o arquivo
 @code{share/tensor/petrov.dem}.
 
-@deffn {Fun@value{cedilha}@~ao} nptetrad ()
+@deffn {Fun@,{c}@~ao} nptetrad ()
 Calcula um tetrad nulo de Newman-Penrose (@code{np}) e seus @'indices ascendentes
 em contrapartida (@code{npi}). Veja @code{petrov} para um exemplo.
 
@@ -647,7 +647,7 @@ np  = (fri  - %i fri ) / sqrt(2)
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} psi (@var{dis})
+@deffn {Fun@,{c}@~ao} psi (@var{dis})
 Calcula os cinco coeficientes de Newman-Penrose @code{psi[0]}...@code{psi[4]}.
 Se @code{psi} for escolhida para @code{true}, os coeficientes s@~ao mostrados.
 Veja @code{petrov} para um exemplo.
@@ -669,7 +669,7 @@ disting@"uir entre os dois tipos.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} petrov ()
+@deffn {Fun@,{c}@~ao} petrov ()
 Calcula a classifica@,{c}@~ao de petrov da m@'etrica caracterizada atrav@'es de @code{psi[0]}...@code{psi[4]}.
 
 Por exemplo, o seguinte demonstra como obter a classifica@,{c}@~ao de Petrov
@@ -805,13 +805,13 @@ coeficientes de conec@,{c}@~ao indexados mistos.
 Se necess@'ario, @code{christof} chama as fun@,{c}@~oes @code{contortion} e
 @code{nonmetricity} com o objetivo de calcular @code{kt} e @code{nm}.
 
-@deffn {Fun@value{cedilha}@~ao} contortion (@var{tr})
+@deffn {Fun@,{c}@~ao} contortion (@var{tr})
 
 Calcula os coeficientes de contors@~ao de categoria (2,1) a partir do tensor de tors@~ao @var{tr}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} nonmetricity (@var{nm})
+@deffn {Fun@,{c}@~ao} nonmetricity (@var{nm})
 
 Calcula o coeficiente de n@~ao metricidade de categoria (2,1) a partir do vetor de
 n@~ao metricidade @var{nm}.
@@ -822,7 +822,7 @@ n@~ao metricidade @var{nm}.
 
 @subsection Recursos diversos
 
-@deffn {Fun@value{cedilha}@~ao} ctransform (@var{M})
+@deffn {Fun@,{c}@~ao} ctransform (@var{M})
 Uma fun@,{c}@~ao no pacote @code{ctensor}
 que ir@'a executar uma transforma@,{c}@~ao de coordenadas
 sobre uma matriz sim@'etrica quadrada arbitr@'aria @var{M}. O usu@'ario deve informar as
@@ -830,7 +830,7 @@ fun@,{c}@~aoes que definem a transforma@,{c}@~ao.  (Formalmente chamada @code{tr
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} findde (@var{A}, @var{n})
+@deffn {Fun@,{c}@~ao} findde (@var{A}, @var{n})
 
 Retorna uma lista de equa@,{c}@~oes diferenciais @'unicas (express@~oes)
 correspondendo aos elementos do array quadrado @var{n} dimensional
@@ -881,12 +881,12 @@ abaixo, @code{findde} fornece as seguintes equa@,{c}@~oes diferenciais independe
 
 
 @end deffn
-@deffn {Fun@value{cedilha}@~ao} cograd ()
+@deffn {Fun@,{c}@~ao} cograd ()
 Calcula o gradiente covariante de uma fun@,{c}@~ao escalar permitindo ao
 usu@'ario escolher o nome do vetor correspondente como o exemplo sob
 @code{contragrad} ilustra.
 @end deffn
-@deffn {Fun@value{cedilha}@~ao} contragrad ()
+@deffn {Fun@,{c}@~ao} contragrad ()
 
 Calcula o gradiente contravariante de uma fun@,{c}@~ao escalar permitindo
 @c "vector^F2name^F*" LOOKS LIKE IT NEEDS TO BE FIXED UP, NOT SURE HOW THOUGH
@@ -919,7 +919,7 @@ abaixo como ilustra a m@'etrica de Schwarzschild:
 @end example
 
 @end deffn
-@deffn {Fun@value{cedilha}@~ao} dscalar ()
+@deffn {Fun@,{c}@~ao} dscalar ()
 Calcula o tensor d'Alembertiano da fun@,{c}@~ao escalar assim que
 as depend@^encias tiverem sido declaradas sobre a fun@,{c}@~ao. Po exemplo:
 
@@ -942,7 +942,7 @@ as depend@^encias tiverem sido declaradas sobre a fun@,{c}@~ao. Po exemplo:
 @end example
 
 @end deffn
-@deffn {Fun@value{cedilha}@~ao} checkdiv ()
+@deffn {Fun@,{c}@~ao} checkdiv ()
 
 Calcula a diverg@^encia covariante do tensor de segunda categoria misto
 (cujo primeiro @'indice deve ser covariante) imprimindo as
@@ -952,7 +952,7 @@ diverg@^encia do tensor de Einstein ir@'a ser formada e pode ser zero.
 Adicionalmente, a diverg@^encia (vetor) @'e dada no array chamado @code{div}.
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} cgeodesic (@var{dis})
+@deffn {Fun@,{c}@~ao} cgeodesic (@var{dis})
 Uma fun@,{c}@~ao no pacote @code{ctensor}.
 @code{cgeodesic} calcula as equa@,{c}@~oes geod@'esicas de
 movimento para uma dada m@'etrica.  Elas s@~ao armazenadas no array @code{geod[i]}.  Se
@@ -961,7 +961,7 @@ o argumento @var{dis} for @code{true} ent@~ao essas equa@,{c}@~oes s@~ao mostrad
 @end deffn
 
 
-@deffn {Fun@value{cedilha}@~ao} bdvac (@var{f})
+@deffn {Fun@,{c}@~ao} bdvac (@var{f})
 
 Gera as componentes covariantes das equa@,{c}@~oes de campo de v@'acuo da
 teoria de gravita@,{c}@~ao de Brans-Dicke. O campo escalar @'e especificado
@@ -973,7 +973,7 @@ representadas pelo array @code{bd}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} invariant1 ()
+@deffn {Fun@,{c}@~ao} invariant1 ()
 
 Gera o tensor misto de Euler-Lagrange (equa@,{c}@~oes de campo) para a
 densidade invariante de R^2. As equa@,{c}@~oes de campo s@~ao componentes de um
@@ -981,7 +981,7 @@ array chamado @code{inv1}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} invariant2 ()
+@deffn {Fun@,{c}@~ao} invariant2 ()
 
 *** NOT YET IMPLEMENTED ***
 
@@ -991,7 +991,7 @@ componentes de um array chamado @code{inv2}.
 
 
 @end deffn
-@deffn {Fun@value{cedilha}@~ao} bimetric ()
+@deffn {Fun@,{c}@~ao} bimetric ()
 
 *** NOT YET IMPLEMENTED ***
 
@@ -1002,19 +1002,19 @@ de campo s@~ao as componentes de um array chamado @code{rosen}.
 
 @subsection Fun@,{c}@~oes utilit@'arias
 
-@deffn {Fun@value{cedilha}@~ao} diagmatrixp (@var{M})
+@deffn {Fun@,{c}@~ao} diagmatrixp (@var{M})
 
 Retorna @code{true} se @var{M} for uma matriz diagonal ou um array (2D).
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} symmetricp (@var{M})
+@deffn {Fun@,{c}@~ao} symmetricp (@var{M})
 
 Retorna @code{true} se @var{M} for uma matriz sim@'etrica ou um array (2D).
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} ntermst (@var{f})
+@deffn {Fun@,{c}@~ao} ntermst (@var{f})
 Fornece ao usu@'ario um r@'apido quadro do "tamanho" do tensor duplamente
 subscrito (array) @var{f}.  Imprime uma lista de dois elementos onde o segundo
 elemento corresponde a N-TERMOS de componentes especificadas atrav@'es dos primeiros
@@ -1023,7 +1023,7 @@ n@~ao nulas e tentar simplifica@,{c}@~ao.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} cdisplay (@var{ten})
+@deffn {Fun@,{c}@~ao} cdisplay (@var{ten})
 Mostra todos os elementos do tensor @var{ten}, como representados por
 um array multidimensional. Tensores de categoria 0 e 1, assim como outros tipos de
 vari@'aveis, s@~ao mostrados com @code{ldisplay}. Tensores de categoria 2 s@~ao
@@ -1241,7 +1241,7 @@ m@'etrica de Schwarzschild pode ser visto como:
 @end example
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} deleten (@var{L}, @var{n})
+@deffn {Fun@,{c}@~ao} deleten (@var{L}, @var{n})
 Retorna uma nova lista consistindo de @var{L} com o @var{n}'@'esimo elemento
 apagado.
 @end deffn

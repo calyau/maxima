@@ -20,8 +20,8 @@ Veja tamb@'em @code{lsquares}.
 @end defvr
 
 
-@deffn {Fun@value{cedilha}@~ao} lsquares (@var{Mat},@var{VarList},@var{equa@,{c}@~ao},@var{ParamList})
-@deffnx {Fun@value{cedilha}@~ao} lsquares (@var{Mat},@var{VarList},@var{equa@,{c}@~ao},@var{ParamList},@var{EsperadosList})
+@deffn {Fun@,{c}@~ao} lsquares (@var{Mat},@var{VarList},@var{equa@,{c}@~ao},@var{ParamList})
+@deffnx {Fun@,{c}@~ao} lsquares (@var{Mat},@var{VarList},@var{equa@,{c}@~ao},@var{ParamList},@var{EsperadosList})
 Ajuste m@'ultiplo de equa@,{c}@~oes n@~ao lineares de uma tabela de dados pelo
 m@'etodo dos "m@'inimos quadrados". @var{Mat} @'e uma matriz contendo os dados,
 @var{VarList} @'e uma lista de nomes de vari@'aveis (um para cada coluna de @var{Mat}),
@@ -103,9 +103,9 @@ Para usar essa fun@,{c}@~ao escreva primeiro @code{load("lsquares")}. Veja tamb@
 @end deffn
 
 
-@deffn {Fun@value{cedilha}@~ao} plsquares (@var{Mat},@var{VarList},@var{depvars})
-@deffnx {Fun@value{cedilha}@~ao} plsquares (@var{Mat},@var{VarList},@var{depvars},@var{maxexpon})
-@deffnx {Fun@value{cedilha}@~ao} plsquares (@var{Mat},@var{VarList},@var{depvars},@var{maxexpon},@var{maxdegree})
+@deffn {Fun@,{c}@~ao} plsquares (@var{Mat},@var{VarList},@var{depvars})
+@deffnx {Fun@,{c}@~ao} plsquares (@var{Mat},@var{VarList},@var{depvars},@var{maxexpon})
+@deffnx {Fun@,{c}@~ao} plsquares (@var{Mat},@var{VarList},@var{depvars},@var{maxexpon},@var{maxdegree})
 Ajuste de polin@^omios de v@'arias vari@'aveis de uma tabela de dados pelo m@'etodo dos
 "m@'inimos quadrados". @var{Mat} @'e uma matriz contendo os dados, @var{VarList} @'e uma lista de nomes de vari@'aveis (um nome para cada coluna de Mat, mas use "-" em lugar de nomes de vari@'aveis para colunas de Mat), @var{depvars} @'e o
 nome de uma vari@'avel dependente ou uma

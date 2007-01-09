@@ -7,7 +7,7 @@
 @node Defini@value{cedilha}@~oes para cholesky,  , cholesky, cholesky
 @section Defini@value{cedilha}@~oes para cholesky
 
-@deffn {Fun@value{cedilha}@~ao} cholesky (@var{A})
+@deffn {Fun@,{c}@~ao} cholesky (@var{A})
 Calcula a decomposi@,{c}@~ao de Cholesky de @var{A},
 uma matriz triangular baixa @var{L} tal que @code{L . transpose(L) = A}.
 

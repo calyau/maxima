@@ -8,7 +8,7 @@
 @section Defini@value{cedilha}@~oes para diag
 
 
-@deffn {Fun@value{cedilha}@~ao} diag (@var{lm})
+@deffn {Fun@,{c}@~ao} diag (@var{lm})
 Constr@'oi a matriz quadrada com as matrizes de @var{lm} na diagonal. @var{lm} @'e uma lista de matrizes ou escalares.
 
 Exemplo:
@@ -37,7 +37,7 @@ Para usar essa fun@,{c}@~ao escreva primeiramente @code{load("diag")}.
 @end deffn
 
 
-@deffn {Fun@value{cedilha}@~ao} JF (@var{lambda},@var{n})
+@deffn {Fun@,{c}@~ao} JF (@var{lambda},@var{n})
 Retorna a c@'elula de Jordan de ordem @var{n} com autovalor @var{lambda}.
 
 Exemplo:
@@ -64,7 +64,7 @@ Para usar essa fun@,{c}@~ao escreva primeiramente @code{load("diag")}.
 @end deffn
 
 
-@deffn {Fun@value{cedilha}@~ao} jordan (@var{mat})
+@deffn {Fun@,{c}@~ao} jordan (@var{mat})
 Retorna a forma de Jordan da matriz @var{mat}, mas codificada em uma lista do Maxima.
 Para pegar a matriz correspondente @`a codifica@,{c}@~ao, chame a fun@,{c}@~ao @code{dispJordan} sando como argumento
 a sa@'ida de @code{JF}.
@@ -106,7 +106,7 @@ Para usar essa fun@,{c}@~ao escreva primeiramente @code{load("diag")}. Veja tamb
 @end deffn
 
 
-@deffn {Fun@value{cedilha}@~ao} dispJordan (@var{l})
+@deffn {Fun@,{c}@~ao} dispJordan (@var{l})
 Retorna a matriz de Jordan associada @`a codifica@,{c}@~ao fornecida pela lista do Maxima @var{l}, que @'e a sa@'ida fornecida pela fun@,{c}@~ao @code{jordan}.
 
 Exemplo:
@@ -137,7 +137,7 @@ Para usar essa fun@,{c}@~ao escreva primeiramente @code{load("diag")}. Veja tamb
 @end deffn
 
 
-@deffn {Fun@value{cedilha}@~ao} minimalPoly (@var{l})
+@deffn {Fun@,{c}@~ao} minimalPoly (@var{l})
 Retorna o menor polin@^omio associado @`a codifica@,{c}@~ao fornecida pela lista do Maxima @var{l}, que @'e a sa@'ida fornecida pela fun@,{c}@~ao @code{jordan}.
 
 Exemplo:
@@ -159,7 +159,7 @@ Exemplo:
 Para usar essa fun@,{c}@~ao escreva prmeiramente @code{load("diag")}. Veja tamb@'em @code{jordan} e @code{dispJordan}.
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} ModeMatrix (@var{A},@var{l})
+@deffn {Fun@,{c}@~ao} ModeMatrix (@var{A},@var{l})
 Retorna a matriz @var{M} tal que @math{(M^^-1).A.M=J}, onde @var{J} @'e a forma de Jordan de @var{A}. A lista do Maxima @var{l} @'e a codifica@,{c}@~ao da forma de Jordan como retornado pela fun@,{c}@~ao @code{jordan}.
 
 Exemplo:
@@ -196,7 +196,7 @@ Para usa essa fun@,{c}@~ao escreva primeiramente @code{load("diag")}. Veja tamb@
 @end deffn
 
 
-@deffn {Fun@value{cedilha}@~ao} mat_function (@var{f},@var{mat})
+@deffn {Fun@,{c}@~ao} mat_function (@var{f},@var{mat})
 Retorna @math{f(mat)}, onde @var{f} @'e uma fun@,{c}@~ao anal@'itica e @var{mat}
 uma matriz. Essa computa@,{c}@~ao @'e baseada na f@'ormula da integral de Cauchy, que estabelece que
 se @code{f(x)} for anal@'itica e

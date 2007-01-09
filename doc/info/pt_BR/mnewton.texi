@@ -25,7 +25,7 @@ caso essa fun@,{c}@~ao n@~ao seja convergente ou se convergir muito lentamente.
 Veja tamb@'em @code{mnewton}.
 @end defvr
 
-@deffn {Fun@value{cedilha}@~ao} mnewton (@var{FuncList},@var{VarList},@var{GuessList})
+@deffn {Fun@,{c}@~ao} mnewton (@var{FuncList},@var{VarList},@var{GuessList})
 Solu@,{c}@~ao de multiplas fun@,{c}@~oes n@~ao lineares usando o m@'etodo de Newton.
 @var{FuncList} @'e a lista de fun@,{c}@~oes a serem resolvidas,
 @var{VarList} @'e a lista dos nomes de vari@'aveis, e

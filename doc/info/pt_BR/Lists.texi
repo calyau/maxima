@@ -249,7 +249,7 @@ x is not numeric.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} join (@var{l}, @var{m})
+@deffn {Fun@,{c}@~ao} join (@var{l}, @var{m})
 Cria uma nova lista contendo os elementos das lista @var{l} and @var{m}, intercaladas.
 O resultado tem os elementos @code{[@var{l}[1], @var{m}[1], @var{l}[2], @var{m}[2], ...]}.
 As listas @var{l} e @var{m} podem conter qualquer tipo de elementos.
@@ -306,7 +306,7 @@ listas.
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~ao} listp (@var{expr})
+@deffn {Fun@,{c}@~ao} listp (@var{expr})
 Retorna @code{true} se @var{expr} for uma lista de outra forma retorna @code{false}.
 
 @end deffn
@@ -340,7 +340,7 @@ Exemplos:
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} member (@var{expr_1}, @var{expr_2})
+@deffn {Fun@,{c}@~ao} member (@var{expr_1}, @var{expr_2})
 
 Retorna @code{true} se @code{is(@var{expr_1} = @var{a})}
 para algum elemento @var{a} em @code{args(@var{expr_2})},

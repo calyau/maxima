@@ -8,7 +8,7 @@
 @section Defini@value{cedilha}@~oes para bode
 
 
-@deffn {Fun@value{cedilha}@~ao} bode_gain (@var{H}, @var{range}, ...@var{plot_opts}...)
+@deffn {Fun@,{c}@~ao} bode_gain (@var{H}, @var{range}, ...@var{plot_opts}...)
 Fun@,{c}@~ao para desenhar gr@'aficos de ganho para Bode.
 
 Exemplos (1 a 7 provenientes de 
@@ -58,7 +58,7 @@ Para usar essa fun@,{c}@~ao escreva primeiramente @code{load("bode")}. Veja tamb
 @end deffn
 
 
-@deffn {Fun@value{cedilha}@~ao} bode_phase (@var{H}, @var{range}, ...@var{plot_opts}...)
+@deffn {Fun@,{c}@~ao} bode_phase (@var{H}, @var{range}, ...@var{plot_opts}...)
 Fun@,{c}@~ao para desenhar gr@'aficos de fase para Bode
 
 Exemplos (1 a 7 provenientes de

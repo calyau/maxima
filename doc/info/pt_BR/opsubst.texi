@@ -8,9 +8,9 @@
 @node Defini@value{cedilha}@~oes para opsubst,  , opsubst, opsubst
 @section Defini@value{cedilha}@~oes para  opsubst
 
-@deffn {Fun@value{cedilha}@~ao} opsubst (@var{f},@var{g},@var{e})
-@deffnx {Fun@value{cedilha}@~ao} opsubst (@var{g}=@var{f},@var{e})
-@deffnx {Fun@value{cedilha}@~ao} opsubst ([@var{g1}=@var{f1},@var{g2}=@var{f2},..., @var{gn}=@var{fn}],@var{e})
+@deffn {Fun@,{c}@~ao} opsubst (@var{f},@var{g},@var{e})
+@deffnx {Fun@,{c}@~ao} opsubst (@var{g}=@var{f},@var{e})
+@deffnx {Fun@,{c}@~ao} opsubst ([@var{g1}=@var{f1},@var{g2}=@var{f2},..., @var{gn}=@var{fn}],@var{e})
 A fun@,{c}@~ao @code{opsubst}  similar @`a fun@,{c}@~ao @code{subst}, exceto que
 @code{opsubst} somente faz substitui@,{c}@~oes para as opera@,{c}@~oes em uma express@~oes. Em geral, 
 quando @var{f} for um operador em uma express@~ao @var{e}, substitui @var{g} 

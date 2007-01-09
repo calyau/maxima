@@ -7,8 +7,8 @@
 @node Defini@value{cedilha}@value{o_til}es para augmented_lagrangian,  , augmented_lagrangian, augmented_lagrangian
 @section Defini@value{cedilha}@value{o_til}es para augmented_lagrangian
 
-@deffn {Fun@value{cedilha}@value{a_til}o} augmented_lagrangian_method (@var{FOM}, @var{xx}, @var{C}, @var{yy})
-@deffnx {Fun@value{cedilha}@value{a_til}o} augmented_lagrangian_method (@var{FOM}, @var{xx}, @var{C}, @var{yy}, args_opcionais)
+@deffn {Fun@,{c}@~ao} augmented_lagrangian_method (@var{FOM}, @var{xx}, @var{C}, @var{yy})
+@deffnx {Fun@,{c}@~ao} augmented_lagrangian_method (@var{FOM}, @var{xx}, @var{C}, @var{yy}, args_opcionais)
  
 Retorna um m@'inimo aproximado da express@~ao @var{FOM}
 com rela@,{c}@~ao @`as vari@'aveis @var{xx},

@@ -261,8 +261,8 @@ Veja tamb@'em @code{setcheck} e @code{setcheckbreak}.
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~ao} timer (@var{f_1}, ..., @var{f_n})
-@deffnx {Fun@value{cedilha}@~ao} timer ()
+@deffn {Fun@,{c}@~ao} timer (@var{f_1}, ..., @var{f_n})
+@deffnx {Fun@,{c}@~ao} timer ()
 Dadas as fun@,{c}@~oes @var{f_1}, ..., @var{f_n},
 @code{timer} coloca cada uma na lista de fun@,{c}@~oes para as quais cronometragens estat@'isticas s@~ao coletadas.
 @code{timer(f)$ timer(g)$} coloca @code{f} e ent@~ao @code{g} sobre a lista;
@@ -287,8 +287,8 @@ Se @code{trace(f)} est@'a vigorando, ent@~ao @code{timer(f)} n@~ao tem efeito; @
 Veja tamb@'em @code{timer_devalue}.
 
 @end deffn
-@deffn {Fun@value{cedilha}@~ao} untimer (@var{f_1}, ..., @var{f_n})
-@deffnx {Fun@value{cedilha}@~ao} untimer ()
+@deffn {Fun@,{c}@~ao} untimer (@var{f_1}, ..., @var{f_n})
+@deffnx {Fun@,{c}@~ao} untimer ()
 Dadas as fun@,{c}@~oes @var{f_1}, ..., @var{f_n},
 @code{untimer} remove cada uma das fun@,{c}@~oes listadas da lista de fun@,{c}@~oes estatisticamente monitoradas.
 
@@ -316,8 +316,8 @@ Veja tamb@'em @code{timer} e @code{timer_info}.
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~ao} timer_info (@var{f_1}, ..., @var{f_n})
-@deffnx {Fun@value{cedilha}@~ao} timer_info ()
+@deffn {Fun@,{c}@~ao} timer_info (@var{f_1}, ..., @var{f_n})
+@deffnx {Fun@,{c}@~ao} timer_info ()
 Dadas as fun@,{c}@~oes @var{f_1}, ..., @var{f_n},
 @code{timer_info} retorna uma matriz contendo informa@,{c}@~oes de cronometragem para cada fun@,{c}@~ao.
 Sem argumentos, @code{timer_info} retorna informa@,{c}@~oes de cronometragem para
@@ -339,8 +339,8 @@ Veja tamb@'em @code{timer}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} trace (@var{f_1}, ..., @var{f_n})
-@deffnx {Fun@value{cedilha}@~ao} trace ()
+@deffn {Fun@,{c}@~ao} trace (@var{f_1}, ..., @var{f_n})
+@deffnx {Fun@,{c}@~ao} trace ()
 Dadas as fun@,{c}@~oes @var{f_1}, ..., @var{f_n},
 @code{trace} instrui Maxima para mostrar
 informa@,{c}@~oes de depura@,{c}@~ao quando essas fun@,{c}@~oes forem chamadas.
@@ -365,8 +365,8 @@ Se @code{timer (f)} estiver em efeito, ent@~ao @code{trace (f)} n@~ao est@'a agi
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} trace_options (@var{f}, @var{option_1}, ..., @var{option_n})
-@deffnx {Fun@value{cedilha}@~ao} trace_options (@var{f})
+@deffn {Fun@,{c}@~ao} trace_options (@var{f}, @var{option_1}, ..., @var{option_n})
+@deffnx {Fun@,{c}@~ao} trace_options (@var{f})
 Escolhe as op@,{c}@~oes de @code{trace} para a fun@,{c}@~ao @var{f}.
 Quaisquer op@,{c}@~oes anteriores s@~ao substitu@'idas.
 @code{trace_options (@var{f}, ...)} n@~ao tem efeito a menos que
@@ -435,8 +435,8 @@ sobre um predicado:
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} untrace (@var{f_1}, ..., @var{f_n})
-@deffnx {Fun@value{cedilha}@~ao} untrace ()
+@deffn {Fun@,{c}@~ao} untrace (@var{f_1}, ..., @var{f_n})
+@deffnx {Fun@,{c}@~ao} untrace ()
 Dadas as fun@,{c}@~oes @var{f_1}, ..., @var{f_n},
 @code{untrace} desabilita a a monitora@,{c}@~ao habilitada pela fun@,{c}@~ao @code{trace}.
 Sem argumentos, @code{untrace} desabilita a atua@,{c}@~ao da fun@,{c}@~ao @code{trade} para todas as fun@,{c}@~oes.

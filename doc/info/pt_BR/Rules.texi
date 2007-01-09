@@ -30,7 +30,7 @@ e para @'algebra comutativa e n@~ao comutativa no pacote @code{affine}.
 @section Defini@value{cedilha}@~oes para Regras e Modelos
 
 @c NEEDS CLARIFICATION AND EXAMPLES
-@deffn {Fun@value{cedilha}@~ao} apply1 (@var{expr}, @var{rule_1}, ..., @var{rule_n})
+@deffn {Fun@,{c}@~ao} apply1 (@var{expr}, @var{rule_1}, ..., @var{rule_n})
 Repetidamente aplica @var{rule_1} a
 @var{expr} at@'e que isso falhe, ent@~ao repetidamente aplica a mesma regra a todas
 as subexpress@~oes de @var{expr}, da esquerda para a direita, at@'e que @var{rule_1} tenha falhado
@@ -47,7 +47,7 @@ Veja tamb@'em @code{applyb1}, @code{apply2}, e @code{let}.
 @end deffn
 
 @c NEEDS CLARIFICATION AND EXAMPLES
-@deffn {Fun@value{cedilha}@~ao} apply2 (@var{expr}, @var{rule_1}, ..., @var{rule_n})
+@deffn {Fun@,{c}@~ao} apply2 (@var{expr}, @var{rule_1}, ..., @var{rule_n})
 Se @var{rule_1} falhar sobre uma dada subexpress@~ao, ent@~ao @var{rule_2} @'e
 repetidamente aplicada, etc.  Somente se todas as regras falharem sobre uma dada
 subexpress@~ao @'e que o conjunto completo de regras @'e repetidamente aplicada @`a pr@'oxima
@@ -62,7 +62,7 @@ Veja tamb@'em @code{apply1} e @code{let}.
 @end deffn
 
 @c NEEDS CLARIFICATION AND EXAMPLES
-@deffn {Fun@value{cedilha}@~ao} applyb1 (@var{expr}, @var{rule_1}, ..., @var{rule_n})
+@deffn {Fun@,{c}@~ao} applyb1 (@var{expr}, @var{rule_1}, ..., @var{rule_n})
 Repetidamente aplica @var{rule_1} para a subexpress@~ao mais distante de @var{expr} at@'e falhar,
 ent@~ao repetidamente aplica a mesma regra um n@'ivel mais acima (i.e., subexpress@~aos mais larga),
 at@'e que @var{rule_1} tenha falhado sobre a express@~ao de n@'ivel mais alto.
@@ -106,7 +106,7 @@ n@~ao for explicitamente escolhido pelo usu@'ario com @code{let} ou atrav@'es de
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~ao} defmatch (@var{prognome}, @var{modelo}, @var{x_1}, ..., @var{x_n})
+@deffn {Fun@,{c}@~ao} defmatch (@var{prognome}, @var{modelo}, @var{x_1}, ..., @var{x_n})
 Cria uma fun@,{c}@~ao @code{@var{prognome} (@var{expr}, @var{y_1}, ..., @var{y_n})}
 que testa @var{expr} para ver se essa express@~ao coincide com @var{modelo}.
 
@@ -196,7 +196,7 @@ n@~ao em qualquer outra vari@'avel.
 @end deffn
 
 @c NEEDS CLARIFICATION AND EXAMPLES
-@deffn {Fun@value{cedilha}@~ao} defrule (@var{nomeregra}, @var{modelo}, @var{substitui@,{c}@~ao})
+@deffn {Fun@,{c}@~ao} defrule (@var{nomeregra}, @var{modelo}, @var{substitui@,{c}@~ao})
 Define e nomeia uma
 regra de substitui@,{c}@~ao para o modelo dado.  Se a regra nomeada @var{nomeregra} for
 aplicada a uma express@~ao (atrav@'es de @code{apply1}, @code{applyb1}, ou @code{apply2}), toda
@@ -213,8 +213,8 @@ Se a coincid@^encia falhar, a fun@,{c}@~ao da regra retorna @code{false}.
 @end deffn
 
 @c NEEDS EXAMPLES
-@deffn {Fun@value{cedilha}@~ao} disprule (@var{nomeregra_1}, ..., @var{nomeregra_2})
-@deffnx {Fun@value{cedilha}@~ao} disprule (all)
+@deffn {Fun@,{c}@~ao} disprule (@var{nomeregra_1}, ..., @var{nomeregra_2})
+@deffnx {Fun@,{c}@~ao} disprule (all)
 Mostra regras com os nomes @var{nomeregra_1}, ..., @var{nomeregra_n},
 como retornado por @code{defrule}, @code{tellsimp}, ou @code{tellsimpafter},
 ou um modelo definido por meio de @code{defmatch}.
@@ -260,8 +260,8 @@ Examples:
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} let (@var{prod}, @var{repl}, @var{prednome}, @var{arg_1}, ..., @var{arg_n})
-@deffnx {Fun@value{cedilha}@~ao} let ([@var{prod}, @var{repl}, @var{prednome}, @var{arg_1}, ..., @var{arg_n}], @var{nome_pacote})
+@deffn {Fun@,{c}@~ao} let (@var{prod}, @var{repl}, @var{prednome}, @var{arg_1}, ..., @var{arg_n})
+@deffnx {Fun@,{c}@~ao} let ([@var{prod}, @var{repl}, @var{prednome}, @var{arg_1}, ..., @var{arg_n}], @var{nome_pacote})
 Define uma regra de substitui@,{c}@~ao para @code{letsimp} tal que @var{prod} @'e substitu@'ido por @var{repl}.
 @var{prod} @'e um produto de expoentes positivos ou negativos dos seguintes termos:
 
@@ -377,8 +377,8 @@ o numerador, o denominador, e seu quocienten s@~ao simplificados nessa ordem.
 @end defvr
 
 @c NEEDS EXAMPLES
-@deffn {Fun@value{cedilha}@~ao} letrules ()
-@deffnx {Fun@value{cedilha}@~ao} letrules (@var{nome_pacote})
+@deffn {Fun@,{c}@~ao} letrules ()
+@deffnx {Fun@,{c}@~ao} letrules (@var{nome_pacote})
 Mostra as regras em um pacote de regras.
 @code{letrules ()} mostra as regras no pacote de regras corrente.
 @code{letrules (@var{nome_pacote})} mostra as regras em @code{nome_pacote}.
@@ -392,9 +392,9 @@ Veja tamb@'em @code{disprule}, que mostra regras defindas por @code{tellsimp} e 
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} letsimp (@var{expr})
-@deffnx {Fun@value{cedilha}@~ao} letsimp (@var{expr}, @var{nome_pacote})
-@deffnx {Fun@value{cedilha}@~ao} letsimp (@var{expr}, @var{nome_pacote_1}, ..., @var{nome_pacote_n})
+@deffn {Fun@,{c}@~ao} letsimp (@var{expr})
+@deffnx {Fun@,{c}@~ao} letsimp (@var{expr}, @var{nome_pacote})
+@deffnx {Fun@,{c}@~ao} letsimp (@var{expr}, @var{nome_pacote_1}, ..., @var{nome_pacote_n})
 Repetidamente aplica a substitui@,{c}@~ao definida por @code{let}
 at@'e que nenhuma mudan@,{c}a adicional seja feita para @var{expr}.
 
@@ -418,7 +418,7 @@ mais o pacote padr@~ao @code{default_let_rule_package}.
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~ao} matchdeclare (@var{a_1}, @var{pred_1}, ..., @var{a_n}, @var{pred_n})
+@deffn {Fun@,{c}@~ao} matchdeclare (@var{a_1}, @var{pred_1}, ..., @var{a_n}, @var{pred_n})
 Associa um predicado @var{pred_k} 
 com uma vari@'avel ou lista de vari@'aveis @var{a_k}
 de forma que @var{a_k} coincida com express@~oes
@@ -623,8 +623,8 @@ As fun@,{c}@~oes @code{propvars} e @code{printprops} retornam informa@,{c}@~oes 
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} matchfix (@var{delimitador_e}, @var{delimitador_d})
-@deffnx {Fun@value{cedilha}@~ao} matchfix (@var{delimitador_e}, @var{delimitador_d}, @var{arg_pos}, @var{pos})
+@deffn {Fun@,{c}@~ao} matchfix (@var{delimitador_e}, @var{delimitador_d})
+@deffnx {Fun@,{c}@~ao} matchfix (@var{delimitador_e}, @var{delimitador_d}, @var{arg_pos}, @var{pos})
 Declara um operador @code{matchfix} com delimitadores esquerdo e direito @var{delimitador_e} and @var{delimitador_d}.
 Os delimitadores s@~ao especificados como seq@"u@^ecias de caracteres.
 
@@ -745,10 +745,10 @@ Operadores @code{matchfix} s@~ao fun@,{c}@~oes comuns definidas pelo usu@'ario.
 @end deffn
 
 @c NEEDS CLARIFICATION AND EXAMPLES
-@deffn {Fun@value{cedilha}@~ao} remlet (@var{prod}, @var{nome})
-@deffnx {Fun@value{cedilha}@~ao} remlet ()
-@deffnx {Fun@value{cedilha}@~ao} remlet (all)
-@deffnx {Fun@value{cedilha}@~ao} remlet (all, @var{nome})
+@deffn {Fun@,{c}@~ao} remlet (@var{prod}, @var{nome})
+@deffnx {Fun@,{c}@~ao} remlet ()
+@deffnx {Fun@,{c}@~ao} remlet (all)
+@deffnx {Fun@,{c}@~ao} remlet (all, @var{nome})
 Apaga a regra de substitui@,{c}ao, prod --> repl, mais
 recentemente definida atrav@'es dea fun@,{c}@~ao @code{let}.  Se @code{nome} for fornecido a regra @'e
 apagada do pacote de regras chamado @code{nome}.
@@ -767,8 +767,8 @@ Veja tamb@'em @code{remrule}, que remove uma regra definida atrav@'es de @code{t
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} remrule (@var{op}, @var{nomeregra})
-@deffnx {Fun@value{cedilha}@~ao} remrule (@var{op}, all)
+@deffn {Fun@,{c}@~ao} remrule (@var{op}, @var{nomeregra})
+@deffnx {Fun@,{c}@~ao} remrule (@var{op}, all)
 Remove regras definidas por @code{tellsimp}, ou @code{tellsimpafter}.
 
 @code{remrule (@var{op}, @var{nomeregra})}
@@ -830,7 +830,7 @@ Examples:
 @end deffn
 
 @c NEEDS EXPANSION OR MAYBE JUST APPROPRIATE REFS TO tellsimpafter
-@deffn {Fun@value{cedilha}@~ao} tellsimp (@var{pattern}, @var{replacement})
+@deffn {Fun@,{c}@~ao} tellsimp (@var{pattern}, @var{replacement})
 @'e similar a @code{tellsimpafter} mas coloca
 nova informa@,{c}@~ao antes da antiga de forma que essa nova regra seja aplicada antes das regras
 de simplifica@,{c}@~ao internas.
@@ -894,7 +894,7 @@ Exemplos:
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} tellsimpafter (@var{modelo}, @var{substitui@,{c}@~ao})
+@deffn {Fun@,{c}@~ao} tellsimpafter (@var{modelo}, @var{substitui@,{c}@~ao})
 Define a uma regra de simplifica@,{c}@~ao que o simplificador do Maxima
 aplica ap@'os as regras de simplifica@,{c}@~ao internas.
 @var{modelo} @'e uma express@~ao, compreendendo vari@'aveis de modelo (declaradas atrav@'es de @code{matchdeclare})
@@ -1163,7 +1163,7 @@ Um exemplo trabalhado: multiplica@,{c}@~ao anticomutativa.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} clear_rules ()
+@deffn {Fun@,{c}@~ao} clear_rules ()
 Executa @code{kill (rules)} e ent@~ao re-escolhe o pr@'oximo n@'umero de regra para 1
 para adi@,{c}@~ao @code{+}, multiplica@,{c}@~ao @code{*}, e exponencia@,{c}@~ao @code{^}.
 

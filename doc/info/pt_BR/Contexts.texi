@@ -8,7 +8,7 @@
 @node Defini@value{cedilha}@~oes para Contextos,  , Contextos, Contextos
 @section Defini@value{cedilha}@~oes para Contextos
 
-@deffn {Fun@value{cedilha}@~ao} activate (@var{context_1}, ..., @var{context_n})
+@deffn {Fun@,{c}@~ao} activate (@var{context_1}, ..., @var{context_n})
 Ativa os contextos @var{context_1}, ..., @var{context_n}.
 Os fatos nesses contextos est@~ao ent@~ao dispon@'iveis para
 fazer dedu@,{c}@~oes e recuperar informa@,{c}@~ao.
@@ -28,7 +28,7 @@ eles s@~ao subcontextos do contexto corrente.
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~ao} assume (@var{pred_1}, ..., @var{pred_n})
+@deffn {Fun@,{c}@~ao} assume (@var{pred_1}, ..., @var{pred_n})
 Adiciona predicados @var{pred_1}, ..., @var{pred_n} ao contexto corrente.
 Se um predicado for incossistente ou redundante 
 com os predicados no contexto corrente,
@@ -293,13 +293,13 @@ Veja tamb@'em @code{facts}, @code{newcontext},
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~ao} deactivate (@var{context_1}, ..., @var{context_n})
+@deffn {Fun@,{c}@~ao} deactivate (@var{context_1}, ..., @var{context_n})
 Desativa os contextos especificados @var{context_1}, ..., @var{context_n}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} facts (@var{item})
-@deffnx {Fun@value{cedilha}@~ao} facts ()
+@deffn {Fun@,{c}@~ao} facts (@var{item})
+@deffnx {Fun@,{c}@~ao} facts ()
 Se @var{item} for o nome de um contexto,
 @code{facts (@var{item})} retorna uma lista
 de fatos no contexto especificado.
@@ -341,8 +341,8 @@ Existe tamb@'em uma lista de recursos n@~ao matem@'aticos, recursos dependentes 
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~ao} forget (@var{pred_1}, ..., @var{pred_n})
-@deffnx {Fun@value{cedilha}@~ao} forget (@var{L})
+@deffn {Fun@,{c}@~ao} forget (@var{pred_1}, ..., @var{pred_n})
+@deffnx {Fun@,{c}@~ao} forget (@var{L})
 Remove predicados estabelecidos atrav@'es de @code{assume}.
 Os predicados podem ser express@~oes equivalentes a (mas n@~ao necess@'ariamente id@^enticas a)
 esses prevamentes assumidos.
@@ -352,7 +352,7 @@ esquece cada item da lista.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} killcontext (@var{context_1}, ..., @var{context_n})
+@deffn {Fun@,{c}@~ao} killcontext (@var{context_1}, ..., @var{context_n})
 Mata os contextos @var{context_1}, ..., @var{context_n}.
 
 Se um dos contextos estiver for o contexto atual, o novo contexto
@@ -370,7 +370,7 @@ atual, ou atrav@'es do uso da fun@,{c}@~ao @code{activate}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} newcontext (@var{nome})
+@deffn {Fun@,{c}@~ao} newcontext (@var{nome})
 Cria um novo contexto, por@'em vazio, chamado @var{nome}, que
 tem @code{global} como seu @'unico subcontexto.  O contexto recentemente criado
 torna-se o contexto ativo atualmente.
@@ -380,8 +380,8 @@ torna-se o contexto ativo atualmente.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} supcontext (@var{nome}, @var{context})
-@deffnx {Fun@value{cedilha}@~ao} supcontext (@var{nome})
+@deffn {Fun@,{c}@~ao} supcontext (@var{nome}, @var{context})
+@deffnx {Fun@,{c}@~ao} supcontext (@var{nome})
 Cria um novo contexto, chamado @var{nome},
 que tem @var{context} como um subcontexto.
 @var{context} deve existir.

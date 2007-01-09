@@ -468,8 +468,8 @@ Incorrect syntax: @@ is not an infix operator
 @node Defini@value{cedilha}@~oes para Express@~oes,  , Sintaxe, Express@~oes
 @section Defini@value{cedilha}@~oes para Express@~oes
 
-@deffn {Fun@value{cedilha}@~ao} at (@var{expr}, [@var{eqn_1}, ..., @var{eqn_n}])
-@deffnx {Fun@value{cedilha}@~ao} at (@var{expr}, @var{eqn})
+@deffn {Fun@,{c}@~ao} at (@var{expr}, [@var{eqn_1}, ..., @var{eqn_n}])
+@deffnx {Fun@,{c}@~ao} at (@var{expr}, @var{eqn})
 Avalia a express@~ao @var{expr} com
 as vari@'aveis assumindo os valores como especificado para elas na lista de
 equa@,{c}@~oes @code{[@var{eqn_1}, ..., @var{eqn_n}]} ou a equa@,{c}@~ao simples @var{eqn}.
@@ -525,8 +525,8 @@ Exemplos:
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} box (@var{expr})
-@deffnx {Fun@value{cedilha}@~ao} box (@var{expr}, @var{a})
+@deffn {Fun@,{c}@~ao} box (@var{expr})
+@deffnx {Fun@,{c}@~ao} box (@var{expr}, @var{a})
 Retorna @var{expr} dentro de uma caixa.
 O valor de retorno @'e uma express@~ao com @code{box} como o operador e @var{expr} como o argumento.
 Uma caixa @'e desenhada sobre a tela quando @code{display2d} for @code{true}.
@@ -601,7 +601,7 @@ desenhada ser@'a redesenhada com o caractere mudado caso isso seja solicitado.
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~ao} carg (@var{z})
+@deffn {Fun@,{c}@~ao} carg (@var{z})
 Retorna o argumento complexo de @var{z}.
 O argumento complexo @'e um @^angulo @code{theta} no intervalo de @code{(-%pi, %pi]}
 tal que @code{r exp (theta %i) = @var{z}} onde @code{r} @'e o m@'odulo de @var{z}.
@@ -660,7 +660,7 @@ Veja @code{declare}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} constantp (@var{expr})
+@deffn {Fun@,{c}@~ao} constantp (@var{expr})
 Retorna @code{true} se @var{expr} for uma express@~ao constante,
 de outra forma retorna @code{false}.
 @c WHAT DOES MAXIMA KNOW ABOUT CONSTANT EXPRESSIONS ??
@@ -709,7 +709,7 @@ Exemplos:
 @c THIS ITEM IS EXTREMELY IMPORTANT
 @c ENSURE THAT ALL KEYWORDS RECOGNIZED BY declare HAVE THEIR OWN DOCUMENTATION ITEMS !!
 @c ALSO: HOW TO FIND THE LIST OF ALL SYMBOLS WHICH HAVE A GIVEN PROPERTY ??
-@deffn {Fun@value{cedilha}@~ao} declare (@var{a_1}, @var{p_1}, @var{a_2}, @var{p_2}, ...)
+@deffn {Fun@,{c}@~ao} declare (@var{a_1}, @var{p_1}, @var{a_2}, @var{p_2}, ...)
 Atribui aos @'atomos ou lista de @'atomos @var{a_i} a propriedade ou lista de propriedades @var{p_i}.
 Quando @var{a_i} e/ou @var{p_i} forem listas,
 cada um dos @'atomos recebe todas as propriedades.
@@ -1125,7 +1125,7 @@ Declara@,{c}@~ao @code{linear}.
 @end deffn
 
 @c NEEDS WORK
-@deffn {Fun@value{cedilha}@~ao} disolate (@var{expr}, @var{x_1}, ..., @var{x_n})
+@deffn {Fun@,{c}@~ao} disolate (@var{expr}, @var{x_1}, ..., @var{x_n})
 @'e similar a @code{isolate (@var{expr}, @var{x})}
 exceto que essa fun@,{c}@~ao habilita ao usu@'ario isolar
 mais que uma vari@'avel simult@^aneamente.  Isso pode ser @'util, por
@@ -1138,7 +1138,7 @@ vari@'aveis de integra@,{c}@~ao.  Essa fun@,{c}@~ao @'e chamada automaticamente 
 @end deffn
 
 @c NEEDS WORK
-@deffn {Fun@value{cedilha}@~ao} dispform (@var{expr})
+@deffn {Fun@,{c}@~ao} dispform (@var{expr})
 Retorna a representa@,{c}@~ao externa de @var{expr} com rela@,{c}@~ao a seu
 principal operador.  Isso pode ser @'util em conjun@,{c}@~ao com @code{part} que
 tamb@'em lida com a representa@,{c}@~ao externa.  Suponha que @var{expr} seja -A .
@@ -1152,7 +1152,7 @@ exemplo, se @code{expr: sin (sqrt (x))}, ent@~ao @code{freeof (sqrt, expr)} e
 @end deffn
 
 @c NEEDS WORK
-@deffn {Fun@value{cedilha}@~ao} distrib (@var{expr})
+@deffn {Fun@,{c}@~ao} distrib (@var{expr})
 Distribue adi@,{c}@~oes sobre produtos.  @code{distrib} difere de @code{expand}
 no fato de que @code{distrib} trabalha em somente no n@'ivel mais alto de uma express@~ao, i.e., @code{distrib} n@~ao
 @'e recursiva e @code{distrib} @'e mais r@'apida que @code{expand}.  @code{distrib} difere de @code{multthru} no
@@ -1178,7 +1178,7 @@ Exemplos:
 @end deffn
 
 @c NEEDS WORK
-@deffn {Fun@value{cedilha}@~ao} dpart (@var{expr}, @var{n_1}, ..., @var{n_k})
+@deffn {Fun@,{c}@~ao} dpart (@var{expr}, @var{n_1}, ..., @var{n_k})
 Seleciona a mesma subexpress@~ao que @code{part}, mas
 em lugar de apenas retornar aquela subexpress@~ao como seu valor, isso retorna
 a express@~ao completa com a subexpress@~ao selecionada mostrada dentro
@@ -1197,7 +1197,7 @@ de uma caixa.  A caixa @'e atualmente parte da express@~ao.
 @end deffn
 
 @c PROBABLY MORE TO BE SAID HERE
-@deffn {Fun@value{cedilha}@~ao} exp (@var{x})
+@deffn {Fun@,{c}@~ao} exp (@var{x})
 Representa fun@,{c}@~ao exponencial.  
 Inst@^ancias de @code{exp (@var{x})} em uma entrada s@~ao simplificadas para @code{%e^@var{x}};
 @code{exp} n@~ao aparece em express@~oes simplificadas.
@@ -1268,7 +1268,7 @@ para @code{%e^x} em @code{%e^(a x)}.
 @c NEED EXAMPLES HERE
 @end defvr
 
-@deffn {Fun@value{cedilha}@~ao} freeof (@var{x_1}, ..., @var{x_n}, @var{expr})
+@deffn {Fun@,{c}@~ao} freeof (@var{x_1}, ..., @var{x_n}, @var{expr})
 @code{freeof (@var{x_1}, @var{expr})}
 Retorna @code{true}
 se nenhuma subexpress@~ao de @var{expr} for igual a @var{x_1}
@@ -1373,14 +1373,14 @@ Uma integral indefinida n@~ao @'e livre de suas vari@'aveis de integra@,{c}@~ao.
 @end deffn
 
 @c IS THIS DEFINITION CORRECT ??
-@deffn {Fun@value{cedilha}@~ao} genfact (@var{x}, @var{y}, @var{z})
+@deffn {Fun@,{c}@~ao} genfact (@var{x}, @var{y}, @var{z})
 Retorna o fatorial generalizado, definido como
 @code{x (x-z) (x - 2 z) ... (x - (y - 1) z)}.  Dessa forma, para integral @var{x},
 @code{genfact (x, x, 1) = x!} e @code{genfact (x, x/2, 2) = x!!}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} imagpart (@var{expr})
+@deffn {Fun@,{c}@~ao} imagpart (@var{expr})
 Retorna a parte imagin@'aria da express@~ao @var{expr}.
 
 @code{imagpart} @'e uma fun@,{c}@~ao computacional,
@@ -1394,9 +1394,9 @@ e @code{realpart}.
 @c NEED EXAMPLES HERE
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} infix (@var{op})
-@deffnx {Fun@value{cedilha}@~ao} infix (@var{op}, @var{lbp}, @var{rbp})
-@deffnx {Fun@value{cedilha}@~ao} infix (@var{op}, @var{lbp}, @var{rbp}, @var{lpos}, @var{rpos}, @var{pos})
+@deffn {Fun@,{c}@~ao} infix (@var{op})
+@deffnx {Fun@,{c}@~ao} infix (@var{op}, @var{lbp}, @var{rbp})
+@deffnx {Fun@,{c}@~ao} infix (@var{op}, @var{lbp}, @var{rbp}, @var{lpos}, @var{rpos}, @var{pos})
 Declara @var{op} para ser um operador infixo.
 Um operador infixo @'e uma fun@,{c}@~ao de dois argumentos,
 com o nome da fun@,{c}@~ao escrito entre os argumentos.
@@ -1499,7 +1499,7 @@ a estrutura @code{for} ... @code{in},
 @end defvr
 
 @c NEEDS WORK
-@deffn {Fun@value{cedilha}@~ao} inpart (@var{expr}, @var{n_1}, ..., @var{n_k})
+@deffn {Fun@,{c}@~ao} inpart (@var{expr}, @var{n_1}, ..., @var{n_k})
 @'E similar a @code{part} mas trabalha sobre a representa@,{c}@~ao
 interna da express@~ao em lugar da forma de exibi@,{c}@~ao e
 dessa forma pode ser mais r@'apida uma vez que nenhuma formata@,{c}@~ao @'e realizada.  Cuidado deve ser tomado
@@ -1531,7 +1531,7 @@ Exemplos:
 @end deffn
 
 @c NEEDS WORK
-@deffn {Fun@value{cedilha}@~ao} isolate (@var{expr}, @var{x})
+@deffn {Fun@,{c}@~ao} isolate (@var{expr}, @var{x})
 Retorna @var{expr} com subexpress@~oes que s@~ao adi@,{c}@~oes e
 que n@~ao possuem @var{x} substituido por r@'otulos de express@~ao intermedi@'aria
 (esses sendo s@'imbolos at@^omicos como @code{%t1}, @code{%t2}, ...).  Isso @'e muitas vezes @'util
@@ -1614,7 +1614,7 @@ Exemplo:
 @end defvr
 
 @c NEEDS WORK
-@deffn {Fun@value{cedilha}@~ao} listofvars (@var{expr})
+@deffn {Fun@,{c}@~ao} listofvars (@var{expr})
 Retorna uma lista de vari@'aveis em @var{expr}.
 
 @code{listconstvars} se @code{true} faz com que @code{listofvars} inclua @code{%e}, @code{%pi},
@@ -1630,12 +1630,12 @@ aparecer em @var{expr}.  O comportamento padr@~ao @'e omitir isso.
 @end deffn
 
 @c NEEDS WORK
-@deffn {Fun@value{cedilha}@~ao} lfreeof (@var{lista}, @var{expr})
+@deffn {Fun@,{c}@~ao} lfreeof (@var{lista}, @var{expr})
 Para cada um dos membros @var{m} de lista, chama @code{freeof (@var{m}, @var{expr})}.
 Retorna @code{false} se qualquer chamada a @code{freeof} for feita e @code{true} de outra forma.
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} lopow (@var{expr}, @var{x})
+@deffn {Fun@,{c}@~ao} lopow (@var{expr}, @var{x})
 Retorna o menor expoente de @var{x} que explicitamente aparecer em
 @var{expr}.  Dessa forma
 
@@ -1647,7 +1647,7 @@ Retorna o menor expoente de @var{x} que explicitamente aparecer em
 @end deffn
 
 @c NEEDS WORK
-@deffn {Fun@value{cedilha}@~ao} lpart (@var{r@'otulo}, @var{expr}, @var{n_1}, ..., @var{n_k})
+@deffn {Fun@,{c}@~ao} lpart (@var{r@'otulo}, @var{expr}, @var{n_1}, ..., @var{n_k})
 @'e similar a @code{dpart} mas usa uma
 caixa rotulada. Uma moldura rotulada @'e similar @`a que @'e produzida por @code{dpart}
 mas a produzida por @code{lpart} tem o nome na linha do topo.
@@ -1655,8 +1655,8 @@ mas a produzida por @code{lpart} tem o nome na linha do topo.
 @end deffn
 
 @c NEEDS WORK
-@deffn {Fun@value{cedilha}@~ao} multthru (@var{expr})
-@deffnx {Fun@value{cedilha}@~ao} multthru (@var{expr_1}, @var{expr_2})
+@deffn {Fun@,{c}@~ao} multthru (@var{expr})
+@deffnx {Fun@,{c}@~ao} multthru (@var{expr_1}, @var{expr_2})
 Multiplica um fator (que pode ser uma adi@,{c}@~ao) de @var{expr} pelos
 outros fatores de @var{expr}.  Isto @'e, @var{expr} @'e @code{@var{f_1} @var{f_2} ... @var{f_n}}
 onde ao menos
@@ -1704,7 +1704,7 @@ forma @'e equivalente a @code{multthru (@var{expr_1}*@var{expr_2})}.
 @end deffn
 
 @c NEEDS WORK
-@deffn {Fun@value{cedilha}@~ao} nounify (@var{f})
+@deffn {Fun@,{c}@~ao} nounify (@var{f})
 Retorna a forma substantiva do nome da fun@,{c}@~ao @var{f}.  Isso @'e
 necess@'ario se se quer referir ao nome de uma fun@,{c}@~ao verbo como se esse nome
 fosse um substantivo.  Note que algumas fun@,{c}@~oes verbos ir@~ao retornar sua forma
@@ -1714,7 +1714,7 @@ a forma retornada se uma chamada de fun@,{c}@~ao @'e precedida por um ap@'ostrof
 @end deffn
 
 @c NEEDS WORK
-@deffn {Fun@value{cedilha}@~ao} nterms (@var{expr})
+@deffn {Fun@,{c}@~ao} nterms (@var{expr})
 Retorna o n@'umero de termos que @var{expr} pode ter se for
 completamente expandida e nenhum cancelamento ou combina@,{c}@~ao de termos
 acontecer.
@@ -1725,7 +1725,7 @@ adi@,{c}@~ao).
 @end deffn
 
 @c NEEDS WORK
-@deffn {Fun@value{cedilha}@~ao} op (@var{expr})
+@deffn {Fun@,{c}@~ao} op (@var{expr})
 Retorna o operador principal da express@~ao @var{expr}.
 @code{op (@var{expr})} @'e equivalente a @code{part (@var{expr}, 0)}. 
 
@@ -1783,8 +1783,8 @@ Exemplos:
 @end deffn
 
 @c NEEDS WORK
-@deffn {Fun@value{cedilha}@~ao} operatorp (@var{expr}, @var{op})
-@deffnx {Fun@value{cedilha}@~ao} operatorp (@var{expr}, [@var{op_1}, ..., @var{op_n}])
+@deffn {Fun@,{c}@~ao} operatorp (@var{expr}, @var{op})
+@deffnx {Fun@,{c}@~ao} operatorp (@var{expr}, [@var{op_1}, ..., @var{op_n}])
 
 @code{operatorp (@var{expr}, @var{op})} retorna @code{true}
 se @var{op} for igual ao operador de @var{expr}.
@@ -1795,7 +1795,7 @@ se algum elementos de @var{op_1}, ..., @var{op_n} for igual ao operador de @var{
 @end deffn
 
 @c NEEDS WORK
-@deffn {Fun@value{cedilha}@~ao} optimize (@var{expr})
+@deffn {Fun@,{c}@~ao} optimize (@var{expr})
 Retorna uma express@~ao que produz o mesmo valor e
 efeito que @var{expr} mas faz de forma mais eficientemente por evitar a
 recomputa@,{c}@~ao de subexpress@~oes comuns.  @code{optimize} tamb@'em tem o mesmo
@@ -1815,7 +1815,7 @@ comando @code{optimize}.
 
 @c NEEDS WORK
 @c WHAT DOES ">" MEAN IN THIS CONTEXT ??
-@deffn {Fun@value{cedilha}@~ao} ordergreat (@var{v_1}, ..., @var{v_n})
+@deffn {Fun@,{c}@~ao} ordergreat (@var{v_1}, ..., @var{v_n})
 Escolhe aliases para as vari@'aveis @var{v_1}, ..., @var{v_n}
 tais que @var{v_1} > @var{v_2} > ...  > @var{v_n},
 e @var{v_n} > qualquer outra vari@'avel n@~ao mencionada como um
@@ -1827,7 +1827,7 @@ Veja tamb@'em @code{orderless}.
 
 @c NEEDS WORK
 @c WHAT DOES "PRECEDES" MEAN IN THIS CONTEXT ??
-@deffn {Fun@value{cedilha}@~ao} ordergreatp (@var{expr_1}, @var{expr_2})
+@deffn {Fun@,{c}@~ao} ordergreatp (@var{expr_1}, @var{expr_2})
 Retorna @code{true} se @var{expr_2} precede @var{expr_1} na
 ordena@,{c}@~ao escolhida com a fun@,{c}@~ao @code{ordergreat}.
 
@@ -1835,7 +1835,7 @@ ordena@,{c}@~ao escolhida com a fun@,{c}@~ao @code{ordergreat}.
 
 @c NEEDS WORK
 @c WHAT DOES "<" MEAN IN THIS CONTEXT ??
-@deffn {Fun@value{cedilha}@~ao} orderless (@var{v_1}, ..., @var{v_n})
+@deffn {Fun@,{c}@~ao} orderless (@var{v_1}, ..., @var{v_n})
 Escolhe aliases para as vari@'aveis @var{v_1}, ..., @var{v_n}
 tais que @var{v_1} < @var{v_2} < ...  < @var{v_n},
 and @var{v_n} < qualquer outra vari@'avel n@~ao mencionada como um
@@ -1854,14 +1854,14 @@ Veja tamb@'em @code{ordergreat} e @code{mainvar}.
 
 @c NEEDS WORK
 @c WHAT DOES "PRECEDES" MEAN IN THIS CONTEXT ??
-@deffn {Fun@value{cedilha}@~ao} orderlessp (@var{expr_1}, @var{expr_2})
+@deffn {Fun@,{c}@~ao} orderlessp (@var{expr_1}, @var{expr_2})
 Retorna @code{true} se @var{expr_1} precede @var{expr_2} na
 ordena@,{c}@~ao escolhida pelo comando @code{orderless}.
 
 @end deffn
 
 @c NEEDS WORK
-@deffn {Fun@value{cedilha}@~ao} part (@var{expr}, @var{n_1}, ..., @var{n_k})
+@deffn {Fun@,{c}@~ao} part (@var{expr}, @var{n_1}, ..., @var{n_k})
 Retorna partes da forma exibida de @code{expr}. Essa fun@,{c}@~ao
 obt@'em a parte de @code{expr} como especificado pelos @'indices @var{n_1}, ..., @var{n_k}.  A primeira
 parte @var{n_1} de @code{expr} @'e obtida, ent@~ao a parte @var{n_2} daquela  @'e obtida, etc.  O resultado @'e
@@ -1893,7 +1893,7 @@ Exemplo: @code{part (z+2*y, 2, 1)} retorna 2.
 @end deffn
 
 @c NEEDS WORK
-@deffn {Fun@value{cedilha}@~ao} partition (@var{expr}, @var{x})
+@deffn {Fun@,{c}@~ao} partition (@var{expr}, @var{x})
 Retorna uma lista de duas express@~oes.  Elas s@~ao (1)
 os fatores de @var{expr} (se essa express@~ao for um produto), os termos de @var{expr} (se isso for uma
 adi@,{c}@~ao), ou a lista (se isso for uma lsita) que n@~ao contiver @code{var} e, (2)
@@ -1920,7 +1920,7 @@ mensagem de erro @'e fornecida.
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~ao} pickapart (@var{expr}, @var{n})
+@deffn {Fun@,{c}@~ao} pickapart (@var{expr}, @var{n})
 Atribui r@'otulos de express@~ao intermedi@'aria a subexpress@~oes de
 @var{expr} de comprimento @var{n}, um inteiro.
 A subexpress@~oes maiores ou menores n@~ao s@~ao atribuidos r@'otulos.
@@ -2024,7 +2024,7 @@ pode referir-se @`a fun@,{c}@~ao em si mesma.
 @end defvr
 
 @c NEEDS EXAMPLES
-@deffn {Fun@value{cedilha}@~ao} polarform (@var{expr})
+@deffn {Fun@,{c}@~ao} polarform (@var{expr})
 Retorna uma express@~ao @code{r %e^(%i theta)} equivalente a @var{expr},
 tal que @code{r} e @code{theta} sejam puramente reais.
 
@@ -2032,7 +2032,7 @@ tal que @code{r} e @code{theta} sejam puramente reais.
 
 @c ISN'T THERE AN EQUIVALENT FUNCTION SOMEWHERE ??
 @c NEEDS WORK (IF KEPT)
-@deffn {Fun@value{cedilha}@~ao} powers (@var{expr}, @var{x})
+@deffn {Fun@,{c}@~ao} powers (@var{expr}, @var{x})
 Fornece os expoentes de @var{x} que ocorrem em express@~ao @var{expr}.
 
 @code{load (powers)} chama essa fun@,{c}@~ao.
@@ -2053,7 +2053,7 @@ Fornece os expoentes de @var{x} que ocorrem em express@~ao @var{expr}.
 @end deffn
 
 @c NEEDS WORK
-@deffn {Fun@value{cedilha}@~ao} product (@var{expr}, @var{i}, @var{i_0}, @var{i_1})
+@deffn {Fun@,{c}@~ao} product (@var{expr}, @var{i}, @var{i_0}, @var{i_1})
 Representa um produto dos velores de @code{expr} com
 o @'indice @var{i} variando de @var{i_0} a @var{i_1}.
 A forma substantiva @code{'product} @'e mostrada como um pi mai@'isculo.
@@ -2128,7 +2128,7 @@ Exemplos:
 @end deffn
 
 @c NEEDS EXAMPLES
-@deffn {Fun@value{cedilha}@~ao} realpart (@var{expr})
+@deffn {Fun@,{c}@~ao} realpart (@var{expr})
 Retorna a parte real de @var{expr}. @code{realpart} e @code{imagpart} ir@~ao
 trabalhar sobre express@~oes envolvendo fun@,{c}@~oes trigonom@'etricas e hiperb@'olicas,
 bem como ra@'izes quadradas, logar@'itmos, e exponencia@,{c}@~ao.
@@ -2136,15 +2136,15 @@ bem como ra@'izes quadradas, logar@'itmos, e exponencia@,{c}@~ao.
 @end deffn
 
 @c NEEDS EXAMPLES
-@deffn {Fun@value{cedilha}@~ao} rectform (@var{expr})
+@deffn {Fun@,{c}@~ao} rectform (@var{expr})
 Retorna uma express@~ao @code{a + b %i} equivalente a @var{expr},
 tal que @var{a} e @var{b} sejam puramente reais.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} rembox (@var{expr}, unlabelled)
-@deffnx {Fun@value{cedilha}@~ao} rembox (@var{expr}, @var{r@'otulo})
-@deffnx {Fun@value{cedilha}@~ao} rembox (@var{expr})
+@deffn {Fun@,{c}@~ao} rembox (@var{expr}, unlabelled)
+@deffnx {Fun@,{c}@~ao} rembox (@var{expr}, @var{r@'otulo})
+@deffnx {Fun@,{c}@~ao} rembox (@var{expr})
 Remove caixas de @var{expr}.
 
 @code{rembox (@var{expr}, unlabelled)} remove todas as caixas sem r@'otulos de @var{expr}.
@@ -2221,7 +2221,7 @@ Exemplos:
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} sum (@var{expr}, @var{i}, @var{i_0}, @var{i_1})
+@deffn {Fun@,{c}@~ao} sum (@var{expr}, @var{i}, @var{i_0}, @var{i_1})
 Representa um somat@'orio dos valores de @var{expr} com
 o @'indice @var{i} variando de @var{i_0} a @var{i_1}.
 A forma substantiva @code{'sum} @'e mostrada com uma letra sigma mai@'uscula.
@@ -2353,7 +2353,7 @@ else b^k, k, 1, 10))
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} lsum (@var{expr}, @var{x}, @var{L})
+@deffn {Fun@,{c}@~ao} lsum (@var{expr}, @var{x}, @var{L})
 Representas a adi@,{c}@~ao de @var{expr} a cada elemento @var{x} em @var{L}.
 
 Uma forma substantiva @code{'lsum} @'e retornada
@@ -2381,7 +2381,7 @@ Exemplos:
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} verbify (@var{f})
+@deffn {Fun@,{c}@~ao} verbify (@var{f})
 Retorna a forma verbal da fun@,{c}@~ao chamada @var{f}.
 
 Veja tamb@'em @code{verb}, @code{noun}, e @code{nounify}.

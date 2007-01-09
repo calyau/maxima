@@ -104,8 +104,8 @@ desejadas.
 
 @section Defini@value{cedilha}@~oes para o Pacote atensor
 
-@deffn {Fun@value{cedilha}@~ao} init_atensor (@var{alg_type}, @var{opt_dims})
-@deffnx {Fun@value{cedilha}@~ao} init_atensor (@var{alg_type})
+@deffn {Fun@,{c}@~ao} init_atensor (@var{alg_type}, @var{opt_dims})
+@deffnx {Fun@,{c}@~ao} init_atensor (@var{alg_type})
 
 Inicializa o pacote @code{atensor} com o tipo especificado de @'algebra.  @var{alg_type}
 pode ser um dos seguintes:
@@ -162,7 +162,7 @@ Cl(3,1).  Uma chamada a @code{init_atensor(dirac)} @'e equivalente a
 @end deffn
 
 
-@deffn {Fun@value{cedilha}@~ao} atensimp (@var{expr})
+@deffn {Fun@,{c}@~ao} atensimp (@var{expr})
 
 Simplifica a express@~ao alg@'ebrica de tensores @var{expr} conforme as regras
 configuradas por uma chamada a @code{init_atensor}.  Simplifica@,{c}@~oes incluem
@@ -173,7 +173,7 @@ express@~oes complexas.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} alg_type
+@deffn {Fun@,{c}@~ao} alg_type
 
 O tipo de @'algebra.  Valores v@'alidos s@'ao @code{universal}, @code{grassmann},
 @code{clifford}, @code{symmetric}, @code{symplectic} and @code{lie_envelop}.
@@ -200,7 +200,7 @@ O s@'imbolo para bases vetoriais.
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~ao} sf (@var{u}, @var{v})
+@deffn {Fun@,{c}@~ao} sf (@var{u}, @var{v})
 
 @'E uma fun@value{cedilha}@~ao escalar sim@'etrica que @'e usada em rela@value{cedilha}@~oes comutativas.
 A implementa@,{c}@~ao padr@~ao verifica se ambos os argumentos s@~ao bases vetoriais
@@ -209,7 +209,7 @@ correspondente da matriz @code{aform}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} af (@var{u}, @var{v})
+@deffn {Fun@,{c}@~ao} af (@var{u}, @var{v})
 
 @'E uma fun@value{cedilha}@~ao escalar antisim@'etrica que @'e usada em rela@value{cedilha}@~oes comutativas.
 A implementa@,{c}@~ao padr@~ao verifica se ambos os argumentos s@~ao bases vetoriais
@@ -218,7 +218,7 @@ valor correspondente da matriz @code{aform}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} av (@var{u}, @var{v})
+@deffn {Fun@,{c}@~ao} av (@var{u}, @var{v})
 
 @'E uma fun@value{cedilha}@~ao antisim@'etrica que @'e usada em rela@value{cedilha}@~oes comutativas.
 A implementa@,{c}@~ao padr@~ao verifica se ambos os argumentos s@~ao bases vetoriais
@@ -248,7 +248,7 @@ Por exemplo:
 @end deffn
 
 
-@deffn {Fun@value{cedilha}@~ao} abasep (@var{v})
+@deffn {Fun@,{c}@~ao} abasep (@var{v})
 
 Verifica se esse argumento @'e uma base vetorial @code{atensor} .  
 

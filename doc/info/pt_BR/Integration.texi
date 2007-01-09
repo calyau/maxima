@@ -1209,8 +1209,8 @@ Exemplos:
 
 @c THERE ARE OPTIONAL ARGUMENTS WHICH MAKES LISTING THE VARIANTS A LITTLE TEDIOUS
 @c NEED A MORE CONVENIENT (AND NONAMBIGUOUS) NOTATION FOR OPTIONAL ARGUMENTS
-@deffn {Fun@value{cedilha}@~ao} quad_qaws (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{alpha}, @var{beta}, @var{wfun}, @var{epsabs}, @var{limite})
-@deffnx {Fun@value{cedilha}@~ao} quad_qaws (@var{f}, @var{x}, @var{a}, @var{b}, @var{alpha}, @var{beta}, @var{wfun}, @var{epsabs}, @var{limite})
+@deffn {Fun@,{c}@~ao} quad_qaws (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{alpha}, @var{beta}, @var{wfun}, @var{epsabs}, @var{limite})
+@deffnx {Fun@,{c}@~ao} quad_qaws (@var{f}, @var{x}, @var{a}, @var{b}, @var{alpha}, @var{beta}, @var{wfun}, @var{epsabs}, @var{limite})
 
 Integra@,{c}@~ao de @math{w(x) f(x)} sobre um intervalo finito,
 onde @math{w(x)} @'e uma certa fun@,{c}@~ao alg@'ebrica ou logar@'itmica.
