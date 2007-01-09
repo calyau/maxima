@@ -5,20 +5,34 @@
     ;; Should we check that all rows have the same length?
     (values (length (cdr a)) (length (cdr row)))))
 
+(defun complex-maxima-matrix-p (a)
+  (dolist (row (cdr a))
+    (dolist (col (cdr row))
+      (unless (eql ($imagpart col) 0)
+	(return-from complex-maxima-matrix-p t))))
+  nil)
+
 (defun lapack-lispify-matrix (a nrow ncol)
   "Convert a Maxima matrix A of dimension NROW and NCOL to Lisp matrix
   suitable for use with LAPACK"
-  (let* ((mat (make-array (* nrow ncol)
-			  :element-type 'double-float))
+  (let* ((array-type (if (complex-maxima-matrix-p a)
+			 '(complex double-float)
+			 'double-float))
+	 (mat (make-array (* nrow ncol)
+			  :element-type array-type))
 	 (mat-2d (make-array (list ncol nrow)
-			     :element-type 'double-float
+			     :element-type array-type
 			     :displaced-to mat))
 	 (r 0))
     (dolist (row (cdr a))
       (let ((c 0))
 	(dolist (col (cdr row))
 	  ;; Fortran matrices are in column-major order!
-	  (setf (aref mat-2d c r) (coerce col 'double-float))
+	  (setf (aref mat-2d c r) (if (eql array-type 'double-float)
+				      (coerce col 'double-float)
+				      (coerce (complex ($realpart col) ($imagpart col))
+					      '(complex double-float))
+				      ))
 	  (incf c)))
       (incf r))
     mat))
@@ -211,3 +225,67 @@ V**T."
 		    (vt-max (lapack-maxify-matrix ncol ncol vt1))
 		    (s-max (maxify-vector s)))
 		`((mlist) ,s-max ,u-max ,vt-max)))))))))
+
+
+
+(defun $dlange (norm a)
+  "
+DLANGE returns the value
+
+   DLANGE = ( max(abs(A(i,j))), NORM = '$max
+            (
+            ( norm1(A),         NORM = '$one_norm
+            (
+            ( normI(A),         NORM = '$inf_norm
+            (
+            ( normF(A),         NORM = '$frobenius
+
+where  norm1  denotes the  one norm of a matrix (maximum column sum),
+normI  denotes the  infinity norm  of a matrix  (maximum row sum) and
+normF  denotes the  Frobenius norm of a matrix (square root of sum of
+squares).  Note that  max(abs(A(i,j)))  is not a  matrix norm."
+
+  ;; Norm should be '$max, '$one_norm, '$inf_norm, '$frobenius
+  (multiple-value-bind (nrows ncols)
+      (maxima-matrix-dims a)
+    (let* ((a-mat (lapack-lispify-matrix a nrows ncols))
+	   (norm-type (ecase norm
+			($max "M")
+			($one_norm "O")
+			($inf_norm "I")
+			($frobenius "F")))
+	   (work (make-array (if (equal norm-type "I") nrows 0)
+			     :element-type 'double-float)))
+      (lapack::dlange norm-type nrows ncols a-mat nrows work))))
+
+
+(defun $zlange (norm a)
+  "
+DLANGE returns the value
+
+   DLANGE = ( max(abs(A(i,j))), NORM = '$max
+            (
+            ( norm1(A),         NORM = '$one_norm
+            (
+            ( normI(A),         NORM = '$inf_norm
+            (
+            ( normF(A),         NORM = '$frobenius
+
+where  norm1  denotes the  one norm of a matrix (maximum column sum),
+normI  denotes the  infinity norm  of a matrix  (maximum row sum) and
+normF  denotes the  Frobenius norm of a matrix (square root of sum of
+squares).  Note that  max(abs(A(i,j)))  is not a  matrix norm."
+
+  ;; Norm should be '$max, '$one_norm, '$inf_norm, '$frobenius
+  (multiple-value-bind (nrows ncols)
+      (maxima-matrix-dims a)
+    (let* ((a-mat (lapack-lispify-matrix a nrows ncols))
+	   (norm-type (ecase norm
+			($max "M")
+			($one_norm "O")
+			($inf_norm "I")
+			($frobenius "F")))
+	   (work (make-array (if (equal norm-type "I") nrows 0)
+			     :element-type 'double-float)))
+      (lapack::zlange norm-type nrows ncols a-mat nrows work))))
+      
