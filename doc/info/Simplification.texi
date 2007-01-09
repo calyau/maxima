@@ -5,8 +5,6 @@
 
 @node Definitions for Simplification,  , Simplification, Simplification
 @section Definitions for Simplification
-@menu
-@end menu
 
 @c After studying src/compar.lisp, it appears that askexp would
 @c work as advertised, except that it doesn't appear to be possible
