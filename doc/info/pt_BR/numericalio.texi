@@ -54,9 +54,9 @@ e n@~ao @'e tentado colapsar a sa@'ida para @code{1234,,Foo}.
 @node Defini@value{cedilha}@~oes para numericalio,  , Introdu@value{cedilha}@~ao a numericalio, numericalio
 @section Defini@value{cedilha}@~oes para numericalio
 
-@deffn {Fun@,{c}@~ao} read_matrix (@var{nome_arquivo})
-@deffnx {Fun@,{c}@~ao} read_matrix (@var{nome_arquivo}, @var{separator_flag})
-L@^e o arquivo @var{nome_arquivo} e retorna seu conte@'udo completo como uma matriz.
+@deffn {Fun@,{c}@~ao} read_matrix (@var{nomearquivo})
+@deffnx {Fun@,{c}@~ao} read_matrix (@var{nomearquivo}, @var{separator_flag})
+L@^e o arquivo @var{nomearquivo} e retorna seu conte@'udo completo como uma matriz.
 Se @var{separator_flag} n@~ao for especificado, o arquivo @'e assumido como delimitado por espa@,{c}os em branco.
 
 @code{read_matrix} infere o tamanho da matriz dos dados de entrada.
@@ -65,8 +65,8 @@ Se algumas linhas possuirem diferentes comprimentos, @code{read_matrix} reclama.
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} read_lisp_array (@var{nome_arquivo}, @var{A})
-@deffnx {Fun@,{c}@~ao} read_lisp_array (@var{nome_arquivo}, @var{A}, @var{separator_flag})
+@deffn {Fun@,{c}@~ao} read_lisp_array (@var{nomearquivo}, @var{A})
+@deffnx {Fun@,{c}@~ao} read_lisp_array (@var{nomearquivo}, @var{A}, @var{separator_flag})
 
 @code{read_lisp_array} exige que o array
 seja declarado atrav@'es de @code{make_array} antes de chamar
@@ -79,8 +79,8 @@ arquivo de entrada est@'a de acordo com as dimens@~aoes do array; a entrada
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} read_maxima_array (@var{nome_arquivo}, @var{A})
-@deffnx {Fun@,{c}@~ao} read_maxima_array (@var{nome_arquivo}, @var{A}, @var{separator_flag})
+@deffn {Fun@,{c}@~ao} read_maxima_array (@var{nomearquivo}, @var{A})
+@deffnx {Fun@,{c}@~ao} read_maxima_array (@var{nomearquivo}, @var{A}, @var{separator_flag})
 
 @code{read_maxima_array} requer que o array
 seja declarado atrav@'es de @code{array} antes de chamar
@@ -93,8 +93,8 @@ arquivo de entrada est@'a de acordo com as dimens@~aoes do array; a entrada
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} read_hashed_array (@var{nome_arquivo}, @var{A})
-@deffnx {Fun@,{c}@~ao} read_hashed_array (@var{nome_arquivo}, @var{A}, @var{separator_flag})
+@deffn {Fun@,{c}@~ao} read_hashed_array (@var{nomearquivo}, @var{A})
+@deffnx {Fun@,{c}@~ao} read_hashed_array (@var{nomearquivo}, @var{A}, @var{separator_flag})
 
 @code{read_hashed_array} trata o primeiro item sobre uma linha como uma
 chave hash, e associa o restante da linha (como uma lista) com a chava.
@@ -104,8 +104,8 @@ Linhas n@~ao precisam ter o mesmo n@'umero de elementos.
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} read_nested_list (@var{nome_arquivo})
-@deffnx {Fun@,{c}@~ao} read_nested_list (@var{nome_arquivo}, @var{separator_flag})
+@deffn {Fun@,{c}@~ao} read_nested_list (@var{nomearquivo})
+@deffnx {Fun@,{c}@~ao} read_nested_list (@var{nomearquivo}, @var{separator_flag})
 
 @code{read_nested_list} retorna uma lista que tem uma sublista para cada
 linha de entrada. Linhas n@~ao precisam ter o mesmo n´umero de elementos.
@@ -113,18 +113,18 @@ Linhas vazias @i{n@~ao} s@~ao ignoradas: uma linha vazia retorna uma sublista va
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} read_list (@var{nome_arquivo})
-@deffnx {Fun@,{c}@~ao} read_list (@var{nome_arquivo}, @var{separator_flag})
+@deffn {Fun@,{c}@~ao} read_list (@var{nomearquivo})
+@deffnx {Fun@,{c}@~ao} read_list (@var{nomearquivo}, @var{separator_flag})
 
 @code{read_list} l@^e todas as entradas em uma lista mon@'otona.
 @code{read_list} ignora o caractere de fim de linha.
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} write_data (@var{X}, @var{nome_arquivo})
-@deffnx {Fun@,{c}@~ao} write_data (@var{object}, @var{nome_arquivo}, @var{separator_flag})
+@deffn {Fun@,{c}@~ao} write_data (@var{X}, @var{nomearquivo})
+@deffnx {Fun@,{c}@~ao} write_data (@var{object}, @var{nomearquivo}, @var{separator_flag})
 
-@code{write_data} escreve o objeto @var{X} no arquivo @var{nome_arquivo}.
+@code{write_data} escreve o objeto @var{X} no arquivo @var{nomearquivo}.
 
 @code{write_data} escreve matrizes da forma usual,
 com uma linha por fileira.

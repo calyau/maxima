@@ -448,11 +448,11 @@ Vari@'aveis, bmas n@~ao contendo matrizes ou listas.
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} setup_autoload (@var{nomedearquivo}, @var{fun@value{cedilha}@~ao_1}, ..., @var{fun@value{cedilha}@~ao_n})
+@deffn {Fun@,{c}@~ao} setup_autoload (@var{nomearquivo}, @var{fun@value{cedilha}@~ao_1}, ..., @var{fun@value{cedilha}@~ao_n})
 Especifica que
 se qualquer entre @var{fun@,{c}@~ao_1}, ..., @var{fun@,{c}@~ao_n} for referenciado e n@~ao ainda definido,
 @var{nomedeqrquivo} @'e chamado via @code{load}.
-@var{nomedearquivo} usualmente cont@'em defini@value{cedilha}@~oes para as fun@value{cedilha}@~oes especificadas,
+@var{nomearquivo} usualmente cont@'em defini@value{cedilha}@~oes para as fun@value{cedilha}@~oes especificadas,
 embora isso n@~ao seja obrigat@'orio.
 
 @code{setup_autoload} n@~ao trabalha para fun@,{c}@~oes array.

@@ -86,7 +86,7 @@ Em um arquivo processado por @code{load},
 @code{__} est@'a associado @`a express@~ao de entrada mais recentemente informada no prompt interativo
 ou em um arquivo de lote (batch);
 @code{__} n@~ao @'e associado @`a express@~oes de entrada no arquivo que est@'a sendo processado.
-Em particular, quando @code{load (@var{nomedearquivo})} for chamado a partir da linha de comando interativa,
+Em particular, quando @code{load (@var{nomearquivo})} for chamado a partir da linha de comando interativa,
 @code{__} @'e associado a @code{load (@var{filename})}
 enquanto o arquivo est@'a sendo processado.
 
@@ -1095,10 +1095,10 @@ Exemplos:
 
 @end defvr
 
-@deffn {Fun@,{c}@~ao} load (@var{nomedearquivo})
-Avalia express@~oes em @var{nomedearquivo}, 
+@deffn {Fun@,{c}@~ao} load (@var{nomearquivo})
+Avalia express@~oes em @var{nomearquivo}, 
 dessa forma conduzindo vari@'aveis, fun@,{c}@~oes, e outros objetos dentro do Maxima.
-A associa@,{c}@~ao de qualquer objeto existente @'e substitu@'ida pela associa@,{c}@~ao recuperada de @var{nomedearquivo}.  
+A associa@,{c}@~ao de qualquer objeto existente @'e substitu@'ida pela associa@,{c}@~ao recuperada de @var{nomearquivo}.  
 Para achar o arquivo,
 @code{load} chama @code{file_search} com @code{file_search_maxima} e @code{file_search_lisp}
 como diret@'orios de busca.
@@ -1112,7 +1112,7 @@ podem ser processadas por @code{load}.
 @code{load} chama @code{loadfile} para carregar arquivos Lisp e @code{batchload} para carregar arquivos Maxima.
 
 @code{load} n@~ao reconhece constru@,{c}@~oes @code{:lisp} em arquivos do Maxima,
-e quando processando @var{nomedearquivo},
+e quando processando @var{nomearquivo},
 as vari@'aveis globais @code{_}, @code{__}, @code{%}, e @code{%th} possuem as mesmas associa@,{c}@~oes
 que possuiam quando @code{load} foi chamada.
 
@@ -1127,15 +1127,15 @@ Veja @code{file_search} para mais detalhes sobre o mecanismo de busca de arquivo
 @end deffn
 
 @c RECOMMEND CUTTING THIS ITEM, AS THE load SUBSUMES FUNCTIONALITY OF loadfile
-@deffn {Fun@,{c}@~ao} loadfile (@var{nomedearquivo})
-Avalia express@~oes Lisp em @var{nomedearquivo}.
-@code{loadfile} n@~ao invoca @code{file_search}, ent@~ao @code{nomedearquivo} deve obrigat@'oriamente incluir
+@deffn {Fun@,{c}@~ao} loadfile (@var{nomearquivo})
+Avalia express@~oes Lisp em @var{nomearquivo}.
+@code{loadfile} n@~ao invoca @code{file_search}, ent@~ao @code{nomearquivo} deve obrigat@'oriamente incluir
 a extens@~ao do arquivo e tanto quanto o caminho como necess@'ario para achar o arquivo.
 
 @code{loadfile} pode processar arquivos criados por @code{save}, @code{translate_file}, e @code{compile_file}.
 O usu@'ario pode achar isso mais conveniente para usar @code{load} em lugar de @code{loadfile}.
 
-@code{loadfile} avalia seu argumento, ent@~ao @code{nomedearquivo} deve obrigat@'oriamente ser uma seq@"u@^encia de caracteres literal,
+@code{loadfile} avalia seu argumento, ent@~ao @code{nomearquivo} deve obrigat@'oriamente ser uma seq@"u@^encia de caracteres literal,
 n@~ao uma vari@'avel do tipo seq@"u@^encia de caracteres.
 O operador ap@'ostrofo-ap@'ostrofo @code{'@w{}'} n@~ao aceita avalia@,{c}@~ao.
 

@@ -235,15 +235,15 @@ e sa@'ida adicional.
 @node Defini@value{cedilha}@~oes para Ajuda,  , Documenta@value{cedilha}@~ao, Ajuda
 @section Defini@value{cedilha}@~oes para Ajuda
 
-@deffn {Fun@,{c}@~ao} demo (@var{nomedearquivo})
-Avalia express@~oes Maxima em @var{nomedearquivo} e mostra os resultados.
+@deffn {Fun@,{c}@~ao} demo (@var{nomearquivo})
+Avalia express@~oes Maxima em @var{nomearquivo} e mostra os resultados.
 @code{demo} faz uma pausa ap@'os avaliar cada express@~ao
 e continua ap@'os a conclus@~ao com um enter das entradas de usu@'ario.
 (Se executando em Xmaxima, @code{demo} pode precisar ver um ponto e v@'irgula @code{;}
 seguido por um enter.)
 
 @code{demo} procura na lista de diret@'orios
-@code{file_search_demo} para achar @code{nomedearquivo}.
+@code{file_search_demo} para achar @code{nomearquivo}.
 Se o arquivo tiver o sufixo @code{dem},
 o sufixo pode ser omitido.
 Veja tamb@'em @code{file_search}.
