@@ -13,5 +13,8 @@
   (:export
    ;; Functions that maxima wants to use from LAPACK.
    #:dgeev
+   #:dgesvd
+   #:dlange
+   #:zlange
    )
   (:documentation "Package for LAPACK routines"))

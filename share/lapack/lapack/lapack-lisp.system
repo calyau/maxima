@@ -212,4 +212,7 @@
 	     (:file "ddisna")
 	     
 	     ;;(:file "zgeev")
+	     (:file "zlange"
+		    :depends-on ("zlassq"))
+	     (:file "zlassq")
 	     ))))
