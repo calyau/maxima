@@ -1,57 +1,60 @@
+@c Language: Brazilian Portuguese, Encoding: iso-8859-1
+@c /stats.texi/1.3/Mon Dec 25 13:25:10 2006//
 @menu
-* Introduction to stats::
-* Definitions for inference_result::
-* Definitions for stats::
-* Definitions for special distributions::
+* Introdu@value{cedilha}@~ao a stats::
+* Defini@value{cedilha}@~oes para inference_result::
+* Defini@value{cedilha}@~oes para stats::
+* Defini@value{cedilha}@~oes para distribui@value{cedilha}@~oes especiais::
 @end menu
 
-@node Introduction to stats, Definitions for inference_result, Top, Top
-@section Introduction to stats
+@node Introdu@value{cedilha}@~ao a stats, Defini@value{cedilha}@~oes para inference_result, Top, Top
+@section Introdu@value{cedilha}@~ao a stats
 
 
-Package @code{stats} contains a set of classical statistical inference and
-hypothesis testing procedures.
+O pacote @code{stats} cont@'em um conjunto de procedimentos de infer@^encia cl@'assica 
+estat@'istica e procedimentos de teste.
 
-All these functions return an @code{inference_result} Maxima object which contains
-the necessary results for population inferences and decision making.
+Todas essas fun@,{c}@~oes retornam um objeto do Maxima chamado @code{inference_result} que cont@'em
+os resultados necess@'arios para infer@^encias de manipula@,{c}@~ao e tomada de decis@~oes.
 
-Global variable @code{stats_numer} controls whether results are given in 
-floating point or symbolic and rational format; its default value is @code{true}
-and results are returned in floating point format.
+A vari@'avel global @code{stats_numer} controla se resultados s@~ao mostrados em 
+ponto flutuante ou simb@'olico e no formato racional; seu valor padr@~ao @'e @code{true}
+e os resultados s@~ao retornados no formato de ponto flutuante.
 
-Package @code{descriptive} contains some utilities to manipulate data structures
-(lists and matrices); for example, to extract subsamples. It also contains some
-examples on how to use package @code{numericalio} to read data from plain text
-files. See @code{descriptive} and @code{numericalio} for more details.
+O pacote @code{descriptive} cont@'em alguns utilit@'arios para manipular estruturas de dados
+(listas e matrizes); por exemplo, para extrair subamostras. O pacote @code{descriptive} tamb@'em cont@'em alguns
+exemplos sobre como usar o pacote @code{numericalio} para ler dados a partir de arquivo no formato texto 
+plano. Veja @code{descriptive} e @code{numericalio} para maiores detalhes.
 
-Package @code{stats} loads packages @code{descriptive}, @code{distrib} and
+O pacote @code{stats} precisa dos pacotes @code{descriptive}, @code{distrib} e
 @code{inference_result}.
 
-For comments, bugs or suggestions, please contact the author at
+Para coment@'arios, erros ou sugest@~oes, por favor contate o autor em
 
 @var{'mario AT edu DOT xunta DOT es'}.
 
 
-@node Definitions for inference_result, Definitions for stats, Introduction to stats, Top
-@section Definitions for inference_result
+@node Defini@value{cedilha}@~oes para inference_result, Defini@value{cedilha}@~oes para stats, Introdu@value{cedilha}@~ao a stats, Top
+@section Defini@value{cedilha}@~oes para inference_result
 
-@deffn {Function} inference_result (@var{title}, @var{values}, @var{numbers})
+@deffn {Fun@,{c}@~ao} inference_result (@var{t@'itulo}, @var{valores}, @var{n@'umeros})
 
-Constructs an @code{inference_result} object of the type returned by the
-stats functions. Argument @var{title} is a
-Maxima string with the name of the procedure; @var{values} is a list with
-elements of the form @code{symbol = value} and @var{numbers} is a list
-with positive integer numbers ranging from one to @code{length(@var{values})},
-indicating which values will be shown by default.
+Constr@'oi um objeto @code{inference_result} do tipo retornado pelas
+fun@,{c}@~oes stats. O argumento @var{t@'itulo} @'e uma
+seq@"u@^encia de caracteres do Maxima co o nome do procedimento; @var{valores} @'e uma lissta com
+elementos da forma @code{s@'imbolo = valor} e @var{n@'umeros} @'e uma lista
+com n@'umeros inteiros positivos no intervalo de um para @code{length(@var{valores})},
+indicando que valores ser@~ao mostrados por padr@~ao.
 
-Example:
+Exemplo:
 
-This is a simple example showing results concerning a rectangle. The title of
-this object is the string @code{"Rectangle"}, it stores five results, named
-@code{'base}, @code{'height}, @code{'diagonal}, @code{'area},
-and @code{'perimeter}, but only the first, second, fifth, and fourth
-will be displayed. The @code{'diagonal} is stored in this object, but it is
-not displayed; to access its value, make use of function @code{take_inference}.
+Este @'e um exemplo que mostras os resultados associados a um ret@'angulo. O
+t@'itulo deste bojeto @'e a seq@"u@^encia de caraceteres @code{"Ret@^angulo"}, o qual
+armazena cinco resultados, a saber, @code{'base}, @code{'altura}, 
+@code{'diagonal}, @code{'@'area} y @code{'per@'imetro}, por@'em s@'o mostra
+o primeiro, segundo, quinto e quarto resultado. O resultado @code{'diagonal} tamb@'em
+@'e armazenado neste objeto, no entanto n@~ao @'e mostrado por padr@~ao; para se ter acesso
+a este valor, faz-se uso da fun@,{c}@~ao @code{take_inference}.
 
 @c ===beg===
 @c load (inference_result)$
@@ -68,14 +71,14 @@ not displayed; to access its value, make use of function @code{take_inference}.
 @example
 (%i1) load(inference_result)$
 (%i2) b: 3$ h: 2$
-(%i3) inference_result("Rectangle",
+(%i3) inference_result("Ret@^angulo",
                         ['base=b,
-                         'height=h,
+                         'altura=h,
                          'diagonal=sqrt(b^2+h^2),
-                         'area=b*h,
-                         'perimeter=2*(b+h)],
+                         '@'area=b*h,
+                         'per@'imetro=2*(b+h)],
                         [1,2,5,4] );
-                        |   Rectangle
+                        |   Ret@^angulo
                         |
                         |    base = 3
                         |
@@ -88,7 +91,7 @@ not displayed; to access its value, make use of function @code{take_inference}.
 (%o4)                        sqrt(13)
 @end example
 
-See also @code{take_inference}.
+Veja tamb@'em @code{take_inference}.
 @end deffn
 
 
@@ -96,10 +99,10 @@ See also @code{take_inference}.
 
 
 
-@deffn {Function} inferencep (@var{obj})
+@deffn {Fun@,{c}@~ao} inferencep (@var{obj})
 
-Returns @code{true} or @code{false}, depending on whether @var{obj} is an
-@code{inference_result} object or not.
+Retorna @code{true} ou @code{false}, dependendo se @var{obj} @'e
+um objeto @code{inference_result} ou n@~ao.
 
 @end deffn
 
@@ -108,16 +111,16 @@ Returns @code{true} or @code{false}, depending on whether @var{obj} is an
 
 
 
-@deffn {Function} items_inference (@var{obj})
+@deffn {Fun@,{c}@~ao} items_inference (@var{obj})
 
-Returns a list with the names of the items stored in @var{obj}, which must
-be an @code{inference_result} object.
+Retorna uma lista com os nomes dos itens em @var{obj}, que devem
+ser um objeto @code{inference_result}.
 
-Example:
+Exemplo:
 
-The @code{inference_result} object stores two values, named @code{'pi} and @code{'e},
-but only the second is displayed. The @code{items_inference} function returns the names
-of all items, no matter they are displayed or not.
+O objeto @code{inference_result} armazena dois valores, a saber @code{'pi} e @code{'e},
+mas somente o segundo @'e mostrado. A fun@,{c}@~ao @code{items_inference} retorna os nomes
+de todos os itens, n@~ao importa se eles s@~ao ou n@~ao mostrados.
 
 @c ===beg===
 @c load (inference_result)$
@@ -141,18 +144,18 @@ of all items, no matter they are displayed or not.
 
 
 
-@deffn {Function} take_inference (@var{n}, @var{obj})
-@deffnx {Function} take_inference (@var{name}, @var{obj})
-@deffnx {Function} take_inference (@var{list}, @var{obj})
+@deffn {Fun@,{c}@~ao} take_inference (@var{n}, @var{obj})
+@deffnx {Fun@,{c}@~ao} take_inference (@var{nome}, @var{obj})
+@deffnx {Fun@,{c}@~ao} take_inference (@var{lista}, @var{obj})
 
-Returns the @var{n}-th value stored in @var{obj} if @var{n} is a positive integer,
-or the item named @var{name} if this is the name of an item. If the first
-argument is a list of numbers and/or symbols, function @code{take_inference} returns
-a list with the corresponding results.
+Retorna o @var{n}-@'esimo valor armazenado em @var{obj} se @var{n} for um inteiro positivo,
+ou o item chamado @var{nome} se esse for o nome de um item. Se o primeiro
+argumento for uma lista de n@'umeros e/ou s@'imbolos, a fun@,{c}@~ao @code{take_inference} retorna
+uma lista com os resultados correspondentes.
 
-Example:
+Exemplo:
 
-Given an @code{inference_result} object, function @code{take_inference} is
+Fornece um objeto @code{inference_result}, function @code{take_inference} is
 called in order to extract some information stored in it.
 
 @c ===beg===
@@ -210,8 +213,8 @@ See also @code{inference_result} and @code{take_inference}.
 
 
 
-@node Definitions for stats, Definitions for special distributions, Definitions for inference_result, Top
-@section Definitions for stats
+@node Defini@value{cedilha}@~oes para stats, Defini@value{cedilha}@~oes para distribui@value{cedilha}@~oes especiais, Defini@value{cedilha}@~oes para inference_result, Top
+@section Defini@value{cedilha}@~oes para stats
 
 
 @defvr {Option variable} stats_numer
@@ -225,8 +228,8 @@ results are given in symbolic and rational format.
 
 
 
-@deffn {Function} test_mean (@var{x})
-@deffnx {Function} test_mean (@var{x}, @var{option_1}, @var{option_2}, ...)
+@deffn {Fun@,{c}@~ao} test_mean (@var{x})
+@deffnx {Fun@,{c}@~ao} test_mean (@var{x}, @var{option_1}, @var{option_2}, ...)
 
 This is the mean @var{t}-test. Argument @var{x} is a list or a column matrix
 containing a one dimensional sample. It also performs an asymptotic test
@@ -326,7 +329,7 @@ evidence for rejecting @math{H_0}.
 @end example
 
 This time Maxima performs an asymptotic test, based on the @i{Central Limit Theorem}.
-The null hypothesis is @math{H_0: mean=50} against the two sided alternative @math{H_1: mean#50};
+The null hypothesis is @math{H_0: equal(mean, 50)} against the two sided alternative @math{H_1: not equal(mean, 50)};
 according to the results, the @math{p}-value is very small, @math{H_0} should be rejected in
 favor of the alternative @math{H_1}. Note that, as indicated by the @code{Method} component,
 this procedure should be applied to large samples.
@@ -371,8 +374,8 @@ this procedure should be applied to large samples.
 
 
 
-@deffn {Function} test_means_difference (@var{x1}, @var{x2})
-@deffnx {Function} test_means_difference (@var{x1}, @var{x2}, @var{option_1}, @var{option_2}, ...)
+@deffn {Fun@,{c}@~ao} test_means_difference (@var{x1}, @var{x2})
+@deffnx {Fun@,{c}@~ao} test_means_difference (@var{x1}, @var{x2}, @var{option_1}, @var{option_2}, ...)
 
 This is the difference of means @var{t}-test for two samples.
 Arguments @var{x1} and @var{x2} are lists or column matrices
@@ -534,8 +537,8 @@ equal.
 
 
 
-@deffn {Function} test_variance (@var{x})
-@deffnx {Function} test_variance (@var{x}, @var{option_1}, @var{option_2}, ...)
+@deffn {Fun@,{c}@~ao} test_variance (@var{x})
+@deffnx {Fun@,{c}@~ao} test_variance (@var{x}, @var{option_1}, @var{option_2}, ...)
 
 This is the variance @var{chi^2}-test. Argument @var{x} is a list or a column matrix
 containing a one dimensional sample taken from a normal population.
@@ -632,8 +635,8 @@ is equal to or greater than 200.
 
 
 
-@deffn {Function} test_variance_ratio (@var{x1}, @var{x2})
-@deffnx {Function} test_variance_ratio (@var{x1}, @var{x2}, @var{option_1}, @var{option_2}, ...)
+@deffn {Fun@,{c}@~ao} test_variance_ratio (@var{x1}, @var{x2})
+@deffnx {Fun@,{c}@~ao} test_variance_ratio (@var{x1}, @var{x2}, @var{option_1}, @var{option_2}, ...)
 
 This is the variance ratio @var{F}-test for two normal populations.
 Arguments @var{x1} and @var{x2} are lists or column matrices
@@ -740,8 +743,8 @@ against the alternative that the first is greater than the second.
 
 
 
-@deffn {Function} test_sign (@var{x})
-@deffnx {Function} test_sign (@var{x}, @var{option_1}, @var{option_2}, ...)
+@deffn {Fun@,{c}@~ao} test_sign (@var{x})
+@deffnx {Fun@,{c}@~ao} test_sign (@var{x}, @var{option_1}, @var{option_2}, ...)
 
 This is the non parametric sign test for the median of a continuous population.
 Argument @var{x} is a list or a column matrix containing a one dimensional sample.
@@ -823,8 +826,8 @@ against the alternative @math{H_1: median > 6}.
 
 
 
-@deffn {Function} test_signed_rank (@var{x})
-@deffnx {Function} test_signed_rank (@var{x}, @var{option_1}, @var{option_2}, ...)
+@deffn {Fun@,{c}@~ao} test_signed_rank (@var{x})
+@deffnx {Fun@,{c}@~ao} test_signed_rank (@var{x}, @var{option_1}, @var{option_2}, ...)
 
 This is the Wilcoxon signed rank test to make inferences about the median of a
 continuous population. Argument @var{x} is a list or a column matrix
@@ -905,8 +908,8 @@ there are no ties.
                  |            p_value = 0.28125
 @end example
 
-Checks the null hypothesis @math{H_0: median = 2.5} against the 
-alternative @math{H_1: median # 2.5}. This is an approximated test,
+Checks the null hypothesis @math{H_0: equal(median, 2.5)} against the 
+alternative @math{H_1: not equal(median, 2.5)}. This is an approximated test,
 since there are ties.
 
 @c equivalent code for R:
@@ -945,8 +948,8 @@ since there are ties.
 
 
 
-@deffn {Function} test_rank_sum (@var{x1}, @var{x2})
-@deffnx {Function} test_rank_sum (@var{x1}, @var{x2}, @var{option_1})
+@deffn {Fun@,{c}@~ao} test_rank_sum (@var{x1}, @var{x2})
+@deffnx {Fun@,{c}@~ao} test_rank_sum (@var{x1}, @var{x2}, @var{option_1})
 
 This is the Wilcoxon-Mann-Whitney test for comparing the medians of two
 continuous populations. The first two arguments @var{x1} and @var{x2} are lists
@@ -1060,7 +1063,7 @@ normal approximation. The alternative hypothesis is
 
 
 
-@deffn {Function} test_normality (@var{x})
+@deffn {Fun@,{c}@~ao} test_normality (@var{x})
 
 Shapiro-Wilk test for normality. Argument @var{x} is a list of numbers, and sample
 size must be greater than 2 and less or equal than 5000, otherwise, function
@@ -1117,8 +1120,8 @@ Checks for the normality of a population, based on a sample of size 9.
 
 
 
-@deffn {Function} simple_linear_regression (@var{x})
-@deffnx {Function} simple_linear_regression (@var{x} @var{option_1})
+@deffn {Fun@,{c}@~ao} simple_linear_regression (@var{x})
+@deffnx {Fun@,{c}@~ao} simple_linear_regression (@var{x} @var{option_1})
 
 Simple linear regression, @math{y_i=a+b x_i+e_i}, where @math{e_i} are @math{N(0,sigma)}
 independent random variables. Argument @var{x} must be a two column matrix or a list of
@@ -1202,7 +1205,7 @@ This is useful for goodness of fit analysis. See examples bellow.
 Only items 1, 4, 14, 9, 10, 11, 12, and 13 above, in this order, are shown by default. The rest remain
 hidden until the user makes use of functions @code{items_inference} and @code{take_inference}.
 
-Example:
+Exemplo:
 
 Fitting a linear model to a bivariate sample. Input @code{%i4} plots
 the sample together with the regression line; input @code{%i5}
@@ -1285,11 +1288,11 @@ confidence interval for a new prediction when @code{x=113} are also calculated.
 
 
 
-@node Definitions for special distributions, , Definitions for stats, Top
-@section Definitions for special distributions
+@node Defini@value{cedilha}@~oes para distribui@value{cedilha}@~oes especiais, , Defini@value{cedilha}@~oes para stats, Top
+@section Defini@value{cedilha}@~oes para distribui@value{cedilha}@~oes especiais
 
 
-@deffn {Function} pdf_signed_rank (@var{x}, @var{n})
+@deffn {Fun@,{c}@~ao} pdf_signed_rank (@var{x}, @var{n})
 Probability density function of the exact distribution of the
 signed rank statistic. Argument @var{x} is a real
 number and @var{n} a positive integer.
@@ -1297,7 +1300,7 @@ number and @var{n} a positive integer.
 See also @code{test_signed_rank}.
 @end deffn
 
-@deffn {Function} cdf_signed_rank (@var{x}, @var{n})
+@deffn {Fun@,{c}@~ao} cdf_signed_rank (@var{x}, @var{n})
 Cumulative density function of the exact distribution of the
 signed rank statistic. Argument @var{x} is a real
 number and @var{n} a positive integer. 
@@ -1305,7 +1308,7 @@ number and @var{n} a positive integer.
 See also @code{test_signed_rank}.
 @end deffn
 
-@deffn {Function} pdf_rank_sum (@var{x}, @var{n}, @var{m})
+@deffn {Fun@,{c}@~ao} pdf_rank_sum (@var{x}, @var{n}, @var{m})
 Probability density function of the exact distribution of the
 rank sum statistic. Argument @var{x} is a real
 number and @var{n} and @var{m} are both positive integers. 
@@ -1313,7 +1316,7 @@ number and @var{n} and @var{m} are both positive integers.
 See also @code{test_rank_sum}.
 @end deffn
 
-@deffn {Function} cdf_rank_sum (@var{x}, @var{n}, @var{m})
+@deffn {Fun@,{c}@~ao} cdf_rank_sum (@var{x}, @var{n}, @var{m})
 Cumulative density function of the exact distribution of the
 rank sum statistic. Argument @var{x} is a real
 number and @var{n} and @var{m} are both positive integers. 
