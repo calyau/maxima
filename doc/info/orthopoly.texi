@@ -379,7 +379,7 @@ orthogonal polynomials; we've generally used the conventions
 of conventions of Abramowitz and Stegun.
 
 Before you suspect a bug in orthopoly, check some special cases 
-to determine if your definitions match those used by orthonormal. 
+to determine if your definitions match those used by @code{orthopoly}. 
 Definitions often differ by a normalization; occasionally, authors
 use ``shifted'' versions of the functions that makes the family
 orthogonal on an interval other than @math{(-1, 1)}. To define, for example,
