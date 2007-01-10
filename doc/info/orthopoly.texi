@@ -333,7 +333,7 @@ fully. Consider
                              2
 @end example
 
-The expression in (%o3) will not evaluate to a float; orthopoly doesn't
+The expression in (%o3) will not evaluate to a float; @code{orthopoly} doesn't
 recognize floating point values where it requires an integer. Similarly, 
 numerical evaluation of the @code{pochhammer} function for orders that
 exceed @code{pochhammer_max_index} can be troublesome; consider
@@ -406,7 +406,7 @@ a Legendre polynomial that is orthogonal on @math{(0, 1)}, define
 @anchor{Floating point Evaluation}
 @subsection Floating point Evaluation
 
-Most functions in orthopoly use a running error analysis to 
+Most functions in @code{orthopoly} use a running error analysis to 
 estimate the error in floating point evaluation; the 
 exceptions are the spherical Bessel functions and the associated Legendre 
 polynomials of the second kind. For numerical evaluation, the spherical 
@@ -516,7 +516,7 @@ and the final result is a double.
 (%o1) interval(- 0.043009481257265, 3.3750051301228864E-14)
 @end example
 
-@subsection Graphics and orthopoly
+@subsection Graphics and @code{orthopoly}
 
 To plot expressions that involve the orthogonal polynomials, you 
 must do two things:
