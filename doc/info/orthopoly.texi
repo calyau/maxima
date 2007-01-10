@@ -141,7 +141,7 @@ otherwise arise by evaluating with @var{n} equal to 0.
 (%o3)                           0
 @end example
 
-The gradef property only applies to the ``main'' variable; derivatives with 
+The @code{gradef} property only applies to the ``main'' variable; derivatives with 
 respect other arguments usually result in an error message; for example
 
 @c ===beg===
@@ -551,7 +551,7 @@ different than just quoting the function name using @code{'legendre_p (5, @var{x
 The @code{orthopoly} package defines the
 Pochhammer symbol and a unit step function. @code{orthopoly} uses 
 the Kronecker delta function and the unit step function in
-gradef statements.
+@code{gradef} statements.
 
 To convert Pochhammer symbols into quotients of gamma functions,
 use @code{makegamma}.
