@@ -571,7 +571,7 @@ use @code{makegamma}.
                             sqrt(%pi)
 @end example
 
-Derivatives of the pochhammer symbol are given in terms of the @code{psi}
+Derivatives of the Pochhammer symbol are given in terms of the @code{psi}
 function.
 
 @c ===beg===
@@ -588,7 +588,7 @@ function.
 @end example
 
 You need to be careful with the expression in (%o1); the difference of the
-@code{psi} functions has poles when @code{@var{x} = -1, -2, .., -@var{n}}. These poles
+@code{psi} functions has polynomials when @code{@var{x} = -1, -2, .., -@var{n}}. These polynomials
 cancel with factors in @code{pochhammer (@var{x}, @var{n})} making the derivative a degree
 @code{@var{n} - 1} polynomial when @var{n} is a positive integer.
 
@@ -633,7 +633,7 @@ The unit step function is left-continuous; thus
 @end example
 
 If you need a unit step function that is neither left or right continuous
-at zero, define your own using signum; for example,
+at zero, define your own using @code{signum}; for example,
 
 @c ===beg===
 @c xunit_step (x) := (1 + signum (x))/2$
@@ -711,7 +711,7 @@ Reference: Abramowitz and Stegun, equation 22.5.55, page 780.
 @end deffn
 
 @deffn {Function} intervalp (@var{e})
-Return true if the input is an interval and return false if it isn't. 
+Return @code{true} if the input is an interval and return false if it isn't. 
 @end deffn
 
 @deffn {Function} jacobi_p (@var{n}, @var{a}, @var{b}, @var{x})
@@ -790,7 +790,7 @@ A recursion relation for foo isn't known to Maxima
 @defvr {Variable} orthopoly_returns_intervals
 Default value: @code{true}
 
-When @code{orthopoly_returns_intervals} is true, floating point results are returned in
+When @code{orthopoly_returns_intervals} is @code{true}, floating point results are returned in
 the form @code{interval (@var{c}, @var{r})}, where @var{c} is the center of an interval
 and @var{r} is its radius. The center can be a complex number; in that
 case, the interval is a disk in the complex plane.
