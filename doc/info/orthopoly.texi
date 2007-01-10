@@ -906,14 +906,14 @@ Reference: Abramowitz and Stegun, equations 10.1.9, page 437 and 10.1.15, page 4
 @end deffn
 
 @deffn {Function} spherical_hankel1 (@var{n}, @var{x})
-The spherical hankel function of the
+The spherical Hankel function of the
 first kind.
 
 Reference: Abramowitz and Stegun, equation 10.1.36, page 439.
 @end deffn
 
 @deffn {Function} spherical_hankel2 (@var{n}, @var{x})
-The spherical hankel function of the second kind.
+The spherical Hankel function of the second kind.
 
 Reference: Abramowitz and Stegun, equation 10.1.17, page 439.
 @end deffn
