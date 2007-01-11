@@ -29,18 +29,13 @@ approx:bfloat(bflevin_u_sum(n/((3*n+1)*(2*n+1)^2),n,1));
 bfloat(approx-exact);
 /* The sum sum(1/n-log(1+1/n),n,1,inf)  computes the
 Euler-Mascheroni constant */
-levin_gamma:bflevin_u_sum(1/n-log(1+1/n),n,1);
-/* oops, we need to use levin_u_sum. */
-/* set precision very high */
-fpprec:60$
-/* compute sum with 30 terms */
-levin_gamma:bfloat(levin_u_sum(1/n-log(1+1/n),n,1,30));
-bfloat(levin_gamma-%gamma);
 fpprec:16$
+levin_gamma:bflevin_u_sum(1/n-log(1+1/n),n,1);
+bfloat(levin_gamma-%gamma);
 /* a series with zero terms */
 pi4(k):=if oddp(k) then (-1)^((k-1)/2)/k else 0$
 /* we need to protect pi4(k) against premature evaluation */
-bfloat(bflevin_u_sum(funmake(pi4,[k]),k,1)-%pi/4);
+bfloat(bflevin_u_sum('(pi4(k)),k,1)-%pi/4);
 /* load package to compute zeta function numerically */
 load(bffac)$
 float2bf:true$
