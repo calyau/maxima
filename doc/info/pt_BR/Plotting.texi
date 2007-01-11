@@ -57,7 +57,7 @@ Algumas outras palavras chave especiais s@~ao @code{xfun}, @code{color}, @code{p
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} plot2d (@var{expr}, @var{range}, ..., @var{options}, ...)
+@deffn {Fun@,{c}@~ao} plot2d (@var{expr}, @var{range}, ..., @var{op@,{c}@~oes}, ...)
 @deffnx {Fun@,{c}@~ao} plot2d (@var{parametric_expr})
 @deffnx {Fun@,{c}@~ao} plot2d ([@var{expr_1}, ..., @var{expr_n}], @var{x_range}, @var{y_range})
 @deffnx {Fun@,{c}@~ao} plot2d ([@var{expr_1}, ..., @var{expr_n}], @var{x_range})
@@ -68,8 +68,8 @@ Algumas outras palavras chave especiais s@~ao @code{xfun}, @code{color}, @code{p
 @deffnx {Fun@,{c}@~ao} plot2d ([@var{nome_1}, ..., @var{nome_n}], @var{x_range})
 @deffnx {Fun@,{c}@~ao} plot2d (@var{name}, @var{x_range}, @var{y_range})
 @deffnx {Fun@,{c}@~ao} plot2d (@var{name}, @var{x_range})
-@deffnx {Fun@,{c}@~ao} plot2d ([@var{expr_1}, ..., @var{expr_n}], @var{x_range}, ..., @var{options}, ...)
-@deffnx {Fun@,{c}@~ao} plot2d ([..., @var{expr}, ..., @var{parametric_expr}, ...], @var{x_range}, ..., @var{options})
+@deffnx {Fun@,{c}@~ao} plot2d ([@var{expr_1}, ..., @var{expr_n}], @var{x_range}, ..., @var{op@,{c}@~oes}, ...)
+@deffnx {Fun@,{c}@~ao} plot2d ([..., @var{expr}, ..., @var{parametric_expr}, ...], @var{x_range}, ..., @var{op@,{c}@~oes})
 Mostra a montagem de uma ou mais express@~oes
 como uma fun@,{c}@~ao de uma vari@'avel.
 
@@ -156,7 +156,7 @@ $g
 
 Em qualquer lugar onde pode existir uma express@~ao comum, pode existir uma express@~ao param@'etrica: 
 @var{parametric_expr} @'e uma lista da forma
-@code{[parametric, @var{x_expr}, @var{y_expr}, @var{t_range}, @var{options}]}.
+@code{[parametric, @var{x_expr}, @var{y_expr}, @var{t_range}, @var{op@,{c}@~oes}]}.
 Aqui @var{x_expr} e @var{y_expr} s@~ao express@~oes de 1 vari@'avel @var{var} que @'e
 o primeiro elemento da amplitude @var{trange}.  
 A montagem do gr@'afico mostra o caminho descrito pelo par
@@ -754,11 +754,11 @@ Uma montagem de gr@'afico onde o eixo z @'e representado apenas por cores.
 
 @end defvr
 
-@deffn {Fun@,{c}@~ao} plot3d ([@var{expr_1}, @var{expr_2}, @var{expr_3}], @var{x_range}, @var{y_range}, ..., @var{options}, ...)
-@deffnx {Fun@,{c}@~ao} plot3d (@var{expr}, @var{x_range}, @var{y_range}, ..., @var{options}, ...)
-@deffnx {Fun@,{c}@~ao} plot3d (@var{name}, @var{x_range}, @var{y_range}, ..., @var{options}, ...)
+@deffn {Fun@,{c}@~ao} plot3d ([@var{expr_1}, @var{expr_2}, @var{expr_3}], @var{x_range}, @var{y_range}, ..., @var{op@,{c}@~oes}, ...)
+@deffnx {Fun@,{c}@~ao} plot3d (@var{expr}, @var{x_range}, @var{y_range}, ..., @var{op@,{c}@~oes}, ...)
+@deffnx {Fun@,{c}@~ao} plot3d (@var{name}, @var{x_range}, @var{y_range}, ..., @var{op@,{c}@~oes}, ...)
 @deffnx {Fun@,{c}@~ao} plot3d ([@var{expr_1}, @var{expr_2}, @var{expr_3}], @var{x_rge}, @var{y_rge})
-@deffnx {Fun@,{c}@~ao} plot3d ([@var{nome_1}, @var{nome_2}, @var{nome_3}], @var{x_range}, @var{y_range}, ..., @var{options}, ...)
+@deffnx {Fun@,{c}@~ao} plot3d ([@var{nome_1}, @var{nome_2}, @var{nome_3}], @var{x_range}, @var{y_range}, ..., @var{op@,{c}@~oes}, ...)
 
 Mostra um gr@'afico de uma ou tr@^es express@~oes como fun@,{c}@~oes de duas vari@'aveis.
 
@@ -916,7 +916,7 @@ muitas montagens de gr@'aficos, e ent@~ao devemos manter esse fluxo aberto.
 
 @deffn {Fun@,{c}@~ao}  set_plot_option (@var{op@,{c}@~ao})
 Atribui uma das var@'aveis globais para impress@~ao.
-@var{option} @'e especificada como uma lista de dois ou mais elementos,
+@var{op@,{c}@~ao} @'e especificada como uma lista de dois ou mais elementos,
 na qual o primeiro elemeto @'e uma das palavras chave
 dentro da lista @code{plot_options}.
 

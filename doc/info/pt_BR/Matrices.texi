@@ -1275,7 +1275,7 @@ desde que isso evite inteiramente a aritm@'etica polinomial.
 Calcula o determinante de uma matriz ou array @var{M} pelo
 algor@'itmo da @'arvore menor de Johnson-Gentleman.
 @c UGH -- ARRAYS ARE SUCH A MESS
-O argumento @var{n} @'e a ordem; isso @'e optional se @var{M} for uma matriz.
+O argumento @var{n} @'e a ordem; isso @'e opcional se @var{M} for uma matriz.
 
 @end deffn
 

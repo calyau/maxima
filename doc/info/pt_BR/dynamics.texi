@@ -132,7 +132,7 @@ frente.
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} mandelbrot (@var{options})
+@deffn {Fun@,{c}@~ao} mandelbrot (@var{op@,{c}@~oes})
 
 Cria um ficheiro gr@'afico com a representa@,{c}@~ao do
 conjunto de Mandelbrot. O ficheiro @'e criado no direct@'orio actual ou

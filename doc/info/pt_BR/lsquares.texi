@@ -109,7 +109,7 @@ Para usar essa fun@,{c}@~ao escreva primeiro @code{load("lsquares")}. Veja tamb@
 Ajuste de polin@^omios de v@'arias vari@'aveis de uma tabela de dados pelo m@'etodo dos
 "m@'inimos quadrados". @var{Mat} @'e uma matriz contendo os dados, @var{VarList} @'e uma lista de nomes de vari@'aveis (um nome para cada coluna de Mat, mas use "-" em lugar de nomes de vari@'aveis para colunas de Mat), @var{depvars} @'e o
 nome de uma vari@'avel dependente ou uma
-lista com um ou mais nomes de vari@'aveis dependentes (os quais nomes podem estar em @var{VarList}), @var{maxexpon} @'e o expoente m@'aximo opcional para cada vari@'avel independente (1 por padr@~ao), e @var{maxdegree} @'e o optional
+lista com um ou mais nomes de vari@'aveis dependentes (os quais nomes podem estar em @var{VarList}), @var{maxexpon} @'e o expoente m@'aximo opcional para cada vari@'avel independente (1 por padr@~ao), e @var{maxdegree} @'e o argumento opcional
 grau m@'aximo do polin@^omio (@var{maxexpon} por padr@~ao); note que a soma dos expoentes de cada termo deve ser menor ou igual a @var{maxdegree}, e se @code{maxdgree = 0} ent@~ao nenhum limite @'e aplicado.
 
 Se @var{depvars} @'e o nome de uma vari@'avel dependente (fora de uma lista), @code{plsquares} retorna o polin@^omio ajustado. Se @var{depvars} for uma lista de uma ou mais vari@'aveis dependentes, @code{plsquares} retorna uma lista com
