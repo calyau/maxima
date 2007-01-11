@@ -1273,17 +1273,9 @@ causing all pending operations to be flushed"
 ;;  D1MACH( 5) = LOG10(B)
 ;;
 
-#+gcl
-(defconstant least-positive-normalized-double-float least-positive-double-float)
-#+gcl
-(defconstant least-positive-normalized-single-float least-positive-single-float)
-
-
 (defun d1mach (i)
   (ecase i
-    (1
-     #-gcl least-positive-normalized-double-float
-     #+gcl least-positive-double-float)
+    (1 least-positive-normalized-double-float)
     (2 most-positive-double-float)
     (3 double-float-epsilon)
     (4 (scale-float double-float-epsilon 1))
@@ -1291,9 +1283,7 @@ causing all pending operations to be flushed"
 
 (defun r1mach (i)
   (ecase i
-    (1
-     #-gcl least-positive-normalized-single-float
-     #+gcl least-positive-single-float)
+    (1 least-positive-normalized-single-float)
     (2 most-positive-single-float)
     (3 single-float-epsilon)
     (4 (scale-float single-float-epsilon 1))
@@ -1415,9 +1405,13 @@ causing all pending operations to be flushed"
 ;;;-------------------------------------------------------------------------
 ;;; end of macros.l
 ;;;
-;;; $Id: f2cl-lib.lisp,v 1.11 2006-12-26 14:53:47 rtoy Exp $
+;;; $Id: f2cl-lib.lisp,v 1.12 2007-01-11 17:08:41 rtoy Exp $
 ;;; $Log: f2cl-lib.lisp,v $
-;;; Revision 1.11  2006-12-26 14:53:47  rtoy
+;;; Revision 1.12  2007-01-11 17:08:41  rtoy
+;;; GCL apparently supports
+;;; least-positive-normalized-{double,single}-float now.
+;;;
+;;; Revision 1.11  2006/12/26 14:53:47  rtoy
 ;;; SBCL can handle integer4 types well, too.
 ;;;
 ;;; Revision 1.10  2006/12/20 18:13:05  rtoy
