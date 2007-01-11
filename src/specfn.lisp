@@ -336,7 +336,17 @@
 				     '$%gamma))))))))
 	       ((alike1 a '((rat) 1 2))
 		(m*t (expt -1 (f1+ s)) (factorial s)
-		     (f1- (expt 2 (f1+ s))) (simplify ($zeta (f1+ s)))))))
+		     (f1- (expt 2 (f1+ s))) (simplify ($zeta (f1+ s)))))
+	       ((and (ratgreaterp a '((rat) 1 2))
+		     (ratgreaterp 1 a))
+		(m*t
+		 (^ -1 s)
+		 (m+t (psisimp1 s (m- 1 a))
+		      (let ((dif (m* '$%pi
+				     ($diff `((%cot) ,(m* '$%pi '$z)) '$z s)))
+			    ($z (m-t a)))
+			(declare (special $z))
+			(meval dif)))))))
 	    ((ratgreaterp a $maxpsinegint)  ;;; Reflection Formula
 	     (m*t
 	      (^ -1 s)
