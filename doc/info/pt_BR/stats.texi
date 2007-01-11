@@ -59,12 +59,12 @@ a este valor, faz-se uso da fun@,{c}@~ao @code{take_inference}.
 @c ===beg===
 @c load (inference_result)$
 @c b: 3$ h: 2$
-@c inference_result("Rectangle",
+@c inference_result("Ret@^angulo",
 @c                  ['base=b,
-@c                   'height=h,
+@c                   'altura=h,
 @c                   'diagonal=sqrt(b^2+h^2),
 @c                   'area=b*h,
-@c                   'perimeter=2*(b+h)],
+@c                   'per@'imetro=2*(b+h)],
 @c                  [1,2,5,4] );
 @c take_inference('diagonal,%);
 @c ===end===
@@ -82,9 +82,9 @@ a este valor, faz-se uso da fun@,{c}@~ao @code{take_inference}.
                         |
                         |    base = 3
                         |
-(%o3)                   |   height = 2
+(%o3)                   |   altura = 2
                         |
-                        | perimeter = 10
+                        | per@'imetro = 10
                         |
                         |    area = 6
 (%i4) take_inference('diagonal,%);
@@ -155,18 +155,18 @@ uma lista com os resultados correspondentes.
 
 Exemplo:
 
-Fornece um objeto @code{inference_result}, function @code{take_inference} is
-called in order to extract some information stored in it.
+Fornece um objeto @code{inference_result}, a fun@,{c}@~ao @code{take_inference} @'e
+chamada com o objetivo de extrair alguma informa@,{c}@~ao armazenada nesse objeto.
 
 @c ===beg===
 @c load (inference_result)$
 @c b: 3$ h: 2$
-@c sol:inference_result("Rectangle",
+@c sol:inference_result("Ret@^angulo",
 @c                      ['base=b,
-@c                       'height=h,
+@c                       'altura=h,
 @c                       'diagonal=sqrt(b^2+h^2),
 @c                       'area=b*h,
-@c                       'perimeter=2*(b+h)],
+@c                       'per@'imetro=2*(b+h)],
 @c                      [1,2,5,4] );
 @c take_inference('base,sol);
 @c take_inference(5,sol);
@@ -176,20 +176,20 @@ called in order to extract some information stored in it.
 @example
 (%i1) load(inference_result)$
 (%i2) b: 3$ h: 2$
-(%i3) sol: inference_result("Rectangle",
+(%i3) sol: inference_result("Ret@^angulo",
                             ['base=b,
-                             'height=h,
+                             'altura=h,
                              'diagonal=sqrt(b^2+h^2),
                              'area=b*h,
-                             'perimeter=2*(b+h)],
+                             'per@'imetro=2*(b+h)],
                             [1,2,5,4] );
-                        |   Rectangle
+                        |   Ret@^angulo
                         |
                         |    base = 3
                         |
-(%o3)                   |   height = 2
+(%o3)                   |   altura = 2
                         |
-                        | perimeter = 10
+                        | per@'imetro = 10
                         |
                         |    area = 6
 (%i4) take_inference('base,sol);
@@ -202,7 +202,7 @@ called in order to extract some information stored in it.
 (%o7)                [3, 2, sqrt(13), 6, 10]
 @end example
 
-See also @code{inference_result} and @code{take_inference}.
+Veja tamb@'em @code{inference_result} e @code{take_inference}.
 @end deffn
 
 
@@ -217,88 +217,87 @@ See also @code{inference_result} and @code{take_inference}.
 @section Defini@value{cedilha}@~oes para stats
 
 
-@defvr {Option variable} stats_numer
-Default value: @code{true}
+@defvr {Vari@'avel de op@,{c}@~ao} stats_numer
+Valor padr@~ao: @code{true}
 
-If @code{stats_numer} is @code{true}, inference statistical functions 
-return their results in floating point numbers. If it is @code{false},
-results are given in symbolic and rational format.
+Se @code{stats_numer} for @code{true}, fun@,{c}@~oes de infer@^encia estat@'istica 
+retornam seus resultados em n@'umeros com ponto flutuante. Se @code{stats_numer} for @code{false},
+resultados s@~ao fornecidos em formato simb@'olico e racional.
 
 @end defvr
 
 
-
 @deffn {Fun@,{c}@~ao} test_mean (@var{x})
-@deffnx {Fun@,{c}@~ao} test_mean (@var{x}, @var{option_1}, @var{option_2}, ...)
+@deffnx {Fun@,{c}@~ao} test_mean (@var{x}, @var{op@,{c}@~ao_1}, @var{op@,{c}@~ao_2}, ...)
 
-This is the mean @var{t}-test. Argument @var{x} is a list or a column matrix
-containing a one dimensional sample. It also performs an asymptotic test
-based on the @i{Central Limit Theorem} if option @code{'asymptotic} is
+Esse @'e o teste-@var{t} de m@'edia. O argumento @var{x} @'e uma lista ou uma matriz coluna
+contendo uma amostra unidimensional. @code{test_mean} tamb;em executa um teste assint@'otico
+baseado no @i{Teorema do Limite Central} se a op@,{c}@~ao @code{'asymptotic} for
 @code{true}.
 
-Options:
+Op@,{c}@~oes:
 
 @itemize @bullet
 
 @item
-@code{'mean}, default @code{0}, is the mean value to be checked.
+@code{'mean}, o valor padr@~ao @'e @code{0}, @'e o valor da m@'edia a ser verificado.
 
 @item
-@code{'alternative}, default @code{'twosided}, is the alternative hypothesis;
-valid values are: @code{'twosided}, @code{'greater} and @code{'less}.
+@code{'alternative}, o valor padr@~ao @'e @code{'twosided}, @'e a hip@'otese alternativa;
+valores v@'alidos s@~ao: @code{'twosided}, @code{'greater} e @code{'less}.
 
 @item
-@code{'dev}, default @code{'unknown}, this is the value of the standard deviation when it is 
-known; valid values are: @code{'unknown} or a positive expression.
+@code{'dev}, o valor padr@~ao @'e @code{'unknown}, corresponde ao valor do desvio padr@~ao quando esse valor de desvio padr@~ao for
+conhecido; valores v@'alidos s@~ao: @code{'unknown} ou uma express@~ao positiva.
 
 @item
-@code{'conflevel}, default @code{95/100}, confidence level for the confidence interval; it must
-be an expression which takes a value in (0,1).
+@code{'conflevel}, o valor padr@~ao @'e @code{95/100}, n@'ivel de confid@^encia para o intervalo de confid@^encia; deve
+ser uma express@~ao que toma um valor em (0,1).
 
 @item
-@code{'asymptotic}, default @code{false}, indicates whether it performs an exact @var{t}-test or
-an asymptotic one based on the @i{Central Limit Theorem};
-valid values are @code{true} and @code{false}.
+@code{'asymptotic}, o valor padr@~ao @'e @code{false}, indica se @code{test_mean} exeecuta um teste-@var{t} exato ou
+um teste assint@'otico baseando-se no @i{Teorema do Limite Central};
+valores v@'alidos s@~ao @code{true} e @code{false}.
 
 @end itemize
 
-The output of function @code{test_mean} is an @code{inference_result} Maxima object
-showing the following results:
+A sa@'ida da fun@,{c}@~ao @code{test_mean} @'e um objeto @code{inference_result} do Maxima
+mostrando os seguintes resultados:
 
 @enumerate
 
 @item
-@code{'mean_estimate}: the sample mean.
+@code{'mean_estimate}: a m@'edia da amostra.
 
 @item
-@code{'conf_level}: confidence level selected by the user.
+@code{'conf_level}: n@'ivel de confid@^encia selecionado pelo usu@'ario.
 
 @item
-@code{'conf_interval}: confidence interval for the population mean.
+@code{'conf_interval}: intervalo de confid@^encia para a m@'edia da popula@,{c}@~ao.
 
 @item
-@code{'method}: inference procedure.
+@code{'method}: procedimento de infer@^encia.
 
 @item
-@code{'hypotheses}: null and alternative hypotheses to be tested.
+@code{'hypotheses}: hip@'otese do nulo e hip@'otese alternativa a ser testada.
 
 @item
-@code{'statistic}: value of the sample statistic used for testing the null hypothesis.
+@code{'statistic}: valor da amostra estat@'istica a ser usado para testar a hip@'otese do nulo.
 
 @item
-@code{'distribution}: distribution of the sample statistic, together with its parameter(s).
+@code{'distribution}: distribui@,{c}@~ao da amostra estat@'istica, juntamente com seus par@^ametro(s).
 
 @item
-@code{'p_value}: @math{p}-value of the test.
+@code{'p_value}: valores de @math{p} do teste.
 
 @end enumerate
 
-Examples:
+Exemplos:
 
-Performs an exact @var{t}-test with unknown variance. The null hypothesis
-is @math{H_0: mean=50} against the one sided alternative @math{H_1: mean<50};
-according to the results, the @math{p}-value is too great, there are no
-evidence for rejecting @math{H_0}.
+Executa um teste-@var{t} exato com vari@^ancia desconhecida. A hip@'otese do nulo
+@'e @math{H_0: mean=50} contra a alternativa unilatera @math{H_1: mean<50};
+conforme os resultados, o valor de @math{p} @'e muito grande, n@~ao existem
+evid@^encias paa rejeitar @math{H_0}.
 
 @c ===beg===
 @c load (stats)$
@@ -328,11 +327,11 @@ evidence for rejecting @math{H_0}.
           |        p_value = .7845100411786889
 @end example
 
-This time Maxima performs an asymptotic test, based on the @i{Central Limit Theorem}.
-The null hypothesis is @math{H_0: equal(mean, 50)} against the two sided alternative @math{H_1: not equal(mean, 50)};
-according to the results, the @math{p}-value is very small, @math{H_0} should be rejected in
-favor of the alternative @math{H_1}. Note that, as indicated by the @code{Method} component,
-this procedure should be applied to large samples.
+Nesta ocasi@~ao Maxima executa um testte assint@'otico, baseado no @i{Teorema do Limite Central}.
+A hip@'otese do nulo @'e @math{H_0: equal(mean, 50)} contra a alternativa de duas vias @math{H_1: not equal(mean, 50)};
+conforme os resultados, o valor de @math{p} @'e muito pequeno, @math{H_0} pode ser rejeitado em
+favor da alternativa @math{H_1}. Note que, como indicado pela componente @code{Method},
+esse procedimento pode ser aplicado a grandes amostras.
 
 @c ===beg===
 @c load (stats)$
@@ -375,47 +374,47 @@ this procedure should be applied to large samples.
 
 
 @deffn {Fun@,{c}@~ao} test_means_difference (@var{x1}, @var{x2})
-@deffnx {Fun@,{c}@~ao} test_means_difference (@var{x1}, @var{x2}, @var{option_1}, @var{option_2}, ...)
+@deffnx {Fun@,{c}@~ao} test_means_difference (@var{x1}, @var{x2}, @var{op@,{c}@~ao_1}, @var{op@,{c}@~ao_2}, ...)
 
-This is the difference of means @var{t}-test for two samples.
-Arguments @var{x1} and @var{x2} are lists or column matrices
-containing two independent samples. In case of different unknown variances
-(see options @code{'dev1}, @code{'dev2} and @code{'varequal} bellow),
-the degrees of freedom are computed by means of the Welch approximation.
-It also performs an asymptotic test
-based on the @i{Central Limit Theorem} if option @code{'asymptotic} is
-set to @code{true}.
+Esse @'e o teste-@var{t} de diferen@,{c}a de m@'edias entre duas amostras.
+Os argumentos @var{x1} e @var{x2} s@~ao listas ou matrizes colunas
+contendo duas amostras independentes. No caso de diferentes vari@^ancias desconhecidas
+(veja op@,{c}@~oes @code{'dev1}, @code{'dev2} e @code{'varequal} abaixo),
+os graus de liberdade s@~ao calculados por meio da aproxima@,{c}@~ao de Welch.
+@code{test_means_difference} tamb@'em executa um teste assint@'otico
+baseado no @i{Teorema do Limite Central} se a op@,{c}@~ao @code{'asymptotic} for
+escolhida para @code{true}.
 
-Options:
+Op@,{c}@~oes:
 
 @itemize @bullet
 
 @item
 
 @item
-@code{'alternative}, default @code{'twosided}, is the alternative hypothesis;
-valid values are: @code{'twosided}, @code{'greater} and @code{'less}.
+@code{'alternative}, o valor padr@~ao @'e @code{'twosided}, @'e a hip@'otese alternativa;
+valores v@'alidos s@~ao: @code{'twosided}, @code{'greater} e @code{'less}.
 
 @item
-@code{'dev1}, default @code{'unknown}, this is the value of the standard deviation
-of the @var{x1} sample when it is known; valid values are: @code{'unknown} or a positive expression.
+@code{'dev1}, o valor padr@~ao @'e @code{'unknown}, @'e o valor do desvio padr@~ao
+da amostra @var{x1} quando esse desvio for conhecido; valores v@'alidos s@~ao: @code{'unknown} ou uma express@~ao positiva.
 
 @item
-@code{'dev2}, default @code{'unknown}, this is the value of the standard deviation
-of the @var{x2} sample when it is known; valid values are: @code{'unknown} or a positive expression.
+@code{'dev2}, o valor padr@~ao @'e @code{'unknown}, @'e o valor do desvio padr@~ao
+da amostra @var{x2} quando esse desvio for conhecido; valores v@'alidos s@~ao: @code{'unknown} ou uma express@~ao positiva.
 
 @item
-@code{'varequal}, default @code{false}, whether variances should be considered to be equal or not;
-this option takes effect only when @code{'dev1} and/or @code{'dev2} are  @code{'unknown}.
+@code{'varequal}, o valor padr@~ao @'e @code{false}, se vari@^ancias podem serem consideradas como iguais ou n@~ao;
+essa op@,{c}@~ao tem efeito somente quando @code{'dev1} e/ou @code{'dev2} forem  @code{'unknown}.
 
 @item
-@code{'conflevel}, default @code{95/100}, confidence level for the confidence interval; it must
-be an expression which takes a value in (0,1).
+@code{'conflevel}, o valor padr@~ao @'e @code{95/100}, n@'ivel de confid@^encia para o intervalo de confid@^encia; deve
+ser uma express@~ao que toma valores em (0,1).
 
 @item
-@code{'asymptotic}, default @code{false}, indicates whether it performs an exact @var{t}-test or
+@code{'asymptotic}, o valor padr@~ao @'e @code{false}, indicates whether it performs an exact @var{t}-test or
 an asymptotic one based on the @i{Central Limit Theorem};
-valid values are @code{true} and @code{false}.
+valores v@'alidos s@~ao @code{true} e @code{false}.
 
 @end itemize
 
@@ -450,10 +449,10 @@ showing the following results:
 
 @end enumerate
 
-Examples:
+Exemplos:
 
-The equality of means is tested with two small samples @var{x} and @var{y},
-against the alternative @math{H_1: m_1>m_2}, being @math{m_1} and @math{m_2}
+The equality of means is tested with two small samples @var{x} e @var{y},
+against the alternative @math{H_1: m_1>m_2}, being @math{m_1} e @math{m_2}
 the populations means; variances are unknown and supposed to be different.
 
 @c equivalent code for R:
@@ -538,7 +537,7 @@ equal.
 
 
 @deffn {Fun@,{c}@~ao} test_variance (@var{x})
-@deffnx {Fun@,{c}@~ao} test_variance (@var{x}, @var{option_1}, @var{option_2}, ...)
+@deffnx {Fun@,{c}@~ao} test_variance (@var{x}, @var{op@,{c}@~ao_1}, @var{op@,{c}@~ao_2}, ...)
 
 This is the variance @var{chi^2}-test. Argument @var{x} is a list or a column matrix
 containing a one dimensional sample taken from a normal population.
@@ -548,17 +547,17 @@ Options:
 @itemize @bullet
 
 @item
-@code{'mean}, default @code{'unknown}, is the population's mean, when it is known.
+@code{'mean}, o valor padr@~ao @'e @code{'unknown}, is the population's mean, when it is known.
 
 @item
-@code{'alternative}, default @code{'twosided}, is the alternative hypothesis;
-valid values are: @code{'twosided}, @code{'greater} and @code{'less}.
+@code{'alternative}, o valor padr@~ao @'e @code{'twosided}, is the alternative hypothesis;
+valores v@'alidos s@~ao: @code{'twosided}, @code{'greater} e @code{'less}.
 
 @item
-@code{'variance}, default @code{1}, this is the variance value (positive) to be checked.
+@code{'variance}, o valor padr@~ao @'e @code{1}, this is the variance value (positive) to be checked.
 
 @item
-@code{'conflevel}, default @code{95/100}, confidence level for the confidence interval; it must
+@code{'conflevel}, o valor padr@~ao @'e @code{95/100}, confidence level for the confidence interval; it must
 be an expression which takes a value in (0,1).
 
 @end itemize
@@ -594,7 +593,7 @@ showing the following results:
 
 @end enumerate
 
-Examples:
+Exemplos:
 
 It is tested whether the variance of a population with unknown mean
 is equal to or greater than 200.
@@ -636,10 +635,10 @@ is equal to or greater than 200.
 
 
 @deffn {Fun@,{c}@~ao} test_variance_ratio (@var{x1}, @var{x2})
-@deffnx {Fun@,{c}@~ao} test_variance_ratio (@var{x1}, @var{x2}, @var{option_1}, @var{option_2}, ...)
+@deffnx {Fun@,{c}@~ao} test_variance_ratio (@var{x1}, @var{x2}, @var{op@,{c}@~ao_1}, @var{op@,{c}@~ao_2}, ...)
 
 This is the variance ratio @var{F}-test for two normal populations.
-Arguments @var{x1} and @var{x2} are lists or column matrices
+Arguments @var{x1} e @var{x2} are lists or column matrices
 containing two independent samples.
 
 Options:
@@ -647,19 +646,19 @@ Options:
 @itemize @bullet
 
 @item
-@code{'alternative}, default @code{'twosided}, is the alternative hypothesis;
-valid values are: @code{'twosided}, @code{'greater} and @code{'less}.
+@code{'alternative}, o valor padr@~ao @'e @code{'twosided}, is the alternative hypothesis;
+valores v@'alidos s@~ao: @code{'twosided}, @code{'greater} e @code{'less}.
 
 @item
-@code{'mean1}, default @code{'unknown}, when it is known, this is the mean of
+@code{'mean1}, o valor padr@~ao @'e @code{'unknown}, when it is known, this is the mean of
 the population from which @var{x1} was taken.
 
 @item
-@code{'mean2}, default @code{'unknown}, when it is known, this is the mean of
+@code{'mean2}, o valor padr@~ao @'e @code{'unknown}, when it is known, this is the mean of
 the population from which @var{x2} was taken.
 
 @item
-@code{'conflevel}, default @code{95/100}, confidence level for the confidence interval of the
+@code{'conflevel}, o valor padr@~ao @'e @code{95/100}, confidence level for the confidence interval of the
 ratio; it must be an expression which takes a value in (0,1).
 
 @end itemize
@@ -696,7 +695,7 @@ showing the following results:
 @end enumerate
 
 
-Examples:
+Exemplos:
 
 The equality of the variances of two normal populations is checked
 against the alternative that the first is greater than the second.
@@ -744,7 +743,7 @@ against the alternative that the first is greater than the second.
 
 
 @deffn {Fun@,{c}@~ao} test_sign (@var{x})
-@deffnx {Fun@,{c}@~ao} test_sign (@var{x}, @var{option_1}, @var{option_2}, ...)
+@deffnx {Fun@,{c}@~ao} test_sign (@var{x}, @var{op@,{c}@~ao_1}, @var{op@,{c}@~ao_2}, ...)
 
 This is the non parametric sign test for the median of a continuous population.
 Argument @var{x} is a list or a column matrix containing a one dimensional sample.
@@ -754,11 +753,11 @@ Options:
 @itemize @bullet
 
 @item
-@code{'alternative}, default @code{'twosided}, is the alternative hypothesis;
-valid values are: @code{'twosided}, @code{'greater} and @code{'less}.
+@code{'alternative}, o valor padr@~ao @'e @code{'twosided}, is the alternative hypothesis;
+valores v@'alidos s@~ao: @code{'twosided}, @code{'greater} e @code{'less}.
 
 @item
-@code{'median}, default @code{0}, is the median value to be checked.
+@code{'median}, o valor padr@~ao @'e @code{0}, is the median value to be checked.
 
 @end itemize
 
@@ -787,7 +786,7 @@ showing the following results:
 
 @end enumerate
 
-Examples:
+Exemplos:
 
 Checks whether the population from which the sample was taken has median 6, 
 against the alternative @math{H_1: median > 6}.
@@ -827,25 +826,25 @@ against the alternative @math{H_1: median > 6}.
 
 
 @deffn {Fun@,{c}@~ao} test_signed_rank (@var{x})
-@deffnx {Fun@,{c}@~ao} test_signed_rank (@var{x}, @var{option_1}, @var{option_2}, ...)
+@deffnx {Fun@,{c}@~ao} test_signed_rank (@var{x}, @var{op@,{c}@~ao_1}, @var{op@,{c}@~ao_2}, ...)
 
 This is the Wilcoxon signed rank test to make inferences about the median of a
 continuous population. Argument @var{x} is a list or a column matrix
 containing a one dimensional sample. Performs normal approximation if the
 sample size is greater than 20, or if there are zeroes or ties.
 
-See also @code{pdf_rank_test} and @code{cdf_rank_test}.
+Veja tamb@'em @code{pdf_rank_test} e @code{cdf_rank_test}.
 
 Options:
 
 @itemize @bullet
 
 @item
-@code{'median}, default @code{0}, is the median value to be checked.
+@code{'median}, o valor padr@~ao @'e @code{0}, is the median value to be checked.
 
 @item
-@code{'alternative}, default @code{'twosided}, is the alternative hypothesis;
-valid values are: @code{'twosided}, @code{'greater} and @code{'less}.
+@code{'alternative}, o valor padr@~ao @'e @code{'twosided}, is the alternative hypothesis;
+valores v@'alidos s@~ao: @code{'twosided}, @code{'greater} e @code{'less}.
 
 @end itemize
 
@@ -874,7 +873,7 @@ with the following results:
 
 @end enumerate
 
-Examples:
+Exemplos:
 
 Checks the null hypothesis @math{H_0: median = 15} against the 
 alternative @math{H_1: median > 15}. This is an exact test, since
@@ -949,10 +948,10 @@ since there are ties.
 
 
 @deffn {Fun@,{c}@~ao} test_rank_sum (@var{x1}, @var{x2})
-@deffnx {Fun@,{c}@~ao} test_rank_sum (@var{x1}, @var{x2}, @var{option_1})
+@deffnx {Fun@,{c}@~ao} test_rank_sum (@var{x1}, @var{x2}, @var{op@,{c}@~ao_1})
 
 This is the Wilcoxon-Mann-Whitney test for comparing the medians of two
-continuous populations. The first two arguments @var{x1} and @var{x2} are lists
+continuous populations. The first two arguments @var{x1} e @var{x2} are lists
 or column matrices with the data of two independent samples. Performs normal
 approximation if any of the sample sizes is greater than 10, or if there are ties.
 
@@ -961,8 +960,8 @@ Option:
 @itemize @bullet
 
 @item
-@code{'alternative}, default @code{'twosided}, is the alternative hypothesis;
-valid values are: @code{'twosided}, @code{'greater} and @code{'less}.
+@code{'alternative}, o valor padr@~ao @'e @code{'twosided}, is the alternative hypothesis;
+valores v@'alidos s@~ao: @code{'twosided}, @code{'greater} e @code{'less}.
 
 @end itemize
 
@@ -988,7 +987,7 @@ with the following results:
 
 @end enumerate
 
-Examples:
+Exemplos:
 
 Checks whether populations have similar medians. Samples sizes
 are small and an exact test is made.
@@ -1086,7 +1085,7 @@ with the following results:
 
 @end enumerate
 
-Examples:
+Exemplos:
 
 Checks for the normality of a population, based on a sample of size 9.
 
@@ -1121,7 +1120,7 @@ Checks for the normality of a population, based on a sample of size 9.
 
 
 @deffn {Fun@,{c}@~ao} simple_linear_regression (@var{x})
-@deffnx {Fun@,{c}@~ao} simple_linear_regression (@var{x} @var{option_1})
+@deffnx {Fun@,{c}@~ao} simple_linear_regression (@var{x} @var{op@,{c}@~ao_1})
 
 Simple linear regression, @math{y_i=a+b x_i+e_i}, where @math{e_i} are @math{N(0,sigma)}
 independent random variables. Argument @var{x} must be a two column matrix or a list of
@@ -1132,11 +1131,11 @@ Options:
 @itemize @bullet
 
 @item
-@code{'conflevel}, default @code{95/100}, confidence level for the confidence interval; it must
+@code{'conflevel}, o valor padr@~ao @'e @code{95/100}, confidence level for the confidence interval; it must
 be an expression which takes a value in (0,1).
 
 @item
-@code{'regressor}, default @code{'x}, name of the independent variable.
+@code{'regressor}, o valor padr@~ao @'e @code{'x}, name of the independent variable.
 
 @end itemize
 
@@ -1202,8 +1201,8 @@ This is useful for goodness of fit analysis. See examples bellow.
 
 @end enumerate
 
-Only items 1, 4, 14, 9, 10, 11, 12, and 13 above, in this order, are shown by default. The rest remain
-hidden until the user makes use of functions @code{items_inference} and @code{take_inference}.
+Only items 1, 4, 14, 9, 10, 11, 12, and 13 above, in this order, are shown por padr@~ao. The rest remain
+hidden until the user makes use of functions @code{items_inference} e @code{take_inference}.
 
 Exemplo:
 
@@ -1297,7 +1296,7 @@ Probability density function of the exact distribution of the
 signed rank statistic. Argument @var{x} is a real
 number and @var{n} a positive integer.
 
-See also @code{test_signed_rank}.
+Veja tamb@'em @code{test_signed_rank}.
 @end deffn
 
 @deffn {Fun@,{c}@~ao} cdf_signed_rank (@var{x}, @var{n})
@@ -1305,22 +1304,22 @@ Cumulative density function of the exact distribution of the
 signed rank statistic. Argument @var{x} is a real
 number and @var{n} a positive integer. 
 
-See also @code{test_signed_rank}.
+Veja tamb@'em @code{test_signed_rank}.
 @end deffn
 
 @deffn {Fun@,{c}@~ao} pdf_rank_sum (@var{x}, @var{n}, @var{m})
 Probability density function of the exact distribution of the
 rank sum statistic. Argument @var{x} is a real
-number and @var{n} and @var{m} are both positive integers. 
+number and @var{n} e @var{m} are both positive integers. 
 
-See also @code{test_rank_sum}.
+Veja tamb@'em @code{test_rank_sum}.
 @end deffn
 
 @deffn {Fun@,{c}@~ao} cdf_rank_sum (@var{x}, @var{n}, @var{m})
 Cumulative density function of the exact distribution of the
 rank sum statistic. Argument @var{x} is a real
-number and @var{n} and @var{m} are both positive integers. 
+number and @var{n} e @var{m} are both positive integers. 
 
-See also @code{test_rank_sum}.
+Veja tamb@'em @code{test_rank_sum}.
 @end deffn
 
