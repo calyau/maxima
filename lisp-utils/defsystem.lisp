@@ -2808,7 +2808,9 @@ the system definition, if provided."
 				   ;; (pathname-host nil)
 				   #+sbcl
 				   (component-host component)
-				   #-sbcl
+				   #+openmcl
+				   (component-host (if (eq component :unspecific) "" component))
+				   #-(or :sbcl :openmcl)
 				   (pathname-host (component-host component)))
 			   :directory (pathname-directory pathname)
 			   ;; Use :directory instead of :defaults
