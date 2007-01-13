@@ -1,5 +1,5 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
-@c /stats.texi/1.3/Mon Dec 25 13:25:10 2006//
+@c /stats.texi/1.4/Sat Jan 13 04:30:36 2007//
 @menu
 * Introdu@value{cedilha}@~ao a stats::
 * Defini@value{cedilha}@~oes para inference_result::
@@ -409,51 +409,53 @@ essa op@,{c}@~ao tem efeito somente quando @code{'dev1} e/ou @code{'dev2} forem 
 
 @item
 @code{'conflevel}, o valor padr@~ao @'e @code{95/100}, n@'ivel de confid@^encia para o intervalo de confid@^encia; deve
-ser uma express@~ao que toma valores em (0,1).
+ser uma express@~ao que toma valores em (0,1). 
+
+Nota de Tradu@,{c}@~ao: (0,1) representa intervalo aberto.
 
 @item
-@code{'asymptotic}, o valor padr@~ao @'e @code{false}, indicates whether it performs an exact @var{t}-test or
-an asymptotic one based on the @i{Central Limit Theorem};
+@code{'asymptotic}, o valor padr@~ao @'e @code{false}, indica se @code{test_means_difference} executa um teste-@var{t} exato ou
+um teste ass@'int@'otico baseando-se no @i{Teorema do Limite Central};
 valores v@'alidos s@~ao @code{true} e @code{false}.
 
 @end itemize
 
-The output of function @code{test_means_difference} is an @code{inference_result} Maxima object
-showing the following results:
+A sa@'ida da fun@,{c}@~ao @code{test_means_difference} @'e um objeto @code{inference_result} do Maxima
+mostrando os seguintes resultados:
 
 @enumerate
 
 @item
-@code{'diff_estimate}: the difference of means estimate.
+@code{'diff_estimate}: a diferen@,{c}a de m@'edias estimadas.
 
 @item
-@code{'conf_level}: confidence level selected by the user.
+@code{'conf_level}: n@'ivel de confid@^encia selecionado pelo usu@'ario.
 
 @item
-@code{'conf_interval}: confidence interval for the difference of means.
+@code{'conf_interval}: intervalo de confid@^encia para a diferen@,{c}a de m@'edias.
 
 @item
-@code{'method}: inference procedure.
+@code{'method}: procedimento de infer@^encia.
 
 @item
-@code{'hypotheses}: null and alternative hypotheses to be tested.
+@code{'hypotheses}: a hip@'otese do nulo e a hip@'otese alternativa a serem testadas.
 
 @item
-@code{'statistic}: value of the sample statistic used for testing the null hypothesis.
+@code{'statistic}: valor da amostra estat@'istica usado para testar a hip@'otese do nulo.
 
 @item
-@code{'distribution}: distribution of the sample statistic, together with its parameter(s).
+@code{'distribution}: distribui@,{c}@~ao da amostra estat@'istica, juntamente com seu(s) par@^ametro(s).
 
 @item
-@code{'p_value}: @math{p}-value of the test.
+@code{'p_value}: valor de @math{p} do teste.
 
 @end enumerate
 
 Exemplos:
 
-The equality of means is tested with two small samples @var{x} e @var{y},
-against the alternative @math{H_1: m_1>m_2}, being @math{m_1} e @math{m_2}
-the populations means; variances are unknown and supposed to be different.
+A igualdade de m@'edias @'e testada com duas pequenas amostras @var{x} e @var{y},
+contra a alternativa @math{H_1: m_1>m_2}, sendo @math{m_1} e @math{m_2}
+as m@'edias das popula@,{c}@~oes; vari@^ancias s@~ao desconhecidas e supostamente admitidas para serem diferentes.
 
 @c equivalent code for R:
 @c x <- c(20.4,62.5,61.3,44.2,11.1,23.7)
@@ -490,8 +492,8 @@ the populations means; variances are unknown and supposed to be different.
             |            p_value = .05032746527991905
 @end example
 
-The same test as before, but now variances are supposed to be
-equal.
+O mesmo teste que antes, mas agora as vari@^ancias s@~ao admitidas serem supostamente
+iguais.
 
 @c equivalent code for R:
 @c x <- c(20.4,62.5,61.3,44.2,11.1,23.7)
@@ -539,64 +541,64 @@ equal.
 @deffn {Fun@,{c}@~ao} test_variance (@var{x})
 @deffnx {Fun@,{c}@~ao} test_variance (@var{x}, @var{op@,{c}@~ao_1}, @var{op@,{c}@~ao_2}, ...)
 
-This is the variance @var{chi^2}-test. Argument @var{x} is a list or a column matrix
-containing a one dimensional sample taken from a normal population.
+Esse @'e o teste da vari@^ancia @var{chi^2}. O argumento @var{x} @'e uma lista ou uma matriz coluna
+contendo uma amostra unidimensional tomada entre a popula@,{c}@~ao normal.
 
-Options:
+Op@,{c}@~oes:
 
 @itemize @bullet
 
 @item
-@code{'mean}, o valor padr@~ao @'e @code{'unknown}, is the population's mean, when it is known.
+@code{'mean}, o valor padr@~ao @'e @code{'unknown}, @'e a m@'edia da popula@,{c}@~ao, quando for conhecida.
 
 @item
-@code{'alternative}, o valor padr@~ao @'e @code{'twosided}, is the alternative hypothesis;
+@code{'alternative}, o valor padr@~ao @'e @code{'twosided}, @'e a hip@'otese alternativa;
 valores v@'alidos s@~ao: @code{'twosided}, @code{'greater} e @code{'less}.
 
 @item
-@code{'variance}, o valor padr@~ao @'e @code{1}, this is the variance value (positive) to be checked.
+@code{'variance}, o valor padr@~ao @'e @code{1}, isso @'e o valor (positivo) da vari@^ancia a ser testado.
 
 @item
-@code{'conflevel}, o valor padr@~ao @'e @code{95/100}, confidence level for the confidence interval; it must
-be an expression which takes a value in (0,1).
+@code{'conflevel}, o valor padr@~ao @'e @code{95/100}, n@'ivel de confid@^encia para o intervalo de confid@^encia; deve
+ser uma express@~ao que toma valores em (0,1).
 
 @end itemize
 
-The output of function @code{test_variance} is an @code{inference_result} Maxima object
-showing the following results:
+A sa@'ida da fun@,{c}@~ao @code{test_variance} est@'a no objeto @code{inference_result} do Maxima
+mostrando os seguintes resultados:
 
 @enumerate
 
 @item
-@code{'var_estimate}: the sample variance.
+@code{'var_estimate}: a vari@^ancia da amostra.
 
 @item
-@code{'conf_level}: confidence level selected by the user.
+@code{'conf_level}: n@'ivel de confid@^encia selecionado pelo usu@'ario.
 
 @item
-@code{'conf_interval}: confidence interval for the population variance.
+@code{'conf_interval}: intervalo de confid@^encia para a vari@^ancia da popula@,{c}@~ao.
 
 @item
-@code{'method}: inference procedure.
+@code{'method}: procedimento de infer@^encia.
 
 @item
-@code{'hypotheses}: null and alternative hypotheses to be tested.
+@code{'hypotheses}: a hip@'otese do nulo e a hip@'otese alternativa a serem testadas.
 
 @item
-@code{'statistic}: value of the sample statistic used for testing the null hypothesis.
+@code{'statistic}: valor da amostra estat@'istica usado para testar a hip@'otese do nulo.
 
 @item
-@code{'distribution}: distribution of the sample statistic, together with its parameter.
+@code{'distribution}: distribui@,{c}@~ao da amostra estat@'istica, juntamente com seu par@^ametro.
 
 @item
-@code{'p_value}: @math{p}-value of the test.
+@code{'p_value}: o valor de @math{p} do teste.
 
 @end enumerate
 
 Exemplos:
 
-It is tested whether the variance of a population with unknown mean
-is equal to or greater than 200.
+Isso @'e testado se a vari@^ancia de uma popula@,{c}@~ao com m@'edia desconhhecida
+for igual ou maior que 200.
 
 @c ===beg===
 @c load (stats)$
@@ -637,68 +639,68 @@ is equal to or greater than 200.
 @deffn {Fun@,{c}@~ao} test_variance_ratio (@var{x1}, @var{x2})
 @deffnx {Fun@,{c}@~ao} test_variance_ratio (@var{x1}, @var{x2}, @var{op@,{c}@~ao_1}, @var{op@,{c}@~ao_2}, ...)
 
-This is the variance ratio @var{F}-test for two normal populations.
-Arguments @var{x1} e @var{x2} are lists or column matrices
-containing two independent samples.
+Isso @'e o teste @var{F} da raz@~ao de vari@^ancia para duas popula@,{c}@~oes normais.
+Os argumentos @var{x1} e @var{x2} s@~ao listas ou matrizes colunas
+contendo duas amostras independentes.
 
-Options:
+Op@,{c}@~oes:
 
 @itemize @bullet
 
 @item
-@code{'alternative}, o valor padr@~ao @'e @code{'twosided}, is the alternative hypothesis;
+@code{'alternative}, o valor padr@~ao @'e @code{'twosided}, @'e a hip@'otese alternativa;
 valores v@'alidos s@~ao: @code{'twosided}, @code{'greater} e @code{'less}.
 
 @item
-@code{'mean1}, o valor padr@~ao @'e @code{'unknown}, when it is known, this is the mean of
-the population from which @var{x1} was taken.
+@code{'mean1}, o valor padr@~ao @'e @code{'unknown}, quando for conhecida, isso @'e a m@'edia da
+popula@,{c}@~ao da qual @var{x1} foi tomada.
 
 @item
-@code{'mean2}, o valor padr@~ao @'e @code{'unknown}, when it is known, this is the mean of
-the population from which @var{x2} was taken.
+@code{'mean2}, o valor padr@~ao @'e @code{'unknown}, quando for conhecida, isso @'e a m@'edia da
+popula@,{c}@~ao da qual @var{x2} foi tomada.
 
 @item
-@code{'conflevel}, o valor padr@~ao @'e @code{95/100}, confidence level for the confidence interval of the
-ratio; it must be an expression which takes a value in (0,1).
+@code{'conflevel}, o valor padr@~ao @'e @code{95/100}, n@'ivel de confid@^encia para o intervalo de confid@^encia da
+raz@~ao; deve ser uma express@~ao que tome valores em (0,1).
 
 @end itemize
 
-The output of function @code{test_variance_ratio} is an @code{inference_result} Maxima object
-showing the following results:
+A sa@'ida da fun@,{c}@~ao @code{test_variance_ratio} @'e um objeto @code{inference_result} do Maxima
+mostrando os seguintes resultados:
 
 @enumerate
 
 @item
-@code{'ratio_estimate}: the sample variance ratio.
+@code{'ratio_estimate}: a raz@~ao de vari@^ancia da amostra.
 
 @item
-@code{'conf_level}: confidence level selected by the user.
+@code{'conf_level}: n@'ivel de confid@^encia selecionado pelo usu@'ario.
 
 @item
-@code{'conf_interval}: confidence interval for the variance ratio.
+@code{'conf_interval}: intervalo de confid@^encia para a raz@~ao de vari@^ancia.
 
 @item
-@code{'method}: inference procedure.
+@code{'method}: procedimento de infer@^encia.
 
 @item
-@code{'hypotheses}: null and alternative hypotheses to be tested.
+@code{'hypotheses}: a hip@'otese do nulo e a hip@'otese alternativa a serem testadas.
 
 @item
-@code{'statistic}: value of the sample statistic used for testing the null hypothesis.
+@code{'statistic}: valor da amostra estat@'istica usado para testar a hip@'otese do nulo.
 
 @item
-@code{'distribution}: distribution of the sample statistic, together with its parameters.
+@code{'distribution}: distribui@,{c}@~ao da amostra estat@'istica, juntamente com seus par@^ametros.
 
 @item
-@code{'p_value}: @math{p}-value of the test.
+@code{'p_value}: o valor de @math{p} do teste.
 
 @end enumerate
 
 
 Exemplos:
 
-The equality of the variances of two normal populations is checked
-against the alternative that the first is greater than the second.
+a igualdade das vari@^ancias de duas popula@,{c}@~oes normais @'e verificado
+contra a alternativa que a primeira @'e maior que a segunda.
 
 @c equivalent code for R:
 @c x <- c(20.4,62.5,61.3,44.2,11.1,23.7)
@@ -745,51 +747,51 @@ against the alternative that the first is greater than the second.
 @deffn {Fun@,{c}@~ao} test_sign (@var{x})
 @deffnx {Fun@,{c}@~ao} test_sign (@var{x}, @var{op@,{c}@~ao_1}, @var{op@,{c}@~ao_2}, ...)
 
-This is the non parametric sign test for the median of a continuous population.
-Argument @var{x} is a list or a column matrix containing a one dimensional sample.
+Esse @'e o teste de sinal n@~ao param@'etrico para a mediana de uma popula@,{c}@~ao cont@'inua.
+O argumento @var{x} @'e uma lista ou uma matriz coluna contendo uma amostra unidimensional.
 
-Options:
+Op@,{c}@~oes:
 
 @itemize @bullet
 
 @item
-@code{'alternative}, o valor padr@~ao @'e @code{'twosided}, is the alternative hypothesis;
+@code{'alternative}, o valor padr@~ao @'e @code{'twosided}, @'e a hip@'otese alternativa;
 valores v@'alidos s@~ao: @code{'twosided}, @code{'greater} e @code{'less}.
 
 @item
-@code{'median}, o valor padr@~ao @'e @code{0}, is the median value to be checked.
+@code{'median}, o valor padr@~ao @'e @code{0}, @'e o valor da mediana a ser verificado.
 
 @end itemize
 
-The output of function @code{test_sign} is an @code{inference_result} Maxima object
-showing the following results:
+A sa@'ida da fun@,{c}@~ao @code{test_sign} @'e um objeto @code{inference_result} do Maxima
+mostrando os seguintes resultados:
 
 @enumerate
 
 @item
-@code{'med_estimate}: the sample median.
+@code{'med_estimate}: a mediana da amostra.
 
 @item
-@code{'method}: inference procedure.
+@code{'method}: procedimento de infer@^encia.
 
 @item
-@code{'hypotheses}: null and alternative hypotheses to be tested.
+@code{'hypotheses}: a hip@'otese do nulo e a hip@'otese alternativa a serem testadas.
 
 @item
-@code{'statistic}: value of the sample statistic used for testing the null hypothesis.
+@code{'statistic}: valor da amostra estat@'istica usada para testar a hip@'otese do nulo.
 
 @item
-@code{'distribution}: distribution of the sample statistic, together with its parameter(s).
+@code{'distribution}: distribui@,{c}@~ao da amostra estat@'istica, juntamente com seu(s) par@^ametro(s).
 
 @item
-@code{'p_value}: @math{p}-value of the test.
+@code{'p_value}: o valor de @math{p} do teste.
 
 @end enumerate
 
 Exemplos:
 
-Checks whether the population from which the sample was taken has median 6, 
-against the alternative @math{H_1: median > 6}.
+Verifica se a popula@,{c}@~ao da qual a amostra foi tomada tem mediana 6, 
+contra a alternativa @math{H_1: median > 6}.
 
 @c ===beg===
 @c load (stats)$
@@ -828,56 +830,56 @@ against the alternative @math{H_1: median > 6}.
 @deffn {Fun@,{c}@~ao} test_signed_rank (@var{x})
 @deffnx {Fun@,{c}@~ao} test_signed_rank (@var{x}, @var{op@,{c}@~ao_1}, @var{op@,{c}@~ao_2}, ...)
 
-This is the Wilcoxon signed rank test to make inferences about the median of a
-continuous population. Argument @var{x} is a list or a column matrix
-containing a one dimensional sample. Performs normal approximation if the
-sample size is greater than 20, or if there are zeroes or ties.
+Esse @'e o teste de ranque sinalizado de Wilcoxon para fazer infer@^encias sobre a mediana de uma
+popula@,{c}@~ao cont@'inua. O argumento @var{x} @'e uma lista ou uma matriz coluna
+contendo uma amostra unidimensional. Executa uma aproxima@,{c}@~ao normal se o
+tamanho da amostra for maior que 20, ou se existirem zeros ou houverem empates.
 
 Veja tamb@'em @code{pdf_rank_test} e @code{cdf_rank_test}.
 
-Options:
+Op@,{c}@~oes:
 
 @itemize @bullet
 
 @item
-@code{'median}, o valor padr@~ao @'e @code{0}, is the median value to be checked.
+@code{'median}, o valor padr@~ao @'e @code{0}, @'e o valor da mediana a ser verificado.
 
 @item
-@code{'alternative}, o valor padr@~ao @'e @code{'twosided}, is the alternative hypothesis;
+@code{'alternative}, o valor padr@~ao @'e @code{'twosided}, @'e a hip@'otese alternativa;
 valores v@'alidos s@~ao: @code{'twosided}, @code{'greater} e @code{'less}.
 
 @end itemize
 
-The output of function @code{test_signed_rank} is an @code{inference_result} Maxima object
-with the following results:
+A sa@'ida da fun@,{c}@~ao @code{test_signed_rank} @'e um objeto @code{inference_result} do Maxima
+com os seguintes resultados:
 
 @enumerate
 
 @item
-@code{'med_estimate}: the sample median.
+@code{'med_estimate}: a mediana da amostra.
 
 @item
-@code{'method}: inference procedure.
+@code{'method}: procedimento de infer@^encia.
 
 @item
-@code{'hypotheses}: null and alternative hypotheses to be tested.
+@code{'hypotheses}: a hip@'otese do nulo e a hip@'otese alternativa a serem testadas.
 
 @item
-@code{'statistic}: value of the sample statistic used for testing the null hypothesis.
+@code{'statistic}: valor da amostra estat@'istica usado para testar a hip@'otese do nulo.
 
 @item
-@code{'distribution}: distribution of the sample statistic, together with its parameter(s).
+@code{'distribution}: distribui@,{c}@~ao da amostra estat@'istica, juntamente com seu(s) par@^ametro(s).
 
 @item
-@code{'p_value}: @math{p}-value of the test.
+@code{'p_value}: o valor de @math{p} do teste.
 
 @end enumerate
 
 Exemplos:
 
-Checks the null hypothesis @math{H_0: median = 15} against the 
-alternative @math{H_1: median > 15}. This is an exact test, since
-there are no ties.
+Verifica a hip@'otese do nulo @math{H_0: median = 15} contra a 
+alternativa @math{H_1: median > 15}. Esse @'e um teste exato, ua vez que
+n@~ao exite empates.
 
 @c equivalent code for R:
 @c x <- c(17.1,15.9,13.7,13.4,15.5,17.6)
@@ -907,9 +909,9 @@ there are no ties.
                  |            p_value = 0.28125
 @end example
 
-Checks the null hypothesis @math{H_0: equal(median, 2.5)} against the 
-alternative @math{H_1: not equal(median, 2.5)}. This is an approximated test,
-since there are ties.
+Verifica a hip@'otese do nulo @math{H_0: equal(median, 2.5)} contra a
+alternativa @math{H_1: not equal(median, 2.5)}. Esse @'e um teste aproximado,
+uma vez que ocorrem empates.
 
 @c equivalent code for R:
 @c y<-c(1.9,2.3,2.6,1.9,1.6,3.3,4.2,4,2.4,2.9,1.5,3,2.9,4.2,3.1)
@@ -950,47 +952,47 @@ since there are ties.
 @deffn {Fun@,{c}@~ao} test_rank_sum (@var{x1}, @var{x2})
 @deffnx {Fun@,{c}@~ao} test_rank_sum (@var{x1}, @var{x2}, @var{op@,{c}@~ao_1})
 
-This is the Wilcoxon-Mann-Whitney test for comparing the medians of two
-continuous populations. The first two arguments @var{x1} e @var{x2} are lists
-or column matrices with the data of two independent samples. Performs normal
-approximation if any of the sample sizes is greater than 10, or if there are ties.
+Esse @'e o teste de Wilcoxon-Mann-Whitney para compara@,{c}@~ao das medianas de duas
+popula@,{c}@~oes cont@'inuas. Os primeiros dois argumentos @var{x1} e @var{x2} s@~ao listas
+ou matrizes colunas com os dados de duas amostras independentes. Executa aproxima@,{c}@~ao
+normal se quaisquer dos tamanhos de amostra for maior que 10, ou se houverem empates.
 
-Option:
+Op@,{c}@~ao:
 
 @itemize @bullet
 
 @item
-@code{'alternative}, o valor padr@~ao @'e @code{'twosided}, is the alternative hypothesis;
+@code{'alternative}, o valor padr@~ao @'e @code{'twosided}, @'e a hip@'otese alternativa;
 valores v@'alidos s@~ao: @code{'twosided}, @code{'greater} e @code{'less}.
 
 @end itemize
 
-The output of function @code{test_rank_sum} is an @code{inference_result} Maxima object
-with the following results:
+A sa@'ida da fun@,{c}@~ao @code{test_rank_sum} @'e um objeto @code{inference_result} do Maxima
+com os seguintes resultados:
 
 @enumerate
 
 @item
-@code{'method}: inference procedure.
+@code{'method}: procedimento de infer@^encia.
 
 @item
-@code{'hypotheses}: null and alternative hypotheses to be tested.
+@code{'hypotheses}: a hip@'otese do nulo e a hip@'otese alternativa a serem testadas.
 
 @item
-@code{'statistic}: value of the sample statistic used for testing the null hypothesis.
+@code{'statistic}: valor da amostra estat@'istica usada para testar a hip@'otese do nulo.
 
 @item
-@code{'distribution}: distribution of the sample statistic, together with its parameters.
+@code{'distribution}: distribui@,{c}@~ao da amostra estat@'istica, juntamente com seus par@^ametros.
 
 @item
-@code{'p_value}: @math{p}-value of the test.
+@code{'p_value}: o valor de @math{p} do teste.
 
 @end enumerate
 
 Exemplos:
 
-Checks whether populations have similar medians. Samples sizes
-are small and an exact test is made.
+Verifica se popula@,{c}@~oes possuem medianas similares. Tamanhos de amotra
+s@~ao pequenos e @'e feito um teste exato.
 
 @c equivalent code for R:
 @c x <- c(12,15,17,38,42,10,23,35,28)
@@ -1021,8 +1023,8 @@ are small and an exact test is made.
               |          p_value = .1995886466474702
 @end example
 
-Now, with greater samples and ties, the procedure makes 
-normal approximation. The alternative hypothesis is
+Agora, com grandes amostras e empates, o procedimento faz 
+aproxima@,{c}@~ao norma. A hip@'otese alternativa @'e
 @math{H_1: median1 < median2}.
 
 @c equivalent code for R:
@@ -1064,30 +1066,30 @@ normal approximation. The alternative hypothesis is
 
 @deffn {Fun@,{c}@~ao} test_normality (@var{x})
 
-Shapiro-Wilk test for normality. Argument @var{x} is a list of numbers, and sample
-size must be greater than 2 and less or equal than 5000, otherwise, function
-@code{test_normality} signals an error message.
+Teste de Shapiro-Wilk para normalidade. O argumento @var{x} @'e uma lista de n@'umeros, e o tamanho
+da amostra deve ser maior que 2 e menor ou igua a 5000, de outra forma, a fun@,{c}@~ao
+@code{test_normality} sinaliza com um erro.
 
-Reference:
+Refer@^encia:
 
   [1] Algorithm AS R94, Applied Statistics (1995), vol.44, no.4, 547-551
 
-The output of function @code{test_normality} is an @code{inference_result} Maxima object
-with the following results:
+A sa@'ida da fun@,{c}@~ao @code{test_normality} @'e um objeto @code{inference_result} do Maxima
+com os seguintes resultados:
 
 @enumerate
 
 @item
-@code{'statistic}: value of the @var{W} statistic.
+@code{'statistic}: valor do @var{W} estat@'istico.
 
 @item
-@code{'p_value}: @math{p}-value under normal assumption.
+@code{'p_value}: valor de @math{p} sob a hip@'otese de normalidade.
 
 @end enumerate
 
 Exemplos:
 
-Checks for the normality of a population, based on a sample of size 9.
+Verifica a normalidade de uma popula@,{c}@~ao, baseada em uma amostra de tamanho 9.
 
 @c equivalent code for R:
 @c x <- c(12,15,17,38,42,10,23,35,28)
@@ -1122,94 +1124,94 @@ Checks for the normality of a population, based on a sample of size 9.
 @deffn {Fun@,{c}@~ao} simple_linear_regression (@var{x})
 @deffnx {Fun@,{c}@~ao} simple_linear_regression (@var{x} @var{op@,{c}@~ao_1})
 
-Simple linear regression, @math{y_i=a+b x_i+e_i}, where @math{e_i} are @math{N(0,sigma)}
-independent random variables. Argument @var{x} must be a two column matrix or a list of
-pairs.
+Regress@~ao linear simples, @math{y_i=a+b x_i+e_i}, onde os @math{e_i} s@~ao @math{N(0,sigma)}
+vari@'aveis aleat@'orias independentes. O argumento @var{x} deve ser uma matriz de duas colunas ou uma lista de
+pares.
 
-Options:
+Op@,{c}@~oes:
 
 @itemize @bullet
 
 @item
-@code{'conflevel}, o valor padr@~ao @'e @code{95/100}, confidence level for the confidence interval; it must
-be an expression which takes a value in (0,1).
+@code{'conflevel}, o valor padr@~ao @'e @code{95/100}, n@'ivel de confid@^encia para o intervalo de confid@^encia; isso deve
+ser uma express@~ao que tome valores em (0,1).
 
 @item
-@code{'regressor}, o valor padr@~ao @'e @code{'x}, name of the independent variable.
+@code{'regressor}, o valor padr@~ao @'e @code{'x}, nome da vari@'avel independente.
 
 @end itemize
 
-The output of function @code{simple_linear_regression} is an @code{inference_result} Maxima object
-with the following results:
+A sa@'ida da fun@,{c}@~ao @code{simple_linear_regression} @'e um objeto @code{inference_result} do Maxima
+com os seguintes resultados:
 
 @enumerate
 
 @item
-@code{'model}: the fitted equation. Useful to make new predictions. See examples bellow.
+@code{'model}: a equa@,{c}@~ao ajustada. @'Util para fazer novas previs@~oes. Veja exemplos abaixo.
 
 @item
-@code{'means}: bivariate mean.
+@code{'means}: m@'edia de duas vari@'aveis pseudo-aleat@'orias.
 
 @item
-@code{'variances}: variances of both variables.
+@code{'variances}: vari@^ancias de ambas as vari@'aveis.
 
 @item
-@code{'correlation}: correlation coefficient.
+@code{'correlation}: coeficiente de correla@,{c}@~ao.
 
 @item
-@code{'adc}: adjusted determination coefficient.
+@code{'adc}: coeficiente de determina@,{c}@~ao ajustado.
 
 @item
-@code{'a_estimation}: estimation of parameter @var{b}.
+@code{'a_estimation}: estimador do par@^ametro @var{a}.
 
 @item
-@code{'a_conf_int}: confidence interval of parameter @var{a}.
+@code{'a_conf_int}: intervalo de confid@^encia do par@^ametro @var{a}.
 
 @item
-@code{'b_estimation}: estimation of parameter @var{b}.
+@code{'b_estimation}: estimador do par@^ametro @var{b}.
 
 @item
-@code{'b_conf_int}: confidence interval of parameter @var{b}.
+@code{'b_conf_int}: intervalo de confid@^encia do par@^ametro @var{b}.
 
 @item
-@code{'hypotheses}: null and alternative hypotheses about parameter @var{b}.
+@code{'hypotheses}: a hip@'otese do nulo e a hip@'otese alternativa sobre o par@^ametro @var{b}.
 
 @item
-@code{'statistic}: value of the sample statistic used for testing the null hypothesis.
+@code{'statistic}: valor da amostra estat@'istica usado para testar a hip@'otese do nulo.
 
 @item
-@code{'distribution}: distribution of the sample statistic, together with its parameter.
+@code{'distribution}: distribui@,{c}@~ao da amostra estat@'istica, juntamente com seu par@^ametro.
 
 @item
-@code{'p_value}: @math{p}-value of the test about @var{b}.
+@code{'p_value}: o valor de @math{p} do teste sobre @var{b}.
 
 @item
-@code{'v_estimation}: unbiased variance estimation, or residual variance.
+@code{'v_estimation}: estimador de vari@^ancia imparcial, ou vari@^ancia residual.
 
 @item
-@code{'v_conf_int}: variance confidence interval.
+@code{'v_conf_int}: intervalo de confid@^encia da vari@^ancia.
 
 @item
-@code{'cond_mean_conf_int}: confidence interval for the conditioned mean. See examples bellow.
+@code{'cond_mean_conf_int}: intervalo de confid@^encia paa a m@'edia condicionada. Veja exemplos abaixo.
 
 @item
-@code{'new_pred_conf_int}: confidence interval for a new prediction. See examples bellow.
+@code{'new_pred_conf_int}: intervalo de confid@^encia para uma nova previs@~ao. Veja exemplos abaixo.
 
 @item
-@code{'residuals}: list of pairs (prediction, residual), ordered with respect to predictions.
-This is useful for goodness of fit analysis. See examples bellow.
+@code{'residuals}: lista de pares (previs@~ao, res@'iduo), ordenados em rela@,{c}@~ao @`as previs@~oes.
+@'Util para achar o melhor da an@'alise de ajuste. Veja exemplos abaixo.
 
 @end enumerate
 
-Only items 1, 4, 14, 9, 10, 11, 12, and 13 above, in this order, are shown por padr@~ao. The rest remain
-hidden until the user makes use of functions @code{items_inference} e @code{take_inference}.
+Somente os itens 1, 4, 14, 9, 10, 11, 12, e 13 acima, nessa ordem, s@~ao mostrados por padr@~ao. Os restantes
+escondem-se at@'e que o usu@'ario fa@,{c}a uso de fun@,{c}@~oes @code{items_inference} e @code{take_inference}.
 
 Exemplo:
 
-Fitting a linear model to a bivariate sample. Input @code{%i4} plots
-the sample together with the regression line; input @code{%i5}
-computes @code{y} given @code{x=113}; the means and the 
-confidence interval for a new prediction when @code{x=113} are also calculated.
+Ajustando um modelo linear para uma amostras de duas vari@'aveis. A entrada @code{%i4} monta p gr@'afico
+da amostra junto com a linha de regress@~ao; a entrada @code{%i5}
+calcula @code{y} dado @code{x=113}; a m@'edia e o 
+intervalo de confid@^encia para uma nova previs@~ao quando @code{x=113} s@~ao tamb@'em calculados.
 
 @c ===beg===
 @c load (stats)$
@@ -1292,33 +1294,33 @@ confidence interval for a new prediction when @code{x=113} are also calculated.
 
 
 @deffn {Fun@,{c}@~ao} pdf_signed_rank (@var{x}, @var{n})
-Probability density function of the exact distribution of the
-signed rank statistic. Argument @var{x} is a real
-number and @var{n} a positive integer.
+Fun@,{c}@~ao densidade de probabilidade da distribui@,{c}@~ao exata da
+estat@'istica do rank sinalizado. O argumento @var{x} @'e um n@'umero
+real e @var{n} um inteiro positivo.
 
 Veja tamb@'em @code{test_signed_rank}.
 @end deffn
 
 @deffn {Fun@,{c}@~ao} cdf_signed_rank (@var{x}, @var{n})
-Cumulative density function of the exact distribution of the
-signed rank statistic. Argument @var{x} is a real
-number and @var{n} a positive integer. 
+Fun@,{c}@~ao de densidade cumulativa da distribui@,{c}@~ao exata da
+estat@'istica do rank sinalizado. O argumento @var{x} @'e um n@'umero
+real e @var{n} um inteiro positivo. 
 
 Veja tamb@'em @code{test_signed_rank}.
 @end deffn
 
 @deffn {Fun@,{c}@~ao} pdf_rank_sum (@var{x}, @var{n}, @var{m})
-Probability density function of the exact distribution of the
-rank sum statistic. Argument @var{x} is a real
-number and @var{n} e @var{m} are both positive integers. 
+Fun@,{c}@~ao densidade de probabilidade da distribui@,{c}@~ao exata da
+estat@'istica do somat@'orio do rank. O argumento @var{x} @'e um n@'umero
+real e @var{n} e @var{m} s@~ao ambos inteiros positivos. 
 
 Veja tamb@'em @code{test_rank_sum}.
 @end deffn
 
 @deffn {Fun@,{c}@~ao} cdf_rank_sum (@var{x}, @var{n}, @var{m})
-Cumulative density function of the exact distribution of the
-rank sum statistic. Argument @var{x} is a real
-number and @var{n} e @var{m} are both positive integers. 
+Fun@,{c}@~ao de densidade cumulativa da distribui@,{c}@~ao exata da
+estat@'istica do somat@'orio do rank. O argumento @var{x} @'e um n@'umero
+real e @var{n} e @var{m} s@~ao ambos inteiro positivos. 
 
 Veja tamb@'em @code{test_rank_sum}.
 @end deffn
