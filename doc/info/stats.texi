@@ -1158,7 +1158,7 @@ with the following results:
 @code{'adc}: adjusted determination coefficient.
 
 @item
-@code{'a_estimation}: estimation of parameter @var{b}.
+@code{'a_estimation}: estimation of parameter @var{a}.
 
 @item
 @code{'a_conf_int}: confidence interval of parameter @var{a}.
