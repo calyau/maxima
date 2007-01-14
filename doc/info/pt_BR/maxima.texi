@@ -568,7 +568,7 @@ plotdf
 
 romberg
 
-* Definitions for romberg::
+* Defini@value{cedilha}@~oes para romberg::
 
 simplex
 
