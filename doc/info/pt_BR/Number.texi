@@ -240,7 +240,7 @@ Retorna uma matriz de numeradores e denominadores dos
 
 @end deffn
 
-@defvr {Vari@'avel de op@value{cedilha}@~ao} cflength
+@defvr {Vari@'avel de op@,{c}@~ao} cflength
 Valor padr@~ao: 1
 
 @code{cflength} controla o n@'umero de termos da fra@,{c}@~ao
@@ -524,7 +524,7 @@ composto @'e muito menor que 10^-15.
 
 @end deffn
 
-@defvr {Vari@'avel de op@value{cedilha}@~ao} primep_number_of_tests
+@defvr {Vari@'avel de op@,{c}@~ao} primep_number_of_tests
 Valor padr@~ao: 25
 
 N@'umero de testes de Miller-Rabin usados em @code{primep}.
@@ -560,7 +560,7 @@ s@~ao relativamente primos com @var{n}.
 
 @end deffn
 
-@defvr {Vari@'avel de op@value{cedilha}@~ao} zerobern
+@defvr {Vari@'avel de op@,{c}@~ao} zerobern
 Valor padr@~ao: @code{true}
 
 Quando @code{zerobern} for @code{false},
@@ -587,7 +587,7 @@ Veja tamb@'em @code{bfzeta} e @code{zeta%pi}.
 
 @end deffn
 
-@defvr {Vari@'avel de op@value{cedilha}@~ao} zeta%pi
+@defvr {Vari@'avel de op@,{c}@~ao} zeta%pi
 Valor padr@~ao: @code{true}
 
 Quando @code{zeta%pi} for @code{true}, @code{zeta} retorna uma express@~ao

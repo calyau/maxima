@@ -168,7 +168,7 @@ para a forma @code{a + b %i}. Veja @code{polartorect}.
 
 @end deffn
 
-@defvr {Vari@'avel de op@value{cedilha}@~ao} fortindent
+@defvr {Vari@'avel de op@,{c}@~ao} fortindent
 Valor padr@~ao: 0
 
 @code{fortindent} controla a margem esquerda de indenta@,{c}@~ao de
@@ -234,7 +234,7 @@ Exemplos:
 
 @end deffn
 
-@defvr {Vari@'avel de op@value{cedilha}@~ao} fortspaces
+@defvr {Vari@'avel de op@,{c}@~ao} fortspaces
 Valor padr@~ao: @code{false}
 
 Quando @code{fortspaces} for @code{true}, @code{fortran} preenche
@@ -340,7 +340,7 @@ Examples:
 
 @end deffn
 
-@defvr {Vari@'avel de op@value{cedilha}@~ao} find_root_abs
+@defvr {Vari@'avel de op@,{c}@~ao} find_root_abs
 Valor padr@~ao: 0.0
 
 @code{find_root_abs} @'e a precis@~ao do comando @code{find_root}. A precis@~ao @'e
@@ -354,7 +354,7 @@ com a precis@~ao aritm@'etica simples que tivermos.
 
 @end defvr
 
-@defvr {Vari@'avel de op@value{cedilha}@~ao} find_root_error
+@defvr {Vari@'avel de op@,{c}@~ao} find_root_error
 Valor padr@~ao: @code{true}
 
 @code{find_root_error} governa o comportamento de @code{find_root}.
@@ -369,7 +369,7 @@ pode ser escolhida para 0.0.
 
 @end defvr
 
-@defvr {Vari@'avel de op@value{cedilha}@~ao} find_root_rel
+@defvr {Vari@'avel de op@,{c}@~ao} find_root_rel
 Valor padr@~ao: 0.0
 
 @code{find_root_rel} @'e a precis@~ao do comando @code{find_root} e @'e
@@ -497,14 +497,14 @@ Simplifica @code{sin (n %pi)} para 0 se @code{sinnpiflag} for @code{true} e
 @c NEEDS EXAMPLES
 @end deffn
 
-@defvr {Vari@'avel de op@value{cedilha}@~ao} sinnpiflag
+@defvr {Vari@'avel de op@,{c}@~ao} sinnpiflag
 Valor padr@~ao: @code{true}
 
 Veja @code{foursimp}.
 
 @end defvr
 
-@defvr {Vari@'avel de op@value{cedilha}@~ao} cosnpiflag
+@defvr {Vari@'avel de op@,{c}@~ao} cosnpiflag
 Valor padr@~ao: @code{true}
 
 Veja @code{foursimp}.

@@ -1249,7 +1249,7 @@ apagado.
 @subsection Vari@'aveis usadas por @code{ctensor}
 
 
-@defvr {Vari@'avel de op@value{cedilha}@~ao} dim
+@defvr {Vari@'avel de op@,{c}@~ao} dim
 Valor padr@~ao: 4
 
 Uma op@,{c}@~ao no pacote @code{ctensor}.
@@ -1259,7 +1259,7 @@ valor @code{n}.
 
 @end defvr
 
-@defvr {Vari@'avel de op@value{cedilha}@~ao} diagmetric
+@defvr {Vari@'avel de op@,{c}@~ao} diagmetric
 Valor padr@~ao: @code{false}
 
 Uma op@,{c}@~ao no pacote @code{ctensor}.
@@ -1271,14 +1271,14 @@ automaticamente por @code{csetup} se uma m@'etrica diagonal for especificada.
 
 @end defvr
 
-@defvr {Vari@'avel de op@value{cedilha}@~ao} ctrgsimp
+@defvr {Vari@'avel de op@,{c}@~ao} ctrgsimp
 
 Faz com que simplifica@,{c}@~oes trigonom@'etricas sejam usadas quando tensores forem calculados. Atualmente,
 @code{ctrgsimp} afeta somente c@'alculos envolvendo uma moldura m@'ovel.
 
 @end defvr
 
-@defvr {Vari@'avel de op@value{cedilha}@~ao} cframe_flag
+@defvr {Vari@'avel de op@,{c}@~ao} cframe_flag
 
 Faz com que c@'alculos sejam executados relativamente a uma moldura m@'ovel em oposi@,{c}@~ao a
 uma m@'etrica holon@^omica. A moldura @'e definida atrav@'es do array da moldura inversa @code{fri}
@@ -1289,7 +1289,7 @@ apropriada.
 
 @end defvr
 
-@defvr {Vari@'avel de op@value{cedilha}@~ao} ctorsion_flag
+@defvr {Vari@'avel de op@,{c}@~ao} ctorsion_flag
 
 Faz com que o tensor de contors@~ao seja inclu@'ido no c@'alculo dos
 coeficientes de conec@,{c}@~ao. O tensor de contors@~ao por si mesmo @'e calculado atrav@'es de
@@ -1297,7 +1297,7 @@ coeficientes de conec@,{c}@~ao. O tensor de contors@~ao por si mesmo @'e calcula
 
 @end defvr
 
-@defvr {Vari@'avel de op@value{cedilha}@~ao} cnonmet_flag
+@defvr {Vari@'avel de op@,{c}@~ao} cnonmet_flag
 
 Faz com que os coeficientes de n@~ao metricidade sejam inclu@'idos no c@'alculo dos
 coeficientes de conec@,{c}@~ao. Os coeficientes de n@~ao metricidade s@~ao calculados
@@ -1306,7 +1306,7 @@ a partir do vetor de n@~ao metricidade @code{nm} fornecido pelo usu@'ario atrav@
 
 @end defvr
 
-@defvr {Vari@'avel de op@value{cedilha}@~ao} ctayswitch
+@defvr {Vari@'avel de op@,{c}@~ao} ctayswitch
 
 Se escolhida para @code{true}, faz com que alguns c@'alculos de @code{ctensor} sejam realizados usando
 expans@~oes das s@'eries de Taylor. atualmente, @code{christof}, @code{ricci},
@@ -1315,21 +1315,21 @@ escolha.
 
 @end defvr
 
-@defvr {Vari@'avel de op@value{cedilha}@~ao} ctayvar
+@defvr {Vari@'avel de op@,{c}@~ao} ctayvar
 
 Vari@'avel usada pela expans@~ao de s@'eries de Taylor se @code{ctayswitch} @'e escolhida para
 @code{true}.
 
 @end defvr
 
-@defvr {Vari@'avel de op@value{cedilha}@~ao} ctaypov
+@defvr {Vari@'avel de op@,{c}@~ao} ctaypov
 
 Maximo expoente usado em expans@~oes de s@'eries de Taylor quando @code{ctayswitch} for
 escolhida para @code{true}.
 
 @end defvr
 
-@defvr {Vari@'avel de op@value{cedilha}@~ao} ctaypt
+@defvr {Vari@'avel de op@,{c}@~ao} ctaypt
 
 Ponto em torno do qual expans@~oes de s@'eries de Taylor sao realizadas quando
 @code{ctayswitch} for escolhida para @code{true}.
@@ -1343,13 +1343,13 @@ O determinante do tensor m@'etrico @code{lg}. Calculado atrav@'es de @code{cmetr
 
 @end defvr
 
-@defvr {Vari@'avel de op@value{cedilha}@~ao} ratchristof
+@defvr {Vari@'avel de op@,{c}@~ao} ratchristof
 
 Faz com que simplifica@,{c}@~oes racionais sejam aplicadas atrav@'es de @code{christof}.
 
 @end defvr
 
-@defvr {Vari@'avel de op@value{cedilha}@~ao} rateinstein
+@defvr {Vari@'avel de op@,{c}@~ao} rateinstein
 Valor padr@~ao: @code{true}
 
 Se @code{true} simplifica@,{c}@~ao racional ir@'a ser
@@ -1357,7 +1357,7 @@ executada sobre as componentes n@~ao nulas de tensores de Einstein; se
 @code{ratfac} for @code{true} ent@~ao as componentes ir@~ao tamb@'em ser fatoradas.
 
 @end defvr
-@defvr {Vari@'avel de op@value{cedilha}@~ao} ratriemann
+@defvr {Vari@'avel de op@,{c}@~ao} ratriemann
 Valor padr@~ao: @code{true}
 
 Um dos comutadores que controlam
@@ -1367,7 +1367,7 @@ componentes ir@'a tamb@'em ser fatorada.
 
 @end defvr
 
-@defvr {Vari@'avel de op@value{cedilha}@~ao} ratweyl
+@defvr {Vari@'avel de op@,{c}@~ao} ratweyl
 Valor padr@~ao: @code{true}
 
 Se @code{true}, esse comutador faz com que a fun@,{c}@~ao de @code{weyl}
@@ -1497,7 +1497,7 @@ Vari@'avel indicando se o pacote tensor foi inicializado. Escolhida e usada por
 
 @end defvr
 
-@defvr {Vari@'avel de op@value{cedilha}@~ao} ct_coords
+@defvr {Vari@'avel de op@,{c}@~ao} ct_coords
 Valor padr@~ao: @code{[]}
 
 Uma op@,{c}@~ao no pacote @code{ctensor}.

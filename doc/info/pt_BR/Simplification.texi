@@ -54,7 +54,7 @@ ou @code{zero}.
 
 @c NEEDS CLARIFICATION, EXAMPLES
 @deffn {Fun@,{c}@~ao} demoivre (@var{expr})
-@deffnx {Vari@'avel de op@value{cedilha}@~ao} demoivre
+@deffnx {Vari@'avel de op@,{c}@~ao} demoivre
 
 A fun@,{c}@~ao @code{demoivre (expr)} converte uma express@~ao
 sem escolher a vari@'avel global @code{demoivre}.
@@ -187,7 +187,7 @@ expandido.
 
 
 @deffn {Fun@,{c}@~ao} exponentialize (@var{expr})
-@deffnx {Vari@'avel de op@value{cedilha}@~ao} exponentialize
+@deffnx {Vari@'avel de op@,{c}@~ao} exponentialize
 
 A fun@,{c}@~ao @code{exponentialize (expr)} converte 
 fun@,{c}@~oes circulares e hiperb@'olicas em @var{expr} para exponenciais,

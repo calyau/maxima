@@ -808,7 +808,7 @@ Se nenhum dos acima, @code{file_type} retorna @code{object}.
 @end deffn
 
 @deffn {Fun@,{c}@~ao} grind (@var{expr})
-@deffnx {Vari@'avel de op@value{cedilha}@~ao} grind
+@deffnx {Vari@'avel de op@,{c}@~ao} grind
 A fun@,{c}@~ao @code{grind} imprime @var{expr}
 para o console em uma forma adequada de entrada para Maxima.
 @code{grind} sempre retorna @code{done}.
@@ -1068,7 +1068,7 @@ n@~ao s@~ao afetadas por @code{linel}.
 
 @end defvr
 
-@defvr {Vari@'avel de op@value{cedilha}@~ao} lispdisp
+@defvr {Vari@'avel de op@,{c}@~ao} lispdisp
 Valor padr@~ao: @code{false}
 
 Quando @code{lispdisp} for @code{true},
@@ -1577,8 +1577,8 @@ e dessa forma n@~ao pode ser usada em um c@'alculo.
 @end deffn
 
 @c SHOULD BE WRITTEN WITH LEADING ? BUT THAT CONFUSES CL-INFO SO WORK AROUND
-@c @defvr {Vari@~avel de op@value{cedilha}@~ao} stringdisp
-@defvr {Vari@~avel de op@value{cedilha}@~ao} stringdisp
+@c @defvr {Vari@~avel de op@,{c}@~ao} stringdisp
+@defvr {Vari@~avel de op@,{c}@~ao} stringdisp
 Valor padr@~ao: @code{false}
 
 Quando @code{stringdisp} for @code{true},

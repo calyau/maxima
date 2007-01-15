@@ -7,7 +7,7 @@
 @node Defini@value{cedilha}@~oes para mnewton,  , mnewton, mnewton
 @section Defini@value{cedilha}@~oes para mnewton
 
-@defvr {Vari@'avel de op@value{cedilha}@~ao} newtonepsilon
+@defvr {Vari@'avel de op@,{c}@~ao} newtonepsilon
 Valor padr@~ao: @code{10.0^(-fpprec/2)}
 
 Precis@~ao para determinar quando a fun@,{c}@~ao @code{mnewton} convergiu em dire@,{c}@~ao @`a solu@,{c}@~ao.
@@ -16,7 +16,7 @@ Veja tamb@'em @code{mnewton}.
 @end defvr
 
 
-@defvr {Vari@'avel de op@value{cedilha}@~ao} newtonmaxiter
+@defvr {Vari@'avel de op@,{c}@~ao} newtonmaxiter
 Valor padr@~ao: @code{50}
 
 N@'umero m@'aximo de itera@,{c}@~oes que para a fun@,{c}@~ao @code{mnewton}

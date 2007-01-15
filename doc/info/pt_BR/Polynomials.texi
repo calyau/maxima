@@ -1214,7 +1214,7 @@ de n@'umeros em ponto flutuante para n@'umeros racionais.
 @end defvr
 
 @deffn {Fun@,{c}@~ao} ratexpand (@var{expr})
-@deffnx {Vari@'avel de op@value{cedilha}@~ao} ratexpand
+@deffnx {Vari@'avel de op@,{c}@~ao} ratexpand
 Expande @var{expr} multiplicando para fora produtos de somas e
 somas exponenciadas, combinando fra@,{c}@~oes sobre um denominador comum,
 cancelando o m@'aximo divisor comum entre entre o numerador e o

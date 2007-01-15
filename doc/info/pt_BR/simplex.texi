@@ -27,7 +27,7 @@ Exemplo:
 @node Defini@value{cedilha}@~oes para simplex,  , Introdu@value{cedilha}@~ao a simplex, simplex
 @section Defini@value{cedilha}@~oes para simplex
 
-@defvr {Vari@value{a_agu}vel de op@value{cedilha}@~ao} epsilon_sx
+@defvr {Vari@'avel de op@,{c}@~ao} epsilon_sx
 Valor padr@~ao: @code{10^-8}
 
 Epsilon usando para c@'alculos num@'ericos em @code{linear_program}.
@@ -133,7 +133,7 @@ Veja tamb@'em: @code{maximize_sx}, @code{nonegative_sx}, @code{epsilon_sx}.
 
 @end deffn
 
-@defvr {Vari@value{a_agu}vel de op@value{cedilha}@~ao} nonegative_sx
+@defvr {Vari@'avel de op@,{c}@~ao} nonegative_sx
 Valor padr@~ao: @code{false}
 
 Se @code{nonegative_sx} for verdadeiro (true) todas as vari@'aveis de decis@~ao para @code{minimize_sx}

@@ -80,7 +80,7 @@ Veja tamb@'em @code{apply1}, @code{apply2}, e @code{let}.
 
 @end deffn
 
-@defvr {Vari@'avel de op@value{cedilha}@~ao} current_let_rule_package
+@defvr {Vari@'avel de op@,{c}@~ao} current_let_rule_package
 Valor padr@~ao: @code{default_let_rule_package}
 
 @code{current_let_rule_package} @'e o nome do pacote de regras que est@'a sendo usado por
@@ -95,7 +95,7 @@ e o valor de @code{current_let_rule_package} n@~ao @'e alterado.
 
 @end defvr
 
-@defvr {Vari@'avel de op@value{cedilha}@~ao} default_let_rule_package
+@defvr {Vari@'avel de op@,{c}@~ao} default_let_rule_package
 @c DEFAULT BINDING OF default_let_rule_package IS default_let_rule_package (BOUND TO ITSELF)
 Valor padr@~ao: @code{default_let_rule_package}
 
@@ -348,7 +348,7 @@ Se n@~ao especificado de outra forma,
 @c NEEDS ADDITIONAL EXAMPLES
 @end deffn
 
-@defvr {Vari@'avel de op@value{cedilha}@~ao} letrat
+@defvr {Vari@'avel de op@,{c}@~ao} letrat
 Valor padr@~ao: @code{false}
 
 Quando @code{letrat} for @code{false}, @code{letsimp} simplifica o
@@ -410,7 +410,7 @@ seguido por @code{letsimp (%, @var{nome_pacote_2})}, e assim sucessivamente.
 @c NEEDS EXAMPLES
 @end deffn
 
-@defvr {Vari@'avel de op@value{cedilha}@~ao} let_rule_packages
+@defvr {Vari@'avel de op@,{c}@~ao} let_rule_packages
 Valor padr@~ao: @code{[default_let_rule_package]}
 
 @code{let_rule_packages} @'e uma lista de todos os pacotes de regras @code{let} definidos pelo usu@'ario

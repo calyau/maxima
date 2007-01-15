@@ -99,7 +99,7 @@ Exemplos:
 
 @end deffn
 
-@defvr {Vari@'avel de op@value{cedilha}@~ao} assumescalar
+@defvr {Vari@'avel de op@,{c}@~ao} assumescalar
 Valor padr@~ao: @code{true}
 
 @code{assumescalar} ajuda a governar se express@~oes @code{expr}
@@ -127,7 +127,7 @@ acima.
 @end defvr
 
 
-@defvr {Vari@'avel de op@value{cedilha}@~ao} assume_pos
+@defvr {Vari@'avel de op@,{c}@~ao} assume_pos
 Valor padr@~ao: @code{false}
 
 Quando @code{assume_pos} for @code{true}

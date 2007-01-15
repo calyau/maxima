@@ -33,7 +33,7 @@ e ent@~ao define fun@,{c}@~oes e vari@'aveis apropriadamente para o teste.
 @code{run_testsuite} retorna @code{done}.
 @end deffn
 
-@defvr {Vari@'avel de op@value{cedilha}@~ao} testsuite_files
+@defvr {Vari@'avel de op@,{c}@~ao} testsuite_files
      
 @code{testsuite_files} @'e o conjunto de testes a ser executado por
 @code{run_testsuite}.  Isso @'e uma lista de nomes de arquivos contendo

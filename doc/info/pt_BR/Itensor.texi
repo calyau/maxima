@@ -617,7 +617,7 @@ que j@'a estiverem sendo usados (veja o exemplo sob @code{indices}).
 
 @end deffn
 
-@defvr {Vari@'avel de op@value{cedilha}@~ao} idummyx
+@defvr {Vari@'avel de op@,{c}@~ao} idummyx
 Valor padr@~ao: @code{%}
 
 @'E o prefixo para @'indices que ocorrem exatamente duas vezes (veja o exemplo sob @'indices @code{indices}).

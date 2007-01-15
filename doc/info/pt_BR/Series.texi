@@ -15,7 +15,7 @@ expans@~ao.
 @node Defini@value{cedilha}@~oes para S@'eries,  , Introdu@value{cedilha}@~ao a S@'eries, S@'eries
 @section Defini@value{cedilha}@~oes para S@'eries
 
-@defvr {Vari@'avel de op@value{cedilha}@~ao} cauchysum
+@defvr {Vari@'avel de op@,{c}@~ao} cauchysum
 Valor padr@~ao: @code{false}
 
 @c REPHRASE
@@ -89,7 +89,7 @@ Exemplo:
 
 @end deffn
 
-@defvr {Vari@'avel de op@value{cedilha}@~ao} maxtayorder
+@defvr {Vari@'avel de op@,{c}@~ao} maxtayorder
 Valor padr@~ao: @code{true}
 
 @c REPHRASE
@@ -137,7 +137,7 @@ Exemplo:
 
 @end deffn
 
-@defvr {Vari@'avel de op@value{cedilha}@~ao} niceindicespref
+@defvr {Vari@'avel de op@,{c}@~ao} niceindicespref
 Valor padr@~ao: @code{[i, j, k, l, m, n]}
 
 @code{niceindicespref} @'e a lista da qual @code{niceindices}
@@ -295,7 +295,7 @@ com o objetivo de ter dispon@'ivel coeficientes desconhecidos para resolver.
 
 @end deffn
 
-@defvr {Vari@'avel de op@value{cedilha}@~ao} powerdisp
+@defvr {Vari@'avel de op@,{c}@~ao} powerdisp
 Valor padr@~ao: @code{false}
 
 Quando @code{powerdisp} for @code{true},
@@ -349,7 +349,7 @@ in the first simplification we have returned:
 
 @end deffn
 
-@defvr {Vari@'avel de op@value{cedilha}@~ao} psexpand
+@defvr {Vari@'avel de op@,{c}@~ao} psexpand
 Valor padr@~ao: @code{false}
 
 Quando @code{psexpand} for @code{true},
@@ -589,7 +589,7 @@ Exemplos:
 
 @end deffn
 
-@defvr {Vari@'avel de op@value{cedilha}@~ao} taylordepth
+@defvr {Vari@'avel de op@,{c}@~ao} taylordepth
 Valor padr@~ao: 3
 
 @c UM, THE CONTEXT FOR THIS REMARK NEEDS TO BE ESTABLISHED
@@ -635,7 +635,7 @@ e @code{false} de outra forma.
 @end deffn
 
 @c WHAT IS THIS ABOUT EXACTLY ??
-@defvr {Vari@'avel de op@value{cedilha}@~ao} taylor_logexpand
+@defvr {Vari@'avel de op@,{c}@~ao} taylor_logexpand
 Valor padr@~ao: @code{true}
 
 @code{taylor_logexpand} controla expans@~ao de logar@'itmos em
@@ -652,7 +652,7 @@ Quando @code{taylor_logexpand} for escolhida para @code{false}, ent@~ao a expans
 @c NEED EXAMPLES HERE
 @end defvr
 
-@defvr {Vari@'avel de op@value{cedilha}@~ao} taylor_order_coefficients
+@defvr {Vari@'avel de op@,{c}@~ao} taylor_order_coefficients
 Valor padr@~ao: @code{true}
 
 @code{taylor_order_coefficients} controla a ordena@value{cedilha}@~ao dos
@@ -672,7 +672,7 @@ Simplifica coeficientes da s@'eries  de pot@^encia @var{expr}.
 
 @end deffn
 
-@defvr {Vari@'avel de op@value{cedilha}@~ao} taylor_truncate_polynomials
+@defvr {Vari@'avel de op@,{c}@~ao} taylor_truncate_polynomials
 Valor padr@~ao: @code{true}
 
 @c WHAT IS THE "INPUT TRUNCATION LEVEL" ?? THE ARGUMENT n OF taylor ??
@@ -749,7 +749,7 @@ Exemplos:
 
 @end deffn
 
-@defvr {Vari@'avel de op@value{cedilha}@~ao} verbose
+@defvr {Vari@'avel de op@,{c}@~ao} verbose
 Valor padr@~ao: @code{false}
 
 Quando @code{verbose} for @code{true},

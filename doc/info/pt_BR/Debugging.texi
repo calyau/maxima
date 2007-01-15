@@ -193,7 +193,7 @@ completar a computa@,{c}@~ao
 @node Defini@value{cedilha}@~oes para Depura@value{cedilha}@~ao, , Comandos Palavra Chave, Depurando
 @section Defini@value{cedilha}@~oes para Depura@value{cedilha}@~ao
 
-@defvr {Vari@'avel de op@value{cedilha}@~ao} refcheck
+@defvr {Vari@'avel de op@,{c}@~ao} refcheck
 Valor padr@~ao: @code{false}
 
 Quando @code{refcheck} for @code{true}, Maxima imprime uma mensagem
@@ -202,7 +202,7 @@ computa@,{c}@~ao.
 
 @end defvr
 
-@defvr {Vari@'avel de op@value{cedilha}@~ao} setcheck
+@defvr {Vari@'avel de op@,{c}@~ao} setcheck
 Valor padr@~ao: @code{false}
 
 Se @code{setcheck} for escolhido para uma lista de vari@'aveis (as quais podem
@@ -237,7 +237,7 @@ vari@'avel na lista @code{setcheck} for atribu@'ida a s@'i mesma, e.g., @code{X:
 
 @end defvr
 
-@defvr {Vari@'avel de op@value{cedilha}@~ao} setcheckbreak
+@defvr {Vari@'avel de op@,{c}@~ao} setcheckbreak
 Valor padr@~ao: @code{false}
 
 Quando @code{setcheckbreak} for @code{true},
@@ -303,7 +303,7 @@ e coloca @code{f} na lista de fun@,{c}@~oes estatisticamente monitoradas novamen
 
 @end deffn
 
-@defvr {Vari@'avel de op@value{cedilha}@~ao} timer_devalue
+@defvr {Vari@'avel de op@,{c}@~ao} timer_devalue
 Valor Padr@~ao: @code{false}
 
 Quando @code{timer_devalue} for @code{true}, Maxima subtrai de cada fun@,{c}@~ao estatisticamente monitorada

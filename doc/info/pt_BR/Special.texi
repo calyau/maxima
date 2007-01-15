@@ -242,7 +242,7 @@ ent@~ao o limite  com @math{v} aproximando-se de @math{n} @'e tomado.
 
 @end deffn
 
-@defvr {Vari@'avel de op@value{cedilha}@~ao} besselexpand
+@defvr {Vari@'avel de op@,{c}@~ao} besselexpand
 Valor padr@~ao: @code{false}
 
 @c REPHRASE
@@ -406,7 +406,7 @@ trigonom@'etricos.
 
 @end deffn
 
-@defvr {Vari@'avel de op@value{cedilha}@~ao} poislim
+@defvr {Vari@'avel de op@,{c}@~ao} poislim
 Valor padr@~ao: 5
 
 @code{poislim} determina o dom@'inio dos coeficientes nos
@@ -512,7 +512,7 @@ valores num@'ericos.
  
  @end deffn
 
-@defvr {Vari@'avel de op@value{cedilha}@~ao} maxpsiposint
+@defvr {Vari@'avel de op@,{c}@~ao} maxpsiposint
 Valor padr@~ao: 20
 
 @code{maxpsiposint} @'e o maior valor positivo para o qual
@@ -520,7 +520,7 @@ Valor padr@~ao: 20
 
 @end defvr
 
-@defvr {Vari@'avel de op@value{cedilha}@~ao} maxpsinegint
+@defvr {Vari@'avel de op@,{c}@~ao} maxpsinegint
 Valor padr@~ao: -10
 
 @code{maxpsinegint} @'e o valor mais negativo para o qual
@@ -530,7 +530,7 @@ retornar resposta simplificada, mesmo se isso for poss@'ivel.
 
 @end defvr
 
-@defvr {Vari@'avel de op@value{cedilha}@~ao} maxpsifracnum
+@defvr {Vari@'avel de op@,{c}@~ao} maxpsifracnum
 Valor padr@~ao: 4
 
 Tomemos @var{x} como sendo um n@'umero racional menor que a unidade e da forma @code{p/q}.
@@ -580,7 +580,7 @@ Exemplos:
 
 @end deffn
 
-@defvr {Vari@'avel de op@value{cedilha}@~ao} maxpsifracdenom
+@defvr {Vari@'avel de op@,{c}@~ao} maxpsifracdenom
 Valor padr@~ao: 4
 
 Tomemos @var{x} como sendo um n@'umero racional menor que a unidade e da forma @code{p/q}.
