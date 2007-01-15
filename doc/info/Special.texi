@@ -1,57 +1,10 @@
 @menu
 * Introduction to Special Functions::  
-* specint::                     
 * Definitions for Special Functions::  
 @end menu
 
-@node Introduction to Special Functions, specint, Special Functions, Special Functions
+@node Introduction to Special Functions, Definitions for Special Functions, Special Functions, Special Functions
 @section Introduction to Special Functions
-
-@c CAN'T FIND ANY SIGN OF THIS FUNCTION 
-@c COMMENT OUT, CUT IT ON NEXT PASS THROUGH THIS FILE
-@c @deffn %K [@var{index}](@var{expr})
-@c 
-@c Constant, in ODE2
-@c 
-@c @end deffn
-
-@node specint, Definitions for Special Functions, Introduction to Special Functions, Special Functions
-
-@c OK, THIS IS A BIT OF A COMPLICATED SITUATION:
-@c SOME SPECIAL FUNCTIONS ARE DEFINED IN src/hypgeo.lisp INCLUDING specint,
-@c AND SOME OF THE SAME FUNCTIONS (AND SOME OTHERS) ARE DEFINED IN src/hyp.lisp .
-@c AT THIS POINT IT'S NOT CLEAR WHICH PACKAGE SHOULD TAKE PRECEDENCE.
-@c FOR NOW LET'S LEAVE THAT ASIDE AND JUST TRY TO DO A SHALLOW CLEAN UP HERE.
-
-@c specint IS ALSO THE NAME OF A FUNCTION. DON'T WE WANT TO GIVE IT ITS OWN @defun ??
-@section specint
-@code{hypgeo} is a package for handling Laplace transforms of special functions.
-@code{hyp} is a package for handling generalized Hypergeometric functions.
-
-@code{specint} attempts to compute the definite integral
-(over the range from zero to infinity) of an expression containing special functions.
-When the integrand contains a factor @code{exp (-s t)}, 
-the result is a Laplace transform.
-
-@c I DON'T THINK specint EVEN WORKS IF THERE'S NO EXPLICIT EXPONENTIAL
-@c FORM.  THAT IS, IT CAN REALLY ONLY HANDLE Laplace TRANSFORMS.
-
-The syntax is as follows:
-
-@example
-specint (exp (-s*@var{t}) * @var{expr}, @var{t});
-@end example
-
-where @var{t} is the variable of integration
-and @var{expr} is an expression containing special functions.
-
-If @code{specint} cannot compute the integral, the return value may
-contain various Lisp symbols, including
-@code{other-defint-to-follow-negtest},
-@code{other-lt-exponential-to-follow},
-@code{product-of-y-with-nofract-indices}, etc.; this is a bug.  
-
-@c REPORTED AS SOURCEFORGE BUG # 1162505
 
 Special function notation follows:
 
@@ -79,68 +32,8 @@ kelliptic (z)                  Complete elliptic integral of the first kind (K)
 %d [n] (z)                     Parabolic cylinder function
 @end example
 
-@code{demo ("hypgeo")} displays several examples of Laplace transforms computed by @code{specint}.
-
-This is a work in progress.  Some of the function names may change.
-@c COPY SOME OF THOSE EXAMPLES INTO THIS DOCUMENT
-
-@c end concepts Special Functions
-@node Definitions for Special Functions,  , specint, Special Functions
+@node Definitions for Special Functions,  , Introduction to Special Functions, Special Functions
 @section Definitions for Special Functions
-
-@c airy IS IN THE bessel PACKAGE. ai, bi, ETC ARE IN THE airy PACKAGE.
-@deffn {Function} airy (@var{x})
-The Airy function Ai.
-If the argument @var{x} is a number,
-the numerical value of @code{airy (@var{x})} is returned.
-Otherwise, an unevaluated expression @code{airy (@var{x})} is returned.
-@c THE RETURN VALUE IS '(($AIRY SIMP) $X) -- NOT A NOUN, RIGHT? SINCE %AIRY WOULD BE A NOUN
-
-@c REMAINDER DERIVED FROM airy.usg AND SHOULD PROBABLY BE MOVED
-@c TO A NODE DEVOTED TO THE airy PACKAGE.
-The Airy equation @code{diff (y(x), x, 2) - x y(x) = 0} has two linearly independent
-solutions, named @code{ai} and @code{bi}. This equation is very popular
-as an approximation to more complicated problems in many mathematical
-physics settings.
-
-@code{load ("airy")} loads the functions @code{ai}, @code{bi}, @code{dai}, and @code{dbi}.
-
-The @code{airy} package contains routines to compute
-@code{ai} and @code{bi} and their derivatives @code{dai} and @code{dbi}. The result is
-a floating point number if the argument is a number, and an
-unevaluated expression otherwise.
-@c THE RETURN VALUE IS '(($AI SIMP) $X) -- NOT A NOUN, RIGHT? SINCE %AI WOULD BE A NOUN
-
-An error occurs if the argument is large
-enough to cause an overflow in the exponentials, or a loss of 
-accuracy in @code{sin} or @code{cos}. This makes the range of validity
-@c NEED TO UPDATE RANGES TO REFLECT DOUBLE PRECISION ARITHMETIC.
-about -2800 to 10^38 for @code{ai} and @code{dai}, and -2800 to 25 for @code{bi} and @code{dbi}.
-
-These derivative rules are known to Maxima:
-@itemize @bullet
-@item
-@code{diff (ai(x), x)} yields @code{dai(x)},
-@item
-@code{diff (dai(x), x)} yields @code{x ai(x)},
-@item
-@code{diff (bi(x), x)} yields @code{dbi(x)},
-@item
-@code{diff (dbi(x), x)} yields @code{x bi(x)}.
-@end itemize
-
-Function values are computed from the convergent Taylor series for @code{abs(@var{x}) < 3},
-and from the asymptotic expansions for @code{@var{x} < -3} or @code{@var{x} > 3} as needed.
-This results in only very minor numerical discrepancies at @code{@var{x} = 3} and @code{@var{x} = -3}.
-For details, see Abramowitz and Stegun,
-@i{Handbook of Mathematical Functions}, Section 10.4 and Table 10.11.
-
-@code{ev (taylor (ai(x), x, 0, 9), infeval)} yields a
-floating point Taylor expansions of the function @code{ai}.
-A similar expression can be constructed for @code{bi}.
-
-@end deffn
-
 
 @deffn {Function} airy_ai (@var{x})
 The Airy function Ai, as defined in Abramowitz and Stegun,
@@ -370,48 +263,6 @@ the Bessel function is expanded.
                                   z
 @end example
 @end defvr
-
-@c THESE ARE DEPRECATED, so remove them, because we've removed the
-@c corresponding code.
-@c Remove these someday.
-
-@c @deffn {Function} j0 (@var{x})
-@c The Bessel function of the first kind of order 0.
-@c 
-@c This function is deprecated.  Write @code{bessel_j (0, @var{x})} instead.
-@c 
-@c @end deffn
-@c 
-@c 
-@c @deffn {Function} j1 (@var{x})
-@c The Bessel function of the first kind of order 1.
-@c 
-@c This function is deprecated.  Write @code{bessel_j (1, @var{x})} instead.
-@c 
-@c @end deffn
-@c 
-@c 
-@c @deffn {Function} jn (@var{x}, @var{n})
-@c The Bessel function of the first kind of order @var{n}.
-@c 
-@c This function is deprecated.  Write @code{bessel_j (@var{n}, @var{x})} instead.
-@c 
-@c @end deffn
-@c 
-@c @deffn {Function} i0 (@var{x})
-@c The modified Bessel function of the first kind of order 0.
-@c 
-@c This function is deprecated.  Write @code{bessel_i (0, @var{x})} instead.
-@c 
-@c @end deffn
-@c 
-@c 
-@c @deffn {Function} i1 (@var{x})
-@c The modified Bessel function of the first kind of order 1.
-@c 
-@c This function is deprecated.  Write @code{bessel_i (1, @code{x})} instead.
-@c 
-@c @end deffn
 
 @deffn {Function} scaled_bessel_i (@var{v}, @var{z}) 
 
@@ -695,5 +546,44 @@ If @code{q} is greater than @code{maxpsifracdeonm}, then
 @code{psi[@var{n}](@var{x})} will not try to return a simplified
 value.
 
-
 @end defvr
+
+@deffn {Function} specint (exp(- s*@var{t}) * @var{expr}, @var{t})
+
+Compute the Laplace transform of @var{expr} with respect to the variable @var{t}.
+The integrand @var{expr} may contain special functions.
+
+If @code{specint} cannot compute the integral, the return value may
+contain various Lisp symbols, including
+@code{other-defint-to-follow-negtest},
+@code{other-lt-exponential-to-follow},
+@code{product-of-y-with-nofract-indices}, etc.; this is a bug.  
+@c REPORTED AS SOURCEFORGE BUG # 1162505
+
+@code{demo(hypgeo)} displays several examples of Laplace transforms computed by @code{specint}.
+
+Examples:
+@c ===beg===
+@c assume (p > 0, a > 0);
+@c specint (t^(1/2) * exp(-a*t/4) * exp(-p*t), t);
+@c specint (t^(1/2) * bessel_j(1, 2 * a^(1/2) * t^(1/2)) * exp(-p*t), t);
+@c ===end===
+
+@example
+(%i1) assume (p > 0, a > 0);
+(%o1)                    [p > 0, a > 0]
+(%i2) specint (t^(1/2) * exp(-a*t/4) * exp(-p*t), t);
+                           sqrt(%pi)
+(%o2)                     ------------
+                                 a 3/2
+                          2 (p + -)
+                                 4
+(%i3) specint (t^(1/2) * bessel_j(1, 2 * a^(1/2) * t^(1/2)) * exp(-p*t), t);
+                                   - a/p
+                         sqrt(a) %e
+(%o3)                    ---------------
+                                2
+                               p
+@end example
+
+@end deffn
