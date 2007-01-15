@@ -1,10 +1,11 @@
 @menu
 * nary::                        
 * nofix::                       
-* operator::                    
 * postfix::                     
 * prefix::                      
-* Definitions for Operators::   
+* Arithmetic operators::   
+* Relational operators::   
+* General operators::   
 @end menu
 
 
@@ -20,7 +21,7 @@ simplify, e.g. @code{j(j(a,b),j(c,d))} to @code{j(a, b, c, d)}.
 
 See also @code{syntax}.
 
-@node nofix, operator, nary, Operators
+@node nofix, postfix, nary, Operators
 @section nofix
 @code{nofix} operators are used to denote functions of no arguments.
 The mere presence of such an operator in a command will cause the
@@ -31,11 +32,7 @@ function which declares x to be a @code{nofix} operator.
 
 See also @code{syntax}.
 
-@node operator, postfix, nofix, Operators
-@section operator
-See @code{operators}.
-
-@node postfix, prefix, operator, Operators
+@node postfix, prefix, nofix, Operators
 @section postfix
 @code{postfix} operators like the @code{prefix} variety denote functions
 of a single argument, but in this case the argument immediately
@@ -45,7 +42,7 @@ to be a @code{postfix} operator.
 
 See also @code{syntax}.
 
-@node prefix, Definitions for Operators, postfix, Operators
+@node prefix, Arithmetic operators, postfix, Operators
 @section prefix
 A @code{prefix} operator is one which signifies a function of one
 argument, which argument immediately follows an occurrence of the
@@ -54,11 +51,261 @@ be a @code{prefix} operator.
 
 See also @code{syntax}.
 
-@c end concepts Operators
-@node Definitions for Operators,  , prefix, Operators
-@section Definitions for Operators
+@node Arithmetic operators, Relational operators, prefix, Operators
+@section Arithmetic operators
+
+@deffn {Operator} +
+@ifinfo
+@fnindex Addition
+@end ifinfo
+@deffnx {Operator} -
+@ifinfo
+@fnindex Subtraction
+@end ifinfo
+@deffnx {Operator} *
+@ifinfo
+@fnindex Multiplication
+@end ifinfo
+@deffnx {Operator} /
+@ifinfo
+@fnindex Division
+@end ifinfo
+@deffnx {Operator} ^
+@ifinfo
+@fnindex Exponentiation
+@end ifinfo
+
+The symbols @code{+} @code{*} @code{/} and @code{^} represent
+addition, multiplication, division, and exponentiation, respectively.
+The name of these operators are @code{"+"} @code{"*"} @code{"//"} and @code{"^"},
+which may appear where the name of a function or operator is required.
+
+The symbols @code{+} and @code{-} represent unary addition and negation, respectively,
+and the names of these operators are @code{"+"} and @code{"-"}, respectively.
+
+Subtraction @code{a - b} is represented within Maxima as addition, @code{a + (- b)}.
+Expressions such as @code{a + (- b)} are displayed as subtraction.
+Maxima recognizes @code{"-"} only as the name of the unary negation operator,
+and not as the name of the binary subtraction operator.
+
+Division @code{a / b} is represented within Maxima as multiplication, @code{a * b^(- 1)}.
+Expressions such as @code{a * b^(- 1)} are displayed as division.
+Maxima recognizes @code{"//"} as the name of the division operator.
+
+Addition and multiplication are n-ary, commutative operators.
+Division and exponentiation are binary, noncommutative operators.
+
+Maxima sorts the operands of commutative operators to construct a canonical representation.
+For internal storage, the ordering is determined by @code{orderlessp}.
+For display, the ordering for addition is determined by @code{ordergreatp},
+and for multiplication, it is the same as the internal ordering.
+
+Arithmetic computations are carried out on literal numbers
+(integers, rationals, ordinary floats, and bigfloats).
+Except for exponentiation, all arithmetic operations on numbers are simplified to numbers.
+Exponentiation is simplified to a number if either operand is an ordinary float or bigfloat
+or if the result is an exact integer or rational;
+otherwise an exponentiation may be simplified to @code{sqrt} or another exponentiation or left unchanged.
+
+Floating-point contagion applies to arithmetic computations:
+if any operand is a bigfloat, the result is a bigfloat;
+otherwise, if any operand is an ordinary float, the result is an ordinary float;
+otherwise, the operands are rationals or integers and the result is a rational or integer.
+
+Arithmetic computations are a simplification, not an evaluation.
+Thus arithmetic is carried out in quoted (but simplified) expressions.
+
+Arithmetic operations are applied element-by-element
+to lists when the global flag @code{listarith} is @code{true},
+and always applied element-by-element to matrices.
+When one operand is a list or matrix and another is an operand of some other type,
+the other operand is combined with each of the elements of the list or matrix.
+
+Examples:
+
+Addition and multiplication are n-ary, commutative operators.
+Maxima sorts the operands to construct a canonical representation.
+The names of these operators are @code{"+"} and @code{"*"}.
+@c ===beg===
+@c c + g + d + a + b + e + f;
+@c [op (%), args (%)];
+@c c * g * d * a * b * e * f;
+@c [op (%), args (%)];
+@c apply ("+", [a, 8, x, 2, 9, x, x, a]);
+@c apply ("*", [a, 8, x, 2, 9, x, x, a]);
+@c ===end===
+
+@example
+(%i1) c + g + d + a + b + e + f;
+(%o1)               g + f + e + d + c + b + a
+(%i2) [op (%), args (%)];
+(%o2)              [+, [g, f, e, d, c, b, a]]
+(%i3) c * g * d * a * b * e * f;
+(%o3)                     a b c d e f g
+(%i4) [op (%), args (%)];
+(%o4)              [*, [a, b, c, d, e, f, g]]
+(%i5) apply ("+", [a, 8, x, 2, 9, x, x, a]);
+(%o5)                    3 x + 2 a + 19
+(%i6) apply ("*", [a, 8, x, 2, 9, x, x, a]);
+                                 2  3
+(%o6)                       144 a  x
+@end example
+
+Division and exponentiation are binary, noncommutative operators.
+The names of these operators are @code{"//"} and @code{"^"}.
+@c ===beg===
+@c [a / b, a ^ b];
+@c [map (op, %), map (args, %)];
+@c [apply ("//", [a, b]), apply ("^", [a, b])];
+@c ===end===
+
+@example
+(%i1) [a / b, a ^ b];
+                              a   b
+(%o1)                        [-, a ]
+                              b
+(%i2) [map (op, %), map (args, %)];
+(%o2)              [[//, ^], [[a, b], [a, b]]]
+(%i3) [apply ("//", [a, b]), apply ("^", [a, b])];
+                              a   b
+(%o3)                        [-, a ]
+                              b
+@end example
+
+Subtraction and division are represented internally
+in terms of addition and multiplication, respectively.
+@c ===beg===
+@c [inpart (a - b, 0), inpart (a - b, 1), inpart (a - b, 2)];
+@c [inpart (a / b, 0), inpart (a / b, 1), inpart (a / b, 2)];
+@c ===end===
+
+@example
+(%i1) [inpart (a - b, 0), inpart (a - b, 1), inpart (a - b, 2)];
+(%o1)                      [+, a, - b]
+(%i2) [inpart (a / b, 0), inpart (a / b, 1), inpart (a / b, 2)];
+                                   1
+(%o2)                       [*, a, -]
+                                   b
+@end example
+
+Computations are carried out on literal numbers.
+Floating-point contagion applies.
+@c ===beg===
+@c 17 + b - (1/2)*29 + 11^(2/4);
+@c [17 + 29, 17 + 29.0, 17 + 29b0];
+@c ===end===
+
+@example
+(%i1) 17 + b - (1/2)*29 + 11^(2/4);
+                                       5
+(%o1)                   b + sqrt(11) + -
+                                       2
+(%i2) [17 + 29, 17 + 29.0, 17 + 29b0];
+(%o2)                   [46, 46.0, 4.6b1]
+@end example
+
+Arithmetic computations are a simplification, not an evaluation.
+@c ===beg===
+@c simp : false;
+@c '(17 + 29*11/7 - 5^3);
+@c simp : true;
+@c '(17 + 29*11/7 - 5^3);
+@c ===end===
+
+@example
+(%i1) simp : false;
+(%o1)                         false
+(%i2) '(17 + 29*11/7 - 5^3);
+                              29 11    3
+(%o2)                    17 + ----- - 5
+                                7
+(%i3) simp : true;
+(%o3)                         true
+(%i4) '(17 + 29*11/7 - 5^3);
+                                437
+(%o4)                         - ---
+                                 7
+@end example
+
+Arithmetic is carried out element-by-element for lists (depending on @code{listarith}) and matrices.
+@c ===beg===
+@c matrix ([a, x], [h, u]) - matrix ([1, 2], [3, 4]);
+@c 5 * matrix ([a, x], [h, u]);
+@c listarith : false;
+@c [a, c, m, t] / [1, 7, 2, 9];
+@c [a, c, m, t] ^ x;
+@c listarith : true;
+@c [a, c, m, t] / [1, 7, 2, 9];
+@c [a, c, m, t] ^ x;
+@c ===end===
+
+@example
+(%i1) matrix ([a, x], [h, u]) - matrix ([1, 2], [3, 4]);
+                        [ a - 1  x - 2 ]
+(%o1)                   [              ]
+                        [ h - 3  u - 4 ]
+(%i2) 5 * matrix ([a, x], [h, u]);
+                          [ 5 a  5 x ]
+(%o2)                     [          ]
+                          [ 5 h  5 u ]
+(%i3) listarith : false;
+(%o3)                         false
+(%i4) [a, c, m, t] / [1, 7, 2, 9];
+                          [a, c, m, t]
+(%o4)                     ------------
+                          [1, 7, 2, 9]
+(%i5) [a, c, m, t] ^ x;
+                                      x
+(%o5)                     [a, c, m, t]
+(%i6) listarith : true;
+(%o6)                         true
+(%i7) [a, c, m, t] / [1, 7, 2, 9];
+                              c  m  t
+(%o7)                     [a, -, -, -]
+                              7  2  9
+(%i8) [a, c, m, t] ^ x;
+                          x   x   x   x
+(%o8)                   [a , c , m , t ]
+@end example
+
+@end deffn
+
+@node Relational operators, General operators, Arithmetic operators, Operators
+@section Relational operators
+
+@deffn {Operator} <
+@ifinfo
+@fnindex Less than
+@end ifinfo
+@deffnx {Operator} <=
+@ifinfo
+@fnindex Less than or equal
+@end ifinfo
+@deffnx {Operator} >=
+@ifinfo
+@fnindex Greater than or equal
+@end ifinfo
+@deffnx {Operator} >
+@ifinfo
+@fnindex Greater than
+@end ifinfo
+
+@end deffn
+
+@node General operators, , Relational operators, Operators
+@section General operators
+
+@deffn {Operator} ^^
+@ifinfo
+@fnindex Noncommutative exponentiation
+@end ifinfo
+
+@end deffn
 
 @deffn {Operator} !
+@ifinfo
+@fnindex Factorial
+@end ifinfo
 The factorial operator.
 For any complex number @code{x} (including integer, rational, and real numbers) except for
 negative integers, @code{x!} is defined as @code{gamma(x+1)}.
