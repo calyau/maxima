@@ -617,19 +617,7 @@
 						       (aref cyi k)))
 				       (aref cyr k)))))))))))
 
-(declare-top(flonum rz y rs cs third sin60 term sum fi cossum sinsum sign (airy flonum)))
-
-;;here is Ai'
-;;airy1(z):=if z = 0. then -1/(gamma(1/3.)*3.^(1/3.))
-;;else block([zz],z:-z,zz:2./3.*z^(3./2.),bessel(zz,4./3.),
-;;j:realpart(2/(3.*zz)*besselarray[0]-besselarray[1]),
-;;-1/3.*z*(j-realpart(bessel(zz,2./3.))));
-
-(defun $airy ($arg)
-  (cond ((numberp $arg)
-	 (slatec:dai (float $arg)))
-	(t
-	 (list '($airy simp) $arg))))
+(declare-top(flonum rz y rs cs third sin60 term sum fi cossum sinsum sign))
 
 (declare-top (flonum im re ys xs y x c t2 t1 s2 s1 s r2 r1 lamb h2 h)
 	     (fixnum np1 n nu capn)
