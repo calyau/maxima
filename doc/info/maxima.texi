@@ -200,10 +200,11 @@ Operators
 
 * nary::                        
 * nofix::                       
-* operator::                    
 * postfix::                     
 * prefix::                      
-* Definitions for Operators::   
+* Arithmetic operators::    
+* Relational operators::   
+* General operators::
 
 Expressions
 
@@ -258,7 +259,6 @@ Trigonometric
 Special Functions
 
 * Introduction to Special Functions::  
-* specint::                     
 * Definitions for Special Functions::  
 
 Elliptic Functions
