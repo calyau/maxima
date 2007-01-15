@@ -147,12 +147,12 @@ Exemplo:
 
 @end deffn
 
-@defvr {Vari@value{a_til}vel} lbfgs_nfeval_max
+@defvr {Vari@~avel} lbfgs_nfeval_max
 Valor padr@~ao: 100
 
 @end defvr
 
-@defvr {Vari@value{a_til}vel} lbfgs_ncorrections
+@defvr {Vari@~avel} lbfgs_ncorrections
 Valor padr@~ao: 25
 
 @end defvr

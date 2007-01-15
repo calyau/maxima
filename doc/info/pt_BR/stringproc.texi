@@ -174,18 +174,18 @@ Example:
 @end example
 
 
-@deffn {Function} close (@var{stream}) 
+@deffn {Fun@,{c}@~ao} close (@var{stream}) 
 Closes @var{stream} and returns @code{true} if @var{stream} had been open. 
 
 @end deffn
 
-@deffn {Function} flength (@var{stream})
+@deffn {Fun@,{c}@~ao} flength (@var{stream})
 Returns the number of elements in @var{stream}. 
 
 @end deffn
 
-@deffn {Function} fposition (@var{stream})
-@deffnx {Function} fposition (@var{stream}, @var{pos})
+@deffn {Fun@,{c}@~ao} fposition (@var{stream})
+@deffnx {Fun@,{c}@~ao} fposition (@var{stream}, @var{pos})
 Returns the current position in @var{stream}, if @var{pos} is not used.
 If @var{pos} is used,
 @code{fposition} sets the position in @var{stream}.
@@ -194,42 +194,42 @@ the first element in @var{stream} is in position 1.
 
 @end deffn
 
-@deffn {Function} freshline () 
-@deffnx {Function} freshline (@var{stream}) 
+@deffn {Fun@,{c}@~ao} freshline () 
+@deffnx {Fun@,{c}@~ao} freshline (@var{stream}) 
 Writes a new line (to @var{stream}),
 if the position is not at the beginning of a line.
 See also @code{newline}.
 @end deffn
 
-@deffn {Function} newline () 
-@deffnx {Function} newline (@var{stream}) 
+@deffn {Fun@,{c}@~ao} newline () 
+@deffnx {Fun@,{c}@~ao} newline (@var{stream}) 
 Writes a new line (to @var{stream}).
 See @code{sprint} for an example of using @code{newline()}.
 Note that there are some cases, where @code{newline()} does not work as expected. 
 
 @end deffn
 
-@deffn {Function} opena (@var{file}) 
+@deffn {Fun@,{c}@~ao} opena (@var{file}) 
 Returns an output stream to @var{file}.
 If an existing file is opened, @code{opena} appends elements at the end of file.
 
 @end deffn
 
-@deffn {Function} openr (@var{file}) 
+@deffn {Fun@,{c}@~ao} openr (@var{file}) 
 Returns an input stream to @var{file}.
 If @var{file} does not exist, it will be created.
 
 @end deffn
 
-@deffn {Function} openw (@var{file}) 
+@deffn {Fun@,{c}@~ao} openw (@var{file}) 
 Returns an output stream to @var{file}.
 If @var{file} does not exist, it will be created.
 If an existing file is opened, @code{openw} destructively modifies @var{file}.
 
 @end deffn
 
-@deffn {Function} printf (@var{dest}, @var{string})
-@deffnx {Function} printf (@var{dest}, @var{string}, @var{expr_1}, ..., @var{expr_n})
+@deffn {Fun@,{c}@~ao} printf (@var{dest}, @var{string})
+@deffnx {Fun@,{c}@~ao} printf (@var{dest}, @var{string}, @var{expr_1}, ..., @var{expr_n})
 Makes the Common Lisp function FORMAT available in Maxima. 
 (From gcl.info: "format produces formatted output by outputting the characters of 
 control-string string and observing that a tilde introduces a directive.
@@ -304,12 +304,12 @@ Otherwise, @code{printf} returns a string containing the output.
 
 @end deffn
 
-@deffn {Function} readline (@var{stream}) 
+@deffn {Fun@,{c}@~ao} readline (@var{stream}) 
 Returns a string containing the characters from the current position in @var{stream} up to the end of the line or @var{false} if the end of the file is encountered.
 
 @end deffn
 
-@deffn {Function} sprint (@var{expr_1}, ..., @var{expr_n})
+@deffn {Fun@,{c}@~ao} sprint (@var{expr_1}, ..., @var{expr_n})
 Evaluates and displays its arguments one after the other `on a line' starting at the leftmost position.
 The numbers are printed with the '-' right next to the number,
 and it disregards line length. @code{newline()}, which can be loaded from @code{stringproc.lisp} 
@@ -337,17 +337,17 @@ might be useful, if you whish to place intermediate line breaking.
 @node Defini@value{cedilha}@~oes para caracteres, Defini@value{cedilha}@~oes para seq@"u@^encias de caracteres, Defini@value{cedilha}@~oes para entrada e sa@'ida, stringproc
 @section Defini@value{cedilha}@~oes para caracteres
 
-@deffn {Function} alphacharp (@var{char})    
+@deffn {Fun@,{c}@~ao} alphacharp (@var{char})    
 Returns @code{true} if @var{char} is an alphabetic character. 
 
 @end deffn
 
-@deffn {Function} alphanumericp (@var{char}) 
+@deffn {Fun@,{c}@~ao} alphanumericp (@var{char}) 
 Returns @code{true} if @var{char} is an alphabetic character or a digit. 
 
 @end deffn
 
-@deffn {Function} ascii (@var{int}) 
+@deffn {Fun@,{c}@~ao} ascii (@var{int}) 
 Returns the character corresponding to the ASCII number @var{int}.
 ( -1 < int < 256 )
 
@@ -366,48 +366,48 @@ a b c d e f g h i j k l m n o p q r s t u v w x y z
 
 @end deffn
 
-@deffn {Function} cequal (@var{char_1}, @var{char_2})          
+@deffn {Fun@,{c}@~ao} cequal (@var{char_1}, @var{char_2})          
 Returns @code{true} if @var{char_1} and @var{char_2} are the same. 
 
 @end deffn
 
-@deffn {Function} cequalignore (@var{char_1}, @var{char_2})    
+@deffn {Fun@,{c}@~ao} cequalignore (@var{char_1}, @var{char_2})    
 Like @code{cequal} but ignores case. 
 
 @end deffn
 
-@deffn {Function} cgreaterp (@var{char_1}, @var{char_2})       
+@deffn {Fun@,{c}@~ao} cgreaterp (@var{char_1}, @var{char_2})       
 Returns @code{true} if the ASCII number of @var{char_1} is greater than the number of @var{char_2}. 
 
 @end deffn
 
-@deffn {Function} cgreaterpignore (@var{char_1}, @var{char_2})
+@deffn {Fun@,{c}@~ao} cgreaterpignore (@var{char_1}, @var{char_2})
 Like @code{cgreaterp} but ignores case. 
 
 @end deffn
 
-@deffn {Function} charp (@var{obj}) 
+@deffn {Fun@,{c}@~ao} charp (@var{obj}) 
 Returns @code{true} if @var{obj} is a Maxima-character.
 See introduction for example.
 
 @end deffn
 
-@deffn {Function} cint (@var{char}) 
+@deffn {Fun@,{c}@~ao} cint (@var{char}) 
 Returns the ASCII number of @var{char}.
 
 @end deffn
 
-@deffn {Function} clessp (@var{char_1}, @var{char_2})
+@deffn {Fun@,{c}@~ao} clessp (@var{char_1}, @var{char_2})
 Returns @code{true} if the ASCII number of @var{char_1} is less than the number of @var{char_2}. 
 
 @end deffn
 
-@deffn {Function} clesspignore (@var{char_1}, @var{char_2})
+@deffn {Fun@,{c}@~ao} clesspignore (@var{char_1}, @var{char_2})
 Like @code{clessp} but ignores case. 
 
 @end deffn
 
-@deffn {Function} constituent (@var{char})   
+@deffn {Fun@,{c}@~ao} constituent (@var{char})   
 Returns @code{true} if @var{char} is a graphic character and not the space character.
 A graphic character is a character one can see, plus the space character.
 (@code{constituent} is defined by Paul Graham, ANSI Common Lisp, 1996, page 67.)
@@ -428,24 +428,24 @@ d e f g h i j k l m n o p q r s t u v w x y z @{ | @} ~
 
 @end deffn
 
-@deffn {Function} cunlisp (@var{lisp_char}) 
+@deffn {Fun@,{c}@~ao} cunlisp (@var{lisp_char}) 
 Converts a Lisp-character into a Maxima-character.
 (You won't need it.)
 
 @end deffn
 
-@deffn {Function} digitcharp (@var{char})    
+@deffn {Fun@,{c}@~ao} digitcharp (@var{char})    
 Returns @code{true} if @var{char} is a digit. 
 
 @end deffn
 
-@deffn {Function} lcharp (@var{obj}) 
+@deffn {Fun@,{c}@~ao} lcharp (@var{obj}) 
 Returns @code{true} if @var{obj} is a Lisp-character.
 (You won't need it.)
 
 @end deffn
 
-@deffn {Function} lowercasep (@var{char})    
+@deffn {Fun@,{c}@~ao} lowercasep (@var{char})    
 Returns @code{true} if @var{char} is a lowercase character. 
 
 @end deffn
@@ -465,7 +465,7 @@ The tab character.
 
 @end defvr
 
-@deffn {Function} uppercasep (@var{char})    
+@deffn {Fun@,{c}@~ao} uppercasep (@var{char})    
 Returns @code{true} if @var{char} is an uppercase character. 
 
 @end deffn
@@ -473,25 +473,25 @@ Returns @code{true} if @var{char} is an uppercase character.
 @node Defini@value{cedilha}@~oes para seq@"u@^encias de caracteres,  , Defini@value{cedilha}@~oes para caracteres, stringproc
 @section Defini@value{cedilha}@~oes para seq@"u@^encias de caracteres
 
-@deffn {Function} sunlisp (@var{lisp_string}) 
+@deffn {Fun@,{c}@~ao} sunlisp (@var{lisp_string}) 
 Converts a Lisp-string into a Maxima-string.
 (In general you won't need it.)
 
 @end deffn
 
-@deffn {Function} lstringp (@var{obj}) 
+@deffn {Fun@,{c}@~ao} lstringp (@var{obj}) 
 Returns @code{true} if @var{obj} is a Lisp-string.
 (In general you won't need it.)
 
 @end deffn
 
-@deffn {Function} stringp (@var{obj}) 
+@deffn {Fun@,{c}@~ao} stringp (@var{obj}) 
 Returns @code{true} if @var{obj} is a Maxima-string.
 See introduction for example.
 
 @end deffn
 
-@deffn {Function} charat (@var{string}, @var{n}) 
+@deffn {Fun@,{c}@~ao} charat (@var{string}, @var{n}) 
 Returns the @var{n}-th character of @var{string}.
 The first character in @var{string} is returned with @var{n} = 1.
 
@@ -507,7 +507,7 @@ The first character in @var{string} is returned with @var{n} = 1.
 
 @end deffn
 
-@deffn {Function} charlist (@var{string}) 
+@deffn {Fun@,{c}@~ao} charlist (@var{string}) 
 Returns the list of all characters in @var{string}. 
 
 @c ===beg===
@@ -525,7 +525,7 @@ Returns the list of all characters in @var{string}.
 
 @end deffn
 
-@deffn {Function} parsetoken (@var{string})  
+@deffn {Fun@,{c}@~ao} parsetoken (@var{string})  
 @code{parsetoken} converts the first token in @var{string} to the corresponding number or returns @code{false} if the number cannot be determined .
 The delimiter set for tokenizing is @code{@{space, comma, semicolon, tab, newline@}}.
 
@@ -544,7 +544,7 @@ See description in file 'share\contrib\eval_string.lisp'.
 
 @end deffn
 
-@deffn {Function} sconc (@var{expr_1}, ..., @var{expr_n})
+@deffn {Fun@,{c}@~ao} sconc (@var{expr_1}, ..., @var{expr_n})
 Evaluates its arguments and concatenates them into a string.
 @code{sconc} is like @code{sconcat} but returns a Maxima string.
 
@@ -563,35 +563,35 @@ Evaluates its arguments and concatenates them into a string.
 
 @end deffn
 
-@deffn {Function} scopy (@var{string}) 
+@deffn {Fun@,{c}@~ao} scopy (@var{string}) 
 Returns a copy of @var{string} as a new string. 
 
 @end deffn
 
-@deffn {Function} sdowncase (@var{string}) 
-@deffnx {Function} sdowncase (@var{string}, @var{start}) 
-@deffnx {Function} sdowncase (@var{string}, @var{start}, @var{end}) 
+@deffn {Fun@,{c}@~ao} sdowncase (@var{string}) 
+@deffnx {Fun@,{c}@~ao} sdowncase (@var{string}, @var{start}) 
+@deffnx {Fun@,{c}@~ao} sdowncase (@var{string}, @var{start}, @var{end}) 
 Like @code{supcase}, but uppercase characters are converted to lowercase. 
 
 @end deffn
 
-@deffn {Function} sequal (@var{string_1}, @var{string_2}) 
+@deffn {Fun@,{c}@~ao} sequal (@var{string_1}, @var{string_2}) 
 Returns @code{true} if @var{string_1} and @var{string_2} are the same length and contain the same characters. 
 
 @end deffn
 
-@deffn {Function} sequalignore (@var{string_1}, @var{string_2})
+@deffn {Fun@,{c}@~ao} sequalignore (@var{string_1}, @var{string_2})
 Like @code{sequal} but ignores case. 
 
 @end deffn
 
-@deffn {Function} sexplode (@var{string})
+@deffn {Fun@,{c}@~ao} sexplode (@var{string})
 @code{sexplode} is an alias for function @code{charlist}.
 
 @end deffn
 
-@deffn {Function} simplode (@var{list})  
-@deffnx {Function} simplode (@var{list}, @var{delim})  
+@deffn {Fun@,{c}@~ao} simplode (@var{list})  
+@deffnx {Fun@,{c}@~ao} simplode (@var{list}, @var{delim})  
 @code{simplode} takes a list of expressions and concatenates them into a string.
 If no delimiter @var{delim} is used, @code{simplode} is like @code{sconc} and uses no delimiter.
 @var{delim} can be any string.
@@ -614,7 +614,7 @@ If no delimiter @var{delim} is used, @code{simplode} is like @code{sconc} and us
 
 @end deffn
 
-@deffn {Function} sinsert (@var{seq}, @var{string}, @var{pos})  
+@deffn {Fun@,{c}@~ao} sinsert (@var{seq}, @var{string}, @var{pos})  
 Returns a string that is a concatenation of @code{substring (@var{string}, 1, @var{pos} - 1)},
 the string @var{seq} and @code{substring (@var{string}, @var{pos})}.
 Note that the first character in @var{string} is in position 1.
@@ -636,9 +636,9 @@ Note that the first character in @var{string} is in position 1.
 
 @end deffn
 
-@deffn {Function} sinvertcase (@var{string})  
-@deffnx {Function} sinvertcase (@var{string}, @var{start})  
-@deffnx {Function} sinvertcase (@var{string}, @var{start}, @var{end})  
+@deffn {Fun@,{c}@~ao} sinvertcase (@var{string})  
+@deffnx {Fun@,{c}@~ao} sinvertcase (@var{string}, @var{start})  
+@deffnx {Fun@,{c}@~ao} sinvertcase (@var{string}, @var{start}, @var{end})  
 Returns @var{string} except that each character from position @var{start} to @var{end} is inverted.
 If @var{end} is not given,
 all characters from start to the @var{end} of @var{string} are replaced.
@@ -655,12 +655,12 @@ all characters from start to the @var{end} of @var{string} are replaced.
 
 @end deffn
 
-@deffn {Function} slength (@var{string}) 
+@deffn {Fun@,{c}@~ao} slength (@var{string}) 
 Returns the number of characters in @var{string}. 
 
 @end deffn
 
-@deffn {Function} smake (@var{num}, @var{char}) 
+@deffn {Fun@,{c}@~ao} smake (@var{num}, @var{char}) 
 Returns a new string with a number of @var{num} characters @var{char}. 
 
 @c ===beg===
@@ -675,8 +675,8 @@ Returns a new string with a number of @var{num} characters @var{char}.
 
 @end deffn
 
-@deffn {Function} smismatch (@var{string_1}, @var{string_2}) 
-@deffnx {Function} smismatch (@var{string_1}, @var{string_2}, @var{test}) 
+@deffn {Fun@,{c}@~ao} smismatch (@var{string_1}, @var{string_2}) 
+@deffnx {Fun@,{c}@~ao} smismatch (@var{string_1}, @var{string_2}, @var{test}) 
 Returns the position of the first character of @var{string_1} at which @var{string_1} and @var{string_2} differ or @code{false}.
 Default test function for matching is @code{sequal}.
 If @code{smismatch} should ignore case, use @code{sequalignore} as test.
@@ -693,9 +693,9 @@ If @code{smismatch} should ignore case, use @code{sequalignore} as test.
 
 @end deffn
 
-@deffn {Function} split (@var{string})  
-@deffnx {Function} split (@var{string}, @var{delim})  
-@deffnx {Function} split (@var{string}, @var{delim}, @var{multiple})  
+@deffn {Fun@,{c}@~ao} split (@var{string})  
+@deffnx {Fun@,{c}@~ao} split (@var{string}, @var{delim})  
+@deffnx {Fun@,{c}@~ao} split (@var{string}, @var{delim}, @var{multiple})  
 Returns the list of all tokens in @var{string}.
 Each token is an unparsed string.
 @code{split} uses @var{delim} as delimiter.
@@ -720,17 +720,17 @@ If @var{multiple} is set to @code{false}, each delimiter is noted.
 
 @end deffn
 
-@deffn {Function} sposition (@var{char}, @var{string}) 
+@deffn {Fun@,{c}@~ao} sposition (@var{char}, @var{string}) 
 Returns the position of the first character in @var{string} which matches @var{char}.
 The first character in @var{string} is in position 1.
 For matching characters ignoring case see @code{ssearch}.
 
 @end deffn
 
-@deffn {Function} sremove (@var{seq}, @var{string})  
-@deffnx {Function} sremove (@var{seq}, @var{string}, @var{test})  
-@deffnx {Function} sremove (@var{seq}, @var{string}, @var{test}, @var{start})  
-@deffnx {Function} sremove (@var{seq}, @var{string}, @var{test}, @var{start}, @var{end})  
+@deffn {Fun@,{c}@~ao} sremove (@var{seq}, @var{string})  
+@deffnx {Fun@,{c}@~ao} sremove (@var{seq}, @var{string}, @var{test})  
+@deffnx {Fun@,{c}@~ao} sremove (@var{seq}, @var{string}, @var{test}, @var{start})  
+@deffnx {Fun@,{c}@~ao} sremove (@var{seq}, @var{string}, @var{test}, @var{start}, @var{end})  
 Returns a string like @var{string} but without all substrings matching @var{seq}.
 Default test function for matching is @code{sequal}.
 If @code{sremove} should ignore case while searching for @var{seq}, use @code{sequalignore} as test.
@@ -752,23 +752,23 @@ Note that the first character in @var{string} is in position 1.
 
 @end deffn
 
-@deffn {Function} sremovefirst (@var{seq}, @var{string})  
-@deffnx {Function} sremovefirst (@var{seq}, @var{string}, @var{test})  
-@deffnx {Function} sremovefirst (@var{seq}, @var{string}, @var{test}, @var{start})  
-@deffnx {Function} sremovefirst (@var{seq}, @var{string}, @var{test}, @var{start}, @var{end})  
+@deffn {Fun@,{c}@~ao} sremovefirst (@var{seq}, @var{string})  
+@deffnx {Fun@,{c}@~ao} sremovefirst (@var{seq}, @var{string}, @var{test})  
+@deffnx {Fun@,{c}@~ao} sremovefirst (@var{seq}, @var{string}, @var{test}, @var{start})  
+@deffnx {Fun@,{c}@~ao} sremovefirst (@var{seq}, @var{string}, @var{test}, @var{start}, @var{end})  
 Like @code{sremove} except that only the first substring that matches @code{seq} is removed. 
 
 @end deffn
 
-@deffn {Function} sreverse (@var{string}) 
+@deffn {Fun@,{c}@~ao} sreverse (@var{string}) 
 Returns a string with all the characters of @var{string} in reverse order. 
 
 @end deffn
 
-@deffn {Function} ssearch (@var{seq}, @var{string})  
-@deffnx {Function} ssearch (@var{seq}, @var{string}, @var{test})  
-@deffnx {Function} ssearch (@var{seq}, @var{string}, @var{test}, @var{start})  
-@deffnx {Function} ssearch (@var{seq}, @var{string}, @var{test}, @var{start}, @var{end})
+@deffn {Fun@,{c}@~ao} ssearch (@var{seq}, @var{string})  
+@deffnx {Fun@,{c}@~ao} ssearch (@var{seq}, @var{string}, @var{test})  
+@deffnx {Fun@,{c}@~ao} ssearch (@var{seq}, @var{string}, @var{test}, @var{start})  
+@deffnx {Fun@,{c}@~ao} ssearch (@var{seq}, @var{string}, @var{test}, @var{start}, @var{end})
 Returns the position of the first substring of @var{string} that matches the string @var{seq}.
 Default test function for matching is @code{sequal}.
 If @code{ssearch} should ignore case, use @code{sequalignore} as test.
@@ -782,8 +782,8 @@ Note that the first character in @var{string} is in position 1.
 
 @end deffn
 
-@deffn {Function} ssort (@var{string}) 
-@deffnx {Function} ssort (@var{string}, @var{test}) 
+@deffn {Fun@,{c}@~ao} ssort (@var{string}) 
+@deffnx {Fun@,{c}@~ao} ssort (@var{string}, @var{test}) 
 Returns a string that contains all characters from @var{string} in an order such there are no two successive characters @var{c} and @var{d} such that @code{test (@var{c}, @var{d})} is @code{false} and @code{test (@var{d}, @var{c})} is @code{true}.
 Default test function for sorting is @var{clessp}.
 The set of test functions is @code{@{clessp, clesspignore, cgreaterp, cgreaterpignore, cequal, cequalignore@}}.
@@ -803,10 +803,10 @@ The set of test functions is @code{@{clessp, clesspignore, cgreaterp, cgreaterpi
 
 @end deffn
 
-@deffn {Function} ssubst (@var{new}, @var{old}, @var{string}) 
-@deffnx {Function} ssubst (@var{new}, @var{old}, @var{string}, @var{test}) 
-@deffnx {Function} ssubst (@var{new}, @var{old}, @var{string}, @var{test}, @var{start}) 
-@deffnx {Function} ssubst (@var{new}, @var{old}, @var{string}, @var{test}, @var{start}, @var{end}) 
+@deffn {Fun@,{c}@~ao} ssubst (@var{new}, @var{old}, @var{string}) 
+@deffnx {Fun@,{c}@~ao} ssubst (@var{new}, @var{old}, @var{string}, @var{test}) 
+@deffnx {Fun@,{c}@~ao} ssubst (@var{new}, @var{old}, @var{string}, @var{test}, @var{start}) 
+@deffnx {Fun@,{c}@~ao} ssubst (@var{new}, @var{old}, @var{string}, @var{test}, @var{start}, @var{end}) 
 Returns a string like @var{string} except that all substrings matching @var{old} are replaced by @var{new}.
 @var{old} and @var{new} need not to be of the same length.
 Default test function for matching is @code{sequal}.
@@ -829,15 +829,15 @@ Note that the first character in @var{string} is in position 1.
 
 @end deffn
 
-@deffn {Function} ssubstfirst (@var{new}, @var{old}, @var{string}) 
-@deffnx {Function} ssubstfirst (@var{new}, @var{old}, @var{string}, @var{test}) 
-@deffnx {Function} ssubstfirst (@var{new}, @var{old}, @var{string}, @var{test}, @var{start}) 
-@deffnx {Function} ssubstfirst (@var{new}, @var{old}, @var{string}, @var{test}, @var{start}, @var{end}) 
+@deffn {Fun@,{c}@~ao} ssubstfirst (@var{new}, @var{old}, @var{string}) 
+@deffnx {Fun@,{c}@~ao} ssubstfirst (@var{new}, @var{old}, @var{string}, @var{test}) 
+@deffnx {Fun@,{c}@~ao} ssubstfirst (@var{new}, @var{old}, @var{string}, @var{test}, @var{start}) 
+@deffnx {Fun@,{c}@~ao} ssubstfirst (@var{new}, @var{old}, @var{string}, @var{test}, @var{start}, @var{end}) 
 Like @code{subst} except that only the first substring that matches @var{old} is replaced. 
 
 @end deffn
 
-@deffn {Function} strim (@var{seq},@var{string}) 
+@deffn {Fun@,{c}@~ao} strim (@var{seq},@var{string}) 
 Returns a string like @var{string},
 but with all characters that appear in @var{seq} removed from both ends. 
 
@@ -858,18 +858,18 @@ but with all characters that appear in @var{seq} removed from both ends.
 
 @end deffn
 
-@deffn {Function} striml (@var{seq}, @var{string}) 
+@deffn {Fun@,{c}@~ao} striml (@var{seq}, @var{string}) 
 Like @code{strim} except that only the left end of @var{string} is trimmed. 
 
 @end deffn
 
-@deffn {Function} strimr (@var{seq}, @var{string}) 
+@deffn {Fun@,{c}@~ao} strimr (@var{seq}, @var{string}) 
 Like @code{strim} except that only the right end of string is trimmed. 
 
 @end deffn
 
-@deffn {Function} substring (@var{string}, @var{start})
-@deffnx {Function} substring (@var{string}, @var{start}, @var{end}) 
+@deffn {Fun@,{c}@~ao} substring (@var{string}, @var{start})
+@deffnx {Fun@,{c}@~ao} substring (@var{string}, @var{start}, @var{end}) 
 Returns the substring of @var{string} beginning at position @var{start} and ending at position @var{end}.
 The character at position @var{end} is not included.
 If @var{end} is not given, the substring contains the rest of the string.
@@ -890,9 +890,9 @@ Note that the first character in @var{string} is in position 1.
 
 @end deffn
 
-@deffn {Function} supcase (@var{string}) 
-@deffnx {Function} supcase (@var{string}, @var{start}) 
-@deffnx {Function} supcase (@var{string}, @var{start}, @var{end}) 
+@deffn {Fun@,{c}@~ao} supcase (@var{string}) 
+@deffnx {Fun@,{c}@~ao} supcase (@var{string}, @var{start}) 
+@deffnx {Fun@,{c}@~ao} supcase (@var{string}, @var{start}, @var{end}) 
 Returns @var{string} except that lowercase characters from position @var{start} to @var{end} are replaced by the corresponding uppercase ones.
 If @var{end} is not given,
 all lowercase characters from @var{start} to the end of @var{string} are replaced.
@@ -909,8 +909,8 @@ all lowercase characters from @var{start} to the end of @var{string} are replace
 
 @end deffn
 
-@deffn {Function} tokens (@var{string}) 
-@deffnx {Function} tokens (@var{string}, @var{test}) 
+@deffn {Fun@,{c}@~ao} tokens (@var{string}) 
+@deffnx {Fun@,{c}@~ao} tokens (@var{string}, @var{test}) 
 Returns a list of tokens, which have been extracted from @var{string}.
 The tokens are substrings whose characters satisfy a certain test function.
 If test is not given, @var{constituent} is used as the default test.

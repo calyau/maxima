@@ -2,10 +2,10 @@
 @c /zeilberger.texi/1.5/Thu Dec 28 05:44:18 2006//
 @menu
 * Introdu@value{cedilha}@~ao a zeilberger::
-* Defini@value{cedilha}@value{o_til}es para zeilberger::
+* Defini@value{cedilha}@~oes para zeilberger::
 @end menu
 
-@node Introdu@value{cedilha}@~ao a zeilberger, Defini@value{cedilha}@value{o_til}es para zeilberger, zeilberger, zeilberger
+@node Introdu@value{cedilha}@~ao a zeilberger, Defini@value{cedilha}@~oes para zeilberger, zeilberger, zeilberger
 @section Introdu@value{cedilha}@~ao a zeilberger
 
 @code{zeilberger} @'e uma implementa@,{c}@~ao do algor@'itmo de Zeilberger
@@ -62,8 +62,8 @@ Por exemplo:
 @code{ZeilbergerExtra}, @code{AntiDifferenceSummary}.
 
 
-@node Defini@value{cedilha}@value{o_til}es para zeilberger, , Introdu@value{cedilha}@~ao a zeilberger, zeilberger
-@section Defini@value{cedilha}@value{o_til}es para zeilberger
+@node Defini@value{cedilha}@~oes para zeilberger, , Introdu@value{cedilha}@~ao a zeilberger, zeilberger
+@section Defini@value{cedilha}@~oes para zeilberger
 
 @deffn {Fun@,{c}@~ao} AntiDifference (@var{F_k}, @var{k})
 

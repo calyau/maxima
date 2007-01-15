@@ -1,16 +1,16 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /Numerical.texi/1.22/Thu Nov  2 05:48:05 2006/-ko/
 @menu
-* Introdu@value{cedilha}@value{a_til}o a Num@'erico::
+* Introdu@value{cedilha}@~ao a Num@'erico::
 * Pacotes de Fourier::
-* Defini@value{cedilha}@value{o_til}es para Num@'erico::
-* Defini@value{cedilha}@value{o_til}es para S@'eries de Fourier::
+* Defini@value{cedilha}@~oes para Num@'erico::
+* Defini@value{cedilha}@~oes para S@'eries de Fourier::
 @end menu
 
-@node Introdu@value{cedilha}@value{a_til}o a Num@'erico, Pacotes de Fourier, Num@'erico, Num@'erico
-@section Introdu@value{cedilha}@value{a_til}o a Num@'erico
+@node Introdu@value{cedilha}@~ao a Num@'erico, Pacotes de Fourier, Num@'erico, Num@'erico
+@section Introdu@value{cedilha}@~ao a Num@'erico
 
-@node Pacotes de Fourier, Defini@value{cedilha}@value{o_til}es para Num@'erico, Introdu@value{cedilha}@value{a_til}o a Num@'erico, Num@'erico
+@node Pacotes de Fourier, Defini@value{cedilha}@~oes para Num@'erico, Introdu@value{cedilha}@~ao a Num@'erico, Num@'erico
 @section Pacotes de Fourier
 O pacote @code{fft} compreende fun@value{cedilha}@~oes para computa@value{cedilha}@~ao num@'erica (n@~ao simb@'olica)
 das transforma@value{cedilha}@~oes r@'apidas de Fourier.
@@ -26,8 +26,8 @@ Veja @code{Defini@value{cedilha}@~oes para S@'eries}.
 
 @c end concepts Numerical
 
-@node Defini@value{cedilha}@value{o_til}es para Num@'erico, Defini@value{cedilha}@value{o_til}es para S@'eries de Fourier, Pacotes de Fourier, Num@'erico
-@section Defini@value{cedilha}@value{o_til}es para Num@'erico
+@node Defini@value{cedilha}@~oes para Num@'erico, Defini@value{cedilha}@~oes para S@'eries de Fourier, Pacotes de Fourier, Num@'erico
+@section Defini@value{cedilha}@~oes para Num@'erico
 @c NOTE: Let's keep POLARTORECT, RECTTOPOLAR, and IFT before FFT
 @c in this file. Otherwise DESCRIBE returns the FFT text (because
 @c POLARTORECT, etc are list in the heading of FFT with @defunx).
@@ -427,8 +427,8 @@ Exemplos:
 
 @end deffn
 
-@node Defini@value{cedilha}@value{o_til}es para S@'eries de Fourier, , Defini@value{cedilha}@value{o_til}es para Num@'erico, Num@'erico
-@section Defini@value{cedilha}@value{o_til}es para S@'eries de Fourier
+@node Defini@value{cedilha}@~oes para S@'eries de Fourier, , Defini@value{cedilha}@~oes para Num@'erico, Num@'erico
+@section Defini@value{cedilha}@~oes para S@'eries de Fourier
 
 @c REPHRASE
 @deffn {Fun@,{c}@~ao} equalp (@var{x}, @var{y})

@@ -1,12 +1,12 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /Special.texi/1.27/Mon Jan 15 06:08:56 2007/-ko/
 @menu
-* Introdu@value{cedilha}@~ao a Fun@value{cedilha}@value{o_til}es Especiais::  
-* Defini@value{cedilha}@value{o_til}es para Fun@value{cedilha}@value{o_til}es Especiais::  
+* Introdu@value{cedilha}@~ao a Fun@value{cedilha}@~oes Especiais::  
+* Defini@value{cedilha}@~oes para Fun@value{cedilha}@~oes Especiais::  
 @end menu
 
-@node Introdu@value{cedilha}@~ao a Fun@value{cedilha}@value{o_til}es Especiais, Defini@value{cedilha}@value{o_til}es para Fun@value{cedilha}@value{o_til}es Especiais, Fun@value{cedilha}@value{o_til}es Especiais, Fun@value{cedilha}@value{o_til}es Especiais
-@section Introdu@value{cedilha}@~ao a Fun@value{cedilha}@value{o_til}es Especiais
+@node Introdu@value{cedilha}@~ao a Fun@value{cedilha}@~oes Especiais, Defini@value{cedilha}@~oes para Fun@value{cedilha}@~oes Especiais, Fun@value{cedilha}@~oes Especiais, Fun@value{cedilha}@~oes Especiais
+@section Introdu@value{cedilha}@~ao a Fun@value{cedilha}@~oes Especiais
 
 A nota@,{c}@~ao de fun@,{c}@~ao especial segue adiante:
 
@@ -34,8 +34,8 @@ kelliptic (z)                  integral eliptica completa de primeiro tipo (K)
 %d [n] (z)                     Fun@,{c}@~ao cil@'indrica parab@'olica
 @end example
 
-@node Defini@value{cedilha}@value{o_til}es para Fun@value{cedilha}@value{o_til}es Especiais,  , Introdu@value{cedilha}@~ao a Fun@value{cedilha}@value{o_til}es Especiais, Fun@value{cedilha}@value{o_til}es Especiais
-@section Defini@value{cedilha}@value{o_til}es para Fun@value{cedilha}@value{o_til}es Especiais
+@node Defini@value{cedilha}@~oes para Fun@value{cedilha}@~oes Especiais,  , Introdu@value{cedilha}@~ao a Fun@value{cedilha}@~oes Especiais, Fun@value{cedilha}@~oes Especiais
+@section Defini@value{cedilha}@~oes para Fun@value{cedilha}@~oes Especiais
 
 @deffn {Fun@,{c}@~ao} airy_ai (@var{x})
 A fun@,{c}@~ao de Airy Ai, como definida em Abramowitz e Stegun,

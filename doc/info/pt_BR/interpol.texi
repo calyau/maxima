@@ -22,7 +22,7 @@ Coment@'arios, corre@,{c}@~oes e sugest@~oes, por favor contacte-me em @var{'mar
 
 
 @deffn {Fun@,{c}@~ao} lagrange (@var{pontos})
-@deffnx {Fun@,{c}@~ao} lagrange (@var{pontos}, @var{op@value{cedilha}@value{a_til}o})
+@deffnx {Fun@,{c}@~ao} lagrange (@var{pontos}, @var{op@value{cedilha}@~ao})
 Calcula a interpola@,{c}@~ao polinomial atrav@'es do m@'etodo Lagrangiano. O argumento @var{pontos} deve ser um dos seguintes:
 
 @itemize @bullet
@@ -36,7 +36,7 @@ uma lista de n@'umeros, @code{p: [4,6,3]}, e nesse caso as abcissas ir@~ao ser a
 
 Nos dois primeiros casos os pares s@~ao ordenados em rela@,{c}@~ao @`a primeira coordenada antes de fazer os c@'alculos.
 
-Com o argumento @var{op@value{cedilha}@value{a_til}o} @'e poss@'ivel escolher o nome da vari@'avel independente, o qual @'e @code{'x} por padr@~ao; para definir qualquer outra, z por exemplo, escreva @code{varname='z}. 
+Com o argumento @var{op@value{cedilha}@~ao} @'e poss@'ivel escolher o nome da vari@'avel independente, o qual @'e @code{'x} por padr@~ao; para definir qualquer outra, z por exemplo, escreva @code{varname='z}. 
 
 Exemplos:
 
@@ -86,7 +86,7 @@ Retorna @code{true}, i. e., verdadeiro se o n@'umero @var{x} pertence ao interva
 
 
 @deffn {Fun@,{c}@~ao} linearinterpol (@var{pontos})
-@deffnx {Fun@,{c}@~ao} linearinterpol (@var{pontos}, @var{op@value{cedilha}@value{a_til}o})
+@deffnx {Fun@,{c}@~ao} linearinterpol (@var{pontos}, @var{op@value{cedilha}@~ao})
 Calcula a interpola@,{c}@~ao polinomial atrav@'es do m@'etodo linear. O argumento @var{pontos} deve ser um dos seguintes:
 
 @itemize @bullet
@@ -100,7 +100,7 @@ uma lista de n@'umeros, @code{p: [4,6,3]}, e nesse caso as abcissas ir@~ao ser a
 
 Nos dois primeiros casos os pares s@~ao ordenados em rela@,{c}@~ao @`a primeira coordenada antes de fazer os c@'alculos.
 
-Com o argumento @var{op@value{cedilha}@value{a_til}o} @'e poss@'ivel escolher o nome da vari@'avel independente, o qual @'e @code{'x} por padr@~ao; para definir qualquer outra, z por exemplo, escreva @code{varname='z}. 
+Com o argumento @var{op@value{cedilha}@~ao} @'e poss@'ivel escolher o nome da vari@'avel independente, o qual @'e @code{'x} por padr@~ao; para definir qualquer outra, z por exemplo, escreva @code{varname='z}. 
 
 Examples:
 @example
@@ -140,7 +140,7 @@ Examples:
 
 
 @deffn {Fun@,{c}@~ao} cspline (@var{pontos})
-@deffnx {Fun@,{c}@~ao} cspline (@var{pontos}, @var{op@value{cedilha}@value{a_til}o1}, @var{op@value{cedilha}@value{a_til}o2}, ...)
+@deffnx {Fun@,{c}@~ao} cspline (@var{pontos}, @var{op@value{cedilha}@~ao1}, @var{op@value{cedilha}@~ao2}, ...)
 Calcula a interpola@,{c}@~ao polnomial pelo m@'etodo de splines ( polin@^omios de ordem k que interpolam os dados e t@^em k-1 derivadas cont@'inuas em todo o intervalo ) c@'ubicos. O argumento @var{pontos} deve ser um dos
 seguintes:
 

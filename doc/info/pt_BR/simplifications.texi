@@ -2,18 +2,18 @@
 @c /simplifications.texi/1.3/Sat Jul  8 08:16:05 2006//
 @menu
 * Introdu@value{cedilha}@~ao a simplification::
-* Defini@value{cedilha}@value{o_til}es para simplification::
+* Defini@value{cedilha}@~oes para simplification::
 @end menu
 
-@node Introdu@value{cedilha}@~ao a simplification, Defini@value{cedilha}@value{o_til}es para simplification, simplification, simplification
+@node Introdu@value{cedilha}@~ao a simplification, Defini@value{cedilha}@~oes para simplification, simplification, simplification
 @section Introdu@value{cedilha}@~ao a simplification
 
 O diret@'orio @code{maxima/share/simplification} cont@'em muitos scripts
 que implementam regras de simplifica@,{c}@~ao e fun@,{c}@~oes,
 e tamb@'em algumas fun@,{c}@~oes n@~ao relacionadas a simplifica@,{c}@~ao.
 
-@node Defini@value{cedilha}@value{o_til}es para simplification,  , Introdu@value{cedilha}@~ao a simplification, simplification
-@section Defini@value{cedilha}@value{o_til}es para simplification
+@node Defini@value{cedilha}@~oes para simplification,  , Introdu@value{cedilha}@~ao a simplification, simplification
+@section Defini@value{cedilha}@~oes para simplification
 
 @c Adapted from absimp.usg ----------------------
 

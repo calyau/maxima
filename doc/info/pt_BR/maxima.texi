@@ -176,7 +176,7 @@ Suporte a @'areas espec@'ificas da matem@'atica
                                 logar@'itmos.
 * Trigonometria::               Manipulando express@~oes com trigonometria e
                                 Fun@value{cedilha}@~oes trigonom@'etricas inversas.
-* Fun@value{cedilha}@value{o_til}es Especiais::           Fun@value{cedilha}@~oes especiais
+* Fun@value{cedilha}@~oes Especiais::           Fun@value{cedilha}@~oes especiais
 * Fun@value{cedilha}@~oes El@'ipticas::           Fun@value{cedilha}@~oes El@'ipticas e Integrais
 * Limites::                     Limites de express@~oes.
 * Diferencia@value{cedilha}@~ao::               C@'alculo diferencial.
@@ -327,10 +327,10 @@ Trigonometria
 * Introdu@value{cedilha}@~ao ao Pacote Trigonom@'etrico::  
 * Defini@value{cedilha}@~oes para Trigonometria::  
 
-Fun@value{cedilha}@value{o_til}es Especiais
+Fun@value{cedilha}@~oes Especiais
 
-* Introdu@value{cedilha}@~ao a Fun@value{cedilha}@value{o_til}es Especiais::  
-* Defini@value{cedilha}@value{o_til}es para Fun@value{cedilha}@value{o_til}es Especiais::  
+* Introdu@value{cedilha}@~ao a Fun@value{cedilha}@~oes Especiais::  
+* Defini@value{cedilha}@~oes para Fun@value{cedilha}@~oes Especiais::  
 
 Fun@value{cedilha}@~oes El@'ipticas
 
@@ -361,10 +361,10 @@ Equa@value{cedilha}@~oes Diferenciais
 
 Num@'erico
 
-* Introdu@value{cedilha}@value{a_til}o a Num@'erico::   
+* Introdu@value{cedilha}@~ao a Num@'erico::   
 * Pacotes de Fourier::                     
-* Defini@value{cedilha}@value{o_til}es para Num@'erico::   
-* Defini@value{cedilha}@value{o_til}es para S@'eries de Fourier::
+* Defini@value{cedilha}@~oes para Num@'erico::   
+* Defini@value{cedilha}@~oes para S@'eries de Fourier::
 
 Estatistica
 
@@ -463,7 +463,7 @@ Depurando
 
 augmented_lagrangian
 
-* Defini@value{cedilha}@value{o_til}es para augmented_lagrangian::
+* Defini@value{cedilha}@~oes para augmented_lagrangian::
 
 bode
 
@@ -514,7 +514,7 @@ impdiff
 
 implicit_plot
 
-* Defini@value{cedilha}@value{o_til}es para implicit_plot::
+* Defini@value{cedilha}@~oes para implicit_plot::
 
 interpol
 
@@ -578,7 +578,7 @@ simplex
 simplification
 
 * Introdu@value{cedilha}@~ao a simplification::
-* Defini@value{cedilha}@value{o_til}es para simplification::
+* Defini@value{cedilha}@~oes para simplification::
 
 solve_rec
 
@@ -611,7 +611,7 @@ unit
 zeilberger
 
 * Introdu@value{cedilha}@~ao a zeilberger::
-* Defini@value{cedilha}@value{o_til}es para zeilberger::
+* Defini@value{cedilha}@~oes para zeilberger::
 
 @comment @end detailmenu
 @end menu
@@ -677,15 +677,15 @@ zeilberger
 @chapter Logar@'itmos
 @include Logarithms.texi
 
-@node Trigonometria, Fun@value{cedilha}@value{o_til}es Especiais, Logar@'itmos, Top
+@node Trigonometria, Fun@value{cedilha}@~oes Especiais, Logar@'itmos, Top
 @chapter Trigonometria
 @include Trigonometric.texi
 
-@node Fun@value{cedilha}@value{o_til}es Especiais, Fun@value{cedilha}@~oes El@'ipticas, Trigonometria, Top
-@chapter Fun@value{cedilha}@value{o_til}es Especiais
+@node Fun@value{cedilha}@~oes Especiais, Fun@value{cedilha}@~oes El@'ipticas, Trigonometria, Top
+@chapter Fun@value{cedilha}@~oes Especiais
 @include Special.texi
 
-@node Fun@value{cedilha}@~oes El@'ipticas, Limites, Fun@value{cedilha}@value{o_til}es Especiais, Top
+@node Fun@value{cedilha}@~oes El@'ipticas, Limites, Fun@value{cedilha}@~oes Especiais, Top
 @chapter Fun@value{cedilha}@~oes El@'ipticas
 @include Elliptic.texi
 
