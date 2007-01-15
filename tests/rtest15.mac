@@ -608,3 +608,57 @@ limit(5^n/(2^n*3^n),n,inf);
  */
 trigsimp(sqrt(2*(cos(x)^2-sin(x)^2)+2));
 sqrt(trigsimp(2*(cos(x)^2-sin(x)^2)+2));
+
+/* Tests for COERCE-FLOAT-FUN via QUADPACK functions.
+ * COERCE-FLOAT-FUN is also an important element in plotting.
+ *
+ * Following cases are tested here:
+ *  EXPR is a symbol
+ *    name of a Lisp function
+ *    name of a Maxima function
+ *    name of a Maxima macro
+ *    a string which is the name of a Maxima operator (e.g., "!")
+ *    name of a simplifying function
+ *  EXPR is a Maxima lambda expression
+ *  EXPR is a general Maxima expression
+ *
+ * The one case not tested: EXPR is the name of a DEFMSPEC function
+ */
+
+(kill(F1, F2, F3),
+ F1(foo) := sin(foo),
+ F2(bar) ::= sin(bar),
+ F3 : lambda([baz], sin(baz)),
+ postfix ("F4"),
+ "F4"(zorg) := sin(zorg),
+ 0);
+0;
+
+(tol : 1e-8,
+ expected : quad_qags (sin(quux), quux, 0, %pi, tol),
+ [first (expected),
+  is (second (expected) < tol * first (expected)),
+  is (abs (first (expected) - 2.0) < tol * 2.0),
+  last (expected)]);
+[2.0, true, true, 0];
+
+quad_qags (F1, blurf, 0, %pi, tol);
+expected;
+
+quad_qags (F2, mumble, 0, %pi, tol);
+expected;
+
+quad_qags (F3, gronk, 0, %pi, tol);
+expected;
+
+quad_qags ("F4", flopt, 0, %pi, tol);
+expected;
+
+quad_qags (sin, foobar, 0, %pi, tol);
+expected;
+
+(translate (F1), ?fboundp (F1));
+true;
+
+quad_qags (F1, glump, 0, %pi, tol);
+expected;

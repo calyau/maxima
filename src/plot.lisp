@@ -631,18 +631,14 @@ setrgbcolor} def
          (cond
        ((fboundp expr)
         (symbol-function expr))
+
        ; expr is name of a Maxima function defined by := or define
        ((mget expr 'mexpr)
-                (let* ((mexpr (mget expr 'mexpr))
-                       (args (nth 1 mexpr)))
-                  (coerce `(lambda ,(cdr args)
-                            (declare (special ,@(cdr args)))
-                            (let* (($ratprint nil) ($numer t)
-                                   (result (maybe-realpart (meval* ',(nth 2 mexpr)))))
-                              (if ($numberp result)
-                                  ($float result)
-                                  nil)))
-                          'function)))
+        (let*
+          ((mexpr (mget expr 'mexpr))
+           (args (cdr (nth 1 mexpr))))
+          (coerce-maxima-function-or-maxima-lambda args expr)))
+
        ((or
           ; expr is the name of a function defined by defmspec
           (get expr 'mfexpr*)
@@ -663,18 +659,10 @@ setrgbcolor} def
          (merror "Undefined function ~M" expr))))
 
     ((and (consp expr) (eq (caar expr) 'lambda))
-     ; FOLLOWING CODE IS IDENTICAL TO CODE FOR EXPR = SYMBOL 
-     ; (EXCEPT HERE WE HAVE EXPR INSTEAD OF MEXPR). DOUBTLESS BEST TO MERGE.
-                (let ((args (nth 1 expr)))
-                  (coerce `(lambda ,(cdr args)
-                            (declare (special ,@(cdr args)))
-                            (let* (($ratprint nil) ($numer t)
-                                   (result (maybe-realpart (meval* ',(nth 2 expr)))))
-                              (if ($numberp result)
-                                  ($float result)
-                                  nil)))
-                          'function)))
-        (t
+     (let ((args (cdr (nth 1 expr))))
+       (coerce-maxima-function-or-maxima-lambda args expr)))
+
+    (t
          (let ((vars (or lvars ($sort ($listofvars expr))))
                                         ;(na (gensym "TMPF"))
                )
@@ -704,6 +692,19 @@ setrgbcolor} def
                                ))
                          result)))
                    'function)))))
+
+(defun coerce-maxima-function-or-maxima-lambda (args expr)
+  (let ((gensym-args (loop for x in args collect (gensym))))
+    (coerce
+      `(lambda ,gensym-args (declare (special ,@gensym-args))
+         (let*
+           (($ratprint nil)
+            ($numer t)
+            (result (maybe-realpart (mapply ',expr (list ,@gensym-args) t))))
+           (if ($numberp result)
+             ($float result)
+             result)))
+      'function)))
 
 (defmacro zval (points verts i) `(aref ,points (f+ 2 (f* 3 (aref ,verts ,i)))))
 
