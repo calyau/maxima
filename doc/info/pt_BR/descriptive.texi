@@ -1,13 +1,15 @@
+@c Language: Brazilian Portuguese, Encoding: iso-8859-1
+@c /descriptive.texi/1.8/Mon Jul 24 10:59:45 2006//
 @menu
-* Introduction to descriptive::
-* Definitions for data manipulation::
-* Definitions for descriptive statistics::
-* Definitions for specific multivariate descriptive statistics::
-* Definitions for statistical graphs::
+* Introdu@value{cedilha}@~ao ao pacote descriptive::
+* Defini@value{cedilha}@~oes para manipula@value{cedilha}@~ao da dados::
+* Defini@value{cedilha}@~oes para estat@'istica descritiva::
+* Defini@value{cedilha}@~oes espec@'ificas para estat@'istica descritiva de v@'arias vari@'aveis::
+* Defini@value{cedilha}@~oes para gr@'aficos estat@'isticos::
 @end menu
 
-@node Introduction to descriptive, Definitions for data manipulation, descriptive, descriptive
-@section Introduction to descriptive
+@node Introdu@value{cedilha}@~ao ao pacote descriptive, Defini@value{cedilha}@~oes para manipula@value{cedilha}@~ao da dados, descriptive, descriptive
+@section Introdu@value{cedilha}@~ao ao pacote descriptive
 
 Package @code{descriptive} contains a set of functions for making descriptive statistical computations and graphing. Together with the source code there are three data sets in your Maxima tree: @code{pidigits.data}, @code{wind.data} and @code{biomed.data}. They can be also downloaded from the web site @code{www.biomates.net}.
 
@@ -173,8 +175,8 @@ One must take care when working with categorical data. In the next example, symb
 
 
 
-@node Definitions for data manipulation, Definitions for descriptive statistics, Introduction to descriptive, descriptive
-@section Definitions for data manipulation
+@node Defini@value{cedilha}@~oes para manipula@value{cedilha}@~ao da dados, Defini@value{cedilha}@~oes para estat@'istica descritiva, Introdu@value{cedilha}@~ao ao pacote descriptive, descriptive
+@section Defini@value{cedilha}@~oes para manipula@value{cedilha}@~ao da dados
 
 @deffn {Function} continuous_freq (@var{list})
 @deffnx {Function} continuous_freq (@var{list}, @var{m})
@@ -376,8 +378,8 @@ Here, the first component is meaningless, since @code{A} and @code{B} are catego
 @end deffn
 
 
-@node Definitions for descriptive statistics, Definitions for specific multivariate descriptive statistics, Definitions for data manipulation, descriptive
-@section Definitions for descriptive statistics
+@node Defini@value{cedilha}@~oes para estat@'istica descritiva, Defini@value{cedilha}@~oes espec@'ificas para estat@'istica descritiva de v@'arias vari@'aveis, Defini@value{cedilha}@~oes para manipula@value{cedilha}@~ao da dados, descriptive
+@section Defini@value{cedilha}@~oes para estat@'istica descritiva
 
 
 
@@ -835,7 +837,7 @@ Example:
 @deffn {Function} quantile (@var{list}, @var{p})
 @deffnx {Function} quantile (@var{matrix}, @var{p})
 This is the @var{p}-@code{quantile}, with @var{p} a number in @math{[0, 1]}, of the sample @var{list}.
-Although there are several definitions for the sample quantile (Hyndman, R. J., Fan, Y. (1996) @var{Sample quantiles in statistical packages}. American Statistician, 50, 361-365), the one based on linear interpolation is implemented in package @code{descriptive}.
+Although there are several Defini@value{cedilha}@~oes para the sample quantile (Hyndman, R. J., Fan, Y. (1996) @var{Sample quantiles in statistical packages}. American Statistician, 50, 361-365), the one based on linear interpolation is implemented in package @code{descriptive}.
 
 Example:
 
@@ -1375,8 +1377,8 @@ See also function @code{quantile}.
 
 
 
-@node Definitions for specific multivariate descriptive statistics, Definitions for statistical graphs, Definitions for descriptive statistics, descriptive
-@section Definitions for specific multivariate descriptive statistics
+@node Defini@value{cedilha}@~oes espec@'ificas para estat@'istica descritiva de v@'arias vari@'aveis, Defini@value{cedilha}@~oes para gr@'aficos estat@'isticos, Defini@value{cedilha}@~oes para estat@'istica descritiva, descriptive
+@section Defini@value{cedilha}@~oes espec@'ificas para estat@'istica descritiva de v@'arias vari@'aveis
 
 
 
@@ -1752,8 +1754,8 @@ See also @code{cov} and @code{cov1}.
 
 
 
-@node Definitions for statistical graphs,  , Definitions for specific multivariate descriptive statistics, descriptive
-@section Definitions for statistical graphs
+@node Defini@value{cedilha}@~oes para gr@'aficos estat@'isticos,  , Defini@value{cedilha}@~oes espec@'ificas para estat@'istica descritiva de v@'arias vari@'aveis, descriptive
+@section Defini@value{cedilha}@~oes para gr@'aficos estat@'isticos
 
 
 

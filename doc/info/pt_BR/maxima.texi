@@ -154,13 +154,13 @@ Jorge Barros de Abreu
 @menu
 Infraestrutura do Maxima
 
-* Introdu@value{cedilha}@~ao ao Maxima:: Exemplo de sess@~oes do Maxima.
-* Detec@value{cedilha}@~ao e Relato de Erros:: Encontrando e relatando erros no Maxima.
+* Introdu@value{cedilha}@~ao ao Maxima::        Exemplo de sess@~oes do Maxima.
+* Detec@value{cedilha}@~ao e Relato de Erros::  Encontrando e relatando erros no Maxima.
 * Ajuda::                       Solicitando ajuda de dentro de uma 
                                 sess@~ao do Maxima.
 * Linha de Comando::            Sintaxe de linha de comando do Maxima.
 * Operadores::                  Operadores usados em express@~oes do Maxima.
-* Express@~oes::                Express@~oes no Maxima.
+* Express@~oes::                  Express@~oes no Maxima.
 * Simplifica@value{cedilha}@~ao::               Simplificando express@~oes.
 * Montando Gr@'aficos::           Sa@'idas gr@'aficas em 2D e 3D.
 * Entrada e Sa@'ida::             Entrada e sa@'ida de arquivos.
@@ -200,7 +200,7 @@ Suporte a @'areas espec@'ificas da matem@'atica
 Facilidades avan@value{cedilha}adas e programa@value{cedilha}@~ao
 
 * Ambiente em Tempo de Execu@value{cedilha}@~ao:: Customiza@value{cedilha}@~ao do ambiente Maxima.
-* Op@value{cedilha}@~oes Diversas:: Op@value{cedilha}@~oes com efeito global sobre o Maxima.
+* Op@value{cedilha}@~oes Diversas::             Op@value{cedilha}@~oes com efeito global sobre o Maxima.
 * Regras e Modelos::            Coincid@^encia de express@~oes definidas pelo utilizador e regras de simplifica@value{cedilha}@~ao.
 * Listas::                      Manipula@value{cedilha}@~ao de listas.
 * Conjuntos::                   Manipula@value{cedilha}@~ao de conjuntos.
@@ -213,7 +213,7 @@ Pacotes Adicionais
 * augmented_lagrangian::        Pacote augmented_lagrangian.
 * bode::                        Gr@'aficos de ganho e fase de Bode.
 * cholesky::                    Decomposi@,{c}@~ao de Cholesky.
-* descriptive::                 Estat@'istica descriptiva.
+* descriptive::                 Estat@'istica descritiva.
 * diag::                        Matrizes de Jordan.
 * distrib::                     Distribui@,{c}@~oes de probabilidade.
 * dynamics::                    Gr@'aficos para sistemas din@^amicos e fractais.
@@ -239,7 +239,7 @@ Pacotes Adicionais
 * solve_rec::                   Rela@,{c}@~oes de recorr@^encias lineares.
 * stats::                       Pacote de infer@^encias estat@'isticas.
 * stirling::                    F@'ormula de Stirling.
-* stringproc::                  Processamento de cadeias de texto.
+* stringproc::                  Manipula@,{c}@~ao de seq@"u@^encias de caracteres.
 * unit::                        Pacote de unidades e dimens@~oes.
 * zeilberger::                  Fun@,{c}@~oes para somat@'orios hipergeom@'etricos.
 
@@ -271,11 +271,12 @@ Linha de Comando
 Operadores
 
 * N-Argumentos::                        
-* Sem Argumentos::                       
-* Operador::                    
+* Operador n@~ao fixado::                       
 * Operador P@'osfixado::                     
 * Operador Pr@'efixado::                      
-* Defini@value{cedilha}@~oes para Operadores::   
+* Operadores Aritm@'eticos::    
+* Operadores Relacionais::   
+* Operadores Geral::
 
 Express@~oes
 
@@ -329,7 +330,6 @@ Trigonometria
 Fun@value{cedilha}@value{o_til}es Especiais
 
 * Introdu@value{cedilha}@~ao a Fun@value{cedilha}@value{o_til}es Especiais::  
-* specint::                     
 * Defini@value{cedilha}@value{o_til}es para Fun@value{cedilha}@value{o_til}es Especiais::  
 
 Fun@value{cedilha}@~oes El@'ipticas
@@ -475,11 +475,11 @@ cholesky
 
 descriptive
 
-* Introduction to descriptive::
-* Definitions for data manipulation::
-* Definitions for descriptive statistics::
-* Definitions for specific multivariate descriptive statistics::
-* Definitions for statistical graphs::
+* Introdu@value{cedilha}@~ao ao pacote descriptive::
+* Defini@value{cedilha}@~oes para manipula@value{cedilha}@~ao da dados::
+* Defini@value{cedilha}@~oes para estat@'istica descritiva::
+* Defini@value{cedilha}@~oes espec@'ificas para estat@'istica descritiva de v@'arias vari@'aveis::
+* Defini@value{cedilha}@~oes para gr@'aficos estat@'isticos::
 
 diag
 
@@ -598,10 +598,10 @@ stirling
 
 stringproc
 
-* Introduction to string processing::
-* Definitions for input and output::
-* Definitions for characters::
-* Definitions for strings::
+* Introdu@value{cedilha}@~ao a manipula@value{cedilha}@~ao de seq@"u@^encias de caracteres::
+* Defini@value{cedilha}@~oes para entrada e sa@'ida::
+* Defini@value{cedilha}@~oes para caracteres::
+* Defini@value{cedilha}@~oes para seq@"u@^encias de caracteres::
 
 unit
 

@@ -1,59 +1,12 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
-@c /Special.texi/1.26/Sat Sep  9 08:52:22 2006/-ko/
+@c /Special.texi/1.27/Mon Jan 15 06:08:56 2007/-ko/
 @menu
 * Introdu@value{cedilha}@~ao a Fun@value{cedilha}@value{o_til}es Especiais::  
-* specint::                     
 * Defini@value{cedilha}@value{o_til}es para Fun@value{cedilha}@value{o_til}es Especiais::  
 @end menu
 
-@node Introdu@value{cedilha}@~ao a Fun@value{cedilha}@value{o_til}es Especiais, specint, Fun@value{cedilha}@value{o_til}es Especiais, Fun@value{cedilha}@value{o_til}es Especiais
+@node Introdu@value{cedilha}@~ao a Fun@value{cedilha}@value{o_til}es Especiais, Defini@value{cedilha}@value{o_til}es para Fun@value{cedilha}@value{o_til}es Especiais, Fun@value{cedilha}@value{o_til}es Especiais, Fun@value{cedilha}@value{o_til}es Especiais
 @section Introdu@value{cedilha}@~ao a Fun@value{cedilha}@value{o_til}es Especiais
-
-@c CAN'T FIND ANY SIGN OF THIS FUNCTION 
-@c COMMENT OUT, CUT IT ON NEXT PASS THROUGH THIS FILE
-@c @deffn %K [@var{index}](@var{expr})
-@c 
-@c Constant, in ODE2
-@c 
-@c @end deffn
-
-@node specint, Defini@value{cedilha}@value{o_til}es para Fun@value{cedilha}@value{o_til}es Especiais, Introdu@value{cedilha}@~ao a Fun@value{cedilha}@value{o_til}es Especiais, Fun@value{cedilha}@value{o_til}es Especiais
-
-@c OK, THIS IS A BIT OF A COMPLICATED SITUATION:
-@c SOME SPECIAL FUNCTIONS ARE DEFINED IN src/hypgeo.lisp INCLUDING specint,
-@c AND SOME OF THE SAME FUNCTIONS (AND SOME OTHERS) ARE DEFINED IN src/hyp.lisp .
-@c AT THIS POINT IT'S NOT CLEAR WHICH PACKAGE SHOULD TAKE PRECEDENCE.
-@c FOR NOW LET'S LEAVE THAT ASIDE AND JUST TRY TO DO A SHALLOW CLEAN UP HERE.
-
-@c specint IS ALSO THE NAME OF A FUNCTION. DON'T WE WANT TO GIVE IT ITS OWN @defun ??
-@section specint
-@code{hypgeo} @'e um pacote para manusear transforma@,{c}@~oes de Laplace de fun@value{cedilha}@~oes especiais.
-@code{hyp} @'e um pacote para manusear fun@value{cedilha}@~oes Hipergeom@'etricas generalizadas.
-
-@code{specint} tenta calcular a integral definida
-(sobre o intervalo de zero a infinito) de uma express@~ao contendo fun@value{cedilha}@~oes especiais.
-Quando o integrando cont@'em um fator @code{exp (-s t)}, 
-o resultado @'e uma transforma@,{c}@~ao de Laplace.
-
-@c I DON'T THINK specint EVEN WORKS IF THERE'S NO EXPLICIT EXPONENTIAL
-@c FORM.  THAT IS, IT CAN REALLY ONLY HANDLE Laplace TRANSFORMS.
-
-A sintaxe @'e como segue:
-
-@example
-specint (exp (-s*@var{t}) * @var{expr}, @var{t});
-@end example
-
-onde @var{t} @'e a vari@'avel de integra@,{c}@~ao
-e @var{expr} @'e uma express@~ao contendo fun@value{cedilha}@~oes especiais.
-
-Se @code{specint} n@~ao puder calcular a integral, o valor de retorno pode
-conter v@'arios s@'imbolos Lisp, incluindo
-@code{other-defint-to-follow-negtest},
-@code{other-lt-exponential-to-follow},
-@code{product-of-y-with-nofract-indices}, etc.; isso @'e um bug.  
-
-@c REPORTED AS SOURCEFORGE BUG # 1162505
 
 A nota@,{c}@~ao de fun@,{c}@~ao especial segue adiante:
 
@@ -81,68 +34,8 @@ kelliptic (z)                  integral eliptica completa de primeiro tipo (K)
 %d [n] (z)                     Fun@,{c}@~ao cil@'indrica parab@'olica
 @end example
 
-@code{demo ("hypgeo")} mostra muitos exemplos de transforma@,{c}@~oes de Laplace calculadas atrav@'es de @code{specint}.
-
-Esse @'e um trabalho em andamento.  Alguns nomes de fun@,{c}@~oes podem mudar.
-@c COPY SOME OF THOSE EXAMPLES INTO THIS DOCUMENT
-
-@c end concepts Fun@value{cedilha}@value{o_til}es Especiais
-@node Defini@value{cedilha}@value{o_til}es para Fun@value{cedilha}@value{o_til}es Especiais,  , specint, Fun@value{cedilha}@value{o_til}es Especiais
+@node Defini@value{cedilha}@value{o_til}es para Fun@value{cedilha}@value{o_til}es Especiais,  , Introdu@value{cedilha}@~ao a Fun@value{cedilha}@value{o_til}es Especiais, Fun@value{cedilha}@value{o_til}es Especiais
 @section Defini@value{cedilha}@value{o_til}es para Fun@value{cedilha}@value{o_til}es Especiais
-
-@c airy IS IN THE bessel PACKAGE. ai, bi, ETC ARE IN THE airy PACKAGE.
-@deffn {Fun@,{c}@~ao} airy (@var{x})
-A fun@,{c}@~ao de Airy Ai.
-Se o argumento @var{x} for um n@'umero,
-o valor num@'erico de @code{airy (@var{x})} @'e retornado.
-de outra forma, uma express@~ao n@~ao avaliada @code{airy (@var{x})} @'e retornada.
-@c THE RETURN VALUE IS '(($AIRY SIMP) $X) -- NOT A NOUN, RIGHT? SINCE %AIRY WOULD BE A NOUN
-
-@c REMAINDER DERIVED FROM airy.usg AND SHOULD PROBABLY BE MOVED
-@c TO A NODE DEVOTED TO THE airy PACKAGE.
-A equa@,{c}@~ao de Airy @code{diff (y(x), x, 2) - x y(x) = 0} tem duas solu@,{c}@~oes linearmente
-independentes, chamadas @code{ai} e @code{bi}. Essa equa@,{c}@~ao @'e muito popular
-como uma aproxima@,{c}@~ao para problemas mais complicados em muitos ambientes de
-f@'isica matem@'atica.
-
-@code{load ("airy")} chama as fun@,{c}@~oes @code{ai}, @code{bi}, @code{dai}, e @code{dbi}.
-
-O pacote @code{airy} cont@'em rotinas para calcular
-@code{ai} e @code{bi} e suas derivadas @code{dai} e @code{dbi}. O resultado @'e
-um n@'umero em ponto flutuante se o argumento for um n@'umero, e uma
-express@~ao n@~ao avaliada de outra forma.
-@c THE RETURN VALUE IS '(($AI SIMP) $X) -- NOT A NOUN, RIGHT? SINCE %AI WOULD BE A NOUN
-
-Um erro ocorre se o argumento for maior que o esperado
-causando um estouro nas exponenciais, ou uma perda de 
-precis@~ao no @code{sin} ou no @code{cos}. Isso faz o intervalo de validade
-@c NEED TO UPDATE RANGES TO REFLECT DOUBLE PRECISION ARITHMETIC.
-sobre -2800 a 10^38 para @code{ai} e @code{dai}, e de -2800 a 25 para @code{bi} e @code{dbi}.
-
-Essas regras de deriva@,{c}@~ao s@~ao conhecidas para Maxima:
-@itemize @bullet
-@item
-@code{diff (ai(x), x)} retorna @code{dai(x)},
-@item
-@code{diff (dai(x), x)} retorna @code{x ai(x)},
-@item
-@code{diff (bi(x), x)} retorna @code{dbi(x)},
-@item
-@code{diff (dbi(x), x)} retorna @code{x bi(x)}.
-@end itemize
-
-Valores de fun@,{c}@~ao s@~ao calculados a partir das s@'eries de Taylor convergentes para @code{abs(@var{x}) < 3},
-e a partir de expans@~oes assint@'oticas para @code{@var{x} < -3} ou @code{@var{x} > 3} como necess@'ario.
-Esses resultados somente apresentam discrep@^ancias num@'ericas muito pequenas em @code{@var{x} = 3} e @code{@var{x} = -3}.
-Para detalhes, veja Abramowitz e Stegun,
-@i{Handbook of Mathematical Functions}, Sess@~ao 10.4 e Tabela 10.11.
-
-@code{ev (taylor (ai(x), x, 0, 9), infeval)} retorna uma
-expans@~ao de Taylor em ponto flutuante da fun@,{c}@~ao @code{ai}.
-Uma express@~ao similar pode ser constru@'ida para @code{bi}.
-
-@end deffn
-
 
 @deffn {Fun@,{c}@~ao} airy_ai (@var{x})
 A fun@,{c}@~ao de Airy Ai, como definida em Abramowitz e Stegun,
@@ -372,48 +265,6 @@ a fun@,{c}@~ao de Bessel @'e expandida.
                                   z
 @end example
 @end defvr
-
-@c THESE ARE DEPRECATED, so remove them, because we've removed the
-@c corresponding code.
-@c Remove these someday.
-
-@c @deffn {Function} j0 (@var{x})
-@c The Bessel function of the first kind of order 0.
-@c 
-@c This function is deprecated.  Write @code{bessel_j (0, @var{x})} instead.
-@c 
-@c @end deffn
-@c 
-@c 
-@c @deffn {Function} j1 (@var{x})
-@c The Bessel function of the first kind of order 1.
-@c 
-@c This function is deprecated.  Write @code{bessel_j (1, @var{x})} instead.
-@c 
-@c @end deffn
-@c 
-@c 
-@c @deffn {Function} jn (@var{x}, @var{n})
-@c The Bessel function of the first kind of order @var{n}.
-@c 
-@c This function is deprecated.  Write @code{bessel_j (@var{n}, @var{x})} instead.
-@c 
-@c @end deffn
-@c 
-@c @deffn {Function} i0 (@var{x})
-@c The modified Bessel function of the first kind of order 0.
-@c 
-@c This function is deprecated.  Write @code{bessel_i (0, @var{x})} instead.
-@c 
-@c @end deffn
-@c 
-@c 
-@c @deffn {Function} i1 (@var{x})
-@c The modified Bessel function of the first kind of order 1.
-@c 
-@c This function is deprecated.  Write @code{bessel_i (1, @code{x})} instead.
-@c 
-@c @end deffn
 
 @deffn {Fun@,{c}@~ao} scaled_bessel_i (@var{v}, @var{z}) 
 
@@ -688,6 +539,46 @@ Se @code{p} for menor que @code{maxpsifracnum}, ent@~ao
 simplificado.
 
 @end defvr
+
+@deffn {Fun@,{c}@~ao} specint (exp(- s*@var{t}) * @var{expr}, @var{t})
+
+Calcula a transformada de Laplace de @var{expr} com rala@,{c}@~ao @`a vari@'avel @var{t}.
+O integrando @var{expr} pode conter fun@,{c}@~oes especiais.
+
+Se @code{specint} n@~ao puder calcular a integral, o valore de retorno pode
+conter v@'arios s@'imbolos do Lisp, incluindo
+@code{other-defint-to-follow-negtest},
+@code{other-lt-exponential-to-follow},
+@code{product-of-y-with-nofract-indices}, etc.; isso @'e um erro.  
+@c REPORTED AS SOURCEFORGE BUG # 1162505
+
+@code{demo(hypgeo)} mostra muitos exemplos de transformadas de Laplace calculados por @code{specint}.
+
+Exemplos:
+@c ===beg===
+@c assume (p > 0, a > 0);
+@c specint (t^(1/2) * exp(-a*t/4) * exp(-p*t), t);
+@c specint (t^(1/2) * bessel_j(1, 2 * a^(1/2) * t^(1/2)) * exp(-p*t), t);
+@c ===end===
+
+@example
+(%i1) assume (p > 0, a > 0);
+(%o1)                    [p > 0, a > 0]
+(%i2) specint (t^(1/2) * exp(-a*t/4) * exp(-p*t), t);
+                           sqrt(%pi)
+(%o2)                     ------------
+                                 a 3/2
+                          2 (p + -)
+                                 4
+(%i3) specint (t^(1/2) * bessel_j(1, 2 * a^(1/2) * t^(1/2)) * exp(-p*t), t);
+                                   - a/p
+                         sqrt(a) %e
+(%o3)                    ---------------
+                                2
+                               p
+@end example
+
+@end deffn
 
 @defvr {Vari@'avel de op@value{cedilha}@~ao} maxpsifracdenom
 Valor padr@~ao: 4
