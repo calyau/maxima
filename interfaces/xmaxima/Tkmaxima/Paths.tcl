@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Paths.tcl,v 1.23 2006-11-12 18:22:43 vvzhy Exp $
+#       $Id: Paths.tcl,v 1.24 2007-01-16 16:43:48 vvzhy Exp $
 #
 # Attach this near the bottom of the xmaxima code to find the paths needed
 # to start up the interface.
@@ -193,6 +193,24 @@ proc setMaxDir {} {
 		}
 	  "es*" {
 		    set maxima_priv(maxima_lang_subdir) "es"
+		}
+	  "pt_BR*utf*" {
+		    set maxima_priv(maxima_lang_subdir) "pt_BR.utf8"
+		}
+	  "pt_BR*UTF*" {
+		    set maxima_priv(maxima_lang_subdir) "pt_BR.utf8"
+		}
+	  "pt_br*utf*" {
+		    set maxima_priv(maxima_lang_subdir) "pt_BR.utf8"
+		}
+	  "pt_br*UTF*" {
+		    set maxima_priv(maxima_lang_subdir) "pt_BR.utf8"
+		}
+	  "pt_BR*" {
+		    set maxima_priv(maxima_lang_subdir) "pt_BR"
+		}
+	  "pt_br*" {
+		    set maxima_priv(maxima_lang_subdir) "pt_BR"
 		}
 	  "pt*utf*" {
 		    set maxima_priv(maxima_lang_subdir) "pt.utf8"
