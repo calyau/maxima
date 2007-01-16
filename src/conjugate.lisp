@@ -241,22 +241,21 @@
 
 (defun simp-conjugate (e f z)
   (oneargcheck e)
-  (cond ((memq 'simp (car e)) e)
-	(t
-	 (setq e (simplifya (nth 1 e) z))
-	 (cond ((complexp e) (conjugate e)) ;; never happens, but might someday.
-	       ((manifestly-real-p e) e)
-	       ((manifestly-pure-imaginary-p e) (mul -1 e))
-	       (($mapatom e) `(($conjugate simp) ,e))
-	       ((op-equalp e '$conjugate) (car (margs e)))
+  (setq e (simplifya (nth 1 e) z))
+  (cond ((complexp e) (conjugate e)) ;; never happens, but might someday.
+	((manifestly-real-p e) e)
+	((manifestly-pure-imaginary-p e) (mul -1 e))
+	((manifestly-nonreal-p e) `(($conjugate simp) ,e))
+	(($mapatom e) `(($conjugate simp) ,e))
+	((op-equalp e '$conjugate) (car (margs e)))
 		 
-	       ((and (symbolp (mop e)) (get (mop e) 'real-valued)) e)
+	((and (symbolp (mop e)) (get (mop e) 'real-valued)) e)
 
-	       ((and (symbolp (mop e)) (get (mop e) 'commutes-with-conjugate))
-		(simplify `((,(mop e)) ,@(mapcar #'(lambda (s) (mfuncall '$conjugate s)) (margs e)))))
+	((and (symbolp (mop e)) (get (mop e) 'commutes-with-conjugate))
+	 (simplify `((,(mop e)) ,@(mapcar #'(lambda (s) (mfuncall '$conjugate s)) (margs e)))))
 	       
-	       ((setq f (and (symbolp (mop e)) (get (mop e) 'conjugate-function))) 
-		(funcall f (margs e)))
-
-	       (t `(($conjugate simp) ,e))))))
+	((setq f (and (symbolp (mop e)) (get (mop e) 'conjugate-function))) 
+	 (funcall f (margs e)))
+	
+	(t `(($conjugate simp) ,e))))
 
