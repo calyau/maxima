@@ -471,8 +471,8 @@
   (setq lis (apply '$append (mapcar 'symbol-value (cdr search-lists))))
   (let ((res ($file_search name lis)))
     (or res
-	(merror "Could not find `~M' using paths in ~A (combined values: ~M )"
-		name    (string-trim "[]" ($sconcat search-lists)) lis))))
+	(merror "Could not find `~M' using paths in ~A."
+		name    (string-trim "[]" ($sconcat search-lists))))))
 
 (defmfun $load (filename)
   "This is the generic file loading function.
