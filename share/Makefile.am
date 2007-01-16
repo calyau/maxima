@@ -100,6 +100,8 @@ contrib/Zeilberger/makeGosperForm.mac\
 contrib/Zeilberger/norm.mac\
 contrib/Zeilberger/numerical.mac\
 contrib/Zeilberger/readme.txt\
+contrib/Zeilberger/rtest_zeilberger.mac\
+contrib/Zeilberger/rtest_zeilberger_extreme.mac\
 contrib/Zeilberger/settings.mac\
 contrib/Zeilberger/shiftQuotient.mac\
 contrib/Zeilberger/testZeilberger.mac\
@@ -249,6 +251,8 @@ contrib/ggf.mac\
 contrib/graph2d.lisp\
 contrib/impdiff.mac\
 contrib/implicit_plot.lisp\
+contrib/levin/levin.mac\
+contrib/levin/rtest_levin.mac\
 contrib/lindstedt.mac\
 contrib/log10.mac\
 contrib/lsquares.mac\
@@ -396,8 +400,9 @@ contrib/simplex/Tests/share2b_c.csv\
 contrib/simplex/Tests/share2b_b.csv\
 contrib/simplex/Tests/share2b_A.csv\
 contrib/simplex/Readme.txt\
-contrib/solve_rec/closed_form.mac\
-contrib/solve_rec/closed_form_test.mac\
+contrib/solve_rec/simplify_sum.mac\
+contrib/solve_rec/simplify_sum_test.mac\
+contrib/solve_rec/rtest_simplify_sum.mac\
 contrib/solve_rec/solve_rec.mac\
 contrib/solve_rec/solve_rec.dem\
 contrib/state/matrix2.mac\
