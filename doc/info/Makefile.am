@@ -14,7 +14,15 @@ if LANG_PT_UTF8
   PT_DIR_UTF8 = pt.utf8
 endif
 
-SUBDIRS = $(ES_DIR) $(ES_DIR_UTF8) $(PT_DIR) $(PT_DIR_UTF8)
+if LANG_PT_BR
+  PT_BR_DIR = pt_BR
+endif
+
+if LANG_PT_BR_UTF8
+  PT_BR_DIR_UTF8 = pt_BR.utf8
+endif
+
+SUBDIRS = $(ES_DIR) $(ES_DIR_UTF8) $(PT_DIR) $(PT_DIR_UTF8) $(PT_BR_DIR) $(PT_BR_DIR_UTF8)
 
 info_TEXINFOS = maxima.texi
 maxima_TEXINFOS = Introduction.texi Help.texi Command.texi Operators.texi \

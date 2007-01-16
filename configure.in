@@ -305,6 +305,7 @@ if test x"${openmcl}" = xtrue ; then
 	fi
 fi
 
+dnl languages
 AC_ARG_ENABLE(lang-es,[  --enable-lang-es                 Spanish language support],
      	[case "${enableval}" in
        		yes) lang_es=true  ;;
@@ -345,6 +346,27 @@ AC_ARG_ENABLE(lang-pt-utf8,[  --enable-lang-pt-utf8            Portuguese langua
 
 AM_CONDITIONAL(LANG_PT_UTF8, test x$lang_pt_utf8 = xtrue)
 
+AC_ARG_ENABLE(lang-pt_BR,[  --enable-lang-pt_BR              Brazilian Portuguese language support],
+     	[case "${enableval}" in
+       		yes) lang_pt_br=true  ;;
+       		no)  lang_pt_br=false ;;
+		*) AC_MSG_ERROR(bad value ${enableval} for --enable-lang-pt_BR) ;;
+     	esac],
+	[lang_pt_br=false])
+
+AM_CONDITIONAL(LANG_PT_BR, test x$lang_pt_br = xtrue)
+
+AC_ARG_ENABLE(lang-pt_BR-utf8,[  --enable-lang-pt_BR-utf8         Brazilian Portuguese language support (UTF-8)],
+     	[case "${enableval}" in
+       		yes) lang_pt_br_utf8=true  ;;
+       		no)  lang_pt_br_utf8=false ;;
+		*) AC_MSG_ERROR(bad value ${enableval} for --enable-lang-pt_BR-utf8) ;;
+     	esac],
+	[lang_pt_br_utf8=false])
+
+AM_CONDITIONAL(LANG_PT_BR_UTF8, test x$lang_pt_br_utf8 = xtrue)
+
+
 AC_ARG_ENABLE(recode,[  --enable-recode                  Use recode for charset conversion],
      	[case "${enableval}" in
        		yes) use_recode=true  ;;
@@ -353,6 +375,7 @@ AC_ARG_ENABLE(recode,[  --enable-recode                  Use recode for charset 
      	esac],
 	[use_recode=false])
 
+dnl iconv and/or recode
 AC_CHECK_PROG(iconv_found,iconv,true,false)
 AC_CHECK_PROG(recode_found,recode,true,false)
 
