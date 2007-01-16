@@ -378,7 +378,7 @@
 
 (defun scalarclass (exp) ;  Returns $SCALAR, $NONSCALAR, or NIL (unknown).
   (cond ((atom exp)
-	 (cond ((mget exp '$nonscalar) '$nonscalar)
+	 (cond ((or (mget exp '$nonscalar) (arrayp exp) ($member exp $arrays)) '$nonscalar)
 	       ((mget exp '$scalar) '$scalar)))
 	((specrepp exp) (scalarclass (specdisrep exp)))
 	;;  If the function is declared scalar or nonscalar, then return.  If it isn't
