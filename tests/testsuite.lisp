@@ -28,4 +28,5 @@
     "rtestint"
     "rtestifactor"
     "rtest_equal"
+    ((mlist) "rtest_abs" 42 43)
     ))

@@ -125,7 +125,7 @@ false;
 
 /* Bug 593344 */
 limit(abs(infinity));
-infinity;
+inf;
 
 /* Bug 626721 */
 logarc(atan2(y,x));
