@@ -1,17 +1,17 @@
 /***************************************
  *
- * This file contains some examples for closed_form function
+ * This file contains some examples for simplify_sum function
  *
  * Use:
- *   load("closed_form");
- *   load("closed_form_test");
+ *   load("simplify_sum");
+ *   load("simplify_sum_test");
  *
  ***************************************/
 
 test_sum(s, ass, use_gamma, smp) := block(
   [product_use_gamma : use_gamma, cs, f],
   if length(ass)>0 then apply(assume, ass),
-  cs : closed_form(s),
+  cs : simplify_sum(s),
   for f in smp do cs : apply(f, [cs]),
   print("|----------------------------------------------------------|"),
   if length(ass)>0 then print("Assuming:", ass),

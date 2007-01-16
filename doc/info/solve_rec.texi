@@ -26,36 +26,6 @@ Example:
 @node Definitions for solve_rec,  , Introduction to solve_rec, solve_rec
 @section Definitions for solve_rec
 
-@deffn {Function} closed_form (@var{expr})
-
-Tries to simplify all sums appearing in @var{expr} to a closed form.
-
-@code{closed_form} uses Gosper and Zeilberger algorithms to simplify sums.
-
-To use this function first load the @code{closed_form} package with
-@code{load(closed_form)}.
-
-Example:
-
-@example
-(%i1) load("closed_form")$
-(%i2) sum(binom(n+k,k)/2^k, k, 0, n) + sum(binom(2*n, 2*k), k, 0, n);
-         n                            n
-        ====                         ====
-        \      binomial(n + k, k)    \
-(%o2)    >     ------------------ +   >    binomial(2 n, 2 k)
-        /               k            /
-        ====           2             ====
-        k = 0                        k = 0
-(%i3) closed_form(%);
-                               n
-                              4     n
-(%o3)                         -- + 2
-                              2
-@end example
-
-@end deffn
-
 @deffn {Function} reduce_order (@var{rec}, @var{sol}, @var{var})
 
 Reduces the order of linear recurrence @var{rec} when a particular solution
@@ -116,6 +86,36 @@ simplify products in result.
 See also: @code{solve_rec}.
 
 @end defvr
+
+@deffn {Function} simplify_sum (@var{expr})
+
+Tries to simplify all sums appearing in @var{expr} to a closed form.
+
+@code{simplify_sum} uses Gosper and Zeilberger algorithms to simplify sums.
+
+To use this function first load the @code{simplify_sum} package with
+@code{load(simplify_sum)}.
+
+Example:
+
+@example
+(%i1) load("simplify_sum")$
+(%i2) sum(binom(n+k,k)/2^k, k, 0, n) + sum(binom(2*n, 2*k), k, 0, n);
+         n                            n
+        ====                         ====
+        \      binomial(n + k, k)    \
+(%o2)    >     ------------------ +   >    binomial(2 n, 2 k)
+        /               k            /
+        ====           2             ====
+        k = 0                        k = 0
+(%i3) simplify_sum(%);
+                               n
+                              4     n
+(%o3)                         -- + 2
+                              2
+@end example
+
+@end deffn
 
 @deffn {Function} solve_rec (@var{eqn}, @var{var}, [@var{init}])
 Solves for hypergeometrical solutions to linear recurrence @var{eqn} with
@@ -244,13 +244,13 @@ Returns the recurrence sattisfied by the sum
 where summand is hypergeometrical in @var{k} and @var{n}. If @var{lo} and @var{hi}
 are omited, they are assumed to be @code{lo = -inf} and @code{hi = inf}.
 
-To use this function first load the @code{closed_form} package with
-@code{load(closed_form)}.
+To use this function first load the @code{simplify_sum} package with
+@code{load(simplify_sum)}.
 
 Example:
 
 @example
-(%i1) load("closed_form")$
+(%i1) load("simplify_sum")$
 (%i2) summand: binom(n,k);
 (%o2)                           binomial(n, k)
 (%i3) summand_to_rec(summand,k,n);
