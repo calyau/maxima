@@ -237,9 +237,11 @@
 			(setq *maxima-lang-subdir* nil))
 		    ;; Latin-1 aka iso-8859-1 languages 
 		    ((zl-member language '("es" "pt" "fr" "de" "it"))
+		      (if (and (string= language "pt") (string= territory "br"))
+		    	    (setq *maxima-lang-subdir* (concatenate 'string language "_BR"))
+		    	    (setq *maxima-lang-subdir* language))    
 		      (if (zl-member codeset '("utf-8" "utf8"))
-		    	    (setq *maxima-lang-subdir* (concatenate 'string language ".utf8"))
-		    	    (setq *maxima-lang-subdir* language)))
+		    	    (setq *maxima-lang-subdir* (concatenate 'string *maxima-lang-subdir* ".utf8"))))
 		    (t  (setq *maxima-lang-subdir* nil)))
 	    )))))    
 
