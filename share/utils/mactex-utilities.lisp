@@ -1,60 +1,7 @@
 
 ;; Additional mactex utilities.
-;; All functions except texput are based on code by Richard J. Fateman, 
-;; copyright 1987. Fateman's code was ported to Common Lisp by William 
-;; Schelter.  The texput function was written by Barton Willis.
-
-
-;; texput is a maxima-level interface to putprop that allows a user
-;; to modify the behavior of maxima's tex function. Here are a few eamples:
-
-;;        (C1) texput(me,"\\mu_e");
-;;        (D1) 				     \mu_e
-;;        (C2) tex(me);
-;;                $$\mu_e$$
-
-;;        (C4) texput("<<",[" \\langle ", " \\rangle "],matchfix);
-;;        (D4) 		         \langle ( \rangle)
-;;        (C5) matchfix("<<",">>");
-;;        (D5) 				     "<<"
-;;        (C6) tex(<<a>>);
-;;              $$ \langle a \rangle $$
-;;        (D6) 				     FALSE
-;;        (C7) tex(<<a,b>>);
-;;              $$ \langle a , b \rangle $$
-
-;;  To change the argument separtor from a comma to a character ch,
-;;  make the third element of the second argument of texput that character.  For
-;;  example, to make Dirac brackets, use
-
-;;        (C12) texput("<<",[" \\langle ", " \\rangle "," \\, | \\,"],matchfix);
-;;        (D12) 		         \langle ( \rangle ,  \, | \,)
-;;        (C13) tex(<<a>>);
-;;                    $$ \langle a \rangle $$
-;;        (D13) 				     FALSE
-;;        (C14) tex(<<a,b>>);
-;;                      $$ \langle a \, | \,b \rangle $$
-
-;;        (C15) texput(grad," \\nabla ",prefix);
-;;        (D15) 				      70
-;;        (C16) prefix("grad");
-;;        (D16) 				    "GRAD"
-;;        (C17) tex(grad f);
-;;                    $$ \nabla f$$
-
-;;        (C19) texput("~"," \\times ",infix);
-;;        (D19) 				      180
-;;        (C20) tex(a~b);
-;;                    $$a \times b$$
-
-;;        (C22) postfix(@);
-;;        (D22) 				      "@"
-;;        (C23) texput("@","!!",postfix);
-;;        (D23) 				      160
-;;        (C24) tex(x @);
-;;              $$x!!$$
-
-
+;; All functions are based on code by Richard J. Fateman, copyright 1987.
+;; Fateman's code was ported to Common Lisp by William Schelter.
 
 ;; If you want LaTeX style quotients, first load mactex and second
 ;; define tex-mquotient as follows
@@ -65,12 +12,10 @@
 	r (tex (caddr x) (list "}{") (append '("}") r) 'mparen 'mparen))
   (append l r))
 
-;; The following defprop controls the space between terms in a product. 
-;; To use thin spaces, use 
-;;    (defprop mtrimes "\\, " texsym)
-;; and to use no space at all, use
-
-(defprop mtimes " " texsym)
+;; (defprop mtimes ("\\,") texsym)
+;; adds a thin space.
+;; The following tells TeX to use whatever it thinks best.
+;; (defprop mtimes (" ") texsym)
 
 ;; To use amsmath style matrices, define tex-matrix as
 ;; (to TeX the code, you'll need to \usepackage{amsmath})
