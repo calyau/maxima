@@ -1,5 +1,5 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
-/solve_rec.texi/1.6/Sat Nov 25 04:03:29 2006//
+@c /solve_rec.texi/1.7/Tue Jan 16 15:15:10 2007//
 @menu
 * Introdu@value{cedilha}@~ao a solve_rec::
 * Defini@value{cedilha}@~oes para solve_rec::
@@ -27,36 +27,6 @@ Exemplo:
 
 @node Defini@value{cedilha}@~oes para solve_rec,  , Introdu@value{cedilha}@~ao a solve_rec, solve_rec
 @section Defini@value{cedilha}@~oes para solve_rec
-
-@deffn {Fun@,{c}@~ao} closed_form (@var{expr})
-
-Tenta simplificar todos os somat@'orios que aparecerem em @var{expr} para uma forma fechada.
-
-@code{closed_form} usa os algor@'itmos de Gosper e Zeilberger para simplificar somat@'orios.
-
-Para usar essa fun@,{c}@~ao primeiramente chame o pacote @code{closed_form} com
-@code{load(closed_form)}.
-
-Exemplo:
-
-@example
-(%i1) load("closed_form")$
-(%i2) sum(binom(n+k,k)/2^k, k, 0, n) + sum(binom(2*n, 2*k), k, 0, n);
-         n                            n
-        ====                         ====
-        \      binomial(n + k, k)    \
-(%o2)    >     ------------------ +   >    binomial(2 n, 2 k)
-        /               k            /
-        ====           2             ====
-        k = 0                        k = 0
-(%i3) closed_form(%);
-                               n
-                              4     n
-(%o3)                         -- + 2
-                              2
-@end example
-
-@end deffn
 
 @deffn {Fun@,{c}@~ao} reduce_order (@var{rec}, @var{sol}, @var{var})
 
@@ -118,6 +88,36 @@ simplificar produtos no resultado.
 Veja tamb@'em: @code{solve_rec}.
 
 @end defvr
+
+@deffn {Fun@,{c}@~ao} simplify_sum (@var{expr})
+
+Tenta simplificar todos os somat@'orios que aparecem na @var{expr} para uma forma a mais simplificada poss@'ivel.
+
+@code{simplify_sum} usa os algor@'itmos de Gosper e de Zeilberger para simplificar somat@'orios.
+
+Para usar essa fun@,{c}@~ao primeiramente chame o pacote @code{simplify_sum} com
+@code{load(simplify_sum)}.
+
+Exemplo:
+
+@example
+(%i1) load("simplify_sum")$
+(%i2) sum(binom(n+k,k)/2^k, k, 0, n) + sum(binom(2*n, 2*k), k, 0, n);
+         n                            n
+        ====                         ====
+        \      binomial(n + k, k)    \
+(%o2)    >     ------------------ +   >    binomial(2 n, 2 k)
+        /               k            /
+        ====           2             ====
+        k = 0                        k = 0
+(%i3) simplify_sum(%);
+                               n
+                              4     n
+(%o3)                         -- + 2
+                              2
+@end example
+
+@end deffn
 
 @deffn {Fun@,{c}@~ao} solve_rec (@var{eqn}, @var{var}, [@var{init}])
 Encontra solu@,{c}@~oes hipergeom@'etricas para a recorr@^encia linear @var{eqn} com
@@ -246,13 +246,13 @@ Retorna a recorr@^encia satisfeita pelo somat@'orio
 onde x @'e hipergeom@'etrico em @var{k} e @var{n}. If @var{inf} and @var{sup}
 forem omitidos, s@~ao assumidos como sendo @code{inf = -inf} e @code{sup = inf}.
 
-Para usar essa fun@,{c}@~ao primeiramente chame o pacote @code{closed_form} com
-@code{load(closed_form)}.
+Para usar essa fun@,{c}@~ao primeiro chame o pacote @code{simplify_sum} com
+@code{load(simplify_sum)}.
 
 Exemplo:
 
 @example
-(%i1) load("closed_form")$
+(%i1) load("simplify_sum")$
 (%i2) summand: binom(n,k);
 (%o2)                           binomial(n, k)
 (%i3) summand_to_rec(summand,k,n);
