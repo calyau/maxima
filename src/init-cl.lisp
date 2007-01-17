@@ -242,6 +242,14 @@
 		    	    (setq *maxima-lang-subdir* language))    
 		      (if (zl-member codeset '("utf-8" "utf8"))
 		    	    (setq *maxima-lang-subdir* (concatenate 'string *maxima-lang-subdir* ".utf8"))))
+		    ;; Russian. Default codepage cp1251 
+		    ((string= language "ru")
+		      (setq *maxima-lang-subdir* language)    
+		      (cond 
+		          ((zl-member codeset '("utf-8" "utf8"))
+		    	      (setq *maxima-lang-subdir* (concatenate 'string *maxima-lang-subdir* ".utf8")))
+			  ((zl-member codeset '("koi8-r" "koi8r"))
+		    	      (setq *maxima-lang-subdir* (concatenate 'string *maxima-lang-subdir* ".koi8r")))))
 		    (t  (setq *maxima-lang-subdir* nil)))
 	    )))))    
 
