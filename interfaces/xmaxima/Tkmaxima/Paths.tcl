@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Paths.tcl,v 1.24 2007-01-16 16:43:48 vvzhy Exp $
+#       $Id: Paths.tcl,v 1.25 2007-01-17 17:16:38 vvzhy Exp $
 #
 # Attach this near the bottom of the xmaxima code to find the paths needed
 # to start up the interface.
@@ -184,30 +184,16 @@ proc setMaxDir {} {
 		set wlocale $env(LANG) }
 	}	
 	# Only languages known to Maxima
+	set wlocale [string tolower $wlocale]
 	switch -glob $wlocale {
 	  "es*utf*" {
-		    set maxima_priv(maxima_lang_subdir) "es.utf8"
-		}
-	  "es*UTF*" {
 		    set maxima_priv(maxima_lang_subdir) "es.utf8"
 		}
 	  "es*" {
 		    set maxima_priv(maxima_lang_subdir) "es"
 		}
-	  "pt_BR*utf*" {
-		    set maxima_priv(maxima_lang_subdir) "pt_BR.utf8"
-		}
-	  "pt_BR*UTF*" {
-		    set maxima_priv(maxima_lang_subdir) "pt_BR.utf8"
-		}
 	  "pt_br*utf*" {
 		    set maxima_priv(maxima_lang_subdir) "pt_BR.utf8"
-		}
-	  "pt_br*UTF*" {
-		    set maxima_priv(maxima_lang_subdir) "pt_BR.utf8"
-		}
-	  "pt_BR*" {
-		    set maxima_priv(maxima_lang_subdir) "pt_BR"
 		}
 	  "pt_br*" {
 		    set maxima_priv(maxima_lang_subdir) "pt_BR"
@@ -215,11 +201,35 @@ proc setMaxDir {} {
 	  "pt*utf*" {
 		    set maxima_priv(maxima_lang_subdir) "pt.utf8"
 		}
-	  "pt*UTF*" {
-		    set maxima_priv(maxima_lang_subdir) "pt.utf8"
-		}
 	  "pt*" {
 		    set maxima_priv(maxima_lang_subdir) "pt"
+		}
+	  "de*utf*" {
+		    set maxima_priv(maxima_lang_subdir) "de.utf8"
+		}
+	  "de*" {
+		    set maxima_priv(maxima_lang_subdir) "de"
+		}
+	  "fr*utf*" {
+		    set maxima_priv(maxima_lang_subdir) "fr.utf8"
+		}
+	  "fr*" {
+		    set maxima_priv(maxima_lang_subdir) "fr"
+		}
+	  "it*utf*" {
+		    set maxima_priv(maxima_lang_subdir) "it.utf8"
+		}
+	  "it*" {
+		    set maxima_priv(maxima_lang_subdir) "it"
+		}
+	  "ru*utf*" {
+		    set maxima_priv(maxima_lang_subdir) "ru.utf8"
+		}
+	  "ru*koi*" {
+		    set maxima_priv(maxima_lang_subdir) "ru.koi8r"
+		}
+	  "ru*" {
+		    set maxima_priv(maxima_lang_subdir) "ru"
 		}
 	  default 
 	        {
