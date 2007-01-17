@@ -1,3 +1,8 @@
+# -----------------------------
+#  Perl 5.8 or later required
+# -----------------------------
+require 5.008;
+
 $main_info = $ARGV[0];
 $infofile_encoding = $ARGV[1];
 
