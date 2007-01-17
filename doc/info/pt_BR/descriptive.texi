@@ -23,7 +23,7 @@ Aqui est@'a um exemplo sobre como as fun@,{c}@~oes de estat@'istica descritiva n
 @c load (descriptive)$
 @c /* univariate sample */   mean ([a, b, c]);
 @c matrix ([a, b], [c, d], [e, f]);
-@c /* multivariate sample */ mean (%);
+@c /* amostra de v@'arias vari@'aveis */ mean (%);
 @c ===end===
 @example
 (%i1) load (descriptive)$
@@ -37,7 +37,7 @@ Aqui est@'a um exemplo sobre como as fun@,{c}@~oes de estat@'istica descritiva n
 (%o3)                       [ c  d ]
                             [      ]
                             [ e  f ]
-(%i4) /* multivariate sample */ mean (%);
+(%i4) /* amostra de v@'arias vari@'aveis */ mean (%);
                       e + c + a  f + d + b
 (%o4)                [---------, ---------]
                           3          3
@@ -357,7 +357,7 @@ Essa @'e a m@'edia de v@'arias vari@'aveis de @code{s3},
                                                     ------------]
                                                         100
 @end example
-Aqui, a primeira componente @'e significativamente menor, uma vez que @code{A} e @code{B} s@~ao categorias, o segundo componente @'e a idade m@'edia dos indiv@'iduos na forma racional, e o quarto eo @'ultimo valores exibem um comportamento estranho. Isso ocorre porque o s@'imbolo @code{NA} @'e usado aqui para indicar dado n@~ao dispon@'ivel (@var{non available} em ingl@^es), e as duas m@'edias s@~ao certamente sem sentido. Uma solu@,{c}@~ao poss@'ivel pode ser jogar fora a matriz cujas linhas possuam s@'imbolos @code{NA}, embora isso cause alguma perda de informa@,{c}@~ao,
+Aqui, a primeira componente @'e sem sentido, uma vez que @code{A} e @code{B} s@~ao categorias, o segundo componente @'e a idade m@'edia dos indiv@'iduos na forma racional, e o quarto eo @'ultimo valores exibem um comportamento estranho. Isso ocorre porque o s@'imbolo @code{NA} @'e usado aqui para indicar dado n@~ao dispon@'ivel (@var{non available} em ingl@^es), e as duas m@'edias s@~ao certamente sem sentido. Uma solu@,{c}@~ao poss@'ivel pode ser jogar fora a matriz cujas linhas possuam s@'imbolos @code{NA}, embora isso cause alguma perda de informa@,{c}@~ao,
 
 @c ===beg===
 @c load (descriptive)$
@@ -890,7 +890,7 @@ Exemplo:
 (%o6)         [10.06, 9.855, 10.73, 15.48, 14.105]
 @end example
 
-The median is the 1/2-@code{quantile}.
+A mediana @'e o 1/2-@code{quantil}.
 
 Veja tamb@'em function @code{quantile}.
 @end deffn
@@ -923,14 +923,14 @@ A amplitude do interquartil @'e a diferen@,{c}a entre o terceiro e o primeiro qu
                                                6.650000000000002]
 @end example
 
-Veja tamb@'em function @code{quantile}.
+Veja tamb@'em a fun@,{c}@~ao @code{quantile}.
 @end deffn
 
 
 
 @deffn {Fun@,{c}@~ao} mean_deviation (@var{lista})
 @deffnx {Fun@,{c}@~ao} mean_deviation (@var{matriz})
-The mean deviation, definido como
+O desvio m@'edio, definido como
 @ifhtml
 @example
                      n
@@ -981,14 +981,14 @@ Exemplo:
                                                4.028546000000002]
 @end example
 
-Veja tamb@'em function @code{mean}.
+Veja tamb@'em a fun@,{c}@~ao @code{mean}.
 @end deffn
 
 
 
 @deffn {Fun@,{c}@~ao} median_deviation (@var{lista})
 @deffnx {Fun@,{c}@~ao} median_deviation (@var{matriz})
-The median deviation, definido como
+O desvio da mediana, definido como
 @ifhtml
 @example
                  n
@@ -1014,7 +1014,7 @@ The median deviation, definido como
 @tex
 $${{1\over{n}}{\sum_{i=1}^{n}{|x_{i}-med|}}}$$
 @end tex
-where @code{med} is the median of @var{lista}.
+onde @code{med} @'e a mediana da @var{lista}.
 
 Exemplo:
 
@@ -1039,14 +1039,14 @@ Exemplo:
 (%o6)           [2.75, 2.755, 3.08, 4.315, 3.31]
 @end example
 
-Veja tamb@'em function @code{mean}.
+Veja tamb@'em a fun@,{c}@~ao @code{mean}.
 @end deffn
 
 
 
 @deffn {Fun@,{c}@~ao} harmonic_mean (@var{lista})
 @deffnx {Fun@,{c}@~ao} harmonic_mean (@var{matriz})
-The harmonic mean, definido como
+A m@'edia harm@^onica, definida como
 @ifhtml
 @example
                   n
@@ -1099,14 +1099,14 @@ Exemplo:
                             13.44199028193692, 13.01439145898509]
 @end example
 
-Veja tamb@'em functions @code{mean} and @code{geometric_mean}.
+Veja tamb@'em as fun@,{c}@~oes @code{mean} e @code{geometric_mean}.
 @end deffn
 
 
 
 @deffn {Fun@,{c}@~ao} geometric_mean (@var{lista})
 @deffnx {Fun@,{c}@~ao} geometric_mean (@var{matriz})
-The geometric mean, definido como
+A m@'edia geom@'etrica, definida como
 @ifhtml
 @example
                  /  n      \ 1/n
@@ -1155,14 +1155,14 @@ Exemplo:
                             14.61274126349021, 13.96184163444275]
 @end example
 
-Veja tamb@'em functions @code{mean} and @code{harmonic_mean}.
+Veja tamb@'em as fun@,{c}@~oes @code{mean} e @code{harmonic_mean}.
 @end deffn
 
 
 
 @deffn {Fun@,{c}@~ao} kurtosis (@var{lista})
 @deffnx {Fun@,{c}@~ao} kurtosis (@var{matriz})
-The kurtosis coefficient, definido como
+O coeficiente de curtose, definido como
 @ifhtml
 @example
                     n
@@ -1211,14 +1211,14 @@ Exemplo:
    - .4275233490482866, - .6405361979019522, - .4952382132352935]
 @end example
 
-Veja tamb@'em functions @code{mean}, @code{var} and @code{skewness}.
+Veja tamb@'em as fun@,{c}@~oes @code{mean}, @code{var} e @code{skewness}.
 @end deffn
 
 
 
 @deffn {Fun@,{c}@~ao} skewness (@var{lista})
 @deffnx {Fun@,{c}@~ao} skewness (@var{matriz})
-The skewness coefficient, definido como
+O coeficiente de assimetria, definido como
 @ifhtml
 @example
                     n
@@ -1267,14 +1267,14 @@ Exemplo:
                             .2059984348148687, .2142520248890832]
 @end example
 
-Veja tamb@'em functions @code{mean}, @code{var} and @code{kurtosis}.
+Veja tamb@'em as fun@,{c}@~oes @code{mean}, @code{var} e @code{kurtosis}.
 @end deffn
 
 
 
 @deffn {Fun@,{c}@~ao} pearson_skewness (@var{lista})
 @deffnx {Fun@,{c}@~ao} pearson_skewness (@var{matriz})
-Pearson's skewness coefficient, definido como 
+O coeficiente de assimetria de pearson, definido como 
 @ifhtml
 @example
                 _
@@ -1294,7 +1294,7 @@ Pearson's skewness coefficient, definido como
 @tex
 $${{3\,\left(\bar{x}-med\right)}\over{s}}$$
 @end tex
-where @var{med} is the median of @var{lista}.
+onde @var{med} @'e a mediana de @var{lista}.
 
 Exemplo:
 
@@ -1318,14 +1318,14 @@ Exemplo:
          .1050904062491204, .1245042340592368, .4464181795804519]
 @end example
 
-Veja tamb@'em functions @code{mean}, @code{var} and @code{median}.
+Veja tamb@'em as fun@,{c}@~oes @code{mean}, @code{var} e @code{median}.
 @end deffn
 
 
 
 @deffn {Fun@,{c}@~ao} quartile_skewness (@var{lista})
 @deffnx {Fun@,{c}@~ao} quartile_skewness (@var{matriz})
-The quartile skewness coefficient, definido como 
+O coeficiented de assimetria do quartil, definido como 
 @ifhtml
 @example
                c    - 2 c    + c
@@ -1348,7 +1348,7 @@ The quartile skewness coefficient, definido como
 $${{c_{{{3}\over{4}}}-2\,c_{{{1}\over{2}}}+c_{{{1}\over{4}}}}\over{c
  _{{{3}\over{4}}}-c_{{{1}\over{4}}}}}$$
 @end tex
-where @math{c_p} is the @var{p}-quantile of sample @var{lista}.
+onde @math{c_p} @'e o quartil de ordem @var{p} da amostra @var{lista}.
 
 Exemplo:
 
@@ -1372,7 +1372,7 @@ Exemplo:
        0.0336239103362392, .03780068728522298, 0.210526315789474]
 @end example
 
-Veja tamb@'em function @code{quantile}.
+Veja tamb@'em a fun@,{c}@~ao @code{quantile}.
 @end deffn
 
 
@@ -1383,7 +1383,7 @@ Veja tamb@'em function @code{quantile}.
 
 
 @deffn {Fun@,{c}@~ao} cov (@var{matriz})
-The covariance matrix of the multivariate sample, definido como
+A matriz de covari@^ancia da amostra de v@'arias vari@'aveis, definida como
 @ifhtml
 @example
               n
@@ -1409,7 +1409,7 @@ The covariance matrix of the multivariate sample, definido como
 @tex
 $${S={1\over{n}}{\sum_{j=1}^{n}{\left(X_{j}-\bar{X}\right)\,\left(X_{j}-\bar{X}\right)'}}}$$
 @end tex
-where @math{X_j} is the @math{j}-th row of the sample matrix.
+onde @math{X_j} @'e a @math{j}-@'esima linha da matriz de amostra.
 
 Exemplo:
 
@@ -1417,14 +1417,14 @@ Exemplo:
 @c load (descriptive)$
 @c load (numericalio)$
 @c s2 : read_matrix (file_search ("wind.data"))$
-@c fpprintprec : 7$  /* change precision for pretty output */
+@c fpprintprec : 7$  /* modifique a precis@~ao para uma sa@'ida melhor */
 @c cov (s2);
 @c ===end===
 @example
 (%i1) load (descriptive)$
 (%i2) load (numericalio)$
 (%i3) s2 : read_matrix (file_search ("wind.data"))$
-(%i4) fpprintprec : 7$  /* change precision for pretty output */
+(%i4) fpprintprec : 7$  /* modifique a precis@~ao para obter uma sa@'ida melhor */
 (%i5) cov (s2);
       [ 17.22191  13.61811  14.37217  19.39624  15.42162 ]
       [                                                  ]
@@ -1437,13 +1437,13 @@ Exemplo:
       [ 15.42162  14.9711   16.18171  20.44685  24.42308 ]
 @end example
 
-Veja tamb@'em function @code{cov1}.
+Veja tamb@'em a fun@,{c}@~ao @code{cov1}.
 @end deffn
 
 
 
 @deffn {Fun@,{c}@~ao} cov1 (@var{matriz})
-The covariance matrix of the multivariate sample, definido como
+A matriz de covari@^ancia da amostra de v@'arias vari@'aveis, definida como
 @ifhtml
 @example
               n
@@ -1477,14 +1477,14 @@ Exemplo:
 @c load (descriptive)$
 @c load (numericalio)$
 @c s2 : read_matrix (file_search ("wind.data"))$
-@c fpprintprec : 7$ /* change precision for pretty output */
+@c fpprintprec : 7$ /* modifique a precis@~ao para obter uma sa@'ida melhor */
 @c cov1 (s2);
 @c ===end===
 @example
 (%i1) load (descriptive)$
 (%i2) load (numericalio)$
 (%i3) s2 : read_matrix (file_search ("wind.data"))$
-(%i4) fpprintprec : 7$ /* change precision for pretty output */
+(%i4) fpprintprec : 7$ /* modifique a precis@~ao para obter uma sa@'ida melhor */
 (%i5) cov1 (s2);
       [ 17.39587  13.75567  14.51734  19.59216  15.5774  ]
       [                                                  ]
@@ -1497,30 +1497,30 @@ Exemplo:
       [ 15.5774   15.12232  16.34516  20.65338  24.66977 ]
 @end example
 
-Veja tamb@'em function @code{cov}.
+Veja tamb@'em a fun@,{c}@~ao @code{cov}.
 @end deffn
 
 
 
 @deffn {Fun@,{c}@~ao} global_variances (@var{matriz})
-@deffnx {Fun@,{c}@~ao} global_variances (@var{matriz}, @var{logical_value})
-Function @code{global_variances} returns a list of global variance measures:
+@deffnx {Fun@,{c}@~ao} global_variances (@var{matriz}, @var{valor_l@'ogico})
+A fun@,{c}@~ao @code{global_variances} retorna uma lista de medidas de vari@^ancia global:
 
 @itemize @bullet
 @item
-@var{total variance}: @code{trace(S_1)},
+@var{vari@^ancia total}: @code{trace(S_1)},
 @item
-@var{mean variance}: @code{trace(S_1)/p},
+@var{vari@^ancia m@'edia}: @code{trace(S_1)/p},
 @item
-@var{generalized variance}: @code{determinant(S_1)},
+@var{vari@^ancia generalizada}: @code{determinant(S_1)},
 @item
-@var{generalized standard deviation}: @code{sqrt(determinant(S_1))},
+@var{desvio padr@~ao generalizado}: @code{sqrt(determinant(S_1))},
 @item
-@var{efective variance} @code{determinant(S_1)^(1/p)}, (defined in: Pe@~na, D. (2002) @var{An@'alisis de datos multivariantes}; McGraw-Hill, Madrid.)
+@var{vari@^ancia efetiva} @code{determinant(S_1)^(1/p)}, (defined in: Pe@~na, D. (2002) @var{An@'alisis de datos multivariantes}; McGraw-Hill, Madrid.)
 @item
-@var{efective standard deviation}: @code{determinant(S_1)^(1/(2*p))}.
+@var{desvio padr@~ao efetivo}: @code{determinant(S_1)^(1/(2*p))}.
 @end itemize
-where @var{p} is the dimension of the multivariate random variable and @math{S_1} the covariance matrix returned by @code{cov1}.
+onde @var{p} @'e a dimens@~ao das v@'arias vari@'aveis aleat@'orias e @math{S_1} a matriz de covari@^ancia retornada por @code{cov1}.
 
 Exemplo:
 
@@ -1539,7 +1539,7 @@ Exemplo:
          113.4651792608502, 6.636590811800794, 2.576158149609762]
 @end example
 
-Function @code{global_variances} has an optional logical argument: @code{global_variances(x,true)} tells Maxima that @code{x} is the data matrix, making the same as @code{global_variances(x)}. On the other hand, @code{global_variances(x,false)} means that @code{x} is not the data matrix, but the covariance matrix, avoiding its recalculation,
+A fun@,{c}@~ao @code{global_variances} tem um argumento l@'ogico opcional: @code{global_variances(x,true)} diz ao Maxima que @code{x} @'e a matriz de dados, fazendo o mesmo que @code{global_variances(x)}. Por outro lado, @code{global_variances(x,false)} significa que @code{x} n@~ao @'e a matriz de dados, mas a matriz de covari@^ancia, evitando a repeti@,{c}@~ao seu c@'alculo,
 
 @c ===beg===
 @c load (descriptive)$
@@ -1558,14 +1558,14 @@ Function @code{global_variances} has an optional logical argument: @code{global_
          113.4651792608502, 6.636590811800794, 2.576158149609762]
 @end example
 
-Veja tamb@'em @code{cov} and @code{cov1}.
+Veja tamb@'em @code{cov} e @code{cov1}.
 @end deffn
 
 
 
 @deffn {Fun@,{c}@~ao} cor (@var{matriz})
-@deffnx {Fun@,{c}@~ao} cor (@var{matriz}, @var{logical_value})
-The correlation matrix of the multivariate sample.
+@deffnx {Fun@,{c}@~ao} cor (@var{matriz}, @var{valor_l@'ogico})
+A matriz de correla@,{c}@~ao da maostra de v@'arias vari@'aveis.
 
 Exemplo:
 
@@ -1593,7 +1593,7 @@ Exemplo:
       [ .7519506  0.782502  .8323358  .7293848    1.0    ]
 @end example
 
-Function @code{cor} has an optional logical argument: @code{cor(x,true)} tells Maxima that @code{x} is the data matrix, making the same as @code{cor(x)}. On the other hand, @code{cor(x,false)} means that @code{x} is not the data matrix, but the covariance matrix, avoiding its recalculation,
+A fun@,{c}@~ao @code{cor} tem um argumento l@'ogico opcional: @code{cor(x,true)} diz ao Maxima que @code{x} @'e a matriz de dados, fazendo o mesmo que @code{cor(x)}. Por outro lado, @code{cor(x,false)} significa que @code{x} n@~ao @'e a matriz de dados, mas a matriz de covari@^ancia, evitando a repeti@,{c}@~ao de seu c@'alculo,
 
 @c ===beg===
 @c load (descriptive)$
@@ -1621,19 +1621,19 @@ Function @code{cor} has an optional logical argument: @code{cor(x,true)} tells M
       [ .7519506  0.782502  .8323358  .7293848    1.0    ]
 @end example
 
-Veja tamb@'em @code{cov} and @code{cov1}.
+Veja tamb@'em @code{cov} e @code{cov1}.
 @end deffn
 
 
 
 @deffn {Fun@,{c}@~ao} list_correlations (@var{matriz})
-@deffnx {Fun@,{c}@~ao} list_correlations (@var{matriz}, @var{logical_value})
-Function @code{list_correlations} returns a list of correlation measures:
+@deffnx {Fun@,{c}@~ao} list_correlations (@var{matriz}, @var{valor_l@'ogico})
+A fun@,{c}@~ao @code{list_correlations} retorna uma lista de medidas de correla@,{c}@~ao:
 
 @itemize @bullet
 
 @item
-@var{precision matrix}: the inverse of the covariance matrix @math{S_1},
+@var{matriz de precis@~ao}: o inverso da matriz de covari@^ancia @math{S_1},
 @ifhtml
 @example
        -1     ij
@@ -1653,7 +1653,7 @@ $${S_{1}^{-1}}={\left(s^{ij}\right)_{i,j=1,2,\ldots, p}}$$
 @end tex
 
 @item
-@var{multiple correlation vector}:  @math{(R_1^2, R_2^2, ..., R_p^2)}, with 
+@var{vetor de correla@,{c}@~ao multipla}:  @math{(R_1^2, R_2^2, ..., R_p^2)}, com 
 @ifhtml
 @example
        2          1
@@ -1675,10 +1675,10 @@ $${S_{1}^{-1}}={\left(s^{ij}\right)_{i,j=1,2,\ldots, p}}$$
 @tex
 $${R_{i}^{2}}={1-{{1}\over{s^{ii}s_{ii}}}}$$
 @end tex
-being an indicator of the goodness of fit of the linear multivariate regression model on @math{X_i} when the rest of variables are used as regressors.
+sendo um indicador do melhor do ajuste do modelo de regress@~ao linear de v@'arias vari@'aveis dobre @math{X_i} quando o resto das vari@'aveis s@~ao usados como regressores.
 
 @item
-@var{partial correlation matrix}: with element @math{(i, j)} being
+@var{matriz de correla@,{c}@~ao parcial}: como elemento @math{(i, j)} sendo
 @ifhtml
 @example
                          ij
@@ -1713,9 +1713,9 @@ Exemplo:
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c z : list_correlations (s2)$
 @c fpprintprec : 5$ /* for pretty output */
-@c z[1];  /* precision matrix */
-@c z[2];  /* multiple correlation vector */
-@c z[3];  /* partial correlation matrix */
+@c z[1];  /* matriz de precis@~ao */
+@c z[2];  /* vetor de correla@,{c}@~ao multipla */
+@c z[3];  /* matriz parcial de correla@,{c}@~ao */
 @c ===end===
 @example
 (%i1) load (descriptive)$
@@ -1747,9 +1747,9 @@ Exemplo:
        [ - .13049   .23492   .37956   .26719    - 1.0   ]
 @end example
 
-Function @code{list_correlations} also has an optional logical argument: @code{list_correlations(x,true)} tells Maxima that @code{x} is the data matrix, making the same as @code{list_correlations(x)}. On the other hand, @code{list_correlations(x,false)} means that @code{x} is not the data matrix, but the covariance matrix, avoiding its recalculation.
+A fun@,{c}@~ao @code{list_correlations} tamb@'em tem um argumento l@'ogico opcional: @code{list_correlations(x,true)} diz ao Maxima que @code{x} @'e a matriz de dados, fazendo o mesmo que @code{list_correlations(x)}. Por outro lado, @code{list_correlations(x,false)} significa que @code{x} n@~ao @'e a matriz de correla@,{c}@~ao, mas a matriz de covariancia, evitando a repeti@,{c}@~ao de seu c@'alculo.
 
-Veja tamb@'em @code{cov} and @code{cov1}.
+Veja tamb@'em @code{cov} e @code{cov1}.
 @end deffn
 
 
@@ -1760,43 +1760,43 @@ Veja tamb@'em @code{cov} and @code{cov1}.
 
 
 @deffn {Fun@,{c}@~ao} dataplot (@var{lista})
-@deffnx {Fun@,{c}@~ao} dataplot (@var{lista}, @var{option_1}, @var{option_2}, ...)
+@deffnx {Fun@,{c}@~ao} dataplot (@var{lista}, @var{op@,{c}@~ao_1}, @var{op@,{c}@~ao_2}, ...)
 @deffnx {Fun@,{c}@~ao} dataplot (@var{matriz})
-@deffnx {Fun@,{c}@~ao} dataplot (@var{matriz}, @var{option_1}, @var{option_2}, ...)
-Funtion @code{dataplot} permits direct visualization of sample data, both univariate (@var{lista}) and multivariate (@var{matriz}). Giving values to the following @var{options} some aspects of the plot can be controlled:
+@deffnx {Fun@,{c}@~ao} dataplot (@var{matriz}, @var{op@,{c}@~ao_1}, @var{op@,{c}@~ao_2}, ...)
+A fun@,{c}@~ao @code{dataplot} permite visualiza@,{c}@~ao direta de dados de amostra, ambas d uma @'unica vari@'avel (@var{lista}) e de v@'arias vari@'aveis (@var{matriz}). Fornecendo valores para as seguintes @var{op@,{c}@~oes} que s@~ao alguns asp@'ectos de impress@~ao que podem ser controlados:
 
 @itemize @bullet
 
 @item
-@code{'outputdev}, default @code{"x"}, indicates the output device; correct values are @code{"x"}, @code{"eps"} and @code{"png"}, for the screen, postscript and png format files, respectively.
+@code{'outputdev}, o valor padr@~ao @'e @code{"x"}, indica o formato de dispositivo/arquivo da figura de sa@'ida; valores corretos s@~ao @code{"x"}, @code{"eps"} e @code{"png"}, para a tela, formato de arquivo postscript e formato de arquivo png, respectivamente.
 
 @item
-@code{'maintitle}, default @code{""}, is the main title between double quotes.
+@code{'maintitle}, o valor padr@~ao @'e @code{""}, @'e o t@'itulo principal entre aspas duplas.
 
 @item
-@code{'axisnames}, default @code{["x","y","z"]}, is a list with the names of axis @code{x}, @code{y} and @code{z}.
+@code{'axisnames}, o valor padr@~ao @'e @code{["x","y","z"]}, @'e uma lista de nomes dos eixos @code{x}, @code{y} e @code{z}.
 
 @item
-@code{'joined}, default @code{false}, a logical value to select points in 2D to be joined or isolated.
+@code{'joined}, o valor padr@~ao @'e @code{false}, um valor l@'ogico para selecionar pontos em 2D para serem unidos ou isolados.
 
 @item
-@code{'picturescales}, default @code{[1.0, 1.0]}, scaling factors for the size of the plot.
+@code{'picturescales}, o valor padr@~ao @'e @code{[1.0, 1.0]}, fator de proporcionalidade para o tamanho do gr@'afico.
 
 @item
-@code{'threedim}, default @code{true}, tells Maxima whether to plot a three column matrix with a 3D diagram or a multivariate scatterplot. See exemplos bellow.
+@code{'threedim}, o valor padr@~ao @'e @code{true}, diz ao Maxima se ou monta-se o gr@'afico de uma matriz de tr@^es colunas como um diagrama 3D ou se monta-se o gr@'afico como um diagrama de dispers@~ao de v@'arias vari@'aveis. Veja exemplos abaixo.
 
 @item
-@code{'axisrot}, default @code{[60, 30]}, changes the point of view when @code{'threedim} is set to @code{true} and  data are stored in a three column matrix. The first number is the rotation angle of the @var{x}-axis, and the second number is the rotation angle of the @var{z}-axis, both measured in degrees.
+@code{'axisrot}, o valor padr@~ao @'e @code{[60, 30]}, modifica o ponto de visualiza@,{c}@~ao quando @code{'threedim} for escolhido para @code{true} dados forem armazenados em uma matriz de tr@^es colunas. O primeiro n@'umero @'e o @^angulo de rota@,{c}@~ao do eixo @var{x}, e o segundo n@'umero @'e o angulo de rota@,{c}@~ao do eixo @var{z}-axis, ambas as medidas em graus.
 
 @item
-@code{'nclasses}, default @code{10}, is the number of classes for the histograms in the diagonal of multivariate scatterplots.
+@code{'nclasses}, o valor padr@~ao @'e @code{10}, @'e o n@'umero de classes para histogramas na diagonal de gr@'aficos de dispers@~ao de v@'arias vari@'aveis.
 
 @item
-@code{'pointstyle}, default @code{1}, is an integer to indicate how to display sample points.
+@code{'pointstyle}, o valor padr@~ao @'e @code{1}, @'e um inteiro que indica como mostrar pontos de amostra.
 
 @end itemize
 
-For exemplo, with the following input a simple plot of the first twenty digits of @code{%pi} is requested and the output stored in an eps file.
+Por exemplo, com a seguite entrada um gr@'afico simples dos primeiros vinte d@'igitos de @code{%pi} @'e requisitado e a sa@'ida @'e armazenada em um arquivo no formato eps.
 
 @c ===beg===
 @c load (descriptive)$
@@ -1811,69 +1811,69 @@ For exemplo, with the following input a simple plot of the first twenty digits o
 (%i4) dataplot (makelist (s1[k], k, 1, 20), 'pointstyle = 3)$
 @end example
 
-Note that one dimensional data are plotted as a time series. In the next case, same more data with different settings,
+Note que dados unidimensionais s@~ao colocados no gr@'afico como uma s@'erie de tempo. No caso seguinte, ocorre a mesma coisa s@'o que com mais dados e com mais configura@,{c}@~oes,
 
 @c ===beg===
 @c load (descriptive)$
 @c load (numericalio)$
 @c s1 : read_list (file_search ("pidigits.data"))$
-@c dataplot (makelist (s1[k], k, 1, 50), 'maintitle = "First pi digits",
-@c  'axisnames = ["digit order", "digit value"], 'pointstyle = 2,
+@c dataplot (makelist (s1[k], k, 1, 50), 'maintitle = "Primeiros d@'igitos de pi",
+@c  'axisnames = ["ordem do d@'igito", "valor do d@'igito"], 'pointstyle = 2,
 @c  'joined = true)$
 @c ===end===
 @example
 (%i1) load (descriptive)$
 (%i2) load (numericalio)$
 (%i3) s1 : read_list (file_search ("pidigits.data"))$
-(%i4) dataplot (makelist (s1[k], k, 1, 50), 'maintitle = "First pi digits",
- 'axisnames = ["digit order", "digit value"], 'pointstyle = 2,
+(%i4) dataplot (makelist (s1[k], k, 1, 50), 'maintitle = "Primeiros d@'igitos de pi",
+ 'axisnames = ["ordem do d@'igito", "valor do d@'igito"], 'pointstyle = 2,
  'joined = true)$
 @end example
 
-Function @code{dataplot} can be used to plot points in the plane. The next exemplo is a scatterplot of the pairs of wind speeds corresponding to the first and fifth meteorological stations,
+A fun@,{c}@~ao @code{dataplot} pode ser usada para montar gr@'aficos de pontos no plano. O exemplo seguinte @'e gr@'afico de dispers@~ao de pares de pontos de velocidades de vento para o primeira e para o quinta esta@,{c}@~ao meteorol@'ogica,
 
 @c ===beg===
 @c load (descriptive)$
 @c load (numericalio)$
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c dataplot (submatrix (s2, 2, 3, 4), 'pointstyle = 2,
-@c  'maintitle = "Pairs of wind speeds measured in knots",
-@c  'axisnames = ["Wind speed in A", "Wind speed in E"])$
+@c  'maintitle = "Pares de medidas de velocidade do vento em n@'os",
+@c  'axisnames = ["Velocidade do vento em A", "Velocidade do vento em E"])$
 @c ===end===
 @example
 (%i1) load (descriptive)$
 (%i2) load (numericalio)$
 (%i3) s2 : read_matrix (file_search ("wind.data"))$
 (%i4) dataplot (submatrix (s2, 2, 3, 4), 'pointstyle = 2,
- 'maintitle = "Pairs of wind speeds measured in knots",
- 'axisnames = ["Wind speed in A", "Wind speed in E"])$
+ 'maintitle = "Pares de medidas de velocidade do vento em n@'os",
+ 'axisnames = ["Velocidade do vento em A", "Velocidade do vento em E"])$
 @end example
 
-If points are stored in a two column matrix, @code{dataplot} can plot them directly, but if they are formatted as a list of pairs, their must be transformed to a matrix as in the following exemplo.
+Se pontos forem armazenados em uma matriz de duas colunas, @code{dataplot} pode montar o gr@'afico desses pontos diretamente, mas se eles forem formatados em uma lista de pares, essa lista deve ser transformada em uma matriz como no seguinte exemplo.
 
 @c ===beg===
 @c load (descriptive)$
 @c x : [[-1, 2], [5, 7], [5, -3], [-6, -9], [-4, 6]]$
-@c dataplot (apply ('matrix, x), 'maintitle = "Points",
+@c dataplot (apply ('matrix, x), 'maintitle = "Pontos",
 @c  'joined = true, 'axisnames = ["", ""], 'picturescales = [0.5, 1.0])$
 @c ===end===
 @example
 (%i1) load (descriptive)$
 (%i2) x : [[-1, 2], [5, 7], [5, -3], [-6, -9], [-4, 6]]$
-(%i3) dataplot (apply ('matrix, x), 'maintitle = "Points",
+(%i3) dataplot (apply ('matrix, x), 'maintitle = "Pontos",
  'joined = true, 'axisnames = ["", ""], 'picturescales = [0.5, 1.0])$
 @end example
 
-Points in three dimensional space can be seen as a projection on the plane. In this exemplo, plots of wind speeds corresponding to  three meteorological stations are requested, first in a 3D plot and then in a multivariate scatterplot.
+Pontos no espa@,{c}o tridimensional podem ser vistos como uma proje@,{c}@~ao no plano. Nesse exemplo, o gr@'afico de velocidades do vento correspondendo a tr@^es esta@,{c}òes meteorol@'ogicas s@~ao requisitados, primeiramente em um gr@'afico em 3D e a seguir em um gr@'afico de dispers@`ao de v@'arias vari@'aveis.
 
 @c ===beg===
 @c load (descriptive)$
 @c load (numericalio)$
 @c s2 : read_matrix (file_search ("wind.data"))$
-@c /* 3D plot */ dataplot (submatrix (s2, 4, 5), 'pointstyle = 2,
-@c  'maintitle = "Pairs of wind speeds measured in knots",
-@c  'axisnames = ["Station A", "Station B", "Station C"])$
-@c /* Multivariate scatterplot */ dataplot (submatrix (s2, 4, 5),
+@c /* Gr@'afico em 3Dt */ dataplot (submatrix (s2, 4, 5), 'pointstyle = 2,
+@c  'maintitle = "Pares de medidas de velocidades do vento em n@'os",
+@c  'axisnames = ["Esta@,{c}@~ao A", "Esta@,{c}@~ao B", "Esta@,{c}@~ao C"])$
+@c /* Gr@'afico de dispers@~ao de v@'arias vari@'aveis */ dataplot (submatrix (s2, 4, 5),
 @c  'nclasses = 6, 'threedim = false)$
 @c ===end===
 @example
@@ -1881,14 +1881,14 @@ Points in three dimensional space can be seen as a projection on the plane. In t
 (%i2) load (numericalio)$
 (%i3) s2 : read_matrix (file_search ("wind.data"))$
 (%i4) /* 3D plot */ dataplot (submatrix (s2, 4, 5), 'pointstyle = 2,
- 'maintitle = "Pairs of wind speeds measured in knots",
- 'axisnames = ["Station A", "Station B", "Station C"])$
-(%i5) /* Multivariate scatterplot */ dataplot (submatrix (s2, 4, 5),
+ 'maintitle = "Pares de medidas de velocidades do vento em n@'os",
+ 'axisnames = ["Esta@,{c}@~ao A", "Esta@,{c}@~ao B", "Esta@,{c}@~ao C"])$
+(%i5) /* Gr@'afico de dispers@~ao de v@'arias vari@'aveis */ dataplot (submatrix (s2, 4, 5),
  'nclasses = 6, 'threedim = false)$
 @end example
-Note that in the last exemplo, the number of classes in the histograms of the diagonal is set to 6, and that option @code{'threedim} is set to @code{false}.
+Note que no @'ultimo exemplo, o n@'umero de classes no histogramas da diagonal @'e escolhido para 6, and that option @code{'threedim} is set to @code{false}.
 
-For more than three dimensions only multivariate scatterplots are possible, as in
+Para mais que tr@^es dimens@~oes somente gr@'aficos de dispers@~ao de v@'arias vari@'aveis s@~ao poss@'ivel, como em
 
 @c ===beg===
 @c load (descriptive)$
@@ -1907,46 +1907,46 @@ For more than three dimensions only multivariate scatterplots are possible, as i
 
 
 @deffn {Fun@,{c}@~ao} histogram (@var{lista})
-@deffnx {Fun@,{c}@~ao} histogram (@var{lista}, @var{option_1}, @var{option_2}, ...)
+@deffnx {Fun@,{c}@~ao} histogram (@var{lista}, @var{op@,{c}@~ao_1}, @var{op@,{c}@~ao_2}, ...)
 @deffnx {Fun@,{c}@~ao} histogram (@var{one_column_matrix})
-@deffnx {Fun@,{c}@~ao} histogram (@var{one_column_matrix}, @var{option_1}, @var{option_2}, ...)
-This function plots an histogram. Sample data must be stored in a list of numbers or a one column matrix. Giving values to the following @var{options} some aspects of the plot can be controlled:
+@deffnx {Fun@,{c}@~ao} histogram (@var{one_column_matrix}, @var{op@,{c}@~ao_1}, @var{op@,{c}@~ao_2}, ...)
+Essa fun@,{c}@~ao monta um gr@'afico de um histograma. Dados de amostras devem ser armazenados em uma lista de n@'umeros ou em uma matriz de uma coluna. Fornecendo valores para as seguintes @var{op@,{c}@~oes} alguns asp@'ectos do gr@'afico podem ser controlados:
 
 @itemize @bullet
 
 @item
-@code{'outputdev}, default @code{"x"}, indicates the output device; correct values are @code{"x"}, @code{"eps"} and @code{"png"}, for the screen, postscript and png format files, respectively.
+@code{'outputdev}, o valor padr@~ao @'e @code{"x"}, indica o formato de arquivo da figura de sa@'ida; valores corretos s@~ao @code{"x"}, @code{"eps"} and @code{"png"}, para a tela, formato de arquivo postscript e formato de arquivo png, respectivamente.
 
 @item
-@code{'maintitle}, default @code{""}, is the main title between double quotes.
+@code{'maintitle}, o valor padr@~ao @'e @code{""}, @'e o t@'itulo principal entre aspas duplas.
 
 @item
-@code{'axisnames}, default @code{["x", "Fr."]}, is a list with the names of axis @code{x} and @code{y}.
+@code{'axisnames}, o valor padr@~ao @'e @code{["x", "Fr."]}, @'e uma lista de nomes dos eixos @code{x} e @code{y}.
 
 @item
-@code{'picturescales}, default @code{[1.0, 1.0]}, scaling factors for the size of the plot.
+@code{'picturescales}, o valor padr@~ao @'e @code{[1.0, 1.0]}, fator de proporcionalidade para o tamanho do gr@'afico.
 
 @item
-@code{'nclasses}, default @code{10}, is the number of classes or bars.
+@code{'nclasses}, o valor padr@~ao @'e @code{10}, @'e o n@'umero de classes ou o n@'umero de barras.
 
 @item
-@code{'relbarwidth}, default @code{0.9}, a decimal number between 0 and 1 to control bars width.
+@code{'relbarwidth}, o valor padr@~ao @'e @code{0.9}, um n@'umero decimao entre 0 e 1 para controlar a largura das barras.
 
 @item
-@code{'barcolor}, default @code{1}, an integer to indicate bars color.
+@code{'barcolor}, o valor padr@~ao @'e @code{1}, um inteiro para indicar a cor das barras.
 
 @item
-@code{'colorintensity}, default @code{1}, a decimal number between 0 and 1 to fix color intensity.
+@code{'colorintensity}, o valor padr@~ao @'e @code{1}, um n@'umero decimal entre 0 e 1 para estabelecer a intensidade da cor.
 
 @end itemize
 
-In the next two exemplos, histograms are requested for the first 100 digits of number @code{%pi} and for the wind speeds in the third meteorological station.
+Nos pr@'oximos dois exemplos, histogramas s@~ao requisitados para os primeiros 100 d@'igitos do n@'umero @code{%pi} e para velocidades do vento na terceira esta@,{c}@~ao meteorol@'ogica.
 
 @c ===beg===
 @c load (descriptive)$
 @c load (numericalio)$
 @c s1 : read_list (file_search ("pidigits.data"))$
-@c histogram (s1, 'maintitle = "pi digits", 'axisnames = ["", "Absolute frequency"],
+@c histogram (s1, 'maintitle = "d@'igitos de pi", 'axisnames = ["", "Freq@"u@^encia absoluta"],
 @c  'relbarwidth = 0.2, 'barcolor = 3, 'colorintensity = 0.6)$
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c histogram (col (s2, 3), 'colorintensity = 0.3)$
@@ -1955,107 +1955,108 @@ In the next two exemplos, histograms are requested for the first 100 digits of n
 (%i1) load (descriptive)$
 (%i2) load (numericalio)$
 (%i3) s1 : read_list (file_search ("pidigits.data"))$
-(%i4) histogram (s1, 'maintitle = "pi digits", 'axisnames = ["", "Absolute frequency"],
+(%i4) histogram (s1, 'maintitle = "d@'igitos de pi", 'axisnames = ["", "Freq@"u@^encia absoluta"],
  'relbarwidth = 0.2, 'barcolor = 3, 'colorintensity = 0.6)$
 (%i5) s2 : read_matrix (file_search ("wind.data"))$
 (%i6) histogram (col (s2, 3), 'colorintensity = 0.3)$
 @end example
-Note that in the first case, @code{s1} is a list and in the second exemplo, @code{col(s2,3)} is a matrix.
+Note tque no primeiro caso, @code{s1} @'e uma lista  e o segundo exemplo, @code{col(s2,3)} @'e uma matriz.
 
-Veja tamb@'em function @code{barsplot}.
+Veja tamb@'em a fun@,{c}@~ao @code{barsplot}.
 @end deffn
 
 
 
 @deffn {Fun@,{c}@~ao} barsplot (@var{lista})
-@deffnx {Fun@,{c}@~ao} barsplot (@var{lista}, @var{option_1}, @var{option_2}, ...)
+@deffnx {Fun@,{c}@~ao} barsplot (@var{lista}, @var{op@,{c}@~ao_1}, @var{op@,{c}@~ao_2}, ...)
 @deffnx {Fun@,{c}@~ao} barsplot (@var{one_column_matrix})
-@deffnx {Fun@,{c}@~ao} barsplot (@var{one_column_matrix}, @var{option_1}, @var{option_2}, ...)
-Similar to @code{histogram} but for discrete, numeric or categorical, statistical variables. These are the options,
+@deffnx {Fun@,{c}@~ao} barsplot (@var{one_column_matrix}, @var{op@,{c}@~ao_1}, @var{op@,{c}@~ao_2}, ...)
+Similar a @code{histogram} mas para vari@'aveis estat@'isticas, num@'ericas ou divididas em categorias. As op@,{c}@~oes est@~ao abaixo,
 
 @itemize @bullet
 
 @item
-@code{'outputdev}, default @code{"x"}, indicates the output device; correct values are @code{"x"}, @code{"eps"} and @code{"png"}, for the screen, postscript and png format files, respectively.
+@code{'outputdev}, o valor padr@~ao @'e @code{"x"}, indica o formato de arquivo da figura de sa@'ida; valores corretos s@~ao @code{"x"}, @code{"eps"} and @code{"png"}, para a tela, formato de arquivo postscript e formato de arquivo png, respectivamente.
 
 @item
-@code{'maintitle}, default @code{""}, is the main title between double quotes.
+@code{'maintitle}, o valor padr@~ao @'e @code{""}, @'e o t@'itulo principal entre aspas duplas.
 
 @item
-@code{'axisnames}, default @code{["x", "Fr."]}, is a list with the names of axis @code{x} and @code{y}.
+@code{'axisnames}, o valor padr@~ao @'e @code{["x", "Fr."]}, @'e uma lista de nomes dos eixos @code{x} e @code{y}.
 
 @item
-@code{'picturescales}, default @code{[1.0, 1.0]}, scaling factors for the size of the plot.
+@code{'picturescales}, o valor padr@~ao @'e @code{[1.0, 1.0]}, fator de proporcionalidade para o tamanho do gr@'afico.
 
 @item
-@code{'relbarwidth}, default @code{0.9}, a decimal number between 0 and 1 to control bars width.
+@code{'relbarwidth}, o valor padr@~ao @'e @code{0.9}, um n@'umero decimao entre 0 e 1 para controlar a largura das barras.
 
 @item
-@code{'barcolor}, default @code{1}, an integer to indicate bars color.
+@code{'barcolor}, o valor padr@~ao @'e @code{1}, um inteiro para indicar a cor das barras.
 
 @item
-@code{'colorintensity}, default @code{1}, a decimal number between 0 and 1 to fix color intensity.
+@code{'colorintensity}, o valor padr@~ao @'e @code{1}, um n@'umero decimal entre 0 e 1 para estabelecer a intensidade da cor.
+
 
 @end itemize
 
-This exemplo plots the barchart for groups @code{A} and @code{B} of patients in sample @code{s3},
+Esse exemplo monta um gr@'afico de barras para os grupos @code{A} e @code{B} de pacientes na amostra @code{s3},
 
 @c ===beg===
 @c load (descriptive)$
 @c load (numericalio)$
 @c s3 : read_matrix (file_search ("biomed.data"))$
-@c barsplot (col (s3, 1), 'maintitle = "Groups of patients",
-@c  'axisnames = ["Group", "# of individuals"], 'colorintensity = 0.2)$
+@c barsplot (col (s3, 1), 'maintitle = "Grupos de pacientes",
+@c  'axisnames = ["Grupo", "# de indiv@'iduos"], 'colorintensity = 0.2)$
 @c ===end===
 @example
 (%i1) load (descriptive)$
 (%i2) load (numericalio)$
 (%i3) s3 : read_matrix (file_search ("biomed.data"))$
-(%i4) barsplot (col (s3, 1), 'maintitle = "Groups of patients",
- 'axisnames = ["Group", "# of individuals"], 'colorintensity = 0.2)$
+(%i4) barsplot (col (s3, 1), 'maintitle = "Grupos de pacientes",
+ 'axisnames = ["Grupo", "# de indiv@'iduos"], 'colorintensity = 0.2)$
 @end example
-The first column in sample @code{s3} stores the categorical values @code{A} and @code{B}, also known sometimes as factors. On the other hand, the positive integer numbers in the second column are ages, in years, which is a discrete variable, so we can plot the absolute frequencies for these values,
+A primeira coluna na amostra @code{s3} armazena os valores das categorias @code{A} e @code{B}, tamb@'em conhecidos algumas vezes como fatores. Por outro lado, os n@'umeros inteiros positivos na segunda coluna s@`ao idades, em anos, que se comportam como vari@'avel discreta, ent@~ao podemos montar um gr@'afico as freq@"u@^encias absolutas para esses valores,
 
 @c ===beg===
 @c load (descriptive)$
 @c load (numericalio)$
 @c s3 : read_matrix (file_search ("biomed.data"))$
-@c barsplot (col (s3, 2), 'maintitle = "Ages",
-@c  'axisnames = ["Years", "# of individuals"], 'colorintensity = 0.2,
+@c barsplot (col (s3, 2), 'maintitle = "Idades",
+@c  'axisnames = ["Anos", "# dos indiv@'iduos"], 'colorintensity = 0.2,
 @c  'relbarwidth = 0.6)$
 @c ===end===
 @example
 (%i1) load (descriptive)$
 (%i2) load (numericalio)$
 (%i3) s3 : read_matrix (file_search ("biomed.data"))$
-(%i4) barsplot (col (s3, 2), 'maintitle = "Ages",
- 'axisnames = ["Years", "# of individuals"], 'colorintensity = 0.2,
+(%i4) barsplot (col (s3, 2), 'maintitle = "Idades",
+ 'axisnames = ["Anos", "# dos indiv@'iduos"], 'colorintensity = 0.2,
  'relbarwidth = 0.6)$
 @end example
 
 
-Veja tamb@'em function @code{histogram}.
+Veja tamb@'em a fun@,{c}@~ao @code{histogram}.
 @end deffn
 
 
 
 @deffn {Fun@,{c}@~ao} boxplot (@var{data})
-@deffnx {Fun@,{c}@~ao} boxplot (@var{data}, @var{option_1}, @var{option_2}, ...)
-This function plots box diagrams. Argument @var{data} can be a list, which is not of great interest, since these diagrams are mainly used for comparing different amostras, or a matrix, so it is possible to compare two or more components of a multivariate statistical variable. But it is also allowed @var{data} to be a list of amostras with possible different sample sizes, in fact this is the only function in package @code{descriptive} that admits this type of data structure. See exemplo bellow.  These are the options,
+@deffnx {Fun@,{c}@~ao} boxplot (@var{data}, @var{op@,{c}@~ao_1}, @var{op@,{c}@~ao_2}, ...)
+Essa fun@,{c}@~ao monta diagramas em caixas. O argumento @var{data} pode ser uma lista, que n@~ao @'e de grande interesse, uma vez que esses diagramas s@~ao principalmente usados para compara@,{c}@~ao entre diferentes amostras, ou uma matriz, eent@~ao @'e poss@'ivel comparar dois ou mais componentes de uma vari@'avel estat@'istica de v@'arias vari@'aveis. Mas @'e tamb@'em permitido @var{data} se uma lista de amostras com tamanhos diferentes de amostra, de fato essa @'e aa @'unica fun@,{c}@~ao no pacote @code{descriptive} que admite esse tipo de estrutura de dados. Veja o exemplo abaixo.  Abaixo et@~ao as op@,{c}@~oes,
 
 @itemize @bullet
 
 @item
-@code{'outputdev}, default @code{"x"}, indicates the output device; correct values are @code{"x"}, @code{"eps"} and @code{"png"}, for the screen, postscript and png format files, respectively.
+@code{'outputdev}, o valor padr@~ao @'e @code{"x"}, indica o formato de arquivo da figura de sa@'ida; valores corretos s@~ao @code{"x"}, @code{"eps"} and @code{"png"}, para a tela, formato de arquivo postscript e formato de arquivo png, respectivamente.
 
 @item
-@code{'maintitle}, default @code{""}, is the main title between double quotes.
+@code{'maintitle}, o valor padr@~ao @'e @code{""}, @'e o t@'itulo principal entre aspas duplas.
 
 @item
-@code{'axisnames}, default @code{["sample", "y"]}, is a list with the names of axis @code{x} and @code{y}.
+@code{'axisnames}, o valor padr@~ao @'e @code{["sample", "y"]}, @'e uma lista de nomes dos eixos @code{x} e @code{y}.
 
 @item
-@code{'picturescales}, default @code{[1.0, 1.0]}, scaling factors for the size of the plot.
+@code{'picturescales}, o valor padr@~ao @'e @code{[1.0, 1.0]}, fator de proporcionalidade para o tamanho do gr@'afico.
 
 @end itemize
 
@@ -2065,8 +2066,8 @@ Examples:
 @c load (descriptive)$
 @c load (numericalio)$
 @c s2 : read_matrix (file_search ("wind.data"))$
-@c boxplot (s2, 'maintitle = "Windspeed in knots",
-@c  'axisnames = ["Seasons", ""])$
+@c boxplot (s2, 'maintitle = "Velocidade do vento em n@'os",
+@c  'axisnames = ["Esta@,{c}@~ao do ano", ""])$
 @c A :
 @c  [[6, 4, 6, 2, 4, 8, 6, 4, 6, 4, 3, 2],
 @c   [8, 10, 7, 9, 12, 8, 10],
@@ -2077,8 +2078,8 @@ Examples:
 (%i1) load (descriptive)$
 (%i2) load (numericalio)$
 (%i3) s2 : read_matrix (file_search ("wind.data"))$
-(%i4) boxplot (s2, 'maintitle = "Windspeed in knots",
- 'axisnames = ["Seasons", ""])$
+(%i4) boxplot (s2, 'maintitle = "Velocidade do vento em n@'os",
+ 'axisnames = ["Esta@,{c}@~ao do ano", ""])$
 (%i5) A :
  [[6, 4, 6, 2, 4, 8, 6, 4, 6, 4, 3, 2],
   [8, 10, 7, 9, 12, 8, 10],
