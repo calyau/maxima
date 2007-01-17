@@ -16,11 +16,6 @@
 
 ($put '$nset 1.21 '$version)
 
-(defmacro while (cond &rest body)
-  `(do ()
-       ((not ,cond))
-     ,@body))
-
 ;; Display sets as { .. }.
 
 (defprop $set msize-matchfix grind) 

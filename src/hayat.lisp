@@ -3216,6 +3216,7 @@
 
 ;		(Comment Subtitle TAYLORINFO)
 
+#|
 (defmfun $taylorinfo (x)
   (ifn (memq 'trunc (car x)) ()
        (cons '(mlist)
@@ -3232,6 +3233,46 @@
 				     (list '(mequal) (car w) (cdr w)))
 			   (switches q))))
 	      (cadddr (cdar x))))))
+|#
+
+(defun taylor-trunc (q)
+  (setq q (current-trunc q))
+  (cond ((null q) '$inf)
+	((equal (cdr q) 1) (car q))
+	(t `((rat) ,(car q) ,(cdr q)))))
+
+(defun taylor-info (q)
+  (let ((acc-var nil) (acc-pt nil) (acc-ord nil) (qk) (acc))
+    (cond ((null q) nil)
+	  (t
+	   (setq qk (pop q))
+	   (cond ((and (fourth qk) (consp (fourth qk)) (eq (caar (fourth qk)) 'multivar)) nil)
+		 ((and (fourth qk) (consp (fourth qk)) (eq (caar (fourth qk)) 'multi))
+		  (while (and (fourth qk) (consp (fourth qk)) (eq (caar (fourth qk)) 'multi))
+		    (setq acc nil)
+		    (push (taylor-trunc qk) acc-ord)
+		    (push (exp-pt qk) acc-pt)
+		    (push (datum-var qk) acc-var)
+		    (setq qk (pop q)))
+		  (push '(mlist) acc-ord)
+		  (push '(mlist) acc-pt)		  
+		  (push '(mlist) acc-var)
+		  (setq q (taylor-info q))
+		  (if (null q) (list acc-var acc-pt acc-ord) (append q (list acc-var acc-pt acc-ord))))
+		
+		 (t
+		  (setq acc (if (and (fourth qk) (consp (fourth qk)) (eq '$asympt (caar (fourth qk))))
+				(list '$asympt) nil))
+		  (push (taylor-trunc qk) acc)
+		  (push (exp-pt qk) acc)
+		  (push (datum-var qk) acc)
+		  (push '(mlist) acc)
+		  (setq q (taylor-info q))
+		  (if (null q) (list acc) (append q (list acc)))))))))
+		  
+(defun $taylorinfo (x)
+  (if (and (consp x) (memq 'trunc (first x))) (cons '(mlist) (taylor-info (mrat-tlist x))) nil))
+
 
 ;;; Local Modes:
 ;;; Lisp let-pw Indent:2

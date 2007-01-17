@@ -19,6 +19,11 @@
 ;;;
 ;;; Every function in this file is known about externally.
 
+(defmacro while (cond &rest body)
+  `(do ()
+       ((not ,cond))
+     ,@body))
+
 (defun maxima-getenv (envvar)
   #+gcl     (si::getenv envvar)
   #+allegro (system:getenv envvar)
