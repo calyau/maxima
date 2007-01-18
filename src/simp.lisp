@@ -929,7 +929,7 @@
 	((memq z '($pos $pz)) y)
 	((memq z '($neg $nz)) (neg y))
 	((eq z '$zero) 0)
-	((and (mexptp y) (integerp (caddr y)))
+	((and (mexptp y) ($featurep (caddr y) '$integer))
 	 ;;(list (car y) (simpabs (list '(mabs) (cadr y)) nil t) (caddr y)))
 	 (list (car y) (simplifya (list '(mabs) (cadr y)) nil) (caddr y)))
 	((mtimesp y)
