@@ -1011,3 +1011,25 @@ true;
 
 kill(closeto);
 done;
+
+/*
+ * Tests for failed cases to see if we're returning the noun forms
+ */
+/* fail-on-f24p146test */
+specint(t^(-3/2)*exp(-t^2/8/a)*exp(-p*t),t);
+'specint(t^(-3/2)*exp(-t^2/8/a)*exp(-p*t),t);
+
+/* fail-on-f35p147test */
+specint((2*t)^(-3/2)*exp(-2*sqrt(a)*sqrt(t))*exp(-p*t),t);
+'specint(exp(-p*t -2*sqrt(a)*sqrt(t))/(8*t^(3/2)),t);
+
+/* fail-on-f29p146test */
+specint(t^(v-1)*exp(1/8/t)*exp(-p*t),t);
+'specint(t^(v-1)*exp(1/8/t)*exp(-p*t),t);
+
+/* fail-in-arbpow (aka f1p137test) */
+specint(t^(-1)*exp(-p*t),t);
+'specint(exp(-p*t)/t,t);
+
+
+

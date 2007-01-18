@@ -18,6 +18,10 @@
 
 (load-macsyma-macros rzmac)
 
+(defvar *hyp-return-noun-form-p* t
+  "Return noun form instead of internal Lisp symbols for integrals
+  that we don't support")
+
 ;; Return the maxima presentation of a bessel function with order v
 ;; and arg z.  If flg is 'J, the ti's the J function; otherwise, the I
 ;; function.
@@ -968,28 +972,58 @@
 (defun f24p146test (c v a)
   (cond ((and (eq (asksign a) '$positive)
 	      (eq (asksign v) '$positive))
-	;; Both a and v must be positive
+	 ;; Both a and v must be positive
 	 (f24p146 c v a))
-	(t 'fail-on-f24p146test)))
+	(t
+	 (if *hyp-return-noun-form-p*
+	     `((%specint) ,(mul* c
+				 (pow var (add v -1))
+				 (pow '$%e (div (mul -1 var var)
+						(mul 8 a)))
+				 (pow '$%e (mul -1 *par* var)))
+	       ,var)
+	     'fail-on-f24p146test))))
 
 ;; Check if conditions for f35p147 hold
 (defun f35p147test (c v a)
   (cond ((eq (asksign v) '$positive)
 	 ;; v must be positive
 	 (f35p147 c v a))
-	(t 'fail-on-f35p147test)))
+	(t
+	 (if *hyp-return-noun-form-p*
+	     `((%specint) ,(mul* c
+				 (pow (mul 2 var)
+				      (add v -1))
+				 (pow '$%e (mul -2
+						(pow a 1//2)
+						(pow var 1//2)))
+				 (pow '$%e (mul -1 *par* var)))
+	       ,var)
+	     'fail-on-f35p147test))))
 
 ;; Check if conditions for f29p146test hold
 (defun f29p146test (v a)
   (cond ((eq (asksign a) '$positive)
 	 (f29p146 v a))
-	(t 'fail-on-f29p146test)))
+	(t
+	 (if *hyp-return-noun-form-p*
+	     `((%specint) ,(mul (pow var (add v -1))
+				(pow '$%e (div (mul -1 a)
+					       (mul 4 var)))
+				(pow '$%e (mul -1 *par* var)))
+	       ,var)
+	     'fail-on-f29p146test))))
 
 ;; Check if conditions for f1p137 hold
 (defun f1p137test (pow)
   (cond ((eq (asksign (add pow 1)) '$positive)
 	 (f1p137 pow))
-	(t 'fail-in-arbpow))) 
+	(t
+	 (if *hyp-return-noun-form-p*
+	     `((%specint) ,(mul (pow var pow)
+				(pow '$%e (mul -1 *par* var)))
+	       ,var)
+	     'fail-in-arbpow))))
 
 ;; Table of Integral Transforms
 ;;
