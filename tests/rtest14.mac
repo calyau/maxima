@@ -1031,5 +1031,18 @@ specint(t^(v-1)*exp(1/8/t)*exp(-p*t),t);
 specint(t^(-1)*exp(-p*t),t);
 'specint(exp(-p*t)/t,t);
 
+/* fail-in-f2p105vcond */
+(assume(p>3),0);
+0;
 
+specint(8*t^1*exp(3*t)*bessel_y(3,t)*exp(-p*t),t);
+'specint(8*bessel_y(3,t)*t*exp(-(p-3)*t),t);
+
+/* fail-in-f50cond */
+specint(8*t^1*exp(3*t)*bessel_y(8,7*sqrt(t))*exp(-p*t),t);
+'specint(8*bessel_y(8,7*sqrt(t))*t*exp(-(p-3)*t),t);
+
+/* fail-in-dionarghyp-y */
+specint(8*t^1*exp(3*t)*bessel_y(8,7*t^(3/2))*exp(-p*t),t);
+'specint(8*bessel_y(8,7*t^(3/2))*t*exp(-(p-3)*t),t);
 

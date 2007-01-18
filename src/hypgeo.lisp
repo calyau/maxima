@@ -2882,10 +2882,24 @@
 	   m (cdras 'm arg) 
 	   c (cdras 'c arg))
      (cond ((and (zerp c) (equal m 1.))
-	    (return (f2p105v2cond a l index))))
+	    (let ((ans (f2p105v2cond a l index)))
+	      (unless (symbolp ans)
+		(return ans)))))
      (cond ((and (zerp c) (equal m (inv 2.)))
-	    (return (f50cond a l index))))
-     (return 'fail-in-dionarghyp-y))) 
+	    (let ((ans (f50cond a l index)))
+	      (unless (symbolp ans)
+		(return ans)))))
+     (if *hyp-return-noun-form-p*
+	 (return `((%specint) ,(mul (cdras 'd l)
+				    (pow var (cdras 'm l))
+				    (cdras 'q l)
+				    (bessy index
+					   (add c
+						(mul a
+						     (pow var m))))
+				    (pow '$%e (mul -1 *par* var)))
+		   ,var))
+	 (return 'fail-in-dionarghyp-y))))
 
 (defun f2p105v2cond (a l index) 
   (prog (d m) 
@@ -2894,7 +2908,7 @@
      (cond ((eq (checksigntm ($realpart (sub m index)))
 		'$positive)
 	    (return (f2p105v2cond-simp m index a))))
-     (return 'fail-in-f2p105v2cond))) 
+     (return 'fail-in-f2p105v2cond)))
 
 (defun f50cond (a l v) 
   (prog (d m) 
