@@ -483,7 +483,7 @@ returns the definite integral of @var{f} with respect to @var{x} from @var{a} to
 @c NEEDS EXPANSION. WHAT IS THE ARGUMENT p ??
 @deffn {Function} fourier (@var{f}, @var{x}, @var{p})
 Returns a list of the Fourier coefficients of @code{@var{f}(@var{x})} defined
-on the interval @code{[-%pi, %pi]}.
+on the interval @code{[-p, p]}.
 
 @c NEEDS EXAMPLES
 @end deffn
