@@ -2764,7 +2764,7 @@
 	   (cdras 'c arg))
      (cond ((and (maxima-integerp m)(zerp c))
 	    (return (f19cond a m l1 l2))))
-     (return 'prop4-and-aother-cases-to-folow)))
+     (return 'prop4-and-other-cases-to-follow)))
 
 
 ;; Match f(x)+c
@@ -2834,7 +2834,14 @@
 				       l2
 				       a
 				       m)))))
-     (return 'failed-on-f19cond-multiply-the-other-cases-with-d)))
+     (if *hyp-return-noun-form-p*
+	 (return
+	   `((%specint) ,(mul d
+			      (pow var s)
+			      (hgfsimp-exec l1 l2 (mul a (pow var m)))
+			      (pow '$%e (mul -1 *par* var)))
+	     ,var))
+	 (return 'failed-on-f19cond-multiply-the-other-cases-with-d))))
 
 ;; Table of Laplace transforms, p 220, formula 19:
 ;;
