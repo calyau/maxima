@@ -917,11 +917,37 @@
 	((atom ex) ex)
 	(t (cons (subst2s (car ex) pat)
 		 (subst2s (cdr ex) pat)))))
+
+;; Match (c*x+b), where c and b are free of x and c is a number
+(defun simple-trig-arg (exp)
+  (m2 exp
+      '((mplus) ((mtimes)
+		 ((coefftt) (c $numberp))
+		 ((coefftt) (v varp)))
+	((coeffpp) (b freevar)))
+      nil))
+
 
 (defun monstertrig (exp var *trigarg*)
   (declare (special *trigarg*))
-  (if (not (atom *trigarg*))
-      (return-from monstertrig (rischint exp var)))
+  (when (not (atom *trigarg*))
+    (let ((arg (simple-trig-arg *trigarg*)))
+      (cond (arg
+	     ;; We have trig(c*x+b).  Use the substitution y=c*x+b to
+	     ;; try to compute the integral.  Why?  Because x*sin(n*x)
+	     ;; takes longer and longer as n gets larger and larger.
+	     ;; This is caused by the Risch integrator.  This is a
+	     ;; work-around for this issue.
+	     (let ((c (cdras 'c arg))
+		   (b (cdras 'b arg))
+		   (new-var (gensym "NEW-VAR-")))
+	       (let ((new-int (div ($integrate (maxima-substitute (div (sub new-var b) c)
+								  var exp)
+					       new-var)
+				   c)))
+		 (return-from monstertrig (maxima-substitute *trigarg* new-var new-int)))))
+	    (t
+	     (return-from monstertrig (rischint exp var))))))
   (prog (*notsame* w *a* *b* y *d*) 
      (declare (special *notsame*))
 	(cond
