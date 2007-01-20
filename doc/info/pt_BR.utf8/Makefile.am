@@ -1,85 +1,20 @@
 MAKEINFOFLAGS = --enable-encoding
 
-langsdir = /pt_BR
+langsdir = /pt_BR.utf8
 
 info_TEXINFOS = maxima.texi
-maxima_TEXINFOS = \
-Affine.texi \
-Arrays.texi \
-Atensor.texi \
-augmented_lagrangian.texi \
-bode.texi \
-Bugs.texi \
-cholesky.texi \
-Command.texi \
-Constants.texi \
-Contexts.texi \
-Ctensor.texi \
-Debugging.texi \
-descriptive.texi \
-diag.texi \
-Differential.texi \
-Differentiation.texi \
-distrib.texi \
-Elliptic.texi \
-Equations.texi \
-eval_string.texi \
-Expressions.texi \
-f90.texi \
-Floating.texi \
-Function.texi \
-ggf.texi \
-Groups.texi \
-Help.texi \
-impdiff.texi \
-Indices.texi \
-Input.texi \
-Integration.texi \
-interpol.texi \
-Introduction.texi \
-Itensor.texi \
-Limits.texi \
-lindstedt.texi \
-linearalgebra.texi \
-Lists.texi \
-Logarithms.texi \
-lsquares.texi \
-makeOrders.texi \
-Matrices.texi \
-Miscellaneous.texi \
-mnewton.texi \
-nset.texi \
-Number.texi \
-numericalio.texi \
-Numerical.texi \
-Operators.texi \
-opsubst.texi \
-orthopoly.texi \
-plotdf.texi \
-Plotting.texi \
-Polynomials.texi \
-Program.texi \
-Rules.texi \
-Runtime.texi \
-Series.texi \
-simplex.texi \
-simplifications.texi \
-Simplification.texi \
-solve_rec.texi \
-Special.texi \
-Statistics.texi \
-stirling.texi \
-stringproc.texi \
-Symmetries.texi \
-Trigonometric.texi \
-unit.texi \
-zeilberger.texi \
-lbfgs.texi
+
+if USE_RECODE
+    urecode=true
+endif
+
+fcharset = "ISO-8859-1"
+tcharset = "UTF-8"
 
 all-local: maxima-index.lisp
 
 maxima-index.lisp: maxima.info ../build_index.pl
-	perl ../build_index.pl maxima.info ':crlf' > maxima-index.lisp
+	perl ../build_index.pl maxima.info ':utf8' > maxima-index.lisp
 
 maximahtml_pt.mk: ../texi2html
 	perl ../texi2html -split_chapter --lang=pt --output=. --css-include=../manual.css --init-file ../texi2html.init maxima.texi 
@@ -94,9 +29,9 @@ $(MAXIMAHTML): maxima.texi $(maxima_TEXINFOS)
 	perl ../create_index
 
 include $(top_srcdir)/common.mk
-genericdir = $(dochtmldir)/pt_BR
+genericdir = $(dochtmldir)/pt_BR.utf8
 genericdirDATA = $(MAXIMAHTML)\
-contents.hhc index.hhk header.hhp maxima.hhp
+contents.hhc index.hhk header.hhp
 
 clean-local: clean-info clean-html
 
@@ -109,7 +44,23 @@ clean-html:
 	rm -f contents.hhc
 	rm -f index.hhk
 
-EXTRA_DIST = maximahtml_pt.mk header.hhp maxima.hhp maxima-index.lisp $(genericdirDATA)
+EXTRA_DIST = maximahtml_pt.mk header.hhp maxima-index.lisp $(genericdirDATA)
+
+maxima.info: maxima.texi
+	@rm -f $@ $@-[0-9] $@-[0-9][0-9]
+	$(MAKEINFO) $(AM_MAKEINFOFLAGS) $(MAKEINFOFLAGS) -I $(srcdir) \
+	 -o $@ `test -f '$<' || echo '$(srcdir)/'`$<
+	for f in $@ $@-[0-9] $@-[0-9][0-9]; do \
+	    if test -f $$f; then \
+		if test x$(urecode) = xtrue ; then \
+		    recode $(fcharset)..$(tcharset) $$f ; \
+		else \
+		    rm -f foo.$$f 2>/dev/null ; \
+		    iconv -f $(fcharset) -t $(tcharset) $$f > foo.$$f ; \
+		    mv -f foo.$$f $$f ; \
+		fi; \
+	    fi; \
+	done
 
 install-info-am: $(INFO_DEPS) maxima-index.lisp
 	test -z "$(infodir)$(langsdir)" || mkdir -p -- "$(DESTDIR)$(infodir)$(langsdir)"

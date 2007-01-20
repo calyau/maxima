@@ -21,9 +21,15 @@
 #  Portuguese
 %define enable_lang_pt 1
 %define lang_pt_flags --enable-lang-pt
-#  Portuguese
+#  Portuguese UTF-8
 %define enable_lang_pt_utf 1
 %define lang_pt_flags_utf --enable-lang-pt-utf8
+#  Brazilian Portuguese
+%define enable_lang_pt_br 1
+%define lang_pt_br_flags --enable-lang-pt_BR
+#  Brazilian Portuguese (UTF-8)
+%define enable_lang_pt_br_utf 1
+%define lang_pt_br_flags_utf --enable-lang-pt_BR-utf8
 
 # Inhibit automatic compressing of info files. Compressed info
 # files break maxima's internal help.
@@ -145,11 +151,30 @@ Requires: maxima = %{version}
 Maxima Portuguese lagnuage support (UTF-8).
 %endif
 
+%if %{enable_lang_pt_br}
+%package lang-pt_BR
+Summary: Maxima Brazilian Portuguese language pack
+Group: Sciences/Mathematics
+Requires: maxima = %{version}
+%description lang-pt_BR
+Maxima Brazilian Portuguese lagnuage support.
+%endif
+
+%if %{enable_lang_pt_br_utf}
+%package lang-pt_BR-utf8
+Summary: Maxima Brazilian Portuguese UTF-8 language pack
+Group: Sciences/Mathematics
+Requires: maxima = %{version}
+%description lang-pt_BR-utf8
+Maxima Brazilian Portuguese lagnuage support (UTF-8).
+%endif
+
 %prep
 %setup -q
 %configure  %{?sbcl_flags:} %{?cmucl_flags:} %{?gcl_flags:} %{?clisp_flags:} \
 	    %{?lang_es_flags:} %{?lang_es_flags_utf:} \
-	    %{?lang_pt_flags:} %{?lang_pt_flags_utf:} 
+	    %{?lang_pt_flags:} %{?lang_pt_flags_utf:} \
+	    %{?lang_pt_br_flags:} %{?lang_pt_br_flags_utf:}
 
 %build
 make
@@ -206,11 +231,17 @@ rm -rf $RPM_BUILD_ROOT
 %if %{enable_lang_pt}
 %exclude %{_datadir}/maxima/%{version}/doc/html/pt
 %endif
+%if %{enable_lang_pt_br}
+%exclude %{_datadir}/maxima/%{version}/doc/html/pt_BR
+%endif
 %if %{enable_lang_es_utf}
 %exclude %{_datadir}/maxima/%{version}/doc/html/es.utf8
 %endif
 %if %{enable_lang_pt_utf}
 %exclude %{_datadir}/maxima/%{version}/doc/html/pt.utf8
+%endif
+%if %{enable_lang_pt_br_utf}
+%exclude %{_datadir}/maxima/%{version}/doc/html/pt_BR.utf8
 %endif
 %dir %{_libexecdir}/maxima
 %{_libexecdir}/maxima/%{version}
@@ -222,11 +253,17 @@ rm -rf $RPM_BUILD_ROOT
 %if %{enable_lang_pt}
 %exclude %{_infodir}/pt
 %endif
+%if %{enable_lang_pt_br}
+%exclude %{_infodir}/pt_BR
+%endif
 %if %{enable_lang_es_utf}
 %exclude %{_infodir}/es.utf8
 %endif
 %if %{enable_lang_pt_utf}
 %exclude %{_infodir}/pt.utf8
+%endif
+%if %{enable_lang_pt_br_utf}
+%exclude %{_infodir}/pt_BR.utf8
 %endif
 %{_mandir}/man1/maxima.1
 %{_bindir}/maxima
@@ -283,15 +320,30 @@ rm -rf $RPM_BUILD_ROOT
 %{_infodir}/pt.utf8
 %endif
 
+%if %{enable_lang_pt_br}
+%files lang-pt_BR
+%{_datadir}/maxima/%{version}/doc/html/pt_BR
+%{_infodir}/pt_BR
+%endif
+
+%if %{enable_lang_pt_br_utf}
+%files lang-pt_BR-utf8
+%{_datadir}/maxima/%{version}/doc/html/pt_BR.utf8
+%{_infodir}/pt_BR.utf8
+%endif
+
 %doc
 
 
 %changelog
+* Sat Jan 20 2007 Vadim Zhytnikov <vvzhy@netorn.ru>
+- Brazilian Portuguese language packs.
+
 * Mon Dec 11 2006 Jaime Villate <villate@fe.up.pt>
 - Moved xmaxima files to the maxima-xmaxima package.
 - Updated description of Xmaxima.
 
-* Wed Dec 28 2005 Vadim Zhytnikov <vvzhy@natorn.ru>
+* Wed Dec 28 2005 Vadim Zhytnikov <vvzhy@netorn.ru>
 - Spanish and Portuguese language packs.
 - Package maxima subdirectories for clean uninstall.
 
