@@ -536,7 +536,7 @@ mnewton
 
 numericalio
 
-* Introdu@value{cedilha}@~ao numericalio::
+* Introdu@value{cedilha}@~ao a numericalio::
 * Defini@value{cedilha}@~oes para numericalio::
 
 opsubst
