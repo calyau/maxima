@@ -1,5 +1,5 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
-@c /Numerical.texi/1.22/Thu Nov  2 05:48:05 2006/-ko/
+@c /Numerical.texi/1.23/Sat Jan 20 05:06:48 2007/-ko/
 @menu
 * Introdu@value{cedilha}@~ao a Num@'erico::
 * Pacotes de Fourier::
@@ -484,7 +484,7 @@ retorna a integral definida de @var{f} com rela@,{c}@~ao a @var{x} de @var{a} at
 @c NEEDS EXPANSION. WHAT IS THE ARGUMENT p ??
 @deffn {Fun@,{c}@~ao} fourier (@var{f}, @var{x}, @var{p})
 Retorna uma lista de coeficientes de Fourier de @code{@var{f}(@var{x})} definidos
-sobre o intervalo @code{[-%pi, %pi]}.
+sobre o intervalo @code{[-p, p]}.
 
 @c NEEDS EXAMPLES
 @end deffn
