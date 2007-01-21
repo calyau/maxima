@@ -99,7 +99,7 @@ para detalhes.
 O pacote @code{atrig1} cont@'em muitas regras adicionais de simplifica@,{c}@~ao 
 para fun@,{c}@~oes trigonom@'etricas inversas.  Junto com regras
 j@'a conhecidas para Maxima, os seguintes @^angulos est@~ao completamente implementados:
-@code{0}, @code{%pi/6}, @code{%pi/4}, @code{%pi/3}, and @code{%pi/2}.  
+@code{0}, @code{%pi/6}, @code{%pi/4}, @code{%pi/3}, e @code{%pi/2}.  
 Os @^angulos correspondentes nos outros tr@^es quadrantes est@~ao tamb@'em dispon@'iveis.  
 Fa@,{c}a @code{load(atrig1);} para us@'a-lo.
 

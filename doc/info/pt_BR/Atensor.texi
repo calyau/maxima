@@ -176,7 +176,7 @@ express@~oes complexas.
 @deffn {Fun@,{c}@~ao} alg_type
 
 O tipo de @'algebra.  Valores v@'alidos s@'ao @code{universal}, @code{grassmann},
-@code{clifford}, @code{symmetric}, @code{symplectic} and @code{lie_envelop}.
+@code{clifford}, @code{symmetric}, @code{symplectic} e @code{lie_envelop}.
 
 @end deffn
 

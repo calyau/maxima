@@ -625,7 +625,7 @@ As fun@,{c}@~oes @code{propvars} e @code{printprops} retornam informa@,{c}@~oes 
 
 @deffn {Fun@,{c}@~ao} matchfix (@var{delimitador_e}, @var{delimitador_d})
 @deffnx {Fun@,{c}@~ao} matchfix (@var{delimitador_e}, @var{delimitador_d}, @var{arg_pos}, @var{pos})
-Declara um operador @code{matchfix} com delimitadores esquerdo e direito @var{delimitador_e} and @var{delimitador_d}.
+Declara um operador @code{matchfix} com delimitadores esquerdo e direito @var{delimitador_e} e @var{delimitador_d}.
 Os delimitadores s@~ao especificados como seq@"u@^ecias de caracteres.
 
 Um operador "matchfix" @'e uma fun@,{c}@~ao que aceita qualquer n@'umero de argumentos,

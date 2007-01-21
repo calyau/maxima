@@ -20,7 +20,7 @@ Stirling de primero e de segundo tipo, os n@'umeros de Bell, coefincientes
 multinomiais, parti@,{c}@~oes de inteiros n@~ao negativos, e umas poucas outras. 
 Maxima tamb@'em define uma fun@,{c}@~ao delta de Kronecker.
 
-@subsection Usage
+@subsection Utiliza@,{c}@~ao
 
 Para construir um conjunto com elementos @code{a_1, ..., a_n}, escreva
 @code{set(a_1, ..., a_n)} ou @code{@{a_1, ..., a_n@}};
@@ -272,7 +272,7 @@ sobre conjuntos.
 Em futuras vers@~oes das fun@,{c}@~oes de conjunto,
 @code{first} e @code{rest} podem vir a funcionar diferentemente ou n@~ao completamente.
 
-@subsection Bugs
+@subsection Erros
 
 As fun@,{c}@~oes de conjunto usam a fun@,{c}@~ao Maxima @code{orderlessp} para 
 organizar os elementos de cum conjunto e a fun@,{c}@~ao (a n@'ivel de Lisp) @code{like} para testar a
@@ -406,7 +406,7 @@ e n@~ao chame @code{unorder}.
 Se voc@^e encontrar alguma coisa que voc@^e pense ser uma falha em alguma fun@,{c}@~o de conjunto, por favor 
 relate isso para a base de dados de falhas do Maxima. Veja @code{bug_report}.
 
-@subsection Authors
+@subsection Autores
 
 Stavros Macrakis de Cambridge, Massachusetts e Barton Willis da 
 Universidade e Nebraska e Kearney (UNK) escreveram as fn@,{c}@~oes de conjunto do Maxima e sua

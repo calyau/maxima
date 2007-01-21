@@ -47,7 +47,7 @@ Predicados combinados da forma @code{@var{pred_1} and ... and @var{pred_n}}
 s@~ao reconhecidos,
 mas n@~ao @code{@var{pred_1} or ... or @var{pred_n}}.
 @code{not @var{pred_k}} @'e reconhecidos se @var{pred_k} for um predicado relacional.
-Express@~oes da forma @code{not (@var{pred_1} and @var{pred_2})}
+Express@~oes da forma @code{not (@var{pred_1} e @var{pred_2})}
 and @code{not (@var{pred_1} or @var{pred_2})}
 n@~ao s@~ao reconhecidas.
 

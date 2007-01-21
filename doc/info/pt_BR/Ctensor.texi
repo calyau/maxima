@@ -1548,7 +1548,7 @@ n@~ao devem ser redefinidos:
 @end example
 
 
-@subsection Changes
+@subsection Modifica@,{c}@~oes
 
 Em Novembro de 2004, o pacote @code{ctensor} foi extensivamente reescrito.
 Muitas fun@,{c}@~oes e vari@'aveis foram renomeadas com o objetivo de tornar o

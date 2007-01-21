@@ -312,7 +312,7 @@ de outra forma o ponto de interroga@,{c}@~ao n@~ao @'e reconhecido com um pedido
 
 @deffn {S@'imbolo especial} ?!
 @ifinfo
-@fnindex Consulta adocumenta@,{c}@~ao (busca exata)
+@fnindex Consulta documenta@,{c}@~ao (busca exata)
 @end ifinfo
 
 A nota@,{c}@~ao @code{?! palavra} (@code{?!} seguido de um espa@,{c}o em branco e uma palavra)

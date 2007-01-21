@@ -967,7 +967,7 @@ Declara@,{c}@~ao @code{feature}.
 (%o3)                         true
 @end example
 
-Declara@,{c}@~oes @code{rassociative} and @code{lassociative}.
+Declara@,{c}@~oes @code{rassociative} e @code{lassociative}.
 @c ===beg===
 @c declare (F, rassociative);
 @c declare (G, lassociative);
@@ -2061,17 +2061,17 @@ A forma substantiva @code{'product} @'e mostrada como um pi mai@'isculo.
 @code{product} avalia @var{expr} e os limites inferior e superior @var{i_0} e @var{i_1},
 @code{product} coloca um ap@'ostrofo (n@~ao avalia) o @'indice @var{i}.
 
-If the upper and lower limits differ by an integer,
-@var{expr} is evaluated for each value of the index @var{i},
-and the result is an explicit product.
+Se os limites superiores e inferiores diferirem por um inteiro,
+@var{expr} @'e avaliada para cada valor do @'indice @var{i},
+e o resultado  um produto expl@'icito.
 
-Otherwise, the range of the index is indefinite.
-Some rules are applied to simplify the product.
-When the global variable @code{simpproduct} is @code{true}, additional rules are applied.
-In some cases, simplification yields a result which is not a product;
-otherwise, the result is a noun form @code{'product}.
+de outra forma, o intervalo do @'indice @'e indefinido.
+Algumas regras s@~ao aplicads para simplificar o produto.
+Quando a vari@'avel global @code{simpproduct} for @code{true}, regras adicionais s@~ao aplicadas.
+Em alguns casos, simplifica@,{c}@~ao um resultado que n@~ao @'e um produto;
+de outra forma, o resultado @'e uma forma substantiva @code{'product}.
 
-See also @code{nouns} and @code{evflag}.
+Veja tamb@'em @code{nouns} e @code{evflag}.
 
 Exemplos:
 

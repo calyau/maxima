@@ -1886,7 +1886,7 @@ Pontos no espa@,{c}o tridimensional podem ser vistos como uma proje@,{c}@~ao no 
 (%i5) /* Gr@'afico de dispers@~ao de v@'arias vari@'aveis */ dataplot (submatrix (s2, 4, 5),
  'nclasses = 6, 'threedim = false)$
 @end example
-Note que no @'ultimo exemplo, o n@'umero de classes no histogramas da diagonal @'e escolhido para 6, and that option @code{'threedim} is set to @code{false}.
+Note que no @'ultimo exemplo, o n@'umero de classes no histogramas da diagonal @'e escolhido para 6, e aquela op@,{c}@~ao @code{'threedim} for escolhida para @code{false}.
 
 Para mais que tr@^es dimens@~oes somente gr@'aficos de dispers@~ao de v@'arias vari@'aveis s@~ao poss@'ivel, como em
 
@@ -1915,7 +1915,7 @@ Essa fun@,{c}@~ao monta um gr@'afico de um histograma. Dados de amostras devem s
 @itemize @bullet
 
 @item
-@code{'outputdev}, o valor padr@~ao @'e @code{"x"}, indica o formato de arquivo da figura de sa@'ida; valores corretos s@~ao @code{"x"}, @code{"eps"} and @code{"png"}, para a tela, formato de arquivo postscript e formato de arquivo png, respectivamente.
+@code{'outputdev}, o valor padr@~ao @'e @code{"x"}, indica o formato de arquivo da figura de sa@'ida; valores corretos s@~ao @code{"x"}, @code{"eps"} e @code{"png"}, para a tela, formato de arquivo postscript e formato de arquivo png, respectivamente.
 
 @item
 @code{'maintitle}, o valor padr@~ao @'e @code{""}, @'e o t@'itulo principal entre aspas duplas.
@@ -1976,7 +1976,7 @@ Similar a @code{histogram} mas para vari@'aveis estat@'isticas, num@'ericas ou d
 @itemize @bullet
 
 @item
-@code{'outputdev}, o valor padr@~ao @'e @code{"x"}, indica o formato de arquivo da figura de sa@'ida; valores corretos s@~ao @code{"x"}, @code{"eps"} and @code{"png"}, para a tela, formato de arquivo postscript e formato de arquivo png, respectivamente.
+@code{'outputdev}, o valor padr@~ao @'e @code{"x"}, indica o formato de arquivo da figura de sa@'ida; valores corretos s@~ao @code{"x"}, @code{"eps"} e @code{"png"}, para a tela, formato de arquivo postscript e formato de arquivo png, respectivamente.
 
 @item
 @code{'maintitle}, o valor padr@~ao @'e @code{""}, @'e o t@'itulo principal entre aspas duplas.
@@ -2047,7 +2047,7 @@ Essa fun@,{c}@~ao monta diagramas em caixas. O argumento @var{data} pode ser uma
 @itemize @bullet
 
 @item
-@code{'outputdev}, o valor padr@~ao @'e @code{"x"}, indica o formato de arquivo da figura de sa@'ida; valores corretos s@~ao @code{"x"}, @code{"eps"} and @code{"png"}, para a tela, formato de arquivo postscript e formato de arquivo png, respectivamente.
+@code{'outputdev}, o valor padr@~ao @'e @code{"x"}, indica o formato de arquivo da figura de sa@'ida; valores corretos s@~ao @code{"x"}, @code{"eps"} e @code{"png"}, para a tela, formato de arquivo postscript e formato de arquivo png, respectivamente.
 
 @item
 @code{'maintitle}, o valor padr@~ao @'e @code{""}, @'e o t@'itulo principal entre aspas duplas.

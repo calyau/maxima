@@ -264,7 +264,7 @@ A integral el@'iptica incompleta de segundo tipo, definida como
 @tex
 $$\int_0^\phi \sqrt{1 - m\sin^2\theta} d\theta$$
 @end tex
-Veja tamb@'em @ref{elliptic_e} and @ref{elliptic_ec}.
+Veja tamb@'em @ref{elliptic_e} e @ref{elliptic_ec}.
 
 @end deffn
 

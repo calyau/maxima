@@ -2913,14 +2913,14 @@ fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @deffn {Fun@,{c}@~ao} cdf_hypergeometric (@var{x},@var{n1},@var{n2},@var{n})
 Retorna o valor em @var{x} da fun@,{c}@~ao distribui@,{c}@~ao de
 probabilidade de uma vari@'avel aleat@'oria @math{Hypergeometric(n1,n2,n)},
-com @var{n1}, @var{n2} and @var{n} inteiros n@~ao negativos e @math{n<=n1+n2}. Para
+com @var{n1}, @var{n2} e @var{n} inteiros n@~ao negativos e @math{n<=n1+n2}. Para
 fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Fun@,{c}@~ao} quantile_hypergeometric (@var{q},@var{n1},@var{n2},@var{n})
 Retorna o @var{q}-quantil de uma vari@'avel aleat@'oria @math{Hypergeometric(n1,n2,n)},
-com @var{n1}, @var{n2} and @var{n} inteiros n@~ao negativos e @math{n<=n1+n2}; em outras
+com @var{n1}, @var{n2} e @var{n} inteiros n@~ao negativos e @math{n<=n1+n2}; em outras
 palavras, essa fun@,{c}@~ao @'e a inversa da fun@,{c}@~ao @code{cdf_hypergeometric}.
 O argumento @var{q} deve ser um elemento de @math{[0,1]}. Para fazer uso dessa
 fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
@@ -3002,7 +3002,7 @@ dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 
 @deffn {Fun@,{c}@~ao} pdf_negative_binomial (@var{x},@var{n},@var{p})
 Retorna o valor em @var{x} da fun@,{c}@~ao de probabilidade de uma vari@'avel
-aleat@'oria @math{Negative Binomial(n,p)}, com @math{0<p<1} and @math{n} um inteiro
+aleat@'oria @math{Negative Binomial(n,p)}, com @math{0<p<1} e @math{n} um inteiro
 positivo. Para fazer uso dessa fun@,{c}@~ao, escreva
 primeiramente @code{load(distrib)}.
 @end deffn

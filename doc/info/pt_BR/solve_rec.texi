@@ -1,3 +1,4 @@
+/solve_rec.texi/1.7/Tue Jan 16 15:15:10 2007//
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /solve_rec.texi/1.7/Tue Jan 16 15:15:10 2007//
 @menu
@@ -243,7 +244,7 @@ Retorna a recorr@^encia satisfeita pelo somat@'orio
   k = inf
 @end example
 
-onde x @'e hipergeom@'etrico em @var{k} e @var{n}. If @var{inf} and @var{sup}
+onde x @'e hipergeom@'etrico em @var{k} e @var{n}. SE @var{inf} e @var{sup}
 forem omitidos, s@~ao assumidos como sendo @code{inf = -inf} e @code{sup = inf}.
 
 Para usar essa fun@,{c}@~ao primeiro chame o pacote @code{simplify_sum} com

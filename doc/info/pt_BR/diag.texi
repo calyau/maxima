@@ -133,7 +133,7 @@ Exemplo:
                     [ 0  0  0  0  0 ]
 @end example
 
-Para usar essa fun@,{c}@~ao escreva primeiramente @code{load("diag")}. Veja tamb@'em @code{jordan} and @code{minimalPoly}.
+Para usar essa fun@,{c}@~ao escreva primeiramente @code{load("diag")}. Veja tamb@'em @code{jordan} e @code{minimalPoly}.
 @end deffn
 
 

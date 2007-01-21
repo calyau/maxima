@@ -48,6 +48,6 @@ Essa fun@,{c}@~ao @'e controlada atrav@'es das vari@'aveis globais @code{newtone
 (%o4) [[u = 1.066618389595407, v = 1.552564766841786]]
 @end example
 
-Para usar essa fun@,{c}@~ao primeiro escreva @code{load("mnewton")}. Veja tamb@'em @code{newtonepsilon} and @code{newtonmaxiter}.
+Para usar essa fun@,{c}@~ao primeiro escreva @code{load("mnewton")}. Veja tamb@'em @code{newtonepsilon} e @code{newtonmaxiter}.
 @end deffn
 

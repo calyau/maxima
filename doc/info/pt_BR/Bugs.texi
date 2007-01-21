@@ -16,7 +16,7 @@ desejada, s@~ao marcados como erros conhecidos.
 
 @code{run_testsuite ()} mostra somente testes que n@~ao s@~ao aprovados.
 
-@code{run_testsuite (true)} mostra somente testes que s@~ao marcados como bugs conhecidos, bem
+@code{run_testsuite (true)} mostra somente testes que s@~ao marcados como erros conhecidos, bem
 como as falhas.
 
 @code{run_testsuite (true, true)} mostra todos os testes.

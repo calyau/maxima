@@ -158,7 +158,7 @@ Os nomes desses operadores s@~ao @code{"+"} e @code{"*"}.
 @end example
 
 Divis@~ao e exponencia@,{c}@~ao s@~ao operadores bin@'arios e n@~ao comutativos.
-Os nomes desses operadores s@~ao @code{"//"} and @code{"^"}.
+Os nomes desses operadores s@~ao @code{"//"} e @code{"^"}.
 @c ===beg===
 @c [a / b, a ^ b];
 @c [map (op, %), map (args, %)];

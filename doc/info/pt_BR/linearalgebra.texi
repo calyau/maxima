@@ -275,7 +275,7 @@ ser@~ao todas matrizes de tamanho apropriado; por exemplo:
 
 @deffn {Fun@,{c}@~ao} dotproduct (@var{u}, @var{v})
 
-Retorna o produto do ponto (produto escalar) dos vetores @var{u} and @var{v}.  Isso @'e o mesmo
+Retorna o produto do ponto (produto escalar) dos vetores @var{u} e @var{v}.  Isso @'e o mesmo
 que @code{conjugate (transpose (@var{u})) . @var{v}}.  Os argumentos @var{u} e @var{v} devem ser
 vetores coluna.
 
