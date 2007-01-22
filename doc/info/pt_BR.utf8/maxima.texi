@@ -88,6 +88,8 @@ com dot br>
 Mantenedores:
 @itemize @bullet
 @item
+Vadim V. Zhytnikov (UTF-8 support)
+@item
 Jaime E. Villate
 @item
 Mario Rodriguez
@@ -141,6 +143,8 @@ e desenvolver o Macsyma DOE, agora chamado Maxima.
  
 Mantenedores:
 @itemize @bullet
+@item
+Vadim V. Zhytnikov (UTF-8 support)
 @item
 Jaime E. Villate
 @item
