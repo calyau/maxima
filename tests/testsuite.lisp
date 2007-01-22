@@ -29,4 +29,5 @@
     "rtestifactor"
     "rtest_equal"
     ((mlist) "rtest_abs" 42 43)
+    ((mlist) "rtest_taylor" 66 67 72 86 88 89 90 92 93 94 95 98 100 103 108 114 116 117 118 123 124 125 126 127 128 129)
     ))
