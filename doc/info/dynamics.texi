@@ -96,7 +96,7 @@ the name of the file created.
 
 The points which do not belong to the Julia set are assigned different
 colors, according to the number of iterations it takes the sequence
-starting at that point to move out of the convergence circle o radius
+starting at that point to move out of the convergence circle of radius
 2. The maximum number of iterations is set with the option @var{levels};
 after that number of iterations, if the sequence is still inside the
 convergence circle, the point will be painted with the color defined by
