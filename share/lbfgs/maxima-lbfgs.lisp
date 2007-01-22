@@ -19,7 +19,7 @@ lbfgs (FOM, '[u[1], u[2], u[3], u[4], u[5], u[6], u[7], u[8]],
       u[5] = 1.00000047321587,u[6] = 1.000000931806471,
       u[7] = 1.00000047321587,u[8] = 1.000000931806471]$
 
-|#
+ |#
 
 ; Example 2:
 ; This computes the least-squares fit to a function A/(1 + exp(-B * (x - C)))
@@ -32,107 +32,45 @@ F(x) := A/(1 + exp(-B*(x - C)));
 ''FOM;
 estimates : lbfgs (FOM, '[A, B, C], [1, 1, 1], 1e-4, [1, 3]);
 plot2d ([F(x), [discrete, X, Y]], [x, -1, 6]), ''estimates;
-|#
+ |#
+
+; estimates => [A = 1.461933911464101, B = 1.601593973254801, C = 2.528933072164855]
+
+; Example 3:
+; Gradient of FOM specified directly (instead of constructing it via diff)
+#|
+load (lbfgs);
+F(a, b, c) := (a - 5)^2 + (b - 3)^4 + (c - 2)^6;
+F_grad : map (lambda ([x], diff (F(a, b, c), x)), [a, b, c]);
+estimates : lbfgs ([F(a, b, c), F_grad], [a, b, c], [0, 0, 0], 1e-4, [1, 0]);
+ |#
+
+; estimates => [a = 5.000086823042934, b = 3.052395429705181, c = 1.927980629919583]
+
+; Example 4:
+; same as Example 3, but FOM and gradient are computed by Lisp functions
+; Construct Lisp functions suitable for this example via translate
+#|
+load (lbfgs);
+F(a, b, c) := (a - 5)^2 + (b - 3)^4 + (c - 2)^6;
+F1(a, b, c) := ''(diff(F(a, b, c), a));
+F2(a, b, c) := ''(diff(F(a, b, c), b));
+F3(a, b, c) := ''(diff(F(a, b, c), c));
+translate (F, F1, F2, F3);
+:lisp (mremprop '|$f| 'mexpr)
+:lisp (mremprop '|$f1| 'mexpr)
+:lisp (mremprop '|$f2| 'mexpr)
+:lisp (mremprop '|$f3| 'mexpr)
+estimates : lbfgs ('[F(a, b, c), [F1(a, b, c), F2(a, b, c), F3(a, b, c)]],
+                   [a, b, c], [0, 0, 0], 1e-4, [1, 0]);
+ |#
+
+; estimates => [a = 5.000086823042934, b = 3.052395429705181, c = 1.927980629919583]
+
 (in-package :maxima)
 
 (defmvar $lbfgs_nfeval_max 100)
 (defmvar $lbfgs_ncorrections 25)
-
-; --------------- COERCE-FLOAT-FUN SHOULD GO INTO SRC/PLOT.LISP ---------------
-(defun coerce-float-fun (expr &optional lvars)
-  (cond ((and (consp expr) (functionp expr))
-	 expr)
-	((and (symbolp expr) (not (member expr lvars)))
-	 (cond ((fboundp expr) expr)
-	       (t
-		(let* ((mexpr (mget expr 'mexpr))
-		       (args (nth 1 mexpr)))
-		  (or mexpr (merror "Undefined function ~M" expr))
-		  (coerce `(lambda ,(cdr args)
-			    (declare (special ,@(cdr args)))
-			    (let* (($ratprint nil) ($numer t)
-				   (result ($realpart (meval* ',(nth 2 mexpr)))))
-			      (if ($numberp result)
-				  ($float result)
-				  nil)))
-			  'function)))))
-    ((and (consp expr) (eq (caar expr) 'lambda))
-     ; FOLLOWING CODE IS IDENTICAL TO CODE FOR EXPR = SYMBOL 
-     ; (EXCEPT HERE WE HAVE EXPR INSTEAD OF MEXPR). DOUBTLESS BEST TO MERGE.
-		(let ((args (nth 1 expr)))
-		  (coerce `(lambda ,(cdr args)
-			    (declare (special ,@(cdr args)))
-			    (let* (($ratprint nil) ($numer t)
-				   (result ($realpart (meval* ',(nth 2 expr)))))
-			      (if ($numberp result)
-				  ($float result)
-				  nil)))
-			  'function)))
-	(t
-	 (let* ((vars (or lvars ($sort ($listofvars expr))))
-            (subscripted-vars ($sublist vars '((lambda) ((mlist) $x) ((mnot) (($atom) $x)))))
-            gensym-vars save-list-gensym subscripted-vars-save
-            subscripted-vars-mset subscripted-vars-restore)
-
-       ; VARS and SUBSCRIPTED-VARS are Maxima lists.
-       ; Other lists are Lisp lists.
-       (when (cdr subscripted-vars)
-         (setq gensym-vars (mapcar #'(lambda (x) (gensym)) (cdr subscripted-vars)))
-         (mapcar #'(lambda (a b) (setq vars (subst b a vars :test 'equal))) (cdr subscripted-vars) gensym-vars)
-
-         ; This stuff about saving and restoring array variables should go into MBINDING,
-         ; and the lambda expression constructed below should call MBINDING.
-         ; (At present MBINDING barfs on array variables.)
-         (setq save-list-gensym (gensym))
-         (setq subscripted-vars-save
-               (mapcar #'(lambda (a) `(push (meval ',a) ,save-list-gensym))
-                       (cdr subscripted-vars)))
-         (setq subscripted-vars-mset
-               (mapcar #'(lambda (a b) `(mset ',a ,b))
-                       (cdr subscripted-vars) gensym-vars))
-         (setq subscripted-vars-restore
-               (mapcar #'(lambda (a) `(mset ',a (pop ,save-list-gensym)))
-                       (reverse (cdr subscripted-vars)))))
-
-	   (coerce `(lambda ,(cdr vars)
-		     (declare (special ,@(cdr vars) errorsw))
-
-             ; Nothing interpolated here when there are no subscripted variables.
-             ,@(if save-list-gensym `((declare (special ,save-list-gensym))))
-
-             ; Nothing interpolated here when there are no subscripted variables.
-             ,@(if (cdr subscripted-vars)
-                 `((progn (setq ,save-list-gensym nil)
-                          ,@(append subscripted-vars-save subscripted-vars-mset))))
-
-		     (let (($ratprint nil) ($numer t)
-			   (errorsw t))
-		       ;; Catch any errors from evaluating the
-		       ;; function.  We're assuming that if an error
-		       ;; is caught, the result is not a number.  We
-		       ;; also assume that for such errors, it's
-		       ;; because the function is not defined there,
-		       ;; not because of some other maxima error.
-		       ;;
-		       ;; GCL 2.6.2 has handler-case but not quite ANSI yet. 
-		       (let ((result
-			      #-gcl
-			       (handler-case 
-				   (catch 'errorsw
-				     ($float ($realpart (meval* ',expr))))
-				 (arithmetic-error () t))
-			       #+gcl
-			       (handler-case 
-				   (catch 'errorsw
-				     ($float ($realpart (meval* ',expr))))
-				 (cl::error () t))
-			       ))
-
-                 ; Nothing interpolated here when there are no subscripted variables.
-                 ,@(if (cdr subscripted-vars) `((progn ,@subscripted-vars-restore)))
-
-			 result)))
-		   'function)))))
 
 (defmfun $lbfgs (FOM-expr x-list x-initial eps iprint-list)
 
@@ -146,11 +84,6 @@ plot2d ([F(x), [discrete, X, Y]], [x, -1, 6]), ''estimates;
      (m $lbfgs_ncorrections)
      (nwork (+ (* n (+ (* 2 m) 1)) (* 2 m)))
 
-     (FOM-function (coerce-float-fun FOM-expr x-list))
-     (FOM-grad-lambda `(lambda (x) (meval (list '($diff) ',FOM-expr x))))
-     (FOM-grad-expr `((mlist) ,@(mapcar (coerce FOM-grad-lambda 'function) (cdr x-list))))
-     (FOM-grad-function (coerce-float-fun FOM-grad-expr x-list))
-
      (xtol double-float-epsilon)
      (iflag 0)
       
@@ -163,8 +96,21 @@ plot2d ([F(x), [discrete, X, Y]], [x, -1, 6]), ''estimates;
      (diagco nil)
      
      (return-value '((mlist)))
-     (f 0.0d0))
+     (f 0.0d0)
+
+     FOM-function FOM-grad-lambda FOM-grad-expr FOM-grad-function)
     
+    (if ($listp FOM-expr)
+      (progn
+        (setq FOM-function (coerce-float-fun ($first FOM-expr) x-list))
+        (setq FOM-grad-expr ($second FOM-expr))
+        (setq FOM-grad-function (coerce-float-fun FOM-grad-expr x-list)))
+      (progn
+        (setq FOM-function (coerce-float-fun FOM-expr x-list))
+        (setq FOM-grad-lambda `(lambda (x) (meval (list '($diff) ',FOM-expr x))))
+        (setq FOM-grad-expr `((mlist) ,@(mapcar (coerce FOM-grad-lambda 'function) (cdr x-list))))
+        (setq FOM-grad-function (coerce-float-fun FOM-grad-expr x-list))))
+
     (setf (aref iprint 0) (nth 1 iprint-list))
     (setf (aref iprint 1) (nth 2 iprint-list))
     (setf diagco f2cl-lib:%false%)
