@@ -2568,18 +2568,17 @@
 			 (rcmone))))
 
 (defun atrig-trans (arg func)
-       (taylor2
-	(if (memq func '(%acos %acosh))
-	    `((mplus)
-	      ,half%pi
-	      ((mtimes) -1
-			((,(cdr (assq func
-				      '((%acos . %asin) (%acosh . %asinh)))))
-			 ,arg)))
-	    `((,(cdr (assq func '((%acsc . %asin) (%asec . %acos)
-				  (%acot . %atan) (%acsch . %asinh)
-				  (%asech . %acosh) (%acoth . %atanh)))))
-	      ,(m^ arg -1)))))
+  (taylor2
+   (cond ((eq func '%acos)
+	  `((mplus) ,half%pi ((mtimes) -1 ((%asin) ,arg))))
+	 
+	 ((eq func '%acosh)
+	  `((mtimes) -1 $%i ((mplus) ,half%pi ((mtimes) -1 ((%asin) ,arg)))))
+	 
+	 (t
+	  `((,(cdr (assq func '((%acsc . %asin) (%asec . %acos)
+				(%acot . %atan) (%acsch . %asinh)
+				(%asech . %acosh) (%acoth . %atanh))))) ,(m^ arg -1))))))
 
 (defun atrigh (arg func)
        (let ((full-log t) ($logarc t) (log-1 '((mtimes) $%i $%pi))
