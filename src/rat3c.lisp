@@ -23,7 +23,7 @@
 
 
 ;; List of GCD algorithms.  Default one is first.
-(defmvar *gcdl* '($subres $ez $red $spmod $mod $algebraic))
+(defmvar *gcdl* '($spmod $subres $ez $red $mod $algebraic))
 
 (defmvar $gcd (car *gcdl*))		;Sparse Modular
 
