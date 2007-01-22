@@ -1,4 +1,4 @@
-@c Language: Portuguese, Encoding: iso-8859-1
+@c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /ggf.texi/1.3/Tue Jul 25 12:01:54 2006//
 @menu
 * Defini@value{cedilha}@~oes para ggf::
@@ -40,7 +40,7 @@ mais complicadas.
 Veja tamb@'em @code{ggf}.
 @end defvr
 
-@deffn {Fun@value{cedilha}@~ao} ggf (@var{l})
+@deffn {Fun@,{c}@~ao} ggf (@var{l})
 Calcula a fun@,{c}@~ao geradora (se for uma fra@,{c}@~ao de dois
 polin@^omios) de uma seq@"u@^encia, sendo dados seus primeiros termos. @var{l}
 @'e uma lista de n@'umeros.

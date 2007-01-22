@@ -1,4 +1,4 @@
-@c Language: Portuguese, Encoding: iso-8859-1
+@c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /Help.texi/1.20/Sun Dec  3 09:51:33 2006/-ko/
 @iftex
 @hyphenation{cor-res-pon-de}
@@ -235,15 +235,15 @@ e sa@'ida adicional.
 @node Defini@value{cedilha}@~oes para Ajuda,  , Documenta@value{cedilha}@~ao, Ajuda
 @section Defini@value{cedilha}@~oes para Ajuda
 
-@deffn {Fun@value{cedilha}@~ao} demo (@var{nomedearquivo})
-Avalia express@~oes Maxima em @var{nomedearquivo} e mostra os resultados.
+@deffn {Fun@,{c}@~ao} demo (@var{nomearquivo})
+Avalia express@~oes Maxima em @var{nomearquivo} e mostra os resultados.
 @code{demo} faz uma pausa ap@'os avaliar cada express@~ao
 e continua ap@'os a conclus@~ao com um enter das entradas de usu@'ario.
 (Se executando em Xmaxima, @code{demo} pode precisar ver um ponto e v@'irgula @code{;}
 seguido por um enter.)
 
 @code{demo} procura na lista de diret@'orios
-@code{file_search_demo} para achar @code{nomedearquivo}.
+@code{file_search_demo} para achar @code{nomearquivo}.
 Se o arquivo tiver o sufixo @code{dem},
 o sufixo pode ser omitido.
 Veja tamb@'em @code{file_search}.
@@ -325,8 +325,8 @@ _
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} describe (@var{string})
-@deffnx {Fun@value{cedilha}@~ao} describe (@var{string}, exact)
+@deffn {Fun@,{c}@~ao} describe (@var{string})
+@deffnx {Fun@,{c}@~ao} describe (@var{string}, exact)
 @code{describe(@var{string})} encontra todos os itens documentados que contiverem @var{string} em seus t@'itulos.
 Se existe mais de um de tal item, Maxima solicita ao usu@'ario selecionar
 um item ou @'itens para mostrar.
@@ -378,8 +378,8 @@ que podem ser abreviado para @code{a} ou para @code{n}, respectivamente.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} example (@var{t@'opico})
-@deffnx {Fun@value{cedilha}@~ao} example ()
+@deffn {Fun@,{c}@~ao} example (@var{t@'opico})
+@deffnx {Fun@,{c}@~ao} example ()
 @code{example (@var{topic})} mostra alguns exemplos de @var{t@'opico},
 que @'e um s@'imbolo (n@~ao uma seq@"u@^encia de caracteres).
 A maioria dos t@'opicos s@~ao nomes de fun@,{c}@~ao.

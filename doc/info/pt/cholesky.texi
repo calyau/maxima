@@ -1,4 +1,4 @@
-@c Language: Portuguese, Encoding: iso-8859-1
+@c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /cholesky.texi/1.1/Mon Feb 27 22:09:17 2006//
 @menu
 * Defini@value{cedilha}@~oes para cholesky::
@@ -7,7 +7,7 @@
 @node Defini@value{cedilha}@~oes para cholesky,  , cholesky, cholesky
 @section Defini@value{cedilha}@~oes para cholesky
 
-@deffn {Fun@value{cedilha}@~ao} cholesky (@var{A})
+@deffn {Fun@,{c}@~ao} cholesky (@var{A})
 Calcula a decomposi@,{c}@~ao de Cholesky de @var{A},
 uma matriz triangular baixa @var{L} tal que @code{L . transpose(L) = A}.
 

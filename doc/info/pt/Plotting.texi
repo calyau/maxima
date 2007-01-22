@@ -1,5 +1,5 @@
-@c Language: Portuguese, Encoding: iso-8859-1
-@c /Plotting.texi/1.30/Mon Dec 11 2006/
+@c Language: Brazilian Portuguese, Encoding: iso-8859-1
+@c /Plotting.texi/1.31/Sun Jan  7 05:49:41 2007/-ko/
 @menu
 * Defini@value{cedilha}@~oes para Montagem de Gr@'aficos::    
 @end menu
@@ -57,22 +57,19 @@ Algumas outras palavras chave especiais s@~ao @code{xfun}, @code{color}, @code{p
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao}  plot2d (@var{expr}, @var{range}, ..., @var{options}, ...)
-@deffnx {Fun@,{c}@~ao}  plot2d (@var{parametric_expr})
-@deffnx {Fun@,{c}@~ao}  plot2d ([@var{expr_1}, ..., @var{expr_n}], @var{x_range}, @var{y_range})
-@deffnx {Fun@,{c}@~ao}  plot2d ([@var{expr_1}, ..., @var{expr_n}], @var{x_range})
-@deffnx {Fun@,{c}@~ao}  plot2d (@var{expr}, @var{x_range}, @var{y_range})
-@deffnx {Fun@,{c}@~ao}  plot2d (@var{expr}, @var{x_range})
-@deffnx {Fun@value{cedilha}@~ao} plot2d (@var{expr}, @var{x_range})
-@deffnx {Fun@value{cedilha}@~ao} plot2d ([@var{name_1}, ..., @var{name_n}], @var{x_range}, @var{y_range})
-@deffnx {Fun@value{cedilha}@~ao} plot2d ([@var{name_1}, ..., @var{name_n}], @var{x_range})
-@deffnx {Fun@value{cedilha}@~ao} plot2d (@var{name}, @var{x_range}, @var{y_range})
-@deffnx {Fun@value{cedilha}@~ao} plot2d (@var{name}, @var{x_range})
-@c TOO LONG !!! (TICKLES CL-INFO BUG)
-@c @defunx plot2d ([@var{expr_1}, ..., @var{expr_n}], @var{x_range}, ..., @var{options}, ...)
-@c TOO LONG !!! (TICKLES CL-INFO BUG)
-@c @defunx plot2d ([..., @var{expr}, ..., @var{parametric_expr}, ...], @var{x_range}, ..., @var{options})
-
+@deffn {Fun@,{c}@~ao} plot2d (@var{expr}, @var{range}, ..., @var{op@,{c}@~oes}, ...)
+@deffnx {Fun@,{c}@~ao} plot2d (@var{parametric_expr})
+@deffnx {Fun@,{c}@~ao} plot2d ([@var{expr_1}, ..., @var{expr_n}], @var{x_range}, @var{y_range})
+@deffnx {Fun@,{c}@~ao} plot2d ([@var{expr_1}, ..., @var{expr_n}], @var{x_range})
+@deffnx {Fun@,{c}@~ao} plot2d (@var{expr}, @var{x_range}, @var{y_range})
+@deffnx {Fun@,{c}@~ao} plot2d (@var{expr}, @var{x_range})
+@deffnx {Fun@,{c}@~ao} plot2d (@var{expr}, @var{x_range})
+@deffnx {Fun@,{c}@~ao} plot2d ([@var{nome_1}, ..., @var{nome_n}], @var{x_range}, @var{y_range})
+@deffnx {Fun@,{c}@~ao} plot2d ([@var{nome_1}, ..., @var{nome_n}], @var{x_range})
+@deffnx {Fun@,{c}@~ao} plot2d (@var{name}, @var{x_range}, @var{y_range})
+@deffnx {Fun@,{c}@~ao} plot2d (@var{name}, @var{x_range})
+@deffnx {Fun@,{c}@~ao} plot2d ([@var{expr_1}, ..., @var{expr_n}], @var{x_range}, ..., @var{op@,{c}@~oes}, ...)
+@deffnx {Fun@,{c}@~ao} plot2d ([..., @var{expr}, ..., @var{parametric_expr}, ...], @var{x_range}, ..., @var{op@,{c}@~oes})
 Mostra a montagem de uma ou mais express@~oes
 como uma fun@,{c}@~ao de uma vari@'avel.
 
@@ -128,7 +125,8 @@ Montando um gr@'afico de uma express@~ao, e escolhendo alguns par@^ametros comum
 @end example
 
 @ifnotinfo
-@image{../figures/plotting2,8cm}@image{../figures/plotting3,8cm}
+@image{../figures/plotting2,8cm}
+@image{../figures/plotting3,8cm}
 @end ifnotinfo
 
 @b{Montando gr@'afico de fun@,{c}@~oes pelo nome.}
@@ -154,12 +152,13 @@ $g
 @end example
 
 @ifnotinfo
-@image{../figures/plotting4,8cm}@image{../figures/plotting5,8cm}
+@image{../figures/plotting4,8cm}
+@image{../figures/plotting5,8cm}
 @end ifnotinfo
 
 Em qualquer lugar onde pode existir uma express@~ao comum, pode existir uma express@~ao param@'etrica: 
 @var{parametric_expr} @'e uma lista da forma
-@code{[parametric, @var{x_expr}, @var{y_expr}, @var{t_range}, @var{options}]}.
+@code{[parametric, @var{x_expr}, @var{y_expr}, @var{t_range}, @var{op@,{c}@~oes}]}.
 Aqui @var{x_expr} e @var{y_expr} s@~ao express@~oes de 1 vari@'avel @var{var} que @'e
 o primeiro elemento da amplitude @var{trange}.  
 A montagem do gr@'afico mostra o caminho descrito pelo par
@@ -757,12 +756,11 @@ Uma montagem de gr@'afico onde o eixo z @'e representado apenas por cores.
 
 @end defvr
 
-@c LONG LINE TICKLES CL-INFO BUG, COMMENT OUT TIL FIXED
-@c @deffnx {Fun@value{cedilha}@~ao} plot3d ([@var{expr_1}, @var{expr_2}, @var{expr_3}], @var{x_range}, @var{y_range}, ..., @var{options}, ...)
-@deffn {Fun@,{c}@~ao}  plot3d (@var{expr}, @var{x_range}, @var{y_range}, ..., @var{options}, ...)
-@deffnx {Fun@value{cedilha}@~ao} plot3d (@var{name}, @var{x_range}, @var{y_range}, ..., @var{options}, ...)
-@deffnx {Fun@value{cedilha}@~ao} plot3d ([@var{expr_1}, @var{expr_2}, @var{expr_3}], @var{x_rge}, @var{y_rge})
-@deffnx {Fun@value{cedilha}@~ao} plot3d ([@var{name_1}, @var{name_2}, @var{name_3}], @var{x_range}, @var{y_range}, ..., @var{options}, ...)
+@deffn {Fun@,{c}@~ao} plot3d ([@var{expr_1}, @var{expr_2}, @var{expr_3}], @var{x_range}, @var{y_range}, ..., @var{op@,{c}@~oes}, ...)
+@deffnx {Fun@,{c}@~ao} plot3d (@var{expr}, @var{x_range}, @var{y_range}, ..., @var{op@,{c}@~oes}, ...)
+@deffnx {Fun@,{c}@~ao} plot3d (@var{name}, @var{x_range}, @var{y_range}, ..., @var{op@,{c}@~oes}, ...)
+@deffnx {Fun@,{c}@~ao} plot3d ([@var{expr_1}, @var{expr_2}, @var{expr_3}], @var{x_rge}, @var{y_rge})
+@deffnx {Fun@,{c}@~ao} plot3d ([@var{nome_1}, @var{nome_2}, @var{nome_3}], @var{x_range}, @var{y_range}, ..., @var{op@,{c}@~oes}, ...)
 
 Mostra um gr@'afico de uma ou tr@^es express@~oes como fun@,{c}@~oes de duas vari@'aveis.
 
@@ -920,7 +918,7 @@ muitas montagens de gr@'aficos, e ent@~ao devemos manter esse fluxo aberto.
 
 @deffn {Fun@,{c}@~ao}  set_plot_option (@var{op@,{c}@~ao})
 Atribui uma das var@'aveis globais para impress@~ao.
-@var{option} @'e especificada como uma lista de dois ou mais elementos,
+@var{op@,{c}@~ao} @'e especificada como uma lista de dois ou mais elementos,
 na qual o primeiro elemeto @'e uma das palavras chave
 dentro da lista @code{plot_options}.
 

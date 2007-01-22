@@ -1,4 +1,4 @@
-@c Language: Portuguese, Encoding: iso-8859-1
+@c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /Constants.texi/1.15/Sat Nov 25 04:02:07 2006/-ko/
 @menu
 * Defini@value{cedilha}@~oes para Constantes::
@@ -18,7 +18,7 @@ O valor num´erico de @code{%e} @'e um n@'umero em ponto flutuante de precis@~ao 
 
 @end defvr
 
-@defvr {Constant} %i
+@defvr {Constante} %i
 @ifinfo
 @vrindex i
 @vrindex Unidade imagin@'aria

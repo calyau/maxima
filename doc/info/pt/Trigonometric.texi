@@ -1,4 +1,4 @@
-@c Language: Portuguese, Encoding: iso-8859-1
+@c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /Trigonometric.texi/1.14/Fri Jun 17 00:57:35 2005/-ko/
 @menu
 * Introdu@value{cedilha}@~ao ao Pacote Trigonom@'etrico::  
@@ -99,7 +99,7 @@ para detalhes.
 O pacote @code{atrig1} cont@'em muitas regras adicionais de simplifica@,{c}@~ao 
 para fun@,{c}@~oes trigonom@'etricas inversas.  Junto com regras
 j@'a conhecidas para Maxima, os seguintes @^angulos est@~ao completamente implementados:
-@code{0}, @code{%pi/6}, @code{%pi/4}, @code{%pi/3}, and @code{%pi/2}.  
+@code{0}, @code{%pi/6}, @code{%pi/4}, @code{%pi/3}, e @code{%pi/2}.  
 Os @^angulos correspondentes nos outros tr@^es quadrantes est@~ao tamb@'em dispon@'iveis.  
 Fa@,{c}a @code{load(atrig1);} para us@'a-lo.
 
@@ -135,7 +135,7 @@ Fa@,{c}a @code{load(atrig1);} para us@'a-lo.
 
 @end deffn
 
-@defvr {Vari@'avel de op@value{cedilha}@~ao} halfangles
+@defvr {Vari@'avel de op@,{c}@~ao} halfangles
 Default value: @code{false}
 
 Quando @code{halfangles} for @code{true},

@@ -1,4 +1,4 @@
-@c Language: Portuguese, Encoding: iso-8859-1
+@c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /Groups.texi/1.11/Thu Apr 21 04:26:33 2005/-ko/
 @menu
 * Defini@value{cedilha}@~oes para Grupos::
@@ -7,8 +7,8 @@
 @node Defini@value{cedilha}@~oes para Grupos,  , Grupos, Grupos
 @section Defini@value{cedilha}@~oes para Grupos
 
-@deffn {Fun@value{cedilha}@~ao} todd_coxeter (@var{rela@value{cedilha}@~ao}, @var{subgroupo})
-@deffnx {Fun@value{cedilha}@~ao} todd_coxeter (@var{rela@value{cedilha}@~ao})
+@deffn {Fun@,{c}@~ao} todd_coxeter (@var{rela@value{cedilha}@~ao}, @var{subgroupo})
+@deffnx {Fun@,{c}@~ao} todd_coxeter (@var{rela@value{cedilha}@~ao})
 
 Acha a ordem de G/H onde G @'e o m@'odulo do Grupo Livre @var{rela@value{cedilha}@~ao}, e
 H @'e o subgroupo de G gerado por @var{subgroupo}.  @var{subgroupo} @'e um argumento

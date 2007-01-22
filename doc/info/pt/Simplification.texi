@@ -1,5 +1,5 @@
-@c Language: Portuguese, Encoding: iso-8859-1
-@c /Simplification.texi/1.16/Sat Jul 29 08:36:54 2006/-ko/
+@c Language: Brazilian Portuguese, Encoding: iso-8859-1
+@c /Simplification.texi/1.17/Tue Jan  9 09:30:23 2007/-ko/
 @c end concepts Simplification
 @iftex
 @hyphenation{di-fe-ren-te-men-te}
@@ -10,8 +10,6 @@
 
 @node Defini@value{cedilha}@~oes para Simplifica@value{cedilha}@~ao,  , Simplifica@value{cedilha}@~ao, Simplifica@value{cedilha}@~ao
 @section Defini@value{cedilha}@~oes para Simplifica@value{cedilha}@~ao
-@menu
-@end menu
 
 @c After studying src/compar.lisp, it appears that askexp would
 @c work as advertised, except that it doesn't appear to be possible
@@ -56,7 +54,7 @@ ou @code{zero}.
 
 @c NEEDS CLARIFICATION, EXAMPLES
 @deffn {Fun@,{c}@~ao} demoivre (@var{expr})
-@deffnx {Vari@'avel de op@value{cedilha}@~ao} demoivre
+@deffnx {Vari@'avel de op@,{c}@~ao} demoivre
 
 A fun@,{c}@~ao @code{demoivre (expr)} converte uma express@~ao
 sem escolher a vari@'avel global @code{demoivre}.
@@ -189,7 +187,7 @@ expandido.
 
 
 @deffn {Fun@,{c}@~ao} exponentialize (@var{expr})
-@deffnx {Vari@'avel de op@value{cedilha}@~ao} exponentialize
+@deffnx {Vari@'avel de op@,{c}@~ao} exponentialize
 
 A fun@,{c}@~ao @code{exponentialize (expr)} converte 
 fun@,{c}@~oes circulares e hiperb@'olicas em @var{expr} para exponenciais,

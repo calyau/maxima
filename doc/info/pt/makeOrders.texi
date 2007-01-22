@@ -1,4 +1,4 @@
-@c Language: Portuguese, Encoding: iso-8859-1
+@c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /makeOrders.texi/1.1/Mon Feb 27 22:09:17 2006//
 @menu
 * Defini@value{cedilha}@~oes para makeOrders::

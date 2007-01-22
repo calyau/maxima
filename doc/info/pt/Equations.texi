@@ -1,4 +1,4 @@
-@c Language: Portuguese, Encoding: iso-8859-1
+@c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /Equations.texi/1.24/Thu Nov  2 05:46:56 2006/-ko/
 @c end concepts Equations
 @menu
@@ -346,7 +346,7 @@ dentro de @code{block}.  Terminando @code{block} com um sinal de dolar, $, escol
 Retorna @code{[@var{g}(@var{t}) = ...]}  ou @code{[]}, dependendo de existir
 ou n@~ao uma fun@,{c}@~ao racional @code{@var{g}(@var{t})} satisfazendo @var{eqn},
 que deve ser de primeira ordem, polin@^omio linear em (para esse caso) 
-@code{@var{g}(@var{t})} and @code{@var{g}(@var{t}+1)}
+@code{@var{g}(@var{t})} e @code{@var{g}(@var{t}+1)}
 
 @example
 (%i1) eqn: (n + 1)*f(n) - (n + 3)*f(n + 1)/(n + 1) = (n - 1)/(n + 2);

@@ -1,5 +1,5 @@
-@c Language: Portuguese, Encoding: iso-8859-1
-@c /Integration.texi/1.28/Sat Jun 24 06:45:35 2006/-ko/
+@c Language: Brazilian Portuguese, Encoding: iso-8859-1
+@c /Integration.texi/1.30/Mon Jan  8 04:17:39 2007/-ko/
 @menu
 * Introdu@value{cedilha}@~ao a Integra@value{cedilha}@~ao::  
 * Defini@value{cedilha}@~oes para Integra@value{cedilha}@~ao::  
@@ -13,12 +13,11 @@
 Maxima tem muitas rotinas para manusear integra@,{c}@~ao.
 A fun@,{c}@~ao @code{integrate} faz uso de muitas dessas.  Exite tamb@'em o
 pacote @code{antid}, que manuseia uma fun@,{c}@~ao n@~ao especificada (e suas
-derivadas, certamente).  Para usos num@'ericos, existe a fun@,{c}@~ao 
-@code{romberg};
-e uma escolha de integradores adaptativos de Quadpack,
+derivadas, certamente).  Para usos numericos,
+existe um conjunto de integradores adaptativos de QUADPACK,
 a saber @code{quad_qag}, @code{quad_qags}, etc., os quais s@~ao descritos sob o t@'opico @code{QUADPACK}.
 Fun@,{c}@~oes hipergeom@'etricas est@~ao sendo trabalhadas,
-veja @code{specint} for details.
+veja @code{specint} para detalhes.
 Geralmente falando, Maxima somente manuseia integrais que s@~ao
 integr@'aveis em termos de "fun@,{c}@~oes elementares" (fun@,{c}@~oes racionais,
 trigonometricas, logar@'itmicas, exponenciais, radicais, etc.) e umas poucas
@@ -502,6 +501,7 @@ depender de seus valores e de sua ordem.  @code{potentialzeroloc} @'e inicialmen
 para 0.
 
 @end deffn
+
 @deffn {Fun@,{c}@~ao} residue (@var{expr}, @var{z}, @var{z_0})
 Calcula o res@'iduo no plano complexo da
 express@~ao @var{expr} quando a vari@'avel @var{z} assumes o valor @var{z_0}.  O
@@ -547,207 +547,6 @@ come@,{c}ar.
 @end example
 
 @end deffn
-
-@c NEEDS WORK BUT DON'T BOTHER TO CLEAN IT UP:
-@c THE GAUSS-KRONROD FUNCTIONS (QUADPACK) MAKE THIS OBSOLETE
-@deffn {Fun@,{c}@~ao} romberg (@var{expr}, @var{x}, @var{a}, @var{b})
-@deffnx {Fun@,{c}@~ao} romberg (@var{expr}, @var{a}, @var{b})
-Integra@,{c}@~ao de Romberg.
-Existem dois caminhos para usar essa fun@,{c}@~ao.  O primeiro @'e um caminho
-ineficiente como a vers@~ao de integral definida de @code{integrate}:
-@code{romberg (<integrando>, <vari@'avel of integra@,{c}@~ao>, <lower limit>, <upper limit>)}.
-
-Exemplos:
-
-@example
-(%i1) showtime: true$
-(%i2) romberg (sin(y), y, 0, %pi);
-Evalua@,{c}@~ao took 0.00 seconds (0.01 elapsed) using 25.293 KB.
-(%o2)                   2.000000016288042
-(%i3) 1/((x-1)^2+1/100) + 1/((x-2)^2+1/1000) + 1/((x-3)^2+1/200)$
-(%i4) f(x) := ''%$
-(%i5) rombergtol: 1e-6$
-(%i6) rombergit: 15$
-(%i7) romberg (f(x), x, -5, 5);
-Evalua@,{c}@~ao took 11.97 seconds (12.21 elapsed) using 12.423 MB.
-(%o7)                   173.6730736617464
-@c INCLUDE THIS COMPARISON TO EXACT RESULT ??? YIELDS A LOT OF "RAT replaced" MESSAGES !!!
-@c integrate (f(x), x, -5, 5) - %, numer;
-@end example
-
-O segundo @'e um caminho eficiente que @'e usado como segue:
-
-@example
-romberg (<fun@,{c}@~ao name>, <lower limit>, <upper limit>);
-@end example
-
-Continuando o exemplo acima, temos:
-@example
-(%i8) f(x) := (mode_declare ([fun@,{c}@~ao(f), x], float), ''(%th(5)))$
-(%i9) translate(f);
-(%o9)                          [f]
-(%i10) romberg (f, -5, 5);
-Evalua@,{c}@~ao took 3.51 seconds (3.86 elapsed) using 6.641 MB.
-(%o10)                  173.6730736617464
-@end example
-
-O primeiro argumento deve ser uma fun@,{c}@~ao trauzida ou compilada.  (Se for
-compilada isso deve ser declarado para retorno a @code{flonum}.)  Se o primeiro
-argumento n@~ao for j@'a traduzido, @code{romberg} n@~ao tentar@'a
-traduz@'i-lo mas resultar@'a um erro.
-
-A precis@~ao da integra@,{c}@~ao @'e governada pelas vari@'aveis globais
-@code{rombergtol} (valor padr@~ao 1.E-4) e @code{rombergit} (valor padr@~ao 11).
-@code{romberg} retornar@'a um resultado se a diferen@,{c}a relativa em sucessivas
-aproxima@,{c}@~oes for menor que @code{rombergtol}.  Isso tentar@'a dividir ao meio o
-tamanho do passo @code{rombergit} vezes antes que isso seja abandonado.  O n@'umero de itera@,{c}@~oes
-e avalia@,{c}@~oes da fun@,{c}@~ao que @code{romberg} far@'a @'e governado por
-@code{rombergabs} e @code{rombergmin}.
-
-@code{romberg} pode ser chamada recursivamente e dessa forma pode fazer integrais duplas e
-triplas.
-
-Exemplo:
-@example
-(%i1) assume (x > 0)$
-(%i2) integrate (integrate (x*y/(x+y), y, 0, x/2), x, 1, 3)$
-(%i3) radcan (%);
-                    26 log(3) - 26 log(2) - 13
-(%o3)             - --------------------------
-                                3
-(%i4) %,numer;
-(%o4)                   .8193023963959073
-(%i5) define_variable (x, 0.0, float, "Global vari@'avel in fun@,{c}@~ao F")$
-(%i6) f(y) := (mode_declare (y, float), x*y/(x+y))$
-(%i7) g(x) := romberg ('f, 0, x/2)$  
-(%i8) romberg (g, 1, 3);
-(%o8)                   .8193022864324522
-@end example
-
-A vantagem com esse caminho @'e que a fun@,{c}@~ao @code{f} pode ser usada para outros
-prop@'ositos, como imprimir gr@'aficos.  A desvantagem @'e que voc@^e tem que inventar
-um nome para ambas a fun@,{c}@~ao @code{f} e sua vari@'avel independente @code{x}.
-Ou, sem a vari@'avel global:
-
-@example
-(%i1) g_1(x) := (mode_declare (x, float), romberg (x*y/(x+y), y, 0, x/2))$
-(%i2) romberg (g_1, 1, 3);
-(%o2)                   .8193022864324522
-@end example
-
-A vantagem aqui @'e que o c@'odigo @'e menor.
-
-@example
-(%i3) q (a, b) := romberg (romberg (x*y/(x+y), y, 0, x/2), x, a, b)$
-(%i4) q (1, 3);
-(%o4)                   .8193022864324522
-@end example
-
-Isso @'e sempre o caminho mais curto, e as vari@'aveis n@~ao precisam ser declaradas
-porque elas est@~ao no contexto de @code{romberg}.
-O uso de @code{romberg} para integrais multiplas pode ter grandes desvantagens,
-apesar disso.  O amontoado de c@'alculos extras necess@'arios por causa da
-informa@,{c}@~ao geom@'etrica descartada durante o processo pela express@~ao de integrais multiplas por
-esse caminho pode ser incr@'ivel.  O usu@'ario dever@'a ter certeza de entender e
-usar os comutadores @code{rombergtol} e @code{rombergit}.
-
-@end deffn
-
-@defvr {Vari@'avel de op@,{c}@~ao} rombergabs
-Valor padr@~ao: 0.0
-
-Assumindo que estimativas sucessivas
-produzidas por @code{romberg} s@~ao @code{y[0]}, @code{y[1]}, @code{y[2]}, etc., ent@~ao @code{romberg}
-retornar@'a ap@'os @code{n} itera@,{c}@~oes se (grasseiramente falando)
-
-@example
- (abs(y[n]-y[n-1]) <= rombergabs ou
- abs(y[n]-y[n-1])/(if y[n]=0.0 then 1.0 else y[n]) <= rombergtol)
-@end example
-
-for @code{true}.  (A condi@,{c}@~ao sobre o n@'umero de itera@,{c}@~oes dadas por
-@code{rombergmin} deve tamb@'em ser satisfeita.)
-Dessa forma se @code{rombergabs} @'e 0.0 (o padr@~ao) voc@^e apenas pega o teste
-de erro relativo.  A utilidade de uma vari@'avel adicional vem quando voc@^e
-executar uma integral, quando a contribui@,{c}@~ao dominante vem
-de uma pequena regi@~ao.  Ent@~ao voc@^e pode fazer a integral sobre uma pequena
-regi@~ao dominante primeiro, usando a verifica@,{c}@~ao relativa de precis@~ao, seguida pela
-integral sobre o restante da regi@~ao usando a verifica@,{c}@~ao absoluta
-de erro.
-
-Exemplo:  Suponha que voc@^e quer calcular
-
-@example
-'integrate (exp(-x), x, 0, 50)
-@end example
-
-(numericamente) com uma precis@~ao relativa de 1 parte em 10000000.
-Defina a fun@,{c}@~ao.  @code{n} @'e o contador, ent@~ao n@'os podemos ver quantas
-avalia@,{c}@~oes de fun@,{c}@~ao foram necess@'arias.
-Primeiro de tudo tente fazer a integral completa de uma s@'o vez.
-
-@example
-(%i1) f(x) := (mode_declare (n, integer, x, float), n:n+1, exp(-x))$
-(%i2) translate(f)$
-Warning-> n @'e an undefined global variable.
-(%i3) block ([rombergtol: 1.e-6, romberabs: 0.0], n:0, romberg (f, 0, 50));
-(%o3)                   1.000000000488271
-(%i4) n;
-(%o4)                          257
-@end example
-
-Que aproximadamente precisou de 257 avalia@,{c}@~oes de fun@,{c}@~ao .
- Agora fa@,{c}a a integral inteligentemente, primeiro fazendo
-     @code{'integrate (exp(-x), x, 0, 10)} e ent@~ao escolhendo @code{rombergabs} para 1.E-6 vezes (nessa
-     integral parcial).
-Isso aproximdamente pega somente 130 avalia@,{c}@~oes de fun@,{c}@~ao.
-
-@example
-(%i5) block ([rombergtol: 1.e-6, rombergabs:0.0, sum:0.0],
-  n: 0, sum: romberg (f, 0, 10), rombergabs: sum*rombergtol, rombergtol:0.0,
-      sum + romberg (f, 10, 50));
-(%o5)                   1.000000001234793
-(%i6) n;
-(%o6)                          130
-@end example
-
-Ent@~ao se @code{f(x)} onde a fun@,{c}@~ao pegou um longo tempo de computa@,{c}@~ao, o
-segundo m@'etodo fez a mesma tarefa 2 vezes mais r@'apido.
-
-@end defvr
-
-@defvr {Vari@'avel de op@,{c}@~ao} rombergit
-Valor padr@~ao: 11
-
-A precis@~ao do comando @code{romberg} de
-integra@,{c}@~ao @'e governada pelas vari@'aveis globais @code{rombergtol} e
-@code{rombergit}.  @code{romberg} retornar@'a um resultado se a diferen@,{c}a
-relativa em sucessivas approxima@,{c}@~oes @'e menor que @code{rombergtol}.  Isso
-tentar@'a dividir ao meio o tamanho do passoe @code{rombergit} vezes antes disso ser abandonado.
-
-@end defvr
-
-@defvr {Vari@'avel de op@,{c}@~ao} rombergmin
-Valor padr@~ao: 0
-
-@code{rombergmin} governa o n@'umero m@'inimo de avalia@,{c}@~oes de
-fun@,{c}@~ao que @code{romberg} far@'a.  @code{romberg} avaliar@'a seu primeiro
-argumento pelo menos @code{2^(rombergmin+2)+1} vezes.  Isso @'e @'util para
-integrar fun@,{c}@~oes oscilat@'orias, onde o teste normal de converg@^encia pode
-lgumas vezes inadequadamente passar.
-
-@end defvr
-
-@defvr {Vari@'avel de op@,{c}@~ao} rombergtol
-Valor padr@~ao: 1e-4
-
-A precis@~ao do comando de integra@,{c}@~ao de @code{romberg} 
-@'e governada pelas vari@'aveis globais @code{rombergtol} e
-@code{rombergit}.  @code{romberg} retornar@'a um resultado se a difere@,{c}a
-relativa em sucessivas aproxima@,{c}@~oes @'e menor que @code{rombergtol}.  Isso
-tentar@'a dividir ao meio o tamanho do passo @code{rombergit} vezes antes disso ser abandonado.
-
-@end defvr
 
 @c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
 @deffn {Fun@,{c}@~ao} tldefint (@var{expr}, @var{x}, @var{a}, @var{b})
@@ -1410,8 +1209,8 @@ Exemplos:
 
 @c THERE ARE OPTIONAL ARGUMENTS WHICH MAKES LISTING THE VARIANTS A LITTLE TEDIOUS
 @c NEED A MORE CONVENIENT (AND NONAMBIGUOUS) NOTATION FOR OPTIONAL ARGUMENTS
-@deffn {Fun@value{cedilha}@~ao} quad_qaws (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{alpha}, @var{beta}, @var{wfun}, @var{epsabs}, @var{limite})
-@deffnx {Fun@value{cedilha}@~ao} quad_qaws (@var{f}, @var{x}, @var{a}, @var{b}, @var{alpha}, @var{beta}, @var{wfun}, @var{epsabs}, @var{limite})
+@deffn {Fun@,{c}@~ao} quad_qaws (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{alpha}, @var{beta}, @var{wfun}, @var{epsabs}, @var{limite})
+@deffnx {Fun@,{c}@~ao} quad_qaws (@var{f}, @var{x}, @var{a}, @var{b}, @var{alpha}, @var{beta}, @var{wfun}, @var{epsabs}, @var{limite})
 
 Integra@,{c}@~ao de @math{w(x) f(x)} sobre um intervalo finito,
 onde @math{w(x)} @'e uma certa fun@,{c}@~ao alg@'ebrica ou logar@'itmica.

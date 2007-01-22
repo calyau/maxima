@@ -1,4 +1,4 @@
-@c Language: Portuguese, Encoding: iso-8859-1
+@c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /Differentiation.texi/1.19/Sun Jun 12 19:13:47 2005/-ko/
 @c end concepts Differentiation
 @menu

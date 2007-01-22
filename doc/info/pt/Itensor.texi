@@ -1,4 +1,4 @@
-@c Language: Portuguese, Encoding: iso-8859-1
+@c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /Itensor.texi/1.40/Sat Nov  4 16:15:55 2006//
 @c RECOMMEND REVISE TEXT THROUGHOUT TO LOSE NOTION OF TIME RELATIVE TO PRESENT
 @c LOOK FOR "NOW", "OLD", "NEW", "RECENT", "EARLIER", DATES
@@ -250,7 +250,7 @@ especificando o nome da m@'etrica, e executando alguns c@'alculos simples.
 @section Defini@value{cedilha}@~oes para itensor
 @subsection Gerenciando objetos indexados
 
-@deffn {Fun@value{cedilha}@~ao} entertensor (@var{nome})
+@deffn {Fun@,{c}@~ao} entertensor (@var{nome})
 
 @'E uma fun@,{c}@~ao que, atrav@'es da linha de comando, permite criar um objeto
 indexado chamado @var{nome} com qualquer n@'umero de @'indices de tensores e
@@ -259,7 +259,7 @@ nulas) s@~ao entradas aceit@'aveis (veja o exemplo sob @code{covdiff}).
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} changename (@var{antigo}, @var{novo}, @var{expr})
+@deffn {Fun@,{c}@~ao} changename (@var{antigo}, @var{novo}, @var{expr})
 
 Ir@'a mudar o nome de todos os objetos indexados chamados @var{antigo} para @var{novo}
 em @var{expr}. @var{antigo} pode ser ou um s@'imbolo ou uma lista da forma
@@ -269,7 +269,7 @@ renomeados para @var{novo}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} listoftens
+@deffn {Fun@,{c}@~ao} listoftens
 
 Lista todos os tensores em uma express@~ao tensorial, incluindo seus @'indices. E.g.,
 
@@ -288,7 +288,7 @@ Lista todos os tensores em uma express@~ao tensorial, incluindo seus @'indices. 
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} ishow (@var{expr})
+@deffn {Fun@,{c}@~ao} ishow (@var{expr})
 
 Mostra @var{expr} com os objetos indexados tendo seus
 @'indices covariantes como subscritos e @'indices contravariantes como
@@ -298,7 +298,7 @@ atrav@'es desse documento).
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} indices (@var{expr})
+@deffn {Fun@,{c}@~ao} indices (@var{expr})
 
 Retorna uma lista de dois elementos.  O primeiro @'e uma lista de @'indices
 livres em @var{expr} (aqueles que ocorrem somente uma vez). O segundo @'e uma
@@ -326,8 +326,8 @@ express@~ao ilegal, seu comportamento pode ser considerado indefinido.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} rename (@var{expr})
-@deffnx {Fun@value{cedilha}@~ao} rename (@var{expr}, @var{contador})
+@deffn {Fun@,{c}@~ao} rename (@var{expr})
+@deffnx {Fun@,{c}@~ao} rename (@var{expr}, @var{contador})
 
 Retorna uma express@~ao equivalente para @var{expr} mas com @'indices que ocorrem exatamente duas vezes
 em cada termo alterado do conjunto @code{[%1, %2,...]}, se o segundo argumento
@@ -404,8 +404,8 @@ sob @code{rename}).
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~ao} defcon (@var{tensor_1})
-@deffnx {Fun@value{cedilha}@~ao} defcon (@var{tensor_1}, @var{tensor_2}, @var{tensor_3})
+@deffn {Fun@,{c}@~ao} defcon (@var{tensor_1})
+@deffnx {Fun@,{c}@~ao} defcon (@var{tensor_1}, @var{tensor_2}, @var{tensor_3})
 Dado @var{tensor_1} a propriedade que a
 contra@,{c}@~ao de um produto do @var{tensor_1} e do @var{tensor_2} resulta em @var{tensor_3}
 com os @'indices apropriados.  Se somente um argumento, @var{tensor_1}, for
@@ -424,15 +424,15 @@ propriedades de contra@,{c}@~oes com @code{defcon}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} remcon (@var{tensor_1}, ..., @var{tensor_n})
-@deffnx {Fun@value{cedilha}@~ao} remcon (all)
+@deffn {Fun@,{c}@~ao} remcon (@var{tensor_1}, ..., @var{tensor_n})
+@deffnx {Fun@,{c}@~ao} remcon (all)
 Remove todas as propriedades de contra@,{c}@~ao
 de @var{tensor_1}, ..., @var{tensor_n}). @code{remcon(all)} remove todas as propriedades de
 contra@,{c}@~ao de todos os objetos indexados.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} contract (@var{expr})
+@deffn {Fun@,{c}@~ao} contract (@var{expr})
 
 Realiza contra@,{c}@~oes tensoriais em @var{expr} a qual pode ser qualquer
 combina@,{c}@~ao de adi@,{c}@~oes e produtos. Essa fun@,{c}@~ao usa a informa@,{c}@~ao
@@ -444,7 +444,7 @@ m@'aximo divisor comum forem desnecess@'arios.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} indexed_tensor (@var{tensor})
+@deffn {Fun@,{c}@~ao} indexed_tensor (@var{tensor})
 
 Deve ser executada antes de atribuir componentes para um @var{tensor} para o qual
 um valor interno j@'a existe como com @code{ichr1}, @code{ichr2},
@@ -452,7 +452,7 @@ um valor interno j@'a existe como com @code{ichr1}, @code{ichr2},
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} components (@var{tensor}, @var{expr})
+@deffn {Fun@,{c}@~ao} components (@var{tensor}, @var{expr})
 
 Permite que se atribua um valor indicial a uma express@~ao
 @var{expr} dando os valores das componentes do @var{tensor}. Esses
@@ -551,7 +551,7 @@ comandos @code{defrule} e @code{applyb1}:
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} remcomps (@var{tensor})
+@deffn {Fun@,{c}@~ao} remcomps (@var{tensor})
 
 Desassocia todos os valores de @var{tensor} que foram atribu@'idos com a
 fun@,{c}@~ao @code{components}.
@@ -559,7 +559,7 @@ fun@,{c}@~ao @code{components}.
 @end deffn
 
 @c NEED LIST OF ARGUMENTS HERE
-@deffn {Fun@value{cedilha}@~ao} showcomps (@var{tensor})
+@deffn {Fun@,{c}@~ao} showcomps (@var{tensor})
 
 Mostra atribui@,{c}@~oes de componentes de um tensor, feitas usando o comando
 @code{components}. Essa fun@,{c}@~ao pode ser particularmente @'util quando uma matriz @'e atribu@'ida
@@ -608,7 +608,7 @@ categoria maior que 2.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} idummy ()
+@deffn {Fun@,{c}@~ao} idummy ()
 
 Incrementos @code{icounter} e retorno como seu valor um @'indice da forma
 @code{%n} onde n @'e um inteiro positivo.  Isso garante que @'indices que ocorrem exatamente duas vezes
@@ -617,7 +617,7 @@ que j@'a estiverem sendo usados (veja o exemplo sob @code{indices}).
 
 @end deffn
 
-@defvr {Vari@'avel de op@value{cedilha}@~ao} idummyx
+@defvr {Vari@'avel de op@,{c}@~ao} idummyx
 Valor padr@~ao: @code{%}
 
 @'E o prefixo para @'indices que ocorrem exatamente duas vezes (veja o exemplo sob @'indices @code{indices}).
@@ -632,7 +632,7 @@ gera@,{c}@~ao do pr@'oximo @'indice que ocorre exatamente duas vezes no pacote t
 determinado atrav@'es da op@,{c}@~ao @code{idummy} (padr@~ao: @code{%}).
 @end defvr
 
-@deffn {Fun@value{cedilha}@~ao} kdelta (@var{L1}, @var{L2})
+@deffn {Fun@,{c}@~ao} kdelta (@var{L1}, @var{L2})
 @'e a fun@,{c}@~ao delta generalizada de Kronecker definida no
 pacote @code{itensor} com @var{L1} a lista de @'indices covariantes e @var{L2}
 a lista de @'indices contravariantes.  @code{kdelta([i],[j])} retorna o delta de
@@ -648,7 +648,7 @@ implicar que @code{kdelta([i,j],[])} seja um objeto tensorial v@'alido.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} kdels (@var{L1}, @var{L2})
+@deffn {Fun@,{c}@~ao} kdels (@var{L1}, @var{L2})
 
 Delta de Kronecker simetrizado, usado em alguns c@'alculos. Por exemplo:
 
@@ -673,7 +673,7 @@ Delta de Kronecker simetrizado, usado em alguns c@'alculos. Por exemplo:
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} levi_civita (@var{L})
+@deffn {Fun@,{c}@~ao} levi_civita (@var{L})
 @'e o tensor de permuta@,{c}@~ao (ou de Levi-Civita) que retorna 1 se
 a lista @var{L} consistir de uma permuta@,{c}@~ao par de inteiros, -1 se isso
 consistir de uma permuta@,{c}@~ao @'impar, e 0 se alguns @'indices em @var{L} forem
@@ -681,7 +681,7 @@ repetidos.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} lc2kdt (@var{expr})
+@deffn {Fun@,{c}@~ao} lc2kdt (@var{expr})
 Simplifica express@~oes contendo os s@'imbolos de Levi-Civita, convertendo esses
 para express@~oes delta de Kronecker quando poss@'ivel. A principal diferen@,{c}a entre
 essa fun@,{c}@~ao e simplesmente avaliar os simbolos de Levi-Civita @'e que a avalia@,{c}@~ao
@@ -755,7 +755,7 @@ To reenable the Lisp debugger set *debugger-hook* to nil.
 @end deffn
 
 @c HMM, WHICH CATEGORY DOES THIS FALL INTO -- FUNCTION, VARIABLE, OTHER ??
-@deffn {Fun@value{cedilha}@~ao} lc_l
+@deffn {Fun@,{c}@~ao} lc_l
 
 Regra de simplifica@,{c}@~ao usada para express@~oes contendo s@'imbolos n@~ao avaliados de
 Levi-Civita (@code{levi_civita}). Juntamente com @code{lc_u}, pode ser usada para simplificar
@@ -784,7 +784,7 @@ Por exemplo:
 @end deffn
 
 @c HMM, WHICH CATEGORY DOES THIS FALL INTO -- FUNCTION, VARIABLE, OTHER ??
-@deffn {Fun@value{cedilha}@~ao} lc_u
+@deffn {Fun@,{c}@~ao} lc_u
 
 Regra de simplifica@,{c}@~ao usada para express@~oes contendo s@'imbolos n@~ao avaliados de
 Levi-Civita (@code{levi_civita}). Juntamente com @code{lc_u}, pode ser usada para simplificar
@@ -793,7 +793,7 @@ Para detalhes, veja @code{lc_l}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} canten (@var{expr})
+@deffn {Fun@,{c}@~ao} canten (@var{expr})
 Simplifica @var{expr} por renomea@,{c}@~ao (veja @code{rename})
 e permutando @'indices que ocorrem exatamente duas vezes. @code{rename} @'e restrito a adi@,{c}@~oes de produto
 de tensores nos quais nenhum @'indice derivativo estiver presente. Como tal isso @'e limitado
@@ -807,7 +807,7 @@ posicionada em @code{true}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} concan (@var{expr})
+@deffn {Fun@,{c}@~ao} concan (@var{expr})
 Similar a @code{canten} mas tamb@'em executa contra@,{c}@~ao de @'indices.
 
 @end deffn
@@ -824,7 +824,7 @@ a menos que @code{iframe_flag} seja escolhida para @code{true}.
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~ao} decsym (@var{tensor}, @var{m}, @var{n}, [@var{cov_1}, @var{cov_2}, ...], [@var{contr_1}, @var{contr_2}, ...])
+@deffn {Fun@,{c}@~ao} decsym (@var{tensor}, @var{m}, @var{n}, [@var{cov_1}, @var{cov_2}, ...], [@var{contr_1}, @var{contr_2}, ...])
 
 Declara propriedades de simetria para @var{tensor} de covariante @var{m} e
 @var{n} @'indices contravariantes. As @var{cov_i} e @var{contr_i} s@~ao
@@ -878,12 +878,12 @@ ilustra.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} remsym (@var{tensor}, @var{m}, @var{n})
+@deffn {Fun@,{c}@~ao} remsym (@var{tensor}, @var{m}, @var{n})
 Remove todas as propriedades de simetria de @var{tensor} que tem @var{m}
 @'indices covariantes e @var{n} @'indices contravariantes.
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} canform (@var{expr})
+@deffn {Fun@,{c}@~ao} canform (@var{expr})
 Simplifica @var{expr} atrav@'es de mudan@,{c}a de nome de @'indices
 que ocorrem exatamente duas vezes e reordena@,{c}@~ao de todos os @'indices como ditados pelas condi@,{c}@~oes de simetria
 impostas sobre eles. Se @code{allsym} for @code{true} ent@~ao todos os @'indices s@~ao assumidos
@@ -899,7 +899,7 @@ retorne sempre um resultado matem@'aticamente correto.
 
 @subsection C@'alculo de tensores indiciais
 
-@deffn {Fun@value{cedilha}@~ao} diff (@var{expr}, @var{v_1}, [@var{n_1}, [@var{v_2}, @var{n_2}] ...])
+@deffn {Fun@,{c}@~ao} diff (@var{expr}, @var{v_1}, [@var{n_1}, [@var{v_2}, @var{n_2}] ...])
 
 @'E a fun@,{c}@~ao usual de diferencia@,{c}@~ao do Maxima que tem sido expandida
 nessas habilidades para @code{itensor}. @code{diff} toma a derivada de @var{expr}
@@ -914,7 +914,7 @@ diferencia@,{c}@~ao.  Isso permite que um array de nomes de coordenadas ou
 nomes subscritos como @code{x[1]}, @code{x[2]}, ...  sejam usados.
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} idiff (@var{expr}, @var{v_1}, [@var{n_1}, [@var{v_2}, @var{n_2}] ...])
+@deffn {Fun@,{c}@~ao} idiff (@var{expr}, @var{v_1}, [@var{n_1}, [@var{v_2}, @var{n_2}] ...])
 Diferencia@,{c}@~ao indicial. A menos que @code{diff}, que diferencia
 com rela@,{c}@~ao a uma vari@'avel independente, @code{idiff} possa ser usada
 para diferenciar com rela@,{c}@~ao a uma coordenada. Para um objeto indexado,
@@ -931,7 +931,7 @@ m@'etrico. Dessa forma, se @code{imetric} tiver sido associada a @code{G} ent@~a
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} liediff (@var{v}, @var{ten})
+@deffn {Fun@,{c}@~ao} liediff (@var{v}, @var{ten})
 
 Calcula a derivada de Lie da express@~ao tensorial @var{ten} com
 rela@,{c}@~ao ao campo vetorial @var{v}. @var{ten} pode ser qualquer express@~ao tensorial
@@ -956,14 +956,14 @@ vetorial. Por exemplo:
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} rediff (@var{ten})
+@deffn {Fun@,{c}@~ao} rediff (@var{ten})
 
 Avalia todas as ocorr@^encias do comando @code{idiff} na express@~ao
 tensorial @var{ten}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} undiff (@var{expr})
+@deffn {Fun@,{c}@~ao} undiff (@var{expr})
 
 Retorna uma express@~ao equivalente a @var{expr} mas com todas as derivadas
 de objetos indexados substitu@'idas pela forma substantiva da fun@,{c}@~ao @code{idiff}. Seu
@@ -975,7 +975,7 @@ em @var{expr} e ent@~ao concluir a diferencia@,{c}@~ao atrav@'es de digamos
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} evundiff (@var{expr})
+@deffn {Fun@,{c}@~ao} evundiff (@var{expr})
 
 Equivalente @`a execu@,{c}@~ao de @code{undiff}, seguida por @code{ev} e
 @code{rediff}.
@@ -1039,19 +1039,19 @@ de forma que @code{evundiff} n@~ao mais @'e necess@'aria para express@~oes como 
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} flush (@var{expr}, @var{tensor_1}, @var{tensor_2}, ...)
+@deffn {Fun@,{c}@~ao} flush (@var{expr}, @var{tensor_1}, @var{tensor_2}, ...)
 Escolhe para zero, em
 @var{expr}, todas as ocorr@^encias de @var{tensor_i} que n@~ao tiverem @'indices derivativos.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} flushd (@var{expr}, @var{tensor_1}, @var{tensor_2}, ...)
+@deffn {Fun@,{c}@~ao} flushd (@var{expr}, @var{tensor_1}, @var{tensor_2}, ...)
 Escolhe para zero, em
 @var{expr}, todas as ocorr@^encias de @var{tensor_i} que tiverem @'indices derivativos.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} flushnd (@var{expr}, @var{tensor}, @var{n})
+@deffn {Fun@,{c}@~ao} flushnd (@var{expr}, @var{tensor}, @var{n})
 Escolhe para zero, em @var{expr}, todas as
 ocorr@^encias do objeto diferenciado @var{tensor} que tem @var{n} ou mais
 @'indices derivativos como demonstra o seguinte exemplo.
@@ -1070,7 +1070,7 @@ ocorr@^encias do objeto diferenciado @var{tensor} que tem @var{n} ou mais
 @end example
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} coord (@var{tensor_1}, @var{tensor_2}, ...)
+@deffn {Fun@,{c}@~ao} coord (@var{tensor_1}, @var{tensor_2}, ...)
 
 Dados os @var{tensor_i} a propriedade de diferencia@,{c}@~ao da coordenada que a
 derivada do vetor contravariante cujo nome @'e um dos
@@ -1080,8 +1080,8 @@ sido conclu@'ida ent@~ao @code{idiff(x([],[i]),j)} fornece @code{kdelta([i],[j])
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} remcoord (@var{tensor_1}, @var{tensor_2}, ...)
-@deffnx {Fun@value{cedilha}@~ao} remcoord (all)
+@deffn {Fun@,{c}@~ao} remcoord (@var{tensor_1}, @var{tensor_2}, ...)
+@deffnx {Fun@,{c}@~ao} remcoord (all)
 
 Remove a propriedade de coordenada de diferencia@,{c}@~ao dos @code{tensor_i}
 que foram estabelecidos atrav@'es da fun@,{c}@~ao @code{coord}.  @code{remcoord(all)}
@@ -1089,7 +1089,7 @@ remove essa propriedade de todos os objetos indexados.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} makebox (@var{expr})
+@deffn {Fun@,{c}@~ao} makebox (@var{expr})
 Mostra @var{expr} da mesma maneira que @code{show}; todavia,
 qualquer tensor d'Alembertiano ocorrendo em @var{expr} ir@'a ser indicado usando o
 s@'imbolo @code{[]}.  Por exemplo, @code{[]p([m],[n])} representa
@@ -1097,7 +1097,7 @@ s@'imbolo @code{[]}.  Por exemplo, @code{[]p([m],[n])} representa
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} conmetderiv (@var{expr}, @var{tensor})
+@deffn {Fun@,{c}@~ao} conmetderiv (@var{expr}, @var{tensor})
 
 Simplifica express@~oes contendo derivadas comuns de
 ambas as formas covariantes e contravariantes do tensor m@'etrico (a
@@ -1120,8 +1120,8 @@ Christoffel como visto adiante:
 @end example
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} simpmetderiv (@var{expr})
-@deffnx {Fun@value{cedilha}@~ao} simpmetderiv (@var{expr}[, @var{stop}])
+@deffn {Fun@,{c}@~ao} simpmetderiv (@var{expr})
+@deffnx {Fun@,{c}@~ao} simpmetderiv (@var{expr}[, @var{stop}])
 
 Simplifica express@~oes contendo produtos de derivadas de
 tensores m@'etricos. Especificamente, @code{simpmetderiv} reconhece duas identidades:
@@ -1209,7 +1209,7 @@ e @code{conmetderiv} juntos para simplificar contra@,{c}@~oes do tensor de Weyl.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} flush1deriv (@var{expr}, @var{tensor})
+@deffn {Fun@,{c}@~ao} flush1deriv (@var{expr}, @var{tensor})
 
 Escolhe para zero, em @code{expr}, todas as ocorr@^encias de @code{tensor} que possuem
 exatamente um @'indice derivativo.
@@ -1218,7 +1218,7 @@ exatamente um @'indice derivativo.
 
 @subsection Tensores em espa@,{c}os curvos
 
-@deffn {Fun@value{cedilha}@~ao} imetric (@var{g})
+@deffn {Fun@,{c}@~ao} imetric (@var{g})
 @deffnx {Vari@'avel de sistema} imetric
 
 Especifica a m@'etrica atrav@'es de atribui@,{c}@~ao @`a vari@'avel @code{imetric:@var{g}}
@@ -1229,13 +1229,13 @@ comando @code{imetric(@var{g})}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} idim (@var{n})
+@deffn {Fun@,{c}@~ao} idim (@var{n})
 Escolhe as dimens@~oes da m@'etrica. Tamb@'em inicializa as propriedades de
 antisimetria dos s@'imbolos de Levi-Civita para as dimens@~oes dadas.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} ichr1 ([@var{i}, @var{j}, @var{k}])
+@deffn {Fun@,{c}@~ao} ichr1 ([@var{i}, @var{j}, @var{k}])
 Retorna o s@'imbolo de Christoffel de primeiro tipo via
 defini@,{c}@~ao
 @example
@@ -1248,7 +1248,7 @@ vari@'avel @code{imetric} deve ser atribu@'ida um nome como no exemplo sob @code
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} ichr2 ([@var{i}, @var{j}], [@var{k}])
+@deffn {Fun@,{c}@~ao} ichr2 ([@var{i}, @var{j}], [@var{k}])
 Retorna o s@'imbolo de Christoffel de segundo tipo
 definido pela rela@,{c}@~ao
 @example
@@ -1258,7 +1258,7 @@ definido pela rela@,{c}@~ao
 @end example
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} icurvature ([@var{i}, @var{j}, @var{k}], [@var{h}])
+@deffn {Fun@,{c}@~ao} icurvature ([@var{i}, @var{j}, @var{k}], [@var{h}])
 Retorna o tensor da curvatura de
 Riemann em termos de s@'imbolos de Christoffel de segundo
 tipo (@code{ichr2}).  A seguinte nota@,{c}@~ao @'e usada:
@@ -1272,7 +1272,7 @@ tipo (@code{ichr2}).  A seguinte nota@,{c}@~ao @'e usada:
 @end example
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} covdiff (@var{expr}, @var{v_1}, @var{v_2}, ...)
+@deffn {Fun@,{c}@~ao} covdiff (@var{expr}, @var{v_1}, @var{v_2}, ...)
 Retorna a derivada da covariante de @var{expr} com
 rela@,{c}@~ao @`as vari@'aveis @var{v_i} em termos de s@'imbolos de Christoffel de
 segundo tipo (@code{ichr2}).  Com o objetivo de avaliar esses, se pode usar
@@ -1317,14 +1317,14 @@ Enter a list of the derivative indices: [];
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} lorentz_gauge (@var{expr})
+@deffn {Fun@,{c}@~ao} lorentz_gauge (@var{expr})
 Imp@~oe a condi@,{c}@~ao de Lorentz atrav@'es da substitui@,{c}@~ao de 0 para todos os
 objetos indexados em @var{expr} que possui um @'indice de derivada id@^entico ao
 @'indice contravariante.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} igeodesic_coords (@var{expr}, @var{nome})
+@deffn {Fun@,{c}@~ao} igeodesic_coords (@var{expr}, @var{nome})
 
 Faz com que s@'imbolos de Christoffel n@~ao diferenciados e
 a primeira derivada do tensor m@'etrico tendam para zero em @var{expr}. O @var{nome}
@@ -1435,7 +1435,7 @@ o sinalizador @code{iframe_bracket_form} @'e escolhido para @code{false}:
 @end example
 
 
-@deffn {Fun@value{cedilha}@~ao} iframes ()
+@deffn {Fun@,{c}@~ao} iframes ()
 
 Uma vez que nessa vers@~ao do Maxima, identidades de contra@,{c}@~ao para @code{ifr} e
 @code{ifri} s@~ao sempre definidas, como @'e o suporte da moldura (@code{ifb}), essa
@@ -1849,7 +1849,7 @@ sinalizador @code{igeowedge_flag}, como no seguinte exemplo:
 
 @end defvr
 
-@defvr {Operator} |
+@defvr {Operador} |
 @ifinfo
 @fnindex Contra@,{c}@~ao com um vetor
 @end ifinfo
@@ -1884,7 +1884,7 @@ os resultados ser@~ao incorretos.
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~ao} extdiff (@var{expr}, @var{i})
+@deffn {Fun@,{c}@~ao} extdiff (@var{expr}, @var{i})
 
 Calcula a derivada externa de @var{expr} com rela@,{c}@~ao ao @'indice
 @var{i}. A derivada externa @'e formalmente definida como o produto
@@ -1919,7 +1919,7 @@ Por exemplo:
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} hodge (@var{expr})
+@deffn {Fun@,{c}@~ao} hodge (@var{expr})
 
 Calcula o Hodge dual de @var{expr}. Por exemplo:
 
@@ -1982,7 +1982,7 @@ o comando regular @code{tex} do Maxima n@~ao produzir@'a a sa@'ida
 esperada. Voc@^e pode tentar em seu lugar o comando @code{tentex}, o qual tenta
 traduzir express@~oes de tensores dentro de objetos TeX indexados apropriadamente.
 
-@deffn {Fun@value{cedilha}@~ao} tentex (@var{expr})
+@deffn {Fun@,{c}@~ao} tentex (@var{expr})
 
 Para usar a fun@,{c}@~ao @code{tentex}, voc@^e deve primeiro chamar @code{tentex},
 como no seguinte exemplo:
@@ -2018,7 +2018,7 @@ O pacote @code{itensor} possui a habilidade de gerar c@'odigo Maxima que pode
 ent@~ao ser executado no contexto do pacote @code{ctensor}. A fun@,{c}@~ao que executa
 essa tarefa @'e @code{ic_convert}.
 
-@deffn {Fun@value{cedilha}@~ao} ic_convert (@var{eqn})
+@deffn {Fun@,{c}@~ao} ic_convert (@var{eqn})
 
 Converte a equa@,{c}@~ao @var{eqn} na sintaxe @code{itensor} para uma declara@,{c}@~ao de atribui@,{c}@~ao @code{ctensor}.
 Adi@,{c}@~oes impl@'icitas sobre @'indices que ocorrem exatamente duas vezes s@~ao tornadas expl@'icitas enquanto objetos

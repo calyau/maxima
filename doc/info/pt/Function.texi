@@ -1,5 +1,5 @@
-@c Language: Portuguese, Encoding: iso-8859-1
-@c /Function.texi/1.42/Sat Jul 22 19:23:54 2006/-ko/
+@c Language: Brazilian Portuguese, Encoding: iso-8859-1
+@c /Function.texi/1.43/Thu Dec 21 04:36:43 2006/-ko/
 @menu
 * Introdu@value{cedilha}@~ao a Defini@value{cedilha}@~ao de Fun@value{cedilha}@~ao::  
 * Fun@value{cedilha}@~ao::                    
@@ -167,7 +167,7 @@ o qual remove tamb@'em remove a defini@,{c}@~ao da fun@,{c}@~ao de array.
 @node Macros, Defini@value{cedilha}@~oes para Defini@value{cedilha}@~ao de Fun@value{cedilha}@~ao, Fun@value{cedilha}@~ao, Defini@value{cedilha}@~ao de Fun@value{cedilha}@~ao
 @section Macros
 
-@deffn {Fun@value{cedilha}@~ao} buildq (@var{L}, @var{expr})
+@deffn {Fun@,{c}@~ao} buildq (@var{L}, @var{expr})
 Substitue vari@'aveis nomeadas pela lista @var{L} dentro da express@~ao @var{expr},
 paralelamente,
 sem avaliar @var{expr}.
@@ -281,7 +281,7 @@ e seus valores sobre o lado direito.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} macroexpand (@var{expr})
+@deffn {Fun@,{c}@~ao} macroexpand (@var{expr})
 Retorna a expans@~ao da macro de @var{expr} sem avaliar a express@~ao,
 quando @code{expr} for uma chamada de fun@,{c}@~ao de macro.
 De outra forma, @code{macroexpand} retorna @var{expr}.
@@ -325,7 +325,7 @@ Exemplos
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} macroexpand1 (@var{expr})
+@deffn {Fun@,{c}@~ao} macroexpand1 (@var{expr})
 Retorna a expans@~ao de macro de @var{expr} sem avaliar a express@~ao,
 quando @code{expr} for uma chamada de fun@,{c}@~ao de macro.
 De outra forma, @code{macroexpand1} retorna @var{expr}.
@@ -378,7 +378,7 @@ Veja tamb@'em @code{infolists}.
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~ao} splice (@var{a})
+@deffn {Fun@,{c}@~ao} splice (@var{a})
 Une como se fosse um elo de liga@,{c}@~ao (interpola) a lista nomeada atrav@'es do @'atomo @var{a} em uma express@~ao,
 mas somente se @code{splice} aparecer dentro de @code{buildq};
 de outra forma, @code{splice} @'e tratada como uma fun@,{c}@~ao indefinida.
@@ -595,9 +595,17 @@ primeiro elemento negativo de @code{l} e "arremessa-o".
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} compfile (@var{filename}, @var{f_1}, ..., @var{f_n})
-Traduz fun@,{c}@~oes Maxima @var{f_1}, ..., @var{f_n} para Lisp 
-e escreve o c@'odigo traduzido no arquivo @var{filename}.
+@deffn {Fun@,{c}@~ao} compfile (@var{nomearquivo}, @var{f_1}, ..., @var{f_n})
+@deffnx {Fun@,{c}@~ao} compfile (@var{nomearquivo}, fun@,{c}@~oes)
+@deffnx {Fun@,{c}@~ao} compfile (@var{nomearquivo}, all)
+
+Traduz fu@,{c}@~oes Maxima para Lisp 
+e escreve o c@'odigo traduzido no arquivo @var{nomearquivo}.
+
+@code{compfile(@var{nomearquivo}, @var{f_1}, ..., @var{f_n})} traduz as
+fun@,{c}@~oes especificadas.
+@code{compfile(@var{nomearquivo}, functions)} e @code{compfile(@var{nomearquivo}, all)}
+traduz todas as fun@,{c}@~oes definidas pelo usu@'ario.
 
 As tradu@,{c}@~oes Lisp n@~ao s@~ao avaliadas, nem @'e o arquivo de sa@'ida processado pelo compilador Lisp.
 @c SO LET'S CONSIDER GIVING THIS FUNCTION A MORE ACCURATE NAME.
@@ -620,13 +628,13 @@ Veja tamb@'em @code{translate}, @code{translate_file}, e @code{compile_file}.
 @c @end defvar
 
 @deffn {Fun@,{c}@~ao} compile (@var{f_1}, ..., @var{f_n})
-@deffnx {Fun@,{c}@~ao} compile (functions)
+@deffnx {Fun@,{c}@~ao} compile (fun@,{c}@~oes)
 @deffnx {Fun@,{c}@~ao} compile (all)
 Traduz fun@,{c}@~oes Maxima @var{f_1}, ..., @var{f_n} para Lisp, avalia a tradu@,{c}@~ao Lisp,
 e chama a fun@,{c}@~ao Lisp @code{COMPILE} sobre cada fun@,{c}@~ao traduzida.
 @code{compile} retorna uma lista de nomes de fun@,{c}@~oes compiladas.
 
-@code{compile (all)} ou @code{compile (functions)} compila todas as fun@,{c}@~oes definidas pelo usu@'ario.
+@code{compile (all)} ou @code{compile (fun@,{c}@~oes)} compila todas as fun@,{c}@~oes definidas pelo usu@'ario.
 
 @code{compile} n@~ao avalia seus argumentos; 
 o operador ap@'ostrofo-ap@'ostrofo @code{'@w{}'} faz com que ocorra avalia@,{c}@~ao sobrepondo-se ao ap@'ostrofo.
@@ -694,7 +702,7 @@ Exemplos:
 @end deffn
 
 @c SEE NOTE BELOW ABOUT THE DOCUMENTATION STRING
-@c @deffn {Fun@value{cedilha}@~ao} define_variable (@var{name}, @var{default_value}, @var{mode}, @var{documentation})
+@c @deffn {Fun@,{c}@~ao} define_variable (@var{name}, @var{default_value}, @var{mode}, @var{documentation})
 @deffn {Fun@,{c}@~ao} define_variable (@var{name}, @var{default_value}, @var{mode})
 
 Introduz uma vari@'avel global dentro do ambiente Maxima.
@@ -1497,14 +1505,14 @@ declara@,{c}@~oes para fazer o c@'odigo traduzido mais adequado para compila@,{c
 @end defvr
 
 @deffn {Fun@,{c}@~ao} translate (@var{f_1}, ..., @var{f_n})
-@deffnx {Fun@,{c}@~ao} translate (functions)
+@deffnx {Fun@,{c}@~ao} translate (fun@,{c}@~oes)
 @deffnx {Fun@,{c}@~ao} translate (all)
 Traduz fun@,{c}@~oes definidas pelo usu@'ario
 @var{f_1}, ..., @var{f_n} da linguagem de Maxima para Lisp
 e avalia a tradu@,{c}@~ao Lisp.
 Tipicamente as fun@,{c}@~oes traduzidas executam mais r@'apido que as originais.
 
-@code{translate (all)} ou @code{translate (functions)} traduz todas as fun@,{c}@~oes definidas pelo usu@'ario.
+@code{translate (all)} ou @code{translate (fun@,{c}@~oes)} traduz todas as fun@,{c}@~oes definidas pelo usu@'ario.
 
 Fun@,{c}@~oes a serem traduzidas incluir~ao uma chamada para @code{mode_declare} no
 in@'icio quando poss@'ivel com o objetivo de produzir um c@'odigo mais eficiente.  Por
@@ -1558,8 +1566,8 @@ fun@,{c}@~oes traduzidas.
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} translate_file (@var{maxima_filename})
-@deffnx {Fun@,{c}@~ao} translate_file (@var{maxima_filename}, @var{lisp_filename})
+@deffn {Fun@,{c}@~ao} translate_file (@var{maxima_nomearquivo})
+@deffnx {Fun@,{c}@~ao} translate_file (@var{maxima_nomearquivo}, @var{lisp_nomearquivo})
 Traduz um arquivo com c@'odigo Maxima para um arquivo com c@'odigo Lisp.
 @code{translate_file} retorna uma lista de tr@^es nomes de arquivo:
 O nome do arquivo Maxima, o nome do arquivo Lisp, e o nome do arquivo
@@ -1571,16 +1579,16 @@ contendo informa@,{c}@~oes adicionais sobre a tradu@,{c}@~ao.
 o uso de @code{'@w{}'} e @code{%}, por exemplo.
 @c FIGURE OUT WHAT THE RESTRICTIONS ARE AND STATE THEM
 
-@code{translate_file (@var{maxima_filename})} traduz um arquivo Maxima @var{maxima_filename}
+@code{translate_file (@var{maxima_nomearquivo})} traduz um arquivo Maxima @var{maxima_nomearquivo}
 para um similarmente chamado arquivo Lisp.
 Por exemplo, @code{foo.mac} @'e traduzido em @code{foo.LISP}.
 O nome de arquivo Maxima pod incluir nome ou nomes de diret@'orio(s),
 nesse caso o arquivo de sa@'ida Lisp @'e escrito
 para o mesmo diret@'orio que a entrada Maxima.
 
-@code{translate_file (@var{maxima_filename}, @var{lisp_filename})} traduz
-um arquivo Maxima @var{maxima_filename} em um arquivo Lisp @var{lisp_filename}.
-@code{translate_file} ignora a extens@~ao do nome do arquivo, se qualquer, de @code{lisp_filename};
+@code{translate_file (@var{maxima_nomearquivo}, @var{lisp_nomearquivo})} traduz
+um arquivo Maxima @var{maxima_nomearquivo} em um arquivo Lisp @var{lisp_nomearquivo}.
+@code{translate_file} ignora a extens@~ao do nome do arquivo, se qualquer, de @code{lisp_nomearquivo};
 a extens@~ao do arquivo de sa@'ida Lisp @'e sempre @code{LISP}.
 O nome de arquivo Lisp pode incluir um nome ou nomes de diret@'orios),
 nesse caso o arquivo de sa@'ida Lisp @'e escrito para o diret@'orio especificado.
@@ -1826,10 +1834,10 @@ dicas de programa@,{c}@~ao.
 
 @end defvr
 
-@deffn {Fun@,{c}@~ao} compile_file (@var{filename})
-@deffnx {Fun@,{c}@~ao} compile_file (@var{filename}, @var{compiled_filename})
-@deffnx {Fun@,{c}@~ao} compile_file (@var{filename}, @var{compiled_filename}, @var{lisp_filename})
-Traduz o arquivo Maxima @var{filename} para Lisp,
+@deffn {Fun@,{c}@~ao} compile_file (@var{nomearquivo})
+@deffnx {Fun@,{c}@~ao} compile_file (@var{nomearquivo}, @var{nomearquivo_compilado})
+@deffnx {Fun@,{c}@~ao} compile_file (@var{nomearquivo}, @var{nomearquivo_compilado}, @var{lisp_nomearquivo})
+Traduz o arquivo Maxima @var{nomearquivo} para Lisp,
 executa o compilador Lisp,
 e, se a tradu@,{c}@~ao e a compila@,{c}@~ao obtiverem sucesso, chama o c@'odigo compilado dentro do Maxima.
 
@@ -1858,7 +1866,7 @@ atribui@,{c}@~oes para sinalizadores traduzidos (@code{tr_numer}, etc.) n@~ao t@
 @c the compilation succeeded.  This @'e a bug.  
 @c REPORTED AS SOURCEFORGE BUG # 1103722.
 
-@var{filename} pode n@~ao conter declara@value{cedilha}@~oes @code{:lisp}.
+@var{nomearquivo} pode n@~ao conter declara@value{cedilha}@~oes @code{:lisp}.
 
 @code{compile_file} avalia seus argumentos.
 

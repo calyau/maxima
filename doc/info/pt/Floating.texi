@@ -1,4 +1,4 @@
-@c Language: Portuguese, Encoding: iso-8859-1
+@c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /Floating.texi/1.19/Thu Nov  2 05:46:57 2006/-ko/
 @c ITEMS IN THIS FILE ARE IN NEED OF EXPANSION, CLARIFICATION, AND EXAMPLES
 
@@ -19,7 +19,7 @@
 @c FOLLOWING FUNCTIONS IN bffac.mac ARE DESCRIBED HERE: !!!
 @c bfpsi, bffac, cbffac !!!
 
-@deffn {Fun@value{cedilha}@~ao} bffac (@var{expr}, @var{n})
+@deffn {Fun@,{c}@~ao} bffac (@var{expr}, @var{n})
 Vers@~ao para grandes n@'umeros em ponto flutuante da fun@value{cedilha}@~ao
 @code{factorial} (usa o artif@'icio gamma).  O segundo argumento informa quantos d@'igitos reter e retornar,
 isso @'e uma boa id@'eia para requisitar precis@~ao adicional.
@@ -36,7 +36,7 @@ Valor padr@~ao: 10^8
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~ao} bfloat (@var{expr})
+@deffn {Fun@,{c}@~ao} bfloat (@var{expr})
 Converte todos os n@'umeros e fun@value{cedilha}@~oes de n@'umeros em @var{expr} para grandes n@'umeros em 
 ponto flutuante (bigfloat).  O n@'umero de algarismos significativos no grande n@'umero em ponto flutuante resultante @'e especificado atrav@'es da vari@'avel global @code{fpprec}.
 
@@ -46,13 +46,13 @@ isso pode resultar em perda de precis@~ao).
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} bfloatp (@var{expr})
+@deffn {Fun@,{c}@~ao} bfloatp (@var{expr})
 Retorna @code{true} se a avalia@value{cedilha}@~ao da @var{expr} resultar em um grande n@'umero em ponto flutuante, de outra forma retorna @code{false}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} bfpsi (@var{n}, @var{z}, @var{fpprec})
-@deffnx {Fun@value{cedilha}@~ao} bfpsi0 (@var{z}, @var{fpprec})
+@deffn {Fun@,{c}@~ao} bfpsi (@var{n}, @var{z}, @var{fpprec})
+@deffnx {Fun@,{c}@~ao} bfpsi0 (@var{z}, @var{fpprec})
 @code{bfpsi} @'e a fun@value{cedilha}@~ao @code{polygamma} de argumentos reais @var{z} e ordem de inteiro @var{n}.
 @code{bfpsi0} @'e a fun@value{cedilha}@~ao @code{digamma}. 
 @code{bfpsi0 (@var{z}, @var{fpprec})} @'e equivalente a @code{bfpsi (0, @var{z}, @var{fpprec})}.
@@ -93,14 +93,14 @@ ser@'a mostrado como @code{1.000000000000000B0}. De outra forma, ser@'a mostrado
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~ao} cbffac (@var{z}, @var{fpprec})
+@deffn {Fun@,{c}@~ao} cbffac (@var{z}, @var{fpprec})
 Fatorial complexo de grandes n@'umeros em ponto flutuante.
 
 @code{load ("bffac")} chama essa fun@value{cedilha}@~ao.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} float (@var{expr})
+@deffn {Fun@,{c}@~ao} float (@var{expr})
 Converte inteiros, n@'umeros racionais e grandes n@'umeros em ponto flutuante em @var{expr}
 para n@'umeros em ponto flutuante.  Da mesma forma um @code{evflag}, @code{float} faz com que
 n@'umeros racionais n@~ao-inteiros e grandes n@'umeros em ponto flutuante sejam convertidos para
@@ -117,7 +117,7 @@ isso pode resultar em perda de precis@~ao).
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~ao} floatnump (@var{expr})
+@deffn {Fun@,{c}@~ao} floatnump (@var{expr})
 Retorna @code{true} se @var{expr} for um n@'umero em ponto flutuante, de outra forma retorna @code{false}.
 
 @end deffn

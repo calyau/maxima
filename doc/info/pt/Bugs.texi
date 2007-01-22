@@ -1,4 +1,4 @@
-@c Language: Portuguese, Encoding: iso-8859-1
+@c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /Bugs.texi/1.10/Sat Nov 25 04:02:06 2006//
 @menu
 * Defini@value{cedilha}@~oes para Detec@value{cedilha}@~ao e Relato de Erros::  
@@ -6,17 +6,17 @@
 
 @node Defini@value{cedilha}@~oes para Detec@value{cedilha}@~ao e Relato de Erros
 @section Defini@value{cedilha}@~oes para Detec@value{cedilha}@~ao e Relato de Erros
-@deffn {Fun@value{cedilha}@~ao} run_testsuite ()
-@deffnx {Fun@value{cedilha}@~ao} run_testsuite (@var{boolean})
-@deffnx {Fun@value{cedilha}@~ao} run_testsuite (@var{boolean}, @var{boolean})
-@deffnx {Fun@value{cedilha}@~ao} run_testsuite (@var{boolean}, @var{boolean}, @var{list})
+@deffn {Fun@,{c}@~ao} run_testsuite ()
+@deffnx {Fun@,{c}@~ao} run_testsuite (@var{boolean})
+@deffnx {Fun@,{c}@~ao} run_testsuite (@var{boolean}, @var{boolean})
+@deffnx {Fun@,{c}@~ao} run_testsuite (@var{boolean}, @var{boolean}, @var{list})
 Executa o conjunto de testes do Maxima.  Testes que produzem a resposta desejada s@~ao
 considerados ``passes,'' e testes que n@~ao produzem a resposta
 desejada, s@~ao marcados como erros conhecidos.
 
 @code{run_testsuite ()} mostra somente testes que n@~ao s@~ao aprovados.
 
-@code{run_testsuite (true)} mostra somente testes que s@~ao marcados como bugs conhecidos, bem
+@code{run_testsuite (true)} mostra somente testes que s@~ao marcados como erros conhecidos, bem
 como as falhas.
 
 @code{run_testsuite (true, true)} mostra todos os testes.
@@ -33,7 +33,7 @@ e ent@~ao define fun@,{c}@~oes e vari@'aveis apropriadamente para o teste.
 @code{run_testsuite} retorna @code{done}.
 @end deffn
 
-@defvr {Vari@'avel de op@value{cedilha}@~ao} testsuite_files
+@defvr {Vari@'avel de op@,{c}@~ao} testsuite_files
      
 @code{testsuite_files} @'e o conjunto de testes a ser executado por
 @code{run_testsuite}.  Isso @'e uma lista de nomes de arquivos contendo
@@ -52,7 +52,7 @@ Essa linha especifica a suite de testes que consiste dos arquivos "rtest13s" e
 e 63.
 @end defvr
 
-@deffn {Fun@value{cedilha}@~ao} bug_report ()
+@deffn {Fun@,{c}@~ao} bug_report ()
 Imprime os n@'umeros de vers@~ao do Maxima e do Lisp, e chama o link
 para a p@'agina web de informa@,{c}@~ao de erros do projeto Maxima.
 A informa@,{c}@~ao da vers@~ao @'e a mesma reportada por @code{build_info}.
@@ -63,7 +63,7 @@ e do Lisp dentro da informa@,{c}@~ao do erro.
 @code{bug_report} retorna uma seq@"u@^encia de caracteres vazia @code{""}.
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} build_info ()
+@deffn {Fun@,{c}@~ao} build_info ()
 Imprime um sum@'ario de par@^ametros da compila@,{c}@~ao do Maxima.
 
 @code{build_info} retorna uma seq@"u@^encia de caracteres vazia @code{""}.

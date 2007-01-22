@@ -1,4 +1,4 @@
-@c Language: Portuguese, Encoding: iso-8859-1
+@c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /impdiff.texi/1.1/Sun Mar 19 20:02:45 2006//
 @menu
 * Defini@value{cedilha}@~oes para impdiff::

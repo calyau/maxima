@@ -1,5 +1,5 @@
-@c Language: Portuguese, Encoding: iso-8859-1
-@c /Input.texi/1.50/Sun Dec  3 09:51:52 2006/-ko/
+@c Language: Brazilian Portuguese, Encoding: iso-8859-1
+@c /Input.texi/1.52/Sun Jan  7 05:49:17 2007/-ko/
 @menu
 * Introdu@value{cedilha}@~ao a Entrada e Sa@'ida::  
 * Coment@'arios::
@@ -86,7 +86,7 @@ Em um arquivo processado por @code{load},
 @code{__} est@'a associado @`a express@~ao de entrada mais recentemente informada no prompt interativo
 ou em um arquivo de lote (batch);
 @code{__} n@~ao @'e associado @`a express@~oes de entrada no arquivo que est@'a sendo processado.
-Em particular, quando @code{load (@var{nomedearquivo})} for chamado a partir da linha de comando interativa,
+Em particular, quando @code{load (@var{nomearquivo})} for chamado a partir da linha de comando interativa,
 @code{__} @'e associado a @code{load (@var{filename})}
 enquanto o arquivo est@'a sendo processado.
 
@@ -312,7 +312,7 @@ de outra forma o ponto de interroga@,{c}@~ao n@~ao @'e reconhecido com um pedido
 
 @deffn {S@'imbolo especial} ?!
 @ifinfo
-@fnindex Consulta adocumenta@,{c}@~ao (busca exata)
+@fnindex Consulta documenta@,{c}@~ao (busca exata)
 @end ifinfo
 
 A nota@,{c}@~ao @code{?! palavra} (@code{?!} seguido de um espa@,{c}o em branco e uma palavra)
@@ -808,7 +808,7 @@ Se nenhum dos acima, @code{file_type} retorna @code{object}.
 @end deffn
 
 @deffn {Fun@,{c}@~ao} grind (@var{expr})
-@deffnx {Vari@'avel de op@value{cedilha}@~ao} grind
+@deffnx {Vari@'avel de op@,{c}@~ao} grind
 A fun@,{c}@~ao @code{grind} imprime @var{expr}
 para o console em uma forma adequada de entrada para Maxima.
 @code{grind} sempre retorna @code{done}.
@@ -1068,7 +1068,7 @@ n@~ao s@~ao afetadas por @code{linel}.
 
 @end defvr
 
-@defvr {Vari@'avel de op@value{cedilha}@~ao} lispdisp
+@defvr {Vari@'avel de op@,{c}@~ao} lispdisp
 Valor padr@~ao: @code{false}
 
 Quando @code{lispdisp} for @code{true},
@@ -1095,10 +1095,10 @@ Exemplos:
 
 @end defvr
 
-@deffn {Fun@,{c}@~ao} load (@var{nomedearquivo})
-Avalia express@~oes em @var{nomedearquivo}, 
+@deffn {Fun@,{c}@~ao} load (@var{nomearquivo})
+Avalia express@~oes em @var{nomearquivo}, 
 dessa forma conduzindo vari@'aveis, fun@,{c}@~oes, e outros objetos dentro do Maxima.
-A associa@,{c}@~ao de qualquer objeto existente @'e substitu@'ida pela associa@,{c}@~ao recuperada de @var{nomedearquivo}.  
+A associa@,{c}@~ao de qualquer objeto existente @'e substitu@'ida pela associa@,{c}@~ao recuperada de @var{nomearquivo}.  
 Para achar o arquivo,
 @code{load} chama @code{file_search} com @code{file_search_maxima} e @code{file_search_lisp}
 como diret@'orios de busca.
@@ -1112,7 +1112,7 @@ podem ser processadas por @code{load}.
 @code{load} chama @code{loadfile} para carregar arquivos Lisp e @code{batchload} para carregar arquivos Maxima.
 
 @code{load} n@~ao reconhece constru@,{c}@~oes @code{:lisp} em arquivos do Maxima,
-e quando processando @var{nomedearquivo},
+e quando processando @var{nomearquivo},
 as vari@'aveis globais @code{_}, @code{__}, @code{%}, e @code{%th} possuem as mesmas associa@,{c}@~oes
 que possuiam quando @code{load} foi chamada.
 
@@ -1127,15 +1127,15 @@ Veja @code{file_search} para mais detalhes sobre o mecanismo de busca de arquivo
 @end deffn
 
 @c RECOMMEND CUTTING THIS ITEM, AS THE load SUBSUMES FUNCTIONALITY OF loadfile
-@deffn {Fun@,{c}@~ao} loadfile (@var{nomedearquivo})
-Avalia express@~oes Lisp em @var{nomedearquivo}.
-@code{loadfile} n@~ao invoca @code{file_search}, ent@~ao @code{nomedearquivo} deve obrigat@'oriamente incluir
+@deffn {Fun@,{c}@~ao} loadfile (@var{nomearquivo})
+Avalia express@~oes Lisp em @var{nomearquivo}.
+@code{loadfile} n@~ao invoca @code{file_search}, ent@~ao @code{nomearquivo} deve obrigat@'oriamente incluir
 a extens@~ao do arquivo e tanto quanto o caminho como necess@'ario para achar o arquivo.
 
 @code{loadfile} pode processar arquivos criados por @code{save}, @code{translate_file}, e @code{compile_file}.
 O usu@'ario pode achar isso mais conveniente para usar @code{load} em lugar de @code{loadfile}.
 
-@code{loadfile} avalia seu argumento, ent@~ao @code{nomedearquivo} deve obrigat@'oriamente ser uma seq@"u@^encia de caracteres literal,
+@code{loadfile} avalia seu argumento, ent@~ao @code{nomearquivo} deve obrigat@'oriamente ser uma seq@"u@^encia de caracteres literal,
 n@~ao uma vari@'avel do tipo seq@"u@^encia de caracteres.
 O operador ap@'ostrofo-ap@'ostrofo @code{'@w{}'} n@~ao aceita avalia@,{c}@~ao.
 
@@ -1458,14 +1458,14 @@ Veja tamb@'em @code{lmxchar}.
 @end defvr
 
 @c NEEDS EXAMPLES
-@deffn {Fun@,{c}@~ao} save (@var{filename}, @var{name_1}, @var{name_2}, @var{name_3}, ...)
+@deffn {Fun@,{c}@~ao} save (@var{filename}, @var{nome_1}, @var{nome_2}, @var{nome_3}, ...)
 @deffnx {Fun@,{c}@~ao} save (@var{filename}, values, functions, labels, ...)
 @deffnx {Fun@,{c}@~ao} save (@var{filename}, [@var{m}, @var{n}])
-@deffnx {Fun@,{c}@~ao} save (@var{filename}, @var{name_1}=@var{expr_1}, ...)
+@deffnx {Fun@,{c}@~ao} save (@var{filename}, @var{nome_1}=@var{expr_1}, ...)
 @deffnx {Fun@,{c}@~ao} save (@var{filename}, all)
-@c @defunx save (@var{filename}, @var{name_1}=@var{expr_1},@var{name_2}=@var{expr_2}, ...)
-@c PRECEDING @defunx IS LONGER THAN 1 LINE, CAUSES cl-info.lisp TO STUMBLE; WORK AROUND IT
-Armazena os valores correntes de @var{name_1}, @var{name_2}, @var{name_3}, ..., em @var{filename}.
+@deffnx {Fun@,{c}@~ao} save (@var{filename}, @var{nome_1}=@var{expr_1}, @var{nome_2}=@var{expr_2}, ...)
+
+Armazena os valores correntes de @var{nome_1}, @var{nome_2}, @var{nome_3}, ..., em @var{filename}.
 Os argumentos s@~ao os nomes das vari@'aveis, fun@,{c}@~oes, ou outros objetos.
 Se um nome n@~ao possui valore ou fun@,{c}@~ao associada a ele, esse nome sem nenhum valor ou fun@,{c}@~ao associado ser@'a ignorado.
 @code{save} retorna @var{filename}.
@@ -1492,9 +1492,9 @@ R@'otulos de entrada e sa@'ida podem tamb@'em ser armazenados um a um, e.g., @co
 @code{save (@var{filename}, labels)} armazena todos os r@'otulos de entrada e sa@'ida.
 Quando r@'otulos armazenados s@~ao recuperados, eles substituem r@'otulos existentes.
 
-A forma especial @code{save (@var{filename}, @var{name_1}=@var{expr_1}, @var{name_2}=@var{expr_2}, ...)}
+A forma especial @code{save (@var{filename}, @var{nome_1}=@var{expr_1}, @var{nome_2}=@var{expr_2}, ...)}
 armazena os valores de @var{expr_1}, @var{expr_2}, ...,
-com nomes @var{name_1}, @var{name_2}, ....
+com nomes @var{nome_1}, @var{nome_2}, ....
 Isso @'e @'util para aplicar essa forma para r@'otulos de entrada e sa@'ida, e.g., @code{save ("foo.1", aa=%o88)}.
 O lado direito dessa igualdade nessa forma pode ser qualquer express@~ao, que @'e avaliada.
 Essa forma n@~ao introduz os novos nomes no ambiente corrente do Maxima,
@@ -1577,8 +1577,8 @@ e dessa forma n@~ao pode ser usada em um c@'alculo.
 @end deffn
 
 @c SHOULD BE WRITTEN WITH LEADING ? BUT THAT CONFUSES CL-INFO SO WORK AROUND
-@c @defvr {Vari@value{a_til}vel de op@value{cedilha}@value{a_til}o} stringdisp
-@defvr {Vari@value{a_til}vel de op@value{cedilha}@value{a_til}o} stringdisp
+@c @defvr {Vari@~avel de op@,{c}@~ao} stringdisp
+@defvr {Vari@~avel de op@,{c}@~ao} stringdisp
 Valor padr@~ao: @code{false}
 
 Quando @code{stringdisp} for @code{true},
@@ -1658,7 +1658,7 @@ vari@'aveis como declara@,{c}@~oes de atribui@,{c}@~ao.
 
 @c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
 @deffn {Fun@,{c}@~ao} tex (@var{expr})
-@deffnx {Fun@value{cedilha}@~ao} tex (@var{r@'otulo})
+@deffnx {Fun@,{c}@~ao} tex (@var{r@'otulo})
 @deffnx {Fun@,{c}@~ao} tex (@var{expr}, @var{momearquivo})
 @deffnx {Fun@,{c}@~ao} tex (@var{label}, @var{nomearquivo})
 
@@ -1712,19 +1712,19 @@ $$-\cos x$$
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} texput (@var{a}, @var{s})
-@deffnx {Fun@value{cedilha}@~ao} texput (@var{a}, @var{s}, @var{operator_type})
-@deffnx {Fun@value{cedilha}@~ao} texput (@var{a}, [@var{s_1}, @var{s_2}], matchfix)
-@deffnx {Fun@value{cedilha}@~ao} texput (@var{a}, [@var{s_1}, @var{s_2}, @var{s_3}], matchfix)
+@deffn {Fun@,{c}@~ao} texput (@var{a}, @var{s})
+@deffnx {Fun@,{c}@~ao} texput (@var{a}, @var{s}, @var{operator_type})
+@deffnx {Fun@,{c}@~ao} texput (@var{a}, [@var{s_1}, @var{s_2}], matchfix)
+@deffnx {Fun@,{c}@~ao} texput (@var{a}, [@var{s_1}, @var{s_2}, @var{s_3}], matchfix)
 
-Escolhe a sa@'ida TeX para o @'atomo @var{a},
+Atribui a sa@'ida TeX para o @'atomo @var{a},
 que pode ser um s@'imbolo ou o nome de um operador.
 
 @code{texput (@var{a}, @var{s})} faz com que a fun@,{c}@~ao @code{tex}
 interpole a seq@"u@^encia de caracteres @var{s} dentro da sa@'ida TeX em lugar de @var{a}.
 
 @code{texput (@var{a}, @var{s}, @var{operator_type})},
-onde @var{operator_type} @'e @code{prefix}, @code{infix}, ou @code{postfix}
+onde @var{operator_type} @'e @code{prefix}, @code{infix}, @code{postfix}, @code{nary}, ou @code{nofix},
 faz com que a fun@,{c}@~ao @code{tex} interpole @var{s} dentro da sa@'ida TeX em lugar de @var{a},
 e coloca o texto interpolado na posi@,{c}@~ao apropriada.
 
@@ -1740,20 +1740,121 @@ com @var{s_3} separando os argumentos.
 
 Exemplos:
 
+Atribui sa@'ida TeX a uma vari@'avel.
 @c ===beg===
 @c texput (me,"\\mu_e");
 @c tex (me);
+@c ===end===
+
+@example
+(%i1) texput (me,"\\mu_e");
+(%o1)                         \mu_e
+(%i2) tex (me);
+$$\mu_e$$
+(%o2)                         false
+@end example
+
+Atribui sa@'ida TeX a uma fun@,{c}@~ao comum (n@~ao a um operador).
+@c ===beg===
 @c texput (lcm, "\\mathrm{lcm}");
 @c tex (lcm (a, b));
+@c ===end===
+
+@example
+(%i1) texput (lcm, "\\mathrm@{lcm@}");
+(%o1)                     \mathrm@{lcm@}
+(%i2) tex (lcm (a, b));
+$$\mathrm@{lcm@}\left(a , b\right)$$
+(%o2)                         false
+@end example
+
+Atribui sa@'ida TeX a um operador prefixado.
+@c ===beg===
 @c prefix ("grad");
 @c texput ("grad", " \\nabla ", prefix);
 @c tex (grad f);
+@c ===end===
+
+@example
+(%i1) prefix ("grad");
+(%o1)                         grad
+(%i2) texput ("grad", " \\nabla ", prefix);
+(%o2)                        \nabla 
+(%i3) tex (grad f);
+$$ \nabla f$$
+(%o3)                         false
+@end example
+
+Atribui sa@'ida TeX a um operador infixado.
+@c ===beg===
 @c infix ("~");
 @c texput ("~", " \\times ", infix);
 @c tex (a ~ b);
+@c ===end===
+
+@example
+(%i1) infix ("~");
+(%o1)                           ~
+(%i2) texput ("~", " \\times ", infix);
+(%o2)                        \times 
+(%i3) tex (a ~ b);
+$$a \times b$$
+(%o3)                         false
+@end example
+
+Atribui sa@'ida TeX a um operadro p@'osfixado.
+@c ===beg===
 @c postfix ("@");
 @c texput ("@", "!!", postfix);
 @c tex (x @);
+@c ===end===
+
+@example
+(%i1) postfix ("@@");
+(%o1)                           @@
+(%i2) texput ("@@", "!!", postfix);
+(%o2)                          !!
+(%i3) tex (x @@);
+$$x!!$$
+(%o3)                         false
+@end example
+
+Atribui sa@'ida TeX a um operador n-@'ario.
+@c ===beg===
+@c nary ("@@");
+@c texput ("@@", " \\circ ", nary);
+@c tex (a @@ b @@ c @@ d);
+@c ===end===
+
+@example
+(%i1) nary ("@@@@");
+(%o1)                          @@@@
+(%i2) texput ("@@@@", " \\circ ", nary);
+(%o2)                         \circ 
+(%i3) tex (a @@@@ b @@@@ c @@@@ d);
+$$a \circ b \circ c \circ d$$
+(%o3)                         false
+@end example
+
+Atribui sa@'ida TeX a um operador nofix.
+@c ===beg===
+@c nofix ("foo");
+@c texput ("foo", "\\mathsc{foo}", nofix);
+@c tex (foo);
+@c ===end===
+
+@example
+(%i1) nofix ("foo");
+(%o1)                          foo
+(%i2) texput ("foo", "\\mathsc@{foo@}", nofix);
+(%o2)                     \mathsc@{foo@}
+(%i3) tex (foo);
+$$\mathsc@{foo@}$$
+(%o3)                         false
+@end example
+
+Atribui sa@'ida TeX a um operadro matchfix.
+@c ===beg===
 @c matchfix ("<<", ">>");
 @c texput ("<<", [" \\langle ", " \\rangle "], matchfix);
 @c tex (<<a>>);
@@ -1762,56 +1863,26 @@ Exemplos:
 @c tex (<<a>>);
 @c tex (<<a, b>>);
 @c ===end===
+
 @example
-(%i1) texput (me,"\\mu_e");
-(%o1)                         \mu_e
-(%i2) tex (me);
-$$\mu_e$$
-(%o2)                         false
-(%i3) texput (lcm, "\\mathrm@{lcm@}");
-(%o3)                     \mathrm@{lcm@}
-(%i4) tex (lcm (a, b));
-$$\mathrm@{lcm@}\left(a , b\right)$$
-(%o4)                         false
-(%i5) prefix ("grad");
-(%o5)                         grad
-(%i6) texput ("grad", " \\nabla ", prefix);
-(%o6)                          180
-(%i7) tex (grad f);
-$$ \nabla f$$
-(%o7)                         false
-(%i8) infix ("~");
-(%o8)                           ~
-(%i9) texput ("~", " \\times ", infix);
-(%o9)                          180
-(%i10) tex (a ~ b);
-$$a \times b$$
-(%o10)                        false
-(%i11) postfix ("@@");
-(%o11)                          @@
-(%i12) texput ("@@", "!!", postfix);
-(%o12)                         160
-(%i13) tex (x @@);
-$$x!!$$
-(%o13)                        false
-(%i14) matchfix ("<<", ">>");
-(%o14)                         <<
-(%i15) texput ("<<", [" \\langle ", " \\rangle "], matchfix);
-(%o15)              \langle ( \rangle , false)
-(%i16) tex (<<a>>);
+(%i1) matchfix ("<<", ">>");
+(%o1)                          <<
+(%i2) texput ("<<", [" \\langle ", " \\rangle "], matchfix);
+(%o2)                [ \langle ,  \rangle ]
+(%i3) tex (<<a>>);
 $$ \langle a \rangle $$
-(%o16)                        false
-(%i17) tex (<<a, b>>);
+(%o3)                         false
+(%i4) tex (<<a, b>>);
 $$ \langle a , b \rangle $$
-(%o17)                        false
-(%i18) texput ("<<", [" \\langle ", " \\rangle ", " \\, | \\,"], matchfix);
-(%o18)            \langle ( \rangle ,  \, | \,)
-(%i19) tex (<<a>>);
+(%o4)                         false
+(%i5) texput ("<<", [" \\langle ", " \\rangle ", " \\, | \\,"], matchfix);
+(%o5)           [ \langle ,  \rangle ,  \, | \,]
+(%i6) tex (<<a>>);
 $$ \langle a \rangle $$
-(%o19)                        false
-(%i20) tex (<<a, b>>);
+(%o6)                         false
+(%i7) tex (<<a, b>>);
 $$ \langle a \, | \,b \rangle $$
-(%o20)                        false
+(%o7)                         false
 @end example
 
 @end deffn
@@ -1854,7 +1925,7 @@ n@~ao s@~ao afetadas por @code{ttyoff}.
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~ao} with_stdout (@var{filename}, @var{expr_1}, @var{expr_2}, @var{expr_3}, ...)
+@deffn {Fun@,{c}@~ao} with_stdout (@var{filename}, @var{expr_1}, @var{expr_2}, @var{expr_3}, ...)
 Abre @var{filename} e ent@~ao avalia @var{expr_1}, @var{expr_2}, @var{expr_3}, ....
 Os valores dos argumentos n@~ao s@~ao armazenados em @var{filename},
 mas qualquer sa@'ida impressa gerada pela avalia@,{c}@~ao dos argumentos

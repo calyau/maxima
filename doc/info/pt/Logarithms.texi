@@ -1,4 +1,4 @@
-@c Language: Portuguese, Encoding: iso-8859-1
+@c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /Logarithms.texi/1.16/Sat Jul  8 08:14:48 2006/-ko/
 @menu
 * Defini@value{cedilha}@~oes para Logar@'itmos::
@@ -93,7 +93,7 @@ Exemplos:
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} log (@var{x})
+@deffn {Fun@,{c}@~ao} log (@var{x})
 Representa o logar@'itmo natural (base @math{e}) de @var{x}.
 
 Maxima n@~ao possui uma fun@,{c}@~ao interna para logar@'itmo de base 10 ou de outras bases. @code{log10(x) := log(x) / log(10)} @'e uma defini@,{c}@~ao @'util.
@@ -139,7 +139,7 @@ extremos @'e muitas vezes necess@'aria.
 
 @c NEEDS EXAMPLES
 @defvr {Vari@'avel de op@,{c}@~ao} logarc
-@defvrx {Fun@value{cedilha}@~ao} logarc (@var{expr})
+@defvrx {Fun@,{c}@~ao} logarc (@var{expr})
 
 Se @code{true} ir@'a fazer com que as fun@,{c}@~oes circularee inversas e
 hiperb@'olicas sejam convertidas em formas logar@'itimicas.

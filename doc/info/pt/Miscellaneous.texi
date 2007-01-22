@@ -1,5 +1,5 @@
-@c Language: Portuguese, Encoding: iso-8859-1
-@c /Miscellaneous.texi/1.19/Sun Dec 18 09:20:28 2005/-ko/
+@c Language: Brazilian Portuguese, Encoding: iso-8859-1
+@c /Miscellaneous.texi/1.20/Mon Jan  1 07:27:14 2007/-ko/
 @menu
 * Introdu@value{cedilha}@~ao a Op@value{cedilha}@~oes Diversas::  
 * Compartilhado::                       
@@ -40,19 +40,32 @@ das fun@,{c}@~oes @code{alias}, @code{ordergreat}, @code{orderless} ou atrav@'es
 
 
 @defvr {Declara@,{c}@~ao} alphabetic
-@code{declare (@var{char}, alphabetic)} adiciona @code{char} (caracteres) ao alfabeto do Maxima,
-que inicialmente cont@'em
-as letras de @code{A} at@'e @code{Z}, de @code{a} at@'e @code{z}, @code{%} e @code{_}.  
-@var{char} @'e especificado como uma seq@"u@^encia de caracteres de comprimento 1, e.g., @code{"~"}.
+@code{alphabetic} @'e uma declara@,{c}@~ao reconhecida por @code{declare}.
+A express@~ao @code{declare(@var{s}, alphabetic)} diz ao Maxima para reconhecer
+como alfab@'etico todos os caracteres em @var{s}, que deve ser uma seq@"u@^encia de caracteres.
+ 
+Veja tamb@'em @ref{Identificadores}.
+
+Exemplo:
+
+@c ===beg===
+@c xx\~yy\`\@ : 1729;
+@c declare ("~`@", alphabetic);
+@c xx~yy`@ + @yy`xx + `xx@@yy~;
+@c listofvars (%);
+@c ===end===
 
 @example
-(%i1) declare ("~", alphabetic);
-(%o1)                         done
-(%i2) foo~bar;  
-(%o2)                        foo~bar
-(%i3) atom (foo~bar);
-(%o3)                         true
+(%i1) xx\~yy\`\@@ : 1729;
+(%o1)                         1729
+(%i2) declare ("~`@@", alphabetic);
+(%o2)                         done
+(%i3) xx~yy`@@ + @@yy`xx + `xx@@@@yy~;
+(%o3)               `xx@@@@yy~ + @@yy`xx + 1729
+(%i4) listofvars (%);
+(%o4)                  [@@yy`xx, `xx@@@@yy~]
 @end example
+
 
 @end defvr
 
@@ -435,11 +448,11 @@ Vari@'aveis, bmas n@~ao contendo matrizes ou listas.
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} setup_autoload (@var{nomedearquivo}, @var{fun@value{cedilha}@~ao_1}, ..., @var{fun@value{cedilha}@~ao_n})
+@deffn {Fun@,{c}@~ao} setup_autoload (@var{nomearquivo}, @var{fun@value{cedilha}@~ao_1}, ..., @var{fun@value{cedilha}@~ao_n})
 Especifica que
 se qualquer entre @var{fun@,{c}@~ao_1}, ..., @var{fun@,{c}@~ao_n} for referenciado e n@~ao ainda definido,
 @var{nomedeqrquivo} @'e chamado via @code{load}.
-@var{nomedearquivo} usualmente cont@'em defini@value{cedilha}@~oes para as fun@value{cedilha}@~oes especificadas,
+@var{nomearquivo} usualmente cont@'em defini@value{cedilha}@~oes para as fun@value{cedilha}@~oes especificadas,
 embora isso n@~ao seja obrigat@'orio.
 
 @code{setup_autoload} n@~ao trabalha para fun@,{c}@~oes array.

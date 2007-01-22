@@ -1,4 +1,4 @@
-@c Language: Portuguese, Encoding: iso-8859-1
+@c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /eval_string.texi/1.1/Mon Feb 27 22:09:17 2006//
 @menu
 * Defini@value{cedilha}@~oes para eval_string::
@@ -7,7 +7,7 @@
 @node Defini@value{cedilha}@~oes para eval_string,  , eval_string, eval_string
 @section Defini@value{cedilha}@~oes para eval_string
 
-@deffn {Fun@value{cedilha}@~ao} eval_string (@var{str})
+@deffn {Fun@,{c}@~ao} eval_string (@var{str})
 Entrega a seq@"u@^encia de caracteres do Maxima @var{str} como uma express@~ao do Maxima e a avalia.
 @var{str} @'e uma seq@"u@^encia de caracteres do Maxima. Essa seq@"u@^encia pode ou n@~ao ter um marcador de final (sinal de d@'olar @code{$} ou ponto e v@'irgula @code{;}).
 Somente a primeira express@~ao @'e entregue e avaliada, se ouver mais de uma.
@@ -28,7 +28,7 @@ Para usar essa fun@,{c}@~ao escreva primeiro @code{load("eval_string")}. Veja ta
 @end deffn
 
 
-@deffn {Fun@value{cedilha}@~ao} parse_string (@var{str})
+@deffn {Fun@,{c}@~ao} parse_string (@var{str})
 Entrega a seq@"u@^encia de caracteres do Maxima @var{str} como uma express@~ao do Maxima (sem fazer nenhuma avalia@,{c}@~ao dessa express@~ao).
 @var{str} @'e uma seq@"u@^encia de caracteres do Maxima. Essa seq@"u@^encia pode ou n@~ao ter um marcador de final (sinal de d@'olar @code{$} ou ponto e v@'irgula @code{;}).
 Somente a primeira express@~ao @'e entregue e avaliada, se ouver mais de uma.

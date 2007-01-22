@@ -1,4 +1,4 @@
-@c Language: Portuguese, Encoding: iso-8859-1
+@c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /simplex.texi/1.2/Mon May 15 07:55:16 2006//
 @menu
 * Introdu@value{cedilha}@~ao a simplex::
@@ -27,7 +27,7 @@ Exemplo:
 @node Defini@value{cedilha}@~oes para simplex,  , Introdu@value{cedilha}@~ao a simplex, simplex
 @section Defini@value{cedilha}@~oes para simplex
 
-@defvr {Vari@value{a_agu}vel de op@value{cedilha}@value{a_til}o} epsilon_sx
+@defvr {Vari@'avel de op@,{c}@~ao} epsilon_sx
 Valor padr@~ao: @code{10^-8}
 
 Epsilon usando para c@'alculos num@'ericos em @code{linear_program}.
@@ -36,7 +36,7 @@ Veja tamb@'em: @code{linear_program}.
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~ao} linear_program (@var{A}, @var{b}, @var{c})
+@deffn {Fun@,{c}@~ao} linear_program (@var{A}, @var{b}, @var{c})
 
 @code{linear_program} @'e uma implementa@,{c}@~ao do algor@'itmo simplex.
 @code{linear_program(A, b, c)} calcula um vetor @var{x} para o qual @code{c.x} @'e o m@'inimo
@@ -71,7 +71,7 @@ Veja tamb@'em: @code{minimize_sx}, @code{scale_sx}, e @code{epsilon_sx}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} maximize_sx (@var{obj}, @var{cond}, [@var{pos}])
+@deffn {Fun@,{c}@~ao} maximize_sx (@var{obj}, @var{cond}, [@var{pos}])
 
 Maximiza a fun@,{c}@~ao linear objetiva @var{obj} submetida a alguma restri@,{c}@~ao linear
 @var{cond}. Veja @code{minimize_sx} para uma descri@,{c}@~ao detalhada de argumentos e valores de
@@ -82,7 +82,7 @@ Veja tamb@'em: @code{minimize_sx}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} minimize_sx (@var{obj}, @var{cond}, [@var{pos}])
+@deffn {Fun@,{c}@~ao} minimize_sx (@var{obj}, @var{cond}, [@var{pos}])
 
 Minimiza uma fun@,{c}@~ao linear objetiva @var{obj} submetida a alguma restri@,{c}@~ao
 linear @var{cond}. @var{cond} @'e uma lista de equa@,{c}@~oes lineares ou
@@ -133,7 +133,7 @@ Veja tamb@'em: @code{maximize_sx}, @code{nonegative_sx}, @code{epsilon_sx}.
 
 @end deffn
 
-@defvr {Vari@value{a_agu}vel de op@value{cedilha}@value{a_til}o} nonegative_sx
+@defvr {Vari@'avel de op@,{c}@~ao} nonegative_sx
 Valor padr@~ao: @code{false}
 
 Se @code{nonegative_sx} for verdadeiro (true) todas as vari@'aveis de decis@~ao para @code{minimize_sx}

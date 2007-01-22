@@ -1,20 +1,21 @@
-@c Language: Portuguese, Encoding: iso-8859-1
-@c /Operators.texi/1.34/Sat Nov 25 04:03:16 2006/-ko/
+@c Language: Brazilian Portuguese, Encoding: iso-8859-1
+@c /Operators.texi/1.35/Mon Jan 15 06:08:51 2007/-ko/
 @iftex
 @hyphenation{con-se-cu-ti-vos}
 @hyphenation{u-san-do}
 @end iftex
 @menu
 * N-Argumentos::                        
-* Sem Argumentos::                       
-* Operador::                    
+* Operador n@~ao fixado::                       
 * Operador P@'osfixado::                     
 * Operador Pr@'efixado::                      
-* Defini@value{cedilha}@~oes para Operadores::   
+* Operadores Aritm@'eticos::   
+* Operadores Relacionais::   
+* Operadores Geral::   
 @end menu
 
 
-@node N-Argumentos, Sem Argumentos, Operadores, Operadores
+@node N-Argumentos, Operador n@~ao fixado, Operadores, Operadores
 @section N-Argumentos
 Um operador @code{nary} @'e usado para denotar uma fun@,{c}@~ao com qualquer n@'umero de
 argumentos, cada um dos quais @'e separado por uma ocorr@^encia do
@@ -26,8 +27,8 @@ simplificar, e.g. @code{j(j(a,b),j(c,d))} para @code{j(a, b, c, d)}.
 
 Veja tamb@'em @code{syntax}.
 
-@node Sem Argumentos, Operador, N-Argumentos, Operadores
-@section Sem Argumentos
+@node Operador n@~ao fixado, Operador P@'osfixado, N-Argumentos, Operadores
+@section Operador n@~ao fixado
 Operadores @code{nofix} s@~ao usados para denotar fun@,{c}@~oes sem argumentos.
 A mera presen@,{c}a de tal operador em um comando far@'a com que a
 fun@,{c}@~ao correspondente seja avaliada.  Por exemplo, quando se digita
@@ -37,11 +38,7 @@ sint@'atica que declara x como sendo um operador @code{nofix}.
 
 Veja tamb@'em @code{syntax}.
 
-@node Operador, Operador P@'osfixado, Sem Argumentos, Operadores
-@section Operador
-Veja @code{operators}.
-
-@node Operador P@'osfixado, Operador Pr@'efixado, Operador, Operadores
+@node Operador P@'osfixado, Operador Pr@'efixado, Operador n@~ao fixado, Operadores
 @section Operador P@'osfixado
 Operadores @code{postfix} como a variedade @code{prefix} denotam fun@,{c}@~oes
 de um argumento simples, mas nesse caso  o argumento sucede
@@ -51,7 +48,7 @@ sint@'atica que declara x como sendo um operador @code{postfix}.
 
 Veja tamb@'em @code{syntax}.
 
-@node Operador Pr@'efixado, Defini@value{cedilha}@~oes para Operadores, Operador P@'osfixado, Operadores
+@node Operador Pr@'efixado, Operadores Aritm@'eticos, Operador P@'osfixado, Operadores
 @section Operador Pr@'efixado
 Um operador @code{prefix} @'e um que significa uma fun@,{c}@~ao de um
 argumento, o qual imediatamente segue uma ocorr@^encia do
@@ -60,10 +57,261 @@ sint@'atica que declara x como sendo um operador @code{prefix}.
 
 Veja tamb@'em @code{syntax}.
 
-@node Defini@value{cedilha}@~oes para Operadores,  , Operador Pr@'efixado, Operadores
-@section Defini@value{cedilha}@~oes para Operadores
+@node Operadores Aritm@'eticos, Operadores Relacionais, Operador Pr@'efixado, Operadores
+@section Operadores Aritm@'eticos
+
+@deffn {Operador} +
+@ifinfo
+@fnindex Adi@,{c}@~ao
+@end ifinfo
+@deffnx {Operador} -
+@ifinfo
+@fnindex Subtra@,{c}@~ao
+@end ifinfo
+@deffnx {Operador} *
+@ifinfo
+@fnindex Multiplica@,{c}@~ao
+@end ifinfo
+@deffnx {Operador} /
+@ifinfo
+@fnindex Divis@~ao
+@end ifinfo
+@deffnx {Operador} ^
+@ifinfo
+@fnindex Exponencia@,{c}@~ao
+@end ifinfo
+
+Os s@'imbolos @code{+} @code{*} @code{/} e @code{^} representam
+adi@,{c}@~ao, multiplica@,{c}@~ao, divis@~ao, e exponencia@,{c}@~ao, respectivamente.
+O nome desses operadores s@~ao @code{"+"} @code{"*"} @code{"//"} e @code{"^"},
+os quais podem aparecer em lugares onde o nome da fun@,{c}@~ao ou operador @'e requerido.
+
+Os s@'imbolos @code{+} e @code{-} representam a adi@,{c}@~ao un@'aria e a nega@,{c}@~ao un@'aria, respectivamente,
+e os nomes desses operadores s@~ao @code{"+"} e @code{"-"}, respectivamente.
+
+A subtra@,{c}@~ao @code{a - b} @'e representada dentro do Maxima como a adi@,{c}@~ao, @code{a + (- b)}.
+Express@~oes tais como @code{a + (- b)} s@~ao mostradas como subtra@,{c}@~ao.
+Maxima reconhece @code{"-"} somente como o nome do operador un@'ario de nega@,{c}@~ao,
+e n@~ao como o nome do operador bin@'ario de subra@,{c}@~ao.
+
+A divis@~ao @code{a / b} @'e representada dentro do Maxima como multiplica@,{c}@~ao, @code{a * b^(- 1)}.
+Express@~oes tais como @code{a * b^(- 1)} s@~ao mostradas como divis@~ao.
+Maxima reconhece @code{"//"} como o nome do operador de divis@~ao.
+
+A adi@,{c}@~ao e a multiplica@,{c}@~ao s@~ao operadores en@'arios e comutativos.
+a divis@~ao e a exponencia@,{c}@~ao s@~ao operadores bin@'arios e n@~ao comutativos.
+
+Maxima ordena os operandos de operadores n@~ao comutativos para construir uma representa@,{c}@~ao can@^onica.
+Para armazenamento interno, a ordem @'e determinada por @code{orderlessp}.
+Para mostrar na tela, a ordem para adi@,{c}@~ao @'e determinada por @code{ordergreatp},
+e para a multiplica@,{c}@~ao, a ordem @'e a mesma da ordena@,{c}@~ao para armazenamento interno.
+
+Computa@,{c}@~oes aritim@'eticas s@~ao realizadas sobre n@'umeros literais
+(inteiro, racionais, n@'umeros comuns em ponto flutuante, e grandes n@'umeros em ponto flutuante de dupla precis@~ao).
+Execto a exponencia@,{c}@~ao, todas as opera@,{c}@~oes aritm@'eticas sobre n@'umeros s@~ao simplificadas para n@'umeros.
+A exponencia@,{c}@~ao @'e simplificada para um n@'umero se ou o operando @'e um n@'umero comum em ponto flutuante ou um grande n@'umero em ponto flutuante de dupla precis@~ao
+ou se o resultado for um inteiro exato ou um racional exato;
+de outra forma uma exponencia@,{c}@~ao pode ser simplificada para @code{sqrt} ou outra exponencia@,{c}@~ao ou permanecer inalterada.
+
+A propaga@,{c}@~ao de n@'umeros em ponto flutuante aplica-se a computa@,{c}@~oes aritim@'eticas:
+Se qualquer operando for um grande n@'umero em ponto flutuante, o resultado @'e um grande n@'umero em ponto flutuante;
+de outra forma, se qualquer operando for um n@'umero em ponto flutuante comum, o resultado @'e um n@'umero comum em ponto flutuante;
+de outra forma, se os operandos forem racioanis ou inteiros e o resultado ser@'a um racional ou inteiro.
+
+Computa@,{c}@~aoes aritim@'eticas s@~ao uma simplifica@,{c}@~ao, n@~ao uma avalia@,{c}@~ao.
+Dessa forma a aritm@'etica @'e realizada em  express@~oes com ap@'ostrofo (mas simplificadas).
+
+Opera@,{c}@~oes aritm@'eticas s@~ao aplicadas elemento-por-elemento
+para listas quando a vari@'avel global @code{listarith} for @code{true},
+e sempre aplicada elemento-por-elemento para matrizes.
+Quando um operando for uma lista ou uma matriz e outro for um operando de algum outro tipo,
+o outro operando @'e combinado com cada um dos elementos da lista ou matriz.
+
+Exemplos:
+
+Adi@,{c}@~ao e multiplica@,{c}@~ao s@~ao opeadores en@'arios comutativos.
+Maxima ordena os operandos para construir uma representa@,{c}@~ao can@^onica.
+Os nomes desses operadores s@~ao @code{"+"} e @code{"*"}.
+@c ===beg===
+@c c + g + d + a + b + e + f;
+@c [op (%), args (%)];
+@c c * g * d * a * b * e * f;
+@c [op (%), args (%)];
+@c apply ("+", [a, 8, x, 2, 9, x, x, a]);
+@c apply ("*", [a, 8, x, 2, 9, x, x, a]);
+@c ===end===
+
+@example
+(%i1) c + g + d + a + b + e + f;
+(%o1)               g + f + e + d + c + b + a
+(%i2) [op (%), args (%)];
+(%o2)              [+, [g, f, e, d, c, b, a]]
+(%i3) c * g * d * a * b * e * f;
+(%o3)                     a b c d e f g
+(%i4) [op (%), args (%)];
+(%o4)              [*, [a, b, c, d, e, f, g]]
+(%i5) apply ("+", [a, 8, x, 2, 9, x, x, a]);
+(%o5)                    3 x + 2 a + 19
+(%i6) apply ("*", [a, 8, x, 2, 9, x, x, a]);
+                                 2  3
+(%o6)                       144 a  x
+@end example
+
+Divis@~ao e exponencia@,{c}@~ao s@~ao operadores bin@'arios e n@~ao comutativos.
+Os nomes desses operadores s@~ao @code{"//"} e @code{"^"}.
+@c ===beg===
+@c [a / b, a ^ b];
+@c [map (op, %), map (args, %)];
+@c [apply ("//", [a, b]), apply ("^", [a, b])];
+@c ===end===
+
+@example
+(%i1) [a / b, a ^ b];
+                              a   b
+(%o1)                        [-, a ]
+                              b
+(%i2) [map (op, %), map (args, %)];
+(%o2)              [[//, ^], [[a, b], [a, b]]]
+(%i3) [apply ("//", [a, b]), apply ("^", [a, b])];
+                              a   b
+(%o3)                        [-, a ]
+                              b
+@end example
+
+Subtra@,{c}@~ao e divis@~ao s@~ao representados internamente
+em termos de adi@,{c}@~ao e multiplica@,{c}@~ao, respectivamente.
+@c ===beg===
+@c [inpart (a - b, 0), inpart (a - b, 1), inpart (a - b, 2)];
+@c [inpart (a / b, 0), inpart (a / b, 1), inpart (a / b, 2)];
+@c ===end===
+
+@example
+(%i1) [inpart (a - b, 0), inpart (a - b, 1), inpart (a - b, 2)];
+(%o1)                      [+, a, - b]
+(%i2) [inpart (a / b, 0), inpart (a / b, 1), inpart (a / b, 2)];
+                                   1
+(%o2)                       [*, a, -]
+                                   b
+@end example
+
+C@'alculos s@~ao realizados sobre n@'umeros lterais.
+A propaga@,{c}@~ao de n@'umeros em poto flutuante aplica-se.
+@c ===beg===
+@c 17 + b - (1/2)*29 + 11^(2/4);
+@c [17 + 29, 17 + 29.0, 17 + 29b0];
+@c ===end===
+
+@example
+(%i1) 17 + b - (1/2)*29 + 11^(2/4);
+                                       5
+(%o1)                   b + sqrt(11) + -
+                                       2
+(%i2) [17 + 29, 17 + 29.0, 17 + 29b0];
+(%o2)                   [46, 46.0, 4.6b1]
+@end example
+
+Computa@,{c}òes aritm@'eticas s@~ao uma simplifica@,{c}@~ao, n@~ao uma avalia@,{c}@~ao.
+@c ===beg===
+@c simp : false;
+@c '(17 + 29*11/7 - 5^3);
+@c simp : true;
+@c '(17 + 29*11/7 - 5^3);
+@c ===end===
+
+@example
+(%i1) simp : false;
+(%o1)                         false
+(%i2) '(17 + 29*11/7 - 5^3);
+                              29 11    3
+(%o2)                    17 + ----- - 5
+                                7
+(%i3) simp : true;
+(%o3)                         true
+(%i4) '(17 + 29*11/7 - 5^3);
+                                437
+(%o4)                         - ---
+                                 7
+@end example
+
+A aritm@'etica @'e realizada elemento-por-elemento para listas lists (dependendo de @code{listarith}) e dependendo de matrizes.
+@c ===beg===
+@c matrix ([a, x], [h, u]) - matrix ([1, 2], [3, 4]);
+@c 5 * matrix ([a, x], [h, u]);
+@c listarith : false;
+@c [a, c, m, t] / [1, 7, 2, 9];
+@c [a, c, m, t] ^ x;
+@c listarith : true;
+@c [a, c, m, t] / [1, 7, 2, 9];
+@c [a, c, m, t] ^ x;
+@c ===end===
+
+@example
+(%i1) matrix ([a, x], [h, u]) - matrix ([1, 2], [3, 4]);
+                        [ a - 1  x - 2 ]
+(%o1)                   [              ]
+                        [ h - 3  u - 4 ]
+(%i2) 5 * matrix ([a, x], [h, u]);
+                          [ 5 a  5 x ]
+(%o2)                     [          ]
+                          [ 5 h  5 u ]
+(%i3) listarith : false;
+(%o3)                         false
+(%i4) [a, c, m, t] / [1, 7, 2, 9];
+                          [a, c, m, t]
+(%o4)                     ------------
+                          [1, 7, 2, 9]
+(%i5) [a, c, m, t] ^ x;
+                                      x
+(%o5)                     [a, c, m, t]
+(%i6) listarith : true;
+(%o6)                         true
+(%i7) [a, c, m, t] / [1, 7, 2, 9];
+                              c  m  t
+(%o7)                     [a, -, -, -]
+                              7  2  9
+(%i8) [a, c, m, t] ^ x;
+                          x   x   x   x
+(%o8)                   [a , c , m , t ]
+@end example
+
+@end deffn
+
+@node Operadores Relacionais, Operadores Geral, Operadores Aritm@'eticos, Operadores
+@section Operadores Relacionais
+
+@deffn {Operador} <
+@ifinfo
+@fnindex Menor que
+@end ifinfo
+@deffnx {Operador} <=
+@ifinfo
+@fnindex Menor que ou igual a
+@end ifinfo
+@deffnx {Operador} >=
+@ifinfo
+@fnindex Maior que ou igual a
+@end ifinfo
+@deffnx {Operador} >
+@ifinfo
+@fnindex Maior que
+@end ifinfo
+
+@end deffn
+
+@node Operadores Geral, , Operadores Relacionais, Operadores
+@section Operadores Geral
+
+@deffn {Operador} ^^
+@ifinfo
+@fnindex exponencia@,{c}@~ao n@~ao comutativa
+@end ifinfo
+
+@end deffn
 
 @deffn {Operador} !
+@ifinfo
+@fnindex Fatorial
+@end ifinfo
 O operador fatorial.
 Para qualquer n@'umero complexo @code{x} (inclu@'indo n@'umeros inteiros, racionais, e reais) exceto para
 inteiros negativos, @code{x!} @'e definido como @code{gamma(x+1)}.
@@ -673,7 +921,7 @@ Retorna o valor absoluto complexo (o m@'odulo complexo) de
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} ceiling (@var{x})
+@deffn {Fun@,{c}@~ao} ceiling (@var{x})
 
 Quando @var{x} for um n@'umero real, retorna o @'ultimo inteiro que 
 @'e maior que ou igual a @var{x}.  
@@ -829,7 +1077,7 @@ Retorna o @'ultimo inteiro menor que ou igual a @var{x} onde @var{x} @'e num@'er
 @end deffn
 
 @c NEEDS CLARIFICATION
-@deffn {Fun@value{cedilha}@~ao} equal (@var{a}, @var{b})
+@deffn {Fun@,{c}@~ao} equal (@var{a}, @var{b})
 
 Representa a equival@^encia, isto @'e, valor igual.
  
@@ -1054,7 +1302,7 @@ podem usar essa informa@,{c}@~ao; por exemplo:
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} notequal (@var{a}, @var{b})
+@deffn {Fun@,{c}@~ao} notequal (@var{a}, @var{b})
 Represents the negation of @code{equal(@var{a}, @var{b})}.
 
 Note que pelo fato de as regras de avalia@,{c}@~ao de express@~oes predicadas

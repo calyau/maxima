@@ -1,4 +1,4 @@
-@c Language: Portuguese, Encoding: iso-8859-1
+@c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /lbfgs.texi/1.2/Sat Dec  9 06:10:42 2006//
 
 @menu
@@ -29,7 +29,7 @@ scale optimization". @i{Mathematical Programming B} 45:503--528 (1989)
 @node Defini@value{cedilha}@~oes para lbfgs, , Introdu@value{cedilha}@~ao a lbfgs, Top
 @section Defini@value{cedilha}@~oes para lbfgs
 
-@deffn {Fun@value{cedilha}@~ao} lbfgs (@var{FOM}, @var{X}, @var{X0}, @var{epsilon}, @var{iprint})
+@deffn {Fun@,{c}@~ao} lbfgs (@var{FOM}, @var{X}, @var{X0}, @var{epsilon}, @var{iprint})
 
 Encontra uma solu@,{c}@~ao aproximada da minimiza@,{c}@~ao n@~ao limitada de n@'umero de m@'erito @var{FOM}
 sobre a lista de vari@'aveis @var{X},
@@ -147,12 +147,12 @@ Exemplo:
 
 @end deffn
 
-@defvr {Vari@value{a_til}vel} lbfgs_nfeval_max
+@defvr {Vari@~avel} lbfgs_nfeval_max
 Valor padr@~ao: 100
 
 @end defvr
 
-@defvr {Vari@value{a_til}vel} lbfgs_ncorrections
+@defvr {Vari@~avel} lbfgs_ncorrections
 Valor padr@~ao: 25
 
 @end defvr

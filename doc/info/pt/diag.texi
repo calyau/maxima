@@ -1,15 +1,17 @@
+@c Language: Brazilian Portuguese, Encoding: iso-8859-1
+@c /diag.texi/1.1/Mon Feb 27 22:09:17 2006//
 @menu
-* Definitions for diag::
+* Defini@value{cedilha}@~oes para diag::
 @end menu
 
-@node Definitions for diag,  , diag, diag
-@section Definitions for diag
+@node Defini@value{cedilha}@~oes para diag,  , diag, diag
+@section Defini@value{cedilha}@~oes para diag
 
 
-@deffn {Function} diag (@var{lm})
-Constructs a square matrix with the matrices of @var{lm} in the diagonal. @var{lm} is a list of matrices or scalars.
+@deffn {Fun@,{c}@~ao} diag (@var{lm})
+Constr@'oi a matriz quadrada com as matrizes de @var{lm} na diagonal. @var{lm} @'e uma lista de matrizes ou escalares.
 
-Example:
+Exemplo:
 @example
 (%i1) load("diag")$
 
@@ -31,14 +33,14 @@ Example:
                    [ 0  0  0  0  1  0 ]
 @end example
 
-To use this function write first @code{load("diag")}.
+Para usar essa fun@,{c}@~ao escreva primeiramente @code{load("diag")}.
 @end deffn
 
 
-@deffn {Function} JF (@var{lambda},@var{n})
-Returns the Jordan cell of order @var{n} with eigenvalue @var{lambda}.
+@deffn {Fun@,{c}@~ao} JF (@var{lambda},@var{n})
+Retorna a c@'elula de Jordan de ordem @var{n} com autovalor @var{lambda}.
 
-Example:
+Exemplo:
 @example
 (%i1) load("diag")$
 
@@ -58,16 +60,16 @@ Example:
                          [ 0  3 ]
 @end example
 
-To use this function write first @code{load("diag")}.
+Para usar essa fun@,{c}@~ao escreva primeiramente @code{load("diag")}.
 @end deffn
 
 
-@deffn {Function} jordan (@var{mat})
-Returns the Jordan form of matrix @var{mat}, but codified in a Maxima list.
-To get the corresponding matrix, call function @code{dispJordan} using as argument
-the output of @code{JF}.
+@deffn {Fun@,{c}@~ao} jordan (@var{mat})
+Retorna a forma de Jordan da matriz @var{mat}, mas codificada em uma lista do Maxima.
+Para pegar a matriz correspondente @`a codifica@,{c}@~ao, chame a fun@,{c}@~ao @code{dispJordan} sando como argumento
+a sa@'ida de @code{JF}.
 
-Example:
+Exemplo:
 @example
 (%i1) load("diag")$
 
@@ -100,14 +102,14 @@ Example:
                 [ 0  0  0  0  0  0  0  3 ]
 @end example
 
-To use this function write first @code{load("diag")}. See also @code{dispJordan} and @code{minimalPoly}.
+Para usar essa fun@,{c}@~ao escreva primeiramente @code{load("diag")}. Veja tamb@'em @code{dispJordan} e @code{minimalPoly}.
 @end deffn
 
 
-@deffn {Function} dispJordan (@var{l})
-Returns the Jordan matrix associated to the codification given by the Maxima list @var{l}, which is the output given by function @code{jordan}.
+@deffn {Fun@,{c}@~ao} dispJordan (@var{l})
+Retorna a matriz de Jordan associada @`a codifica@,{c}@~ao fornecida pela lista do Maxima @var{l}, que @'e a sa@'ida fornecida pela fun@,{c}@~ao @code{jordan}.
 
-Example:
+Exemplo:
 @example
 (%i1) load("diag")$
 
@@ -131,14 +133,14 @@ Example:
                     [ 0  0  0  0  0 ]
 @end example
 
-To use this function write first @code{load("diag")}. See also @code{jordan} and @code{minimalPoly}.
+Para usar essa fun@,{c}@~ao escreva primeiramente @code{load("diag")}. Veja tamb@'em @code{jordan} e @code{minimalPoly}.
 @end deffn
 
 
-@deffn {Function} minimalPoly (@var{l})
-Returns the minimal polynomial associated to the codification given by the Maxima list @var{l}, which is the output given by function @code{jordan}.
+@deffn {Fun@,{c}@~ao} minimalPoly (@var{l})
+Retorna o menor polin@^omio associado @`a codifica@,{c}@~ao fornecida pela lista do Maxima @var{l}, que @'e a sa@'ida fornecida pela fun@,{c}@~ao @code{jordan}.
 
-Example:
+Exemplo:
 @example
 (%i1) load("diag")$
 
@@ -154,13 +156,13 @@ Example:
 (%o4)                (x - 1)  (x + 1)
 @end example
 
-To use this function write first @code{load("diag")}. See also @code{jordan} and @code{dispJordan}.
+Para usar essa fun@,{c}@~ao escreva prmeiramente @code{load("diag")}. Veja tamb@'em @code{jordan} e @code{dispJordan}.
 @end deffn
 
-@deffn {Function} ModeMatrix (@var{A},@var{l})
-Returns the matrix @var{M} such that @math{(M^^-1).A.M=J}, where @var{J} is the Jordan form of @var{A}. The Maxima list @var{l} is the codified form of the Jordan form as returned by function @code{jordan}.
+@deffn {Fun@,{c}@~ao} ModeMatrix (@var{A},@var{l})
+Retorna a matriz @var{M} tal que @math{(M^^-1).A.M=J}, onde @var{J} @'e a forma de Jordan de @var{A}. A lista do Maxima @var{l} @'e a codifica@,{c}@~ao da forma de Jordan como retornado pela fun@,{c}@~ao @code{jordan}.
 
-Example:
+Exemplo:
 @example
 (%i1) load("diag")$
 
@@ -188,32 +190,33 @@ Example:
 (%i5) is(  (M^^-1).a.M = dispJordan(%o3)  );
 (%o5)                      true
 @end example
-Note that @code{dispJordan(%o3)} is the Jordan form of matrix @code{a}.
+Note que @code{dispJordan(%o3)} @'e a forma de Jordan da matriz @code{a}.
 
-To use this function write first @code{load("diag")}. See also @code{jordan} and @code{dispJordan}.
+Para usa essa fun@,{c}@~ao escreva primeiramente @code{load("diag")}. Veja tamb@'em @code{jordan} e @code{dispJordan}.
 @end deffn
 
 
-@deffn {Function} mat_function (@var{f},@var{mat})
-Returns @math{f(mat)}, where @var{f} is an analytic function and @var{mat}
-a matrix. This computation is based on Cauchy's integral formula, which states that
-if @code{f(x)} is analytic and
+@deffn {Fun@,{c}@~ao} mat_function (@var{f},@var{mat})
+Retorna @math{f(mat)}, onde @var{f} @'e uma fun@,{c}@~ao anal@'itica e @var{mat}
+uma matriz. Essa computa@,{c}@~ao @'e baseada na f@'ormula da integral de Cauchy, que estabelece que
+se @code{f(x)} for anal@'itica e
 
 @example
 mat=diag([JF(m1,n1),...,JF(mk,nk)]),
 @end example
 
-then
+ent@~ao
 
 @example
 f(mat)=ModeMatrix*diag([f(JF(m1,n1)),...,f(JF(mk,nk))])*ModeMatrix^^(-1)
 @end example
 
-Note that there are about 6 or 8 other methods for this calculation.
+Note que existem entre 6 ou 8 outros m@'etodos para esse c@'alculo.
 
-Some examples follow.
 
-Example 1:
+Segue-se alguns exemplos.
+
+Exemplo 1:
 @example
 (%i1) load("diag")$
 
@@ -292,7 +295,7 @@ t  (----- - -----) - t (%e    - -----)])
 @end example
 
 
-Example 2:
+Exemplo 2:
 @example
 (%i5) b1:matrix([0,0,1,1,1],
                 [0,0,0,1,1],
@@ -357,7 +360,7 @@ Example 2:
               [ 0  0   0     0        1     ]
 @end example
 
-Example 3:
+Exemplo 3:
 @example
 (%i11) a1:matrix([2,1,0,0,0,0],
                  [-1,4,0,0,0,0],
@@ -416,7 +419,7 @@ Example 3:
          [ 3  - 2  ]         [ 2  ]
 @end example
 
-To use this function write first @code{load("diag")}.
+Para usar essa fun@,{c}@~ao escreva primeiramente @code{load("diag")}.
 @end deffn
 
 

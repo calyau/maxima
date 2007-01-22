@@ -1,4 +1,4 @@
-@c Language: Portuguese, Encoding: iso-8859-1
+@c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /Matrices.texi/1.26/Sat Nov  4 16:13:29 2006/-ko/
 @menu
 * Introdu@value{cedilha}@~ao a Matrizes e @'Algebra Linear::  
@@ -763,8 +763,8 @@ Se @var{x} @'e uma lista de listas, o algor@'itmo @'e aplicado @`as sublistas,
 que devem ter igual n@'umeros de elementos.
 Nos dois casos,
 o valor de retorno @'e uma lista de listas, as sublistas das listas s@~ao ortogonais
-e alcan@,{c}am o mesmo spa@,{c}o que @var{x}.
-Se a dimens@~ao do alcance de @var{x} @'e menor que o n@'umero de linhas ou sublistas,
+e gera o mesmo spa@,{c}o que @var{x}.
+Se a dimens@~ao do conjunto gerador de @var{x} @'e menor que o n@'umero de linhas ou sublistas,
 algumas sublistas do valor de retorno s@~ao zero.
 
 @code{factor} @'e chamada a cada est@'agio do algor@'itmo para simplificar resultados intermedi@'arios.
@@ -1275,7 +1275,7 @@ desde que isso evite inteiramente a aritm@'etica polinomial.
 Calcula o determinante de uma matriz ou array @var{M} pelo
 algor@'itmo da @'arvore menor de Johnson-Gentleman.
 @c UGH -- ARRAYS ARE SUCH A MESS
-O argumento @var{n} @'e a ordem; isso @'e optional se @var{M} for uma matriz.
+O argumento @var{n} @'e a ordem; isso @'e opcional se @var{M} for uma matriz.
 
 @end deffn
 
@@ -1478,7 +1478,7 @@ Se @code{knowneigvects} @'e escolhido para @code{true} e a lista de autovetores 
 escolha do sinalizador @code{nondiagonalizable} pode n@~ao estar correta.  Se esse @'e
 o caso por favor ecolha isso para o valor correto.  O autor assume que
 o usu@'ario sabe o que est@'a fazendo e que n@~ao tentar@'a diagonalizar uma
-matriz cujos autovetores n@~ao alcan@,{c}am o mesmo espa@,{c}o vetorial de
+matriz cujos autovetores n@~ao geram o mesmo espa@,{c}o vetorial de
 dimens@~ao apropriada.
 
 @code{load ("eigen")} chama essa fun@,{c}@~ao.

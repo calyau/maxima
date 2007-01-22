@@ -1,4 +1,4 @@
-@c Language: Portuguese, Encoding: iso-8859-1
+@c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /Command.texi/1.43/Sat Nov  4 16:10:35 2006/-ko/
 @iftex
 @hyphenation{si-na-li-za-do-res}
@@ -139,7 +139,7 @@ O ap@'ostrofo n@~ao evita simplifica@,{c}@~ao.
 
 @end deffn
 
-@deffn {Operator} ''
+@deffn {Operador} ''
 @ifinfo
 @fnindex Operador ap@'ostrofo-ap@'ostrofo
 @end ifinfo

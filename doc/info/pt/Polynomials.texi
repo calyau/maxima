@@ -1,4 +1,4 @@
-@c Language: Portuguese, Encoding: iso-8859-1
+@c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /Polynomials.texi/1.22/Sun May 21 07:18:29 2006/-ko/
 @c FOR THE FUNCTIONS WHICH RETURN A CRE, BE SURE TO MENTION THAT
 @menu
@@ -860,7 +860,7 @@ Se @var{expr} n@~ao for uma raz@~ao, @var{expr} @'e retornado.
 @c NEED SOME EXAMPLES HERE
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} polydecomp (@var{p}, @var{x})
+@deffn {Fun@,{c}@~ao} polydecomp (@var{p}, @var{x})
 
 Decomp@~oes o polin@^omio @var{p} na vari@'avel  @var{x}
 em uma composi@,{c}@~ao funcional de polin@^omios em @var{x}.
@@ -1214,7 +1214,7 @@ de n@'umeros em ponto flutuante para n@'umeros racionais.
 @end defvr
 
 @deffn {Fun@,{c}@~ao} ratexpand (@var{expr})
-@deffnx {Vari@'avel de op@value{cedilha}@~ao} ratexpand
+@deffnx {Vari@'avel de op@,{c}@~ao} ratexpand
 Expande @var{expr} multiplicando para fora produtos de somas e
 somas exponenciadas, combinando fra@,{c}@~oes sobre um denominador comum,
 cancelando o m@'aximo divisor comum entre entre o numerador e o
