@@ -1,5 +1,5 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
-@c /descriptive.texi/1.8/Mon Jul 24 10:59:45 2006//
+@c /descriptive.texi/1.9/Mon Jan 22 12:53:44 2007//
 @menu
 * Introdu@value{cedilha}@~ao ao pacote descriptive::
 * Defini@value{cedilha}@~oes para manipula@value{cedilha}@~ao da dados::
