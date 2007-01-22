@@ -17,7 +17,8 @@ Load @code{stringproc.lisp} by typing @code{load("stringproc");}.
 
 In Maxima a string is easily constructed by typing "text".
 Note that Maxima-strings are no Lisp-strings and vice versa.
-Tests can be done with @code{stringp} respectively @code{lstringp}.
+@code{stringp} tests for Maxima
+strings, and @code{lstringp} tests for Lisp strings.
 If for some reasons you have a value,
 that is a Lisp-string, maybe when using Maxima-function @code{sconcat}, you can convert via @code{sunlisp}. 
 

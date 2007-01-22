@@ -897,7 +897,7 @@ See also function @code{quantile}.
 
 @deffn {Function} qrange (@var{list})
 @deffnx {Function} qrange (@var{matrix})
-The interquartilic range is the difference between the third and first quartiles, @code{quantile(list,3/4) - quantile(list,1/4)},
+The interquartilic range is the difference between the third and first quartiles, @code{quantile(@var{list},3/4) - quantile(@var{list},1/4)},
 
 @c ===beg===
 @c load (descriptive)$
