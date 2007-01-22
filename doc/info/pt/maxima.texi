@@ -68,23 +68,10 @@ e desenvolver o Macsyma DOE, agora chamado Maxima.
 
 Notas de tradu@,{c}@~ao:
 
-Com o t@'ermino da tradu@,{c}@~ao inicia-se o processo de revis@~o da mesma.  Est@'a
-aberta a temporada de ca@,{c}a aos erros de tradu@,{c}@~ao, erros de hifeniza@,{c}@~ao e de adequa@,{c}@~ao entre
-a linguagem matem@'atica inglesa e a linguagem matem@'atica brasileira. Caso voc@^e me
-envie alguma corre@,{c}@~ao ou melhoria a comunidade matem@'atica que utiliza o Sofware Livre
-lhe ficar@'a muito grata ( e n@'os, da equipe do Maxima, tamb@'em).
-
 O c@'odigo fonte deste documento encontra-se no formato texinfo.  Para
 contribuir com a equipe do Maxima na tarefa de manter a tradu@,{c}@~ao para o
 portugu@^es sempre atualizada envie um e-mail para @value{mail}.
 
-Em caso de d@'uvida sobre algum trecho deste manual consulte o original
-ingl@^es.
-
-Caso sua d@'uvida persista ou tenha alguma sugest@~ao/aperfei@,{c}oamento/
-cr@'{@dotless{i}}tica mande por e-mail para Jorge Barros de Abreu <ficmatin01 at solar dot
-com dot br>
- 
 Mantenedores:
 @itemize @bullet
 @item
@@ -120,27 +107,11 @@ e desenvolver o Macsyma DOE, agora chamado Maxima.
 
 @i{Notas de tradu@,{c}@~ao:}
 
-    Com o t@'ermino da tradu@,{c}@~ao inicia-se o processo de revis@~o da mesma.  Est@'a
- aberta a temporada de ca@,{c}a aos erros de tradu@,{c}@~ao, erros de hifeniza@,{c}@~ao e de adequa@,{c}@~ao entre
- a linguagem matem@'atica inglesa e a linguagem matem@'atica brasileira. Caso voc@^e me
- envie alguma corre@,{c}@~ao ou melhoria a comunidade matem@'atica que utiliza o Sofware Livre
- lhe ficar@'a muito grata ( e n@'os, da equipe do Maxima, tamb@'em).
-
     O c@'odigo fonte deste documento encontra-se no formato texinfo.
  Para contribuir com a equipe do Maxima na tarefa de manter a 
  tradu@,{c}@~ao para o portugu@^es sempre atualizada envie um 
  e-mail para @value{mail}.
 
-    Em caso de d@'uvida sobre algum trecho deste manual consulte o 
- original ingl@^es.
-
-    A se@,{c}@~ao "Pacotes adicionais" foi anexada ao manual recentemente
-        (fevereiro/2006) e possui partes a serem traduzidas.
-
-    Caso sua d@'uvida persista ou tenha alguma sugest@~ao/aperfei@,{c}oamen-
- to/cr@'itica mande por e-mail para Jorge Barros de Abreu 
- <ficmatin01 at solar dot com dot br>
- 
 Mantenedores:
 @itemize @bullet
 @item
