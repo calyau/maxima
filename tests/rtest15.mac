@@ -620,7 +620,8 @@ sqrt(trigsimp(2*(cos(x)^2-sin(x)^2)+2));
  *    a string which is the name of a Maxima operator (e.g., "!")
  *    name of a simplifying function
  *  EXPR is a Maxima lambda expression
- *  EXPR is a general Maxima expression
+ *  EXPR is a general Maxima expression with atomic variable
+ *  EXPR is a general Maxima expression with subscripted variable
  *
  * The one case not tested: EXPR is the name of a DEFMSPEC function
  */
@@ -661,4 +662,7 @@ expected;
 true;
 
 quad_qags (F1, glump, 0, %pi, tol);
+expected;
+
+quad_qags (sin(y[1]), y[1], 0, %pi, tol);
 expected;

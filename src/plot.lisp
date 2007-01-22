@@ -663,36 +663,71 @@ setrgbcolor} def
      (let ((args (cdr (nth 1 expr))))
        (coerce-maxima-function-or-maxima-lambda args expr)))
 
-    (t
-         (let ((vars (or lvars ($sort ($listofvars expr))))
-                                        ;(na (gensym "TMPF"))
-               )
-           (coerce `(lambda ,(cdr vars)
-                     (declare (special ,@(cdr vars) errorsw))
-                     (let (($ratprint nil) ($numer t)
-                           (errorsw t))
-                       ;; Catch any errors from evaluating the
-                       ;; function.  We're assuming that if an error
-                       ;; is caught, the result is not a number.  We
-                       ;; also assume that for such errors, it's
-                       ;; because the function is not defined there,
-                       ;; not because of some other maxima error.
-                       ;;
-                       ;; GCL 2.6.2 has handler-case but not quite ANSI yet. 
-                       (let ((result
-                              #-gcl
-                               (handler-case 
-                                   (catch 'errorsw
-                                     ($float (maybe-realpart (meval* ',expr))))
-                                 (arithmetic-error () t))
-                               #+gcl
-                               (handler-case 
-                                   (catch 'errorsw
-                                     ($float (maybe-realpart (meval* ',expr))))
-                                 (cl::error () t))
-                               ))
-                         result)))
-                   'function)))))
+	(t
+	 (let* ((vars (or lvars ($sort ($listofvars expr))))
+            (subscripted-vars ($sublist vars '((lambda) ((mlist) $x) ((mnot) (($atom) $x)))))
+            gensym-vars save-list-gensym subscripted-vars-save
+            subscripted-vars-mset subscripted-vars-restore)
+
+       ; VARS and SUBSCRIPTED-VARS are Maxima lists.
+       ; Other lists are Lisp lists.
+       (when (cdr subscripted-vars)
+         (setq gensym-vars (mapcar #'(lambda (x) (gensym)) (cdr subscripted-vars)))
+         (mapcar #'(lambda (a b) (setq vars (subst b a vars :test 'equal))) (cdr subscripted-vars) gensym-vars)
+
+         ; This stuff about saving and restoring array variables should go into MBINDING,
+         ; and the lambda expression constructed below should call MBINDING.
+         ; (At present MBINDING barfs on array variables.)
+         (setq save-list-gensym (gensym))
+         (setq subscripted-vars-save
+               (mapcar #'(lambda (a) `(push (meval ',a) ,save-list-gensym))
+                       (cdr subscripted-vars)))
+         (setq subscripted-vars-mset
+               (mapcar #'(lambda (a b) `(mset ',a ,b))
+                       (cdr subscripted-vars) gensym-vars))
+         (setq subscripted-vars-restore
+               (mapcar #'(lambda (a) `(mset ',a (pop ,save-list-gensym)))
+                       (reverse (cdr subscripted-vars)))))
+
+	   (coerce `(lambda ,(cdr vars)
+		     (declare (special ,@(cdr vars) errorsw))
+
+             ; Nothing interpolated here when there are no subscripted variables.
+             ,@(if save-list-gensym `((declare (special ,save-list-gensym))))
+
+             ; Nothing interpolated here when there are no subscripted variables.
+             ,@(if (cdr subscripted-vars)
+                 `((progn (setq ,save-list-gensym nil)
+                          ,@(append subscripted-vars-save subscripted-vars-mset))))
+
+		     (let (($ratprint nil) ($numer t)
+			   (errorsw t))
+		       ;; Catch any errors from evaluating the
+		       ;; function.  We're assuming that if an error
+		       ;; is caught, the result is not a number.  We
+		       ;; also assume that for such errors, it's
+		       ;; because the function is not defined there,
+		       ;; not because of some other maxima error.
+		       ;;
+		       ;; GCL 2.6.2 has handler-case but not quite ANSI yet. 
+		       (let ((result
+			      #-gcl
+			       (handler-case 
+				   (catch 'errorsw
+				     ($float ($realpart (meval* ',expr))))
+				 (arithmetic-error () t))
+			       #+gcl
+			       (handler-case 
+				   (catch 'errorsw
+				     ($float ($realpart (meval* ',expr))))
+				 (cl::error () t))
+			       ))
+
+                 ; Nothing interpolated here when there are no subscripted variables.
+                 ,@(if (cdr subscripted-vars) `((progn ,@subscripted-vars-restore)))
+
+			 result)))
+		   'function)))))
 
 (defun coerce-maxima-function-or-maxima-lambda (args expr)
   (let ((gensym-args (loop for x in args collect (gensym))))
