@@ -736,10 +736,10 @@ Valor padr@~ao: true
 
 Se @code{true}, maxima ir@'a interromper a fatora@,{c}@~ao de
 inteiros se nenhum fator for encontrado ap@'os tentar divis@~oes e o m@'etodo rho de
-Pollard e a fatora@,{c}@~ao n@~ao ir@'a ser completada.
+Pollard e a fatora@,{c}@~ao n@~ao ser@'a completada.
 
 Quando @code{intfaclim} for @code{false} (esse @'e o caso quando o usu@'ario
-chama @code{factor} explicitamente), a fatora@,{c}@~ao completa ir@'a ser
+chama @code{factor} explicitamente), a fatora@,{c}@~ao completa ser@'a
 tentada.  @code{intfaclim} @'e escolhida para @code{false} quando fatores s@~ao
 calculados em @code{divisors}, @code{divsum} e @code{totient}.
 @c ANY OTHERS ??

@@ -310,7 +310,7 @@ expandido pelo comando @code{expand} (veja tamb@'em @code{maxposex}).
 @defvr {Vari@'avel de op@,{c}@~ao} maxposex
 Valor padr@~ao: 1000
 
-@code{maxposex} @'e o maior expoente que ir@'a ser
+@code{maxposex} @'e o maior expoente que ser@'a
 expandido com o comando @code{expand} (veja tamb@'em @code{maxnegex}).
 
 @end defvr

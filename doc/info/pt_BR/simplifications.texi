@@ -156,7 +156,7 @@ Valor padr@~ao: @code{true}
 
 @code{facsum_combine} controla a forma do resultado final retornada por meio de
 @code{facsum}  quando seu argumento @'e um quociente de polin@^omios.   Se
-@code{facsum_combine} for @code{false}  ent@~ao a forma ir@'a ser retornada como um somat@'orio
+@code{facsum_combine} for @code{false}  ent@~ao a forma ser@'a retornada como um somat@'orio
 completametne expandido como descrito acima,  mas se @code{true},  ent@~ao a express@~ao
 retornada @'e uma raz@~ao de polin@^omios, com cada polin@^omio na forma
 descrita acima.

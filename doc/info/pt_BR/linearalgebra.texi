@@ -515,7 +515,7 @@ N@~ao existe interface de usu@'ario definida um novo anel. Um usu@'ario que esti
 familiazrizado com o Lisp Comum est@'a apto para definir um novo corpo.  Para fazer
 isso, um usu@'ario deve definir fun@,{c}@~oes para as opera@,{c}@~oes aritm@'eticas e
 fun@,{c}@~oes para convers@~ao para a representa@,{c}@~ao de corpo do M@'axima e
-vice-versa. Adicionalmente, para corpos ordenados (onde a pivotagem parcial ir@'a ser
+vice-versa. Adicionalmente, para corpos ordenados (onde a pivotagem parcial ser@'a
 usada), um udu@'ario deve definir fun@,{c}@~oes para m@'odulo e para
 comparar membros do corpo.  Ap@'os isso tudo que resta @'e definir uma
 estrutura de Lisp Comum @code{mring}.  O arquivo @code{mring} tem muitos

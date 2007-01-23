@@ -514,7 +514,7 @@ Veja tamb@'em @code{random_normal}.
 @deffnx {Fun@,{c}@~ao} random_normal (@var{m},@var{s},@var{n})
 Retorna uma vari@'avel estat@'istica pseudo-aleat@'oria @math{Normal(m,s)},
 com @math{s>0}. Chamando @code{random_normal} com um terceiro argumento
-@var{n}, uma amostra aleat@'oria de tamanho @var{n} ir@'a ser simulada.
+@var{n}, uma amostra aleat@'oria de tamanho @var{n} ser@'a simulada.
 
 Existem dois algor@'itmos implementados para essa fun@,{c}@~ao, e o algor@'itmo
 a ser usado pode ser selecionado fornecendo um certo valor para a vari@'avel global
@@ -664,7 +664,7 @@ Veja tamb@'em @code{random_student_t}.
 @deffnx {Fun@,{c}@~ao} random_student_t (@var{n},@var{m})
 Retorna uma vari@'avel estat@'istica pseudo-aleat@'oria de Student @math{t(n)},
 com @math{n>0}. Chamando @code{random_student_t} com um segundo argumento
-@var{m}, uma amostra aleat@'oria de tamanho @var{m} ir@'a ser simulada.
+@var{m}, uma amostra aleat@'oria de tamanho @var{m} ser@'a simulada.
 
 Existem dois algor@'itmos implementados para essa fun@,{c}@~ao, se pode
 selecionar o algor@'itmo a ser usado fornecendo um certo valor @`a vari@'avel
@@ -1063,7 +1063,7 @@ Veja tamb@'em @code{random_f}.
 @deffnx {Fun@,{c}@~ao} random_f (@var{m},@var{n},@var{k})
 Retorna uma vari@'avel estat@'istica pseudo-aleat@'oria F, @math{F(m,n)},
 com @math{m,n>0}. Chamando @code{random_f} com um terceiro argumento
-@var{k}, uma amostra aleat@'oria de tamanho @var{k} ir@'a ser simulada.
+@var{k}, uma amostra aleat@'oria de tamanho @var{k} ser@'a simulada.
 
 Existem dois algor@'itmos implementados para essa fun@,{c}@~ao, se pode selecionar
 o algor@'itmo a ser usado fornecendo um certo valor @`a vari@'avel global
@@ -1318,7 +1318,7 @@ Veja tamb@'em @code{random_exp}.
 @deffnx {Fun@,{c}@~ao} random_exp (@var{m},@var{k})
 Retorna uma vari@'avel estat@'istica pseudo-aleat@'oria @math{Exponential(m)},
 com @math{m>0}. Chamando @code{random_exp} com um segundo argumento
-@var{k}, uma amostra aleat@'oria de tamanho @var{k} ir@'a ser simulada.
+@var{k}, uma amostra aleat@'oria de tamanho @var{k} ser@'a simulada.
 
 Existem tr@^es algor@'itmos implementados para essa fun@,{c}@~ao, se pode
 selecionar o algor@'itmo a ser usado fornecendo um certo valor @`a vari@'avel global
@@ -1404,7 +1404,7 @@ com @math{s>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente
 @deffnx {Fun@,{c}@~ao} random_lognormal (@var{m},@var{s},@var{n})
 Retorna uma vari@'avel estat@'istica pseudo-aleat@'oria @math{Lognormal(m,s)},
 com @math{s>0}. Chamando @code{random_lognormal} com um terceiro argumento
-@var{n}, uma amostra aleat@'oria de tamanho @var{n} ir@'a ser simulada.
+@var{n}, uma amostra aleat@'oria de tamanho @var{n} ser@'a simulada.
 
 Vari@'aveis Log-normal s@~ao simuladas por meio de vari@'aveis estat@'isticas normais
 pseudo-aleat@'orias. Existem dois algor@'itmos implementados para essa fun@,{c}@~ao, se
@@ -1517,7 +1517,7 @@ Veja tamb@'em @code{random_gamma}.
 @deffnx {Fun@,{c}@~ao} random_gamma (@var{a},@var{b},@var{n})
 Retorna uma vari@'avel estat@'istica pseudo-aleat@'oria @math{Gamma(a,b)},
 com @math{a,b>0}. Chamando @code{random_gamma} com um terceiro argumento
-@var{n}, uma amostra aleat@'oria de tamanho @var{n} ir@'a ser simulada.
+@var{n}, uma amostra aleat@'oria de tamanho @var{n} ser@'a simulada.
 
 Existem dois algor@'itmos implementados para essa fun@,{c}@~ao, se pode selecionar
 o algor@'itmo a ser usado fornecendo um certo valor @`a vari@'avel global @code{random_gamma_algorithm}, cujo valor padr@~ao @'e
@@ -1632,7 +1632,7 @@ Veja tamb@'em @code{random_beta}.
 @deffnx {Fun@,{c}@~ao} random_beta (@var{a},@var{b},@var{n})
 Retorna uma vari@'avel estat@'istica pseudo-aleat@'oria @math{Beta(a,b)},
 com @math{a,b>0}. Chamando @code{random_beta} com um terceiro argumento @var{n},
-uma amostra aleat@'oria de tamanho @var{n} ir@'a ser simulada.
+uma amostra aleat@'oria de tamanho @var{n} ser@'a simulada.
 
 Existem tr@^es algor@'itmos implementados para essa fun@,{c}@~ao, se pode selecionar
 o algor@'itmo a ser usado fornecendo um certo valor @`a vari@'avel global
@@ -1702,7 +1702,7 @@ com @math{a<b}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{l
 @deffnx {Fun@,{c}@~ao} random_continuous_uniform (@var{a},@var{b},@var{n})
 Retorna uma vari@'avel estat@'istica pseudo-aleat@'oria @math{Continuous Uniform(a,b)},
 com @math{a<b}. Chamando @code{random_continuous_uniform} com um terceiro
-argumento @var{n}, uma amostra aleat@'oria de tamanho @var{n} ir@'a ser simulada.
+argumento @var{n}, uma amostra aleat@'oria de tamanho @var{n} ser@'a simulada.
 
 Essa @'e uma aplica@,{c}@~ao direta da fun@,{c}@~ao @code{random} interna do Maxima.
 
@@ -1772,7 +1772,7 @@ com @math{b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{l
 @deffnx {Fun@,{c}@~ao} random_logistic (@var{a},@var{b},@var{n})
 Retorna uma vari@'avel estat@'istica pseudo-aleat@'oria @math{Logistic(a,b)}, com @math{b>0}.
 Chamando @code{random_logistic} com um terceiro argumento @var{n}, uma
-amostra aleat@'oria de tamanho @var{n} ir@'a ser simulada.
+amostra aleat@'oria de tamanho @var{n} ser@'a simulada.
 
 Somente o m@'etodo inverso gen@'erico est@'a implementado. Para fazer uso dessa
 fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
@@ -1843,7 +1843,7 @@ com @math{a>4,b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente
 @deffnx {Fun@,{c}@~ao} random_pareto (@var{a},@var{b},@var{n})
 Retorna uma vari@'avel estat@'istica pseudo-aleat@'oria @math{Pareto(a,b)}, com
 @math{a>0,b>0}. Chamando @code{random_pareto} com um terceiro
-argumento @var{n}, uma amostra aleat@'oria de tamanho @var{n} ir@'a ser simulada.
+argumento @var{n}, uma amostra aleat@'oria de tamanho @var{n} ser@'a simulada.
 
 Somente o m@'etodo inverso gen@'erico est@'a implementado. Para fazer uso
 dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
@@ -1907,7 +1907,7 @@ com @math{a,b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code
 @deffnx {Fun@,{c}@~ao} random_weibull (@var{a},@var{b},@var{n})
 Retorna uma vari@'avel estat@'istica pseudo-aleat@'oria @math{Weibull(a,b)},
 com @math{a,b>0}. Chamando @code{random_weibull} com um terceiro argumento
-@var{n}, uma amostra aleat@'oria de tamanho @var{n} ir@'a ser simulada.
+@var{n}, uma amostra aleat@'oria de tamanho @var{n} ser@'a simulada.
 
 Somente o m@'etodo inverso gen@'erico est@'a implementado. Para fazer uso dessa
 fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
@@ -2148,7 +2148,7 @@ uma forma nominal baseada no coeficiente de curtose de Weibull @'e retornada.
 @deffnx {Fun@,{c}@~ao} random_rayleigh (@var{b},@var{n})
 Retorna uma vari@'avel estat@'istica pseudo-aleat@'oria @math{Rayleigh(b)}, com @math{b>0}.
 Chamando @code{random_rayleigh} com um segundo argumento @var{n}, uma amostra aleat@'oria
-de tamanho @var{n} ir@'a ser simulada.
+de tamanho @var{n} ser@'a simulada.
 
 Somente o m@'etodo inverso gen@'erico est@'a implementado. Para fazer uso dessa fun@,{c}@~ao,
 escreva primeiramente @code{load(distrib)}.
@@ -2213,7 +2213,7 @@ com @math{b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{l
 @deffnx {Fun@,{c}@~ao} random_laplace (@var{a},@var{b},@var{n})
 Retorna uma vari@'avel estat@'istica pseudo-aleat@'oria @math{Laplace(a,b)}, com @math{b>0}.
 Chamando @code{random_laplace} com um terceiro argumento @var{n}, uma
-amostra aleat@'oria de tamanho @var{n} ir@'a ser simulada.
+amostra aleat@'oria de tamanho @var{n} ser@'a simulada.
 
 Somente o m@'etodo inverso gen@'erico est@'a implementado. Para fazer uso dessa fun@,{c}@~ao,
 escreva primeiramente @code{load(distrib)}.
@@ -2247,7 +2247,7 @@ fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @deffnx {Fun@,{c}@~ao} random_cauchy (@var{a},@var{b},@var{n})
 Retorna uma vari@'avel estat@'istica pseudo aleat@'oria @math{Cauchy(a,b)}, com @math{b>0}.
 Chamando @code{random_cauchy} com um terceiro argumento @var{n}, uma amostra
-aleat@'oria de tamanho @var{n} ir@'a ser simulada.
+aleat@'oria de tamanho @var{n} ser@'a simulada.
 
 Somente o m@'etodo inverso gen@'erico est@'a implementado. Para fazer uso dessa fun@,{c}@~ao,
 escreva primeiramente @code{load(distrib)}.
@@ -2338,7 +2338,7 @@ com @math{b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{l
 @deffnx {Fun@,{c}@~ao} random_gumbel (@var{a},@var{b},@var{n})
 Retorna uma vari@'avel estat@'istica pseudo-aleat@'oria @math{Gumbel(a,b)},
 com @math{b>0}. Chamando @code{random_gumbel} com um terceiro argumento @var{n},
-uma amostra aleat@'oria de tamanho @var{n} ir@'a ser simulada.
+uma amostra aleat@'oria de tamanho @var{n} ser@'a simulada.
 
 Somente o m@'etodo inverso gen@'erico est@'a implementado. Para fazer uso dessa fun@,{c}@~ao,
 escreva primeiramente @code{load(distrib)}.
@@ -2451,7 +2451,7 @@ Veja tamb@'em @code{random_binomial}.
 @deffnx {Fun@,{c}@~ao} random_binomial (@var{n},@var{p},@var{m})
 Retorna uma vari@'avel estat@'istica pseudo-aleat@'oria @math{Binomial(n,p)},
 com @math{0<p<1} e @math{n} um inteiro positivo. Chamando @code{random_binomial}
-com um terceiro argumento @var{m}, uma amostra aleat@'oria de tamanho @var{m} ir@'a ser
+com um terceiro argumento @var{m}, uma amostra aleat@'oria de tamanho @var{m} ser@'a
 simulada.
 
 Existem tr@^es algor@'itmos implementado para essa fun@,{c}@~ao, se pode
@@ -2558,7 +2558,7 @@ Veja tamb@'em @code{random_poisson}.
 @deffnx {Fun@,{c}@~ao} random_poisson (@var{m},@var{n})
 Retorna uma vari@'avel estat@'istica pseudo-aleat@'oria @math{Poisson(m)}, com @math{m>0}.
 Chamando @code{random_poisson} com um segundo argumento @var{n}, uma amostra
-aleat@'oria de tamanho @var{n} ir@'a ser simulada.
+aleat@'oria de tamanho @var{n} ser@'a simulada.
 
 Existem dois algor@'itmos implementado para essa fun@,{c}@~ao, se pode selecionar o
 algor@'itmo a ser usado fornecendo um certo valor @`a vari@'avel global 
@@ -2728,7 +2728,7 @@ uma forma nominal baseada no coeficiente de curtose binomial @'e retornada.
 @deffnx {Fun@,{c}@~ao} random_bernoulli (@var{p},@var{n})
 Retorna uma vari@'avel estat@'istica pseudo-aleat@'oria @math{Bernoulli(p)},
 com @math{0<p<1}. Chamando @code{random_bernoulli} com um segundo
-argumento @var{n}, uma amostra aleat@'oria de tamanho @var{n} ir@'a ser simulada.
+argumento @var{n}, uma amostra aleat@'oria de tamanho @var{n} ser@'a simulada.
 
 Essa @'e uma aplica@,{c}@~ao direta da fun@,{c}@~ao @code{random} built-in fun@,{c}@~ao do Maxima.
 
@@ -2816,7 +2816,7 @@ Veja tamb@'em @code{random_geometric}.
 @deffnx {Fun@,{c}@~ao} random_geometric (@var{p},@var{n})
 Retorna um @math{Geometric(p)} vari@'avel estat@'istica pseudo-aleat@'oria, com @math{0<p<1}.
 Chamando @code{random_geometric} com um segundo argumento @var{n}, uma amostra aleat@'oria
-de tamanho @var{n} ir@'a ser simulada.
+de tamanho @var{n} ser@'a simulada.
 
 Existem tr@^es algor@'itmos implementados para essa fun@,{c}@~ao, se
 pode selecionar o algor@'itmo a ser usado fornecendo um certo valor @`a
@@ -2893,7 +2893,7 @@ escreva primeiramente @code{load(distrib)}.
 Retorna uma vari@'avel estat@'istica pseudo-aleat@'oria @math{Discrete Uniform(n)},
 com @math{n} um inteiro estritamente positivo. Chamando @code{random_discrete_uniform}
 com um segundo argumento @var{m}, uma amostra aleat@'oria de
-tamanho @var{m} ir@'a ser simulada.
+tamanho @var{m} ser@'a simulada.
 
 Isso @'e uma aplica@,{c}@~ao direta da fun@,{c}@~ao @code{random} built-in fun@,{c}@~ao do Maxima.
 
@@ -2989,7 +2989,7 @@ Veja tamb@'em @code{random_hypergeometric}.
 Retorna uma vari@'avel estat@'istica pseudo-aleat@'oria @math{Hypergeometric(n1,n2,n)},
 com @var{n1}, @var{n2} e @var{n} inteiros n@~ao negativos e @math{n<=n1+n2}. Chamando
 @code{random_hypergeometric} com um quarto argumento @var{m}, uma amostra
-aleat@'oria de tamanho @var{m} ir@'a ser simulada.
+aleat@'oria de tamanho @var{m} ser@'a simulada.
 
 Existem dois algor@'itmos implementados para essa fun@,{c}@~ao, se pode selecionar o
 algor@'itmo a ser usado fornecendo um certo valor @`a vari@'avel global @code{random_hypergeometric_algorithm},
@@ -3104,7 +3104,7 @@ Veja tamb@'em @code{random_negative_binomial}.
 Retorna uma vari@'avel estat@'istica pseudo-aleat@'oria @math{Negative Binomial(n,p)},
 com @math{0<p<1} e @math{n} um inteiro positivo. Chamando @code{random_negative_binomial}
 com um terceiro argumento @var{m}, uma amostra aleat@'oria de tamanho
-@var{m} ir@'a ser simulada.
+@var{m} ser@'a simulada.
 
 Existem tr@^es algor@'itmos implementados para essa fun@,{c}@~ao, se pode
 selecionar o algor@'itmo a ser usado fornecendo um certo valor @`a vari@'avel global

@@ -14,12 +14,12 @@ Essa @'e uma vari@'avel de op@,{c}@~ao para a fun@,{c}@~ao @code{ggf}.
 
 Quando calculando a fra@,{c}@~ao cont@'inua da
 fun@,{c}@~ao geradora, um quociente parcial tendo um grau
-(estritamente) maior que @var{GGFINFINITY} ir@'a ser descartado e
-o convergente atual ir@'a ser considerado com o valor exato
+(estritamente) maior que @var{GGFINFINITY} ser@'a descartado e
+o convergente atual ser@'a considerado como o valor exato
 da fun@,{c}@~ao geradora; na grande mioria dos casos o grau de todos
-os quocientes parciais ser@~ao 0 ou 1; se voc@^e usar um valor muito grande,
+os quocientes parciais ser@'a ou 0 ou 1; se voc@^e usar um valor muito grande,
 ent@~ao voc@^e poder@'a fornecer termos suficientes com o objetivo de fazer o
-c@'alculo preciso o suficiente.
+c@'alculo preciso o bastante.
 
 Veja tamb@'em @code{ggf}.
 @end defvr
@@ -32,7 +32,7 @@ Essa @'e uma vari@'avel de op@,{c}@~ao para a fun@,{c}@~ao @code{ggf}.
 Quando calculando a fra@,{c}@~ao cont@'inua da
 fun@,{c}@~ao geradora, se nenhum bom resultado for encontrado (veja
 o sinalizador @var{GGFINFINITY}) ap@'os se ter calculado uma quantidade de @var{GGFCFMAX} quocientes
-parciais, a fun@,{c}@~ao geradora ir@'a ser considerada como
+parciais, a fun@,{c}@~ao geradora ser@'a considerada como
 n@~ao sendo uma fra@,{c}@~ao de dois polin@^omios e a fun@,{c}@~ao ir@'a
 terminar. Coloque livemente um valor muito grande para fun@,{c}@~oes geradoras
 mais complicadas.

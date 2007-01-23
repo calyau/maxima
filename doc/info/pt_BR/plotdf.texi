@@ -123,18 +123,18 @@ As op@value{cedilha}@~oesque s@~ao reconhecidas por @code{plotdf} s@~ao as segui
 @dfn{tstep} define o comprimento dos incrementos sobre a
 vari@'avel independente @var{t}, usado para calcular uma curva integral. Se somente
 uma express@~ao @var{dydx} for fornecida a @code{plotdf}, a vari@'avel
-@var{x} ir@'a ser diretamente proporcional a @var{t}.
+@var{x} ser@'a diretamente proporcional a @var{t}.
 O valor padr@~ao @'e 0.1.
 
 @item
 @dfn{nsteps} define o n@'umero de passos de comprimento @code{tstep}
-que ir@'a ser usando para a vari@'avel independente, para calcular uma curva
+que ser@'a usando para a vari@'avel independente, para calcular uma curva
 integral.
 O valor padr@~ao @'e 100.
 
 @item
 @dfn{direction} define a dire@,{c}@~ao da vari@'avel
-independente que ir@'a ser seguida para calcular uma curva integral. Poss@'iveis
+independente que ser@'a seguida para calcular uma curva integral. Poss@'iveis
 valores s@~ao @code{forward}, para fazer a vari@'avel independente aumentar
 @code{nsteps} vezes, com incrementos de @code{tstep}, @code{backward}, para
 fazer a vari@'avel independente diminuir, ou @code{both} que ir@'a conduzir a
@@ -171,7 +171,7 @@ diferenciais. O nome e valores dos par@^ametros devem ser fornecidos em uma
 seq@"u@^encia de caracteres com uma seq@"u@^encia de pares  @code{nome=valor} separados por v@'irgula.
 
 @item
-@dfn{sliders} define uma lista de par@^ametros que ir@'a ser modificada
+@dfn{sliders} define uma lista de par@^ametros que ser@'a modificada
 interativamente usando bot@~oes de deslizamento, e o intervalo de varia@,{c}@~ao desses
 par@^ametros. Os nomes e intervalos dos par@^ametros devem ser fornecidos in a
 seq@"u@^encia de caracteres com uma seq@"u@^encia de elementos  @code{name=min:max} separados por v@'irgula.

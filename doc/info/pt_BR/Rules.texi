@@ -200,7 +200,7 @@ n@~ao em qualquer outra vari@'avel.
 Define e nomeia uma
 regra de substitui@,{c}@~ao para o modelo dado.  Se a regra nomeada @var{nomeregra} for
 aplicada a uma express@~ao (atrav@'es de @code{apply1}, @code{applyb1}, ou @code{apply2}), toda
-subexpress@~ao coincidindo com o modelo ir@'a ser substitu@'ida por
+subexpress@~ao coincidindo com o modelo ser@'a substitu@'ida por
 @code{substitui@,{c}@~ao}. Todas as vari@'aveis em @code{substitui@,{c}@~ao} que tiverem sido
 atribuidos valores pela coincid@^encia com o modelo s@~ao atribuidas esses valores na
 @code{substitui@,{c}@~ao} que @'e ent@~ao simplificado.

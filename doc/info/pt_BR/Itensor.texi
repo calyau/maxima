@@ -417,7 +417,7 @@ Por exemplo, se @code{imetric:g}, ent@~ao @code{defcon(g)} ir@'a implementar o
 incremento e decremento de @'indices atrav@'es da contra@,{c}@~ao com o tensor
 m@'etrico.
 Mais de uma @code{defcon} pode ser dada para o mesmo objeto indexado; o
-@'ultimo  fornecido que for aplicado a uma contra@,{c}@~ao particular ir@'a ser
+@'ultimo  fornecido que for aplicado a uma contra@,{c}@~ao particular ser@'a
 usado.
 @code{contractions} @'e uma lista de objetos indexados que tenham fornecido
 propriedades de contra@,{c}@~oes com @code{defcon}.
@@ -909,7 +909,7 @@ forma que os @var{v_i} possam ser inteiros de 1 at@'e o valor da vari@'avel
 @code{dim}.  Isso causar@'a a conclus@~ao da diferencia@,{c}@~ao com
 rela@,{c}@~ao ao @var{v_i}@'esimo membro da lista @code{vect_coords}.  Se
 @code{vect_coords} for associado a uma vari@'avel at@^omica, ent@~ao aquela vari@'avel
-subscrita atrav@'es de @var{v_i} ir@'a ser usada para a vari@'avel de
+subscrita atrav@'es de @var{v_i} ser@'a usada para a vari@'avel de
 diferencia@,{c}@~ao.  Isso permite que um array de nomes de coordenadas ou
 nomes subscritos como @code{x[1]}, @code{x[2]}, ...  sejam usados.
 @end deffn
@@ -1091,7 +1091,7 @@ remove essa propriedade de todos os objetos indexados.
 
 @deffn {Fun@,{c}@~ao} makebox (@var{expr})
 Mostra @var{expr} da mesma maneira que @code{show}; todavia,
-qualquer tensor d'Alembertiano ocorrendo em @var{expr} ir@'a ser indicado usando o
+qualquer tensor d'Alembertiano ocorrendo em @var{expr} ser@'a indicado usando o
 s@'imbolo @code{[]}.  Por exemplo, @code{[]p([m],[n])} representa
 @code{g([],[i,j])*p([m],[n],i,j)}.
 
@@ -2024,7 +2024,7 @@ Converte a equa@,{c}@~ao @var{eqn} na sintaxe @code{itensor} para uma declara@,{
 Adi@,{c}@~oes impl@'icitas sobre @'indices que ocorrem exatamente duas vezes s@~ao tornadas expl@'icitas enquanto objetos
 indexados s@~ao transformados em arrays (os arrays subscritos est@~ao na
 ordem de covari@^ancia seguidos de @'indices contravariantes dos objetos
-indexados). A derivada de um objeto indexado ir@'a ser substitu@'ida pela
+indexados). A derivada de um objeto indexado ser@'a substitu@'ida pela
 forma substantiva de @code{diff} tomada com rela@,{c}@~ao a @code{ct_coords} subscrita
 pelo @'indice de deriva@,{c}@~ao. Os s@'imbolos de Christoffel @code{ichr1} e @code{ichr2}
 ir@~ao ser traduzidos para @code{lcs} e @code{mcs}, respectivamente e se

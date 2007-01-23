@@ -948,7 +948,7 @@ Calcula a diverg@^encia covariante do tensor de segunda categoria misto
 (cujo primeiro @'indice deve ser covariante) imprimindo as
 correspondentes n componentes do campo do vetor (a diverg@^encia) onde
 n = @code{dim}. Se o argumento para a fun@,{c}@~ao for @code{g} ent@~ao a
-diverg@^encia do tensor de Einstein ir@'a ser formada e pode ser zero.
+diverg@^encia do tensor de Einstein ser@'a formada e pode ser zero.
 Adicionalmente, a diverg@^encia (vetor) @'e dada no array chamado @code{div}.
 @end deffn
 
@@ -1352,7 +1352,7 @@ Faz com que simplifica@,{c}@~oes racionais sejam aplicadas atrav@'es de @code{ch
 @defvr {Vari@'avel de op@,{c}@~ao} rateinstein
 Valor padr@~ao: @code{true}
 
-Se @code{true} simplifica@,{c}@~ao racional ir@'a ser
+Se @code{true} simplifica@,{c}@~ao racional ser@'a
 executada sobre as componentes n@~ao nulas de tensores de Einstein; se
 @code{ratfac} for @code{true} ent@~ao as componentes ir@~ao tamb@'em ser fatoradas.
 
