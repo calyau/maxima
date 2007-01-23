@@ -1,6 +1,6 @@
 \input texinfo
 @c /maxima.texi/1.40/Mon Jan 15 06:09:02 2007/-ko/
-@c Language: Brazilian Portuguese, Encoding: iso-8859-1
+@c Language: Portuguese, Encoding: iso-8859-1
 @c -*-texinfo-*-
 
 @c 2000-04-17 Jim Van Zandt <jrv@vanzandt.mv.com> Added header,
@@ -70,7 +70,7 @@ Notas de tradu@,{c}@~ao:
 
 O c@'odigo fonte deste documento encontra-se no formato texinfo.  Para
 contribuir com a equipe do Maxima na tarefa de manter a tradu@,{c}@~ao para o
-portugu@^es sempre atualizada envie um e-mail para @value{mail}.
+portugu@^es de Portugal sempre atualizada envie um e-mail para @value{mail}.
 
 Mantenedores:
 @itemize @bullet
@@ -188,7 +188,7 @@ Pacotes Adicionais
 * augmented_lagrangian::        Pacote augmented_lagrangian.
 * bode::                        Gr@'aficos de ganho e fase de Bode.
 * cholesky::                    Decomposi@,{c}@~ao de Cholesky.
-* descriptive::                 Estat@'istica descritiva.
+* descriptive::                 Estat@'istica descriptiva.
 * diag::                        Matrizes de Jordan.
 * distrib::                     Distribui@,{c}@~oes de probabilidade.
 * dynamics::                    Gr@'aficos para sistemas din@^amicos e fractais.
@@ -211,7 +211,7 @@ Pacotes Adicionais
 * romberg::                     M@'etodo de Romberg para integra@,{c}@~ao numerica.
 * simplex::                     Programa@,{c}@~ao linear.
 * simplification::              Fun@,{c}@~oes e regras de simplifica@,{c}@~ao.
-* solve_rec::                   Rela@,{c}@~oes de recorr@^encias lineares.
+* solve_rec::                   Rela@,{c}@~oes de recorr@^encia lineares.
 * stats::                       Pacote de infer@^encias estat@'isticas.
 * stirling::                    F@'ormula de Stirling.
 * stringproc::                  Processamento de cadeias de texto.
