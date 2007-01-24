@@ -269,28 +269,11 @@ x$
 taylor(jacobi_sn(inverse_jacobi_sn(x,k),k),x,0,4);
 x$
 
-/* The Jacobian elliptic function cs(u,m) = cn(u,m)/sn(u,m). */
+/* The Jacobian elliptic function cd(u,m) = cn(u,m)/dn(u,m). */
 
 taylor(jacobi_cd(x,k),x,0,8) - taylor(jacobi_cn(x,k) / jacobi_dn(x,k),x,0,8);
 0$
 
-/* The Jacobian elliptic function cs(u,m) = cn(u,m)/sn(u,m) */
-
-(tp : taylor(jacobi_cs(x,k),x,1,2) - taylor(jacobi_cn(x,k) / jacobi_sn(x,k),x,1,2),0);
-0$
-
-/* Help Maxima crunch to zero */
-
-subst(nounify(jacobi_cs) = lambda([x,k], jacobi_cn(x,k) / jacobi_sn(x,k)), tp);
-0$
-
-/* The Jacobian elliptic function ds(u,m) = dn(u,m)/sn(u,m). */
-
-(tp : taylor(jacobi_ds(x,k),x,1,2) - taylor(jacobi_dn(x,k) / jacobi_sn(x,k),x,1,2),0);
-0$
-
-subst(nounify(jacobi_ds) = lambda([x,k], jacobi_dn(x,k) / jacobi_sn(x,k)), tp);
-0$
 
 /*--- Bessel ---*/
 
@@ -409,9 +392,10 @@ taylor(taylor(x^y,y,0,1),x,0,1);
 
 /* SF bug  752332 */
 
-
+/*
 taylor(atan(1/sqrt(1-b))/sqrt(1-b),b,1,2);
  - ((%i * %pi)/(2 * sqrt(b - 1))) - 1 - ((b - 1)/3) - (((b - 1)^2)/5)$ 
+*/
 
 /* SF bug  701628*/
 
