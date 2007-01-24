@@ -29,3 +29,4 @@ você deve remover o "../pt_BR/" e a linha deve ficar assim:
 []´s
 
 Jorge Barros de Abreu
+24/01/2007
