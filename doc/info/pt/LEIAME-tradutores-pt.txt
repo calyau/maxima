@@ -1,0 +1,31 @@
+Na fase inicial de sua tradução evite alterar tudo que tiver entre @menu ... @end menu e
+toda linha que começar com @node ou @section. Após você alcaçar segurança altere o
+que lhe parecer conveniente.
+
+****Diretório pt.utf8****
+
+Ao traduzir um arquivo para o Português de Portugal você precisa apenas
+colocar o arquivo no diretório doc/info/pt e no arquivo /doc/info/pt.utf8/maxima.texi na 
+linha que contém:
+
+@include ../pt_BR/arquivotraduzido.texi
+
+você deve remover o "_BR" e a linha deve ficar assim:
+
+@include ../pt/arquivotraduzido.texi
+
+****Diretório pt****
+
+Ao traduzir um arquivo para o Português de Portugal você precisa apenas
+colocar o arquivo no diretório doc/info/pt e no arquivo doc/info/pt/maxima.texi na 
+linha que contém:
+
+@include ../pt_BR/arquivotraduzido.texi
+
+você deve remover o "../pt_BR/" e a linha deve ficar assim:
+
+@include arquivotraduzido.texi
+
+[]´s
+
+Jorge Barros de Abreu
