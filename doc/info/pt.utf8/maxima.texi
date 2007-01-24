@@ -68,6 +68,13 @@ e desenvolver o Macsyma DOE, agora chamado Maxima.
 
 Notas de tradu@,{c}@~ao:
 
+O manual do Maxima @'e um convite aos povos lus@'ofonos de homenagearem
+o ato her@'oico de Cam@~oes ao salvar seu manuscrito de "Os Lus@'iadas" durante
+o naufr@'agio do rio Mekong no oriente. @'E tamb@'em um convite a homenagearmos
+a @'ultima flor do L@'acio.  No presente momento apenas as se@,{c}@~oes plotdf e
+dynamics est@~ao no portugu@^es de Portugal (traduzidos por Jaime E. Villate).
+As restantes se@,{c}@~oes aguardam a sua colabora@,{c}@~ao, caro leitor/leitora, para serem convertidos.
+
 O c@'odigo fonte deste documento encontra-se no formato texinfo.  Para
 contribuir com a equipe do Maxima na tarefa de manter a tradu@,{c}@~ao para o
 portugu@^es de Portugal sempre atualizada envie um e-mail para @value{mail}.
@@ -106,6 +113,13 @@ e em 2000 ele iniciou o projeto Maxima no SourceForge para manter
 e desenvolver o Macsyma DOE, agora chamado Maxima.
 
 @i{Notas de tradu@,{c}@~ao:}
+
+    O manual do Maxima @'e um convite aos povos lus@'ofonos de homenagearem
+ o ato her@'oico de Cam@~oes ao salvar seu manuscrito de "Os Lus@'iadas" durante
+ o naufr@'agio do rio Mekong no oriente. @'E tamb@'em um convite a homenagearmos
+ a @'ultima flor do L@'acio.  No presente momento apenas as se@,{c}@~oes plotdf e
+ dynamics est@~ao no portugu@^es de Portugal (traduzidos por Jaime E. Villate).
+ As restantes se@,{c}@~oes aguardam a sua colabora@,{c}@~ao, caro leitor/leitora, para serem convertidos.
 
     O c@'odigo fonte deste documento encontra-se no formato texinfo.
  Para contribuir com a equipe do Maxima na tarefa de manter a 
