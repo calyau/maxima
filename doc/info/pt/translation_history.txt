@@ -1,0 +1,15 @@
+Portugal Portuguese History File
+
+23/01/2007
+Directory updates and adjust. After this date pt is
+sycronized with pt_BR.
+Portugal Portuguese directory incorporate all pt_BR
+improviments including UTF-8 by Vadim V. Zhytnikov
+and aditional packages allocated by Mario Rodrigues
+Riotorto.
+By Jorge Barros de Abreu.
+
+11/12/2006
+First two files in Portugal Portuguese:
+dynamics.texi and plotdf.texi.
+By Jaime E. Villate
