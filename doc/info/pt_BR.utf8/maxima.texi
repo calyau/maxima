@@ -68,7 +68,7 @@ e desenvolver o Macsyma DOE, agora chamado Maxima.
 
 Notas de tradu@,{c}@~ao:
 
-Com o t@'ermino da tradu@,{c}@~ao inicia-se o processo de revis@~o da mesma.  Est@'a
+Com o t@'ermino da tradu@,{c}@~ao inicia-se o processo de revis@~ao da mesma.  Est@'a
 aberta a temporada de ca@,{c}a aos erros de tradu@,{c}@~ao, erros de hifeniza@,{c}@~ao e de adequa@,{c}@~ao entre
 a linguagem matem@'atica inglesa e a linguagem matem@'atica brasileira. Caso voc@^e me
 envie alguma corre@,{c}@~ao ou melhoria a comunidade matem@'atica que utiliza o Sofware Livre
@@ -78,14 +78,19 @@ O c@'odigo fonte deste documento encontra-se no formato texinfo.  Para
 contribuir com a equipe do Maxima na tarefa de manter a tradu@,{c}@~ao para o
 portugu@^es sempre atualizada envie um e-mail para @value{mail}.
 
-Em caso de d@'uvida sobre algum trecho deste manual consulte o original
-ingl@^es.
+A se@,{c}@~ao "Pacotes adicionais" foi anexada ao manual em fevereiro/2006).
 
-Caso sua d@'uvida persista ou tenha alguma sugest@~ao/aperfei@,{c}oamento/
+Em caso de d@'uvida sobre algum trecho deste manual consulte o original
+ingl@^es. Caso sua d@'uvida persista ou tenha alguma sugest@~ao/aperfei@,{c}oamento/
 cr@'{@dotless{i}}tica mande por e-mail para Jorge Barros de Abreu <ficmatin01 at solar dot
 com dot br>
- 
+
+Vers@~ao do manual no formato pdf: maxima.pdf
+
+Vers@~ao do manual no formato info: maxima-info
+
 Mantenedores:
+
 @itemize @bullet
 @item
 Vadim V. Zhytnikov (UTF-8 support)
@@ -120,7 +125,7 @@ e desenvolver o Macsyma DOE, agora chamado Maxima.
 
 @i{Notas de tradu@,{c}@~ao:}
 
-    Com o t@'ermino da tradu@,{c}@~ao inicia-se o processo de revis@~o da mesma.  Est@'a
+    Com o t@'ermino da tradu@,{c}@~ao inicia-se o processo de revis@~ao da mesma.  Est@'a
  aberta a temporada de ca@,{c}a aos erros de tradu@,{c}@~ao, erros de hifeniza@,{c}@~ao e de adequa@,{c}@~ao entre
  a linguagem matem@'atica inglesa e a linguagem matem@'atica brasileira. Caso voc@^e me
  envie alguma corre@,{c}@~ao ou melhoria a comunidade matem@'atica que utiliza o Sofware Livre
@@ -131,17 +136,19 @@ e desenvolver o Macsyma DOE, agora chamado Maxima.
  tradu@,{c}@~ao para o portugu@^es sempre atualizada envie um 
  e-mail para @value{mail}.
 
+    A se@,{c}@~ao "Pacotes adicionais" foi anexada ao manual em fevereiro/2006).
+
     Em caso de d@'uvida sobre algum trecho deste manual consulte o 
- original ingl@^es.
-
-    A se@,{c}@~ao "Pacotes adicionais" foi anexada ao manual recentemente
-        (fevereiro/2006) e possui partes a serem traduzidas.
-
-    Caso sua d@'uvida persista ou tenha alguma sugest@~ao/aperfei@,{c}oamen-
+ original ingl@^es. Caso sua d@'uvida persista ou tenha alguma sugest@~ao/aperfei@,{c}oamen-
  to/cr@'itica mande por e-mail para Jorge Barros de Abreu 
  <ficmatin01 at solar dot com dot br>
- 
+
+  Vers@~ao do manual no formato pdf: maxima.pdf
+
+  Vers@~ao do manual no formato info: maxima-info
+
 Mantenedores:
+
 @itemize @bullet
 @item
 Vadim V. Zhytnikov (UTF-8 support)
