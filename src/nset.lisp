@@ -914,20 +914,16 @@ a positive integer; instead found ~:M" n))))
   ; otherwise it goes in initial context, which is meant for the user.
   (let (($context '$global) (context '$global))
     (meval* '(($declare) $kron_delta $symmetric))))
-
+		 	
 (defun simp-kron-delta (x y z)
   (twoargcheck x)
-  (setq y (mapcar #'(lambda (s) (simpcheck s z)) (cdr x)))
-  (let ((p (nth 0 y)) (q (nth 1 y)) (sgn) (d))
-    (cond ((like p q) 1)
-	  ((and (symbolp p) (get p 'sysconst) (symbolp q) (get q 'sysconst)) 0)
-	  (t
-	   (setq d (simplify `((mabs) ,(specrepcheck (sub p q)))))
-	   (setq sgn (csign d))
-	   (cond ((eq sgn '$pos) 0)
-		 ((and (eq sgn '$zero) (not (floatp d)) (not ($bfloatp d))) 1)
-		 (t `(($kron_delta simp) ,p ,q)))))))
-		 				
+  (setq y (mapcar #'(lambda (s) (simplifya s z)) (margs x)))
+  (let ((p (nth 0 y)) (q (nth 1 y)) (sgn))
+    (let ((sgn (meqp p q)))
+      (cond ((eq sgn t) 1)
+	    ((eq sgn nil) 0)
+	    (t `(($kron_delta simp) ,p ,q))))))
+			
 (defprop $kron_delta tex-kron-delta tex)
 
 (defun tex-kron-delta (x l r)
