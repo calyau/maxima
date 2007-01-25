@@ -101,7 +101,6 @@ Mario Rodriguez
 @item
 Jorge Barros de Abreu
 @end itemize
-
 @end titlepage
 
 @summarycontents
@@ -138,7 +137,7 @@ e desenvolver o Macsyma DOE, agora chamado Maxima.
  e-mail para @value{mail}.
 
     A se@,{c}@~ao "Pacotes adicionais" foi anexada ao manual em fevereiro/2006).
-    
+
     Em caso de d@'uvida sobre algum trecho deste manual consulte o 
  original ingl@^es. Caso sua d@'uvida persista ou tenha alguma sugest@~ao/aperfei@,{c}oamen-
  to/cr@'itica mande por e-mail para Jorge Barros de Abreu 
