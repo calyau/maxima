@@ -79,6 +79,10 @@ O c@'odigo fonte deste documento encontra-se no formato texinfo.  Para
 contribuir com a equipe do Maxima na tarefa de manter a tradu@,{c}@~ao para o
 portugu@^es de Portugal sempre atualizada envie um e-mail para @value{mail}.
 
+Vers@~ao do manual no formato pdf: maxima.pdf
+
+Vers@~ao do manual no formato info: maxima-info.tar.gz
+
 Mantenedores:
 @itemize @bullet
 @item
@@ -126,7 +130,12 @@ e desenvolver o Macsyma DOE, agora chamado Maxima.
  tradu@,{c}@~ao para o portugu@^es sempre atualizada envie um 
  e-mail para @value{mail}.
 
+  Vers@~ao do manual no formato pdf: maxima.pdf
+
+  Vers@~ao do manual no formato info: maxima-info.tar.gz
+
 Mantenedores:
+
 @itemize @bullet
 @item
 Vadim V. Zhytnikov (suporte a UTF-8)
