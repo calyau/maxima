@@ -21,6 +21,7 @@ diag.texi \
 Differential.texi \
 Differentiation.texi \
 distrib.texi \
+dynamics.texi \
 Elliptic.texi \
 Equations.texi \
 eval_string.texi \
@@ -32,12 +33,14 @@ ggf.texi \
 Groups.texi \
 Help.texi \
 impdiff.texi \
+implicit_plot.texi \
 Indices.texi \
 Input.texi \
 Integration.texi \
 interpol.texi \
 Introduction.texi \
 Itensor.texi \
+lbfgs.texi \
 Limits.texi \
 lindstedt.texi \
 linearalgebra.texi \
@@ -59,6 +62,7 @@ plotdf.texi \
 Plotting.texi \
 Polynomials.texi \
 Program.texi \
+romberg.texi \
 Rules.texi \
 Runtime.texi \
 Series.texi \
@@ -68,26 +72,26 @@ Simplification.texi \
 solve_rec.texi \
 Special.texi \
 Statistics.texi \
+stats.texi \
 stirling.texi \
 stringproc.texi \
 Symmetries.texi \
 Trigonometric.texi \
 unit.texi \
-zeilberger.texi \
-lbfgs.texi
+zeilberger.texi
 
 all-local: maxima-index.lisp
 
 maxima-index.lisp: maxima.info ../build_index.pl
 	perl ../build_index.pl maxima.info ':crlf' > maxima-index.lisp
 
-maximahtml_pt.mk: ../texi2html
+maximahtml_pt_BR.mk: ../texi2html
 	perl ../texi2html -split_chapter --lang=pt --output=. --css-include=../manual.css --init-file ../texi2html.init maxima.texi 
-	rm -f maximahtml_pt.mk
-	ls -1 maxima*.html | sed 's/\(.*\)/MAXIMAHTML += \1/' > maximahtml_pt.mk
+	rm -f maximahtml_pt_BR.mk
+	ls -1 maxima*.html | sed 's/\(.*\)/MAXIMAHTML += \1/' > maximahtml_pt_BR.mk
 
 MAXIMAHTML = 
-include maximahtml_pt.mk
+include maximahtml_pt_BR.mk
 
 $(MAXIMAHTML): maxima.texi $(maxima_TEXINFOS)
 	perl ../texi2html -split_chapter --lang=pt --output=. --css-include=../manual.css --init-file ../texi2html.init maxima.texi 
@@ -109,7 +113,7 @@ clean-html:
 	rm -f contents.hhc
 	rm -f index.hhk
 
-EXTRA_DIST = maximahtml_pt.mk header.hhp maxima.hhp maxima-index.lisp $(genericdirDATA)
+EXTRA_DIST = maximahtml_pt_BR.mk header.hhp maxima.hhp maxima-index.lisp $(genericdirDATA)
 
 install-info-am: $(INFO_DEPS) maxima-index.lisp
 	test -z "$(infodir)$(langsdir)" || mkdir -p -- "$(DESTDIR)$(infodir)$(langsdir)"
