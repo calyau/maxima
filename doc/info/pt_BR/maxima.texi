@@ -87,7 +87,7 @@ com dot br>
 
 Vers@~ao do manual no formato pdf: maxima.pdf
 
-Vers@~ao do manual no formato info: maxima-info
+Vers@~ao do manual no formato info: maxima-info.tar.gz
 
 Mantenedores:
 
@@ -145,7 +145,7 @@ e desenvolver o Macsyma DOE, agora chamado Maxima.
 
   Vers@~ao do manual no formato pdf: maxima.pdf
 
-  Vers@~ao do manual no formato info: maxima-info
+  Vers@~ao do manual no formato info: maxima-info.tar.gz
 
 Mantenedores:
 
