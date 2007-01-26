@@ -45,7 +45,7 @@
 
 (defmfun ask-integer (x even-odd)
   (setq x (sratsimp (sublis '((z** . 0) (*z* . 0)) x)))
-  (cond ((or (not (free x '$%pi)) (not (free x '$%i)) (ratnump x)) '$no)
+  (cond ((ratnump x) '$no)
 	((eq even-odd '$integer) (ask-integerp x))
 	(t (ask-evod x even-odd))))
 
