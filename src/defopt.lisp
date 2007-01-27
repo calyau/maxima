@@ -3,6 +3,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :maxima)
+
 (macsyma-module defopt macro)
 
 ;; For defining optimizers which run on various systems.
@@ -12,92 +13,5 @@
 ;; ***==> Right now, DEFOPT is used just like you would a DEFMACRO <==***
 ;; (defopt <name> <arlist> <body-boo>)
 
-;; PDP-10 Maclisp:
-;; SOURCE-TRANS property is a list of functions (F[1] F[2] ... F[n]).
-;; F[k] is funcalled on the <FORM>, it returns (VALUES <NEW-FORM> <FLAG>).
-;; If <FLAG> = NIL then compiler procedes to F[k+1]
-;; If <FLAG> = T then compiler calls starts again with F[1].
-
-;; LispMachine Lisp:
-;; COMPILER:OPTIMIZERS property is a list of functions as in PDP-10 Maclisp.
-;; F[k] returns <NEW-FORM>. Stop condition is (EQ <FORM> <NEW-FORM>).
-
-;; VAX NIL (with compiler "H"):
-;; SOURCE-CODE-REWRITE property is a function, returns NIL if no rewrite,
-;; else returns NCONS of result to recursively call compiler on.
-
-;; Multics Maclisp:
-;; ???
-;; Franz Lisp:
-;; ???
-
-;; General note:
-;; Having a list of optimizers with stop condition doesn't provide
-;; any increase in power over having a single property. For example,
-;; only two functions in LISPM lisp have more than one optimizer, and
-;; no maclisp functions do. It just isn't very usefull or efficient
-;; to use such a crude mechanism. What one really wants is to be able
-;; to define a set of production rules in a simple pattern match
-;; language. The optimizer for NTH is a case in point:
-;; (NTH 0 X) => (CAR X)
-;; (NTH 1 X) => (CADR X)
-;; ...
-;; This is defined on the LISPM as a single compiler:optimizers with
-;; a hand-compiled pattern matcher.
-
-;;;what's that damn defmacro1 doing here..
-
-;;#+LISPM
-;;(progn 'compile
-;;(defmacro defopt-internal (name . other)
-;;  `(defun (,name opt) . ,other))
-;;(defun opt-driver (form)
-;;  (funcall (get (car form) 'opt) form))
-;;(defmacro defopt (name . other)
-;;  `(progn 'compile
-;;	  ,(si:defmacro1 (cons name other) 'defopt-internal)
-;;	  (defprop ,name (opt-driver) compiler:optimizers)))
-;;
-;;)
-
-
-#+(and cl (not lispm))
 (defmacro defopt (&rest other)
-  `(#-gcl define-compiler-macro #+gcl si::define-compiler-macro ,.other)) 
-
-#+(and lispm cl)
-(progn 'compile
-       (defun opt-driver (form)
-	 (apply (get (car form) 'opt) (cdr form)))
-
-       (defmacro defopt (name . other)
-	 `(progn 'compile
-	   (defun-prop (,name opt) . , other)
-	   (defprop ,name (opt-driver) compiler:optimizers)))
-       )
-
-
-#+pdp10
-(progn 'compile
-       (defun opt-driver (form)
-	 (values (apply (get (car form) 'opt)
-			(cdr form))
-		 t))
-       ;; pdp10 maclisp has argument destructuring available in
-       ;; vanilla defun.
-       (defmacro defopt (name . other)
-	 `(progn 'compile
-	   (defun-prop (,name opt) . ,other)
-	   (defprop ,name (opt-driver) source-trans)))
-       )
-
-#+nil
-(defmacro defopt (name argl &rest other &aux (form (gensym)))
-  `(defun-prop (,name source-code-rewrite) (,form)
-    (compiler:debind-args ,argl ,form (list (progn ,@other)))))
-
-#+(or multics franz)
-(defmacro defopt (name argl . other)
-  `(defmacro ,name ,argl . ,other))
-
-
+  `(#-gcl define-compiler-macro #+gcl si::define-compiler-macro ,@other)) 
