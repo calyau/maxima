@@ -827,10 +827,11 @@
 	 ((mexpt simp) ((mtimes simp) x x ((rat simp) 1 4)) $%k))
 	$%k 0 $inf)))
       
-     ;; Derivative wrt to arg x.  A&S 9.1.30
-     ((mplus)
-      ((%bessel_j) ((mplus) -1 n) x)
-      ((mtimes) -1 n ((%bessel_j) n x) ((mexpt) x -1))))
+     ;; Derivative wrt to arg x.  A&S 9.1.27; changed from 9.1.30 so that taylor works on Bessel functions
+     ((mtimes) ((mplus) ((%bessel_j) ((mplus) -1 n) x) ((mtimes) -1 ((%bessel_j) ((mplus) 1 n) x))) ((rat) 1 2)))
+;;     ((mplus)
+;;      ((%bessel_j) ((mplus) -1 n) x)
+;;      ((mtimes) -1 n ((%bessel_j) n x) ((mexpt) x -1))))
   grad)
 
 ;; If E is a maxima ratio with a denominator of DEN, return the ratio
@@ -1071,10 +1072,13 @@
        ((mplus simp)
 	((mtimes simp) -1 $%pi ((%bessel_y simp) n x))
 	((%derivative simp) ((%bessel_j simp) n x) n 1))))
-     ((mplus)
-      ((%bessel_y) ((mplus) -1 n) x)
-      ((mtimes) -1 n ((%bessel_y) n x) ((mexpt) x -1))))
-  grad)
+
+     ;; Derivative wrt to arg x.  A&S 9.1.27; changed from A&S 9.1.30 to be consistent with bessel_j.
+     ((mtimes) ((mplus) ((%bessel_y)((mplus) -1 n) x) ((mtimes) -1 ((%bessel_y) ((mplus) 1 n) x))) ((rat) 1 2)))
+    ;;((mplus)
+    ;; ((%bessel_y) ((mplus) -1 n) x)
+    ;; ((mtimes) -1 n ((%bessel_y) n x) ((mexpt) x -1))))
+    grad)
 
 (defun bessel-y-simp (exp ignored z)
   (declare (ignore ignored))
@@ -1082,11 +1086,14 @@
   (let ((order (simpcheck (cadr exp) z))
 	(rat-order nil))
     (let* ((arg (simpcheck (caddr exp) z)))
-      (cond ((and (>= (signum1 order) 0) (bessel-numerical-eval-p order arg))
+      (cond ((eql arg 0) (domain-error arg 'bessel_y))
+	    ((and (>= (signum1 order) 0) (bessel-numerical-eval-p order arg))
 	     ;; We have numeric order and arg and $numer is true, or
 	     ;; we have either the order or arg being floating-point,
 	     ;; so let's evaluate it numerically.
 	     (bessel-y (float order) (complex ($realpart arg) ($imagpart arg))))
+
+	  	    
 	    ((and (integerp order) (minusp order))
 	     ;; Special case when the order is an integer.
 	     ;;
