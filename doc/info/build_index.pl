@@ -10,6 +10,9 @@ binmode STDOUT, $infofile_encoding;
 
 $unit_separator = "";
 
+$item_cnt = 0;
+$section_cnt = 0;
+
 # ------------------------------------------------------------------
 # PART 1. BUILD INDEX FOR @DEFFN AND @DEFVR ITEMS
 # ------------------------------------------------------------------
@@ -112,6 +115,7 @@ print "(defvar *info-deffn-defvr-pairs* '(\n";
 print "; CONTENT: (<INDEX TOPIC> . (<FILENAME> <BYTE OFFSET> <LENGTH IN CHARACTERS> <NODE NAME>))\n";
 
 foreach $key (sort keys %topic_locator) {
+    $item_cnt++;
     my $sanitized_key = $key;
     $sanitized_key =~ s/"/\\"/g;
     print "(\"$sanitized_key\" . (\"$topic_locator{$key}[1]\" $topic_locator{$key}[2] $topic_locator{$key}[3] \"$topic_locator{$key}[0]\"))\n";
@@ -192,6 +196,7 @@ print "(defvar *info-section-pairs* '(\n";
 print "; CONTENT: (<NODE NAME> . (<FILENAME> <BYTE OFFSET> <LENGTH IN CHARACTERS>))\n";
 
 foreach $node_title (sort keys %node_locator) {
+    $section_cnt++;
     ($filename, $begin_node_offset, $length) = @{$node_locator{$node_title}};
     my $sanitized_title = $node_title;
     $sanitized_title =~ s/"/\\"/g;
@@ -203,6 +208,13 @@ print "))\n";
 #        Construct hashtables from the lists given above.
 
 print "(load-info-hashtables)\n";
+
+# (2.3)  Do we have any items or sections?
+#
+#        Warn if no index items or secions found. 
+
+($item_cnt+$section_cnt)>0 || 
+    print STDERR "WARNING: Epmpty index. Probably makeinfo is too old. Version 4.7 or 4.8 required.\n";
 
 # ------------------------------------------------------------------
 # Helper functions
