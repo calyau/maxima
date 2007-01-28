@@ -9,14 +9,10 @@
 ;;; ** (c) Copyright 1981 Massachusetts Institute of Technology **
 ;;;
 ;;; SYSTEM: The ``New'' Macsyma System Stuff
-;;;
-;;; *** NOTE *** this file uses common-lisp read syntax.
 
 (in-package :maxima)
-(macsyma-module system)
 
-;;(eval-when (:execute :compile-toplevel :load-toplevel)
-;;  (sstatus feature maxii))
+(macsyma-module system)
 
 ;;; Standard Kinds of Input Prompts
 
@@ -37,7 +33,6 @@
   (declare (special $prompt))
   (stripdollar $prompt))
 
-
 ;; there is absoletely no need to catch errors here, because
 ;; they are caught by the macsyma-listener window process on
 ;; the lisp machine, or by setting the single toplevel process in Maclisp. -gjc
@@ -48,26 +43,12 @@
 
 (defun toplevel-macsyma-eval (x) (meval* x))
 
-(defmvar $_ '$_ "last thing read in, cooresponds to lisp +")
-;;Also defined in JPG;SUPRV
-#-cl (defmvar $% '$% "last thing printed out, cooresponds to lisp *")
-(defmvar $__ '$__ "thing read in which will be evaluated, cooresponds to -")
+(defmvar $_ '$_ "last thing read in, corresponds to lisp +")
+(defmvar $__ '$__ "thing read in which will be evaluated, corresponds to -")
 
 (declare-top (special *mread-prompt*  $file_search_demo))
 
 (defvar accumulated-time 0.0)
-#-cl
-(defun fixnum-char-upcase (x) (char-upcase x))
-;;#-ti
-;;(defun get-internal-real-time () (time:microsecond-time))
-;;#-ti
-;;(defun get-internal-run-time ()  (* 1000 (send current-process :cpu-time)) )
-;;(defvar internal-time-units-per-second  1000000)
-
-;;#+lispm
-;;(defun used-area ( &optional (area working-storage-area ))
-;;  (multiple-value-bind (nil used)(si:room-get-area-length-used area)
-;;    used))
 
 #+(or cmu scl)
 (defun used-area (&optional unused)
@@ -99,8 +80,7 @@
   (declare (optimize (speed 3)))
   (let ((.oldspace (make-array 4 :element-type
 			       #-64bit '(unsigned-byte 32)
-			       #+64bit '(unsigned-byte 64)))
-	)
+			       #+64bit '(unsigned-byte 64))))
     (declare (type (simple-array #-64bit (unsigned-byte 32)
 				 #+64bit (unsigned-byte 64) (*))
 		   .oldspace))
@@ -113,7 +93,7 @@
       )))
 
 
-#-(or lispm cmu scl sbcl clisp allegro)
+#-(or cmu scl sbcl clisp allegro)
 (defun used-area (&optional unused)
   (declare (ignore unused))
   0)
@@ -246,10 +226,10 @@
 	;; they don't echo
 	(and batch-or-demo-flag
 	     (do ((char)) (())
-	       (setq char (read-char input-stream nil #+cl nil))
+	       (setq char (read-char input-stream nil nil))
 	       (when (null char) 
 		 (throw 'macsyma-quit nil)) 
-	       (unless (zl-member char '(#\space #\newline #\return #\tab))
+	       (unless (member char '(#\space #\newline #\return #\tab) :test #'equal)
 		 (unread-char char input-stream)  
 		 (return nil)))))))) 
 
@@ -258,11 +238,8 @@
   (prog1 (apply #'$print arg-list)
     (mbreak-loop)))
 
-
-
 (defun mbreak-loop ()
-  (let ((*standard-input* #+nil (make-synonym-stream '*terminal-io*)
-			  #-nil *debug-io*)
+  (let ((*standard-input* *debug-io*)
 	(*standard-output* *debug-io*))
     (catch 'break-exit
       (format t "~%Entering a Maxima break point. Type exit; to resume")
@@ -278,19 +255,6 @@
   (format *debug-io* "~%Merrbreak:~A" arg)
   (mbreak-loop))
 
-#-cl
-(defun retrieve (msg flag &aux (print? nil))
-  (declare (special msg flag print?))
-  (or (eq flag 'noprint) (setq print? t))
-  (mread-terminal
-   (closure '(msg flag)
-	    #'(lambda (stream char) stream char
-		      (cond ((not print?) (setq print? t))
-			    ((null msg))
-			    ((atom msg) (princ msg) (mterpri))
-			    ((eq flag t) (mapc #'princ (cdr msg)) (mterpri))
-			    (t (displa msg) (mterpri)))))))
-#+cl
 (defun retrieve (msg flag &aux (print? nil))
   (declare (special msg flag print?))
   (or (eq flag 'noprint) (setq print? t))
@@ -323,29 +287,18 @@
 
 (defmfun $readonly (&rest l)
   (let ((*mread-prompt*
-	 (if l (string-right-trim '(#\n)
-				  (with-output-to-string (*standard-output*)
-				    (apply '$print l))) "")))
-    (setf *mread-prompt* (format nil "~a~a~a" *prompt-prefix* *mread-prompt* 
-				 *prompt-suffix*))
-    (setf answer (third (mread *query-io*)))))
+	 (if l
+	     (string-right-trim '(#\n)
+				(with-output-to-string (*standard-output*)
+				  (apply '$print l)))
+	     "")))
+    (setf *mread-prompt*
+	  (format nil "~a~a~a" *prompt-prefix* *mread-prompt* *prompt-suffix*))
+    (third (mread *query-io*))))
 
-
-;;#-cl
-;;(DEFUN MREAD-TERMINAL (PROMPT)
-;;  (prog1 (let (#+NIL (si:*ttyscan-dispatch-table *macsyma-ttyscan-operators*))
-;;	    (CADDR (send *terminal-io* ':RUBOUT-HANDLER
-;;			 `((:PROMPT ,PROMPT) #+NIL (:reprompt ,prompt))
-;;			 #'MREAD-RAW *terminal-io*)))
-;;	 (fresh-line *terminal-io*)))
-
-
-(defun make-input-stream (x y) y	;ignore
-       x)
 
 (defun batch (filename &optional demo-p
-	      &aux (orig filename )
-	      list
+	      &aux (orig filename) list
 	      file-obj (accumulated-time 0.0) (abortp t))
   (setq list (if demo-p '$file_search_demo '$file_search_maxima))
   (setq filename ($file_search filename (symbol-value list)))
@@ -363,13 +316,8 @@
 
 
 (defun batch-internal (fileobj demo-p)
-  (continue (make-echo-stream
-	     (make-input-stream fileobj "Batch Input Stream")
-	     *standard-output*)
+  (continue (make-echo-stream fileobj *standard-output*)
 	    (if demo-p ':demo ':batch)))
-#-cl
-(defun $batch (&rest arg-list)
-  (batch (filename-from-arg-list arg-list) nil))
 
 (defun filename-from-arg-list (arg-list)
   (if (= (length arg-list) 1)
@@ -380,15 +328,11 @@
   (eval `(grindef ,@(cdr form)))
   '$done)
 
-#+cl
 (defun $demo (&rest arg-list)
   (let ((tem ($file_search (car arg-list) $file_search_demo)))
-    (or tem (merror "Could not find ~M in  ~M: ~M" (car arg-list) '$file_search_demo $file_search_demo   ))
-    ($batch tem	  '$demo)))
-
-#-cl
-(defun $demo (&rest arg-list)
-  (batch (filename-from-arg-list arg-list) t))
+    (or tem (merror "Could not find ~M in  ~M: ~M"
+		    (car arg-list) '$file_search_demo $file_search_demo))
+    ($batch tem	'$demo)))
 
 (defmfun $bug_report ()
   (format t "~%The Maxima bug database is available at~%")
@@ -415,19 +359,19 @@
   "")
 
 (defvar *maxima-started* nil)
+
 (defvar *maxima-prolog* "")
 (defvar *maxima-epilog* "")
 
 (defvar *maxima-quiet* nil)
 
-#-lispm
 (defun macsyma-top-level (&optional (input-stream *standard-input*)
 			  batch-flag)
   (let ((*package* (find-package :maxima)))
     (if *maxima-started*
 	(format t "Maxima restarted.~%")
 	(progn
-      (if (not *maxima-quiet*) (maxima-banner))
+	  (if (not *maxima-quiet*) (maxima-banner))
 	  (setq *maxima-started* t)))
     (if ($file_search "maxima-init.lisp") ($load ($file_search "maxima-init.lisp")))
     (if ($file_search "maxima-init.mac") ($batchload ($file_search "maxima-init.mac")))
@@ -435,12 +379,14 @@
     (catch 'quit-to-lisp
       (in-package :maxima)
       (loop 
-       do
-       (catch #+kcl si::*quit-tag* #+(or cmu scl sbcl) 'continue #-(or kcl cmu scl sbcl) nil
-	      (catch 'macsyma-quit
-		(continue input-stream batch-flag)
-		(format t *maxima-epilog*)
-		(bye)))))))
+	 do
+	 (catch #+kcl si::*quit-tag* 
+		#+(or cmu scl sbcl) 'continue 
+		#-(or kcl cmu scl sbcl) nil
+		(catch 'macsyma-quit
+		  (continue input-stream batch-flag)
+		  (format t *maxima-epilog*)
+		  (bye)))))))
 
 (defun maxima-banner ()
   (format t *maxima-prolog*)
@@ -449,8 +395,7 @@
   (format t "Using Lisp ~a ~a" (lisp-implementation-type)
       #-clisp (lisp-implementation-version)
       #+clisp (subseq (lisp-implementation-version)
-              0 (+ 1 (search
-                  ")" (lisp-implementation-version)))))
+              0 (1+ (search ")" (lisp-implementation-version)))))
   #+gcl (format t " (aka GCL)")
   (format t "~%")
   (format t "Distributed under the GNU Public License. See the file COPYING.~%")
@@ -458,75 +403,74 @@
   (format t "This is a development version of Maxima. The function bug_report()~%")
   (format t "provides bug reporting information.~%"))
 
-#-lispm
-(progn 
+
   
-  #+kcl
-  (si::putprop :t 'throw-macsyma-top 'si::break-command)
+#+kcl
+(si::putprop :t 'throw-macsyma-top 'si::break-command)
 
-  (defun throw-macsyma-top ()
-    (throw 'macsyma-quit t))
+(defun throw-macsyma-top ()
+  (throw 'macsyma-quit t))
 
+(defmfun $writefile (x)
+ (dribble (maxima-string x)))
 
-  (defmfun $writefile (x) (dribble (maxima-string x)))
+(defvar $appendfile nil )
+(defvar *appendfile-data*)
 
-  (defvar $appendfile nil )
-
-  (defvar *appendfile-data*)
-
-  (defmfun $appendfile (name)
-    (if (and (symbolp name)
-	     (member (getcharn name 1) '(#\& #\$)))
-	(setq name (maxima-string name)))
-    (if $appendfile (merror "already in appendfile, use closefile first"))
-    (let ((stream  (open name :direction :output
-			 :if-exists :append
-			 :if-does-not-exist :create)))
-      (setq *appendfile-data* (list stream *terminal-io* name ))
+(defmfun $appendfile (name)
+  (if (and (symbolp name)
+	   (member (getcharn name 1) '(#\& #\$)))
+      (setq name (maxima-string name)))
+  (if $appendfile (merror "already in appendfile, use closefile first"))
+  (let ((stream  (open name :direction :output
+		       :if-exists :append
+		       :if-does-not-exist :create)))
+    (setq *appendfile-data* (list stream *terminal-io* name))
   
-      (setq $appendfile (make-two-way-stream
-			 (make-echo-stream *terminal-io* stream)
-			 (make-broadcast-stream *terminal-io* stream))
-	    *terminal-io* $appendfile)
-      (multiple-value-bind (sec min hour day month year)
-	  (get-decoded-time)
-	(format t
-		"~&/* Starts dribbling to ~A (~d/~d/~d, ~d:~d:~d).*/"
-		name year month day hour min sec))
-      '$done))
+    (setq $appendfile (make-two-way-stream
+		       (make-echo-stream *terminal-io* stream)
+		       (make-broadcast-stream *terminal-io* stream))
+	  *terminal-io* $appendfile)
+    (multiple-value-bind (sec min hour day month year)
+	(get-decoded-time)
+      (format t "~&/* Starts dribbling to ~A (~d/~d/~d, ~d:~d:~d).*/"
+	      name year month day hour min sec))
+    '$done))
   
-  (defmfun $closefile ()
-    (cond ($appendfile
-	 
-	   (cond ((eq $appendfile *terminal-io*)
-		  (format t "~&/*Finished dribbling to ~A.*/"
-			  (nth 2 *appendfile-data*))
-		  (setq *terminal-io* (nth 1 *appendfile-data*))
-		  )
-		 (t  (warn "*TERMINAL-IO* was rebound while APPENDFILE is on.~%~
+(defmfun $closefile ()
+  (cond ($appendfile
+	 (cond ((eq $appendfile *terminal-io*)
+		(format t "~&/*Finished dribbling to ~A.*/"
+			(nth 2 *appendfile-data*))
+		(setq *terminal-io* (nth 1 *appendfile-data*)))
+	       (t (warn "*TERMINAL-IO* was rebound while APPENDFILE is on.~%~
                    You may miss some dribble output.")))
-	   (close (nth 0 *appendfile-data*))
-	   (setq *appendfile-data* nil $appendfile nil)
-	 
-	   )
-	  (t (dribble))))
+	 (close (nth 0 *appendfile-data*))
+	 (setq *appendfile-data* nil $appendfile nil))
+	(t (dribble))))
  
 
-  (defmfun $ed (x) (ed (maxima-string x))) 
+(defmfun $ed (x)
+  (ed (maxima-string x))) 
  
-  (defmfun $cli () (merror "Not implemented!") )
+(defmfun $cli ()
+  (merror "Not implemented!") )
  
-  (defun nsubstring (x y) (subseq x y)) 
+(defun nsubstring (x y)
+  (subseq x y)) 
  
-  (defun filestrip (x) (subseq (print-invert-case (car x)) 1)) 
-  )
+(defun filestrip (x)
+  (subseq (print-invert-case (car x)) 1)) 
+  
 
 (defmspec $with_stdout (arg)
+  (declare (special $file_output_append))
   (setq arg (cdr arg))
   (let*
     ((fname (namestring (maxima-string (car arg))))
      (filespec
-       (if (or (eq $file_output_append '$true) (eq $file_output_append t))
+       (if (or (eq $file_output_append '$true)
+	       (eq $file_output_append t))
          `(*standard-output* ,fname :direction :output :if-exists :append :if-does-not-exist :create)
          `(*standard-output* ,fname :direction :output :if-exists :supersede :if-does-not-exist :create))))
     (eval
@@ -536,19 +480,16 @@
              (setq res (meval* v)))
            res)))))
 
-(defun $sconcat(&rest x)
+(defun $sconcat (&rest x)
   (let ((ans "") )
     (dolist (v x)
       (setq ans (concatenate 'string ans
-				   
-			     (cond ((and (symbolp v) (eql (getcharn v 1)
-							  #\&))
+			     (cond ((and (symbolp v) (eql (getcharn v 1) #\&))
 				    (subseq (print-invert-case v) 1))
 				   ((stringp v) v)
 				   (t
 				    (coerce (mstring v) 'string))))))
     ans))
-					;
 
 (defun $system (&rest args)
   #+gcl   (lisp:system (apply '$sconcat args))
