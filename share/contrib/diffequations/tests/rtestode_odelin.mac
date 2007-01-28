@@ -17,8 +17,8 @@ forget(a > b);
 [a > b];
 
 odelin(9*x^2*'diff(y,x,2)+9*x^2*'diff(y,x,1)+2*y,y,x);
-{bessel_j(1/6,-%i*x/2)*sqrt(-x)*%e^-(x/2),
-       bessel_y(1/6,-%i*x/2)*sqrt(-x)*%e^-(x/2)};
+{bessel_j(1/6,-(%i*x/2))*sqrt(-x)*%e^-(x/2),
+       bessel_y(1/6,-(%i*x/2))*sqrt(-x)*%e^-(x/2)};
 
 odelin(2*x*(x-1)*'diff(y,x,2)+3*(x-1)*'diff(y,x,1)-y,y,x);
 {(x-1)/sqrt(x),
@@ -48,8 +48,8 @@ odelin(x*'diff(y,x,2)-'diff(y,x,1)+(-x)*y,y,x);
 {bessel_j(1,-%i*x)*x,bessel_y(1,-%i*x)*x};
 
 odelin(3*x^2*'diff(y,x,2)+8*x*'diff(y,x,1)+(x-2)*y,y,x);
-{bessel_j(-7/3,2*sqrt(x)/sqrt(3))/x^(5/6),
-	bessel_y(-7/3,2*sqrt(x)/sqrt(3))/x^(5/6)};
+{bessel_j(-(7/3),2*sqrt(x)/sqrt(3))/x^(5/6),
+	bessel_y(-(7/3),2*sqrt(x)/sqrt(3))/x^(5/6)};
 
 odelin(x*'diff(y,x,2)+(x-1)*'diff(y,x,1)+(-2)*y,y,x);
 {x^2,x^2*'integrate(%e^-x/x^3,x)};
@@ -101,7 +101,7 @@ odelin(4*x^2*'diff(y,x,2)+4*x*'diff(y,x,1)+(4*x^2-1)*y,y,x);
 {%e^-(%i*x)/sqrt(x),%e^(%i*x)/sqrt(x)};
 
 odelin(9*x^2*'diff(y,x,2)+9*x*'diff(y,x,1)+(9*x^2-16)*y,y,x);
-{bessel_j(-4/3,-x),bessel_y(-4/3,-x)};
+{bessel_j(-(4/3),-x),bessel_y(-(4/3),-x)};
 
 odelin(x^2*'diff(y,x,2)+x*'diff(y,x,1)+(x^2-1)*y,y,x);
 {bessel_j(1,-x),bessel_y(1,-x)};
@@ -110,7 +110,7 @@ odelin(x^2*'diff(y,x,2)+x*'diff(y,x,1)+x^2*y,y,x);
 {bessel_j(0,-x),bessel_y(0,-x)};
 
 odelin(9*x^2*'diff(y,x,2)+9*x*'diff(y,x,1)+(9*x^2-4)*y,y,x);
-{bessel_j(-2/3,-x),bessel_y(-2/3,-x)};
+{bessel_j(-(2/3),-x),bessel_y(-(2/3),-x)};
 
 odelin(x^2*'diff(y,x,2)+x*'diff(y,x,1)+(x^2-16)*y,y,x);
 {bessel_j(4,-x),bessel_y(4,-x)};
@@ -119,7 +119,7 @@ odelin(x^2*'diff(y,x,2)+x*'diff(y,x,1)+(x^2-1)*y,y,x);
 {bessel_j(1,-x),bessel_y(1,-x)};
 
 odelin(x^2*'diff(y,x,2)+x*'diff(y,x,1)+(x^2-4)*y,y,x);
-{bessel_j(2,-x),bessel_y(2,-x)};
+{bessel_j(-2,-x),bessel_y(-2,-x)};
 
 odelin('diff(y,x,2)+5*'diff(y,x,1)+6*y,y,x);
 {%e^-(3*x),%e^-(2*x)};
@@ -186,8 +186,8 @@ odelin(x*'diff(y,x,2)-'diff(y,x,1)+(-x)*y,y,x);
 {bessel_j(1,-%i*x)*x,bessel_y(1,-%i*x)*x};
 
 odelin(3*x^2*'diff(y,x,2)+8*x*'diff(y,x,1)+(x-2)*y,y,x);
-{bessel_j(-7/3,2*sqrt(x)/sqrt(3))/x^(5/6),
-	bessel_y(-7/3,2*sqrt(x)/sqrt(3))/x^(5/6)};
+{bessel_j(-(7/3),2*sqrt(x)/sqrt(3))/x^(5/6),
+	bessel_y(-(7/3),2*sqrt(x)/sqrt(3))/x^(5/6)};
 
 odelin(x*'diff(y,x,2)+(x-1)*'diff(y,x,1)+(-2)*y,y,x);
 {x^2,x^2*'integrate(%e^-x/x^3,x)};
@@ -216,12 +216,12 @@ odelin('diff(y,x,2)+(1-2*a)*'diff(y,x,1)/x+(b^2+(a^2-n^2)/x^2)*y,y,x);
 {bessel_j(n,-b*x)*x^a,bessel_y(n,-b*x)*x^a};
 
 odelin('diff(y,x,2)+b^2*x^3*y,y,x);
-{bessel_j(-1/5,2*b*x^(5/2)/5)*sqrt(x),
-	bessel_y(-1/5,2*b*x^(5/2)/5)*sqrt(x)};
+{bessel_j(-(1/5),2*b*x^(5/2)/5)*sqrt(x),
+	bessel_y(-(1/5),2*b*x^(5/2)/5)*sqrt(x)};
 
 odelin('diff(y,x,2)+b^2*x^2*y,y,x);
-{bessel_j(-1/4,-b*x^2/2)*x/sqrt(-x),
-	bessel_y(-1/4,-b*x^2/2)*x/sqrt(-x)};
+{bessel_j(-(1/4),-(b*x^2/2))*x/sqrt(-x),
+	bessel_y(-(1/4),-(b*x^2/2))*x/sqrt(-x)};
 
 odelin('diff(y,x,2)+'diff(y,x,1)/x+4*(x^2-n^2/x^2)*y,y,x);
 {bessel_j(n,x^2),bessel_y(n,x^2)};
@@ -233,13 +233,13 @@ odelin('diff(y,x,2)+(1-n)*'diff(y,x,1)/x+y/(4*x),y,x);
 {bessel_j(n,sqrt(x))*x^(n/2),bessel_y(n,sqrt(x))*x^(n/2)};
 
 odelin('diff(y,x,1) = (-((x^9+4*x^7+6*x^5+4*x^3+x)*'diff(y,x,2)+((-100)*x^7-200*x^5+(-96)*x^3)*y))/(x^8+2*x^6+(-2)*x^2-1),y,x);
-{-bessel_j(5,-1/(x^2+1)),-bessel_y(5,-1/(x^2+1))};
+{bessel_j(-5,-(1/(x^2+1))),bessel_y(-5,-(1/(x^2+1)))};
 
 odelin('diff(y,x,2) = (-((x^10+x^8+(-10)*x^6+14*x^4+(-7)*x^2+1)*'diff(y,x,1)+(x^7+3*x^5+3*x^3+x)*y))/(x^11-3*x^9+2*x^7+2*x^5+(-3)*x^3+x),y,x);
-{bessel_j(0,-x/(x^2-1)),bessel_y(0,-x/(x^2-1))};
+{bessel_j(0,-(x/(x^2-1))),bessel_y(0,-(x/(x^2-1)))};
 
 odelin('diff(y,x,2) = (-((x^10+3*x^9+2*x^8+(-7)*x^7+(-25)*x^6+(-40)*x^5+(-43)*x^4+(-31)*x^3+(-16)*x^2+(-5)*x-1)*'diff(y,x,1)+(x^7-3*x^5+3*x^3-x)*y))/(x^11+4*x^10+9*x^9+12*x^8+9*x^7+(-9)*x^5+(-12)*x^4+(-9)*x^3+(-4)*x^2-x),y,x);
-{bessel_j(0,-x/(x^2+x+1)),bessel_y(0,-x/(x^2+x+1))};
+{bessel_j(0,-(x/(x^2+x+1))),bessel_y(0,-(x/(x^2+x+1)))};
 
 odelin('diff(y,x,2) = (2*x*'diff(y,x,1)-2*y)/x^2,y,x);
 {x,x^2};
@@ -257,9 +257,9 @@ odelin('diff(y,x,2) = ((4*a*x^4-8*a*x^3+(7*a-4)*x^2+(4-3*a)*x-1)*'diff(y,x,1)+(8
 {kummer_m(a,1/a,(x-1)*x),kummer_u(a,1/a,(x-1)*x)};
 
 odelin('diff(y,x,2) = (((8*a-6)*x^6+(24*a-18)*x^5+(42*a-34)*x^4+(44*a-38)*x^3+(30*a-27)*x^2+(12*a-11)*x+2*a-1)*'diff(y,x,1)+(8*a*x^3+12*a*x^2+6*a*x+a)*y)/(2*x^7+7*x^6+15*x^5+20*x^4+19*x^3+12*x^2+5*x+1),y,x);
-{bessel_j(-(2*a-1)/2,-%i/(2*(x^2+x+1)))
+{bessel_j(-((2*a-1))/2,-(%i/(2*(x^2+x+1))))
 	 *(x^2+x+1)^((2*a-1)/2)*%e^(1/(2*x^2+2*x+2)),
-	bessel_y(-(2*a-1)/2,-%i/(2*(x^2+x+1)))
+	bessel_y(-((2*a-1)/2),-(%i/(2*(x^2+x+1))))
 	 *(x^2+x+1)^((2*a-1)/2)*%e^(1/(2*x^2+2*x+2))};
 
 odelin('diff(y,x,2) = (-(((u+n+1)*x-k)*'diff(y,x,1)+n*u*y))/(x^2-x),y,x);
