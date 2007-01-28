@@ -169,19 +169,15 @@ cos(2*x)+1;
 */
 
 /* 23 */
-(pn_(23),ans:contrib_ode(eqn:'diff(y,x)=2*csc(2*x)*(sin(x)^3+y),y,x));
-[y=(2*((sin(x)*sin(2*x)+cos(x)*cos(2*x)+cos(x))/(2*sin(2*x)^2+2*cos(2*x)^2+4*cos(2*x)+2)-(sin(2*x)*sin(3*x)+(cos(2*x)+1)*cos(3*x)+3*sin(x)*sin(2*x)+5*cos(x)*cos(2*x)+5*cos(x))/(4*sin(2*x)^2+4*cos(2*x)^2+8*cos(2*x)+4))+%c)/(csc(2*x)+cot(2*x))];
-ans:map(trigrat,ans[1]);
-y=-(sin(2*x)-2*%c*sin(x))/(2*cos(x));
-[method,trigrat(ode_check(eqn,ans))];
+(pn_(23),ans:contrib_ode(eqn:'diff(y,x)=2*csc(2*x)*(sin(x)^3+y),y,x),ans:map(lambda([e],map(trigrat,e)),ans));
+[y=-(sin(2*x)-2*%c*sin(x))/(2*cos(x))];
+[method,trigrat(ode_check(eqn,ans[1]))];
 [linear,0];
 
 /* 24 */
-(pn_(24),ans:contrib_ode(eqn:'diff(y,x)=2*csc(2*x)*(1-tan(x)^2+y),y,x));
-[y=(-2*((3*cos(4*x)+3*cos(2*x)+2)*sin(6*x)+(-3*sin(4*x)-3*sin(2*x))*cos(6*x)+3*sin(4*x)+3*sin(2*x))/(3*sin(6*x)^2+(18*sin(4*x)+18*sin(2*x))*sin(6*x)+3*cos(6*x)^2+(18*cos(4*x)+18*cos(2*x)+6)*cos(6*x)+27*sin(4*x)^2+54*sin(2*x)*sin(4*x)+27*cos(4*x)^2+(54*cos(2*x)+18)*cos(4*x)+27*sin(2*x)^2+27*cos(2*x)^2+18*cos(2*x)+3)-2*((3*cos(2*x)+1)*sin(6*x)-3*sin(2*x)*cos(6*x)+(9*cos(2*x)+3)*sin(4*x)-9*sin(2*x)*cos(4*x))/(3*sin(6*x)^2+(18*sin(4*x)+18*sin(2*x))*sin(6*x)+3*cos(6*x)^2+(18*cos(4*x)+18*cos(2*x)+6)*cos(6*x)+27*sin(4*x)^2+54*sin(2*x)*sin(4*x)+27*cos(4*x)^2+(54*cos(2*x)+18)*cos(4*x)+27*sin(2*x)^2+27*cos(2*x)^2+18*cos(2*x)+3)-2*(cos(2*x)*sin(4*x)-sin(2*x)*cos(4*x)+sin(2*x))/(sin(4*x)^2+cos(4*x)^2-2*cos(4*x)+1)-2*sin(4*x)/(sin(4*x)^2+cos(4*x)^2-2*cos(4*x)+1)+%c)/(csc(2*x)+cot(2*x))];
-ans:map(trigrat,ans[1]);
-y=(%c*sin(2*x)-2)/(cos(2*x)+1);
-[method,trigrat(ode_check(eqn,ans))];
+(pn_(24),ans:contrib_ode(eqn:'diff(y,x)=2*csc(2*x)*(1-tan(x)^2+y),y,x),ans:map(lambda([e],map(trigrat,e)),ans));
+[y=(%c*sin(2*x)-2)/(cos(2*x)+1)];
+[method,trigrat(ode_check(eqn,ans[1]))];
 [linear,0];
 
 /* 25 */
