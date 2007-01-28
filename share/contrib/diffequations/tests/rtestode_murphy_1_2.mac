@@ -50,7 +50,7 @@ assume(a>0,b>0);
 [asinh(sqrt(b)*y/sqrt(a))/sqrt(b)=x+%c];
 ans:first(solve(ans[1],y));
 y=sqrt(a)*sinh(sqrt(b)*(x+%c))/sqrt(b);
-[method,trigsimp(ode_check(eqn,%))];
+[method,trigsimp(radcan(ode_check(eqn,%)))];
 [separable,0];
 forget(a>0,b>0);
 [a>0,b>0];
@@ -225,16 +225,8 @@ forget(a>b,4*a^2>4*b^2);
 /* 128 - FIXME: ode1_lie takes "forever" */
 /* (pn_(128),ans:contrib_ode(eqn:'diff(y,x)=(1+cos(x)*sin(y))*tan(y),y,x)); */
 
-/* 129 */
-(pn_(129),ans:contrib_ode(eqn:'diff(y,x)+csc(2*x)*sin(2*y)=0,y,x));
- [(log(sin(2*y)^2+cos(2*y)^2+2*cos(2*y)+1)-log(sin(y)^2+cos(y)^2+2*cos(y)+1)-log(sin(y)^2+cos(y)^2-2*cos(y)+1))/4=%c-log(csc(2*x)+cot(2*x))/2];
-map(exp,4*ans[1]);
-(sin(2*y)^2+cos(2*y)^2+2*cos(2*y)+1)/((sin(y)^2+cos(y)^2-2*cos(y)+1)*(sin(y)^2+cos(y)^2+2*cos(y)+1))=%e^(4*(%c-log(csc(2*x)+cot(2*x))/2));
-trigsimp(%);
-(cos(2*y)+1)/(2*sin(y)^2) = %e^(4*%c)*sin(2*x)^2/(cos(2*x)^2+2*cos(2*x)+1);
-subst(%c,exp(4*%c),%);
-(cos(2*y)+1)/(2*sin(y)^2) = %c*sin(2*x)^2/(cos(2*x)^2+2*cos(2*x)+1);
-/* Is this equivalent to tan(x)*tan(y)=C */
+/* 129 - See Kamke 1.199 */
+/* (pn_(129),ans:contrib_ode(eqn:'diff(y,x)+csc(2*x)*sin(2*y)=0,y,x)); */
 
 /* 132 CHECKME - Why the %I in the solution? */
 /* Interactive solution is equivalent but different */
