@@ -22,7 +22,7 @@
          "rtestode_murphy_2_4.mac"
          "rtestode_murphy_2_5.mac"
          "rtestode_kamke_1_1.mac"
-         (mlist "rtestode_kamke_1_2.mac" 223 224)
+         (mlist "rtestode_kamke_1_2.mac" 220 221)
          "rtestode_kamke_1_3.mac"
          "rtestode_kamke_1_4.mac" 
          (mlist "rtestode_kamke_1_5.mac" 71 107 114 150)
@@ -36,5 +36,6 @@
 	 "rtest_sym2.mac"
 	 "rtest_ode1_riccati.mac"
          "rtest_ode1_abel.mac"
+         "rtestode_odelin.mac"
 	)
 )
