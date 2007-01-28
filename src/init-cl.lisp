@@ -395,8 +395,10 @@
 		(combine-path (list *maxima-symdir* maxima-patterns))))
     (let 
       ((subdir-bit (if (null *maxima-lang-subdir*) "" (concatenate 'string "/" *maxima-lang-subdir*))))
+      (when (not (probe-file (concatenate 'string *maxima-infodir* subdir-bit "/maxima-index.lisp")))
+    	    (setq subdir-bit ""))
       (autof 'cl-info::cause-maxima-index-to-load
-             (concatenate 'string *maxima-infodir* subdir-bit "/maxima-index.lisp")))))
+                (concatenate 'string *maxima-infodir* subdir-bit "/maxima-index.lisp")))))
 
 (defun get-dirs (path)
   #+(or :clisp :sbcl)
