@@ -16,13 +16,13 @@ all-local: maxima-index.lisp
 maxima-index.lisp: maxima.info ../build_index.pl
 	perl ../build_index.pl maxima.info ':utf8' > maxima-index.lisp
 
-maximahtml_pt.mk: ../texi2html
+maximahtml_pt_BR.mk: ../texi2html
 	perl ../texi2html -split_chapter --lang=pt --output=. --css-include=../manual.css --init-file ../texi2html.init maxima.texi 
-	rm -f maximahtml_pt.mk
-	ls -1 maxima*.html | sed 's/\(.*\)/MAXIMAHTML += \1/' > maximahtml_pt.mk
+	rm -f maximahtml_pt_BR.mk
+	ls -1 maxima*.html | sed 's/\(.*\)/MAXIMAHTML += \1/' > maximahtml_pt_BR.mk
 
 MAXIMAHTML = 
-include maximahtml_pt.mk
+include maximahtml_pt_BR.mk
 
 $(MAXIMAHTML): maxima.texi $(maxima_TEXINFOS)
 	perl ../texi2html -split_chapter --lang=pt --output=. --css-include=../manual.css --init-file ../texi2html.init maxima.texi 
@@ -44,7 +44,7 @@ clean-html:
 	rm -f contents.hhc
 	rm -f index.hhk
 
-EXTRA_DIST = maximahtml_pt.mk header.hhp maxima-index.lisp $(genericdirDATA)
+EXTRA_DIST = maximahtml_pt_BR.mk header.hhp maxima-index.lisp $(genericdirDATA)
 
 maxima.info: maxima.texi
 	@rm -f $@ $@-[0-9] $@-[0-9][0-9]
