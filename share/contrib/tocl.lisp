@@ -7,7 +7,7 @@
  This software has NO WARRANTY, not even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
-If you need to use a Maxima expression in a Common Lisp program,
+If you need to use a Maxima expression in a Common Lisp (CL) program,
 the function 'common_lisp' might be useful to you. Basically,
 'common_lisp' converts a Maxima expression into a Lisp lambda form.
 It converts Maxima operators into their closest Common Lisp 
@@ -37,9 +37,20 @@ The function 'to_cl' doesn't generate a lambda form:
 (%i2) to_cl('(f(x) := (x : x + 1, x * x)))$
 (DEFUN $F (X) (PROGN (SETQ X (+ X 1)) (* X X))) 
 
-The function common_lisp should work correctly for polynomials
-and trig-like functions, block constructs, conditionals, and compound 
-statements. It doesn't work for any loop construct.
+The function common_lisp should work correctly for polynomials, trig-like 
+functions, block constructs, conditionals, compound statements, and
+ 'for' and 'while' loops. 
+
+The function 'cl_eval' evaluates the generated CL code; for example
+
+(%i1) 'block([acc : 0], for k : 1 thru 100 do acc : acc + 1.0/k, acc)$
+(%i2) [ev(%),cl_eval(%)];
+(%o2) [5.187377517639621,5.187377517639621]
+(%i3) 'block([acc : 0], for k : 1 thru 100 while acc < 1.78 do acc : acc + 1.0/k, acc :
+  acc + 1.2, acc+12.7)$
+(%i4) [ev(%),cl_eval(%)];
+(%o4) [15.73333333333333,15.73333333333333]
+
 |#
 
 (defun $common_lisp (e)
@@ -52,6 +63,9 @@ statements. It doesn't work for any loop construct.
 (defun $to_cl (e)
   (print (expr-to-cl (nformat ($ratdisrep e))))
   '$done)
+
+(defun $cl_eval (e)
+  (eval (expr-to-cl (nformat ($ratdisrep e)))))
 
 (setf (get 'mplus 'cl-function) '+)
 (setf (get 'mminus 'cl-function) '-)
@@ -73,6 +87,7 @@ statements. It doesn't work for any loop construct.
 (setf (get 'mprog 'cl-translation-function) 'block-tr)
 (setf (get 'mcond 'cl-translation-function) 'cond-tr)
 (setf (get 'mdefine 'cl-translation-function) 'mdefine-tr)
+(setf (get 'mdo 'cl-translation-function) 'mdo-tr)
 
 (defun lambda-tr (&rest f)
   `(lambda (,@(mapcar 'expr-to-cl (margs (first f)))) ,(expr-to-cl (second f))))
@@ -83,7 +98,7 @@ statements. It doesn't work for any loop construct.
     (dolist (ai f1)
       (push (if (op-equalp ai 'msetq) (mapcar 'expr-to-cl (margs ai)) (list (expr-to-cl ai))) acc))
     (setq acc (list (reverse acc)))
-    `(let ,@acc ,(expr-to-cl (second f)))))
+    `(let ,@acc ,@(mapcar #'expr-to-cl (cdr f)))))
 
 (defun cond-tr (&rest f)
   (let ((acc nil) (f1) (f2))
@@ -95,7 +110,24 @@ statements. It doesn't work for any loop construct.
 
 (defun mdefine-tr (&rest f)
   `(defun ,(caaar f) ,(mapcar 'expr-to-cl (cdar f)) ,(expr-to-cl (cadr f))))
-
+      
+(defun mdo-tr (&rest f)
+  (let ((k) (lo) (inc) (pred) (hi) (body) (op))
+    (setq k (expr-to-cl (nth 0 f)))
+    (setq lo (expr-to-cl (nth 1 f)))
+    (setq d (expr-to-cl (nth 2 f)))
+    (setq hi (expr-to-cl (nth 4 f))) ;; skips (nth 3 f)?
+    (setq pred (expr-to-cl (nth 5 f)))
+    (setq body (expr-to-cl (nth 6 f)))
+   
+    (cond ((and (null lo) (null hi) (null d)) `(do () (,pred (quote $done)) ,body))
+	  (t
+	   (setq d (or d 1))
+	   (setq op (if (> d 0) '> '<))
+	   (setq pred (if pred `((or (,op ,k ,hi) ,pred) (quote $done)) `((,op ,k ,hi) (quote $done))))
+	   (setq body (expr-to-cl (nth 6 f)))
+	   `(do ((,k ,lo (incf ,k ,d))) ,pred ,body)))))
+       		
 (defun mapatom-expr-to-cl (e)
   (cond ((eq e '$%i) (complex 0 1))
 	((memq e '($true t)) 't)
