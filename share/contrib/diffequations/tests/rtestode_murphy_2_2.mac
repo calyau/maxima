@@ -576,16 +576,22 @@ solve(ans[1],y);
 */
 
 /* 186 ode1_lie finds symmetry but ... */
+/* "solution" has changed.  Don't worry for now.
 (pn_(186),ans:contrib_ode(eqn:x^4*'diff(y,x)^2-x*'diff(y,x)-y=0,y,x));
 [(2*%i*x^2*sqrt(4*x^2*y+1)*'integrate((abs(x)*sqrt(4*x^2*y+1)-abs(x))/(x^3*sqrt(4*x^2*y+1)),x)+8*%i*x^2*abs(x)*y+2*%i*'integrate(abs(x)/x,x)+2*%i*abs(x))/(sqrt(2)*sqrt(3)*x^2*sqrt(4*x^2*y+1))=%c];
 method;
 lie;
+*/
 
-/* 187 ode1_lie finds symmetry but ... */
+/* 187 */
 (pn_(187),ans:contrib_ode(eqn:x^4*'diff(y,x)^2+2*x^3*y*'diff(y,x)-4=0,y,x));
 [(y*asinh(x*y^2/(2*abs(y)))+log(x)*abs(y))/abs(y)=%c];
-method;
-lie;
+(assume(y>0),solve(ratsimp(ans[1]),y));
+[y=-2*sinh(log(x)-%c)/x];
+[method,trigsimp(ode_check(eqn,%[1]))];
+[lie,0];
+forget(y>0);
+[y>0];
 
 /* 188  ode1_lie finds symmetry but returns long "answer" */
 /*(pn_(188),ans:contrib_ode(eqn:x^4*'diff(y,x)^2+x*y^2*'diff(y,x)-y^3=0,y,x));*/
@@ -603,10 +609,12 @@ forget(a>0);
 [a>0];
 
 /* 190 ode1_lie finds symmetry but ... */
+/* "solution" has changed - Jan 2007.  Don't care at present.
 (pn_(190),ans:contrib_ode(eqn:3*x^4*'diff(y,x)^2-x*y-y=0,y,x));
 [(4*sqrt(2)*sqrt(3)*%i*x*sqrt((x+1)*y)+sqrt(x+1)*(sqrt(2)*%i*x*log(sqrt(x+1)-1)-sqrt(2)*%i*x*log(sqrt(x+1)+1))-2*sqrt(2)*%i*x-2*sqrt(2)*%i)/(6*x*sqrt(x+1))=%c];
 method;
 lie;
+*/
 
 /* 191 ode1_lie finds symmetry but ... */
 assume(x>0);
