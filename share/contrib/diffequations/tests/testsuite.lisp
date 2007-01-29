@@ -17,15 +17,15 @@
          "rtestode_murphy_1_5.mac"
          "rtestode_murphy_1_6.mac"
          "rtestode_murphy_2_1.mac"
-         (mlist "rtestode_murphy_2_2.mac" 162)
+         "rtestode_murphy_2_2.mac"
          "rtestode_murphy_2_3.mac"
          "rtestode_murphy_2_4.mac"
          "rtestode_murphy_2_5.mac"
          "rtestode_kamke_1_1.mac"
-         (mlist "rtestode_kamke_1_2.mac" 220 221)
+         "rtestode_kamke_1_2.mac"
          "rtestode_kamke_1_3.mac"
          "rtestode_kamke_1_4.mac" 
-         (mlist "rtestode_kamke_1_5.mac" 71 107 114 150)
+         "rtestode_kamke_1_5.mac"
          "rtestode_kamke_1_6.mac" 
          "rtestode_kamke_2_1.mac"
          "rtestode_kamke_2_2.mac"
@@ -36,6 +36,6 @@
 	 "rtest_sym2.mac"
 	 "rtest_ode1_riccati.mac"
          "rtest_ode1_abel.mac"
-         "rtestode_odelin.mac"
+         (mlist "rtestode_odelin.mac" 73 75 81)
 	)
 )
