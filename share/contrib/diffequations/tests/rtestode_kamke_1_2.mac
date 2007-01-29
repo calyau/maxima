@@ -129,17 +129,21 @@ solve(ans[1],y);
 forget(x>0,y>0);
 [x>0,y>0];
 
-/* 115 */
+/* 115 - "solution" has changed - Jan 2007.  Don't care at present */
+/*
 (pn_(115),ans:contrib_ode(eqn:x*'diff(y,x)-x*(y-x)*sqrt(y^2+x^2)-y,y,x));
 [(2*'integrate((sqrt(y^2+x^2)*((y^2-x*y)*'integrate((2*y^2-x*y+x^2)*%e^-(log(y^2+x^2)/2)/(y^4-2*x*y^3+2*x^2*y^2-2*x^3*y+x^4),x)+(x-y)*'integrate(%e^-(log(y^2+x^2)/2)/(y-x),x))-x)/((y-x)*sqrt(y^2+x^2)),y)+2*y*'integrate(%e^-(log(y^2+x^2)/2)/(y-x),x)+x^2)/2=%c];
 method;
 lie;
+*/
 
-/* 116 */
+/* 116 - "solution" has changed - Jan 2007.  Don't care at present */
+/*
 (pn_(116),ans:contrib_ode(eqn:x*'diff(y,x)-x*sqrt((y^2-x^2)*(y^2-4*x^2))-y,y,x)); 
 [(2*'integrate((sqrt(y^4-5*x^2*y^2+4*x^4)*(y*'integrate((2*y^3-5*x^2*y)*%e^(-log(y+2*x)/2-log(y+x)/2-log(y-x)/2-log(y-2*x)/2)/(y^4-5*x^2*y^2+4*x^4),x)-'integrate(%e^(-log(y+2*x)/2-log(y+x)/2-log(y-x)/2-log(y-2*x)/2),x))-x)/sqrt(y^4-5*x^2*y^2+4*x^4),y)+2*y*'integrate(%e^(-log(y+2*x)/2-log(y+x)/2-log(y-x)/2-log(y-2*x)/2),x)+x^2)/2=%c];
 method;
 lie;
+*/
 
 /* 117 */
 (pn_(117),ans:contrib_ode(eqn:x*'diff(y,x)-x*exp(y/x)-y-x,y,x));
@@ -627,9 +631,19 @@ done;
 
 /*  192  */ 
 (pn_(192),ans:contrib_ode(eqn:sqrt(x^2+a^2)*'diff(y,x,1)+y-sqrt(x^2+a^2)+x,y,x));
-[y=%e^-asinh(x/abs(a))*(('integrate(%e^(log(x^2+a^2)/2),x))/a-('integrate(x^2*%e^-(log(x^2+a^2)/2),x))/abs(a)+(a-abs(a))*x^2/(2*a*abs(a))+%c)];
-method;
-linear;
+ [y = %e^-asinh(x/abs(a))*(('integrate(sqrt(x^2+a^2),x))/a
+     -('integrate(x^2/sqrt(x^2+a^2),x))/abs(a)
+     +(a-abs(a))*x^2/(2*a*abs(a))+%c)];
+assume(a>0);  /* Just check when a>0 */
+[a>0];
+radcan(ans),integrate;
+[y = %e^-asinh(x/a)*(a*asinh(x/a)+%c)];
+logarc(%[1]);
+y=(a*log(sqrt(x^2/a^2+1)+x/a)+%c)/(sqrt(x^2/a^2+1)+x/a);
+[method,ode_check(eqn,%[1])];
+[linear,0];
+forget(a>0);
+[a>0];
 
 /*  193  */ 
 (pn_(193),ans:contrib_ode(eqn:x*log(x)*'diff(y,x,1)+y-a*x*(log(x)+1),y,x));
@@ -672,11 +686,19 @@ y=-sqrt(sin(x)-1)*('integrate((sin(x)+1)^(3/2)/sqrt(sin(x)-1),x)-%c)
 [method,trigsimp(ode_check(eqn,ans[1]))];
 [linear,0];
 
-/*  199  */ 
+/*  199  - also Murphy 1.129 */ 
 (pn_(199),ans:contrib_ode(eqn:sin(2*y)+sin(2*x)*'diff(y,x,1),y,x));
-[(log(sin(2*y)^2+cos(2*y)^2+2*cos(2*y)+1)-log(sin(y)^2+cos(y)^2+2*cos(y)+1)-log(sin(y)^2+cos(y)^2-2*cos(y)+1))/4=%c-(log(sin(2*x)^2+cos(2*x)^2+2*cos(2*x)+1)-log(sin(x)^2+cos(x)^2+2*cos(x)+1)-log(sin(x)^2+cos(x)^2-2*cos(x)+1))/4];
-method;
-separable;
+[(log(cos(2*y)+1)-log(cos(2*y)-1))/4=%c-(log(cos(2*x)+1)-log(cos(2*x)-1))/4];
+trigsimp(map(exp,4*ans[1]));
+(cos(2*y)+1)/(cos(2*y)-1) = (%e^(4*%c)*cos(2*x)-%e^(4*%c))/(cos(2*x)+1);
+subst(%c,exp(4*%c),%);
+(cos(2*y)+1)/(cos(2*y)-1)=(%c*cos(2*x)-%c)/(cos(2*x)+1);
+solve(%,y);
+[y = acos(%c*cos(2*x)/(%c*cos(2*x)-cos(2*x)-%c-1)
+    +cos(2*x)/(%c*cos(2*x)-cos(2*x)-%c-1)-%c/(%c*cos(2*x)-cos(2*x)-%c-1)
+    +1/(%c*cos(2*x)-cos(2*x)-%c-1))/2];
+[method,trigsimp(ode_check(eqn,%[1]))];
+[separable,0];
 
 /*  200  */ 
 (pn_(200),ans:contrib_ode(eqn:(a*sin(x)^2+b)*'diff(y,x,1)+a*sin(2*x)*y+A*x*(a*sin(x)^2+c),y,x));
