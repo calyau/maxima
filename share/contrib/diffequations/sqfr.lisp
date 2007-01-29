@@ -44,11 +44,6 @@
 (defun mbag-map (f bag)
   (simplify `((,(mop bag)) ,@(mapcar f (margs bag)))))
 
-(defmacro while (cond &rest body)
-  `(do ()
-       ((not ,cond))
-     ,@body))
-
 (defun $strictmysqfr (p x)
   (setq p ($expand ($ratdisrep p)))
   (setq x (require-symbol x "$mysqfr"))

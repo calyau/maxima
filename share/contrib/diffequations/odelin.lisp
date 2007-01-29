@@ -38,11 +38,6 @@
 
 (defmvar $de_solver_is_loquacious t)
 
-(defmacro while (cond &rest body)
-  `(do ()
-       ((not ,cond))
-     ,@body))
-
 (defun $okay (de y x)
   (let ((okay t))
   (setq de (require-linear-homogeneous-de de y x))
