@@ -9,49 +9,13 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :maxima)
+
 (macsyma-module rzmac macro)
 
 ;;;   *****************************************************************
 ;;;   ***** MACROS ******* ASSORTED MACROS FOR GENERAL REPRESENTATION *
 ;;;   *****************************************************************
 
-(defmacro repeat (index limit . body)
-  `(do ((,index 0 (f1+ ,index)))
-    ((not (< ,index ,limit))) . ,body))
-
-(defmacro logor (&rest frobs) `(boole  boole-ior . ,frobs))
-
-(defmacro add-to-set (set frob)
-  `((lambda (temp)
-      (or (memq temp ,set)
-	  (setq ,set (cons temp ,set))))
-    ,frob))
-
-#+its
-(defmacro compiling ()
-  `(and (boundp 'compiler-state)
-    (not (eq compiler-state 'toplevel))))
-#-its
-(defmacro compiling nil t)
-
-
-;;(defun *bind* macro (l)
-;;(macro *bind* (l)
-;;       ((lambda (bindings body)
-;;		(nconc (list 'do (mapcar (fn (q)
-;;					     (cond ((atom q)
-;;						    (list q))
-;;						   ((eq (cadr q) '|<-|)
-;;						    (list (car q) (caddr q)))
-;;						   (t q)))
-;;					 bindings)
-;;			     nil)
-;;		       (maplist (fn (x) (cond ((null (cdr x))
-;;					       (cons 'return x))
-;;					      ((car x))))
-;;				body)))
-;;	(cadr l) (cddr l)))
-						
 (defmacro *bind* (bindings &body body)
   (nconc (list 'do (mapcar (fn (q)
 			       (cond ((atom q)
@@ -66,13 +30,6 @@
 				((car x))))
 		  body)))
 
-  
-
-
-
-(defmacro displace2 (form new-car new-cdr)
-  `(rplaca (rplacd ,form ,new-cdr) ,new-car))
-
 ;; Returns the negation of VALUE if PREDICATE is true.  Otherwise, just
 ;; returns VALUE.
 
@@ -80,9 +37,6 @@
   `(let ((,temp ,predicate))
     (cond (,temp (neg ,value))
 	  (t ,value))))
-
-(defmacro either (which first second)
-  `(cond (,which ,first) (,second)))
 
 ;; Setq's the first variable to VALUE if SWITCH is true, and sets the second
 ;; variable otherwise.
@@ -92,11 +46,7 @@
     (cond (,switch (setq ,first-var ,temp))
 	  (t (setq ,second-var ,temp)))))
 
-#-cl ;;I could not find any callers of this thank god.
-(defmacro \* (&rest l) `(remainder . ,l))
-
-
-(comment symbolic arithmetic macros)
+;; symbolic arithmetic macros
 
 (defmacro m+ (&rest body) `(add* . ,body))
 
@@ -120,7 +70,6 @@
 
 (defmacro m*l (l) `(muln ,l nil))
 
-;;With 
 (defmacro m+t (&rest body) `(add . ,body))
 
 (defmacro m*t (&rest body) `(mul . ,body))
