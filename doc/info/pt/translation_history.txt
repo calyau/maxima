@@ -4,9 +4,9 @@ Portugal Portuguese History File
 Directory updates and adjust. After this date pt is
 sycronized with pt_BR.
 Portugal Portuguese directory incorporate all pt_BR
-improviments including UTF-8 by Vadim V. Zhytnikov
-and aditional packages allocated by Mario Rodrigues
-Riotorto.
+improviments including UTF-8 by Vadim V. Zhytnikov,
+aditional packages allocated by Mario Rodrigues
+Riotorto and all orietation given by Robert Dodier.
 By Jorge Barros de Abreu.
 
 11/12/2006
