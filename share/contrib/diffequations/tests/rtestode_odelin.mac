@@ -1,6 +1,6 @@
 /* Unit tests for odelin.  Inputs are from file de-tests.txt in odelin19.tar.gz */
 
-(load('odelin),done);
+(kill(all),load('odelin),done);
 done;
 
 odelin('diff(y,x,2)+y,y,x);
