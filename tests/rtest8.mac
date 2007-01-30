@@ -132,3 +132,13 @@ x1^2+x2^2 = 1;
 x2^2+x1^2 = 1$
 solve([exp,%],[x1,x2]);
 [[x1 = -1/sqrt(5),x2 = -2/sqrt(5)],[x1 = 1/sqrt(5),x2 = 2/sqrt(5)]]$
+
+/* verify that find_root is happy with %e
+ * (problem reported on mailing list 2007/01/25)
+ */
+
+find_root (2*x = -(log((4 + %e)/(2*%pi)))*(((4 + %e)/(2*%pi))^x), x, -1, 0);
+-0.03340289826874122;
+
+find_root (2*x = cos((%e + %pi)*x), x, 0, 1);
+0.1984210505656873;

@@ -94,7 +94,7 @@ Perhaps you meant to enter `~a'.~%" (print-invert-case (implode (mstring `(($fin
 	 (cond (translp
 		`(($find_root_subr) ,@form))
 	       (t
-		`((mprog) ((mlist) ((msetq) $numer t))
+		`((mprog) ((mlist) ((msetq) $numer t) ((msetq) $%enumer t))
 		  (($find_root_subr)  ,@form)))))
 	((= (length form) 4)
 	 (destructuring-let (((exp var . bnds) form))
@@ -106,7 +106,7 @@ Perhaps you meant to enter `~a'.~%" (print-invert-case (implode (mstring `(($fin
 		     ,exp)
 		    ,@bnds))
 		 (t
-		  `((mprog) ((mlist) ((msetq) $numer t))
+		  `((mprog) ((mlist) ((msetq) $numer t) ((msetq) $%enumer t))
 		    (($find_root_subr)
 		     ((lambda) ((mlist) ,var) ,exp)
 		     ,@bnds))))))
