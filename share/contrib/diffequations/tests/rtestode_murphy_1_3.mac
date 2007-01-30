@@ -55,9 +55,11 @@ genhom;
 
 /* 268 */
 (pn_(268),ans:contrib_ode(eqn:x^2*'diff(y,x)+2+a*x*(1-x*y)-x^2*y^2=0,y,x));
-[[y=-'diff(%u,x,1)/%u,%u*(-a/x-2/x^2)-'diff(%u,x,1)*a+'diff(%u,x,2)=0]];
-method;
-riccati;
+ [y = -(%c*a^3*x^3*%e^(a*x)-%c*a^2*x^2*%e^(a*x)+2*%c*a*x*%e^(a*x)
+                                 -2*%c*%e^(a*x)-1)
+          /(x*(2*%c*%e^(a*x)+1)+%c*a^2*x^3*%e^(a*x)-2*%c*a*x^2*%e^(a*x))];
+[method,ode_check(eqn,ans[1])];
+[riccati,0];
 
 /* 270 */
 (pn_(270),ans:contrib_ode(eqn:x^2*'diff(y,x)=a+b*x^n+c*x^2*y^2,y,x));
@@ -71,9 +73,19 @@ riccati;
 method;
 genhom;
 
-/* 272 */
+/* 272 - CHECKME */
 (pn_(272),ans:contrib_ode(eqn:x^2*'diff(y,x)=a+b*x*y+c*x^4*y^2,y,x));
-[[y=-'diff(%u,x,1)/(%u*c*x^2),%u*a*c^2*x^2+'diff(%u,x,2)*c*x^2-'diff(%u,x,1)*(b*c*x+2*c*x)=0]];
+[y = (sqrt(a)*(%c*bessel_y(-(b+5)/2,-sqrt(a)*sqrt(c)*x)
+                     +bessel_j(-(b+5)/2,-sqrt(a)*sqrt(c)*x))*sqrt(c)*x
+          +b*(-%c*bessel_y(-(b+3)/2,-sqrt(a)*sqrt(c)*x)
+             -bessel_j(-(b+3)/2,-sqrt(a)*sqrt(c)*x))
+          -3*%c*bessel_y(-(b+3)/2,-sqrt(a)*sqrt(c)*x)
+          -3*bessel_j(-(b+3)/2,-sqrt(a)*sqrt(c)*x))
+          /((%c*bessel_y(-(b+3)/2,-sqrt(a)*sqrt(c)*x)
+           +bessel_j(-(b+3)/2,-sqrt(a)*sqrt(c)*x))
+           *c*x^3)];
+method;
+riccati;
 
 /* 275 - Abel eqn of 1st kind */
 (pn_(275),ans:contrib_ode(eqn:x^2*'diff(y,x)=a*x^2*y^2-a*y^3,y,x));
@@ -83,10 +95,12 @@ false;
 (pn_(276),ans:contrib_ode(eqn:x^2*'diff(y,x)+a*y^2+b*x^2*y^3=0,y,x));
 false;
 
-/* 300 Riccati - Lie symmetry method works */
+/* 300 Riccati */
 (pn_(300),ans:contrib_ode(eqn:(1-x^2)*'diff(y,x)=1-(2*x-y)*y,y,x));
-[-((log(x+1)-log(x-1))*y-x*log(x+1)+x*log(x-1)+2)/(2*y-2*x) = %c];
-ans:first(solve(ans[1],y));
-y = (x*log(x+1)-x*log(x-1)+2*%c*x-2)/(log(x+1)-log(x-1)+2*%c);
-[method,ode_check(eqn,ans)];
-[lie,0];
+ [y = (x^2*((x+1)*(%c*log(x+1)-%c*log(x-1)+1)
+                 +(x-1)*(%c*log(x+1)-%c*log(x-1)+1))
+          +(x+1)*(-%c*log(x+1)+%c*log(x-1)-4*%c*(x-1)-1)
+          +(x-1)*(-%c*log(x+1)+%c*log(x-1)-1))
+          /((x-1)*(x+1)*(2*%c*log(x+1)-2*%c*log(x-1)+2))];
+[method,ode_check(eqn,ans[1])];
+[riccati,0];

@@ -605,21 +605,24 @@ y = -x/(x^2+%c);
 [method,ode_check(eqn,ans)];
 [exact,0];
 
-/* 181 Riccati - CHECK SOLUTION
-   Fails as can't solve -a*'DIFF(z,x,2)-2*a*'DIFF(z,x,1)/x-a^2*b*z = 0 
-*/
+/* 181 Riccati */
 (pn_(181),assume(a>0,b>0),ans:contrib_ode(eqn:x*'diff(y,x)+b*x+(2+a*x*y)*y=0,y,x),forget(a>0,b>0),ans);
-[-(sqrt(a)*sqrt(b)*(atan((a^2*x*y^2+a*y+a*b*x)/(sqrt(a)*sqrt(b)))-atan(sqrt(a)*y/sqrt(b)))-a*b*x)/(a*b)=%c];
+[y = (x*(%c*sqrt(a)*sqrt(-b)*%e^(2*sqrt(a)*sqrt(-b)*x)
+     -sqrt(a)*sqrt(-b))-%c*%e^(2*sqrt(a)*sqrt(-b)*x)-1)
+    /(a*x*(%c*%e^(2*sqrt(a)*sqrt(-b)*x)+1))];
+[method,ode_check(eqn,ans[1])];
+[riccati,0];
 
 /* 182 Riccati */
-ans:contrib_ode(eqn:x*'diff(y,x)+a0+a1*x+(a2+a3*x*y)*y=0,y,x);
+(pn_(182),ans:contrib_ode(eqn:x*'diff(y,x)+a0+a1*x+(a2+a3*x*y)*y=0,y,x));
 [[y='diff(%u,x,1)/(%u*a3),%u*a3^2*(-a0/x-a1)-'diff(%u,x,1)*a2*a3/x-'diff(%u,x,2)*a3=0]];
 method;
 riccati;
 
-/* 183 Riccati */
+/* 183 Riccati - CHECK ME */
 (pn_(183),ans:contrib_ode(eqn:x*'diff(y,x)+a*x^2*y^2+2*y=b,y,x));
-[[y='diff(%u,x,1)/(%u*a*x),%u*a^2*b*x-'diff(%u,x,2)*a*x-'diff(%u,x,1)*a=0]];
+[y=(bessel_y(1,-sqrt(a)*sqrt(-b)*x)*%c+bessel_j(1,-sqrt(a)*sqrt(-b)*x))*sqrt(-b)
+  /((bessel_y(0,-sqrt(a)*sqrt(-b)*x)*%c+bessel_j(0,-sqrt(a)*sqrt(-b)*x))*sqrt(a)*x)];
 method;
 riccati;
 
@@ -641,17 +644,17 @@ ans:map(radcan,ans);
 [method,ode_check(eqn,ans[1])];
 [bernoulli,0];
 
-/* 186 */
-(pn_(186),ans:contrib_ode(eqn:x*'diff(y,x)=a*x^m-b*y-c*x^n*y^2,y,x));
+/* 186 - FIXME 2006-12-11 - Runs forever */
+/* (pn_(186),ans:contrib_ode(eqn:x*'diff(y,x)=a*x^m-b*y-c*x^n*y^2,y,x));
 [[y='diff(%u,x,1)*x^(1-n)/(%u*c),-'diff(%u,x,2)*c*x^(n-1)-'diff(%u,x,1)*(b*c*x^(n-2)-c*(n-1)*x^(n-2))+%u*a*c^2*x^(2*(n-1)+m-1)=0]];
 method;
-riccati;
+riccati; */
 
-/* 187 */
-(pn_(187),ans:contrib_ode(eqn:x*'diff(y,x)=2*x-y+a*x^n*(x-y)^2,y,x));
+/* 187 - FIXME 2006-12-11 - Runs forever */
+/* (pn_(187),ans:contrib_ode(eqn:x*'diff(y,x)=2*x-y+a*x^n*(x-y)^2,y,x));
 [[y=-'diff(%u,x,1)*x^(1-n)/(%u*a),%u*a^2*x^(2*(n-1))*(a*x^(n+1)+2)-'diff(%u,x,1)*(a*x^(n-1)*(-2*a*x^n-1/x)+a*(n-1)*x^(n-2))+'diff(%u,x,2)*a*x^(n-1)=0]];
 method;
-riccati;
+riccati; */
 
 /* 188 */
 (pn_(188),ans:contrib_ode(eqn:x*'diff(y,x)+(1-a*y*log(x))*y=0,y,x));
