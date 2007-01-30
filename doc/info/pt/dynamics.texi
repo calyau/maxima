@@ -1,5 +1,5 @@
-@c Language: Portuguese, Encoding: iso-8859-1
-@c /dynamics.texi/1.10/Tue Dec 12 04:06:49 2006//
+@c Language: Portuguese
+@c Source: dynamics.texi (en) 1.10
 @menu
 * Introdu@value{cedilha}@~ao a dynamics::
 * Defini@value{cedilha}@~oes para dynamics::
@@ -341,7 +341,7 @@ amarelo 60, verde 120, azul ciano 180 e azul 240. Consulte tamb@'em a
 op@,{c}@~ao @var{huerange}.
 
 @item
-@dfn{saturation} define o n@'ivel de satura@,{c}@~ao das cores
+@dfn{saturation} define o n@'{@dotless{i}}vel de satura@,{c}@~ao das cores
 usadas para os pontos que n@~ao perten@,{c}am ao
 conjunto. Dever@'a ser um valor entre 0 e 1. O valor por omiss@~ao @'e
 0.46.
@@ -372,7 +372,7 @@ cabe dentro da regi@~ao quadrada que ser@'a representada. O valor
 por omiss@~ao @'e 2.
 
 @item
-@dfn{nomearquivo} d@'a o nome do ficheiro onde ser@'a armazenado o
+@dfn{nomeficheiro} d@'a o nome do ficheiro onde ser@'a armazenado o
 gr@'afico produzido. A esse nome ser@'a acrescentada a
 termina@,{c}@~ao .xpm. Se o ficheiro j@'a existir, ser@'a
 substitu@'{@dotless{i}}do pelo ficheiro produzido pela
@@ -492,7 +492,7 @@ representa@,{c}@~ao gr@'afica do conjunto de Mandelbrot, com
 12 colores, use o comando:
 
 @example
-mandelbrot([nomearquivo,"dinamica9"])$
+mandelbrot([nomeficheiro,"dinamica9"])$
 @end example
 
 @ifnotinfo
@@ -502,7 +502,7 @@ mandelbrot([nomearquivo,"dinamica9"])$
 e o conjunto de Julia do n@'umero (-0.55 + i 0.6) pode ser obtido com:
 @example
 julia(-0.55, 0.6, [levels, 36], [center, 0, 0.6], [radius, 0.3],
-      [hue, 240], [huerange, -180], [nomearquivo, "dinamica10"])$
+      [hue, 240], [huerange, -180], [nomeficheiro, "dinamica10"])$
 @end example
 
 o gr@'afico guardar-se-@'a no ficheiro @emph{dinamica10.xpm} e
