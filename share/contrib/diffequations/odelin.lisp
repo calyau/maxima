@@ -38,12 +38,23 @@
 
 (defmvar $de_solver_is_loquacious t)
 
+(defun ode-polynomialp (p x)
+  (setq p ($ratdisrep p))
+  (or
+   ($freeof x p)
+   (like p x)
+   (and (or (mtimesp p) (mplusp p)) 
+	(every #'(lambda (s) (ode-polynomialp s x)) (margs p)))
+   (and (mexptp p) (ode-polynomialp (car (margs p)) x) 
+	(integerp (cadr (margs p)))
+	(> (cadr (margs p)) 0))))
+   
 (defun $okay (de y x)
   (let ((okay t))
   (setq de (require-linear-homogeneous-de de y x))
   (dolist (p de)
-    (setq okay (and okay ($polynomialp ($ratnumer p) x) 
-		    ($polynomialp ($ratnumer p) x))))
+    (setq okay (and okay (ode-polynomialp ($ratnumer p) x) 
+		    (ode-polynomialp ($ratnumer p) x))))
   okay))
 
 (defun $rerat (dirtyrat)
@@ -146,10 +157,10 @@
     (setq p1 (div p1 p2))
     (setq p0 (div p0 p2))
 
-    (if (not (and ($polynomialp ($ratnumer p1) x)
-		  ($polynomialp ($ratdenom p1) x)
-		  ($polynomialp ($ratnumer p0) x)
-		  ($polynomialp ($ratdenom p0) x)))
+    (if (not (and (ode-polynomialp ($ratnumer p1) x)
+		  (ode-polynomialp ($ratdenom p1) x)
+		  (ode-polynomialp ($ratnumer p0) x)
+		  (ode-polynomialp ($ratdenom p0) x)))
 	(setq ode-methods nil))
       
     (setq p (add p0 (div ($diff p1 x) -2) (mul p1 p1 (div -1 4))))
