@@ -20,8 +20,13 @@
   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.	
 */
 
+declare(method,special);
+
 if get('ode1_nonlinear,'version)=false then
   load('ode1_nonlinear)$
+
+if get('odelin,'version)=false then
+  load('odelin)$
 
 contrib_ode(eqn,y,x) := block(
   [soln,degree:derivdegree(eqn,y,x)],
@@ -50,18 +55,51 @@ contrib_ode(eqn,y,x) := block(
     )
   )
   else if (degree=2) then (
-    ode_disp("   Second order equation"),
+    return(ode2_linear(eqn,y,x))
+  )
+  else (
+    error("contrib_ode: This case cannot occur"),
+    false
+  )
+)$
+
+/* Try methods for linear 2nd order ODEs.
+   eqn is a 2nd order ODE.
+   FIXME: Remove multiple checks for linearity 
+*/
+ode2_linear(eqn,y,x) := block(
+  [de,a1,a2,a3,a4,soln,%k1,%k2],
+  ode_disp("   Second order equation"),
+  de: desimp(lhs(eqn)-rhs(eqn)),
+  a1: coeff(de,'diff(y,x,2)), 
+  a2: coeff(de,'diff(y,x)), 
+  a3: coeff(de,y),
+  a4: expand(de - a1*'diff(y,x,2) - a2*'diff(y,x) - a3*y),
+  if (freeof(y,[a1,a2,a3,a4])) then (
+    ode_disp("     Linear 2nd order ODE"),
+    /* Try the ode2 routines first */
     ode_disp("    -> ode2"),
     soln:ode2(eqn,y,x),
     if (soln#false) then (
       ode_disp("     Successful"),
       [soln]
+    ) else if is(a4=0) then (
+      /* Now try the routines in odelin */
+      ode_disp("    -> odelin"),
+      soln:odelin(eqn,y,x),
+      if (soln#false) then (
+        ode_disp("     Successful"),
+        method:'odelin,
+        ode_disp(soln),
+        /* odelin returns a fundamental soln set */
+        soln:listify(soln),
+        [y=%k1*soln[1]+%k2*soln[2]]
+      ) else (
+        false
+      )
     )
-    else
-      false
-  )
-  else (
-    error("contrib_ode: This case cannot occur"),
+  ) else (
+    ode_disp("     Non-linear 2nd order ODE"),
     false
   )
 )$
