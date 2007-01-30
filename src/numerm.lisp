@@ -15,9 +15,6 @@
 ;;; Macros for interface of lisp numerical routines to maxima
 ;;; for use with the functions in Maxsrc;Numer.
 
-(defmacro aref$ (&rest l)
-  `(aref (the (simple-array double-float) ,(car l)) ,@(cdr l)))
-
 (defmacro defbindtramp$ (nargs)
   (let ((bind-tramp$ (symbolconc 'bind-tramp nargs '$))
 	(tramp$ (symbolconc 'tramp nargs '$)))
