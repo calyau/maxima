@@ -162,12 +162,12 @@ the first element of the range @var{trange}.
 The plot is of the path traced out by the pair
 @code{[@var{x_expr}, @var{y_expr}]} as @var{var} varies in @var{trange}.
 
+@b{Parametric plot examples:}
+@c PUT PARAMETRIC EXAMPLES HERE
+
 In the following example, we plot a circle, then we do
 the plot with only a few points used, so that we get a star,
 and finally we plot this together with an ordinary function of X.
-
-@b{Parametric plot examples:}
-@c PUT PARAMETRIC EXAMPLES HERE
 
 @itemize @bullet
 @item
@@ -206,7 +206,7 @@ plot.
 
 @end itemize
 
-Discrete expressions may also be used instead or ordinary or
+Discrete expressions may also be used instead of ordinary or
 parametric expressions:
 @var{discrete_expr} is a list of the form
 @code{[discrete, @var{x_list}, @var{y_list}]}
@@ -304,7 +304,7 @@ pt_set: append (["NoLines: True", "LargePixels: true"],
 @end example
 
 @noindent
-would make the point set [and subsequent ones], have  
+would make the point set (and subsequent ones), have  
 no lines between points, and to use large pixels.
 See the man page on xgraph for more options to specify.
 
@@ -910,11 +910,11 @@ See also @code{closeps}.
 
 
 @deffn {Function} closeps ()
-This should usually becalled at the end of a sequence of plotting
-commands.   It closes the current output stream @var{pstream}, and sets
-it to nil.   It also may be called at the start of a plot, to ensure
-pstream is closed if it was open.    All commands which write to
-pstream, open it if necessary.   @code{closeps} is separate from the other
+This should usually be called at the end of a sequence of plotting
+commands. It closes the current output stream @var{pstream}, and sets
+it to nil. It also may be called at the start of a plot, to ensure
+pstream is closed if it was open. All commands which write to
+pstream, open it if necessary. @code{closeps} is separate from the other
 plotting commands, since we may want to plot 2 ranges or superimpose
 several plots, and so must keep the stream open.
 @end deffn
@@ -925,8 +925,8 @@ Assigns one of the global variables for plotting.
 in which the first element is one of the keywords
 on the @code{plot_options} list.
 
-@code{set_plot_option} evaluates its argument.
-@code{set_plot_option} returns @code{plot_options} 
+@code{set_plot_option} evaluates its argument and
+returns the complete list @code{plot_options} 
 (after modifying one of its elements).
 
 See also @code{plot_options}, @code{plot2d}, and @code{plot3d}.
