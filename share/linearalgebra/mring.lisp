@@ -101,6 +101,7 @@
    :great #'>
    :add #'+
    :div #'/
+   :rdiv #'/
    :reciprocal #'/
    :mult #'*
    :sub #'-
@@ -128,6 +129,7 @@
    :great #'>
    :add #'+
    :div #'/
+   :rdiv #'/
    :reciprocal #'/
    :mult #'*
    :sub #'-
