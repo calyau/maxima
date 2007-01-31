@@ -40,14 +40,13 @@ forget(a>0);
 [riccati,0];
 
 /* 104 */
-assume(a>0,b>0);
-[a>0,b>0];
 (pn_(104),ans:contrib_ode(eqn: x*'diff(y,x)+a*x*y^2+2*y+b*x,y,x));
-[-(sqrt(a)*sqrt(b)*(atan((a^2*x*y^2+a*y+a*b*x)/(sqrt(a)*sqrt(b)))-atan(sqrt(a)*y/sqrt(b)))-a*b*x)/(a*b)=%c];
-method;
-lie;
-forget(a>0,b>0);
-[a>0,b>0];
+[y = (x*(%c*sqrt(a)*sqrt(-b)*%e^(2*sqrt(a)*sqrt(-b)*x)
+               -sqrt(a)*sqrt(-b))
+          -%c*%e^(2*sqrt(a)*sqrt(-b)*x)-1)
+          /(a*x*(%c*%e^(2*sqrt(a)*sqrt(-b)*x)+1))];
+[method,ode_check(eqn,ans[1])];
+[riccati,0];
 
 /* 105 */
 (pn_(105),ans:contrib_ode(eqn:x*'diff(y,x)+a*x*y^2+b*y+c*x+d,y,x));
@@ -317,9 +316,12 @@ forget(4*b-a^2+2*a-1>0);
 
 /*  142  */ 
 (pn_(142),ans:contrib_ode(eqn:x^2*('diff(y,x,1)-y^2)-a*x^2*y+a*x+2,y,x));
-[[y=-'diff(%u,x,1)/%u,%u*(-a/x-2/x^2)-'diff(%u,x,1)*a+'diff(%u,x,2)=0]];
-method;
-riccati;
+[y = -(%c*a^3*x^3*%e^(a*x)-%c*a^2*x^2*%e^(a*x)+2*%c*a*x*%e^(a*x)
+                                 -2*%c*%e^(a*x)-1)
+          /(x*(2*%c*%e^(a*x)+1)+%c*a^2*x^3*%e^(a*x)-2*%c*a*x^2*%e^(a*x))];
+[method,ode_check(eqn,ans[1])];
+[riccati,0];
+
 
 /*  143  */ 
 assume(4*a*b>-1);
@@ -389,9 +391,13 @@ false;
 
 /*  155  */ 
 (pn_(155),ans:contrib_ode(eqn:(x^2-1)*'diff(y,x,1)+y^2-2*x*y+1,y,x));
-[-((log(x+1)-log(x-1))*y-x*log(x+1)+x*log(x-1)+2)/(2*y-2*x)=%c];
+[y = (x^2*((x+1)*(%c*log(x+1)-%c*log(x-1)+1)
+                 +(x-1)*(%c*log(x+1)-%c*log(x-1)+1))
+          +(x+1)*(-%c*log(x+1)+%c*log(x-1)-4*%c*(x-1)-1)
+          +(x-1)*(-%c*log(x+1)+%c*log(x-1)-1))
+          /((x-1)*(x+1)*(2*%c*log(x+1)-2*%c*log(x-1)+2))];
 [method,ode_check(eqn,ans[1])];
-[lie,0];
+[riccati,0];
 
 /*  156  */ 
 (pn_(156),ans:contrib_ode(eqn:(x^2-1)*'diff(y,x,1)-y*(y-x),y,x));
@@ -401,9 +407,12 @@ false;
 
 /*  157  */ 
 (pn_(157),ans:contrib_ode(eqn:(x^2-1)*'diff(y,x,1)+a*(y^2-2*x*y+1),y,x));
-[[y='diff(%u,x,1)*(x^2-1)/(%u*a),-'diff(%u,x,1)*(2*a*x/(x^2-1)^2-2*a^2*x/(x^2-1)^2)-'diff(%u,x,2)*a/(x^2-1)-%u*a^3/(x^2-1)^3=0]];
-method;
-riccati;
+[y = -((%c*dgauss_b(1-a,a,1,-(x-1)/2)+dgauss_a(1-a,a,1,-(x-1)/2))*x^2
+          +(-2*%c*gauss_b(1-a,a,1,-(x-1)/2)-2*gauss_a(1-a,a,1,-(x-1)/2))*a*x
+          -%c*dgauss_b(1-a,a,1,-(x-1)/2)-dgauss_a(1-a,a,1,-(x-1)/2))
+          /((2*%c*gauss_b(1-a,a,1,-(x-1)/2)+2*gauss_a(1-a,a,1,-(x-1)/2))*a)];
+[method,ode_check(eqn,ans[1])];
+[riccati,0];
 
 /*  158  */ 
 (pn_(158),ans:contrib_ode(eqn:(x^2-1)*'diff(y,x,1)+a*x*y^2+x*y,y,x));
@@ -431,9 +440,10 @@ riccati;
 
 /*  162  */ 
 (pn_(162),ans:contrib_ode(eqn:(x-a)*(x-b)*'diff(y,x,1)+y^2+k*(y+x-a)*(y+x-b),y,x));
-[(log((k+1)*y+k*x-b*k)-log((k+1)*y+k*x-a*k)+k*log(x-b)-k*log(x-a))/((b-a)*k)=%c];
+[y = -(k*(-b*(x-b)^k-%c*a*(x-a)^k)+k*x*((x-b)^k+%c*(x-a)^k))
+          /(k*((x-b)^k+%c*(x-a)^k)+(x-b)^k+%c*(x-a)^k)];
 [method,ode_check(eqn,ans[1])];
-[lie,0];
+[riccati,0];
 
 /*  163  */
 assume(x>0);
@@ -447,7 +457,9 @@ forget(x>0);
 
 /*  164  */ 
 (pn_(164),ans:contrib_ode(eqn:2*x^2*'diff(y,x,1)-2*y^2-3*x*y+2*a^2*x,y,x));
-[[y=-'diff(%u,x,1)*x^2/%u,'diff(%u,x,2)/x^2+'diff(%u,x,1)/(2*x^3)-%u*a^2/x^5=0]];
+[y = -(bessel_y(-3/2,2*a/sqrt(-x))*%c+bessel_j(-3/2,2*a/sqrt(-x)))
+          *a*sqrt(-x)
+          /(bessel_y(-1/2,2*a/sqrt(-x))*%c+bessel_j(-1/2,2*a/sqrt(-x)))];
 method;
 riccati;
 
@@ -459,9 +471,15 @@ riccati;
 
 /*  166  */ 
 (pn_(166),ans:contrib_ode(eqn:2*(x-1)*x*'diff(y,x,1)+(x-1)*y^2-x,y,x));
-[[y=2*'diff(%u,x,1)*x/%u,%u/(4*x^2*(2*x-2))-'diff(%u,x,2)/(2*x)-'diff(%u,x,1)/(2*x^2)=0]];
-method;
-riccati;
+[y = ((2*dgauss_b(1/2,3/2,1,x)*%c+2*dgauss_a(1/2,3/2,1,x))*x^2
+          +(2*gauss_b(1/2,3/2,1,x)*%c-2*dgauss_b(1/2,3/2,1,x)*%c
+                                     +2*gauss_a(1/2,3/2,1,x)
+                                     -2*dgauss_a(1/2,3/2,1,x))
+           *x)
+          /((gauss_b(1/2,3/2,1,x)*%c+gauss_a(1/2,3/2,1,x))*x
+           -gauss_b(1/2,3/2,1,x)*%c-gauss_a(1/2,3/2,1,x))];
+[method,ode_check(eqn,ans[1])];
+[riccati,0];
 
 /*  167  */ 
 (pn_(167),ans:contrib_ode(eqn:3*x^2*'diff(y,x,1)-7*y^2-3*x*y-x^2,y,x));
@@ -473,9 +491,29 @@ solve(map(log,ans[1]),y);
 
 /*  168  */ 
 (pn_(168),ans:contrib_ode(eqn:3*(x^2-4)*'diff(y,x,1)+y^2-x*y-3,y,x));
-[[y='diff(%u,x,1)*(3*x^2-12)/%u,-'diff(%u,x,2)/(3*x^2-12)+%u/((x^2-4)*(3*x^2-12)^2)-5*'diff(%u,x,1)*x/(3*x^2-12)^2=0]];
-method;
-riccati;
+[y = -(x^2*(((3*dgauss_b(1/2,7/6,4/3,-(x-2)/4)*%c
+                  +3*dgauss_a(1/2,7/6,4/3,-(x-2)/4))
+                  *(x-2)
+                  -3*gauss_b(1/2,7/6,4/3,-(x-2)/4)*%c
+                  -3*gauss_a(1/2,7/6,4/3,-(x-2)/4))
+                  *(x+2)
+                  +(-3*gauss_b(1/2,7/6,4/3,-(x-2)/4)*%c
+                   -3*gauss_a(1/2,7/6,4/3,-(x-2)/4))
+                   *(x-2))
+          +((-12*dgauss_b(1/2,7/6,4/3,-(x-2)/4)*%c
+           -12*dgauss_a(1/2,7/6,4/3,-(x-2)/4))
+           *(x-2)
+           +12*gauss_b(1/2,7/6,4/3,-(x-2)/4)*%c
+           +12*gauss_a(1/2,7/6,4/3,-(x-2)/4))
+           *(x+2)
+          +(12*gauss_b(1/2,7/6,4/3,-(x-2)/4)*%c
+           +12*gauss_a(1/2,7/6,4/3,-(x-2)/4))
+           *(x-2))
+          /((4*gauss_b(1/2,7/6,4/3,-(x-2)/4)*%c
+           +4*gauss_a(1/2,7/6,4/3,-(x-2)/4))
+           *(x-2)*(x+2))];
+[method,ode_check(eqn,ans[1])];
+[riccati,0];
 
 /*  169  */ 
 (pn_(169),ans:contrib_ode(eqn:(a*x+b)^2*'diff(y,x,1)+(a*x+b)*y^3+c*y^2,y,x));
@@ -533,9 +571,12 @@ riccati;
 
 /*  178  */ 
 (pn_(178),ans:contrib_ode(eqn:2*x*(x^2-1)*'diff(y,x,1)+2*(x^2-1)*y^2+(5-3*x^2)*y+x^2-3,y,x));
-[[y='diff(%u,x,1)*x/%u,-'diff(%u,x,1)*(1/x^2-(3*x^2/(2*x^3-2*x)-5/(2*x^3-2*x))/x)+%u*(3/(2*x^3-2*x)-x^2/(2*x^3-2*x))/x^2-'diff(%u,x,2)/x=0]];
-method;
-riccati;
+[y = (%c*sqrt(x-1)*sqrt(x+1)*'integrate(1/(sqrt(x-1)*sqrt(x)*sqrt(x+1)),x)
+         +sqrt(x-1)*sqrt(x+1)+%c*sqrt(x))
+    /(%c*sqrt(x-1)*sqrt(x+1)*'integrate(1/(sqrt(x-1)*sqrt(x)*sqrt(x+1)),x)
+         +sqrt(x-1)*sqrt(x+1))];
+[method,ode_check(eqn,ans[1])];
+[riccati,0];
 
 /*  179  */ 
 (pn_(179),ans:contrib_ode(eqn:3*x*(x^2-1)*'diff(y,x,1)+x*y^2+(-x^2-1)*y-3*x,y,x));
@@ -565,9 +606,14 @@ forget(a>0);
 
 /*  182  */ 
 (pn_(182),ans:contrib_ode(eqn:x*(x^3-1)*'diff(y,x,1)-2*x*y^2+y+x^2,y,x));
-[[y=-'diff(%u,x,1)*(x^3-1)/(2*%u),-'diff(%u,x,1)*(-2/((x^3-1)*(x^4-x))-6*x^2/(x^3-1)^2)+2*'diff(%u,x,2)/(x^3-1)-4*%u*x/(x^3-1)^3=0]];
-method;
-riccati;
+ [y = (2*%c*(x-1)*x^6+x*(3*%c*(x-1)*(x^2+x+1)-2*(x-1))
+                          +x^4*(2*(x-1)-3*%c*(x-1)*(x^2+x+1))
+                          +x^5*(%c*(x^2+x+1)+%c*(x-1))
+                          +x^2*(-%c*(x^2+x+1)-%c*(x-1))
+                          +x^3*(x^2+x+(1-2*%c)*(x-1)+1)-x^2-2*x)
+         /(3*%c*(x-1)*x^2*(x^2+x+1)+3*(x-1)*(x^2+x+1))];
+[method,ode_check(eqn,ans[1])];
+[riccati,0];
 
 /*  183  */ 
 (pn_(183),ans:contrib_ode(eqn:(2*x^4-x)*'diff(y,x,1)-2*(x^3-1)*y,y,x));
@@ -575,11 +621,11 @@ riccati;
 [method,ode_check(eqn,ans[1])];
 [linear,0];
 
-/*  184  */ 
-(pn_(184),ans:contrib_ode(eqn:(a*x^2+b*x+c)^2*('diff(y,x,1)+y^2)+A,y,x));
+/*  184  - FIXME 2006-12-11 - Runs forever */ 
+/* (pn_(184),ans:contrib_ode(eqn:(a*x^2+b*x+c)^2*('diff(y,x,1)+y^2)+A,y,x));
 [[y='diff(%u,x,1)/%u,-%u*A/(a^2*x^4+2*a*b*x^3+2*a*c*x^2+b^2*x^2+2*b*c*x+c^2)-'diff(%u,x,2)=0]];
 method;
-riccati;
+riccati; */
 
 /*  185  */ 
 /* This equation presents a problem - runs forever */ 
