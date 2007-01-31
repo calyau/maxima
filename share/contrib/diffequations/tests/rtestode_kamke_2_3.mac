@@ -11,19 +11,29 @@ true;
 
 /* Kamke 2. 201  */ 
 (pn_(201),ans:contrib_ode(eqn:x^2*'diff(y,x,2)+x*(2*x+1)*'diff(y,x,1)-4*y,y,x));
-false;
+[y = kummer_u(-2,-3,-2*x)*%k2/x^2+kummer_m(-2,-3,-2*x)*%k1/x^2];
+[method,ode_check(eqn,ans[1])];
+[odelin,0];
 
 /* Kamke 2. 202  */ 
 (pn_(202),ans:contrib_ode(eqn:x^2*'diff(y,x,2)-2*x*(x+1)*'diff(y,x,1)+2*(x+1)*y,y,x));
-false;
+[y = %k2*x*%e^(2*x)+%k1*x];
+[method,ode_check(eqn,ans[1])];
+[odelin,0];
 
 /* Kamke 2. 203  */ 
 (pn_(203),ans:contrib_ode(eqn:x^2*'diff(y,x,2)+a*x^2*'diff(y,x,1)-2*y,y,x));
-false;
+[y = bessel_y(-3/2,-%i*a*x/2)*%k2*sqrt(-x)*%e^-(a*x/2)
+    +bessel_j(-3/2,-%i*a*x/2)*%k1*sqrt(-x)*%e^-(a*x/2)];
+method;
+odelin;
 
 /* Kamke 2. 204  */ 
 (pn_(204),ans:contrib_ode(eqn:x^2*'diff(y,x,2)+(2*b+a)*x^2*'diff(y,x,1)+(b*(b+a)*x^2-2)*y,y,x));
-false;
+[y = bessel_y(-3/2,-%i*a*x/2)*%k2*sqrt(-x)*%e^-(b*x+a*x/2)
+    +bessel_j(-3/2,-%i*a*x/2)*%k1*sqrt(-x)*%e^-(b*x+a*x/2)];
+method;
+odelin;
 
 /* Kamke 2. 205  */ 
 (pn_(205),ans:contrib_ode(eqn:x^2*'diff(y,x,2)+a*x^2*'diff(y,x,1)+f(x)*y,y,x));
@@ -31,27 +41,57 @@ false;
 
 /* Kamke 2. 206  */ 
 (pn_(206),ans:contrib_ode(eqn:x^2*'diff(y,x,2)+x*(2*a*x+b)*'diff(y,x,1)+(c*x^2+a*b*x+d)*y,y,x));
-false;
+[y=%k2*bessel_y(sqrt(-4*d+b^2-2*b+1)/2,-sqrt(c-a^2)*x)*%e^-(a*x)/x^(b/2-1/2)
+  +%k1*bessel_j(sqrt(-4*d+b^2-2*b+1)/2,-sqrt(c-a^2)*x)*%e^-(a*x)/x^(b/2-1/2)];
+method;
+odelin;
 
 /* Kamke 2. 207  */ 
 (pn_(207),ans:contrib_ode(eqn:x^2*'diff(y,x,2)+x*(a*x+b)*'diff(y,x,1)+(a1*x^2+b1*x+c_1)*y,y,x));
-false;
+[y = %k2*kummer_u(((4*a1-a^2)*sqrt(-4*c_1+b^2-2*b+1)
+                          +sqrt(a^2-4*a1)*(a*b-2*b1)+4*a1-a^2)
+                          /(2*(4*a1-a^2)),sqrt(-4*c_1+b^2-2*b+1)+1,
+                         -sqrt(a^2-4*a1)*x)*x^((sqrt(-4*c_1+b^2-2*b+1)-b+1)/2)
+               *%e^((sqrt(a^2-4*a1)-a)*x/2)
+     +%k1*kummer_m(((4*a1-a^2)*sqrt(-4*c_1+b^2-2*b+1)
+                         +sqrt(a^2-4*a1)*(a*b-2*b1)+4*a1-a^2)
+                         /(2*(4*a1-a^2)),sqrt(-4*c_1+b^2-2*b+1)+1,
+                        -sqrt(a^2-4*a1)*x)*x^((sqrt(-4*c_1+b^2-2*b+1)-b+1)/2)
+              *%e^((sqrt(a^2-4*a1)-a)*x/2)];
+[method,ode_check(eqn,ans[1])];
+[odelin,0];
 
 /* Kamke 2. 208  */ 
 (pn_(208),ans:contrib_ode(eqn:x^2*'diff(y,x,2)+x^3*'diff(y,x,1)+(x^2-2)*y,y,x));
-false;
+[y = %k2*%e^-(x^2/2)*(sqrt(2)*sqrt(%pi)*%e^(x^2/2)*erf(x/sqrt(2))-2*x)/x
+    +%k1/x];
+[method,ode_check(eqn,ans[1])];
+[odelin,0];
 
 /* Kamke 2. 209  */ 
 (pn_(209),ans:contrib_ode(eqn:x^2*'diff(y,x,2)+x*(x^2+2)*'diff(y,x,1)+(x^2-2)*y,y,x));
-false;
+[y = %k2*%e^-(x^2/2)
+          *(sqrt(2)*sqrt(%pi)*%i*erf(%i*x/sqrt(2))+2*x*%e^(x^2/2))/x^2
+    +%k1*%e^-(x^2/2)/x^2];
+[method,ode_check(eqn,ans[1])];
+[odelin,0];
 
 /* Kamke 2. 210  */ 
 (pn_(210),ans:contrib_ode(eqn:x^2*'diff(y,x,2)-2*x*(x^2-a)*'diff(y,x,1)+(2*n*x^2+a*((-1)^n-1))*y,y,x));
-false;
+[y = %k2*kummer_u((sqrt(-4*a*(-1)^n+4*a^2+1)-2*n-2*a+1)/4,
+                         (sqrt(-4*a*(-1)^n+4*a^2+1)+2)/2,x^2)
+               *x^((sqrt(-4*a*(-1)^n+4*a^2+1)-2*a+1)/2)
+    +%k1*kummer_m((sqrt(-4*a*(-1)^n+4*a^2+1)-2*n-2*a+1)/4,
+                        (sqrt(-4*a*(-1)^n+4*a^2+1)+2)/2,x^2)
+              *x^((sqrt(-4*a*(-1)^n+4*a^2+1)-2*a+1)/2)];
+[method,ode_check(eqn,ans[1])];
+[odelin,0];
 
 /* Kamke 2. 211  */ 
 (pn_(211),ans:contrib_ode(eqn:x^2*'diff(y,x,2)+4*x^3*'diff(y,x,1)+(4*x^4+2*x^2+1)*y,y,x));
-false;
+[y = %k2*x^((sqrt(-3)+1)/2)*%e^-x^2+%k1*%e^-x^2/x^(sqrt(-3)/2-1/2)];
+[method,ode_check(eqn,ans[1])];
+[odelin,0];
 
 /* Kamke 2. 212  */ 
 (pn_(212),ans:contrib_ode(eqn:x^2*'diff(y,x,2)+x*(a*x^2+b)*'diff(y,x,1)+f(x)*y,y,x));
@@ -59,11 +99,21 @@ false;
 
 /* Kamke 2. 213  */ 
 (pn_(213),ans:contrib_ode(eqn:x^2*'diff(y,x,2)+x*(x^3+1)*'diff(y,x,1)-y,y,x));
-false;
+ [y = kummer_u(2/3,1/3,x^3/3)*%k2*%e^-(x^3/3)/x
+     +kummer_m(2/3,1/3,x^3/3)*%k1*%e^-(x^3/3)/x];
+[method,ode_check(eqn,ans[1])];
+[odelin,0];
 
 /* Kamke 2. 214  */ 
 (pn_(214),ans:contrib_ode(eqn:x^2*'diff(y,x,2)+(-x^4+(2*n+2*a+1)*x^2+a*(-1)^n-a^2)*y,y,x));
-false;
+[y = %k2*kummer_u((sqrt(-4*a*(-1)^n+4*a^2+1)-2*n-2*a+1)/4,
+                         (sqrt(-4*a*(-1)^n+4*a^2+1)+2)/2,x^2)
+               *x^((sqrt(-4*a*(-1)^n+4*a^2+1)+1)/2)*%e^-(x^2/2)
+          +%k1*kummer_m((sqrt(-4*a*(-1)^n+4*a^2+1)-2*n-2*a+1)/4,
+                        (sqrt(-4*a*(-1)^n+4*a^2+1)+2)/2,x^2)
+              *x^((sqrt(-4*a*(-1)^n+4*a^2+1)+1)/2)*%e^-(x^2/2)];
+[method,ode_check(eqn,ans[1])];
+[odelin,0];
 
 /* Kamke 2. 215  */ 
 (pn_(215),ans:contrib_ode(eqn:x^2*'diff(y,x,2)+x*(a*x^n+b)*'diff(y,x,1)+(a1*x^(2*n)+b1*x^n+c_1)*y,y,x));
@@ -123,19 +173,34 @@ xformtoconstcoeff;
 
 /* Kamke 2. 225  */ 
 (pn_(225),ans:contrib_ode(eqn:(x^2+1)*'diff(y,x,2)-x*'diff(y,x,1)+y,y,x));
-false;
+[y = gauss_b(2,2,5/2,-(%i*x-1)/2)*%k2*(-%i*x-1)^(1/4)*(1-%i*x)^(1/4)
+                                        *(x^2+1)^(5/4)
+    +gauss_a(2,2,5/2,-(%i*x-1)/2)*%k1*(-%i*x-1)^(1/4)*(1-%i*x)^(1/4)
+                                       *(x^2+1)^(5/4)];
+[method,ode_check(eqn,ans[1])];
+[odelin,0];
 
 /* Kamke 2. 226  */ 
 (pn_(226),ans:contrib_ode(eqn:(x^2+1)*'diff(y,x,2)+2*x*'diff(y,x,1)-(v-1)*v*y,y,x));
-false;
+[y = %k2*gauss_b(1-v,v,1,-(%i*x-1)/2)*sqrt(-%i*x-1)*sqrt(1-%i*x)/sqrt(x^2+1)
+    +%k1*gauss_a(1-v,v,1,-(%i*x-1)/2)*sqrt(-%i*x-1)*sqrt(1-%i*x)/sqrt(x^2+1)];
+[method,ode_check(eqn,ans[1])];
+[odelin,0];
 
 /* Kamke 2. 227  */ 
 (pn_(227),ans:contrib_ode(eqn:(x^2+1)*'diff(y,x,2)-2*x*'diff(y,x,1)+2*y,y,x));
-false;
+[y = %k2*(x^2+1)*%e^(2*%i*atan(x))+%k1*(x^2+1)*%e^-(2*%i*atan(x))];
+[method,ode_check(eqn,ans[1])];
+[odelin,0];
 
 /* Kamke 2. 228  */ 
 (pn_(228),ans:contrib_ode(eqn:(x^2+1)*'diff(y,x,2)+3*x*'diff(y,x,1)+a*y,y,x));
-false;
+[y = %k2*gauss_b(sqrt(1-a),-sqrt(1-a),1/2,-(%i*x-1)/2)*(-%i*x-1)^(1/4)
+               *(1-%i*x)^(1/4)/(x^2+1)^(3/4)
+    +%k1*gauss_a(sqrt(1-a),-sqrt(1-a),1/2,-(%i*x-1)/2)*(-%i*x-1)^(1/4)
+              *(1-%i*x)^(1/4)/(x^2+1)^(3/4)];
+[method,ode_check(eqn,ans[1])];
+[odelin,0];
 
 /* Kamke 2. 229  */ 
 (pn_(229),ans:contrib_ode(eqn:(x^2+1)*'diff(y,x,2)+4*x*'diff(y,x,1)+2*y-2*cos(x)+2*x,y,x));
@@ -155,7 +220,9 @@ exact;
 
 /* Kamke 2. 231  */ 
 (pn_(231),ans:contrib_ode(eqn:(x^2-1)*'diff(y,x,2)-v*(v+1)*y,y,x));
-false;
+[y = %k2*gauss_b(-v-1,v,0,-(x-1)/2)+%k1*gauss_a(-v-1,v,0,-(x-1)/2)];
+[method,ode_check(eqn,ans[1])];
+[odelin,0];
 
 /* Kamke 2. 232  */ 
 (pn_(232),ans:contrib_ode(eqn:(x^2-1)*'diff(y,x,2)-n*(n+1)*y+Diff(LegendreP(n,x),x),y,x));
@@ -203,31 +270,55 @@ variationofparameters;
 
 /* Kamke 2. 239  */ 
 (pn_(239),ans:contrib_ode(eqn:(x^2-1)*'diff(y,x,2)+2*x*'diff(y,x,1)-l*y,y,x));
-false;
+ [y = %k2*gauss_b((sqrt(4*l+1)+1)/2,-(sqrt(4*l+1)-1)/2,1,-(x-1)/2)
+     +%k1*gauss_a((sqrt(4*l+1)+1)/2,-(sqrt(4*l+1)-1)/2,1,-(x-1)/2)];
+[method,ode_check(eqn,ans[1])];
+[odelin,0];
 
 /* Kamke 2. 240  */ 
 (pn_(240),ans:contrib_ode(eqn:(x^2-1)*'diff(y,x,2)+2*x*'diff(y,x,1)-v*(v+1)*y,y,x));
-false;
+[y = %k2*gauss_b(-v,v+1,1,-(x-1)/2)+%k1*gauss_a(-v,v+1,1,-(x-1)/2)];
+[method,ode_check(eqn,ans[1])];
+[odelin,0];
 
 /* Kamke 2. 241  */ 
 (pn_(241),ans:contrib_ode(eqn:(x^2-1)*'diff(y,x,2)-2*x*'diff(y,x,1)+(-v-2)*(v-1)*y,y,x));
-false;
+[y = %k2*gauss_b(-v,v+1,3,-(x-1)/2)*(x-1)^2
+    +%k1*gauss_a(-v,v+1,3,-(x-1)/2)*(x-1)^2];
+[method,ode_check(eqn,ans[1])];
+[odelin,0];
 
 /* Kamke 2. 242  */ 
 (pn_(242),ans:contrib_ode(eqn:(x^2-1)*'diff(y,x,2)-(3*x+1)*'diff(y,x,1)+(x-x^2)*y,y,x));
-false;
+ [y = %k2*%e^-x
+               *(x^3*'integrate((8*x-7)*%e^(2*x)/(x^4+4*x^3+6*x^2+4*x+1),x)
+                +3*x^2*'integrate((8*x-7)*%e^(2*x)/(x^4+4*x^3+6*x^2+4*x+1),x)
+                +3*x*'integrate((8*x-7)*%e^(2*x)/(x^4+4*x^3+6*x^2+4*x+1),x)
+                +'integrate((8*x-7)*%e^(2*x)/(x^4+4*x^3+6*x^2+4*x+1),x)
+                -2*x^2*%e^(2*x)+3*x*%e^(2*x))/(x+1)
+        +%k1*(x+1)^2*%e^-x];
+[method,ode_check(eqn,ans[1])];
+[odelin,0];
 
 /* Kamke 2. 243  */ 
 (pn_(243),ans:contrib_ode(eqn:(x^2-1)*'diff(y,x,2)+4*x*'diff(y,x,1)+(x^2+1)*y,y,x));
-false;
+[y = %k2*%e^(%i*x)/((x-1)*(x+1))+%k1*%e^-(%i*x)/((x-1)*(x+1))];
+[method,ode_check(eqn,ans[1])];
+[odelin,0];
 
 /* Kamke 2. 244  */ 
 (pn_(244),ans:contrib_ode(eqn:(x^2-1)*'diff(y,x,2)+2*(n+1)*x*'diff(y,x,1)+(-v-n-1)*(v-n)*y,y,x));
-false;
+ [y = %k2*gauss_b(-v,v+1,n+1,-(x-1)/2)/(x+1)^n
+     +%k1*gauss_a(-v,v+1,n+1,-(x-1)/2)/(x+1)^n];
+[method,ode_check(eqn,ans[1])];
+[odelin,0];
 
 /* Kamke 2. 245  */ 
 (pn_(245),ans:contrib_ode(eqn:(x^2-1)*'diff(y,x,2)-2*(n-1)*x*'diff(y,x,1)+(-v+n-1)*(v+n)*y,y,x));
-false;
+[y = %k2*gauss_b(-v,v+1,n+1,-(x-1)/2)*(x-1)^n
+    +%k1*gauss_a(-v,v+1,n+1,-(x-1)/2)*(x-1)^n];
+[method,ode_check(eqn,ans[1])];
+[odelin,0];
 
 /* Kamke 2. 246  */ 
 (pn_(246),ans:contrib_ode(eqn:(x^2-1)*'diff(y,x,2)-2*(v-1)*x*'diff(y,x,1)-2*v*y,y,x));
@@ -239,27 +330,43 @@ exact;
 
 /* Kamke 2. 247  */ 
 (pn_(247),ans:contrib_ode(eqn:(x^2-1)*'diff(y,x,2)+2*a*x*'diff(y,x,1)+(a-1)*a*y,y,x));
-false;
+ [y = %k2*(x+1)^(1-a)*'integrate((x+1)^a/((x-1)^a*(x^2+2*x+1)),x)
+     +%k1*(x+1)^(1-a)];
+[method,ode_check(eqn,ans[1])];
+[odelin,0];
 
 /* Kamke 2. 248  */ 
+/* Take a long time
 (pn_(248),ans:contrib_ode(eqn:(x^2-1)*'diff(y,x,2)+a*x*'diff(y,x,1)+(b*x^2+c*x+d)*y,y,x));
 false;
+*/
 
 /* Kamke 2. 249  */ 
+/* Take a long time
 (pn_(249),ans:contrib_ode(eqn:(x^2-1)*'diff(y,x,2)+(a*x+b)*'diff(y,x,1)+c*y,y,x));
 false;
+*/
 
 /* Kamke 2. 250  */ 
 (pn_(250),ans:contrib_ode(eqn:(x^2-a^2)*'diff(y,x,2)+8*x*'diff(y,x,1)+12*y,y,x));
-false;
+[y = %k2*(3*x^2+a^2)/((x-a)^3*(x+a)^3)+%k1/(x+a)^3];
+[method,ode_check(eqn,ans[1])];
+[odelin,0];
 
 /* Kamke 2. 251  */ 
 (pn_(251),ans:contrib_ode(eqn:x*(x+1)*'diff(y,x,2)-(x-1)*'diff(y,x,1)+y,y,x));
-false;
+[y = gauss_b(2,2,1,-x)*%k2*(x+1)^3+gauss_a(2,2,1,-x)*%k1*(x+1)^3];
+[method,ode_check(eqn,ans[1])];
+[odelin,0];
 
 /* Kamke 2. 252  */ 
 (pn_(252),ans:contrib_ode(eqn:x*(x+1)*'diff(y,x,2)+(a*x+b)*'diff(y,x,1)+c*y,y,x));
-false;
+[y = %k2*gauss_b((sqrt(-4*c+a^2-2*a+1)+a-1)/2,
+                        -(sqrt(-4*c+a^2-2*a+1)-a+1)/2,b,-x)
+    +%k1*gauss_a((sqrt(-4*c+a^2-2*a+1)+a-1)/2,
+                       -(sqrt(-4*c+a^2-2*a+1)-a+1)/2,b,-x)];
+[method,ode_check(eqn,ans[1])];
+[odelin,0];
 
 /* Kamke 2. 253  */ 
 (pn_(253),ans:contrib_ode(eqn:x*(x+1)*'diff(y,x,2)+(3*x+2)*'diff(y,x,1)+y,y,x));
@@ -271,7 +378,16 @@ exact;
 
 /* Kamke 2. 254  */ 
 (pn_(254),ans:contrib_ode(eqn:(x^2+x-2)*'diff(y,x,2)+(x^2-x)*'diff(y,x,1)+(-6*x^2-7*x)*y,y,x));
-false;
+ [y = %k2*%e^-(3*x)
+               *(2*x^2*%e^(5*x)
+                  *'integrate((7*x-12)*%e^-(5*x)/(x^3-3*x^2+3*x-1),x)
+                -4*x*%e^(5*x)
+                  *'integrate((7*x-12)*%e^-(5*x)/(x^3-3*x^2+3*x-1),x)
+                +2*%e^(5*x)*'integrate((7*x-12)*%e^-(5*x)/(x^3-3*x^2+3*x-1),x)
+                -x^2-4*x)/(x-1)
+     +%k1*(x-1)*%e^(2*x)];
+[method,ode_check(eqn,ans[1])];
+[odelin,0];
 
 /* Kamke 2. 255  */ 
 (pn_(255),ans:contrib_ode(eqn:(x-1)*x*'diff(y,x,2)+a*'diff(y,x,1)-2*y,y,x));
@@ -283,7 +399,9 @@ exact;
 
 /* Kamke 2. 256  */ 
 (pn_(256),ans:contrib_ode(eqn:(x-1)*x*'diff(y,x,2)+(2*x-1)*'diff(y,x,1)-v*(v+1)*y,y,x));
-false;
+[y = %k2*gauss_b(-v,v+1,1,x)+%k1*gauss_a(-v,v+1,1,x)];
+[method,ode_check(eqn,ans[1])];
+[odelin,0];
 
 /* Kamke 2. 257  */ 
 (pn_(257),ans:contrib_ode(eqn:(x-1)*x*'diff(y,x,2)+((a+1)*x+b)*'diff(y,x,1),y,x));
@@ -295,11 +413,19 @@ freeofy;
 
 /* Kamke 2. 258  */ 
 (pn_(258),ans:contrib_ode(eqn:(x-1)*x*'diff(y,x,2)+(a*x+b)*'diff(y,x,1)+c*y,y,x));
-false;
+[y = %k2*gauss_b((sqrt(-4*c+a^2-2*a+1)+a-1)/2,
+                        -(sqrt(-4*c+a^2-2*a+1)-a+1)/2,-b,x)
+    +%k1*gauss_a((sqrt(-4*c+a^2-2*a+1)+a-1)/2,
+                       -(sqrt(-4*c+a^2-2*a+1)-a+1)/2,-b,x)];
+[method,ode_check(eqn,ans[1])];
+[odelin,0];
 
 /* Kamke 2. 259  */ 
 (pn_(259),ans:contrib_ode(eqn:(x-1)*x*'diff(y,x,2)+((a+1)*x+b)*'diff(y,x,1)-l*y,y,x));
-false;
+[y = %k2*gauss_b((sqrt(4*l+a^2)+a)/2,-(sqrt(4*l+a^2)-a)/2,-b,x)
+    +%k1*gauss_a((sqrt(4*l+a^2)+a)/2,-(sqrt(4*l+a^2)-a)/2,-b,x)];
+[method,ode_check(eqn,ans[1])];
+[odelin,0];
 
 /* Kamke 2. 260  */ 
 (pn_(260),ans:contrib_ode(eqn:(x-1)*x*'diff(y,x,2)+((b1+a1+1)*x-d1)*'diff(y,x,1)+a1*b1*d1,y,x));
@@ -315,7 +441,10 @@ false;
 
 /* Kamke 2. 262  */ 
 (pn_(262),ans:contrib_ode(eqn:(x+1)^2*'diff(y,x,2)+(x^2+x-1)*'diff(y,x,1)+(-x-2)*y,y,x));
-false;
+[y = %k2*%e^-x*'integrate((x+1)*%e^(x^2/(x+1)+x/(x+1)-1/(x+1)),x)
+    +%k1*%e^-x];
+[method,ode_check(eqn,ans[1])];
+[odelin,0];
 
 /* Kamke 2. 263  CHECKME - seems OK */ 
 (pn_(263),ans:contrib_ode(eqn:x*(x+3)*'diff(y,x,2)+(3*x-1)*'diff(y,x,1)+y+(-20*x-30)*(x^2+3*x)^(7/3),y,x));
@@ -327,7 +456,9 @@ variationofparameters;
 
 /* Kamke 2. 264  */ 
 (pn_(264),ans:contrib_ode(eqn:(x^2+3*x+4)*'diff(y,x,2)+(x^2+x+1)*'diff(y,x,1)+(-2*x-3)*y,y,x));
-false;
+[y = %k2*%e^-x+%k1*(x^2+x+3)];
+[method,ode_check(eqn,ans[1])];
+[odelin,0];
 
 /* Kamke 2. 265  */ 
 (pn_(265),ans:contrib_ode(eqn:(x-2)*(x-1)*'diff(y,x,2)-(2*x-3)*'diff(y,x,1)+y,y,x));
@@ -355,11 +486,30 @@ false;
 
 /* Kamke 2. 269  */ 
 (pn_(269),ans:contrib_ode(eqn:2*(x-1)*x*'diff(y,x,2)+((2*v+5)*x-2*v-3)*'diff(y,x,1)+(v+1)*y,y,x));
-false;
+[y = %k2*gauss_b(-v,1/2,-(2*v-1)/2,x)/x^(v+1/2)
+    +%k1*gauss_a(-v,1/2,-(2*v-1)/2,x)/x^(v+1/2)];
+[method,ode_check(eqn,ans[1])];
+[odelin,0];
 
 /* Kamke 2. 270  */ 
 (pn_(270),ans:contrib_ode(eqn:(2*x^2+6*x+4)*'diff(y,x,2)+(10*x^2+21*x+8)*'diff(y,x,1)+(12*x^2+17*x+8)*y,y,x));
-false;
+[y = %k2*%e^-(3*x)
+     *(x^5*sqrt(x+1)*'integrate((43*x+36)*%e^x
+               /(sqrt(x+1)*(x^6+12*x^5+60*x^4+160*x^3+240*x^2+192*x+64)),x)
+      +10*x^4*sqrt(x+1)*'integrate((43*x+36)*%e^x
+               /(sqrt(x+1)*(x^6+12*x^5+60*x^4+160*x^3+240*x^2+192*x+64)),x)
+      +40*x^3*sqrt(x+1)*'integrate((43*x+36)*%e^x
+               /(sqrt(x+1)*(x^6+12*x^5+60*x^4+160*x^3+240*x^2+192*x+64)),x)
+      +80*x^2*sqrt(x+1)*'integrate((43*x+36)*%e^x
+              /(sqrt(x+1)*(x^6+12*x^5+60*x^4+160*x^3+240*x^2+192*x+64)),x)
+      +80*x*sqrt(x+1)*'integrate((43*x+36)*%e^x
+              /(sqrt(x+1)*(x^6+12*x^5+60*x^4+160*x^3+240*x^2+192*x+64)),x)
+      +32*sqrt(x+1)*'integrate((43*x+36)*%e^x
+              /(sqrt(x+1)*(x^6+12*x^5+60*x^4+160*x^3+240*x^2+192*x+64)),x)
+      +4*x^2*%e^x+22*x*%e^x+18*%e^x)/(sqrt(x+1)*(x+2))
+     +%k1*(x+2)^4*%e^-(3*x)];
+[method,ode_check(eqn,ans[1])];
+[odelin,0];
 
 /* Kamke 2. 271  */ 
 (pn_(271),ans:contrib_ode(eqn:4*x^2*'diff(y,x,2)+y,y,x));
@@ -371,15 +521,22 @@ xformtoconstcoeff;
 
 /* Kamke 2. 272  */ 
 (pn_(272),ans:contrib_ode(eqn:4*x^2*'diff(y,x,2)+(4*a^2*x^2+1)*y,y,x));
-false;
+[y = bessel_y(0,-a*x)*%k2*sqrt(-x)+bessel_j(0,-a*x)*%k1*sqrt(-x)];
+[method,ode_check(eqn,ans[1])];
+[odelin,0];
 
 /* Kamke 2. 273  */ 
 (pn_(273),ans:contrib_ode(eqn:4*x^2*'diff(y,x,2)-(x^2-4*k*x+4*m^2-1)*y,y,x));
-false;
+[y = %k2*kummer_u(-(2*m-2*k-1)/2,1-2*m,-x)*%e^(x/2)/(-x)^(m-1/2)
+    +%k1*kummer_m(-(2*m-2*k-1)/2,1-2*m,-x)*%e^(x/2)/(-x)^(m-1/2)];
+[method,ode_check(eqn,ans[1])];
+[odelin,0];
 
 /* Kamke 2. 274  */ 
 (pn_(274),ans:contrib_ode(eqn:4*x^2*'diff(y,x,2)+4*x*'diff(y,x,1)+(x-v^2)*y,y,x));
-false;
+[y = %k2*bessel_y(v,sqrt(x))+%k1*bessel_j(v,sqrt(x))];
+method;
+odelin;
 
 /* Kamke 2. 275  */ 
 (pn_(275),ans:contrib_ode(eqn:4*x^2*'diff(y,x,2)+4*x*'diff(y,x,1)+(-x^2+2*(-m+2*l+1)*x-m^2+1)*y,y,x));
@@ -391,7 +548,9 @@ false;
 
 /* Kamke 2. 277  */ 
 (pn_(277),ans:contrib_ode(eqn:4*x^2*'diff(y,x,2)+4*x*'diff(y,x,1)+(-a*x^2-1)*y,y,x));
-false;
+[y = %k2*%e^(sqrt(a)*x/2)/sqrt(x)+%k1*%e^-(sqrt(a)*x/2)/sqrt(x)];
+[method,ode_check(eqn,ans[1])];
+[odelin,0];
 
 /* Kamke 2. 278  */ 
 (pn_(278),ans:contrib_ode(eqn:4*x^2*'diff(y,x,2)+4*x*'diff(y,x,1)+f(x)*y,y,x));
@@ -407,15 +566,21 @@ variationofparameters;
 
 /* Kamke 2. 280  */ 
 (pn_(280),ans:contrib_ode(eqn:4*x^2*'diff(y,x,2)+8*x*'diff(y,x,1)+(-4*x^2-12*x-3)*y,y,x));
-false;
+[y = %k2*sqrt(x)*%e^x*'integrate(%e^-(2*x)/x^3,x)+%k1*sqrt(x)*%e^x];
+[method,ode_check(eqn,ans[1])];
+[odelin,0];
 
 /* Kamke 2. 281  */ 
 (pn_(281),ans:contrib_ode(eqn:4*x^2*'diff(y,x,2)-4*x*(2*x-1)*'diff(y,x,1)+(4*x^2-4*x-1)*y,y,x));
-false;
+[y = %k2*sqrt(x)*%e^x+%k1*%e^x/sqrt(x)];
+[method,ode_check(eqn,ans[1])];
+[odelin,0];
 
 /* Kamke 2. 282  */ 
 (pn_(282),ans:contrib_ode(eqn:4*x^2*'diff(y,x,2)+4*x^3*'diff(y,x,1)+(x^2-4)*(x^2+6)*y,y,x));
-false;
+[y = %k2*x^3*%e^-(x^2/4)+%k1*%e^-(x^2/4)/x^2];
+[method,ode_check(eqn,ans[1])];
+[odelin,0];
 
 /* Kamke 2. 283  */ 
 (pn_(283),ans:contrib_ode(eqn:4*x^2*'diff(y,x,2)+4*x^2*log(x)*'diff(y,x,1)+(x^2*log(x)^2+2*x-8)*y-4*x^2*%e^(x/2)/sqrt(x^x),y,x));
@@ -431,7 +596,10 @@ variationofparameters;
 
 /* Kamke 2. 285  */ 
 (pn_(285),ans:contrib_ode(eqn:x*(4*x-1)*'diff(y,x,2)+((4*a+2)*x-a)*'diff(y,x,1)+(a-1)*a*y,y,x));
-false;
+[y = %k2*gauss_b(a/2,(a+1)/2,a,4*x)*sqrt(4*x-1)
+    +%k1*gauss_a(a/2,(a+1)/2,a,4*x)*sqrt(4*x-1)];
+[method,ode_check(eqn,ans[1])];
+[odelin,0];
 
 /* Kamke 2. 286  */ 
 (pn_(286),ans:contrib_ode(eqn:(3*x-1)^2*'diff(y,x,2)+3*(3*x-1)*'diff(y,x,1)-9*y-log(3*x-1)^2,y,x));
@@ -443,15 +611,23 @@ variationofparameters;
 
 /* Kamke 2. 287  */ 
 (pn_(287),ans:contrib_ode(eqn:9*(x-1)*x*'diff(y,x,2)+3*(2*x-1)*'diff(y,x,1)-20*y,y,x));
-false;
+[y = gauss_b(-1,2,5/3,x)*%k2*x^(2/3)+gauss_a(-1,2,5/3,x)*%k1*x^(2/3)];
+[method,ode_check(eqn,ans[1])];
+[odelin,0];
 
 /* Kamke 2. 288  */ 
 (pn_(288),ans:contrib_ode(eqn:16*x^2*'diff(y,x,2)+(4*x+3)*y,y,x));
-false;
+[y = bessel_y(-1/2,sqrt(x))*%k2*sqrt(x)
+    +bessel_j(-1/2,sqrt(x))*%k1*sqrt(x)];
+method;
+odelin;
 
 /* Kamke 2. 289  */ 
 (pn_(289),ans:contrib_ode(eqn:16*x^2*'diff(y,x,2)+32*x*'diff(y,x,1)+(-4*x-5)*y,y,x));
-false;
+[y = bessel_y(-3/2,sqrt(-x))*%k2*sqrt(-x)/x
+    +bessel_j(-3/2,sqrt(-x))*%k1*sqrt(-x)/x];
+method;
+odelin
 
 /* Kamke 2. 290  */ 
 assume(x>0);
@@ -475,11 +651,17 @@ false;
 
 /* Kamke 2. 293  */ 
 (pn_(293),ans:contrib_ode(eqn:144*(x-1)*x*'diff(y,x,2)+(120*x-48)*'diff(y,x,1)+y,y,x));
-false;
+[y = gauss_b(7/12,7/12,5/3,x)*%k2*x^(2/3)
+    +gauss_a(7/12,7/12,5/3,x)*%k1*x^(2/3)];
+[method,ode_check(eqn,ans[1])];
+[odelin,0];
 
 /* Kamke 2. 294  */ 
 (pn_(294),ans:contrib_ode(eqn:144*(x-1)*x*'diff(y,x,2)+(168*x-96)*'diff(y,x,1)+y,y,x));
-false;
+[y = gauss_b(5/12,5/12,4/3,x)*%k2*x^(1/3)
+    +gauss_a(5/12,5/12,4/3,x)*%k1*x^(1/3)];
+[method,ode_check(eqn,ans[1])];
+[odelin,0];
 
 /* Kamke 2. 295  */ 
 (pn_(295),ans:contrib_ode(eqn:a*x^2*'diff(y,x,2)+b*x*'diff(y,x,1)+(c*x^2+d*x+f)*y,y,x));
@@ -487,7 +669,24 @@ false;
 
 /* Kamke 2. 296  */ 
 (pn_(296),ans:contrib_ode(eqn:a2*x^2*'diff(y,x,2)+(a1*x^2+b1*x)*'diff(y,x,1)+(a0*x^2+b0*x+c_0)*y,y,x));
-false;
+[y = %k2*kummer_u(((4*a0*a2-a1^2)*sqrt(-4*a2*c_0+b1^2-2*a2*b1+a2^2)
+                          +sqrt(a1^2-4*a0*a2)*(a1*b1-2*a2*b0)+4*a0*a2^2
+                          -a1^2*a2)
+                          /(2*a2*(4*a0*a2-a1^2)),
+                         (sqrt(-4*a2*c_0+b1^2-2*a2*b1+a2^2)+a2)/a2,
+                         -sqrt(a1^2-4*a0*a2)*x/a2)
+               *x^((sqrt(-4*a2*c_0+b1^2-2*a2*b1+a2^2)-b1+a2)/(2*a2))
+               *%e^((sqrt(a1^2-4*a0*a2)-a1)*x/(2*a2))
+     +%k1*kummer_m(((4*a0*a2-a1^2)*sqrt(-4*a2*c_0+b1^2-2*a2*b1+a2^2)
+                         +sqrt(a1^2-4*a0*a2)*(a1*b1-2*a2*b0)+4*a0*a2^2
+                         -a1^2*a2)
+                         /(2*a2*(4*a0*a2-a1^2)),
+                        (sqrt(-4*a2*c_0+b1^2-2*a2*b1+a2^2)+a2)/a2,
+                        -sqrt(a1^2-4*a0*a2)*x/a2)
+              *x^((sqrt(-4*a2*c_0+b1^2-2*a2*b1+a2^2)-b1+a2)/(2*a2))
+              *%e^((sqrt(a1^2-4*a0*a2)-a1)*x/(2*a2))];
+[method,ode_check(eqn,ans[1])];
+[odelin,0];
 
 /* Kamke 2. 297  */ 
 assume(a>0);
@@ -503,7 +702,18 @@ forget(a>0);
 
 /* Kamke 2. 298  */ 
 (pn_(298),ans:contrib_ode(eqn:(a*x^2+1)*'diff(y,x,2)+b*x*'diff(y,x,1)+c*y,y,x));
-false;
+[y = %k2*gauss_b((sqrt(-4*a*c+b^2-2*a*b+a^2)+a)/(2*a),
+                        -(sqrt(-4*a*c+b^2-2*a*b+a^2)-a)/(2*a),b/(2*a),
+                        -(sqrt(-a)*x-1)/2)*(1-sqrt(-a)*x)^(b/(4*a))
+               *(sqrt(-a)*x+1)
+          /((-sqrt(-a)*x-1)^(b/(4*a))*(a*x^2+1)^(b/(4*a)))
+          +%k1*gauss_a((sqrt(-4*a*c+b^2-2*a*b+a^2)+a)/(2*a),
+                       -(sqrt(-4*a*c+b^2-2*a*b+a^2)-a)/(2*a),b/(2*a),
+                       -(sqrt(-a)*x-1)/2)*(1-sqrt(-a)*x)^(b/(4*a))
+              *(sqrt(-a)*x+1)
+           /((-sqrt(-a)*x-1)^(b/(4*a))*(a*x^2+1)^(b/(4*a)))];
+[method,ode_check(eqn,ans[1])];
+[odelin,0];
 
 /* Kamke 2. 299  */ 
 (pn_(299),ans:contrib_ode(eqn:(a^2*x^2-1)*'diff(y,x,2)+2*a^2*x*'diff(y,x,1),y,x));
@@ -515,5 +725,7 @@ exact;
 
 /* Kamke 2. 300  */ 
 (pn_(300),ans:contrib_ode(eqn:(a^2*x^2-1)*'diff(y,x,2)+2*a^2*x*'diff(y,x,1)-2*a^2*y,y,x));
-false;
+[y = gauss_b(-1,2,1,-(a*x-1)/2)*%k2+gauss_a(-1,2,1,-(a*x-1)/2)*%k1];
+[method,ode_check(eqn,ans[1])];
+[odelin,0];
 
