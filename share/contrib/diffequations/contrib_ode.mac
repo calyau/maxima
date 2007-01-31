@@ -80,7 +80,8 @@ ode2_linear(eqn,y,x) := block(
     /* Try the ode2 routines first */
     ode_disp("    -> ode2"),
     soln:ode2(eqn,y,x),
-    if (soln#false) then (
+    /* ode2 can return [] on failure */
+    if (soln#false and soln#[]) then (
       ode_disp("     Successful"),
       [soln]
     ) else if is(a4=0) then (
