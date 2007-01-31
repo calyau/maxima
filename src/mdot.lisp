@@ -288,8 +288,7 @@ is no need to rely on the setting of this switch.")
 	  ;; This does (A+B)^^2 --> A^^2 + A.B + B.A + B^^2
 	  ;; and (A.B)^^2 --> A.B.A.B
 
-	  ((and (or (mplusp factor)
-		    (and (not $dotexptsimp) (mnctimesp factor)))
+	  ((and (or (mplusp factor) (not $dotexptsimp))
 		(fixnump power)
 		(not (greaterp power $expop))
 		(plusp power))
@@ -299,12 +298,13 @@ is no need to rely on the setting of this switch.")
 	  ;; and (A.B)^^(-2).  Here the "-" operator does the trick
 	  ;; for us.
 
-	  ((and (or (mplusp factor)
-		    (and (not $dotexptsimp) (mnctimesp factor)))
+	  ((and (or (mplusp factor) (not $dotexptsimp))
 		(fixnump power)
 		(not (greaterp (minus power) $expon))
-		(minusp power))
-	   (ncmul (simpnct-invert factor) (ncpower factor (f1+ power))))
+		(< power -1))
+	   (let (($expop $expon))
+	     (ncpower (ncpower factor (- power)) -1)))
+	  
 	  ((product-with-inner-scalarp factor)
 	   (let ((p-p (partition-product factor)))
 	     (mul2 (power (muln (car p-p) t) power)
