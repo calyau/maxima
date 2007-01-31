@@ -100,7 +100,14 @@ solve(map(exp,2*ans[1]),y);
 
 /* 13 - Riccati eqn */
 (pn_(13),ans:contrib_ode(eqn:'diff(y,x) + y^2 - a*x - b,y,x));
-[[y='diff(%u,x,1)/%u,%u*(a*x+b)-'diff(%u,x,2)=0]];
+[y = (%i*(bessel_y(-2/3,2*%i*(a*x+b)^(3/2)/(3*a))*%c
+         +bessel_j(-2/3,2*%i*(a*x+b)^(3/2)/(3*a)))*a*x
+     +%i*(bessel_y(-2/3,2*%i*(a*x+b)^(3/2)/(3*a))*%c
+         +bessel_j(-2/3,2*%i*(a*x+b)^(3/2)/(3*a)))*b)
+   /((bessel_y(1/3,2*%i*(a*x+b)^(3/2)/(3*a))*%c
+     +bessel_j(1/3,2*%i*(a*x+b)^(3/2)/(3*a)))*sqrt(a*x+b))];
+method;
+riccati;
 
 /* 14 - The constraints need some work 
          want m # -2, rather than m > -2 */
@@ -144,11 +151,11 @@ solve(map(log,ans[1]/%c),y);
 
 /* 15 This is a Riccati eqn */
 (pn_(15),ans:contrib_ode(eqn:'diff(y,x) + y^2 - 2*x^2*y + x^4 -2*x-1,y,x));
-[(log(-y+x^2+1)-log(-y+x^2-1)+2*x)/2 = %c];
-solve(map(exp,2*ans[1]-2*x),y);
-[y = ((x^2-1)*%e^(2*%c-2*x)-x^2-1)/(%e^(2*%c-2*x)-1)];
-[method,ode_check(eqn,%[1])];
-[lie,0];
+[y = (x^2*(%c*%e^(x*(x^2+3)/3)+%e^(x*(x^2-3)/3))
+         +%c*%e^(x*(x^2+3)/3)-%e^(x*(x^2-3)/3))
+         /(%c*%e^(x*(x^2+3)/3)+%e^(x*(x^2-3)/3))];
+[method,ode_check(eqn,ans[1])];
+[riccati,0];
 
 /* 16 This is a Riccati eqn */
 (pn_(16),ans:contrib_ode(eqn:'diff(y,x) + y^2 +(x*y-1)*f(x),y,x));
@@ -166,9 +173,13 @@ solve(map(exp,ans[1]*5),y);
 
 /* 18 */
 (pn_(18),ans:contrib_ode(eqn:'diff(y,x)-y^2-x*y-x+1,y,x));
-[[y=-'diff(%u,x,1)/%u,-'diff(%u,x,1)*x+%u*(x-1)+'diff(%u,x,2)=0]];
-method;
-riccati;
+[y = -%e^-(2*x)*(2*%i*%e^(x^2/2+2)
+                      +(sqrt(2)*sqrt(%pi)*erf(%i*(x-2)/sqrt(2))
+                       +sqrt(2)*%e^2*sqrt(%pi)*%c)
+                       *%e^(2*x))
+         /(sqrt(2)*sqrt(%pi)*erf(%i*(x-2)/sqrt(2))+sqrt(2)*%e^2*sqrt(%pi)*%c)];
+[method,ode_check(eqn,ans[1])];
+[riccati,0];
 
 /* 19 */
 (pn_(19),ans:contrib_ode(eqn:'diff(y,x) - (y + x)^2,y,x));
@@ -251,7 +262,10 @@ solve(map(exp,ans[1]*(a*B-b*A)),y);
 
 /* 28 */
 (pn_(28),ans:contrib_ode(eqn:'diff(y,x)+x*y^2-x^3*y-2*x,y,x));
-[[y='diff(%u,x,1)/(%u*x),-'diff(%u,x,1)*(-x^4-1)+2*%u*x^3-'diff(%u,x,2)*x=0]];
+[y = %e^-(x^4/4)*(x^2*%e^(x^4/4)*(sqrt(%pi)*%c*erf(x^2/2)+sqrt(%pi))+2*%c)
+          /(sqrt(%pi)*%c*erf(x^2/2)+sqrt(%pi))];
+[method,ode_check(eqn,ans[1])];
+[riccati,0];
 
 /* 29 */
 (pn_(29),ans:contrib_ode(eqn:'diff(y,x) - x*y^2 - 3*x*y,y,x));
@@ -263,7 +277,13 @@ solve(map(exp,3*ans[1]),y);
 
 /* 30 */
 (pn_(30),ans:contrib_ode(eqn:'diff(y,x)+x^(-a-1)*y^2-x^a,y,x));
-[[y='diff(%u,x,1)*x^(a+1)/%u,%u*x^(a+2*(-a-1))-'diff(%u,x,2)*x^(-a-1)+'diff(%u,x,1)*(-a-1)*x^(-a-2)=0]];
+[y = -((-%c*bessel_y(a-1,2*sqrt(-x))-bessel_j(a-1,2*sqrt(-x)))
+          *sqrt(-x)
+          +a*(%c*bessel_y(a,2*sqrt(-x))+bessel_j(a,2*sqrt(-x))))
+          *x^a
+          /(%c*bessel_y(a,2*sqrt(-x))+bessel_j(a,2*sqrt(-x)))];
+method;
+riccati;
 
 /* 31 */
 assume(n>-1);
