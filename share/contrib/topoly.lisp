@@ -24,8 +24,8 @@
 
 (defun convert-from-max-min-to-abs (e)
   (cond (($mapatom e) e)
-	((op-equalp e '$max) (max-to-abs (margs e)))
-	((op-equalp e '$min) (min-to-abs (margs e)))
+	((op-equalp e '$max) (max-to-abs (mapcar 'convert-from-max-min-to-abs (margs e))))
+	((op-equalp e '$min) (min-to-abs (mapcar 'convert-from-max-min-to-abs (margs e))))
 	(t (simplifya `((,(mop e)) ,@(mapcar 'convert-from-max-min-to-abs (margs e))) nil))))
 
 (defun maxima-variable-p (e)
