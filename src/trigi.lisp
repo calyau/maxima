@@ -114,10 +114,61 @@
 ;; Apply formula from CLHS if X falls on a branch cut.
 ;; Otherwise punt to CL:ASIN.
 (defun maxima-branch-asin (x)
-  ; Test for (IMAGPART X) is EQUAL because signed zero is EQUAL to zero.
+  ;; Test for (IMAGPART X) is EQUAL because signed zero is EQUAL to zero.
   (if (and (> (abs (realpart x)) 1d0) (equal (imagpart x) 0d0))
-    (* #C(0d0 -1d0) (cl:log (+ (* #C(0d0 1d0) x) (cl:sqrt (- #C(1d0 0d0) (* x x))))))
-    (cl:asin x)))
+      ;; The formula from CLHS is asin(x) = -%i*log(%i*x+sqrt(1-x^2)).
+      ;; This has problems with overflow for large x.
+      ;;
+      ;; Let's rewrite it, where abs(x)>1
+      ;;
+      ;; asin(x) = -%i*log(%i*x+abs(x)*sqrt(1-1/x^2))
+      ;;         = -%i*log(%i*x*(1+abs(x)/x*sqrt(1-1/x^2)))
+      ;;         = -%i*[log(abs(x)*abs(1+abs(x)/x*sqrt(1-1/x^2)))
+      ;;                 + %i*arg(%i*x*(1+abs(x)/x*sqrt(1-1/x^2)))]
+      ;;         = -%i*[log(abs(x)*(1+abs(x)/x*sqrt(1-1/x^2)))
+      ;;                 + %i*%pi/2*sign(x)]
+      ;;         = %pi/2*sign(x) - %i*[log(abs(x)*(1+abs(x)/x*sqrt(1-1/x^2))]
+      ;;
+      ;; Now, look at log part.  If x > 0, we have
+      ;;
+      ;;    log(x*(1+sqrt(1-1/x^2)))
+      ;;
+      ;; which is just fine.  For x < 0, we have
+      ;;
+      ;;    log(abs(x)*(1-sqrt(1-1/x^2))).
+      ;;
+      ;; But
+      ;;    1-sqrt(1-1/x^2) = (1-sqrt(1-1/x^2))*(1+sqrt(1-1/x^2))/(1+sqrt(1-1/x^2))
+      ;;                    = (1-(1-1/x^2))/(1+sqrt(1-1/x^2))
+      ;;                    = 1/x^2/(1+sqrt(1-1/x^2))
+      ;;
+      ;; So
+      ;;
+      ;;    log(abs(x)*(1-sqrt(1-1/x^2)))
+      ;;        = log(abs(x)/x^2/(1+sqrt(1-1/x^2)))
+      ;;        = -log(x^2/abs(x)*(1+sqrt(1-1/x^2))
+      ;;        = -log(abs(x)*(1+sqrt(1-1/x^2)))
+      ;;
+      ;; Thus, for x < 0,
+      ;;
+      ;; asin(x) = -%pi/2+%i*log(abs(x)*(1+sqrt(1-1/x^2)))
+      ;;         = -asin(-x)
+      ;;
+      ;; If we had an accurate f(x) = log(1+x) function, we should
+      ;; probably evaluate log(1+sqrt(1-1/x^2)) via f(x) instead of
+      ;; log.  One other accuracy change is to evaluate sqrt(1-1/x^2)
+      ;; as sqrt(1-1/x)*sqrt(1+1/x), because 1/x^2 won't underflow as
+      ;; soon as 1/x.
+      (let* ((absx (abs x))
+	     (recip (/ absx))
+	     (result (complex (/ (float pi 1d0) 2)
+			      (- (log (* absx
+					 (1+ (* (sqrt (+ 1 recip))
+						(sqrt (- 1 recip))))))))))
+	(if (minusp x)
+	    (- result)
+	    result))
+      (cl:asin x)))
 
 ;; Apply formula from CLHS if X falls on a branch cut.
 ;; Otherwise punt to CL:ACOS.
