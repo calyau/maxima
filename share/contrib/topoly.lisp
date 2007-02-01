@@ -1,6 +1,6 @@
 ;;  Author Barton Willis
 ;;  University of Nebraska at Kearney
-;;  Copyright (C) 2006 Barton Willis
+;;  Copyright (C) 2006, 2007 Barton Willis
 
 ;;  This program is free software; you can redistribute it and/or modify	 
 ;;  it under the terms of the GNU General Public License as published by	 
@@ -15,6 +15,18 @@
 ;;  You should have received a copy of the GNU General Public License	
 ;;  along with this program; if not, write to the Free Software 		 
 ;;  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+
+(defun max-to-abs (e)
+  (reduce #'(lambda (a b) (div (add (add a b) (take '(mabs) (sub a b))) 2)) e))
+
+(defun min-to-abs (e)
+  (reduce #'(lambda (a b) (div (sub (add a b) (take '(mabs) (sub a b))) 2)) e))
+
+(defun convert-from-max-min-to-abs (e)
+  (cond (($mapatom e) e)
+	((op-equalp e '$max) (max-to-abs (margs e)))
+	((op-equalp e '$min) (min-to-abs (margs e)))
+	(t (simplifya `((,(mop e)) ,@(mapcar 'convert-from-max-min-to-abs (margs e))) nil))))
 
 (defun maxima-variable-p (e)
   (or (symbolp e) ($subvarp e)))
@@ -34,7 +46,7 @@
 ;; constants.
 
 (defun $topoly (p &optional (vars 'convert-all-vars))
-  (let (($listconstvars t) (subs) (q) (convert-cnst nil) (nv `((mlist)))) ;; new variables
+  (let (($listconstvars t) (subs) (q) (convert-cnst nil) (nv `(($set)))) ;; new variables
 
     (if (eq vars 'convert-all-vars) (setq vars ($cons 1 ($listofvars p))))
     
@@ -49,16 +61,21 @@
     (setq q ($ratdenom p))
     (if (not ($constantp q)) (mtell "Assuming that ~:M " `((mnotequal) ,q 0)))
     (setq p ($ratdisrep ($ratnumer ($radcan p))))
-    
+    (setq p (convert-from-max-min-to-abs p))
+    (setq p ($ratsimp p)) ;; --what's the story here? 
     (setq p (to-polynomial p nil vars convert-cnst))
     (setq subs (second p))
     (setq p (first p))
     (dolist (sk subs)
-	(setq nv ($append nv ($listofvars ($lhs sk)))))
+      (setq nv ($union nv ($setify ($listofvars ($lhs sk))))))
+    
+    (setq nv ($setdifference nv ($setify vars)))
+    (setq nv ($listify nv))
     (setq p (if (null subs) p ($first (mfuncall '$eliminate `((mlist) ,p ,@subs) nv))))
     `((mequal) ,(suppress-multiple-zeros p) 0)))
 
 (defun to-polynomial (p subs vars convert-cnst)
+  ;;(print `(p = ,p))
   (cond ((or (maxima-variable-p p)
 	     (mnump p)
 	     ($emptyp vars)
@@ -81,7 +98,7 @@
 		  (setq nv (gensym))
 		  (setq subs (cons `((mequal) ,(power nv ($denom n)) ,(power b ($num n))) subs))
 		  (list nv subs))
-		 (t (merror "Non algebraic argument given to 'topoly'")))))
+		 (t (merror "Nonalgebraic argument given to 'topoly'")))))
 
 	((op-equalp p 'mabs)
 	 (let ((b) (nv))
@@ -98,8 +115,8 @@
 	     (setq z (mul z (first pk)))
 	     (setq acc (append acc (second pk))))
 	   (list z acc)))
-	  
-	 ((mplusp p)
+
+	((mplusp p)
 	  (let ((z 0) (acc nil))
 	    (setq p (mapcar #'(lambda (s) (to-polynomial s nil vars convert-cnst)) (margs p)))
 	    (dolist (pk p)
@@ -107,4 +124,4 @@
 	      (setq acc (append acc (second pk))))
 	    (list z acc)))
 
-	 (t (merror "Non algebraic argument given to 'topoly'"))))
+	 (t (merror "Nonalgebraic argument given to 'topoly'"))))
