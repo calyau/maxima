@@ -9,6 +9,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :maxima)
+
 (macsyma-module specfn)
 
 ;;*********************************************************************
@@ -23,15 +24,12 @@
 (defmacro mnumericalp (arg)
   `(or (floatp ,arg) (and (or $numer $float) (integerp ,arg))))
 
-(comment subtitle polylogarithm routines)
+;; subtitle polylogarithm routines
 
-(declare-top(splitfile plylog))
-
-(declare-top(special $zerobern ivars key-vars tlist)
-	    (notype (li2numer flonum) (li3numer flonum)))
+(declare-top (special $zerobern ivars key-vars tlist))
 
 (defun lisimp (exp vestigial z)
-  vestigial ;; Ignored
+  (declare (ignore vestigial))
   (let ((s (simpcheck (car (subfunsubs exp)) z))
 	($zerobern t)
 	(a))
@@ -43,7 +41,7 @@
 	      ((and (integerp a) (> s 1)
 		    (cond ((= a 1) ($zeta s))
 			  ((= a -1)
-			   (m*t (m1- `((rat) 1 ,(expt 2 (f- s 1))))
+			   (m*t (m1- `((rat) 1 ,(expt 2 (- s 1))))
 				($zeta s))))))
 	      ((= s 2) (li2simp a))
 	      ((= s 3) (li3simp a)))
@@ -64,16 +62,11 @@
 	      (m*t (m// ($zeta 2) -2) (simplify '((%log) 2)))
 	      (m*t '((rat simp) 1 6) (m^ '((%log) 2) 3))))))
 
-
-(declare-top (flonum x))
-
 ;; Numerical evaluation for Chebyschev expansions of the first kind
 
 (defun cheby (x chebarr)
-  (declare (flonum x))
   (let ((bn+2 0.0) (bn+1 0.0))
-    (declare (flonum bn+1 bn+2))
-    (do ((i (fix (arraycall flonum chebarr 0)) (f1- i)))
+    (do ((i (fix (arraycall flonum chebarr 0)) (1- i)))
 	((< i 1) (-$ bn+1 (*$ bn+2 x)))
      (setq bn+2
 	    (prog1 bn+1 (setq bn+1
@@ -82,29 +75,12 @@
 				      bn+2))))))))
 
 (defun cheby-prime (x chebarr)
-  (declare (flonum x))
   (-$ (cheby x chebarr)
       (*$ (arraycall flonum chebarr 1) .5)))
 
 ;; These should really be calculated with minimax rational approximations.
 ;; Someone has done LI[2] already, and this should be updated; I haven't
 ;; seen any results for LI[3] yet.
-
-#+nil
-(defun li2numer (x)
-  (cond ((= x 0.0) 0.0)
-	((= x 1.0) 1.64493407)
-	((= x -1.0) -.822467033)
-	((< x -1.0) 
-	 (-$ (+$ (chebyli2 (//$ x)) 1.64493407
-		 (//$ (expt (log (-$ x)) 2) 2.0))))
-	((not (> x .5)) (chebyli2 x))
-	((< x 1.0)
-	 (-$ 1.64493407 (*$ (log x) (log (-$ 1.0 x)))
-	     (chebyli2 (-$ 1.0 x))))
-	(t (m+t (-$ 3.28986813 (//$ (expt (log x) 2) 2.0)
-		    (li2numer (//$ x)))
-		(m*t (-$ (*$ 3.14159265 (log x))) '$%i)))))
 
 (defun li2numer (y)
   ;; Spence's function can be used to compute li[2] for 0 <= x <= 1.
@@ -156,61 +132,37 @@
 		    (//$ (expt (log x) 3) -6.0))
 		(m*t (*$ -1.57079633 (expt (log x) 2)) '$%i)))))
 
-;;(array *li2* flonum 15.)
-;;(array *li3* flonum 15.)
-;;(array *S12* flonum 18.)
+(defvar *li2* (make-array 15. :initial-contents '(14.0d0 1.93506430d0 .166073033d0 2.48793229d-2
+						  4.68636196d-3 1.0016275d-3 2.32002196d-4
+						  5.68178227d-5 1.44963006d-5 3.81632946d-6
+						  1.02990426d-6 2.83575385d-7 7.9387055d-8
+						  2.2536705d-8 6.474338d-9)))
 
-(defvar *li2* (*array nil 'flonum 15.))
-(eval-when (load eval)
-  (fillarray *li2* 
-	     '(14.0       1.93506430 .166073033 2.48793229e-2 4.68636196e-3
-	       1.0016275e-3 2.32002196e-4 5.68178227e-5 1.44963006e-5
-	       3.81632946e-6 1.02990426e-6 2.83575385e-7 7.9387055e-8
-	       2.2536705e-8 6.474338e-9))
-  )
 
-(defvar *li3* (*array nil 'flonum 15.))
-(eval-when (load eval)
-  (fillarray *li3*
-	     '(14.0       1.95841721 8.51881315e-2 8.55985222e-3 1.21177214e-3
-	       2.07227685e-4 3.99695869e-5 8.38064066e-6 1.86848945e-6
-	       4.36660867e-7 1.05917334e-7 2.6478920e-8 6.787e-9 
-	       1.776536e-9 4.73417e-10))
-  )
-(defvar *s12* (*array nil  'flonum 18.))
-(eval-when (load eval)
-  (fillarray *s12*
-	     '(17.0      1.90361778 .431311318 .100022507 2.44241560e-2
-	       6.22512464e-3 1.64078831e-3 4.44079203e-4 1.22774942e-4
-	       3.45398128e-5 9.85869565e-6 2.84856995e-6 8.31708473e-7
-	       2.45039499e-7 7.2764962e-8 2.1758023e-8 6.546158e-9
-	       1.980328e-9))
-  )
+(defvar *li3* (make-array 15. :initial-contents '(14.0d0 1.95841721d0 8.51881315d-2 8.55985222d-3
+						  1.21177214d-3 2.07227685d-4 3.99695869d-5
+						  8.38064066d-6 1.86848945d-6 4.36660867d-7
+						  1.05917334d-7 2.6478920d-8 6.787d-9 
+						  1.776536d-9 4.73417d-10)))
+
+(defvar *s12* (make-array 18. :initial-contents '(17.0d0 1.90361778d0 .431311318d0 .100022507d0
+						  2.44241560d-2 6.22512464d-3 1.64078831d-3
+						  4.44079203d-4 1.22774942d-4 3.45398128d-5
+						  9.85869565d-6 2.84856995d-6 8.31708473d-7
+						  2.45039499d-7 7.2764962d-8 2.1758023d-8 6.546158d-9
+						  1.980328d-9)))
+
 (defun chebyli2 (x)
   (*$ x (cheby-prime (//$ (1+$ (*$ x 4.0)) 3.0) *li2*)))
 
-;;		      #+Maclisp '#,(get '*li2* 'array)
-;;		      #+Franz (getd '*li2*)
-;;		      #-(Or Maclisp Franz) (get-array-pointer '*li2*))))
-
 (defun chebyli3 (x)
   (*$ x (cheby-prime (//$ (1+$ (*$ 4.0 x)) 3.0) *li3*)))
-;;		      #+Maclisp '#,(get '*li3* 'array)
-;;		      #+Franz (getd '*li3*)
-;;		      #-(or Maclisp Franz) (get-array-pointer '*li3*))))
 
 (defun chebys12 (x)
   (*$ (//$ (expt x 2) 4.0)
       (cheby-prime (//$ (1+$ (*$ 4.0 x)) 3.0) *s12*)))
-;;	       #+Maclisp '#,(get '*S12* 'array)
-;;	       #+Franz (getd '*S12*)
-;;	       #-(or Maclisp Franz) (get-array-pointer '*S12*))))
 
-(declare-top(notype x))
-
-(comment subtitle polygamma routines)
-
-(declare-top(splitfile plygam))
+;; subtitle polygamma routines
 
 ;; gross efficiency hack, exp is a function of *k*, *k* should be mbind'ed
 
@@ -218,7 +170,7 @@
   (if (< hi lo)
       0
       (let ((sum 0))
-	(do ((*k* lo (f1+ *k*)))
+	(do ((*k* lo (1+ *k*)))
 	    ((> *k* hi) sum)
 	  (declare (special *k*))
 	  (setq sum (add2 sum (meval exp)))))))
@@ -227,20 +179,15 @@
 (defun pole-err (exp)
   (declare (special errorsw))
   (cond (errorsw (throw 'errorsw t))
-	(t (merror "Pole encountered in: ~M" exp)
-	   )))
+	(t (merror "Pole encountered in: ~M" exp))))
 
 
-(declare-top (special
-	      $maxpsiposint $maxpsinegint $maxpsifracnum $maxpsifracdenom)
-	     (fixnum 
-	      $maxpsiposint $maxpsinegint $maxpsifracnum $maxpsifracdenom)
-	     (*lexpr $diff))
+(declare-top (special $maxpsiposint $maxpsinegint $maxpsifracnum $maxpsifracdenom))
 
 (defprop $psi psisimp specsimp)
 
-(mapcar (function (lambda (var val)
-	  (and (not (boundp var)) (set var val))))
+(mapcar #'(lambda (var val)
+	    (and (not (boundp var)) (setf (symbol-value var) val)))
 	'($maxpsiposint $maxpsinegint $maxpsifracnum $maxpsifracdenom)
 	'(20. -10. 6 6))
 
@@ -266,9 +213,9 @@
 	    ((integerp a)
 	     (and (not (> a $maxpsiposint)) ; integer values
 		  (m*t (expt -1 s) (factorial s)
-		       (m- (msum (inv (m^t '*k* (f1+ s))) 1 (f1- a))
+		       (m- (msum (inv (m^t '*k* (1+ s))) 1 (1- a))
 			   (cond ((zerop s) '$%gamma)
-				 (($zeta (f1+ s))))))))
+				 (($zeta (1+ s))))))))
 	    ((or (not (ratnump a)) (ratgreaterp a $maxpsiposint)) ())
 	    ((ratgreaterp a 0)
 	     (cond
@@ -281,8 +228,8 @@
 		       (subfunmakes '$psi (ncons s) (ncons int))
 		       (m*t (expt -1 s) (factorial s)
 			    (msum (m^t (m+t (m-t a int) '*k*)
-				       (f1- (f- s)))
-				  0 (f1- int)))))))
+				       (1- (- s)))
+				  0 (1- int)))))))
 	       ((= s 0)
 		(let ((p (cadr a)) (q (caddr a)))
 		  (cond
@@ -324,7 +271,7 @@
 				  `((%log) ,(m-t 2 (m* 2 `((%cos) 
 							   ,(m//t (m* 2 '$%pi '*k*)
 								  q))))))))
-		       (m+t (msum f 1 (f1- (// q 2)))
+		       (m+t (msum f 1 (1- (// q 2)))
 			    (let ((*k* (// q 2)))
 			      (declare (special *k*))
 			      (m*t (meval f)
@@ -335,8 +282,8 @@
 				     `((%log) ,q)
 				     '$%gamma))))))))
 	       ((alike1 a '((rat) 1 2))
-		(m*t (expt -1 (f1+ s)) (factorial s)
-		     (f1- (expt 2 (f1+ s))) (simplify ($zeta (f1+ s)))))
+		(m*t (expt -1 (1+ s)) (factorial s)
+		     (1- (expt 2 (1+ s))) (simplify ($zeta (1+ s)))))
 	       ((and (ratgreaterp a '((rat) 1 2))
 		     (ratgreaterp 1 a))
 		(m*t
@@ -356,16 +303,16 @@
 			      ($z (m-t a)))
 			  (declare (special $z))
 			  (meval dif)))
-		   (m*t (factorial s) (m^t (m-t a) (f1- (f- s)))))))))
+		   (m*t (factorial s) (m^t (m-t a) (1- (- s)))))))))
      (subfunmakes '$psi (ncons s) (ncons a)))))
 
 
-(comment subtitle polygamma tayloring routines)
+;; subtitle polygamma tayloring routines
 
 ;; These routines are specially coded to be as fast as possible given the
 ;; current $TAYLOR; too bad they have to be so ugly.
 
-(declare-top(special var subl *last* sign last-exp))
+(declare-top (special var subl *last* sign last-exp))
 
 (defun expgam-fun (pw temp)
   (setq temp (get-datum (get-key-var (car var))))
@@ -380,7 +327,7 @@
   (if (or (not (integerp subl)) (lessp subl -1))
       (tay-err "Unable to expand at a subscript in")
       (prog ((e 0) (sign 0) npw)
-	 (declare (flonum npw) (fixnum e) #-multics (fixnum sign))
+	 (declare (fixnum e) (fixnum sign))
 	 (setq npw (//$ (float (car pw)) (float (cdr pw))))
 	 (setq
 	  l (cond ((= subl -1)
@@ -391,17 +338,17 @@
 			     `(((0 . 1)
 				. ,(prep1 '((mtimes) -1 $%gamma)))))))
 		  (t (setq *last* (factorial subl))
-		     `(((,(f- (f1+ subl)) . 1)
-			,(times (^ -1 (f1+ subl))
+		     `(((,(- (1+ subl)) . 1)
+			,(times (^ -1 (1+ subl))
 				(factorial subl)) . 1))))
-	  e (if (< subl 1) (f- subl) -1)
+	  e (if (< subl 1) (- subl) -1)
 	  sign (if (< subl 1) -1 (^ -1 subl)))
-	 a (setq e (f1+ e) sign (f- sign))
+	 a (setq e (1+ e) sign (- sign))
 	 (if (greaterp e npw) (return l)
 	     (rplacd (last l)
 		     `(((,e . 1)
 			. ,(rctimes (rcplygam e)
-				    (prep1 ($zeta (f+ (f1+ subl) e))))))))
+				    (prep1 ($zeta (+ (1+ subl) e))))))))
 	 (go a))))
 
 (defun rcplygam (k)
@@ -416,7 +363,7 @@
 
 (defun plygam-ord (subl)
   (if (equal (car subl) -1) (ncons (rcone))
-      `((,(f- (f1+ (car subl))) . 1))))
+      `((,(- (1+ (car subl))) . 1))))
 
 (defun plygam-pole (a c func)
   (if (rcmintegerp c)
@@ -471,29 +418,15 @@
        (taylor2 (diff-expand `((mqapply) ,func ,a) tlist)))
       (t (setq const (car const))
 	 (psplus
-	  (expand (m+t a (f- const)) func)
+	  (expand (m+t a (- const)) func)
 	  (if (> const 0)
 	      (pstimes
 	       (cons (times (^ -1 sub) (factorial sub)) 1)
-	       (tsprsum `((mexpt) ,(m+t a (m-t '%%taylor-index%%)) ,(f- (f1+ sub)))
+	       (tsprsum `((mexpt) ,(m+t a (m-t '%%taylor-index%%)) ,(- (1+ sub)))
 			`(%%taylor-index%% 1 ,const) '%sum))
 	      (pstimes
-	       (cons (times (^ -1 (f1+ sub)) (factorial sub)) 1)
-	       (tsprsum `((mexpt) ,(m+t a '%%taylor-index%%) ,(f- (f1+ sub)))
-			`(%%taylor-index%% 0 ,(f- (f1+ const))) '%sum))))))))
+	       (cons (times (^ -1 (1+ sub)) (factorial sub)) 1)
+	       (tsprsum `((mexpt) ,(m+t a '%%taylor-index%%) ,(- (1+ sub)))
+			`(%%taylor-index%% 0 ,(- (1+ const))) '%sum))))))))
 
-(declare-top(unspecial var subl *last* sign last-exp))
-
-;; Not done correctly
-;;
-;; (defun beta-trans (argl funname)
-;;   funname ;ignored
-;;   (let ((sum (m+t (car argl) (cadr argl))) (PSI[-1] '(($PSI ARRAY) -1)))
-;;     (if (zerop sum) (unfam-sing-err)
-;; 	(taylor2 `((MTIMES)
-;; 		   ((MEXPT) $%E ((MPLUS) ((MQAPPLY) ,PSI[-1] ,(car argl))
-;; 					 ((MQAPPLY) ,PSI[-1] ,(cadr argl))
-;; 					 ((MTIMES) -1
-;; 						   ((MQAPPLY) ,PSI[-1] ,sum))))
-;; 		   ((MPLUS) ((MEXPT) ,(car argl) -1)
-;; 			    ((MEXPT) ,(cadr argl) -1)))))))
+(declare-top (unspecial var subl *last* sign last-exp))
