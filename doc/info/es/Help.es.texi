@@ -299,10 +299,12 @@ _
 @end example
 @end deffn
 
+
 @deffn {Funci@'on} describe (@var{string})
 @deffnx {Funci@'on} describe (@var{string}, exact)
 La sentencia @code{describe(@var{string})} encuentra todos los elementos
 documentados que contengan @var{string} en sus t@'{@dotless{i}}tulos.
+
 Si hay m@'as de una opci@'on, Maxima preguntar@'a al usuario para que
 seleccione las opciones que desee consultar.
 
@@ -350,6 +352,7 @@ En este ejemplo fueron seleccionadas las opciones 7 y 8 .
 Todas o ninguna de las opciones pueden ser seleccionadas escribiendo
 @code{all} o @code{none}, las cuales pueden ser abreviadas por
 @code{a} o @code{n}, respectivamente. 
+
 
 @c @pxref{Introducci@'on a la Ayuda}
 

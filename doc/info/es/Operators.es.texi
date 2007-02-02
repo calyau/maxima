@@ -87,7 +87,7 @@ El factorial de un entero, semi-entero o de punto flotante es simplificado a men
 @item
 El factorial de un n@'umero complejo, constante  conocida (por ejemplo @code{%e}) o una expresi@'on general no es simplificado. 
 
-Sin embargo puede ser posible simplificar el factorial despu@'es evaluar el operando. 
+Sin embargo puede ser posible simplificar el factorial despu@'es de evaluar el operando. 
 
 @c ===beg===
 @c [(%i + 1)!, %pi!, %e!, (cos(1) + sin(1))!];
@@ -149,7 +149,7 @@ Note que esta definici@'on no coincide con otras definciones publicadas para arg
 @c REPORTED TO BUG TRACKER AS BUG # 1093138 !!!
 
 Para un entero par (o impar) @code{n}, @code{n!} se evalua el producto de
-todos los enteros pares (o impares) consecutivos desde 2 (o 1) por @code{n}inclusive.  
+todos los enteros pares (o impares) consecutivos desde 2 (o 1) por @code{n} inclusive.  
 
 Para un argumento @code{n} el cual no es un n@'umero entero, punto flotante o racional, @code{n!!} produce una forma de nombre @code{genfact (n, n/2, 2)}. 
 
@@ -1383,7 +1383,7 @@ Ejemplos:
 
 
 @deffn {Funci@'on} rationalize (@var{expr})
-Convierte todos los n@'umeros en coma flotante de doble precisi@'on y grandes (big float) presentes en una expresi@'on @var{expr} de Maxima a a sus formas racionales exactas equivalentes. Si el usuario no est@'a familiarizado con la representaci@'on binaria de n@'umeros en coma flotante, le puede extra@~nar que @code{rationalize (0.1)} no sea igual que 1/10.  Este comportamiento no es @'unico de Maxima, ya que el n@'umero 1/10 en su forma binaria es peri@'odico y no exacto.
+Convierte todos los n@'umeros en coma flotante de doble precisi@'on y grandes (big float) presentes en una expresi@'on @var{expr} de Maxima a sus formas racionales exactas equivalentes. Si el usuario no est@'a familiarizado con la representaci@'on binaria de n@'umeros en coma flotante, le puede extra@~nar que @code{rationalize (0.1)} no sea igual que 1/10.  Este comportamiento no es @'unico de Maxima, ya que el n@'umero 1/10 en su forma binaria es peri@'odico y no exacto.
 
 @c ===beg===
 @c rationalize (0.5);

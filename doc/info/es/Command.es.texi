@@ -64,7 +64,7 @@ la comilla simple evita la evaluaci@'on del s@'{@dotless{i}}mbolo.
 (%i4) ''%;
 (%o4)                        1048576
 @end example
-
+OB
 Aplicado a la llamada de una funci@'on,
 la comilla simple evita la evaluaci@'on de la funci@'on llamada,
 aunque los argumentos de la funci@'on son evaluados (siempre y cuando 
@@ -881,7 +881,11 @@ asignan los resultados; adem@'as, las etiquetas no se
 incorporan a la lista @code{labels}.
 Puesto que a las etiquetas no se les asignan resultados, 
 el colector de basura puede recuperar la memoria ocupada
+<<<<<<< Command.es.texi
+por @'estos resultados.
+=======
 por @'estos.
+>>>>>>> 1.11
 
 En el caso contrario, a las etiquetas de entrada y salida se les asignan los resultados correspondientes y son a@~nadidas a la lista @code{labels}.
 
@@ -955,7 +959,6 @@ en el mismo formato como la funci@'on @code{grind}.
 Las expresiones de salida no se ven afectadas por la opci@'on 
 @code{grind}. 
 Vea @code{grind}. 
-
 Los argumentos pueden ser combinados, por ejemplo, 
 @code{playback ([5, 10], grind, time, slow)}.
 @c APPEARS TO BE input INTERSECT (UNION OF ALL OTHER ARGUMENTS). CORRECT ???
