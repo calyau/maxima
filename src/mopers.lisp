@@ -9,7 +9,9 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :maxima)
+
 (macsyma-module mopers macro)
+
 (load-macsyma-macros defopt)
 (load-macsyma-macros-at-runtime 'defopt)
 
@@ -98,14 +100,7 @@
 ;; several places.  In Franz, Multics, and the LISPM, this macros out on the
 ;; assumption that calls are more expensive than the additional memory.
 
-#+(or cl multics franz nil)
 (defopt simplify (x) `(simplifya ,x nil))
-
-
-;; Multics Lisp is broken in that it doesn't grab the subr definition
-;; when applying.  If the macro definition is there first, it tries that and
-;; loses.
-#+multics (if (get 'simplify 'subr) (remprop 'simplify 'macro))
 
 ;; A hand-made DEFSTRUCT for dealing with the Macsyma MDO structure.
 ;; Used in GRAM, etc. for storing/retrieving from DO structures.

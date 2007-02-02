@@ -9,6 +9,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :maxima)
+
 (macsyma-module opers)
 
 ;; This file is the run-time half of the OPERS package, an interface to the
@@ -34,14 +35,7 @@
 ;; needed to compile this file.
 
 ;; Addition primitives.
-#-cl
-(defmfun add2 (x y)
-  (cond
-    ((=0 x) y)
-    ((=0 y) x)
-    (t (simplifya `((mplus) ,x ,y) t))))
 
-#+cl
 (defmfun add2 (x y)
   (cond ((numberp x)
 	 (cond ((numberp y) (+ x y))
@@ -52,7 +46,7 @@
 
 (defmfun add2* (x y)
   (cond
-    #+cl ((and (numberp x) (numberp y)) (+ x y))
+    ((and (numberp x) (numberp y)) (+ x y))
     ((=0 x) (simplifya y nil))
     ((=0 y) (simplifya x nil))
     (t (simplifya `((mplus) ,x ,y) nil))))
@@ -65,22 +59,20 @@
   (cond ((null terms) 0)
 	(t (simplifya `((mplus) . ,terms) simp-flag))))
 
-(declare-top (special $negdistrib) (muzzled t))
+(declare-top (special $negdistrib))
 
 (defmfun neg (x)
   (cond ((numberp x) (minus x))
 	(t (let (($negdistrib t))
 	     (simplifya `((mtimes) -1 ,x) t)))))
 
-(declare-top (muzzled nil))
-
 (defmfun sub (x y)
   (cond
-    #+cl ((and (numberp x) (numberp y)) (- x y))
+    ((and (numberp x) (numberp y)) (- x y))
     ((=0 y) x)
     ((=0 x) (neg y))
     (t (add x (neg y)))))
-#+cl
+
 (defmfun sub* (x y)
   (cond
     ((and (numberp x) (numberp y)) (- x y))
@@ -88,23 +80,20 @@
     ((=0 x) (neg y))
     (t
      (add (simplifya x nil) (mul -1 (simplifya y nil))))))
-#-cl
-(defmfun sub* (x y)
-  (add (simplifya x nil) (mul -1 (simplifya y nil))))
 
 ;; Multiplication primitives -- is it worthwhile to handle the 3-arg
 ;; case specially?  Don't simplify x*0 --> 0 since x could be non-scalar.
 
 (defmfun mul2 (x y)
-  (cond    
-    #+cl ((and (numberp x) (numberp y)) (* x y))
+  (cond
+    ((and (numberp x) (numberp y)) (* x y))
     ((=1 x) y)
     ((=1 y) x)
     (t (simplifya `((mtimes) ,x ,y) t))))
 
 (defmfun mul2* (x y)
   (cond
-    #+cl ((and (numberp x) (numberp y)) (* x y))
+    ((and (numberp x) (numberp y)) (* x y))
     ((=1 x) (simplifya y nil))
     ((=1 y) (simplifya x nil))
     (t (simplifya `((mtimes) ,x ,y) nil))))
@@ -124,12 +113,21 @@
 	((atom factors) factors)
 	(t (simplifya `((mtimes) . ,factors) simp-flag))))
 
-(defmfun div (x y) (if (=1 x) (inv y) (mul x (inv y))))
+(defmfun div (x y)
+  (if (=1 x)
+      (inv y)
+      (mul x (inv y))))
 
-(defmfun div* (x y) (if (=1 x) (inv* y) (mul (simplifya x nil) (inv* y))))
+(defmfun div* (x y)
+  (if (=1 x)
+      (inv* y)
+      (mul (simplifya x nil) (inv* y))))
 
-(defmfun ncmul2 (x y) (simplifya `((mnctimes) ,x ,y) t))
-(defmfun ncmuln (factors flag) (simplifya `((mnctimes) . ,factors) flag))
+(defmfun ncmul2 (x y)
+  (simplifya `((mnctimes) ,x ,y) t))
+
+(defmfun ncmuln (factors flag)
+  (simplifya `((mnctimes) . ,factors) flag))
 
 ;; Exponentiation
 
@@ -172,5 +170,5 @@
 ;; several places.  In Franz, Multics, and the LISPM, this macros out on the
 ;; assumption that calls are more expensive than the additional memory.
 
-(defmfun simplify (x) (simplifya x nil))
-
+(defmfun simplify (x)
+  (simplifya x nil))
