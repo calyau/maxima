@@ -212,6 +212,9 @@
 
 (defun set-locale ()
   (let (locale language territory codeset)
+    ;; Determine *maxima-lang-subdir* 
+    ;;   1. from MAXIMA_LANG_SUBDIR environment variable
+    ;;   2. if 1. isn't set from user locale 
     (unless  (setq *maxima-lang-subdir* (maxima-getenv "MAXIMA_LANG_SUBDIR"))
       (setq locale
             (or
@@ -393,12 +396,19 @@
 	  (list '(mlist)
 		(combine-path (list *maxima-symdir* lisp-patterns))
 		(combine-path (list *maxima-symdir* maxima-patterns))))
+    ;; If *maxima-lang-subdir* is not nil test whether corresponding info directory 
+    ;; with some data really exists.  If not this probably means that required
+    ;; language pack wasn't installed and we reset *maxima-lang-subdir* to nil.
+    (when (and *maxima-lang-subdir* 
+               (not (probe-file (concatenate 'string *maxima-infodir* 
+		                                     "/" *maxima-lang-subdir* 
+       						     "/maxima-index.lisp"))))	    
+       (setq *maxima-lang-subdir* nil))
+    ;; Autoload for Maxima documantation index file
     (let 
       ((subdir-bit (if (null *maxima-lang-subdir*) "" (concatenate 'string "/" *maxima-lang-subdir*))))
-      (when (not (probe-file (concatenate 'string *maxima-infodir* subdir-bit "/maxima-index.lisp")))
-    	    (setq subdir-bit ""))
       (autof 'cl-info::cause-maxima-index-to-load
-                (concatenate 'string *maxima-infodir* subdir-bit "/maxima-index.lisp")))))
+             (concatenate 'string *maxima-infodir* subdir-bit "/maxima-index.lisp")))))
 
 (defun get-dirs (path)
   #+(or :clisp :sbcl)
