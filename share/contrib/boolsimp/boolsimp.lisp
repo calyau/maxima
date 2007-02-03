@@ -583,4 +583,16 @@
 	  ((null dummy))
 	  (t (setq npl (cons dummy npl))))))
 
+; REDEFINE PARSE-CONDITION (IN SRC/NPARSE.LISP) TO APPEND NIL INSTEAD OF $FALSE
+; WHEN INPUT IS LIKE "IF FOO THEN BAR" (WITHOUT ELSE)
 
+(defun parse-condition (op)
+  (list* (parse (rpos op) (rbp op))
+	 (if (eq (first-c) '$then)
+	     (parse '$any (rbp (pop-c)))
+	     (mread-synerr "Missing `then'"))
+	 (case (first-c)
+	   (($else)   (list t (parse '$any (rbp (pop-c)))))
+	   (($elseif) (parse-condition (pop-c)))
+	   (t
+	    (list t nil)))))
