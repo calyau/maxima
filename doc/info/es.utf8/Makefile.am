@@ -1,5 +1,7 @@
 MAKEINFOFLAGS = --enable-encoding
 
+TEXINFO_TEX=../es/texinfo.tex
+
 langsdir = /es.utf8
 
 info_TEXINFOS = maxima.texi
