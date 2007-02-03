@@ -689,45 +689,54 @@ setrgbcolor} def
                (mapcar #'(lambda (a) `(mset ',a (pop ,save-list-gensym)))
                        (reverse (cdr subscripted-vars)))))
 
-	   (coerce `(lambda ,(cdr vars)
-		     (declare (special ,@(cdr vars) errorsw))
+       (coerce
+	`(lambda ,(cdr vars)
+	   (declare (special ,@(cdr vars) errorsw))
 
-             ; Nothing interpolated here when there are no subscripted variables.
-             ,@(if save-list-gensym `((declare (special ,save-list-gensym))))
+	   ;; Nothing interpolated here when there are no subscripted variables.
+	   ,@(if save-list-gensym `((declare (special ,save-list-gensym))))
 
-             ; Nothing interpolated here when there are no subscripted variables.
-             ,@(if (cdr subscripted-vars)
-                 `((progn (setq ,save-list-gensym nil)
-                          ,@(append subscripted-vars-save subscripted-vars-mset))))
+	   ;; Nothing interpolated here when there are no subscripted variables.
+	   ,@(if (cdr subscripted-vars)
+		 `((progn (setq ,save-list-gensym nil)
+			  ,@(append subscripted-vars-save subscripted-vars-mset))))
 
-		     (let (($ratprint nil) ($numer t)
-			   (errorsw t))
-		       ;; Catch any errors from evaluating the
-		       ;; function.  We're assuming that if an error
-		       ;; is caught, the result is not a number.  We
-		       ;; also assume that for such errors, it's
-		       ;; because the function is not defined there,
-		       ;; not because of some other maxima error.
-		       ;;
-		       ;; GCL 2.6.2 has handler-case but not quite ANSI yet. 
-		       (let ((result
-			      #-gcl
-			       (handler-case 
-				   (catch 'errorsw
-				     ($float ($realpart (meval* ',expr))))
-				 (arithmetic-error () t))
-			       #+gcl
-			       (handler-case 
-				   (catch 'errorsw
-				     ($float ($realpart (meval* ',expr))))
-				 (cl::error () t))
-			       ))
+	   (let (($ratprint nil) ($numer t)
+		 (errorsw t)
+		 (errcatch t))
+	     (declare (special errcatch))
+	     ;; Catch any errors from evaluating the
+	     ;; function.  We're assuming that if an error
+	     ;; is caught, the result is not a number.  We
+	     ;; also assume that for such errors, it's
+	     ;; because the function is not defined there,
+	     ;; not because of some other maxima error.
+	     ;;
+	     ;; GCL 2.6.2 has handler-case but not quite ANSI yet. 
+	     (let ((result
+		    #-gcl
+		     (handler-case 
+			 (catch 'errorsw
+			   ($float ($realpart (meval* ',expr))))
+		       ;; Should we just catch all errors here?  It is
+		       ;; rather nice to only catch errors we care
+		       ;; about and let other errors fall through so
+		       ;; that we don't pretend to do something when
+		       ;; it is better to let the error through.
+		       (arithmetic-error () t)
+		       (maxima-$error () t))
+		     #+gcl
+		     (handler-case 
+			 (catch 'errorsw
+			   ($float ($realpart (meval* ',expr))))
+		       (cl::error () t))
+		     ))
 
-                 ; Nothing interpolated here when there are no subscripted variables.
-                 ,@(if (cdr subscripted-vars) `((progn ,@subscripted-vars-restore)))
+	       ;; Nothing interpolated here when there are no subscripted variables.
+	       ,@(if (cdr subscripted-vars) `((progn ,@subscripted-vars-restore)))
 
-			 result)))
-		   'function)))))
+	       result)))
+	'function)))))
 
 (defun coerce-maxima-function-or-maxima-lambda (args expr)
   (let ((gensym-args (loop for x in args collect (gensym))))
