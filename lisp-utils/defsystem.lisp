@@ -4669,6 +4669,7 @@ the system definition, if provided."
 Signal an error when it is not a filename designator.
 Return NIL when the file does not exist, or is not readable,
 or does not contain valid compiled code."
+  (declare (ignorable file-name))
   #+clisp
   (with-open-file (in file-name :direction :input :if-does-not-exist nil)
     (and in (char= #\( (peek-char nil in))
