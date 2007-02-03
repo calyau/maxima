@@ -90,7 +90,7 @@ to subsitute their knowledge of defsystem for the following steps.
 
     CMUCL: (CMUCL terminates after saving the image)
 
-    (extensions:save-lisp "binary-cmucl/maxima.core" :init-function 'user::run)
+    (extensions:save-lisp "binary-cmucl/maxima.core" :init-function 'cl-user::run)
 
     SCL: (SCL terminates after saving the image)
 
