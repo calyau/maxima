@@ -173,7 +173,7 @@
 (defun maxima-branch-acos (x)
   ; Test for (IMAGPART X) is EQUAL because signed zero is EQUAL to zero.
   (if (and (> (abs (realpart x)) 1d0) (equal (imagpart x) 0d0))
-    (- #.(/ pi #C(2d0 0d0)) (maxima-branch-asin x))
+    (- #.(/ (float pi 1d0) 2) (maxima-branch-asin x))
     (cl:acos x)))
 
 ;; Apply formula from CLHS if X falls on a branch cut.
@@ -181,7 +181,7 @@
 (defun maxima-branch-atanh (x)
   ; Test for (IMAGPART X) is EQUAL because signed zero is EQUAL to zero.
   (if (and (> (abs (realpart x)) 1d0) (equal (imagpart x) 0d0))
-    (/ (- (cl:log (+ #C(1d0 0d0) x)) (cl:log (- #C(1d0 0d0) x))) #C(2d0 0d0))
+    (/ (- (cl:log (+ 1 x)) (cl:log (- 1 x))) 2)
     (cl:atanh x)))
 
 ;; Fill the hash table.
