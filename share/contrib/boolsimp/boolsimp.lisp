@@ -321,8 +321,8 @@
       (setq args (cddr args)))
     
     (cond
-      ((null args-simplified) '$false)
-      ((or (eq (car args-simplified) t) (eq (car args-simplified) '$true))
+      ((null args-simplified) nil)
+      ((or (eq (car args-simplified) t) (eq (car args-simplified) t))
        (cadr args-simplified))
       (t
         ; Indicate that the return value has been simplified.
