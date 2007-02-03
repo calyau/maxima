@@ -161,3 +161,20 @@ poissimp(sin(x)^5+cos(x)^5);
 1/16*sin(5*x)+1/16*cos(5*x)-5/16*sin(3*x)+5/16*cos(3*x)+5/8*sin(x)+5/8*cos(x)$
 pfeformat:false;
 false$
+
+/* test for bug [ 1648352 ] rules and pattern bug */
+
+(matchdeclare (aa, true, gg, lambda([yy], evenp(yy) and (yy > 1))),
+ let (sin(aa)^gg, (1 - cos(aa)^2)^(gg/2)),
+ 0);
+0;
+
+letsimp (sin(x)^2);
+1 - cos(x)^2;
+
+letsimp (sin(x)^3);
+sin(x)^3;
+
+letsimp (sin(x)^4);
+cos(x)^4 - 2*cos(x)^2 + 1;
+

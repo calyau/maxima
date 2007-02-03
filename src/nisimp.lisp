@@ -391,7 +391,14 @@
 	   ((and (not (atom (car w)))
 		 (not (atom (caar w)))
 		 (atom (caaar w))
-		 (meval (append (car w) (list x))))
+         ; If we arrive here, (CAR W) is a Maxima expression like ((FOO) ...)
+         ; If (CAR W) is a Maxima lambda expression, evaluate it via MFUNCALL.
+         ; Otherwise, append X and call MEVAL.
+         ; Note that "otherwise" includes Maxima lambda expressions with missing arguments;
+         ; in that case the expression is ((MQAPPLY) ((LAMBDA) ...)) and MEVAL is the way to go.
+		 (if (eq (caaar w) 'lambda)
+           (mfuncall (car w) x)
+           (meval (append (car w) (list x)))))
 	    (go out))
 	   (t (return nil)))
      out  (return (cons (cons y x) c)))) 
