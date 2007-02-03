@@ -167,7 +167,7 @@
   (if (not $nolabels)
       (if (or (null (cdr $labels))
 	      (when (member linelable (cddr $labels) :test #'equal)
-		(delete linelable $labels :count 1 :test #'eq) t)
+		(setf $labels (delete linelable $labels :count 1 :test #'eq)) t)
 	      (not (eq linelable (cadr $labels))))
 	  (setq $labels (cons (car $labels) (cons linelable (cdr $labels))))))
   linelable)
@@ -262,6 +262,7 @@
 (defvar autoload 'generic-autoload)
 
 (defmfun load-function (func mexprp)	; The dynamic loader
+  (declare (ignore mexprp))
   (let ((file (get func 'autoload)))
     (if file (funcall autoload (cons func file)))))
 
@@ -360,7 +361,7 @@
 	  (cond (y ($remrule y x))
 		(t (when (not (member x *builtin-$rules* :test #'equal))
 		     (fmakunbound x)
-		     (delete x $rules :count 1 :test #'eq))))))
+		     (setf $rules (delete x $rules :count 1 :test #'eq)))))))
       (when (and (get x 'operators) (rulechk x))
 	($remrule x '$all))
       (when (mget x 'trace)
@@ -384,13 +385,18 @@
 	(when (and y (not (member y mopl :test #'equal)) (member y (cdr $props) :test #'equal))
 	  (kill-operator x)))
       (remalias x nil)
-      (delete x $arrays :count 1 :test #'eq)
+      (setf $arrays (delete x $arrays :count 1 :test #'eq))
       (rempropchk x)
-      (delete (assoc (ncons x) $functions :test #'equal) $functions :count 1 :test #'equal)
-      (delete (assoc (ncons x) $macros :test #'equal) $macros :count 1 :test #'equal)
+      (setf $functions
+	    (delete (assoc (ncons x) $functions :test #'equal) $functions :count 1 :test #'equal))
+      (setf $macros
+	    (delete (assoc (ncons x) $macros :test #'equal) $macros :count 1 :test #'equal))
       (let ((y (assoc (ncons x) $gradefs :test #'equal)))
-	(when y (remprop x 'grad) (delete y $gradefs :count 1 :test #'equal)))
-      (delete (assoc (ncons x) $dependencies :test #'equal) $dependencies :count 1 :test #'equal)
+	(when y
+	  (remprop x 'grad)
+	  (setf $gradefs (delete y $gradefs :count 1 :test #'equal))))
+      (setf $dependencies
+	    (delete (assoc (ncons x) $dependencies :test #'equal) $dependencies :count 1 :test #'equal))
       (when (and (member x *builtin-symbols* :test #'equal)
 		 (gethash x *builtin-symbol-props*))
 	(setf (symbol-plist x)
@@ -467,8 +473,8 @@
 	 (let (y)
 	   (cond ((or (setq y (member x (cdr $values) :test #'equal))
 		      (member x (cdr $labels) :test #'equal))
-		  (cond (y (delete x $values :count 1 :test #'eq))
-			(t (delete x $labels :count 1 :test #'eq)
+		  (cond (y (setf $values (delete x $values :count 1 :test #'eq)))
+			(t (setf $labels (delete x $labels :count 1 :test #'eq))
 			   (remprop x 'time) (remprop x 'nodisp)
 			   (if (not (zerop dcount))
 			       (setq dcount (1- dcount)))))
@@ -743,9 +749,12 @@
 (defmfun remalias (x &optional remp)
   (let ((y (and (or remp (member x (cdr $aliases) :test #'equal)) (get x 'reversealias))))
     (cond ((and y (eq x '%derivative))
-	   (remprop x 'reversealias) (delete x $aliases :count 1 :test #'eq)
+	   (remprop x 'reversealias)
+	   (setf $aliases (delete x $aliases :count 1 :test #'eq))
 	   (remprop '$diff 'alias) '$diff)
-	  (y (remprop x 'reversealias) (remprop x 'noun) (delete x $aliases :count 1 :test #'eq)
+	  (y (remprop x 'reversealias)
+	     (remprop x 'noun)
+	     (setf $aliases (delete x $aliases :count 1 :test #'eq))
 	     (remprop (setq x (makealias y)) 'alias) (remprop x 'verb) x))))
 
 (defmfun stripdollar (x)
@@ -1063,8 +1072,8 @@
 (defmfun $pagepause (x)
   (pagepause1 nil x))
 
-(defun pagepause1 (x y)
-  (declare (ignore x y))
+(defun pagepause1 (xx yy)
+  (declare (ignore xx yy))
   (merror "`pagepause' does not exist in this system."))
 
 (defmspec $status (form)
@@ -1088,12 +1097,12 @@
 	 (setq *features* (delete ($mkey item) *features*)) t)
 	(t (error "know only how to set and remove feature status"))))
 
-(defmfun $dskgc (x)
-  (declare (ignore x))
+(defmfun $dskgc (xx)
+  (declare (ignore xx))
   nil)
 
-(defun dskgc1 (x y)
-  (declare (ignore x y))
+(defun dskgc1 (xx yy)
+  (declare (ignore xx yy))
   nil)
   
 (do ((l '($sqrt $erf $sin $cos $tan $log $plog $sec $csc $cot $sinh $cosh
