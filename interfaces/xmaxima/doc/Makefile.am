@@ -1,5 +1,7 @@
 include $(top_srcdir)/common.mk
 
+TEXINFO_TEX=../../../doc/info/texinfo.tex
+
 SUBDIRS = figures
 
 info_TEXINFOS = xmaxima.texi
