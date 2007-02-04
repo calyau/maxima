@@ -31,11 +31,15 @@ false;
 
 /* Kamke 2. 404  */ 
 (pn_(404),ans:contrib_ode(eqn:'diff(y,x,2)=(-2*x^2-1)*'diff(y,x,1)/x^3-(1-2*x^2)*y/(4*x^6),y,x));
-false;
+[y = %k2*%e^(1/(4*x^2))/x+%k1*%e^(1/(4*x^2))];
+[method,ode_check(eqn,ans[1])];
+[odelin,0];
 
 /* Kamke 2. 405  */ 
+/* CHECKME:  Takes a long time
 (pn_(405),ans:contrib_ode(eqn:'diff(y,x,2)=(2*x^2+1)*'diff(y,x,1)/x^3-(a*x^4+10*x^2+1)*y/(4*x^6),y,x));
 false;
+*/
 
 /* Kamke 2. 406  */ 
 (pn_(406),ans:contrib_ode(eqn:'diff(y,x,2)=-27*x*y/(16*(x^3-1)^2),y,x));
@@ -46,8 +50,10 @@ false;
 /*(pn_(407),ans:contrib_ode(eqn:'diff(y,x,2)=(-b3*(-bl3-al3+1)/(b3*x-a3)-b2*(-bl2-al2+1)/(b2*x-a2)-b1*(-bl1-al1+1)/(b1*x-a1))*'diff(y,x,1)-(al3*(a3*b1-a1*b3)*(a2*b3-a3*b2)*bl3/(b3*x-a3)+al2*(a1*b2-a2*b1)*(a2*b3-a3*b2)*bl2/(b2*x-a2)+al1*(a1*b2-a2*b1)*(a3*b1-a1*b3)*bl1/(b1*x-a1))*y/((b1*x-a1)*(b2*x-a2)*(b3*x-a3)),y,x));*/
 
 /* Kamke 2. 408  */ 
+/* CHECKME:  Takes a long time
 (pn_(408),ans:contrib_ode(eqn:'diff(y,x,2)=((x^2-a1)*(x^2-a2)*(x^2-a3)-x^2*((x^2-a2)*(x^2-a3)+(x^2-a1)*(x^2-a3)+(x^2-a1)*(x^2-a2)))*'diff(y,x,1)/(x*(x^2-a1)*(x^2-a2)*(x^2-a3))-y*(B+x^2*A)/(x*(x^2-a1)*(x^2-a2)*(x^2-a3)),y,x));
 false;
+*/
 
 /* Kamke 2. 409  */ 
 assume(a>1);
