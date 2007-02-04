@@ -10,7 +10,6 @@
 
 (in-package :maxima)
 
-
 (macsyma-module merror)
 
 ;;; Macsyma error signalling. 
@@ -44,16 +43,16 @@
   (let (($simp nil))
     (setq exp (ratdisrep exp)))
 
-  (if (atom exp) 0
+  (if (atom exp)
+      0
       (do ((l (cdr exp) (cdr l))
-	   (n 1 (f1+ (f+ n (error-size (car l))))))
+	   (n 1 (1+ (+ n (error-size (car l))))))
 	  ((or (atom l)
 	       ;; no need to go any further, and this will save us
 	       ;; from circular structures. (Which the display
 	       ;; package would have a hell of a time with too.)
 	       (> n $error_size))
-	   n)
-	(declare (fixnum n)))))
+	   n))))
 
 ;;; Problem: Most macsyma users do not take advantage of break-points
 ;;; for debugging. Therefore they need to have the error variables
@@ -64,21 +63,6 @@
 ;;; set things back. It would be better to bind these variables,
 ;;; for, amoung other things, then the values could get garbage 
 ;;; collected.
-
-;;Make up your mind.  The first definition here, commented out, is the
-;; original in the source.  I guess the binding didn't make it, because
-;; the second is from the 302 fix file F302. --gsb
-;;(DEFMFUN MERROR (STRING &REST L)
-;;  (SETQ STRING (CHECK-OUT-OF-CORE-STRING STRING))
-;;  (LET (($ERROR `((MLIST) ,STRING ,@L)))
-;;    (AND $ERRORMSG ($ERRORMSG))
-;;    (ERROR #+(OR LISPM NIL) STRING)))
-;;#-cl
-;;(DEFMFUN MERROR (STRING &REST L)
-;;  (SETQ STRING (CHECK-OUT-OF-CORE-STRING STRING))
-;;  (SETQ $ERROR `((MLIST) ,STRING ,@L))
-;;  (AND $ERRORMSG ($ERRORMSG))
-;;  (MAXIMA-ERROR #+(OR CL NIL) STRING))
 
 (define-condition maxima-$error (error)
   ((message :initform $error :reader the-$error))
@@ -100,27 +84,18 @@
 	   (progn
 	     (setq ret (break-dbm-loop nil))
 	     (cond ((eql ret :resume)
-		    (break-quit)))
-		    
-	     ;;#+previous
-	     ;;	     (cond ((and (eql ret 'exit)
-	     ;;		    (member 'macsyma-break state-pdl))
-	     ;; 	            (throw 'macsyma-break t))
-	     ;;	           (t  (throw 'macsyma-quit t)
-	     ;;	      ))
-	     )))
+		    (break-quit))))))
 	(errcatch  (error 'maxima-$error))
 	(t
 	 (fresh-line *standard-output*)
 	 ($backtrace 3)
 	 (format t "~& -- an error.  To debug this try debugmode(true);~%")
-	 (throw 'macsyma-quit 'maxima-error)
-	 ;;(if errcatch (error "macsyma error"))
-	 )))
+	 (throw 'macsyma-quit 'maxima-error))))
 
 (defmacro with-$error (&body body)
   "Let MERROR signal a MAXIMA-$ERROR condition."
-  `(let ((errcatch t) *mdebug*	       ;let merror signal a lisp error
+  `(let ((errcatch t)
+	 *mdebug*		       ;let merror signal a lisp error
 	 $errormsg)			;don't print $error
      (declare (special errcatch))
      ,@body))
@@ -154,17 +129,17 @@
 	     (nreverse new-argl)))
     (let ((form (pop l)))
       (cond ((> (error-size form) $error_size)
-	     (setq symbol-number (f1+ symbol-number))
+	     (setq symbol-number (1+ symbol-number))
 	     (let ((sym (nthcdr symbol-number $error_syms)))
 	       (cond (sym
 		      (setq sym (car sym)))
-		     ('else
+		     (t
 		      (setq sym (concat '$errexp symbol-number))
 		      (setq $error_syms (append $error_syms (list sym)))))
 	       (push sym error-symbols)
 	       (push form error-values)
 	       (push sym new-argl)))
-	    ('else
+	    (t
 	     (push form new-argl))))))
 
 (defmfun $errormsg ()
@@ -183,15 +158,13 @@
 	  (mtell "~%** error while printing error message **~%~A~%"
 		 (cadr $error)
 		 )))
-    (fresh-line)
-    )
+    (fresh-line))
   '$done)
 
 (defmfun read-only-assign (var val)
   (if munbindp
       'munbindp
-      (merror "Attempting to assign read-only variable ~:M the value:~%~M"
-	      var val)))
+      (merror "Attempting to assign read-only variable ~:M the value:~%~M" var val)))
 
 
 (defprop $error read-only-assign  assign)
@@ -220,7 +193,6 @@
        (se nil))
       ((null l)
        (setq sl (maknam sl))
-					;#+PDP10 (putprop sl t '+INTERNAL-STRING-MARKER)
        (cons sl (nreverse se)))
     (setq s (pop l))
     (cond ((and (symbolp s) (char= (getcharn s 1) #\&))
