@@ -353,10 +353,6 @@ Openmath es un programa gr@'afico escrito en Tcl/Tk. Este formato lo
 suministra el paquete Xmaxima, que se distribuye junto con Maxima;
 deber@'a instalar Xmaxima si quiere usar este formato.
 
-@item
-Valor: @code{ps}
-Genera ficheros PostScript directamente desde Maxima. Se tendr@'an resultados PostScript mejores utilizando gnuplot,
-dejando la opci@'on @code{plot_format} sin especificar (aceptando la que tiene por defecto), y d@'andole a @code{gnuplot_term} el valor @code{ps}.
 @end itemize
 
 @item
@@ -817,21 +813,6 @@ make_transform ([r, th, z], r*cos(th), r*sin(th), z)$
 es una transformaci@'on para pasar a coordenadas polares.
 @end deffn
 
-@deffn {Funci@'on} plot2d_ps (@var{expr}, @var{range})
-Escribe en el @var{pstream} una secuencia de comandos PostScript que dibujan @var{expr} sobre @var{range}.
-
-El argumento @var{expr} es una expresi@'on y @var{range} es una lista de la forma @code{[@var{x}, @var{min}, @var{max}]}
-en la cual @var{x} es una variable que aparece en @var{expr}.
-
-V@'ease tambi@'en @code{closeps}.
-
-@end deffn
-
-@deffn {Funci@'on} closeps ()
-Esta funci@'on deber@'{@dotless{i}}a invocarse al final de una secuencia de comandos gr@'aficos.  Cierra el @var{pstream} y le asigna @code{nil}. Tambi@'en puede ser invocado antes de empezar un dibujo, para asegurar que se cierre el @var{pstream}
-si estaba abierto.  Todas las instrucciones que se env@'{@dotless{i}}an al @var{pstream} lo abren si es necesario. La funci@'on  @code{closeps} es independiente de otras instrucciones gr@'aficas, ya que si se quiere dibujar dos rangos o sobreponer varios gr@'aficos, @var{pstream} debe permanecer abierto.
-@end deffn
-
 @deffn {Funci@'on} set_plot_option (@var{option})
 Asigna un valor a una de las variables globales que controlan los gr@'aficos. El argumento
 @var{option} se especifica como una lista de dos o m@'as elementos, en la que el primero es el nombre de una de las opciones de la lista @code{plot_options}.
@@ -888,36 +869,3 @@ eps enhanced color solid 24]]
 
 @end deffn
 
-@deffn {Funci@'on} psdraw_curve (@var{ptlist})
-
-Dibuja una curva uniendo los puntos de @var{ptlist}, que puede ser de la forma @code{[x0, y0, x1, y1, ...]} o @code{[[x0, y0], [x1, y1], ...]}
-
-La funci@'on @code{join} se puede utilizar para tomar una lista con las x y otra con las y para luego formar pares.
-
-La funci@'on @var{psdraw_curve} tan s@'olo llama a la funci@'on @var{pscurve}.  Esta es su definici@'on:
-
-@example
-(defun $psdraw_curve (lis)
-  (p "newpath")
-  ($pscurve lis)
-  (p "stroke"))
-
-@end example
-
-@c ?DRAW2D  may also be used to produce a list
-@c @example
-@c points1:?draw2d(1/x,[.05,10],.03) 
-@c @end example
-
-@end deffn
-
-
-@deffn {Funci@'on} pscom (@var{cmd})
-
-El argumento @var{cmd} se a@~nade al fichero PostScript.
-Ejemplo:
-@example
-pscom ("4.5 72 mul 5.5 72 mul translate 14 14 scale");
-@end example
-
-@end deffn

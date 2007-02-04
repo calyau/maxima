@@ -382,12 +382,6 @@ Valor: @code{openmath}
 Openmath @'e um programa gr@'afico escrito em Tcl/Tk. Este formato @'e
 fornecido pelo pacote Xmaxima, que @'e distribuido com Maxima. Se quiser
 usar este formato, dever@'a instalar Xmaxima.
-@item
-Valor: @code{ps}
-Gera arquivos Postscript simples diretamente do
-Maxima.  Sa@'idas Postscript mais sofisticadas podem ser geradas pelo gnuplot,
-deixando a op@,{c}@~ao @code{plot_format} n@~ao especificada (para aceitar o padr@~ao),
-e posicionando a op@,{c}@~ao @code{gnuplot_term} para @code{ps}.
 @end itemize
 
 @item
@@ -893,29 +887,6 @@ make_transform ([r, th, z], r*cos(th), r*sin(th), z)$
 @'e uma transforma@value{cedilha}@~ao para coordenadas polares.
 @end deffn
 
-@deffn {Fun@,{c}@~ao}  plot2d_ps (@var{expr}, @var{range})
-Escreve para pstream uma seq@"u@^encia de comandos PostScript que
-montam o gra@'afico de @var{expr} sobre @var{range}.
-
-@var{expr} @'e uma express@~ao.
-@var{range} @'e uma lista da forma @code{[@var{x}, @var{min}, @var{max}]}
-na qual @var{x} @'e uma vari@'avel que aparece em @var{expr}.
-
-Veja tamb@'em @code{closeps}.
-
-@end deffn
-
-
-@deffn {Fun@,{c}@~ao}  closeps ()
-Essa poder@'a usualmente ser chamada no final de um seq@"u@^encia comandos de
-montagem de gr@'afico.   Isso fecha o fluxo corrente de sa@'ida @var{pstream}, e altera
-esse para nil.   Isso tamb@'em pode ser chamado ao iniciar uma montagem de gr@'afico, para garantir
-que pstream ser@'a fechado se estiver aberto.    Todos os comandos que escrevem para
-pstream, abrem isso se necess@'ario.   @code{closeps} @'e separada de outros
-comandos de montagem de gr@'afico, posteriormente podemos querer montar um gr@'afico com 2 amplitudes ou sobrepor
-muitas montagens de gr@'aficos, e ent@~ao devemos manter esse fluxo aberto.
-@end deffn
-
 @deffn {Fun@,{c}@~ao}  set_plot_option (@var{op@,{c}@~ao})
 Atribui uma das var@'aveis globais para impress@~ao.
 @var{op@,{c}@~ao} @'e especificada como uma lista de dois ou mais elementos,
@@ -976,43 +947,3 @@ eps enhanced color solid 24]]
 @end example
 
 @end deffn
-
-@deffn {Fun@,{c}@~ao}  psdraw_curve (@var{ptlist})
-
-Desenha uma curva conectando os pontos em @var{ptlist}.   O @'ultimo
-pode ser da forma @code{[x0, y0, x1, y1, ...]} ou da forma @code{[[x0, y0], [x1, y1], ...]}
-
-A fun@,{c}@~ao @code{join} @'e @'util fazendo uma lista dos x's e uma
-lista dos y's e colocando-os juntos.
-
-@var{psdraw_curve} simplesmente invoca a mais primitiva fun@value{cedilha}@~ao
-@var{pscurve}.   Aqui est@'a a defini@value{cedilha}@~a:
-
-@example
-(defun $psdraw_curve (lis)
-  (p "newpath")
-  ($pscurve lis)
-  (p "stroke"))
-
-@end example
-
-@c ?DRAW2D  may also be used to produce a list
-@c @example
-@c  points1:?draw2d(1/x,[.05,10],.03)
-@c @end example
-
-
-@end deffn
-
-@deffn {Fun@,{c}@~ao}  pscom (@var{cmd})
-
-@var{cmd} @'e inserida no arquivo PostScript.
-Exemplo:
-@example
-pscom ("4.5 72 mul 5.5 72 mul translate 14 14 scale");
-@end example
-
-@end deffn
-
-
-

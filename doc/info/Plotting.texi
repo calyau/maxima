@@ -381,12 +381,6 @@ Value: @code{openmath}
 Openmath is a Tcl/Tk GUI plotting program. This format is provided by
 Xmaxima, which is distributed together with Maxima; you should install
 Xmaxima in order to use this format.
-@item
-Value: @code{ps}
-Generates simple PostScript files directly from
-Maxima. Much more sophisticated PostScript output can be generated from gnuplot,
-by leaving the option @code{plot_format} unspecified (to accept the default),
-and setting the option @code{gnuplot_term} to @code{ps}.
 @end itemize
 
 @item
@@ -896,29 +890,6 @@ make_transform ([r, th, z], r*cos(th), r*sin(th), z)$
 is a transformation to polar coordinates.
 @end deffn
 
-@deffn {Function} plot2d_ps (@var{expr}, @var{range})
-Writes to pstream a sequence of PostScript commands which
-plot @var{expr} over @var{range}.
-
-@var{expr} is an expression.
-@var{range} is a list of the form @code{[@var{x}, @var{min}, @var{max}]}
-in which @var{x} is a variable which appears in @var{expr}.
-
-See also @code{closeps}.
-
-@end deffn
-
-
-@deffn {Function} closeps ()
-This should usually be called at the end of a sequence of plotting
-commands. It closes the current output stream @var{pstream}, and sets
-it to nil. It also may be called at the start of a plot, to ensure
-pstream is closed if it was open. All commands which write to
-pstream, open it if necessary. @code{closeps} is separate from the other
-plotting commands, since we may want to plot 2 ranges or superimpose
-several plots, and so must keep the stream open.
-@end deffn
-
 @deffn {Function} set_plot_option (@var{option})
 Assigns one of the global variables for plotting.
 @var{option} is specified as a list of two or more elements,
@@ -979,43 +950,4 @@ eps enhanced color solid 24]]
 @end example
 
 @end deffn
-
-@deffn {Function} psdraw_curve (@var{ptlist})
-
-Draws a curve connecting the points in @var{ptlist}.   The latter
-may be of the form @code{[x0, y0, x1, y1, ...]} or @code{[[x0, y0], [x1, y1], ...]}
-
-The function @code{join} is handy for taking a list of x's and a
-list of y's and splicing them together.
-
-@var{psdraw_curve} simply invokes the more primitive function
-@var{pscurve}.   Here is the definition:
-
-@example
-(defun $psdraw_curve (lis)
-  (p "newpath")
-  ($pscurve lis)
-  (p "stroke"))
-
-@end example
-
-@c ?DRAW2D  may also be used to produce a list
-@c @example
-@c  points1:?draw2d(1/x,[.05,10],.03)
-@c @end example
-
-
-@end deffn
-
-@deffn {Function} pscom (@var{cmd})
-
-@var{cmd} is inserted in the PostScript file.
-Example:
-@example
-pscom ("4.5 72 mul 5.5 72 mul translate 14 14 scale");
-@end example
-
-@end deffn
-
-
 
