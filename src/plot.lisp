@@ -827,21 +827,36 @@
   (let* ((f (copy-tree f))              ; Copy all of F because we destructively modify it below.
          (x (third f))
          (y (fourth f)))
-    (cond 
-      ((= (length f) 4)                 ; [discrete,x,y]
-       (if (not ($listp x))
-           (merror "draw2d (discrete): ~M must be a list." x))
-       (if (not ($listp y))
-           (merror "draw2d (discrete): ~M must be a list." y))
-       (cons '(mlist) (mapcan #'list (rest x) (rest y))))
-      ((= (length f) 3)                 ; [discrete,xy]
-       (if (not ($listp x))
-           (merror "draw2d (discrete): ~M must be a list." x))
-       (let ((tmp (mapcar #'rest (rest x))))
-         (cons '(mlist) (mapcan #'append tmp))))
-      (t                                ; error
-       (merror 
-        "draw2d (discrete): expression is not of the form [discrete,x,y] or ~%[discrete,xy].")))))
+    (let
+      (($numer t) ($float t) ($%enumer t)
+       (data
+         (cond
+           ((= (length f) 4)                 ; [discrete,x,y]
+            (if (not ($listp x))
+              (merror "draw2d (discrete): ~M must be a list." x))
+            (if (not ($listp y))
+              (merror "draw2d (discrete): ~M must be a list." y))
+            (cons '(mlist) (mapcan #'list (rest x) (rest y))))
+           ((= (length f) 3)                 ; [discrete,xy]
+            (if (not ($listp x))
+              (merror "draw2d (discrete): ~M must be a list." x))
+            (let ((tmp (mapcar #'rest (rest x))))
+              (cons '(mlist) (mapcan #'append tmp))))
+           (t                                ; error
+             (merror
+               "draw2d (discrete): expression is not of the form [discrete,x,y] or ~%[discrete,xy].")))))
+
+      ;; Encourage non-floats to become floats here.
+
+      ;; Arguments X and Y were evaluated when $PLOT2D was called.
+      ;; So theoretically calling MEVAL again is a no-no; 
+      ;; instead, RESIMPLIFY should be called.
+      ;; However, the only circumstance in which MEVAL and RESIMPLIFY yield different results
+      ;; is when X or Y contains a symbol which evaluates to a number, in which case calling
+      ;; RESIMPLIFY would cause an error (because the symbol would cause Gnuplot to barf).
+
+      (meval data))))
+
 
 ;; arrange so that the list of points x0,y0,x1,y1,.. on the curve
 ;; never have abs(y1-y0 ) and (x1-x0) <= deltax
