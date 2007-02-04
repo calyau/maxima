@@ -476,24 +476,6 @@
   (let ((maxima-options nil))
     (setf maxima-options
 	  (list 
-	   (make-cl-option :names '("-h" "--help")
-			   :action #'(lambda () 
-				       (format t "usage: maxima [options]~%")
-				       (list-cl-options maxima-options)
-				       (bye))
-			   :help-string "Display this usage message.")
-	   (make-cl-option :names '("-l" "--lisp")
-			   :argument "<lisp>"
-			   :action nil
-			   :help-string "Use lisp implementation <lisp>.")
-	   (make-cl-option :names '("-u" "--use-version")
-			   :argument "<version>"
-			   :action nil
-			   :help-string "Use maxima version <version>.")
-	   (make-cl-option :names '("--list-avail")
-			   :action 'list-avail-action
-			   :help-string 
-			   "List the installed version/lisp combinations.")
 	   (make-cl-option :names '("-b" "--batch")
 			   :argument "<file>"
 			   :action #'(lambda (file)
@@ -523,14 +505,35 @@
 				       (setf batch-flag :batch))
 			   :help-string 
 			   "Process maxima command(s) <string> in batch mode.")
-	   (make-cl-option :names '("-r" "--run-string")
-			   :argument "<string>"
-			   :action #'(lambda (string)
-				       (setf input-stream
-					     (make-string-input-stream string))
-				       (setf batch-flag nil))
+	   (make-cl-option :names '("-d" "--directories")
+			   :action 'print-directories
+			   :help-string
+			   "Display maxima internal directory information.")
+	   (make-cl-option :names '("--disable-readline")
+			   :action #'(lambda ()
+				       #+gcl
+				       (if (find :readline *features*)
+					   (si::readline-off)))
+			   :help-string "Disable readline support.")
+	   (make-cl-option :names '("-g" "--enable-lisp-debugger")
+			   :action #'(lambda ()
+				       (setf *debugger-hook* nil))
+			   :help-string
+			   "Enable underlying lisp debugger.")
+	   (make-cl-option :names '("-h" "--help")
+			   :action #'(lambda () 
+				       (format t "usage: maxima [options]~%")
+				       (list-cl-options maxima-options)
+				       (bye))
+			   :help-string "Display this usage message.")
+	   (make-cl-option :names '("-l" "--lisp")
+			   :argument "<lisp>"
+			   :action nil
+			   :help-string "Use lisp implementation <lisp>.")
+	   (make-cl-option :names '("--list-avail")
+			   :action 'list-avail-action
 			   :help-string 
-			   "Process maxima command(s) <string> in interactive mode.")
+			   "List the installed version/lisp combinations.")
 	   (make-cl-option :names '("-p" "--preload-lisp")
 			   :argument "<lisp-file>"
 			   :action #'(lambda (file)
@@ -539,27 +542,24 @@
        (make-cl-option :names '("-q" "--quiet")
                :action #'(lambda () (declare (special *maxima-quiet*)) (setq *maxima-quiet* t))
                :help-string "Suppress Maxima start-up message.")
-	   (make-cl-option :names '("--disable-readline")
-			   :action #'(lambda ()
-				       #+gcl
-				       (if (find :readline *features*)
-					   (si::readline-off)))
-			   :help-string "Disable readline support.")
+	   (make-cl-option :names '("-r" "--run-string")
+			   :argument "<string>"
+			   :action #'(lambda (string)
+				       (setf input-stream
+					     (make-string-input-stream string))
+				       (setf batch-flag nil))
+			   :help-string 
+			   "Process maxima command(s) <string> in interactive mode.")
 	   (make-cl-option :names '("-s" "--server")
 			   :argument "<port>"
 			   :action #'(lambda (port-string)
 				       (start-server (parse-integer 
 						      port-string)))
 			   :help-string "Start maxima server on <port>.")
-	   (make-cl-option :names '("-d" "--directories")
-			   :action 'print-directories
-			   :help-string
-			   "Display maxima internal directory information.")
-	   (make-cl-option :names '("-g" "--enable-lisp-debugger")
-			   :action #'(lambda ()
-				       (setf *debugger-hook* nil))
-			   :help-string
-			   "Enable underlying lisp debugger.")
+	   (make-cl-option :names '("-u" "--use-version")
+			   :argument "<version>"
+			   :action nil
+			   :help-string "Use maxima version <version>.")
 	   (make-cl-option :names '("-v" "--verbose")
 			   :action nil
 			   :help-string 
