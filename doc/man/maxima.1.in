@@ -52,6 +52,9 @@ Process \fIstring\fR in noninteractive mode.
 \fB\-d\fR, \fB\-\-directories\fR
 Display Maxima directory information.
 .TP
+\fB\-\-disable\-readline\fR
+Disable readline support.
+.TP
 \fB\-g\fR, \fB\-\-enable\-lisp\-debugger\fR
 Enable Lisp debugger.
 .TP
@@ -67,6 +70,9 @@ List the available Lisp and Maxima versions.
 .TP
 \fB\-p\fR \fIlisp_file\fR, \fB\-\-preload-lisp=\fR\fIlisp_file\fR
 Preload \fIlisp_file\fR.
+.TP
+\fB\-q\fR, \fB\-\-quiet\fR
+Suppress Maxima start-up message.
 .TP
 \fB\-r\fR \fIstring\fR, \fB\-\-run-string=\fR\fIstring\fR
 Process \fIstring\fR in interactive mode.
