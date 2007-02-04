@@ -133,27 +133,25 @@ figures/plotting24.pdf\
 figures/plotting25.pdf\
 figures/orthopoly1.pdf
 
-all-local: maxima-index.lisp
+all-local: maxima-index.lisp maxima.html contents.hhc
 
 maxima-index.lisp: maxima.info build_index.pl
 	perl ./build_index.pl maxima.info ':crlf' > maxima-index.lisp
 
-maximahtml.mk: texi2html
+maxima.html: maxima.texi $(maxima_TEXINFOS)
 	perl ./texi2html -split_chapter --lang=en --output=. --css-include=./manual.css --init-file ./texi2html.init maxima.texi 
-	rm -f maximahtml.mk
-	ls -1 maxima*.html | sed 's/\(.*\)/MAXIMAHTML += \1/' > maximahtml.mk
 
-MAXIMAHTML = 
-include maximahtml.mk
-
-$(MAXIMAHTML): maxima.texi $(maxima_TEXINFOS)
-	perl ./texi2html -split_chapter --lang=en --output=. --css-include=./manual.css --init-file ./texi2html.init maxima.texi 
+contents.hhc: maxima.html
 	perl ./create_index
 
 include $(top_srcdir)/common.mk
 genericdir = $(dochtmldir)
-genericdirDATA = $(MAXIMAHTML) $(figurefiles) \
+genericdirDATA = $(figurefiles) \
 contents.hhc index.hhk header.hhp maxima.hhp
+
+# This handles all maxima.html and maxima_*.html files
+htmlname = maxima
+include $(top_srcdir)/common-html.mk
 
 all-local: warn_texinfo
 dist-hook: check_texinfo
@@ -180,9 +178,9 @@ clean-html:
 	rm -f contents.hhc
 	rm -f index.hhk
 
-EXTRA_DIST = texi2html maximahtml.mk manual.css texi2html.init \
-    $(genericdirDATA) $(pdffigures)\
-    create_index header.hhp maxima.hhp maxima-index.lisp \
+EXTRA_DIST = texi2html manual.css texi2html.init \
+    $(genericdirDATA) $(pdffigures) \
+    create_index maxima-index.lisp \
     check_crlf check_tab fix_crlf fix_tab build_index.pl
 
 check_texinfo:

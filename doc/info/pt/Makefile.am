@@ -81,27 +81,24 @@ stringproc.texi \
 ../pt_BR/zeilberger.texi
 
 
-all-local: maxima-index.lisp
+all-local: maxima-index.lisp maxima.html contents.hhc
 
 maxima-index.lisp: maxima.info ../build_index.pl
 	perl ../build_index.pl maxima.info ':crlf' > maxima-index.lisp
 
-maximahtml_pt.mk: ../texi2html
+maxima.html: maxima.texi $(maxima_TEXINFOS)
 	perl ../texi2html -split_chapter --lang=pt --output=. --css-include=../manual.css --init-file ../texi2html.init maxima.texi 
-	rm -f maximahtml_pt.mk
-	ls -1 maxima*.html | sed 's/\(.*\)/MAXIMAHTML += \1/' > maximahtml_pt.mk
 
-MAXIMAHTML = 
-include maximahtml_pt.mk
-
-$(MAXIMAHTML): maxima.texi $(maxima_TEXINFOS)
-	perl ../texi2html -split_chapter --lang=pt --output=. --css-include=../manual.css --init-file ../texi2html.init maxima.texi 
+contents.hhc: maxima.html
 	perl ../create_index
 
 include $(top_srcdir)/common.mk
 genericdir = $(dochtmldir)/pt
-genericdirDATA = $(MAXIMAHTML)\
+genericdirDATA = \
 contents.hhc index.hhk header.hhp maxima.hhp
+
+htmlname = maxima
+include $(top_srcdir)/common-html.mk
 
 clean-local: clean-info clean-html
 
@@ -114,7 +111,7 @@ clean-html:
 	rm -f contents.hhc
 	rm -f index.hhk
 
-EXTRA_DIST = maximahtml_pt.mk header.hhp maxima.hhp maxima-index.lisp $(genericdirDATA)
+EXTRA_DIST = maxima-index.lisp $(genericdirDATA)
 
 include ../common-lang.mk
 
