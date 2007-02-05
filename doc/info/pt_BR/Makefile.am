@@ -97,6 +97,7 @@ genericdirDATA = \
 contents.hhc index.hhk header.hhp maxima.hhp
 
 htmlname = maxima
+htmlinstdir = $(dochtmldir)/pt_BR
 include $(top_srcdir)/common-html.mk
 
 clean-local: clean-info clean-html

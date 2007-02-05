@@ -149,8 +149,8 @@ genericdir = $(dochtmldir)
 genericdirDATA = $(figurefiles) \
 contents.hhc index.hhk header.hhp maxima.hhp
 
-# This handles all maxima.html and maxima_*.html files
 htmlname = maxima
+htmlinstdir = $(dochtmldir)
 include $(top_srcdir)/common-html.mk
 
 all-local: warn_texinfo
