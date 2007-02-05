@@ -700,7 +700,7 @@
 	   (cond ((and (not nostringp) incharp)
 		  (let ((linelable (car l1))) (mterpri) (printlabel))
 		  (if grindp (mgrind (meval1 (car l1)) nil)
-		      (mapc #'write-char (mstring (meval1 (car l1)))))
+		      (mapc #+gcl #'tyo #-gcl #'write-char (mstring (meval1 (car l1)))))
 		  (if (get (car l1) 'nodisp) (princ '$) (princ '|;|))
 		  (mterpri))
 		 ((or incharp
