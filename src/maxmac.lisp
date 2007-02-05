@@ -155,7 +155,7 @@
 	      ,(caddr variable-specification)
 	      ,@body))
 	   (t
-	    (maxima-error "Bad variable specification:" variable-specification)))))
+	    (maxima-error "Bad variable specification: ~a" variable-specification)))))
 
 (defmacro mbinding-sub (variables values function-name &rest body &aux (win (gensym)))
   `(let ((,win nil))

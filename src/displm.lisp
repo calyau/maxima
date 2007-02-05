@@ -9,6 +9,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :maxima)
+
 (macsyma-module displm macro)
 
 (declare-top
@@ -117,7 +118,7 @@
 	  ((integerp x)
 	   (if rbp (setq lbp rbp))
 	   (setq rbp x))
-	  (t (maxima-error "Random object in `displa-def' form" x))))
+	  (t (maxima-error "Random object in `displa-def' form: ~a" x))))
   (if l-dissym
       (setq l-dissym
 	    (if r-dissym
