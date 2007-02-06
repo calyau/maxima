@@ -1549,8 +1549,9 @@
 		       (cond ((conti f)              ;If contravariant indices
 			      (list '(mexpt simp)
 				    foobar
-				     (cons '(mtimes simp)  ;Make indices appear
-					  (conti f))))    ;as exponents for
+;				     (cons '(mtimes simp)  ;Make indices appear
+;					  (conti f))))    ;as exponents for
+					(maknam (splice (conti f) nil))))	; Changed for wxmaxima
 			     (t foobar)))                  ;proper display
 		      (t
 		       (cons (car f) (mapcar 'ishow (cdr f))))))
