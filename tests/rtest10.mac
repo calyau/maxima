@@ -42,6 +42,41 @@ cfexpand(%);
 matrix([265,97],[153,56])$
 ev(%[1,2]/%[2,2],numer);
 1.73214285$
+
+(foop1(L1, L2) := length(L1) <= length(L2) and L1 = makelist (L2[i], i, 1, length(L1)),
+ foop(L1, L2) := foop1(L1, L2) or last(L1) # 1 and foop1 (reverse (append ([1, last(L1) - 1], rest (reverse (L1)))), L2), 
+ ratepsilon : 1b-16,
+ 0);
+0;
+
+(expr: 2^(1/3),
+ cf(expr),
+ foop (%%, cf(rat(bfloat(expr)))));
+true;
+
+(expr: 8^(1/4),
+ cf(expr),
+ foop (%%, cf(rat(bfloat(expr)))));
+true;
+
+(expr: 12^(1/5),
+ cf(expr),
+ foop (%%, cf(rat(bfloat(expr)))));
+true;
+
+(expr : 2^(1/3) + 3^(1/4) + 4^(1/5),
+ cf(expr),
+ foop (%%, cf(rat(bfloat(expr)))));
+true;
+
+(expr : sqrt(2) + 2^(2/3) + sqrt(17) - 11^(7/5),
+ cf(expr),
+ foop (%%, cf(rat(bfloat(expr)))));
+true;
+
+(reset (ratepsilon), 0);
+0;
+
 declare(j,even);
 done$
 featurep(j,integer);

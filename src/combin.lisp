@@ -591,6 +591,17 @@
         (t (cons '(mlist cf simp)
                  (apply 'find-cf (cf-back-recurrence (cdr a)))))))
 
+; Code to expand nth degree roots of integers into continued fraction
+; approximations. E.g. cf(2^(1/3))
+; Courtesy of Andrei Zorine (feniy@mail.nnov.ru) 2005/05/07
+
+(defun cfnroot(b)
+  (let ((ans (list '(mlist xf))) ent ($algebraic $true))
+    (dotimes (i $cflength (nreverse ans))
+      (setq ent (meval `(($floor) ,b))
+	    ans (cons ent ans)
+	    b ($ratsimp (m// (m- b ent)))))))
+
 (defun cfeval (a)
   (let (temp $ratprint)
     (cond ((integerp a) (list '(mlist cf) a))
@@ -622,6 +633,7 @@
 		  (cftimes (cfsqrt (cfeval (cadr a)))
 			   (cfexpt (cfeval (cadr a))
 				   (m- (caddr a) '((rat) 1 2)))))
+		 ((integerp (cadr a)) (cfnroot a)) ; <=== new case x
 		 ((cfexpt (cfeval (cadr a)) (caddr a)))))
 	  ((setq temp (assq (caar a) '((mplus . cfplus) (mtimes . cftimes) (mquotient . cfquot)
 				       (mdifference . cfdiff) (mminus . cfminus))))
