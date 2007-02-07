@@ -164,17 +164,18 @@ false$
 
 /* test for bug [ 1648352 ] rules and pattern bug */
 
-(matchdeclare (aa, true, gg, lambda([yy], evenp(yy) and (yy > 1))),
- let (sin(aa)^gg, (1 - cos(aa)^2)^(gg/2)),
+(kill (foo, bar),
+ matchdeclare (aa, true, gg, lambda([yy], evenp(yy) and (yy > 1))),
+ let (foo(aa)^gg, (1 - bar(aa)^2)^(gg/2)),
  0);
 0;
 
-letsimp (sin(x)^2);
-1 - cos(x)^2;
+letsimp (foo(x)^2);
+1 - bar(x)^2;
 
-letsimp (sin(x)^3);
-sin(x)^3;
+letsimp (foo(x)^3);
+foo(x)^3;
 
-letsimp (sin(x)^4);
-cos(x)^4 - 2*cos(x)^2 + 1;
+letsimp (foo(x)^4);
+bar(x)^4 - 2*bar(x)^2 + 1;
 
