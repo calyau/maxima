@@ -9,12 +9,16 @@
       '((mlist simp)
 	"rtestnset" "rtest1" "rtest1a" "rtest2" "rtest4"  "rtest5"
 	"rtest6" "rtest6a" "rtest6b" "rtest7" "rtest9"
-	"rtest9a" "rtest10" "rtest11" "rtest13" "rtest13s"
+	"rtest9a"
+    ((mlist) "rtest10" 24 25)
+    "rtest11" "rtest13" "rtest13s"
 	((mlist simp) "rtest14" 57 63)
 	((mlist simp) "rtest15")
 	((mlist simp) "rtest16" 5)
 	"rtestode" "rtestode_zp"
-	"rtest3" "rtest8" "rtest12" "rexamples"
+	"rtest3" "rtest8"
+    ((mlist) "rtest12" 76 78)
+    "rexamples"
 	"rtesthyp"
 	"rtestmt19937"
     "rtest_allnummod"
