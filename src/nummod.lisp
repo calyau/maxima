@@ -1,8 +1,8 @@
 ;; Maxima functions for floor, ceiling, and friends
-;; Copyright (C) 2004, 2005, Barton Willis
+;; Copyright (C) 2004, 2005, 2007 Barton Willis
 
 ;; Barton Willis
-;; Department of Mathematics, 
+;; Department of Mathematics 
 ;; University of Nebraska at Kearney
 ;; Kearney NE 68847
 ;; willisb@unk.edu
@@ -31,7 +31,7 @@
 
 (eval-when (:compile-toplevel :load-toplevel :execute)
   (mfuncall '$declare '$integervalued '$feature)
-  ($put '$nummod 2 '$version))
+  ($put '$nummod 3 '$version))
  
 ;; charfun(pred) evaluates to 1 when the predicate 'pred' evaluates
 ;; to true; it evaluates to 0 when 'pred' evaluates to false; otherwise,
@@ -74,53 +74,64 @@
 (defprop $entier tex-matchfix tex)
 (defprop $entier (("\\lfloor ") " \\rfloor") texsym)
 
+;; For an example, see pretty-good-floor-or-ceiling. Code courtesy of Stavros Macrakis.
+
+(defmacro bind-fpprec (val &rest exprs)
+  `(let ($fpprec fpprec bigfloatzero bigfloatone bfhalf bfmhalf)
+     (fpprec1 nil ,val)
+     ,@exprs))
+
 ;; When constantp(x) is true, we use bfloat evaluation to try to determine
-;; the floor. If numerical evaluation of e is ill-conditioned, this function 
-;; can misbehave.  I'm somewhat uncomfortable with this,  but it is no worse 
+;; the ceiling or floor. If numerical evaluation of e is ill-conditioned, this function 
+;; can misbehave.  I'm somewhat uncomfortable with this, but it is no worse 
 ;; than some other stuff. One safeguard -- the evaluation is done with three
 ;; values for fpprec.  When the floating point evaluations are  
 ;; inconsistent, bailout and return nil.  I hope that this function is
 ;; much more likely to return nil than it is to return a bogus value.
 
-(defun pretty-good-floor-or-ceiling (x fn &optional (digits 'no-value))
-  (let (($fpprec) ($float2bf t))
-    (cond ((eq digits 'no-value)
+(defun pretty-good-floor-or-ceiling (x fn &optional digits)
+  (let (($float2bf t) ($algebraic t) (f1) (f2) (f3) (eps) (lb) (ub) (n))
 
-	   ;; When x doesn't evaluate to a bigfloat, bailout and return nil.  
-	   ;; This happens when, for example, x = asin(2). For now, bfloatp
-	   ;; evaluates to nil for a complex big float.  If this ever changes,
-	   ;; the freeof(%i, xf) will detect the complex big float and return nil.
+    (setq digits (if (and (integerp digits) (> 0 digits)) digits 25))
+    (catch 'done
 
-	   (meval  `((msetq) $fpprec 25))
-	   (let (($algebraic t) (xf ($bfloat (setq x ($rectform x)))))
-	     (if (and ($bfloatp xf) ($freeof '$%i xf)) 
-		 (pretty-good-floor-or-ceiling x fn 
-					       (max 25 (ceiling (* 0.4 (nth 2 xf))))) nil)))
-	  (t
-	   (let ((f1) (f2) (f3) (xf) (eps) (lb) (ub) (n))
-	     (meval `((msetq) $fpprec ,digits))
-	     (setq f1 (mfuncall fn ($bfloat x)))
-	     
-	     (incf digits 20)
-	     (meval `((msetq) $fpprec ,digits))
-	     (setq f2 (mfuncall fn ($bfloat x)))
-	     
-	     (incf digits 20)
-	     (meval `((msetq) $fpprec ,digits))
-	     (setq f3 (mfuncall fn (setq xf ($bfloat x))))
-	    
-	     ;; Let's say that the true value of x is in the interval
-	     ;; [xf - |xf| * eps, xf + |xf| * eps], where eps = 10^(20 - digits).
-	     ;; Define n to be the number of integers in this interval; we have
-	     
-	     (setq eps (power ($bfloat 10) (- 20 digits)))
-	     (setq lb (sub xf (mult (simplify (list '(mabs) xf)) eps)))
-	     (setq ub (add xf (mult (simplify (list '(mabs) xf)) eps)))
-	     (setq n (sub (mfuncall '$ceiling ub) (mfuncall '$ceiling lb)))
-	     	     
-	     ;; Provided f1, f2, and f3 are the same and that n = 0, return f1.
-	     
-	     (if (and (= f1 f2) (= f2 f3) (= n 0)) f1 nil))))))
+      ;; To handle ceiling(%i^%i), we need to apply rectform. If bfloat
+      ;; is improved, it might be possible to remove this call to rectform.
+
+      (setq x ($rectform x))
+      (if (not ($freeof '$%i '$minf '$inf '$und '$infinity x)) (throw 'done nil))
+
+      ;; When x doesn't evaluate to a bigfloat, bailout and return nil.  
+      ;; This happens when, for example, x = asin(2). For now, bfloatp
+      ;; evaluates to nil for a complex big float. If this ever changes,
+      ;; this code might need to be repaired.
+      
+      (setq f1 (bind-fpprec digits ($bfloat x)))
+      (if (or (not ($bfloatp f1)) (not ($freeof '$%i f1))) (throw 'done nil))
+
+      (incf digits 20)
+      (setq f2 (bind-fpprec digits ($bfloat x)))
+      (if (or (not ($bfloatp f2)) (not ($freeof '$%i f2))) (throw 'done nil))
+
+      (incf digits 20)
+      (setq f3 (bind-fpprec digits ($bfloat x)))
+      (if (or (not ($bfloatp f3)) (not ($freeof '$%i f3))) (throw 'done nil))
+       
+      ;; Let's say that the true value of x is in the interval
+      ;; [f3 - |f3| * eps, f3 + |f3| * eps], where eps = 10^(20 - digits).
+      ;; Define n to be the number of integers in this interval; we have
+      
+      (setq eps (power ($bfloat 10) (- 20 digits)))
+      (setq lb (sub f3 (mult (take '(mabs) f3) eps)))
+      (setq ub (add f3 (mult (take '(mabs) f3) eps)))
+      (setq n (sub (mfuncall '$ceiling ub) (mfuncall '$ceiling lb)))
+      (setq f1 (mfuncall fn f1))
+      (setq f2 (mfuncall fn f2))
+      (setq f3 (mfuncall fn f3))
+      
+      ;; Provided f1 = f2 = f3 and n = 0, return f1.
+    
+      (if (and (= f1 f2) (= f2 f3) (= n 0)) f1 nil))))
 
 ;; (a) The function fpentier rounds a bigfloat towards zero--we need to
 ;;     check for that.
