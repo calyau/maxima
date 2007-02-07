@@ -220,6 +220,25 @@ ceiling(%i^%i);
 ceiling(asin(-107) -42);
 ceiling(asin(-107)) - 42$
 
+/* SF bug  #1653672 */
+
+trigsimp(floor(asin(cos(sqrt(2))^2 + sin(sqrt(2))^2 - 1/7)));
+1$
+
+trigsimp(ceiling(asin(cos(sqrt(2))^2 + sin(sqrt(2))^2 - 1/7)));
+2$
+
+/* SF bug #1644378 */
+
+(x : ?bigfloatone,0);
+0$
+
+(ceiling(log(2)), is(x = ?bigfloatone));
+true$
+
+(remvalue(x),0);
+0$
+
 ceiling(signum(x));
 signum(x)$
 
