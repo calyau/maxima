@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Menu.tcl,v 1.26 2006-12-09 19:57:08 vvzhy Exp $
+#       $Id: Menu.tcl,v 1.27 2007-02-09 05:26:08 jpromerobx-max Exp $
 #
 
 proc pMAXSaveTexToFile {text} {
@@ -172,11 +172,12 @@ proc vMAXAddSystemMenu {fr text} {
     foreach elt {labels values functions macros arrays \
 		     myoptions props aliases rules gradefs \
 		     dependencies let_rule_packages} {
-	$km add command -label "Kill [string totit $elt]" \
+	$km add command -label [mc [string totit $elt]] \
 	    -command [list sendMaxima $text "kill($elt)\$\n"]
     }
-    $m add separator
-    set dir $maxima_priv(pTestsDir)
+
+    $m add separator  
+    set dir $maxima_priv(pTestsDir)  
     if {[file isdir $dir]} {
 	set state normal
     } else {
