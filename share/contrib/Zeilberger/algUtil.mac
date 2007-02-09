@@ -54,10 +54,10 @@ primitive(pol,var) :=
 
 /* Make a list out of a product of powers of integers disregarding powers */
 factorsList(factors) :=
-  if operatorp(factors,"^") then
+  if zb_operatorp(factors,"^") then
     first(factors)
   else
-    if operatorp(factors,"*") then
+    if zb_operatorp(factors,"*") then
        makelist(factorsList(part(factors,i)),i,1,length(factors))
     else
        factors;

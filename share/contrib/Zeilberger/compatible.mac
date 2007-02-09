@@ -4,15 +4,15 @@
 /* by Fabrizio Caruso               */
 
 
-op(expr) := 
+zb_op(expr) := 
   if atom(expr) then
      expr
   else 
      part(expr,0);
 
 
-operatorp(expr,operator) := 
-    if op(expr)=operator then
+zb_operatorp(expr,operator) :=
+    if zb_op(expr)=operator then
        true
     else
        false;

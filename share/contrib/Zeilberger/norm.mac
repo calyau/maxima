@@ -34,7 +34,7 @@ polyNorm(expr,k) :=
 
 intLinNorm(expr,k) :=
  block([polyNorm,res,constRes],
-  if operatorp(expr,"^") then
+  if zb_operatorp(expr,"^") then
      (
      polyNorm : intLinPolyNorm(first(expr),k),
      res : [polyNorm[1],second(expr)],
@@ -52,7 +52,7 @@ intLinNorm(expr,k) :=
 
 powerNorm(expr,k) :=
   block([base,res,constRes],
-  if operatorp(expr,"^") then
+  if zb_operatorp(expr,"^") then
      (
      base : polyNorm(first(expr),k),
      res : [base[1],second(expr)],
@@ -75,7 +75,7 @@ intLinCreate(expr,k) :=
 
   nonIntLinList:[],
   intLinList:[],
-  if atom(expr) or not(operatorp(expr,"*")) then
+  if atom(expr) or not(zb_operatorp(expr,"*")) then
      if(integerLinear(expr,k)) then
        if (expr=1) then
            return([])
@@ -113,7 +113,7 @@ intLinSep(expr,k) :=
   nonIntLinList:[],
   intLinList:[],
   
-  if atom(expr) or not(operatorp(expr,"*")) then
+  if atom(expr) or not(zb_operatorp(expr,"*")) then
      if(integerLinear(expr,k)) then
        if (expr=1) then
            return([[],[]])
@@ -150,7 +150,7 @@ factored2List(expr) :=
   [list,length,i],
 
   list:[],
-  if atom(expr)or not(operatorp(expr,"*")) then
+  if atom(expr)or not(zb_operatorp(expr,"*")) then
      return([expr])
   else
      (

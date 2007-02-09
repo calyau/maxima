@@ -59,7 +59,7 @@ candSplit(list,coef,constCoef) :=
 /* It checks whether a factored expression is linear */
 /* with integer coefficients */
 integerLinear(expr,var) :=
-  if not(operatorp(expr,"^")) then
+  if not(zb_operatorp(expr,"^")) then
     is(degree(expr,var) < 2)
 /*
 and
@@ -142,8 +142,8 @@ makeGosperFormPrHypCheckVerboseOpt(expr,k,mode) :=
     print(den)
     ),
 
-negNumFlag : operatorp(num,"-"),
-negDenFlag : operatorp(den,"-"),
+negNumFlag : zb_operatorp(num,"-"),
+negDenFlag : zb_operatorp(den,"-"),
 
 if (negNumFlag) then
   num : -1 * num,

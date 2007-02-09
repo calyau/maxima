@@ -29,7 +29,7 @@ dependent(expr,var) :=
 
 poly2list(pol) :=
    block(
-   if atom(pol) or not(operatorp(pol,"*")) then
+   if atom(pol) or not(zb_operatorp(pol,"*")) then
      return([pol])
    else
      return(cons(first(pol),poly2list(pol/first(pol))))
@@ -97,10 +97,10 @@ removeBinomial(expr) :=
   if atom(expr) then
     expr
   else
-    if op(expr) = binomial then
+    if zb_op(expr) = binomial then
       first(expr)!/second(expr)!/(first(expr)-second(expr))!
     else
-      apply(op(expr),makelist(removeBinomial(part(expr,i)),i,1,length(expr)));
+      apply(zb_op(expr),makelist(removeBinomial(part(expr,i)),i,1,length(expr)));
 */
 
 removeBinomial(expr) :=
@@ -109,14 +109,14 @@ removeBinomial(expr) :=
   if atom(expr) then
     return(expr)
   else
-    if op(expr) = binomial then
+    if zb_op(expr) = binomial then
       return(first(expr)!/second(expr)!/(first(expr)-second(expr))!)
     else
-      if op(expr) = "-" then
+      if zb_op(expr) = "-" then
         return(-removeBinomial(first(expr)))
       else
       
-        return(apply(op(expr),makelist(removeBinomial(part(expr,i)),i,1,length(expr))))
+        return(apply(zb_op(expr),makelist(removeBinomial(part(expr,i)),i,1,length(expr))))
       
   );
 
@@ -124,13 +124,13 @@ shiftFactPoly(expr,k,j) :=
   if atom(expr) then
     subst(k+j,k,expr)
   else
-  if op(expr) = "/" then
+  if zb_op(expr) = "/" then
      shiftFactPoly(first(expr),k,j)*shiftFactPoly(second(expr),k,j)^(-1) 
   else
-  if op(expr) = "*" then
+  if zb_op(expr) = "*" then
      product(shiftFactPoly(part(expr,i__),k,j),i__,1,length(expr)) 
   else
-  if op(expr) = "^" then
+  if zb_op(expr) = "^" then
      if integerp(second(expr)) then 
          shiftFactPoly(first(expr),k,j)^second(expr)
      else 
@@ -163,13 +163,13 @@ isPolynomial(expr,k) :=
   if freeof(k,expr) or expr=k or expr=-k or constantp(expr) then
      true
   else
-    if op(expr) = "^" then
+    if zb_op(expr) = "^" then
       ( freeof(k,second(expr)) and isPolynomial(first(expr),k) )
     else
-      if op(expr) = "-" then
+      if zb_op(expr) = "-" then
         isPolynomial(first(expr),k)
       else
-        if op(expr) = "*" or op(expr)= "+" or op(expr) = "-" then
+        if zb_op(expr) = "*" or zb_op(expr)= "+" or zb_op(expr) = "-" then
            apply("and", makelist(isPolynomial(part(expr,i),k),i,1,length(expr)))
         else
            false;
@@ -178,11 +178,11 @@ isPolynomial(expr,k) :=
 
 rationalp(expr,k) :=
   if not(isPolynomial(expr,k)) and
-     not(op(expr) = "//" and
+     not(zb_op(expr) = "//" and
                  isPolynomial(expand(num(expr)),k) and
                  isPolynomial(expand(denom(expr)), k)) then
      (
-     if op(expr) = "-" then
+     if zb_op(expr) = "-" then
        rationalp(first(expr),k)
      else
        false
@@ -214,18 +214,18 @@ block([sq_num,sq_den,sq_base,sq_exp],
      if expr = k then
        return([(k+1)/k,HYP])
      else
-     if op(expr) = "*" then
+     if zb_op(expr) = "*" then
        return(product(shiftQuoHypCheckAux(part(expr,i__),k,hyp_flag),
               i__,1,length(expr)))
      else
-     if op(expr) = "//" then
+     if zb_op(expr) = "//" then
        (
        sq_num : shiftQuoHypCheckAux(first(expr),k,hyp_flag),
        sq_den : shiftQuoHypCheckAux(second(expr),k,hyp_flag),
        return([first(sq_num)/first(sq_den),second(sq_num)*second(sq_den)])
        )
      else
-     if op(expr) = "^" then
+     if zb_op(expr) = "^" then
        (
        if (freeof(k, second(expr))) then
          (
@@ -242,7 +242,7 @@ block([sq_num,sq_den,sq_base,sq_exp],
        else return([expr, NO_HYP])
        )
      else
-     if op(expr) = "!" then
+     if zb_op(expr) = "!" then
         if not(integerp(leadCoeff(first(expr),k))) then
            return([expr,NO_HYP])
         else
@@ -256,7 +256,7 @@ block([sq_num,sq_den,sq_base,sq_exp],
                      i__,1,-leadCoeff(first(expr),k)),hyp_flag]
 /*
      else
-     if op(expr) = binomial then
+     if zb_op(expr) = binomial then
         (
         sq_num : shiftQuoHypCheckAux(factorial(first(expr)),k,hyp_flag),
         sq_den : shiftQuoHypCheckAux(factorial(first(expr)-second(expr)),
@@ -271,15 +271,15 @@ block([sq_num,sq_den,sq_base,sq_exp],
         )
 */
      else
-       if op(expr) = "-" then block(
+       if zb_op(expr) = "-" then block(
          return(shiftQuoHypCheckAux(-expr, k, hyp_flag))
        )
        else
-       if op(expr) = "+" then
+       if zb_op(expr) = "+" then
          return([shiftFactPoly(expr,k,1)/expr,hyp_flag])
        else
          (
-         print("Unknown operator : ", op(expr)),
+         print("Unknown operator : ", zb_op(expr)),
          return([expr,NO_HYP])
          )
 );
