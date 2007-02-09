@@ -9,15 +9,17 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :maxima)
+
 (macsyma-module compar)
 
 (load-macsyma-macros mrgmac)
 
-(declare-top(special $float2bf $radexpand $ratprint $ratsimpexpons $listconstvars
-		     success %initiallearnflag $props *x* $%enumer)
+(declare-top (special $float2bf $radexpand $ratprint $ratsimpexpons $listconstvars
+		     success $props *x* $%enumer)
 	    ;; Variables defined in DB
-	    (special context current dobjects dbtrace +labs)
-	    (*expr $bfloat sign retrieve wna-err $listofvars))
+	    (special context current dobjects dbtrace +labs))
+
+(defvar %initiallearnflag)
 
 (defmvar $context '$initial
   "Whenever a user assumes a new fact, it is placed in the context
@@ -64,62 +66,53 @@ relational knowledge is contained in the default context GLOBAL."
 (defmvar lhs nil)
 (defmvar rhs nil)
 
-;; This variable is also initialized in DB for its own purposes.  
+;; This variable is also initialized in DB for its own purposes.
 ;; COMPAR is loaded after DB.
 (setq context '$global)
 
-;; Load-time environment for COMPAR.  $CONTEXT and $CONTEXTS will be 
+;; Load-time environment for COMPAR.  $CONTEXT and $CONTEXTS will be
 ;; reset at the end of the file via a call to ($newcontext '$initial).
 (setq $context '$global $contexts '((mlist) $global))
 
-;;(defun ask macro (x) `(retrieve (list '(mtext) . ,(cdr x)) nil))
-;;(defun pow macro (x) `(power . ,(cdr x)))
+(defmacro ask (&rest x)
+ `(retrieve (list '(mtext) ,@x) nil))
 
-;;(macro ask  (x) `(retrieve (list '(mtext) . ,(cdr x))  nil))
-;;(macro pow (x) `(power . ,(cdr x)))
+(defmacro pow (&rest x)
+  `(power ,@x))
 
-(defmacro ask (&rest x) `(retrieve (list '(mtext) . , x) nil))
-
-(defmacro pow (&rest x) `(power . , x))
-
-
-
-
-(defun lmul (l) (simplify (cons '(mtimes) l)))
+(defun lmul (l)
+  (simplify (cons '(mtimes) l)))
 
 (defun conssize (x)
-  (cond
-    ((atom x) 0)
-    (t (setq x (cdr x))
-       (do ((sz 1))
-	   ((null x) sz)
-	 (setq sz (f+ 1 (conssize (car x)) sz) x (cdr x))))))
-
-;;;  Functions for creating, activating, manipulating, and killing contexts
+  (if (atom x)
+      0
+      (do ((x (cdr x) (cdr x))
+	   (sz 1))
+	  ((null x) sz)
+	(incf sz (1+ (conssize (car x)))))))
 
-(defmfun $context flush
-  flush					;Ignored
-  (merror "The `context' function no longer exists."))
+;;;  Functions for creating, activating, manipulating, and killing contexts
 
 ;;; This "turns on" a context, making its facts visible.
 
-(defmfun $activate n 
-  (do ((i 1 (f1+ i))) ((> i n))
+(defmfun $activate n
+  (do ((i 1 (1+ i)))
+      ((> i n))
     (cond ((not (symbolp (arg i))) (nc-err))
-	  ((memq (arg i) (cdr $activecontexts)))
-	  ((memq (arg i) (cdr $contexts))
+	  ((member (arg i) (cdr $activecontexts) :test #'eq))
+	  ((member (arg i) (cdr $contexts) :test #'eq)
 	   (setq $activecontexts (mcons (arg i) $activecontexts))
 	   (activate (arg i)))
 	  (t (merror "There is no context with the name ~:M" (arg i)))))
   '$done)
 
-;;; This "turns off" a context, keeping the facts, but making them 
+;;; This "turns off" a context, keeping the facts, but making them
 ;;; invisible
 
-(defmfun $deactivate n 
-  (do ((i 1 (f1+ i))) ((> i n))
+(defmfun $deactivate n
+  (do ((i 1 (1+ i))) ((> i n))
     (cond ((not (symbolp (arg i))) (nc-err))
-	  ((memq (arg i) (cdr $contexts))
+	  ((member (arg i) (cdr $contexts) :test #'eq)
 	   (setq $activecontexts ($delete (arg i) $activecontexts))
 	   (deactivate (arg i)))
 	  (t (merror "There is no context with the name ~:M" (arg i)))))
@@ -129,24 +122,18 @@ relational knowledge is contained in the default context GLOBAL."
 ;;; in the specified context.  No argument implies the current context.
 
 (defmfun $facts n
-  (cond ((equal n 0) (facts1 $context))
-	((equal n 1) (facts1 (arg n)))
+  (cond ((= n 0) (facts1 $context))
+	((= n 1) (facts1 (arg n)))
 	(t (merror "`facts' takes zero or one argument only."))))
-       
-;;(defun facts1 (con)
-;;       (contextmark)
-;;       (do ((l (get con 'data) (cdr l)) (nl))
-;;	   ((null l) (cons '(mlist) nl))
-;;	   (cond ((visiblep (car l))
-;;		  (setq nl (cons (intext (caaar l) (cdaar l)) nl))))))
-;;Update from F302 --gsb
+
 (defun facts1 (con)
   (contextmark)
   (do ((l (zl-get con 'data) (cdr l)) (nl) (u))
       ((null l) (cons '(mlist) nl))
     (when (visiblep (car l))
       (setq u (intext (caaar l) (cdaar l)))
-      (if (not (memalike u nl)) (setq nl (cons u nl))))))
+      (unless (memalike u nl)
+	(setq nl (cons u nl))))))
 
 (defun intext (rel body)
   (setq body (mapcar #'doutern body))
@@ -161,17 +148,18 @@ relational knowledge is contained in the default context GLOBAL."
 
 ;;; This function switches contexts, creating one if necessary.
 
-(defun asscontext (x y) x		;Ignored
-       (cond ((not (symbolp y)) (nc-err))
-	     ((memq y $contexts) (setq context y $context y))
-	     (t ($newcontext y))))
+(defun asscontext (x y)
+  (declare (ignore x))
+  (cond ((not (symbolp y)) (nc-err))
+	((member y $contexts :test #'eq) (setq context y $context y))
+	(t ($newcontext y))))
 
 ;;; This function actually creates a context whose subcontext is $GLOBAL.
 ;;; It also switches contexts to the newly created one.
 
 (defmfun $newcontext (x)
   (cond ((not (symbolp x)) (nc-err))
-	((memq x $contexts)
+	((member x $contexts :test #'eq)
 	 (mtell "Context ~M already exists." x) nil)
 	(t (setq $contexts (mcons x $contexts))
 	   (putprop x '($global) 'subc)
@@ -180,40 +168,46 @@ relational knowledge is contained in the default context GLOBAL."
 ;;; This function creates a supercontext.  If given one argument, it
 ;;; makes the current context be the subcontext of the argument.  If
 ;;; given more than one argument, the first is assumed the name of the
-;;; supercontext and the rest are the subcontexts. 
+;;; supercontext and the rest are the subcontexts.
 
-(defmspec $supcontext (x) (setq x (cdr x))
-	  (cond ((null x) (merror "You must supply a name for the context."))
-		((caddr x) (merror "`supcontext' takes either one or two arguments."))
-		((not (symbolp (car x))) (nc-err))
-		((memq (car x) $contexts)
-		 (merror "Context ~M already exists." (car x)))
-		((and (cadr x) (not (memq (cadr x) $contexts)))
-		 (merror "Nonexistent context ~M." (cadr x)))
-		(t (setq $contexts (mcons (car x) $contexts))
-		   (putprop (car x) (ncons (or (cadr x) $context)) 'subc)
-		   (setq context (car x) $context (car x)))))
-   
+(defmspec $supcontext (x)
+  (setq x (cdr x))
+  (cond ((null x) (merror "You must supply a name for the context."))
+	((caddr x) (merror "`supcontext' takes either one or two arguments."))
+	((not (symbolp (car x))) (nc-err))
+	((member (car x) $contexts :test #'eq)
+	 (merror "Context ~M already exists." (car x)))
+	((and (cadr x) (not (member (cadr x) $contexts :test #'eq)))
+	 (merror "Nonexistent context ~M." (cadr x)))
+	(t (setq $contexts (mcons (car x) $contexts))
+	   (putprop (car x) (ncons (or (cadr x) $context)) 'subc)
+	   (setq context (car x) $context (car x)))))
+
 ;;; This function kills a context or a list of contexts
-   
+
 (defmfun $killcontext n
-  (do ((i 1 (f1+ i))) ((> i n))
-    (if (symbolp (arg i)) (killcontext (arg i)) (nc-err)))
-  (if (and (= n 1) (eq (arg 1) '$global)) '$not_done '$done))
+  (do ((i 1 (1+ i)))
+      ((> i n))
+    (if (symbolp (arg i))
+	(killcontext (arg i))
+	(nc-err)))
+  (if (and (= n 1) (eq (arg 1) '$global))
+      '$not_done
+      '$done))
 
 (defun killallcontexts ()
   (mapcar #'killcontext (cdr $contexts))
-  (setq $context '$initial context '$initial current '$initial  
+  (setq $context '$initial context '$initial current '$initial
 	$contexts '((mlist) $initial $global) dobjects ())
   ;;The DB variables
   ;;conmark, conunmrk, conindex, connumber, and contexts
   ;;concern garbage-collectible contexts, and so we're
   ;;better off not resetting them.
-  (defprop $global 1 cmark) (defprop $initial 1 cmark)	 
+  (defprop $global 1 cmark) (defprop $initial 1 cmark)
   (defprop $initial ($global) subc))
 
 (defun killcontext (x)
-  (cond ((not (memq x $contexts))
+  (cond ((not (member x $contexts :test #'eq))
 	 (mtell "The context ~M doesn't exist." x))
 	((eq x '$global) '$global)
 	((eq x '$initial)
@@ -233,12 +227,16 @@ relational knowledge is contained in the default context GLOBAL."
 		  (setq context (car (zl-get x 'subc)))))
 	   (killc x)
 	   x)))
-	     
-(defun nc-err () (merror "Contexts must be symbolic atoms."))
-
-(defmspec $is (form) (mevalp (fexprcheck form)))
 
-(defmfun is (pred) (let (($prederror t)) (mevalp pred)))
+(defun nc-err ()
+  (merror "Contexts must be symbolic atoms."))
+
+(defmspec $is (form)
+  (mevalp (fexprcheck form)))
+
+(defmfun is (pred)
+  (let (($prederror t))
+    (mevalp pred)))
 
 ;; =>* N.B. *<=
 ;; The function IS-BOOLE-CHECK, used by the translator, depends
@@ -248,18 +246,18 @@ relational knowledge is contained in the default context GLOBAL."
 (defmfun mevalp (pat)
   (let (patevalled ans)
     (setq ans (mevalp1 pat))
-    (cond ((memq ans '(#.(not ()) ()))
+    (cond ((member ans '(t nil) :test #'eq)
 	   ans)
 	  ($prederror (pre-err patevalled))
 	  (t '$unknown))))
 
 (defun mevalp1 (pat)
-  (cond ((and (not (atom pat)) (memq (caar pat) '(mnot mand mor)))
+  (cond ((and (not (atom pat)) (member (caar pat) '(mnot mand mor) :test #'eq))
 	 (cond ((eq 'mnot (caar pat)) (is-mnot (cadr pat)))
 	       ((eq 'mand (caar pat)) (is-mand (cdr pat)))
 	       (t (is-mor (cdr pat)))))
 	((atom (setq patevalled (meval pat))) patevalled)
-	((memq (caar patevalled) '(mnot mand mor)) (mevalp1 patevalled))
+	((member (caar patevalled) '(mnot mand mor) :test #'eq) (mevalp1 patevalled))
 	(t (mevalp2 (caar patevalled) (cadr patevalled) (caddr patevalled)))))
 
 (defmfun mevalp2 (pred arg1 arg2)
@@ -314,25 +312,24 @@ relational knowledge is contained in the default context GLOBAL."
     (cond ((eq t dummy) (return t))
 	  ((null dummy))
 	  (t (setq npl (cons dummy npl))))))
-
-(defmspec $assume (x) (setq x (cdr x))
-	  (do ((nl)) ((null x) (cons '(mlist) (nreverse nl)))
-	    (cond ((atom (car x)) (setq nl (cons (assume (meval (car x))) nl)))
-		  ((eq 'mand (caaar x))
-		   (mapc #'(lambda (l) (setq nl (cons (assume (meval l)) nl)))
-			 (cdar x)))
-		  ((eq 'mnot (caaar x))
-		   (setq nl (cons (assume (meval (pred-reverse (cadar x)))) nl)))
-		  ((eq 'mor (caaar x))
-		   (merror "`assume': Maxima is unable to handle assertions involving `or'."))
-		  ((eq (caaar x) 'mequal)
-		   (merror "`assume': `=' means syntactic equality in Maxima.
-Maybe you want to use `equal'."))
-		  ((eq (caaar x) 'mnotequal)
-		   (merror "`assume': `#' means syntactic nonequality in Maxima.
-Maybe you want to use `not equal'."))
-		  (t (setq nl (cons (assume (meval (car x))) nl))))
-	    (setq x (cdr x))))
+
+(defmspec $assume (x)
+  (setq x (cdr x))
+  (do ((nl)) ((null x) (cons '(mlist) (nreverse nl)))
+    (cond ((atom (car x)) (setq nl (cons (assume (meval (car x))) nl)))
+	  ((eq 'mand (caaar x))
+	   (mapc #'(lambda (l) (setq nl (cons (assume (meval l)) nl)))
+		 (cdar x)))
+	  ((eq 'mnot (caaar x))
+	   (setq nl (cons (assume (meval (pred-reverse (cadar x)))) nl)))
+	  ((eq 'mor (caaar x))
+	   (merror "`assume': Maxima is unable to handle assertions involving `or'."))
+	  ((eq (caaar x) 'mequal)
+	   (merror "`assume': `=' means syntactic equality in Maxima. Maybe you want to use `equal'."))
+	  ((eq (caaar x) 'mnotequal)
+	   (merror "`assume': `#' means syntactic nonequality in Maxima. Maybe you want to use `not equal'."))
+	  (t (setq nl (cons (assume (meval (car x))) nl))))
+    (setq x (cdr x))))
 
 (defmfun assume (pat)
   (if (and (not (atom pat))
@@ -351,35 +348,35 @@ Maybe you want to use `not equal'."))
 	 (funcall (zl-get (caar pat) (if flag 'learn 'unlearn)) pat))
 	((eq (caar pat) 'mgreaterp) (daddgr flag (sub (cadr pat) (caddr pat))))
 	((eq (caar pat) 'mgeqp) (daddgq flag (sub (cadr pat) (caddr pat))))
-	((memq (caar pat) '(mequal $equal))
+	((member (caar pat) '(mequal $equal) :test #'eq)
 	 (daddeq flag (sub (cadr pat) (caddr pat))))
-	((memq (caar pat) '(mnotequal $notequal))
+	((member (caar pat) '(mnotequal $notequal) :test #'eq)
 	 (daddnq flag (sub (cadr pat) (caddr pat))))
 	((eq (caar pat) 'mleqp) (daddgq flag (sub (caddr pat) (cadr pat))))
 	((eq (caar pat) 'mlessp) (daddgr flag (sub (caddr pat) (cadr pat))))
 	(flag (true* (munformat pat)))
 	(t (untrue (munformat pat)))))
 
-(defmacro def-learn ( name pat flag)
-  `(progn
-    #+lispm (si:record-source-file-name ',name 'def-learn)
-    (learn ,pat ,flag)))
+(defmacro def-learn (name pat flag)
+  (declare (ignore name))
+  `(learn ,pat ,flag))
 
-(defmspec $forget (x) (setq x (cdr x))
-	  (do ((nl)) ((null x) (cons '(mlist) (nreverse nl)))
-	    (cond ((atom (car x)) (setq nl (cons (forget (meval (car x))) nl)))
-		  ((eq 'mand (caaar x))
-		   (mapc #'(lambda (l) (setq nl (cons (forget (meval l)) nl)))
-			 (cdar x)))
-		  ((eq 'mnot (caaar x))
-		   (setq nl (cons (forget (meval (pred-reverse (cadar x)))) nl)))
-		  ((eq 'mor (caaar x))
-		   (merror "Maxima is unable to handle assertions involving `or'."))
-		  (t (setq nl (cons (forget (meval (car x))) nl))))
-	    (setq x (cdr x))))
+(defmspec $forget (x)
+  (setq x (cdr x))
+  (do ((nl))
+      ((null x) (cons '(mlist) (nreverse nl)))
+    (cond ((atom (car x)) (setq nl (cons (forget (meval (car x))) nl)))
+	  ((eq 'mand (caaar x))
+	   (mapc #'(lambda (l) (setq nl (cons (forget (meval l)) nl))) (cdar x)))
+	  ((eq 'mnot (caaar x))
+	   (setq nl (cons (forget (meval (pred-reverse (cadar x)))) nl)))
+	  ((eq 'mor (caaar x))
+	   (merror "Maxima is unable to handle assertions involving `or'."))
+	  (t (setq nl (cons (forget (meval (car x))) nl))))
+    (setq x (cdr x))))
 
 (defmfun forget (pat)
-  (cond (($listp pat) 
+  (cond (($listp pat)
 	 (cons '(mlist simp) (mapcar #'forget1 (cdr pat))))
 	(t (forget1 pat))))
 
@@ -389,7 +386,7 @@ Maybe you want to use `not equal'."))
 	      (eq (caaadr pat) '$equal))
 	 (setq pat `(($notequal) ,@(cdadr pat)))))
   (learn pat nil))
-
+
 (defmfun restore-facts (factl)		; used by SAVE
   (dolist (fact factl)
     (cond ((eq (caar fact) '$kind)
@@ -399,33 +396,37 @@ Maybe you want to use `not equal'."))
 	  (t (assume fact)))))
 
 
-;;(defun compare macro (x) `(sign1 (sub* ,(cadr x) ,(caddr x))))
-(defmacro compare (a b) `(sign1 (sub* ,a ,b)))
+(defmacro compare (a b)
+  `(sign1 (sub* ,a ,b)))
 
-(defmfun maximum (l) (maximin l '$max))
+(defmfun maximum (l)
+  (maximin l '$max))
 
-(defmfun minimum (l) (maximin l '$min))
+(defmfun minimum (l)
+  (maximin l '$min))
 
-
-(defmspec mnot (form) (setq form (cdr form))
-	  (let ((x (mevalp (car form))))
-	    (if (eq x '$unknown) x (not x))))
+(defmspec mnot (form)
+  (setq form (cdr form))
+  (let ((x (mevalp (car form))))
+    (if (eq x '$unknown) x (not x))))
 
-(defmspec mand (form) (setq form (cdr form))
-	  (do ((l form (cdr l)) (x)) ((null l) t)
-	    (cond ((not (setq x (mevalp (car l)))) (return nil))
-		  ((eq x '$unknown) (return x)))))
+(defmspec mand (form)
+  (setq form (cdr form))
+  (do ((l form (cdr l)) (x)) ((null l) t)
+    (cond ((not (setq x (mevalp (car l)))) (return nil))
+	  ((eq x '$unknown) (return x)))))
 
-(defmspec mor (form) (setq form (cdr form))
-	  (do ((l form (cdr l)) (x)) ((null l) nil)
-	    (cond ((eq (setq x (mevalp (car l))) '$unknown) (return x))
-		  (x (return t)))))
-
+(defmspec mor (form)
+  (setq form (cdr form))
+  (do ((l form (cdr l)) (x)) ((null l) nil)
+    (cond ((eq (setq x (mevalp (car l))) '$unknown) (return x))
+	  (x (return t)))))
+
 ;;;Toplevel functions- $ASKSIGN, $SIGN.
 ;;;Switches- LIMITP If TRUE $ASKSIGN and $SIGN will look for special
 ;;;		     symbols such as EPSILON, $INF, $MINF and attempt
 ;;;		     to do the correct thing. In addition calls to
-;;;		     $REALPART and $IMAGPART are made to assure that	
+;;;		     $REALPART and $IMAGPART are made to assure that
 ;;;		     the expression is real.
 ;;;
 ;;;		  if NIL $ASKSIGN and $SIGN assume the expression
@@ -441,19 +442,21 @@ Maybe you want to use `not equal'."))
 		     (t exp)))))
 
 (defmfun asksign-p-or-n (e)
-  (unwind-protect (prog2 (assume `(($notequal) ,e 0)) 
+  (unwind-protect (prog2
+		      (assume `(($notequal) ,e 0))
 		      ($asksign e))
     (forget `(($notequal) ,e 0))))
 
 (defun asksign01 (a)
   (let ((e (sign-prep a)))
     (cond ((eq e '$pnz) '$pnz)
-	  ((memq (setq e (asksign1 e)) '($pos $neg)) e)
+	  ((member (setq e (asksign1 e)) '($pos $neg) :test #'eq) e)
 	  (limitp (eps-sign a))
 	  (t '$zero))))
 
-(defmfun csign (x) ;; csign returns t if x appears to be complex.
-  ;; Else, it returns the sign.
+;; csign returns t if x appears to be complex.
+;; Else, it returns the sign.
+(defmfun csign (x) 
   (or (not (free x '$%i))
       (let (sign-imag-errp limitp) (catch 'sign-imag-err ($sign x)))))
 
@@ -484,7 +487,7 @@ Maybe you want to use `not equal'."))
       x))
 
 ;;; Do substitutions for special symbols.
-(defmfun nmr (a) 
+(defmfun nmr (a)
   (if (not (free a '$zeroa)) (setq a ($limit a '$zeroa 0 '$plus)))
   (if (not (free a '$zerob)) (setq a ($limit a '$zerob 0 '$minus)))
   (if (not (free a 'z**)) (setq a ($limit a 'z** 0 '$plus)))
@@ -509,7 +512,7 @@ Maybe you want to use `not equal'."))
 	   (cond ((and (null temp1) (null temp2)) temp3)
 		 ((and (null temp2) (null temp3)) temp1)
 		 ((and (null temp1) (null temp3)) temp2)
-		 (t (merror 
+		 (t (merror
 		     "~%`asksign': Internal error. See Maintainers.")))))))
 
 (defun eps-coef-sign (exp epskind)
@@ -534,14 +537,14 @@ Maybe you want to use `not equal'."))
 	  (t (let ((deriv (sdiff exp epskind)) deriv-sign)
 	       (cond ((not (eq (setq deriv-sign ($asksign deriv)) '$zero))
 		      (total-sign epskind deriv-sign))
-		     ((not 
+		     ((not
 		       (eq (let ((deriv (sdiff deriv epskind)))
 			     (setq deriv-sign ($asksign deriv)))
 			   '$zero))
 		      deriv-sign)
 		     (t (merror "~%`asksign' or `sign': Insufficient data.~%"))))))))
 
-;;; The above code does a partial Taylor series analysis of something 
+;;; The above code does a partial Taylor series analysis of something
 ;;; that isn't a polynomial.
 
 (defun total-sign (epskind factor-sign)
@@ -553,7 +556,7 @@ Maybe you want to use `not equal'."))
 	 (cond ((eq factor-sign '$pos) '$neg)
 	       ((eq factor-sign '$neg) '$pos)
 	       ((eq factor-sign '$zero) '$zero)))))
-
+
 (defun asksign (x)
   (setq x ($asksign x))
   (cond ((eq '$pos x) '$positive)
@@ -563,43 +566,45 @@ Maybe you want to use `not equal'."))
 
 (defun asksign1 ($askexp)
   (let ($radexpand) (sign1 $askexp))
-  (cond ((memq sign '($pos $neg $zero)) sign)
+  (cond ((member sign '($pos $neg $zero) :test #'eq) sign)
 	((null odds)
 	 (setq $askexp (lmul evens)
 	       sign (cdr (assol $askexp locals)))
-	 (do () (nil)
+	 (do ()
+	     (nil)
 	   (cond ((zl-member sign '($zero |$Z| |$z| 0 0.0))
 		  (tdzero $askexp) (setq sign '$zero) (return t))
-		 ((memq sign '($pn $nonzero |$N| |$n| $nz $nonz $non0))
+		 ((member sign '($pn $nonzero |$N| |$n| $nz $nonz $non0) :test #'eq)
 		  (tdpn $askexp) (setq sign '$pos) (return t))
-		 ((memq sign '($pos |$P| |$p| $positive))
+		 ((member sign '($pos |$P| |$p| $positive) :test #'eq)
 		  (tdpos $askexp) (setq sign '$pos) (return t))
-		 ((memq sign '($neg |$N| |$n| $negative))
+		 ((member sign '($neg |$N| |$n| $negative) :test #'eq)
 		  (tdneg $askexp) (setq sign '$pos) (return t)))
 	   (setq sign (ask "Is  " $askexp "  zero or nonzero?")))
 	 (if minus (flip sign) sign))
 	(t (if minus (setq sign (flip sign)))
-	   (setq $askexp (lmul (nconc odds (mapcar #'(lambda (l) (pow l 2))
-						   evens))))
+	   (setq $askexp (lmul (nconc odds (mapcar #'(lambda (l) (pow l 2)) evens))))
 	   (do ((dom (cond ((eq '$pz sign) "  positive or zero?")
 			   ((eq '$nz sign) "  negative or zero?")
 			   ((eq '$pn sign) "  positive or negative?")
 			   (t "  positive, negative, or zero?")))
-		(ans (cdr (assol $askexp locals)))) (nil)
-	     (cond ((and (memq ans '($pos |$P| |$p| $positive))
-			 (memq sign '($pz $pn $pnz)))
+		(ans (cdr (assol $askexp locals))))
+	       (nil)
+	     (cond ((and (member ans '($pos |$P| |$p| $positive) :test #'eq)
+			 (member sign '($pz $pn $pnz) :test #'eq))
 		    (tdpos $askexp) (setq sign '$pos) (return t))
-		   ((and (memq ans '($neg |$N| |$n| $negative))
-			 (memq sign '($nz $pn $pnz)))
+		   ((and (member ans '($neg |$N| |$n| $negative) :test #'eq)
+			 (member sign '($nz $pn $pnz) :test #'eq))
 		    (tdneg $askexp) (setq sign '$neg) (return t))
 		   ((and (zl-member ans '($zero |$Z| |$z| 0 0.0))
-			 (memq sign '($pz $nz $pnz)))
+			 (member sign '($pz $nz $pnz) :test #'eq))
 		    (tdzero $askexp) (setq sign '$zero) (return t)))
 	     (setq ans (ask "Is  " $askexp dom)))
 	   (if minus (flip sign) sign))))
 
 (defun clearsign ()
-  (do () ((null locals))
+  (do ()
+      ((null locals))
     (cond ((eq '$pos (cdar locals)) (daddgr nil (caar locals)))
 	  ((eq '$neg (cdar locals)) (daddgr nil (neg (caar locals))))
 	  ((eq '$zero (cdar locals)) (daddeq nil (caar locals)))
@@ -607,8 +612,9 @@ Maybe you want to use `not equal'."))
 	  ((eq '$pz (cdar locals)) (daddgq nil (caar locals)))
 	  ((eq '$nz (cdar locals)) (daddgq nil (neg (caar locals)))))
     (setq locals (cdr locals))))
-
-(defmfun like (x y) (alike1 (specrepcheck x) (specrepcheck y)))
+
+(defmfun like (x y)
+  (alike1 (specrepcheck x) (specrepcheck y)))
 
 (setf (get '$und 'sysconst) t)
 (setf (get '$ind 'sysconst) t)
@@ -618,11 +624,11 @@ Maybe you want to use `not equal'."))
 ;; There have been some conversations about NaN on the list, but
 ;; the issue hasn't been settled.
 
-(defvar indefinites `($und $ind)) 
+(defvar indefinites `($und $ind))
 
 ;; Other than sums, products, and lambda forms, meqp knows nothing
-;; about dummy variables. Because of the way niceindices chooses names 
-;; for the sum indicies, it's necessary to locally assign a new value to 
+;; about dummy variables. Because of the way niceindices chooses names
+;; for the sum indicies, it's necessary to locally assign a new value to
 ;; niceindicespref.
 
 (defun meqp-by-csign (z a b)
@@ -630,46 +636,45 @@ Maybe you want to use `not equal'."))
     (setq z ($niceindices z))
     (setq sgn (csign z))
     (cond ((eq '$zero sgn) t)
-
 	  ((eq sgn t)
 	   (setq z ($rectform z))
-	   (if (or (eq nil (meqp ($realpart z) 0)) (eq nil (meqp ($imagpart z) 0))) nil `(($equal) ,a ,b)))
-
+	   (if (or (eq nil (meqp ($realpart z) 0)) (eq nil (meqp ($imagpart z) 0)))
+	       nil
+	       `(($equal) ,a ,b)))
 	  ((member sgn '($pos $neg $pn)) nil)
-	  
 	  (t `(($equal) ,a ,b)))))
- 		 
+
 ;; For each fact of the form equal(a,b) in the active context, do e : ratsubst(b,a,e).
 
 (defun equal-facts-simp (e)
   (let ((f (margs ($facts))))
-    (dolist (fi f e) 
-      (if (op-equalp fi '$equal) (setq e ($ratsubst (nth 2 fi) (nth 1 fi) e))))))
-      
+    (dolist (fi f e)
+      (if (op-equalp fi '$equal)
+	  (setq e ($ratsubst (nth 2 fi) (nth 1 fi) e))))))
+
 (defun meqp (a b)
   (let ((z))
     (setq a (specrepcheck a))
     (setq b (specrepcheck b))
-  
     (cond ((or (like a b)) (not (member a indefinites)))
-	
+
 	  ((or (member a indefinites) (member b indefinites)
 	       (member a infinities) (member b infinities)) nil)
-	  
+
 	  ((and (symbolp a) (or (eq t a) (eq nil a) (get a 'sysconst))
 		(symbolp b) (or (eq t b) (eq nil b) (get b 'sysconst))) nil)
-	   
-	  ((or (mbagp a) (mrelationp a) (mbagp b) (mrelationp b)) 
+
+	  ((or (mbagp a) (mrelationp a) (mbagp b) (mrelationp b))
 	   (cond ((and (or (and (mbagp a) (mbagp b)) (and (mrelationp a) (mrelationp b)))
 		       (eq (mop a) (mop b)) (= (length (margs a)) (length (margs b))))
 		  (setq z (list-meqp (margs a) (margs b)))
 		  (if (or (eq z t) (eq z nil)) z `(($equal) ,a ,b)))
 		 (t nil)))
-	  
+
 	  ((and (op-equalp a 'lambda) (op-equalp b 'lambda)) (lambda-meqp a b))
 	  (($setp a) (set-meqp a b))
 	  (t (meqp-by-csign (equal-facts-simp ($ratsimp (sub a b))) a b)))))
-  
+
 (defun list-meqp (p q)
   (let ((z))
     (cond ((or (null p) (null q)) (and (null p) (null q)))
@@ -678,7 +683,7 @@ Maybe you want to use `not equal'."))
 	   (cond ((eq z nil) nil)
 		 ((or (eq z '$unknown) (op-equalp z '$equal)) z)
 		 (t (list-meqp (cdr p) (cdr q))))))))
-	   	 
+
 (defun lambda-meqp (a b)
   (let ((z))
     (cond ((= (length (second a)) (length (second b)))
@@ -692,13 +697,15 @@ Maybe you want to use `not equal'."))
   (let ((aa) (bb))
     (setq aa (equal-facts-simp a))
     (setq bb (equal-facts-simp b))
-	   	     
-    (cond ((or (not ($setp bb)) (and ($emptyp aa) (not ($emptyp bb))) (and ($emptyp bb) (not ($emptyp aa))))
+
+    (cond ((or (not ($setp bb))
+	       (and ($emptyp aa) (not ($emptyp bb)))
+	       (and ($emptyp bb) (not ($emptyp aa))))
 	   nil)
 
-	  ((and (= (length aa) (length bb)) 
+	  ((and (= (length aa) (length bb))
 		(every #'(lambda (p q) (eq t (meqp p q))) (margs aa) (margs bb))) t)
-	  
+
 	  ((set-not-eqp (margs aa) (margs bb)) nil)
 
 	  (t `(($equal ,a ,b))))))
@@ -714,28 +721,19 @@ Maybe you want to use `not equal'."))
 (defmfun mgrp (x y)
   (compare x y)
   (cond ((eq '$pos sign))
-	((memq sign '($neg $zero $nz)) nil)
+	((member sign '($neg $zero $nz) :test #'eq) nil)
 	(t (c-$pos odds evens))))
 
-(defun mlsp (x y) (mgrp y x))
+(defun mlsp (x y)
+  (mgrp y x))
 
 (defmfun mgqp (x y)
   (compare x y)
-  (cond ((memq sign '($pos $zero $pz)) t)
+  (cond ((member sign '($pos $zero $pz) :test #'eq) t)
 	((eq '$neg sign) nil)
 	((eq '$nz sign) (c-$zero odds evens))
 	((eq '$pn sign) (c-$pos odds evens))
 	(t (c-$pz odds evens))))
-
-;;(defmfun mnqp (x y)
-;;  (cond ((like x y) nil)
-;;	(t (compare x y)
-;;	   (cond ((memq sign '($pos $neg $pn)) t)
-;;		 ((eq sign '$zero) nil)
-;;		 ((eq sign '$pz) (c-$pos odds evens))
-;;		 ((eq sign '$nz)
-;;		  (c-$pos (mapcar #'neg odds) (mapcar #'neg evens)))
-;;		 (t (c-$pn odds evens))))))
 
 (defun mnqp (x y)
   (let ((b (meqp x y)))
@@ -743,9 +741,11 @@ Maybe you want to use `not equal'."))
 	  ((or (eq b t) (eq b nil)) (not b))
 	  (t `(($notequal) ,x ,y)))))
 
-(defun c-$pn (o e) (list '(mnot) (c-$zero o e)))
+(defun c-$pn (o e)
+  (list '(mnot) (c-$zero o e)))
 
-(defun c-$zero (o e) (list '($equal) (lmul (nconc o e)) 0))
+(defun c-$zero (o e)
+  (list '($equal) (lmul (nconc o e)) 0))
 
 (defun c-$pos (o e)
   (cond ((null o) (list '(mnot) (list '($equal) (lmul e) 0)))
@@ -759,63 +759,20 @@ Maybe you want to use `not equal'."))
 	(t (setq e (mapcar #'(lambda (l) (pow l 2)) e))
 	   (list '(mgeqp) (lmul (nconc o e)) 0))))
 
-;;; These functions are for old translated files to work 6/4/76.
-;; (defprop greater mgrp expr)
-;; (defprop geq mgqp expr)
-;; (defprop equals meqp expr)
-
-(defun sign* (x) (let (sign minus odds evens) (sign1 x)))
 
-;;(defun sign1 (x)
-;;  (if (not (free x '$inf))
-;;      (let (($listconstvars t) l)
-;;	   (setq l ($listofvars x))
-;;	   (if (and (null (cddr l)) (eq (cadr l) '$inf))
-;;	       (setq x (infsimp x)))))
-;; ; (setq x (infsimp* x))
-;;  
-;;  (if (eq x '$`und') (if limitp '$PNZ (merror "`sign' called on `und'.")))
-;;  (prog (dum exp)
-;;	(setq dum (constp x) exp x)
-;;	(cond ((or (numberp x) (ratnump x)))
-;;	      ((eq dum 'bigfloat)
-;;	       (if (prog2 (setq dum ($bfloat x)) ($bfloatp dum))
-;;		   (setq exp dum)))
-;;	      ((eq dum 'float)
-;;	       (if (and (setq dum (numer x)) (numberp dum)) (setq exp dum)))
-;;	      ((and (memq dum '(numer symbol))
-;;		    (prog2 (setq dum (numer x))
-;;			   (or (null dum)
-;;			       (and (numberp dum)
-;;				    (prog2 (setq exp dum)
-;;					   (lessp (abs dum) 1.0e-6))))))
-;;	       (cond ($signbfloat
-;;		      (and (setq dum ($bfloat x)) ($bfloatp dum) (setq exp dum)))
-;;		     (t (setq sign '$pnz evens nil odds (ncons x) minus nil)
-;;			(return sign)))))
-;;	(or (and (not (atom x)) (not (mnump x)) (equal x exp)
-;;		 (let (s o e m lhs rhs)
-;;		      (compsplt x)
-;;		      (dcompare lhs rhs)
-;;		      (cond ((memq sign '($pos $neg $zero)))
-;;			    ((eq sign '$pnz) nil)
-;;			    (t (setq s sign o odds e evens m minus)
-;;			       (sign x)
-;;			       (if (not (strongp sign s))
-;;				   (if (and (eq sign '$pnz) (eq s '$pn))
-;;				       (setq sign s)
-;;				       (setq sign s odds o evens e minus m)))
-;;			       t))))
-;;	    (sign exp))
-;;	(return sign)))
+(defun sign* (x)
+  (let (sign minus odds evens)
+    (sign1 x)))
 
 (defmfun infsimp* (e)
-  (if (or (atom e) (and (free e '$inf) (free e '$minf))) e (infsimp e)))
+  (if (or (atom e) (and (free e '$inf) (free e '$minf)))
+      e
+      (infsimp e)))
 
 (defun sign1 (x)
   (setq x (specrepcheck x))
   (setq x (infsimp* x))
-  (if (memq x '($und $ind $infinity))
+  (if (member x '($und $ind $infinity) :test #'eq)
       (if limitp '$pnz (merror "The sign of ~:M is undefined" x)))
   (prog (dum exp)
      (setq dum (constp x) exp x)
@@ -825,12 +782,12 @@ Maybe you want to use `not equal'."))
 		(setq exp dum)))
 	   ((eq dum 'float)
 	    (if (and (setq dum (numer x)) (numberp dum)) (setq exp dum)))
-	   ((and (memq dum '(numer symbol))
+	   ((and (member dum '(numer symbol) :test #'eq)
 		 (prog2 (setq dum (numer x))
 		     (or (null dum)
 			 (and (numberp dum)
 			      (prog2 (setq exp dum)
-				  (lessp (abs dum) 1.0e-6))))))
+				  (< (abs dum) 1.0d-6))))))
 	    (cond ($signbfloat
 		   (and (setq dum ($bfloat x)) ($bfloatp dum) (setq exp dum)))
 		  (t (setq sign '$pnz evens nil odds (ncons x) minus nil)
@@ -839,7 +796,7 @@ Maybe you want to use `not equal'."))
 	      (let (s o e m lhs rhs)
 		(compsplt x)
 		(dcompare lhs rhs)
-		(cond ((memq sign '($pos $neg $zero)))
+		(cond ((member sign '($pos $neg $zero) :test #'eq))
 		      ((eq sign '$pnz) nil)
 		      (t (setq s sign o odds e evens m minus)
 			 (sign x)
@@ -858,7 +815,7 @@ Maybe you want to use `not equal'."))
 (defun constp (x)
   (cond ((floatp x) 'float)
 	((numberp x) 'numer)
-	((symbolp x) (if (memq x '($%pi $%e $%phi $%gamma)) 'symbol))
+	((symbolp x) (if (member x '($%pi $%e $%phi $%gamma) :test #'eq) 'symbol))
 	((eq (caar x) 'rat) 'numer)
 	((eq (caar x) 'bigfloat) 'bigfloat)
 	((specrepp x) (constp (specdisrep x)))
@@ -871,7 +828,7 @@ Maybe you want to use `not equal'."))
 		   ((eq dum 'symbol)
 		    (if (eq ans 'numer) (setq ans 'symbol)))
 		   (t (return nil)))))))
-
+
 (defmfun sign (x)
   (cond ((mnump x) (setq sign (rgrp x 0) minus nil odds nil evens nil))
 	((atom x) (if (eq x '$%i) (imag-err x)) (sign-any x))
@@ -880,11 +837,11 @@ Maybe you want to use `not equal'."))
 	((eq (caar x) 'mexpt) (sign-mexpt x))
 	((eq (caar x) '%log) (compare (cadr x) 1))
 	((eq (caar x) 'mabs) (sign-mabs x))
-	((memq (caar x) '(%csc %csch))
+	((member (caar x) '(%csc %csch) :test #'eq)
 	 (sign (inv* (cons (ncons (zl-get (caar x) 'recip)) (cdr x)))))
 	((specrepp x) (sign (specdisrep x)))
 	((kindp (caar x) '$posfun) (sign-posfun x))
-	((or (memq (caar x) '(%signum %erf))
+	((or (member (caar x) '(%signum %erf) :test #'eq)
 	     (and (kindp (caar x) '$oddfun) (kindp (caar x) '$increasing)))
 	 (sign-oddinc x))
 	(t (sign-any x))))
@@ -892,12 +849,12 @@ Maybe you want to use `not equal'."))
 (defun sign-any (x)
   (dcompare x 0)
   (if (and $assume_pos
-	   (memq sign '($pnz $pz $pn))
+	   (member sign '($pnz $pz $pn) :test #'eq)
 	   (if $assume_pos_pred (let ((*x* x)) (is '(($assume_pos_pred) *x*)))
 	       (mapatom x)))
       (setq sign '$pos))
-  (setq minus nil evens nil 
-	odds (if (not (memq sign '($pos $neg $zero))) (ncons x))))
+  (setq minus nil evens nil
+	odds (if (not (member sign '($pos $neg $zero) :test #'eq)) (ncons x))))
 
 (defun sign-mtimes (x)
   (setq x (cdr x))
@@ -921,30 +878,13 @@ Maybe you want to use `not equal'."))
   (cond ((signdiff x))
 	((prog2 (setq s sign e evens o odds m minus) nil))
 	((signsum x))
-	((prog2 (cond ((strongp s sign))    
+	((prog2 (cond ((strongp s sign))
 		      (t (setq s sign e evens o odds m minus)))
 	     nil))
 	((and (not factored) (signfactor x)))
 	((strongp sign s))
 	(t (setq sign s evens e odds o minus m))))
 
-;;(defun signdiff (x)
-;;  (setq sign '$pnz)
-;;  (compsplt x)
-;;  (let (dum)
-;;       (cond ((or (equal rhs 0) (mplusp lhs)) nil)
-;;	     ((and (memq (constp rhs) '(numer symbol))
-;;		   (numberp (setq dum (numer rhs)))
-;;		   (prog2 (setq rhs dum) nil)))
-;;	     ((mplusp rhs) nil)
-;;	     ((and (dcompare lhs rhs) (memq sign '($pos $neg $zero))))
-;;	     ((and (not (atom lhs)) (not (atom rhs))
-;;		   (eq (caar lhs) (caar rhs))
-;;		   (kindp (caar lhs) '$increasing))
-;;	      (sign (sub (cadr lhs) (cadr rhs)))
-;;	      t)
-;;	     ((signdiff-special lhs rhs)))))
-;;Update from F302 --gsb
 (defun signdiff (x)
   (setq sign '$pnz)
   (compsplt x)
@@ -954,11 +894,11 @@ Maybe you want to use `not equal'."))
       (setq rhs (neg (cadr lhs)) lhs (caddr lhs)))
   (let (dum)
     (cond ((or (equal rhs 0) (mplusp lhs)) nil)
-	  ((and (memq (constp rhs) '(numer symbol))
+	  ((and (member (constp rhs) '(numer symbol) :test #'eq)
 		(numberp (setq dum (numer rhs)))
 		(prog2 (setq rhs dum) nil)))
 	  ((mplusp rhs) nil)
-	  ((and (dcompare lhs rhs) (memq sign '($pos $neg $zero))))
+	  ((and (dcompare lhs rhs) (member sign '($pos $neg $zero) :test #'eq)))
 	  ((and (not (atom lhs)) (not (atom rhs))
 		(eq (caar lhs) (caar rhs))
 		(kindp (caar lhs) '$increasing))
@@ -974,7 +914,7 @@ Maybe you want to use `not equal'."))
 		 (not (atom xlhs)) (eq (sign* xlhs) '$pos))
 					; e.g. sign(a^3+%pi-1) where a>0
 	    (and (mexptp xlhs)		; e.g. sign(%e^x-1) where x>0
-		 (memq (sign* (sub 1 xrhs)) '($pos $zero $pz))
+		 (member (sign* (sub 1 xrhs)) '($pos $zero $pz) :test #'eq)
 		 (eq (sign* (caddr xlhs)) '$pos)
 		 (eq (sign* (sub (cadr xlhs) 1)) '$pos))
 	    (and (mexptp xlhs) (mexptp xrhs) ; e.g. sign(2^x-2^y) where x>y
@@ -988,13 +928,13 @@ Maybe you want to use `not equal'."))
       ((null l) (setq sign s minus nil odds (list x) evens nil) t)
     (sign (car l))
     (cond ((or (and (eq sign '$zero)
-		    (setq x (sub x (car l))))			
+		    (setq x (sub x (car l))))
 	       (and (eq s sign) (not (eq s '$pn))) ; $PN + $PN = $PNZ
 	       (and (eq s '$pos) (eq sign '$pz))
 	       (and (eq s '$neg) (eq sign '$nz))))
-	  ((or (and (memq sign '($pz $pos)) (memq s '($zero $pz)))
-	       (and (memq sign '($nz $neg)) (memq s '($zero $nz)))
-	       (and (eq sign '$pn) (eq s '$zero)))	     
+	  ((or (and (member sign '($pz $pos) :test #'eq) (member s '($zero $pz) :test #'eq))
+	       (and (member sign '($nz $neg) :test #'eq) (member s '($zero $nz) :test #'eq))
+	       (and (eq sign '$pn) (eq s '$zero)))
 	   (setq s sign))
 	  (t (setq sign '$pnz odds (list x) evens nil minus nil)
 	     (return nil)))))
@@ -1003,83 +943,24 @@ Maybe you want to use `not equal'."))
   (let (y (factored t))
     (setq y (factor-if-small x))
     (cond ((or (mplusp y) (> (conssize y) 50.))
-	   (prog2 (setq sign '$pnz) nil))
+	   (prog2
+	       (setq sign '$pnz)
+	       nil))
 	  (t (sign y)))))
 
 (defun factor-if-small (x)
-  (if (< (conssize x) 51.) (let ($ratprint) (factor x)) x))
-
-;;(defun sign-mexpt (x)
-;; (let* ((expt (caddr x)) (base1 (cadr x))
-;;	(sign-expt (sign1 expt)) (sign-base (sign1 base1))
-;;	(evod (evod expt)))
-;;       (cond ((and (eq sign-base '$zero)
-;;		   (memq sign-expt '($zero $neg)))
-;;	      (dbzs-err x))
-;;	     ((eq sign-expt '$zero) (setq sign '$pos) (tdzero (sub x 1)))
-;;	     ((eq sign-base '$pos))
-;;	     ((eq sign-base '$zero) (tdpos expt))
-;;	     ((eq evod '$even)
-;;	      (cond ((eq sign-expt '$neg)
-;;		     (setq sign '$pos minus nil evens (ncons base1) odds nil)
-;;		     (tdpn base1))
-;;		    ((memq sign-base '($pn $neg))
-;;		     (setq sign '$pos minus nil
-;;			   evens (nconc odds evens)
-;;			   odds nil))
-;;		    (t (setq sign '$pz minus nil
-;;			     evens (nconc odds evens)
-;;			     odds nil))))
-;;	     ((and (memq sign-expt '($neg $nz))
-;;		   (memq sign-base '($nz $pz $pnz)))
-;;	      (tdpn base1)
-;;	      (setq sign (cond ((eq sign-base '$pnz) '$pn)
-;;			       ((eq sign-base '$pz) '$pos)
-;;			       ((eq sign-expt '$neg) '$neg)
-;;			       (t '$pn))))  
-;;	     ((memq sign-expt '($pz $nz $pnz))
-;;	      (cond ((eq sign-base '$neg)
-;;		     (setq odds (ncons x) sign '$pn))))
-;;	     ((eq sign-expt '$pn))
-;;	     (t (cond ((ratnump expt)
-;;		       (cond ((mevenp (cadr expt))
-;;			      (cond ((memq sign-base '($pn $neg))
-;;				     (setq sign-base '$pos))
-;;				    ((memq sign-base '($pnz $nz))
-;;				     (setq sign-base '$pz)))
-;;			      (setq evens (nconc odds evens)
-;;				    odds nil minus nil))
-;;			     ((mevenp (caddr expt))
-;;			      (cond ((eq sign-base '$neg)
-;;				     (imag-err x))
-;;				    ((eq sign-base '$pn)
-;;				     (setq sign-base '$pos)
-;;				     (tdpos base1))
-;;				    ((eq sign-base '$nz)
-;;				     (setq sign-base '$zero)
-;;				     (tdzero base1))
-;;				    (t (setq sign-base '$pz)
-;;				       (tdpz base1)))))))
-;;		(cond ((eq sign-expt '$neg)
-;;		       (cond ((eq sign-base '$zero) (dbzs-err x))
-;;			     ((eq sign-base '$pz)
-;;			      (setq sign-base '$pos)
-;;			      (tdpos base1))
-;;			     ((eq sign-base '$nz)
-;;			      (setq sign-base '$neg)
-;;			      (tdneg base1))
-;;			     ((eq sign-base '$pnz)
-;;			      (setq sign-base '$pn)
-;;			      (tdpn base1)))))
-;;		(setq sign sign-base)))))
-;;Update from F302 --gsb
+  (if (< (conssize x) 51.)
+      (let ($ratprint)
+	(factor x)) x))
+
 (defmvar complexsign nil)
+
 (defun sign-mexpt (x)
   (let* ((expt (caddr x)) (base1 (cadr x))
 	 (sign-expt (sign1 expt)) (sign-base (sign1 base1))
 	 (evod (evod expt)))
     (cond ((and (eq sign-base '$zero)
-		(memq sign-expt '($zero $neg)))
+		(member sign-expt '($zero $neg) :test #'eq))
 	   (dbzs-err x))
 	  ((eq sign-expt '$zero) (setq sign '$pos) (tdzero (sub x 1)))
 	  ((eq sign-base '$pos))
@@ -1088,29 +969,29 @@ Maybe you want to use `not equal'."))
 	   (cond ((eq sign-expt '$neg)
 		  (setq sign '$pos minus nil evens (ncons base1) odds nil)
 		  (tdpn base1))
-		 ((memq sign-base '($pn $neg))
+		 ((member sign-base '($pn $neg) :test #'eq)
 		  (setq sign '$pos minus nil
 			evens (nconc odds evens)
 			odds nil))
 		 (t (setq sign '$pz minus nil
 			  evens (nconc odds evens)
 			  odds nil))))
-	  ((and (memq sign-expt '($neg $nz))
-		(memq sign-base '($nz $pz $pnz)))
+	  ((and (member sign-expt '($neg $nz) :test #'eq)
+		(member sign-base '($nz $pz $pnz) :test #'eq))
 	   (tdpn base1)
 	   (setq sign (cond ((eq sign-base '$pnz) '$pn)
 			    ((eq sign-base '$pz) '$pos)
 			    ((eq sign-expt '$neg) '$neg)
-			    (t '$pn))))  
-	  ((memq sign-expt '($pz $nz $pnz))
+			    (t '$pn))))
+	  ((member sign-expt '($pz $nz $pnz) :test #'eq)
 	   (cond ((eq sign-base '$neg)
 		  (setq odds (ncons x) sign '$pn))))
 	  ((eq sign-expt '$pn))
 	  (t (cond ((ratnump expt)
 		    (cond ((mevenp (cadr expt))
-			   (cond ((memq sign-base '($pn $neg))
+			   (cond ((member sign-base '($pn $neg) :test #'eq)
 				  (setq sign-base '$pos))
-				 ((memq sign-base '($pnz $nz))
+				 ((member sign-base '($pnz $nz) :test #'eq)
 				  (setq sign-base '$pz)))
 			   (setq evens (nconc odds evens)
 				 odds nil minus nil))
@@ -1138,25 +1019,29 @@ Maybe you want to use `not equal'."))
 			   (setq sign-base '$pn)
 			   (tdpn base1)))))
 	     (setq sign sign-base)))))
-	
+
 (defun sign-mabs (x)
   (sign (cadr x))
-  (cond ((memq sign '($pos $zero)))
-	((memq sign '($neg $pn)) (setq sign '$pos))
+  (cond ((member sign '($pos $zero) :test #'eq))
+	((member sign '($neg $pn) :test #'eq) (setq sign '$pos))
 	(t (setq sign '$pz minus nil evens (nconc odds evens) odds nil))))
 
-(defun sign-posfun (x) x		;Ignored
-       (setq sign '$pos minus nil odds nil evens nil))
+(defun sign-posfun (x)
+  (declare (ignore x))
+  (setq sign '$pos minus nil odds nil evens nil))
 
-(defun sign-oddinc (x) (sign (cadr x)))
+(defun sign-oddinc (x)
+  (sign (cadr x)))
 
 (defun imag-err (x)
-  (if sign-imag-errp (merror "`sign' called on an imaginary argument:~%~M" x)
+  (if sign-imag-errp
+      (merror "`sign' called on an imaginary argument:~%~M" x)
       (throw 'sign-imag-err t)))
 
-(defun dbzs-err (x) (merror "Division by zero detected in `sign':~%~M" x))
-
-;; Return true iff e is an expression with operator op1, op2,...,or opn. 
+(defun dbzs-err (x)
+  (merror "Division by zero detected in `sign':~%~M" x))
+
+;; Return true iff e is an expression with operator op1, op2,...,or opn.
 
 (defun op-equalp (e &rest op)
   (and (consp e) (consp (car e)) (some #'(lambda (s) (equal (caar e) s)) op)))
@@ -1185,7 +1070,7 @@ Maybe you want to use `not equal'."))
 	((symbolp e) (kindp e ind))))
 
 ;; Give a function the maps-integers-to-integers property when it is integer
-;; valued on the integers; give it the integer-valued property when its 
+;; valued on the integers; give it the integer-valued property when its
 ;; range is a subset of the integers. What have I missed?
 
 (setf (get 'mplus 'maps-integers-to-integers) t)
@@ -1238,7 +1123,7 @@ Maybe you want to use `not equal'."))
 	  ((specrepp e) (nonintegerp (specdisrep e)))
 	  ((and (eq (caar e) 'mplus) (ratnump (cadr e)) (intp (cdr e))) t)
 	  ((and (integerp (setq num ($num e)))
-		(prog2 (setq e ($denom e)) 
+		(prog2 (setq e ($denom e))
 		    (or (eq (csign (sub e num)) '$pos)
 			(eq (csign (add2 e num)) '$neg))))
 	   t))))
@@ -1246,7 +1131,9 @@ Maybe you want to use `not equal'."))
 (defun intp (l)
   (setq l (cdr l))
   (do () ((null l) t)
-    (if (maxima-integerp (car l)) (setq l (cdr l)) (return nil))))
+    (if (maxima-integerp (car l))
+	(setq l (cdr l))
+	(return nil))))
 
 (defun intp-mexpt (e)
   (and (integerp (caddr e)) (not (minusp (caddr e))) (maxima-integerp (cadr e))))
@@ -1292,16 +1179,17 @@ Maybe you want to use `not equal'."))
 	  (t (return nil)))))
 
 (defun evod-mexpt (x)
-  (cond ((and (integerp (caddr x)) (not (minusp (caddr x)))) (evod (cadr x)))))
-
+  (when (and (integerp (caddr x)) (not (minusp (caddr x))))
+    (evod (cadr x))))
+
 
 (declare-top (special mgqp mlqp))
 
-(defmode cl () (atom (selector +labs) (selector -labs) (selector data)))
+(defmode cl ()
+  (atom (selector +labs) (selector -labs) (selector data)))
 
-;;(defun c-dobj macro (x) `(list . ,(cdr x)))
-
-(defmacro c-dobj (&rest x) `(list . , x))
+(defmacro c-dobj (&rest x)
+  `(list ,@x))
 
 (defun dcompare (x y)
   (setq odds (list (sub x y)) evens nil minus nil
@@ -1310,13 +1198,13 @@ Maybe you want to use `not equal'."))
 		   ((or (eq '$minf x) (eq '$inf y)) '$neg)
 		   (t (dcomp x y)))))
 
-(defun dcomp (x y) 
+(defun dcomp (x y)
   (let (mgqp mlqp)
     (setq x (dinternp x) y (dinternp y))
     (cond ((or (null x) (null y)) '$pnz)
 	  ((progn (clear) (deq x y) (sel y +labs)))
 	  (t '$pnz))))
-
+
 
 (defun deq (x y)
   (cond ((dmark x '$zero) nil)
@@ -1337,20 +1225,26 @@ Maybe you want to use `not equal'."))
 (defun dgr (x y)
   (cond ((dmark x '$pos) nil)
 	((eq x y))
-	(t (do ((l (sel x data) (cdr l))) ((null l))
-	     (if (or mlqp (and (visiblep (car l)) (dgrf x y (car l)))) (return t))))))
+	(t (do ((l (sel x data) (cdr l)))
+	       ((null l))
+	     (when (or mlqp (and (visiblep (car l)) (dgrf x y (car l))))
+	       (return t))))))
 
 (defun dgrf (x y f)
   (cond ((eq 'mgrp (caar f)) (if (eq x (cadar f)) (dgr (caddar f) y)))
 	((eq 'mgqp (caar f)) (if (eq x (cadar f)) (dgr (caddar f) y)))
 	((eq 'meqp (caar f))
-	 (if (eq x (cadar f)) (dgr (caddar f) y) (dgr (cadar f) y)))))
+	 (if (eq x (cadar f))
+	     (dgr (caddar f) y)
+	     (dgr (cadar f) y)))))
 
 (defun dls (x y)
   (cond ((dmark x '$neg) nil)
 	((eq x y))
-	(t (do ((l (sel x data) (cdr l))) ((null l))
-	     (if (or mgqp (and (visiblep (car l)) (dlsf x y (car l)))) (return t))))))
+	(t (do ((l (sel x data) (cdr l)))
+	       ((null l))
+	     (when (or mgqp (and (visiblep (car l)) (dlsf x y (car l))))
+	       (return t))))))
 
 (defun dlsf (x y f)
   (cond ((eq 'mgrp (caar f)) (if (eq x (caddar f)) (dls (cadar f) y)))
@@ -1359,7 +1253,7 @@ Maybe you want to use `not equal'."))
 	 (if (eq x (cadar f)) (dls (caddar f) y) (dls (cadar f) y)))))
 
 (defun dgq (x y)
-  (cond ((memq (sel x +labs) '($pos $zero)) nil)
+  (cond ((member (sel x +labs) '($pos $zero) :test #'eq) nil)
 	((eq '$nz (sel x +labs)) (deq x y))
 	((eq '$pn (sel x +labs)) (dgr x y))
 	((dmark x '$pz) nil)
@@ -1374,7 +1268,7 @@ Maybe you want to use `not equal'."))
 	 (if (eq x (cadar f)) (dgq (caddar f) y) (dgq (cadar f) y)))))
 
 (defun dlq (x y)
-  (cond ((memq (sel x +labs) '($neg $zero)) nil)
+  (cond ((member (sel x +labs) '($neg $zero) :test #'eq) nil)
 	((eq '$pz (sel x +labs)) (deq x y))
 	((eq '$pn (sel x +labs)) (dgr x y))
 	((dmark x '$nz) nil)
@@ -1389,7 +1283,7 @@ Maybe you want to use `not equal'."))
 	 (if (eq x (cadar f)) (dlq (caddar f) y) (dlq (cadar f) y)))))
 
 (defun dnq (x y)
-  (cond ((memq (sel x +labs) '($pos $neg)) nil)
+  (cond ((member (sel x +labs) '($pos $neg) :test #'eq) nil)
 	((eq '$pz (sel x +labs)) (dgr x y))
 	((eq '$nz (sel x +labs)) (dls x y))
 	((dmark x '$pn) nil)
@@ -1401,15 +1295,17 @@ Maybe you want to use `not equal'."))
   (cond ((eq 'meqp (caar f))
 	 (if (eq x (cadar f)) (dnq (caddar f) y) (dnq (cadar f) y)))))
 
-
-(defun dmark (x m  &aux #+lispm (default-cons-area working-storage-area ))
+(defun dmark (x m)
   (cond ((eq m (sel x +labs)))
-	((and dbtrace (prog1 t (mtell "marking ~M ~M"
-				      (if (atom x) x (car x))
-				      m))
+	((and dbtrace (prog1
+			  t
+			(mtell "marking ~M ~M" (if (atom x) x (car x)) m))
 	      nil))
-	(t (setq +labs (cons x +labs)) (_ (sel x +labs) m) nil)))
-
+	(t
+	 (setq +labs (cons x +labs))
+	 (_ (sel x +labs) m)
+	 nil)))
+
 (defun daddgr (flag x)
   (let (lhs rhs)
     (compsplt x)
@@ -1447,19 +1343,30 @@ Maybe you want to use `not equal'."))
 	  (t (mdata flag 'mnqp (dintern lhs) (dintern rhs))))
     (list '(mnot) (list '($equal) lhs rhs))))
 
-(defun tdpos (x) (daddgr t x) (setq locals (cons (cons x '$pos) locals)))
+(defun tdpos (x)
+  (daddgr t x)
+  (setq locals (cons (cons x '$pos) locals)))
 
-(defun tdneg (x) (daddgr t (neg x)) (setq locals (cons (cons x '$neg) locals)))
+(defun tdneg (x)
+  (daddgr t (neg x))
+  (setq locals (cons (cons x '$neg) locals)))
 
-(defun tdzero (x) (daddeq t x) (setq locals (cons (cons x '$zero) locals)))
+(defun tdzero (x)
+  (daddeq t x)
+  (setq locals (cons (cons x '$zero) locals)))
 
-(defun tdpn (x) (daddnq t x) (setq locals (cons (cons x '$pn) locals)))
+(defun tdpn (x)
+  (daddnq t x)
+  (setq locals (cons (cons x '$pn) locals)))
 
-(defun tdpz (x) (daddgq t x) (setq locals (cons (cons x '$pz) locals)))
+(defun tdpz (x)
+  (daddgq t x)
+  (setq locals (cons (cons x '$pz) locals)))
 
 (defun compsplt-eq (x)
   (compsplt x)
-  (if (equal lhs 0) (setq lhs rhs rhs 0))
+  (if (equal lhs 0)
+      (setq lhs rhs rhs 0))
   (if (and (equal rhs 0)
 	   (or (mexptp lhs)
 	       (and (not (atom lhs))
@@ -1467,9 +1374,12 @@ Maybe you want to use `not equal'."))
 		    (kindp (caar lhs) '$increasing))))
       (setq lhs (cadr lhs))))
 
-(defun mdata (flag r x y) (if flag (mfact r x y) (mkill r x y)))
+(defun mdata (flag r x y)
+  (if flag
+      (mfact r x y)
+      (mkill r x y)))
 
-(defun mfact (r x y &aux #+lispm (default-cons-area working-storage-area ))
+(defun mfact (r x y)
   (let ((f (datum (list r x y))))
     (cntxt f context)
     (addf f x)
@@ -1481,7 +1391,8 @@ Maybe you want to use `not equal'."))
     (maxima-remf f x)
     (maxima-remf f y)))
 
-(defun mkind (x y) (kind (dintern x) (dintern y)))
+(defun mkind (x y)
+  (kind (dintern x) (dintern y)))
 
 (defmfun rgrp (x y)
   (cond ((or ($bfloatp x) ($bfloatp y))
@@ -1497,9 +1408,10 @@ Maybe you want to use `not equal'."))
 	((greaterp y x) '$neg)
 	(t '$zero)))
 
-(defun mcons (x l) (cons (car l) (cons x (cdr l))))
+(defun mcons (x l)
+  (cons (car l) (cons x (cdr l))))
 
-(defun flip (s) 
+(defun flip (s)
   (cond ((eq '$pos s) '$neg)
 	((eq '$neg s) '$pos)
 	((eq '$pz s) '$nz)
@@ -1509,27 +1421,29 @@ Maybe you want to use `not equal'."))
 (defun strongp (x y)
   (cond ((eq '$pnz y))
 	((eq '$pnz x) nil)
-	((memq y '($pz $nz $pn)))))
+	((member y '($pz $nz $pn) :test #'eq))))
 
 (defun munformat (form)
-  (if (atom form) form (cons (caar form) (mapcar #'munformat (cdr form)))))
+  (if (atom form)
+      form
+      (cons (caar form) (mapcar #'munformat (cdr form)))))
 
 (defmfun declarekind (var prop)	; This function is for $DECLARE to use.
   (let (prop2)
     (cond ((truep (list 'kind var prop)) t)
 	  ((or (falsep (list 'kind var prop))
-	       (and (setq prop2 (assq prop '(($integer . $noninteger)
+	       (and (setq prop2 (assoc prop '(($integer . $noninteger)
 					     ($noninteger . $integer)
 					     ($increasing . $decreasing)
 					     ($decreasing . $increasing)
 					     ($symmetric . $antisymmetric)
 					     ($antisymmetric . $symmetric)
 					     ($oddfun . $evenfun)
-					     ($evenfun . $oddfun))))
+					     ($evenfun . $oddfun)) :test #'eq))
 		    (truep (list 'kind var (cdr prop2)))))
 	   (merror "Inconsistent Declaration: ~:M" `(($declare) ,var ,prop)))
 	  (t (mkind var prop) t))))
-
+
 ;;;  These functions reformat expressions to be stored in the data base.
 
 (defun compsplt (x)
@@ -1549,7 +1463,7 @@ Maybe you want to use `not equal'."))
 (defun compsplt2 (x)
   (cond ((or (atom x) (atom (car x))) ; If x is an atom or a single level
 	 (setq lhs x rhs 0))	;    list then we won't change it any.
-	((negp x)	    ; If x is a negative expression but not a 
+	((negp x)	    ; If x is a negative expression but not a
 	 (setq lhs 0 rhs (neg x))) ; sum, then get rid of the negative sign.
 	((or (cdddr x)		      ; If x is not a sum, or is a sum
 	     (not (eq (caar x) 'mplus))	; with more than 2 terms, or has
@@ -1566,27 +1480,39 @@ Maybe you want to use `not equal'."))
 	 (setq lhs 0 rhs (neg x)))
 	(t (setq lhs x rhs 0))))
 
-(defun negp (x) (and (mtimesp x) (mnegp (cadr x))))
-		     
+(defun negp (x)
+  (and (mtimesp x) (mnegp (cadr x))))
+
 (defun splitsum (exp)
-  (do ((llist (cdar exp) (cdr llist)) (lhs (car exp)) (rhs (cadr exp)))
-      ((null llist) (if (mplusp lhs) (setq success t))
+  (do ((llist (cdar exp) (cdr llist))
+       (lhs (car exp))
+       (rhs (cadr exp)))
+      ((null llist)
+       (if (mplusp lhs) (setq success t))
        (list lhs rhs))
-    (cond ((memq '$inf llist) (setq rhs (add2 '$inf (sub* rhs (addn llist t)))
-				    lhs (add2 '$inf (sub* lhs (addn llist t)))
-				    llist nil))
-	  ((memq '$minf llist) (setq rhs
-				     (add2 '$minf (sub* rhs (addn llist t)))
-				     lhs
-				     (add2 '$minf (sub* lhs (addn llist t)))
-				     llist nil))
-	  ((null (symbols (car llist))) (setq lhs (sub lhs (car llist))
-					      rhs (sub rhs (car llist)))))))
+    (cond ((member '$inf llist :test #'eq)
+	   (setq rhs (add2 '$inf (sub* rhs (addn llist t)))
+		 lhs (add2 '$inf (sub* lhs (addn llist t)))
+		 llist nil))
+	  ((member '$minf llist :test #'eq)
+	   (setq rhs (add2 '$minf (sub* rhs (addn llist t)))
+		 lhs (add2 '$minf (sub* lhs (addn llist t)))
+		 llist nil))
+	  ((null (symbols (car llist)))
+	   (setq lhs (sub lhs (car llist))
+		 rhs (sub rhs (car llist)))))))
 
 (defun splitprod (exp)
-  (do ((flipsign) (lhs (car exp)) (rhs (cadr exp)) (llist (cdar exp) (cdr llist))
-       (sign) (minus) (evens) (odds))
-      ((null llist) (if (mtimesp lhs) (setq success t))
+  (do ((flipsign)
+       (lhs (car exp))
+       (rhs (cadr exp))
+       (llist (cdar exp) (cdr llist))
+       (sign)
+       (minus)
+       (evens)
+       (odds))
+      ((null llist)
+       (if (mtimesp lhs) (setq success t))
        (cond (flipsign (compsplt (sub lhs rhs))
 		       (setq success t)
 		       (list rhs lhs))
@@ -1594,33 +1520,36 @@ Maybe you want to use `not equal'."))
     (when (null (symbols (car llist)))
       (sign (car llist))
       (if (eq sign '$neg) (setq flipsign (not flipsign)))
-      (if (memq sign '($pos $neg))
+      (if (member sign '($pos $neg) :test #'eq)
 	  (setq lhs (div lhs (car llist)) rhs (div rhs (car llist)))))))
 
 (defun symbols (x)
-  (let (($listconstvars %initiallearnflag)) (cdr ($listofvars x))))
-
+  (let (($listconstvars %initiallearnflag))
+    (cdr ($listofvars x))))
+
 ;; %initiallearnflag is only necessary so that %PI, %E, etc. can be LEARNed.
 
-(eval-when (load)
+(eval-when
+    #+gcl (load)
+    #-gcl (:load-toplevel)
+
   (setq %initiallearnflag t)
+
   (def-learn $%e `((mequal) $%e ,(mget '$%e '$numer)) t)
   (def-learn $%pi `((mequal) $%pi ,(mget '$%pi '$numer)) t)
   (def-learn $%phi `((mequal) $%phi ,(mget '$%phi '$numer)) t)
   (def-learn $%gamma `((mequal) $%gamma ,(mget '$%gamma '$numer)) t)
 
-  ;;(learn `((mequal) $%e ,(mget '$%e '$numer)) t)
-  ;;(learn `((mequal) $%pi ,(mget '$%pi '$numer)) t)
-  ;;(learn `((mequal) $%phi ,(mget '$%phi '$numer)) t)
-  ;;(learn `((mequal) $%gamma ,(mget '$%gamma '$numer)) t)
   (setq %initiallearnflag nil)
 
   (mapc #'true*
 	'((par ($even $odd) $integer)
+
 	  (kind $integer $rational)
+
 	  (par ($rational $irrational) $real)
 	  (par ($real $imaginary) $complex)
-	
+
 	  (kind %log $increasing)
 	  (kind %atan $increasing) (kind %atan $oddfun)
 	  (kind $delta $evenfun)
@@ -1633,9 +1562,5 @@ Maybe you want to use `not equal'."))
 	  (kind $li $complex)
 	  (kind %cabs $complex)))
 
-  ($newcontext '$initial)     ; Create an initial context for the user
-					; which is a subcontext of $global.
-
-  )
-
-
+  ;; Create an initial context for the user which is a subcontext of $global.
+  ($newcontext '$initial))
