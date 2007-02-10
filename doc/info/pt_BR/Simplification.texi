@@ -578,11 +578,11 @@ matem@'atica.
 
 @c NEEDS CLARIFICATION, EXAMPLES
 @deffn {Fun@,{c}@~ao} sumcontract (@var{expr})
-Combina todas as parcelas de uma adi@,{c}@~ao que tem
-maiores e menores associa@,{c}@~oes que diferem por constantes. O resultado @'e uma
+Combina todas as parcelas de um somat@'orio que possuem
+limites superiores e inferiores que diferem por constantes. O resultado @'e uma
 express@~ao contendo um somat@'orio para cada escolha de cada tais somat@'orios
 adicionados a todos os termos extras apropriados que tiveram de ser extra@'idos para a forma
-dessa adi@,{c}@~ao.  @code{sumcontract} combina todas as somas compat@'iveis e usa-se os
+dessa adi@,{c}@~ao.  @code{sumcontract} combina todas as somas compat@'iveis e usa os
 indices de uma as somas se puder, e ent@~ao tenta formar um
 @'indice razo@'avel se n@~ao for usar qualquer dos fornecidos.
 
@@ -627,7 +627,7 @@ Exemplos:
 @defvr {Vari@'avel de op@,{c}@~ao} sumsplitfact
 Valor padr@~ao: @code{true}
 
-When @code{sumsplitfact} for @code{false},
+Quando @code{sumsplitfact} for @code{false},
 @c "IS APPLIED" -- UNDER WHAT CIRCUMSTANCES EXACTLY ??
 @code{minfactorial} @'e aplicado ap@'os um @code{factcomb}.
 

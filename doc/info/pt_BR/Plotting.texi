@@ -1,5 +1,8 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /Plotting.texi/1.33/Mon Feb  5 17:02:16 2007/-ko/
+@iftex
+@hyphenation{ca-rac-te-res}
+@end iftex
 @menu
 * Defini@value{cedilha}@~oes para Montagem de Gr@'aficos::    
 @end menu
@@ -92,7 +95,7 @@ Todas as op@,{c}@~oes s@~ao assumidas terem valores padr@~ao a menos que sejam a
 @code{plot2d (@var{expr}, @var{x_range}, @var{y_range})}
 monta o gr@'afico de @var{expr} como uma fun@,{c}@~ao de uma vari@'avel nomeada em @var{x_range},
 sobre a amplitude especificada em @var{x_range}.
-O alcance vertical @'e escolhido para @var{y_range}.
+A amplitude vertical @'e escolhida para @var{y_range}.
 Todas as op@,{c}@~oes s@~ao assumidas terem valores padr@~ao a menos que sejam alternativamente especificadas por @code{set_plot_option}.
 
 @code{plot2d ([@var{expr_1}, ..., @var{expr_n}], @var{x_range})}
@@ -159,10 +162,10 @@ $g
 Em qualquer lugar onde pode existir uma express@~ao comum, pode existir uma express@~ao param@'etrica: 
 @var{parametric_expr} @'e uma lista da forma
 @code{[parametric, @var{x_expr}, @var{y_expr}, @var{t_range}, @var{op@,{c}@~oes}]}.
-Aqui @var{x_expr} e @var{y_expr} s@~ao express@~oes de 1 vari@'avel @var{var} que @'e
-o primeiro elemento da amplitude @var{trange}.  
+Aqui @var{x_expr} e @var{y_expr} s@~ao express@~oes de 1 vari@'avel qualquer que @'e
+o primeiro elemento da amplitude @var{t_range}.  
 A montagem do gr@'afico mostra o caminho descrito pelo par
-@code{[@var{x_expr}, @var{y_expr}]} como @var{var} varia em @var{trange}.
+@code{[@var{x_expr}, @var{y_expr}]} com @var{x_expr} e @var{y_expr} variando ambos em @var{t_range}.
 
 @b{Parametric plot examples:}
 @c PUT PARAMETRIC EXAMPLES HERE
@@ -372,7 +375,7 @@ Gnuplot @'e o padr@~ao, e mais avan@,{c}ado, pacote de montagem de gr@'afico.  E
 requer uma instala@,{c}@~ao externa do gnuplot.
 @item
 Valor: @code{mgnuplot}
-Mgnuplot @'e um inv@'olucro em torno do gnuplot baseado no Tk.  Isso est@'a inclu@'ido na
+Mgnuplot @'e um ambiente montado em volta do gnuplot baseado no Tk.  Esse ambiente est@'a inclu@'ido na
 distribu@'i@,{c}@~ao do Maxima.  Mgnuplot oferece uma GUI rudimentar para o gnuplot,
 mas tem menos recursos em geral que a interface 
 texto.  Mgnuplot requer uma instala@,{c}@~ao externa do gnuplot e
@@ -386,7 +389,7 @@ usar este formato, dever@'a instalar Xmaxima.
 
 @item
 Op@,{c}@~ao: @code{run_viewer} controla se o visualizador apropriado para o formato da montagem do gr@'afico pode ou n@~ao
-poder@'a ser executado.
+ser executado.
 
 @itemize @bullet
 @item
@@ -515,7 +518,7 @@ Permite que transforma@,{c}@~oes sejam aplicadas @`a montagem de gr@'aficos trid
 @example
 [transform_xy, false]
 @end example
-O padr@~ao @code{transform_xy} @'e @code{false}.  Se isso n@~ao @'e @code{false}, pode ser
+O valor padr@~ao de @code{transform_xy} @'e @code{false}.  Se o valor padr@~ao de @code{transform_xy} n@~ao @'e @code{false}, pode ser
 a sa@'ida de
 @example
 make_transform ([x, y, z], f1(x, y, z), f2(x, y, z), f3(x, y, z))$
@@ -685,9 +688,9 @@ Usa um muito complicado @code{gnuplot_preamble} para produzir elegantes r@'otulo
 
 @itemize @bullet
 @item
-Usa uma muito complicada @code{gnuplot_preamble} para produzir elegantes r@'otulos para o eixo x,
+Usa um muito complicad @code{gnuplot_preamble} para produzir elegantes r@'otulos para o eixo x,
 e produzir sa@'idas
-PostScript que pegam vantagens do formato de texto avan@,{c}ado dispon@'ivel
+PostScript que aproveita as vantagens do formato de texto avan@,{c}ado dispon@'ivel
 no gnuplot.
 (Note que a seq@"u@^encia de caracteres @code{gnuplot_preamble} deve ser fornecida inteiramente sem qualquer quebra de linha.)
 @end itemize
@@ -798,7 +801,7 @@ Um exemplo do terceiro modelo de argumento @'e
 @end ifnotinfo
 
 que monta o gr@'afico da banda de Moebius, parametrizada por tr@^es express@~oes fornecidas
-como o primeiro argumento para @code{plot3d}.  Um adicional e opcional argumento
+como o primeiro argumento para @code{plot3d}.  O argumento adiconal por@'em opcional
 @code{['grid, 50, 15]} fornece o n@'umero de ret@^agulos da grade na dire@,{c}@~ao x e
 na dire@,{c}@~ao y.
 
@@ -822,9 +825,9 @@ Esse exemplo mostra uma montagem de gr@'afico da parte real de @code{z^1/3}.
 
 @noindent
 Aqui a op@,{c}@~ao @code{view_direction} indica a dire@,{c}@~ao da qual n@'os
-pegamos a proje@,{c}@~ao.  N@'os atualmente fazemos isso de infinitamente distante,
-mas paralelo @`a linha de @code{view_direction} para a or@'igem.  Isso @'e
-correntemente usado somente em plot_format @code{ps}, uma vez que outros visualizadores
+pegamos a proje@,{c}@~ao.  N@'os atualmente fazemos isso de um ponto infinitamente distante,
+mas esse pont contido em uma reta paralela @`a linha de @code{view_direction} para a or@'igem.  A op@,{c}@~ao @code{view_direction} @'e
+correntemente usada somente em plot_format @code{ps}, uma vez que outros visualizadores
 permitem rota@,{c}@~ao interativa do objeto.
 
 Outro exemplo @'e uma superf@'icie de Klein:
@@ -858,9 +861,9 @@ e um toro
 @end ifnotinfo
 
 Algumas vezes isso @'e necess@'ario para definir uma fun@,{c}@~ao para montar o graico da express@~ao. Todos
-os argumentos para plot3d s@~ao avaliados antes de serem passados para plot3d, e
-ent@~ao tentando fazer um express@~ao que faz apenas o que @'e preciso pode ser 
-dif@'icil, e @'e apenas mais f@'acil fazer uma fun@,{c}@~ao.   
+os argumentos para plot3d s@~ao avaliados antes de serem passados para plot3d. Tentar
+fazer um express@~ao que faz apenas o que @'e preciso pode ser 
+dif@'icil e pode ser mais f@'acil fazer uma fun@,{c}@~ao.   
 
 @example
 (%i13) M: matrix([1, 2, 3, 4], [1, 2, 3, 2], [1, 2, 3, 4],
@@ -878,7 +881,7 @@ Veja @code{plot_options} para mais exemplos.
 @end deffn
 
 @deffn {Fun@,{c}@~ao}  make_transform (@var{vars}, @var{fx}, @var{fy}, @var{fz})
-Retornam uma fun@,{c}@~ao adequada para a fun@,{c}@~ao transforma@,{c}@~ao em plot3d.  Use
+Retorna uma fun@,{c}@~ao adequada para a fun@,{c}@~ao transforma@,{c}@~ao em plot3d.  Use
 com a op@,{c}@~ao de montagem de gr@'afico @code{transform_xy}.
 @example
 make_transform ([r, th, z], r*cos(th), r*sin(th), z)$
@@ -889,7 +892,7 @@ make_transform ([r, th, z], r*cos(th), r*sin(th), z)$
 @deffn {Fun@,{c}@~ao}  set_plot_option (@var{op@,{c}@~ao})
 Atribui uma das var@'aveis globais para impress@~ao.
 @var{op@,{c}@~ao} @'e especificada como uma lista de dois ou mais elementos,
-na qual o primeiro elemeto @'e uma das palavras chave
+na qual o primeiro elemento @'e uma das palavras chave
 dentro da lista @code{plot_options}.
 
 @code{set_plot_option} avalia seu argumento e
