@@ -1,5 +1,5 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
-@c /Plotting.texi/1.31/Sun Jan  7 05:49:41 2007/-ko/
+@c /Plotting.texi/1.33/Mon Feb  5 17:02:16 2007/-ko/
 @menu
 * Defini@value{cedilha}@~oes para Montagem de Gr@'aficos::    
 @end menu
@@ -164,12 +164,12 @@ o primeiro elemento da amplitude @var{trange}.
 A montagem do gr@'afico mostra o caminho descrito pelo par
 @code{[@var{x_expr}, @var{y_expr}]} como @var{var} varia em @var{trange}.
 
+@b{Parametric plot examples:}
+@c PUT PARAMETRIC EXAMPLES HERE
+
 No exemplo seguinte, montaremos o gr@'afico de um c@'irculo, ent@~ao faremos
 a montagem do gr@'afico com somente poucos pontos usados, desse modo vamos pegar uma estrela,
 e inicialmente montaremos o gr@'afico juntamente com uma fun@,{c}@~ao comum de X.
-
-@b{Exemplos de gr@'aficos param@'etricos:}
-@c PUT PARAMETRIC EXAMPLES HERE
 
 @itemize @bullet
 @item
@@ -207,7 +207,7 @@ Monta o gr@'afico de um polin@^omio c@'ubico da forma comum e de um c@'irculo da
 
 @end itemize
 
-Express@~oes discretas podem tamb@'em serem usadas ou em lugar de express@~oes comuns ou
+Express@~oes discretas podem tamb@'em serem usadas em lugar de express@~oes comuns ou
 em lugar de express@~oes param@'etricas:
 @var{discrete_expr} @'e uma lista da forma
 @code{[discrete, @var{x_list}, @var{y_list}]}
@@ -305,7 +305,7 @@ pt_set: append (["NoLines: True", "LargePixels: true"],
 @end example
 
 @noindent
-fizemos com que os grupos de pontos [e os pr@'oprios subseq@"u@^entes], n@~ao  
+fizemos com que os grupos de pontos (e os pr@'oprios subseq@"u@^entes), n@~ao  
 possuam linhas entre os pontos, e para usar pixels largos.
 Veja a p@'agina de manual sobre o xgraph para especificar mais op@,{c}@~oes.
 
@@ -877,7 +877,6 @@ Veja @code{plot_options} para mais exemplos.
 
 @end deffn
 
-
 @deffn {Fun@,{c}@~ao}  make_transform (@var{vars}, @var{fx}, @var{fy}, @var{fz})
 Retornam uma fun@,{c}@~ao adequada para a fun@,{c}@~ao transforma@,{c}@~ao em plot3d.  Use
 com a op@,{c}@~ao de montagem de gr@'afico @code{transform_xy}.
@@ -893,9 +892,9 @@ Atribui uma das var@'aveis globais para impress@~ao.
 na qual o primeiro elemeto @'e uma das palavras chave
 dentro da lista @code{plot_options}.
 
-@code{set_plot_option} avalia seu argumento.
-@code{set_plot_option} retorna @code{plot_options} 
-(ap@'os modificar um desses elementos).
+@code{set_plot_option} avalia seu argumento e
+retorna a liasta completa @code{plot_options}
+(ap@'os modificar um de seus elementos).
 
 Veja tamb@'em @code{plot_options}, @code{plot2d}, e @code{plot3d}.
 
@@ -947,3 +946,4 @@ eps enhanced color solid 24]]
 @end example
 
 @end deffn
+
