@@ -322,6 +322,7 @@ and @code{errormsg} formats and prints it.
 @end deffn
 
 @c REPHRASE
+@c AT LEAST SHOULD LIST VARIANTS HERE
 @deffn {Special operator} for
 Used in iterations. See @code{do} for a description of
 Maxima's iteration facilities.
@@ -542,6 +543,13 @@ ways.
 Evaluates @var{expr} and throws the value back to the most recent
 @code{catch}.  @code{throw} is used with @code{catch} as a nonlocal return
 mechanism.
+
+@end deffn
+
+@c NEED MORE HERE !!
+@c AT LEAST SHOULD LIST ACCEPTABLE VARIANTS
+@deffn {Special operator} while
+See @code{do}.
 
 @end deffn
 
