@@ -1,4 +1,4 @@
-@c english version: 1.7
+@c english version: 1.9
 @menu
 * Introducci@'on a descriptive::
 * Definiciones para el tratamiento de datos::
@@ -895,7 +895,8 @@ V@'ease tambi@'en @code{quantile}.
 
 @deffn {Funci@'on} qrange (@var{list})
 @deffnx {Funci@'on} qrange (@var{matrix})
-El rango intercuart@'{@dotless{i}}lico es la diferencia entre el tercer y primer cuartil, @code{quantile(list,3/4) - quantile(list,1/4)},
+El rango intercuart@'{@dotless{i}}lico es la diferencia entre el tercer y primer cuartil,
+@code{quantile(@var{list},3/4) - quantile(@var{list},1/4)},
 
 @c ===beg===
 @c load (descriptive)$

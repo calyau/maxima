@@ -1,4 +1,4 @@
-@c english version 1.30
+@c english version 1.33
 @menu
 * Definiciones para Gr@'aficos::    
 @end menu
@@ -60,6 +60,8 @@ Otros s@'{@dotless{i}}mbolos de elementos importantes son @code{xfun},
 @deffnx {Funci@'on} plot2d ([@var{name_1}, ..., @var{name_n}], @var{x_range})
 @deffnx {Funci@'on} plot2d (@var{name}, @var{x_range}, @var{y_range})
 @deffnx {Funci@'on} plot2d (@var{name}, @var{x_range})
+@deffnx {Funci@'on} plot2d ([@var{expr_1}, ..., @var{expr_n}], @var{x_range}, ..., @var{options}, ...)
+@deffnx {Funci@'on} plot2d ([..., @var{expr}, ..., @var{parametric_expr}, ...], @var{x_range}, ..., @var{options})
 
 Muestra un gr@'afico de una o m@'as expresiones como funci@'on de una variable.
 
@@ -376,7 +378,7 @@ La salidad de gnuplot se muestra en una ventana gr@'afica.
 
 @item
 Valor: @code{dumb}
-GLa salidad de gnuplot se muestra en la consola de Maxima con caracteres ASCII.
+La salidad de gnuplot se muestra en la consola de Maxima con caracteres ASCII.
 
 @item
 Valor: @code{ps}
@@ -690,7 +692,8 @@ Un gr@'afico en el que el eje z s@'olo se representa por el color.
 
 @end defvr
 
-@deffn {Funci@'on} plot3d (@var{expr}, @var{x_range}, @var{y_range}, ..., @var{options}, ...)
+@deffn {Function} plot3d ([@var{expr_1}, @var{expr_2}, @var{expr_3}], @var{x_range}, @var{y_range}, ..., @var{options}, ...)
+@deffnx {Funci@'on} plot3d (@var{expr}, @var{x_range}, @var{y_range}, ..., @var{options}, ...)
 @deffnx {Funci@'on} plot3d (@var{name}, @var{x_range}, @var{y_range}, ..., @var{options}, ...)
 @deffnx {Funci@'on} plot3d ([@var{expr_1}, @var{expr_2}, @var{expr_3}], @var{x_rge}, @var{y_rge})
 @deffnx {Funci@'on} plot3d ([@var{name_1}, @var{name_2}, @var{name_3}], @var{x_range}, @var{y_range}, ..., @var{options}, ...)

@@ -1,4 +1,4 @@
-@c english version 1.5
+@c english version 1.6
 @menu
 * Introducci@'on al procesamiento de cadenas::
 * Definiciones para entrada y salida::

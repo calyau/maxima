@@ -1,4 +1,4 @@
-@c english version 1.6
+@c english version 1.7
 @menu
 * Introducci@'on a solve_rec::
 * Definiciones para solve_rec::
@@ -29,36 +29,6 @@ Ejemplo:
 
 @section Definiciones para solve_rec
 
-
-@deffn {Funci@'on} closed_form (@var{expr})
-
-Intenta reducir todas las sumas que aparecen en @var{expr} a una forma
-cerrada. La funci@'on @code{closed_form} utiliza los algoritmos de Gosper
-y Zeilberger para reducir las sumas.
-
-Para utilizar esta funci@'on c@'arguese previamente el paquete @code{closed_form}
-ejecutando la instrucci@'on @code{load(closed_form)}.
-
-Ejemplo:
-
-@example
-(%i1) load("closed_form")$
-(%i2) sum(binom(n+k,k)/2^k, k, 0, n) + sum(binom(2*n, 2*k), k, 0, n);
-         n                            n
-        ====                         ====
-        \      binomial(n + k, k)    \
-(%o2)    >     ------------------ +   >    binomial(2 n, 2 k)
-        /               k            /
-        ====           2             ====
-        k = 0                        k = 0
-(%i3) closed_form(%);
-                               n
-                              4     n
-(%o3)                         -- + 2
-                              2
-@end example
-
-@end deffn
 
 @deffn {Funci@'on} reduce_order (@var{rec}, @var{sol}, @var{var})
 
@@ -123,6 +93,39 @@ simplificar los productos del resultado.
 V@'ease tambi@'en @code{solve_rec}.
 
 @end defvr
+
+
+
+@deffn {Funci@'on} simplify_sum (@var{expr})
+
+Intenta reducir todas las sumas que aparecen en @var{expr} a una forma
+cerrada. La funci@'on @code{simplify_sum} utiliza los algoritmos de Gosper
+y Zeilberger para reducir las sumas.
+
+Para utilizar esta funci@'on c@'arguese previamente el paquete @code{simplify_sum}
+ejecutando la instrucci@'on @code{load(simplify_sum)}.
+
+Ejemplo:
+
+@example
+(%i1) load("simplify_sum")$
+(%i2) sum(binom(n+k,k)/2^k, k, 0, n) + sum(binom(2*n, 2*k), k, 0, n);
+         n                            n
+        ====                         ====
+        \      binomial(n + k, k)    \
+(%o2)    >     ------------------ +   >    binomial(2 n, 2 k)
+        /               k            /
+        ====           2             ====
+        k = 0                        k = 0
+(%i3) simplify_sum(%);
+                               n
+                              4     n
+(%o3)                         -- + 2
+                              2
+@end example
+
+@end deffn
+
 
 @deffn {Funci@'on} solve_rec (@var{eqn}, @var{var}, [@var{init}])
 

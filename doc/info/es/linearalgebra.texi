@@ -1,4 +1,4 @@
-@c english version 1.1
+@c english version 1.11
 @menu
 * Introducci@'on a linearalgebra::
 * Definiciones para linearalgebra::
@@ -286,6 +286,88 @@ a @code{conjugate (transpose (@var{u})) . @var{v}}. Los argumentos @var{u} y @va
 deben ser vectores columna.
 
 @end deffn
+
+
+
+@deffn {Funci@'on} eigens_by_jacobi (@var{A})
+@deffnx {Funci@'on} eigens_by_jacobi (@var{A}, @var{field_type})
+
+Calcula los valores y vectores propios de @var{A} por el m@'etodo de
+las rotaciones de Jacobi. @var{A} debe ser una matriz sim@'etrica
+(aunque no necesariamente definida o semidefinida positiva).
+El argumento @var{field_type} indica el tipo num@'erico sobre el
+que se realizan los c@'alculos, que puede ser tanto @code{floatfield}
+como @code{bigfloatfield}. En caso de que no se especifique @var{field_type},
+su valor por defecto ser@'a @code{floatfield}.
+
+Los elementos de @var{A} deben ser n@'umeros o expresiones reducibles
+a n@'umeros mediante la ejecuci@'on de @code{float} o @code{bfloat},
+seg@'un sea el valor de @var{field_type}.
+
+Ejemplos:
+@c ===beg===
+@c load (linearalgebra);
+@c S : matrix ([1/sqrt(2), 1/sqrt(2)], [- 1/sqrt(2), 1/sqrt(2)]);
+@c L : matrix ([sqrt(3), 0], [0, sqrt(5)]);
+@c M : S . L . transpose (S);
+@c eigens_by_jacobi (M);
+@c float ([[sqrt(3), sqrt(5)], S]);
+@c eigens_by_jacobi (M, bigfloatfield);
+@c ===end===
+
+@example
+(%i1) load (linearalgebra);
+(%o1) /home/robert/tmp/maxima-head/maxima/share/linearalgebra/li\
+nearalgebra.mac
+(%i2) S : matrix ([1/sqrt(2), 1/sqrt(2)], [- 1/sqrt(2), 1/sqrt(2)]);
+                     [     1         1    ]
+                     [  -------   ------- ]
+                     [  sqrt(2)   sqrt(2) ]
+(%o2)                [                    ]
+                     [      1        1    ]
+                     [ - -------  ------- ]
+                     [   sqrt(2)  sqrt(2) ]
+(%i3) L : matrix ([sqrt(3), 0], [0, sqrt(5)]);
+                      [ sqrt(3)     0    ]
+(%o3)                 [                  ]
+                      [    0     sqrt(5) ]
+(%i4) M : S . L . transpose (S);
+            [ sqrt(5)   sqrt(3)  sqrt(5)   sqrt(3) ]
+            [ ------- + -------  ------- - ------- ]
+            [    2         2        2         2    ]
+(%o4)       [                                      ]
+            [ sqrt(5)   sqrt(3)  sqrt(5)   sqrt(3) ]
+            [ ------- - -------  ------- + ------- ]
+            [    2         2        2         2    ]
+(%i5) eigens_by_jacobi (M);
+The largest percent change was 0.1454972243679
+The largest percent change was 0.0
+number of sweeps: 2
+number of rotations: 1
+(%o5) [[1.732050807568877, 2.23606797749979], 
+                        [  0.70710678118655   0.70710678118655 ]
+                        [                                      ]]
+                        [ - 0.70710678118655  0.70710678118655 ]
+(%i6) float ([[sqrt(3), sqrt(5)], S]);
+(%o6) [[1.732050807568877, 2.23606797749979], 
+                        [  0.70710678118655   0.70710678118655 ]
+                        [                                      ]]
+                        [ - 0.70710678118655  0.70710678118655 ]
+(%i7) eigens_by_jacobi (M, bigfloatfield);
+The largest percent change was 1.454972243679028b-1
+The largest percent change was 0.0b0
+number of sweeps: 2
+number of rotations: 1
+(%o7) [[1.732050807568877b0, 2.23606797749979b0], 
+                [  7.071067811865475b-1   7.071067811865475b-1 ]
+                [                                              ]]
+                [ - 7.071067811865475b-1  7.071067811865475b-1 ]
+@end example
+
+@end deffn
+
+
+
 
 @deffn {Funci@'on} get_lu_factors (@var{x}) 
 

@@ -1,3 +1,4 @@
+@c version 1.4
 @menu
 * Introducci@'on a stats::
 * Definiciones para inference_result::
@@ -1182,7 +1183,7 @@ V@'eanse los ejemplos m@'as abajo.
 @code{'adc}: coeficiente de determinaci@'on ajustado.
 
 @item
-@code{'a_estimation}: estimador del par@'ametro @var{b}.
+@code{'a_estimation}: estimador del par@'ametro @var{a}.
 
 @item
 @code{'a_conf_int}: intervalo de confianza del par@'ametro @var{a}.

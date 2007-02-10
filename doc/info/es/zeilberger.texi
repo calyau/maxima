@@ -1,4 +1,4 @@
-@c english version 1.2
+@c english version 1.5
 @menu
 * Introducci@'on a zeilberger::
 * Definiciones para zeilberger::

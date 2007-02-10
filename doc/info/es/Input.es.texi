@@ -1,4 +1,4 @@
-@c english version 1.50
+@c english version 1.52
 @menu
 * Introducci@'on a  Entrada y Salida::
 * Comentarios::
@@ -1215,6 +1215,8 @@ V@'ease tambi@'en @code{lmxchar}.
 @deffnx {Funci@'on} save (@var{filename}, [@var{m}, @var{n}])
 @deffnx {Funci@'on} save (@var{filename}, @var{name_1}=@var{expr_1}, ...)
 @deffnx {Funci@'on} save (@var{filename}, all)
+@deffnx {Funci@'on} save (@var{filename}, @var{name_1}=@var{expr_1}, @var{name_2}=@var{expr_2}, ...)
+
 Alamacena los valores actuales de @var{name_1}, @var{name_2}, @var{name_3}, ..., en el archivo @var{filename}.
 Los argumentos son nombres de variables, funciones u otros objetos.
 Si un nombre no tiene un valor o una funci@'on asociado a @'el, entonces se ignora.
@@ -1404,32 +1406,145 @@ $$-\cos x$$
 @deffnx {Funci@'on} texput (@var{a}, [@var{s_1}, @var{s_2}], matchfix)
 @deffnx {Funci@'on} texput (@var{a}, [@var{s_1}, @var{s_2}, @var{s_3}], matchfix)
 
-Establece el formato en TeX del @'atomo @var{a}, el cual puede ser un s@'{@dotless{i}}mbolo o el nombre de un operador.
+Establece el formato en TeX del @'atomo @var{a}, el cual puede ser un
+s@'{@dotless{i}}mbolo o el nombre de un operador.
 
-La instrucci@'on @code{texput (@var{a}, @var{s})} hace que la funci@'on @code{tex} introduzca @var{s} en la salida TeX en el lugar de @var{a}.
+La instrucci@'on @code{texput (@var{a}, @var{s})} hace que la funci@'on
+@code{tex} introduzca @var{s} en la salida TeX en el lugar de @var{a}.
 
-La instrucci@'on @code{texput (@var{a}, @var{s}, @var{operator_type})}, en la que @var{operator_type} es @code{prefix}, @code{infix} o @code{postfix}, hace que la funci@'on @code{tex} introduzca @var{s} en la salida TeX en el lugar de @var{a}, coloc@'andolo en el lugar correcto.
+La instrucci@'on @code{texput (@var{a}, @var{s}, @var{operator_type})},
+en la que @var{operator_type} es @code{prefix}, @code{infix} o
+@code{postfix}, @code{nary} o @code{nofix},hace que la funci@'on
+@code{tex} introduzca @var{s} en la salida TeX en el lugar de @var{a},
+coloc@'andolo en el lugar correcto.
 
-La instrucci@'on @code{texput (@var{a}, [@var{s_1}, @var{s_2}], matchfix)} hace que la funci@'on @code{tex} introduzca @var{s_1} y @var{s_2} en la salida TeX a los lados de los argumentos de @var{a}. Si son m@'as de uno, los argumentos se separan por comas.
+La instrucci@'on @code{texput (@var{a}, [@var{s_1}, @var{s_2}], matchfix)}
+hace que la funci@'on @code{tex} introduzca @var{s_1} y @var{s_2} en la
+salida TeX a los lados de los argumentos de @var{a}. Si son m@'as de uno,
+los argumentos se separan por comas.
 
-La instrucci@'on @code{texput (@var{a}, [@var{s_1}, @var{s_2}, @var{s_3}], matchfix)} hace que la funci@'on @code{tex} introduzca @var{s_1} y @var{s_2} en la salida TeX a los lados de los argumentos de @var{a}, con @var{s_3} separando los argumentos.
+La instrucci@'on @code{texput (@var{a}, [@var{s_1}, @var{s_2}, @var{s_3}],
+matchfix)} hace que la funci@'on @code{tex} introduzca @var{s_1} y
+@var{s_2} en la salida TeX a los lados de los argumentos de @var{a},
+con @var{s_3} separando los argumentos.
 
 Ejemplos:
 
+Asigna c@'odigo TeX para una variable.
 @c ===beg===
 @c texput (me,"\\mu_e");
 @c tex (me);
+@c ===end===
+
+@example
+(%i1) texput (me,"\\mu_e");
+(%o1)                         \mu_e
+(%i2) tex (me);
+$$\mu_e$$
+(%o2)                         false
+@end example
+
+Asigna c@'odigo TeX para una funci@'on ordinaria (no para un operador).
+@c ===beg===
 @c texput (lcm, "\\mathrm{lcm}");
 @c tex (lcm (a, b));
+@c ===end===
+
+@example
+(%i1) texput (lcm, "\\mathrm@{lcm@}");
+(%o1)                     \mathrm@{lcm@}
+(%i2) tex (lcm (a, b));
+$$\mathrm@{lcm@}\left(a , b\right)$$
+(%o2)                         false
+@end example
+
+Asigna c@'odigo TeX para un operador prefijo.
+@c ===beg===
 @c prefix ("grad");
 @c texput ("grad", " \\nabla ", prefix);
 @c tex (grad f);
+@c ===end===
+
+@example
+(%i1) prefix ("grad");
+(%o1)                         grad
+(%i2) texput ("grad", " \\nabla ", prefix);
+(%o2)                        \nabla 
+(%i3) tex (grad f);
+$$ \nabla f$$
+(%o3)                         false
+@end example
+
+Asigna c@'odigo TeX para un operador infijo.
+@c ===beg===
 @c infix ("~");
 @c texput ("~", " \\times ", infix);
 @c tex (a ~ b);
+@c ===end===
+
+@example
+(%i1) infix ("~");
+(%o1)                           ~
+(%i2) texput ("~", " \\times ", infix);
+(%o2)                        \times 
+(%i3) tex (a ~ b);
+$$a \times b$$
+(%o3)                         false
+@end example
+
+Asigna c@'odigo TeX para un operador postfijo..
+@c ===beg===
 @c postfix ("@");
 @c texput ("@", "!!", postfix);
 @c tex (x @);
+@c ===end===
+
+@example
+(%i1) postfix ("@@");
+(%o1)                           @@
+(%i2) texput ("@@", "!!", postfix);
+(%o2)                          !!
+(%i3) tex (x @@);
+$$x!!$$
+(%o3)                         false
+@end example
+
+Asigna c@'odigo TeX para un operador n-ario.
+@c ===beg===
+@c nary ("@@");
+@c texput ("@@", " \\circ ", nary);
+@c tex (a @@ b @@ c @@ d);
+@c ===end===
+
+@example
+(%i1) nary ("@@@@");
+(%o1)                          @@@@
+(%i2) texput ("@@@@", " \\circ ", nary);
+(%o2)                         \circ 
+(%i3) tex (a @@@@ b @@@@ c @@@@ d);
+$$a \circ b \circ c \circ d$$
+(%o3)                         false
+@end example
+
+Asigna c@'odigo TeX para un operador "no-fijo".
+@c ===beg===
+@c nofix ("foo");
+@c texput ("foo", "\\mathsc{foo}", nofix);
+@c tex (foo);
+@c ===end===
+
+@example
+(%i1) nofix ("foo");
+(%o1)                          foo
+(%i2) texput ("foo", "\\mathsc@{foo@}", nofix);
+(%o2)                     \mathsc@{foo@}
+(%i3) tex (foo);
+$$\mathsc@{foo@}$$
+(%o3)                         false
+@end example
+
+Asigna c@'odigo TeX para un operador "bi-fijo" (matchfix).
+@c ===beg===
 @c matchfix ("<<", ">>");
 @c texput ("<<", [" \\langle ", " \\rangle "], matchfix);
 @c tex (<<a>>);
@@ -1438,56 +1553,26 @@ Ejemplos:
 @c tex (<<a>>);
 @c tex (<<a, b>>);
 @c ===end===
+
 @example
-(%i1) texput (me,"\\mu_e");
-(%o1)                         \mu_e
-(%i2) tex (me);
-$$\mu_e$$
-(%o2)                         false
-(%i3) texput (lcm, "\\mathrm@{lcm@}");
-(%o3)                     \mathrm@{lcm@}
-(%i4) tex (lcm (a, b));
-$$\mathrm@{lcm@}\left(a , b\right)$$
-(%o4)                         false
-(%i5) prefix ("grad");
-(%o5)                         grad
-(%i6) texput ("grad", " \\nabla ", prefix);
-(%o6)                          180
-(%i7) tex (grad f);
-$$ \nabla f$$
-(%o7)                         false
-(%i8) infix ("~");
-(%o8)                           ~
-(%i9) texput ("~", " \\times ", infix);
-(%o9)                          180
-(%i10) tex (a ~ b);
-$$a \times b$$
-(%o10)                        false
-(%i11) postfix ("@@");
-(%o11)                          @@
-(%i12) texput ("@@", "!!", postfix);
-(%o12)                         160
-(%i13) tex (x @@);
-$$x!!$$
-(%o13)                        false
-(%i14) matchfix ("<<", ">>");
-(%o14)                         <<
-(%i15) texput ("<<", [" \\langle ", " \\rangle "], matchfix);
-(%o15)              \langle ( \rangle , false)
-(%i16) tex (<<a>>);
+(%i1) matchfix ("<<", ">>");
+(%o1)                          <<
+(%i2) texput ("<<", [" \\langle ", " \\rangle "], matchfix);
+(%o2)                [ \langle ,  \rangle ]
+(%i3) tex (<<a>>);
 $$ \langle a \rangle $$
-(%o16)                        false
-(%i17) tex (<<a, b>>);
+(%o3)                         false
+(%i4) tex (<<a, b>>);
 $$ \langle a , b \rangle $$
-(%o17)                        false
-(%i18) texput ("<<", [" \\langle ", " \\rangle ", " \\, | \\,"], matchfix);
-(%o18)            \langle ( \rangle ,  \, | \,)
-(%i19) tex (<<a>>);
+(%o4)                         false
+(%i5) texput ("<<", [" \\langle ", " \\rangle ", " \\, | \\,"], matchfix);
+(%o5)           [ \langle ,  \rangle ,  \, | \,]
+(%i6) tex (<<a>>);
 $$ \langle a \rangle $$
-(%o19)                        false
-(%i20) tex (<<a, b>>);
+(%o6)                         false
+(%i7) tex (<<a, b>>);
 $$ \langle a \, | \,b \rangle $$
-(%o20)                        false
+(%o7)                         false
 @end example
 
 @end deffn

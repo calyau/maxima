@@ -1,4 +1,4 @@
-@c version 1.22
+@c version 1.23
 @menu
 * Introducci@'on a los m@'etodos num@'ericos::   
 * Series de Fourier::                     
@@ -393,9 +393,10 @@ La llamada @code{absint (@var{f}, @var{x}, @var{a}, @var{b})} devuelve la integr
 @c NEEDS EXAMPLES
 @end deffn
 
-@c NEEDS EXPANSION. WHAT IS THE ARGUMENT p ??
+
 @deffn {Funci@'on} fourier (@var{f}, @var{x}, @var{p})
-Devuelve una lista con los coeficientes de Fourier de @code{@var{f}(@var{x})} definida en el intervalo @code{[-%pi, %pi]}.
+Devuelve una lista con los coeficientes de Fourier de 
+@code{@var{f}(@var{x})} definida en el intervalo @code{[-p, p]}.
 
 @c NEEDS EXAMPLES
 @end deffn

@@ -1,4 +1,4 @@
-@c english version 1.4
+@c english version 1.6
 @menu
 * Introducci@'on a plotdf::
 * Definiciones para plotdf::
