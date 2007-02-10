@@ -10,7 +10,6 @@ Atensor.texi \
 augmented_lagrangian.texi \
 bode.texi \
 Bugs.texi \
-cholesky.texi \
 Command.texi \
 Constants.texi \
 Contexts.texi \

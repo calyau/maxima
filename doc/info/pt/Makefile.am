@@ -10,7 +10,6 @@ maxima_TEXINFOS = \
 ../pt_BR/augmented_lagrangian.texi \
 ../pt_BR/bode.texi \
 ../pt_BR/Bugs.texi \
-../pt_BR/cholesky.texi \
 Command.texi \
 ../pt_BR/Constants.texi \
 ../pt_BR/Contexts.texi \

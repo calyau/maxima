@@ -114,7 +114,6 @@ contrib/augmented_lagrangian.mac\
 contrib/bode.mac\
 contrib/boolsimp/boolsimp.lisp\
 contrib/boolsimp/rtest_boolsimp.mac\
-contrib/cholesky.mac\
 contrib/defstruct.lisp\
 contrib/descriptive/biomed.data\
 contrib/descriptive/descriptive.mac\

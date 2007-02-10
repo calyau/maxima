@@ -16,7 +16,7 @@ Debugging.es.texi        Integration.es.texi   Operators.es.texi      Trigonomet
 Differential.es.texi     Introduction.es.texi  Plotting.es.texi  \
 Differentiation.es.texi  Itensor.es.texi       Polynomials.es.texi \
 Elliptic.es.texi         Limits.es.texi        Program.es.texi \
-bode.texi           augmented_lagrangian.texi      cholesky.texi       descriptive.texi \
+bode.texi           augmented_lagrangian.texi      descriptive.texi \
 diag.texi           distrib.texi                   eval_string.texi    f90.texi \
 ggf.texi            impdiff.texi                   interpol.texi       lindstedt.texi \
 linearalgebra.texi  lsquares.texi                  makeOrders.texi     mnewton.texi \
