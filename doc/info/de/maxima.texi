@@ -140,7 +140,6 @@ Zus@"atzliche Pakete
 
 @c * augmented_lagrangian::        augmented_lagrangian package.
 @c * bode::                        Bode gain and phase plots.
-@c * cholesky::                    Cholesky decomposition.
 @c * descriptive::                 Descriptive statistics.
 @c * diag::                        Jordan matrices.
 @c * distrib::                     Probability distributions.
@@ -397,10 +396,6 @@ augmented_lagrangian
 bode
 
 @c * Definitions for bode::
-
-cholesky
-
-@c * Definitions for cholesky::
 
 descriptive
 
@@ -704,15 +699,11 @@ zeilberger
 @c @chapter augmented_lagrangian
 @c @include augmented_lagrangian.texi
 
-@c @node bode, cholesky, augmented_lagrangian, Top
+@c @node bode, descriptive, augmented_lagrangian, Top
 @c @chapter bode
 @c @include bode.texi
 
-@c @node cholesky, descriptive, bode, Top
-@c @chapter cholesky
-@c @include cholesky.texi
-
-@c @node descriptive, diag, cholesky, Top
+@c @node descriptive, diag, bode, Top
 @c @chapter descriptive
 @c @include descriptive.texi
 

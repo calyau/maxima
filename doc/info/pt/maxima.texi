@@ -160,7 +160,6 @@ Pacotes Adicionais
 
 * augmented_lagrangian::        Pacote augmented_lagrangian.
 * bode::                        Gr@'aficos de ganho e fase de Bode.
-* cholesky::                    Decomposi@value{cedilha}@~ao de Cholesky.
 * descriptive::                 Estat@'{@dotless{i}}stica descritiva.
 * diag::                        Matrizes de Jordan.
 * distrib::                     Distribui@value{cedilha}@~oes de probabilidade.
@@ -421,10 +420,6 @@ augmented_lagrangian
 bode
 
 * Defini@value{cedilha}@~oes para bode::
-
-cholesky
-
-* Defini@value{cedilha}@~oes para cholesky::
 
 descriptive
 
@@ -748,15 +743,11 @@ zeilberger
 @chapter augmented_lagrangian
 @include ../pt_BR/augmented_lagrangian.texi
 
-@node bode, cholesky, augmented_lagrangian, Top
+@node bode, descriptive, augmented_lagrangian, Top
 @chapter bode
 @include ../pt_BR/bode.texi
 
-@node cholesky, descriptive, bode, Top
-@chapter cholesky
-@include ../pt_BR/cholesky.texi
-
-@node descriptive, diag, cholesky, Top
+@node descriptive, diag, bode, Top
 @chapter descriptive
 @include descriptive.texi
 
