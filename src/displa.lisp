@@ -1094,12 +1094,14 @@
 
 (displa-def mlable dim-mlabel 0 0)
 
+(defvar *display-labels-p* t)
+
 (defun dim-mlabel (form result)
   (prog (dummy (w 0) (h 0) (d 0)) (declare (fixnum w h d))
 	(cond ((eq nil (cadr form)) (setq w 0 h 0 d 0))
-	      (mratp (setq result (append mratp (dimension-paren (cadr form) result))
+	      (mratp (setq result (append mratp (if *display-labels-p* (dimension-paren (cadr form) result)))
 			   w (f+ 4 width) h height d depth))
-	      (t (setq result (cons #\space (dimension-paren (cadr form) result))
+	      (t (setq result (cons #\space (if *display-labels-p* (dimension-paren (cadr form) result)))
 		       w (f1+ width) h height d depth)))
 	(let ((level linel)) (checkbreak result w))
 	(setq dummy (list 0 0))

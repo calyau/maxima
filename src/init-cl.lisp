@@ -570,7 +570,11 @@
 					       *autoconf-version*)
 				       ($quit))
 			   :help-string 
-			   "Display the default installed version.")))
+			   "Display the default installed version.")
+       (make-cl-option :names '("--very-quiet")
+               :action #'(lambda () (declare (special *maxima-quiet* *display-labels-p*))
+                           (setq *maxima-quiet* t *display-labels-p* nil))
+               :help-string "Suppress expression labels and Maxima start-up message.")))
     (process-args (get-application-args) maxima-options))
   (values input-stream batch-flag))
 

@@ -22,12 +22,12 @@
 ;;;  its input.
 
 (defun linear-displa (x)
-  (declare (special chrps))
+  (declare (special chrps *display-labels-p*))
   (fresh-line *standard-output*)
   (cond ((not (atom x))
 	 (cond ((eq (caar x) 'mlable)
 		(setq chrps 0)
-		(cond ((cadr x)
+		(cond ((and (cadr x) *display-labels-p*)
 		       (princ "(")
 		       (setq chrps
 			     (+  3 (length (mgrind (cadr x) nil))))

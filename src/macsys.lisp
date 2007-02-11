@@ -26,8 +26,11 @@
   ;; and take a format string and format arguments.
   ;; Even easier and more general is for MREAD to take
   ;; a FUNARG as the prompt. -gjc
-  (format () "~A(~A~D) ~A" *prompt-prefix* 
-	  (print-invert-case (stripdollar $inchar)) $linenum *prompt-suffix*))
+  (declare (special *display-labels-p*))
+  (if *display-labels-p*
+    (format () "~A(~A~D) ~A" *prompt-prefix* 
+	  (print-invert-case (stripdollar $inchar)) $linenum *prompt-suffix*)
+    ""))
 
 (defun break-prompt ()
   (declare (special $prompt))
