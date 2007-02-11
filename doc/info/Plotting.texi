@@ -524,22 +524,6 @@ transformation as
 @example
 make_transform ([r, th, z], r*cos(th), r*sin(th), z)$
 @end example
-
-@item
-Option: @code{colour_z} is specific to the @code{ps} plot format.
-@example
-[colour_z, true]
-@end example
-The default value for @code{colour_z} is @code{false}.
-
-@item
-Option: @code{view_direction}
-@c REPHRASE
-Specific to the @code{ps} plot format.
-@example
-[view_direction, 1, 1, 1]
-@end example
-The default @code{view_direction} is [1, 1, 1].
 @end itemize
 
 There are several plot options specific to gnuplot.
@@ -814,20 +798,12 @@ This example shows a plot of the real part of @code{z^1/3}.
 
 @example
 (%i4) plot3d (r^.33*cos(th/3), [r, 0, 1], [th, 0, 6*%pi],
-      ['grid, 12, 80], ['transform_xy, polar_to_xy],
-      ['view_direction, 1, 1, 1.4], ['colour_z, true]);
+      ['grid, 12, 80], ['transform_xy, polar_to_xy]);
 @end example
 
 @ifnotinfo
 @image{figures/plotting21,8cm}
 @end ifnotinfo
-
-@noindent
-Here the @code{view_direction} option indicates the direction from which we
-take a projection.  We actually do this from infinitely far away,
-but parallel to the line from @code{view_direction} to the origin.  This
-is currently only used in @code{ps} plot_format, since the other viewers
-allow interactive rotating of the object.
 
 Other examples are the Klein bottle:
 
@@ -918,8 +894,7 @@ quote it to prevent evaluation.
 (%i1) set_plot_option ([grid, 30, 40]);
 (%o1) [[x, - 1.755559702014E+305, 1.755559702014E+305], 
 [y, - 1.755559702014E+305, 1.755559702014E+305], [t, - 3, 3], 
-[grid, 30, 40], [view_direction, 1, 1, 1], [colour_z, false], 
-[transform_xy, false], [run_viewer, true], 
+[grid, 30, 40], [transform_xy, false], [run_viewer, true], 
 [plot_format, gnuplot], [gnuplot_term, default], 
 [gnuplot_out_file, false], [nticks, 10], [adapt_depth, 10], 
 [gnuplot_pm3d, false], [gnuplot_preamble, ], 
@@ -935,7 +910,6 @@ eps enhanced color solid 24]]
 (%i3) set_plot_option (['x, -100, 100]);
 (%o3) [[x, - 100.0, 100.0], [y, - 1.755559702014E+305, 
 1.755559702014E+305], [t, - 3, 3], [grid, 30, 40], 
-[view_direction, 1, 1, 1], [colour_z, false], 
 [transform_xy, false], [run_viewer, true], 
 [plot_format, gnuplot], [gnuplot_term, default], 
 [gnuplot_out_file, false], [nticks, 10], [adapt_depth, 10], 

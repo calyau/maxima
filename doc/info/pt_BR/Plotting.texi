@@ -528,22 +528,6 @@ transforma@,{c}@~ao que
 @example
 make_transform ([r, th, z], r*cos(th), r*sin(th), z)$
 @end example
-
-@item
-Op@,{c}@~ao: @code{colour_z} @'e espec@'ifica para o formato @code{ps} de montagem de gr@'afico.
-@example
-[colour_z, true]
-@end example
-O valor padr@~ao para @code{colour_z} @'e @code{false}.
-
-@item
-Op@,{c}@~ao: @code{view_direction}
-@c REPHRASE
-Espec@'ifico para o formato @code{ps} de montagem de gr@'afico.
-@example
-[view_direction, 1, 1, 1]
-@end example
-O padr@~ao @code{view_direction} @'e [1, 1, 1].
 @end itemize
 
 Existem muitas op@,{c}@~oes de montagem de gr@'aficos espec@'ificas para gnuplot.
@@ -815,20 +799,12 @@ Esse exemplo mostra uma montagem de gr@'afico da parte real de @code{z^1/3}.
 
 @example
 (%i4) plot3d (r^.33*cos(th/3), [r, 0, 1], [th, 0, 6*%pi],
-      ['grid, 12, 80], ['transform_xy, polar_to_xy],
-      ['view_direction, 1, 1, 1.4], ['colour_z, true]);
+      ['grid, 12, 80], ['transform_xy, polar_to_xy]);
 @end example
 
 @ifnotinfo
 @image{../figures/plotting21,8cm}
 @end ifnotinfo
-
-@noindent
-Aqui a op@,{c}@~ao @code{view_direction} indica a dire@,{c}@~ao da qual n@'os
-pegamos a proje@,{c}@~ao.  N@'os atualmente fazemos isso de um ponto infinitamente distante,
-mas esse pont contido em uma reta paralela @`a linha de @code{view_direction} para a or@'igem.  A op@,{c}@~ao @code{view_direction} @'e
-correntemente usada somente em plot_format @code{ps}, uma vez que outros visualizadores
-permitem rota@,{c}@~ao interativa do objeto.
 
 Outro exemplo @'e uma superf@'icie de Klein:
 
@@ -917,8 +893,7 @@ colocar um ap@'ostrofo evita avalia@,{c}@~ao.
 (%i1) set_plot_option ([grid, 30, 40]);
 (%o1) [[x, - 1.755559702014E+305, 1.755559702014E+305], 
 [y, - 1.755559702014E+305, 1.755559702014E+305], [t, - 3, 3], 
-[grid, 30, 40], [view_direction, 1, 1, 1], [colour_z, false], 
-[transform_xy, false], [run_viewer, true], 
+[grid, 30, 40], [transform_xy, false], [run_viewer, true], 
 [plot_format, gnuplot], [gnuplot_term, default], 
 [gnuplot_out_file, false], [nticks, 10], [adapt_depth, 10], 
 [gnuplot_pm3d, false], [gnuplot_preamble, ], 
@@ -934,7 +909,6 @@ eps enhanced color solid 24]]
 (%i3) set_plot_option (['x, -100, 100]);
 (%o3) [[x, - 100.0, 100.0], [y, - 1.755559702014E+305, 
 1.755559702014E+305], [t, - 3, 3], [grid, 30, 40], 
-[view_direction, 1, 1, 1], [colour_z, false], 
 [transform_xy, false], [run_viewer, true], 
 [plot_format, gnuplot], [gnuplot_term, default], 
 [gnuplot_out_file, false], [nticks, 10], [adapt_depth, 10], 

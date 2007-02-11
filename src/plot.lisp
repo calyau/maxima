@@ -41,8 +41,6 @@
                          #.(/ most-positive-double-float 1024))
                         ((mlist) $t -3 3)
                         ((mlist) $grid 30 30)
-                        ((mlist) $view_direction 1 1 1)
-                        ((mlist) $colour_z nil)
                         ((mlist) $transform_xy nil)
                         ((mlist) $run_viewer t)
                         ((mlist) $plot_format
@@ -202,10 +200,9 @@
           (($x $y $t) (check-list-items name (cddr value) 'number 2)
            (check-range value)
            )
-          ($view_direction (check-list-items name (cddr value) 'number 3))
           ($grid  (check-list-items name (cddr value) 'fixnum 2))
           ($nticks  (check-list-items name (cddr value) 'fixnum 1))
-          (($colour_z $run_viewer $transform_xy $gnuplot_pm3d)
+          (($run_viewer $transform_xy $gnuplot_pm3d)
            (check-list-items name (cddr value) 't 1))
           ($plot_format (or (member (nth 2 value)
 				    (if (string= *autoconf-win32* "true")
@@ -1604,15 +1601,6 @@
 
      
 
-(defun average-slope (m1 m2)
-  (tan ($/ ($+ (cl:atan m1) (cl:atan m2)) 2.0)))
-
-(defun slope (x1 y1 x2 y2 &aux (del ($- x2 x1)))
-  (declare (double-float x1 y1 x2 y2 del))
-  (cond ((eql del 0.0)
-         #. (expt 10 30))
-        (t ($/ ($- y2 y1) del))))
-           
 (defun $view_zic ()
   (let ((izdir (maxima-getenv "IZICDIR")))
     (or (probe-file
@@ -1794,7 +1782,7 @@
                 &aux lvars trans *original-points*
                 ($plot_options $plot_options)
                 ($in_netmath $in_netmath)
-                colour-z grid
+                grid
                 plot-format gnuplot-term gnuplot-out-file file
                 orig-fun
                 const-expr
@@ -1823,7 +1811,6 @@
            (setq xrange ($cons (nth 1 vars) ($rest xrange)))
            (setq yrange ($cons (nth 2 vars) ($rest yrange))))))
   (setq grid ($get_plot_option '$grid))
-  (setq colour-z  ($get_plot_option '$colour_z 2))
   (setq lvars `((mlist),(nth 1 xrange) ,(nth 1 yrange)))
   (cond (($listp fun)
          (or (eql 3 ($length fun)) (merror "List ~M is not of length 3" fun))
@@ -2008,10 +1995,10 @@
 Examples
 
 /* plot of z^(1/3)...*/
-plot3d(r^.33*cos(th/3),[r,0,1],[th,0,6*%pi],['grid,12,80],['transform_xy,polar_to_xy],['view_direction,1,1,1.4],['colour_z,true],['plot_format,zic]) ;
+plot3d(r^.33*cos(th/3),[r,0,1],[th,0,6*%pi],['grid,12,80],['transform_xy,polar_to_xy],['plot_format,zic]) ;
 
 /* plot of z^(1/2)...*/
-plot3d(r^.5*cos(th/2),[r,0,1],[th,0,6*%pi],['grid,12,80],['transform_xy,polar_to_xy],['view_direction,1,1,1.4],['colour_z,true],['plot_format,zic]) ;
+plot3d(r^.5*cos(th/2),[r,0,1],[th,0,6*%pi],['grid,12,80],['transform_xy,polar_to_xy],['plot_format,zic]) ;
 
 /* moebius */
 plot3d([cos(x)*(3+y*cos(x/2)),sin(x)*(3+y*cos(x/2)),y*sin(x/2)],[x,-%pi,%pi],[y,-1,1],['grid,50,15]) ;
