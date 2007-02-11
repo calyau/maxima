@@ -276,8 +276,6 @@ contrib/mnewton.mac\
 contrib/nset/README\
 contrib/nset/announce-1.2.txt\
 contrib/nset/changes_1.0_to_1.2.txt\
-contrib/nset/maxima-init.lisp\
-contrib/nset/nset-init.lisp\
 contrib/numericalio/README\
 contrib/numericalio/array.data\
 contrib/numericalio/array.mac\
