@@ -117,7 +117,6 @@ Soporte para campos m@'as espec@'{@dotless{i}}ficos de las matem@'aticas
 * Ecuaciones::                         Definici@'on y resoluci@'on de ecuaciones.
 * Ecuaciones Diferenciales::           Definici@'on y resoluci@'on de ecuaciones diferenciales.
 * M@'etodos num@'ericos::              Integraci@'on num@'erica, transformadas de Fourier, etc.
-* Estad@'{@dotless{i}}stica::          Funciones estad@'isticas.
 * Arrays::                             Creaci@'on y manipulaci@'on de arrays.
 * Matrices y @'Algebra Lineal::        Operaciones matriciales.
 * Afines::                             
@@ -302,10 +301,6 @@ M@'etodos num@'ericos
 * Series de Fourier::
 * Definiciones para los m@'etodos num@'ericos::
 * Definiciones para las series de Fourier::
-
-Estad@'{@dotless{i}}stica
-
-* Definiciones para Estad@'{@dotless{i}}stica::
 
 Arrays
 
@@ -635,15 +630,11 @@ zeilberger
 @chapter Ecuaciones Diferenciales
 @include Differential.es.texi
 
-@node M@'etodos num@'ericos, Estad@'{@dotless{i}}stica, Ecuaciones Diferenciales, Top
+@node M@'etodos num@'ericos, Arrays, Ecuaciones Diferenciales, Top
 @chapter M@'etodos num@'ericos
 @include Numerical.es.texi
 
-@node Estad@'{@dotless{i}}stica, Arrays, M@'etodos num@'ericos, Top
-@chapter Estad@'{@dotless{i}}stica
-@include Statistics.es.texi
-
-@node Arrays, Matrices y @'Algebra Lineal, Estad@'{@dotless{i}}stica, Top
+@node Arrays, Matrices y @'Algebra Lineal, M@'etodos num@'ericos, Top
 @chapter Arrays
 @include Arrays.es.texi
 

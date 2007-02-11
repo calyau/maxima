@@ -640,99 +640,12 @@
 	   (t (return (list '($nzetai simp) $z))))))
 
 
-;; Initialize tables for Marsaglia's Ziggurat method of generating
-;; random numbers.  See http://www.jstatsoft.org for a reference.
-;;
-;; Let 0 = x[0] < x[1] < x[2] <...< x[n].  Select a set of rectangles
-;; with common area v such that
-;;
-;; x[k]*(f(x[k-1]) - f(x[k])) = v
-;;
-;; and
-;;
-;;              inf
-;; v = r*f(r) + int f(x) dx
-;;               r
-;;
-;; where r = x[n].
-;;
-(defun ziggurat-init (n r v scale f finv)
-  ;; n = one less than the number of elements in the tables
-  ;; r = x[n]
-  ;; v = common area term
-  ;; scale = 2^scale is the scaling to use to make integers
-  ;; f = density function
-  ;; finv = inverse density function
-  (let ((x (make-array (1+ n) :element-type 'double-float))
-	(fx (make-array (1+ n) :element-type 'double-float))
-	(k-table (make-array (1+ n) :element-type '(unsigned-byte 32)))
-	(w-table (make-array (1+ n) :element-type 'double-float)))
-    (setf (aref x n) r)
-    (loop for k from (1- n) downto 1 do
-	  (let ((prev (aref x (1+ k))))
-	    (setf (aref x k) (funcall finv (+ (/ v prev)
-					      (funcall f prev))))
-	    (setf (aref fx k) (funcall f (aref x k)))))
-
-    (setf (aref x 0) 0d0)
-    (setf (aref fx 0) (funcall f (aref x 0)))
-    (setf (aref fx n) (funcall f (aref x n)))
-
-    (loop for k from 1 to n do
-	  (setf (aref k-table k)
-		(floor (scale-float (/ (aref x (1- k)) (aref x k)) scale)))
-	  (setf (aref w-table k)
-		(* (aref x k) (expt .5d0 scale))))
-
-    (setf (aref k-table 0) (floor (scale-float (/ (* r (funcall f r)) v) scale)))
-    (setf (aref w-table 0) (* (/ v (funcall f r)) (expt 0.5d0 scale)))
-    (values k-table w-table fx)))
-
-;; Marsaglia's Ziggurat method for Gaussians
-(let ((r 3.442619855899d0))
-  (flet ((density (x)
-	   (exp (* -0.5d0 x x))))
-    (declare (inline density))
-    (multiple-value-bind (k-table w-table f-table)
-	(ziggurat-init 127 r 9.91256303526217d-3 31
-		       #'density
-		       #'(lambda (x) (sqrt (* -2 (log x)))))
-      (defun gen-gaussian-variate-ziggurat (state)
-	(loop
-	 ;; We really want a signed 32-bit random number. So make a
-	 ;; 32-bit unsigned number, take the low 31 bits as the
-	 ;; number, and use the most significant bit as the sign.
-	 ;; Doing this in other ways can cause consing.
-	 (let* ((ran (random (ash 1 32) state))
-		(sign (ldb (byte 1 31) ran))
-		(j (if (plusp sign)
-		       (- (ldb (byte 31 0) ran))
-		       (ldb (byte 31 0) ran)))
-		(i (logand j 127))
-		(x (* j (aref w-table i))))
-	   (when (< (abs j) (aref k-table i))
-	     (return x))
-	   (when (zerop i)
-	     (loop
-	      (let ((x (/ (- (log (random 1d0 state))) r))
-		    (y (- (log (random 1d0 state)))))
-		(when (> (+ y y) (* x x))
-		  (return-from gen-gaussian-variate-ziggurat
-		    (if (plusp j)
-			(- (+ r x))
-			(+ r x)))))))
-	   (when (< (* (random 1d0 state) (- (aref f-table (1- i))
-					     (aref f-table i)))
-		    (- (density x) (aref f-table i)))
-	     (return x))))))))
-
-(defun $gauss ($mean $sd)
-  (cond ((and (numberp $mean) (numberp $sd))
-	 (+ (float $mean)
-	     (* (float $sd)
-		 (gen-gaussian-variate-ziggurat *random-state*))))
-	(t (list '($gauss simp) $mean $sd))))
-
+(defmspec $gauss (form)
+  (format t
+"NOTE: The gauss function is superseded by random_normal in the `distrib' package.
+Perhaps you meant to enter `~a'.~%"
+    (print-invert-case (implode (mstring `(($random_normal) ,@ (cdr form))))))
+  '$done)
 
 ;; I think this is the function E1(x).  At least some simple numerical
 ;; tests show that this expint matches the function de1 from SLATEC

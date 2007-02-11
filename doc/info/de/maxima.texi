@@ -112,7 +112,6 @@ Hilfen f@"ur spezielle Gebiete der Mathematik
 @c * Differential Equations::      Defining and solving differential equations.
 @c * Numerical::                   Numerical integration, Fourier
 @c                                 transforms, etc.
-@c * Statistics::                  Statistical functions.
 @c * Arrays::                      Creating and working with arrays.
 @c * Matrices and Linear Algebra:: Matrix operations.
 @c * Affine::                      
@@ -292,10 +291,6 @@ Numerical
 @c * Fourier packages::                     
 @c * Definitions for Numerical::   
 @c * Definitions for Fourier Series::
-
-Statistics
-
-@c * Definitions for Statistics::  
 
 Arrays
 
@@ -615,15 +610,11 @@ zeilberger
 
 @c @include NonCommutative.texi
 
-@c @node Numerical, Statistics, Differential Equations, Top
+@c @node Numerical, Arrays, Differential Equations, Top
 @c @chapter Numerical
 @c @include Numerical.texi
 
-@c @node Statistics, Arrays, Numerical, Top
-@c @chapter Statistics
-@c @include Statistics.texi
-
-@c @node Arrays, Matrices and Linear Algebra, Statistics, Top
+@c @node Arrays, Matrices and Linear Algebra, Numerical, Top
 @c @chapter Arrays
 @c @include Arrays.texi
 

@@ -70,7 +70,6 @@ simplifications.texi \
 Simplification.texi \
 solve_rec.texi \
 Special.texi \
-Statistics.texi \
 stats.texi \
 stirling.texi \
 stringproc.texi \

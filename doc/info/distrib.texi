@@ -463,9 +463,7 @@ Returns a @math{Normal(m,s)} random variate, with @math{s>0}. Calling @code{rand
 
 There are two algorithms implemented for this function, the one to be used can be selected giving a certain value to the global variable @code{random_normal_algorithm}, which defaults to @code{box_mueller}.
 
-There is also a built-in Maxima function for simulating random normal variates based on the so called Marsaglia's Ziggurat method.
-
-See also @code{random_normal_algorithm} and @code{gauss}. To make use of this function, write first @code{load(distrib)}.
+See also @code{random_normal_algorithm}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
 

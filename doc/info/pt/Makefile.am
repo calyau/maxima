@@ -70,7 +70,6 @@ Plotting.texi \
 ../pt_BR/Simplification.texi \
 ../pt_BR/solve_rec.texi \
 ../pt_BR/Special.texi \
-../pt_BR/Statistics.texi \
 ../pt_BR/stats.texi \
 ../pt_BR/stirling.texi \
 stringproc.texi \

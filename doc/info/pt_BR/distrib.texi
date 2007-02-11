@@ -521,11 +521,7 @@ a ser usado pode ser selecionado fornecendo um certo valor para a vari@'avel glo
 @code{random_normal_algorithm}, cujo valor padr@~ao @'e
 @code{box_mueller}.
 
-Existe tamb@'em uma fun@,{c}@~ao interna do Maxima para simula@,{c}@~ao de
-vari@'aveis estat@'isticas normais pseudo-aleat@'orias baseada no ent@~ao chamado
-m@'etodo de Marsaglia Ziggurat.
-
-Veja tamb@'em @code{random_normal_algorithm} e @code{gauss}. Para fazer uso
+Veja tamb@'em @code{random_normal_algorithm}. Para fazer uso
 dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 

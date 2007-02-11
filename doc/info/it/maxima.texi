@@ -81,7 +81,6 @@ Support for specific areas of mathematics
 * Differential Equations::      Defining and solving differential equations.
 * Numerical::                   Numerical integration, Fourier
                                 transforms, etc.
-* Statistics::                  Statistical functions.
 * Arrays::                      Creating and working with arrays.
 * Matrices and Linear Algebra:: Matrix operations.
 * Affine::                      
@@ -258,10 +257,6 @@ Numerical
 * Fourier packages::                     
 * Definitions for Numerical::   
 * Definitions for Fourier Series::
-
-Statistics
-
-* Definitions for Statistics::  
 
 Arrays
 
@@ -581,15 +576,11 @@ zeilberger
 
 @c @include NonCommutative.texi
 
-@node Numerical, Statistics, Differential Equations, Top
+@node Numerical, Arrays, Differential Equations, Top
 @chapter Numerical
 @include Numerical.texi
 
-@node Statistics, Arrays, Numerical, Top
-@chapter Statistics
-@include Statistics.texi
-
-@node Arrays, Matrices and Linear Algebra, Statistics, Top
+@node Arrays, Matrices and Linear Algebra, Numerical, Top
 @chapter Arrays
 @include Arrays.texi
 

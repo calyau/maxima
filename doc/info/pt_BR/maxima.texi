@@ -196,7 +196,6 @@ Suporte a @'areas espec@'ificas da matem@'atica
 * Equa@value{cedilha}@~oes Diferenciais::       Definindo e resolvendo equa@value{cedilha}@~oes diferenciais.
 * Num@'erico::                    Integra@value{cedilha}@~ao num@'erica, transforma@value{cedilha}@~oes
                                 de Fourier, etc.
-* Estat@'istica::                 Fun@value{cedilha}@~oes estat@'isticas.
 * Arrays ::                     Criando e trabalhando com arrays.
 * Matrizes e @'Algebra Linear::   Opera@value{cedilha}@~oes com Matrizes.
 * Fun@value{cedilha}@~oes Afins::                        
@@ -375,10 +374,6 @@ Num@'erico
 * Pacotes de Fourier::                     
 * Defini@value{cedilha}@~oes para Num@'erico::   
 * Defini@value{cedilha}@~oes para S@'eries de Fourier::
-
-Estatistica
-
-* Defini@value{cedilha}@~oes para Estat@'istica::  
 
 Arrays
 
@@ -717,15 +712,11 @@ zeilberger
 
 @c @include NonCommutative.texi
 
-@node Num@'erico, Estat@'istica, Equa@value{cedilha}@~oes Diferenciais, Top
+@node Num@'erico, Arrays, Equa@value{cedilha}@~oes Diferenciais, Top
 @chapter Num@'erico
 @include Numerical.texi
 
-@node Estat@'istica, Arrays, Num@'erico, Top
-@chapter Estat@'istica
-@include Statistics.texi
-
-@node Arrays, Matrizes e @'Algebra Linear, Estat@'istica, Top
+@node Arrays, Matrizes e @'Algebra Linear, Num@'erico, Top
 @chapter Arrays
 @include Arrays.texi
 

@@ -10,7 +10,7 @@ Atensor.es.texi          Floating.es.texi      Matrices.es.texi       Series.es.
 Bugs.es.texi             Function.es.texi                             Simplification.es.texi \
 Command.es.texi          Groups.es.texi        Miscellaneous.es.texi \
 Constants.es.texi        Help.es.texi          nset.es.texi           Special.es.texi \
-Contexts.es.texi         Indices.es.texi       Number.es.texi         Statistics.es.texi \
+Contexts.es.texi         Indices.es.texi       Number.es.texi         \
 Ctensor.es.texi          Input.es.texi         Numerical.es.texi      Symmetries.es.texi \
 Debugging.es.texi        Integration.es.texi   Operators.es.texi      Trigonometric.es.texi \
 Differential.es.texi     Introduction.es.texi  Plotting.es.texi  \

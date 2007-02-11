@@ -459,9 +459,7 @@ Devuelve un valor aleatorio  @i{Normal}@math{(m,s)}, con @math{s>0}. Llamando a 
 
 Hay dos algoritmos programados para esta funci@'on, el que se vaya a utilizar tendr@'a que ser seleccionado d@'andole un valor a la variable global @code{random_normal_algorithm}, cuyo valor por defecto es @code{box_mueller}.
 
-Tambi@'en existe una funci@'on en Maxima  para simular variables normales, la cual utiliza el llamado m@'etodo Ziggurat de  Marsaglia.
-
-V@'eanse tambi@'en @code{random_normal_algorithm} y @code{gauss}. Para hacer uso de esta funci@'on, ejec@'utese primero @code{load(distrib)}.
+V@'eanse tambi@'en @code{random_normal_algorithm}. Para hacer uso de esta funci@'on, ejec@'utese primero @code{load(distrib)}.
 @end deffn
 
 
