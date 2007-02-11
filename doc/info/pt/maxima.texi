@@ -248,7 +248,7 @@ Cria@value{cedilha}@~ao de Gr@'aficos
 
 Entrada e Sa@'{@dotless{i}}da
 
-* Introdu@value{cedilha}@~ao a Entrada e Sa@'{@dotless{i}}da::  
+* Coment@'arios::
 * Ficheiros::                       
 * Defini@value{cedilha}@~oes para Entrada e Sa@'{@dotless{i}}da::  
 

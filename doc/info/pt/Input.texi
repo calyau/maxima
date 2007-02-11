@@ -1,16 +1,12 @@
 @c Language: Portuguese
 @c Source: Input.texi (en) 1.52
 @menu
-* Introdu@value{cedilha}@~ao a Entrada e Sa@'{@dotless{i}}da::  
 * Coment@'arios::
 * Ficheiros::                       
 * Defini@value{cedilha}@~oes para Entrada e Sa@'{@dotless{i}}da::  
 @end menu
 
-@node Introdu@value{cedilha}@~ao a Entrada e Sa@'{@dotless{i}}da, Coment@'arios, Entrada e Sa@'{@dotless{i}}da, Entrada e Sa@'{@dotless{i}}da
-@section Introdu@value{cedilha}@~ao a Entrada e Sa@'{@dotless{i}}da
-
-@node Coment@'arios, Ficheiros, Introdu@value{cedilha}@~ao a Entrada e Sa@'{@dotless{i}}da, Entrada e Sa@'{@dotless{i}}da
+@node Coment@'arios, Ficheiros, Entrada e Sa@'{@dotless{i}}da, Entrada e Sa@'{@dotless{i}}da
 @section Coment@'arios
 
 Um coment@'ario na entrada do Maxima @'e qualquer texto entre @code{/*} e @code{*/}.

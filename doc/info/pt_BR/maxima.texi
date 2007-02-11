@@ -306,7 +306,7 @@ Montando Gr@'aficos
 
 Entrada e Sa@'ida
 
-* Introdu@value{cedilha}@~ao a Entrada e Sa@'ida::  
+* Coment@'arios::
 * Arquivos::                       
 * Defini@value{cedilha}@~oes para Entrada e Sa@'ida::  
 

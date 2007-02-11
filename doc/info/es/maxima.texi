@@ -231,7 +231,6 @@ Gr@'aficos
 
 Entrada y Salida
 
-* Introducci@'on a  Entrada y Salida::
 * Comentarios::
 * Archivos::
 * Definiciones para Entrada y Salida:: 

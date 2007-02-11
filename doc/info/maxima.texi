@@ -223,7 +223,6 @@ Plotting
 
 Input and Output
 
-* Introduction to Input and Output::  
 * Comments::
 * Files::                       
 * Definitions for Input and Output::  

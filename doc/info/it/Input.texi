@@ -1,14 +1,10 @@
 @menu
-* Introduction to Input and Output::  
 * Comments::
 * Files::                       
 * Definitions for Input and Output::  
 @end menu
 
-@node Introduction to Input and Output, Comments, Input and Output, Input and Output
-@section Introduction to Input and Output
-
-@node Comments, Files, Introduction to Input and Output, Input and Output
+@node Comments, Files, Input and Output, Input and Output
 @section Comments
 
 @node Files, Definitions for Input and Output, Comments, Input and Output
