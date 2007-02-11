@@ -1,4 +1,4 @@
-@c version 1.21
+@c version 1.22
 @menu
 * Introducci@'on a la Programaci@'on::  
 * Definiciones para la Programaci@'on::  
@@ -380,6 +380,13 @@ En este caso se obtiene la misma respuesta por cualquiera de los dos m@'etodos.
 Eval@'ua @var{expr} y devuelve el valor del @code{catch} m@'as reciente. La funci@'on @code{throw} se utiliza junto con @code{catch} como un mecanismo de retorno no local.
 
 @end deffn
+
+
+@deffn {Operador especial} while
+V@'ease @code{do}.
+
+@end deffn
+
 
 @deffn {Funci@'on} outermap (@var{f}, @var{a_1}, ..., @var{a_n})
 Aplica la funci@'on @var{f} a cada uno de los elementos del producto vectorial @var{a_1} por @var{a_2} ... por @var{a_n}.

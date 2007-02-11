@@ -1,4 +1,4 @@
-@c version 1.28
+@c version 1.30
 @menu
 * Introducci@'on a la Integraci@'on::
 * Definiciones para Integraci@'on::
@@ -10,7 +10,7 @@
 
 @section Introducci@'on a la Integraci@'on   
 
-Maxima tiene varias rutinas para calcular integrales. La funci@'on @code{integrate} hace uso de la mayor parte de ellas.  Tambi@'en est@'a el paquete @code{antid}, que opera con funciones no especificadas y sus derivadas. Para usos num@'ericos se dispone de la funci@'on @code{romberg}, y una bater@'{@dotless{i}}a de integradores adaptativos de Quadpack, como @code{quad_qag}, @code{quad_qags}, etc., que se describen en la secci@'on @code{QUADPACK}.
+Maxima tiene varias rutinas para calcular integrales. La funci@'on @code{integrate} hace uso de la mayor parte de ellas.  Tambi@'en est@'a el paquete @code{antid}, que opera con funciones no especificadas y sus derivadas. Para usos num@'ericos se dispone de la bater@'{@dotless{i}}a de integradores adaptativos de @code{QUADPACK}, como @code{quad_qag}, @code{quad_qags}, etc., que se describen en la secci@'on @code{QUADPACK}.
 Tambi@'en se trabajan funciones hipergeom@'etricas, v@'ease @code{specint} para m@'as detalles. En t@'erminos generales, Maxima s@'olo opera con funciones que son integrables en t@'erminos de funciones elementales, como las racionales, trigonom@'etricas, logar@'{@dotless{i}}tmicas, exponenciales, radicales, etc., y unas pocas extensiones de @'estas, como la funci@'on de error o los dilogaritmos. No opera con integrales en t@'erminos de funciones desconocidas, como  @code{g(x)} o @code{h(x)}.
 
 @c end concepts Integration
@@ -415,111 +415,6 @@ en la respuesta si @'esta no estaba presente previamente en el integrando.
 
 @end deffn
 
-@c NEEDS WORK BUT DON'T BOTHER TO CLEAN IT UP:
-@c THE GAUSS-KRONROD FUNCTIONS (QUADPACK) MAKE THIS OBSOLETE
-@deffn {Funci@'on} romberg (@var{expr}, @var{x}, @var{a}, @var{b})
-@deffnx {Funci@'on} romberg (@var{expr}, @var{a}, @var{b})
-Integraci@'on de Romberg. Hay dos formas de utilizar esta funci@'on. La primera es ineficiente:
-@code{romberg (<integrando>, <variable de integraci@'on>, <l@'{@dotless{i}}mite inferior>, <l@'{@dotless{i}}mite superior>)}.
-
-Ejemplos:
-
-@example
-(%i1) showtime: true$
-(%i2) romberg (sin(y), y, 0, %pi);
-Evaluation took 0.00 seconds (0.01 elapsed) using 25.293 KB.
-(%o2)                   2.000000016288042
-(%i3) 1/((x-1)^2+1/100) + 1/((x-2)^2+1/1000) + 1/((x-3)^2+1/200)$
-(%i4) f(x) := ''%$
-(%i5) rombergtol: 1e-6$
-(%i6) rombergit: 15$
-(%i7) romberg (f(x), x, -5, 5);
-Evaluation took 11.97 seconds (12.21 elapsed) using 12.423 MB.
-(%o7)                   173.6730736617464
-@c INCLUDE THIS COMPARISON TO EXACT RESULT ??? YIELDS A LOT OF "RAT replaced" MESSAGES !!!
-@c integrate (f(x), x, -5, 5) - %, numer;
-@end example
-
-La segunda forma es m@'as eficiente y se utiliza como sigue:
-
-@example
-romberg (<function name>, <lower limit>, <upper limit>);
-@end example
-
-Continuando con el ejemplo anterior, se tiene:
-@example
-(%i8) f(x) := (mode_declare ([function(f), x], float), ''(%th(5)))$
-(%i9) translate(f);
-(%o9)                          [f]
-(%i10) romberg (f, -5, 5);
-Evaluation took 3.51 seconds (3.86 elapsed) using 6.641 MB.
-(%o10)                  173.6730736617464
-@end example
-
-El primer argumento debe ser una funci@'on traducida o compilada.  (Si est@'a compilada, debe declararse para que devuelvaun @code{flonum}.) Si el primer argumento no est@'a ya traducido,  @code{romberg} no intentar@'a traducirlo y emitir@'a un mensaje de error.
-
-La precisi@'on de la integraci@'on se controla con las variables globales
-@code{rombergtol} (valor por defecto 1.E-4) y @code{rombergit} (valor por defecto 11).
-La funci@'on @code{romberg} devolver@'a un resultado si la diferencia relativa de aproximaciones sucesivas es menor que @code{rombergtol}.  Intentar@'a disminuir el tama@~no de los pasos @code{rombergit} veces antes de abandonar.  El n@'umero de iteraciones y evaluaciones de las funciones que har@'a @code{romberg} se controla con @code{rombergabs} y @code{rombergmin}.
-
-La funci@'on @code{romberg} puede llamarse recursivamente, de manera que puede calcular integrales dobles y triples.
-
-Ejemplo:
-@example
-(%i1) assume (x > 0)$
-(%i2) integrate (integrate (x*y/(x+y), y, 0, x/2), x, 1, 3)$
-(%i3) radcan (%);
-                    26 log(3) - 26 log(2) - 13
-(%o3)             - --------------------------
-                                3
-(%i4) %,numer;
-(%o4)                   .8193023963959073
-(%i5) define_variable (x, 0.0, float, "Global variable in function F")$
-(%i6) f(y) := (mode_declare (y, float), x*y/(x+y))$
-(%i7) g(x) := romberg ('f, 0, x/2)$  
-(%i8) romberg (g, 1, 3);
-(%o8)                   .8193022864324522
-@end example
-
-@c FALTAN PARRAFOS POR TRADUCIR
-
-@end deffn
-
-@defvr {Variable optativa} rombergabs
-Valor por defecto: 0.0
-
-Supuesto que las sucesivas estimaciones producidas por @code{romberg} son @code{y[0]}, @code{y[1]}, @code{y[2]}, etc., entonces @code{romberg} devolver@'a un resultado despu@'es de @code{n} iteraciones, si
-
-@example
- (abs(y[n]-y[n-1]) <= rombergabs or
- abs(y[n]-y[n-1])/(if y[n]=0.0 then 1.0 else y[n]) <= rombergtol)
-@end example
-
-vale @code{true}.  (La condici@'on sobre el n@'umero de iteraciones dado por @code{rombergmin} tambi@'en debe verificarse.)
-As@'{@dotless{i}}, si @code{rombergabs} es 0.0 (el valor por defecto) se realiza el test relativo. @c FALTA COMPLETAR PARRAFOS
-
-@end defvr
-
-@defvr {Variable optativa} rombergit
-Valor por defecto: 11
-
-La precisi@'on de la funci@'on de integraci@'on @code{romberg} est@'a controlada por las variables globales @code{rombergtol} y @code{rombergit}. La funci@'on  @code{romberg} devolver@'a un resultado si la diferencia relativa de aproximaciones sucesivas es menor que @code{rombergtol}. Intentar@'a disminuir el tama@~no de los pasos @code{rombergit} veces antes de abandonar.
-
-@end defvr
-
-@defvr {Variable optativa} rombergmin
-Valor por defecto: 0
-
-La variable @code{rombergmin} controla el n@'umero m@'{@dotless{i}}nimo de evaluaciones de funci@'on que realizar@'a la funci@'on @code{romberg}, la cual calcular@'a su primer argumento al menos @code{2^(rombergmin+2)+1} veces. 
-
-@end defvr
-
-@defvr {Variable optativa} rombergtol
-Valor por defecto: 1e-4
-
-La precisi@'on de la funci@'on de integraci@'on @code{romberg} est@'a controlada por las variables globales @code{rombergtol} y @code{rombergit}. La funci@'on  @code{romberg} devolver@'a un resultado si la diferencia relativa de aproximaciones sucesivas es menor que @code{rombergtol}. Intentar@'a disminuir el tama@~no de los pasos @code{rombergit} veces antes de abandonar.
-
-@end defvr
 
 @c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
 @deffn {Funci@'on} tldefint (@var{expr}, @var{x}, @var{a}, @var{b})
@@ -527,7 +422,7 @@ Equivale a @code{ldefint} cuando @code{tlimswitch} vale @code{true}.
 
 @end deffn
 
-@footnotestyle end
+
 
 @node Introducci@'on a QUADPACK, Definiciones para QUADPACK, Definiciones para Integraci@'on, Integraci@'on
 @section Introducci@'on a QUADPACK

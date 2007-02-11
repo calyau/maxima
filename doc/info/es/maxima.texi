@@ -1,6 +1,6 @@
 \input texinfo
 @c -*-texinfo-*-
-@c english version 1.35
+@c english version 1.43
 
 @c 2000-04-17 Jim Van Zandt <jrv@vanzandt.mv.com> Added header,
 @c info directory entry, reference to introduction chapter, and menu
@@ -264,7 +264,6 @@ Trigonometr@'{@dotless{i}}a
 Funciones Especiales
 
 * Introducci@'on a las Funciones Especiales::
-* specint::
 * Definiciones para las Funciones Especiales::
 
 Funciones el@'{@dotless{i}}pticas

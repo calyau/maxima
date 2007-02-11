@@ -1,4 +1,4 @@
-@c version 1.4
+@c version 1.9
 @menu
 * Introducci@'on a polinomios ortogonales::
 * Definiciones para polinomios ortogonales::

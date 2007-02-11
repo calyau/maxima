@@ -1,12 +1,11 @@
-@c version 1.16
+@c version 1.17
 @menu
 * Definiciones para Simplificaci@'on::  
 @end menu
 
 @node Definiciones para Simplificaci@'on,  , Simplificaci@'on, Simplificaci@'on
 @section Definiciones para Simplificaci@'on
-@menu
-@end menu
+
 
 @defvr {Variable del sistema} askexp
 Cuando se invoca a @code{asksign}, la expresi@'on que se va a analizar es precisamente @code{askexp}.

@@ -1,35 +1,11 @@
-@c version 1.26
+@c version 1.27
 @menu
-* Introducci@'on a las Funciones Especiales::  
-* specint::                     
-* Definiciones para las Funciones Especiales::  
+* Introducci@'on a las Funciones Especiales::
+* Definiciones para las Funciones Especiales::
 @end menu
 
-@node Introducci@'on a las Funciones Especiales, specint, Funciones Especiales, Funciones Especiales
+@node Introducci@'on a las Funciones Especiales, Definiciones para las Funciones Especiales, Funciones Especiales, Funciones Especiales
 @section Introducci@'on a las Funciones Especiales
-
-
-@node specint, Definiciones para las Funciones Especiales, Introducci@'on a las Funciones Especiales, Funciones Especiales
-@section specint
-
-
-El paquete @code{hypgeo} permite calcular transformadas de Laplace de funciones especiales, mientras que @code{hyp} es otro paquete destinado al c@'alculo de funciones hipergeom@'etricas generalizadas.
-
-Por otro lado, @code{specint} tiene por objeto calcular la integral definida (en el intervalo que va desde cero hasta infinito) de expresiones que contengan funciones especiales. Cuando el integrando contenga el factor @code{exp (-s t)}, 
-el resultado no es otro que la transformada de Laplace.
-
-La sintaxis es la siguiente:
-
-@example
-specint (exp (-s*@var{t}) * @var{expr}, @var{t});
-@end example
-
-donde @var{t} es la variable de integraci@'on y @var{expr} es una expresi@'on que contiene funciones especiales.
-
-Si @code{specint} no puede calcular la integral, la respuesta que se obtiene puede contener s@'{@dotless{i}}mbolos de Lisp, entre los que se incluyen 
-@code{other-defint-to-follow-negtest},
-@code{other-lt-exponential-to-follow},
-@code{product-of-y-with-nofract-indices}, etc.; este es un fallo conocido del programa. 
 
 A continuaci@'on se especifican las notaciones correspondientes a las funciones especiales:
 
@@ -57,50 +33,12 @@ kelliptic (z)             Integral el@'{@dotless{i}}ptica completa de primera es
 %d [n] (z)                Funci@'on cil@'{@dotless{i}}ndrica parab@'olica
 @end example
 
-Con la instrucci@'on @code{demo ("hypgeo")} se podr@'an ver algunos ejemplos de transformadas de Laplace calculadas por @code{specint}.
 
-Este paquete a@'un est@'a en desarrollo, por lo que algunos nombres de funciones pueden sufrir cambios.
 
-@node Definiciones para las Funciones Especiales,  , specint, Funciones Especiales
+
+@node Definiciones para las Funciones Especiales,  , Introducci@'on a las Funciones Especiales, Funciones Especiales
 @section Definiciones para las Funciones Especiales
 
-@c airy IS IN THE bessel PACKAGE. ai, bi, ETC ARE IN THE airy PACKAGE.
-@deffn {Funci@'on} airy (@var{x})
-Funci@'on Ai de Airy.
-Si el argumento @var{x} es un n@'umero, se obtiene el valor num@'erico de @code{airy (@var{x})}.
-En caso contrario, se devuelve la expresi@'on no evaluada @code{airy (@var{x})}.
-@c THE RETURN VALUE IS '(($AIRY SIMP) $X) -- NOT A NOUN, RIGHT? SINCE %AIRY WOULD BE A NOUN
-
-La ecuaci@'on de Airy @code{diff (y(x), x, 2) - x y(x) = 0} tiene dos soluciones linealmente independientes, llamadas @code{ai} y @code{bi}. Esta ecuaci@'on es muy utilizada para obtener aproximaciones a problemas complejos en muchos @'ambitos de la f@'{@dotless{i}}sica matem@'atica.
-
-La instrucci@'on @code{load ("airy")} carga las funciones @code{ai}, @code{bi}, @code{dai} y @code{dbi}.
-
-El paquete @code{airy} contiene algoritmos para calcular @code{ai} y @code{bi}, as@'{@dotless{i}} como sus derivadas @code{dai} y @code{dbi}. El resultado es un n@'umero decimal en coma flotante si el argumento es a su vez un n@'umero, en caso contrario ser@'a una expresi@'on no evaluada.
-
-Se producir@'a un error si el argumento es lo suficientemente grande como para que los exponenciales causen un desbordamiento (@i{overflow}), o una p@'erdida de precisi@'on en el @code{sin} o en el @code{cos}. Con esto, el rango de validez es aproximadamente entre 
--2800 y 10^38 para @code{ai} y @code{dai}, y entre -2800 y 25 para @code{bi} y @code{dbi}.
-
-Maxima reconoce las siguientes derivadas:
-@itemize @bullet
-@item
-@code{diff (ai(x), x)} devuelve @code{dai(x)},
-@item
-@code{diff (dai(x), x)} devuelve @code{x ai(x)},
-@item
-@code{diff (bi(x), x)} devuelve @code{dbi(x)},
-@item
-@code{diff (dbi(x), x)} devuelve @code{x bi(x)}.
-@end itemize
-
-Los valores de las funciones se calculan a partir del desarrollo convergente de Taylor para @code{abs(@var{x}) < 3},
-y de las expansiones asint@'oticas para @code{@var{x} < -3} o @code{@var{x} > 3}, seg@'un sea necesario.
-Con esto se consiguen discrepancias num@'ericas despreciables en @code{@var{x} = 3} y @code{@var{x} = -3}.
-Para detalles, v@'ease Abramowitz y Stegun,
-@i{Handbook of Mathematical Functions}, Secci@'on 10.4 y Tabla 10.11.
-
-La llamada @code{ev (taylor (ai(x), x, 0, 9), infeval)} devuelve el desarrollo de Taylor con n@'umeros decimales de la funci@'on @code{ai}. Se puede escribir una expresi@'on similar para @code{bi}.
-
-@end deffn
 
 @deffn {Funci@'on} airy_ai (@var{x})
 Funci@'on Ai de Airy, tal como la definen Abramowitz y Stegun,

@@ -1,15 +1,11 @@
-@c english version 1.52
+@c english version 1.53
 @menu
-* Introducci@'on a  Entrada y Salida::
 * Comentarios::
 * Archivos::
 * Definiciones para Entrada y Salida::
 @end menu
 
-@node Introducci@'on a Entrada y Salida, Comentarios, Entrada y Salida, Entrada y Salida
-@section Introducci@'on a Entrada y Salida
-
-@node Comentarios, Archivos, Introducci@'on a Entrada y Salida, Entrada y Salida
+@node Comentarios, Archivos, Entrada y Salida, Entrada y Salida
 @section Comentarios
 
 En Maxima, un comentario es cualquier texto encerrado entre las

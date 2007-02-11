@@ -1,4 +1,4 @@
-@c english version 1.15
+@c english version 1.16
 @menu
 * Introducci@'on a las Series::      
 * Definiciones para las Series::      
@@ -349,9 +349,7 @@ Ejemplos:
 @deffnx {Funci@'on} taylor (@var{expr}, [@var{x_1}, @var{x_2}, ...], @var{a}, @var{n})
 @deffnx {Funci@'on} taylor (@var{expr}, [@var{x}, @var{a}, @var{n}, 'asymp])
 @deffnx {Funci@'on} taylor (@var{expr}, [@var{x_1}, @var{x_2}, ...], [@var{a_1}, @var{a_2}, ...], [@var{n_1}, @var{n_2}, ...])
-@c THIS NEXT ARGUMENT LIST TICKLES A BUG IN CL-INFO OR SOMETHING:
-@c APPARENTLY IF SOME ARGUMENT LIST IS LONGER THAN 1 LINE, REMAINDER OF THE DESCRIPTION IS LOST
-@c @deffnx taylor (@var{expr}, [@var{x_1}, @var{a_1}, @var{n_1}], [@var{x_2}, @var{a_2}, @var{n_2}], ...)
+@deffnx {Funci@'on} taylor (@var{expr}, [@var{x_1}, @var{a_1}, @var{n_1}], [@var{x_2}, @var{a_2}, @var{n_2}], ...)
 
 La llamada @code{taylor (@var{expr}, @var{x}, @var{a}, @var{n})} expande la expresi@'on @var{expr} en un desarrollo  de 
  Taylor o de  Laurent respecto de la variable @var{x} alrededor del punto @var{a}, con t@'erminos hasta @code{(@var{x} - @var{a})^@var{n}}.
