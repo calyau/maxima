@@ -11,9 +11,20 @@
 (in-package :maxima)
 
 (macsyma-module mformt)
+
 (load-macsyma-macros mforma)
 
-(def-mformat)
+(setf (get '|| 'mformat-ops) nil)
+(setf (get '|| 'mformat-state-vars) nil)
+
+(defmacro def-mformat-op (char &rest body)
+  `(+def-mformat-op ,'|| ,char ,@body))
+
+(defmacro def-mformat-var (var val init)
+  `(+def-mformat-var ,'|| ,var ,val ,init))
+
+(defmacro mformat-loop (&rest endcode)
+  `(+mformat-loop ,'|| ,@endcode))
 
 (def-mformat-var |:-FLAG| nil t)
 (def-mformat-var |@-FLAG| nil t)
@@ -26,9 +37,9 @@
 (def-mformat-var post-%-p nil nil)
 
 (defmacro push-text-temp ()
-  '(if text-temp
-    (setq text (cons (cons '(text-string) (nreverse text-temp)) text)
-     text-temp nil)))
+  '(when text-temp
+     (push (cons '(text-string) (nreverse text-temp)) text)
+     (setq text-temp nil)))
 
 (defmacro output-text ()
   '(progn
@@ -40,9 +51,8 @@
      post-%-p nil)))
 
 (def-mformat-op (#\% #\&)
-    (cond ((or text text-temp)
+    (cond ((or text text-temp) ;; there is text to output.
 	   (setq post-%-p t)
-	   ;; there is text to output.
 	   (output-text))
 	  (t
 	   (setq pre-%-p t))))
@@ -71,17 +81,16 @@
 	text))
 
 (defmfun mformat n
-  (or (> n 1)
-      ;; make error message without new symbols.
-      ;; This error should not happen in compiled code because
-      ;; this check is done at compile time too.
-      (maxima-error "~a: wrng-no-args" 'mformat))
+  (unless (> n 1)
+    ;; make error message without new symbols.
+    ;; This error should not happen in compiled code because
+    ;; this check is done at compile time too.
+    (maxima-error "mformat: wrng-no-args"))
   (let* ((stream (arg 1))
 	 (sstring (exploden (arg 2)))
 	 (arg-index 2))
-    (and (or (null stream)
-	     (eq t stream))
-	 (setq stream *standard-output*))
+    (when (or (null stream) (eq t stream))
+      (setq stream *standard-output*))
     ;; This is all done via macros to save space,
     ;; (No functions, no special variable symbols.)
     ;; If the lack of flexibilty becomes an issue then
@@ -95,19 +104,17 @@
 ;;note: compile whole file, incremental compiling will not work.
 
 (defmfun aformat n
-  (or (> n 1)
+  (unless (> n 1)
       ;; make error message without new symbols.
       ;; This error should not happen in compiled code because
       ;; this check is done at compile time too.
-      (maxima-error "~a: wrng-no-args" 'mformat))
+      (maxima-error "mformat: wrng-no-args"))
   (let ((stream (arg 1))
 	(sstring (exploden (arg 2)))
 	(arg-index 2))
-    (cond ((null stream)
-	   (with-output-to-string (stream)
-	     (mformat-loop (output-text))))
-	  (t
-	   (mformat-loop (output-text)))) ))
+    (if (null stream)
+	(with-output-to-string (stream) (mformat-loop (output-text)))
+	(mformat-loop (output-text)))))
 
 
 (defun output-text* (stream text displa-p pre-%-p post-%-p)
@@ -124,15 +131,13 @@
 	 (if post-%-p (terpri stream)))))
 
 (defun-prop (text-string dimension) (form result)
-  ;; come up with something more efficient later.
   (dimension-atom (maknam (cdr form)) result))
 
 (defmfun displaf (object stream)
   ;; for DISPLA to a file.
   ;; a bit of a kludge here. ^r and ^w still communicate something
   ;; to the displa package, but OUTFILES has not been implemented/hacked.
-  (if (or (eq stream nil)
-	  (eq stream *standard-output*))
+  (if (or (eq stream nil) (eq stream *standard-output*))
       (displa object)
       (let ((*standard-output* stream)
 	    (^r t)
