@@ -58,9 +58,13 @@
 	(merror "The ~:M argument to ~:M must be a selfadjoint (hermitian) matrix" pos fun)))
   '$done)
 
+;; matrix() is a 0 x 0 matrix, and matrix([]) is a 1 x 0 matrix.
+;; There is no representation for a 0 x 1 matrix. Currently,
+;; transpose(matrix([])) => matrix(). And that's a bug. 
+
 (defun $matrix_size(m)
   ($require_matrix m "$first" "$matrix_size")
-  `((mlist) ,($length m) ,($length ($first m))))
+  `((mlist) ,($length ($args m)) ,(if ($emptyp ($args m)) 0 ($length ($first ($args m))))))
   
 (defun $require_list (lst pos fun)
   (if (not ($listp lst))
