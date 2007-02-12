@@ -320,21 +320,21 @@
 			t)))
 
 (defun enprog (num denom cont deg)
-					; Denominator is (A*VAR^4+B) = 
-					;   if B<0 then (SQRT(A)*VAR^2 - SQRT(-B)) (SQRT(A)*VAR^2 + SQRT(-B))
-					;	     else
-					;	(SQRT(A)*VAR^2 - SQRT(2)*A^(1/4)*B^(1/4)*VAR + SQRT(B)) * 
-					;	(SQRT(A)*VAR^2 + SQRT(2)*A^(1/4)*B^(1/4)*VAR + SQRT(B))
-					; or (A*VAR^5+B) = 
-					;	(1/4) * (A^(1/5)*VAR + B^(1/5)) *
-					;	(2*A^(2/5)*VAR^2 + (-SQRT(5)-1)*A^(1/5)*B^(1/5)*VAR + 2*B^(2/5)) *
-					;	(2*A^(2/5)*VAR^2 + (+SQRT(5)-1)*A^(1/5)*B^(1/5)*VAR + 2*B^(2/5))
-					; or (A*VAR^6+B) = 
-					;   if B<0 then (SQRT(A)*VAR^3 - SQRT(-B)) (SQRT(A)*VAR^3 + SQRT(-B))
-					;	     else
-					;	(A^(1/3)*VAR^2 + B^(1/3)) *
-					;	(A^(1/3)*VAR^2 - SQRT(3)*A^(1/6)*B^(1/6)*VAR + B^(1/3)) *
-					;	(A^(1/3)*VAR^2 + SQRT(3)*A^(1/6)*B^(1/6)*VAR + B^(1/3))
+  ;; Denominator is (A*VAR^4+B) = 
+  ;;   if B<0 then (SQRT(A)*VAR^2 - SQRT(-B)) (SQRT(A)*VAR^2 + SQRT(-B))
+  ;;	     else
+  ;;	(SQRT(A)*VAR^2 - SQRT(2)*A^(1/4)*B^(1/4)*VAR + SQRT(B)) * 
+  ;;	(SQRT(A)*VAR^2 + SQRT(2)*A^(1/4)*B^(1/4)*VAR + SQRT(B))
+  ;; or (A*VAR^5+B) = 
+  ;;	(1/4) * (A^(1/5)*VAR + B^(1/5)) *
+  ;;	(2*A^(2/5)*VAR^2 + (-SQRT(5)-1)*A^(1/5)*B^(1/5)*VAR + 2*B^(2/5)) *
+  ;;	(2*A^(2/5)*VAR^2 + (+SQRT(5)-1)*A^(1/5)*B^(1/5)*VAR + 2*B^(2/5))
+  ;; or (A*VAR^6+B) = 
+  ;;   if B<0 then (SQRT(A)*VAR^3 - SQRT(-B)) (SQRT(A)*VAR^3 + SQRT(-B))
+  ;;	     else
+  ;;	(A^(1/3)*VAR^2 + B^(1/3)) *
+  ;;	(A^(1/3)*VAR^2 - SQRT(3)*A^(1/6)*B^(1/6)*VAR + B^(1/3)) *
+  ;;	(A^(1/3)*VAR^2 + SQRT(3)*A^(1/6)*B^(1/6)*VAR + B^(1/3))
   (prog ($expop $expon a b term disvar $algebraic)
      (setq $expop 0 $expon 0)
      (setq a (simplify (disrep (polcoef denom deg)))
