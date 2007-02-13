@@ -1,6 +1,5 @@
 \input texinfo
 @c -*-texinfo-*-
-@c english version 1.35
 
 @c 2000-04-17 Jim Van Zandt <jrv@vanzandt.mv.com> Added header,
 @c info directory entry, reference to introduction chapter, and menu
@@ -163,6 +162,7 @@ Paquetes adicionales
 * opsubst::                     Utilidad para sustituciones.
 * orthopoly::                   Polinomios ortogonales.
 * plotdf::                      Gr@'aficos de campos vectoriales.
+* romberg::                     Integraci@'on num@'erica por el m@'etodo de Romberg.
 * simplex::                     Programaci@'on lineal.
 * simplification::              Reglas y funciones de simplificaci@'on.
 * solve_rec::                   Recurrencias lineales.
@@ -205,10 +205,11 @@ Operadores
 
 * n-arios::
 * no-fijos::
-* operador::
 * postfijos::
 * prefijos::
-* Definiciones para Operadores::
+* Operadores aritm@'eticos::
+* Operadores relacionales::
+* Operadores generales::
 
 Expresiones
 
@@ -264,7 +265,6 @@ Trigonometr@'{@dotless{i}}a
 Funciones Especiales
 
 * Introducci@'on a las Funciones Especiales::
-* specint::
 * Definiciones para las Funciones Especiales::
 
 Funciones el@'{@dotless{i}}pticas
@@ -489,6 +489,10 @@ orthopoly
 plotdf
 
 * Definiciones para plotdf::
+
+romberg
+
+* Definiciones para romberg::
 
 simplex
 
@@ -785,11 +789,15 @@ zeilberger
 @chapter orthopoly
 @include ../es/orthopoly.texi
 
-@node plotdf, simplex, orthopoly, Top
+@node plotdf, romberg, orthopoly, Top
 @chapter plotdf
 @include ../es/plotdf.texi
 
-@node simplex, simplification, plotdf, Top
+@node romberg, simplex, plotdf, Top
+@chapter romberg
+@include ../es/romberg.texi
+
+@node simplex, simplification, romberg, Top
 @chapter simplex
 @include ../es/simplex.texi
 

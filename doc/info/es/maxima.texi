@@ -163,6 +163,7 @@ Paquetes adicionales
 * opsubst::                     Utilidad para sustituciones.
 * orthopoly::                   Polinomios ortogonales.
 * plotdf::                      Gr@'aficos de campos vectoriales.
+* romberg::                     Integraci@'on num@'erica por el m@'etodo de Romberg.
 * simplex::                     Programaci@'on lineal.
 * simplification::              Reglas y funciones de simplificaci@'on.
 * solve_rec::                   Recurrencias lineales.
@@ -490,6 +491,10 @@ plotdf
 
 * Definiciones para plotdf::
 
+romberg
+
+* Definiciones para romberg::
+
 simplex
 
 * Introducci@'on a simplex::
@@ -785,11 +790,15 @@ zeilberger
 @chapter orthopoly
 @include orthopoly.texi
 
-@node plotdf, simplex, orthopoly, Top
+@node plotdf, romberg, orthopoly, Top
 @chapter plotdf
 @include plotdf.texi
 
-@node simplex, simplification, plotdf, Top
+@node romberg, simplex, plotdf, Top
+@chapter romberg
+@include romberg.texi
+
+@node simplex, simplification, romberg, Top
 @chapter simplex
 @include simplex.texi
 
