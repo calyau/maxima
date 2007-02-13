@@ -720,10 +720,23 @@
   (subst4 exp))
 
 ;; exp = a*t^r1*(c1+c2*t^q)^r2, where var = t.
+;;
+;; G&S 2.202 has says this integral can be expressed by elementary
+;; functions ii:
+;;
+;; 1. q is an integer
+;; 2. (r1+1)/q is an integer
+;; 3. (r1+1)/q+r2 is an integer.
+;;
+;; I (rtoy) think that for this code to work, r1, r2, and q must be
+;; numbers.
 (defun chebyf (exp var) 
   (prog (r1 r2 d1 d2 n1 n2 w q) 
+     ;; Return NIL if the expression doesn't match.
      (cond ((not (setq w
 		       (m2 exp
+			   ;; Why aren't we using *chebyform* here?
+			   ;; This pattern is the same as *chebyform*.
 			   '((mtimes)
 			     ((mexpt) (var varp) (r1 numberp))
 			     ((mexpt)
@@ -736,7 +749,11 @@
 			     ((coefftt) (a freevar)))
 			   nil)))
 	    (return nil)))
+     #+nil
+     (format t "w = ~A~%" w)
      (when (zerop1 (cdr (sassq 'c1 w #'nill)))
+       ;; rtoy: Is it really possible to be in this routine with c1 =
+       ;; 0?
        (return
 	 (mul*
 	  ;; This factor is locally constant as long as t and
@@ -746,6 +763,7 @@
 	  (integrator
 	   (subliss w '((mexpt) var ((mplus) r1 ((mtimes) q r2)))) var))))
      (setq q (cdr (sassq 'q w 'nill)))
+     ;; Reset parameters.  a = a/q, r1 = (1 - q + r1)/q
      (setq w
 	   (list* (cons 'a (div* (cdr (sassq 'a w 'nill)) q))
 		  (cons
@@ -753,8 +771,18 @@
 		   (div* (addn (list 1 (neg (simplify q)) (cdr (sassq 'r1 w 'nill))) nil)
 			 q))
 		  w))
+     #+nil
+     (format t "new w = ~A~%" w)
      (setq r1 (cdr (sassq 'r1 w 'nill))
 	   r2 (cdr (sassq 'r2 w 'nill)))
+     #+nil
+     (progn
+       (format t "new r1 = ~A~%" r1)
+       (format t "r2     = ~A~%" r2))
+     ;; Write r1 = d1/n1, r2 = d2/n2, if possible.  Update w with
+     ;; these values, if so.  If we can't, give up.  I (rtoy) think
+     ;; this only happens if r1 or r2 can't be expressed as rational
+     ;; numbers.  Hence, r1 and r2 have to be numbers, not variables.
      (cond
        ((not (and (setq d1 (denomfind r1))
 		  (setq d2 (denomfind r2))
@@ -763,14 +791,29 @@
 		  (setq w (list* (cons 'd1 d1) (cons 'd2 d2)
 				 (cons 'n1 n1) (cons 'n2 n2)
 				 w))))
+	#+nil
+	(progn
+	  (format t "cheby can't find one of d1,d2,n1,n2:~%")
+	  (format t "  d1 = ~A~%" d1)
+	  (format t "  d2 = ~A~%" d2)
+	  (format t "  n1 = ~A~%" n1)
+	  (format t "  n2 = ~A~%" n2))
 	(return nil))
        ((and (integerp2 r1) (greaterp r1 0))
+	;; (r1+q-1)/q is positive integer.
+	;;
+	;; I (rtoy) think we are using the substitution z=(c1+c2*t^q).
+	;; Maxima thinks the resulting integral should then be
+	;;
+	;; a/q*c2^(-r1/q-1/q)*integrate(z^r2*(z-c1)^(r1/q+1/q-1),z)
+	;;
 	(return
 	  (substint
 	   (subliss w '((mplus) c1 ((mtimes) c2 ((mexpt) var q))))
 	   var
 	   (integrator
 	    (expands (list (subliss w
+				    ;; a*t^r2*c2^(-r1-1)
 				    '((mtimes)
 				      a
 				      ((mexpt) var r2)
@@ -779,13 +822,23 @@
 				       ((mtimes)
 					-1
 					((mplus) r1 1))))))
-		     (cdr (expandexpt (subliss w
-					       '((mplus)
-						 var
-						 ((mtimes) -1 c1)))
-				      r1)))
+		     (cdr
+		      ;; (t-c1)^r1
+		      (expandexpt (subliss w
+					   '((mplus)
+					     var
+					     ((mtimes) -1 c1)))
+				  r1)))
 	    var))))
        ((integerp2 r2)
+	;; I (rtoy) think this is using the substitution z = t^(q/d1).
+	;;
+	;; The integral (as maxima will tell us) becomes
+	;;
+	;; a*d1/q*integrate(z^(n1/q+d1/q-1)*(c1+c2*z^d1)^r2,z)
+	;;
+	;; But be careful because the variable A in the code is
+	;; actually a/q.
 	(return
 	  (substint (subliss w '((mexpt) var ((mquotient) q d1)))
 		    var
@@ -806,8 +859,18 @@
 						  r2))))
 			    var))))
        ((and (integerp2 r1) (lessp r1 0))
+	;; I (rtoy) think this is using the substitution
+	;;
+	;; z = (c1+c2*t^q)^(1/d2)
+	;;
+	;; With this substitution, maxima says the resulting integral
+	;; is
+	;;
+	;;  a/q*c2^(-r1/q-1/q)*d2*
+	;;    integrate(z^(n2+d2-1)*(z^d2-c1)^(r1/q+1/q-1),z)
 	(return
 	  (substint (subliss w
+			     ;; (c1+c2*t^q)^(1/d2)
 			     '((mexpt)
 			       ((mplus)
 				c1
@@ -815,6 +878,11 @@
 			       ((mquotient) 1 d2)))
 		    var
 		    (ratint (simplify (subliss w
+					       ;; This is essentially
+					       ;; the integrand above,
+					       ;; except A and R1 here
+					       ;; are not the same as
+					       ;; derived above.
 					       '((mtimes)
 						 a d2
 						 ((mexpt)
@@ -835,6 +903,15 @@
 						  r1))))
 			    var))))
        ((integerp2 (add2* r1 r2))
+	;; I (rtoy) think this is using the substitution
+	;;
+	;; z = ((c1+c2*t^q)/t^q)^(1/d1)
+	;;
+	;; With this substitution, maxima says the resulting integral
+	;; is
+	;;
+	;; a*d2/q*c1^(r2+r1/q+1/q)*
+	;;   integrate(z^(d2*r2+d2-1)*(z^d2-c2)^(-r2-r1/q-1/q-1),z)
 	(return
 	  (substint (subliss w
 			     '((mexpt)
