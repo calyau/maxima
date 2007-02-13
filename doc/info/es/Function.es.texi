@@ -1,4 +1,4 @@
-@c english version 1.42
+@c english version 1.43
 @menu
 * Introducci@'on a la definici@'on de funciones::  
 * Funciones::                    
@@ -488,14 +488,24 @@ La funci@'on @code{g} devuelve las im@'agenes por @code{f} de todos los elemento
 
 @end deffn
 
-@deffn {Function} compfile (@var{nombre_fichero}, @var{f_1}, ..., @var{f_n})
+@deffn {Function} compfile (@var{filename}, @var{f_1}, ..., @var{f_n})
+@deffnx {Function} compfile (@var{filename}, functions)
+@deffnx {Function} compfile (@var{filename}, all)
 
-Traduce las funciones de Maxima @var{f_1}, ..., @var{f_n} a c@'odigo Lisp y lo guarda en el fichero @var{nombre_fichero}.
+Traduce funciones de Maxima a c@'odigo Lisp, guard@'andolo 
+luego en el fichero @var{filename}.
 
-El c@'odigo Lisp traducido no se eval@'ua, ni el fichero de salida es procesado por el compilador de Lisp.
-@c SO LET'S CONSIDER GIVING THIS FUNCTION A MORE ACCURATE NAME.
-@code{translate} creates and evaluates Lisp translations.
-@code{compile_file} translates Maxima into Lisp, and then executes the Lisp compiler. 
+Con la llamada @code{compfile(@var{filename}, @var{f_1}, ..., @var{f_n})}
+se traducen las funciones especificadas, mientras que 
+@code{compfile(@var{filename}, functions)} y
+@code{compfile(@var{filename}, all)} traducen las funciones definidas por
+el usuario.
+
+El c@'odigo Lisp traducido no se eval@'ua, ni el fichero 
+de salida es procesado por el compilador de Lisp.
+La funci@'on @code{translate} crea y eval@'ua las traducciones Lisp, mientras que
+@code{compile_file} traduce primero de Maxima a Lisp y luego
+ejecuta el compilador Lisp. 
 
 V@'eanse tambi@'en @code{translate}, @code{translate_file} y @code{compile_file}.
 

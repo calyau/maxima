@@ -205,10 +205,11 @@ Operadores
 
 * n-arios::
 * no-fijos::
-* operador::
 * postfijos::
 * prefijos::
-* Definiciones para Operadores::
+* Operadores aritm@'eticos::
+* Operadores relacionales::
+* Operadores generales::
 
 Expresiones
 
