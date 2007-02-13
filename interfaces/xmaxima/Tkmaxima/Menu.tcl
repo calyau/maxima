@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Menu.tcl,v 1.28 2007-02-10 09:48:25 vvzhy Exp $
+#       $Id: Menu.tcl,v 1.29 2007-02-13 12:50:30 grozin Exp $
 #
 
 proc pMAXSaveTexToFile {text} {
@@ -246,9 +246,9 @@ proc vMAXAddSystemMenu {fr text} {
 	}
     } else {
 	
-	set selectedbrowser mozilla
+	set selectedbrowser xdg-open
 
-	foreach b { firefox mozilla konqueror epiphany galeon amaya netscape } {
+	foreach b { xdg-open htmlview firefox mozilla konqueror epiphany galeon amaya opera netscape } {
 	    if { ! [catch {exec which $b} ] } {
 		set selectedbrowser $b
 		break } }
