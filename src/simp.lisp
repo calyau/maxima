@@ -404,7 +404,7 @@
 	   (and (eq (caar x) 'mlist) $listarith))))
 
 (defmfun constfun (ign)
-  (declare (ignore ignx)) ; Arg ignored.  Function used for mapping down lists.
+  (declare (ignore ign)) ; Arg ignored.  Function used for mapping down lists.
   *const*)
 
 (defun constmx (*const* x) (simplifya (fmapl1 'constfun x) t))
