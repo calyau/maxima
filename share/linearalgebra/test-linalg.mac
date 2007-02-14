@@ -454,6 +454,18 @@ matrix([1])$
 vandermonde_matrix([a,b]);
 matrix([1,a],[1,b])$
 
+vandermode_matrix([]);
+matrix()$
+
+/* SF bug #1659985 */
+
+vandermode_matrix([0]);
+matrix([1])$
+
+vandermode_matrix([0,1]);
+matrix([1,0],[1,1)$
+
+
 /*--- copylist and copymatrix ----*/
 
 (m :  [1,[2,3]],0);

@@ -292,7 +292,7 @@ hilbert_matrix(n) := (
 vandermonde_matrix(vars) := block([n],
   require_list(vars,"first","vandermonde_matrix"),
   n : length(vars),
-  funmake('matrix, makelist(makelist(vars[i]^j,j,0,n-1),i,1,n)));
+  funmake('matrix, makelist(makelist(if j=0 then 1 else vars[i]^j,j,0,n-1),i,1,n)));
 
 hankel([q]) := block([col,row,m,n,partswitch : false],
   if length(q) > 2 or length(q) < 1 then error("The function 'hankel' requires one or two arguments"),
