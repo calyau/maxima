@@ -1,5 +1,5 @@
 ;; A Maxima ring stucture
-;; Copyright (C) 2005, Barton Willis
+;; Copyright (C) 2005, 2007, Barton Willis
 
 ;; Barton Willis
 ;; Department of Mathematics
@@ -222,8 +222,8 @@
    :adjoint #'cl:identity
    :mring-to-maxima #'(lambda (s) s)
    :maxima-to-mring #'(lambda (s) 
-			(setq s ($bfloat s))
-			(if ($bfloatp s) s
+			(setq s ($rectform ($bfloat s)))
+			(if (or (eq s '$%i) (complex-number-p s '$bfloatp)) s
 			  (merror "Unable to convert matrix entry to a big float")))))
 
 (setf (get '$bigfloatfield 'ring) *bigfloatfield*)
