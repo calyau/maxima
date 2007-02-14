@@ -80,6 +80,9 @@ true$
 lu_test(hilbert_matrix(13), 1.0e-38);
 true$
 
+lu_test(hilbert_matrix(4) + %i * vandermonde_matrix([1,2,3,4]), 1.0e-15);
+true$
+
 (lu_test(m, tol) := block([mp],
   mp : get_lu_factors(lu_factor(m,complexfield)),
   every(lambda([s], is(cabs(s) < tol)),m - mp[1] . mp[2] . mp[3])),0);
