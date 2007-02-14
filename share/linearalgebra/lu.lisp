@@ -267,4 +267,16 @@
   ($require_square_matrix m "$first" "$mat_cond")
   (mul (simplify (mfunction-call $mat_norm m p))
        (simplify (mfunction-call $mat_norm ($invert_by_lu m) p))))
-   
+
+(defun $linsolve_by_lu (m b &optional (fld '$generalring))
+  ($require_square_matrix m "$first" "$linsolve_by_lu")
+  (setq b (if ($listp b) ($transpose b) b))
+  ($require_matrix b "$second" "$linsolve_by_lu")
+  ($require_ring fld "$third" "$linsolve_by_lu")
+  (if (= ($second ($matrix_size m)) ($first ($matrix_size b))) t
+    (merror "Incompatible matrix sizes"))
+  
+  (setq m ($lu_factor m fld))
+  (if (floatp ($last m)) (mtell "An upper bound for the condition number is ~:M" ($last m)))
+  ($lu_backsub m b))
+
