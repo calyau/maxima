@@ -1,0 +1,791 @@
+@menu
+* Introduction to draw::
+* Definitions for draw::
+@end menu
+
+
+
+
+
+@node Introduction to draw, Definitions for draw, draw, draw
+@section Introduction to draw
+
+
+@code{draw} is a new Maxima-Gnuplot interface.
+
+There are three functions to be used at Maxima level: 
+@code{draw2d}, @code{draw3d} and @code{draw}.
+
+
+
+
+
+
+
+@node Definitions for draw,  , Introduction to draw, draw
+@section Definitions for draw
+
+
+
+
+@defvr {Graphic option} xrange
+Default value: @code{false}
+
+If @code{xrange} is @code{false}, the range for the @var{x} coordinate is
+computed automatically.
+
+If the user wants a specific interval for @var{x}, it must be given as a 
+Maxima list, as in @code{xrange=[-2, 3]}.
+@end defvr
+
+
+
+@defvr {Graphic option} yrange
+Default value: @code{false}
+
+If @code{yrange} is @code{false}, the range for the @var{y} coordinate is
+computed automatically.
+
+If the user wants a specific interval for @var{y}, it must be given as a 
+Maxima list, as in @code{yrange=[-2, 3]}.
+@end defvr
+
+
+
+@defvr {Graphic option} zrange
+Default value: @code{false}
+
+If @code{zrange} is @code{false}, the range for the @var{z} coordinate is
+computed automatically.
+
+If the user wants a specific interval for @var{z}, it must be given as a 
+Maxima list, as in @code{zrange=[-2, 3]}.
+@end defvr
+
+
+
+@defvr {Graphic option} logx
+Default value: @code{false}
+
+If @code{logx} is @code{true}, the @var{x} axis will be drawn in the
+logarithmic scale.
+@end defvr
+
+
+
+@defvr {Graphic option} logy
+Default value: @code{false}
+
+If @code{logy} is @code{true}, the @var{y} axis will be drawn in the
+logarithmic scale.
+@end defvr
+
+
+
+@defvr {Graphic option} logz
+Default value: @code{false}
+
+If @code{logz} is @code{true}, the @var{z} axis will be drawn in the
+logarithmic scale.
+@end defvr
+
+
+
+@defvr {Graphic option} terminal
+Default value: @code{screen}
+
+Selects the terminal to be used by Gnuplot; possible values are:
+@code{screen} (default), @code{png}, @code{jpg}, @code{eps}, and @code{eps_color}.
+
+See also @code{file_name}, @code{pic_width}, and @code{pic_height}.
+@end defvr
+
+
+
+@defvr {Graphic option} grid
+Default value: @code{false}
+
+If @code{grid} is @code{true}, a grid will be drawn on the @var{xy} plane.
+@end defvr
+
+
+
+@defvr {Graphic option} title
+Default value: @code{""} (empty string)
+
+Variable @code{title} stores a Maxima string with the main title for the scene.
+By default, no title is written.
+@end defvr
+
+
+
+@defvr {Graphic option} xlabel
+Default value: @code{""} (empty string)
+
+Variable @code{xlabel} stores a Maxima string with the label for the @var{x} axis.
+By default, no label is written.
+@end defvr
+
+
+
+@defvr {Graphic option} ylabel
+Default value: @code{""} (empty string)
+
+Variable @code{ylabel} stores a Maxima string with the label for the @var{y} axis.
+By default, no label is written.
+@end defvr
+
+
+
+@defvr {Graphic option} zlabel
+Default value: @code{""} (empty string)
+
+Variable @code{zlabel} stores a Maxima string with the label for the @var{z} axis.
+By default, no label is written.
+@end defvr
+
+
+
+@defvr {Graphic option} xtics
+Default value: @code{true}
+
+If @code{xtics} is @code{true}, tics will be written in the @var{x} axis.
+@end defvr
+
+
+
+@defvr {Graphic option} ytics
+Default value: @code{true}
+
+If @code{ytics} is @code{true}, tics will be written in the @var{y} axis.
+@end defvr
+
+
+
+@defvr {Graphic option} ztics
+Default value: @code{true}
+
+If @code{ztics} is @code{true}, tics will be written in the @var{z} axis.
+@end defvr
+
+
+
+@defvr {Graphic option} rot_vertical
+Default value: 60
+
+@code{rot_vertical} is the angle (in degrees) of vertical rotation (around 
+the @var{x} axis) to set the view point in 3d scenes.
+
+The angle is bounded to the @math{[0, 180]} interval.
+@end defvr
+
+
+
+@defvr {Graphic option} rot_horizontal
+Default value: 30
+
+@code{rot_horizontal} is the angle (in degrees) of horizontal rotation (around 
+the @var{z} axis) to set the view point in 3d scenes.
+
+The angle is bounded to the @math{[0, 360]} interval.
+@end defvr
+
+
+
+@defvr {Graphic option} xy_file
+Default value: @code{""} (empty string)
+
+@code{xy_file} is the name of the file where the coordinates will be saved
+after clicking with the mouse button and hitting the 'x' key. By default,
+no coordinates are saved.
+@end defvr
+
+
+
+@defvr {Graphic option} user_preamble
+Default value: @code{""} (empty string)
+
+Expert Gnuplot users can make use of this option to fine tune Gnuplot's
+behaviour by writing settings to be sent before the @code{plot} or @code{splot}
+command.
+@end defvr
+
+
+
+@defvr {Graphic option} file_name
+Default value: @code{"maxima_out"}
+
+This is the name of the file where terminals @code{png}, @code{jpg}, @code{eps}
+and @code{eps_color} will save the graphic.
+
+See also @code{terminal}.
+@end defvr
+
+
+
+@defvr {Graphic option} pic_width
+Default value: 640
+
+This is the width of the bitmap file generated by terminals @code{png} and @code{jpg}.
+
+See also @code{terminal}.
+@end defvr
+
+
+
+@defvr {Graphic option} pic_height
+Default value: 640
+
+This is the height of the bitmap file generated by terminals @code{png} and @code{jpg}.
+
+See also @code{terminal}.
+@end defvr
+
+
+
+@defvr {Graphic option} axis_bottom
+Default value: @code{true}
+
+If @code{axis_bottom} is @code{true}, the bottom axis is shown in 2d scenes.
+
+See also @code{axis_left},  @code{axis_top}, @code{axis_right}, and @code{axis_3d}.
+@end defvr
+
+
+
+@defvr {Graphic option} axis_left
+Default value: @code{true}
+
+If @code{axis_left} is @code{true}, the left axis is shown in 2d scenes.
+
+See also @code{axis_bottom},  @code{axis_top}, @code{axis_right}, and @code{axis_3d}.
+@end defvr
+
+
+
+@defvr {Graphic option} axis_top
+Default value: @code{true}
+
+If @code{axis_top} is @code{true}, the top axis is shown in 2d scenes.
+
+See also @code{axis_bottom},  @code{axis_left}, @code{axis_right}, and @code{axis_3d}.
+@end defvr
+
+
+
+@defvr {Graphic option} axis_right
+Default value: @code{true}
+
+If @code{axis_right} is @code{true}, the right axis is shown in 2d scenes.
+
+See also @code{axis_bottom},  @code{axis_left}, @code{axis_top}, and @code{axis_3d}.
+@end defvr
+
+
+
+@defvr {Graphic option} axis_3d
+Default value: @code{true}
+
+If @code{axis_3d} is @code{true}, the @var{x}, @var{y} and @var{z} axis are shown in 3d scenes.
+
+See also @code{axis_bottom},  @code{axis_left}, @code{axis_top}, and @code{axis_right} for axis in 2d.
+@end defvr
+
+
+
+@defvr {Graphic option} point_size
+Default value: 1
+
+@code{point_size} sets the size for plotted points. It must be a
+non negative number.
+@end defvr
+
+
+
+@defvr {Graphic option} point_type
+Default value: 1
+
+@code{point_type} is an index (greater or equal than -1) to specify how points are displayed.
+Point colors are controlled with this option.
+@end defvr
+
+
+
+@defvr {Graphic option} points_joined
+Default value: @code{false}
+
+if @code{points_joined} is @code{true}, points are joined by lines.
+@end defvr
+
+
+
+@defvr {Graphic option} fill_type
+Default value: 1
+
+@code{fill_type} is an index (greater or equal than -1) to specify the color for filled regions.
+@end defvr
+
+
+
+@defvr {Graphic option} transparent
+Default value: @code{false}
+
+If @code{transparent} is @code{true}, interior regions of polygons are 
+filled according to @code{fill_type}.
+@end defvr
+
+
+
+@defvr {Graphic option} border
+Default value: @code{true}
+
+If @code{border} is @code{true}, borders of polygons are painted
+according to @code{line_type} and @code{line_width}.
+@end defvr
+
+
+
+@defvr {Graphic option} head_both
+Default value: @code{false}
+
+If @code{head_both} is @code{true}, vectors are plotted with two arrow heads.
+If @code{false}, only one arrow is plotted.
+@end defvr
+
+
+
+@defvr {Graphic option} head_length
+Default value: 2
+
+@code{head_length} indicates, in @var{x}-axis units, the length of arrow heads.
+@end defvr
+
+
+
+@defvr {Graphic option} head_angle
+Default value: 45
+
+@code{head_angle} indicates the angle, in degrees, between the arrow heads and
+the segment.
+@end defvr
+
+
+
+@defvr {Graphic option} head_type
+Default value: @code{filled}
+
+@code{head_type} is used to specify how arrow heads are plotted. Possible
+values are: @code{filled} (closed and filled arrow heads), @code{empty}
+(closed but not filled arrow heads), and @code{nofilled} (open arrow heads).
+@end defvr
+
+
+
+@defvr {Graphic option} label_alignment
+Default value: @code{center}
+
+@code{label_alignment} is used to specify where to write labels with
+respect to the given coordinates. Possible values are: @code{center},
+@code{left}, and @code{right}.
+@end defvr
+
+
+
+@defvr {Graphic option} label_orientation
+Default value: @code{horizontal}
+
+@code{label_orientation} is used to specify orientation of labels.
+Possible values are: @code{horizontal}, and @code{vertical}.
+@end defvr
+
+
+
+@defvr {Graphic option} label_color
+Default value: 1
+
+@code{label_color} is an index (greater or equal than -1) to specify the font color.
+@end defvr
+
+
+
+@defvr {Graphic option} line_width
+Default value: 1
+
+@code{line_width} is the width for plotted lines.
+@end defvr
+
+
+
+@defvr {Graphic option} line_type
+Default value: 1
+
+@code{line_type} is an index (greater or equal than -1) to specify how lines are displayed.
+Line colors are controlled with this option.
+@end defvr
+
+
+
+@defvr {Graphic option} nticks
+Default value: 30
+
+@code{nticks} is the number of sample points used by the plotting routine.
+@end defvr
+
+
+
+@defvr {Graphic option} adapt_depth
+Default value: 10
+
+@code{adapt_depth} is the maximum number of splittings used by the adaptive plotting routine.
+@end defvr
+
+
+
+@defvr {Graphic option} key
+Default value: @code{""} (empty string)
+
+@code{key} is the mame of a function in the legend. If @code{key} is an
+empty string, no key is assigned to the function.
+@end defvr
+
+
+
+@defvr {Graphic option} function_style
+Default value: @code{lines}
+
+@code{function_style} indicates how functions are plotted: with @code{lines} or @code{dots}.
+@end defvr
+
+
+
+@defvr {Graphic option} xu_grid
+Default value: 30
+
+@code{xu_grid} is the number of coordinates of the first variable
+(@code{x} in explicit and @code{u} in parametric 3d surfaces) to 
+build the grid of sample points.
+
+See also @code{yv_grid}.
+@end defvr
+
+
+
+@defvr {Graphic option} yv_grid
+Default value: 30
+
+@code{yv_grid} is the number of coordinates of the second variable
+(@code{y} in explicit and @code{v} in parametric 3d surfaces) to 
+build the grid of sample points.
+
+See also @code{xu_grid}.
+@end defvr
+
+
+
+@defvr {Graphic option} surface_hide
+Default value: @code{false}
+
+If @code{surface_hide} is @code{true}, hidden parts are not plotted in 3d surfaces.
+@end defvr
+
+
+
+@defvr {Graphic option} contour
+Default value: @code{none}
+
+Option @code{contour} enables the user to select where to plot contour lines.
+Possible values are:
+
+@itemize @bullet
+
+@item
+@code{none}:
+no contour lines are plotted.
+
+@item
+@code{base}:
+contour lines are projected on the xy plane.
+
+@item
+@code{surface}:
+contour lines are plotted on the surface.
+
+@item
+@code{both}:
+two contour lines are plotted: on the xy plane and on the surface.
+
+@item
+@code{map}:
+contour lines are projected on the xy plane, and the view point is
+set just in the vertical.
+
+@end itemize
+
+@end defvr
+
+
+
+@defvr {Graphic option} contour_levels
+Default value: 5
+
+@code{contour_levels} is the number of levels in contour plots.
+@end defvr
+
+
+
+@defvr {Graphic option} columns
+Default value: 1
+
+@code{columns} is the number of columns in multiple plots.
+@end defvr
+
+
+
+@defvr {Graphic option} ip_grid
+Default value: @code{[50, 50]}
+
+@code{ip_grid} sets the grid for the first sampling in implicit plots.
+@end defvr
+
+
+
+@defvr {Graphic option} ip_grid_in
+Default value: @code{[5, 5]}
+
+@code{ip_grid_in} sets the grid for the second sampling in implicit plots.
+@end defvr
+
+
+
+
+
+
+
+
+
+@deffn {Scene constructor} gr2d (@var{graphic option}, ..., @var{graphic object}, ...)
+
+Function @code{gr2d} builds an object describing a 2d scene. Arguments are
+@i{graphic options} and @i{graphic objects}. This scene is interpreted
+sequentially: @i{graphic options} affect those @i{graphic objects} placed
+on its right.
+
+This is the list of @i{graphic objects} available for scenes in two dimensions:
+
+@itemize @bullet
+@item
+@code{points([[x1,y1], [x2,y2], [x3,y3],...])} or @code{points([x1,x2,x3,...], [y1,y2,y3,...])}:
+allocates points @code{[x1,y1]}, @code{[x2,y2]}, @code{[x2,y2]}, ....
+This object is affected by the following @i{graphic options}: @code{point_size}, 
+@code{point_type}, @code{points_joined}, @code{line_width}, @code{key} and @code{line_type}.
+
+
+@item
+@code{polygon([[x1,y1], [x2,y2], [x3,y3],...])} or @code{polygon([x1,x2,x3,...], [y1,y2,y3,...])}:
+plots a polygon with vertices @code{[x1,y1]}, @code{[x2,y2]}, @code{[x2,y2]}, ... on the plane.
+This object is affected by the following @i{graphic options}: @code{transparent}, 
+@code{fill_type}, @code{border}, @code{line_width}, @code{key} and @code{line_type}.
+
+
+@item
+@code{rectangle([x1,y1], [x2,y2])}:
+plots a rectangle with opposite vertices @code{[x1,y1]} and @code{[x2,y2]}.
+This object is affected by the following @i{graphic options}: @code{transparent}, 
+@code{fill_type}, @code{border}, @code{line_width}, @code{key} and @code{line_type}.
+
+
+@item
+@code{ellipse(xc, yc, a, b, start_angle, end_angle)}:
+plots an ellipse centered at @code{[xc, yc]} with horizontal and vertical
+semi axis @code{a} and @code{b}, respectively, from angle @code{start_angle} to angle
+@code{end_angle}.
+This object is affected by the following @i{graphic options}: @code{nticks}, 
+@code{transparent}, @code{fill_type}, @code{border}, @code{line_width}, 
+@code{line_type} and @code{key}.
+
+
+@item
+@code{label(string,x,y)}:
+writes the @code{string} at point @code{[x,y]}.
+This object is affected by the following @i{graphic options}: @code{label_alignment}, 
+@code{label_orientation} and @code{label_color}.
+
+
+@item
+@code{vector([x,y], [dx,dy])}:
+plots vector @code{[dx,dy]} with origin in @code{[x,y]}.
+This object is affected by the following @i{graphic options}: @code{head_both}, 
+@code{head_length}, @code{head_angle}, @code{head_type}, @code{line_width}, 
+@code{line_type} and @code{key}.
+
+
+@item
+@code{explicit(fcn,var,minval,maxval)}:
+plots explicit function @code{fcn}, with variable @code{var} taking values
+from @code{minval} to @code{maxval}.
+This object is affected by the following @i{graphic options}: @code{nticks}, 
+@code{adapt_depth}, @code{line_width}, @code{line_type}, @code{key}, 
+@code{function_style} and @code{fill_type}.
+
+
+@item
+@code{implicit(fcn,x-var,x-minval,x-maxval,y-var,y-minval,y-maxval)}:
+plots the implicit function defined by @code{fcn}, with variable @code{x-var} taking values
+from @code{x-minval} to @code{x-maxval}, and variable @code{y-var} taking values
+from @code{y-minval} to @code{y-maxval}.
+This object is affected by the following @i{graphic options}: @code{ip_grid}, 
+@code{ip_grid_in}, @code{line_width}, @code{line_type}, @code{key}, 
+@code{filled_function} and @code{fill_type}.
+
+
+@item
+@code{polar(radius,ang,minang,maxang)}:
+plots function @code{radius(ang)} defined in polar coordinates, with variable @code{ang}
+taking values from @code{minang} to @code{maxang}.
+This object is affected by the following @i{graphic options}: @code{nticks}, 
+@code{line_width}, @code{line_type}, @code{key}, 
+@code{function_style} and @code{point_type}.
+
+
+@item
+@code{parametric(xfun,yfun,par,parmin,parmax)}:
+plots parametric function @code{[xfun,yfun]}, with parameter @code{par}
+taking values from @code{parmin} to @code{parmax}.
+This object is affected by the following @i{graphic options}: @code{nticks}, 
+@code{line_width}, @code{line_type}, @code{key}, 
+@code{function_style} and @code{point_type}.
+
+@end itemize
+
+See also the following graphic options: @code{xrange}, @code{yrange}, 
+@code{logx}, @code{logy}, @code{terminal}, @code{grid}, @code{title}, 
+@code{xlabel}, @code{ylabel}, @code{xtics}, @code{ytics}, @code{xy_file}, 
+@code{file_name}, @code{pic_width}, @code{pic_height}, 
+@code{user_preamble}, @code{axis_bottom}, @code{axis_left}, @code{axis_top}, 
+and @code{axis_right}.
+
+@end deffn
+
+
+
+
+
+
+
+
+
+@deffn {Scene constructor} gr3d (@var{graphic option}, ..., @var{graphic object}, ...)
+
+Function @code{gr3d} builds an object describing a 3d scene. Arguments are
+@i{graphic options} and @i{graphic objects}. This scene is interpreted
+sequentially: @i{graphic options} affect those @i{graphic objects} placed
+on its right.
+
+This is the list of @i{graphic objects} available for scenes in three dimensions:
+
+@itemize @bullet
+@item
+@code{points([[x1,y1,z1], [x2,y2,z2], [x3,y3,z3],...])} or 
+@code{points([x1,x2,x3,...], [y1,y2,y3,...], [z1,z2,z3,...])}:
+allocates points @code{[x1,y1,z1]}, @code{[x2,y2,z2]}, @code{[x2,y2,z3]}, ....
+This object is affected by the following @i{graphic options}: @code{point_size}, 
+@code{point_type}, @code{points_joined}, @code{line_width}, @code{key} and @code{line_type}.
+
+
+@item
+@code{label(string,x,y,z)}:
+writes the @code{string} at point @code{[x,y,z]}.
+This object is affected by the following @i{graphic options}: @code{label_alignment}, 
+@code{label_orientation} and @code{label_color}.
+
+
+@item
+@code{explicit(fcn,var1,minval1,maxval1,var2,minval2,maxval2)}:
+plots explicit function @code{fcn}, with variable @code{var1} taking values
+from @code{minval1} to @code{maxval1} and variable @code{var2} taking values
+from @code{minval2} to @code{maxval2}.
+This object is affected by the following @i{graphic options}: @code{xu_grid}, 
+@code{yv_grid}, @code{line_type}, and @code{key}.
+
+
+@item
+@code{parametric(xfun,yfun,zfun,par,parmin,parmax)}:
+plots parametric curve @code{[xfun,yfun,zfun]}, with parameter @code{par}
+taking values from @code{parmin} to @code{parmax}.
+This object is affected by the following @i{graphic options}: @code{nticks}, 
+@code{line_width}, @code{line_type}, and @code{key}.
+
+
+@item
+@code{parametric_surface(xfun,yfun,zfun,par1,par1min,par1max,par2,par2min,par2max)}:
+plots parametric surface @code{[xfun,yfun,zfun]}, with parameter @code{par1}
+taking values from @code{par1min} to @code{par1max} and parameter @code{par2}
+taking values from @code{par2min} to @code{par2max}.
+This object is affected by the following @i{graphic options}: @code{nticks}, 
+@code{line_width}, @code{line_type}, and @code{key}.
+
+@end itemize
+
+See also the following graphic options: @code{xrange}, @code{yrange}, 
+@code{zrange}, @code{logx}, @code{logy}, @code{logz}, @code{terminal}, 
+@code{grid}, @code{title}, @code{xlabel}, @code{ylabel}, @code{zlabel}, 
+@code{xtics}, @code{ytics}, @code{ztics}, @code{xy_file}, 
+@code{user_preamble}, @code{axis_bottom}, @code{axis_left}, 
+@code{axis_top}, @code{file_name}, @code{pic_width}, @code{pic_height}, 
+@code{axis_right}, @code{rot_vertical}, @code{rot_horizontal}, 
+@code{axis_3d}, @code{xu_grid}, @code{yv_grid}, @code{surface_hide}, 
+@code{contour}, and @code{contour_levels}.
+
+@end deffn
+
+
+
+
+
+
+
+@deffn {Function} draw (@var{gr2d}, ..., @var{gr3d}, ..., @var{options}, ...)
+
+Plots a series of scenes; its arguments are @code{gr2d} and @code{gr3d} 
+objects, together with some options. By default, the scenes are put together
+in one column.
+
+Function @code{draw} accepts two possible options: @code{terminal} 
+and @code{columns}.
+
+Functions @code{draw2d} and @code{draw3d} are short cuts to be used 
+when only one scene is required, in two or three dimensions, respectively.
+
+@end deffn
+
+
+@deffn {Function} draw2d (@var{option}, @var{graphic object}, ...)
+
+This function is a short cut for
+@code{draw2d(gr2d(@var{options}, ..., @var{graphic object}, ...))}.
+
+It can be used to plot a unique scene in 2d.
+
+@end deffn
+
+
+@deffn {Function} draw3d (@var{option}, @var{graphic object}, ...)
+
+This function is a short cut for
+@code{draw3d(gr3d(@var{options}, ..., @var{graphic object}, ...))}.
+
+It can be used to plot a unique scene in 3d.
+
+@end deffn
+
+
+
+@defvr {Variable} draw_pipes
+Default value: @code{true}
+
+When @code{draw_pipes} is @code{true}, Maxima communicates with Gnuplot
+via pipes. If @code{draw_pipes} is @code{false}, Maxima communicates 
+with Gnuplot via files. This is only useful in non Windows systems.
+
+@end defvr
+

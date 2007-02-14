@@ -341,6 +341,7 @@
          "contrib/Zeilberger"
          "diff_form"
          "diffequations"
+         "draw"
 	 "lapack"
          "lbfgs"
          "linearalgebra"

@@ -37,7 +37,7 @@ maxima_TEXINFOS = Introduction.texi Help.texi Command.texi Operators.texi \
   Function.texi Program.texi Debugging.texi Indices.texi Elliptic.texi \
   Bugs.texi nset.texi zeilberger.texi orthopoly.texi linearalgebra.texi \
   solve_rec.texi stringproc.texi numericalio.texi descriptive.texi \
-  distrib.texi simplex.texi simplifications.texi unit.texi makeOrders.texi \
+  distrib.texi draw.texi simplex.texi simplifications.texi unit.texi makeOrders.texi \
   mnewton.texi lsquares.texi plotdf.texi lindstedt.texi impdiff.texi \
   ggf.texi f90.texi eval_string.texi diag.texi dynamics.texi\
   bode.texi augmented_lagrangian.texi opsubst.texi stats.texi stirling.texi\

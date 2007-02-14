@@ -450,6 +450,7 @@ diffequations/pdvtr.mac\
 diffequations/phypgm.mac\
 diffequations/pivtr.mac\
 diffequations/pmain.mac\
+draw/draw.lisp\
 integequations/inteqn.mac\
 integequations/inteqn.usg\
 integequations/intexs.mac\

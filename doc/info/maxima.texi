@@ -142,6 +142,7 @@ Additional packages
 * descriptive::                 Descriptive statistics.
 * diag::                        Jordan matrices.
 * distrib::                     Probability distributions.
+* draw::                        A Maxima-Gnuplot interface.
 * dynamics::                    Graphics for dynamical systems and fractals.
 * eval_string::                 Maxima expressions as strings.
 * f90::                         Maxima to fortran translator.
@@ -409,6 +410,11 @@ distrib
 * Introduction to distrib::
 * Definitions for continuous distributions::
 * Definitions for discrete distributions::
+
+draw
+
+* Introduction to draw::
+* Definitions for draw::
 
 dynamics
 
@@ -722,11 +728,15 @@ zeilberger
 @chapter diag
 @include diag.texi
 
-@node distrib, dynamics, diag, Top
+@node distrib, draw, diag, Top
 @chapter distrib
 @include distrib.texi
 
-@node dynamics, eval_string, distrib, Top
+@node draw, dynamics, distrib, Top
+@chapter draw
+@include draw.texi
+
+@node dynamics, eval_string, draw, Top
 @chapter dynamics
 @include dynamics.texi
 
