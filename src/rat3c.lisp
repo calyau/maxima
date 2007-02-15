@@ -9,38 +9,39 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :maxima)
+
 (macsyma-module rat3c)
 
 ;;	THIS IS THE NEW RATIONAL FUNCTION PACKAGE PART 3.
 ;;	IT INCLUDES THE GCD ROUTINES AND THEIR SUPPORTING FUNCTIONS
 
-;;(DECLARE-TOP (GENPREFIX A_3))
-
 (load-macsyma-macros ratmac)
 
-(declare-top (special $float $keepfloat $algebraic $ratfac *alpha)
-	     (special genvar))
-
+(declare-top (special $float $keepfloat $algebraic $ratfac *alpha genvar))
 
 ;; List of GCD algorithms.  Default one is first.
 (defmvar *gcdl* '($spmod $subres $ez $red $mod $algebraic))
 
 (defmvar $gcd (car *gcdl*))		;Sparse Modular
 
-(defun cgcd (a b) (cond (modulus 1)
-			((and $keepfloat (or (floatp a) (floatp b))) 1)
-			(t (gcd a b)))) 
+(defun cgcd (a b)
+  (cond (modulus 1)
+	((and $keepfloat (or (floatp a) (floatp b))) 1)
+	(t (gcd a b)))) 
 
-(defmfun pquotientchk (a b) (if (eqn b 1) a (pquotient a b)))
+(defmfun pquotientchk (a b)
+  (if (eqn b 1) a (pquotient a b)))
 
-(defun ptimeschk (a b) (cond ((eqn a 1) b) ((eqn b 1) a) (t (ptimes a b)))) 
+(defun ptimeschk (a b)
+  (cond ((eqn a 1) b)
+	((eqn b 1) a)
+	(t (ptimes a b)))) 
 
 (defun pfloatp (x)
-  (catch 'float (cond ((pcoefp x) (floatp x)) (t (pfloatp1 x)))))
+  (catch 'float (if (pcoefp x) (floatp x) (pfloatp1 x))))
 
 (defun pfloatp1 (x)
-  (mapc #'(lambda (q) (cond ((pcoefp q)
-			     (cond ((floatp q) (throw 'float t))))
+  (mapc #'(lambda (q) (cond ((pcoefp q) (when (floatp q) (throw 'float t)))
 			    ((pfloatp1 q))))
 	(cdr x))
   nil)
@@ -107,7 +108,7 @@
 	      (desetq (a . c) (lin-var-find (nreverse (pdegreevector x))
 					    (nreverse (pdegreevector y))
 					    (reverse genvar))))
-	 (cond ((f= a 1) (linhack x y (car c) (cadr c) cofac?))
+	 (cond ((= a 1) (linhack x y (car c) (cadr c) cofac?))
 	       (t (setq a (linhack y x a (cadr c) cofac?))
 		  (if (cdr a) (rplacd a (nreverse (cdr a))))
 		  a)))
@@ -123,10 +124,6 @@
 	((not (memq $gcd *gcdl*))
 	 (merror "`gcd' set incorrectly:~%~M" $gcd))
 	(t (list 1 x y))))
-
-;; (DEFUN PMINDEG (P) (IF (PCOEFP P) 0 (NXTTOLAST (CDR P))))
-
-;; (DEFUN PDEGRED (P N) (IF (ZEROP N) P (PQUOTIENT P (MAKE-POLY (P-VAR P) N 1))))
 
 (defun monomgcdco (p q cofac?)
   (let ((gcd (monomgcd p q)))
@@ -178,8 +175,8 @@
 	(return (list (car degl1) (car degl2) (car varl))))))
 
 (defun linhackcontent (var pol nonlindeg &aux (npol pol) coef gcd)
-  (do ((i nonlindeg (f1- i)))
-      ((f= i 0) (list (setq gcd (pgcd gcd npol)) (pquotient pol gcd)))
+  (do ((i nonlindeg (1- i)))
+      ((= i 0) (list (setq gcd (pgcd gcd npol)) (pquotient pol gcd)))
     (desetq (coef . npol) (bothprodcoef (make-poly var i 1) npol)) 
     (unless (pzerop coef)
       (setq gcd (if (null gcd) coef (pgcd coef gcd)))
@@ -203,8 +200,7 @@
     (setq s (pexpon*// (primpart
 			(if $algebraic s
 			    (pquotient s (pquotient (p-lc s)
-						    (pgcd (p-lc u)
-							  (p-lc v))))))
+						    (pgcd (p-lc u) (p-lc v))))))
 		       egcd t)))
   (setq s (ptimeschk s (pgcd x y)))
   (and $algebraic (not (pcoefp (setq u (leadalgcoef s))))
@@ -217,14 +213,14 @@
   (if (pcoefp p) 0
       (do ((d (cadr p) (gcd d (car l)))
 	   (l (cdddr p) (cddr l)))
-	  ((or (null l) (f= d 1)) d))))
+	  ((or (null l) (= d 1)) d))))
 
 (defun pexpon*// (p n *?)
-  (if (or (pcoefp p) (f= n 1)) p
+  (if (or (pcoefp p) (= n 1)) p
       (do ((ans (list (car p))
 		(cons (cadr l)
-		      (cons (if *? (f* (car l) n)
-				(// (car l) n))
+		      (cons (if *? (* (car l) n)
+				(truncate (car l) n))
 			    ans)))
 	   (l (cdr p) (cddr l)))
 	  ((null l) (nreverse ans)))))
@@ -251,11 +247,9 @@
 
 ;;*** THIS COMPUTES PSEUDO REMAINDERS
 
-;;(DECLARE (SPECIAL K LCU LCV) (FIXNUM K M I))
-
 (defun psquorem1 (u v quop)
   (prog (k (m 0) lcu lcv quo lc)
-     (declare (special k lcu lcv) (fixnum #-cl k m))
+     (declare (special k lcu lcv))
      (setq lcv (pt-lc v))
      (setq k (f- (pt-le u) (pt-le v)))
      (cond ((minusp k) (return (list 1 '(0 0) u))))
@@ -282,7 +276,7 @@
 (defmfun pgcd1 (u v) (caddr (psquorem1 u v nil)))
 
 (defun pgcd2 (u v &aux (i 0))
-  (declare (special k lcu lcv) (fixnum #-cl k i))
+  (declare (special k lcu lcv) (fixnum k i))
   (cond ((null u) (pcetimes1 v k lcu))
 	((null v) (pctimes1 lcv u))
 	((zerop (setq i (f+ (pt-le u) (f- k) (f- (car v)))))
@@ -292,8 +286,6 @@
 	((minusp i)
 	 (list* (f+ (pt-le v) k) (ptimes lcu (pt-lc v)) (pgcd2 u (pt-red v))))
 	(t (list* (pt-le u) (ptimes lcv (pt-lc u)) (pgcd2 (pt-red u) v)))))
-
-;;(DECLARE (UNSPECIAL K LCU LCV) (NOTYPE K M I))
 
 ;;;*** OLDCONTENT REMOVES ALL BUT MAIN VARIABLE AND PUTS THAT IN CONTENT
 ;;;***  OLDCONTENT OF 3*A*X IS 3*A (WITH MAINVAR=X)
@@ -377,8 +369,6 @@
   (do () ((pzerop q) (monize p))
     (psetq p q q (pmodrem p q))))
 
-;;(DECLARE (SPECIAL K Q* QUO) (FIXNUM K))
-
 (defun pmodrem (x y)
   (cond ((null modulus)
 	 (merror "Illegal use of `pmodrem'"))
@@ -400,14 +390,6 @@
 	(t (xcons (psimp (car u) (pgcdu1 (cdr u) (cdr v) t))
 		  (psimp (car u) quo)))))
 
-(comment (defun pmodrem (x y) (cond ((null modulus)
-				     (merror "Illegal use of `pmodrem'"))
-				    ((pacoefp y) 0)
-				    ((pacoefp x) x)
-				    ((eq (car x) (car y))
-				     (dpdisrep
-				      (dpmodrem (dprep x) (dprep y))))
-				    (t (merror "Illegal use of `pmodrem'")))))
 
 (defun pgcdu1 (u v pquo*)
   (let ((invv (painvmod (pt-lc v))) (k 0) q*)
@@ -419,7 +401,6 @@
 	   return (ptzero)
 	   finally (return u))))
 
-;;(DECLARE (UNSPECIAL K Q* QUO) (NOTYPE K))
 
 (defun newprime (p)
   (declare (special bigprimes))		;defined later on
@@ -428,7 +409,7 @@
 	       ((null pl) (setq p (fnewprime p))
 		(setq bigprimes (nconc bigprimes (list p)))
 		p)
-	     (if (f< (car pl) p) (return (car pl)))))))
+	     (if (< (car pl) p) (return (car pl)))))))
 
 (defun fnewprime (p)	     ; Finds biggest prime less than fixnum P.
   (do ((pp (if (oddp p) (f- p 2) (f- p 1)) (f- pp 2))) ((f< pp 0))
@@ -436,86 +417,46 @@
 
 ;; #O <form> reads <form> in octal (base 8)
 
-
 (defvar bigprimes nil)
 
-(eval-when (load)
+(eval-when
+    #+gcl (load)
+    #-gcl (:load-toplevel)
  
-  ;; it is convenient to have the bigprimes be actually less than
-  ;; half the size of the most positive fixnum, so that arithmetic is
-  ;; easier
-  #.(case most-positive-fixnum
-      (2147483647
-       '(setq bigprimes
-	 '(1073741789 1073741783 1073741741 1073741723 1073741719 1073741717
-	   1073741689 1073741671 1073741663 1073741651 1073741621 1073741567
-	   1073741561 1073741527 1073741503 1073741477 1073741467 1073741441
-	   1073741419 1073741399)
-	 ))
-      (1152921504606846975
-       '(setq bigprimes
-       '(576460752303423433 576460752303423389 576460752303423263
-         576460752303423061 576460752303422971 576460752303422881
-         576460752303422839 576460752303422801 576460752303422627
-         576460752303422617 576460752303422599 576460752303422557
-         576460752303422543 576460752303422533 576460752303422501
-         576460752303422479 576460752303422431 576460752303422429
-         576460752303422369 576460752303422309)
-       ))
-      ;; Could always use the following, but it takes several seconds to compute
-      ;; so if we want to autoload this file, it is tiresome.
-      (t '(do ((i 0 (f1+ i))	   ;GENERATES 20 LARGEST PRIMES < WORD
-	       (p (quotient most-positive-fixnum 2) (newprime p)))
-	   ((= i 20.)))))
+    ;; it is convenient to have the bigprimes be actually less than
+    ;; half the size of the most positive fixnum, so that arithmetic is
+    ;; easier
+    #.(case most-positive-fixnum
+	(2147483647
+	 '(setq bigprimes
+	   '(1073741789 1073741783 1073741741 1073741723 1073741719 1073741717
+	     1073741689 1073741671 1073741663 1073741651 1073741621 1073741567
+	     1073741561 1073741527 1073741503 1073741477 1073741467 1073741441
+	     1073741419 1073741399)))
+	(1152921504606846975
+	 '(setq bigprimes
+	   '(576460752303423433 576460752303423389 576460752303423263
+	     576460752303423061 576460752303422971 576460752303422881
+	     576460752303422839 576460752303422801 576460752303422627
+	     576460752303422617 576460752303422599 576460752303422557
+	     576460752303422543 576460752303422533 576460752303422501
+	     576460752303422479 576460752303422431 576460752303422429
+	     576460752303422369 576460752303422309)))
+	;; Could always use the following, but it takes several seconds to compute
+	;; so if we want to autoload this file, it is tiresome.
+	(t '(do ((i 0 (1+ i))
+		 (p (truncate most-positive-fixnum 2) (newprime p)))
+	     ((= i 20)))))
 
-  (setq *alpha (car bigprimes))
-  )
+    (setq *alpha (car bigprimes)))
 
 (defmvar *alpha (car bigprimes))
 
-;;#+MacLisp 
-;;(DEFMVAR BIGPRIMES
-;;      '(#O 377777777741 #O 377777777717 #O 377777777703 #O 377777777673
-;;	#O 377777777661 #O 377777777607 #O 377777777563 #O 377777777411
-;;	#O 377777777313 #O 377777777273 #O 377777777233 #O 377777777075
-;;	#O 377777777015 #O 377777776771 #O 377777776755 #O 377777776735
-;;	#O 377777776725 #O 377777776677 #O 377777776661 #O 377777776653))
+(defun leadcoefficient (p)
+  (if (pcoefp p) p (leadcoefficient (caddr p))))
 
-
-;;;; list of primes less than 2^30 -1  (limit of smallnums in Franz/vax)
-;;#+Franz 
-;;(defmvar bigprimes '(1073741789. 1073741783. 1073741741. 1073741723. 
-;;		  1073741719. 1073741717. 1073741689. 1073741671.
-;;		  1073741663. 1073741651. 1073741621. 1073741567. 
-;;		  1073741561. 1073741527. 1073741503. 1073741477.
-;;		  1073741467. 1073741441. 1073741419. 1073741399.))
-
-;;#+NIL
-;;(PROGN 'COMPILE
-;;;; It takes a lot longer to compute the 35 bit primes for the PDP-10,
-;;;; thats why they are wired-in there.
-;;(DEFMVAR BIGPRIMES
-;;  '(#o3777777775 #o3777777737 #o3777777725 #o3777777701 #o3777777667
-;;    #o3777777665 #o3777777643 #o3777777635 #o3777777607 #o3777777573
-;;    #o3777777557 #o3777777527 #o3777777511 #o3777777503 #o3777777475
-;;    #o3777777455 #o3777777433 #o3777777401 #o3777777361 #o3777777343))
-
-;;(DEFUN BIGPRIMES ()
-;;  (SETQ BIGPRIMES ())
-;;  (DO ((I 0 (f1+ I)) (P MOST-POSITIVE-FIXNUM (NEWPRIME P)))
-;;      ((= I 20.))))
-;;; wire it in for now. PRIMEP is losing. (BIGPRIMES)
-;;)
-
-;;#+CL
-;;(DO ((I 0 (f1+ I))				;GENERATES 20 LARGEST
-;;	     (P (LSH -1 -1) (NEWPRIME P)))		;PRIMES < WORD
-;;	    ((= I 20.)))
-
-
-(defun leadcoefficient (p) (if (pcoefp p) p (leadcoefficient (caddr p))))
-
-(defun maxcoefficient (p) (if (pcoefp p) (abs p) (maxcoef1 (cdr p))))
+(defun maxcoefficient (p)
+  (if (pcoefp p) (abs p) (maxcoef1 (cdr p))))
 
 (defun maxcoef1 (p)
   (if (null p) 0 (max (maxcoefficient (cadr p)) (maxcoef1 (cddr p)))))
@@ -526,10 +467,10 @@
 (defun norm (poly)
   (cond ((null poly) 0)
 	((pcoefp poly) (abs poly))
-	(t (plus (norm (caddr poly)) (norm1 (cdddr poly)) )) ))
+	(t (+ (norm (caddr poly)) (norm1 (cdddr poly)) )) ))
 
 (defun norm1 (poly)
-  (if (null poly) 0 (plus (norm (cadr poly)) (norm1 (cddr poly)) )) )
+  (if (null poly) 0 (+ (norm (cadr poly)) (norm1 (cddr poly)) )) )
 
 (defmfun pdegree (p var)
   (cond ((pcoefp p) 0)
@@ -549,7 +490,8 @@
 						  (list (p-var p) exp 1))))
 		finally (return ans)))))
 
-(defun univar (x) (or (null x) (and (pcoefp (pt-lc x)) (univar (pt-red x)))))
+(defun univar (x)
+  (or (null x) (and (pcoefp (pt-lc x)) (univar (pt-red x)))))
 
 ;;**THE CHINESE REMAINDER ALGORITHM IS A SPECIAL CASE OF LAGRANGE INTERPOLATION
 
