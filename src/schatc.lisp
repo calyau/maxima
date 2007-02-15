@@ -9,6 +9,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :maxima)
+
 (macsyma-module schatc)
 
 ;;;; I think this is described in Chapter 3 of J. Moses' thesis,
@@ -21,19 +22,18 @@
 ;;;; Schatchen is Yiddish for "matchmaker" and Schatchen here is a
 ;;;; pattern matching routine.
 
-#-nil
-(eval-when (eval compile)
-  (setq old-ibase *read-base* *read-base* 10.))
+(eval-when
+    #+gcl (eval compile)
+    #-gcl (:execute :compile-toplevel)
+    (setq old-ibase *read-base* *read-base* 10.))
 
-(declare-top(special
-	     ;;VAR
-	     splist dict ans *schatfactor bindlist speclist)
-	    (*lexpr $divide $factor)
-	    (genprefix schat))
+(declare-top (special splist dict ans *schatfactor bindlist speclist))
 
-(defmacro push-context () '(setq ans (cons nil ans)))
+(defmacro push-context ()
+  '(setq ans (cons nil ans)))
 
-(defmacro push-loop-context () '(rplacd ans (cons '*loop (cdr ans))))
+(defmacro push-loop-context ()
+  '(rplacd ans (cons '*loop (cdr ans))))
 
 (defmacro preserve (z)
   `(rplacd ans (cons (cons ,z (cdr ,z)) (cdr ans))))
@@ -41,65 +41,11 @@
 (defmacro add-to (var val)
   `(rplacd ans (cons (cons ,var ,val) (cdr ans))))
 
-(defmacro var-pat (x) `(atom (car ,x)))
+(defmacro var-pat (x)
+  `(atom (car ,x)))
 
 (setq *schatfactor nil)	 ;DETERMINES WHETHER FACTORING SHOULD BE USED.
 
-
-;;;
-;;;	VARIOUS MACROS WHICH PERMIT STAND-ALONE SCHATCHEN'S
-;;;	Stand-alone Schatchen's are only needed on ITS, so define them
-;;;	there only.
-
-#+its (progn 'compile
-
-	     (defun compiling macro (l)
-		    (and (boundp 'compiler-state)
-			 (not (eq compiler-state 'toplevel))))
-
-	     ;; If compiling or the function already defined, punt.
-
-	     (defmacro define (&rest l)
-	       (cond ((or (compiling) (fboundp (cadr l)))
-		      nil)
-		     (t (cons 'defun l))))
-
-	     (define mplusp (x)
-	       (and (null (atom x))
-		    (eq (caar x) 'mplus)))
-
-	     (define mtimesp (x)
-	       (and (null (atom x))
-		    (eq (caar x) 'mtimes)))
-
-	     (define mexptp (x)
-	       (and (null (atom x))
-		    (eq (caar x) 'mexpt)))
-
-	     (define free (e x)
-	       (cond ((equal e x) nil)
-		     ((atom e))
-		     ((do ((l (cdr e) (cdr l)))
-			  ((null l) t)
-			(or (free (car l) x)
-			    (return nil))))))
-
-	     (define alike (x y)
-	       (cond ((atom x) (equal x y))
-		     ((atom y) nil)
-		     (t (and (alike1 (car x) (car y))
-			     (alike (cdr x) (cdr y))))))
-
-	     (define alike1 (x y)
-	       (cond ((eq x y))
-		     ((atom x) (equal x y))
-		     ((atom y) nil)
-		     (t (and (eq (caar x) (caar y))
-			     (alike (cdr x) (cdr y))))))
-
-	     ) ;; End of ITS conditionalization
-
-
 ;;
 ;;VARIOUS SIMPLE PATTERNS
 ;;
@@ -108,21 +54,20 @@
   (declare (special var))
   (and (null (pzerop a)) (free a var)))
 
-(defun not-zero-free (a var) (declare (special var)) (free1 a))
+(defun not-zero-free (a var)
+  (declare (special var)) (free1 a))
 
 (defun linear* (e var)
   (declare(special var))
   (prog (a n)
      (setq n ($ratcoef e var))
-     (cond ((null (free n var))
-	    (return nil)))
+     (when (null (free n var))
+       (return nil))
      (setq a (simplus (list '(mplus) e (list '(mtimes) -1 n var)) 1 nil))
-     (return
-       (cond ((free a var) (cons a n))))))
+     (return (cond ((free a var) (cons a n))))))
 
 (defun dvcoe (e pat args)
   (m1 ($ratsimp (list '(mtimes) e args)) pat))
-
 
 ;;; SCHATCHEN pattern matcher.
 ;;;
@@ -214,6 +159,7 @@
 ;;; fails.  If no subexpressions remain in e, then (pred 1 arg1
 ;;; ... argn) is attempted.  If this succeeds, ((name . 1) is
 ;;; appended.
+
 (defmfun schatchen (e p)
   (m2 e p nil))
 
@@ -231,7 +177,7 @@
 
 (defmfun m2 (e p splist)
   ((lambda (ans)
-     (cond ((null (m1 (copy e) p)) nil)
+     (cond ((null (m1 (copy-tree e) p)) nil)
 	   ((null (cdr ans)))
 	   ((cdr ans))))
    (list nil)))
@@ -249,11 +195,11 @@
 		(restore1))
 	       ((restore))))
 	((atom (caar p))
-	 (cond ((memq 'simp (cdar p)) (alike1 e p))
-	       ((memq (caar p) '(mplus mtimes))
+	 (cond ((member 'simp (cdar p) :test #'eq) (alike1 e p))
+	       ((member (caar p) '(mplus mtimes) :test #'eq)
 		(loopp e p))
-	       ((memq (caar p) '(mexpt zepow)) (zepow e p t))
-	       ((and (not (atom e)) (eq (caar e) (caar p))) (eachp e p)) 
+	       ((member (caar p) '(mexpt zepow) :test #'eq) (zepow e p t))
+	       ((and (not (atom e)) (eq (caar e) (caar p))) (eachp e p))
 	       ((eq (caar p) 'coefft) (coefft e p t))
 	       ((eq (caar p) 'coeffpt) (coeffpt e p t))
 	       ((eq (caar p) 'coeffp) (coeffp e p t))
@@ -265,7 +211,7 @@
 	 (cond ((atom e) nil)		;NO OPERATOR TO MATCH
 	       ((prog2 (push-context)	;BIND THE CONTEXT
 		    (testa (caar p) (car e) nil)) ;TRY IT
-		(cond ((memq (caar e) '(mplus mtimes)) ;CHECK FOR COMMUTIVITY
+		(cond ((member (caar e) '(mplus mtimes) :test #'eq) ;CHECK FOR COMMUTIVITY
 		       (cond ((loopp e (cons (car e) (cdr p)))
 			      (restore1))
 			     ((restore))))
@@ -273,7 +219,7 @@
 		       (restore1))
 		      ((restore))))
 	       ((restore))))))
-
+
 (defun loopp (e p)
   (prog (x z)
      (setq e (cond  ((atom e) (list (car p) e))
@@ -285,13 +231,12 @@
 		    (e)))
      (push-context)
      (setq z p)
-     loop	(setq z (cdr z))
+     loop (setq z (cdr z))
      (cond ((null z)
-	    (return
-	      (cond ((null (cdr e)) (restore1))
-		    ((restore))))))
+	    (return (cond ((null (cdr e)) (restore1))
+			  ((restore))))))
      (setq x e)
-     l5	(cond ((null (cdr x)) 
+     l5	(cond ((null (cdr x))
 	       ((lambda (ident)
 		  (cond ((and ident (m1 ident (car z)))
 			 (go loop))
@@ -317,17 +262,17 @@
 	      ((eq (caaar z) 'coeffpp)
 	       (cond ((coefftt e (cadar z) nil 'mplus) (go loop))
 		     ((return (restore)))))
-	      ((memq (caaar z) '(mexpt zepow)) 
-	       (cond ((zepow (cadr x) (car z) t) 
+	      ((member (caaar z) '(mexpt zepow) :test #'eq)
+	       (cond ((zepow (cadr x) (car z) t)
 		      (sav&del x) (go loop))))
 	      ((eq (caaar z) 'loop)
 	       (cond ((sch-loop e (cdar z)) (go loop))
 		     ((return (restore)))))
-	      ((m1 (cadr x) (car z)) 
+	      ((m1 (cadr x) (car z))
 	       (sav&del x) (go loop)))
      (setq x (cdr x))
      (go l5)))
-
+
 ;;; IND = T MEANS AN INTERNAL CALL (USUALLY FROM LOOPP)
 
 (defun coeffp (e p ind)
@@ -354,7 +299,7 @@
 
 (defun coefft (e p ind)
   (push-context)
-  (cond ((and (null ind) (null (atom e)) (memq (caar e) '(mplus mtimes)))
+  (cond ((and (null ind) (null (atom e)) (member (caar e) '(mplus mtimes) :test #'eq))
 	 (do ((x e (cdr x)))
 	     ((null (cdr x))
 	      (cond ((m1 1 p) (restore2))
@@ -368,13 +313,13 @@
 	       ((restore))))
 	(t (coeffport (cond ((mtimesp e) e) ((list '(mtimes) e)))
 		      p 1 ind))))
-
+
 (defun coeffport (e p ident ind)
   (do ((z (cddr p) (cdr z))
        (x e e))
       ((null z)
        (coeffret e (cadr p) ident ind))
-   l	;;; EACH TIME HERE WE HAVR CDR'D DOWN THE EXP.
+   l	;;; EACH TIME HERE WE HAVE CDR'D DOWN THE EXP.
     (cond ((null (cdr x))
 	   (and (null (m1 ident (car z)))
 		(return (restore))))
@@ -412,9 +357,9 @@
   (do ((z (cond ((mplusp e) e) ((list '(mplus) e))))
        (zz (cons '(coefft) (cdr p)))) ;THIS ROUTINE IS THE ONE WHICH PUTS
 					;MOST OF THE THE GARBAGE ON ANS IT
-      ((null (cdr z))		       ;IT CANNOT USE THE SPLIST HACK 
+      ((null (cdr z))		       ;IT CANNOT USE THE SPLIST HACK
        (setq z (findit (cond ((eq (caadr p) 'var*) ;BECAUSE IT COULD BE USING
-			      (car (cddadr p)))	;MANY DIFFERENT VARIABLES ALTHOUGH 
+			      (car (cddadr p)))	;MANY DIFFERENT VARIABLES ALTHOUGH
 			     ((caadr p))))) ;THOUGHT THE FIRST IS THE ONLY ONE
        ((lambda (q fl)	       ;WHICH BECOMES A SUM AND MIGHT BE RESET
 	  (cond ((null (testa (cadr p) q fl))
@@ -428,7 +373,8 @@
     (cond ((null (m1 (cadr z) zz))	;THIS IS THE DO BODY
 	   (setq z (cdr z)))
 	  ((sav&del z)))))
-(defun zepow (e p fl)		    ;FL=NIL INDICATES A RECURSIVE CALL
+
+(defun zepow (e p fl)		    ;FL=NIL INDICATES A RECURSIVE CALL
     (and fl (push-context))		;SO ANS SHOULD NOT BE MARKED
     (cond ((atom e)
 	   (cond ((equal e 1)
@@ -471,7 +417,7 @@
 		    (m1 1 (caddr p))))
 	   (restore1))
 	  ((restore))))
-
+
 (defun eachp (e p)
   (cond ((= (length e) (length p))
 	 (push-context)
@@ -509,8 +455,8 @@
        (cond (res (setq res (cond ((cdr res) (cons (list opind) res))
 				  ((car res))))
 		  (cond ((and (eq (car pat) 'var*)
-			      (memq 'set (cadr pat)))
-			 (add-to (caddr pat) (set (caddr pat) (simplifya res nil))))
+			      (member 'set (cadr pat) :test #'eq))
+			 (add-to (caddr pat) (setf (symbol-value (caddr pat)) (simplifya res nil))))
 			((add-to (car pat) (simplifya res nil))))
 		  (cond (ind (restore1))
 			((restore2))))
@@ -522,17 +468,18 @@
 	   (setq res (cons (cadr z) res))
 	   (sav&del z))
 	  (t (setq z (cdr z))))))
-(defun restore nil
-    (do ((y (cdr ans) (cdr y)))
-	((null y) nil)
-      (cond ((eq (car y) '*loop)
-	     (rplaca y (cadr y))
-	     (rplacd y (cddr y)))
-	    ((null (car y))
-	     (setq ans y)
-	     (return nil))
-	    ((null (atom (caar y)))
-	     (rplacd (caar y) (cdar y))))))
+
+(defun restore nil
+  (do ((y (cdr ans) (cdr y)))
+      ((null y) nil)
+    (cond ((eq (car y) '*loop)
+	   (rplaca y (cadr y))
+	   (rplacd y (cddr y)))
+	  ((null (car y))
+	   (setq ans y)
+	   (return nil))
+	  ((null (atom (caar y)))
+	   (rplacd (caar y) (cdar y))))))
 
 (defun restore1 nil
   (do ((y ans) (l))			;L IS A LIST OF VAR'S NOTED
@@ -541,9 +488,9 @@
 	   (rplacd y (cddr y))		;SPLICE OUT THE CONTEXT MARKER
 	   (return t))
 	  ((not (atom (caadr y)))	;FIXUP NECESSARY
-	   (rplacd (caadr y) (cdadr y))	
+	   (rplacd (caadr y) (cdadr y))
 	   (rplacd y (cddr y)))
-	  ((memq (car y) l)	       ;THIS VAR HAS ALREADY BEEN SEEN
+	  ((member (car y) l :test #'eq)	       ;THIS VAR HAS ALREADY BEEN SEEN
 	   (rplacd y (cddr y)))	   ;SO SPLICE IT OUT TO KEEP ANS CLEAN
 	  ((setq y (cdr y)
 		 l (cons (caar y) l))))))
@@ -563,8 +510,9 @@
     (or (atom (caadr y))
 	(rplacd (caadr y) (cdadr y)))
     (rplacd y (cddr y))))
-		    ;WHEN THE CAR OF ALA IS VAR* THE CADR IS A LIST OF
-;;THE VARIOUS SWITCHES WHICH MAY BE SET.  
+
+;;WHEN THE CAR OF ALA IS VAR* THE CADR IS A LIST OF
+;;THE VARIOUS SWITCHES WHICH MAY BE SET.
 ;;UVAR- INDICATES THIS SHOULD MATCH SOMETHING WHICH IS ALREADY ON ANS.
 ;;SET - ACTUALLY SET THIS VARIABLE TO ITS VALUE IF IT MATCHES.
 ;;COEFFPT - SPECIAL ARGUMENT IF IN COEFFPT.
@@ -580,11 +528,11 @@
 	      (setq y (cond (uvar (m1 exp y))
 			    ((testa* ala exp nil))))
 	      (cond ((null y) nil)
-		    (set (set (car ala) exp))
+		    (set (setf (symbol-value (car ala)) exp))
 		    (y)))
 	   (cond ((eq (car z) 'set) (setq set t))
 		 ((eq (car z) 'uvar)
-		  (cond ((setq y (cdr (zl-assoc (car ala) ans)))
+		  (cond ((setq y (cdr (assoc (car ala) ans :test #'equal)))
 			 (setq uvar t))))
 		 ((eq (car z) 'coeffpt)
 		  (and (eq b 'coeffpt)
@@ -613,28 +561,28 @@
 			      (mapply (cadr ala)
 				      (findthem exp (cddr ala))
 				      (cadr ala)))))
-		      ((memq (caadr ala) '(lambda function *function quote))
+		      ((member (caadr ala) '(lambda function *function quote) :test #'eq)
 			     ;;;THE LAMBDA IS HERE ONLY BECAUSE OF SIN!!!
 		       (apply (cadr ala) (findthem exp (cddr ala))))
 		      ((eval-pred (cadr ala) (car ala) exp)))))
-	 (cond ((memq (car ala) splist))
+	 (cond ((member (car ala) splist :test #'eq))
 	       ((add-to (car ala) exp))))
 	((cond ((and loc (atom (cadr ala))
 		     (fboundp (cadr ala)))
-		(mapc #'(lambda (q v) (and (null (memq q splist))
+		(mapc #'(lambda (q v) (and (null (member q splist :test #'eq))
 					   (add-to q v)))
 		      (car ala)
 		      (apply (cadr ala) (findthem exp (cddr ala)))))))))
-
+
 (defun eval-pred (exp %var value)
   (progv (list %var) (list value)
     (eval exp)))
 
-(defun findthem (exp args)  
+(defun findthem (exp args)
   (cons exp
 	(mapcar #'(lambda (q)
 		    (cond ((atom q)
-			   (or (cdr (assq q ans))
+			   (or (cdr (assoc q ans :test #'eq))
 			       (eval q)))
 			  ( q )))
 		args)))
@@ -647,7 +595,8 @@
 	   (rplacd y (cddr y)))
 	  ((setq y (cdr y))))))
 
-(defun sch-replace (dict exp1) (replac exp1))
+(defun sch-replace (dict exp1)
+  (replac exp1))
 
 (defun replac (exp1)
   ((lambda (w1)
@@ -661,13 +610,14 @@
 			    exp1)
 			   ((simplifya (cons (list (caar exp1)) w1) t))))))
 	   ((numberp exp1) exp1)
-	   ((setq w1 (assq exp1 dict))
+	   ((setq w1 (assoc exp1 dict :test #'eq))
 	    (cdr w1))
 	   (exp1)))
    nil))
-#-nil
+
 (declare-top (unspecial var splist dict ans bindlist speclist))
 
-#-nil
-(eval-when (eval compile) (setq *read-base* old-ibase))
-
+(eval-when
+    #+gcl (eval compile)
+    #-gcl (:execute :compile-toplevel)
+    (setq *read-base* old-ibase))
