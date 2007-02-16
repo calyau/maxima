@@ -1421,8 +1421,11 @@ Returns the transpose of @var{M}.
 If @var{M} is a matrix, the return value is another matrix @var{N}
 such that @code{N[i,j] = M[j,i]}.
 
-Otherwise @var{M} is a list, and the return value is a matrix @var{N}
+If @var{M} is a list, the return value is a matrix @var{N}
 of @code{length (m)} rows and 1 column, such that @code{N[i,1] = M[i]}.
+
+Otherwise @var{M} is a symbol,
+and the return value is a noun expression @code{'transpose (@var{M})}.
 
 @end deffn
 
