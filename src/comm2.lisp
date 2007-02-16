@@ -68,10 +68,10 @@
 	    (mul2* pow (list '(mncexpt) base* (add2 pow -1))))
 	   ((ml-typep pow 'fixnum)
 	    ((lambda (deriv ans)
-	       (do ((i 0 (f1+ i))) ((= i pow))
+	       (do ((i 0 (1+ i))) ((= i pow))
 		 (setq ans (cons (list '(mnctimes) (list '(mncexpt) base* i)
 				       (list '(mnctimes) deriv
-					     (list '(mncexpt) base* (f- pow 1 i))))
+					     (list '(mncexpt) base* (- pow 1 i))))
 				 ans)))
 	       (addn ans nil))
 	     (sdiff base* x) nil))
@@ -90,7 +90,7 @@
 
 (defmfun stotaldiff (e)
   (cond ((or (mnump e) (constant e)) 0)
-	((or (atom e) (memq 'array (cdar e)))
+	((or (atom e) (member 'array (cdar e) :test #'eq))
 	 (let ((w (mget (if (atom e) e (caar e)) 'depends)))
 	   (if w (cons '(mplus)
 		       (mapcar #'(lambda (x)
@@ -118,7 +118,7 @@
 	 (if (not (maxima-constantp (car e)))
 	     (union* (ncons (car e)) (extractvars (cdr e)))
 	     (extractvars (cdr e))))
-	((memq 'array (cdaar e)) (union* (ncons (car e)) (extractvars (cdr e))))
+	((member 'array (cdaar e) :test #'eq) (union* (ncons (car e)) (extractvars (cdr e))))
 	(t (union* (extractvars (cdar e)) (extractvars (cdr e))))))
 
 ;;;; AT
@@ -144,11 +144,11 @@
 	  (improper-arg-err (cons '(mlist) vl) '$atvalue)))
     (setq eqs (if (eq (caar eqs) 'mequal) (list eqs) (cdr eqs)))
     (setq eqs (do ((eqs eqs (cdr eqs)) (l)) ((null eqs) l)
-		(if (not (memq (cadar eqs) vl))
+		(if (not (member (cadar eqs) vl :test #'eq))
 		    (improper-arg-err (car eqs) '$atvalue))
 		(setq l (nconc l (ncons (cons (cadar eqs) (caddar eqs)))))))
     (setq vl (do ((vl vl (cdr vl)) (l)) ((null vl) l)
-	       (setq l (nconc l (ncons (cdr (or (assq (car vl) eqs)
+	       (setq l (nconc l (ncons (cdr (or (assoc (car vl) eqs :test #'eq)
 						(cons nil munbound))))))))
     (do ((atvalues (mget fun 'atvalues) (cdr atvalues)))
 	((null atvalues)
@@ -163,7 +163,7 @@
   (atscan (let ((atp t)) ($substitute ateqs exp))))
 
 (defun atscan (exp)
-  (cond ((or (atom exp) (memq (caar exp) '(%at mrat))) exp)
+  (cond ((or (atom exp) (member (caar exp) '(%at mrat) :test #'eq)) exp)
 	((eq (caar exp) '%derivative)
 	 (or (and (not (atom (cadr exp)))
 		  (let ((vl (cdadr exp)) dl)
@@ -174,7 +174,7 @@
 			    (cdr ($substitute ateqs (cons '(mlist) vl)))
 			    dl)))
 	     (list '(%at) exp ateqs)))
-	((memq (caar exp) dummy-variable-operators) (list '(%at) exp ateqs))
+	((member (caar exp) dummy-variable-operators :test #'eq) (list '(%at) exp ateqs))
 	((at1 exp))
 	(t (recur-apply #'atscan exp))))
 
@@ -205,7 +205,7 @@
 
 (defun logcon (e)
   (cond ((atom e) e)
-	((memq (caar e) '(mplus mtimes))
+	((member (caar e) '(mplus mtimes) :test #'eq)
 	 (if (and $superlogcon (not (lgcsimplep e))) (setq e (lgcsort e)))
 	 (cond ((mplusp e) (lgcplus e)) ((mtimesp e) (lgctimes e)) (t (logcon e))))
 	(t (recur-apply #'logcon e))))
@@ -275,7 +275,7 @@
   (let (num denom)
     (cond ((atom e) e)
 	  ((and (eq (caar e) '%log)
-		(setq num (zl-member ($num (cadr e)) '(1 -1)))
+		(setq num (member ($num (cadr e)) '(1 -1) :test #'equal))
 		(not (equal (setq denom ($denom (cadr e))) 1)))
 	   (list '(mtimes simp) -1
 		 (list '(%log simp) (if (= (car num) 1) denom (neg denom)))))
@@ -302,10 +302,10 @@
 		  (let ((num ($num e)))
 		    (and (not (alike1 e num))
 			 (or (eq num '$%i)
-			     (and (not (atom num)) (memq '$%i num)
-				  (memq '$%i (rtcon num)))))))
+			     (and (not (atom num)) (member '$%i num :test #'eq)
+				  (member '$%i (rtcon num) :test #'eq))))))
 	     (setq e (list* (car e) -1 '((mexpt) -1 ((rat simp) -1 2))
-			    (delq '$%i (copy-top-level (cdr e)) 1))))
+			    (delete '$%i (copy-list (cdr e)) :count 1 :test #'eq))))
 	 (do ((x (cdr e) (cdr x)) (roots) (notroots) (y))
 	     ((null x)
 	      (cond ((null roots) (subst0 (cons '(mtimes) (nreverse notroots)) e))
@@ -351,7 +351,7 @@
 ;;		     (<term> <numer>)) etc)
 
 (defun rt-separ (a roots)
-  (let ((u (zl-assoc (car a) roots)))
+  (let ((u (assoc (car a) roots :test #'equal)))
     (cond (u (nconc u (cdr a))) (t (setq roots (cons a roots)))))
   roots)
 
@@ -385,13 +385,13 @@
 	((atom e) 1)
 	((eq (caar e) 'mtimes)
 	 (if (equal -1 (cadr e)) (setq e (cdr e)))
-	 (do ((l (cdr e) (cdr l)) (c 1 (times c ($nterms (car l)))))
+	 (do ((l (cdr e) (cdr l)) (c 1 (* c ($nterms (car l)))))
 	     ((null l) c)))
 	((eq (caar e) 'mplus)
-	 (do ((l (cdr e) (cdr l)) (c 0 (plus c ($nterms (car l)))))
+	 (do ((l (cdr e) (cdr l)) (c 0 (+ c ($nterms (car l)))))
 	     ((null l) c)))
 	((and (eq (caar e) 'mexpt) (integerp (caddr e)) (plusp (caddr e)))
-	 ($binomial (plus (caddr e) ($nterms (cadr e)) -1) (caddr e)))
+	 ($binomial (+ (caddr e) ($nterms (cadr e)) -1) (caddr e)))
 	((specrepp e) ($nterms (specdisrep e)))
 	(t 1)))
 
@@ -440,7 +440,7 @@
 	  ((and (free x '$%i) (eq (setq signx ($sign x)) '$pos))
 	   (simplifya (list '(%atan) (div y x)) t))
 	  ((and (eq signx '$neg) (free y '$%i)
-		(memq (setq signy ($sign y)) '($pos $neg)))
+		(member (setq signy ($sign y)) '($pos $neg) :test #'eq))
 	   (add2 (simplifya (list '(%atan) (div y x)) t)
 		 (porm (eq signy '$pos) (simplify '$%pi))))
 	  ((and (eq signx '$zero) (eq signy '$zero))
@@ -518,7 +518,7 @@
 (defun rembox1 (e)
   (cond ((atom e) e)
 	((or (and (eq (caar e) 'mbox)
-		  (or (equal label '(nil)) (memq label '($unlabelled $unlabeled))))
+		  (or (equal label '(nil)) (member label '($unlabelled $unlabeled) :test #'eq)))
 	     (and (eq (caar e) 'mlabox)
 		  (or (equal label '(nil)) (equal label (caddr e)))))
 	 (rembox1 (cadr e)))
@@ -529,10 +529,7 @@
 ;;;; MAPF
 
 
-(declare-top				;#-NIL (SPLITFILE MAPF)
- (special scanmapp)
-					;#-cl (*LEXPR SCANMAP1)
- )
+(declare-top (special scanmapp))
 
 (defmspec $scanmap (l)
   (let ((scanmapp t)) (resimplify (apply #'scanmap1 (mmapev l)))))
@@ -582,16 +579,13 @@
 
 (defun dsfunc1 (dsn dso)
   (cond ((or (atom dso) (atom (car dso))) dso)
-	((memq 'array (car dso))
+	((member 'array (car dso) :test #'eq)
 	 (cond ((eq 'mqapply (caar dso))
 		(nconc (list (car dso) (cadr dso) dsn) (cddr dso)))
 	       (t (nconc (list (car dso) dsn) (cdr dso)))))
 	(t (mapcar #'(lambda (d) (dsfunc1 dsn d)) dso))))
 
 ;;;; GENMAT
-
-;;(DECLARE-TOP #-NIL (SPLITFILE GENMAT)
-;;	 (FIXNUM DIM1 DIM2))
 
 (defmfun $genmatrix n
   (let ((args (listify n)))
@@ -601,7 +595,6 @@
 		 (and (not (atom (car args)))
 		      (eq (caaar args) 'lambda))))
 	(improper-arg-err (car args) '$genmatrix))
-					;(MEMQ NIL (MAPCAR #'(LAMBDA (U) (EQ (TYPEP U) 'FIXNUM)) (CDR ARGS)))
     (if (notevery #'fixnump (cdr args))
 	(merror "Invalid arguments to `genmatrix':~%~M"
 		(cons '(mlist) (cdr args))))
@@ -615,9 +608,9 @@
 	    ((or (> i dim1) (> j dim2))
 	     (merror "Invalid arguments to `genmatrix':~%~M"
 		     (cons '(mlist) args))))
-      (do ((i i (f1+ i))) ((> i dim1)) (nconc l (ncons (ncons '(mlist)))))
-      (do ((i i (f1+ i)) (l (cdr l) (cdr l))) ((> i dim1))
-	(do ((j j (f1+ j))) ((> j dim2))
+      (do ((i i (1+ i))) ((> i dim1)) (nconc l (ncons (ncons '(mlist)))))
+      (do ((i i (1+ i)) (l (cdr l) (cdr l))) ((> i dim1))
+	(do ((j j (1+ j))) ((> j dim2))
 	  (nconc (car l) (ncons (meval (list header i j))))))
       l)))
 
@@ -637,20 +630,18 @@
 
 ;;;; ADDROW
 
-;;(DECLARE-TOP #-NIL (SPLITFILE ADDROW))
-
 (defmfun $addrow n
   (cond ((= n 0) (wna-err '$addrow))
 	((not ($matrixp (arg 1))) (merror "First argument to `addrow' must be a matrix"))
 	((= n 1) (arg 1))
-	(t (do ((i 2 (f1+ i)) (m (arg 1))) ((> i n) m)
+	(t (do ((i 2 (1+ i)) (m (arg 1))) ((> i n) m)
 	     (setq m (addrow m (arg i)))))))
 
 (defmfun $addcol n
   (cond ((= n 0) (wna-err '$addcol))
 	((not ($matrixp (arg 1))) (merror "First argument to `addcol' must be a matrix"))
 	((= n 1) (arg 1))
-	(t (do ((i 2 (f1+ i)) (m ($transpose (arg 1)))) ((> i n) ($transpose m))
+	(t (do ((i 2 (1+ i)) (m ($transpose (arg 1)))) ((> i n) ($transpose m))
 	     (setq m (addrow m ($transpose (arg i))))))))
 
 (defun addrow (m r)
@@ -666,8 +657,6 @@
 
 ;;;; ARRAYF
 
-;;(DECLARE-TOP #-NIL (SPLITFILE ARRAYF))
-
 (defmfun $arraymake (ary subs)
   (cond ((or (not ($listp subs)) (null (cdr subs)))
 	 (merror "Wrong type argument to `arraymake':~%~M" subs))
@@ -675,11 +664,9 @@
 	 (cons (cons (getopr ary) '(array)) (cdr subs)))
 	(t (cons '(mqapply array) (cons ary (cdr subs))))))
 
-;;(DEFMACRO $ARRAYINFO (ARY)
-;;  `(arrayinfo-aux ',ary (safe-value ,ary)))
-
-(defmspec $arrayinfo (ary) (setq ary (cdr ary)) 
-	  (arrayinfo-aux (car ary) (getvalue (car ary))))
+(defmspec $arrayinfo (ary)
+  (setq ary (cdr ary)) 
+  (arrayinfo-aux (car ary) (getvalue (car ary))))
 
 (defun arrayinfo-aux (sym val)
   (prog
@@ -703,8 +690,7 @@
 			 '$declared
 			 ;; they don't want more info (array-type arra)
 			 (length (setq dims (array-dimensions arra)))
-			 (cons '(mlist) (mapcar #'1- dims))))))
-	      ))
+			 (cons '(mlist) (mapcar #'1- dims))))))))
 	   (t
 	    (let ((gen (mgetl  sym '(hashar array))) ary1)
 	      (cond ((null gen) (merror "Not an array - `arrayinfo':~%~M" ary))
@@ -713,11 +699,11 @@
 		     (setq gen (mgetl ary '(hashar array)))))
 	      (setq ary1 (cadr gen))
 	      (cond ((eq (car gen) 'hashar)
-		     #+cl (setq ary1 (symbol-array ary1))
+		     (setq ary1 (symbol-array ary1))
 		     (return
 		       (append '((mlist simp) $hashed)
 			       (cons (aref ary1 2)
-				     (do ((i 3 (f1+ i)) (l)
+				     (do ((i 3 (1+ i)) (l)
 					  (n (cadr (arraydims ary1))))
 					 ((= i n) (sort l
 							#'(lambda (x y) (great y x))))
@@ -731,74 +717,23 @@
 		    (t (setq ary1 (arraydims ary1))
 		       (return (list '(mlist simp)
 				     (cond ((safe-get ary 'array)
-					    (cdr (assq (car ary1)
+					    (cdr (assoc (car ary1)
 						       '((t . $complete) (fixnum . $integer)
-							 (flonum . $float)))))
+							 (flonum . $float)) :test #'eq)))
 					   (t '$declared))
 				     (length (cdr ary1))
 				     (cons '(mlist simp) (mapcar #'1- (cdr ary1))))))))))))
 
 
-
-
-
-
-;;(DEFMSPEC $ARRAYINFO (ARY) (SETQ ARY (CDR ARY))
-;;  (cond ($use_fast_arrays
-;;	 (setq ary (symbol-value (car ary)))
-;;	 (cond ((arrayp ary)
-;;		(let (dims)(list '(mlist) (array-type ary)
-;;				  (length (setq dims (array-dimensions ary)))
-;;				  (cons '(mlist) dims))))
-;;	       (#-cl(ml-typep ary 'si:equal-hash-table )
-;;		#+cl (hash-table-p ary)
-;;		(list '(mlist) '$hash_table 1
-;;		      (cons '(mlist)
-;;			    (let (all-keys )
-;;			      (declare (special all-keys))
-;;			      (maphash #'(lambda (u v) 
-;;					   (declare (special all-keys)) v ;ignore
-;;					   (setq all-keys (cons u all-keys)))
-;;				       ary)
-;;			      all-keys))))
-;;	       (t (fsignal "Use_fast_arrays is true and the argument of arrayinfo is not a hash-table or an array"))))
-;;	(t
-;;	 (LET ((GEN (MGETL (SETQ ARY (CAR ARY)) '(HASHAR ARRAY))) ARY1)
-;;	   (COND ((NULL GEN) (MERROR "Not an array - `arrayinfo':~%~M" ARY))
-;;		 ((MFILEP (CADR GEN))
-;;		  (I-$UNSTORE (NCONS ARY))
-;;		  (SETQ GEN (MGETL ARY '(HASHAR ARRAY)))))
-;;	   (SETQ ARY1 (CADR GEN))
-;;	   (COND ((EQ (CAR GEN) 'HASHAR)
-;;		  (APPEND '((MLIST SIMP) $HASHED)
-;;			  (CONS (FUNCALL ARY1 2)
-;;				(DO ((I 3 (f1+ I)) (L) (N (CADR (ARRAYDIMS ARY1))))
-;;				    ((= I N) (SORT L #'(LAMBDA (X Y) (GREAT Y X))))
-;;				  (DO L1 (FUNCALL ARY1 I) (CDR L1) (NULL L1)
-;;				      (SETQ L (CONS (CONS '(MLIST SIMP) (CAAR L1))
-;;						    L)))))))
-;;		 (T (SETQ ARY1 (ARRAYDIMS ARY1))
-;;		    (LIST '(MLIST SIMP)
-;;			  (COND ((safe-GET ARY 'array)
-;;				 (CDR (ASSQ (CAR ARY1)
-;;					    '((T . $COMPLETE) (FIXNUM . $INTEGER)
-;;					      (FLONUM . $FLOAT)))))
-;;				(T '$DECLARED))
-;;			  (LENGTH (CDR ARY1))
-;;			  (CONS '(MLIST SIMP) (MAPCAR #'1- (CDR ARY1))))))))))
-
 ;;;; ALIAS
 
-(declare-top				;#-NIL (SPLITFILE ALIAS)
- (special aliaslist aliascntr greatorder lessorder)
-					;(FIXNUM ALIASCNTR)
- )
+(declare-top (special aliaslist aliascntr greatorder lessorder))
 
 (defmspec $makeatomic (l) (setq l (cdr l))
 	  (do ((l l (cdr l)) (bas) (x)) ((null l) '$done)
 	    (if (or (atom (car l))
-		    (not (or (setq x (memq (caaar l) '(mexpt mncexpt)))
-			     (memq 'array (cdaar l)))))
+		    (not (or (setq x (member (caaar l) '(mexpt mncexpt) :test #'eq))
+			     (member 'array (cdaar l) :test #'eq))))
 		(improper-arg-err (car l) '$makeatomic))
 	    (if x (setq bas (cadar l) x (and (atom (caddar l)) (caddar l)))
 		(setq bas (caaar l) x (and (atom (cadar l)) (cadar l))))
@@ -808,7 +743,7 @@
 			      (implode
 			       (nconc (exploden bas)
 				      (or (and x (exploden x)) (ncons '| |))
-				      (cons '$ (mexploden (setq aliascntr (f1+ aliascntr)))))))
+				      (cons '$ (mexploden (setq aliascntr (1+ aliascntr)))))))
 			aliaslist))))
 
 (defmspec $ordergreat (l)
@@ -820,107 +755,33 @@
   (makorder (setq lessorder (cdr l)) '|#|))
 
 (defun makorder (l char)
-  (do ((l l (cdr l)) (n 101 (f1+ n))) ((null l) '$done)
+  (do ((l l (cdr l))
+       (n 101 (1+ n)))
+      ((null l) '$done)
     (alias (car l)
 	   (implode (nconc (ncons char) (mexploden n)
 			   (exploden (stripdollar (car l))))))))
 
 (defmfun $unorder nil
-  (let ((l (delq nil
+  (let ((l (delete nil
 		 (cons '(mlist simp)
-		       (nconc (mapcar #'(lambda (x) (remalias (getalias x)))
-				      lessorder)
-			      (mapcar #'(lambda (x) (remalias (getalias x)))
-				      greatorder))))))
+		       (nconc (mapcar #'(lambda (x) (remalias (getalias x))) lessorder)
+			      (mapcar #'(lambda (x) (remalias (getalias x))) greatorder)))
+		 :test #'eq)))
     (setq lessorder nil greatorder nil)
     l))
 
 ;;;; CONCAT
 
-;;(DECLARE-TOP #-NIL (SPLITFILE CONCAT)
-;;	 (NOTYPE (ASCII-NUMBERP FIXNUM)))
-
 (defmfun $concat (&rest l)
-  (if (null l) (merror "`concat' needs at least one argument."))
-  (getalias
-   (implode
-    (cons (cond ((not (atom (car l))))
-		((or (numberp (car l)) (char= (getcharn (car l) 1) #\&)) #\&)
-		(t #\$))
-	  (mapcan #'(lambda (x)
-		      (if (not (atom x))
-			  (merror "Argument to `concat' not an atom: ~M" x))
-		      (string* x))
-		  l)))))
-
-;; this function is undocumented and cryptic
-;; it is obviously maldefined
-;;(DEFMFUN $GETCHAR (X Y)
-;; (LET ((N 0))
-;;      (COND ((NOT (SYMBOLP X))
-;;	     (MERROR "1st argument to `getchar' not a symbol: ~M" X))
-;;	    ((OR (NOT (FIXNUMP Y)) (NOT (> Y 0)))
-;;	     (MERROR "Incorrect 2nd argument to `getchar': ~M" Y))
-;;	    ((char= (SETQ N (GETCHARN (FULLSTRIP1 X) Y)) 0) NIL)
-;;	    ((char= (GETCHARN X 1) '#\&) (IMPLODE (LIST #\& N)))
-;;	    ((ASCII-NUMBERP N) (f- (char-code N) (char-code #\0)))
-;;	    (T (IMPLODE (LIST #\$ N))))))
-
-;;;; ITS TTYINIT
-
-;;#+ITS
-;;(DECLARE-TOP (SPLITFILE TTYINI)
-;;	 (SPECIAL $PAGEPAUSE LINEL $LINEL SCROLLP TTYHEIGHT $PLOTHEIGHT
-;;		  SMART-TTY RUBOUT-TTY 12-BIT-TTY CURSORPOS PLASMA-TTY
-;;		  DISPLAY-FILE CHARACTER-GRAPHICS-TTY))
-
-;;#+ITS
-;;(DEFMFUN $TTY_INIT NIL 
-;;  (SETQ $PAGEPAUSE (= 0 (BOOLE  BOOLE-AND (CADDR (STATUS TTY)) #. (f* 1 (^ 2 25.)))))
-;;		; bit 3.8 (%TSMOR) of TTYSTS
-;;  (SETQ $LINEL (SETQ LINEL (LINEL T)))
-;;  (SETQ SCROLLP (NOT (= 0 (BOOLE  BOOLE-AND (CADDR (STATUS TTY)) #. (f* 1 (^ 2 30.))))))
-;;  (SETQ TTYHEIGHT (CAR (STATUS TTYSIZE))
-;;	$PLOTHEIGHT (IF (< TTYHEIGHT 200.) (f- TTYHEIGHT 2) 24.))
-;;  (LET ((TTYOPT (CAR (CDDDDR (SYSCALL 6 'CNSGET TYO)))))
-;;		; %TOFCI (bit 3.4) = terminal has a 12 bit keyboard.
-;;    (SETQ 12-BIT-TTY (NOT (= (BOOLE  BOOLE-AND #. (f* 8 (^ 2 18.)) TTYOPT) 0)))
-;;		; %TOMVU (bit 3.9) = terminal can do vertical cursor movement.
-;;		; However, we must also make sure that the screen size
-;;		; is within the ITS addressing limits.
-;;    (SETQ SMART-TTY (AND (NOT (= (BOOLE  BOOLE-AND #. (f* 256. (^ 2 18.)) TTYOPT) 0))
-;;			 (< TTYHEIGHT 200.)
-;;			 (< LINEL 128.)))
-;;		; %TOERS (bit 4.6) = terminal can selectively erase.
-;;		; %TOMVB (bit 4.4) = terminal can backspace.
-;;		; %TOOVR (bit 4.1) = terminal can overstrike (i.e. printing one
-;;		;		      character on top of another causes both 
-;;		;		      to appear.)
-;;    (SETQ RUBOUT-TTY
-;;	  (OR (NOT (= (BOOLE  BOOLE-AND #. (f* 32. (^ 2 27.)) TTYOPT) 0))	  ;%TOERS
-;;	      (AND (NOT (= (BOOLE  BOOLE-AND #. (f* 8. (^ 2 27.)) TTYOPT) 0))	  ;%TOMVB
-;;		   (= (BOOLE  BOOLE-AND #. (f* 1 (^ 2 27.)) TTYOPT) 0))))	  ;%TOOVR
-;;		; %TOCID (bit 3.1) = terminal can insert and delete characters.
-;;		; If the console has a 12-bit keyboard, an 85 by 50 screen, and
-;;		; can't ins/del characters, then it must be a Plasma console.
-;;    (SETQ PLASMA-TTY
-;;	  (AND 12-BIT-TTY (= LINEL 84.) (= TTYHEIGHT 50.)
-;;	       (= 0 (BOOLE  BOOLE-AND #. (f* 1 (^ 2 18.)) TTYOPT)))))
-;;  (SETQ CURSORPOS SMART-TTY)
-;;  (IF SMART-TTY (SETQ DISPLAY-FILE (OPEN '|TTY:| '(TTY OUT IMAGE BLOCK))))
-;;  (COND (PLASMA-TTY (LOAD '((DSK MACSYM) ARDS)))
-;;	((OR (= TTY 13.) (JOB-EXISTS 'H19) (JOB-EXISTS 'H19WHO))
-;;	 (LOAD '((DSK MACSYM) H19)))
-;;	((JOB-EXISTS 'VT100) (LOAD '((DSK MACSYM) VT100)))
-;;	(T (SETQ CHARACTER-GRAPHICS-TTY NIL)
-;;	   (REMPROP 'CG-D-PRODSIGN 'SUBR)
-;;	   (REMPROP 'CG-D-SUMSIGN 'SUBR)))
-;;  '$DONE)
-
-;;#+ITS
-;;(DEFUN JOB-EXISTS (JNAME) (PROBE-FILE (LIST '(USR *) (STATUS UNAME) JNAME)))
-
-
-;; Undeclarations for the file:
-;;#-NIL
-;;(DECLARE-TOP (NOTYPE N I J))
+  (when (null l)
+    (merror "`concat' needs at least one argument."))
+  (getalias (implode
+	     (cons (cond ((not (atom (car l))))
+			 ((or (numberp (car l)) (char= (getcharn (car l) 1) #\&)) #\&)
+			 (t #\$))
+		   (mapcan #'(lambda (x)
+			       (unless (atom x)
+				 (merror "Argument to `concat' not an atom: ~M" x))
+			       (string* x))
+			   l)))))
