@@ -9,12 +9,12 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :maxima)
+
 (macsyma-module solve)
 
 (load-macsyma-macros ratmac strmac)
 
-(declare-top (genprefix v_)
-	     (special var-list expsumsplit $dispflag $nolabels checkfactors *g
+(declare-top (special var-list expsumsplit $dispflag $nolabels checkfactors *g
 		      $algebraic equations ;List of E-labels
 		      *power *varb *flg $derivsubst $numer $float
 		      $%emode wflag genvar genpairs varlist broken-not-freeof
@@ -26,9 +26,7 @@
 		      *has*var *var $dontfactor $linenum $linechar
 		      linelable $keepfloat $ratfac
 		      errrjfflag  ;A substitute for condition binding.
-		      lsolveflag xm* xn* mul* solvexp)
-	     (array* (notype xa* 2))
-	     (fixnum thisn $linenum))
+		      lsolveflag xm* xn* mul* solvexp))
 
 (defmvar $breakup t
   "Causes solutions to cubic and quartic equations to be expressed in
@@ -73,19 +71,8 @@
 (defmvar $solveradcan nil
   "SOLVE will use RADCAN which will make SOLVE slower but will allow
 	 certain problems containing exponentials and logs to be solved.")
-
+
 ;; Utility macros
-
-;; In MacLisp, this turns into SUBRCALL if we are compiling, FUNCALL if
-;; interpreted.  In LMLisp and other random systems, just turn into FUNCALL.
-
-#+maclisp
-(defmacro subr-funcall (function . args)
-  (cond ((status feature complr) `(subrcall nil ,function . ,args))
-	(t `(funcall ,function . ,args))))
-
-#-maclisp
-(defmacro subr-funcall (function . args) `(funcall ,function . ,args))
 
 ;; This macro returns the number of trivial equations.  It counts up the
 ;; number of zeros in a list.
@@ -95,14 +82,13 @@
 	(zcount 0))
     ((null l) zcount)
     (if (and (integerp (car l)) (zerop (car l)))
-	(increment zcount))))
+	(incf zcount))))
 
 ;; This is only called on a variable.
 
 (defmacro allroot (exp)
   `(setq *failures (list* (make-mequal-simp ,exp ,exp) 1 *failures)))
 
-
 ;; Finds variables, changes equations into expressions without MEQUAL.
 ;; Checks for consistency between the number of unknowns and equations.
 ;; Calls SOLVEX for simultaneous equations and SSOLVE for a single equation.
@@ -117,8 +103,8 @@
 	   (cond ((atom *eql) (ncons *eql))
 		 ((eq (g-rep-operator *eql) 'mlist)
 		  (mapcar 'meqhk (mapcar 'meval (cdr *eql))))
-		 ((memq (g-rep-operator *eql)
-			'(mnotequal mgreaterp mlessp mgeqp mleqp))
+		 ((member (g-rep-operator *eql)
+			'(mnotequal mgreaterp mlessp mgeqp mleqp) :test #'eq)
 		  (merror "Cannot solve inequalities. -`solve'"))
 		 (t (ncons (meqhk *eql)))))
 
@@ -167,7 +153,7 @@
 		  ~%Equations given:  ~%~M"
 		   u e)))))
 
-
+
 ;; Removes anything from its list arg which solve considers not to be a
 ;; variable, i.e.  constants, functions or subscripted variables without
 ;; numeric args.
@@ -175,8 +161,8 @@
 (defun remc (lst)
   (do ((l lst (cdr l)) (fl) (vl)) ((null l) vl)
     (cond ((atom (setq fl (car l)))
-	   (or (maxima-constantp fl) (setq vl (cons fl vl))))
-	  ((andmapc #'$constantp (cdr fl)) (setq vl (cons fl vl))))))
+	   (unless (maxima-constantp fl) (push fl vl)))
+	  ((andmapc #'$constantp (cdr fl)) (push fl vl)))))
 
 ;; List of multiplicities.  Why is this special?
 
@@ -191,22 +177,20 @@
 	  (t (solve exp *var 1)
 	     (cond ((not (or *roots *failures)) (make-mlist))
 		   ($programmode
-		    (prog1 (make-mlist-l
-			    (nreverse
-			     (map2c #'(lambda (eqn mult) (push mult multi) eqn)
-				    (if $solveexplicit
-					*roots
-					(nconc *roots *failures)))))
-		      (setq $multiplicities
-			    (make-mlist-l (nreverse multi)))))
+		    (prog1
+			(make-mlist-l (nreverse (map2c #'(lambda (eqn mult) (push mult multi) eqn)
+						       (if $solveexplicit
+							   *roots
+							   (nconc *roots *failures)))))
+		      (setq $multiplicities (make-mlist-l (nreverse multi)))))
 		   (t (when (and *failures (not $solveexplicit))
-			(if $dispflag (mtell "The roots of:~%"))
+			(when $dispflag (mtell "The roots of:~%"))
 			(solve2 *failures))
 		      (when *roots
-			(if $dispflag (mtell "Solution:~%"))
+			(when $dispflag (mtell "Solution:~%"))
 			(solve2 *roots))
 		      (make-mlist-l equations)))))))
-
+
 ;; Solve takes three arguments, the expression to solve for zero, the variable
 ;; to solve for, and what multiplicity this solution is assumed to have (from
 ;; higher-level Solve's).  Solve returns NIL.  Isn't that useful?  The lists
@@ -217,21 +201,19 @@
 
 ;; Factors expression and reduces exponents by their gcd (via solventhp)
 
-(defmfun solve (*exp *var mult
-		     &aux (genvar nil)
-		     ($derivsubst nil)
+(defmfun solve (*exp *var mult &aux (genvar nil) ($derivsubst nil)
 		     (exp (float2rat (mratcheck *exp)))
-		     (*myvar *var)
-		     ($savefactors t))
+		     (*myvar *var) ($savefactors t))
   (prog (factors *has*var genpairs $dontfactor temp symbol *g checkfactors 
 	 varlist expsumsplit)
-     (let (($ratfac t)) (setq exp (ratdisrep (ratf exp))))
-					; Cancel out any simple 
-					; (non-algebraic) common factors in numerator and 
-					; denominator without altering the structure of the 
-					; expression too much.
-					; Also, RJFPROB in TEST;SOLVE TEST is now solved.
-					; - JPG
+     (let (($ratfac t))
+       (setq exp (ratdisrep (ratf exp))))
+     ;; Cancel out any simple 
+     ;; (non-algebraic) common factors in numerator and 
+     ;; denominator without altering the structure of the 
+     ;; expression too much.
+     ;; Also, RJFPROB in TEST;SOLVE TEST is now solved.
+     ;; - JPG
      a (cond ((atom exp)
 	      (cond ((eq exp *var)
 		     (solve3 0 mult))
@@ -368,14 +350,8 @@
 
 (defun measure (f alist set &aux (sum 0))
   (dolist (element set)
-    (increment sum (funcall f (cdr (assq element alist)))))
+    (incf sum (funcall f (cdr (assoc element alist :test #'eq)))))
   sum)
-
-;; (defun MEASURE (F AL S)
-;;        (do ((j 0 (f1+ j))
-;;	       (sum 0))
-;;	   ((= j (length S))  sum)
-;;	   (setq sum (f+ sum (funcall F (cdr (assoc (nth j S) al)))))))
 
 ;; Named for uniqueness only
 
@@ -391,17 +367,18 @@
 ;; sample space S. (what the '&%%#?& has this got to do with SOLVE?) 
 
 (defun extend (f l1 l2 s)
-  (do ((j 0 (f1+ j))
+  (do ((j 0 (1+ j))
        (value nil))
       ((= j (length s)) value)
     (setq value (cons (cons (nth j s)
-			    (funcall f (cdr (zl-assoc (nth j s) l1))
-				     (cdr (zl-assoc (nth j s) l2))))
+			    (funcall f (cdr (assoc (nth j s) l1 :test #'equal))
+				     (cdr (assoc (nth j s) l2 :test #'equal))))
 		      value))))
 
 ;; For the case where the value of assoc is NIL, we will need a special "+"
 
-(defun +mset (a b) (f+ (or a 0) (or b 0)))
+(defun +mset (a b)
+  (+ (or a 0) (or b 0)))
 
 ;; To recursively looks through a list
 ;; structure (the VLIST) for members of the SET appearing in the MACSYMA 
@@ -409,9 +386,9 @@
 ;; frequencies. Notice the use of EXTEND.
 
 (defun operator-frequency-table (vlist set)
-  (do ((j 0 (f1+ j))
+  (do ((j 0 (1+ j))
        (it)
-       (assl (do ((k 0 (f1+ k))
+       (assl (do ((k 0 (1+ k))
 		  (made nil))
 		 ((= k (length set)) made)
 	       (setq made (cons (cons (nth k set) 0)
@@ -526,7 +503,7 @@
 		      (t (return nil)))))
 	     (t nil)))))
 
-
+
 ;;; DISPATCHING FUNCTION ON DEGREE OF EXPRESSION
 ;;; This is a crock of shit, it should be data driven and be able to
 ;;; dispatch to all manner of special cases that are in a table.
@@ -674,12 +651,10 @@
 			 varlist))
 	   (list (car w) (rdis (cdr w1)) (rdis (cdr w2))))))
 
-(declare-top (muzzled t))
 (defun solventh1 (l) 
   (cond ((null l) nil)
 	(t (cons (quotient (car l) *g)
 		 (cons (cadr l) (solventh1 (cddr l)))))))
-(declare-top (muzzled nil))
 
 ;; Will decompose or factor
 
@@ -698,7 +673,6 @@
 
 ;; Solves the special case A*F(X)^N+B.
 
-(declare-top (muzzled t))
 (defun solvespec (exp $%emode) 
   (prog (a b c) 
      (setq a (pdis (caddr exp)))
@@ -710,12 +684,10 @@
 			 (simpnrt (div* b a) (cadr exp))
 			 (make-rat 1 (cadr exp))
 			 (cadr exp)))))
-(declare-top (muzzled nil))
 
 (defun solvespec1 (var root n thisn) 
-  (do ((thisn thisn (f1- thisn))) ((zerop thisn))
-    (solve (add* var (mul* -1 root
-			   (power* '$%e (mul* 2 '$%pi '$%i thisn n))))
+  (do ((thisn thisn (1- thisn))) ((zerop thisn))
+    (solve (add* var (mul* -1 root (power* '$%e (mul* 2 '$%pi '$%i thisn n))))
 	   *var mult)))
 
 
@@ -764,7 +736,7 @@
 		  (push (make-mequal-simp *myvar exp) *failures))
 		 (t (usolve exp (g-rep-operator *myvar)))))))
 
-
+
 ;; Solve a linear equation.  Argument is a polynomial in pseudo-cre form.
 ;; This function is called for side-effect only.
 
@@ -780,7 +752,6 @@
 ;; The code for handling the case where the discriminant = 0 seems to never
 ;; be run.  Presumably, the expression is factored higher up.
 
-(declare-top (muzzled t))
 (defun solvequad (exp &aux discrim a b c)
   (setq a (caddr exp))
   (setq b (pterm (cdr exp) 1.))
@@ -799,7 +770,6 @@
 		     mult)
 	     (solve3 (fullratsimp `((mquotient) ((mplus) ,b ((mminus) ,discrim)) ,a))
 		     mult)))))
-(declare-top (muzzled nil))
 
 ;; Reorders V so that members which contain the variable of
 ;; interest come first.
@@ -810,7 +780,7 @@
     (mapc #'(lambda (z) 
 	      (cond ((broken-freeof *var z)
 		     (setq *u (cons z *u))
-		     (setq *v (zl-delete z *v 1)))))
+		     (setq *v (delete z *v :count 1 :test #'equal)))))
 	  v)
     (setq $dontfactor *u)
     (setq *has*var *v)
@@ -860,8 +830,7 @@
 		    (t (go fail))))
 	     ((setq inverse (get op '$inverse))
 	      (when (and $solvetrigwarn
-			 (memq op '(%sin %cos %tan %sec
-				    %csc %cot %cosh %sech)))
+			 (member op '(%sin %cos %tan %sec %csc %cot %cosh %sech) :test #'eq))
 		(mtell "~&`solve' is using arc-trig functions to get ~
 			    a solution.~%Some solutions will be lost.~%")
 		(setq $solvetrigwarn nil))
@@ -885,7 +854,6 @@
        (not $programmode)
        (not (free exp 'mplus))))
 
-(declare-top (muzzled t))
 (defun rootsort (l) 
   (prog (a fm fm1) 
    g1   (cond ((null l) (return nil)))
@@ -893,29 +861,23 @@
    (setq fm1 (cdr fm))
    loop (cond ((null (cddr fm)) (setq l (cddr l)) (go g1))
 	      ((alike1 (caddr fm) a)
-	       (rplaca fm1 (plus (car fm1) (cadddr fm)))
+	       (rplaca fm1 (+ (car fm1) (cadddr fm)))
 	       (rplacd (cdr fm) (cddddr fm))
 	       (go loop)))
    (setq fm (cddr fm))
    (go loop)))
-(declare-top (muzzled nil))
-
-;; Stuff moving in from MAT to get it out of core.
 
 (defmfun $linsolve (eql varl)
   (let (($ratfac))
-    (setq eql (cond (($listp eql) (cdr eql))
-		    (t (ncons eql))))
-    (setq varl (cond (($listp varl) (remred (cdr varl)))
-		     (t (ncons varl))))
-    (do ((varl varl (cdr varl))) ((null varl))
-      (cond ((mnump (car varl))
-	     (merror "Unacceptable variable to `solve': ~M"
-		     (car varl)
-		     ))))
-    (cond ((null varl) (make-mlist-simp))
-	  (t (solvex (mapcar 'meqhk eql) varl (not $programmode) nil)))
-    ))
+    (setq eql (if ($listp eql) (cdr eql) (ncons eql)))
+    (setq varl (if ($listp varl) (remred (cdr varl)) (ncons varl)))
+    (do ((varl varl (cdr varl)))
+	((null varl))
+      (when (mnump (car varl))
+	(merror "Unacceptable variable to `solve': ~M" (car varl))))
+    (if (null varl)
+	(make-mlist-simp)
+	(solvex (mapcar 'meqhk eql) varl (not $programmode) nil))))
 
 ;; REMRED removes any repetition that may be in the variables list
 ;; The NREVERSE is significant here for some reason?
@@ -928,10 +890,8 @@
      (setq *varl varl)
      (setq solvexp flag)
      (setq lsolveflag t)
-     (setq eql
-	   (mapcar #'(lambda (x) ($ratdisrep ($ratnumer x)))
-		   eql))
-     (cond ((atom (let ((errrjfflag  t))
+     (setq eql (mapcar #'(lambda (x) ($ratdisrep ($ratnumer x))) eql))
+     (cond ((atom (let ((errrjfflag t))
 		    (catch 'raterr (formx flag 'xa* eql varl))))
 	    ;; This flag is T if called from SOLVE
 	    ;; and NIL if called from LINSOLVE.
@@ -945,18 +905,16 @@
 	 (if $solve_inconsistent_error
 	     (merror "Inconsistent equations:  ~A" (cadr ans))
 	     (return '((mlist simp)))))
-     (do ((j 0 (f1+ j)))
+     (do ((j 0 (1+ j)))
 	 ((> j xm*))
        ;;I put this in the value cell--wfs 
-					; (STORE ( XA* 0 J) NIL))
-       (store (arraycall t xa* 0 j) nil))
+       (setf (aref xa* 0 j) nil))
      (ptorat 'xa* xn* xm*)
      (setq varl
 	   (xrutout 'xa* xn* xm* 
 		    (mapcar #'(lambda (x) (ith varl x))
 			    (caddr ans))
 		    ind))
-     (*rearray 'xa*)
      (if $programmode
 	 (setq varl (make-mlist-l (linsort (cdr varl) *varl))))
      (return varl)))
@@ -967,5 +925,4 @@
 (defun linsort (meq-list var-list)
   (mapcar #'(lambda (x) (cons (caar meq-list) x))
 	  (sortcar (mapcar #'cdr meq-list)
-		   #'(lambda (x y)
-		       (zl-member y (zl-member x var-list))))))
+		   #'(lambda (x y) (member y (member x var-list :test #'equal) :test #'equal)))))
