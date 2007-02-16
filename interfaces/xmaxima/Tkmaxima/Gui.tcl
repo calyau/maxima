@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Gui.tcl,v 1.3 2006-07-29 09:26:59 villate Exp $
+#       $Id: Gui.tcl,v 1.4 2007-02-16 06:19:29 robert_dodier Exp $
 #
 
 object_class MAXGui {
@@ -73,7 +73,7 @@ object_class MAXGui {
 	pack $fr.bottom -side bottom -fill x
 
 	text $w -yscrollcommand "$fr.scroll set" \
-	    	-selectbackground "#808080"
+	    	-selectbackground yellow
 	set maxima_priv($w,inputTag) input
 	resetMaximaFont $w
 	scrollbar $fr.scroll -command "$w yview"
@@ -84,6 +84,7 @@ object_class MAXGui {
 	$w mark gravity lastStart left
 	bind $w <Configure> "resizeSubPlotWindows $w %w %h; resizeMaxima $w %w %h"
 
+	$w configure -background white
 	$w configure -foreground {#009900}
 	$w tag configure input -foreground blue
 	$w tag configure output -foreground black
