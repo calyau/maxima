@@ -144,8 +144,11 @@
 		  (boundp '*socket-connection*))
 		 (progn
 		   (setq input-stream *standard-input*)
-		   (setq *mread-prompt* nil)
-		   (setq r (dbm-read input-stream nil eof))))
+           (if batch-or-demo-flag
+             (return '$done)
+             (progn
+               (setq *mread-prompt* nil)
+               (setq r (dbm-read input-stream nil eof))))))
 
 	     (cond ((and (eq r eof) (boundp '*socket-connection*)
 			 (eq input-stream *socket-connection*))
@@ -455,9 +458,6 @@
 
 (defmfun $ed (x)
   (ed (maxima-string x))) 
- 
-(defmfun $cli ()
-  (merror "Not implemented!") )
  
 (defun nsubstring (x y)
   (subseq x y)) 
