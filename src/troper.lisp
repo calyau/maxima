@@ -9,15 +9,12 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :maxima)
-(macsyma-module troper)
 
+(macsyma-module troper)
 
 (transl-module troper)
 
 ;;; The basic OPERATORS properties translators.
-
-
-(declare-top (muzzled t))	 ; TURN OFF CLOSED COMPILATION MESSAGE
 
 (def%tr mminus (form)
   (setq form (translate (cadr form)))
@@ -32,7 +29,6 @@
 		`($rational quote ((rat) ,(f- (car form)) ,(cadr form))))
 	       (t `($rational rtimes -1 ,(cdr form)))))
 	(t `($any . (*mminus ,(cdr form))))))
-(declare-top (muzzled nil))
 
 (def%tr mplus (form)
   (let   (args mode)
@@ -46,14 +42,12 @@
 	  ((eq '$number mode) `($number plus . ,(mapcar 'cdr args)))
 	  (t `($any add* . ,(mapcar 'dconvx args))))))
 
-
 (defun nestify (op l)
   (do ((l (cdr l) (cdr l)) (nl (car l))) ((null l) nl)
     (setq nl (list op nl (car l)))))
-
+
 (def%tr mtimes (form)
-  (let
-      (args mode)
+  (let (args mode)
     (cond
       ((equal -1 (cadr form))
        (translate `((mminus) ((mtimes) . ,(cddr form)))))
@@ -75,15 +69,16 @@
 	  mode (*union-mode (car arg1) (car arg2))
 	  arg1 (dconv arg1 mode) arg2 (dconv arg2 mode))
     (cond ((eq '$float mode)
-	   (setq arg1 (if (zl-member arg1 '(1 1.0)) (list arg2)
+	   (setq arg1 (if (member arg1 '(1 1.0) :test #'equal)
+			  (list arg2)
 			  (list arg1 arg2)))
 	   `($float //$ . ,arg1))
 	  ((and (eq mode '$fixnum) $tr_numer)
 	   `($float . (//$ (float ,arg1) (float ,arg2))))
-	  ((memq mode '($fixnum $rational))
+	  ((member mode '($fixnum $rational) :test #'eq)
 	   `($rational rremainder ,arg1 ,arg2))
 	  (t `($any div ,arg1 ,arg2)))))
-
+
 (defvar $tr_exponent nil "If True it allows translation of x^n to generate (expt $x $n) if $n is fixnum and $x is fixnum, or number" )
 
 (def%tr mexpt (form)
@@ -102,13 +97,9 @@
 		      ;; this form numerical hackers at translate time
 		      ;; where it does the most good. -gjc
 		      `($float . (^$ (float ,(cdr bas)) ,exp)))
-		     ;; This next optimization was just plain wrong!
-		     ;; -gjc
-		     ;;((MEMQ (CAR BAS) '($FIXNUM $NUMBER))
-		     ;;`($NUMBER EXPT ,(CDR BAS) ,EXP))
-		     #+cl ;;It seems to me we can do this,
+		     ;;It seems to me we can do this,
 		     ;; although 2^-3 would result in a "cl rat'l number"
-		     ((and $tr_exponent (memq (car bas) '($fixnum $number)))
+		     ((and $tr_exponent (member (car bas) '($fixnum $number) :test #'eq))
 		      `($number expt ,(cdr bas) ,exp))
 		     (t `($any power ,(cdr bas) ,exp))))
 	      ((and (eq '$float (car bas))
@@ -121,37 +112,27 @@
 				 (t `($float expt$ (sqrt ,(cdr bas)) ,exp))))
 			  ((eq 'rat (caar (caddr exp)))
 			   `($float expt ,(cdr bas) ,($float (caddr exp)))))))
-	      ;; See bug 771218.  This causes maxima to think that
-	      ;; (-1)^(0.5) is a float and uses cl:expt.  But the
-	      ;; result is not a float, and calling cl:expt returns a
-	      ;; Lisp complex number, which confuses maxima.
-	      #+nil
-	      ((and (covers '$number (car bas)) (covers '$number (car exp)))
-	       `(,(*union-mode (car bas) (car exp)) expt ,(cdr bas) ,(cdr exp)))
 	      (t `($any power ,(cdr bas) ,(cdr exp)))))))
 
+(def%tr rat (form)
+  `($rational . ',form))
 
-
-(def%tr rat (form) `($rational . ',form))
-
-(def%tr bigfloat (form) `($any . ',form))
-
-
+(def%tr bigfloat (form)
+  `($any . ',form))
 
 (def%tr %sqrt (form)
   (setq form (translate (cadr form)))
   (if (eq '$float (car form)) `($float sqrt ,(cdr form))
       `($any simplify (list '(%sqrt) ,(cdr form)))))
-
+
 (def%tr mabs (form) 
   (setq form (translate (cadr form)))
   (if (covers '$number (car form)) (list (car form) 'abs (cdr form))
       `($any simplify (list '(mabs) ,(dconvx form)))))
 
-
 (def%tr %signum (form)
   (destructuring-let (( (mode . arg) (translate (cadr form))))
-    (cond ((memq mode '($fixnum $float))
+    (cond ((member mode '($fixnum $float) :test #'eq)
 	   (let ((temp (tr-gensym)))
 	     `($fixnum . ((lambda (,temp)
 			    (declare (,(if (eq mode '$float)	
@@ -185,7 +166,7 @@
 ;; just to show the kind of brain damage...
 ;;(DEF%TR %SIGNUM (FORM)
 ;;   (SETQ FORM (TRANSLATE (CADR FORM)))
-;;   (COND ((MEMQ (CAR FORM) 
+;;   (COND ((MEMber (CAR FORM) 
 ;;	  (LET   ((X (CDR FORM)) (MODE (CAR FORM))
 ;;		    (ONE 1) (MINUS1 -1) (ZERO 0) (VAR '%%N)
 ;;		    (DECLARE-TYPE 'FIXNUM) COND-CLAUSE)
@@ -195,7 +176,7 @@
 ;;				      ((PLUSP ,X)  ,ONE)
 ;;				      (T ,ZERO)))
 ;;	     (IF (ATOM (CDR FORM)) `(,MODE . ,COND-CLAUSE)
-;;		 (ADDL `(,DECLARE-TYPE ,VAR) DECLARES)
+;;		 (PUSHNEW `(,DECLARE-TYPE ,VAR) DECLARES)
 ;;		 `(,MODE (LAMBDA (,VAR) ,COND-CLAUSE) ,X))))
 ;;	 (T `($ANY SIMPLIFY (LIST '(%SIGNUM) ,(CDR FORM))))))
 
@@ -203,7 +184,7 @@
 (def%tr $entier (form) 
   (setq form (translate (cadr form)))
   (cond ((eq '$fixnum (car form)) form)
-        ((memq (car form) '($float $number))
+        ((member (car form) '($float $number) :test #'eq)
 	 (if (eq 'sqrt (cadr form)) `($fixnum $isqrt ,(caddr form))
 	     `($fixnum fix ,(cdr form))))
         (t `(,(if (eq (car form) '$rational) '$fixnum '$any)
@@ -213,8 +194,6 @@
   (setq form (translate (cadr form)))
   (if (covers '$float (car form)) (cons '$float (dconv-$float form))
       `($any $float ,(cdr form))))
-
-
 
 (def%tr $exp (form)
   (setq form (translate (cadr form)))
@@ -233,4 +212,3 @@
   (let   ((x (translate (car form))))
     (if (eq '$float (car x)) `($float atan1 ,(cdr x))
 	`($any simplify (list '(%atan) ,(cdr x))))))
-
