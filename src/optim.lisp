@@ -7,17 +7,15 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :maxima)
+
 ;;	** (c) Copyright 1982 Massachusetts Institute of Technology **
 
 (macsyma-module optim)
 
 (declare-top (special vars setqs optimcount xvars)
-	     (fixnum n (opt-hash))
-	     (array* (notype (subexp 1)))
-	     #-nil (unspecial args))
+	     (unspecial args))
 
-;;(ARRAY *SUBEXP* T 64.)
-(defvar *subexp* (*array nil t 64.))
+(defvar *subexp* (make-array 64))
 
 (defmvar $optimprefix '$%)
 
@@ -33,15 +31,14 @@
        (setq optimcount 0 xvars (cdr ($listofvars x0)))
        (fillarray *subexp* '(nil))
        (setq x (collapse (opformat (collapse x0))))
-       (if (atom x) (return x))
+       (when (atom x) (return x))
        (comexp x)
        (setq x (optim x))
        (return (prog1 (cond ((null vars) x0)
 			    (t (if (or (not (eq (caar x) 'mprog))
 				       (and ($listp (cadr x)) (cdadr x)))
 				   (setq x (nreverse (cons x setqs)))
-				   (setq x ;(NCONC (NREVERSE SETQS) (CDDR X))
-					 (nreconc setqs (cddr x))))
+				   (setq x (nreconc setqs (cddr x))))
 			       `((mprog simp) ((mlist) . ,(nreverse vars)) . ,x)))
 		 (fillarray *subexp* '(nil)))))))
 
@@ -100,30 +97,30 @@
 		 ((null l))
 	       (if (not (eq (collapse (car l)) (car l)))
 		   (rplaca l (collapse (car l))))
-	       (setq n (fixnum-remainder (f+ (opt-hash (car l)) n) 12553.)))
-	     (setq n (logand 63. n))
+	       (setq n (rem (+ (opt-hash (car l)) n) 12553.)))
+	     (setq n (logand 63 n))
 	     (do ((l (aref *subexp* n) (cdr l)))
-		 ((null l) (store (aref *subexp* n) (cons (list x) (aref *subexp* n))) x)
+		 ((null l) (setf (aref *subexp* n) (cons (list x) (aref *subexp* n))) x)
 	       (if (alike1 x (caar l)) (return (caar l))))))))
 
 (defun comexp (x)
   (if (not (or (atom x) (eq (caar x) 'rat)))
       (let ((n (opt-hash (caar x))))
-	(dolist (u (cdr x)) (setq n (fixnum-remainder (f+ (opt-hash u) n) 12553.)))
+	(dolist (u (cdr x)) (setq n (rem (+ (opt-hash u) n) 12553.)))
 	(setq x (assol x (aref *subexp* (logand 63. n))))
 	(cond ((null (cdr x)) (rplacd x 'seen) (mapc #'comexp (cdar x)))
 	      (t (rplacd x 'comexp))))))
 
 (defun optim (x)
   (cond ((atom x) x)
-	((and (memq 'array (cdar x))
+	((and (member 'array (cdar x) :test #'eq)
 	      (not (eq (caar x) 'mqapply))
 	      (not (mget (caar x) 'arrayfun-mode)))
 	 x)
 	((eq (caar x) 'rat) x)
 	(t (let ((n (opt-hash (caar x))) (nx (list (car x))))
 	     (dolist (u (cdr x))
-	       (setq n (fixnum-remainder (f+ (opt-hash u) n) 12553.)
+	       (setq n (rem (+ (opt-hash u) n) 12553.)
 		     nx (cons (optim u) nx)))
 	     (setq x (assol x (aref *subexp* (logand 63. n))) nx (nreverse nx))
 	     (cond ((eq (cdr x) 'seen) nx)
@@ -134,30 +131,21 @@
 		   (t (cdr x)))))))
 
 (defun opt-hash (exp)		   ; EXP is in general representation.
-  (fixnum-remainder (if (atom exp)
-			(sxhash exp)
-			(do ((n (opt-hash (caar exp)))
-			     (args (cdr exp) (cdr args)))
-			    ((null args) n)
-			  (setq n (fixnum-remainder (f+ (opt-hash (car args)) n) 12553.))))
-		    12553.))   ; a prime number < 2^14 ; = PRIME(1500)
+  (rem (if (atom exp)
+	   (sxhash exp)
+	   (do ((n (opt-hash (caar exp)))
+		(args (cdr exp) (cdr args)))
+	       ((null args) n)
+	     (setq n (rem (+ (opt-hash (car args)) n) 12553.))))
+       12553.))		       ; a prime number < 2^14 ; = PRIME(1500)
 
 
 (defun getoptimvar ()
   (loop with var
-	 do
-	 (increment optimcount)
-	 (setq var
-	       #-(or nil cl) (intern  (maknam (nconc (exploden $optimprefix)
-						     (mexploden optimcount))))
-	       #+cl (make-symbol
-		     (format nil "~A~D"
-			     $optimprefix optimcount))
-	       #+nil (symbolconc $optimprefix optimcount))
-	 while (memq var xvars)
-	 finally
-	 (setq vars (cons var vars))
-	 (return var)))
-
-
-
+     do
+     (incf optimcount)
+     (setq var (make-symbol (format nil "~A~D" $optimprefix optimcount)))
+     while (member var xvars :test #'eq)
+     finally
+     (push var vars)
+     (return var)))
