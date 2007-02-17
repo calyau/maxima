@@ -727,6 +727,7 @@
 ;;     key
 ;;     function_style
 ;;     fill_type
+;;     point_type
 ;; Note: implements a clon of draw2d (plot.lisp) with some
 ;;       mutations to fit the draw environment.
 ;;       Read source in plot.lisp for more information
@@ -792,12 +793,11 @@
            ($dots
                (setf pltcmd (format nil "'-' ~a w d ~a" 
                                         (make-obj-title (get-option '$key))    
-                                        (get-option '$line_type)))  ))
+                                        (get-option '$point_type)))  ))
         (make-gr-object
            :name   'explicit
            :command pltcmd
            :points  (list (cons 2 result))) )))
-
 
 
 
@@ -816,6 +816,7 @@
 ;;     key
 ;;     filled_function
 ;;     fill_type
+;;     point_type
 ;; Note: taken from implicit_plot.lisp
 
 (defvar pts ())
@@ -935,7 +936,7 @@
        ($dots
            (setf pltcmd (format nil "'-' ~a w d ~a" 
                                     (make-obj-title (get-option '$key))    
-                                    (get-option '$line_type)))  ))
+                                    (get-option '$point_type)))  ))
     (make-gr-object
        :name   'implicit
        :command pltcmd
