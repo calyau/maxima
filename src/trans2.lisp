@@ -11,6 +11,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :maxima)
+
 ;;; TRANSLATION PROPERTIES FOR MACSYMA OPERATORS AND FUNCTIONS.
 
 ;;; This file is for list and array manipulation optimizations.
@@ -40,7 +41,6 @@
 ;;; avoid indirection through the property list to get to the
 ;;; array.
 
-#+cl
 (defvar $translate_fast_arrays t )
 ;;When $translate_fast_arrays and $use_fast_arrays are true
 ;;there should only be two types of arrays and they should be stored on
@@ -59,7 +59,7 @@
 
 
 ;;acceptable arguments to ar[i] or ar[i]:val
-#+cl
+
 (defun lispm-marray-type (ar)
   (cond ((arrayp ar) 'array)
 	( (hash-table-p ar) 'hash-table)
@@ -68,52 +68,23 @@
 	((symbolp ar) 'symbol)
 	(t nil)))
 
-#+nil
-(defun tr-maset (ar val  inds)
-  `(nil maset ,val ,ar  ,@ inds))
-
-#+cl
 (defun tr-maset (ar val  inds)
   ;; Top-level forms need to define the variable first.
   (if *macexpr-top-level-form-p* 
       `(nil progn (defvar ,ar ',ar) (maset ,val ,ar  ,@ inds))
       `(nil maset ,val ,ar  ,@ inds)))
 
-#+(and nil cl)
-(defun maset1 ( val ar  &rest inds &aux  )
-  (cl:let
-      ((.type. (#. *primitive-data-type-function*  ar)))
-    (cond
-      ((one-of-types .type. (make-array 3))
-       (setf (apply #'aref ar inds)  val))
-      ((one-of-types .type. (make-hash-table :test 'equal))
-       (setf (gethash (if (cdr inds) (copy-rest inds) (car inds))
-		      ar)
-	     val))
-      ((one-of-types .type.  'a)
-       (error "must set the hash table outside")
-       )
-      ((and (= (length inds) 1)
-	    (or ($listp ar) ($matrixp ar)))
-       (setf (nth (car inds) ar) val) val)
-      ((and ($matrixp ar)
-	    (= (length inds) 2))
-       (setf (nth (second inds) (nth  (car inds) ar)) val) val)
-      (t (error "not a valid array reference to ~A" ar)))))
-
-#+cl
 (defun maset1 ( val ar  &rest inds &aux  )
   (cond
     ((and (typep ar 'cl:array)
 	  (= (length inds) (cl:array-rank ar)))
      (setf (apply #'aref ar inds)  val))
     ((typep ar 'cl:hash-table)
-     (setf (gethash (if (cdr inds) (copy-rest inds) (car inds))
+     (setf (gethash (if (cdr inds) (copy-list inds) (car inds))
 		    ar)
 	   val))
     ((symbolp ar)
-     (error "must set the hash table outside")
-     )
+     (error "must set the hash table outside"))
     ((and (= (length inds) 1)
 	  (or ($listp ar) ($matrixp ar)))
      (setf (nth (car inds) ar) val) val)
@@ -159,33 +130,10 @@
 ;;	 ((symbolp ,ar)`((,ar ,@ (copy-list ,inds))))))
 
 ;;in maref in transl now
-#+cl
+
 (defun tr-maref (ar inds)
   `(nil maref , ar ,@ (copy-list inds)))
 
-#+(and nil cl)
-(defun maref1 (ar  &rest inds &aux )
-  (let ((.type. (#. *primitive-data-type-function*  ar)))
-    (cond
-      ((typep ar 'cl:array)
-       (apply #'aref ar inds))
-      ((one-of-types .type. (make-array 3))     (apply #'aref ar inds))
-      ((one-of-types .type. (make-hash-table :test 'equal))
-       (gethash (if (cdr inds) inds (car inds)) ar))
-      ((one-of-types .type.  'a)  `((,ar array) ,@ (copy-list inds)))
-      ((and (= (length inds) 1)
-	    (or ($listp ar) ($matrixp ar)))
-       (nth (first inds) ar))
-      ((and ($matrixp ar) (= (length inds) 2))
-       (nth (second inds) (nth (first inds) ar)))
-      (t
-       #+nil
-       (error "not a valid array reference to ~A" ar)
-       (merror "Wrong number of indices:~%~M" (cons '(mlist) inds))))))
-
-;; Same as above, but I think this is more likely correct for Common
-;; Lisp.  I think it's doing the same thing.
-#+cl
 (defun maref1 (ar  &rest inds &aux )
   (cond
     ((and (typep ar 'cl:array)
@@ -204,22 +152,15 @@
     ((and ($matrixp ar) (= (length inds) 2))
      (nth (second inds) (nth (first inds) ar)))
     (t
-     #+nil
-     (error "not a valid array reference to ~A" ar)
      (merror "Wrong number of indices:~%~M" (cons '(mlist) inds)))))
 
 
 
 (deftrfun tr-arraycall (form &aux all-inds)
   (cond ((get (caar form) 'array-mode)
-	 (addl (caar form) arrays)
+	 (pushnew (caar form) arrays :test #'eq)
 	 `(,(array-mode (caar form))
 	   . (,(caar form) ,@(tr-args (cdr form)))))
-	;;((MEMQ (MGET (CAAR FORM) 'ARRAYFUN-MODE) '($FLOAT $FIXNUM))
-	;;`(,(MGET (CAAR FORM) 'ARRAYFUN-MODE)
-	;;MAFCALL ,(CAAR FORM) . ,(MAPCAR 'DTRANSLATE (CDR FORM))))
-	     
-	#+cl
 	($translate_fast_arrays (setq all-inds (mapcar 'dtranslate (cdr form)))
 				;;not apply changed 'tr-maref
 				(funcall 'tr-maref (cdr (translate (caar form)))   all-inds))
@@ -242,7 +183,6 @@
 	   (setq mode (car t-ref))	; ooh, could be bad.
 	   `(,mode
 	     . (store ,(cdr t-ref) ,(cdr t-value)))))
-	#+cl
 	($translate_fast_arrays 
 	 (funcall 'tr-maset (caar array-ref) (dtranslate value)
 		  (mapcar 'dtranslate (copy-list (cdr array-ref)))))
@@ -273,35 +213,30 @@
   (setq form (cdr form))
   (let ((mode (cond ((atom (cadr form))
 		     (mget (cadr form) 'array-mode)))))
-    (cond ((null mode) (setq mode '$any)))
+    (when (null mode) (setq mode '$any))
     (setq form (tr-args form))
     (destructuring-let (((val aarray . inds) form))
       `(,mode . (,(if (and (= (length inds) 1)
 			   (eq mode '$float))
-		      (progn (push-autoload-def 'marrayset '(marrayset1$))
-			     'marrayset1$)
+		      (progn
+			(push-autoload-def 'marrayset '(marrayset1$))
+			'marrayset1$)
 		      'marrayset)
-		 ,val ,aarray . ,inds)))))
+		  ,val ,aarray . ,inds)))))
 
 (def%tr mlist (form)
-  (cond ((null (cdr form)) ;;; []
-	 '($any . '((mlist))))
-	(t
-	 `($any . (list '(mlist) . ,(tr-args (cdr form)))))))
+  (if (null (cdr form)) ;;; []
+      '($any . '((mlist)))
+      `($any . (list '(mlist) . ,(tr-args (cdr form))))))
 
 (def%tr $first (form)
   (setq form (translate (cadr form)))
-  (call-and-simp '$any
-		 (cond ((eq '$list (car form))
-			'cadr)
-		       (t
-			'$first))
+  (call-and-simp '$any (if (eq '$list (car form))
+			   'cadr
+			   '$first)
 		 (list (cdr form))))
 
-
-
 ;; Local Modes:
 ;; Mode: LISP
 ;; Comment Col: 40
 ;; END:
-
