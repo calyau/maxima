@@ -590,7 +590,7 @@
     (if (and eqnsp (not (mequalp ans)))
 	(setq ans (list '(mequal simp) (disp2 l) ans)))
     (if lablist (nconc lablist (cons (elabel ans) nil)))
-    (setq tim (runtime))
+    (setq tim (get-internal-run-time))
     (displa (list '(mlable) (if lablist linelable) ans))
     (mterpri)
     (timeorg tim)))

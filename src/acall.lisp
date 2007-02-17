@@ -200,7 +200,7 @@
 	(push linelable lablist) ;; note the spelling
 	(unless $nolabels
 	  (setf (symbol-value linelable) ans)))
-      (setq tim (runtime))
+      (setq tim (get-internal-run-time))
       (displa `((mlable) ,(cond (labelsp linelable)) ,ans))
       (mterpri)
       (timeorg tim))))

@@ -211,12 +211,12 @@
 (defun listen () 0)			; Doesn't exist yet.
 
 (defun display* (&aux (ret nil) (tim 0))
-  (setq tim (runtime)
+  (setq tim (get-internal-run-time)
 	ret (let ((errset 'errbreak2) (thistime -1))
 	      (errset (displa (list '(mlable) linelable $%)))))
   (if (null ret) (mtell "~%Error during display~%"))
   (when $disptime
-    (mtell-open "Displaytime= ~A sec.~%" (/ (float (- (runtime) tim))
+    (mtell-open "Displaytime= ~A sec.~%" (/ (float (- (get-internal-run-time) tim))
 					    internal-time-units-per-second)))
   ret)
 
@@ -529,7 +529,7 @@
 	(declare (special $help))
 	(prog (x ^q #.ttyoff o^r tim $%% $backtrace retval oldst ($help $help))
 	   (setq  errset 'errbreak1)
-	   (setq tim (runtime)
+	   (setq tim (get-internal-run-time)
 		 $%% '$%%
 		 ;; just in case baktrcl is cons'd on the stack
 		 $backtrace (cons '(mlist simp) (copy-list baktrcl)))
@@ -1023,7 +1023,7 @@
 
 (defmfun timeorg (tim)
   (if (> thistime 0)
-      (setq thistime (+ thistime (- (runtime) tim)))))
+      (incf thistime (- (get-internal-run-time) tim))))
 
 
 (defmfun $quit ()

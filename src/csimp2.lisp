@@ -610,7 +610,7 @@ Is the matrix  1. Diagonal  2. Symmetric  3. Antisymmetric  4. General
 				linelable)
 				(set linelable zzz)))
 	 (nconc sol (ncons linelable))
-	 (cond ($dispflag (setq tim (runtime))
+	 (cond ($dispflag (setq tim (get-internal-run-time))
 			  (mtell-open "~%~M" zzz)
 			  (timeorg tim))
 	       (t (putprop linelable t 'nodisp))))

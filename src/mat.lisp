@@ -474,7 +474,7 @@
   (let ($nolabels (tim 0)) 
     (elabel exp)
     (cond ($dispflag (remprop linelable 'nodisp) 
-		     (setq tim (runtime))
+		     (setq tim (get-internal-run-time))
 		     (mterpri)
 		     (displa (list '(mlable) linelable exp))
 		     (timeorg tim))

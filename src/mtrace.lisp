@@ -707,14 +707,14 @@
   ;; N.B. Doesn't even try to account for use of DYNAMIC CONTROL
   ;; such as ERRSET ERROR and CATCH and THROW, as these are
   ;; rare and the overhead for the unwind-protect is high.
-  (let ((runtime (runtime))
+  (let ((runtime (get-internal-run-time))
 	(gctime (status gctime))
 	(old-runtime-devalue runtime-devalue)
 	(old-gctime-devalue gctime-devalue))
     (prog1 (trace-apply fun largs)
       (setq old-runtime-devalue (- runtime-devalue old-runtime-devalue))
       (setq old-gctime-devalue (- gctime-devalue old-gctime-devalue))
-      (setq runtime (- (runtime) runtime old-runtime-devalue))
+      (setq runtime (- (get-internal-run-time) runtime old-runtime-devalue))
       (setq gctime (- (status gctime) gctime old-gctime-devalue))
       (when $timer_devalue
 	(incf runtime-devalue runtime)
