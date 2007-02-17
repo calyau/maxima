@@ -480,7 +480,7 @@ returns the definite integral of @var{f} with respect to @var{x} from @var{a} to
 @c NEEDS EXAMPLES
 @end deffn
 
-@c NEEDS EXPANSION. WHAT IS THE ARGUMENT p ??
+@c NEEDS EXPANSION
 @deffn {Function} fourier (@var{f}, @var{x}, @var{p})
 Returns a list of the Fourier coefficients of @code{@var{f}(@var{x})} defined
 on the interval @code{[-p, p]}.
@@ -520,21 +520,21 @@ may be @code{inf}). @var{x} and @var{p} have same meaning as in
 @c NEEDS EXAMPLES
 @end deffn
 
-@c NEEDS EXPANSION. WHAT IS THE ARGUMENT p ??
+@c NEEDS EXPANSION
 @deffn {Function} fourcos (@var{f}, @var{x}, @var{p})
-Returns the Fourier cosine coefficients for @code{@var{f}(@var{x})} defined on @code{[0, %pi]}.
+Returns the Fourier cosine coefficients for @code{@var{f}(@var{x})} defined on @code{[0, @var{p}]}.
 
 @c NEEDS EXAMPLES
 @end deffn
 
-@c NEEDS EXPANSION. WHAT IS THE ARGUMENT p ??
+@c NEEDS EXPANSION
 @deffn {Function} foursin (@var{f}, @var{x}, @var{p})
-Returns the Fourier sine coefficients for @code{@var{f}(@var{x})} defined on @code{[0, %pi]}.
+Returns the Fourier sine coefficients for @code{@var{f}(@var{x})} defined on @code{[0, @var{p}]}.
 
 @c NEEDS EXAMPLES
 @end deffn
 
-@c NEEDS EXPANSION. WHAT IS THE ARGUMENT p ??
+@c NEEDS EXPANSION
 @deffn {Function} totalfourier (@var{f}, @var{x}, @var{p})
 Returns @code{fourexpand (foursimp (fourier (@var{f}, @var{x}, @var{p})), @var{x}, @var{p}, 'inf)}.
 
