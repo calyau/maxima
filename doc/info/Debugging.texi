@@ -260,11 +260,15 @@ See also @code{setcheck} and @code{setcheckbreak}.
 @end defvr
 
 @deffn {Function} timer (@var{f_1}, ..., @var{f_n})
+@deffnx {Function} timer (all)
 @deffnx {Function} timer ()
 Given functions @var{f_1}, ..., @var{f_n},
 @code{timer} puts each one on the list of functions for which timing statistics are collected.
 @code{timer(f)$ timer(g)$} puts @code{f} and then @code{g} onto the list;
 the list accumulates from one call to the next.
+
+@code{timer(all)} puts all user-defined functions (as named by the global variable @code{functions})
+on the list of timed functions.
 
 With no arguments, 
 @code{timer} returns the list of timed functions.
@@ -338,12 +342,16 @@ See also @code{timer}.
 @end deffn
 
 @deffn {Function} trace (@var{f_1}, ..., @var{f_n})
+@deffnx {Function} trace (all)
 @deffnx {Function} trace ()
 Given functions @var{f_1}, ..., @var{f_n},
 @code{trace} instructs Maxima to print out
 debugging information whenever those functions are called.
 @code{trace(f)$ trace(g)$} puts @code{f} and then @code{g} onto the list of functions
 to be traced; the list accumulates from one call to the next.
+
+@code{trace(all)} puts all user-defined functions (as named by the global variable @code{functions})
+on the list of functions to be traced.
 
 With no arguments,
 @code{trace} returns a list of all the functions currently being traced.
