@@ -547,19 +547,22 @@ values")
 (defun implode (lis) (implode1 lis nil))
 
 
+;;; If the 'string is all the same case, invert the case.  Otherwise,
+;;; do nothing.
 #-(or scl allegro)
 (defun maybe-invert-string-case (string)
-  ;; If STRING is all the same case, invert the case.  Otherwise, do
-  ;; nothing.
-  (flet ((alpha-upper-case-p (s)
-	   (not (some #'lower-case-p s)))
-	 (alpha-lower-case-p (s)
-	   (not (some #'upper-case-p s))))
-    ;; Don't explicitly add a package here.  It seems maxima sets
-    ;; *package* as needed.
-    (cond ((alpha-upper-case-p string)
+  (let ((all-upper t)
+	(all-lower t)
+	(length (length string)))
+    (dotimes (i length)
+      (let ((ch (aref string i)))
+	(when (both-case-p ch)
+	  (if (upper-case-p ch)
+	      (setq all-lower nil)
+	      (setq all-upper nil)))))
+    (cond (all-upper
 	   (string-downcase string))
-	  ((alpha-lower-case-p string)
+	  (all-lower
 	   (string-upcase string))
 	  (t
 	   string))))
@@ -570,17 +573,18 @@ values")
 	 #+allegro (eq excl:*current-case-mode* :case-sensitive-lower)
 	 string)
 	(t
-	 ;; If STRING is all the same case, invert the case.  Otherwise, do
-	 ;; nothing.
-	 (flet ((alpha-upper-case-p (s)
-		  (not (some #'lower-case-p s)))
-		(alpha-lower-case-p (s)
-		  (not (some #'upper-case-p s))))
-	   ;; Don't explicitly add a package here.  It seems maxima sets
-	   ;; *package* as needed.
-	   (cond ((alpha-upper-case-p string)
+	 (let ((all-upper t)
+	       (all-lower t)
+	       (length (length string)))
+	   (dotimes (i length)
+	     (let ((ch (aref string i)))
+	       (when (both-case-p ch)
+		 (if (upper-case-p ch)
+		     (setq all-lower nil)
+		     (setq all-upper nil)))))
+	   (cond (all-upper
 		  (string-downcase string))
-		 ((alpha-lower-case-p string)
+		 (all-lower
 		  (string-upcase string))
 		 (t
 		  string))))))
