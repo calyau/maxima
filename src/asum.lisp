@@ -9,28 +9,25 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :maxima)
+
 (macsyma-module asum)
+
 (load-macsyma-macros rzmac)
 
-(declare-top(special opers *a *n $factlim sum msump *i
-		     *opers-list opers-list $ratsimpexpons makef)
-	    (*expr sum)
-	    (fixnum %n %k %i %m $genindex)
-	    (genprefix sm))
+(declare-top (special opers *a *n $factlim sum msump *i *opers-list opers-list $ratsimpexpons makef))
 
-(loop for (x y) on 
-       '(%cot %tan %csc %sin %sec %cos %coth %tanh %csch %sinh %sech %cosh)
-       by #'cddr do (putprop x y 'recip) (putprop y x 'recip))
+(loop for (x y) on '(%cot %tan %csc %sin %sec %cos %coth %tanh %csch %sinh %sech %cosh)
+   by #'cddr do (putprop x y 'recip) (putprop y x 'recip))
 
 (defun nill () '(nil))
 
 (defmvar $zeta%pi t)
-
-(comment polynomial predicates and other such things)
+
+;; polynomial predicates and other such things
 
 (defun poly? (exp var)
   (cond ((or (atom exp) (free exp var)))
-	((memq (caar exp) '(mtimes mplus))
+	((member (caar exp) '(mtimes mplus) :test #'eq)
 	 (do ((exp (cdr exp) (cdr exp)))
 	     ((null exp) t)
 	   (and (null (poly? (car exp) var)) (return nil))))
@@ -39,9 +36,11 @@
 	      (> (caddr exp) 0))
 	 (poly? (cadr exp) var))))
 
-(defun smono (x var) (smonogen x var t))
+(defun smono (x var)
+  (smonogen x var t))
 
-(defun smonop (x var) (smonogen x var nil))
+(defun smonop (x var)
+  (smonogen x var nil))
 
 (defun smonogen (x var fl)	; fl indicates whether to return *a *n
   (cond ((free x var) (and fl (setq *n 0 *a x)) t)
@@ -60,13 +59,13 @@
 	      (eq (caar x) 'mexpt))
 	 (cond ((and (free (caddr x) var) (eq (cadr x) var))
 		(and fl (setq *n (caddr x) *a 1)) t)))))
-
-(comment factorial stuff)
+
+;; factorial stuff
 
 (setq $factlim -1 makef nil)
 
 (defmfun $genfact (&rest l)
-  (cons '(%genfact) (copy-rest-arg l)))
+  (cons '(%genfact) l))
 
 (defun gfact (n %m i)
   (cond ((minusp %m) (improper-arg-err %m '$genfact))
@@ -74,27 +73,8 @@
 	(t (prog (ans)
 	      (setq ans n)
 	      a (if (= %m 1) (return ans))
-	      (setq n (m- n i) %m (f1- %m) ans (m* ans n))
+	      (setq n (m- n i) %m (1- %m) ans (m* ans n))
 	      (go a)))))
-
-;;(defun factorial (%i)
-;;	(cond ((< %i 2) 1)
-;;	      (t (do ((x 1 (times %i x)) (%i %i (f1- %i)))
-;;		     ((= %i 1) x)))))
-;; people like to do big factorials so do them a bit faster.
-;; by breaking into chunks.
-
-#+nil
-(defun factorial (n &aux (ans 1)  )
-  (let* ((vec (make-array (if (< n 100) 1 20) :initial-element 1))
-	 (m (length vec))
-	 (j 0))
-    (loop for i from 1 to n
-	   do (setq j (mod i m))
-	   (setf (aref vec j) (* (aref vec j) i)))
-    (loop for v across vec
-	   do (setq ans (* ans v)))
-    ans))
 
 ;; From Richard Fateman's paper, "Comments on Factorial Programs",
 ;; http://www.cs.berkeley.edu/~fateman/papers/factorial.pdf
@@ -105,12 +85,12 @@
 ;;
 ;; This is much faster (3-4 times) than the original factorial
 ;; function.
+
 (defun k (n m) 
   (if (<= n m)
       n
       (* (k n (* 2 m))
 	 (k (- n m) (* 2 m)))))
-
 
 (defun factorial (n)
   (if (zerop n)
@@ -133,23 +113,23 @@
 	((eq (caar e) 'mfactorial)
 	 (list '(%gamma) (list '(mplus) 1 (makegamma1 (cadr e)))))
 
-    ; Begin code copied from orthopoly/orthopoly-init.lisp
-    ;; Do pochhammer(x,n) ==> gamma(x+n)/gamma(x).
-    ((eq (caar e) '$pochhammer)
-     (let ((x (makegamma1 (nth 1 e)))
-           (n (makegamma1 (nth 2 e))))
-       `((mtimes) ((%gamma) ((mplus) ,x ,n)) ((mexpt) ((%gamma) ,x) -1))))
+	;; Begin code copied from orthopoly/orthopoly-init.lisp
+	;; Do pochhammer(x,n) ==> gamma(x+n)/gamma(x).
+	((eq (caar e) '$pochhammer)
+	 (let ((x (makegamma1 (nth 1 e)))
+	       (n (makegamma1 (nth 2 e))))
+	   `((mtimes) ((%gamma) ((mplus) ,x ,n)) ((mexpt) ((%gamma) ,x) -1))))
 
-    ((eq (caar e) '%genfact)
-     (let ((x (makegamma1 (nth 1 e)))
-           (y (makegamma1 (nth 2 e)))
-           (z (makegamma1 (nth 3 e))))
-       (setq x (add (div x z) 1))
-       (setq y (simplify `(($entier) ,y)))
-       (setq z (power z y))
-       `((mtimes) ,z ((%gamma) ,x)
-         ((mexpt) ((%gamma) ((mplus) ,x ((mtimes) -1 ,y))) -1))))
-    ; End code copied from orthopoly/orthopoly-init.lisp
+	((eq (caar e) '%genfact)
+	 (let ((x (makegamma1 (nth 1 e)))
+	       (y (makegamma1 (nth 2 e)))
+	       (z (makegamma1 (nth 3 e))))
+	   (setq x (add (div x z) 1))
+	   (setq y (simplify `(($entier) ,y)))
+	   (setq z (power z y))
+	   `((mtimes) ,z ((%gamma) ,x)
+	     ((mexpt) ((%gamma) ((mplus) ,x ((mtimes) -1 ,y))) -1))))
+	;; End code copied from orthopoly/orthopoly-init.lisp
 
 	((eq (caar e) '%elliptic_kc)
 	 ;; Complete elliptic integral of the first kind
@@ -320,8 +300,8 @@
 			       b)
 			   c)
 		     x)))))
-
-(comment sum begins)
+
+;; sum begins
 
 (defmvar $cauchysum nil
   "When multiplying together sums with INF as their upper limit, 
@@ -356,37 +336,44 @@ summation when necessary."
       $maxtaydiff 4 $verbose nil $psexpand nil ps-bmt-disrep t
       silent-taylor-flag nil)
 
-(defmacro sum-arg (sum) `(cadr ,sum))
+(defmacro sum-arg (sum)
+  `(cadr ,sum))
 
-(defmacro sum-index (sum) `(caddr ,sum))
+(defmacro sum-index (sum)
+  `(caddr ,sum))
 
-(defmacro sum-lower (sum) `(cadddr ,sum))
+(defmacro sum-lower (sum)
+  `(cadddr ,sum))
 
-(defmacro sum-upper (sum) `(cadr (cdddr ,sum)))
+(defmacro sum-upper (sum)
+  `(cadr (cdddr ,sum)))
 
-(defmspec $sum (l) (setq l (cdr l))
-	  (if (= (length l) 4)
-	      (dosum (car l) (cadr l) (meval (caddr l)) (meval (cadddr l)) t)
-	      (wna-err '$sum)))
+(defmspec $sum (l)
+  (setq l (cdr l))
+  (if (= (length l) 4)
+      (dosum (car l) (cadr l) (meval (caddr l)) (meval (cadddr l)) t)
+      (wna-err '$sum)))
 
-(defmspec $lsum (l) (setq l (cdr l))
-	  (or (= (length l) 3) (wna-err '$lsum))
-	  (let ((form (car l))
-		(ind (cadr l))
-		(lis (meval (caddr l)))
-		(ans 0))
-	    (or (symbolp ind) (merror "Second argument not a variable ~M" ind))
-	    (cond (($listp lis)
-		   (loop for v in (cdr lis)
-			  with lind = (cons ind nil)
-			  for w = (cons v nil)
-			  do
-			  (setq ans (add* ans  (mbinding (lind w) (meval form)))))
-		   ans)
-		  (t `((%lsum) ,form ,ind ,lis)))))
+(defmspec $lsum (l)
+  (setq l (cdr l))
+  (or (= (length l) 3) (wna-err '$lsum))
+  (let ((form (car l))
+	(ind (cadr l))
+	(lis (meval (caddr l)))
+	(ans 0))
+    (or (symbolp ind) (merror "Second argument not a variable ~M" ind))
+    (cond (($listp lis)
+	   (loop for v in (cdr lis)
+	      with lind = (cons ind nil)
+	      for w = (cons v nil)
+	      do
+	      (setq ans (add* ans  (mbinding (lind w) (meval form)))))
+	   ans)
+	  (t `((%lsum) ,form ,ind ,lis)))))
     
 (defmfun simpsum (x y z)
-  (let (($ratsimpexpons t)) (setq y (simplifya (sum-arg x) z)))
+  (let (($ratsimpexpons t))
+    (setq y (simplifya (sum-arg x) z)))
   (simpsum1 y (sum-index x) (simplifya (sum-lower x) z)
 	    (simplifya (sum-upper x) z)))
 
@@ -412,121 +399,88 @@ summation when necessary."
 ;;  - distribute sum/product over mbags when listarith = true
 
 (defun dosum (expr ind low hi sump)
-  (setq low (ratdisrep low) hi (ratdisrep hi))  ;; UGH, GAG WITH ME A SPOON
-
+  (setq low (ratdisrep low) hi (ratdisrep hi)) ;; UGH, GAG WITH ME A SPOON
   (if (not (symbolp ind))
-    (merror "~:M: bad index ~M (must be a symbol)~%" (if sump '$sum '$product) ind))
-
+      (merror "~:M: bad index ~M (must be a symbol)~%" (if sump '$sum '$product) ind))
   (unwind-protect
-    (prog (u *i lind l*i *hl)
+       (prog (u *i lind l*i *hl)
 	  (setq lind (cons ind nil))
 	  (cond
-        ((not (fixnump (setq *hl (m- hi low))))
-         (setq expr (mevalsumarg expr ind low hi sump))
-         (return (cons (if sump '(%sum) '(%product))
-                       (list expr ind low hi))))
-
-        ((signp l *hl)
-         (return (if sump 0 1))))
-
-      (setq *i low l*i (list *i) u (if sump 0 1))
-
-      lo 
-
-      (setq u
-            (if sump
-              (add u (resimplify (let*
-                                   ((foo (mbinding (lind l*i) (meval expr)))
-                                    (bar (subst-if-not-freeof *i ind foo)))
-                                   bar)))
-              (mul u (resimplify (let*
-                                   ((foo (mbinding (lind l*i) (meval expr)))
-                                    (bar (subst-if-not-freeof *i ind foo)))
-                                   bar)))))
-
-      (if (= *hl 0) (return u))
-
-      (setq *hl (1- *hl))
-      (setq *i (car (rplaca l*i (m+ *i 1))))
-      (go lo))))
+	    ((not (fixnump (setq *hl (m- hi low))))
+	     (setq expr (mevalsumarg expr ind low hi))
+	     (return (cons (if sump '(%sum) '(%product))
+			   (list expr ind low hi))))
+	    ((signp l *hl)
+	     (return (if sump 0 1))))
+	  (setq *i low l*i (list *i) u (if sump 0 1))
+	  lo (setq u
+		   (if sump
+		       (add u (resimplify (let* ((foo (mbinding (lind l*i) (meval expr)))
+						 (bar (subst-if-not-freeof *i ind foo)))
+					    bar)))
+		       (mul u (resimplify (let* ((foo (mbinding (lind l*i) (meval expr)))
+						 (bar (subst-if-not-freeof *i ind foo)))
+					    bar)))))
+	  (when (zerop *hl) (return u))
+	  (setq *hl (1- *hl))
+	  (setq *i (car (rplaca l*i (m+ *i 1))))
+	  (go lo))))
 
 (defun subst-if-not-freeof (x y expr)
-  (cond
-    (($freeof y expr) expr)
-    (t
-      (cond 
-        ((atom expr) x)
-        (t
-          (let*
-            ((args (cdr expr))
-             (L (eval `(mapcar (lambda (a) (subst-if-not-freeof ',x ',y a)) ',args))))
-            ;; Throw away any flags stored in (CDAR EXPR). OK ??
-            (cons (list (caar expr)) L)))))))
-            ;; Alternatively, keep (CDAR EXPR) flags.
-            ;; (cons (car expr) L)))))))
+  (if ($freeof y expr)
+      expr
+      (if (atom expr)
+	  x
+	  (let* ((args (cdr expr))
+		 (L (eval `(mapcar (lambda (a) (subst-if-not-freeof ',x ',y a)) ',args))))
+	    ;; Throw away any flags stored in (CDAR EXPR). OK ??
+	    (cons (list (caar expr)) L)))))
 
-(defun mevalsumarg (expr ind low hi sump)
-  (if (let (($prederror nil)) (eq (mevalp `((mlessp) ,hi ,low)) t))
-    0)
+(defun mevalsumarg (expr ind low hi)
+  (if (let (($prederror nil))
+	(eq (mevalp `((mlessp) ,hi ,low)) t))
+      0)
 
   (let ((gensym-ind (gensym)))
-
     (if (apparently-integer low) 
-      (meval `(($declare) ,gensym-ind $integer)))
-
+	(meval `(($declare) ,gensym-ind $integer)))
     (assume (list '(mgeqp) gensym-ind low))
-
     (if (not (eq hi '$inf))
-      (assume (list '(mgeqp) hi gensym-ind)))
-
+	(assume (list '(mgeqp) hi gensym-ind)))
     (let ((msump t) (foo) (summand))
-
       (setq summand
             (if (and (not (atom expr)) (get (caar expr) 'mevalsumarg-macro))
-              (funcall (get (caar expr) 'mevalsumarg-macro) expr)
-              expr))
-
+		(funcall (get (caar expr) 'mevalsumarg-macro) expr)
+		expr))
       (let (($simp nil))
         (setq summand ($substitute gensym-ind ind summand)))
-
-      (setq foo
-            (mbinding ((list gensym-ind) (list gensym-ind))
-                      (resimplify (meval summand))))
-
-      (let (($simp nil)) (setq foo ($substitute ind gensym-ind foo)))
-
+      (setq foo (mbinding ((list gensym-ind) (list gensym-ind))
+			  (resimplify (meval summand))))
+      (let (($simp nil))
+	(setq foo ($substitute ind gensym-ind foo)))
       (if (not (eq hi '$inf))
-        (forget (list '(mgeqp) hi gensym-ind)))
-
+	  (forget (list '(mgeqp) hi gensym-ind)))
       (forget (list '(mgeqp) gensym-ind low))
-
       (if (apparently-integer low)
-        (meval `(($remove) ,gensym-ind $integer)))
-
+	  (meval `(($remove) ,gensym-ind $integer)))
       foo)))
 
 (defun apparently-integer (x)
   (or ($integerp x) ($featurep x '$integer)))
 
 (defun do%sum (l op)
-
   (if (not (= (length l) 4)) (wna-err op))
-
   (let ((ind (cadr l)))
-
     (if (mquotep ind) (setq ind (cadr ind)))
-
     (if (not (symbolp ind))
       (merror "~:M: bad index ~M (must be a symbol)~%" op ind))
-
-    (let ((sump (memq op '(%sum $sum))) (low (caddr l)) (hi (cadddr l)))
-      (list (mevalsumarg (car l) ind low hi sump)
+    (let ((low (caddr l))
+	  (hi (cadddr l)))
+      (list (mevalsumarg (car l) ind low hi)
             ind (meval (caddr l)) (meval (cadddr l))))))
 
 (defun simpsum1 (e k lo hi)
-
   (let ((fact1) (fact2) (acc 0) (n) (sgn) ($prederror nil) (i (gensym)) (ex))
-    
     (setq lo ($ratdisrep lo))
     (setq hi ($ratdisrep hi))
    
@@ -562,8 +516,8 @@ summation when necessary."
 			
 		((and (integerp n) (eq sgn '$pos))
 		 (unwind-protect 
-		     (dotimes (j n acc)
-		       (setq acc (add acc (resimplify (subst (add j lo) i ex)))))
+		      (dotimes (j n acc)
+			(setq acc (add acc (resimplify (subst (add j lo) i ex)))))
 		   (mfuncall '$forget fact1)
 		   (mfuncall '$forget fact2)))
 		(t 
@@ -576,8 +530,8 @@ summation when necessary."
     ;; punt to previous simplification code.
 
     (if (and $simpsum (op-equalp acc '$sum '%sum))
-      (let* ((args (cdr acc)) (e (first args)) (i (second args)) (i0 (third args)) (i1 (fourth args)))
-        (setq acc (simpsum1-save e i i0 i1))))
+	(let* ((args (cdr acc)) (e (first args)) (i (second args)) (i0 (third args)) (i1 (fourth args)))
+	  (setq acc (simpsum1-save e i i0 i1))))
 
     (mfuncall '$forget fact1)
     (mfuncall '$forget fact2)
@@ -585,15 +539,12 @@ summation when necessary."
     acc))
 
 (defun simpprod1 (e k lo hi)
-  
-  (let ((fact1) (fact2) (acc 1) (n) (sgn) ($prederror nil) (i (gensym)) (ex))
+  (let ((fact1) (fact2) (acc 1) (n) (sgn) ($prederror nil) (i (gensym)) (ex) (ex-mag) (realp))
 
     (setq lo ($ratdisrep lo))
     (setq hi ($ratdisrep hi))
-   
     (setq n ($limit (add 1 (sub hi lo))))
     (setq sgn ($sign n))
-    
     (setq fact1 `((mgeqp) ,i ,lo))
     (setq fact2 `((mgeqp) ,hi ,i))
     
@@ -603,7 +554,6 @@ summation when necessary."
     (setq ex (subst i k e))
     (setq ex (subst i k ex))
 
-    
     (setq acc
           (cond
             ((like ex 1) 1)
@@ -624,28 +574,28 @@ summation when necessary."
 
             ((and (mbagp e) $listarith)
              (simplifya
-               `((,(caar e)) ,@(mapcar #'(lambda (s) (mfuncall '$product s k lo hi)) (margs e))) t))
+	      `((,(caar e)) ,@(mapcar #'(lambda (s) (mfuncall '$product s k lo hi)) (margs e))) t))
             
             (($freeof i ex) (power ex n))
             
             ((and (integerp n) (eq sgn '$pos))
              (unwind-protect
-               (dotimes (j n acc)
-                 (setq acc (mult acc (resimplify (subst (add j lo) i ex)))))
+		  (dotimes (j n acc)
+		    (setq acc (mult acc (resimplify (subst (add j lo) i ex)))))
                
                (mfuncall '$forget fact1)
                (mfuncall '$forget fact2)))
             
             (t
-              (setq ex (subst '%product '$product ex))
-              `((%product) ,(subst k i ex) ,k ,lo ,hi))))
+	     (setq ex (subst '%product '$product ex))
+	     `((%product) ,(subst k i ex) ,k ,lo ,hi))))
 
     ;; Hmm, this is curious... don't call existing product simplifications
     ;; if index range is infinite -- what's up with that??
 
     (if (and $simpproduct (op-equalp acc '$product '%product) (not (like n '$inf)))
-      (let* ((args (cdr acc)) (e (first args)) (i (second args)) (i0 (third args)) (i1 (fourth args)))
-        (setq acc (simpprod1-save e i i0 i1))))
+	(let* ((args (cdr acc)) (e (first args)) (i (second args)) (i0 (third args)) (i1 (fourth args)))
+	  (setq acc (simpprod1-save e i i0 i1))))
 
     (setq acc (subst k i acc))
     (setq acc (subst '%product '$product acc))
@@ -679,7 +629,7 @@ summation when necessary."
 				(list '(mfactorial) (list '(mplus) lo -1))))
 			  ((m* (list '(mfactorial)
 				     (list '(mabs) lo))
-			       (cond ((memq (asksign hi) '($zero $positive))
+			       (cond ((member (asksign hi) '($zero $positive) :test #'eq)
 				      0)
 				     (t (prog2 0
 					    (m^ -1 (m+ hi lo 1))
@@ -687,13 +637,13 @@ summation when necessary."
 			       (list '(mfactorial) hi))))))))
 	  ((list '(%product simp) exp i lo hi)))))
 
-
-(comment multiplication of sums)
 
-(defun gensumindex nil
+;; multiplication of sums
+
+(defun gensumindex ()
   (implode (nconc (exploden $genindex)
 		  (and $gensumnum
-		       (mexploden (setq $gensumnum (f1+ $gensumnum)))))))
+		       (mexploden (setq $gensumnum (1+ $gensumnum)))))))
 
 (defun sumtimes (x y)
   (cond ((null x) y)
@@ -729,8 +679,8 @@ summation when necessary."
 		    (sumultin x (subst ind (sum-index s) (sum-arg s)))
 		    ind
 		    (cdddr s))))))
-
-(comment addition of sums)
+
+;; addition of sums
 
 (defun sumpls (sum out)
   (prog (l)
@@ -761,11 +711,13 @@ summation when necessary."
      (setq out (cdr out))
      (go a)))
 
-(defun onediff (x y) (equal 1 (m- y x)))
+(defun onediff (x y)
+  (equal 1 (m- y x)))
 
-(defun freesum (e b a q) (m* e q (m- (m+ a 1) b)))
-
-(comment linear operator stuff)
+(defun freesum (e b a q)
+  (m* e q (m- (m+ a 1) b)))
+
+;; linear operator stuff
 
 (defparameter *opers-list '(($linear . linearize1)))
 (defparameter  opers (list '$linear))
@@ -782,11 +734,12 @@ summation when necessary."
 	     (oper-apply e z)))))
 
 (defun linearize1 (e z)		; z = t means args already simplified.
-  (linearize2
-   (cons (car e) (mapcar #'(lambda (q) (simpcheck q z)) (cdr e)))
-   nil))
+  (linearize2 (cons (car e) (mapcar #'(lambda (q) (simpcheck q z)) (cdr e)))
+	      nil))
 
-(defun opident (op) (cond ((eq op 'mplus) 0) ((eq op 'mtimes) 1)))
+(defun opident (op)
+  (cond ((eq op 'mplus) 0)
+	((eq op 'mtimes) 1)))
 
 (defun rem-const (e)			;removes constantp stuff
   (do ((l (cdr e) (cdr l))
@@ -825,13 +778,13 @@ summation when necessary."
   (if (or (mnump (cadr e))
 	  (constant (cadr e))
 	  (and (cddr e)
-	       (or (atom (caddr e)) (memq 'array (cdar (caddr e))))
+	       (or (atom (caddr e)) (member 'array (cdar (caddr e)) :test #'eq))
 	       (free (cadr e) (caddr e))))
       (if (or (zerop1 (cadr e))
-	      (and (memq (caar e) '(%sum %integrate))
+	      (and (member (caar e) '(%sum %integrate) :test #'eq)
 		   (= (length e) 5)
 		   (or (eq (cadddr e) '$minf)
-		       (memq (car (cddddr e)) '($inf $infinity)))
+		       (member (car (cddddr e)) '($inf $infinity) :test #'eq))
 		   (eq ($asksign (cadr e)) '$zero)))
 	  0
 	  (let ((w (oper-apply (list* (car e) 1 (cddr e)) t)))
@@ -839,7 +792,7 @@ summation when necessary."
 
 (defun linearize3 (w e x)
   (let (w1)
-    (if (and (memq w '($inf $minf $infinity)) (safe-zerop x))
+    (if (and (member w '($inf $minf $infinity) :test #'eq) (safe-zerop x))
 	(merror "Undefined form 0*inf:~%~M" e))
     (setq w (mul2 (simplifya x t) w))
     (cond ((or (atom w) (getl (caar w) '($outative $linear))) (setq w1 1))
@@ -854,7 +807,7 @@ summation when necessary."
     (if (and (not (atom w1)) (or (among '$inf w1) (among '$minf w1)))
 	(infsimp w)
 	w)))
-
+
 (setq opers (cons '$additive opers)
       *opers-list (cons '($additive . additive) *opers-list))
 
@@ -921,7 +874,7 @@ summation when necessary."
 (defprop %integrate t opers)
 (defprop %limit t $outative)
 (defprop %limit t opers)
-
+
 (setq opers (cons '$evenfun opers)
       *opers-list (cons '($evenfun . evenfun) *opers-list))
 
@@ -1006,14 +959,6 @@ summation when necessary."
 (setq opers (cons '$rassociative opers)
       *opers-list (cons '($rassociative . rassociative) *opers-list))
 
-;;(defmfun rassociative (e z)
-;;  (let ((ans (nreverse (cdr (oper-apply (cons (car e) (total-nary e)) z)))))
-;;    (cond ((null (cddr ans)) (cons (car e) ans))
-;;	  ((do ((newans (list (car e) (cadr ans) (car ans))
-;;			(list (car e) (car ans) newans))
-;;		(ans (cddr ans) (cdr ans)))
-;;	       ((null ans) newans))))))
-;;Update from F302 --gsb
 (defmfun rassociative (e z)
   (let ((ans (cdr (oper-apply (cons (car e) (total-nary e)) z))))
     (cond ((null (cddr ans)) (cons (car e) ans))
@@ -1030,8 +975,4 @@ summation when necessary."
 		  (nconc (reverse (total-nary (car l))) ans)
 		  (cons (car l) ans)))))
 
-#-nil
-(setq opers (purcopy opers) *opers-list (purcopy *opers-list))
-
 (defparameter $opproperties (cons '(mlist simp) (reverse opers)))
-
