@@ -23,6 +23,3 @@ caseq(var,[pairs])::=
                 pairs:rest(rest(pairs))],
           if member(var,'keys) then statement else caseq(var,splice(pairs)))$
 
-push(c,l)::=(if symbolp(x) then x else error("arg must be a symbol",x),
-             buildq([c,l],l:cons(c,l)))$
-
