@@ -52,8 +52,8 @@
 
 (defun dpgcd (p q)
   (if (< (car p) (car q)) (exch p q))
-  (do ((p (copy-top-level p) q)
-       (q (copy-top-level q) (dpremquo p q nil)))
+  (do ((p (copy-list p) q)
+       (q (copy-list q) (dpremquo p q nil)))
       ((= (car q) 0)
        (if (= (cadr q) 0) p '(0 1)))))
 

@@ -570,10 +570,8 @@
 	       ((null l))
 	     (setq chain-sol
 		   (decomp-chain (car l) (cdr decomp) var *$var (cadr l)))
-	     (setq wins (nconc wins
-			       (copy-top-level (solution-wins chain-sol))))
-	     (setq losses (nconc losses
-				 (copy-top-level (solution-losses chain-sol)))))
+	     (setq wins (nconc wins (copy-list (solution-wins chain-sol))))
+	     (setq losses (nconc losses (copy-list (solution-losses chain-sol)))))
 	   (make-solution wins losses))))
 
 ;; Decomp-chain is the function which formats the mess for the recursive call.
@@ -776,7 +774,7 @@
 
 (defun varsort (v)
   (let ((*u nil)
-	(*v (copy-top-level v)))
+	(*v (copy-list v)))
     (mapc #'(lambda (z) 
 	      (cond ((broken-freeof *var z)
 		     (setq *u (cons z *u))

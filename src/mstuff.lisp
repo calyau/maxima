@@ -18,7 +18,7 @@
   (let ((llist (arg 1)) comparfun bfun)
     (if (not ($listp llist))
 	(merror "The first argument to `sort' must be a list:~%~M" llist))
-    (setq llist (copy-top-level (cdr llist) )
+    (setq llist (copy-list (cdr llist) )
 	  comparfun 
 	  (mfunction1 (setq bfun (if (= n 2) (getopr (arg 2)) 'lessthan))))
     (if (memq bfun '(lessthan great))

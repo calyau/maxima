@@ -868,7 +868,7 @@ summation when necessary."
 
 (defun additive (e z)
   (cond ((get (caar e) '$outative)	;Really a linearize!
-	 (setq opers-list (copy-top-level opers-list ))
+	 (setq opers-list (copy-list opers-list ))
 	 (rem-opers-p '$outative)
 	 (linearize1 e z))
 	((mplusp (cadr e))
@@ -897,7 +897,7 @@ summation when necessary."
 (defun outative (e z)
   (setq e (cons (car e) (mapcar #'(lambda (q) (simpcheck q z)) (cdr e))))
   (cond ((get (caar e) '$additive)
-	 (setq opers-list (copy-top-level opers-list ))
+	 (setq opers-list (copy-list opers-list ))
 	 (rem-opers-p '$additive)
 	 (linearize1 e t))
 	((linearconst e))

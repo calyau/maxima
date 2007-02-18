@@ -412,7 +412,7 @@ translated."
   (new-comment-line)
   (print-module 'transl-autoload)
   (do ((j 0 (1+ j))
-       (s (delete 'transl-autoload (copy-top-level transl-modules) :test #'equal)
+       (s (delete 'transl-autoload (copy-list transl-modules) :test #'equal)
 	  (cdr s)))
       ((null s))
     (if (= 0 (rem j 3)) (new-comment-line))

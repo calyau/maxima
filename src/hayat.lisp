@@ -1272,7 +1272,7 @@
 		(setq datum (list* kernel
 					;(mapcar #'(lambda (e) (emax e (rczero)))
 					;	    (trunc-stack (car tlist)))
-				   (copy-top-level (trunc-stack (car tlist)))
+				   (copy-list (trunc-stack (car tlist)))
 				   lim () g no))
 					;(setq tlist (nconc tlist (ncons datum)))
 		(adjoin-datum datum)
@@ -1965,7 +1965,7 @@
    (let ((label (gensym))
 	 (vs (cdar l))
 	 (pts (make-long-list (if ($listp (cadr l))
-				  (copy-top-level (cdadr l))
+				  (copy-list (cdadr l))
 				 (ncons (ratdisrep (cadr l))))))
 	 (ord (caddr l))
 	 (switches (make-switch-list (cdddr l)))

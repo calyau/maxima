@@ -343,7 +343,7 @@
 		(cond (ind (restore1))
 		      ((restore2))))
 	       ((restore))))
-	((testa p (cond ((cddr e) (copy-top-level e ))
+	((testa p (cond ((cddr e) (copy-list e ))
 			((cadr e)))
 		nil)
 	 (cond (ind (restore1))

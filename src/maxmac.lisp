@@ -58,9 +58,6 @@
 (defmacro tuchus (list object)
   `(setf ,list (nconc ,list (ncons ,object))))
 
-(defmacro copy-top-level (list)
-  `(copy-list ,list))
-
 ;; Old names kept around for compatibility.
 
 (defmacro copy (list)

@@ -1351,7 +1351,7 @@
 	(t (pdecomp1 (ptimes (car l) prod) (cdr l)))))
 
 (defun pdecgdfrm (l)			;Get list of divisors
-  (do ((l (copy-top-level l ))
+  (do ((l (copy-list l ))
        (ll (list (car l))
 	   (cons (car l) ll)))
       (nil)

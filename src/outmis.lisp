@@ -245,7 +245,7 @@
 ;;(declare-top (FIXNUM N))
 
 (defun atdecode (fun dl vl) 
-  (setq vl (copy-top-level vl))
+  (setq vl (copy-list vl))
   (atvarschk vl)
   ((lambda (eqs nvarl)
      (cond ((not (member nil (mapcar #'(lambda (x) (signp e x)) dl) :test #'eq))
