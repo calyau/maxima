@@ -47,10 +47,12 @@ newtonmaxiter:50$
 newtondebug:false$
 
 mnewton(FuncList, VarList, GuessList):=
-  block([nfunc, Solutions, Increments, solved:false, h,
+  block([nfunc, Solutions, Increments, solved:false, h, DF,
          i, j, k, keepfloat:true, ratprint:false],
+    local(h),
 
     /* Depuration of the function arguments */
+   
     GuessList:float(GuessList),
     nfunc:length(FuncList),
     if length(VarList) # nfunc then (
@@ -63,7 +65,7 @@ mnewton(FuncList, VarList, GuessList):=
             "variables but", length(GuessList), "approximation values)."),
       return(false)
     ),
-    apply(kill, VarList),
+    /* apply(kill, VarList), */
 
     DF: zeromatrix (nfunc, nfunc),
     h : makelist (h[i], i, 1, nfunc),
@@ -82,11 +84,11 @@ mnewton(FuncList, VarList, GuessList):=
       /* Solve 0 = F(x) + DF(x) h for h.
        */
       block
-        ([DFx: sublis (Solutions, DF),
-        Fx: sublis (Solutions, FuncList)],
+        ([DFx: subst (Solutions, DF),
+        Fx: subst (Solutions, FuncList)],
         Increments: linsolve (transpose (DFx . h + Fx)[1], h)),
 
-      GuessList:GuessList + map (rhs, Increments),
+      GuessList:GuessList + map ('rhs, Increments),
       GuessList: float (GuessList),
       if newtondebug
          then print ("DEBUG: Increments:", Increments, "GuessList:", GuessList),
@@ -104,6 +106,6 @@ mnewton(FuncList, VarList, GuessList):=
     ),
     Solutions:map("=", VarList, GuessList),
     if newtondebug
-       then print ("DEBUG: sublis (Solutions, FuncList) =>", sublis (Solutions, FuncList)),
+       then print ("DEBUG: subst (Solutions, FuncList) =>", subst (Solutions, FuncList)),
     return([Solutions])
   )$
