@@ -27,6 +27,7 @@
 (defun getunhack (gen) (or (get gen 'unhacked) (pget gen))) 
 
 (defmacro getdis (x) `(get ,x 'disrep))
+
 (defmacro cons1 (x) `(cons ,x 1))
 
 (defun frpoly? (r) (equal 1 (cdr r)))
@@ -48,10 +49,10 @@
 
 (defun cdinf (a b both) 
   (cond ((or (pcoefp a) (pcoefp b)) (list 1. a b))
-	(t (setq a (ncons (copy a))
-		 b (ncons (cond (both (copy b))(t b))))
+	(t (setq a (ncons (copy-tree a))
+		 b (ncons (cond (both (copy-tree b))(t b))))
 	   (list (cd1 a b both) (car a) (car b))))) 
-
+
 (defun cd1 (a b both) 
   (cond ((or (pcoefp (car a)) (pcoefp (car b))) 1.)
 	((eq (caar a) (caar b))

@@ -273,7 +273,7 @@
 (defmacro exp-datum-lt (fun exp-datum)
   `(if (atom (cadr ,exp-datum))
     (funcall (cadr ,exp-datum) (cdr ,fun))
-    (copy (cadr ,exp-datum))))
+    (copy-tree (cadr ,exp-datum))))
 
 (defmacro exp-datum-le (fun exp-datum)  `(e (exp-datum-lt ,fun ,exp-datum)))
 

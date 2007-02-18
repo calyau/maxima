@@ -903,7 +903,7 @@
 (defun nprod (lc u lfunct) 
   (prog (stage v d2 af0 r lcindex factor llc ltuple lprod lindex qnt af
 	 funct tuple ltemp lpr f l li lf modulus hmodulus) 
-     (setq lpr (copy (setq ltemp (cons nil nil))))
+     (setq lpr (copy-tree (setq ltemp (cons nil nil))))
      (setq lprod (cons nil lfunct))
      (setq d2 (quotient (cadr u) 2))
      (remov0 lprod d2)
@@ -1219,8 +1219,6 @@
      (setq trl* (cons term trl*))
      (setq i (f1+ i))
      (go loop)))
-
-;;(DECLARE (ARRAY* (NOTYPE A 2 INVC 1 FCTC 1)))
 
 (defun cptomf (p u n) 
   (declare (fixnum n p  ))
@@ -1231,7 +1229,7 @@
 	   (ind (go sa))
 	   ((> (f* p j) n-1)
 	    (setq *xn (mapcar (function -) (p2cpol (cddr u) n-1))
-		  s (copy *xn)
+		  s (copy-tree *xn)
 		  ind t)
 	    (setq i (f- (f* p j) n))
 	    (go sa1)))

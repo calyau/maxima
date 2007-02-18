@@ -93,7 +93,7 @@
 
 (defun reset-do-the-work (args reset-verbose)
 
-  (let ((actually-reset (copy '((mlist)))) ($lispdisp t))
+  (let ((actually-reset (copy-tree '((mlist)))) ($lispdisp t))
     (if args
       (mapcar
         #'(lambda (key)

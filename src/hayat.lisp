@@ -1713,7 +1713,7 @@
 	(cond (exp-datum
 		   ;; Info not needed yet.
 		   ;; (or (atom (car exp-datum))
-		   ;;     (setq 0p-funord (copy (cdar exp-datum))))
+		   ;;     (setq 0p-funord (copy-tree (cdar exp-datum))))
 	       (exp-datum-lt fun exp-datum))
 	      ((setq exp-datum (get (oper-name fun) 'sp2))
 	       (setq exp-datum (get-lexp (subst (dummy-var) 'sp2var exp-datum)
@@ -1730,7 +1730,7 @@
 
 (defun getexp-fun (fun var pw)
   (declare (special var))
-  (let ((exp-datum (copy (get (oper-name fun) 'exp-form))))
+  (let ((exp-datum (copy-tree (get (oper-name fun) 'exp-form))))
     (cond ((infp pw) (infin-ord-err))
 	  ((null exp-datum)
 	   (if (null (setq exp-datum
@@ -2198,9 +2198,7 @@
   (cond ((or (atom e) (mnump e)) )
 	((eq (caar e) 'mrat)
 	 (when (memq 'trunc (car e))
-	    (push (mapcar #'(lambda (q) (copy q)) ; copy is a macro!!!
-			  (mrat-tlist e))
-		  *a*)))
+	    (push (mapcar #'copy-tree (mrat-tlist e)) *a*)))
 	(t (mapc #'findtl1 (cdr e)))))
 
 (defun tlist-merge (tlists)

@@ -849,9 +849,9 @@
   (cond ((= $cflength 1)
 	 (cons '(mlist simp) n))
 	((do ((i 2 (f1+ i))
-	      (a (copy (cdr n))))
+	      (a (copy-tree (cdr n))))
 	     ((> i $cflength) (cons '(mlist simp) n))
-	   (setq n (nconc n (copy a)))))))	
+	   (setq n (nconc n (copy-tree a)))))))	
 
 (defmfun $qunit (n)
   (let ((l (sqcont n)))

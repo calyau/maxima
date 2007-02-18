@@ -58,11 +58,6 @@
 (defmacro tuchus (list object)
   `(setf ,list (nconc ,list (ncons ,object))))
 
-;; Old names kept around for compatibility.
-
-(defmacro copy (list)
-  `(copy-tree ,list))
-
 ;; Use this instead of GETL when looking for "function" properties,
 ;; i.e. one of EXPR, SUBR, LSUBR, FEXPR, FSUBR, MACRO.
 ;; Use FBOUNDP, SYMBOL-FUNCTION, or FMAKUNBOUND if possible.

@@ -336,7 +336,7 @@
      sa (cptimesxa s q)
      st (cond ((and (= j 1)
 		    (equal '(1 0) (ncdr s (1- (length s))))
-		    (= 1 (length (delete 0 (copy s) :test #'equal))))
+		    (= 1 (length (delete 0 (copy-tree s) :test #'equal))))
 	       (return (setq split* t))))
      (setq l s)
      (setq i n-1)
@@ -368,7 +368,7 @@
      loop (when (= i m) (return (cptimesxa x (- (f* pp p) pp))))
      (setq d pp)
      (cptimesxa x (- (setq pp(f* pp p)) d))
-     (setq trl* (cons(copy x) trl*))
+     (setq trl* (cons (copy-tree x) trl*))
      (incf i)
      (go loop)))
 

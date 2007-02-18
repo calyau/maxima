@@ -497,9 +497,9 @@
       (setq part
             (cond
               ((= (length args) 0)
-               `(,(msize (caddr x) (copy then-literal) r 'mcond rop)))
+               `(,(msize (caddr x) (copy-tree then-literal) r 'mcond rop)))
               (t
-                `(,(msize (caddr x) (copy then-literal) nil 'mcond 'mparen))))
+                `(,(msize (caddr x) (copy-tree then-literal) nil 'mcond 'mparen))))
 
             parts (append parts part))
       
@@ -511,19 +511,19 @@
                ((eq maybe-elseif t)
                 (let ((else-arg else-or-then))
                   (setq
-                    part `(,(msize else-arg (copy else-literal) r 'mcond rop))
+                    part `(,(msize else-arg (copy-tree else-literal) r 'mcond rop))
                     parts (append parts part))))
                (t
                  (let ((elseif-arg maybe-elseif) (then-arg else-or-then))
                    (setq
-                     part `(,(msize elseif-arg (copy elseif-literal) nil 'mcond 'mparen)
-                             ,(msize then-arg (copy then-literal) r 'mcond rop))
+                     part `(,(msize elseif-arg (copy-tree elseif-literal) nil 'mcond 'mparen)
+                             ,(msize then-arg (copy-tree then-literal) r 'mcond rop))
                      parts (append parts part))))))
             (t
               (let ((elseif-arg maybe-elseif) (then-arg else-or-then))
                 (setq
-                  part `(,(msize elseif-arg (copy elseif-literal) nil 'mcond 'mparen)
-                          ,(msize then-arg (copy then-literal) nil 'mcond 'mparen))
+                  part `(,(msize elseif-arg (copy-tree elseif-literal) nil 'mcond 'mparen)
+                          ,(msize then-arg (copy-tree then-literal) nil 'mcond 'mparen))
                   parts (append parts part))))))
 
         (setq args (cddr args)))
