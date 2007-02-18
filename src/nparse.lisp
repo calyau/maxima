@@ -224,7 +224,7 @@
 
 (defun scan-macsyma-token ()
   ;; note that only $-ed tokens are GETALIASed.
-  (getalias (bothcase-implode (cons '#\$ (scan-token t)))))
+  (getalias (implode (cons '#\$ (scan-token t)))))
 
 (defun scan-lisp-token ()
   (let ((charlist (scan-token nil)))

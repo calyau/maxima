@@ -544,9 +544,6 @@ values")
   (make-array 20 :fill-pointer 0 :adjustable t
 	      :element-type ' #.(array-element-type "ab")))
 
-(defun implode (lis) (implode1 lis nil))
-
-
 ;;; If the 'string is all the same case, invert the case.  Otherwise,
 ;;; do nothing.
 #-(or scl allegro)
@@ -588,7 +585,7 @@ values")
 		  (string-upcase string))
 		 (t
 		  string))))))
-
+	
 (defun intern-invert-case (string)
   ;; Like read-from-string with readtable-case :invert
   ;;
@@ -642,9 +639,8 @@ values")
 	       converted-str)))
 	(t (princ-to-string sym))))
 				      
-(defun implode1 (lis upcase &aux (ar *string-for-implode*) (leng 0))
-  (declare (type string ar) (fixnum leng)
-	   (ignore upcase))
+(defun implode (lis &aux (ar *string-for-implode*) (leng 0))
+  (declare (type string ar) (fixnum leng))
   (or (> (array-total-size ar) (setq leng (length lis)))
       (adjust-array ar (+ leng 20)))
   (setf (fill-pointer ar) leng)
@@ -656,9 +652,6 @@ values")
 	       ((numberp v) (setq v (code-char v))))
 	 (setf (aref ar i) v))
   (intern-invert-case ar))
-
-(defun bothcase-implode (lis)
-  (implode1 lis nil))
 
 (defun list-string (strin &aux tem)
   (setq tem (make-list (length (the string  strin))))
