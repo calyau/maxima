@@ -275,7 +275,7 @@
 	      ((not (pzerop (car b))) (cons b m))))) ))
 
 (defun rot* (b)
-  (setq b (copy1 b)) (prog2 (nconc b b) (cdr b) (rplacd b nil)))
+  (setq b (copy-list b)) (prog2 (nconc b b) (cdr b) (rplacd b nil)))
 
 
 (defun ppluschk (p q) (cond ((pzerop p) q) (t (pplus p q))))

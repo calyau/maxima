@@ -197,7 +197,7 @@
 (defun mfacpplus (l)
   (let (($gcd
 	 (or $gcd '$ez))( $ratfac nil)( g nil))
-    (setq g (oldcontent2 (sort (copy1 l) 'contodr) 0))
+    (setq g (oldcontent2 (sort (copy-list l) 'contodr) 0))
     (cond ((pzerop g) g)
 	  ((do ((a (pflatten (pquotient (car l) g))
 		   (pplus a (pflatten (pquotient (car ll) g))))

@@ -50,8 +50,7 @@
 (defmvar mplc* nil)
 (defmvar mm* 1)
 (defmvar alpha nil)
-(defmvar smallprimes '(3 5 7 11. 13. 17. 19. 23. 29. 31. 37.
-		       41. 43. 47. 53. 59. 61.))
+(defmvar smallprimes '(3 5 7 11. 13. 17. 19. 23. 29. 31. 37. 41. 43. 47. 53. 59. 61.))
 
 ;; External specials
 
@@ -580,7 +579,7 @@
   (prog (s n) 
      (setq n (quotient (length l) 2))
      (setq s (ncdr l n))
-     (setq dn* (copy1 (cdr s)))
+     (setq dn* (copy-list (cdr s)))
      (rplacd s nil)
      (setq nn* l))) 
 
@@ -912,14 +911,14 @@
      (setq lindex (index* (setq r (length lfunct))))
      (cond ((not monic*)
 	    (setq llc (mapcar (function caddr) lfunct))
-	    (setq lcindex (copy1 lindex))
+	    (setq lcindex (copy-list lindex))
 	    (remov3 llc lcindex)
 	    (setq v (ptimes lc (ptimes (caddr u) u))))
 	   (t (setq v u)))
      (setq ltuple (cons nil (mapcar  #'list lindex)))
      (setq stage 1)
      (setq lindex (cons nil lindex))
-     (setq lfunct (copy1 lprod))
+     (setq lfunct (copy-list lprod))
      tloop(setq stage (f1+ stage))
      cont (cond ((or (greaterp stage d2) (greaterp stage (f1- r)))
 		 (return (cons u factor))))
@@ -1087,7 +1086,7 @@
 
 (defun fact5mod (u)
   (prog (lc poly)
-     (setq poly (copy1 u))
+     (setq poly (copy-list u))
      (setqmodulus modulu*)
      (setq poly (pmod poly))	     
      (setq lc (caddr poly))
@@ -1124,7 +1123,7 @@
      (setq w (pgcdu vj u))
      (cond ((or (numberp w) (= (cadr w) (cadr u))) (go agg)))
      (setq y (car (pmodquo u w)))
-     (setq fnq (cons (copy1 w) fnq))
+     (setq fnq (cons (copy-list w) fnq))
      (setq fnj (cons y fnj))
      (setq p2 (f1+ p2))
      (rplacd factors (cddr factors))
@@ -1194,7 +1193,7 @@
      (setq u (cddr u))
      (rplaca u (cond ((pcoefp (car u))
 		      (quotient (car u) c))
-		     (t (npquo (copy1 (car u)) c))))
+		     (t (npquo (copy-list (car u)) c))))
      (go loop)))
 
 (defun npctimes1 (c p)
@@ -1204,7 +1203,7 @@
      (setq u p)
      loop (cond ((null (cdr u))(return p)))
      (setq a (cond ((pcoefp (caddr u)) (ctimes c (caddr u)))
-		   (t (npctimes c (copy1 (caddr u))))))
+		   (t (npctimes c (copy-list (caddr u))))))
      (cond ((equal a 0) (rplacd u (cdddr u)))
 	   (t (setq u (cddr u))
 	      (rplaca u a)))

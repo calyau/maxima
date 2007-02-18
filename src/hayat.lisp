@@ -2031,7 +2031,7 @@
 			    tlist))
 	(setq $zerobern t $simp t $algebraic t last-exp e least_term? 't
 	      log-1 '((%log simp) -1) log%i '((%log simp) $%i)
-	      tvars (mapcar 'car tlist) varlist (copy1* tvars))
+	      tvars (mapcar 'car tlist) varlist (copy-list tvars))
          (when $taylor_simplifier
 	    (setq taylor_simplifier
 		  (if (fboundp $taylor_simplifier) $taylor_simplifier

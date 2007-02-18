@@ -63,12 +63,6 @@
 
 ;; Old names kept around for compatibility.
 
-(defmacro copy1* (list)
-  `(copy-list ,list))
-
-(defmacro copy1 (list)
-  `(copy-list ,list))
-
 (defmacro copy (list)
   `(copy-tree ,list))
 

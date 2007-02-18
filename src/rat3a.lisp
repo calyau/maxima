@@ -531,7 +531,7 @@
 
 (defmfun monize (p) 
   (cond ((pcoefp p) (if (pzerop p) p 1))
-	(t (cons (p-var p) (pmonicize (copy1 (p-terms p)))))))
+	(t (cons (p-var p) (pmonicize (copy-list (p-terms p)))))))
 
 (defun pmonicize (p)			;CLOBBERS POLY
   (cond ((equal (pt-lc p) 1) p)

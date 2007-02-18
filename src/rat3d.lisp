@@ -95,7 +95,7 @@
 (defun minlist(l) (maxminl l nil))
 
 (defun maxminl (l switch)
-  (do ((l1 (copy1 (car l)))
+  (do ((l1 (copy-list (car l)))
        (ll (cdr l) (cdr ll)))
       ((null ll) l1)
     (do ((v1 l1 (cdr v1))
