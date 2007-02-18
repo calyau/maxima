@@ -1,18 +1,18 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /eval_string.texi/1.1/Mon Feb 27 22:09:17 2006//
 @menu
-* Defini@value{cedilha}@~oes para eval_string::
+* Defini@,{c}@~{o}es para eval_string::
 @end menu
 
-@node Defini@value{cedilha}@~oes para eval_string,  , eval_string, eval_string
-@section Defini@value{cedilha}@~oes para eval_string
+@node Defini@,{c}@~{o}es para eval_string,  , eval_string, eval_string
+@section Defini@,{c}@~{o}es para eval_string
 
-@deffn {Fun@,{c}@~ao} eval_string (@var{str})
-Entrega a seq@"u@^encia de caracteres do Maxima @var{str} como uma express@~ao do Maxima e a avalia.
-@var{str} @'e uma seq@"u@^encia de caracteres do Maxima. Essa seq@"u@^encia pode ou n@~ao ter um marcador de final (sinal de d@'olar @code{$} ou ponto e v@'irgula @code{;}).
-Somente a primeira express@~ao @'e entregue e avaliada, se ouver mais de uma.
+@deffn {Fun@,{c}@~{a}o} eval_string (@var{str})
+Entrega a seq@"{u}@^{e}ncia de caracteres do Maxima @var{str} como uma express@~{a}o do Maxima e a avalia.
+@var{str} @'{e} uma seq@"{u}@^{e}ncia de caracteres do Maxima. Essa seq@"{u}@^{e}ncia pode ou n@~{a}o ter um marcador de final (sinal de d@'{o}lar @code{$} ou ponto e v@'{i}rgula @code{;}).
+Somente a primeira express@~{a}o @'{e} entregue e avaliada, se ouver mais de uma.
 
-Reclama se @var{str} n@~ao for uma seq@"u@^encia de caracteres do Maxima.
+Reclama se @var{str} n@~{a}o for uma seq@"{u}@^{e}ncia de caracteres do Maxima.
 
 Exemplos:
 @example
@@ -24,16 +24,16 @@ Exemplos:
 (%o3)                   baz + 1764
 @end example
 
-Para usar essa fun@,{c}@~ao escreva primeiro @code{load("eval_string")}. Veja tamb@'em @code{parse_string}.
+Para usar essa fun@,{c}@~{a}o escreva primeiro @code{load("eval_string")}. Veja tamb@'{e}m @code{parse_string}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~ao} parse_string (@var{str})
-Entrega a seq@"u@^encia de caracteres do Maxima @var{str} como uma express@~ao do Maxima (sem fazer nenhuma avalia@,{c}@~ao dessa express@~ao).
-@var{str} @'e uma seq@"u@^encia de caracteres do Maxima. Essa seq@"u@^encia pode ou n@~ao ter um marcador de final (sinal de d@'olar @code{$} ou ponto e v@'irgula @code{;}).
-Somente a primeira express@~ao @'e entregue e avaliada, se ouver mais de uma.
+@deffn {Fun@,{c}@~{a}o} parse_string (@var{str})
+Entrega a seq@"{u}@^{e}ncia de caracteres do Maxima @var{str} como uma express@~{a}o do Maxima (sem fazer nenhuma avalia@,{c}@~{a}o dessa express@~{a}o).
+@var{str} @'{e} uma seq@"{u}@^{e}ncia de caracteres do Maxima. Essa seq@"{u}@^{e}ncia pode ou n@~{a}o ter um marcador de final (sinal de d@'{o}lar @code{$} ou ponto e v@'{i}rgula @code{;}).
+Somente a primeira express@~{a}o @'{e} entregue e avaliada, se ouver mais de uma.
 
-Reclama se @var{str} n@~ao for uma seq@"u@^encia de caracteres do Maxima.
+Reclama se @var{str} n@~{a}o for uma seq@"{u}@^{e}ncia de caracteres do Maxima.
 
 Exemplos:
 @example
@@ -46,5 +46,5 @@ Exemplos:
 (%o3)          (foo : 42, bar : foo  + baz)
 @end example
 
-Para usar essa fun@,{c}@~ao escreva primeiro @code{load("eval_string")}. Veja tamb@'em a fun@,{c}@~ao @code{eval_string}.
+Para usar essa fun@,{c}@~{a}o escreva primeiro @code{load("eval_string")}. Veja tamb@'{e}m a fun@,{c}@~{a}o @code{eval_string}.
 @end deffn

@@ -2,33 +2,33 @@
 @c /Debugging.texi/1.16/Thu Jun 16 17:05:29 2005/-ko/
 @c end concepts Debugging
 @menu
-* Depurando o C@'odigo Fonte::
+* Depurando o C@'{o}digo Fonte::
 * Comandos Palavra Chave::
-* Defini@value{cedilha}@~oes para Depura@value{cedilha}@~ao::   
+* Defini@,{c}@~{o}es para Depura@,{c}@~{a}o::   
 @end menu
 
-@node Depurando o C@'odigo Fonte, Comandos Palavra Chave, , Depurando
-@section Depurando o C@'odigo Fonte
+@node Depurando o C@'{o}digo Fonte, Comandos Palavra Chave, , Depurando
+@section Depurando o C@'{o}digo Fonte
 
-Maxima tem um depurador interno de c@'odigo fonte.  
-O usu@'ario pode escolher um ponto de parada em uma fun@,{c}@~ao,
-e ent@~ao caminhar linha por linha a partir da@'i.  A pilha de
-chamadas po ser examinada, juntamente com as vari@'aveis associadas @`aquele
-n@'ivel.
+Maxima tem um depurador interno de c@'{o}digo fonte.  
+O usu@'{a}rio pode escolher um ponto de parada em uma fun@,{c}@~{a}o,
+e ent@~{a}o caminhar linha por linha a partir da@'{i}.  A pilha de
+chamadas po ser examinada, juntamente com as vari@'{a}veis associadas @`aquele
+n@'{i}vel.
 
-O comando @code{:help} ou @code{:h} mostra a lista de comando de depura@,{c}@~ao.
+O comando @code{:help} ou @code{:h} mostra a lista de comando de depura@,{c}@~{a}o.
 (Em geral,
-comandos podem ser abreviados se a abrevia@,{c}@~ao for @'unica.  Se n@~ao for
-@'unica, as alternativas podem ser listadas.)
-Dentro do depurador, o usu@'ario pode tamb@'em usar qualquer fun@,{c}@~oes comuns
-do Maxima para examinar, definir, e manipular vari@'aveis e express@~oes.
+comandos podem ser abreviados se a abrevia@,{c}@~{a}o for @'{u}nica.  Se n@~{a}o for
+@'{u}nica, as alternativas podem ser listadas.)
+Dentro do depurador, o usu@'{a}rio pode tamb@'{e}m usar qualquer fun@,{c}@~{o}es comuns
+do Maxima para examinar, definir, e manipular vari@'{a}veis e express@~{o}es.
 
-Um ponto de parada @'e escolhido atrav@'es do comando @code{:br} na linha de comando do Maxima.
+Um ponto de parada @'{e} escolhido atrav@'{e}s do comando @code{:br} na linha de comando do Maxima.
 Dentro do depurador,
-o usu@'ario pode avan@,{c}ar uma linha de cada vez usando o comando @code{:n} (``next'').
+o usu@'{a}rio pode avan@,{c}ar uma linha de cada vez usando o comando @code{:n} (``next'').
 o comando @code{:bt} (``backtrace'') mostra uma lista da pilha de frames.
-O comando @code{:r} (``resume'') sai do depurador e continua com a execu@,{c}@~ao.
-Esses comandos s@~ao demostrados no exemplo abaixo.
+O comando @code{:r} (``resume'') sai do depurador e continua com a execu@,{c}@~{a}o.
+Esses comandos s@~{a}o demostrados no exemplo abaixo.
 
 @example
 (%i1) load ("/tmp/foobar.mac");
@@ -61,12 +61,12 @@ Bkpt 0:(foobar.mac 1)
 (dbm:1) u: 33;                     <-- Altera u para ser 33
 33
 
-(dbm:1) :r                         <-- Digite :r para retomar a computa@,{c}@~ao
+(dbm:1) :r                         <-- Digite :r para retomar a computa@,{c}@~{a}o
 
 (%o2)                                1094
 @end example
 
-O arquivo @code{/tmp/foobar.mac} @'e o seguinte:
+O arquivo @code{/tmp/foobar.mac} @'{e} o seguinte:
 
 @example
 foo(y) := block ([u:y^2],
@@ -81,19 +81,19 @@ bar(x,y) := (
   x+y);
 @end example
 
-USO DO DEPURADOR ATRAV@'ES DO EMACS
+USO DO DEPURADOR ATRAV@'{E}S DO EMACS
 
-Se o usu@'ario estiver rodando o c@'odigo sob o GNU emacs em uma janela
-shell (shel dbl), ou est@'a rodando a vers@~ao de interface gr@'afica,
-@code{xmaxima}, ent@~ao se ele para em um ponto de parada, ele ver@'a sua
-posi@,{c}@~ao corrente no arquivo fonte a qua ser@'a mostrada na
+Se o usu@'{a}rio estiver rodando o c@'{o}digo sob o GNU emacs em uma janela
+shell (shel dbl), ou est@'{a} rodando a vers@~{a}o de interface gr@'{a}fica,
+@code{xmaxima}, ent@~{a}o se ele para em um ponto de parada, ele ver@'{a} sua
+posi@,{c}@~{a}o corrente no arquivo fonte a qua ser@'{a} mostrada na
 outra metade da janela, ou em vermelho brilhante, ou com um pequeno
 seta apontando na direita da linha.  Ele pode avan@,{c}ar uma linha por
 vez digitando M-n (Alt-n).
 
-Sob Emacs voc@^e pode executar em um shell @code{dbl}, o qual requer o
-arquivo @code{dbl.el} no diret@'orio elisp.
-Tenha certeza que instalou os arquivos elisp ou adicionou o diret@'orio elisp do Macima ao
+Sob Emacs voc@^{e} pode executar em um shell @code{dbl}, o qual requer o
+arquivo @code{dbl.el} no diret@'{o}rio elisp.
+Tenha certeza que instalou os arquivos elisp ou adicionou o diret@'{o}rio elisp do Macima ao
 seu caminho:
 e.g., adicione o seguinte ao seu arquivo @file{.emacs} ou ao seu arquivo @code{site-init.el}
 
@@ -102,34 +102,34 @@ e.g., adicione o seguinte ao seu arquivo @file{.emacs} ou ao seu arquivo @code{s
 (autoload 'dbl "dbl")
 @end example
 
-ent@~ao no emacs 
+ent@~{a}o no emacs 
 
 @example
 M-x dbl
 @end example
 
-pode iniciar uma janela shell na qual voc@^e pode executar programas, por exemplo
-Maxima, gcl, gdb etc.   Essa janela de shell tamb@'em reconhece informa@,{c}@~oes sobre depura@,{c}@~ao de
-c@'odigo fonte, e mostra o c@'odigo fonte em outra janela.  
+pode iniciar uma janela shell na qual voc@^{e} pode executar programas, por exemplo
+Maxima, gcl, gdb etc.   Essa janela de shell tamb@'{e}m reconhece informa@,{c}@~{o}es sobre depura@,{c}@~{a}o de
+c@'{o}digo fonte, e mostra o c@'{o}digo fonte em outra janela.  
 
-O usu@'ario pode escolher um ponto de parada em certa linha do
-arquivo digitando @code{C-x space}.  Isso encontra qual a fun@,{c}@~ao
-que o cursor est@'a posicionado, e ent@~ao mostra qual a linha daquela fun@,{c}@~ao
-que o cursor est@'a habilitado.   Se o cursor estiver habilitado, digamos, na linha 2 de @code{foo}, ent@~ao isso ir@'a
+O usu@'{a}rio pode escolher um ponto de parada em certa linha do
+arquivo digitando @code{C-x space}.  Isso encontra qual a fun@,{c}@~{a}o
+que o cursor est@'{a} posicionado, e ent@~{a}o mostra qual a linha daquela fun@,{c}@~{a}o
+que o cursor est@'{a} habilitado.   Se o cursor estiver habilitado, digamos, na linha 2 de @code{foo}, ent@~{a}o isso ir@'{a}
 inserir na outra janela o comando, ``@code{:br foo 2}'', para
-parar @code{foo} nessa segunda linha.   Para ter isso habilitado, o usu@'ario deve ter
+parar @code{foo} nessa segunda linha.   Para ter isso habilitado, o usu@'{a}rio deve ter
 maxima-mode.el habilitado na janela na qual o arquivo @code{foobar.mac} estiver interagindo.
-Existe comandos adicional dispon@'iveis naquela janela de arquivo, tais como
-avaliando a fun@,{c}@~ao dentro do Maxima, atrav@'es da digita@,{c}@~ao de @code{Alt-Control-x}.
+Existe comandos adicional dispon@'{i}veis naquela janela de arquivo, tais como
+avaliando a fun@,{c}@~{a}o dentro do Maxima, atrav@'{e}s da digita@,{c}@~{a}o de @code{Alt-Control-x}.
 
-@node Comandos Palavra Chave, Defini@value{cedilha}@~oes para Depura@value{cedilha}@~ao, Depurando o C@'odigo Fonte, Depurando
+@node Comandos Palavra Chave, Defini@,{c}@~{o}es para Depura@,{c}@~{a}o, Depurando o C@'{o}digo Fonte, Depurando
 @section Comandos Palavra Chave
 
-Comandos palavra chave s@~ao palavras chaves especiais que n@~ao s@~ao interpretadas como express@~oes do Maxima.
+Comandos palavra chave s@~{a}o palavras chaves especiais que n@~{a}o s@~{a}o interpretadas como express@~{o}es do Maxima.
 Um comando palavra chave pode ser inserido na linha de comando do Maxima ou na linha de comando do depurador,
-embora n@~ao possa ser inserido na linha de comando de parada.
+embora n@~{a}o possa ser inserido na linha de comando de parada.
 Comandos palavra chave iniciam com um dois pontos Keyword commands start with a colon, ':'.
-Por exemplo, para avaliar uma forma Lisp voc@^e
+Por exemplo, para avaliar uma forma Lisp voc@^{e}
 pode digitar @code{:lisp} seguido pela forma a ser avaliada.  
 
 @example
@@ -137,24 +137,24 @@ pode digitar @code{:lisp} seguido pela forma a ser avaliada.
 5
 @end example
 
-O n@'umero de argumentos tomados depende do comando em particular.  Tamb@'em,
-voc@^e n@~ao precisa digitar o comando completo, apenas o suficiente para ser @'unico no meio
-das palavras chave de parada.   Dessa forma @code{:br} ser@'a suficiente para @code{:break}.
+O n@'{u}mero de argumentos tomados depende do comando em particular.  Tamb@'{e}m,
+voc@^{e} n@~{a}o precisa digitar o comando completo, apenas o suficiente para ser @'{u}nico no meio
+das palavras chave de parada.   Dessa forma @code{:br} ser@'{a} suficiente para @code{:break}.
 
-Os comandos de palavra chave s@~ao listados abaixo.
+Os comandos de palavra chave s@~{a}o listados abaixo.
 
 @table @code
 @item :break F n
-Escolhe um ponto de parada em uma fun@,{c}@~ao @code{F} na linha @code{n} 
-a partir do in@'icio da fun@,{c}@~ao.
-Se @code{F} for dado como uma seq@"u@^encia de caracteres, ent@~ao essa seq@"u@^encia de caracteres @'e assumida referir-se a
-um arquivo, e @code{n} @'e o deslocamente a partir do in@'icio do arquivo.
-O deslocamento @'e opcional. Se for omitido, @'e assumido ser zero
-(primeira linha da fun@,{c}@~ao ou do arquivo).
+Escolhe um ponto de parada em uma fun@,{c}@~{a}o @code{F} na linha @code{n} 
+a partir do in@'{i}cio da fun@,{c}@~{a}o.
+Se @code{F} for dado como uma seq@"{u}@^{e}ncia de caracteres, ent@~{a}o essa seq@"{u}@^{e}ncia de caracteres @'{e} assumida referir-se a
+um arquivo, e @code{n} @'{e} o deslocamente a partir do in@'{i}cio do arquivo.
+O deslocamento @'{e} opcional. Se for omitido, @'{e} assumido ser zero
+(primeira linha da fun@,{c}@~{a}o ou do arquivo).
 @item :bt
 Imprime na tela uma lista da pilha de frames
 @item :continue
-Continua a computa@,{c}@~ao
+Continua a computa@,{c}@~{a}o
 @c CAN'T SEEM TO GET :delete TO WORK !!!
 @item :delete
 Remove o ponto de parada selecionado, ou todos se nenum for especificado
@@ -171,219 +171,219 @@ Imprime na tela a pilha de frame @code{n}, ou o corrente frame se nenhum for esp
 Imprime na tela a ajuda sobre um comando do depurador, ou todos os comandos se nenhum for especificado
 @c CAN'T SEEM TO GET :info TO WORK !!!
 @item :info
-Imprime na tela informa@,{c}@~oes sobre um item
+Imprime na tela informa@,{c}@~{o}es sobre um item
 @item :lisp alguma-forma
 Avalia @code{alguma-forma} como uma forma Lisp
 @item :lisp-quiet alguma-forma
-Avalia a forma Lisp @code{alguma-forma} sem qualquer sa@'ida
+Avalia a forma Lisp @code{alguma-forma} sem qualquer sa@'{i}da
 @item :next
-Como @code{:step}, exceto @code{:next} passos sobre chamadas de fu@,{c}@~ao
+Como @code{:step}, exceto @code{:next} passos sobre chamadas de fu@,{c}@~{a}o
 @item :quit
-Sai do n@'ivel corrente do depurador sem concluir a computa@,{c}@~ao
+Sai do n@'{i}vel corrente do depurador sem concluir a computa@,{c}@~{a}o
 @item :resume
-Continua a computa@,{c}@~ao
+Continua a computa@,{c}@~{a}o
 @item :step
-Continua a computa@,{c}@~ao at@'e encontraruma nova linha de c@'odico
+Continua a computa@,{c}@~{a}o at@'{e} encontraruma nova linha de c@'{o}dico
 @item :top
-Retorne para a linha de comando do Maxima (saindo de qualquer n@'ivel do depurador) sem 
-completar a computa@,{c}@~ao
+Retorne para a linha de comando do Maxima (saindo de qualquer n@'{i}vel do depurador) sem 
+completar a computa@,{c}@~{a}o
 @end table 
 
 
-@node Defini@value{cedilha}@~oes para Depura@value{cedilha}@~ao, , Comandos Palavra Chave, Depurando
-@section Defini@value{cedilha}@~oes para Depura@value{cedilha}@~ao
+@node Defini@,{c}@~{o}es para Depura@,{c}@~{a}o, , Comandos Palavra Chave, Depurando
+@section Defini@,{c}@~{o}es para Depura@,{c}@~{a}o
 
-@defvr {Vari@'avel de op@,{c}@~ao} refcheck
-Valor padr@~ao: @code{false}
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} refcheck
+Valor padr@~{a}o: @code{false}
 
 Quando @code{refcheck} for @code{true}, Maxima imprime uma mensagem
-cada vez que uma vari@'avel associada for usada pela primeira vez em uma
-computa@,{c}@~ao.
+cada vez que uma vari@'{a}vel associada for usada pela primeira vez em uma
+computa@,{c}@~{a}o.
 
 @end defvr
 
-@defvr {Vari@'avel de op@,{c}@~ao} setcheck
-Valor padr@~ao: @code{false}
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} setcheck
+Valor padr@~{a}o: @code{false}
 
-Se @code{setcheck} for escolhido para uma lista de vari@'aveis (as quais podem
+Se @code{setcheck} for escolhido para uma lista de vari@'{a}veis (as quais podem
 ser subscritas), 
-Maxima mostra uma mensagem quando as vari@'aveis, ou
-ocorr@^encias subscritas delas, forem associadas com o
-operador comum de atribui@,{c}@~ao @code{:}, o operador @code{::}
-de atribui@,{c}@~ao, ou associando argumentos de fun@,{c}@~ao,
-mas n@~ao com o operador de atribui@,{c}@~ao de fun@,{c}@~ao @code{:=} nem o operador de atribui@,{c}@~ao
+Maxima mostra uma mensagem quando as vari@'{a}veis, ou
+ocorr@^{e}ncias subscritas delas, forem associadas com o
+operador comum de atribui@,{c}@~{a}o @code{:}, o operador @code{::}
+de atribui@,{c}@~{a}o, ou associando argumentos de fun@,{c}@~{a}o,
+mas n@~{a}o com o operador de atribui@,{c}@~{a}o de fun@,{c}@~{a}o @code{:=} nem o operador de atribui@,{c}@~{a}o
 @code{::=} de macro.
-A mensagem compreende o nome das vari@'aveis e o
+A mensagem compreende o nome das vari@'{a}veis e o
 valor associado a ela.
 
 @code{setcheck} pode ser escolhida para @code{all} ou @code{true} incluindo
-desse modo todas as vari@'aveis.
+desse modo todas as vari@'{a}veis.
 
-Cada nova atribui@,{c}@~ao de @code{setcheck} estabelece uma nova lista de vari@'aveis
-para verificar, e quaisquer vari@'aveis previamente atribu@'idas a @code{setcheck} s@~ao esquecidas.
+Cada nova atribui@,{c}@~{a}o de @code{setcheck} estabelece uma nova lista de vari@'{a}veis
+para verificar, e quaisquer vari@'{a}veis previamente atribu@'{i}das a @code{setcheck} s@~{a}o esquecidas.
 
-Os nomes atribu@'idos a @code{setcheck} devem ter um ap@'ostrofo no in@'icio se eles forem de outra forma
-avaliam para alguma outra coisa que n@~ao eles mesmo.
-Por exemplo, se @code{x}, @code{y}, e @code{z} estiverem atualmente associados, ent@~ao digite
+Os nomes atribu@'{i}dos a @code{setcheck} devem ter um ap@'{o}strofo no in@'{i}cio se eles forem de outra forma
+avaliam para alguma outra coisa que n@~{a}o eles mesmo.
+Por exemplo, se @code{x}, @code{y}, e @code{z} estiverem atualmente associados, ent@~{a}o digite
 
 @example
 setcheck: ['x, 'y, 'z]$
 @end example
 
-para coloc@'a-los na lista de vari@'aveis monitoradas.
+para coloc@'{a}-los na lista de vari@'{a}veis monitoradas.
 
-Nenhuma sa@'ida @'e gerada quando uma
-vari@'avel na lista @code{setcheck} for atribu@'ida a s@'i mesma, e.g., @code{X: 'X}.
+Nenhuma sa@'{i}da @'{e} gerada quando uma
+vari@'{a}vel na lista @code{setcheck} for atribu@'{i}da a s@'{i} mesma, e.g., @code{X: 'X}.
 
 @end defvr
 
-@defvr {Vari@'avel de op@,{c}@~ao} setcheckbreak
-Valor padr@~ao: @code{false}
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} setcheckbreak
+Valor padr@~{a}o: @code{false}
 
 Quando @code{setcheckbreak} for @code{true},
-Maxima mostrar@'a um ponto de parada 
-quando uma vari@'avel sob a lista @code{setcheck} for atribu@'ida a um novo valor.
-A parada ocorre antes que a atribu@'i@,{c}@~ao seja conclu@'ida.
-Nesse ponto, @code{setval} ret@'em o valor para o qual a vari@'avel est@'a 
-para ser atribu@'ida.
-Conseq@"uentemente, se pode atribuir um valor diferente atrav@'es da atribui@,{c}@~ao a @code{setval}.
+Maxima mostrar@'{a} um ponto de parada 
+quando uma vari@'{a}vel sob a lista @code{setcheck} for atribu@'{i}da a um novo valor.
+A parada ocorre antes que a atribu@'{i}@,{c}@~{a}o seja conclu@'{i}da.
+Nesse ponto, @code{setval} ret@'{e}m o valor para o qual a vari@'{a}vel est@'{a} 
+para ser atribu@'{i}da.
+Conseq@"{u}entemente, se pode atribuir um valor diferente atrav@'{e}s da atribui@,{c}@~{a}o a @code{setval}.
 
-Veja tamb@'em @code{setcheck} e @code{setval}.
+Veja tamb@'{e}m @code{setcheck} e @code{setval}.
 
 @end defvr
 
-@defvr {Vari@'avel de sistema} setval
-Mant@'em o valor para o qual a vari@'avel est@'a para ser escolhida quando
+@defvr {Vari@'{a}vel de sistema} setval
+Mant@'{e}m o valor para o qual a vari@'{a}vel est@'{a} para ser escolhida quando
 um @code{setcheckbreak} ocorrer.
-Conseq@"uentemente, se pode atribuir um valor diferente atrav@'es da atribui@,{c}@~ao a @code{setval}.
+Conseq@"{u}entemente, se pode atribuir um valor diferente atrav@'{e}s da atribui@,{c}@~{a}o a @code{setval}.
 
-Veja tamb@'em @code{setcheck} e @code{setcheckbreak}.
+Veja tamb@'{e}m @code{setcheck} e @code{setcheckbreak}.
 
 @end defvr
 
-@deffn {Fun@,{c}@~ao} timer (@var{f_1}, ..., @var{f_n})
-@deffnx {Fun@,{c}@~ao} timer ()
-Dadas as fun@,{c}@~oes @var{f_1}, ..., @var{f_n},
-@code{timer} coloca cada uma na lista de fun@,{c}@~oes para as quais cronometragens estat@'isticas s@~ao coletadas.
-@code{timer(f)$ timer(g)$} coloca @code{f} e ent@~ao @code{g} sobre a lista;
+@deffn {Fun@,{c}@~{a}o} timer (@var{f_1}, ..., @var{f_n})
+@deffnx {Fun@,{c}@~{a}o} timer ()
+Dadas as fun@,{c}@~{o}es @var{f_1}, ..., @var{f_n},
+@code{timer} coloca cada uma na lista de fun@,{c}@~{o}es para as quais cronometragens estat@'{i}sticas s@~{a}o coletadas.
+@code{timer(f)$ timer(g)$} coloca @code{f} e ent@~{a}o @code{g} sobre a lista;
 a lista acumula de uma chamada para a chamada seguinte.
 
 Sem argumentos, 
-@code{timer} retorna a lista das fun@,{c}@~oes tempo estatisticamente monitoradas.
+@code{timer} retorna a lista das fun@,{c}@~{o}es tempo estatisticamente monitoradas.
 
-Maxima armazena quanto tempo @'e empregado executando cada fun@,{c}@~ao
-na lista de fun@,{c}@~oes tempo estatisticamente monitoradas.
-@code{timer_info} retorna a coronometragem estat@'istica, incluindo o
-tempo m@'edio decorrido por chamada de fun@,{c}@~ao, o n@'umero de chamadas, e o
+Maxima armazena quanto tempo @'{e} empregado executando cada fun@,{c}@~{a}o
+na lista de fun@,{c}@~{o}es tempo estatisticamente monitoradas.
+@code{timer_info} retorna a coronometragem estat@'{i}stica, incluindo o
+tempo m@'{e}dio decorrido por chamada de fun@,{c}@~{a}o, o n@'{u}mero de chamadas, e o
 tempo total decorrido.
-@code{untimer} remove fun@,{c}@~oes da lista de fun@,{c}@~oes tempo estatisticamente monitoradas.
+@code{untimer} remove fun@,{c}@~{o}es da lista de fun@,{c}@~{o}es tempo estatisticamente monitoradas.
 
-@code{timer} n@~ao avalia seus argumentos. 
-@code{f(x) := x^2$ g:f$ timer(g)$} n@~ao coloca @code{f} na lista de fun@,{c}@~oes estatisticamente monitoradas.
+@code{timer} n@~{a}o avalia seus argumentos. 
+@code{f(x) := x^2$ g:f$ timer(g)$} n@~{a}o coloca @code{f} na lista de fun@,{c}@~{o}es estatisticamente monitoradas.
 
-Se @code{trace(f)} est@'a vigorando, ent@~ao @code{timer(f)} n@~ao tem efeito; @code{trace} e
-@code{timer} n@~ao podem ambas atuarem ao mesmo tempo.
+Se @code{trace(f)} est@'{a} vigorando, ent@~{a}o @code{timer(f)} n@~{a}o tem efeito; @code{trace} e
+@code{timer} n@~{a}o podem ambas atuarem ao mesmo tempo.
 
-Veja tamb@'em @code{timer_devalue}.
+Veja tamb@'{e}m @code{timer_devalue}.
 
 @end deffn
-@deffn {Fun@,{c}@~ao} untimer (@var{f_1}, ..., @var{f_n})
-@deffnx {Fun@,{c}@~ao} untimer ()
-Dadas as fun@,{c}@~oes @var{f_1}, ..., @var{f_n},
-@code{untimer} remove cada uma das fun@,{c}@~oes listadas da lista de fun@,{c}@~oes estatisticamente monitoradas.
+@deffn {Fun@,{c}@~{a}o} untimer (@var{f_1}, ..., @var{f_n})
+@deffnx {Fun@,{c}@~{a}o} untimer ()
+Dadas as fun@,{c}@~{o}es @var{f_1}, ..., @var{f_n},
+@code{untimer} remove cada uma das fun@,{c}@~{o}es listadas da lista de fun@,{c}@~{o}es estatisticamente monitoradas.
 
-Sem argumentos, @code{untimer} remove todas as fun@,{c}@~oes atualmente na  lista de fun@,{c}@~oes estatisticamente monitoradas.
+Sem argumentos, @code{untimer} remove todas as fun@,{c}@~{o}es atualmente na  lista de fun@,{c}@~{o}es estatisticamente monitoradas.
 
-Ap@'os @code{untimer (f)} ser executada, @code{timer_info (f)} ainda retorna
+Ap@'{o}s @code{untimer (f)} ser executada, @code{timer_info (f)} ainda retorna
 estatisticas de tempo previamente coletadas,
-embora @code{timer_info()} (sem argumentos) n@~ao
-retorna informa@,{c}@~oes sobre qualquer fun@,{c}@~ao que n@~ao estiver atualmente na lista de fun@,{c}@~oes tempo estatisticamente monitoradas.
+embora @code{timer_info()} (sem argumentos) n@~{a}o
+retorna informa@,{c}@~{o}es sobre qualquer fun@,{c}@~{a}o que n@~{a}o estiver atualmente na lista de fun@,{c}@~{o}es tempo estatisticamente monitoradas.
 @code{timer (f)} reposiciona todas as estatisticas de tempo para zero
-e coloca @code{f} na lista de fun@,{c}@~oes estatisticamente monitoradas novamente.
+e coloca @code{f} na lista de fun@,{c}@~{o}es estatisticamente monitoradas novamente.
 
 @end deffn
 
-@defvr {Vari@'avel de op@,{c}@~ao} timer_devalue
-Valor Padr@~ao: @code{false}
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} timer_devalue
+Valor Padr@~{a}o: @code{false}
 
-Quando @code{timer_devalue} for @code{true}, Maxima subtrai de cada fun@,{c}@~ao estatisticamente monitorada
-o tempo empregado em ou fun@,{c}@~oes estatisticamente monitoradas. De outra forma, o tempo reportado 
-para cada fun@,{c}@~ao inclui o tempo empregado em outras fun@,{c}@~oes.
-Note que tempo empregado em fun@,{c}@~oes n@~ao estatisticamente monitoradas n@~ao @'e subtra@'ido do
+Quando @code{timer_devalue} for @code{true}, Maxima subtrai de cada fun@,{c}@~{a}o estatisticamente monitorada
+o tempo empregado em ou fun@,{c}@~{o}es estatisticamente monitoradas. De outra forma, o tempo reportado 
+para cada fun@,{c}@~{a}o inclui o tempo empregado em outras fun@,{c}@~{o}es.
+Note que tempo empregado em fun@,{c}@~{o}es n@~{a}o estatisticamente monitoradas n@~{a}o @'{e} subtra@'{i}do do
 tempo total.
 
-Veja tamb@'em @code{timer} e @code{timer_info}.
+Veja tamb@'{e}m @code{timer} e @code{timer_info}.
 
 @end defvr
 
-@deffn {Fun@,{c}@~ao} timer_info (@var{f_1}, ..., @var{f_n})
-@deffnx {Fun@,{c}@~ao} timer_info ()
-Dadas as fun@,{c}@~oes @var{f_1}, ..., @var{f_n},
-@code{timer_info} retorna uma matriz contendo informa@,{c}@~oes de cronometragem para cada fun@,{c}@~ao.
-Sem argumentos, @code{timer_info} retorna informa@,{c}@~oes de cronometragem para
-todas as fun@,{c}@~oes atualmente na lista de fun@,{c}@~oes estatisticamente monitoradas.
+@deffn {Fun@,{c}@~{a}o} timer_info (@var{f_1}, ..., @var{f_n})
+@deffnx {Fun@,{c}@~{a}o} timer_info ()
+Dadas as fun@,{c}@~{o}es @var{f_1}, ..., @var{f_n},
+@code{timer_info} retorna uma matriz contendo informa@,{c}@~{o}es de cronometragem para cada fun@,{c}@~{a}o.
+Sem argumentos, @code{timer_info} retorna informa@,{c}@~{o}es de cronometragem para
+todas as fun@,{c}@~{o}es atualmente na lista de fun@,{c}@~{o}es estatisticamente monitoradas.
 
-A matriz retornada atrav@'es de @code{timer_info} cont@'em o nome da fun@,{c}@~ao,
-tempo por chamda de fun@,{c}@~ao, n@'umero de chamadas a fun@,{c}@~oes,tempo total,
+A matriz retornada atrav@'{e}s de @code{timer_info} cont@'{e}m o nome da fun@,{c}@~{a}o,
+tempo por chamda de fun@,{c}@~{a}o, n@'{u}mero de chamadas a fun@,{c}@~{o}es,tempo total,
 e @code{gctime}, cujja forma "tempo de descarte" no Macsyma original
-mas agora @'e sempre zero.
+mas agora @'{e} sempre zero.
 
-Os dados sobre os quais @code{timer_info} constr@'oi seu valor de retorno
-podem tamb@'em serem obtidos atrav@'es da fun@,{c}@~ao @code{get}:
+Os dados sobre os quais @code{timer_info} constr@'{o}i seu valor de retorno
+podem tamb@'{e}m serem obtidos atrav@'{e}s da fun@,{c}@~{a}o @code{get}:
 
 @example
 get(f, 'calls);  get(f, 'runtime);  get(f, 'gctime);
 @end example
 
-Veja tamb@'em @code{timer}.
+Veja tamb@'{e}m @code{timer}.
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} trace (@var{f_1}, ..., @var{f_n})
-@deffnx {Fun@,{c}@~ao} trace ()
-Dadas as fun@,{c}@~oes @var{f_1}, ..., @var{f_n},
+@deffn {Fun@,{c}@~{a}o} trace (@var{f_1}, ..., @var{f_n})
+@deffnx {Fun@,{c}@~{a}o} trace ()
+Dadas as fun@,{c}@~{o}es @var{f_1}, ..., @var{f_n},
 @code{trace} instrui Maxima para mostrar
-informa@,{c}@~oes de depura@,{c}@~ao quando essas fun@,{c}@~oes forem chamadas.
-@code{trace(f)$ trace(g)$} coloca @code{f} e ent@~ao @code{g} na lista de fun@,{c}@~oes
-para serem colocadas sob a a@,{c}@~ao de @code{trace}; a lista acumula de uma chamada para a seguinte.
+informa@,{c}@~{o}es de depura@,{c}@~{a}o quando essas fun@,{c}@~{o}es forem chamadas.
+@code{trace(f)$ trace(g)$} coloca @code{f} e ent@~{a}o @code{g} na lista de fun@,{c}@~{o}es
+para serem colocadas sob a a@,{c}@~{a}o de @code{trace}; a lista acumula de uma chamada para a seguinte.
 
 Sem argumentos,
-@code{trace} retorna uma lista de todas as fun@,{c}@~oes atualmente sob a a@,{c}@~ao de @code{trace}.
+@code{trace} retorna uma lista de todas as fun@,{c}@~{o}es atualmente sob a a@,{c}@~{a}o de @code{trace}.
 
-A fun@,{c}@~ao @code{untrace} desabilita a a@,{c}@~ao de @code{trace}.
-Veja tamb@'em @code{trace_options}. 
+A fun@,{c}@~{a}o @code{untrace} desabilita a a@,{c}@~{a}o de @code{trace}.
+Veja tamb@'{e}m @code{trace_options}. 
 
-@code{trace} n@~ao avalia seus argumentos. Dessa forma,
-@code{f(x) := x^2$ g:f$ trace(g)$} n@~ao coloca @code{f} sobre a lista de fun@,{c}@~oes monitoradas por @code{trace}.
+@code{trace} n@~{a}o avalia seus argumentos. Dessa forma,
+@code{f(x) := x^2$ g:f$ trace(g)$} n@~{a}o coloca @code{f} sobre a lista de fun@,{c}@~{o}es monitoradas por @code{trace}.
 
-Quando uma fun@,{c}@~ao for redefinida, ela @'e removida da lista de @code{timer}.
-Dessa forma ap@'os @code{timer(f)$ f(x) := x^2$},
-a fun@,{c}@~ao @code{f} n@~ao mais est@'a na lista de @code{timer}.
+Quando uma fun@,{c}@~{a}o for redefinida, ela @'{e} removida da lista de @code{timer}.
+Dessa forma ap@'{o}s @code{timer(f)$ f(x) := x^2$},
+a fun@,{c}@~{a}o @code{f} n@~{a}o mais est@'{a} na lista de @code{timer}.
 
-Se @code{timer (f)} estiver em efeito, ent@~ao @code{trace (f)} n@~ao est@'a agindo; @code{trace} e
-@code{timer} n@~ao podem ambas estar agindo para a mesma fun@,{c}@~ao.
+Se @code{timer (f)} estiver em efeito, ent@~{a}o @code{trace (f)} n@~{a}o est@'{a} agindo; @code{trace} e
+@code{timer} n@~{a}o podem ambas estar agindo para a mesma fun@,{c}@~{a}o.
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} trace_options (@var{f}, @var{option_1}, ..., @var{option_n})
-@deffnx {Fun@,{c}@~ao} trace_options (@var{f})
-Escolhe as op@,{c}@~oes de @code{trace} para a fun@,{c}@~ao @var{f}.
-Quaisquer op@,{c}@~oes anteriores s@~ao substitu@'idas.
-@code{trace_options (@var{f}, ...)} n@~ao tem efeito a menos que
-@code{trace (@var{f})} tenha sido tamb@'em chamada (ou antes ou ap@'os @code{trace_options}). 
+@deffn {Fun@,{c}@~{a}o} trace_options (@var{f}, @var{option_1}, ..., @var{option_n})
+@deffnx {Fun@,{c}@~{a}o} trace_options (@var{f})
+Escolhe as op@,{c}@~{o}es de @code{trace} para a fun@,{c}@~{a}o @var{f}.
+Quaisquer op@,{c}@~{o}es anteriores s@~{a}o substitu@'{i}das.
+@code{trace_options (@var{f}, ...)} n@~{a}o tem efeito a menos que
+@code{trace (@var{f})} tenha sido tamb@'{e}m chamada (ou antes ou ap@'{o}s @code{trace_options}). 
 
-@code{trace_options (@var{f})} reposiciona todas as op@,{c}@~oes para seus valores padr@~ao.
+@code{trace_options (@var{f})} reposiciona todas as op@,{c}@~{o}es para seus valores padr@~{a}o.
 
-As op@,{c}@~oes de palavra chave s@~ao:
+As op@,{c}@~{o}es de palavra chave s@~{a}o:
 
 @itemize @bullet
 @item
 @code{noprint}
-N@~ao mostre uma mensagem na entrada da fun@,{c}@~ao e saia.
+N@~{a}o mostre uma mensagem na entrada da fun@,{c}@~{a}o e saia.
 @item
 @code{break}
-Coloque um ponto de parada antes da fun@,{c}@~ao ser inserida,
-e ap@'os a fun@,{c}@~aos er retirada. Veja @code{break}.
+Coloque um ponto de parada antes da fun@,{c}@~{a}o ser inserida,
+e ap@'{o}s a fun@,{c}@~{a}os er retirada. Veja @code{break}.
 @item
 @code{lisp_print}
 Mostre argumentos e valores de retorno com objetos Lisp.
@@ -392,24 +392,24 @@ Mostre argumentos e valores de retorno com objetos Lisp.
 Mostre @code{-> true} na entrada da fun@,{c}@`ao e saia.
 @item
 @code{errorcatch}
-Capture os erros, fornecendo a op@,{c}@~ao para sinalizar um erro,
-tentar novamente a chamada de fun@,{c}@~ao, ou especificar um valor de retorno.
+Capture os erros, fornecendo a op@,{c}@~{a}o para sinalizar um erro,
+tentar novamente a chamada de fun@,{c}@~{a}o, ou especificar um valor de retorno.
 @end itemize
 
-Op@,{c}@~oes para @code{trace} s@~ao especificadas em duas formas. A presen@,{c}a da palavra chave de 
-op@,{c}@~ao sozinha coloca a op@,{c}@~ao para ter efeito incondicionalmente.
-(Note que op@,{c}@~ao @var{foo} n@~ao coloca para ter efeito especificando 
-@code{@var{foo}: true} ou uma forma similar; note tamb@'em que palavras chave n@~ao precisam
-estar com ap@'ostrofo.) Especificando a op@,{c}@~ao palavra chave com uma fun@,{c}@~ao
-predicado torna a op@,{c}@~ao condicional sobre o predicado.
+Op@,{c}@~{o}es para @code{trace} s@~{a}o especificadas em duas formas. A presen@,{c}a da palavra chave de 
+op@,{c}@~{a}o sozinha coloca a op@,{c}@~{a}o para ter efeito incondicionalmente.
+(Note que op@,{c}@~{a}o @var{foo} n@~{a}o coloca para ter efeito especificando 
+@code{@var{foo}: true} ou uma forma similar; note tamb@'{e}m que palavras chave n@~{a}o precisam
+estar com ap@'{o}strofo.) Especificando a op@,{c}@~{a}o palavra chave com uma fun@,{c}@~{a}o
+predicado torna a op@,{c}@~{a}o condicional sobre o predicado.
 
-A lista de argumentos para a fun@,{c}@~ao predicado @'e sempre 
-@code{[level, direction, function, item]} onde @code{level} @'e o n@'ivel rerecurs@~ao
-para a fun@,{c}@~ao,  @code{direction} @'e ou @code{enter} ou @code{exit}, @code{function} @'e o
-nome da fun@,{c}@~ao, e @code{item} @'e a lista de argumentos (sobre entrada)
-ou o valor de retorno (sobre a sa@'ida).
+A lista de argumentos para a fun@,{c}@~{a}o predicado @'{e} sempre 
+@code{[level, direction, function, item]} onde @code{level} @'{e} o n@'{i}vel rerecurs@~{a}o
+para a fun@,{c}@~{a}o,  @code{direction} @'{e} ou @code{enter} ou @code{exit}, @code{function} @'{e} o
+nome da fun@,{c}@~{a}o, e @code{item} @'{e} a lista de argumentos (sobre entrada)
+ou o valor de retorno (sobre a sa@'{i}da).
 
-Aqui est@'a um exemplo de op@,{c}@~oes incondicionais de @code{trace}:
+Aqui est@'{a} um exemplo de op@,{c}@~{o}es incondicionais de @code{trace}:
 
 @example
 (%i1) ff(n) := if equal(n, 0) then 1 else n * ff(n - 1)$
@@ -421,7 +421,7 @@ Aqui est@'a um exemplo de op@,{c}@~oes incondicionais de @code{trace}:
 (%i4) ff(3);
 @end example
 
-Aqui est@'a a mesma fun@,{c}@~ao, com a op@,{c}@~ao @code{break} condicional
+Aqui est@'{a} a mesma fun@,{c}@~{a}o, com a op@,{c}@~{a}o @code{break} condicional
 sobre um predicado:
 
 @example
@@ -435,13 +435,13 @@ sobre um predicado:
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} untrace (@var{f_1}, ..., @var{f_n})
-@deffnx {Fun@,{c}@~ao} untrace ()
-Dadas as fun@,{c}@~oes @var{f_1}, ..., @var{f_n},
-@code{untrace} desabilita a a monitora@,{c}@~ao habilitada pela fun@,{c}@~ao @code{trace}.
-Sem argumentos, @code{untrace} desabilita a atua@,{c}@~ao da fun@,{c}@~ao @code{trade} para todas as fun@,{c}@~oes.
+@deffn {Fun@,{c}@~{a}o} untrace (@var{f_1}, ..., @var{f_n})
+@deffnx {Fun@,{c}@~{a}o} untrace ()
+Dadas as fun@,{c}@~{o}es @var{f_1}, ..., @var{f_n},
+@code{untrace} desabilita a a monitora@,{c}@~{a}o habilitada pela fun@,{c}@~{a}o @code{trace}.
+Sem argumentos, @code{untrace} desabilita a atua@,{c}@~{a}o da fun@,{c}@~{a}o @code{trade} para todas as fun@,{c}@~{o}es.
 
-@code{untrace} retorne uma lista das fun@,{c}@~oes para as quais 
-@code{untrace} desabilita a atua@,{c}@~ao de @code{trace}.
+@code{untrace} retorne uma lista das fun@,{c}@~{o}es para as quais 
+@code{untrace} desabilita a atua@,{c}@~{a}o de @code{trace}.
 
 @end deffn

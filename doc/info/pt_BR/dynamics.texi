@@ -1,44 +1,44 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /dynamics.texi/1.11/Mon Jan 22 13:45:03 2007//
 @menu
-* Introdu@value{cedilha}@~ao a dynamics::
-* Defini@value{cedilha}@~oes para dynamics::
+* Introdu@,{c}@~{a}o a dynamics::
+* Defini@,{c}@~{o}es para dynamics::
 @end menu
 
-@node Introdu@value{cedilha}@~ao a dynamics, Defini@value{cedilha}@~oes para dynamics, dynamics, dynamics
-@section Introdu@value{cedilha}@~ao a dynamics
+@node Introdu@,{c}@~{a}o a dynamics, Defini@,{c}@~{o}es para dynamics, dynamics, dynamics
+@section Introdu@,{c}@~{a}o a dynamics
 
 O pacote adicional @code{dynamics} inclui muitas
-fun@,{c}@~oes para criar v@'arias representa@,{c}@~oes gr@'aficas de sistemas
-din@^amicos discretos e fractais, e uma implementa@,{c}@~ao deo m@'etodo
-num@'erico de Runge-Kutta de quarta ordem para a resolu@,{c}@~ao de sistemas de equa@,{c}òes diferenciais.
+fun@,{c}@~{o}es para criar v@'{a}rias representa@,{c}@~{o}es gr@'{a}ficas de sistemas
+din@^{a}micos discretos e fractais, e uma implementa@,{c}@~{a}o deo m@'{e}todo
+num@'{e}rico de Runge-Kutta de quarta ordem para a resolu@,{c}@~{a}o de sistemas de equa@,{c}òes diferenciais.
 
-Para usar as fun@,{c}@~oes nesse pacote voc@^e deve primeiramente torn@'a-lo dispon@'ivel para uso com
-@code{load("dynamics")}, e as fun@,{c}@~oes que ir@~ao criar gr@'aficos
+Para usar as fun@,{c}@~{o}es nesse pacote voc@^{e} deve primeiramente torn@'{a}-lo dispon@'{i}vel para uso com
+@code{load("dynamics")}, e as fun@,{c}@~{o}es que ir@~{a}o criar gr@'{a}ficos
 requerem que o Xmaxima esteja instalado.
 
 
-@node Defini@value{cedilha}@~oes para dynamics,  , Introdu@value{cedilha}@~ao a dynamics, dynamics
-@section Defini@value{cedilha}@~oes para dynamics
+@node Defini@,{c}@~{o}es para dynamics,  , Introdu@,{c}@~{a}o a dynamics, dynamics
+@section Defini@,{c}@~{o}es para dynamics
 
-@deffn {Fun@,{c}@~ao} chaosgame (@code{[[}@var{x1}, @var{y1}@code{]}...@code{[}@var{xm}, @var{ym}@code{]]}, @code{[}@var{x0}, @var{y0}@code{]}, @var{b}, @var{n}, ...op@,{c}@~oes...);
+@deffn {Fun@,{c}@~{a}o} chaosgame (@code{[[}@var{x1}, @var{y1}@code{]}...@code{[}@var{xm}, @var{ym}@code{]]}, @code{[}@var{x0}, @var{y0}@code{]}, @var{b}, @var{n}, ...op@,{c}@~{o}es...);
 
-Implementa o ent@~ao chamado jogo do caos: o ponto inicial (@var{x0},
-@var{y0}) @'e colocado no gr@'afico e ent@~ao um dos @var{m} pontos
+Implementa o ent@~{a}o chamado jogo do caos: o ponto inicial (@var{x0},
+@var{y0}) @'{e} colocado no gr@'{a}fico e ent@~{a}o um dos @var{m} pontos
 @code{[}@var{x1}, @var{y1}@code{]}...@code{[}@var{xm}, @var{ym}@code{]}
-ser@'a selecionado de forma aleat@'oria. O pr@'oximo ponto colocado no gr@'afico ser@'a sobre o
-segmento que vai do ponto anteriormente colocado no gr@'afico ao ponto escolhido aleat@'oriamente, @`a
-dist@^ancia do ponto aleat@'orio que ser@'a @var{b} vezes o comprimento daquele
-segmento. o procedimento @'e repetido @var{n} vezes.
+ser@'{a} selecionado de forma aleat@'{o}ria. O pr@'{o}ximo ponto colocado no gr@'{a}fico ser@'{a} sobre o
+segmento que vai do ponto anteriormente colocado no gr@'{a}fico ao ponto escolhido aleat@'{o}riamente, @`a
+dist@^{a}ncia do ponto aleat@'{o}rio que ser@'{a} @var{b} vezes o comprimento daquele
+segmento. o procedimento @'{e} repetido @var{n} vezes.
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} evolution (@var{F}, @var{y0}, @var{n},...op@,{c}@~oes...);
+@deffn {Fun@,{c}@~{a}o} evolution (@var{F}, @var{y0}, @var{n},...op@,{c}@~{o}es...);
 
-Desenha @var{n+1} pontos em gr@'afico bidimensional, onde as coordenadas
-horizontais dos pontos s@~ao os inteiros 0, 1, 2, ..., @var{n}, e
-as coordenadas verticais s@~ao os valores correspondentes @var{y(n)} da
-seq@"u@^encia definida pela rela@,{c}@~ao de recorr@^encia
+Desenha @var{n+1} pontos em gr@'{a}fico bidimensional, onde as coordenadas
+horizontais dos pontos s@~{a}o os inteiros 0, 1, 2, ..., @var{n}, e
+as coordenadas verticais s@~{a}o os valores correspondentes @var{y(n)} da
+seq@"{u}@^{e}ncia definida pela rela@,{c}@~{a}o de recorr@^{e}ncia
 @ifnottex
 @example
         y(n+1) = F(y(n))
@@ -49,16 +49,16 @@ $$y_{n+1} = F(y_n)$$
 @end tex
 
 com valor inicial @var{y(0)} igual a @var{y0}. @var{F} deve ser uma
-express@~ao que depende somente da vari@'avel @var{y} (e n@~ao da vari@'avel @var{n}),
-@var{y0} deve ser um n@'umero real e @var{n} deve ser um inteiro positivo.
+express@~{a}o que depende somente da vari@'{a}vel @var{y} (e n@~{a}o da vari@'{a}vel @var{n}),
+@var{y0} deve ser um n@'{u}mero real e @var{n} deve ser um inteiro positivo.
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} evolution2d (@code{[}@var{F}, @var{G}@code{]}, @code{[}@var{x0}, @var{y0}@code{]}, @var{n}, ...op@,{c}@~oes...);
+@deffn {Fun@,{c}@~{a}o} evolution2d (@code{[}@var{F}, @var{G}@code{]}, @code{[}@var{x0}, @var{y0}@code{]}, @var{n}, ...op@,{c}@~{o}es...);
 
-Mostra, em um gr@'afico bidimensional, os primeiros @var{n+1} pontos na
-seq@"u@^encia de pontos definida por meio do sistema din@^amico discreto
-bidimensional com rela@,{c}@~oes de recorr@^encia
+Mostra, em um gr@'{a}fico bidimensional, os primeiros @var{n+1} pontos na
+seq@"{u}@^{e}ncia de pontos definida por meio do sistema din@^{a}mico discreto
+bidimensional com rela@,{c}@~{o}es de recorr@^{e}ncia
 @ifnottex
 @example
         x(n+1) = F(x(n), y(n))    y(n+1) = G(x(n), y(n))
@@ -69,144 +69,144 @@ $$\cases{x_{n+1} = F(x_n, y_n) &\cr y_{n+1} = G(x_n, y_n)}$$
 @end tex
 
 Com valores iniciais @var{x0} e @var{y0}. @var{F} e @var{G} devem ser
-duas express@~oes que dependem apenas de @var{x} e @var{y}. 
+duas express@~{o}es que dependem apenas de @var{x} e @var{y}. 
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} ifs (@code{[}@var{r1},...,@var{rm}@code{]},@code{[}@var{A1},...,@var{Am}@code{]}, @code{[[}@var{x1},@var{y1}@code{]}...@code{[}@var{xm}, @var{ym}@code{]]}, @code{[}@var{x0},@var{y0}@code{]}, @var{n}, ...op@,{c}@~oes...);
+@deffn {Fun@,{c}@~{a}o} ifs (@code{[}@var{r1},...,@var{rm}@code{]},@code{[}@var{A1},...,@var{Am}@code{]}, @code{[[}@var{x1},@var{y1}@code{]}...@code{[}@var{xm}, @var{ym}@code{]]}, @code{[}@var{x0},@var{y0}@code{]}, @var{n}, ...op@,{c}@~{o}es...);
 
-Implemanta o m@'etodo de Sistemas de Fun@,{c}@~oes iteradas. Esse m@'etodo @'e similar
-ao m@'etodo descrito na fun@,{c}@~ao @code{chaosgame}, mas em lugar de
+Implemanta o m@'{e}todo de Sistemas de Fun@,{c}@~{o}es iteradas. Esse m@'{e}todo @'{e} similar
+ao m@'{e}todo descrito na fun@,{c}@~{a}o @code{chaosgame}, mas em lugar de
 encolher o segmento do ponto corrente ao ponto escolhido
-aleat@'oriamente, as duas componentes daquele segmento ir@~ao ser multiplicadas pela matrix 2 por 2
-@var{Ai} que corresponde ao ponto escolhido aleat@'oriamente.
+aleat@'{o}riamente, as duas componentes daquele segmento ir@~{a}o ser multiplicadas pela matrix 2 por 2
+@var{Ai} que corresponde ao ponto escolhido aleat@'{o}riamente.
 
-A escolha aleat@'oria de um dos @var{m} pontos de atra@,{c}@~ao pode ser feita com
-uma distribui@,{c}@~ao de probabilidade n@~ao uniforme definida por meio dos pesos
-@var{r1},...,@var{rm}. Esses pesos s@~ao fornecidos de forma cumulativa; por exemplo se existem 3 pontos com probabilidades 0.2, 0.5 e
+A escolha aleat@'{o}ria de um dos @var{m} pontos de atra@,{c}@~{a}o pode ser feita com
+uma distribui@,{c}@~{a}o de probabilidade n@~{a}o uniforme definida por meio dos pesos
+@var{r1},...,@var{rm}. Esses pesos s@~{a}o fornecidos de forma cumulativa; por exemplo se existem 3 pontos com probabilidades 0.2, 0.5 e
 0.3, os pesos @var{r1}, @var{r2} e @var{r3} podem ser 2, 7 e 10.
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} julia (@var{x}, @var{y}, ...@var{op@,{c}@~oes}...)
+@deffn {Fun@,{c}@~{a}o} julia (@var{x}, @var{y}, ...@var{op@,{c}@~{o}es}...)
 
-Cria um arqu@'ivo gr@'afico com a representa@,{c}@~ao do conjunto de Julia para o
-n@'umero complexo (@var{x} + i @var{y}). Os par@^ametros @var{x} e @var{y}
-devem ser reais. o arquivo @'e criado no diret@'orio corrente ou no diret@'orio do
-do usu@'ario, usando o formato gr@'afico XPM. O programa pode demorar muitos
-segundos para executar e concluir ap@'os isso, uma mensagem ser@'a mostrada com
+Cria um arqu@'{i}vo gr@'{a}fico com a representa@,{c}@~{a}o do conjunto de Julia para o
+n@'{u}mero complexo (@var{x} + i @var{y}). Os par@^{a}metros @var{x} e @var{y}
+devem ser reais. o arquivo @'{e} criado no diret@'{o}rio corrente ou no diret@'{o}rio do
+do usu@'{a}rio, usando o formato gr@'{a}fico XPM. O programa pode demorar muitos
+segundos para executar e concluir ap@'{o}s isso, uma mensagem ser@'{a} mostrada com
 o nome do arquivo criado.
 
-Os pontos que n@~ao pertencem ao conjunto de Julia recebem diferentes
-cores, conforme o n@'umero de itera@,{c}@~oes a fun@,{c}@~ao @code{julia} toma a seq@"u@^encia
-iniciando naquele ponto para fora do c@'irculo de converg@^encia de raio
-2. O n@'umero m@'acimo de itera@,{c}@~oes @'e escolhido com a op@,{c}@~ao @var{levels};
-ap@'os aquele n@'umero de itera@,{c}@~oes, se a seq@"u@^encia estiver ainda dentro do
-c@'irculo de converg@^encia, o ponto ser@'a desenhado com a cor definica pela
-op@,{c}@~ao @var{color}.
+Os pontos que n@~{a}o pertencem ao conjunto de Julia recebem diferentes
+cores, conforme o n@'{u}mero de itera@,{c}@~{o}es a fun@,{c}@~{a}o @code{julia} toma a seq@"{u}@^{e}ncia
+iniciando naquele ponto para fora do c@'{i}rculo de converg@^{e}ncia de raio
+2. O n@'{u}mero m@'{a}cimo de itera@,{c}@~{o}es @'{e} escolhido com a op@,{c}@~{a}o @var{levels};
+ap@'{o}s aquele n@'{u}mero de itera@,{c}@~{o}es, se a seq@"{u}@^{e}ncia estiver ainda dentro do
+c@'{i}rculo de converg@^{e}ncia, o ponto ser@'{a} desenhado com a cor definica pela
+op@,{c}@~{a}o @var{color}.
 
-Todas as cores usadas para os pontos que n@~ao pertencem ao conjunto de Julia
-ir@~ao ter a mesma @var{satura@,{c}@~ao} e o mesmo @var{value}, mas com diferentes
-@^angulos de matizes distribu@'idos uniformemente entre @var{hue} e (@var{hue} +
+Todas as cores usadas para os pontos que n@~{a}o pertencem ao conjunto de Julia
+ir@~{a}o ter a mesma @var{satura@,{c}@~{a}o} e o mesmo @var{value}, mas com diferentes
+@^{a}ngulos de matizes distribu@'{i}dos uniformemente entre @var{hue} e (@var{hue} +
 @var{huerange})@footnote{hue - valor de matiz, huerange - valor do intervalo de matiz}.
 
-@var{op@,{c}@~oes} @'e uma seq@"u@^encia facultativa de op@,{c}@~oes. A lista de op@,{c}@~oes
-aceitas @'e fornecida em uma se@,{c}@~ao adiante.
+@var{op@,{c}@~{o}es} @'{e} uma seq@"{u}@^{e}ncia facultativa de op@,{c}@~{o}es. A lista de op@,{c}@~{o}es
+aceitas @'{e} fornecida em uma se@,{c}@~{a}o adiante.
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} mandelbrot (@var{op@,{c}@~oes})
+@deffn {Fun@,{c}@~{a}o} mandelbrot (@var{op@,{c}@~{o}es})
 
-Cria um arquivo gr@'afico com a representa@,{c}@~ao do conjunto de
-Mandelbrot. O arquivo @'e criado no diret@'orio atual ou no diret@'orio do
-usu@'ario, usando o formato gr@'afico XPM. O programa pode demorar muitos
-segundos para executar e concluir ap@'os isso, uma mensagem ser@'a mostrada com
+Cria um arquivo gr@'{a}fico com a representa@,{c}@~{a}o do conjunto de
+Mandelbrot. O arquivo @'{e} criado no diret@'{o}rio atual ou no diret@'{o}rio do
+usu@'{a}rio, usando o formato gr@'{a}fico XPM. O programa pode demorar muitos
+segundos para executar e concluir ap@'{o}s isso, uma mensagem ser@'{a} mostrada com
 o nome do arquivo criado.
 
-Os pontos que n@~ao pertencem ao conjunto de Mandelbrot recebem diferentes
-cores, conforme o n@'umero de itera@,{c}@~oes a fun@,{c}@~ao @code{mandelbrot}
-toma a seq@"u@^encia iniciando naquele ponto para fora do c@'irculo de converg@^encia de raio
-2. O n@'umero m@'aximo de itera@,{c}@~oes @'e escolhido com a op@,{c}@~ao @var{levels};
-ap@'os aquele n@'umero de itera@,{c}@~oes, se a seq@"u@^encia estiver ainda dentro do
-c@'irculo de converg@^encia, o ponto ser@'a desenhado com a cor definida pela
-op@,{c}@~ao @var{color}.
+Os pontos que n@~{a}o pertencem ao conjunto de Mandelbrot recebem diferentes
+cores, conforme o n@'{u}mero de itera@,{c}@~{o}es a fun@,{c}@~{a}o @code{mandelbrot}
+toma a seq@"{u}@^{e}ncia iniciando naquele ponto para fora do c@'{i}rculo de converg@^{e}ncia de raio
+2. O n@'{u}mero m@'{a}ximo de itera@,{c}@~{o}es @'{e} escolhido com a op@,{c}@~{a}o @var{levels};
+ap@'{o}s aquele n@'{u}mero de itera@,{c}@~{o}es, se a seq@"{u}@^{e}ncia estiver ainda dentro do
+c@'{i}rculo de converg@^{e}ncia, o ponto ser@'{a} desenhado com a cor definida pela
+op@,{c}@~{a}o @var{color}.
 
-Todas as cores usadas para os pontos que n@~ao pertencem ao conjunto de Julia
-ir@~ao ter a mesma @var{saturation} e o mesmo @var{value}, mas com diferentes
-@^angulos de matizes distribu@'idos uniformemente entre @var{hue} e (@var{hue} +
+Todas as cores usadas para os pontos que n@~{a}o pertencem ao conjunto de Julia
+ir@~{a}o ter a mesma @var{saturation} e o mesmo @var{value}, mas com diferentes
+@^{a}ngulos de matizes distribu@'{i}dos uniformemente entre @var{hue} e (@var{hue} +
 @var{huerange}).
 
-@var{op@,{c}@~oes} @'e uma seq@"u@^encia facultativa de op@,{c}@~oes. A lista de op@,{c}@~oes
-aceitas @'e fornecida em uma se@,{c}@~ao adiante.
+@var{op@,{c}@~{o}es} @'{e} uma seq@"{u}@^{e}ncia facultativa de op@,{c}@~{o}es. A lista de op@,{c}@~{o}es
+aceitas @'{e} fornecida em uma se@,{c}@~{a}o adiante.
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} orbits (@var{F}, @var{y0}, @var{n1}, @var{n2}, [@var{x}, @var{x0}, @var{xf}, @var{xstep}], ...op@,{c}@~oes...);
+@deffn {Fun@,{c}@~{a}o} orbits (@var{F}, @var{y0}, @var{n1}, @var{n2}, [@var{x}, @var{x0}, @var{xf}, @var{xstep}], ...op@,{c}@~{o}es...);
 
-Desenha o diagrama de @'orbitas para uma fam@'ilia de sistemas din@^amicos
-discretos unidimensionais, com um par@^ametro @var{x}; esse tipo de
-diagrama @'e usado para estudar as bifurca@,{c}@~oes de um sistema discreto
+Desenha o diagrama de @'{o}rbitas para uma fam@'{i}lia de sistemas din@^{a}micos
+discretos unidimensionais, com um par@^{a}metro @var{x}; esse tipo de
+diagrama @'{e} usado para estudar as bifurca@,{c}@~{o}es de um sistema discreto
 unidimensional.
 
-A fun@,{c}@~ao @var{F(y)} define uma seq@"u@^encia com um valor inicial de
-@var{y0}, como no caso da fun@,{c}@~ao @code{evolution}, mas nesse
-caso a fun@,{c}@~ao @var{F(y)} ir@'a tamb@'em depender de um par@^ametro @var{x} que
-receber@'a valores no intervalo de @var{x0} a @var{xf} com incrementos de
-@var{xstep}. Cada valor usado para o par@^ametro @var{x} @'e mostrado sobre o
-eixo horizontal. O eixo vertical ir@'a mostrar os valores  de @var{n2}
-da seq@"u@^encia @var{y(n1+1)},..., @var{y(n1+n2+1)} obtida ap@'os permitir
-que a seq@"u@^encia produza @var{n1} iterac@~oes.
+A fun@,{c}@~{a}o @var{F(y)} define uma seq@"{u}@^{e}ncia com um valor inicial de
+@var{y0}, como no caso da fun@,{c}@~{a}o @code{evolution}, mas nesse
+caso a fun@,{c}@~{a}o @var{F(y)} ir@'{a} tamb@'{e}m depender de um par@^{a}metro @var{x} que
+receber@'{a} valores no intervalo de @var{x0} a @var{xf} com incrementos de
+@var{xstep}. Cada valor usado para o par@^{a}metro @var{x} @'{e} mostrado sobre o
+eixo horizontal. O eixo vertical ir@'{a} mostrar os valores  de @var{n2}
+da seq@"{u}@^{e}ncia @var{y(n1+1)},..., @var{y(n1+n2+1)} obtida ap@'{o}s permitir
+que a seq@"{u}@^{e}ncia produza @var{n1} iterac@~{o}es.
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} rk (EDO, var, inicio, domain)
-@deffnx {Fun@,{c}@~ao} rk ([EDO1,...,EDOm], [v1,...,vm], [inic1,...,inicm], domain)
+@deffn {Fun@,{c}@~{a}o} rk (EDO, var, inicio, domain)
+@deffnx {Fun@,{c}@~{a}o} rk ([EDO1,...,EDOm], [v1,...,vm], [inic1,...,inicm], domain)
 
-A primeira forma resolve numericamente uma equa@,{c}@~ao diferencial  de primeira
-ordem, e a segunda formaresolve um sistema de m dessas equa@,{c}@~oes,
-usando o m@'etodo de Runge-Kutta de quarta ordem. @code{var} representa a vari@'avel
-dependente. EDO deve ser uma express@~ao que dependa somente da vari@'avel  independente e da
-vari@'avel dependente e defina a derivada da vari@'avel
-dependente com rela@,{c}@~ao @`a vari@'avel independente.
+A primeira forma resolve numericamente uma equa@,{c}@~{a}o diferencial  de primeira
+ordem, e a segunda formaresolve um sistema de m dessas equa@,{c}@~{o}es,
+usando o m@'{e}todo de Runge-Kutta de quarta ordem. @code{var} representa a vari@'{a}vel
+dependente. EDO deve ser uma express@~{a}o que dependa somente da vari@'{a}vel  independente e da
+vari@'{a}vel dependente e defina a derivada da vari@'{a}vel
+dependente com rela@,{c}@~{a}o @`a vari@'{a}vel independente.
 
-A vari@'avel independente @'e especificada com @code{domain}, que deve ser uma
+A vari@'{a}vel independente @'{e} especificada com @code{domain}, que deve ser uma
 lista dde quatro elementos como, por exemplo:
 @example
 [t, 0, 10, 0.1]
 @end example
-O primeiro elemento da lista identifica a vari@'avel independente, o
-segundo e o terceiro elementos s@~ao os valores inicial e final para para aquela
-vari@'avel, e o @'ultimo elemento escolhe o incremento que pode ser usado
+O primeiro elemento da lista identifica a vari@'{a}vel independente, o
+segundo e o terceiro elementos s@~{a}o os valores inicial e final para para aquela
+vari@'{a}vel, e o @'{u}ltimo elemento escolhe o incremento que pode ser usado
 dentro daquele intervalo.
 
-Se @var{m} equa@,{c}@~oes est@~ao sendo resolvidas, podem existir @var{m}
-vari@'aveis dependentes @var{v1}, @var{v2}, ..., @var{vm}. Os valores iniciais
-para aquelas vari@'aveis ser@~ao @var{inic1}, @var{inic2}, ..., @var{inicm}.
-Ainda pode ser apenas uma vari@'avel independente definida por @code{domain},
-como no caso anterior. @var{EDO1}, ..., @var{EDOm} s@~ao as express@~oes
-que definem as derivadas de cada vari@'avel dependente em
-termos da vari@'avel independente. As vari@'aveis que podem aparecer
-naquelas express@~oes s@~ao a vari@'avel independente e quaisquer outras vari@'aveis
-dependentes. @'E importante fornecer as derivadas @var{EDO1}, ...,
-@var{EDOm} na lista exatamente na mesma ordem usada para vari@'aveis
-dependentes; por exemplo, o terceiro elemento na lista ir@'a ser interpretado
-com a derivada da terceira vari@'avel dependente.
+Se @var{m} equa@,{c}@~{o}es est@~{a}o sendo resolvidas, podem existir @var{m}
+vari@'{a}veis dependentes @var{v1}, @var{v2}, ..., @var{vm}. Os valores iniciais
+para aquelas vari@'{a}veis ser@~{a}o @var{inic1}, @var{inic2}, ..., @var{inicm}.
+Ainda pode ser apenas uma vari@'{a}vel independente definida por @code{domain},
+como no caso anterior. @var{EDO1}, ..., @var{EDOm} s@~{a}o as express@~{o}es
+que definem as derivadas de cada vari@'{a}vel dependente em
+termos da vari@'{a}vel independente. As vari@'{a}veis que podem aparecer
+naquelas express@~{o}es s@~{a}o a vari@'{a}vel independente e quaisquer outras vari@'{a}veis
+dependentes. @'{E} importante fornecer as derivadas @var{EDO1}, ...,
+@var{EDOm} na lista exatamente na mesma ordem usada para vari@'{a}veis
+dependentes; por exemplo, o terceiro elemento na lista ir@'{a} ser interpretado
+com a derivada da terceira vari@'{a}vel dependente.
 
-O programa tentar@'a integrar as equa@,{c}@~oes a partir do valor inicial
-da vari@'avel independente at@'e seu @'ultimo valor, usando incrementos
-constantes. Se em algum passo uma das vari@'aveis dependentes recebe um
-valor absoluto muito grande, a integra@,{c}@~ao ser@'a interrompida naquele
-ponto. O resultado ser@'a uma lista com tamtos elementos quantos forem o n@'umero de
-itera@,{c}@~oes feitas. Cada elemento na lista de resultado @'e em si mesmo outra lista
-comh @var{m}+1 elementos: o valor da vari@'avel independente, seguido
-pelos valores das vari@'aveis dependentes correspondentes @`aquele ponto.
+O programa tentar@'{a} integrar as equa@,{c}@~{o}es a partir do valor inicial
+da vari@'{a}vel independente at@'{e} seu @'{u}ltimo valor, usando incrementos
+constantes. Se em algum passo uma das vari@'{a}veis dependentes recebe um
+valor absoluto muito grande, a integra@,{c}@~{a}o ser@'{a} interrompida naquele
+ponto. O resultado ser@'{a} uma lista com tamtos elementos quantos forem o n@'{u}mero de
+itera@,{c}@~{o}es feitas. Cada elemento na lista de resultado @'{e} em si mesmo outra lista
+comh @var{m}+1 elementos: o valor da vari@'{a}vel independente, seguido
+pelos valores das vari@'{a}veis dependentes correspondentes @`aquele ponto.
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} staircase (@var{F}, @var{y0}, @var{n}, ...op@,{c}@~oes...);
+@deffn {Fun@,{c}@~{a}o} staircase (@var{F}, @var{y0}, @var{n}, ...op@,{c}@~{o}es...);
 
-Desenha um diagrama em escada para a seq@"u@^encia definida pela rela@,{c}@~ao de
-recorr@^encia
+Desenha um diagrama em escada para a seq@"{u}@^{e}ncia definida pela rela@,{c}@~{a}o de
+recorr@^{e}ncia
 @ifnottex
 @example
         y(n+1) = F(y(n))
@@ -216,130 +216,130 @@ recorr@^encia
 $$y_{n+1} = F(y_n)$$
 @end tex
 
-A interpreta@,{c}@~ao e os valores permitidos dos par@^ametros de entrada s@~ao os
-mesmos que para a fun@,{c}@~ao @code{evolution}. Um diagrama em escada consiste
-de um gr@'afico da fun@,{c}@~ao @var{F(y)}, juntamente com a linha
-@var{G(y)} @code{=} @var{y}. Um segmento vertical @'e desenhado a partir das
+A interpreta@,{c}@~{a}o e os valores permitidos dos par@^{a}metros de entrada s@~{a}o os
+mesmos que para a fun@,{c}@~{a}o @code{evolution}. Um diagrama em escada consiste
+de um gr@'{a}fico da fun@,{c}@~{a}o @var{F(y)}, juntamente com a linha
+@var{G(y)} @code{=} @var{y}. Um segmento vertical @'{e} desenhado a partir das
 point (@var{y0}, @var{y0}) on that line until the point where it
-intersec@,{c}@~oes com a fun@,{c}@~ao @var{F}. A partir daquele ponto um segmento horizontal @'e
-desenhado at@'e encontrar o ponto (@var{y1}, @var{y1}) sobre a linha, e
-o procedimento @'e repetido @var{n} vezes at@'e que o ponto (@var{yn}, @var{yn})
-@'e encontrado.
+intersec@,{c}@~{o}es com a fun@,{c}@~{a}o @var{F}. A partir daquele ponto um segmento horizontal @'{e}
+desenhado at@'{e} encontrar o ponto (@var{y1}, @var{y1}) sobre a linha, e
+o procedimento @'{e} repetido @var{n} vezes at@'{e} que o ponto (@var{yn}, @var{yn})
+@'{e} encontrado.
 
 @end deffn
 
-@b{op@,{c}@~oes}
+@b{op@,{c}@~{o}es}
 
-Cada op@,{c}@~ao @'e uma lista de dois ou mais itens. O primeiro item @'e o nome
-da op@,{c}@~ao, e os restantes compreendem os argumentos para a op@,{c}@~ao.
+Cada op@,{c}@~{a}o @'{e} uma lista de dois ou mais itens. O primeiro item @'{e} o nome
+da op@,{c}@~{a}o, e os restantes compreendem os argumentos para a op@,{c}@~{a}o.
 
-As op@,{c}@~oes aceitas pela fun@,{c}@~ao @code{evolution}, @code{evolution2d}, @code{staircase},
-@code{orbits}, @code{ifs} e @code{chaosgame} s@~ao:
+As op@,{c}@~{o}es aceitas pela fun@,{c}@~{a}o @code{evolution}, @code{evolution2d}, @code{staircase},
+@code{orbits}, @code{ifs} e @code{chaosgame} s@~{a}o:
 
 @itemize @bullet
 @item
-@dfn{domain} escolhe os valores de m@'inimo e de maximo paraa a
-vari@'avel independente na coonstru@,{c}@~ao do gr@'afico da fun@,{c}@~ao @var{F} mostrada por
+@dfn{domain} escolhe os valores de m@'{i}nimo e de maximo paraa a
+vari@'{a}vel independente na coonstru@,{c}@~{a}o do gr@'{a}fico da fun@,{c}@~{a}o @var{F} mostrada por
 @code{staircase}.
 
 @item
 @dfn{pointsize} define o raio de cada ponto mostrado, em unidades de
-pontos. O valor padr@~ao @'e 1.
+pontos. O valor padr@~{a}o @'{e} 1.
 
 @item
-@dfn{xaxislabel} @'e o r@'otulo a ser colocado no eixo horizontal do gr@'afico.
+@dfn{xaxislabel} @'{e} o r@'{o}tulo a ser colocado no eixo horizontal do gr@'{a}fico.
 
 @item
-@dfn{xcenter} @'e a coordenada x do ponto que pode aparecer no
-centro do gr@'afico. Essa op@,{c}@~ao n@~ao @'e utilizada na fun@,{c}@~ao
+@dfn{xcenter} @'{e} a coordenada x do ponto que pode aparecer no
+centro do gr@'{a}fico. Essa op@,{c}@~{a}o n@~{a}o @'{e} utilizada na fun@,{c}@~{a}o
 @code{orbits}.
 
 @item
-@dfn{xradius} @'e metade do comprimento do intervalo de valores que ser@~ao
-mostrados na dire@,{c}@~ao x. Essa op@,{c}@~ao n@~ao @'e usada pela fun@,{c}@~ao
+@dfn{xradius} @'{e} metade do comprimento do intervalo de valores que ser@~{a}o
+mostrados na dire@,{c}@~{a}o x. Essa op@,{c}@~{a}o n@~{a}o @'{e} usada pela fun@,{c}@~{a}o
 @code{orbits}.
 
 @item
-@dfn{yaxislabel} @'e o r@'otulo a ser colocado sobre o eixo vertical.
+@dfn{yaxislabel} @'{e} o r@'{o}tulo a ser colocado sobre o eixo vertical.
 
 @item
-@dfn{ycenter} @'e a coordenada  y do ponto que ir@'a
-aparecer no centro do gr@'afico.
+@dfn{ycenter} @'{e} a coordenada  y do ponto que ir@'{a}
+aparecer no centro do gr@'{a}fico.
 
 @item
-@dfn{yradius} @'e a metade do comprimento do intervalo de valores que ser@~ao
-mostrados na dire@,{c}@~ao y.
+@dfn{yradius} @'{e} a metade do comprimento do intervalo de valores que ser@~{a}o
+mostrados na dire@,{c}@~{a}o y.
 
 @end itemize
 
-As seguintes op@,{c}@~oes s@~ao aceitas pelas fu@,{c}@~oes @code{julia} e @code{mandelbrot}:
+As seguintes op@,{c}@~{o}es s@~{a}o aceitas pelas fu@,{c}@~{o}es @code{julia} e @code{mandelbrot}:
 
 @itemize @bullet
 @item
-@dfn{size} recebe um ou dois argumentos. Se somente um argumento @'e
-fornecido, a largura e a altura do arquivo gr@'afico criado ser@~ao iguais a
-esse valor, em pixels. Se dois argumentos forem fornecidos, eles ir@~ao definir a
-largura e a altura. O valor padr@~ao @'e 400 pixels para ambos a largura e
-altura. Se os dois valores n@~ao forem iguais, o conjunto aparecer@'a distorcido.
+@dfn{size} recebe um ou dois argumentos. Se somente um argumento @'{e}
+fornecido, a largura e a altura do arquivo gr@'{a}fico criado ser@~{a}o iguais a
+esse valor, em pixels. Se dois argumentos forem fornecidos, eles ir@~{a}o definir a
+largura e a altura. O valor padr@~{a}o @'{e} 400 pixels para ambos a largura e
+altura. Se os dois valores n@~{a}o forem iguais, o conjunto aparecer@'{a} distorcido.
 
 @item
-@dfn{levels} define o n@'umero m@'aximo de itera@,{c}@~oes, que tamb@'em
-igual ao n@'umero de cores usados para pontos que n@~ao pertencem ao
-conjunto. O valor padr@~ao @'e 12; grandes valoes significam maior quantidade de vezes de
+@dfn{levels} define o n@'{u}mero m@'{a}ximo de itera@,{c}@~{o}es, que tamb@'{e}m
+igual ao n@'{u}mero de cores usados para pontos que n@~{a}o pertencem ao
+conjunto. O valor padr@~{a}o @'{e} 12; grandes valoes significam maior quantidade de vezes de
 processamento.
 
 @item
-@dfn{huerange} define o intervalo de @^angulos de matiz usados para a matiz dos
-pontos n@~ao pertencentes ao conjunto. O valor padr@~ao @'e 360,
-que significa que as cores expandir-se-@~ao em todo o intervalo de matizes. Valores
-maiores que 360, significar@~ao intervalos repetidos de matizes, e valores
-negativos podem ser usados para fazer o @^angulo de matiz decrescer como o n@'umero de
-itera@,{c}@~oes tamb@'em decresce.
+@dfn{huerange} define o intervalo de @^{a}ngulos de matiz usados para a matiz dos
+pontos n@~{a}o pertencentes ao conjunto. O valor padr@~{a}o @'{e} 360,
+que significa que as cores expandir-se-@~{a}o em todo o intervalo de matizes. Valores
+maiores que 360, significar@~{a}o intervalos repetidos de matizes, e valores
+negativos podem ser usados para fazer o @^{a}ngulo de matiz decrescer como o n@'{u}mero de
+itera@,{c}@~{o}es tamb@'{e}m decresce.
 
 @item
 @dfn{hue} conjuntos de matizes, em graus, da primeira cor usada para o
-ponto que n@~ao pertence ao conjunto. Seu valor padr@~ao @'e 300 graus,
-que corresponde ao magenta; os valores para outras cores padr@~ao s@~ao 0
+ponto que n@~{a}o pertence ao conjunto. Seu valor padr@~{a}o @'{e} 300 graus,
+que corresponde ao magenta; os valores para outras cores padr@~{a}o s@~{a}o 0
 para vermelho, 45 para laranja, 60 para amarelo, 120 para verde, 180 para ciano e
-240 para o azul. Veja tamb@'em a op@,{c}@~ao @var{huerange}.
+240 para o azul. Veja tamb@'{e}m a op@,{c}@~{a}o @var{huerange}.
 
 @item
-@dfn{saturation} escolhe o valor da satura@,{c}@~ao usada para pontos n@~ao
-pertencentes ao conjunto. A @code{saturation} deve estar entre 0 e 1. o valor padr@~ao @'e 0.46.
+@dfn{saturation} escolhe o valor da satura@,{c}@~{a}o usada para pontos n@~{a}o
+pertencentes ao conjunto. A @code{saturation} deve estar entre 0 e 1. o valor padr@~{a}o @'{e} 0.46.
 
 @item
-@dfn{value} escolhe o valor das cores usadas para pontos n@~ao pertencentes
+@dfn{value} escolhe o valor das cores usadas para pontos n@~{a}o pertencentes
 ao conjunto. @var{value} deve estar entre 0 e 1; Valores maiores, acarretam
-que as cores sejam mais brilhantes. O valor padr@~ao @'e 0.96
+que as cores sejam mais brilhantes. O valor padr@~{a}o @'{e} 0.96
 
 @item
-@dfn{color} deve ser seguido por tr@^es par@^ametros que definem o matiz,
-a satura@,{c}@~ao e o valor, para a cor usada para representar os pontos do
-conjunto. O valor padr@~ao @'e 0 para tr@^es par@^ametos, que correspondem
-ao preto. Para uma explana@,{c}@~ao do intervalo de valores permitidos, veja op@,{c}@~oes
+@dfn{color} deve ser seguido por tr@^{e}s par@^{a}metros que definem o matiz,
+a satura@,{c}@~{a}o e o valor, para a cor usada para representar os pontos do
+conjunto. O valor padr@~{a}o @'{e} 0 para tr@^{e}s par@^{a}metos, que correspondem
+ao preto. Para uma explana@,{c}@~{a}o do intervalo de valores permitidos, veja op@,{c}@~{o}es
 @var{hue}, @var{saturation} e @var{value}.
 
 @item
-@dfn{center} deve ser seguida por dois par@^ametros reais, que fornecem as
+@dfn{center} deve ser seguida por dois par@^{a}metros reais, que fornecem as
 coordenadas, sobre o plano complexo, do ponto no centro da
-regi@~ao mostrada. O valor padr@~ao @'e 0 para ambas as coordenadas (a or@'igem).
+regi@~{a}o mostrada. O valor padr@~{a}o @'{e} 0 para ambas as coordenadas (a or@'{i}gem).
 
 @item
-@dfn{radius} escolhe o raio do maior c@'irculo dentro da regi@~ao
-quadrado que ser@'a mostrado. O valor padr@~ao @'e 2.
+@dfn{radius} escolhe o raio do maior c@'{i}rculo dentro da regi@~{a}o
+quadrado que ser@'{a} mostrado. O valor padr@~{a}o @'{e} 2.
 
 @item
-@dfn{filename} fornece o nome do arquivo onde o gr@'afico resultante ser@'a
-gravado. A extens@~ao .xpm ser@'a adicionada @`a aquele nome. Se o arquivo
-j@'a existir, ele ser@'a substitu@'ido pelo arquivo gerado pela
-fun@,{c}@~ao. Os valores padr@~ao s@~ao @code{julia} para o conjunto de Julia, e @code{mandelbrot}
+@dfn{filename} fornece o nome do arquivo onde o gr@'{a}fico resultante ser@'{a}
+gravado. A extens@~{a}o .xpm ser@'{a} adicionada @`a aquele nome. Se o arquivo
+j@'{a} existir, ele ser@'{a} substitu@'{i}do pelo arquivo gerado pela
+fun@,{c}@~{a}o. Os valores padr@~{a}o s@~{a}o @code{julia} para o conjunto de Julia, e @code{mandelbrot}
 para o conjunto de Mandelbrot.
 
 @end itemize
 
 @b{Exemplos}
 
-Representa@,{c}@~ao gr@'afica e diagrama em escada para a seq@"u@^encia:
+Representa@,{c}@~{a}o gr@'{a}fica e diagrama em escada para a seq@"{u}@^{e}ncia:
 2, cos(2), cos(cos(2)),...
 
 @example
@@ -353,12 +353,12 @@ Representa@,{c}@~ao gr@'afica e diagrama em escada para a seq@"u@^encia:
 @image{../figures/dynamics2,8cm}
 @end ifnotinfo
 
-Se seu sistema for lento, voc@^e dever@'a reduzir o n@'umero de itera@,{c}@~oes nos
+Se seu sistema for lento, voc@^{e} dever@'{a} reduzir o n@'{u}mero de itera@,{c}@~{o}es nos
 seguites exemplos. E o tamanho do ponto, @var{pointsize},  que fornece melhores resultados
-depende do monitor e da resolu@,{c}@~ao que est@'a sendo usada.Voc@^e pode
+depende do monitor e da resolu@,{c}@~{a}o que est@'{a} sendo usada.Voc@^{e} pode
 experimentar usando diferentes valores.
 
-Diagrama de @'orbitas para o mapa quadr@'atico
+Diagrama de @'{o}rbitas para o mapa quadr@'{a}tico
 @ifnottex
 @example
         y(n+1) = x + y(n)^2
@@ -376,7 +376,7 @@ $$y_{n+1} = x + y_n^2$$
 @image{../figures/dynamics3,8cm}
 @end ifnotinfo
 
-Para ampliar a regi@~ao em torno da bifurca@,{c}@~ao menor perto de x @code{=} -1.25 use:
+Para ampliar a regi@~{a}o em torno da bifurca@,{c}@~{a}o menor perto de x @code{=} -1.25 use:
 @example
 (%i5) orbits(x+y^2, 0, 100, 400, [x,-1,-1.53,-0.001], [pointsize,0.9],
              [ycenter,-1.2], [yradius,0.4]);
@@ -386,7 +386,7 @@ Para ampliar a regi@~ao em torno da bifurca@,{c}@~ao menor perto de x @code{=} -
 @image{../figures/dynamics4,8cm}
 @end ifnotinfo
 
-Evolu@,{c}@~ao de um sistemma bidimensional que leva a um fractal:
+Evolu@,{c}@~{a}o de um sistemma bidimensional que leva a um fractal:
 
 @example
 (%i6) f: 0.6*x*(1+2*x)+0.8*y*(x-1)-y^2-0.9$
@@ -398,7 +398,7 @@ Evolu@,{c}@~ao de um sistemma bidimensional que leva a um fractal:
 @image{../figures/dynamics5,8cm}
 @end ifnotinfo
 
-E uma amplia@,{c}@~ao de uma pequena regial naquele fractal:
+E uma amplia@,{c}@~{a}o de uma pequena regial naquele fractal:
 
 @example
 (%i9) evolution2d([f,g],[-0.5,0],300000,[pointsize,0.7], [xcenter,-0.7],
@@ -409,7 +409,7 @@ E uma amplia@,{c}@~ao de uma pequena regial naquele fractal:
 @image{../figures/dynamics6,8cm}
 @end ifnotinfo
 
-Um gr@'afico do tri@^angulo de Sierpinsky, obtido com o jogo do caos:
+Um gr@'{a}fico do tri@^{a}ngulo de Sierpinsky, obtido com o jogo do caos:
 
 @example
 (%i9) chaosgame([[0, 0], [1, 0], [0.5, sqrt(3)/2]], [0.1, 0.1], 1/2,
@@ -420,7 +420,7 @@ Um gr@'afico do tri@^angulo de Sierpinsky, obtido com o jogo do caos:
 @image{../figures/dynamics7,8cm}
 @end ifnotinfo
 
-A samambaia de Barnsley, obtida com um Sistema de Fun@,{c}@~oes Iteradas:
+A samambaia de Barnsley, obtida com um Sistema de Fun@,{c}@~{o}es Iteradas:
 
 @example
 (%i10) a1: matrix([0.85,0.04],[-0.04,0.85])$
@@ -439,8 +439,8 @@ A samambaia de Barnsley, obtida com um Sistema de Fun@,{c}@~oes Iteradas:
 @image{../figures/dynamics8,8cm}
 @end ifnotinfo
 
-Para criar um arquivo chamado @emph{dynamics9.xpm} com uma representa@,{c}@~ao
-gr@'afica do conjunto de Mandelbrot, com 12 cores, use:
+Para criar um arquivo chamado @emph{dynamics9.xpm} com uma representa@,{c}@~{a}o
+gr@'{a}fica do conjunto de Mandelbrot, com 12 cores, use:
 
 @example
 mandelbrot([filename,"dynamics9"])$
@@ -450,22 +450,22 @@ mandelbrot([filename,"dynamics9"])$
 @image{../figures/dynamics9,8cm}
 @end ifnotinfo
 
-e o conjunto de Julia para o n@'umero (-0.55 + i 0.6) pode ser obtida com:
+e o conjunto de Julia para o n@'{u}mero (-0.55 + i 0.6) pode ser obtida com:
 @example
 julia(-0.55, 0.6, [levels, 36], [center, 0, 0.6], [radius, 0.3],
       [hue, 240], [huerange, -180], [filename, "dynamics10"])$
 @end example
 
-o gr@'afico ser@'a gravado no arquivo @emph{dynamics10.xpm} e ir@'a mostrar
-a regi@~ao de -0.3 a 0.3 na dire@,{c}@~ao x, e de 0.3 a 0.9 na
-dire@,{c}@~ao y. 36 cores sr@~ao usadas, iniciando com azul e terminando
+o gr@'{a}fico ser@'{a} gravado no arquivo @emph{dynamics10.xpm} e ir@'{a} mostrar
+a regi@~{a}o de -0.3 a 0.3 na dire@,{c}@~{a}o x, e de 0.3 a 0.9 na
+dire@,{c}@~{a}o y. 36 cores sr@~{a}o usadas, iniciando com azul e terminando
 com amarelo.
 
 @ifnotinfo
 @image{../figures/dynamics10,8cm}
 @end ifnotinfo
 
-Para resolver numericamente a equa@,{c}@~ao diferencial
+Para resolver numericamente a equa@,{c}@~{a}o diferencial
 
 @ifnottex
 @example
@@ -483,7 +483,7 @@ incrementos de 0.1 para @code{t}, use:
 (%i20) results: rk(t-x^2,x,1,[t,0,8,0.1])$
 @end example
 
-os resultados ser@~ao salvos na lista de resultados.
+os resultados ser@~{a}o salvos na lista de resultados.
 
 Para resolver numericamente o sistema:
 

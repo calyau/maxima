@@ -3,11 +3,11 @@
 @c ITEMS IN THIS FILE ARE IN NEED OF EXPANSION, CLARIFICATION, AND EXAMPLES
 
 @menu
-* Defini@value{cedilha}@~oes para ponto Flutuante::  
+* Defini@,{c}@~{o}es para ponto Flutuante::  
 @end menu
 
-@node Defini@value{cedilha}@~oes para ponto Flutuante,  , Ponto Flutuante, Ponto Flutuante
-@section Defini@value{cedilha}@~oes para ponto Flutuante
+@node Defini@,{c}@~{o}es para ponto Flutuante,  , Ponto Flutuante, Ponto Flutuante
+@section Defini@,{c}@~{o}es para ponto Flutuante
 
 @c FOLLOWING FUNCTIONS IN bffac.mac ARE NOT DESCRIBED IN .texi FILES: !!!
 @c obfac, azetb, vonschtoonk, divrlst, obzeta, bfhzeta, bfpsi0 !!!
@@ -19,136 +19,136 @@
 @c FOLLOWING FUNCTIONS IN bffac.mac ARE DESCRIBED HERE: !!!
 @c bfpsi, bffac, cbffac !!!
 
-@deffn {Fun@,{c}@~ao} bffac (@var{expr}, @var{n})
-Vers@~ao para grandes n@'umeros em ponto flutuante da fun@value{cedilha}@~ao
-@code{factorial} (usa o artif@'icio gamma).  O segundo argumento informa quantos d@'igitos reter e retornar,
-isso @'e uma boa id@'eia para requisitar precis@~ao adicional.
+@deffn {Fun@,{c}@~{a}o} bffac (@var{expr}, @var{n})
+Vers@~{a}o para grandes n@'{u}meros em ponto flutuante da fun@,{c}@~{a}o
+@code{factorial} (usa o artif@'{i}cio gamma).  O segundo argumento informa quantos d@'{i}gitos reter e retornar,
+isso @'{e} uma boa id@'{e}ia para requisitar precis@~{a}o adicional.
 
-@code{load ("bffac")} chama essa fun@value{cedilha}@~ao.
+@code{load ("bffac")} chama essa fun@,{c}@~{a}o.
 
 @end deffn
 
-@defvr {Vari@'avel de Op@value{cedilha}@~ao} algepsilon
-Valor padr@~ao: 10^8
+@defvr {Vari@'{a}vel de Op@,{c}@~{a}o} algepsilon
+Valor padr@~{a}o: 10^8
 
 @c WHAT IS algepsilon, EXACTLY ??? describe ("algsys") IS NOT VERY INFORMATIVE !!!
-@code{algepsilon} @'e usada por @code{algsys}.
+@code{algepsilon} @'{e} usada por @code{algsys}.
 
 @end defvr
 
-@deffn {Fun@,{c}@~ao} bfloat (@var{expr})
-Converte todos os n@'umeros e fun@value{cedilha}@~oes de n@'umeros em @var{expr} para grandes n@'umeros em 
-ponto flutuante (bigfloat).  O n@'umero de algarismos significativos no grande n@'umero em ponto flutuante resultante @'e especificado atrav@'es da vari@'avel global @code{fpprec}.
+@deffn {Fun@,{c}@~{a}o} bfloat (@var{expr})
+Converte todos os n@'{u}meros e fun@,{c}@~{o}es de n@'{u}meros em @var{expr} para grandes n@'{u}meros em 
+ponto flutuante (bigfloat).  O n@'{u}mero de algarismos significativos no grande n@'{u}mero em ponto flutuante resultante @'{e} especificado atrav@'{e}s da vari@'{a}vel global @code{fpprec}.
 
-Quando @code{float2bf} for @code{false} uma mensagem de alerta @'e mostrada quando
-uma n@'umero em ponto flutuante (float) @'e convertido em um grande n@'umero em ponto flutuante (bigfloat - uma vez que
-isso pode resultar em perda de precis@~ao).
-
-@end deffn
-
-@deffn {Fun@,{c}@~ao} bfloatp (@var{expr})
-Retorna @code{true} se a avalia@value{cedilha}@~ao da @var{expr} resultar em um grande n@'umero em ponto flutuante, de outra forma retorna @code{false}.
+Quando @code{float2bf} for @code{false} uma mensagem de alerta @'{e} mostrada quando
+uma n@'{u}mero em ponto flutuante (float) @'{e} convertido em um grande n@'{u}mero em ponto flutuante (bigfloat - uma vez que
+isso pode resultar em perda de precis@~{a}o).
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} bfpsi (@var{n}, @var{z}, @var{fpprec})
-@deffnx {Fun@,{c}@~ao} bfpsi0 (@var{z}, @var{fpprec})
-@code{bfpsi} @'e a fun@value{cedilha}@~ao @code{polygamma} de argumentos reais @var{z} e ordem de inteiro @var{n}.
-@code{bfpsi0} @'e a fun@value{cedilha}@~ao @code{digamma}. 
-@code{bfpsi0 (@var{z}, @var{fpprec})} @'e equivalente a @code{bfpsi (0, @var{z}, @var{fpprec})}.
+@deffn {Fun@,{c}@~{a}o} bfloatp (@var{expr})
+Retorna @code{true} se a avalia@,{c}@~{a}o da @var{expr} resultar em um grande n@'{u}mero em ponto flutuante, de outra forma retorna @code{false}.
 
-Essas fun@value{cedilha}@~oes retornam valores em grandes n@'umeros em ponto flutuante.
-@var{fpprec} @'e a precis@~ao do valor de retorno dos grandes n@'umeros em ponto flutuante.
+@end deffn
+
+@deffn {Fun@,{c}@~{a}o} bfpsi (@var{n}, @var{z}, @var{fpprec})
+@deffnx {Fun@,{c}@~{a}o} bfpsi0 (@var{z}, @var{fpprec})
+@code{bfpsi} @'{e} a fun@,{c}@~{a}o @code{polygamma} de argumentos reais @var{z} e ordem de inteiro @var{n}.
+@code{bfpsi0} @'{e} a fun@,{c}@~{a}o @code{digamma}. 
+@code{bfpsi0 (@var{z}, @var{fpprec})} @'{e} equivalente a @code{bfpsi (0, @var{z}, @var{fpprec})}.
+
+Essas fun@,{c}@~{o}es retornam valores em grandes n@'{u}meros em ponto flutuante.
+@var{fpprec} @'{e} a precis@~{a}o do valor de retorno dos grandes n@'{u}meros em ponto flutuante.
 
 @c psi0(1) = -%gamma IS AN INTERESTING PROPERTY BUT IN THE ABSENCE OF ANY OTHER
 @c DISCUSSION OF THE PROPERTIES OF THIS FUNCTION, THIS STATEMENT SEEMS OUT OF PLACE.
 @c Note @code{-bfpsi0 (1, fpprec)} provides @code{%gamma} (Euler's constant) as a bigfloat.
 
-@code{load ("bffac")} chama essas fun@value{cedilha}@~oes.
+@code{load ("bffac")} chama essas fun@,{c}@~{o}es.
 
 @end deffn
 
-@defvr {Vari@'avel de Op@value{cedilha}@~ao} bftorat
-Valor padr@~ao: @code{false}
+@defvr {Vari@'{a}vel de Op@,{c}@~{a}o} bftorat
+Valor padr@~{a}o: @code{false}
 
-@code{bftorat} controla a convers@~ao de @code{bfloats} para
-n@'umeros racionais. 
+@code{bftorat} controla a convers@~{a}o de @code{bfloats} para
+n@'{u}meros racionais. 
 Quando @code{bftorat} for @code{false},
-@code{ratepsilon} ser@'a usada para
-controlar a convers@~ao (isso resulta em n@'umeros racionais relativametne
+@code{ratepsilon} ser@'{a} usada para
+controlar a convers@~{a}o (isso resulta em n@'{u}meros racionais relativametne
 pequenos).
 Quando @code{bftorat} for @code{true},
-o n@'umero racional gerado ir@'a
+o n@'{u}mero racional gerado ir@'{a}
 representar precisamente o @code{bfloat}.
 
 @end defvr
 
-@defvr {Vari@'avel de Op@value{cedilha}@~ao} bftrunc
-Valor padr@~ao: @code{true}
+@defvr {Vari@'{a}vel de Op@,{c}@~{a}o} bftrunc
+Valor padr@~{a}o: @code{true}
 
-@code{bftrunc} faz com que tilhas de zeros em grandes n@'umeros em ponto flutuante
+@code{bftrunc} faz com que tilhas de zeros em grandes n@'{u}meros em ponto flutuante
 diferentes de zero sejam ocultadas.  Desse modo, se @code{bftrunc} for @code{false}, @code{bfloat (1)}
-ser@'a mostrado como @code{1.000000000000000B0}. De outra forma, ser@'a mostrado como
+ser@'{a} mostrado como @code{1.000000000000000B0}. De outra forma, ser@'{a} mostrado como
 @code{1.0B0}.
 
 @end defvr
 
-@deffn {Fun@,{c}@~ao} cbffac (@var{z}, @var{fpprec})
-Fatorial complexo de grandes n@'umeros em ponto flutuante.
+@deffn {Fun@,{c}@~{a}o} cbffac (@var{z}, @var{fpprec})
+Fatorial complexo de grandes n@'{u}meros em ponto flutuante.
 
-@code{load ("bffac")} chama essa fun@value{cedilha}@~ao.
+@code{load ("bffac")} chama essa fun@,{c}@~{a}o.
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} float (@var{expr})
-Converte inteiros, n@'umeros racionais e grandes n@'umeros em ponto flutuante em @var{expr}
-para n@'umeros em ponto flutuante.  Da mesma forma um @code{evflag}, @code{float} faz com que
-n@'umeros racionais n@~ao-inteiros e grandes n@'umeros em ponto flutuante sejam convertidos para
+@deffn {Fun@,{c}@~{a}o} float (@var{expr})
+Converte inteiros, n@'{u}meros racionais e grandes n@'{u}meros em ponto flutuante em @var{expr}
+para n@'{u}meros em ponto flutuante.  Da mesma forma um @code{evflag}, @code{float} faz com que
+n@'{u}meros racionais n@~{a}o-inteiros e grandes n@'{u}meros em ponto flutuante sejam convertidos para
 ponto flutuante.
 
 @end deffn
 
-@defvr {Vari@'avel de Op@value{cedilha}@~ao} float2bf
-Valor padr@~ao: @code{false}
+@defvr {Vari@'{a}vel de Op@,{c}@~{a}o} float2bf
+Valor padr@~{a}o: @code{false}
  
-Quando @code{float2bf} for @code{false}, uma mensagem de alerta @'e mostrada quando
-um n@'umero em ponto flutuante @'e convertido em um grande n@'umero em ponto flutuante (uma vez que
-isso pode resultar em perda de precis@~ao).
+Quando @code{float2bf} for @code{false}, uma mensagem de alerta @'{e} mostrada quando
+um n@'{u}mero em ponto flutuante @'{e} convertido em um grande n@'{u}mero em ponto flutuante (uma vez que
+isso pode resultar em perda de precis@~{a}o).
 
 @end defvr
 
-@deffn {Fun@,{c}@~ao} floatnump (@var{expr})
-Retorna @code{true} se @var{expr} for um n@'umero em ponto flutuante, de outra forma retorna @code{false}.
+@deffn {Fun@,{c}@~{a}o} floatnump (@var{expr})
+Retorna @code{true} se @var{expr} for um n@'{u}mero em ponto flutuante, de outra forma retorna @code{false}.
 
 @end deffn
 
-@defvr {Vari@'avel de Op@value{cedilha}@~ao} fpprec
-Valor padr@~ao: 16
+@defvr {Vari@'{a}vel de Op@,{c}@~{a}o} fpprec
+Valor padr@~{a}o: 16
 
-@code{fpprec} @'e o n@'umero de algarismos significativos para aritm@'etica sobre grandes n@'umeros em ponto flutuante
-@code{fpprec} n@~ao afeta c@'alculos sobre n@'umeros em ponto flutuante comuns.
+@code{fpprec} @'{e} o n@'{u}mero de algarismos significativos para aritm@'{e}tica sobre grandes n@'{u}meros em ponto flutuante
+@code{fpprec} n@~{a}o afeta c@'{a}lculos sobre n@'{u}meros em ponto flutuante comuns.
 
-Veja tamb@'em @code{bfloat} e @code{fpprintprec}.
+Veja tamb@'{e}m @code{bfloat} e @code{fpprintprec}.
 
 @end defvr
 
-@defvr {Vari@'avel de Op@value{cedilha}@~ao} fpprintprec
-Valor padr@~ao: 0
+@defvr {Vari@'{a}vel de Op@,{c}@~{a}o} fpprintprec
+Valor padr@~{a}o: 0
 
-@code{fpprintprec} @'e o n;umero de d@'igitos a serem mostrados na tela quando no caso de nu@'umeros em ponto flutuante e no caso de grandes n@'umeros em ponto flutuante.
+@code{fpprintprec} @'{e} o n;umero de d@'{i}gitos a serem mostrados na tela quando no caso de nu@'{u}meros em ponto flutuante e no caso de grandes n@'{u}meros em ponto flutuante.
 
-Para n@'umeros em ponto flutuante comuns,
+Para n@'{u}meros em ponto flutuante comuns,
 quando @code{fpprintprec} tiver um valor entre 2 e 16  (inclusive),
-o n;umero de d@'igitos mostrado na tela @'e igual a @code{fpprintprec}.
-De outra forma, @code{fpprintprec} @'e 0, ou maior que 16,
-e o n@'umero de d@'igitos mostrados @'e 16.
+o n;umero de d@'{i}gitos mostrado na tela @'{e} igual a @code{fpprintprec}.
+De outra forma, @code{fpprintprec} @'{e} 0, ou maior que 16,
+e o n@'{u}mero de d@'{i}gitos mostrados @'{e} 16.
 
-Para grandes n@'umeros em ponto flutuante,
+Para grandes n@'{u}meros em ponto flutuante,
 quando @code{fpprintprec} tiver um valor entre 2 e @code{fpprec} (inclusive),
-o n;umero de d@'igitos mostrados @'e giaul a @code{fpprintprec}.
-De outra forma, @code{fpprintprec} @'e 0, ou maior que @code{fpprec},
-e o n;umero de d@'igitos mostrados @'e igual a @code{fpprec}.
+o n;umero de d@'{i}gitos mostrados @'{e} giaul a @code{fpprintprec}.
+De outra forma, @code{fpprintprec} @'{e} 0, ou maior que @code{fpprec},
+e o n;umero de d@'{i}gitos mostrados @'{e} igual a @code{fpprec}.
 
-@code{fpprintprec} n@~ao pode ser 1.
+@code{fpprintprec} n@~{a}o pode ser 1.
 
 @end defvr

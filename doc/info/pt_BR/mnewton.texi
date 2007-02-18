@@ -1,40 +1,40 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /mnewton.texi/1.2/Mon May 15 07:54:51 2006//
 @menu
-* Defini@value{cedilha}@~oes para mnewton::
+* Defini@,{c}@~{o}es para mnewton::
 @end menu
 
-@node Defini@value{cedilha}@~oes para mnewton,  , mnewton, mnewton
-@section Defini@value{cedilha}@~oes para mnewton
+@node Defini@,{c}@~{o}es para mnewton,  , mnewton, mnewton
+@section Defini@,{c}@~{o}es para mnewton
 
-@defvr {Vari@'avel de op@,{c}@~ao} newtonepsilon
-Valor padr@~ao: @code{10.0^(-fpprec/2)}
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} newtonepsilon
+Valor padr@~{a}o: @code{10.0^(-fpprec/2)}
 
-Precis@~ao para determinar quando a fun@,{c}@~ao @code{mnewton} convergiu em dire@,{c}@~ao @`a solu@,{c}@~ao.
+Precis@~{a}o para determinar quando a fun@,{c}@~{a}o @code{mnewton} convergiu em dire@,{c}@~{a}o @`a solu@,{c}@~{a}o.
 
-Veja tamb@'em @code{mnewton}.
+Veja tamb@'{e}m @code{mnewton}.
 @end defvr
 
 
-@defvr {Vari@'avel de op@,{c}@~ao} newtonmaxiter
-Valor padr@~ao: @code{50}
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} newtonmaxiter
+Valor padr@~{a}o: @code{50}
 
-N@'umero m@'aximo de itera@,{c}@~oes que para a fun@,{c}@~ao @code{mnewton}
-caso essa fun@,{c}@~ao n@~ao seja convergente ou se convergir muito lentamente.
+N@'{u}mero m@'{a}ximo de itera@,{c}@~{o}es que para a fun@,{c}@~{a}o @code{mnewton}
+caso essa fun@,{c}@~{a}o n@~{a}o seja convergente ou se convergir muito lentamente.
 
-Veja tamb@'em @code{mnewton}.
+Veja tamb@'{e}m @code{mnewton}.
 @end defvr
 
-@deffn {Fun@,{c}@~ao} mnewton (@var{FuncList},@var{VarList},@var{GuessList})
-Solu@,{c}@~ao de multiplas fun@,{c}@~oes n@~ao lineares usando o m@'etodo de Newton.
-@var{FuncList} @'e a lista de fun@,{c}@~oes a serem resolvidas,
-@var{VarList} @'e a lista dos nomes de vari@'aveis, e
-@var{GuessList} @'e a lista de aproxima@,{c}@~oes iniciais.
+@deffn {Fun@,{c}@~{a}o} mnewton (@var{FuncList},@var{VarList},@var{GuessList})
+Solu@,{c}@~{a}o de multiplas fun@,{c}@~{o}es n@~{a}o lineares usando o m@'{e}todo de Newton.
+@var{FuncList} @'{e} a lista de fun@,{c}@~{o}es a serem resolvidas,
+@var{VarList} @'{e} a lista dos nomes de vari@'{a}veis, e
+@var{GuessList} @'{e} a lista de aproxima@,{c}@~{o}es iniciais.
 
-A solu@,{c}@~ao @'e retornada no mesmo formato retornado pela fun@,{c}@~ao @code{solve()}.
-Caso a solu@,{c}@~ao n@~ao seja encontrada, @code{[]} @'e retornado.
+A solu@,{c}@~{a}o @'{e} retornada no mesmo formato retornado pela fun@,{c}@~{a}o @code{solve()}.
+Caso a solu@,{c}@~{a}o n@~{a}o seja encontrada, @code{[]} @'{e} retornado.
 
-Essa fun@,{c}@~ao @'e controlada atrav@'es das vari@'aveis globais @code{newtonepsilon} e @code{newtonmaxiter}.
+Essa fun@,{c}@~{a}o @'{e} controlada atrav@'{e}s das vari@'{a}veis globais @code{newtonepsilon} e @code{newtonmaxiter}.
 
 @example
 (%i1) load("mnewton")$
@@ -48,6 +48,6 @@ Essa fun@,{c}@~ao @'e controlada atrav@'es das vari@'aveis globais @code{newtone
 (%o4) [[u = 1.066618389595407, v = 1.552564766841786]]
 @end example
 
-Para usar essa fun@,{c}@~ao primeiro escreva @code{load("mnewton")}. Veja tamb@'em @code{newtonepsilon} e @code{newtonmaxiter}.
+Para usar essa fun@,{c}@~{a}o primeiro escreva @code{load("mnewton")}. Veja tamb@'{e}m @code{newtonepsilon} e @code{newtonmaxiter}.
 @end deffn
 

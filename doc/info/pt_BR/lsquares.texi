@@ -2,50 +2,50 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /lsquares.texi/1.1/Mon Feb 27 22:09:17 2006//
 @menu
-* Defini@value{cedilha}@~oes para lsquares::
+* Defini@,{c}@~{o}es para lsquares::
 @end menu
 
-@node Defini@value{cedilha}@~oes para lsquares,  , lsquares, lsquares
-@section Defini@value{cedilha}@~oes para lsquares
+@node Defini@,{c}@~{o}es para lsquares,  , lsquares, lsquares
+@section Defini@,{c}@~{o}es para lsquares
 
 
-@defvr {Vari@'avel global} DETCOEF
+@defvr {Vari@'{a}vel global} DETCOEF
 
-Essa vari@'avel @'e usada pelas fun@,{c}@~oes @code{lsquares} e @code{plsquares} para armazenar o Coeficiente de Determina@,{c}@~ao que mede o melhor do ajuste. Esse intervalo de 0 (nenhuma correla@,{c}@~ao) a 1 (correla@,{c}@~ao
+Essa vari@'{a}vel @'{e} usada pelas fun@,{c}@~{o}es @code{lsquares} e @code{plsquares} para armazenar o Coeficiente de Determina@,{c}@~{a}o que mede o melhor do ajuste. Esse intervalo de 0 (nenhuma correla@,{c}@~{a}o) a 1 (correla@,{c}@~{a}o
 exata). 
 
-Quando @code{plsquares} for chamada com uma lista de vari@'aveis independentes, @var{DETCOEF} @'e escolhida para uma lista de Coeficientes de Determina@,{c}@~ao. Veja @code{plsquares} para detalhes.
+Quando @code{plsquares} for chamada com uma lista de vari@'{a}veis independentes, @var{DETCOEF} @'{e} escolhida para uma lista de Coeficientes de Determina@,{c}@~{a}o. Veja @code{plsquares} para detalhes.
 
-Veja tamb@'em @code{lsquares}.
+Veja tamb@'{e}m @code{lsquares}.
 @end defvr
 
 
-@deffn {Fun@,{c}@~ao} lsquares (@var{Mat},@var{VarList},@var{equa@,{c}@~ao},@var{ParamList})
-@deffnx {Fun@,{c}@~ao} lsquares (@var{Mat},@var{VarList},@var{equa@,{c}@~ao},@var{ParamList},@var{EsperadosList})
-Ajuste m@'ultiplo de equa@,{c}@~oes n@~ao lineares de uma tabela de dados pelo
-m@'etodo dos "m@'inimos quadrados". @var{Mat} @'e uma matriz contendo os dados,
-@var{VarList} @'e uma lista de nomes de vari@'aveis (um para cada coluna de @var{Mat}),
-@var{equa@,{c}@~ao} @'e a equa@,{c}@~ao a ser ajustada (essa equa@,{c}@~ao deve estar na forma:
+@deffn {Fun@,{c}@~{a}o} lsquares (@var{Mat},@var{VarList},@var{equa@,{c}@~{a}o},@var{ParamList})
+@deffnx {Fun@,{c}@~{a}o} lsquares (@var{Mat},@var{VarList},@var{equa@,{c}@~{a}o},@var{ParamList},@var{EsperadosList})
+Ajuste m@'{u}ltiplo de equa@,{c}@~{o}es n@~{a}o lineares de uma tabela de dados pelo
+m@'{e}todo dos "m@'{i}nimos quadrados". @var{Mat} @'{e} uma matriz contendo os dados,
+@var{VarList} @'{e} uma lista de nomes de vari@'{a}veis (um para cada coluna de @var{Mat}),
+@var{equa@,{c}@~{a}o} @'{e} a equa@,{c}@~{a}o a ser ajustada (essa equa@,{c}@~{a}o deve estar na forma:
 @code{depvar=f(indepvari,..., paramj,...)}, @code{g(depvar)=f(indepvari,..., paramj,...)} 
-ou na forma @code{g(depvar, paramk,...)=f(indepvari,..., paramj,...)}), @var{ParamList} @'e a
-lista de par@^ametros para obter, e @var{EsperadosList} @'e uma lista opcional de aproxima@,{c}@~oes 
-iniciais para os par@^ametros; quando esse @'ultimo argumento estiver presente, @code{mnewton} @'e usado
-em lugar de @code{solve} com o objetivo de pegar os par@^ametros.
+ou na forma @code{g(depvar, paramk,...)=f(indepvari,..., paramj,...)}), @var{ParamList} @'{e} a
+lista de par@^{a}metros para obter, e @var{EsperadosList} @'{e} uma lista opcional de aproxima@,{c}@~{o}es 
+iniciais para os par@^{a}metros; quando esse @'{u}ltimo argumento estiver presente, @code{mnewton} @'{e} usado
+em lugar de @code{solve} com o objetivo de pegar os par@^{a}metros.
 
-A equa@,{c}@~ao pode ser completamente n@~ao linear com rela@,{c}@~ao @`as vari@'aveis
-independentes e @`a vari@'avel dependente.
-Com o objetivo de usar @code{solve()}, as equa@,{c}@~oes devem ser lineares ou polinomiais com
-rela@,{c}@~ao aos par@^ametros. Equa@,{c}@~oes como @code{y=a*b^x+c} podem ser ajustadas para
+A equa@,{c}@~{a}o pode ser completamente n@~{a}o linear com rela@,{c}@~{a}o @`as vari@'{a}veis
+independentes e @`a vari@'{a}vel dependente.
+Com o objetivo de usar @code{solve()}, as equa@,{c}@~{o}es devem ser lineares ou polinomiais com
+rela@,{c}@~{a}o aos par@^{a}metros. Equa@,{c}@~{o}es como @code{y=a*b^x+c} podem ser ajustadas para
 @code{[a,b,c]} com @code{solve} se os valores de @code{x} forem inteiros positivos pequenos e
 existam poucos dados (veja o exemplo em lsquares.dem).
-@code{mnewton} permite ajustar uma equa@,{c}@~ao n@~ao linear com rela@,{c}@~ao aos
-par@^ametros, mas um bom conjunto de aproxima@,{c}@~oes iniciais deve ser fornecido.
+@code{mnewton} permite ajustar uma equa@,{c}@~{a}o n@~{a}o linear com rela@,{c}@~{a}o aos
+par@^{a}metros, mas um bom conjunto de aproxima@,{c}@~{o}es iniciais deve ser fornecido.
 
-Se poss@'ivel, a equa@,{c}@~ao ajustada @'e retornada. Se existir mais
-de uma solu@,{c}@~ao, uma lista de equa@,{c}@~oes @'e retornada.
-O Coeficiente de Determina@,{c}@~ao @'e mostrado para informar sobre
-o melhor do ajuste, de 0 (nenhuma correla@,{c}@~ao) a 1 (correla@,{c}@~ao exata).
-Esse valor @'e tamb@'em armazenada na vri@'avel global @var{DETCOEF}.
+Se poss@'{i}vel, a equa@,{c}@~{a}o ajustada @'{e} retornada. Se existir mais
+de uma solu@,{c}@~{a}o, uma lista de equa@,{c}@~{o}es @'{e} retornada.
+O Coeficiente de Determina@,{c}@~{a}o @'{e} mostrado para informar sobre
+o melhor do ajuste, de 0 (nenhuma correla@,{c}@~{a}o) a 1 (correla@,{c}@~{a}o exata).
+Esse valor @'{e} tamb@'{e}m armazenada na vri@'{a}vel global @var{DETCOEF}.
 
 Exemplos usando @code{solve}:
 @example
@@ -99,26 +99,26 @@ Exemplos usando @code{mnewton}:
                                          + 2.00000000000012
 @end example
 
-Para usar essa fun@,{c}@~ao escreva primeiro @code{load("lsquares")}. Veja tamb@'em @code{DETCOEF} e @code{mnewton}.
+Para usar essa fun@,{c}@~{a}o escreva primeiro @code{load("lsquares")}. Veja tamb@'{e}m @code{DETCOEF} e @code{mnewton}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~ao} plsquares (@var{Mat},@var{VarList},@var{depvars})
-@deffnx {Fun@,{c}@~ao} plsquares (@var{Mat},@var{VarList},@var{depvars},@var{maxexpon})
-@deffnx {Fun@,{c}@~ao} plsquares (@var{Mat},@var{VarList},@var{depvars},@var{maxexpon},@var{maxdegree})
-Ajuste de polin@^omios de v@'arias vari@'aveis de uma tabela de dados pelo m@'etodo dos
-"m@'inimos quadrados". @var{Mat} @'e uma matriz contendo os dados, @var{VarList} @'e uma lista de nomes de vari@'aveis (um nome para cada coluna de Mat, mas use "-" em lugar de nomes de vari@'aveis para colunas de Mat), @var{depvars} @'e o
-nome de uma vari@'avel dependente ou uma
-lista com um ou mais nomes de vari@'aveis dependentes (os quais nomes podem estar em @var{VarList}), @var{maxexpon} @'e o expoente m@'aximo opcional para cada vari@'avel independente (1 por padr@~ao), e @var{maxdegree} @'e o argumento opcional
-grau m@'aximo do polin@^omio (@var{maxexpon} por padr@~ao); note que a soma dos expoentes de cada termo deve ser menor ou igual a @var{maxdegree}, e se @code{maxdgree = 0} ent@~ao nenhum limite @'e aplicado.
+@deffn {Fun@,{c}@~{a}o} plsquares (@var{Mat},@var{VarList},@var{depvars})
+@deffnx {Fun@,{c}@~{a}o} plsquares (@var{Mat},@var{VarList},@var{depvars},@var{maxexpon})
+@deffnx {Fun@,{c}@~{a}o} plsquares (@var{Mat},@var{VarList},@var{depvars},@var{maxexpon},@var{maxdegree})
+Ajuste de polin@^{o}mios de v@'{a}rias vari@'{a}veis de uma tabela de dados pelo m@'{e}todo dos
+"m@'{i}nimos quadrados". @var{Mat} @'{e} uma matriz contendo os dados, @var{VarList} @'{e} uma lista de nomes de vari@'{a}veis (um nome para cada coluna de Mat, mas use "-" em lugar de nomes de vari@'{a}veis para colunas de Mat), @var{depvars} @'{e} o
+nome de uma vari@'{a}vel dependente ou uma
+lista com um ou mais nomes de vari@'{a}veis dependentes (os quais nomes podem estar em @var{VarList}), @var{maxexpon} @'{e} o expoente m@'{a}ximo opcional para cada vari@'{a}vel independente (1 por padr@~{a}o), e @var{maxdegree} @'{e} o argumento opcional
+grau m@'{a}ximo do polin@^{o}mio (@var{maxexpon} por padr@~{a}o); note que a soma dos expoentes de cada termo deve ser menor ou igual a @var{maxdegree}, e se @code{maxdgree = 0} ent@~{a}o nenhum limite @'{e} aplicado.
 
-Se @var{depvars} @'e o nome de uma vari@'avel dependente (fora de uma lista), @code{plsquares} retorna o polin@^omio ajustado. Se @var{depvars} for uma lista de uma ou mais vari@'aveis dependentes, @code{plsquares} retorna uma lista com
-o(s) polin@^omio(s) ajustado(s). Os Coeficientes de Determina@,{c}@~ao s@~ao mostrados com o objetivo de informar sobre o melhor do ajuste, cujo intervalo vai de 0 (nenhuma correla@,{c}@~ao) a 1 (correla@,{c}@~ao exata). Esses valores s@~ao tamb@'em s@~ao
-tamb@'em armazenados na vari@'avel
-global @var{DETCOEF} (uma lista se @var{depvars} for tamb@'em uma lista).
+Se @var{depvars} @'{e} o nome de uma vari@'{a}vel dependente (fora de uma lista), @code{plsquares} retorna o polin@^{o}mio ajustado. Se @var{depvars} for uma lista de uma ou mais vari@'{a}veis dependentes, @code{plsquares} retorna uma lista com
+o(s) polin@^{o}mio(s) ajustado(s). Os Coeficientes de Determina@,{c}@~{a}o s@~{a}o mostrados com o objetivo de informar sobre o melhor do ajuste, cujo intervalo vai de 0 (nenhuma correla@,{c}@~{a}o) a 1 (correla@,{c}@~{a}o exata). Esses valores s@~{a}o tamb@'{e}m s@~{a}o
+tamb@'{e}m armazenados na vari@'{a}vel
+global @var{DETCOEF} (uma lista se @var{depvars} for tamb@'{e}m uma lista).
 
 
-Um simples exemplo de ajuste linear de v@'arias vari@'aveis:
+Um simples exemplo de ajuste linear de v@'{a}rias vari@'{a}veis:
 @example
 (%i1) load("plsquares")$
 
@@ -130,7 +130,7 @@ Um simples exemplo de ajuste linear de v@'arias vari@'aveis:
                               3
 @end example
 
-O mesmo exemplo sem restri@,{c}@~oes de gra:
+O mesmo exemplo sem restri@,{c}@~{o}es de gra:
 @example
 (%i3) plsquares(matrix([1,2,0],[3,5,4],[4,7,9],[5,8,10]),
                 [x,y,z],z,1,0);
@@ -140,7 +140,7 @@ O mesmo exemplo sem restri@,{c}@~oes de gra:
                               6
 @end example
 
-Quantas diagonais possi um pol@'igono de N lados tem? What polynomial degree should be used?
+Quantas diagonais possi um pol@'{i}gono de N lados tem? What polynomial degree should be used?
 @example
 (%i4) plsquares(matrix([3,0],[4,2],[5,5],[6,9],[7,14],[8,20]),
                 [N,diagonais],diagonais,5);
@@ -149,11 +149,11 @@ Quantas diagonais possi um pol@'igono de N lados tem? What polynomial degree sho
                                N  - 3 N
 (%o4)              diagonais = --------
                                   2
-(%i5) ev(%, N=9);   /* Testando para um pol@'igono de 9 lados - o ene@'agono */
+(%i5) ev(%, N=9);   /* Testando para um pol@'{i}gono de 9 lados - o ene@'{a}gono */
 (%o5)                 diagonals = 27
 @end example
 
-Quantos caminhos fazemos para colocar  duas ra@'inhas sem que elas estejam amea@,{c}adas em um tabuleiro de xadrez n x n ?
+Quantos caminhos fazemos para colocar  duas ra@'{i}nhas sem que elas estejam amea@,{c}adas em um tabuleiro de xadrez n x n ?
 @example
 (%i6) plsquares(matrix([0,0],[1,0],[2,0],[3,8],[4,44]),
                 [n,posicoes],[posicoes],4);
@@ -166,7 +166,7 @@ Quantos caminhos fazemos para colocar  duas ra@'inhas sem que elas estejam amea@
 (%o7)                posicoes = 1288
 @end example
 
-Em exemplo com seis vari@'aveis dependentes:
+Em exemplo com seis vari@'{a}veis dependentes:
 @example
 (%i8) mtrx:matrix([0,0,0,0,0,1,1,1],[0,1,0,1,1,1,0,0],
                   [1,0,0,1,1,1,0,0],[1,1,1,1,0,0,0,1])$
@@ -180,6 +180,6 @@ _Xor = - 2 a b + b + a, _Nand = 1 - a b,
 _Nor = a b - b - a + 1, _Nxor = 2 a b - b - a + 1]
 @end example
 
-Para usar essa fun@,{c}@~ao escreva primeiramente @code{load("lsquares")}.
+Para usar essa fun@,{c}@~{a}o escreva primeiramente @code{load("lsquares")}.
 @end deffn
 

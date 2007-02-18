@@ -4,27 +4,27 @@
 @hyphenation{cor-res-pon-de}
 @end iftex
 @menu
-* Introdu@value{cedilha}@~ao a Ajuda::        
+* Introdu@,{c}@~{a}o a Ajuda::        
 * Lisp e Maxima::            
 * Descartando::          
-* Documenta@value{cedilha}@~ao::               
-* Defini@value{cedilha}@~oes para Ajuda::        
+* Documenta@,{c}@~{a}o::               
+* Defini@,{c}@~{o}es para Ajuda::        
 @end menu
 
-@node Introdu@value{cedilha}@~ao a Ajuda, Lisp e Maxima, Ajuda, Ajuda
-@section Introdu@value{cedilha}@~ao a Ajuda
+@node Introdu@,{c}@~{a}o a Ajuda, Lisp e Maxima, Ajuda, Ajuda
+@section Introdu@,{c}@~{a}o a Ajuda
 
 @c AS IT STANDS THIS IS JUST A REPEAT OF THE STUFF FOUND UNDER @defun describe.
 
-A fun@,{c}@~ao prim@'aria de ajuda on-line @'e @code{describe},
-que @'e tipicamente invocada atrav@'es do ponto de interroga@,{c}@~ao @code{?} na linha de comando interativa.  
+A fun@,{c}@~{a}o prim@'{a}ria de ajuda on-line @'{e} @code{describe},
+que @'{e} tipicamente invocada atrav@'{e}s do ponto de interroga@,{c}@~{a}o @code{?} na linha de comando interativa.  
 @code{? foo} (com um espa@,{c}o entre @code{?} e @code{foo})
-@'e equivalente a @code{describe ("foo")}, onde @code{foo}
-@'e o nome ou parte do nome de uma fun@value{cedilha}@~ao ou t@'opico;
-@code{describe} ent@~ao acha todos os @'itens documentados que possuem a seq@"u@^encia de caracteres
-@code{foo} em seus t@'itulos.
-Se existe mais que um tal item, Maxima solicita ao usu@'ario selecionar
-um item ou @'itens para mostrar.
+@'{e} equivalente a @code{describe ("foo")}, onde @code{foo}
+@'{e} o nome ou parte do nome de uma fun@,{c}@~{a}o ou t@'{o}pico;
+@code{describe} ent@~{a}o acha todos os @'{i}tens documentados que possuem a seq@"{u}@^{e}ncia de caracteres
+@code{foo} em seus t@'{i}tulos.
+Se existe mais que um tal item, Maxima solicita ao usu@'{a}rio selecionar
+um item ou @'{i}tens para mostrar.
 
 @example
 (%i1) ? integ
@@ -49,80 +49,80 @@ Info from file /use/local/maxima/doc/info/maxima.info:
      integral, [...]
 @end example
 
-Nesse exemplo, @'itens 7 e 8 foram selecionados.
-Todos ou nenhum dos @'itens poderia ter sido selecionados atrav@'es da inser@,{c}@~ao de @code{all} ou @code{none},
+Nesse exemplo, @'{i}tens 7 e 8 foram selecionados.
+Todos ou nenhum dos @'{i}tens poderia ter sido selecionados atrav@'{e}s da inser@,{c}@~{a}o de @code{all} ou @code{none},
 que podem ser abreviados para @code{a} ou @code{n}, respectivamente.
 
-@node Lisp e Maxima, Descartando, Introdu@value{cedilha}@~ao a Ajuda, Ajuda
+@node Lisp e Maxima, Descartando, Introdu@,{c}@~{a}o a Ajuda, Ajuda
 @section Lisp e Maxima
-Maxima @'e escrito na liguagem de programa@,{c}@~ao Lisp, e @'e f@'acil acessar fun@,{c}@~oes Lisp e vari@'aveis
+Maxima @'{e} escrito na liguagem de programa@,{c}@~{a}o Lisp, e @'{e} f@'{a}cil acessar fun@,{c}@~{o}es Lisp e vari@'{a}veis
 a partir do Maxima e vice-versa.
-S@'imbolos Lisp e Maxima s@~ao disting@"uidos atrav@'es de uma conven@,{c}@~ao de nome.
-Um s@'imbolo Lisp que come@,{c}a com um sinal de d@'olar @code{$} corresponde a
-um s@'imbolo Maxima sem o sinal de d@'olar.
+S@'{i}mbolos Lisp e Maxima s@~{a}o disting@"{u}idos atrav@'{e}s de uma conven@,{c}@~{a}o de nome.
+Um s@'{i}mbolo Lisp que come@,{c}a com um sinal de d@'{o}lar @code{$} corresponde a
+um s@'{i}mbolo Maxima sem o sinal de d@'{o}lar.
 @c NEED TO MENTION THIS OR IS IT JUST CLUTTERING ??
 @c This includes special Maxima variables such as @code{%} and input and output labels,
 @c which appear as @code{$%}, @code{$%i1}, @code{$%o1}, etc., in Lisp.
-Um s@'imbolo Maxima que come@,{c}a com um ponto de interroga@,{c}@~ao @code{?} corresponde a
-um s@'imbolo Lisp sem o ponto de interroga@,{c}@~ao.
-Por exemplo, o s@'imbolo Maxima @code{foo} corresponde ao s@'imbolo Lisp @code{$foo},
-enquanto o s@'imbolo Maxima @code{?foo} corresponde ao s@'imbolo Lisp @code{foo},
-Note que @code{?foo} @'e escrito sem um espa@,{c}o entre @code{?} e @code{foo};
-de outra forma pode ser uma chamada err@^onea para @code{describe ("foo")}.
+Um s@'{i}mbolo Maxima que come@,{c}a com um ponto de interroga@,{c}@~{a}o @code{?} corresponde a
+um s@'{i}mbolo Lisp sem o ponto de interroga@,{c}@~{a}o.
+Por exemplo, o s@'{i}mbolo Maxima @code{foo} corresponde ao s@'{i}mbolo Lisp @code{$foo},
+enquanto o s@'{i}mbolo Maxima @code{?foo} corresponde ao s@'{i}mbolo Lisp @code{foo},
+Note que @code{?foo} @'{e} escrito sem um espa@,{c}o entre @code{?} e @code{foo};
+de outra forma pode ser uma chamada err@^{o}nea para @code{describe ("foo")}.
 
-H@'ifen @code{-}, asterisco @code{*}, ou outro caractere especial em s@'imbolos Lisp
-deve ser precedido por uma barra invertida @code{\} onde ele aparecer no c@'odigo Maxima.
-Por exemplo, o identificador Lisp @code{*foo-bar*} @'e escrito @code{?\*foo\-bar\*} no Maxima.
+H@'{i}fen @code{-}, asterisco @code{*}, ou outro caractere especial em s@'{i}mbolos Lisp
+deve ser precedido por uma barra invertida @code{\} onde ele aparecer no c@'{o}digo Maxima.
+Por exemplo, o identificador Lisp @code{*foo-bar*} @'{e} escrito @code{?\*foo\-bar\*} no Maxima.
 
-C@'odigo Lisp pode ser executado dentro de uma sess@~ao Maxima.
+C@'{o}digo Lisp pode ser executado dentro de uma sess@~{a}o Maxima.
 Uma linha simples de Lisp (contendo uma ou mais formas) pode ser executada
-atrav@'es do comando especial @code{:lisp}. Por exemplo,
+atrav@'{e}s do comando especial @code{:lisp}. Por exemplo,
 
 @example
 (%i1) :lisp (foo $x $y)
 @end example
 
 @noindent
-chama a fun@,{c}@~ao Lisp @code{foo} com vari@'aveis Maxima @code{x} e @code{y} como argumentos.
-A constu@,{c}@~ao @code{:lisp} pode aparecer na linha de comando interativa
-ou em um arquivo processado por @code{batch} ou @code{demo}, mas n@~ao em um arquivo processado por
+chama a fun@,{c}@~{a}o Lisp @code{foo} com vari@'{a}veis Maxima @code{x} e @code{y} como argumentos.
+A constu@,{c}@~{a}o @code{:lisp} pode aparecer na linha de comando interativa
+ou em um arquivo processado por @code{batch} ou @code{demo}, mas n@~{a}o em um arquivo processado por
 @code{load}, @code{batchload}, @code{translate_file}, ou @code{compile_file}.
 
-A fun@,{c}@~ao @code{to_lisp()} abre uma sess@~ao interativa Lisp.
-Digitando @code{(to-maxima)} fecha a sess@~ao Lisp e retorna para o Maxima.
+A fun@,{c}@~{a}o @code{to_lisp()} abre uma sess@~{a}o interativa Lisp.
+Digitando @code{(to-maxima)} fecha a sess@~{a}o Lisp e retorna para o Maxima.
 @c I DON'T EVEN WANT TO MENTION USING CTRL-C TO OPEN A LISP SESSION.
 @c (1) IT TAKES EXTRA SET UP TO GET STARTED NAMELY :lisp (setq *debugger-hook* nil)
 @c (2) IT GETS SCREWED UP EASILY -- TYPE SOMETHING WRONG AND YOU CAN'T GET BACK TO MAXIMA
 @c (3) IT DOESN'T OFFER FUNCTIONALITY NOT PRESENT IN THE to_lisp() SESSION
 
-Fun@,{c}@~oes Lisp e vari@'aveis que s@~ao para serem vis@'iveis no Maxima como
-fun@,{c}@~oes e vari@'aveis com nomes comuns (sem pontua@,{c}@~ao especial)
-devem ter nomes Lisp come@,{c}ando com o sinal de d@'olar @code{$}.
+Fun@,{c}@~{o}es Lisp e vari@'{a}veis que s@~{a}o para serem vis@'{i}veis no Maxima como
+fun@,{c}@~{o}es e vari@'{a}veis com nomes comuns (sem pontua@,{c}@~{a}o especial)
+devem ter nomes Lisp come@,{c}ando com o sinal de d@'{o}lar @code{$}.
 
-Maxima @'e sens@'ivel @`a caixa, distingue entre letras em caixa alta (mai@'usculas) e letras em caixa baixa (min@'usculas)
-em identificadores, enquanto Lisp n@~ao @'e sens@'ivel @`a caixa.
-Existem algumas regras governando a tradu@,{c}@~ao de nomes entre o Lisp e o Maxima.
+Maxima @'{e} sens@'{i}vel @`a caixa, distingue entre letras em caixa alta (mai@'{u}sculas) e letras em caixa baixa (min@'{u}sculas)
+em identificadores, enquanto Lisp n@~{a}o @'{e} sens@'{i}vel @`a caixa.
+Existem algumas regras governando a tradu@,{c}@~{a}o de nomes entre o Lisp e o Maxima.
 
 @enumerate
 @item
-Um identificador Lisp n@~ao contido entre barras verticais corresponde a um identificador Maxima
+Um identificador Lisp n@~{a}o contido entre barras verticais corresponde a um identificador Maxima
 em caixa baixa.
-Se o identificador Lisp estiver em caixa alta, caixa baixa, ou caixa mista, @'e ignorado.
+Se o identificador Lisp estiver em caixa alta, caixa baixa, ou caixa mista, @'{e} ignorado.
 E.g., Lisp @code{$foo}, @code{$FOO}, e @code{$Foo} todos correspondem a Maxima @code{foo}.
 @item
-Um identificador Lisp que est@'a todo em caixa alta ou todo em caixa baixa
+Um identificador Lisp que est@'{a} todo em caixa alta ou todo em caixa baixa
 e contido em barras verticais corresponde a um identificador Maxima com caixa invertida.
-Isto @'e, caixa alta @'e alterada para caixa baixa e caixa baixa para caixa alta.
+Isto @'{e}, caixa alta @'{e} alterada para caixa baixa e caixa baixa para caixa alta.
 E.g., Lisp @code{|$FOO|} e @code{|$foo|}
 corresponde a Maxima @code{foo} e @code{FOO}, respectivamente.
 @item
-Um identificador Lisp que @'e misto de caixa alta e caixa baixa
+Um identificador Lisp que @'{e} misto de caixa alta e caixa baixa
 e contido entre barras verticais corresponde a um identificador Maxima com o mesma caixa.
 E.g., Lisp @code{|$Foo|} corresponde a Maxima @code{Foo}.
 @end enumerate
 
-A macro Lisp @code{#$} permite o uso de express@~oes Maxima em c@'odigo Lisp.
-@code{#$@var{expr}$} expande para uma express@~ao Lisp equivalente @`a express@~ao Maxima @var{expr}.
+A macro Lisp @code{#$} permite o uso de express@~{o}es Maxima em c@'{o}digo Lisp.
+@code{#$@var{expr}$} expande para uma express@~{a}o Lisp equivalente @`a express@~{a}o Maxima @var{expr}.
 
 @example
 (msetq $foo #$[x, y]$)
@@ -136,7 +136,7 @@ Isso tem o mesmo efeito que digitar
 @end example
 
 @noindent
-A fun@,{c}@~ao Lisp @code{displa} imprime uma express@~ao em formato Maxima.
+A fun@,{c}@~{a}o Lisp @code{displa} imprime uma express@~{a}o em formato Maxima.
 
 @example
 (%i1) :lisp #$[x, y, z]$ 
@@ -146,8 +146,8 @@ A fun@,{c}@~ao Lisp @code{displa} imprime uma express@~ao em formato Maxima.
 NIL
 @end example
 
-Fun@,{c}@~oes definidas em Maxima n@~ao s@~ao fun@,{c}@~oes comuns em Lisp.
-A fun@,{c}@~ao Lisp @code{mfuncall} chama uma fun@,{c}@~ao Maxima.
+Fun@,{c}@~{o}es definidas em Maxima n@~{a}o s@~{a}o fun@,{c}@~{o}es comuns em Lisp.
+A fun@,{c}@~{a}o Lisp @code{mfuncall} chama uma fun@,{c}@~{a}o Maxima.
 Por exemplo:
 
 @example
@@ -156,7 +156,7 @@ Por exemplo:
 ((MTIMES SIMP) A B)
 @end example
 
-Algumas fun@,{c}@~oes Lisp possuem o mesmo nome que no pacote Maxima, a saber as seguintes.
+Algumas fun@,{c}@~{o}es Lisp possuem o mesmo nome que no pacote Maxima, a saber as seguintes.
 
 @code{complement},
 @code{continue},
@@ -181,34 +181,34 @@ Algumas fun@,{c}@~oes Lisp possuem o mesmo nome que no pacote Maxima, a saber as
 e @code{gcd}.
 
 
-@node Descartando, Documenta@value{cedilha}@~ao, Lisp e Maxima, Ajuda
+@node Descartando, Documenta@,{c}@~{a}o, Lisp e Maxima, Ajuda
 @section Descartando
-Computa@,{c}@~ao simb@'olica tende a criar um bom volume
-de arquivos tempor@'arios, e o efetivo manuseio disso pode ser crucial para sucesso
+Computa@,{c}@~{a}o simb@'{o}lica tende a criar um bom volume
+de arquivos tempor@'{a}rios, e o efetivo manuseio disso pode ser crucial para sucesso
 completo de alguns programas.
 
 @c HOW MUCH OF THE FOLLOWING STILL HOLDS ??
 @c WHAT ABOUT GC IN GCL ON MS WINDOWS ??
 @c SHOULD WE SAY SOMETHING ABOUT GC FOR OTHER LISPS ??
-Sob GCL, nos sistemas UNIX onde a chamada de sistema mprotect ( controle de acessso autorizado a uma regi@~ao de mem@'oria) est@'a dispon@'ivel
-(incluindo SUN OS 4.0 e algumas variantes de BSD) uma organiza@,{c}@~ao de arquivos tempor@'arios estratificada
-est@'a dispon@'ivel.   Isso limita a organiza@,{c}@~ao para p@'aginas que tenham sido recentemente
-escritas.    Veja a documenta@,{c}@~ao da GCL sob ALLOCATE e GBC.   No
-ambiente Lisp fazendo (setq si::*notify-gbc* t) ir@'a ajudar voc@^e a determinar quais
-@'areas podem precisar de mais espa@value{cedilha}o.
+Sob GCL, nos sistemas UNIX onde a chamada de sistema mprotect ( controle de acessso autorizado a uma regi@~{a}o de mem@'{o}ria) est@'{a} dispon@'{i}vel
+(incluindo SUN OS 4.0 e algumas variantes de BSD) uma organiza@,{c}@~{a}o de arquivos tempor@'{a}rios estratificada
+est@'{a} dispon@'{i}vel.   Isso limita a organiza@,{c}@~{a}o para p@'{a}ginas que tenham sido recentemente
+escritas.    Veja a documenta@,{c}@~{a}o da GCL sob ALLOCATE e GBC.   No
+ambiente Lisp fazendo (setq si::*notify-gbc* t) ir@'{a} ajudar voc@^{e} a determinar quais
+@'{a}reas podem precisar de mais espa@,{c}o.
 
-@node Documenta@value{cedilha}@~ao, Defini@value{cedilha}@~oes para Ajuda, Descartando, Ajuda
-@section Documenta@value{cedilha}@~ao
+@node Documenta@,{c}@~{a}o, Defini@,{c}@~{o}es para Ajuda, Descartando, Ajuda
+@section Documenta@,{c}@~{a}o
 
 @c SHOULD TALK ABOUT OTHER FORMS OF DOCUMENTATION ASIDE FROM ON-LINE MANUAL.
 
-O manual on-line de usu@'ario do Maxima pode ser visto em diferentes formas.
-A partir da linha de comando interativa do Maxima, o manual de usu@'ario
-@'e visto em texto plano atrav@'es do comando @code{?} (i.e., a fun@value{cedilha}@~ao @code{describe} ).
-O manual de usu@'ario @'e visto como hipertexto @code{info} atrav@'es do programa visualizador @code{info}
-e como uma web page atrav@'es de qualquer navegador web comum.
+O manual on-line de usu@'{a}rio do Maxima pode ser visto em diferentes formas.
+A partir da linha de comando interativa do Maxima, o manual de usu@'{a}rio
+@'{e} visto em texto plano atrav@'{e}s do comando @code{?} (i.e., a fun@,{c}@~{a}o @code{describe} ).
+O manual de usu@'{a}rio @'{e} visto como hipertexto @code{info} atrav@'{e}s do programa visualizador @code{info}
+e como uma web page atrav@'{e}s de qualquer navegador web comum.
 
-@code{example} mostra exemplos de muitas fun@,{c}@~oes do Maxima.
+@code{example} mostra exemplos de muitas fun@,{c}@~{o}es do Maxima.
 Por exemplo,
 
 @example
@@ -230,26 +230,26 @@ retorna
 (%o5)                           0
 @end example
 
-e sa@'ida adicional.
+e sa@'{i}da adicional.
 
-@node Defini@value{cedilha}@~oes para Ajuda,  , Documenta@value{cedilha}@~ao, Ajuda
-@section Defini@value{cedilha}@~oes para Ajuda
+@node Defini@,{c}@~{o}es para Ajuda,  , Documenta@,{c}@~{a}o, Ajuda
+@section Defini@,{c}@~{o}es para Ajuda
 
-@deffn {Fun@,{c}@~ao} demo (@var{nomearquivo})
-Avalia express@~oes Maxima em @var{nomearquivo} e mostra os resultados.
-@code{demo} faz uma pausa ap@'os avaliar cada express@~ao
-e continua ap@'os a conclus@~ao com um enter das entradas de usu@'ario.
-(Se executando em Xmaxima, @code{demo} pode precisar ver um ponto e v@'irgula @code{;}
+@deffn {Fun@,{c}@~{a}o} demo (@var{nomearquivo})
+Avalia express@~{o}es Maxima em @var{nomearquivo} e mostra os resultados.
+@code{demo} faz uma pausa ap@'{o}s avaliar cada express@~{a}o
+e continua ap@'{o}s a conclus@~{a}o com um enter das entradas de usu@'{a}rio.
+(Se executando em Xmaxima, @code{demo} pode precisar ver um ponto e v@'{i}rgula @code{;}
 seguido por um enter.)
 
-@code{demo} procura na lista de diret@'orios
+@code{demo} procura na lista de diret@'{o}rios
 @code{file_search_demo} para achar @code{nomearquivo}.
 Se o arquivo tiver o sufixo @code{dem},
 o sufixo pode ser omitido.
-Veja tamb@'em @code{file_search}.
+Veja tamb@'{e}m @code{file_search}.
 
 @code{demo} avalia seus argumento.
-@code{demo} retorna o nome do arquivo de demonstra@,{c}@~ao.
+@code{demo} retorna o nome do arquivo de demonstra@,{c}@~{a}o.
 
 Exemplo:
 
@@ -325,25 +325,25 @@ _
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} describe (@var{string})
-@deffnx {Fun@,{c}@~ao} describe (@var{string}, exact)
-@code{describe(@var{string})} encontra todos os itens documentados que contiverem @var{string} em seus t@'itulos.
-Se existe mais de um de tal item, Maxima solicita ao usu@'ario selecionar
-um item ou @'itens para mostrar.
+@deffn {Fun@,{c}@~{a}o} describe (@var{string})
+@deffnx {Fun@,{c}@~{a}o} describe (@var{string}, exact)
+@code{describe(@var{string})} encontra todos os itens documentados que contiverem @var{string} em seus t@'{i}tulos.
+Se existe mais de um de tal item, Maxima solicita ao usu@'{a}rio selecionar
+um item ou @'{i}tens para mostrar.
 
-@code{describe(@var{string}, exact)} encontra um item com t@'itulo igual
+@code{describe(@var{string}, exact)} encontra um item com t@'{i}tulo igual
 (case-insensitive)
 a @var{string}, se existir tal item.
 
 Na linha de comando interativa,
 @code{? foo} (com um espa@,{c}o entre @code{?} e @code{foo})
-@'e equivalente a @code{describe("foo")}.
-e @code{?! foo} @'e equivalente a @code{describe("foo", exact)}.
+@'{e} equivalente a @code{describe("foo")}.
+e @code{?! foo} @'{e} equivalente a @code{describe("foo", exact)}.
 
-@code{describe("")} retorna uma lista de todos os t@'opicos documentados no manual on-line.
+@code{describe("")} retorna uma lista de todos os t@'{o}picos documentados no manual on-line.
 
-@code{describe} n@~ao avalia seu argumento.
-@code{describe} retorna @code{true} se alguma documenta@,{c}@~ao for encontrada, de outra forma retorna @code{false}.
+@code{describe} n@~{a}o avalia seu argumento.
+@code{describe} retorna @code{true} se alguma documenta@,{c}@~{a}o for encontrada, de outra forma retorna @code{false}.
 
 Exemplo:
 
@@ -370,28 +370,28 @@ Info from file /use/local/maxima/doc/info/maxima.info:
      integral, [...]
 @end example
 
-Nesse , @'itens 7 e 8 foram selecionados.
-Todos ou nenhum dos @'itens poderia ter sido selecionado atrav@'es da inser@,{c}@~ao de @code{all} ou @code{none},
+Nesse , @'{i}tens 7 e 8 foram selecionados.
+Todos ou nenhum dos @'{i}tens poderia ter sido selecionado atrav@'{e}s da inser@,{c}@~{a}o de @code{all} ou @code{none},
 que podem ser abreviado para @code{a} ou para @code{n}, respectivamente.
 
-@pxref{Introdu@value{cedilha}@~ao a Ajuda}
+@pxref{Introdu@,{c}@~{a}o a Ajuda}
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} example (@var{t@'opico})
-@deffnx {Fun@,{c}@~ao} example ()
-@code{example (@var{topic})} mostra alguns exemplos de @var{t@'opico},
-que @'e um s@'imbolo (n@~ao uma seq@"u@^encia de caracteres).
-A maioria dos t@'opicos s@~ao nomes de fun@,{c}@~ao.
-@code{example ()} retorna a lista de todos os t@'opicos reconhecidos.
+@deffn {Fun@,{c}@~{a}o} example (@var{t@'{o}pico})
+@deffnx {Fun@,{c}@~{a}o} example ()
+@code{example (@var{topic})} mostra alguns exemplos de @var{t@'{o}pico},
+que @'{e} um s@'{i}mbolo (n@~{a}o uma seq@"{u}@^{e}ncia de caracteres).
+A maioria dos t@'{o}picos s@~{a}o nomes de fun@,{c}@~{a}o.
+@code{example ()} retorna a lista de todos os t@'{o}picos reconhecidos.
 
-O nome do arquivo contendo os exemplos @'e dado pela
-vari@'avel global @code{manual_demo}, cujo valor padr@~ao @'e @code{"manual.demo"}.
+O nome do arquivo contendo os exemplos @'{e} dado pela
+vari@'{a}vel global @code{manual_demo}, cujo valor padr@~{a}o @'{e} @code{"manual.demo"}.
 
-@code{example} n@~ao avalia seu argumento.
+@code{example} n@~{a}o avalia seu argumento.
 @code{example} retorna @code{done}
-a menos que ocorra um erro ou n@~ao exista o argumento fornecido pelo usu@'ario, nesse caso @code{example}
-retorna uma lista de todos os t@'opicos reconhecidos.
+a menos que ocorra um erro ou n@~{a}o exista o argumento fornecido pelo usu@'{a}rio, nesse caso @code{example}
+retorna uma lista de todos os t@'{o}picos reconhecidos.
 
 Exemplos:
 

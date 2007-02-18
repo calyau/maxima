@@ -1,29 +1,29 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /interpol.texi/1.1/Mon Feb 27 22:09:17 2006//
 @menu
-* Introdu@value{cedilha}@~ao a interpol::
-* Defini@value{cedilha}@~oes para interpol::
+* Introdu@,{c}@~{a}o a interpol::
+* Defini@,{c}@~{o}es para interpol::
 @end menu
 
-@node Introdu@value{cedilha}@~ao a interpol, Defini@value{cedilha}@~oes para interpol, interpol, interpol
-@section Introdu@value{cedilha}@~ao a interpol
+@node Introdu@,{c}@~{a}o a interpol, Defini@,{c}@~{o}es para interpol, interpol, interpol
+@section Introdu@,{c}@~{a}o a interpol
 
-Pacote @code{interpol} define os m@'etodos Lagrangiano, linear e o de
-splines c@'ubicos para interpola@,{c}@~ao polinomial.
-
-
-
-Coment@'arios, corre@,{c}@~oes e sugest@~oes, por favor contacte-me em @var{'mario AT edu DOT xunta DOT es'}.
+Pacote @code{interpol} define os m@'{e}todos Lagrangiano, linear e o de
+splines c@'{u}bicos para interpola@,{c}@~{a}o polinomial.
 
 
 
-@node Defini@value{cedilha}@~oes para interpol,  , Introdu@value{cedilha}@~ao a interpol, interpol
-@section Defini@value{cedilha}@~oes para interpol
+Coment@'{a}rios, corre@,{c}@~{o}es e sugest@~{o}es, por favor contacte-me em @var{'mario AT edu DOT xunta DOT es'}.
 
 
-@deffn {Fun@,{c}@~ao} lagrange (@var{pontos})
-@deffnx {Fun@,{c}@~ao} lagrange (@var{pontos}, @var{op@,{c}@~ao})
-Calcula a interpola@,{c}@~ao polinomial atrav@'es do m@'etodo Lagrangiano. O argumento @var{pontos} deve ser um dos seguintes:
+
+@node Defini@,{c}@~{o}es para interpol,  , Introdu@,{c}@~{a}o a interpol, interpol
+@section Defini@,{c}@~{o}es para interpol
+
+
+@deffn {Fun@,{c}@~{a}o} lagrange (@var{pontos})
+@deffnx {Fun@,{c}@~{a}o} lagrange (@var{pontos}, @var{op@,{c}@~{a}o})
+Calcula a interpola@,{c}@~{a}o polinomial atrav@'{e}s do m@'{e}todo Lagrangiano. O argumento @var{pontos} deve ser um dos seguintes:
 
 @itemize @bullet
 @item
@@ -31,12 +31,12 @@ uma matriz de duas colunas, @code{p:matrix([2,4],[5,6],[9,3])},
 @item
 uma lista de pares, @code{p: [[2,4],[5,6],[9,3]]},
 @item
-uma lista de n@'umeros, @code{p: [4,6,3]}, e nesse caso as abcissas ir@~ao ser atribu@'idas automaticamente aos valores 1, 2, 3, etc.
+uma lista de n@'{u}meros, @code{p: [4,6,3]}, e nesse caso as abcissas ir@~{a}o ser atribu@'{i}das automaticamente aos valores 1, 2, 3, etc.
 @end itemize
 
-Nos dois primeiros casos os pares s@~ao ordenados em rela@,{c}@~ao @`a primeira coordenada antes de fazer os c@'alculos.
+Nos dois primeiros casos os pares s@~{a}o ordenados em rela@,{c}@~{a}o @`a primeira coordenada antes de fazer os c@'{a}lculos.
 
-Com o argumento @var{op@,{c}@~ao} @'e poss@'ivel escolher o nome da vari@'avel independente, o qual @'e @code{'x} por padr@~ao; para definir qualquer outra, z por exemplo, escreva @code{varname='z}. 
+Com o argumento @var{op@,{c}@~{a}o} @'{e} poss@'{i}vel escolher o nome da vari@'{a}vel independente, o qual @'{e} @code{'x} por padr@~{a}o; para definir qualquer outra, z por exemplo, escreva @code{varname='z}. 
 
 Exemplos:
 
@@ -80,14 +80,14 @@ Exemplos:
 @end deffn
 
 
-@deffn {Fun@,{c}@~ao} charfun2 (@var{x}, @var{a}, @var{b})
-Retorna @code{true}, i. e., verdadeiro se o n@'umero @var{x} pertence ao intervalo @math{[a, b)}, e @code{false}, i. e., falsono caso contr@'ario.
+@deffn {Fun@,{c}@~{a}o} charfun2 (@var{x}, @var{a}, @var{b})
+Retorna @code{true}, i. e., verdadeiro se o n@'{u}mero @var{x} pertence ao intervalo @math{[a, b)}, e @code{false}, i. e., falsono caso contr@'{a}rio.
 @end deffn
 
 
-@deffn {Fun@,{c}@~ao} linearinterpol (@var{pontos})
-@deffnx {Fun@,{c}@~ao} linearinterpol (@var{pontos}, @var{op@,{c}@~ao})
-Calcula a interpola@,{c}@~ao polinomial atrav@'es do m@'etodo linear. O argumento @var{pontos} deve ser um dos seguintes:
+@deffn {Fun@,{c}@~{a}o} linearinterpol (@var{pontos})
+@deffnx {Fun@,{c}@~{a}o} linearinterpol (@var{pontos}, @var{op@,{c}@~{a}o})
+Calcula a interpola@,{c}@~{a}o polinomial atrav@'{e}s do m@'{e}todo linear. O argumento @var{pontos} deve ser um dos seguintes:
 
 @itemize @bullet
 @item
@@ -95,12 +95,12 @@ uma matriz de duas colunas, @code{p:matrix([2,4],[5,6],[9,3])},
 @item
 uma lista de pares, @code{p: [[2,4],[5,6],[9,3]]},
 @item
-uma lista de n@'umeros, @code{p: [4,6,3]}, e nesse caso as abcissas ir@~ao ser atribu@'idas automaticamente aos valores 1, 2, 3, etc.
+uma lista de n@'{u}meros, @code{p: [4,6,3]}, e nesse caso as abcissas ir@~{a}o ser atribu@'{i}das automaticamente aos valores 1, 2, 3, etc.
 @end itemize
 
-Nos dois primeiros casos os pares s@~ao ordenados em rela@,{c}@~ao @`a primeira coordenada antes de fazer os c@'alculos.
+Nos dois primeiros casos os pares s@~{a}o ordenados em rela@,{c}@~{a}o @`a primeira coordenada antes de fazer os c@'{a}lculos.
 
-Com o argumento @var{op@,{c}@~ao} @'e poss@'ivel escolher o nome da vari@'avel independente, o qual @'e @code{'x} por padr@~ao; para definir qualquer outra, z por exemplo, escreva @code{varname='z}. 
+Com o argumento @var{op@,{c}@~{a}o} @'{e} poss@'{i}vel escolher o nome da vari@'{a}vel independente, o qual @'{e} @code{'x} por padr@~{a}o; para definir qualquer outra, z por exemplo, escreva @code{varname='z}. 
 
 Examples:
 @example
@@ -139,9 +139,9 @@ Examples:
 
 
 
-@deffn {Fun@,{c}@~ao} cspline (@var{pontos})
-@deffnx {Fun@,{c}@~ao} cspline (@var{pontos}, @var{op@,{c}@~ao1}, @var{op@,{c}@~ao2}, ...)
-Calcula a interpola@,{c}@~ao polnomial pelo m@'etodo de splines ( polin@^omios de ordem k que interpolam os dados e t@^em k-1 derivadas cont@'inuas em todo o intervalo ) c@'ubicos. O argumento @var{pontos} deve ser um dos
+@deffn {Fun@,{c}@~{a}o} cspline (@var{pontos})
+@deffnx {Fun@,{c}@~{a}o} cspline (@var{pontos}, @var{op@,{c}@~{a}o1}, @var{op@,{c}@~{a}o2}, ...)
+Calcula a interpola@,{c}@~{a}o polnomial pelo m@'{e}todo de splines ( polin@^{o}mios de ordem k que interpolam os dados e t@^{e}m k-1 derivadas cont@'{i}nuas em todo o intervalo ) c@'{u}bicos. O argumento @var{pontos} deve ser um dos
 seguintes:
 
 @itemize @bullet
@@ -150,25 +150,25 @@ uma matriz de duas colunas, @code{p:matrix([2,4],[5,6],[9,3])},
 @item
 uma lista de pares, @code{p: [[2,4],[5,6],[9,3]]},
 @item
-uma lista de n@'umeros, @code{p: [4,6,3]}, e nesse caso as abcissas ir@~ao ser atribu@'idas automaticamente aos valores 1, 2, 3, etc.
+uma lista de n@'{u}meros, @code{p: [4,6,3]}, e nesse caso as abcissas ir@~{a}o ser atribu@'{i}das automaticamente aos valores 1, 2, 3, etc.
 @end itemize
 
-Nos dois primeiros casos os pares s@~ao ordenados em rela@,{c}@~ao @`a primeira coordenada antes de fazer os c@'alculos.
+Nos dois primeiros casos os pares s@~{a}o ordenados em rela@,{c}@~{a}o @`a primeira coordenada antes de fazer os c@'{a}lculos.
 
-Existem tr@^es op@,{c}@~oes para ajustar necessidades espec@'ificas:
+Existem tr@^{e}s op@,{c}@~{o}es para ajustar necessidades espec@'{i}ficas:
 @itemize @bullet
 @item
-@code{'d1}, o padr@~ao @'e @code{'unknown}, @'e a primeira derivada em @math{x_1}; se essa primeira derivada for desconhecida, @code{'unknown}, a segunda derivada em @math{x_1} @'e igualada a 0 (o spline c@'ubico natural); se
+@code{'d1}, o padr@~{a}o @'{e} @code{'unknown}, @'{e} a primeira derivada em @math{x_1}; se essa primeira derivada for desconhecida, @code{'unknown}, a segunda derivada em @math{x_1} @'{e} igualada a 0 (o spline c@'{u}bico natural); se
 essa primeira
-derivada for igual a um n@'umero, a segunda derivada @'e calculada baseando-se nesse n@'umero.
+derivada for igual a um n@'{u}mero, a segunda derivada @'{e} calculada baseando-se nesse n@'{u}mero.
 
 @item
-@code{'dn}, o padr@~ao @'e @code{'unknown}, @'e a primeira derivada em @math{x_n}; se essa primeira derivada for desconhecida, @code{'unknown}, a segunda derivada em @math{x_n} @'e igualada a 0 (o spline c@'ubico natural); se
+@code{'dn}, o padr@~{a}o @'{e} @code{'unknown}, @'{e} a primeira derivada em @math{x_n}; se essa primeira derivada for desconhecida, @code{'unknown}, a segunda derivada em @math{x_n} @'{e} igualada a 0 (o spline c@'{u}bico natural); se
 essa primeira
-derivada for igual a um n@'umero, a segunda derivada @'e calculada baseando-se nesse n@'umero.
+derivada for igual a um n@'{u}mero, a segunda derivada @'{e} calculada baseando-se nesse n@'{u}mero.
 
 @item
-@code{'nome_var}, o padr@~ao @'e @code{'x}, @'e o nome da vari@'avel independente.
+@code{'nome_var}, o padr@~{a}o @'{e} @code{'x}, @'{e} o nome da vari@'{a}vel independente.
 @end itemize
 
 Exemplos:

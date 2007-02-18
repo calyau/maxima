@@ -1,43 +1,43 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /augmented_lagrangian.texi/1.2/Wed Sep 27 07:36:26 2006//
 @menu
-* Defini@value{cedilha}@~oes para augmented_lagrangian::
+* Defini@,{c}@~{o}es para augmented_lagrangian::
 @end menu
 
-@node Defini@value{cedilha}@~oes para augmented_lagrangian,  , augmented_lagrangian, augmented_lagrangian
-@section Defini@value{cedilha}@~oes para augmented_lagrangian
+@node Defini@,{c}@~{o}es para augmented_lagrangian,  , augmented_lagrangian, augmented_lagrangian
+@section Defini@,{c}@~{o}es para augmented_lagrangian
 
-@deffn {Fun@,{c}@~ao} augmented_lagrangian_method (@var{FOM}, @var{xx}, @var{C}, @var{yy})
-@deffnx {Fun@,{c}@~ao} augmented_lagrangian_method (@var{FOM}, @var{xx}, @var{C}, @var{yy}, args_opcionais)
+@deffn {Fun@,{c}@~{a}o} augmented_lagrangian_method (@var{FOM}, @var{xx}, @var{C}, @var{yy})
+@deffnx {Fun@,{c}@~{a}o} augmented_lagrangian_method (@var{FOM}, @var{xx}, @var{C}, @var{yy}, args_opcionais)
  
-Retorna um m@'inimo aproximado da express@~ao @var{FOM}
-com rela@,{c}@~ao @`as vari@'aveis @var{xx},
+Retorna um m@'{i}nimo aproximado da express@~{a}o @var{FOM}
+com rela@,{c}@~{a}o @`as vari@'{a}veis @var{xx},
 mantendo restrito o valor de @var{C} a zero.
-@var{yy} @'e uma lista de suposi@,{c}@~oes iniciais para @var{xx}.
-O m@'etodo utilizado @'e o m@'etodo do Lagrangiano aumentado (veja refer@^encias [1] e [2]).
+@var{yy} @'{e} uma lista de suposi@,{c}@~{o}es iniciais para @var{xx}.
+O m@'{e}todo utilizado @'{e} o m@'{e}todo do Lagrangiano aumentado (veja refer@^{e}ncias [1] e [2]).
 
 @code{args_opcionais} representam argumentos adicionais,
-especificados como @code{@var{s@'imbolo} = @var{valor}}.
-Os argumentos opcionais que podem ser colocados no lugar de @var{s@'imbolo}:
+especificados como @code{@var{s@'{i}mbolo} = @var{valor}}.
+Os argumentos opcionais que podem ser colocados no lugar de @var{s@'{i}mbolo}:
  
 @table @code
 @item niter
-N@'umero de itera@,{c}@~oes do algor@'itmo do Langrangiano aumentado
+N@'{u}mero de itera@,{c}@~{o}es do algor@'{i}tmo do Langrangiano aumentado
 @item lbfgs_tolerance
-Toler@^ancia forneceida a LBFGS (Limited-memory, Broyden, Fletcher, Goldfarb, Shanno)
+Toler@^{a}ncia forneceida a LBFGS (Limited-memory, Broyden, Fletcher, Goldfarb, Shanno)
 @item iprint
-par@^ametro IPRINT (uma lista de dois inteiros que controlam o n@'ivel de informa@,{c}@~ao) fornecido a LBFGS
+par@^{a}metro IPRINT (uma lista de dois inteiros que controlam o n@'{i}vel de informa@,{c}@~{a}o) fornecido a LBFGS
 @item %lambda
-valor inicial de @code{%lambda} a ser usado durante o c@'alculo do Lagrangiano aumentado
+valor inicial de @code{%lambda} a ser usado durante o c@'{a}lculo do Lagrangiano aumentado
 @end table
 
-Essa implementa@,{c}@~ao minimiza o Lagrangiano aumentado pela
-pela aplica@,{c}@~ao do algor@'itmo de mem@'oria limitada BFGS (LBFGS),
-que @'e um algor@'itmo quasi-Newton.
+Essa implementa@,{c}@~{a}o minimiza o Lagrangiano aumentado pela
+pela aplica@,{c}@~{a}o do algor@'{i}tmo de mem@'{o}ria limitada BFGS (LBFGS),
+que @'{e} um algor@'{i}tmo quasi-Newton.
 
-@code{load(augmented_lagrangian)} chama essa fun@,{c}@~ao.
+@code{load(augmented_lagrangian)} chama essa fun@,{c}@~{a}o.
  
-Veja tamb@'em @code{lbfgs}.
+Veja tamb@'{e}m @code{lbfgs}.
 
 References:
 

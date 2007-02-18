@@ -1,19 +1,19 @@
 @c @c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /f90.texi/1.1/Mon Feb 27 22:09:17 2006//
 @menu
-* Defini@value{cedilha}@~oes para f90::
+* Defini@,{c}@~{o}es para f90::
 @end menu
 
-@node Defini@value{cedilha}@~oes para f90,  , f90, f90
-@section Defini@value{cedilha}@~oes para f90
+@node Defini@,{c}@~{o}es para f90,  , f90, f90
+@section Defini@,{c}@~{o}es para f90
 
 
-@deffn {Fun@,{c}@~ao} f90 (@var{expr})
-O comando f90 @'e uma atualiza@,{c}@~ao para o comando @code{fortran} original do
-maxima. A diferen@,{c}a prim@'aria @'e o caminho atrav@'es do qual linhas longas s@~ao quebradas.
+@deffn {Fun@,{c}@~{a}o} f90 (@var{expr})
+O comando f90 @'{e} uma atualiza@,{c}@~{a}o para o comando @code{fortran} original do
+maxima. A diferen@,{c}a prim@'{a}ria @'{e} o caminho atrav@'{e}s do qual linhas longas s@~{a}o quebradas.
 
-No exemplo seguinte, observe como o comando @code{fortran} para linhas dentro de s@'imbolos. O comando
-@code{f90} jamais para linha dentro de um s@'imbolo.
+No exemplo seguinte, observe como o comando @code{fortran} para linhas dentro de s@'{i}mbolos. O comando
+@code{f90} jamais para linha dentro de um s@'{i}mbolo.
 
 @example
 (%i1) load("f90")$
@@ -38,10 +38,10 @@ yyy**4+4*xxx*yyy**3+28*yyy**3+6*xxx**2*yyy**2+84*xxx*yyy**2+294* &
 (%o4)                       done
 @end example
 
-A implementa@,{c}@~ao @code{f90} termina como um r@'apido reparo em @code{fortran}. N@~ao @'e
-necess@'ariamente um bom exemplo sobre o qual se deva basear outros tradutores do
-Maxima para outras linguagens de programa@,{c}@~ao.
+A implementa@,{c}@~{a}o @code{f90} termina como um r@'{a}pido reparo em @code{fortran}. N@~{a}o @'{e}
+necess@'{a}riamente um bom exemplo sobre o qual se deva basear outros tradutores do
+Maxima para outras linguagens de programa@,{c}@~{a}o.
 
-Para usar essa fun@,{c}@~ao escreva primeiro @code{load("f90")}.
+Para usar essa fun@,{c}@~{a}o escreva primeiro @code{load("f90")}.
 @end deffn
 

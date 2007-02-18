@@ -1,14 +1,14 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /linearalgebra.texi/1.11/Fri Jan  5 17:01:04 2007//
 @menu
-* Introdu@value{cedilha}@~ao a linearalgebra::
-* Defini@value{cedilha}@~oes para linearalgebra::
+* Introdu@,{c}@~{a}o a linearalgebra::
+* Defini@,{c}@~{o}es para linearalgebra::
 @end menu
 
-@node Introdu@value{cedilha}@~ao a linearalgebra, Defini@value{cedilha}@~oes para linearalgebra, linearalgebra, linearalgebra
-@section Introdu@value{cedilha}@~ao a linearalgebra
+@node Introdu@,{c}@~{a}o a linearalgebra, Defini@,{c}@~{o}es para linearalgebra, linearalgebra, linearalgebra
+@section Introdu@,{c}@~{a}o a linearalgebra
 
-@code{linearalgebra} @'e uma cole@,{c}@~ao de fun@,{c}@~oes para @'algebra linear.
+@code{linearalgebra} @'{e} uma cole@,{c}@~{a}o de fun@,{c}@~{o}es para @'{a}lgebra linear.
 
 Exemplo:
 
@@ -123,15 +123,15 @@ Warning - you are redefining the Maxima function rank
                            [ 3 ]  [ - 2 ]
 @end example
 
-@node Defini@value{cedilha}@~oes para linearalgebra,  , Introdu@value{cedilha}@~ao a linearalgebra, linearalgebra
-@section Defini@value{cedilha}@~oes para linearalgebra
+@node Defini@,{c}@~{o}es para linearalgebra,  , Introdu@,{c}@~{a}o a linearalgebra, linearalgebra
+@section Defini@,{c}@~{o}es para linearalgebra
 
-@deffn {Fun@,{c}@~ao} addmatrices (@var{f}, @var{M_1}, ..., @var{M_n})
+@deffn {Fun@,{c}@~{a}o} addmatrices (@var{f}, @var{M_1}, ..., @var{M_n})
 
 @c REWORD -- THE RESULT IS NOT GENERALLY THE SUM OF M_1, ..., M_N
-Usando a fun@,{c}@~ao @var{f} como a fun@,{c}@~ao de adi@,{c}@~ao, retorne a adi@,{c}@~ao das
-matrizes @var{M_1}, ..., @var{M_n}. A fun@,{c}@~ao @var{f} deve aceitar qualquer n@'umero de
-argumentos (uma fun@,{c}@~ao en@'aria do Maxima).
+Usando a fun@,{c}@~{a}o @var{f} como a fun@,{c}@~{a}o de adi@,{c}@~{a}o, retorne a adi@,{c}@~{a}o das
+matrizes @var{M_1}, ..., @var{M_n}. A fun@,{c}@~{a}o @var{f} deve aceitar qualquer n@'{u}mero de
+argumentos (uma fun@,{c}@~{a}o en@'{a}ria do Maxima).
 
 Exemplos:
 
@@ -152,41 +152,41 @@ Exemplos:
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} blockmatrixp (@var{M})
+@deffn {Fun@,{c}@~{a}o} blockmatrixp (@var{M})
 
 Retorna @code{true} se e somente se @var{M} for uma matriz e toda entrada de
-@var{M} tamb@'em for uma matriz.
+@var{M} tamb@'{e}m for uma matriz.
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} columnop (@var{M}, @var{i}, @var{j}, @var{theta})
+@deffn {Fun@,{c}@~{a}o} columnop (@var{M}, @var{i}, @var{j}, @var{theta})
 
 Se @var{M} for uma matriz, retorna a matriz que resulta de fazer a  
-opera@,{c}@~ao de coluna @code{C_i <- C_i - @var{theta} * C_j}. Se @var{M} n@~ao tiver uma linha
+opera@,{c}@~{a}o de coluna @code{C_i <- C_i - @var{theta} * C_j}. Se @var{M} n@~{a}o tiver uma linha
 @var{i} ou @var{j}, emite uma mensagem de erro.
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} columnswap (@var{M}, @var{i}, @var{j})
+@deffn {Fun@,{c}@~{a}o} columnswap (@var{M}, @var{i}, @var{j})
 
-Se @var{M} for uma matriz, troca as colunas @var{i} e @var{j}.  Se @var{M} n@~ao tiver uma coluna
+Se @var{M} for uma matriz, troca as colunas @var{i} e @var{j}.  Se @var{M} n@~{a}o tiver uma coluna
 @var{i} ou @var{j}, emite uma mensagem de erro.
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} columnspace (@var{M})
+@deffn {Fun@,{c}@~{a}o} columnspace (@var{M})
 
 Se @var{M} for uma matriz, retorna @code{span (v_1, ..., v_n)}, onde o conjunto
-@code{@{v_1, ..., v_n@}} @'e uma base para o espa@,{c}o coluna de @var{M}.  A diferen@,{c}a entre o maior elemento e o menor elemento do 
-conjunto vazio @'e @code{@{0@}}. Dessa forma, quando o espa@,{c}o coluna tiver somente 
+@code{@{v_1, ..., v_n@}} @'{e} uma base para o espa@,{c}o coluna de @var{M}.  A diferen@,{c}a entre o maior elemento e o menor elemento do 
+conjunto vazio @'{e} @code{@{0@}}. Dessa forma, quando o espa@,{c}o coluna tiver somente 
 um membro, retorna @code{span ()}.
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} copy (@var{e})
+@deffn {Fun@,{c}@~{a}o} copy (@var{e})
 
-Retorna uma c@'opia da express@~ao @var{e} do Maxima. Embora @var{e} possa ser qualquer
-express@~ao do Maxima, Afun@,{c}@~ao @code{copy} @'e mais @'util quando @var{e} for ou
+Retorna uma c@'{o}pia da express@~{a}o @var{e} do Maxima. Embora @var{e} possa ser qualquer
+express@~{a}o do Maxima, Afun@,{c}@~{a}o @code{copy} @'{e} mais @'{u}til quando @var{e} for ou
 uma lista ou uma matriz; considere:
 @c ===beg===
 load (linearalgebra);
@@ -206,7 +206,7 @@ mm;
 (%i6) mm;
 (%o6) [1,[x,3]]
 @end example
-Vamos tentar a mesma experi@^encia, mas dessa vez tomemos @var{mm} como sendo uma c@'opia de @var{m}
+Vamos tentar a mesma experi@^{e}ncia, mas dessa vez tomemos @var{mm} como sendo uma c@'{o}pia de @var{m}
 @c ===beg===
 m : [1,[2,3]]$
 mm : copy(m)$
@@ -223,31 +223,31 @@ mm;
 (%i11) mm;
 (%o11) [1,[x,3]]
 @end example
-Dessa vez, a atribui@,{c}@~ao a @var{mm} n@~ao muda o valor de @var{m}.
+Dessa vez, a atribui@,{c}@~{a}o a @var{mm} n@~{a}o muda o valor de @var{m}.
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} cholesky (@var{M})
-@deffnx {Fun@,{c}@~ao} cholesky (@var{M}, @var{corpo})
+@deffn {Fun@,{c}@~{a}o} cholesky (@var{M})
+@deffnx {Fun@,{c}@~{a}o} cholesky (@var{M}, @var{corpo})
 
-Retorna fatoriza@,{c}@~ao de Cholesky da matriz hermitiana (or autoadjunta) 
-@var{M}. O valor padr@~ao para o segundo argumento @'e @code{generalring}. Para uma descri@,{c}@~ao dos
-poss@'iveis valores para @var{corpo}, veja @code{lu_factor}.
+Retorna fatoriza@,{c}@~{a}o de Cholesky da matriz hermitiana (or autoadjunta) 
+@var{M}. O valor padr@~{a}o para o segundo argumento @'{e} @code{generalring}. Para uma descri@,{c}@~{a}o dos
+poss@'{i}veis valores para @var{corpo}, veja @code{lu_factor}.
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} ctranspose (@var{M})
+@deffn {Fun@,{c}@~{a}o} ctranspose (@var{M})
 
-Retorna a matriz transposta conjugada complexa da matriz @var{M}. A fun@,{c}@~ao
+Retorna a matriz transposta conjugada complexa da matriz @var{M}. A fun@,{c}@~{a}o
 @code{ctranspose} usa @code{matrix_element_transpose} para transpor cada elemento da matriz.
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} diag_matrix (@var{d_1}, @var{d_2},...,@var{d_n})
+@deffn {Fun@,{c}@~{a}o} diag_matrix (@var{d_1}, @var{d_2},...,@var{d_n})
 
 Retorna uma matriz diagonal matriz com entradas de diagonal @var{d_1}, @var{d_2},...,@var{d_n}.
 Quando as entradas de diagonal forem matrizes, as entradas zero da matriz retornada
-ser@~ao todas matrizes de tamanho apropriado; por exemplo:
+ser@~{a}o todas matrizes de tamanho apropriado; por exemplo:
 @c ===beg===
 @c load(linearalgebra)$
 @c diag_matrix(diag_matrix(1,2),diag_matrix(3,4));
@@ -273,23 +273,23 @@ ser@~ao todas matrizes de tamanho apropriado; por exemplo:
 @end example
 @end deffn
 
-@deffn {Fun@,{c}@~ao} dotproduct (@var{u}, @var{v})
+@deffn {Fun@,{c}@~{a}o} dotproduct (@var{u}, @var{v})
 
-Retorna o produto do ponto (produto escalar) dos vetores @var{u} e @var{v}.  Isso @'e o mesmo
+Retorna o produto do ponto (produto escalar) dos vetores @var{u} e @var{v}.  Isso @'{e} o mesmo
 que @code{conjugate (transpose (@var{u})) . @var{v}}.  Os argumentos @var{u} e @var{v} devem ser
 vetores coluna.
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} eigens_by_jacobi (@var{A})
-@deffnx {Fun@,{c}@~ao} eigens_by_jacobi (@var{A}, @var{tipo_corpo})
+@deffn {Fun@,{c}@~{a}o} eigens_by_jacobi (@var{A})
+@deffnx {Fun@,{c}@~{a}o} eigens_by_jacobi (@var{A}, @var{tipo_corpo})
 
-Calculam os autovalores e autovetores de @var{A} pelo m@'etodo de rota@,{c}@~oes de Jacobi.
-@var{A} deve ser uma matriz sim@'etrica (mas essa matriz sim@'etrica precisa n@~ao ser nem definida positiva e nem semidefinida positiva).
+Calculam os autovalores e autovetores de @var{A} pelo m@'{e}todo de rota@,{c}@~{o}es de Jacobi.
+@var{A} deve ser uma matriz sim@'{e}trica (mas essa matriz sim@'{e}trica precisa n@~{a}o ser nem definida positiva e nem semidefinida positiva).
 @var{tipo_corpo} indica o corpo computacional, pode ser ou @code{floatfield} ou @code{bigfloatfield}.
-Se @var{tipo_corpo} n@~ao for especificado, o padr@~ao @'e @code{floatfield}.
+Se @var{tipo_corpo} n@~{a}o for especificado, o padr@~{a}o @'{e} @code{floatfield}.
 
-Os elementos de @var{A} devem ser n@'umeros ou express@~oes que avaliam para n@'umeros
+Os elementos de @var{A} devem ser n@'{u}meros ou express@~{o}es que avaliam para n@'{u}meros
 via @code{float} ou @code{bfloat} (dependendo do valor de @var{tipo_corpo}).
 
 Exemplos:
@@ -354,182 +354,182 @@ number of rotations: 1
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} get_lu_factors (@var{x}) 
+@deffn {Fun@,{c}@~{a}o} get_lu_factors (@var{x}) 
 
-Quando @code{@var{x} = lu_factor (@var{A})}, ent@~ao @code{get_lu_factors} retorna uma lista da 
-forma @code{[P, L, U]}, onde @var{P} @'e uma matriz de permuta@,{c}@~ao, @var{L} @'e triangular baixa com
-a diagonal preenchida com a unidade, e @var{U} @'e triangular alta, e @code{@var{A} = @var{P} @var{L} @var{U}}.
-
-@end deffn
-
-@deffn {Fun@,{c}@~ao} hankel (@var{col})
-@deffnx {Fun@,{c}@~ao} hankel (@var{col}, @var{lin})
-
-Retorna uma matriz de Hankel @var{H}. A primeira coluna de @var{H} @'e @var{col};
-exceto para a primeira entrada, a @'ultima linha de @var{H} @'e @var{lin}. O
-valor padr@~ao para @var{lin} @'e o vetor nulo com o mesmo comprimento que @var{col}.
+Quando @code{@var{x} = lu_factor (@var{A})}, ent@~{a}o @code{get_lu_factors} retorna uma lista da 
+forma @code{[P, L, U]}, onde @var{P} @'{e} uma matriz de permuta@,{c}@~{a}o, @var{L} @'{e} triangular baixa com
+a diagonal preenchida com a unidade, e @var{U} @'{e} triangular alta, e @code{@var{A} = @var{P} @var{L} @var{U}}.
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} hessian (@var{f},@var{vars})
+@deffn {Fun@,{c}@~{a}o} hankel (@var{col})
+@deffnx {Fun@,{c}@~{a}o} hankel (@var{col}, @var{lin})
 
-Retorna a matriz hessiana de @var{f} com rela@,{c}@~ao @`as vari@'aveis na lista
-@var{vars}.  As entradas @var{i},@var{j} da matriz hessiana s@~ao
+Retorna uma matriz de Hankel @var{H}. A primeira coluna de @var{H} @'{e} @var{col};
+exceto para a primeira entrada, a @'{u}ltima linha de @var{H} @'{e} @var{lin}. O
+valor padr@~{a}o para @var{lin} @'{e} o vetor nulo com o mesmo comprimento que @var{col}.
+
+@end deffn
+
+@deffn {Fun@,{c}@~{a}o} hessian (@var{f},@var{vars})
+
+Retorna a matriz hessiana de @var{f} com rela@,{c}@~{a}o @`as vari@'{a}veis na lista
+@var{vars}.  As entradas @var{i},@var{j} da matriz hessiana s@~{a}o
 @var{diff(f vars[i],1,vars[j],1)}.
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} hilbert_matrix (@var{n})
+@deffn {Fun@,{c}@~{a}o} hilbert_matrix (@var{n})
 
-Retorna the @var{n} by @var{n} matriz de Hilbert. Quando @var{n} n@~ao for um inteiro
+Retorna the @var{n} by @var{n} matriz de Hilbert. Quando @var{n} n@~{a}o for um inteiro
 positivo, emite uma mensagem de erro.
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} identfor (@var{M})
-@deffnx {Fun@,{c}@~ao} identfor (@var{M}, @var{corpo})
+@deffn {Fun@,{c}@~{a}o} identfor (@var{M})
+@deffnx {Fun@,{c}@~{a}o} identfor (@var{M}, @var{corpo})
 
 Retorna uma matriz identidade que tem o mesmo tamanho que a matriz
-@var{M}.  As entradas de diagonal da matriz identidade s@~ao a 
-identidade multiplicativa do corpo @var{corpo}; o padr@~ao para
-@var{corpo} @'e @var{generalring}.
+@var{M}.  As entradas de diagonal da matriz identidade s@~{a}o a 
+identidade multiplicativa do corpo @var{corpo}; o padr@~{a}o para
+@var{corpo} @'{e} @var{generalring}.
 
 O primeiro argumento @var{M} pode ser uma  matriz quadrada ou um 
-n@~ao matriz. Quando @var{M} for uma matriz, cada entrada de @var{M} pode ser uma
+n@~{a}o matriz. Quando @var{M} for uma matriz, cada entrada de @var{M} pode ser uma
 matriz quadrada -- dessa forma @var{M} pode ser uma matriz de bloco do Maxima. A
-matriz pode ser de bloco para qualquer (finita) quantidade de n@'iveis.
+matriz pode ser de bloco para qualquer (finita) quantidade de n@'{i}veis.
 
-Veja tamb@'em @code{zerofor}
-
-@end deffn
-
-@deffn {Fun@,{c}@~ao} invert_by_lu (@var{M}, @var{(rng generalring)})
-
-Inverte a matriz @var{M} atrav@'es de fatoriza@,{c}@~ao linear alta (LU).  A fatoriza@,{c}@~ao LU
-@'e conclu@'ida usando o anel @var{rng}.
+Veja tamb@'{e}m @code{zerofor}
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} kronecker_product (@var{A}, @var{B})
+@deffn {Fun@,{c}@~{a}o} invert_by_lu (@var{M}, @var{(rng generalring)})
+
+Inverte a matriz @var{M} atrav@'{e}s de fatoriza@,{c}@~{a}o linear alta (LU).  A fatoriza@,{c}@~{a}o LU
+@'{e} conclu@'{i}da usando o anel @var{rng}.
+
+@end deffn
+
+@deffn {Fun@,{c}@~{a}o} kronecker_product (@var{A}, @var{B})
 
 Retorna o produto de Kronecker das matrizes @var{A} e @var{B}.
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} listp (@var{e}, @var{p})
-@deffnx {Fun@,{c}@~ao} listp (@var{e})
+@deffn {Fun@,{c}@~{a}o} listp (@var{e}, @var{p})
+@deffnx {Fun@,{c}@~{a}o} listp (@var{e})
 
 Recebendo um argumento opcional @var{p}, retorna @code{true} se @var{e} for 
 uma lista do Maxima e @var{p} avalia para @code{true} para elemento da lista.
-Quando @code{listp} n@~ao recebe o argumento opcional, retorna @code{true} se @var{e} for 
+Quando @code{listp} n@~{a}o recebe o argumento opcional, retorna @code{true} se @var{e} for 
 uma lista do Maxima.  em todos os outros casos, retorna @code{false}.
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} locate_matrix_entry (@var{M}, @var{r_1}, @var{c_1}, @var{r_2}, @var{c_2}, @var{f}, @var{rel})
+@deffn {Fun@,{c}@~{a}o} locate_matrix_entry (@var{M}, @var{r_1}, @var{c_1}, @var{r_2}, @var{c_2}, @var{f}, @var{rel})
 
-O primeiro argumento deve ser uma matriz; os argumentos que v@~ao de
-@var{r_1} at@'e @var{c_2} determinam um sub-matriz de @var{M} que consiste de
-linhas que v@~ao de @var{r_1} at@'e @var{r_2} e colunas que v@~ao de @var{c_1} at@'e @var{c_2}. 
+O primeiro argumento deve ser uma matriz; os argumentos que v@~{a}o de
+@var{r_1} at@'{e} @var{c_2} determinam um sub-matriz de @var{M} que consiste de
+linhas que v@~{a}o de @var{r_1} at@'{e} @var{r_2} e colunas que v@~{a}o de @var{c_1} at@'{e} @var{c_2}. 
 
 Encontra uma entrada na sub-matriz @var{M} que satisfaz alguma propriedade. 
-Existem tr@^es casos:
+Existem tr@^{e}s casos:
 
 (1) @code{@var{rel} = 'bool} e @var{f} um predicado: 
 
 Examina a sub-matriz da esquerda para a direita e de cima para baixo,
-e retorna o @'indice da primeria entrada que satisfizer o 
+e retorna o @'{i}ndice da primeria entrada que satisfizer o 
 predicado @var{f}. Se nenhuma entrada da matriz satisfizer o predicado @var{f}, retorna @code{false}.
 
-(2) @code{@var{rel} = 'max} e @var{f} avaliar para um n@'umero real:
+(2) @code{@var{rel} = 'max} e @var{f} avaliar para um n@'{u}mero real:
 
 Examina a sub-matriz procurando por uma entrada que maximize @var{f}.
-Retorna retorna o @'indice da entrada maximizada.
+Retorna retorna o @'{i}ndice da entrada maximizada.
 
-(3) @code{@var{rel} = 'min} e @var{f} avaliar para um n@'umero real:
+(3) @code{@var{rel} = 'min} e @var{f} avaliar para um n@'{u}mero real:
 
 Examina a sub-matriz procurando por uma entrada que minimize @var{f}. 
-Retorna o @'indice de uma entrada minimizada.
+Retorna o @'{i}ndice de uma entrada minimizada.
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} lu_backsub (@var{M}, @var{b})
+@deffn {Fun@,{c}@~{a}o} lu_backsub (@var{M}, @var{b})
 
 Quando @code{@var{M} = lu_factor (@var{A}, @var{corpo})},
-ent@~ao @code{lu_backsub (@var{M}, @var{b})} resolve o sistema
+ent@~{a}o @code{lu_backsub (@var{M}, @var{b})} resolve o sistema
 linear @code{@var{A} @var{x} = @var{b}}.
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} lu_factor (@var{M}, @var{corpo})
+@deffn {Fun@,{c}@~{a}o} lu_factor (@var{M}, @var{corpo})
 
 Retorna uma lista da forma @code{[@var{LU}, @var{perm}, @var{corpo}]}, 
 ou da forma @code{[@var{LU}, @var{perm}, @var{cmp}, @var{baixo-cnd} @var{alto-cnd}]}, onde
 
-  (1) A matriz @var{LU} cont@'ea fatoriza@,{c}@~ao de @var{M} na forma enpacotada. Forma
-      empacotada significa tr@^es coisas: Primeiro, as linhas de @var{LU} s@~ao permutadas confirme a 
+  (1) A matriz @var{LU} cont@'{e}a fatoriza@,{c}@~{a}o de @var{M} na forma enpacotada. Forma
+      empacotada significa tr@^{e}s coisas: Primeiro, as linhas de @var{LU} s@~{a}o permutadas confirme a 
       lista @var{perm}.  Se, por exemplo, @var{perm} for a lista list @code{[3,2,1]}, a primeira linha atual 
-      da fatoriza@,{c}@~ao @var{LU} ser@'a a terceira linha da matriz @var{LU}. Segundo,
-      o fator triangular baixo de m @'e a parte triangular baixa de @var{LU} com as
-      entradas de diagonal todas substitu@'idas pela unidade. Terceiro, o fator triangular alto de 
-      @var{M} @'e a parte triangular alta de @var{LU}.  
+      da fatoriza@,{c}@~{a}o @var{LU} ser@'{a} a terceira linha da matriz @var{LU}. Segundo,
+      o fator triangular baixo de m @'{e} a parte triangular baixa de @var{LU} com as
+      entradas de diagonal todas substitu@'{i}das pela unidade. Terceiro, o fator triangular alto de 
+      @var{M} @'{e} a parte triangular alta de @var{LU}.  
 
   (2) Quando o corpo for ou @code{floatfield} ou @code{complexfield},
-      os n@'umeros @var{baixo-cnd} e @var{alto-cnd} ser@~ao associados baixo e alto para o 
-      n@'umero condicional de norma infinita de @var{M}.  Para todos os corpos (fields), o n@'umero condicional de norma infinita 
-      n@~ao pode ser estimado; para tais corpos, @code{lu_factor} retorna uma lista com dois itens.
+      os n@'{u}meros @var{baixo-cnd} e @var{alto-cnd} ser@~{a}o associados baixo e alto para o 
+      n@'{u}mero condicional de norma infinita de @var{M}.  Para todos os corpos (fields), o n@'{u}mero condicional de norma infinita 
+      n@~{a}o pode ser estimado; para tais corpos, @code{lu_factor} retorna uma lista com dois itens.
       Ambos o baixo e o alto associado  podem diferir de seus verdadeiros valores de 
-      fatores arbitr@'ariamente grandes. (Veja tamb@'em @code{mat_cond}.)
+      fatores arbitr@'{a}riamente grandes. (Veja tamb@'{e}m @code{mat_cond}.)
    
   O argumento @var{M} deve ser a matriz quadrada.
 
-  O argumento opcional @var{cmp} deve ser um s@'imbolo que determine um anel ou corpo. Os corpos e an@'eis 
-  predefinidos s@~ao:
+  O argumento opcional @var{cmp} deve ser um s@'{i}mbolo que determine um anel ou corpo. Os corpos e an@'{e}is 
+  predefinidos s@~{a}o:
 
-    (a) @code{generalring} -- o anel de express@~oes do Maxima,
-    (b) @code{floatfield} --  o corpo dos n@'umeros em ponto flutuante do tipo de precis@~ao dupla,
-    (c) @code{complexfield} --  o corpo dos n@'umeros complexos em ponto flutuante do 
-        tipo de precis@~ao dupla,
-    (d) @code{crering}  -- o anel das express@~oes racionais can@^onicas (CRE) do Maxima,
-    (e) @code{rationalfield} -- o corpo dos n@'umeros racionais,
-    (f) @code{runningerror} -- rastro de todos os erros de arredondamento de n@'umeros em ponto flutuante,
-     (g) @code{noncommutingring} -- o anel de express@~oes do Maxima onde multiplica@,{c}@~ao for o
-        operador ponto n@~ao comutativo.       
+    (a) @code{generalring} -- o anel de express@~{o}es do Maxima,
+    (b) @code{floatfield} --  o corpo dos n@'{u}meros em ponto flutuante do tipo de precis@~{a}o dupla,
+    (c) @code{complexfield} --  o corpo dos n@'{u}meros complexos em ponto flutuante do 
+        tipo de precis@~{a}o dupla,
+    (d) @code{crering}  -- o anel das express@~{o}es racionais can@^{o}nicas (CRE) do Maxima,
+    (e) @code{rationalfield} -- o corpo dos n@'{u}meros racionais,
+    (f) @code{runningerror} -- rastro de todos os erros de arredondamento de n@'{u}meros em ponto flutuante,
+     (g) @code{noncommutingring} -- o anel de express@~{o}es do Maxima onde multiplica@,{c}@~{a}o for o
+        operador ponto n@~{a}o comutativo.       
 
 Quando o corpo for @code{floatfield}, @code{complexfield}, ou
-@code{runningerror}, o algor@'itmo usa pivotagem parcial; para todos
-os outros corpos, linhas s@~ao comutadas somente quando necess@'ario para evitar um piv@^o
+@code{runningerror}, o algor@'{i}tmo usa pivotagem parcial; para todos
+os outros corpos, linhas s@~{a}o comutadas somente quando necess@'{a}rio para evitar um piv@^{o}
 nulo.
 
-A adi@,{c}@~ao aritm@'etica em ponto flutuante n@~ao @'e associativa, ent@~ao o significado
-de 'corpo' difere da defini@,{c}@~ao matem@'atica.
+A adi@,{c}@~{a}o aritm@'{e}tica em ponto flutuante n@~{a}o @'{e} associativa, ent@~{a}o o significado
+de 'corpo' difere da defini@,{c}@~{a}o matem@'{a}tica.
 
-Um membro do corpo @code{runningerror} @'e uma lista do M@'axima de dois membros
-da forma @code{[x,n]},onde @var{x} @'e um n@'umero em onto flutuante e
-@code{n} @'e um inteiro. A diferen@,{c}a relativa entre o valor de
-'verdadeiro' de @code{x} e @code{x} @'e aproximadamente associado pelo @'epsilon da
-m@'aquina vezes @code{n}. O erro de execu@,{c}@~ao associado arrasta alguns termos
-da ordem do quadrado do @'epsilon da m@'aquina.
+Um membro do corpo @code{runningerror} @'{e} uma lista do M@'{a}xima de dois membros
+da forma @code{[x,n]},onde @var{x} @'{e} um n@'{u}mero em onto flutuante e
+@code{n} @'{e} um inteiro. A diferen@,{c}a relativa entre o valor de
+'verdadeiro' de @code{x} e @code{x} @'{e} aproximadamente associado pelo @'{e}psilon da
+m@'{a}quina vezes @code{n}. O erro de execu@,{c}@~{a}o associado arrasta alguns termos
+da ordem do quadrado do @'{e}psilon da m@'{a}quina.
 
-N@~ao existe interface de usu@'ario definida um novo anel. Um usu@'ario que estiver
-familiazrizado com o Lisp Comum est@'a apto para definir um novo corpo.  Para fazer
-isso, um usu@'ario deve definir fun@,{c}@~oes para as opera@,{c}@~oes aritm@'eticas e
-fun@,{c}@~oes para convers@~ao para a representa@,{c}@~ao de corpo do M@'axima e
-vice-versa. Adicionalmente, para corpos ordenados (onde a pivotagem parcial ser@'a
-usada), um udu@'ario deve definir fun@,{c}@~oes para m@'odulo e para
-comparar membros do corpo.  Ap@'os isso tudo que resta @'e definir uma
+N@~{a}o existe interface de usu@'{a}rio definida um novo anel. Um usu@'{a}rio que estiver
+familiazrizado com o Lisp Comum est@'{a} apto para definir um novo corpo.  Para fazer
+isso, um usu@'{a}rio deve definir fun@,{c}@~{o}es para as opera@,{c}@~{o}es aritm@'{e}ticas e
+fun@,{c}@~{o}es para convers@~{a}o para a representa@,{c}@~{a}o de corpo do M@'{a}xima e
+vice-versa. Adicionalmente, para corpos ordenados (onde a pivotagem parcial ser@'{a}
+usada), um udu@'{a}rio deve definir fun@,{c}@~{o}es para m@'{o}dulo e para
+comparar membros do corpo.  Ap@'{o}s isso tudo que resta @'{e} definir uma
 estrutura de Lisp Comum @code{mring}.  O arquivo @code{mring} tem muitos
 exemplos.
  
-Para calcular a fatoriza@,{c}@~ao, a primeira tarefa @'e converter cada entrada de
-matriz para um elemento do corpo indicado. Quando a cnvers@~ao n@~ao for
-poss@'ivel, a fatoriza@,{c}@~ao encerra com uma mensagem de erro. Elementos do
-corpo n@~ao precisam ser express@~oes do Maxima.  Elementos do
-@code{complexfield}, por exemplo, s@~ao n@'umeros complexos do Lisp Comum. Dessa forma
-ap@'os calcular a fatoriza@,{c}@~ao, como entradas da matriz devem ser
-convertidas para express@~oes do Maxima.
+Para calcular a fatoriza@,{c}@~{a}o, a primeira tarefa @'{e} converter cada entrada de
+matriz para um elemento do corpo indicado. Quando a cnvers@~{a}o n@~{a}o for
+poss@'{i}vel, a fatoriza@,{c}@~{a}o encerra com uma mensagem de erro. Elementos do
+corpo n@~{a}o precisam ser express@~{o}es do Maxima.  Elementos do
+@code{complexfield}, por exemplo, s@~{a}o n@'{u}meros complexos do Lisp Comum. Dessa forma
+ap@'{o}s calcular a fatoriza@,{c}@~{a}o, como entradas da matriz devem ser
+convertidas para express@~{o}es do Maxima.
 
-Veja tamb@'em  @code{get_lu_factors}.
+Veja tamb@'{e}m  @code{get_lu_factors}.
 
 Exemplos:
 @c ===beg===
@@ -588,76 +588,76 @@ Evaluation took 109.24 seconds (152.10 elapsed)
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} mat_cond (@var{M}, 1)
-@deffnx {Fun@,{c}@~ao} mat_cond (@var{M}, inf)
+@deffn {Fun@,{c}@~{a}o} mat_cond (@var{M}, 1)
+@deffnx {Fun@,{c}@~{a}o} mat_cond (@var{M}, inf)
 
-Retorna o n@'umero condiciona da norma de ordem @var{p} da matriz
-@var{m}. Os valores permitidos para @var{p} s@~ao 1 e @var{inf}.  Essa
-fun@,{c}@~ao utiliza a fatoriza@,{c}@~ao linear alta para inverter a matriz @var{m}. Dessa forma
-o tempode execu@,{c}@~ao para @code{mat_cond} @'e proporcional ao cubo do
-tamanho da matriz; @code{lu_factor} determina as associa@,{c}@~aoes baixa e alta
-para o n@'umero de condi@,{c}@~ao de norma infinita em tempo proporcional ao
+Retorna o n@'{u}mero condiciona da norma de ordem @var{p} da matriz
+@var{m}. Os valores permitidos para @var{p} s@~{a}o 1 e @var{inf}.  Essa
+fun@,{c}@~{a}o utiliza a fatoriza@,{c}@~{a}o linear alta para inverter a matriz @var{m}. Dessa forma
+o tempode execu@,{c}@~{a}o para @code{mat_cond} @'{e} proporcional ao cubo do
+tamanho da matriz; @code{lu_factor} determina as associa@,{c}@~{a}oes baixa e alta
+para o n@'{u}mero de condi@,{c}@~{a}o de norma infinita em tempo proporcional ao
 quadrado do tamanho da matriz.
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} mat_norm (@var{M}, 1)
-@deffnx {Fun@,{c}@~ao} mat_norm (@var{M}, inf)
-@deffnx {Fun@,{c}@~ao} mat_norm (@var{M}, frobenius)
+@deffn {Fun@,{c}@~{a}o} mat_norm (@var{M}, 1)
+@deffnx {Fun@,{c}@~{a}o} mat_norm (@var{M}, inf)
+@deffnx {Fun@,{c}@~{a}o} mat_norm (@var{M}, frobenius)
 
-Retorna a matriz de norma @var{p} da matriz @var{M}.  Os valores permitidos para @var{p} s@~ao
+Retorna a matriz de norma @var{p} da matriz @var{M}.  Os valores permitidos para @var{p} s@~{a}o
 1, @code{inf}, e @code{frobenius} (a norma da matriz de Frobenius). A matriz @var{M} pode ser
-uma matriz n@~ao de bloco.
+uma matriz n@~{a}o de bloco.
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} matrixp (@var{e}, @var{p})
-@deffnx {Fun@,{c}@~ao} matrixp (@var{e})
+@deffn {Fun@,{c}@~{a}o} matrixp (@var{e}, @var{p})
+@deffnx {Fun@,{c}@~{a}o} matrixp (@var{e})
 
 Fornecendo um argumento opcional @var{p}, @code{matrixp} retorna @code{true} se @var{e} for
 uma matriz e @var{p} avaliar para @code{true} para todo elemento da matriz.
-Quando a @code{matrixp} n@~ao for fornecido umargumento opcional, retorna @code{true} 
+Quando a @code{matrixp} n@~{a}o for fornecido umargumento opcional, retorna @code{true} 
 se @code{e} for uma matriz.  em todos os outros casos, retorna @code{false}.
 
-Veja tamb@'em @code{blockmatrixp}
+Veja tamb@'{e}m @code{blockmatrixp}
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} matrix_size (@var{M})
+@deffn {Fun@,{c}@~{a}o} matrix_size (@var{M})
 
-Retorna uma lista com dois elementos que fornecem o n@'umero de linhas e colunas, respectivamente
+Retorna uma lista com dois elementos que fornecem o n@'{u}mero de linhas e colunas, respectivamente
 da matriz @var{M}.
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} mat_fullunblocker (@var{M})
+@deffn {Fun@,{c}@~{a}o} mat_fullunblocker (@var{M})
 
-Se @var{M} for uma matriz de bloco, expande todos os blocos da matriz em todos os n@'iveis. Se @var{M} for uma matriz,
+Se @var{M} for uma matriz de bloco, expande todos os blocos da matriz em todos os n@'{i}veis. Se @var{M} for uma matriz,
 retorna @var{M}; de outra forma, emite uma mensagem de erro. 
 
 @c precisa de exemplo aqui
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} mat_trace (@var{M})
+@deffn {Fun@,{c}@~{a}o} mat_trace (@var{M})
 
-Retorna o tra@,{c}o da matriz @var{M}. Se @var{M} n@~ao for uma matriz, retorna uma
+Retorna o tra@,{c}o da matriz @var{M}. Se @var{M} n@~{a}o for uma matriz, retorna uma
 forma substantiva. Quando @var{M} for uma matriz de bloco, @code{mat_trace(M)} retorna
 o mesmo valor retornado por @code{mat_trace(mat_unblocker(m))}.
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} mat_unblocker (@var{M})
+@deffn {Fun@,{c}@~{a}o} mat_unblocker (@var{M})
 
-Se @var{M} for uma matriz de bloco, @code{mat_unbloker} desfaz o bloco de @var{M} um n@'ivel. Se @var{M} for uma matriz, 
+Se @var{M} for uma matriz de bloco, @code{mat_unbloker} desfaz o bloco de @var{M} um n@'{i}vel. Se @var{M} for uma matriz, 
 @code{mat_unblocker (M)} retorna @var{M}; de outra forma, emite uma mensagem de erro.
 
 Dessa forma se cada entrada de @var{M} for matriz, @code{mat_unblocker (M)} retorna uma 
 matriz "desblocada", mas se cada entrada de @var{M} for uma matriz de bloco, @code{mat_unblocker (M)} 
-retorna uma matriz de bloco com um n@'ivel de bloco a menos.
+retorna uma matriz de bloco com um n@'{i}vel de bloco a menos.
 
-Se voc@^e usa matrizes de bloco, muito provavelmente voc@^e ir@'a querer escolher @code{matrix_element_mult} para 
-@code{"."} e @code{matrix_element_transpose} para @code{'transpose}. Veja tamb@'em @code{mat_fullunblocker}.
+Se voc@^{e} usa matrizes de bloco, muito provavelmente voc@^{e} ir@'{a} querer escolher @code{matrix_element_mult} para 
+@code{"."} e @code{matrix_element_transpose} para @code{'transpose}. Veja tamb@'{e}m @code{mat_fullunblocker}.
 
 Exemplo:
 
@@ -694,54 +694,54 @@ Warning - you are redefining the Maxima function rank
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} nonnegintegerp (@var{n})
+@deffn {Fun@,{c}@~{a}o} nonnegintegerp (@var{n})
 
 Retorna @code{true} se e somente se @code{@var{n} >= 0} e @var{n} for um inteiro.
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} nullspace (@var{M})
+@deffn {Fun@,{c}@~{a}o} nullspace (@var{M})
 
 Se @var{M} for uma matriz, retorna @code{span (v_1, ..., v_n)}, onde o conjunto @code{@{v_1, ..., v_n@}}
-@'e uma base para o espa@,{c}o nulo de @var{M}.  A diferen@,{c}a entre o maior elemento e o menor elemento do conjunto vazio @'e  @code{@{0@}}.  
+@'{e} uma base para o espa@,{c}o nulo de @var{M}.  A diferen@,{c}a entre o maior elemento e o menor elemento do conjunto vazio @'{e}  @code{@{0@}}.  
 Dessa forma, quando o espa@,{c}o nulo tiver somente um membro, retorna @code{span ()}.
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} nullity (@var{M})
+@deffn {Fun@,{c}@~{a}o} nullity (@var{M})
 
-Se @var{M} for uma matriz, retorna a dimens@~ao do espa@,{c}o nulo de @var{M}.
+Se @var{M} for uma matriz, retorna a dimens@~{a}o do espa@,{c}o nulo de @var{M}.
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} orthogonal_complement (@var{v_1}, ..., @var{v_n})
+@deffn {Fun@,{c}@~{a}o} orthogonal_complement (@var{v_1}, ..., @var{v_n})
 
-Retorna @code{span (u_1, ..., u_m)}, onde o conjunto @code{@{u_1, ..., u_m@}} @'e uma 
+Retorna @code{span (u_1, ..., u_m)}, onde o conjunto @code{@{u_1, ..., u_m@}} @'{e} uma 
 base para o complemento ortogonal do conjunto @code{(v_1, ..., v_n)}.
 
-Cada vetor no intervalo de @var{v_1} at@'e @var{v_n} deve ser um vetor coluna.
+Cada vetor no intervalo de @var{v_1} at@'{e} @var{v_n} deve ser um vetor coluna.
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} polynomialp (@var{p}, @var{L}, @var{coeffp}, @var{exponp})
-@deffnx {Fun@,{c}@~ao} polynomialp (@var{p}, @var{L}, @var{coeffp})
-@deffnx {Fun@,{c}@~ao} polynomialp (@var{p}, @var{L})
+@deffn {Fun@,{c}@~{a}o} polynomialp (@var{p}, @var{L}, @var{coeffp}, @var{exponp})
+@deffnx {Fun@,{c}@~{a}o} polynomialp (@var{p}, @var{L}, @var{coeffp})
+@deffnx {Fun@,{c}@~{a}o} polynomialp (@var{p}, @var{L})
 
-Retorna @code{true} se @var{p} for um polin@^omio nas vari@'aveis da lista @var{L},
+Retorna @code{true} se @var{p} for um polin@^{o}mio nas vari@'{a}veis da lista @var{L},
 O predicado @var{coeffp} deve avaliar para @code{true} para cada
 coeficiente, e o predicado @var{exponp} deve avaliar para @code{true} para todos os 
-expoentes das vari@'aveis na lista @var{L}. Se voc@^e quiser usar um valor
-personalizado para @var{exponp}, voc@^e deve fornecer @var{coeffp} com um valor mesmo se voc@^e quiser
-o valor padr@~ao para @var{coeffp}.
+expoentes das vari@'{a}veis na lista @var{L}. Se voc@^{e} quiser usar um valor
+personalizado para @var{exponp}, voc@^{e} deve fornecer @var{coeffp} com um valor mesmo se voc@^{e} quiser
+o valor padr@~{a}o para @var{coeffp}.
 
 @c WORK THE FOLLOWING INTO THE PRECEDING
-@code{polynomialp (@var{p}, @var{L}, @var{coeffp})} @'e equivalente a
+@code{polynomialp (@var{p}, @var{L}, @var{coeffp})} @'{e} equivalente a
 @code{polynomialp (@var{p}, @var{L}, @var{coeffp}, 'nonnegintegerp)}.
 
-@code{polynomialp (@var{p}, @var{L})} @'e equivalente a
+@code{polynomialp (@var{p}, @var{L})} @'{e} equivalente a
 @code{polynomialp (@var{p}, L@var{,} 'constantp, 'nonnegintegerp)}.
 
-O polin@^omio n@~ao precisa ser expandido:
+O polin@^{o}mio n@~{a}o precisa ser expandido:
 
 @c ===beg===
 @c load (linearalgebra);
@@ -779,7 +779,7 @@ Warning - you are redefining the Maxima function rank
 (%o3)                         true
 @end example
 
-Polin@^omios com duas vari@'aveis:
+Polin@^{o}mios com duas vari@'{a}veis:
 
 @c ===beg===
 @c load (linearalgebra);
@@ -800,44 +800,44 @@ Warning - you are redefining the Maxima function rank
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} polytocompanion (@var{p}, @var{x})
+@deffn {Fun@,{c}@~{a}o} polytocompanion (@var{p}, @var{x})
 
-Se @var{p} for um polin@^omio em @var{x}, retorna a atriz companheira de @var{p}. Para
-um polin@^omio m@^onico @var{p} de grau @var{n},
+Se @var{p} for um polin@^{o}mio em @var{x}, retorna a atriz companheira de @var{p}. Para
+um polin@^{o}mio m@^{o}nico @var{p} de grau @var{n},
 temos @code{@var{p} = (-1)^@var{n} charpoly (polytocompanion (@var{p}, @var{x}))}.
 
-Quando @var{p} n@~ao for um polin@^omio em @var{x}, emite uma mensagem de erro.
+Quando @var{p} n@~{a}o for um polin@^{o}mio em @var{x}, emite uma mensagem de erro.
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} ptriangularize (@var{M}, @var{v})
+@deffn {Fun@,{c}@~{a}o} ptriangularize (@var{M}, @var{v})
 
-Se @var{M} for uma matriz onde cada entrada dessa matriz for um polin@^omio em @var{v}, retorna 
+Se @var{M} for uma matriz onde cada entrada dessa matriz for um polin@^{o}mio em @var{v}, retorna 
 a matriz @var{M2} tal que
 
-(1) @var{M2} @'e triangular alta,
+(1) @var{M2} @'{e} triangular alta,
 
 (2) @code{@var{M2} = @var{E_n} ... @var{E_1} @var{M}},
-onde os elemetnos de @var{E_1} a @var{E_n} s@~ao matrizes elementares 
-cujas entrada s@~ao polin@^omios em @var{v},
+onde os elemetnos de @var{E_1} a @var{E_n} s@~{a}o matrizes elementares 
+cujas entrada s@~{a}o polin@^{o}mios em @var{v},
 
 (3) @code{|det (@var{M})| = |det (@var{M2})|},
 
-Nota: Essa fun@,{c}@~ao n@~ao verifica se toda entrada @'e um polin@^omio em @var{v}.  
+Nota: Essa fun@,{c}@~{a}o n@~{a}o verifica se toda entrada @'{e} um polin@^{o}mio em @var{v}.  
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} rowop (@var{M}, @var{i}, @var{j}, @var{theta})
+@deffn {Fun@,{c}@~{a}o} rowop (@var{M}, @var{i}, @var{j}, @var{theta})
 
 Se @var{M} for uma matriz, retorna a matriz que resulta de se fazer a  
-opera@,{c}@~ao de linha @code{R_i <- R_i - theta * R_j}. Se @var{M} n@~ao tiver uma linha
+opera@,{c}@~{a}o de linha @code{R_i <- R_i - theta * R_j}. Se @var{M} n@~{a}o tiver uma linha
 @var{i} ou @var{j}, emite uma mensagem de erro.
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} rank (@var{M})
+@deffn {Fun@,{c}@~{a}o} rank (@var{M})
 
-Retorna o ranque daquela matriz @var{M}. O rank @'e a dimens@~ao do
+Retorna o ranque daquela matriz @var{M}. O rank @'{e} a dimens@~{a}o do
 espa@,{c}o coluna. Exemplo:
 @c ===beg===
 @c load (linearalgebra)$
@@ -860,19 +860,19 @@ Proviso:  @{d - b c # 0@}
 @end deffn
 
 
-@deffn {Fun@,{c}@~ao} rowswap (@var{M}, @var{i}, @var{j})
+@deffn {Fun@,{c}@~{a}o} rowswap (@var{M}, @var{i}, @var{j})
 
-Se @var{M} for uma matriz, permuta as linha @var{i} e @var{j}. Se @var{M} n@~ao tiver uma linha
+Se @var{M} for uma matriz, permuta as linha @var{i} e @var{j}. Se @var{M} n@~{a}o tiver uma linha
 @var{i} ou @var{j}, emite uma mensagem de erro.
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} toeplitz (@var{col})
-@deffnx {Fun@,{c}@~ao} toeplitz (@var{col}, @var{lin})
+@deffn {Fun@,{c}@~{a}o} toeplitz (@var{col})
+@deffnx {Fun@,{c}@~{a}o} toeplitz (@var{col}, @var{lin})
 
-Retorna uma matriz de Toeplitz @var{T}. a primeira coluna de @var{T} @'e @var{col};
-exceto para a primeira entrada, a primeira linha de @var{T} @'e @var{lin}. O
-padr@~ao para @var{lin} @'e o conjugado complexo de @var{col}. Exemplo:
+Retorna uma matriz de Toeplitz @var{T}. a primeira coluna de @var{T} @'{e} @var{col};
+exceto para a primeira entrada, a primeira linha de @var{T} @'{e} @var{lin}. O
+padr@~{a}o para @var{lin} @'{e} o conjugado complexo de @var{col}. Exemplo:
 @c ===beg===
 @c load(linearalgebra)$
 @c toeplitz([1,2,3],[x,y,z]);
@@ -897,33 +897,33 @@ padr@~ao para @var{lin} @'e o conjugado complexo de @var{col}. Exemplo:
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} vandermonde_matrix ([@var{x_1}, ..., @var{x_n}])
+@deffn {Fun@,{c}@~{a}o} vandermonde_matrix ([@var{x_1}, ..., @var{x_n}])
 
-Retorna uma matriz @var{n} por @var{n} cuja @var{i}-@'esima linha @'e 
+Retorna uma matriz @var{n} por @var{n} cuja @var{i}-@'{e}sima linha @'{e} 
 @code{[1, @var{x_i}, @var{x_i}^2, ... @var{x_i}^(@var{n}-1)]}. 
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} zerofor (@var{M})
-@deffnx {Fun@,{c}@~ao}  zerofor (@var{M}, @var{fld})
+@deffn {Fun@,{c}@~{a}o} zerofor (@var{M})
+@deffnx {Fun@,{c}@~{a}o}  zerofor (@var{M}, @var{fld})
 
 Retorna uma matriz zero que tem o mesmo tamanho da matriz
-@var{M}.  Toda entrada da matriz zero @'e a
-identidade aditiva do anel @var{fld}; o valor padr@~ao para
-@var{fld} @'e @var{generalring}.
+@var{M}.  Toda entrada da matriz zero @'{e} a
+identidade aditiva do anel @var{fld}; o valor padr@~{a}o para
+@var{fld} @'{e} @var{generalring}.
 
 O primeiro argumento @var{M} pode ser uma matriz quadrada ou uma
-n@~ao matriz. Quando @var{M} for uma matriz, cada entrada de @var{M} pode ser uma
+n@~{a}o matriz. Quando @var{M} for uma matriz, cada entrada de @var{M} pode ser uma
 matriz quadrada -- dessa forma @var{M} pode ser uma matriz de bloco do Maxima. A
-matriz pode ser de bloco para qualquer n@'ivel (finito).
+matriz pode ser de bloco para qualquer n@'{i}vel (finito).
 
-Veja tamb@'em @code{identfor}
+Veja tamb@'{e}m @code{identfor}
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} zeromatrixp (@var{M})
+@deffn {Fun@,{c}@~{a}o} zeromatrixp (@var{M})
 
-Se @var{M} n@~ao for uma matriz de bloco, retorna @code{true} se @code{is (equal (@var{e}, 0))} 
+Se @var{M} n@~{a}o for uma matriz de bloco, retorna @code{true} se @code{is (equal (@var{e}, 0))} 
 for verdadeiro para cada elemento @var{e} da matriz @var{M}.  Se @var{M} for uma matriz de bloco, retorna
 @code{true} se @code{zeromatrixp} avaliar para @code{true} para cada elemento de @var{e}.
 

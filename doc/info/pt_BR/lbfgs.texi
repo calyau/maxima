@@ -2,75 +2,75 @@
 @c /lbfgs.texi/1.2/Sat Dec  9 06:10:42 2006//
 
 @menu
-* Introdu@value{cedilha}@~ao a lbfgs::
-* Defini@value{cedilha}@~oes para lbfgs::
+* Introdu@,{c}@~{a}o a lbfgs::
+* Defini@,{c}@~{o}es para lbfgs::
 @end menu
 
-@node Introdu@value{cedilha}@~ao a lbfgs, Defini@value{cedilha}@~oes para lbfgs, Top, Top
-@section Introdu@value{cedilha}@~ao a lbfgs
+@node Introdu@,{c}@~{a}o a lbfgs, Defini@,{c}@~{o}es para lbfgs, Top, Top
+@section Introdu@,{c}@~{a}o a lbfgs
 
-@code{lbfgs} @'e uma implementa@,{c}@~ao do algor@'itmo[1] L-BFGS (Broyden-Fletcher-Goldfarb-Shanno)
-para resolver problemas de minimiza@,{c}@~ao n@~ao limitada atrav@'es de um algor@'itmo de mem@'oria limitada quasi-Newton (BFGS).
-Esse algor@'itmo @'e chamado de m@'etodo de mem@'oria limitada porque uma aproxima@,{c}@~ao de baixo ranque da
-inverso da matriz Hessiana @'e armazenado em lugar da inversa da matriz Hessiana completa.
-O programa foi escrito origin@'ariamente em Fortran [2] por Jorge Nocedal,
-incorporando algumas fun@,{c}@~oes originalmente escritas por Jorge J. Mor@'{e} e David J. Thuente,
-e traduzidas para Lisp automaticamente atrav@'es do programa @code{f2cl}.
-O pacote do Maxima @code{lbfgs} compreende o c@'odigo traduzido e adicionalmente
-uma interface de fun@,{c}@~ao que gerencia alguns detallhes.
+@code{lbfgs} @'{e} uma implementa@,{c}@~{a}o do algor@'{i}tmo[1] L-BFGS (Broyden-Fletcher-Goldfarb-Shanno)
+para resolver problemas de minimiza@,{c}@~{a}o n@~{a}o limitada atrav@'{e}s de um algor@'{i}tmo de mem@'{o}ria limitada quasi-Newton (BFGS).
+Esse algor@'{i}tmo @'{e} chamado de m@'{e}todo de mem@'{o}ria limitada porque uma aproxima@,{c}@~{a}o de baixo ranque da
+inverso da matriz Hessiana @'{e} armazenado em lugar da inversa da matriz Hessiana completa.
+O programa foi escrito origin@'{a}riamente em Fortran [2] por Jorge Nocedal,
+incorporando algumas fun@,{c}@~{o}es originalmente escritas por Jorge J. Mor@'{e} e David J. Thuente,
+e traduzidas para Lisp automaticamente atrav@'{e}s do programa @code{f2cl}.
+O pacote do Maxima @code{lbfgs} compreende o c@'{o}digo traduzido e adicionalmente
+uma interface de fun@,{c}@~{a}o que gerencia alguns detallhes.
 
-Refer@^encias:
+Refer@^{e}ncias:
 
 [1] D. Liu and J. Nocedal. "On the limited memory BFGS method for large
 scale optimization". @i{Mathematical Programming B} 45:503--528 (1989)
 
 [2] http://netlib.org/opt/lbfgs_um.shar
 
-@node Defini@value{cedilha}@~oes para lbfgs, , Introdu@value{cedilha}@~ao a lbfgs, Top
-@section Defini@value{cedilha}@~oes para lbfgs
+@node Defini@,{c}@~{o}es para lbfgs, , Introdu@,{c}@~{a}o a lbfgs, Top
+@section Defini@,{c}@~{o}es para lbfgs
 
-@deffn {Fun@,{c}@~ao} lbfgs (@var{FOM}, @var{X}, @var{X0}, @var{epsilon}, @var{iprint})
+@deffn {Fun@,{c}@~{a}o} lbfgs (@var{FOM}, @var{X}, @var{X0}, @var{epsilon}, @var{iprint})
 
-Encontra uma solu@,{c}@~ao aproximada da minimiza@,{c}@~ao n@~ao limitada de n@'umero de m@'erito @var{FOM}
-sobre a lista de vari@'aveis @var{X},
+Encontra uma solu@,{c}@~{a}o aproximada da minimiza@,{c}@~{a}o n@~{a}o limitada de n@'{u}mero de m@'{e}rito @var{FOM}
+sobre a lista de vari@'{a}veis @var{X},
 come@,{c}ando a partir da estimativa inicial @var{X0},
 tal que @math{norm grad FOM < epsilon max(1, norm X)}.
 
-O algor@'itmo aplicado @'e um algor@'itmo de mem@'oria limitada[1] quasi-Newton (BFGS).
-Esse algor@'itmo @'e chamado de m@'etodo de mem@'oria limitada porque uma aproxima@,{c}@~ao de baixo ranque da
-inverso da matriz Hessiana @'e armazenado em lugar da inversa da matriz Hessiana completa.
+O algor@'{i}tmo aplicado @'{e} um algor@'{i}tmo de mem@'{o}ria limitada[1] quasi-Newton (BFGS).
+Esse algor@'{i}tmo @'{e} chamado de m@'{e}todo de mem@'{o}ria limitada porque uma aproxima@,{c}@~{a}o de baixo ranque da
+inverso da matriz Hessiana @'{e} armazenado em lugar da inversa da matriz Hessiana completa.
 
-@var{iprint} controla as messaens de progresso mostradas atrav@'es de @code{lbfgs}.
+@var{iprint} controla as messaens de progresso mostradas atrav@'{e}s de @code{lbfgs}.
 
 @table @code
 @item iprint[1]
-@code{@var{iprint}[1]} controla a freq@"u@^encia das mensagens de progresso.
+@code{@var{iprint}[1]} controla a freq@"{u}@^{e}ncia das mensagens de progresso.
 @table @code
 @item iprint[1] < 0
 Nenhuma mensagem de progresso.
 @item iprint[1] = 0
-Messagens na primeira itera@,{c}@~ao e na @'ultima itera@,{c}@~ao.
+Messagens na primeira itera@,{c}@~{a}o e na @'{u}ltima itera@,{c}@~{a}o.
 @item iprint[1] > 0
-Mostra uma mensagem a cada @code{@var{iprint}[1]} itera@,{c}@~oes.
+Mostra uma mensagem a cada @code{@var{iprint}[1]} itera@,{c}@~{o}es.
 @end table
 @item iprint[2]
-@code{@var{iprint}[2]} controla a quantidade de informa@,{c}@~oes fornecidas pelas mensagens de progresso (verbosidade).
+@code{@var{iprint}[2]} controla a quantidade de informa@,{c}@~{o}es fornecidas pelas mensagens de progresso (verbosidade).
 @table @code
 @item iprint[2] = 0
-Mostra na tela o contador de itera@,{c}@~oes, o n@'umero de avalia@,{c}@~oes de @var{FOM}, o valor de @var{FOM},
+Mostra na tela o contador de itera@,{c}@~{o}es, o n@'{u}mero de avalia@,{c}@~{o}es de @var{FOM}, o valor de @var{FOM},
 a norma do gradiente de @var{FOM}, e o comprimento do salto.
 @item iprint[2] = 1
 O mesmo que @code{@var{iprint}[2] = 0}, adicionando @var{X0} e o gradiente de @var{FOM} avaliado em @var{X0}.
 @item iprint[2] = 2
-O mesmo que @code{@var{iprint}[2] = 1}, adicionando valores de @var{X} a cada itera@,{c}@~ao.
+O mesmo que @code{@var{iprint}[2] = 1}, adicionando valores de @var{X} a cada itera@,{c}@~{a}o.
 @item iprint[2] = 3
-O mesmo que @code{@var{iprint}[2] = 2}, adicionando o gradiente de @var{FOM} a cada itera@,{c}@~ao.
+O mesmo que @code{@var{iprint}[2] = 2}, adicionando o gradiente de @var{FOM} a cada itera@,{c}@~{a}o.
 @end table
 @end table
 
-Veja tamb@'em @code{lbfgs_nfeval_max} e @code{lbfgs_ncorrections}.
+Veja tamb@'{e}m @code{lbfgs_nfeval_max} e @code{lbfgs_ncorrections}.
 
-Refer@^encias:
+Refer@^{e}ncias:
 
 [1] D. Liu and J. Nocedal. "On the limited memory BFGS method for large
 scale optimization". @i{Mathematical Programming B} 45:503--528 (1989)
@@ -147,12 +147,12 @@ Exemplo:
 
 @end deffn
 
-@defvr {Vari@~avel} lbfgs_nfeval_max
-Valor padr@~ao: 100
+@defvr {Vari@~{a}vel} lbfgs_nfeval_max
+Valor padr@~{a}o: 100
 
 @end defvr
 
-@defvr {Vari@~avel} lbfgs_ncorrections
-Valor padr@~ao: 25
+@defvr {Vari@~{a}vel} lbfgs_ncorrections
+Valor padr@~{a}o: 25
 
 @end defvr
