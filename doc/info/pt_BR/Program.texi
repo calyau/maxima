@@ -1,5 +1,5 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
-@c /Program.texi/1.21/Wed Jun  7 08:45:22 2006/-ko/
+@c /Program.texi/1.22/Sat Feb 17 06:34:11 2007/-ko/
 @menu
 * Introdu@,{c}@~{a}o a Fluxo de Programa::  
 * Defini@,{c}@~{o}es para Fluxo de Programa::  
@@ -323,6 +323,7 @@ e @code{errormsg} formata e imprime essa mensagem.
 @end deffn
 
 @c REPHRASE
+@c AT LEAST SHOULD LIST VARIANTS HERE
 @deffn {Operador especial} for
 Usado em itera@,{c}@~{o}es.  Veja @code{do} para uma descri@,{c}@~{a}o das
 facilidades de itera@,{c}@~{a}o do Maxima.
@@ -545,6 +546,13 @@ caminhos.
 Avalia @var{expr} e descarta o valor retornado para o mais recente
 @code{catch}.  @code{throw} @'{e} usada com @code{catch} como um mecanismo de retorno
 n@~{a}o local.
+
+@end deffn
+
+@c NEED MORE HERE !!
+@c AT LEAST SHOULD LIST ACCEPTABLE VARIANTS
+@deffn {Operador especial} while
+Veja @code{do}.
 
 @end deffn
 

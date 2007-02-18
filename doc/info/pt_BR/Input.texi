@@ -1,5 +1,5 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
-@c /Input.texi/1.52/Sun Jan  7 05:49:17 2007/-ko/
+@c /Input.texi/1.53/Sat Feb 17 06:34:06 2007/-ko/
 @menu
 * Coment@'{a}rios::
 * Arquivos::                       

@@ -1,5 +1,5 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
-@c /Plotting.texi/1.33/Mon Feb  5 17:02:16 2007/-ko/
+@c /Plotting.texi/1.34/Sat Feb 17 06:44:10 2007/-ko/
 @iftex
 @hyphenation{ca-rac-te-res}
 @end iftex
@@ -309,7 +309,7 @@ pt_set: append (["NoLines: True", "LargePixels: true"],
 
 @noindent
 fizemos com que os grupos de pontos (e os pr@'{o}prios subseq@"{u}@^{e}ntes), n@~{a}o  
-possuam linhas entre os pontos, e para usar pixels largos.
+possuam linhas entre si, e usassem pixels grandes.
 Veja a p@'{a}gina de manual sobre o xgraph para especificar mais op@,{c}@~{o}es.
 
 @example

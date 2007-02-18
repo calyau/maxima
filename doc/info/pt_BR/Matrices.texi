@@ -1,5 +1,5 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
-@c /Matrices.texi/1.26/Sat Nov  4 16:13:29 2006/-ko/
+@c /Matrices.texi/1.27/Sat Feb 17 06:34:09 2007/-ko/
 @menu
 * Introdu@,{c}@~{a}o a Matrizes e @'{A}lgebra Linear::  
 * Defini@,{c}@~{o}es para Matrizes e @'{A}lgebra Linear::  
@@ -1423,8 +1423,11 @@ Retorna a transposta de @var{M}.
 Se @var{M} @'{e} uma matriz, o valor de retorno @'{e} outra matriz @var{N}
 tal que @code{N[i,j] = M[j,i]}.
 
-De outra forma @var{M} @'{e} uma lista, e o valor de retorno @'{e} uma matriz @var{N}
+Se @var{M} for uma lista, o valor de retorno @'e uma matrix @var{N}
 de @code{length (m)} linhas e 1 coluna, tal que @code{N[i,1] = M[i]}.
+
+De outra forma @var{M} @'e um s@'imbolo,
+e o valor de retorno @'e uma express@~ao substantiva @code{'transpose (@var{M})}.
 
 @end deffn
 

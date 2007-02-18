@@ -1,5 +1,5 @@
 \input texinfo
-@c /maxima.texi/1.40/Mon Jan 15 06:09:02 2007/-ko/
+@c /maxima.texi/1.44/Sat Feb 17 06:34:16 2007/-ko/
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c -*-texinfo-*-
 
@@ -225,6 +225,7 @@ Pacotes Adicionais
 * descriptive::                 Estat@'{i}stica descritiva.
 * diag::                        Matrizes de Jordan.
 * distrib::                     Distribui@,{c}@~{o}es de probabilidade.
+* draw::                        Uma interface Maxima-Gnuplot.
 * dynamics::                    Gr@'{a}ficos para sistemas din@^{a}micos e fractais.
 * eval_string::                 Express@~{o}es do Maxima como cadeias de texto.
 * f90::                         Tradutor do Maxima para o fortran.
@@ -491,6 +492,11 @@ distrib
 * Introdu@,{c}@~{a}o a distrib::
 * Defini@,{c}@~{o}es para distribui@,{c}@~{o}es cont@'{i}nuas::
 * Defini@,{c}@~{o}es para distribui@,{c}@~{o}es discretas::
+
+draw
+
+* Introduction to draw::
+* Definitions for draw::
 
 dynamics
 
@@ -804,11 +810,15 @@ zeilberger
 @chapter diag
 @include diag.texi
 
-@node distrib, dynamics, diag, Top
+@node distrib, draw, diag, Top
 @chapter distrib
 @include distrib.texi
 
-@node dynamics, eval_string, distrib, Top
+@node draw, dynamics, distrib, Top
+@chapter draw
+@include draw.texi
+
+@node dynamics, eval_string, draw, Top
 @chapter dynamics
 @include dynamics.texi
 
