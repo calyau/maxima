@@ -139,9 +139,9 @@
        (prog (cov contr deriv tensor)
 	     ((lambda (dummy) (and nfprpobjs dummy (setq e (rename1 e dummy))))
 	      (nonumber (cdaddr ($indices e)))) ;NFPRPOBJS is Not From Product
-	     (setq cov (copy (cdadr e))          ;of RP (indexed) OBJects
-		   contr (copy (cdaddr e))
-		   deriv (copy (cdddr e))
+	     (setq cov (copy-tree (cdadr e))          ;of RP (indexed) OBJects
+		   contr (copy-tree (cdaddr e))
+		   deriv (copy-tree (cdddr e))
 		   tensor (implode (nconc (exploden (caar e)) (ncons 45)
 					  (exploden (length cov)) (ncons 45)
 					  (exploden (length contr))))

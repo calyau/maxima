@@ -96,7 +96,7 @@
 	     ((eq x '$features)
 	      (cond ((not (equal (cdr $features) featurel))
 		     (setq $features (cons '(mlist simp) 
-					   (copy-top-level featurel ))))))
+					   (copy-list featurel ))))))
 	     ((eq x '$pre_eval_functions) (setq $pre_eval_functions '((mlist)) ))
 	     ((eq x '$post_eval_functions) (setq $post_eval_functions '((mlist)) ))
 	     ((or (eq x t) (eq x '$all))

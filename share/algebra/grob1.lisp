@@ -461,7 +461,7 @@
 ;remettre a jour la liste des paires et recommencer
 
 (defun grobner (gener ordexp)
-	  (setq $base (cons nil (sort (copy gener)
+	  (setq $base (cons nil (sort (copy-tree gener)
 				#'(lambda (u v) (ordexp (cdar v) (cdar u))))))
 	  (let ((paires nil))
 	  (setq $nbsyz 0 $nbred 0 $nbreduc 0 $nbred0 0)
@@ -699,7 +699,7 @@
 	    ((null i) l)
 	    (rplaca i (1+ (car i)))
 	    (cond ((sousp m esc)
-		     (setq l (cons (copy m) l))
+		     (setq l (cons (copy-tree m) l))
 		     (setq i m))
 	          (t
 		    (rplaca i 0)
@@ -727,7 +727,7 @@
 (defun umat (basli base)
 	(mapcar #'(lambda (u) (divise
 			       (cons
-				 (cons 1 (rplaca (copy u) (1+ (car u))))
+				 (cons 1 (rplaca (copy-tree u) (1+ (car u))))
 				 nil)
 			       base))
 	         basli))

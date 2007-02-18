@@ -186,7 +186,7 @@
        (if (null ($get recordname '$defstruct_default))
          (merror "~% new: don't know anything about `~M'." recordname))
 
-       (copy ($get recordname '$defstruct_default)))
+       (copy-tree ($get recordname '$defstruct_default)))
 
       ;; assume there is some initialization here e.g. new (f(5,6,7))
       (t
@@ -198,7 +198,7 @@
             (merror "~% new: wrong number of arguments in initializer; expected ~M, not ~M."
                     (length (cdr ($get recordop '$defstruct_default))) (length recordargs)))
 
-          (copy recordname))))))
+          (copy-tree recordname))))))
 
 ;; this is the lisp code equivalent to executing the command
 ;; infix(@);
