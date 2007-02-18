@@ -1,5 +1,5 @@
 \input texinfo
-@c /maxima.texi/1.40/Mon Jan 15 06:09:02 2007/-ko/
+@c /maxima.texi/1.44/Sat Feb 17 06:34:16 2007/-ko/
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c -*-texinfo-*-
 
@@ -196,7 +196,6 @@ Suporte a @'areas espec@'ificas da matem@'atica
 * Equa@value{cedilha}@~oes Diferenciais::       Definindo e resolvendo equa@value{cedilha}@~oes diferenciais.
 * Num@'erico::                    Integra@value{cedilha}@~ao num@'erica, transforma@value{cedilha}@~oes
                                 de Fourier, etc.
-* Estat@'istica::                 Fun@value{cedilha}@~oes estat@'isticas.
 * Arrays ::                     Criando e trabalhando com arrays.
 * Matrizes e @'Algebra Linear::   Opera@value{cedilha}@~oes com Matrizes.
 * Fun@value{cedilha}@~oes Afins::                        
@@ -223,10 +222,10 @@ Pacotes Adicionais
 
 * augmented_lagrangian::        Pacote augmented_lagrangian.
 * bode::                        Gr@'aficos de ganho e fase de Bode.
-* cholesky::                    Decomposi@,{c}@~ao de Cholesky.
 * descriptive::                 Estat@'istica descritiva.
 * diag::                        Matrizes de Jordan.
 * distrib::                     Distribui@,{c}@~oes de probabilidade.
+* draw::                        Uma interface Maxima-Gnuplot.
 * dynamics::                    Gr@'aficos para sistemas din@^amicos e fractais.
 * eval_string::                 Express@~oes do Maxima como cadeias de texto.
 * f90::                         Tradutor do Maxima para o fortran.
@@ -308,7 +307,7 @@ Montando Gr@'aficos
 
 Entrada e Sa@'ida
 
-* Introdu@value{cedilha}@~ao a Entrada e Sa@'ida::  
+* Coment@'{a}rios::  
 * Arquivos::                       
 * Defini@value{cedilha}@~oes para Entrada e Sa@'ida::  
 
@@ -376,10 +375,6 @@ Num@'erico
 * Pacotes de Fourier::                     
 * Defini@value{cedilha}@~oes para Num@'erico::   
 * Defini@value{cedilha}@~oes para S@'eries de Fourier::
-
-Estatistica
-
-* Defini@value{cedilha}@~oes para Estat@'istica::  
 
 Arrays
 
@@ -480,10 +475,6 @@ bode
 
 * Defini@value{cedilha}@~oes para bode::
 
-cholesky
-
-* Defini@value{cedilha}@~oes para cholesky::
-
 descriptive
 
 * Introdu@value{cedilha}@~ao ao pacote descriptive::
@@ -501,6 +492,11 @@ distrib
 * Introdu@value{cedilha}@~ao a distrib::
 * Defini@value{cedilha}@~oes para distribui@value{cedilha}@~oes cont@'inuas::
 * Defini@value{cedilha}@~oes para distribui@value{cedilha}@~oes discretas::
+
+draw
+
+* Introduction to draw::
+* Definitions for draw::
 
 dynamics
 
@@ -722,15 +718,11 @@ zeilberger
 
 @c @include ../pt_BR/NonCommutative.texi
 
-@node Num@'erico, Estat@'istica, Equa@value{cedilha}@~oes Diferenciais, Top
+@node Num@'{e}rico, Arrays, Equa@,{c}@~{o}es Diferenciais, Top
 @chapter Num@'erico
 @include ../pt_BR/Numerical.texi
 
-@node Estat@'istica, Arrays, Num@'erico, Top
-@chapter Estat@'istica
-@include ../pt_BR/Statistics.texi
-
-@node Arrays, Matrizes e @'Algebra Linear, Estat@'istica, Top
+@node Arrays, Matrizes e @'{A}lgebra Linear, Num@'{e}rico, Top
 @chapter Arrays
 @include ../pt_BR/Arrays.texi
 
@@ -806,15 +798,11 @@ zeilberger
 @chapter augmented_lagrangian
 @include ../pt_BR/augmented_lagrangian.texi
 
-@node bode, cholesky, augmented_lagrangian, Top
+@node bode, descriptive, augmented_lagrangian, Top
 @chapter bode
 @include ../pt_BR/bode.texi
 
-@node cholesky, descriptive, bode, Top
-@chapter cholesky
-@include ../pt_BR/cholesky.texi
-
-@node descriptive, diag, cholesky, Top
+@node descriptive, diag, bode, Top
 @chapter descriptive
 @include ../pt_BR/descriptive.texi
 
@@ -822,11 +810,15 @@ zeilberger
 @chapter diag
 @include ../pt_BR/diag.texi
 
-@node distrib, dynamics, diag, Top
+@node distrib, draw, diag, Top
 @chapter distrib
 @include ../pt_BR/distrib.texi
 
-@node dynamics, eval_string, distrib, Top
+@node draw, dynamics, distrib, Top
+@chapter draw
+@include draw.texi
+
+@node dynamics, eval_string, draw, Top
 @chapter dynamics
 @include ../pt_BR/dynamics.texi
 
