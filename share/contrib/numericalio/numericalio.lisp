@@ -210,7 +210,7 @@
   (cond ((not (null L))
       (loop 
         (if (not L) (return))
-        (let ((e (pop l)))
+        (let ((e (pop L)))
           (cond (($listp e)
               (write-list-lowlevel (cdr e) stream sep-ch))
             (t (mgrind e stream)
