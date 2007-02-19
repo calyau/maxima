@@ -136,7 +136,7 @@
 	  (partial-matrix-prod m perm k i (- k 1) #'fadd #'fsub #'fmult add-id fname)))
       
       (cond ((not (eq nil (mring-coerce-to-lisp-float fld)))
-	     (multiple-value-setq (lb ub) (mat-cond-by-lu m perm (- c 1) (mring-coerce-to-lisp-float fld)))
+	     (multiple-value-setq (lb ub) (mat-cond-by-lu m perm c (mring-coerce-to-lisp-float fld)))
 	     (setq m (array-to-maxima-matrix m (mring-mring-to-maxima fld)))
 	     (setq lb ($limit (mul lb cnd)))
 	     (setq ub ($limit (mul ub cnd)))
@@ -153,7 +153,8 @@
 
 (defun m-elem-reflect (mat perm n r i j)
   (cond ((and r (= i j)) 1)
-	(r (m-elem mat perm (+ n (- i) 1) (+ n (- j) 1)))
+	;;(r (m-elem mat perm (+ n (- i) 1) (+ n (- j) 1)))
+	(r (m-elem mat perm (+ n (- i)) (+ n (- j))))
 	(t (m-elem mat perm i j))))
 
 ;; The first argument mat should be a matrix in the packed LU format. 
@@ -178,11 +179,12 @@
 (defun triangular-mat-cond (mat perm n fn r)
   (let ((z) (d-max 0.0) (z-max 0.0) (s) (d))
     (setq z (make-array (+ 1 n)))
+   
     (catch 'singular
       (loop for i from n downto 0 do
 	(setq d (abs (funcall fn (m-elem-reflect mat perm n r i i))))
 	(if (= 0.0 d) (throw 'singular (values '$inf '$inf)) (setq d (/ 1 d)))
-	(setq d-max (max d-max d))
+	(setq d-max (max d-max (abs (funcall fn d))))
 	(setq s 1.0)
 	(loop for j from (+ 1 i) to n do
 	  (incf s (* (abs (funcall fn (m-elem-reflect mat perm n r i j))) (aref z j))))
