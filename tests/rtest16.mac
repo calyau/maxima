@@ -150,5 +150,14 @@ limit(exp(-1/x)/x^4,x,0,'plus);
 limit(x*(atan(x)-%pi/2),x,inf);
 -1;
 
+/*
+ * Bug [ 1661490 ] An integral gives a wrong result.
+ */
+(assume(a>0,b>0,sqrt(b^2+a^2)-a>0,sqrt(sqrt(b^2+a^2)-a)*(sqrt(b^2+a^2)+a)^(3/2)-b^2>0),0);
+0;
+radcan(integrate(exp(-(a+%i*b)*x^2),x,minf,inf)/rectform(sqrt(%pi)/sqrt(a+%i*b)));
+1;
+
+
 end;
 end$
