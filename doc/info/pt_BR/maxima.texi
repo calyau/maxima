@@ -19,12 +19,6 @@
 @synindex vr fn
 @c @documentencoding ISO-8859-15
 @documentencoding ISO-8859-1
-@set cedilha @,{c}
-@set i_agu @'{i}
-@set I_agu @'{I}
-@set a_til @~{a}
-@set a_agu @'{a}
-@set o_til @~{o}
 @set mail <maxima at math dot utexas dot edu>
 @settitle Manual do Maxima
 @c %**end of header
@@ -495,8 +489,8 @@ distrib
 
 draw
 
-* Introduction to draw::
-* Definitions for draw::
+* Introdu@,{c}@~{a}o a draw::
+* Defini@,{c}@~{o}es para draw::
 
 dynamics
 

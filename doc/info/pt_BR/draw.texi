@@ -1,0 +1,793 @@
+@c Language: Brazilian Portuguese, Encoding: iso-8859-1
+@c /draw.texi/1.1/Wed Feb 14 22:04:15 2007//
+@menu
+* Introdu@,{c}@~{a}o a draw::
+* Defini@,{c}@~{o}es para draw::
+@end menu
+
+
+
+
+
+@node Introdu@,{c}@~{a}o a draw, Defini@,{c}@~{o}es para draw, draw, draw
+@section Introdu@,{c}@~{a}o a draw
+
+
+@code{draw} @'e uma uma nova interface entre o Maxima e o Gnuplot.
+
+Existem tr@^es fun@,{c}@~oes a serem usadas n n@'ivel do Maxima: 
+@code{draw2d}, @code{draw3d} e @code{draw}.
+
+
+
+
+
+
+
+@node Defini@,{c}@~{o}es para draw,  , Introdu@,{c}@~{a}o a draw, draw
+@section Defini@,{c}@~{o}es para draw
+
+
+
+
+@defvr {Op@,{c}@~ao gr@'afica} xrange
+Valor padr@~ao: @code{false}
+
+Se @code{xrange} for @code{false}, o intevalo para a coordenada @var{x} @'e
+calculado automaticamente.
+
+Caso o usu@'ario deseje um intervalo espec@'ifico para @var{x}, esse intervalo deve ser fornecido como uma 
+lista da forma definida pelo Maxima, como em @code{xrange=[-2, 3]}.
+@end defvr
+
+
+
+@defvr {Op@,{c}@~ao gr@'afica} yrange
+Valor padr@~ao: @code{false}
+
+Se @code{yrange} for @code{false}, the range for the @var{y} coordinate is
+computed automatically.
+
+Se o usu@'ario sesejar um intervalo espec@'ifico para @var{y}, esse intervalo deve ser fornecido como uma 
+lista da forma definida pelo Maxima, como em @code{yrange=[-2, 3]}.
+@end defvr
+
+
+
+@defvr {Op@,{c}@~ao gr@'afica} zrange
+Valor padr@~ao: @code{false}
+
+Se @code{zrange} for @code{false}, o intervalo para a coordenada @var{z} @'e
+calculado automaticamente.
+
+Se o usu@'ario sesejar um intervalo espec@'ifico para @var{z}, esse intervalo deve ser fornecido como uma 
+lista da forma definida pelo Maxima, como em @code{zrange=[-2, 3]}.
+@end defvr
+
+
+
+@defvr {Op@,{c}@~ao gr@'afica} logx
+Valor padr@~ao: @code{false}
+
+Se @code{logx} for @code{true}, o eixo @var{x}ser@'a desenhado em
+escala logar@'itmica.
+@end defvr
+
+
+
+@defvr {Op@,{c}@~ao gr@'afica} logy
+Valor padr@~ao: @code{false}
+
+Se @code{logy} for @code{true}, o eixo @var{y}ser@'a desenhado em
+escala logar@'itmica.
+@end defvr
+
+
+
+@defvr {Op@,{c}@~ao gr@'afica} logz
+Valor padr@~ao: @code{false}
+
+Se @code{logz} for @code{true}, o eixo @var{z}ser@'a desenhado em
+escala logar@'itmica.
+@end defvr
+
+
+
+@defvr {Op@,{c}@~ao gr@'afica} terminal
+Valor padr@~ao: @code{screen}
+
+Seleciona o terminal a ser usado pelo Gnuplot; os valores poss@'iveis s@~ao:
+@code{screen} (o valor padr@~ao), @code{png}, @code{jpg}, @code{eps}, e @code{eps_color}.
+
+Veja tamb@'em @code{file_name}, @code{pic_width}, e @code{pic_height}.
+@end defvr
+
+
+
+@defvr {Op@,{c}@~ao gr@'afica} grid
+Valor padr@~ao: @code{false}
+
+Se @code{grid} for @code{true}, uma malha ser@'a desenhada sobre o plano @var{xy}.
+@end defvr
+
+
+
+@defvr {Op@,{c}@~ao gr@'afica} title
+Valor padr@~ao: @code{""} (a seq@"u@^encia de caracteres vazia)
+
+Variable @code{title} armazena uma seq@"u@^encia de caracteres do Maxima com o t@'itulo principal do gr@'afico.
+Por padr@~ao, nenhum t@'itulo @'e escrito.
+@end defvr
+
+
+
+@defvr {Op@,{c}@~ao gr@'afica} xlabel
+Valor padr@~ao: @code{""} (a seq@"u@^encia de caracteres vazia)
+
+A vari@'avel @code{xlabel} armazena uma seq@"u@^encia de caracteres do Maxima com o r@'otulo para o eixo @var{x}.
+Por padr@~ao, nenhum r@'otulo @'e escrito.
+@end defvr
+
+
+
+@defvr {Op@,{c}@~ao gr@'afica} ylabel
+Valor padr@~ao: @code{""} (a seq@"u@^encia de caracteres vazia)
+
+A vari@'avel @code{ylabel} armazena uma seq@"u@^encia de caracteres do Maxima com o r@'otulo para o eixo @var{y}.
+Por padr@~ao, nenhum r@'otulo @'e escrito.
+@end defvr
+
+
+
+@defvr {Op@,{c}@~ao gr@'afica} zlabel
+Valor padr@~ao: @code{""} (a seq@"u@^encia de caracteres vazia)
+
+A vari@'avel @code{zlabel} armazena uma seq@"u@^encia de caracteres do Maxima com o r@'otulo para o eixo @var{z}.
+Por padr@~ao, nenhum r@'otulo @'e escrito.
+@end defvr
+
+
+
+@defvr {Op@,{c}@~ao gr@'afica} xtics
+Valor padr@~ao: @code{true}
+
+Se @code{xtics} for @code{true}, a marca@,{c}@~ao num@'erica ser@'a feitas sobre o eixo @var{x}.
+@end defvr
+
+
+
+@defvr {Op@,{c}@~ao gr@'afica} ytics
+Valor padr@~ao: @code{true}
+
+Se @code{ytics} for @code{true}, a marca@,{c}@~ao num@'erica ser@'a feitas sobre o eixo @var{y}.
+@end defvr
+
+
+
+@defvr {Op@,{c}@~ao gr@'afica} ztics
+Valor padr@~ao: @code{true}
+
+Se @code{ztics} for @code{true}, a marca@,{c}@~ao num@'erica ser@'a feitas sobre o eixo @var{z}.
+@end defvr
+
+
+
+@defvr {Op@,{c}@~ao gr@'afica} rot_vertical
+Valor padr@~ao: 60
+
+@code{rot_vertical} @'e o @^angulo (em graus) da rota@,{c}@~ao vertical (em torno 
+do eixo @var{x}) para escolher o ponto de visualiza@,{c}@~ao em gr@'aficos tridimensionais.
+
+O @^angulo @'e associado ao intervalo @math{[0, 180]}.
+@end defvr
+
+
+
+@defvr {Op@,{c}@~ao gr@'afica} rot_horizontal
+Valor padr@~ao: 30
+
+@code{rot_horizontal} @'e o @^angulo (em graus) da rota@,{c}@~ao horizontal (em torno 
+do eixo @var{z})  para escolher o ponto de visualiza@,{c}@~ao em gr@'aficos tridimensionais.
+
+O @^angulo @'e associado ao intervalo @math{[0, 180]}.
+@end defvr
+
+
+
+@defvr {Op@,{c}@~ao gr@'afica} xy_file
+Valor padr@~ao: @code{""} (a seq@"u@^encia de caracteres vazia)
+
+@code{xy_file} @'e o nome do arquivo onde as coordenada ser@~ao armazenadas
+ap@'os um clique com o bot@~ao do mouse e pressionar a tecla 'x'. Por padr@~ao,
+nenhuma coordenada @'e armazenada.
+@end defvr
+
+
+
+@defvr {Op@,{c}@~ao gr@'afica} user_preamble
+Valor padr@~ao: @code{""} (a seq@"u@^encia de caracteres vazia)
+
+Usu@'arios experientes de Gnuplot podem fazer uso dessa op@,{c}@~ao para ajuste fino do comportamento
+do Gnuplot escolhendo op@,{c}@~oes para serem enviadas antes do comando @code{plot} ou do
+comando @code{splot}.
+@end defvr
+
+
+
+@defvr {Op@,{c}@~ao gr@'afica} file_name
+Valor padr@~ao: @code{"maxima_out"}
+
+Esse @'e o nome do arquivo onde os terminais @code{png}, @code{jpg}, @code{eps}
+e @code{eps_color} guardar@~ao o gr@'afico.
+
+Veja tamb@'em @code{terminal}.
+@end defvr
+
+
+
+@defvr {Op@,{c}@~ao gr@'afica} pic_width
+Valor padr@~ao: 640
+
+Essa @'e a largura do arquivo de bitmap gerado pelos terminais @code{png} e @code{jpg}.
+
+Veja tamb@'em @code{terminal}.
+@end defvr
+
+
+
+@defvr {Op@,{c}@~ao gr@'afica} pic_height
+Valor padr@~ao: 640
+
+Essa @'e a altura do arquivo de bitmap gerado pelos terminais @code{png} e @code{jpg}.
+
+Veja tamb@'em @code{terminal}.
+@end defvr
+
+
+
+@defvr {Op@,{c}@~ao gr@'afica} axis_bottom
+Valor padr@~ao: @code{true}
+
+Se @code{axis_bottom} for @code{true}, o eixo inferior @'e mostrado em gr@'aficos bidimensionais.
+
+Veja tamb@'em @code{axis_left},  @code{axis_top}, @code{axis_right}, e @code{axis_3d}.
+@end defvr
+
+
+
+@defvr {Op@,{c}@~ao gr@'afica} axis_left
+Valor padr@~ao: @code{true}
+
+Se @code{axis_left} for @code{true}, o eixo da esquerda @'e mostrado em gr@'aficos bidimensionais.
+
+Veja tamb@'em @code{axis_bottom},  @code{axis_top}, @code{axis_right}, e @code{axis_3d}.
+@end defvr
+
+
+
+@defvr {Op@,{c}@~ao gr@'afica} axis_top
+Valor padr@~ao: @code{true}
+
+Se @code{axis_top} for @code{true}, o eixo superior @'e mostrado em gr@'aficos bidimensionais.
+
+Veja tamb@'em @code{axis_bottom},  @code{axis_left}, @code{axis_right}, e @code{axis_3d}.
+@end defvr
+
+
+
+@defvr {Op@,{c}@~ao gr@'afica} axis_right
+Valor padr@~ao: @code{true}
+
+Se @code{axis_right} for @code{true}, o eixo da direita @'e mostrado em gr@'aficos bidimensionais.
+
+Veja tamb@'em @code{axis_bottom},  @code{axis_left}, @code{axis_top}, and @code{axis_3d}.
+@end defvr
+
+
+
+@defvr {Op@,{c}@~ao gr@'afica} axis_3d
+Valor padr@~ao: @code{true}
+
+Se @code{axis_3d} for @code{true}, os eixos @var{x}, @var{y} e @var{z} s@~ao mostrados em gr@'aficos tridimensionais.
+
+Veja tamb@'em @code{axis_bottom},  @code{axis_left}, @code{axis_top}, e @code{axis_right} para eixos em duas dimens@~oes.
+@end defvr
+
+
+
+@defvr {Op@,{c}@~ao gr@'afica} point_size
+Valor padr@~ao: 1
+
+@code{point_size} escolhe o tamanho para os pontos do gr´afico. Esse valor deve ser um
+n@'umero n@~ao negativo.
+@end defvr
+
+
+
+@defvr {Op@,{c}@~ao gr@'afica} point_type
+Valor padr@~ao: 1
+
+@code{point_type} @'e um @'indice (maior ou igual a -1) para especificar como os pontos s@~ao mostrados.
+As cores dos pontos s@~ao controladas com essa op@,{c}@~ao.
+@end defvr
+
+
+
+@defvr {Op@,{c}@~ao gr@'afica} points_joined
+Valor padr@~ao: @code{false}
+
+if @code{points_joined} for @code{true}, points are joined by lines.
+@end defvr
+
+
+
+@defvr {Op@,{c}@~ao gr@'afica} fill_type
+Valor padr@~ao: 1
+
+@code{fill_type} is an index (greater or equal than -1) to specify the color for filled regions.
+@end defvr
+
+
+
+@defvr {Op@,{c}@~ao gr@'afica} transparent
+Valor padr@~ao: @code{false}
+
+Se @code{transparent} for @code{true}, interior regions of polygons are 
+filled according to @code{fill_type}.
+@end defvr
+
+
+
+@defvr {Op@,{c}@~ao gr@'afica} border
+Valor padr@~ao: @code{true}
+
+Se @code{border} for @code{true}, borders of polygons are painted
+according to @code{line_type} and @code{line_width}.
+@end defvr
+
+
+
+@defvr {Op@,{c}@~ao gr@'afica} head_both
+Valor padr@~ao: @code{false}
+
+Se @code{head_both} for @code{true}, vectors are plotted with two arrow heads.
+Se @code{false}, only one arrow is plotted.
+@end defvr
+
+
+
+@defvr {Op@,{c}@~ao gr@'afica} head_length
+Valor padr@~ao: 2
+
+@code{head_length} indicates, in @var{x}-axis units, the length of arrow heads.
+@end defvr
+
+
+
+@defvr {Op@,{c}@~ao gr@'afica} head_angle
+Valor padr@~ao: 45
+
+@code{head_angle} indicates the angle, in degrees, between the arrow heads and
+the segment.
+@end defvr
+
+
+
+@defvr {Op@,{c}@~ao gr@'afica} head_type
+Valor padr@~ao: @code{filled}
+
+@code{head_type} is used to specify how arrow heads are plotted. Possible
+values are: @code{filled} (closed and filled arrow heads), @code{empty}
+(closed but not filled arrow heads), and @code{nofilled} (open arrow heads).
+@end defvr
+
+
+
+@defvr {Op@,{c}@~ao gr@'afica} label_alignment
+Valor padr@~ao: @code{center}
+
+@code{label_alignment} is used to specify where to write labels with
+respect to the given coordinates. Possible values are: @code{center},
+@code{left}, and @code{right}.
+@end defvr
+
+
+
+@defvr {Op@,{c}@~ao gr@'afica} label_orientation
+Valor padr@~ao: @code{horizontal}
+
+@code{label_orientation} is used to specify orientation of labels.
+Possible values are: @code{horizontal}, and @code{vertical}.
+@end defvr
+
+
+
+@defvr {Op@,{c}@~ao gr@'afica} label_color
+Valor padr@~ao: 1
+
+@code{label_color} is an index (greater or equal than -1) to specify the font color.
+@end defvr
+
+
+
+@defvr {Op@,{c}@~ao gr@'afica} line_width
+Valor padr@~ao: 1
+
+@code{line_width} is the width for plotted lines.
+@end defvr
+
+
+
+@defvr {Op@,{c}@~ao gr@'afica} line_type
+Valor padr@~ao: 1
+
+@code{line_type} is an index (greater or equal than -1) to specify how lines are displayed.
+Line colors are controlled with this option.
+@end defvr
+
+
+
+@defvr {Op@,{c}@~ao gr@'afica} nticks
+Valor padr@~ao: 30
+
+@code{nticks} is the number of sample points used by the plotting routine.
+@end defvr
+
+
+
+@defvr {Op@,{c}@~ao gr@'afica} adapt_depth
+Valor padr@~ao: 10
+
+@code{adapt_depth} is the maximum number of splittings used by the adaptive plotting routine.
+@end defvr
+
+
+
+@defvr {Op@,{c}@~ao gr@'afica} key
+Valor padr@~ao: @code{""} (a seq@"u@^encia de caracteres vazia)
+
+@code{key} is the mame of a function in the legend. Se @code{key} is uma
+seq@"u@^encia de caracteres vazia, no key is assigned to the function.
+@end defvr
+
+
+
+@defvr {Op@,{c}@~ao gr@'afica} function_style
+Valor padr@~ao: @code{lines}
+
+@code{function_style} indicates how functions are plotted: with @code{lines} or @code{dots}.
+@end defvr
+
+
+
+@defvr {Op@,{c}@~ao gr@'afica} xu_grid
+Valor padr@~ao: 30
+
+@code{xu_grid} is the number of coordinates of the first variable
+(@code{x} in explicit and @code{u} in parametric 3d surfaces) to 
+build the grid of sample points.
+
+Veja tamb@'em @code{yv_grid}.
+@end defvr
+
+
+
+@defvr {Op@,{c}@~ao gr@'afica} yv_grid
+Valor padr@~ao: 30
+
+@code{yv_grid} is the number of coordinates of the second variable
+(@code{y} in explicit and @code{v} in parametric 3d surfaces) to 
+build the grid of sample points.
+
+Veja tamb@'em @code{xu_grid}.
+@end defvr
+
+
+
+@defvr {Op@,{c}@~ao gr@'afica} surface_hide
+Valor padr@~ao: @code{false}
+
+Se @code{surface_hide} for @code{true}, hidden parts are not plotted in 3d surfaces.
+@end defvr
+
+
+
+@defvr {Op@,{c}@~ao gr@'afica} contour
+Valor padr@~ao: @code{none}
+
+Option @code{contour} enables the user to select where to plot contour lines.
+Possible values are:
+
+@itemize @bullet
+
+@item
+@code{none}:
+no contour lines are plotted.
+
+@item
+@code{base}:
+contour lines are projected on the xy plane.
+
+@item
+@code{surface}:
+contour lines are plotted on the surface.
+
+@item
+@code{both}:
+two contour lines are plotted: on the xy plane and on the surface.
+
+@item
+@code{map}:
+contour lines are projected on the xy plane, and the view point is
+set just in the vertical.
+
+@end itemize
+
+@end defvr
+
+
+
+@defvr {Op@,{c}@~ao gr@'afica} contour_levels
+Valor padr@~ao: 5
+
+@code{contour_levels} is the number of levels in contour plots.
+@end defvr
+
+
+
+@defvr {Op@,{c}@~ao gr@'afica} columns
+Valor padr@~ao: 1
+
+@code{columns} is the number of columns in multiple plots.
+@end defvr
+
+
+
+@defvr {Op@,{c}@~ao gr@'afica} ip_grid
+Valor padr@~ao: @code{[50, 50]}
+
+@code{ip_grid} sets the grid for the first sampling in implicit plots.
+@end defvr
+
+
+
+@defvr {Op@,{c}@~ao gr@'afica} ip_grid_in
+Valor padr@~ao: @code{[5, 5]}
+
+@code{ip_grid_in} sets the grid for the second sampling in implicit plots.
+@end defvr
+
+
+
+
+
+
+
+
+
+@deffn {Scene constructor} gr2d (@var{graphic option}, ..., @var{graphic object}, ...)
+
+Function @code{gr2d} builds an object describing a 2d scene. Arguments are
+@i{graphic options} and @i{graphic objects}. This scene is interpreted
+sequentially: @i{graphic options} affect those @i{graphic objects} placed
+on its right.
+
+This is the list of @i{graphic objects} available for scenes in two dimensions:
+
+@itemize @bullet
+@item
+@code{points([[x1,y1], [x2,y2], [x3,y3],...])} or @code{points([x1,x2,x3,...], [y1,y2,y3,...])}:
+allocates points @code{[x1,y1]}, @code{[x2,y2]}, @code{[x2,y2]}, ....
+This object is affected by the following @i{graphic options}: @code{point_size}, 
+@code{point_type}, @code{points_joined}, @code{line_width}, @code{key} and @code{line_type}.
+
+
+@item
+@code{polygon([[x1,y1], [x2,y2], [x3,y3],...])} or @code{polygon([x1,x2,x3,...], [y1,y2,y3,...])}:
+plots a polygon with vertices @code{[x1,y1]}, @code{[x2,y2]}, @code{[x2,y2]}, ... on the plane.
+This object is affected by the following @i{graphic options}: @code{transparent}, 
+@code{fill_type}, @code{border}, @code{line_width}, @code{key} and @code{line_type}.
+
+
+@item
+@code{rectangle([x1,y1], [x2,y2])}:
+plots a rectangle with opposite vertices @code{[x1,y1]} and @code{[x2,y2]}.
+This object is affected by the following @i{graphic options}: @code{transparent}, 
+@code{fill_type}, @code{border}, @code{line_width}, @code{key} and @code{line_type}.
+
+
+@item
+@code{ellipse(xc, yc, a, b, start_angle, end_angle)}:
+plots an ellipse centered at @code{[xc, yc]} with horizontal and vertical
+semi axis @code{a} and @code{b}, respectively, from angle @code{start_angle} to angle
+@code{end_angle}.
+This object is affected by the following @i{graphic options}: @code{nticks}, 
+@code{transparent}, @code{fill_type}, @code{border}, @code{line_width}, 
+@code{line_type} and @code{key}.
+
+
+@item
+@code{label(string,x,y)}:
+writes the @code{string} at point @code{[x,y]}.
+This object is affected by the following @i{graphic options}: @code{label_alignment}, 
+@code{label_orientation} and @code{label_color}.
+
+
+@item
+@code{vector([x,y], [dx,dy])}:
+plots vector @code{[dx,dy]} with origin in @code{[x,y]}.
+This object is affected by the following @i{graphic options}: @code{head_both}, 
+@code{head_length}, @code{head_angle}, @code{head_type}, @code{line_width}, 
+@code{line_type} and @code{key}.
+
+
+@item
+@code{explicit(fcn,var,minval,maxval)}:
+plots explicit function @code{fcn}, with variable @code{var} taking values
+from @code{minval} to @code{maxval}.
+This object is affected by the following @i{graphic options}: @code{nticks}, 
+@code{adapt_depth}, @code{line_width}, @code{line_type}, @code{key}, 
+@code{function_style} and @code{fill_type}.
+
+
+@item
+@code{implicit(fcn,x-var,x-minval,x-maxval,y-var,y-minval,y-maxval)}:
+plots the implicit function defined by @code{fcn}, with variable @code{x-var} taking values
+from @code{x-minval} to @code{x-maxval}, and variable @code{y-var} taking values
+from @code{y-minval} to @code{y-maxval}.
+This object is affected by the following @i{graphic options}: @code{ip_grid}, 
+@code{ip_grid_in}, @code{line_width}, @code{line_type}, @code{key}, 
+@code{filled_function} and @code{fill_type}.
+
+
+@item
+@code{polar(radius,ang,minang,maxang)}:
+plots function @code{radius(ang)} defined in polar coordinates, with variable @code{ang}
+taking values from @code{minang} to @code{maxang}.
+This object is affected by the following @i{graphic options}: @code{nticks}, 
+@code{line_width}, @code{line_type}, @code{key}, 
+@code{function_style} and @code{point_type}.
+
+
+@item
+@code{parametric(xfun,yfun,par,parmin,parmax)}:
+plots parametric function @code{[xfun,yfun]}, with parameter @code{par}
+taking values from @code{parmin} to @code{parmax}.
+This object is affected by the following @i{graphic options}: @code{nticks}, 
+@code{line_width}, @code{line_type}, @code{key}, 
+@code{function_style} and @code{point_type}.
+
+@end itemize
+
+See also the following graphic options: @code{xrange}, @code{yrange}, 
+@code{logx}, @code{logy}, @code{terminal}, @code{grid}, @code{title}, 
+@code{xlabel}, @code{ylabel}, @code{xtics}, @code{ytics}, @code{xy_file}, 
+@code{file_name}, @code{pic_width}, @code{pic_height}, 
+@code{user_preamble}, @code{axis_bottom}, @code{axis_left}, @code{axis_top}, 
+and @code{axis_right}.
+
+@end deffn
+
+
+
+
+
+
+
+
+
+@deffn {Scene constructor} gr3d (@var{graphic option}, ..., @var{graphic object}, ...)
+
+Function @code{gr3d} builds an object describing a 3d scene. Arguments are
+@i{graphic options} and @i{graphic objects}. This scene is interpreted
+sequentially: @i{graphic options} affect those @i{graphic objects} placed
+on its right.
+
+This is the list of @i{graphic objects} available for scenes in three dimensions:
+
+@itemize @bullet
+@item
+@code{points([[x1,y1,z1], [x2,y2,z2], [x3,y3,z3],...])} or 
+@code{points([x1,x2,x3,...], [y1,y2,y3,...], [z1,z2,z3,...])}:
+allocates points @code{[x1,y1,z1]}, @code{[x2,y2,z2]}, @code{[x2,y2,z3]}, ....
+This object is affected by the following @i{graphic options}: @code{point_size}, 
+@code{point_type}, @code{points_joined}, @code{line_width}, @code{key} and @code{line_type}.
+
+
+@item
+@code{label(string,x,y,z)}:
+writes the @code{string} at point @code{[x,y,z]}.
+This object is affected by the following @i{graphic options}: @code{label_alignment}, 
+@code{label_orientation} and @code{label_color}.
+
+
+@item
+@code{explicit(fcn,var1,minval1,maxval1,var2,minval2,maxval2)}:
+plots explicit function @code{fcn}, with variable @code{var1} taking values
+from @code{minval1} to @code{maxval1} and variable @code{var2} taking values
+from @code{minval2} to @code{maxval2}.
+This object is affected by the following @i{graphic options}: @code{xu_grid}, 
+@code{yv_grid}, @code{line_type}, and @code{key}.
+
+
+@item
+@code{parametric(xfun,yfun,zfun,par,parmin,parmax)}:
+plots parametric curve @code{[xfun,yfun,zfun]}, with parameter @code{par}
+taking values from @code{parmin} to @code{parmax}.
+This object is affected by the following @i{graphic options}: @code{nticks}, 
+@code{line_width}, @code{line_type}, and @code{key}.
+
+
+@item
+@code{parametric_surface(xfun,yfun,zfun,par1,par1min,par1max,par2,par2min,par2max)}:
+plots parametric surface @code{[xfun,yfun,zfun]}, with parameter @code{par1}
+taking values from @code{par1min} to @code{par1max} and parameter @code{par2}
+taking values from @code{par2min} to @code{par2max}.
+This object is affected by the following @i{graphic options}: @code{nticks}, 
+@code{line_width}, @code{line_type}, and @code{key}.
+
+@end itemize
+
+See also the following graphic options: @code{xrange}, @code{yrange}, 
+@code{zrange}, @code{logx}, @code{logy}, @code{logz}, @code{terminal}, 
+@code{grid}, @code{title}, @code{xlabel}, @code{ylabel}, @code{zlabel}, 
+@code{xtics}, @code{ytics}, @code{ztics}, @code{xy_file}, 
+@code{user_preamble}, @code{axis_bottom}, @code{axis_left}, 
+@code{axis_top}, @code{file_name}, @code{pic_width}, @code{pic_height}, 
+@code{axis_right}, @code{rot_vertical}, @code{rot_horizontal}, 
+@code{axis_3d}, @code{xu_grid}, @code{yv_grid}, @code{surface_hide}, 
+@code{contour}, and @code{contour_levels}.
+
+@end deffn
+
+
+
+
+
+
+
+@deffn {Function} draw (@var{gr2d}, ..., @var{gr3d}, ..., @var{options}, ...)
+
+Plots a series of scenes; its arguments are @code{gr2d} and @code{gr3d} 
+objects, together with some options. By default, the scenes are put together
+in one column.
+
+Function @code{draw} accepts two possible options: @code{terminal} 
+and @code{columns}.
+
+Functions @code{draw2d} and @code{draw3d} are short cuts to be used 
+when only one scene is required, in two or three dimensions, respectively.
+
+@end deffn
+
+
+@deffn {Function} draw2d (@var{option}, @var{graphic object}, ...)
+
+This function is a short cut for
+@code{draw2d(gr2d(@var{options}, ..., @var{graphic object}, ...))}.
+
+It can be used to plot a unique scene in 2d.
+
+@end deffn
+
+
+@deffn {Function} draw3d (@var{option}, @var{graphic object}, ...)
+
+This function is a short cut for
+@code{draw3d(gr3d(@var{options}, ..., @var{graphic object}, ...))}.
+
+It can be used to plot a unique scene in 3d.
+
+@end deffn
+
+
+
+@defvr {Variable} draw_pipes
+Valor padr@~ao: @code{true}
+
+When @code{draw_pipes} for @code{true}, Maxima communicates with Gnuplot
+via pipes. Se @code{draw_pipes} for @code{false}, Maxima communicates 
+with Gnuplot via files. This is only useful in non Windows systems.
+
+@end defvr
+
