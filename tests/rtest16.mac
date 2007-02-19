@@ -158,6 +158,14 @@ limit(x*(atan(x)-%pi/2),x,inf);
 radcan(integrate(exp(-(a+%i*b)*x^2),x,minf,inf)/rectform(sqrt(%pi)/sqrt(a+%i*b)));
 1;
 
+/*
+ * [ 1663704 ] integrate(sin(r*x)^7/x^4,x,0,inf) -> r^3*false
+ *
+ * Should return the integral instead of producing false.
+ */
+integrate(sin(a*x)^7/x^4,x,0,inf);
+integrate(sin(a*x)^7/x^4,x,0,inf);
+
 
 end;
 end$

@@ -1614,10 +1614,20 @@
 ;; 
 (defun scmp (c n)
   ;; Compute sign(r)*r^(n-1)*integrate(sin(y)^k/y^n,y,0,inf)
-  (m* (car c)
-      (m^ (cadr c) (m+ n -1))
-      `((%signum) ,(cadr c))
-      (sinsp (caddr c) n)))
+  (destructuring-bind (mult r k)
+      c
+    (let ((recursion (sinsp k n)))
+      (if recursion
+	  (m* mult
+	      (m^ r (m+ n -1))
+	      `((%signum) ,r)
+	      recursion)
+	  ;; Recursion failed.  Return the integrand
+	  (let ((integrand (div (pow `((%sin) ,(m* r var))
+				     k)
+				(pow var n))))
+	    (m* mult
+		`((%integrate) ,integrand ,var ,ll ,ul)))))))
 
 ;; integrate(sin(x)^n/x^2,x,0,inf) = pi/2*binomial(n-3/2,n-1).
 ;; Express in terms of Gamma functions, though.
