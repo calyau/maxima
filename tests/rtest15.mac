@@ -666,3 +666,35 @@ expected;
 
 quad_qags (sin(y[1]), y[1], 0, %pi, tol);
 expected;
+
+/*
+ * [ 1654183 ] integrate(x^2 / (1+x^6)^(3/2),x);
+ */
+integrate(x^2/(1+x^6)^(3/2),x);
+x^3/(3*sqrt(x^6+1));
+
+integrate(x^2/(1+x^6)^(3/2),x,-1,1);
+sqrt(2)/3;
+
+/*
+ * A few more tests of CHEBYF that handles integrals of the form
+ *
+ * x^r1*(c1+c2*x^q)^r2
+ */
+/* (r1-q+1)/q a positive integer */
+integrate(x^7/(1+x^4)^(3/2),x);
+sqrt(x^4+1)/2+1/(2*sqrt(x^4+1));
+
+/* r2 an integer */
+integrate(sqrt(x)/(1+x^(3/2))^2,x);
+-2/(3*(x^(3/2)+1));
+
+/* (r1-q+1)/q a negative integer */
+integrate(x^(-1)/(1+x^4)^(3/2),x);
+-log(sqrt(x^4+1)+1)/4+log(sqrt(x^4+1)-1)/4+1/(2*sqrt(x^4+1));
+
+/* (r1-q+1)/q + r2 an integer */
+integrate(sqrt(x)*(1+x^2)^(1/4),x);
+log((x^2+1)^(1/4)/sqrt(x)+1)/8-log((x^2+1)^(1/4)/sqrt(x)-1)/8
+			      +atan((x^2+1)^(1/4)/sqrt(x))/4
+			      +(x^2+1)^(1/4)/(sqrt(x)*(2*(x^2+1)/x^2-2))$
