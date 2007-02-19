@@ -348,18 +348,31 @@ one containing the @code{go}.
 @c NEEDS CLARIFICATION, EXPANSION, EXAMPLES
 @c THIS ITEM IS IMPORTANT
 @deffn {Special operator} if
-The @code{if} statement is used for conditional execution.  The syntax
-is:
+Represents conditional evaluation. Various forms of @code{if} expressions are recognized.
 
-@example
-if <condition> then <expr_1> else <expr_2>
-@end example
+@code{if @var{cond_1} then @var{expr_1} else @var{expr_0}}
+evaluates to @var{expr_1} if @var{cond_1} evaluates to @code{true},
+otherwise the expression evaluates to @code{expr_0}.
 
-The result of an @code{if} statement is @var{expr_1} if condition is @code{true} and
-@var{expr_2} otherwise.  @var{expr_1} and @var{expr_2} are any
-Maxima expressions (including nested @code{if} statements), and @var{condition} is
-an expression which evaluates to @code{true} or @code{false} and is composed of
-relational and logical operators which are as follows:
+@code{if @var{cond_1} then @var{expr_1} elseif @var{cond_2} then @var{expr_2} elseif ... else @var{expr_0}}
+evaluates to @var{expr_k} if @var{cond_k} is @code{true} and all preceding conditions are @code{false}.
+If none of the conditions are @code{true}, the expression evaluates to @code{expr_0}.
+
+A trailing @code{else false} is assumed if @code{else} is missing.
+That is, @code{if @var{cond_1} then @var{expr_1}} is equivalent to
+@code{if @var{cond_1} then @var{expr_1} else false},
+and @code{if @var{cond_1} then @var{expr_1} elseif ... elseif @var{cond_n} then @var{expr_n}}
+is equivalent to
+@code{if @var{cond_1} then @var{expr_1} elseif ... elseif @var{cond_n} then @var{expr_n} else false}.
+
+The alternatives @var{expr_0}, ..., @var{expr_n} may be any Maxima expressions,
+including nested @code{if} expressions.
+The alternatives are neither simplified nor evaluated unless the corresponding condition is @code{true}.
+
+The conditions @var{cond_1}, ..., @var{cond_n} are expressions such that @code{is(@var{cond_k})} evaluates
+to @code{true} or @code{false};
+it is an error otherwise.
+Among other elements, conditions may comprise relational and logical operators as follows.
 
 @c - SEEMS LIKE THIS TABLE WANTS TO BE IN A DISCUSSION OF PREDICATE FUNCTIONS; PRESENT LOCATION IS OK I GUESS
 @c - REFORMAT THIS TABLE USING TEXINFO MARKUP (MAYBE)
