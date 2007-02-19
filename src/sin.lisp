@@ -800,6 +800,7 @@
 	  (format t "  n2 = ~A~%" n2))
 	(return nil))
        ((and (integerp2 r1) (greaterp r1 0))
+	#+nil (format t "integer r1 > 0~%")
 	;; (r1+q-1)/q is positive integer.
 	;;
 	;; I (rtoy) think we are using the substitution z=(c1+c2*t^q).
@@ -831,6 +832,7 @@
 				  r1)))
 	    var))))
        ((integerp2 r2)
+	#+nil (format t "integer r2~%")
 	;; I (rtoy) think this is using the substitution z = t^(q/d1).
 	;;
 	;; The integral (as maxima will tell us) becomes
@@ -859,6 +861,7 @@
 						  r2))))
 			    var))))
        ((and (integerp2 r1) (lessp r1 0))
+	#+nil (format t "integer r1 < 0~%")
 	;; I (rtoy) think this is using the substitution
 	;;
 	;; z = (c1+c2*t^q)^(1/d2)
@@ -903,6 +906,9 @@
 						  r1))))
 			    var))))
        ((integerp2 (add2* r1 r2))
+	#+nil (format t "integer r1+r2~%")
+	;; If we're here,  (r1-q+1)/q+r2 is an integer.
+	;;
 	;; I (rtoy) think this is using the substitution
 	;;
 	;; z = ((c1+c2*t^q)/t^q)^(1/d1)
@@ -913,14 +919,18 @@
 	;; a*d2/q*c1^(r2+r1/q+1/q)*
 	;;   integrate(z^(d2*r2+d2-1)*(z^d2-c2)^(-r2-r1/q-1/q-1),z)
 	(return
-	  (substint (subliss w
-			     '((mexpt)
-			       ((mquotient)
-				((mplus)
-				 c1
-				 ((mtimes) c2 ((mexpt) var q)))
-				((mexpt) var q))
-			       ((mquotient) 1 d1)))
+	  (substint (let (($radexpand '$all))
+		      ;; Setting $radexpand to $all here gets rid of
+		      ;; ABS in the subtitution.  I think that's ok in
+		      ;; this case.  See Bug 1654183.
+		      (subliss w
+			       '((mexpt)
+				 ((mquotient)
+				  ((mplus)
+				   c1
+				   ((mtimes) c2 ((mexpt) var q)))
+				  ((mexpt) var q))
+				 ((mquotient) 1 d1))))
 		    var
 		    (ratint (simplify (subliss w
 					       '((mtimes)
@@ -1692,8 +1702,11 @@
      (cond ((null z) (return nil)))
      (go a)))
  
-(defun subliss (a b) 
-  (prog (x y z) 
+(defun subliss (a b)
+  "A is alist consisting of a variable (symbol) and its value.  B is
+  an expression.  For each entry in A, substitute the corresponding
+  value into B."
+  (prog (x y z)
      (setq x b)
      (setq z a)
    loop
