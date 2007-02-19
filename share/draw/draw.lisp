@@ -1498,7 +1498,8 @@
                   (format dest "~a" (gr-object-command obj)))))
 
       ; write sets of points
-      (format dest "~a" pltcmd)
+      (if biglist  ; no points, no drawing
+          (format dest "~a" pltcmd))
       (format dest "~%")
       (dolist (blis biglist 'done)
          ; the first element of blis indicates how many numbers are
