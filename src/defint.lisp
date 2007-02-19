@@ -1560,6 +1560,8 @@
 ;; integrate(a*sc(r*x)^k/x^n,x,0,inf).
 (defun ssp (exp)
   (prog (u n c)
+     (when (notinvolve exp '(%sin %cos))
+       (return nil))
      ;; I don't think this needs to be special.
      #+nil
      (declare (special n))
@@ -2877,18 +2879,37 @@
 ;; I believe the formula Wang gives is incorrect.  The derivation is
 ;; correct except for the last step.
 ;;
-;; Let J = integrate(x^m*exp(%i*k*x^n),x,0,inf), with k < 0.
+;; Let J = integrate(x^m*exp(%i*k*x^n),x,0,inf), with real k.
+;;
+;; Consider the case for k < 0.  Take a sector of a circle bounded by
+;; the real line and the angle -%pi/(2*n), and by the radii, r and R.
+;; Since there are no poles inside this contour, the integral
+;;
+;; integrate(z^m*exp(%i*k*z^n),z) = 0
 ;;
 ;; Then J = exp(-%pi*%i*(m+1)/(2*n))*integrate(R^m*exp(k*R^n),R,0,inf)
 ;;
-;; Wang seems to say this last integral is gamma(s/n/(-k)^s) where s =
-;; (m+1)/n.  But that seems wrong.  If we use the substitution x =
-;; (y/k)^(1/n), we end up with the result:
+;; because the integral along the boundary is zero except for the part
+;; on the real axis.  (Proof?)
 ;;
-;;   integrate(y^((m+1)/n-1)*exp(-y),y,0,inf)/k^((m+1)/n)/n.
+;; Wang seems to say this last integral is gamma(s/n/(-k)^s) where s =
+;; (m+1)/n.  But that seems wrong.  If we use the substitution R =
+;; (y/(-k))^(1/n), we end up with the result:
+;;
+;;   integrate(y^((m+1)/n-1)*exp(-y),y,0,inf)/(n*k^((m+1)/n).
 ;;
 ;; or gamma((m+1)/n)/k^((m+1)/n)/n.
 ;;
+;; Note that this also handles the case of
+;;
+;;   integrate(x^m*exp(-k*x^n),x,0,inf);
+;;
+;; where k is positive real number.  A simple change of variables,
+;; y=k*x^n, gives
+;;
+;;   integrate(y^((m+1)/n-1)*exp(-y),y,0,inf)/(n*k^((m+1)/n))
+;;
+;; which is the same form above.
 #+nil
 (defun ggr (e ind)
   (prog (c *zd* zn nn* dn* nd* dosimp $%emode)
@@ -2949,13 +2970,19 @@
      (setq c (car e))
      (setq e (cdr e))
      (cond ((setq e (ggr1 e var))
-	    ;; e = (m b n a).  I think we want to compute
-	    ;; gamma((m+1)/n)/k^((m+1)/n)/n.
+	    ;; e = (m b n a).  That is, the integral is of the form
+	    ;; x^m*exp(b*x^n+a).  I think we want to compute
+	    ;; gamma((m+1)/n)/b^((m+1)/n)/n.
 	    ;;
 	    ;; FIXME: If n > m + 1, the integral converges.  We need
 	    ;; to check for this.
 	    (destructuring-bind (m b n a)
 		e
+	      (when (and (not (zerop1 ($realpart b)))
+			 (not (zerop1 ($imagpart b))))
+		;; The derivation only holds if b is purely real or
+		;; purely imaginary.  Give up if it's not.
+		(return nil))
 	      ;; Check for convergence.  If b is complex, we need n -
 	      ;; m > 1.  If b is real, we need b < 0.
 	      (when (and (zerop1 ($imagpart b))
@@ -2964,6 +2991,7 @@
 	      (when (and (not (zerop1 ($imagpart b)))
 			 (not (eq ($asksign (sub n (add m 1))) '$pos)))
 		(diverg))
+	      
 	      (setq e (gamma1 m (cond ((zerop1 ($imagpart b))
 				       ;; If we're here, b must be negative.
 				       (neg b))
