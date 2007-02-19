@@ -277,6 +277,6 @@
     (merror "Incompatible matrix sizes"))
   
   (setq m ($lu_factor m fld))
-  (if (floatp ($last m)) (mtell "An upper bound for the condition number is ~:M" ($last m)))
+  (if (floatp ($last m)) (mtell "An upper bound for the condition number is ~:M~:%" ($last m)))
   ($lu_backsub m b))
 
