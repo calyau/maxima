@@ -9,11 +9,12 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :maxima)
+
 (macsyma-module risch)
 
 (load-macsyma-macros rzmac ratmac)
 
-(declare-top(special prob rootfac parnumer pardenom logptdx wholepart $ratalgdenom
+(declare-top (special prob rootfac parnumer pardenom logptdx wholepart $ratalgdenom
 		     expexpflag $logsimp switch1 degree cary $ratfac $logexpand
 		     ratform genvar *var var rootfactor expint $keepfloat
 		     trigint operator $exponentialize $gcd $logarc changevp
@@ -22,10 +23,7 @@
 		     rischp $factorflag alphar m simp genpairs hypertrigint
 		     *mosesflag yyy *exp y $algebraic implicit-real
 		     errrjfflag $%e_to_numlog generate-atan2 context
-		     bigfloatzero rp-polylogp)
-	    (*expr $exponentialize subfunsubs subfunname sratsimp partfrac mqapplyp)
-	    (*lexpr context polylogp)
-	    (genprefix risch))
+		     bigfloatzero rp-polylogp))
 
 (defmvar $liflag t "Controls whether `risch' generates polylogs") 
 
@@ -58,12 +56,9 @@
     (cons (r+ a c) (append b d))))
 
 (defmfun $risch (exp var)
-  ;; Get RATINT from SININT
-  (find-function 'ratint)
   (with-new-context (context)
     (rischint exp var)))
 
-
 (defun spderivative (p var) 
   (cond ((pcoefp p) '(0 . 1))
 	((null (cdr p)) '(0 . 1))
@@ -1046,7 +1041,6 @@
 
 (defun fixintgreat (a) (subst '/_101x *var a))
 
-#-nil
-(declare-top(unspecial b beta cary context *exp degree gamma
-		       klth liflag m nogood operator prob
-		       r s simp switch switch1 *var var  y yyy))
+(declare-top (unspecial b beta cary context *exp degree gamma
+			klth liflag m nogood operator prob
+			r s simp switch switch1 *var var  y yyy))

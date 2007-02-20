@@ -1,7 +1,7 @@
 ;;; -*-  Mode: Lisp; Package: Maxima; Syntax: Common-Lisp; Base: 10 -*- ;;;;
 
-
 ;;    ** (c) Copyright 1976, 1983 Massachusetts Institute of Technology **
+
 (in-package :maxima)
 
 ;;These are the main routines for finding the Laplace Transform
@@ -77,14 +77,7 @@
 (defun parp (a)
   (eq a *par*))
 
-
-
-;;(DEFUN HASVAR(EXP)(COND ((FREEVAR EXP) NIL)(T T)))
-
-
-
-(defun arbpow1
-    (exp)
+(defun arbpow1 (exp)
   (m2 exp
       '((mplus)
 	((coeffpt)
@@ -657,8 +650,7 @@
 	((coeffpp) (a zerp)))
       nil))
 
-(defun onehe
-    (exp)
+(defun onehe (exp)
   (m2 exp
       '((mplus)
 	((coeffpt)
@@ -667,8 +659,7 @@
 	((coeffpp) (a zerp)))
       nil))
 
-(defun oneq
-    (exp)
+(defun oneq (exp)
   (m2 exp
       '((mplus)
 	((coeffpt)
@@ -679,8 +670,7 @@
 	((coeffpp) (a zerp)))
       nil))
 
-(defun onep0
-    (exp)
+(defun onep0 (exp)
   (m2 exp
       '((mplus)
 	((coeffpt)
@@ -689,8 +679,7 @@
 	((coeffpp) (a zerp)))
       nil))
 
-(defun hyp-onep
-    (exp)
+(defun hyp-onep (exp)
   (m2 exp
       '((mplus)
 	((coeffpt)
@@ -702,8 +691,7 @@
       nil))
 
 ;; Recognize %w[v1,v2](w), Whittaker W function.
-(defun onew
-    (exp)
+(defun onew (exp)
   (m2 exp
       '((mplus)
 	((coeffpt)
@@ -713,13 +701,6 @@
 	  (w true)))
 	((coeffpp) (a zerp)))
       nil))
-
- 
-
-
- 
-
-
 
 ;;...RECOGNIZES L.T.E. "U*%E^(A*X+E*F(X)-P*X+C)+D".
 
@@ -739,13 +720,8 @@
 	((coeffpp) (d zerp)))
       nil)) 
 
-;;(DEFUN ZERP(A)(EQUAL A 0))
-
-;;(DEFUN NONZERP(A)(NOT (ZERP A)))
-
 (defmfun $specint (exp var)
   (prog ($radexpand checkcoefsignlist)
-     (progn (find-function 'sinint))
      (setq $radexpand '$all)
      (return (grasp-some-trigs exp))))
 

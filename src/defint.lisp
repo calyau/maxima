@@ -9,6 +9,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :maxima)
+
 (macsyma-module defint)
 
 ;;;          this is the definite integration package. 
@@ -219,9 +220,7 @@
 		 (rp-polylogp ())
 		 ($domain '$real) ($m1pbranch ())) ;Try this out.
 
-	     (find-function '$limit)
 	     (make-global-assumptions) ;sets *global-defint-assumptions*
-	     (find-function '$residue)
 	     (setq exp (ratdisrep exp))
 	     (setq var (ratdisrep var))
 	     (setq ll (ratdisrep ll))

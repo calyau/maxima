@@ -86,13 +86,6 @@
 
 ;; The following macros pertain only to Macsyma.
 
-;; All functions are present on non-autoloading systems.  Definition
-;; for autoloading systems is in SUPRV.
-;; If you have dynamic linking you might as well take advantage of it.
-
-(defmacro find-function (function)
-  (declare (ignore function)))
-
 ;; Except on the Lisp Machine, load the specified macro files.
 ;; On the Lisp Machine, the DEFSYSTEM facility is used for loading
 ;; macro files, so just check that the file is loaded. This is
