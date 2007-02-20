@@ -444,7 +444,7 @@ Default value: 10
 @defvr {Graphic option} key
 Default value: @code{""} (empty string)
 
-@code{key} is the mame of a function in the legend. If @code{key} is an
+@code{key} is the name of a function in the legend. If @code{key} is an
 empty string, no key is assigned to the function.
 @end defvr
 
