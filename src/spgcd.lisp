@@ -11,30 +11,19 @@
 ;;;   ** (C) COPYRIGHT 1982 MASSACHUSETTS INSTITUTE OF TECHNOLOGY *****
 ;;;   ****** THIS IS A READ-ONLY FILE! (ALL WRITES RESERVED) **********
 ;;;   *****************************************************************
+
 (in-package :maxima)
 
 (macsyma-module spgcd)
 
 (declare-top (special modulus temp genvar *alpha *which-factor*
-		      $algebraic algfac* $gcd)
-	     (mapex t)
-	     (genprefix spgcd))
+		      $algebraic algfac* $gcd))
 
 (load-macsyma-macros ratmac)
 
 (defvar *alpha nil) 
 
 (defmvar $pointbound *alpha)
-
-(defmacro 0? (x) `(= ,x 0))
-
-(defmacro melt (a . indices) `(arraycall fixnum ,a . ,indices))
-
-(defmacro arraytype (m) `(array-type ,m))
-
-(defmacro ncols (m) `(array-dimension-n ,m 1))
-
-(defmacro nrows (m) `(array-dimension-n ,m 2))
 
 (defmacro len (lobj) `(cadr ,lobj))
 
@@ -46,7 +35,6 @@
 
 (defmacro badrows (lobj) `(cadr (cddddr ,lobj)))
 
-
 (defun pinterp (x pts vals)
   (do ((u (car vals)
 	  (pplus u (ptimes
@@ -66,11 +54,11 @@
 	   (ans 0
 		(ctimes
 		 (cplus ans (pt-lc l))
-		 (cexpt val (f- (pt-le l) (pt-le (pt-red l)))))))
+		 (cexpt val (- (pt-le l) (pt-le (pt-red l)))))))
 	  ((null (pt-red l))
 	   (ctimes
 	    (cplus ans (pt-lc l))
-	    (if (0? (pt-le l))
+	    (if (zerop (pt-le l))
 		1
 		(cexpt val (pt-le l))))))))
 
@@ -87,23 +75,22 @@
   (do ((l mon (cdr l))
        (ll pt (cdr ll))
        (ans 1 (ctimes
-	       (if (0? (car l)) 1
+	       (if (zerop (car l)) 1
 		   (cexpt (car ll) (car l)))
 	       ans)))
       ((null l) ans)))
-
+
 ;; ONE-STEP causes the  (row,col) element of mat to be made to be zero.  It is
 ;; assumed that row > col, and that the matrix is diagonal above the row.  
 ;; n indicates how wide the rows are suppoded to be.
 
 (defun one-step (mat row col n)
-  (do ((i col (f1+ i))
-       (c (arraycall fixnum mat row col))) ;Got to save this away before it is 
-					;zeroed
+  (do ((i col (1+ i))
+       (c (aref mat row col)))	  ;Got to save this away before it is zeroed
       ((> i n) mat)
-    (store (arraycall fixnum mat row i)
-	   (cdifference (arraycall fixnum mat row i)
-			(ctimes c (arraycall fixnum mat col i))))))
+    (setf (aref mat row i)
+	   (cdifference (aref mat row i)
+			(ctimes c (aref mat col i))))))
 
 ;; MONICIZE-ROW assumes the (row,row) element is non-zero and that this element
 ;; is to be made equal to one.  It merely divides the entire row by the 
@@ -111,39 +98,38 @@
 ;; already zero.  Again n is the width of the rows.
 
 (defun monicize-row (mat row n)
-  (do ((i n (f1- i))
-       (c (crecip (arraycall fixnum mat row row))))
+  (do ((i n (1- i))
+       (c (crecip (aref mat row row))))
       ((= i row)
-       (store (arraycall fixnum mat row row) 1)) ;Don't bother doing the
-					;division on the diagonal
-    (store (arraycall fixnum mat row i) (ctimes (arraycall fixnum mat row i) c))))
+       (setf (aref mat row row) 1)) ;Don't bother doing the division on the diagonal
+    (setf (aref mat row i) (ctimes (aref mat row i) c))))
 
 ;; FILL-ROW is given a point and the value of the skeleton at the point and
 ;; fills the apropriate row in the matrix. with the values of the monomials
 ;; n is the length of the skeleton
 
 (defun fill-row (skel mat n row pt val)
-  (do ((i 0 (f1+ i))
+  (do ((i 0 (1+ i))
        (l skel (cdr l)))
       ((= i n)				;l should be nil now,
        (if (not (null l))	     ;but lets check just to make sure
 	   (merror "Skeleton too long in  `fill-row': ~S"
 		   (list n '= skel)))
-       (store (arraycall fixnum mat row n) val)) ;The value is stored in the
-					;last column
-    (store (arraycall fixnum mat row i)
+       (setf (aref mat row n) val)) ;The value is stored in the last column
+    (setf (aref mat row i)
 	   (eval-mon (car l) pt))))	;Should think about a better
 					;way to do this evaluation.
 
 #-allegro
 (defun swap-rows (mat m n)		;Interchange row m and n
-  (do ((k 0 (f1+ k))
-       (l (ncols mat)))
+  (do ((k 0 (1+ k))
+       (l (array-dimension mat 1)))
       ((> k l) mat)
-    (store (arraycall fixnum mat m k)
-	   (prog2 0 (melt mat n k)
-	     (store (melt mat n k) (melt mat m k))))))
-
+    (setf (aref mat m k)
+	   (prog1
+	       (aref mat n k)
+	     (setf (aref mat n k) (aref mat m k))))))
+
 ;; PARTIAL-DIAG fills in one more row of the matrix and tries to diagonalize
 ;; what it has so far.  If the row which has just been introduced has a 
 ;; zero element on the diagonal then it is scanned for its first non-zero
@@ -170,7 +156,7 @@
 
     ;; This loop kills all the elements in the row up to the diagonal.
 
-    (do ((i 0 (f1+ i))			;runs over the columns of mat
+    (do ((i 0 (1+ i))			;runs over the columns of mat
 	 (l (setq badrows (cons nil badrows)))
 	 (flag))
 	((= i crow)
@@ -178,7 +164,7 @@
       (if (cdr l)			;Any bad rows around?
 	  (if (= (cadr l) i)		;No one for this row,
 	      (if (and (null flag)	;So if this guy can fill in
-		       (not (0? (melt mat crow i))))
+		       (not (zerop (aref mat crow i))))
 		  (progn
 		    (swap-rows mat crow i) ;Put this guy in the right spot
 		    (rplacd l (cddr l))
@@ -188,29 +174,29 @@
 	      (one-step mat crow i n))
 	  (one-step mat crow i n)))
 
-    (if (0? (melt mat crow crow))	;diagonal is zero?
+    (if (zerop (aref mat crow crow))	;diagonal is zero?
 	(setq badrows (cons crow badrows))
 	(progn
 	  (monicize-row mat crow n) ;Monicize the diagonal element on this
 					;row
-	  (do ((j 0 (f1+ j)))	  ;For each element in the rows above 
+	  (do ((j 0 (1+ j)))	  ;For each element in the rows above 
 					;this one zero the the crow column
 	      ((= j crow))	      ;Don't zero the diagonal element
 	    (one-step mat j crow n))))
-    (cond ((and (= (f1+ row) n)
-		(progn (setq row (f1- row)) t) ;Decrement it just in case
+    (cond ((and (= (1+ row) n)
+		(progn (setq row (1- row)) t) ;Decrement it just in case
 		(null (cdr badrows)))
-	   (do ((l nil (cons (melt mat i n) l))
-		(i (f1- n) (f1- i)))
+	   (do ((l nil (cons (aref mat i n) l))
+		(i (1- n) (1- i)))
 	       ((< i 0)
 		(list 'solution n skel mat l))))
-	  (t (list 'matrix n skel mat (f1+ row) badrows)))))
+	  (t (list 'matrix n skel mat (1+ row) badrows)))))
 
 (defun gen-point (vars)
   (do ((l vars (cdr l))
        (ans nil (cons (cmod (random $pointbound)) ans)))
       ((null l) ans)))
-
+
 ;; PDIAG-ALL introduces a new row in each matrix in the list of l-lobjs.
 ;; The RHS of the equations is stripped off of poly.
 
@@ -252,7 +238,7 @@
 ;; 		  (setq h (cddr h)))
 ;; 		 (t (error '|Bad Evaluation point - MERGE-INTVECT|)))))
 
-
+
 (defun merge-skel (mon poly)
   (cond ((pcoefp poly)
 	 (list (cons 0 mon)))
@@ -263,9 +249,8 @@
 
 (defun new-skel (skel polys)
   (list
-   (mapcan (fn (mon poly) (merge-skel mon poly))
-	   skel polys)
-   (mapcan (fn (q)
+   (mapcan #'(lambda (mon poly) (merge-skel mon poly)) skel polys)
+   (mapcan #'(lambda (q)
 	       (cond ((pcoefp q) (list q))
 		     ((do ((l (cdr q) (cddr l))
 			   (ans nil (cons (cadr l) ans)))
@@ -277,7 +262,7 @@
 	      (let ((n (length (cadr q))))
 		(cons (car q)
 		      (list 'matrix n (cadr q)
-			    (*array nil 'fixnum n (f1+ n))
+			    (make-array (list n (1+ n)) :initial-element 0 :element-type 'fixnum)
 			    0 nil))))
 	  prev-lift))
 
@@ -287,7 +272,7 @@
 		    (list 'matrix (caddr q) (cadddr q)
 			  (caddr (cddr q)) 0 nil)))
 	  lobjs))
-
+
 (defun sparse-lift (c f g l-lobjs vars)
   (do ((pt (gen-point vars) (gen-point vars))
        (gcd))
@@ -306,7 +291,7 @@
       (1 (pctimes c gcd))
       (2 (pquotient f gcd))
       (3 (pquotient g gcd)))))
-
+
 (defun zgcd-lift* (c f g vars degb)
   (do ((vals (gen-point vars) (gen-point vars))
        (ans))
@@ -339,7 +324,7 @@
 			   (pcsubsty (car vals) (car vars) f)
 			   (pcsubsty (car vals) (car vars) g)
 			   (cdr vars) (cdr vals) (cdr degb))))
-	   (do ((i 0 (f1+ i))		;counts to the degree bound
+	   (do ((i 0 (1+ i))		;counts to the degree bound
 		(lobjs (create-lobjs prev-lift)	;need to create
 					;the appropriate matrices
 		       (clear-lobjs lobjs)) ;but reuse them at each
@@ -370,9 +355,9 @@
 (defun add-point (l)
   (do ((try (cmod (random $pointbound))
 	    (cmod (random $pointbound))))
-      ((null (zl-member try l))
+      ((null (member try l :test #'equal))
        (cons try l))))
-
+
 (defun merge-sol-lin (l1 l2)
   (do ((l l1 (cdr l))
        (l2 l2 (cdr l2)))
@@ -424,7 +409,7 @@
 		    ((not (null modulus))
 		     (return (let (($gcd '$red))
 			       (pgcd f g)))))))))
-
+
 (defun zgcd1 (f g)
   (let* ((modulus modulus)
 	 first-lift
@@ -466,7 +451,7 @@
 	   (lobj->poly (car vars) (cdr vars)
 		       (zgcd-lift* c f g (cdr vars) (cdr degb))))
 	  (t
-	   (setq h (times (maxcoefficient f)
+	   (setq h (* (maxcoefficient f)
 			  (maxcoefficient g)))
 	   (setq modulus *alpha)	;Really should randomize
 	   (setq first-lift
@@ -478,12 +463,12 @@
 				 first-lift)
 			 (merge-sol-lin-z linsols
 					  (sparse-lift cm fm gm lobjs (cdr vars))
-					  (times coef-bound
+					  (* coef-bound
 						 (crecip (cmod coef-bound)))
-					  (times modulus coef-bound)))
+					  (* modulus coef-bound)))
 		(lobjs (create-lobjs first-lift)
 		       (clear-lobjs lobjs))
-		(coef-bound *alpha (times modulus coef-bound))
+		(coef-bound *alpha (* modulus coef-bound))
 		(cm) (fm) (gm))
 	       ((greaterp coef-bound h)
 		(setq modulus nil)
@@ -492,7 +477,7 @@
 	     (setq cm (pmod c)
 		   fm (pmod f)
 		   gm (pmod g)))))))
-
+
 (defun lobj->poly (var vars lobj)
   (primpart
    (cons var
@@ -514,7 +499,7 @@
 	 (disrep-monom (cdr monom) c (cdr vars)))
 	((list (car vars) (car monom)
 	       (disrep-monom (cdr monom) c (cdr vars))))))
-
+
 (defun merge-sol-lin-z (l1 l2 c new-coef-bound)
   (do ((l l1 (cdr l))
        (l2 l2 (cdr l2))
@@ -546,8 +531,8 @@
   (let ((modulus *alpha))
     (setq f (pmod f) g (pmod g))
     (do ((vn (cdr vars) (cdr vn))
-	 (vs (zl-delete (car vars) (copy-list vars))
-	     (zl-delete (car vn) (copy-list vars)))
+	 (vs (delete (car vars) (copy-list vars) :test #'equal)
+	     (delete (car vn) (copy-list vars) :test #'equal))
 	 (l) (f*) (g*) (gcd*) (rand))
 	(nil)
       (setq rand (gen-point vs))
@@ -564,25 +549,15 @@
 ;; to which to lift 
 
 (defun dlf-mumblify (a b)
-  (loop for x in a for y in b sum (difference x y)))
+  (loop for x in a for y in b sum (- x y)))
 
 (defun determine-lifting-factor (f-degv g-degv gcd-degv)
-  (let* ((fv		       ;(apply '+ (mapcar '- f-degv gcd-degv))
-	  (dlf-mumblify f-degv gcd-degv))
-	 (gv		       ;(apply '+ (mapcar '- g-degv gcd-degv))
-	  (dlf-mumblify g-degv gcd-degv))
+  (let* ((fv (dlf-mumblify f-degv gcd-degv))
+	 (gv (dlf-mumblify g-degv gcd-degv))
 	 (gcdv (apply '+ gcd-degv)))
     (if (lessp fv gcdv)
 	(if (lessp fv gv) 2 3)
 	(if (lessp gv gcdv) 3 1))))
-;;(defun DETERMINE-LIFTING-FACTOR (f-degv g-degv gcd-degv)
-;;       (let* ((fv (apply '+ (mapcar '- f-degv gcd-degv)))
-;;	      (gv (apply '+ (mapcar '- g-degv gcd-degv)))
-;;	      (gcdv (apply '+ gcd-degv)))
-;;	     (if (lessp fv gcdv)
-;;		 (if (lessp fv gv) 2 3)
-;;		 (if (lessp gv gcdv) 3 1))))
-  
 
 (defun excise-extra-variables (degv vars)
   (do ((l (reverse degv) (cdr l))
@@ -596,7 +571,7 @@
 
 (defun zpdegreevector (p vars)
   (excise-extra-variables (pdegreevector p) vars))
-
+
 ;; Local Modes:
 ;; Mode:LISP
 ;; Fill Column:76
