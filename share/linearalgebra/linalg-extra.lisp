@@ -38,4 +38,61 @@
     (push '($matrix) mat)))
 
 
+;; Use Sylvester's criterion to decide if the self-adjoint part of a matrix is 
+;; negative definite (neg), negative semidefinite (nz), positive semidefinite (pz), 
+;; or positive definite (pos). By the self-adjoint part of a matrix M, I mean
+;; (M + M^*) / 2, where ^* is the conjugate transpose. 
+
+;; For purely numerical matrices, there more efficient algorithms; for symbolic
+;; matrices, things like matrix([a,b],[b,a]), assume(a > 0, a^2 > b^2), I think
+;; this is the best we can do.
+
+;; (1) The divide by 2 isn't needed, but try assume(a > 0, a^2 > b^2),
+;; matrix_sign(matrix([a,b],[b,a])) without the divide by 2.
+
+(defun $matrix_sign (m)
+  (let ((i 1) (sgn) (n) (matrix-sign))
+    ($require_square_matrix m '$first '$matrix_sign)
+    (setq m (div (add m ($ctranspose m)) 2)) ;; see (1)
+    (setq n ($first ($matrix_size m)))
+    (setq matrix-sign (csign (ratdisrep (newdet m i nil))))
+    
+    (while (and (memq matrix-sign '($neg $nz $pz $pos)) (< i n))
+      (incf i)
+      (setq sgn (csign (ratdisrep (newdet m i nil))))      
+      (cond
+       ((and (eq matrix-sign '$neg) (memq sgn '($nz $neg)))
+	(setq matrix-sign sgn))
+       
+       ((and (eq matrix-sign '$neg) (eq sgn '$zero))
+	(setq matrix-sign '$nz))
+       
+       ((eq matrix-sign '$neg)
+	(setq matrix-sign '$pnz))
+       
+       ((and (eq matrix-sign '$nz) (memq sgn '($neg $nz $zero)))
+	(setq matrix-sign '$nz))
+	
+       ((eq matrix-sign '$nz) 
+	(setq matrix-sign '$pnz))
+
+       ((and (eq matrix-sign '$pz) (memq sgn '($pz $pos $zero)))
+	(setq matrix-sign '$pz))
+
+       ((eq matrix-sign '$pz) 
+	(setq matrix-sign '$pnz))
+
+       ((and (eq matrix-sign '$pos) (memq sgn '($pz $pos)))
+	(setq matrix-sign sgn))
+
+       ((and (eq matrix-sign '$pos) (eq sgn '$zero))
+	(setq matrix-sign '$pz))
+       
+       ((eq matrix-sign '$pos)
+	(setq matrix-sign '$pnz))
+
+       (t  (setq matrix-sign '$pnz))))
+    
+    matrix-sign))
+
   
