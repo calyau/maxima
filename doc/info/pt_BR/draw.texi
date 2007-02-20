@@ -1,5 +1,5 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
-@c /draw.texi/1.1/Wed Feb 14 22:04:15 2007//
+@c /draw.texi/1.2/Tue Feb 20 06:59:00 2007//
 @menu
 * Introdu@,{c}@~{a}o a draw::
 * Defini@,{c}@~{o}es para draw::
@@ -115,7 +115,7 @@ Se @code{grid} for @code{true}, uma malha ser@'a desenhada sobre o plano @var{xy
 @defvr {Op@,{c}@~ao gr@'afica} title
 Valor padr@~ao: @code{""} (a seq@"u@^encia de caracteres vazia)
 
-Variable @code{title} armazena uma seq@"u@^encia de caracteres do Maxima com o t@'itulo principal do gr@'afico.
+Variable @code{title} armazena uma seq@"u@^encia de caracteres do Maxima com o t@'itulo principal de um fundo gr@'afico.
 Por padr@~ao, nenhum t@'itulo @'e escrito.
 @end defvr
 
@@ -176,7 +176,7 @@ Se @code{ztics} for @code{true}, a marca@,{c}@~ao num@'erica ser@'a feitas sobre
 Valor padr@~ao: 60
 
 @code{rot_vertical} @'e o @^angulo (em graus) da rota@,{c}@~ao vertical (em torno 
-do eixo @var{x}) para escolher o ponto de visualiza@,{c}@~ao em gr@'aficos tridimensionais.
+do eixo @var{x}) para escolher o ponto de visualiza@,{c}@~ao em fundos gr@'aficos tridimensionais.
 
 O @^angulo @'e associado ao intervalo @math{[0, 180]}.
 @end defvr
@@ -187,7 +187,7 @@ O @^angulo @'e associado ao intervalo @math{[0, 180]}.
 Valor padr@~ao: 30
 
 @code{rot_horizontal} @'e o @^angulo (em graus) da rota@,{c}@~ao horizontal (em torno 
-do eixo @var{z})  para escolher o ponto de visualiza@,{c}@~ao em gr@'aficos tridimensionais.
+do eixo @var{z})  para escolher o ponto de visualiza@,{c}@~ao em fundos gr@'aficos tridimensionais.
 
 O @^angulo @'e associado ao intervalo @math{[0, 180]}.
 @end defvr
@@ -248,7 +248,7 @@ Veja tamb@'em @code{terminal}.
 @defvr {Op@,{c}@~ao gr@'afica} axis_bottom
 Valor padr@~ao: @code{true}
 
-Se @code{axis_bottom} for @code{true}, o eixo inferior @'e mostrado em gr@'aficos bidimensionais.
+Se @code{axis_bottom} for @code{true}, o eixo inferior @'e mostrado em fundos gr@'aficos bidimensionais.
 
 Veja tamb@'em @code{axis_left},  @code{axis_top}, @code{axis_right}, e @code{axis_3d}.
 @end defvr
@@ -258,7 +258,7 @@ Veja tamb@'em @code{axis_left},  @code{axis_top}, @code{axis_right}, e @code{axi
 @defvr {Op@,{c}@~ao gr@'afica} axis_left
 Valor padr@~ao: @code{true}
 
-Se @code{axis_left} for @code{true}, o eixo da esquerda @'e mostrado em gr@'aficos bidimensionais.
+Se @code{axis_left} for @code{true}, o eixo da esquerda @'e mostrado em fundos gr@'aficos bidimensionais.
 
 Veja tamb@'em @code{axis_bottom},  @code{axis_top}, @code{axis_right}, e @code{axis_3d}.
 @end defvr
@@ -268,7 +268,7 @@ Veja tamb@'em @code{axis_bottom},  @code{axis_top}, @code{axis_right}, e @code{a
 @defvr {Op@,{c}@~ao gr@'afica} axis_top
 Valor padr@~ao: @code{true}
 
-Se @code{axis_top} for @code{true}, o eixo superior @'e mostrado em gr@'aficos bidimensionais.
+Se @code{axis_top} for @code{true}, o eixo superior @'e mostrado em fundos gr@'aficos bidimensionais.
 
 Veja tamb@'em @code{axis_bottom},  @code{axis_left}, @code{axis_right}, e @code{axis_3d}.
 @end defvr
@@ -278,7 +278,7 @@ Veja tamb@'em @code{axis_bottom},  @code{axis_left}, @code{axis_right}, e @code{
 @defvr {Op@,{c}@~ao gr@'afica} axis_right
 Valor padr@~ao: @code{true}
 
-Se @code{axis_right} for @code{true}, o eixo da direita @'e mostrado em gr@'aficos bidimensionais.
+Se @code{axis_right} for @code{true}, o eixo da direita @'e mostrado em fundos gr@'aficos bidimensionais.
 
 Veja tamb@'em @code{axis_bottom},  @code{axis_left}, @code{axis_top}, and @code{axis_3d}.
 @end defvr
@@ -288,7 +288,7 @@ Veja tamb@'em @code{axis_bottom},  @code{axis_left}, @code{axis_top}, and @code{
 @defvr {Op@,{c}@~ao gr@'afica} axis_3d
 Valor padr@~ao: @code{true}
 
-Se @code{axis_3d} for @code{true}, os eixos @var{x}, @var{y} e @var{z} s@~ao mostrados em gr@'aficos tridimensionais.
+Se @code{axis_3d} for @code{true}, os eixos @var{x}, @var{y} e @var{z} s@~ao mostrados em fundos gr@'aficos tridimensionais.
 
 Veja tamb@'em @code{axis_bottom},  @code{axis_left}, @code{axis_top}, e @code{axis_right} para eixos em duas dimens@~oes.
 @end defvr
@@ -316,7 +316,7 @@ As cores dos pontos s@~ao controladas com essa op@,{c}@~ao.
 @defvr {Op@,{c}@~ao gr@'afica} points_joined
 Valor padr@~ao: @code{false}
 
-if @code{points_joined} for @code{true}, points are joined by lines.
+Se @code{points_joined} for @code{true}, pontos s@~ao unidos por linhas retas.
 @end defvr
 
 
@@ -324,7 +324,7 @@ if @code{points_joined} for @code{true}, points are joined by lines.
 @defvr {Op@,{c}@~ao gr@'afica} fill_type
 Valor padr@~ao: 1
 
-@code{fill_type} is an index (greater or equal than -1) to specify the color for filled regions.
+@code{fill_type} @'e um @'indice (maior ou igual a -1) para especificar a cor para regi@~oes a serem preenchidas.
 @end defvr
 
 
@@ -332,8 +332,8 @@ Valor padr@~ao: 1
 @defvr {Op@,{c}@~ao gr@'afica} transparent
 Valor padr@~ao: @code{false}
 
-Se @code{transparent} for @code{true}, interior regions of polygons are 
-filled according to @code{fill_type}.
+Se @code{transparent} for @code{true}, regi@~oes internas de poligonos s@~ao
+preenchidas de acordo com @code{fill_type}.
 @end defvr
 
 
@@ -341,8 +341,8 @@ filled according to @code{fill_type}.
 @defvr {Op@,{c}@~ao gr@'afica} border
 Valor padr@~ao: @code{true}
 
-Se @code{border} for @code{true}, borders of polygons are painted
-according to @code{line_type} and @code{line_width}.
+Se @code{border} for @code{true}, bordas de pol@'igonos s@~ao colorizadas
+de acordo com @code{line_type} e @code{line_width}.
 @end defvr
 
 
@@ -350,8 +350,8 @@ according to @code{line_type} and @code{line_width}.
 @defvr {Op@,{c}@~ao gr@'afica} head_both
 Valor padr@~ao: @code{false}
 
-Se @code{head_both} for @code{true}, vectors are plotted with two arrow heads.
-Se @code{false}, only one arrow is plotted.
+Se @code{head_both} for @code{true}, vetores s@~ao mostrados com seta dupla na ponta.
+Se @code{false}, somente uma seta @'e mostrada.
 @end defvr
 
 
@@ -359,7 +359,7 @@ Se @code{false}, only one arrow is plotted.
 @defvr {Op@,{c}@~ao gr@'afica} head_length
 Valor padr@~ao: 2
 
-@code{head_length} indicates, in @var{x}-axis units, the length of arrow heads.
+@code{head_length} indica, em unidades do eixo @var{x}, o comprimento da ponta da seta do vetor.
 @end defvr
 
 
@@ -367,8 +367,8 @@ Valor padr@~ao: 2
 @defvr {Op@,{c}@~ao gr@'afica} head_angle
 Valor padr@~ao: 45
 
-@code{head_angle} indicates the angle, in degrees, between the arrow heads and
-the segment.
+@code{head_angle} indica o @^angulo, em graus, entre a ponta da seta do vetor e
+o segmento que forma o corpo do vetor.
 @end defvr
 
 
@@ -376,9 +376,9 @@ the segment.
 @defvr {Op@,{c}@~ao gr@'afica} head_type
 Valor padr@~ao: @code{filled}
 
-@code{head_type} is used to specify how arrow heads are plotted. Possible
-values are: @code{filled} (closed and filled arrow heads), @code{empty}
-(closed but not filled arrow heads), and @code{nofilled} (open arrow heads).
+@code{head_type} @'e usada para especificar como a ponta @'e mostrada. Valores
+poss@'iveis s@~ao: @code{filled} (ponta fechada e preenchida), @code{empty}
+(ponta fechada mas n@~ao preenchida), e @code{nofilled} (ponta aberta).
 @end defvr
 
 
@@ -386,9 +386,9 @@ values are: @code{filled} (closed and filled arrow heads), @code{empty}
 @defvr {Op@,{c}@~ao gr@'afica} label_alignment
 Valor padr@~ao: @code{center}
 
-@code{label_alignment} is used to specify where to write labels with
-respect to the given coordinates. Possible values are: @code{center},
-@code{left}, and @code{right}.
+@code{label_alignment} \'e usado para especificar onde escrever r@'otulos com
+rela@,{c}@~ao @`as coordenadas fornecidas. Valores poss@'iveis s@~ao: @code{center},
+@code{left}, e @code{right}.
 @end defvr
 
 
@@ -396,8 +396,8 @@ respect to the given coordinates. Possible values are: @code{center},
 @defvr {Op@,{c}@~ao gr@'afica} label_orientation
 Valor padr@~ao: @code{horizontal}
 
-@code{label_orientation} is used to specify orientation of labels.
-Possible values are: @code{horizontal}, and @code{vertical}.
+@code{label_orientation} @'e usada para especificar a orienta@,{c}@~ao dos r@'otulos.
+Valores poss@'iveis s@~ao: @code{horizontal}, e @code{vertical}.
 @end defvr
 
 
@@ -405,7 +405,7 @@ Possible values are: @code{horizontal}, and @code{vertical}.
 @defvr {Op@,{c}@~ao gr@'afica} label_color
 Valor padr@~ao: 1
 
-@code{label_color} is an index (greater or equal than -1) to specify the font color.
+@code{label_color} @'e um @'indice (maior ou igual a -1) para especificar a cor da fonte usada no r@'otulo.
 @end defvr
 
 
@@ -413,7 +413,7 @@ Valor padr@~ao: 1
 @defvr {Op@,{c}@~ao gr@'afica} line_width
 Valor padr@~ao: 1
 
-@code{line_width} is the width for plotted lines.
+@code{line_width} @'e a lagura para linhas do gr@'afico.
 @end defvr
 
 
@@ -421,8 +421,8 @@ Valor padr@~ao: 1
 @defvr {Op@,{c}@~ao gr@'afica} line_type
 Valor padr@~ao: 1
 
-@code{line_type} is an index (greater or equal than -1) to specify how lines are displayed.
-Line colors are controlled with this option.
+@code{line_type} @'e um @'indice (maior ou igual a -1) para especificar como linhas s@~ao mostradas.
+A cor das linhas @'e controlada com essa op@,{c}@~ao.
 @end defvr
 
 
@@ -430,7 +430,7 @@ Line colors are controlled with this option.
 @defvr {Op@,{c}@~ao gr@'afica} nticks
 Valor padr@~ao: 30
 
-@code{nticks} is the number of sample points used by the plotting routine.
+@code{nticks} @'e o n@'umero de amostra de pontos usado pelas rotinas de montagem de gr@'afico.
 @end defvr
 
 
@@ -438,7 +438,7 @@ Valor padr@~ao: 30
 @defvr {Op@,{c}@~ao gr@'afica} adapt_depth
 Valor padr@~ao: 10
 
-@code{adapt_depth} is the maximum number of splittings used by the adaptive plotting routine.
+@code{adapt_depth} @'e o n@'umero m@'aximo de quebras usado pelas rotinas adaptativos de impress@~ao.
 @end defvr
 
 
@@ -446,8 +446,8 @@ Valor padr@~ao: 10
 @defvr {Op@,{c}@~ao gr@'afica} key
 Valor padr@~ao: @code{""} (a seq@"u@^encia de caracteres vazia)
 
-@code{key} is the mame of a function in the legend. Se @code{key} is uma
-seq@"u@^encia de caracteres vazia, no key is assigned to the function.
+@code{key} @'e o nome de uma fun@,{c}@~ao na legenda. Se @code{key} @'e uma
+seq@"u@^encia de caracteres vazia, nenhuma chave @'e atribu@'ida @`a fun@,{c}@~ao.
 @end defvr
 
 
@@ -455,7 +455,7 @@ seq@"u@^encia de caracteres vazia, no key is assigned to the function.
 @defvr {Op@,{c}@~ao gr@'afica} function_style
 Valor padr@~ao: @code{lines}
 
-@code{function_style} indicates how functions are plotted: with @code{lines} or @code{dots}.
+@code{function_style} indica como fun@,{c}@~oes s@~ao mostradas: com linhas (@code{lines}) ou com pontos (@code{dots}).
 @end defvr
 
 
@@ -463,9 +463,9 @@ Valor padr@~ao: @code{lines}
 @defvr {Op@,{c}@~ao gr@'afica} xu_grid
 Valor padr@~ao: 30
 
-@code{xu_grid} is the number of coordinates of the first variable
-(@code{x} in explicit and @code{u} in parametric 3d surfaces) to 
-build the grid of sample points.
+@code{xu_grid} @'e o n@'umero de coordenadas da primeira vari@'avel
+(@code{x} na forma expl@'icita e o n@'umero de coordenadas de @code{u} em superf@'icies tridimensionais na forma param@'etrica) para 
+contruir a grade dos pontos de amostra.
 
 Veja tamb@'em @code{yv_grid}.
 @end defvr
@@ -475,9 +475,9 @@ Veja tamb@'em @code{yv_grid}.
 @defvr {Op@,{c}@~ao gr@'afica} yv_grid
 Valor padr@~ao: 30
 
-@code{yv_grid} is the number of coordinates of the second variable
-(@code{y} in explicit and @code{v} in parametric 3d surfaces) to 
-build the grid of sample points.
+@code{yv_grid} @'e o n@'umero de coordenadas da segunda vari@'avel
+(@code{y} na forma expl@'icita e o n@'umero de coordenadas de @code{v} em superf@'icies tridimensionais na forma param@'etrica) para 
+construir a grade dos pontos de amostra.
 
 Veja tamb@'em @code{xu_grid}.
 @end defvr
@@ -487,7 +487,7 @@ Veja tamb@'em @code{xu_grid}.
 @defvr {Op@,{c}@~ao gr@'afica} surface_hide
 Valor padr@~ao: @code{false}
 
-Se @code{surface_hide} for @code{true}, hidden parts are not plotted in 3d surfaces.
+Se @code{surface_hide} for @code{true}, partes escondidas n@~ao s@~ao mostradas no gr@'afico em superf@'icies tridimensioais.
 @end defvr
 
 
@@ -495,31 +495,31 @@ Se @code{surface_hide} for @code{true}, hidden parts are not plotted in 3d surfa
 @defvr {Op@,{c}@~ao gr@'afica} contour
 Valor padr@~ao: @code{none}
 
-Option @code{contour} enables the user to select where to plot contour lines.
-Possible values are:
+Option @code{contour} torna o usu@'ario capaz de selecionar onde imprimir linhas de contorno.
+Valores poss@'iveis s@~ao:
 
 @itemize @bullet
 
 @item
 @code{none}:
-no contour lines are plotted.
+nenhuma linha de contorno @'e mostrada.
 
 @item
 @code{base}:
-contour lines are projected on the xy plane.
+linhas de contorno s@~ao projetadas no plano xy.
 
 @item
 @code{surface}:
-contour lines are plotted on the surface.
+linhas de contorno s@~ao mostradas sobre a superf@'icie.
 
 @item
 @code{both}:
-two contour lines are plotted: on the xy plane and on the surface.
+duas linhas de contorno s@~ao mostradas: no plano xy e sobre a superf@'icie.
 
 @item
 @code{map}:
-contour lines are projected on the xy plane, and the view point is
-set just in the vertical.
+linhas de contorno s@~ao projetadas sobre o plano xy, e o ponto de boserva@,{c}@~ao @'e
+escolhido na vertical.
 
 @end itemize
 
@@ -530,7 +530,7 @@ set just in the vertical.
 @defvr {Op@,{c}@~ao gr@'afica} contour_levels
 Valor padr@~ao: 5
 
-@code{contour_levels} is the number of levels in contour plots.
+@code{contour_levels} @'e o n@'umero de n@'iveis em gr@'aficos de contorno.
 @end defvr
 
 
@@ -538,7 +538,7 @@ Valor padr@~ao: 5
 @defvr {Op@,{c}@~ao gr@'afica} columns
 Valor padr@~ao: 1
 
-@code{columns} is the number of columns in multiple plots.
+@code{columns} @'e o n;umero de colunas em gr@'aficos multiplos.
 @end defvr
 
 
@@ -546,7 +546,7 @@ Valor padr@~ao: 1
 @defvr {Op@,{c}@~ao gr@'afica} ip_grid
 Valor padr@~ao: @code{[50, 50]}
 
-@code{ip_grid} sets the grid for the first sampling in implicit plots.
+@code{ip_grid} escolhe a grade para a primeira amostragem em gr@'aficos impl@'icitos.
 @end defvr
 
 
@@ -554,7 +554,7 @@ Valor padr@~ao: @code{[50, 50]}
 @defvr {Op@,{c}@~ao gr@'afica} ip_grid_in
 Valor padr@~ao: @code{[5, 5]}
 
-@code{ip_grid_in} sets the grid for the second sampling in implicit plots.
+@code{ip_grid_in} escolhe a grade para a segunda amostragem em gr@'aficos impl@'icitos.
 @end defvr
 
 
@@ -565,106 +565,106 @@ Valor padr@~ao: @code{[5, 5]}
 
 
 
-@deffn {Scene constructor} gr2d (@var{graphic option}, ..., @var{graphic object}, ...)
+@deffn {Construtor de fundo gr@'afico} gr2d (@var{op@,{c}@~ao gr@'afica}, ..., @var{objeto gr@'afico}, ...)
 
-Function @code{gr2d} builds an object describing a 2d scene. Arguments are
-@i{graphic options} and @i{graphic objects}. This scene is interpreted
-sequentially: @i{graphic options} affect those @i{graphic objects} placed
-on its right.
+A fun@,{c}@~ao @code{gr2d} constr@'oi um objeto descrevendo um fundo gr@'afico em duas dimens@~oes. Arguments are
+@i{op@,{c}@~oes gr@'aficas} e @i{objetos gr@'aficos}. Esse fundo gr@'afico @'e interpretado
+seq@"u@^encialmente: @i{op@,{c}@~oes gr@'aficas} afetam aqueles @i{objetos gr@'aficos} colocados
+imediatamente @`a sua direita.
 
-This is the list of @i{graphic objects} available for scenes in two dimensions:
+Adiante encontra-se uma lista de @i{objetos gr@'aficos} dispon@'ivies para fundos gr@'aficos em duas dimens@~oes:
 
 @itemize @bullet
 @item
-@code{points([[x1,y1], [x2,y2], [x3,y3],...])} or @code{points([x1,x2,x3,...], [y1,y2,y3,...])}:
-allocates points @code{[x1,y1]}, @code{[x2,y2]}, @code{[x2,y2]}, ....
-This object is affected by the following @i{graphic options}: @code{point_size}, 
-@code{point_type}, @code{points_joined}, @code{line_width}, @code{key} and @code{line_type}.
+@code{points([[x1,y1], [x2,y2], [x3,y3],...])} ou @code{points([x1,x2,x3,...], [y1,y2,y3,...])}:
+posiciona os pontos @code{[x1,y1]}, @code{[x2,y2]}, @code{[x2,y2]}, ... no gr@'afico.
+Esse objeto @'e efetado pelas seguintes @i{op@,{c}@~oes gr@'aficas}: @code{point_size}, 
+@code{point_type}, @code{points_joined}, @code{line_width}, @code{key} e @code{line_type}.
 
 
 @item
-@code{polygon([[x1,y1], [x2,y2], [x3,y3],...])} or @code{polygon([x1,x2,x3,...], [y1,y2,y3,...])}:
-plots a polygon with vertices @code{[x1,y1]}, @code{[x2,y2]}, @code{[x2,y2]}, ... on the plane.
-This object is affected by the following @i{graphic options}: @code{transparent}, 
-@code{fill_type}, @code{border}, @code{line_width}, @code{key} and @code{line_type}.
+@code{polygon([[x1,y1], [x2,y2], [x3,y3],...])} ou @code{polygon([x1,x2,x3,...], [y1,y2,y3,...])}:
+desenha um pol@'igono com v@'ertices @code{[x1,y1]}, @code{[x2,y2]}, @code{[x2,y2]}, ... no plano.
+Esse objeto @'e afetado pelas seguintes @i{op@,{c}s gr@'aficas}: @code{transparent}, 
+@code{fill_type}, @code{border}, @code{line_width}, @code{key} e @code{line_type}.
 
 
 @item
 @code{rectangle([x1,y1], [x2,y2])}:
-plots a rectangle with opposite vertices @code{[x1,y1]} and @code{[x2,y2]}.
-This object is affected by the following @i{graphic options}: @code{transparent}, 
-@code{fill_type}, @code{border}, @code{line_width}, @code{key} and @code{line_type}.
+desenha um ret@^angulo partindo do v@'ertice @code{[x1,y1]} e terminando no v@'ertice @code{[x2,y2]} oposto ao primeiro.
+Esse objeto @'e afetado pelas seguintes @i{op@,{c}@~oes gr@'aficas}: @code{transparent}, 
+@code{fill_type}, @code{border}, @code{line_width}, @code{key} e @code{line_type}.
 
 
 @item
-@code{ellipse(xc, yc, a, b, start_angle, end_angle)}:
-plots an ellipse centered at @code{[xc, yc]} with horizontal and vertical
-semi axis @code{a} and @code{b}, respectively, from angle @code{start_angle} to angle
-@code{end_angle}.
-This object is affected by the following @i{graphic options}: @code{nticks}, 
+@code{ellipse(xc, yc, a, b, angulo_inicial, @^angulo_final)}:
+desenha uma elipse com centro em @code{[xc, yc]} com semi-eixo horizontal @code{a} e
+semi-eixo vertial @code{b} tra@,{c}ando um arco de elipse que se inicia no @^angulo @code{@^angulo_inicial} e indo
+at@'e o @^angulo @code{@^angulo_final}.
+Esse objeto @'e afetado pelas seguintes @i{op@,{c}@~oes gr@'aficas}: @code{nticks}, 
 @code{transparent}, @code{fill_type}, @code{border}, @code{line_width}, 
-@code{line_type} and @code{key}.
+@code{line_type} e @code{key}.
 
 
 @item
-@code{label(string,x,y)}:
-writes the @code{string} at point @code{[x,y]}.
-This object is affected by the following @i{graphic options}: @code{label_alignment}, 
-@code{label_orientation} and @code{label_color}.
+@code{label(r@'otulo,x,y)}:
+escreve o @code{r@'otulo} no ponto @code{[x,y]}.
+Esse objeto @'e afetado pelas seguintes @i{op@,{c}@~oes gr@'aficas}: @code{label_alignment}, 
+@code{label_orientation} e @code{label_color}.
 
 
 @item
 @code{vector([x,y], [dx,dy])}:
-plots vector @code{[dx,dy]} with origin in @code{[x,y]}.
-This object is affected by the following @i{graphic options}: @code{head_both}, 
+desenha um vetor de componentes ortogonais @code{[dx,dy]} com or@'igem eno ponto @code{[x,y]}.
+Esse objeto @'e afetado pelas seguintes @i{op@,{c}@~oes gr@'aficas}: @code{head_both}, 
 @code{head_length}, @code{head_angle}, @code{head_type}, @code{line_width}, 
-@code{line_type} and @code{key}.
+@code{line_type} e @code{key}.
 
 
 @item
 @code{explicit(fcn,var,minval,maxval)}:
-plots explicit function @code{fcn}, with variable @code{var} taking values
-from @code{minval} to @code{maxval}.
-This object is affected by the following @i{graphic options}: @code{nticks}, 
+monta o gr@'afico da fun@,{c}@~ao expl@'icita @code{fcn}, com vari@'avel @code{var} assumindo valores
+de @code{minval} a @code{maxval}.
+Esse objeto @'e afetado pelas seguintes @i{op@,{c}@~oes gr@'aficas}: @code{nticks}, 
 @code{adapt_depth}, @code{line_width}, @code{line_type}, @code{key}, 
-@code{function_style} and @code{fill_type}.
+@code{function_style} e @code{fill_type}.
 
 
 @item
 @code{implicit(fcn,x-var,x-minval,x-maxval,y-var,y-minval,y-maxval)}:
-plots the implicit function defined by @code{fcn}, with variable @code{x-var} taking values
-from @code{x-minval} to @code{x-maxval}, and variable @code{y-var} taking values
-from @code{y-minval} to @code{y-maxval}.
-This object is affected by the following @i{graphic options}: @code{ip_grid}, 
+monta o gr@'afico da fun@,{c}@~ao impl@'icita definida por @code{fcn}, com vari@'avel @code{x-var} assumindo
+de @code{x-minval} a @code{x-maxval}, e vari@'avel @code{y-var} assumindo valores
+de @code{y-minval} a @code{y-maxval}.
+Esse objeto @'e afetado pelas seguintes @i{op@,{c}@~oes gr@'aficas}: @code{ip_grid}, 
 @code{ip_grid_in}, @code{line_width}, @code{line_type}, @code{key}, 
-@code{filled_function} and @code{fill_type}.
+@code{filled_function} e @code{fill_type}.
 
 
 @item
 @code{polar(radius,ang,minang,maxang)}:
-plots function @code{radius(ang)} defined in polar coordinates, with variable @code{ang}
-taking values from @code{minang} to @code{maxang}.
-This object is affected by the following @i{graphic options}: @code{nticks}, 
+plots function @code{radius(ang)} defined in polar coordinates, com a vari@'avel @code{ang}
+assumindo valores de @code{minang} a @code{maxang}.
+Esse objeto @'e afetado pelas seguintes @i{op@,{c}@~oes gr@'aficas}: @code{nticks}, 
 @code{line_width}, @code{line_type}, @code{key}, 
-@code{function_style} and @code{point_type}.
+@code{function_style} e @code{point_type}.
 
 
 @item
 @code{parametric(xfun,yfun,par,parmin,parmax)}:
-plots parametric function @code{[xfun,yfun]}, with parameter @code{par}
-taking values from @code{parmin} to @code{parmax}.
-This object is affected by the following @i{graphic options}: @code{nticks}, 
+monta o gr@'afico da fun@,{c}@~ao param@'etrica @code{[xfun,yfun]}, com par@^ametro @code{par}
+assumindo valores de @code{parmin} a @code{parmax}.
+Esse objeto @'e afetado pelas seguintes @i{op@,{c}@~oes gr@'aficas}: @code{nticks}, 
 @code{line_width}, @code{line_type}, @code{key}, 
-@code{function_style} and @code{point_type}.
+@code{function_style} e @code{point_type}.
 
 @end itemize
 
-See also the following graphic options: @code{xrange}, @code{yrange}, 
+Veja tamb@'em as seguintes op@,{c}@~oes gr@'aficas: @code{xrange}, @code{yrange}, 
 @code{logx}, @code{logy}, @code{terminal}, @code{grid}, @code{title}, 
 @code{xlabel}, @code{ylabel}, @code{xtics}, @code{ytics}, @code{xy_file}, 
 @code{file_name}, @code{pic_width}, @code{pic_height}, 
 @code{user_preamble}, @code{axis_bottom}, @code{axis_left}, @code{axis_top}, 
-and @code{axis_right}.
+e @code{axis_right}.
 
 @end deffn
 
@@ -676,59 +676,59 @@ and @code{axis_right}.
 
 
 
-@deffn {Scene constructor} gr3d (@var{graphic option}, ..., @var{graphic object}, ...)
+@deffn {Scene constructor} gr3d (@var{op@,{c}@~ao gr@'afica}, ..., @var{objeto gr@'afico}, ...)
 
-Function @code{gr3d} builds an object describing a 3d scene. Arguments are
-@i{graphic options} and @i{graphic objects}. This scene is interpreted
-sequentially: @i{graphic options} affect those @i{graphic objects} placed
-on its right.
+A fun@,{c}@~ao @code{gr3d} constr@'oi um objeto descrevendo um fundo gr@'afico tridimensional. Argumentos s@~ao
+@i{op@,{c}@~oes gr@'aficas} e @i{objetos gr@'aficos}. Esse fundo gr@'afico @'e interpretado
+seq@"u@^encialmente: @i{op@,{c}@~oes gr@'aficas} afetam aqueles @i{objetos gr@'aficos} colocados
+imediatamente @`a sua direita.
 
-This is the list of @i{graphic objects} available for scenes in three dimensions:
+Essa @'e a lista dos @i{objetos gr@'aficos} dispon@'iveis para fundos gr@'aficos tridimensionais:
 
 @itemize @bullet
 @item
-@code{points([[x1,y1,z1], [x2,y2,z2], [x3,y3,z3],...])} or 
+@code{points([[x1,y1,z1], [x2,y2,z2], [x3,y3,z3],...])} ou 
 @code{points([x1,x2,x3,...], [y1,y2,y3,...], [z1,z2,z3,...])}:
-allocates points @code{[x1,y1,z1]}, @code{[x2,y2,z2]}, @code{[x2,y2,z3]}, ....
-This object is affected by the following @i{graphic options}: @code{point_size}, 
-@code{point_type}, @code{points_joined}, @code{line_width}, @code{key} and @code{line_type}.
+posiciona os pontos @code{[x1,y1,z1]}, @code{[x2,y2,z2]}, @code{[x2,y2,z3]}, ... no gr@'afico.
+Esse objeto @'e afetado pelas seguintes @i{op@,{c}@~oes gr@'aficas}: @code{point_size}, 
+@code{point_type}, @code{points_joined}, @code{line_width}, @code{key} e @code{line_type}.
 
 
 @item
-@code{label(string,x,y,z)}:
-writes the @code{string} at point @code{[x,y,z]}.
-This object is affected by the following @i{graphic options}: @code{label_alignment}, 
-@code{label_orientation} and @code{label_color}.
+@code{label(r@'otulo,x,y,z)}:
+escreve @code{r@'otulo} no ponto @code{[x,y,z]}.
+Esse objeto @'e afetado pelas seguintes @i{op@,{c}@~oes gr@'aficas}: @code{label_alignment}, 
+@code{label_orientation} e @code{label_color}.
 
 
 @item
 @code{explicit(fcn,var1,minval1,maxval1,var2,minval2,maxval2)}:
-plots explicit function @code{fcn}, with variable @code{var1} taking values
-from @code{minval1} to @code{maxval1} and variable @code{var2} taking values
-from @code{minval2} to @code{maxval2}.
-This object is affected by the following @i{graphic options}: @code{xu_grid}, 
-@code{yv_grid}, @code{line_type}, and @code{key}.
+monta o gr@'afico da fun@,{c}@~ao expl@'icita @code{fcn}, com a vari@'avel @code{var1} assumindo valores
+de @code{minval1} a @code{maxval1} e vari@'avel @code{var2} assumindo valores
+de @code{minval2} a @code{maxval2}.
+Esse objeto @'e afetado pelas seguintes @i{op@,{c}@~oes gr@'aficas}: @code{xu_grid}, 
+@code{yv_grid}, @code{line_type} e @code{key}.
 
 
 @item
 @code{parametric(xfun,yfun,zfun,par,parmin,parmax)}:
-plots parametric curve @code{[xfun,yfun,zfun]}, with parameter @code{par}
-taking values from @code{parmin} to @code{parmax}.
-This object is affected by the following @i{graphic options}: @code{nticks}, 
-@code{line_width}, @code{line_type}, and @code{key}.
+monta o gr@'afico da curva param@'etrica @code{[xfun,yfun,zfun]}, com par@^ametro @code{par}
+assumindo valores de @code{parmin} a @code{parmax}.
+Esse objeto @'e afetado pelas seguintes @i{op@,{c}@~oes gr@'aficas}: @code{nticks}, 
+@code{line_width}, @code{line_type} e @code{key}.
 
 
 @item
 @code{parametric_surface(xfun,yfun,zfun,par1,par1min,par1max,par2,par2min,par2max)}:
-plots parametric surface @code{[xfun,yfun,zfun]}, with parameter @code{par1}
-taking values from @code{par1min} to @code{par1max} and parameter @code{par2}
-taking values from @code{par2min} to @code{par2max}.
-This object is affected by the following @i{graphic options}: @code{nticks}, 
-@code{line_width}, @code{line_type}, and @code{key}.
+monta o gr@'afico da superf@'icie param@'etrica @code{[xfun,yfun,zfun]}, com par@^ametro @code{par1}
+assumindo valores de @code{par1min} a @code{par1max} e o par@^ametro @code{par2}
+assumindo valores de @code{par2min} a @code{par2max}.
+Esse objeto @'e afetado pelas seguintes @i{op@,{c}@~oes gr@'aficas}: @code{nticks}, 
+@code{line_width}, @code{line_type}, e @code{key}.
 
 @end itemize
 
-See also the following graphic options: @code{xrange}, @code{yrange}, 
+Veja tamb@'em as seguintes op@,{c}@~oes gr@'aficas: @code{xrange}, @code{yrange}, 
 @code{zrange}, @code{logx}, @code{logy}, @code{logz}, @code{terminal}, 
 @code{grid}, @code{title}, @code{xlabel}, @code{ylabel}, @code{zlabel}, 
 @code{xtics}, @code{ytics}, @code{ztics}, @code{xy_file}, 
@@ -736,7 +736,7 @@ See also the following graphic options: @code{xrange}, @code{yrange},
 @code{axis_top}, @code{file_name}, @code{pic_width}, @code{pic_height}, 
 @code{axis_right}, @code{rot_vertical}, @code{rot_horizontal}, 
 @code{axis_3d}, @code{xu_grid}, @code{yv_grid}, @code{surface_hide}, 
-@code{contour}, and @code{contour_levels}.
+@code{contour}, e @code{contour_levels}.
 
 @end deffn
 
@@ -746,48 +746,48 @@ See also the following graphic options: @code{xrange}, @code{yrange},
 
 
 
-@deffn {Function} draw (@var{gr2d}, ..., @var{gr3d}, ..., @var{options}, ...)
+@deffn {Function} draw (@var{gr2d}, ..., @var{gr3d}, ..., @var{op@,{c}@~oes}, ...)
 
-Plots a series of scenes; its arguments are @code{gr2d} and @code{gr3d} 
-objects, together with some options. By default, the scenes are put together
-in one column.
+Monta o fundo de uma s@'erie de gr@'aficos; seus argumentos s@~ao objetos @code{gr2d} e
+@code{gr3d}, juntamente com algumas op@,{c}@~oes. Por padr@~ao, o fundos gr@'aficos s@~ao colocados juntos
+em uma coluna.
 
-Function @code{draw} accepts two possible options: @code{terminal} 
-and @code{columns}.
+A fun@,{c}@~ao @code{draw} aceita duas op@,{c}@~oes poss@'iveis: @code{terminal} 
+e @code{columns}.
 
-Functions @code{draw2d} and @code{draw3d} are short cuts to be used 
-when only one scene is required, in two or three dimensions, respectively.
-
-@end deffn
-
-
-@deffn {Function} draw2d (@var{option}, @var{graphic object}, ...)
-
-This function is a short cut for
-@code{draw2d(gr2d(@var{options}, ..., @var{graphic object}, ...))}.
-
-It can be used to plot a unique scene in 2d.
+As fun@,{c}@~oes @code{draw2d} e @code{draw3d} s@~ao atalhos para serem usados 
+quando somente um fundo gr@'afico @'e requerido, em duas ou tr@^es dimens@~oes, respectivamente.
 
 @end deffn
 
 
-@deffn {Function} draw3d (@var{option}, @var{graphic object}, ...)
+@deffn {Fun@,{c}@~ao} draw2d (@var{op@,{c}@~ao}, @var{objeto gr@'afico}, ...)
 
-This function is a short cut for
-@code{draw3d(gr3d(@var{options}, ..., @var{graphic object}, ...))}.
+Essa fun@,{c}@~ao @'e um atalho para
+@code{draw2d(gr2d(@var{op@,{c}@~oes}, ..., @var{objeto gr@'afico}, ...))}.
 
-It can be used to plot a unique scene in 3d.
+Pode ser usada para montar gr@'afico de um @'unico fundo bidimensional.
+
+@end deffn
+
+
+@deffn {Fun@,{c}@~ao} draw3d (@var{op@,{c}@~ao}, @var{graphic object}, ...)
+
+Essa fun@,{c}@~ao @'e um atalho para
+@code{draw3d(gr3d(@var{op@,{c}@~oes}, ..., @var{objeto gr@'afico}, ...))}.
+
+Pode ser usada para montar o fundo gr@'afico @'unico tridmensional.
 
 @end deffn
 
 
 
-@defvr {Variable} draw_pipes
+@defvr {Vari@'avel} draw_pipes
 Valor padr@~ao: @code{true}
 
-When @code{draw_pipes} for @code{true}, Maxima communicates with Gnuplot
-via pipes. Se @code{draw_pipes} for @code{false}, Maxima communicates 
-with Gnuplot via files. This is only useful in non Windows systems.
+Quando @code{draw_pipes} for @code{true}, Maxima comunica-se com Gnuplot
+diretamente (via pipes). Se @code{draw_pipes} for @code{false}, Maxima comunica-se 
+com Gnuplot via arquivos. Essa op@,{c}@~ao n@~ao est@'a dispon@'ivel para usu@'arios windows.
 
 @end defvr
 
