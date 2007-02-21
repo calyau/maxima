@@ -37,6 +37,17 @@
     (setq mat (nreverse mat))
     (push '($matrix) mat)))
 
+(defun $hessian (e vars)
+  (if ($listp vars)
+      (let ((n ($length vars)))
+	($genmatrix `((lambda) ((mlist) i j) ($diff ,e (nth i ,vars) 1 (nth j ,vars) 1)) n n))
+    `(($hessian) ,e ,vars)))
+
+(defun $jacobian (e vars)
+  (if (and ($listp vars) ($listp e))
+      (let ((m ($length e)) (n ($length vars)))
+	($genmatrix `((lambda) ((mlist) i j) ($diff (nth i ,e) (nth j ,vars))) m n))
+    `(($jacobian) ,e ,vars)))
 
 ;; Use Sylvester's criterion to decide if the self-adjoint part of a matrix is 
 ;; negative definite (neg), negative semidefinite (nz), positive semidefinite (pz), 
@@ -91,8 +102,8 @@
        ((eq matrix-sign '$pos)
 	(setq matrix-sign '$pnz))
 
-       (t  (setq matrix-sign '$pnz))))
+       (t (setq matrix-sign '$pnz))))
     
-    matrix-sign))
+    (if (eq matrix-sign '$zero) '$pnz matrix-sign)))
 
   
