@@ -35,7 +35,7 @@
 )
 
 (declare-top (special $jarray $iarray $garray)) 
-
+
 
 ;;
 ;; Bessel function of the first kind of order 0.
@@ -66,7 +66,7 @@
   (cond ((numberp $x)
 	 (j[0]-bessel (float $x)))
 	(t (list '(%bessel_j simp) 0 $x))))
-
+
 
 ;; Bessel function of the first kind of order 1.
 ;;
@@ -128,7 +128,7 @@
   (cond ((numberp $x)
 	 (i[0]-bessel (float $x)))
 	(t (list '(%bessel_i simp) 0 $x))))
-
+
 ;; Modified Bessel function of the first kind of order 1.  This is
 ;; related to J[1] via
 ;;
@@ -201,8 +201,8 @@
 		 (format t "zbesi ierr = ~A~%" v-ierr))
 	       (narray $besselarray (1+ n))
 	       (dotimes (k (1+ n)
-			 (arraycall 'flonum (symbol-value '$besselarray) n))
-		 (setf (arraycall 'flonum (symbol-value '$besselarray) k)
+			 (aref (symbol-value '$besselarray) n))
+		 (setf (aref (symbol-value '$besselarray) k)
 		       (simplify (list '(mplus)
 				       (simplify (list '(mtimes)
 						       '$%i
@@ -256,8 +256,8 @@
 		 (format t "zbesk ierr = ~A~%" v-ierr))
 	       (narray $besselarray (1+ n))
 	       (dotimes (k (1+ n)
-			 (arraycall 'flonum (symbol-value '$besselarray) n))
-		 (setf (arraycall 'flonum (symbol-value '$besselarray) k)
+			 (aref (symbol-value '$besselarray) n))
+		 (setf (aref (symbol-value '$besselarray) k)
 		       (simplify (list '(mplus)
 				       (simplify (list '(mtimes)
 						       '$%i
@@ -265,7 +265,7 @@
 				       (aref cyr k)))))))))))
 
 
-
+
 ;; I think g0(x) = exp(-x)*I[0](x), g1(x) = exp(-x)*I[1](x), and
 ;; gn(x,n) = exp(-x)*I[n](x), based on some simple numerical
 ;; evaluations.
@@ -303,7 +303,7 @@
 
 
 
-
+
 ;; Numerically compute H1(v, z).
 ;;
 ;; A&S 9.1.3 says H1(v,z) = J(v,z) + i * Y(v,z)
@@ -363,7 +363,7 @@
 	       (declare (ignore dzr dzi df dk dm dn dcyr dcyi nz ierr))
 	       (complex (aref cyr n)
 			(aref cyi n)))))))))
-
+
 ;; Bessel function of the first kind for real or complex arg and real
 ;; non-negative order.
 (defun $bessel ($arg $order)
@@ -407,13 +407,13 @@
 			   (let ((s (cis (* $order pi))))
 			     (dotimes (k (1+ n))
 			       (let ((v (* s (aref jvals k))))
-				 (setf (arraycall 'flonum (symbol-value '$besselarray) k)
+				 (setf (aref (symbol-value '$besselarray) k)
 				       (simplify `((mplus)
 						   ,(realpart v)
 						   ((mtimes)
 						    $%i
 						    ,(imagpart v)))))))
-			     (arraycall 'flonum (symbol-value '$besselarray) n)))))))))
+			     (aref (symbol-value '$besselarray) n)))))))))
 	(t
 	 ;; The first arg is complex.  Use the complex-valued Bessel
 	 ;; function.
@@ -454,8 +454,8 @@
 			(format t "zbesj ierr = ~A~%" v-ierr))
 		      (narray $besselarray (1+ n))
 		      (dotimes (k (1+ n)
-				(arraycall 'flonum (symbol-value '$besselarray) n))
-			(setf (arraycall 'flonum (symbol-value '$besselarray) k)
+				(aref (symbol-value '$besselarray) n))
+			(setf (aref (symbol-value '$besselarray) k)
 			      (simplify (list '(mplus)
 					      (simplify (list '(mtimes)
 							      '$%i
@@ -523,15 +523,14 @@
 			       (narray $yarray n)
 			       (dotimes (k (1+ n))
 				 (let ((v (+ (* s1 (aref jvals k))
-					     (* s2 (arraycall 'flonum (symbol-value '$besselarray)
-							      k)))))
-				   (setf (arraycall 'flonum (symbol-value '$yarray) k)
+					     (* s2 (aref (symbol-value '$besselarray) k)))))
+				   (setf (aref (symbol-value '$yarray) k)
 					 (simplify `((mplus)
 						     ,(realpart v)
 						     ((mtimes)
 						      $%i
 						      ,(imagpart v)))))))
-			       (arraycall 'flonum (symbol-value '$yarray) n))))))))))
+			       (aref (symbol-value '$yarray) n))))))))))
 	(t
 	 ;; The first arg is complex.  Use the complex-valued Bessel
 	 ;; function
@@ -564,15 +563,15 @@
 		 (format t "zbesy ierr = ~A~%" v-ierr))
 	       (narray $besselarray (1+ n))
 	       (dotimes (k (1+ n)
-			 (arraycall 'flonum (symbol-value '$besselarray) n))
-		 (setf (arraycall 'flonum (symbol-value '$besselarray) k)
+			 (aref (symbol-value '$besselarray) n))
+		 (setf (aref (symbol-value '$besselarray) k)
 		       (simplify (list '(mplus)
 				       (simplify (list '(mtimes)
 						       '$%i
 						       (aref cyi k)))
 				       (aref cyr k)))))))))))
 
-
+
 (defun z-function (x y) 
   ((lambda (xs ys capn nu np1 h h2 lamb r1 r2 s s1 s2 t1 t2 c bool re im) 
      (setq xs (cond ((> 0.0d0 x) -1.0d0) (t 1.0d0)))
@@ -608,7 +607,7 @@
    (cond ((> 0.0d0 x) -1.0d0) (t 1.0d0))
    (cond ((> 0.0d0 x) -1.0d0) (t 1.0d0))
    0 0 0 0.0d0 0.0d0 0.0d0 0.0d0 0.0d0 0.0d0 0.0d0 0.0d0 0.0d0 0.0d0 0.0d0 nil 0.0d0 0.0d0)) 
-
+
 (defun $nzeta ($z) 
   (prog ($x $y $w) 
      (cond ((and (numberp (setq $x ($realpart $z)))
@@ -658,7 +657,7 @@ Perhaps you meant to enter `~a'.~%"
 	(t
 	 (list '($expint simp) x))))
 
-
+
 ;; Define the Bessel funtion J[n](z)
 
 (defprop %bessel_j bessel-j-simp operators)
