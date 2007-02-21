@@ -65,18 +65,18 @@
 ;; Numerical evaluation for Chebyschev expansions of the first kind
 
 (defun cheby (x chebarr)
-  (let ((bn+2 0.0) (bn+1 0.0))
-    (do ((i (fix (arraycall flonum chebarr 0)) (1- i)))
+  (let ((bn+2 0d0) (bn+1 0d0))
+    (do ((i (floor (aref chebarr 0)) (1- i)))
 	((< i 1) (-$ bn+1 (*$ bn+2 x)))
      (setq bn+2
 	    (prog1 bn+1 (setq bn+1
-			      (+$ (arraycall flonum chebarr i)
-				  (-$ (*$ 2.0 x bn+1)
+			      (+$ (aref chebarr i)
+				  (-$ (*$ 2d0 x bn+1)
 				      bn+2))))))))
 
 (defun cheby-prime (x chebarr)
   (-$ (cheby x chebarr)
-      (*$ (arraycall flonum chebarr 1) .5)))
+      (*$ (aref chebarr 1) 0.5d0)))
 
 ;; These should really be calculated with minimax rational approximations.
 ;; Someone has done LI[2] already, and this should be updated; I haven't
@@ -111,26 +111,26 @@
 
 
 (defun li3numer (x)
-  (cond ((= x 0.0) 0.0)
-	((= x 1.0) 1.20205690)
-	((< x -1.0)
-	 (-$ (chebyli3 (//$ x)) (*$ 1.64493407 (log (-$ x)))
-	     (//$ (expt (log (-$ x)) 3) 6.0)))
-	((not (> x .5)) (chebyli3 x))
-	((not (> x 2.0))
-	 (let ((fac (*$ (expt (log x) 2) .5))) 
-	   (m+t (+$ 1.20205690 
+  (cond ((= x 0d0) 0d0)
+	((= x 1d0) 1.20205690d0)
+	((< x -1d0)
+	 (-$ (chebyli3 (//$ x)) (*$ 1.64493407d0 (log (-$ x)))
+	     (//$ (expt (log (-$ x)) 3) 6d0)))
+	((not (> x .5d0)) (chebyli3 x))
+	((not (> x 2d0))
+	 (let ((fac (*$ (expt (log x) 2) 0.5d0))) 
+	   (m+t (+$ 1.20205690d0 
 		    (-$ (*$ (log x)
-			    (-$ 1.64493407 (chebyli2 (-$ 1.0 x))))
-			(chebys12 (-$ 1.0 x))
+			    (-$ 1.64493407d0 (chebyli2 (-$ 1.0 x))))
+			(chebys12 (-$ 1d0 x))
 			(*$ fac
-			    (log (cond ((< x 1.0) (-$ 1.0 x))
+			    (log (cond ((< x 1d0) (-$ 1d0 x))
 				       ((1-$ x)))))))
-		(cond ((< x 1.0) 0)
-		      ((m*t (*$ fac -3.14159265) '$%i))))))
-	(t (m+t (+$ (chebyli3 (//$ x)) (*$ 3.28986813 (log x))
+		(cond ((< x 1d0) 0)
+		      ((m*t (*$ fac -3.14159265d0) '$%i))))))
+	(t (m+t (+$ (chebyli3 (//$ x)) (*$ 3.28986813d0 (log x))
 		    (//$ (expt (log x) 3) -6.0))
-		(m*t (*$ -1.57079633 (expt (log x) 2)) '$%i)))))
+		(m*t (*$ -1.57079633d0 (expt (log x) 2)) '$%i)))))
 
 (defvar *li2* (make-array 15. :initial-contents '(14.0d0 1.93506430d0 .166073033d0 2.48793229d-2
 						  4.68636196d-3 1.0016275d-3 2.32002196d-4
