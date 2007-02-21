@@ -174,21 +174,16 @@
 
 
 	       
-;;(defmacro array-active-length (ar)
-;;  `(length (the vector ,ar)))
-
-(defmacro symbol-array (sym) `(get ,sym 'array))
+(defmacro symbol-array (sym)
+  `(get ,sym 'array))
 
 (defmacro afuncall (sym &rest ind)
   `(aref (symbol-array ,sym) ,@ind))
 
 (defun arraydims (ar)
-  (when (symbolp ar) (setq ar (symbol-array ar)))
+  (when (symbolp ar)
+    (setq ar (symbol-array ar)))
   (cons (array-type ar) (array-dimensions ar)))
-
-(defun array-dimension-n (n ar)
-  (declare (fixnum n))
-  (array-dimension ar (the fixnum (- n 1))))
 
 (defun array-type (ar)
   (array-element-type ar))
