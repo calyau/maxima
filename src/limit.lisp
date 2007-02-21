@@ -939,14 +939,22 @@ It appears in LIMIT and DEFINT.......")
 		       ((mexpt simp) $%e ((mtimes simp) -1 $z)))))
 
 (defun no-err-sub (v e &aux ans) 
-  (let ((errorsw t) (errrjfflag t) (*zexptsimp? t))
-    ;; (CATCH '(ERRORSW RATERR) (SRATSIMP (SUBIN V E)))
-    ;; broken on the Lispm
-    (setq ans (catch 'errorsw
-		(catch 'raterr 
-		  (sratsimp (subin v e)))))
+  (let ((errorsw t) (errrjfflag t) (*zexptsimp? t)
+	(errcatch t)
+	;; Don't print any error messages
+	($errormsg nil))
+    (declare (special errcatch))
+    ;; Should we just use IGNORE-ERRORS instead HANDLER-CASE here?  I
+    ;; (rtoy) am choosing the latter so that unexpected errors will
+    ;; actually show up instead of being silently discarded.
+    (handler-case 
+	(setq ans (catch 'errorsw
+		    (catch 'raterr 
+		      (sratsimp (subin v e)))))
+      (maxima-$error ()
+	(setq ans nil)))
     (cond ((null ans) t)     ; Ratfun package returns NIL for failure.
-	  (t ans))))		   ; Simplifier returns T for failure.
+	  (t ans))))
 
 (defun simplimsubst (v e) 
   (prog (ans)  
@@ -1645,7 +1653,7 @@ It appears in LIMIT and DEFINT.......")
     ((memq (caar exp) '(%acos %asin))
      (simplim%asin-%acos (caar exp) (limit (cadr exp) var val 'think)))
     ((eq (caar exp) '%atanh)
-     (simplim%atanh (limit (cadr exp) var val 'think)))
+     (simplim%atanh (limit (cadr exp) var val 'think) val))
     ((eq (caar exp) '%acosh)
      (simplim%acosh (limit (cadr exp) var val 'think)))
     ((eq (caar exp) '%asinh)
@@ -2657,12 +2665,24 @@ It appears in LIMIT and DEFINT.......")
 	((memq arg '($und $ind $infinity)) '$und)
 	(t (simplify (list '(%acosh) (ridofab arg))))))
 
-(defun simplim%atanh (arg) 
+(defun simplim%atanh (arg dir)
+  ;; Compute limit(atanh(x),x,arg).  If ARG is +/-1, we need to take
+  ;; into account which direction we're approaching ARG.
   (cond ((zerop2 arg) arg)
 	((memq arg '($ind $und $infinity $minf $inf))
 	 '$und)
-	((equal (setq arg (ridofab arg)) 1.) '$inf)
-	((equal arg -1.) '$minf)
+	((equal (setq arg (ridofab arg)) 1.)
+	 ;; The limit at 1 should be complex infinity because atanh(x)
+	 ;; is complex for x > 1, but inf if we're approaching 1 from
+	 ;; below.
+	 (if (eq dir '$zerob)
+	     '$inf
+	     '$infinity))
+	((equal arg -1.)
+	 ;; Same as above, except for the limit is at -1.
+	 (if (eq dir '$zeroa)
+	     '$minf
+	     '$infinity))
 	(t (simplify (list '(%atanh) arg))))) 
 
 (defun simplim%asin-%acos (fn arg) 

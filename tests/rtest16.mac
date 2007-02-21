@@ -166,6 +166,27 @@ radcan(integrate(exp(-(a+%i*b)*x^2),x,minf,inf)/rectform(sqrt(%pi)/sqrt(a+%i*b))
 integrate(sin(a*x)^7/x^4,x,0,inf);
 integrate(sin(a*x)^7/x^4,x,0,inf);
 
+/*
+ * [ 1646761 ] limit atanh @ -1 / 1 all wrong...
+ */
+/* Limit at 1 is (complex) infinity).  But one-sided limit can be inf (real infinity). */
+limit(atanh(x),x,1);
+infinity;
+limit(atanh(x),x,1,'minus);
+inf;
+limit(atanh(x),x,-1);
+infinity;
+limit(atanh(x),x,-1,'plus);
+minf;
+
+/* There shouldn't be an error message printed out here.  Need to look at output to see. */
+limit(2*atanh(x),x,1);
+infinity;
+limit(2*atanh(x),x,1,'minus);
+inf;
+
+limit(atanh(a-1)-log(a)/2,a,0,'plus),logarc:true;
+-log(2)/2;
 
 end;
 end$
