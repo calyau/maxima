@@ -795,17 +795,25 @@
     (rplaca l (ascii (car l))))
   x)
 
+;;; Note that this function had originally stripped a prefix of '|M|.  This
+;;; was intended for operators such as 'MABS, but with the case flipping
+;;; performed by explodec this test would always fail.  Dependent code has
+;;; been written assuming the '|M| prefix is not stripped so this test has
+;;; been disabled for now.
+;;;
 (defmfun $nounify (x)
-  (let (y u)
-    (nonsymchk x '$nounify)
-    (setq x (amperchk x))
-    (cond ((get x 'verb))
-	  ((get x 'noun) x)
-	  ((or (setq u (member (car (setq y (explodec x))) '($ m) :test #'equal))
-	       (not (eq (car y) '%)))
-	   (setq y (implode (cons '% (if u (cdr y) y))))
-	   (putprop y x 'noun) (putprop x y 'verb))
-	  (t x))))
+  (nonsymchk x '$nounify)
+  (setq x (amperchk x))
+  (cond ((get x 'verb))
+	((get x 'noun) x)
+	(t
+	 (let* ((y (explodec x))
+		(u #+nil (member (car y) '($ |M| |m|) :test 'eq)
+		   (eq (car y) '$)))
+	   (cond ((or u (not (eq (car y) '%)))
+		  (setq y (implode (cons '% (if u (cdr y) y))))
+		  (putprop y x 'noun) (putprop x y 'verb))
+		 (t x))))))
 
 (defmfun $verbify (x)
   (nonsymchk x '$verbify)
@@ -871,29 +879,28 @@
 (defmfun amperchk (name)
   " $AB ==> $AB,
    $aB ==> $aB,
-   &aB ==> $AB,
+   &AB ==> $AB,
+   &aB ==> $aB,
    |aB| ==> |aB| "
   (if (char= (getcharn name 1) #\&)
-      (or (get name 'opr)
-	  (implode (cons #\$ (casify-exploden name))))
+      (getalias (or (get name 'opr)
+		    (implode (cons #\$ (casify-exploden name)))))
       name))
 
 
 #+(and cl (not scl) (not allegro))
 (defun casify-exploden (x)
   (cond ((char= (getcharn x 1) #\&)
-	 (cdr (exploden (string-upcase (string x)))))
+	 (cdr (exploden (maybe-invert-string-case (string x)))))
 	(t (exploden x))))
 
 #+(or scl allegro)
 (defun casify-exploden (x)
   (cond ((char= (getcharn x 1) #\&)
 	 (let ((string (string x)))
-	   (cond (#+scl (eq ext:*case-mode* :lower)
-		  #+allegro (eq excl:*current-case-mode* :case-sensitive-lower)
-		  (setf string (string-downcase string)))
-		 (t
-		  (setf string (string-upcase string))))
+	   (unless #+scl (eq ext:*case-mode* :lower)
+		   #+allegro (eq excl:*current-case-mode* :case-sensitive-lower)
+	     (setf string (maybe-invert-string-case string)))
 	   (cdr (exploden string))))
 	(t (exploden x))))
 
