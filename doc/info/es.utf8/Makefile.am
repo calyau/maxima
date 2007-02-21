@@ -40,9 +40,6 @@ maxima.html: maxima.texi
 	    mv -f foo.$$f $$f ; \
 	done
 
-contents.hhc: maxima.html
-	perl ../create_index
-
 include $(top_srcdir)/common.mk
 genericdir = $(dochtmldir)/es.utf8
 genericdirDATA = \
