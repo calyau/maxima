@@ -123,7 +123,7 @@
 #-allegro
 (defun swap-rows (mat m n)		;Interchange row m and n
   (do ((k 0 (1+ k))
-       (l (array-dimension mat 1)))
+       (l (array-dimension mat 0)))
       ((> k l) mat)
     (setf (aref mat m k)
 	   (prog1
