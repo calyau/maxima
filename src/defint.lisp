@@ -2330,10 +2330,12 @@
 		    (eq (caar e) '%cos))
 		(setq ind (caar e))
 		(setq e (bx**n (cadr e))))
-	   ;; Ok, we have cos(b*x^n) or sin(b*x^n), and we set e = (a
-	   ;; b n) where the arg of the trig function is b*x^n+a.
+	   ;; Ok, we have cos(b*x^n) or sin(b*x^n), and we set e = (n
+	   ;; b)
 	   (cond ((equal (car e) 1.)
-		  ;; a = 1.  Give up.
+		  ;; n = 1.  Give up.  (Why IND?  Why not divergent or
+		  ;; something else?  Why is this case different from
+		  ;; the case below of n <= 1?)
 		  '$ind)
 		 ((zerop (setq s (let ((sign ($asksign (cadr e))))
 				   (cond ((eq sign '$pos) 1)
@@ -2342,7 +2344,8 @@
 		  ;; s is the sign of b.  Give up if it's zero.
 		  nil)
 		 ((not (eq ($asksign (m+ -1 (car e)))  '$pos))
-		  ;; Give up if a-1 <= 0
+		  ;; Give up if n-1 <= 0.  (Why give up?  Isn't the
+		  ;; integral divergent?)
 		  nil)
 		 (t
 		  ;; We can apply our formula now.  g = gamma(1/n)/n/b^(1/n)
