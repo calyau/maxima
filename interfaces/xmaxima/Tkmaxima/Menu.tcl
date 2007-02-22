@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Menu.tcl,v 1.29 2007-02-13 12:50:30 grozin Exp $
+#       $Id: Menu.tcl,v 1.30 2007-02-22 12:17:35 vvzhy Exp $
 #
 
 proc pMAXSaveTexToFile {text} {
@@ -255,13 +255,14 @@ proc vMAXAddSystemMenu {fr text} {
 
 	lappend browse $selectedbrowser
     }
-    $m add sep
+    $m add separator
     if {$tcl_platform(platform) != "windows"} {
 	$m add command -underline 0 -label [mc "Maxima Manual (web browser)"] \
 	    -command [list eval $browse "file://$file" &]
     }
     $m add command -underline 0 -label [mc "Xmaxima Manual (web browser)"] \
 	-command [list eval $browse "file://$xfile" &]
+    $m add separator
     $m add command -underline 7 -label [mc "Maxima Homepage"] \
 	-command [list eval $browse http://maxima.sourceforge.net &]
     $m add command -underline 0 -label [mc "Project Page"] \
