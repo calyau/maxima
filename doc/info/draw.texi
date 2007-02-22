@@ -36,6 +36,19 @@ computed automatically.
 
 If the user wants a specific interval for @var{x}, it must be given as a 
 Maxima list, as in @code{xrange=[-2, 3]}.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(xrange = [-3,5],
+             explicit(x^2,x,-1,1))$
+@end example
+
+See also @code{yrange} and @code{zrange}.
 @end defvr
 
 
@@ -48,6 +61,20 @@ computed automatically.
 
 If the user wants a specific interval for @var{y}, it must be given as a 
 Maxima list, as in @code{yrange=[-2, 3]}.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(yrange = [-2,3],
+             explicit(x^2,x,-1,1),
+             xrange = [-3,3])$
+@end example
+
+See also @code{xrange} and @code{zrange}.
 @end defvr
 
 
@@ -60,6 +87,21 @@ computed automatically.
 
 If the user wants a specific interval for @var{z}, it must be given as a 
 Maxima list, as in @code{zrange=[-2, 3]}.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(yrange = [-3,3],
+             zrange = [-2,5],
+             explicit(x^2+y^2,x,-1,1,y,-1,1),
+             xrange = [-3,3])$
+@end example
+
+See also @code{yrange} and @code{zrange}.
 @end defvr
 
 
@@ -69,6 +111,19 @@ Default value: @code{false}
 
 If @code{logx} is @code{true}, the @var{x} axis will be drawn in the
 logarithmic scale.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(explicit(log(x),x,0.01,5),
+             logx = true)$
+@end example
+
+See also @code{logy} and @code{logz}.
 @end defvr
 
 
@@ -78,6 +133,19 @@ Default value: @code{false}
 
 If @code{logy} is @code{true}, the @var{y} axis will be drawn in the
 logarithmic scale.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(logy = true,
+             explicit(exp(x),x,0,5))$
+@end example
+
+See also @code{logx} and @code{logz}.
 @end defvr
 
 
@@ -87,6 +155,19 @@ Default value: @code{false}
 
 If @code{logz} is @code{true}, the @var{z} axis will be drawn in the
 logarithmic scale.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(logz = true,
+             explicit(exp(u^2+v^2),u,-2,2,v,-2,2))$
+@end example
+
+See also @code{logx} and @code{logy}.
 @end defvr
 
 
@@ -97,6 +178,30 @@ Default value: @code{screen}
 Selects the terminal to be used by Gnuplot; possible values are:
 @code{screen} (default), @code{png}, @code{jpg}, @code{eps}, and @code{eps_color}.
 
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+Examples:
+
+@example
+(%i1) load(draw)$
+(%i2) /* screen terminal (default) */
+      draw2d(explicit(x^2,x,-1,1))$
+(%i3) /* png file */
+      draw2d(terminal  = 'png,
+             pic_width = 300,
+             explicit(x^2,x,-1,1))$
+(%i4) /* jpg file */
+      draw2d(terminal   = 'jpg,
+             pic_width  = 300,
+             pic_height = 300,
+             explicit(x^2,x,-1,1))$
+(%i5) /* eps file */
+      draw2d(file_name = "myfile",
+             explicit(x^2,x,-1,1),
+             terminal  = 'eps)$
+@end example
+
 See also @code{file_name}, @code{pic_width}, and @code{pic_height}.
 @end defvr
 
@@ -106,6 +211,17 @@ See also @code{file_name}, @code{pic_width}, and @code{pic_height}.
 Default value: @code{false}
 
 If @code{grid} is @code{true}, a grid will be drawn on the @var{xy} plane.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(grid = true,
+             explicit(exp(u),u,-2,2))$
+@end example
 @end defvr
 
 
@@ -113,8 +229,19 @@ If @code{grid} is @code{true}, a grid will be drawn on the @var{xy} plane.
 @defvr {Graphic option} title
 Default value: @code{""} (empty string)
 
-Variable @code{title} stores a Maxima string with the main title for the scene.
+Option @code{title} stores a Maxima string with the main title for the scene.
 By default, no title is written.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(explicit(exp(u),u,-2,2),
+             title = "Exponential function")$
+@end example
 @end defvr
 
 
@@ -122,8 +249,22 @@ By default, no title is written.
 @defvr {Graphic option} xlabel
 Default value: @code{""} (empty string)
 
-Variable @code{xlabel} stores a Maxima string with the label for the @var{x} axis.
+Option @code{xlabel} stores a Maxima string with the label for the @var{x} axis.
 By default, no label is written.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(xlabel = "Time",
+             explicit(exp(u),u,-2,2),
+             ylabel = "Population")$
+@end example
+
+See also @code{ylabel}, and @code{zlabel}.
 @end defvr
 
 
@@ -131,8 +272,22 @@ By default, no label is written.
 @defvr {Graphic option} ylabel
 Default value: @code{""} (empty string)
 
-Variable @code{ylabel} stores a Maxima string with the label for the @var{y} axis.
+Option @code{ylabel} stores a Maxima string with the label for the @var{y} axis.
 By default, no label is written.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(xlabel = "Time",
+             ylabel = "Population",
+             explicit(exp(u),u,-2,2) )$
+@end example
+
+See also @code{xlabel}, and @code{zlabel}.
 @end defvr
 
 
@@ -140,8 +295,23 @@ By default, no label is written.
 @defvr {Graphic option} zlabel
 Default value: @code{""} (empty string)
 
-Variable @code{zlabel} stores a Maxima string with the label for the @var{z} axis.
+Option @code{zlabel} stores a Maxima string with the label for the @var{z} axis.
 By default, no label is written.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(zlabel = "Z variable",
+             ylabel = "Y variable",
+             explicit(sin(x^2+y^2),x,-2,2,y,-2,2),
+             xlabel = "X variable" )$
+@end example
+
+See also @code{xlabel}, and @code{ylabel}.
 @end defvr
 
 
@@ -150,6 +320,20 @@ By default, no label is written.
 Default value: @code{true}
 
 If @code{xtics} is @code{true}, tics will be written in the @var{x} axis.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) /* No tics in the x-axis */
+      draw2d(xtics = false,
+             explicit(exp(u),u,-2,2))$
+@end example
+
+See also @code{ytics}, and @code{ztics}.
 @end defvr
 
 
@@ -158,6 +342,20 @@ If @code{xtics} is @code{true}, tics will be written in the @var{x} axis.
 Default value: @code{true}
 
 If @code{ytics} is @code{true}, tics will be written in the @var{y} axis.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(ytics = false,
+             explicit(exp(u),u,-2,2),
+             xtics = false)$
+@end example
+
+See also @code{xtics}, and @code{ztics}.
 @end defvr
 
 
@@ -166,6 +364,20 @@ If @code{ytics} is @code{true}, tics will be written in the @var{y} axis.
 Default value: @code{true}
 
 If @code{ztics} is @code{true}, tics will be written in the @var{z} axis.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) /* No tics in the z-axis */
+      draw3d(ztics = false,
+             explicit(sin(x^2+y^2),x,-2,2,y,-2,2) )$
+@end example
+
+See also @code{xtics}, and @code{ytics}.
 @end defvr
 
 
@@ -177,6 +389,19 @@ Default value: 60
 the @var{x} axis) to set the view point in 3d scenes.
 
 The angle is bounded to the @math{[0, 180]} interval.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(rot_vertical = 170,
+             explicit(sin(x^2+y^2),x,-2,2,y,-2,2) )$
+@end example
+
+See also @code{rot_horizontal}.
 @end defvr
 
 
@@ -188,6 +413,20 @@ Default value: 30
 the @var{z} axis) to set the view point in 3d scenes.
 
 The angle is bounded to the @math{[0, 360]} interval.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(rot_vertical = 170,
+             rot_horizontal = 360,
+             explicit(sin(x^2+y^2),x,-2,2,y,-2,2) )$
+@end example
+
+See also @code{rot_horizontal}.
 @end defvr
 
 
@@ -198,6 +437,9 @@ Default value: @code{""} (empty string)
 @code{xy_file} is the name of the file where the coordinates will be saved
 after clicking with the mouse button and hitting the 'x' key. By default,
 no coordinates are saved.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
 @end defvr
 
 
@@ -208,6 +450,20 @@ Default value: @code{""} (empty string)
 Expert Gnuplot users can make use of this option to fine tune Gnuplot's
 behaviour by writing settings to be sent before the @code{plot} or @code{splot}
 command.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+Example:
+
+The @i{dumb} terminal is not supported by package @code{draw},
+but it is possible to set it by making use of option @code{user_preamble},
+@example
+(%i1) load(draw)$
+(%i2) draw2d(explicit(exp(x)-1,x,-1,1),
+             parametric(cos(u),sin(u),u,0,2*%pi),
+             user_preamble="set terminal dumb")$
+@end example
 @end defvr
 
 
@@ -218,7 +474,19 @@ Default value: @code{"maxima_out"}
 This is the name of the file where terminals @code{png}, @code{jpg}, @code{eps}
 and @code{eps_color} will save the graphic.
 
-See also @code{terminal}.
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(file_name = "myfile",
+             explicit(x^2,x,-1,1),
+             terminal  = 'png)$
+@end example
+
+See also @code{terminal}, @code{pic_width}, and @code{pic_height}.
 @end defvr
 
 
@@ -228,7 +496,20 @@ Default value: 640
 
 This is the width of the bitmap file generated by terminals @code{png} and @code{jpg}.
 
-See also @code{terminal}.
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(terminal   = 'png,
+             pic_width  = 300,
+             pic_height = 300,
+             explicit(x^2,x,-1,1))$
+@end example
+
+See also @code{terminal}, @code{file_name}, and @code{pic_height}.
 @end defvr
 
 
@@ -238,7 +519,20 @@ Default value: 640
 
 This is the height of the bitmap file generated by terminals @code{png} and @code{jpg}.
 
-See also @code{terminal}.
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(terminal   = 'png,
+             pic_width  = 300,
+             pic_height = 300,
+             explicit(x^2,x,-1,1))$
+@end example
+
+See also @code{terminal}, @code{file_name}, and @code{pic_width}.
 @end defvr
 
 
@@ -247,6 +541,17 @@ See also @code{terminal}.
 Default value: @code{true}
 
 If @code{axis_bottom} is @code{true}, the bottom axis is shown in 2d scenes.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(axis_bottom = false,
+             explicit(x^3,x,-1,1))$
+@end example
 
 See also @code{axis_left},  @code{axis_top}, @code{axis_right}, and @code{axis_3d}.
 @end defvr
@@ -258,6 +563,17 @@ Default value: @code{true}
 
 If @code{axis_left} is @code{true}, the left axis is shown in 2d scenes.
 
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(axis_left = false,
+             explicit(x^3,x,-1,1))$
+@end example
+
 See also @code{axis_bottom},  @code{axis_top}, @code{axis_right}, and @code{axis_3d}.
 @end defvr
 
@@ -267,6 +583,17 @@ See also @code{axis_bottom},  @code{axis_top}, @code{axis_right}, and @code{axis
 Default value: @code{true}
 
 If @code{axis_top} is @code{true}, the top axis is shown in 2d scenes.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(axis_top = false,
+             explicit(x^3,x,-1,1))$
+@end example
 
 See also @code{axis_bottom},  @code{axis_left}, @code{axis_right}, and @code{axis_3d}.
 @end defvr
@@ -278,6 +605,17 @@ Default value: @code{true}
 
 If @code{axis_right} is @code{true}, the right axis is shown in 2d scenes.
 
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(axis_right = false,
+             explicit(x^3,x,-1,1))$
+@end example
+
 See also @code{axis_bottom},  @code{axis_left}, @code{axis_top}, and @code{axis_3d}.
 @end defvr
 
@@ -287,6 +625,17 @@ See also @code{axis_bottom},  @code{axis_left}, @code{axis_top}, and @code{axis_
 Default value: @code{true}
 
 If @code{axis_3d} is @code{true}, the @var{x}, @var{y} and @var{z} axis are shown in 3d scenes.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(axis_3d = false,
+             explicit(sin(x^2+y^2),x,-2,2,y,-2,2) )$
+@end example
 
 See also @code{axis_bottom},  @code{axis_left}, @code{axis_top}, and @code{axis_right} for axis in 2d.
 @end defvr
@@ -298,6 +647,24 @@ Default value: 1
 
 @code{point_size} sets the size for plotted points. It must be a
 non negative number.
+
+This option affects the following graphic objects:
+@itemize @bullet
+@item
+@code{gr2d}: @code{points}.
+
+@item
+@code{gr3d}: @code{points}.
+@end itemize
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(points(makelist([random(20),random(50)],k,1,10)),
+             point_size = 5,
+             points(makelist(k,k,1,20),makelist(random(30),k,1,20)))$
+@end example
 @end defvr
 
 
@@ -307,6 +674,47 @@ Default value: 1
 
 @code{point_type} is an index (greater or equal than -1) to specify how points are displayed.
 Point colors are controlled with this option.
+
+This option affects the following graphic objects:
+@itemize @bullet
+@item
+@code{gr2d}: @code{points}, @code{explicit}, @code{implicit}, @code{parametric}, and @code{polar}.
+
+@item
+@code{gr3d}: @code{points}.
+@end itemize
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(xrange = [0,10],
+             yrange = [0,10],
+             point_size = 3,
+             point_type = 1,
+             points([[1,1],[5,1],[9,1]]),
+             point_type = 2,
+             points([[1,2],[5,2],[9,2]]),
+             point_type = 3,
+             points([[1,3],[5,3],[9,3]]),
+             point_type = 4,
+             points([[1,4],[5,4],[9,4]]),
+             point_type = 5,
+             points([[1,5],[5,5],[9,5]]),
+             point_type = 6,
+             points([[1,6],[5,6],[9,6]]),
+             point_type = 7,
+             points([[1,7],[5,7],[9,7]]),
+             point_type = 8,
+             points([[1,8],[5,8],[9,8]]),
+             point_type = 9,
+             points([[1,9],[5,9],[9,9]]) )$
+(%i3) draw2d(function_style = 'dots,
+             point_type = -1,
+             explicit(x^2,x,-1,1),
+             point_type = 7,
+             explicit(x^4,x,-1,1))$
+@end example
 @end defvr
 
 
@@ -314,7 +722,36 @@ Point colors are controlled with this option.
 @defvr {Graphic option} points_joined
 Default value: @code{false}
 
-if @code{points_joined} is @code{true}, points are joined by lines.
+If @code{points_joined} is @code{true}, points are joined by lines.
+
+This option affects the following graphic objects:
+@itemize @bullet
+@item
+@code{gr2d}: @code{points}.
+
+@item
+@code{gr3d}: @code{points}.
+@end itemize
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(xrange        = [0,10],
+             yrange        = [0,4],
+             point_size    = 3,
+             point_type    = 1,
+             line_type     = 3,
+             points([[1,1],[5,1],[9,1]]),
+             points_joined = true,
+             point_type    = 3,
+             line_type     = 5,
+             points([[1,2],[5,2],[9,2]]),
+             point_type    = 5,
+             line_type     = 8,
+             line_width    = 7,
+             points([[1,3],[5,3],[9,3]]) )$
+@end example
 @end defvr
 
 
@@ -323,6 +760,24 @@ if @code{points_joined} is @code{true}, points are joined by lines.
 Default value: 1
 
 @code{fill_type} is an index (greater or equal than -1) to specify the color for filled regions.
+
+This option affects the following graphic objects:
+@itemize @bullet
+@item
+@code{gr2d}: @code{polygon}, @code{rectangle}, @code{ellipse}, @code{explicit}, and @code{implicit}.
+
+@end itemize
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(fill_type      = 6,
+             polygon([[3,2],[7,2],[5,5]]),
+             fill_type      = 2,
+             function_style = filled,
+             explicit(sin(x),x,0,10) )$
+@end example
 @end defvr
 
 
@@ -332,6 +787,22 @@ Default value: @code{false}
 
 If @code{transparent} is @code{true}, interior regions of polygons are 
 filled according to @code{fill_type}.
+
+This option affects the following graphic objects:
+@itemize @bullet
+@item
+@code{gr2d}: @code{polygon}, @code{rectangle}, and @code{ellipse}.
+@end itemize
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(polygon([[3,2],[7,2],[5,5]]),
+             transparent = true,
+             line_type   = 3,
+             polygon([[5,2],[9,2],[7,5]]) )$
+@end example
 @end defvr
 
 
@@ -341,6 +812,24 @@ Default value: @code{true}
 
 If @code{border} is @code{true}, borders of polygons are painted
 according to @code{line_type} and @code{line_width}.
+
+This option affects the following graphic objects:
+@itemize @bullet
+@item
+@code{gr2d}: @code{polygon}, @code{rectangle}, and @code{ellipse}.
+@end itemize
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(line_type   = 3,
+             line_width  = 8,
+             polygon([[3,2],[7,2],[5,5]]),
+             border      = false,
+             fill_type   = 6,
+             polygon([[5,2],[9,2],[7,5]]) )$
+@end example
 @end defvr
 
 
@@ -350,6 +839,22 @@ Default value: @code{false}
 
 If @code{head_both} is @code{true}, vectors are plotted with two arrow heads.
 If @code{false}, only one arrow is plotted.
+
+This option is relevant only for @code{vector} objects.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(xrange      = [0,8],
+             yrange      = [0,8],
+             head_length = 0.7,
+             vector([1,1],[6,0]),
+             head_both   = true,
+             vector([1,7],[6,0]) )$
+@end example
+
+Se also @code{head_length}, @code{head_angle}, and @code{head_type}. 
 @end defvr
 
 
@@ -358,6 +863,25 @@ If @code{false}, only one arrow is plotted.
 Default value: 2
 
 @code{head_length} indicates, in @var{x}-axis units, the length of arrow heads.
+
+This option is relevant only for @code{vector} objects.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(xrange      = [0,12],
+             yrange      = [0,8],
+             vector([0,1],[5,5]),
+             head_length = 1,
+             vector([2,1],[5,5]),
+             head_length = 0.5,
+             vector([4,1],[5,5]),
+             head_length = 0.25,
+             vector([6,1],[5,5]))$
+@end example
+
+Se also @code{head_both}, @code{head_angle}, and @code{head_type}. 
 @end defvr
 
 
@@ -367,6 +891,37 @@ Default value: 45
 
 @code{head_angle} indicates the angle, in degrees, between the arrow heads and
 the segment.
+
+This option is relevant only for @code{vector} objects.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(xrange      = [0,10],
+             yrange      = [0,9],
+             head_length = 0.7,
+             head_angle  = 10,
+             vector([1,1],[0,6]),
+             head_angle  = 20,
+             vector([2,1],[0,6]),
+             head_angle  = 30,
+             vector([3,1],[0,6]),
+             head_angle  = 40,
+             vector([4,1],[0,6]),
+             head_angle  = 60,
+             vector([5,1],[0,6]),
+             head_angle  = 90,
+             vector([6,1],[0,6]),
+             head_angle  = 120,
+             vector([7,1],[0,6]),
+             head_angle  = 160,
+             vector([8,1],[0,6]),
+             head_angle  = 180,
+             vector([9,1],[0,6]) )$
+@end example
+
+Se also @code{head_both}, @code{head_length}, and @code{head_type}. 
 @end defvr
 
 
@@ -377,6 +932,24 @@ Default value: @code{filled}
 @code{head_type} is used to specify how arrow heads are plotted. Possible
 values are: @code{filled} (closed and filled arrow heads), @code{empty}
 (closed but not filled arrow heads), and @code{nofilled} (open arrow heads).
+
+This option is relevant only for @code{vector} objects.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(xrange      = [0,12],
+             yrange      = [0,10],
+             head_length = 1,
+             vector([0,1],[5,5]), /* default type */
+             head_type = 'empty,
+             vector([3,1],[5,5]),
+             head_type = 'nofilled,
+             vector([6,1],[5,5]))$
+@end example
+
+Se also @code{head_both}, @code{head_angle}, and @code{head_length}. 
 @end defvr
 
 
@@ -387,6 +960,26 @@ Default value: @code{center}
 @code{label_alignment} is used to specify where to write labels with
 respect to the given coordinates. Possible values are: @code{center},
 @code{left}, and @code{right}.
+
+This option is relevant only for @code{label} objects.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(xrange          = [0,10],
+             yrange          = [0,10],
+             points_joined   = true,
+             points([[5,0],[5,10]]),
+             label_color     = 3,
+             label("Centered alignment (default)",5,2),
+             label_alignment = 'left,
+             label("Left alignment",5,5),
+             label_alignment = 'right,
+             label("Right alignment",5,8))$
+@end example
+
+Se also @code{label_orientation}, and @code{label_color}. 
 @end defvr
 
 
@@ -396,6 +989,25 @@ Default value: @code{horizontal}
 
 @code{label_orientation} is used to specify orientation of labels.
 Possible values are: @code{horizontal}, and @code{vertical}.
+
+This option is relevant only for @code{label} objects.
+
+Example:
+
+In this example, a dummy point is added to get an image.
+Package @code{draw} needs always data to draw an scene.
+@example
+(%i1) load(draw)$
+(%i2) draw2d(xrange     = [0,10],
+             yrange     = [0,10],
+             point_size = 0,
+             points([[5,5]]),
+             label("Horizontal orientation (default)",5,2),
+             label_orientation = 'vertical,
+             label("Vertical orientation",1,5))$
+@end example
+
+Se also @code{label_alignment}, and @code{label_color}. 
 @end defvr
 
 
@@ -404,6 +1016,41 @@ Possible values are: @code{horizontal}, and @code{vertical}.
 Default value: 1
 
 @code{label_color} is an index (greater or equal than -1) to specify the font color.
+
+This option is relevant only for @code{label} objects.
+
+Example:
+
+In this example, a dummy point is added to get an image.
+Package @code{draw} needs always data to draw an scene.
+These colors may change in different terminals.
+@example
+(%i1) load(draw)$
+(%i2) draw2d(xrange     = [0,10],
+             yrange     = [0,10],
+             point_size = 0,
+             points([[0,0]]),
+             label_color = -1,
+             label("Label color -1",5,1),
+             label_color = 1,
+             label("Label color 1 (default)",5,2),
+             label_color = 2,
+             label("Label color 2",5,3),
+             label_color = 3,
+             label("Label color 3",5,4),
+             label_color = 4,
+             label("Label color 4",5,5),
+             label_color = 5,
+             label("Label color 5",5,6),
+             label_color = 6,
+             label("Label color 6",5,7),
+             label_color = 7,
+             label("Label color 7",5,8),
+             label_color = 8,
+             label("Label color 8",5,9) )$
+@end example
+
+Se also @code{label_alignment}, and @code{label_orientation}. 
 @end defvr
 
 
@@ -412,6 +1059,30 @@ Default value: 1
 Default value: 1
 
 @code{line_width} is the width for plotted lines.
+
+This option affects the following graphic objects:
+@itemize @bullet
+@item
+@code{gr2d}: @code{points}, @code{polygon}, @code{rectangle}, 
+@code{ellipse}, @code{vector}, @code{explicit}, @code{implicit}, 
+@code{parametric} and @code{polar}.
+
+@item
+@code{gr3d}: @code{points} and @code{parametric}.
+@end itemize
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(explicit(x^2,x,-1,1), /* default width */
+             line_width = 5,
+             explicit(1 + x^2,x,-1,1),
+             line_width = 10,
+             explicit(2 + x^2,x,-1,1))$
+@end example
+
+Se also @code{line_type}.
 @end defvr
 
 
@@ -421,6 +1092,30 @@ Default value: 1
 
 @code{line_type} is an index (greater or equal than -1) to specify how lines are displayed.
 Line colors are controlled with this option.
+
+This option affects the following graphic objects:
+@itemize @bullet
+@item
+@code{gr2d}: @code{points}, @code{polygon}, @code{rectangle}, 
+@code{ellipse}, @code{vector}, @code{explicit}, @code{implicit}, 
+@code{parametric} and @code{polar}.
+
+@item
+@code{gr3d}: @code{points}, @code{explicit}, @code{parametric} and @code{parametric_surface}.
+@end itemize
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(explicit(x^2,x,-1,1), /* default type */
+             line_type = 5,
+             explicit(1 + x^2,x,-1,1),
+             line_type = 10,
+             explicit(2 + x^2,x,-1,1))$
+@end example
+
+Se also @code{line_width}.
 @end defvr
 
 
@@ -429,6 +1124,25 @@ Line colors are controlled with this option.
 Default value: 30
 
 @code{nticks} is the number of sample points used by the plotting routine.
+
+This option affects the following graphic objects:
+@itemize @bullet
+@item
+@code{gr2d}: @code{ellipse}, @code{explicit}, @code{parametric} and @code{polar}.
+
+@item
+@code{gr3d}: @code{parametric}.
+@end itemize
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(transparent = true,
+             ellipse(0,0,4,2,0,180),
+             nticks = 5,
+             ellipse(0,0,4,2,180,180) )$
+@end example
 @end defvr
 
 
@@ -437,6 +1151,8 @@ Default value: 30
 Default value: 10
 
 @code{adapt_depth} is the maximum number of splittings used by the adaptive plotting routine.
+
+This option is relevant only for 2d @code{explicit} functions.
 @end defvr
 
 
@@ -444,8 +1160,31 @@ Default value: 10
 @defvr {Graphic option} key
 Default value: @code{""} (empty string)
 
-@code{key} is the name of a function in the legend. If @code{key} is an
+@code{key} is the mame of a function in the legend. If @code{key} is an
 empty string, no key is assigned to the function.
+
+This option affects the following graphic objects:
+@itemize @bullet
+@item
+@code{gr2d}: @code{points}, @code{polygon}, @code{rectangle},
+@code{ellipse}, @code{vector}, @code{explicit}, @code{implicit},
+@code{parametric}, and @code{polar}.
+
+@item
+@code{gr3d}: @code{points}, @code{explicit}, @code{parametric},
+and @code{parametric_surface}.
+@end itemize
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(key = "Sinus",
+             explicit(sin(x),x,0,10),
+             key = "Cosinus",
+             line_type = 3,
+             explicit(cos(x),x,0,10) )$
+@end example
 @end defvr
 
 
@@ -454,6 +1193,24 @@ empty string, no key is assigned to the function.
 Default value: @code{lines}
 
 @code{function_style} indicates how functions are plotted: with @code{lines} or @code{dots}.
+
+This option affects the following graphic objects:
+@itemize @bullet
+@item
+@code{gr2d}: @code{explicit}, @code{implicit},
+@code{parametric}, and @code{polar}.
+@end itemize
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(key = "Sinus",
+             explicit(sin(x),x,0,10),
+             key = "Cosinus",
+             function_style = 'dots,
+             explicit(cos(x),x,0,10) )$
+@end example
 @end defvr
 
 
@@ -464,6 +1221,21 @@ Default value: 30
 @code{xu_grid} is the number of coordinates of the first variable
 (@code{x} in explicit and @code{u} in parametric 3d surfaces) to 
 build the grid of sample points.
+
+This option affects the following graphic objects:
+@itemize @bullet
+@item
+@code{gr3d}: @code{explicit} and @code{parametric_surface}.
+@end itemize
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(xu_grid = 10,
+             yv_grid = 50,
+             explicit(x^2+y^2,x,-3,3,y,-3,3) )$
+@end example
 
 See also @code{yv_grid}.
 @end defvr
@@ -477,6 +1249,21 @@ Default value: 30
 (@code{y} in explicit and @code{v} in parametric 3d surfaces) to 
 build the grid of sample points.
 
+This option affects the following graphic objects:
+@itemize @bullet
+@item
+@code{gr3d}: @code{explicit} and @code{parametric_surface}.
+@end itemize
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(xu_grid = 10,
+             yv_grid = 50,
+             explicit(x^2+y^2,x,-3,3,y,-3,3) )$
+@end example
+
 See also @code{xu_grid}.
 @end defvr
 
@@ -486,6 +1273,19 @@ See also @code{xu_grid}.
 Default value: @code{false}
 
 If @code{surface_hide} is @code{true}, hidden parts are not plotted in 3d surfaces.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw(columns=2,
+           gr3d(explicit(exp(sin(x)+cos(x^2)),x,-3,3,y,-3,3)),
+           gr3d(surface_hide = true,
+                explicit(exp(sin(x)+cos(x^2)),x,-3,3,y,-3,3)) )$
+@end example
 @end defvr
 
 
@@ -521,6 +1321,18 @@ set just in the vertical.
 
 @end itemize
 
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(explicit(20*exp(-x^2-y^2)-10,x,0,2,y,-3,3),
+             contour_levels = 15,
+             contour        = both,
+             surface_hide   = true) $
+@end example
 @end defvr
 
 
@@ -529,6 +1341,19 @@ set just in the vertical.
 Default value: 5
 
 @code{contour_levels} is the number of levels in contour plots.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(explicit(20*exp(-x^2-y^2)-10,x,0,2,y,-3,3),
+             contour_levels = 15,
+             contour        = both,
+             surface_hide   = true) $
+@end example
 @end defvr
 
 
@@ -537,6 +1362,19 @@ Default value: 5
 Default value: 1
 
 @code{columns} is the number of columns in multiple plots.
+
+Note that this option must be written outside of objects @code{gr2d}
+and @code{gr3d}.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) scene1: gr2d(title="Ellipse",nticks=30,parametric(2*cos(t),5*sin(t),t,0,2*%pi))$
+(%i3) scene2: gr2d(title="Triangle",polygon([4,5,7],[6,4,2]))$
+(%i4) draw(scene1, scene2, columns = 2)$
+@end example
+
 @end defvr
 
 
@@ -545,6 +1383,8 @@ Default value: 1
 Default value: @code{[50, 50]}
 
 @code{ip_grid} sets the grid for the first sampling in implicit plots.
+
+This option is relevant only for @code{implicit} objects.
 @end defvr
 
 
@@ -553,6 +1393,8 @@ Default value: @code{[50, 50]}
 Default value: @code{[5, 5]}
 
 @code{ip_grid_in} sets the grid for the second sampling in implicit plots.
+
+This option is relevant only for @code{implicit} objects.
 @end defvr
 
 
@@ -624,7 +1466,7 @@ This object is affected by the following @i{graphic options}: @code{head_both},
 plots explicit function @code{fcn}, with variable @code{var} taking values
 from @code{minval} to @code{maxval}.
 This object is affected by the following @i{graphic options}: @code{nticks}, 
-@code{adapt_depth}, @code{line_width}, @code{line_type}, @code{key}, 
+@code{adapt_depth}, @code{line_width}, @code{line_type}, @code{key}, @code{point_type},  
 @code{function_style} and @code{fill_type}.
 
 
@@ -635,7 +1477,7 @@ from @code{x-minval} to @code{x-maxval}, and variable @code{y-var} taking values
 from @code{y-minval} to @code{y-maxval}.
 This object is affected by the following @i{graphic options}: @code{ip_grid}, 
 @code{ip_grid_in}, @code{line_width}, @code{line_type}, @code{key}, 
-@code{filled_function} and @code{fill_type}.
+@code{filled_function}, @code{point_type}, and @code{fill_type}.
 
 
 @item
@@ -652,7 +1494,7 @@ This object is affected by the following @i{graphic options}: @code{nticks},
 plots parametric function @code{[xfun,yfun]}, with parameter @code{par}
 taking values from @code{parmin} to @code{parmax}.
 This object is affected by the following @i{graphic options}: @code{nticks}, 
-@code{line_width}, @code{line_type}, @code{key}, 
+@code{line_width}, @code{line_type}, @code{key}, @code{point_type}, 
 @code{function_style} and @code{point_type}.
 
 @end itemize
