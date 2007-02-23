@@ -426,7 +426,7 @@ Example:
              explicit(sin(x^2+y^2),x,-2,2,y,-2,2) )$
 @end example
 
-See also @code{rot_horizontal}.
+See also @code{rot_vertical}.
 @end defvr
 
 
