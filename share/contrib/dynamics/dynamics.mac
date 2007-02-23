@@ -16,7 +16,7 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston,
     MA  02111-1307  USA
 
-$Id: dynamics.mac,v 1.1 2006-12-02 02:00:38 villate Exp $
+$Id: dynamics.mac,v 1.2 2007-02-23 15:34:06 robert_dodier Exp $
 ***********************************************************************/
 
 load("complex_dynamics")$
@@ -303,7 +303,7 @@ block
     4th Order Runge-Kutta method for one or more ODE's
 
     Sample usage:
-      (%i1) load("rk.mac")$
+      (%i1) load(dynamics)$
       (%i2) results: rk(t-x^2,x,1,[t,0,8,0.1])$
       (%i3) openplot_curves([results]);
         (or plot2d([discrete, results]))
