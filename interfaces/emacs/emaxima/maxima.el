@@ -2802,15 +2802,15 @@ The variable `tab-width' controls the spacing of tab stops."
       (save-excursion
         (set-buffer mbuf)
         (setq inferior-maxima-process (get-buffer-process mbuf))
-        (add-to-list 'comint-output-filter-functions
-                     'inferior-maxima-output-filter)
-;        (add-to-list 'comint-output-filter-functions
-;                     'inferior-maxima-replace-tabs-by-spaces)
-;        (add-to-list 'comint-output-filter-functions
-;                     'inferior-maxima-remove-double-input-prompt)
+        (add-hook 'comint-output-filter-functions
+                  'inferior-maxima-output-filter nil t)
+;        (add-hook 'comint-output-filter-functions
+;                  'inferior-maxima-replace-tabs-by-spaces nil t)
+;        (add-hook 'comint-output-filter-functions
+;                  'inferior-maxima-remove-double-input-prompt nil t)
 	(if maxima-fix-double-prompt
-            (add-to-list 'comint-output-filter-functions
-                         'inferior-maxima-remove-double-prompt))
+            (add-hook 'comint-output-filter-functions
+                      'inferior-maxima-remove-double-prompt nil t))
         (inferior-maxima-wait-for-output)
         (inferior-maxima-mode)))))
 
