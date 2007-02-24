@@ -126,12 +126,16 @@ false;
 
 /* 385 Riccati - CHECK ME */
 (pn_(385),ans:contrib_ode(eqn:x^n*'diff(y,x)=x^(2*n-1)-y^2,y,x));
-[y = -((-%c*bessel_y(n-2,2*sqrt(-x))-bessel_j(n-2,2*sqrt(-x)))
-          *sqrt(-x)
-          +n*(%c*bessel_y(n-1,2*sqrt(-x))+bessel_j(n-1,2*sqrt(-x)))
-          -%c*bessel_y(n-1,2*sqrt(-x))-bessel_j(n-1,2*sqrt(-x)))
-          *x^(n-1)
-          /(%c*bessel_y(n-1,2*sqrt(-x))+bessel_j(n-1,2*sqrt(-x)))];
+[y = x^(n-1)*((-%c*(bessel_y(n-2,2*sqrt(-x))
+                          -bessel_y(n,2*sqrt(-x)))
+                    /sqrt(-x)
+                    -(bessel_j(n-2,2*sqrt(-x))-bessel_j(n,2*sqrt(-x)))
+                     /sqrt(-x))
+                    *x
+                    +n*(-%c*bessel_y(n-1,2*sqrt(-x))
+                       -bessel_j(n-1,2*sqrt(-x)))
+                    +%c*bessel_y(n-1,2*sqrt(-x))+bessel_j(n-1,2*sqrt(-x)))
+          /(2*%c*bessel_y(n-1,2*sqrt(-x))+2*bessel_j(n-1,2*sqrt(-x)))];
 method;
 riccati;
 
