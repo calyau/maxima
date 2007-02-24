@@ -854,7 +854,7 @@ Example:
              vector([1,7],[6,0]) )$
 @end example
 
-Se also @code{head_length}, @code{head_angle}, and @code{head_type}. 
+See also @code{head_length}, @code{head_angle}, and @code{head_type}. 
 @end defvr
 
 
@@ -881,7 +881,7 @@ Example:
              vector([6,1],[5,5]))$
 @end example
 
-Se also @code{head_both}, @code{head_angle}, and @code{head_type}. 
+See also @code{head_both}, @code{head_angle}, and @code{head_type}. 
 @end defvr
 
 
@@ -921,7 +921,7 @@ Example:
              vector([9,1],[0,6]) )$
 @end example
 
-Se also @code{head_both}, @code{head_length}, and @code{head_type}. 
+See also @code{head_both}, @code{head_length}, and @code{head_type}. 
 @end defvr
 
 
@@ -949,7 +949,7 @@ Example:
              vector([6,1],[5,5]))$
 @end example
 
-Se also @code{head_both}, @code{head_angle}, and @code{head_length}. 
+See also @code{head_both}, @code{head_angle}, and @code{head_length}. 
 @end defvr
 
 
@@ -979,7 +979,7 @@ Example:
              label("Right alignment",5,8))$
 @end example
 
-Se also @code{label_orientation}, and @code{label_color}. 
+See also @code{label_orientation}, and @code{label_color}. 
 @end defvr
 
 
@@ -1007,7 +1007,7 @@ Package @code{draw} needs always data to draw an scene.
              label("Vertical orientation",1,5))$
 @end example
 
-Se also @code{label_alignment}, and @code{label_color}. 
+See also @code{label_alignment}, and @code{label_color}. 
 @end defvr
 
 
@@ -1050,7 +1050,7 @@ These colors may change in different terminals.
              label("Label color 8",5,9) )$
 @end example
 
-Se also @code{label_alignment}, and @code{label_orientation}. 
+See also @code{label_alignment}, and @code{label_orientation}. 
 @end defvr
 
 
@@ -1082,7 +1082,7 @@ Example:
              explicit(2 + x^2,x,-1,1))$
 @end example
 
-Se also @code{line_type}.
+See also @code{line_type}.
 @end defvr
 
 
@@ -1115,7 +1115,7 @@ Example:
              explicit(2 + x^2,x,-1,1))$
 @end example
 
-Se also @code{line_width}.
+See also @code{line_width}.
 @end defvr
 
 
