@@ -76,14 +76,16 @@ genhom;
 /* 272 - CHECKME */
 (pn_(272),ans:contrib_ode(eqn:x^2*'diff(y,x)=a+b*x*y+c*x^4*y^2,y,x));
 [y = (sqrt(a)*(%c*bessel_y(-(b+5)/2,-sqrt(a)*sqrt(c)*x)
-                     +bessel_j(-(b+5)/2,-sqrt(a)*sqrt(c)*x))*sqrt(c)*x
-          +b*(-%c*bessel_y(-(b+3)/2,-sqrt(a)*sqrt(c)*x)
-             -bessel_j(-(b+3)/2,-sqrt(a)*sqrt(c)*x))
-          -3*%c*bessel_y(-(b+3)/2,-sqrt(a)*sqrt(c)*x)
-          -3*bessel_j(-(b+3)/2,-sqrt(a)*sqrt(c)*x))
-          /((%c*bessel_y(-(b+3)/2,-sqrt(a)*sqrt(c)*x)
-           +bessel_j(-(b+3)/2,-sqrt(a)*sqrt(c)*x))
-           *c*x^3)];
+                    +bessel_j(-(b+5)/2,-sqrt(a)*sqrt(c)*x)
+                    -%c*bessel_y(-(b+1)/2,-sqrt(a)*sqrt(c)*x)
+                    -bessel_j(-(b+1)/2,-sqrt(a)*sqrt(c)*x))*sqrt(c)*x
+         +b*(-%c*bessel_y(-(b+3)/2,-sqrt(a)*sqrt(c)*x)
+            -bessel_j(-(b+3)/2,-sqrt(a)*sqrt(c)*x))
+         -3*%c*bessel_y(-(b+3)/2,-sqrt(a)*sqrt(c)*x)
+         -3*bessel_j(-(b+3)/2,-sqrt(a)*sqrt(c)*x))
+         /((2*%c*bessel_y(-(b+3)/2,-sqrt(a)*sqrt(c)*x)
+          +2*bessel_j(-(b+3)/2,-sqrt(a)*sqrt(c)*x))
+          *c*x^3)];
 method;
 riccati;
 
