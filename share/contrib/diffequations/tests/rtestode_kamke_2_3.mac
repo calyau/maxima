@@ -627,7 +627,7 @@ odelin;
 [y = bessel_y(-3/2,sqrt(-x))*%k2*sqrt(-x)/x
     +bessel_j(-3/2,sqrt(-x))*%k1*sqrt(-x)/x];
 method;
-odelin
+odelin;
 
 /* Kamke 2. 290  */ 
 assume(x>0);
