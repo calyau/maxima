@@ -298,7 +298,7 @@ false;
 (pn_(143),ans:contrib_ode(eqn:2*a*x*'diff(y,x,2)+(b*x+a)*'diff(y,x,1)+c*y,y,x));
 [y = %k2*kummer_u(c/b,1/2,-b*x/(2*a))+%k1*kummer_m(c/b,1/2,-b*x/(2*a))];
 [method, ode_check(eqn,ans[1])];
-odelin,0];
+[odelin,0];
 
 /* Kamke 2. 144  */ 
 (pn_(144),ans:contrib_ode(eqn:2*a*x*'diff(y,x,2)+(b*x+3*a)*'diff(y,x,1)+c*y,y,x));
