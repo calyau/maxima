@@ -549,13 +549,16 @@ forget(a>0,b>0);
 
 /* 173 Too general */
 
-/* 174 */
+/* 174 FIXME - 2007-02-04 - Solution correct.  Add check. */
 assume(a>0);
 [a>0];
 (pn_(174),ans:contrib_ode(eqn:x*'diff(y,x)+a+x*y^2=0,y,x));
-[y=(bessel_y(0,2*sqrt(a)*sqrt(x))*%c+bessel_j(0,2*sqrt(a)*sqrt(x)))*sqrt(a)/((bessel_y(1,2*sqrt(a)*sqrt(x))*%c+bessel_j(1,2*sqrt(a)*sqrt(x)))*sqrt(x))];
-[method,ode_check(eqn,ans[1])];
-[riccati,0];
+[y = -(((bessel_y(2,2*sqrt(a)*sqrt(x))-bessel_y(0,2*sqrt(a)*sqrt(x)))*%c
+ +bessel_j(2,2*sqrt(a)*sqrt(x))-bessel_j(0,2*sqrt(a)*sqrt(x)))*sqrt(a)*sqrt(x)
+ -bessel_y(1,2*sqrt(a)*sqrt(x))*%c-bessel_j(1,2*sqrt(a)*sqrt(x)))
+ /((2*bessel_y(1,2*sqrt(a)*sqrt(x))*%c+2*bessel_j(1,2*sqrt(a)*sqrt(x)))*x)];
+method;
+riccati;
 forget(a>0);
 [a>0];
 
