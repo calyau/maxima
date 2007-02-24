@@ -616,12 +616,78 @@ wrapper for this."
 		   (if $optionset (mtell "~:M option is being set.~%" x))
 		   (if (not (eq x '$linenum)) (add2lnc x $myoptions))))
 	    (return (setf (symbol-value x) y)))
+
+           ;; ---------- begin code copied & modified from defstruct.lisp
+
+           ;; Check to see if the operator has an mset_extension_operator.
+           ;; If so, this says how to do assignments. Examples, a@b:x. Put mset_extension_operator
+           ;; of $mrecordassign on the atom $@.  To allow [a,b]:[3,4] put op on mlist.
+           ;; arguably we could use mget, mfuncall, and $mset_extension_operator  and
+           ;; allow this to be done at the maxima level instead of lisp.
+
+           ;; X is could be something like (($FOO ARRAY) 42), in which case it is meaningful
+           ;; to look for an assignment operator associated either with $FOO itself or with
+           ;; $FOO's object type, with "object type" = (CAAR (SYMBOL-VALUE '$FOO)).
+
+           ((let*
+              ((x-value (if (boundp (caar x)) (symbol-value (caar x))))
+               (mset-extension-op
+                 (cond
+                   ((get (caar x) 'mset_extension_operator))
+                   ((and
+                      (not (atom x-value))
+                      (get (caar x-value) '$defstruct_template)
+                      (get (caar x-value) 'mset_extension_operator))))))
+              (if mset-extension-op
+                (return-from mset (funcall mset-extension-op x y)))))
+
+           ;; ---------- end code copied & modified from defstruct.lisp
+
 	   ((member 'array (cdar x) :test #'eq)
 	    (return (arrstore x y)))
-	   ((and $subscrmap (member (caar x) '(mlist $matrix) :test #'eq))
-	    (return (outermap1 'mset x y)))
 	   (t (merror "Improper value assignment:~%~M" x)))))
 
+;; ---------- begin code copied from defstruct.lisp
+
+;; The follow code implements PARALLEL LIST assignment.
+;; it is consistent with commercial macsyma.  [a,b,c]:[x,y,z] means
+;;  about the same as a:x, b:y, c:z.  Actually it
+;; evaluates x,y,z  BEFORE any assignments to a,b,c, hence parallel.
+;; Also implemented is [a,b,c]:x  which evaluates x once and assigns
+;; to a,b,c.
+;; value returned is (evaluated x to ex)  [ex,ex,ex].
+
+;; quiz .  [a,b]:[b,2*a].  produces values a=b, b= 2*a.
+;; re-execute the statement 4 times. what do you get?  [4b, 8a]
+;;         
+;; a neat application of parallel assignment is this version of
+;; a gcd algorithm (for integers)...
+;; kgcd(a,b):=(while b#0 do [a,b]:[b,remainder(a,b)], abs(a));
+;; The extended euclidean algorithm looks even better with parallel
+;; assignment.
+
+;; add MLIST to possible operators on the left hand side of 
+;; an assignment statement.
+
+(setf (get 'mlist 'mset_extension_operator) '$mlistassign)
+
+(defmfun $mlistassign (tlist vlist)
+  ;;  tlist is  ((mlist..)  var[0]... var[n])  of targets
+  ;; vlist is either((mlist..)  val[0]... val[n]) of values
+  ;; or possibly just one value.
+  ;; should insert some checking code here
+  (if (and (listp vlist)
+	   (eq (caar vlist) 'mlist)
+	   (not (= (length tlist)(length vlist))))
+      (merror "Illegal list assignment: different lengths of ~M and ~M." tlist vlist))
+  (unless (and (listp vlist)
+	   (eq (caar vlist) 'mlist))
+    (setf vlist (cons (car tlist) ;; if [a,b,c]:v  then make a list [v,v,v]
+		      (make-sequence 'list (1-(length tlist)) :initial-element vlist))))
+  (map nil #'mset (cdr tlist)(cdr vlist))
+   vlist)
+
+;; ---------- end code copied from defstruct.lisp
 
 (defmspec $ev (l)
   (setq l (cdr l))
