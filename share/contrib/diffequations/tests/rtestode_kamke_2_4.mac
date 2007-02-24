@@ -530,7 +530,7 @@ false;
 /* Kamke 2. 378  */ 
 (pn_(378),ans:contrib_ode(eqn:'diff(y,x,2)=-2*(x^2-1)*'diff(y,x,1)/((x-1)^2*x)-(-2*x^2+2*x+2)*y/((x-1)^2*x^2),y,x));
 [y = %k2*x*(2*x^2*log(x)-2*x*log(x)-2*x^2*log(x-1)+2*x*log(x-1)-2*x+1)/(x-1)^2
-    +%k1*x^2/(x-1)]
+    +%k1*x^2/(x-1)];
 [method,ode_check(eqn,ans[1])];
 [odelin,0];
 
