@@ -513,8 +513,3 @@
 	(morecontinue (stripdollar more-continue)))
     ;;     (MORE-FUN NIL)
     '$done))
-
-;; $CLEARSCREEN clears the screen.  It takes no arguments.
-
-(defmfun $clearscreen ()
-  (cursorpos 'c) '$done)
