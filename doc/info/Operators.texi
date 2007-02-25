@@ -270,6 +270,39 @@ Arithmetic is carried out element-by-element for lists (depending on @code{lista
 
 @end deffn
 
+@deffn {Operator} **
+
+Exponentiation operator.
+Maxima recognizes @code{**} as the same operator as @code{^} in input,
+and it is displayed as @code{^} in 1-dimensional output,
+or by placing the exponent as a superscript in 2-dimensional output.
+
+The @code{fortran} function displays the exponentiation operator as @code{**},
+whether it was input as @code{**} or @code{^}.
+
+Examples:
+
+@c ===beg===
+@c is (a**b = a^b);
+@c x**y + x^z;
+@c string (x**y + x^z);
+@c fortran (x**y + x^z);
+@c ===end===
+@example
+(%i1) is (a**b = a^b);
+(%o1)                         true
+(%i2) x**y + x^z;
+                              z    y
+(%o2)                        x  + x
+(%i3) string (x**y + x^z);
+(%o3)                        x^z+x^y
+(%i4) fortran (x**y + x^z);
+      x**z+x**y
+(%o4)                         done
+@end example
+
+@end deffn
+
 @node Relational operators, General operators, Arithmetic operators, Operators
 @section Relational operators
 
@@ -299,6 +332,27 @@ Arithmetic is carried out element-by-element for lists (depending on @code{lista
 @ifinfo
 @fnindex Noncommutative exponentiation
 @end ifinfo
+
+Noncommutative exponentiation operator.
+@code{^^} is the exponentiation operator corresponding to noncommutative multiplication @code{.},
+just as the ordinary exponentiation operator @code{^} corresponds to commutative multiplication @code{*}.
+
+Noncommutative exponentiation is displayed by @code{^^} in 1-dimensional output,
+and by placing the exponent as a superscript within angle brackets @code{< >} in 2-dimensional output.
+
+Examples:
+
+@c ===beg===
+@c a . a . b . b . b + a * a * a * b * b;
+@c string (a . a . b . b . b + a * a * a * b * b);
+@c ===end===
+@example
+(%i1) a . a . b . b . b + a * a * a * b * b;
+                        3  2    <2>    <3>
+(%o1)                  a  b  + a    . b
+(%i2) string (a . a . b . b . b + a * a * a * b * b);
+(%o2)                  a^3*b^2+a^^2 . b^^3
+@end example
 
 @end deffn
 
