@@ -307,7 +307,7 @@ By far, the best way to do numerical evaluation is to make one or more
 of the function arguments floating point numbers. By doing that, 
 specialized floating point algorithms are used for evaluation.
 
-Maxima's @code{float} function is somewhat indiscriminant; if you apply 
+Maxima's @code{float} function is somewhat indiscriminate; if you apply 
 @code{float} to an expression involving an orthogonal polynomial with a
 symbolic degree or order parameter, these parameters may be 
 converted into floats; after that, the expression will not evaluate 
@@ -654,20 +654,18 @@ requires that the unit step function be left-continuous.
 @subsection Algorithms
 
 Generally, @code{orthopoly} does symbolic evaluation by using a hypergeometic 
-representation of the various orthogonal polynomials. The hypergeometic 
+representation of the orthogonal polynomials. The hypergeometic 
 functions are evaluated using the (undocumented) functions @code{hypergeo11} 
 and @code{hypergeo21}. The exceptions are the half-integer Bessel functions 
-and the associated Legendre function of the second kind. The Bessel functions are
-evaluated using an explicit representation, while the associated Legendre 
+and the associated Legendre function of the second kind. The half-integer Bessel functions are
+evaluated using an explicit representation, and the associated Legendre 
 function of the second kind is evaluated using recursion.
 
 For floating point evaluation, we again convert most functions into
 a hypergeometic form; we evaluate the hypergeometic functions using 
 forward recursion. Again, the exceptions are the half-integer Bessel functions 
 and the associated Legendre function of the second kind. Numerically, 
-the half-integer Bessel functions are evaluated using the SLATEC code, and the 
-associated Legendre functions of the second kind is numerically evaluated using 
-the same algorithm as its symbolic evaluation uses.
+the half-integer Bessel functions are evaluated using the SLATEC code.
 
 
 @node Definitions for orthogonal polynomials,  , Introduction to orthogonal polynomials, orthopoly
@@ -934,7 +932,7 @@ takes on the value 1/2 at zero, use @code{(1 + signum (@var{x}))/2}.
 @end deffn
 
 @deffn {Function} ultraspherical (@var{n}, @var{a}, @var{x})
-The ultraspherical polynomial (also known the Gegenbauer polynomial).
+The ultraspherical polynomial (also known as the Gegenbauer polynomial).
 
 Reference: Abramowitz and Stegun, equation 22.5.46, page 779.
 @end deffn
