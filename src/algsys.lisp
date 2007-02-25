@@ -29,7 +29,7 @@
 ;;this method will remain impractical.
 
 ;;Some other possible ideas:  Keeping the total number of equations constant,
-;;in an effort to reduce extraneous solutions, or Reducing to a linear 
+;;in an effort to reduce extraneous solutions, or Reducing to a linear
 ;;equation before taking resultants.
 
 (declare-top (special $algdelta $ratepsilon $algepsilon $keepfloat
@@ -50,12 +50,12 @@
 (defmvar $realonly nil "If t only real solutions are returned.")
 
 (defmvar realonlyratnum nil
-  "A REALROOTS hack for RWG.  Causes ALGSYS to retain rational numbers 
+  "A REALROOTS hack for RWG.  Causes ALGSYS to retain rational numbers
   returned by REALROOTS when REALONLY is TRUE."
   in-core)
 
 (defmvar $algexact nil "If t ALGSYS always calls SOLVE to try to MAXIMA-FIND exact
-                        solutions.") 
+			solutions.")
 
 (defmvar algnotexact nil
   "A hack for RWG for univariate polys.  Causes SOLVE not to get called
@@ -65,7 +65,7 @@
 (defmacro merrset (l)
   `(let ((errset 'errbreak1) (unbind (cons bindlist loclist)) val)
      (setq val (errset ,l nil))
-     (cond ((null val) (errlfun1 unbind)))
+     (when (null val) (errlfun1 unbind))
      val))
 
 (defmfun $algsys (lhslist varxlist &aux varlist genvar)
@@ -77,7 +77,7 @@
 	 (merror "Wrong type arg to `algsys':~%~M" varxlist)))
   ((lambda (tlhslist *tvarxlist* solnlist $ratprint $ratepsilon
 	    $keepfloat varlist genvar $ratfac $breakup
-	    $solvefactors *roots *failures *ivar* $polyfactor 
+	    $solvefactors *roots *failures *ivar* $polyfactor
 	    varxl $infeval $numer $float numerflg)
      (dolist (var (cdr ($listofvars (list '(mlist simp) lhslist varxlist))))
        (if (and (symbolp var) (not (constant var)))
@@ -114,21 +114,20 @@
   (let (solnl)
     (mapl #'(lambda (q) (or (subsetl (cdr q) (car q))
 			    (setq solnl (cons (car q) solnl))))
-	  (sort tempsolnl #'(lambda (a b) (> (length a)
-					     (length b)))))
+	  (sort tempsolnl #'(lambda (a b) (> (length a) (length b)))))
     solnl))
 
 (defun subsetl (l1 s2)
   (or (equal s2 (list nil))
       (do ((l l1 (cdr l)))
 	  ((null l) nil)
-	(cond ((m-subset (car l) s2) (return t))))))
+	(when (m-subset (car l) s2) (return t)))))
 
 (defun m-subset (s1 s2)
   (do ((s s1 (cdr s)))
       ((null s) t)
-    (cond ((not (memalike (car s) s2)) (return nil)))))
-
+    (unless (memalike (car s) s2) (return nil))))
+
 (defun algsys (tlhslist &aux answ)
   (setq answ
 	(condensesolnl (apply #'append
@@ -154,10 +153,10 @@
 				      (t q)))
 			    (delete resulteq (copy-list tlhslist) :test #'equal)))
      (setq answ (bakalevel (algsys nlhslist) tlhslist vartorid))
-		
+
      answ)
    (findleastvar tlhslist) nil nil))
-       
+
 (defun addmlist (l)
   (cons '(mlist) l))
 
@@ -168,29 +167,30 @@
   ;; anyway.
   `(meval (list '($ev) ,@l)))
 
-(defun rootsp (asolnset eqn)		;eqn is ((MLIST) eq deriv) 
-  (let (rr ($keepfloat t) ($numer t) ($float t)) 
+(defun rootsp (asolnset eqn)		;eqn is ((MLIST) eq deriv)
+  (let (rr ($keepfloat t) ($numer t) ($float t))
     (setq rr (what-the-$ev eqn asolnset)) ; ratsimp?
     (cond ((and (complexnump (cadr rr)) (complexnump (caddr rr)))
-	   (lessp (cabs (cadr rr))
-		  (times $algdelta (max 1 (cabs (caddr rr))))))
-	  (t nil)))) 
+	   (< (cabs (cadr rr))
+		  (* $algdelta (max 1 (cabs (caddr rr))))))
+	  (t nil))))
 
-(defun round1 (a) 
+(defun round1 (a)
   (cond ((floatp a)
 	 (setq a (maxima-rationalize a))
 	 (fpcofrat1 (car a) (cdr a)))
-	(t a))) 
+	(t a)))
 
 (defun roundrhs (eqn)
   (list (car eqn) (cadr eqn) (round1 (caddr eqn))))
 
-(defun roundroots1 (lsoln) (mapcar #'roundrhs lsoln))
+(defun roundroots1 (lsoln)
+  (mapcar #'roundrhs lsoln))
 
 (defun bbsorteqns (l)
   (sort (copy-list l) #'orderlessp))
 
-(defun putorder (tempvarl) 
+(defun putorder (tempvarl)
   (do ((n 1 (1+ n))
        (tempvarl tempvarl (cdr tempvarl)))
       ((null tempvarl) nil)
@@ -198,9 +198,9 @@
 
 (defun remorder (gvarl)
   (mapc #'(lambda (x) (remprop x 'varorder)) gvarl))
-
 
-(defun orderlessp (eqn1 eqn2) 
+
+(defun orderlessp (eqn1 eqn2)
   (< (get (caadr (ratf (cadr eqn1))) 'varorder)
      (get (caadr (ratf (cadr eqn2))) 'varorder)))
 
@@ -257,8 +257,8 @@
   (cond ((pconstp poly) 0)
 	(t ((lambda (x) (and x
 			     (not (> (cdr x) (cadr poly)))
-			     (setq *vardegs* (zl-delete x *vardegs*))))
-	    (assq (car poly) *vardegs*))
+			     (setq *vardegs* (delete x *vardegs* :test #'equal))))
+	    (assoc (car poly) *vardegs* :test #'eq))
 	   (do ((poly (cdr poly) (cddr poly))
 		(tdeg 0 (max tdeg (+ (car poly)
 				      (killvardegsn (cadr poly))))))
@@ -271,7 +271,7 @@
 	       (getvardegs (pterm (cdr poly) 0))))
 	(t (getvardegs (pterm (cdr poly) 0)))))
 
-(declare-top(unspecial *vardegs*))
+(declare-top (unspecial *vardegs*))
 
 (defun pconstp (poly)
   (or (atom poly) (not (member (car poly) *tvarxlist* :test #'eq))))
@@ -295,40 +295,41 @@
 		    (return (list 0)))
 		   ((and (not (atom poly)) (atom (car poly)))
 		    (setq lfactors (cons (pabs poly) lfactors))))))))
-
+
 (defun combiney (listofl)
   (cond ((member nil listofl :test #'eq) nil)
-	(t (combiney1 (zl-delete '(0) listofl)))))
+	(t (combiney1 (delete '(0) listofl :test #'equal)))))
 
 (defun combiney1 (listofl)
   (cond ((null listofl) (list nil))
 	(t (mapcan #'(lambda (r)
-		       (cond ((intersect (car listofl) r) (list r))
-			     (t (mapcar #'(lambda (q) (cons q r))
-					(car listofl)))))
+		       (if (intersection (car listofl) r :test #'equal)
+			   (list r)
+			   (mapcar #'(lambda (q) (cons q r)) (car listofl))))
 		   (combiney1 (cdr listofl))))))
 
-(defun midpnt (l) (rhalf (rplus* (car l) (cadr l)))) 
+(defun midpnt (l)
+  (rhalf (rplus* (car l) (cadr l))))
 
-(defun rflot (l) 
+(defun rflot (l)
   (let ((rr (midpnt l)))
     (if realonlyratnum (list '(rat) (car rr) (cdr rr))
-	(quotient (plus 0.0 (car rr)) (cdr rr)))))
-
+	(/ (+ 0d0 (car rr)) (cdr rr)))))
+
 (defun memberroot (a x eps)
   (cond ((null x) nil)
-	((lessp (abs (difference a (car x)))
-		(quotient (plus 0.0 (car eps)) (cdr eps)))
+	((< (abs (difference a (car x)))
+		(/ (+ 0d0 (car eps)) (cdr eps)))
 	 t)
 	(t (memberroot a (cdr x) eps))))
 
-(defun commonroots (eps solnl1 solnl2) 
+(defun commonroots (eps solnl1 solnl2)
   (cond ((null solnl1) nil)
 	((memberroot (car solnl1) solnl2 eps)
 	 (cons (car solnl1) (commonroots eps (cdr solnl1) solnl2)))
-	(t (commonroots eps (cdr solnl1) solnl2)))) 
+	(t (commonroots eps (cdr solnl1) solnl2))))
 
-(defun deletmult (l) 
+(defun deletmult (l)
   (and l (cons (car l) (deletmult (cddr l)))))
 
 (defun punivarp (poly)
@@ -339,21 +340,21 @@
 	     (punivarp (cadr l)))
 	(return nil))))
 
-(defun realonly (rootsl) 
+(defun realonly (rootsl)
   (cond ((null rootsl) nil)
 	((freeof '$%i (car rootsl))
 	 (nconc (list (car rootsl)) (realonly (cdr rootsl))))
-	(t (realonly (cdr rootsl))))) 
+	(t (realonly (cdr rootsl)))))
 
-
-(defun presultant (p1 p2 var) 
-  (cadr (ratf ($resultant (pdis p1) (pdis p2) (pdis (list var 1. 1.)))))) 
 
-(defun ptimeftrs (l) 
-  (prog (ll) 
+(defun presultant (p1 p2 var)
+  (cadr (ratf ($resultant (pdis p1) (pdis p2) (pdis (list var 1 1))))))
+
+(defun ptimeftrs (l)
+  (prog (ll)
      (setq ll (cddr l))
      (cond ((null ll) (return (car l)))
-	   (t (return (ptimes (car l) (ptimeftrs ll))))))) 
+	   (t (return (ptimes (car l) (ptimeftrs ll)))))))
 
 (defun ebaksubst (solnl lhsl)
   (mapcar #'(lambda (q) (cadr (ratf (what-the-$ev (pdis q)
@@ -362,19 +363,19 @@
 	  lhsl))
 
 (defun baksubst (solnl lhsl)
-  (setq lhsl (delete 't (mapcar #'(lambda (q)
-				  (car (merrset (baksubst1 solnl q))))
-			      lhsl) :test #'eq))	;catches arith. ovfl
-  (cond ((member nil lhsl :test #'eq) (list nil))
-	(t lhsl)))
+  (setq lhsl (delete 't (mapcar #'(lambda (q) (car (merrset (baksubst1 solnl q))))
+				lhsl)
+		     :test #'eq))	;catches arith. ovfl
+  (if (member nil lhsl :test #'eq)
+      (list nil)
+      lhsl))
 
 (defun baksubst1 (solnl poly)
   (let* (($keepfloat (not $realonly))	;sturm1 needs poly with
 	 (poly1				;integer coefs
-	  (cdr
-	   (ratf (what-the-$ev (pdis poly)
-			       (cons '(mlist) solnl)
-			       '$numer)))))
+	  (cdr (ratf (what-the-$ev (pdis poly)
+				   (cons '(mlist) solnl)
+				   '$numer)))))
     (cond ((and (complexnump (pdis (car poly1)))
 		(numberp (cdr poly1)))
 	   (rootsp (cons '(mlist) solnl)
@@ -385,17 +386,17 @@
   ((lambda (p)
      (or (numberp p) (eq (pdis (pget (car p))) '$%i)))
    (cadr (ratf ($ratsimp p)))))
-
+
 (defun bakalevel (solnl lhsl var)
 ;;(apply #'append (mapcar #'(lambda (q) (bakalevel1 q lhsl var)) solnl))
   (loop for q in solnl append (bakalevel1 q lhsl var)))
 
-(defun bakalevel1 (solnl lhsl var) 
+(defun bakalevel1 (solnl lhsl var)
   (cond ((exactonly solnl)
 	 (cond (solnl (mergesoln solnl (algsys (ebaksubst solnl lhsl))))
 	       ((cdr lhsl)
 		(bakalevel (callsolve (setq solnl (findleastvar lhsl)))
-			   (zl-remove (car solnl) lhsl) var))
+			   (remove (car solnl) lhsl :test #'equal) var))
 	       (t (callsolve (cons (car lhsl) var)))))
 	(t (mergesoln solnl (apprsys (baksubst solnl lhsl))))))
 
@@ -407,19 +408,19 @@
 
 (defun mergesoln (asoln solnl)
   (let ((errorsw t) s (unbind (cons bindlist loclist)))
-    (mapcan
-     #'(lambda (q)
-	 (setq s (catch 'errorsw
-		   (append
-		    (mapcar #'(lambda (r)
-				(what-the-$ev r
-					      (cons '(mlist) q))
-				)
-			    asoln)
-		    q)))
-	 (cond ((eq s t) (errlfun1 unbind) nil)
-	       (t (list s))))
-     solnl)))
+    (mapcan #'(lambda (q)
+		(setq s (catch 'errorsw
+			  (append
+			   (mapcar #'(lambda (r)
+				       (what-the-$ev r (cons '(mlist) q)))
+				   asoln)
+			   q)))
+		(cond ((eq s t)
+		       (errlfun1 unbind)
+		       nil)
+		      (t
+		       (list s))))
+	    solnl)))
 
 (defun callsolve (pv)
   ((lambda (poly var varlist genvar *roots *failures $programmode)
@@ -429,13 +430,12 @@
 	    (cond ((null (or *roots *failures))
 		   (list nil))
 		  (t
-		   (append (mapcan #'(lambda (q)
-				       (callapprs (cadr (ratf (meqhk q)))))
-				    (deletmult *failures))
+		   (append (mapcan #'(lambda (q) (callapprs (cadr (ratf (meqhk q)))))
+				   (deletmult *failures))
 			   (mapcar #'list
-				   (cond ($realonly
-					  (realonly (deletmult *roots)))
-					 (t (deletmult *roots))))))))
+				   (if $realonly
+				       (realonly (deletmult *roots))
+				       (deletmult *roots)))))))
 	   (t (callapprs poly))))
    (car pv) (cdr pv) varlist genvar nil nil t))
 
@@ -450,7 +450,7 @@
   (or (null l)
       (and (or (= (car l) 2) (= (car l) 0))
 	   (biquadp1 (cddr l)))))
-	   
+
 (defun callapprs (poly)
   (or (punivarp poly)
       (merror "`algsys' cannot solve - system too complicated."))
@@ -472,8 +472,7 @@
 	(t
 	 (do ((tlhsl lhsl (cdr tlhsl))) (nil)
 	   (cond ((null tlhsl)
-		  (merror
-		   "`algsys' cannot solve - system too complicated."))
+		  (merror "`algsys' cannot solve - system too complicated."))
 		 ((pconstp (car tlhsl)) (return nil))
 		 ((punivarp (car tlhsl))
 		  (return (bakalevel (callapprs (car tlhsl))
@@ -495,14 +494,15 @@
 (defun condensey (l)
   ((lambda (result)
      (mapl #'(lambda (q) (or (memalike (car q) (cdr q))
-			     (setq result (cons (car q) result))))
+			     (push (car q) result)))
 	   l)
      result)
    nil))
 
-(defun condensesublist (lol) (mapcar #'condensey lol))
+(defun condensesublist (lol)
+  (mapcar #'condensey lol))
 
-(defun exclude (l1 l2) 
+(defun exclude (l1 l2)
   (cond ((null l2) nil)
 	((member (car l2) l1 :test #'equal) (exclude l1 (cdr l2)))
 	(t	       ;(append (list (car l2)) (exclude l1 (cdr l2)))
