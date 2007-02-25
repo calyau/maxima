@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Paths.tcl,v 1.25 2007-01-17 17:16:38 vvzhy Exp $
+#       $Id: Paths.tcl,v 1.26 2007-02-25 10:34:36 vvzhy Exp $
 #
 # Attach this near the bottom of the xmaxima code to find the paths needed
 # to start up the interface.
@@ -236,7 +236,7 @@ proc setMaxDir {} {
 		    set maxima_priv(maxima_lang_subdir) ""
 		}
 	}
-	puts $maxima_priv(maxima_lang_subdir)
+	#puts $maxima_priv(maxima_lang_subdir)
     }
 
     # On Windows ::msgcat::mclocale is a good way to derive locale 
