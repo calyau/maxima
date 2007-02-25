@@ -796,16 +796,6 @@ Warning - you are redefining the Macsyma function eigenvectors
 
 @end deffn
 
-@deffn {Function} hach (@var{a}, @var{b}, @var{m}, @var{n}, @var{l})
-@code{hach} is an implementation of Hacijan's linear programming algorithm.
-
-@code{load ("kach")} loads this function.
-@code{demo ("kach")} executes a demonstration of this function.
-@c ACTUALLY BOTH kach.mac AND kach.dem APPEAR TO BE BROKEN AT THE MOMENT
-@c DUNNO WHAT WE SHOULD DO ABOUT THAT HERE
-
-@end deffn
-
 @deffn {Function} ident (@var{n})
 Returns an @var{n} by @var{n} identity matrix.
 

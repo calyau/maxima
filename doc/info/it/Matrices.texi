@@ -168,10 +168,6 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} hach (@var{a}, @var{b}, @var{m}, @var{n}, @var{l})
-THIS ITEM NEEDS TO BE TRANSLATED.
-@end deffn
-
 @deffn {Function} ident (@var{n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn

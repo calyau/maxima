@@ -744,15 +744,6 @@ Warning - you are redefining the Macsyma function eigenvectors
 
 @end deffn
 
-@deffn {Funci@'on} hach (@var{a}, @var{b}, @var{m}, @var{n}, @var{l})
-La funci@'on @code{hach} es una implementaci@'on del algoritmo Hacijan de programaci@'on lineal.
-
-Es necesario cargar la funci@'on haciendo @code{load ("kach")}. La instrucci@'on @code{demo ("kach")} ejecuta una demostraci@'on de esta funci@'on.
-@c ACTUALLY BOTH kach.mac AND kach.dem APPEAR TO BE BROKEN AT THE MOMENT
-@c DUNNO WHAT WE SHOULD DO ABOUT THAT HERE
-
-@end deffn
-
 @deffn {Funci@'on} ident (@var{n})
 Devuelve la matriz identidad de orden @var{n}.
 

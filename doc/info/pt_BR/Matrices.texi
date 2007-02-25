@@ -798,16 +798,6 @@ Warning - you are redefining the Macsyma function autovetores
 
 @end deffn
 
-@deffn {Fun@,{c}@~{a}o} hach (@var{a}, @var{b}, @var{m}, @var{n}, @var{l})
-@code{hach} @'{e} um implementa@,{c}@~{a}o algor@'{i}tmo de programa@,{c}@~{a}o linear de Hacijan.
-
-@code{load ("kach")} chama essa fun@,{c}@~{a}o.
-@code{demo ("kach")} executa uma demonstra@,{c}@~{a}o dessa fun@,{c}@~{a}o.
-@c ACTUALLY BOTH kach.mac AND kach.dem APPEAR TO BE BROKEN AT THE MOMENT
-@c DUNNO WHAT WE SHOULD DO ABOUT THAT HERE
-
-@end deffn
-
 @deffn {Fun@,{c}@~{a}o} ident (@var{n})
 Retorna uma matriz identidade @var{n} por @var{n}.
 
