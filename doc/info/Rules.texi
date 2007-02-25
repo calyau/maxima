@@ -104,50 +104,57 @@ is not explicitly set by the user with @code{let} or by changing the value of
 @end defvr
 
 @deffn {Function} defmatch (@var{progname}, @var{pattern}, @var{x_1}, ..., @var{x_n})
-Creates a function @code{@var{progname} (@var{expr}, @var{y_1}, ..., @var{y_n})}
+@deffnx {Function} defmatch (@var{progname}, @var{pattern})
+Defines a function @code{@var{progname}(@var{expr}, @var{x_1}, ..., @var{x_n})}
 which tests @var{expr} to see if it matches @var{pattern}.
 
-@var{pattern} is an expression
-containing the pattern variables @var{x_1}, ..., @var{x_n}
-and pattern parameters, if any.
-The pattern variables are given
-explicitly as arguments to @code{defmatch} while the pattern parameters
+@var{pattern} is an expression containing the pattern arguments @var{x_1}, ..., @var{x_n} (if any)
+and some pattern variables (if any).
+The pattern arguments are given explicitly as arguments to @code{defmatch} while the pattern variables
 are declared by the @code{matchdeclare} function.
-@c DOES matchdeclare HAVE TO GO BEFORE defmatch ?? OR CAN IT GO AFTER ??
+Any variable not declared as a pattern variable in @code{matchdeclare}
+or as a pattern argument in @code{defmatch} matches only itself.
 
 The first argument to the created function @var{progname} is an expression
-to be matched against the pattern and the other arguments are the
-actual variables @var{y_1}, ..., @var{y_n}
-in the expression which correspond to
-the dummy variables @var{x_1}, ..., @var{x_n}
-in the pattern.
+to be matched against the pattern and the other arguments are the actual arguments
+which correspond to the dummy variables @var{x_1}, ..., @var{x_n} in the pattern.
 
 If the match is successful, @var{progname} returns
 a list of equations whose left sides are the
-pattern variables and pattern parameters, and whose right sides are the expressions
-which the pattern variables and parameters matched.
-The pattern parameters, but not the variables, are assigned the subexpressions they match.
+pattern arguments and pattern variables, and whose right sides are the subexpressions
+which the pattern arguments and variables matched.
+The pattern variables, but not the pattern arguments, are assigned the subexpressions they match.
 If the match fails, @var{progname} returns @code{false}.  
 
-Any variables not declared as pattern parameters in @code{matchdeclare} or as
-variables in @code{defmatch} match only themselves.
-
-A pattern which contains no pattern variables or parameters
+A literal pattern
+(that is, a pattern which contains neither pattern arguments nor pattern variables)
 returns @code{true} if the match succeeds.
 
 See also @code{matchdeclare}, @code{defrule}, @code{tellsimp}, and @code{tellsimpafter}.
 
 Examples:
 
-This @code{defmatch} defines the function @code{linearp (expr, y)}, which
-tests @code{expr} to see if it is of the form @code{a*y + b}
-such that @code{a} and @code{b} do not contain @code{y}.
+Define a function @code{linearp(expr, x)} which
+tests @code{expr} to see if it is of the form @code{a*x + b}
+such that @code{a} and @code{b} do not contain @code{x} and @code{a} is nonzero.
+This match function matches expressions which are linear in any variable,
+because the pattern argument @code{x} is given to @code{defmatch}.
 @c HOW HARD WILL MAXIMA TRY TO COLLECT TERMS AND DO OTHER MUNGEING TO FIT THE PATTERN ??
 
+@c ===beg===
+@c matchdeclare (a, lambda ([e], e#0 and freeof(x, e)), b, freeof(x));
+@c defmatch (linearp, a*x + b, x);
+@c linearp (3*z + (y + 1)*z + y^2, z);
+@c a;
+@c b;
+@c x;
+@c ===end===
 @example
-(%i1) matchdeclare (a, freeof(x), b, freeof(x))$
-(%i2) defmatch (linearp, a*x + b, x)$
-(%i3) linearp (3*z + (y+1)*z + y^2, z);
+(%i1) matchdeclare (a, lambda ([e], e#0 and freeof(x, e)), b, freeof(x));
+(%o1)                         done
+(%i2) defmatch (linearp, a*x + b, x);
+(%o2)                        linearp
+(%i3) linearp (3*z + (y + 1)*z + y^2, z);
                          2
 (%o3)              [b = y , a = y + 4, x = z]
 (%i4) a;
@@ -155,39 +162,73 @@ such that @code{a} and @code{b} do not contain @code{y}.
 (%i5) b;
                                 2
 (%o5)                          y
+(%i6) x;
+(%o6)                           x
 @end example
 
-If the third argument to @code{defmatch} in line (%i2) had
-been omitted, then @code{linear} would only match expressions linear in @var{x},
-not in any other variable.
-@c SHOW THAT IN AN EXAMPLE
+Define a function @code{linearp(expr)} which tests @code{expr}
+to see if it is of the form @code{a*x + b}
+such that @code{a} and @code{b} do not contain @code{x} and @code{a} is nonzero.
+This match function only matches expressions linear in @code{x},
+not any other variable, because no pattern argument is given to @code{defmatch}.
 
+@c ===beg===
+@c matchdeclare (a, lambda ([e], e#0 and freeof(x, e)), b, freeof(x));
+@c defmatch (linearp, a*x + b);
+@c linearp (3*z + (y + 1)*z + y^2);
+@c linearp (3*x + (y + 1)*x + y^2);
+@c ===end===
 @example
-(%i1) matchdeclare ([a, f], true)$
-(%i2) constinterval (l, h) := constantp (h - l)$
-(%i3) matchdeclare (b, constinterval (a))$
-(%i4) matchdeclare (x, atom)$
-(%i5) (remove (integrate, outative),
-          defmatch (checklimits, 'integrate (f, x, a, b)),
-          declare (integrate, outative))$
-(%i6) 'integrate (sin(t), t, %pi + x, 2*%pi + x);
+(%i1) matchdeclare (a, lambda ([e], e#0 and freeof(x, e)), b, freeof(x));
+(%o1)                         done
+(%i2) defmatch (linearp, a*x + b);
+(%o2)                        linearp
+(%i3) linearp (3*z + (y + 1)*z + y^2);
+(%o3)                         false
+(%i4) linearp (3*x + (y + 1)*x + y^2);
+                             2
+(%o4)                  [b = y , a = y + 4]
+@end example
+
+Define a function @code{checklimits(expr)} which tests @code{expr}
+to see if it is a definite integral.
+
+@c ===beg===
+@c matchdeclare ([a, f], true);
+@c constinterval (l, h) := constantp (h - l);
+@c matchdeclare (b, constinterval (a));
+@c matchdeclare (x, atom);
+@c simp : false;
+@c defmatch (checklimits, 'integrate (f, x, a, b));
+@c simp : true;
+@c 'integrate (sin(t), t, %pi + x, 2*%pi + x);
+@c checklimits (%);
+@c ===end===
+@example
+(%i1) matchdeclare ([a, f], true);
+(%o1)                         done
+(%i2) constinterval (l, h) := constantp (h - l);
+(%o2)        constinterval(l, h) := constantp(h - l)
+(%i3) matchdeclare (b, constinterval (a));
+(%o3)                         done
+(%i4) matchdeclare (x, atom);
+(%o4)                         done
+(%i5) simp : false;
+(%o5)                         false
+(%i6) defmatch (checklimits, 'integrate (f, x, a, b));
+(%o6)                      checklimits
+(%i7) simp : true;
+(%o7)                         true
+(%i8) 'integrate (sin(t), t, %pi + x, 2*%pi + x);
                        x + 2 %pi
                       /
                       [
-(%o6)                 I          sin(t) dt
+(%o8)                 I          sin(t) dt
                       ]
                       /
                        x + %pi
-(%i7) checklimits (%);
-(%o7)    [b = x + 2 %pi, a = x + %pi, x = t, f = sin(t)]
-(%i8) a;
-(%o8)                        x + %pi
-(%i9) b;
-(%o9)                       x + 2 %pi
-(%i10) f;
-(%o10)                       sin(t)
-(%i11) x;
-(%o11)                          t
+(%i9) checklimits (%);
+(%o9)    [b = x + 2 %pi, a = x + %pi, x = t, f = sin(t)]
 @end example
 
 @end deffn
