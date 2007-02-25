@@ -4,8 +4,8 @@
 
 ;; Author: Jay Belanger <belanger@truman.edu>
 ;; $Name:  $
-;; $Revision: 1.14 $
-;; $Date: 2007-01-06 19:19:30 $
+;; $Revision: 1.15 $
+;; $Date: 2007-02-25 16:42:59 $
 ;; Keywords: maxima, font-lock
 
 ;; This program is free software; you can redistribute it and/or
@@ -506,7 +506,6 @@
    "chr1"
    "chr2"
    "christof"
-   "clearscreen"
    "closefile"
    "closeps"
    "coeff"

@@ -1,5 +1,5 @@
 
-title(exp):=block(clearscreen(),disp(dpart(exp)))$
+title(exp):=disp(dpart(exp))$
 (title("a classical textbook example of differentiation"))$
 x^x^x;
 diff(%,x);
