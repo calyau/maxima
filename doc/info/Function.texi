@@ -643,63 +643,116 @@ the quote-quote operator @code{'@w{}'} defeats quotation.
 @end deffn
 
 @deffn {Function} define (@var{f}(@var{x_1}, ..., @var{x_n}), @var{expr})
-Defines a function named @var{f} with arguments @var{x_1}, ..., @var{x_n} and function body @var{expr}.
+@deffnx {Function} define (@var{f}[@var{x_1}, ..., @var{x_n}], @var{expr})
+@deffnx {Function} define (funmake (@var{f}, [@var{x_1}, ..., @var{x_n}]), @var{expr})
+@deffnx {Function} define (arraymake (@var{f}, [@var{x_1}, ..., @var{x_n}]), @var{expr})
+@deffnx {Function} define (ev (@var{expr_1}), @var{expr_2})
 
-@code{define} quotes its first argument in most cases,
-and evaluates its second argument unless explicitly quoted.
-However, if the first argument is an expression of the form
-@code{ev (@var{expr})}, @code{funmake (@var{expr})}, or @code{arraymake (@var{expr})},
+Defines a function named @var{f} with arguments @var{x_1}, ..., @var{x_n} and function body @var{expr}.
+@code{define} always evaluates its second argument (unless explicitly quoted).
+The function so defined may be an ordinary Maxima function or an array function.
+
+When the last or only function argument @var{x_n} is a list of one element,
+the function defined by @code{define} accepts a variable number of arguments.
+Actual arguments are assigned one-to-one to formal arguments @var{x_1}, ..., @var{x_(n - 1)},
+and any further actual arguments, if present, are assigned to @var{x_n} as a list.
+
+When the first argument of @code{define} is an expression of the form
+@code{@var{f}(@var{x_1}, ..., @var{x_n})} or @code{@var{f}[@var{x_1}, ..., @var{x_n}]},
+the function arguments are evaluated but @var{f} is not evaluated,
+even if there is already a function or variable by that name.
+
+When the first argument is an expression with operator @code{funmake}, @code{arraymake}, or @code{ev},
 the first argument is evaluated;
 this allows for the function name to be computed, as well as the body.
-
-@code{define} is similar to the function definition operator @code{:=}, but when
-@code{define} appears inside a function, the definition is created using the value
-of @code{expr} at execution time rather than at the
-time of definition of the function which contains it.
 
 All function definitions appear in the same namespace;
 defining a function @code{f} within another function @code{g}
 does not limit the scope of @code{f} to @code{g}.
 
-@c MAKE THIS SAME POINT IN :=
-@code{define} defines array functions (called with arguments in square brackets @code{[ ]})
-as well as ordinary functions.
+If some formal argument @var{x_k} is a quoted symbol (after evaluation),
+the function defined by @code{define} does not evaluate the corresponding actual argument.
+Otherwise all actual arguments are evaluated.
 
 Examples:
 
+@code{define} always evaluates its second argument (unless explicitly quoted).
+
+@c ===beg===
+@c expr : cos(y) - sin(x);
+@c define (F_1 (x, y), expr);
+@c F_1 (a, b);
+@c F_2 (x, y) := expr;
+@c F_2 (a, b);
+@c ===end===
 @example
-(%i1) foo: 2^bar;
-                               bar
-(%o1)                         2
-(%i2) g(x) := (f_1 (y) :=   foo*x*y,
-               f_2 (y) := ''foo*x*y,
-       define (f_3 (y),     foo*x*y),
-       define (f_4 (y),   ''foo*x*y));
-                                             bar
-(%o2) g(x) := (f_1(y) := foo x y, f_2(y) := 2    x y, 
-                                                        bar
-               define(f_3(y), foo x y), define(f_4(y), 2    x y))
-(%i3) functions;
-(%o3)                        [g(x)]
-(%i4) g(a);
-                                    bar
-(%o4)                  f_4(y) := a 2    y
-(%i5) functions;
-(%o5)        [g(x), f_1(y), f_2(y), f_3(y), f_4(y)]
-(%i6) dispfun (f_1, f_2, f_3, f_4);
-(%t6)                   f_1(y) := foo x y
-
-                                  bar
-(%t7)                  f_2(y) := 2    x y
-
-                                    bar
-(%t8)                  f_3(y) := a 2    y
-
-                                    bar
-(%t9)                  f_4(y) := a 2    y
-
-(%o9)                         done
+(%i1) expr : cos(y) - sin(x);
+(%o1)                    cos(y) - sin(x)
+(%i2) define (F_1 (x, y), expr);
+(%o2)             F_1(x, y) := cos(y) - sin(x)
+(%i3) F_1 (a, b);
+(%o3)                    cos(b) - sin(a)
+(%i4) F_2 (x, y) := expr;
+(%o4)                   F_2(x, y) := expr
+(%i5) F_2 (a, b);
+(%o5)                    cos(y) - sin(x)
 @end example
+
+The function defined by @code{define} may be an ordinary Maxima function or an array function.
+
+@c ===beg===
+@c define (G_1 (x, y), x.y - y.x);
+@c define (G_2 [x, y], x.y - y.x);
+@c ===end===
+@example
+(%i1) define (G_1 (x, y), x.y - y.x);
+(%o1)              G_1(x, y) := x . y - y . x
+(%i2) define (G_2 [x, y], x.y - y.x);
+(%o2)               G_2     := x . y - y . x
+                       x, y
+@end example
+
+When the last or only function argument @var{x_n} is a list of one element,
+the function defined by @code{define} accepts a variable number of arguments.
+
+@c ===beg===
+@c define (H ([L]), '(apply ("+", L)));
+@c H (a, b, c);
+@c ===end===
+@example
+(%i1) define (H ([L]), '(apply ("+", L)));
+(%o1)                H([L]) := apply("+", L)
+(%i2) H (a, b, c);
+(%o2)                       c + b + a
+@end example
+
+When the first argument is an expression with operator @code{funmake}, @code{arraymake}, or @code{ev},
+the first argument is evaluated.
+
+@c ===beg===
+@c [F : I, u : x];
+@c funmake (F, [u]);
+@c define (funmake (F, [u]), cos(u) + 1);
+@c define (arraymake (F, [u]), cos(u) + 1);
+@c define (foo (x, y), bar (y, x));
+@c define (ev (foo (x, y)), sin(x) - cos(y));
+@c ===end===
+@example
+(%i1) [F : I, u : x];
+(%o1)                        [I, x]
+(%i2) funmake (F, [u]);
+(%o2)                         I(x)
+(%i3) define (funmake (F, [u]), cos(u) + 1);
+(%o3)                  I(x) := cos(x) + 1
+(%i4) define (arraymake (F, [u]), cos(u) + 1);
+(%o4)                   I  := cos(x) + 1
+                         x
+(%i5) define (foo (x, y), bar (y, x));
+(%o5)                foo(x, y) := bar(y, x)
+(%i6) define (ev (foo (x, y)), sin(x) - cos(y));
+(%o6)             bar(y, x) := sin(x) - cos(y)
+@end example
+
 @end deffn
 
 @c SEE NOTE BELOW ABOUT THE DOCUMENTATION STRING
