@@ -671,8 +671,80 @@ x is equal to 1234 - 1729 w
 @ifinfo
 @fnindex Function definition operator
 @end ifinfo
-The function definition operator.  E.g. @code{f(x):=sin(x)} defines
-a function @code{f}.
+
+The function definition operator.
+@code{@var{f}(@var{x_1}, ..., @var{x_n}) := @var{expr}}
+defines a function named @var{f} with arguments @var{x_1}, ..., @var{x_n} and function body @var{expr}.
+@code{:=} never evaluates the function body (unless explicitly evaluated by quote-quote @code{'@w{}'}).
+The function so defined may be an ordinary Maxima function (with arguments enclosed in parentheses)
+or an array function (with arguments enclosed in square brackets).
+
+When the last or only function argument @var{x_n} is a list of one element,
+the function defined by @code{:=} accepts a variable number of arguments.
+Actual arguments are assigned one-to-one to formal arguments @var{x_1}, ..., @var{x_(n - 1)},
+and any further actual arguments, if present, are assigned to @var{x_n} as a list.
+
+All function definitions appear in the same namespace;
+defining a function @code{f} within another function @code{g}
+does not limit the scope of @code{f} to @code{g}.
+
+If some formal argument @var{x_k} is a quoted symbol,
+the function defined by @code{:=} does not evaluate the corresponding actual argument.
+Otherwise all actual arguments are evaluated.
+
+See also @code{define} and @code{::=}.
+
+Examples:
+
+@code{:=} never evaluates the function body (unless explicitly evaluated by quote-quote).
+
+@c ===beg===
+@c expr : cos(y) - sin(x);
+@c F1 (x, y) := expr;
+@c F1 (a, b);
+@c F2 (x, y) := ''expr;
+@c F2 (a, b);
+@c ===end===
+@example
+(%i1) expr : cos(y) - sin(x);
+(%o1)                    cos(y) - sin(x)
+(%i2) F1 (x, y) := expr;
+(%o2)                   F1(x, y) := expr
+(%i3) F1 (a, b);
+(%o3)                    cos(y) - sin(x)
+(%i4) F2 (x, y) := ''expr;
+(%o4)              F2(x, y) := cos(y) - sin(x)
+(%i5) F2 (a, b);
+(%o5)                    cos(b) - sin(a)
+@end example
+
+The function defined by @code{:=} may be an ordinary Maxima function or an array function.
+
+@c ===beg===
+@c G1 (x, y) := x.y - y.x;
+@c G2 [x, y] := x.y - y.x;
+@c ===end===
+@example
+(%i1) G1 (x, y) := x.y - y.x;
+(%o1)               G1(x, y) := x . y - y . x
+(%i2) G2 [x, y] := x.y - y.x;
+(%o2)                G2     := x . y - y . x
+                       x, y
+@end example
+
+When the last or only function argument @var{x_n} is a list of one element,
+the function defined by @code{:=} accepts a variable number of arguments.
+
+@c ===beg===
+@c H ([L]) := apply ("+", L);
+@c H (a, b, c);
+@c ===end===
+@example
+(%i1) H ([L]) := apply ("+", L);
+(%o1)                H([L]) := apply("+", L)
+(%i2) H (a, b, c);
+(%o2)                       c + b + a
+@end example
 
 @end deffn
 

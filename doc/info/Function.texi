@@ -650,7 +650,8 @@ the quote-quote operator @code{'@w{}'} defeats quotation.
 
 Defines a function named @var{f} with arguments @var{x_1}, ..., @var{x_n} and function body @var{expr}.
 @code{define} always evaluates its second argument (unless explicitly quoted).
-The function so defined may be an ordinary Maxima function or an array function.
+The function so defined may be an ordinary Maxima function (with arguments enclosed in parentheses)
+or an array function (with arguments enclosed in square brackets).
 
 When the last or only function argument @var{x_n} is a list of one element,
 the function defined by @code{define} accepts a variable number of arguments.
@@ -674,41 +675,43 @@ If some formal argument @var{x_k} is a quoted symbol (after evaluation),
 the function defined by @code{define} does not evaluate the corresponding actual argument.
 Otherwise all actual arguments are evaluated.
 
+See also @code{:=} and @code{::=}.
+
 Examples:
 
 @code{define} always evaluates its second argument (unless explicitly quoted).
 
 @c ===beg===
 @c expr : cos(y) - sin(x);
-@c define (F_1 (x, y), expr);
-@c F_1 (a, b);
-@c F_2 (x, y) := expr;
-@c F_2 (a, b);
+@c define (F1 (x, y), expr);
+@c F1 (a, b);
+@c F2 (x, y) := expr;
+@c F2 (a, b);
 @c ===end===
 @example
 (%i1) expr : cos(y) - sin(x);
 (%o1)                    cos(y) - sin(x)
-(%i2) define (F_1 (x, y), expr);
-(%o2)             F_1(x, y) := cos(y) - sin(x)
-(%i3) F_1 (a, b);
+(%i2) define (F1 (x, y), expr);
+(%o2)              F1(x, y) := cos(y) - sin(x)
+(%i3) F1 (a, b);
 (%o3)                    cos(b) - sin(a)
-(%i4) F_2 (x, y) := expr;
-(%o4)                   F_2(x, y) := expr
-(%i5) F_2 (a, b);
+(%i4) F2 (x, y) := expr;
+(%o4)                   F2(x, y) := expr
+(%i5) F2 (a, b);
 (%o5)                    cos(y) - sin(x)
 @end example
 
 The function defined by @code{define} may be an ordinary Maxima function or an array function.
 
 @c ===beg===
-@c define (G_1 (x, y), x.y - y.x);
-@c define (G_2 [x, y], x.y - y.x);
+@c define (G1 (x, y), x.y - y.x);
+@c define (G2 [x, y], x.y - y.x);
 @c ===end===
 @example
-(%i1) define (G_1 (x, y), x.y - y.x);
-(%o1)              G_1(x, y) := x . y - y . x
-(%i2) define (G_2 [x, y], x.y - y.x);
-(%o2)               G_2     := x . y - y . x
+(%i1) define (G1 (x, y), x.y - y.x);
+(%o1)               G1(x, y) := x . y - y . x
+(%i2) define (G2 [x, y], x.y - y.x);
+(%o2)                G2     := x . y - y . x
                        x, y
 @end example
 
