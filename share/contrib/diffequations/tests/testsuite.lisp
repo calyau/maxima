@@ -36,6 +36,6 @@
 	 "rtest_sym2.mac"
 	 "rtest_ode1_riccati.mac"
          "rtest_ode1_abel.mac"
-         (mlist "rtestode_odelin.mac" 73 75 81)
+         "rtestode_odelin.mac"
 	)
 )

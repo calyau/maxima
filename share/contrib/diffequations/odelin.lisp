@@ -137,8 +137,8 @@
     (mbag-map #'(lambda (s) (expunge-const-factors s x)) fss)))
 
 (defun post-check-cleanup (fss)
-  (setq fss ($substitute '$bessel_j '$fbessel_j fss))
-  ($substitute '$bessel_y '$fbessel_y fss))
+  (setq fss ($substitute '%bessel_j '$fbessel_j fss))
+  ($substitute '%bessel_y '$fbessel_y fss))
         
 (defun odelin-order-two (cfs x)
   (let ((p0 (nth 0 cfs))
