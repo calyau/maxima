@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Menu.tcl,v 1.30 2007-02-22 12:17:35 vvzhy Exp $
+#       $Id: Menu.tcl,v 1.31 2007-02-25 19:02:12 vvzhy Exp $
 #
 
 proc pMAXSaveTexToFile {text} {
@@ -147,7 +147,7 @@ proc vMAXAddSystemMenu {fr text} {
     foreach elt { embedded separate multiple } {
 	$pm add radio -label [mc [string totit $elt]] \
 	    -variable maxima_default(plotwindow) \
-	    -value $elt
+	    -value $elt -command [list SetPlotFormat $text ]
     }
 
     $m add separator
@@ -276,6 +276,17 @@ proc vMAXAddSystemMenu {fr text} {
 
     # Backwards compatability
     return $win
+}
+
+proc SetPlotFormat { text } {
+
+    global maxima_default
+    
+    if { $maxima_default(plotwindow) == "embedded" } {
+	#sendMaxima $text "set_plot_option(\[plot_format,openmath\])\$\n"
+	sendMaxima $text ":lisp-quiet (prog2 (\$set_plot_option '((mlist simp) \$plot_format \$openmath)) nil) \n"
+    }
+    
 }
 
 

@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: RunMaxima.tcl,v 1.28 2006-12-16 01:59:30 villate Exp $
+#       $Id: RunMaxima.tcl,v 1.29 2007-02-25 19:02:12 vvzhy Exp $
 #
 proc textWindowWidth { w } {
     set font [$w cget -font]
@@ -341,6 +341,8 @@ proc runOneMaxima { win } {
 	return -code error [mc "Failed to start Maxima"]
     }
     gui status [mc "Started Maxima"]
+    
+    SetPlotFormat $maxima_priv(cConsoleText)
 
     set res [list [oget $win pid] $sock ]
     global pdata
