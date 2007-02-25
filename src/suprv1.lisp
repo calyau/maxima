@@ -319,10 +319,6 @@
 (defmfun truefname (file)
   (probe-file file))
 
-(defmfun mtruename (stream)
-  (declare (ignore stream))
-  (merror "Unimplemented!"))
-
 (defmfun carfile (file)		       ; FILE is in OldIO list format.
   (if (= (length file) 3) (cdr file) file))
 
