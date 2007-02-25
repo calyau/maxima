@@ -13,29 +13,9 @@
 
 (defmvar $besselexpand nil)
 
-
-(eval-when
-    #+gcl (compile eval)
-    #-gcl (:compile-toplevel :execute)
-
-  ;; Temporarily we establish an array convention for conversion
-  ;; of this file to new type arrays.
-
-  (defmacro narray (x &rest dims)
-    `(setf (symbol-value ',x)
-	   (make-array
-	    ,(if (cdr dims)
-		 `(mapcar '1+ (list ,@ dims))
-		 `(1+ ,(car dims))))))
-
-  (defmacro *f (a b) `(*$ ,a ,b))
-  (defmacro //f (a b) `(//$ ,a ,b))
-  (defmacro +f (a b) `(+$ ,a ,b))
-  (defmacro -f (a b) `(-$ ,a ,b))
-)
-
-(declare-top (special $jarray $iarray $garray)) 
-
+(defvar $iarray)
+(defvar $yarray)
+(defvar $besselarray)
 
 ;;
 ;; Bessel function of the first kind of order 0.
@@ -57,6 +37,7 @@
 ;; we have equivalent functionality in bessel_j and bessel_i.
 ;;
 ;; XXX  Remove these someday.
+
 #||
 (defun j[0]-bessel (x)
   (slatec:dbesj0 (float x 1d0)))
@@ -156,6 +137,7 @@
 ;; non-negative real.
 
 ||#
+
 (defun bessel-i (order arg)
   (cond ((zerop (imagpart arg))
 	 ;; We have numeric args and the first arg is purely
@@ -167,13 +149,10 @@
 		 ((= order 1)
 		  (slatec:dbesi1 (float arg)))
 		 (t
-		  (multiple-value-bind (n alpha)
-		      (floor (float order))
-		    (let ((jvals (make-array (1+ n) :element-type 'double-float)))
-		      (slatec:dbesi (float (realpart arg)) alpha 1 (1+ n) jvals 0)
-		      (narray $besselarray n)
-		      (fillarray (symbol-value '$besselarray) jvals)
-		      (aref jvals n)))))))
+		  (multiple-value-bind (n alpha) (floor (float order))
+		    (setf $besselarray (make-array (1+ n) :element-type 'double-float))
+		    (slatec:dbesi (float (realpart arg)) alpha 1 (1+ n) $besselarray 0)
+		    (aref $besselarray n))))))
 	(t
 	 ;; The arg is complex.  Use the complex-valued Bessel
 	 ;; function
@@ -192,17 +171,15 @@
 				cyi
 				0
 				0)
-	       (declare (ignore v-zr v-zi v-fnu v-kode v-n
-				v-cyr v-cyi v-nz))
+	       (declare (ignore v-zr v-zi v-fnu v-kode v-n v-cyr v-cyi v-nz))
 
 	       ;; We should check for errors here based on the
 	       ;; value of v-ierr.
 	       (when (plusp v-ierr)
 		 (format t "zbesi ierr = ~A~%" v-ierr))
-	       (narray $besselarray (1+ n))
-	       (dotimes (k (1+ n)
-			 (aref (symbol-value '$besselarray) n))
-		 (setf (aref (symbol-value '$besselarray) k)
+	       (setf $besselarray (make-array (+ n 2)))
+	       (dotimes (k (1+ n) (aref $besselarray n))
+		 (setf (aref $besselarray k)
 		       (simplify (list '(mplus)
 				       (simplify (list '(mtimes)
 						       '$%i
@@ -222,13 +199,10 @@
 		 (t
 		  ;; From A&S 9.6.6, K(-v,z) = K(v,z), so take the
 		  ;; absolute value of the order.
-		  (multiple-value-bind (n alpha)
-		      (floor (abs (float order)))
-		    (let ((jvals (make-array (1+ n) :element-type 'double-float)))
-		      (slatec:dbesk (float (realpart arg)) alpha 1 (1+ n) jvals 0)
-		      (narray $besselarray n)
-		      (fillarray (symbol-value '$besselarray) jvals)
-		      (aref jvals n)))))))
+		  (multiple-value-bind (n alpha) (floor (abs (float order)))
+		    (setf $besselarray (make-array (1+ n) :element-type 'double-float))
+		    (slatec:dbesk (float (realpart arg)) alpha 1 (1+ n) $besselarray 0)
+		    (aref $besselarray n))))))
 	(t
 	 ;; The first arg is complex.  Use the complex-valued Bessel
 	 ;; function
@@ -254,16 +228,14 @@
 	       ;; value of v-ierr.
 	       (when (plusp v-ierr)
 		 (format t "zbesk ierr = ~A~%" v-ierr))
-	       (narray $besselarray (1+ n))
-	       (dotimes (k (1+ n)
-			 (aref (symbol-value '$besselarray) n))
-		 (setf (aref (symbol-value '$besselarray) k)
+	       (setf $besselarray (make-array (+ n 2)))
+	       (dotimes (k (1+ n) (aref $besselarray n))
+		 (setf (aref $besselarray k)
 		       (simplify (list '(mplus)
 				       (simplify (list '(mtimes)
 						       '$%i
 						       (aref cyi k)))
 				       (aref cyr k)))))))))))
-
 
 
 ;; I think g0(x) = exp(-x)*I[0](x), g1(x) = exp(-x)*I[1](x), and
@@ -290,18 +262,13 @@
 (defun $scaled_bessel_i ($n $x)
   (cond ((and (mnump $x) (mnump $n))
 	 ;; XXX Should we return noun forms if $n and $x are rational?
-	 (multiple-value-bind (n alpha)
-	     (floor ($float $n))
-	   (let ((jvals (make-array (1+ n) :element-type 'double-float)))
-	     (slatec:dbesi ($float $x) alpha 2 (1+ n) jvals 0)
-	     (narray $iarray n)
-	     (fillarray (symbol-value '$iarray) jvals)
-	     (aref jvals n))))
+	 (multiple-value-bind (n alpha) (floor ($float $n))
+	   (setf $iarray (make-array (1+ n) :element-type 'double-float))
+	   (slatec:dbesi ($float $x) alpha 2 (1+ n) $iarray 0)
+	   (aref $iarray n)))
 	(t
 	 (mul (power '$%e (neg (simplifya `((mabs) ,$x) nil)))
 	      ($bessel_i $n $x)))))
-
-
 
 
 ;; Numerically compute H1(v, z).
@@ -386,8 +353,7 @@
 		;; J(v,z) is real.
 		(realpart (hankel-1 $order $arg)))
 	       (t
-		(multiple-value-bind (n alpha)
-		    (floor (float $order))
+		(multiple-value-bind (n alpha) (floor (float $order))
 		  (let ((jvals (make-array (1+ n) :element-type 'double-float)))
 		    ;; Use analytic continuation formula A&S 9.1.35:
 		    ;;
@@ -398,22 +364,19 @@
 		    ;; %j[v](-x) = exp(v*%pi*%i)*%j[v](x)
 		    (cond ((>= $arg 0)
 			   (slatec:dbesj (float $arg) alpha (1+ n) jvals 0)
-			   (narray $besselarray n)
-			   (fillarray (symbol-value '$besselarray) jvals)
-			   (aref jvals n))
+			   (setf $besselarray (make-array (1+ n) :initial-contents jvals)))
 			  (t
 			   (slatec:dbesj (- (float $arg)) alpha (1+ n) jvals 0)
-			   (narray $besselarray n)
+			   (setf $besselarray (make-array (1+ n)))
 			   (let ((s (cis (* $order pi))))
 			     (dotimes (k (1+ n))
 			       (let ((v (* s (aref jvals k))))
-				 (setf (aref (symbol-value '$besselarray) k)
-				       (simplify `((mplus)
-						   ,(realpart v)
+				 (setf (aref $besselarray k)
+				       (simplify `((mplus) ,(realpart v)
 						   ((mtimes)
 						    $%i
-						    ,(imagpart v)))))))
-			     (aref (symbol-value '$besselarray) n)))))))))
+						    ,(imagpart v))))))))))
+		    (aref $besselarray n))))))
 	(t
 	 ;; The first arg is complex.  Use the complex-valued Bessel
 	 ;; function.
@@ -452,10 +415,9 @@
 		      ;; routine.
 		      (when (plusp v-ierr)
 			(format t "zbesj ierr = ~A~%" v-ierr))
-		      (narray $besselarray (1+ n))
-		      (dotimes (k (1+ n)
-				(aref (symbol-value '$besselarray) n))
-			(setf (aref (symbol-value '$besselarray) k)
+		      (setf $besselarray (make-array (+ n 2)))
+		      (dotimes (k (1+ n) (aref $besselarray n))
+			(setf (aref $besselarray k)
 			      (simplify (list '(mplus)
 					      (simplify (list '(mtimes)
 							      '$%i
@@ -508,29 +470,26 @@
 				      $%i
 				      ,(* -2 (slatec:dbesj1 (float (- arg))))))))))
 		 (t
-		  (multiple-value-bind (n alpha)
-		      (floor (float order))
+		  (multiple-value-bind (n alpha) (floor (float order))
 		    (let ((jvals (make-array (1+ n) :element-type 'double-float)))
 		      (cond ((>= arg 0)
 			     (slatec:dbesy (float (realpart arg)) alpha (1+ n) jvals)
-			     (narray $besselarray n)
-			     (fillarray (symbol-value '$besselarray) jvals)
+			     (setf $besselarray (make-array (1+ n) :initial-contents jvals))
 			     (aref jvals n))
 			    (t
 			     (let* ((s1 (cis (- (* order pi))))
 				    (s2 (* #c(0 2) (cos (* order pi)))))
 			       (slatec:dbesy (- (float arg)) alpha (1+ n) jvals)
-			       (narray $yarray n)
+			       (setf $yarray (make-array (1+ n)))
 			       (dotimes (k (1+ n))
 				 (let ((v (+ (* s1 (aref jvals k))
-					     (* s2 (aref (symbol-value '$besselarray) k)))))
-				   (setf (aref (symbol-value '$yarray) k)
-					 (simplify `((mplus)
-						     ,(realpart v)
+					     (* s2 (aref $besselarray k)))))
+				   (setf (aref $yarray k)
+					 (simplify `((mplus) ,(realpart v)
 						     ((mtimes)
 						      $%i
 						      ,(imagpart v)))))))
-			       (aref (symbol-value '$yarray) n))))))))))
+			       (aref $yarray n))))))))))
 	(t
 	 ;; The first arg is complex.  Use the complex-valued Bessel
 	 ;; function
@@ -561,10 +520,9 @@
 	       ;; value of v-ierr.
 	       (when (plusp v-ierr)
 		 (format t "zbesy ierr = ~A~%" v-ierr))
-	       (narray $besselarray (1+ n))
-	       (dotimes (k (1+ n)
-			 (aref (symbol-value '$besselarray) n))
-		 (setf (aref (symbol-value '$besselarray) k)
+	       (setf $besselarray (make-array (+ n 2)))
+	       (dotimes (k (1+ n) (aref $besselarray n))
+		 (setf (aref $besselarray k)
 		       (simplify (list '(mplus)
 				       (simplify (list '(mtimes)
 						       '$%i
@@ -583,7 +541,7 @@
 	    (setq h (* 1.6d0 s) h2 (* 2.0d0 h) capn (+ 6 (fix (* 23.0d0 s))))
 	    (setq nu (+ 9 (fix (* 21.0d0 s)))))
 	   (t (setq h 0.0d0) (setq capn 0) (setq nu 8)))
-     (and (> h 0.0d0) (setq lamb (^$ h2 capn)))
+     (and (> h 0.0d0) (setq lamb (expt h2 capn)))
      (setq bool (or (zerop h) (zerop lamb)))
      (do ((n nu (1- n)))
 	 ((> 0 n))
@@ -781,7 +739,6 @@ Perhaps you meant to enter `~a'.~%"
     (if (evenp n)
 	(mul -1 jn)
 	jn)))
-	
 	
 
 ;; See A&S 10.2.12
