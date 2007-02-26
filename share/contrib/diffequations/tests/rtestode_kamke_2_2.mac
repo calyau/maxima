@@ -455,11 +455,17 @@ bessel;
 remove(v,integer);
 done;
 
-/* Kamke 2. 163  */ 
+/* Kamke 2. 163  CHECKME - It is correct for f(x)=0 */ 
 declare(v,integer);
 done;
 (pn_(163),ans:contrib_ode(eqn:x^2*'diff(y,x,2)+x*'diff(y,x,1)+(x^2-v^2)*y-f(x),y,x));
-[y=bessel_j(v,x)*'integrate(bessel_y(v,x)*f(x)/((bessel_j(v-1,x)*bessel_y(v,x)-bessel_y(v-1,x)*bessel_j(v,x))*x^2),x)-bessel_y(v,x)*'integrate(bessel_j(v,x)*f(x)/((bessel_j(v-1,x)*bessel_y(v,x)-bessel_y(v-1,x)*bessel_j(v,x))*x^2),x)+%k2*bessel_y(v,x)+%k1*bessel_j(v,x)];
+[y = 2*bessel_j(v,x)*'integrate(bessel_y(v,x)*f(x)
+   /((bessel_j(v,x)*bessel_y(v+1,x)-bessel_y(v,x)*bessel_j(v+1,x)
+     +bessel_j(v-1,x)*bessel_y(v,x)-bessel_y(v-1,x)*bessel_j(v,x))*x^2),x)
+    -2*bessel_y(v,x)*'integrate(bessel_j(v,x)*f(x)
+   /((bessel_j(v,x)*bessel_y(v+1,x)-bessel_y(v,x)*bessel_j(v+1,x)
+     +bessel_j(v-1,x)*bessel_y(v,x)-bessel_y(v-1,x)*bessel_j(v,x))*x^2),x)
+ +%k2*bessel_y(v,x)+%k1*bessel_j(v,x)];
 method;
 variationofparameters;
 remove(v,integer);
