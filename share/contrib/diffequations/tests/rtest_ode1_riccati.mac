@@ -10,6 +10,20 @@ besiident(n,x):=bessel_i(n,x)=-2*(n-1)*bessel_i(n-1,x)/x+bessel_i(n-2,x);
 beskident(n,x):=bessel_k(n,x)=2*(n-1)*bessel_k(n-1,x)/x+bessel_k(n-2,x);
 beskident(n,x):=bessel_k(n,x)=2*(n-1)*bessel_k(n-1,x)/x+bessel_k(n-2,x);
 
+/* Another way to simplify Bessel function solutions */
+(besjysimp(e,n,x):=block([expr],
+   expr:subst(2*(n-1)*bessel_j(n-1,x)/x-bessel_j(n-2,x),bessel_j(n,x),e),
+   expr:subst(2*(n-1)*bessel_y(n-1,x)/x-bessel_y(n-2,x),bessel_y(n,x),expr),
+   ratsimp(expr)), 0);
+0;
+/* Apply besjysimp for order n and n-1 */
+(besjysimp2(e,n,x):=block([expr:besjysimp(e,n,x)],besjysimp(expr,n-1,x)), 0);
+0;
+/* Apply besjysimp for order n, n-1 and n-2 */
+(besjysimp3(e,n,x):=block([expr:besjysimp(e,n,x)],
+   expr:besjysimp(expr,n-1,x),besjysimp(expr,n-2,x)), 0);
+0;
+
 /* Test cases with n=2*a   ode1_riccati_special(a,b,c,n,y,x)*/
 eq:x*'diff(y,x)-a*y+b*y^2=c*x^n;
 x*'diff(y,x)-a*y+b*y^2=c*x^n;
@@ -207,20 +221,37 @@ trigsimp(ode_check(eq,ans));
 
 /* Bessel function of integer order - easy to check */
 ans:ode1_riccati_special(a:1,b:-1,c:1,n:1,y,x);
-y=-(bessel_y(0,2*sqrt(x))*%c+bessel_j(0,2*sqrt(x)))*sqrt(x)/(bessel_y(1,2*sqrt(x))*%c+bessel_j(1,2*sqrt(x)));
-ode_check(eq,ans);
+y=(((bessel_y(2,2*sqrt(x))-bessel_y(0,2*sqrt(x)))*%c
+    +bessel_j(2,2*sqrt(x))-bessel_j(0,2*sqrt(x)))*sqrt(x)
+    -bessel_y(1,2*sqrt(x))*%c-bessel_j(1,2*sqrt(x)))
+ /(2*bessel_y(1,2*sqrt(x))*%c+2*bessel_j(1,2*sqrt(x)));
+besjysimp2(ode_check(eq,ans),3,2*sqrt(x));
 0;
 
 ans:ode1_riccati_special(a:1,b:-2,c:3,n:1,y,x);
-y=-(sqrt(6)*bessel_y(0,2*sqrt(6)*sqrt(x))*%c+sqrt(6)*bessel_j(0,2*sqrt(6)*sqrt(x)))*sqrt(x)/(2*bessel_y(1,2*sqrt(6)*sqrt(x))*%c+2*bessel_j(1,2*sqrt(6)*sqrt(x)));
-ode_check(eq,ans);
+y = (((sqrt(6)*bessel_y(2,2*sqrt(6)*sqrt(x))
+         -sqrt(6)*bessel_y(0,2*sqrt(6)*sqrt(x)))
+         *%c
+         +sqrt(6)*bessel_j(2,2*sqrt(6)*sqrt(x))
+         -sqrt(6)*bessel_j(0,2*sqrt(6)*sqrt(x)))
+         *sqrt(x)
+         -bessel_y(1,2*sqrt(6)*sqrt(x))*%c-bessel_j(1,2*sqrt(6)*sqrt(x)))
+         /(4*bessel_y(1,2*sqrt(6)*sqrt(x))*%c
+          +4*bessel_j(1,2*sqrt(6)*sqrt(x)));
+besjysimp2(ode_check(eq,ans),3,2*sqrt(6)*sqrt(x));
 0;
 
 assume(x>0);
 [x>0];
 ans:ode1_riccati_special(a:2,b:-2,c:3,n:2,y,x);
-y=-(sqrt(2)*sqrt(3)*bessel_y(0,2*sqrt(3)*x/sqrt(2))*%c+sqrt(2)*sqrt(3)*bessel_j(0,2*sqrt(3)*x/sqrt(2)))*x/(2*bessel_y(1,2*sqrt(3)*x/sqrt(2))*%c+2*bessel_j(1,2*sqrt(3)*x/sqrt(2)));
-ode_check(eq,ans);
+y = (((sqrt(2)*sqrt(3)*bessel_y(2,2*sqrt(3)*x/sqrt(2))
+      -sqrt(2)*sqrt(3)*bessel_y(0,2*sqrt(3)*x/sqrt(2)))*%c
+      +sqrt(2)*sqrt(3)*bessel_j(2,2*sqrt(3)*x/sqrt(2))
+      -sqrt(2)*sqrt(3)*bessel_j(0,2*sqrt(3)*x/sqrt(2)))*x
+      -2*bessel_y(1,2*sqrt(3)*x/sqrt(2))*%c
+      -2*bessel_j(1,2*sqrt(3)*x/sqrt(2)))
+ /(4*bessel_y(1,2*sqrt(3)*x/sqrt(2))*%c+4*bessel_j(1,2*sqrt(3)*x/sqrt(2)));
+besjysimp2(ode_check(eq,ans),3,2*sqrt(3)*x/sqrt(2));
 0;
 forget(x>0);
 [x>0];
@@ -244,12 +275,12 @@ ode_check(eq,ans);
 /* Cases with a=0 and b*c<0 */
 ans:ode1_riccati_special(a:0,b:-1,c:1,n:2,y,x);
 y=(bessel_y(1,x)*%c+bessel_j(1,x))*x/(bessel_y(0,x)*%c+bessel_j(0,x));
-ode_check(eq,ans);
+besjysimp(ode_check(eq,ans),2,x);
 0;
 
 ans:ode1_riccati_special(a:0,b:-1,c:1,n:1,y,x);
 y=(bessel_y(1,2*sqrt(x))*%c+bessel_j(1,2*sqrt(x)))*sqrt(x)/(bessel_y(0,2*sqrt(x))*%c+bessel_j(0,2*sqrt(x)));
-ode_check(eq,ans);
+besjysimp(ode_check(eq,ans),2,2*sqrt(x));
 0;
 
 /* Cases with a=0 and b*c>0 */
@@ -327,8 +358,13 @@ y=(15*tanh((%c*x^(1/7)-7)/x^(1/7))*x^(4/7)+105*x^(3/7)+315*tanh((%c*x^(1/7)-7)/x
 
 /* Bessel function solution - integer order with b*c<0 */
 ans:ode1_riccati_original(b:3,c:-2,m:-1,y,x);
-y=(sqrt(6)*bessel_y(0,2*sqrt(6)*sqrt(x))*%c+sqrt(6)*bessel_j(0,2*sqrt(6)*sqrt(x)))/((3*bessel_y(1,2*sqrt(6)*sqrt(x))*%c+3*bessel_j(1,2*sqrt(6)*sqrt(x)))*sqrt(x));
-ode_check(eqn,ans);
+y = -(((sqrt(6)*bessel_y(2,2*sqrt(6)*sqrt(x))
+       -sqrt(6)*bessel_y(0,2*sqrt(6)*sqrt(x)))*%c
+       +sqrt(6)*bessel_j(2,2*sqrt(6)*sqrt(x))
+       -sqrt(6)*bessel_j(0,2*sqrt(6)*sqrt(x)))*sqrt(x)
+    -bessel_y(1,2*sqrt(6)*sqrt(x))*%c-bessel_j(1,2*sqrt(6)*sqrt(x)))
+  /((6*bessel_y(1,2*sqrt(6)*sqrt(x))*%c+6*bessel_j(1,2*sqrt(6)*sqrt(x)))*x);
+ besjysimp2(ode_check(eqn,ans),3,2*sqrt(6)*sqrt(x));
 0;
 
 /* Bessel function solution - integer order with b*c>0 */
@@ -343,10 +379,12 @@ forget(x>0);
 
 /* Bessel function solution - non-integer order b*c<0 */
 ans:ode1_riccati_original(b:1,c:-1,m:2,y,x);
-y=((bessel_j(-5/4,x^2/2)*%c+bessel_j(-3/4,x^2/2))*x^2+bessel_j(-1/4,x^2/2)*%c)/((bessel_j(-1/4,x^2/2)*%c+bessel_j(1/4,x^2/2))*x);
-ode_check(eqn,ans);
-(((bessel_j(-1/4,x^2/2)+bessel_j(-9/4,x^2/2))*%c+bessel_j(1/4,x^2/2)+bessel_j(-7/4,x^2/2))*x^2+5*bessel_j(-5/4,x^2/2)*%c+3*bessel_j(-3/4,x^2/2))/(bessel_j(-1/4,x^2/2)*%c+bessel_j(1/4,x^2/2));
-expand(ev(%,besjident(1/4,x^2/2),besjident(-1/4,x^2/2)));
+y = -(((bessel_j(3/4,x^2/2)-bessel_j(-5/4,x^2/2))*%c
+       +bessel_j(5/4,x^2/2)-bessel_j(-3/4,x^2/2))*x^2
+       -bessel_j(-1/4,x^2/2)*%c-bessel_j(1/4,x^2/2))
+    /((2*bessel_j(-1/4,x^2/2)*%c+2*bessel_j(1/4,x^2/2))*x);
+/* FIXME:  Answer is correct.  Check is ugly */
+(s:ode_check(eqn,ans),s:besjysimp3(s,9/4,x^2/2),besjysimp3(s,7/4,x^2/2));
 0;
 
 /* Bessel function solution - non-integer order b*c>0 */
@@ -404,5 +442,5 @@ y=x^(2/3)/(x^(1/3)/tanh(3*x^(1/3)+%c)-1/3);
 trigsimp(ode_check(eqn,ans));
 0;
 
-(kill(besjident,besiident,beskident),done);
+(kill(besjident,besiident,beskident,besjysimp,besjysimp2,besjysimp3),done);
 done;
