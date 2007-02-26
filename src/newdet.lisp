@@ -9,6 +9,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :maxima)
+
 (macsyma-module newdet)
 
 ;; THIS IS A VERSION OF THE GENTLEMAN-JOHNSON TREE-MINOR DETERMINANT
@@ -16,165 +17,127 @@
 ;; ANSWER IS IN RATIONAL FORM.
 ;; RJF  5/2/73
 
-(declare-top(special vlist varlist genvar aryp)
-	    #-cl
-	    (fixnum rr k j old new *binom* *i* pascal n m))
-;;	 (ARRAY* (NOTYPE *INPUT* 2 *BINOM* 2 *MINOR1* 2 *i* 1)
+(declare-top (special vlist varlist genvar aryp))
 
 ;;these are general type arrays
-(declare-top  (special *input*  *binom*  *minor1*  *i* ))
+
+(defvar *i*)
+(defvar *minor1*)
+(defvar *binom*)
+(defvar *input*)
 
 (defmfun $newdet n
-  ((lambda (a)
-     (cond ((= n 2)
-	    (cond ((not (integerp (arg 2)))
-		   (merror "Wrong arg to `newdet': ~M" (arg 2))))
-	    (setq a (arg 1) n (arg 2)))
-	   ((and (= n 1) ($matrixp (setq a (arg 1))))
-	    (setq n (length (cdr (arg 1)))))
-	   (t (merror "Wrong number of args to `newdet'")))
-     (newdet a n nil))
-   nil))
+  (let (a)
+    (cond ((= n 2)
+	   (unless (integerp (arg 2))
+	     (merror "Wrong arg to `newdet': ~M" (arg 2)))
+	   (setq a (arg 1) n (arg 2)))
+	  ((and (= n 1) ($matrixp (setq a (arg 1))))
+	   (setq n (length (cdr (arg 1)))))
+	  (t (merror "Wrong number of args to `newdet'")))
+    (newdet a n nil)))
 
 (defmfun $permanent n		
-  ((lambda (a)
-     (cond ((= n 2)
-	    (cond ((not (integerp (arg 2)))
-		   (merror "Wrong arg to `perm': ~M" (arg 2))))
-	    (setq a (arg 1) n (arg 2)))
-	   ((and (= n 1) ($matrixp (setq a (arg 1))))
-	    (setq n (length (cdr (arg 1)))))
-	   (t (merror "Wrong number of args to `perm'")))
-     (newdet a n t))
-   nil))
+  (let (a)
+    (cond ((= n 2)
+	   (unless (integerp (arg 2))
+	     (merror "Wrong arg to `perm': ~M" (arg 2)))
+	   (setq a (arg 1) n (arg 2)))
+	  ((and (= n 1) ($matrixp (setq a (arg 1))))
+	   (setq n (length (cdr (arg 1)))))
+	  (t (merror "Wrong number of args to `perm'")))
+    (newdet a n t)))
 
 (defun newdet (a n perm)
-  (prog (rr r k j old new vlist m loc addr sign) 
-     (cond ((> n 50.)
-	    (merror "Array too big - `newdet': ~M" n)))
-     (setq  *binom* (*array nil t (add1 n) (add1 n)))
-     (setq  *minor1* (*array nil t 2. (add1 (setq rr (pascal n)))))
-     (setq  *i* (*array nil t (plus 2. n)))
-     (do ((k
-	   0.
-	   (add1 k)))
-	 ((> k 1.))
-       (do ((j
-	     0.
-	     (add1 j)))
+  (prog (rr k j old new vlist m loc addr sign) 
+     (when (> n 50)
+       (merror "Array too big - `newdet': ~M" n))
+     (setq  *binom* (make-array (list (1+ n) (1+ n)) :element-type 'integer))
+     (setq  *minor1* (make-array (list 2 (1+ (setq rr (pascal n))))))
+     (setq  *i* (make-array (+ 2 n)))
+     (do ((k 0 (1+ k)))
+	 ((> k 1))
+       (do ((j 0 (1+ j)))
 	   ((> j rr))
-	 (store (aref *minor1* k j) '(0. . 1.))))
-     (do ((k 0. (add1 k))) ((> k (add1 n))) (store (aref *i* k) -1.))
-     (setq  *input* (*array nil t (add1 n) (add1 n)))
-     (do ((k
-	   1.
-	   (add1 k)))
+	 (setf (aref *minor1* k j) '(0 . 1))))
+     (do ((k 0 (1+ k)))
+	 ((> k (1+ n)))
+       (setf (aref *i* k) -1))
+     (setq  *input* (make-array (list (1+ n) (1+ n))))
+     (do ((k 1 (1+ k)))
 	 ((> k n))
-       (do ((j
-	     1.
-	     (add1 j)))
+       (do ((j 1 (1+ j)))
 	   ((> j n))
-	 (newvar1 (store (aref *input* k j)
-			 ((lambda (aryp)
-			    #+cl
-			    (maref a k j)
-			    #-cl
-			    (meval (list (list a 'array) k j))
-			    )
-			  t)))))
+	 (newvar1 (setf (aref *input* k j) (let ((aryp t)) (maref a k j))))))
      (newvar (cons '(mtimes) vlist))
-     (do ((k
-	   1.
-	   (add1 k)))
+     (do ((k 1 (1+ k)))
 	 ((> k n))
-       (do ((j
-	     1.
-	     (add1 j)))
+       (do ((j 1 (1+ j)))
 	   ((> j n))
-	 (store (aref *input* k j)
-		(cdr (ratrep* (aref *input* k j))))))
-     (setq new 1.)
-     (setq old 0.)
-     (store (aref *i* 0.) n)
-     (do ((loc
-	   1.
-	   (add1 loc)))
+	 (setf (aref *input* k j) (cdr (ratrep* (aref *input* k j))))))
+     (setq new 1)
+     (setq old 0)
+     (setf (aref *i* 0) n)
+     (do ((loc 1 (1+ loc)))
 	 ((> loc n))
-       (store (aref *minor1* old (sub1 loc)) (aref *input* 1. loc)))
-     (setq m 1.)
-     g0193(cond ((> m (sub1 n)) (go ret)))
-     (setq loc 0.)
-     (setq j 1.)
-     g0189(cond ((> j m) (go nextminor)))
-     (store (aref *i* j) (difference m j))
-     (setq j (f+ j 1.))
+       (setf (aref *minor1* old (1- loc)) (aref *input* 1 loc)))
+     (setq m 1)
+     g0193 (when (> m (1- n)) (go ret))
+     (setq loc 0)
+     (setq j 1)
+     g0189 (when (> j m) (go nextminor))
+     (setf (aref *i* j) (- m j))
+     (incf j)
      (go g0189)
      nextminor
-     (cond ((not (equal (aref *minor1* old loc) '(0. . 1.)))
-	    (setq k (sub1 n))
-	    (setq j 0.)
-	    (setq addr (plus loc (aref *binom* k (add1 m))))
-	    (setq sign 1.))
+     (cond ((not (equal (aref *minor1* old loc) '(0 . 1)))
+	    (setq k (1- n))
+	    (setq j 0)
+	    (setq addr (+ loc (aref *binom* k (1+ m))))
+	    (setq sign 1))
 	   (t (go over)))
      nextuse
      (cond
-       ((equal k (aref *i* (add1 j)))
-	(setq j (add1 j))
+       ((equal k (aref *i* (1+ j)))
+	(incf j)
 	(setq sign (minus sign)))
        (t
-	(store
-	 (aref *minor1* new addr)
-	 (ratplus
-	  (aref *minor1* new addr)
-	  (rattimes (aref *minor1* old loc)
-		    (cond ((or (equal sign 1.) perm)
-			   (aref *input* (add1 m) (add1 k)))
-			  (t (ratminus (aref *input* (add1 m)
-					     (add1 k)))))
-		    t)))))
-     (cond ((> k 0.)
-	    (setq k (sub1 k))
-	    (setq addr
-		  (difference addr
-			      (aref *binom* k (difference m j))))
-	    (go nextuse)))
-     (store (aref *minor1* old loc)  '(0 . 1))
-     over (setq loc (add1 loc))
+	(setf (aref *minor1* new addr)
+	      (ratplus
+	       (aref *minor1* new addr)
+	       (rattimes (aref *minor1* old loc)
+			 (cond ((or (= sign 1) perm)
+				(aref *input* (1+ m) (1+ k)))
+			       (t (ratminus (aref *input* (1+ m) (1+ k)))))
+			 t)))))
+     (when (> k 0)
+       (decf k)
+       (decf addr (aref *binom* k (- m j)))
+       (go nextuse))
+     (setf (aref *minor1* old loc)  '(0 . 1))
+     over (incf loc)
      (setq j m)
-     back (cond ((> 1. j) (setq m (add1 m))(setq old(difference 1 old))(setq new (difference 1 new))(go g0193)))
-     (store (aref *i* j) (add1 (aref *i* j)))
-     (cond ((> (aref *i* (sub1 j)) (aref *i* j)) (go nextminor))
-	   (t (store (aref *i* j) (difference m j))))
+     back (when (> 1 j)
+	    (incf m)
+	    (setq old (- 1 old))
+	    (setq new (- 1 new))
+	    (go g0193))
+     (setf (aref *i* j) (1+ (aref *i* j)))
+     (if (> (aref *i* (1- j)) (aref *i* j))
+	 (go nextminor)
+	 (setf (aref *i* j) (- m j)))
 	
-     (setq j (sub1 j))
+     (decf j)
      (go back)
-     ret(*rearray '*binom*)
-     (*rearray '*input*)
-     (setq r (cons (list 'mrat
-			 'simp
-			 varlist
-			 genvar)
-		   (aref *minor1* old 0.)))
-     (*rearray '*minor1*)
-     (return r)))
+     ret 
+     (return (cons (list 'mrat 'simp varlist genvar) (aref *minor1* old 0)))))
 
 (defun pascal (n) 
-  (prog nil 
-     (store (aref *binom* 0. 0.) 1.)
-     (do ((h
-	   1.
-	   (add1 h)))
-	 ((> h n))
-       (store (aref *binom* h 0.) 1.)
-       (store (aref *binom* (sub1 h) h) 0.)
-       (do ((j
-	     1.
-	     (add1 j)))
-	   ((> j h))
-	 (store (aref *binom* h j)
-		(plus (aref *binom* (sub1 h) (sub1 j))
-		      (aref *binom* (sub1 h) j)))))
-     (return (sub1 (aref *binom* n (lsh n -1.))))))
-
-;;these need to be special in so many places please dont unspecial them..
-;;(DECLARE (UNSPECIAL VLIST VARLIST GENVAR ARYP))
+  (setf (aref *binom* 0 0) 1)
+  (do ((h 1 (1+ h)))
+      ((> h n) (1- (aref *binom* n (ash n -1))))
+    (setf (aref *binom* h 0) 1)
+    (setf (aref *binom* (1- h) h) 0)
+    (do ((j 1 (1+ j)))
+	((> j h))
+      (setf (aref *binom* h j) (+ (aref *binom* (1- h) (1- j)) (aref *binom* (1- h) j))))))
