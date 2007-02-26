@@ -25,13 +25,13 @@
 		     errrjfflag $%e_to_numlog generate-atan2 context
 		     bigfloatzero rp-polylogp))
 
-(defmvar $liflag t "Controls whether `risch' generates polylogs") 
+(defmvar $liflag t "Controls whether `risch' generates polylogs")
 
-(defmvar $erfflag t "Controls whether `risch' generates `erfs'") 
+(defmvar $erfflag t "Controls whether `risch' generates `erfs'")
 
-(defvar changevp t #-lispm "When nil prevents changevar hack")
+(defvar changevp t "When nil prevents changevar hack")
 
-(defmacro pair (al bl) `(mapcar (function cons) ,al ,bl))
+(defmacro pair (al bl) `(mapcar #'cons ,al ,bl))
 
 (defmacro rischzero () ''((0 . 1) 0))
 
@@ -59,7 +59,7 @@
   (with-new-context (context)
     (rischint exp var)))
 
-(defun spderivative (p var) 
+(defun spderivative (p var)
   (cond ((pcoefp p) '(0 . 1))
 	((null (cdr p)) '(0 . 1))
 	((or (not (atom (car p))) (numberp (car p))) ;P IS A RATFORM
@@ -77,9 +77,9 @@
 	       (spderivative (cons (car p) (cdddr p))
 			     var)))))
 
-(defun spderivative1 (var1 deg coeff var) 
+(defun spderivative1 (var1 deg coeff var)
   (cond ((eq var1 var)
-	 (r* (ratexpt (cons (list var 1 1) 1) (sub1 deg))
+	 (r* (ratexpt (cons (list var 1 1) 1) (1- deg))
 	     (pctimes deg coeff)))
 	((pointergp var var1) '(0 . 1))
 	((equal deg 0) (spderivative coeff var))
@@ -89,14 +89,14 @@
 			 (t (r* deg
 				coeff
 				(ratexpt (cons (list var1 1 1) 1)
-					 (sub1 deg)))))
+					 (1- deg)))))
 		   (get var1 'rischdiff) )))))
 
 (defun polylogp (exp &optional sub)
   (and (mqapplyp exp) (eq (subfunname exp) '$li)
        (or (null sub) (equal sub (car (subfunsubs exp))))))
 
-
+
 (defun rischint (exp intvar &aux ($logarc nil) ($exponentialize nil)
 		 ($gcd '$algebraic) ($algebraic t) (implicit-real t))
   (prog ($%e_to_numlog $logsimp trigint operator y z var ratform liflag
@@ -116,7 +116,7 @@
      (setq varlist (caddr ratform))
      (setq mainvar (caadr (ratf intvar)))
      (setq genvar (cadddr ratform))
-     (unless (ormapc (function algpget) varlist) 
+     (unless (ormapc #'algpget varlist)
        (setq $algebraic nil)
        (setq $gcd (car *gcdl*)))
      (setq var (getrischvar))
@@ -129,8 +129,8 @@
 					 (disrep (car z))
 					 (cdr z)))))))
      noun (return (list '(%integrate) exp intvar))))
- 
-(defun rischform (l) 
+
+(defun rischform (l)
   (cond ((or (atom l) (alike1 intvar l) (freeof intvar l)) nil)
 	((polylogp l)
 	 (if (and (integerp (car (subfunsubs l)))
@@ -154,13 +154,13 @@
 	   ((mtimes mplus mexpt rat %erf %log)
 	    (mapc #'rischform (cdr l)))
 	   (t (setq operator (caar l)))))
-	(t (setq operator (caar l)))))		
+	(t (setq operator (caar l)))))
 
 (defun hypertrigint1 (exp var hyperfunc)
   (if hyperfunc (integrator (resimplify exp) var)
       (rischint (resimplify exp) var)))
 
-(defun trigin1 (*exp var) 
+(defun trigin1 (*exp var)
   (let ((yyy (hypertrigint1 *exp var nil)))
     (setq yyy (div ($expand ($num yyy))
 		   ($expand ($denom yyy))))
@@ -169,10 +169,10 @@
 		    ($realpart yyy)
 		    ($rectform yyy))))))
 
-
-(defun tryrisch (exp mainvar) 
+
+(defun tryrisch (exp mainvar)
   (prog (wholepart rootfactor parnumer pardenom
-	 switch1 logptdx expflag expstuff expint y) 
+	 switch1 logptdx expflag expstuff expint y)
      (setq expstuff '(0 . 1))
      (cond ((eq mainvar var)
 	    (return (rischfprog exp)))
@@ -192,14 +192,14 @@
     (tryrisch exp mainvar)))
 
 (defun rischfprog (rat)
-  (let (rootfactor pardenom parnumer logptdx wholepart switch1) 
+  (let (rootfactor pardenom parnumer logptdx wholepart switch1)
     (cons (cdr (ratrep* (dprog rat)))
 	  (let ((varlist varlist)
 		(genvar (firstn (length varlist) genvar)))
 	    (mapcar 'eprog logptdx)))))
-
-(defun rischlogdprog (ratarg) 
-  (prog (klth arootf deriv thebpg thetop thebot prod1 prod2 ans) 
+
+(defun rischlogdprog (ratarg)
+  (prog (klth arootf deriv thebpg thetop thebot prod1 prod2 ans)
      (setq ans '(0 . 1))
      (cond ((or (pcoefp (cdr ratarg))
 		(pointergp var (cadr ratarg)))
@@ -208,14 +208,14 @@
      (cprog (ratnumerator ratarg) (ratdenominator ratarg))
      (do ((rootfactor (reverse rootfactor) (cdr rootfactor))
 	  (parnumer (reverse parnumer) (cdr parnumer))
-	  (klth (length rootfactor) (f1- klth)))
+	  (klth (length rootfactor) (1- klth)))
 	 ((= klth 1))
        (setq arootf (car rootfactor))
        (cond
 	 ((pcoefp arootf))
 	 ((and (eq (get (car arootf) 'leadop) 'mexpt)
 	       (null (cdddr arootf)))
-	  (setq 
+	  (setq
 	   expint
 	   (append
 	    (cond ((and (not (atom (car parnumer)))
@@ -226,11 +226,11 @@
 		      (list 'neg (car parnumer)
 			    (car arootf) klth (cadr arootf)))))
 	    expint)))
-	 ((not (zerop (pdegree arootf var))) 
+	 ((not (zerop (pdegree arootf var)))
 	  (setq deriv (spderivative arootf mainvar))
 	  (setq thebpg (bprog arootf (ratnumerator deriv)))
 	  (setq thetop (car parnumer))
-	  (do ((kx (f1- klth) (f1- kx))) ((= kx 0))
+	  (do ((kx (1- klth) (1- kx))) ((= kx 0))
 	    (setq prod1 (r* thetop (car thebpg)))
 	    (setq prod2 (r* thetop (cdr thebpg) (ratdenominator deriv)))
 	    (setq thebot (pexpt arootf kx))
@@ -246,17 +246,17 @@
 				 (ratdenominator ans))))
      (return (rischadd (ncons (ratqu thetop (ratdenominator ans)))
 		       (rischlogpoly wholepart)))))
- 
-(defun gennegs (denom num numdenom) 
+
+(defun gennegs (denom num numdenom)
   (cond ((null num) nil)
 	(t (cons (list 'neg (cadr num)
 		       (car denom)
-		       (difference klth (car num))
+		       (- klth (car num))
 		       (r* numdenom (caddr denom) ))
 		 (gennegs denom (cddr num) numdenom)))))
-
-(defun rischlogeprog (p) 
-  (prog (p1e p2e p2deriv logcoef ncc dcc allcc expcoef) 
+
+(defun rischlogeprog (p)
+  (prog (p1e p2e p2deriv logcoef ncc dcc allcc expcoef)
      (if (or (pzerop p) (pzerop (car p))) (return (rischzero)))
      (setq p1e (ratnumerator p))
      (desetq (dcc p2e) (oldcontent (ratdenominator p)))
@@ -311,12 +311,13 @@
 		 (list (rzero)
 		       (maxima-substitute (get var 'rischexpr) newvar new-int))))))
      (return (rischnoun p))))
-	 
-
-(defun findint (exp) (cond ((atom exp) nil)
-			   ((atom (car exp)) (findint (cdr exp)))
-			   ((eq (caaar exp) '%integrate) t)
-			   (t (findint (cdr exp)))))
+
+
+(defun findint (exp)
+  (cond ((atom exp) nil)
+	((atom (car exp)) (findint (cdr exp)))
+	((eq (caaar exp) '%integrate) t)
+	(t (findint (cdr exp)))))
 
 (defun logequiv (fn1 fn2)
   (freeof intvar ($ratsimp (div* (remabs (leadarg fn1))
@@ -327,13 +328,13 @@
 	((eq (caar exp) 'mabs) (cadr exp))
 	(t exp)))
 
-(declare-top(special vlist lians degree))
+(declare-top (special vlist lians degree))
 
 (defun getfnsplit (l &aux coef fn)
   (mapc #'(lambda (x) (if (free x intvar) (push x coef) (push x fn))) l)
   (cons (muln coef nil) (muln fn nil)))
 
-(defun getfncoeff (a form) 
+(defun getfncoeff (a form)
   (cond ((null a) 0)
 	((equal (car a) 0) (getfncoeff (cdr a) form))
 	((eq (caaar a) 'mplus) (ratpl (getfncoeff (cdar a) form)
@@ -342,7 +343,7 @@
 	 (destructuring-let (((coef . newfn) (getfnsplit (cdar a))))
 	   (setf (cdar a) (list coef newfn))
 	   (cond ((zerop1 coef) (getfncoeff (cdr a) form))
-		 ((and (matanp newfn) (memq '$%i varlist))
+		 ((and (matanp newfn) (member '$%i varlist :test #'eq))
 		  (let (($logarc t) ($logexpand '$all))
 		    (rplaca a ($expand (resimplify (car a)))))
 		  (getfncoeff a form))
@@ -377,7 +378,7 @@
 		       (polylogp form)
 		       (mlogp newfn)
 		       (logequiv form newfn))
-		  (push (mul* (cadar a) (make-li (f1+ (car (subfunsubs form)))
+		  (push (mul* (cadar a) (make-li (1+ (car (subfunsubs form)))
 						 (leadarg form)))
 			lians)
 		  (rplaca a 0)
@@ -386,13 +387,13 @@
 	(t (rplaca a (list '(mtimes) 1 (car a)))
 	   (getfncoeff a form))))
 
-
-(defun rischlogpoly (exp) 
+
+(defun rischlogpoly (exp)
   (cond ((equal exp '(0 . 1)) (rischzero))
 	(expflag (push (cons 'poly exp) expint)
 		 (rischzero))
 	((not (among var exp)) (tryrisch1 exp mainvar))
-	(t (do ((degree (pdegree (car exp) var) (f1- degree))
+	(t (do ((degree (pdegree (car exp) var) (1- degree))
 		(p (car exp))
 		(den (cdr exp))
 		(lians ())
@@ -401,7 +402,7 @@
 		(y) (z) (ak) (nogood) (lbkpl1))
 	       ((minusp degree) (cons sum (append lians (cdr y))))
 	     (setq ak (r- (ratqu (polcoef p degree) den)
-			  (r* (cons (add1 degree) 1)
+			  (r* (cons (1+ degree) 1)
 			      cary
 			      (get var 'rischdiff))))
 	     (if (not (pzerop (polcoef p degree)))
@@ -411,13 +412,13 @@
 	     (and (> degree 0) (setq liflag $liflag))
 	     (setq z (getfncoeff (cdr y) (get var 'rischexpr)))
 	     (setq liflag nil)
-	     (cond ((and (greaterp degree 0)
+	     (cond ((and (> degree 0)
 			 (or nogood (findint (cdr y))))
 		    (return (rischnoun sum (r+ (r* ak
 						   (make-poly var degree 1))
 					       (ratqu p den))))))
-	     (setq lbkpl1 (ratqu z (cons (f1+ degree) 1)))
-	     (setq sum (r+ (r* lbkpl1 (make-poly var (add1 degree) 1))
+	     (setq lbkpl1 (ratqu z (cons (1+ degree) 1)))
+	     (setq sum (r+ (r* lbkpl1 (make-poly var (1+ degree) 1))
 			   (r* cary (if (zerop degree) 1
 					(make-poly var degree 1)))
 			   sum))))))
@@ -432,7 +433,7 @@
   (destructuring-let* ((((nil coef nlog) . olog) l)
 		       (narg (remabs (cadr nlog)))
 		       (varlist varlist)
-		       (genvar genvar)				
+		       (genvar genvar)
 		       (rn (rform narg))
 		       (ro (rform (cadr olog)))
 		       (var (caar ro))
@@ -451,7 +452,7 @@
     (cond ((and (risch-constp rc)
 		(risch-constp rd))
 	   (setq narg ($ratsimp (sub 1 (div narg (rdis rd)))))
-	   (mul* coef (power -1 (f1+ degree))
+	   (mul* coef (power -1 (1+ degree))
 		 `((mfactorial) ,degree)
 		 (dosum (mul* (power -1 idx)
 			      (div* (power olog idx)
@@ -459,9 +460,9 @@
 			      (make-li (add degree (neg idx) 1) narg))
 			idx 0 degree t)))
 	  (t (setq nogood t) 0))))
-
-(defun exppolycontrol (flag f a expg n) 
-  (let (y l var (varlist varlist) (genvar genvar)) 
+
+(defun exppolycontrol (flag f a expg n)
+  (let (y l var (varlist varlist) (genvar genvar))
     (setq varlist (reverse (cdr (reverse varlist))))
     (setq var (getrischvar))
     (setq y (get var 'leadop))
@@ -476,9 +477,9 @@
 			  (list expg n (get var 'rischarg)
 				var (get var 'rischdiff)))))))
 
-(defun rischexppoly (expint var) 
+(defun rischexppoly (expint var)
   (let (y w num denom type (ans (rischzero))
-	  (expdiff (ratqu (get var 'rischdiff) (list var 1 1)))) 
+	  (expdiff (ratqu (get var 'rischdiff) (list var 1 1))))
     (do ((expint expint (cdr expint)))
 	((null expint) ans)
       (desetq (type . y) (car expint))
@@ -506,10 +507,10 @@
 					     (car num))
 					    w)))))))
       (setq ans (rischadd w ans)))))
-
-(defun rischexpvar (expexpflag flag l) 
+
+(defun rischexpvar (expexpflag flag l)
   (prog (lcm y m p alphar beta gamma delta r s
-	 tt denom k wl wv i ytemp ttemp yalpha f a expg n yn yd) 
+	 tt denom k wl wv i ytemp ttemp yalpha f a expg n yn yd)
      (desetq (f a expg n) l)
      (cond ((or (pzerop a) (pzerop (car a)))
 	    (return (cond ((null flag) (rzero))
@@ -527,10 +528,10 @@
      (setq beta (pdegree r mainvar))
      (setq gamma (pdegree s mainvar))
      (setq delta (pdegree tt mainvar))
-     (setq alphar (max (difference (add1 delta) beta)
-		       (difference delta gamma)))
+     (setq alphar (max (- (1+ delta) beta)
+		       (- delta gamma)))
      (setq m 0)
-     (cond ((equal (sub1 beta) gamma)
+     (cond ((equal (1- beta) gamma)
 	    (setq y (r* -1
 			(ratqu (polcoef s gamma)
 			       (polcoef r beta))))
@@ -542,20 +543,20 @@
 	 (return (if flag (cxerfarg (rzero) expg n a) nil)))
      (cond ((not (and (equal alphar m) (not (zerop m))))
 	    (go down2)))
-     (setq k (plus alphar beta -2))
+     (setq k (+ alphar beta -2))
      (setq wl nil)
      l2   (setq wv (list (cons (polcoef tt k) 1)))
      (setq i alphar)
      l1   (setq wv
 		(cons (r+ (r* (cons i 1)
-			      (polcoef r (plus k 1 (minus i))))
-			  (cons (polcoef s (plus k (minus i))) 1))
+			      (polcoef r (+ k 1 (minus i))))
+			  (cons (polcoef s (+ k (minus i))) 1))
 		      wv))
-     (setq i (sub1 i))
-     (cond ((greaterp i -1) (go l1)))
+     (decf i)
+     (cond ((> i -1) (go l1)))
      (setq wl (cons wv wl))
-     (setq k (sub1 k))
-     (cond ((greaterp k -1) (go l2)))
+     (decf k)
+     (cond ((> k -1) (go l2)))
      (setq y (lsa wl))
      (if (or (eq y 'singular) (eq y 'inconsistent))
 	 (cond ((null flag) (return nil))
@@ -566,7 +567,7 @@
      l3   (setq lcm
 		(r+ (r* (car y) (pexpt (list mainvar 1 1) k))
 		    lcm))
-     (setq k (add1 k))
+     (incf k)
      (setq y (cdr y))
      (cond ((null y)
 	    (return (cond ((null flag) (ratqu lcm p))
@@ -574,13 +575,13 @@
 				       (cons (list expg n 1) 1))
 				   0))))))
      (go l3)
-     down2(cond ((greaterp (sub1 beta) gamma)
-		 (setq k (plus alphar (sub1 beta)))
+     down2 (cond ((> (1- beta) gamma)
+		 (setq k (+ alphar (1- beta)))
 		 (setq denom '(ratti alphar (polcoef r beta) t)))
-		((lessp (sub1 beta) gamma)
-		 (setq k (plus alphar gamma))
+		((< (1- beta) gamma)
+		 (setq k (+ alphar gamma))
 		 (setq denom '(polcoef s gamma)))
-		(t (setq k (plus alphar gamma))
+		(t (setq k (+ alphar gamma))
 		   (setq denom
 			 '(ratpl (ratti alphar (polcoef r beta) t)
 			   (polcoef s gamma)))))
@@ -590,7 +591,7 @@
 		       (cond ((zerop alphar) (polcoef s gamma))
 			     (t (eval denom))) ))
      (cond ((rzerop yd)
-	    (cond ((pzerop yn) (setq k (f1- k) alphar (f1- alphar))
+	    (cond ((pzerop yn) (setq k (1- k) alphar (1- alphar))
 		   (go loop))		;need more constraints?
 		  (t (cond
 		       ((null flag) (return nil))
@@ -601,41 +602,39 @@
      (setq ttemp (r- tt (r* yalpha
 			    (r+ (r* s (cons (list mainvar alphar 1) 1))
 				(r* r alphar
-				    (list mainvar (sub1 alphar) 1))))))
-     (setq k (sub1 k))
-     (setq alphar (sub1 alphar))
-     (cond
-       ((lessp alphar 0)
-	(cond
-	  ((rzerop ttemp)
-	   (cond
-	     ((null flag) (return (ratqu ytemp p)))
-	     (t (return (list (ratqu (r* ytemp (cons (list expg n 1) 1))
-				     p)
-			      0)))))
-	  ((null flag) (return nil))
-	  ((and (risch-constp (setq ttemp (ratqu ttemp lcm)))
-		$erfflag
-		(equal (pdegree (car (get expg 'rischarg)) mainvar) 2)
-		(equal (pdegree (cdr (get expg 'rischarg)) mainvar) 0))
-	   (return (list (ratqu (r* ytemp (cons (list expg n 1) 1)) p)
-			 (erfarg2 (r* n (get expg 'rischarg)) ttemp))))
-	  (t (return
-	       (cxerfarg
-		(ratqu (r* y (cons (list expg n 1) 1)) p)
-		expg
-		n
-		(ratqu tt lcm)))))))
+				    (list mainvar (1- alphar) 1))))))
+     (decf k)
+     (decf alphar)
+     (cond ((< alphar 0)
+	    (cond
+	      ((rzerop ttemp)
+	       (cond
+		 ((null flag) (return (ratqu ytemp p)))
+		 (t (return (list (ratqu (r* ytemp (cons (list expg n 1) 1))
+					 p)
+				  0)))))
+	      ((null flag) (return nil))
+	      ((and (risch-constp (setq ttemp (ratqu ttemp lcm)))
+		    $erfflag
+		    (equal (pdegree (car (get expg 'rischarg)) mainvar) 2)
+		    (equal (pdegree (cdr (get expg 'rischarg)) mainvar) 0))
+	       (return (list (ratqu (r* ytemp (cons (list expg n 1) 1)) p)
+			     (erfarg2 (r* n (get expg 'rischarg)) ttemp))))
+	      (t (return
+		   (cxerfarg
+		    (ratqu (r* y (cons (list expg n 1) 1)) p)
+		    expg
+		    n
+		    (ratqu tt lcm)))))))
      (setq y ytemp)
      (setq tt ttemp)
      (go loop)))
- 
-
+
+
 ;; *JM should be declared as an array, although it is not created
 ;; by this file. -- cwh
 
 (defun lsa (mm)
-
   (prog (d *mosesflag m m2)
      (setq d (length (car mm)))
      ;; MTOA stands for MATRIX-TO-ARRAY.  An array is created and
@@ -645,14 +644,13 @@
      (setq m (tfgeli '*jm*  (length mm) d))
      (cond ((or (and (null (car m)) (null (cadr m)))
 		(and (car m)
-		     (> (length (car m)) (f- (length mm) (f1- d)))))
+		     (> (length (car m)) (- (length mm) (1- d)))))
 	    (return 'singular))
 	   ((cadr m) (return 'inconsistent)))
      (setq *mosesflag t)
-     (ptorat '*jm* (f1- d) d)
-     (setq m2 (xrutout '*jm* (f1- d) d nil nil))
+     (ptorat '*jm* (1- d) d)
+     (setq m2 (xrutout '*jm* (1- d) d nil nil))
      (setq m2 (lsafix (cdr m2) (caddr m)))
-     (*rearray '*jm*)
      (return m2)))
 
 (defun lsafix (l n)
@@ -660,32 +658,31 @@
   (do ((n n (cdr n))
        (l l (cdr l)))
       ((null l))
-					;(STORE (*JM 1 (CAR N)) (CAR L))
-    (store (aref *jm* 1 (car n)) (car l))
-    )
-  (do ((s (length l) (f1- s))
+    (setf (aref *jm* 1 (car n)) (car l)))
+  (do ((s (length l) (1- s))
        (ans))
       ((= s 0) (cons '(list) ans))
     (setq ans (cons (aref *jm* 1 s) ans))))
 
-
+
 (defun findpr (alist flist &aux (p 1) alphar fterm)
   (do ((alist alist (cdr alist))) ((null alist))
     (setq fterm (findflist (cadar alist) flist))
-    (if fterm (setq flist (remq y flist 1)))
+    (if fterm (setq flist (remove y flist :count 1 :test #'eq)))
     (setq alphar
 	  (cond ((null fterm) (caddar alist))
 		((equal (caddr fterm) 1)
 		 (fpr-dif (car flist) (caddar alist)))
-		(t (max (f- (caddar alist) (caddr fterm)) 0))))
+		(t (max (- (caddar alist) (caddr fterm)) 0))))
     (if (not (zerop alphar))
 	(setq p (ptimes p (pexpt (cadar alist) alphar)))))
-  (do ((flist flist (cdr flist))) ((null flist))
+  (do ((flist flist (cdr flist)))
+      ((null flist))
     (when (equal (caddar flist) 1)
       (setq alphar (fpr-dif (car flist) 0))
       (setq p (ptimes p (pexpt (cadar flist) alphar)))))
   p)
-	 
+
 (defun fpr-dif (fterm alpha)
   (destructuring-let* (((num den mult) fterm)
 		       (m (spderivative den mainvar))
@@ -697,17 +694,18 @@
 		 (max (car n) alpha)
 		 alpha)))))
 
-(defun findflist (a llist) (cond ((null llist) nil)
-				 ((equal (cadar llist) a) (car llist))
-				 (t (findflist a (cdr llist)))))
-	 
-
+(defun findflist (a llist)
+  (cond ((null llist) nil)
+	((equal (cadar llist) a) (car llist))
+	(t (findflist a (cdr llist)))))
+
+
 (defun rischexplog (expexpflag flag f a l)
   (declare (special var))
   (prog (lcm y yy m p alphar beta gamma delta
 	 mu r s tt denom ymu rbeta expg n eta logeta logdiff
-	 temp cary nogood vector aarray rmu rrmu rarray) 
-     (desetq (expg n eta logeta logdiff) l) 
+	 temp cary nogood vector aarray rmu rrmu rarray)
+     (desetq (expg n eta logeta logdiff) l)
      (cond ((or (pzerop a) (pzerop (car a)))
 	    (return (cond ((null flag) (rzero))
 			  (t (rischzero))))))
@@ -722,17 +720,17 @@
      (setq beta (pdegree r var))
      (setq gamma (pdegree s var))
      (setq delta (pdegree tt var))
-     (cond (expexpflag (setq mu (max (f- delta beta)
-				     (f- delta gamma)))
+     (cond (expexpflag (setq mu (max (- delta beta)
+				     (- delta gamma)))
 		       (go expcase)))
-     (setq mu (max (f- (f1+ delta) beta)
-		   (f- (f1+ delta) gamma)))
+     (setq mu (max (- (1+ delta) beta)
+		   (- (1+ delta) gamma)))
      (cond ((< beta gamma) (go back))
-	   ((= (sub1 beta) gamma) (go down1)))
-     (setq y (tryrisch1 (ratqu (r- (r* (polcoef r (f1- beta))
+	   ((= (1- beta) gamma) (go down1)))
+     (setq y (tryrisch1 (ratqu (r- (r* (polcoef r (1- beta))
 				       (polcoef s gamma))
 				   (r* (polcoef r beta)
-				       (polcoef s (f1- gamma))))
+				       (polcoef s (1- gamma))))
 			       (r* (polcoef r beta)
 				   (polcoef r beta) ))
 			mainvar))
@@ -743,7 +741,7 @@
 		 (not (atom yy))
 		 (equal (cdr yy) 1)
 		 (numberp (car yy))
-		 (greaterp (car yy) mu))
+		 (> (car yy) mu))
 	    (setq mu (car yy))))
      (go back)
      expcase
@@ -754,7 +752,7 @@
      (setq yy (ratqu (r* -1 (car y)) eta))
      (cond ((and (equal (cdr yy) 1)
 		 (numberp (car yy))
-		 (greaterp (car yy) mu))
+		 (> (car yy) mu))
 	    (setq mu (car yy))))
      (go back)
      down1(setq y (tryrisch1 (ratqu (polcoef s gamma) (polcoef r beta))
@@ -765,7 +763,7 @@
 		 (not nogood)
 		 (equal (cdr yy) 1)
 		 (numberp (car yy))
-		 (greaterp (minus (car yy)) mu))
+		 (> (minus (car yy)) mu))
 	    (setq mu (minus (car yy)))))
      back (if (minusp mu)
 	      (return (if flag (cxerfarg (rzero) expg n a) nil)))
@@ -775,47 +773,44 @@
      (setq denom (polcoef s gamma))
      (setq y '(0 . 1))
      linearloop
-     (setq ymu (ratqu (polcoef (ratnumerator tt) (f+ mu gamma))
+     (setq ymu (ratqu (polcoef (ratnumerator tt) (+ mu gamma))
 		      (r* (ratdenominator tt) denom)))
      (setq y (r+ y (setq ymu (r* ymu (pexpt (list logeta 1 1) mu) ))))
      (setq tt (r- tt
 		  (r* s ymu)
 		  (r* r (spderivative ymu mainvar))))
-     (setq mu (f1- mu))
-     (cond
-       ((not (< mu 0)) (go linearloop))
-       ((not flag) (return (cond ((rzerop tt) (ratqu y p)) (t nil))))
-       ((rzerop tt)
-	(return (cons (ratqu (r* y (cons (list expg n 1) 1)) p) '(0))))
-       (t (return (cxerfarg (ratqu (r* y (cons (list expg n 1) 1)) p)
-			    expg
-			    n
-			    (ratqu tt lcm)))))
+     (decf mu)
+     (cond  ((not (< mu 0)) (go linearloop))
+	    ((not flag) (return (if (rzerop tt) (ratqu y p) nil)))
+	    ((rzerop tt)
+	     (return (cons (ratqu (r* y (cons (list expg n 1) 1)) p) '(0))))
+	    (t (return (cxerfarg (ratqu (r* y (cons (list expg n 1) 1)) p)
+				 expg
+				 n
+				 (ratqu tt lcm)))))
      recurse
      (setq rbeta (polcoef r beta))
      (setq y '(0 . 1))
      recurseloop
      (setq f (r+ (ratqu (polcoef s gamma) rbeta)
-		 (cond (expexpflag (r* mu (spderivative eta mainvar)))
-		       (t 0))))
+		 (if expexpflag
+		     (r* mu (spderivative eta mainvar))
+		     0)))
      (setq ymu (exppolycontrol nil
 			       f
 			       (ratqu (polcoef (ratnumerator tt)
-					       (f+ beta mu))
+					       (+ beta mu))
 				      (r* (ratdenominator tt) rbeta))
 			       expg n))
-     (cond
-       ((null ymu)
-	(return
-	  (cond
-	    ((null flag) nil)
-	    (t (return (cxerfarg (ratqu (r* y (cons (list expg n 1) 1)) p)
-				 expg n (ratqu tt lcm))))))))
+     (when (null ymu)
+       (return (cond ((null flag) nil)
+		     (t (return (cxerfarg (ratqu (r* y (cons (list expg n 1) 1)) p)
+					  expg n (ratqu tt lcm)))))))
      (setq y (r+ y (setq ymu (r* ymu (pexpt (list logeta 1 1) mu)))))
      (setq tt (r- tt
 		  (r* s ymu)
 		  (r* r (spderivative ymu mainvar))))
-     (setq mu (f1- mu))
+     (decf mu)
      (cond
        ((not (< mu 0)) (go recurseloop))
        ((not flag)
@@ -829,17 +824,17 @@
      lsacall
      (setq rrmu mu)
      muloop
-     (setq temp (r* (ratexpt (cons (list logeta 1 1) 1) (f1- mu))
+     (setq temp (r* (ratexpt (cons (list logeta 1 1) 1) (1- mu))
 		    (r+ (r* s (cons (list logeta 1 1) 1))
 			(r* mu r logdiff ))))
      mu1  (setq vector nil)
-     (setq rmu (f+ rrmu beta))
+     (setq rmu (+ rrmu beta))
      rmuloop
      (setq vector (cons (ratqu (polcoef (ratnumerator temp) rmu)
 			       (ratdenominator temp)) vector))
-     (setq rmu (f1- rmu))
-     (cond ((not (< rmu 0)) (go rmuloop)))
-     (setq mu (f1- mu))
+     (decf rmu)
+     (unless (< rmu 0) (go rmuloop))
+     (decf mu)
      (setq aarray (append aarray (list (reverse vector))))
      (cond ((not (< mu 0)) (go muloop))
 	   ((equal mu -2) (go skipmu)))
@@ -852,36 +847,35 @@
      (setq vector (mapcar 'car aarray))
      (setq aarray (mapcar 'cdr aarray))
      (setq rarray (append rarray (list vector)))
-     (cond ((not (null (car aarray))) (go arrayloop)))
-     (setq rmu (f1+ rrmu))
+     (unless (null (car aarray)) (go arrayloop))
+     (setq rmu (1+ rrmu))
      (setq vector nil)
      array1loop
      (setq vector (cons '(0 . 1) vector))
-     (setq rmu (f1- rmu))
-     (cond ((not (< rmu 0)) (go array1loop)))
+     (decf rmu)
+     (unless (< rmu 0) (go array1loop))
      (setq aarray nil)
      array2loop
      (cond ((equal (car rarray) vector) nil)
 	   (t (setq aarray (cons (car rarray) aarray))))
      (setq rarray (cdr rarray))
-     (cond (rarray (go array2loop)))
+     (when rarray (go array2loop))
      (setq rarray (reverse aarray))
      (setq temp (lsa rarray))
-     (cond ((or (eq temp 'singular) (eq temp 'inconsistent))
-	    (return
-	      (cond ((null flag) nil)
-		    (t (cxerfarg (rzero) expg n a))))))
+     (when (or (eq temp 'singular) (eq temp 'inconsistent))
+       (return (if (null flag) nil (cxerfarg (rzero) expg n a))))
      (setq temp (reverse  (cdr temp)))
      (setq rmu 0)
      (setq y 0)
      l3   (setq y (r+ y (r* (car temp) (pexpt (list logeta 1 1) rmu))))
      (setq temp (cdr temp))
-     (setq rmu (f1+ rmu))
-     (cond ((not (> rmu rrmu)) (go l3)))
-     (return (cond ((null flag) (ratqu y p))
-		   (t (cons (r* (list expg n 1) (ratqu y p)) '(0)))))))
+     (incf rmu)
+     (unless (> rmu rrmu) (go l3))
+     (return (if (null flag)
+		 (ratqu y p)
+		 (cons (r* (list expg n 1) (ratqu y p)) '(0))))))
 
-
+
 (defun erfarg (exparg coef)
   (prog (num denom erfarg)
      (setq exparg (r- exparg))
@@ -896,7 +890,7 @@
 			     ,(disrep coef)
 			     ((%erf) ,(disrep erfarg))))))))
 
-(defun erfarg2 (exparg coeff &aux (var mainvar) a b c d) 
+(defun erfarg2 (exparg coeff &aux (var mainvar) a b c d)
   (when (and (= (pdegree (car exparg) var) 2)
 	     (eq (caar exparg) var)
 	     (risch-pconstp (cdr exparg))
@@ -922,7 +916,7 @@
 			 ((mtimes) ,d ,intvar)
 			 ((mtimes) ,b ((rat) 1 2) ((mexpt) ,d -1))))))))
 
-
+
 (defun cxerfarg (ans expg n numdenom &aux (arg (r* n (get expg 'rischarg)))
 		 (fails 0))
   (prog (denom erfans num nerf)
@@ -933,7 +927,7 @@
      again	(when (and (not (pcoefp denom))
 			   (null (p-red denom))
 			   (eq (get (car denom) 'leadop) 'mexpt))
-		  (setq arg (r+ arg (r* (f- (p-le denom))
+		  (setq arg (r+ arg (r* (- (p-le denom))
 					(get (p-var denom) 'rischarg)))
 			denom (p-lc denom))
 		  (go again))
@@ -958,10 +952,10 @@
 				 (ptimes exps
 					 (make-poly (p-var p) exp 1)))))))
 
-
+
 (declare-top (special *fnewvarsw))
-	
-(defun intsetup (exp *var) 
+
+(defun intsetup (exp *var)
   (prog (varlist clist $factorflag dlist genpairs old y z $ratfac $keepfloat
 	 *fnewvarsw)
    y    (setq exp (radcan1 exp))
@@ -988,17 +982,16 @@
 		(t (push y dlist))))
 	 (t (push y dlist)))
    (if z (go up))
-   (if (memq '$%i clist) (setq clist (cons '$%i (zl-delete '$%i clist))))
+   (if (member '$%i clist :test #'eq) (setq clist (cons '$%i (delete '$%i clist :test #'equal))))
    (setq varlist (append clist
 			 (cons *var
-			       (nreverse (sort (append dlist nil) 'intgreat)))))
+			       (nreverse (sort (append dlist nil) #'intgreat)))))
    (orderpointer varlist)
    (setq old varlist)
-   (mapc (function intset1) (cons *var dlist))
+   (mapc #'intset1 (cons *var dlist))
    (cond ((alike old varlist) (return (ratrep* exp)))
 	 (t (go a)))))
- 
-
+
 (defun leadop (exp)
   (cond ((atom exp) exp)
 	((mqapplyp exp) (cadr exp))
@@ -1011,16 +1004,16 @@
 	(t (cadr exp))))
 
 (defun intset1 (b)
-  (let (e c d) 
+  (let (e c d)
     (fnewvar
      (setq d (if (mexptp b)		;needed for radicals
 		 `((mtimes simp)
 		   ,b
-		   ,(radcan1 (sdiff (simplify (caddr b)) *var)))	      
+		   ,(radcan1 (sdiff (simplify (caddr b)) *var)))
 		 (radcan1 (sdiff (simplify b) *var)))))
     (setq d (ratrep* d))
     (setq c (ratrep* (leadarg b)))
-    (setq e (cdr (zl-assoc b (pair varlist genvar))))
+    (setq e (cdr (assoc b (pair varlist genvar) :test #'equal)))
     (putprop e (leadop b) 'leadop)
     (putprop e b 'rischexpr)
     (putprop e (cdr d) 'rischdiff)
@@ -1039,7 +1032,8 @@
 	(t (great (resimplify (fixintgreat a))
 		  (resimplify (fixintgreat b))))))
 
-(defun fixintgreat (a) (subst '/_101x *var a))
+(defun fixintgreat (a)
+  (subst '/_101x *var a))
 
 (declare-top (unspecial b beta cary context *exp degree gamma
 			klth liflag m nogood operator prob
