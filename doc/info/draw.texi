@@ -1370,8 +1370,11 @@ Example:
 
 @example
 (%i1) load(draw)$
-(%i2) scene1: gr2d(title="Ellipse",nticks=30,parametric(2*cos(t),5*sin(t),t,0,2*%pi))$
-(%i3) scene2: gr2d(title="Triangle",polygon([4,5,7],[6,4,2]))$
+(%i2) scene1: gr2d(title="Ellipse",
+                   nticks=30,
+                   parametric(2*cos(t),5*sin(t),t,0,2*%pi))$
+(%i3) scene2: gr2d(title="Triangle",
+                   polygon([4,5,7],[6,4,2]))$
 (%i4) draw(scene1, scene2, columns = 2)$
 @end example
 
@@ -1412,62 +1415,187 @@ Function @code{gr2d} builds an object describing a 2d scene. Arguments are
 sequentially: @i{graphic options} affect those @i{graphic objects} placed
 on its right.
 
+To make use of this function, write first @code{load(draw)}.
+
 This is the list of @i{graphic objects} available for scenes in two dimensions:
 
 @itemize @bullet
 @item
 @code{points([[x1,y1], [x2,y2], [x3,y3],...])} or @code{points([x1,x2,x3,...], [y1,y2,y3,...])}:
 allocates points @code{[x1,y1]}, @code{[x2,y2]}, @code{[x2,y2]}, ....
+
 This object is affected by the following @i{graphic options}: @code{point_size}, 
 @code{point_type}, @code{points_joined}, @code{line_width}, @code{key} and @code{line_type}.
 
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(key           = "Small points",
+             points(makelist([random(20),random(50)],k,1,10)),
+             point_type    = 6,
+             point_size    = 3,
+             points_joined = true,
+             key           = "Great points",
+             points(makelist(k,k,1,20),makelist(random(30),k,1,20)))$
+@end example
 
 @item
 @code{polygon([[x1,y1], [x2,y2], [x3,y3],...])} or @code{polygon([x1,x2,x3,...], [y1,y2,y3,...])}:
 plots a polygon with vertices @code{[x1,y1]}, @code{[x2,y2]}, @code{[x2,y2]}, ... on the plane.
+
 This object is affected by the following @i{graphic options}: @code{transparent}, 
 @code{fill_type}, @code{border}, @code{line_width}, @code{key} and @code{line_type}.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(line_type   = 3,
+             line_width  = 8,
+             polygon([[3,2],[7,2],[5,5]]),
+             border      = false,
+             fill_type   = 6,
+             polygon([[5,2],[9,2],[7,5]]) )$
+@end example
+
 
 
 @item
 @code{rectangle([x1,y1], [x2,y2])}:
 plots a rectangle with opposite vertices @code{[x1,y1]} and @code{[x2,y2]}.
+
 This object is affected by the following @i{graphic options}: @code{transparent}, 
 @code{fill_type}, @code{border}, @code{line_width}, @code{key} and @code{line_type}.
 
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(fill_type   = 6,
+             line_width  = 6,
+             line_type   = 2,
+             transparent = false,
+             fill_type   = 8,
+             rectangle([-2,-2],[8,-1]),   /* opposite vertices */
+             transparent = true,
+             line_type   = 5,
+             line_width  = 1,
+             rectangle([9,4],[2,-1.5]),
+             xrange      = [-3,10],
+             yrange      = [-3,4.5] )$
+@end example
+
 
 @item
-@code{ellipse(xc, yc, a, b, start_angle, end_angle)}:
+@code{ellipse(xc, yc, a, b, ang1, ang2)}:
 plots an ellipse centered at @code{[xc, yc]} with horizontal and vertical
-semi axis @code{a} and @code{b}, respectively, from angle @code{start_angle} to angle
-@code{end_angle}.
+semi axis @code{a} and @code{b}, respectively, from angle @code{ang1} to angle
+@code{ang2}.
+
 This object is affected by the following @i{graphic options}: @code{nticks}, 
 @code{transparent}, @code{fill_type}, @code{border}, @code{line_width}, 
 @code{line_type} and @code{key}.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(transparent = false,
+             fill_type   = 8,
+             line_type   = 5,
+             transparent = false,
+             line_width  = 5,
+             ellipse(0,6,3,2,270,-270),  /* center (x,y), a, b, start & end in degrees */
+             transparent = true,
+             line_type   = 7,
+             line_width  = 3,
+             ellipse(2.5,6,2,3,30,-90),
+             xrange      = [-3,6],
+             yrange      = [2,9] )$
+@end example
 
 
 @item
 @code{label(string,x,y)}:
 writes the @code{string} at point @code{[x,y]}.
+
 This object is affected by the following @i{graphic options}: @code{label_alignment}, 
 @code{label_orientation} and @code{label_color}.
+
+Example:
+
+In this example, a dummy point is added to get an image.
+Package @code{draw} needs always data to draw an scene.
+These colors may change in different terminals.
+@example
+(%i1) load(draw)$
+(%i2) draw2d(xrange     = [0,10],
+             yrange     = [0,10],
+             point_size = 0,
+             points([[0,0]]),
+             label_color = -1,
+             label("Label color -1",5,1),
+             label_color = 1,
+             label("Label color 1 (default)",5,2),
+             label_color = 2,
+             label("Label color 2",5,3),
+             label_color = 3,
+             label("Label color 3",5,4),
+             label_color = 4,
+             label("Label color 4",5,5),
+             label_color = 5,
+             label("Label color 5",5,6),
+             label_color = 6,
+             label("Label color 6",5,7),
+             label_color = 7,
+             label("Label color 7",5,8),
+             label_color = 8,
+             label("Label color 8",5,9) )$
+@end example
 
 
 @item
 @code{vector([x,y], [dx,dy])}:
 plots vector @code{[dx,dy]} with origin in @code{[x,y]}.
+
 This object is affected by the following @i{graphic options}: @code{head_both}, 
 @code{head_length}, @code{head_angle}, @code{head_type}, @code{line_width}, 
 @code{line_type} and @code{key}.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(xrange      = [0,12],
+             yrange      = [0,10],
+             head_length = 1,
+             vector([0,1],[5,5]), /* default type */
+             head_type = 'empty,
+             vector([3,1],[5,5]),
+             head_both = true,
+             head_type = 'nofilled,
+             vector([6,1],[5,5]))$
+@end example
 
 
 @item
 @code{explicit(fcn,var,minval,maxval)}:
 plots explicit function @code{fcn}, with variable @code{var} taking values
 from @code{minval} to @code{maxval}.
+
 This object is affected by the following @i{graphic options}: @code{nticks}, 
 @code{adapt_depth}, @code{line_width}, @code{line_type}, @code{key}, @code{point_type},  
 @code{function_style} and @code{fill_type}.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(xu_grid = 10,
+             yv_grid = 50,
+             explicit(x^2+y^2,x,-3,3,y,-3,3) )$
+@end example
 
 
 @item
@@ -1475,27 +1603,68 @@ This object is affected by the following @i{graphic options}: @code{nticks},
 plots the implicit function defined by @code{fcn}, with variable @code{x-var} taking values
 from @code{x-minval} to @code{x-maxval}, and variable @code{y-var} taking values
 from @code{y-minval} to @code{y-maxval}.
+
 This object is affected by the following @i{graphic options}: @code{ip_grid}, 
 @code{ip_grid_in}, @code{line_width}, @code{line_type}, @code{key}, 
 @code{filled_function}, @code{point_type}, and @code{fill_type}.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(grid      = true,
+             line_type = -1,
+             key       = "y^2=x^3-2*x+1",
+             implicit(y^2=x^3-2*x+1, x, -4,4, y, -4,4),
+             line_type = 0,
+             key       = "x^3+y^3 = 3*x*y^2-x-1",
+             implicit(x^3+y^3 = 3*x*y^2-x-1, x, -4,4, y, -4,4),
+             title     = "Two implicit functions" )$
+@end example
 
 
 @item
 @code{polar(radius,ang,minang,maxang)}:
 plots function @code{radius(ang)} defined in polar coordinates, with variable @code{ang}
 taking values from @code{minang} to @code{maxang}.
+
 This object is affected by the following @i{graphic options}: @code{nticks}, 
 @code{line_width}, @code{line_type}, @code{key}, 
 @code{function_style} and @code{point_type}.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(user_preamble = "set grid polar",
+             nticks        = 200,
+             xrange        = [-5,5],
+             yrange        = [-5,5],
+             line_type     = 6,
+             line_width    = 3,
+             title         = "Hyperbolic Spiral",
+             polar(10/theta,theta,1,10*%pi) )$
+@end example
 
 
 @item
 @code{parametric(xfun,yfun,par,parmin,parmax)}:
 plots parametric function @code{[xfun,yfun]}, with parameter @code{par}
 taking values from @code{parmin} to @code{parmax}.
+
 This object is affected by the following @i{graphic options}: @code{nticks}, 
 @code{line_width}, @code{line_type}, @code{key}, @code{point_type}, 
 @code{function_style} and @code{point_type}.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(explicit(exp(x),x,-1,3),
+             line_type = 3,
+             key       = "This is the parametric one!!",
+             parametric(2*cos(rrr),rrr^2,rrr,0,2*%pi))$
+@end example
 
 @end itemize
 
@@ -1523,6 +1692,8 @@ Function @code{gr3d} builds an object describing a 3d scene. Arguments are
 sequentially: @i{graphic options} affect those @i{graphic objects} placed
 on its right.
 
+To make use of this function, write first @code{load(draw)}.
+
 This is the list of @i{graphic objects} available for scenes in three dimensions:
 
 @itemize @bullet
@@ -1530,15 +1701,54 @@ This is the list of @i{graphic objects} available for scenes in three dimensions
 @code{points([[x1,y1,z1], [x2,y2,z2], [x3,y3,z3],...])} or 
 @code{points([x1,x2,x3,...], [y1,y2,y3,...], [z1,z2,z3,...])}:
 allocates points @code{[x1,y1,z1]}, @code{[x2,y2,z2]}, @code{[x2,y2,z3]}, ....
+
 This object is affected by the following @i{graphic options}: @code{point_size}, 
 @code{point_type}, @code{points_joined}, @code{line_width}, @code{key} and @code{line_type}.
+
+Examples:
+
+One tridimensional sample,
+@example
+(%i1) load(draw)$
+(%i2) load (numericalio)$
+(%i3) s2 : read_matrix (file_search ("wind.data"))$
+(%i4) draw3d(title      = "Daily average wind speeds",
+             point_size = 2,
+             points(args(submatrix (s2, 4, 5))) )$
+@end example
+
+Two tridimensional samples,
+@example
+(%i1) load(draw)$
+(%i2) load (numericalio)$
+(%i3) s2 : read_matrix (file_search ("wind.data"))$
+(%i4) draw3d(title      = "Daily average wind speeds. Two data sets",
+             point_size = 2,
+             key        = "Sample from stations 1, 2 and 3",
+             points(args(submatrix (s2, 4, 5))),
+             point_type = 4,
+             key        = "Sample from stations 1, 4 and 5",
+             points(args(submatrix (s2, 2, 3))) )$
+@end example
 
 
 @item
 @code{label(string,x,y,z)}:
 writes the @code{string} at point @code{[x,y,z]}.
+
 This object is affected by the following @i{graphic options}: @code{label_alignment}, 
 @code{label_orientation} and @code{label_color}.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(explicit(exp(sin(x)+cos(x^2)),x,-3,3,y,-3,3),
+             label_color = 6,
+             label("UP",-2,0,3),
+             label_color = 3,
+             label("DOWN",2,0,-3) )$
+@end example
 
 
 @item
@@ -1546,16 +1756,46 @@ This object is affected by the following @i{graphic options}: @code{label_alignm
 plots explicit function @code{fcn}, with variable @code{var1} taking values
 from @code{minval1} to @code{maxval1} and variable @code{var2} taking values
 from @code{minval2} to @code{maxval2}.
+
 This object is affected by the following @i{graphic options}: @code{xu_grid}, 
 @code{yv_grid}, @code{line_type}, and @code{key}.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(key       = "Gauss",
+             line_type = 2,
+             explicit(20*exp(-x^2-y^2)-10,x,-3,3,y,-3,3),
+             yv_grid     = 10,
+             line_type = 5,
+             key="Plane",
+             explicit(x+y,x,-5,5,y,-5,5),
+             surface_hide = true)$
+@end example
 
 
 @item
 @code{parametric(xfun,yfun,zfun,par,parmin,parmax)}:
 plots parametric curve @code{[xfun,yfun,zfun]}, with parameter @code{par}
 taking values from @code{parmin} to @code{parmax}.
+
 This object is affected by the following @i{graphic options}: @code{nticks}, 
 @code{line_width}, @code{line_type}, and @code{key}.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(explicit(exp(sin(x)+cos(x^2)),x,-3,3,y,-3,3),
+             line_type  = 3,
+             parametric(cos(5*u)^2,sin(7*u),u-2,u,0,2),
+             line_type  = 6,
+             line_width = 2,
+             parametric(t^2,sin(t),2+t,t,0,2),
+             surface_hide = true,
+             title = "Surface & curves" )$
+@end example
 
 
 @item
@@ -1563,8 +1803,25 @@ This object is affected by the following @i{graphic options}: @code{nticks},
 plots parametric surface @code{[xfun,yfun,zfun]}, with parameter @code{par1}
 taking values from @code{par1min} to @code{par1max} and parameter @code{par2}
 taking values from @code{par2min} to @code{par2max}.
+
 This object is affected by the following @i{graphic options}: @code{nticks}, 
 @code{line_width}, @code{line_type}, and @code{key}.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(title          = "Sea shell",
+             xu_grid        = 100,
+             yv_grid        = 25,
+             rot_vertical   = 100,
+             rot_horizontal = 20,
+             surface_hide   = true,
+             parametric_surface(0.5*u*cos(u)*(cos(v)+1),
+                                0.5*u*sin(u)*(cos(v)+1),
+                                u*sin(v) - ((u+3)/8*%pi)^2 - 20,
+                                u, 0, 13*%pi, v, -%pi, %pi) )$
+@end example
 
 @end itemize
 
@@ -1598,6 +1855,19 @@ and @code{columns}.
 Functions @code{draw2d} and @code{draw3d} are short cuts to be used 
 when only one scene is required, in two or three dimensions, respectively.
 
+To make use of this function, write first @code{load(draw)}.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) scene1: gr2d(title="Ellipse",
+                   nticks=30,
+                   parametric(2*cos(t),5*sin(t),t,0,2*%pi))$
+(%i3) scene2: gr2d(title="Triangle",
+                   polygon([4,5,7],[6,4,2]))$
+(%i4) draw(scene1, scene2, columns = 2)$
+@end example
 @end deffn
 
 
@@ -1608,6 +1878,8 @@ This function is a short cut for
 
 It can be used to plot a unique scene in 2d.
 
+To make use of this function, write first @code{load(draw)}.
+
 @end deffn
 
 
@@ -1617,6 +1889,8 @@ This function is a short cut for
 @code{draw3d(gr3d(@var{options}, ..., @var{graphic object}, ...))}.
 
 It can be used to plot a unique scene in 3d.
+
+To make use of this function, write first @code{load(draw)}.
 
 @end deffn
 
