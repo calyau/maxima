@@ -567,7 +567,7 @@ exact;
 (pn_(95),ans:contrib_ode(eqn:x*'diff(y,x,2)+'diff(y,x,1)+l*x*y,y,x));
 [y = bessel_y(0,-sqrt(l)*x)*%k2+bessel_j(0,-sqrt(l)*x)*%k1];
 [method,ode_check(eqn,ans[1])];
-[odelin,0;
+[odelin,0];
 
 /* Kamke 2. 96  */ 
 (pn_(96),ans:contrib_ode(eqn:x*'diff(y,x,2)+'diff(y,x,1)+(x+a)*y,y,x));
