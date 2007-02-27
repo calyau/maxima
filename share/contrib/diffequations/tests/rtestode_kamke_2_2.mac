@@ -19,15 +19,15 @@ true;
 (pn_(102),ans:contrib_ode(eqn:x*'diff(y,x,2)+2*'diff(y,x,1)+a*x^2*y,y,x));
 [y = bessel_y(1/3,2*sqrt(a)*x^(3/2)/3)*%k2/sqrt(x)
     +bessel_j(1/3,2*sqrt(a)*x^(3/2)/3)*%k1/sqrt(x)];
-method;
-odelin;
+[method,ode_check(eqn,ans[1])];
+[odelin,0];
 
 /* Kamke 2. 103  */ 
 (pn_(103),ans:contrib_ode(eqn:x*'diff(y,x,2)-2*'diff(y,x,1)+a*y,y,x));
 [y = bessel_y(-3,2*sqrt(a)*sqrt(x))*%k2*x^(3/2)
     +bessel_j(-3,2*sqrt(a)*sqrt(x))*%k1*x^(3/2)];
-method;
-odelin;
+[method,ode_check(eqn,ans[1])];
+[odelin,0];
 
 /* Kamke 2. 104  */ 
 (pn_(104),ans:contrib_ode(eqn:x*'diff(y,x,2)+v*'diff(y,x,1)+a*y,y,x));
@@ -369,21 +369,21 @@ odelin;
 /* Kamke 2. 150  */ 
 (pn_(150),ans:contrib_ode(eqn:x^2*'diff(y,x,2)+(x^2-2)*y,y,x));
 [y = bessel_y(-3/2,-x)*%k2*sqrt(-x)+bessel_j(-3/2,-x)*%k1*sqrt(-x)];
-method;
-odelin;
+[method,ode_check(eqn,ans[1])];
+[odelin,0];
 
 /* Kamke 2. 151  */ 
 (pn_(151),ans:contrib_ode(eqn:x^2*'diff(y,x,2)-(a*x^2+2)*y,y,x));
 [y = bessel_y(-3/2,-sqrt(-a)*x)*%k2*sqrt(-x)
     +bessel_j(-3/2,-sqrt(-a)*x)*%k1*sqrt(-x)];
-method;
-odelin;
+[method, ode_check(eqn,ans[1])];
+[odelin,0];
 
 /* Kamke 2. 152  */ 
 (pn_(152),ans:contrib_ode(eqn:x^2*'diff(y,x,2)+(a^2*x^2-6)*y,y,x));
 [y = bessel_y(5/2,-a*x)*%k2*sqrt(-x)+bessel_j(5/2,-a*x)*%k1*sqrt(-x)];
-method;
-odelin;
+[method, ode_check(eqn,ans[1])];
+[odelin,0];
 
 /* Kamke 2. 153  */ 
 (pn_(153),ans:contrib_ode(eqn:x^2*'diff(y,x,2)+(a*x^2-(v-1)*v)*y,y,x));
@@ -623,8 +623,8 @@ variationofparameters;
 (pn_(185),ans:contrib_ode(eqn:x^2*'diff(y,x,2)+5*x*'diff(y,x,1)+(4-2*x^3)*y,y,x));
 [y = bessel_y(0,-2*sqrt(2)*sqrt(-x)*x/3)*%k2/x^2
     +bessel_j(0,-2*sqrt(2)*sqrt(-x)*x/3)*%k1/x^2];
-method;
-odelin;
+[method,ode_check(eqn,ans[1])];
+[odelin,0];
 
 /* Kamke 2. 186  */ 
 (pn_(186),ans:contrib_ode(eqn:x^2*'diff(y,x,2)-5*x*'diff(y,x,1)+8*y-x^3*sin(x),y,x));
@@ -672,8 +672,8 @@ false;
 (pn_(191),ans:contrib_ode(eqn:x^2*'diff(y,x,2)+x^2*'diff(y,x,1)-2*y,y,x));
 [y = bessel_y(-3/2,-%i*x/2)*%k2*sqrt(-x)*%e^-(x/2)
     +bessel_j(-3/2,-%i*x/2)*%k1*sqrt(-x)*%e^-(x/2)];
-method;
-odelin;
+[method, ode_check(eqn,ans[1])];
+[odelin,0];
 
 /* Kamke 2. 192  */ 
 (pn_(192),ans:contrib_ode(eqn:x^2*'diff(y,x,2)+(x^2-1)*'diff(y,x,1)-y,y,x));
@@ -733,3 +733,5 @@ odelin;
 method;
 odelin;
 
+(kill(besjysimp,besjysimp2,besjysimp3),done);
+done;

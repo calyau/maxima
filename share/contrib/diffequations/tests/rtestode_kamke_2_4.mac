@@ -9,13 +9,6 @@
 (pn_(n_):=print("Kamke ODE 2.",n_),true);
 true;
 
-/* Function to simplify Bessel function solutions */
-(besjysimp(e,n,x):=block([expr],
-   expr:subst(2*(n-1)*bessel_j(n-1,x)/x-bessel_j(n-2,x),bessel_j(n,x),e),
-   expr:subst(2*(n-1)*bessel_y(n-1,x)/x-bessel_y(n-2,x),bessel_y(n,x),expr),
-   expand(expr)), 0);
-0;
-
 /* Kamke 2. 301  */ 
 (pn_(301),ans:contrib_ode(eqn:(a*x^2+b*x)*'diff(y,x,2)+2*b*'diff(y,x,1)-2*a*y,y,x));
 [y=%k2*(a*x+b)^3/x-%k1*(a*x+b)^3/(x*(3*a^4*x^3+9*a^3*b*x^2+9*a^2*b^2*x+3*a*b^3))];
@@ -316,7 +309,7 @@ false;
 /* Kamke 2. 347  */ 
 (pn_(347),ans:contrib_ode(eqn:'diff(y,x,2)=-'diff(y,x,1)/x-y/x^4,y,x));
 [y = bessel_y(0,-1/x)*%k2+bessel_j(0,-1/x)*%k1];
-[method,besjysimp(ode_check(eqn,ans[1]),2,-1/x)];
+[method,ode_check(eqn,ans[1])];
 [odelin,0];
 
 /* Kamke 2. 348  */ 
@@ -684,6 +677,3 @@ false;
 [y = %k2*x^2*%e^(sqrt(-a)/(2*x^2))+%k1*x^2*%e^-(sqrt(-a)/(2*x^2))];
 [method,ode_check(eqn,ans[1])];
 [odelin,0];
-
-kill(besjysimp);
-done;

@@ -549,7 +549,7 @@ forget(a>0,b>0);
 
 /* 173 Too general */
 
-/* 174 FIXME - 2007-02-04 - Solution correct.  Add check. */
+/* 174 */
 assume(a>0);
 [a>0];
 (pn_(174),ans:contrib_ode(eqn:x*'diff(y,x)+a+x*y^2=0,y,x));
@@ -557,8 +557,8 @@ assume(a>0);
  +bessel_j(2,2*sqrt(a)*sqrt(x))-bessel_j(0,2*sqrt(a)*sqrt(x)))*sqrt(a)*sqrt(x)
  -bessel_y(1,2*sqrt(a)*sqrt(x))*%c-bessel_j(1,2*sqrt(a)*sqrt(x)))
  /((2*bessel_y(1,2*sqrt(a)*sqrt(x))*%c+2*bessel_j(1,2*sqrt(a)*sqrt(x)))*x)];
-method;
-riccati;
+[method,ode_check(eqn,ans[1])];
+[riccati,0];
 forget(a>0);
 [a>0];
 
@@ -626,8 +626,8 @@ riccati;
 (pn_(183),ans:contrib_ode(eqn:x*'diff(y,x)+a*x^2*y^2+2*y=b,y,x));
 [y=(bessel_y(1,-sqrt(a)*sqrt(-b)*x)*%c+bessel_j(1,-sqrt(a)*sqrt(-b)*x))*sqrt(-b)
   /((bessel_y(0,-sqrt(a)*sqrt(-b)*x)*%c+bessel_j(0,-sqrt(a)*sqrt(-b)*x))*sqrt(a)*x)];
-method;
-riccati;
+[method,ode_check(eqn,ans[1])];
+[riccati,0];
 
 /* 184 Riccati */
 assume(not equal(m+n,0));

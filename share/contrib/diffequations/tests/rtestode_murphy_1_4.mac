@@ -136,8 +136,8 @@ false;
                        -bessel_j(n-1,2*sqrt(-x)))
                     +%c*bessel_y(n-1,2*sqrt(-x))+bessel_j(n-1,2*sqrt(-x)))
           /(2*%c*bessel_y(n-1,2*sqrt(-x))+2*bessel_j(n-1,2*sqrt(-x)))];
-method;
-riccati;
+[method,ode_check(eqn,ans[1])];
+[riccati,0];
 
 /* 387 Riccati */
 (pn_(387),ans:contrib_ode(eqn:x^n*'diff(y,x)+x^(2*n-2)+y^2+(1-n)*x^(n-1)*y=0,y,x));
