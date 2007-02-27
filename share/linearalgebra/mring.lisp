@@ -158,7 +158,7 @@
    :name '$crering
    :coerce-to-lisp-float nil
    :abs #'(lambda (s) (simplify (mfuncall '$cabs s)))
-   :great #'(lambda (a b) (like b 0))
+   :great #'(lambda (a b) (meqp b 0))
    :add #'add
    :div #'div
    :rdiv #'div
@@ -169,7 +169,7 @@
    :psqrt #'(lambda (s) (if (member (csign ($ratdisrep s)) `($pos $pz $zero)) (take '(%sqrt) s) nil))
    :add-id #'(lambda () 0)
    :mult-id #'(lambda () 1)
-   :fzerop #'(lambda (s) (like s 0))
+   :fzerop #'(lambda (s) (meqp s 0))
    :adjoint #'(lambda (s) (take '($conjugate) s))
    :mring-to-maxima #'(lambda (s) s)
    :maxima-to-mring #'(lambda (s) ($rat s))))
@@ -181,7 +181,7 @@
    :name '$generalring
    :coerce-to-lisp-float nil
    :abs #'(lambda (s) (simplify (mfuncall '$cabs s)))
-   :great #'(lambda (a b) (like b 0))
+   :great #'(lambda (a b) (meqp b 0))
    :add #'(lambda (a b) ($rectform (add a b)))
    :div #'(lambda (a b) ($rectform (div a b)))
    :rdiv #'(lambda (a b) ($rectform (div a b)))
@@ -192,7 +192,7 @@
    :psqrt #'(lambda (s) (if (member (csign s) `($pos $pz $zero)) (take '(%sqrt) s) nil))
    :add-id #'(lambda () 0)
    :mult-id #'(lambda () 1)
-   :fzerop #'(lambda (s) (like s 0))
+   :fzerop #'(lambda (s) (meqp s 0))
    :adjoint #'(lambda (s) (take '($conjugate) s))
    :mring-to-maxima #'(lambda (s) s)
    :maxima-to-mring #'(lambda (s) s)))
@@ -290,7 +290,7 @@
    :name '$noncommutingring
    :coerce-to-lisp-float nil
    :abs #'(lambda (s) (simplify (mfuncall '$cabs s)))
-   :great #'(lambda (a b) (like b 0))
+   :great #'(lambda (a b) (meqp b 0))
    :add #'(lambda (a b) (add a b))
    :div #'(lambda (a b) (progn
 			  (let (($matrix_element_mult '&.)
@@ -324,7 +324,7 @@
    :add-id #'(lambda () 0)
    :psqrt #'(lambda (s) (take '(%sqrt) s))
    :mult-id #'(lambda () 1)
-   :fzerop #'(lambda (s) (like s 0))
+   :fzerop #'(lambda (s) (meqp s 0))
    :adjoint #'(lambda (s) ($transpose (take '($conjugate) s)))
    :mring-to-maxima #'cl:identity
    :maxima-to-mring #'cl:identity))
