@@ -109,7 +109,6 @@
 	(add-id (funcall (mring-add-id fld))))
     (flet
 	((fzerop (a) (funcall (mring-fzerop fld) a))
-	 (fpsqrt (a) (funcall (mring-psqrt fld) a))
 	 (fadd (a b) (funcall (mring-add fld) a b))
 	 (fsub (a b) (funcall (mring-sub fld) a b))
 	 (fabs (a) (funcall (mring-abs fld) a))
