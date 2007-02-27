@@ -32,14 +32,7 @@ eval_when(translate,
 
 eval_when([batch,load,translate,compile],
   put(infolevel, debug, linearalgebra),    
-  load("polynomialp"),
-  load("mring"),
-  load("lu"),
-  load("linalgcholesky"),
-  load("eigens-by-jacobi"),
-  load("linalg-extra"),	
-  load("matrixexp"),
-  load("linalg-utilities"));
+  load("load-linearalgebra-lisp-files"));
   
 require_integer(i, pos, fn) := 
   if integerp(i) then true else 
