@@ -359,7 +359,7 @@ y = -(((bessel_j(3/4,x^2/2)-bessel_j(-5/4,x^2/2))*%c
        +bessel_j(5/4,x^2/2)-bessel_j(-3/4,x^2/2))*x^2
        -bessel_j(-1/4,x^2/2)*%c-bessel_j(1/4,x^2/2))
     /((2*bessel_j(-1/4,x^2/2)*%c+2*bessel_j(1/4,x^2/2))*x);
-(ode_check(eqn,ans);
+ode_check(eqn,ans);
 0;
 
 /* Bessel function solution - non-integer order b*c>0 */
