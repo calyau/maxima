@@ -49,6 +49,14 @@
 	(merror "The ~:M argument to ~:M must be a symmetric matrix" pos fun)))
   '$done)
 
+(defun $require_real_symmetric_matrix (m pos fun)
+  (if (not ($matrixp m)) (merror "The ~:M argument to ~:M must be a matrix" pos fun))
+  (let ((n ($matrix_size m)))
+    (if (not (= ($first n) ($second n)))
+	(merror "The ~:M argument to ~:M must be a square matrix" pos fun))
+    (if (and ($zeromatrixp (sub m ($transpose m))) ($zeromatrixp (sub m (take '($conjugate) m)))) '$done
+      (merror "The ~:M argument to ~:M must be a real symmetric matrix" pos fun))))
+ 
 (defun $require_selfadjoint_matrix (m fun pos)
   (if (not ($matrixp m)) (merror "The ~:M argument to ~:M must be a matrix" pos fun))
   (let ((n ($matrix_size m)))

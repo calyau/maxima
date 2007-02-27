@@ -28,6 +28,9 @@ eigens_by_jacobi(m,bigfloatfield);
 errcatch(eigens_by_jacobi(m,floatfield));
 []$
 
+errcatch(eigens_by_jacobi(m,bigfloatfield));
+[]$
+
 (m : matrix([0,0],[0,0]),0);
 0$
 
