@@ -135,11 +135,6 @@
   (if (or ($matrixp m) ($listp m)) (every '$zeromatrixp (cdr m))
     (eq '$zero (csign ($rectform m)))))
 	
-(eval-when (eval compile load)
-  (mfuncall '$alias '$copylist '$copy '$copymatrix '$copy))
-
-(defun $copy (e) (copy-tree e))
-
 (defun array-to-row-list (mat &optional (fn 'identity))
   (let ((acc) (r (array-dimensions mat)) (row) (c))
     (setq c (second r))
