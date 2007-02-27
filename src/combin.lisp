@@ -9,26 +9,21 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :maxima)
+
 (macsyma-module combin)
 
 
-(declare-top (special *mfactl *factlist donel nn* dn* splist *ans* *var*
+(declare-top (special *mfactl *factlist donel nn* dn* *ans* *var*
 		      dict ans var
 		      a* $zerobern *a *n $cflength *a* $prevfib hi lo
 		      *infsumsimp *times *plus sum usum makef
 		      varlist genvar $sumsplitfact gensim $ratfac $simpsum
 		      $prederror $listarith
-		      $ratprint $zeta%pi $bftorat)
-	     ;;	 (*lexpr $ratcoef $divide)
-	     ;;	 (fixnum %n %a* %i %m)
-	     ;;	 (genprefix comb)
-	     )
+		      $ratprint $zeta%pi $bftorat))
 
 (load-macsyma-macros mhayat rzmac ratmac)
 
-;;(declare-top (splitfile minfct))
-
-;;(comment minfactorial and factcomb stuff)
+;; minfactorial and factcomb stuff
 
 (defmfun $makefact (e)
   (let ((makef t)) (if (atom e) e (simplify (makefact1 e)))))
@@ -59,25 +54,22 @@
   (let (*mfactl *factlist)
     (if (specrepp e) (setq e (specdisrep e)))
     (getfact e)
-					;(maplist #'evfac1 *factlist)		;this is to save consing
-					;If it was to save consing, why was MAPLIST used?
     (mapl #'evfac1 *factlist)
     (setq e (evfact e))))
 
 (defun evfact (e)
   (cond ((atom e) e)
 	((eq (caar e) 'mfactorial)
-	 (cdr (zl-assoc (cadr e) *factlist)))
-	((memq  (caar e) '(%sum %derivative %integrate %product))
+	 (cdr (assoc (cadr e) *factlist :test #'equal)))
+	((member  (caar e) '(%sum %derivative %integrate %product) :test #'eq)
 	 (cons (list (caar e)) (cons (evfact (cadr e)) (cddr e))))
 	(t (recur-apply #'evfact e))))
 
 (defun adfactl (e l)
   (let (n)
-    (cond ((null l) (setq *mfactl (cons (list e) *mfactl)))
+    (cond ((null l) (push (list e) *mfactl))
 	  ((numberp (setq n ($ratsimp `((mplus) ,e ((mtimes) -1 ,(caar l))))))
 	   (cond ((plusp n)
-					;(signp g n)
 		  (rplacd (car l) (cons e (cdar l))))
 		 ((rplaca l (cons e (car l))))))
 	  ((adfactl e (cdr l))))))
@@ -85,16 +77,17 @@
 (defun getfact (e)
   (cond ((atom e) nil)
 	((eq (caar e) 'mfactorial)
-	 (and (null (zl-member (cadr e) *factlist))
-	      (prog2 (setq *factlist (cons (cadr e) *factlist))
+	 (and (null (member (cadr e) *factlist :test #'equal))
+	      (prog2
+		  (push (cadr e) *factlist)
 		  (adfactl (cadr e) *mfactl))))
-	((memq (caar e) '(%sum %derivative %integrate %product))
+	((member (caar e) '(%sum %derivative %integrate %product) :test #'eq)
 	 (getfact (cadr e)))
 	((mapc #'getfact (cdr e)))))
 
 (defun evfac1 (e)
   (do ((al *mfactl (cdr al)))
-      ((zl-member (car e) (car al))
+      ((member (car e) (car al) :test #'equal)
        (rplaca e
 	       (cons (car e)
 		     (list '(mtimes)
@@ -110,22 +103,21 @@
 		  (t (simplify (cons (list (caar e))
 				     (mapcar #'factcomb1 (cdr e)))))))
     (or $sumsplitfact (setq e ($minfactorial e)))
-    (cond (ratrep (ratf e))
-	  (t e))))
+    (if ratrep (ratf e)	e)))
 
 (defun factcomb1 (e)
   (cond ((free e 'mfactorial) e)
-	((memq (caar e) '(mplus mtimes mexpt))
+	((member (caar e) '(mplus mtimes mexpt) :test #'eq)
 	 (cons (list (caar e)) (mapcar #'factcomb1 (cdr e))))
 	(t (setq e (factcomb e))
-	   (cond ((atom e) e)
-		 (t (cons (list (caar e))
-			  (mapcar #'factcomb1 (cdr e))))))))
+	   (if (atom e)
+	       e
+	       (cons (list (caar e)) (mapcar #'factcomb1 (cdr e)))))))
 
 (defun factcomb (e)
   (cond ((atom e) e)
 	((free e 'mfactorial) e)
-	((memq (caar e) '(mplus mtimes))
+	((member (caar e) '(mplus mtimes) :test #'eq)
 	 (factpluscomb (factcombplus e)))
 	((eq (caar e) 'mexpt)
 	 (simpexpt (list '(mexpt) (factcomb (cadr e))
@@ -181,8 +173,9 @@
    (go tag)))
 
 (defun nplus (e)
-  (cond ((eq (caar e) 'mplus) (cdr e))
-	(t (list e))))
+  (if (eq (caar e) 'mplus)
+      (cdr e)
+      (list e)))
 
 (defun factexpand (e)
   (cond ((atom e) e)
@@ -194,7 +187,7 @@
 
 (defun getfactorial (e)
   (cond ((atom e) nil)
-	((memq (caar e) '(mplus mtimes))
+	((member (caar e) '(mplus mtimes) :test #'eq)
 	 (do ((e (cdr e) (cdr e))
 	      (a))
 	     ((null e) nil)
@@ -265,7 +258,7 @@
 	  (t (rplaca l '(mplus))))))
 
 (defun factplus0 (r e fact)
-  (do ((i -1 (f1- i))
+  (do ((i -1 (1- i))
        (fpn fact (list '(mplus) fact i))
        (j -1) (exp) (rfpn) (div))
       (nil)
@@ -275,7 +268,7 @@
 	       (equal (car div) 0))
 	   (return (simplus (cons '(mplus) (mapcar
 					    #'(lambda (q)
-						(setq j (f1+ j))
+						(incf j)
 						(list '(mtimes) q (list '(mexpt)
 									(list '(mfactorial) (list '(mplus) fpn j)) e)))
 					    (factplus1 (cons r exp) e fpn)))
@@ -285,7 +278,7 @@
 
 (defun factplus1 (exp e fact)
   (do ((l exp (cdr l))
-       (i 2 (f1+ i))
+       (i 2 (1+ i))
        (fpn (list '(mplus) fact 1) (list '(mplus) fact i))
        (div))
       ((null l) exp)
@@ -320,56 +313,24 @@
     (setq r1 (ratf r)
 	  p1 (testdivide (cadr r1) n)
 	  p2 (testdivide (cddr r1) d))
-    (cond ((and p1 p2) (cons (rdis (cons p1 p2)) '(0)))
-	  (t (cons '0 (list r))))))
+    (if (and p1 p2)
+	(cons (rdis (cons p1 p2)) '(0))
+	(cons '0 (list r)))))
 
-;;(declare-top (splitfile eulbrn)
-;;	 (array* (notype *eu* 1 *bn* 1 *bd* 1)
-;;		 )
+;; euler and bernoulli stuff
 
-;;(comment euler and bernoulli stuff)
+(defvar *bn* (make-array 17 :adjustable t :element-type 'integer
+			 :initial-contents '(0 -1 1 -1 5. -691. 7. -3617. 43867. -174611. 854513.
+					     -236364091. 8553103. -23749461029. 8615841276005.
+					     -7709321041217. 2577687858367.)))
 
-(eval-when (compile eval load)
+(defvar *bd* (make-array 17 :adjustable t :element-type 'integer
+			 :initial-contents '(0 30. 42. 30. 66. 2730. 6. 510. 798. 330. 138. 2730.
+					     6. 870. 14322.  510. 6.)))
 
-  (defvar *bn*
-    (vector nil -1. 1. -1. 5. -691. 7. -3617. 43867. -174611. 854513.
-	    -236364091. 8553103. -23749461029. 8615841276005.
-	    -7709321041217. 2577687858367.))
-
-  (defvar *bd*
-    (vector nil 30. 42. 30. 66. 2730. 6. 510. 798. 330. 138. 2730. 6. 870.
-	    14322.  510. 6.))
-
-  (defvar *eu*
-    (vector -1. 5. -61. 1385. -50521. 2702765. -199360981. 19391512145.
-	    -2404879675441. 370371188237525. -69348874393137901.)))
-
-;;#-cl
-;;(progn 'compile
-;;(defvar *bn* (*array nil t 20.))
-;;(defvar *bd* (*array nil t 20.))
-;;(defvar *eu* (*array nil t 20.))
-
-;;(setq i 0)
-;;(mapc #'(lambda (q)
-;;	  (store (aref *bn* (setq i (f1+ i))) q))
-;;	  '(-1. 1. -1. 5. -691. 7. -3617. 43867. -174611. 854513. -236364091.
-;;		8553103. -23749461029. 8615841276005. -7709321041217. 2577687858367.))
-
-
-;;(setq i 0)
-;;(mapc #'(lambda (a)
-;;	   (store (aref *bd* (setq i (f1+ i))) a))
-;;      '(30. 42. 30. 66. 2730. 6. 510. 798. 330. 138. 2730. 6. 870. 14322.
-;;        510. 6.))
-
-;;(setq i -1)
-;;(mapc #'(lambda (a)
-;;	  (store (aref *eu* (setq i (f1+ i))) a))
-;;      '(-1. 5. -61. 1385. -50521. 2702765. -199360981. 19391512145.
-;;	    -2404879675441. 370371188237525. -69348874393137901.))
-;;)
-
+(defvar *eu* (make-array 11 :adjustable t :element-type 'integer
+			 :initial-contents '(-1 5. -61. 1385. -50521. 2702765. -199360981. 19391512145.
+					     -2404879675441. 370371188237525. -69348874393137901.)))
 
 (putprop '*eu* 11 'lim)
 (putprop 'bern 16 'lim)
@@ -378,41 +339,40 @@
   (setq s
 	(let ((%n 0) $float)
 	  (cond ((or (not (fixnump s)) (< s 0)) (list '($euler) s))
-		((= (setq %n s) 0) 1)
+		((zerop (setq %n s)) 1)
 		($zerobern
 		 (cond ((oddp %n) 0)
-		       ((null (> (// %n 2) (get '*eu* 'lim)))
-			(aref *eu* (f1- (// %n 2))))
+		       ((null (> (ash %n -1) (get '*eu* 'lim)))
+			(aref *eu* (1- (ash %n -1))))
 		       ((eq $zerobern '%$/#&)
 			(euler %n))
-		       ((*rearray '*eu* t (f1+ (// %n 2))) 
+		       ((adjust-array *eu* (1+ (ash %n -1))) 
 			(euler %n))))
-		((null (> %n (get '*eu* 'lim)))
-		 (aref *eu* (f1- %n)))
-		((*rearray '*eu* t (f1+ %n))
-		 (euler (f* 2 %n))))))
+		((<= %n (get '*eu* 'lim))
+		 (aref *eu* (1- %n)))
+		((adjust-array *eu* (1+ %n))
+		 (euler (* 2 %n))))))
   (simplify s))
 
 (defun euler (%a*)
   (prog (nom %k e fl $zerobern *a*)
-     (setq nom 1 %k %a* fl nil e 0 $zerobern '%$/#& *a* (f1+ %a*))
-     a	(cond ((= %k 0)
-	       (setq e (minus e))
-					;(eval (list 'store (list '*eu* (f1- (// %a* 2))) e))
-	       (store (aref *eu* (f1- (// %a* 2))) e)
-	       (putprop '*eu* (// %a* 2) 'lim)
+     (setq nom 1 %k %a* fl nil e 0 $zerobern '%$/#& *a* (1+ %a*))
+     a	(cond ((zerop %k)
+	       (setq e (- e))
+	       (setf (aref *eu* (1- (ash %a* -1))) e)
+	       (putprop '*eu* (ash %a* -1) 'lim)
 	       (return e)))
-     (setq nom (nxtbincoef (f1+ (- %a* %k)) nom) %k (f1- %k))
+     (setq nom (nxtbincoef (1+ (- %a* %k)) nom) %k (1- %k))
      (cond ((setq fl (null fl))
 	    (go a)))
-     (setq e (plus e (times nom ($euler %k))))
+     (incf e (* nom ($euler %k)))
      (go a)))
 
 (defmfun simpeuler (x vestigial z) 
-  vestigial				;ignored.
+  (declare (ignore vestigial))
   (oneargcheck x)
   (let ((u (simpcheck (cadr x) z)))
-    (if (and (fixnump u) (not (< u 0)))
+    (if (and (fixnump u) (>= u 0))
 	($euler u)
 	(eqtest (list '($euler) u) x))))
 
@@ -425,48 +385,43 @@
 		((= %n 2) '((rat) 1 6))
 		($zerobern
 		 (cond ((oddp %n) 0)
-		       ((null (> (setq %n (f1- (// %n 2))) (get 'bern 'lim)))
+		       ((null (> (setq %n (1- (ash %n -1))) (get 'bern 'lim)))
 			(list '(rat) (aref *bn* %n) (aref *bd* %n)))
-		       ((eq $zerobern '$/#&) (bern  (f* 2 (f1+ %n))))
-		       (t (*rearray '*bn* t (setq %n (f1+ %n)))
-			  (*rearray '*bd* t %n) (bern  (f* 2 %n)))))
+		       ((eq $zerobern '$/#&) (bern  (* 2 (1+ %n))))
+		       (t (adjust-array *bn* (setq %n (1+ %n)))
+			  (adjust-array *bd* %n) (bern  (* 2 %n)))))
 		((null (> %n (get 'bern 'lim)))
 		 (list '(rat) (aref *bn* %n) (aref *bd* %n)))
-		(t (*rearray '*bn* t (f1+ %n)) (*rearray '*bd* t (f1+ %n))
+		(t (adjust-array *bn* (1+ %n)) (adjust-array *bd* (1+ %n))
 		   (bern %n)))))
   (simplify s))
 
 (defun bern (%a*)
   (prog (nom %k bb a b $zerobern l *a*)
      (setq %k 0
-	   l (f1- %a*)
-	   %a* (f1+ %a*)
+	   l (1- %a*)
+	   %a* (1+ %a*)
 	   nom 1
 	   $zerobern '$/#&
 	   a 1
 	   b 1
-	   *a* (f1+ %a*))
+	   *a* (1+ %a*))
      a	(cond ((= %k l)
-	       (setq bb (*red a (times -1 b %a*)))
-	       (putprop 'bern (setq %a* (f1- (// %a* 2))) 'lim)
-					;if bb is a list, then it will always be
-					;((RAT SIMP) number number).  ergo, evaluation
-					; by store is no-op.
-					;(eval (list 'store (list '*bn* %a*) (cadr bb)))
-					;(eval (list 'store (list '*bd* %a*) (caddr bb)))
-	       (store (aref *bn* %a*) (cadr bb))
-	       (store (aref *bd* %a*) (caddr bb))
+	       (setq bb (*red a (* -1 b %a*)))
+	       (putprop 'bern (setq %a* (1- (ash %a* -1))) 'lim)
+	       (setf (aref *bn* %a*) (cadr bb))
+	       (setf (aref *bd* %a*) (caddr bb))
 	       (return bb)))
-     (setq %k (f1+ %k))
-     (setq a (plus (times b (setq nom (nxtbincoef %k nom))
+     (incf %k)
+     (setq a (+ (* b (setq nom (nxtbincoef %k nom))
 			  (num1 (setq bb ($bern %k))))
-		   (times a (denom1 bb))))
-     (setq b (times b (denom1 bb)))
+		   (* a (denom1 bb))))
+     (setq b (* b (denom1 bb)))
      (setq a (*red a b) b (denom1 a) a (num1 a))
      (go a)))
 
 (defmfun simpbern (x vestigial z) 
-  vestigial				;ignored.
+  (declare (ignore vestigial))
   (oneargcheck x)
   (let ((u (simpcheck (cadr x) z)))
     (if (and (fixnump u) (not (< u 0)))
@@ -483,15 +438,13 @@
 		     (cons (m* (timesk (binocomp %n %k) ($bern %k))
 			       (if (and (= %n %k) (zerop1 x))
 				   (addk 1 x)
-				   (m^ x (f- %n %k))))
+				   (m^ x (- %n %k))))
 			   sum))
-		(%k 1 (f1+ %k)))
+		(%k 1 (1+ %k)))
 	       ((> %k %n) (addn sum t))))
 	  (t (list '($bernpoly) x %n)))))
 
-;;(declare-top (splitfile zeta))
-
-;;(comment zeta and fibonacci stuff)
+;; zeta and fibonacci stuff
 
 (defmfun $zeta (s)
   (cond (($bfloatp s) (mfuncall '$bfzeta s $fpprec))
@@ -500,7 +453,7 @@
 	   ($float (mfuncall '$bfzeta s 18))))
 	((null (fixnump s)) (list '($zeta) s))
 	((oddp s)
-	 (cond ((greaterp s 1)
+	 (cond ((> s 1)
 		(list '($zeta) s))
 	       ((= 1 s) '$inf)
 	       ((setq s (sub 1 s))
@@ -510,7 +463,7 @@
 	((not $zeta%pi) (list '($zeta) s))
 	(t (let ($numer $float)
 	     (setq s (mul2 (power '$%pi s)
-			   (timesk (*red (expt 2 (sub1 s)) (factorial s))
+			   (timesk (*red (expt 2 (1- s)) (factorial s))
 				   (simpabs (list 'mabs ($bern s)) 1 nil)))))
 	   (resimplify s))))
 
@@ -520,24 +473,21 @@
 	   (list '($fib) n))))
 
 (defun ffib (%n) 
-  (cond ((or (equal %n -1.) (zerop %n))
-	 (setq $prevfib (boole boole-ior %n 1.) *a (f- %n)))
+  (cond ((or (eql %n -1) (zerop %n))
+	 (setq $prevfib (boole boole-ior %n 1) *a (- %n)))
 	(t
-	 (let ((x (plus (ffib (// (boole  boole-andc2 %n 1.) 2.)) $prevfib))
-	       (y (times $prevfib $prevfib))
-	       (z (times *a *a)))
-	   (setq *a (*dif (times x x) y)
-		 $prevfib (plus y z)))
+	 (let ((x (+ (ffib (ash (boole  boole-andc2 %n 1) -1)) $prevfib))
+	       (y (* $prevfib $prevfib))
+	       (z (* *a *a)))
+	   (setq *a (- (* x x) y)
+		 $prevfib (+ y z)))
 	 (cond ((oddp %n)
-		(setq *a (prog2
-			     nil
-			     (plus *a $prevfib)
+		(setq *a (prog1
+			     (+ *a $prevfib)
 			   (setq $prevfib *a))))
 	       (*a)))))
 
-;;(declare-top (splitfile cffun))
-
-;;(comment continued fraction stuff)
+;; continued fraction stuff
 
 (defmfun $cfdisrep (a)
   (cond ((not ($listp a))
@@ -568,26 +518,14 @@
 
 ;;; Translation properties for $CF defined in MAXSRC;TRANS5 >
 
-(defmacro bind-status-divov-t (&rest forms)
-  (cond
-    ;;	    #-cl
-    ;;	    ((status feature maclisp)
-    ;;		 `(let ((divov (status divov)))
-    ;;		       (unwind-protect
-    ;;			(progn (sstatus divov t)
-    ;;			       ,@forms)
-    ;;			(sstatus divov divov))))
-    (t
-     `(progn ,@forms))))
-
 (defmspec $cf (a)
   (cfratsimp  (let ($listarith)
-		(bind-status-divov-t (cfeval (meval (fexprcheck a)))))))
+		(cfeval (meval (fexprcheck a))))))
 
 ;; Definition of cfratsimp as given in SF bug report # 620928.
 (defun cfratsimp (a)
   (cond ((atom a) a)
-        ((memq 'cf (car a)) a)
+        ((member 'cf (car a) :test #'eq) a)
         (t (cons '(mlist cf simp)
                  (apply 'find-cf (cf-back-recurrence (cdr a)))))))
 
@@ -625,7 +563,7 @@
 		(mexptp (caddr a))
 		(fixnump (cadr (caddr a)))
 		(alike1 (caddr (caddr a)) '((rat) 1 2)))
-	   (cfsqrt (cfeval (times (expt (cadr a) 2) (cadr (caddr a))))))
+	   (cfsqrt (cfeval (* (expt (cadr a) 2) (cadr (caddr a))))))
 	  ((eq (caar a) 'mexpt)
 	   (cond ((alike1 (caddr a) '((rat) 1 2))
 		  (cfsqrt (cfeval (cadr a))))
@@ -671,7 +609,7 @@
   (cond ((null (integerp e))
 	 (merror "Can't raise continued fraction to non-integral powers"))
 	((let ((n (abs e)))
-	   (do ((n (// n 2) (// n 2))
+	   (do ((n (ash n -1) (ash n -1))
 		(s (cond ((oddp n) b)
 			 (t '(1)))))
 	       ((zerop n)
@@ -684,19 +622,16 @@
 		  (setq s (cffun '(1 0 0 0) '(0 0 0 1) s b))))))))
 
 
-;;(defun conf1 (f g a b)
-;;  (*quo (conf2 f a b ) (conf2 g a b)))
-
 (defun conf1 (f g a b &aux (den (conf2 g a b)))
   (cond ((zerop den)
-	 (* (signum (conf2 f a b )) ;#+cl (/ most-positive-fixnum (^ 2 4))
+	 (* (signum (conf2 f a b )) ; (/ most-positive-fixnum (^ 2 4))
 	    #.(expt 2 31)))
-	(t (*quo (conf2 f a b) den))))
+	(t (truncate (conf2 f a b) den))))
 
 (defun conf2 (n a b)			;2*(abn_0+an_1+bn_2+n_3)
-  (times 2 (plus (times (car n) a b)
-		 (times (cadr n) a)
-		 (times (caddr n) b)
+  (* 2 (+ (* (car n) a b)
+		 (* (cadr n) a)
+		 (* (caddr n) b)
 		 (cadddr n))))
 
 ;;(cffun '(0 1 1 0) '(0 0 0 1) '(1 2) '(1 1 1 2)) gets error
@@ -726,42 +661,18 @@
 	    finally (return (list (reverse pp) (reverse qq)))))))
 
 
-(defun find-cf1 (p q &optional so-far quot zl-rem )
-  (setq quot (quotient p q))
-  (setq zl-rem (- p (* quot q) ))
-  (prog ()
-     (cond ((< zl-rem 0) (incf zl-rem q) (incf quot -1))
-	   ((zerop zl-rem) (return (cons quot so-far))))
-     (setq so-far (cons quot so-far))
-     (return (find-cf1 q zl-rem so-far))))
+(defun find-cf1 (p q so-far)
+  (multiple-value-bind (quot rem) (truncate p q)
+    (cond ((< rem 0) (incf rem q) (incf quot -1))
+	  ((zerop rem) (return-from find-cf1 (cons quot so-far))))
+    (setq so-far (cons quot so-far))
+    (find-cf1 q rem so-far)))
  
-;;(compare-functions 
-;;the following are equivalent but find-cf faster.
-
 (defun find-cf (p q)
   "returns the continued fraction for p and q integers, q not zero"
-  (cond  ((zerop q)(error "quotient by zero"))
-	 ((< q 0) (setq p (f- p)) (setq q (f- q))))
-  (nreverse (find-cf1 p q))) 
-
-;;this works but since it is slower than find-cf
-;;(defun standard-cf (p q &aux start  tem new-q)
-;; "returns the continued fraction for p and q integers, q not zero"
-;;  (setq start (floor p q))
-;;  (setq p (f- p (f* start q)))
-;;  (loop until (zerop q)
-;;	when start
-;;	  collecting start
-;;	and
-;;	do(setq tem (floor p q))(setq start nil)
-;;	else
-;;	  collecting (setq tem (floor p q))
-;;	do
-;;	       (setq new-q (f- p (f* tem q)))
-;;	       (setq p q)
-;;	       (setq q new-q)))
-;;)
-
+  (cond  ((zerop q) (maxima-error "find-cf: quotient by zero"))
+	 ((< q 0) (setq p (- p)) (setq q (- q))))
+  (nreverse (find-cf1 p q ()))) 
 
 (defun cf-back-recurrence (cf &aux tem (num-gg 0)(den-gg 1))
   "converts CF (a continued fraction list) to a list of numerator
@@ -793,20 +704,18 @@
 	      (zerop (cadr g))
 	      (zerop (car g))
 	      (return (reverse c)))
-     (and (equal (setq w (conf1 f g (car a) (add1 (car b))))
+     (and (equal (setq w (conf1 f g (car a) (1+ (car b))))
 		 (setq v (conf1 f g (car a) (car b))))
-	  (equal (conf1 f g (add1 (car a)) (car b)) v)
-	  (equal (conf1 f g (add1 (car a)) (add1 (car b))) v)
+	  (equal (conf1 f g (1+ (car a)) (car b)) v)
+	  (equal (conf1 f g (1+ (car a)) (1+ (car b))) v)
 	  (setq g (mapcar #'(lambda (a b)
 			      (declare (special v))
-			      (*dif a (times v b)))
+			      (- a (* v b)))
 			  f (setq f g)))
 	  (setq c (cons v c))
-	  ;;	     (progn (show v w) t)
 	  (go a))
-     ;;	(show v w)
-     (cond ((lessp (abs (*dif (conf1 f g (add1 (car a)) (car b)) v))
-		   (abs (*dif w v)))
+     (cond ((< (abs (- (conf1 f g (1+ (car a)) (car b)) v))
+		   (abs (- w v)))
 	    (cond ((setq v (cdr b))
 		   (setq f (conf6 f b))
 		   (setq g (conf6 g b))
@@ -821,25 +730,25 @@
      (go a)))
 
 (defun conf4 (n a)		      ;n_0*a_0+n_2,n_1*a_0+n_3,n_0,n_1
-  (list (plus (times (car n) (car a)) (caddr n))
-	(plus (times (cadr n) (car a)) (cadddr n))
+  (list (+ (* (car n) (car a)) (caddr n))
+	(+ (* (cadr n) (car a)) (cadddr n))
 	(car n)
 	(cadr n)))
 
 (defun conf5 (n a)			;0,0, n_0*a_0,n_2
   (list 0 0
-	(plus (times (car n) (car a)) (caddr n))
-	(plus (times (cadr n) (car a)) (cadddr n))))
+	(+ (* (car n) (car a)) (caddr n))
+	(+ (* (cadr n) (car a)) (cadddr n))))
 
 (defun conf6 (n b)
-  (list (plus (times (car n) (car b)) (cadr n))
+  (list (+ (* (car n) (car b)) (cadr n))
 	(car n)
-	(plus (times (caddr n) (car b)) (cadddr n))
+	(+ (* (caddr n) (car b)) (cadddr n))
 	(caddr n)))
 
 (defun conf7 (n b)
-  (list 0 (plus (times (car n) (car b)) (cadr n))
-	0 (plus (times (caddr n) (car b)) (cadddr n))))
+  (list 0 (+ (* (car n) (car b)) (cadr n))
+	0 (+ (* (caddr n) (car b)) (cadddr n))))
 
 (defun cfsqrt (n)
   (cond ((cddr n)			;A non integer
@@ -848,7 +757,7 @@
   (setq n (sqcont n))
   (cond ((= $cflength 1)
 	 (cons '(mlist simp) n))
-	((do ((i 2 (f1+ i))
+	((do ((i 2 (1+ i))
 	      (a (copy-tree (cdr n))))
 	     ((> i $cflength) (cons '(mlist simp) n))
 	   (setq n (nconc n (copy-tree a)))))))	
@@ -863,17 +772,17 @@
 (defun pelso1 (l a b)
   (do ((i l (cdr i))) (nil)
     (and (null (cdr i)) (return b))
-    (setq b (plus a (times (car i) (setq a b))))))
+    (setq b (+ a (* (car i) (setq a b))))))
 
 (defun sqcont (n)
   (prog (q q1 q2 m m1 a0 a l)
      (setq a0 ($isqrt n) a (list a0) q2 1 m1 a0 
-	   q1 (*dif n (times m1 m1)) l (times 2 a0))
-     a	(setq a (cons (*quo (plus m1 a0) q1) a))
+	   q1 (- n (* m1 m1)) l (* 2 a0))
+     a	(setq a (cons (truncate (+ m1 a0) q1) a))
      (cond ((equal (car a) l)
 	    (return (nreverse a))))
-     (setq m (*dif (times (car a) q1) m1)
-	   q (plus q2 (times (car a) (*dif m1 m)))
+     (setq m (- (* (car a) q1) m1)
+	   q (+ q2 (* (car a) (- m1 m)))
 	   q2 q1 q1 q m1 m)
      (go a)))
 
@@ -881,15 +790,15 @@
   (prog (a b)
    a	(cond ((equal  y 1) (return (nreverse (cons x a))))
 	      ((minusp x)
-	       (setq b (plus y (remainder x y))
-		     a (cons (sub1 (*quo x y)) a)
+	       (setq b (+ y (rem x y))
+		     a (cons (1- (truncate x y)) a)
 		     x y y b))
-	      ((greaterp y x)
+	      ((> y x)
 	       (setq a (cons 0 a))
 	       (setq b x x y y b))
 	      ((equal x y) (return (nreverse (cons 1 a))))
-	      ((setq b (remainder x y))
-	       (setq a (cons (*quo x y) a) x y y b)))
+	      ((setq b (rem x y))
+	       (setq a (cons (truncate x y) a) x y y b)))
    (go a)))
 
 (defmfun $cfexpand (x)
@@ -904,14 +813,13 @@
        (l ll (cdr l)))
       ((null l) (list (list '(mlist) p2 p1) (list '(mlist) q2 q1)))))
 
-;;(declare-top (splitfile sum)
-;;	 (*expr sum))
+;; Summation stuff
 
-;;(comment Summation stuff)
+(defun adsum (e)
+  (push (simplify e) sum))
 
-(defun adsum (e) (setq sum (cons (simplify e) sum)))
-
-(defun adusum (e) (setq usum (cons (simplify e) usum)))
+(defun adusum (e)
+  (push (simplify e) usum))
 
 (defmfun simpsum2 (exp i lo hi)
   (prog (*plus *times $simpsum u)
@@ -922,8 +830,9 @@
        (setq *plus (cons (m* -1 *times (maxima-substitute 0 i exp)) *plus))
        (setq exp (m+ exp (maxima-substitute (m- i) i exp))))
      (cond ((eq ($sign (setq u (m- hi lo))) '$neg)
-	    (cond ((equal u -1) (return 0))
-		  (t (merror "Lower bound to sum is > upper bound"))))
+	    (if (equal u -1)
+		(return 0)
+		(merror "Lower bound to sum is > upper bound")))
 	   ((free exp i)
 	    (return (m+l (cons (freesum exp lo hi *times) *plus))))
 
@@ -964,7 +873,7 @@
 	 nil)))
 
 (defun isum (e)
-  (cond ((memq (setq e (catch 'isumout (isum1 e))) '($inf $undefined $minf))
+  (cond ((member (setq e (catch 'isumout (isum1 e))) '($inf $undefined $minf) :test #'eq)
 	 (setq sum (list e) usum nil))))
 
 (defun isum1 (e)
@@ -989,7 +898,7 @@
 	   0)))
 
 (defun ipoly2 (a n sign)
-  (cond ((memq (asksign lo) '($zero $negative))
+  (cond ((member (asksign lo) '($zero $negative) :test #'eq)
 	 (throw 'isumout '$inf)))
   (and (null (equal lo 1))
        (let ((sign sign))
@@ -1031,10 +940,10 @@
   (let ((a (fpoly1 (setq e ($expand ($ratdisrep ($rat e *var*))))))
 	(b) ($prederror))
     (cond ((null a) 0)
-	  ((zl-member lo '(0 1))
+	  ((member lo '(0 1))
 	   (maxima-substitute hi 'foo a))
 	  ((or (equal t (mevalp (list '(mgeqp) lo 0)))
-	       (memq (asksign lo) '($zero $positive)))
+	       (member (asksign lo) '($zero $positive) :test #'eq))
 	   (list '(mplus) (maxima-substitute hi 'foo a)
 		 (list '(mtimes) -1 (maxima-substitute (list '(mplus) lo -1) 'foo a))))
 	  (t
@@ -1049,16 +958,16 @@
 	(t (adusum e) 0)))
 
 (defun fpoly2 (a n e)
-  (cond ((null (and (integerp n) (greaterp n -1))) (adusum e) 0)
+  (cond ((null (and (integerp n) (> n -1))) (adusum e) 0)
 	((equal n 0)
 	 (m* (cond ((signp e lo)
 		    (m1+ 'foo))
 		   (t 'foo))
 	     a))
 	(($ratsimp
-	  (m* a (list '(rat) 1 (f1+ n))
-	      (m- ($bernpoly (m+ 'foo 1) (f1+ n))
-		  ($bern (f1+ n))))))))
+	  (m* a (list '(rat) 1 (1+ n))
+	      (m- ($bernpoly (m+ 'foo 1) (1+ n))
+		  ($bern (1+ n))))))))
 
 (defun fbino (e y)
   (prog (n d l h fl)
@@ -1073,12 +982,12 @@
 					 (list '(mtimes) -1 (car d))) 1 nil) 0))))
      (cond ((and (numberp (cdr d)) (or (minusp (cdr d)) (and (zerop (cdr d))
 							     (numberp (cdr n)) (minusp (cdr n)))))
-	    (rplacd d (minus (cdr d)))
-	    (rplacd n (minus (cdr n)))
+	    (rplacd d (- (cdr d)))
+	    (rplacd n (- (cdr n)))
 	    (setq l (simptimes (list '(mtimes) hi -1) 1 nil)
 		  h (simptimes (list '(mtimes) lo -1) 1 nil)))
 	   (t (setq l lo  h hi)))
-     (cond ((null (or (zl-member (cdr n) '(0 -1)) (equal 0 (cdr d))))
+     (cond ((null (or (member (cdr n) '(0 -1)) (equal 0 (cdr d))))
 	    (return (adusum e)))
 	   ((and (equal 0 (cdr d)) (equal 1 (cdr n)))
 	    (return (adsum (list '(mplus) (list '(%binomial)
@@ -1095,7 +1004,7 @@
      (cond ((equal (cdr d) -1)
 	    (setq d (simplus (list '(mplus) n (list '(mtimes) -1 (car d))) 1 nil)))
 	   ((setq d (car d))))
-     (cond ((equal fl 1) (setq d (*quo d 2))))
+     (cond ((equal fl 1) (setq d (ash d -1))))
      (setq l (simplus (list '(mplus) l d) 1 nil)
 	   h (simplus (list '(mplus) h d) 1 nil))
      (cond ((or (null (numberp l)) 
@@ -1105,10 +1014,10 @@
 			  (progn (setq fl 2) t)))))
 	    (return (adusum e))))
      (setq e (list '(%binomial) n *var*))
-     (and (greaterp l 0) (adsum (dosum (list '(mtimes) y -1 e) *var* 0 (sub1 l) t)))
-     (and (lessp d 0)
+     (and (> l 0) (adsum (dosum (list '(mtimes) y -1 e) *var* 0 (1- l) t)))
+     (and (< d 0)
 	  (adsum (dosum (list '(mtimes) y -1 e) *var* (simplus (list '(mplus) h 1) 1 nil) n t)))
-     (and (greaterp d 0)
+     (and (> d 0)
 	  (adsum (dosum (list '(mtimes) y e) *var* (simplus (list '(mplus) n 1) 1 nil) h t)))
      (setq fl
 	   (cond ((null fl) (list '(mexpt) 2 n))
@@ -1116,13 +1025,12 @@
 		 ((list '(mexpt) 2 (list '(mplus) n -1)))))
      (adsum (list '(mtimes) y fl))))
 
-;;(declare-top (splitfile prodct))
+;; product routines
 
-;;(comment product routines)
-
-(defmspec $product (l) (setq l (cdr l))
-	  (cond ((not (= (length l) 4)) (merror "Wrong no. of args to product"))
-		((dosum (car l) (cadr l)   (meval (caddr l)) (meval (cadddr l)) nil))))
+(defmspec $product (l)
+  (setq l (cdr l))
+  (cond ((not (= (length l) 4)) (merror "Wrong no. of args to product"))
+	((dosum (car l) (cadr l) (meval (caddr l)) (meval (cadddr l)) nil))))
 
 (declare-top (special $ratsimpexpons))
 
@@ -1137,11 +1045,9 @@
 	     (simplifya (cadddr x) z)
 	     (simplifya (cadr (cdddr x)) z)))
 
-;;(declare-top (splitfile tayrat))
-
 (defmfun $taytorat (e)
   (cond ((mbagp e) (cons (car e) (mapcar #'$taytorat (cdr e))))
-	((or (atom e) (not (memq 'trunc (cdar e)))) (ratf e))
+	((or (atom e) (not (member 'trunc (cdar e) :test #'eq))) (ratf e))
 	((catch 'srrat (srrat e))) 
 	(t (ratf ($ratdisrep e)))))
 
@@ -1167,8 +1073,7 @@
 	  (srrat3 (n-term l) *var*)))))
 
 
-(declare-top				;(splitfile deftay)
- (special $props *i))
+(declare-top (special $props *i))
 
 (defmspec $deftaylor (l)
   (prog (fun series param op ops)
@@ -1213,8 +1118,7 @@
 	     (subst *i (caddr e) e)))
 	(t (recur-apply #'susum1 e))))
 
-(declare-top				;(splitfile decomp)
- (special varlist genvar $factorflag $ratfac *p* *var* *l* *x*))
+(declare-top (special varlist genvar $factorflag $ratfac *p* *var* *l* *x*))
 
 (defmfun $polydecomp (e v)
   (let ((varlist (list v))
@@ -1277,9 +1181,7 @@
 	       (null (eq (car p) *var*)))
 	   (cons p nil))
 	  (t (setq p (pdecomp p *var*))
-	     (do ((l (setq p
-			   (mapcar #'(lambda (q) (cons q 1))
-				   p))
+	     (do ((l (setq p (mapcar #'(lambda (q) (cons q 1)) p))
 		     (cdr l))
 		  (a))
 		 ((null l)
@@ -1309,12 +1211,12 @@
 (defun pdecred (f h *var*)		;f = g(h(*var*))
   (cond ((or (pcoefp h) (null (eq (car h) *var*))
 	     (equal (cadr h) 1)
-	     (null (zerop (remainder (cadr f) (cadr h))))
+	     (null (zerop (rem (cadr f) (cadr h))))
 	     (and (null (pzerop (caadr (setq f (pdivide f h)))))
 		  (equal (cdadr f) 1)))
 	 nil)
 	(t (do ((q (pdivide (caar f) h) (pdivide (caar q) h))
-		(i 1 (f1+ i))
+		(i 1 (1+ i))
 		(*ans*))
 	       ((pzerop (caar q))
 		(cond ((and (equal (cdadr q) 1)
@@ -1355,7 +1257,7 @@
        (ll (list (car l))
 	   (cons (car l) ll)))
       (nil)
-    (rplaca (cdr l) (f1- (cadr l)))
+    (rplaca (cdr l) (1- (cadr l)))
     (cond ((signp e (cadr l))
 	   (setq l (cddr l))))
     (cond ((null l) (return ll)))))
@@ -1386,6 +1288,6 @@
 				  t)))
 	       (cons lin 1)))))
 
-(declare-top (unspecial *mfactl *factlist donel nn* dn* splist ans var
+(declare-top (unspecial *mfactl *factlist donel nn* dn* ans var
 			dict *var* *ans* a* *a *n *a*  hi lo
 			*infsumsimp *times *plus sum usum makef gensim))
