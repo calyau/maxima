@@ -76,7 +76,7 @@
 		      ((> i m)
 		       (do ((ans)
 			    (i m (1- i)))
-			   ((< i 1) (*rearray arr) ans)
+			   ((< i 1) ans)
 			   (push (aref t arr i 0) ans)))
 		      (do ((vecl)
 			   (j m (1- j)))
