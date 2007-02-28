@@ -192,8 +192,10 @@ homogeneous;
 /* 125 */
 (pn_(125),ans:contrib_ode(eqn:x*'diff(y,x)+x*tan(y/x)-y,y,x));
 [%c*x=1/sin(y/x)];
-method;
-homogeneous;
+solve(ans[1],y);
+[y = asin(1/(%c*x))*x];
+[method,ode_check(eqn,%[1]);
+[homogeneous,0];
 
 /* Equations 126 to 128 need pdiff */
 use_pdiff:true;
@@ -752,8 +754,5 @@ solve(%,y);
 /*  200  */ 
 (pn_(200),ans:contrib_ode(eqn:(a*sin(x)^2+b)*'diff(y,x,1)+a*sin(2*x)*y+A*x*(a*sin(x)^2+c),y,x));
 [y=(a*A*(2*x*sin(2*x)+cos(2*x)-2*x^2)/8-A*c*x^2/2+%c)/(a*sin(x)^2+b)];
-method;
-linear;
-
-(kill(besjysimp,besjysimp2,besjysimp3),done);
-done;
+[method,trigrat(ode_check(eqn,ans[1]))];
+[linear,0];
