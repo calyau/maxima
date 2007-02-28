@@ -173,99 +173,62 @@ ode_check(e_,a_) := block(
 /* Attempt to simplify the result from ode_check() */
 ode_check_tidy(e) := if freeof_bessel(e) then e else bessimp(e)$
 
-/*  This Bessel function simplification code can be improved,
-    but is does work.  Most of the code below is duplicated. 
 
-    Also need to extend to cover cases like Murphy 1.272
-    Kamke 1.14, 1.24, 2.104, 2.105, 2.140, 2.149, 2.153, 2.161, 2.162
-    2.164, 2.170, 2.172, 2.197, 2.200, 2.206. 2.274, 2.302
+/*  This Bessel function simplification code can be improved,
+    but is does work fairly well on the contrib_ode testsuite.
+    Need to extend to cover cases like Kamke 1.14 and 1.24
 */
 
 freeof_bessel(e):=freeof(nounify(bessel_j),nounify(bessel_y),
    nounify(bessel_i),nounify(bessel_k),e);
 
-/* Simplify expressions containing bessel_j */
-besjsimp(ex) := block([arglist,ords,max,min,s,n,x,e:ex],
-  if freeof(nounify(bessel_j),ex) then return(ex),
-  argset:setify(gatherargs(ex,bessel_j)),
+/* Simplify expressions containing bessel_F, where F in {j,y,i,k}.
+   Repeatedly find the highest order term F and substitute Fsub for F 
+
+   When F is a Bessel function of order n and argument x, then
+   Fsub is contains Bessel functions of order n-1 and n-2.
+
+   We separate the set of arguements into groups that have a common
+   artgument and orders that differ by integers, then work on each
+   class until all the orders differ by less than 2. 
+*/
+besFsimp(ex,F,Fsub) := block([arglist,ords,ord2,max,min,s,t,u,m,n,x,e:ex],
+  if freeof(nounify(F),ex) then return(ex),
+  argset:setify(gatherargs(ex,F)),
   /*  partition arguments into sets with same second argument and
       orders that differ by an integer */
   argset:equiv_classes(argset,lambda([x,y],
     (second(x)=second(y)) and integerp(ratsimp(first(x)-first(y))))),
+
   /* Iterate over each equivalance class */
+
   for s in argset do (
     x:second(first(s)),  /* The common argument for s */
     ords:map('first,s),  /* List of orders */
-    max:lmax(ords),
-    min:lmin(ords),
-    for n: max step -1 unless ratsimp(n-min)<2 do (
-      e:subst(2*(n-1)*bessel_j(n-1,x)/x-bessel_j(n-2,x),bessel_j(n,x),e),
+    t:first(ords),          /* One element of the list of orders */
+    ord2:map(lambda([m],ratsimp(m-t)),ords), /* List of differences */
+    max:lmax(ord2),      /* maximum order is t+max */
+    min:lmin(ord2),      /* minimum order is t+min */
+    for m: max step -1 unless ratsimp(m-min)<2 do (
+      n:subset(ords,lambda([u],is(ratsimp(u-t-m)=0))),
+      n:if emptyp(n) then ratsimp(t+m) else first(n),
+      e:subst(apply(Fsub,[n,x]),apply(F,[n,x]),e),
       e:ratsimp(e)
     ) 
   ),
   e
 )$
 
-/* Simplify expressions containing bessel_y */
-besysimp(ex) := block([arglist,ords,max,min,s,n,x,e:ex],
-  if freeof(nounify(bessel_y),ex) then return(ex),
-  argset:setify(gatherargs(ex,bessel_y)),
-  /*  partition arguments into sets with same second argument and
-      orders that differ by an integer */
-  argset:equiv_classes(argset,lambda([x,y],
-    (second(x)=second(y)) and integerp(ratsimp(first(x)-first(y))))),
-  /* Iterate over each equivalance class */
-  for s in argset do (
-    x:second(first(s)),  /* The common argument for s */
-    ords:map('first,s),  /* List of orders */
-    for n:lmax(ords)  step -1 unless ratsimp(n-lmin(ords))<2 do (
-      e:subst(2*(n-1)*bessel_y(n-1,x)/x-bessel_y(n-2,x),bessel_y(n,x),e),
-      e:ratsimp(e)
-    ) 
-  ),
-  e
-)$
+besjsimp(ex):=besFsimp(ex,bessel_j,
+  lambda([n,x], 2*(n-1)*bessel_j(n-1,x)/x-bessel_j(n-2,x)));
 
-/* Simplify expressions containing bessel_i by repeated application 
-   of bessel_i(n,x)=-2*(n-1)*bessel_i(n-1,x)/x+bessel_i(n-2,x) */
-besisimp(ex) := block([arglist,ords,max,min,s,n,x,e:ex],
-  if freeof(nounify(bessel_i),ex) then return(ex),
-  argset:setify(gatherargs(ex,bessel_i)),
-  /*  partition arguments into sets with same second argument and
-      orders that differ by an integer */
-  argset:equiv_classes(argset,lambda([x,y],
-    (second(x)=second(y)) and integerp(ratsimp(first(x)-first(y))))),
-  /* Iterate over each equivalance class */
-  for s in argset do (
-    x:second(first(s)),  /* The common argument for s */
-    ords:map('first,s),  /* List of orders */
-    for n:lmax(ords)  step -1 unless ratsimp(n-lmin(ords))<2 do (
-      e:subst(-2*(n-1)*bessel_i(n-1,x)/x+bessel_i(n-2,x),bessel_i(n,x),e),
-      e:ratsimp(e)
-    ) 
-  ),
-  e
-)$
+besysimp(ex):=besFsimp(ex,bessel_y,
+  lambda([n,x], 2*(n-1)*bessel_y(n-1,x)/x-bessel_y(n-2,x)));
 
-/* Simplify expressions containing bessel_k by repeated application 
-   of bessel_k(n,x)=2*(n-1)*bessel_k(n-1,x)/x+bessel_k(n-2,x) */
-besksimp(ex) := block([arglist,ords,max,min,s,n,x,e:ex],
-  if freeof(nounify(bessel_k),ex) then return(ex),
-  argset:setify(gatherargs(ex,bessel_k)),
-  /*  partition arguments into sets with same second argument and
-      orders that differ by an integer */
-  argset:equiv_classes(argset,lambda([x,y],
-    (second(x)=second(y)) and integerp(ratsimp(first(x)-first(y))))),
-  /* Iterate over each equivalance class */
-  for s in argset do (
-    x:second(first(s)),  /* The common argument for s */
-    ords:map('first,s),  /* List of orders */
-    for n:lmax(ords)  step -1 unless ratsimp(n-lmin(ords))<2 do (
-      e:subst(2*(n-1)*bessel_k(n-1,x)/x+bessel_k(n-2,x),bessel_k(n,x),e),
-      e:ratsimp(e)
-    ) 
-  ),
-  e
-)$
+besisimp(ex):=besFsimp(ex,bessel_i,
+  lambda([n,x],-2*(n-1)*bessel_i(n-1,x)/x+bessel_i(n-2,x)));
+
+besksimp(ex):=besFsimp(ex,bessel_k,
+  lambda([n,x], 2*(n-1)*bessel_k(n-1,x)/x+bessel_k(n-2,x)));
 
 bessimp(e) := besksimp(besisimp(besysimp(besjsimp(e))))$
