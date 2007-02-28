@@ -65,81 +65,81 @@ matrix_size(matrix([false],[false]));
 matrix_size(matrix([false,false]));
 [1,2]$
 
-/*--- matrix rank and nullity -----*/
+/*--- matrix linalg_rank and nullity -----*/
 
-rank(matrix([0]));
+linalg_rank(matrix([0]));
 0$
 
 nullity(matrix([0]));
 1$
 
-rank(matrix([1]));
+linalg_rank(matrix([1]));
 1$
 
 nullity(matrix([1]));
 0$
 
-rank(matrix([0,0]));
+linalg_rank(matrix([0,0]));
 0$
 
 nullity(matrix([0,0]));
 2$
 
-rank(matrix([0,1]));
+linalg_rank(matrix([0,1]));
 1$
 
 nullity(matrix([0,1]));
 1$
 
-rank(matrix([0],[0]));
+linalg_rank(matrix([0],[0]));
 0$
 
 nullity(matrix([0],[0]));
 1$
 
-rank(matrix([1],[0]));
+linalg_rank(matrix([1],[0]));
 1$
 
 nullity(matrix([1],[0]));
 0$
 
-rank(matrix([0],[1]));
+linalg_rank(matrix([0],[1]));
 1$
 
 nullity(matrix([0],[1]));
 0$
 
-rank(matrix([1],[1]));
+linalg_rank(matrix([1],[1]));
 1$
 
 nullity(matrix([1],[1]));
 0$
 
-rank(matrix([0],[%i]));
+linalg_rank(matrix([0],[%i]));
 1$
 
 nullity(matrix([0],[%i]));
 0$
 
-rank(matrix([1],[1]));
+linalg_rank(matrix([1],[1]));
 1$
 
 nullity(matrix([1],[1]));
 0$
 
-rank(matrix([1],[%i]));
+linalg_rank(matrix([1],[%i]));
 1$
 
 nullity(matrix([1],[%i]));
 0$
 
-rank(matrix([1,2],[0,0]));
+linalg_rank(matrix([1,2],[0,0]));
 1$
 
 nullity(matrix([1,2],[0,0]));
 1$
 
-rank(matrix([1,2],[0,1]));
+linalg_rank(matrix([1,2],[0,1]));
 2$
 
 nullity(matrix([1,2],[0,1]));
@@ -627,6 +627,12 @@ true$
 
 (remvalue(mm,m1,m2,m3,m),0);
 0$
+
+columnspace(matrix([0,1],[0,1]));
+span(matrix([1],[1]))$
+
+linalg_rank(matrix([0,1],[0,1]));
+1$
 
 
 

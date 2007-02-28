@@ -128,7 +128,7 @@ locate_matrix_entry(m, r1, c1, r2, c2, fn, rel) := block([im, cm, mf, e,
          mf : e))),
   if im > 0 and cm > 0 then [im, cm] else false);
          
-columnspace(a) := block([m, nc, nr, cs : [], pos, x, proviso : [], algebraic : true],
+columnspace(a) := block([m, nc, nr, cs : [], pos, x, proviso : [], algebraic : true, c_min],
   require_unblockedmatrix(a, "first","columnspace"),
   /* request_rational_matrix(a, "first", "columnspace"), */
   nc : length(first(a)),
@@ -139,12 +139,14 @@ columnspace(a) := block([m, nc, nr, cs : [], pos, x, proviso : [], algebraic : t
   m : ptriangularize_with_proviso(a, ?gensym()),
   proviso : second(m),
   m : first(m),
-  for i : 1 thru nr do (
-   if listp(pos : locate_matrix_entry(m, i, 1, i, nc, lambda([x],x # 0), 'bool)) then (
+  c_min : 1,
+  for i : 1 thru nr while c_min <= nc do (
+   if listp(pos : locate_matrix_entry(m, i, c_min, i, nc, lambda([x],x # 0), 'bool)) then (
+      c_min : second(pos) + 1,
       if not(constantp(x : part(part(m, first(pos)),second(pos)))) then 
           proviso : adjoin(x # 0,proviso),
        cs : cons(col(a,second(pos)),cs))),
-  cs : sort(cs),
+  cs : listify(setify(cs)),
   if not(emptyp(proviso)) then print("Proviso: ",proviso),
   funmake('span,cs));
 
@@ -152,7 +154,7 @@ columnspace(a) := block([m, nc, nr, cs : [], pos, x, proviso : [], algebraic : t
 I don't approve of rank(matrix([a,b],[c,d])) --> 2.  
 */
 
-rank(m) := length(columnspace(m));
+linalg_rank(m) := length(columnspace(m));
 
 rowswap(m,i,j) := block([n, p, r],
   require_matrix(m, "first", "rowswap"),
