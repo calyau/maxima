@@ -86,8 +86,8 @@ genhom;
          /((2*%c*bessel_y(-(b+3)/2,-sqrt(a)*sqrt(c)*x)
           +2*bessel_j(-(b+3)/2,-sqrt(a)*sqrt(c)*x))
           *c*x^3)];
-method;
-riccati;
+[method,ode_check(eqn,ans[1])];
+[riccati,0];
 
 /* 275 - Abel eqn of 1st kind */
 (pn_(275),ans:contrib_ode(eqn:x^2*'diff(y,x)=a*x^2*y^2-a*y^3,y,x));

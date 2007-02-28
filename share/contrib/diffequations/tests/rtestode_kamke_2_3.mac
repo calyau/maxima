@@ -43,8 +43,8 @@ false;
 (pn_(206),ans:contrib_ode(eqn:x^2*'diff(y,x,2)+x*(2*a*x+b)*'diff(y,x,1)+(c*x^2+a*b*x+d)*y,y,x));
 [y=%k2*bessel_y(sqrt(-4*d+b^2-2*b+1)/2,-sqrt(c-a^2)*x)*%e^-(a*x)/x^(b/2-1/2)
   +%k1*bessel_j(sqrt(-4*d+b^2-2*b+1)/2,-sqrt(c-a^2)*x)*%e^-(a*x)/x^(b/2-1/2)];
-method;
-odelin;
+[method,ode_check(eqn,ans[1])];
+[odelin,0];
 
 /* Kamke 2. 207  */ 
 (pn_(207),ans:contrib_ode(eqn:x^2*'diff(y,x,2)+x*(a*x+b)*'diff(y,x,1)+(a1*x^2+b1*x+c_1)*y,y,x));
@@ -535,8 +535,8 @@ xformtoconstcoeff;
 /* Kamke 2. 274  */ 
 (pn_(274),ans:contrib_ode(eqn:4*x^2*'diff(y,x,2)+4*x*'diff(y,x,1)+(x-v^2)*y,y,x));
 [y = %k2*bessel_y(v,sqrt(x))+%k1*bessel_j(v,sqrt(x))];
-method;
-odelin;
+[method,ode_check(eqn,ans[1])];
+[odelin,0];
 
 /* Kamke 2. 275  */ 
 (pn_(275),ans:contrib_ode(eqn:4*x^2*'diff(y,x,2)+4*x*'diff(y,x,1)+(-x^2+2*(-m+2*l+1)*x-m^2+1)*y,y,x));

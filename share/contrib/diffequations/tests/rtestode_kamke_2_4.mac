@@ -23,8 +23,8 @@ exact;
               *bessel_y((a*A2-A1)/(a*A2),2*sqrt(a*x+b)*sqrt(A0)/(a*sqrt(A2)))
     +%k1*(a*x+b)^((a*A2-A1)/(2*a*A2))
              *bessel_j((a*A2-A1)/(a*A2),2*sqrt(a*x+b)*sqrt(A0)/(a*sqrt(A2)))];
-method;
-odelin;
+[method,ode_check(eqn,ans[1])];
+[odelin,0];
 
 /* Kamke 2. 303  */ 
 /* Takes a long time ...
