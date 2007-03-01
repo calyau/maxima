@@ -461,11 +461,9 @@
 	    (intersect (cdr x) y))))
 
 ;; Like APL IOTA function.
-(defun index* (k)
-  (if (< k 2)
-      (list 1)
-      (loop for i from k downto 1 collect i)))
-
+(defun index* (k) 
+  (declare (fixnum k))
+  (if (< k 2) (list 1) (cons k (index* (f1- k)))))
 
 (defun klim (u p1)
   (prog (bcoef)
