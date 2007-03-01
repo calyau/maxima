@@ -24,11 +24,6 @@
 (defmvar $matrix_element_add '|&+|)
 (defmvar $matrix_element_transpose nil)
 
-;;provides some of the same spirit of *array but
-;;in the value cell. see get-array-pointer below.
-(defun cl-*array (nam maclisp-type &rest dimlist)
-  (proclaim (list 'special nam))
-  (setf (symbol-value nam) (apply '*array nil maclisp-type dimlist)))
 
 ;;I believe that all the code now stores arrays in the value cell 
 (defun get-array-pointer (symbol)
@@ -310,19 +305,20 @@
   (prog ((i 0) (j 0))
      (declare (fixnum i j))
      (setq ax (get-array-pointer ax))
-     loop1(setq i (1+ i) j 0)
-     (cond((> i m) (return t)))
-     loop2(setq j (1+ j))
-     (cond((> j m) (go loop1))
-	  ((and (not (= i j))(equal (aref ax i j) '(0 . 1))) nil)
-	  ((and(= i j)(not (equal (aref ax i j) '(0 . 1)))) nil)
-	  (t(return nil)))
+     loop1 (setq i (1+ i) j 0)
+     (cond ((> i m) (return t)))
+     loop2 (incf j)
+     (cond ((> j m) (go loop1))
+	   ((and (not (= i j)) (equal (aref ax i j) '(0 . 1))) nil)
+	   ((and (= i j) (not (equal (aref ax i j) '(0 . 1)))) nil)
+	   (t (return nil)))
      (go loop2)))
 
-(defun tfgeli0 (x m n) (cond((or $sparse *det*) (tfgeli x m n))
-			    (t(tfgeli x m n) (diaglize1 x m n))))
+(defun tfgeli0 (x m n)
+  (cond ((or $sparse *det*) (tfgeli x m n))
+	(t (tfgeli x m n) (diaglize1 x m n))))
 
-					;  TWO-STEP FRACTION-FREE GAUSSIAN ELIMINATION ROUTINE
+;;  TWO-STEP FRACTION-FREE GAUSSIAN ELIMINATION ROUTINE
 
 (defun ritediv (x m n a)
   (declare (fixnum m n))
@@ -437,7 +433,7 @@
    loop (cond ((= i n) (setq g (cons var g)))
 	      ((zerop i) (return g)) 
 	      (t (setq g (cons fill g))))
-   (setq i (1- i))
+   (decf i)
    (go loop)))
 
 (defun timex0 (x y)
