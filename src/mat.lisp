@@ -14,9 +14,9 @@
 
 ;; this is the mat package
 
-(declare-top (special pivsign* *ech* *tri* $algebraic $multiplicities equations
-		      mul* formatform dosimp $dispflag $ratfac *tb $nolabels errrjfflag *det*
-		      genvar xm* xn* varlist ax linelable $linechar $linenum sol))
+(declare-top (special *ech* *tri* $algebraic $multiplicities equations
+		      mul* $dispflag $nolabels errrjfflag *det*
+		      xm* xn* varlist ax linelable sol))
 
 ;;these are arrays.
 (defvar *row*)
@@ -29,8 +29,6 @@
 
 (defmvar *rank* nil)
 (defmvar *inv* nil)
-
-(defvar solvexp nil)
 
 (defun solcoef (m *c varl flag)
   (prog (cc answer leftover)

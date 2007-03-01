@@ -14,7 +14,7 @@
 
 (load-macsyma-macros ratmac strmac)
 
-(declare-top (special var-list expsumsplit $dispflag $nolabels checkfactors *g
+(declare-top (special var-list expsumsplit $dispflag checkfactors *g
 		      $algebraic equations ;List of E-labels
 		      *power *varb *flg $derivsubst $numer $float
 		      $%emode wflag genvar genpairs varlist broken-not-freeof
@@ -26,7 +26,7 @@
 		      *has*var *var $dontfactor $linenum $linechar
 		      linelable $keepfloat $ratfac
 		      errrjfflag  ;A substitute for condition binding.
-		      lsolveflag xm* xn* mul* solvexp))
+		      xm* xn* mul*))
 
 (defmvar $breakup t
   "Causes solutions to cubic and quartic equations to be expressed in
@@ -269,8 +269,7 @@
 			       ((specasep exp) (solve1a exp mult))
 			       ((and (not (pcoefp exp))
 				     (cddr exp)
-				     (not (equal 1 (setq *g
-							 (solventhp (cdddr exp) (cadr exp))))))
+				     (not (equal 1 (setq *g (solventhp (cdddr exp) (cadr exp))))))
 				(solventh exp *g))
 			       (t (map2c #'solve1a
 					 (cond ($solvefactors (pfactor exp))
@@ -884,10 +883,8 @@
 
 (defun solvex (eql varl ind flag &aux ($algebraic $algebraic))
   (declare (special xa*))
-  (prog (*varl ans varlist genvar lsolveflag xm* xn* mul* solvexp)
+  (prog (*varl ans varlist genvar xm* xn* mul*)
      (setq *varl varl)
-     (setq solvexp flag)
-     (setq lsolveflag t)
      (setq eql (mapcar #'(lambda (x) ($ratdisrep ($ratnumer x))) eql))
      (cond ((atom (let ((errrjfflag t))
 		    (catch 'raterr (formx flag 'xa* eql varl))))
