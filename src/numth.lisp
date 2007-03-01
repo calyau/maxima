@@ -109,8 +109,8 @@
       ((zerop r1) 0)
     (cond ((evenp r1)
 	   (setq r1 (quotient r1 2))
-	   (setq odd (boole boole-xor odd (lsh (^ (haipart r2 -4) 2) -2)))))
-    (and (equal r1 1) (return (expt -1 (boole  boole-and 1 (lsh odd -1)))))))
+	   (setq odd (boole boole-xor odd (ash (^ (haipart r2 -4) 2) -2)))))
+    (and (equal r1 1) (return (expt -1 (boole  boole-and 1 (ash odd -1)))))))
 
 (defun psumsq (p)
   ((lambda (x)

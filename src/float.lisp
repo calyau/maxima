@@ -539,7 +539,7 @@ One extra decimal digit in actual representation for rounding purposes.")
 	 ;; The form which follows is nearly identical to (ASH X N), however
 	 ;; (ASH -100 -20) = -1, whereas (BIGLSH -100 -20) = 0.
 	 (if (>= x 0)
-	     (lsh x n)
+	     (ash x n)
 	     (- (biglsh (- x) n)))) ;(- x) may be a bignum even is x is a fixnum.
 	;; If we get here, then either X is a bignum or our answer is
 	;; going to be a bignum.
@@ -551,7 +551,7 @@ One extra decimal digit in actual representation for rounding purposes.")
 	((= n 0) x)
 	;; Isn't this the kind of optimization that compilers are
 	;; supposed to make?
-	((< n #.(1- +machine-fixnum-precision+)) (* x (lsh 1 n)))
+	((< n #.(1- +machine-fixnum-precision+)) (* x (ash 1 n)))
 	(t (* x (expt 2 n)))))
 
 

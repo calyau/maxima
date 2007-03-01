@@ -9,14 +9,13 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :maxima)
+
 (macsyma-module pois3)
 
 ;; GENERAL POISSON SERIES
 
 (declare-top (special *argc *coef poisvals poisco1 poiscom1 b* a* *a ss cc h* poishift
-		      poistsm poissiz poists $wtlvl $poisz $pois1)
-	     (*lexpr $print $coeff)
-	     (genprefix \P)) 
+		      poistsm poissiz poists $wtlvl $poisz $pois1)) 
 
 (defvar trim nil)
 
@@ -51,7 +50,6 @@
 
 ;;;********
 
-(declare-top(fixnum ae poishift poistsm poissiz poists))
 ;; ABOVE ASSUMES POISLIM(5) OR LESS ALSO REDEFINE ORDER< AND ORDER= TO BE < AND =
 
 ;;; THIS TELLS THE EVALUATOR TO KEEP OUT OF POISSON $SERIES.
@@ -62,9 +60,8 @@
   (setq a (intopois a) b (intopois b))
   (list '(mpois simp) (poismerge22 (cadr a) (cadr b)) (poismerge22 (caddr a) (caddr b)))) 
 
-
-
 (declare-top (special *b *fn)) 
+
 (defmfun $poismap (p sinfn cosfn) 
   (prog (*b *fn) 
      (setq p (intopois p))
@@ -554,7 +551,7 @@
 (defmfun $poisexpt (p n) 
   (prog (u h) 
      (cond ((oddp n) (setq u p)) (t (setq u (setq h (intopois 1.)))))
-     a    (setq n (lsh n -1.))
+     a    (setq n (ash n -1))
      (cond ((zerop n) (return u)))
      (setq p ($poistimes p p))
      (cond ((oddp n) (setq u (cond ((equal u h) p) (t ($poistimes u p))))))

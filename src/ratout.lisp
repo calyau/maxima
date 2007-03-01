@@ -155,7 +155,7 @@
      (setq e (pdegreer bigf2))
      (setq degree (pdegreer bigf1))
      (cond ((vgreat e degree) (setq e degree)))
-     (setq b (lsh modulus -1))
+     (setq b (ash modulus -1))
      (setq gbar
 	   (pgcdu (setq f1 (pgathercoef bigf1 xv 0))
 		  (setq f1f2
@@ -460,14 +460,14 @@
 	    (return (lsft (pctimes1 (cadr f) g) (car f))))
 	   ((null (cddr g))
 	    (return (lsft (pctimes1 (cadr g) f) (car g)))))
-     (setq d (lsh (add1 (max (car f) (car g))) -1))
+     (setq d (ash (add1 (max (car f) (car g))) -1))
      (setq f (halfsplit f d) g (halfsplit g d))
      (setq a (fptimes1 (car f) (car g)))
      (setq b
 	   (fptimes1 (pplus1 (car f) (cdr f)) (pplus1 (car g) (cdr g))))
      (setq c (fptimes1 (cdr f) (cdr g)))
      (setq b (pdiffer1 (pdiffer1 b a) c))
-     (return (pplus1 (lsft a (lsh d 1)) (pplus1 (lsft b d) c)))))
+     (return (pplus1 (lsft a (ash d 1)) (pplus1 (lsft b d) c)))))
 
 (defun halfsplit (p d)
   (do ((a) (p p (cddr p)))

@@ -91,7 +91,6 @@
     (def-op lessp t < t)
     (def-op remainder t rem)
     #-mcl
-    (def-op lsh fixnum ash)
     (def-op fixnum-remainder fixnum rem)
     (def-op minus t -)
     ;;(def-op \\ fixnum rem) ;no calls any more
@@ -239,8 +238,6 @@
 
 (defun zl-delete (x lis &optional count)
   (delete x lis :test #'equal :count count))
-
-(setf (symbol-function 'lsh) #'ash)
 
 (defun haulong (x)
   (integer-length x))
