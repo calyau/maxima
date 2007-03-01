@@ -335,7 +335,7 @@
      (go st)
      sa (cptimesxa s q)
      st (cond ((and (= j 1)
-		    (equal '(1 0) (ncdr s (1- (length s))))
+		    (equal '(1 0) (last s 2))
 		    (= 1 (length (delete 0 (copy-tree s) :test #'equal))))
 	       (return (setq split* t))))
      (setq l s)

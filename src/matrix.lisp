@@ -168,7 +168,7 @@
   (prog (row mdl lindex tuplel n id md lt)
      (setq mat (reverse mat))
      (setq n (length mat) md (car mat))
-     (setq mat (cdr mat))(setq lindex (nreverse (index* n)) tuplel (mapcar #'list lindex))
+     (setq mat (cdr mat)) (setq lindex (nreverse (index* n)) tuplel (mapcar #'list lindex))
      loop1 (when (null mat) (return (car md)))
      (setq mdl nil)
      (mapcar #'(lambda(a b) (setq mdl (nconc mdl (list a b)))) tuplel md)
@@ -210,7 +210,7 @@
    loop (when (null tuplel) (return ans))
    (setq l (car tuplel)
 	 tuplel (cdr tuplel)
-	 li (cdr (ncdr lindex (car (last l)))))
+	 li (cdr (nthcdr (1- (car (last l))) lindex)))
    (when (null li) (go loop))
    (setq ans (nconc ans (apdl l li)))
    (go loop)))
@@ -604,7 +604,7 @@
 	 (merror "Wrong arg to `setelmx'"))
 	((not (and (> m 0) (> n 0) (> (length mat) m) (> (length (cadr mat)) n)))
 	 (merror "No such entry - `setelmx'")))
-  (rplaca (ncdr (car (ncdr mat (1+ m))) (1+ n)) elm) mat) 
+  (rplaca (nthcdr n (car (nthcdr m mat))) elm) mat) 
  
 ;;; Here the function transpose can actually do simplification of
 ;;; its argument. TRANSPOSE(TRANSPOSE(FOO)) => FOO.

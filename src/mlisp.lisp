@@ -1624,7 +1624,7 @@ wrapper for this."
 		    (cond ((not (eq (ml-typep index) 'fixnum))
 			   (merror "Index not an integer:~%~M" index))
 			  ((and (> index 0) (< index (length ary)))
-			   (rplaca (ncdr (cdr ary) index) r))
+			   (rplaca (nthcdr (1- index) (cdr ary)) r))
 			  (t (merror "~A - index out of range" index))))
 		  r)
 		 (t (if (not (= (length l) 3))

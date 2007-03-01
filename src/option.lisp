@@ -12,15 +12,15 @@
 
 (macsyma-module option)
 
-(declare-top(special options history cru crf)
-	    (*expr options ncdr fullstrip1 retrieve urestore nonsymchk mdescribe))
+(declare-top (special options history cru crf))
 
-(defmspec $options (x) (setq x (cdr x))
-	  (cond ((null x)
-		 (princ "`options' interpreter  (Type `exit' to exit.)")
-		 (terpri) (options '$all))
-		((nonsymchk (car x) 'options))
-		(t (cons '(mlist) (downs (car x))))))
+(defmspec $options (x)
+  (setq x (cdr x))
+  (cond ((null x)
+	 (princ "`options' interpreter  (Type `exit' to exit.)")
+	 (terpri) (options '$all))
+	((nonsymchk (car x) 'options))
+	(t (cons '(mlist) (downs (car x))))))
 
 (defun options (ans)
   (do ((history)) (nil)
@@ -49,11 +49,12 @@
 	   (menu options))))
 
 (defun downs (node) (oldget node 'subc))
+
 (defun ups (node) (oldget node 'supc))
 
 (defun decode (node)
   (cond ((not (integerp node)) node)
-	((or (zerop node) (null (setq node (ncdr options node)))) (nor-err))
+	((or (zerop node) (null (setq node (nthcdr (1- node) options)))) (nor-err))
 	(t (car node))))
 
 (defun menu (opts)
@@ -64,27 +65,31 @@
 
 
 (defun opt-err () (princ "Illegal command to `options'") (terpri))
+
 (defun nor-err () (princ "Number out of range") (terpri))
 
 (defmacro subc (a b &rest l)
   `(subc-internal '(,a ,b ,@l)))
+
 (defun subc-internal (x)
   (putprop (car x) (cadr x) 'kind)
   (putprop (car x) (cddr x) 'subc))
 
 (defmacro supc (a b &rest l)
   `(supc-internal '(,a ,b ,@l)))
+
 (defun supc-internal (x)
   (putprop (car x) (cadr x) 'kind)
   (putprop (car x) (cddr x) 'supc))
 
 (defun printnet () (prnet '$all 0) nil)
+
 (defun prnet (node indent)
   (terpri)
   (do ((i 1 (f1+ i))) ((> i indent)) (tyo #\tab)) (princ (fullstrip1 node))
   (cond ((oldget node 'kind) (tyo #\space) (princ (oldget node 'kind))))
   (mapc #'(lambda (l) (prnet l (f1+ indent))) (downs node)))
-
+
 ;;Copyright 1980, Massachusetts Institute of Technology
 (subc $all () $interaction $debugging $evaluation $lists $matrices 
       $simplification $representations $plotting $translation
