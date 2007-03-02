@@ -106,10 +106,9 @@
 	     (simplifya (timex0 mat1 mat2) nil)))))
 
 (defun lnewvar (a)
-  ((lambda (vlist)
-     (lnewvar1 a)
-     (setq varlist (nconc (sortgreat vlist) varlist)))
-   nil))
+  (let ((vlist nil))
+    (lnewvar1 a)
+    (setq varlist (nconc (sortgreat vlist) varlist))))
 
 (defun lnewvar1 (a)
   (cond ((atom a) (newvar1 a))
@@ -117,10 +116,10 @@
 	(t (newvar1 a))))
 
 (defun newvarmat (mat1 mat2)
-  (cond ($ratmx
-	 ((lambda (vlist)
-	    (lnewvar1 mat1) (lnewvar1 mat2)
-	    (setq varlist (nconc (sortgreat vlist) varlist))) nil))))
+  (when $ratmx
+    (let ((vlist nil))
+      (lnewvar1 mat1) (lnewvar1 mat2)
+      (setq varlist (nconc (sortgreat vlist) varlist)))))
 
 (defun newvarmat1 (a)
   (cond ($ratmx (lnewvar a))))
@@ -297,7 +296,6 @@
      (setq k nil)
      (cond ((diagp '*mat* m) (diaginv '*mat* m)) (t (tfgeli0 '*mat* m n)))
      (setq k (atomat '*mat* m n (1+ m)))
-     (*rearray '*mat*)
      (return k)))
 
 (defun diagp (ax m)
@@ -327,16 +325,17 @@
      (declare (fixnum i j))
      (setq errrjfflag t)
      (setq i m)
-     loop1 (cond ((zerop i) (return nil)))
+     loop1 (when (zerop i) (return nil))
      (setf (aref x i i) nil)
      (setq j m)
-     loop (cond ((= j n) (setq i (1- i)) (go loop1)))
-     (setq j (1+ j))
+     loop (cond ((= j n) (decf i) (go loop1)))
+     (incf j)
      (cond ((equal a 1)
 	    (setf (aref x i j) (cons (aref x i j) 1))
 	    (go loop)))
      (setq d (catch 'raterr (pquotient (aref x i j) a)))
-     (setq d (cond (d (cons d 1)) (t (ratreduce (aref x i j) a))))
+     (setq d (cond (d (cons d 1))
+		   (t (ratreduce (aref x i j) a))))
      (setf (aref x i j) d)
      (go loop)))
 
@@ -370,21 +369,20 @@
 
 
 (defmfun $echelon (x)
-  ((lambda ($ratmx) (newvarmat1 (setq x (check x)))) t)
-  ((lambda (*ech*)
-     (setq x (cons '($matrix) (mxc (disreplist1 (echelon1 (replist1 (mcx (cdr x)))))))))
-   t)
+  (let (($ratmx t))
+    (newvarmat1 (setq x (check x))))
+  (let ((*ech* t))
+    (setq x (cons '($matrix) (mxc (disreplist1 (echelon1 (replist1 (mcx (cdr x)))))))))
   (if $ratmx x ($totaldisrep x)))
 
 (defun echelon1 (x)
-  ((lambda (m n)
-     (mtoa '*mat* m n x)
-     (setq x (catch 'rank (tfgeli '*mat* m n)))
-     (cond ((and *rank* x)
-	    (throw 'rnk x))
-	   (t (echelon2 '*mat* m n))))
-   (length x)
-   (length (car x))))
+  (let ((m (length x))
+	(n (length (car x))))
+    (mtoa '*mat* m n x)
+    (setq x (catch 'rank (tfgeli '*mat* m n)))
+    (cond ((and *rank* x)
+	   (throw 'rnk x))
+	  (t (echelon2 '*mat* m n)))))
 
 (defun echelon2 (name m n)
   (declare (fixnum m n))
@@ -405,11 +403,12 @@
      (go loop2)))
 
 (defun triang (x)
-  ((lambda (m n *tri*)
-     (mtoa '*mat* m n x) 
-     (tfgeli '*mat* m n)
-     (triang2 '*mat* m n))
-   (length x) (length (car x)) t))
+  (let ((m (length x))
+	(n (length (car x)))
+	(*tri* t))
+    (mtoa '*mat* m n x) 
+    (tfgeli '*mat* m n)
+    (triang2 '*mat* m n)))
 
 (defun triang2 (nam m n)
   (declare (fixnum m n))
@@ -437,13 +436,13 @@
    (go loop)))
 
 (defun timex0 (x y)
-  ((lambda (u v)
-     (cond ((and (null u) (null v)) (list '(mtimes) x y))
-	   ((null u) (timex1 x (cons '($matrix) (mcx (cdr v)))))
-	   ((null v) (timex1 y (cons '($matrix) (mcx (cdr u)))))
-	   (t (cons '($matrix mult) (mxc (multiplymatrices (mcx (cdr u)) (mcx (cdr v))))))))
-   (check1 x) (check1 y)))
- 
+  (let ((u (check1 x))
+	(v (check1 y)))
+    (cond ((and (null u) (null v)) (list '(mtimes) x y))
+	  ((null u) (timex1 x (cons '($matrix) (mcx (cdr v)))))
+	  ((null v) (timex1 y (cons '($matrix) (mcx (cdr u)))))
+	  (t (cons '($matrix mult) (mxc (multiplymatrices (mcx (cdr u)) (mcx (cdr v)))))))))
+
 (defun timex1 (x y)
   (setq y (check y))
   (cond ((not $ratmx) (setq y (cdr y)))
@@ -567,7 +566,8 @@
      (go loop)))
  
 (defmfun $triangularize (x) 
-  ((lambda ($ratmx) (newvarmat1 (setq x (check x)))) t)
+  (let (($ratmx t))
+    (newvarmat1 (setq x (check x))))
   (setq x (cons '($matrix) (mxc (disreplist1 (triang (replist1 (mcx (cdr x)))))))) 
   (if $ratmx x ($totaldisrep x)))
 
@@ -627,9 +627,7 @@
 	(t
 	 (let ((ans (transpose (mcx (cdr (check mat))))))
 	   (cond ($matrix_element_transpose
-		  (setq ans (mapcar #'(lambda (u)
-					(mapcar #'transpose-els
-						u))
+		  (setq ans (mapcar #'(lambda (u) (mapcar #'transpose-els u))
 				    ans))))
 	   `(($matrix) . ,(mxc ans))))))
 
