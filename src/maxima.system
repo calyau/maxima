@@ -96,8 +96,7 @@
                                      (:file "mformt") 
                                      (:file "mutils") 
                                      (:file "outmis") 
-                                     (:file "ar") 
-                                     (:file "misc")))
+                                     (:file "ar")))
                (:module commands :source-pathname ""
                         :components ((:file "comm")
                                      (:file "comm2")))
