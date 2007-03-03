@@ -9,17 +9,15 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :maxima)
+
 (macsyma-module csimp2)
 
 (load-macsyma-macros rzmac)
 
-;;(declare-top (GENPREFIX C/#))
-
-(declare-top (splitfile plog)
-	     (special var %p%i varlist plogabs half%pi nn* dn*))
+(declare-top (special var %p%i varlist plogabs half%pi nn* dn*))
 
 (defmfun simpplog (x vestigial z)
-  vestigial				;Ignored.
+  (declare (ignore vestigial))
   (prog (varlist dd check y)
      (oneargcheck x)
      (setq check x)
@@ -101,19 +99,17 @@
 		     ((alike1 r '((mexpt) 3 ((rat) -1 2)))
 		      (archk a b (list '(mtimes) '((rat) 1 6) '$%pi))))))))
 
-;;(declare-top (SPLITFILE BINOML))
-
 (defmfun simpbinocoef (x vestigial z) 
-  vestigial				;Ignored.
+  (declare (ignore vestigial))
   (twoargcheck x)
   (let ((u (simpcheck (cadr x) z))
 	(v (simpcheck (caddr x) z))
 	(y))
     (cond ((integerp v)
 	   (cond ((minusp v)
-		  (if (and (integerp u) (minusp u) (lessp v u)) (bincomp u (*dif u v)) 0))
+		  (if (and (integerp u) (minusp u) (< v u)) (bincomp u (- u v)) 0))
 		 ((or (zerop v) (equal u v)) 1)
-		 ((and (integerp u) (not (minusp u))) (bincomp u (min v (*dif u v))))
+		 ((and (integerp u) (not (minusp u))) (bincomp u (min v (- u v))))
 		 (t (bincomp u v))))
 	  ((integerp (setq y (sub u v))) (bincomp u y))
 	  ((and (floatp u) (floatp v)) ($makegamma (list '(%binomial) u v)))
@@ -128,22 +124,22 @@
 (defun bincomp1 (u v) 
   (if (equal v 1)
       (ncons u)
-      (list* u (list '(mexpt) v -1) (bincomp1 (add2 -1 u) (sub1 v)))))
+      (list* u (list '(mexpt) v -1) (bincomp1 (add2 -1 u) (1- v)))))
 
 (defmfun binocomp (u v) 
   (prog (ans) 
      (setq ans 1)
      loop (if (zerop v) (return ans))
      (setq ans (timesk (timesk u ans) (simplify (list '(rat) 1 v))))
-     (setq u (addk -1 u) v (sub1 v))
+     (setq u (addk -1 u) v (1- v))
      (go loop)))
 
-(declare-top (splitfile gamma) (special $numer $gammalim))
+(declare-top (special $numer $gammalim))
 
 (defmvar $beta_args_sum_to_integer nil)
 
 (defmfun simpbeta (x vestigial z &aux check)
-  vestigial				;Ignored.
+  (declare (ignore vestigial))
   (twoargcheck x)
   (setq check x)
   (let ((u (simpcheck (cadr x) z)) (v (simpcheck (caddr x) z)))
@@ -161,22 +157,22 @@
 				   t))
 		  -1))
 	  ((and (integerp u) (integerp v))
-	   (mul2* (div* (list '(mfactorial) (sub1 u))
-			(list '(mfactorial) (plus u v -1)))
-		  (list '(mfactorial) (sub1 v))))
+	   (mul2* (div* (list '(mfactorial) (1- u))
+			(list '(mfactorial) (+ u v -1)))
+		  (list '(mfactorial) (1- v))))
 	  ((or (and (ratnump u) (ratnump v) (integerp (setq x (addk u v))))
 	       (and $beta_args_sum_to_integer
 		    (integerp (setq x (expand1 (add2 u v) 1 1)))))
 	   (let ((w (if (symbolp v) v u)))
 	     (div* (mul2* '$%pi
 			  (list '(%binomial)
-				(add2 (sub1 x) (neg w))
-				(sub1 x)))
+				(add2 (1- x) (neg w))
+				(1- x)))
 		   `((%sin) ((mtimes) ,w $%pi)))))
 	  (t (eqtest (list '($beta) u v) check)))))
 
 (defmfun simpgamma (x vestigial z)
-  vestigial				;Ignored.
+  (declare (ignore vestigial))
   (oneargcheck x)
   (let* ((j (simpcheck (cadr x) z))
 	 (jr ($realpart j))
@@ -191,7 +187,7 @@
 	       (ratgreaterp (simpabs (list '(%abs) j) 1 t) $gammalim))
 	   (eqtest (list '(%gamma) j) x))
 	  ((integerp j)
-	   (cond ((greaterp j 0) (simpfact (list '(mfactorial) (sub1 j)) 1 nil))
+	   (cond ((> j 0) (simpfact (list '(mfactorial) (1- j)) 1 nil))
 		 (errorsw (throw 'errorsw t))
 		 (t (merror "gamma(~:M) is undefined" j))))
 	  ($numer (gammafloat (fpcofrat j)))
@@ -200,85 +196,46 @@
 	  ((or (ratgreaterp j 1) (ratgreaterp 0 j)) (gammared j))
 	  (t (eqtest (list '(%gamma) j) x)))))
 
-;;(declare-top (flonum sum))
-
 (defun gamma (y) ;;; numerical evaluation for 0 < y < 1
   (prog (sum coefs)
-     (setq coefs '(0.035868343 -0.193527817
-		   0.48219939
-		   -0.75670407
-		   0.91820685
-		   -0.89705693
-		   0.98820588
-		   -0.57719165))
-     (or (atom y) (setq y (fpcofrat y)))
+     (setq coefs (list 0.035868343d0 -0.193527817d0 0.48219939d0
+		       -0.75670407d0 0.91820685d0 -0.89705693d0
+		       0.98820588d0 -0.57719165d0))
+     (unless (atom y) (setq y (fpcofrat y)))
      (setq sum (car coefs) coefs (cdr coefs))
-     loop (setq sum (+$ (*$ sum y) (car coefs)))
-     (and (setq coefs (cdr coefs)) (go loop))
-     (return (+$ (//$ 1.0 y) sum))))
-
-;;(declare-top (notype sum))
+     loop (setq sum (+ (* sum y) (car coefs)))
+     (when (setq coefs (cdr coefs)) (go loop))
+     (return (+ (/ y) sum))))
 
 (defun gammared (a)			;A is assumed to
   (prog (m q n)				;be '((RAT) M N)
      (cond ((floatp a) (return (gammafloat a))))
      (setq m (cadr a)			;Numerator
 	   n (caddr a)			;denominator
-	   q (abs (*quo m n)))		;integer part
+	   q (abs (truncate m n)))		;integer part
      (cond ((minusp m)
-	    (setq q (add1 q) m (plus m (times n q)))
+	    (setq q (1+ q) m (+ m (* n q)))
 	    (return
 	      (simptimes (list '(mtimes)
 			       (list '(mexpt) n q)
 			       (simpgamma (list '(%gamma)
 						(list '(rat) m n))
-					  1.
+					  1
 					  nil)
-			       (list '(mexpt) (gammac m n q) -1.))
-			 1.
+			       (list '(mexpt) (gammac m n q) -1))
+			 1
 			 nil))))
      (return (m* (gammac m n q)
 		 (simpgamma (list '(%gamma)
-				  (list '(rat) (remainder m n) n))
+				  (list '(rat) (rem m n) n))
 			    1 nil)
-		 (m^ n (minus q))))))
+		 (m^ n (- q))))))
 
 (defun gammac (m n q)
   (do ((ans 1))
-      ((lessp q 1) ans)
-    (setq q (sub1 q) m (*dif m n) ans (times m ans))))
+      ((< q 1) ans)
+    (setq q (1- q) m (- m n) ans (* m ans))))
  
-;;#+nil
-;;(declare-top (flonum a r))
-
-;;#+nil
-;;(defun gammafloat (a) 
-;;       (cond ((= a 1.0) 1.0)
-;;	     ((= a 0.0) (merror "gamma(0.0) has been generated."))	
-;;	     ((and (> a 0.0) (> 1.0 a)) (gamma a))
-;;	     ((or (> a 34.82) (< a -34.12))
-;;	      (merror "gamma(~A) - arithmetic overflow" a))
-;;	     (t (do-gammafloat a))))
-
-;;
-;;(defun gammafloat (a)
-;;  (cond ((= a 1.0) 1.0)
-;;	((= a 0.0) (merror "gamma(0.0) has been generated."))	
-;;	((and (> a 0.0) (> 1.0 a)) (gamma a))
-;;	(t (condition-case ()
-;;	       (do-gammafloat a)
-;;	     (dbg:floating-exponent-overflow 
-;;	       (merror "gamma(~A) - arithmetic overflow" a))))))
-
-;;#+nil
-;;(defun do-gammafloat (a)
-;;  (do ((r 1.0 (*$ z r))
-;;       (s (minusp a)) (z (abs a)))
-;;      ((not (greaterp z 1.0))
-;;       (setq r (*$ r (gamma z)))
-;;       (cond (s (t//$ -3.141592654 (*$ a r (sin (*$ 3.141592654 a))) 'gamma))
-;;	     (t r))) 
-;;    (setq z (1-$ z))))
 
 ;; This implementation is based on Lanczos convergent formula for the
 ;; gamma function for Re(z) > 0.  We can use the reflection formula
@@ -338,8 +295,7 @@
 		     (pp (1- (length c)) (1- pp)))
 		    ((< pp 1)
 		     sum)
-		  (incf sum (/ (aref c pp) (+ z pp))))
-		 ))
+		  (incf sum (/ (aref c pp) (+ z pp))))))
 	  (* (sqrt (float (* 2 pi) 1d0))
 	     (+ ss (aref c 0))
 	     (* zp (exp (- zgh)) zp))))))
@@ -347,12 +303,10 @@
 (defun gammafloat (a)
   (realpart (gamma-lanczos (complex a 0d0))))
 
-;;(declare-top (notype a r))
-
-(declare-top (splitfile erf) (special $numer $trigsign))
+(declare-top (special $numer $trigsign))
 
 (defmfun simperf (x vestigial z &aux y)
-  vestigial				;Ignored.
+  (declare (ignore vestigial))
   (oneargcheck x)
   (setq y (simpcheck (cadr x) z))
   (cond ((zerop1 y) y)
@@ -362,38 +316,12 @@
 	((and $trigsign (mminusp* y)) (neg (list '(%erf simp) (neg y))))
 	(t (eqtest (list '(%erf) y) x))))
 
-;;#+nil
-;;(defmfun erf (y)
-;;       (cond ((> (abs y) 4.0) (cond ((> y 0.0) 1.0) (t -1.0)))
-;;	     (t ((lambda (t1 xf)
-;;		   (declare (flonum t1 xf))
-;;		   (setq t1 (//$ (1+$ (*$ xf 0.3275911))))
-;;		   (setq 
-;;		    t1
-;;		    (-$
-;;		     1.0
-;;		     (*$
-;;		      (exp (minus (*$ xf xf)))
-;;		      (*$ (+$ (*$ (+$ (*$ (+$ (*$ (+$ (*$ t1
-;;							  1.06140543)
-;;						      -1.45315203)
-;;						  t1)
-;;					      1.42141373)
-;;					  t1)
-;;				      -0.28449674)
-;;				  t1)
-;;			      0.25482959)
-;;			  t1))))
-;;		   (cond ((> y 0.0) t1) (t (minus t1))))
-;;		  0.0
-;;		  (abs y)))))
 
 (defmfun erf (y)
   (slatec:derf (float y 1d0)))
+
 (defmfun erfc (y)
   (slatec:derfc (float y 1d0)))
-
-;;(declare-top (SPLITFILE EMATRIX))
 
 (defmfun $zeromatrix (m n) ($ematrix m n 0 1 1))
 
@@ -410,14 +338,16 @@
      loop (cond ((= m i) (setq row (onen j n var 0)) (go on))
 		((zerop m) (return (cons '($matrix) (mxc ans)))))
      (setq row nil)
-     (do ((n n (f1- n))) ((zerop n)) (setq row (cons 0 row)))
-     on   (setq ans (cons row ans) m (f1- m))
+     (do ((n n (1- n))) ((zerop n)) (setq row (cons 0 row)))
+     on   (setq ans (cons row ans) m (1- m))
      (go loop)))
 
 (defun list-of-mlists (n)
-  (do ((n n (f1- n)) (l nil (cons (ncons '(mlist simp)) l))) ((= n 0) l)))
+  (do ((n n (1- n))
+       (l nil (cons (ncons '(mlist simp)) l)))
+      ((= n 0) l)))
 
-(declare-top (splitfile coefm) (special $ratmx))
+(declare-top (special $ratmx))
 
 (defmfun $coefmatrix (eql varl) (coefmatrix eql varl nil))
 
@@ -445,8 +375,6 @@
 (defun const1 (e varl)
   (dolist (v varl) (setq e (maxima-substitute 0 v e))) e)
 
-;;(declare-top (SPLITFILE ENTERM))
-
 (defmfun $entermatrix (rows columns)
   (prog (row column vector matrix sym symvector)
      (cond ((or (not (fixnump rows))
@@ -461,7 +389,7 @@
 Is the matrix  1. Diagonal  2. Symmetric  3. Antisymmetric  4. General
 ")	     (setq sym (retrieve "Answer 1, 2, 3 or 4 : " nil))
      (cond ((not (zl-member sym '(1 2 3 4))) (go quest)))
-     oloop(cond ((> (setq row (f1+ row)) rows)
+     oloop(cond ((> (incf row) rows)
 		 (format t "~%Matrix entered.~%")
 		 (return (cons '($matrix) (mxc matrix)))))
      (cond ((equal sym 1)
@@ -473,7 +401,7 @@ Is the matrix  1. Diagonal  2. Symmetric  3. Antisymmetric  4. General
 					(meval (retrieve prompt nil)) 0)))))
 	    (go oloop))
 	   ((equal sym 2)
-	    (setq column (f1- row))
+	    (setq column (1- row))
 	    (cond ((equal row 1) (go iloop)))
 	    (setq symvector 
 		  (cons (nthcdr column vector) symvector)
@@ -484,21 +412,20 @@ Is the matrix  1. Diagonal  2. Symmetric  3. Antisymmetric  4. General
 	    (setq column row)
 	    (cond ((equal row 1) (setq vector (ncons 0)) (go iloop)))
 	    (setq symvector
-		  (cons (mapcar 'neg
-				(nthcdr (f1- column) vector))
+		  (cons (mapcar #'neg (nthcdr (1- column) vector))
 			symvector)
 		  vector (nreconc (mapcar 'car symvector) (ncons 0))
 		  symvector (mapcar 'cdr symvector))
 	    (go iloop)))	 	
      (setq column 0 vector nil)
-     iloop(cond ((> (setq column (f1+ column)) columns)
+     iloop(cond ((> (incf column) columns)
 		 (setq matrix (nconc matrix (ncons vector)))
 		 (go oloop)))
      (let ((prompt (format nil "Row ~a Column ~a: " row column)))
        (setq vector (nconc vector (ncons (meval (retrieve prompt nil))))))
      (go iloop)))
 
-(declare-top (splitfile xthru) (special sn* sd* rsn*))
+(declare-top (special sn* sd* rsn*))
 
 (defmfun $xthru (e)
   (cond ((atom e) e)
@@ -539,7 +466,7 @@ Is the matrix  1. Diagonal  2. Symmetric  3. Antisymmetric  4. General
      (setq e (car l))
      (cond ((atom e) (setq sn* (cons e sn*)))
 	   ((ratnump e)
-	    (cond ((not (equal 1. (cadr e)))
+	    (cond ((not (equal 1 (cadr e)))
 		   (setq sn* (cons (cadr e) sn*))))
 	    (setq sd* (cons (caddr e) sd*)))
 	   ((and (eq (caar e) 'mexpt)
@@ -560,55 +487,54 @@ Is the matrix  1. Diagonal  2. Symmetric  3. Antisymmetric  4. General
        (list (add2 (m* a c1) (m* c b1))
 	     (mul2 d b1)))))
 
-(declare-top (splitfile xrtout)
-	     (special $globalsolve $backsubst $dispflag
+(declare-top (special $globalsolve $backsubst $dispflag
 		      $linsolve_params $%rnum_list ax linelable $linechar 
-		      $linenum sol *mosesflag) 
-	     (fixnum tim $linenum))
+		      $linenum sol *mosesflag))
 
 (defun xrutout (ax n m varl ind)
   (let (($linsolve_params (and $backsubst $linsolve_params)))
     (prog (ix imin j ans zz m-1 sol tim chk zzz)
        (setq ax (get-array-pointer ax) tim 0)
        (if $linsolve_params (setq $%rnum_list (list '(mlist))))
-       (setq imin (min (setq m-1 (f1- m)) n))
+       (setq imin (min (setq m-1 (1- m)) n))
        (setq ix (max imin (length varl)))
        loop (if (zerop ix) (if ind (go out) (return (cons '(mlist) zz))))
-       (when (or (> ix imin) (equal (car (arraycall t ax ix ix)) 0))
-	 (store (arraycall t ax 0 ix)
+       (when (or (> ix imin) (equal (car (aref ax ix ix)) 0))
+	 (setf (aref ax 0 ix)
 		(rform (if $linsolve_params (make-param) (ith varl ix))))
 	 (if $linsolve_params (go saval) (go next)))
-       (setq ans (arraycall t ax ix m))
-       (store (arraycall t ax ix m) nil)
-       (do ((j (f1+ ix) (f1+ j))) ((> j m-1))
-	 (setq ans (ratdif ans (rattimes (arraycall t ax ix j) 
-					 (arraycall t ax 0 j)
-					 t)))
-	 (store (arraycall t ax ix j ) nil))
-       (store (arraycall t ax 0 ix) (ratquotient ans (arraycall t ax ix ix)))
-       (store (arraycall t ax ix ix ) nil)
+       (setq ans (aref ax ix m))
+       (setf (aref ax ix m) nil)
+       (do ((j (1+ ix) (1+ j))) ((> j m-1))
+	 (setq ans (ratdif ans (rattimes (aref ax ix j) (aref ax 0 j) t)))
+	 (setf (aref ax ix j) nil))
+       (setf (aref ax 0 ix) (ratquotient ans (aref ax ix ix)))
+       (setf (aref ax ix ix) nil)
        (setq ans nil)
-       saval(push (cond (*mosesflag (arraycall t ax 0 ix)) 
-			(t (list (if $globalsolve '(msetq) '(mequal))
-				 (ith varl ix)
-				 (simplify (rdis (arraycall t ax 0 ix))))))
-		  zz)
+       saval (push (cond (*mosesflag (aref ax 0 ix)) 
+			 (t (list (if $globalsolve '(msetq) '(mequal))
+				  (ith varl ix)
+				  (simplify (rdis (aref ax 0 ix))))))
+		   zz)
        (if (not $backsubst)
-	   (store (arraycall t ax 0 ix) (rform (ith varl ix))))
+	   (setf (aref ax 0 ix) (rform (ith varl ix))))
        (and $globalsolve (meval (car zz)))
-       next (setq ix (f1- ix))
+       next (decf ix)
        (go loop)
        out
        (cond ($dispflag (mtell "Solution~%")))
        (setq j 1 sol (list '(mlist)) chk (checklabel $linechar))
-       (do ((ll zz (cdr ll))) ((null ll)) (setq zzz (car ll))
+       (do ((ll zz (cdr ll)))
+	   ((null ll))
+	 (setq zzz (car ll))
 	 (setq zzz (list '(mlable)
-			 (progn (if chk (setq chk nil)
-				    (setq $linenum (f1+ $linenum)))
-				(let (($nolabels nil))
-                  (makelabel $linechar))
-				linelable)
-				(set linelable zzz)))
+			 (progn
+			   (if chk (setq chk nil)
+			       (incf $linenum))
+			   (let (($nolabels nil))
+			     (makelabel $linechar))
+			   linelable)
+			 (set linelable zzz)))
 	 (nconc sol (ncons linelable))
 	 (cond ($dispflag (setq tim (get-internal-run-time))
 			  (mtell-open "~%~M" zzz)
