@@ -34,7 +34,6 @@ binary-clisp/maxima.mem : mformt.lisp
 binary-clisp/maxima.mem : mutils.lisp
 binary-clisp/maxima.mem : outmis.lisp
 binary-clisp/maxima.mem : ar.lisp
-binary-clisp/maxima.mem : misc.lisp
 binary-clisp/maxima.mem : comm.lisp
 binary-clisp/maxima.mem : comm2.lisp
 binary-clisp/maxima.mem : mlisp.lisp

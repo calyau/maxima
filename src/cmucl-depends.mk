@@ -34,7 +34,6 @@ binary-cmucl/maxima.core : mformt.lisp
 binary-cmucl/maxima.core : mutils.lisp
 binary-cmucl/maxima.core : outmis.lisp
 binary-cmucl/maxima.core : ar.lisp
-binary-cmucl/maxima.core : misc.lisp
 binary-cmucl/maxima.core : comm.lisp
 binary-cmucl/maxima.core : comm2.lisp
 binary-cmucl/maxima.core : mlisp.lisp

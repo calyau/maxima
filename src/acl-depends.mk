@@ -34,7 +34,6 @@ binary-acl/maxima.dxl : mformt.lisp
 binary-acl/maxima.dxl : mutils.lisp
 binary-acl/maxima.dxl : outmis.lisp
 binary-acl/maxima.dxl : ar.lisp
-binary-acl/maxima.dxl : misc.lisp
 binary-acl/maxima.dxl : comm.lisp
 binary-acl/maxima.dxl : comm2.lisp
 binary-acl/maxima.dxl : mlisp.lisp

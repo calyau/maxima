@@ -40,7 +40,6 @@ binary-gcl/maxima : mformt.lisp
 binary-gcl/maxima : mutils.lisp
 binary-gcl/maxima : outmis.lisp
 binary-gcl/maxima : ar.lisp
-binary-gcl/maxima : misc.lisp
 binary-gcl/maxima : comm.lisp
 binary-gcl/maxima : comm2.lisp
 binary-gcl/maxima : mlisp.lisp

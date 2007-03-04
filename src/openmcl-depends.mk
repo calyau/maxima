@@ -32,7 +32,6 @@ binary-openmcl/maxima.image : mformt.lisp
 binary-openmcl/maxima.image : mutils.lisp
 binary-openmcl/maxima.image : outmis.lisp
 binary-openmcl/maxima.image : ar.lisp
-binary-openmcl/maxima.image : misc.lisp
 binary-openmcl/maxima.image : comm.lisp
 binary-openmcl/maxima.image : comm2.lisp
 binary-openmcl/maxima.image : mlisp.lisp
