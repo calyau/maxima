@@ -194,7 +194,7 @@ homogeneous;
 [%c*x=1/sin(y/x)];
 solve(ans[1],y);
 [y = asin(1/(%c*x))*x];
-[method,ode_check(eqn,%[1]);
+[method,ode_check(eqn,%[1])];
 [homogeneous,0];
 
 /* Equations 126 to 128 need pdiff */
