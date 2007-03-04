@@ -348,7 +348,6 @@ merror.lisp \
 mforma.lisp \
 mformt.lisp \
 mhayat.lisp \
-misc.lisp \
 mlisp.lisp \
 mload.lisp \
 mmacro.lisp \
