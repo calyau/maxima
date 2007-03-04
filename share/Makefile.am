@@ -670,8 +670,6 @@ macro/keyarg.dem\
 macro/keyarg.mac\
 macro/packg.mac\
 macro/sum1.mac\
-matrix/determ.mac\
-matrix/determ.usg\
 matrix/eigen.dem\
 matrix/eigen.mac\
 matrix/eigen_1.dem\
