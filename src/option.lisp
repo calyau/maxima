@@ -60,7 +60,7 @@
 (defun menu (opts)
   (do ((l opts (cdr l)) (i 1 (f1+ i))) ((null l))
     (princ i) (princ " - ") (princ (fullstrip1 (car l)))
-    (cond ((oldget (car l) 'kind) (tyo #\space) (princ (oldget (car l) 'kind))))
+    (cond ((oldget (car l) 'kind) (write-char #\space) (princ (oldget (car l) 'kind))))
     (terpri)))
 
 
@@ -86,9 +86,12 @@
 
 (defun prnet (node indent)
   (terpri)
-  (do ((i 1 (f1+ i))) ((> i indent)) (tyo #\tab)) (princ (fullstrip1 node))
-  (cond ((oldget node 'kind) (tyo #\space) (princ (oldget node 'kind))))
-  (mapc #'(lambda (l) (prnet l (f1+ indent))) (downs node)))
+  (do ((i 1 (1+ i)))
+      ((> i indent))
+    (write-char #\tab))
+  (princ (fullstrip1 node))
+  (cond ((oldget node 'kind) (write-char #\space) (princ (oldget node 'kind))))
+  (mapc #'(lambda (l) (prnet l (1+ indent))) (downs node)))
 
 ;;Copyright 1980, Massachusetts Institute of Technology
 (subc $all () $interaction $debugging $evaluation $lists $matrices 

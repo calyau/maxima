@@ -12,54 +12,34 @@
 
 (macsyma-module grind)
 
-(declare-top (genprefix gri)
-	     (special lop rop *grind-charlist* chrps $aliases aliaslist linel)
-	     (fixnum (chrct))
-	     (*expr lbp rbp))
+(declare-top (special lop rop *grind-charlist* chrps $aliases aliaslist linel))
 
-(defun chrct () (f- linel chrps))
+(defun chrct () (- linel chrps))
 
-(defun chrct* () (f- linel chrps))
+(defun chrct* () (- linel chrps))
 
 (defvar fortranp nil)
 
-;;(DEFMSPEC $GRIND (X) (SETQ X (CDR X))
-;;  (LET (Y)
-;;    (IF (NOT (ZEROP (CHARPOS T))) (MTERPRI))
-;;    (COND ((OR (NULL X) (CDR X)) (WNA-ERR '$GRIND))
-;;	  ((ATOM (SETQ X (STRMEVAL (CAR X))))
-;;	   (SETQ X ($VERBIFY X))
-;;	   (COND ((SETQ Y (MGET X 'MEXPR))
-;;		  (MGRIND (LIST '(MDEFINE) (CONS (LIST X) (CDADR Y)) (CADDR Y)) NIL))
-;;		 ((SETQ Y (MGET X 'MMACRO))
-;;		  (MGRIND (LIST '(MDEFMACRO) (CONS (LIST X) (CDADR Y)) (CADDR Y)) NIL))
-;;		 ((SETQ Y (MGET X 'AEXPR))
-;;		  (MGRIND (LIST '(MDEFINE) (CONS (LIST X 'ARRAY) (CDADR Y)) (CADDR Y)) NIL))
-;;		 (T (MGRIND X NIL)))
-;;	   (TYO #/$ NIL))
-;;	  (T (MGRIND X NIL) (TYO #/$ NIL)))
-;;    '$DONE))
-;;Update from F302 --gsb
-
-(defmspec $grind (x) (setq x (cdr x))
-	  (let (y)
-	    #+nocp(fresh-line)
-	    #-nocp(if (not (zerop (charpos t))) (mterpri))
-	    (cond
-	  ((null x))
-	  ((cdr x) (mapc #'(lambda (xx) (funcall (get '$grind 'mfexpr*) `(($grind) ,xx))) x))
-		  ((symbolp (setq x (strmeval (car x))))
-		   (unless (mstringp x) (setq x ($verbify x)))
-		   (cond ((setq y (mget x 'mexpr))
-			  (mgrind (list '(mdefine) (cons (list x) (cdadr y)) (caddr y)) nil))
-			 ((setq y (mget x 'mmacro))
-			  (mgrind (list '(mdefmacro) (cons (list x) (cdadr y)) (caddr y)) nil))
-			 ((setq y (mget x 'aexpr))
-			  (mgrind (list '(mdefine) (cons (list x 'array) (cdadr y)) (caddr y)) nil))
-			 (t (mgrind x nil)))
-		   (tyo #\$ nil) (tyo #\Newline nil))
-		  (t (mgrind x nil) (tyo #\$ nil) (tyo #\Newline nil)))
-	    '$done))
+(defmspec $grind (x)
+  (setq x (cdr x))
+  (let (y)
+    #+nocp(fresh-line)
+    #-nocp(if (not (zerop (charpos t))) (mterpri))
+    (cond
+      ((null x))
+      ((cdr x) (mapc #'(lambda (xx) (funcall (get '$grind 'mfexpr*) `(($grind) ,xx))) x))
+      ((symbolp (setq x (strmeval (car x))))
+       (unless (mstringp x) (setq x ($verbify x)))
+       (cond ((setq y (mget x 'mexpr))
+	      (mgrind (list '(mdefine) (cons (list x) (cdadr y)) (caddr y)) nil))
+	     ((setq y (mget x 'mmacro))
+	      (mgrind (list '(mdefmacro) (cons (list x) (cdadr y)) (caddr y)) nil))
+	     ((setq y (mget x 'aexpr))
+	      (mgrind (list '(mdefine) (cons (list x 'array) (cdadr y)) (caddr y)) nil))
+	     (t (mgrind x nil)))
+       (write-char #\$ nil) (write-char #\Newline nil))
+      (t (mgrind x nil) (write-char #\$ nil) (write-char #\Newline nil)))
+    '$done))
 
 (defun show-msize (lis)
   (format t "~%Length is ~A" (car lis))
@@ -94,8 +74,8 @@
 		  ((setq y (mget x 'aexpr))
 		   (mgrind (list '(mdefine) (cons (list x 'array) (cdadr y)) (caddr y)) nil))
 		  (t (mgrind x nil)))
-	    (tyo #\$ nil))
-	   (t (mgrind x nil) (tyo #\$ nil)))
+	    (write-char #\$ nil))
+	   (t (mgrind x nil) (write-char #\$ nil)))
     '$done))
 
 
@@ -105,7 +85,7 @@
 
 (defun mprint (x out)
   (cond ((characterp x)
-	 (setq chrps (f1+ chrps)) (tyo x out))
+	 (setq chrps (1+ chrps)) (write-char x out))
 	((< (car x) (chrct*)) (mapc #'(lambda (l) (mprint l out)) (cdr x)))
 	(t (prog (i) (setq i chrps)
 		 (mprint (cadr x) out)
@@ -115,7 +95,7 @@
 				 (atom (caddr x)) (< (caaddr x) (chrct*))))
 			(setq i chrps)
 			(mprint (caddr x) out))
-		       (t (setq i (f1+ i)) (setq chrps 0) (terpri out)
+		       (t (setq i (1+ i)) (setq chrps 0) (terpri out)
 			  (mtyotbsp i out) (mprint (caddr x) out)))
 		 (do ((l (cdddr x) (cdr l))) ((null l))
 		   (cond
@@ -124,9 +104,9 @@
 		   (mprint (car l) out))))))
 
 (defun mtyotbsp (n out) (declare (fixnum n))
-       (setq chrps (f+ n chrps))
-       (do () ((< n 8)) (tyo #\tab out) (setq n (f- n 8)))
-       (do () ((< n 1)) (tyo #\space out) (setq n (f1- n))))
+       (setq chrps (+ n chrps))
+       (do () ((< n 8)) (write-char #\tab out) (setq n (- n 8)))
+       (do () ((< n 1)) (write-char #\space out) (setq n (1- n))))
 
 (defun strgrind (x)
   (let (*grind-charlist* (chrps 0))
@@ -145,7 +125,7 @@
 			      (atom (caddr x)) (< (caaddr x) (chrct*))))
 		     (setq i chrps)
 		     (strprint (caddr x)))
-		    (t (setq i (f1+ i)) (setq chrps 0) (sterpri)
+		    (t (setq i (1+ i)) (setq chrps 0) (sterpri)
 		       (styotbsp i) (strprint (caddr x))))
 	      (do ((l (cdddr x) (cdr l))) ((null l))
 		(cond
@@ -153,13 +133,13 @@
 		  (t (setq chrps 0) (sterpri) (styotbsp i)))
 		(strprint (car l)))))))
 
-(defun styo (x) (setq *grind-charlist* (cons x *grind-charlist*) chrps (f1+ chrps)))
+(defun styo (x) (setq *grind-charlist* (cons x *grind-charlist*) chrps (1+ chrps)))
 
 (defun sterpri () (setq *grind-charlist* (cons #\newline *grind-charlist*) chrps 0))
 
 (defun styotbsp (n) (declare (fixnum n)) (setq chrps n)
-       (do () ((< n 8)) (setq *grind-charlist* (cons #\tab *grind-charlist*) n (f- n 8)))
-       (do () ((< n 1)) (setq *grind-charlist* (cons #\space *grind-charlist*) n (f1- n))))
+       (do () ((< n 8)) (setq *grind-charlist* (cons #\tab *grind-charlist*) n (- n 8)))
+       (do () ((< n 1)) (setq *grind-charlist* (cons #\space *grind-charlist*) n (1- n))))
 
 (defmfun mstring (x)
   (nreverse (string1 (msize x nil nil 'mparen 'mparen) nil)))
@@ -239,7 +219,7 @@
 	 (setq l (cons #\' l))))
   (setq l (msize f l (list lb) lop 'mfunction)
 	r (msize-list (cdr x) nil (cons rb r)))
-  (cons (f+ (car l) (car r)) (cons l (cdr r))))
+  (cons (+ (car l) (car r)) (cons l (cdr r))))
 
 (defun msize-function (x l r op)
   (cond ((not (symbolp (caar x))))
@@ -250,17 +230,17 @@
 	 (setq l (cons #\' l))))
   (setq l (msize (if op (getop (caar x)) (caar x)) l (ncons #\( ) 'mparen 'mparen)
 	r (msize-list (cdr x) nil (cons #\) r)))
-  (cons (f+ (car l) (car r)) (cons l (cdr r))))
+  (cons (+ (car l) (car r)) (cons l (cdr r))))
 
 (defun msize-list (x l r)
   (if (null x) (msz nil l r)
       (do ((nl) (w 0))
 	  ((null (cdr x))
 	   (setq nl (cons (msize (car x) l r 'mparen 'mparen) nl))
-	   (cons (f+ w (caar nl)) (nreverse nl)))
+	   (cons (+ w (caar nl)) (nreverse nl)))
 	(declare (fixnum w))
 	(setq nl (cons (msize (car x) l (list #\,) 'mparen 'mparen) nl)
-	      w (f+ w (caar nl)) x (cdr x) l nil))))
+	      w (+ w (caar nl)) x (cdr x) l nil))))
 
 (defun msize-prefix (x l r)
   (msize (cadr x) (reconc (strsym (caar x)) l) r (caar x) rop))
@@ -270,7 +250,7 @@
     (return-from msize-infix (msize-function x l r t)))
   (setq l (msize (cadr x) l nil lop (caar x))
 	r (msize (caddr x) (reverse (strsym (caar x))) r (caar x) rop))
-  (list (f+ (car l) (car r)) l r))
+  (list (+ (car l) (car r)) l r))
 
 (defun msize-postfix (x l r)
   (msize (cadr x) l (append (strsym (caar x)) r) lop (caar x)))
@@ -284,7 +264,7 @@
 	l (cons (length l) l)
 	r (append (cdr (strsym (caar x))) r)
 	x (msize-list (cdr x) nil r))
-  (cons (f+ (car l) (car x)) (cons l (cdr x))))
+  (cons (+ (car l) (car x)) (cons l (cdr x))))
 
 (defun msznary (x l r dissym)
   (cond ((null (cddr x)) (msize-function x l r t))
@@ -292,11 +272,11 @@
 	   (do ((ol (cddr x) (cdr ol)) (nl (list l)) (w (car l)))
 	       ((null (cdr ol))
 		(setq r (msize (car ol) (reverse dissym) r (caar x) rop))
-		(cons (f+ (car r) w) (nreverse (cons r nl))))
+		(cons (+ (car r) w) (nreverse (cons r nl))))
 	     (declare (fixnum w))
 	     (setq nl (cons (msize (car ol) (reverse dissym) nil (caar x) (caar x))
 			    nl)
-		   w (f+ (caar nl) w))))))
+		   w (+ (caar nl) w))))))
 
 (defun strsym (x) (or (get x 'strsym) (get x 'dissym)))
 
@@ -313,18 +293,18 @@
 (defun msz-mqapply (x l r)
   (setq l (msize (cadr x) l (list #\( ) lop 'mfunction)
 	r (msize-list (cddr x) nil (cons #\) r)))
-  (cons (f+ (car l) (car r)) (cons l (cdr r))))
+  (cons (+ (car l) (car r)) (cons l (cdr r))))
 
 ; SPACEOUT appears solely in trace output. See mtrace.lisp.
 
 (defprop spaceout msize-spaceout grind)
 
-(defun msize-spaceout (x l r)
-  (declare (ignore l r))
+(defun msize-spaceout (x ll r)
+  (declare (ignore ll r))
   (let ((n (cadr x))
 	l)
     (dotimes (i n)
-      (setq l (cons #\space l)))
+      (push #\space l))
     (cons n l)))
 
 (defprop mquote msize-prefix grind)
@@ -353,12 +333,12 @@
 (defun msz-mdef (x l r)
   (setq l (msize (cadr x) l (copy-list (strsym (caar x))) lop (caar x))
 	r (msize (caddr x) nil r (caar x) rop))
-  (setq x (cons (f- (car l) (caadr l)) (cddr l)))
+  (setq x (cons (- (car l) (caadr l)) (cddr l)))
   (if (and (not (atom (cadr r))) (not (atom (caddr r)))
-	   (< (f+ (car l) (caadr r) (caaddr r)) linel))
+	   (< (+ (car l) (caadr r) (caaddr r)) linel))
       (setq x (nconc x (list (cadr r) (caddr r)))
 	    r (cons (car r) (cdddr r))))
-  (cons (f+ (car l) (car r)) (cons (cadr l) (cons x (cdr r)))))
+  (cons (+ (car l) (car r)) (cons (cadr l) (cons x (cdr r)))))
 
 
 (defprop mfactorial msize-postfix grind)
@@ -373,7 +353,7 @@
 	r (if (mmminusp (setq x (nformat (caddr x))))
 	      (msize (cadr x) (reverse '(#\^ #\-)) r 'mexpt rop)
 	      (msize x (list #\^) r 'mexpt rop)))
-  (list (f+ (car l) (car r)) l r))
+  (list (+ (car l) (car r)) l r))
 
 
 (defprop mncexpt msize-infix grind)
@@ -413,12 +393,12 @@
 		(if (mmminusp (car x)) (setq l (cadar x) dissym (list #\-))
 		    (setq l (car x) dissym (list #\+)))
 		(setq r (msize l dissym r 'mplus rop))
-		(cons (f+ (car r) w) (nreverse (cons r nl))))
+		(cons (+ (car r) w) (nreverse (cons r nl))))
 	     (declare (fixnum w))
 	     (if (mmminusp (car x)) (setq l (cadar x) dissym (list #\-))
 		 (setq l (car x) dissym (list #\+)))
 	     (setq nl (cons (msize l dissym nil 'mplus 'mplus) nl)
-		   w (f+ (caar nl) w)
+		   w (+ (caar nl) w)
 		   x (cdr x))))))
 
 (defprop mminus msize-prefix grind)
@@ -526,8 +506,8 @@
 
 (defprop text-string msize-text-string grind)
 
-(defun msize-text-string (x l r)
-  (declare (ignore l r))
+(defun msize-text-string (x ll r)
+  (declare (ignore ll r))
   (cons (length (cdr x)) (cdr x)))
 
 (defprop mdo msz-mdo grind)

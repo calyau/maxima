@@ -1,4 +1,5 @@
 (in-package :maxima)
+
 ;; TeX-printing
 ;; (c) copyright 1987, Richard J. Fateman
 ;; small corrections and additions: Andrey Grozin, 2001
@@ -184,7 +185,7 @@
      (do ((ch chlst (cdr ch))
 	  (colc ccol (add1 colc)))
 	 ((null ch) (setq ccol colc))
-       (tyo (car ch) texport))))
+       (write-char (car ch) texport))))
 
 (defun myterpri nil
   (cond (texport (terpri texport))
