@@ -46,8 +46,8 @@
 	    #+nocp(fresh-line)
 	    #-nocp(if (not (zerop (charpos t))) (mterpri))
 	    (cond
-          ((null x))
-          ((cdr x) (mapc #'(lambda (xx) (funcall (get '$grind 'mfexpr*) `(($grind) ,xx))) x))
+	  ((null x))
+	  ((cdr x) (mapc #'(lambda (xx) (funcall (get '$grind 'mfexpr*) `(($grind) ,xx))) x))
 		  ((symbolp (setq x (strmeval (car x))))
 		   (unless (mstringp x) (setq x ($verbify x)))
 		   (cond ((setq y (mget x 'mexpr))
@@ -97,7 +97,7 @@
 	    (tyo #\$ nil))
 	   (t (mgrind x nil) (tyo #\$ nil)))
     '$done))
-  
+
 
 (defun mgrind (x out)
   (setq chrps 0)
@@ -193,17 +193,12 @@
 	   ((char= #\$ (car y)) (setq y (slash (cdr y))))
 	   ((char= #\& (car y))
 	    (do ((l (cdr y) (cdr l))) ((null l))
-	      (cond ((or (zl-member (car l)
-				    '(#. double-quote-char
-				      #. back-slash-char
-				      #. semi-colon-char #\$))
+	      (cond ((or (member (car l) '(#\" #\\ #\; #\$) :test #'equal)
 			 (and (char< (car l) #\space)
-			      (not (char= (car l) #\return ;13
-					  ))))
+			      (not (char= (car l) #\return))))
 		     (rplacd l (cons (car l) (cdr l)))
-		     (rplaca l #. back-slash-char) (setq l (cdr l)))))
-	    (setq y (cons #.double-quote-char
-			  (nconc (cdr y) (list #.double-quote-char)))))
+		     (rplaca l #\\) (setq l (cdr l)))))
+	    (setq y (cons #\" (nconc (cdr y) (list #\")))))
 	   (t (setq y (cons #\? (slash y)))))
      (return (msz y l r))))
 
@@ -216,16 +211,15 @@
     (if (or (ascii-numberp (car l)) (alphabetp (car l)))
 	nil
 	(progn (rplacd l (cons (car l) (cdr l)))
-	       (rplaca l #. back-slash-char) (setq l (cdr l)))))
-  (if (alphabetp (car x)) x (cons #. back-slash-char x)))
+	       (rplaca l #\\) (setq l (cdr l)))))
+  (if (alphabetp (car x)) x (cons #\\ x)))
 
 ;;#-cl
 ;;(DEFUN ALPHANUMP (N) (DECLARE (FIXNUM N))
 ;;  (OR (ASCII-NUMBERP N) (ALPHABETP N)))
 
 (defun msize-paren (x l r)
-  (msize x (cons #.left-parentheses-char l)
-	 (cons #.right-parentheses-char r) 'mparen 'mparen))
+  (msize x (cons #\( l) (cons #\) r) 'mparen 'mparen))
 
 ;; The variables LB and RB are not uses here syntactically, but for
 ;; communication.  The FORTRAN program rebinds them to #/( and #/) since
@@ -254,8 +248,8 @@
 	((and (get (caar x) 'noun) (not (memq (caar x) (cdr $aliases)))
 	      (not (get (caar x) 'reversealias)))
 	 (setq l (cons #\' l))))
-  (setq l (msize (if op (getop (caar x)) (caar x)) l (ncons #. left-parentheses-char ) 'mparen 'mparen)
-	r (msize-list (cdr x) nil (cons #. right-parentheses-char r)))
+  (setq l (msize (if op (getop (caar x)) (caar x)) l (ncons #\( ) 'mparen 'mparen)
+	r (msize-list (cdr x) nil (cons #\) r)))
   (cons (f+ (car l) (car r)) (cons l (cdr r))))
 
 (defun msize-list (x l r)
@@ -317,8 +311,8 @@
 (defprop mqapply msz-mqapply grind)
 
 (defun msz-mqapply (x l r)
-  (setq l (msize (cadr x) l (list #. left-parentheses-char ) lop 'mfunction)
-	r (msize-list (cddr x) nil (cons #. right-parentheses-char r)))
+  (setq l (msize (cadr x) l (list #\( ) lop 'mfunction)
+	r (msize-list (cddr x) nil (cons #\) r)))
   (cons (f+ (car l) (car r)) (cons l (cdr r))))
 
 ; SPACEOUT appears solely in trace output. See mtrace.lisp.
@@ -326,8 +320,11 @@
 (defprop spaceout msize-spaceout grind)
 
 (defun msize-spaceout (x l r)
-  (let ((n (cadr x)) l)
-    (dotimes (i n) (setq l (cons #\space l)))
+  (declare (ignore l r))
+  (let ((n (cadr x))
+	l)
+    (dotimes (i n)
+      (setq l (cons #\space l)))
     (cons n l)))
 
 (defprop mquote msize-prefix grind)
@@ -396,7 +393,7 @@
 
 (defprop mquotient msize-infix grind)
 (defprop mquotient 120. lbp)
-(defprop mquotient 120. rbp) 
+(defprop mquotient 120. rbp)
 (defprop rat msize-infix grind)
 (defprop rat 120. lbp)
 (defprop rat 120. rbp)
@@ -475,65 +472,62 @@
 ;; See comments above DIM-MCOND in displa.lisp concerning MCOND parsing and formatting.
 
 (defun msz-mcond (x l r)
-  (setq if (nreconc l '(#\i #\f #\space))
-        if (cons (length if) if)
-        l (msize (cadr x) nil nil 'mcond 'mparen))
+  (let ((if (nreconc l '(#\i #\f #\space))))
+    (setq if (cons (length if) if)
+	  l (msize (cadr x) nil nil 'mcond 'mparen))
 
-    (let
-      ((args (cdddr x))
-       (if-literal (reverse (exploden "if ")))
-       (else-literal (reverse (exploden " else ")))
-       (elseif-literal (reverse (exploden " elseif ")))
-       (then-literal (reverse (exploden " then ")))
-       (parts)
-       (part))
+
+    (let ((args (cdddr x))
+	  (else-literal (reverse (exploden " else ")))
+	  (elseif-literal (reverse (exploden " elseif ")))
+	  (then-literal (reverse (exploden " then ")))
+	  (parts)
+	  (part))
 
       (let ((sgra (reverse args)))
-        (if (and (or (eq (car sgra) nil) (eq (car sgra) '$false)) (eq (cadr sgra) t))
-          (setq args (reverse (cddr sgra)))))
+	(if (and (or (eq (car sgra) nil) (eq (car sgra) '$false)) (eq (cadr sgra) t))
+	    (setq args (reverse (cddr sgra)))))
 
       (setq parts (list if l))
 
-      (setq part
-            (cond
-              ((= (length args) 0)
-               `(,(msize (caddr x) (copy-tree then-literal) r 'mcond rop)))
-              (t
-                `(,(msize (caddr x) (copy-tree then-literal) nil 'mcond 'mparen))))
+      (setq part (cond ((= (length args) 0)
+			`(,(msize (caddr x) (copy-tree then-literal) r 'mcond rop)))
+		       (t
+			`(,(msize (caddr x) (copy-tree then-literal) nil 'mcond 'mparen))))
 
-            parts (append parts part))
-      
+	    parts (append parts part))
+
       (loop while (>= (length args) 2) do
-        (let ((maybe-elseif (car args)) (else-or-then (cadr args)))
-          (cond
-            ((= (length args) 2)
-             (cond
-               ((eq maybe-elseif t)
-                (let ((else-arg else-or-then))
-                  (setq
-                    part `(,(msize else-arg (copy-tree else-literal) r 'mcond rop))
-                    parts (append parts part))))
-               (t
-                 (let ((elseif-arg maybe-elseif) (then-arg else-or-then))
-                   (setq
-                     part `(,(msize elseif-arg (copy-tree elseif-literal) nil 'mcond 'mparen)
-                             ,(msize then-arg (copy-tree then-literal) r 'mcond rop))
-                     parts (append parts part))))))
-            (t
-              (let ((elseif-arg maybe-elseif) (then-arg else-or-then))
-                (setq
-                  part `(,(msize elseif-arg (copy-tree elseif-literal) nil 'mcond 'mparen)
-                          ,(msize then-arg (copy-tree then-literal) nil 'mcond 'mparen))
-                  parts (append parts part))))))
+	   (let ((maybe-elseif (car args)) (else-or-then (cadr args)))
+	     (cond
+	       ((= (length args) 2)
+		(cond
+		  ((eq maybe-elseif t)
+		   (let ((else-arg else-or-then))
+		     (setq
+		      part `(,(msize else-arg (copy-tree else-literal) r 'mcond rop))
+		      parts (append parts part))))
+		  (t
+		   (let ((elseif-arg maybe-elseif) (then-arg else-or-then))
+		     (setq
+		      part `(,(msize elseif-arg (copy-tree elseif-literal) nil 'mcond 'mparen)
+			      ,(msize then-arg (copy-tree then-literal) r 'mcond rop))
+		      parts (append parts part))))))
+	       (t
+		(let ((elseif-arg maybe-elseif) (then-arg else-or-then))
+		  (setq
+		   part `(,(msize elseif-arg (copy-tree elseif-literal) nil 'mcond 'mparen)
+			   ,(msize then-arg (copy-tree then-literal) nil 'mcond 'mparen))
+		   parts (append parts part))))))
 
-        (setq args (cddr args)))
+	   (setq args (cddr args)))
 
-      (cons (apply '\+ (mapcar 'car parts)) parts)))
+      (cons (apply '\+ (mapcar #'car parts)) parts))))
 
 (defprop text-string msize-text-string grind)
 
 (defun msize-text-string (x l r)
-  (declare (ignore r))
+  (declare (ignore l r))
   (cons (length (cdr x)) (cdr x)))
 
 (defprop mdo msz-mdo grind)
@@ -580,6 +574,3 @@
 		`($while ,(cadr (seventh x))))
 	       (t `($unless ,(seventh x))))
 	 `($do ,(eighth x))))
-
-
-

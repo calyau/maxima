@@ -232,12 +232,12 @@
 	  ((not (eq (getop atom) atom))
 	   (setq dummy (exploden (getop atom)))
 	   (if (char= #\& (car dummy))
-	       (cons double-quote-char (nconc (cdr dummy) (list double-quote-char)))
+	       (cons #\" (nconc (cdr dummy) (list #\")))
 	       (cdr dummy)))
 	  (t (setq dummy (exploden atom))
 	     (cond ((char= #\$ (car dummy)) (cdr dummy))
 		   ((and $stringdisp (char= #\& (car dummy)))
-		    (cons double-quote-char (nconc (cdr dummy) (list double-quote-char))))
+		    (cons #\" (nconc (cdr dummy) (list #\"))))
 		   ((or (char= #\% (car dummy)) (char= #\& (car dummy))) (cdr dummy))
 		   ($lispdisp (cons #\? dummy))
 		   (t dummy))))))
@@ -1064,10 +1064,10 @@
 (defun dim-mlabel (form result)
   (prog (dummy (w 0) (h 0) (d 0))
      (cond ((eq nil (cadr form)) (setq w 0 h 0 d 0))
-	   (mratp (setq result (append mratp (if *display-labels-p* 
+	   (mratp (setq result (append mratp (if *display-labels-p*
 						 (dimension-paren (cadr form) result)))
 			w (+ 4 width) h height d depth))
-	   (t (setq result (cons #\space (if *display-labels-p* 
+	   (t (setq result (cons #\space (if *display-labels-p*
 					     (dimension-paren (cadr form) result)))
 		    w (1+ width) h height d depth)))
      (let ((level linel)) (checkbreak result w))
@@ -1350,7 +1350,7 @@
 ;; character cell precisely and not get clipped when moving things around in
 ;; the equation editor.
 
-(defun d-vbar (linear? h d &optional (char vertical-stroke-char))
+(defun d-vbar (linear? h d &optional (char #\|))
   (cond (linear?
 	 (setq d (- d))
 	 (do ((i (- h 2) (1- i))

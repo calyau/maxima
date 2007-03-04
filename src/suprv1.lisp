@@ -523,7 +523,7 @@
     (*mdebug*
      ((lambda (brklvl varlist genvar errbrkl linelable)
 	(declare (special $help))
-	(prog (x ^q #.ttyoff o^r tim $%% $backtrace retval oldst ($help $help))
+	(prog (x ^q #.ttyoff o^r tim $%% $backtrace retval oldst)
 	   (setq  errset 'errbreak1)
 	   (setq tim (get-internal-run-time)
 		 $%% '$%%
@@ -946,7 +946,7 @@
 					    savefile))
 			 (if (or (and (atom (car l)) (get (car l) 'nodisp)) (not $strdisp))
 			     (write-char #\$ savefile)
-			     (write-char semi-colon-char savefile)))))
+			     (write-char #\; savefile)))))
 		     (setq maxima-error t)))
 	      (setq truename (truename savefile))
 	      (terpri savefile))
@@ -1067,9 +1067,10 @@
 ;; files only.
 
 (defmfun mterpri (&aux x)
-  #-nocp (setq x  (cursorpos))
+  #-nocp (setq x (cursorpos))
   (if (and smart-tty x (equal x '(0 . 0)))
-      (let ((#.ttyoff t)) (terpri))
+      (let ((#.ttyoff t))
+	(terpri))
       (terpri)))
 
 (defmfun $pagepause (x)
@@ -1107,7 +1108,7 @@
 (defun dskgc1 (xx yy)
   (declare (ignore xx yy))
   nil)
-  
+
 (do ((l '($sqrt $erf $sin $cos $tan $log $plog $sec $csc $cot $sinh $cosh
 	  $tanh $sech $csch $coth $asin $acos $atan $acot $acsc $asec $asinh
 	  $acosh $atanh $acsch $asech $acoth $binomial $gamma $genfact $del)
