@@ -330,8 +330,7 @@ is EQ to FNNAME if the latter is non-NIL."
 				 ~%Send a bug note."
 				   (car u) (caar form)))
 		       (setq noevalargs nil) (apply (caar form) (cdr form)))
-		      ((or (and (eq (car u) 'subr)
-				(prog2 (margchk (caar form) (cdr form)) t))
+		      ((or (eq (car u) 'subr)
 			   (eq (car u) 'lsubr))
 		       (apply (caar form) (mevalargs (cdr form))))
 		      ((eq (car u) 'noun)
@@ -358,9 +357,10 @@ is EQ to FNNAME if the latter is non-NIL."
 		       (setq noevalargs nil)
 		       (setq form (cons(caar form) (cdr form)))
 		       (eval form))
-		      ((eq (car u) 't-mfexpr) (apply (cadr u) (cdr form)))
-		      (t (margchk (caar form) (cdr form))
-			 (apply (cadr u) (mevalargs (cdr form))))))
+		      ((eq (car u) 't-mfexpr)
+		       (apply (cadr u) (cdr form)))
+		      (t
+		       (apply (cadr u) (mevalargs (cdr form))))))
 	      b   (if (and (not aryp) (load-function (caar form) t)) (go a))
 	      (badfunchk (caar form) (caar form) nil)
 	      (if (symbolp (caar form))
