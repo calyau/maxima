@@ -10,7 +10,9 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :maxima)
+
 (macsyma-module transl)
+
 (transl-module transl)
 
 ;;; File directory.
@@ -45,7 +47,7 @@
 ;;; MLOAD    This has a hack hook into BATCH, which is needed to do
 ;;;          TRANSLATE_FILE I/O. when using old-i/o SUPRV.
 
-
+
 ;;; Functions and literals have various MODE properties;;; >
 ;;; (at user level set up by $MODEDECLARE), such as "$FLOAT" and "$ANY".
 ;;; The main problem solved by this translater (and the reason that
@@ -248,7 +250,7 @@ APPLY means like APPLY.")
 	 (if $transcompile (addl var specials))
 	 t)))
 
-
+
 ;;; The error message system. Crude as it is.
 ;;; I tell you how this aught to work:
 ;;; (1) All state should be in one structure, one state variable.
@@ -325,7 +327,7 @@ APPLY means like APPLY.")
 	 (tr-warnbreak)
 	 'warned)))
 
-
+
 (deftrfun warn-mode (var mode newmode &optional comment)
   (cond ((eq mode newmode))
 	(t
@@ -393,7 +395,7 @@ APPLY means like APPLY.")
 						    ((null l) ll)
 						    (or (variable-p (car l))
 							(bad-var-warn (car l)))))
-			    (($modedeclare) ,@(copy-rest-arg vars-modes))
+			    (($modedeclare) ,@vars-modes)
 			    ,exp)))))
     (let ((mode (car loc))
 	  (exp (car (last loc)))) ;;; length varies with TRANSCOMPILE.
@@ -419,7 +421,7 @@ APPLY means like APPLY.")
 	 (if (integerp (cdr x)) (float (cdr x)) (list 'float (cdr x))))
 	((eq '$rational (car x))
 	 (ifn (eq 'quote (cadr x)) `($float ,(cdr x))
-	      (//$ (float (cadadr (cdr x))) (float (caddr (caddr x))))))
+	      (/ (float (cadadr (cdr x))) (float (caddr (caddr x))))))
 	(t (cdr x))))
 
 (defun dconv-$cre (x) (if (eq '$cre (car x)) (cdr x) `(ratf ,(cdr x))))
@@ -431,7 +433,7 @@ APPLY means like APPLY.")
 	((eq '$float mode1) (member mode2 '($float $fixnum $rational) :test #'eq))
 	((eq '$number mode1) (member mode2 '($fixnum $float) :test #'eq))
 	((member mode1 *$any-modes* :test #'eq) t)))
-
+
 
 ;;; takes a function name as input.
 
@@ -568,7 +570,7 @@ APPLY means like APPLY.")
 
 (defun trfail (x)
   (tr-tell x " failed to translate.") nil)
-
+
 
 ;;; should macsyma batch files support INCLUDEF? No, not needed
 ;;; and not as efficient for loading declarations, and macros 
@@ -705,7 +707,7 @@ APPLY means like APPLY.")
 		 (t
 		  t-form))))))
 
-
+
 
 (defmvar $tr_optimize_max_loop 100.
   "The maximum number of times the macro-expansion and optimization
@@ -724,7 +726,7 @@ APPLY means like APPLY.")
 	       (t form)))
 	(t
 	 (do ((new-form)
-	      (kount 0 (f1+ kount)))
+	      (kount 0 (1+ kount)))
 	     ;; tailrecursion should always arrange for a counter
 	     ;; to check for mobylossage.
 	     ((> kount $tr_optimize_max_loop)
@@ -851,7 +853,7 @@ APPLY means like APPLY.")
 	(t
 	 (tr-macsyma-user-function-call (caar form) (cdr form) form))))
 
-
+
 
 (defmvar $tr_bound_function_applyp t)
 
@@ -899,7 +901,7 @@ APPLY means like APPLY.")
   (warn-fexpr form)
   `($any . (meval ',(translate-atoms form))))
 
-
+
 (defun tr-lisp-function-call (form type)
   (let ((op (caar form)) (mode) (args))
     (setq args (cond ((member type '(subr lsubr expr) :test #'eq)
@@ -947,7 +949,7 @@ APPLY means like APPLY.")
 	(args (tr-args (cdr form))))
     `($any . (simplify (list ',op ,@args)))))
 
-
+
 
 ;;; Some atoms, soley by usage, are self evaluating. 
 
@@ -980,7 +982,7 @@ APPLY means like APPLY.")
 	((eq 'mquote (caar form)) form)
 	(t (cons (car form) (mapcar 'translate-atoms (cdr form))))))
 
-
+
 ;;; the Translation Properties. the heart of TRANSL.
 
 ;;; This conses up the call to the function, adding in the
@@ -1065,7 +1067,7 @@ APPLY means like APPLY.")
 
 (def%tr mquote (form)
   (list (tr-class (cadr form)) 'quote (cadr form)))
-
+
 
 (defun tr-lambda (form &optional (tr-body #'tr-seq) &rest tr-body-argl
 		  &aux
@@ -1184,7 +1186,7 @@ APPLY means like APPLY.")
   (setq form (tr-seq (cdr form)))
   (cons (car form) `(progn ,@(cdr form))))
 	
-
+
 (def%tr mprog (form)
   (let (arglist body val-list)
     ;; [1] normalize the MPROG syntax.
@@ -1321,7 +1323,7 @@ APPLY means like APPLY.")
 	  (t
 	   (warn-meval form)
 	   `($any meval ',form)))))
-
+
 
 
 (def%tr mcond (form) 
@@ -1356,7 +1358,7 @@ APPLY means like APPLY.")
 			    form)))))
      (return (cons mode (cons 'cond form)))))
 
-
+
 
 ;; The MDO and MDOIN translators should be changed to use the TR-LAMBDA.
 ;; Perhaps a mere expansion into an MPROG would be best.
@@ -1394,7 +1396,7 @@ APPLY means like APPLY.")
 			       (list '(mlessp) var (cadr (cddddr form))))
 			      (t (list '(mgreaterp) var (cadr (cddddr form)))))
 			(caddr (cddddr form)))))
-      (cond ((and end-var (symbolp end-var))(remprop end-var 'mode)
+      (cond ((and end-var (symbolp end-var)) (remprop end-var 'mode)
 	     (remprop end-var 'tbind)))
       (setq action (translate (cadddr (cddddr form)))
 	    mode (cond ((null returns) '$any)
@@ -1413,7 +1415,6 @@ APPLY means like APPLY.")
 
 (setq shit nil)
 
-
 (def%tr mdoin (form)
   (let (returns assigns return-mode local (inside-mprog t) need-prog?)
     (prog (mode var init action)
@@ -1438,7 +1439,7 @@ APPLY means like APPLY.")
 		 ,(cond ((atom (cdr action)) nil)
 			((eq 'progn (cadr action)) (cddr action))
 			(t (list (cdr action)))))))))
-
+
 
 (defun lambda-wrap1 (tn val form)
   (if (or (atom val)
@@ -1479,7 +1480,7 @@ APPLY means like APPLY.")
   (cond ((null (cddr form)) (cons '$cre (dconv-$cre (translate (cadr form)))))
 	(t (setq tr-abort t) (cons '$any form))))
 
-
+
 (def%tr $max (x) (translate-$max-$min x))
 (def%tr $min (x) (translate-$max-$min x))
 (def%tr %max (x) (translate-$max-$min x))
@@ -1497,7 +1498,7 @@ APPLY means like APPLY.")
 	`($any ,(if (eq 'min op) '$lmin '$lmax)
 	  (list '(mlist) . ,(mapcar 'dconvx arglist))))))
 
-
+
 ;;; mode acessing, binding, handling. Super over-simplified.
 
 (defun tr-class (x)
@@ -1522,8 +1523,6 @@ APPLY means like APPLY.")
 	((eq '$number mode1)
 	 (if (eq '$rational mode2) '$any '$number))
 	(t '$any)))
-
-
 
 (defun value-mode (var)
   (cond ((get var 'mode))
@@ -1554,16 +1553,13 @@ APPLY means like APPLY.")
   "A hack to allow users to key the modes of variables
   off of variable spelling, and other things like that.")
 
-(eval-when
-    #+gcl (compile load eval)
-    #-gcl (:compile-toplevel :load-toplevel :execute)
-  (defstruct (tstack-slot (:conc-name tstack-slot-))
-    mode 
-    tbind
-    val-modes
-    ;; an alist telling second order info
-    ;; about APPLY(VAR,[X]), ARRAYAPPLY(F,[X]) etc.
-    special))
+(defstruct (tstack-slot (:conc-name tstack-slot-))
+  mode 
+  tbind
+  val-modes
+  ;; an alist telling second order info
+  ;; about APPLY(VAR,[X]), ARRAYAPPLY(F,[X]) etc.
+  special)
 
 ;;; should be a macro (TBINDV <var-list> ... forms)
 ;;; so that TUNBIND is assured, and also so that the stupid ASSQ doesn't

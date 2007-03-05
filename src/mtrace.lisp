@@ -608,12 +608,10 @@
        (args 'the-trace-apply-hack (args fun))
        (setplist 'the-trace-apply-hack (list type prop))
        (apply (second (getl 'the-trace-apply-hack '(subr lsubr))) largs))
-      ((mfexpr*)
-       (funcall prop (car largs)))
-      ((mfexpr*s)
-       (subrcall nil prop (car largs))))))
+      ((mfexpr* mfexpr*s)
+       (funcall prop (car largs))))))
 
-
+
 ;;; I/O cruft
 
 (defmvar $trace_max_indent 15. "max number of spaces it will go right" fixnum)
@@ -625,9 +623,7 @@
   (dimension-string (make-list (cadr form) :initial-element #\space) result))
 
 (defun trace-mprint (&rest l)
-  (mtell-open "~M"
-	      `((mtext)	((spaceout) ,(min $trace_max_indent trace-indent-level))
-		,@ (copy-rest-arg l))))
+  (mtell-open "~M" `((mtext) ((spaceout) ,(min $trace_max_indent trace-indent-level)) ,@l)))
 
 (defun trace-print (form)
   (terpri)
@@ -639,7 +635,7 @@
       (prin1 form))
   (write-char #\space))
 
-
+
 ;; 9:02pm  Monday, 18 May 1981 -GJC
 ;; A function benchmark facility using trace utilities.
 ;; This provides medium accuracy, enough for most user needs.

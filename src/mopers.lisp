@@ -39,24 +39,24 @@
 ;; operands.
 
 (defopt add (&rest terms)
-  (cond ((= (length terms) 2) `(add2 . ,(copy-rest-arg terms)))
-	(t `(addn (list . , (copy-rest-arg terms)) t))))
+  (cond ((= (length terms) 2) `(add2 . ,terms))
+	(t `(addn (list . ,terms) t))))
 
 (defopt add* (&rest terms)
-  (cond ((= (length terms) 2) `(add2* . ,(copy-rest-arg terms)))
-	(t `(addn (list . ,(copy-rest-arg terms)) nil))))
+  (cond ((= (length terms) 2) `(add2* . ,terms))
+	(t `(addn (list . ,terms) nil))))
 
 ;; Multiplication -- call MUL or NCMUL with simplified operands; MUL* or NCMUL*
 ;; with unsimplified operands.
 
 (defopt mul (&rest factors)
-  (cond ((= (length factors) 2) `(mul2 . ,(copy-rest-arg factors)))
-	((= (length factors) 3) `(mul3 . ,(copy-rest-arg factors)))
-	(t `(muln (list . ,(copy-rest-arg factors)) t))))
+  (cond ((= (length factors) 2) `(mul2 . ,factors))
+	((= (length factors) 3) `(mul3 . ,factors))
+	(t `(muln (list . ,factors) t))))
 
 (defopt mul* (&rest factors)
-  (cond ((= (length factors) 2) `(mul2* . ,(copy-rest-arg factors)))
-	(t `(muln (list . ,(copy-rest-arg factors)) nil))))
+  (cond ((= (length factors) 2) `(mul2* . ,factors))
+	(t `(muln (list . ,factors) nil))))
 
 ;; the rest here can't be DEFOPT's because there aren't interpreted versions yet.
 
@@ -64,8 +64,8 @@
 (defmacro inv* (x) `(power* ,x -1))
 
 (defmacro ncmul (&rest factors)
-  (cond ((= (length factors) 2) `(ncmul2 . ,(copy-rest-arg factors)))
-	(t `(ncmuln (list . ,(copy-rest-arg factors)) t))))
+  (cond ((= (length factors) 2) `(ncmul2 . ,factors))
+	(t `(ncmuln (list . ,factors) t))))
 
 ;; (TAKE '(%TAN) X) = tan(x)
 ;; This syntax really loses.  Not only does this syntax lose, but this macro

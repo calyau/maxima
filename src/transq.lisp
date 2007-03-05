@@ -207,8 +207,8 @@
    `(defun ,name ,argl
      ,@declarep
      (let ((,env ,name))
-       ,@(cond (declarep (cdr (copy-rest-arg body)))
-	       (t (copy-rest-arg  body))))))
+       ,@(cond (declarep (cdr body))
+	       (t body)))))
   (emit-defun `(defparameter ,name (make-list ,(length env))))
   `(progn
     (set-vals-into-list ,env ,name)
