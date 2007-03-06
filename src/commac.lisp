@@ -696,8 +696,7 @@ values")
 
 ;;essentially no common lisp support for cursor pos:
 ;;should be adapted for a particular implementation.
-;;the #+nocp (no cursorpos) flag could then be removed from *features*
-;;and perhaps even smart-tty set to t.
+;;perhaps even smart-tty could be set to t.
 
 (defun cursorpos (&rest args &aux q1 q2 )
   (cond ((null args) (error "cursorpos doesn't know position"))

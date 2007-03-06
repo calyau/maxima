@@ -3,7 +3,7 @@
 (in-package :cl-user)
 
 (pushnew :cl *features*)
-(pushnew :nocp *features*)
+
 #+gcl
 (let ((version-num (+ (* 10000 system::*gcl-major-version*)
 		      (* 100 system::*gcl-minor-version*)
@@ -13,8 +13,11 @@
 		      
 #+cmu
 (setf ext:*gc-verbose* nil)
+
 (setf *load-verbose* nil)
+
 (defvar *maxima-build-time* (multiple-value-list (get-decoded-time)))
+
 (export '*maxima-build-time*)
 
 (mk:defsystem "maxima"

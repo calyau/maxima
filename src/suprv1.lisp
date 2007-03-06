@@ -1066,9 +1066,8 @@
 ;; line, leave the cursor there and send the blank line to transcript
 ;; files only.
 
-(defmfun mterpri (&aux x)
-  #-nocp (setq x (cursorpos))
-  (if (and smart-tty x (equal x '(0 . 0)))
+(defmfun mterpri ()
+  (if smart-tty
       (let ((#.ttyoff t))
 	(terpri))
       (terpri)))

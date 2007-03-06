@@ -23,8 +23,7 @@
 (defmspec $grind (x)
   (setq x (cdr x))
   (let (y)
-    #+nocp(fresh-line)
-    #-nocp(if (not (zerop (charpos t))) (mterpri))
+    (fresh-line)
     (cond
       ((null x))
       ((cdr x) (mapc #'(lambda (xx) (funcall (get '$grind 'mfexpr*) `(($grind) ,xx))) x))
@@ -63,8 +62,7 @@
 
 (defun i-$grind (x)
   (let (y)
-    #+nocp(fresh-line)
-    #-nocp(if (not (zerop (charpos t))) (mterpri))
+    (fresh-line)
     (cond  ((symbolp (setq x (strmeval  x)))
 	    (setq x ($verbify x))
 	    (cond ((setq y (mget x 'mexpr))
