@@ -109,7 +109,8 @@
 (defvar *within-srf?* nil)
 
 (load-macsyma-macros mhayat rzmac ratmac)
-;		(comment Subtitle Special Stuff for Compiling)
+
+;;;		 Subtitle Special Stuff for Compiling
 
 (declare-top
  (special vlist
@@ -176,8 +177,6 @@
 				; suppress the message that TAYLOR is assumming
 				; an expression to be zero.
 	  $zerobern $simp 0p-funord lexp-non0)
-;	     (*expr lcm)
-;	     (muzzled t)
  )				;Don't want to see closed compilation notes.
 
 (defmvar $psexpand ()
@@ -277,9 +276,10 @@
 	    (or (atom (cdr e))
 		(memq (cadr e) genvar))))
 
-;		(Comment Subtitle Exponent arithmetic)
+;;;		 Subtitle Exponent arithmetic
 
-(defun ezerop (x) (and (not (infp x)) (signp e (car x))))
+(defun ezerop (x)
+  (and (not (infp x)) (signp e (car x))))
 
 (defun e+ (x y)
     (cond ((or (infp x) (infp y)) (inf))
@@ -291,8 +291,8 @@
 (defun ediff (x y)
     (cond ((infp x) (inf))
 	  ((and (equal (cdr x) 1) (equal (cdr y) 1))
-	   (cons (*dif (car x) (car y)) 1))
-	  (t (ereduce (*dif (times (car x) (cdr y)) (times (cdr x) (car y)))
+	   (cons (- (car x) (car y)) 1))
+	  (t (ereduce (- (times (car x) (cdr y)) (times (cdr x) (car y)))
 		      (times (cdr x) (cdr y))))))
 
 (defun emin (x y)
@@ -333,7 +333,7 @@
 (defun e1- (x)
     (cond ((infp x) (inf))
 	  ((equal (cdr x) 1) (cons (sub1 (car x)) 1))
-	  (t (cons (*dif (car x) (cdr x)) (cdr x)))))
+	  (t (cons (- (car x) (cdr x)) (cdr x)))))
 
 (defun e> (x y)
     (cond ((infp x) t)
@@ -358,9 +358,9 @@
 	     (yn (abs (car y))) (yd (cdr y)))
 	    (cons (gcd xn yn) (times xd (*quo yd (gcd xd yd))))))
 
-;		(Comment Subtitle polynomial arithmetic)
+;;;		 Subtitle polynomial arithmetic
 
-(declare-top(special vars))
+(declare-top (special vars))
 
 (defun ord-vector (p)
    (let ((vars (mapcar #'(lambda (datum) (list (int-gvar datum)))
@@ -981,12 +981,12 @@
 		(pstimes (psexpt-fn2 (srdis (lc (terms p))))
 			 (psexpt-fn (pscheck (gvar-o p) (list (trunc-lvl p))
 					     (n-term (terms p))))))) )
-	 (t (prog (l le inc trunc lt ea0 ans)
+	 (t (prog (l inc trunc ea0 ans)
 	       (setq l (terms p))
 	       (when ord<0?
 		  ;(return (ps-invert-var (psexpt-fn (ps-invert-var p))))
 		  (setq l (invert-terms l)))
-	       (setq le (le l) lt (lt l) trunc (trunc-lvl p)
+	       (setq trunc (trunc-lvl p)
 		     inc (psexpon-gcd l) ea0 (rcone))
 	       (unless (e> (le l) (rczero))
 		  (merror "Unreachable point in psexpt-fn"))
@@ -1181,14 +1181,14 @@
 		 (terms a)))))
 
 (defun adjoin-sing-datum (d)
-   (let ((r (prep1 (datum-var d))) g* (g (gensym)) (kernel (datum-var d))
-         (no (f1+ (cdr (int-var (car (last tlist)))))))
+   (let ((r (prep1 (datum-var d))) (g (gensym)) (kernel (datum-var d))
+         (no (1+ (cdr (int-var (car (last tlist)))))))
       (unless (and (equal (car r) 1) (equal (cddr r) '(1 1)))
 	 (break "bad singular datum"))
       (putprop g kernel 'disrep)
       (rplacd (cdddr d) (cons g no))
       (adjoin-datum d)
-      (push (cons (setq g* (cadr r)) kernel) key-vars)
+      (push (cons (cadr r) kernel) key-vars)
       (push (cons g kernel) key-vars)
       (push (car key-vars) ivars)
       ;(push (cons kernel (cons (pget g) 1)) genpairs)

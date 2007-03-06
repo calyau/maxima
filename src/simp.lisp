@@ -1931,7 +1931,7 @@
 	 (cond ((atom y)
 		(cond ((numberp x)
 		       (cond ((numberp y)
-			      (setq y (*dif x y))
+			      (setq y (- x y))
 			      (cond ((zerop y) (floatp x)) (t (plusp y))))))
 		      ((constant x)
 		       (cond ((constant y) (alphalessp y x)) (t (numberp y))))

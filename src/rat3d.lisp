@@ -9,10 +9,8 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :maxima)
+
 (macsyma-module rat3d)
-
-(declare-top (genprefix a_4))
-
 
 (load-macsyma-macros ratmac)
 
@@ -259,11 +257,11 @@
 (defun iroot (a n)   ; computes a^(1/n)  see Fitch, SIGSAM Bull Nov 74
   (cond ((< (haulong a) n) (list 1 (sub1 a)))
 	(t				;assumes integer a>0 n>=2
-	 (do ((x (expt 2 (f1+ (quotient (haulong a) n)))
+	 (do ((x (expt 2 (1+ (quotient (haulong a) n)))
 		 (difference x (quotient (plus n1 bk) n)))
-	      (n1 (f1- n)) (xn) (bk))
+	      (n1 (1- n)) (xn) (bk))
 	     (nil)
-	   (cond ((signp le (setq bk (*dif x (*quo a (setq xn (expt x n1))))))
+	   (cond ((signp le (setq bk (- x (*quo a (setq xn (expt x n1))))))
 		  (return (list x (difference a (times x xn))))))))))
 
 (defmfun $nthroot(p n)
