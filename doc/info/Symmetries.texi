@@ -91,14 +91,30 @@ Other functions for changing bases: @code{comp2ele}.
 
 
 @deffn {Function} mon2schur (@var{L})
-@c The formatting is tricky here.  Use @iftex ... and @ifhtml ... ?
-@c I've opted for nice-looking dvi/pdf output.
 The list @var{L} represents the Schur function @math{S_L}: we have
-@math{L = [i_1,i_2, \ldots, i_q]}, with @math{i_1 \le i_2 \le \ldots \le
-i_q}.  The Schur function @math{S_{i_1,i_2, \ldots, i_q}} is the minor
+@iftex
+@math{L = [i_1,i_2, \ldots, i_q]}, with @math{i_1 \le i_2 \le \ldots \le i_q}.
+The Schur function @math{S_{i_1,i_2, \ldots, i_q}} is the minor
 of the infinite matrix @math{h_{i-j}}, @math{i \ge 1, j \ge 1},
 consisting of the @math{q} first rows and the columns @math{i_1+1,
 i_2+2, \ldots, i_q+q}.
+@end iftex
+@c UNFORTUNATELY TEXINFO DOES NOT HAVE A NOTION OF "@ELSE"
+@c SO IT IS NECESSARY TO REPEAT THE FOLLOWING NON-TEX STUFF FOR INFO AND FOR HTML ... SIGH
+@ifinfo
+@math{L = [i_1, i_2, ..., i_q]}, with @math{i_1 <= i_2 <= ... <= i_q}.
+The Schur function @math{S_[i_1, i_2, ..., i_q]} is the minor
+of the infinite matrix @math{h_[i-j]}, @math{i <= 1, j <= 1},
+consisting of the @math{q} first rows and the columns @math{1 + i_1,
+2 + i_2, ..., q + i_q}.
+@end ifinfo
+@ifhtml
+@math{L = [i_1, i_2, ..., i_q]}, with @math{i_1 <= i_2 <= ... <= i_q}.
+The Schur function @math{S_[i_1, i_2, ..., i_q]} is the minor
+of the infinite matrix @math{h_[i-j]}, @math{i <= 1, j <= 1},
+consisting of the @math{q} first rows and the columns @math{1 + i_1,
+2 + i_2, ..., q + i_q}.
+@end ifhtml
 
 This Schur function can be written in terms of monomials by using
 @code{treinat} and @code{kostka}.  The form returned is a symmetric
@@ -598,8 +614,21 @@ the function @var{f} under the action of @var{SC}. (This list may be
 obtained by the function @code{multi_orbit}.)  The @var{di} are integers
 s.t. @math{c_1 \le d_1, c_2 \le d_2, \ldots, c_n \le d_n}.  
 
+@iftex
 Let @var{SD} be the product of the symmetric groups @math{S_{d_1} \times
-S_{d_2} \times \cdots \times S_{d_n}}.  The function @code{pui_direct} returns
+S_{d_2} \times \cdots \times S_{d_n}}.
+@end iftex
+@c UNFORTUNATELY TEXINFO DOES NOT HAVE A NOTION OF "@ELSE"
+@c SO IT IS NECESSARY TO REPEAT THE FOLLOWING NON-TEX STUFF FOR INFO AND FOR HTML ... SIGH
+@ifinfo
+Let @var{SD} be the product of the symmetric groups @math{S_[d_1] x
+S_[d_2] x ... x S_[d_n]}.
+@end ifinfo
+@ifhtml
+Let @var{SD} be the product of the symmetric groups @math{S_[d_1] x
+S_[d_2] x ... x S_[d_n]}.
+@end ifhtml
+The function @code{pui_direct} returns
 the first @var{n} power functions of @code{@var{SD}(@var{f})} deduced
 from the power functions of @code{@var{SC}(@var{f})}, where @var{n} is
 the size of @code{@var{SD}(@var{f})}.
@@ -1064,9 +1093,18 @@ See also:
 
 @deffn {Function} resolvante_alternee1 (@var{P}, @var{x})
 calculates the transformation
-@c UMM, I THINK THE TEX STUFF SHOULD BE REPLACED BY @code (original comment)
-@code{@var{P}(@var{x})} of degree @var{n} by the function @math{\prod_{1\leq
-i<j\leq n-1} (x_i-x_j)}.
+@code{@var{P}(@var{x})} of degree @var{n} by the function
+@iftex
+@math{\prod_{1\leq i<j\leq n-1} (x_i-x_j)}.
+@end iftex
+@c UNFORTUNATELY TEXINFO DOES NOT HAVE A NOTION OF "@ELSE"
+@c SO IT IS NECESSARY TO REPEAT THE FOLLOWING NON-TEX STUFF FOR INFO AND FOR HTML ... SIGH
+@ifinfo
+@math{product(x_i - x_j, 1 <= i < j <= n - 1)}.
+@end ifinfo
+@ifhtml
+@math{product(x_i - x_j, 1 <= i < j <= n - 1)}.
+@end ifhtml
 
 See also:
 
@@ -1080,8 +1118,17 @@ See also:
 @deffn {Function} resolvante_bipartite (@var{P}, @var{x})
 calculates the transformation of
 @code{@var{P}(@var{x})} of even degree @var{n} by the function 
-@c We could use @ifhtml ... and @iftex ... here
+@iftex
 @math{x_1 x_2 \cdots x_{n/2} + x_{n/2+1}\cdots x_n}.
+@end iftex
+@c UNFORTUNATELY TEXINFO DOES NOT HAVE A NOTION OF "@ELSE"
+@c SO IT IS NECESSARY TO REPEAT THE FOLLOWING NON-TEX STUFF FOR INFO AND FOR HTML ... SIGH
+@ifinfo
+@math{x_1 x_2 ... x_[n/2] + x_[n/2 + 1] ... x_n}.
+@end ifinfo
+@ifhtml
+@math{x_1 x_2 ... x_[n/2] + x_[n/2 + 1] ... x_n}.
+@end ifhtml
 
 See also:
 
