@@ -46,11 +46,11 @@
 ;;; in the current power series.
 ;;; The terms in the list of exponent-coefficient pairs are ordered by
 ;;; increasing degree.
-
+
 (declare-top (special tlist ivars key-vars last-exp))
 
-
-(comment subtitle hayat macros)
+
+;; subtitle hayat macros
 
 (defmacro pszero (var pw) var pw ''(0 . 1)) ; until constants are fixed
 
@@ -141,7 +141,7 @@
 (defmacro mlet (varl vals comp)
   `(mbinding (,varl ,vals) ,comp))
 
-
+
 ;;; these macros access "tlist" to get various global information
 ;;; "tlist" is structured as a list of datums, each datum having
 ;;; following form:
@@ -305,8 +305,8 @@
 				 (m^ (get-inverse (gvar ,p))
 				  (edisrep (e ,term)))))
 
-
-(comment coefficient arithmetic)
+
+;; coefficient arithmetic
 
 (defmacro rczero ()  ''(0 . 1))
 
@@ -352,8 +352,8 @@
 (defmacro rcderiv (x v) `(ratderivative ,x ,v))
 
 (defmacro rcderivx (x) `(ratdx1 (car ,x) (cdr ,x)))
-
-(comment exponent arithmetic)
+
+;; exponent arithmetic
 
 ;; These macros are also used in BMT;PADE and RAT;NALGFA.
 
@@ -374,8 +374,5 @@
 (defmacro ezero () ''(0 . 1))
 
 (defmacro eone () ''(1 . 1))
-
-#-mcl
-(defmacro ezerop (e) `(zerop (car ,e)))
 
 (defmacro rcinv (r) `(ratinvert ,r))
