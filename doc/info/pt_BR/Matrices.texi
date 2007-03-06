@@ -1,5 +1,5 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
-@c /Matrices.texi/1.27/Sat Feb 17 06:34:09 2007/-ko/
+@c /Matrices.texi/1.28/Fri Mar  2 00:44:39 2007/-ko/
 @menu
 * Introdu@,{c}@~{a}o a Matrizes e @'{A}lgebra Linear::  
 * Defini@,{c}@~{o}es para Matrizes e @'{A}lgebra Linear::  

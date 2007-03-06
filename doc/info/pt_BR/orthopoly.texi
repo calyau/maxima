@@ -1,5 +1,5 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
-@c /orthopoly.texi/1.9/Wed Jan 10 08:43:21 2007//
+@c /orthopoly.texi/1.10/Fri Mar  2 00:44:47 2007//
 @menu
 * Introdu@,{c}@~{a}o a polin@^{o}mios ortogonais::
 * Defini@,{c}@~{o}es para polin@^{o}mios ortogonais::
@@ -656,21 +656,18 @@ requerem que a fun@,{c}@~{a}o de passo de unidade seja cont@'{i}nua @`a esquerda
 @subsection Algor@'{i}tmos
 
 Geralmente, @code{orthopoly} faz avalia@,{c}@~{o}es simb@'{o}licas pelo uso de uma representa@,{c}@~{a}o 
-hipergeom@'{e}trica de v@'{a}rios polin@^{o}mios ortogonais. As fun@,{c}@~{o}es 
+hipergeom@'{e}trica de polin@^{o}mios ortogonais. As fun@,{c}@~{o}es 
 hipegeom@'{e}tricas s@~{a}o avaliadas usando as fun@,{c}@~{o}es (n@~{a}o documetadas) @code{hypergeo11} 
 e @code{hypergeo21}. As excess@~{o}es s@~{a}o as fun@,{c}@~{o}es de Bessel metade inteiras 
-e a fun@,{c}@~{a}o de Legendre associada de segundo tipo. As fun@,{c}@~{o}es de Bessel s@~{a}o
-avaliadas usando uma representa@,{c}@~{a}o expl@'{i}cita, enquanto a fun@,{c}@~{a}o de Legendre 
-associada de segundo tipo @'{e} avaliada suando recursividade.
+e a fun@,{c}@~{a}o de Legendre associada de segundo tipo. As fun@,{c}@~{o}es de Bessel metade inteiras s@~{a}o
+avaliadas usando uma representa@,{c}@~{a}o expl@'{i}cita, e a fun@,{c}@~{a}o de Legendre 
+associada de segundo tipo @'{e} avaliada usando recursividade.
 
 Para avalia@,{c}@~{a}o em ponto flutuante, n@'{o}s novamente convertemos muitas fu@,{c}@~{o}es em
 uma forma hipergeom@'{e}trica; n@'{o}s avaliamos as fun@,{c}@~{o}es hipergeom@'{e}tricas usando 
 recursividade para frente. Novamente, as excess@~{o}es s@~{a}o as fun@,{c}@~{o}es de Bessel metade inteiras 
 e a fun@,{c}@~{a}o de Legendre associada de segundo tipo. Numericamente, 
-as fun@,{c}@~{o}es de Bessel meio inteiras s@~{a}o avaliadas usando o c@'{o}digo SLATEC, e as 
-fun@,{c}@~{o}es de legendre associadas de segundo tipo @'{e} numericamente avaliada usando 
-o mesmo algor@'{i}tmo que sua avalia@,{c}@~{a}o simb@'{o}lica utiliza.
-
+as fun@,{c}@~{o}es de Bessel meio inteiras s@~{a}o avaliadas usando o c@'{o}digo SLATEC.
 
 @node Defini@,{c}@~{o}es para polin@^{o}mios ortogonais,  , Introdu@,{c}@~{a}o a polin@^{o}mios ortogonais, orthopoly
 @section Defini@,{c}@~{o}es para polin@^{o}mios ortogonais
@@ -936,7 +933,7 @@ tome o valor 1/2 em zero, use @code{(1 + signum (@var{x}))/2}.
 @end deffn
 
 @deffn {Fun@,{c}@~{a}o} ultraspherical (@var{n}, @var{a}, @var{x})
-A fun@,{c}@~{a}o polin@^{o}mial ultraesf@'{e}rica (tamb@'{e}m conhecida com fun@,{c}@~{a}o polinomial de Gegenbauer).
+A fun@,{c}@~{a}o polin@^{o}mial ultraesf@'{e}rica (tamb@'{e}m conhecida como fun@,{c}@~{a}o polinomial de Gegenbauer).
 
 Refer@^{e}ncia: Abramowitz e Stegun, equa@,{c}@~{a}o 22.5.46,p@'{a}gina 779.
 @end deffn

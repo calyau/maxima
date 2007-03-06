@@ -1,5 +1,5 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
-@c /Function.texi/1.43/Thu Dec 21 04:36:43 2006/-ko/
+@c /Function.texi/1.46/Fri Mar  2 00:44:37 2007/-ko/
 @menu
 * Introdu@,{c}@~{a}o a Defini@,{c}@~{a}o de Fun@,{c}@~{a}o::  
 * Fun@,{c}@~{a}o::                    
@@ -642,63 +642,118 @@ o operador ap@'{o}strofo-ap@'{o}strofo @code{'@w{}'} faz com que ocorra avalia@,
 @end deffn
 
 @deffn {Fun@,{c}@~{a}o} define (@var{f}(@var{x_1}, ..., @var{x_n}), @var{expr})
-Define uma fun@,{c}@~{a}o chamada @var{f} com argumentos @var{x_1}, ..., @var{x_n} e corpo da fun@,{c}@~{a}o @var{expr}.
+@deffnx {Fun@,{c}@~{a}o} define (@var{f}[@var{x_1}, ..., @var{x_n}], @var{expr})
+@deffnx {Fun@,{c}@~{a}o} define (funmake (@var{f}, [@var{x_1}, ..., @var{x_n}]), @var{expr})
+@deffnx {Fun@,{c}@~{a}o} define (arraymake (@var{f}, [@var{x_1}, ..., @var{x_n}]), @var{expr})
+@deffnx {Fun@,{c}@~{a}o} define (ev (@var{expr_1}), @var{expr_2})
 
-@code{define} n@~{a}o avalia seu primeiro argumento na maioria dos casos,
-e avalia seu segundo argumento a menos que explicitamente seja pedido o contr@'{a}rio.
-Todavia, se o primeiro argumento for uma express@~{a}o da forma
-@code{ev (@var{expr})}, @code{funmake (@var{expr})}, ou @code{arraymake (@var{expr})},
+Define uma fun@,{c}@~{a}o chamada @var{f} com argumentos @var{x_1}, ..., @var{x_n} e corpo da fun@,{c}@~{a}o @var{expr}.
+@code{define} sempre avalia seu segundo argumento (a menos que expl@'icitamente receba um apostrofo de forma a evitar a avalia@,{c}@~ao).
+A fun@,{c}@~ao ent@~ao definida pode ser uma fun@,{c}@~ao comum do Maxima (com argumentos contidos entre par@^etesis)
+ou uma fun@,{c}@~ao de array (com argumentos contidos entre colch@^etes).
+
+Quando o @'ultimo ou @'unico argumento da fun@,{c}@~ao @var{x_n} for uma lista de um elemento,
+a fun@,{c}@~ao definida por @code{define} aceita um n@'umero vari@'avel de argumentos.
+Os argumentos atuais s@~ao atribu@'idos um a um a argumentos formais @var{x_1}, ..., @var{x_(n - 1)},
+e quaisquer argumentos adicionais atuais, se estiverem presentes, s@~ao atribu@'idos a @var{x_n} como uma lista.
+
+Quando o primeiro argumento de @code{define} for uma express@~ao da forma
+@code{@var{f}(@var{x_1}, ..., @var{x_n})} or @code{@var{f}[@var{x_1}, ..., @var{x_n}]},
+os argumentos s@~ao avaliados mas @var{f} n@~ao @'e avaliada,
+mesmo se j@'a existe anteriormente uma fun@,{c}@~ao ou vari@'avel com aquele nome.
+Quando o primeiro argumento for uma express@~ao com operador @code{funmake}, @code{arraymake}, ou @code{ev},
 o primeiro argumento ser@'{a} avaliado;
 isso permite para o nome da fun@,{c}@~{a}o seja calculado, tamb@'{e}m como o corpo.
-
-@code{define} @'{e} similar ao operador de defini@,{c}@~{a}o de fun@,{c}@~{a}o @code{:=}, mas quando
-@code{define} aparece dentro da fun@,{c}@~{a}o, a defini@,{c}@~{a}o @'{e} criada usando o valor
-de @code{expr} em tempo de execu@,{c}@~{a}o em lugar de em
-tempo de defini@,{c}@~{a}o da fun@,{c}@~{a}o que a cont@'{e}m.
 
 Todas as defini@,{c}@~{o}es de fun@,{c}@~{a}o aparecem no mesmo n@'{i}vel de escopo e visibilidade;
 definindo uma fun@,{c}@~{a}o @code{f} dentro de outra fun@,{c}@~{a}o @code{g}
 n@~{a}o limita o escopo de @code{f} a @code{g}.
 
-@c MAKE THIS SAME POINT IN :=
-o comando @code{define} cria fun@,{c}@~{o}es de array (chamadas com argumentsos entre colch@^{e}tes @code{[ ]})
-da mesma forma que fun@,{c}@~{o}es comuns.
+Se algum argumento formal @var{x_k} for um s@'imbolo com ap@'ostrofo (ap@'os ter sido feita uma avalia@,{c}@~ao),
+a fun@,{c}@~ao definida por @code{define} n@~ao avalia o correspondente atual argumento.
+de outra forma todos os argumentos atuais s@~ao avaliados.
+
+Veja tamb@'em @code{:=} and @code{::=}.
 
 Exemplos:
 
+@code{define} sempre avalia seu segundo argumento (a menos que expl@'icitamente receba um apostrofo de forma a evitar a avalia@,{c}@~ao).
+
+@c ===beg===
+@c expr : cos(y) - sin(x);
+@c define (F1 (x, y), expr);
+@c F1 (a, b);
+@c F2 (x, y) := expr;
+@c F2 (a, b);
+@c ===end===
 @example
-(%i1) foo: 2^bar;
-                               bar
-(%o1)                         2
-(%i2) g(x) := (f_1 (y) :=   foo*x*y,
-               f_2 (y) := ''foo*x*y,
-       define (f_3 (y),     foo*x*y),
-       define (f_4 (y),   ''foo*x*y));
-                                             bar
-(%o2) g(x) := (f_1(y) := foo x y, f_2(y) := 2    x y, 
-                                                        bar
-               define(f_3(y), foo x y), define(f_4(y), 2    x y))
-(%i3) functions;
-(%o3)                        [g(x)]
-(%i4) g(a);
-                                    bar
-(%o4)                  f_4(y) := a 2    y
-(%i5) functions;
-(%o5)        [g(x), f_1(y), f_2(y), f_3(y), f_4(y)]
-(%i6) dispfun (f_1, f_2, f_3, f_4);
-(%t6)                   f_1(y) := foo x y
-
-                                  bar
-(%t7)                  f_2(y) := 2    x y
-
-                                    bar
-(%t8)                  f_3(y) := a 2    y
-
-                                    bar
-(%t9)                  f_4(y) := a 2    y
-
-(%o9)                         done
+(%i1) expr : cos(y) - sin(x);
+(%o1)                    cos(y) - sin(x)
+(%i2) define (F1 (x, y), expr);
+(%o2)              F1(x, y) := cos(y) - sin(x)
+(%i3) F1 (a, b);
+(%o3)                    cos(b) - sin(a)
+(%i4) F2 (x, y) := expr;
+(%o4)                   F2(x, y) := expr
+(%i5) F2 (a, b);
+(%o5)                    cos(y) - sin(x)
 @end example
+
+A fun@,{c}@~ao definida por @code{define} pode ser uma fun@,{c}@~ao comum do Maxima ou uma fun@,{c}@~ao de array.
+
+@c ===beg===
+@c define (G1 (x, y), x.y - y.x);
+@c define (G2 [x, y], x.y - y.x);
+@c ===end===
+@example
+(%i1) define (G1 (x, y), x.y - y.x);
+(%o1)               G1(x, y) := x . y - y . x
+(%i2) define (G2 [x, y], x.y - y.x);
+(%o2)                G2     := x . y - y . x
+                       x, y
+@end example
+
+Quando o @'ultimo ou @'unico argumento da fun@,{c}@~ao @var{x_n} for uma lista de um @'unico elemento,
+a fun@,{c}@~ao definida por @code{define} aceita um n@'umero vari@'avel de argumentos.
+
+@c ===beg===
+@c define (H ([L]), '(apply ("+", L)));
+@c H (a, b, c);
+@c ===end===
+@example
+(%i1) define (H ([L]), '(apply ("+", L)));
+(%o1)                H([L]) := apply("+", L)
+(%i2) H (a, b, c);
+(%o2)                       c + b + a
+@end example
+
+When the first argument is an expression with operator @code{funmake}, @code{arraymake}, or @code{ev},
+the first argument is evaluated.
+
+@c ===beg===
+@c [F : I, u : x];
+@c funmake (F, [u]);
+@c define (funmake (F, [u]), cos(u) + 1);
+@c define (arraymake (F, [u]), cos(u) + 1);
+@c define (foo (x, y), bar (y, x));
+@c define (ev (foo (x, y)), sin(x) - cos(y));
+@c ===end===
+@example
+(%i1) [F : I, u : x];
+(%o1)                        [I, x]
+(%i2) funmake (F, [u]);
+(%o2)                         I(x)
+(%i3) define (funmake (F, [u]), cos(u) + 1);
+(%o3)                  I(x) := cos(x) + 1
+(%i4) define (arraymake (F, [u]), cos(u) + 1);
+(%o4)                   I  := cos(x) + 1
+                         x
+(%i5) define (foo (x, y), bar (y, x));
+(%o5)                foo(x, y) := bar(y, x)
+(%i6) define (ev (foo (x, y)), sin(x) - cos(y));
+(%o6)             bar(y, x) := sin(x) - cos(y)
+@end example
+
 @end deffn
 
 @c SEE NOTE BELOW ABOUT THE DOCUMENTATION STRING

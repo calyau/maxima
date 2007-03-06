@@ -1,5 +1,5 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
-@c /Operators.texi/1.35/Mon Jan 15 06:08:51 2007/-ko/
+@c /Operators.texi/1.37/Fri Mar  2 00:44:42 2007/-ko/
 @iftex
 @hyphenation{con-se-cu-ti-vos}
 @hyphenation{u-san-do}
@@ -272,6 +272,39 @@ A aritm@'{e}tica @'{e} realizada elemento-por-elemento para listas lists (depend
 (%i8) [a, c, m, t] ^ x;
                           x   x   x   x
 (%o8)                   [a , c , m , t ]
+@end example
+
+@end deffn
+
+@deffn {Operador} **
+
+Operador de exponencia@,{c}@~ao.
+Maxima reconhece @code{**} como o mesmo operador que @code{^} em entrada,
+e @code{**} @'e mostrado como @code{^} em sa@'ida unidimensional,
+ou colocando o expoente  como sobrescrito em sa@'ida bidimensional.
+
+A fun@,{c}@~ao @code{fortran} mostra o operador de exponencia@,{c}@~ao com como @code{**},
+independente de a entrada ter sido na forma @code{**} ou a forma @code{^}.
+
+Exemplos:
+
+@c ===beg===
+@c is (a**b = a^b);
+@c x**y + x^z;
+@c string (x**y + x^z);
+@c fortran (x**y + x^z);
+@c ===end===
+@example
+(%i1) is (a**b = a^b);
+(%o1)                         true
+(%i2) x**y + x^z;
+                              z    y
+(%o2)                        x  + x
+(%i3) string (x**y + x^z);
+(%o3)                        x^z+x^y
+(%i4) fortran (x**y + x^z);
+      x**z+x**y
+(%o4)                         done
 @end example
 
 @end deffn
