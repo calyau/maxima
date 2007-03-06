@@ -35,7 +35,6 @@
 ;;; TRANSM   This defines the macro DEF%TR. When compiled on MC
 ;;;          DEF%TR produces autoload definitions for TRANS1 thru L.
 ;;; PROCS    macro's needed.
-;;; TPRELU   this file is INCLUDEF'ed by translated macsyma code.
 ;;; TRANSQ   these are macros for translated code. Loaded by TPRELU
 ;;;          this is compile-time only.
 ;;; MDEFUN   contains the macro which defines macsyma functions.
@@ -570,11 +569,6 @@ APPLY means like APPLY.")
 
 (defun trfail (x)
   (tr-tell x " failed to translate.") nil)
-
-
-;;; should macsyma batch files support INCLUDEF? No, not needed
-;;; and not as efficient for loading declarations, and macros 
-;;; as simple LOADING is. Thats why there is EVAL_WHEN.
 
 (deftrfun translate-macexpr-actual (form filepos)
   (declare (special *translate-buffered-forms*))

@@ -383,7 +383,7 @@ translated."
 	 (mapc #'sub-print* (cddr p)))
 	(t
 	 (setq flag (and $tr_semicompile
-			 (not (member (car p) '(eval-when includef) :test #'eq))))
+			 (not (eq (car p) 'eval-when))))
 	 (when flag (princ* '|(|) (princ* 'progn) (terpri*))
 	 (cond ($compgrind
 		(sprin1 p))
@@ -430,28 +430,21 @@ translated."
 	   ($timedate) $version (sys-user-id))
   (print-transl-modules)
   (mformat transl-file
-	   ;; The INCLUDEF must be in lower case for transportation
-	   ;; of translated code to Multics.
 	   "~%~
-	   ~%(includef (cond ((status feature ITS) '|DSK:LIBMAX;TPRELU >|)~
-	   ~%                ((status feature Multics) '|translate|)~
-	   ~%                ((status feature Unix) '|libmax//tprelu.l|)~
-	   ~%                (t (maxima-error '|Unknown system, see GJC@MIT-MC|))))~
 	   ~%~
 	   ~%(eval-when (compile eval) ~
-	   ~%  (or (status feature lispm)~
 	   ~%      (setq *infile-name-key*~
 	   ~%               ((lambda (file-name)~
 	   ~%                           ;; temp crock for multics.~
 	   ~%                          (cond ((eq (ml-typep file-name) 'list)~
 	   ~%                                 (namestring file-name))~
 	   ~%                                (t file-name)))~
-	   ~%                  (truename infile)))))~
+	   ~%                  (truename infile))))~
 	   ~%~
 	   ~%(eval-when (compile) ~
 	   ~%   (setq $tr_semicompile '~S)~
 	   ~%   (setq forms-to-compile-queue ()))~
-	   ~%~%(comment ~S)~%~%"
+	   ~%~%;;; ~S~%~%"
 	   $tr_semicompile source)
   (cond ($transcompile
 	 (update-global-declares)
