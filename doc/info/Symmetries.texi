@@ -1,4 +1,11 @@
 @c end concepts Symmetries
+@c Notes by K.O.:
+@c In {Function} mon2schur, I don't know how to produce both
+@c nice-looking dvi/pdf output, and HTML output.  Same situation occurs in
+@c a couple of other places.  I've favored dvi/pdf.  So right now, "make
+@c html" reports some (non-fatal) errors.
+
+
 @menu
 * Definitions for Symmetries::  
 @end menu
@@ -6,13 +13,17 @@
 @node Definitions for Symmetries,  , Symmetries, Symmetries
 @section Definitions for Symmetries
 
-@deffn {Function} comp2pui (@var{n}, @var{l})
-re'alise le passage des fonctions syme'triques
-comple`tes, donnee's dans la liste @var{l}, aux fonctions 
-syme'triques e'le'mentaires de 0 a` @var{n}. Si la liste
-@var{l} contient moins de @code{@var{n}+1} e'le'ments les valeurs formelles viennent
-la completer. Le premier e'le'ment de la liste @var{l} donne le cardinal
-de l'alphabet si il existe, sinon on le met e'gal a @var{n}.
+
+@subsection Changing bases
+
+
+@deffn {Function} comp2pui (@var{n}, @var{L})
+implements passing from the complete symmetric functions given in the list
+@var{L} to the elementary symmetric functions from 0 to @var{n}. If the
+list @var{L} contains fewer than @var{n+1} elements, it will be completed with
+formal values of the type @var{h1}, @var{h2}, etc. If the first element
+of the list @var{L} exists, it specifies the size of the alphabet,
+otherwise the size is set to @var{n}.
 
 @c GENERATED FROM THE FOLLOWING
 @c comp2pui (3, [4, g]);
@@ -24,9 +35,283 @@ de l'alphabet si il existe, sinon on le met e'gal a @var{n}.
 
 @end deffn
 
+
+@deffn {Function} ele2pui (@var{m}, @var{L})
+goes from the elementary symmetric functions to the complete functions.
+Similar to @code{comp2ele} and @code{comp2pui}.
+
+Other functions for changing bases: @code{comp2ele}.
+
+@end deffn
+
+
+@deffn {Function} ele2comp (@var{m}, @var{L})
+Goes from the elementary symmetric functions to the compete functions.
+Similar to @code{comp2ele} and @code{comp2pui}.
+
+Other functions for changing bases: @code{comp2ele}.
+@end deffn
+
+
+@deffn {Function} elem (@var{ele}, @var{sym}, @var{lvar})
+decomposes the symmetric polynomial @var{sym}, in the variables
+contained in the list @var{lvar}, in terms of the elementary symmetric
+functions given in the list @var{ele}.  If the first element of
+@var{ele} is given, it will be the size of the alphabet, otherwise the
+size will be the degree of the polynomial @var{sym}.  If values are
+missing in the list @var{ele}, formal values of the type @var{e1},
+@var{e2}, etc. will be added.  The polynomial @var{sym} may be given in
+three different forms: contracted (@code{elem} should then be 1, its
+default value), partitioned (@code{elem} should be 3), or extended
+(i.e. the entire polynomial, and @code{elem} should then be 2).  The
+function @code{pui} is used in the same way.
+
+On an alphabet of size 3 with @var{e1}, the first elementary symmetric
+function, with value 7, the symmetric polynomial in 3 variables whose
+contracted form (which here depends on only two of its variables) is
+@var{x^4-2*x*y} decomposes as follows in elementary symmetric functions:
+
+@c GENERATED FROM THE FOLLOWING
+@c elem ([3, 7], x^4 - 2*x*y, [x, y]);
+@c ratsimp (%);
+@example
+(%i1) elem ([3, 7], x^4 - 2*x*y, [x, y]);
+(%o1) 7 (e3 - 7 e2 + 7 (49 - e2)) + 21 e3
+
+                                         + (- 2 (49 - e2) - 2) e2
+(%i2) ratsimp (%);
+                              2
+(%o2)             28 e3 + 2 e2  - 198 e2 + 2401
+@end example
+
+@noindent
+Other functions for changing bases: @code{comp2ele}.
+
+@end deffn
+
+
+@deffn {Function} mon2schur (@var{L})
+@c The formatting is tricky here.  Use @iftex ... and @ifhtml ... ?
+@c I've opted for nice-looking dvi/pdf output.
+The list @var{L} represents the Schur function @math{S_L}: we have
+@math{L = [i_1,i_2, \ldots, i_q]}, with @math{i_1 \le i_2 \le \ldots \le
+i_q}.  The Schur function @math{S_{i_1,i_2, \ldots, i_q}} is the minor
+of the infinite matrix @math{h_{i-j}}, @math{i \ge 1, j \ge 1},
+consisting of the @math{q} first rows and the columns @math{i_1+1,
+i_2+2, \ldots, i_q+q}.
+
+This Schur function can be written in terms of monomials by using
+@code{treinat} and @code{kostka}.  The form returned is a symmetric
+polynomial in a contracted representation in the variables @math{x_1,x_2,\ldots}.
+
+@c GENERATED FROM THE FOLLOWING
+@c mon2schur ([1, 1, 1]);
+@c mon2schur ([3]);
+@c mon2schur ([1, 2]);
+@example
+(%i1) mon2schur ([1, 1, 1]);
+(%o1)                       x1 x2 x3
+(%i2) mon2schur ([3]);
+                                  2        3
+(%o2)                x1 x2 x3 + x1  x2 + x1
+(%i3) mon2schur ([1, 2]);
+                                      2
+(%o3)                  2 x1 x2 x3 + x1  x2
+@end example
+
+@noindent
+which means that for 3 variables this gives:
+
+@c UM, FROM WHAT ARGUMENTS WAS THE FOLLOWING GENERATED ?? (original comment)
+@example
+   2 x1 x2 x3 + x1^2 x2 + x2^2 x1 + x1^2 x3 + x3^2 x1
+    + x2^2 x3 + x3^2 x2
+@end example
+@noindent
+Other functions for changing bases: @code{comp2ele}.
+
+@end deffn
+
+
+@deffn {Function} multi_elem (@var{l_elem}, @var{multi_pc}, @var{l_var})
+decomposes a multi-symmetric polynomial in the multi-contracted form
+@var{multi_pc} in the groups of variables contained in the list of lists
+@var{l_var} in terms of the elementary symmetric functions contained in
+@var{l_elem}.
+
+@c GENERATED FROM THE FOLLOWING
+@c multi_elem ([[2, e1, e2], [2, f1, f2]], a*x + a^2 + x^3, [[x, y], [a, b]]);
+@c ratsimp (%);
+@example
+(%i1) multi_elem ([[2, e1, e2], [2, f1, f2]], a*x + a^2 + x^3, [[x, y], [a, b]]);
+                                                  3
+(%o1)         - 2 f2 + f1 (f1 + e1) - 3 e1 e2 + e1
+(%i2) ratsimp (%);
+                         2                       3
+(%o2)         - 2 f2 + f1  + e1 f1 - 3 e1 e2 + e1
+@end example
+
+Other functions for changing bases: @code{comp2ele}.
+
+@end deffn
+
+
+@c WHAT ARE THE ARGUMENTS FOR THIS FUNCTION ?? (original comment)
+@deffn {Function} multi_pui
+is to the function @code{pui} what the function @code{multi_elem} is to
+the function @code{elem}.
+
+@c GENERATED FROM THE FOLLOWING
+@c multi_pui ([[2, p1, p2], [2, t1, t2]], a*x + a^2 + x^3, [[x, y], [a, b]]);
+@example
+(%i1) multi_pui ([[2, p1, p2], [2, t1, t2]], a*x + a^2 + x^3, [[x, y], [a, b]]);
+                                            3
+                                3 p1 p2   p1
+(%o1)              t2 + p1 t1 + ------- - ---
+                                   2       2
+@end example
+
+@end deffn
+
+
+@c HMM, pui IS A VARIABLE AS WELL.  It's a function, for sure.
+@deffn {Function} pui (@var{L}, @var{sym}, @var{lvar})
+decomposes the symmetric polynomial @var{sym}, in the variables in the
+list @var{lvar}, in terms of the power functions in the list @var{L}.
+If the first element of @var{L} is given, it will be the size of the
+alphabet, otherwise the size will be the degree of the polynomial
+@var{sym}.  If values are missing in the list @var{L}, formal values of
+the type @var{p1}, @var{p2} , etc. will be added. The polynomial
+@var{sym} may be given in three different forms: contracted (@code{elem}
+should then be 1, its default value), partitioned (@code{elem} should be
+3), or extended (i.e. the entire polynomial, and @code{elem} should then
+be 2). The function @code{pui} is used in the same way.
+
+@c GENERATED FROM THE FOLLOWING
+@c pui;
+@c pui ([3, a, b], u*x*y*z, [x, y, z]);
+@c ratsimp (%);
+@example
+(%i1) pui;
+(%o1)                           1
+(%i2) pui ([3, a, b], u*x*y*z, [x, y, z]);
+                       2
+                   a (a  - b) u   (a b - p3) u
+(%o2)              ------------ - ------------
+                        6              3
+(%i3) ratsimp (%);
+                                       3
+                      (2 p3 - 3 a b + a ) u
+(%o3)                 ---------------------
+                                6
+@end example
+@noindent
+Other functions for changing bases: @code{comp2ele}.
+
+@end deffn
+
+
+
+@deffn {Function} pui2comp (@var{n}, @var{lpui})
+renders the list of the first @var{n} complete functions (with the
+length first) in terms of the power functions given in the list
+@var{lpui}. If the list @var{lpui} is empty, the cardinal is @var{n},
+otherwise it is its first element (as in @code{comp2ele} and
+@code{comp2pui}).
+
+@c GENERATED FROM THE FOLLOWING
+@c pui2comp (2, []);
+@c pui2comp (3, [2, a1]);
+@c ratsimp (%);
+@example
+(%i1) pui2comp (2, []);
+                                       2
+                                p2 + p1
+(%o1)                   [2, p1, --------]
+                                   2
+(%i2) pui2comp (3, [2, a1]);
+                                            2
+                                 a1 (p2 + a1 )
+                         2  p3 + ------------- + a1 p2
+                  p2 + a1              2
+(%o2)     [2, a1, --------, --------------------------]
+                     2                  3
+(%i3) ratsimp (%);
+                            2                     3
+                     p2 + a1   2 p3 + 3 a1 p2 + a1
+(%o3)        [2, a1, --------, --------------------]
+                        2               6
+@end example
+@noindent
+Other functions for changing bases: @code{comp2ele}.
+
+@end deffn
+
+
+
+@deffn {Function} pui2ele (@var{n}, @var{lpui})
+effects the passage from power functions to the elementary symmetric functions.
+If the flag @code{pui2ele} is @code{girard}, it will return the list of
+elementary symmetric functions from 1 to @var{n}, and if the flag is
+@code{close}, it will return the @var{n}-th elementary symmetric function.
+
+Other functions for changing bases: @code{comp2ele}.
+@end deffn
+
+
+@deffn {Function} puireduc (@var{n}, @var{lpui})
+@var{lpui} is a list whose first element is an integer @var{m}.
+@code{puireduc} gives the first @var{n} power functions in terms of the
+first @var{m}.
+
+@c GENERATED FROM THE FOLLOWING
+@c puireduc (3, [2]);
+@example
+(%i1) puireduc (3, [2]);
+                                         2
+                                   p1 (p1  - p2)
+(%o1)          [2, p1, p2, p1 p2 - -------------]
+                                         2
+(%i2) ratsimp (%);
+                                           3
+                               3 p1 p2 - p1
+(%o2)              [2, p1, p2, -------------]
+                                     2
+@end example
+@end deffn
+
+
+@deffn {Function} schur2comp (@var{P}, @var{l_var})
+@var{P} is a polynomial in the variables of the list @var{l_var}.  Each
+of these variables represents a complete symmetric function.  In
+@var{l_var} the @var{i}-th complete symmetric function is represented by
+the concatenation of the letter @code{h} and the integer @var{i}:
+@code{h@var{i}}.  This function expresses @var{P} in terms of Schur
+functions.
+
+
+@c GENERATED FROM THE FOLLOWING
+@c schur2comp (h1*h2 - h3, [h1, h2, h3]);
+@c schur2comp (a*h3, [h3]);
+@example
+(%i1) schur2comp (h1*h2 - h3, [h1, h2, h3]);
+(%o1)                         s
+                               1, 2
+(%i2) schur2comp (a*h3, [h3]);
+(%o2)                         s  a
+                               3
+@end example
+@end deffn
+
+
+
+
+
+@subsection Changing representations
+
 @deffn {Function} cont2part (@var{pc}, @var{lvar})
-rend le polyno^me partitionne' associe' 
-a` la forme  contracte'e @var{pc} dont les variables sont dans @var{lvar}.
+returns the partitioned polynomial associated to the contracted form
+@var{pc} whose variables are in @var{lvar}.
 
 @c GENERATED FROM THE FOLLOWING
 @c pc: 2*a^3*b*x^4*y + x^5;
@@ -39,21 +324,17 @@ a` la forme  contracte'e @var{pc} dont les variables sont dans @var{lvar}.
                                    3
 (%o2)              [[1, 5, 0], [2 a  b, 4, 1]]
 @end example
-
-@noindent
-Autres fonctions de changements de repre'sentations :
-
-@code{contract}, @code{explose}, @code{part2cont}, @code{partpol}, @code{tcontract}, @code{tpartpol}.
-
-
 @end deffn
 
+
+
 @deffn {Function} contract (@var{psym}, @var{lvar})
-rend une forme contracte'e (i.e. un mono^me
-par orbite sous l'action du groupe syme'trique) du polyno^me @var{psym}
-en les variables contenues dans la liste @var{lvar}. La fonction @code{explose}
-re'alise l'ope'ration inverse. La fonction @code{tcontract} teste en plus
-la syme'trie du polyno^me.
+returns a contracted form (i.e. a monomial orbit under the action of the
+@c CHECK ME!!
+symmetric group) of the polynomial @var{psym} in the variables contained
+in the list @var{lvar}.  The function @code{explose} performs the
+inverse operation.  The function @code{tcontract} tests the symmetry of
+the polynomial.
 
 @c GENERATED FROM THE FOLLOWING
 @c psym: explose (2*a^3*b*x^4*y, [x, y, z]);
@@ -69,24 +350,82 @@ la syme'trie du polyno^me.
                               3    4
 (%o2)                      2 a  b x  y
 @end example
+@end deffn
 
-@noindent
-Autres fonctions de changements de repre'sentations :
 
-@code{cont2part}, @code{explose}, @code{part2cont}, @code{partpol}, @code{tcontract}, @code{tpartpol}.
+@deffn {Function} explose (@var{pc}, @var{lvar})
+returns the symmetric polynomial associated with the contracted form
+@var{pc}. The list @var{lvar} contains the variables.
 
+@c GENERATED FROM THE FOLLOWING
+@c explose (a*x + 1, [x, y, z]);
+@example
+(%i1) explose (a*x + 1, [x, y, z]);
+(%o1)                  a z + a y + a x + 1
+@end example
+@end deffn
+
+
+@deffn {Function} part2cont (@var{ppart}, @var{lvar})
+goes from the partitioned form to the contracted form of a symmetric polynomial.
+The contracted form is rendered with the variables in @var{lvar}.
+
+@c GENERATED FROM THE FOLLOWING
+@c part2cont ([[2*a^3*b, 4, 1]], [x, y]);
+@example
+(%i1) part2cont ([[2*a^3*b, 4, 1]], [x, y]);
+                              3    4
+(%o1)                      2 a  b x  y
+@end example
+@end deffn
+
+
+
+@deffn {Function} partpol (@var{psym}, @var{lvar})
+@var{psym} is a symmetric polynomial in the variables of the list
+@var{lvar}. This function retturns its partitioned representation.
+
+@c GENERATED FROM THE FOLLOWING
+@c partpol (-a*(x + y) + 3*x*y, [x, y]);
+@example
+(%i1) partpol (-a*(x + y) + 3*x*y, [x, y]);
+(%o1)               [[3, 1, 1], [- a, 1, 0]]
+@end example
 
 @end deffn
 
+
+@deffn {Function} tcontract (@var{pol}, @var{lvar})
+tests if the polynomial @var{pol} is symmetric in the variables of the
+list @var{lvar}.  If so, it returns a contracted representation like the
+function @code{contract}.
+
+@end deffn
+
+
+
+@deffn {Function} tpartpol (@var{pol}, @var{lvar})
+tests if the polynomial @var{pol} is symmetric in the variables of the
+list @var{lvar}.  If so, it returns its partitioned representation like
+the function @code{partpol}.
+
+@end deffn
+
+
+
+
+@subsection Groups and orbits
+
+
 @deffn {Function} direct ([@var{p_1}, ..., @var{p_n}], @var{y}, @var{f}, [@var{lvar_1}, ..., @var{lvar_n}])
-calcul l'image
-directe (voir M. GIUSTI, D. LAZARD et A. VALIBOUZE, ISSAC 1988, Rome)
-associe'e a` la fonction @var{f}, en les listes de variables @var{lvar_1}, ..., @var{lvar_n},
-et aux polyno^mes @var{p_1}, ..., @var{p_n} d'une variable @var{y}. l'arite' de la fonction
-@var{f} est importante pour le calcul. Ainsi, si l'expression de @var{f} ne depend
-pas d'une variable, non seulement il est inutile de donner cette
-variable mais cela diminue conside'rablement lees calculs si on ne le
-fait pas.
+calculates the direct image (see M. Giusti, D. Lazard et A. Valibouze,
+ISSAC 1988, Rome) associated to the function @var{f}, in the lists of
+variables @var{lvar_1}, ..., @var{lvar_n}, and in the polynomials
+@var{p_1}, ..., @var{p_n} in a variable @var{y}.  The arity of the
+function @var{f} is important for the calulation.  Thus, if the
+expression for @var{f} does not depend on some variable, it is useless
+to include this variable, and not including it will also considerably
+reduce the amount of computation.
 
 @c GENERATED FROM THE FOLLOWING
 @c direct ([z^2  - e1* z + e2, z^2  - f1* z + f2],
@@ -137,14 +476,15 @@ fait pas.
  + (e1 e2 e3 - 9 e3 ) f1  f2 + e3  f1
 @end example
 
-Recherche du polyno^me dont les racines sont les somme a+u ou a est
-racine de z^2  - e1* z + e2 et u est racine de z^2  - f1* z + f2
+Finding the polynomial whose roots are the sums @math{a+u} where @math{a}
+is a root of @math{z^2 - e_1 z + e_2} and @math{u} is a root of @math{z^2 -
+f_1 z + f_2}.
 
 @c GENERATED FROM THE FOLLOWING
-@c ratsimp (direct ([z^2  - e1* z + e2, z^2  - f1* z + f2],
+@c ratsimp (direct ([z^2 - e1* z + e2, z^2 - f1* z + f2],
 @c                           z, a + u, [[u], [a]]));
 @example
-(%i1) ratsimp (direct ([z^2  - e1* z + e2, z^2  - f1* z + f2],
+(%i1) ratsimp (direct ([z^2 - e1* z + e2, z^2 - f1* z + f2],
                           z, a + u, [[u], [a]]));
        4                    3             2
 (%o1) y  + (- 2 f1 - 2 e1) y  + (2 f2 + f1  + 3 e1 f1 + 2 e2
@@ -159,256 +499,29 @@ racine de z^2  - e1* z + e2 et u est racine de z^2  - f1* z + f2
  + e2
 @end example
 
-@code{direct} peut prendre deux drapeaux possibles : @code{elementaires} et
-@code{puissances} (valeur par de'faut) qui permettent de de'composer
-les polyno^mes syme'triques apparaissant dans ce calcul par
-les fonctions syme'triques e'le'mentaires ou les fonctions puissances
-respectivement.
+@code{direct} accepts two flags: @code{elementaires} and
+@code{puissances} (default) which allow decomposing the symmetric
+polynomials appearing in the calculation into elementary symmetric
+functions, or power functions, respectively.
 
-Fonctions de @code{sym} utilis'ees dans cette fonction :
+Functions of @code{sym} used in this function:
 
-@code{multi_orbit} (donc @code{orbit}), @code{pui_direct}, @code{multi_elem}
-(donc @code{elem}), @code{multi_pui} (donc @code{pui}), @code{pui2ele}, @code{ele2pui}
-(si le drapeau @code{direct} est a` @code{puissances}).
-
-@end deffn
-
-@deffn {Function} ele2comp (@var{m}, @var{l})
-passe des fonctions syme'triques e'le'mentaires
-aux fonctions comple`tes. Similaire a` @code{comp2ele} et @code{comp2pui}.
-
-Autres fonctions de changements de bases :
-
-@code{comp2ele}, @code{comp2pui}, @code{ele2pui}, @code{elem}, @code{mon2schur}, @code{multi_elem},
-@code{multi_pui}, @code{pui}, @code{pui2comp}, @code{pui2ele}, @code{puireduc}, @code{schur2comp}.
+@code{multi_orbit} (so @code{orbit}), @code{pui_direct}, @code{multi_elem}
+(so @code{elem}), @code{multi_pui} (so @code{pui}), @code{pui2ele}, @code{ele2pui}
+(if the flag @code{direct} is in @code{puissances}).
 
 @end deffn
 
-@deffn {Function} ele2polynome (@var{l}, @var{z})
-donne le polyno^me en @var{z} dont les fonctions
-syme'triques e'le'mentaires des racines sont dans la liste @var{l}.
-@code{@var{l} = [@var{n}, @var{e_1}, ..., @var{e_n}]} ou` @var{n} est le degre' du polyno^me
-et @var{e_i} la @var{i}-ie`me
-fonction syme'trique e'le'mentaire.
-
-@c GENERATED FROM THE FOLLOWING
-@c ele2polynome ([2, e1, e2], z);
-@c polynome2ele (x^7 - 14*x^5 + 56*x^3  - 56*x + 22, x);
-@c ele2polynome ([7, 0, -14, 0, 56, 0, -56, -22], x);
-@example
-(%i1) ele2polynome ([2, e1, e2], z);
-                          2
-(%o1)                    z  - e1 z + e2
-(%i2) polynome2ele (x^7 - 14*x^5 + 56*x^3  - 56*x + 22, x);
-(%o2)          [7, 0, - 14, 0, 56, 0, - 56, - 22]
-(%i3) ele2polynome ([7, 0, -14, 0, 56, 0, -56, -22], x);
-                  7       5       3
-(%o3)            x  - 14 x  + 56 x  - 56 x + 22
-@end example
-
-@noindent
-   
-La re'ciproque: @code{polynome2ele (@var{P}, @var{z})}
-
-Autres fonctions a` voir :
-
-@code{polynome2ele}, @code{pui2polynome}.
 
 
-@end deffn
 
-@deffn {Function} ele2pui (@var{m}, @var{l})
-passe des fonctions syme'triques e'le'mentaires
-aux fonctions comple`tes. Similaire a` @code{comp2ele} et @code{comp2pui}.
+@deffn {Function} multi_orbit (@var{P}, [@var{lvar_1}, @var{lvar_2},..., @var{lvar_p}])
 
-Autres fonctions de changements de bases :
-
-@code{comp2ele}, @code{comp2pui}, @code{ele2comp}, @code{elem}, @code{mon2schur}, @code{multi_elem},
-@code{multi_pui}, @code{pui}, @code{pui2comp}, @code{pui2ele}, @code{puireduc}, @code{schur2comp}.
-
-@end deffn
-
-@deffn {Function} elem (@var{ele}, @var{sym}, @var{lvar})
-de'compose le polyno^me syme'trique @var{sym}, en les variables
-contenues de la liste @var{lvar}, par les fonctions syme'triques e'le'mentaires
-contenues dans la liste @var{ele}. Si le premier e'le'ment de @var{ele} est donne'
-ce sera le cardinal de l'alphabet sinon on prendra le degre' du polyno^me
-@var{sym}. Si il manque des valeurs a` la liste @var{ele} des valeurs formelles
-du type "ei" sont rajoute'es. Le polyno^me @var{sym} peut etre donne'
-sous 3 formes diffe'rentes : contracte'e (@code{elem} doit alors valoir 1 sa valeur
-par de'faut), partitionne'e (@code{elem} doit alors valoir 3) ou e'tendue (i.e. le
-polyno^me en entier) (@code{elem} doit alors valoir 2). L'utilsation
-de la fonction @code{pui} se re'alise sur le me^me mode`le.
-
-Sur un alphabet de cardinal 3 avec e1, la premie`re fonction syme'trique
-e'le'mentaire, valant 7, le polyno^me syme'trique en 3 variables dont
-la forme contracte'e (ne de'pendant ici que de deux de ses variables)
-est x^4-2*x*y se de'compose ainsi en les fonctions syme'triques 
-e'le'mentaires :
-
-@c GENERATED FROM THE FOLLOWING
-@c elem ([3, 7], x^4 - 2*x*y, [x, y]);
-@c ratsimp (%);
-@example
-(%i1) elem ([3, 7], x^4 - 2*x*y, [x, y]);
-(%o1) 7 (e3 - 7 e2 + 7 (49 - e2)) + 21 e3
-
-                                         + (- 2 (49 - e2) - 2) e2
-(%i2) ratsimp (%);
-                              2
-(%o2)             28 e3 + 2 e2  - 198 e2 + 2401
-@end example
-
-@noindent
-Autres fonctions de changements de bases :
-
-@code{comp2ele}, @code{comp2pui}, @code{ele2comp}, @code{ele2pui},
-@code{mon2schur}, @code{multi_elem}, @code{multi_pui},
-@code{pui}, @code{pui2comp}, @code{pui2ele}, @code{puireduc}, @code{schur2comp}.
-
-
-@end deffn
-
-@deffn {Function} explose (@var{pc}, @var{lvar})
-rend le polyno^me syme'trique associe' a` la forme 
-contracte'e @var{pc}. La liste @var{lvar} contient les variables.
-
-@c GENERATED FROM THE FOLLOWING
-@c explose (a*x + 1, [x, y, z]);
-@example
-(%i1) explose (a*x + 1, [x, y, z]);
-(%o1)                  a z + a y + a x + 1
-@end example
-
-@noindent
-Autres fonctions de changements de repre'sentations :
-
-@code{contract}, @code{cont2part}, @code{part2cont}, @code{partpol}, @code{tcontract}, @code{tpartpol}.
-
-@end deffn
-
-@deffn {Function} kostka (@var{part_1}, @var{part_2})
-e'crite par P. ESPERET, calcule le nombre de
-Kostka associe' aux partition @var{part_1} et @var{part_2}.
-
-@c GENERATED FROM THE FOLLOWING
-@c kostka ([3, 3, 3], [2, 2, 2, 1, 1, 1]);
-@example
-(%i1) kostka ([3, 3, 3], [2, 2, 2, 1, 1, 1]);
-(%o1)                           6
-@end example
-
-@end deffn
-
-@deffn {Function} lgtreillis (@var{n}, @var{m})
-rend la liste des partitions de poids @var{n} et de longueur @var{m}.
-
-@c GENERATED FROM THE FOLLOWING
-@c lgtreillis (4, 2);
-@example
-(%i1) lgtreillis (4, 2);
-(%o1)                   [[3, 1], [2, 2]]
-@end example
-
-Voir e'galement : @code{ltreillis}, @code{treillis} et @code{treinat}.
-
-
-@end deffn
-
-@deffn {Function} ltreillis (@var{n}, @var{m})
-rend la liste des partitions de poids @var{n} et de longueur 
-infe'rieure ou e'gale a` @var{m}.
-
-@c GENERATED FROM THE FOLLOWING
-@c ltreillis (4, 2);
-@example
-(%i1) ltreillis (4, 2);
-(%o1)               [[4, 0], [3, 1], [2, 2]]
-@end example
-
-@noindent
-Voir e'galement : @code{lgtreillis}, @code{treillis} et @code{treinat}.
-
-@end deffn
-
-@c NOT REALLY HAPPY ABOUT MATH NOTATION HERE
-@deffn {Function} mon2schur (@var{l})
-la liste @var{l} repre'sente la fonction de Schur S_@var{l}:
- On a @var{l} = [@var{i_1}, @var{i_2}, ..., @var{i_q}]
-avec @var{i_1} <= @var{i_2} <= ... <= @var{i_q}.
-La fonction de Schur est S_[@var{i_1}, @var{i_2}, ..., @var{i_q}]
-est le mineur de la matrice infinie (h_@{i-j@}) @var{i} >= 1, @var{j} >= 1 compose'
-des q premie`res lignes et des colonnes @var{i_1} + 1, @var{i_2} + 2, ..., @var{i_q} + @var{q}.
-
-On e'crit cette fonction de Schur en fonction des
-formes monomiales en utilisant les fonctions @code{treinat} et @code{kostka}. La forme
-rendue est un polyno^me syme'trique dans une de ses repre'sentations
-contracte'es avec les variables @var{x_1}, @var{x_2}, ....
- 
-@c GENERATED FROM THE FOLLOWING
-@c mon2schur ([1, 1, 1]);
-@c mon2schur ([3]);
-@c mon2schur ([1, 2]);
-@example
-(%i1) mon2schur ([1, 1, 1]);
-(%o1)                       x1 x2 x3
-(%i2) mon2schur ([3]);
-                                  2        3
-(%o2)                x1 x2 x3 + x1  x2 + x1
-(%i3) mon2schur ([1, 2]);
-                                      2
-(%o3)                  2 x1 x2 x3 + x1  x2
-@end example
-
-@noindent
-ce qui veut dire que pour 3 variables cela donne :
-
-@c UM, FROM WHAT ARGUMENTS WAS THE FOLLOWING GENERATED ??
-@example
-   2 x1 x2 x3 + x1^2 x2 + x2^2 x1 + x1^2 x3 + x3^2 x1
-    + x2^2 x3 + x3^2 x2
-@end example
-
-@noindent
-Autres fonctions de changements de bases :
-
-@code{comp2ele}, @code{comp2pui}, @code{ele2comp}, @code{ele2pui}, @code{elem}, @code{multi_elem},
-@code{multi_pui}, @code{pui}, @code{pui2comp}, @code{pui2ele}, @code{puireduc}, @code{schur2comp}.
-
-@end deffn
-
-@deffn {Function} multi_elem (@var{l_elem}, @var{multi_pc}, @var{l_var})
-de'compose un polyno^me 
-multi-syme'trique sous la forme multi-contracte'e @var{multi_pc} en les groupes
-de variables contenue dans la liste de listes @var{l_var} sur les
-groupes de fonctions syme'triques e'le'mentaires contenues dans @var{l_elem}.
-
-@c GENERATED FROM THE FOLLOWING
-@c multi_elem ([[2, e1, e2], [2, f1, f2]], a*x + a^2 + x^3, [[x, y], [a, b]]);
-@c ratsimp (%);
-@example
-(%i1) multi_elem ([[2, e1, e2], [2, f1, f2]], a*x + a^2 + x^3, [[x, y], [a, b]]);
-                                                  3
-(%o1)         - 2 f2 + f1 (f1 + e1) - 3 e1 e2 + e1
-(%i2) ratsimp (%);
-                         2                       3
-(%o2)         - 2 f2 + f1  + e1 f1 - 3 e1 e2 + e1
-@end example
-
-Autres fonctions de changements de bases :
-
-@code{comp2ele}, @code{comp2pui}, @code{ele2comp}, @code{ele2pui}, @code{elem},
-@code{mon2schur}, @code{multi_pui}, @code{pui}, @code{pui2comp}, @code{pui2ele},
-@code{puireduc}, @code{schur2comp}.
-
-@end deffn
-
-@deffn {Function} multi_orbit (@var{P}, [@var{lvar_1}, @var{lvar_2}, ..., @var{lvar_p}])
-@var{P} est un polyno^me en l'ensemble
-des variables contenues dans les listes @var{lvar_1}, @var{lvar_2}, ..., @var{lvar_p}. 
-Cette fonction rame`ne l'orbite du polyno^me @var{P} sous l'action du produit 
-des groupes syme'triques des ensembles de variables repre'sente's par 
-ces @var{p} listes.
+@var{P} is a polynomial in the set of variables contained in the lists
+@var{lvar_1}, @var{lvar_2}, ..., @var{lvar_p}. This function returns the
+orbit of the polynomial @var{P} under the action of the product of the
+symmetric groups of the sets of variables represented in these @var{p}
+lists.
 
 @c GENERATED FROM THE FOLLOWING
 @c multi_orbit (a*x + b*y, [[x, y], [a, b]]);
@@ -419,46 +532,21 @@ ces @var{p} listes.
 (%i2) multi_orbit (x + y + 2*a, [[x, y], [a, b, c]]);
 (%o2)        [y + x + 2 c, y + x + 2 b, y + x + 2 a]
 @end example
-
 @noindent
-Voir e'galement : @code{orbit} pour l'action d'un seul groupe syme'trique.
-
+Also see: @code{orbit} for the action of a single symmetric group.
 @end deffn
 
-@c WHAT ARE THE ARGUMENTS FOR THIS FUNCTION ??
-@deffn {Function} multi_pui
-est a` la fonction @code{pui} ce que la fonction @code{multi_elem} est
-a` la fonction @code{elem}.
 
-@c GENERATED FROM THE FOLLOWING
-@c multi_pui ([[2, p1, p2], [2, t1, t2]], a*x + a^2 + x^3, [[x, y], [a, b]]);
-@example
-(%i1) multi_pui ([[2, p1, p2], [2, t1, t2]], a*x + a^2 + x^3, [[x, y], [a, b]]);
-                                            3
-                                3 p1 p2   p1
-(%o1)              t2 + p1 t1 + ------- - ---
-                                   2       2
-@end example
 
-@end deffn
-
-@deffn {Function} multinomial (@var{r}, @var{part})
-ou` @var{r} est le poids de la partition @var{part}. Cette
-fonction rame`ne le coefficient multinomial associe' : si les
-parts de la partitions part sont @var{i_1}, @var{i_2}, ..., @var{i_k}, le re'sultat de
-@code{multinomial} est @code{@var{r}!/(@var{i_1}! @var{i_2}! ... @var{i_k}!)}.
-
-@end deffn
 
 @deffn {Function} multsym (@var{ppart_1}, @var{ppart_2}, @var{n})
-re'alise le produit de deux polyno^mes
-syme'triques de @var{n} variables en ne travaillant que modulo l'action du
-groupe syme'trique d'ordre @var{n}. Les polyno^mes sont dans leur repre'sentation
-partitionne'e. 
+returns the product of the two symmetric polynomials in @var{n}
+variables by working only modulo the action of the symmetric group of
+order @var{n}. The polynomials are in their partitioned form.
 
-Soient les 2 polyno^mes syme'triques en @code{x}, @code{y}: @code{3*(x + y) + 2*x*y} et @code{5*(x^2 + y^2)}
-dont les formes partitionne'es sont respectivement @code{[[3, 1], [2, 1, 1]]} et @code{[[5, 2]]},
-alors leur produit sera donne' par :
+Given the 2 symmetric polynomials in @var{x}, @var{y}:  @code{3*(x + y)
++ 2*x*y} and @code{5*(x^2 + y^2)} whose partitioned forms are @code{[[3,
+1], [2, 1, 1]]} and @code{[[5, 2]]}, their product will be
 
 @c GENERATED FROM THE FOLLOWING
 @c multsym ([[3, 1], [2, 1, 1]], [[5, 2]], 2);
@@ -466,21 +554,21 @@ alors leur produit sera donne' par :
 (%i1) multsym ([[3, 1], [2, 1, 1]], [[5, 2]], 2);
 (%o1)         [[10, 3, 1], [15, 3, 0], [15, 2, 1]]
 @end example
-
 @noindent
-soit @code{10*(x^3*y + y^3*x) + 15*(x^2*y + y^2*x) + 15*(x^3 + y^3)}.
+that is @code{10*(x^3*y + y^3*x) + 15*(x^2*y + y^2*x) + 15*(x^3 + y^3)}.
 
-Fonctions de changements de repre'sentations d'un polyno^me syme'trique :
+Functions for changing the representations of a symmetric polynomial:
 
 @code{contract}, @code{cont2part}, @code{explose}, @code{part2cont},
 @code{partpol}, @code{tcontract}, @code{tpartpol}.
-
 @end deffn
 
+
+
 @deffn {Function} orbit (@var{P}, @var{lvar})
-calcul l'orbite du polyno^me @var{P} en les variables de la liste
-@var{lvar} sous l'action du groupe syme'trique de l'ensemble des variables contenues
-dans la liste @var{lvar}.
+computes the orbit of the polynomial @var{P} in the variables in the list
+@var{lvar} under the action of the symmetric group of the set of
+variables in the list @var{lvar}.
  
 @c GENERATED FROM THE FOLLOWING
 @c orbit (a*x + b*y, [x, y]);
@@ -492,227 +580,32 @@ dans la liste @var{lvar}.
                         2         2
 (%o2)                 [y  + 2 y, x  + 2 x]
 @end example
-
 @noindent
-Voir e'galement : @code{multi_orbit} pour l'action d'un produit de groupes 
-syme'triques sur un polyno^me.
-
-
+See also @code{multi_orbit} for the action of a product of symmetric
+groups on a polynomial.
 @end deffn
 
-@deffn {Function} part2cont (@var{ppart}, @var{lvar})
-passe de la forme partitionne'e a` la forme contracte'e
-d'un polyno^me syme'trique. La forme contracte'e est rendue avec les variables
-contenues dans @var{lvar}.
 
-@c GENERATED FROM THE FOLLOWING
-@c part2cont ([[2*a^3*b, 4, 1]], [x, y]);
-@example
-(%i1) part2cont ([[2*a^3*b, 4, 1]], [x, y]);
-                              3    4
-(%o1)                      2 a  b x  y
-@end example
-
-@noindent
-Autres fonctions de changements de repre'sentations :
-
-@code{contract}, @code{cont2part}, @code{explose}, @code{partpol}, @code{tcontract}, @code{tpartpol}.
-
-
-@end deffn
-
-@deffn {Function} partpol (@var{psym}, @var{lvar})
-@var{psym} est un polyno^me syme'trique en les variables 
-de @var{lvar}. Cette fonction rame`ne sa repre'sentation partitionne'e.
-
-@c GENERATED FROM THE FOLLOWING
-@c partpol (-a*(x + y) + 3*x*y, [x, y]);
-@example
-(%i1) partpol (-a*(x + y) + 3*x*y, [x, y]);
-(%o1)               [[3, 1, 1], [- a, 1, 0]]
-@end example
-
-@noindent
-Autres fonctions de changements de repre'sentations :
-
-@code{contract}, @code{cont2part}, @code{explose}, @code{part2cont}, @code{tcontract}, @code{tpartpol}.
-
-@end deffn
-
-@deffn {Function} permut (@var{l})
-rame`ne la liste des permutations de la liste @var{l}.
-
-
-@end deffn
-
-@deffn {Function} polynome2ele (@var{P}, @var{x})
-donne la liste @code{@var{l} = [@var{n}, @var{e_1}, ..., @var{e_n}]} ou` @var{n} est le degre'
-du polyno^me @var{P} en la variable @var{x} et @var{e_i} la @var{i}-ieme fonction syme'trique 
-e'le'mentaire des racines de @var{P}.
-
-@c GENERATED FROM THE FOLLOWING
-@c polynome2ele (x^7 - 14*x^5 + 56*x^3 - 56*x + 22, x);
-@c ele2polynome ([7, 0, -14, 0, 56, 0, -56, -22], x);
-@example
-(%i1) polynome2ele (x^7 - 14*x^5 + 56*x^3 - 56*x + 22, x);
-(%o1)          [7, 0, - 14, 0, 56, 0, - 56, - 22]
-(%i2) ele2polynome ([7, 0, -14, 0, 56, 0, -56, -22], x);
-                  7       5       3
-(%o2)            x  - 14 x  + 56 x  - 56 x + 22
-@end example
-
-@noindent
-La re'ciproque : @code{ele2polynome (@var{l}, @var{x})}
-
-@end deffn
-
-@deffn {Function} prodrac (@var{l}, @var{k})
-@var{l} est une liste contenant les fonctions syme'triques 
-e'le'mentaires sur un ensemble @var{A}. @code{prodrac} rend le polyno^me dont
-les racines sont les produits @var{k} a` @var{k} des e'le'ments de @var{A}.
-
-@end deffn
-
-@c HMM, pui IS A VARIABLE AS WELL
-@deffn {Function} pui (@var{l}, @var{sym}, @var{lvar})
-de'compose le polyno^me syme'trique @var{sym}, en les variables
-contenues de la liste @var{lvar}, par les fonctions puissances
-contenues dans la liste @var{l}. Si le premier e'le'ment de @var{l} est donne'
-ce sera le cardinal de l'alphabet sinon on prendra le degre' du polyno^me
-@var{sym}. Si il manque des valeurs a` la liste @var{l}, des valeurs formelles
-du type "pi" sont rajoute'es. Le polyno^me sym peut etre donne'
-sous 3 formes diffe'rentes : contracte'e (@code{pui} doit alors valoir 1 sa valeur
-par de'faut), partitionne'e (@code{pui} doit alors valoir 3) ou e'tendue (i.e. le
-polyno^me en entier) (@code{pui} doit alors valoir 2). La fonction @code{elem}
-s'utilise de la me^me manie`re.
-
-@c GENERATED FROM THE FOLLOWING
-@c pui;
-@c pui ([3, a, b], u*x*y*z, [x, y, z]);
-@c ratsimp (%);
-@example
-(%i1) pui;
-(%o1)                           1
-(%i2) pui ([3, a, b], u*x*y*z, [x, y, z]);
-                       2
-                   a (a  - b) u   (a b - p3) u
-(%o2)              ------------ - ------------
-                        6              3
-(%i3) ratsimp (%);
-                                       3
-                      (2 p3 - 3 a b + a ) u
-(%o3)                 ---------------------
-                                6
-@end example
-
-@noindent
-Autres fonctions de changements de bases :
-
-@code{comp2ele}, @code{comp2pui}, @code{ele2comp}, @code{ele2pui}, @code{elem}, @code{mon2schur},
-@code{multi_elem}, @code{multi_pui}, @code{pui2comp}, @code{pui2ele}, @code{puireduc},
-@code{schur2comp}.
-
-@end deffn
-
-@deffn {Function} pui2comp (@var{n}, @var{lpui})
-rend la liste des @var{n} premie`res fonctions comple`tes
-(avec en te^te le cardinal) en fonction des fonctions puissance donne'es dans
-la liste @var{lpui}. Si la liste @var{lpui} est vide le cardinal est N sinon 
-c'est son premier e'le'ment similaire a` @code{comp2ele} et @code{comp2pui}.
-
-@c GENERATED FROM THE FOLLOWING
-@c pui2comp (2, []);
-@c pui2comp (3, [2, a1]);
-@c ratsimp (%);
-@example
-(%i1) pui2comp (2, []);
-                                       2
-                                p2 + p1
-(%o1)                   [2, p1, --------]
-                                   2
-(%i2) pui2comp (3, [2, a1]);
-                                            2
-                                 a1 (p2 + a1 )
-                         2  p3 + ------------- + a1 p2
-                  p2 + a1              2
-(%o2)     [2, a1, --------, --------------------------]
-                     2                  3
-(%i3) ratsimp (%);
-                            2                     3
-                     p2 + a1   2 p3 + 3 a1 p2 + a1
-(%o3)        [2, a1, --------, --------------------]
-                        2               6
-@end example
-
-@noindent
-Autres fonctions de changements de bases :
-
-@code{comp2ele}, @code{comp2pui}, @code{ele2comp}, @code{ele2pui}, @code{elem},
-@code{mon2schur}, @code{multi_elem}, @code{multi_pui}, @code{pui}, @code{pui2ele},
-@code{puireduc}, @code{schur2comp}.
-
-@end deffn
-
-@deffn {Function} pui2ele (@var{n}, @var{lpui})
-re'alise le passage des fonctions puissances aux
-fonctions syme'triques e'le'mentaires.
-Si le drapeau @code{pui2ele} est @code{girard}, on re'cupe`re la liste des fonctions 
-syme'triques e'le'mentaires de 1 a` @var{n}, et s'il est e'gal a` @code{close}, 
-la @var{n}-ie`me fonction syme'trique e'le'mentaire.
-
-Autres fonctions de changements de bases :
-
-@code{comp2ele}, @code{comp2pui}, @code{ele2comp}, @code{ele2pui}, @code{elem},
-@code{mon2schur}, @code{multi_elem}, @code{multi_pui}, @code{pui}, @code{pui2comp},
-@code{puireduc}, @code{schur2comp}.
-
-@end deffn
-
-@deffn {Function} pui2polynome (@var{x}, @var{lpui})
-calcul le polyno^me en @var{x} dont les fonctions puissances
-des racines sont donne'es dans la liste @var{lpui}.
-
-@c GENERATED FROM THE FOLLOWING
-@c polynome2ele (x^3 - 4*x^2 + 5*x - 1, x);
-@c ele2pui (3, %);
-@c pui2polynome (x, %);
-@example
-(%i1) pui;
-(%o1)                           1
-(%i2) kill(labels);
-(%o0)                         done
-(%i1) polynome2ele (x^3 - 4*x^2 + 5*x - 1, x);
-(%o1)                     [3, 4, 5, 1]
-(%i2) ele2pui (3, %);
-(%o2)                     [3, 4, 6, 7]
-(%i3) pui2polynome (x, %);
-                        3      2
-(%o3)                  x  - 4 x  + 5 x - 1
-@end example
-
-@noindent
-Autres fonctions a` voir :
-@code{polynome2ele}, @code{ele2polynome}.
-
-@end deffn
 
 @deffn {Function} pui_direct (@var{orbite}, [@var{lvar_1}, ..., @var{lvar_n}], [@var{d_1}, @var{d_2}, ..., @var{d_n}])
 
-Soit @var{f} un polynome en @var{n} blocs de variables @var{lvar_1}, ..., @var{lvar_n}.
-Soit @var{c_i} le nombre de variables dans @var{lvar_i} . Et @var{SC} le produit des @var{n}
-groupes syme'triques de degre' @var{c_1}, ..., @var{c_n}. Ce groupe agit
-naturellement sur @var{f}.
-La liste @var{orbite} est l'orbite, note'e @code{@var{SC}(@var{f})}, de la fonction @var{f} sous 
-l'action de @var{SC}. (Cette liste peut e^tre obtenue avec la fonction : 
-@code{multi_orbit}).
-Les di sont des entiers tels que @var{c_1} <= @var{d_1}, @var{c_2} <= @var{d_2}, ..., @var{c_n} <= @var{d_n}.
-Soit @var{SD} le produit des groupes syme'triques @var{S_d1} x @var{S_d2} x ... x @var{S_dn}.
+Let @var{f} be a polynomial in @var{n} blocks of variables @var{lvar_1},
+..., @var{lvar_n}.  Let @var{c_i} be the number of variables in
+@var{lvar_i}, and @var{SC} be the product of @var{n} symmetric groups of
+degree @var{c_1}, ..., @var{c_n}. This group acts naturally on @var{f}.
+The list @var{orbite} is the orbit, denoted @code{@var{SC}(@var{f})}, of
+the function @var{f} under the action of @var{SC}. (This list may be
+obtained by the function @code{multi_orbit}.)  The @var{di} are integers
+s.t. @math{c_1 \le d_1, c_2 \le d_2, \ldots, c_n \le d_n}.  
 
-La fonction @code{pui_direct} rame`ne les @var{n} premie`res fonctions puissances de @code{@var{SD}(@var{f})}
-de'duites des fonctions puissances de @code{@var{SC}(@var{f})} ou` @var{n} est le cardinal de @code{@var{SD}(@var{f})}.
+Let @var{SD} be the product of the symmetric groups @math{S_{d_1} \times
+S_{d_2} \times \cdots \times S_{d_n}}.  The function @code{pui_direct} returns
+the first @var{n} power functions of @code{@var{SD}(@var{f})} deduced
+from the power functions of @code{@var{SC}(@var{f})}, where @var{n} is
+the size of @code{@var{SD}(@var{f})}.
 
-Le re'sultat est rendue sous forme multi-contracte'e par rapport a @var{SD}.
-i.e. on ne conserve qu'un e'le'ment par orbite sous l'action de @var{SD}).
+The result is in multi-contracted form w.r.t. @var{SD}, i.e. only one
+element is kept per orbit, under the action of @var{SD}.
 
 @c GENERATED FROM THE FOLLOWING
 @c l: [[x, y], [a, b]];
@@ -750,55 +643,231 @@ i.e. on ne conserve qu'un e'le'ment par orbite sous l'action de @var{SD}).
 
 @end deffn
 
-@deffn {Function} puireduc (@var{n}, @var{lpui})
-@var{lpui} est une liste dont le premier e'le'ment est un entier
-@var{m}. @code{puireduc} donne les @var{n} premie`res fonctions puissances en fonction 
-des @var{m} premie`res.
+
+
+
+
+
+@subsection Partitions
+
+@deffn {Function} kostka (@var{part_1}, @var{part_2})
+written by P. Esperet, calculates the Kostka number of the partition
+@var{part_1} and @var{part_2}.
 
 @c GENERATED FROM THE FOLLOWING
-@c puireduc (3, [2]);
+@c kostka ([3, 3, 3], [2, 2, 2, 1, 1, 1]);
 @example
-(%i1) puireduc (3, [2]);
-                                         2
-                                   p1 (p1  - p2)
-(%o1)          [2, p1, p2, p1 p2 - -------------]
-                                         2
-(%i2) ratsimp (%);
-                                           3
-                               3 p1 p2 - p1
-(%o2)              [2, p1, p2, -------------]
-                                     2
+(%i1) kostka ([3, 3, 3], [2, 2, 2, 1, 1, 1]);
+(%o1)                           6
 @end example
+@end deffn
+
+
+
+@deffn {Function} lgtreillis (@var{n}, @var{m})
+returns the list of partitions of weight @var{n} and length @var{m}.
+
+@c GENERATED FROM THE FOLLOWING
+@c lgtreillis (4, 2);
+@example
+(%i1) lgtreillis (4, 2);
+(%o1)                   [[3, 1], [2, 2]]
+@end example
+@noindent
+Also see: @code{ltreillis}, @code{treillis} and @code{treinat}.
+@end deffn
+
+
+
+@deffn {Function} ltreillis (@var{n}, @var{m})
+returns the list of partitions of weight @var{n} and length less than or
+equal to @var{m}.
+
+@c GENERATED FROM THE FOLLOWING
+@c ltreillis (4, 2);
+@example
+(%i1) ltreillis (4, 2);
+(%o1)               [[4, 0], [3, 1], [2, 2]]
+@end example
+@noindent
+Also see: @code{lgtreillis}, @code{treillis} and @code{treinat}.
+@end deffn
+
+
+
+@deffn {Function} treillis (@var{n})
+returns all partitions of weight @var{n}.
+
+@c GENERATED FROM THE FOLLOWING
+@c treillis (4);
+@example
+(%i1) treillis (4);
+(%o1)    [[4], [3, 1], [2, 2], [2, 1, 1], [1, 1, 1, 1]]
+@end example
+
+See also: @code{lgtreillis}, @code{ltreillis} and @code{treinat}.
 
 @end deffn
 
-@deffn {Function} resolvante (@var{P}, @var{x}, @var{f}, [@var{x_1}, ..., @var{x_d}])
-calcule la re'solvante du polyno^me @var{P}
-de la variable @var{x} et de degre' @var{n} >= @var{d} par la fonction @var{f} exprime'e en
-les variables @var{x_1}, ..., @var{x_d}. Il est important pour l'efficacite' des
-calculs de ne pas mettre dans la liste @code{[@var{x_1}, ..., @var{x_d}]} les variables
-n'intervenant pas dans la fonction de transformation @var{f}.
 
-Afin de rendre plus efficaces les calculs on peut mettre des drapeaux
-a` la variable @code{resolvante} afin que des algorithmes ade'quates soient
-utilise's :
 
-Si la fonction @var{f} est unitaire :
+@deffn {Function} treinat (@var{part})
+retruns the list of partitions inferior to the partition @var{part} w.r.t.
+the natural order.
+
+@c GENERATED FROM THE FOLLOWING
+@c treinat ([5]);
+@c treinat ([1, 1, 1, 1, 1]);
+@c treinat ([3, 2]);
+@example
+(%i1) treinat ([5]);
+(%o1)                         [[5]]
+(%i2) treinat ([1, 1, 1, 1, 1]);
+(%o2) [[5], [4, 1], [3, 2], [3, 1, 1], [2, 2, 1], [2, 1, 1, 1], 
+
+                                                 [1, 1, 1, 1, 1]]
+(%i3) treinat ([3, 2]);
+(%o3)                 [[5], [4, 1], [3, 2]]
+@end example
+
+See also: @code{lgtreillis}, @code{ltreillis} and @code{treillis}.
+
+@end deffn
+
+
+
+
+
+@subsection Polynomials and their roots
+
+@deffn {Function} ele2polynome (@var{L}, @var{z})
+returns the polynomial in @var{z} s.t. the elementary symmetric
+functions of its roots are in the list @code{@var{L} = [@var{n},
+@var{e_1}, ..., @var{e_n}]}, where @var{n} is the degree of the
+polynomial and @var{e_i} the @var{i}-th elementary symmetric function.
+
+@c GENERATED FROM THE FOLLOWING
+@c ele2polynome ([2, e1, e2], z);
+@c polynome2ele (x^7 - 14*x^5 + 56*x^3  - 56*x + 22, x);
+@c ele2polynome ([7, 0, -14, 0, 56, 0, -56, -22], x);
+@example
+(%i1) ele2polynome ([2, e1, e2], z);
+                          2
+(%o1)                    z  - e1 z + e2
+(%i2) polynome2ele (x^7 - 14*x^5 + 56*x^3  - 56*x + 22, x);
+(%o2)          [7, 0, - 14, 0, 56, 0, - 56, - 22]
+(%i3) ele2polynome ([7, 0, -14, 0, 56, 0, -56, -22], x);
+                  7       5       3
+(%o3)            x  - 14 x  + 56 x  - 56 x + 22
+@end example
+@noindent
+The inverse: @code{polynome2ele (@var{P}, @var{z})}.
+
+Also see:
+@code{polynome2ele}, @code{pui2polynome}.
+@end deffn
+
+
+
+@deffn {Function} polynome2ele (@var{P}, @var{x})
+gives the list @code{@var{l} = [@var{n}, @var{e_1}, ..., @var{e_n}]}
+where @var{n} is the degree of the polynomial @var{P} in the variable
+@var{x} and @var{e_i} is the @var{i}-the elementary symmetric function
+of the roots of @var{P}.
+
+@c GENERATED FROM THE FOLLOWING
+@c polynome2ele (x^7 - 14*x^5 + 56*x^3 - 56*x + 22, x);
+@c ele2polynome ([7, 0, -14, 0, 56, 0, -56, -22], x);
+@example
+(%i1) polynome2ele (x^7 - 14*x^5 + 56*x^3 - 56*x + 22, x);
+(%o1)          [7, 0, - 14, 0, 56, 0, - 56, - 22]
+(%i2) ele2polynome ([7, 0, -14, 0, 56, 0, -56, -22], x);
+                  7       5       3
+(%o2)            x  - 14 x  + 56 x  - 56 x + 22
+@end example
+@noindent
+The inverse: @code{ele2polynome (@var{l}, @var{x})}
+@end deffn
+
+
+
+@deffn {Function} prodrac (@var{L}, @var{k})
+@var{L} is a list containing the elementary symmetric functions 
+on a set @var{A}. @code{prodrac} returns the polynomial whose roots
+are the @var{k} by @var{k} products of the elements of @var{A}.
+
+Also see @code{somrac}.
+@end deffn
+
+
+@deffn {Function} pui2polynome (@var{x}, @var{lpui})
+calculates the polynomial in @var{x} whose power functions of the roots
+are given in the list @var{lpui}.
+
+@c GENERATED FROM THE FOLLOWING
+@c polynome2ele (x^3 - 4*x^2 + 5*x - 1, x);
+@c ele2pui (3, %);
+@c pui2polynome (x, %);
+@example
+(%i1) pui;
+(%o1)                           1
+(%i2) kill(labels);
+(%o0)                         done
+(%i1) polynome2ele (x^3 - 4*x^2 + 5*x - 1, x);
+(%o1)                     [3, 4, 5, 1]
+(%i2) ele2pui (3, %);
+(%o2)                     [3, 4, 6, 7]
+(%i3) pui2polynome (x, %);
+                        3      2
+(%o3)                  x  - 4 x  + 5 x - 1
+@end example
+@noindent
+See also:
+@code{polynome2ele}, @code{ele2polynome}.
+@end deffn
+
+
+
+@deffn {Function} somrac (@var{L}, @var{k})
+The list @var{L} contains elementary symmetric functions of a polynomial
+@var{P} . The function computes the polynomial whose roots are the 
+@var{k} by @var{k} distinct sums of the roots of @var{P}. 
+
+Also see @code{prodrac}.
+@end deffn
+
+
+
+
+
+@subsection Resolvents
+
+@deffn {Function} resolvante (@var{P}, @var{x}, @var{f}, [@var{x_1},..., @var{x_d}]) 
+calculates the resolvent of the polynomial @var{P} in @var{x} of degree
+@var{n} >= @var{d} by the function @var{f} expressed in the variables
+@var{x_1}, ..., @var{x_d}.  For efficiency of computation it is
+important to not include in the list @code{[@var{x_1}, ..., @var{x_d}]}
+variables which do not appear in the transformation function @var{f}.
+
+To increase the efficiency of the computation one may set flags in
+@code{resolvante} so as to use appropriate algorithms:
+
+If the function @var{f} is unitary:
 @itemize @bullet
 @item
-un polyno^me d'une variable,
+A polynomial in a single variable,
 @item
-  line'aire ,
+  linear,
 @item
-  alterne'e,
+  alternating,
 @item
-  une somme de variables,
+  a sum,
 @item
-  syme'trique en les variables qui apparaissent dans son expression,
+  symmetric,
 @item
-  un produit de variables,
+  a product,
 @item
-la fonction de la re'solvante de Cayley (utilisable qu'en degre' 5)
+the function of the Cayley resolvent (usable up to degree 5)
 
 @c WHAT IS THIS ILLUSTRATING EXACTLY ??
 @example
@@ -806,9 +875,9 @@ la fonction de la re'solvante de Cayley (utilisable qu'en degre' 5)
      (x1*x3 + x3*x5 + x5*x2 + x2*x4 + x4*x1))^2
 @end example
 
-  generale,
+general,
 @end itemize
-le drapeau de @code{resolvante} pourra e^tre respectivement :
+the flag of @code{resolvante} may be, respectively:
 @itemize @bullet
 @item
   unitaire,
@@ -980,10 +1049,10 @@ x   - 7 x   + 21 x   - 35 x   + 35 x  - 21 x  + 7 x  - 1]
                                                        + 93392896
 @end example
 
-Pour la re'solvante de Cayley, les 2 derniers arguments sont neutres
-et le polyno^me donne' en entre'e doit ne'cessairement e^tre de degre' 5.
+For the Cayley resolvent, the 2 last arguments are neutral and the input
+polynomial must necessarily be of degree 5.
 
-Voir e'galement :
+See also:
 
 @code{resolvante_bipartite}, @code{resolvante_produit_sym},
 @code{resolvante_unitaire}, @code{resolvante_alternee1}, @code{resolvante_klein}, 
@@ -991,12 +1060,15 @@ Voir e'galement :
 
 @end deffn
 
-@deffn {Function} resolvante_alternee1 (@var{P}, @var{x})
-calcule la transformation de 
-@c UMM, I THINK THE TEX STUFF SHOULD BE REPLACED BY @code
-@code{@var{P}(@var{x})} de degre @var{n} par la fonction $\prod_@{1\leq i<j\leq n-1@} (x_i-x_j)$.
 
-Voir e'galement :
+
+@deffn {Function} resolvante_alternee1 (@var{P}, @var{x})
+calculates the transformation
+@c UMM, I THINK THE TEX STUFF SHOULD BE REPLACED BY @code (original comment)
+@code{@var{P}(@var{x})} of degree @var{n} by the function @math{\prod_{1\leq
+i<j\leq n-1} (x_i-x_j)}.
+
+See also:
 
 @code{resolvante_produit_sym}, @code{resolvante_unitaire},
 @code{resolvante} , @code{resolvante_klein}, @code{resolvante_klein3},
@@ -1004,13 +1076,14 @@ Voir e'galement :
 
 @end deffn
 
-@deffn {Function} resolvante_bipartite (@var{P}, @var{x})
-calcule la transformation de 
-@code{@var{P}(@var{x})} de degre @var{n} (@var{n} pair) par la fonction 
-@c UMM, I THINK THE TEX STUFF SHOULD BE REPLACED BY @code
-$x_1x_2\ldots x_@{n/2@}+x_@{n/2+1@}\ldotsx_n$
 
-Voir e'galement :
+@deffn {Function} resolvante_bipartite (@var{P}, @var{x})
+calculates the transformation of
+@code{@var{P}(@var{x})} of even degree @var{n} by the function 
+@c We could use @ifhtml ... and @iftex ... here
+@math{x_1 x_2 \cdots x_{n/2} + x_{n/2+1}\cdots x_n}.
+
+See also:
 
 @code{resolvante_produit_sym}, @code{resolvante_unitaire},
 @code{resolvante} , @code{resolvante_klein}, @code{resolvante_klein3},
@@ -1024,7 +1097,7 @@ Voir e'galement :
 (%o1)        y   - 972 y  + 314928 y  - 34012224 y
 @end example
 
-Voir e'galement :
+See also:
 
 @code{resolvante_produit_sym}, @code{resolvante_unitaire},
 @code{resolvante}, @code{resolvante_klein}, @code{resolvante_klein3},
@@ -1033,9 +1106,11 @@ Voir e'galement :
 
 @end deffn
 
+
+
 @deffn {Function} resolvante_diedrale (@var{P}, @var{x})
-calcule la transformation de
-@code{@var{P}(@var{x})} par la fonction @code{@var{x_1} @var{x_2} + @var{x_3} @var{x_4}}.
+calculates the transformation of @code{@var{P}(@var{x})} by the function
+@code{@var{x_1} @var{x_2} + @var{x_3} @var{x_4}}.
 
 @c GENERATED FROM THE FOLLOWING
 @c resolvante_diedrale (x^5 - 3*x^4 + 1, x);
@@ -1050,7 +1125,7 @@ calcule la transformation de
  - 697
 @end example
 
-Voir e'galement :
+See also:
 
 @code{resolvante_produit_sym}, @code{resolvante_unitaire},
 @code{resolvante_alternee1}, @code{resolvante_klein}, @code{resolvante_klein3},
@@ -1058,11 +1133,13 @@ Voir e'galement :
 
 @end deffn
 
-@deffn {Function} resolvante_klein (@var{P}, @var{x})
-calcule la transformation de
-@code{@var{P}(@var{x})} par la fonction @code{@var{x_1} @var{x_2} @var{x_4} + @var{x_4}}.
 
-Voir e'galement :
+
+@deffn {Function} resolvante_klein (@var{P}, @var{x})
+calculates the transformation of @code{@var{P}(@var{x})} by the function
+@code{@var{x_1} @var{x_2} @var{x_4} + @var{x_4}}.
+
+See also:
 
 @code{resolvante_produit_sym}, @code{resolvante_unitaire},
 @code{resolvante_alternee1}, @code{resolvante}, @code{resolvante_klein3},
@@ -1070,11 +1147,12 @@ Voir e'galement :
 
 @end deffn
 
-@deffn {Function} resolvante_klein3 (@var{P}, @var{x})
-calcule la transformation de
-@code{@var{P}(@var{x})} par la fonction @code{@var{x_1} @var{x_2} @var{x_4} + @var{x_4}}.
 
-Voir e'galement :
+@deffn {Function} resolvante_klein3 (@var{P}, @var{x})
+calculates the transformation of @code{@var{P}(@var{x})} by the function
+@code{@var{x_1} @var{x_2} @var{x_4} + @var{x_4}}.
+
+See also:
 
 @code{resolvante_produit_sym}, @code{resolvante_unitaire},
 @code{resolvante_alternee1}, @code{resolvante_klein}, @code{resolvante},
@@ -1082,9 +1160,11 @@ Voir e'galement :
 
 @end deffn
 
+
+
 @deffn {Function} resolvante_produit_sym (@var{P}, @var{x})
-calcule la liste toutes les 
-r\'esolvantes produit du polyn\^ome @code{@var{P}(@var{x})}.
+calculates the list of all product resolvents of the polynomial
+@code{@var{P}(@var{x})}.
 
 @c GENERATED FROM THE FOLLOWING
 @c resolvante_produit_sym (x^5 + 3*x^4 + 2*x - 1, x);
@@ -1111,19 +1191,22 @@ r\'esolvantes produit du polyn\^ome @code{@var{P}(@var{x})}.
 @c " resolvante produit " IS PRINTED FROM SOMEWHERE IN THE BOWELS OF resolvante
 @c AND IT GOOFS UP THE DISPLAY OF THE EXPONENTS OF %o3 -- I THREW IN A LINE BREAK TO ADJUST
 
-Voir e'galement :
+See also:
 
 @code{resolvante}, @code{resolvante_unitaire},
-@code{resolvante_alternee1}, @code{resolvante_klein}, @code{resolvante_klein3},
-@code{resolvante_vierer}, @code{resolvante_diedrale}.
+@code{resolvante_alternee1}, @code{resolvante_klein},
+@code{resolvante_klein3}, @code{resolvante_vierer},
+@code{resolvante_diedrale}.
 
 @end deffn
 
-@deffn {Function} resolvante_unitaire (@var{P}, @var{Q}, @var{x})
-calcule la r\'esolvante du 
-polyn\^ome @code{@var{P}(@var{x})} par le polyn\^ome @code{@var{Q}(@var{x})}.
 
-Voir e'galement :
+
+@deffn {Function} resolvante_unitaire (@var{P}, @var{Q}, @var{x})
+computes the resolvent of the polynomial @code{@var{P}(@var{x})} by the
+polynomial @code{@var{Q}(@var{x})}. 
+
+See also:
 
 @code{resolvante_produit_sym}, @code{resolvante},
 @code{resolvante_alternee1}, @code{resolvante_klein}, @code{resolvante_klein3},
@@ -1131,11 +1214,13 @@ Voir e'galement :
 
 @end deffn
 
-@deffn {Function} resolvante_vierer (@var{P}, @var{x})
-calcule la transformation de
-@code{@var{P}(@var{x})} par la fonction @code{@var{x_1} @var{x_2} - @var{x_3} @var{x_4}}.
 
-Voir e'galement :
+@deffn {Function} resolvante_vierer (@var{P}, @var{x})
+computes the transformation of
+@code{@var{P}(@var{x})} by the function @code{@var{x_1} @var{x_2} -
+@var{x_3} @var{x_4}}.
+
+See also:
 
 @code{resolvante_produit_sym}, @code{resolvante_unitaire},
 @code{resolvante_alternee1}, @code{resolvante_klein}, @code{resolvante_klein3},
@@ -1143,95 +1228,20 @@ Voir e'galement :
 
 @end deffn
 
-@deffn {Function} schur2comp (@var{P}, @var{l_var})
-@var{P} est un polyno^mes en les variables contenues dans 
-la liste @var{l_var}. Chacune des variables de @var{l_var} repre'sente une fonction
-syme'trique comple`te. On repre'sente dans @var{l_var} la ie`me fonction syme'trique
-comple`te comme la concate'nation de la lettre @code{h} avec l'entier @var{i} : @code{h@var{i}}.
-Cette fonction donne l'expression de @var{P} en fonction des fonctions
-de Schur.
 
-@c GENERATED FROM THE FOLLOWING
-@c schur2comp (h1*h2 - h3, [h1, h2, h3]);
-@c schur2comp (a*h3, [h3]);
-@example
-(%i1) schur2comp (h1*h2 - h3, [h1, h2, h3]);
-(%o1)                         s
-                               1, 2
-(%i2) schur2comp (a*h3, [h3]);
-(%o2)                         s  a
-                               3
-@end example
 
+
+@subsection Miscellaneous
+
+
+@deffn {Function} multinomial (@var{r}, @var{part})
+where @var{r} is the weight of the partition @var{part}.  This function
+returns the associate multinomial coefficient: if the parts of
+@var{part} are @var{i_1}, @var{i_2}, ..., @var{i_k}, the result is
+@code{@var{r}!/(@var{i_1}! @var{i_2}! ... @var{i_k}!)}.
 @end deffn
 
-@deffn {Function} somrac (@var{l}, @var{k})
-la liste @var{l} contient les fonctions syme'triques e'le'mentaires
-d'un polyno^me @var{P} . On calcul le polyno^mes dont les racines sont les sommes 
-@var{K} a` @var{K} distinctes des racines de @var{P}. 
 
-Voir e'galement @code{prodrac}.
-
-
-@end deffn
-
-@deffn {Function} tcontract (@var{pol}, @var{lvar})
-teste si le polyno^me pol est syme'trique en les
-variables contenues dans la liste @var{lvar}. Si oui il rend une forme contracte'e
-comme la fonction @code{contract}.
-
-Autres fonctions de changements de repre'sentations :
-
-@code{contract}, @code{cont2part}, @code{explose}, @code{part2cont}, @code{partpol}, @code{tpartpol}.
-
-
-@end deffn
-
-@deffn {Function} tpartpol (@var{pol}, @var{lvar})
-teste si le polyno^me pol est syme'trique en les
-variables contenues dans la liste @var{lvar}. Si oui il rend sa forme partionne'e
-comme la fonction @code{partpol}.
-
-Autres fonctions de changements de repre'sentations :
-
-@code{contract}, @code{cont2part}, @code{explose}, @code{part2cont}, @code{partpol}, @code{tcontract}.
-
-
-@end deffn
-
-@deffn {Function} treillis (@var{n})
-rame`ne toutes les partitions de poids @var{n}.
-
-@c GENERATED FROM THE FOLLOWING
-@c treillis (4);
-@example
-(%i1) treillis (4);
-(%o1)    [[4], [3, 1], [2, 2], [2, 1, 1], [1, 1, 1, 1]]
-@end example
-
-Voir e'galement : @code{lgtreillis}, @code{ltreillis} et @code{treinat}.
-
-@end deffn
-
-@deffn {Function} treinat (@var{part})
-rame`ne la liste des partitions infe'rieures a` la partition
-@var{part} pour l'ordre naturel.
-
-@c GENERATED FROM THE FOLLOWING
-@c treinat ([5]);
-@c treinat ([1, 1, 1, 1, 1]);
-@c treinat ([3, 2]);
-@example
-(%i1) treinat ([5]);
-(%o1)                         [[5]]
-(%i2) treinat ([1, 1, 1, 1, 1]);
-(%o2) [[5], [4, 1], [3, 2], [3, 1, 1], [2, 2, 1], [2, 1, 1, 1], 
-
-                                                 [1, 1, 1, 1, 1]]
-(%i3) treinat ([3, 2]);
-(%o3)                 [[5], [4, 1], [3, 2]]
-@end example
-
-Voir e'galement : @code{lgtreillis}, @code{ltreillis} et @code{treillis}.
-
+@deffn {Function} permut (@var{L})
+returns the list of permutations of the list @var{L}.
 @end deffn
