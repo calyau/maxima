@@ -604,13 +604,10 @@
       ((expr)
        (apply prop largs))
       ((subr lsubr)
-       ;; no need to be fast here.
-       (args 'the-trace-apply-hack (args fun))
        (setplist 'the-trace-apply-hack (list type prop))
        (apply (second (getl 'the-trace-apply-hack '(subr lsubr))) largs))
       ((mfexpr* mfexpr*s)
        (funcall prop (car largs))))))
-
 
 ;;; I/O cruft
 

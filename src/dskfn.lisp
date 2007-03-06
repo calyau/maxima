@@ -198,8 +198,6 @@
 		     (dskdefprop rename val1 'expr))
 		 (setplist item (list* 'expr val (symbol-plist item))))
 	       (dskdefprop rename val 'expr))
-	   (if (setq val (args item))
-	       (fasprin `(args (quote ,rename) (quote ,val))))
 	   (propschk item rename 'translated))
 	 (when (setq val (get item 'operators))
 	   (dskdefprop rename val 'operators)
@@ -275,9 +273,6 @@
 	   (if (not (member (car props) '(mlexprp mfexprp t-mfexpr) :test #'eq))
 	       (infostore item file (car props) stfl
 			  (cond ((member (car props) '(mexpr mmacro) :test #'eq)
-				 (let ((val1 (args item)))
-				   (if val1 (fasprin `(args (quote ,rename)
-						       (quote ,val1)))))
 				 (let ((val1 (get item 'function-mode)))
 				   (if val1 (dskdefprop rename
 							val1

@@ -1248,8 +1248,6 @@ wrapper for this."
 			   (when (member prop '(mexpr mmacro) :test #'eq)
 			     (mremprop var 'mlexprp)
 			     (mremprop var 'mfexprp)
-			     (if (not (get var 'translated))
-				 (args var nil))
 			     (if (mget var 'trace)
 				 (macsyma-untrace var))))
 		   ((eq prop '$op) (kill-operator var))

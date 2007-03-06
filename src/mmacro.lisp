@@ -72,7 +72,7 @@ call."
 	((null a)
 	 (remove1 (ncons name) 'mexpr t $functions t) ;do all arg checking,
 	 (cond (mlexprp (mputprop name t 'mlexprp)) ; then remove MEXPR defn
-	       (t (args name (cons () (length args))))))
+	       (t nil)))
       (cond ((mdefparam (car a)))
 	    ((and (mdeflistp a)
 		  (mdefparam (cadr (car a))))

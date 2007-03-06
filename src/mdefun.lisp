@@ -30,10 +30,8 @@
 
 ;;; (DEFMTRFUN ($FOO <mode> <property> <&restp>) <ARGL> . BODY)
 ;;; If the MODE is numeric it should do something about the
-;;; numebr declarations for compiling. Also, the information about the
+;;; number declarations for compiling. Also, the information about the
 ;;; modes of the arguments should not be thrown away.
-
-;;; For the LISPM this sucks, since &REST is built-in.
 
 (defmacro defmtrfun  ((name mode prop restp . array-flag) argl . body )
   (let ((def-header))
@@ -64,13 +62,11 @@
       ,@(cond ((and (eq prop 'mdefine) (not array-flag))
 	       `((cond ((status feature macsyma)
 			(mputprop ',name t
-				  ,(cond
-				    ((not restp)
-				     ''$fixed_num_args_function)
-				    (t
-				     ''$variable_num_args_function)))))
-		 ,(cond ((not restp)
-			 `(args ',name '(nil . ,(length argl))))))))
+				  ,(cond ((not restp)
+					  ''$fixed_num_args_function)
+					 (t
+					  ''$variable_num_args_function)))))
+		 ,(cond ((not restp) nil)))))
       (,(if (consp def-header)
 	    'defun-prop
 	    'defmfun)

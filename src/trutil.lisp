@@ -121,11 +121,9 @@
 
 
 
-(deftrfun tr-nargs-check (form &optional
-			       (args-p (args (caar form)))
-			       (nargs (length (cdr form))))
-					; the maclisp args info format is NIL meaning no info,
-					; probably a lexpr. or cons (min . max)
+(deftrfun tr-nargs-check (form &optional (args-p nil) (nargs (length (cdr form))))
+  ;; the maclisp args info format is NIL meaning no info,
+  ;; probably a lexpr. or cons (min . max)
   (and
    args-p
    (let ((nargs (length (cdr form)))
