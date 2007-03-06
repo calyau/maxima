@@ -1,5 +1,5 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
-@c /Rules.texi/1.24/Sat Jun 24 06:46:04 2006/-ko/
+@c /Rules.texi/1.25/Fri Mar  2 00:44:44 2007/-ko/
 
 @menu
 * Introdu@,{c}@~{a}o a Regras e Modelos::  
@@ -107,50 +107,57 @@ n@~{a}o for explicitamente escolhido pelo usu@'{a}rio com @code{let} ou atrav@'{
 @end defvr
 
 @deffn {Fun@,{c}@~{a}o} defmatch (@var{prognome}, @var{modelo}, @var{x_1}, ..., @var{x_n})
-Cria uma fun@,{c}@~{a}o @code{@var{prognome} (@var{expr}, @var{y_1}, ..., @var{y_n})}
+@deffnx {Fun@,{c}@~{a}o} defmatch (@var{prognome}, @var{modelo})
+Define uma fun@,{c}@~ao @code{@var{prognome}(@var{expr}, @var{x_1}, ..., @var{x_n})}
 que testa @var{expr} para ver se essa express@~{a}o coincide com @var{modelo}.
 
-@var{modelo} @'{e} uma expres@~{a}o
-contendo as vari@'{a}veis de modelo @var{x_1}, ..., @var{x_n}
-e par@^{a}metros de modelo, se quaisquer.
-As vari@'{a}veis de modelo s@~{a}o dadas
-explicitamente como argumentos para @code{defmatch} enquanto os par@^{a}metros de modelo
+@var{modelo} @'e uma express@~ao contendo os argumentos modelo @var{x_1}, ..., @var{x_n} (se existir algum)
+e alguns modelos de vari@'aveis (se existir algum).
+os argumentos modelo s@~ao fornecidos explicitamente como argumentos para @code{defmatch} enquanto os modelos de vari@'aveis
 s@~{a}o declarados atrav@'{e}s da fun@,{c}@~{a}o @code{matchdeclare}.
-@c DOES matchdeclare HAVE TO GO BEFORE defmatch ?? OR CAN IT GO AFTER ??
+Qualquer vari@'avel n@~ao declarada como modelo em @code{matchdeclare}
+ou como um argumento modelo em @code{defmatch} coincide somente com si mesma.
 
 O primeiro argumento para a fun@,{c}@~{a}o criada @var{prognome} @'{e} uma express@~{a}o
-a ser comparada contra o modelo e os outros argumentos s@~{a}o as
-vari@'{a}veis atuais @var{y_1}, ..., @var{y_n}
-ne express@~{a}o que corresponde @`as
-vari@'{a}veis correspondentes @var{x_1}, ..., @var{x_n}
-no modelo.
+a serem comparadas contra o modelo  e os outros argumentos s@~ao os atuais argumetnos
+que correspondem @`as vari@'aveis respectivas @var{x_1}, ..., @var{x_n} no modelo.
 
-Se a tentativa de coincid@^{e}ncia obtiver sucesso, @var{progname} retorna
-uma lista de equa@,{c}@~{o}es cujos lados esquerdos s@~{a}o as
-vari@'{a}veis de modelo e os par@^{a}metros de modelo, e cujos lados direitos s@~{a}o express@~{o}es
-cujas vari@'{a}veis de modelo e modelos coincidir@~{a}o.
-Os par@^{a}metros de modelo, mas n@~{a}o as vari@'{a}veis de modelo, s@~{a}o atribu@'{i}dos @`as subexpress@~{o}es que elas coincidem.
+Se a tentativa de coincid@^{e}ncia obtiver sucesso, @var{prognome} retorna
+uma lista de equa@,{c}@~{o}es cujos lados esquerdos s@~{a}o os
+argumetnos de modelo e vari@'aveis de modelo, e cujo lado direito forem as subexpress@~oes
+cujos argumentos de modelo e as vari@'aveis coincidem.
+Os modelos de vari@'aveis, mas n@~ao tos argumentos de modelo, s@~ao atribu@'idos @`as subexpress@~oes que coincidirem.
 Se a coincid@^{e}ncia falhar, @var{prognome} retorna @code{false}.  
 
-Quaisquer vari@'{a}veis n@~{a}o declaradas como par@^{a}metros de modelo em @code{matchdeclare} ou como
-vari@'{a}veis em @code{defmatch} coincidem somente consigo mesmas.
-
-Um modelo que n@~{a}o contiver nenhuma vari@'{a}vel de modelo ou par@^{a}metros
-retorna @code{true} se a coincid@^{e}ncia ocorre.
+Um modelo literal
+(isto @'e, um modelo que n@~ao contiver nem argumentos de modelo nem vari@'aveis de modelo)
+retorna @code{true} se a coincid@^{e}ncia ocorrer.
 
 Veja tamb@'{e}m @code{matchdeclare}, @code{defrule}, @code{tellsimp}, e @code{tellsimpafter}.
 
 Exemplos:
 
-Esse @code{defmatch} define a fun@,{c}@~{a}o @code{linearp (expr, y)}, que
-testa @code{expr} para ver se essa express@~{a}o @'{e} da forma @code{a*y + b}
-tal que @code{a} e @code{b} n@~{a}o contenham @code{y}.
+Define uma fun@,{c}@~ao @code{linearp(expr, x)} que
+testa @code{expr} para ver se essa express@~ao da forma @code{a*x + b}
+tal que @code{a} e @code{b} n@~ao contenham @code{x} e @code{a} seja n@~ao nulo.
+Essa fun@,{c}@~ao de coincid@^encia coincide com express@~oes que sejam lineares em qualquer vari@'avel,
+por que o argumento de modelo @code{x} @'e fornecido para @code{defmatch}.
 @c HOW HARD WILL MAXIMA TRY TO COLLECT TERMS AND DO OTHER MUNGEING TO FIT THE PATTERN ??
 
+@c ===beg===
+@c matchdeclare (a, lambda ([e], e#0 and freeof(x, e)), b, freeof(x));
+@c defmatch (linearp, a*x + b, x);
+@c linearp (3*z + (y + 1)*z + y^2, z);
+@c a;
+@c b;
+@c x;
+@c ===end===
 @example
-(%i1) matchdeclare (a, freeof(x), b, freeof(x))$
-(%i2) defmatch (linearp, a*x + b, x)$
-(%i3) linearp (3*z + (y+1)*z + y^2, z);
+(%i1) matchdeclare (a, lambda ([e], e#0 and freeof(x, e)), b, freeof(x));
+(%o1)                         done
+(%i2) defmatch (linearp, a*x + b, x);
+(%o2)                        linearp
+(%i3) linearp (3*z + (y + 1)*z + y^2, z);
                          2
 (%o3)              [b = y , a = y + 4, x = z]
 (%i4) a;
@@ -158,39 +165,73 @@ tal que @code{a} e @code{b} n@~{a}o contenham @code{y}.
 (%i5) b;
                                 2
 (%o5)                          y
+(%i6) x;
+(%o6)                           x
 @end example
 
-Se o terceiro argumento para @code{defmatch} na linha (%i2) tiver
-sido omitido, ent@~{a}o @code{linear} pode somente coincidir com express@~{o}es lineares em @var{x},
-n@~{a}o em qualquer outra vari@'{a}vel.
-@c SHOW THAT IN AN EXAMPLE
+Define uma fun@,{c}@~ao @code{linearp(expr)} que testa @code{expr}
+para ver se essa express@~ao @'e da forma @code{a*x + b}
+tal que @code{a} e @code{b} n@~ao contenham @code{x} e @code{a} seja n@~ao nulo.
+Essa fun@,{c}@~ao de coincid@^encia somente coincide com express@~oes lineares em @code{x},
+n@~ao em qualquer outra vari@'avel, porque nenhum argumento de modelo @'e fornecido a @code{defmatch}.
 
+@c ===beg===
+@c matchdeclare (a, lambda ([e], e#0 and freeof(x, e)), b, freeof(x));
+@c defmatch (linearp, a*x + b);
+@c linearp (3*z + (y + 1)*z + y^2);
+@c linearp (3*x + (y + 1)*x + y^2);
+@c ===end===
 @example
-(%i1) matchdeclare ([a, f], true)$
-(%i2) constinterval (l, h) := constantp (h - l)$
-(%i3) matchdeclare (b, constinterval (a))$
-(%i4) matchdeclare (x, atom)$
-(%i5) (remove (integrate, outative),
-          defmatch (checklimits, 'integrate (f, x, a, b)),
-          declare (integrate, outative))$
-(%i6) 'integrate (sin(t), t, %pi + x, 2*%pi + x);
+(%i1) matchdeclare (a, lambda ([e], e#0 and freeof(x, e)), b, freeof(x));
+(%o1)                         done
+(%i2) defmatch (linearp, a*x + b);
+(%o2)                        linearp
+(%i3) linearp (3*z + (y + 1)*z + y^2);
+(%o3)                         false
+(%i4) linearp (3*x + (y + 1)*x + y^2);
+                             2
+(%o4)                  [b = y , a = y + 4]
+@end example
+
+Define uma fun@,{c}@~ao @code{checklimits(expr)} que testa @code{expr}
+para ver se essa express@~ao @'e uma integral definida.
+ 
+@c ===beg===
+@c matchdeclare ([a, f], true);
+@c constinterval (l, h) := constantp (h - l);
+@c matchdeclare (b, constinterval (a));
+@c matchdeclare (x, atom);
+@c simp : false;
+@c defmatch (checklimits, 'integrate (f, x, a, b));
+@c simp : true;
+@c 'integrate (sin(t), t, %pi + x, 2*%pi + x);
+@c checklimits (%);
+@c ===end===
+@example
+(%i1) matchdeclare ([a, f], true);
+(%o1)                         done
+(%i2) constinterval (l, h) := constantp (h - l);
+(%o2)        constinterval(l, h) := constantp(h - l)
+(%i3) matchdeclare (b, constinterval (a));
+(%o3)                         done
+(%i4) matchdeclare (x, atom);
+(%o4)                         done
+(%i5) simp : false;
+(%o5)                         false
+(%i6) defmatch (checklimits, 'integrate (f, x, a, b));
+(%o6)                      checklimits
+(%i7) simp : true;
+(%o7)                         true
+(%i8) 'integrate (sin(t), t, %pi + x, 2*%pi + x);
                        x + 2 %pi
                       /
                       [
-(%o6)                 I          sin(t) dt
+(%o8)                 I          sin(t) dt
                       ]
                       /
                        x + %pi
-(%i7) checklimits (%);
-(%o7)    [b = x + 2 %pi, a = x + %pi, x = t, f = sin(t)]
-(%i8) a;
-(%o8)                        x + %pi
-(%i9) b;
-(%o9)                       x + 2 %pi
-(%i10) f;
-(%o10)                       sin(t)
-(%i11) x;
-(%o11)                          t
+(%i9) checklimits (%);
+(%o9)    [b = x + 2 %pi, a = x + %pi, x = t, f = sin(t)]
 @end example
 
 @end deffn
