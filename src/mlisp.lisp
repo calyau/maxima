@@ -197,9 +197,10 @@ is EQ to FNNAME if the latter is non-NIL."
 			 (t (meval (caddr fn)))))
 	       nil))
 	(if finish2033
-	    (progn (incf (fill-pointer *mlambda-call-stack*) -5)
-		   (munlocal)
-		   (munbind finish2032)))))))
+	    (progn
+	      (incf (fill-pointer *mlambda-call-stack*) -5)
+	      (munlocal)
+	      (munbind finish2032)))))))
 
 
 (defmspec mprogn (form)
@@ -458,13 +459,10 @@ wrapper for this."
     (let ((var (car vars)))
       (if (not (symbolp var))
 	  (merror "Only symbolic atoms can be bound:~%~M" var))
-      (let ((value (if (boundp var)
-		       (symbol-value var)
-		       munbound)))
-	(without-tty-interrupts
-	  (mset var (car args))
-	  (psetq bindlist (cons var bindlist)
-		 mspeclist (cons value mspeclist)))))))
+      (let ((value (if (boundp var) (symbol-value var) munbound)))
+	(mset var (car args))
+	(psetq bindlist (cons var bindlist)
+	       mspeclist (cons value mspeclist))))))
 
 (defun mbind (lamvars fnargs fnname)
   "Error-handling wrapper around MBIND-DOIT."
@@ -518,13 +516,11 @@ wrapper for this."
 (defmspec $local (l)
   (setq l (cdr l))
   (if (not mlocp) (merror "Improper call to `local'"))
-  (nointerrupt 'tty)
   (dolist (var l)
     (cond ((not (symbolp var))
-	   (nointerrupt nil) (improper-arg-err var '$local))
+	   (improper-arg-err var '$local))
 	  ((and (mget var 'array)
 		(arrayp (symbol-array var)))
-	   (nointerrupt nil)
 	   (merror "Attempt to bind a complete array ~M" var)))
     (setq mproplist (cons (get var 'mprops) mproplist)
 	  factlist (cons (get var 'data) factlist))
@@ -539,11 +535,9 @@ wrapper for this."
     (zl-remprop var 'data))
   (rplaca loclist (reverse l))
   (setq mlocp nil)
-  (nointerrupt nil)
   '$done)
 
-(defun munlocal nil
-  (nointerrupt 'tty)
+(defun munlocal ()
   (dolist (var (car loclist))
     (let ((mprop (car mproplist))
 	  (y nil)
@@ -569,8 +563,7 @@ wrapper for this."
 	(zl-remprop u 'ulabs))
       (setq mproplist (cdr mproplist)
 	    factlist (cdr factlist))))
-  (setq loclist (cdr loclist))
-  (nointerrupt nil))
+  (setq loclist (cdr loclist)))
 
 (defmacro msetq (a b)
   `(mset ',a ,b))
