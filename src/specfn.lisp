@@ -129,28 +129,31 @@
 		(cond ((< x 1d0) 0)
 		      ((m*t (*$ fac -3.14159265d0) '$%i))))))
 	(t (m+t (+$ (chebyli3 (//$ x)) (*$ 3.28986813d0 (log x))
-		    (//$ (expt (log x) 3) -6.0))
+		    (//$ (expt (log x) 3) -6d0))
 		(m*t (*$ -1.57079633d0 (expt (log x) 2)) '$%i)))))
 
 (defvar *li2* (make-array 15. :initial-contents '(14.0d0 1.93506430d0 .166073033d0 2.48793229d-2
 						  4.68636196d-3 1.0016275d-3 2.32002196d-4
 						  5.68178227d-5 1.44963006d-5 3.81632946d-6
 						  1.02990426d-6 2.83575385d-7 7.9387055d-8
-						  2.2536705d-8 6.474338d-9)))
+						  2.2536705d-8 6.474338d-9)
+			  :element-type 'double-float))
 
 
 (defvar *li3* (make-array 15. :initial-contents '(14.0d0 1.95841721d0 8.51881315d-2 8.55985222d-3
 						  1.21177214d-3 2.07227685d-4 3.99695869d-5
 						  8.38064066d-6 1.86848945d-6 4.36660867d-7
 						  1.05917334d-7 2.6478920d-8 6.787d-9 
-						  1.776536d-9 4.73417d-10)))
+						  1.776536d-9 4.73417d-10)
+			  :element-type 'double-float))
 
 (defvar *s12* (make-array 18. :initial-contents '(17.0d0 1.90361778d0 .431311318d0 .100022507d0
 						  2.44241560d-2 6.22512464d-3 1.64078831d-3
 						  4.44079203d-4 1.22774942d-4 3.45398128d-5
 						  9.85869565d-6 2.84856995d-6 8.31708473d-7
 						  2.45039499d-7 7.2764962d-8 2.1758023d-8 6.546158d-9
-						  1.980328d-9)))
+						  1.980328d-9)
+			  :element-type 'double-float))
 
 (defun chebyli2 (x)
   (*$ x (cheby-prime (//$ (1+$ (*$ x 4.0)) 3.0) *li2*)))
@@ -233,8 +236,8 @@
 	       ((= s 0)
 		(let ((p (cadr a)) (q (caddr a)))
 		  (cond
-		    ((or (greaterp p $maxpsifracnum)
-			 (greaterp q $maxpsifracdenom) (bigp p) (bigp q)) ())
+		    ((or (> p $maxpsifracnum)
+			 (> q $maxpsifracdenom) (bigp p) (bigp q)) ())
 		    ((and (= p 1)
 			  (cond ((= q 2)
 				 (m+ (m* -2 '((%log) 2)) (m- '$%gamma)))
@@ -324,7 +327,7 @@
 
 (defun expplygam-funs (pw subl l)	; l is a irrelevant here
   (setq subl (car subl))
-  (if (or (not (integerp subl)) (lessp subl -1))
+  (if (or (not (integerp subl)) (< subl -1))
       (tay-err "Unable to expand at a subscript in")
       (prog ((e 0) (sign 0) npw)
 	 (declare (fixnum e) (fixnum sign))
@@ -334,17 +337,17 @@
 		   `(((1 . 1) . ,(prep1 '((mtimes) -1 $%gamma)))))
 		  ((= subl 0)
 		   (cons '((-1 . 1) -1 . 1)
-			 (if (> 0.0 npw) ()
+			 (if (> 0d0 npw) ()
 			     `(((0 . 1)
 				. ,(prep1 '((mtimes) -1 $%gamma)))))))
 		  (t (setq *last* (factorial subl))
 		     `(((,(- (1+ subl)) . 1)
-			,(times (^ -1 (1+ subl))
+			,(* (^ -1 (1+ subl))
 				(factorial subl)) . 1))))
 	  e (if (< subl 1) (- subl) -1)
 	  sign (if (< subl 1) -1 (^ -1 subl)))
 	 a (setq e (1+ e) sign (- sign))
-	 (if (greaterp e npw) (return l)
+	 (if (> e npw) (return l)
 	     (rplacd (last l)
 		     `(((,e . 1)
 			. ,(rctimes (rcplygam e)
@@ -355,11 +358,11 @@
   (declare (fixnum k) )
   (cond ((= subl -1) (cons sign k))
 	((= subl 0) (cons sign 1))
-	(t (prog1 (cons (times sign *last*) 1)
-		  
+	(t (prog1
+	       (cons (* sign *last*) 1)
 	     (setq *last*
-		   (*quo (times *last* (plus subl (add1 k)))
-			 (add1 k)))))))
+		   (*quo (* *last* (+ subl (1+ k)))
+			 (1+ k)))))))
 
 (defun plygam-ord (subl)
   (if (equal (car subl) -1) (ncons (rcone))
@@ -392,7 +395,7 @@
 		   (ord (if arg-c (le (terms arg-c))
 			    (le (n-term (terms arg))))))
 	       (setq func (current-trunc datum))
-	       (if (greaterp const 0)
+	       (if (> const 0)
 		   (pstimes 
 		    (let-pw datum (e- func ord)
 			    (expand (m+t a (minus const)) '%gamma))
@@ -406,7 +409,7 @@
 			    (psexpt 
 			     (tsprsum (m+t a '%%taylor-index%%)
 				      `(%%taylor-index%% 0
-					,(minus (add1 const))) '%product)
+					,(minus (1+ const))) '%product)
 			     (rcmone))))))))))
 
 (defun plygam-const (a arg func)
@@ -421,11 +424,11 @@
 	  (expand (m+t a (- const)) func)
 	  (if (> const 0)
 	      (pstimes
-	       (cons (times (^ -1 sub) (factorial sub)) 1)
+	       (cons (* (^ -1 sub) (factorial sub)) 1)
 	       (tsprsum `((mexpt) ,(m+t a (m-t '%%taylor-index%%)) ,(- (1+ sub)))
 			`(%%taylor-index%% 1 ,const) '%sum))
 	      (pstimes
-	       (cons (times (^ -1 (1+ sub)) (factorial sub)) 1)
+	       (cons (* (^ -1 (1+ sub)) (factorial sub)) 1)
 	       (tsprsum `((mexpt) ,(m+t a '%%taylor-index%%) ,(- (1+ sub)))
 			`(%%taylor-index%% 0 ,(- (1+ const))) '%sum))))))))
 
