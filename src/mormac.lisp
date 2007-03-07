@@ -9,14 +9,9 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :maxima)
-;; more macros for LISPM compatibility.
-
-;; Needed at read time, by e.g. JPG;SUPRV.  There should be a better
-;; way of setting this up for #+.
-(sstatus feature maxii)
 
 (defmacro macsyma-module (module &rest options)
-  (setq *macro-file* (if (member 'macro options) t nil))
+  (setq *macro-file* (member 'macro options))
   (if (null options)
       (push 'runtime options))
   `(defprop ,module ,options macsyma-module))

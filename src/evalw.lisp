@@ -10,6 +10,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :maxima)
+
 (macsyma-module evalw)
 
 ;;; Assuming that this will only be a top-level form, it will
@@ -18,7 +19,7 @@
 ;;; EVAL_WHEN(TRANSLATE,FOO(ME),BAZ())$
 ;;; EVAL_WHEN([LOADFILE,BATCH],INITIALIZE())$
 
-(declare-top(special $version state-pdl batconl))
+(declare-top (special $version state-pdl batconl))
 
 ;; Gosh. Seems it was really stupid to have EVAL_WHEN for BATCH and DEMO,
 ;; people use it for the most random things. -gjc
@@ -29,23 +30,10 @@
 	     (not (or (atom (car argl))
 		      ($listp (car argl)))))
 	 (merror "Bad whens form to `eval_when'~%~M" (car argl))))
-  (let ((demop #-maxii (if (and (eq (ml-typep $version) 'fixnum)
-				(> $version 296.))
-			   (caddr batconl)
-			   (cadddr batconl))
-	       #+maxii  nil)
-	(whens (cond (($listp (car argl)) (cdar argl))
-		     (t (list (car argl))))))
-    (cond ((cond (#-maxii (memq 'batch state-pdl)
-			  #+maxii t	; foo for now!
-			  (if demop (or (memq '$demo whens) (memq '$batch whens))
-			      (memq '$batch whens)))
-		 (t
-		  ;; this is a form typed in on a c-line by
-		  ;; the user. or, perhaps it is inside a
-		  ;; program. Which is an error in the translator.
-		  ;; What *was* I doing here? -gjc
-		  (memq '$toplevel whens)))
+  (let ((whens (if ($listp (car argl))
+		   (cdar argl)
+		   (list (car argl)))))
+    (cond ((member '$batch whens :test #'eq)
 	   `(($evaluated_when) ,@(mapcar 'meval (cdr argl))))
 	  (t
 	   '$not_evaluated_when))))
