@@ -56,8 +56,10 @@
     (cons (r+ a c) (append b d))))
 
 (defmfun $risch (exp var)
-  (with-new-context (context)
-    (rischint exp var)))
+  (let ((*integrator-level* 0))
+    (declare (special *integrator-level*))
+    (with-new-context (context)
+      (rischint exp var))))
 
 (defun spderivative (p var)
   (cond ((pcoefp p) '(0 . 1))
