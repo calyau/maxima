@@ -9,17 +9,16 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :maxima)
+
 (macsyma-module sinint)
+
 (load-macsyma-macros ratmac)
 
-(declare-top (genprefix i))
-(declare-top	 (special rischpf genvar $savefactors checkfactors
-			  exp var $factorflag $ratfac $logabs $expop $expon
-			  $keepfloat ratform rootfactor pardenom $algebraic
-			  wholepart parnumer varlist logptdx switch1))
-(declare-top	 (fixnum nargs i n klth kx))
+(declare-top (special rischpf genvar $savefactors checkfactors
+		      exp var $factorflag $ratfac $logabs $expop $expon
+		      $keepfloat ratform rootfactor pardenom $algebraic
+		      wholepart parnumer varlist logptdx switch1))
 
-
 (defun rootfac (q)
   (prog (nthdq nthdq1 simproots ans)
      (setq nthdq (pgcd q (pderivative q var)))
@@ -28,8 +27,7 @@
      amen (if (or (pcoefp nthdq) (pointergp var (car nthdq)))
 	      (return (reverse ans)))
      (setq nthdq1 (pgcd (pderivative nthdq var) nthdq))
-     (setq ans (cons (pquotient (pgcd nthdq simproots) (pgcd nthdq1 simproots))
-		     ans))
+     (push (pquotient (pgcd nthdq simproots) (pgcd nthdq1 simproots)) ans)
      (setq nthdq nthdq1)
      (go amen)))
 
@@ -40,7 +38,7 @@
 	(cons (ptimes (car q) (car rootfactor)) (cdr rootfactor)))
   (do ((pd (list (car rootfactor)))
        (rf (cdr rootfactor) (cdr rf))
-       (n 2 (f1+ n)))
+       (n 2 (1+ n)))
       ((null rf) (setq pardenom (reverse pd)))
     (push (pexpt (car rf) n) pd))
   rootfactor)
@@ -72,7 +70,7 @@
      (if (null ppdenom)
 	 (return (setq parnumer (cons frpart parnumer))))
      (go numc)))
-
+
 (defun polyint (p) (ratqu (polyint1 (ratnumerator p)) (ratdenominator p)))
 	 
 (defun polyint1 (p)
@@ -82,7 +80,7 @@
 	 (if (pointergp var (car p)) (list var 1 p) (polyint1 (cdr p))))
 	(t (ratplus (polyint2 p) (polyint1 (cddr p))))))
 
-(defun polyint2 (p) (cons (list var (add1 (car p)) (cadr p)) (add1 (car p))))
+(defun polyint2 (p) (cons (list var (1+ (car p)) (cadr p)) (1+ (car p))))
 
 (defun dprog (ratarg)
   (prog (klth kx arootf deriv thebpg thetop thebot prod1 prod2 ans)
@@ -99,7 +97,7 @@
      (if (zerop (pdegree arootf var)) (go reset))
      (setq deriv (pderivative arootf var))
      (setq thebpg (bprog arootf deriv))
-     (setq kx (f1- klth))
+     (setq kx (1- klth))
      (setq thetop (car parnumer))
      iter (setq prod1 (ratti thetop (car thebpg) t))
      (setq prod2 (ratti thetop (cdr thebpg) t))
@@ -114,21 +112,20 @@
      (setq thetop (cdr (ratdivide thetop thebot)))
      (cond ((= kx 1) (setq logptdx (cons (ratqu thetop arootf) logptdx))
 	    (go reset)))
-     (setq kx (f1- kx))
+     (setq kx (1- kx))
      (go iter)
      reset(setq rootfactor (cdr rootfactor))
      (setq parnumer (cdr parnumer))
-     (setq klth (f1- klth))
+     (decf klth)
      (go intg)
-     simp (setq logptdx
-		(cons (ratqu (car parnumer) (car rootfactor)) logptdx))
+     simp (push (ratqu (car parnumer) (car rootfactor)) logptdx)
      (if (equal ans 0) (return (disrep (polyint wholepart))))
      (setq thetop
 	   (cadr (pdivide (ratnumerator ans) (ratdenominator ans))))
      (return (list '(mplus)
 		   (disrep (polyint wholepart))
 		   (disrep (ratqu thetop (ratdenominator ans)))))))
-
+
 (defun logmabs (x)
   (list '(%log) (if $logabs (simplify (list '(mabs) x)) x)))
 
@@ -139,9 +136,8 @@
 
 (defvar $integrate_use_rootsof nil "Use the rootsof form for integrals when denominator does not factor")
 
-(defun integrate-use-rootsof (f q variable &aux qprime ff qq
-			      (dummy (make-param)) lead)
-  ;; p2e is squarefree in polynomial in cre form p1e is lower degreee
+(defun integrate-use-rootsof (f q variable &aux qprime ff qq (dummy (make-param)) lead)
+  ;; p2e is squarefree in polynomial in cre form p1e is lower degree
   (setq lead (p-lc q))
   (setq qprime (disrep (pderivative q (p-var q))))
   (setq ff (disrep f) qq (disrep q))
@@ -149,9 +145,7 @@
 	     ,(div* (mul* lead (subst dummy variable ff))
 		    (subst dummy variable qprime))
 	     ((%log) ,(sub* variable  dummy)))  ,dummy
-    (($rootsof) ,qq)
-    )
-  )
+    (($rootsof) ,qq)))
 
 (defun eprog (p)
   (prog (p1e p2e a1e a2e a3e discrim repart sign ncc dcc allcc xx deg)
@@ -160,7 +154,7 @@
      (cond ((or switch1
 		(and (not (atom p2e))
 		     (eq (car (setq xx (cadr (oldcontent p2e)))) var)
-		     (zl-member (setq deg (pdegree xx var)) '(5 6))
+		     (member (setq deg (pdegree xx var)) '(5 6) :test #'equal)
 		     (zerocoefl xx deg)
 		     (or (equal deg 5) (not (pminusp (car (last xx)))))))
 	    (go efac)))
@@ -184,7 +178,7 @@
 	   ((and (equal deg 3) (equal (polcoef p2e 2) 0)
 		 (equal (polcoef p2e 1) 0))
 	    (return (e3prog p1e p2e allcc)))
-	   ((and (zl-member deg '(4 5 6)) (zerocoefl p2e deg))
+	   ((and (member deg '(4 5 6) :test #'equal) (zerocoefl p2e deg))
 	    (return (enprog p1e p2e allcc deg))))
      (cond ((and $integrate_use_rootsof (equal (car (psqfr p2e)) p2e))
 	    (return (list '(mtimes) (disrep allcc)
@@ -280,7 +274,7 @@
 	   (mapcar #'(lambda (j k) (eprog (ratqu j k))) parnumer pardenom))
      (setq switch1 nil)
      (return (cons '(mplus) a2e))))
- 
+ 
 (defun e3prog (num denom cont)
   (prog (a b c d e r ratr var* x)
      (setq a (polcoef num 2) b (polcoef num 1) c (polcoef num 0)
@@ -314,11 +308,11 @@
 	      )))))
 
 (defun eprogratd (a2e p1e p2e)
-  (ratdifference (ratti a2e (polcoef p1e (sub1 (pdegree p1e var))) t)
-		 (ratti (polcoef p2e (sub1 (pdegree p2e var)))
+  (ratdifference (ratti a2e (polcoef p1e (1- (pdegree p1e var))) t)
+		 (ratti (polcoef p2e (1- (pdegree p2e var)))
 			(polcoef p1e (pdegree p1e var))
 			t)))
-
+
 (defun enprog (num denom cont deg)
   ;; Denominator is (A*VAR^4+B) = 
   ;;   if B<0 then (SQRT(A)*VAR^2 - SQRT(-B)) (SQRT(A)*VAR^2 + SQRT(-B))
@@ -376,9 +370,9 @@
      (return (mul2 cont (ratint (div num denom) disvar)))))
 
 (defun zerocoefl (e n)
-  (do ((i 1 (f1+ i))) ((= i n) t)
+  (do ((i 1 (1+ i))) ((= i n) t)
     (if (not (equal (polcoef e i) 0)) (return nil))))
-
+
 (defun ratsqrt (a) (let (varlist) (simpnrt (disrep a) 2)))
 
 (defun fprog (rat*)
