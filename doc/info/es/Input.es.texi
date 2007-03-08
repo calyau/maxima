@@ -305,13 +305,13 @@ no se reconoce como una solicitud de documentaci@'on.
 
 @end deffn
 
-@deffn {S@'{@dotless{i}}mbolo especial} ?!
+@deffn {S@'{@dotless{i}}mbolo especial} ??
 @ifinfo
-@fnindex Busca coincidencias exactas en la documentaci&oacute;n
+@fnindex Busca coincidencias inexactas en la documentaci&oacute;n
 @end ifinfo
 
-La notaci@'on @code{?! palabra} (@code{?!} seguido de un espacio
-y una palabra) equivale a @code{describe("palabra", exact)}.
+La notaci@'on @code{?? palabra} (@code{??} seguido de un espacio
+y una palabra) equivale a @code{describe("palabra", inexact)}.
 El s@'{@dotless{i}}mbolo de interrogaci@'on debe escribirse al
 comienzo de la l@'{@dotless{i}}nea de entrada; en caso contrario
 no se reconoce como una solicitud de documentaci@'on.

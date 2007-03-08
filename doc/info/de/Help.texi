@@ -2,57 +2,13 @@
 @c English original: Help.texi CVS 1.19
 
 @menu
-* Einf@"uhrung in die Hilfe::        
 * Lisp und Maxima::            
 * Speicherbereinigung::          
 * Dokumentation::               
 * Definitionen f@"ur die Hilfe::        
 @end menu
 
-@node Einf@"uhrung in die Hilfe, Lisp und Maxima, Hilfe, Hilfe
-@section Einf@"uhrung in die Hilfe
-
-@c AS IT STANDS THIS IS JUST A REPEAT OF THE STUFF FOUND UNDER @defun describe.
-
-Die prim@"are Online-Hilfefunktion ist @code{describe}, 
-welche typischerweise durch ein Fragezeichen @code{?} in der interaktiven Eingabeaufforderung 
-aufgerufen wird. @code{? foo} (mit einem Leerzeichen zwischen @code{?} und @code{foo}) 
-ist @"aquivalent zu @code{describe ("foo")}, wobei @code{foo} der Name oder Teil eines Namens 
-einer Funktion oder eines Themas ist; 
-@code{describe} findet dann s@"amtliche dokumentierte Elemente, die die Zeichenkette @code{foo} 
-in ihrem Titel haben. 
-Gibt es mehr als einen solchen Eintrag, bittet Maxima den Benutzer, einen oder mehrere 
-Eintr@"age zur Anzeige auszuw@"ahlen. 
-
-@example
-(%i1) ? integ
- 0: (maxima.info)Introduction to Elliptic Functions and Integrals.
- 1: Definitions for Elliptic Integrals.
- 2: Integration.
- 3: Introduction to Integration.
- 4: Definitions for Integration.
- 5: askinteger :Definitions for Simplification.
- 6: integer_partitions :Definitions for Sets.
- 7: integerp :Definitions for Miscellaneous Options.
- 8: integrate :Definitions for Integration.
- 9: integrate_use_rootsof :Definitions for Integration.
- 10: integration_constant_counter :Definitions for Integration.
- 11: nonnegintegerp :Definitions for linearalgebra.
-Enter space-separated numbers, `all' or `none': 8 9
-
- -- Function: integrate (<expr>, <x>)
- -- Function: integrate (<expr>, <x>, <a>, <b>)
-     Attempts to symbolically compute the integral of <expr> with
-     respect to <x>.  `integrate (<expr>, <x>)' is an indefinite
-     integral, while `integrate (<expr>, <x>, <a>, <b>)' is a definite
-     integral, [...]
-@end example
-
-In diesem Beispiel wurden die Eintr@"age 8 und 9 ausgew@"ahlt. 
-Jeder oder kein Eintrag kann durch die Eingabe von @code{all} bzw. @code{none} 
-ausgew@"ahlt werden, abgek@"urzt durch @code{a} bzw. @code{n}.
-
-@node Lisp und Maxima, Speicherbereinigung, Einf@"uhrung in die Hilfe, Hilfe
+@node Lisp und Maxima, Speicherbereinigung, Hilfe, Hilfe
 @section Lisp und Maxima
 Maxima ist in Lisp geschrieben und es ist leicht, von Maxima aus auf Lisp-Funktionen 
 und Variablen zuzugreifen und umgekehrt. 
@@ -319,19 +275,29 @@ _
 @end deffn
 
 @deffn {Funktion} describe (@var{string})
+@deffnx {Funktion} describe (@var{string}, exact)
+@deffnx {Funktion} describe (@var{string}, inexact)
+@ifinfo
+@fnindex Hilfe
+@end ifinfo
 Findet s@"amtliche dokumentierte Eintr@"age, die @var{string} in ihren Titeln enthalten. 
 Gibt es mehr als einen solchen Eintrag, bittet Maxima den Benutzer, einen oder mehrere Eintr@"age auszuw@"ahlen. 
 In der interaktiven Eingabeaufforderung ist @code{? foo} 
-(mit einem Leerzeichen zwischen @code{?} und @code{foo}) @"aquivalent zu @code{describe ("foo")}. 
+(mit einem Leerzeichen zwischen @code{?} und @code{foo}) @"aquivalent zu @code{describe ("foo", exact)},
+@c PLEASE ACCEPT MY APOLOGIES FOR THE FOLLOWING PHRASE
+@c (ATTEMPTED TRANSLATION OF "and @code{?? foo} is equivalent to @code{describe("foo", inexact)}"
+und ist @code{?? foo} @"aquivalent zu @code{describe ("foo", inexact)}. 
 
-@code{describe ("")} ergibt eine Liste s@"amtlicher dokumentierter Themen im Online-Handbuch.
+@code{describe ("", inexact)} ergibt eine Liste s@"amtlicher dokumentierter Themen im Online-Handbuch.
 
 @code{describe} quotiert (Operator @code{'}) seine Argumente. @code{describe} gibt stets @code{false} zur@"uck.
+
+Siehe auch @ref{Dokumentation}.
 
 Beispiel:
 
 @example
-(%i1) ? integ
+(%i1) ?? integ
  0: (maxima.info)Introduction to Elliptic Functions and Integrals.
  1: Definitions for Elliptic Integrals.
  2: Integration.
@@ -357,9 +323,6 @@ Enter space-separated numbers, `all' or `none': 8 9
 In diesem Beispiel wurden die Eintr@"age 8 und 9 ausgew@"ahlt. 
 Jeder oder kein Eintrag kann durch die Eingabe von @code{all} bzw. @code{none} 
 ausgew@"ahlt werden, abgek@"urzt durch @code{a} bzw. @code{n}.
-
-@c ERROR MESSAGE WHEN CONVERTING TO PDF (VvN)
-@c @pxref{Einf@"uhrung in die Hilfe} 
 
 @end deffn
 

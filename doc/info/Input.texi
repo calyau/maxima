@@ -305,13 +305,13 @@ otherwise it is not recognized as a request for documentation.
 
 @end deffn
 
-@deffn {Special symbol} ?!
+@deffn {Special symbol} ??
 @ifinfo
-@fnindex Fetch documentation (exact search)
+@fnindex Fetch documentation (inexact search)
 @end ifinfo
 
-The notation @code{?! word} (@code{?!} followed a word, separated by whitespace)
-is equivalent to @code{describe("word", exact)}.
+The notation @code{?? word} (@code{??} followed a word, separated by whitespace)
+is equivalent to @code{describe("word", inexact)}.
 The question mark must occur at the beginning of an input line;
 otherwise it is not recognized as a request for documentation.
 

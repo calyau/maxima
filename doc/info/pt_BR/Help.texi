@@ -4,56 +4,13 @@
 @hyphenation{cor-res-pon-de}
 @end iftex
 @menu
-* Introdu@,{c}@~{a}o a Ajuda::        
 * Lisp e Maxima::            
 * Descartando::          
 * Documenta@,{c}@~{a}o::               
 * Defini@,{c}@~{o}es para Ajuda::        
 @end menu
 
-@node Introdu@,{c}@~{a}o a Ajuda, Lisp e Maxima, Ajuda, Ajuda
-@section Introdu@,{c}@~{a}o a Ajuda
-
-@c AS IT STANDS THIS IS JUST A REPEAT OF THE STUFF FOUND UNDER @defun describe.
-
-A fun@,{c}@~{a}o prim@'{a}ria de ajuda on-line @'{e} @code{describe},
-que @'{e} tipicamente invocada atrav@'{e}s do ponto de interroga@,{c}@~{a}o @code{?} na linha de comando interativa.  
-@code{? foo} (com um espa@,{c}o entre @code{?} e @code{foo})
-@'{e} equivalente a @code{describe ("foo")}, onde @code{foo}
-@'{e} o nome ou parte do nome de uma fun@,{c}@~{a}o ou t@'{o}pico;
-@code{describe} ent@~{a}o acha todos os @'{i}tens documentados que possuem a seq@"{u}@^{e}ncia de caracteres
-@code{foo} em seus t@'{i}tulos.
-Se existe mais que um tal item, Maxima solicita ao usu@'{a}rio selecionar
-um item ou @'{i}tens para mostrar.
-
-@example
-(%i1) ? integ
- 0: (maxima.info)Introduction to Elliptic Functions and Integrals.
- 1: Definitions for Elliptic Integrals.
- 2: Integration.
- 3: Introduction to Integration.
- 4: Definitions for Integration.
- 5: askinteger :Definitions for Simplification.
- 6: integerp :Definitions for Miscellaneous Options.
- 7: integrate :Definitions for Integration.
- 8: integrate_use_rootsof :Definitions for Integration.
- 9: integration_constant_counter :Definitions for Integration.
-Enter space-separated numbers, `all' or `none': 7 8
-
-Info from file /use/local/maxima/doc/info/maxima.info:
- - Function: integrate (expr, var)
- - Function: integrate (expr, var, a, b)
-     Attempts to symbolically compute the integral of `expr' with
-     respect to `var'.  `integrate (expr, var)' is an indefinite
-     integral, while `integrate (expr, var, a, b)' is a definite
-     integral, [...]
-@end example
-
-Nesse exemplo, @'{i}tens 7 e 8 foram selecionados.
-Todos ou nenhum dos @'{i}tens poderia ter sido selecionados atrav@'{e}s da inser@,{c}@~{a}o de @code{all} ou @code{none},
-que podem ser abreviados para @code{a} ou @code{n}, respectivamente.
-
-@node Lisp e Maxima, Descartando, Introdu@,{c}@~{a}o a Ajuda, Ajuda
+@node Lisp e Maxima, Descartando, Ajuda, Ajuda
 @section Lisp e Maxima
 Maxima @'{e} escrito na liguagem de programa@,{c}@~{a}o Lisp, e @'{e} f@'{a}cil acessar fun@,{c}@~{o}es Lisp e vari@'{a}veis
 a partir do Maxima e vice-versa.
@@ -327,28 +284,37 @@ _
 
 @deffn {Fun@,{c}@~{a}o} describe (@var{string})
 @deffnx {Fun@,{c}@~{a}o} describe (@var{string}, exact)
-@code{describe(@var{string})} encontra todos os itens documentados que contiverem @var{string} em seus t@'{i}tulos.
-Se existe mais de um de tal item, Maxima solicita ao usu@'{a}rio selecionar
-um item ou @'{i}tens para mostrar.
+@deffnx {Fun@,{c}@~{a}o} describe (@var{string}, inexact)
+@ifinfo
+@fnindex
+@end ifinfo
+
+@code{describe(@var{string})} @'{e} equivalente a @code{describe(@var{string}, exact)}.
 
 @code{describe(@var{string}, exact)} encontra um item com t@'{i}tulo igual
 (case-insensitive)
 a @var{string}, se existir tal item.
 
+@code{describe(@var{string}, inexact)} encontra todos os itens documentados que contiverem @var{string} em seus t@'{i}tulos.
+Se existe mais de um de tal item, Maxima solicita ao usu@'{a}rio selecionar
+um item ou @'{i}tens para mostrar.
+
 Na linha de comando interativa,
 @code{? foo} (com um espa@,{c}o entre @code{?} e @code{foo})
-@'{e} equivalente a @code{describe("foo")}.
-e @code{?! foo} @'{e} equivalente a @code{describe("foo", exact)}.
+@'{e} equivalente a @code{describe("foo", exact)}.
+e @code{?? foo} @'{e} equivalente a @code{describe("foo", inexact)}.
 
-@code{describe("")} retorna uma lista de todos os t@'{o}picos documentados no manual on-line.
+@code{describe("", inexact)} retorna uma lista de todos os t@'{o}picos documentados no manual on-line.
 
 @code{describe} n@~{a}o avalia seu argumento.
 @code{describe} retorna @code{true} se alguma documenta@,{c}@~{a}o for encontrada, de outra forma retorna @code{false}.
 
+Veja tamb@'{e}m @ref{Documenta@,{c}@~{a}o}.
+
 Exemplo:
 
 @example
-(%i1) ? integ
+(%i1) ?? integ
  0: (maxima.info)Introduction to Elliptic Functions and Integrals.
  1: Definitions for Elliptic Integrals.
  2: Integration.
@@ -373,8 +339,6 @@ Info from file /use/local/maxima/doc/info/maxima.info:
 Nesse , @'{i}tens 7 e 8 foram selecionados.
 Todos ou nenhum dos @'{i}tens poderia ter sido selecionado atrav@'{e}s da inser@,{c}@~{a}o de @code{all} ou @code{none},
 que podem ser abreviado para @code{a} ou para @code{n}, respectivamente.
-
-@pxref{Introdu@,{c}@~{a}o a Ajuda}
 
 @end deffn
 

@@ -148,7 +148,6 @@ Introduction
 
 Help
 
-* Introduction to Help::        
 * Lisp and Maxima::            
 * Garbage Collection::          
 * Documentation::               

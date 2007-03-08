@@ -1,15 +1,11 @@
 @menu
-* Introduction to Help::        
 * Lisp and Maxima::            
 * Garbage Collection::          
 * Documentation::               
 * Definitions for Help::        
 @end menu
 
-@node Introduction to Help, Lisp and Maxima, Help, Help
-@section Introduction to Help
-
-@node Lisp and Maxima, Garbage Collection, Introduction to Help, Help
+@node Lisp and Maxima, Garbage Collection, Help, Help
 @section Lisp and Maxima
 
 @node Garbage Collection, Documentation, Lisp and Maxima, Help

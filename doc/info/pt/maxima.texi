@@ -208,7 +208,6 @@ Introdu@value{cedilha}@~ao
 
 Ajuda
 
-* Introdu@value{cedilha}@~ao a Ajuda::        
 * Lisp e Maxima::            
 * Descartando::          
 * Documenta@value{cedilha}@~ao::               

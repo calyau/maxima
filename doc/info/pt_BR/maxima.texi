@@ -261,7 +261,6 @@ Introdu@,{c}@~{a}o
 
 Ajuda
 
-* Introdu@,{c}@~{a}o a Ajuda::        
 * Lisp e Maxima::            
 * Descartando::          
 * Documenta@,{c}@~{a}o::               

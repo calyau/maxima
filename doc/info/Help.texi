@@ -1,54 +1,11 @@
 @menu
-* Introduction to Help::        
 * Lisp and Maxima::            
 * Garbage Collection::          
 * Documentation::               
 * Definitions for Help::        
 @end menu
 
-@node Introduction to Help, Lisp and Maxima, Help, Help
-@section Introduction to Help
-
-@c AS IT STANDS THIS IS JUST A REPEAT OF THE STUFF FOUND UNDER @defun describe.
-
-The primary on-line help function is @code{describe},
-which is typically invoked by the question mark @code{?} at the interactive prompt.
-@code{? foo} (with a space between @code{?} and @code{foo})
-is equivalent to @code{describe ("foo")}, where @code{foo}
-is the name or part of the name of a function or topic;
-@code{describe} then finds all documented items which contain the string
-@code{foo} in their titles.
-If there is more than one such item, Maxima asks the user to select
-an item or items to display.
-
-@example
-(%i1) ? integ
- 0: (maxima.info)Introduction to Elliptic Functions and Integrals.
- 1: Definitions for Elliptic Integrals.
- 2: Integration.
- 3: Introduction to Integration.
- 4: Definitions for Integration.
- 5: askinteger :Definitions for Simplification.
- 6: integerp :Definitions for Miscellaneous Options.
- 7: integrate :Definitions for Integration.
- 8: integrate_use_rootsof :Definitions for Integration.
- 9: integration_constant_counter :Definitions for Integration.
-Enter space-separated numbers, `all' or `none': 7 8
-
-Info from file /use/local/maxima/doc/info/maxima.info:
- - Function: integrate (expr, var)
- - Function: integrate (expr, var, a, b)
-     Attempts to symbolically compute the integral of `expr' with
-     respect to `var'.  `integrate (expr, var)' is an indefinite
-     integral, while `integrate (expr, var, a, b)' is a definite
-     integral, [...]
-@end example
-
-In this example, items 7 and 8 were selected.
-All or none of the items could have been selected by entering @code{all} or @code{none},
-which can be abbreviated @code{a} or @code{n}, respectively.
-
-@node Lisp and Maxima, Garbage Collection, Introduction to Help, Help
+@node Lisp and Maxima, Garbage Collection, Help, Help
 @section Lisp and Maxima
 Maxima is written in Lisp, and it is easy to access Lisp functions and variables
 from Maxima and vice versa.
@@ -322,28 +279,37 @@ _
 
 @deffn {Function} describe (@var{string})
 @deffnx {Function} describe (@var{string}, exact)
-@code{describe(@var{string})} finds all documented items which contain @var{string} in their titles.
-If there is more than one such item, Maxima asks the user to select
-an item or items to display.
+@deffnx {Function} describe (@var{string}, inexact)
+@ifinfo
+@fnindex Help
+@end ifinfo
+
+@code{describe(@var{string})} is equivalent to @code{describe(@var{string}, exact)}.
 
 @code{describe(@var{string}, exact)} finds an item with title equal
 (case-insensitive)
 to @var{string}, if there is any such item.
 
+@code{describe(@var{string}, inexact)} finds all documented items which contain @var{string} in their titles.
+If there is more than one such item, Maxima asks the user to select
+an item or items to display.
+
 At the interactive prompt,
 @code{? foo} (with a space between @code{?} and @code{foo})
-is equivalent to @code{describe("foo")},
-and @code{?! foo} is equivalent to @code{describe("foo", exact)}.
+is equivalent to @code{describe("foo", exact)},
+and @code{?? foo} is equivalent to @code{describe("foo", inexact)}.
 
-@code{describe("")} yields a list of all topics documented in the on-line manual.
+@code{describe("", inexact)} yields a list of all topics documented in the on-line manual.
 
 @code{describe} quotes its argument.
 @code{describe} returns @code{true} if some documentation is found, otherwise @code{false}.
 
+See also @ref{Documentation}.
+
 Example:
 
 @example
-(%i1) ? integ
+(%i1) ?? integ
  0: (maxima.info)Introduction to Elliptic Functions and Integrals.
  1: Definitions for Elliptic Integrals.
  2: Integration.
@@ -368,8 +334,6 @@ Info from file /use/local/maxima/doc/info/maxima.info:
 In this example, items 7 and 8 were selected.
 All or none of the items could have been selected by entering @code{all} or @code{none},
 which can be abbreviated @code{a} or @code{n}, respectively.
-
-@pxref{Introduction to Help}
 
 @end deffn
 

@@ -179,7 +179,6 @@ Introduction
 
 Hilfe
 
-* Einf@"uhrung in die Hilfe::        
 * Lisp und Maxima::            
 * Speicherbereinigung::          
 * Dokumentation::               

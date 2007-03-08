@@ -306,13 +306,13 @@ de outra forma o ponto de interroga@,{c}@~{a}o n@~{a}o @'{e} reconhecido com um 
 
 @end deffn
 
-@deffn {S@'{i}mbolo especial} ?!
+@deffn {S@'{i}mbolo especial} ??
 @ifinfo
-@fnindex Consulta documenta@,{c}@~{a}o (busca exata)
+@fnindex Consulta documenta@,{c}@~{a}o (busca inexata)
 @end ifinfo
 
-A nota@,{c}@~{a}o @code{?! palavra} (@code{?!} seguido de um espa@,{c}o em branco e uma palavra)
-@'{e} equivalente a @code{describe("palavra", exact)}.
+A nota@,{c}@~{a}o @code{?? palavra} (@code{??} seguido de um espa@,{c}o em branco e uma palavra)
+@'{e} equivalente a @code{describe("palavra", inexact)}.
 O ponto de interroga@,{c}@~{a}o deve ocorrer no in@'{i}cio de uma linha de entrada;
 de outra forma n@~{a}o @'{e} reconhecido com um pedido de documenta@,{c}@~{a}o.
 

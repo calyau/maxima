@@ -1,52 +1,12 @@
 @c version 1.20
 @menu
-* Introducci@'on a la Ayuda::        
 * Lisp y Maxima::            
 * Recolector de Basura::          
 * Documentaci@'on::               
 * Definiciones para la Ayuda::        
 @end menu
 
-@node Introducci@'on a la Ayuda, Lisp y Maxima, Ayuda, Ayuda
-@section Introducci@'on a la Ayuda
-
-El comando de ayuda m@'as @'util es @code{describe}, 
-el cual es invocado por el signo de cierre de interrogaci@'on @code{?} a trav@'es del prompt interactivo. 
-@code{? foo} (con espacio entre @code{?} y @code{foo})
-es equivalente a @code{describe ("foo")}, donde @code{foo}
-es el nombre o parte del nombre de alguna funci@'on o tema;
-entonces @code{describe} encontrar@'a todos los documentos que contengan
-la cadena @code{foo} en sus t@'{@dotless{i}}tulos y los desplegar@'a como opciones. 
-Si hay m@'as de una opci@'on, Maxima preguntar@'a al usuario para que
-seleccione las opciones que desee consultar. 
-
-@example
-(%i1) ? integ
- 0: (maxima.info)Introduction to Elliptic Functions and Integrals.
- 1: Definitions for Elliptic Integrals.
- 2: Integration.
- 3: Introduction to Integration.
- 4: Definitions for Integration.
- 5: askinteger :Definitions for Simplification.
- 6: integerp :Definitions for Miscellaneous Options.
- 7: integrate :Definitions for Integration.
- 8: integrate_use_rootsof :Definitions for Integration.
- 9: integration_constant_counter :Definitions for Integration.
-Enter space-separated numbers, `all' or `none': 7 8
-
-Info from file /use/local/maxima/doc/info/maxima.info:
- - Function: integrate (expr, var)
- - Function: integrate (expr, var, a, b)
-     Attempts to symbolically compute the integral of `expr' with
-     respect to `var'.  `integrate (expr, var)' is an indefinite
-     integral, while `integrate (expr, var, a, b)' is a definite
-     integral, [...]
-@end example
-
-En este ejemplo las opciones 7 y 8 fueron seleccionadas. 
-Todas o ninguna de las opciones pueden ser seleccionadas escribiendo @code{all} o @code{none}, las cuales pueden ser abreviadas por @code{a} o @code{n}, respectivamente. 
-
-@node Lisp y Maxima, Recolector de Basura, Introducci@'on a la Ayuda, Ayuda
+@node Lisp y Maxima, Recolector de Basura, Ayuda, Ayuda
 @section Lisp y Maxima
 
 Maxima fue escrito en Lisp, y es muy f@'acil tener acceso a funciones y variables Lisp desde Maxima y viceversa. 
@@ -302,31 +262,39 @@ _
 
 @deffn {Funci@'on} describe (@var{string})
 @deffnx {Funci@'on} describe (@var{string}, exact)
-La sentencia @code{describe(@var{string})} encuentra todos los elementos
-documentados que contengan @var{string} en sus t@'{@dotless{i}}tulos.
-
-Si hay m@'as de una opci@'on, Maxima preguntar@'a al usuario para que
-seleccione las opciones que desee consultar.
+@deffnx {Funci@'on} describe (@var{string}, inexact)
+@ifinfo
+@fnindex Ayuda
+@end ifinfo
+La sentencia @code{describe(@var{string})} equivale a @code{describe(@var{string}, exact)}.
 
 La sentencia @code{describe(@var{string}, exact)} encuentra el elemento, si
 existe, cuyo t@'{@dotless{i}}tulo coincide exactamente con @var{string}
 (ignorando la diferencia entre may@'usculas y min@'usculas).
 
-La sentencia @code{? foo} (con espacio entre @code{?} y @code{foo})
-equivale a  @code{describe("foo")}, mientras que @code{?! foo}
-equivale a @code{describe("foo", exact)}.
+La sentencia @code{describe(@var{string}, inexact)} encuentra todos los elementos
+documentados que contengan @var{string} en sus t@'{@dotless{i}}tulos.
 
-@code{describe ("")} produce una lista de todos los temas documentados en
+Si hay m@'as de una opci@'on, Maxima preguntar@'a al usuario para que
+seleccione las opciones que desee consultar.
+
+La sentencia @code{? foo} (con espacio entre @code{?} y @code{foo})
+equivale a  @code{describe("foo", exact)}, mientras que @code{?? foo}
+equivale a @code{describe("foo", inexact)}.
+
+@code{describe ("", inexact)} produce una lista de todos los temas documentados en
 el manual en l@'{@dotless{i}}nea. 
 
 @code{describe} no eval@'ua su argumento. La funci@'on @code{describe} devuelve
 @code{true} si encuentra la documentaci@'on solicitada y @code{false} en caso
 contrario.
 
+V@'ease tambi@'en @ref{Documentaci@'on}.
+
 Ejemplo:
 
 @example
-(%i1) ? integ
+(%i1) ?? integ
  0: (maxima.info)Introduction to Elliptic Functions and Integrals.
  1: Definitions for Elliptic Integrals.
  2: Integration.
@@ -353,8 +321,6 @@ Todas o ninguna de las opciones pueden ser seleccionadas escribiendo
 @code{all} o @code{none}, las cuales pueden ser abreviadas por
 @code{a} o @code{n}, respectivamente. 
 
-
-@c @pxref{Introducci@'on a la Ayuda}
 
 @end deffn
 
