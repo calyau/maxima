@@ -673,6 +673,11 @@ wrapper for this."
 	   (eq (caar vlist) 'mlist)
 	   (not (= (length tlist)(length vlist))))
       (merror "Illegal list assignment: different lengths of ~M and ~M." tlist vlist))
+  (setq tlist
+        `((mlist)
+          ,@(mapcar
+              #'(lambda (x) (if (symbolp x) x `(,(car x) ((mquote) ,@(mapcar #'meval (cdr x))))))
+              (cdr tlist))))
   (unless (and (listp vlist)
 	   (eq (caar vlist) 'mlist))
     (setf vlist (cons (car tlist) ;; if [a,b,c]:v  then make a list [v,v,v]
