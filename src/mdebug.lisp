@@ -336,21 +336,20 @@
 	 ;; First, read and discard the #\? since we don't need it anymore.
 	 (read-char stream)
 	 (let ((next (peek-char nil stream nil)))
-	   (cond ((member next '(#\space #\tab))
-		  ;; Got "? <stuff>".  This means describe.
-		  (let* ((line (string-trim 
-				'(#\space #\tab #\; #\$)
-				(subseq 
-				 (read-line stream eof-error-p eof-value) 1))))
-		    `((displayinput) nil (($describe) ,line))))
-         ((equal next #\!)
-          ;; We have "?!...". Assume it is "?! <stuff>",
-          ;; so invoke INFO-EXACT on <stuff>.
+	   (cond ((member next '(#\space #\tab #\!))
+		  ;; Got "? <stuff>" or "?! <stuff>". Invoke exact search on <stuff>.
 		  (let* ((line (string-trim 
 				'(#\space #\tab #\; #\$)
 				(subseq 
 				 (read-line stream eof-error-p eof-value) 1))))
 		    `((displayinput) nil (($describe) ,line $exact))))
+         ((equal next #\?)
+          ;; Got "?? <stuff>". Invoke inexact search on <stuff>.
+		  (let* ((line (string-trim 
+				'(#\space #\tab #\; #\$)
+				(subseq 
+				 (read-line stream eof-error-p eof-value) 1))))
+		    `((displayinput) nil (($describe) ,line $inexact))))
 		 (t
 		  ;; Got "?<stuff>" This means a call to a Lisp
 		  ;; function.  Pass this on to mread which can handle

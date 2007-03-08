@@ -132,7 +132,7 @@
 (defmspec $describe (x)
   (let
     ((topic ($sconcat (cadr x)))
-     (exact-p (eq (caddr x) '$exact))
+     (exact-p (or (null (caddr x)) (eq (caddr x) '$exact)))
      (cl-info::*prompt-prefix* *prompt-prefix*)
      (cl-info::*prompt-suffix* *prompt-suffix*))
     (if exact-p

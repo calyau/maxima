@@ -59,14 +59,14 @@
   (let ((exact-matches (exact-topic-match x)))
     (if (null exact-matches)
       (progn
-        (format t "  No exact match found for topic `~a'.~%  Try `? ~a' (inexact match) instead.~%~%" x x)
+        (format t "  No exact match found for topic `~a'.~%  Try `?? ~a' (inexact match) instead.~%~%" x x)
         nil)
       (progn
         (format t "~%")
         (loop for item in exact-matches
               do (format t "~A~%~%" (read-info-text item)))
         (if (some-inexact x (inexact-topic-match x))
-          (format t "  There are also some inexact matches for `~a'.~%  Try `? ~a' to see them.~%~%" x x))
+          (format t "  There are also some inexact matches for `~a'.~%  Try `?? ~a' to see them.~%~%" x x))
         t))))
 
 (defun some-inexact (x inexact-matches)
