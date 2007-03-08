@@ -5,19 +5,9 @@
 
 (macsyma-module hyp)
 
-;;(eval-when
-;;    #+gcl (compile eval)
-;;    #-gcl (:compile-toplevel :execute)
-;;    (declare-top (special fun w b l alglist $true $false n  c l1 l2)))
-
 (declare-top (special $true $false))
 
-(declare-top (special var *par*
-		      checkcoefsignlist
-		      $exponentialize $bestriglim $radexpand))
-
-
-;; (eval-when (compile eval) (load '((dsk ell) macros >)) )
+(declare-top (special var *par* checkcoefsignlist $exponentialize $bestriglim $radexpand))
 
 ;; Why is this needed?
 (setq checkcoefsignlist nil)
@@ -36,7 +26,6 @@
     (defmacro fixp (x) `(typep ,x 'fixnum))
 
     (setq checkcoefsignlist '())
-    ;;      $BESTRIGLIM 3. $RADEXPAND '$ALL
 
     (defmacro simp (x) `(simplifya ,x ()))
 
@@ -150,7 +139,7 @@
 (defun del (a b)
   (cond ((null a) b)
 	(t
-	 (del (cdr a) (zl-delete (car a) b 1)))))
+	 (del (cdr a) (delete (car a) b :count 1 :test #'equal)))))
 
 ;; Handle the simple cases where the result is either a polynomial, or
 ;; is undefined because we divide by zero.
@@ -181,17 +170,6 @@
 	(t
 	 (intdiff arg-l1 arg-l2))))
 
-#+nil
-(defun intdiff (arg-l1 arg-l2)
-  (prog(l a dif)
-     (setq l arg-l2 a (car arg-l1))
-     jump
-     (cond ((null l)(return (intdiffl1l2 (cdr arg-l1) arg-l2))))
-     (cond ((nni (setq dif (sub a (car l))))
-	    (return (list a dif))))
-     (setq l (cdr l))
-     (go jump)))
-
 ;; For each element x in arg-l1 and y in arg-l2, compute d = x - y.
 ;; Find the smallest such non-negative integer d and return (list x
 ;; d).
@@ -208,7 +186,7 @@
     ;; Find the smallest one and return it.
     (let ((min (first result)))
       (dolist (x (rest result))
-	(when (lessp (second x) (second min))
+	(when (< (second x) (second min))
 	  (setf min x)))
       min)))
     
@@ -399,7 +377,7 @@
      (setq l (vfvp (div (add (cadr arg-l1) n) 2)))
 
      ;;(format t "l  = ~A~%" l)
-     (setq v (cdr (zl-assoc 'v l)))
+     (setq v (cdr (assoc 'v l :test #'equal)))
 
      ;; Assuming we have F(-n,b;c;z), then v is (b+n)/2.
 	    
@@ -435,22 +413,10 @@
 			    (sub (mul 2 v) (car arg-l2))
 			    (sub 1 (mul 2 *par*)))))))
 
-
-#+nil
-(defun jacobpol
-    (n a b x)
-  (list '(mqapply)(list '($%p array) n a b) x))
-
-
 ;; Jacobi polynomial
 (defun jacobpol (n a b x)
   `(($jacobi_p) ,n ,a ,b ,x))
 
-
-#+nil
-(defun gegenpol(n v x)
-  (cond ((equal v 0) (tchebypol n x))
-	(t (list '(mqapply)(list '($%c array) n v) x))))
 
 ;; Gegenbauer (Ultraspherical) polynomial.  We use ultraspherical to
 ;; match specfun.
@@ -497,35 +463,20 @@
 
 ;; Compute the product of the elements of the list L.
 (defun mull (l)
-  (cond ((null l) 1)
-	(t (mul (car l) (mull (cdr l))))))
+ (reduce #'mul l :initial-value 1))
 
 
 ;; Add 1 to each element of the list L
 (defun incr1 (l)
-  (cond ((null l) nil)
-	(t (append (list (add (car l) 1)) (incr1 (cdr l))))))
-
-
-#+nil
-(defun dispatch-spec-simp (arg-l1 arg-l2)
-  (prog(len1 len2)
-     (setq len1 (length arg-l1) len2 (length arg-l2))
-     (cond ((and (lessp len1 2)
-		 (lessp len2 2))
-	    (return (simp2>f<2 arg-l1 arg-l2 len1 len2))))
-     (cond ((and (equal len1 2)
-		 (equal len2 1))
-	    (return (simp2f1 arg-l1 arg-l2))))
-     (return (fpqform arg-l1 arg-l2 var))))
+  (mapcar #'(lambda (x) (add x 1)) l))
 
 ;; Figure out the orders of generalized hypergeometric function we
 ;; have and call the right simplifier.
 (defun dispatch-spec-simp (arg-l1 arg-l2)
   (let  ((len1 (length arg-l1))
 	 (len2 (length arg-l2)))
-    (cond ((and (lessp len1 2)
-		(lessp len2 2))
+    (cond ((and (< len1 2)
+		(< len2 2))
 	   ;; pFq where p and q < 2.
 	   (simp2>f<2 arg-l1 arg-l2 len1 len2))
 	  ((and (equal len1 2)
@@ -537,16 +488,6 @@
 	   ;; function.
 	   (fpqform arg-l1 arg-l2 var)))))
 
-
-#+nil
-(defun simp2>f<2 (l1 l2 len1 len2)
-  (prog()
-     (cond ((and (zerop len1) (zerop len2))
-	    (return (power '$%e var))))
-     (cond ((and (zerop len1) (equal len2 1))
-	    (return (bestrig (car l2) var))))
-     (cond ((zerop len2) (return (binom (car l1)))))
-     (return (confl l1 l2 var))))
 
 ;; Handle the cases where the number of indices is less than 2.
 (defun simp2>f<2 (arg-l1 arg-l2 len1 len2)
@@ -610,7 +551,7 @@
      #+(or)
      (cond ((and (hyp-integerp (add a a))
 		 (numberp (setq n (sub a (inv 2))))
-		 (lessp n $bestriglim))
+		 (< n $bestriglim))
 	    ;; This is totally broken.  It's got an extra (-1)^foo
 	    ;; factor, so let's not use it at all for now.  Use the
 	    ;; general forms below and let expand get the right
@@ -659,7 +600,7 @@
 ;; Should we use that instead?
 (defun besredtrig (n z)
   (cond ((minusp n)
-	 (trigredminus (mul -1 (add1 n)) z))
+	 (trigredminus (mul -1 (1+ n)) z))
 	(t (trigredplus n z))))
 
 (defun trigredplus (n z)
@@ -672,8 +613,7 @@
    (mul n '$%pi (inv 2))))
 
 
-(defun trigredminus
-    (n z)
+(defun trigredminus (n z)
   ((lambda(npinv2)
      (mul (ctr z)
 	  (sub (mul (cos% (add z npinv2))
@@ -682,14 +622,13 @@
 		    (secondsum n z)))))
    (mul n '$%pi (inv 2))))
 
-(defun firstsum
-    (n z)
+(defun firstsum (n z)
   (prog(count result 2r n1)
      (setq n1 ($entier (div n 2)) count 0 result 1)
      loop
      (cond ((eq count n1)(return result)))
      (setq count
-	   (add1 count)
+	   (1+ count)
 	   2r
 	   (add count count)
 	   result
@@ -705,7 +644,7 @@
 (defun secondsum (n z)
   (prog (count result 2r+1 n1)
      (setq n1
-	   ($entier (div (sub1 n) 2))
+	   ($entier (div (1- n) 2))
 	   count
 	   0
 	   result
@@ -714,7 +653,7 @@
      loop
      (cond ((eq count n1)(return result)))
      (setq count
-	   (add1 count)
+	   (1+ count)
 	   2r+1
 	   (add count count 1)
 	   result
@@ -753,25 +692,11 @@
 
 
 ;; Return non-NIL if any element of the list L is zero.
-#+nil
-(defun zerop-in-l (l)
-  (cond ((null l) nil)
-	((numberp (car l))
-	 (cond ((zerop (car l)) t)(t (zerop-in-l (cdr l)))))
-	(t (zerop-in-l (cdr l)))))
 
 (defun zerop-in-l (l)
   (some #'(lambda (x)
 	    (and (numberp x) (zerop x)))
 	l))
-
-#+nil
-(defun hyp-negp-in-l (l)
-  (cond ((null l) nil)
-	((hyp-integerp (car l))
-	 (cond ((minusp (car l)) (car l))
-	       (t (hyp-negp-in-l (cdr l)))))
-	(t (hyp-negp-in-l (cdr l)))))
 
 ;; If the list L contains a negative integer, return the most positive
 ;; of the negative integers.  Otherwise return NIL.
@@ -788,10 +713,10 @@
 ;; modifying L2.  Perserves duplications in L1.
 (defun zl-intersection (arg-l1 arg-l2)
   (cond ((null arg-l1) nil)
-	((zl-member (car arg-l1) arg-l2)
+	((member (car arg-l1) arg-l2 :test #'equal)
 	 (cons (car arg-l1)
 	       (zl-intersection (cdr arg-l1)
-				(zl-delete (car arg-l1) arg-l2 1))))
+				(delete (car arg-l1) arg-l2 :count 1 :test #'equal))))
 	(t (zl-intersection (cdr arg-l1) arg-l2))))
 
 ;; Whittaker M function.  A&S 13.1.32 defines it as
@@ -1181,13 +1106,13 @@
 
 (defun geredno1
     (arg-l1 arg-l2)
-  (cond ((and (greaterp (car arg-l2)(car arg-l1))
-	      (greaterp (car arg-l2)(cadr arg-l1)))
+  (cond ((and (> (car arg-l2)(car arg-l1))
+	      (> (car arg-l2)(cadr arg-l1)))
 	 (geredf (car arg-l1)(cadr arg-l1)(car arg-l2)))
 	(t (gered1 arg-l1 arg-l2 #'hgfsimp))))
 
 (defun geredno2 (a b c)
-  (cond ((greaterp c b) (geredf b a c))
+  (cond ((> c b) (geredf b a c))
 	(t (gered2 a b c))))
 
 ;; Consider F(1,1;2;z).  A&S 15.1.3 says this is equal to -log(1-z)/z.
@@ -1900,7 +1825,7 @@
     (print 'fail-1-in-c-1-case)
     (return-from legpol nil))
   (let* ((l (vfvp (div (add b a) 2)))
-	 (v (cdr (zl-assoc 'v l))))
+	 (v (cdr (assoc 'v l :test #'equal))))
     ;; v is (a+b)/2
     (cond
       ((and (alike1 v '((rat simp) 1 2))
@@ -2313,9 +2238,9 @@
   (prog (c m poly constfact ) 
      (setq c (car l) 
 	   m (cadr l) 
-	   l1 (zl-delete c l1 1.) 
+	   l1 (delete c l1 :count 1 :test #'equal) 
 	   c (sub c m)
-	   l2 (zl-delete c l2 1.) 
+	   l2 (delete c l2 :count 1 :test equal) 
 	   poly ($expand (constrpoly c m 'avgoustis)) 
 	   constfact (createconstfact c m))
      (return (yanmult constfact
@@ -2323,12 +2248,12 @@
 
 (defun constrpoly (c m k) 
   (cond ((zerop m) 1.)
-	(t (mul (add c k (sub1 m)) (constrpoly c (sub1 m) k))))) 
+	(t (mul (add c k (1- m)) (constrpoly c (1- m) k))))) 
 
 (defun createconstfact (c m) 
   (cond ((zerop m) 1.)
-	(t (mul (inv (add c (sub1 m)))
-		(createconstfact c (sub1 m)))))) 
+	(t (mul (inv (add c (1- m)))
+		(createconstfact c (1- m)))))) 
 
 (defun diffintprop-exec (poly l1 l2) 
   (distrdiffintprop (createcoefpowlist-exec poly) l1 l2)) 
@@ -2360,7 +2285,7 @@
 	 (setq res
 	       '(yanmult (mul (div (multpl l1) (multpl l2))
 			  var)
-		 (diffintproprecurse (sub1 pow)
+		 (diffintproprecurse (1- pow)
 		  (incr1 l1)
 		  (incr1 l2))))))))
      (return (eval res)))) 
@@ -2384,7 +2309,7 @@
 (defun createcoefpowlist (poly hp) 
   (cond ((equal hp 1.)
 	 (list (list 1. ($coeff poly 'avgoustis))))
-	(t (append (createcoefpowlist poly (sub1 hp))
+	(t (append (createcoefpowlist poly (1- hp))
 		   (list (list hp
 			       ($coeff poly
 				       (power 'avgoustis
@@ -2415,16 +2340,6 @@
 
 ;; Why is this needed?
 (setq *par* '$p)
-
-;;(DEFUN FREEVAR (A) 
-;;       (COND ((ATOM A) (NOT (EQ A VAR)))
-;;	     ((ALIKE1 A VAR)NIL)
-;;	     ((AND (NOT (ATOM (CAR A)))
-;;		   (MEMQ 'ARRAY (CDAR A)))
-;;	      (if (FREEVAR (CDR A))
-;;		  T
-;;		  (merror "`variable-of-integration-appeared-in-subscript'")))
-;;	     (T (AND (FREEVAR (CAR A)) (FREEVAR (CDR A))))))
 
 (defun freepar (exp)
   (cond ((atom exp)
@@ -2535,12 +2450,12 @@
 			    (hypredincgm atemp z))))
      loop
      (cond ((eq count m)(return result)))
-     (setq count (add1 count)
+     (setq count (1+ count)
 	   atemp (add atemp 1)
 	   result (add result
 		       (mul (power -1 count)
 			    (inv (factorial (sub m
-						 (sub1 count))))
+						 (1- count))))
 			    numprod
 			    (inv atemp)
 			    (hypredincgm atemp z))))
@@ -2689,7 +2604,7 @@
      ;; a = n + 1/2
      ;; c = m + 3/2
      ;; a - c < 0 so n - m - 1 < 0
-     (cond ((not (or (greaterp n m) (minusp n)))
+     (cond ((not (or (> n m) (minusp n)))
 	    ;; 0 <= n <= m
 	    (return (thno33 n m z))))
      (cond ((and (minusp n) (minusp m))
@@ -2837,11 +2752,11 @@
 	      (div (mul (fctrl (div 3 2) m)
 			(power '$%e 'yannis))
 		   (mul (fctrl 1 m)
-			(fctrl (add1 m) n)
+			(fctrl (1+ m) n)
 			(power 'yannis m)))
 	      (meval (list '($diff)
 			   (mul (power 'yannis
-				       (plus m n))
+				       (+ m n))
 				(meval (list '($diff)
 					     (mul (power '$%e
 							 (mul
@@ -2886,7 +2801,7 @@
   (subst x
 	 'yannis
 	 (mul (div (power 'yannis (sub m (inv 2)))
-		   (mul (power -1 (times -1 m))
+		   (mul (power -1 (* -1 m))
 			(fctrl 1 n)
 			(fctrl (inv -2) m)))
 	      (meval (list '($diff)
@@ -2916,8 +2831,8 @@
 	((equal n 1)
 	 a)
 	(t
-	 (mul (add a (sub1 n))
-	      (fctrl a (sub1 n))))))
+	 (mul (add a (1- n))
+	      (fctrl a (1- n))))))
 
 
 
@@ -3009,8 +2924,8 @@
 	   (proden 1)
 	   (b1 (sub a1 k))
 	   (prod-b 1)
-	   (arg-l1 (zl-delete a1 arg-l1 1))
-	   (arg-l2 (zl-delete b1 arg-l2 1)))
+	   (arg-l1 (delete a1 arg-l1 :count 1 :test #'equal))
+	   (arg-l2 (delete b1 arg-l2 :count 1 :test #'equal)))
       (loop for count from 0 upto k
 	 do
 	   (when $trace2f1
@@ -3056,7 +2971,7 @@
      (setq m+n (add a b))
      (setq m ($entier con))
      (when (minusp m)
-       (add1 m))
+       (1+ m))
      ;; At this point sym = r*s, con is f+m, and m is m.
      (setq ap (add (sub con m) ap))
      ;; ap = r*a+f
@@ -3067,7 +2982,7 @@
      ;;
      ;; So we have changed F(a+m,-a+n;c;z) to F(a',-a'+m+n;c;z).
      (cond ((and (minusp (mul n m))
-		 (greaterp (abs m) (abs n)))
+		 (> (abs m) (abs n)))
 	    (return (list ap (sub ap n) m+n))))
      (return  (list ap (add ap m) m+n))))
 
@@ -3104,7 +3019,7 @@
      ;; Truncate con to an integer m.
      (setq m ($entier con))
      (when (minusp m)
-       (add1 m))
+       (1+ m))
      ;; Make ap = s+con-m
      (setq ap (add (sub con m) ap))
      (setq n (add b ap))
@@ -3116,7 +3031,7 @@
      ;; differentiations.  So the only simplification we could do is
      ;; make a' simpler.
      (cond ((and (minusp (mul n m))
-		 (greaterp (abs m) (abs n)))
+		 (> (abs m) (abs n)))
 	    (return (list ap (sub ap n) m+n m n))))
      (return  (list ap (add ap m) m+n m n))))
 
@@ -3214,8 +3129,8 @@
 
 
 ;; Transform F(a,b;c;z) to F(a+n,b;c;z), given F(a,b;c;z)
-(defun as-15.2.3 (a b c n arg fun)
-  (declare (ignore b c))
+(defun as-15.2.3 (a bb cx n arg fun)
+  (declare (ignore bb cx))
   (assert (>= n 0))
   ;; A&S 15.2.3:
   ;; F(a+n,b;c;z) = z^(1-a)/poch(a,n)*diff(z^(a+n-1)*fun,z,n)
@@ -3226,8 +3141,8 @@
 	      arg n)))
 
 ;; Transform F(a,b;c;z) to F(a,b;c-n;z), given F(a,b;c;z)
-(defun as-15.2.4 (a b c n arg fun)
-  (declare (ignore a b))
+(defun as-15.2.4 (ax bb c n arg fun)
+  (declare (ignore ax bb))
   (assert (>= n 0))
   ;; A&S 15.2.4
   ;; F(a,b;c-n;z) = 1/poch(c-n,n)/z^(c-n-1)*diff(z^(c-1)*fun,z,n)
@@ -3321,12 +3236,12 @@
   (let ((mm (abs m))
 	(nn (abs n)))
     (cond ((and (nni m) (nni n))
-	   (cond ((lessp m n)
+	   (cond ((< m n)
 		  (f81 fun m n aprime))
 		 (t
 		  (f85 fun mm nn aprime))))
 	  ((and (hyp-negp n) (hyp-negp m))
-	   (cond ((greaterp (abs m) (abs n))
+	   (cond ((> (abs m) (abs n))
 		  (f86 fun mm nn aprime))
 		 (t
 		  (f82 fun mm nn aprime))))
