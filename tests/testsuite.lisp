@@ -35,4 +35,5 @@
     ((mlist) "rtest_abs" 42 43)
     ((mlist) "rtest_taylor" 66 67 72 88 89 90 91 94 96 99 104 110 112 113 118 119 120 121 122 123 124)
     ((mlist) "rtest_dot")
+    "rtest_mset"
     ))
