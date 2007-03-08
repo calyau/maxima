@@ -9,15 +9,14 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :maxima)
+
 (macsyma-module residu)
 
 (load-macsyma-macros rzmac)
 
-(declare-top (*lexpr $diff $substitute $taylor $expand)
-	     (special $breakup $noprincipal varlist
+(declare-top (special $breakup $noprincipal varlist
 		      leadcoef var *roots *failures wflag nn*
-		      sn* sd* $tellratlist genvar dn* zn)
-	     (genprefix res))
+		      sn* sd* $tellratlist genvar dn* zn))
 
 
 ;; Compute the poles (roots) of the polynomial D and return them.
@@ -44,7 +43,7 @@
 ;;
 ;; Finally, the fourth part is NIL, unless *semirat* is T.
 (defun polelist (d region region1)
-  (prog (roots $breakup r rr ss r1 s pole wflag cf) 
+  (prog (roots $breakup r rr ss r1 s pole wflag cf)
      (setq wflag t)
      (setq leadcoef (polyinx d var 'leadcoef))
      (setq roots (solvecase d))
@@ -53,15 +52,12 @@
      ;; ((x = r1) mult1
      ;;  (x = r2) mult2
      ;;  ...)
-     
+
    loop1
      (cond ((null roots)
 	    (cond ((and *semirat*
-			(> (f+ (length s) (length r))
-					;(LENGTH (APPEND S R))
-			   (f+ (length ss) (length rr))
-					;(LENGTH (APPEND SS RR))
-			   ))
+			(> (+ (length s) (length r))
+			   (+ (length ss) (length rr))))
 		   ;; Return CF, repeated roots (*semirat*), simple
 		   ;; roots (*semirat*), roots in region 1.
 		   (return (list cf rr ss r1)))
@@ -78,7 +74,7 @@
 		   ;;
 		   ;; Push (pole (x - pole)^d) onto the list CF.
 		   (setq cf (cons pole
-				  (cons 
+				  (cons
 				   (m^ (m+ var (m* -1 pole))
 				       d)
 				   cf)))))))
@@ -86,33 +82,33 @@
 	    ;; The pole is in REGION
 	    (cond ((equal d 1)
 		   ;; A simple pole, so just push the pole onto the list S.
-		   (setq s (cons pole s)))
+		   (push pole s))
 		  (t
 		   ;; A multiple pole, so push (pole d) onto the list R.
-		   (setq r (cons (list pole d) r)))))
+		   (push (list pole d) r))))
 	   ((funcall region1 pole)
 	    ;; The pole is in REGION1
 	    (cond ((not $noprincipal)
 		   ;; Put the pole onto the R1 list.  (Don't know what
 		   ;; $NOPRINCIPAL is.)
-		   (setq r1 (cons pole r1)))
+		   (push pole r1))
 		  (t
-		   ;; Return NIL if we get here.  
+		   ;; Return NIL if we get here.
 		   (return nil))))
 	   (*semirat*
 	    ;; (What does *SEMIRAT* mean?)  Anyway if we're here, the
 	    ;; pole is not in REGION or REGIOn1, so push the pole onto
 	    ;; SS or RR depending if the pole is repeated or not.
 	    (cond ((equal d 1)
-		   (setq ss (cons pole ss)))
-		  (t (setq rr (cons (list pole d) rr))))))
+		   (push pole ss))
+		  (t (push (list pole d) rr)))))
      ;; Pop this root and multiplicity and move on.
      (setq roots (cddr roots))
      (go loop1)))
 
 (defun solvecase (e)
   (cond ((not (among var e)) nil)
-	(t (let (*failures *roots) 
+	(t (let (*failures *roots)
 	     (solve e var 1)
 	     (cond (*failures 'failure)
 		   ((null *roots) ())
@@ -122,7 +118,7 @@
 (defun res (n d region region1)
   (let ((pl (polelist d region region1))
 	dp a b c factors leadcoef)
-    (cond 
+    (cond
       ((null pl) nil)
       (t
        (setq factors (car pl))
@@ -130,7 +126,7 @@
        ;; PL now contains the list of the roots in region, roots in
        ;; region1, and everything else.
        (cond ((or (cadr pl)
-		  (caddr pl)) 
+		  (caddr pl))
 	      (setq dp (sdiff d var))))
        (cond ((car pl)
 	      ;; Compute the sum of the residues of n/d for the
@@ -138,7 +134,7 @@
 	      (setq a (m+l (residue n (cond (leadcoef factors)
 					    (t d))
 				    (car pl)))))
-	     (t (setq a 0.)))
+	     (t (setq a 0)))
        (cond ((cadr pl)
 	      ;; Compute the sum of the residues of n/d for the simple
 	      ;; roots in REGION1.  Since the roots are simple, we can
@@ -150,7 +146,7 @@
 				       ($residue (m// n d) var pole))
 				   (cadr pl))))
 	      (setq b (m+l (res1 n dp (cadr pl)))))
-	     (t (setq b 0.)))
+	     (t (setq b 0)))
        (cond ((caddr pl)
 	      ;; Compute the sum of the residues of n/d for the roots
 	      ;; not in REGION nor REGION1.
@@ -161,9 +157,9 @@
        ;; Return the sum of the residues in the two regions and the
        ;; sum of the residues outside the two regions.
        (list (m+ a b) c)))))
-
+
 (defun residue (zn factors pl)
-  (cond (leadcoef 
+  (cond (leadcoef
 	 (mapcar #'(lambda (j)
 		     (destructuring-let (((factor1 factor2) (remfactor factors (car j) zn)))
 		       (resm0 factor1 factor2 (car j) (cadr j))))
@@ -188,7 +184,7 @@
 	  pl1))
 
 (defun resprog0 (f g n n2)
-  (prog (a b c r) 
+  (prog (a b c r)
      (setq a (resprog f g))
      (setq b (cadr a) c (ptimes (cddr a) n2) a (caar a))
      (setq a (ptimes n a) b (ptimes n b))
@@ -197,26 +193,26 @@
      (setq b (cons (pplus (ptimes (car r) f) (ptimes (cdr r) b))
 		   (cdr r)))
      (return (cons (cons (car a) (ptimes (cdr a) c))
-		   (cons (car b) (ptimes (cdr b) c)))))) 
-
+		   (cons (car b) (ptimes (cdr b) c))))))
+
 
 (defun resm0 (e n pole m)
   (setq e (div* n e))
-  (setq e ($diff e var (sub1 m)))
+  (setq e ($diff e var (1- m)))
   (setq e ($rectform ($expand (subin pole e))))
-  (div* e (simplify `((mfactorial) ,(sub1 m)))))
+  (div* e (simplify `((mfactorial) ,(1- m)))))
 
 (defun remfactor (l p n)
-  (prog (f g) 
+  (prog (f g)
    loop (cond ((null l)
 	       (return (list (m*l (cons leadcoef g)) n)))
 	      ((equal p (car l)) (setq f (cadr l)))
 	      (t (setq g (cons (cadr l) g))))
    (setq l (cddr l))
    (go loop)))
-
+
 (defun resprog (p1b p2b)
-  (prog (temp coef1r coef2r fac coef1s coef2s zeropolb f1 f2) 
+  (prog (temp coef1r coef2r fac coef1s coef2s zeropolb f1 f2)
      (setq coef2r (setq coef1s 0))
      (setq coef2s (setq coef1r 1))
      b1   (cond ((not (lessp (pdegree p1b var) (pdegree p2b var))) (go b2)))
@@ -232,8 +228,7 @@
      b2   (cond ((zerop (pdegree p2b var))
 		 (return (cons (cons coef2r p2b) (cons coef2s p2b)))))
      (setq zeropolb (psimp var
-			   (list (difference (pdegree p1b var)
-					     (pdegree p2b var))
+			   (list (- (pdegree p1b var) (pdegree p2b var))
 				 1)))
      (setq fac (pgcd (caddr p1b) (caddr p2b)))
      (setq f1 (pquotient (caddr p1b) fac))
@@ -247,14 +242,14 @@
 			       (ptimes (ptimes f1 coef2r) zeropolb)))
      (setq coef1s (pdifference (ptimes f2 coef1s)
 			       (ptimes (ptimes f1 coef2s) zeropolb)))
-     (go b1))) 
-
+     (go b1)))
+
 ;;;Looks for polynomials. puts polys^(pos-num) in sn* polys^(neg-num) in sd*.
 (defun snumden (e)
-  (cond ((or (atom e) 
+  (cond ((or (atom e)
 	     (mnump e))
 	 (setq sn* (cons e sn*)))
-	((and (mexptp e) 
+	((and (mexptp e)
 	      (integerp (caddr e)))
 	 (cond ((polyinx (cadr e) var nil)
 		(cond ((minusp (caddr e))
@@ -266,7 +261,7 @@
 	((polyinx e var nil)
 	 (setq sn* (cons e sn*)))))
 
-(setq sn* nil sd* nil) 
+(setq sn* nil sd* nil)
 
 (defmfun $residue (e var p)
   (cond (($unknown e)
@@ -289,4 +284,3 @@
 				;;-1
 				)))
     (coeff e (m^ (m+ (m* -1 pole) var) -1) 1)))
-
