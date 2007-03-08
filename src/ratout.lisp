@@ -12,11 +12,11 @@
 
 (macsyma-module ratout)
 
-;; THIS IS THE OUT-OF-CORE SEGMENT OF THE RATIONAL FUNCTION PACKAGE. 
+;; THIS IS THE OUT-OF-CORE SEGMENT OF THE RATIONAL FUNCTION PACKAGE.
 
 (declare-top (special $algebraic errrjfflag varlist ss *y* f $factorflag modulus hmodulus
-	  genvar *a* *alpha *var* *x* *p *max *var *res *chk *l $intfaclim
-	  $ratfac u* $ratwtlvl *ratweights $ratweights $keepfloat))
+		      genvar *a* *alpha *var* *x* *p *max *var *res *chk *l $intfaclim
+		      $ratfac u* $ratwtlvl *ratweights $ratweights $keepfloat))
 
 (load-macsyma-macros ratmac)
 
@@ -42,8 +42,8 @@
 	  (t (pgcdm x y)))))
 
 ;;;***	PMODCONTENT COMPUTES CONTENT OF
-;;;	P IN 
-;;	Z [X ] [X , X , ..., X   ] 
+;;;	P IN
+;;	Z [X ] [X , X , ..., X   ]
 ;;        P  V    1   2        V-1
 
 ;;	PMODCONTENT OF 3*A*X IS A, IF MAINVAR IS X (=X )
@@ -67,7 +67,7 @@
 		(gcd (setq gcd (pgcdu gcd *res)))
 		(t (setq gcd *res)))
      (cond ((pcoefp gcd) (go ret1))
-	   ((minusp (setq *max (sub1 *max)))
+	   ((minusp (setq *max (1- *max)))
 	    (return (list gcd (pquotient p gcd)))))
      (go a)
      ret1 (return (list 1 p))))
@@ -125,7 +125,7 @@
 	((null y) t)
 	((pointergp (car x)(car y))t)
 	((not (eq (car x)(car y)))nil)
-	((greaterp (cadr x)(cadr y)) t)
+	((> (cadr x)(cadr y)) t)
 	((eqn (cadr x)(cadr y))(vgreat (cddr x)(cddr y)))
 	(t nil)))
 
@@ -136,7 +136,7 @@
 
 (defun pgcdp (bigf1 bigf2 modulus)
   (prog (c c1		c2		n		q
-	 h1tilde		h2tilde		gstar		h1star
+	 h1tilde	h2tilde		gstar		h1star
 	 h2star		xv		e		b
 	 gbar		nubar		nu1bar		nu2bar
 	 gtilde		f1tilde		f2tilde		biggtilde
@@ -181,7 +181,7 @@
      (setq degree (pdegreer biggtilde))
      (cond ((vgreat degree e) (go step6))
 	   ((vgreat e degree) (setq n 0) (setq e degree)))
-     (setq n (add1 n))
+     (setq n (1+ n))
      (cond ((equal n 1) (setq q (list xv 1 1 0 (cminus b)))
 	    (setq gstar biggtilde)
 	    (setq h1star h1tilde)
@@ -247,7 +247,7 @@
      (cond ((vgreat e degree) (setq e degree)))
      ;; Step 5
      (setq mubar
-	   (times 2 gbar (max (maxcoefficient bigf1)
+	   (* 2 gbar (max (maxcoefficient bigf1)
 			      (maxcoefficient bigf2))))
      (go step6a)
      step6(setq p (newprime p))
@@ -276,7 +276,7 @@
      (setq degree (pdegreer biggtilde))
      (cond ((vgreat degree e) (go step6))
 	   ((vgreat e degree) (setq n 0) (setq e degree)))
-     (setq n (add1 n))
+     (setq n (1+ n))
      ;; Step 11
      (setqmodulus nil)
      (cond ((equal n 1) (setq q p)
@@ -286,13 +286,12 @@
 	   (t (setq gstar (lagrange3 gstar biggtilde p q))
 	      (setq h1star (lagrange3 h1star h1tilde p q))
 	      (setq h2star (lagrange3 h2star h2tilde p q))
-	      (setq q (times p q))))
+	      (setq q (* p q))))
      ;; Step 12
-     (cond ((greaterp mubar q) (go step6)))
-     (cond ((greaterp (times 2 (max
-				(times (setq gtilde (norm gstar)) (maxcoefficient h1star))
-				(times gtilde (maxcoefficient h2star)) ))
-		      q)
+     (cond ((> mubar q) (go step6)))
+     (cond ((> (* 2 (max (* (setq gtilde (norm gstar)) (maxcoefficient h1star))
+			 (* gtilde (maxcoefficient h2star))))
+	       q)
 	    (go step6)))
      (setqmodulus nil)
      (setq gstar (cadr (pcontent gstar)))
@@ -309,7 +308,7 @@
   (prog (maxexp i l *p factors factor errrjfflag)
      (setq maxexp (quotient (cadr p) 2))
      (setq i 1)
-     a    (cond ((greaterp i maxexp) (return (cons p factors))))
+     a    (cond ((> i maxexp) (return (cons p factors))))
      (setq l (p1 (reverse ((lambda (p i $factorflag)
 			     (pfactor2 p i))
 			   p
@@ -335,26 +334,26 @@
      (setq factors (cons factor factors))
      (cond ((or (eqn p 1) (eqn p -1)) (return factors)))
      (go a)
-     d    (setq i (add1 i))
+     d    (setq i (1+ i))
      (go a)
      ))
 
 (defun pfactor2 (p i)
-  (cond ((lessp i 0.) nil)
+  (cond ((< i 0) nil)
 	(t (cons (pfactor (pcsubst p i (car p)))
-		 (pfactor2 p (sub1 i))))))
+		 (pfactor2 p (1- i))))))
 
 (defun rpowerset (x n)
   (cond ((null x) (quote (1 nil)))
 	((equal x 1) (quote (1)))
 	(t (cons 1 (ptts1 x n x)))))
-	 
+
 
 (defun allprods (x y)
   (cond ((null x) nil)
 	((null y) nil)
 	(t (nconc (ap1 (car x) y) (allprods (cdr x) y)))))
-	 
+
 (defun al1 (f r len)
   (prog (ss)
      (cond
@@ -367,9 +366,9 @@
 			(nconc ss
 			       (mapcar #'(lambda (z) (cons z *y*))
 				       f))))
-	      (al1 (car r) (cdr r) (sub1 len)))
+	      (al1 (car r) (cdr r) (1- len)))
 	(return ss)))))
- 
+
 
 (defun ap1 (x l)
   (cond ((null l) nil)
@@ -377,7 +376,7 @@
 
 (defun ptts1 (x n y)
   (cond ((eqn n 1) (list y))
-	(t (cons y (ptts1 x (sub1 n) (ptimes x y))))))
+	(t (cons y (ptts1 x (1- n) (ptimes x y))))))
 
 (defun p1 (l)
   (prog (a)
@@ -386,7 +385,7 @@
 		   (t (cdr (al1 (car a)
 				(cdr a)
 				(length a))))))))
-	 
+
 (defun p11 (ele)
   (cond ((null (cddr ele)) (rpowerset (car ele) (cadr ele)))
 	(t (allprods (rpowerset (car ele) (cadr ele))
@@ -394,38 +393,38 @@
 
 (defun pinterpolate (l var)
   (psimp var (pinterpolate1 (pinterpolate2 l 1)
-			    (difference (length l) 2))))
+			    (- (length l) 2))))
 
 (defun pinterpolate1 (x n)
-  (pinterpolate4 (pinterpolate5 (reverse x) 1 n n) (add1 n)))
-	 
+  (pinterpolate4 (pinterpolate5 (reverse x) 1 n n) (1+ n)))
+
 (defun pinterpolate2 (x n)
   (cond ((null (cdr x)) x)
 	(t (cons (car x)
-		 (pinterpolate2 (pinterpolate3 x n) (add1 n))))))
+		 (pinterpolate2 (pinterpolate3 x n) (1+ n))))))
 
 (defun pinterpolate3 (x n)
   (cond ((null (cdr x)) nil)
 	(t (cons (pquotient (pdifference (cadr x) (car x)) n)
 		 (pinterpolate3 (cdr x) n)))))
-	 
+
 (defun pinterpolate4 (x n)
   (cond ((null x) nil)
-	((pzerop (car x)) (pinterpolate4 (cdr x) (sub1 n)))
+	((pzerop (car x)) (pinterpolate4 (cdr x) (1- n)))
 	(t (cons n (cons (car x)
-			 (pinterpolate4 (cdr x) (sub1 n)))))))
+			 (pinterpolate4 (cdr x) (1- n)))))))
 
 (defun pinterpolate5 (x i j n)
-  (cond ((greaterp i n) x)
+  (cond ((> i n) x)
 	(t (pinterpolate5 (cons (car x) (pinterpolate6 x i j))
-			  (add1 i)
-			  (sub1 j)
+			  (1+ i)
+			  (1- j)
 			  n))))
-	 
+
 (defun pinterpolate6 (x i j)
   (cond ((zerop i) (cdr x))
 	(t (cons (pdifference (cadr x) (pctimes j (car x)))
-		 (pinterpolate6 (cdr x) (sub1 i) j)))))
+		 (pinterpolate6 (cdr x) (1- i) j)))))
 
 ;; THE N**(1.585) MULTIPLICATION SCHEME
 ;;FOLLOWS.  IT SHOULD BE USED ONLY WHEN BOTH INPUTS ARE MULTIVARIATE,
@@ -452,7 +451,7 @@
 	((pointergp (car x) (car y))
 	 (cons (car x) (pctimes1 y (cdr x))))
 	(t (cons (car y) (pctimes1 x (cdr y))))))
-	 
+
 (defun fptimes1 (f g)
   (prog (a b c d)
      (cond ((or (null f) (null g)) (return nil))
@@ -460,7 +459,7 @@
 	    (return (lsft (pctimes1 (cadr f) g) (car f))))
 	   ((null (cddr g))
 	    (return (lsft (pctimes1 (cadr g) f) (car g)))))
-     (setq d (ash (add1 (max (car f) (car g))) -1))
+     (setq d (ash (1+ (max (car f) (car g))) -1))
      (setq f (halfsplit f d) g (halfsplit g d))
      (setq a (fptimes1 (car f) (car g)))
      (setq b
@@ -472,7 +471,7 @@
 (defun halfsplit (p d)
   (do ((a) (p p (cddr p)))
       ((or (null p) (< (car p) d)) (cons (nreverse a) p))
-    (setq a (cons (cadr p) (cons (f- (car p) d) a)))))
+    (setq a (cons (cadr p) (cons (- (car p) d) a)))))
 
 (defun lsft (p n)
   (do ((q p (cddr (rplaca q (+ (car q) n))))) ((null q)))
@@ -483,19 +482,19 @@
 ;;; TO TRUNCATE ON E, DO RATWEIGHT(E,1);
 ;;;THEN DO RATWTLVL:N.  ALL POWERS >N GO TO 0.
 
-(defmfun $ratweight n 
+(defmfun $ratweight n
   (cond ((oddp n) (merror "`ratweight' takes an even number of arguments.")))
   (do ((*i* 1 (+ *i* 2))) ((> *i* n))
     (rplacd (or (assoc (arg *i*) *ratweights :test #'equal)
 		(car (setq *ratweights (cons (list (arg *i*)) *ratweights))))
-	    (arg (1+ *i*)))) 
+	    (arg (1+ *i*))))
   (setq $ratweights (cons '(mlist simp) (dot2l *ratweights)))
   (cond ((= n 0) $ratweights) (t (cons '(mlist) (listify n)))))
 
 (defun pweight (x)
-  (or (get x '$ratweight) 0.)) 
+  (or (get x '$ratweight) 0.))
 
-(defun wtptimes (x y wtsofar) 
+(defun wtptimes (x y wtsofar)
   (cond ((or (pzerop x) (pzerop y) (> wtsofar $ratwtlvl))
 	 (pzero))
 	((pcoefp x) (wtpctimes x y))
@@ -510,9 +509,9 @@
 	 (psimp (car x)
 		(wtpctimes1 y (cdr x) (pweight (car x)))))
 	(t (psimp (car y)
-		  (wtpctimes1 x (cdr y) (pweight (car y))))))) 
+		  (wtpctimes1 x (cdr y) (pweight (car y)))))))
 
-(defun wtptimes1 (*x* y xweight) 
+(defun wtptimes1 (*x* y xweight)
   (prog (u* v)
      (declare (special v))
      (setq v (setq u* (wtptimes2 y)))
@@ -522,19 +521,19 @@
      (go a)))
 
 
-(defun wtptimes2 (y) 
+(defun wtptimes2 (y)
   (cond ((null y) nil)
 	(t ((lambda (ii) (declare (fixnum ii))
 		    (cond ((> ii $ratwtlvl) (wtptimes2 (cddr y)))
 			  (t (pcoefadd (+ (car *x*) (car y))
 				       (wtptimes (cadr *x*) (cadr y) ii)
 				       (wtptimes2 (cddr y))))))
-	    (+ (* xweight (+ (car *x*) (car y))) wtsofar))))) 
+	    (+ (* xweight (+ (car *x*) (car y))) wtsofar)))))
 
-(defun wtptimes3 (y) 
+(defun wtptimes3 (y)
   (prog ((e 0) u c)
      (declare (fixnum e) (special v))
- 
+
      a1   (cond ((null y) (return nil)))
      (setq e (+ (car *x*) (car y)))
      (setq c (wtptimes (cadr y) (cadr *x*) (+ wtsofar (* xweight e))))
@@ -558,15 +557,15 @@
 					       (setq e (+ (car *x*) (car y))))))))
 	    (go d)))
      c    (cond ((and (cdr u) (> (cadr u) e)) (setq u (cddr u)) (go c)))
-     (go b))) 
- 
+     (go b)))
 
-(defun wtpctimes (c p) 
+
+(defun wtpctimes (c p)
   (cond ((pcoefp p) (ctimes c p))
 	(t (psimp (car p) (wtpctimes1 c (cdr p) (pweight (car p)))))))
 
-(defun wtpctimes1 (c x xwt) 
-  (prog (cc) 
+(defun wtpctimes1 (c x xwt)
+  (prog (cc)
      (return
        (cond ((null x) nil)
 	     (t (setq cc (wtptimes c
@@ -615,17 +614,17 @@
 				   (list '(mexpt) var last) ans)))))
 	   (t (setq ans (list '(mplus)
 			      (hornrep (cadr l))
-			      (list '(mtimes) 
-				    (list '(mexpt) var (difference last (car l)))
+			      (list '(mtimes)
+				    (list '(mexpt) var (- last (car l)))
 				    ans)))))
      (go a)))
 
 (declare-top (special y rischpf genvar $savefactors checkfactors w
 		      exp var x $factorflag $ratfac
-		      $keepfloat ratform rootfactor 
+		      $keepfloat ratform rootfactor
 		      wholepart parnumer varlist n))
 
-(defmfun $partfrac (exp var) 
+(defmfun $partfrac (exp var)
   (cond ((and (not (atom exp)) (member (caar exp) '(mequal mlist $matrix) :test #'eq))
 	 (cons (car exp) (mapcar #'(lambda (u) ($partfrac u var)) (cdr exp))))
 	((and (atom var) (not (among var exp))) exp)
@@ -637,7 +636,7 @@
 	     (setq exp (cons (car exp)	;FULL DECOMP?
 			     (mapcan #'partfraca (cdr exp))))
 	     (add2* (disrep (car exp))
-		    (cons '(mplus) 
+		    (cons '(mplus)
 			  (mapcar #'(lambda (l)
 				      (destructuring-let (((coef poly exp) l))
 							 (list '(mtimes)
@@ -655,7 +654,7 @@
 	((rzerop (car nc)) (cons (list (cdr nc) poly n) ans))
       (push (list (cdr nc) poly n) ans))))
 
-(defun partfrac (rat var &optional facdenom)		
+(defun partfrac (rat var &optional facdenom)
   (destructuring-let* (((wholepart frpart) (pdivide (car rat) (cdr rat)))
 		       ((num . denom) (ratqu frpart (cdr rat))))
     (cond ((pzerop num) (cons wholepart nil))
@@ -712,8 +711,8 @@
 
 (declare-top (special $pfeformat varlist $factorflag m v dosimp))
 
-(defmfun $pfet (m) 
-  (prog (listov $pfeformat varlist $factorflag) 
+(defmfun $pfet (m)
+  (prog (listov $pfeformat varlist $factorflag)
      (setq $pfeformat t)
      (newvar m)
      (setq listov varlist)
@@ -734,7 +733,7 @@
 (defun sssqfr (x)
   (let ((dosimp t)) (simplify ($sqfr x))))
 
-(defun pfet1 (m v) 
+(defun pfet1 (m v)
   (cond ((atom m) m)
 	((eq (caar m) 'mplus)
 	 (cons '(mplus)
