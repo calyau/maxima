@@ -22,34 +22,31 @@
 
 ;;; Sum of divisors and Totient functions
 
-(defmfun $divsum n
-  (unless (< n 3)
-    (merror "To many arguments to `divsum'"))
-  ((lambda ($intfaclim k n) 
-     (cond ((and (integerp k) (integerp n))
-	    (setq n (abs n))
-	    (cond ((zerop k)
-		   (cond ((= n 1) 1)
-			 ((= n 0) 1)
-			 (t (do ((l (cfactorw n) (cddr l))
-				 (a 1 (* a (1+ (cadr l)))))
-				((null l) a)))))
-		  (t (divsum (cfactorw n) k))))
-	   ((list '($divsum) n k))))
-   nil
-   (cond ((= n 1) 1)
-	 ((arg 2)))
-   (arg 1)))
+(defmfun $divsum (n &optional (k 1))
+  (let (($intfaclim nil)) 
+    (if (and (integerp k) (integerp n))
+	(let ((n (abs n)))
+	  (cond ((= n 1) 1)
+		((zerop n) 1)
+		((zerop k)
+		 (do ((l (cfactorw n) (cddr l))
+		      (a 1 (* a (1+ (cadr l)))))
+		     ((null l) a)))
+		((minusp k)
+		 `((rat) ,(divsum (cfactorw n) (- k)) ,(expt n (- k))))
+		(t
+		 (divsum (cfactorw n) k))))
+	(list '($divsum) n k))))
 
 (defun divsum (l k)
   (do ((l l (cddr l))
-       (ans 1) (temp))
+       (ans 1))
       ((null l) ans)
-    (cond ((equal (car l) 1))
-	  ((setq temp (expt (car l) k)
-		 ans (* (*quo (1- (expt temp (1+ (cadr l))))
-			      (1- temp))
-			ans))))))
+    (unless (eql (car l) 1)
+      (let ((temp (expt (car l) k)))
+	(setq ans (* ans
+		     (truncate (1- (expt temp (1+ (cadr l))))
+			       (1- temp))))))))
 
 (defmfun $totient (n)
   (cond ((integerp n)
@@ -66,15 +63,13 @@
 
 ;;; JACOBI symbol and Gaussian factoring
 
-(declare-top (special *incl* modulus $intfaclim))
+(declare-top (special modulus $intfaclim))
 
-(setq *incl* (list 2 4))
-
-(and (nconc *incl* *incl*) 'noprint)
+(defvar *incl* (let ((l (list 2 4))) (nconc l l)))
 
 (defun rtzerl2 (n)
   (cond ((zerop n) 0)
-	(t (do ((n n (quotient n 4)))
+	(t (do ((n n (ash n -2)))
 	       ((not (zerop (haipart n -2))) n)))))
 
 (defun imodp (p)
@@ -86,7 +81,7 @@
 	       ((= (jacobi i p) -1) (imodp1 i p))))))
 
 (defun imodp1 (i modulus)
-  (abs (cexpt i (quotient (1- modulus) 4) )))
+  (abs (cexpt i (ash (1- modulus) -2) )))
 
 (defmfun $jacobi (p q)
   (cond ((null (and (integerp p) (integerp q)))
@@ -94,7 +89,7 @@
 	((zerop q) (merror "Zero denominator?"))
 	((minusp q) ($jacobi p (minus q)))
 	((and (evenp (setq q (rtzerl2 q)))
-	      (setq q (quotient q 2))
+	      (setq q (ash q -1))
 	      (evenp p)) 0)
 	((equal q 1) 1)
 	((minusp (setq p (rem p q)))
@@ -108,7 +103,7 @@
        (odd 0 (boole boole-xor odd (boole boole-and bit2 (setq bit2 (haipart r1 -2))))))
       ((zerop r1) 0)
     (cond ((evenp r1)
-	   (setq r1 (quotient r1 2))
+	   (setq r1 (ash r1 -1))
 	   (setq odd (boole boole-xor odd (ash (^ (haipart r2 -4) 2) -2)))))
     (and (equal r1 1) (return (expt -1 (boole  boole-and 1 (ash odd -1)))))))
 
@@ -178,10 +173,9 @@
 	    (setq plis (cons p (cons (cadr gl) plis)))
 	    (setq gl (cddr gl)) (go loop))
 	   ((equal p (car nl))
-	    (cond ((zerop (remainder
-			   (setq tem (+ (* a (car cd)) ;gcremainder
-					   (* b (cadr cd))))
-			   p))		;remainder(real((a+bi)cd~),p)
+	    (cond ((zerop (rem (setq tem (+ (* a (car cd)) ;gcremainder
+					    (* b (cadr cd))))
+			       p))		;remainder(real((a+bi)cd~),p)
 					;z~ is complex conjugate
 		   (setq e1 (cadr nl)) (setq dc cd))
 		  (t (setq e2 (cadr nl))
@@ -194,9 +188,9 @@
      (cond ((equal p (car gl))
 	    (setq econt (+ econt (cadr gl)))
 	    (cond ((equal p 2)
-		   (setq e1 (f+ e1 (f* 2 (cadr gl)))))
-		  (t (setq e1 (f+ e1 (cadr gl))
-			   e2 (f+ e2 (cadr gl)))))
+		   (setq e1 (+ e1 (* 2 (cadr gl)))))
+		  (t (setq e1 (+ e1 (cadr gl))
+			   e2 (+ e2 (cadr gl)))))
 	    (setq gl (cddr gl))))
      (and (not (zerop e1))
 	  (setq ans (cons cd (cons e1 ans)))
@@ -232,7 +226,7 @@
 (defun gcexpt (a n)
   (cond ((zerop n) '(1 0))
 	((equal n 1) a)
-	(t (gctime1 a (gcexpt a (f1- n))))))
+	(t (gctime1 a (gcexpt a (1- n))))))
 
 (defun gctime1 (a b)
   (gctimes (car a) (cadr a) (car b) (cadr b)))
