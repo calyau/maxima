@@ -9,28 +9,23 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :maxima)
+
 (macsyma-module trgred)
 
-(declare-top (genprefix ps)
-	     (fixnum %n %nn)
-	     (notype (sin^n fixnum) (cos^n fixnum) (sinh^n fixnum)
-		     (cosh^n fixnum) (cs^n fixnum))
-	     (*lexpr $gcd $divide $ratsimp $factor)
-	     (special var *n *a *sp1logf splist *var usexp $verbose ans *trigred
+(declare-top (special var *n *a *sp1logf splist *var usexp $verbose ans *trigred
 		      *noexpand sc^ndisp *lin *trig laws triglaws hyperlaws
 		      $trigexpand trigbuckets hyperbuckets half%pi
 		      trans-list-plus $ratprint $keepfloat))
 
 (load-macsyma-macros rzmac)
 
-
 ;;The Trigreduce file contains a group of routines which can be used to
-;;make trigonometric simplifications of expressions.  The bulk of the 
+;;make trigonometric simplifications of expressions.  The bulk of the
 ;;routines here involve the reductions of products of sin's and cos's.
 ;;
 ;;	*TRIGRED	indicates that the special simplifications for
 ;;			$TRIGREDUCE are to be used.
-;;	*NOEXPAND	indicates that trig functions of sums of 
+;;	*NOEXPAND	indicates that trig functions of sums of
 ;;			angles are not to be used.
 
 (defmfun $trigreduce n
@@ -53,11 +48,11 @@
 	 (sp1expt (sp1 (cadr e)) (sp1 (caddr e))))
 	((eq (caar e) '%log)
 	 (sp1log (sp1 (cadr e))))
-	((memq (caar e) '(%cos %sin %tan %cot %sec %csc
-			  %cosh %sinh %tanh %coth %sech %csch))
+	((member (caar e) '(%cos %sin %tan %cot %sec %csc
+			  %cosh %sinh %tanh %coth %sech %csch) :test #'eq)
 	 (sp1trig (list (car e) (let* ((*noexpand t)) (sp1 (cadr e))))))
-	((memq (caar e) '(%asin %acos %atan %acot %asec %acsc
-			  %asinh %acosh %atanh %acoth %asech %acsch))
+	((member (caar e) '(%asin %acos %atan %acot %asec %acsc
+			  %asinh %acosh %atanh %acoth %asech %acsch) :test #'eq)
 	 (sp1atrig (caar e) (let* ((*noexpand t)) (sp1 (cadr e)))))
 	((eq (caar e) 'mrat) (sp1 (ratdisrep e)))
 	((mbagp e)
@@ -66,11 +61,11 @@
 				       (cdr e))))
 	((eq (caar e) '%integrate)
 	 (list* '(%integrate) (sp1 (cadr e)) (cddr e)))
-	(t e))) 
+	(t e)))
 
 (setq trans-list-plus
       '( (((mplus) ((coeffpt) (c true) ((mexpt) ((%tan) (x true)) 2))
-	   (var* (uvar) c))   
+	   (var* (uvar) c))
 	  ((mtimes) c ((mexpt) ((%sec) x) 2)))
 	(((mplus) ((coeffpt) (c true) ((mexpt) ((%cot) (x true)) 2))
 	  (var* (uvar) c))
@@ -81,7 +76,7 @@
 	(((mplus) ((coeffpt) (c true) ((mexpt) ((%coth) (x true)) 2))
 	  ((mtimes) -1 (var* (uvar) c)))
 	 ((mtimes) c ((mexpt) ((%csch) x) 2))) ))
-
+
 (defun trigfp (e) (or (and (not (atom e)) (trigp (caar e))) (equal e 1)))
 
 (defun gcdred (e)
@@ -107,7 +102,7 @@
 		 ((div* (cadr ($divide nn gcd))
 			(cadr ($divide nd gcd)))))))
 	(t e)))
-
+
 (defun sp1times (e)
   (let* ((fr
 	  nil)( g '(1))( trigbuckets nil)( hyperbuckets nil)( tr nil)( hyp nil)( *lin '(0)))
@@ -144,30 +139,30 @@
       '(* %sinh (* %coth %cosh %sech %tanh) %cosh (* %tanh %sinh %csch %coth)
 	%tanh (* %cosh %sinh %csch %sech) %coth (* %sinh %cosh %sech %csch)
 	%sech (* %sinh %tanh %coth %csch) %csch (* %cosh %coth %tanh %sech)))
-
+
 (defun sp1tlin (l *trig) (sp1tlin1 l))
 
 (defun sp1tlin1 (l)
   (cond ((null (cdr l)) nil)
 	((and (eq (caaadr l) 'mexpt)
 	      (integerp (caddr (cadr l)))
-	      (memq (caaadr (cadr l))
-		    (if *trig '(%sin %cos) '(%sinh %cosh))))
-	 (cons (funcall (cdr (assq (caaadr (cadr l)) sc^ndisp))
+	      (member (caaadr (cadr l))
+		    (if *trig '(%sin %cos) '(%sinh %cosh)) :test #'eq))
+	 (cons (funcall (cdr (assoc (caaadr (cadr l)) sc^ndisp :test #'eq))
 			(caddr (cadr l)) (cadadr (cadr l)))
 	       (sp1tlin1 (rplacd l (cddr l)))))
-	((memq (caaadr l) (if *trig '(%sin %cos) '(%sinh %cosh)))
+	((member (caaadr l) (if *trig '(%sin %cos) '(%sinh %cosh)) :test #'eq)
 	 (setq *lin (cons (cadr l) *lin))
 	 (sp1tlin1 (rplacd l (cddr l))))
 	((sp1tlin1 (cdr l)))))
 
 (defun sp1tplus (l *trig)
   (cond ((or (null l) (null (cdr l))) l)
-	((do ((c (list '(rat) 1 (expt 2 (f1- (length l)))))
+	((do ((c (list '(rat) 1 (expt 2 (1- (length l)))))
 	      (ans (list (car l)))
 	      (l (cdr l) (cdr l)))
 	     ((null l) (list c (m+l ans)))
-	   (setq ans 
+	   (setq ans
 		 (m+l
 		  (mapcar #'(lambda (q)
 			      (cond ((mtimesp q)
@@ -180,8 +175,8 @@
   (let* ((x
 	  nil)( y nil))
     (cond ((or (atom a) (atom b)
-	       (not (memq (caar a) '(%sin %cos %sinh %cosh)))
-	       (not (memq (caar b) '(%sin %cos %sinh %cosh))))
+	       (not (member (caar a) '(%sin %cos %sinh %cosh) :test #'eq))
+	       (not (member (caar b) '(%sin %cos %sinh %cosh) :test #'eq)))
 	   (mul3 2 a b))
 	  ((prog2 (setq x (m+ (cadr a) (cadr b)) y (m- (cadr a) (cadr b)))
 	       (null (eq (caar a) (caar b))))
@@ -189,33 +184,33 @@
 	   (or (eq (caar a) '%sin) (eq (caar a) '%sinh)
 	       (setq y (m- y)))
 	   (m+ (list b x) (list b y)))
-	  ((memq (caar a) '(%cos %cosh))
+	  ((member (caar a) '(%cos %cosh) :test #'eq)
 	   (m+ (list (list (caar a)) x)
 	       (list (list (caar a)) y)))
 	  (*trig
 	   (m- (list '(%cos) y) (list '(%cos) x)))
 	  ((m- (list '(%cosh) x) (list '(%cosh) y))))))
-
-;; For COS(X)^2, TRIGBUCKET is (X (1 (COS . 2))) or, more generally, 
+
+;; For COS(X)^2, TRIGBUCKET is (X (1 (COS . 2))) or, more generally,
 ;; (arg (numfactor-of-arg (operator . exponent)))
 
 (defun sp1add (e)
   (let* ((n
 	  (cond ((eq (caar e) 'mexpt)
 		 (cond ((= (signum1 (caddr e)) -1)
-			(prog2 0 (m- (caddr e))
+			(prog1 (m- (caddr e))
 			  (setq e (cons (list (oldget (caaadr e) 'recip)) (cdadr e)))))
-		       ((prog2 0 (caddr e) (setq e (cadr e))))))
+		       ((prog1 (caddr e) (setq e (cadr e))))))
 		( 1 )))( arg
 			(sp1kget (cadr e)))( buc nil)( laws hyperlaws))
-    (cond ((memq (caar e) '(%sin %cos %tan %cot %sec %csc))
-	   (cond ((setq buc (zl-assoc (cdr arg) trigbuckets))
+    (cond ((member (caar e) '(%sin %cos %tan %cot %sec %csc) :test #'eq)
+	   (cond ((setq buc (assoc (cdr arg) trigbuckets :test #'equal))
 		  (setq laws triglaws)
 		  (sp1addbuc (caar e) (car arg) n buc))
 		 ((setq trigbuckets
 			(cons (list (cdr arg) (list (car arg) (cons (caar e) n)))
 			      trigbuckets)))))
-	  ((setq buc (zl-assoc (cdr arg) hyperbuckets))
+	  ((setq buc (assoc (cdr arg) hyperbuckets :test #'equal))
 	   (sp1addbuc (caar e) (car arg) n buc))
 	  ((setq hyperbuckets
 		 (cons (list (cdr arg) (list (car arg) (cons (caar e) n)))
@@ -227,7 +222,7 @@
 	((or (null (cdr b)) (great (caadr b) arg))
 	 (rplacd b (cons (list arg (cons f n)) (cdr b))))
 	((sp1addbuc f arg n (cdr b)))))
-
+
 (defun sp1putbuc (f n *buc)		;PUT IT IN THERE
   (do ((buc *buc (cdr buc)))
       ((null (cdr buc))
@@ -264,7 +259,7 @@
 	((eq f (caadr buc))
 	 (rplacd (cadr buc) (m+ n (cdadr buc))))
 	((sp1putbuc1 f n (cdr buc)))))
-
+
 (defun sp1great (x y)
   (let* ((a    nil)( b nil))
     (cond ((mnump x)
@@ -296,7 +291,7 @@
   (or (and (mtimesp e) (numberp (cadr e))
 	   (cons (cadr e) (m*l (cddr e))))
       (cons 1 e)))
-
+
 (defun sp1sincos (l *trig)
   (mapcar #'(lambda (q) (sp1sincos2 (m* (car l) (car q)) q)) (cdr l)))
 
@@ -305,10 +300,10 @@
 	  nil))
     (cond ((null (cdr l)))
 	  ((and
-	    (setq a (memq (caadr l)
+	    (setq a (member (caadr l)
 			  (cond ((null *trig)
 				 '(%sinh %cosh %sinh %csch %sech %csch))
-				('(%sin %cos %sin %csc %sec %csc)))))
+				('(%sin %cos %sin %csc %sec %csc))) :test #'eq))
 	    (cddr l))		 ;THERE MUST BE SOMETHING TO MATCH TO.
 	   (sp1sincos1 (cadr a) l arg))
 	  ((sp1sincos2 arg (cdr l))))))
@@ -321,11 +316,11 @@
       (cond ((eq s (caadr ll))
 	     (setq arg (m* 2 arg))
 	     (cond (*trig
-		    (cond ((memq s '(%sin %cos))
+		    (cond ((member s '(%sin %cos) :test #'eq)
 			   (setq s '%sin))
 			  ((setq s '%csc e -1))))
-		   (t 
-		    (cond ((memq s '(%sinh %cosh))
+		   (t
+		    (cond ((member s '(%sinh %cosh) :test #'eq)
 			   (setq s '%sinh))
 			  ((setq s '%csch e -1)))))
 	     (cond ((alike1 (cdadr ll) (cdadr l))
@@ -351,7 +346,7 @@
 (defun sp1addto (fn arg exp)
   (setq arg (list (list fn) arg))
   (sp1add (cond ((equal exp 1) arg) (t (m^ arg exp)))))
-
+
 (setq sc^ndisp '((%sin . sin^n) (%cos . cos^n) (%sinh . sinh^n) (%cosh . cosh^n)))
 
 (defun sp1expt (b e)
@@ -363,14 +358,14 @@
 	 (sp1expt2 e))
 	((and (null (eq var '*novar)) (free b var))
 	 (sp1expt2 (m* (list '(%log) b) e)))
-	((memq (caar b) '(%sin %cos %tan %cot %sec %csc
-			  %sinh %cosh %tanh %coth %sech %csch))
+	((member (caar b) '(%sin %cos %tan %cot %sec %csc
+			  %sinh %cosh %tanh %coth %sech %csch) :test #'eq)
 	 (cond ((= (signum1 e) -1)
 		(sp1expt (list (list (oldget (caar b) 'recip)) (cadr b))
 			 (neg e)))
 	       ((and (signp g e)
-		     (memq (caar b) '(%sin %cos %sinh %cosh)))
-		(funcall (cdr (assq (caar b) sc^ndisp)) e (cadr b)))
+		     (member (caar b) '(%sin %cos %sinh %cosh) :test #'eq))
+		(funcall (cdr (assoc (caar b) sc^ndisp :test #'eq)) e (cadr b)))
 	       ((m^ b e))))
 	((m^ b e))))
 
@@ -380,12 +375,12 @@
     (setq ans (m2 e '((mplus) ((coeffpp) (fr freevar))
 		      ((coeffpp) (exp true)))
 		  nil)
-	  fr (cdr (assq 'fr ans))
-	  exp (cdr (assq 'exp ans)))
+	  fr (cdr (assoc 'fr ans :test #'eq))
+	  exp (cdr (assoc 'exp ans :test #'eq)))
     (cond ((equal fr 0)
 	   (m^ '$%e exp))
 	  ((m* (m^ '$%e fr) (m^ '$%e exp))))))
-
+
 (setq *sp1logf nil)
 
 (defun sp1log (e)
@@ -422,7 +417,7 @@
   (list '(%integrate)
 	(sp1 ($ratsimp (list '(mtimes) (sdiff e var) (list '(mexpt) e -1))))
 	var))
-
+
 (defun sp1trig (e)
   (cond ((atom (cadr e)) (simplify e))
 	((eq (caaadr e) (oldget (caar e) '$inverse)) (sp1 (cadadr e)))
@@ -438,15 +433,15 @@
     (setq ans (m2 (cadr e) '((mplus) ((coeffpp) (fr freevar))
 			     ((coeffpp) (exp true)))
 		  nil)
-	  fr (cdr (assq 'fr ans))
-	  exp (cdr (assq 'exp ans)))
+	  fr (cdr (assoc 'fr ans :test #'eq))
+	  exp (cdr (assoc 'exp ans :test #'eq)))
     (cond ((signp e fr)
 	   (setq fr (cadr exp)
 		 exp (cond ((cdddr exp)
 			    (cons (car exp) (cddr exp)))
 			   ((caddr exp))))))
     (cond ((or (equal fr 0)
-	       (null (memq (caar e) '(%sin %cos %sinh %cosh))))
+	       (null (member (caar e) '(%sin %cos %sinh %cosh) :test #'eq)))
 	   e)
 	  ((eq (caar e) '%sin)
 	   (m+ (m* (sp1trig (list '(%sin) exp))
@@ -468,7 +463,7 @@
 		   (sp1trig (list '(%cosh) fr)))
 	       (m* (sp1trig (list '(%sinh) exp))
 		   (sp1trig (list '(%sinh) fr))))))))
-
+
 (defun sp1atrig (fn exp)
   (cond ((atom exp)
 	 (sp1atrig2 fn exp))
@@ -477,20 +472,20 @@
 	(t (sp1atrig2 fn exp))))
 
 (defun sp1atrig2 (fn exp)
-  (cond ((memq fn '(%cot %sec %csc %coth %sech %csch))
+  (cond ((member fn '(%cot %sec %csc %coth %sech %csch) :test #'eq)
 	 (setq exp (sp1 (m// exp))
-	       fn (cdr (assq fn '((%acot . %atan) (%asec . %acos) (%acsc . %asin)
-				  (%acoth . %atanh) (%asech . %acosh) (%acsch . %asinh)))))))
+	       fn (cdr (assoc fn '((%acot . %atan) (%asec . %acos) (%acsc . %asin)
+				  (%acoth . %atanh) (%asech . %acosh) (%acsch . %asinh)) :test #'eq)))))
   (cond ((and (null *trigred)
-	      (memq fn '(%acos %acosh)))
+	      (member fn '(%acos %acosh) :test #'eq))
 	 (m+ half%pi (list
-		      (list (cdr (assq fn '((%acos . %asin) (%acosh . %asinh)))))
+		      (list (cdr (assoc fn '((%acos . %asin) (%acosh . %asinh)) :test #'eq)))
 		      exp)))
 	((list (list fn) exp))))
 
 (defun sin^n (%n v)
   (sc^n %n v (cond ((oddp %n) '(%sin))('(%cos))) (not (oddp %n))
-	(m^ -1 (m+ (// %n 2) 'k))))
+	(m^ -1 (m+ (ash %n -1) 'k))))
 
 (defun sinh^n (%n v)
   (if (oddp %n)
@@ -506,12 +501,11 @@
 (defun sc^n (%n v fn fl coef)
   (cond ((minusp %n) (merror "Bug in `trigreduce'.  Please report.")))
   (m* (list '(rat) 1 (expt 2 %n))
-      (m+ (cond (fl (list '(%binomial) %n (// %n 2))) (t 0))
+      (m+ (cond (fl (list '(%binomial) %n (ash %n -1))) (t 0))
 	  (maxima-substitute v 'trig-var
 			     (dosum (m+ (m* 2
 					    (list '(%binomial) %n 'k)
 					    coef
 					    (list fn (m* 'trig-var
 							 (m+ %n (m* -2 'k))))))
-				    'k 0 (// (f1- %n) 2) t)))))
-
+				    'k 0 (ash (1- %n) -1) t)))))
