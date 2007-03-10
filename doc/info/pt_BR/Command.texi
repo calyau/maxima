@@ -6,11 +6,11 @@
 @hyphenation{va-lo-res}
 @end iftex
 @menu
-* Introdu@,{c}@~{a}o a Linha de Comando::  
-* Defini@,{c}@~{o}es para Linha de Comando::  
+* Introdu@value{cedilha}@~{a}o a Linha de Comando::  
+* Defini@value{cedilha}@~{o}es para Linha de Comando::  
 @end menu
 
-@node Introdu@,{c}@~{a}o a Linha de Comando, Defini@,{c}@~{o}es para Linha de Comando, Linha de Comando, Linha de Comando
+@node Introdu@value{cedilha}@~{a}o a Linha de Comando, Defini@value{cedilha}@~{o}es para Linha de Comando, Linha de Comando, Linha de Comando
 @section Introdu@,{c}@~{a}o a Linha de Comando
 
 @c NEEDS EXAMPLES
@@ -143,7 +143,7 @@ O ap@'{o}strofo n@~{a}o evita simplifica@,{c}@~{a}o.
 @ifinfo
 @fnindex Operador ap@'{o}strofo-ap@'{o}strofo
 @end ifinfo
-O operador ap@'{o}strofo-ap@'{o}strofo @code{'@w{}'} (dois ap@'{o}strofost) modifica avalia@,{c}@~{a}o em express@~{o}es de entrada.
+O operador ap@'{o}strofo-ap@'{o}strofo @code{'@w{}'} (dois ap@'{o}strofost) modifica avalia@value{cedilha}@~{a}o em express@~{o}es de entrada.
 
 Aplicado a uma express@~{a}o geral @var{expr}, ap@'{o}strofo-ap@'{o}strofo faz com que o valor de @var{expr}
 seja substitu@'{i}do por @var{expr} na express@~{a}o de entrada.
@@ -155,8 +155,8 @@ O operador ap@'{o}strofo-ap@'{o}strofo @'{e} aplicado atrav@'{e}s do passador de
 o ap@'{o}strofo-ap@'{o}strofo n@~{a}o @'{e} armazenado como parte de uma express@~{a}o de entrada passada.
 O operador ap@'{o}strofo-ap@'{o}strofo @'{e} sempre aplicado t@~{a}o rapidamente quanto for passado,
 e n@~{a}o pode receber um terceiro ap@'{o}strofo.
-Dessa forma faz com que ocorra avalia@,{c}@~{a}o quando essa avalia@,{c}@~{a}o for de outra forma suprimida,
-da mesma forma que em defini@,{c}@~{o}es de fun@,{c}@~{a}o, defini@,{c}@~{o}es de express@~{a}oes lambda, e express@~{o}es que recebem um ap@'{o}strofo simples @code{'}.
+Dessa forma faz com que ocorra avalia@value{cedilha}@~{a}o quando essa avalia@value{cedilha}@~{a}o for de outra forma suprimida,
+da mesma forma que em defini@value{cedilha}@~{o}es de fun@value{cedilha}@~{a}o, defini@value{cedilha}@~{o}es de express@~{a}oes lambda, e express@~{o}es que recebem um ap@'{o}strofo simples @code{'}.
 
 Ap@'{o}strofo-ap@'{o}strofo @'{e} reconhecido por @code{batch} e @code{load}.
 
@@ -278,8 +278,8 @@ operador-ap@'{o}strofo n@~{a}o @'{e} armazenado como parte da express@~{a}o de e
 (%o5)                         done
 @end example
 
-Ap@'{o}strofo ap@'{o}strofo faz com que ocorra avalia@,{c}@~{a}o quando a avalia@,{c}@~{a}o tiver sido de outra forma suprimida,
-da mesma forma que em defini@,{c}@~{o}es de fun@,{c}@~{a}o, da mesma forma que em defini@,{c}@~{o}es de fun@,{c}@~{a}o lambda expressions, E express@~{o}es que recebem o ap@'{o}strofo simples @code{'}.
+Ap@'{o}strofo ap@'{o}strofo faz com que ocorra avalia@value{cedilha}@~{a}o quando a avalia@value{cedilha}@~{a}o tiver sido de outra forma suprimida,
+da mesma forma que em defini@value{cedilha}@~{o}es de fun@value{cedilha}@~{a}o, da mesma forma que em defini@value{cedilha}@~{o}es de fun@value{cedilha}@~{a}o lambda expressions, E express@~{o}es que recebem o ap@'{o}strofo simples @code{'}.
 
 @c ===beg===
 @c foo_1a (x) := ''(integrate (log (x), x));
@@ -331,25 +331,25 @@ da mesma forma que em defini@,{c}@~{o}es de fun@,{c}@~{a}o, da mesma forma que e
 
 @end deffn
 
-@node Defini@,{c}@~{o}es para Linha de Comando,  , Introdu@,{c}@~{a}o a Linha de Comando, Linha de Comando
-@section Defini@,{c}@~{o}es para Linha de Comando
+@node Defini@value{cedilha}@~{o}es para Linha de Comando,  , Introdu@value{cedilha}@~{a}o a Linha de Comando, Linha de Comando
+@section Defini@value{cedilha}@~{o}es para Linha de Comando
 
 @c NEEDS WORK, ESPECIALLY EXAMPLES
-@deffn {Fun@,{c}@~{a}o} alias (@var{new_name_1}, @var{old_name_1}, ..., @var{new_name_n}, @var{old_name_n})
+@deffn {Fun@value{cedilha}@~{a}o} alias (@var{new_name_1}, @var{old_name_1}, ..., @var{new_name_n}, @var{old_name_n})
 prov@^{e} um
-nome alternativo para uma fun@,{c}@~{a}o (de usu@'{a}rio ou de sistema), vari@'{a}vel, array, etc.
+nome alternativo para uma fun@value{cedilha}@~{a}o (de usu@'{a}rio ou de sistema), vari@'{a}vel, array, etc.
 Qualquer n@'{u}mero de argumentos pode ser usado.
 
 @end deffn
 
-@defvr {Vari@'{a}vel de op@,{c}@~{a}o} debugmode
+@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} debugmode
 Valor padr@~{a}o: @code{false}
 
 Quando um erro do Maxima ocorre, Maxima iniciar@'{a} o depurador se @code{debugmode} for @code{true}.
 O usu@'{a}rio pode informar comandos para examinar o hist@'{o}rico de chamadas, marcar pontos de parada, percorrer uma linha por vez
-o c@'{o}digo do Maxima, e assim por diante.  Veja @code{debugging} para uma lista de op@,{c}@~{o}es do depurador.
+o c@'{o}digo do Maxima, e assim por diante.  Veja @code{debugging} para uma lista de op@value{cedilha}@~{o}es do depurador.
 
-Habilitando @code{debugmode} por meio da altera@,{c}@~{a}o de seu valor para @code{true}, n@~{a}o ser@~{a}o capturados erros do Lisp.
+Habilitando @code{debugmode} por meio da altera@value{cedilha}@~{a}o de seu valor para @code{true}, n@~{a}o ser@~{a}o capturados erros do Lisp.
 @c DO WE WANT TO SAY MORE ABOUT DEBUGGING LISP ERRORS ???
 @c I'M NOT CONVINCED WE WANT TO OPEN THAT CAN OF WORMS !!!
 
@@ -357,13 +357,13 @@ Habilitando @code{debugmode} por meio da altera@,{c}@~{a}o de seu valor para @co
 
 @c NEEDS CLARIFICATION
 @c VERY IMPORTANT !!
-@deffn {Fun@,{c}@~{a}o} ev (@var{expr}, @var{arg_1}, ..., @var{arg_n})
+@deffn {Fun@value{cedilha}@~{a}o} ev (@var{expr}, @var{arg_1}, ..., @var{arg_n})
 Avalia a express@~{a}o @var{expr} no ambiente
 especificado pelos argumentos @var{arg_1}, ..., @var{arg_n}.
-Os argumentos s@~{a}o comutadores (sinalizadores Booleanos), atribui@,{c}@~{o}es, equa@,{c}@~{o}es, e fun@,{c}@~{o}es.
-@code{ev} retorna o resultado (outra express@~{a}o) da avalia@,{c}@~{a}o.
+Os argumentos s@~{a}o comutadores (sinalizadores Booleanos), atribui@value{cedilha}@~{o}es, equa@value{cedilha}@~{o}es, e fun@value{cedilha}@~{o}es.
+@code{ev} retorna o resultado (outra express@~{a}o) da avalia@value{cedilha}@~{a}o.
 
-A avalia@,{c}@~{a}o @'{e} realizada em passos, como segue.
+A avalia@value{cedilha}@~{a}o @'{e} realizada em passos, como segue.
 
 @enumerate
 @item
@@ -372,15 +372,15 @@ ser quaisquer ou todos os seguintes.
 
 @itemize @bullet
 @item
-@code{simp} faz com que @var{expr} seja simplificado independentemente da posi@,{c}@~{a}o do
-comutador @code{simp} que inibe simplifica@,{c}@~{a}o se @code{false}.
+@code{simp} faz com que @var{expr} seja simplificado independentemente da posi@value{cedilha}@~{a}o do
+comutador @code{simp} que inibe simplifica@value{cedilha}@~{a}o se @code{false}.
 @item
-@code{noeval} suprime a fase de avalia@,{c}@~{a}o de @code{ev} (veja passo (4) adiante).
+@code{noeval} suprime a fase de avalia@value{cedilha}@~{a}o de @code{ev} (veja passo (4) adiante).
 Isso @'{e} @'{u}til juntamente com outros comutadores e faz com que
 @var{expr} seja simplificado novamente sem ser reavaliado.
 @item
-@code{nouns} causa a avalia@,{c}@~{a}o de formas substantivas
-(tipicamente fun@,{c}@~{o}es n@~{a}o avaliadas tais como @code{'integrate} ou @code{'diff})
+@code{nouns} causa a avalia@value{cedilha}@~{a}o de formas substantivas
+(tipicamente fun@value{cedilha}@~{o}es n@~{a}o avaliadas tais como @code{'integrate} ou @code{'diff})
 em @var{expr}.
 @item
 @code{expand} causa expans@~{a}o.
@@ -392,15 +392,15 @@ em @var{expr}.
 determinante mantido fora da inversa ao inv@'{e}s de dividindo a
 cada elemento.
 @item
-@code{diff} faz com que todas as diferencia@,{c}@~{o}es indicadas em @var{expr} sejam executadas.
+@code{diff} faz com que todas as diferencia@value{cedilha}@~{o}es indicadas em @var{expr} sejam executadas.
 @item
-@code{derivlist (@var{x}, @var{y}, @var{z}, ...)} causa somente diferencia@,{c}@~{o}es referentes @`as
+@code{derivlist (@var{x}, @var{y}, @var{z}, ...)} causa somente diferencia@value{cedilha}@~{o}es referentes @`as
 vari@'{a}veis indicadas.
 @item
 @code{float} faz com que n@'{u}meros racionais n@~{a}o inteiros sejam convertidos para ponto 
 flutuante.
 @item
-@code{numer} faz com que algumas fun@,{c}@~{o}es matem@'{a}ticas (incluindo a exponencia@,{c}@~{a}o)
+@code{numer} faz com que algumas fun@value{cedilha}@~{o}es matem@'{a}ticas (incluindo a exponencia@value{cedilha}@~{a}o)
 com argumentos sejam valiadas em ponto flutuante.  Isso faz com que
 vari@'{a}vels em @var{expr} que tenham sido dados numervals (valores num@'{e}ricos) sejam substitu@'{i}das por
 seus valores.  Isso tamb@'{e}m modifica o comutador @code{float} para ativado.
@@ -408,51 +408,51 @@ seus valores.  Isso tamb@'{e}m modifica o comutador @code{float} para ativado.
 @code{pred} faz com que predicados (express@~{o}es que podem ser avaliados em @code{true} ou @code{false})
 sejam avaliadas.
 @item
-@code{eval} faz com que uma avalia@,{c}@~{a}o posterior de @var{expr} ocorra.  (Veja passo (5)
+@code{eval} faz com que uma avalia@value{cedilha}@~{a}o posterior de @var{expr} ocorra.  (Veja passo (5)
 adiante.)
 @code{eval} pode ocorrer multiplas vezes.
 Para cada inst@^{a}ncia de @code{eval}, a express@~{a}o @'{e} avaliada novamente.
 @item
-@code{A} onde @code{A} @'{e} um @'{a}tomo declarado seja um sinalizador de avalia@,{c}@~{a}o (veja @code{evflag})
+@code{A} onde @code{A} @'{e} um @'{a}tomo declarado seja um sinalizador de avalia@value{cedilha}@~{a}o (veja @code{evflag})
 faz com que @code{A} seja associado a
-@code{true} durante a avalia@,{c}@~{a}o de @var{expr}.
+@code{true} durante a avalia@value{cedilha}@~{a}o de @var{expr}.
 @item
 @code{V: expres@~{a}o} (ou alternativamente @code{V=express@~{a}o}) faz com que @code{V} seja associado ao
-valor de @code{express@~{a}o} durante a avalia@,{c}@~{a}o de @var{expr}.  Note que se @code{V} @'{e} uma
-op@,{c}@~{a}o do Maxima, ent@~{a}o @code{expression} @'{e} usada para seu valor durante a
-avalia@,{c}@~{a}o de @var{expr}.  Se mais que um argumento para @code{ev} @'{e} desse tipo
-ent@~{a}o a associa@,{c}@~{a}o termina em paralelo.  Se @code{V} @'{e} uma express@~{a}o n@~{a}o at@^{o}mica
-ent@~{a}o a substitui@,{c}@~{a}o, ao inv@'{e}s de uma associa@,{c}@~{a}o, @'{e} executada.
+valor de @code{express@~{a}o} durante a avalia@value{cedilha}@~{a}o de @var{expr}.  Note que se @code{V} @'{e} uma
+op@value{cedilha}@~{a}o do Maxima, ent@~{a}o @code{expression} @'{e} usada para seu valor durante a
+avalia@value{cedilha}@~{a}o de @var{expr}.  Se mais que um argumento para @code{ev} @'{e} desse tipo
+ent@~{a}o a associa@value{cedilha}@~{a}o termina em paralelo.  Se @code{V} @'{e} uma express@~{a}o n@~{a}o at@^{o}mica
+ent@~{a}o a substitui@value{cedilha}@~{a}o, ao inv@'{e}s de uma associa@value{cedilha}@~{a}o, @'{e} executada.
 @item
-@code{F} onde @code{F}, um nome de fun@,{c}@~{a}o, tenha sido declarado para ser uma fun@,{c}@~{a}o de avalia@,{c}@~{a}o (veja @code{evfun})
+@code{F} onde @code{F}, um nome de fun@value{cedilha}@~{a}o, tenha sido declarado para ser uma fun@value{cedilha}@~{a}o de avalia@value{cedilha}@~{a}o (veja @code{evfun})
 faz com que @code{F}
 seja aplicado a @var{expr}.
 @item
-Qualquer outro nome de fun@,{c}@~{a}o (e.g., @code{sum}) causa a avalia@,{c}@~{a}o de ocorr@^{e}ncias
+Qualquer outro nome de fun@value{cedilha}@~{a}o (e.g., @code{sum}) causa a avalia@value{cedilha}@~{a}o de ocorr@^{e}ncias
 desses nomes em @var{expr} mesmo que eles tenham sido verbos.
 @item
-De forma adicional uma fun@,{c}@~{a}o ocorrendo em @var{expr} (digamos @code{F(x)}) pode ser definida
-localmente para o prop@'{o}sito dessa avalia@,{c}@~{a}o de @var{expr} dando
+De forma adicional uma fun@value{cedilha}@~{a}o ocorrendo em @var{expr} (digamos @code{F(x)}) pode ser definida
+localmente para o prop@'{o}sito dessa avalia@value{cedilha}@~{a}o de @var{expr} dando
 @code{F(x) := express@~{a}o} como um argumento para @code{ev}.
 @item
 Se um @'{a}tomo n@~{a}o mensionado acima ou uma vari@'{a}vel subscrita ou
 express@~{a}o subscrita for dada como um argumento, isso @'{e} avaliado e
-se o resultado for uma equa@,{c}@~{a}o ou uma atribui@,{c}@~{a}o ent@~{a}o a associa@,{c}@~{a}o indicada
-ou substitui@,{c}@~{a}o @'{e} executada.  Se o resultado for uma lista ent@~{a}o os
+se o resultado for uma equa@value{cedilha}@~{a}o ou uma atribui@value{cedilha}@~{a}o ent@~{a}o a associa@value{cedilha}@~{a}o indicada
+ou substitui@value{cedilha}@~{a}o @'{e} executada.  Se o resultado for uma lista ent@~{a}o os
 membros da lista ser@~{a}o tratados  como se eles fossem argumentos adicionais
-dados para @code{ev}.  Isso permite que uma lista de equa@,{c}@~{o}es seja dada (e.g. @code{[X=1, Y=A**2]})
-ou que seja dado uma lista de nomes de equa@,{c}@~{o}es (e.g., @code{[%t1, %t2]} onde @code{%t1} e
-@code{%t2} s@~{a}o equa@,{c}@~{o}es) tais como aquelas listas retornadas por @code{solve}.
+dados para @code{ev}.  Isso permite que uma lista de equa@value{cedilha}@~{o}es seja dada (e.g. @code{[X=1, Y=A**2]})
+ou que seja dado uma lista de nomes de equa@value{cedilha}@~{o}es (e.g., @code{[%t1, %t2]} onde @code{%t1} e
+@code{%t2} s@~{a}o equa@value{cedilha}@~{o}es) tais como aquelas listas retornadas por @code{solve}.
 @end itemize
 
-Os argumentos de @code{ev} podem ser dados em qualquer ordem com exce@,{c}@~{a}o de
-substitui@,{c}@~{o}es de equa@,{c}@~{o}es que s@~{a}o manuseadas em seq@"{u}@^{e}ncia, da esquerda para a direita,
-e fun@,{c}@~{o}es de avalia@,{c}@~{a}o que s@~{a}o compostas, e.g., @code{ev (@var{expr}, ratsimp, realpart)} s@~{a}o
+Os argumentos de @code{ev} podem ser dados em qualquer ordem com exce@value{cedilha}@~{a}o de
+substitui@value{cedilha}@~{o}es de equa@value{cedilha}@~{o}es que s@~{a}o manuseadas em seq@"{u}@^{e}ncia, da esquerda para a direita,
+e fun@value{cedilha}@~{o}es de avalia@value{cedilha}@~{a}o que s@~{a}o compostas, e.g., @code{ev (@var{expr}, ratsimp, realpart)} s@~{a}o
 manuseadas como @code{realpart (ratsimp (@var{expr}))}.
 
 Os comutadores @code{simp}, @code{numer}, @code{float}, e @code{pred} podem tamb@'{e}m ser alterados localmente em um
 bloco, ou globalmente no Maxima dessa forma eles ir@~{a}
-permanecer em efeito at@'{e} serem resetados ao t@'{e}rmino da execu@,{c}@~{a}o do bloco.
+permanecer em efeito at@'{e} serem resetados ao t@'{e}rmino da execu@value{cedilha}@~{a}o do bloco.
 
 Se @var{expr} for uma express@~{a}o racional can@^{o}nica (CRE),
 ent@~{a}o a express@~{a}o retornada por @code{ev} @'{e} tamb@'{e}m uma CRE,
@@ -460,9 +460,9 @@ contanto que os comutadores @code{numer} e @code{float} n@~{a}o sejam ambos @cod
 
 @item
 Durante o passo (1), @'{e} feito uma lista  de vari@'{a}veis n@~{a}o subscritas
-aparecendo do lado esquerdo das equa@,{c}@~{o}es nos argumentos ou nos
-valores de alguns argumentos se o valor for uma equa@,{c}@~{a}o.  As vari@'{a}veis
-(vari@'{a}veis subscritas que n@~{a}o possuem fun@,{c}@~{o}es array
+aparecendo do lado esquerdo das equa@value{cedilha}@~{o}es nos argumentos ou nos
+valores de alguns argumentos se o valor for uma equa@value{cedilha}@~{a}o.  As vari@'{a}veis
+(vari@'{a}veis subscritas que n@~{a}o possuem fun@value{cedilha}@~{o}es array
 associadas bem como vari@'{a}veis n@~{a}o subscritas) na express@~{a}o @var{expr} s@~{a}o
 substitu@'{i}das por seus valores globais, exceto para esse aparecendo nessa 
 lista.  Usualmente, @var{expr} @'{e} apenas um r@'{o}tulo ou @code{%}
@@ -471,13 +471,13 @@ passo simplesmente repete a express@~{a}o nomeada pelo r@'{o}tulo, de modo que @
 possa trabalhar sobre isso.
 
 @item
-Se quaisquer substitui@,{c}@~{o}es tiveem sido indicadas pelos argumentos, elas ser@~{a}o
+Se quaisquer substitui@value{cedilha}@~{o}es tiveem sido indicadas pelos argumentos, elas ser@~{a}o
 realizadas agora.
 
 @item
 A express@~{a}o resultante @'{e} ent@~{a}o reavaliada (a menos que um dos
 argumentos seja @code{noeval}) e simplificada conforme os argumentos.  Note que
-qualquer chamada de fun@,{c}@~{a}o em @var{expr} ser@'{a} completada depois das vari@'{a}veis
+qualquer chamada de fun@value{cedilha}@~{a}o em @var{expr} ser@'{a} completada depois das vari@'{a}veis
 nela serem avalidas e que @code{ev(F(x))} dessa forma possa comportar-se como @code{F(ev(x))}.
 
 @item
@@ -505,9 +505,9 @@ escrever simplesmente
 @end example
 
 Isso n@~{a}o @'{e} permitido como parte de
-outra express@~{a}o, e.g., em fun@,{c}@~{o}es, blocos, etc.
+outra express@~{a}o, e.g., em fun@value{cedilha}@~{o}es, blocos, etc.
 
-Observe o processo de associa@,{c}@~{a}o paralela no seguinte exemplo.
+Observe o processo de associa@value{cedilha}@~{a}o paralela no seguinte exemplo.
 
 @example
 (%i3) programmode: false;
@@ -644,18 +644,18 @@ Exemplos:
 @end defvr
 
 @defvr {Propriedade}  evfun
-Quando uma fun@,{c}@~{a}o @var{F} tem a propriedade @code{evfun},
+Quando uma fun@value{cedilha}@~{a}o @var{F} tem a propriedade @code{evfun},
 as express@~{o}es @code{ev(@var{expr}, @var{F})} e @code{@var{expr}, @var{F}}
 (na linha de comando interativa)
 s@~{a}o equivalentes a @code{@var{F}(ev(@var{expr}))}.
 
-Se duas ou mais fun@,{c}@~{o}es @var{F}, @var{G}, etc., que possuem a propriedade @code{evfun} forem especificadas,
-as fun@,{c}@~{o}es ser@~{a}o aplicadas na ordem em que forem especificadas.
+Se duas ou mais fun@value{cedilha}@~{o}es @var{F}, @var{G}, etc., que possuem a propriedade @code{evfun} forem especificadas,
+as fun@value{cedilha}@~{o}es ser@~{a}o aplicadas na ordem em que forem especificadas.
 
 A express@~{a}o @code{declare(@var{F}, evfun)}
-fornece a propriedade @code{evfun} para a fun@,{c}@~{a}o @var{F}.
+fornece a propriedade @code{evfun} para a fun@value{cedilha}@~{a}o @var{F}.
 
-As fun@,{c}@~{o}es que possuem a propriedade @code{evfun} por padr@~{a}o s@~{a}o as seguintes:
+As fun@value{cedilha}@~{o}es que possuem a propriedade @code{evfun} por padr@~{a}o s@~{a}o as seguintes:
 @c FOLLOWING LIST CONSTRUCTED FROM LIST UNDER (prog1 '(evfun properties) ...)
 @c NEAR LINE 2643 IN mlisp.lisp AT PRESENT (2004/11).
 @code{bfloat},
@@ -744,9 +744,9 @@ Exemplos:
 @end defvr
 
 @c NEEDS WORK
-@defvr {Vari@'{a}vel de op@,{c}@~{a}o} infeval
-Habilita o modo "avalia@,{c}@~{a}o infinita".  @code{ev} repetidamente avalia
-uma express@~{a}o at@'{e} que ela permane@,{c}a invariante.  Para prevenir uma
+@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} infeval
+Habilita o modo "avalia@value{cedilha}@~{a}o infinita".  @code{ev} repetidamente avalia
+uma express@~{a}o at@'{e} que ela permane@value{cedilha}a invariante.  Para prevenir uma
 vari@'{a}vel, digamos @code{X}, seja demoradamente avaliada nesso modo, simplesmente
 inclua @code{X='X} como um argumento para @code{ev}.  Certamente express@~{o}es tais como
 @code{ev (X, X=X+1, infeval)} ir@~{a}o gerar um ciclo infinito.
@@ -756,19 +756,19 @@ inclua @code{X='X} como um argumento para @code{ev}.  Certamente express@~{o}es 
 @c REVIEW FOR ACCURACY AND COMPLETENESS
 @c THIS ITEM IS VERY IMPORTANT !!
 @c NEEDS EXAMPLES
-@deffn {Fun@,{c}@~{a}o} kill (@var{a_1}, ..., @var{a_n})
-@deffnx {Fun@,{c}@~{a}o} kill (labels)
-@deffnx {Fun@,{c}@~{a}o} kill (inlabels, outlabels, linelabels)
-@deffnx {Fun@,{c}@~{a}o} kill (@var{n})
-@deffnx {Fun@,{c}@~{a}o} kill ([@var{m}, @var{n}])
-@deffnx {Fun@,{c}@~{a}o} kill (values, functions, arrays, ...)
-@deffnx {Fun@,{c}@~{a}o} kill (all)
-@deffnx {Fun@,{c}@~{a}o} kill (allbut (@var{a_1}, ..., @var{a_n}))
+@deffn {Fun@value{cedilha}@~{a}o} kill (@var{a_1}, ..., @var{a_n})
+@deffnx {Fun@value{cedilha}@~{a}o} kill (labels)
+@deffnx {Fun@value{cedilha}@~{a}o} kill (inlabels, outlabels, linelabels)
+@deffnx {Fun@value{cedilha}@~{a}o} kill (@var{n})
+@deffnx {Fun@value{cedilha}@~{a}o} kill ([@var{m}, @var{n}])
+@deffnx {Fun@value{cedilha}@~{a}o} kill (values, functions, arrays, ...)
+@deffnx {Fun@value{cedilha}@~{a}o} kill (all)
+@deffnx {Fun@value{cedilha}@~{a}o} kill (allbut (@var{a_1}, ..., @var{a_n}))
 
-Remove todas as associa@,{c}@~{o}es (valor, fun@,{c}@~{o}es, array, ou regra) dos argumentos
+Remove todas as associa@value{cedilha}@~{o}es (valor, fun@value{cedilha}@~{o}es, array, ou regra) dos argumentos
 @var{a_1}, ..., @var{a_n}.
 Um argumento @var{a_k} pode ser um s@'{i}mbolo ou um elemento de array simples.
-Quando @var{a_k} for um elemento de array simples, @code{kill} remove a associa@,{c}@~{a}o daquele elemento
+Quando @var{a_k} for um elemento de array simples, @code{kill} remove a associa@value{cedilha}@~{a}o daquele elemento
 sem afetar qualquer outro elemento do array.
 
 Muitos argumentos especiais s@~{a}o reconhecidos.  
@@ -777,12 +777,12 @@ podem ser combinadas, e.g., @code{kill (inlabels, functions, allbut (foo, bar))}
 
 todos os r@'{o}tulos de entrada, de sa@'{i}da, e de express@~{o}es intermedi@'{a}rias criados at@'{e} ent@~{a}o.
 @code{kill (inlabels)} libera somente r@'{o}tudos de entrada 
-que come@,{c}am com o valor corrente de @code{inchar}.
+que come@value{cedilha}am com o valor corrente de @code{inchar}.
 De forma semelhante,
 @code{kill (outlabels)} libera somente r@'{o}tulos de sa@'{i}da
-que come@,{c}am com o valor corrente de @code{outchar},
+que come@value{cedilha}am com o valor corrente de @code{outchar},
 e @code{kill (linelabels)} libera somente r@'{o}tulos de express@~{o}es intermedi@'{a}rias
-que come@,{c}am com o valor corrente de @code{linechar}.
+que come@value{cedilha}am com o valor corrente de @code{linechar}.
 
 @code{kill (@var{n})}, onde @var{n} @'{e} um inteiro,
 libera os @var{n} mais recentes r@'{o}tulos de entrada e sa@'{i}da.
@@ -799,55 +799,55 @@ Veja tamb@'{e}m @code{infolists}.
 Veja @code{reset} sobre esse ponto.
 
 @code{kill (allbut (@var{a_1}, ..., @var{a_n}))}
-remove a associa@,{c}@~{a}o de todos os itens sobre todas as infolistas exceto para @var{a_1}, ..., @var{a_n}.
+remove a associa@value{cedilha}@~{a}o de todos os itens sobre todas as infolistas exceto para @var{a_1}, ..., @var{a_n}.
 @code{kill (allbut (@var{infolist}))} libera todos os @'{i}tens exceto para si pr@'{o}prio em @var{infolist},
 onde @var{infolist} @'{e} @code{values}, @code{functions}, @code{arrays}, etc.
 
-A mem@'{o}ria usada por uma propriedade de associa@,{c}@~{a}o n@~{a}o ser@'{a} liberada at@'{e} que todos os s@'{i}mbolos
+A mem@'{o}ria usada por uma propriedade de associa@value{cedilha}@~{a}o n@~{a}o ser@'{a} liberada at@'{e} que todos os s@'{i}mbolos
 sejam liberados disso.
 Em particular, para liberar a mem@'{o}ria usada pelo valor de um s@'{i}mbolo,
 deve-se liberar o r@'{o}tulo de sa@'{i}da que mosta o valor associado, bem como liberando o pr@'{o}prio s@'{i}mbolo.
 
 @code{kill} coloca um ap@'{o}stro em seus argumentos (n@~{a}o os avalia).
-O operador ap@'{o}strofo-ap@'{o}strofo, @code{'@w{}'}, faz com que ocorra avalia@,{c}@~{a}o.
+O operador ap@'{o}strofo-ap@'{o}strofo, @code{'@w{}'}, faz com que ocorra avalia@value{cedilha}@~{a}o.
 
 @code{kill (@var{s@'{i}mbolo})} libera todas as propriedades de @var{s@'{i}mbolo}.
-Em oposi@,{c}@~{a}o, @code{remvalue}, @code{remfunction}, @code{remarray}, e @code{remrule}
+Em oposi@value{cedilha}@~{a}o, @code{remvalue}, @code{remfunction}, @code{remarray}, e @code{remrule}
 liberam uma propriedade espec@'{i}fica.
 
-@code{kill} sempre retorna @code{done}, igualmente se um argumento n@~{a}o tem associa@,{c}@~{o}es.
+@code{kill} sempre retorna @code{done}, igualmente se um argumento n@~{a}o tem associa@value{cedilha}@~{o}es.
 
 @end deffn
 
-@deffn {Fun@,{c}@~{a}o} labels (@var{s@'{i}mbolo})
+@deffn {Fun@value{cedilha}@~{a}o} labels (@var{s@'{i}mbolo})
 @deffnx {Vari@'{a}vel de sistema} labels
-Retorna a lista de r@'{o}tulos de entradas, de sa@'{i}da, de express@~{o}es intermedi@'{a}rias que come@,{c}am com @var{s@'{i}mbolo}.
+Retorna a lista de r@'{o}tulos de entradas, de sa@'{i}da, de express@~{o}es intermedi@'{a}rias que come@value{cedilha}am com @var{s@'{i}mbolo}.
 Tipicamente @var{s@'{i}mbolo} @'{e} o valor de @code{inchar}, @code{outchar}, ou @code{linechar}.
 O caracter r@'{o}tulo pode ser dado com ou sem o sinal de porcentagem,
 ent@~{a}o, por exemplo, @code{i} e @code{%i} retornam o mesmo resultado.
 
-Se nenhum r@'{o}tulo come@,{c}a com @var{s@'{i}mbolo}, @code{labels} retorna uma lista vazia.
+Se nenhum r@'{o}tulo come@value{cedilha}a com @var{s@'{i}mbolo}, @code{labels} retorna uma lista vazia.
 
-A fun@,{c}@~{a}o @code{labels} n@~{a}o avalia seu argumento.
-O operador ap@'{o}strofo-ap@'{o}strofo @code{'@w{}'} faz com que ocorra avalia@,{c}@~{a}o.
+A fun@value{cedilha}@~{a}o @code{labels} n@~{a}o avalia seu argumento.
+O operador ap@'{o}strofo-ap@'{o}strofo @code{'@w{}'} faz com que ocorra avalia@value{cedilha}@~{a}o.
 Por exemplo,
-@code{labels (''inchar)} retorna os r@'{o}tulos de entrada que come@,{c}am com o caractere corrente do r@'{o}tulo de entrada.
+@code{labels (''inchar)} retorna os r@'{o}tulos de entrada que come@value{cedilha}am com o caractere corrente do r@'{o}tulo de entrada.
 
 A vari@'{a}vel @code{labels} @'{e} uma lista de r@'{o}tulos de entrada, sa@'{i}da, e de express@~{o}es intermedi@'{a}rias,
 incluindo todos os r@'{o}tulos anteriores se @code{inchar}, @code{outchar}, ou @code{linechar} que tiverem sido redefinidos.
 
 Por padr@~{a}o, Maxima mostra o resultado de cada express@~{a}o de entrada do usu@'{a}rio,
 dando ao resultado um r@'{o}tulo de sa@'{i}da.
-A exibi@,{c}@~{a}o da sa@'{i}da @'{e} suprimida pelo encerramento da entrada com @code{$} (sinal de dolar)
+A exibi@value{cedilha}@~{a}o da sa@'{i}da @'{e} suprimida pelo encerramento da entrada com @code{$} (sinal de dolar)
 em lugar de @code{;} (ponto e v@'{i}rgula).
 Um r@'{o}tulo de sa@'{i}da @'{e} construido e associado ao resultado, mas n@~{a}o @'{e} mostrado, 
 e o r@'{o}tulo pode ser referenciado da mesma forma que r@'{o}tulos de sa@'{i}da mostrados.
 Veja tamb@'{e}m @code{%}, @code{%%}, e @code{%th}.
 
-R@'{o}tulos de express@~{o}es intermedi@'{a}rias podem ser gerados por algumas fun@,{c}@~{o}es.
-O sinalizador @code{programmode} controla se @code{solve} e algumas outras fun@,{c}@~{o}es
+R@'{o}tulos de express@~{o}es intermedi@'{a}rias podem ser gerados por algumas fun@value{cedilha}@~{o}es.
+O sinalizador @code{programmode} controla se @code{solve} e algumas outras fun@value{cedilha}@~{o}es
 geram r@'{o}tulos de express@~{o}es intermedi@'{a}rias em lugar de retornar uma lista de express@~{o}es.
-Algumas outras fun@,{c}@~{o}es, tais como @code{ldisplay}, sempre geram r@'{o}tulos de express@~{o}es intermedi@'{a}rias.
+Algumas outras fun@value{cedilha}@~{o}es, tais como @code{ldisplay}, sempre geram r@'{o}tulos de express@~{o}es intermedi@'{a}rias.
 
 Veja tamb@'{e}m @code{inchar}, @code{outchar}, @code{linechar}, e @code{infolists}.
 
@@ -863,12 +863,12 @@ Retorna o n@'{u}mero da linha do par corrente de express@~{o}es de entrada e sa@
 @defvr {Vari@'{a}vel de sistema} myoptions
 Valor padr@~{a}o: @code{[]}
 
-@code{myoptions} @'{e} a lista de todas as op@,{c}@~{o}es alguma vez alteradas pelo usu@'{a}rio,
-tenha ou n@~{a}o ele retornado a altera@,{c}@~{a}o para o seu valor padr@~{a}o.
+@code{myoptions} @'{e} a lista de todas as op@value{cedilha}@~{o}es alguma vez alteradas pelo usu@'{a}rio,
+tenha ou n@~{a}o ele retornado a altera@value{cedilha}@~{a}o para o seu valor padr@~{a}o.
 
 @end defvr
 
-@defvr {Vari@'{a}vel de op@,{c}@~{a}o} nolabels
+@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} nolabels
 Valor padr@~{a}o: @code{false}
 
 @c PREVIOUS DESCRIPTION OF nolabels: THIS IS OUT OF DATE
@@ -894,24 +894,24 @@ Veja tamb@'{e}m @code{batch}, @code{batchload}, e @code{labels}.
 @end defvr
 
 @c NEEDS WORK
-@defvr {Vari@'{a}vel de op@,{c}@~{a}o} optionset
+@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} optionset
 Valor padr@~{a}o: @code{false}
 
 Quando @code{optionset} for @code{true}, Maxima mostrar@'{a} uma
-mensagem sempre que uma op@,{c}@~{a}o do Maxima for alterada.  Isso @'{e} @'{u}til se o
-usu@'{a}rio est@'{a} incerto sobre a ortografia de alguma op@,{c}@~{a}o e quer ter certeza
-que a vari@'{a}vel por ele atribu@'{i}do um valor foi realmente uma vari@'{a}vel de op@,{c}@~{a}o.
+mensagem sempre que uma op@value{cedilha}@~{a}o do Maxima for alterada.  Isso @'{e} @'{u}til se o
+usu@'{a}rio est@'{a} incerto sobre a ortografia de alguma op@value{cedilha}@~{a}o e quer ter certeza
+que a vari@'{a}vel por ele atribu@'{i}do um valor foi realmente uma vari@'{a}vel de op@value{cedilha}@~{a}o.
 
 @end defvr
 
-@deffn {Fun@,{c}@~{a}o} playback ()
-@deffnx {Fun@,{c}@~{a}o} playback (@var{n})
-@deffnx {Fun@,{c}@~{a}o} playback ([@var{m}, @var{n}])
-@deffnx {Fun@,{c}@~{a}o} playback ([@var{m}])
-@deffnx {Fun@,{c}@~{a}o} playback (input)
-@deffnx {Fun@,{c}@~{a}o} playback (slow)
-@deffnx {Fun@,{c}@~{a}o} playback (time)
-@deffnx {Fun@,{c}@~{a}o} playback (grind)
+@deffn {Fun@value{cedilha}@~{a}o} playback ()
+@deffnx {Fun@value{cedilha}@~{a}o} playback (@var{n})
+@deffnx {Fun@value{cedilha}@~{a}o} playback ([@var{m}, @var{n}])
+@deffnx {Fun@value{cedilha}@~{a}o} playback ([@var{m}])
+@deffnx {Fun@value{cedilha}@~{a}o} playback (input)
+@deffnx {Fun@value{cedilha}@~{a}o} playback (slow)
+@deffnx {Fun@value{cedilha}@~{a}o} playback (time)
+@deffnx {Fun@value{cedilha}@~{a}o} playback (grind)
 Mostra express@~{o}es de entrada, de sa@'{i}da, e express@~{o}es intermedi@'{a}rias,
 sem refazer os c@'{a}lculos.
 @code{playback} somente mostra as express@~{o}es associadas a r@'{o}tulos;
@@ -947,13 +947,13 @@ Esse comportamento @'{e} similar a @code{demo}.
 @code{playback (slow)} @'{e} @'{u}til juntamente com @code{save} ou @code{stringout}
 quando criamos um arquivo secund@'{a}rio de armazenagem com a finalidade de capturar express@~{o}es @'{u}teis.
 
-@code{playback (time)} mostra o tempo de computa@,{c}@~{a}o de cada express@~{a}o.
+@code{playback (time)} mostra o tempo de computa@value{cedilha}@~{a}o de cada express@~{a}o.
 @c DON'T BOTHER TO MENTION OBSOLETE OPTIONS !!!
 @c The arguments @code{gctime} e @code{totaltime} have the same effect as @code{time}.
 
 @code{playback (grind)} mostra express@~{o}es de entrada
-no mesmo formato da fun@,{c}@~{a}o @code{grind}.
-Express@~{o}es de sa@'{i}da n@~{a}o s@~{a}o afetadas pela op@,{c}@~{a}o @code{grind}.
+no mesmo formato da fun@value{cedilha}@~{a}o @code{grind}.
+Express@~{o}es de sa@'{i}da n@~{a}o s@~{a}o afetadas pela op@value{cedilha}@~{a}o @code{grind}.
 Veja @code{grind}.
 
 Argumentos podem ser combinados, e.g., 
@@ -964,9 +964,9 @@ Argumentos podem ser combinados, e.g.,
 
 @c NEEDS WORK ESPECIALLY EXAMPLES
 @c WHOLE BUSINESS WITH PROPERTIES IS PRETTY CONFUSING, TRY TO CLEAR IT UP
-@deffn {Fun@,{c}@~{a}o} printprops (@var{a}, @var{i})
-@deffnx {Fun@,{c}@~{a}o} printprops ([@var{a_1}, ..., @var{a_n}], @var{i})
-@deffnx {Fun@,{c}@~{a}o} printprops (all, @var{i})
+@deffn {Fun@value{cedilha}@~{a}o} printprops (@var{a}, @var{i})
+@deffnx {Fun@value{cedilha}@~{a}o} printprops ([@var{a_1}, ..., @var{a_n}], @var{i})
+@deffnx {Fun@value{cedilha}@~{a}o} printprops (all, @var{i})
 Mostra a propriedade como o indicador @var{i}
 associada com o @'{a}tomo @var{a}.  @var{a} pode tamb@'{e}m ser uma lista de @'{a}tomos ou o @'{a}tomo
 @code{all} nesse caso todos os @'{a}tomos com a propriedade dada ser@~{a}o
@@ -976,33 +976,33 @@ propriedades que n@~{a}o podem  ser mostradas de outra forma, i.e. para
 
 @end deffn
 
-@defvr {Vari@'{a}vel de op@,{c}@~{a}o} prompt
+@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} prompt
 Valor padr@~{a}o: @code{_}
 
-@code{prompt} @'{e} o s@'{i}mbolo de linha de comando da fun@,{c}@~{a}o @code{demo},
-modo @code{playback (slow)}, e da interrup@,{c}@~{a}o de ciclos do Maxima (como invocado por @code{break}).
+@code{prompt} @'{e} o s@'{i}mbolo de linha de comando da fun@value{cedilha}@~{a}o @code{demo},
+modo @code{playback (slow)}, e da interrup@value{cedilha}@~{a}o de ciclos do Maxima (como invocado por @code{break}).
 
 @end defvr
 
-@deffn {Fun@,{c}@~{a}o} quit ()
+@deffn {Fun@value{cedilha}@~{a}o} quit ()
 Encerra a sess@~{a}o do Maxima.
-Note que a fun@,{c}@~{a}o pode ser invocada como @code{quit();} ou @code{quit()$},
+Note que a fun@value{cedilha}@~{a}o pode ser invocada como @code{quit();} ou @code{quit()$},
 n@~{a}o por s@'{i} mesma @code{quit}.
 
 Para parar um c@'{a}lculo muito longo,
 digite @code{control-C}.
-A a@,{c}@~{a}o padr@~{a}o @'{e} retornar @`a linha de comando do Maxima.
+A a@value{cedilha}@~{a}o padr@~{a}o @'{e} retornar @`a linha de comando do Maxima.
 Se @code{*debugger-hook*} @'{e} @code{nil},
 @code{control-C} abre o depurador Lisp.
 Veja tamb@'{e}m @code{debugging}.
 
 @end deffn
 
-@deffn {Fun@,{c}@~{a}o} remfunction (@var{f_1}, ..., @var{f_n})
-@deffnx {Fun@,{c}@~{a}o} remfunction (all)
-Desassocia as defini@,{c}@~{o}es de fun@,{c}@~{a}o dos s@'{i}bolos @var{f_1}, ..., @var{f_n}.
-Os argumentos podem ser os nomes de fun@,{c}@~{o}es comuns (criadas por meio de @code{:=} ou @code{define})
-ou fun@,{c}@~{o}es macro (criadas por meio de @code{::=}).
+@deffn {Fun@value{cedilha}@~{a}o} remfunction (@var{f_1}, ..., @var{f_n})
+@deffnx {Fun@value{cedilha}@~{a}o} remfunction (all)
+Desassocia as defini@value{cedilha}@~{o}es de fun@value{cedilha}@~{a}o dos s@'{i}bolos @var{f_1}, ..., @var{f_n}.
+Os argumentos podem ser os nomes de fun@value{cedilha}@~{o}es comuns (criadas por meio de @code{:=} ou @code{define})
+ou fun@value{cedilha}@~{o}es macro (criadas por meio de @code{::=}).
 
 @code{remfunction (all)} desassocia todas as defini@,{c}@~{o}es de func@,{c}@~{a}o.
 
@@ -1017,16 +1017,16 @@ ou fun@,{c}@~{o}es macro (criadas por meio de @code{::=}).
 Retorna muitas vari@'{a}veis globais e op@,{c}@~{o}es, e algumas outras vari@'{a}veis, para seus valores padr@~{o}es.
 
 @code{reset} processa as vari@'{a}veis na lista Lisp @code{*variable-initial-values*}.
-A macro Lisp @code{defmvar} coloca vari@'{a}veis nessa lista (entre outras a@,{c}@~{o}es).
-Muitas, mas n@~{a}o todas, vari@'{a}veis globais e op@,{c}@~{o}es s@~{a}o definidas por @code{defmvar},
- e algumas vari@'{a}veis definidas por @code{defmvar} n@~{a}o s@~{a}o vari@'{a}veis globais ou vari@'{a}veis de op@,{c}@~{a}o.
+A macro Lisp @code{defmvar} coloca vari@'{a}veis nessa lista (entre outras a@value{cedilha}@~{o}es).
+Muitas, mas n@~{a}o todas, vari@'{a}veis globais e op@value{cedilha}@~{o}es s@~{a}o definidas por @code{defmvar},
+ e algumas vari@'{a}veis definidas por @code{defmvar} n@~{a}o s@~{a}o vari@'{a}veis globais ou vari@'{a}veis de op@value{cedilha}@~{a}o.
 
 @end deffn
 
-@defvr {Vari@'{a}vel de op@,{c}@~{a}o} showtime
+@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} showtime
 Valor padr@~{a}o: @code{false}
 
-Quando @code{showtime} for @code{true}, o tempo de computa@,{c}@~{a}o e o tempo decorrido s@~{a}o
+Quando @code{showtime} for @code{true}, o tempo de computa@value{cedilha}@~{a}o e o tempo decorrido s@~{a}o
 impressos na tela com cada express@~{a}o de sa@'{i}da.
 
 O tempo de c@'{a}lculo @'{e} sempre gravado,
@@ -1039,7 +1039,7 @@ Veja tamb@'{e}m @code{timer}.
 
 @c IS THIS ANY DIFFERENT FROM ASSIGNING A PROPERTY ??
 @c THIS REALLY SEEMS LIKE A HACK
-@deffn {Fun@,{c}@~{a}o} sstatus (@var{recurso}, @var{pacote})
+@deffn {Fun@value{cedilha}@~{a}o} sstatus (@var{recurso}, @var{pacote})
 Altera o status de @var{recurso} em @var{pacote}.
 Ap@'{o}s @code{sstatus (@var{recurso}, @var{pacote})} ser executado,
 @code{status (@var{recurso}, @var{pacote})} retorna @code{true}.
@@ -1049,7 +1049,7 @@ manter um registro de quais recursos os pacotes usam.
 @end deffn
 
 @c NEEDS EXPANSION, EXAMPLES
-@deffn {Fun@,{c}@~{a}o} to_lisp ()
+@deffn {Fun@value{cedilha}@~{a}o} to_lisp ()
 Insere o sistema Lisp dentro do Maxima.  @code{(to-maxima)} retorna para o Maxima.
 
 @end deffn
@@ -1057,7 +1057,7 @@ Insere o sistema Lisp dentro do Maxima.  @code{(to-maxima)} retorna para o Maxim
 @defvr {Vari@'{a}vel de sistema} values
 Valor inicial: @code{[]}
 
-@code{values} @'{e} uma lista de todas as var@'{a}veis de usu@'{a}rio associadas (n@~{a}o op@,{c}@~{o}es Maxima ou comutadores).
+@code{values} @'{e} uma lista de todas as var@'{a}veis de usu@'{a}rio associadas (n@~{a}o op@value{cedilha}@~{o}es Maxima ou comutadores).
 A lista compreende s@'{i}mbolos associados por @code{:} , @code{::}, ou @code{:=}.
 
 @end defvr

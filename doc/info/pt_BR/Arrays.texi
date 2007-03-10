@@ -1,15 +1,15 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /Arrays.texi/1.14/Mon Jan  1 07:26:48 2007/-ko/
 @menu
-* Defini@,{c}@~{o}es para Arrays::  
+* Defini@value{cedilha}@~{o}es para Arrays::  
 @end menu
 
-@node Defini@,{c}@~{o}es para Arrays,  , Arrays, Arrays
-@section Defini@,{c}@~{o}es para Arrays
+@node Defini@value{cedilha}@~{o}es para Arrays,  , Arrays, Arrays
+@section Defini@value{cedilha}@~{o}es para Arrays
 
-@deffn {Fun@,{c}@~{a}o} array (@var{name}, @var{dim_1}, ..., @var{dim_n})
-@deffnx {Fun@,{c}@~{a}o} array (@var{name}, @var{type}, @var{dim_1}, ..., @var{dim_n})
-@deffnx {Fun@,{c}@~{a}o} array ([@var{nome_1}, ..., @var{nome_m}], @var{dim_1}, ..., @var{dim_n})
+@deffn {Fun@value{cedilha}@~{a}o} array (@var{name}, @var{dim_1}, ..., @var{dim_n})
+@deffnx {Fun@value{cedilha}@~{a}o} array (@var{name}, @var{type}, @var{dim_1}, ..., @var{dim_n})
+@deffnx {Fun@value{cedilha}@~{a}o} array ([@var{nome_1}, ..., @var{nome_m}], @var{dim_1}, ..., @var{dim_n})
 
 Cria um array @math{n}-dimensional.  
 @math{n} pode ser menor ou igual a 5.
@@ -36,25 +36,25 @@ declarados.  O usu@'{a}rio n@~{a}o declara seu tamanho m@'{a}ximo, e ele cresce
 dinamicamente e desordenadamente @`a medida que s@~{a}o atribu@'{i}dos valores a mais elementos.  Os
 subscritos de um array n@~{a}o declarado n@~{a}o precisam sempre ser n@'{u}meros.  Todavia,
 exceto para um array um tanto quanto esparso, @'{e} provavelmente mais eficiente
-declarar isso quando poss@'{i}vel que deixar n@~{a}o declarado.  A fun@,{c}@~{a}o @code{array}
+declarar isso quando poss@'{i}vel que deixar n@~{a}o declarado.  A fun@value{cedilha}@~{a}o @code{array}
 pode ser usada para transformar um array n@~{a}o declarado em um array
 declarado.
 @c HOW DOES ONE CHANGE AN UNDECLARED ARRAY INTO A DECLARED ARRAY EXACTLY ??
 
 @end deffn
 
-@deffn {Fun@,{c}@~{a}o} arrayapply (@var{A}, [@var{i_1}, ..., @var{i_n}])
+@deffn {Fun@value{cedilha}@~{a}o} arrayapply (@var{A}, [@var{i_1}, ..., @var{i_n}])
 Avalia @code{@var{A} [@var{i_1}, ..., @var{i_n}]},
 quando @var{A} for um array e @var{i_1}, ..., @var{i_n} s@~{a}o inteiros.
 
-Ela @'{e} remanescente de @code{apply}, exceto o primeiro argumento que @'{e} um array ao inv@'{e}s de uma fun@,{c}@~{a}o.
+Ela @'{e} remanescente de @code{apply}, exceto o primeiro argumento que @'{e} um array ao inv@'{e}s de uma fun@value{cedilha}@~{a}o.
 
 @end deffn
 
-@deffn {Fun@,{c}@~{a}o} arrayinfo (@var{A})
-Retorna informa@,{c}@~{o}es sobre o array @var{A}.
+@deffn {Fun@value{cedilha}@~{a}o} arrayinfo (@var{A})
+Retorna informa@value{cedilha}@~{o}es sobre o array @var{A}.
 O argumento @var{A} pode ser um array declarado, uma array n@~{a}o declarado ( que sofreu um hash),
-uma fun@,{c}@~{a}o de array, ou uma fun@,{c}@~{a}o que possui subscrito.
+uma fun@value{cedilha}@~{a}o de array, ou uma fun@value{cedilha}@~{a}o que possui subscrito.
 
 Para arrays declarados, @code{arrayinfo} retorna uma lista
 compreendendo o @'{a}tomo @code{declared}, o n;umero de dimens@~{o}es, e o tamanho de cada dimens@~{a}o.
@@ -65,12 +65,12 @@ Para arrays n@~{a}o declarados (arrays que sofreram um hash),
 e os subscritos de de todo elemento que tiver um valor.
 Os valores s@~{a}o retornados por meio de @code{listarray}.
 
-Para fun@,{c}@~{o}es de array,
+Para fun@value{cedilha}@~{o}es de array,
 @code{arrayinfo} retretorna uma lista compreendendo o @'{a}tomo @code{hashed}, o n@'{u}mero de subscritos,
 e quaisquer valores de subscritos para os quais exista valores funcionais armazenados.
 Os valores funcionais armazenados s@~{a}o retornados atrav@'{e}s de @code{listarray}.
 
-Para fun@,{c}@~{o}es que possuem subscritos,
+Para fun@value{cedilha}@~{o}es que possuem subscritos,
 @code{arrayinfo} retorna uma lista compreendendo o @'{a}tomo @code{hashed}, o n@'{u}mero de subscritos,
 e qualquer valores subscritos para os quais existe uma express@~{o}es lambda.
 As express@~{o}es lambda s@~{a}o retornadas por @code{listarray}.
@@ -122,7 +122,7 @@ Examples:
 (%o4)                 [(c - d) , (b + a) ]
 @end example
 
-@code{arrayinfo} e @code{listarray} aplicado a uma fun@,{c}@~{a}o de array.
+@code{arrayinfo} e @code{listarray} aplicado a uma fun@value{cedilha}@~{a}o de array.
 
 @c ===beg===
 @c cc [x, y] := y / x;
@@ -152,7 +152,7 @@ Examples:
                               4  u
 @end example
 
-@code{arrayinfo} e @code{listarray} aplicadas a fun@,{c}@~{o}es com subscritos.
+@code{arrayinfo} e @code{listarray} aplicadas a fun@value{cedilha}@~{o}es com subscritos.
 
 @c ===beg===
 @c dd [x] (y) := y ^ x;
@@ -180,13 +180,13 @@ Examples:
 @end example
 @end deffn
 
-@deffn {Fun@,{c}@~{a}o} arraymake (@var{A}, [@var{i_1}, ..., @var{i_n}])
+@deffn {Fun@value{cedilha}@~{a}o} arraymake (@var{A}, [@var{i_1}, ..., @var{i_n}])
 Retorna a express@~{a}o @code{@var{A}[@var{i_1}, ..., @var{i_n}]}.
 O resultado @'{e} uma refer@^{e}ncia a um array n@~{a}o avaliado.
 
 @code{arraymake} @'{e} remanic@^{e}ncia de @code{funmake},
 exceto o valor retornado @'{e} um array de refer@^{e}ncia n@~{a}o avaliado
-ao inv@'{e}s de uma chamada de fun@,{c}@~{a}o n@~{a}o avaliada.
+ao inv@'{e}s de uma chamada de fun@value{cedilha}@~{a}o n@~{a}o avaliada.
 
 Exemplos:
 @c ===beg===
@@ -250,8 +250,8 @@ Valor padr@~{a}o: @code{[]}
 
 @code{arrays} @'{e} uma lista dos arrays que tiverem sido alocados.
 Essa lista compreende arrays declarados atrav@'{e}s de @code{array},
-arrays desordenados (hashed) constru@'{i}dos atrav@'{e}s de defini@,{c}@~{a}o impl@'{i}cita (atribuindo alguma coisa a um elemento de array),
-e fun@,{c}@~{o}es de array definidas por meio de @code{:=} e @code{define}.
+arrays desordenados (hashed) constru@'{i}dos atrav@'{e}s de defini@value{cedilha}@~{a}o impl@'{i}cita (atribuindo alguma coisa a um elemento de array),
+e fun@value{cedilha}@~{o}es de array definidas por meio de @code{:=} e @code{define}.
 Arrays definidos por meio de @code{make_array} n@~{a}o est@~{a}o inclu@'{i}dos.
 
 Veja tamb@'{e}m
@@ -286,7 +286,7 @@ Exemplos:
 
 @end defvr
 
-@deffn {Fun@,{c}@~{a}o} bashindices (@var{expr})
+@deffn {Fun@value{cedilha}@~{a}o} bashindices (@var{expr})
 Transforma a express@~{a}o @var{expr} dando a cada
 somat@'{o}rio e a cada produto um @'{u}nico @'{i}ndice.  Isso d@'{a} a @code{changevar} grande
 precis@~{a}o quando se est@'{a} trabalhando com somat@'{o}rios e produtos.  A forma do
@@ -296,10 +296,10 @@ exemplo, @code{gensumnum:0$} reseta isso.
 
 @end deffn
 
-@deffn {Fun@,{c}@~{a}o} fillarray (@var{A}, @var{B})
+@deffn {Fun@value{cedilha}@~{a}o} fillarray (@var{A}, @var{B})
 Preenche o array @var{A} com @var{B}, que @'{e} uma lista ou um array.
 
-Se um tipo espec@'{i}fico for declarado para @var{A} no momento de sua cria@,{c}@~{a}o,
+Se um tipo espec@'{i}fico for declarado para @var{A} no momento de sua cria@value{cedilha}@~{a}o,
 @var{A} somente porde ser preenchido com elementos do tipo especificado;
 Constitui um erro alguma tentativa feita para copiar um um elemento de um tipo diferente.
  
@@ -374,24 +374,24 @@ Arrays multi-dimensionais s@~{a}o preenchidos em ordem de maior fileira.
 
  @end deffn
 
-@deffn {Fun@,{c}@~{a}o} listarray (@var{A})
+@deffn {Fun@value{cedilha}@~{a}o} listarray (@var{A})
 Retorna uma lista dos elementos do array @var{A}.
 O argumento @var{A} pode ser um array declarado, um array n@~{a}o declarado (desordenado - hashed),
-uma fun@,{c}@~{a}o de array, ou uma fun@,{c}@~{a}o com subscritos.
+uma fun@value{cedilha}@~{a}o de array, ou uma fun@value{cedilha}@~{a}o com subscritos.
 
 Elementos s@~{a}o listados em ordem de linha maior.
 Isto @'{e}, elementos s@~{a}o ordenados conforme o primeiro @'{i}ndice, en seguida conforme o segundo @'{i}ndice, e assim sucessivamente.
-A sequ@"{u}@^{e}ncia de ordena@,{c}@~{a}o por meio dos valores dos @'{i}ndices @'{e} a mesma ordem estabelecida por meio de @code{orderless}.
+A sequ@"{u}@^{e}ncia de ordena@value{cedilha}@~{a}o por meio dos valores dos @'{i}ndices @'{e} a mesma ordem estabelecida por meio de @code{orderless}.
 
-Para arrays n@~{a}o declarados , fun@,{c}@~{o}es de arrays, e fun@,{c}@~{o}es com subscritos,
+Para arrays n@~{a}o declarados , fun@value{cedilha}@~{o}es de arrays, e fun@value{cedilha}@~{o}es com subscritos,
 os elementos correspondem aos valores de @'{i}ndice retornados atrav@'{e}s de @code{arrayinfo}.
 
 Elemetos n@~{a}o associados de arrays gen@'{e}ricos declarados (isto @'{e}, n@~{a}o @code{fixnum} e n@~{a}o @code{flonum})
 s@~{a}o retornados como @code{#####}.
 Elementos n@~{a}o associados de arrays declarados @code{fixnum} ou @code{flonum}
 s@~{a}o retornados como 0 ou 0.0, respectivamente.
-Elementos n@~{a}o associados de arrays n@~{a}o declarados, fun@,{c}@~{o}es de array,
-e fun@,{c}@~{o}es subscritas n@~{a}o s@~{a}o retornados.
+Elementos n@~{a}o associados de arrays n@~{a}o declarados, fun@value{cedilha}@~{o}es de array,
+e fun@value{cedilha}@~{o}es subscritas n@~{a}o s@~{a}o retornados.
 
 Exemplos:
 
@@ -440,7 +440,7 @@ Exemplos:
 (%o4)               [hashed, 1, [BAR], [FOO]]
 @end example
 
-@code{listarray} e @code{arrayinfo} aplicada a uma fun@,{c}@~{a}o de array.
+@code{listarray} e @code{arrayinfo} aplicada a uma fun@value{cedilha}@~{a}o de array.
 
 @c ===beg===
 @c cc [x, y] := y / x;
@@ -470,7 +470,7 @@ Exemplos:
 (%o5)              [hashed, 2, [4, z], [u, v]]
 @end example
 
-@code{listarray} e @code{arrayinfo} aplicadas a fun@,{c}@~{o}es com subscritos.
+@code{listarray} e @code{arrayinfo} aplicadas a fun@value{cedilha}@~{o}es com subscritos.
 
 @c ===beg===
 @c dd [x] (y) := y ^ x;
@@ -500,7 +500,7 @@ Exemplos:
 @end deffn
 
 @c NEEDS CLARIFICATION
-@deffn {Fun@,{c}@~{a}o} make_array (@var{type}, @var{dim_1}, ..., @var{dim_n})
+@deffn {Fun@value{cedilha}@~{a}o} make_array (@var{type}, @var{dim_1}, ..., @var{dim_n})
 Cria e retorna um array de Lisp.  @var{type} pode
 ser @code{any}, @code{flonum}, @code{fixnum}, @code{hashed} ou
 @code{functional}.
@@ -510,7 +510,7 @@ e o @math{i}'en@'{e}simo indice est@'{a} no intervalo de 0 a @math{@var{dim_i} -
 A vantagem de @code{make_array} sobre @code{array} @'{e} que o valor de retorno n@~{a}o tem 
 um nome, e uma vez que um ponteiro a ele vai, ele ir@'{a} tamb@'{e}m.
 Por exemplo, se @code{y: make_array (...)} ent@~{a}o @code{y} aponta para um objeto 
-que ocupa espa@,{c}o, mas depois de @code{y: false}, @code{y} n@~{a}o mais
+que ocupa espa@value{cedilha}o, mas depois de @code{y: false}, @code{y} n@~{a}o mais
 aponta para aquele objeto, ent@~{a}o o objeto pode ser descartado.  
 
 @c NEEDS CLARIFICATION HERE
@@ -574,8 +574,8 @@ Exemplos:
 @end deffn
 
 @c DOES THIS MODIFY A OR DOES IT CREATE A NEW ARRAY ??
-@deffn {Fun@,{c}@~{a}o} rearray (@var{A}, @var{dim_1}, ..., @var{dim_n})
-Altera as dimen@,{c}@~{o}es de um array.  
+@deffn {Fun@value{cedilha}@~{a}o} rearray (@var{A}, @var{dim_1}, ..., @var{dim_n})
+Altera as dimen@value{cedilha}@~{o}es de um array.  
 O novo array ser@'{a} preenchido com os elementos do antigo em
 ordem da maior linha.  Se o array antigo era muito pequeno, 
 os elementos restantes ser@~{a}o preenchidos com
@@ -585,22 +585,22 @@ alterado.
 
 @end deffn
 
-@deffn {Fun@,{c}@~{a}o} remarray (@var{A_1}, ..., @var{A_n})
-@deffnx {Fun@,{c}@~{a}o} remarray (all)
-Remove arrays e fun@,{c}@~{o}es associadas
-a arrays e libera o espa@,{c}o ocupado.
-Os argumentos podem ser arrays declarados, arrays n@~{a}o declarados (dsordenados - hashed), fun@,{c}@~{o}es de array functions, e fun@,{c}@~{o}es com subscritos.
+@deffn {Fun@value{cedilha}@~{a}o} remarray (@var{A_1}, ..., @var{A_n})
+@deffnx {Fun@value{cedilha}@~{a}o} remarray (all)
+Remove arrays e fun@value{cedilha}@~{o}es associadas
+a arrays e libera o espa@value{cedilha}o ocupado.
+Os argumentos podem ser arrays declarados, arrays n@~{a}o declarados (dsordenados - hashed), fun@value{cedilha}@~{o}es de array functions, e fun@value{cedilha}@~{o}es com subscritos.
 
 @code{remarray (all)} remove todos os @'{i}tens na lista global @code{arrays}.
 
 @c WHAT DOES THIS MEAN EXACTLY ??
-Isso pode ser necess@'{a}rio para usar essa fun@,{c}@~{a}o se isso @'{e}
+Isso pode ser necess@'{a}rio para usar essa fun@value{cedilha}@~{a}o se isso @'{e}
 desejado para redefinir os valores em um array desordenado.
 
 @code{remarray} retorna a lista dos arrays removidos.
 
 @end deffn
-@deffn {Fun@,{c}@~{a}o} subvar (@var{x}, @var{i})
+@deffn {Fun@value{cedilha}@~{a}o} subvar (@var{x}, @var{i})
 Avalia a express@~{a}o subscrita @code{@var{x}[@var{i}]}.
 
 @code{subvar} avalia seus argumentos.
@@ -639,13 +639,13 @@ Exemplos:
 @end deffn
 
 @c THIS IS REALLY CONFUSING
-@defvr {Vari@'{a}vel de p@,{c}@~{a}o} use_fast_arrays
+@defvr {Vari@'{a}vel de p@value{cedilha}@~{a}o} use_fast_arrays
 - Se @code{true} somente dois tipos de arrays s@~{a}o reconhecidos.  
 
 1) O array art-q (t no Lisp Comum) que pode ter muitas dimens@~{o}es
 indexadas por inteiros, e pode aceitar qualquer objeto do Lisp ou do Maxima como uma
 entrada.  Para construir assim um array, insira @code{a:make_array(any,3,4);} 
-ent@~{a}o @code{a} ter@'{a} como valor, um array com doze posi@,{c}@~{o}es, e o 
+ent@~{a}o @code{a} ter@'{a} como valor, um array com doze posi@value{cedilha}@~{o}es, e o 
 @'{i}ndice @'{e} baseado em zero.
 
 2) O array Hash_table que @'{e} o tipo padr@~{a}o de array criado se um
@@ -659,7 +659,7 @@ A refer@^{e}ncia termina em @code{b[x+1] ==> y^2}.  Certamente a chave poe ser u
 com os arrays antigos do Maxima, mas poupa recursos.
 
 Uma vantagem de armazenar os arrays como valores de s@'{i}mbolos @'{e} que as
-conven@,{c}@~{o}es usuais sobre vari@'{a}veis locais de uma fun@,{c}@~{a}o aplicam-se a arrays
+conven@value{cedilha}@~{o}es usuais sobre vari@'{a}veis locais de uma fun@value{cedilha}@~{a}o aplicam-se a arrays
 tamb@'{e}m.  O tipo Hash_table tamb@'{e}m usa menos recursos e @'{e} mais eficiente
 que o velho tipo hashar do Maxima.  Para obter comportamento consistente em
 c@'{o}digos traduzidos e compilados posicione @code{translate_fast_arrays} para ser

@@ -1,11 +1,11 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /dynamics.texi/1.11/Mon Jan 22 13:45:03 2007//
 @menu
-* Introdu@,{c}@~{a}o a dynamics::
-* Defini@,{c}@~{o}es para dynamics::
+* Introdu@value{cedilha}@~{a}o a dynamics::
+* Defini@value{cedilha}@~{o}es para dynamics::
 @end menu
 
-@node Introdu@,{c}@~{a}o a dynamics, Defini@,{c}@~{o}es para dynamics, dynamics, dynamics
+@node Introdu@value{cedilha}@~{a}o a dynamics, Defini@value{cedilha}@~{o}es para dynamics, dynamics, dynamics
 @section Introdu@,{c}@~{a}o a dynamics
 
 O pacote adicional @code{dynamics} inclui muitas
@@ -18,7 +18,7 @@ Para usar as fun@,{c}@~{o}es nesse pacote voc@^{e} deve primeiramente torn@'{a}-
 requerem que o Xmaxima esteja instalado.
 
 
-@node Defini@,{c}@~{o}es para dynamics,  , Introdu@,{c}@~{a}o a dynamics, dynamics
+@node Defini@value{cedilha}@~{o}es para dynamics,  , Introdu@value{cedilha}@~{a}o a dynamics, dynamics
 @section Defini@,{c}@~{o}es para dynamics
 
 @deffn {Fun@,{c}@~{a}o} chaosgame (@code{[[}@var{x1}, @var{y1}@code{]}...@code{[}@var{xm}, @var{ym}@code{]]}, @code{[}@var{x0}, @var{y0}@code{]}, @var{b}, @var{n}, ...op@,{c}@~{o}es...);
@@ -398,7 +398,7 @@ Evolu@,{c}@~{a}o de um sistemma bidimensional que leva a um fractal:
 @image{../figures/dynamics5,8cm}
 @end ifnotinfo
 
-E uma amplia@,{c}@~{a}o de uma pequena regial naquele fractal:
+E uma amplia@value{cedilha}@~{a}o de uma pequena regial naquele fractal:
 
 @example
 (%i9) evolution2d([f,g],[-0.5,0],300000,[pointsize,0.7], [xcenter,-0.7],
@@ -420,7 +420,7 @@ Um gr@'{a}fico do tri@^{a}ngulo de Sierpinsky, obtido com o jogo do caos:
 @image{../figures/dynamics7,8cm}
 @end ifnotinfo
 
-A samambaia de Barnsley, obtida com um Sistema de Fun@,{c}@~{o}es Iteradas:
+A samambaia de Barnsley, obtida com um Sistema de Fun@value{cedilha}@~{o}es Iteradas:
 
 @example
 (%i10) a1: matrix([0.85,0.04],[-0.04,0.85])$
@@ -439,7 +439,7 @@ A samambaia de Barnsley, obtida com um Sistema de Fun@,{c}@~{o}es Iteradas:
 @image{../figures/dynamics8,8cm}
 @end ifnotinfo
 
-Para criar um arquivo chamado @emph{dynamics9.xpm} com uma representa@,{c}@~{a}o
+Para criar um arquivo chamado @emph{dynamics9.xpm} com uma representa@value{cedilha}@~{a}o
 gr@'{a}fica do conjunto de Mandelbrot, com 12 cores, use:
 
 @example
@@ -457,15 +457,15 @@ julia(-0.55, 0.6, [levels, 36], [center, 0, 0.6], [radius, 0.3],
 @end example
 
 o gr@'{a}fico ser@'{a} gravado no arquivo @emph{dynamics10.xpm} e ir@'{a} mostrar
-a regi@~{a}o de -0.3 a 0.3 na dire@,{c}@~{a}o x, e de 0.3 a 0.9 na
-dire@,{c}@~{a}o y. 36 cores sr@~{a}o usadas, iniciando com azul e terminando
+a regi@~{a}o de -0.3 a 0.3 na dire@value{cedilha}@~{a}o x, e de 0.3 a 0.9 na
+dire@value{cedilha}@~{a}o y. 36 cores sr@~{a}o usadas, iniciando com azul e terminando
 com amarelo.
 
 @ifnotinfo
 @image{../figures/dynamics10,8cm}
 @end ifnotinfo
 
-Para resolver numericamente a equa@,{c}@~{a}o diferencial
+Para resolver numericamente a equa@value{cedilha}@~{a}o diferencial
 
 @ifnottex
 @example

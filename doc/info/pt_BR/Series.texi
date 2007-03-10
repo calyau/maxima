@@ -1,18 +1,18 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /Series.texi/1.16/Sun Jan  7 05:49:50 2007/-ko/
 @menu
-* Introdu@,{c}@~{a}o a S@'{e}ries::      
-* Defini@,{c}@~{o}es para S@'{e}ries::      
+* Introdu@value{cedilha}@~{a}o a S@'{e}ries::      
+* Defini@value{cedilha}@~{o}es para S@'{e}ries::      
 @end menu
 
-@node Introdu@,{c}@~{a}o a S@'{e}ries, Defini@,{c}@~{o}es para S@'{e}ries, S@'{e}ries, S@'{e}ries
+@node Introdu@value{cedilha}@~{a}o a S@'{e}ries, Defini@value{cedilha}@~{o}es para S@'{e}ries, S@'{e}ries, S@'{e}ries
 @section Introdu@,{c}@~{a}o a S@'{e}ries
 Maxima cont@'{e}m fun@,{c}@~{o}es @code{taylor} e @code{powerseries} (s@'{e}ries de pot@^{e}ncia) para encontrar as
 s@'{e}ries de fun@,{c}@~{o}es diferenci@'{a}veis.   Maxima tamb@'{e}m tem ferramentas  tais como @code{nusum}
 capazes de encontrar a forma fechada de algumas s@'{e}ries.   Opera@,{c}@~{o}es tais como adi@,{c}@~{a}o e multiplica@,{c}@~{a}o travalham da forma usual sobre s@'{e}ries.  Essa se@,{c}@~{a}o apresenta as vari@'{a}veis globais que controlam a
 expans@~{a}o.
 @c end concepts Series
-@node Defini@,{c}@~{o}es para S@'{e}ries,  , Introdu@,{c}@~{a}o a S@'{e}ries, S@'{e}ries
+@node Defini@value{cedilha}@~{o}es para S@'{e}ries,  , Introdu@value{cedilha}@~{a}o a S@'{e}ries, S@'{e}ries
 @section Defini@,{c}@~{o}es para S@'{e}ries
 
 @defvr {Vari@'{a}vel de op@,{c}@~{a}o} cauchysum
@@ -54,16 +54,16 @@ Exemplo:
 
 @end defvr
 
-@deffn {Fun@,{c}@~{a}o} deftaylor (@var{f_1}(@var{x_1}), @var{expr_1}, ..., @var{f_n}(@var{x_n}), @var{expr_n})
-Para cada fun@,{c}@~{a}o @var{f_i} de uma vari@'{a}vel @var{x_i}, 
+@deffn {Fun@value{cedilha}@~{a}o} deftaylor (@var{f_1}(@var{x_1}), @var{expr_1}, ..., @var{f_n}(@var{x_n}), @var{expr_n})
+Para cada fun@value{cedilha}@~{a}o @var{f_i} de uma vari@'{a}vel @var{x_i}, 
 @code{deftaylor} define @var{expr_i} como a s@'{e}ries de Taylor sobre zero.
 @var{expr_i} @'{e} tipicamente um polin@^{o}mio em @var{x_i} ou um somat@'{o}rio;
-express@~{o}es mais gerais s@~{a}o aceitas por @code{deftaylor} sem reclama@,{c}@~{o}es.
+express@~{o}es mais gerais s@~{a}o aceitas por @code{deftaylor} sem reclama@value{cedilha}@~{o}es.
 
 @code{powerseries (@var{f_i}(@var{x_i}), @var{x_i}, 0)}
 retorna as s@'{e}ries definidas por @code{deftaylor}.
 
-@code{deftaylor} retorna uma lista das fun@,{c}@~{o}es
+@code{deftaylor} retorna uma lista das fun@value{cedilha}@~{o}es
 @var{f_1}, ..., @var{f_n}.
 @code{deftaylor} avalia seus argumentos.
 
@@ -89,20 +89,20 @@ Exemplo:
 
 @end deffn
 
-@defvr {Vari@'{a}vel de op@,{c}@~{a}o} maxtayorder
+@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} maxtayorder
 Valor padr@~{a}o: @code{true}
 
 @c REPHRASE
-Quando @code{maxtayorder} for @code{true}, durante a manipula@,{c}@~{a}o
+Quando @code{maxtayorder} for @code{true}, durante a manipula@value{cedilha}@~{a}o
 alg@'{e}brica de s@'{e}ries (truncadas) de Taylor, @code{taylor} tenta reter
 tantos termos quantos forem conhecidos serem corretos.
 
 @end defvr
 
-@deffn {Fun@,{c}@~{a}o} niceindices (@var{expr})
-Renomeia os @'{i}ndices de adi@,{c}@~{o}es e produtos em @var{expr}.
+@deffn {Fun@value{cedilha}@~{a}o} niceindices (@var{expr})
+Renomeia os @'{i}ndices de adi@value{cedilha}@~{o}es e produtos em @var{expr}.
 @code{niceindices} tenta renomear cada @'{i}ndice para o valor de @code{niceindicespref[1]},
-a menos que o nome apare@,{c}a nas parcelas do somat@'{o}rio ou produt@'{o}rio,
+a menos que o nome apare@value{cedilha}a nas parcelas do somat@'{o}rio ou produt@'{o}rio,
 nesses casos @code{niceindices} tenta
 os elementos seguintes de @code{niceindicespref} por sua vez, at@'{e} que uma var@'{a}vel n@~{a}o usada unused variable seja encontrada.
 Se a lista inteira for exaurida,
@@ -137,11 +137,11 @@ Exemplo:
 
 @end deffn
 
-@defvr {Vari@'{a}vel de op@,{c}@~{a}o} niceindicespref
+@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} niceindicespref
 Valor padr@~{a}o: @code{[i, j, k, l, m, n]}
 
 @code{niceindicespref} @'{e} a lista da qual @code{niceindices}
-pega os nomes dos @'{i}ndices de adi@,{c}@~{o}es e produtos products.
+pega os nomes dos @'{i}ndices de adi@value{cedilha}@~{o}es e produtos products.
 
 Os elementos de @code{niceindicespref} s@~{a}o tipicamente nomes de vari@'{a}veis,
 embora que n@~{a}o seja imposto por @code{niceindices}.
@@ -170,23 +170,23 @@ Exemplo:
 
 @end defvr
 
-@deffn {Fun@,{c}@~{a}o} nusum (@var{expr}, @var{x}, @var{i_0}, @var{i_1})
+@deffn {Fun@value{cedilha}@~{a}o} nusum (@var{expr}, @var{x}, @var{i_0}, @var{i_1})
 Realiza o somat@'{o}rio hipergeom@'{e}trico indefinido de @var{expr} com
-rela@,{c}@~{a}o a @var{x} usando um procedimento de decis@~{a}o devido a R.W. Gosper.
+rela@value{cedilha}@~{a}o a @var{x} usando um procedimento de decis@~{a}o devido a R.W. Gosper.
 @var{expr} e o resultado deve ser express@'{a}vel como produtos de expoentes inteiros,
-fatoriais, binomios, e fun@,{c}@~{o}es recionais.
+fatoriais, binomios, e fun@value{cedilha}@~{o}es recionais.
 
 @c UMM, DO WE REALLY NEED TO DEFINE "DEFINITE" AND "INDEFINITE" SUMMATION HERE ??
 @c (CAN'T WE MAKE THE POINT WITHOUT DRAGGING IN SOME NONSTANDARD TERMINOLOGY ??)
 Os termos "definido"
 and "e somat@'{o}rio indefinido" s@~{a}o usados analogamente a "definida" and
-"integra@,{c}@~{a}o indefinida".
+"integra@value{cedilha}@~{a}o indefinida".
 Adicionar indefinidamente significa dar um resultado sim@'{o}lico
-para a adi@,{c}@~{a}o sobre intervalos de comprimentos de vari@'{a}veis, n@~{a}o apenas e.g. 0 a
-infinito.  Dessa forma, uma vez que n@~{a}o existe f@'{o}rmula para a adi@,{c}@~{a}o parcial geral de
+para a adi@value{cedilha}@~{a}o sobre intervalos de comprimentos de vari@'{a}veis, n@~{a}o apenas e.g. 0 a
+infinito.  Dessa forma, uma vez que n@~{a}o existe f@'{o}rmula para a adi@value{cedilha}@~{a}o parcial geral de
 s@'{e}ries binomiais, @code{nusum} n@~{a}o pode fazer isso.
 
-@code{nusum} e @code{unsum} conhecem um porco sobre adi@,{c}@~{o}es e subtra@,{c}@~{o}es de produtos finitos.
+@code{nusum} e @code{unsum} conhecem um porco sobre adi@value{cedilha}@~{o}es e subtra@value{cedilha}@~{o}es de produtos finitos.
 Veja tamb@'{e}m @code{unsum}.
 
 Exemplos:
@@ -227,12 +227,12 @@ Dependent equations eliminated:  (2 3)
 @end deffn
 
 @c THIS ITEM NEEDS SERIOUS WORK
-@deffn {Fun@,{c}@~{a}o} pade (@var{taylor_series}, @var{numer_deg_bound}, @var{denom_deg_bound})
+@deffn {Fun@value{cedilha}@~{a}o} pade (@var{taylor_series}, @var{numer_deg_bound}, @var{denom_deg_bound})
 Retorna uma lista de
-todas as fun@,{c}@~{o}es racionais que possuem a dada expans@~{a}o da s@'{e}ries de Taylor
-onde a adi@,{c}@~{a}o dos graus do numerador e do denominador @'{e}
-menor que ou igual ao n@'{i}vel de trunca@,{c}@~{a}o das s@'{e}ries de pot@^{e}ncia, i.e.
-s@~{a}o "melhores" aproxima@,{c}@~{o}es, e que adicionalmente satisfazem o grau
+todas as fun@value{cedilha}@~{o}es racionais que possuem a dada expans@~{a}o da s@'{e}ries de Taylor
+onde a adi@value{cedilha}@~{a}o dos graus do numerador e do denominador @'{e}
+menor que ou igual ao n@'{i}vel de trunca@value{cedilha}@~{a}o das s@'{e}ries de pot@^{e}ncia, i.e.
+s@~{a}o "melhores" aproxima@value{cedilha}@~{o}es, e que adicionalmente satisfazem o grau
 especificado associado.
 
 @var{taylor_series} @'{e} uma s@'{e}ries de Taylor de uma vari@'{a}vel.
@@ -241,11 +241,11 @@ s@~{a}o inteiros positivos especificando o grau associado sobre
 o numerador e o denominador.
 
 @var{taylor_series} podem tamb@'{e}m ser s@'{e}ries de Laurent, e o grau
-associado pode ser @code{inf} que acarreta todas fun@,{c}@~{o}es racionais cujo grau
+associado pode ser @code{inf} que acarreta todas fun@value{cedilha}@~{o}es racionais cujo grau
 total for menor que ou igual ao comprimento das s@'{e}ries de pot@^{e}ncias a serem
 retornadas.  O grau total @'{e} definido como @code{@var{numer_deg_bound} + @var{denom_deg_bound}}.
 O comprimento de s@'{e}ries de pot@^{e}ncia @'{e} definido como
-@code{"n@'{i}vel de trnca@,{c}@~{a}o" + 1 - min(0, "ordem das s@'{e}ries")}.
+@code{"n@'{i}vel de trnca@value{cedilha}@~{a}o" + 1 - min(0, "ordem das s@'{e}ries")}.
 
 @example
 (%i1) taylor (1 + x + x^2 + x^3, x, 0, 3);
@@ -273,7 +273,7 @@ O comprimento de s@'{e}ries de pot@^{e}ncia @'{e} definido como
 (%o4)                          []
 @end example
 
-N@~{a}o existe fun@,{c}@~{a}o racional de grau 4 numerador/denominador, com essa
+N@~{a}o existe fun@value{cedilha}@~{a}o racional de grau 4 numerador/denominador, com essa
 expans@~{a}o de s@'{e}rie de pot@^{e}ncia.  Voc@^{e} obrigatoriamente em geral tem grau do numerador e
 grau do denominador adicionando para cima ao menor grau das s@'{e}ries de pot@^{e}ncia,
 com o objetivo de ter dispon@'{i}vel coeficientes desconhecidos para resolver.
@@ -295,20 +295,20 @@ com o objetivo de ter dispon@'{i}vel coeficientes desconhecidos para resolver.
 
 @end deffn
 
-@defvr {Vari@'{a}vel de op@,{c}@~{a}o} powerdisp
+@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} powerdisp
 Valor padr@~{a}o: @code{false}
 
 Quando @code{powerdisp} for @code{true},
-uma adi@,{c}@~{a}o @'{e} mostrada com seus termos em ordem do crescimento do expoente.
+uma adi@value{cedilha}@~{a}o @'{e} mostrada com seus termos em ordem do crescimento do expoente.
 Dessa forma um polin@^{o}mio @'{e} mostrado como s@'{e}ries de pot@^{e}ncias truncadas,
 com o termo constante primeiro e o maior expoente por @'{u}ltimo.
 
-Por pad@~{a}o, termos de uma adi@,{c}@~{a}o s@~{a}o mostrados em ordem do expoente decrescente.
+Por pad@~{a}o, termos de uma adi@value{cedilha}@~{a}o s@~{a}o mostrados em ordem do expoente decrescente.
 
 @c NEED AN EXAMPLE HERE
 @end defvr
 
-@deffn {Fun@,{c}@~{a}o} powerseries (@var{expr}, @var{x}, @var{a})
+@deffn {Fun@value{cedilha}@~{a}o} powerseries (@var{expr}, @var{x}, @var{a})
 Retorna a forma geral expans@~{a}o de s@'{e}ries de pot@^{e}ncia para @var{expr}
 na vari@'{a}vel @var{x} sobre o ponto @var{a} (o qual pode ser @code{inf} para infinito).
 
@@ -349,16 +349,16 @@ in the first simplification we have returned:
 
 @end deffn
 
-@defvr {Vari@'{a}vel de op@,{c}@~{a}o} psexpand
+@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} psexpand
 Valor padr@~{a}o: @code{false}
 
 Quando @code{psexpand} for @code{true},
-uma express@~{a}o fun@,{c}@~{a}o racional extendida @'{e} mostrada completamente expandida.
+uma express@~{a}o fun@value{cedilha}@~{a}o racional extendida @'{e} mostrada completamente expandida.
 O comutador @code{ratexpand} tem o mesmo efeito.
 
 @c WE NEED TO BE EXPLICIT HERE
 Quando @code{psexpand} for @code{false},
-uma express@~{a}o de v@'{a}rias vari@'{a}veis @'{e} mostrada apenas como no pacote de fun@,{c}@~{a}o racional.
+uma express@~{a}o de v@'{a}rias vari@'{a}veis @'{e} mostrada apenas como no pacote de fun@value{cedilha}@~{a}o racional.
 
 @c TERMS OF WHAT ??
 Quando @code{psexpand} for  @code{multi},
@@ -366,14 +366,14 @@ ent@~{a}o termos com o mesmo grau total nas vari@'{a}veis s@~{a}o agrupados junt
 
 @end defvr
 
-@deffn {Fun@,{c}@~{a}o} revert (@var{expr}, @var{x})
-@deffnx {Fun@,{c}@~{a}o} revert2 (@var{expr}, @var{x}, @var{n})
-Essas fun@,{c}@~{o}es retornam a revers@~{a}o de @var{expr}, uma s@'{e}rie de Taylor sobre zero na vari@'{a}vel @var{x}.
+@deffn {Fun@value{cedilha}@~{a}o} revert (@var{expr}, @var{x})
+@deffnx {Fun@value{cedilha}@~{a}o} revert2 (@var{expr}, @var{x}, @var{n})
+Essas fun@value{cedilha}@~{o}es retornam a revers@~{a}o de @var{expr}, uma s@'{e}rie de Taylor sobre zero na vari@'{a}vel @var{x}.
 @code{revert} retorna um polin@^{o}mio de grau igual ao maior expoente em @var{expr}.
 @code{revert2} retorna um polin@^{o}mio de grau @var{n},
 o qual pode ser maior que, igual a, ou menor que o grau de @var{expr}.
 
-@code{load ("revert")} chama essas fun@,{c}@~{o}es.
+@code{load ("revert")} chama essas fun@value{cedilha}@~{o}es.
 
 Exemplos:
 
@@ -410,11 +410,11 @@ Exemplos:
 
 @end deffn
 
-@deffn {Fun@,{c}@~{a}o} taylor (@var{expr}, @var{x}, @var{a}, @var{n})
-@deffnx {Fun@,{c}@~{a}o} taylor (@var{expr}, [@var{x_1}, @var{x_2}, ...], @var{a}, @var{n})
-@deffnx {Fun@,{c}@~{a}o} taylor (@var{expr}, [@var{x}, @var{a}, @var{n}, 'asymp])
-@deffnx {Fun@,{c}@~{a}o} taylor (@var{expr}, [@var{x_1}, @var{x_2}, ...], [@var{a_1}, @var{a_2}, ...], [@var{n_1}, @var{n_2}, ...])
-@deffnx {Fun@,{c}@~{a}o} taylor (@var{expr}, [@var{x_1}, @var{a_1}, @var{n_1}], [@var{x_2}, @var{a_2}, @var{n_2}], ...)
+@deffn {Fun@value{cedilha}@~{a}o} taylor (@var{expr}, @var{x}, @var{a}, @var{n})
+@deffnx {Fun@value{cedilha}@~{a}o} taylor (@var{expr}, [@var{x_1}, @var{x_2}, ...], @var{a}, @var{n})
+@deffnx {Fun@value{cedilha}@~{a}o} taylor (@var{expr}, [@var{x}, @var{a}, @var{n}, 'asymp])
+@deffnx {Fun@value{cedilha}@~{a}o} taylor (@var{expr}, [@var{x_1}, @var{x_2}, ...], [@var{a_1}, @var{a_2}, ...], [@var{n_1}, @var{n_2}, ...])
+@deffnx {Fun@value{cedilha}@~{a}o} taylor (@var{expr}, [@var{x_1}, @var{a_1}, @var{n_1}], [@var{x_2}, @var{a_2}, @var{n_2}], ...)
 @code{taylor (@var{expr}, @var{x}, @var{a}, @var{n})} expande a express@~{a}o @var{expr}
 em uma s@'{e}rie truncada de Taylor ou de Laurent na vari@'{a}vel @var{x}
 em torno do ponto @var{a},
@@ -446,15 +446,15 @@ truncada em @var{n_1}, @var{n_2}, ....
 retorna uma expans@~{a}o de @var{expr} em expoentes negativos de @code{@var{x} - @var{a}}.
 O termo de maior ordem @'{e} @code{(@var{x} - @var{a})^@var{-n}}.
 
-Quando @code{maxtayorder} for @code{true}, ent@~{a}o durante maniplula@,{c}@~{a}o
+Quando @code{maxtayorder} for @code{true}, ent@~{a}o durante maniplula@value{cedilha}@~{a}o
 alg@'{e}brica da s@'{e}ries de Taylor (truncada), @code{taylor} tenta reter
 tantos termos quantos forem conhecidos serem corretos.
 
 Quando @code{psexpand} for @code{true},
-uma express@~{a}o de fun@,{c}@~{a}o racional extendida @'{e} mostrada completamente expandida.
+uma express@~{a}o de fun@value{cedilha}@~{a}o racional extendida @'{e} mostrada completamente expandida.
 O comutador @code{ratexpand} tem o mesmo efeito.
 Quando @code{psexpand} for @code{false},
-uma express@~{a}o de v@'{a}rias vari@'{a}veis @'{e} mostrada apenas como no pacote de fun@,{c}@~{a}o racional.
+uma express@~{a}o de v@'{a}rias vari@'{a}veis @'{e} mostrada apenas como no pacote de fun@value{cedilha}@~{a}o racional.
 Quando @code{psexpand} for  @code{multi},
 ent@~{a}o os termos com o mesmo grau total nas vari@'{a}veis s@~{a}o agrupados juntos.
 
@@ -589,7 +589,7 @@ Exemplos:
 
 @end deffn
 
-@defvr {Vari@'{a}vel de op@,{c}@~{a}o} taylordepth
+@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} taylordepth
 Valor padr@~{a}o: 3
 
 @c UM, THE CONTEXT FOR THIS REMARK NEEDS TO BE ESTABLISHED
@@ -599,7 +599,7 @@ contanto que o grau da expans@~{a}o seja menor que ou igual a @code{@var{n} 2^ta
 
 @end defvr
 
-@deffn {Fun@,{c}@~{a}o} taylorinfo (@var{expr})
+@deffn {Fun@value{cedilha}@~{a}o} taylorinfo (@var{expr})
 Retorna information about the s@'{e}ries de Taylor @var{expr}.
 O valor de retorno @'{e} uma lista de listas.
 Cada lista compreende o nome de uma vari@'{a}vel,
@@ -628,14 +628,14 @@ Exemplo:
 
 @end deffn
 
-@deffn {Fun@,{c}@~{a}o} taylorp (@var{expr})
+@deffn {Fun@value{cedilha}@~{a}o} taylorp (@var{expr})
 Retorna @code{true} se @var{expr} for uma s@'{e}ries de Taylor,
 e @code{false} de outra forma.
 
 @end deffn
 
 @c WHAT IS THIS ABOUT EXACTLY ??
-@defvr {Vari@'{a}vel de op@,{c}@~{a}o} taylor_logexpand
+@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} taylor_logexpand
 Valor padr@~{a}o: @code{true}
 
 @code{taylor_logexpand} controla expans@~{a}o de logar@'{i}tmos em
@@ -644,7 +644,7 @@ s@'{e}ries de @code{taylor}.
 Quando @code{taylor_logexpand} for @code{true}, todos  logar@'{i}tmos s@~{a}o expandidos completamente dessa forma
 problemas de reconhecimento de zero envolvendo envolvendo identidades logar@'{i}tmicas n@~{a}o
 atrapalham o processo de expans@~{a}o.  Todavia, esse esquema n@~{a}o @'{e} sempre
-maematicamente correto uma vez que isso ignora informa@,{c}@~{o}es de ramo.
+maematicamente correto uma vez que isso ignora informa@value{cedilha}@~{o}es de ramo.
 
 Quando @code{taylor_logexpand} for escolhida para @code{false}, ent@~{a}o a expans@~{a}o logar@'{i}tmica que ocorre
 @'{e} somente aquela que for necess@'{a}ria para obter uma s@'{e}ries de pot@^{e}ncia formal.
@@ -652,10 +652,10 @@ Quando @code{taylor_logexpand} for escolhida para @code{false}, ent@~{a}o a expa
 @c NEED EXAMPLES HERE
 @end defvr
 
-@defvr {Vari@'{a}vel de op@,{c}@~{a}o} taylor_order_coefficients
+@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} taylor_order_coefficients
 Valor padr@~{a}o: @code{true}
 
-@code{taylor_order_coefficients} controla a ordena@,{c}@~{a}o dos
+@code{taylor_order_coefficients} controla a ordena@value{cedilha}@~{a}o dos
 coeficientes em uma s@'{e}rie de Taylor.
 
 Quando @code{taylor_order_coefficients} for @code{true},
@@ -666,18 +666,18 @@ coeficientes da s@'{e}ries de Taylor s@~{a}o ordenados canonicamente.
 @c NEED EXAMPLES HERE
 @end defvr
 
-@deffn {Fun@,{c}@~{a}o} taylor_simplifier (@var{expr})
+@deffn {Fun@value{cedilha}@~{a}o} taylor_simplifier (@var{expr})
 Simplifica coeficientes da s@'{e}ries  de pot@^{e}ncia @var{expr}.
-@code{taylor} chama essa fun@,{c}@~{a}o.
+@code{taylor} chama essa fun@value{cedilha}@~{a}o.
 
 @end deffn
 
-@defvr {Vari@'{a}vel de op@,{c}@~{a}o} taylor_truncate_polynomials
+@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} taylor_truncate_polynomials
 Valor padr@~{a}o: @code{true}
 
 @c WHAT IS THE "INPUT TRUNCATION LEVEL" ?? THE ARGUMENT n OF taylor ??
 Quando @code{taylor_truncate_polynomials} for @code{true},
-polin@^{o}mios s@~{a}o truncados baseados sobre a entrada de n@'{i}veis de trunca@,{c}@~{a}o.
+polin@^{o}mios s@~{a}o truncados baseados sobre a entrada de n@'{i}veis de trunca@value{cedilha}@~{a}o.
 
 De outra forma,
 entrada de polin@^{o}mios para @code{taylor} s@~{a}o consideradas terem precis@~{a}o infinita.
@@ -685,15 +685,15 @@ entrada de polin@^{o}mios para @code{taylor} s@~{a}o consideradas terem precis@~
 
 @end defvr
 
-@deffn {Fun@,{c}@~{a}o} taytorat (@var{expr})
+@deffn {Fun@value{cedilha}@~{a}o} taytorat (@var{expr})
 Converte @var{expr} da forma @code{taylor} para a forma de express@~{a}o racional can@^{o}nica (CRE).
 O efeito @'{e} o mesmo que @code{rat (ratdisrep (@var{expr}))}, mas mais r@'{a}pido.
 
 @end deffn
 
-@deffn {Fun@,{c}@~{a}o} trunc (@var{expr})
-Coloca notas na representa@,{c}@~{a}o interna da express@~{a}o geral @var{expr}
-de modo que isso @'{e} mostrado como se suas adi@,{c}@~{o}es forem s@'{e}ries de Taylor truncadas.
+@deffn {Fun@value{cedilha}@~{a}o} trunc (@var{expr})
+Coloca notas na representa@value{cedilha}@~{a}o interna da express@~{a}o geral @var{expr}
+de modo que isso @'{e} mostrado como se suas adi@value{cedilha}@~{o}es forem s@'{e}ries de Taylor truncadas.
 @var{expr} is not otherwise modified.
 
 Exemplo:
@@ -711,8 +711,8 @@ Exemplo:
 
 @end deffn
 
-@deffn {Fun@,{c}@~{a}o} unsum (@var{f}, @var{n})
-Retorna a primeira diferen@,{c}@~{a} de tr@'{a}s para frente @code{@var{f}(@var{n}) - @var{f}(@var{n} - 1)}.
+@deffn {Fun@value{cedilha}@~{a}o} unsum (@var{f}, @var{n})
+Retorna a primeira diferen@value{cedilha}@~{a} de tr@'{a}s para frente @code{@var{f}(@var{n}) - @var{f}(@var{n} - 1)}.
 Dessa forma @code{unsum} logicamente @'{e} a inversa de @code{sum}.
 
 Veja tamb@'{e}m @code{nusum}.
@@ -749,7 +749,7 @@ Exemplos:
 
 @end deffn
 
-@defvr {Vari@'{a}vel de op@,{c}@~{a}o} verbose
+@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} verbose
 Valor padr@~{a}o: @code{false}
 
 Quando @code{verbose} for @code{true},

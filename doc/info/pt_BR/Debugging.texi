@@ -4,30 +4,30 @@
 @menu
 * Depurando o C@'{o}digo Fonte::
 * Comandos Palavra Chave::
-* Defini@,{c}@~{o}es para Depura@,{c}@~{a}o::   
+* Defini@value{cedilha}@~{o}es para Depura@value{cedilha}@~{a}o::   
 @end menu
 
 @node Depurando o C@'{o}digo Fonte, Comandos Palavra Chave, , Depurando
 @section Depurando o C@'{o}digo Fonte
 
 Maxima tem um depurador interno de c@'{o}digo fonte.  
-O usu@'{a}rio pode escolher um ponto de parada em uma fun@,{c}@~{a}o,
+O usu@'{a}rio pode escolher um ponto de parada em uma fun@value{cedilha}@~{a}o,
 e ent@~{a}o caminhar linha por linha a partir da@'{i}.  A pilha de
 chamadas po ser examinada, juntamente com as vari@'{a}veis associadas @`aquele
 n@'{i}vel.
 
-O comando @code{:help} ou @code{:h} mostra a lista de comando de depura@,{c}@~{a}o.
+O comando @code{:help} ou @code{:h} mostra a lista de comando de depura@value{cedilha}@~{a}o.
 (Em geral,
-comandos podem ser abreviados se a abrevia@,{c}@~{a}o for @'{u}nica.  Se n@~{a}o for
+comandos podem ser abreviados se a abrevia@value{cedilha}@~{a}o for @'{u}nica.  Se n@~{a}o for
 @'{u}nica, as alternativas podem ser listadas.)
-Dentro do depurador, o usu@'{a}rio pode tamb@'{e}m usar qualquer fun@,{c}@~{o}es comuns
+Dentro do depurador, o usu@'{a}rio pode tamb@'{e}m usar qualquer fun@value{cedilha}@~{o}es comuns
 do Maxima para examinar, definir, e manipular vari@'{a}veis e express@~{o}es.
 
 Um ponto de parada @'{e} escolhido atrav@'{e}s do comando @code{:br} na linha de comando do Maxima.
 Dentro do depurador,
-o usu@'{a}rio pode avan@,{c}ar uma linha de cada vez usando o comando @code{:n} (``next'').
+o usu@'{a}rio pode avan@value{cedilha}ar uma linha de cada vez usando o comando @code{:n} (``next'').
 o comando @code{:bt} (``backtrace'') mostra uma lista da pilha de frames.
-O comando @code{:r} (``resume'') sai do depurador e continua com a execu@,{c}@~{a}o.
+O comando @code{:r} (``resume'') sai do depurador e continua com a execu@value{cedilha}@~{a}o.
 Esses comandos s@~{a}o demostrados no exemplo abaixo.
 
 @example
@@ -122,7 +122,7 @@ maxima-mode.el habilitado na janela na qual o arquivo @code{foobar.mac} estiver 
 Existe comandos adicional dispon@'{i}veis naquela janela de arquivo, tais como
 avaliando a fun@,{c}@~{a}o dentro do Maxima, atrav@'{e}s da digita@,{c}@~{a}o de @code{Alt-Control-x}.
 
-@node Comandos Palavra Chave, Defini@,{c}@~{o}es para Depura@,{c}@~{a}o, Depurando o C@'{o}digo Fonte, Depurando
+@node Comandos Palavra Chave, Defini@value{cedilha}@~{o}es para Depura@value{cedilha}@~{a}o, Depurando o C@'{o}digo Fonte, Depurando
 @section Comandos Palavra Chave
 
 Comandos palavra chave s@~{a}o palavras chaves especiais que n@~{a}o s@~{a}o interpretadas como express@~{o}es do Maxima.
@@ -190,7 +190,7 @@ completar a computa@,{c}@~{a}o
 @end table 
 
 
-@node Defini@,{c}@~{o}es para Depura@,{c}@~{a}o, , Comandos Palavra Chave, Depurando
+@node Defini@value{cedilha}@~{o}es para Depura@value{cedilha}@~{a}o, , Comandos Palavra Chave, Depurando
 @section Defini@,{c}@~{o}es para Depura@,{c}@~{a}o
 
 @defvr {Vari@'{a}vel de op@,{c}@~{a}o} refcheck
@@ -429,7 +429,7 @@ Aqui est@'{a} um exemplo de op@,{c}@~{o}es incondicionais de @code{trace}:
 (%i4) ff(3);
 @end example
 
-Aqui est@'{a} a mesma fun@,{c}@~{a}o, com a op@,{c}@~{a}o @code{break} condicional
+Aqui est@'{a} a mesma fun@value{cedilha}@~{a}o, com a op@value{cedilha}@~{a}o @code{break} condicional
 sobre um predicado:
 
 @example
@@ -443,13 +443,13 @@ sobre um predicado:
 
 @end deffn
 
-@deffn {Fun@,{c}@~{a}o} untrace (@var{f_1}, ..., @var{f_n})
-@deffnx {Fun@,{c}@~{a}o} untrace ()
-Dadas as fun@,{c}@~{o}es @var{f_1}, ..., @var{f_n},
-@code{untrace} desabilita a a monitora@,{c}@~{a}o habilitada pela fun@,{c}@~{a}o @code{trace}.
-Sem argumentos, @code{untrace} desabilita a atua@,{c}@~{a}o da fun@,{c}@~{a}o @code{trade} para todas as fun@,{c}@~{o}es.
+@deffn {Fun@value{cedilha}@~{a}o} untrace (@var{f_1}, ..., @var{f_n})
+@deffnx {Fun@value{cedilha}@~{a}o} untrace ()
+Dadas as fun@value{cedilha}@~{o}es @var{f_1}, ..., @var{f_n},
+@code{untrace} desabilita a a monitora@value{cedilha}@~{a}o habilitada pela fun@value{cedilha}@~{a}o @code{trace}.
+Sem argumentos, @code{untrace} desabilita a atua@value{cedilha}@~{a}o da fun@value{cedilha}@~{a}o @code{trade} para todas as fun@value{cedilha}@~{o}es.
 
-@code{untrace} retorne uma lista das fun@,{c}@~{o}es para as quais 
-@code{untrace} desabilita a atua@,{c}@~{a}o de @code{trace}.
+@code{untrace} retorne uma lista das fun@value{cedilha}@~{o}es para as quais 
+@code{untrace} desabilita a atua@value{cedilha}@~{a}o de @code{trace}.
 
 @end deffn

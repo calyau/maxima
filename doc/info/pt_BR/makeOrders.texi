@@ -1,14 +1,14 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /makeOrders.texi/1.1/Mon Feb 27 22:09:17 2006//
 @menu
-* Defini@,{c}@~{o}es para makeOrders::
+* Defini@value{cedilha}@~{o}es para makeOrders::
 @end menu
 
 
-@node Defini@,{c}@~{o}es para makeOrders,  , makeOrders, makeOrders
-@section Defini@,{c}@~{o}es para makeOrders
+@node Defini@value{cedilha}@~{o}es para makeOrders,  , makeOrders, makeOrders
+@section Defini@value{cedilha}@~{o}es para makeOrders
 
-@deffn {Fun@,{c}@~{a}o} makeOrders (@var{indvarlist},@var{orderlist})
+@deffn {Fun@value{cedilha}@~{a}o} makeOrders (@var{indvarlist},@var{orderlist})
 Retorna uma lista de todos os expoentes para um polin@^{o}mio acima de e incluindo os argumentos. 
 
 @example
@@ -25,5 +25,5 @@ Retorna uma lista de todos os expoentes para um polin@^{o}mio acima de e incluin
 @end example
 onde @code{[0, 1]} est@'{a} associado ao termo @math{b} e @code{[2, 3]} est@'{a} associado ao termo @math{a^2 b^3}.
 
-Para usar essa fun@,{c}@~{a}o escreva primeiro @code{load("makeOrders")}.
+Para usar essa fun@value{cedilha}@~{a}o escreva primeiro @code{load("makeOrders")}.
 @end deffn

@@ -19,6 +19,7 @@
 @synindex vr fn
 @c @documentencoding ISO-8859-15
 @documentencoding ISO-8859-1
+@set cedilha @,{c}
 @set mail <maxima at math dot utexas dot edu>
 @settitle Manual do Maxima
 @c %**end of header
@@ -101,7 +102,7 @@ Jorge Barros de Abreu
 @contents
 
 @ifnottex
-@node Top, Introdu@,{c}@~{a}o ao Maxima, (dir), (dir)
+@node Top, Introdu@value{cedilha}@~{a}o ao Maxima, (dir), (dir)
 @top
 
 @i{Maxima @'{e} um sistema de @'{a}lgebra computacional, implementado em Lisp.}
@@ -250,7 +251,7 @@ Pacotes Adicionais
 
 @'{I}ndice
 
-* @'{I}ndice de Fun@,{c}@~{o}es e Vari@'{a}veis:: @'{I}ndice
+* @'{I}ndice de Fun@,{c}@~{o}es e Vari@'{a}veis:: @'{I}ndice::
 
 @comment @detailmenu
  --- Listagem de Nodos Detalhada ---
@@ -621,15 +622,15 @@ zeilberger
 @c  nota bene: C-c C-u C-a and texinfo-multiple-files-update will delete
 @c  the detailed node listing!
 
-@node Introdu@,{c}@~{a}o ao Maxima, Detec@,{c}@~{a}o e Relato de Erros, Top, Top
-@chapter Introdu@,{c}@~{a}o ao Maxima
+@node Introdu@value{cedilha}@~{a}o ao Maxima, Detec@value{cedilha}@~{a}o e Relato de Erros, Top, Top
+@chapter Introdu@value{cedilha}@~{a}o ao Maxima
 @include Introduction.texi
 
-@node Detec@,{c}@~{a}o e Relato de Erros, Ajuda, Introdu@,{c}@~{a}o ao Maxima, Top
-@chapter Detec@,{c}@~{a}o e Relato de Erros
+@node Detec@value{cedilha}@~{a}o e Relato de Erros, Ajuda, Introdu@value{cedilha}@~{a}o ao Maxima, Top
+@chapter Detec@value{cedilha}@~{a}o e Relato de Erros
 @include Bugs.texi
 
-@node Ajuda, Linha de Comando, Detec@,{c}@~{a}o e Relato de Erros, Top
+@node Ajuda, Linha de Comando, Detec@value{cedilha}@~{a}o e Relato de Erros, Top
 @chapter Ajuda
 @include Help.texi
 
@@ -641,15 +642,15 @@ zeilberger
 @chapter Operadores
 @include Operators.texi
 
-@node Express@~{o}es, Simplifica@,{c}@~{a}o, Operadores, Top
+@node Express@~{o}es, Simplifica@value{cedilha}@~{a}o, Operadores, Top
 @chapter Express@~{o}es
 @include Expressions.texi
 
-@node Simplifica@,{c}@~{a}o, Montando Gr@'{a}ficos, Express@~{o}es, Top
-@chapter Simplifica@,{c}@~{a}o
+@node Simplifica@value{cedilha}@~{a}o, Montando Gr@'{a}ficos, Express@~{o}es, Top
+@chapter Simplifica@value{cedilha}@~{a}o
 @include Simplification.texi
 
-@node Montando Gr@'{a}ficos, Entrada e Sa@'{i}da, Simplifica@,{c}@~{a}o, Top
+@node Montando Gr@'{a}ficos, Entrada e Sa@'{i}da, Simplifica@value{cedilha}@~{a}o, Top
 @chapter Montando Gr@'{a}ficos
 @include Plotting.texi
 
@@ -677,41 +678,41 @@ zeilberger
 @chapter Logar@'{i}tmos
 @include Logarithms.texi
 
-@node Trigonometria, Fun@,{c}@~{o}es Especiais, Logar@'{i}tmos, Top
+@node Trigonometria, Fun@value{cedilha}@~{o}es Especiais, Logar@'{i}tmos, Top
 @chapter Trigonometria
 @include Trigonometric.texi
 
-@node Fun@,{c}@~{o}es Especiais, Fun@,{c}@~{o}es El@'{i}pticas, Trigonometria, Top
-@chapter Fun@,{c}@~{o}es Especiais
+@node Fun@value{cedilha}@~{o}es Especiais, Fun@value{cedilha}@~{o}es El@'{i}pticas, Trigonometria, Top
+@chapter Fun@value{cedilha}@~{o}es Especiais
 @include Special.texi
 
-@node Fun@,{c}@~{o}es El@'{i}pticas, Limites, Fun@,{c}@~{o}es Especiais, Top
-@chapter Fun@,{c}@~{o}es El@'{i}pticas
+@node Fun@value{cedilha}@~{o}es El@'{i}pticas, Limites, Fun@value{cedilha}@~{o}es Especiais, Top
+@chapter Fun@value{cedilha}@~{o}es El@'{i}pticas
 @include Elliptic.texi
 
-@node Limites, Diferencia@,{c}@~{a}o, Fun@,{c}@~{o}es El@'{i}pticas, Top
+@node Limites, Diferencia@value{cedilha}@~{a}o, Fun@value{cedilha}@~{o}es El@'{i}pticas, Top
 @chapter Limites
 @include Limits.texi
 
-@node Diferencia@,{c}@~{a}o, Integra@,{c}@~{a}o, Limites, Top
-@chapter Diferencia@,{c}@~{a}o
+@node Diferencia@value{cedilha}@~{a}o, Integra@value{cedilha}@~{a}o, Limites, Top
+@chapter Diferencia@value{cedilha}@~{a}o
 @include Differentiation.texi
 
-@node Integra@,{c}@~{a}o, Equa@,{c}@~{o}es, Diferencia@,{c}@~{a}o, Top
-@chapter Integra@,{c}@~{a}o
+@node Integra@value{cedilha}@~{a}o, Equa@value{cedilha}@~{o}es, Diferencia@value{cedilha}@~{a}o, Top
+@chapter Integra@value{cedilha}@~{a}o
 @include Integration.texi
 
-@node Equa@,{c}@~{o}es, Equa@,{c}@~{o}es Diferenciais, Integra@,{c}@~{a}o, Top
-@chapter Equa@,{c}@~{o}es
+@node Equa@value{cedilha}@~{o}es, Equa@value{cedilha}@~{o}es Diferenciais, Integra@value{cedilha}@~{a}o, Top
+@chapter Equa@value{cedilha}@~{o}es
 @include Equations.texi
 
-@node Equa@,{c}@~{o}es Diferenciais, Num@'{e}rico, Equa@,{c}@~{o}es, Top
-@chapter Equa@,{c}@~{o}es Diferenciais
+@node Equa@value{cedilha}@~{o}es Diferenciais, Num@'{e}rico, Equa@value{cedilha}@~{o}es, Top
+@chapter Equa@value{cedilha}@~{o}es Diferenciais
 @include Differential.texi
 
 @c @include NonCommutative.texi
 
-@node Num@'{e}rico, Arrays, Equa@,{c}@~{o}es Diferenciais, Top
+@node Num@'{e}rico, Arrays, Equa@value{cedilha}@~{o}es Diferenciais, Top
 @chapter Num@'{e}rico
 @include Numerical.texi
 
@@ -719,15 +720,15 @@ zeilberger
 @chapter Arrays
 @include Arrays.texi
 
-@node Matrizes e @'{A}lgebra Linear, Fun@,{c}@~{o}es Afins, Arrays, Top
+@node Matrizes e @'{A}lgebra Linear, Fun@value{cedilha}@~{o}es Afins, Arrays, Top
 @chapter Matrizes e @'{A}lgebra Linear
 @include Matrices.texi
 
-@node Fun@,{c}@~{o}es Afins, itensor, Matrizes e @'{A}lgebra Linear, Top
-@chapter Fun@,{c}@~{o}es Afins
+@node Fun@value{cedilha}@~{o}es Afins, itensor, Matrizes e @'{A}lgebra Linear, Top
+@chapter Fun@value{cedilha}@~{o}es Afins
 @include Affine.texi
 
-@node itensor, ctensor, Fun@,{c}@~{o}es Afins, Top
+@node itensor, ctensor, Fun@value{cedilha}@~{o}es Afins, Top
 @chapter itensor
 @include Itensor.texi
 
@@ -751,19 +752,19 @@ zeilberger
 @chapter Simetrias
 @include Symmetries.texi
 
-@node Grupos, Ambiente em Tempo de Execu@,{c}@~{a}o, Simetrias, Top
+@node Grupos, Ambiente em Tempo de Execu@value{cedilha}@~{a}o, Simetrias, Top
 @chapter Grupos
 @include Groups.texi
 
-@node Ambiente em Tempo de Execu@,{c}@~{a}o, Op@,{c}@~{o}es Diversas, Grupos, Top
-@chapter Ambiente em Tempo de Execu@,{c}@~{a}o
+@node Ambiente em Tempo de Execu@value{cedilha}@~{a}o, Op@value{cedilha}@~{o}es Diversas, Grupos, Top
+@chapter Ambiente em Tempo de Execu@value{cedilha}@~{a}o
 @include Runtime.texi
 
-@node Op@,{c}@~{o}es Diversas, Regras e Modelos, Ambiente em Tempo de Execu@,{c}@~{a}o, Top
-@chapter Op@,{c}@~{o}es Diversas
+@node Op@value{cedilha}@~{o}es Diversas, Regras e Modelos, Ambiente em Tempo de Execu@value{cedilha}@~{a}o, Top
+@chapter Op@value{cedilha}@~{o}es Diversas
 @include Miscellaneous.texi
 
-@node Regras e Modelos, Listas, Op@,{c}@~{o}es Diversas, Top
+@node Regras e Modelos, Listas, Op@value{cedilha}@~{o}es Diversas, Top
 @chapter Regras e Modelos
 @include Rules.texi
 
@@ -771,15 +772,15 @@ zeilberger
 @chapter Listas
 @include Lists.texi
 
-@node Conjuntos, Defini@,{c}@~{a}o de Fun@,{c}@~{a}o, Listas, Top
+@node Conjuntos, Defini@value{cedilha}@~{a}o de Fun@value{cedilha}@~{a}o, Listas, Top
 @chapter Conjuntos
 @include nset.texi
 
-@node Defini@,{c}@~{a}o de Fun@,{c}@~{a}o, Fluxo de Programa, Conjuntos, Top
-@chapter Defini@,{c}@~{a}o de Fun@,{c}@~{a}o
+@node Defini@value{cedilha}@~{a}o de Fun@value{cedilha}@~{a}o, Fluxo de Programa, Conjuntos, Top
+@chapter Defini@value{cedilha}@~{a}o de Fun@value{cedilha}@~{a}o
 @include Function.texi
 
-@node Fluxo de Programa, Depurando, Defini@,{c}@~{a}o de Fun@,{c}@~{a}o, Top
+@node Fluxo de Programa, Depurando, Defini@value{cedilha}@~{a}o de Fun@value{cedilha}@~{a}o, Top
 @chapter Fluxo de Programa
 @include Program.texi
 
@@ -911,12 +912,12 @@ zeilberger
 @chapter unit
 @include unit.texi
 
-@node zeilberger, @'{I}ndice de Fun@,{c}@~{o}es e Vari@'{a}veis, unit, Top
+@node zeilberger, @'{I}ndice de Fun@value{cedilha}@~{o}es e Vari@'{a}veis, unit, Top
 @chapter zeilberger
 @include zeilberger.texi
 
-@node @'{I}ndice de Fun@,{c}@~{o}es e Vari@'{a}veis,  , zeilberger, Top
-@chapter @'{I}ndice de Fun@,{c}@~{o}es e Vari@'{a}veis
+@node @'{I}ndice de Fun@value{cedilha}@~{o}es e Vari@'{a}veis,  , zeilberger, Top
+@chapter @'{I}ndice de Fun@value{cedilha}@~{o}es e Vari@'{a}veis
 @include Indices.texi
 
 @c end includes

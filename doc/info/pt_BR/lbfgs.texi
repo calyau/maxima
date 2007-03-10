@@ -2,11 +2,11 @@
 @c /lbfgs.texi/1.2/Sat Dec  9 06:10:42 2006//
 
 @menu
-* Introdu@,{c}@~{a}o a lbfgs::
-* Defini@,{c}@~{o}es para lbfgs::
+* Introdu@value{cedilha}@~{a}o a lbfgs::
+* Defini@value{cedilha}@~{o}es para lbfgs::
 @end menu
 
-@node Introdu@,{c}@~{a}o a lbfgs, Defini@,{c}@~{o}es para lbfgs, Top, Top
+@node Introdu@value{cedilha}@~{a}o a lbfgs, Defini@value{cedilha}@~{o}es para lbfgs, Top, Top
 @section Introdu@,{c}@~{a}o a lbfgs
 
 @code{lbfgs} @'{e} uma implementa@,{c}@~{a}o do algor@'{i}tmo[1] L-BFGS (Broyden-Fletcher-Goldfarb-Shanno)
@@ -26,7 +26,7 @@ scale optimization". @i{Mathematical Programming B} 45:503--528 (1989)
 
 [2] http://netlib.org/opt/lbfgs_um.shar
 
-@node Defini@,{c}@~{o}es para lbfgs, , Introdu@,{c}@~{a}o a lbfgs, Top
+@node Defini@value{cedilha}@~{o}es para lbfgs, , Introdu@value{cedilha}@~{a}o a lbfgs, Top
 @section Defini@,{c}@~{o}es para lbfgs
 
 @deffn {Fun@,{c}@~{a}o} lbfgs (@var{FOM}, @var{X}, @var{X0}, @var{epsilon}, @var{iprint})

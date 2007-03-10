@@ -1,11 +1,11 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /plotdf.texi/1.6/Tue Dec 26 07:17:12 2006//
 @menu
-* Introdu@,{c}@~{a}o a plotdf::
-* Defini@,{c}@~{o}es para plotdf::
+* Introdu@value{cedilha}@~{a}o a plotdf::
+* Defini@value{cedilha}@~{o}es para plotdf::
 @end menu
 
-@node Introdu@,{c}@~{a}o a plotdf, Defini@,{c}@~{o}es para plotdf, plotdf, plotdf
+@node Introdu@value{cedilha}@~{a}o a plotdf, Defini@value{cedilha}@~{o}es para plotdf, plotdf, plotdf
 @section Introdu@,{c}@~{a}o a plotdf
 
 A fun@,{c}@~{a}o @code{plotdf} cria um gr@'{a}fico do campo de dire@,{c}@~{a}o de uma
@@ -54,7 +54,7 @@ Se somente uma EDO for fornecida, @code{plotdf} ir@'{a} admitir implicitamente
 @code{x=t}, e @code{G(x,y)=1}, transformando a equa@,{c}@~{a}o n@~{a}o
 aut@^{o}noma em um sistema de duas equa@,{c}@~{o}es aut@^{o}nomas.
 
-@node Defini@,{c}@~{o}es para plotdf,  , Introdu@,{c}@~{a}o a plotdf, plotdf
+@node Defini@value{cedilha}@~{o}es para plotdf,  , Introdu@value{cedilha}@~{a}o a plotdf, plotdf
 @section Defini@,{c}@~{o}es para plotdf
 
 @deffn {Fun@,{c}@~{a}o} plotdf (@var{dydx},...op@,{c}@~{o}es...)
@@ -245,7 +245,7 @@ O gr@'{a}fico tamb@'{e}m mostra a fun@,{c}@~{a}o @math{y = sqrt(x)}.
 
 @item
 O seguinte exemplo mostra o campo de dire@,{c}@~{a}o de um oscilador harm@^{o}nico,
-definido pelas duas equa@,{c}@~{o}es @math{dx/dt = y} e @math{dy/dt = -k*x/m},
+definido pelas duas equa@value{cedilha}@~{o}es @math{dx/dt = y} e @math{dy/dt = -k*x/m},
 e a curva integral em todo o intervalo @math{(x,y) = (6,0)}, com um bot@~{a}o de deslizamento que
 ir@'{a} permitir a voc@^{e} mudar o valor de @math{m} interativamente (@math{k} est@'{a}
 fixado em 2):
@@ -259,7 +259,7 @@ fixado em 2):
 @end ifnotinfo
 
 @item
-Para montar o gr@'{a}fico do campo de dire@,{c}@~{a}o da equa@,{c}@~{a}o de Duffing, @math{m*x''+c*x'+k*x+b*x^3 = 0}, introduzimos a vari@'{a}vel @math{y=x'} e usamos:
+Para montar o gr@'{a}fico do campo de dire@value{cedilha}@~{a}o da equa@value{cedilha}@~{a}o de Duffing, @math{m*x''+c*x'+k*x+b*x^3 = 0}, introduzimos a vari@'{a}vel @math{y=x'} e usamos:
 @example
 (%i5) plotdf([y,-(k*x + c*y + b*x^3)/m],
               [parameters,"k=-1,m=1.0,c=0,b=1"],
@@ -271,10 +271,10 @@ Para montar o gr@'{a}fico do campo de dire@,{c}@~{a}o da equa@,{c}@~{a}o de Duff
 @end ifnotinfo
 
 @item
-O campo de dire@,{c}@~{a}o para um p@^{e}dulo amortecido, incluindo a
-solu@,{c}@~{a}o para as condi@,{c}@~{o}es iniciais fornecidas, com um bot@~{a}o de deslizamento que
+O campo de dire@value{cedilha}@~{a}o para um p@^{e}dulo amortecido, incluindo a
+solu@value{cedilha}@~{a}o para as condi@value{cedilha}@~{o}es iniciais fornecidas, com um bot@~{a}o de deslizamento que
 pode ser usado para mudar o valor da massa @math{m}, e com um gr@'{a}fico das
-duas  vari@'{a}veis de estado como uma fun@,{c}@~{a}o do tempo:
+duas  vari@'{a}veis de estado como uma fun@value{cedilha}@~{a}o do tempo:
 
 @example
 (%i6) plotdf([y,-g*sin(x)/l - b*y/m/l],

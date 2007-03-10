@@ -6,8 +6,8 @@
 @menu
 * Lisp e Maxima::            
 * Descartando::          
-* Documenta@,{c}@~{a}o::               
-* Defini@,{c}@~{o}es para Ajuda::        
+* Documenta@value{cedilha}@~{a}o::               
+* Defini@value{cedilha}@~{o}es para Ajuda::        
 @end menu
 
 @node Lisp e Maxima, Descartando, Ajuda, Ajuda
@@ -40,25 +40,25 @@ atrav@'{e}s do comando especial @code{:lisp}. Por exemplo,
 @end example
 
 @noindent
-chama a fun@,{c}@~{a}o Lisp @code{foo} com vari@'{a}veis Maxima @code{x} e @code{y} como argumentos.
-A constu@,{c}@~{a}o @code{:lisp} pode aparecer na linha de comando interativa
+chama a fun@value{cedilha}@~{a}o Lisp @code{foo} com vari@'{a}veis Maxima @code{x} e @code{y} como argumentos.
+A constu@value{cedilha}@~{a}o @code{:lisp} pode aparecer na linha de comando interativa
 ou em um arquivo processado por @code{batch} ou @code{demo}, mas n@~{a}o em um arquivo processado por
 @code{load}, @code{batchload}, @code{translate_file}, ou @code{compile_file}.
 
-A fun@,{c}@~{a}o @code{to_lisp()} abre uma sess@~{a}o interativa Lisp.
+A fun@value{cedilha}@~{a}o @code{to_lisp()} abre uma sess@~{a}o interativa Lisp.
 Digitando @code{(to-maxima)} fecha a sess@~{a}o Lisp e retorna para o Maxima.
 @c I DON'T EVEN WANT TO MENTION USING CTRL-C TO OPEN A LISP SESSION.
 @c (1) IT TAKES EXTRA SET UP TO GET STARTED NAMELY :lisp (setq *debugger-hook* nil)
 @c (2) IT GETS SCREWED UP EASILY -- TYPE SOMETHING WRONG AND YOU CAN'T GET BACK TO MAXIMA
 @c (3) IT DOESN'T OFFER FUNCTIONALITY NOT PRESENT IN THE to_lisp() SESSION
 
-Fun@,{c}@~{o}es Lisp e vari@'{a}veis que s@~{a}o para serem vis@'{i}veis no Maxima como
-fun@,{c}@~{o}es e vari@'{a}veis com nomes comuns (sem pontua@,{c}@~{a}o especial)
-devem ter nomes Lisp come@,{c}ando com o sinal de d@'{o}lar @code{$}.
+Fun@value{cedilha}@~{o}es Lisp e vari@'{a}veis que s@~{a}o para serem vis@'{i}veis no Maxima como
+fun@value{cedilha}@~{o}es e vari@'{a}veis com nomes comuns (sem pontua@value{cedilha}@~{a}o especial)
+devem ter nomes Lisp come@value{cedilha}ando com o sinal de d@'{o}lar @code{$}.
 
 Maxima @'{e} sens@'{i}vel @`a caixa, distingue entre letras em caixa alta (mai@'{u}sculas) e letras em caixa baixa (min@'{u}sculas)
 em identificadores, enquanto Lisp n@~{a}o @'{e} sens@'{i}vel @`a caixa.
-Existem algumas regras governando a tradu@,{c}@~{a}o de nomes entre o Lisp e o Maxima.
+Existem algumas regras governando a tradu@value{cedilha}@~{a}o de nomes entre o Lisp e o Maxima.
 
 @enumerate
 @item
@@ -93,7 +93,7 @@ Isso tem o mesmo efeito que digitar
 @end example
 
 @noindent
-A fun@,{c}@~{a}o Lisp @code{displa} imprime uma express@~{a}o em formato Maxima.
+A fun@value{cedilha}@~{a}o Lisp @code{displa} imprime uma express@~{a}o em formato Maxima.
 
 @example
 (%i1) :lisp #$[x, y, z]$ 
@@ -103,8 +103,8 @@ A fun@,{c}@~{a}o Lisp @code{displa} imprime uma express@~{a}o em formato Maxima.
 NIL
 @end example
 
-Fun@,{c}@~{o}es definidas em Maxima n@~{a}o s@~{a}o fun@,{c}@~{o}es comuns em Lisp.
-A fun@,{c}@~{a}o Lisp @code{mfuncall} chama uma fun@,{c}@~{a}o Maxima.
+Fun@value{cedilha}@~{o}es definidas em Maxima n@~{a}o s@~{a}o fun@value{cedilha}@~{o}es comuns em Lisp.
+A fun@value{cedilha}@~{a}o Lisp @code{mfuncall} chama uma fun@value{cedilha}@~{a}o Maxima.
 Por exemplo:
 
 @example
@@ -113,7 +113,7 @@ Por exemplo:
 ((MTIMES SIMP) A B)
 @end example
 
-Algumas fun@,{c}@~{o}es Lisp possuem o mesmo nome que no pacote Maxima, a saber as seguintes.
+Algumas fun@value{cedilha}@~{o}es Lisp possuem o mesmo nome que no pacote Maxima, a saber as seguintes.
 
 @code{complement},
 @code{continue},
@@ -138,9 +138,9 @@ Algumas fun@,{c}@~{o}es Lisp possuem o mesmo nome que no pacote Maxima, a saber 
 e @code{gcd}.
 
 
-@node Descartando, Documenta@,{c}@~{a}o, Lisp e Maxima, Ajuda
+@node Descartando, Documenta@value{cedilha}@~{a}o, Lisp e Maxima, Ajuda
 @section Descartando
-Computa@,{c}@~{a}o simb@'{o}lica tende a criar um bom volume
+Computa@value{cedilha}@~{a}o simb@'{o}lica tende a criar um bom volume
 de arquivos tempor@'{a}rios, e o efetivo manuseio disso pode ser crucial para sucesso
 completo de alguns programas.
 
@@ -148,13 +148,13 @@ completo de alguns programas.
 @c WHAT ABOUT GC IN GCL ON MS WINDOWS ??
 @c SHOULD WE SAY SOMETHING ABOUT GC FOR OTHER LISPS ??
 Sob GCL, nos sistemas UNIX onde a chamada de sistema mprotect ( controle de acessso autorizado a uma regi@~{a}o de mem@'{o}ria) est@'{a} dispon@'{i}vel
-(incluindo SUN OS 4.0 e algumas variantes de BSD) uma organiza@,{c}@~{a}o de arquivos tempor@'{a}rios estratificada
-est@'{a} dispon@'{i}vel.   Isso limita a organiza@,{c}@~{a}o para p@'{a}ginas que tenham sido recentemente
-escritas.    Veja a documenta@,{c}@~{a}o da GCL sob ALLOCATE e GBC.   No
+(incluindo SUN OS 4.0 e algumas variantes de BSD) uma organiza@value{cedilha}@~{a}o de arquivos tempor@'{a}rios estratificada
+est@'{a} dispon@'{i}vel.   Isso limita a organiza@value{cedilha}@~{a}o para p@'{a}ginas que tenham sido recentemente
+escritas.    Veja a documenta@value{cedilha}@~{a}o da GCL sob ALLOCATE e GBC.   No
 ambiente Lisp fazendo (setq si::*notify-gbc* t) ir@'{a} ajudar voc@^{e} a determinar quais
 @'{a}reas podem precisar de mais espa@,{c}o.
 
-@node Documenta@,{c}@~{a}o, Defini@,{c}@~{o}es para Ajuda, Descartando, Ajuda
+@node Documenta@value{cedilha}@~{a}o, Defini@value{cedilha}@~{o}es para Ajuda, Descartando, Ajuda
 @section Documenta@,{c}@~{a}o
 
 @c SHOULD TALK ABOUT OTHER FORMS OF DOCUMENTATION ASIDE FROM ON-LINE MANUAL.
@@ -189,7 +189,7 @@ retorna
 
 e sa@'{i}da adicional.
 
-@node Defini@,{c}@~{o}es para Ajuda,  , Documenta@,{c}@~{a}o, Ajuda
+@node Defini@value{cedilha}@~{o}es para Ajuda,  , Documenta@value{cedilha}@~{a}o, Ajuda
 @section Defini@,{c}@~{o}es para Ajuda
 
 @deffn {Fun@,{c}@~{a}o} demo (@var{nomearquivo})

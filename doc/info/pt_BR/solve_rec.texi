@@ -2,11 +2,11 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /solve_rec.texi/1.7/Tue Jan 16 15:15:10 2007//
 @menu
-* Introdu@,{c}@~{a}o a solve_rec::
-* Defini@,{c}@~{o}es para solve_rec::
+* Introdu@value{cedilha}@~{a}o a solve_rec::
+* Defini@value{cedilha}@~{o}es para solve_rec::
 @end menu
 
-@node Introdu@,{c}@~{a}o a solve_rec, Defini@,{c}@~{o}es para solve_rec, solve_rec, solve_rec
+@node Introdu@value{cedilha}@~{a}o a solve_rec, Defini@value{cedilha}@~{o}es para solve_rec, solve_rec, solve_rec
 @section Introdu@,{c}@~{a}o a solve_rec
 
 @code{solve_rec} @'{e} um pacote para resolver recorr@^{e}ncias lineares com coeficientes
@@ -26,13 +26,13 @@ Exemplo:
              n     (n + 1) (n + 2)      (n + 1) (n + 2)
 @end example
 
-@node Defini@,{c}@~{o}es para solve_rec,  , Introdu@,{c}@~{a}o a solve_rec, solve_rec
-@section Defini@,{c}@~{o}es para solve_rec
+@node Defini@value{cedilha}@~{o}es para solve_rec,  , Introdu@value{cedilha}@~{a}o a solve_rec, solve_rec
+@section Defini@value{cedilha}@~{o}es para solve_rec
 
-@deffn {Fun@,{c}@~{a}o} reduce_order (@var{rec}, @var{sol}, @var{var})
+@deffn {Fun@value{cedilha}@~{a}o} reduce_order (@var{rec}, @var{sol}, @var{var})
 
-Reduz a ordem de recorr@^{e}ncia linear @var{rec} quando uma solu@,{c}@~{a}o particular
-@var{sol} for conhecida. A recorr@^{e}ncia reduzida pode ser usada para pegar outras solu@,{c}@~{o}es.
+Reduz a ordem de recorr@^{e}ncia linear @var{rec} quando uma solu@value{cedilha}@~{a}o particular
+@var{sol} for conhecida. A recorr@^{e}ncia reduzida pode ser usada para pegar outras solu@value{cedilha}@~{o}es.
 
 Exemplo:
 
@@ -80,7 +80,7 @@ So the general solution is
 
 @end deffn
 
-@defvr {Vari@'{a}vel de op@,{c}@~{a}o} simplify_products
+@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} simplify_products
 Valor padr@~{a}o: @code{true}
 
 Se @code{simplify_products} for @code{true}, @code{solve_rec} ir@'{a} tentar
@@ -90,13 +90,13 @@ Veja tamb@'{e}m: @code{solve_rec}.
 
 @end defvr
 
-@deffn {Fun@,{c}@~{a}o} simplify_sum (@var{expr})
+@deffn {Fun@value{cedilha}@~{a}o} simplify_sum (@var{expr})
 
 Tenta simplificar todos os somat@'{o}rios que aparecem na @var{expr} para uma forma a mais simplificada poss@'{i}vel.
 
 @code{simplify_sum} usa os algor@'{i}tmos de Gosper e de Zeilberger para simplificar somat@'{o}rios.
 
-Para usar essa fun@,{c}@~{a}o primeiramente chame o pacote @code{simplify_sum} com
+Para usar essa fun@value{cedilha}@~{a}o primeiramente chame o pacote @code{simplify_sum} com
 @code{load(simplify_sum)}.
 
 Exemplo:
@@ -120,21 +120,21 @@ Exemplo:
 
 @end deffn
 
-@deffn {Fun@,{c}@~{a}o} solve_rec (@var{eqn}, @var{var}, [@var{init}])
-Encontra solu@,{c}@~{o}es hipergeom@'{e}tricas para a recorr@^{e}ncia linear @var{eqn} com
+@deffn {Fun@value{cedilha}@~{a}o} solve_rec (@var{eqn}, @var{var}, [@var{init}])
+Encontra solu@value{cedilha}@~{o}es hipergeom@'{e}tricas para a recorr@^{e}ncia linear @var{eqn} com
 coeficientes polinomiais na vari@'{a}vel @var{var}. Argumentos opcionais @var{init}
-s@~{a}o as condi@,{c}@~{o}es iniciais.
+s@~{a}o as condi@value{cedilha}@~{o}es iniciais.
 
 @code{solve_rec} pode resolver recorr@^{e}ncias lineares com coeficientes constantes,
-encontrando solu@,{c}@~{o}es hipergeom@'{e}tricas para recorr@^{e}ncias lineares homog@^{e}neas com
-coeficientes polinomiais, solu@,{c}@~{o}es racionais para recorr@^{e}ncias lineares com
+encontrando solu@value{cedilha}@~{o}es hipergeom@'{e}tricas para recorr@^{e}ncias lineares homog@^{e}neas com
+coeficientes polinomiais, solu@value{cedilha}@~{o}es racionais para recorr@^{e}ncias lineares com
 coeficientes polinomiais e pode resolver recorr@^{e}ncias do tipo de Ricatti.
 
-Note que o tempo de execu@,{c}@~{a}o do algor@'{i}tmo usado para encontrar solu@,{c}@~{o}es
+Note que o tempo de execu@value{cedilha}@~{a}o do algor@'{i}tmo usado para encontrar solu@value{cedilha}@~{o}es
 hipergeom@'{e}tricas aumenta exponencialmente com o grau do coeficiente lider e
 guia.
 
-Para usar essa fun@,{c}@~{a}o primeiramente chame o pacote @code{solve_rec} com
+Para usar essa fun@value{cedilha}@~{a}o primeiramente chame o pacote @code{solve_rec} com
 @code{load(solve_rec);}.
 
 Exemplo de recorr@^{e}ncia linear com coeficientes constantes:
@@ -191,12 +191,12 @@ Veja tamb@'{e}m: @code{solve_rec_rat}, @code{simplify_products}, e @code{product
 
 @end deffn
 
-@deffn {Fun@,{c}@~{a}o} solve_rec_rat (@var{eqn}, @var{var}, [@var{init}])
+@deffn {Fun@value{cedilha}@~{a}o} solve_rec_rat (@var{eqn}, @var{var}, [@var{init}])
 
-Encontra solu@,{c}@~{o}es racionais para recorr@^{e}ncias lineares. Veja solve_rec para
-uma descri@,{c}@~{a}o dos argumentos.
+Encontra solu@value{cedilha}@~{o}es racionais para recorr@^{e}ncias lineares. Veja solve_rec para
+uma descri@value{cedilha}@~{a}o dos argumentos.
 
-Para usar essa fun@,{c}@~{a}o primeirametne chame o pacote @code{solve_rec} com
+Para usar essa fun@value{cedilha}@~{a}o primeirametne chame o pacote @code{solve_rec} com
 @code{load(solve_rec);}.
 
 Exemplo:
@@ -219,18 +219,18 @@ Veja tamb@'{e}m: @code{solve_rec}.
 
 @end deffn
 
-@defvr {Vari@'{a}vel de op@,{c}@~{a}o} product_use_gamma
+@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} product_use_gamma
 Valor padr@~{a}o: @code{true}
 
-Quando simplificando produtos, @code{solve_rec} introduz a fun@,{c}@~{a}o gama
+Quando simplificando produtos, @code{solve_rec} introduz a fun@value{cedilha}@~{a}o gama
 dentro da express@~{a}o se @code{product_use_gamma} for @code{true}.
 
 Veja tamb@'{e}m: @code{simplify_products}, @code{solve_rec}.
 
 @end defvr
 
-@deffn {Fun@,{c}@~{a}o} summand_to_rec (@var{summand}, @var{k}, @var{n})
-@deffnx {Fun@,{c}@~{a}o} summand_to_rec (@var{summand}, [@var{k}, @var{lo}, @var{hi}], @var{n})
+@deffn {Fun@value{cedilha}@~{a}o} summand_to_rec (@var{summand}, @var{k}, @var{n})
+@deffnx {Fun@value{cedilha}@~{a}o} summand_to_rec (@var{summand}, [@var{k}, @var{lo}, @var{hi}], @var{n})
 
 Retorna a recorr@^{e}ncia satisfeita pelo somat@'{o}rio
 
@@ -247,7 +247,7 @@ Retorna a recorr@^{e}ncia satisfeita pelo somat@'{o}rio
 onde x @'{e} hipergeom@'{e}trico em @var{k} e @var{n}. SE @var{inf} e @var{sup}
 forem omitidos, s@~{a}o assumidos como sendo @code{inf = -inf} e @code{sup = inf}.
 
-Para usar essa fun@,{c}@~{a}o primeiro chame o pacote @code{simplify_sum} com
+Para usar essa fun@value{cedilha}@~{a}o primeiro chame o pacote @code{simplify_sum} com
 @code{load(simplify_sum)}.
 
 Exemplo:

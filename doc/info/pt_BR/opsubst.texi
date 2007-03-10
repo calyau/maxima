@@ -2,17 +2,17 @@
 @c /opsubst.texi/1.1/Mon Feb 27 22:09:17 2006//
 
 @menu
-* Defini@,{c}@~{o}es para  opsubst::
+* Defini@value{cedilha}@~{o}es para  opsubst::
 @end menu
 
-@node Defini@,{c}@~{o}es para opsubst,  , opsubst, opsubst
-@section Defini@,{c}@~{o}es para  opsubst
+@node Defini@value{cedilha}@~{o}es para opsubst,  , opsubst, opsubst
+@section Defini@value{cedilha}@~{o}es para  opsubst
 
-@deffn {Fun@,{c}@~{a}o} opsubst (@var{f},@var{g},@var{e})
-@deffnx {Fun@,{c}@~{a}o} opsubst (@var{g}=@var{f},@var{e})
-@deffnx {Fun@,{c}@~{a}o} opsubst ([@var{g1}=@var{f1},@var{g2}=@var{f2},..., @var{gn}=@var{fn}],@var{e})
-A fun@,{c}@~{a}o @code{opsubst}  similar @`a fun@,{c}@~{a}o @code{subst}, exceto que
-@code{opsubst} somente faz substitui@,{c}@~{o}es para as opera@,{c}@~{o}es em uma express@~{o}es. Em geral, 
+@deffn {Fun@value{cedilha}@~{a}o} opsubst (@var{f},@var{g},@var{e})
+@deffnx {Fun@value{cedilha}@~{a}o} opsubst (@var{g}=@var{f},@var{e})
+@deffnx {Fun@value{cedilha}@~{a}o} opsubst ([@var{g1}=@var{f1},@var{g2}=@var{f2},..., @var{gn}=@var{fn}],@var{e})
+A fun@value{cedilha}@~{a}o @code{opsubst}  similar @`a fun@value{cedilha}@~{a}o @code{subst}, exceto que
+@code{opsubst} somente faz substitui@value{cedilha}@~{o}es para as opera@value{cedilha}@~{o}es em uma express@~{o}es. Em geral, 
 quando @var{f} for um operador em uma express@~{a}o @var{e}, substitui @var{g} 
 por @var{f} na express@~{a}o @var{e}.
 
@@ -39,8 +39,8 @@ Exemplos:
 (%o7)                       h(x)
 @end example
 
-Internamente, Maxima n@~{a}o usa os operadores de nega@,{c}@~{a}o un@'{a}ria,
-divis@~{a}o, ou de subtra@,{c}@~{a}o; dessa forma:
+Internamente, Maxima n@~{a}o usa os operadores de nega@value{cedilha}@~{a}o un@'{a}ria,
+divis@~{a}o, ou de subtra@value{cedilha}@~{a}o; dessa forma:
 @example
 (%i8) opsubst("+","-",a-b);
 (%o8)                     a - b
@@ -52,13 +52,13 @@ divis@~{a}o, ou de subtra@,{c}@~{a}o; dessa forma:
                              b
 @end example
 
-A representa@,{c}@~{a}o interna de -a*b @'{e} *(-1,a,b); dessa forma
+A representa@value{cedilha}@~{a}o interna de -a*b @'{e} *(-1,a,b); dessa forma
 @example
 (%i11) opsubst("[","*", -a*b);
 (%o11)                  [- 1, a, b]
 @end example
 
-Quando o operador n@~{a}o for um s@'{i}mbolo Maxima, geralmente alguma outra fun@,{c}@~{a}o
+Quando o operador n@~{a}o for um s@'{i}mbolo Maxima, geralmente alguma outra fun@value{cedilha}@~{a}o
 sinalizar@'{a} um erro:
 @example
 (%i12) opsubst(a+b,f, f(x));
@@ -75,6 +75,6 @@ Todavia, operadores subscritos s@~{a}o permitidos:
                             5
 @end example
 
-Para usar essa fun@,{c}@~{a}o escreva primeiramente @code{load("opsubst")}.
+Para usar essa fun@value{cedilha}@~{a}o escreva primeiramente @code{load("opsubst")}.
 @end deffn
 

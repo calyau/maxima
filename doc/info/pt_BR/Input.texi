@@ -3,7 +3,7 @@
 @menu
 * Coment@'{a}rios::
 * Arquivos::                       
-* Defini@,{c}@~{o}es para Entrada e Sa@'{i}da::  
+* Defini@value{cedilha}@~{o}es para Entrada e Sa@'{i}da::  
 @end menu
 
 @node Coment@'{a}rios, Arquivos, Entrada e Sa@'{i}da, Entrada e Sa@'{i}da
@@ -11,15 +11,15 @@
 
 Um coment@'{a}rio na entrada do Maxima @'{e} qualquer texto entre @code{/*} e @code{*/}.
 
-O analisador do Maxima trata um coment@'{a}rio como espa@,{c}@~{a}o em branco para o prop@'{o}sito de
-encontrar indica@,{c}@~{o}es no fluxo de entrada;
-uma indica@,{c}@~{a}o sempre termina um coment@'{a}rio.
-Uma entrada tal como @code{a/* foo */b} cont@'{e}m duas indica@,{c}@~{o}es, @code{a} e @code{b},
-e n@~{a}o uma indica@,{c}@~{a}o simples @code{ab}.
+O analisador do Maxima trata um coment@'{a}rio como espa@value{cedilha}@~{a}o em branco para o prop@'{o}sito de
+encontrar indica@value{cedilha}@~{o}es no fluxo de entrada;
+uma indica@value{cedilha}@~{a}o sempre termina um coment@'{a}rio.
+Uma entrada tal como @code{a/* foo */b} cont@'{e}m duas indica@value{cedilha}@~{o}es, @code{a} e @code{b},
+e n@~{a}o uma indica@value{cedilha}@~{a}o simples @code{ab}.
 Coment@'{a}rios s@~{a}o de outra ignorados pelo Maxima;
-nem o conte@'{u}do nem a localiza@,{c}@~{a}o dos coment@'{a}rios s@~{a}o armazenados pelo analisador de express@~{o}es de entrada.
+nem o conte@'{u}do nem a localiza@value{cedilha}@~{a}o dos coment@'{a}rios s@~{a}o armazenados pelo analisador de express@~{o}es de entrada.
 
-Coment@'{a}rios podem ser aninhados de forma a terem um n@'{i}vel de estratifica@,{c}@~{a}o arbitrario.
+Coment@'{a}rios podem ser aninhados de forma a terem um n@'{i}vel de estratifica@value{cedilha}@~{a}o arbitrario.
 O delimitador @code{/*} e o delimitador @code{*/} formam pares.
 A quantidade de @code{/*} deve ser a mesma quantidade de @code{*/}.
 
@@ -46,7 +46,7 @@ Exemplos:
 @end example
 
 
-@node Arquivos, Defini@,{c}@~{o}es para Entrada e Sa@'{i}da, Coment@'{a}rios, Entrada e Sa@'{i}da
+@node Arquivos, Defini@value{cedilha}@~{o}es para Entrada e Sa@'{i}da, Coment@'{a}rios, Entrada e Sa@'{i}da
 @section Arquivos
 Um arquivo @'{e} simplesmente uma @'{a}rea sobre um dispositivo particular de armazenagem que cont@'{e}m dados ou texto.
 Arquivos em disco s@~{a}o figurativamente agrupados dentro de "diret@'{o}rios".
@@ -63,8 +63,8 @@ Comandos que lidam com arquivos s@~{a}o:
 e
 @code{appendfile}.
 
-@node Defini@,{c}@~{o}es para Entrada e Sa@'{i}da,  , Arquivos, Entrada e Sa@'{i}da
-@section Defini@,{c}@~{o}es para Entrada e Sa@'{i}da de Dados
+@node Defini@value{cedilha}@~{o}es para Entrada e Sa@'{i}da,  , Arquivos, Entrada e Sa@'{i}da
+@section Defini@value{cedilha}@~{o}es para Entrada e Sa@'{i}da de Dados
 @defvr {Vari@'{a}vel de sistema} __
 @ifinfo
 @vrindex Express@~{a}o de entrada atual
@@ -208,9 +208,9 @@ Veja tamb@'{e}m @code{_}, @code{%%}, e @code{%th}
 @ifinfo
 @vrindex Resultado anterior em express@~{a}o composta
 @end ifinfo
-Em declara@,{c}@~{a}o composta,
+Em declara@value{cedilha}@~{a}o composta,
 a saber @code{block}, @code{lambda}, ou @code{(@var{s_1}, ..., @var{s_n})},
-@code{%%} @'{e} os valor da declara@,{c}@~{a}o anterior.
+@code{%%} @'{e} os valor da declara@value{cedilha}@~{a}o anterior.
 Por exemplo,
 
 @example
@@ -220,9 +220,9 @@ block ([prev], prev: integrate (x^5, x), ev (prev, x=2) - ev (prev, x=1));
 
 retornam o mesmo resultado, a saber @code{21/2}.
 
-Uma declara@,{c}@~{a}o composta pode compreender outras declara@,{c}@~{o}es compostas.
-Pode uma declara@,{c}@~{a}o ser simples ou composta, 
-@code{%%} @'{e} o valor da declara@,{c}@~{a}o anterior.
+Uma declara@value{cedilha}@~{a}o composta pode compreender outras declara@value{cedilha}@~{o}es compostas.
+Pode uma declara@value{cedilha}@~{a}o ser simples ou composta, 
+@code{%%} @'{e} o valor da declara@value{cedilha}@~{a}o anterior.
 Por exemplo,
 
 @example
@@ -231,8 +231,8 @@ block (block (a^n, %%*42), %%/6)
 
 retorna @code{7*a^n}.
 
-Dentro da declara@,{c}@~{a}o composta, o valor de @code{%%} pode ser inspecionado em uma parada de linha de comando,
-que @'{e} aberta pela execu@,{c}@~{a}o da fun@,{c}@~{a}o @code{break}.
+Dentro da declara@value{cedilha}@~{a}o composta, o valor de @code{%%} pode ser inspecionado em uma parada de linha de comando,
+que @'{e} aberta pela execu@value{cedilha}@~{a}o da fun@value{cedilha}@~{a}o @code{break}.
 Por exemplo, na parada de linha de comando aberta por
 
 @example
@@ -241,8 +241,8 @@ block (a: 42, break ())$
 
 digitando @code{%%;} retorna @code{42}.
 
-Na primeira declara@,{c}@~{a}o em uma declara@,{c}@~{a}o composta,
-ou fora de uma declara@,{c}@~{a}o composta,
+Na primeira declara@value{cedilha}@~{a}o em uma declara@value{cedilha}@~{a}o composta,
+ou fora de uma declara@value{cedilha}@~{a}o composta,
 @code{%%} @'{e} indefinido.
 
 @code{%%}  reconhecido por @code{batch} e @code{load},
@@ -252,7 +252,7 @@ Veja tamb@'{e}m @code{%}.
 
 @end defvr
 
-@defvr {Vari@'{a}vel de op@,{c}@~{a}o} %edispflag
+@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} %edispflag
 Valor padr@~{a}o: @code{false}
 
 Quando @code{%edispflag} for @code{true},
@@ -261,7 +261,7 @@ Por exemplo, @code{%e^-x} @'{e} mostrado como @code{1/%e^x}.
 
 @end defvr
 
-@deffn {Fun@,{c}@~{a}o} %th (@var{i})
+@deffn {Fun@value{cedilha}@~{a}o} %th (@var{i})
 @ifinfo
 @fnindex N'@'{e}sima sa@'{i}da anterior
 @end ifinfo
@@ -292,33 +292,33 @@ Veja tamb@'{e}m @code{%}.
 
 @deffn {S@'{i}mbolo especial} ?
 @ifinfo
-@fnindex Consulta documenta@,{c}@~{a}o
+@fnindex Consulta documenta@value{cedilha}@~{a}o
 @end ifinfo
-Como prefixo para uma fun@,{c}@~{a}o ou nome de vari@'{a}vel, @code{?} significa que
+Como prefixo para uma fun@value{cedilha}@~{a}o ou nome de vari@'{a}vel, @code{?} significa que
 o nome @'{e} um nome Lisp, n@~{a}o um nome Maxima.
-Por exemplo, @code{?round} significa a fun@,{c}@~{a}o Lisp @code{ROUND}.
+Por exemplo, @code{?round} significa a fun@value{cedilha}@~{a}o Lisp @code{ROUND}.
 Veja @ref{Lisp e Maxima} para mais sobre esse ponto.
 
-A nota@,{c}@~{a}o @code{? palavra} (um ponto de interroga@,{c}@~{a}o seguido de uma palavra e separado desta por um espa@,{c}o em branco)
+A nota@value{cedilha}@~{a}o @code{? palavra} (um ponto de interroga@value{cedilha}@~{a}o seguido de uma palavra e separado desta por um espa@value{cedilha}o em branco)
 @'{e} equivalente a @code{describe("palavra")}.
-O ponto de interroga@,{c}@~{a}o deve aparecer no in@'{i}cio de uma linha de entrada;
-de outra forma o ponto de interroga@,{c}@~{a}o n@~{a}o @'{e} reconhecido com um pedido de documenta@,{c}@~{a}o.
+O ponto de interroga@value{cedilha}@~{a}o deve aparecer no in@'{i}cio de uma linha de entrada;
+de outra forma o ponto de interroga@value{cedilha}@~{a}o n@~{a}o @'{e} reconhecido com um pedido de documenta@value{cedilha}@~{a}o.
 
 @end deffn
 
 @deffn {S@'{i}mbolo especial} ??
 @ifinfo
-@fnindex Consulta documenta@,{c}@~{a}o (busca inexata)
+@fnindex Consulta documenta@value{cedilha}@~{a}o (busca inexata)
 @end ifinfo
 
-A nota@,{c}@~{a}o @code{?? palavra} (@code{??} seguido de um espa@,{c}o em branco e uma palavra)
+A nota@value{cedilha}@~{a}o @code{?? palavra} (@code{??} seguido de um espa@value{cedilha}o em branco e uma palavra)
 @'{e} equivalente a @code{describe("palavra", inexact)}.
-O ponto de interroga@,{c}@~{a}o deve ocorrer no in@'{i}cio de uma linha de entrada;
-de outra forma n@~{a}o @'{e} reconhecido com um pedido de documenta@,{c}@~{a}o.
+O ponto de interroga@value{cedilha}@~{a}o deve ocorrer no in@'{i}cio de uma linha de entrada;
+de outra forma n@~{a}o @'{e} reconhecido com um pedido de documenta@value{cedilha}@~{a}o.
 
 @end deffn
 
-@defvr {Vari@'{a}vel de op@,{c}@~{a}o} absboxchar
+@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} absboxchar
 Valor padr@~{a}o: @code{!}
 
 @code{absboxchar} @'{e} o caracter usado para para desenhar o sinal de valor
@@ -326,25 +326,25 @@ absoluto em torno de express@~{o}es que s@~{a}o maiores que uma linha de altura.
 
 @end defvr
 
-@defvr {Vari@'{a}vel de op@,{c}@~{a}o} file_output_append
+@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} file_output_append
 Valor padr@~{a}o: @code{false}
 
-@code{file_output_append} governa se fun@,{c}@~{o}es de sa@'{i}da de arquivo
+@code{file_output_append} governa se fun@value{cedilha}@~{o}es de sa@'{i}da de arquivo
 anexam ao final ou truncam seu arquivo de sa@'{i}da.
 Quando @code{file_output_append} for @code{true},
-tais fun@,{c}@~{o}es anexam ao final de seu arquivo de sa@'{i}da.
+tais fun@value{cedilha}@~{o}es anexam ao final de seu arquivo de sa@'{i}da.
 De outra forma, o arquivo de sa@'{i}da @'{e} truncado.
 
 @code{save}, @code{stringout}, e @code{with_stdout} respeitam @code{file_output_append}.
-Outras fun@,{c}@~{o}es que escrevem arquivos de sa@'{i}da n@~{a}o respeitam @code{file_output_append}.
-Em particular, montagem de gr@'{a}ficos e tradu@,{c}@~{o}es de fun@,{c}@~{o}es sempre truncam seu arquivo de sa@'{i}da,
+Outras fun@value{cedilha}@~{o}es que escrevem arquivos de sa@'{i}da n@~{a}o respeitam @code{file_output_append}.
+Em particular, montagem de gr@'{a}ficos e tradu@value{cedilha}@~{o}es de fun@value{cedilha}@~{o}es sempre truncam seu arquivo de sa@'{i}da,
 e @code{tex} e @code{appendfile} sempre anexam ao final.
 @c WHAT ABOUT WRITEFILE ??
 
 @end defvr
 
-@deffn {Fun@,{c}@~{a}o} appendfile (@var{nomearquivo})
-Adiciona ao final de @var{nomearquivo} uma transcri@,{c}@~{a}o do console.
+@deffn {Fun@value{cedilha}@~{a}o} appendfile (@var{nomearquivo})
+Adiciona ao final de @var{nomearquivo} uma transcri@value{cedilha}@~{a}o do console.
 @code{appendfile} @'{e} o mesmo que @code{writefile}, 
 exceto que o arquivo transcrito, se j@'{a} existe, ter@'{a} sempre alguma coisa adicionada ao seu final.
 
@@ -355,18 +355,18 @@ exceto que o arquivo transcrito, se j@'{a} existe, ter@'{a} sempre alguma coisa 
 @c batch CAN TAKE 'test AS AN OPTIONAL ARGUMENT IN WHICH CASE IT CALLS test-batch
 @c (SAME AS run_testsuite) -- SHOULD DOCUMENT batch (file, 'test)
 @c FIX BUG WHICH CAUSES batch (<file>, 'test) TO FAIL, THEN DOCUMENT IT HERE
-@deffn {Fun@,{c}@~{a}o} batch (@var{nomearquivo})
+@deffn {Fun@value{cedilha}@~{a}o} batch (@var{nomearquivo})
 L@^{e} express@~{o}es Maxima do arquivo @var{nomearquivo} e as avalia.
 @code{batch} procura pelo arquivo @var{nomearquivo} na lista @code{file_search_maxima}.
 Veja @code{file_search}.
 
 @var{nomearquivo} compreende uma seq@"{u}@^{e}ncia de express@~{o}es Maxima,
 cada uma terminada com @code{;} ou @code{$}.
-A var@'{a}vel especial @code{%} e a fun@,{c}@~{a}o @code{%th}
+A var@'{a}vel especial @code{%} e a fun@value{cedilha}@~{a}o @code{%th}
 referem-se a resultados pr@'{e}vios dentro do arquivo.
-O arquivo pode incluir constru@,{c}@~{o}es @code{:lisp}.
-Espa@,{c}os, tabula@,{c}@~{o}es, e o caracter de nova linha no arquivo ser@~{a}o ignorados.
-um arquivo de entrada conveniente pode ser criado por um editor de texto ou pela fun@,{c}@~{a}o @code{stringout}.
+O arquivo pode incluir constru@value{cedilha}@~{o}es @code{:lisp}.
+Espa@value{cedilha}os, tabula@value{cedilha}@~{o}es, e o caracter de nova linha no arquivo ser@~{a}o ignorados.
+um arquivo de entrada conveniente pode ser criado por um editor de texto ou pela fun@value{cedilha}@~{a}o @code{stringout}.
 
 @code{batch} l@^{e} cada express@~{a}o de entrada de @var{nomearquivo},
 mostra a entrada para o console, 
@@ -381,13 +381,13 @@ Se uma entrada de usu@'{a}rio for requisitada (por @code{asksign} ou por @code{a
 
 @c CTRL-C BREAKS batch IN CMUCL, BUT CLISP (ALTHO IT SHOWS "User break") KEEPS GOING !!!
 @c DON'T KNOW ABOUT GCL !!!
-O recurso de requisi@,{c}@~{a}o de entrada ao usu@'{a}rio possibilita interromper @code{batch} pela digita@,{c}@~{a}o de @code{control-C} no console.
-O efeito de @code{control-C} depende da subjacente implementa@,{c}@~{a}o do Lisp.
+O recurso de requisi@value{cedilha}@~{a}o de entrada ao usu@'{a}rio possibilita interromper @code{batch} pela digita@value{cedilha}@~{a}o de @code{control-C} no console.
+O efeito de @code{control-C} depende da subjacente implementa@value{cedilha}@~{a}o do Lisp.
 
 @code{batch} tem muitos usos,
 tais como fornecer um reservat@'{o}rio para trabalhar linhas de comando,
-para fornecer demonstra@,{c}@~{o}es livres de erros,
-ou para ajudar a organizar alguma coisa na solu@,{c}@~{a}o de problemas complexos.
+para fornecer demonstra@value{cedilha}@~{o}es livres de erros,
+ou para ajudar a organizar alguma coisa na solu@value{cedilha}@~{a}o de problemas complexos.
 
 @code{batch} avalia seu argumento.
 @c LACK OF A RETURN VALUE IS A BUG; THE INTENT IS TO RETURN THE FILE PATH, TO JUDGE BY THE SOURCE CODE
@@ -398,17 +398,17 @@ Veja tamb@'{e}m @code{load}, @code{batchload}, e @code{demo}.
 @end deffn
 
 @c RECOMMEND CUTTING THIS ITEM, AS THE load SUBSUMES FUNCTIONALITY OF batchload
-@deffn {Fun@,{c}@~{a}o} batchload (@var{nomearquivo})
+@deffn {Fun@value{cedilha}@~{a}o} batchload (@var{nomearquivo})
 L@^{e} express@~{o}es Maxima de @var{nomearquivo} e as avalia,
 sem mostrar a entrada ou express@~{o}es de sa@'{i}da
 e sem atribuir r@'{o}tulos para express@~{o}es de sa@'{i}da.
 Sa@'{i}das impressas (tais como produzidas por @code{print} ou @code{describe})
 s@~{a}o mostradas, todavia.
 
-A vari@'{a}vel especial @code{%} e a fun@,{c}@~{a}o @code{%th}
+A vari@'{a}vel especial @code{%} e a fun@value{cedilha}@~{a}o @code{%th}
 referem-se a resultados anteriores do interpretador interativo,
 n@~{a}o a resultados dentro do arquivo.
-O arquivo n@~{a}o pode incluir constru@,{c}@~{o}es @code{:lisp}.
+O arquivo n@~{a}o pode incluir constru@value{cedilha}@~{o}es @code{:lisp}.
 
 @code{batchload} retorna o caminho de @var{nomearquivo}, como uma seq@"{u}@^{e}ncia de caracteres.
 @code{batchload} avalia seu argumento.
@@ -418,16 +418,16 @@ Veja tamb@'{e}m @code{batch} e @code{load}.
 
 @end deffn
 
-@deffn {Fun@,{c}@~{a}o} closefile ()
+@deffn {Fun@value{cedilha}@~{a}o} closefile ()
 Fecha o arquivo transcrito aberto por @code{writefile} ou @code{appendfile}.
 
 @end deffn
 
 @c NEEDS CLARIFICATION !!!
-@deffn {Fun@,{c}@~{a}o} collapse (@var{expr})
+@deffn {Fun@value{cedilha}@~{a}o} collapse (@var{expr})
 Reduz @var{expr} fazendo com que todas as suas
 subexpress@~{o}es comuns (i.e., iguais)  sejam compartilhadas (i.e., usam a mesma c@'{e}lulas),
-dessa forma economizando espa@,{c}o.  (@code{collapse} @'{e} uma subrotina usada pelo comando
+dessa forma economizando espa@value{cedilha}o.  (@code{collapse} @'{e} uma subrotina usada pelo comando
 @code{optimize}.)  Dessa forma, chamar @code{collapse} pode ser @'{u}til
 ap@'{o}s um @code{save} arquivo.  Voc@^{e} pode diminuir muitas express@~{o}es
 juntas pelo uso de @code{collapse ([@var{expr_1}, ..., @var{expr_n}])}.  Similarmente, voc@^{e} pode
@@ -436,14 +436,14 @@ diminuir os elementos de um array @code{A} fazendo
 
 @end deffn
 
-@deffn {Fun@,{c}@~{a}o} concat (@var{arg_1}, @var{arg_2}, ...)
+@deffn {Fun@value{cedilha}@~{a}o} concat (@var{arg_1}, @var{arg_2}, ...)
 Concatena seus argumentos.
 Os argumentos devem obrigat@'{o}riamente serem avaliados para atomos.
 O valor de retorno ou @'{e} um s@'{i}mbolo se o primeiro argumento for um s@'{i}mbolo
 ou @'{e} uma seq@"{u}@^{e}ncia de caracteres no formato do Maxima em caso contr@'{a}rio.
 
 @code{concat} avalia seus argumentos.
-O ap@'{o}strofo @code{'} evita avalia@,{c}@~{a}o.
+O ap@'{o}strofo @code{'} evita avalia@value{cedilha}@~{a}o.
 
 @example
 (%i1) y: 7$
@@ -456,7 +456,7 @@ O ap@'{o}strofo @code{'} evita avalia@,{c}@~{a}o.
 
 Um s@'{i}mbolo constru@'{i}do por @code{concat} pode
 ser atribu@'{i}do a um valor e aparecer em express@~{o}es.
-O operador de atribui@,{c}@~{a}o @code{::} (duplo dois pontos) avalia seu lado esquerdo.
+O operador de atribui@value{cedilha}@~{a}o @code{::} (duplo dois pontos) avalia seu lado esquerdo.
 
 @example
 (%i5) a: concat ('y, z/2);
@@ -513,9 +513,9 @@ O resultado @'{e} uma seq@"{u}@^{e}ncia de caracteres no format do Lisp.
 @c @end defvar
 
 @c REPHRASE, NEEDS EXAMPLES
-@deffn {Fun@,{c}@~{a}o} disp (@var{expr_1}, @var{expr_2}, ...)
+@deffn {Fun@value{cedilha}@~{a}o} disp (@var{expr_1}, @var{expr_2}, ...)
 @'{e} como @code{display} mas somente os valores dos
-argumentos s@~{a}o mostrados em lugar de equa@,{c}@~{o}es.  A fun@,{c}@~{a}o @code{disp} @'{e} @'{u}til para
+argumentos s@~{a}o mostrados em lugar de equa@value{cedilha}@~{o}es.  A fun@value{cedilha}@~{a}o @code{disp} @'{e} @'{u}til para
 argumentos complicados que n@~{a}o possuem nomes ou onde somente o valor
 do argumento @'{e} de interesse e n@~{a}o o nome.
 
@@ -523,22 +523,22 @@ do argumento @'{e} de interesse e n@~{a}o o nome.
 
 @c HMM, THIS NEXT ITEM IS DEFINED IN A SHARE FILE (itensor.lisp); 
 @c DOES ITS DESCRIPTION WANT TO BE ELSEWHERE ???
-@deffn {Fun@,{c}@~{a}o} dispcon (@var{tensor_1}, @var{tensor_2}, ...)
-@deffnx {Fun@,{c}@~{a}o} dispcon (all)
-Mostra as propriedades de contra@,{c}@~{a}o de
+@deffn {Fun@value{cedilha}@~{a}o} dispcon (@var{tensor_1}, @var{tensor_2}, ...)
+@deffnx {Fun@value{cedilha}@~{a}o} dispcon (all)
+Mostra as propriedades de contra@value{cedilha}@~{a}o de
 seus argumentos da forma que foram dadas para @code{defcon}.  @code{dispcon (all)} mostra todas as
-propriedades de contra@,{c}@~{a}o que foram definidas.
+propriedades de contra@value{cedilha}@~{a}o que foram definidas.
 
 @end deffn
 
 @c REPHRASE, MORE EXAMPLES
-@deffn {Fun@,{c}@~{a}o} display (@var{expr_1}, @var{expr_2}, ...)
-Mostra equa@,{c}@~{o}es cujo lado esquerdo @'{e}
+@deffn {Fun@value{cedilha}@~{a}o} display (@var{expr_1}, @var{expr_2}, ...)
+Mostra equa@value{cedilha}@~{o}es cujo lado esquerdo @'{e}
 @var{expr_i} n@~{a}o avaliado, e cujo lado direito @'{e} o valor da express@~{a}o
-centrada na linha.  Essa fun@,{c}@~{a}o @'{e} @'{u}til em blocos e em @code{for}
-declara@,{c}@~{o}es com o objetivo de ter resultados intermedi@'{a}rios mostrados.  Os
+centrada na linha.  Essa fun@value{cedilha}@~{a}o @'{e} @'{u}til em blocos e em @code{for}
+declara@value{cedilha}@~{o}es com o objetivo de ter resultados intermedi@'{a}rios mostrados.  Os
 argumentos para @code{display} s@~{a}o usualmente @'{a}tomos, vari@'{a}veis com subscritos, ou
-chamadas de fun@,{c}@~{a}o.  Veja tamb@'{e}m @code{disp}.
+chamadas de fun@value{cedilha}@~{a}o.  Veja tamb@'{e}m @code{disp}.
 
 @example
 (%i1) display(B[1,2]);
@@ -550,7 +550,7 @@ chamadas de fun@,{c}@~{a}o.  Veja tamb@'{e}m @code{disp}.
 
 @end deffn
 
-@defvr {Vari@'{a}vel de op@,{c}@~{a}o} display2d
+@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} display2d
 Valor padr@~{a}o: @code{true}
 
 Quando @code{display2d} @'{e} @code{false},
@@ -558,12 +558,12 @@ O console visualizador @'{e} unidimensional ao inv@'{e}s de bidimensional.
 
 @end defvr
 
-@defvr {Vari@'{a}vel de op@,{c}@~{a}o} display_format_internal
+@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} display_format_internal
 Valor padr@~{a}o: @code{false}
 
 Quando @code{display_format_internal} @'{e} @code{true},
 express@~{o}es s@~{a}o mostradas sem ser por caminhos que
-escondam a representa@,{c}@~{a}o matem@'{a}tica interna.  O visualizador ent@~{a}o
+escondam a representa@value{cedilha}@~{a}o matem@'{a}tica interna.  O visualizador ent@~{a}o
 corresponde ao que @code{inpart} retorna em lugar de @code{part}.
 
 Exemplos:
@@ -587,13 +587,13 @@ X*4/3;    ---        - X
 
 @c IS THIS FUNCTION STILL USEFUL ???
 @c REPHRASE, NEEDS EXAMPLES
-@deffn {Fun@,{c}@~{a}o} dispterms (@var{expr})
+@deffn {Fun@value{cedilha}@~{a}o} dispterms (@var{expr})
 Mostra @var{expr} em partes uma abaixo da outra.
 Isto @'{e}, primeiro o operador de @var{expr} @'{e} mostrado, ent@~{a}o cada parcela em
-uma adi@,{c}@~{a}o, ou fatores em um produto, ou parte de uma express@~{a}o mais geral @'{e}
+uma adi@value{cedilha}@~{a}o, ou fatores em um produto, ou parte de uma express@~{a}o mais geral @'{e}
 mostrado separadamente.  Isso @'{e} @'{u}til se @var{expr} @'{e} muito larga para ser
 mostrada de outra forma.  Por exemplo se @code{P1}, @code{P2}, ...  s@~{a}o express@~{o}es
-muito largas ent@~{a}o o programa visualizador pode sair fora do espa@,{c}o de armazenamento na
+muito largas ent@~{a}o o programa visualizador pode sair fora do espa@value{cedilha}o de armazenamento na
 tentativa de mostrar @code{P1 + P2 + ...}  tudo de uma vez.  Todavia,
 @code{dispterms (P1 + P2 + ...)} mostra @code{P1}, ent@~{a}o abaixo disso @code{P2}, etc.  Quando n@~{a}o
 usando @code{dispterms}, se uma express@~{a}o exponencial @'{e} muito alta para ser
@@ -602,11 +602,11 @@ caso de @code{A^^B}).
 
 @end deffn
 
-@defvr {Vari@'{a}vel de op@,{c}@~{a}o} error_size
+@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} error_size
 Valor padr@~{a}o: 10
 
 @code{error_size} modifica mensagens de erro conforme o tamanho das express@~{o}es que aparecem nelas.
-Se o tamanho de uma express@~{a}o (como determinado pela fun@,{c}@~{a}o Lisp @code{ERROR-SIZE})
+Se o tamanho de uma express@~{a}o (como determinado pela fun@value{cedilha}@~{a}o Lisp @code{ERROR-SIZE})
 @'{e} maior que @code{error_size},
 a express@~{a}o @'{e} substitu@'{i}da na mensagem por um s@'{i}mbolo,
 e o o s@'{i}mbolo @'{e} atribu@'{i}do @`a express@~{a}o.
@@ -657,7 +657,7 @@ Express@~{a}o exemplo @'{e} --------------
 
 @end defvr
 
-@defvr {Vari@'{a}vel de op@,{c}@~{a}o} error_syms
+@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} error_syms
 Valor padr@~{a}o: @code{[errexp1, errexp2, errexp3]}
 
 Em mensagens de erro,
@@ -675,7 +675,7 @@ Veja tamb@'{e}m @code{error} e @code{error_size}.
 
 @end defvr
 
-@deffn {Fun@,{c}@~{a}o} expt (@var{a}, @var{b})
+@deffn {Fun@value{cedilha}@~{a}o} expt (@var{a}, @var{b})
 Se uma express@~{a}o exponencial @'{e} muito alta para ser mostrada
 cmo @code{@var{a}^@var{b}} isso aparece como @code{expt (@var{a}, @var{b})} (ou como @code{ncexpt (@var{a}, @var{b})} no caso de
 @code{@var{a}^^@var{b}}).
@@ -686,7 +686,7 @@ cmo @code{@var{a}^@var{b}} isso aparece como @code{expt (@var{a}, @var{b})} (ou 
 
 @end deffn
 
-@defvr {Vari@'{a}vel de op@,{c}@~{a}o} exptdispflag
+@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} exptdispflag
 Valor padr@~{a}o: @code{true}
 
 Quando @code{exptdispflag} @'{e} @code{true}, Maxima mostra express@~{o}es
@@ -695,7 +695,7 @@ com expoente negativo usando quocientes, e.g., @code{X^(-1)} como @code{1/X}.
 @end defvr
 
 @c NEEDS EXAMPLES
-@deffn {Fun@,{c}@~{a}o} filename_merge (@var{path}, @var{nomearquivo})
+@deffn {Fun@value{cedilha}@~{a}o} filename_merge (@var{path}, @var{nomearquivo})
 Constroem um caminho modificado de @var{path} e @var{nomearquivo}.
 Se o componente final de @var{path} @'{e} da forma @code{###.@var{algumacoisa}},
 o componente @'{e} substitu@'{i}do com @code{@var{nomearquivo}.@var{algumacoisa}}.
@@ -705,8 +705,8 @@ De outra forma, o componente final @'{e} simplesmente substitu@'{i}do por @var{n
 @c SAY SOMETHING ABOUT RETURN TYPE
 @end deffn
 
-@deffn {Fun@,{c}@~{a}o} file_search (@var{nomearquivo})
-@deffnx {Fun@,{c}@~{a}o} file_search (@var{nomearquivo}, @var{listacaminho})
+@deffn {Fun@value{cedilha}@~{a}o} file_search (@var{nomearquivo})
+@deffnx {Fun@value{cedilha}@~{a}o} file_search (@var{nomearquivo}, @var{listacaminho})
 
 @code{file_search} procura pelo arquivo @var{nomearquivo} e retorna o caminho para o arquivo
 (como uma seq@"{u}@^{e}ncia de caracteres) se ele for achado; de outra forma @code{file_search} retorna @code{false}.
@@ -746,13 +746,13 @@ como diret@'{o}rios de busca.
 
 @end deffn
 
-@defvr {Vari@'{a}vel de op@,{c}@~{a}o} file_search_maxima
-@defvrx {Vari@'{a}vel de op@,{c}@~{a}o} file_search_lisp
-@defvrx {Vari@'{a}vel de op@,{c}@~{a}o} file_search_demo
+@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} file_search_maxima
+@defvrx {Vari@'{a}vel de op@value{cedilha}@~{a}o} file_search_lisp
+@defvrx {Vari@'{a}vel de op@value{cedilha}@~{a}o} file_search_demo
 Essas vari@'{a}veis especificam listas de diret@'{o}rios a serem procurados
-por @code{load}, @code{demo}, e algumas outras fun@,{c}@~{o}es do Maxima.
+por @code{load}, @code{demo}, e algumas outras fun@value{cedilha}@~{o}es do Maxima.
 O valor padr@~{a}o dessas vari@'{a}veis
-nomeia v@'{a}rios diret@'{o}rios na instala@,{c}@~{a} padr@~{a}o do Maxima.
+nomeia v@'{a}rios diret@'{o}rios na instala@value{cedilha}@~{a} padr@~{a}o do Maxima.
 
 O usu@'{a}ro pode modificar essas vari@'{a}veis,
 quer substituindo os valores padr@~{a}o ou colocando no final diret@'{o}rios adicionais.
@@ -776,7 +776,7 @@ Isso pode ser conveniente para colocar assim uma express@~{a}o no arquivo @code{
 de forma que o caminho de busca de arquivo @'{e} atribu@'{i}do automaticamente quando o Maxima inicia.
 
 Multiplas extens@~{o}es de arquivo e e multiplos caminhos podem ser especificados por
-constru@,{c}@~{o}es ``coringa'' especiais.
+constru@value{cedilha}@~{o}es ``coringa'' especiais.
 A seq@"{u}@^{e}ncia de caracteres @code{###} expande a busca para al@'{e}m do nome b@'{a}sico,
 enquanto uma lista separada por v@'{i}rgulas e entre chaves @code{@{foo,bar,baz@}} expande
 em multiplas seq@"{u}@^{e}ncias de caracteres.
@@ -790,27 +790,27 @@ expande em @code{/home/wfs/neumann.lisp}, @code{/home/gcj/neumann.lisp}, @code{/
 
 @end defvr
 
-@deffn {Fun@,{c}@~{a}o} file_type (@var{nomearquivo})
-Retorna uma suposta informa@,{c}@~{a}o sobre o conte@'{u}do de @var{nomearquivo},
+@deffn {Fun@value{cedilha}@~{a}o} file_type (@var{nomearquivo})
+Retorna uma suposta informa@value{cedilha}@~{a}o sobre o conte@'{u}do de @var{nomearquivo},
 baseada na extens@~{a}o do arquivo.
 @var{nomearquivo} n@~{a}o precisa referir-se a um arquivo atual;
 nenhuma tentativa @'{e} feita para abrir o arquivo e inspecionar seu conte@'{u}do.
 
 O valor de retorno @'{e} um s@'{i}mbolo, qualquer um entre @code{object}, @code{lisp}, ou @code{maxima}.
-Se a extens@~{a}o come@,{c}a com @code{m} ou @code{d}, @code{file_type} retorna @code{maxima}.
-Se a extens@~{a}o come@,{c}a om @code{l}, @code{file_type} retorna @code{lisp}.
+Se a extens@~{a}o come@value{cedilha}a com @code{m} ou @code{d}, @code{file_type} retorna @code{maxima}.
+Se a extens@~{a}o come@value{cedilha}a om @code{l}, @code{file_type} retorna @code{lisp}.
 Se nenhum dos acima, @code{file_type} retorna @code{object}.
 
 @end deffn
 
-@deffn {Fun@,{c}@~{a}o} grind (@var{expr})
-@deffnx {Vari@'{a}vel de op@,{c}@~{a}o} grind
-A fun@,{c}@~{a}o @code{grind} imprime @var{expr}
+@deffn {Fun@value{cedilha}@~{a}o} grind (@var{expr})
+@deffnx {Vari@'{a}vel de op@value{cedilha}@~{a}o} grind
+A fun@value{cedilha}@~{a}o @code{grind} imprime @var{expr}
 para o console em uma forma adequada de entrada para Maxima.
 @code{grind} sempre retorna @code{done}.
 
-Quando @var{expr} for um nome de uma fun@,{c}@~{a}o ou o nome de uma macro,
-@code{grind} mostra na tela a defini@,{c}@~{a}o da fun@,{c}@~{a}o ou da macro em lugar de apenas o nome.
+Quando @var{expr} for um nome de uma fun@value{cedilha}@~{a}o ou o nome de uma macro,
+@code{grind} mostra na tela a defini@value{cedilha}@~{a}o da fun@value{cedilha}@~{a}o ou da macro em lugar de apenas o nome.
 
 Veja tamb@'{e}m @code{string}, que retorna uma seq@"{u}@^{e}ncia de caracteres em lugar de imprimir sua sa@'{i}da.
 @code{grind} tenta imprimir a express@~{a}o de uma maneira que a faz
@@ -818,12 +818,12 @@ levemente mais f@'{a}cil para ler que a sa@'{i}da de @code{string}.
 
 Quando a vari@'{a}vel @code{grind} @'{e} @code{true},
 a sa@'{i}da de @code{string} e @code{stringout} tem o mesmo formato que @code{grind};
-de outra forma nenhuma tentativa @'{e} feita para formatar especialmente a sa@'{i}da dessas fun@,{c}@~{o}es.
+de outra forma nenhuma tentativa @'{e} feita para formatar especialmente a sa@'{i}da dessas fun@value{cedilha}@~{o}es.
 O valor padr@~{a}o da vari@'{a}vel @code{grind} @'{e} @code{false}.
 
 @code{grind} pode tamb@'{e}m ser especificado como um argumento de @code{playback}.
 Quando @code{grind} est@'{a} presente,
-@code{playback} imprime express@~{o}es de entrada no mesmo formato que a fun@,{c}@~{a}o @code{grind}.
+@code{playback} imprime express@~{o}es de entrada no mesmo formato que a fun@value{cedilha}@~{a}o @code{grind}.
 De outra forma, nenhuma tentativa @'{e} feita para formatar especialmente as express@~{o}es de entrada.
 @code{grind} avalia seus argumentos.
 
@@ -926,7 +926,7 @@ n do (for j from i+1 thru n do L[i,j]:0),L)
 
 @end deffn
 
-@defvr {Vari@'{a}vel de op@,{c}@~{a}o} ibase
+@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} ibase
 Valor padr@~{a}o: 10
 
 Inteiros fornecidos dentro do Maxima s@~{a}o interpretados
@@ -948,12 +948,12 @@ Veja tamb@'{e}m @code{obase}.
 @c NEED EXAMPLES HERE
 @end defvr
 
-@defvr {Vari@'{a}vel de op@,{c}@~{a}o} inchar
+@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} inchar
 Valor padr@~{a}o: @code{%i}
 
 @code{inchar} @'{e} o prefixo dos r@'{o}tulos de express@~{o}es fornecidas pelo usu@'{a}rio.
 Maxima automaticamente constr@'{o}i um r@'{o}tulo para cada express@~{a}o de entrada
-por concatena@,{c}@~{a}o de @code{inchar} e @code{linenum}.
+por concatena@value{cedilha}@~{a}o de @code{inchar} e @code{linenum}.
 A @code{inchar} pode ser atribu@'{i}do qualquer seq@"{u}@^{e}ncia de caracteres ou s@'{i}mbolo, n@~{a}o necessariamente um caracter simples.
 
 @example
@@ -969,7 +969,7 @@ Veja tamb@'{e}m @code{labels}.
 
 @end defvr
 
-@deffn {Fun@,{c}@~{a}o} ldisp (@var{expr_1}, ..., @var{expr_n})
+@deffn {Fun@value{cedilha}@~{a}o} ldisp (@var{expr_1}, ..., @var{expr_n})
 Mostra express@~{o}es @var{expr_1}, ..., @var{expr_n} para o console
 como sa@'{i}da impressa na tela.
 @code{ldisp} atribue um r@'{o}tulo de express@~{a}o intermedi@'{a}ria a cada argumento
@@ -1002,14 +1002,14 @@ Veja tamb@'{e}m @code{disp}.
 
 @end deffn
 
-@deffn {Fun@,{c}@~{a}o} ldisplay (@var{expr_1}, ..., @var{expr_n})
+@deffn {Fun@value{cedilha}@~{a}o} ldisplay (@var{expr_1}, ..., @var{expr_n})
 Mostra express@~{o}es @var{expr_1}, ..., @var{expr_n} para o console
 como sa@'{i}da impressa na tela.
-Cada express@~{a}o @'{e} impressa como uma equa@,{c}@~{a}o da forma @code{lhs = rhs}
+Cada express@~{a}o @'{e} impressa como uma equa@value{cedilha}@~{a}o da forma @code{lhs = rhs}
 na qual @code{lhs} @'{e} um dos argumentos de @code{ldisplay}
 e @code{rhs} @'{e} seu valor.
 Tipicamente cada argumento @'{e} uma vari@'{a}vel.
-@code{ldisp} atribui um r@'{o}tulo de express@~{a}o intermedi@'{a}ia a cada equa@,{c}@~{a}o
+@code{ldisp} atribui um r@'{o}tulo de express@~{a}o intermedi@'{a}ia a cada equa@value{cedilha}@~{a}o
 e retorna a lista de r@'{o}tulos.
 
 Veja tamb@'{e}m @code{display}.
@@ -1039,12 +1039,12 @@ Veja tamb@'{e}m @code{display}.
 
 @end deffn
 
-@defvr {Vari@'{a}vel de op@,{c}@~{a}o} linechar
+@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} linechar
 Valor padr@~{a}o: @code{%t}
 
 @code{linechar} @'{e} o refixo de r@'{o}tulos de express@~{o}es intermedi@'{a}rias gerados pelo Maxima.
 Maxima constr@'{o}i um r@'{o}tulo para cada express@~{a}o intermedi@'{a}ria (se for mostrada)
-pela concatena@,{c}@~{a}o de @code{linechar} e @code{linenum}.
+pela concatena@value{cedilha}@~{a}o de @code{linechar} e @code{linenum}.
 A @code{linechar} pode ser atribu@'{i}do qualquer seq@"{u}@^{e}ncia de caracteres ou s@'{i}mbolo, n@~{a}o necess@'{a}riamente um caractere simples.
 
 Express@~{o}es intermedi@'{a}rias podem ou n@~{a}o serem mostradas.
@@ -1052,25 +1052,25 @@ See @code{programmode} e @code{labels}.
 
 @end defvr
 
-@defvr {Vari@'{a}vel de op@,{c}@~{a}o} linel
+@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} linel
 Valor padr@~{a}o: 79
 
 @code{linel} @'{e} a largura assumida (em caracteres) do console
 para o prop@'{o}sito de mostrar express@~{o}es.
 A @code{linel} pode ser atribu@'{i}do qualquer valor pelo usu@'{a}rio,
 embora valores muio pequenos ou muito grandes possam ser impratic@'{a}veis.
-Textos impressos por fun@,{c}@~{o}es internas do Maxima, tais como mensagens de erro e a sa@'{i}da de @code{describe},
+Textos impressos por fun@value{cedilha}@~{o}es internas do Maxima, tais como mensagens de erro e a sa@'{i}da de @code{describe},
 n@~{a}o s@~{a}o afetadas por @code{linel}.
 
 @end defvr
 
-@defvr {Vari@'{a}vel de op@,{c}@~{a}o} lispdisp
+@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} lispdisp
 Valor padr@~{a}o: @code{false}
 
 Quando @code{lispdisp} for @code{true},
-s@'{i}mbolos Lisp s@~{a}o mostrados com um ponto de interroga@,{c}@~{a}o @code{?} na frente.
+s@'{i}mbolos Lisp s@~{a}o mostrados com um ponto de interroga@value{cedilha}@~{a}o @code{?} na frente.
 De outra forma,
-s@'{i}mbolos Lisp ser@~{a}o mostrados sem o ponto de interroga@,{c}@~{o} na frente.
+s@'{i}mbolos Lisp ser@~{a}o mostrados sem o ponto de interroga@value{cedilha}@~{o} na frente.
 
 Exemplos:
 
@@ -1091,10 +1091,10 @@ Exemplos:
 
 @end defvr
 
-@deffn {Fun@,{c}@~{a}o} load (@var{nomearquivo})
+@deffn {Fun@value{cedilha}@~{a}o} load (@var{nomearquivo})
 Avalia express@~{o}es em @var{nomearquivo}, 
-dessa forma conduzindo vari@'{a}veis, fun@,{c}@~{o}es, e outros objetos dentro do Maxima.
-A associa@,{c}@~{a}o de qualquer objeto existente @'{e} substitu@'{i}da pela associa@,{c}@~{a}o recuperada de @var{nomearquivo}.  
+dessa forma conduzindo vari@'{a}veis, fun@value{cedilha}@~{o}es, e outros objetos dentro do Maxima.
+A associa@value{cedilha}@~{a}o de qualquer objeto existente @'{e} substitu@'{i}da pela associa@value{cedilha}@~{a}o recuperada de @var{nomearquivo}.  
 Para achar o arquivo,
 @code{load} chama @code{file_search} com @code{file_search_maxima} e @code{file_search_lisp}
 como diret@'{o}rios de busca.
@@ -1107,9 +1107,9 @@ e @code{stringout}, que criam c@'{o}digos Maxima,
 podem ser processadas por @code{load}.
 @code{load} chama @code{loadfile} para carregar arquivos Lisp e @code{batchload} para carregar arquivos Maxima.
 
-@code{load} n@~{a}o reconhece constru@,{c}@~{o}es @code{:lisp} em arquivos do Maxima,
+@code{load} n@~{a}o reconhece constru@value{cedilha}@~{o}es @code{:lisp} em arquivos do Maxima,
 e quando processando @var{nomearquivo},
-as vari@'{a}veis globais @code{_}, @code{__}, @code{%}, e @code{%th} possuem as mesmas associa@,{c}@~{o}es
+as vari@'{a}veis globais @code{_}, @code{__}, @code{%}, e @code{%th} possuem as mesmas associa@value{cedilha}@~{o}es
 que possuiam quando @code{load} foi chamada.
 
 Veja tamb@'{e}m @code{loadfile}, @code{batch}, @code{batchload}, e @code{demo}.
@@ -1123,7 +1123,7 @@ Veja @code{file_search} para mais detalhes sobre o mecanismo de busca de arquivo
 @end deffn
 
 @c RECOMMEND CUTTING THIS ITEM, AS THE load SUBSUMES FUNCTIONALITY OF loadfile
-@deffn {Fun@,{c}@~{a}o} loadfile (@var{nomearquivo})
+@deffn {Fun@value{cedilha}@~{a}o} loadfile (@var{nomearquivo})
 Avalia express@~{o}es Lisp em @var{nomearquivo}.
 @code{loadfile} n@~{a}o invoca @code{file_search}, ent@~{a}o @code{nomearquivo} deve obrigat@'{o}riamente incluir
 a extens@~{a}o do arquivo e tanto quanto o caminho como necess@'{a}rio para achar o arquivo.
@@ -1133,13 +1133,13 @@ O usu@'{a}rio pode achar isso mais conveniente para usar @code{load} em lugar de
 
 @code{loadfile} avalia seu argumento, ent@~{a}o @code{nomearquivo} deve obrigat@'{o}riamente ser uma seq@"{u}@^{e}ncia de caracteres literal,
 n@~{a}o uma vari@'{a}vel do tipo seq@"{u}@^{e}ncia de caracteres.
-O operador ap@'{o}strofo-ap@'{o}strofo @code{'@w{}'} n@~{a}o aceita avalia@,{c}@~{a}o.
+O operador ap@'{o}strofo-ap@'{o}strofo @code{'@w{}'} n@~{a}o aceita avalia@value{cedilha}@~{a}o.
 
 @end deffn
 
 @c loadprint DOESN'T EXACTLY WORK LIKE THIS, BUT IT HARDLY SEEMS WORTH FIXING
 @c I GUESS THIS COULD BE UPDATED TO DESCRIBE THE WAY IT ACTUALLY WORKS
-@defvr {Vari@'{a}vel de op@,{c}@~{a}o} loadprint
+@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} loadprint
 Valor padr@~{a}o: @code{true}
 
 @code{loadprint} diz se deve imprimir uma mensagem quando um arquivo @'{e} chamado.
@@ -1149,7 +1149,7 @@ Valor padr@~{a}o: @code{true}
 Quando @code{loadprint} @'{e} @code{true}, sempre imprime uma mensagem.
 @item
 Quando @code{loadprint} @'{e} @code{'loadfile}, imprime uma mensagem somente se
-um arquivo @'{e} chamado pela fun@,{c}@~{a}o @code{loadfile}.
+um arquivo @'{e} chamado pela fun@value{cedilha}@~{a}o @code{loadfile}.
 @item
 Quando @code{loadprint} @'{e} @code{'autoload},
 imprime uma mensagem somente se um arquivo @'{e} automaticamente carregado.
@@ -1160,7 +1160,7 @@ Quando @code{loadprint} @'{e} @code{false}, nunca imprime uma mensagem.
 
 @end defvr
 
-@defvr {Vari@'{a}vel de op@,{c}@~{a}o} obase
+@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} obase
 Valor padr@~{a}o: 10
 
 @code{obase} @'{e} a base para inteiros mostrados pelo Maxima.
@@ -1177,12 +1177,12 @@ Veja tamb@'{e}m @code{ibase}.
 @c NEED EXAMPLES HERE
 @end defvr
 
-@defvr {Vari@'{a}vel de op@,{c}@~{a}o} outchar
+@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} outchar
 Valor padr@~{a}o: @code{%o}
 
 @code{outchar} @'{e} o prefixo dos r@'{o}tulos de express@~{o}es calculadas pelo Maxima.
 Maxima automaticamente constr@'{o}i um r@'{o}tulo para cada express@~{a}o calculada
-pela concatena@,{c}@~{a}o de @code{outchar} e @code{linenum}.
+pela concatena@value{cedilha}@~{a}o de @code{outchar} e @code{linenum}.
 A @code{outchar} pode ser atribu@'{i}do qualquer seq@"{u}@^{e}ncia de caracteres ou s@'{i}mbolo, n@~{a}o necess@'{a}riamente um caractere simples.
 
 @example
@@ -1199,14 +1199,14 @@ Veja tamb@'{e}m @code{labels}.
 @end defvr
 
 @c STILL EXISTS, NEEDS CLARIFICATION !!!
-@defvr {Vari@'{a}vel de op@,{c}@~{a}o} packagefile
+@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} packagefile
 Valor padr@~{a}o: @code{false}
 
 Projetistas de pacotes que usam @code{save}
 ou @code{translate} para criar pacotes (arquivos) para outros
-usarem podem querer escolher @code{packagefile: true} para prevenir qu informa@,{c}@~{o}es
-sejam acrescentadas @`a lista de informa@,{c}@~{o}es do Maxima (e.g. @code{values},
-@code{fun@,{c}@~{o}es}) exceto onde necess@'{a}rio quando o arquivo @'{e} carregado.
+usarem podem querer escolher @code{packagefile: true} para prevenir qu informa@value{cedilha}@~{o}es
+sejam acrescentadas @`a lista de informa@value{cedilha}@~{o}es do Maxima (e.g. @code{values},
+@code{fun@value{cedilha}@~{o}es}) exceto onde necess@'{a}rio quando o arquivo @'{e} carregado.
 Nesse caminho, o conte@'{u}do do pacote n@~{a}o pegar@'{a} no
 caminho do usu@'{a}rio quando ele adicionar seus pr@'{o}prios dados.  Note que isso n@~{a}o
 resolve o problema de poss@'{i}veis conflitos de nome.  Tamb@'{e}m note que
@@ -1216,7 +1216,7 @@ init do Maxima.
 
 @end defvr
 
-@defvr {Vari@'{a}vel de op@,{c}@~{a}o} pfeformat
+@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} pfeformat
 Valor padr@~{a}o: @code{false}
 
 Quando @code{pfeformat} @'{e} @code{true}, uma raz@~{a}o de inteiros @'{e}
@@ -1243,7 +1243,7 @@ e um denominador inteiro @code{n}
 
 @end defvr
 
-@deffn {Fun@,{c}@~{a}o} print (@var{expr_1}, ..., @var{expr_n})
+@deffn {Fun@value{cedilha}@~{a}o} print (@var{expr_1}, ..., @var{expr_n})
 Avalia e mostra @var{expr_1}, ..., @var{expr_n}
 uma ap@'{o}s a outra, da esquerda para a direita,
 iniciando no lado esquerdo do console.
@@ -1252,7 +1252,7 @@ O valor retornado por @code{print} @'{e} o valor de seu @'{u}ltimo argumento.
 @code{print} n@~{a}o gera r@'{o}tulos de express@~{a}o intermedi@'{a}ria.
 
 Veja tamb@'{e}m @code{display}, @code{disp}, @code{ldisplay}, e @code{ldisp}.
-Essas fun@,{c}@~{o}es mostram uma express@~{a}o por linha, enquanto @code{print} tenta
+Essas fun@value{cedilha}@~{o}es mostram uma express@~{a}o por linha, enquanto @code{print} tenta
 mostrar duas ou mais express@~{o}es por linha.
 
 Para mostrar o conte@'{u}do de um arquivo, veja @code{printfile}.
@@ -1283,15 +1283,15 @@ Para mostrar o conte@'{u}do de um arquivo, veja @code{printfile}.
 @c $tcl_output IS NEVER CALLED WITHIN MAXIMA SOURCE,
 @c AND THIS EXTREMELY NARROW, LIMITED FUNCTIONALITY ISN'T USEFUL TO USERS
 @c AND IT'S BROKEN: INCORRECT OUTPUT FOR CLISP, DIES ON GCL
-@deffn {Fun@,{c}@~{a}o} tcl_output (@var{list}, @var{i0}, @var{skip})
-@deffnx {Fun@,{c}@~{a}o} tcl_output (@var{list}, @var{i0})
-@deffnx {Fun@,{c}@~{a}o} tcl_output ([@var{list_1}, ..., @var{list_n}], @var{i})
+@deffn {Fun@value{cedilha}@~{a}o} tcl_output (@var{list}, @var{i0}, @var{skip})
+@deffnx {Fun@value{cedilha}@~{a}o} tcl_output (@var{list}, @var{i0})
+@deffnx {Fun@value{cedilha}@~{a}o} tcl_output ([@var{list_1}, ..., @var{list_n}], @var{i})
 
 Imprime os elementos de uma lista entre chaves @code{@{ @}},
 conveniente como parte de um programa na linguagem Tcl/Tk.
 
 @code{tcl_output (@var{list}, @var{i0}, @var{skip})}
-imprime @var{list}, come@,{c}ando com o elemento @var{i0} e imprimindo elementos
+imprime @var{list}, come@value{cedilha}ando com o elemento @var{i0} e imprimindo elementos
 @code{@var{i0} + @var{skip}}, @code{@var{i0} + 2 @var{skip}}, etc.
 
 @code{tcl_output (@var{list}, @var{i0})}
@@ -1337,7 +1337,7 @@ Exemplos:
 
 @end deffn
 
-@deffn {Fun@,{c}@~{a}o} read (@var{expr_1}, ..., @var{expr_n})
+@deffn {Fun@value{cedilha}@~{a}o} read (@var{expr_1}, ..., @var{expr_n})
 Imprime @var{expr_1}, ..., @var{expr_n}, ent@~{a}o l@^{e} uma express@~{a}o do console
 e retorna a express@~{a}o avaliada.
 A express@~{a}o @'{e} terminada com um ponto e v@'{i}rgula @code{;} ou o sinal de d@'{o}lar @code{$}.
@@ -1356,19 +1356,19 @@ foo is 42  -- enter new value.
 
 @end deffn
 
-@deffn {Fun@,{c}@~{a}o} readonly (@var{expr_1}, ..., @var{expr_n})
+@deffn {Fun@value{cedilha}@~{a}o} readonly (@var{expr_1}, ..., @var{expr_n})
 Imprime @var{expr_1}, ..., @var{expr_n}, ent@~{a}o l@^{e} uma express@~{a}o do console
-e retorna a express@~{a}o (sem avalia@,{c}@~{a}o).
+e retorna a express@~{a}o (sem avalia@value{cedilha}@~{a}o).
 A express@~{a}o @'{e} terminada com um @code{;} (ponto e v@'{i}rgula) ou @code{$} (sinal de d@'{o}lar).
 
 @example
 (%i1) aa: 7$
-(%i2) foo: readonly ("Forne@,{c}a uma express@~{a}o:");
+(%i2) foo: readonly ("Forne@value{cedilha}a uma express@~{a}o:");
 Enter an express@~{a}o: 
 2^aa;
                                   aa
 (%o2)                            2
-(%i3) foo: read ("Forne@,{c}a uma express@~{a}o:");
+(%i3) foo: read ("Forne@value{cedilha}a uma express@~{a}o:");
 Enter an express@~{a}o: 
 2^aa;
 (%o3)                            128
@@ -1378,27 +1378,27 @@ Veja tamb@'{e}m @code{read}.
 
 @end deffn
 
-@deffn {Fun@,{c}@~{a}o} reveal (@var{expr}, @var{depth})
+@deffn {Fun@value{cedilha}@~{a}o} reveal (@var{expr}, @var{depth})
 Substitue partes de @var{expr} no inteiro especificado @var{depth}
 com sum@'{a}rio descritivo.
 
 @itemize @bullet
 @item
-Somas e diferen@,{c}as s@~{a}o substitu@'{i}das por @code{sum(@var{n})}
+Somas e diferen@value{cedilha}as s@~{a}o substitu@'{i}das por @code{sum(@var{n})}
 onde @var{n} @'{e} o n@'{u}mero de operandos do produto.
 @item
 Produtos s@~{a}o substitu@'{i}dos por @code{product(@var{n})}
-onde @var{n} @'{e} o n@'{u}mero de operandos da multiplica@,{c}@~{a}o.
+onde @var{n} @'{e} o n@'{u}mero de operandos da multiplica@value{cedilha}@~{a}o.
 @item
 Exponenciais s@~{a}o substitu@'{i}dos por @code{expt}.  
 @item
 Quocientes s@~{a}o substitu@'{i}dos por @code{quotient}.
 @item
-Nega@,{c}@~{a}o un@'{a}ria @'{e} substitu@'{i}da por @code{negterm}.
+Nega@value{cedilha}@~{a}o un@'{a}ria @'{e} substitu@'{i}da por @code{negterm}.
 @end itemize
 
 Quando @var{depth} @'{e} maior que ou igual @`a m@'{a}xima intensidade de @var{expr},
-@code{reveal (@var{expr}, @var{depth})} retornam @var{expr} sem modifica@,{c}@~{o}es.
+@code{reveal (@var{expr}, @var{depth})} retornam @var{expr} sem modifica@value{cedilha}@~{o}es.
 
 @code{reveal} avalia seus argumentos.
 @code{reveal} retorna express@~{a}o sumarizada.
@@ -1444,7 +1444,7 @@ Exemplo:
 
 @end deffn
 
-@defvr {Vari@'{a}vel de op@,{c}@~{a}o} rmxchar
+@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} rmxchar
 Valor padr@~{a}o: @code{]}
 
 @code{rmxchar} @'{e} the caractere desenhado lado direito de uma matriz.
@@ -1454,16 +1454,16 @@ Veja tamb@'{e}m @code{lmxchar}.
 @end defvr
 
 @c NEEDS EXAMPLES
-@deffn {Fun@,{c}@~{a}o} save (@var{nomearquivo}, @var{nome_1}, @var{nome_2}, @var{nome_3}, ...)
-@deffnx {Fun@,{c}@~{a}o} save (@var{nomearquivo}, values, functions, labels, ...)
-@deffnx {Fun@,{c}@~{a}o} save (@var{nomearquivo}, [@var{m}, @var{n}])
-@deffnx {Fun@,{c}@~{a}o} save (@var{nomearquivo}, @var{nome_1}=@var{expr_1}, ...)
-@deffnx {Fun@,{c}@~{a}o} save (@var{nomearquivo}, all)
-@deffnx {Fun@,{c}@~{a}o} save (@var{nomearquivo}, @var{nome_1}=@var{expr_1}, @var{nome_2}=@var{expr_2}, ...)
+@deffn {Fun@value{cedilha}@~{a}o} save (@var{nomearquivo}, @var{nome_1}, @var{nome_2}, @var{nome_3}, ...)
+@deffnx {Fun@value{cedilha}@~{a}o} save (@var{nomearquivo}, values, functions, labels, ...)
+@deffnx {Fun@value{cedilha}@~{a}o} save (@var{nomearquivo}, [@var{m}, @var{n}])
+@deffnx {Fun@value{cedilha}@~{a}o} save (@var{nomearquivo}, @var{nome_1}=@var{expr_1}, ...)
+@deffnx {Fun@value{cedilha}@~{a}o} save (@var{nomearquivo}, all)
+@deffnx {Fun@value{cedilha}@~{a}o} save (@var{nomearquivo}, @var{nome_1}=@var{expr_1}, @var{nome_2}=@var{expr_2}, ...)
 
 Armazena os valores correntes de @var{nome_1}, @var{nome_2}, @var{nome_3}, ..., em @var{nomearquivo}.
-Os argumentos s@~{a}o os nomes das vari@'{a}veis, fun@,{c}@~{o}es, ou outros objetos.
-Se um nome n@~{a}o possui valore ou fun@,{c}@~{a}o associada a ele, esse nome sem nenhum valor ou fun@,{c}@~{a}o associado ser@'{a} ignorado.
+Os argumentos s@~{a}o os nomes das vari@'{a}veis, fun@value{cedilha}@~{o}es, ou outros objetos.
+Se um nome n@~{a}o possui valore ou fun@value{cedilha}@~{a}o associada a ele, esse nome sem nenhum valor ou fun@value{cedilha}@~{a}o associado ser@'{a} ignorado.
 @code{save} retorna @var{nomearquivo}.
 
 @code{save} armazena dados na forma de express@~{o}es Lisp.
@@ -1477,7 +1477,7 @@ De outra forma, @code{save} trunca o arquivo de sa@'{i}da.
 Nesse caso, @code{save} cria o arquivo se ele n@~{a}o existir ainda.
 
 A forma especial @code{save (@var{nomearquivo}, values, functions, labels, ...)}
-armazena os @'{i}tens nomeados por @code{values}, @code{fun@,{c}@~{o}es}, @code{labels}, etc.
+armazena os @'{i}tens nomeados por @code{values}, @code{fun@value{cedilha}@~{o}es}, @code{labels}, etc.
 Os nomes podem ser quaisquer especificados pela vari@'{a}vel @code{infolists}.
 @code{values} compreende todas as vari@'{a}veis definidas pelo usu@'{a}rio.
 
@@ -1497,10 +1497,10 @@ Essa forma n@~{a}o introduz os novos nomes no ambiente corrente do Maxima,
 mas somente armazena-os em @var{nomearquivo}.
 
 Essa forma especial e a forma geral de @code{save} podem ser misturados.
-Por exemplo, @code{save (@var{nomearquivo}, aa, bb, cc=42, fun@,{c}@~{o}es, [11, 17])}.
+Por exemplo, @code{save (@var{nomearquivo}, aa, bb, cc=42, fun@value{cedilha}@~{o}es, [11, 17])}.
 
 A forma especial @code{save (@var{nomearquivo}, all)} armazena o estado corrente do Maxima.
-Isso inclui todas as vari@'{a}veis definidas pelo usu@'{a}rio, fun@,{c}@~{o}es, arrays, etc., bem como
+Isso inclui todas as vari@'{a}veis definidas pelo usu@'{a}rio, fun@value{cedilha}@~{o}es, arrays, etc., bem como
 alguns @'{i}tens definidos automaticamente.
 Os @'{i}tes salvos incluem vari@'{a}veis de sistema,
 tais como @code{file_search_maxima} ou @code{showtime}, se a elas tiverem sido atribu@'{i}dos novos valores pelo usu@'{a}rio;
@@ -1524,22 +1524,22 @@ e vari@'{a}veis inteiras para seus valores inteiros, e.g., @code{m: 5$ n: 12$ sa
 @end deffn
 
 @c NEEDS MORE WORK !!!
-@defvr {Vari@'{a}vel de op@,{c}@~{a}o} savedef
+@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} savedef
 Valor padr@~{a}o: @code{true}
 
 Quando @code{savedef} @'{e} @code{true}, a ves@~{a}o Maxima de uma
-fun@,{c}@~{a}o de usu@'{a}rio @'{e} preservada quando a fun@,{c}@~{a}o @'{e} traduzida.
-Isso permite que a defini@,{c}@~{a}o seja mostrada por @code{dispfun} e autoriza a fun@,{c}@~{a}o a
+fun@value{cedilha}@~{a}o de usu@'{a}rio @'{e} preservada quando a fun@value{cedilha}@~{a}o @'{e} traduzida.
+Isso permite que a defini@value{cedilha}@~{a}o seja mostrada por @code{dispfun} e autoriza a fun@value{cedilha}@~{a}o a
 ser editada.
 
-Quando @code{savedef} @'{e} @code{false}, os nomes de fun@,{c}@~{o}es traduzidas s@~{a}o
-removidos da lista de @code{fun@,{c}@~{o}es}.
+Quando @code{savedef} @'{e} @code{false}, os nomes de fun@value{cedilha}@~{o}es traduzidas s@~{a}o
+removidos da lista de @code{fun@value{cedilha}@~{o}es}.
 
 @end defvr
 
 @c THIS FUNCTION IS IN THE SHARE PACKAGE itensor.lisp
 @c MOVE THIS DESCRIPTION TO Itensor.texi
-@deffn {Fun@,{c}@~{a}o} show (@var{expr})
+@deffn {Fun@value{cedilha}@~{a}o} show (@var{expr})
 Mostra @code{expr} com os objetos indexados
 tendo @'{i}ndices covariantes como subscritos, @'{i}ndices contravariantes como
 sobrescritos.  Os @'{i}ndices derivativos s@~{a}o mostrados como subscritos,
@@ -1547,24 +1547,24 @@ separados dos @'{i}ndices covariantes por uma v@'{i}rgula.
 
 @end deffn
 
-@deffn {Fun@,{c}@~{a}o} showratvars (@var{expr})
+@deffn {Fun@value{cedilha}@~{a}o} showratvars (@var{expr})
 Retorna uma lista de vari@'{a}veis express@~{a}o racional can@^{o}nica (CRE) na express@~{a}o @code{expr}.
 
 Veja tamb@'{e}m @code{ratvars}.
 
 @end deffn
 
-@defvr {Vari@'{a}vel de op@,{c}@~{a}o} stardisp
+@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} stardisp
 Valor padr@~{a}o: @code{false}
 
-Quando @code{stardisp} @'{e} @code{true}, multiplica@,{c}@~{a}o @'{e}
+Quando @code{stardisp} @'{e} @code{true}, multiplica@value{cedilha}@~{a}o @'{e}
 mostrada com um asterisco @code{*} entre os operandos.
 
 @end defvr
 
 @c NEEDS CLARIFICATION AND EXAMPLES
-@deffn {Fun@,{c}@~{a}o} string (@var{expr})
-Converte @code{expr} para a nota@,{c}@~{a}o linear do Maxima
+@deffn {Fun@value{cedilha}@~{a}o} string (@var{expr})
+Converte @code{expr} para a nota@value{cedilha}@~{a}o linear do Maxima
 apenas como se tivesse sido digitada.
 
 O valor de retorno de @code{string} @'{e} uma seq@"{u}@^{e}ncia de caracteres,
@@ -1573,8 +1573,8 @@ e dessa forma n@~{a}o pode ser usada em um c@'{a}lculo.
 @end deffn
 
 @c SHOULD BE WRITTEN WITH LEADING ? BUT THAT CONFUSES CL-INFO SO WORK AROUND
-@c @defvr {Vari@~{a}vel de op@,{c}@~{a}o} stringdisp
-@defvr {Vari@~{a}vel de op@,{c}@~{a}o} stringdisp
+@c @defvr {Vari@~{a}vel de op@value{cedilha}@~{a}o} stringdisp
+@defvr {Vari@~{a}vel de op@value{cedilha}@~{a}o} stringdisp
 Valor padr@~{a}o: @code{false}
 
 Quando @code{stringdisp} for @code{true},
@@ -1582,7 +1582,7 @@ seq@"{u}@^{e}ncias de caracteres ser@~{a}o mostradas contidas em aspas duplas.
 De outra forma,
 aspas n@~{a}o s@~{a}o mostradas.
 
-@code{stringdisp} @'{e} sempre @code{true} quando mostrando na tela uma defini@,{c}@~{a}o de fun@,{c}@~{a}o.
+@code{stringdisp} @'{e} sempre @code{true} quando mostrando na tela uma defini@value{cedilha}@~{a}o de fun@value{cedilha}@~{a}o.
 
 Exemplos:
 
@@ -1607,11 +1607,11 @@ Exemplos:
 
 @end defvr
 
-@deffn {Fun@,{c}@~{a}o} stringout (@var{nomearquivo}, @var{expr_1}, @var{expr_2}, @var{expr_3}, ...)
-@deffnx {Fun@,{c}@~{a}o} stringout (@var{nomearquivo}, [@var{m}, @var{n}])
-@deffnx {Fun@,{c}@~{a}o} stringout (@var{nomearquivo}, input)
-@deffnx {Fun@,{c}@~{a}o} stringout (@var{nomearquivo}, functions)
-@deffnx {Fun@,{c}@~{a}o} stringout (@var{nomearquivo}, values)
+@deffn {Fun@value{cedilha}@~{a}o} stringout (@var{nomearquivo}, @var{expr_1}, @var{expr_2}, @var{expr_3}, ...)
+@deffnx {Fun@value{cedilha}@~{a}o} stringout (@var{nomearquivo}, [@var{m}, @var{n}])
+@deffnx {Fun@value{cedilha}@~{a}o} stringout (@var{nomearquivo}, input)
+@deffnx {Fun@value{cedilha}@~{a}o} stringout (@var{nomearquivo}, functions)
+@deffnx {Fun@value{cedilha}@~{a}o} stringout (@var{nomearquivo}, values)
 
 @code{stringout} escreve express@~{o}es para um arquivo na mesma forma de
 express@~{o}es que foram digitadas para entrada.  O arquivo pode ent@~{a}o ser usado
@@ -1641,46 +1641,46 @@ A forma especial @code{stringout (@var{nomearquivo}, input)} escreve todos
 os r@'{o}tulos de entrada para o arquivo.
 
 A forma especial @code{stringout (@var{nomearquivo}, functions)} escreve todas
-as fun@,{c}@~{o}es definidas pelo usu@'{a}rio (nomeadas pela lista global @code{functions}) para o arquivo.
+as fun@value{cedilha}@~{o}es definidas pelo usu@'{a}rio (nomeadas pela lista global @code{functions}) para o arquivo.
 
 A forma especial @code{stringout (@var{nomearquivo}, values)} escreve todas as
 vari@'{a}veis atribu@'{i}das pelo usu@'{a}rio (nomeadas pela lista global @code{values})
 para o arquivo.  Cada vari@'{a}vel @'{e} impressa como uma
-declara@,{c}@~{a}o de atribui@,{c}@~{a}o, com o nome da vari@'{a}vel seguida de dois pontos, e seu
+declara@value{cedilha}@~{a}o de atribui@value{cedilha}@~{a}o, com o nome da vari@'{a}vel seguida de dois pontos, e seu
 valor.  Note que a forma geral de @code{stringout} n@~{a}o imprime 
-vari@'{a}veis como declara@,{c}@~{o}es de atribui@,{c}@~{a}o.
+vari@'{a}veis como declara@value{cedilha}@~{o}es de atribui@value{cedilha}@~{a}o.
 
 @end deffn
 
 @c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
-@deffn {Fun@,{c}@~{a}o} tex (@var{expr})
-@deffnx {Fun@,{c}@~{a}o} tex (@var{r@'{o}tulo})
-@deffnx {Fun@,{c}@~{a}o} tex (@var{expr}, @var{momearquivo})
-@deffnx {Fun@,{c}@~{a}o} tex (@var{label}, @var{nomearquivo})
+@deffn {Fun@value{cedilha}@~{a}o} tex (@var{expr})
+@deffnx {Fun@value{cedilha}@~{a}o} tex (@var{r@'{o}tulo})
+@deffnx {Fun@value{cedilha}@~{a}o} tex (@var{expr}, @var{momearquivo})
+@deffnx {Fun@value{cedilha}@~{a}o} tex (@var{label}, @var{nomearquivo})
 
-Imprime uma representa@,{c}@~{a}o de uma express@~{a}o
-adequada para o sistema TeX  de prepara@,{c}@~{a}o de documento.
+Imprime uma representa@value{cedilha}@~{a}o de uma express@~{a}o
+adequada para o sistema TeX  de prepara@value{cedilha}@~{a}o de documento.
 O resultado @'{e} um fragmento de um documento,
 que pode ser copiado dentro de um documento maior.
 Esse fragmento n@~{a}o pode ser processado de forma direta e isolada.
 
-@code{tex (@var{expr})} imprime uma representa@,{c}@~{a}o TeX da @var{expr} no console.
+@code{tex (@var{expr})} imprime uma representa@value{cedilha}@~{a}o TeX da @var{expr} no console.
 
-@code{tex (@var{r@'{o}tulo})} imprime uma representa@,{c}@~{a}o TeX de uma express@~{a}o chamada @var{r@'{o}tulo}
-e atribui a essa um r@'{o}tulo de equa@,{c}@~{a}o (a ser mostrado @`a esquerda da express@~{a}o).
-O r@'{o}tulo de equa@,{c}@~{a}o TeX @'{e} o mesmo que o r@'{o}tulo da equa@,{c}@~{a}o no Maxima.
+@code{tex (@var{r@'{o}tulo})} imprime uma representa@value{cedilha}@~{a}o TeX de uma express@~{a}o chamada @var{r@'{o}tulo}
+e atribui a essa um r@'{o}tulo de equa@value{cedilha}@~{a}o (a ser mostrado @`a esquerda da express@~{a}o).
+O r@'{o}tulo de equa@value{cedilha}@~{a}o TeX @'{e} o mesmo que o r@'{o}tulo da equa@value{cedilha}@~{a}o no Maxima.
 
-@code{tex (@var{expr}, @var{nomearquivo})} anexa ao final uma representa@,{c}@~{a}o TeX de @var{expr}
+@code{tex (@var{expr}, @var{nomearquivo})} anexa ao final uma representa@value{cedilha}@~{a}o TeX de @var{expr}
 no arquivo @var{nomearquivo}.
-@code{tex} n@~{a}o avalia o argumento @var{nomearquivo}; ap@'{o}strofo-ap@'{o}strofo @code{''} for@,{c}a a avalia@,{c}@~{a}o so argumento.
+@code{tex} n@~{a}o avalia o argumento @var{nomearquivo}; ap@'{o}strofo-ap@'{o}strofo @code{''} for@value{cedilha}a a avalia@value{cedilha}@~{a}o so argumento.
 
-@code{tex (@var{r@'{o}tulo}, @var{nomearquivo})} anexa ao final uma representa@,{c}@~{a}o TeX da
-express@~{a}o chamada de @var{r@'{o}tulo}, com um r@'{o}tulo de equa@,{c}@~{a}o, ao arquivo @var{nomearquivo}.
+@code{tex (@var{r@'{o}tulo}, @var{nomearquivo})} anexa ao final uma representa@value{cedilha}@~{a}o TeX da
+express@~{a}o chamada de @var{r@'{o}tulo}, com um r@'{o}tulo de equa@value{cedilha}@~{a}o, ao arquivo @var{nomearquivo}.
 
 
-@code{tex} n@~{a}o avalia o argumento @var{nomearquivo}; ap@'{o}strofo-ap@'{o}strofo @code{''} for@,{c}a a avalia@,{c}@~{a}o so argumento.
+@code{tex} n@~{a}o avalia o argumento @var{nomearquivo}; ap@'{o}strofo-ap@'{o}strofo @code{''} for@value{cedilha}a a avalia@value{cedilha}@~{a}o so argumento.
 @code{tex} avalia seus argumentos ap@'{o}s testar esse argumento para ver se @'{e} um r@'{o}tulo.
-duplo ap@'{o}strofo @code{''} for@,{c}a a avalia@,{c}@~{a}o do argumento, desse modo frustrando o teste
+duplo ap@'{o}strofo @code{''} for@value{cedilha}a a avalia@value{cedilha}@~{a}o do argumento, desse modo frustrando o teste
 e prevenindo o r@'{o}tulo.
 
 Veja tamb@'{e}m @code{texput}.
@@ -1708,29 +1708,29 @@ $$-\cos x$$
 
 @end deffn
 
-@deffn {Fun@,{c}@~{a}o} texput (@var{a}, @var{s})
-@deffnx {Fun@,{c}@~{a}o} texput (@var{a}, @var{s}, @var{operator_type})
-@deffnx {Fun@,{c}@~{a}o} texput (@var{a}, [@var{s_1}, @var{s_2}], matchfix)
-@deffnx {Fun@,{c}@~{a}o} texput (@var{a}, [@var{s_1}, @var{s_2}, @var{s_3}], matchfix)
+@deffn {Fun@value{cedilha}@~{a}o} texput (@var{a}, @var{s})
+@deffnx {Fun@value{cedilha}@~{a}o} texput (@var{a}, @var{s}, @var{operator_type})
+@deffnx {Fun@value{cedilha}@~{a}o} texput (@var{a}, [@var{s_1}, @var{s_2}], matchfix)
+@deffnx {Fun@value{cedilha}@~{a}o} texput (@var{a}, [@var{s_1}, @var{s_2}, @var{s_3}], matchfix)
 
 Atribui a sa@'{i}da TeX para o @'{a}tomo @var{a},
 que pode ser um s@'{i}mbolo ou o nome de um operador.
 
-@code{texput (@var{a}, @var{s})} faz com que a fun@,{c}@~{a}o @code{tex}
+@code{texput (@var{a}, @var{s})} faz com que a fun@value{cedilha}@~{a}o @code{tex}
 interpole a seq@"{u}@^{e}ncia de caracteres @var{s} dentro da sa@'{i}da TeX em lugar de @var{a}.
 
 @code{texput (@var{a}, @var{s}, @var{operator_type})},
 onde @var{operator_type} @'{e} @code{prefix}, @code{infix}, @code{postfix}, @code{nary}, ou @code{nofix},
-faz com que a fun@,{c}@~{a}o @code{tex} interpole @var{s} dentro da sa@'{i}da TeX em lugar de @var{a},
-e coloca o texto interpolado na posi@,{c}@~{a}o apropriada.
+faz com que a fun@value{cedilha}@~{a}o @code{tex} interpole @var{s} dentro da sa@'{i}da TeX em lugar de @var{a},
+e coloca o texto interpolado na posi@value{cedilha}@~{a}o apropriada.
 
 @code{texput (@var{a}, [@var{s_1}, @var{s_2}], matchfix)}
-faz com que a fun@,{c}@~{a}o @code{tex} interpole @var{s_1} e @var{s_2} dentro da sa@'{i}da TeX
+faz com que a fun@value{cedilha}@~{a}o @code{tex} interpole @var{s_1} e @var{s_2} dentro da sa@'{i}da TeX
 sobre qualquer lado dos argumentos de @var{a}.
 Os argumentos (se mais de um) s@~{a}o separados por v@'{i}rgulas.
 
 @code{texput (@var{a}, [@var{s_1}, @var{s_2}, @var{s_3}], matchfix)}
-faz com que a fun@,{c}@~{a}o @code{tex} interpole @var{s_1} e @var{s_2} dentro da sa@'{i}da TeX
+faz com que a fun@value{cedilha}@~{a}o @code{tex} interpole @var{s_1} e @var{s_2} dentro da sa@'{i}da TeX
 sobre qualquer lado dos argumentos de @var{a},
 com @var{s_3} separando os argumentos.
 
@@ -1750,7 +1750,7 @@ $$\mu_e$$
 (%o2)                         false
 @end example
 
-Atribui sa@'{i}da TeX a uma fun@,{c}@~{a}o comum (n@~{a}o a um operador).
+Atribui sa@'{i}da TeX a uma fun@value{cedilha}@~{a}o comum (n@~{a}o a um operador).
 @c ===beg===
 @c texput (lcm, "\\mathrm{lcm}");
 @c tex (lcm (a, b));
@@ -1884,9 +1884,9 @@ $$ \langle a \, | \,b \rangle $$
 @end deffn
 
 @c NEEDS CLARIFICATION
-@deffn {Fun@,{c}@~{a}o} system (@var{comando})
+@deffn {Fun@value{cedilha}@~{a}o} system (@var{comando})
 Executa @var{comando} como um processo separado.
-O comando @'{e} passado ao shell padra@~{o} para execu@,{c}@~{a}o.
+O comando @'{e} passado ao shell padra@~{o} para execu@value{cedilha}@~{a}o.
 @code{system} n@~{a}o @'{e} suportado por todos os sistemas
 operacionais, mas geralmente existe em ambientes Unix e Unix-like.
 
@@ -1902,7 +1902,7 @@ usando @code{xgraph}.
 @end example
 
 Com o objetivo de fazer com que a impress@~{a}o do gr@'{a}fico seja conclu@'{i}da em segundo plano (retornando o controle para o Maxima)
-e remover o arquivo tempor@'{a}rio ap@'{o}s isso ter sido conclu@'{i}do fa@,{c}a:
+e remover o arquivo tempor@'{a}rio ap@'{o}s isso ter sido conclu@'{i}do fa@value{cedilha}a:
 
 @example
 system("(xgraph -bar -brw .7 -nl < _hist.out;  rm -f _hist.out)&")
@@ -1910,21 +1910,21 @@ system("(xgraph -bar -brw .7 -nl < _hist.out;  rm -f _hist.out)&")
 
 @end deffn
 
-@defvr {Vari@'{a}vel de op@,{c}@~{a}o} ttyoff
+@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} ttyoff
 Valor padr@~{a}o: @code{false}
 
 Quando @code{ttyoff} @'{e} @code{true}, express@~{o}es de sa@'{i}da n@~{a}o s@~{a}o mostradas.
 Express@~{o}es de sa@'{i}da s@~{a}o ainda calculadas e atribu@'{i}das r@'{o}tulos.  Veja @code{labels}.
 
-Textos impresso por fun@,{c}@~{o}es internas do Maxima, tais como mensagens de erro e a sa@'{i}da de @code{describe},
+Textos impresso por fun@value{cedilha}@~{o}es internas do Maxima, tais como mensagens de erro e a sa@'{i}da de @code{describe},
 n@~{a}o s@~{a}o afetadas por @code{ttyoff}.
 
 @end defvr
 
-@deffn {Fun@,{c}@~{a}o} with_stdout (@var{nomearquivo}, @var{expr_1}, @var{expr_2}, @var{expr_3}, ...)
+@deffn {Fun@value{cedilha}@~{a}o} with_stdout (@var{nomearquivo}, @var{expr_1}, @var{expr_2}, @var{expr_3}, ...)
 Abre @var{nomearquivo} e ent@~{a}o avalia @var{expr_1}, @var{expr_2}, @var{expr_3}, ....
 Os valores dos argumentos n@~{a}o s@~{a}o armazenados em @var{nomearquivo},
-mas qualquer sa@'{i}da impressa gerada pela avalia@,{c}@~{a}o dos argumentos
+mas qualquer sa@'{i}da impressa gerada pela avalia@value{cedilha}@~{a}o dos argumentos
 (de @code{print}, @code{display}, @code{disp}, ou @code{grind}, por exemplo)
 vai para @var{nomearquivo} em lugar do console.
 
@@ -1967,28 +1967,28 @@ Veja tamb@'{e}m @code{writefile}.
 
 @end deffn
 
-@deffn {Fun@,{c}@~{a}o} writefile (@var{nomearquivo})
-Come@,{c}a escrevendo uma transcri@,{c}@~{a}o da sess@~{a}o Maxima para @var{nomearquivo}.
-Toda intera@,{c}@~{a}o entre o usu@'{a}rio e Maxima @'{e} ent@~{a}o gravada nesse arquivo,
+@deffn {Fun@value{cedilha}@~{a}o} writefile (@var{nomearquivo})
+Come@value{cedilha}a escrevendo uma transcri@value{cedilha}@~{a}o da sess@~{a}o Maxima para @var{nomearquivo}.
+Toda intera@value{cedilha}@~{a}o entre o usu@'{a}rio e Maxima @'{e} ent@~{a}o gravada nesse arquivo,
 @c FOLLOWING CLAIM PROBABLY NEEDS TO BE QUALIFIED
 da mesma forma que aparece no console.
 
-Como a transcri@,{c}@~{a}o @'{e} impressa no formato de sa@'{i}da do console,
+Como a transcri@value{cedilha}@~{a}o @'{e} impressa no formato de sa@'{i}da do console,
 isso n@~{a}o pode ser reaproveitado pelo Maxima.
 Para fazer um arquivo contendo express@~{o}es que podem ser reaproveitadas,
 veja @code{save} e @code{stringout}.
 @code{save} armazena express@~{o}es no formato Lisp, enquanto @code{stringout} armazena express@~{o}es no formato Maxima.
 
 O efeito de executar @code{writefile} quando @var{nomearquivo} ainda existe
-depende da implementa@,{c}@~{a}o Lisp subjacente;
+depende da implementa@value{cedilha}@~{a}o Lisp subjacente;
 o arquivo transcrito pode ser substitu@'{i}do, ou o arquivo pode receber um anexo.
 @code{appendfile} sempre anexa para o arquivo transcrito.
 
 Isso pode ser conveniente para executar @code{playback} ap@'{o}s
-@code{writefile} para salvar a visualiza@,{c}@~{a}o de intera@,{c}@~{o}es pr@'{e}vias.
+@code{writefile} para salvar a visualiza@value{cedilha}@~{a}o de intera@value{cedilha}@~{o}es pr@'{e}vias.
 Como @code{playback} mostra somente as vari@'{a}veis de entrada e sa@'{i}da (@code{%i1}, @code{%o1}, etc.),
-qualquer sa@'{i}da gerada por uma declara@,{c}@~{a}o de impress@~{a}o em uma fun@,{c}@~{a}o
-(como oposi@,{c}@~{a}o a um valor de retorno) n@~{a}o @'{e} mostrada por @code{playback}.
+qualquer sa@'{i}da gerada por uma declara@value{cedilha}@~{a}o de impress@~{a}o em uma fun@value{cedilha}@~{a}o
+(como oposi@value{cedilha}@~{a}o a um valor de retorno) n@~{a}o @'{e} mostrada por @code{playback}.
 
 @code{closefile} fecha o arquivo transcrito aberto por @code{writefile} ou @code{appendfile}.
 

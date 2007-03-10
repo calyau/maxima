@@ -1,25 +1,25 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /Miscellaneous.texi/1.20/Mon Jan  1 07:27:14 2007/-ko/
 @menu
-* Introdu@,{c}@~{a}o a Op@,{c}@~{o}es Diversas::  
+* Introdu@value{cedilha}@~{a}o a Op@value{cedilha}@~{o}es Diversas::  
 * Compartilhado::                       
-* Defini@,{c}@~{o}es para Op@,{c}@~{o}es Diversas::  
+* Defini@value{cedilha}@~{o}es para Op@value{cedilha}@~{o}es Diversas::  
 @end menu
 
-@node Introdu@,{c}@~{a}o a Op@,{c}@~{o}es Diversas, Compartilhado, Op@,{c}@~{o}es Diversas, Op@,{c}@~{o}es Diversas
-@section Introdu@,{c}@~{a}o a Op@,{c}@~{o}es Diversas
+@node Introdu@value{cedilha}@~{a}o a Op@value{cedilha}@~{o}es Diversas, Compartilhado, Op@value{cedilha}@~{o}es Diversas, Op@value{cedilha}@~{o}es Diversas
+@section Introdu@value{cedilha}@~{a}o a Op@value{cedilha}@~{o}es Diversas
 
-Nessa se@,{c}@~{a}o v@'{a}rias op@,{c}@~{o}es s@~{a}o tratadas pelo fato de possuirem um efeito global
-sobre a opera@,{c}@~{a}o do Maxima.   Tamb@'{e}m v@'{a}rias listas tais como a lista de todas as
-fun@,{c}@~{o}es definidas pelo usu@'{a}rio, s@~{a}o discutidas.
+Nessa se@value{cedilha}@~{a}o v@'{a}rias op@value{cedilha}@~{o}es s@~{a}o tratadas pelo fato de possuirem um efeito global
+sobre a opera@value{cedilha}@~{a}o do Maxima.   Tamb@'{e}m v@'{a}rias listas tais como a lista de todas as
+fun@value{cedilha}@~{o}es definidas pelo usu@'{a}rio, s@~{a}o discutidas.
 
-@node Compartilhado, Defini@,{c}@~{o}es para Op@,{c}@~{o}es Diversas, Introdu@,{c}@~{a}o a Op@,{c}@~{o}es Diversas, Op@,{c}@~{o}es Diversas
+@node Compartilhado, Defini@value{cedilha}@~{o}es para Op@value{cedilha}@~{o}es Diversas, Introdu@value{cedilha}@~{a}o a Op@value{cedilha}@~{o}es Diversas, Op@value{cedilha}@~{o}es Diversas
 @section Compartilhado
 O diret@'{o}rio "share" do Maxima cont@'{e}m programas e outros arquivos 
-de interesse para os usu@'{a}rios do Maxima, mas que n@~{a}o s@~{a}o parte da implementa@,{c}@~{a}o do n@'{u}cleo do Maxima.
+de interesse para os usu@'{a}rios do Maxima, mas que n@~{a}o s@~{a}o parte da implementa@value{cedilha}@~{a}o do n@'{u}cleo do Maxima.
 Esses programas s@~{a}o tipicamente chamados via @code{load} ou @code{setup_autoload}.
 
-@code{:lisp *maxima-sharedir*} mostra a localiza@,{c}@~{a}o do diret@'{o}rio compartilhado
+@code{:lisp *maxima-sharedir*} mostra a localiza@value{cedilha}@~{a}o do diret@'{o}rio compartilhado
 dentro do sistema de arquivos do usu@'{a}rio.
 
 @c FIXME FIXME FIXME -- WE REALLY NEED AN UP-TO-DATE LIST OF SHARE PACKAGES !!
@@ -27,20 +27,20 @@ dentro do sistema de arquivos do usu@'{a}rio.
 Usu@'{a}rios podem encontrar isso de forma mais detalhada navegando no diret@'{o}rio compartilhado usando um navegador de sistema de arquivo.
 
 
-@node Defini@,{c}@~{o}es para Op@,{c}@~{o}es Diversas,  , Compartilhado, Op@,{c}@~{o}es Diversas
-@section Defini@,{c}@~{o}es para Op@,{c}@~{o}es Diversas
+@node Defini@value{cedilha}@~{o}es para Op@value{cedilha}@~{o}es Diversas,  , Compartilhado, Op@value{cedilha}@~{o}es Diversas
+@section Defini@value{cedilha}@~{o}es para Op@value{cedilha}@~{o}es Diversas
 
 @defvr {Vari@'{a}vel de sistema} aliases
 Valor padr@~{a}o: @code{[]}
 
 @code{aliases} @'{e} a lista de @'{a}tomos que possuem um alias definido pelo usu@'{a}rio (escolhido atrav@'{e}s
-das fun@,{c}@~{o}es @code{alias}, @code{ordergreat}, @code{orderless} ou atrav@'{e}s da declara@,{c}@~{a}o do @'{a}tomo como sendo um
+das fun@value{cedilha}@~{o}es @code{alias}, @code{ordergreat}, @code{orderless} ou atrav@'{e}s da declara@value{cedilha}@~{a}o do @'{a}tomo como sendo um
 @code{noun} (substantivo) com @code{declare}).
 @end defvr
 
 
-@defvr {Declara@,{c}@~{a}o} alphabetic
-@code{alphabetic} @'{e} uma declara@,{c}@~{a}o reconhecida por @code{declare}.
+@defvr {Declara@value{cedilha}@~{a}o} alphabetic
+@code{alphabetic} @'{e} uma declara@value{cedilha}@~{a}o reconhecida por @code{declare}.
 A express@~{a}o @code{declare(@var{s}, alphabetic)} diz ao Maxima para reconhecer
 como alfab@'{e}tico todos os caracteres em @var{s}, que deve ser uma seq@"{u}@^{e}ncia de caracteres.
  
@@ -71,18 +71,18 @@ Exemplo:
 
 @c REPHRASE
 @c DOES apropos RETURN THE SAME THING AS THE LIST SHOWN BY describe ??
-@deffn {Fun@,{c}@~{a}o} apropos (@var{string})
+@deffn {Fun@value{cedilha}@~{a}o} apropos (@var{string})
 Procura por nomes Maxima que possuem @var{string} aparecendo em qualquer lugar dentro
 de seu nome.  Dessa forma, @code{apropos (exp)} retorna uma lista de todos os sinalizadores
-e fun@,{c}@~{o}es que possuem @code{exp} como parte de seus nomes, tais como @code{expand},
+e fun@value{cedilha}@~{o}es que possuem @code{exp} como parte de seus nomes, tais como @code{expand},
 @code{exp}, e @code{exponentialize}.  Dessa forma voc@^{e} pode somente lembra parte do nome
 de alguma coisa voc@^{e} pode usar esse comando para achar o restante do nome.
 Similarmente, voc@^{e} pode dizer @code{apropos (tr_)} para achar uma lista de muitos dos
-comutadores relatando para o tradutor, muitos dos quais come@,{c}am com @code{tr_}.
+comutadores relatando para o tradutor, muitos dos quais come@value{cedilha}am com @code{tr_}.
 
 @end deffn
 
-@deffn {Fun@,{c}@~{a}o} args (@var{expr})
+@deffn {Fun@value{cedilha}@~{a}o} args (@var{expr})
 Retorna a lista de argumentos de @code{expr},
 que pode ser de qualquer tipo de express@~{a}o outra como um @'{a}tomo.
 Somente os argumentos do operador de n@'{i}vel mais alto s@~{a}o extra@'{i}dos;
@@ -99,7 +99,7 @@ Veja tamb@'{e}m @code{op}.
 @c NEEDS EXAMPLES
 @end deffn
 
-@defvr {Vari@'{a}vel de op@,{c}@~{a}o} genindex
+@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} genindex
 Valor padr@~{a}o: @code{i}
 
 @code{genindex} @'{e} o prefixo usado para gerar a
@@ -107,7 +107,7 @@ pr@'{o}xima vari@'{a}vel do somat@'{o}rio quando necess@'{a}rio.
 
 @end defvr
 
-@defvr {Vari@'{a}vel de op@,{c}@~{a}o} gensumnum
+@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} gensumnum
 Valor padr@~{a}o: 0
 
 @code{gensumnum} @'{e} o sufixo num@'{e}rico usado para gerar vari@'{a}vel seguinte
@@ -133,13 +133,13 @@ arbitr@'{a}ria.  Veja tamb@'{e}m @code{inf} e @code{minf}.
 Valor padr@~{a}o: @code{[]}
 
 @code{infolists} @'{e} uma lista dos nomes de todas as listas de
-informa@,{c}@~{a}o no Maxima. S@~{a}o elas:
+informa@value{cedilha}@~{a}o no Maxima. S@~{a}o elas:
 
 @table @code
 @item labels
 Todos associam @code{%i}, @code{%o}, e r@'{o}tulos @code{%t}.
 @item values
-Todos associam @'{a}tomos que s@~{a}o vari@'{a}veis de usu@'{a}rio, n@~{a}o op@,{c}@~{o}es do
+Todos associam @'{a}tomos que s@~{a}o vari@'{a}veis de usu@'{a}rio, n@~{a}o op@value{cedilha}@~{o}es do
 Maxima ou comutadores, criados atrav@'{e}s de @code{:} ou @code{::} ou associando funcionalmente.
 @c WHAT IS INTENDED BY "FUNCTIONAL BINDING" HERE ??
 
@@ -242,7 +242,7 @@ m1pbranch:false          m1pbranch:true
 
 @end defvr
 
-@deffn {Fun@,{c}@~{a}o} numberp (@var{expr})
+@deffn {Fun@value{cedilha}@~{a}o} numberp (@var{expr})
 Retorna @code{true} se @var{expr} for um inteiro literal, n@'{u}mero racional, 
 n@'{u}mero em ponto flutuante, ou um grande n@'{u}mero em ponto flutuante, de outra forma retorna @code{false}.
 
@@ -275,7 +275,7 @@ Exemplos:
 
 @c CROSS REF TO WHICH FUNCTION OR FUNCTIONS ESTABLISH PROPERTIES !! (VERY IMPORTANT)
 @c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
-@deffn {Fun@,{c}@~{a}o} properties (@var{a})
+@deffn {Fun@value{cedilha}@~{a}o} properties (@var{a})
 Retorna uma lista de nomes de todas as
 propriedades associadas com o @'{a}tomo @var{a}.
 
@@ -287,13 +287,13 @@ propriedades associadas com o @'{a}tomo @var{a}.
 @defvr {S@'{i}mbolo especial} props
 @code{props} s@~{a}o @'{a}tomos que possuem qualquer propriedade outra como essas explicitamente
 mencionadas em @code{infolists}, tais como atvalues, matchdeclares, etc., tamb@'{e}m
-propriedades especificadas na fun@,{c}@~{a}o  @code{declare}.
+propriedades especificadas na fun@value{cedilha}@~{a}o  @code{declare}.
 
 @end defvr
 
 @c CROSS REF TO WHICH FUNCTION OR FUNCTIONS ESTABLISH PROPERTIES !! (VERY IMPORTANT)
 @c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
-@deffn {Fun@,{c}@~{a}o} propvars (@var{prop})
+@deffn {Fun@value{cedilha}@~{a}o} propvars (@var{prop})
 Retorna uma lista desses @'{a}tomos sobre a lista @code{props} que
 possui a propriedade indicada atrav@'{e}s de @var{prop}.  Dessa forma @code{propvars (atvalue)}
 retorna uma lista de @'{a}tomos que possuem atvalues.
@@ -304,7 +304,7 @@ retorna uma lista de @'{a}tomos que possuem atvalues.
 @c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
 @c ARE PROPERTIES ESTABLISHED BY put THE SAME AS PROPERTIES ESTABLISHED BY declare OR OTHER FUNCTIONS ??
 @c IS put (foo, true, integer) EQUIVALENT TO declare (foo, integer) FOR EXAMPLE ??
-@deffn {Fun@,{c}@~{a}o} put (@var{@'{a}tomo}, @var{valor}, @var{indicador})
+@deffn {Fun@value{cedilha}@~{a}o} put (@var{@'{a}tomo}, @var{valor}, @var{indicador})
 Atribui @var{valor} para a propriedade (especificada atrav@'{e}s de @var{indicador}) do @var{@'{a}tomo}.
 @var{indicador} pode ser o nome de qualquer propriedade, n@~{a}o apenas uma propriedade definida pelo sistema.
 
@@ -330,7 +330,7 @@ Exemplos:
 
 @end deffn
 
-@deffn {Fun@,{c}@~{a}o} qput (@var{@'{a}tomo}, @var{valor}, @var{indicador})
+@deffn {Fun@value{cedilha}@~{a}o} qput (@var{@'{a}tomo}, @var{valor}, @var{indicador})
 Atribui @var{valor} para a propriedade (especificada atrav@'{e}s de @var{indicador}) do @var{@'{a}tomo}.
 Isso @'{e} o mesmo que @code{put},
 exceto que os argumentos n@~{a} s@~{a}o avaliados.
@@ -361,7 +361,7 @@ Exemplo:
 @c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
 @c HOW DOES THIS INTERACT WITH declare OR OTHER PROPERTY-ESTABLISHING FUNCTIONS ??
 @c HOW IS THIS DIFFERENT FROM remove ??
-@deffn {Fun@,{c}@~{a}o} rem (@var{@'{a}tomo}, @var{indicador})
+@deffn {Fun@value{cedilha}@~{a}o} rem (@var{@'{a}tomo}, @var{indicador})
 Remove a propriedade indicada atrav@'{e}s de @var{indicador} do @var{@'{a}tomo}.
 
 @end deffn
@@ -370,11 +370,11 @@ Remove a propriedade indicada atrav@'{e}s de @var{indicador} do @var{@'{a}tomo}.
 @c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
 @c HOW DOES THIS INTERACT WITH declare OR OTHER PROPERTY-ESTABLISHING FUNCTIONS ??
 @c HOW IS THIS DIFFERENT FROM rem ??
-@deffn {Fun@,{c}@~{a}o} remove (@var{a_1}, @var{p_1}, ..., @var{a_n}, @var{p_n})
-@deffnx {Fun@,{c}@~{a}o} remove ([@var{a_1}, ..., @var{a_m}], [@var{p_1}, ..., @var{p_n}], ...)
-@deffnx {Fun@,{c}@~{a}o} remove ("@var{a}", operator)
-@deffnx {Fun@,{c}@~{a}o} remove (@var{a}, transfun)
-@deffnx {Fun@,{c}@~{a}o} remove (all, @var{p})
+@deffn {Fun@value{cedilha}@~{a}o} remove (@var{a_1}, @var{p_1}, ..., @var{a_n}, @var{p_n})
+@deffnx {Fun@value{cedilha}@~{a}o} remove ([@var{a_1}, ..., @var{a_m}], [@var{p_1}, ..., @var{p_n}], ...)
+@deffnx {Fun@value{cedilha}@~{a}o} remove ("@var{a}", operator)
+@deffnx {Fun@value{cedilha}@~{a}o} remove (@var{a}, transfun)
+@deffnx {Fun@value{cedilha}@~{a}o} remove (all, @var{p})
 Remove propriedades associadas a @'{a}tomos.
 
 @code{remove (@var{a_1}, @var{p_1}, ..., @var{a_n}, @var{p_n})}
@@ -395,8 +395,8 @@ A propriedade removida pode ser definida pelo sistema tal como
 @c VERIFY THAT THIS WORKS AS ADVERTISED
 @c IS transfun PECULIAR TO remove ?? IF SO, SHOW SPECIAL CASE AS @defunx
 uma propriedade pode ser @code{transfun} para remover
-a vers@~{a}o traduzida Lisp de uma fun@,{c}@~{a}o.
-Ap@'{o}s executar isso, a vers@~{a}o Maxima da fun@,{c}@~{a}o @'{e} executada
+a vers@~{a}o traduzida Lisp de uma fun@value{cedilha}@~{a}o.
+Ap@'{o}s executar isso, a vers@~{a}o Maxima da fun@value{cedilha}@~{a}o @'{e} executada
 em lugar da vers@~{a}o traduzida.
 
 @code{remove ("@var{a}", operator)} ou, equivalentemente, @code{remove ("@var{a}", op)}
@@ -405,28 +405,28 @@ remove de @var{a} as propriedades @code{operator} declaradas atrav@'{e}s de
 Note que o nome do operador deve ser escrito como uma seq@"{u}@^{e}ncia de caracteres com ap@'{o}stofo.
 
 @code{remove} sempre retorna @code{done} se um @'{a}tomo possui ou n@~{a}o uma propriedade especificada.
-Esse comportamento @'{e} diferente das fun@,{c}@~{o}es remove mais espec@'{i}ficas
+Esse comportamento @'{e} diferente das fun@value{cedilha}@~{o}es remove mais espec@'{i}ficas
 @code{remvalue}, @code{remarray}, @code{remfunction}, e @code{remrule}.
 
 @c IN SERIOUS NEED OF EXAMPLES HERE
 @end deffn
 
 @c NEEDS EXAMPLES
-@deffn {Fun@,{c}@~{a}o} remvalue (@var{nome_1}, ..., @var{nome_n})
-@deffnx {Fun@,{c}@~{a}o} remvalue (all)
+@deffn {Fun@value{cedilha}@~{a}o} remvalue (@var{nome_1}, ..., @var{nome_n})
+@deffnx {Fun@value{cedilha}@~{a}o} remvalue (all)
 Remove os valores de Vari@'{a}veis de usu@'{a}rio @var{nome_1}, ..., @var{nome_n}
 (que podem ser subscritas) do sistema.
 
 @code{remvalue (all)} remove os valores de todas as vari@'{a}veis em @code{values},
 a lista de todas as vari@'{a}veis nomeadas atrav@'{e}s do usu@'{a}rio
-(em oposi@,{c}@~{a}o a essas que s@~{a}o automaticamente atribu@'{i}das atrav@'{e}s do Maxima).
+(em oposi@value{cedilha}@~{a}o a essas que s@~{a}o automaticamente atribu@'{i}das atrav@'{e}s do Maxima).
 
 Veja tamb@'{e}m @code{values}.
 
 @end deffn
 
 @c NEEDS EXAMPLES
-@deffn {Fun@,{c}@~{a}o} rncombine (@var{expr})
+@deffn {Fun@value{cedilha}@~{a}o} rncombine (@var{expr})
 Transforma @var{expr} combinando todos os termos de @var{expr} que possuem
 denominadores id@^{e}nticos ou denominadores que diferem de cada um dos outros apenas por
 fatores num@'{e}ricos somente.  Isso @'{e} ligeiramente diferente do comportamento de
@@ -441,21 +441,21 @@ cancelamentos.
 @end deffn
 
 @c NEEDS CLARIFICATION AND EXAMPLES
-@deffn {Fun@,{c}@~{a}o} scalarp (@var{expr})
+@deffn {Fun@value{cedilha}@~{a}o} scalarp (@var{expr})
 Retorna @code{true} se @var{expr} for um n@'{u}mero, constante, ou vari@'{a}vel
 declarada @code{scalar} com @code{declare}, ou composta inteiramente de n@'{u}meros, constantes, e tais
 Vari@'{a}veis, bmas n@~{a}o contendo matrizes ou listas.
 
 @end deffn
 
-@deffn {Fun@,{c}@~{a}o} setup_autoload (@var{nomearquivo}, @var{fun@,{c}@~{a}o_1}, ..., @var{fun@,{c}@~{a}o_n})
+@deffn {Fun@value{cedilha}@~{a}o} setup_autoload (@var{nomearquivo}, @var{fun@value{cedilha}@~{a}o_1}, ..., @var{fun@value{cedilha}@~{a}o_n})
 Especifica que
-se qualquer entre @var{fun@,{c}@~{a}o_1}, ..., @var{fun@,{c}@~{a}o_n} for referenciado e n@~{a}o ainda definido,
+se qualquer entre @var{fun@value{cedilha}@~{a}o_1}, ..., @var{fun@value{cedilha}@~{a}o_n} for referenciado e n@~{a}o ainda definido,
 @var{nomedeqrquivo} @'{e} chamado via @code{load}.
-@var{nomearquivo} usualmente cont@'{e}m defini@,{c}@~{o}es para as fun@,{c}@~{o}es especificadas,
+@var{nomearquivo} usualmente cont@'{e}m defini@value{cedilha}@~{o}es para as fun@value{cedilha}@~{o}es especificadas,
 embora isso n@~{a}o seja obrigat@'{o}rio.
 
-@code{setup_autoload} n@~{a}o trabalha para fun@,{c}@~{o}es array.
+@code{setup_autoload} n@~{a}o trabalha para fun@value{cedilha}@~{o}es array.
 
 @code{setup_autoload} n@~{a}o avalia seus argumentos.
 
@@ -473,8 +473,8 @@ Exemplo:
 (%i2) setup_autoload ("specfun.mac", legendre_p, ultraspherical);
 (%o2)                         done
 (%i3) ultraspherical (2, 1/2, %pi);
-Warning - you are redefining the Macsyma fun@,{c}@~{a}o ultraspherical
-Warning - you are redefining the Macsyma fun@,{c}@~{a}o legendre_p
+Warning - you are redefining the Macsyma fun@value{cedilha}@~{a}o ultraspherical
+Warning - you are redefining the Macsyma fun@value{cedilha}@~{a}o legendre_p
                             2
                  3 (%pi - 1)
 (%o3)            ------------ + 3 (%pi - 1) + 1

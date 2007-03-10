@@ -1,23 +1,23 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /Groups.texi/1.11/Thu Apr 21 04:26:33 2005/-ko/
 @menu
-* Defini@,{c}@~{o}es para Grupos::
+* Defini@value{cedilha}@~{o}es para Grupos::
 @end menu
 
-@node Defini@,{c}@~{o}es para Grupos,  , Grupos, Grupos
-@section Defini@,{c}@~{o}es para Grupos
+@node Defini@value{cedilha}@~{o}es para Grupos,  , Grupos, Grupos
+@section Defini@value{cedilha}@~{o}es para Grupos
 
-@deffn {Fun@,{c}@~{a}o} todd_coxeter (@var{rela@,{c}@~{a}o}, @var{subgroupo})
-@deffnx {Fun@,{c}@~{a}o} todd_coxeter (@var{rela@,{c}@~{a}o})
+@deffn {Fun@value{cedilha}@~{a}o} todd_coxeter (@var{rela@value{cedilha}@~{a}o}, @var{subgroupo})
+@deffnx {Fun@value{cedilha}@~{a}o} todd_coxeter (@var{rela@value{cedilha}@~{a}o})
 
-Acha a ordem de G/H onde G @'{e} o m@'{o}dulo do Grupo Livre @var{rela@,{c}@~{a}o}, e
+Acha a ordem de G/H onde G @'{e} o m@'{o}dulo do Grupo Livre @var{rela@value{cedilha}@~{a}o}, e
 H @'{e} o subgroupo de G gerado por @var{subgroupo}.  @var{subgroupo} @'{e} um argumento
-opcional, cujo valor padr@~{a}o @'{e} [].  Em fazendo isso a fun@,{c}@~{a}o produz uma
-tabela de multiplica@,{c}@~{a}o @`a direita de G sobre G/H, onde os
+opcional, cujo valor padr@~{a}o @'{e} [].  Em fazendo isso a fun@value{cedilha}@~{a}o produz uma
+tabela de multiplica@value{cedilha}@~{a}o @`a direita de G sobre G/H, onde os
 co-conjuntos s@~{a}o enumerados [H,Hg2,Hg3,...].  Isso pode ser visto internamente no
 @code{$todd_coxeter_state}.
 
-As tabelas de multiplica@,{c}@~{a}o para as vari@'{a}veis est@~{a}o em
+As tabelas de multiplica@value{cedilha}@~{a}o para as vari@'{a}veis est@~{a}o em
 @code{table:todd_coxeter_state[2]}.  Ent@~{a}o @code{table[i]} fornece a tabela para
 a i'@'{e}sima vari@'{a}vel.  @code{multiplos_co_conjuntos(co_conjunto,i) := table[varnum][co_conjunto];}
 

@@ -1,16 +1,16 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /Numerical.texi/1.24/Mon Feb 19 14:23:08 2007/-ko/
 @menu
-* Introdu@,{c}@~{a}o a Num@'{e}rico::
+* Introdu@value{cedilha}@~{a}o a Num@'{e}rico::
 * Pacotes de Fourier::
-* Defini@,{c}@~{o}es para Num@'{e}rico::
-* Defini@,{c}@~{o}es para S@'{e}ries de Fourier::
+* Defini@value{cedilha}@~{o}es para Num@'{e}rico::
+* Defini@value{cedilha}@~{o}es para S@'{e}ries de Fourier::
 @end menu
 
-@node Introdu@,{c}@~{a}o a Num@'{e}rico, Pacotes de Fourier, Num@'{e}rico, Num@'{e}rico
+@node Introdu@value{cedilha}@~{a}o a Num@'{e}rico, Pacotes de Fourier, Num@'{e}rico, Num@'{e}rico
 @section Introdu@,{c}@~{a}o a Num@'{e}rico
 
-@node Pacotes de Fourier, Defini@,{c}@~{o}es para Num@'{e}rico, Introdu@,{c}@~{a}o a Num@'{e}rico, Num@'{e}rico
+@node Pacotes de Fourier, Defini@value{cedilha}@~{o}es para Num@'{e}rico, Introdu@value{cedilha}@~{a}o a Num@'{e}rico, Num@'{e}rico
 @section Pacotes de Fourier
 O pacote @code{fft} compreende fun@,{c}@~{o}es para computa@,{c}@~{a}o num@'{e}rica (n@~{a}o simb@'{o}lica)
 das transforma@,{c}@~{o}es r@'{a}pidas de Fourier.
@@ -26,7 +26,7 @@ Veja @code{Defini@,{c}@~{o}es para S@'{e}ries}.
 
 @c end concepts Numerical
 
-@node Defini@,{c}@~{o}es para Num@'{e}rico, Defini@,{c}@~{o}es para S@'{e}ries de Fourier, Pacotes de Fourier, Num@'{e}rico
+@node Defini@value{cedilha}@~{o}es para Num@'{e}rico, Defini@value{cedilha}@~{o}es para S@'{e}ries de Fourier, Pacotes de Fourier, Num@'{e}rico
 @section Defini@,{c}@~{o}es para Num@'{e}rico
 @c NOTE: Let's keep POLARTORECT, RECTTOPOLAR, and IFT before FFT
 @c in this file. Otherwise DESCRIBE returns the FFT text (because
@@ -182,27 +182,27 @@ express@~{o}es sejam mostrados mais al@'{e}m para a direita.
 Mostra @var{expr} como uma declara@,{c}@~{a}o Fortran.
 A linha de sa@'{i}da @'{e} indentada com espa@,{c}os.
 Se a linha for muito longa, @code{fortran} imprime linhas de continua@,{c}@~{a}o.
-@code{fortran} mostra o operador de exponencia@,{c}@~{a}o @code{^} como @code{**},
+@code{fortran} mostra o operador de exponencia@value{cedilha}@~{a}o @code{^} como @code{**},
 e mostra um n@'{u}mero complexo @code{a + b %i} na forma @code{(a,b)}.
 
-@var{expr} pode ser uma equa@,{c}@~{a}o. Nesse caso, @code{fortran} mostra uma declara@,{c}@~{a}o de
-atribui@,{c}@~{a}o, atribuindo o primeiro membro (esquerda) da equa@,{c}@~{a}o ao segundo membro (direita).
+@var{expr} pode ser uma equa@value{cedilha}@~{a}o. Nesse caso, @code{fortran} mostra uma declara@value{cedilha}@~{a}o de
+atribui@value{cedilha}@~{a}o, atribuindo o primeiro membro (esquerda) da equa@value{cedilha}@~{a}o ao segundo membro (direita).
 Em particular, se o primeiro membro @var{expr} @'{e} um nome de uma matriz,
-ent@~{a}o @code{fortran} mostra uma declara@,{c}@~{a}o de atribui@,{c}@~{a}o para cada elemento da matriz.
+ent@~{a}o @code{fortran} mostra uma declara@value{cedilha}@~{a}o de atribui@value{cedilha}@~{a}o para cada elemento da matriz.
 
 Se @var{expr} n@~{a}o for alguma coisa reconhecida por @code{fortran},
-a express@~{a}o @'{e} mostrada no formato @code{grind} sem reclama@,{c}@~{a}o.
-@code{fortran} n@~{a}o conhece listas, arrays ou fun@,{c}@~{o}es.
+a express@~{a}o @'{e} mostrada no formato @code{grind} sem reclama@value{cedilha}@~{a}o.
+@code{fortran} n@~{a}o conhece listas, arrays ou fun@value{cedilha}@~{o}es.
 
 @code{fortindent} controla o margem esquerda das linhas mostradas.
-0 @'{e} a margem normal (i.e., indentada 6 espa@,{c}os). Incrementando @code{fortindent}
+0 @'{e} a margem normal (i.e., indentada 6 espa@value{cedilha}os). Incrementando @code{fortindent}
 faz com que express@~{o}es sejam mostradas adiante para a direita.
 
 quando @code{fortspaces} for @code{true}, @code{fortran} preenche
-cada linha mostrada com espa@,{c}os em branco at@'{e} completar 80 columas.
+cada linha mostrada com espa@value{cedilha}os em branco at@'{e} completar 80 columas.
 
 @code{fortran} avalia seus argumentos;
-colocando um ap@'{o}strofo em um argumento evita avalia@,{c}@~{a}o.
+colocando um ap@'{o}strofo em um argumento evita avalia@value{cedilha}@~{a}o.
 @code{fortran} sempre retorna @code{done}.
 
 Exemplos:
@@ -234,17 +234,17 @@ Exemplos:
 
 @end deffn
 
-@defvr {Vari@'{a}vel de op@,{c}@~{a}o} fortspaces
+@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} fortspaces
 Valor padr@~{a}o: @code{false}
 
 Quando @code{fortspaces} for @code{true}, @code{fortran} preenche
-cada linha mostrada com espa@,{c}os em branco at@'{e} completar 80 columas.
+cada linha mostrada com espa@value{cedilha}os em branco at@'{e} completar 80 columas.
 
 @end defvr
 
-@deffn {Fun@,{c}@~{a}o} horner (@var{expr}, @var{x})
-@deffnx {Fun@,{c}@~{a}o} horner (@var{expr})
-Retorna uma representa@,{c}@~{a}o rearranjada de @var{expr} como
+@deffn {Fun@value{cedilha}@~{a}o} horner (@var{expr}, @var{x})
+@deffnx {Fun@value{cedilha}@~{a}o} horner (@var{expr})
+Retorna uma representa@value{cedilha}@~{a}o rearranjada de @var{expr} como
 na regra de Horner, usando @var{x} como vari@'{a}vel principal se isso for especificado.
 @code{x} pode ser omitido e nesse caso a vari@'{a}vel principal da forma de express@~{a}o racional
 can@^{o}nica de @var{expr} @'{e} usada.
@@ -273,11 +273,11 @@ To reenable the Lisp debugger set *debugger-hook* to nil.
 @end deffn
 
 @c NEEDS WORK
-@deffn {Fun@,{c}@~{a}o} find_root (@var{f}(@var{x}), @var{x}, @var{a}, @var{b})
-@deffnx {Fun@,{c}@~{a}o} find_root (@var{f}, @var{a}, @var{b})
-Encontra a ra@'{i}z da fun@,{c}@~{a}o @var{f} com a vari@'{a}vel @var{x} percorrendo o intervalo @code{[@var{a}, @var{b}]}.
-A fun@,{c}@~{a}o deve ter um
-sinal diferente em cada ponto final.  Se essa condi@,{c}@~{a}o n@~{a}o for alcan@,{c}ada, a
+@deffn {Fun@value{cedilha}@~{a}o} find_root (@var{f}(@var{x}), @var{x}, @var{a}, @var{b})
+@deffnx {Fun@value{cedilha}@~{a}o} find_root (@var{f}, @var{a}, @var{b})
+Encontra a ra@'{i}z da fun@value{cedilha}@~{a}o @var{f} com a vari@'{a}vel @var{x} percorrendo o intervalo @code{[@var{a}, @var{b}]}.
+A fun@value{cedilha}@~{a}o deve ter um
+sinal diferente em cada ponto final.  Se essa condi@value{cedilha}@~{a}o n@~{a}o for alcan@value{cedilha}ada, a
 action of the function is governed by @code{find_root_error}.  If
 @code{find_root_error} is @code{true} then an error occurs, otherwise the value of
 @code{find_root_error} is returned (thus for plotting @code{find_root_error} might be set to
@@ -288,11 +288,11 @@ que uma ra@'{i}z).  A precis@~{a}o de @code{find_root} @'{e} governada por
 @code{intpolabs} e @code{intpolrel} os quais devem ser n@'{u}meros em ponto flutuante
 n@~{a}o negativos.  @code{find_root} encerrar@'{a} quando o primeiro argumento avaliar para
 alguma coisa menor que ou igual a @code{intpolabs} ou se sucessivas
-aproxima@,{c}@~{o}es da ra@'{i}z diferirem por n@~{a}o mais que @code{intpolrel * <um dos aproximandos>}.
+aproxima@value{cedilha}@~{o}es da ra@'{i}z diferirem por n@~{a}o mais que @code{intpolrel * <um dos aproximandos>}.
 O valor padr@~{a}o de @code{intpolabs} e @code{intpolrel} s@~{a}o
 0.0 de forma que @code{find_root} pega como boa uma resposta como for poss@'{i}vel com a
 precis@~{a}o aritm@'{e}tica simples que tivermos.  O primeiro argumento pode ser uma
-equa@,{c}@~{a}o.  A ordem dos dois @'{u}ltimos argumentos @'{e} irrelevante.  Dessa forma
+equa@value{cedilha}@~{a}o.  A ordem dos dois @'{u}ltimos argumentos @'{e} irrelevante.  Dessa forma
 
 @example
 find_root (sin(x) = x/2, x, %pi, 0.1);
@@ -305,8 +305,8 @@ find_root (sin(x) = x/2, x, 0.1, %pi);
 @end example
 
 O m@'{e}todo usado @'{e} uma busca bin@'{a}ria no intervalo especificado pelos @'{u}ltimos
-dois argumentos.  Quando o resultado da busca for encontrado a fun@,{c}@~{a}o @'{e} fechada o suficiente para ser
-linear, isso inicia usando interpola@,{c}@~{a}o linear.
+dois argumentos.  Quando o resultado da busca for encontrado a fun@value{cedilha}@~{a}o @'{e} fechada o suficiente para ser
+linear, isso inicia usando interpola@value{cedilha}@~{a}o linear.
 
 Examples:
 @c ===beg===
@@ -340,7 +340,7 @@ Examples:
 
 @end deffn
 
-@defvr {Vari@'{a}vel de op@,{c}@~{a}o} find_root_abs
+@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} find_root_abs
 Valor padr@~{a}o: 0.0
 
 @code{find_root_abs} @'{e} a precis@~{a}o do comando @code{find_root}. A precis@~{a}o @'{e}
@@ -354,14 +354,14 @@ com a precis@~{a}o aritm@'{e}tica simples que tivermos.
 
 @end defvr
 
-@defvr {Vari@'{a}vel de op@,{c}@~{a}o} find_root_error
+@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} find_root_error
 Valor padr@~{a}o: @code{true}
 
 @code{find_root_error} governa o comportamento de @code{find_root}.
-Quando @code{find_root} for chamada, ela determina se a fun@,{c}@~{a}o
-a ser resolvida satisfaz ou n@~{a}o a condi@,{c}@~{a}o que os valores da
-fun@,{c}@~{a}o nos pontos finais do intervalo de interpola@,{c}@~{a}o s@~{a}o opostos
-em sinal.  Se eles forem de sinais opostos, a interpola@,{c}@~{a}o prossegue.
+Quando @code{find_root} for chamada, ela determina se a fun@value{cedilha}@~{a}o
+a ser resolvida satisfaz ou n@~{a}o a condi@value{cedilha}@~{a}o que os valores da
+fun@value{cedilha}@~{a}o nos pontos finais do intervalo de interpola@value{cedilha}@~{a}o s@~{a}o opostos
+em sinal.  Se eles forem de sinais opostos, a interpola@value{cedilha}@~{a}o prossegue.
 Se eles forem de mesmo sinal, e @code{find_root_error} for @code{true}, ent@~{a}o um erro @'{e}
 sinalizado.  Se eles forem de mesmo sinal e @code{find_root_error} n@~{a}o for @code{true}, o
 valor de @code{find_root_error} @'{e} retornado.  Dessa forma para montagem de gr@'{a}fico, @code{find_root_error}
@@ -369,7 +369,7 @@ pode ser escolhida para 0.0.
 
 @end defvr
 
-@defvr {Vari@'{a}vel de op@,{c}@~{a}o} find_root_rel
+@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} find_root_rel
 Valor padr@~{a}o: 0.0
 
 @code{find_root_rel} @'{e} a precis@~{a}o do comando @code{find_root} e @'{e}
@@ -383,19 +383,19 @@ com a precis@~{a}o aritm@'{e}tica simples que tivermos.
 
 @end defvr
 
-@deffn {Fun@,{c}@~{a}o} newton (@var{expr}, @var{x}, @var{x_0}, @var{eps})
-Retorna uma solu@,{c}@~{a}o aproximada de @code{@var{expr} = 0} atrav@'{e}s do m@'{e}todo de Newton,
-considerando @var{expr} como sendo uma fun@,{c}@~{a}o de uma vari@'{a}vel, @var{x}.
-A busca pela solu@,{c}@~{a}o come@,{c}a com @code{@var{x} = @var{x_0}}
+@deffn {Fun@value{cedilha}@~{a}o} newton (@var{expr}, @var{x}, @var{x_0}, @var{eps})
+Retorna uma solu@value{cedilha}@~{a}o aproximada de @code{@var{expr} = 0} atrav@'{e}s do m@'{e}todo de Newton,
+considerando @var{expr} como sendo uma fun@value{cedilha}@~{a}o de uma vari@'{a}vel, @var{x}.
+A busca pela solu@value{cedilha}@~{a}o come@value{cedilha}a com @code{@var{x} = @var{x_0}}
 e prossegue at@'{e} @code{abs(@var{expr}) < @var{eps}}
 (com @var{expr} avaliada para o valor corrente de @var{x}).
 
-@code{newton} permite que vari@'{a}veis indefinidas apare@,{c}am em @var{expr},
-contanto que o teste de termina@,{c}@~{a}o @code{abs(@var{expr}) < @var{eps}} avalie
+@code{newton} permite que vari@'{a}veis indefinidas apare@value{cedilha}am em @var{expr},
+contanto que o teste de termina@value{cedilha}@~{a}o @code{abs(@var{expr}) < @var{eps}} avalie
 para @code{true} ou @code{false}.
 Dessa forma n@~{a}o @'{e} necess@'{a}rio que @var{expr} avalie para um n@'{u}mero.
 
-@code{load(newton1)} chama essa fun@,{c}@~{a}o.
+@code{load(newton1)} chama essa fun@value{cedilha}@~{a}o.
 
 Veja tamb@'{e}m @code{realroots}, @code{allroots}, @code{find_root}, e @code{mnewton}.
 
@@ -427,19 +427,19 @@ Exemplos:
 
 @end deffn
 
-@node Defini@,{c}@~{o}es para S@'{e}ries de Fourier, , Defini@,{c}@~{o}es para Num@'{e}rico, Num@'{e}rico
-@section Defini@,{c}@~{o}es para S@'{e}ries de Fourier
+@node Defini@value{cedilha}@~{o}es para S@'{e}ries de Fourier, , Defini@value{cedilha}@~{o}es para Num@'{e}rico, Num@'{e}rico
+@section Defini@value{cedilha}@~{o}es para S@'{e}ries de Fourier
 
 @c REPHRASE
-@deffn {Fun@,{c}@~{a}o} equalp (@var{x}, @var{y})
+@deffn {Fun@value{cedilha}@~{a}o} equalp (@var{x}, @var{y})
 Retorna @code{true} se @code{equal (@var{x}, @var{y})} de outra forma @code{false} (n@~{a}o fornece uma
 mensagem de erro como @code{equal (x, y)} poderia fazer nesse caso).
 
 @c NEEDS EXAMPLES
 @end deffn
 
-@deffn {Fun@,{c}@~{a}o} remfun (@var{f}, @var{expr})
-@deffnx {Fun@,{c}@~{a}o} remfun (@var{f}, @var{expr}, @var{x})
+@deffn {Fun@value{cedilha}@~{a}o} remfun (@var{f}, @var{expr})
+@deffnx {Fun@value{cedilha}@~{a}o} remfun (@var{f}, @var{expr}, @var{x})
 @code{remfun (@var{f}, @var{expr})}
 substitue todas as ocorr@^{e}ncias de @code{@var{f} (@var{arg})} por @var{arg} em @var{expr}.
 
@@ -450,23 +450,23 @@ somente se @var{arg} contiver a vari@'{a}vel @var{x}.
 @c NEEDS EXAMPLES
 @end deffn
 
-@deffn {Fun@,{c}@~{a}o} funp (@var{f}, @var{expr})
-@deffnx {Fun@,{c}@~{a}o} funp (@var{f}, @var{expr}, @var{x})
+@deffn {Fun@value{cedilha}@~{a}o} funp (@var{f}, @var{expr})
+@deffnx {Fun@value{cedilha}@~{a}o} funp (@var{f}, @var{expr}, @var{x})
 @code{funp (@var{f}, @var{expr})}
-retorna @code{true} se @var{expr} cont@'{e}m a fun@,{c}@~{a}o @var{f}.
+retorna @code{true} se @var{expr} cont@'{e}m a fun@value{cedilha}@~{a}o @var{f}.
 
 @code{funp (@var{f}, @var{expr}, @var{x})}
-retorna @code{true} se @var{expr} cont@'{e}m a fun@,{c}@~{a}o @var{f} e a vari@'{a}vel
+retorna @code{true} se @var{expr} cont@'{e}m a fun@value{cedilha}@~{a}o @var{f} e a vari@'{a}vel
 @var{x} em algum lugar no argumento de uma das inst@^{a}ncias de @var{f}.
 
 @c NEEDS EXAMPLES
 @end deffn
 
-@deffn {Fun@,{c}@~{a}o} absint (@var{f}, @var{x}, @var{halfplane})
-@deffnx {Fun@,{c}@~{a}o} absint (@var{f}, @var{x})
-@deffnx {Fun@,{c}@~{a}o} absint (@var{f}, @var{x}, @var{a}, @var{b})
+@deffn {Fun@value{cedilha}@~{a}o} absint (@var{f}, @var{x}, @var{halfplane})
+@deffnx {Fun@value{cedilha}@~{a}o} absint (@var{f}, @var{x})
+@deffnx {Fun@value{cedilha}@~{a}o} absint (@var{f}, @var{x}, @var{a}, @var{b})
 @code{absint (@var{f}, @var{x}, @var{halfplane})}
-retorna a integral indefinida de @var{f} com rela@,{c}@~{a}o a
+retorna a integral indefinida de @var{f} com rela@value{cedilha}@~{a}o a
 @var{x} no dado semi-plano (@code{pos}, @code{neg}, ou @code{both}).
 @var{f} pode conter express@~{o}es da forma
 @code{abs (x)}, @code{abs (sin (x))}, @code{abs (a) * exp (-abs (b) * abs (x))}.
@@ -474,7 +474,7 @@ retorna a integral indefinida de @var{f} com rela@,{c}@~{a}o a
 @code{absint (@var{f}, @var{x})} @'{e} equivalente a @code{absint (@var{f}, @var{x}, pos)}.
 
 @code{absint (@var{f}, @var{x}, @var{a}, @var{b})}
-retorna a integral definida de @var{f} com rela@,{c}@~{a}o a @var{x} de @var{a} at@'{e} @var{b}.
+retorna a integral definida de @var{f} com rela@value{cedilha}@~{a}o a @var{x} de @var{a} at@'{e} @var{b}.
 @c SAME LIST AS ABOVE ??
 @var{f} pode incluir valores absolutos.
 
@@ -482,7 +482,7 @@ retorna a integral definida de @var{f} com rela@,{c}@~{a}o a @var{x} de @var{a} 
 @end deffn
 
 @c NEEDS EXPANSION
-@deffn {Fun@,{c}@~{a}o} fourier (@var{f}, @var{x}, @var{p})
+@deffn {Fun@value{cedilha}@~{a}o} fourier (@var{f}, @var{x}, @var{p})
 Retorna uma lista de coeficientes de Fourier de @code{@var{f}(@var{x})} definidos
 sobre o intervalo @code{[-p, p]}.
 
@@ -490,21 +490,21 @@ sobre o intervalo @code{[-p, p]}.
 @end deffn
 
 @c NEES EXPANSION. WHAT IS THE ARGUMENT l ??
-@deffn {Fun@,{c}@~{a}o} foursimp (@var{l})
+@deffn {Fun@value{cedilha}@~{a}o} foursimp (@var{l})
 Simplifica @code{sin (n %pi)} para 0 se @code{sinnpiflag} for @code{true} e
 @code{cos (n %pi)} para @code{(-1)^n} se @code{cosnpiflag} for @code{true}.
 
 @c NEEDS EXAMPLES
 @end deffn
 
-@defvr {Vari@'{a}vel de op@,{c}@~{a}o} sinnpiflag
+@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} sinnpiflag
 Valor padr@~{a}o: @code{true}
 
 Veja @code{foursimp}.
 
 @end defvr
 
-@defvr {Vari@'{a}vel de op@,{c}@~{a}o} cosnpiflag
+@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} cosnpiflag
 Valor padr@~{a}o: @code{true}
 
 Veja @code{foursimp}.
@@ -512,7 +512,7 @@ Veja @code{foursimp}.
 @end defvr
 
 @c NEEDS EXPANSION. EXPLAIN x AND p HERE (DO NOT REFER SOMEWHERE ELSE)
-@deffn {Fun@,{c}@~{a}o} fourexpand (@var{l}, @var{x}, @var{p}, @var{limit})
+@deffn {Fun@value{cedilha}@~{a}o} fourexpand (@var{l}, @var{x}, @var{p}, @var{limit})
 Constr@'{o}i e retorna a s@'{e}rie de Fourier partindo da lista de
 coeficientes de Fourier @var{l} at@'{e} (up through) @var{limit} termos (@var{limit}
 pode ser @code{inf}). @var{x} e @var{p} possuem o mesmo significado que em
@@ -522,28 +522,28 @@ pode ser @code{inf}). @var{x} e @var{p} possuem o mesmo significado que em
 @end deffn
 
 @c NEEDS EXPANSION. WHAT IS THE ARGUMENT p ??
-@deffn {Fun@,{c}@~{a}o} fourcos (@var{f}, @var{x}, @var{p})
+@deffn {Fun@value{cedilha}@~{a}o} fourcos (@var{f}, @var{x}, @var{p})
 Retorna os coeficientes do cosseno de Fourier para @code{@var{f}(@var{x})} definida sobre @code{[0, %pi]}.
 
 @c NEEDS EXAMPLES
 @end deffn
 
 @c NEEDS EXPANSION
-@deffn {Fun@,{c}@~{a}o} foursin (@var{f}, @var{x}, @var{p})
+@deffn {Fun@value{cedilha}@~{a}o} foursin (@var{f}, @var{x}, @var{p})
 Retorna os coeficientes do seno de Fourier para @code{@var{f}(@var{x})} definida sobre @code{[0, @var{p}]}.
 
 @c NEEDS EXAMPLES
 @end deffn
 
 @c NEEDS EXPANSION
-@deffn {Fun@,{c}@~{a}o} totalfourier (@var{f}, @var{x}, @var{p})
+@deffn {Fun@value{cedilha}@~{a}o} totalfourier (@var{f}, @var{x}, @var{p})
 Retorna @code{fourexpand (foursimp (fourier (@var{f}, @var{x}, @var{p})), @var{x}, @var{p}, 'inf)}.
 
 @c NEEDS EXAMPLES
 @end deffn
 
 @c NEEDS EXPANSION
-@deffn {Fun@,{c}@~{a}o} fourint (@var{f}, @var{x})
+@deffn {Fun@value{cedilha}@~{a}o} fourint (@var{f}, @var{x})
 Constr@'{o}i e retorna uma lista de coeficientes de integral de Fourier de @code{@var{f}(@var{x})}
 definida sobre @code{[minf, inf]}.
 
@@ -551,14 +551,14 @@ definida sobre @code{[minf, inf]}.
 @end deffn
 
 @c NEEDS EXPANSION
-@deffn {Fun@,{c}@~{a}o} fourintcos (@var{f}, @var{x})
+@deffn {Fun@value{cedilha}@~{a}o} fourintcos (@var{f}, @var{x})
 Retorna os coeficientes da integral do cosseno de Fourier para @code{@var{f}(@var{x})} on @code{[0, inf]}.
 
 @c NEEDS EXAMPLES
 @end deffn
 
 @c NEEDS EXPANSION
-@deffn {Fun@,{c}@~{a}o} fourintsin (@var{f}, @var{x})
+@deffn {Fun@value{cedilha}@~{a}o} fourintsin (@var{f}, @var{x})
 Retorna os coeficientes da integral do seno de Fourier para @code{@var{f}(@var{x})} on @code{[0, inf]}.
 
 @c NEEDS EXAMPLES

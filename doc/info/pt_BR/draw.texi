@@ -1,15 +1,15 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /draw.texi/1.2/Tue Feb 20 06:59:00 2007//
 @menu
-* Introdu@,{c}@~{a}o a draw::
-* Defini@,{c}@~{o}es para draw::
+* Introdu@value{cedilha}@~{a}o a draw::
+* Defini@value{cedilha}@~{o}es para draw::
 @end menu
 
 
 
 
 
-@node Introdu@,{c}@~{a}o a draw, Defini@,{c}@~{o}es para draw, draw, draw
+@node Introdu@value{cedilha}@~{a}o a draw, Defini@value{cedilha}@~{o}es para draw, draw, draw
 @section Introdu@,{c}@~{a}o a draw
 
 
@@ -24,7 +24,7 @@ Existem tr@^es fun@,{c}@~oes a serem usadas n n@'ivel do Maxima:
 
 
 
-@node Defini@,{c}@~{o}es para draw,  , Introdu@,{c}@~{a}o a draw, draw
+@node Defini@value{cedilha}@~{o}es para draw,  , Introdu@value{cedilha}@~{a}o a draw, draw
 @section Defini@,{c}@~{o}es para draw
 
 
