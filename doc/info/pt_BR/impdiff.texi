@@ -1,17 +1,17 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /impdiff.texi/1.1/Sun Mar 19 20:02:45 2006//
 @menu
-* Defini@,{c}@~{o}es para impdiff::
+* Defini@value{cedilha}@~{o}es para impdiff::
 @end menu
 
-@node Defini@,{c}@~{o}es para impdiff,  , impdiff, impdiff
-@section Defini@,{c}@~{o}es para impdiff
+@node Defini@value{cedilha}@~{o}es para impdiff,  , impdiff, impdiff
+@section Defini@value{cedilha}@~{o}es para impdiff
 
-@deffn {Fun@,{c}@~{a}o} implicit_derivative (@var{f},@var{indvarlist},@var{orderlist},@var{depvar})
-Essa subrotina calcula derivadas impl@'{i}citas de fun@,{c}@~{o}es de v@'{a}rias vari@'{a}veis.
-@var{f} @'{e} uma fun@,{c}@~{a}o do tipo array, os @'{i}ndices s@~{a}o o grau da derivada na ordem @var{indvarlist};
+@deffn {Fun@value{cedilha}@~{a}o} implicit_derivative (@var{f},@var{indvarlist},@var{orderlist},@var{depvar})
+Essa subrotina calcula derivadas impl@'{i}citas de fun@value{cedilha}@~{o}es de v@'{a}rias vari@'{a}veis.
+@var{f} @'{e} uma fun@value{cedilha}@~{a}o do tipo array, os @'{i}ndices s@~{a}o o grau da derivada na ordem @var{indvarlist};
 @var{indvarlist} @'{e} a lista de vari@'{a}veis independentes; @var{orderlist} @'{e} a ordem desejada; e 
 @var{depvar} @'{e} a vari@'{a}vel dependente.
 
-Para usar essa fun@,{c}@~{a}o escreva primeiro @code{load("impdiff")}.
+Para usar essa fun@value{cedilha}@~{a}o escreva primeiro @code{load("impdiff")}.
 @end deffn

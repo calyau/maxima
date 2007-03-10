@@ -1,48 +1,48 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /Special.texi/1.27/Mon Jan 15 06:08:56 2007/-ko/
 @menu
-* Introdu@,{c}@~{a}o a Fun@,{c}@~{o}es Especiais::  
-* Defini@,{c}@~{o}es para Fun@,{c}@~{o}es Especiais::  
+* Introdu@value{cedilha}@~{a}o a Fun@value{cedilha}@~{o}es Especiais::  
+* Defini@value{cedilha}@~{o}es para Fun@value{cedilha}@~{o}es Especiais::  
 @end menu
 
-@node Introdu@,{c}@~{a}o a Fun@,{c}@~{o}es Especiais, Defini@,{c}@~{o}es para Fun@,{c}@~{o}es Especiais, Fun@,{c}@~{o}es Especiais, Fun@,{c}@~{o}es Especiais
-@section Introdu@,{c}@~{a}o a Fun@,{c}@~{o}es Especiais
+@node Introdu@value{cedilha}@~{a}o a Fun@value{cedilha}@~{o}es Especiais, Defini@value{cedilha}@~{o}es para Fun@value{cedilha}@~{o}es Especiais, Fun@value{cedilha}@~{o}es Especiais, Fun@value{cedilha}@~{o}es Especiais
+@section Introdu@value{cedilha}@~{a}o a Fun@value{cedilha}@~{o}es Especiais
 
-A nota@,{c}@~{a}o de fun@,{c}@~{a}o especial segue adiante:
+A nota@value{cedilha}@~{a}o de fun@value{cedilha}@~{a}o especial segue adiante:
 
 @example
-bessel_j (index, expr)         Fun@,{c}@~{a}o de Bessel, primeiro tipo
-bessel_y (index, expr)         Fun@,{c}@~{a}o de Bessel, segundo tipo
-bessel_i (index, expr)         Fun@,{c}@~{a}o de Bessel modificada, primeiro tipo
-bessel_k (index, expr)         Fun@,{c}@~{a}o de Bessel modificada, segundo tipo
+bessel_j (index, expr)         Fun@value{cedilha}@~{a}o de Bessel, primeiro tipo
+bessel_y (index, expr)         Fun@value{cedilha}@~{a}o de Bessel, segundo tipo
+bessel_i (index, expr)         Fun@value{cedilha}@~{a}o de Bessel modificada, primeiro tipo
+bessel_k (index, expr)         Fun@value{cedilha}@~{a}o de Bessel modificada, segundo tipo
 %he[n] (z)                     Polin@^{o}mio de Hermite (Note bem: @code{he}, n@~{a}o @code{h}. Veja A&S 22.5.18)
-%p[u,v] (z)                    Fun@,{c}@~{a}o de Legendre
-%q[u,v] (z)                    Fun@,{c}@~{a}o de Legendre, segundo tipo
-hstruve[n] (z)                 Fun@,{c}@~{a}o H de Struve H
-lstruve[n] (z)                 Fun@,{c}@~{a}o de L Struve
-%f[p,q] ([], [], expr)         Fun@,{c}@~{a}o Hipergeom@'{e}trica Generalizada
-gamma()                        Fun@,{c}@~{a}o Gamma
-gammagreek(a,z)                Fun@,{c}@~{a}o gama incompleta
-gammaincomplete(a,z)           Final da fun@,{c}@~{a}o gama incompleta
+%p[u,v] (z)                    Fun@value{cedilha}@~{a}o de Legendre
+%q[u,v] (z)                    Fun@value{cedilha}@~{a}o de Legendre, segundo tipo
+hstruve[n] (z)                 Fun@value{cedilha}@~{a}o H de Struve H
+lstruve[n] (z)                 Fun@value{cedilha}@~{a}o de L Struve
+%f[p,q] ([], [], expr)         Fun@value{cedilha}@~{a}o Hipergeom@'{e}trica Generalizada
+gamma()                        Fun@value{cedilha}@~{a}o Gamma
+gammagreek(a,z)                Fun@value{cedilha}@~{a}o gama incompleta
+gammaincomplete(a,z)           Final da fun@value{cedilha}@~{a}o gama incompleta
 @c IS slommel THE "LOMMEL" FUNCTION ?? NOT OTHERWISE MENTIONED IN TEXINFO FILES
 slommel
-%m[u,k] (z)                    Fun@,{c}@~{a}o de Whittaker, primeiro tipo
-%w[u,k] (z)                    Fun@,{c}@~{a}o de Whittaker, segundo tipo
-erfc (z)                       Complemento da fun@,{c}@~{a}o erf (fun@,{c}@~{a}o de erros - integral da distribui@,{c}@~{a}o normal)
+%m[u,k] (z)                    Fun@value{cedilha}@~{a}o de Whittaker, primeiro tipo
+%w[u,k] (z)                    Fun@value{cedilha}@~{a}o de Whittaker, segundo tipo
+erfc (z)                       Complemento da fun@value{cedilha}@~{a}o erf (fun@value{cedilha}@~{a}o de erros - integral da distribui@value{cedilha}@~{a}o normal)
 ei (z)                         Integral de exponencial (?)
 kelliptic (z)                  integral eliptica completa de primeiro tipo (K)
-%d [n] (z)                     Fun@,{c}@~{a}o cil@'{i}ndrica parab@'{o}lica
+%d [n] (z)                     Fun@value{cedilha}@~{a}o cil@'{i}ndrica parab@'{o}lica
 @end example
 
-@node Defini@,{c}@~{o}es para Fun@,{c}@~{o}es Especiais,  , Introdu@,{c}@~{a}o a Fun@,{c}@~{o}es Especiais, Fun@,{c}@~{o}es Especiais
-@section Defini@,{c}@~{o}es para Fun@,{c}@~{o}es Especiais
+@node Defini@value{cedilha}@~{o}es para Fun@value{cedilha}@~{o}es Especiais,  , Introdu@value{cedilha}@~{a}o a Fun@value{cedilha}@~{o}es Especiais, Fun@value{cedilha}@~{o}es Especiais
+@section Defini@value{cedilha}@~{o}es para Fun@value{cedilha}@~{o}es Especiais
 
-@deffn {Fun@,{c}@~{a}o} airy_ai (@var{x})
-A fun@,{c}@~{a}o de Airy Ai, como definida em Abramowitz e Stegun,
+@deffn {Fun@value{cedilha}@~{a}o} airy_ai (@var{x})
+A fun@value{cedilha}@~{a}o de Airy Ai, como definida em Abramowitz e Stegun,
 @i{Handbook of Mathematical Functions}, Sess@~{a}o 10.4. 
 
-A equa@,{c}@~{a}o de Airy @code{diff (y(x), x, 2) - x y(x) = 0} tem duas 
-solu@,{c}@~{o}es linearmente independentes, @code{y = Ai(x)} e @code{y = Bi(x)}.
+A equa@value{cedilha}@~{a}o de Airy @code{diff (y(x), x, 2) - x y(x) = 0} tem duas 
+solu@value{cedilha}@~{o}es linearmente independentes, @code{y = Ai(x)} e @code{y = Bi(x)}.
 A derivada de @code{diff (airy_ai(x), x)} @'{e} @code{airy_dai(x)}.
 
 Se o argumento @code{x} for um n@'{u}mero real ou um n@'{u}mero complexo qualquer deles em ponto
@@ -53,16 +53,16 @@ Veja tamb@'{e}m @code{airy_bi}, @code{airy_dai}, @code{airy_dbi}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} airy_dai (@var{x})
-A derivada da fun@,{c}@~{a}o de Airy Ai @code{airy_ai(x)}. 
+@deffn {Fun@value{cedilha}@~{a}o} airy_dai (@var{x})
+A derivada da fun@value{cedilha}@~{a}o de Airy Ai @code{airy_ai(x)}. 
 
 Veja @code{airy_ai}.
 @end deffn
 
-@deffn {Fun@,{c}@~{a}o} airy_bi (@var{x})
-A fun@,{c}@~{a}o de Airy Bi, como definida em Abramowitz e Stegun,
+@deffn {Fun@value{cedilha}@~{a}o} airy_bi (@var{x})
+A fun@value{cedilha}@~{a}o de Airy Bi, como definida em Abramowitz e Stegun,
 @i{Handbook of Mathematical Functions}, Sess@~{a}o 10.4, 
-@'{e} a segunda solu@,{c}@~{a}o da equa@,{c}@~{a}o de Airy
+@'{e} a segunda solu@value{cedilha}@~{a}o da equa@value{cedilha}@~{a}o de Airy
 @code{diff (y(x), x, 2) - x y(x) = 0}.
 
 Se o argumento @code{x} for um n@'{u}mero real ou um n@'{u}mero complexo qualquer deles em ponto flutuante,
@@ -75,15 +75,15 @@ Veja @code{airy_ai}, @code{airy_dbi}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} airy_dbi (@var{x})
-A derivada de fun@,{c}@~{a}o de Airy Bi @code{airy_bi(x)}.
+@deffn {Fun@value{cedilha}@~{a}o} airy_dbi (@var{x})
+A derivada de fun@value{cedilha}@~{a}o de Airy Bi @code{airy_bi(x)}.
 
 Veja @code{airy_ai} e @code{airy_bi}.
 @end deffn
 
-@deffn {Fun@,{c}@~{a}o} asympa
+@deffn {Fun@value{cedilha}@~{a}o} asympa
 @code{asympa} @'{e} um pacote para an@'{a}lise assint@'{o}tica. O pacote cont@'{e}m
-fun@,{c}@~{o}es de simplifica@,{c}@~{a}o para an@'{a}lise assint@'{o}tica, incluindo as fun@,{c}@~{o}es 
+fun@value{cedilha}@~{o}es de simplifica@value{cedilha}@~{a}o para an@'{a}lise assint@'{o}tica, incluindo as fun@value{cedilha}@~{o}es 
 ``grande O'' e ``pequeno o'' que s@~{a}o largamente usadas em an@'{a}lises de complexidade e
 an@'{a}lise num@'{e}rica.
 
@@ -91,16 +91,16 @@ an@'{a}lise num@'{e}rica.
 
 @end deffn
 
-@deffn {Fun@,{c}@~{a}o} bessel (@var{z}, @var{a}) 
-A fun@,{c}@~{a}o de Bessel de primeiro tipo.
+@deffn {Fun@value{cedilha}@~{a}o} bessel (@var{z}, @var{a}) 
+A fun@value{cedilha}@~{a}o de Bessel de primeiro tipo.
 
-Essa fun@,{c}@~{a}o est@'{a} desatualizada.  Escreva @code{bessel_j (@var{z}, @var{a})} em lugar dessa.
+Essa fun@value{cedilha}@~{a}o est@'{a} desatualizada.  Escreva @code{bessel_j (@var{z}, @var{a})} em lugar dessa.
 
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} bessel_j (@var{v}, @var{z})
-A fun@,{c}@~{a}o de Bessel do primeiro tipo de ordem @math{v} e argumento @math{z}.
+@deffn {Fun@value{cedilha}@~{a}o} bessel_j (@var{v}, @var{z})
+A fun@value{cedilha}@~{a}o de Bessel do primeiro tipo de ordem @math{v} e argumento @math{z}.
 
 @code{bessel_j} calcula o array @code{besselarray} tal que
 @code{besselarray [i] = bessel_j [i + v - int(v)] (z)} para @code{i} de zero a @code{int(v)}.
@@ -139,8 +139,8 @@ todavia s@'{e}ries infinitas n@~{a}o s@~{a}o usadas nos c@'{a}lculos.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} bessel_y (@var{v}, @var{z})
-A fun@,{c}@~{a}o de Bessel do segundo tipo de ordem @math{v} e argumento @math{z}.
+@deffn {Fun@value{cedilha}@~{a}o} bessel_y (@var{v}, @var{z})
+A fun@value{cedilha}@~{a}o de Bessel do segundo tipo de ordem @math{v} e argumento @math{z}.
 
 @code{bessel_y} calcula o array @code{besselarray} tal que
 @code{besselarray [i] = bessel_y [i + v - int(v)] (z)} para @code{i} de zero a @code{int(v)}.
@@ -172,8 +172,8 @@ o limite com @math{v} aprocimando-se de @math{n} @'{e} tomado.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} bessel_i (@var{v}, @var{z})
-A fun@,{c}@~{a}o de Bessel modificada de primeiro tipo de ordem @math{v} e argumento @math{z}.
+@deffn {Fun@value{cedilha}@~{a}o} bessel_i (@var{v}, @var{z})
+A fun@value{cedilha}@~{a}o de Bessel modificada de primeiro tipo de ordem @math{v} e argumento @math{z}.
 
 @code{bessel_i} calcula o array @code{besselarray} tal que
 @code{besselarray [i] = bessel_i [i + v - int(v)] (z)} para @code{i} de zero a @code{int(v)}.
@@ -212,8 +212,8 @@ todavia s@'{e}ries infinitas n@~{a}o s@~{a}o usadas nos c@'{a}lculos.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} bessel_k (@var{v}, @var{z})
-A fun@,{c}@~{a}o de Bessel modificada de segundo tipo de ordem @math{v} e argumento @math{z}.
+@deffn {Fun@value{cedilha}@~{a}o} bessel_k (@var{v}, @var{z})
+A fun@value{cedilha}@~{a}o de Bessel modificada de segundo tipo de ordem @math{v} e argumento @math{z}.
 
 @code{bessel_k} calcula o array @code{besselarray} tal que
 @code{besselarray [i] = bessel_k [i + v - int(v)] (z)} para @code{i} de zero a @code{int(v)}.
@@ -242,14 +242,14 @@ ent@~{a}o o limite  com @math{v} aproximando-se de @math{n} @'{e} tomado.
 
 @end deffn
 
-@defvr {Vari@'{a}vel de op@,{c}@~{a}o} besselexpand
+@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} besselexpand
 Valor padr@~{a}o: @code{false}
 
 @c REPHRASE
-Expans@~{o}es de controle de fun@,{c}@~{o}es de Bessel quando a ordem for a metade de
-um inteiro @'{i}mpar.  Nesse caso, as fun@,{c}@~{o}es de Bessel podem ser expandidas
-em termos de outras fun@,{c}@~{o}es elementares.  Quando @code{besselexpand} for @code{true},
-a fun@,{c}@~{a}o de Bessel @'{e} expandida.
+Expans@~{o}es de controle de fun@value{cedilha}@~{o}es de Bessel quando a ordem for a metade de
+um inteiro @'{i}mpar.  Nesse caso, as fun@value{cedilha}@~{o}es de Bessel podem ser expandidas
+em termos de outras fun@value{cedilha}@~{o}es elementares.  Quando @code{besselexpand} for @code{true},
+a fun@value{cedilha}@~{a}o de Bessel @'{e} expandida.
 
 @example
 (%i1) besselexpand: false$
@@ -266,39 +266,39 @@ a fun@,{c}@~{a}o de Bessel @'{e} expandida.
 @end example
 @end defvr
 
-@deffn {Fun@,{c}@~{a}o} scaled_bessel_i (@var{v}, @var{z}) 
+@deffn {Fun@value{cedilha}@~{a}o} scaled_bessel_i (@var{v}, @var{z}) 
 
-A fun@,{c}@~{a}o homot@'{e}tica modificada de Bessel de primeiro tipo de ordem
+A fun@value{cedilha}@~{a}o homot@'{e}tica modificada de Bessel de primeiro tipo de ordem
 @math{v} e argumento @math{z}.  Isto @'{e}, @math{scaled_bessel_i(v,z) =
-exp(-abs(z))*bessel_i(v, z)}. Essa fun@,{c}@~{a}o @'{e} particularmente @'{u}til
+exp(-abs(z))*bessel_i(v, z)}. Essa fun@value{cedilha}@~{a}o @'{e} particularmente @'{u}til
 para calcular @math{bessel_i} para grandes valores de @math{z}.
-Todavia, maxima n@~{a}o conhece outra forma muito mais sobre essa fun@,{c}@~{a}o.  Para
-computa@,{c}@~{a}o simb@'{o}lica, @'{e} provavelmete prefer@'{i}vel trabalhar com a express@~{a}o
+Todavia, maxima n@~{a}o conhece outra forma muito mais sobre essa fun@value{cedilha}@~{a}o.  Para
+computa@value{cedilha}@~{a}o simb@'{o}lica, @'{e} provavelmete prefer@'{i}vel trabalhar com a express@~{a}o
 @code{exp(-abs(z))*bessel_i(v, z)}.
 
 @end deffn
 
-@deffn {Fun@,{c}@~{a}o} scaled_bessel_i0 (@var{z}) 
+@deffn {Fun@value{cedilha}@~{a}o} scaled_bessel_i0 (@var{z}) 
 
 Id@^{e}ntica a @code{scaled_bessel_i(0,z)}.
 
 @end deffn
 
-@deffn {Fun@,{c}@~{a}o} scaled_bessel_i1 (@var{z}) 
+@deffn {Fun@value{cedilha}@~{a}o} scaled_bessel_i1 (@var{z}) 
 
 Id@^{e}ntica a @code{scaled_bessel_i(1,z)}.
 
 @end deffn
 
-@deffn {Fun@,{c}@~{a}o} beta (@var{x}, @var{y})
-A fun@,{c}@~{a}o beta, definida como @code{gamma(x) gamma(y)/gamma(x + y)}.
+@deffn {Fun@value{cedilha}@~{a}o} beta (@var{x}, @var{y})
+A fun@value{cedilha}@~{a}o beta, definida como @code{gamma(x) gamma(y)/gamma(x + y)}.
 @c SEEMS LIKE THERE SHOULD BE MORE TO SAY HERE
 @c ANY SIMPLIFICATION RULES FOR THIS FUNCTION ??
 
 @end deffn
 
-@deffn {Fun@,{c}@~{a}o} gamma (@var{x})
-A fun@,{c}@~{a}o gama.
+@deffn {Fun@value{cedilha}@~{a}o} gamma (@var{x})
+A fun@value{cedilha}@~{a}o gama.
 
 @c SEEMS POINTLESS TO MENTION THE FOLLOWING IDENTITY, 
 @c AS MAXIMA DOESN'T SEEM TO CARRY OUT THIS SIMPLIFICATION
@@ -306,34 +306,34 @@ A fun@,{c}@~{a}o gama.
 
 Veja tamb@'{e}m @code{makegamma}.
 
-A vari@'{a}vel @code{gammalim} controla a simplifica@,{c}@~{a}o da fun@,{c}@~{a}o gama.
+A vari@'{a}vel @code{gammalim} controla a simplifica@value{cedilha}@~{a}o da fun@value{cedilha}@~{a}o gama.
 
 A constante de Euler-Mascheroni @'{e} @code{%gamma}.
 
 @end deffn
 
-@defvr {Vari@'{a}vel de op@,{c}@~{a}o} gammalim
+@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} gammalim
 Valor padr@~{a}o: 1000000
 
 @c REPHRASE
-@code{gammalim} controla a simplifica@,{c}@~{a}o da fun@,{c}@~{a}o
+@code{gammalim} controla a simplifica@value{cedilha}@~{a}o da fun@value{cedilha}@~{a}o
 gama para integral e argumentos na forma de n@'{u}meros racionais.  Se o valor
 absoluto do argumento n@~{a}o for maior que @code{gammalim}, ent@~{a}o
-a simplifica@,{c}@~{a}o ocorrer@'{a}.  Note que @code{factlim} comuta controle de
-simplifica@,{c}c@~{a}o do resultado de @code{gamma} de um argumento inteiro tamb@'{e}m.
+a simplifica@value{cedilha}@~{a}o ocorrer@'{a}.  Note que @code{factlim} comuta controle de
+simplifica@value{cedilha}c@~{a}o do resultado de @code{gamma} de um argumento inteiro tamb@'{e}m.
 
 @end defvr
 
 @c NEED EXAMPLES HERE
-@deffn {Fun@,{c}@~{a}o} intopois (@var{a})
+@deffn {Fun@value{cedilha}@~{a}o} intopois (@var{a})
 Converte @var{a} em um c@'{o}digo de Poisson.
 
 @end deffn
 
 @c NEED CROSS REFS HERE
 @c NEED EXAMPLES HERE
-@deffn {Fun@,{c}@~{a}o} makefact (@var{expr})
-Transforma inst@^{a}ncias de fun@,{c}@~{o}es binomiais, gama,
+@deffn {Fun@value{cedilha}@~{a}o} makefact (@var{expr})
+Transforma inst@^{a}ncias de fun@value{cedilha}@~{o}es binomiais, gama,
 e beta em @var{expr} para fatoriais.
 
 Veja tamb@'{e}m @code{makegamma}.
@@ -342,21 +342,21 @@ Veja tamb@'{e}m @code{makegamma}.
 
 @c NEED CROSS REFS HERE
 @c NEED EXAMPLES HERE
-@deffn {Fun@,{c}@~{a}o} makegamma (@var{expr})
-Transforma inst@^{a}ncias de fun@,{c}@~{o}es binomiais, fatorial,
-e beta em @var{expr} para fun@,{c}@~{o}es gama.
+@deffn {Fun@value{cedilha}@~{a}o} makegamma (@var{expr})
+Transforma inst@^{a}ncias de fun@value{cedilha}@~{o}es binomiais, fatorial,
+e beta em @var{expr} para fun@value{cedilha}@~{o}es gama.
 
 Veja tamb@'{e}m @code{makefact}.
 
 @end deffn
 
 @c AREN'T THERE OTHER FUNCTIONS THAT DO ESSENTIALLY THE SAME THING ??
-@deffn {Fun@,{c}@~{a}o} numfactor (@var{expr})
+@deffn {Fun@value{cedilha}@~{a}o} numfactor (@var{expr})
 Retorna o fator num@'{e}rico multiplicando a express@~{a}o
 @var{expr}, que pode ser um termo simples.
 
 @c WHY IS content MENTIONED IN THIS CONTEXT ??
-@code{content} retorna o m@'{a}ximo divisor comum (mdc) de todos os termos em uma adi@,{c}@~{a}o.
+@code{content} retorna o m@'{a}ximo divisor comum (mdc) de todos os termos em uma adi@value{cedilha}@~{a}o.
 
 @example
 (%i1) gamma (7/2);
@@ -372,19 +372,19 @@ Retorna o fator num@'{e}rico multiplicando a express@~{a}o
 @end deffn
 
 @c NEED EXAMPLES HERE
-@deffn {Fun@,{c}@~{a}o} outofpois (@var{a})
-Converte @var{a} de um c@'{o}digo de Poisson para uma representa@,{c}@~{a}o
+@deffn {Fun@value{cedilha}@~{a}o} outofpois (@var{a})
+Converte @var{a} de um c@'{o}digo de Poisson para uma representa@value{cedilha}@~{a}o
 geral.  Se @var{a} n@~{a}o for uma forma de Poisson, @code{outofpois} realiza a convers@~{a}o,
 i.e., o valor de retorno @'{e} @code{outofpois (intopois (@var{a}))}.
-Essa fun@,{c}@~{a}o @'{e} desse modo um simplificador can@^{o}nico
-para adi@,{c}@~{o}es e pot@^{e}ncias de termos de seno e cosseno de um tipo particular.
+Essa fun@value{cedilha}@~{a}o @'{e} desse modo um simplificador can@^{o}nico
+para adi@value{cedilha}@~{o}es e pot@^{e}ncias de termos de seno e cosseno de um tipo particular.
 
 @end deffn
 
 @c NEED MORE INFO HERE
 @c NEED EXAMPLES HERE
-@deffn {Fun@,{c}@~{a}o} poisdiff (@var{a}, @var{b})
-Deriva @var{a} com rela@,{c}@~{a}o a @var{b}.  @var{b} deve ocorrer somente
+@deffn {Fun@value{cedilha}@~{a}o} poisdiff (@var{a}, @var{b})
+Deriva @var{a} com rela@value{cedilha}@~{a}o a @var{b}.  @var{b} deve ocorrer somente
 nos argumentos trigonom@'{e}tricos ou somente nos coeficientes.
 
 @end deffn
@@ -392,47 +392,47 @@ nos argumentos trigonom@'{e}tricos ou somente nos coeficientes.
 @c LOOKING AT THE CODE IN src/pois3.lisp, THIS FCN SEEMS TO COMPUTE THE EXPONENT BY MULTIPLYING IN A LOOP
 @c DUNNO HOW WE WANT TO EXPLAIN THAT
 @c REPHRASE WITHOUT USING THE TERM "FUNCTIONALLY IDENTICAL"
-@deffn {Fun@,{c}@~{a}o} poisexpt (@var{a}, @var{b})
+@deffn {Fun@value{cedilha}@~{a}o} poisexpt (@var{a}, @var{b})
 Funcionalmente identica a @code{intopois (@var{a}^@var{b})}.
 @var{b} deve ser um inteiro positico.
 
 @end deffn
 
 @c WHAT IS THIS ABOUT ??
-@deffn {Fun@,{c}@~{a}o} poisint (@var{a}, @var{b})
+@deffn {Fun@value{cedilha}@~{a}o} poisint (@var{a}, @var{b})
 Integra em um senso restrito similarmente (para
 @code{poisdiff}).  Termos n@~{a}o peri@'{o}dicos em @var{b} s@~{a}o diminu@'{i}dos se @var{b} estiver em argumentos
 trigonom@'{e}tricos.
 
 @end deffn
 
-@defvr {Vari@'{a}vel de op@,{c}@~{a}o} poislim
+@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} poislim
 Valor padr@~{a}o: 5
 
 @code{poislim} determina o dom@'{i}nio dos coeficientes nos
-argumentos de fun@,{c}@~{o}es trigonom@'{e}tricas.  O valor inicial de 5
+argumentos de fun@value{cedilha}@~{o}es trigonom@'{e}tricas.  O valor inicial de 5
 corresponde ao intervalo [-2^(5-1)+1,2^(5-1)], ou [-15,16], mas isso
 pode ser alterado para [-2^(n-1)+1, 2^(n-1)].
 
 @end defvr
 
 @c UMM, WHAT IS THIS ABOUT EXACTLY ?? EXAMPLES NEEDED
-@deffn {Fun@,{c}@~{a}o} poismap (@var{series}, @var{sinfn}, @var{cosfn})
-mapear@'{a} as fun@,{c}@~{o}es @var{sinfn} sobre os
+@deffn {Fun@value{cedilha}@~{a}o} poismap (@var{series}, @var{sinfn}, @var{cosfn})
+mapear@'{a} as fun@value{cedilha}@~{o}es @var{sinfn} sobre os
 termos de seno e @var{cosfn} ssobre os termos de cosseno das s@'{e}ries de Poisson dadas.
-@var{sinfn} e @var{cosfn} s@~{a}o fun@,{c}@~{o}es de dois argumentos que s@~{a}o um coeficiente
+@var{sinfn} e @var{cosfn} s@~{a}o fun@value{cedilha}@~{o}es de dois argumentos que s@~{a}o um coeficiente
 e uma parte trigonom@'{e}trica de um termo em s@'{e}ries respectivamente.
 
 @end deffn
 
 @c REPHRASE WITHOUT USING THE TERM "FUNCTIONALLY IDENTICAL"
-@deffn {Fun@,{c}@~{a}o} poisplus (@var{a}, @var{b})
+@deffn {Fun@value{cedilha}@~{a}o} poisplus (@var{a}, @var{b})
 @'{E} funcionalmente identica a @code{intopois (a + b)}.
 
 @end deffn
 
-@deffn {Fun@,{c}@~{a}o} poissimp (@var{a})
-Converte @var{a} em s@'{e}ries de Poisson para @var{a} em representa@,{c}@~{a}o
+@deffn {Fun@value{cedilha}@~{a}o} poissimp (@var{a})
+Converte @var{a} em s@'{e}ries de Poisson para @var{a} em representa@value{cedilha}@~{a}o
 geral.
 
 @end deffn
@@ -444,7 +444,7 @@ Poisson.
 
 @end defvr
 
-@deffn {Fun@,{c}@~{a}o} poissubst (@var{a}, @var{b}, @var{c})
+@deffn {Fun@value{cedilha}@~{a}o} poissubst (@var{a}, @var{b}, @var{c})
 Substitue @var{a} por @var{b} em @var{c}.  @var{c} @'{e} uma s@'{e}rie de Poisson.
 
 (1) Quando @var{B} @'{e} uma vari@'{a}vel @var{u}, @var{v}, @var{w}, @var{x}, @var{y}, ou @var{z},
@@ -454,43 +454,43 @@ express@~{a}o linear nessas vari@'{a}veis (e.g., @code{6*u + 4*v}).
 (2) Quando @var{b} for outra que n@~{a}o essas vari@'{a}veis, ent@~{a}o @var{a} deve tamb@'{e}m ser
 livre dessas vari@'{a}veis, e al@'{e} disso, livre de senos ou cossenos.
 
-@code{poissubst (@var{a}, @var{b}, @var{c}, @var{d}, @var{n})} @'{e} um tipo especial d substitui@,{c}@~{a}o que
+@code{poissubst (@var{a}, @var{b}, @var{c}, @var{d}, @var{n})} @'{e} um tipo especial d substitui@value{cedilha}@~{a}o que
 opera sobre @var{a} e @var{b} como no tipo (1) acima, mas onde @var{d} @'{e} uma s@'{e}rie de
 Poisson, expande @code{cos(@var{d})} e @code{sin(@var{d})} para a ordem @var{n} como provendo o
-resultado da substitui@,{c}@~{a}o @code{@var{a} + @var{d}} por @var{b} em @var{c}.  A id@'{e}ia @'{e} que @var{d} @'{e} uma
+resultado da substitui@value{cedilha}@~{a}o @code{@var{a} + @var{d}} por @var{b} em @var{c}.  A id@'{e}ia @'{e} que @var{d} @'{e} uma
 expans@~{a}o em termos de um pequeno par@^{a}metro.  Por exemplo,
 @code{poissubst (u, v, cos(v), %e, 3)} retorna @code{cos(u)*(1 - %e^2/2) - sin(u)*(%e - %e^3/6)}.
 
 @end deffn
 
 @c REPHRASE WITHOUT USING THE TERM "FUNCTIONALLY IDENTICAL"
-@deffn {Fun@,{c}@~{a}o} poistimes (@var{a}, @var{b})
+@deffn {Fun@value{cedilha}@~{a}o} poistimes (@var{a}, @var{b})
 @'{E} funcionalmente id@^{e}ntica a @code{intopois (@var{a}*@var{b})}.
 
 @end deffn
 
 @c HOW DOES THIS WORK ?? NEED MORE INFO AND EXAMPLES
-@deffn {Fun@,{c}@~{a}o} poistrim ()
-@'{e} um nome de fun@,{c}@~{a}o reservado que (se o usu@'{a}rio tiver definido
-uma fun@,{c}@~{a}o com esse nome) @'{e} aplicada durante multiplica@,{c}@~{a}o de Poisson.  Isso @'{e} uma fun@,{c}@~{a}o
+@deffn {Fun@value{cedilha}@~{a}o} poistrim ()
+@'{e} um nome de fun@value{cedilha}@~{a}o reservado que (se o usu@'{a}rio tiver definido
+uma fun@value{cedilha}@~{a}o com esse nome) @'{e} aplicada durante multiplica@value{cedilha}@~{a}o de Poisson.  Isso @'{e} uma fun@value{cedilha}@~{a}o
 predicada de 6 argumentos que s@~{a}o os coeficientes de @var{u}, @var{v}, ..., @var{z}
 em um termo.  Termos para os quais @code{poistrim} for @code{true} (para os coeficientes
-daquele termo) s@~{a}o eliminados durante a multiplica@,{c}@~{a}o.
+daquele termo) s@~{a}o eliminados durante a multiplica@value{cedilha}@~{a}o.
 
 @end deffn
 
-@deffn {Fun@,{c}@~{a}o} printpois (@var{a})
+@deffn {Fun@value{cedilha}@~{a}o} printpois (@var{a})
 Mostra uma s@'{e}rie de Poisson em um formato leg@'{i}vel.  Em comum
-com @code{outofpois}, essa fun@,{c}@~{a}o converter@'{a} @var{a} em um c@'{o}digo de Poisson primeiro, se
+com @code{outofpois}, essa fun@value{cedilha}@~{a}o converter@'{a} @var{a} em um c@'{o}digo de Poisson primeiro, se
 necess@'{a}rio.
 
 @end deffn
 
 @c NEED INFO HERE ABOUT THE SUBSCRIPTED FORM psi[n](x)
 @c I (rtoy) don't think there is a plain psi(x) function anymore.
-@c @deffn {Fun@,{c}@~{a}o} psi (@var{x})
-@c @deffnx {Fun@,{c}@~{a}o} psi [@var{n}](@var{x})
-@deffn {Fun@,{c}@~{a}o} psi [@var{n}](@var{x})
+@c @deffn {Fun@value{cedilha}@~{a}o} psi (@var{x})
+@c @deffnx {Fun@value{cedilha}@~{a}o} psi [@var{n}](@var{x})
+@deffn {Fun@value{cedilha}@~{a}o} psi [@var{n}](@var{x})
 
 A derivada de @code{log (gamma (@var{x}))} de ordem @code{@var{n}+1}.
 Dessa forma, @code{psi[0](@var{x})} @'{e} a primeira derivada,
@@ -507,12 +507,12 @@ Isto @'{e}, @var{x} deve localizar-se entre @code{maxpsinegint} e
 e tiver um denominador menor que @code{maxpsifracdenom}, @code{psi}
 ir@'{a} retornar um valor exato.
 
-A fun@,{c}@~{a}o @code{bfpsi} no pacote @code{bffac} pode calcular
+A fun@value{cedilha}@~{a}o @code{bfpsi} no pacote @code{bffac} pode calcular
 valores num@'{e}ricos.
  
  @end deffn
 
-@defvr {Vari@'{a}vel de op@,{c}@~{a}o} maxpsiposint
+@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} maxpsiposint
 Valor padr@~{a}o: 20
 
 @code{maxpsiposint} @'{e} o maior valor positivo para o qual
@@ -520,7 +520,7 @@ Valor padr@~{a}o: 20
 
 @end defvr
 
-@defvr {Vari@'{a}vel de op@,{c}@~{a}o} maxpsinegint
+@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} maxpsinegint
 Valor padr@~{a}o: -10
 
 @code{maxpsinegint} @'{e} o valor mais negativo para o qual
@@ -530,7 +530,7 @@ retornar resposta simplificada, mesmo se isso for poss@'{i}vel.
 
 @end defvr
 
-@defvr {Vari@'{a}vel de op@,{c}@~{a}o} maxpsifracnum
+@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} maxpsifracnum
 Valor padr@~{a}o: 4
 
 Tomemos @var{x} como sendo um n@'{u}mero racional menor que a unidade e da forma @code{p/q}.
@@ -540,10 +540,10 @@ simplificado.
 
 @end defvr
 
-@deffn {Fun@,{c}@~{a}o} specint (exp(- s*@var{t}) * @var{expr}, @var{t})
+@deffn {Fun@value{cedilha}@~{a}o} specint (exp(- s*@var{t}) * @var{expr}, @var{t})
 
-Calcula a transformada de Laplace de @var{expr} com rala@,{c}@~{a}o @`a vari@'{a}vel @var{t}.
-O integrando @var{expr} pode conter fun@,{c}@~{o}es especiais.
+Calcula a transformada de Laplace de @var{expr} com rala@value{cedilha}@~{a}o @`a vari@'{a}vel @var{t}.
+O integrando @var{expr} pode conter fun@value{cedilha}@~{o}es especiais.
 
 Se @code{specint} n@~{a}o puder calcular a integral, o valore de retorno pode
 conter v@'{a}rios s@'{i}mbolos do Lisp, incluindo
@@ -580,7 +580,7 @@ Exemplos:
 
 @end deffn
 
-@defvr {Vari@'{a}vel de op@,{c}@~{a}o} maxpsifracdenom
+@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} maxpsifracdenom
 Valor padr@~{a}o: 4
 
 Tomemos @var{x} como sendo um n@'{u}mero racional menor que a unidade e da forma @code{p/q}.

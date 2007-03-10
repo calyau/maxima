@@ -2,22 +2,22 @@
 @c /lbfgs.texi/1.2/Sat Dec  9 06:10:42 2006//
 
 @menu
-* Introdu@,{c}@~{a}o a lbfgs::
-* Defini@,{c}@~{o}es para lbfgs::
+* Introdu@value{cedilha}@~{a}o a lbfgs::
+* Defini@value{cedilha}@~{o}es para lbfgs::
 @end menu
 
-@node Introdu@,{c}@~{a}o a lbfgs, Defini@,{c}@~{o}es para lbfgs, Top, Top
-@section Introdu@,{c}@~{a}o a lbfgs
+@node Introdu@value{cedilha}@~{a}o a lbfgs, Defini@value{cedilha}@~{o}es para lbfgs, Top, Top
+@section Introdu@value{cedilha}@~{a}o a lbfgs
 
-@code{lbfgs} @'{e} uma implementa@,{c}@~{a}o do algor@'{i}tmo[1] L-BFGS (Broyden-Fletcher-Goldfarb-Shanno)
-para resolver problemas de minimiza@,{c}@~{a}o n@~{a}o limitada atrav@'{e}s de um algor@'{i}tmo de mem@'{o}ria limitada quasi-Newton (BFGS).
-Esse algor@'{i}tmo @'{e} chamado de m@'{e}todo de mem@'{o}ria limitada porque uma aproxima@,{c}@~{a}o de baixo ranque da
+@code{lbfgs} @'{e} uma implementa@value{cedilha}@~{a}o do algor@'{i}tmo[1] L-BFGS (Broyden-Fletcher-Goldfarb-Shanno)
+para resolver problemas de minimiza@value{cedilha}@~{a}o n@~{a}o limitada atrav@'{e}s de um algor@'{i}tmo de mem@'{o}ria limitada quasi-Newton (BFGS).
+Esse algor@'{i}tmo @'{e} chamado de m@'{e}todo de mem@'{o}ria limitada porque uma aproxima@value{cedilha}@~{a}o de baixo ranque da
 inverso da matriz Hessiana @'{e} armazenado em lugar da inversa da matriz Hessiana completa.
 O programa foi escrito origin@'{a}riamente em Fortran [2] por Jorge Nocedal,
-incorporando algumas fun@,{c}@~{o}es originalmente escritas por Jorge J. Mor@'{e} e David J. Thuente,
+incorporando algumas fun@value{cedilha}@~{o}es originalmente escritas por Jorge J. Mor@'{e} e David J. Thuente,
 e traduzidas para Lisp automaticamente atrav@'{e}s do programa @code{f2cl}.
 O pacote do Maxima @code{lbfgs} compreende o c@'{o}digo traduzido e adicionalmente
-uma interface de fun@,{c}@~{a}o que gerencia alguns detallhes.
+uma interface de fun@value{cedilha}@~{a}o que gerencia alguns detallhes.
 
 Refer@^{e}ncias:
 
@@ -26,18 +26,18 @@ scale optimization". @i{Mathematical Programming B} 45:503--528 (1989)
 
 [2] http://netlib.org/opt/lbfgs_um.shar
 
-@node Defini@,{c}@~{o}es para lbfgs, , Introdu@,{c}@~{a}o a lbfgs, Top
-@section Defini@,{c}@~{o}es para lbfgs
+@node Defini@value{cedilha}@~{o}es para lbfgs, , Introdu@value{cedilha}@~{a}o a lbfgs, Top
+@section Defini@value{cedilha}@~{o}es para lbfgs
 
-@deffn {Fun@,{c}@~{a}o} lbfgs (@var{FOM}, @var{X}, @var{X0}, @var{epsilon}, @var{iprint})
+@deffn {Fun@value{cedilha}@~{a}o} lbfgs (@var{FOM}, @var{X}, @var{X0}, @var{epsilon}, @var{iprint})
 
-Encontra uma solu@,{c}@~{a}o aproximada da minimiza@,{c}@~{a}o n@~{a}o limitada de n@'{u}mero de m@'{e}rito @var{FOM}
+Encontra uma solu@value{cedilha}@~{a}o aproximada da minimiza@value{cedilha}@~{a}o n@~{a}o limitada de n@'{u}mero de m@'{e}rito @var{FOM}
 sobre a lista de vari@'{a}veis @var{X},
-come@,{c}ando a partir da estimativa inicial @var{X0},
+come@value{cedilha}ando a partir da estimativa inicial @var{X0},
 tal que @math{norm grad FOM < epsilon max(1, norm X)}.
 
 O algor@'{i}tmo aplicado @'{e} um algor@'{i}tmo de mem@'{o}ria limitada[1] quasi-Newton (BFGS).
-Esse algor@'{i}tmo @'{e} chamado de m@'{e}todo de mem@'{o}ria limitada porque uma aproxima@,{c}@~{a}o de baixo ranque da
+Esse algor@'{i}tmo @'{e} chamado de m@'{e}todo de mem@'{o}ria limitada porque uma aproxima@value{cedilha}@~{a}o de baixo ranque da
 inverso da matriz Hessiana @'{e} armazenado em lugar da inversa da matriz Hessiana completa.
 
 @var{iprint} controla as messaens de progresso mostradas atrav@'{e}s de @code{lbfgs}.
@@ -49,22 +49,22 @@ inverso da matriz Hessiana @'{e} armazenado em lugar da inversa da matriz Hessia
 @item iprint[1] < 0
 Nenhuma mensagem de progresso.
 @item iprint[1] = 0
-Messagens na primeira itera@,{c}@~{a}o e na @'{u}ltima itera@,{c}@~{a}o.
+Messagens na primeira itera@value{cedilha}@~{a}o e na @'{u}ltima itera@value{cedilha}@~{a}o.
 @item iprint[1] > 0
-Mostra uma mensagem a cada @code{@var{iprint}[1]} itera@,{c}@~{o}es.
+Mostra uma mensagem a cada @code{@var{iprint}[1]} itera@value{cedilha}@~{o}es.
 @end table
 @item iprint[2]
-@code{@var{iprint}[2]} controla a quantidade de informa@,{c}@~{o}es fornecidas pelas mensagens de progresso (verbosidade).
+@code{@var{iprint}[2]} controla a quantidade de informa@value{cedilha}@~{o}es fornecidas pelas mensagens de progresso (verbosidade).
 @table @code
 @item iprint[2] = 0
-Mostra na tela o contador de itera@,{c}@~{o}es, o n@'{u}mero de avalia@,{c}@~{o}es de @var{FOM}, o valor de @var{FOM},
+Mostra na tela o contador de itera@value{cedilha}@~{o}es, o n@'{u}mero de avalia@value{cedilha}@~{o}es de @var{FOM}, o valor de @var{FOM},
 a norma do gradiente de @var{FOM}, e o comprimento do salto.
 @item iprint[2] = 1
 O mesmo que @code{@var{iprint}[2] = 0}, adicionando @var{X0} e o gradiente de @var{FOM} avaliado em @var{X0}.
 @item iprint[2] = 2
-O mesmo que @code{@var{iprint}[2] = 1}, adicionando valores de @var{X} a cada itera@,{c}@~{a}o.
+O mesmo que @code{@var{iprint}[2] = 1}, adicionando valores de @var{X} a cada itera@value{cedilha}@~{a}o.
 @item iprint[2] = 3
-O mesmo que @code{@var{iprint}[2] = 2}, adicionando o gradiente de @var{FOM} a cada itera@,{c}@~{a}o.
+O mesmo que @code{@var{iprint}[2] = 2}, adicionando o gradiente de @var{FOM} a cada itera@value{cedilha}@~{a}o.
 @end table
 @end table
 

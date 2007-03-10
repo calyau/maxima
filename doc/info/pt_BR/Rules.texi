@@ -2,16 +2,16 @@
 @c /Rules.texi/1.25/Fri Mar  2 00:44:44 2007/-ko/
 
 @menu
-* Introdu@,{c}@~{a}o a Regras e Modelos::  
-* Defini@,{c}@~{o}es para Regras e Modelos::  
+* Introdu@value{cedilha}@~{a}o a Regras e Modelos::  
+* Defini@value{cedilha}@~{o}es para Regras e Modelos::  
 @end menu
 
-@node Introdu@,{c}@~{a}o a Regras e Modelos, Defini@,{c}@~{o}es para Regras e Modelos, Regras e Modelos, Regras e Modelos
-@section Introdu@,{c}@~{a}o a Regras e Modelos
+@node Introdu@value{cedilha}@~{a}o a Regras e Modelos, Defini@value{cedilha}@~{o}es para Regras e Modelos, Regras e Modelos, Regras e Modelos
+@section Introdu@value{cedilha}@~{a}o a Regras e Modelos
 
-Essa se@,{c}@~{a}o descreve coincid@^{e}ncias de modelos definidos pelo usu@'{a}rio e
-regras de simplifica@,{c}@~{a}o.
-Existem dois grupos de fun@,{c}@~{o}es que implementam at@'{e} certo ponto diferentes esquemas de coincid@^{e}ncia de modelo.
+Essa se@value{cedilha}@~{a}o descreve coincid@^{e}ncias de modelos definidos pelo usu@'{a}rio e
+regras de simplifica@value{cedilha}@~{a}o.
+Existem dois grupos de fun@value{cedilha}@~{o}es que implementam at@'{e} certo ponto diferentes esquemas de coincid@^{e}ncia de modelo.
 Em um grupo est@~{a}o @code{tellsimp}, @code{tellsimpafter}, @code{defmatch}, @code{defrule},
 @code{apply1}, @code{applyb1}, e @code{apply2}.
 Em outro grupo est@~{a}o @code{let} e @code{letsimp}.
@@ -20,21 +20,21 @@ Ambos os esquemas definem modelos em termos de vari@'{a}veis de modelo declarada
 Regras de coincid@^{e}ncia de modelos definidas por @code{tellsimp} e @code{tellsimpafter} s@~{a}o aplicadas automaticamente
 atrav@'{e}s do simplificador do Maxima.
 Regras definidas atrav@'{e}s de @code{defmatch}, @code{defrule}, e @code{let} s@~{a}o aplicadas
-atrav@'{e}s de uma chamada expl@'{i}cita de fun@,{c}@~{a}o.
+atrav@'{e}s de uma chamada expl@'{i}cita de fun@value{cedilha}@~{a}o.
 
 Existe mecanismos adicionais para regras aplicadas a polin@^{o}mios atrav@'{e}s de @code{tellrat},
 e para @'{a}lgebra comutativa e n@~{a}o comutativa no pacote @code{affine}. 
 
 @c end concepts Rules and Patterns
-@node Defini@,{c}@~{o}es para Regras e Modelos,  , Introdu@,{c}@~{a}o a Regras e Modelos, Regras e Modelos
-@section Defini@,{c}@~{o}es para Regras e Modelos
+@node Defini@value{cedilha}@~{o}es para Regras e Modelos,  , Introdu@value{cedilha}@~{a}o a Regras e Modelos, Regras e Modelos
+@section Defini@value{cedilha}@~{o}es para Regras e Modelos
 
 @c NEEDS CLARIFICATION AND EXAMPLES
-@deffn {Fun@,{c}@~{a}o} apply1 (@var{expr}, @var{rule_1}, ..., @var{rule_n})
+@deffn {Fun@value{cedilha}@~{a}o} apply1 (@var{expr}, @var{rule_1}, ..., @var{rule_n})
 Repetidamente aplica @var{rule_1} a
 @var{expr} at@'{e} que isso falhe, ent@~{a}o repetidamente aplica a mesma regra a todas
 as subexpress@~{o}es de @var{expr}, da esquerda para a direita, at@'{e} que @var{rule_1} tenha falhado
-sobre todas as subexpress@~{o}es.  Chama o resultado da transforma@,{c}@~{a}o de @var{expr} dessa
+sobre todas as subexpress@~{o}es.  Chama o resultado da transforma@value{cedilha}@~{a}o de @var{expr} dessa
 maneira de @var{expr_2}.  Ent@~{a}o @var{rule_2} @'{e} aplicada no mesmo estilo
 iniciando no topo de @var{expr_2}.  Quando @var{rule_n} falhar na subexpress@~{a}o
 final, o resultado @'{e} retornado.
@@ -47,7 +47,7 @@ Veja tamb@'{e}m @code{applyb1}, @code{apply2}, e @code{let}.
 @end deffn
 
 @c NEEDS CLARIFICATION AND EXAMPLES
-@deffn {Fun@,{c}@~{a}o} apply2 (@var{expr}, @var{rule_1}, ..., @var{rule_n})
+@deffn {Fun@value{cedilha}@~{a}o} apply2 (@var{expr}, @var{rule_1}, ..., @var{rule_n})
 Se @var{rule_1} falhar sobre uma dada subexpress@~{a}o, ent@~{a}o @var{rule_2} @'{e}
 repetidamente aplicada, etc.  Somente se todas as regras falharem sobre uma dada
 subexpress@~{a}o @'{e} que o conjunto completo de regras @'{e} repetidamente aplicada @`a pr@'{o}xima
@@ -62,7 +62,7 @@ Veja tamb@'{e}m @code{apply1} e @code{let}.
 @end deffn
 
 @c NEEDS CLARIFICATION AND EXAMPLES
-@deffn {Fun@,{c}@~{a}o} applyb1 (@var{expr}, @var{rule_1}, ..., @var{rule_n})
+@deffn {Fun@value{cedilha}@~{a}o} applyb1 (@var{expr}, @var{rule_1}, ..., @var{rule_n})
 Repetidamente aplica @var{rule_1} para a subexpress@~{a}o mais distante de @var{expr} at@'{e} falhar,
 ent@~{a}o repetidamente aplica a mesma regra um n@'{i}vel mais acima (i.e., subexpress@~{a}os mais larga),
 at@'{e} que @var{rule_1} tenha falhado sobre a express@~{a}o de n@'{i}vel mais alto.
@@ -80,50 +80,50 @@ Veja tamb@'{e}m @code{apply1}, @code{apply2}, e @code{let}.
 
 @end deffn
 
-@defvr {Vari@'{a}vel de op@,{c}@~{a}o} current_let_rule_package
+@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} current_let_rule_package
 Valor padr@~{a}o: @code{default_let_rule_package}
 
 @code{current_let_rule_package} @'{e} o nome do pacote de regras que est@'{a} sendo usado por
-fun@,{c}@~{o}es no pacote @code{let} (@code{letsimp}, etc.) @c NEED TO GIVE AN EXPLICIT LIST HERE (NOT "ETC")
+fun@value{cedilha}@~{o}es no pacote @code{let} (@code{letsimp}, etc.) @c NEED TO GIVE AN EXPLICIT LIST HERE (NOT "ETC")
 se nenhum outro pacote de regras for especificado.
 A essa vari@'{a}vel pode ser atribu@'{i}do o nome de qualquer pacote de regras definido
 via comando @code{let}.
 
 Se uma chamada tal como @code{letsimp (expr, nome_pct_regras)} for feita,
-o pacote de regras @code{nome_pct_regras} @'{e} usado para aquela chamada de fun@,{c}@~{a}o somente,
+o pacote de regras @code{nome_pct_regras} @'{e} usado para aquela chamada de fun@value{cedilha}@~{a}o somente,
 e o valor de @code{current_let_rule_package} n@~{a}o @'{e} alterado.
 
 @end defvr
 
-@defvr {Vari@'{a}vel de op@,{c}@~{a}o} default_let_rule_package
+@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} default_let_rule_package
 @c DEFAULT BINDING OF default_let_rule_package IS default_let_rule_package (BOUND TO ITSELF)
 Valor padr@~{a}o: @code{default_let_rule_package}
 
 @c THIS IS SORT OF CONFUSING. PROBABLY NEED TO GIVE MORE DETAIL HERE
 @code{default_let_rule_package} @'{e} o nome do pacote de regras usado quando um
-n@~{a}o for explicitamente escolhido pelo usu@'{a}rio com @code{let} ou atrav@'{e}s de altera@,{c}@~{a}o do valor de
+n@~{a}o for explicitamente escolhido pelo usu@'{a}rio com @code{let} ou atrav@'{e}s de altera@value{cedilha}@~{a}o do valor de
 @code{current_let_rule_package}.
 
 @end defvr
 
-@deffn {Fun@,{c}@~{a}o} defmatch (@var{prognome}, @var{modelo}, @var{x_1}, ..., @var{x_n})
-@deffnx {Fun@,{c}@~{a}o} defmatch (@var{prognome}, @var{modelo})
-Define uma fun@,{c}@~{a}o @code{@var{prognome}(@var{expr}, @var{x_1}, ..., @var{x_n})}
+@deffn {Fun@value{cedilha}@~{a}o} defmatch (@var{prognome}, @var{modelo}, @var{x_1}, ..., @var{x_n})
+@deffnx {Fun@value{cedilha}@~{a}o} defmatch (@var{prognome}, @var{modelo})
+Define uma fun@value{cedilha}@~{a}o @code{@var{prognome}(@var{expr}, @var{x_1}, ..., @var{x_n})}
 que testa @var{expr} para ver se essa express@~{a}o coincide com @var{modelo}.
 
 @var{modelo} @'{e} uma express@~{a}o contendo os argumentos modelo @var{x_1}, ..., @var{x_n} (se existir algum)
 e alguns modelos de vari@'{a}veis (se existir algum).
 os argumentos modelo s@~{a}o fornecidos explicitamente como argumentos para @code{defmatch} enquanto os modelos de vari@'{a}veis
-s@~{a}o declarados atrav@'{e}s da fun@,{c}@~{a}o @code{matchdeclare}.
+s@~{a}o declarados atrav@'{e}s da fun@value{cedilha}@~{a}o @code{matchdeclare}.
 Qualquer vari@'{a}vel n@~{a}o declarada como modelo em @code{matchdeclare}
 ou como um argumento modelo em @code{defmatch} coincide somente com si mesma.
 
-O primeiro argumento para a fun@,{c}@~{a}o criada @var{prognome} @'{e} uma express@~{a}o
+O primeiro argumento para a fun@value{cedilha}@~{a}o criada @var{prognome} @'{e} uma express@~{a}o
 a serem comparadas contra o modelo  e os outros argumentos s@~{a}o os atuais argumetnos
 que correspondem @`as vari@'{a}veis respectivas @var{x_1}, ..., @var{x_n} no modelo.
 
 Se a tentativa de coincid@^{e}ncia obtiver sucesso, @var{prognome} retorna
-uma lista de equa@,{c}@~{o}es cujos lados esquerdos s@~{a}o os
+uma lista de equa@value{cedilha}@~{o}es cujos lados esquerdos s@~{a}o os
 argumetnos de modelo e vari@'{a}veis de modelo, e cujo lado direito forem as subexpress@~{o}es
 cujos argumentos de modelo e as vari@'{a}veis coincidem.
 Os modelos de vari@'{a}veis, mas n@~{a}o tos argumentos de modelo, s@~{a}o atribu@'{i}dos @`as subexpress@~{o}es que coincidirem.
@@ -137,10 +137,10 @@ Veja tamb@'{e}m @code{matchdeclare}, @code{defrule}, @code{tellsimp}, e @code{te
 
 Exemplos:
 
-Define uma fun@,{c}@~{a}o @code{linearp(expr, x)} que
+Define uma fun@value{cedilha}@~{a}o @code{linearp(expr, x)} que
 testa @code{expr} para ver se essa express@~{a}o da forma @code{a*x + b}
 tal que @code{a} e @code{b} n@~{a}o contenham @code{x} e @code{a} seja n@~{a}o nulo.
-Essa fun@,{c}@~{a}o de coincid@^{e}ncia coincide com express@~{o}es que sejam lineares em qualquer vari@'{a}vel,
+Essa fun@value{cedilha}@~{a}o de coincid@^{e}ncia coincide com express@~{o}es que sejam lineares em qualquer vari@'{a}vel,
 por que o argumento de modelo @code{x} @'{e} fornecido para @code{defmatch}.
 @c HOW HARD WILL MAXIMA TRY TO COLLECT TERMS AND DO OTHER MUNGEING TO FIT THE PATTERN ??
 
@@ -169,10 +169,10 @@ por que o argumento de modelo @code{x} @'{e} fornecido para @code{defmatch}.
 (%o6)                           x
 @end example
 
-Define uma fun@,{c}@~{a}o @code{linearp(expr)} que testa @code{expr}
+Define uma fun@value{cedilha}@~{a}o @code{linearp(expr)} que testa @code{expr}
 para ver se essa express@~{a}o @'{e} da forma @code{a*x + b}
 tal que @code{a} e @code{b} n@~{a}o contenham @code{x} e @code{a} seja n@~{a}o nulo.
-Essa fun@,{c}@~{a}o de coincid@^{e}ncia somente coincide com express@~{o}es lineares em @code{x},
+Essa fun@value{cedilha}@~{a}o de coincid@^{e}ncia somente coincide com express@~{o}es lineares em @code{x},
 n@~{a}o em qualquer outra vari@'{a}vel, porque nenhum argumento de modelo @'{e} fornecido a @code{defmatch}.
 
 @c ===beg===
@@ -193,7 +193,7 @@ n@~{a}o em qualquer outra vari@'{a}vel, porque nenhum argumento de modelo @'{e} 
 (%o4)                  [b = y , a = y + 4]
 @end example
 
-Define uma fun@,{c}@~{a}o @code{checklimits(expr)} que testa @code{expr}
+Define uma fun@value{cedilha}@~{a}o @code{checklimits(expr)} que testa @code{expr}
 para ver se essa express@~{a}o @'{e} uma integral definida.
  
 @c ===beg===
@@ -237,25 +237,25 @@ para ver se essa express@~{a}o @'{e} uma integral definida.
 @end deffn
 
 @c NEEDS CLARIFICATION AND EXAMPLES
-@deffn {Fun@,{c}@~{a}o} defrule (@var{nomeregra}, @var{modelo}, @var{substitui@,{c}@~{a}o})
+@deffn {Fun@value{cedilha}@~{a}o} defrule (@var{nomeregra}, @var{modelo}, @var{substitui@value{cedilha}@~{a}o})
 Define e nomeia uma
-regra de substitui@,{c}@~{a}o para o modelo dado.  Se a regra nomeada @var{nomeregra} for
+regra de substitui@value{cedilha}@~{a}o para o modelo dado.  Se a regra nomeada @var{nomeregra} for
 aplicada a uma express@~{a}o (atrav@'{e}s de @code{apply1}, @code{applyb1}, ou @code{apply2}), toda
 subexpress@~{a}o coincidindo com o modelo ser@'{a} substitu@'{i}da por
-@code{substitui@,{c}@~{a}o}. Todas as vari@'{a}veis em @code{substitui@,{c}@~{a}o} que tiverem sido
+@code{substitui@value{cedilha}@~{a}o}. Todas as vari@'{a}veis em @code{substitui@value{cedilha}@~{a}o} que tiverem sido
 atribuidos valores pela coincid@^{e}ncia com o modelo s@~{a}o atribuidas esses valores na
-@code{substitui@,{c}@~{a}o} que @'{e} ent@~{a}o simplificado.
+@code{substitui@value{cedilha}@~{a}o} que @'{e} ent@~{a}o simplificado.
 
 As regras por si mesmas podem ser
-tratadas como fun@,{c}@~{o}es que transforma uma express@~{a}o atrav@'{e}s de uma
-opera@,{c}@~{a}o de coincid@^{e}ncia de modelo e substitui@,{c}@~{a}o.
-Se a coincid@^{e}ncia falhar, a fun@,{c}@~{a}o da regra retorna @code{false}.
+tratadas como fun@value{cedilha}@~{o}es que transforma uma express@~{a}o atrav@'{e}s de uma
+opera@value{cedilha}@~{a}o de coincid@^{e}ncia de modelo e substitui@value{cedilha}@~{a}o.
+Se a coincid@^{e}ncia falhar, a fun@value{cedilha}@~{a}o da regra retorna @code{false}.
 
 @end deffn
 
 @c NEEDS EXAMPLES
-@deffn {Fun@,{c}@~{a}o} disprule (@var{nomeregra_1}, ..., @var{nomeregra_2})
-@deffnx {Fun@,{c}@~{a}o} disprule (all)
+@deffn {Fun@value{cedilha}@~{a}o} disprule (@var{nomeregra_1}, ..., @var{nomeregra_2})
+@deffnx {Fun@value{cedilha}@~{a}o} disprule (all)
 Mostra regras com os nomes @var{nomeregra_1}, ..., @var{nomeregra_n},
 como retornado por @code{defrule}, @code{tellsimp}, ou @code{tellsimpafter},
 ou um modelo definido por meio de @code{defmatch}.
@@ -301,15 +301,15 @@ Examples:
 
 @end deffn
 
-@deffn {Fun@,{c}@~{a}o} let (@var{prod}, @var{repl}, @var{prednome}, @var{arg_1}, ..., @var{arg_n})
-@deffnx {Fun@,{c}@~{a}o} let ([@var{prod}, @var{repl}, @var{prednome}, @var{arg_1}, ..., @var{arg_n}], @var{nome_pacote})
-Define uma regra de substitui@,{c}@~{a}o para @code{letsimp} tal que @var{prod} @'{e} substitu@'{i}do por @var{repl}.
+@deffn {Fun@value{cedilha}@~{a}o} let (@var{prod}, @var{repl}, @var{prednome}, @var{arg_1}, ..., @var{arg_n})
+@deffnx {Fun@value{cedilha}@~{a}o} let ([@var{prod}, @var{repl}, @var{prednome}, @var{arg_1}, ..., @var{arg_n}], @var{nome_pacote})
+Define uma regra de substitui@value{cedilha}@~{a}o para @code{letsimp} tal que @var{prod} @'{e} substitu@'{i}do por @var{repl}.
 @var{prod} @'{e} um produto de expoentes positivos ou negativos dos seguintes termos:
 
 @itemize @bullet
 @item
 Atomos que @code{letsimp} ir@'{a} procurar literalmente a menos que previamente
-chamando @code{letsimp} a fun@,{c}@~{a}o @code{matchdeclare} @'{e} usada para associar um
+chamando @code{letsimp} a fun@value{cedilha}@~{a}o @code{matchdeclare} @'{e} usada para associar um
 predicado com o @'{a}tomo.  Nesse caso @code{letsimp} ir@'{a} coincidir com o @'{a}tomo para
 qualquer termo de um produto satisfazendo o predicado.
 @item
@@ -325,7 +325,7 @@ negativo.  o caso de expentes negativos em @var{prod} o comutador
 @code{letrat} deve ser escolhido para @code{true}.
 Veja tamb@'{e}m @code{letrat}.
 
-Se um predicado for inclu@'{i}do na fun@,{c}@~{a}o @code{let} seguido por uma lista de
+Se um predicado for inclu@'{i}do na fun@value{cedilha}@~{a}o @code{let} seguido por uma lista de
 argumentos, uma tentativa de coincid@^{e}ncia (i.e. uma que pode ser aceita se o
 predicado fosse omitido) @'{e} aceita somente se
 @code{prednome (arg_1', ..., arg_n')} avaliar para @code{true} onde @var{arg_i'} @'{e} o valor
@@ -333,17 +333,17 @@ coincidente com @var{arg_i}.  O @var{arg_i} pode ser o nome de qualquer @'{a}tom
 de qualquer n@'{u}cleo aparecendo em @var{prod}.
 @var{repl} pode ser qualquer express@~{a}o racional. @c ONLY RATIONAL -- REALLY ??
 Se quaisquer dos @'{a}tomos ou argumentos de @var{prod} aparecer em @var{repl} a
-substitui@,{c}@~{a}o @'{e} feita. @c SPELL OUT "APPROPRIATE" IN THIS CONTEXT
+substitui@value{cedilha}@~{a}o @'{e} feita. @c SPELL OUT "APPROPRIATE" IN THIS CONTEXT
 
-O sinalizador global @code{letrat} controla a simplifica@,{c}@~{a}o dos quocientes atrav@'{e}s de @code{letsimp}.
+O sinalizador global @code{letrat} controla a simplifica@value{cedilha}@~{a}o dos quocientes atrav@'{e}s de @code{letsimp}.
 Quando @code{letrat} for @code{false},
 @code{letsimp} simplifica o numerador e o
 denominador de @var{expr} separadamente, e n@~{a}o simplifica o quociente.
-Substitui@,{c}@~{o}es tais como @code{n!/n} v@~{a}o para @code{(n-1)!} ent@~{a}o falham quando @code{letrat} for @code{false}.
+Substitui@value{cedilha}@~{o}es tais como @code{n!/n} v@~{a}o para @code{(n-1)!} ent@~{a}o falham quando @code{letrat} for @code{false}.
 Quando @code{letrat} for @code{true}, ent@~{a}o o numerador,
 o denominador, e o quociente s@~{a}o simplificados nessa ordem.
 
-Essas fun@,{c}@~{o}es de substitui@,{c}@~{a}o permitem a voc@^{e} trabalhar com muitos pacotes de regras.
+Essas fun@value{cedilha}@~{o}es de substitui@value{cedilha}@~{a}o permitem a voc@^{e} trabalhar com muitos pacotes de regras.
 Cada pacote de regras pode conter qualquer n@'{u}mero de regras
 @code{let} e @'{e} referenciado atrav@'{e}s de um nome definido pelo usu@'{a}rio.
 @code{let ([@var{prod}, @var{repl}, @var{prednome}, @var{arg_1}, ..., @var{arg_n}], @var{nome_pacote})}
@@ -358,7 +358,7 @@ seguido por @code{letsimp (%, @var{nome_pacote2})}, ....
 atualmente sendo usando.
 Essa vari@'{a}vel pode receber o nome de
 qualquer pacote de regras definidos via o comando @code{let}.
-Quando qualquer das fun@,{c}@~{o}es compreendidas no pacote @code{let} s@~{a}o chamadas sem o nome do pacote,
+Quando qualquer das fun@value{cedilha}@~{o}es compreendidas no pacote @code{let} s@~{a}o chamadas sem o nome do pacote,
 o pacote nomeado por @code{current_let_rule_package} @'{e} usado.
 Se uma chamada tal como @code{letsimp (@var{expr}, @var{nome_pct_regras})} @'{e} feita,
 o pacote de regras @var{nome_pct_regras} @'{e} usado somente para aquele comando @code{letsimp},
@@ -389,7 +389,7 @@ Se n@~{a}o especificado de outra forma,
 @c NEEDS ADDITIONAL EXAMPLES
 @end deffn
 
-@defvr {Vari@'{a}vel de op@,{c}@~{a}o} letrat
+@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} letrat
 Valor padr@~{a}o: @code{false}
 
 Quando @code{letrat} for @code{false}, @code{letsimp} simplifica o
@@ -418,8 +418,8 @@ o numerador, o denominador, e seu quocienten s@~{a}o simplificados nessa ordem.
 @end defvr
 
 @c NEEDS EXAMPLES
-@deffn {Fun@,{c}@~{a}o} letrules ()
-@deffnx {Fun@,{c}@~{a}o} letrules (@var{nome_pacote})
+@deffn {Fun@value{cedilha}@~{a}o} letrules ()
+@deffnx {Fun@value{cedilha}@~{a}o} letrules (@var{nome_pacote})
 Mostra as regras em um pacote de regras.
 @code{letrules ()} mostra as regras no pacote de regras corrente.
 @code{letrules (@var{nome_pacote})} mostra as regras em @code{nome_pacote}.
@@ -433,11 +433,11 @@ Veja tamb@'{e}m @code{disprule}, que mostra regras defindas por @code{tellsimp} 
 
 @end deffn
 
-@deffn {Fun@,{c}@~{a}o} letsimp (@var{expr})
-@deffnx {Fun@,{c}@~{a}o} letsimp (@var{expr}, @var{nome_pacote})
-@deffnx {Fun@,{c}@~{a}o} letsimp (@var{expr}, @var{nome_pacote_1}, ..., @var{nome_pacote_n})
-Repetidamente aplica a substitui@,{c}@~{a}o definida por @code{let}
-at@'{e} que nenhuma mudan@,{c}a adicional seja feita para @var{expr}.
+@deffn {Fun@value{cedilha}@~{a}o} letsimp (@var{expr})
+@deffnx {Fun@value{cedilha}@~{a}o} letsimp (@var{expr}, @var{nome_pacote})
+@deffnx {Fun@value{cedilha}@~{a}o} letsimp (@var{expr}, @var{nome_pacote_1}, ..., @var{nome_pacote_n})
+Repetidamente aplica a substitui@value{cedilha}@~{a}o definida por @code{let}
+at@'{e} que nenhuma mudan@value{cedilha}a adicional seja feita para @var{expr}.
 
 @code{letsimp (@var{expr})} usa as regras de @code{current_let_rule_package}.
 
@@ -451,7 +451,7 @@ seguido por @code{letsimp (%, @var{nome_pacote_2})}, e assim sucessivamente.
 @c NEEDS EXAMPLES
 @end deffn
 
-@defvr {Vari@'{a}vel de op@,{c}@~{a}o} let_rule_packages
+@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} let_rule_packages
 Valor padr@~{a}o: @code{[default_let_rule_package]}
 
 @code{let_rule_packages} @'{e} uma lista de todos os pacotes de regras @code{let} definidos pelo usu@'{a}rio
@@ -459,62 +459,62 @@ mais o pacote padr@~{a}o @code{default_let_rule_package}.
 
 @end defvr
 
-@deffn {Fun@,{c}@~{a}o} matchdeclare (@var{a_1}, @var{pred_1}, ..., @var{a_n}, @var{pred_n})
+@deffn {Fun@value{cedilha}@~{a}o} matchdeclare (@var{a_1}, @var{pred_1}, ..., @var{a_n}, @var{pred_n})
 Associa um predicado @var{pred_k} 
 com uma vari@'{a}vel ou lista de vari@'{a}veis @var{a_k}
 de forma que @var{a_k} coincida com express@~{o}es
 para as quais o predicado retorne qualquer coisa que n@~{a}o @code{false}.
 
-Umpredicado @'{e} o nome de uma fun@,{c}@~{a}o,
+Umpredicado @'{e} o nome de uma fun@value{cedilha}@~{a}o,
 ou de uma express@~{a}o lambda,
-ou uma chamada de fun@,{c}@~{a}o ou chamada de fun@,{c}@~{a}o lambda iomitindo o @'{u}lltimo argumento,
+ou uma chamada de fun@value{cedilha}@~{a}o ou chamada de fun@value{cedilha}@~{a}o lambda iomitindo o @'{u}lltimo argumento,
 ou @code{true} ou @code{all}.
 Qualquer express@~{a}o coincide com @code{true} ou @code{all}.
-Se o predicado for especificado como uma chamada de fun@,{c}@~{a}o ou chamada de fun@,{c}@~{a}o lambda,
+Se o predicado for especificado como uma chamada de fun@value{cedilha}@~{a}o ou chamada de fun@value{cedilha}@~{a}o lambda,
 a express@~{a}o a ser testada @'{e} anexada ao final da lista de argumentos;
 os argumentos s@~{a}o avaliados ao mesmo tempo que a coincid@^{e}ncia @'{e} avaliada.
-De outra forma, o predicado @'{e} especificado como um nome de fun@,{c}@~{a}o ou express@~{a}o lambda,
+De outra forma, o predicado @'{e} especificado como um nome de fun@value{cedilha}@~{a}o ou express@~{a}o lambda,
 e a express@~{a}o a ser testada @'{e} o argumento sozinho.
-Uma fun@,{c}@~{a}o predicado n@~{a}o precisa ser definida quando @code{matchdeclare} for chamada;
+Uma fun@value{cedilha}@~{a}o predicado n@~{a}o precisa ser definida quando @code{matchdeclare} for chamada;
 o predicado n@~{a}o @'{e} avaliado at@'{e} que uma coincid@^{e}ncia seja tentada.
 
 Um predicado pode retornar uma express@~{a}o Booleana al@'{e}m de @code{true} ou @code{false}.
-Express@~{o}es Booleanas s@~{a}o avaliadas por @code{is} dentro da fun@,{c}@~{a}o da regra constru@'{i}da,
+Express@~{o}es Booleanas s@~{a}o avaliadas por @code{is} dentro da fun@value{cedilha}@~{a}o da regra constru@'{i}da,
 de forma que n@~{a}o @'{e} necess@'{a}rio chamar @code{is} dentro do predicado.
 
 Se uma express@~{a}o satisfaz uma coincid@^{e}ncia de predicado,
 a vari@'{a}vel de coincid@^{e}ncia @'{e} atribu@'{i}da @`a express@~{a}o,
-exceto para vari@'{a}veis de coincid@^{e}ncia que s@~{a}o operandos de adi@,{c}@~{a}o @code{+} ou multiplica@,{c}@~{a}o @code{*}.
-Somente adi@,{c}@~{a}o e multiplica@,{c}@~{a}o s@~{a}o manuseadas de forma especial;
-outros operadores en@'{a}rios (ambos os definidos internamente e os definidos pelo usu@'{a}rio) s@~{a}o tratados como fun@,{c}@~{o}es comuns.
+exceto para vari@'{a}veis de coincid@^{e}ncia que s@~{a}o operandos de adi@value{cedilha}@~{a}o @code{+} ou multiplica@value{cedilha}@~{a}o @code{*}.
+Somente adi@value{cedilha}@~{a}o e multiplica@value{cedilha}@~{a}o s@~{a}o manuseadas de forma especial;
+outros operadores en@'{a}rios (ambos os definidos internamente e os definidos pelo usu@'{a}rio) s@~{a}o tratados como fun@value{cedilha}@~{o}es comuns.
 @c WOULD BE GREAT TO EXTEND PART+/PART* PROCESSING TO ALL N-ARY OPERATORS
 
-No caso de adi@,{c}@~{a}o e multiplica@,{c}@~{a}o,
+No caso de adi@value{cedilha}@~{a}o e multiplica@value{cedilha}@~{a}o,
 a vari@'{a}vel de coincid@^{e}ncia pode ser atribuida a uma express@~{a}o simples que satisfaz o predicado de coincid@^{e}ncia,
-ou uma adi@,{c}@~{a}o ou um produto (respectivamente) de tais express@~{o}es.
+ou uma adi@value{cedilha}@~{a}o ou um produto (respectivamente) de tais express@~{o}es.
 Tal coincid@^{e}ncia de termo multiplo @'{e} gulosa:
 predicados s@~{a}o avaliados na ordem em que suas vari@'{a}veis associadas
 aparecem no modelo de coincid@^{e}ncia,
 e o termo que satisfizer mais que um predicado @'{e} tomado pelo primeiro
 predicado que satisfizer.
-Cada predicado @'{e} testado contra todos os operandos de adi@,{c}@~{a}o ou produto antes que o pr@'{o}ximo predicado seja avaliado.
+Cada predicado @'{e} testado contra todos os operandos de adi@value{cedilha}@~{a}o ou produto antes que o pr@'{o}ximo predicado seja avaliado.
 Adicionalmente,
 se 0 ou 1 (respectivamente) satisfazem um predicado de coincid@^{e}ncia,
-e n@~{a}o existe outros termos que satisfa@,{c}am o predicado,
+e n@~{a}o existe outros termos que satisfa@value{cedilha}am o predicado,
 0 ou 1 @'{e} atribu@'{i}do para a vari@'{a}vel de coincid@^{e}ncia associada com o predicado.
 
-O algor@'{i}tmo para processar modelos contendo adi@,{c}@~{a}o e multiplica@,{c}@~{a}o faz alguns resultados de coincid@^{e}ncia
+O algor@'{i}tmo para processar modelos contendo adi@value{cedilha}@~{a}o e multiplica@value{cedilha}@~{a}o faz alguns resultados de coincid@^{e}ncia
 (por exemplo, um modelo no qual uma vari@'{a}vel "coincida com qualquer coisa" aparecer)
 dependerem da ordem dos termos no modelo de coincid@^{e}ncia e na express@~{a}o a ser testada a coincid@^{e}ncia.
 Todavia,
 se todos os predicados de coincid@^{e}ncia s@~{a}o mutuamente exclusivos,
-o resultado de coincid@^{e}ncia @'{e} insens@'{i}vel a ordena@,{c}@~{a}o,
+o resultado de coincid@^{e}ncia @'{e} insens@'{i}vel a ordena@value{cedilha}@~{a}o,
 como um predicado de coincid@^{e}ncia n@~{a}o pode aceitar termos de coincid@^{e}ncia de outro.
 
 Chamado @code{matchdeclare} com uma vari@'{a}vel @var{a} como um argumento
 muda a propriedade @code{matchdeclare} para @var{a}, se a vari@'{a}vel @var{a} tiver sido declarada anteriormente;
 somente o @code{matchdeclare} mais recente est@'{a} em efeito quando uma regra @'{e} definida,
-mudan@,{c}as posteriores para a propriedade @code{matchdeclare}
+mudan@value{cedilha}as posteriores para a propriedade @code{matchdeclare}
 (via @code{matchdeclare} ou @code{remove})
 n@~{a}o afetam regras existentes.
 
@@ -524,7 +524,7 @@ para as quais exista uma propriedade @code{matchdeclare}.
 @code{printprops (all, matchdeclare)} retorna a lista de predicados para todas as vari@'{a}veis @code{matchdeclare}.
 @code{remove (@var{a}, matchdeclare)} remove a propriedade @code{matchdeclare} da vari@'{a}vel @var{a}.
 
-As fun@,{c}@~{o}es
+As fun@value{cedilha}@~{o}es
 @code{defmatch}, @code{defrule}, @code{tellsimp}, @code{tellsimpafter}, e @code{let}
 constroem regras que testam express@~{o}es contra modelos.
 
@@ -533,9 +533,9 @@ constroem regras que testam express@~{o}es contra modelos.
 
 Exemplos:
 
-Um predicado @'{e} o nome de uma fun@,{c}@~{a}o,
+Um predicado @'{e} o nome de uma fun@value{cedilha}@~{a}o,
 ou uma express@~{a}o lambda,
-ou uma chamada de fun@,{c}@~{a}o ou chamada a fun@,{c}@~{a}o lambda omitindo o @'{u}ltimo argumento,
+ou uma chamada de fun@value{cedilha}@~{a}o ou chamada a fun@value{cedilha}@~{a}o lambda omitindo o @'{u}ltimo argumento,
 or @code{true} or @code{all}.
 
 @c ===beg===
@@ -579,7 +579,7 @@ a vari@'{a}vel de coincid@^{e}ncia @'{e} atribu@'{i}da @`a express@~{a}o.
 (%o3)               [integer = 8, atom = %pi]
 @end example
 
-No caso de adi@,{c}@~{a}o e multiplica@,{c}@~{a}o,
+No caso de adi@value{cedilha}@~{a}o e multiplica@value{cedilha}@~{a}o,
 @`a vari@'{a}vel de coincid@^{e}ncia pode ser atribu@'{i}da uma express@~{a}o simples que satisfaz o predicado de coincid@^{e}ncia,
 ou um somat@'{o}rio ou produt@'{o}rio (respectivamente) de tais express@~{o}es.
 
@@ -607,7 +607,7 @@ bb aa partitions `product'
 
 Quando coincidindo argumentos de @code{+} e @code{*},
 se todos os predicados de coincid@^{e}ncia forem mutuamente exclusivos,
-o resultado da coincid@^{e}ncia @'{e} insens@'{i}ve @`a ordena@,{c}@~{a}o,
+o resultado da coincid@^{e}ncia @'{e} insens@'{i}ve @`a ordena@value{cedilha}@~{a}o,
 como um predicado de coincid@^{e}ncia n@~{a}o pode aceitar termos que coincidiram com outro.
 
 @c ===beg===
@@ -636,7 +636,7 @@ bb aa partitions `product'
                                                  c
 @end example
 
-As fun@,{c}@~{o}es @code{propvars} e @code{printprops} retornam informa@,{c}@~{o}es sobre vari@'{a}vels de coincid@^{e}ncia.
+As fun@value{cedilha}@~{o}es @code{propvars} e @code{printprops} retornam informa@value{cedilha}@~{o}es sobre vari@'{a}vels de coincid@^{e}ncia.
 
 @c ===beg===
 @c matchdeclare ([aa, bb, cc], atom, [dd, ee], integerp);
@@ -664,19 +664,19 @@ As fun@,{c}@~{o}es @code{propvars} e @code{printprops} retornam informa@,{c}@~{o
 
 @end deffn
 
-@deffn {Fun@,{c}@~{a}o} matchfix (@var{delimitador_e}, @var{delimitador_d})
-@deffnx {Fun@,{c}@~{a}o} matchfix (@var{delimitador_e}, @var{delimitador_d}, @var{arg_pos}, @var{pos})
+@deffn {Fun@value{cedilha}@~{a}o} matchfix (@var{delimitador_e}, @var{delimitador_d})
+@deffnx {Fun@value{cedilha}@~{a}o} matchfix (@var{delimitador_e}, @var{delimitador_d}, @var{arg_pos}, @var{pos})
 Declara um operador @code{matchfix} com delimitadores esquerdo e direito @var{delimitador_e} e @var{delimitador_d}.
 Os delimitadores s@~{a}o especificados como seq@"{u}@^{e}cias de caracteres.
 
-Um operador "matchfix" @'{e} uma fun@,{c}@~{a}o que aceita qualquer n@'{u}mero de argumentos,
+Um operador "matchfix" @'{e} uma fun@value{cedilha}@~{a}o que aceita qualquer n@'{u}mero de argumentos,
 tal que os argumentos ocorram entre os delimitadores correspondentes esquerdo e direito.
 Os delimitadores podem ser quaisquer seq@"{u}@^{e}cias de caracteres, contanto que o analisador de express@~{o}es do Maxima possa
 disting@"{u}ir os delimitadores dos operandos 
 e de outras express@~{o}es e operadores.
 Na pr@'{a}tica essas regras excluem delimitadores n@~{a}o analis@'{a}veis tais como
 @code{%}, @code{,}, @code{$} e @code{;}, 
-e pode ser necess@'{a}rio isolar os delimitadores com espa@,{c}os em branco.
+e pode ser necess@'{a}rio isolar os delimitadores com espa@value{cedilha}os em branco.
 O delimitador da direita pode ser o mesmo ou diferente do delimitador da esquerda.
 
 Um delimitador esquerdo pode ser associado com somente um delimitador direito;
@@ -684,15 +684,15 @@ dois diferentes operadores @code{matchfix} n@~{a}o podem ter o mesmo delimitador
 
 Um operador existente pode ser redeclarado com um operador @code{matchfix}
 sem alterar suas outras propriedades.
-Particularmente, operadores internos tais como adi@,{c}@~{a}o @code{+} podem
+Particularmente, operadores internos tais como adi@value{cedilha}@~{a}o @code{+} podem
 ser declarados @code{matchfix},
-mas fun@,{c}@~{o}es operadores n@~{a}o podem ser definidas para operadores internos.
+mas fun@value{cedilha}@~{o}es operadores n@~{a}o podem ser definidas para operadores internos.
 
 @code{matchfix (@var{delimitador_e}, @var{delimitador_d}, @var{arg_pos}, @var{pos})} 
 declara o argumento @var{arg_pos} como sendo um entre: express@~{a}o l@'{o}gica,
 express@~{a}o comum do Maxima mas que n@~{a}o seja do tipo anterior, e qualquer outro
 tipo de express@~{a}o que n@~{a}o esteja inclu@'{i}da nos dois primeiros tipos.
-Essa declara@,{c}@~{a}o resulta em @var{pos} sendo um entre: express@~{a}o l@'{o}gica,
+Essa declara@value{cedilha}@~{a}o resulta em @var{pos} sendo um entre: express@~{a}o l@'{o}gica,
 express@~{a}o comum do Maxima mas que n@~{a}o seja do tipo anterior, e qualquer outro
 tipo de express@~{a}o que n@~{a}o esteja inclu@'{i}da nos dois primeiros tipos 
 e os delimitadores @var{delimitador_e} e @var{delimitador_d}.
@@ -704,15 +704,15 @@ e os delimitadores @var{delimitador_e} e @var{delimitador_d}.
 @c binding power is effectively irrelevant
 @c to the declaration of a matchfix operator.
 
-A fun@,{c}@~{a}o para realizar uma opera@,{c}@~{a}o @code{matchfix} @'{e} uma fun@,{c}@~{a}o
+A fun@value{cedilha}@~{a}o para realizar uma opera@value{cedilha}@~{a}o @code{matchfix} @'{e} uma fun@value{cedilha}@~{a}o
 comum definida pelo usu@'{a}rio.
-A fun@,{c}@~{a}o operador @'{e} definida
+A fun@value{cedilha}@~{a}o operador @'{e} definida
 da forma usual
-com o operador de defini@,{c}@~{a}o de fun@,{c}@~{a}o @code{:=} ou @code{define}.
+com o operador de defini@value{cedilha}@~{a}o de fun@value{cedilha}@~{a}o @code{:=} ou @code{define}.
 Os argumentos podem ser escritos entre os delimitadores,
 ou com o delimitador esquerdo com uma seq@"{u}@^{e}ncia de caracteres com ap@'{o}strofo e os argumentos
 seguindo entre par@^{e}ntesis.
-@code{dispfun (@var{delimitador_e})} mostra a defini@,{c}@~{a}o da fun@,{c}@~{a}o operador.
+@code{dispfun (@var{delimitador_e})} mostra a defini@value{cedilha}@~{a}o da fun@value{cedilha}@~{a}o operador.
 
 O @'{u}nico operador interno @code{matchfix} @'{e} o construtor de listas @code{[ ]}.
 Par@^{e}ntesis @code{( )} e aspas duplas @code{" "} 
@@ -750,7 +750,7 @@ Delimitadores podem ser quase quaisquer seq@"{u}@^{e}ncia de caracteres.
 
 @itemize @bullet
 @item
-Operadores @code{matchfix} s@~{a}o fun@,{c}@~{o}es comuns definidas pelo usu@'{a}rio.
+Operadores @code{matchfix} s@~{a}o fun@value{cedilha}@~{o}es comuns definidas pelo usu@'{a}rio.
 @end itemize
 @example
 (%i1) matchfix ("!-", "-!");
@@ -786,30 +786,30 @@ Operadores @code{matchfix} s@~{a}o fun@,{c}@~{o}es comuns definidas pelo usu@'{a
 @end deffn
 
 @c NEEDS CLARIFICATION AND EXAMPLES
-@deffn {Fun@,{c}@~{a}o} remlet (@var{prod}, @var{nome})
-@deffnx {Fun@,{c}@~{a}o} remlet ()
-@deffnx {Fun@,{c}@~{a}o} remlet (all)
-@deffnx {Fun@,{c}@~{a}o} remlet (all, @var{nome})
-Apaga a regra de substitui@,{c}ao, prod --> repl, mais
-recentemente definida atrav@'{e}s dea fun@,{c}@~{a}o @code{let}.  Se @code{nome} for fornecido a regra @'{e}
+@deffn {Fun@value{cedilha}@~{a}o} remlet (@var{prod}, @var{nome})
+@deffnx {Fun@value{cedilha}@~{a}o} remlet ()
+@deffnx {Fun@value{cedilha}@~{a}o} remlet (all)
+@deffnx {Fun@value{cedilha}@~{a}o} remlet (all, @var{nome})
+Apaga a regra de substitui@value{cedilha}ao, prod --> repl, mais
+recentemente definida atrav@'{e}s dea fun@value{cedilha}@~{a}o @code{let}.  Se @code{nome} for fornecido a regra @'{e}
 apagada do pacote de regras chamado @code{nome}.
 
-@code{remlet()} e @code{remlet(all)} apagam todas as regras de substitui@,{c}@~{a}o do pacote de regras corrente.
+@code{remlet()} e @code{remlet(all)} apagam todas as regras de substitui@value{cedilha}@~{a}o do pacote de regras corrente.
 Se o nome de um pacote de regras for fornecido,
 e.g. @code{remlet (all, @var{nome})}, o pacote de regras @var{nome} @'{e} tamb@'{e}m apagado.
 
-Se uma substitui@,{c}@~{a}o @'{e} para ser mudada usando o mesmo
-produto, @code{remlet} n@~{a}o precisa ser chamada, apenas redefina a substitui@,{c}@~{a}o
-usando o mesmo produto (literalmente) com a fun@,{c}@~{a}o @code{let} e a nova
-substitui@,{c}@~{a}o e/ou nome de predicado.  Pode agora @code{remlet (@var{prod})} ser
-chamada e a regra de substitui@,{c}@~{a}o original @'{e} ressuscitada.
+Se uma substitui@value{cedilha}@~{a}o @'{e} para ser mudada usando o mesmo
+produto, @code{remlet} n@~{a}o precisa ser chamada, apenas redefina a substitui@value{cedilha}@~{a}o
+usando o mesmo produto (literalmente) com a fun@value{cedilha}@~{a}o @code{let} e a nova
+substitui@value{cedilha}@~{a}o e/ou nome de predicado.  Pode agora @code{remlet (@var{prod})} ser
+chamada e a regra de substitui@value{cedilha}@~{a}o original @'{e} ressuscitada.
 
 Veja tamb@'{e}m @code{remrule}, que remove uma regra definida atrav@'{e}s de @code{tellsimp} ou de @code{tellsimpafter}.
 
 @end deffn
 
-@deffn {Fun@,{c}@~{a}o} remrule (@var{op}, @var{nomeregra})
-@deffnx {Fun@,{c}@~{a}o} remrule (@var{op}, all)
+@deffn {Fun@value{cedilha}@~{a}o} remrule (@var{op}, @var{nomeregra})
+@deffnx {Fun@value{cedilha}@~{a}o} remrule (@var{op}, all)
 Remove regras definidas por @code{tellsimp}, ou @code{tellsimpafter}.
 
 @code{remrule (@var{op}, @var{nomeregra})}
@@ -871,21 +871,21 @@ Examples:
 @end deffn
 
 @c NEEDS EXPANSION OR MAYBE JUST APPROPRIATE REFS TO tellsimpafter
-@deffn {Fun@,{c}@~{a}o} tellsimp (@var{pattern}, @var{replacement})
+@deffn {Fun@value{cedilha}@~{a}o} tellsimp (@var{pattern}, @var{replacement})
 @'{e} similar a @code{tellsimpafter} mas coloca
-nova informa@,{c}@~{a}o antes da antiga de forma que essa nova regra seja aplicada antes das regras
-de simplifica@,{c}@~{a}o internas.
+nova informa@value{cedilha}@~{a}o antes da antiga de forma que essa nova regra seja aplicada antes das regras
+de simplifica@value{cedilha}@~{a}o internas.
 
 @code{tellsimp} @'{e} usada quando for importante modificar
 a express@~{a}o antes que o simplificador trabalhe sobre ela, por exemplo se o
 simplificador "sabe" alguma coisa sobre a express@~{a}o, mas o que ele retorna
-n@~{a}o @'{e} para sua aprecia@,{c}@~{a}o.
+n@~{a}o @'{e} para sua aprecia@value{cedilha}@~{a}o.
 Se o simplificador "sabe" alguma coisa sobre o
 principal operador da express@~{a}o, mas est@'{a} simplesmente escondendo de
 voc@^{e}, voc@^{e} provavelmente quer usar @code{tellsimpafter}.
 
 O modelo pode n@~{a}o ser uma
-adi@,{c}@~{a}o, um produto, vari@'{a}vel simples, ou n@'{u}mero.
+adi@value{cedilha}@~{a}o, um produto, vari@'{a}vel simples, ou n@'{u}mero.
 
 @code{rules} @'{e} a lista de regras definidas por
 @code{defrule}, @code{defmatch}, @code{tellsimp}, e @code{tellsimpafter}.
@@ -935,29 +935,29 @@ Exemplos:
 
 @end deffn
 
-@deffn {Fun@,{c}@~{a}o} tellsimpafter (@var{modelo}, @var{substitui@,{c}@~{a}o})
-Define a uma regra de simplifica@,{c}@~{a}o que o simplificador do Maxima
-aplica ap@'{o}s as regras de simplifica@,{c}@~{a}o internas.
+@deffn {Fun@value{cedilha}@~{a}o} tellsimpafter (@var{modelo}, @var{substitui@value{cedilha}@~{a}o})
+Define a uma regra de simplifica@value{cedilha}@~{a}o que o simplificador do Maxima
+aplica ap@'{o}s as regras de simplifica@value{cedilha}@~{a}o internas.
 @var{modelo} @'{e} uma express@~{a}o, compreendendo vari@'{a}veis de modelo (declaradas atrav@'{e}s de @code{matchdeclare})
-e outros @'{a}tomos e opera@,{c}@~{o}es, considerados literais para o prop@'{o}sito de coincid@^{e}ncia de modelos.
-@var{substitui@,{c}@~{a}o} @'{e} substitu@'{i}da para uma express@~{a}o atual que coincide com @var{modelo};
-vari@'{a}veis de modelo em @var{substitui@,{c}@~{a}o} s@~{a}o atribuidas a valores coincidentes na express@~{a}o atual.
+e outros @'{a}tomos e opera@value{cedilha}@~{o}es, considerados literais para o prop@'{o}sito de coincid@^{e}ncia de modelos.
+@var{substitui@value{cedilha}@~{a}o} @'{e} substitu@'{i}da para uma express@~{a}o atual que coincide com @var{modelo};
+vari@'{a}veis de modelo em @var{substitui@value{cedilha}@~{a}o} s@~{a}o atribuidas a valores coincidentes na express@~{a}o atual.
 
 @var{modelo} pode ser qualquer express@~{a}o n@~{a}o at@^{o}mica
 na qual o principal operador n@~{a}o @'{e} uma vari@'{a}vel de modelo;
-a regra de simplifica@,{c}@~{a}o est@'{a} associada com o operador principal.
-Os nomes de fun@,{c}@~{o}es (com uma excess@~{a}o, descrita abaixo), listas, e arrays
+a regra de simplifica@value{cedilha}@~{a}o est@'{a} associada com o operador principal.
+Os nomes de fun@value{cedilha}@~{o}es (com uma excess@~{a}o, descrita abaixo), listas, e arrays
 podem aparecer em @var{modelo} como o principal operador somente como literais (n@~{a}o vari@'{a}veis de modelo);
 essas regras fornecem express@~{o}es tais como @code{aa(x)} e @code{bb[y]} como modelos,
 se @code{aa} e @code{bb} forem vari@'{a}veis de modelo.
-Nomes de fun@,{c}@~{o}es, listas, e arrays que s@~{a}o vari@'{a}veis de modelo podem aparecer como operadores
+Nomes de fun@value{cedilha}@~{o}es, listas, e arrays que s@~{a}o vari@'{a}veis de modelo podem aparecer como operadores
 outros que n@~{a}o o operador principal em @var{modelo}.
 
-Existe uma excess@~{a}o para o que foi dito acima com rela@,{c}@~{a}o a regras e nomes de fun@,{c}@~{o}es.
-O nome de uma fun@,{c}@~{a}o subscrita em uma express@~{a}o tal como @code{aa[x](y)}
+Existe uma excess@~{a}o para o que foi dito acima com rela@value{cedilha}@~{a}o a regras e nomes de fun@value{cedilha}@~{o}es.
+O nome de uma fun@value{cedilha}@~{a}o subscrita em uma express@~{a}o tal como @code{aa[x](y)}
 pode ser uma vari@'{a}vel de modelo,
 porque o operador principal n@~{a}o @'{e} @code{aa} mas ao contr@'{a}rio o @'{a}tomo Lisp @code{mqapply}.
-Isso @'{e} uma conseq@"{u}@^{e}ncia da representa@,{c}@~{a}o de express@~{o}es envolvendo fun@,{c}@~{o}es subscritas.
+Isso @'{e} uma conseq@"{u}@^{e}ncia da representa@value{cedilha}@~{a}o de express@~{o}es envolvendo fun@value{cedilha}@~{o}es subscritas.
 
 @c LET'S NOT GO INTO DETAILS ABOUT MAIN OPERATORS HERE; BUT PRESERVE THIS FOR REFERENCE
 @c The main operator of an expression @code{expr} is @code{caar $expr}.
@@ -967,8 +967,8 @@ Isso @'{e} uma conseq@"{u}@^{e}ncia da representa@,{c}@~{a}o de express@~{o}es e
 @c which appears in indexed function expressions (e.g., @code{foo[i](x)}).
 
 @c NEED TO REVIEW THIS PARAGRAPH FOR ACCURACY
-Regras de simplifica@,{c}@~{a}o s@~{a}o aplicadas ap@'{o}s avalia@,{c}@~{a}o 
-(se n@~{a}o suprimida atrav@'{e}s de coloca@,{c}@~{a}o de ap@'{o}strofo ou do sinalizador @code{noeval}).
+Regras de simplifica@value{cedilha}@~{a}o s@~{a}o aplicadas ap@'{o}s avalia@value{cedilha}@~{a}o 
+(se n@~{a}o suprimida atrav@'{e}s de coloca@value{cedilha}@~{a}o de ap@'{o}strofo ou do sinalizador @code{noeval}).
 Regras estabelecidas por @code{tellsimpafter} s@~{a}o aplicadas na ordem em que forem definidas,
 e ap@'{o}s quaisquer regras internas.
 Regras s@~{a}o aplicadas de baixo para cima, isto @'{e},
@@ -979,14 +979,14 @@ Isso pode ser necess@'{a}rio para repetidamente simplificar um resultado
 (por exemplo, via o operador ap@'{o}strofo-ap@'{o}strofo @code{'@w{}'} ou o sinalizador @code{infeval})
 para garantir que todas as regras s@~{a}o aplicadas.
 
-Vari@'{a}veis de modelo s@~{a}o tratadas como vari@'{a}veis locais em regras de simplifica@,{c}@~{a}o.
+Vari@'{a}veis de modelo s@~{a}o tratadas como vari@'{a}veis locais em regras de simplifica@value{cedilha}@~{a}o.
 Assim que uma regra @'{e} definida, o valor de uma vari@'{a}vel de modelo
 n@~{a}o afeta a regra, e n@~{a}o @'{e} afetado pela regra.
-Uma atribui@,{c}@~{a}o para uma vari@'{a}vel de modelo que resulta em uma coincid@^{e}ncia de regra com sucesso
-n@~{a}o afeta a atribui@,{c}@~{a}o corrente (ou necessita disso) da vari@'{a}vel de modelo.
+Uma atribui@value{cedilha}@~{a}o para uma vari@'{a}vel de modelo que resulta em uma coincid@^{e}ncia de regra com sucesso
+n@~{a}o afeta a atribui@value{cedilha}@~{a}o corrente (ou necessita disso) da vari@'{a}vel de modelo.
 Todavia,
 como com todos os @'{a}tomos no Maxima,
-as propriedades de vari@'{a}veis de modelo (como declarado por @code{put} e fun@,{c}@~{o}es relacionadas) s@~{a}o globais.
+as propriedades de vari@'{a}veis de modelo (como declarado por @code{put} e fun@value{cedilha}@~{o}es relacionadas) s@~{a}o globais.
 
 A regra constru@'{i}da por @code{tellsimpafter} @'{e} nomeada ap@'{o}s o operador principal de @code{modelo}.
 Regras para operadores internos, 
@@ -995,7 +995,7 @@ definidos por meio de @code{infix}, @code{prefix}, @code{postfix}, @code{matchfi
 possuem nomes que s@~{a}o seq@"{u}@^{e}ncias de caracteres do Maxima.
 @c SLIGHTLY TOO MUCH DETAIL
 @c (that is, the name begins with ampersand @code{&}).
-Regras para outras fun@,{c}@~{o}es possuem nomes que s@~{a}o identificadores comuns do Maxima.
+Regras para outras fun@value{cedilha}@~{o}es possuem nomes que s@~{a}o identificadores comuns do Maxima.
 @c SLIGHTLY TOO MUCH DETAIL
 @c (that is, the name begins with dollar sign @code{$}).
 
@@ -1006,10 +1006,10 @@ ent@~{a}o a nova regra definida aplica-se a ambas as formas (substantiva e verba
 Se uma regra para a correspondente forma verbal (ou substantiva) n@~{a}o existe,
 a nova regra definida aplicar-se-@'{a} somente para a forma substantiva (ou verbal).
 
-A regra constru@'{i}da atrav@'{e}s de @code{tellsimpafter} @'{e} uma fun@,{c}@~{a}o Lisp comum.
+A regra constru@'{i}da atrav@'{e}s de @code{tellsimpafter} @'{e} uma fun@value{cedilha}@~{a}o Lisp comum.
 Se o nome da regra for @code{$foorule1},
-a constru@,{c}@~{a}o @code{:lisp (trace $foorule1)} rastreia a fun@,{c}@~{a}o,
-e @code{:lisp (symbol-function '$foorule1} mostra sua defini@,{c}@~{a}o.
+a constru@value{cedilha}@~{a}o @code{:lisp (trace $foorule1)} rastreia a fun@value{cedilha}@~{a}o,
+e @code{:lisp (symbol-function '$foorule1} mostra sua defini@value{cedilha}@~{a}o.
 
 @code{tellsimpafter} n@~{a}o avalia seus argumentos.
 @code{tellsimpafter} retorna a lista de regras para o operador principal de @var{modelo},
@@ -1073,7 +1073,7 @@ a regra que foi primeiro definida @'{e} a que ser@'{a} aplicada.
 (%o4)                       bar_1(42)
 @end example
 
-vari@'{a}veis de modelo s@~{a}o tratadas como vari@'{a}veis locais em regras de simplifica@,{c}@~{a}o.
+vari@'{a}veis de modelo s@~{a}o tratadas como vari@'{a}veis locais em regras de simplifica@value{cedilha}@~{a}o.
 (Compare a @code{defmatch}, que trata vari@'{a}veis de modelo como vari@'{a}veis globais.)
 
 @c ===beg===
@@ -1097,7 +1097,7 @@ vari@'{a}veis de modelo s@~{a}o tratadas como vari@'{a}veis locais em regras de 
 @end example
 
 Como com todos os @'{a}tomos, propriedades de vari@'{a}veis de modelo s@~{a}o globais embora valores sejam locais.
-Nesse exemplo, uma propriedade de atribui@,{c}@~{a}o @'{e} declarada via @code{define_variable}.
+Nesse exemplo, uma propriedade de atribui@value{cedilha}@~{a}o @'{e} declarada via @code{define_variable}.
 Essa @'{e} a propriedade do @'{a}tomo @code{bb} atrav@'{e}s de todo o Maxima.
 
 @c ===beg===
@@ -1123,7 +1123,7 @@ Error: bb was declared mode boolean, has value: %e
 
 Regras s@~{a}o nomeadas ap@'{o}s operadores principais.
 Nomes de regras para operadores internos e operadores definidos pelo usu@'{a}rio s@~{a}o seq@"{u}@^{e}ncias de caracteres,
-enquanto nomes para outras fun@,{c}@~{o}es s@~{a}o identificadores comuns.
+enquanto nomes para outras fun@value{cedilha}@~{o}es s@~{a}o identificadores comuns.
 
 @c ===beg===
 @c tellsimpafter (foo (%pi + %e), 3*%pi);
@@ -1171,7 +1171,7 @@ foorule2, foorule3, +rule1, *rule1, ^rule1]
 (%o13)                          ^
 @end example
 
-Um exemplo trabalhado: multiplica@,{c}@~{a}o anticomutativa.
+Um exemplo trabalhado: multiplica@value{cedilha}@~{a}o anticomutativa.
 
 @c ===beg===
 @c gt (i, j) := integerp(j) and i < j;
@@ -1204,9 +1204,9 @@ Um exemplo trabalhado: multiplica@,{c}@~{a}o anticomutativa.
 
 @end deffn
 
-@deffn {Fun@,{c}@~{a}o} clear_rules ()
+@deffn {Fun@value{cedilha}@~{a}o} clear_rules ()
 Executa @code{kill (rules)} e ent@~{a}o re-escolhe o pr@'{o}ximo n@'{u}mero de regra para 1
-para adi@,{c}@~{a}o @code{+}, multiplica@,{c}@~{a}o @code{*}, e exponencia@,{c}@~{a}o @code{^}.
+para adi@value{cedilha}@~{a}o @code{+}, multiplica@value{cedilha}@~{a}o @code{*}, e exponencia@value{cedilha}@~{a}o @code{^}.
 
 @end deffn
 

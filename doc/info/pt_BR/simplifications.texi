@@ -1,19 +1,19 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /simplifications.texi/1.3/Sat Jul  8 08:16:05 2006//
 @menu
-* Introdu@,{c}@~{a}o a simplification::
-* Defini@,{c}@~{o}es para simplification::
+* Introdu@value{cedilha}@~{a}o a simplification::
+* Defini@value{cedilha}@~{o}es para simplification::
 @end menu
 
-@node Introdu@,{c}@~{a}o a simplification, Defini@,{c}@~{o}es para simplification, simplification, simplification
-@section Introdu@,{c}@~{a}o a simplification
+@node Introdu@value{cedilha}@~{a}o a simplification, Defini@value{cedilha}@~{o}es para simplification, simplification, simplification
+@section Introdu@value{cedilha}@~{a}o a simplification
 
 O diret@'{o}rio @code{maxima/share/simplification} cont@'{e}m muitos scripts
-que implementam regras de simplifica@,{c}@~{a}o e fun@,{c}@~{o}es,
-e tamb@'{e}m algumas fun@,{c}@~{o}es n@~{a}o relacionadas a simplifica@,{c}@~{a}o.
+que implementam regras de simplifica@value{cedilha}@~{a}o e fun@value{cedilha}@~{o}es,
+e tamb@'{e}m algumas fun@value{cedilha}@~{o}es n@~{a}o relacionadas a simplifica@value{cedilha}@~{a}o.
 
-@node Defini@,{c}@~{o}es para simplification,  , Introdu@,{c}@~{a}o a simplification, simplification
-@section Defini@,{c}@~{o}es para simplification
+@node Defini@value{cedilha}@~{o}es para simplification,  , Introdu@value{cedilha}@~{a}o a simplification, simplification
+@section Defini@value{cedilha}@~{o}es para simplification
 
 @c Adapted from absimp.usg ----------------------
 
@@ -21,18 +21,18 @@ e tamb@'{e}m algumas fun@,{c}@~{o}es n@~{a}o relacionadas a simplifica@,{c}@~{a}
 @c SAME WITH OTHER "ADD-ON PACKAGES" HERE (FACEXP, INEQ)
 @subsection Package absimp
 
-O pacote @code{absimp} cont@'{e}m regras de compara@,{c}@~{a}o de seq@"{u}@^{e}ncias decaractere que
-extendem as regras internas de simplifica@,{c}@~{a}o para as fun@,{c}@~{o}es @code{abs} e
+O pacote @code{absimp} cont@'{e}m regras de compara@value{cedilha}@~{a}o de seq@"{u}@^{e}ncias decaractere que
+extendem as regras internas de simplifica@value{cedilha}@~{a}o para as fun@value{cedilha}@~{o}es @code{abs} e
 @code{signum}.
-@code{absimp} respeita as rela@,{c}@~{o}es
-estabelecidas com a fun@,{c}@~{a}o interna @code{assume} e por meio de declara@,{c}@~{o}es tais
+@code{absimp} respeita as rela@value{cedilha}@~{o}es
+estabelecidas com a fun@value{cedilha}@~{a}o interna @code{assume} e por meio de declara@value{cedilha}@~{o}es tais
 como @code{modedeclare (m, even, n, odd)}  para inteiros paes ou @'{i}mpares.
 
-@code{absimp} define as fun@,{c}@~{o}es @code{unitramp} e @code{unitstep}
+@code{absimp} define as fun@value{cedilha}@~{o}es @code{unitramp} e @code{unitstep}
 em termos de @code{abs} e @code{signum}.
 
 @code{load (absimp)} torna esse pacote dispon@'{i}vel para uso.
-@code{demo (absimp)} faz uma demonstra@,{c}@~{a}o desse pacote.
+@code{demo (absimp)} faz uma demonstra@value{cedilha}@~{a}o desse pacote.
 
 Exemplos:
 
@@ -67,22 +67,22 @@ Exemplos:
 @subsection Package facexp
 
 @c THIS IS VERY VAGUE. JUST WHAT DOES THIS DO?
-O pacote @code{facexp} cont@'{e}m muitas fun@,{c}@~{o}es relacionadas a simplifica@,{c}@~{o}es que
+O pacote @code{facexp} cont@'{e}m muitas fun@value{cedilha}@~{o}es relacionadas a simplifica@value{cedilha}@~{o}es que
 fornecem ao usu@'{a}rio a habilidade de estruturar express@~{o}es por meio de expans@~{a}o
 controlada.   Essa capacidade @'{e} especialmente @'{u}til quando a express@~{a}o
 cont@'{e}m vari@'{a}veis que possuem significado f@'{i}sico, porque @'{e} muitas vezes verdadeiro
 que a forma mais econ@^{o}mica de uma tal express@~{a}o pode ser obtida por meio de
-uma expans@~{a}o completa da express@~{a}o com rela@,{c}@~{a}o a essas vari@'{a}veis, e ent@~{a}o
+uma expans@~{a}o completa da express@~{a}o com rela@value{cedilha}@~{a}o a essas vari@'{a}veis, e ent@~{a}o
 fatorar seus coeficientes.  Apesar de ser verdadeiro que esse procedimento @'{e}
-f@'{a}cil de realizar usando as fun@,{c}@~{o}es padr@~{a}o do Maxima, ajustes
+f@'{a}cil de realizar usando as fun@value{cedilha}@~{o}es padr@~{a}o do Maxima, ajustes
 adicionais podem se desej@'{a}veis, e esses toques finais podem ser
 mais dif@'{i}ceis de aplicar.
 
-A fun@,{c}@~{a}o @code{facsum}  e suas formas relacionadas
+A fun@value{cedilha}@~{a}o @code{facsum}  e suas formas relacionadas
 fornecem um meio conveniente de controlar a estrutura de express@~{o}es
-por esse caminho.  Outra fun@,{c}@~{a}o, @code{collectterms}, pode ser usada para adicionar duas ou
+por esse caminho.  Outra fun@value{cedilha}@~{a}o, @code{collectterms}, pode ser usada para adicionar duas ou
 mais express@~{o}es que j@'{a} tenham sido simplificadas para essa forma, sem
-resimplificar a express@~{a}o completa novamente.  Essa fun@,{c}@~{a}o pode ser
+resimplificar a express@~{a}o completa novamente.  Essa fun@value{cedilha}@~{a}o pode ser
 @'{u}til quando express@~{o}es forem muito grandes.
 
 @c CAN'T FIND ANY SUCH FILE "DIAGEVAL".
@@ -94,16 +94,16 @@ resimplificar a express@~{a}o completa novamente.  Essa fun@,{c}@~{a}o pode ser
 @c manipulation.
 
 @code{load (facexp)} torna dispon;ivel para uso esse pacote.
-@code{demo (facexp)} faz uma demonstra@,{c}@~{a}o desse pacote.
+@code{demo (facexp)} faz uma demonstra@value{cedilha}@~{a}o desse pacote.
 
 @c THIS IS VERY VAGUE. JUST WHAT DOES THIS DO?
 @c SOME EXAMPLES WOULD HELP HERE
-@deffn {Fun@,{c}@~{a}o} facsum (@var{expr}, @var{arg_1}, ..., @var{arg_n})
+@deffn {Fun@value{cedilha}@~{a}o} facsum (@var{expr}, @var{arg_1}, ..., @var{arg_n})
 Retorna uma forma de @var{expr}  que depende dos
 argumentos @var{arg_1}, ..., @var{arg_n}.
 Os argumentos podem ser quaisquer formas adequadas para @code{ratvars}, ou eles podem ser
 listas  de tais formas.  Se os argumentos n@~{a}o forem listas, ent@~{a}o a forma
-retornada @'{e} completamente expandida com rela@,{c}@~{a}o aos argumentos,  e os
+retornada @'{e} completamente expandida com rela@value{cedilha}@~{a}o aos argumentos,  e os
 coeficientes dos argumentos foram fatorados.  Esses coeficientes s@~{a}o
 livres dos argumentos, exceto talvez no sentido n@~{a}o racional.
 
@@ -112,21 +112,21 @@ em uma lista simples,   e em lugar de chamar @code{factor}   sobre os
 coeficientes  dos  argumentos,  @code{facsum}  chama a si mesma sobre esses
 coeficientes, usando  essa nova lista simples que foi constru@'{i}da como o novo
 argumento listo  para essa chamada recursiva.  Esse processo pode ser repetido para um
-quantidade arbitr@'{a}ria de repeti@,{c}@~{o}es por atrav@'{e}s do aninhamento dos elementos desejados nas listas.
+quantidade arbitr@'{a}ria de repeti@value{cedilha}@~{o}es por atrav@'{e}s do aninhamento dos elementos desejados nas listas.
 
-@'{E} poss@'{i}vel que algu@'{e}m possa querer usar @code{facsum} com rela@,{c}@~{a}o a subexpress@~{o}es
+@'{E} poss@'{i}vel que algu@'{e}m possa querer usar @code{facsum} com rela@value{cedilha}@~{a}o a subexpress@~{o}es
 mais complicadas,  tal como  @code{log (x + y)}.  Tais argumentos s@~{a}o
-tamb@'{e}m permitidos.   Sem especifica@,{c}@~{a}o de vari@'{a}vel,  por exemplo
+tamb@'{e}m permitidos.   Sem especifica@value{cedilha}@~{a}o de vari@'{a}vel,  por exemplo
 @code{facsum (@var{expr})}, o resultado retornado @'{e} o mesmo que o que @'{e} retornado por meio de
 @code{ratsimp (@var{expr})}.
 
 Ocasionalmente o usu@'{a}rio pode querer obter quaisquer das formas abaixo
 para express@~{o}es que s@~{a}o especificadas somente por meio de seus operadores l@'{i}deres.
-Por exemplo, algu@'{e}m pode querer usar @code{facsum} com rela@,{c}@~{a}o a todos os @code{log}'s.  Nessa
-situa@,{c}@~{a}o, algu@'{e}m pode incluir no meio dos argumentos ou o c@'{o}digo
+Por exemplo, algu@'{e}m pode querer usar @code{facsum} com rela@value{cedilha}@~{a}o a todos os @code{log}'s.  Nessa
+situa@value{cedilha}@~{a}o, algu@'{e}m pode incluir no meio dos argumentos ou o c@'{o}digo
 dos @code{log}'s eespec@'{i}ficos que devem ser tratados po esse caminho ou alternativamente a
 express@~{a}o  @code{operator (log)} ou a express@~{a}o @code{'operator (log)}.   Se algu@'{e}m quiser usar
-@code{facsum} na express@~{a}o @var{expr} com rela@,{c}@~{a}o aos operadores @var{op_1}, ..., @var{op_n},
+@code{facsum} na express@~{a}o @var{expr} com rela@value{cedilha}@~{a}o aos operadores @var{op_1}, ..., @var{op_n},
 pode-se avaliar @code{facsum (@var{expr}, operator (@var{op_1}, ..., @var{op_n}))}.
 A forma @code{operator} pode tamb@'{e}m aparecer dentro de uma lista de argumentos.
 
@@ -148,7 +148,7 @@ A inclus@~{a}o do @'{a}tomo
 @code{nextlayerfactor} na lista argumento de @code{facsum}  tem o efieto de
 @code{nextlayerfactor: true}, mas para o pr@'{o}ximo n@'{i}vel da express@~{a}o @i{somente}.
 Uma vez que @code{nextlayerfactor} @'{e} sempre associado ou a @code{true} ou a  @code{false}, @code{nextlayerfactor}
-deve ser apresentada com ap@'{o}strofo simples mesmo que @code{nextlayerfactor} apare@,{c}a na lista de argumento de @code{facsum}.
+deve ser apresentada com ap@'{o}strofo simples mesmo que @code{nextlayerfactor} apare@value{cedilha}a na lista de argumento de @code{facsum}.
 @end defvr
 
 @defvr {Vari@'{a}vel global} facsum_combine
@@ -167,24 +167,24 @@ racional,  mas n@~{a}o se deseja que o denominador seja multiplicado
 de forma completa pelos termos do numerador.
 @end defvr
 
-@deffn {Fun@,{c}@~{a}o} factorfacsum (@var{expr}, @var{arg_1}, ... @var{arg_n})
+@deffn {Fun@value{cedilha}@~{a}o} factorfacsum (@var{expr}, @var{arg_1}, ... @var{arg_n})
 Retorna uma forma de @var{expr}  que @'{e}
 obtida por meio de chamada a @code{facsum} sobre os fatores de @var{expr} com @var{arg_1}, ... @var{arg_n} como
 argumentos.  Se qualqeur dos fatores de @var{expr} estiver elevado a um expoente, ambos
 o fator e o expoente ir@~{a}o ser processados por esse meio.
 @end deffn
 
-@deffn {Fun@,{c}@~{a}o} collectterms (@var{arg_1}, ..., @var{arg_n})
+@deffn {Fun@value{cedilha}@~{a}o} collectterms (@var{arg_1}, ..., @var{arg_n})
 Se muitas express@~{o}es tiverem sido
 simplificadas com @code{facsum}, @code{factorfacsum},  @code{factenexpand},  @code{facexpten} ou
 com @code{factorfacexpten},  e elas est@~{a}o para serem adicionadas umas @`as outras, pode ser
-desej@'{a}vel combin@'{a}-las usando a fun@,{c}@~{a}o @code{collecterms}.
+desej@'{a}vel combin@'{a}-las usando a fun@value{cedilha}@~{a}o @code{collecterms}.
 @code{collecterms} pode pegar como argumentos todos os argumentos que podem ser
-fornecidos para essas outras fun@,{c}@~{o}es associadas com excess@~{a}o de
+fornecidos para essas outras fun@value{cedilha}@~{o}es associadas com excess@~{a}o de
 @code{nextlayerfactor}, que n@~{a}o tem efeito sobre @code{collectterms}.  A vantagem
 de @code{collectterms}  est@'{a} em que @code{collectterms} retorna uma forma similar a @code{facsum}, mas
 uma vez que @code{collectterms} est@'{a} adicionando forma que j@'{a} tenham sido processadas por @code{facsum},
-@code{collectterms} n@~{a}o precisa repetir aquele esfor@,{c}o.   Essa capacidade @'{e}
+@code{collectterms} n@~{a}o precisa repetir aquele esfor@value{cedilha}o.   Essa capacidade @'{e}
 especialmente @'{u}til quando a express@~{a}o a ser somada for muito grande.
 @end deffn
 
@@ -193,82 +193,82 @@ especialmente @'{u}til quando a express@~{a}o a ser somada for muito grande.
 @c conjugate already described in doc/info/Matrices.texi
 @subsection Pacote functs
 
-@deffn {Fun@,{c}@~{a}o} rempart (@var{expr}, @var{n})
+@deffn {Fun@value{cedilha}@~{a}o} rempart (@var{expr}, @var{n})
 Remove a parte @var{n} da express@~{a}o @var{expr}.
 
 Se @var{n} @'{e} uma lsita da forma @code{[@var{l}, @var{m}]}
 ent@~{a}o as partes de @var{l} at@'{e} @var{m} s@~{a}o removidas.
 
-Para usar essa fun@,{c}@~{a}o escreva primeiramente @code{load(functs)}.
+Para usar essa fun@value{cedilha}@~{a}o escreva primeiramente @code{load(functs)}.
 @end deffn
 
-@deffn {Fun@,{c}@~{a}o} wronskian ([@var{f_1}, ..., @var{f_n}], @var{x})
-Retorna a matriz Wronskiana das fun@,{c}@~{o}es @var{f_1}, ..., @var{f_n} na vari@'{a}vel @var{x}.
+@deffn {Fun@value{cedilha}@~{a}o} wronskian ([@var{f_1}, ..., @var{f_n}], @var{x})
+Retorna a matriz Wronskiana das fun@value{cedilha}@~{o}es @var{f_1}, ..., @var{f_n} na vari@'{a}vel @var{x}.
 
-@var{f_1}, ..., @var{f_n} pode ser o nome de fun@,{c}@~{o}es definidas pelo usu@'{a}rio,
+@var{f_1}, ..., @var{f_n} pode ser o nome de fun@value{cedilha}@~{o}es definidas pelo usu@'{a}rio,
 ou express@~{o}es na vari@'{a}vel @var{x}.
 
-O determinante da matriz Wronskiana @'{e} o determinante Wronskiano do conjunto de fun@,{c}@~{o}es.
-As fun@,{c}@~{o}es s@~{a}o linearmente independentes entre si se seu determinante for igual a zero.
+O determinante da matriz Wronskiana @'{e} o determinante Wronskiano do conjunto de fun@value{cedilha}@~{o}es.
+As fun@value{cedilha}@~{o}es s@~{a}o linearmente independentes entre si se seu determinante for igual a zero.
 
-Para usar essa fun@,{c}@~{a}o escreva primeiramente @code{load(functs)}.
+Para usar essa fun@value{cedilha}@~{a}o escreva primeiramente @code{load(functs)}.
 @end deffn
 
 @c adjoint already described in doc/info/Matrices.texi
 
-@deffn {Fun@,{c}@~{a}o} tracematrix (@var{M})
-Retorna o tra@,{c}o (somat@'{o}rio dos elementos da diagonal principal) da matriz @var{M}.
+@deffn {Fun@value{cedilha}@~{a}o} tracematrix (@var{M})
+Retorna o tra@value{cedilha}o (somat@'{o}rio dos elementos da diagonal principal) da matriz @var{M}.
 
-Para usar essa fun@,{c}@~{a}o escreva primeiramente @code{load(functs)}.
+Para usar essa fun@value{cedilha}@~{a}o escreva primeiramente @code{load(functs)}.
 @end deffn
 
-@deffn {Fun@,{c}@~{a}o} rational (@code{z})
+@deffn {Fun@value{cedilha}@~{a}o} rational (@code{z})
 Multiplica o numerador e o denominador de @var{z} pelo complexo conjugado do denominador,
 racionando dessa forma o denominador complexo.
 Retorna a forma de express@~{a}o racional can@^{o}nica (CRE) se fornecida uma CRE, caso contr@'{a}rio retorna a forma geral.
 
-Para usar essa fun@,{c}@~{a}o escreva primeiramente @code{load(functs)}.
+Para usar essa fun@value{cedilha}@~{a}o escreva primeiramente @code{load(functs)}.
 @end deffn
 
-@deffn {Fun@,{c}@~{a}o} logand (@code{x},@code{y})
+@deffn {Fun@value{cedilha}@~{a}o} logand (@code{x},@code{y})
 Retorna o "e" l@'{o}gico (bit-wise) dos argumento x e do argumento y.
 
-Para usar essa fun@,{c}@~{a}o escreva primeiramente @code{load(functs)}.
+Para usar essa fun@value{cedilha}@~{a}o escreva primeiramente @code{load(functs)}.
 @end deffn
 
-@deffn {Fun@,{c}@~{a}o} logor (@code{x},@code{y})
+@deffn {Fun@value{cedilha}@~{a}o} logor (@code{x},@code{y})
 Retorna o "ou" l@'{o}gico (bit-wise) dos argumento x e do argumento y.
 
-Para usar essa fun@,{c}@~{a}o escreva primeiramente @code{load(functs)}.
+Para usar essa fun@value{cedilha}@~{a}o escreva primeiramente @code{load(functs)}.
 @end deffn
 
-@deffn {Fun@,{c}@~{a}o} logxor (@code{x},@code{y})
+@deffn {Fun@value{cedilha}@~{a}o} logxor (@code{x},@code{y})
 Retorna "ou-exclusivo" l@'{o}gico (bit-wise) dos argumento x e do argumento y.
 
-Para usar essa fun@,{c}@~{a}o escreva primeiramente @code{load(functs)}.
+Para usar essa fun@value{cedilha}@~{a}o escreva primeiramente @code{load(functs)}.
 @end deffn
 
 @c uprobe calls ?uprobe and assumes file is a list => obsolete, not common lisp
 
 @c kronecker superseded by kron_delta in src/nset.lisp
 
-@deffn {Fun@,{c}@~{a}o} nonzeroandfreeof (@var{x}, @var{expr})
+@deffn {Fun@value{cedilha}@~{a}o} nonzeroandfreeof (@var{x}, @var{expr})
 Retorna @code{true} se @var{expr} for diferente de zero e @code{freeof (@var{x}, @var{expr})} retorna @code{true}.
 Retorna @code{false} de outra forma.
 
-Para usar essa fun@,{c}@~{a}o escreva primeiramente @code{load(functs)}.
+Para usar essa fun@value{cedilha}@~{a}o escreva primeiramente @code{load(functs)}.
 @end deffn
 
-@deffn {Fun@,{c}@~{a}o} linear (@var{expr}, @var{x})
+@deffn {Fun@value{cedilha}@~{a}o} linear (@var{expr}, @var{x})
 Quando @var{expr} for uma express@~{a}o linear na vari@'{a}vel @var{x},
 @code{linear} retorna @code{@var{a}*@var{x} + @var{b}} onde @var{a} @'{e} diferente de zero,
 e @var{a} e @var{b} s@~{a}o livres de @var{x}.
 De outra forma, @code{linear} retorna @var{expr}.
 
-Para usar essa fun@,{c}@~{a}o escreva primeiramente @code{load(functs)}.
+Para usar essa fun@value{cedilha}@~{a}o escreva primeiramente @code{load(functs)}.
 @end deffn
 
-@deffn {Fun@,{c}@~{a}o} gcdivide (@var{p}, @var{q})
+@deffn {Fun@value{cedilha}@~{a}o} gcdivide (@var{p}, @var{q})
 Quando @code{takegcd} for @code{true},
 @code{gcdivide} divide os polin@^{o}mios @var{p} e @var{q} por seu maior divisor comum (MDC)
 e retorna a raz@~{a}o dos resultados.
@@ -276,112 +276,112 @@ e retorna a raz@~{a}o dos resultados.
 Quando @code{takegcd} for @code{false},
 @code{gcdivide} retorna a raz@~{a}o @code{@var{p}/@var{q}}.
 
-Para usar essa fun@,{c}@~{a}o escreva primeiramente @code{load(functs)}.
+Para usar essa fun@value{cedilha}@~{a}o escreva primeiramente @code{load(functs)}.
 @end deffn
 
 @c lcm already described in doc/info/Number.texi
 
-@deffn {Fun@,{c}@~{a}o} arithmetic (@var{a}, @var{d}, @var{n})
+@deffn {Fun@value{cedilha}@~{a}o} arithmetic (@var{a}, @var{d}, @var{n})
 Retorna o @var{n}-@'{e}siomo termo da s@'{e}rie aritm@'{e}tica
 @code{@var{a}, @var{a} + @var{d}, @var{a} + 2*@var{d}, ..., @var{a} + (@var{n} - 1)*@var{d}}.
 
-Para usar essa fun@,{c}@~{a}o escreva primeiramente @code{load(functs)}.
+Para usar essa fun@value{cedilha}@~{a}o escreva primeiramente @code{load(functs)}.
 @end deffn
 
-@deffn {Fun@,{c}@~{a}o} geometric (@var{a}, @var{r}, @var{n})
+@deffn {Fun@value{cedilha}@~{a}o} geometric (@var{a}, @var{r}, @var{n})
 Retorna o @var{n}-@'{e}simo termo da s@'{e}rie geom@'{e}trica
 @code{@var{a}, @var{a}*@var{r}, @var{a}*@var{r}^2, ..., @var{a}*@var{r}^(@var{n} - 1)}.
 
-Para usar essa fun@,{c}@~{a}o escreva primeiramente @code{load(functs)}.
+Para usar essa fun@value{cedilha}@~{a}o escreva primeiramente @code{load(functs)}.
 @end deffn
 
-@deffn {Fun@,{c}@~{a}o} harmonic (@var{a}, @var{b}, @var{c}, @var{n})
+@deffn {Fun@value{cedilha}@~{a}o} harmonic (@var{a}, @var{b}, @var{c}, @var{n})
 Retorna o @var{n}-@'{e}simo termo da s@'{e}rie harm@^{o}nica
 @code{@var{a}/@var{b}, @var{a}/(@var{b} + @var{c}), @var{a}/(@var{b} + 2*@var{c}), ..., @var{a}/(@var{b} + (@var{n} - 1)*@var{c})}.
 
-Para usar essa fun@,{c}@~{a}o escreva primeiramente @code{load(functs)}.
+Para usar essa fun@value{cedilha}@~{a}o escreva primeiramente @code{load(functs)}.
 @end deffn
 
-@deffn {Fun@,{c}@~{a}o} arithsum (@var{a}, @var{d}, @var{n})
+@deffn {Fun@value{cedilha}@~{a}o} arithsum (@var{a}, @var{d}, @var{n})
 Retorna a soma dos elementos da s@'{e}rie aritm@'{e}tica de 1 a @var{n}.
 
-Para usar essa fun@,{c}@~{a}o escreva primeiramente @code{load(functs)}.
+Para usar essa fun@value{cedilha}@~{a}o escreva primeiramente @code{load(functs)}.
 @end deffn
 
-@deffn {Fun@,{c}@~{a}o} geosum (@var{a}, @var{r}, @var{n})
+@deffn {Fun@value{cedilha}@~{a}o} geosum (@var{a}, @var{r}, @var{n})
 Retorna a soma dos elementos da s@'{e}rie geom@'{e}trica de 1 a @var{n}.  Se @var{n} for
 infinito (@code{inf}) ent@~{a}o a soma ser@'{a} finita se e somente se o valor absoluto
 de @var{r} for menor que 1.
 
-Para usar essa fun@,{c}@~{a}o escreva primeiramente @code{load(functs)}.
+Para usar essa fun@value{cedilha}@~{a}o escreva primeiramente @code{load(functs)}.
 @end deffn
 
-@deffn {Fun@,{c}@~{a}o} gaussprob (@var{x})
-Retorna a fun@,{c}@~{a}o de probalilidade de Gauss
+@deffn {Fun@value{cedilha}@~{a}o} gaussprob (@var{x})
+Retorna a fun@value{cedilha}@~{a}o de probalilidade de Gauss
 @code{%e^(-@var{x}^2/2) / sqrt(2*%pi)}.
 
-Para usar essa fun@,{c}@~{a}o escreva primeiramente @code{load(functs)}.
+Para usar essa fun@value{cedilha}@~{a}o escreva primeiramente @code{load(functs)}.
 @end deffn
 
-@deffn {Fun@,{c}@~{a}o} gd (@var{x})
-Retorna a fun@,{c}@~{a}o de Gudermann
+@deffn {Fun@value{cedilha}@~{a}o} gd (@var{x})
+Retorna a fun@value{cedilha}@~{a}o de Gudermann
 @code{2 * atan(%e^@var{x} - %pi/2)}.
 
-Para usar essa fun@,{c}@~{a}o escreva primeiramente @code{load(functs)}.
+Para usar essa fun@value{cedilha}@~{a}o escreva primeiramente @code{load(functs)}.
 @end deffn
 
-@deffn {Fun@,{c}@~{a}o} agd (@var{x})
-Retorna o inverso da fun@,{c}@~{a}o de Gudermann
+@deffn {Fun@value{cedilha}@~{a}o} agd (@var{x})
+Retorna o inverso da fun@value{cedilha}@~{a}o de Gudermann
 @code{log (tan (%pi/4 + x/2)))}.
 
-Para usar essa fun@,{c}@~{a}o escreva primeiramente @code{load(functs)}.
+Para usar essa fun@value{cedilha}@~{a}o escreva primeiramente @code{load(functs)}.
 @end deffn
 
-@deffn {Fun@,{c}@~{a}o} vers (@var{x})
+@deffn {Fun@value{cedilha}@~{a}o} vers (@var{x})
 Retorna o @i{sinus versus} @code{1 - cos (x)}.
 
-Para usar essa fun@,{c}@~{a}o escreva primeiramente @code{load(functs)}.
+Para usar essa fun@value{cedilha}@~{a}o escreva primeiramente @code{load(functs)}.
 @end deffn
 
-@deffn {Fun@,{c}@~{a}o} covers (@var{x})
+@deffn {Fun@value{cedilha}@~{a}o} covers (@var{x})
 Retorna o @i{sinus versus} do complemento @code{1 - sin (@var{x})}.
 
-Para usar essa fun@,{c}@~{a}o escreva primeiramente @code{load(functs)}.
+Para usar essa fun@value{cedilha}@~{a}o escreva primeiramente @code{load(functs)}.
 @end deffn
 
-@deffn {Fun@,{c}@~{a}o} exsec (@var{x})
+@deffn {Fun@value{cedilha}@~{a}o} exsec (@var{x})
 Retorna a parte externa da secante @code{sec (@var{x}) - 1}.
 
-Para usar essa fun@,{c}@~{a}o escreva primeiramente @code{load(functs)}.
+Para usar essa fun@value{cedilha}@~{a}o escreva primeiramente @code{load(functs)}.
 @end deffn
 
-@deffn {Fun@,{c}@~{a}o} hav (@var{x})
+@deffn {Fun@value{cedilha}@~{a}o} hav (@var{x})
 Retorna o semi-@i{sinus versus} @code{(1 - cos(x))/2}.
 
-Para usar essa fun@,{c}@~{a}o escreva primeiramente @code{load(functs)}.
+Para usar essa fun@value{cedilha}@~{a}o escreva primeiramente @code{load(functs)}.
 @end deffn
 
 @c REDUNDANT WITH BINOMIAL COEFFICIENT; CUT IT ??
-@deffn {Fun@,{c}@~{a}o} combination (@var{n}, @var{r})
-Retorna o n@'{u}mero de combina@,{c}@~{o}es de @var{n} objetos
+@deffn {Fun@value{cedilha}@~{a}o} combination (@var{n}, @var{r})
+Retorna o n@'{u}mero de combina@value{cedilha}@~{o}es de @var{n} objetos
 tomados em grupos de @var{r} elementos.
 
-Para usar essa fun@,{c}@~{a}o escreva primeiramente @code{load(functs)}.
+Para usar essa fun@value{cedilha}@~{a}o escreva primeiramente @code{load(functs)}.
 @end deffn
 
 @c REDUNDANT WITH PERMUTATIONS FUNCTION IN NSET; CUT IT ??
-@deffn {Fun@,{c}@~{a}o} permutation (@var{n}, @var{r})
-Retorna o n@'{u}mero de permuta@,{c}@~{o}es de @var{r} objetos
+@deffn {Fun@value{cedilha}@~{a}o} permutation (@var{n}, @var{r})
+Retorna o n@'{u}mero de permuta@value{cedilha}@~{o}es de @var{r} objetos
 selecionados de um conjunto de @var{n} objetos.
 
-Para usar essa fun@,{c}@~{a}o escreva primeiramente @code{load(functs)}.
+Para usar essa fun@value{cedilha}@~{a}o escreva primeiramente @code{load(functs)}.
 @end deffn
 
 @c Adapted from ineq.usg ----------------------
 @c THIS PACKAGE IS INTERESTING BUT THIS TEXT NEEDS WORK AND EXAMPLES
 @subsection Package ineq
 
-O pacote @code{ineq} cont@'{e}m regras de simplifica@,{c}@~{a}o
+O pacote @code{ineq} cont@'{e}m regras de simplifica@value{cedilha}@~{a}o
 para desigualdades.
 
 Sess@~{a}o exemplo:
@@ -457,8 +457,8 @@ em torno de desigualdades: quando o usu@'{a}rio digita @code{(A > B) + (C = 5)} 
 resltado @'{e} @code{A + C > B + 5}, mas @code{A > B + C = 5} @'{e} um erro de sintaxe,
 e @code{(A > B + C) = 5} @'{e} alguma coisa completametne diferente.
 
-Fa@,{c}a @code{disprule (all)} para ver uma lista completa
-das defini@,{c}@~{o}es de regras.
+Fa@value{cedilha}a @code{disprule (all)} para ver uma lista completa
+das defini@value{cedilha}@~{o}es de regras.
 
 O usu@'{a}rio ser@'{a} questionado se o Maxima for
 incapaz de decidir o sinal de uma quantidade multiplicando uma desigualdade.
@@ -483,14 +483,14 @@ Outro problema @'{e} 0 vezes uma desigualdade; o padr@~{a}o para isso
 acontecer @'{e} 0 ter sido colocado @`a esquerda sozinho. Todavia, se voc@^{e} digitar 
 @code{X*@var{some_inequality}} e Maxima perguntar sobre o sinal de @code{X} e voc@^{e}
 responder @code{zero} (ou @code{z}), o programa retorna @code{X*@var{some_inequality}}
-e n@~{a}o utiliza a informa@,{c}@~{a}o que @code{X} @'{e} 0. Voc@^{e} pode fazer @code{ev (%, x: 0)} em casos
-semelhantes a esse, como a base de dados ir@'{a} somente ser usada para prop@'{o}sitos de compara@,{c}@~{a}o
-em decis@~{o}es, e n@~{a}o para o prop@'{o}sito de avalia@,{c}@~{a}o de @code{X}.
+e n@~{a}o utiliza a informa@value{cedilha}@~{a}o que @code{X} @'{e} 0. Voc@^{e} pode fazer @code{ev (%, x: 0)} em casos
+semelhantes a esse, como a base de dados ir@'{a} somente ser usada para prop@'{o}sitos de compara@value{cedilha}@~{a}o
+em decis@~{o}es, e n@~{a}o para o prop@'{o}sito de avalia@value{cedilha}@~{a}o de @code{X}.
 
 O usu@'{a}rio pode notar uma resposta lenta quando esse pacote @'{e} disponibilizado para uso, como
-o simplificador @'{e} for@,{c}ado a examinar mais regras do precisaria sem esse
+o simplificador @'{e} for@value{cedilha}ado a examinar mais regras do precisaria sem esse
 pacote, ent@~{a}o voc@^{e} pode desejar remover essas regras ap@'{o}s fazer uso
-delas. Fa@,{c}a @code{kill (rules)} para eliminar todas as regras (incluindo qualquer
+delas. Fa@value{cedilha}a @code{kill (rules)} para eliminar todas as regras (incluindo qualquer
 regra que voc@^{e} possa ter definido); ou voc@^{e} pode ser mais seletivo
 eliminando somente algumas delas; ou use @code{remrule} sobre uma regra espec@'{i}fica.
 
@@ -501,7 +501,7 @@ regras no pacote s@~{a}o:
 @code{+rule1}, ..., @code{+rule18},
 e voc@^{e} deve colocar o nome de regra entre aspas duplas ao referir-se a eles, como
 em @code{remrule ("+", "+rule1")} para especificamente remover a primeira regra sobre @code{"+"}
-ou @code{disprule ("*rule2")} para mostrar a defini@,{c}@~{a}o da segunda regra multiplicativa.
+ou @code{disprule ("*rule2")} para mostrar a defini@value{cedilha}@~{a}o da segunda regra multiplicativa.
 
 @c lrats.usg: "lratsubst" and "fullratsubst" already in doc/info/Polynomials.texi
 
@@ -509,12 +509,12 @@ ou @code{disprule ("*rule2")} para mostrar a defini@,{c}@~{a}o da segunda regra 
 @c THIS IS AN INTERESTING FUNCTION BUT THIS TEXT NEEDS WORK AND EXAMPLES
 @subsection Package rducon
 
-@deffn {Fun@,{c}@~{a}o} reduce_consts (@var{expr})
+@deffn {Fun@value{cedilha}@~{a}o} reduce_consts (@var{expr})
 Substitui subexpress@~{o}es constantes de @var{expr} com
-constru@'{i}da com @'{a}tomos constantes, gravando a defini@,{c}@~{a}o de todas essas
-constantes constru@'{i}das na lista de equa@,{c}@~{o}es @code{const_eqns}, e
+constru@'{i}da com @'{a}tomos constantes, gravando a defini@value{cedilha}@~{a}o de todas essas
+constantes constru@'{i}das na lista de equa@value{cedilha}@~{o}es @code{const_eqns}, e
 retornando a express@~{a}o modificada @var{expr}.  Essas partes de @var{expr} s@~{a}o constantes que
-retornam @code{true} quando operadas por meio da fun@,{c}@~{a}o @code{constantp}.  Conseq@"{u}@^{e}ntemente,
+retornam @code{true} quando operadas por meio da fun@value{cedilha}@~{a}o @code{constantp}.  Conseq@"{u}@^{e}ntemente,
 antes de usar @code{reduce_consts}, se pode fazer
 
 @example
@@ -525,8 +525,8 @@ para escolher a base de dados das quantidades constantes ocorrendo em suas
 express@~{o}es.
 
 Se voc@^{e} est@'{a} planejando gerar sa@'{i}das em Fortran ap@'{o}s esses c@'{a}lculos
-simb@'{o}licos, uma das primeiras se@,{c}@~{o}es de c@'{o}digo pode ser o c@'{a}lculo
-de todas as constantes.  Para gerar esse segmento de c@'{o}digo, fa@,{c}a
+simb@'{o}licos, uma das primeiras se@value{cedilha}@~{o}es de c@'{o}digo pode ser o c@'{a}lculo
+de todas as constantes.  Para gerar esse segmento de c@'{o}digo, fa@value{cedilha}a
 
 @example
 map ('fortran, const_eqns)$
@@ -540,8 +540,8 @@ os s@'{i}mbolos gerados por @code{reduce_consts} para representar subexpress@~{o
 @code{const_counter} (valor padr@~{a}o: 1) @'{e} o @'{i}ndice inteiro usado para gerar s@'{i}mbolos
 @'{u}nicos para representar cada subexpress@~{a}o constante emcontrada por @code{reduce_consts}.
 
-@code{load (rducon)} torna essa fun@,{c}@~{a}o dispon@'{i}vel para uso.
-@code{demo (rducon)} faz uma demonstra@,{c}@~{a}o dessa fun@,{c}@~{a}o.
+@code{load (rducon)} torna essa fun@value{cedilha}@~{a}o dispon@'{i}vel para uso.
+@code{demo (rducon)} faz uma demonstra@value{cedilha}@~{a}o dessa fun@value{cedilha}@~{a}o.
 @end deffn
 
 @c rncomb.usg: "rncombine" already in doc/info/Miscellaneous.texi
@@ -549,10 +549,10 @@ os s@'{i}mbolos gerados por @code{reduce_consts} para representar subexpress@~{o
 @c Adapted from scifac.usg ----------------------
 @subsection Pacote scifac
 
-@deffn {Fun@,{c}@~{a}o} gcfac (@var{expr})
-@code{gcfac} fun@,{c}@~{a}o de fatora@,{c}@~{a}o que tenta aplicar a mesma heur@'{i}stica que
+@deffn {Fun@value{cedilha}@~{a}o} gcfac (@var{expr})
+@code{gcfac} fun@value{cedilha}@~{a}o de fatora@value{cedilha}@~{a}o que tenta aplicar a mesma heur@'{i}stica que
 cient@'{i}stas aplicam em tentativas de fazer express@~{o}es extremamente simples.  @code{gcfac} est@'{a} limitada
-a fatora@,{c}@~{o}es monomiais.  Para um somat@'{o}rio, @code{gcfac} faz o seguinte:
+a fatora@value{cedilha}@~{o}es monomiais.  Para um somat@'{o}rio, @code{gcfac} faz o seguinte:
 
 @enumerate
 @item
@@ -561,26 +561,26 @@ Fatores sobre os inteiros.
 Coloca em evid@^{e}ncia o maior expoente de termos ocorrendo como
 coeficientes, independentemente da complexidade dos termos.
 @item
-Usa (1) e (2) em fatora@,{c}@~{o}es de pares de termos adjascentes.
+Usa (1) e (2) em fatora@value{cedilha}@~{o}es de pares de termos adjascentes.
 @item
 Repetidamente e recursivamente aplica essas t@'{e}cnicas at@'{e} que
 a express@~{a}o n@~{a}o mais mude.
 @end enumerate
 
-O item (3) n@~{a}o necess@'{a}riamente faz uma tarefa @'{o}tima fatora@,{c}@~{a}o
+O item (3) n@~{a}o necess@'{a}riamente faz uma tarefa @'{o}tima fatora@value{cedilha}@~{a}o
 par a par devido @`a dificuldade combinat@'{o}ria natural de encontrar
 qual de todas dos poss@'{i}veis rearranjos de pares retorna o mais
-compacto resultado de fatora@,{c}@~{a}o de um par.
+compacto resultado de fatora@value{cedilha}@~{a}o de um par.
 
-@code{load (scifac)} torna essa fun@,{c}@~{a}o dispon@'{i}vel para uso.
-@code{demo (scifac)} faz uma demonstra@,{c}@~{a}o dessa fun@,{c}@~{a}o.
+@code{load (scifac)} torna essa fun@value{cedilha}@~{a}o dispon@'{i}vel para uso.
+@code{demo (scifac)} faz uma demonstra@value{cedilha}@~{a}o dessa fun@value{cedilha}@~{a}o.
 @end deffn
 
 @c Adapted from sqdnst.usg ----------------------
 @c THIS FUNCTION IS INTERESTING BUT THIS TEXT NEEDS WORK. HOW DEEPLY CAN SQRT BE NESTED ??
 @subsection Pacote sqdnst
 
-@deffn {Fun@,{c}@~{a}o} sqrtdenest (@var{expr})
+@deffn {Fun@value{cedilha}@~{a}o} sqrtdenest (@var{expr})
 Desaninha @code{sqrt} de simples, num@'{e}rico, bin@^{o}mios de ra@'{i}zes irracionais de n@'{u}meros racionais , onde for poss@'{i}vel.  E.g.
 
 @c ===beg===
@@ -608,7 +608,7 @@ Desaninha @code{sqrt} de simples, num@'{e}rico, bin@^{o}mios de ra@'{i}zes irrac
 Algumas vezes isso ajuda na hora de aplicar @code{sqrtdenest} mais que uma vez, sobre coisas como
 @code{(19601-13860 sqrt(2))^(7/4)}.
 
-@code{load (sqdnst)} Torna essa fun@,{c}@~{a}o dispon@'{i}vel para uso.
+@code{load (sqdnst)} Torna essa fun@value{cedilha}@~{a}o dispon@'{i}vel para uso.
 @end deffn
 
 @c stopex.usg: "expandwrt", "expandwrt_denom", and "expandwrt_factored" already in doc/info/Simplification.texi

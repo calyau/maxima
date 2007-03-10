@@ -1,25 +1,25 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /distrib.texi/1.4/Sat Feb 17 06:34:15 2007//
 @menu
-* Introdu@,{c}@~{a}o a distrib::
-* Defini@,{c}@~{o}es para distribui@,{c}@~{o}es cont@'{i}nuas::
-* Defini@,{c}@~{o}es para distribui@,{c}@~{o}es discretas::
+* Introdu@value{cedilha}@~{a}o a distrib::
+* Defini@value{cedilha}@~{o}es para distribui@value{cedilha}@~{o}es cont@'{i}nuas::
+* Defini@value{cedilha}@~{o}es para distribui@value{cedilha}@~{o}es discretas::
 @end menu
 
-@node Introdu@,{c}@~{a}o a distrib, Defini@,{c}@~{o}es para distribui@,{c}@~{o}es cont@'{i}nuas, distrib, distrib
-@section Introdu@,{c}@~{a}o a distrib
+@node Introdu@value{cedilha}@~{a}o a distrib, Defini@value{cedilha}@~{o}es para distribui@value{cedilha}@~{o}es cont@'{i}nuas, distrib, distrib
+@section Introdu@value{cedilha}@~{a}o a distrib
 
 
-Pacote @code{distrib} cont@'{e}m um conjunto de fun@,{c}@~{o}es para fazer c@'{a}lculos 
+Pacote @code{distrib} cont@'{e}m um conjunto de fun@value{cedilha}@~{o}es para fazer c@'{a}lculos 
 envolvendo probabilidades de modelos de uma @'{u}nica vari@'{a}vel estat@'{i}stica e de 
 ambos os tipos discreta e cont@'{i}nua. 
 
-O que segue @'{e} um curto resumo de defini@,{c}oes b@'{a}sicas
+O que segue @'{e} um curto resumo de defini@value{cedilha}oes b@'{a}sicas
 relacionadas @`a teoria das probabilidades.
 
-Seja @math{f(x)} a @var{fun@,{c}@~{a}o densidade de probabilidade} absoluta 
-de uma vari@'{a}vel aleat@'{o}ria cont@'{i}nua @math{X}. A @var{fun@,{c}@~{a}o 
-distribui@,{c}@~{a}o de probabilidade} @'{e} definida como
+Seja @math{f(x)} a @var{fun@value{cedilha}@~{a}o densidade de probabilidade} absoluta 
+de uma vari@'{a}vel aleat@'{o}ria cont@'{i}nua @math{X}. A @var{fun@value{cedilha}@~{a}o 
+distribui@value{cedilha}@~{a}o de probabilidade} @'{e} definida como
 @ifhtml
 @example
                        x
@@ -47,7 +47,7 @@ $$F\left(x\right)=\int_{ -\infty }^{x}{f\left(u\right)\;du}$$
 @end tex
 que @'{e} igual @`a probabilidade @var{Pr(X <= x)}.
 
-O valor @var{m@'{e}dio} @'{e} um par@^{a}metro de localiza@,{c}@~{a}o e est@'{a} definido como
+O valor @var{m@'{e}dio} @'{e} um par@^{a}metro de localiza@value{cedilha}@~{a}o e est@'{a} definido como
 @ifhtml
 @example
                      inf
@@ -74,7 +74,7 @@ O valor @var{m@'{e}dio} @'{e} um par@^{a}metro de localiza@,{c}@~{a}o e est@'{a}
 $$E\left[X\right]=\int_{ -\infty }^{\infty }{x\,f\left(x\right)\;dx}$$
 @end tex
 
-A @var{vari@^{a}ncia} @'{e} uma medida de varia@,{c}@~{a}o,
+A @var{vari@^{a}ncia} @'{e} uma medida de varia@value{cedilha}@~{a}o,
 @ifhtml
 @example
                  inf
@@ -103,7 +103,7 @@ $$V\left[X\right]=\int_{ -\infty }^{\infty }{f\left(x\right)\,\left(x
 @end tex
 que @'{e} um n@'{u}mero real positivo. A ra@'{i}z quadrada da vari@^{a}ncia @'{e} o
 @var{desvio padr@~{a}o}, @math{D[X]=sqrt(V[X])}, e esse @var{desvio padr@~{a}o}
-@'{e} outra medida de varia@,{c}@~{a}o.
+@'{e} outra medida de varia@value{cedilha}@~{a}o.
 
 O @var{coeficiente de assimetria} @'{e} uma medida de n@~{a}o simetria,
 @ifhtml
@@ -133,7 +133,7 @@ $$SK\left[X\right]={{\int_{ -\infty }^{\infty }{f\left(x\right)\,
  \left(x-E\left[X\right]\right)^3\;dx}}\over{D\left[X\right]^3}}$$
 @end tex
 
-E o @var{coeficiente de curtose} mede o grau de achatamento de uma distribui@,{c}@~{a}o,
+E o @var{coeficiente de curtose} mede o grau de achatamento de uma distribui@value{cedilha}@~{a}o,
 @ifhtml
 @example
                  inf
@@ -161,13 +161,13 @@ $$KU\left[X\right]={{\int_{ -\infty }^{\infty }{f\left(x\right)\,
  \left(x-E\left[X\right]\right)^4\;dx}}\over{D\left[X\right]^4}}-3$$
 @end tex
 Se @math{X} for gaussiana, @math{KU[X]=0}. De fato, ambos assimetria e curtose s@~{a}o
-par@^{a}metros de ajuste usados para medir a n@~{a}o gaussianidade de uma distribui@,{c}@~{a}o.
+par@^{a}metros de ajuste usados para medir a n@~{a}o gaussianidade de uma distribui@value{cedilha}@~{a}o.
 
-Se a vari@'{a}vel aleat@'{o}ria @math{X} for discreta, a fun@,{c}@~{a}o densidade
+Se a vari@'{a}vel aleat@'{o}ria @math{X} for discreta, a fun@value{cedilha}@~{a}o densidade
 de probabilidade, ou simplesmente @var{probabilidade}, @math{f(x)} toma valores
 positivos dentro de certos conjuntos cont@'{a}veis de n@'{u}meros @math{x_i},
-e zero em caso contr@'{a}rio. Nesse caso, a fun@,{c}@~{a}o
-distribui@,{c}@~{a}o de probabilidade @'{e}
+e zero em caso contr@'{a}rio. Nesse caso, a fun@value{cedilha}@~{a}o
+distribui@value{cedilha}@~{a}o de probabilidade @'{e}
 @ifhtml
 @example
                        ====
@@ -316,15 +316,15 @@ $$KU\left[X\right]={{\sum_{x_{i}}{f\left(x\right)\,
 @end tex
 respectively.
 
-O Pacote @code{distrib} inclui fun@,{c}@~{o}es para simula@,{c}@~{a}o de
-vari@'{a}veis estat@'{i}sticas pseudo-aleat@'{o}rias. Algumas dessas fun@,{c}@~{o}es
+O Pacote @code{distrib} inclui fun@value{cedilha}@~{o}es para simula@value{cedilha}@~{a}o de
+vari@'{a}veis estat@'{i}sticas pseudo-aleat@'{o}rias. Algumas dessas fun@value{cedilha}@~{o}es
 fazem uso de vari@'{a}veis opcionais que indicam o algor@'{i}tmo a ser usado.
 O m@'{e}todo inverso gen@'{e}rico (baseado no fato que se
 @var{u} for um n@'{u}mero aleat@'{o}rio uniforme no intervalo @math{(0,1)},
 ent@~{a}o @var{F^(-1)(u)} @'{e} uma vari@'{a}vel estat@'{i}stica pseudo-aleat@'{o}ria
-com distribui@,{c}@~{a}o @math{F}) est@'{a} implementada para a maioria dos casos;
+com distribui@value{cedilha}@~{a}o @math{F}) est@'{a} implementada para a maioria dos casos;
 isso @'{e} um m@'{e}todo sub@'{o}timo em termos de cronometragem, mas @'{u}til para
-fazer compara@,{c}@~{o}es com outros algor@'{i}tmos. Nesse exemplo, a
+fazer compara@value{cedilha}@~{o}es com outros algor@'{i}tmos. Nesse exemplo, a
 @code{perandom_formance} dos algor@'{i}tmos @code{ahrens_cheng} e
 @code{inverse} em simular  vari@'{a}veis chi-quadradas (letra grega "chi") 
 s@~{a}o comparadas por meio de seus histogramas:
@@ -342,24 +342,24 @@ Evaluation took 0.00 seconds (0.00 elapsed) using 32 bytes.
 Evaluation took 10.15 seconds (10.17 elapsed) using 322.098 MB.
 @end example
 
-Com o objetivo de fazer compara@,{c}@~{o}es visuais entre algor@'{i}tmos para uma
-vari@'{a}vel estat@'{i}stica discreta, a fun@,{c}@~{a}o @code{barsplot} do pacote
+Com o objetivo de fazer compara@value{cedilha}@~{o}es visuais entre algor@'{i}tmos para uma
+vari@'{a}vel estat@'{i}stica discreta, a fun@value{cedilha}@~{a}o @code{barsplot} do pacote
 @code{descriptive} pode ser usada.
 
-Note que algum trabalho resta para ser realizado, uma vez que essas fun@,{c}@~{o}es
-de simula@,{c}@~{a}o n@~{a}o foram ainda verificadas pelos mais rigorosamente
+Note que algum trabalho resta para ser realizado, uma vez que essas fun@value{cedilha}@~{o}es
+de simula@value{cedilha}@~{a}o n@~{a}o foram ainda verificadas pelos mais rigorosamente
 melhores dos testes de ajuste.
 
 Por favor, consulte um manual introdut@'{o}rio sobre probabilidade e estat@'{i}stica
-para maiores informa@,{c}@~{o}es sobre todo esse material matem@'{a}tico.
+para maiores informa@value{cedilha}@~{o}es sobre todo esse material matem@'{a}tico.
 
-Existe uma conven@,{c}@~{a}o de nome no pacote @code{distrib}. Todo nome de
-fun@,{c}@~{a}o tem duas partes, a primeira faz refer@^{e}ncia @`a fun@,{c}@~{a}o
+Existe uma conven@value{cedilha}@~{a}o de nome no pacote @code{distrib}. Todo nome de
+fun@value{cedilha}@~{a}o tem duas partes, a primeira faz refer@^{e}ncia @`a fun@value{cedilha}@~{a}o
 ou ao par@^{a}metro que queremos calcular,
 @example
-Fun@,{c}@~{o}es:
-   fun@,{c}@~{a}o densidade de probabilidade            (pdf_*)
-   fun@,{c}@~{a}o distribui@,{c}@~{a}o de probabilidade       (cdf_*)
+Fun@value{cedilha}@~{o}es:
+   fun@value{cedilha}@~{a}o densidade de probabilidade            (pdf_*)
+   fun@value{cedilha}@~{a}o distribui@value{cedilha}@~{a}o de probabilidade       (cdf_*)
    Quartil                    (quantile_*)
    M@'{e}dia                        (mean_*)
    Vari@^{a}ncia                    (var_*)
@@ -371,7 +371,7 @@ Fun@,{c}@~{o}es:
 
 A segunda parte @'{e} uma refer@^{e}ncia expl@'{i}cita ao modelo probabil@'{i}stico,
 @example
-Distribu@'{i}@,{c}@~{o}es cont@'{i}nuas:
+Distribu@'{i}@value{cedilha}@~{o}es cont@'{i}nuas:
    Normal              (*normal)
    Student             (*student_t)
    Chi^2               (*chi2)
@@ -389,7 +389,7 @@ Distribu@'{i}@,{c}@~{o}es cont@'{i}nuas:
    Cauchy              (*cauchy)
    Gumbel              (*gumbel)
 
-Distribui@,{c}@~{o}es discretas:
+Distribui@value{cedilha}@~{o}es discretas:
    Binomial             (*binomial)
    Poisson              (*poisson)
    Bernoulli            (*bernoulli)
@@ -399,11 +399,11 @@ Distribui@,{c}@~{o}es discretas:
    Binomial Negativa    (*negative_binomial)
 @end example
 
-Por exemplo, @code{pdf_student_t(x,n)} @'{e} a fun@,{c}@~{a}o densidade de
-probabilidade da distribui@,{c}@~{a}o de Student com @var{n} graus de liberdade,
-@code{std_pareto(a,b)} @'{e} o desvio padr@~{a}o da distribui@,{c}@~{a}o de
+Por exemplo, @code{pdf_student_t(x,n)} @'{e} a fun@value{cedilha}@~{a}o densidade de
+probabilidade da distribui@value{cedilha}@~{a}o de Student com @var{n} graus de liberdade,
+@code{std_pareto(a,b)} @'{e} o desvio padr@~{a}o da distribui@value{cedilha}@~{a}o de
 Pareto com par@^{a}metros @var{a} e @var{b} e @code{kurtosis_poisson(m)}
-@'{e} o coeficiente de curtose da distribui@,{c}@~{a}o de Poisson com m@'{e}dia @var{m}.
+@'{e} o coeficiente de curtose da distribui@value{cedilha}@~{a}o de Poisson com m@'{e}dia @var{m}.
 
 
 Com o objetivo de fazer uso do pacote @code{distrib} voc@^{e} precisa primeiro
@@ -415,20 +415,20 @@ tornar esse pacote dispon@'{i}vel para uso escrevendo
 Para coment@'{a}rios, melhorias ou sugest@~{o}es, por favor contacte o autor em
 @var{'mario AT edu DOT xunta DOT es'}.
 
-@node Defini@,{c}@~{o}es para distribui@,{c}@~{o}es cont@'{i}nuas, Defini@,{c}@~{o}es para distribui@,{c}@~{o}es discretas, Introdu@,{c}@~{a}o a distrib, distrib
-@section Defini@,{c}@~{o}es para distribui@,{c}@~{o}es cont@'{i}nuas
+@node Defini@value{cedilha}@~{o}es para distribui@value{cedilha}@~{o}es cont@'{i}nuas, Defini@value{cedilha}@~{o}es para distribui@value{cedilha}@~{o}es discretas, Introdu@value{cedilha}@~{a}o a distrib, distrib
+@section Defini@value{cedilha}@~{o}es para distribui@value{cedilha}@~{o}es cont@'{i}nuas
 
-@deffn {Fun@,{c}@~{a}o} pdf_normal (@var{x},@var{m},@var{s})
-Retorna o valor em @var{x} da fun@,{c}@~{a}o densidade de probabilidade
+@deffn {Fun@value{cedilha}@~{a}o} pdf_normal (@var{x},@var{m},@var{s})
+Retorna o valor em @var{x} da fun@value{cedilha}@~{a}o densidade de probabilidade
 de uma  vari@'{a}vel aleat@'{o}ria @math{Normal(m,s)}, com @math{s>0}. Para fazer
-uso dessa fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+uso dessa fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} cdf_normal (@var{x},@var{m},@var{s})
-Retorna o valor em @var{x} da fun@,{c}@~{a}o distribui@,{c}@~{a}o de probabilidade
+@deffn {Fun@value{cedilha}@~{a}o} cdf_normal (@var{x},@var{m},@var{s})
+Retorna o valor em @var{x} da fun@value{cedilha}@~{a}o distribui@value{cedilha}@~{a}o de probabilidade
 de uma  vari@'{a}vel aleat@'{o}ria @math{Normal(m,s)}, com @math{s>0}. Essa
-fun@,{c}@~{a}o @'{e} definida em termos de fun@,{c}@~{o}es de erro internas do
+fun@value{cedilha}@~{a}o @'{e} definida em termos de fun@value{cedilha}@~{o}es de erro internas do
 Maxima,
 @code{erf}.
 
@@ -450,49 +450,49 @@ Veja tamb@'{e}m @code{erf}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} quantile_normal (@var{q},@var{m},@var{s})
+@deffn {Fun@value{cedilha}@~{a}o} quantile_normal (@var{q},@var{m},@var{s})
 Retorna o @var{q}-quantil de uma vari@'{a}vel aleat@'{o}ria @math{Normal(m,s)}, com
 @math{s>0}; em outras palavras, isso @'{e} o inverso de @code{cdf_normal}. O argumento
-@var{q} deve ser um elemento de @math{[0,1]}. Para fazer uso dessa fun@,{c}@~{a}o,
+@var{q} deve ser um elemento de @math{[0,1]}. Para fazer uso dessa fun@value{cedilha}@~{a}o,
 escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} mean_normal (@var{m},@var{s})
+@deffn {Fun@value{cedilha}@~{a}o} mean_normal (@var{m},@var{s})
 Retorna a m@'{e}dia de uma  vari@'{a}vel aleat@'{o}ria @math{Normal(m,s)}, com
-@math{s>0}, a saber @var{m}. Para fazer uso dessa fun@,{c}@~{a}o, escreva
+@math{s>0}, a saber @var{m}. Para fazer uso dessa fun@value{cedilha}@~{a}o, escreva
 primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} var_normal (@var{m},@var{s})
+@deffn {Fun@value{cedilha}@~{a}o} var_normal (@var{m},@var{s})
 Retorna a vari@^{a}ncia de uma  vari@'{a}vel aleat@'{o}ria @math{Normal(m,s)}, com
-@math{s>0}, a saber @var{s^2}. Para fazer uso dessa fun@,{c}@~{a}o, escreva
+@math{s>0}, a saber @var{s^2}. Para fazer uso dessa fun@value{cedilha}@~{a}o, escreva
 primeiramente @code{load(distrib)}.
 @end deffn
 
-@deffn {Fun@,{c}@~{a}o} std_normal (@var{m},@var{s})
+@deffn {Fun@value{cedilha}@~{a}o} std_normal (@var{m},@var{s})
 Retorna o desvio padr@~{a}o de uma  vari@'{a}vel aleat@'{o}ria @math{Normal(m,s)},
-com @math{s>0}, a saber @var{s}. Para fazer uso dessa fun@,{c}@~{a}o, escreva
+com @math{s>0}, a saber @var{s}. Para fazer uso dessa fun@value{cedilha}@~{a}o, escreva
 primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} skewness_normal (@var{m},@var{s})
+@deffn {Fun@value{cedilha}@~{a}o} skewness_normal (@var{m},@var{s})
 Retorna o coeficiente de assimetria de uma  vari@'{a}vel aleat@'{o}ria @math{Normal(m,s)},
-com @math{s>0}, que @'{e} sempre igual  a 0. Para fazer uso dessa fun@,{c}@~{a}o,escreva
+com @math{s>0}, que @'{e} sempre igual  a 0. Para fazer uso dessa fun@value{cedilha}@~{a}o,escreva
 primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} kurtosis_normal (@var{m},@var{s})
+@deffn {Fun@value{cedilha}@~{a}o} kurtosis_normal (@var{m},@var{s})
 Retorna o coeficiente de curtose de uma  vari@'{a}vel aleat@'{o}ria @math{Normal(m,s)},
-com @math{s>0}, que @'{e} sempre igual  a 0. Para fazer uso dessa fun@,{c}@~{a}o,
+com @math{s>0}, que @'{e} sempre igual  a 0. Para fazer uso dessa fun@value{cedilha}@~{a}o,
 escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@defvr {Vari@'{a}vel de op@,{c}@~{a}o} random_normal_algorithm
+@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} random_normal_algorithm
 Valor padr@~{a}o: @code{box_mueller}
 
 Esse @'{e} o algor@'{i}tmo selecionado para simular vari@'{a}veis aleat@'{o}rias normais.
@@ -510,32 +510,32 @@ Veja tamb@'{e}m @code{random_normal}.
 @end defvr
 
 
-@deffn {Fun@,{c}@~{a}o} random_normal (@var{m},@var{s})
-@deffnx {Fun@,{c}@~{a}o} random_normal (@var{m},@var{s},@var{n})
+@deffn {Fun@value{cedilha}@~{a}o} random_normal (@var{m},@var{s})
+@deffnx {Fun@value{cedilha}@~{a}o} random_normal (@var{m},@var{s},@var{n})
 Retorna uma vari@'{a}vel estat@'{i}stica pseudo-aleat@'{o}ria @math{Normal(m,s)},
 com @math{s>0}. Chamando @code{random_normal} com um terceiro argumento
 @var{n}, uma amostra aleat@'{o}ria de tamanho @var{n} ser@'{a} simulada.
 
-Existem dois algor@'{i}tmos implementados para essa fun@,{c}@~{a}o, e o algor@'{i}tmo
+Existem dois algor@'{i}tmos implementados para essa fun@value{cedilha}@~{a}o, e o algor@'{i}tmo
 a ser usado pode ser selecionado fornecendo um certo valor para a vari@'{a}vel global
 @code{random_normal_algorithm}, cujo valor padr@~{a}o @'{e}
 @code{box_mueller}.
 
 Veja tamb@'{e}m @code{random_normal_algorithm}. Para fazer uso
-dessa fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+dessa fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} pdf_student_t (@var{x},@var{n})
-Retorna o valor em @var{x} da fun@,{c}@~{a}o densidade de probabilidade de uma
+@deffn {Fun@value{cedilha}@~{a}o} pdf_student_t (@var{x},@var{n})
+Retorna o valor em @var{x} da fun@value{cedilha}@~{a}o densidade de probabilidade de uma
 vari@'{a}vel aleat@'{o}ria de Student @math{t(n)}, com @math{n>0}. Para fazer uso dessa
-fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} cdf_student_t (@var{x},@var{n})
-Retorna o valor em @var{x} da fun@,{c}@~{a}o distribui@,{c}@~{a}o de probabilidade de
-uma vari@'{a}vel aleat@'{o}ria de Student @math{t(n)}, com @math{n>0}. Essa fun@,{c}@~{a}o
+@deffn {Fun@value{cedilha}@~{a}o} cdf_student_t (@var{x},@var{n})
+Retorna o valor em @var{x} da fun@value{cedilha}@~{a}o distribui@value{cedilha}@~{a}o de probabilidade de
+uma vari@'{a}vel aleat@'{o}ria de Student @math{t(n)}, com @math{n>0}. Essa fun@value{cedilha}@~{a}o
 n@~{a}o tem uma forma definitiva e @'{e} calculada numericamente
 se a
 vari@'{a}vel global
@@ -559,23 +559,23 @@ express@~{a}o nominal.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} quantile_student_t (@var{q},@var{n})
+@deffn {Fun@value{cedilha}@~{a}o} quantile_student_t (@var{q},@var{n})
 Retorna o @var{q}-quantil de uma vari@'{a}vel aleat@'{o}ria de Student @math{t(n)},
 com @math{n>0}; em outras palavras, @code{quantile_student_t} @'{e} o inverso de
 @code{cdf_student_t}. O argumento @var{q} deve ser um elemento de
 @math{[0,1]}. Para fazer uso dessa
-fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} mean_student_t (@var{n})
+@deffn {Fun@value{cedilha}@~{a}o} mean_student_t (@var{n})
 Retorna a m@'{e}dia de uma vari@'{a}vel aleat@'{o}ria de Student @math{t(n)}, com
-@math{n>0}, que @'{e} sempre igual a 0. Para fazer uso dessa fun@,{c}@~{a}o, escreva
+@math{n>0}, que @'{e} sempre igual a 0. Para fazer uso dessa fun@value{cedilha}@~{a}o, escreva
 primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} var_student_t (@var{n})
+@deffn {Fun@value{cedilha}@~{a}o} var_student_t (@var{n})
 Retorna a vari@^{a}ncia de uma vari@'{a}vel aleat@'{o}ria de Student @math{t(n)}, com @math{n>2}.
 
 @c ===beg===
@@ -592,27 +592,27 @@ Retorna a vari@^{a}ncia de uma vari@'{a}vel aleat@'{o}ria de Student @math{t(n)}
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} std_student_t (@var{n})
+@deffn {Fun@value{cedilha}@~{a}o} std_student_t (@var{n})
 Retorna o desvio padr@~{a}o de uma vari@'{a}vel aleat@'{o}ria de Student @math{t(n)},
-com @math{n>2}. Para fazer uso dessa fun@,{c}@~{a}o, escreva primeiramente
+com @math{n>2}. Para fazer uso dessa fun@value{cedilha}@~{a}o, escreva primeiramente
 @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} skewness_student_t (@var{n})
+@deffn {Fun@value{cedilha}@~{a}o} skewness_student_t (@var{n})
 Retorna o coeficiente de assimetria de uma vari@'{a}vel aleat@'{o}ria de Student @math{t(n)},
-com @math{n>3}, que @'{e} sempre igual a 0. Para fazer uso dessa fun@,{c}@~{a}o, escreva
+com @math{n>3}, que @'{e} sempre igual a 0. Para fazer uso dessa fun@value{cedilha}@~{a}o, escreva
 primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} kurtosis_student_t (@var{n})
+@deffn {Fun@value{cedilha}@~{a}o} kurtosis_student_t (@var{n})
 Retorna o coeficiente de curtose de uma vari@'{a}vel aleat@'{o}ria de Student @math{t(n)},
-com @math{n>4}. Para fazer uso dessa fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+com @math{n>4}. Para fazer uso dessa fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@defvr {Vari@'{a}vel de op@,{c}@~{a}o} random_student_t_algorithm
+@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} random_student_t_algorithm
 Valor padr@~{a}o: @code{ratio}
 
 Esse @'{e} o  algor@'{i}tmo selecionado para simular vari@'{a}veis estat@'{i}sticas pseudo-aleat@'{o}rias
@@ -656,29 +656,29 @@ Veja tamb@'{e}m @code{random_student_t}.
 @end defvr
 
 
-@deffn {Fun@,{c}@~{a}o} random_student_t (@var{n})
-@deffnx {Fun@,{c}@~{a}o} random_student_t (@var{n},@var{m})
+@deffn {Fun@value{cedilha}@~{a}o} random_student_t (@var{n})
+@deffnx {Fun@value{cedilha}@~{a}o} random_student_t (@var{n},@var{m})
 Retorna uma vari@'{a}vel estat@'{i}stica pseudo-aleat@'{o}ria de Student @math{t(n)},
 com @math{n>0}. Chamando @code{random_student_t} com um segundo argumento
 @var{m}, uma amostra aleat@'{o}ria de tamanho @var{m} ser@'{a} simulada.
 
-Existem dois algor@'{i}tmos implementados para essa fun@,{c}@~{a}o, se pode
+Existem dois algor@'{i}tmos implementados para essa fun@value{cedilha}@~{a}o, se pode
 selecionar o algor@'{i}tmo a ser usado fornecendo um certo valor @`a vari@'{a}vel
 global @code{random_student_t_algorithm}, cujo valor padr@~{a}o @'{e} @code{ratio}.
 
 Veja tamb@'{e}m @code{random_student_t_algorithm}. Para fazer uso dessa
-fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} pdf_chi2 (@var{x},@var{n})
-Retorna o valor em @var{x} da fun@,{c}@~{a}o densidade de probabilidade de uma
+@deffn {Fun@value{cedilha}@~{a}o} pdf_chi2 (@var{x},@var{n})
+Retorna o valor em @var{x} da fun@value{cedilha}@~{a}o densidade de probabilidade de uma
 vari@'{a}vel aleat@'{o}ria Chi-quadrada @math{Chi^2(n)}, com @math{n>0}.
 
 A  vari@'{a}vel aleat@'{o}ria @math{Chi^2(n)} @'{e} equivalente a @math{Gamma(n/2,2)},
-portanto quando Maxima n@~{a}o tiver informa@,{c}@~{a}o para pegar o resultado, uma
-forma nomial baseada na fun@,{c}@~{a}o de densidade densidade de probabilidade da
-fun@,{c}@~{a}o  gama @'{e}
+portanto quando Maxima n@~{a}o tiver informa@value{cedilha}@~{a}o para pegar o resultado, uma
+forma nomial baseada na fun@value{cedilha}@~{a}o de densidade densidade de probabilidade da
+fun@value{cedilha}@~{a}o  gama @'{e}
 retornada.
 
 @c ===beg===
@@ -703,14 +703,14 @@ retornada.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} cdf_chi2 (@var{x},@var{n})
-Retorna o valor em @var{x} da fun@,{c}@~{a}o distribui@,{c}@~{a}o de probabilidade
+@deffn {Fun@value{cedilha}@~{a}o} cdf_chi2 (@var{x},@var{n})
+Retorna o valor em @var{x} da fun@value{cedilha}@~{a}o distribui@value{cedilha}@~{a}o de probabilidade
 de uma vari@'{a}vel aleat@'{o}ria Chi-quadrada @math{Chi^2(n)}, com @math{n>0}.
 
-Essa fun@,{c}@~{a}o n@~{a}o possui uma forma fechada e @'{e} calculada numericamante
+Essa fun@value{cedilha}@~{a}o n@~{a}o possui uma forma fechada e @'{e} calculada numericamante
 se a vari@'{a}vel global @code{numer} for igual a @code{true},  de outra forma essa
-fun@,{c}@~{a}o retorna uma express@~{a}o nominal baseada na 
-distribui@,{c}@~{a}o gama, uma vez
+fun@value{cedilha}@~{a}o retorna uma express@~{a}o nominal baseada na 
+distribui@value{cedilha}@~{a}o gama, uma vez
 que a vari@'{a}vel aleat@'{o}ria @math{Chi^2(n)}
 @'{e} equivalente a    @'{e} equivalente a @math{Gamma(n/2,2)}.
 
@@ -729,16 +729,16 @@ que a vari@'{a}vel aleat@'{o}ria @math{Chi^2(n)}
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} quantile_chi2 (@var{q},@var{n})
+@deffn {Fun@value{cedilha}@~{a}o} quantile_chi2 (@var{q},@var{n})
 Retorna o @var{q}-quantilede uma vari@'{a}vel aleat@'{o}ria Chi-quadrada @math{Chi^2(n)},
-com @math{n>0}; em outras palavras, essa fun@,{c}@~{a}o @'{e} a inversa da fun@,{c}@~{a}o
+com @math{n>0}; em outras palavras, essa fun@value{cedilha}@~{a}o @'{e} a inversa da fun@value{cedilha}@~{a}o
 @code{cdf_chi2}. O argumento @var{q} deve ser um elemento
 de
 @math{[0,1]}.
 
-This fun@,{c}@~{a}o n@~{a}o possui uma forma fechada e @'{e} calculada numericamante se
+This fun@value{cedilha}@~{a}o n@~{a}o possui uma forma fechada e @'{e} calculada numericamante se
 a vari@'{a}vel global @code{numer} for igual a @code{true},  de outra forma essa
-fun@,{c}@~{a}o retorna uma express@~{a}o nominal baseada no quantil da fun@,{c}@~{a}o
+fun@value{cedilha}@~{a}o retorna uma express@~{a}o nominal baseada no quantil da fun@value{cedilha}@~{a}o
 gama, uma vez que a vari@'{a}vel aleat@'{o}ria @math{Chi^2(n)} @'{e} equivalente a @math{Gamma(n/2,2)}.
 
 @c ===beg===
@@ -758,12 +758,12 @@ gama, uma vez que a vari@'{a}vel aleat@'{o}ria @math{Chi^2(n)} @'{e} equivalente
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} mean_chi2 (@var{n})
+@deffn {Fun@value{cedilha}@~{a}o} mean_chi2 (@var{n})
 Retorna a m@'{e}dia de uma vari@'{a}vel aleat@'{o}ria Chi-quadrada @math{Chi^2(n)}, com @math{n>0}.
 
 A vari@'{a}vel aleat@'{o}ria @math{Chi^2(n)} @'{e} equivalente a @math{Gamma(n/2,2)},
-embora quando Maxima n@~{a}o tiver informa@,{c}@~{a}o dispon@'{i}vel para pegar o resultado,
-uma forma nominal baseada na m@'{e}dia da fun@,{c}@~{a}o gama @'{e}
+embora quando Maxima n@~{a}o tiver informa@value{cedilha}@~{a}o dispon@'{i}vel para pegar o resultado,
+uma forma nominal baseada na m@'{e}dia da fun@value{cedilha}@~{a}o gama @'{e}
 retornada.
 
 @c ===beg===
@@ -783,12 +783,12 @@ retornada.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} var_chi2 (@var{n})
+@deffn {Fun@value{cedilha}@~{a}o} var_chi2 (@var{n})
 Retorna a vari@^{a}ncia de uma vari@'{a}vel aleat@'{o}ria Chi-quadrada @math{Chi^2(n)}, com @math{n>0}.
 
 A vari@'{a}vel aleat@'{o}ria @math{Chi^2(n)} @'{e} equivalente a @math{Gamma(n/2,2)},
-embora quando Maxima n@~{a}o tiver informa@,{c}@~{a}o dispon@'{i}vel para pegar o resultado,
-uma forma nominal baseada na vari@^{a}ncia da fun@,{c}@~{a}o gama
+embora quando Maxima n@~{a}o tiver informa@value{cedilha}@~{a}o dispon@'{i}vel para pegar o resultado,
+uma forma nominal baseada na vari@^{a}ncia da fun@value{cedilha}@~{a}o gama
 @'{e} retornada.
 
 @c ===beg===
@@ -808,13 +808,13 @@ uma forma nominal baseada na vari@^{a}ncia da fun@,{c}@~{a}o gama
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} std_chi2 (@var{n})
+@deffn {Fun@value{cedilha}@~{a}o} std_chi2 (@var{n})
 Retorna o desvio padr@~{a}o de uma vari@'{a}vel aleat@'{o}ria Chi-quadrada
 @math{Chi^2(n)}, com @math{n>0}.
 
 A vari@'{a}vel aleat@'{o}ria @math{Chi^2(n)} @'{e} equivalente a @math{Gamma(n/2,2)},
-embora quando Maxima n@~{a}o tiver informa@,{c}@~{a}o dispon@'{i}vel para pegar o resultado,
-uma forma nominal baseada no desvio padr@~{a}o da fun@,{c}@~{a}o
+embora quando Maxima n@~{a}o tiver informa@value{cedilha}@~{a}o dispon@'{i}vel para pegar o resultado,
+uma forma nominal baseada no desvio padr@~{a}o da fun@value{cedilha}@~{a}o
 gama @'{e} retornada.
 
 @c ===beg===
@@ -834,14 +834,14 @@ gama @'{e} retornada.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} skewness_chi2 (@var{n})
+@deffn {Fun@value{cedilha}@~{a}o} skewness_chi2 (@var{n})
 Retorna o coeficiente de assimetria de uma vari@'{a}vel aleat@'{o}ria Chi-quadrada
 @math{Chi^2(n)}, com @math{n>0}.
 
 A vari@'{a}vel aleat@'{o}ria @math{Chi^2(n)} @'{e} equivalente a @math{Gamma(n/2,2)},
-embora quando Maxima n@~{a}o tiver informa@,{c}@~{a}o dispon@'{i}vel para pegar o resultado,
+embora quando Maxima n@~{a}o tiver informa@value{cedilha}@~{a}o dispon@'{i}vel para pegar o resultado,
 uma forma nominal baseada no coeficiente de assimetria da
-fun@,{c}@~{a}o gama @'{e}
+fun@value{cedilha}@~{a}o gama @'{e}
 retornada.
 
 @c ===beg===
@@ -863,13 +863,13 @@ retornada.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} kurtosis_chi2 (@var{n})
+@deffn {Fun@value{cedilha}@~{a}o} kurtosis_chi2 (@var{n})
 Retorna o coeficiente de curtose de uma vari@'{a}vel aleat@'{o}ria Chi-quadrada
 @math{Chi^2(n)}, com @math{n>0}.
 
 A vari@'{a}vel aleat@'{o}ria @math{Chi^2(n)} @'{e} equivalente a @math{Gamma(n/2,2)},
-embora quando Maxima n@~{a}o tiver informa@,{c}@~{a}o dispon@'{i}vel para pegar o resultado,
-uma forma nominal baseada no coeficiente de curtose da fun@,{c}@~{a}o gama @'{e} retornada.
+embora quando Maxima n@~{a}o tiver informa@value{cedilha}@~{a}o dispon@'{i}vel para pegar o resultado,
+uma forma nominal baseada no coeficiente de curtose da fun@value{cedilha}@~{a}o gama @'{e} retornada.
 
 @c ===beg===
 @c load (distrib)$
@@ -890,7 +890,7 @@ uma forma nominal baseada no coeficiente de curtose da fun@,{c}@~{a}o gama @'{e}
 @end deffn
 
 
-@defvr {Vari@'{a}vel de op@,{c}@~{a}o} random_chi2_algorithm
+@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} random_chi2_algorithm
 Valor padr@~{a}o: @code{ahrens_cheng}
 
 Esse @'{e} o algor@'{i}tmo selecionado para simular vari@'{a}veis estat@'{i}stica pseudo-aleat@'{o}rias
@@ -898,7 +898,7 @@ Chi-quadradas. Os algor@'{i}tmos implementados s@~{a}o @code{ahrens_cheng} e @co
 @itemize @bullet
 
 @item
-@code{ahrens_cheng}, baseado na simula@,{c}@~{a}o aleat@'{o}ria de vari@'{a}veis gama.
+@code{ahrens_cheng}, baseado na simula@value{cedilha}@~{a}o aleat@'{o}ria de vari@'{a}veis gama.
 Veja @code{random_gamma_algorithm} para mais detalhes.
 
 @item
@@ -910,32 +910,32 @@ Veja tamb@'{e}m @code{random_chi2}.
 @end defvr
 
 
-@deffn {Fun@,{c}@~{a}o} random_chi2 (@var{n})
-@deffnx {Fun@,{c}@~{a}o} random_chi2 (@var{n},@var{m})
+@deffn {Fun@value{cedilha}@~{a}o} random_chi2 (@var{n})
+@deffnx {Fun@value{cedilha}@~{a}o} random_chi2 (@var{n},@var{m})
 Retorna uma vari@'{a}vel estat@'{i}stica pseudo-aleat@'{o}ria Chi-square @math{Chi^2(n)},
 com @math{n>0}. Chamando @code{random_chi2} com um segundo argumento @var{m},
 uma amostra aleat@'{o}ria de tamanho @var{m} ser@'{a} simulada.
 
-Existem dois algor@'{i}tmos implementados para essa fun@,{c}@~{a}o, se pode selecionar o
+Existem dois algor@'{i}tmos implementados para essa fun@value{cedilha}@~{a}o, se pode selecionar o
 algor@'{i}tmo a ser usado fornecendo um certo valor @`a vari@'{a}vel global
 @code{random_chi2_algorithm}, cujo valor padr@~{a}o @'{e}
 @code{ahrens_cheng}.
 
-Veja tamb@'{e}m @code{random_chi2_algorithm}. Para fazer uso dessa fun@,{c}@~{a}o,
+Veja tamb@'{e}m @code{random_chi2_algorithm}. Para fazer uso dessa fun@value{cedilha}@~{a}o,
 escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} pdf_f (@var{x},@var{m},@var{n})
-Retorna o valor em @var{x} da fun@,{c}@~{a}o densidade de probabilidade de uma
+@deffn {Fun@value{cedilha}@~{a}o} pdf_f (@var{x},@var{m},@var{n})
+Retorna o valor em @var{x} da fun@value{cedilha}@~{a}o densidade de probabilidade de uma
 vari@'{a}vel aleat@'{o}ria F, @math{F(m,n)}, com @math{m,n>0}. Para fazer uso dessa
-fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} cdf_f (@var{x},@var{m},@var{n})
-Retorna o valor em @var{x} da fun@,{c}@~{a}o distribui@,{c}@~{a}o de probabilidade de
-uma vari@'{a}vel aleat@'{o}ria F, @math{F(m,n)}, com @math{m,n>0}. Essa fun@,{c}@~{a}o
+@deffn {Fun@value{cedilha}@~{a}o} cdf_f (@var{x},@var{m},@var{n})
+Retorna o valor em @var{x} da fun@value{cedilha}@~{a}o distribui@value{cedilha}@~{a}o de probabilidade de
+uma vari@'{a}vel aleat@'{o}ria F, @math{F(m,n)}, com @math{m,n>0}. Essa fun@value{cedilha}@~{a}o
 n@~{a}o possui uma forma definitiva e @'{e} calculada numericamente se
 a
 vari@'{a}vel global
@@ -958,12 +958,12 @@ vari@'{a}vel global
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} quantile_f (@var{q},@var{m},@var{n})
+@deffn {Fun@value{cedilha}@~{a}o} quantile_f (@var{q},@var{m},@var{n})
 Retorna o @var{q}-quantil de uma vari@'{a}vel aleat@'{o}ria F, @math{F(m,n)}, com @math{m,n>0};
-em outras palavras, essa fun@,{c}@~{a}o @'{e} o inverso de @code{cdf_f}. O argumento @var{q} deve ser um elemento de @math{[0,1]}.
+em outras palavras, essa fun@value{cedilha}@~{a}o @'{e} o inverso de @code{cdf_f}. O argumento @var{q} deve ser um elemento de @math{[0,1]}.
 
-Essa fun@,{c}@~{a}o n@~{a}o possui uma forma fechada e @'{e} calculada numericamante se a
-vari@'{a}vel global @code{numer} for igual a @code{true},  de outra forma essa fun@,{c}@~{a}o
+Essa fun@value{cedilha}@~{a}o n@~{a}o possui uma forma fechada e @'{e} calculada numericamante se a
+vari@'{a}vel global @code{numer} for igual a @code{true},  de outra forma essa fun@value{cedilha}@~{a}o
 retorna uma express@~{a}o nominal.
 
 @c ===beg===
@@ -983,39 +983,39 @@ retorna uma express@~{a}o nominal.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} mean_f (@var{m},@var{n})
+@deffn {Fun@value{cedilha}@~{a}o} mean_f (@var{m},@var{n})
 Retorna a m@'{e}dia de uma vari@'{a}vel aleat@'{o}ria F, @math{F(m,n)}, com @math{m>0, n>2}.
-Para fazer uso dessa fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+Para fazer uso dessa fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} var_f (@var{m},@var{n})
+@deffn {Fun@value{cedilha}@~{a}o} var_f (@var{m},@var{n})
 Retorna a vari@^{a}ncia de uma vari@'{a}vel aleat@'{o}ria F, @math{F(m,n)}, com @math{m>0, n>4}.
-Para fazer uso dessa fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+Para fazer uso dessa fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} std_f (@var{m},@var{n})
+@deffn {Fun@value{cedilha}@~{a}o} std_f (@var{m},@var{n})
 Retorna o desvio padr@~{a}o de uma vari@'{a}vel aleat@'{o}ria F, @math{F(m,n)}, com @math{m>0, n>4}.
-Para fazer uso dessa fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+Para fazer uso dessa fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} skewness_f (@var{m},@var{n})
+@deffn {Fun@value{cedilha}@~{a}o} skewness_f (@var{m},@var{n})
 Retorna o coeficiente de assimetria de uma vari@'{a}vel aleat@'{o}ria F, @math{F(m,n)},
-com @math{m>0, n>6}. Para fazer uso dessa fun@,{c}@~{a}o, escreva primeiramente
+com @math{m>0, n>6}. Para fazer uso dessa fun@value{cedilha}@~{a}o, escreva primeiramente
 @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} kurtosis_f (@var{m},@var{n})
+@deffn {Fun@value{cedilha}@~{a}o} kurtosis_f (@var{m},@var{n})
 Retorna o coeficiente de curtose de uma vari@'{a}vel aleat@'{o}ria F, @math{F(m,n)},
-com @math{m>0, n>8}. Para fazer uso dessa fun@,{c}@~{a}o, escreva
+com @math{m>0, n>8}. Para fazer uso dessa fun@value{cedilha}@~{a}o, escreva
 primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@defvr {Vari@'{a}vel de op@,{c}@~{a}o} random_f_algorithm
+@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} random_f_algorithm
 Valor padr@~{a}o: @code{inverse}
 
 Esse @'{e} o algor@'{i}tmo selecionado para simular vari@'{a}veis estat@'{i}sticas
@@ -1055,27 +1055,27 @@ Veja tamb@'{e}m @code{random_f}.
 @end defvr
 
 
-@deffn {Fun@,{c}@~{a}o} random_f (@var{m},@var{n})
-@deffnx {Fun@,{c}@~{a}o} random_f (@var{m},@var{n},@var{k})
+@deffn {Fun@value{cedilha}@~{a}o} random_f (@var{m},@var{n})
+@deffnx {Fun@value{cedilha}@~{a}o} random_f (@var{m},@var{n},@var{k})
 Retorna uma vari@'{a}vel estat@'{i}stica pseudo-aleat@'{o}ria F, @math{F(m,n)},
 com @math{m,n>0}. Chamando @code{random_f} com um terceiro argumento
 @var{k}, uma amostra aleat@'{o}ria de tamanho @var{k} ser@'{a} simulada.
 
-Existem dois algor@'{i}tmos implementados para essa fun@,{c}@~{a}o, se pode selecionar
+Existem dois algor@'{i}tmos implementados para essa fun@value{cedilha}@~{a}o, se pode selecionar
 o algor@'{i}tmo a ser usado fornecendo um certo valor @`a vari@'{a}vel global
 @code{random_f_algorithm}, cujo valor padr@~{a}o @'{e} @code{inverse}.
 
-Veja tamb@'{e}m @code{random_f_algorithm}. Para fazer uso dessa fun@,{c}@~{a}o,
+Veja tamb@'{e}m @code{random_f_algorithm}. Para fazer uso dessa fun@value{cedilha}@~{a}o,
 escreva primeiramente @code{load(distrib)}.
 @end deffn
 
-@deffn {Fun@,{c}@~{a}o} pdf_exp (@var{x},@var{m})
-Retorna o valor em @var{x} da fun@,{c}@~{a}o densidade de probabilidade
+@deffn {Fun@value{cedilha}@~{a}o} pdf_exp (@var{x},@var{m})
+Retorna o valor em @var{x} da fun@value{cedilha}@~{a}o densidade de probabilidade
 vari@'{a}vel aleat@'{o}ria @math{Exponential(m)}, com @math{m>0}.
 
 A vari@'{a}vel aleat@'{o}ria @math{Exponential(m)} @'{e} equivalente a
-@math{Weibull(1,1/m)}, embora quando Maxima n@~{a}o tiver informa@,{c}@~{a}o
-dispon@'{i}vel para pegar o resultado, uma forma nominal baseada na fun@,{c}@~{a}o
+@math{Weibull(1,1/m)}, embora quando Maxima n@~{a}o tiver informa@value{cedilha}@~{a}o
+dispon@'{i}vel para pegar o resultado, uma forma nominal baseada na fun@value{cedilha}@~{a}o
 de densidade de probabilidade de Weibull @'{e}retornada.
 
 @c ===beg===
@@ -1096,13 +1096,13 @@ de densidade de probabilidade de Weibull @'{e}retornada.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} cdf_exp (@var{x},@var{m})
-Retorna o valor em @var{x} da fun@,{c}@~{a}o distribui@,{c}@~{a}o de probabilidade
+@deffn {Fun@value{cedilha}@~{a}o} cdf_exp (@var{x},@var{m})
+Retorna o valor em @var{x} da fun@value{cedilha}@~{a}o distribui@value{cedilha}@~{a}o de probabilidade
 vari@'{a}vel aleat@'{o}ria @math{Exponential(m)}, com @math{m>0}.
 
 A vari@'{a}vel aleat@'{o}ria @math{Exponential(m)} @'{e} equivalente a @math{Weibull(1,1/m)},
-embora quando Maxima n@~{a}o tiver informa@,{c}@~{a}o dispon@'{i}vel para pegar o resultado,
-uma forma nominal baseada na distribui@,{c}@~{a}o de
+embora quando Maxima n@~{a}o tiver informa@value{cedilha}@~{a}o dispon@'{i}vel para pegar o resultado,
+uma forma nominal baseada na distribui@value{cedilha}@~{a}o de
 Weibull @'{e}
 retornada.
 
@@ -1124,13 +1124,13 @@ retornada.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} quantile_exp (@var{q},@var{m})
+@deffn {Fun@value{cedilha}@~{a}o} quantile_exp (@var{q},@var{m})
 Retorna o @var{q}-quantil vari@'{a}vel aleat@'{o}ria @math{Exponential(m)}, com @math{m>0};
-em outras palavras, essa fun@,{c}@~{a}o @'{e} inversa da fun@,{c}@~{a}o @code{cdf_exp}.
+em outras palavras, essa fun@value{cedilha}@~{a}o @'{e} inversa da fun@value{cedilha}@~{a}o @code{cdf_exp}.
 O argumento @var{q} deve ser um elemento de @math{[0,1]}.
 
 A vari@'{a}vel aleat@'{o}ria @math{Exponential(m)} @'{e} equivalente a @math{Weibull(1,1/m)},
-embora quando Maxima n@~{a}o tiver informa@,{c}@~{a}o dispon@'{i}vel para pegar o resultado,
+embora quando Maxima n@~{a}o tiver informa@value{cedilha}@~{a}o dispon@'{i}vel para pegar o resultado,
 uma forma nominal baseada no qualtil de Weibull @'{e}
 retornada.
 
@@ -1151,11 +1151,11 @@ retornada.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} mean_exp (@var{m})
+@deffn {Fun@value{cedilha}@~{a}o} mean_exp (@var{m})
 Retorna a m@'{e}dia de uma vari@'{a}vel aleat@'{o}ria @math{Exponential(m)}, com @math{m>0}.
 
 A vari@'{a}vel aleat@'{o}ria @math{Exponential(m)} @'{e} equivalente a @math{Weibull(1,1/m)},
-embora quando Maxima n@~{a}o tiver informa@,{c}@~{a}o dispon@'{i}vel para pegar o resultado,
+embora quando Maxima n@~{a}o tiver informa@value{cedilha}@~{a}o dispon@'{i}vel para pegar o resultado,
 uma forma nominal baseada na m@'{e}dia de Weibull @'{e}
 reornada.
 
@@ -1178,11 +1178,11 @@ reornada.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} var_exp (@var{m})
+@deffn {Fun@value{cedilha}@~{a}o} var_exp (@var{m})
 Retorna a vari@^{a}ncia de uma vari@'{a}vel aleat@'{o}ria @math{Exponential(m)}, com @math{m>0}.
 
 A vari@'{a}vel aleat@'{o}ria @math{Exponential(m)} @'{e} equivalente a @math{Weibull(1,1/m)},
-embora quando Maxima n@~{a}o tiver informa@,{c}@~{a}o dispon@'{i}vel para pegar o resultado,
+embora quando Maxima n@~{a}o tiver informa@value{cedilha}@~{a}o dispon@'{i}vel para pegar o resultado,
 uma forma nominal baseada na vari@^{a}ncia de Weibull
 @'{e} retornada.
 
@@ -1206,11 +1206,11 @@ uma forma nominal baseada na vari@^{a}ncia de Weibull
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} std_exp (@var{m})
+@deffn {Fun@value{cedilha}@~{a}o} std_exp (@var{m})
 Retorna o desvio padr@~{a}o de uma vari@'{a}vel aleat@'{o}ria @math{Exponential(m)}, com @math{m>0}.
 
 A vari@'{a}vel aleat@'{o}ria @math{Exponential(m)} @'{e} equivalente a @math{Weibull(1,1/m)},
-embora quando Maxima n@~{a}o tiver informa@,{c}@~{a}o dispon@'{i}vel para pegar o resultado,
+embora quando Maxima n@~{a}o tiver informa@value{cedilha}@~{a}o dispon@'{i}vel para pegar o resultado,
 uma forma nominal baseada no desvio padr@~{a}o de
 Weibull @'{e} retornada.
 
@@ -1233,11 +1233,11 @@ Weibull @'{e} retornada.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} skewness_exp (@var{m})
+@deffn {Fun@value{cedilha}@~{a}o} skewness_exp (@var{m})
 Retorna o coeficiente de assimetria de uma vari@'{a}vel aleat@'{o}ria @math{Exponential(m)}, com @math{m>0}.
 
 A vari@'{a}vel aleat@'{o}ria @math{Exponential(m)} @'{e} equivalente a @math{Weibull(1,1/m)},
-embora quando Maxima n@~{a}o tiver informa@,{c}@~{a}o dispon@'{i}vel para pegar o resultado,
+embora quando Maxima n@~{a}o tiver informa@value{cedilha}@~{a}o dispon@'{i}vel para pegar o resultado,
 uma forma nominal baseada no coeficiente de assimetria
 de Weibull
 @'{e} retornada.
@@ -1259,11 +1259,11 @@ de Weibull
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} kurtosis_exp (@var{m})
+@deffn {Fun@value{cedilha}@~{a}o} kurtosis_exp (@var{m})
 Retorna o coeficiente de curtose de uma vari@'{a}vel aleat@'{o}ria @math{Exponential(m)}, com @math{m>0}.
 
 A vari@'{a}vel aleat@'{o}ria @math{Exponential(m)} @'{e} equivalente a @math{Weibull(1,1/m)}, embora
-quando Maxima n@~{a}o tiver informa@,{c}@~{a}o dispon@'{i}vel para pegar o resultado, uma forma nominal
+quando Maxima n@~{a}o tiver informa@value{cedilha}@~{a}o dispon@'{i}vel para pegar o resultado, uma forma nominal
 baseada no coeficiente de curtose de Weibull @'{e} retornada.
 
 @c ===beg===
@@ -1283,7 +1283,7 @@ baseada no coeficiente de curtose de Weibull @'{e} retornada.
 @end deffn
 
 
-@defvr {Vari@'{a}vel de op@,{c}@~{a}o} random_exp_algorithm
+@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} random_exp_algorithm
 Valor padr@~{a}o: @code{inverse}
 
 Esse @'{e} o algor@'{i}tmo selecionado para simular vari@'{a}veis exponenciais estat@'{i}stica
@@ -1310,32 +1310,32 @@ Veja tamb@'{e}m @code{random_exp}.
 @end defvr
 
 
-@deffn {Fun@,{c}@~{a}o} random_exp (@var{m})
-@deffnx {Fun@,{c}@~{a}o} random_exp (@var{m},@var{k})
+@deffn {Fun@value{cedilha}@~{a}o} random_exp (@var{m})
+@deffnx {Fun@value{cedilha}@~{a}o} random_exp (@var{m},@var{k})
 Retorna uma vari@'{a}vel estat@'{i}stica pseudo-aleat@'{o}ria @math{Exponential(m)},
 com @math{m>0}. Chamando @code{random_exp} com um segundo argumento
 @var{k}, uma amostra aleat@'{o}ria de tamanho @var{k} ser@'{a} simulada.
 
-Existem tr@^{e}s algor@'{i}tmos implementados para essa fun@,{c}@~{a}o, se pode
+Existem tr@^{e}s algor@'{i}tmos implementados para essa fun@value{cedilha}@~{a}o, se pode
 selecionar o algor@'{i}tmo a ser usado fornecendo um certo valor @`a vari@'{a}vel global
 @code{random_exp_algorithm}, cujo valor padr@~{a}o @'{e} @code{inverse}.
 
-Veja tamb@'{e}m @code{random_exp_algorithm}. Para fazer uso dessa fun@,{c}@~{a}o,
+Veja tamb@'{e}m @code{random_exp_algorithm}. Para fazer uso dessa fun@value{cedilha}@~{a}o,
 escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} pdf_lognormal (@var{x},@var{m},@var{s})
-Retorna o valor em @var{x} da fun@,{c}@~{a}o densidade de probabilidade de uma
+@deffn {Fun@value{cedilha}@~{a}o} pdf_lognormal (@var{x},@var{m},@var{s})
+Retorna o valor em @var{x} da fun@value{cedilha}@~{a}o densidade de probabilidade de uma
 vari@'{a}vel aleat@'{o}ria @math{Lognormal(m,s)}, com @math{s>0}. Para fazer uso
-dessa fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+dessa fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} cdf_lognormal (@var{x},@var{m},@var{s})
-Retorna o valor em @var{x} da fun@,{c}@~{a}o distribui@,{c}@~{a}o de probabilidade
+@deffn {Fun@value{cedilha}@~{a}o} cdf_lognormal (@var{x},@var{m},@var{s})
+Retorna o valor em @var{x} da fun@value{cedilha}@~{a}o distribui@value{cedilha}@~{a}o de probabilidade
 de uma vari@'{a}vel aleat@'{o}ria @math{Lognormal(m,s)}, com @math{s>0}. Essa
-fun@,{c}@~{a}o @'{e} definida em termos de fun@,{c}@~{o}es @code{erf}de erro
+fun@value{cedilha}@~{a}o @'{e} definida em termos de fun@value{cedilha}@~{o}es @code{erf}de erro
 internas do Maxima.
 
 @c ===beg===
@@ -1356,76 +1356,76 @@ Veja tamb@'{e}m @code{erf}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} quantile_lognormal (@var{q},@var{m},@var{s})
+@deffn {Fun@value{cedilha}@~{a}o} quantile_lognormal (@var{q},@var{m},@var{s})
 Retorna o @var{q}-quantil de uma vari@'{a}vel aleat@'{o}ria @math{Lognormal(m,s)},
-com @math{s>0}; em outras palavras, essa fun@,{c}@~{a}o @'{e} a inversa da fun@,{c}@~{a}o
+com @math{s>0}; em outras palavras, essa fun@value{cedilha}@~{a}o @'{e} a inversa da fun@value{cedilha}@~{a}o
 @code{cdf_lognormal}. O argumento @var{q} deve ser um elemento de @math{[0,1]}.
-Para fazer uso dessa fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+Para fazer uso dessa fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} mean_lognormal (@var{m},@var{s})
+@deffn {Fun@value{cedilha}@~{a}o} mean_lognormal (@var{m},@var{s})
 Retorna a m@'{e}dia de uma vari@'{a}vel aleat@'{o}ria @math{Lognormal(m,s)}, com @math{s>0}.
-Para fazer uso dessa fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+Para fazer uso dessa fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} var_lognormal (@var{m},@var{s})
+@deffn {Fun@value{cedilha}@~{a}o} var_lognormal (@var{m},@var{s})
 Retorna a vari@^{a}ncia de uma vari@'{a}vel aleat@'{o}ria @math{Lognormal(m,s)},
-com @math{s>0}. Para fazer uso dessa fun@,{c}@~{a}o, escreva primeiramente
+com @math{s>0}. Para fazer uso dessa fun@value{cedilha}@~{a}o, escreva primeiramente
 @code{load(distrib)}.
 @end deffn
 
-@deffn {Fun@,{c}@~{a}o} std_lognormal (@var{m},@var{s})
+@deffn {Fun@value{cedilha}@~{a}o} std_lognormal (@var{m},@var{s})
 Retorna o desvio padr@~{a}o de uma vari@'{a}vel aleat@'{o}ria @math{Lognormal(m,s)},
-com @math{s>0}. Para fazer uso dessa fun@,{c}@~{a}o, escreva primeiramente
+com @math{s>0}. Para fazer uso dessa fun@value{cedilha}@~{a}o, escreva primeiramente
 @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} skewness_lognormal (@var{m},@var{s})
+@deffn {Fun@value{cedilha}@~{a}o} skewness_lognormal (@var{m},@var{s})
 Retorna o coeficiente de assimetria de uma vari@'{a}vel aleat@'{o}ria @math{Lognormal(m,s)},
-com @math{s>0}. Para fazer uso dessa fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+com @math{s>0}. Para fazer uso dessa fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} kurtosis_lognormal (@var{m},@var{s})
+@deffn {Fun@value{cedilha}@~{a}o} kurtosis_lognormal (@var{m},@var{s})
 Retorna o coeficiente de curtose de uma vari@'{a}vel aleat@'{o}ria @math{Lognormal(m,s)},
-com @math{s>0}. Para fazer uso dessa fun@,{c}@~{a}o, escreva primeiramente
+com @math{s>0}. Para fazer uso dessa fun@value{cedilha}@~{a}o, escreva primeiramente
 @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} random_lognormal (@var{m},@var{s})
-@deffnx {Fun@,{c}@~{a}o} random_lognormal (@var{m},@var{s},@var{n})
+@deffn {Fun@value{cedilha}@~{a}o} random_lognormal (@var{m},@var{s})
+@deffnx {Fun@value{cedilha}@~{a}o} random_lognormal (@var{m},@var{s},@var{n})
 Retorna uma vari@'{a}vel estat@'{i}stica pseudo-aleat@'{o}ria @math{Lognormal(m,s)},
 com @math{s>0}. Chamando @code{random_lognormal} com um terceiro argumento
 @var{n}, uma amostra aleat@'{o}ria de tamanho @var{n} ser@'{a} simulada.
 
 Vari@'{a}veis Log-normal s@~{a}o simuladas por meio de vari@'{a}veis estat@'{i}sticas normais
-pseudo-aleat@'{o}rias. Existem dois algor@'{i}tmos implementados para essa fun@,{c}@~{a}o, se
+pseudo-aleat@'{o}rias. Existem dois algor@'{i}tmos implementados para essa fun@value{cedilha}@~{a}o, se
 pode selecionar o algor@'{i}tmo a ser usado fornecendo um certo valor
 @`a vari@'{a}vel global
 @code{random_normal_algorithm}, cujo valor padr@~{a}o @'{e} @code{box_mueller}.
 
-Veja tamb@'{e}m @code{random_normal_algorithm}. Para fazer uso dessa fun@,{c}@~{a}o, escreva
+Veja tamb@'{e}m @code{random_normal_algorithm}. Para fazer uso dessa fun@value{cedilha}@~{a}o, escreva
 primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} pdf_gamma (@var{x},@var{a},@var{b})
-Retorna o valor em @var{x} da fun@,{c}@~{a}o densidade de probabilidade de uma
+@deffn {Fun@value{cedilha}@~{a}o} pdf_gamma (@var{x},@var{a},@var{b})
+Retorna o valor em @var{x} da fun@value{cedilha}@~{a}o densidade de probabilidade de uma
 vari@'{a}vel aleat@'{o}ria @math{Gamma(a,b)}, com @math{a,b>0}. Para fazer uso dessa
-fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} cdf_gamma (@var{x},@var{a},@var{b})
-Retorna o valor em @var{x} da fun@,{c}@~{a}o distribui@,{c}@~{a}o de probabilidade de
+@deffn {Fun@value{cedilha}@~{a}o} cdf_gamma (@var{x},@var{a},@var{b})
+Retorna o valor em @var{x} da fun@value{cedilha}@~{a}o distribui@value{cedilha}@~{a}o de probabilidade de
 uma vari@'{a}vel aleat@'{o}ria @math{Gamma(a,b)}, com @math{a,b>0}. 
 
-Essa fun@,{c}@~{a}o n@~{a}o possui uma forma fechada e @'{e} calculada numericamante se
-a vari@'{a}vel global @code{numer} for igual a @code{true},  de outra forma essa fun@,{c}@~{a}o
+Essa fun@value{cedilha}@~{a}o n@~{a}o possui uma forma fechada e @'{e} calculada numericamante se
+a vari@'{a}vel global @code{numer} for igual a @code{true},  de outra forma essa fun@value{cedilha}@~{a}o
 retorna uma express@~{a}o nominal.
 
 @c ===beg===
@@ -1443,46 +1443,46 @@ retorna uma express@~{a}o nominal.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} quantile_gamma (@var{q},@var{a},@var{b})
+@deffn {Fun@value{cedilha}@~{a}o} quantile_gamma (@var{q},@var{a},@var{b})
 Retorna o @var{q}-quantil de uma vari@'{a}vel aleat@'{o}ria @math{Gamma(a,b)},
-com @math{a,b>0}; em outras palavras, essa fun@,{c}@~{a}o @'{e} a inversa da
-fun@,{c}@~{a}o @code{cdf_gamma}. O argumento @var{q} deve ser um elemento de
-@math{[0,1]}. Para fazer uso dessa fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+com @math{a,b>0}; em outras palavras, essa fun@value{cedilha}@~{a}o @'{e} a inversa da
+fun@value{cedilha}@~{a}o @code{cdf_gamma}. O argumento @var{q} deve ser um elemento de
+@math{[0,1]}. Para fazer uso dessa fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} mean_gamma (@var{a},@var{b})
+@deffn {Fun@value{cedilha}@~{a}o} mean_gamma (@var{a},@var{b})
 Retorna a m@'{e}dia de uma vari@'{a}vel aleat@'{o}ria @math{Gamma(a,b)},
-com @math{a,b>0}. Para fazer uso dessa fun@,{c}@~{a}o, escreva primeiramente
+com @math{a,b>0}. Para fazer uso dessa fun@value{cedilha}@~{a}o, escreva primeiramente
 @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} var_gamma (@var{a},@var{b})
+@deffn {Fun@value{cedilha}@~{a}o} var_gamma (@var{a},@var{b})
 Retorna a vari@^{a}ncia de uma vari@'{a}vel aleat@'{o}ria @math{Gamma(a,b)}, com
-@math{a,b>0}. Para fazer uso dessa fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+@math{a,b>0}. Para fazer uso dessa fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
-@deffn {Fun@,{c}@~{a}o} std_gamma (@var{a},@var{b})
+@deffn {Fun@value{cedilha}@~{a}o} std_gamma (@var{a},@var{b})
 Retorna o desvio padr@~{a}o de uma vari@'{a}vel aleat@'{o}ria @math{Gamma(a,b)},
-com @math{a,b>0}. Para fazer uso dessa fun@,{c}@~{a}o, escreva primeiramente
+com @math{a,b>0}. Para fazer uso dessa fun@value{cedilha}@~{a}o, escreva primeiramente
 @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} skewness_gamma (@var{a},@var{b})
+@deffn {Fun@value{cedilha}@~{a}o} skewness_gamma (@var{a},@var{b})
 Retorna o coeficiente de assimetria de uma vari@'{a}vel aleat@'{o}ria @math{Gamma(a,b)},
-com @math{a,b>0}. Para fazer uso dessa fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+com @math{a,b>0}. Para fazer uso dessa fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} kurtosis_gamma (@var{a},@var{b})
+@deffn {Fun@value{cedilha}@~{a}o} kurtosis_gamma (@var{a},@var{b})
 Retorna o coeficiente de curtose de uma vari@'{a}vel aleat@'{o}ria @math{Gamma(a,b)},
-com @math{a,b>0}. Para fazer uso dessa fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+com @math{a,b>0}. Para fazer uso dessa fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@defvr {Vari@'{a}vel de op@,{c}@~{a}o} random_gamma_algorithm
+@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} random_gamma_algorithm
 Valor padr@~{a}o: @code{ahrens_cheng}
 
 Esse @'{e} o algor@'{i}tmo selecionado para simular vari@'{a}veis estat@'{i}stica gama
@@ -1491,7 +1491,7 @@ e @code{inverse}
 @itemize @bullet
 
 @item
-@code{ahrens_cheng}, essa @'{e} uma combina@,{c}@~{a}o de dois processos, dependendo
+@code{ahrens_cheng}, essa @'{e} uma combina@value{cedilha}@~{a}o de dois processos, dependendo
 do valor do par@^{a}metro @var{a}:
 
 For @math{a>=1}, Cheng, R.C.H. e Feast, G.M. (1979). @var{Some simple gamma variate
@@ -1509,35 +1509,35 @@ Veja tamb@'{e}m @code{random_gamma}.
 @end defvr
 
 
-@deffn {Fun@,{c}@~{a}o} random_gamma (@var{a},@var{b})
-@deffnx {Fun@,{c}@~{a}o} random_gamma (@var{a},@var{b},@var{n})
+@deffn {Fun@value{cedilha}@~{a}o} random_gamma (@var{a},@var{b})
+@deffnx {Fun@value{cedilha}@~{a}o} random_gamma (@var{a},@var{b},@var{n})
 Retorna uma vari@'{a}vel estat@'{i}stica pseudo-aleat@'{o}ria @math{Gamma(a,b)},
 com @math{a,b>0}. Chamando @code{random_gamma} com um terceiro argumento
 @var{n}, uma amostra aleat@'{o}ria de tamanho @var{n} ser@'{a} simulada.
 
-Existem dois algor@'{i}tmos implementados para essa fun@,{c}@~{a}o, se pode selecionar
+Existem dois algor@'{i}tmos implementados para essa fun@value{cedilha}@~{a}o, se pode selecionar
 o algor@'{i}tmo a ser usado fornecendo um certo valor @`a vari@'{a}vel global @code{random_gamma_algorithm}, cujo valor padr@~{a}o @'{e}
 @code{ahrens_cheng}.
 
-Veja tamb@'{e}m @code{random_gamma_algorithm}. Para fazer uso dessa fun@,{c}@~{a}o,
+Veja tamb@'{e}m @code{random_gamma_algorithm}. Para fazer uso dessa fun@value{cedilha}@~{a}o,
 escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} pdf_beta (@var{x},@var{a},@var{b})
-Retorna o valor em @var{x} da fun@,{c}@~{a}o densidade de probabilidade de uma vari@'{a}vel
-aleat@'{o}ria @math{Beta(a,b)}, com @math{a,b>0}. Para fazer uso dessa fun@,{c}@~{a}o, escreva
+@deffn {Fun@value{cedilha}@~{a}o} pdf_beta (@var{x},@var{a},@var{b})
+Retorna o valor em @var{x} da fun@value{cedilha}@~{a}o densidade de probabilidade de uma vari@'{a}vel
+aleat@'{o}ria @math{Beta(a,b)}, com @math{a,b>0}. Para fazer uso dessa fun@value{cedilha}@~{a}o, escreva
 primeiramente @code{load(distrib)}.
 @end deffn
 
 
 
-@deffn {Fun@,{c}@~{a}o} cdf_beta (@var{x},@var{a},@var{b})
-Retorna o valor em @var{x} da fun@,{c}@~{a}o distribui@,{c}@~{a}o de probabilidade de
+@deffn {Fun@value{cedilha}@~{a}o} cdf_beta (@var{x},@var{a},@var{b})
+Retorna o valor em @var{x} da fun@value{cedilha}@~{a}o distribui@value{cedilha}@~{a}o de probabilidade de
 uma vari@'{a}vel aleat@'{o}ria @math{Beta(a,b)}, com @math{a,b>0}. 
 
-Essa fun@,{c}@~{a}o n@~{a}o possui uma forma fechada e @'{e} calculada numericamante se a
-vari@'{a}vel global @code{numer} for igual a @code{true},  de outra forma essa fun@,{c}@~{a}o
+Essa fun@value{cedilha}@~{a}o n@~{a}o possui uma forma fechada e @'{e} calculada numericamante se a
+vari@'{a}vel global @code{numer} for igual a @code{true},  de outra forma essa fun@value{cedilha}@~{a}o
 retorna uma express@~{a}o nominal.
 
 @c ===beg===
@@ -1557,47 +1557,47 @@ retorna uma express@~{a}o nominal.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} quantile_beta (@var{q},@var{a},@var{b})
+@deffn {Fun@value{cedilha}@~{a}o} quantile_beta (@var{q},@var{a},@var{b})
 Retorna o @var{q}-quantil de uma vari@'{a}vel aleat@'{o}ria @math{Beta(a,b)}, com
-@math{a,b>0}; em outras palavras, essa fun@,{c}@~{a}o @'{e} a inversa da fun@,{c}@~{a}o
+@math{a,b>0}; em outras palavras, essa fun@value{cedilha}@~{a}o @'{e} a inversa da fun@value{cedilha}@~{a}o
 @code{cdf_beta}. O argumento @var{q} deve ser um elemento de
 @math{[0,1]}. Para
 fazer uso dessa
-fun@,{c}@~{a}o,
+fun@value{cedilha}@~{a}o,
 escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} mean_beta (@var{a},@var{b})
+@deffn {Fun@value{cedilha}@~{a}o} mean_beta (@var{a},@var{b})
 Retorna a m@'{e}dia de uma vari@'{a}vel aleat@'{o}ria @math{Beta(a,b)}, com @math{a,b>0}.
-Para fazer uso dessa fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+Para fazer uso dessa fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} var_beta (@var{a},@var{b})
+@deffn {Fun@value{cedilha}@~{a}o} var_beta (@var{a},@var{b})
 Retorna a vari@^{a}ncia de uma vari@'{a}vel aleat@'{o}ria @math{Beta(a,b)}, com @math{a,b>0}.
-Para fazer uso dessa fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+Para fazer uso dessa fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
-@deffn {Fun@,{c}@~{a}o} std_beta (@var{a},@var{b})
+@deffn {Fun@value{cedilha}@~{a}o} std_beta (@var{a},@var{b})
 Retorna o desvio padr@~{a}o de uma vari@'{a}vel aleat@'{o}ria @math{Beta(a,b)}, com @math{a,b>0}.
-Para fazer uso dessa fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+Para fazer uso dessa fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} skewness_beta (@var{a},@var{b})
+@deffn {Fun@value{cedilha}@~{a}o} skewness_beta (@var{a},@var{b})
 Retorna o coeficiente de assimetria de uma vari@'{a}vel aleat@'{o}ria @math{Beta(a,b)},
-com @math{a,b>0}. Para fazer uso dessa fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+com @math{a,b>0}. Para fazer uso dessa fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} kurtosis_beta (@var{a},@var{b})
+@deffn {Fun@value{cedilha}@~{a}o} kurtosis_beta (@var{a},@var{b})
 Retorna o coeficiente de curtose de uma vari@'{a}vel aleat@'{o}ria @math{Beta(a,b)},
-com @math{a,b>0}. Para fazer uso dessa fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+com @math{a,b>0}. Para fazer uso dessa fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@defvr {Vari@'{a}vel de op@,{c}@~{a}o} random_beta_algorithm
+@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} random_beta_algorithm
 Valor padr@~{a}o: @code{cheng}
 
 Esse @'{e} o algor@'{i}tmo selecionado para simular vari@'{a}veis estat@'{i}sticas beta
@@ -1624,300 +1624,300 @@ Veja tamb@'{e}m @code{random_beta}.
 @end defvr
 
 
-@deffn {Fun@,{c}@~{a}o} random_beta (@var{a},@var{b})
-@deffnx {Fun@,{c}@~{a}o} random_beta (@var{a},@var{b},@var{n})
+@deffn {Fun@value{cedilha}@~{a}o} random_beta (@var{a},@var{b})
+@deffnx {Fun@value{cedilha}@~{a}o} random_beta (@var{a},@var{b},@var{n})
 Retorna uma vari@'{a}vel estat@'{i}stica pseudo-aleat@'{o}ria @math{Beta(a,b)},
 com @math{a,b>0}. Chamando @code{random_beta} com um terceiro argumento @var{n},
 uma amostra aleat@'{o}ria de tamanho @var{n} ser@'{a} simulada.
 
-Existem tr@^{e}s algor@'{i}tmos implementados para essa fun@,{c}@~{a}o, se pode selecionar
+Existem tr@^{e}s algor@'{i}tmos implementados para essa fun@value{cedilha}@~{a}o, se pode selecionar
 o algor@'{i}tmo a ser usado fornecendo um certo valor @`a vari@'{a}vel global
 @code{random_beta_algorithm}, cujo valor padr@~{a}o @'{e} @code{cheng}.
 
 Veja tamb@'{e}m @code{random_beta_algorithm}. Para fazer uso dessa
-fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
-@deffn {Fun@,{c}@~{a}o} pdf_continuous_uniform (@var{x},@var{a},@var{b})
-Retorna o valor em @var{x} da fun@,{c}@~{a}o densidade de probabilidade
+@deffn {Fun@value{cedilha}@~{a}o} pdf_continuous_uniform (@var{x},@var{a},@var{b})
+Retorna o valor em @var{x} da fun@value{cedilha}@~{a}o densidade de probabilidade
 de uma vari@'{a}vel aleat@'{o}ria @math{Continuous Uniform(a,b)}, com @math{a<b}.
-Para fazer uso dessa fun@,{c}@~{a}o, escreva primeiramente
+Para fazer uso dessa fun@value{cedilha}@~{a}o, escreva primeiramente
 @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} cdf_continuous_uniform (@var{x},@var{a},@var{b})
-Retorna o valor em @var{x} da fun@,{c}@~{a}o distribui@,{c}@~{a}o de probabilidade
+@deffn {Fun@value{cedilha}@~{a}o} cdf_continuous_uniform (@var{x},@var{a},@var{b})
+Retorna o valor em @var{x} da fun@value{cedilha}@~{a}o distribui@value{cedilha}@~{a}o de probabilidade
 de uma vari@'{a}vel aleat@'{o}ria @math{Continuous Uniform(a,b)}, com @math{a<b}.
-Para fazer uso dessa fun@,{c}@~{a}o, escreva primeiramente
+Para fazer uso dessa fun@value{cedilha}@~{a}o, escreva primeiramente
 @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} quantile_continuous_uniform (@var{q},@var{a},@var{b})
+@deffn {Fun@value{cedilha}@~{a}o} quantile_continuous_uniform (@var{q},@var{a},@var{b})
 Retorna o @var{q}-quantil de uma vari@'{a}vel aleat@'{o}ria @math{Continuous Uniform(a,b)},
-com @math{a<b}; em outras palavras, essa fun@,{c}@~{a}o @'{e} a inversa da fun@,{c}@~{a}o
+com @math{a<b}; em outras palavras, essa fun@value{cedilha}@~{a}o @'{e} a inversa da fun@value{cedilha}@~{a}o
 @code{cdf_continuous_uniform}. O argumento @var{q} deve
 ser um elemento
 de @math{[0,1]}.
 Para
-fazer uso dessa fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+fazer uso dessa fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} mean_continuous_uniform (@var{a},@var{b})
+@deffn {Fun@value{cedilha}@~{a}o} mean_continuous_uniform (@var{a},@var{b})
 Retorna a m@'{e}dia de uma vari@'{a}vel aleat@'{o}ria @math{Continuous Uniform(a,b)},
-com @math{a<b}. Para fazer uso dessa fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+com @math{a<b}. Para fazer uso dessa fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} var_continuous_uniform (@var{a},@var{b})
+@deffn {Fun@value{cedilha}@~{a}o} var_continuous_uniform (@var{a},@var{b})
 Retorna a vari@^{a}ncia de uma vari@'{a}vel aleat@'{o}ria @math{Continuous Uniform(a,b)},
-com @math{a<b}. Para fazer uso dessa fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+com @math{a<b}. Para fazer uso dessa fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
-@deffn {Fun@,{c}@~{a}o} std_continuous_uniform (@var{a},@var{b})
+@deffn {Fun@value{cedilha}@~{a}o} std_continuous_uniform (@var{a},@var{b})
 Retorna o desvio padr@~{a}o de uma vari@'{a}vel aleat@'{o}ria @math{Continuous Uniform(a,b)},
-com @math{a<b}. Para fazer uso dessa fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+com @math{a<b}. Para fazer uso dessa fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} skewness_continuous_uniform (@var{a},@var{b})
+@deffn {Fun@value{cedilha}@~{a}o} skewness_continuous_uniform (@var{a},@var{b})
 Retorna o coeficiente de assimetria de uma vari@'{a}vel aleat@'{o}ria @math{Continuous Uniform(a,b)},
-com @math{a<b}. Para fazer uso dessa fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+com @math{a<b}. Para fazer uso dessa fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} kurtosis_continuous_uniform (@var{a},@var{b})
+@deffn {Fun@value{cedilha}@~{a}o} kurtosis_continuous_uniform (@var{a},@var{b})
 Retorna o coeficiente de curtose de uma vari@'{a}vel aleat@'{o}ria @math{Continuous Uniform(a,b)},
-com @math{a<b}. Para fazer uso dessa fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+com @math{a<b}. Para fazer uso dessa fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} random_continuous_uniform (@var{a},@var{b})
-@deffnx {Fun@,{c}@~{a}o} random_continuous_uniform (@var{a},@var{b},@var{n})
+@deffn {Fun@value{cedilha}@~{a}o} random_continuous_uniform (@var{a},@var{b})
+@deffnx {Fun@value{cedilha}@~{a}o} random_continuous_uniform (@var{a},@var{b},@var{n})
 Retorna uma vari@'{a}vel estat@'{i}stica pseudo-aleat@'{o}ria @math{Continuous Uniform(a,b)},
 com @math{a<b}. Chamando @code{random_continuous_uniform} com um terceiro
 argumento @var{n}, uma amostra aleat@'{o}ria de tamanho @var{n} ser@'{a} simulada.
 
-Essa @'{e} uma aplica@,{c}@~{a}o direta da fun@,{c}@~{a}o @code{random} interna do Maxima.
+Essa @'{e} uma aplica@value{cedilha}@~{a}o direta da fun@value{cedilha}@~{a}o @code{random} interna do Maxima.
 
-Veja tamb@'{e}m @code{random}. Para fazer uso dessa fun@,{c}@~{a}o, escreva
+Veja tamb@'{e}m @code{random}. Para fazer uso dessa fun@value{cedilha}@~{a}o, escreva
 primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} pdf_logistic (@var{x},@var{a},@var{b})
-Retorna o valor em @var{x} da fun@,{c}@~{a}o densidade de probabilidade de
+@deffn {Fun@value{cedilha}@~{a}o} pdf_logistic (@var{x},@var{a},@var{b})
+Retorna o valor em @var{x} da fun@value{cedilha}@~{a}o densidade de probabilidade de
 uma vari@'{a}vel aleat@'{o}ria @math{Logistic(a,b)} , com @math{b>0}. Para fazer
-uso dessa fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+uso dessa fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} cdf_logistic (@var{x},@var{a},@var{b})
-Retorna o valor em @var{x} da fun@,{c}@~{a}o distribui@,{c}@~{a}o de probabilidade
+@deffn {Fun@value{cedilha}@~{a}o} cdf_logistic (@var{x},@var{a},@var{b})
+Retorna o valor em @var{x} da fun@value{cedilha}@~{a}o distribui@value{cedilha}@~{a}o de probabilidade
 de uma vari@'{a}vel aleat@'{o}ria @math{Logistic(a,b)}, com @math{b>0}. Para fazer
-uso dessa fun@,{c}@~{a}o, escreva primeiramente
+uso dessa fun@value{cedilha}@~{a}o, escreva primeiramente
 @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} quantile_logistic (@var{q},@var{a},@var{b})
+@deffn {Fun@value{cedilha}@~{a}o} quantile_logistic (@var{q},@var{a},@var{b})
 Retorna o @var{q}-quantil de uma vari@'{a}vel aleat@'{o}ria @math{Logistic(a,b)} , com
-@math{b>0}; em outras palavras, essa fun@,{c}@~{a}o @'{e} a inversa da fun@,{c}@~{a}o
+@math{b>0}; em outras palavras, essa fun@value{cedilha}@~{a}o @'{e} a inversa da fun@value{cedilha}@~{a}o
 @code{cdf_logistic}. O argumento @var{q} deve ser um elemento de
 @math{[0,1]}.
 Para fazer uso
 dessa
-fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} meanlog (@var{a},@var{b})
+@deffn {Fun@value{cedilha}@~{a}o} meanlog (@var{a},@var{b})
 Retorna a m@'{e}dia de uma @math{Logistic(a,b)} vari@'{a}vel aleat@'{o}ria , com @math{b>0}.
-Para fazer uso dessa fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+Para fazer uso dessa fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} var_logistic (@var{a},@var{b})
+@deffn {Fun@value{cedilha}@~{a}o} var_logistic (@var{a},@var{b})
 Retorna a vari@^{a}ncia de uma vari@'{a}vel aleat@'{o}ria @math{Logistic(a,b)} , com @math{b>0}.
-Para fazer uso dessa fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+Para fazer uso dessa fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} std_logistic (@var{a},@var{b})
+@deffn {Fun@value{cedilha}@~{a}o} std_logistic (@var{a},@var{b})
 Retorna o desvio padr@~{a}o de uma vari@'{a}vel aleat@'{o}ria @math{Logistic(a,b)} ,
-com @math{b>0}. Para fazer uso dessa fun@,{c}@~{a}o, escreva primeiramente
+com @math{b>0}. Para fazer uso dessa fun@value{cedilha}@~{a}o, escreva primeiramente
 @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} skewness_logistic (@var{a},@var{b})
+@deffn {Fun@value{cedilha}@~{a}o} skewness_logistic (@var{a},@var{b})
 Retorna o coeficiente de assimetria de uma vari@'{a}vel aleat@'{o}ria @math{Logistic(a,b)} ,
-com @math{b>0}. Para fazer uso dessa fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+com @math{b>0}. Para fazer uso dessa fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} kurtosis_logistic (@var{a},@var{b})
+@deffn {Fun@value{cedilha}@~{a}o} kurtosis_logistic (@var{a},@var{b})
 Retorna o coeficiente de curtose de uma vari@'{a}vel aleat@'{o}ria @math{Logistic(a,b)} ,
-com @math{b>0}. Para fazer uso dessa fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+com @math{b>0}. Para fazer uso dessa fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} random_logistic (@var{a},@var{b})
-@deffnx {Fun@,{c}@~{a}o} random_logistic (@var{a},@var{b},@var{n})
+@deffn {Fun@value{cedilha}@~{a}o} random_logistic (@var{a},@var{b})
+@deffnx {Fun@value{cedilha}@~{a}o} random_logistic (@var{a},@var{b},@var{n})
 Retorna uma vari@'{a}vel estat@'{i}stica pseudo-aleat@'{o}ria @math{Logistic(a,b)}, com @math{b>0}.
 Chamando @code{random_logistic} com um terceiro argumento @var{n}, uma
 amostra aleat@'{o}ria de tamanho @var{n} ser@'{a} simulada.
 
 Somente o m@'{e}todo inverso gen@'{e}rico est@'{a} implementado. Para fazer uso dessa
-fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} pdf_pareto (@var{x},@var{a},@var{b})
-Retorna o valor em @var{x} da fun@,{c}@~{a}o densidade de probabilidade de uma
+@deffn {Fun@value{cedilha}@~{a}o} pdf_pareto (@var{x},@var{a},@var{b})
+Retorna o valor em @var{x} da fun@value{cedilha}@~{a}o densidade de probabilidade de uma
 vari@'{a}vel aleat@'{o}ria @math{Pareto(a,b)}, com @math{a,b>0}. Para fazer uso
-dessa fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+dessa fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} cdf_pareto (@var{x},@var{a},@var{b})
-Retorna o valor em @var{x} da fun@,{c}@~{a}o distribui@,{c}@~{a}o de probabilidade
+@deffn {Fun@value{cedilha}@~{a}o} cdf_pareto (@var{x},@var{a},@var{b})
+Retorna o valor em @var{x} da fun@value{cedilha}@~{a}o distribui@value{cedilha}@~{a}o de probabilidade
 de uma vari@'{a}vel aleat@'{o}ria @math{Pareto(a,b)}, com @math{a,b>0}. Para fazer
-uso dessa fun@,{c}@~{a}o, escreva primeiramente
+uso dessa fun@value{cedilha}@~{a}o, escreva primeiramente
 @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} quantile_pareto (@var{q},@var{a},@var{b})
+@deffn {Fun@value{cedilha}@~{a}o} quantile_pareto (@var{q},@var{a},@var{b})
 Retorna o @var{q}-quantile de uma vari@'{a}vel aleat@'{o}ria @math{Pareto(a,b)},
-com @math{a,b>0}; em outras palavras, essa fun@,{c}@~{a}o @'{e} a inversa da
-fun@,{c}@~{a}o @code{cdf_pareto}. O argumento @var{q} deve ser um elemento de
+com @math{a,b>0}; em outras palavras, essa fun@value{cedilha}@~{a}o @'{e} a inversa da
+fun@value{cedilha}@~{a}o @code{cdf_pareto}. O argumento @var{q} deve ser um elemento de
 @math{[0,1]}. Para
 fazer uso dessa
-fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} mean_pareto (@var{a},@var{b})
+@deffn {Fun@value{cedilha}@~{a}o} mean_pareto (@var{a},@var{b})
 Retorna a m@'{e}dia de uma vari@'{a}vel aleat@'{o}ria @math{Pareto(a,b)}, com
-@math{a>1,b>0}. Para fazer uso dessa fun@,{c}@~{a}o, escreva primeiramente
+@math{a>1,b>0}. Para fazer uso dessa fun@value{cedilha}@~{a}o, escreva primeiramente
 @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} var_pareto (@var{a},@var{b})
+@deffn {Fun@value{cedilha}@~{a}o} var_pareto (@var{a},@var{b})
 Retorna a vari@^{a}ncia de uma vari@'{a}vel aleat@'{o}ria @math{Pareto(a,b)},
-com @math{a>2,b>0}. Para fazer uso dessa fun@,{c}@~{a}o, escreva
+com @math{a>2,b>0}. Para fazer uso dessa fun@value{cedilha}@~{a}o, escreva
 primeiramente @code{load(distrib)}.
 @end deffn
 
-@deffn {Fun@,{c}@~{a}o} std_pareto (@var{a},@var{b})
+@deffn {Fun@value{cedilha}@~{a}o} std_pareto (@var{a},@var{b})
 Retorna o desvio padr@~{a}o de uma vari@'{a}vel aleat@'{o}ria @math{Pareto(a,b)},
-com @math{a>2,b>0}. Para fazer uso dessa fun@,{c}@~{a}o, escreva
+com @math{a>2,b>0}. Para fazer uso dessa fun@value{cedilha}@~{a}o, escreva
 primeiramente @code{load(distrib)}.
 @end deffn
 
 
 
-@deffn {Fun@,{c}@~{a}o} skewness_pareto (@var{a},@var{b})
+@deffn {Fun@value{cedilha}@~{a}o} skewness_pareto (@var{a},@var{b})
 Retorna o coeficiente de assimetria de uma vari@'{a}vel aleat@'{o}ria
-@math{Pareto(a,b)}, com @math{a>3,b>0}. Para fazer uso dessa fun@,{c}@~{a}o,
+@math{Pareto(a,b)}, com @math{a>3,b>0}. Para fazer uso dessa fun@value{cedilha}@~{a}o,
 escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} kurtosis_pareto (@var{a},@var{b})
+@deffn {Fun@value{cedilha}@~{a}o} kurtosis_pareto (@var{a},@var{b})
 Retorna o coeficiente de curtose de uma vari@'{a}vel aleat@'{o}ria @math{Pareto(a,b)},
-com @math{a>4,b>0}. Para fazer uso dessa fun@,{c}@~{a}o, escreva primeiramente
+com @math{a>4,b>0}. Para fazer uso dessa fun@value{cedilha}@~{a}o, escreva primeiramente
 @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} random_pareto (@var{a},@var{b})
-@deffnx {Fun@,{c}@~{a}o} random_pareto (@var{a},@var{b},@var{n})
+@deffn {Fun@value{cedilha}@~{a}o} random_pareto (@var{a},@var{b})
+@deffnx {Fun@value{cedilha}@~{a}o} random_pareto (@var{a},@var{b},@var{n})
 Retorna uma vari@'{a}vel estat@'{i}stica pseudo-aleat@'{o}ria @math{Pareto(a,b)}, com
 @math{a>0,b>0}. Chamando @code{random_pareto} com um terceiro
 argumento @var{n}, uma amostra aleat@'{o}ria de tamanho @var{n} ser@'{a} simulada.
 
 Somente o m@'{e}todo inverso gen@'{e}rico est@'{a} implementado. Para fazer uso
-dessa fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+dessa fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} pdf_weibull (@var{x},@var{a},@var{b})
-Retorna o valor em @var{x} da fun@,{c}@~{a}o densidade de probabilidade de uma
+@deffn {Fun@value{cedilha}@~{a}o} pdf_weibull (@var{x},@var{a},@var{b})
+Retorna o valor em @var{x} da fun@value{cedilha}@~{a}o densidade de probabilidade de uma
 vari@'{a}vel aleat@'{o}ria @math{Weibull(a,b)}, com @math{a,b>0}. Para fazer uso dessa
-fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} cdf_weibull (@var{x},@var{a},@var{b})
-Retorna o valor em @var{x} da fun@,{c}@~{a}o distribui@,{c}@~{a}o de probabilidade de uma
+@deffn {Fun@value{cedilha}@~{a}o} cdf_weibull (@var{x},@var{a},@var{b})
+Retorna o valor em @var{x} da fun@value{cedilha}@~{a}o distribui@value{cedilha}@~{a}o de probabilidade de uma
 vari@'{a}vel aleat@'{o}ria @math{Weibull(a,b)}, com @math{a,b>0}. Para fazer uso dessa
-fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} quantile_weibull (@var{q},@var{a},@var{b})
+@deffn {Fun@value{cedilha}@~{a}o} quantile_weibull (@var{q},@var{a},@var{b})
 Retorna o @var{q}-quantil de uma vari@'{a}vel aleat@'{o}ria @math{Weibull(a,b)},
-com @math{a,b>0}; em outras palavras, essa fun@,{c}@~{a}o @'{e} a inversa da
-fun@,{c}@~{a}o @code{cdf_weibull}. O argumento @var{q} deve ser um elemento de
-@math{[0,1]}. Para fazer uso dessa fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+com @math{a,b>0}; em outras palavras, essa fun@value{cedilha}@~{a}o @'{e} a inversa da
+fun@value{cedilha}@~{a}o @code{cdf_weibull}. O argumento @var{q} deve ser um elemento de
+@math{[0,1]}. Para fazer uso dessa fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} mean_weibull (@var{a},@var{b})
+@deffn {Fun@value{cedilha}@~{a}o} mean_weibull (@var{a},@var{b})
 Retorna a m@'{e}dia de uma vari@'{a}vel aleat@'{o}ria @math{Weibull(a,b)}, com
-@math{a,b>0}. Para fazer uso dessa fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+@math{a,b>0}. Para fazer uso dessa fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} var_weibull (@var{a},@var{b})
+@deffn {Fun@value{cedilha}@~{a}o} var_weibull (@var{a},@var{b})
 Retorna a vari@^{a}ncia de uma vari@'{a}vel aleat@'{o}ria @math{Weibull(a,b)},
-com @math{a,b>0}. Para fazer uso dessa fun@,{c}@~{a}o, escreva
+com @math{a,b>0}. Para fazer uso dessa fun@value{cedilha}@~{a}o, escreva
 primeiramente @code{load(distrib)}.
 @end deffn
 
-@deffn {Fun@,{c}@~{a}o} std_weibull (@var{a},@var{b})
+@deffn {Fun@value{cedilha}@~{a}o} std_weibull (@var{a},@var{b})
 Retorna o desvio padr@~{a}o de uma vari@'{a}vel aleat@'{o}ria @math{Weibull(a,b)},
-com @math{a,b>0}. Para fazer uso dessa fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+com @math{a,b>0}. Para fazer uso dessa fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 
-@deffn {Fun@,{c}@~{a}o} skewness_weibull (@var{a},@var{b})
+@deffn {Fun@value{cedilha}@~{a}o} skewness_weibull (@var{a},@var{b})
 Retorna o coeficiente de assimetria de uma vari@'{a}vel aleat@'{o}ria @math{Weibull(a,b)},
-com @math{a,b>0}. Para fazer uso dessa fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+com @math{a,b>0}. Para fazer uso dessa fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} kurtosis_weibull (@var{a},@var{b})
+@deffn {Fun@value{cedilha}@~{a}o} kurtosis_weibull (@var{a},@var{b})
 Retorna o coeficiente de curtose de uma vari@'{a}vel aleat@'{o}ria @math{Weibull(a,b)},
-com @math{a,b>0}. Para fazer uso dessa fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+com @math{a,b>0}. Para fazer uso dessa fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} random_weibull (@var{a},@var{b})
-@deffnx {Fun@,{c}@~{a}o} random_weibull (@var{a},@var{b},@var{n})
+@deffn {Fun@value{cedilha}@~{a}o} random_weibull (@var{a},@var{b})
+@deffnx {Fun@value{cedilha}@~{a}o} random_weibull (@var{a},@var{b},@var{n})
 Retorna uma vari@'{a}vel estat@'{i}stica pseudo-aleat@'{o}ria @math{Weibull(a,b)},
 com @math{a,b>0}. Chamando @code{random_weibull} com um terceiro argumento
 @var{n}, uma amostra aleat@'{o}ria de tamanho @var{n} ser@'{a} simulada.
 
 Somente o m@'{e}todo inverso gen@'{e}rico est@'{a} implementado. Para fazer uso dessa
-fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 
-@deffn {Fun@,{c}@~{a}o} pdf_rayleigh (@var{x},@var{b})
-Retorna o valor em @var{x} da fun@,{c}@~{a}o densidade de probabilidade de uma
+@deffn {Fun@value{cedilha}@~{a}o} pdf_rayleigh (@var{x},@var{b})
+Retorna o valor em @var{x} da fun@value{cedilha}@~{a}o densidade de probabilidade de uma
 vari@'{a}vel aleat@'{o}ria @math{Rayleigh(b)}, com @math{b>0}.
 
 A vari@'{a}vel aleat@'{o}ria @math{Rayleigh(b)} @'{e} equivalente a @math{Weibull(2,1/b)},
-embora quando Maxima n@~{a}o tiver informa@,{c}@~{a}o dispon@'{i}vel para pegar o resultado,
-uma forma nominal baseada na fun@,{c}@~{a}o densidade de probabilidade de Weibull @'{e} retornada.
+embora quando Maxima n@~{a}o tiver informa@value{cedilha}@~{a}o dispon@'{i}vel para pegar o resultado,
+uma forma nominal baseada na fun@value{cedilha}@~{a}o densidade de probabilidade de Weibull @'{e} retornada.
 
 @c ===beg===
 @c load (distrib)$
@@ -1938,13 +1938,13 @@ uma forma nominal baseada na fun@,{c}@~{a}o densidade de probabilidade de Weibul
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} cdf_rayleigh (@var{x},@var{b})
-Retorna o valor em @var{x} da fun@,{c}@~{a}o distribui@,{c}@~{a}o de probabilidade
+@deffn {Fun@value{cedilha}@~{a}o} cdf_rayleigh (@var{x},@var{b})
+Retorna o valor em @var{x} da fun@value{cedilha}@~{a}o distribui@value{cedilha}@~{a}o de probabilidade
 de uma vari@'{a}vel aleat@'{o}ria @math{Rayleigh(b)}, com @math{b>0}.
 
 A vari@'{a}vel aleat@'{o}ria @math{Rayleigh(b)} @'{e} equivalente a @math{Weibull(2,1/b)},
-embora quando Maxima n@~{a}o tiver informa@,{c}@~{a}o dispon@'{i}vel para pegar o
-resultado, uma forma nominal baseada na distribui@,{c}@~{a}o de Weibull @'{e} retornada.
+embora quando Maxima n@~{a}o tiver informa@value{cedilha}@~{a}o dispon@'{i}vel para pegar o
+resultado, uma forma nominal baseada na distribui@value{cedilha}@~{a}o de Weibull @'{e} retornada.
 
 @c ===beg===
 @c load (distrib)$
@@ -1965,14 +1965,14 @@ resultado, uma forma nominal baseada na distribui@,{c}@~{a}o de Weibull @'{e} re
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} quantile_rayleigh (@var{q},@var{b})
+@deffn {Fun@value{cedilha}@~{a}o} quantile_rayleigh (@var{q},@var{b})
 Retorna o @var{q}-quantil de uma vari@'{a}vel aleat@'{o}ria @math{Rayleigh(b)}, com
-@math{b>0}; em outras palavras, essa fun@,{c}@~{a}o @'{e} a inversa da fun@,{c}@~{a}o
+@math{b>0}; em outras palavras, essa fun@value{cedilha}@~{a}o @'{e} a inversa da fun@value{cedilha}@~{a}o
 @code{cdf_rayleigh}. O argumento @var{q} deve ser um elemento de
 @math{[0,1]}.
 
 A vari@'{a}vel aleat@'{o}ria @math{Rayleigh(b)} @'{e} equivalente a @math{Weibull(2,1/b)},
-embora quando Maxima n@~{a}o tiver informa@,{c}@~{a}o dispon@'{i}vel para pegar o resultado,
+embora quando Maxima n@~{a}o tiver informa@value{cedilha}@~{a}o dispon@'{i}vel para pegar o resultado,
 uma forma nominal baseada no quantil de Weibull @'{e}
 retornada.
 
@@ -1995,11 +1995,11 @@ retornada.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} mean_rayleigh (@var{b})
+@deffn {Fun@value{cedilha}@~{a}o} mean_rayleigh (@var{b})
 Retorna a m@'{e}dia de uma vari@'{a}vel aleat@'{o}ria @math{Rayleigh(b)}, com @math{b>0}.
 
 A vari@'{a}vel aleat@'{o}ria @math{Rayleigh(b)} @'{e} equivalente a @math{Weibull(2,1/b)},
-embora quando Maxima n@~{a}o tiver informa@,{c}@~{a}o dispon@'{i}vel para pegar o resultado,
+embora quando Maxima n@~{a}o tiver informa@value{cedilha}@~{a}o dispon@'{i}vel para pegar o resultado,
 uma forma nominal baseada na meia de Weibull @'{e} retornada.
 
 @c ===beg===
@@ -2021,11 +2021,11 @@ uma forma nominal baseada na meia de Weibull @'{e} retornada.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} var_rayleigh (@var{b})
+@deffn {Fun@value{cedilha}@~{a}o} var_rayleigh (@var{b})
 Retorna a vari@^{a}ncia de uma vari@'{a}vel aleat@'{o}ria @math{Rayleigh(b)}, com @math{b>0}.
 
 A vari@'{a}vel aleat@'{o}ria @math{Rayleigh(b)} @'{e} equivalente a @math{Weibull(2,1/b)},
-embora quando Maxima n@~{a}o tiver informa@,{c}@~{a}o dispon@'{i}vel para pegar o resultado,
+embora quando Maxima n@~{a}o tiver informa@value{cedilha}@~{a}o dispon@'{i}vel para pegar o resultado,
 uma forma nominal baseada na vari@^{a}ncia de Weibull @'{e} retornada.
 
 @c ===beg===
@@ -2050,11 +2050,11 @@ uma forma nominal baseada na vari@^{a}ncia de Weibull @'{e} retornada.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} std_rayleigh (@var{b})
+@deffn {Fun@value{cedilha}@~{a}o} std_rayleigh (@var{b})
 Retorna o desvio padr@~{a}o de uma vari@'{a}vel aleat@'{o}ria @math{Rayleigh(b)}, com @math{b>0}.
 
 A vari@'{a}vel aleat@'{o}ria @math{Rayleigh(b)} @'{e} equivalente a @math{Weibull(2,1/b)},
-embora quando Maxima n@~{a}o tiver informa@,{c}@~{a}o dispon@'{i}vel para pegar o resultado,
+embora quando Maxima n@~{a}o tiver informa@value{cedilha}@~{a}o dispon@'{i}vel para pegar o resultado,
 uma forma nominal baseada na Weibull desvio padr@~{a}o @'{e} retornada.
 
 @c ===beg===
@@ -2078,11 +2078,11 @@ uma forma nominal baseada na Weibull desvio padr@~{a}o @'{e} retornada.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} skewness_rayleigh (@var{b})
+@deffn {Fun@value{cedilha}@~{a}o} skewness_rayleigh (@var{b})
 Retorna o coeficiente de assimetria de uma vari@'{a}vel aleat@'{o}ria @math{Rayleigh(b)}, com @math{b>0}.
 
 A vari@'{a}vel aleat@'{o}ria @math{Rayleigh(b)} @'{e} equivalente a @math{Weibull(2,1/b)},
-embora quando Maxima n@~{a}o tiver informa@,{c}@~{a}o dispon@'{i}vel para pegar o resultado,
+embora quando Maxima n@~{a}o tiver informa@value{cedilha}@~{a}o dispon@'{i}vel para pegar o resultado,
 uma forma nominal baseada no coeficiente de assimetria de Weibull  @'{e} retornada.
 
 @c ===beg===
@@ -2109,11 +2109,11 @@ uma forma nominal baseada no coeficiente de assimetria de Weibull  @'{e} retorna
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} kurtosis_rayleigh (@var{b})
+@deffn {Fun@value{cedilha}@~{a}o} kurtosis_rayleigh (@var{b})
 Retorna o coeficiente de curtose de uma vari@'{a}vel aleat@'{o}ria @math{Rayleigh(b)}, com @math{b>0}.
 
 A vari@'{a}vel aleat@'{o}ria @math{Rayleigh(b)} @'{e} equivalente a @math{Weibull(2,1/b)},
-embora quando Maxima n@~{a}o tiver informa@,{c}@~{a}o dispon@'{i}vel para pegar o resultado,
+embora quando Maxima n@~{a}o tiver informa@value{cedilha}@~{a}o dispon@'{i}vel para pegar o resultado,
 uma forma nominal baseada no coeficiente de curtose de Weibull @'{e} retornada.
 
 @c ===beg===
@@ -2140,140 +2140,140 @@ uma forma nominal baseada no coeficiente de curtose de Weibull @'{e} retornada.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} random_rayleigh (@var{b})
-@deffnx {Fun@,{c}@~{a}o} random_rayleigh (@var{b},@var{n})
+@deffn {Fun@value{cedilha}@~{a}o} random_rayleigh (@var{b})
+@deffnx {Fun@value{cedilha}@~{a}o} random_rayleigh (@var{b},@var{n})
 Retorna uma vari@'{a}vel estat@'{i}stica pseudo-aleat@'{o}ria @math{Rayleigh(b)}, com @math{b>0}.
 Chamando @code{random_rayleigh} com um segundo argumento @var{n}, uma amostra aleat@'{o}ria
 de tamanho @var{n} ser@'{a} simulada.
 
-Somente o m@'{e}todo inverso gen@'{e}rico est@'{a} implementado. Para fazer uso dessa fun@,{c}@~{a}o,
+Somente o m@'{e}todo inverso gen@'{e}rico est@'{a} implementado. Para fazer uso dessa fun@value{cedilha}@~{a}o,
 escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 
-@deffn {Fun@,{c}@~{a}o} pdf_laplace (@var{x},@var{a},@var{b})
-Retorna o valor em @var{x} da fun@,{c}@~{a}o densidade de probabilidade de uma
+@deffn {Fun@value{cedilha}@~{a}o} pdf_laplace (@var{x},@var{a},@var{b})
+Retorna o valor em @var{x} da fun@value{cedilha}@~{a}o densidade de probabilidade de uma
 vari@'{a}vel aleat@'{o}ria @math{Laplace(a,b)}, com @math{b>0}. Para fazer uso dessa
-fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} cdf_laplace (@var{x},@var{a},@var{b})
-Retorna o valor em @var{x} da fun@,{c}@~{a}o distribui@,{c}@~{a}o de probabilidade
+@deffn {Fun@value{cedilha}@~{a}o} cdf_laplace (@var{x},@var{a},@var{b})
+Retorna o valor em @var{x} da fun@value{cedilha}@~{a}o distribui@value{cedilha}@~{a}o de probabilidade
 de uma vari@'{a}vel aleat@'{o}ria @math{Laplace(a,b)}, com @math{b>0}. Para fazer uso
-dessa fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+dessa fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} quantile_laplace (@var{q},@var{a},@var{b})
+@deffn {Fun@value{cedilha}@~{a}o} quantile_laplace (@var{q},@var{a},@var{b})
 Retorna o @var{q}-quantil de uma vari@'{a}vel aleat@'{o}ria @math{Laplace(a,b)}, com
-@math{b>0}; em outras palavras, essa fun@,{c}@~{a}o @'{e} a inversa da fun@,{c}@~{a}o
+@math{b>0}; em outras palavras, essa fun@value{cedilha}@~{a}o @'{e} a inversa da fun@value{cedilha}@~{a}o
 @code{cdf_laplace}. O argumento @var{q} deve ser um elemento de
-@math{[0,1]}. Para fazer uso dessa fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+@math{[0,1]}. Para fazer uso dessa fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} mean_laplace (@var{a},@var{b})
+@deffn {Fun@value{cedilha}@~{a}o} mean_laplace (@var{a},@var{b})
 Retorna a m@'{e}dia de uma vari@'{a}vel aleat@'{o}ria @math{Laplace(a,b)},
-com @math{b>0}. Para fazer uso dessa fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+com @math{b>0}. Para fazer uso dessa fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} var_laplace (@var{a},@var{b})
+@deffn {Fun@value{cedilha}@~{a}o} var_laplace (@var{a},@var{b})
 Retorna a vari@^{a}ncia de uma vari@'{a}vel aleat@'{o}ria @math{Laplace(a,b)},
-com @math{b>0}. Para fazer uso dessa fun@,{c}@~{a}o, escreva
+com @math{b>0}. Para fazer uso dessa fun@value{cedilha}@~{a}o, escreva
 primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} std_laplace (@var{a},@var{b})
+@deffn {Fun@value{cedilha}@~{a}o} std_laplace (@var{a},@var{b})
 Retorna o desvio padr@~{a}o de uma vari@'{a}vel aleat@'{o}ria @math{Laplace(a,b)},
-com @math{b>0}. Para fazer uso dessa fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+com @math{b>0}. Para fazer uso dessa fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} skewness_laplace (@var{a},@var{b})
+@deffn {Fun@value{cedilha}@~{a}o} skewness_laplace (@var{a},@var{b})
 Retorna o coeficiente de assimetria de uma vari@'{a}vel aleat@'{o}ria @math{Laplace(a,b)},
-com @math{b>0}. Para fazer uso dessa fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+com @math{b>0}. Para fazer uso dessa fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} kurtosis_laplace (@var{a},@var{b})
+@deffn {Fun@value{cedilha}@~{a}o} kurtosis_laplace (@var{a},@var{b})
 Retorna o coeficiente de curtose de uma vari@'{a}vel aleat@'{o}ria @math{Laplace(a,b)},
-com @math{b>0}. Para fazer uso dessa fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+com @math{b>0}. Para fazer uso dessa fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} random_laplace (@var{a},@var{b})
-@deffnx {Fun@,{c}@~{a}o} random_laplace (@var{a},@var{b},@var{n})
+@deffn {Fun@value{cedilha}@~{a}o} random_laplace (@var{a},@var{b})
+@deffnx {Fun@value{cedilha}@~{a}o} random_laplace (@var{a},@var{b},@var{n})
 Retorna uma vari@'{a}vel estat@'{i}stica pseudo-aleat@'{o}ria @math{Laplace(a,b)}, com @math{b>0}.
 Chamando @code{random_laplace} com um terceiro argumento @var{n}, uma
 amostra aleat@'{o}ria de tamanho @var{n} ser@'{a} simulada.
 
-Somente o m@'{e}todo inverso gen@'{e}rico est@'{a} implementado. Para fazer uso dessa fun@,{c}@~{a}o,
+Somente o m@'{e}todo inverso gen@'{e}rico est@'{a} implementado. Para fazer uso dessa fun@value{cedilha}@~{a}o,
 escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 
-@deffn {Fun@,{c}@~{a}o} pdf_cauchy (@var{x},@var{a},@var{b})
-Retorna o valor em @var{x} da fun@,{c}@~{a}o densidade de probabilidade de uma
+@deffn {Fun@value{cedilha}@~{a}o} pdf_cauchy (@var{x},@var{a},@var{b})
+Retorna o valor em @var{x} da fun@value{cedilha}@~{a}o densidade de probabilidade de uma
 vari@'{a}vel aleat@'{o}ria @math{Cauchy(a,b)}, com @math{b>0}. Para fazer uso dessa
-fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} cdf_cauchy (@var{x},@var{a},@var{b})
-Retorna o valor em @var{x} da fun@,{c}@~{a}o distribui@,{c}@~{a}o de probabilidade
+@deffn {Fun@value{cedilha}@~{a}o} cdf_cauchy (@var{x},@var{a},@var{b})
+Retorna o valor em @var{x} da fun@value{cedilha}@~{a}o distribui@value{cedilha}@~{a}o de probabilidade
 de uma vari@'{a}vel aleat@'{o}ria @math{Cauchy(a,b)}, com @math{b>0}. Para fazer uso
-dessa fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+dessa fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} quantile_cauchy (@var{q},@var{a},@var{b})
+@deffn {Fun@value{cedilha}@~{a}o} quantile_cauchy (@var{q},@var{a},@var{b})
 Retorna o @var{q}-quantil de uma vari@'{a}vel aleat@'{o}ria @math{Cauchy(a,b)}, com
-@math{b>0}; em outras palavras, essa fun@,{c}@~{a}o @'{e} a inversa da fun@,{c}@~{a}o
+@math{b>0}; em outras palavras, essa fun@value{cedilha}@~{a}o @'{e} a inversa da fun@value{cedilha}@~{a}o
 @code{cdf_cauchy}. O argumento @var{q} deve ser um elemento de @math{[0,1]}. Para
-fazer uso dessa fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+fazer uso dessa fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} random_cauchy (@var{a},@var{b})
-@deffnx {Fun@,{c}@~{a}o} random_cauchy (@var{a},@var{b},@var{n})
+@deffn {Fun@value{cedilha}@~{a}o} random_cauchy (@var{a},@var{b})
+@deffnx {Fun@value{cedilha}@~{a}o} random_cauchy (@var{a},@var{b},@var{n})
 Retorna uma vari@'{a}vel estat@'{i}stica pseudo aleat@'{o}ria @math{Cauchy(a,b)}, com @math{b>0}.
 Chamando @code{random_cauchy} com um terceiro argumento @var{n}, uma amostra
 aleat@'{o}ria de tamanho @var{n} ser@'{a} simulada.
 
-Somente o m@'{e}todo inverso gen@'{e}rico est@'{a} implementado. Para fazer uso dessa fun@,{c}@~{a}o,
+Somente o m@'{e}todo inverso gen@'{e}rico est@'{a} implementado. Para fazer uso dessa fun@value{cedilha}@~{a}o,
 escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 
-@deffn {Fun@,{c}@~{a}o} pdf_gumbel (@var{x},@var{a},@var{b})
-Retorna o valor em @var{x} da fun@,{c}@~{a}o densidade de probabilidade de uma vari@'{a}vel
-aleat@'{o}ria @math{Gumbel(a,b)}, com @math{b>0}. Para fazer uso dessa fun@,{c}@~{a}o, escreva
+@deffn {Fun@value{cedilha}@~{a}o} pdf_gumbel (@var{x},@var{a},@var{b})
+Retorna o valor em @var{x} da fun@value{cedilha}@~{a}o densidade de probabilidade de uma vari@'{a}vel
+aleat@'{o}ria @math{Gumbel(a,b)}, com @math{b>0}. Para fazer uso dessa fun@value{cedilha}@~{a}o, escreva
 primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} cdf_gumbel (@var{x},@var{a},@var{b})
-Retorna o valor em @var{x} da fun@,{c}@~{a}o distribui@,{c}@~{a}o de probabilidade de uma
+@deffn {Fun@value{cedilha}@~{a}o} cdf_gumbel (@var{x},@var{a},@var{b})
+Retorna o valor em @var{x} da fun@value{cedilha}@~{a}o distribui@value{cedilha}@~{a}o de probabilidade de uma
 vari@'{a}vel aleat@'{o}ria @math{Gumbel(a,b)}, com @math{b>0}. Para fazer uso dessa
-fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} quantile_gumbel (@var{q},@var{a},@var{b})
+@deffn {Fun@value{cedilha}@~{a}o} quantile_gumbel (@var{q},@var{a},@var{b})
 Retorna o @var{q}-quantil de uma vari@'{a}vel aleat@'{o}ria @math{Gumbel(a,b)}, com
-@math{b>0}; em outras palavras, essa fun@,{c}@~{a}o @'{e} a inversa da fun@,{c}@~{a}o
+@math{b>0}; em outras palavras, essa fun@value{cedilha}@~{a}o @'{e} a inversa da fun@value{cedilha}@~{a}o
 @code{cdf_gumbel}. O argumento @var{q} deve ser um elemento de @math{[0,1]}. Para
-fazer uso dessa fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+fazer uso dessa fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} mean_gumbel (@var{a},@var{b})
+@deffn {Fun@value{cedilha}@~{a}o} mean_gumbel (@var{a},@var{b})
 Retorna a m@'{e}dia de uma vari@'{a}vel aleat@'{o}ria @math{Gumbel(a,b)}, com @math{b>0}.
 
 @c ===beg===
@@ -2290,19 +2290,19 @@ Veja tamb@'{e}m @code{%gamma}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} var_gumbel (@var{a},@var{b})
+@deffn {Fun@value{cedilha}@~{a}o} var_gumbel (@var{a},@var{b})
 Retorna a vari@^{a}ncia de uma vari@'{a}vel aleat@'{o}ria @math{Gumbel(a,b)},
-com @math{b>0}. Para fazer uso dessa fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+com @math{b>0}. Para fazer uso dessa fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} std_gumbel (@var{a},@var{b})
+@deffn {Fun@value{cedilha}@~{a}o} std_gumbel (@var{a},@var{b})
 Retorna o desvio padr@~{a}o de uma vari@'{a}vel aleat@'{o}ria @math{Gumbel(a,b)},
-com @math{b>0}. Para fazer uso dessa fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+com @math{b>0}. Para fazer uso dessa fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} skewness_gumbel (@var{a},@var{b})
+@deffn {Fun@value{cedilha}@~{a}o} skewness_gumbel (@var{a},@var{b})
 Retorna o coeficiente de assimetria de uma vari@'{a}vel aleat@'{o}ria @math{Gumbel(a,b)}, com @math{b>0}.
 
 @c ===beg===
@@ -2320,40 +2320,40 @@ Retorna o coeficiente de assimetria de uma vari@'{a}vel aleat@'{o}ria @math{Gumb
 (%i4) numer:true$ skewness_gumbel(a,b);
 (%o5)                   1.139547099404649
 @end example
-onde @code{zeta} representa a fun@,{c}@~{a}o zeta de Riemann.
+onde @code{zeta} representa a fun@value{cedilha}@~{a}o zeta de Riemann.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} kurtosis_gumbel (@var{a},@var{b})
+@deffn {Fun@value{cedilha}@~{a}o} kurtosis_gumbel (@var{a},@var{b})
 Retorna o coeficiente de curtose de uma vari@'{a}vel aleat@'{o}ria @math{Gumbel(a,b)},
-com @math{b>0}. Para fazer uso dessa fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+com @math{b>0}. Para fazer uso dessa fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} random_gumbel (@var{a},@var{b})
-@deffnx {Fun@,{c}@~{a}o} random_gumbel (@var{a},@var{b},@var{n})
+@deffn {Fun@value{cedilha}@~{a}o} random_gumbel (@var{a},@var{b})
+@deffnx {Fun@value{cedilha}@~{a}o} random_gumbel (@var{a},@var{b},@var{n})
 Retorna uma vari@'{a}vel estat@'{i}stica pseudo-aleat@'{o}ria @math{Gumbel(a,b)},
 com @math{b>0}. Chamando @code{random_gumbel} com um terceiro argumento @var{n},
 uma amostra aleat@'{o}ria de tamanho @var{n} ser@'{a} simulada.
 
-Somente o m@'{e}todo inverso gen@'{e}rico est@'{a} implementado. Para fazer uso dessa fun@,{c}@~{a}o,
+Somente o m@'{e}todo inverso gen@'{e}rico est@'{a} implementado. Para fazer uso dessa fun@value{cedilha}@~{a}o,
 escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@node Defini@,{c}@~{o}es para distribui@,{c}@~{o}es discretas,  , Defini@,{c}@~{o}es para distribui@,{c}@~{o}es cont@'{i}nuas, distrib
-@section Defini@,{c}@~{o}es para distribui@,{c}@~{o}es discretas
+@node Defini@value{cedilha}@~{o}es para distribui@value{cedilha}@~{o}es discretas,  , Defini@value{cedilha}@~{o}es para distribui@value{cedilha}@~{o}es cont@'{i}nuas, distrib
+@section Defini@value{cedilha}@~{o}es para distribui@value{cedilha}@~{o}es discretas
 
 
-@deffn {Fun@,{c}@~{a}o} pdf_binomial (@var{x},@var{n},@var{p})
-Retorna o valor em @var{x} da fun@,{c}@~{a}o de probabilidade de uma @math{Binomial(n,p)}
+@deffn {Fun@value{cedilha}@~{a}o} pdf_binomial (@var{x},@var{n},@var{p})
+Retorna o valor em @var{x} da fun@value{cedilha}@~{a}o de probabilidade de uma @math{Binomial(n,p)}
 vari@'{a}vel aleat@'{o}ria, com @math{0<p<1} e @math{n} um inteiro positivo. Para fazer uso
-dessa fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+dessa fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} cdf_binomial (@var{x},@var{n},@var{p})
-Retorna o valor em @var{x} da fun@,{c}@~{a}o distribui@,{c}@~{a}o de probabilidade
+@deffn {Fun@value{cedilha}@~{a}o} cdf_binomial (@var{x},@var{n},@var{p})
+Retorna o valor em @var{x} da fun@value{cedilha}@~{a}o distribui@value{cedilha}@~{a}o de probabilidade
 de uma @math{Binomial(n,p)} vari@'{a}vel aleat@'{o}ria, com @math{0<p<1} e @math{n} um inteiro positivo.
 
 @code{cdf_binomial} @'{e} calculada num@'{e}ricamente se a vari@'{a}vel global @code{numer}
@@ -2376,51 +2376,51 @@ for igual a @code{true},  de outra forma @code{cdf_binomial} retorna uma express
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} quantile_binomial (@var{q},@var{n},@var{p})
+@deffn {Fun@value{cedilha}@~{a}o} quantile_binomial (@var{q},@var{n},@var{p})
 Retorna o @var{q}-quantil de uma vari@'{a}vel aleat@'{o}ria @math{Binomial(n,p)},
 com @math{0<p<1} e @math{n} um inteiro positivo; em outras palavras, essa
-fun@,{c}@~{a}o @'{e} a inversa da fun@,{c}@~{a}o @code{cdf_binomial}. O argumento
+fun@value{cedilha}@~{a}o @'{e} a inversa da fun@value{cedilha}@~{a}o @code{cdf_binomial}. O argumento
 @var{q} deve ser um elemento de @math{[0,1]}. Para fazer uso dessa
-fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} mean_binomial (@var{n},@var{p})
+@deffn {Fun@value{cedilha}@~{a}o} mean_binomial (@var{n},@var{p})
 Retorna a m@'{e}dia de uma vari@'{a}vel aleat@'{o}ria @math{Binomial(n,p)}, com
-@math{0<p<1} e @math{n} um inteiro positivo. Para fazer uso dessa fun@,{c}@~{a}o,
+@math{0<p<1} e @math{n} um inteiro positivo. Para fazer uso dessa fun@value{cedilha}@~{a}o,
 escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} var_binomial (@var{n},@var{p})
+@deffn {Fun@value{cedilha}@~{a}o} var_binomial (@var{n},@var{p})
 Retorna a vari@^{a}ncia de uma vari@'{a}vel aleat@'{o}ria @math{Binomial(n,p)},
 com @math{0<p<1} e @math{n} um inteiro positivo. Para fazer uso dessa
-fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} std_binomial (@var{n},@var{p})
+@deffn {Fun@value{cedilha}@~{a}o} std_binomial (@var{n},@var{p})
 Retorna o desvio padr@~{a}o de uma vari@'{a}vel aleat@'{o}ria @math{Binomial(n,p)},
 com @math{0<p<1} e @math{n} um inteiro positivo. Para fazer uso dessa
-fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} skewness_binomial (@var{n},@var{p})
+@deffn {Fun@value{cedilha}@~{a}o} skewness_binomial (@var{n},@var{p})
 Retorna o coeficiente de assimetria de uma vari@'{a}vel aleat@'{o}ria 
 @math{Binomial(n,p)}, com @math{0<p<1} e @math{n} um inteiro positivo. Para
-fazer uso dessa fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+fazer uso dessa fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} kurtosis_binomial (@var{n},@var{p})
+@deffn {Fun@value{cedilha}@~{a}o} kurtosis_binomial (@var{n},@var{p})
 Retorna o coeficiente de curtose de uma vari@'{a}vel aleat@'{o}ria @math{Binomial(n,p)},
-com @math{0<p<1} e @math{n} um inteiro positivo. Para fazer uso dessa fun@,{c}@~{a}o,
+com @math{0<p<1} e @math{n} um inteiro positivo. Para fazer uso dessa fun@value{cedilha}@~{a}o,
 escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@defvr {Vari@'{a}vel de op@,{c}@~{a}o} random_binomial_algorithm
+@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} random_binomial_algorithm
 Valor padr@~{a}o: @code{kachit}
 
 Esse @'{e} o algor@'{i}tmo selecionado para simular rvari@'{a}veis estat@'{i}sticas pseudo-aleat@'{o}rias
@@ -2432,7 +2432,7 @@ binomiais. Os algor@'{i}tmos implementados s@~{a}o @code{kachit}, @code{bernoull
 Schmeiser, B.W. (1988) @var{Binomial Random Variate Generation}. Communications of the ACM, 31, Feb., 216.
 
 @item
-@code{bernoulli}, baseado na simula@,{c}@~{a}o testes de Bernoulli.
+@code{bernoulli}, baseado na simula@value{cedilha}@~{a}o testes de Bernoulli.
 
 @item
 @code{inverse}, baseado no m@'{e}todo inverso gen@'{e}rico.
@@ -2443,35 +2443,35 @@ Veja tamb@'{e}m @code{random_binomial}.
 @end defvr
 
 
-@deffn {Fun@,{c}@~{a}o} random_binomial (@var{n},@var{p})
-@deffnx {Fun@,{c}@~{a}o} random_binomial (@var{n},@var{p},@var{m})
+@deffn {Fun@value{cedilha}@~{a}o} random_binomial (@var{n},@var{p})
+@deffnx {Fun@value{cedilha}@~{a}o} random_binomial (@var{n},@var{p},@var{m})
 Retorna uma vari@'{a}vel estat@'{i}stica pseudo-aleat@'{o}ria @math{Binomial(n,p)},
 com @math{0<p<1} e @math{n} um inteiro positivo. Chamando @code{random_binomial}
 com um terceiro argumento @var{m}, uma amostra aleat@'{o}ria de tamanho @var{m} ser@'{a}
 simulada.
 
-Existem tr@^{e}s algor@'{i}tmos implementado para essa fun@,{c}@~{a}o, se pode
+Existem tr@^{e}s algor@'{i}tmos implementado para essa fun@value{cedilha}@~{a}o, se pode
 selecionar o algor@'{i}tmo a ser usado fornecendo um certo valor @`a vari@'{a}vel
 global @code{random_binomial_algorithm}, cujo valor padr@~{a}o @'{e} @code{kachit}.
 
 Veja tamb@'{e}m @code{random_binomial_algorithm}. Para fazer uso dessa
-fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} pdf_poisson (@var{x},@var{m})
-Retorna o valor em @var{x} da fun@,{c}@~{a}o de probabilidade de uma
+@deffn {Fun@value{cedilha}@~{a}o} pdf_poisson (@var{x},@var{m})
+Retorna o valor em @var{x} da fun@value{cedilha}@~{a}o de probabilidade de uma
 vari@'{a}vel aleat@'{o}ria @math{Poisson(m)}, com @math{m>0}. Para fazer
-uso dessa fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+uso dessa fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} cdf_poisson (@var{x},@var{m})
-Retorna o valor em @var{x} da fun@,{c}@~{a}o distribui@,{c}@~{a}o de
+@deffn {Fun@value{cedilha}@~{a}o} cdf_poisson (@var{x},@var{m})
+Retorna o valor em @var{x} da fun@value{cedilha}@~{a}o distribui@value{cedilha}@~{a}o de
 probabilidade de uma vari@'{a}vel aleat@'{o}ria @math{Poisson(m)}, com @math{m>0}.
 
-Essa fun@,{c}@~{a}o @'{e} calculada num@'{e}ricamente se a vari@'{a}vel global
-@code{numer} for igual a @code{true},  de outra forma essa fun@,{c}@~{a}o
+Essa fun@value{cedilha}@~{a}o @'{e} calculada num@'{e}ricamente se a vari@'{a}vel global
+@code{numer} for igual a @code{true},  de outra forma essa fun@value{cedilha}@~{a}o
 retorna uma express@~{a}o nominal.
 
 @c ===beg===
@@ -2489,47 +2489,47 @@ retorna uma express@~{a}o nominal.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} quantile_poisson (@var{q},@var{m})
+@deffn {Fun@value{cedilha}@~{a}o} quantile_poisson (@var{q},@var{m})
 Retorna o @var{q}-quantil de uma vari@'{a}vel aleat@'{o}ria @math{Poisson(m)},
-com @math{m>0}; em outras palavras, essa fun@,{c}@~{a}o @'{e} a inversa da
-fun@,{c}@~{a}o @code{cdf_poisson}. O argumento @var{q} deve ser um elemento de
-@math{[0,1]}. Para fazer uso dessa fun@,{c}@~{a}o,
+com @math{m>0}; em outras palavras, essa fun@value{cedilha}@~{a}o @'{e} a inversa da
+fun@value{cedilha}@~{a}o @code{cdf_poisson}. O argumento @var{q} deve ser um elemento de
+@math{[0,1]}. Para fazer uso dessa fun@value{cedilha}@~{a}o,
 escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} mean_poisson (@var{m})
+@deffn {Fun@value{cedilha}@~{a}o} mean_poisson (@var{m})
 Retorna a m@'{e}dia de uma vari@'{a}vel aleat@'{o}ria @math{Poisson(m)},
-com @math{m>0}. Para fazer uso dessa fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+com @math{m>0}. Para fazer uso dessa fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} var_poisson (@var{m})
+@deffn {Fun@value{cedilha}@~{a}o} var_poisson (@var{m})
 Retorna a vari@^{a}ncia de uma vari@'{a}vel aleat@'{o}ria @math{Poisson(m)},
-com  @math{m>0}. Para fazer uso dessa fun@,{c}@~{a}o, escreva
+com  @math{m>0}. Para fazer uso dessa fun@value{cedilha}@~{a}o, escreva
 primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} std_poisson (@var{m})
+@deffn {Fun@value{cedilha}@~{a}o} std_poisson (@var{m})
 Retorna o desvio padr@~{a}o de uma vari@'{a}vel aleat@'{o}ria @math{Poisson(m)},
-com @math{m>0}. Para fazer uso dessa fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+com @math{m>0}. Para fazer uso dessa fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} skewness_poisson (@var{m})
+@deffn {Fun@value{cedilha}@~{a}o} skewness_poisson (@var{m})
 Retorna o coeficiente de assimetria de uma vari@'{a}vel aleat@'{o}ria @math{Poisson(m)},
-com @math{m>0}. Para fazer uso dessa fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+com @math{m>0}. Para fazer uso dessa fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} kurtosis_poisson (@var{m})
+@deffn {Fun@value{cedilha}@~{a}o} kurtosis_poisson (@var{m})
 Retorna o coeficiente de curtose de uma Poisson vari@'{a}vel aleat@'{o}ria  @math{Poi(m)},
-com @math{m>0}. Para fazer uso dessa fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+com @math{m>0}. Para fazer uso dessa fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@defvr {Vari@'{a}vel de op@,{c}@~{a}o} random_poisson_algorithm
+@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} random_poisson_algorithm
 Valor padr@~{a}o: @code{ahrens_dieter}
 
 Esse @'{e} o algor@'{i}tmo selecionado para simular vari@'{a}veis estat@'{i}sticas
@@ -2550,29 +2550,29 @@ Veja tamb@'{e}m @code{random_poisson}.
 @end defvr
 
 
-@deffn {Fun@,{c}@~{a}o} random_poisson (@var{m})
-@deffnx {Fun@,{c}@~{a}o} random_poisson (@var{m},@var{n})
+@deffn {Fun@value{cedilha}@~{a}o} random_poisson (@var{m})
+@deffnx {Fun@value{cedilha}@~{a}o} random_poisson (@var{m},@var{n})
 Retorna uma vari@'{a}vel estat@'{i}stica pseudo-aleat@'{o}ria @math{Poisson(m)}, com @math{m>0}.
 Chamando @code{random_poisson} com um segundo argumento @var{n}, uma amostra
 aleat@'{o}ria de tamanho @var{n} ser@'{a} simulada.
 
-Existem dois algor@'{i}tmos implementado para essa fun@,{c}@~{a}o, se pode selecionar o
+Existem dois algor@'{i}tmos implementado para essa fun@value{cedilha}@~{a}o, se pode selecionar o
 algor@'{i}tmo a ser usado fornecendo um certo valor @`a vari@'{a}vel global 
 @code{random_poisson_algorithm}, cujo valor padr@~{a}o @'{e}
 @code{ahrens_dieter}.
 
 Veja tamb@'{e}m @code{random_poisson_algorithm}. Para fazer uso
-dessa fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+dessa fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} pdf_bernoulli (@var{x},@var{p})
-Retorna o valor em @var{x} da fun@,{c}@~{a}o de probabilidade de uma
+@deffn {Fun@value{cedilha}@~{a}o} pdf_bernoulli (@var{x},@var{p})
+Retorna o valor em @var{x} da fun@value{cedilha}@~{a}o de probabilidade de uma
 vari@'{a}vel aleat@'{o}ria @math{Bernoulli(p)}, com @math{0<p<1}.
 
 A vari@'{a}vel aleat@'{o}ria @math{Bernoulli(p)} @'{e} equivalente a @math{Binomial(1,p)},
-embora quando Maxima n@~{a}o tiver informa@,{c}@~{a}o dispon@'{i}vel para pegar o
-resultado, uma forma nominal baseada na fun@,{c}@~{a}o binomial de
+embora quando Maxima n@~{a}o tiver informa@value{cedilha}@~{a}o dispon@'{i}vel para pegar o
+resultado, uma forma nominal baseada na fun@value{cedilha}@~{a}o binomial de
 probabilidade @'{e} retornada.
 
 @c ===beg===
@@ -2590,26 +2590,26 @@ probabilidade @'{e} retornada.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} cdf_bernoulli (@var{x},@var{p})
-Retorna o valor em @var{x} da fun@,{c}@~{a}o distribui@,{c}@~{a}o de
+@deffn {Fun@value{cedilha}@~{a}o} cdf_bernoulli (@var{x},@var{p})
+Retorna o valor em @var{x} da fun@value{cedilha}@~{a}o distribui@value{cedilha}@~{a}o de
 probabilidade de uma vari@'{a}vel aleat@'{o}ria @math{Bernoulli(p)}, com @math{0<p<1}.
-Para fazer uso dessa fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+Para fazer uso dessa fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} quantile_bernoulli (@var{q},@var{p})
+@deffn {Fun@value{cedilha}@~{a}o} quantile_bernoulli (@var{q},@var{p})
 Retorna o @var{q}-quantil de uma vari@'{a}vel aleat@'{o}ria @math{Bernoulli(p)},
-com @math{0<p<1}; em outras palavras, essa fun@,{c}@~{a}o @'{e} a inversa da
-fun@,{c}@~{a}o @code{cdf_bernoulli}. O argumento @var{q} deve ser um elemento de
-@math{[0,1]}. Para fazer uso dessa fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+com @math{0<p<1}; em outras palavras, essa fun@value{cedilha}@~{a}o @'{e} a inversa da
+fun@value{cedilha}@~{a}o @code{cdf_bernoulli}. O argumento @var{q} deve ser um elemento de
+@math{[0,1]}. Para fazer uso dessa fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} mean_bernoulli (@var{p})
+@deffn {Fun@value{cedilha}@~{a}o} mean_bernoulli (@var{p})
 Retorna a m@'{e}dia de uma vari@'{a}vel aleat@'{o}ria @math{Bernoulli(p)}, com @math{0<p<1}.
 
 A vari@'{a}vel aleat@'{o}ria @math{Bernoulli(p)} @'{e} equivalente a @math{Binomial(1,p)}, embora
-quando Maxima n@~{a}o tiver informa@,{c}@~{a}o dispon@'{i}vel para pegar o resultado, uma forma
+quando Maxima n@~{a}o tiver informa@value{cedilha}@~{a}o dispon@'{i}vel para pegar o resultado, uma forma
 nominal baseada na m@'{e}dia binomial @'{e} retornada.
 
 @c ===beg===
@@ -2627,11 +2627,11 @@ nominal baseada na m@'{e}dia binomial @'{e} retornada.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} var_bernoulli (@var{p})
+@deffn {Fun@value{cedilha}@~{a}o} var_bernoulli (@var{p})
 Retorna a vari@^{a}ncia de uma vari@'{a}vel aleat@'{o}ria @math{Bernoulli(p)}, com @math{0<p<1}.
 
 A vari@'{a}vel aleat@'{o}ria @math{Bernoulli(p)} @'{e} equivalente a @math{Binomial(1,p)},
-embora quando Maxima n@~{a}o tiver informa@,{c}@~{a}o dispon@'{i}vel para pegar o resultado,
+embora quando Maxima n@~{a}o tiver informa@value{cedilha}@~{a}o dispon@'{i}vel para pegar o resultado,
 uma forma nominal baseada na vari@^{a}ncia binomial @'{e} retornada.
 
 @c ===beg===
@@ -2649,11 +2649,11 @@ uma forma nominal baseada na vari@^{a}ncia binomial @'{e} retornada.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} std_bernoulli (@var{p})
+@deffn {Fun@value{cedilha}@~{a}o} std_bernoulli (@var{p})
 Retorna o desvio padr@~{a}o de uma vari@'{a}vel aleat@'{o}ria @math{Bernoulli(p)}, com @math{0<p<1}.
 
 A vari@'{a}vel aleat@'{o}ria @math{Bernoulli(p)} @'{e} equivalente a
-@math{Binomial(1,p)}, embora quando Maxima n@~{a}o tiver informa@,{c}@~{a}o
+@math{Binomial(1,p)}, embora quando Maxima n@~{a}o tiver informa@value{cedilha}@~{a}o
 dispon@'{i}vel para pegar o resultado, uma forma nominal baseada no desvio
 padr@~{a}o binomial @'{e} retornada.
 
@@ -2672,11 +2672,11 @@ padr@~{a}o binomial @'{e} retornada.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} skewness_bernoulli (@var{p})
+@deffn {Fun@value{cedilha}@~{a}o} skewness_bernoulli (@var{p})
 Retorna o coeficiente de assimetria de uma vari@'{a}vel aleat@'{o}ria @math{Bernoulli(p)}, com @math{0<p<1}.
 
 A vari@'{a}vel aleat@'{o}ria @math{Bernoulli(p)} @'{e} equivalente a @math{Binomial(1,p)},
-embora quando Maxima n@~{a}o tiver informa@,{c}@~{a}o dispon@'{i}vel para pegar o resultado,
+embora quando Maxima n@~{a}o tiver informa@value{cedilha}@~{a}o dispon@'{i}vel para pegar o resultado,
 uma forma nominal baseada no coeficiente de assimetria binomial @'{e} retornada.
 
 @c ===beg===
@@ -2696,11 +2696,11 @@ uma forma nominal baseada no coeficiente de assimetria binomial @'{e} retornada.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} kurtosis_bernoulli (@var{p})
+@deffn {Fun@value{cedilha}@~{a}o} kurtosis_bernoulli (@var{p})
 Retorna o coeficiente de curtose de uma vari@'{a}vel aleat@'{o}ria @math{Bernoulli(p)}, com @math{0<p<1}.
 
 A vari@'{a}vel aleat@'{o}ria @math{Bernoulli(p)} @'{e} equivalente a @math{Binomial(1,p)},
-embora quando Maxima n@~{a}o tiver informa@,{c}@~{a}o dispon@'{i}vel para pegar o resultado,
+embora quando Maxima n@~{a}o tiver informa@value{cedilha}@~{a}o dispon@'{i}vel para pegar o resultado,
 uma forma nominal baseada no coeficiente de curtose binomial @'{e} retornada.
 
 @c ===beg===
@@ -2720,72 +2720,72 @@ uma forma nominal baseada no coeficiente de curtose binomial @'{e} retornada.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} random_bernoulli (@var{p})
-@deffnx {Fun@,{c}@~{a}o} random_bernoulli (@var{p},@var{n})
+@deffn {Fun@value{cedilha}@~{a}o} random_bernoulli (@var{p})
+@deffnx {Fun@value{cedilha}@~{a}o} random_bernoulli (@var{p},@var{n})
 Retorna uma vari@'{a}vel estat@'{i}stica pseudo-aleat@'{o}ria @math{Bernoulli(p)},
 com @math{0<p<1}. Chamando @code{random_bernoulli} com um segundo
 argumento @var{n}, uma amostra aleat@'{o}ria de tamanho @var{n} ser@'{a} simulada.
 
-Essa @'{e} uma aplica@,{c}@~{a}o direta da fun@,{c}@~{a}o @code{random} built-in fun@,{c}@~{a}o do Maxima.
+Essa @'{e} uma aplica@value{cedilha}@~{a}o direta da fun@value{cedilha}@~{a}o @code{random} built-in fun@value{cedilha}@~{a}o do Maxima.
 
-Veja tamb@'{e}m @code{random}. Para fazer uso dessa fun@,{c}@~{a}o, escreva
+Veja tamb@'{e}m @code{random}. Para fazer uso dessa fun@value{cedilha}@~{a}o, escreva
 primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} pdf_geometric (@var{x},@var{p})
-Retorna o valor em @var{x} da fun@,{c}@~{a}o de probabilidade de uma vari@'{a}vel
+@deffn {Fun@value{cedilha}@~{a}o} pdf_geometric (@var{x},@var{p})
+Retorna o valor em @var{x} da fun@value{cedilha}@~{a}o de probabilidade de uma vari@'{a}vel
 aleat@'{o}ria @math{Geometric(p)}, com @math{0<p<1}. Para fazer uso dessa
-fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} cdf_geometric (@var{x},@var{p})
-Retorna o valor em @var{x} da fun@,{c}@~{a}o distribui@,{c}@~{a}o de probabilidade
+@deffn {Fun@value{cedilha}@~{a}o} cdf_geometric (@var{x},@var{p})
+Retorna o valor em @var{x} da fun@value{cedilha}@~{a}o distribui@value{cedilha}@~{a}o de probabilidade
 de uma vari@'{a}vel aleat@'{o}ria @math{Geometric(p)}, com @math{0<p<1}. Para fazer
-uso dessa fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+uso dessa fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} quantile_geometric (@var{q},@var{p})
+@deffn {Fun@value{cedilha}@~{a}o} quantile_geometric (@var{q},@var{p})
 Retorna o @var{q}-quantil de uma vari@'{a}vel aleat@'{o}ria @math{Geometric(p)},
-com @math{0<p<1}; em outras palavras, essa fun@,{c}@~{a}o @'{e} a inversa da
-fun@,{c}@~{a}o @code{cdf_geometric}. O argumento @var{q} deve ser um elemento de
-@math{[0,1]}. Para fazer uso dessa fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+com @math{0<p<1}; em outras palavras, essa fun@value{cedilha}@~{a}o @'{e} a inversa da
+fun@value{cedilha}@~{a}o @code{cdf_geometric}. O argumento @var{q} deve ser um elemento de
+@math{[0,1]}. Para fazer uso dessa fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} mean_geometric (@var{p})
+@deffn {Fun@value{cedilha}@~{a}o} mean_geometric (@var{p})
 Retorna a m@'{e}dia de uma vari@'{a}vel aleat@'{o}ria @math{Geometric(p)},
-com @math{0<p<1}. Para fazer uso dessa fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+com @math{0<p<1}. Para fazer uso dessa fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} var_geometric (@var{p})
+@deffn {Fun@value{cedilha}@~{a}o} var_geometric (@var{p})
 Retorna a vari@^{a}ncia de uma vari@'{a}vel aleat@'{o}ria @math{Geometric(p)},
-com @math{0<p<1}. Para fazer uso dessa fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+com @math{0<p<1}. Para fazer uso dessa fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} std_geometric (@var{p})
+@deffn {Fun@value{cedilha}@~{a}o} std_geometric (@var{p})
 Retorna o desvio padr@~{a}o de uma vari@'{a}vel aleat@'{o}ria @math{Geometric(p)},
-com @math{0<p<1}. Para fazer uso dessa fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+com @math{0<p<1}. Para fazer uso dessa fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} skewness_geometric (@var{p})
+@deffn {Fun@value{cedilha}@~{a}o} skewness_geometric (@var{p})
 Retorna o coeficiente de assimetria de uma vari@'{a}vel aleat@'{o}ria @math{Geometric(p)},
-com @math{0<p<1}. Para fazer uso dessa fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+com @math{0<p<1}. Para fazer uso dessa fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} kurtosis_geometric (@var{p})
+@deffn {Fun@value{cedilha}@~{a}o} kurtosis_geometric (@var{p})
 Retorna o coeficiente de curtose de uma geometric vari@'{a}vel aleat@'{o}ria  @math{Geo(p)},
-com @math{0<p<1}. Para fazer uso dessa fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+com @math{0<p<1}. Para fazer uso dessa fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@defvr {Vari@'{a}vel de op@,{c}@~{a}o} random_geometric_algorithm
+@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} random_geometric_algorithm
 Valor padr@~{a}o: @code{bernoulli}
 
 Esse @'{e} o algor@'{i}tmo selecionado para simular vari@'{a}veis estat@'{i}sticas pseudo-aleat@'{o}rias
@@ -2793,7 +2793,7 @@ geom@'{e}tricas. Algor@'{i}tmos implementados s@~{a}o @code{bernoulli}, @code{de
 @itemize @bullet
 
 @item
-@code{bernoulli}, baseado na simula@,{c}@~{a}o de testes de Bernoulli.
+@code{bernoulli}, baseado na simula@value{cedilha}@~{a}o de testes de Bernoulli.
 
 @item
 @code{devroye}, baseado no algor@'{i}tmo descrito em Devroye, L. (1986)
@@ -2808,158 +2808,158 @@ Veja tamb@'{e}m @code{random_geometric}.
 @end defvr
 
 
-@deffn {Fun@,{c}@~{a}o} random_geometric (@var{p})
-@deffnx {Fun@,{c}@~{a}o} random_geometric (@var{p},@var{n})
+@deffn {Fun@value{cedilha}@~{a}o} random_geometric (@var{p})
+@deffnx {Fun@value{cedilha}@~{a}o} random_geometric (@var{p},@var{n})
 Retorna um @math{Geometric(p)} vari@'{a}vel estat@'{i}stica pseudo-aleat@'{o}ria, com @math{0<p<1}.
 Chamando @code{random_geometric} com um segundo argumento @var{n}, uma amostra aleat@'{o}ria
 de tamanho @var{n} ser@'{a} simulada.
 
-Existem tr@^{e}s algor@'{i}tmos implementados para essa fun@,{c}@~{a}o, se
+Existem tr@^{e}s algor@'{i}tmos implementados para essa fun@value{cedilha}@~{a}o, se
 pode selecionar o algor@'{i}tmo a ser usado fornecendo um certo valor @`a
 vari@'{a}vel global @code{random_geometric_algorithm}, cujo valor padr@~{a}o @'{e}
 @code{bernoulli}.
 
 Veja tamb@'{e}m @code{random_geometric_algorithm}. Para fazer uso dessa
-fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} pdf_discrete_uniform (@var{x},@var{n})
-Retorna o valor em @var{x} da fun@,{c}@~{a}o de probabilidade de uma vari@'{a}vel
-aleat@'{o}ria @math{Discrete Uniform(n)}, com @math{n} a strictly positive integer. Para fazer uso dessa fun@,{c}@~{a}o, escreva primeiramente
+@deffn {Fun@value{cedilha}@~{a}o} pdf_discrete_uniform (@var{x},@var{n})
+Retorna o valor em @var{x} da fun@value{cedilha}@~{a}o de probabilidade de uma vari@'{a}vel
+aleat@'{o}ria @math{Discrete Uniform(n)}, com @math{n} a strictly positive integer. Para fazer uso dessa fun@value{cedilha}@~{a}o, escreva primeiramente
 @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} cdf_discrete_uniform (@var{x},@var{n})
-Retorna o valor em @var{x} da fun@,{c}@~{a}o distribui@,{c}@~{a}o de probabilidade
+@deffn {Fun@value{cedilha}@~{a}o} cdf_discrete_uniform (@var{x},@var{n})
+Retorna o valor em @var{x} da fun@value{cedilha}@~{a}o distribui@value{cedilha}@~{a}o de probabilidade
 de uma vari@'{a}vel aleat@'{o}ria @math{Discrete Uniform(n)}, com @math{n} inteiro
-estritamente positivo. Para fazer uso dessa fun@,{c}@~{a}o, escreva
+estritamente positivo. Para fazer uso dessa fun@value{cedilha}@~{a}o, escreva
 primeiramente
 @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} quantile_discrete_uniform (@var{q},@var{n})
+@deffn {Fun@value{cedilha}@~{a}o} quantile_discrete_uniform (@var{q},@var{n})
 Retorna o @var{q}-quantil de uma vari@'{a}vel aleat@'{o}ria @math{Discrete Uniform(n)},
 com @math{n} um inteiro estritamente positivo; em outras palavras, essa
-fun@,{c}@~{a}o @'{e} a inversa da fun@,{c}@~{a}o @code{cdf_discrete_uniform}. O
+fun@value{cedilha}@~{a}o @'{e} a inversa da fun@value{cedilha}@~{a}o @code{cdf_discrete_uniform}. O
 argumento @var{q} deve ser um elemento de @math{[0,1]}. Para fazer uso dessa
-fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} mean_discrete_uniform (@var{n})
+@deffn {Fun@value{cedilha}@~{a}o} mean_discrete_uniform (@var{n})
 Retorna a m@'{e}dia de uma vari@'{a}vel aleat@'{o}ria @math{Discrete Uniform(n)},
 com @math{n} um inteiro estritamente positivo. Para fazer uso dessa
-fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} var_discrete_uniform (@var{n})
+@deffn {Fun@value{cedilha}@~{a}o} var_discrete_uniform (@var{n})
 Retorna a vari@^{a}ncia de uma vari@'{a}vel aleat@'{o}ria @math{Discrete Uniform(n)},
-com @math{n} um inteiro estritamente positivo. Para fazer uso dessa fun@,{c}@~{a}o,
+com @math{n} um inteiro estritamente positivo. Para fazer uso dessa fun@value{cedilha}@~{a}o,
 escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} std_discrete_uniform (@var{n})
+@deffn {Fun@value{cedilha}@~{a}o} std_discrete_uniform (@var{n})
 Retorna o desvio padr@~{a}o de uma vari@'{a}vel aleat@'{o}ria @math{Discrete Uniform(n)},
-com @math{n} um inteiro estritamente positivo. Para fazer uso dessa fun@,{c}@~{a}o,
+com @math{n} um inteiro estritamente positivo. Para fazer uso dessa fun@value{cedilha}@~{a}o,
 escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} skewness_discrete_uniform (@var{n})
+@deffn {Fun@value{cedilha}@~{a}o} skewness_discrete_uniform (@var{n})
 Retorna o coeficiente de assimetria de uma vari@'{a}vel aleat@'{o}ria @math{Discrete Uniform(n)},
-com @math{n} um inteiro estritamente positivo. Para fazer uso dessa fun@,{c}@~{a}o,
+com @math{n} um inteiro estritamente positivo. Para fazer uso dessa fun@value{cedilha}@~{a}o,
 escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} kurtosis_discrete_uniform (@var{n})
+@deffn {Fun@value{cedilha}@~{a}o} kurtosis_discrete_uniform (@var{n})
 Retorna o coeficiente de curtose de uma vari@'{a}vel aleat@'{o}ria @math{Discrete Uniform(n)},
-com @math{n} um inteiro estritamente positivo. Para fazer uso dessa fun@,{c}@~{a}o,
+com @math{n} um inteiro estritamente positivo. Para fazer uso dessa fun@value{cedilha}@~{a}o,
 escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} random_discrete_uniform (@var{n})
-@deffnx {Fun@,{c}@~{a}o} random_discrete_uniform (@var{n},@var{m})
+@deffn {Fun@value{cedilha}@~{a}o} random_discrete_uniform (@var{n})
+@deffnx {Fun@value{cedilha}@~{a}o} random_discrete_uniform (@var{n},@var{m})
 Retorna uma vari@'{a}vel estat@'{i}stica pseudo-aleat@'{o}ria @math{Discrete Uniform(n)},
 com @math{n} um inteiro estritamente positivo. Chamando @code{random_discrete_uniform}
 com um segundo argumento @var{m}, uma amostra aleat@'{o}ria de
 tamanho @var{m} ser@'{a} simulada.
 
-Isso @'{e} uma aplica@,{c}@~{a}o direta da fun@,{c}@~{a}o @code{random} built-in fun@,{c}@~{a}o do Maxima.
+Isso @'{e} uma aplica@value{cedilha}@~{a}o direta da fun@value{cedilha}@~{a}o @code{random} built-in fun@value{cedilha}@~{a}o do Maxima.
 
-Veja tamb@'{e}m @code{random}. Para fazer uso dessa fun@,{c}@~{a}o, escreva
+Veja tamb@'{e}m @code{random}. Para fazer uso dessa fun@value{cedilha}@~{a}o, escreva
 primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} pdf_hypergeometric (@var{x},@var{n1},@var{n2},@var{n})
-Retorna o valor em @var{x} da fun@,{c}@~{a}o de probabilidade de uma
+@deffn {Fun@value{cedilha}@~{a}o} pdf_hypergeometric (@var{x},@var{n1},@var{n2},@var{n})
+Retorna o valor em @var{x} da fun@value{cedilha}@~{a}o de probabilidade de uma
 vari@'{a}vel aleat@'{o}ria @math{Hypergeometric(n1,n2,n)}, com @var{n1}, @var{n2}
 e @var{n} inteiros n@~{a}o negativos e @math{n<=n1+n2}. Para fazer uso dessa
-fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} cdf_hypergeometric (@var{x},@var{n1},@var{n2},@var{n})
-Retorna o valor em @var{x} da fun@,{c}@~{a}o distribui@,{c}@~{a}o de
+@deffn {Fun@value{cedilha}@~{a}o} cdf_hypergeometric (@var{x},@var{n1},@var{n2},@var{n})
+Retorna o valor em @var{x} da fun@value{cedilha}@~{a}o distribui@value{cedilha}@~{a}o de
 probabilidade de uma vari@'{a}vel aleat@'{o}ria @math{Hypergeometric(n1,n2,n)},
 com @var{n1}, @var{n2} e @var{n} inteiros n@~{a}o negativos e @math{n<=n1+n2}. Para
-fazer uso dessa fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+fazer uso dessa fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} quantile_hypergeometric (@var{q},@var{n1},@var{n2},@var{n})
+@deffn {Fun@value{cedilha}@~{a}o} quantile_hypergeometric (@var{q},@var{n1},@var{n2},@var{n})
 Retorna o @var{q}-quantil de uma vari@'{a}vel aleat@'{o}ria @math{Hypergeometric(n1,n2,n)},
 com @var{n1}, @var{n2} e @var{n} inteiros n@~{a}o negativos e @math{n<=n1+n2}; em outras
-palavras, essa fun@,{c}@~{a}o @'{e} a inversa da fun@,{c}@~{a}o @code{cdf_hypergeometric}.
+palavras, essa fun@value{cedilha}@~{a}o @'{e} a inversa da fun@value{cedilha}@~{a}o @code{cdf_hypergeometric}.
 O argumento @var{q} deve ser um elemento de @math{[0,1]}. Para fazer uso dessa
-fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} mean_hypergeometric (@var{n1},@var{n2},@var{n})
+@deffn {Fun@value{cedilha}@~{a}o} mean_hypergeometric (@var{n1},@var{n2},@var{n})
 Retorna a m@'{e}dia de uma vari@'{a}vel aleat@'{o}ria discreta univorme
 @math{Hyp(n1,n2,n)}, com @var{n1}, @var{n2} e @var{n} inteiros n@~{a}o negativos
-e @math{n<=n1+n2}. Para fazer uso dessa fun@,{c}@~{a}o, escreva
+e @math{n<=n1+n2}. Para fazer uso dessa fun@value{cedilha}@~{a}o, escreva
 primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} var_hypergeometric (@var{n1},@var{n2},@var{n})
+@deffn {Fun@value{cedilha}@~{a}o} var_hypergeometric (@var{n1},@var{n2},@var{n})
 Retorna a vari@^{a}ncia de uma vari@'{a}vel aleat@'{o}ria hipergeom@'{e}trica
 @math{Hyp(n1,n2,n)}, com @var{n1}, @var{n2} e @var{n} inteiros
-n@~{a}o negativos e @math{n<=n1+n2}. Para fazer uso dessa fun@,{c}@~{a}o,
+n@~{a}o negativos e @math{n<=n1+n2}. Para fazer uso dessa fun@value{cedilha}@~{a}o,
 escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} std_hypergeometric (@var{n1},@var{n2},@var{n})
+@deffn {Fun@value{cedilha}@~{a}o} std_hypergeometric (@var{n1},@var{n2},@var{n})
 Retorna o desvio padr@~{a}o de uma vari@'{a}vel aleat@'{o}ria @math{Hypergeometric(n1,n2,n)},
-com @var{n1}, @var{n2} e @var{n} inteiros n@~{a}o negativos e @math{n<=n1+n2}. Para fazer uso dessa fun@,{c}@~{a}o, escreva primeiramente
+com @var{n1}, @var{n2} e @var{n} inteiros n@~{a}o negativos e @math{n<=n1+n2}. Para fazer uso dessa fun@value{cedilha}@~{a}o, escreva primeiramente
 @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} skewness_hypergeometric (@var{n1},@var{n2},@var{n})
+@deffn {Fun@value{cedilha}@~{a}o} skewness_hypergeometric (@var{n1},@var{n2},@var{n})
 Retorna o coeficiente de assimetria de uma vari@'{a}vel aleat@'{o}ria @math{Hypergeometric(n1,n2,n)},
 com @var{n1}, @var{n2} e @var{n} inteiros n@~{a}o negativos e @math{n<=n1+n2}. Para fazer uso
-dessa fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+dessa fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} kurtosis_hypergeometric (@var{n1},@var{n2},@var{n})
+@deffn {Fun@value{cedilha}@~{a}o} kurtosis_hypergeometric (@var{n1},@var{n2},@var{n})
 Retorna o coeficiente de curtose de uma vari@'{a}vel aleat@'{o}ria @math{Hypergeometric(n1,n2,n)},
 com @var{n1}, @var{n2} e @var{n} inteiros n@~{a}o negativos e @math{n<=n1+n2}. Para fazer uso
-dessa fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+dessa fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
-@defvr {Vari@'{a}vel de op@,{c}@~{a}o} random_hypergeometric_algorithm
+@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} random_hypergeometric_algorithm
 Valor padr@~{a}o: @code{kachit}
 
 Esse @'{e} o algor@'{i}tmo selecionado para simular vari@'{a}veis estat@'{i}sticas pseudo
@@ -2980,36 +2980,36 @@ Veja tamb@'{e}m @code{random_hypergeometric}.
 @end defvr
 
 
-@deffn {Fun@,{c}@~{a}o} random_hypergeometric (@var{n1},@var{n2},@var{n})
-@deffnx {Fun@,{c}@~{a}o} random_hypergeometric (@var{n1},@var{n2},@var{n},@var{m})
+@deffn {Fun@value{cedilha}@~{a}o} random_hypergeometric (@var{n1},@var{n2},@var{n})
+@deffnx {Fun@value{cedilha}@~{a}o} random_hypergeometric (@var{n1},@var{n2},@var{n},@var{m})
 Retorna uma vari@'{a}vel estat@'{i}stica pseudo-aleat@'{o}ria @math{Hypergeometric(n1,n2,n)},
 com @var{n1}, @var{n2} e @var{n} inteiros n@~{a}o negativos e @math{n<=n1+n2}. Chamando
 @code{random_hypergeometric} com um quarto argumento @var{m}, uma amostra
 aleat@'{o}ria de tamanho @var{m} ser@'{a} simulada.
 
-Existem dois algor@'{i}tmos implementados para essa fun@,{c}@~{a}o, se pode selecionar o
+Existem dois algor@'{i}tmos implementados para essa fun@value{cedilha}@~{a}o, se pode selecionar o
 algor@'{i}tmo a ser usado fornecendo um certo valor @`a vari@'{a}vel global @code{random_hypergeometric_algorithm},
 cujo valor padr@~{a}o @'{e} @code{kachit}.
 
 Veja tamb@'{e}m @code{random_hypergeometric_algorithm}. Para fazer uso
-dessa fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+dessa fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} pdf_negative_binomial (@var{x},@var{n},@var{p})
-Retorna o valor em @var{x} da fun@,{c}@~{a}o de probabilidade de uma vari@'{a}vel
+@deffn {Fun@value{cedilha}@~{a}o} pdf_negative_binomial (@var{x},@var{n},@var{p})
+Retorna o valor em @var{x} da fun@value{cedilha}@~{a}o de probabilidade de uma vari@'{a}vel
 aleat@'{o}ria @math{Negative Binomial(n,p)}, com @math{0<p<1} e @math{n} um inteiro
-positivo. Para fazer uso dessa fun@,{c}@~{a}o, escreva
+positivo. Para fazer uso dessa fun@value{cedilha}@~{a}o, escreva
 primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} cdf_negative_binomial (@var{x},@var{n},@var{p})
-Retorna o valor em @var{x} da fun@,{c}@~{a}o distribui@,{c}@~{a}o de probabilidade
+@deffn {Fun@value{cedilha}@~{a}o} cdf_negative_binomial (@var{x},@var{n},@var{p})
+Retorna o valor em @var{x} da fun@value{cedilha}@~{a}o distribui@value{cedilha}@~{a}o de probabilidade
 de uma @math{Negative Binomial(n,p)} vari@'{a}vel aleat@'{o}ria, com @math{0<p<1} e @math{n} um inteiro positivo.
 
-Essa fun@,{c}@~{a}o @'{e} calculada num@'{e}ricamente se a vari@'{a}vel global @code{numer} for
-igual a @code{true},  de outra forma essa fun@,{c}@~{a}o retorna uma express@~{a}o nominal.
+Essa fun@value{cedilha}@~{a}o @'{e} calculada num@'{e}ricamente se a vari@'{a}vel global @code{numer} for
+igual a @code{true},  de outra forma essa fun@value{cedilha}@~{a}o retorna uma express@~{a}o nominal.
 
 @c ===beg===
 @c load (distrib)$
@@ -3028,50 +3028,50 @@ igual a @code{true},  de outra forma essa fun@,{c}@~{a}o retorna uma express@~{a
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} quantile_negative_binomial (@var{q},@var{n},@var{p})
+@deffn {Fun@value{cedilha}@~{a}o} quantile_negative_binomial (@var{q},@var{n},@var{p})
 Retorna o @var{q}-quantil de uma vari@'{a}vel aleat@'{o}ria @math{Negative Binomial(n,p)},
-com @math{0<p<1} e @math{n} um inteiro positivo; em outras palavras, essa fun@,{c}@~{a}o
-@'{e} a inversa da fun@,{c}@~{a}o @code{cdf_negative_binomial}. O argumento @var{q} deve ser
-um elemento de @math{[0,1]}. Para fazer uso dessa fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+com @math{0<p<1} e @math{n} um inteiro positivo; em outras palavras, essa fun@value{cedilha}@~{a}o
+@'{e} a inversa da fun@value{cedilha}@~{a}o @code{cdf_negative_binomial}. O argumento @var{q} deve ser
+um elemento de @math{[0,1]}. Para fazer uso dessa fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} mean_negative_binomial (@var{n},@var{p})
+@deffn {Fun@value{cedilha}@~{a}o} mean_negative_binomial (@var{n},@var{p})
 Retorna a m@'{e}dia de uma vari@'{a}vel aleat@'{o}ria @math{Negative Binomial(n,p)},
-com @math{0<p<1} e @math{n} um inteiro positivo. Para fazer uso dessa fun@,{c}@~{a}o,
+com @math{0<p<1} e @math{n} um inteiro positivo. Para fazer uso dessa fun@value{cedilha}@~{a}o,
 escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} var_negative_binomial (@var{n},@var{p})
+@deffn {Fun@value{cedilha}@~{a}o} var_negative_binomial (@var{n},@var{p})
 Retorna a vari@^{a}ncia de uma vari@'{a}vel aleat@'{o}ria @math{Negative Binomial(n,p)},
-com @math{0<p<1} e @math{n} um inteiro positivo. Para fazer uso dessa fun@,{c}@~{a}o,
+com @math{0<p<1} e @math{n} um inteiro positivo. Para fazer uso dessa fun@value{cedilha}@~{a}o,
 escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} std_negative_binomial (@var{n},@var{p})
+@deffn {Fun@value{cedilha}@~{a}o} std_negative_binomial (@var{n},@var{p})
 Retorna o desvio padr@~{a}o de uma vari@'{a}vel aleat@'{o}ria @math{Negative Binomial(n,p)},
-com @math{0<p<1} e @math{n} um inteiro positivo. Para fazer uso dessa fun@,{c}@~{a}o,
+com @math{0<p<1} e @math{n} um inteiro positivo. Para fazer uso dessa fun@value{cedilha}@~{a}o,
 escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} skewness_negative_binomial (@var{n},@var{p})
+@deffn {Fun@value{cedilha}@~{a}o} skewness_negative_binomial (@var{n},@var{p})
 Retorna o coeficiente de assimetria de uma vari@'{a}vel aleat@'{o}ria @math{Negative Binomial(n,p)},
-com @math{0<p<1} e @math{n} um inteiro positivo. Para fazer uso dessa fun@,{c}@~{a}o, escreva
+com @math{0<p<1} e @math{n} um inteiro positivo. Para fazer uso dessa fun@value{cedilha}@~{a}o, escreva
 primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} kurtosis_negative_binomial (@var{n},@var{p})
+@deffn {Fun@value{cedilha}@~{a}o} kurtosis_negative_binomial (@var{n},@var{p})
 Retorna o coeficiente de curtose de uma vari@'{a}vel aleat@'{o}ria @math{Negative Binomial(n,p)},
-com @math{0<p<1} e @math{n} um inteiro positivo. Para fazer uso dessa fun@,{c}@~{a}o, escreva
+com @math{0<p<1} e @math{n} um inteiro positivo. Para fazer uso dessa fun@value{cedilha}@~{a}o, escreva
 primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@defvr {Vari@'{a}vel de op@,{c}@~{a}o} random_negative_binomial_algorithm
+@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} random_negative_binomial_algorithm
 Valor padr@~{a}o: @code{bernoulli}
 
 Esse @'{e} o algor@'{i}tmo selecionado para simular vari@'{a}veis estat@'{i}sticas pseuso-aleat@'{o}rias
@@ -3084,7 +3084,7 @@ e @code{inverse}:
 @var{Non-Uniform Random Variate Generation}. Springer Verlag, p. 480.
 
 @item
-@code{bernoulli}, baseado na simula@,{c}@~{a}o de testes de Bernoulli.
+@code{bernoulli}, baseado na simula@value{cedilha}@~{a}o de testes de Bernoulli.
 
 @item
 @code{inverse}, baseado no m@'{e}todo inverso gen@'{e}rico.
@@ -3095,17 +3095,17 @@ Veja tamb@'{e}m @code{random_negative_binomial}.
 @end defvr
 
 
-@deffn {Fun@,{c}@~{a}o} random_negative_binomial (@var{n},@var{p})
-@deffnx {Fun@,{c}@~{a}o} random_negative_binomial (@var{n},@var{p},@var{m})
+@deffn {Fun@value{cedilha}@~{a}o} random_negative_binomial (@var{n},@var{p})
+@deffnx {Fun@value{cedilha}@~{a}o} random_negative_binomial (@var{n},@var{p},@var{m})
 Retorna uma vari@'{a}vel estat@'{i}stica pseudo-aleat@'{o}ria @math{Negative Binomial(n,p)},
 com @math{0<p<1} e @math{n} um inteiro positivo. Chamando @code{random_negative_binomial}
 com um terceiro argumento @var{m}, uma amostra aleat@'{o}ria de tamanho
 @var{m} ser@'{a} simulada.
 
-Existem tr@^{e}s algor@'{i}tmos implementados para essa fun@,{c}@~{a}o, se pode
+Existem tr@^{e}s algor@'{i}tmos implementados para essa fun@value{cedilha}@~{a}o, se pode
 selecionar o algor@'{i}tmo a ser usado fornecendo um certo valor @`a vari@'{a}vel global
 @code{random_negative_binomial_algorithm}, cujo valor padr@~{a}o @'{e} @code{bernoulli}.
 
 Veja tamb@'{e}m @code{random_negative_binomial_algorithm}. Para fazer uso dessa
-fun@,{c}@~{a}o, escreva primeiramente @code{load(distrib)}.
+fun@value{cedilha}@~{a}o, escreva primeiramente @code{load(distrib)}.
 @end deffn

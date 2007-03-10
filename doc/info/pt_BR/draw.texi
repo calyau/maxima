@@ -1,21 +1,21 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /draw.texi/1.2/Tue Feb 20 06:59:00 2007//
 @menu
-* Introdu@,{c}@~{a}o a draw::
-* Defini@,{c}@~{o}es para draw::
+* Introdu@value{cedilha}@~{a}o a draw::
+* Defini@value{cedilha}@~{o}es para draw::
 @end menu
 
 
 
 
 
-@node Introdu@,{c}@~{a}o a draw, Defini@,{c}@~{o}es para draw, draw, draw
-@section Introdu@,{c}@~{a}o a draw
+@node Introdu@value{cedilha}@~{a}o a draw, Defini@value{cedilha}@~{o}es para draw, draw, draw
+@section Introdu@value{cedilha}@~{a}o a draw
 
 
 @code{draw} @'{e} uma uma nova interface entre o Maxima e o Gnuplot.
 
-Existem tr@^{e}s fun@,{c}@~{o}es a serem usadas n n@'{i}vel do Maxima: 
+Existem tr@^{e}s fun@value{cedilha}@~{o}es a serem usadas n n@'{i}vel do Maxima: 
 @code{draw2d}, @code{draw3d} e @code{draw}.
 
 
@@ -24,13 +24,13 @@ Existem tr@^{e}s fun@,{c}@~{o}es a serem usadas n n@'{i}vel do Maxima:
 
 
 
-@node Defini@,{c}@~{o}es para draw,  , Introdu@,{c}@~{a}o a draw, draw
-@section Defini@,{c}@~{o}es para draw
+@node Defini@value{cedilha}@~{o}es para draw,  , Introdu@value{cedilha}@~{a}o a draw, draw
+@section Defini@value{cedilha}@~{o}es para draw
 
 
 
 
-@defvr {Op@,{c}@~{a}o gr@'{a}fica} xrange
+@defvr {Op@value{cedilha}@~{a}o gr@'{a}fica} xrange
 Valor padr@~{a}o: @code{false}
 
 Se @code{xrange} for @code{false}, o intevalo para a coordenada @var{x} @'{e}
@@ -42,7 +42,7 @@ lista da forma definida pelo Maxima, como em @code{xrange=[-2, 3]}.
 
 
 
-@defvr {Op@,{c}@~{a}o gr@'{a}fica} yrange
+@defvr {Op@value{cedilha}@~{a}o gr@'{a}fica} yrange
 Valor padr@~{a}o: @code{false}
 
 Se @code{yrange} for @code{false}, the range for the @var{y} coordinate is
@@ -54,7 +54,7 @@ lista da forma definida pelo Maxima, como em @code{yrange=[-2, 3]}.
 
 
 
-@defvr {Op@,{c}@~{a}o gr@'{a}fica} zrange
+@defvr {Op@value{cedilha}@~{a}o gr@'{a}fica} zrange
 Valor padr@~{a}o: @code{false}
 
 Se @code{zrange} for @code{false}, o intervalo para a coordenada @var{z} @'{e}
@@ -66,7 +66,7 @@ lista da forma definida pelo Maxima, como em @code{zrange=[-2, 3]}.
 
 
 
-@defvr {Op@,{c}@~{a}o gr@'{a}fica} logx
+@defvr {Op@value{cedilha}@~{a}o gr@'{a}fica} logx
 Valor padr@~{a}o: @code{false}
 
 Se @code{logx} for @code{true}, o eixo @var{x}ser@'{a} desenhado em
@@ -75,7 +75,7 @@ escala logar@'{i}tmica.
 
 
 
-@defvr {Op@,{c}@~{a}o gr@'{a}fica} logy
+@defvr {Op@value{cedilha}@~{a}o gr@'{a}fica} logy
 Valor padr@~{a}o: @code{false}
 
 Se @code{logy} for @code{true}, o eixo @var{y}ser@'{a} desenhado em
@@ -84,7 +84,7 @@ escala logar@'{i}tmica.
 
 
 
-@defvr {Op@,{c}@~{a}o gr@'{a}fica} logz
+@defvr {Op@value{cedilha}@~{a}o gr@'{a}fica} logz
 Valor padr@~{a}o: @code{false}
 
 Se @code{logz} for @code{true}, o eixo @var{z}ser@'{a} desenhado em
@@ -93,7 +93,7 @@ escala logar@'{i}tmica.
 
 
 
-@defvr {Op@,{c}@~{a}o gr@'{a}fica} terminal
+@defvr {Op@value{cedilha}@~{a}o gr@'{a}fica} terminal
 Valor padr@~{a}o: @code{screen}
 
 Seleciona o terminal a ser usado pelo Gnuplot; os valores poss@'{i}veis s@~{a}o:
@@ -104,7 +104,7 @@ Veja tamb@'{e}m @code{file_name}, @code{pic_width}, e @code{pic_height}.
 
 
 
-@defvr {Op@,{c}@~{a}o gr@'{a}fica} grid
+@defvr {Op@value{cedilha}@~{a}o gr@'{a}fica} grid
 Valor padr@~{a}o: @code{false}
 
 Se @code{grid} for @code{true}, uma malha ser@'{a} desenhada sobre o plano @var{xy}.
@@ -112,7 +112,7 @@ Se @code{grid} for @code{true}, uma malha ser@'{a} desenhada sobre o plano @var{
 
 
 
-@defvr {Op@,{c}@~{a}o gr@'{a}fica} title
+@defvr {Op@value{cedilha}@~{a}o gr@'{a}fica} title
 Valor padr@~{a}o: @code{""} (a seq@"{u}@^{e}ncia de caracteres vazia)
 
 Variable @code{title} armazena uma seq@"{u}@^{e}ncia de caracteres do Maxima com o t@'{i}tulo principal de um fundo gr@'{a}fico.
@@ -121,7 +121,7 @@ Por padr@~{a}o, nenhum t@'{i}tulo @'{e} escrito.
 
 
 
-@defvr {Op@,{c}@~{a}o gr@'{a}fica} xlabel
+@defvr {Op@value{cedilha}@~{a}o gr@'{a}fica} xlabel
 Valor padr@~{a}o: @code{""} (a seq@"{u}@^{e}ncia de caracteres vazia)
 
 A vari@'{a}vel @code{xlabel} armazena uma seq@"{u}@^{e}ncia de caracteres do Maxima com o r@'{o}tulo para o eixo @var{x}.
@@ -130,7 +130,7 @@ Por padr@~{a}o, nenhum r@'{o}tulo @'{e} escrito.
 
 
 
-@defvr {Op@,{c}@~{a}o gr@'{a}fica} ylabel
+@defvr {Op@value{cedilha}@~{a}o gr@'{a}fica} ylabel
 Valor padr@~{a}o: @code{""} (a seq@"{u}@^{e}ncia de caracteres vazia)
 
 A vari@'{a}vel @code{ylabel} armazena uma seq@"{u}@^{e}ncia de caracteres do Maxima com o r@'{o}tulo para o eixo @var{y}.
@@ -139,7 +139,7 @@ Por padr@~{a}o, nenhum r@'{o}tulo @'{e} escrito.
 
 
 
-@defvr {Op@,{c}@~{a}o gr@'{a}fica} zlabel
+@defvr {Op@value{cedilha}@~{a}o gr@'{a}fica} zlabel
 Valor padr@~{a}o: @code{""} (a seq@"{u}@^{e}ncia de caracteres vazia)
 
 A vari@'{a}vel @code{zlabel} armazena uma seq@"{u}@^{e}ncia de caracteres do Maxima com o r@'{o}tulo para o eixo @var{z}.
@@ -148,53 +148,53 @@ Por padr@~{a}o, nenhum r@'{o}tulo @'{e} escrito.
 
 
 
-@defvr {Op@,{c}@~{a}o gr@'{a}fica} xtics
+@defvr {Op@value{cedilha}@~{a}o gr@'{a}fica} xtics
 Valor padr@~{a}o: @code{true}
 
-Se @code{xtics} for @code{true}, a marca@,{c}@~{a}o num@'{e}rica ser@'{a} feitas sobre o eixo @var{x}.
+Se @code{xtics} for @code{true}, a marca@value{cedilha}@~{a}o num@'{e}rica ser@'{a} feitas sobre o eixo @var{x}.
 @end defvr
 
 
 
-@defvr {Op@,{c}@~{a}o gr@'{a}fica} ytics
+@defvr {Op@value{cedilha}@~{a}o gr@'{a}fica} ytics
 Valor padr@~{a}o: @code{true}
 
-Se @code{ytics} for @code{true}, a marca@,{c}@~{a}o num@'{e}rica ser@'{a} feitas sobre o eixo @var{y}.
+Se @code{ytics} for @code{true}, a marca@value{cedilha}@~{a}o num@'{e}rica ser@'{a} feitas sobre o eixo @var{y}.
 @end defvr
 
 
 
-@defvr {Op@,{c}@~{a}o gr@'{a}fica} ztics
+@defvr {Op@value{cedilha}@~{a}o gr@'{a}fica} ztics
 Valor padr@~{a}o: @code{true}
 
-Se @code{ztics} for @code{true}, a marca@,{c}@~{a}o num@'{e}rica ser@'{a} feitas sobre o eixo @var{z}.
+Se @code{ztics} for @code{true}, a marca@value{cedilha}@~{a}o num@'{e}rica ser@'{a} feitas sobre o eixo @var{z}.
 @end defvr
 
 
 
-@defvr {Op@,{c}@~{a}o gr@'{a}fica} rot_vertical
+@defvr {Op@value{cedilha}@~{a}o gr@'{a}fica} rot_vertical
 Valor padr@~{a}o: 60
 
-@code{rot_vertical} @'{e} o @^{a}ngulo (em graus) da rota@,{c}@~{a}o vertical (em torno 
-do eixo @var{x}) para escolher o ponto de visualiza@,{c}@~{a}o em fundos gr@'{a}ficos tridimensionais.
+@code{rot_vertical} @'{e} o @^{a}ngulo (em graus) da rota@value{cedilha}@~{a}o vertical (em torno 
+do eixo @var{x}) para escolher o ponto de visualiza@value{cedilha}@~{a}o em fundos gr@'{a}ficos tridimensionais.
 
 O @^{a}ngulo @'{e} associado ao intervalo @math{[0, 180]}.
 @end defvr
 
 
 
-@defvr {Op@,{c}@~{a}o gr@'{a}fica} rot_horizontal
+@defvr {Op@value{cedilha}@~{a}o gr@'{a}fica} rot_horizontal
 Valor padr@~{a}o: 30
 
-@code{rot_horizontal} @'{e} o @^{a}ngulo (em graus) da rota@,{c}@~{a}o horizontal (em torno 
-do eixo @var{z})  para escolher o ponto de visualiza@,{c}@~{a}o em fundos gr@'{a}ficos tridimensionais.
+@code{rot_horizontal} @'{e} o @^{a}ngulo (em graus) da rota@value{cedilha}@~{a}o horizontal (em torno 
+do eixo @var{z})  para escolher o ponto de visualiza@value{cedilha}@~{a}o em fundos gr@'{a}ficos tridimensionais.
 
 O @^{a}ngulo @'{e} associado ao intervalo @math{[0, 180]}.
 @end defvr
 
 
 
-@defvr {Op@,{c}@~{a}o gr@'{a}fica} xy_file
+@defvr {Op@value{cedilha}@~{a}o gr@'{a}fica} xy_file
 Valor padr@~{a}o: @code{""} (a seq@"{u}@^{e}ncia de caracteres vazia)
 
 @code{xy_file} @'{e} o nome do arquivo onde as coordenada ser@~{a}o armazenadas
@@ -204,17 +204,17 @@ nenhuma coordenada @'{e} armazenada.
 
 
 
-@defvr {Op@,{c}@~{a}o gr@'{a}fica} user_preamble
+@defvr {Op@value{cedilha}@~{a}o gr@'{a}fica} user_preamble
 Valor padr@~{a}o: @code{""} (a seq@"{u}@^{e}ncia de caracteres vazia)
 
-Usu@'{a}rios experientes de Gnuplot podem fazer uso dessa op@,{c}@~{a}o para ajuste fino do comportamento
-do Gnuplot escolhendo op@,{c}@~{o}es para serem enviadas antes do comando @code{plot} ou do
+Usu@'{a}rios experientes de Gnuplot podem fazer uso dessa op@value{cedilha}@~{a}o para ajuste fino do comportamento
+do Gnuplot escolhendo op@value{cedilha}@~{o}es para serem enviadas antes do comando @code{plot} ou do
 comando @code{splot}.
 @end defvr
 
 
 
-@defvr {Op@,{c}@~{a}o gr@'{a}fica} file_name
+@defvr {Op@value{cedilha}@~{a}o gr@'{a}fica} file_name
 Valor padr@~{a}o: @code{"maxima_out"}
 
 Esse @'{e} o nome do arquivo onde os terminais @code{png}, @code{jpg}, @code{eps}
@@ -225,7 +225,7 @@ Veja tamb@'{e}m @code{terminal}.
 
 
 
-@defvr {Op@,{c}@~{a}o gr@'{a}fica} pic_width
+@defvr {Op@value{cedilha}@~{a}o gr@'{a}fica} pic_width
 Valor padr@~{a}o: 640
 
 Essa @'{e} a largura do arquivo de bitmap gerado pelos terminais @code{png} e @code{jpg}.
@@ -235,7 +235,7 @@ Veja tamb@'{e}m @code{terminal}.
 
 
 
-@defvr {Op@,{c}@~{a}o gr@'{a}fica} pic_height
+@defvr {Op@value{cedilha}@~{a}o gr@'{a}fica} pic_height
 Valor padr@~{a}o: 640
 
 Essa @'{e} a altura do arquivo de bitmap gerado pelos terminais @code{png} e @code{jpg}.
@@ -245,7 +245,7 @@ Veja tamb@'{e}m @code{terminal}.
 
 
 
-@defvr {Op@,{c}@~{a}o gr@'{a}fica} axis_bottom
+@defvr {Op@value{cedilha}@~{a}o gr@'{a}fica} axis_bottom
 Valor padr@~{a}o: @code{true}
 
 Se @code{axis_bottom} for @code{true}, o eixo inferior @'{e} mostrado em fundos gr@'{a}ficos bidimensionais.
@@ -255,7 +255,7 @@ Veja tamb@'{e}m @code{axis_left},  @code{axis_top}, @code{axis_right}, e @code{a
 
 
 
-@defvr {Op@,{c}@~{a}o gr@'{a}fica} axis_left
+@defvr {Op@value{cedilha}@~{a}o gr@'{a}fica} axis_left
 Valor padr@~{a}o: @code{true}
 
 Se @code{axis_left} for @code{true}, o eixo da esquerda @'{e} mostrado em fundos gr@'{a}ficos bidimensionais.
@@ -265,7 +265,7 @@ Veja tamb@'{e}m @code{axis_bottom},  @code{axis_top}, @code{axis_right}, e @code
 
 
 
-@defvr {Op@,{c}@~{a}o gr@'{a}fica} axis_top
+@defvr {Op@value{cedilha}@~{a}o gr@'{a}fica} axis_top
 Valor padr@~{a}o: @code{true}
 
 Se @code{axis_top} for @code{true}, o eixo superior @'{e} mostrado em fundos gr@'{a}ficos bidimensionais.
@@ -275,7 +275,7 @@ Veja tamb@'{e}m @code{axis_bottom},  @code{axis_left}, @code{axis_right}, e @cod
 
 
 
-@defvr {Op@,{c}@~{a}o gr@'{a}fica} axis_right
+@defvr {Op@value{cedilha}@~{a}o gr@'{a}fica} axis_right
 Valor padr@~{a}o: @code{true}
 
 Se @code{axis_right} for @code{true}, o eixo da direita @'{e} mostrado em fundos gr@'{a}ficos bidimensionais.
@@ -285,7 +285,7 @@ Veja tamb@'{e}m @code{axis_bottom},  @code{axis_left}, @code{axis_top}, and @cod
 
 
 
-@defvr {Op@,{c}@~{a}o gr@'{a}fica} axis_3d
+@defvr {Op@value{cedilha}@~{a}o gr@'{a}fica} axis_3d
 Valor padr@~{a}o: @code{true}
 
 Se @code{axis_3d} for @code{true}, os eixos @var{x}, @var{y} e @var{z} s@~{a}o mostrados em fundos gr@'{a}ficos tridimensionais.
@@ -295,7 +295,7 @@ Veja tamb@'{e}m @code{axis_bottom},  @code{axis_left}, @code{axis_top}, e @code{
 
 
 
-@defvr {Op@,{c}@~{a}o gr@'{a}fica} point_size
+@defvr {Op@value{cedilha}@~{a}o gr@'{a}fica} point_size
 Valor padr@~{a}o: 1
 
 @code{point_size} escolhe o tamanho para os pontos do gr´afico. Esse valor deve ser um
@@ -304,16 +304,16 @@ n@'{u}mero n@~{a}o negativo.
 
 
 
-@defvr {Op@,{c}@~{a}o gr@'{a}fica} point_type
+@defvr {Op@value{cedilha}@~{a}o gr@'{a}fica} point_type
 Valor padr@~{a}o: 1
 
 @code{point_type} @'{e} um @'{i}ndice (maior ou igual a -1) para especificar como os pontos s@~{a}o mostrados.
-As cores dos pontos s@~{a}o controladas com essa op@,{c}@~{a}o.
+As cores dos pontos s@~{a}o controladas com essa op@value{cedilha}@~{a}o.
 @end defvr
 
 
 
-@defvr {Op@,{c}@~{a}o gr@'{a}fica} points_joined
+@defvr {Op@value{cedilha}@~{a}o gr@'{a}fica} points_joined
 Valor padr@~{a}o: @code{false}
 
 Se @code{points_joined} for @code{true}, pontos s@~{a}o unidos por linhas retas.
@@ -321,7 +321,7 @@ Se @code{points_joined} for @code{true}, pontos s@~{a}o unidos por linhas retas.
 
 
 
-@defvr {Op@,{c}@~{a}o gr@'{a}fica} fill_type
+@defvr {Op@value{cedilha}@~{a}o gr@'{a}fica} fill_type
 Valor padr@~{a}o: 1
 
 @code{fill_type} @'{e} um @'{i}ndice (maior ou igual a -1) para especificar a cor para regi@~{o}es a serem preenchidas.
@@ -329,7 +329,7 @@ Valor padr@~{a}o: 1
 
 
 
-@defvr {Op@,{c}@~{a}o gr@'{a}fica} transparent
+@defvr {Op@value{cedilha}@~{a}o gr@'{a}fica} transparent
 Valor padr@~{a}o: @code{false}
 
 Se @code{transparent} for @code{true}, regi@~{o}es internas de poligonos s@~{a}o
@@ -338,7 +338,7 @@ preenchidas de acordo com @code{fill_type}.
 
 
 
-@defvr {Op@,{c}@~{a}o gr@'{a}fica} border
+@defvr {Op@value{cedilha}@~{a}o gr@'{a}fica} border
 Valor padr@~{a}o: @code{true}
 
 Se @code{border} for @code{true}, bordas de pol@'{i}gonos s@~{a}o colorizadas
@@ -347,7 +347,7 @@ de acordo com @code{line_type} e @code{line_width}.
 
 
 
-@defvr {Op@,{c}@~{a}o gr@'{a}fica} head_both
+@defvr {Op@value{cedilha}@~{a}o gr@'{a}fica} head_both
 Valor padr@~{a}o: @code{false}
 
 Se @code{head_both} for @code{true}, vetores s@~{a}o mostrados com seta dupla na ponta.
@@ -356,7 +356,7 @@ Se @code{false}, somente uma seta @'{e} mostrada.
 
 
 
-@defvr {Op@,{c}@~{a}o gr@'{a}fica} head_length
+@defvr {Op@value{cedilha}@~{a}o gr@'{a}fica} head_length
 Valor padr@~{a}o: 2
 
 @code{head_length} indica, em unidades do eixo @var{x}, o comprimento da ponta da seta do vetor.
@@ -364,7 +364,7 @@ Valor padr@~{a}o: 2
 
 
 
-@defvr {Op@,{c}@~{a}o gr@'{a}fica} head_angle
+@defvr {Op@value{cedilha}@~{a}o gr@'{a}fica} head_angle
 Valor padr@~{a}o: 45
 
 @code{head_angle} indica o @^{a}ngulo, em graus, entre a ponta da seta do vetor e
@@ -373,7 +373,7 @@ o segmento que forma o corpo do vetor.
 
 
 
-@defvr {Op@,{c}@~{a}o gr@'{a}fica} head_type
+@defvr {Op@value{cedilha}@~{a}o gr@'{a}fica} head_type
 Valor padr@~{a}o: @code{filled}
 
 @code{head_type} @'{e} usada para especificar como a ponta @'{e} mostrada. Valores
@@ -383,26 +383,26 @@ poss@'{i}veis s@~{a}o: @code{filled} (ponta fechada e preenchida), @code{empty}
 
 
 
-@defvr {Op@,{c}@~{a}o gr@'{a}fica} label_alignment
+@defvr {Op@value{cedilha}@~{a}o gr@'{a}fica} label_alignment
 Valor padr@~{a}o: @code{center}
 
 @code{label_alignment} \'e usado para especificar onde escrever r@'{o}tulos com
-rela@,{c}@~{a}o @`as coordenadas fornecidas. Valores poss@'{i}veis s@~{a}o: @code{center},
+rela@value{cedilha}@~{a}o @`as coordenadas fornecidas. Valores poss@'{i}veis s@~{a}o: @code{center},
 @code{left}, e @code{right}.
 @end defvr
 
 
 
-@defvr {Op@,{c}@~{a}o gr@'{a}fica} label_orientation
+@defvr {Op@value{cedilha}@~{a}o gr@'{a}fica} label_orientation
 Valor padr@~{a}o: @code{horizontal}
 
-@code{label_orientation} @'{e} usada para especificar a orienta@,{c}@~{a}o dos r@'{o}tulos.
+@code{label_orientation} @'{e} usada para especificar a orienta@value{cedilha}@~{a}o dos r@'{o}tulos.
 Valores poss@'{i}veis s@~{a}o: @code{horizontal}, e @code{vertical}.
 @end defvr
 
 
 
-@defvr {Op@,{c}@~{a}o gr@'{a}fica} label_color
+@defvr {Op@value{cedilha}@~{a}o gr@'{a}fica} label_color
 Valor padr@~{a}o: 1
 
 @code{label_color} @'{e} um @'{i}ndice (maior ou igual a -1) para especificar a cor da fonte usada no r@'{o}tulo.
@@ -410,7 +410,7 @@ Valor padr@~{a}o: 1
 
 
 
-@defvr {Op@,{c}@~{a}o gr@'{a}fica} line_width
+@defvr {Op@value{cedilha}@~{a}o gr@'{a}fica} line_width
 Valor padr@~{a}o: 1
 
 @code{line_width} @'{e} a lagura para linhas do gr@'{a}fico.
@@ -418,16 +418,16 @@ Valor padr@~{a}o: 1
 
 
 
-@defvr {Op@,{c}@~{a}o gr@'{a}fica} line_type
+@defvr {Op@value{cedilha}@~{a}o gr@'{a}fica} line_type
 Valor padr@~{a}o: 1
 
 @code{line_type} @'{e} um @'{i}ndice (maior ou igual a -1) para especificar como linhas s@~{a}o mostradas.
-A cor das linhas @'{e} controlada com essa op@,{c}@~{a}o.
+A cor das linhas @'{e} controlada com essa op@value{cedilha}@~{a}o.
 @end defvr
 
 
 
-@defvr {Op@,{c}@~{a}o gr@'{a}fica} nticks
+@defvr {Op@value{cedilha}@~{a}o gr@'{a}fica} nticks
 Valor padr@~{a}o: 30
 
 @code{nticks} @'{e} o n@'{u}mero de amostra de pontos usado pelas rotinas de montagem de gr@'{a}fico.
@@ -435,7 +435,7 @@ Valor padr@~{a}o: 30
 
 
 
-@defvr {Op@,{c}@~{a}o gr@'{a}fica} adapt_depth
+@defvr {Op@value{cedilha}@~{a}o gr@'{a}fica} adapt_depth
 Valor padr@~{a}o: 10
 
 @code{adapt_depth} @'{e} o n@'{u}mero m@'{a}ximo de quebras usado pelas rotinas adaptativos de impress@~{a}o.
@@ -443,24 +443,24 @@ Valor padr@~{a}o: 10
 
 
 
-@defvr {Op@,{c}@~{a}o gr@'{a}fica} key
+@defvr {Op@value{cedilha}@~{a}o gr@'{a}fica} key
 Valor padr@~{a}o: @code{""} (a seq@"{u}@^{e}ncia de caracteres vazia)
 
-@code{key} @'{e} o nome de uma fun@,{c}@~{a}o na legenda. Se @code{key} @'{e} uma
-seq@"{u}@^{e}ncia de caracteres vazia, nenhuma chave @'{e} atribu@'{i}da @`a fun@,{c}@~{a}o.
+@code{key} @'{e} o nome de uma fun@value{cedilha}@~{a}o na legenda. Se @code{key} @'{e} uma
+seq@"{u}@^{e}ncia de caracteres vazia, nenhuma chave @'{e} atribu@'{i}da @`a fun@value{cedilha}@~{a}o.
 @end defvr
 
 
 
-@defvr {Op@,{c}@~{a}o gr@'{a}fica} function_style
+@defvr {Op@value{cedilha}@~{a}o gr@'{a}fica} function_style
 Valor padr@~{a}o: @code{lines}
 
-@code{function_style} indica como fun@,{c}@~{o}es s@~{a}o mostradas: com linhas (@code{lines}) ou com pontos (@code{dots}).
+@code{function_style} indica como fun@value{cedilha}@~{o}es s@~{a}o mostradas: com linhas (@code{lines}) ou com pontos (@code{dots}).
 @end defvr
 
 
 
-@defvr {Op@,{c}@~{a}o gr@'{a}fica} xu_grid
+@defvr {Op@value{cedilha}@~{a}o gr@'{a}fica} xu_grid
 Valor padr@~{a}o: 30
 
 @code{xu_grid} @'{e} o n@'{u}mero de coordenadas da primeira vari@'{a}vel
@@ -472,7 +472,7 @@ Veja tamb@'{e}m @code{yv_grid}.
 
 
 
-@defvr {Op@,{c}@~{a}o gr@'{a}fica} yv_grid
+@defvr {Op@value{cedilha}@~{a}o gr@'{a}fica} yv_grid
 Valor padr@~{a}o: 30
 
 @code{yv_grid} @'{e} o n@'{u}mero de coordenadas da segunda vari@'{a}vel
@@ -484,7 +484,7 @@ Veja tamb@'{e}m @code{xu_grid}.
 
 
 
-@defvr {Op@,{c}@~{a}o gr@'{a}fica} surface_hide
+@defvr {Op@value{cedilha}@~{a}o gr@'{a}fica} surface_hide
 Valor padr@~{a}o: @code{false}
 
 Se @code{surface_hide} for @code{true}, partes escondidas n@~{a}o s@~{a}o mostradas no gr@'{a}fico em superf@'{i}cies tridimensioais.
@@ -492,7 +492,7 @@ Se @code{surface_hide} for @code{true}, partes escondidas n@~{a}o s@~{a}o mostra
 
 
 
-@defvr {Op@,{c}@~{a}o gr@'{a}fica} contour
+@defvr {Op@value{cedilha}@~{a}o gr@'{a}fica} contour
 Valor padr@~{a}o: @code{none}
 
 Option @code{contour} torna o usu@'{a}rio capaz de selecionar onde imprimir linhas de contorno.
@@ -518,7 +518,7 @@ duas linhas de contorno s@~{a}o mostradas: no plano xy e sobre a superf@'{i}cie.
 
 @item
 @code{map}:
-linhas de contorno s@~{a}o projetadas sobre o plano xy, e o ponto de boserva@,{c}@~{a}o @'{e}
+linhas de contorno s@~{a}o projetadas sobre o plano xy, e o ponto de boserva@value{cedilha}@~{a}o @'{e}
 escolhido na vertical.
 
 @end itemize
@@ -527,7 +527,7 @@ escolhido na vertical.
 
 
 
-@defvr {Op@,{c}@~{a}o gr@'{a}fica} contour_levels
+@defvr {Op@value{cedilha}@~{a}o gr@'{a}fica} contour_levels
 Valor padr@~{a}o: 5
 
 @code{contour_levels} @'{e} o n@'{u}mero de n@'{i}veis em gr@'{a}ficos de contorno.
@@ -535,7 +535,7 @@ Valor padr@~{a}o: 5
 
 
 
-@defvr {Op@,{c}@~{a}o gr@'{a}fica} columns
+@defvr {Op@value{cedilha}@~{a}o gr@'{a}fica} columns
 Valor padr@~{a}o: 1
 
 @code{columns} @'{e} o n;umero de colunas em gr@'{a}ficos multiplos.
@@ -543,7 +543,7 @@ Valor padr@~{a}o: 1
 
 
 
-@defvr {Op@,{c}@~{a}o gr@'{a}fica} ip_grid
+@defvr {Op@value{cedilha}@~{a}o gr@'{a}fica} ip_grid
 Valor padr@~{a}o: @code{[50, 50]}
 
 @code{ip_grid} escolhe a grade para a primeira amostragem em gr@'{a}ficos impl@'{i}citos.
@@ -551,7 +551,7 @@ Valor padr@~{a}o: @code{[50, 50]}
 
 
 
-@defvr {Op@,{c}@~{a}o gr@'{a}fica} ip_grid_in
+@defvr {Op@value{cedilha}@~{a}o gr@'{a}fica} ip_grid_in
 Valor padr@~{a}o: @code{[5, 5]}
 
 @code{ip_grid_in} escolhe a grade para a segunda amostragem em gr@'{a}ficos impl@'{i}citos.
@@ -565,11 +565,11 @@ Valor padr@~{a}o: @code{[5, 5]}
 
 
 
-@deffn {Construtor de fundo gr@'{a}fico} gr2d (@var{op@,{c}@~{a}o gr@'{a}fica}, ..., @var{objeto gr@'{a}fico}, ...)
+@deffn {Construtor de fundo gr@'{a}fico} gr2d (@var{op@value{cedilha}@~{a}o gr@'{a}fica}, ..., @var{objeto gr@'{a}fico}, ...)
 
-A fun@,{c}@~{a}o @code{gr2d} constr@'{o}i um objeto descrevendo um fundo gr@'{a}fico em duas dimens@~{o}es. Arguments are
-@i{op@,{c}@~{o}es gr@'{a}ficas} e @i{objetos gr@'{a}ficos}. Esse fundo gr@'{a}fico @'{e} interpretado
-seq@"{u}@^{e}ncialmente: @i{op@,{c}@~{o}es gr@'{a}ficas} afetam aqueles @i{objetos gr@'{a}ficos} colocados
+A fun@value{cedilha}@~{a}o @code{gr2d} constr@'{o}i um objeto descrevendo um fundo gr@'{a}fico em duas dimens@~{o}es. Arguments are
+@i{op@value{cedilha}@~{o}es gr@'{a}ficas} e @i{objetos gr@'{a}ficos}. Esse fundo gr@'{a}fico @'{e} interpretado
+seq@"{u}@^{e}ncialmente: @i{op@value{cedilha}@~{o}es gr@'{a}ficas} afetam aqueles @i{objetos gr@'{a}ficos} colocados
 imediatamente @`a sua direita.
 
 Adiante encontra-se uma lista de @i{objetos gr@'{a}ficos} dispon@'{i}vies para fundos gr@'{a}ficos em duas dimens@~{o}es:
@@ -578,30 +578,30 @@ Adiante encontra-se uma lista de @i{objetos gr@'{a}ficos} dispon@'{i}vies para f
 @item
 @code{points([[x1,y1], [x2,y2], [x3,y3],...])} ou @code{points([x1,x2,x3,...], [y1,y2,y3,...])}:
 posiciona os pontos @code{[x1,y1]}, @code{[x2,y2]}, @code{[x2,y2]}, ... no gr@'{a}fico.
-Esse objeto @'{e} efetado pelas seguintes @i{op@,{c}@~{o}es gr@'{a}ficas}: @code{point_size}, 
+Esse objeto @'{e} efetado pelas seguintes @i{op@value{cedilha}@~{o}es gr@'{a}ficas}: @code{point_size}, 
 @code{point_type}, @code{points_joined}, @code{line_width}, @code{key} e @code{line_type}.
 
 
 @item
 @code{polygon([[x1,y1], [x2,y2], [x3,y3],...])} ou @code{polygon([x1,x2,x3,...], [y1,y2,y3,...])}:
 desenha um pol@'{i}gono com v@'{e}rtices @code{[x1,y1]}, @code{[x2,y2]}, @code{[x2,y2]}, ... no plano.
-Esse objeto @'{e} afetado pelas seguintes @i{op@,{c}s gr@'{a}ficas}: @code{transparent}, 
+Esse objeto @'{e} afetado pelas seguintes @i{op@value{cedilha}s gr@'{a}ficas}: @code{transparent}, 
 @code{fill_type}, @code{border}, @code{line_width}, @code{key} e @code{line_type}.
 
 
 @item
 @code{rectangle([x1,y1], [x2,y2])}:
 desenha um ret@^{a}ngulo partindo do v@'{e}rtice @code{[x1,y1]} e terminando no v@'{e}rtice @code{[x2,y2]} oposto ao primeiro.
-Esse objeto @'{e} afetado pelas seguintes @i{op@,{c}@~{o}es gr@'{a}ficas}: @code{transparent}, 
+Esse objeto @'{e} afetado pelas seguintes @i{op@value{cedilha}@~{o}es gr@'{a}ficas}: @code{transparent}, 
 @code{fill_type}, @code{border}, @code{line_width}, @code{key} e @code{line_type}.
 
 
 @item
 @code{ellipse(xc, yc, a, b, angulo_inicial, @^{a}ngulo_final)}:
 desenha uma elipse com centro em @code{[xc, yc]} com semi-eixo horizontal @code{a} e
-semi-eixo vertial @code{b} tra@,{c}ando um arco de elipse que se inicia no @^{a}ngulo @code{@^{a}ngulo_inicial} e indo
+semi-eixo vertial @code{b} tra@value{cedilha}ando um arco de elipse que se inicia no @^{a}ngulo @code{@^{a}ngulo_inicial} e indo
 at@'{e} o @^{a}ngulo @code{@^{a}ngulo_final}.
-Esse objeto @'{e} afetado pelas seguintes @i{op@,{c}@~{o}es gr@'{a}ficas}: @code{nticks}, 
+Esse objeto @'{e} afetado pelas seguintes @i{op@value{cedilha}@~{o}es gr@'{a}ficas}: @code{nticks}, 
 @code{transparent}, @code{fill_type}, @code{border}, @code{line_width}, 
 @code{line_type} e @code{key}.
 
@@ -609,33 +609,33 @@ Esse objeto @'{e} afetado pelas seguintes @i{op@,{c}@~{o}es gr@'{a}ficas}: @code
 @item
 @code{label(r@'{o}tulo,x,y)}:
 escreve o @code{r@'{o}tulo} no ponto @code{[x,y]}.
-Esse objeto @'{e} afetado pelas seguintes @i{op@,{c}@~{o}es gr@'{a}ficas}: @code{label_alignment}, 
+Esse objeto @'{e} afetado pelas seguintes @i{op@value{cedilha}@~{o}es gr@'{a}ficas}: @code{label_alignment}, 
 @code{label_orientation} e @code{label_color}.
 
 
 @item
 @code{vector([x,y], [dx,dy])}:
 desenha um vetor de componentes ortogonais @code{[dx,dy]} com or@'{i}gem eno ponto @code{[x,y]}.
-Esse objeto @'{e} afetado pelas seguintes @i{op@,{c}@~{o}es gr@'{a}ficas}: @code{head_both}, 
+Esse objeto @'{e} afetado pelas seguintes @i{op@value{cedilha}@~{o}es gr@'{a}ficas}: @code{head_both}, 
 @code{head_length}, @code{head_angle}, @code{head_type}, @code{line_width}, 
 @code{line_type} e @code{key}.
 
 
 @item
 @code{explicit(fcn,var,minval,maxval)}:
-monta o gr@'{a}fico da fun@,{c}@~{a}o expl@'{i}cita @code{fcn}, com vari@'{a}vel @code{var} assumindo valores
+monta o gr@'{a}fico da fun@value{cedilha}@~{a}o expl@'{i}cita @code{fcn}, com vari@'{a}vel @code{var} assumindo valores
 de @code{minval} a @code{maxval}.
-Esse objeto @'{e} afetado pelas seguintes @i{op@,{c}@~{o}es gr@'{a}ficas}: @code{nticks}, 
+Esse objeto @'{e} afetado pelas seguintes @i{op@value{cedilha}@~{o}es gr@'{a}ficas}: @code{nticks}, 
 @code{adapt_depth}, @code{line_width}, @code{line_type}, @code{key}, 
 @code{function_style} e @code{fill_type}.
 
 
 @item
 @code{implicit(fcn,x-var,x-minval,x-maxval,y-var,y-minval,y-maxval)}:
-monta o gr@'{a}fico da fun@,{c}@~{a}o impl@'{i}cita definida por @code{fcn}, com vari@'{a}vel @code{x-var} assumindo
+monta o gr@'{a}fico da fun@value{cedilha}@~{a}o impl@'{i}cita definida por @code{fcn}, com vari@'{a}vel @code{x-var} assumindo
 de @code{x-minval} a @code{x-maxval}, e vari@'{a}vel @code{y-var} assumindo valores
 de @code{y-minval} a @code{y-maxval}.
-Esse objeto @'{e} afetado pelas seguintes @i{op@,{c}@~{o}es gr@'{a}ficas}: @code{ip_grid}, 
+Esse objeto @'{e} afetado pelas seguintes @i{op@value{cedilha}@~{o}es gr@'{a}ficas}: @code{ip_grid}, 
 @code{ip_grid_in}, @code{line_width}, @code{line_type}, @code{key}, 
 @code{filled_function} e @code{fill_type}.
 
@@ -644,22 +644,22 @@ Esse objeto @'{e} afetado pelas seguintes @i{op@,{c}@~{o}es gr@'{a}ficas}: @code
 @code{polar(radius,ang,minang,maxang)}:
 plots function @code{radius(ang)} defined in polar coordinates, com a vari@'{a}vel @code{ang}
 assumindo valores de @code{minang} a @code{maxang}.
-Esse objeto @'{e} afetado pelas seguintes @i{op@,{c}@~{o}es gr@'{a}ficas}: @code{nticks}, 
+Esse objeto @'{e} afetado pelas seguintes @i{op@value{cedilha}@~{o}es gr@'{a}ficas}: @code{nticks}, 
 @code{line_width}, @code{line_type}, @code{key}, 
 @code{function_style} e @code{point_type}.
 
 
 @item
 @code{parametric(xfun,yfun,par,parmin,parmax)}:
-monta o gr@'{a}fico da fun@,{c}@~{a}o param@'{e}trica @code{[xfun,yfun]}, com par@^{a}metro @code{par}
+monta o gr@'{a}fico da fun@value{cedilha}@~{a}o param@'{e}trica @code{[xfun,yfun]}, com par@^{a}metro @code{par}
 assumindo valores de @code{parmin} a @code{parmax}.
-Esse objeto @'{e} afetado pelas seguintes @i{op@,{c}@~{o}es gr@'{a}ficas}: @code{nticks}, 
+Esse objeto @'{e} afetado pelas seguintes @i{op@value{cedilha}@~{o}es gr@'{a}ficas}: @code{nticks}, 
 @code{line_width}, @code{line_type}, @code{key}, 
 @code{function_style} e @code{point_type}.
 
 @end itemize
 
-Veja tamb@'{e}m as seguintes op@,{c}@~{o}es gr@'{a}ficas: @code{xrange}, @code{yrange}, 
+Veja tamb@'{e}m as seguintes op@value{cedilha}@~{o}es gr@'{a}ficas: @code{xrange}, @code{yrange}, 
 @code{logx}, @code{logy}, @code{terminal}, @code{grid}, @code{title}, 
 @code{xlabel}, @code{ylabel}, @code{xtics}, @code{ytics}, @code{xy_file}, 
 @code{file_name}, @code{pic_width}, @code{pic_height}, 
@@ -676,11 +676,11 @@ e @code{axis_right}.
 
 
 
-@deffn {Scene constructor} gr3d (@var{op@,{c}@~{a}o gr@'{a}fica}, ..., @var{objeto gr@'{a}fico}, ...)
+@deffn {Scene constructor} gr3d (@var{op@value{cedilha}@~{a}o gr@'{a}fica}, ..., @var{objeto gr@'{a}fico}, ...)
 
-A fun@,{c}@~{a}o @code{gr3d} constr@'{o}i um objeto descrevendo um fundo gr@'{a}fico tridimensional. Argumentos s@~{a}o
-@i{op@,{c}@~{o}es gr@'{a}ficas} e @i{objetos gr@'{a}ficos}. Esse fundo gr@'{a}fico @'{e} interpretado
-seq@"{u}@^{e}ncialmente: @i{op@,{c}@~{o}es gr@'{a}ficas} afetam aqueles @i{objetos gr@'{a}ficos} colocados
+A fun@value{cedilha}@~{a}o @code{gr3d} constr@'{o}i um objeto descrevendo um fundo gr@'{a}fico tridimensional. Argumentos s@~{a}o
+@i{op@value{cedilha}@~{o}es gr@'{a}ficas} e @i{objetos gr@'{a}ficos}. Esse fundo gr@'{a}fico @'{e} interpretado
+seq@"{u}@^{e}ncialmente: @i{op@value{cedilha}@~{o}es gr@'{a}ficas} afetam aqueles @i{objetos gr@'{a}ficos} colocados
 imediatamente @`a sua direita.
 
 Essa @'{e} a lista dos @i{objetos gr@'{a}ficos} dispon@'{i}veis para fundos gr@'{a}ficos tridimensionais:
@@ -690,23 +690,23 @@ Essa @'{e} a lista dos @i{objetos gr@'{a}ficos} dispon@'{i}veis para fundos gr@'
 @code{points([[x1,y1,z1], [x2,y2,z2], [x3,y3,z3],...])} ou 
 @code{points([x1,x2,x3,...], [y1,y2,y3,...], [z1,z2,z3,...])}:
 posiciona os pontos @code{[x1,y1,z1]}, @code{[x2,y2,z2]}, @code{[x2,y2,z3]}, ... no gr@'{a}fico.
-Esse objeto @'{e} afetado pelas seguintes @i{op@,{c}@~{o}es gr@'{a}ficas}: @code{point_size}, 
+Esse objeto @'{e} afetado pelas seguintes @i{op@value{cedilha}@~{o}es gr@'{a}ficas}: @code{point_size}, 
 @code{point_type}, @code{points_joined}, @code{line_width}, @code{key} e @code{line_type}.
 
 
 @item
 @code{label(r@'{o}tulo,x,y,z)}:
 escreve @code{r@'{o}tulo} no ponto @code{[x,y,z]}.
-Esse objeto @'{e} afetado pelas seguintes @i{op@,{c}@~{o}es gr@'{a}ficas}: @code{label_alignment}, 
+Esse objeto @'{e} afetado pelas seguintes @i{op@value{cedilha}@~{o}es gr@'{a}ficas}: @code{label_alignment}, 
 @code{label_orientation} e @code{label_color}.
 
 
 @item
 @code{explicit(fcn,var1,minval1,maxval1,var2,minval2,maxval2)}:
-monta o gr@'{a}fico da fun@,{c}@~{a}o expl@'{i}cita @code{fcn}, com a vari@'{a}vel @code{var1} assumindo valores
+monta o gr@'{a}fico da fun@value{cedilha}@~{a}o expl@'{i}cita @code{fcn}, com a vari@'{a}vel @code{var1} assumindo valores
 de @code{minval1} a @code{maxval1} e vari@'{a}vel @code{var2} assumindo valores
 de @code{minval2} a @code{maxval2}.
-Esse objeto @'{e} afetado pelas seguintes @i{op@,{c}@~{o}es gr@'{a}ficas}: @code{xu_grid}, 
+Esse objeto @'{e} afetado pelas seguintes @i{op@value{cedilha}@~{o}es gr@'{a}ficas}: @code{xu_grid}, 
 @code{yv_grid}, @code{line_type} e @code{key}.
 
 
@@ -714,7 +714,7 @@ Esse objeto @'{e} afetado pelas seguintes @i{op@,{c}@~{o}es gr@'{a}ficas}: @code
 @code{parametric(xfun,yfun,zfun,par,parmin,parmax)}:
 monta o gr@'{a}fico da curva param@'{e}trica @code{[xfun,yfun,zfun]}, com par@^{a}metro @code{par}
 assumindo valores de @code{parmin} a @code{parmax}.
-Esse objeto @'{e} afetado pelas seguintes @i{op@,{c}@~{o}es gr@'{a}ficas}: @code{nticks}, 
+Esse objeto @'{e} afetado pelas seguintes @i{op@value{cedilha}@~{o}es gr@'{a}ficas}: @code{nticks}, 
 @code{line_width}, @code{line_type} e @code{key}.
 
 
@@ -723,12 +723,12 @@ Esse objeto @'{e} afetado pelas seguintes @i{op@,{c}@~{o}es gr@'{a}ficas}: @code
 monta o gr@'{a}fico da superf@'{i}cie param@'{e}trica @code{[xfun,yfun,zfun]}, com par@^{a}metro @code{par1}
 assumindo valores de @code{par1min} a @code{par1max} e o par@^{a}metro @code{par2}
 assumindo valores de @code{par2min} a @code{par2max}.
-Esse objeto @'{e} afetado pelas seguintes @i{op@,{c}@~{o}es gr@'{a}ficas}: @code{nticks}, 
+Esse objeto @'{e} afetado pelas seguintes @i{op@value{cedilha}@~{o}es gr@'{a}ficas}: @code{nticks}, 
 @code{line_width}, @code{line_type}, e @code{key}.
 
 @end itemize
 
-Veja tamb@'{e}m as seguintes op@,{c}@~{o}es gr@'{a}ficas: @code{xrange}, @code{yrange}, 
+Veja tamb@'{e}m as seguintes op@value{cedilha}@~{o}es gr@'{a}ficas: @code{xrange}, @code{yrange}, 
 @code{zrange}, @code{logx}, @code{logy}, @code{logz}, @code{terminal}, 
 @code{grid}, @code{title}, @code{xlabel}, @code{ylabel}, @code{zlabel}, 
 @code{xtics}, @code{ytics}, @code{ztics}, @code{xy_file}, 
@@ -746,35 +746,35 @@ Veja tamb@'{e}m as seguintes op@,{c}@~{o}es gr@'{a}ficas: @code{xrange}, @code{y
 
 
 
-@deffn {Function} draw (@var{gr2d}, ..., @var{gr3d}, ..., @var{op@,{c}@~{o}es}, ...)
+@deffn {Function} draw (@var{gr2d}, ..., @var{gr3d}, ..., @var{op@value{cedilha}@~{o}es}, ...)
 
 Monta o fundo de uma s@'{e}rie de gr@'{a}ficos; seus argumentos s@~{a}o objetos @code{gr2d} e
-@code{gr3d}, juntamente com algumas op@,{c}@~{o}es. Por padr@~{a}o, o fundos gr@'{a}ficos s@~{a}o colocados juntos
+@code{gr3d}, juntamente com algumas op@value{cedilha}@~{o}es. Por padr@~{a}o, o fundos gr@'{a}ficos s@~{a}o colocados juntos
 em uma coluna.
 
-A fun@,{c}@~{a}o @code{draw} aceita duas op@,{c}@~{o}es poss@'{i}veis: @code{terminal} 
+A fun@value{cedilha}@~{a}o @code{draw} aceita duas op@value{cedilha}@~{o}es poss@'{i}veis: @code{terminal} 
 e @code{columns}.
 
-As fun@,{c}@~{o}es @code{draw2d} e @code{draw3d} s@~{a}o atalhos para serem usados 
+As fun@value{cedilha}@~{o}es @code{draw2d} e @code{draw3d} s@~{a}o atalhos para serem usados 
 quando somente um fundo gr@'{a}fico @'{e} requerido, em duas ou tr@^{e}s dimens@~{o}es, respectivamente.
 
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} draw2d (@var{op@,{c}@~{a}o}, @var{objeto gr@'{a}fico}, ...)
+@deffn {Fun@value{cedilha}@~{a}o} draw2d (@var{op@value{cedilha}@~{a}o}, @var{objeto gr@'{a}fico}, ...)
 
-Essa fun@,{c}@~{a}o @'{e} um atalho para
-@code{draw2d(gr2d(@var{op@,{c}@~{o}es}, ..., @var{objeto gr@'{a}fico}, ...))}.
+Essa fun@value{cedilha}@~{a}o @'{e} um atalho para
+@code{draw2d(gr2d(@var{op@value{cedilha}@~{o}es}, ..., @var{objeto gr@'{a}fico}, ...))}.
 
 Pode ser usada para montar gr@'{a}fico de um @'{u}nico fundo bidimensional.
 
 @end deffn
 
 
-@deffn {Fun@,{c}@~{a}o} draw3d (@var{op@,{c}@~{a}o}, @var{graphic object}, ...)
+@deffn {Fun@value{cedilha}@~{a}o} draw3d (@var{op@value{cedilha}@~{a}o}, @var{graphic object}, ...)
 
-Essa fun@,{c}@~{a}o @'{e} um atalho para
-@code{draw3d(gr3d(@var{op@,{c}@~{o}es}, ..., @var{objeto gr@'{a}fico}, ...))}.
+Essa fun@value{cedilha}@~{a}o @'{e} um atalho para
+@code{draw3d(gr3d(@var{op@value{cedilha}@~{o}es}, ..., @var{objeto gr@'{a}fico}, ...))}.
 
 Pode ser usada para montar o fundo gr@'{a}fico @'{u}nico tridmensional.
 
@@ -787,7 +787,7 @@ Valor padr@~{a}o: @code{true}
 
 Quando @code{draw_pipes} for @code{true}, Maxima comunica-se com Gnuplot
 diretamente (via pipes). Se @code{draw_pipes} for @code{false}, Maxima comunica-se 
-com Gnuplot via arquivos. Essa op@,{c}@~{a}o n@~{a}o est@'{a} dispon@'{i}vel para usu@'{a}rios windows.
+com Gnuplot via arquivos. Essa op@value{cedilha}@~{a}o n@~{a}o est@'{a} dispon@'{i}vel para usu@'{a}rios windows.
 
 @end defvr
 

@@ -1,19 +1,19 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /zeilberger.texi/1.5/Thu Dec 28 05:44:18 2006//
 @menu
-* Introdu@,{c}@~{a}o a zeilberger::
-* Defini@,{c}@~{o}es para zeilberger::
+* Introdu@value{cedilha}@~{a}o a zeilberger::
+* Defini@value{cedilha}@~{o}es para zeilberger::
 @end menu
 
-@node Introdu@,{c}@~{a}o a zeilberger, Defini@,{c}@~{o}es para zeilberger, zeilberger, zeilberger
-@section Introdu@,{c}@~{a}o a zeilberger
+@node Introdu@value{cedilha}@~{a}o a zeilberger, Defini@value{cedilha}@~{o}es para zeilberger, zeilberger, zeilberger
+@section Introdu@value{cedilha}@~{a}o a zeilberger
 
-@code{zeilberger} @'{e} uma implementa@,{c}@~{a}o do algor@'{i}tmo de Zeilberger
+@code{zeilberger} @'{e} uma implementa@value{cedilha}@~{a}o do algor@'{i}tmo de Zeilberger
 para somat@'{o}rio hipergeom@'{e}tricos definidos, e tamb@'{e}m 
 para o algor@'{i}tmo de Gosper para somat@'{o}rios hipergeom@'{e}tricos
 indefinidos.
 
-@code{zeilberger} faz uso do m@'{e}todo de otimiza@,{c}@~{a}o "filtering" desenvolvido por Axel Riese.
+@code{zeilberger} faz uso do m@'{e}todo de otimiza@value{cedilha}@~{a}o "filtering" desenvolvido por Axel Riese.
 
 @code{zeilberger} foi desenvolvido por Fabrizio Caruso.
 
@@ -23,7 +23,7 @@ indefinidos.
 
 @code{zeilberger} implementa o algor@'{i}tmo de Gosper
 para somat@'{o}rio hipergeom@'{e}trico indefinido.
-Dado um termo hipergeom@'{e}trico @math{F_k} em @math{k} queremos encontrar sua anti-diferen@,{c}a
+Dado um termo hipergeom@'{e}trico @math{F_k} em @math{k} queremos encontrar sua anti-diferen@value{cedilha}a
 hipergeom@'{e}trica, isto @'{e}, um termo hipergeom@'{e}trico @math{f_k} tal que @math{F_k = f_(k+1) - f_k}.
 
 @subsubsection O problema dos somat@'{o}rios hipergeom@'{e}tricos definidos
@@ -33,27 +33,27 @@ para somat@'{o}rio hipergeom@'{e}trico definido.
 Dado um termo hipergeom@'{e}trico apropriado (em @math{n} e @math{k}) @math{F_(n,k)} e um
 inteiro positivo @math{d} queremos encontrar um @math{d}-@'{e}sima ordem de recorr@^{e}ncia
 linear com coeficientes polinomiais (em @math{n}) para @math{F_(n,k)}
-e uma fun@,{c}@~{a}o racional @math{R} em @math{n} e @math{k} tal que
+e uma fun@value{cedilha}@~{a}o racional @math{R} em @math{n} e @math{k} tal que
 
 @math{a_0 F_(n,k) + ... + a_d F_(n+d),k = Delta_K(R(n,k) F_(n,k))}
 
-onde @math{Delta_k} @'{e} o @math{k}-seguinte operador de diferen@,{c}a, i.e.,
+onde @math{Delta_k} @'{e} o @math{k}-seguinte operador de diferen@value{cedilha}a, i.e.,
 @math{Delta_k(t_k) := t_(k+1) - t_k}.
 
-@subsection N@'{i}veis de detalhe nas informa@,{c}@~{o}es
+@subsection N@'{i}veis de detalhe nas informa@value{cedilha}@~{o}es
 
 Existe tamb@'{e}m vers@~{o}es de n@'{i}veis de detalhe fornecidos pelos comandos
-que s@~{a}o chamados (os n@'{i}veis) atrav@'{e}s da adi@,{c}@~{a}o de um dos seguintes prefixos:
+que s@~{a}o chamados (os n@'{i}veis) atrav@'{e}s da adi@value{cedilha}@~{a}o de um dos seguintes prefixos:
 
 @table @code
 @item Summary
 Apenas um sum@'{a}rio @'{e} mostrado no final
 @item Verbose
-Algumas informa@,{c}@~{o}es nos passos intermedi@'{a}rios
+Algumas informa@value{cedilha}@~{o}es nos passos intermedi@'{a}rios
 @item VeryVerbose
-Muita informa@,{c}@~{a}o
+Muita informa@value{cedilha}@~{a}o
 @item Extra
-Muito mais informa@,{c}@~{a}o incluindo informa@,{c}@~{a}o sobre
+Muito mais informa@value{cedilha}@~{a}o incluindo informa@value{cedilha}@~{a}o sobre
 o sistema linear no algor@'{i}tmo de Zeilberger
 @end table
 
@@ -62,30 +62,30 @@ Por exemplo:
 @code{ZeilbergerExtra}, @code{AntiDifferenceSummary}.
 
 
-@node Defini@,{c}@~{o}es para zeilberger, , Introdu@,{c}@~{a}o a zeilberger, zeilberger
-@section Defini@,{c}@~{o}es para zeilberger
+@node Defini@value{cedilha}@~{o}es para zeilberger, , Introdu@value{cedilha}@~{a}o a zeilberger, zeilberger
+@section Defini@value{cedilha}@~{o}es para zeilberger
 
-@deffn {Fun@,{c}@~{a}o} AntiDifference (@var{F_k}, @var{k})
+@deffn {Fun@value{cedilha}@~{a}o} AntiDifference (@var{F_k}, @var{k})
 
-Retorna a anti-diferen@,{c}a hipergeom@'{e}trica
-de @var{F_k}, se essa anti-diferen@,{c}a.
+Retorna a anti-diferen@value{cedilha}a hipergeom@'{e}trica
+de @var{F_k}, se essa anti-diferen@value{cedilha}a.
 De outra forma @code{AntiDifference} retorna @code{no_hyp_antidifference}.
 @end deffn
 
-@deffn {Fun@,{c}@~{a}o} Gosper (@var{F_k}, @var{k})
+@deffn {Fun@value{cedilha}@~{a}o} Gosper (@var{F_k}, @var{k})
 Retorna o certificado racional @var{R(k)} para @var{F_k}, isto @'{e},
-uma fun@,{c}@~{a}o racional tal que
+uma fun@value{cedilha}@~{a}o racional tal que
 
 @math{F_k = R(k+1) F_(k+1) - R(k) F_k}
  
-se essa fun@,{c}@~{a}o racional exitir.
+se essa fun@value{cedilha}@~{a}o racional exitir.
 De outra forma, @code{Gosper} retorna @code{no_hyp_sol}.
 @end deffn
 
-@deffn {Fun@,{c}@~{a}o} GosperSum (@var{F_k}, @var{k}, @var{a}, @var{b}) 
+@deffn {Fun@value{cedilha}@~{a}o} GosperSum (@var{F_k}, @var{k}, @var{a}, @var{b}) 
 
 Retorna o somat@'{o}rio de @var{F_k} de @math{@var{k} = @var{a}} a @math{@var{k} = @var{b}}
-se @var{F_k} tiver ma diferen@,{c}a hipergeom@'{e}trica.
+se @var{F_k} tiver ma diferen@value{cedilha}a hipergeom@'{e}trica.
 De outra forma, @code{GosperSum} retorna @code{nongosper_summable}.
 
 Exemplos:
@@ -142,33 +142,33 @@ Dependent equations eliminated:  (1)
 @end example
 @end deffn
 
-@deffn {Fun@,{c}@~{a}o} parGosper (@var{F_@{n,k@}}, @var{k}, @var{n}, @var{d})
+@deffn {Fun@value{cedilha}@~{a}o} parGosper (@var{F_@{n,k@}}, @var{k}, @var{n}, @var{d})
 Tenta encontrar uma recorr@^{e}ncia de @var{d}-@'{e}sima ordem para @var{F_@{n,k@}}.
 
 O algor@'{i}tmo retorna uma seq@"{u}@^{e}ncia
-@math{[s_1, s_2, ..., s_m]} de solu@,{c}@~{o}es.
-Cada solu@,{c}@~{a}o tem a forma
+@math{[s_1, s_2, ..., s_m]} de solu@value{cedilha}@~{o}es.
+Cada solu@value{cedilha}@~{a}o tem a forma
 
 @math{[R(n, k), [a_0, a_1, ..., a_d]]}
 
 @code{parGosper} retorna @code{[]} caso n@~{a}o consiga encontrar uma recorr@^{e}ncia.
 @end deffn
 
-@deffn {Fun@,{c}@~{a}o} Zeilberger (@var{F_@{n,k@}}, @var{k}, @var{n})
+@deffn {Fun@value{cedilha}@~{a}o} Zeilberger (@var{F_@{n,k@}}, @var{k}, @var{n})
 Tenta calcular o somat@'{o}rio hipergeom@'{e}trico indefinido de @var{F_@{n,k@}}.
 
-@code{Zeilberger} primeiro invoca @code{Gosper}, e se @code{Gosper} n@~{a}o conseguir encontrar uma solu@,{c}@~{a}o, ent@~{a}o @code{Zeilberger} invoca
+@code{Zeilberger} primeiro invoca @code{Gosper}, e se @code{Gosper} n@~{a}o conseguir encontrar uma solu@value{cedilha}@~{a}o, ent@~{a}o @code{Zeilberger} invoca
 @code{parGosper}com ordem 1, 2, 3, ..., acima de @code{MAX_ORD}.
-Se Zeilberger encontrar uma solu@,{c}@~{a}o antes de esticar @code{MAX_ORD},
-Zeilberger para e retorna a solu@,{c}@~{a}o.
+Se Zeilberger encontrar uma solu@value{cedilha}@~{a}o antes de esticar @code{MAX_ORD},
+Zeilberger para e retorna a solu@value{cedilha}@~{a}o.
 
 O algor@'{i}tmo retorna uma seq@"{u}@^{e}ncia
-@math{[s_1, s_2, ..., s_m]} de solu@,{c}@~{o}es.
-Cada solu@,{c}@~{a}o tem a forma
+@math{[s_1, s_2, ..., s_m]} de solu@value{cedilha}@~{o}es.
+Cada solu@value{cedilha}@~{a}o tem a forma
 
 @math{[R(n,k), [a_0, a_1, ..., a_d]]}
 
-@code{Zeilberger} retorna @code{[]} se n@~{a}o conseguir encontrar uma solu@,{c}@~{a}o.
+@code{Zeilberger} retorna @code{[]} se n@~{a}o conseguir encontrar uma solu@value{cedilha}@~{a}o.
 
 @code{Zeilberger} invoca @code{Gosper} somente se @code{gosper_in_zeilberger} for @code{true}.
 @end deffn
@@ -185,30 +185,30 @@ Valor padr@~{a}o: 5
 Valor padr@~{a}o: @code{false}
 
 Quando @code{simplified_output} for @code{true},
-fun@,{c}@~{o}es no pacote @code{zeilberger} tentam
-simplifica@,{c}@~{a}o adicional da solu@,{c}@~{a}o.
+fun@value{cedilha}@~{o}es no pacote @code{zeilberger} tentam
+simplifica@value{cedilha}@~{a}o adicional da solu@value{cedilha}@~{a}o.
 @end defvr
 
 @defvr {Vari@'{a}vel global} linear_solver
 Valor padr@~{a}o: @code{linsolve}
 
 @code{linear_solver} nomeia o resolvedor que @'{e} usado para resolver o sistema
-de equa@,{c}@~{o}es no algor@'{i}tmo de Zeilberger.
+de equa@value{cedilha}@~{o}es no algor@'{i}tmo de Zeilberger.
 @end defvr
 
 @defvr {Vari@'{a}vel global} warnings
 Valor padr@~{a}o: @code{true}
 
 Quando @code{warnings} for @code{true},
-fun@,{c}@~{o}es no pacote @code{zeilberger} imprimem
-mensagens de alerta durante a execu@,{c}@~{a}o.
+fun@value{cedilha}@~{o}es no pacote @code{zeilberger} imprimem
+mensagens de alerta durante a execu@value{cedilha}@~{a}o.
 @end defvr
 
 @defvr {Vari@'{a}vel global} gosper_in_zeilberger
 Valor padr@~{a}o: @code{true}
 
 Quando @code{gosper_in_zeilberger} for @code{true},
-a fun@,{c}@~{a}o @code{Zeilberger} chama @code{Gosper} antes de chamar @code{parGosper}.
+a fun@value{cedilha}@~{a}o @code{Zeilberger} chama @code{Gosper} antes de chamar @code{parGosper}.
 De outra forma, @code{Zeilberger} vai imediatamente para @code{parGosper}.
 @end defvr
 
@@ -216,7 +216,7 @@ De outra forma, @code{Zeilberger} vai imediatamente para @code{parGosper}.
 Valor padr@~{a}o: @code{true}
 
 Quando @code{trivial_solutions} for @code{true},
-@code{Zeilberger} retorna solu@,{c}@~{o}es
+@code{Zeilberger} retorna solu@value{cedilha}@~{o}es
 que possuem certificado igual a zero, ou todos os coeficientes iguais a zero.
 @end defvr
 
@@ -227,7 +227,7 @@ Valor padr@~{a}o: @code{false}
 
 Quando @code{mod_test} for @code{true},
 @code{parGosper} executa um
-teste modular discartando sistemas sem solu@,{c}@~{a}o.
+teste modular discartando sistemas sem solu@value{cedilha}@~{a}o.
 @end defvr
 
 @defvr {Vari@'{a}vel global} modular_linear_solver
@@ -240,7 +240,7 @@ Valor padr@~{a}o: @code{linsolve}
 Valor padr@~{a}o: @code{big_primes[10]}
 
 @code{ev_point} @'{e} o valor no qual a vari@'{a}vel @var{n} @'{e} avaliada
-no momento da execu@,{c}@~{a}o do teste modular em @code{parGosper}.
+no momento da execu@value{cedilha}@~{a}o do teste modular em @code{parGosper}.
 @end defvr
 
 @defvr {Vari@'{a}vel global} mod_big_prime

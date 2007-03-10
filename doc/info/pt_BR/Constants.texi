@@ -1,11 +1,11 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /Constants.texi/1.15/Sat Nov 25 04:02:07 2006/-ko/
 @menu
-* Defini@,{c}@~{o}es para Constantes::
+* Defini@value{cedilha}@~{o}es para Constantes::
 @end menu
 
-@node Defini@,{c}@~{o}es para Constantes,  , Constantes, Constantes
-@section Defini@,{c}@~{o}es para Constantes
+@node Defini@value{cedilha}@~{o}es para Constantes,  , Constantes, Constantes
+@section Defini@value{cedilha}@~{o}es para Constantes
 
 @defvr {Constante} %e
 @ifinfo

@@ -1,6 +1,6 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /Introduction.texi/1.5/Sun Apr  3 08:17:33 2005/-ko/
-Inicie o Maxima com o comando "maxima".  Maxima mostrar@'{a} a informa@,{c}@~{a}o
+Inicie o Maxima com o comando "maxima".  Maxima mostrar@'{a} a informa@value{cedilha}@~{a}o
 de vers@~{a}o e uma linha de comando.  Termine cada comando Maxima com um ponto e v@'{i}rgula.
 Termine uma sess@~{a}o com o comando "quit();".  Aqui est@'{a} um exemplo de sess@~{a}o:
 
@@ -27,7 +27,7 @@ provides bug reporting information.
 
 Maxima pode procurar as p@'{a}ginas info.  Use o comando @kbd{describe} para mostrar
 todos os comandos e vari@'{a}veis contendo uma dada seq@"{u}@^{e}ncia de caracteres, e opcionalmente sua
-documenta@,{c}@~{a}o.  O ponto de interroga@,{c}@~{a}o @code{?} @'{e} uma abreviatura para @code{describe}:
+documenta@value{cedilha}@~{a}o.  O ponto de interroga@value{cedilha}@~{a}o @code{?} @'{e} uma abreviatura para @code{describe}:
 
 @example
 (%i1) ? integ
@@ -108,7 +108,7 @@ Maxima pode fazer c@'{a}lculos diferenciais e integrais:
                   6             sqrt(3)          3
 @end example
 
-Maxima pode resolver sistemas lineares e equa@,{c}@~{o}es c@'{u}bicas:
+Maxima pode resolver sistemas lineares e equa@value{cedilha}@~{o}es c@'{u}bicas:
 
 @example
 (%i1) linsolve ([3*x + 4*y = 7, 2*x + a*y = 13], [x, y]);
@@ -119,7 +119,7 @@ Maxima pode resolver sistemas lineares e equa@,{c}@~{o}es c@'{u}bicas:
 (%o2)       [x = - sqrt(5) %i, x = sqrt(5) %i, x = 3]
 @end example
 
-Maxima pode resolver sistemas de equa@,{c}@~{o}es n@~{a}o lineares.  Note que se voc@^{e} n@~{a}o
+Maxima pode resolver sistemas de equa@value{cedilha}@~{o}es n@~{a}o lineares.  Note que se voc@^{e} n@~{a}o
 quer um resultado impresso, voc@^{e} pode encerrar seu comando com @kbd{$} em lugar de
 encerrar com @kbd{;}.
 
@@ -137,7 +137,7 @@ encerrar com @kbd{;}.
 @end example
 
 Maxima pode gerar gr@'{a}ficos de uma ou mais
-fun@,{c}@~{o}es:
+fun@value{cedilha}@~{o}es:
 
 @example
 (%i1) eq_1: x^2 + 3*x*y + y^2 = 0$
