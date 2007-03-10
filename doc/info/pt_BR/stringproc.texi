@@ -1,13 +1,13 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /stringproc.texi/1.6/Mon Jan 22 12:51:40 2007//
 @menu
-* Introdu@value{cedilha}@~{a}o a manipula@value{cedilha}@~{a}o de seq@"{u}@^{e}ncias de caracteres::
-* Defini@value{cedilha}@~{o}es para entrada e sa@'{i}da::
-* Defini@value{cedilha}@~{o}es para caracteres::
-* Defini@value{cedilha}@~{o}es para seq@"{u}@^{e}ncias de caracteres::
+* Introdu@,{c}@~{a}o a manipula@,{c}@~{a}o de seq@"{u}@^{e}ncias de caracteres::
+* Defini@,{c}@~{o}es para entrada e sa@'{i}da::
+* Defini@,{c}@~{o}es para caracteres::
+* Defini@,{c}@~{o}es para seq@"{u}@^{e}ncias de caracteres::
 @end menu
 
-@node Introdu@value{cedilha}@~{a}o a manipula@value{cedilha}@~{a}o de seq@"{u}@^{e}ncias de caracteres, Defini@value{cedilha}@~{o}es para entrada e sa@'{i}da, stringproc, stringproc
+@node Introdu@,{c}@~{a}o a manipula@,{c}@~{a}o de seq@"{u}@^{e}ncias de caracteres, Defini@,{c}@~{o}es para entrada e sa@'{i}da, stringproc, stringproc
 @section Introdu@,{c}@~{a}o a manipula@,{c}@~{a}o de seq@"{u}@^{e}ncias de caracteres
 
 O arquivo @code{stringproc.lisp} amplia a compatibilidade do Maxima de trabalhar com seq@"{u}@^{e}ncias de caracteres 
@@ -138,7 +138,7 @@ precisa de @code{parse_string}, que pode ser disponibilizada para uso atrav@'{e}
 
 @code{readline} retorna @code{false} quado o fim de arquivo acontecer.
 
-@node Defini@value{cedilha}@~{o}es para entrada e sa@'{i}da, Defini@value{cedilha}@~{o}es para caracteres, Introdu@value{cedilha}@~{a}o a manipula@value{cedilha}@~{a}o de seq@"{u}@^{e}ncias de caracteres, stringproc
+@node Defini@,{c}@~{o}es para entrada e sa@'{i}da, Defini@,{c}@~{o}es para caracteres, Introdu@,{c}@~{a}o a manipula@,{c}@~{a}o de seq@"{u}@^{e}ncias de caracteres, stringproc
 @section Defini@,{c}@~{o}es para entrada e sa@'{i}da
 
 Exemplo: 
@@ -304,13 +304,13 @@ De outra forma, @code{printf} retorna uma seq@"{u}@^{e}ncia de caracteres conten
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} readline (@var{fluxo}) 
-Retorna uma seq@"{u}@^{e}ncia de caracteres contendo os caracteres a partir da posi@value{cedilha}@~{a}o corrente em @var{fluxo} at@'{e} o fim de linha ou @var{false} se o fim de linha do arquivo for encontrado.
+@deffn {Fun@,{c}@~{a}o} readline (@var{fluxo}) 
+Retorna uma seq@"{u}@^{e}ncia de caracteres contendo os caracteres a partir da posi@,{c}@~{a}o corrente em @var{fluxo} at@'{e} o fim de linha ou @var{false} se o fim de linha do arquivo for encontrado.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} sprint (@var{expr_1}, ..., @var{expr_n})
-Avalia e mostra seus argumentos um ap@'{o}s o outro `sobre uma linha' iniciando na posi@value{cedilha}@~{a}o mais @`a esquerda.
+@deffn {Fun@,{c}@~{a}o} sprint (@var{expr_1}, ..., @var{expr_n})
+Avalia e mostra seus argumentos um ap@'{o}s o outro `sobre uma linha' iniciando na posi@,{c}@~{a}o mais @`a esquerda.
 Os n@'{u}meros s@~{a}o mostrados com o '-' @`a direita do n@'{u}mero,
 e isso desconsidera o comprimento da linha. @code{newline()}, que pode ser chamada a partir de @code{stringproc.lisp} 
 pode ser @'{u}til, se voc@^{e} desejar colocar uma parada de linha intermedi@'{a}ria.
@@ -334,20 +334,20 @@ pode ser @'{u}til, se voc@^{e} desejar colocar uma parada de linha intermedi@'{a
 
 @end deffn
 
-@node Defini@value{cedilha}@~{o}es para caracteres, Defini@value{cedilha}@~{o}es para seq@"{u}@^{e}ncias de caracteres, Defini@value{cedilha}@~{o}es para entrada e sa@'{i}da, stringproc
-@section Defini@value{cedilha}@~{o}es para caracteres
+@node Defini@,{c}@~{o}es para caracteres, Defini@,{c}@~{o}es para seq@"{u}@^{e}ncias de caracteres, Defini@,{c}@~{o}es para entrada e sa@'{i}da, stringproc
+@section Defini@,{c}@~{o}es para caracteres
 
-@deffn {Fun@value{cedilha}@~{a}o} alphacharp (@var{caractere})    
+@deffn {Fun@,{c}@~{a}o} alphacharp (@var{caractere})    
 Retorna @code{true} se @var{caractere} for um caractere alfab@'{e}tico. 
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} alphanumericp (@var{caractere}) 
+@deffn {Fun@,{c}@~{a}o} alphanumericp (@var{caractere}) 
 Retorna @code{true} se @var{caractere} for um caractere alfab@'{e}tico ou um d@'{i}gito. 
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} ascii (@var{int}) 
+@deffn {Fun@,{c}@~{a}o} ascii (@var{int}) 
 Retorna o caractere correspondente ao c@'{o}digo num@'{e}rico ASCII @var{int}.
 ( -1 < int < 256 )
 
@@ -366,50 +366,50 @@ a b c d e f g h i j k l m n o p q r s t u v w x y z
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} cequal (@var{caractere_1}, @var{caractere_2})          
+@deffn {Fun@,{c}@~{a}o} cequal (@var{caractere_1}, @var{caractere_2})          
 Retorna @code{true} se @var{caractere_1} e @var{caractere_2} forem os mesmos. 
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} cequalignore (@var{caractere_1}, @var{caractere_2})    
+@deffn {Fun@,{c}@~{a}o} cequalignore (@var{caractere_1}, @var{caractere_2})    
 como @code{cequal} mas ignora a caixa alta/baixa. 
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} cgreaterp (@var{caractere_1}, @var{caractere_2})       
+@deffn {Fun@,{c}@~{a}o} cgreaterp (@var{caractere_1}, @var{caractere_2})       
 Retorna @code{true} se o c@'{o}digo num@'{e}rico ASCII do @var{caractere_1} for maior que o c@'{o}digo num@'{e}rico ASCII do @var{caractere_2}. 
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} cgreaterpignore (@var{caractere_1}, @var{caractere_2})
+@deffn {Fun@,{c}@~{a}o} cgreaterpignore (@var{caractere_1}, @var{caractere_2})
 Como @code{cgreaterp} mas ignora a caixa alta/baixa. 
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} charp (@var{obj}) 
+@deffn {Fun@,{c}@~{a}o} charp (@var{obj}) 
 Retorna @code{true} se @var{obj} for um caractere do Maxima.
-Veja na se@value{cedilha}@~{a}o "Introdu@value{cedilha}@~{a}o a manipula@value{cedilha}@~{a}o de seq@"{u}@^{e}ncias de caracteres" para ter um exemplo.
+Veja na se@,{c}@~{a}o "Introdu@,{c}@~{a}o a manipula@,{c}@~{a}o de seq@"{u}@^{e}ncias de caracteres" para ter um exemplo.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} cint (@var{caractere}) 
+@deffn {Fun@,{c}@~{a}o} cint (@var{caractere}) 
 Retorna o c@'{o}digo num@'{e}ico ASCII de @var{caractere}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} clessp (@var{caractere_1}, @var{caractere_2})
+@deffn {Fun@,{c}@~{a}o} clessp (@var{caractere_1}, @var{caractere_2})
 Retorna @code{true} se o c@'{o}digo num@'{e}rico ASCII de @var{caractere_1} for menor que o c@'{o}digo num@'{e}rico ASCII de @var{caractere_2}. 
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} clesspignore (@var{caractere_1}, @var{caractere_2})
+@deffn {Fun@,{c}@~{a}o} clesspignore (@var{caractere_1}, @var{caractere_2})
 Como em @code{clessp} ignora a caixa alta/baixa. 
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} constituent (@var{caractere})   
-Retorna @code{true} se @var{caractere} for caractere  gr@'{a}fico e n@~{a}o o caractere de espa@value{cedilha}o em branco.
-Um caractere gr@'{a}fico @'{e} um caractere que se pode ver, adicionado o caractere de espa@value{cedilha}o em branco.
+@deffn {Fun@,{c}@~{a}o} constituent (@var{caractere})   
+Retorna @code{true} se @var{caractere} for caractere  gr@'{a}fico e n@~{a}o o caractere de espa@,{c}o em branco.
+Um caractere gr@'{a}fico @'{e} um caractere que se pode ver, adicionado o caractere de espa@,{c}o em branco.
 (@code{constituent} foi definida por Paul Graham, em ANSI Common Lisp, 1996, p@'{a}gina 67.)
 
 @c ===beg===
@@ -428,24 +428,24 @@ d e f g h i j k l m n o p q r s t u v w x y z @{ | @} ~
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} cunlisp (@var{lisp_char}) 
+@deffn {Fun@,{c}@~{a}o} cunlisp (@var{lisp_char}) 
 Converte um caractere do Lisp em um caractere do Maxima.
-(Voc@^{e} pode n@~{a}o precisar dessa fun@value{cedilha}@~{a}o.)
+(Voc@^{e} pode n@~{a}o precisar dessa fun@,{c}@~{a}o.)
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} digitcharp (@var{caractere})    
+@deffn {Fun@,{c}@~{a}o} digitcharp (@var{caractere})    
 Retorna @code{true} se @var{caractere} for um d@'{i}gito (algarismo de 0 a 9). 
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} lcharp (@var{obj}) 
+@deffn {Fun@,{c}@~{a}o} lcharp (@var{obj}) 
 Retorna @code{true} se @var{obj} for um caractere do Lisp.
-(Voc@^{e} pode n@~{a}o precisar dessa fun@value{cedilha}@~{a}o.)
+(Voc@^{e} pode n@~{a}o precisar dessa fun@,{c}@~{a}o.)
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} lowercasep (@var{caractere})    
+@deffn {Fun@,{c}@~{a}o} lowercasep (@var{caractere})    
 Retorna @code{true} se @var{caractere} for um caractere em caixa baixa. 
 
 @end deffn
@@ -456,42 +456,42 @@ O caractere de nova linha.
 @end defvr
 
 @defvr {Vari@'{a}vel} space   
-O caractere de espa@value{cedilha}o em branco.
+O caractere de espa@,{c}o em branco.
 
 @end defvr
 
 @defvr {Vari@'{a}vel} tab     
-O caractere de tabula@value{cedilha}@~{a}o.
+O caractere de tabula@,{c}@~{a}o.
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~{a}o} uppercasep (@var{caractere})    
+@deffn {Fun@,{c}@~{a}o} uppercasep (@var{caractere})    
 Retorna @code{true} se @var{caractere} for um caractere em caixa alta. 
 
 @end deffn
 
-@node Defini@value{cedilha}@~{o}es para seq@"{u}@^{e}ncias de caracteres,  , Defini@value{cedilha}@~{o}es para caracteres, stringproc
-@section Defini@value{cedilha}@~{o}es para seq@"{u}@^{e}ncias de caracteres
+@node Defini@,{c}@~{o}es para seq@"{u}@^{e}ncias de caracteres,  , Defini@,{c}@~{o}es para caracteres, stringproc
+@section Defini@,{c}@~{o}es para seq@"{u}@^{e}ncias de caracteres
 
-@deffn {Fun@value{cedilha}@~{a}o} sunlisp (@var{lisp_string}) 
+@deffn {Fun@,{c}@~{a}o} sunlisp (@var{lisp_string}) 
 Converte uma seq@"{u}@^{e}ncia de caracteres do Lisp em uma seq@"{u}@^{e}ncia de caracteres do Maxima.
-(Em geral voc@^{e} pode n@~{a}o precisar dessa fun@value{cedilha}@~{a}o.)
+(Em geral voc@^{e} pode n@~{a}o precisar dessa fun@,{c}@~{a}o.)
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} lstringp (@var{obj}) 
+@deffn {Fun@,{c}@~{a}o} lstringp (@var{obj}) 
 Retorna @code{true} se @var{obj} is uma seq@"{u}@^{e}ncia de caracteres do Lisp.
-(Em geral voc@^{e} pode n@~{a}o precisar dessa fun@value{cedilha}@~{a}o.)
+(Em geral voc@^{e} pode n@~{a}o precisar dessa fun@,{c}@~{a}o.)
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} stringp (@var{obj}) 
+@deffn {Fun@,{c}@~{a}o} stringp (@var{obj}) 
 Retorna @code{true} se @var{obj} for uma seq@"{u}@^{e}ncia de caracteres do Maxima.
-Veja a introdu@value{cedilha}@~{a}o para obter exemplos.
+Veja a introdu@,{c}@~{a}o para obter exemplos.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} charat (@var{seq_caracte}, @var{n}) 
+@deffn {Fun@,{c}@~{a}o} charat (@var{seq_caracte}, @var{n}) 
 Retorna o @var{n}-@'{e}simo caractere de @var{seq_caracte}.
 O primeiro caractere em @var{seq_caracte} @'{e} retornado com @var{n} = 1.
 
@@ -507,7 +507,7 @@ O primeiro caractere em @var{seq_caracte} @'{e} retornado com @var{n} = 1.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} charlist (@var{seq_caracte}) 
+@deffn {Fun@,{c}@~{a}o} charlist (@var{seq_caracte}) 
 Retorna a lsita de todos os caracteres em @var{seq_caracte}. 
 
 @c ===beg===
@@ -525,12 +525,12 @@ Retorna a lsita de todos os caracteres em @var{seq_caracte}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} parsetoken (@var{seq_caracte})  
+@deffn {Fun@,{c}@~{a}o} parsetoken (@var{seq_caracte})  
 @code{parsetoken} converte a primeira ficha em @var{seq_caracte} para o correspondente n@'{u}mero ou retorna @code{false} se o n@'{u}mero n@~{a}o puder ser determinado.
 O conjunto de delimitadores para a troca de fichas @'{e} @code{@{space, comma, semicolon, tab, newline@}}
 
-Nota de tradu@value{cedilha}@~{a}o:
-espa@value{cedilha}o, v@'{i}rgula, ponto e v@'{i}rgula, tabula@value{cedilha}@~{a}o e nova linha.
+Nota de tradu@,{c}@~{a}o:
+espa@,{c}o, v@'{i}rgula, ponto e v@'{i}rgula, tabula@,{c}@~{a}o e nova linha.
 
 @c ===beg===
 @c load("stringproc")$
@@ -542,12 +542,12 @@ espa@value{cedilha}o, v@'{i}rgula, ponto e v@'{i}rgula, tabula@value{cedilha}@~{
 (%o2)                         2.468
 @end example
 
-Para analizar voc@^{e} pode tamb@'{e}m usar  a fun@value{cedilha}@~{a}o @code{parse_string}.
-Veja a descri@value{cedilha}@~{a}o no arquivo 'share\contrib\eval_string.lisp'. 
+Para analizar voc@^{e} pode tamb@'{e}m usar  a fun@,{c}@~{a}o @code{parse_string}.
+Veja a descri@,{c}@~{a}o no arquivo 'share\contrib\eval_string.lisp'. 
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} sconc (@var{expr_1}, ..., @var{expr_n})
+@deffn {Fun@,{c}@~{a}o} sconc (@var{expr_1}, ..., @var{expr_n})
 Avalia seus argumentos e concatena-os em uma seq@"{u}@^{e}ncia de caracteres.
 @code{sconc} @'{e} como @code{sconcat} mas retorna uma seq@"{u}@^{e}ncia de caracteres do Maxima.
 
@@ -566,35 +566,35 @@ Avalia seus argumentos e concatena-os em uma seq@"{u}@^{e}ncia de caracteres.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} scopy (@var{seq_caracte}) 
+@deffn {Fun@,{c}@~{a}o} scopy (@var{seq_caracte}) 
 Retorna uma c@'{o}pia de @var{seq_caracte} como uma nova seq@"{u}@^{e}ncia de caracteres. 
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} sdowncase (@var{seq_caracte}) 
-@deffnx {Fun@value{cedilha}@~{a}o} sdowncase (@var{seq_caracte}, @var{in@'{i}cio}) 
-@deffnx {Fun@value{cedilha}@~{a}o} sdowncase (@var{seq_caracte}, @var{in@'{i}cio}, @var{fim}) 
+@deffn {Fun@,{c}@~{a}o} sdowncase (@var{seq_caracte}) 
+@deffnx {Fun@,{c}@~{a}o} sdowncase (@var{seq_caracte}, @var{in@'{i}cio}) 
+@deffnx {Fun@,{c}@~{a}o} sdowncase (@var{seq_caracte}, @var{in@'{i}cio}, @var{fim}) 
 Como em @code{supcase}, mas caracteres em caixa alta s@~{a}o convertidos para caracteres em caixa baixa. 
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} sequal (@var{seq_caracte__1}, @var{seq_caracte__2}) 
+@deffn {Fun@,{c}@~{a}o} sequal (@var{seq_caracte__1}, @var{seq_caracte__2}) 
 Retorna @code{true} se @var{seq_caracte__1} e @var{seq_caracte__2} tiverem o mesmo comprimento e contiverem os mesmos caracteres. 
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} sequalignore (@var{seq_caracte__1}, @var{seq_caracte__2})
+@deffn {Fun@,{c}@~{a}o} sequalignore (@var{seq_caracte__1}, @var{seq_caracte__2})
 Como em @code{sequal} mas igonara a caixa alta/baixa. 
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} sexplode (@var{seq_caracte})
-@code{sexplode} @'{e} um apelido para a fun@value{cedilha}@~{a}o @code{charlist}.
+@deffn {Fun@,{c}@~{a}o} sexplode (@var{seq_caracte})
+@code{sexplode} @'{e} um apelido para a fun@,{c}@~{a}o @code{charlist}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} simplode (@var{lista})  
-@deffnx {Fun@value{cedilha}@~{a}o} simplode (@var{lista}, @var{delim})  
+@deffn {Fun@,{c}@~{a}o} simplode (@var{lista})  
+@deffnx {Fun@,{c}@~{a}o} simplode (@var{lista}, @var{delim})  
 @code{simplode} takes uma @code{lista} ou express@~{o}es  e concatena-as em uma seq@"{u}@^{e}ncia de caracteres.
 Se nenhum delimitador @var{delim} for usado, @code{simplode} funciona como @code{sconc} e n@~{a}o utiliza delimitador.
 @var{delim} pode ser qualquer seq@"{u}@^{e}ncia de caracteres.
@@ -617,10 +617,10 @@ Se nenhum delimitador @var{delim} for usado, @code{simplode} funciona como @code
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} sinsert (@var{seq}, @var{seq_caracte}, @var{pos})  
-Retorna uma seq@"{u}@^{e}ncia de caracteres que @'{e} uma concatena@value{cedilha}@~{a}o de @code{substring (@var{seq_caracte}, 1, @var{pos} - 1)},
+@deffn {Fun@,{c}@~{a}o} sinsert (@var{seq}, @var{seq_caracte}, @var{pos})  
+Retorna uma seq@"{u}@^{e}ncia de caracteres que @'{e} uma concatena@,{c}@~{a}o de @code{substring (@var{seq_caracte}, 1, @var{pos} - 1)},
 a seq@"{u}@^{e}ncia de caracteres @var{seq} e @code{substring (@var{seq_caracte}, @var{pos})}.
-Note que o primeiro caractere est@'{a} em @var{seq_caracte} e est@'{a} na posi@value{cedilha}@~{a}o 1.
+Note que o primeiro caractere est@'{a} em @var{seq_caracte} e est@'{a} na posi@,{c}@~{a}o 1.
 
 @c ===beg===
 @c load("stringproc")$
@@ -639,11 +639,11 @@ Note que o primeiro caractere est@'{a} em @var{seq_caracte} e est@'{a} na posi@v
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} sinvertcase (@var{seq_caracte})  
-@deffnx {Fun@value{cedilha}@~{a}o} sinvertcase (@var{seq_caracte}, @var{in@'{i}cio})  
-@deffnx {Fun@value{cedilha}@~{a}o} sinvertcase (@var{seq_caracte}, @var{in@'{i}cio}, @var{fim})  
-Retorna @var{seq_caracte} exceto que cada caractere da posi@value{cedilha}@~{a}o @var{in@'{i}cio} at@'{e} a posi@value{cedilha}@~{a}o @var{fim} est@'{a} invertido.
-Se a posi@value{cedilha}@~{a}o @var{fim} n@~{a}o for fornecida,
+@deffn {Fun@,{c}@~{a}o} sinvertcase (@var{seq_caracte})  
+@deffnx {Fun@,{c}@~{a}o} sinvertcase (@var{seq_caracte}, @var{in@'{i}cio})  
+@deffnx {Fun@,{c}@~{a}o} sinvertcase (@var{seq_caracte}, @var{in@'{i}cio}, @var{fim})  
+Retorna @var{seq_caracte} exceto que cada caractere da posi@,{c}@~{a}o @var{in@'{i}cio} at@'{e} a posi@,{c}@~{a}o @var{fim} est@'{a} invertido.
+Se a posi@,{c}@~{a}o @var{fim} n@~{a}o for fornecida,
 todos os caracteres do in@'{i}cio ao @var{fim} de @var{seq_caracte} s@~{a}o substitu@'{i}dos.
 
 @c ===beg===
@@ -658,12 +658,12 @@ todos os caracteres do in@'{i}cio ao @var{fim} de @var{seq_caracte} s@~{a}o subs
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} slength (@var{seq_caracte}) 
+@deffn {Fun@,{c}@~{a}o} slength (@var{seq_caracte}) 
 Retorna n@'{u}mero de caracteres em @var{seq_caracte}. 
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} smake (@var{num}, @var{caractere}) 
+@deffn {Fun@,{c}@~{a}o} smake (@var{num}, @var{caractere}) 
 Retorna uma nova seq@"{u}@^{e}ncia de caracteres repetindo @var{num} vezes @var{caractere}. 
 
 @c ===beg===
@@ -678,11 +678,11 @@ Retorna uma nova seq@"{u}@^{e}ncia de caracteres repetindo @var{num} vezes @var{
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} smismatch (@var{seq_caracte__1}, @var{seq_caracte__2}) 
-@deffnx {Fun@value{cedilha}@~{a}o} smismatch (@var{seq_caracte__1}, @var{seq_caracte__2}, @var{test}) 
-Retorna a posi@value{cedilha}@~{a}o do primeiro caractere de @var{seq_caracte__1} no qual @var{seq_caracte__1} e @var{seq_caracte__2} diferem ou @code{false} em caso contr@'{a}rio.
-A fun@value{cedilha}@~{a}o padrao de teste para coincid@^{e}ncia @'{e} @code{sequal}.
-Se @code{smismatch} pode ignorar a caixa alta/baixa, use @code{sequalignore} como fun@value{cedilha}@~{a}o de teste.
+@deffn {Fun@,{c}@~{a}o} smismatch (@var{seq_caracte__1}, @var{seq_caracte__2}) 
+@deffnx {Fun@,{c}@~{a}o} smismatch (@var{seq_caracte__1}, @var{seq_caracte__2}, @var{test}) 
+Retorna a posi@,{c}@~{a}o do primeiro caractere de @var{seq_caracte__1} no qual @var{seq_caracte__1} e @var{seq_caracte__2} diferem ou @code{false} em caso contr@'{a}rio.
+A fun@,{c}@~{a}o padrao de teste para coincid@^{e}ncia @'{e} @code{sequal}.
+Se @code{smismatch} pode ignorar a caixa alta/baixa, use @code{sequalignore} como fun@,{c}@~{a}o de teste.
 
 @c ===beg===
 @c load("stringproc")$
@@ -696,16 +696,16 @@ Se @code{smismatch} pode ignorar a caixa alta/baixa, use @code{sequalignore} com
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} split (@var{seq_caracte})  
-@deffnx {Fun@value{cedilha}@~{a}o} split (@var{seq_caracte}, @var{delim})  
-@deffnx {Fun@value{cedilha}@~{a}o} split (@var{seq_caracte}, @var{delim}, @var{multiple})  
+@deffn {Fun@,{c}@~{a}o} split (@var{seq_caracte})  
+@deffnx {Fun@,{c}@~{a}o} split (@var{seq_caracte}, @var{delim})  
+@deffnx {Fun@,{c}@~{a}o} split (@var{seq_caracte}, @var{delim}, @var{multiple})  
 Retorna a lista de todas as fichas em @var{seq_caracte}.
 Cada ficha @'{e} uma seq@"{u}@^{e}ncia de caracteres n@~{a}o analisada.
 @code{split} usa @var{delim} como delimitador.
-Se @var{delim} n@~{a}o for fornecido, o caractere de espa@value{cedilha}o @'{e} o delimitador padr@~{a}o.
+Se @var{delim} n@~{a}o for fornecido, o caractere de espa@,{c}o @'{e} o delimitador padr@~{a}o.
 @var{multiple} @'{e} uma vari@'{a}vel booleana com @code{true} como valor padr@~{a}o.
 Multiplos delimitadores s@~{a}o lidos como um.
-Essa fun@value{cedilha}@~{a}o @'{e} @'{u}til se tabula@value{cedilha}@~{o}es s@~{a}o gravadas com caracteres de espa@value{cedilha}o multiplos.
+Essa fun@,{c}@~{a}o @'{e} @'{u}til se tabula@,{c}@~{o}es s@~{a}o gravadas com caracteres de espa@,{c}o multiplos.
 Se @var{multiple} for escolhido para @code{false}, cada delimitador @'{e} considerado.
 
 @c ===beg===
@@ -723,22 +723,22 @@ Se @var{multiple} for escolhido para @code{false}, cada delimitador @'{e} consid
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} sposition (@var{caractere}, @var{seq_caracte}) 
-Retorna a posi@value{cedilha}@~{a}o do primeiro caractere em @var{seq_caracte} que coincide com @var{caractere}.
-O primeiro caractere em @var{seq_caracte} est@'{a} na posi@value{cedilha}@~{a}o 1.
+@deffn {Fun@,{c}@~{a}o} sposition (@var{caractere}, @var{seq_caracte}) 
+Retorna a posi@,{c}@~{a}o do primeiro caractere em @var{seq_caracte} que coincide com @var{caractere}.
+O primeiro caractere em @var{seq_caracte} est@'{a} na posi@,{c}@~{a}o 1.
 Para que os caracteres que coincidirem desconsiderem a caixa alta/baixa veja @code{ssearch}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} sremove (@var{seq}, @var{seq_caracte})  
-@deffnx {Fun@value{cedilha}@~{a}o} sremove (@var{seq}, @var{seq_caracte}, @var{test})  
-@deffnx {Fun@value{cedilha}@~{a}o} sremove (@var{seq}, @var{seq_caracte}, @var{test}, @var{in@'{i}cio})  
-@deffnx {Fun@value{cedilha}@~{a}o} sremove (@var{seq}, @var{seq_caracte}, @var{test}, @var{in@'{i}cio}, @var{fim})  
+@deffn {Fun@,{c}@~{a}o} sremove (@var{seq}, @var{seq_caracte})  
+@deffnx {Fun@,{c}@~{a}o} sremove (@var{seq}, @var{seq_caracte}, @var{test})  
+@deffnx {Fun@,{c}@~{a}o} sremove (@var{seq}, @var{seq_caracte}, @var{test}, @var{in@'{i}cio})  
+@deffnx {Fun@,{c}@~{a}o} sremove (@var{seq}, @var{seq_caracte}, @var{test}, @var{in@'{i}cio}, @var{fim})  
 Retorna uma seq@"{u}@^{e}ncia de caracteres como @var{seq_caracte} mas com todas as subseq@"{u}@^{e}ncias de caracteres que coincidirem com @var{seq}.
-A fun@value{cedilha}@~{a}o padr@~{a}o de teste de coincid@^{e}ncia @'{e} @code{sequal}.
+A fun@,{c}@~{a}o padr@~{a}o de teste de coincid@^{e}ncia @'{e} @code{sequal}.
 Se @code{sremove} puder ignorar a caixa alta/baixa enquanto busca por @var{seq}, use @code{sequalignore} como teste.
 Use @var{in@'{i}cio} e @var{fim} para limitar a busca.
-Note que o primeiro caractere em @var{seq_caracte} est@'{a} na posi@value{cedilha}@~{a}o 1.
+Note que o primeiro caractere em @var{seq_caracte} est@'{a} na posi@,{c}@~{a}o 1.
 
 @c ===beg===
 @c load("stringproc")$
@@ -755,28 +755,28 @@ Note que o primeiro caractere em @var{seq_caracte} est@'{a} na posi@value{cedilh
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} sremovefirst (@var{seq}, @var{seq_caracte})  
-@deffnx {Fun@value{cedilha}@~{a}o} sremovefirst (@var{seq}, @var{seq_caracte}, @var{test})  
-@deffnx {Fun@value{cedilha}@~{a}o} sremovefirst (@var{seq}, @var{seq_caracte}, @var{test}, @var{in@'{i}cio})  
-@deffnx {Fun@value{cedilha}@~{a}o} sremovefirst (@var{seq}, @var{seq_caracte}, @var{test}, @var{in@'{i}cio}, @var{fim})  
+@deffn {Fun@,{c}@~{a}o} sremovefirst (@var{seq}, @var{seq_caracte})  
+@deffnx {Fun@,{c}@~{a}o} sremovefirst (@var{seq}, @var{seq_caracte}, @var{test})  
+@deffnx {Fun@,{c}@~{a}o} sremovefirst (@var{seq}, @var{seq_caracte}, @var{test}, @var{in@'{i}cio})  
+@deffnx {Fun@,{c}@~{a}o} sremovefirst (@var{seq}, @var{seq_caracte}, @var{test}, @var{in@'{i}cio}, @var{fim})  
 Como em @code{sremove} exceto qie a primeira subseq@"{u}@^{e}ncia de caracteres que coincide com @code{seq} @'{e} removida. 
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} sreverse (@var{seq_caracte}) 
+@deffn {Fun@,{c}@~{a}o} sreverse (@var{seq_caracte}) 
 Retorna uma seq@"{u}@^{e}ncia de caracteres com todos os caracteres de @var{seq_caracte} em ordem reversa. 
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} ssearch (@var{seq}, @var{seq_caracte})  
-@deffnx {Fun@value{cedilha}@~{a}o} ssearch (@var{seq}, @var{seq_caracte}, @var{test})  
-@deffnx {Fun@value{cedilha}@~{a}o} ssearch (@var{seq}, @var{seq_caracte}, @var{test}, @var{in@'{i}cio})  
-@deffnx {Fun@value{cedilha}@~{a}o} ssearch (@var{seq}, @var{seq_caracte}, @var{test}, @var{in@'{i}cio}, @var{fim})
-Retorna a posi@value{cedilha}@~{a}o da primeira subseq@"{u}@^{e}ncia de caracteres de @var{seq_caracte} que coincide com a seq@"{u}@^{e}ncia de caracteres @var{seq}.
-A fun@value{cedilha}@~{a}o padr@~{a}o de teste de coincid@^{e}ncia @'{e} @code{sequal}.
-Se @code{ssearch} puder igonorar a caixa alta/baixa, use @code{sequalignore} como fun@value{cedilha}@~{a}o de teste.
+@deffn {Fun@,{c}@~{a}o} ssearch (@var{seq}, @var{seq_caracte})  
+@deffnx {Fun@,{c}@~{a}o} ssearch (@var{seq}, @var{seq_caracte}, @var{test})  
+@deffnx {Fun@,{c}@~{a}o} ssearch (@var{seq}, @var{seq_caracte}, @var{test}, @var{in@'{i}cio})  
+@deffnx {Fun@,{c}@~{a}o} ssearch (@var{seq}, @var{seq_caracte}, @var{test}, @var{in@'{i}cio}, @var{fim})
+Retorna a posi@,{c}@~{a}o da primeira subseq@"{u}@^{e}ncia de caracteres de @var{seq_caracte} que coincide com a seq@"{u}@^{e}ncia de caracteres @var{seq}.
+A fun@,{c}@~{a}o padr@~{a}o de teste de coincid@^{e}ncia @'{e} @code{sequal}.
+Se @code{ssearch} puder igonorar a caixa alta/baixa, use @code{sequalignore} como fun@,{c}@~{a}o de teste.
 Use @var{in@'{i}cio} e @var{fim} para limitar a busca.
-Note que o primeiro caractere em @var{seq_caracte} est@'{a} na posi@value{cedilha}@~{a}o 1.
+Note que o primeiro caractere em @var{seq_caracte} est@'{a} na posi@,{c}@~{a}o 1.
 
 @example
 (%i1) ssearch("~s","~@{~S ~@}~%",'sequalignore);
@@ -785,11 +785,11 @@ Note que o primeiro caractere em @var{seq_caracte} est@'{a} na posi@value{cedilh
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} ssort (@var{seq_caracte}) 
-@deffnx {Fun@value{cedilha}@~{a}o} ssort (@var{seq_caracte}, @var{test}) 
+@deffn {Fun@,{c}@~{a}o} ssort (@var{seq_caracte}) 
+@deffnx {Fun@,{c}@~{a}o} ssort (@var{seq_caracte}, @var{test}) 
 Retorna uma seq@"{u}@^{e}ncia de caracteres que cont@'{e}m todos os caracteres de @var{seq_caracte} em uma ordem tal que n@~{a}o existam dois caracteres @var{c} sucessivos e @var{d} seja tal que @code{test (@var{c}, @var{d})} seja @code{false} e @code{test (@var{d}, @var{c})} seja @code{true}.
-A fun@value{cedilha}@~{a}o padr@~{a}o de teste para ordena@value{cedilha}@`ao @'{e} @var{clessp}.
-O conjunto de fun@value{cedilha}òes de teste @'{e} @code{@{clessp, clesspignore, cgreaterp, cgreaterpignore, cequal, cequalignore@}}.
+A fun@,{c}@~{a}o padr@~{a}o de teste para ordena@,{c}@`ao @'{e} @var{clessp}.
+O conjunto de fun@,{c}òes de teste @'{e} @code{@{clessp, clesspignore, cgreaterp, cgreaterpignore, cequal, cequalignore@}}.
 
 @c ===beg===
 @c load("stringproc")$
@@ -806,16 +806,16 @@ O conjunto de fun@value{cedilha}òes de teste @'{e} @code{@{clessp, clesspignore,
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} ssubst (@var{nova}, @var{antiga}, @var{seq_caracte}) 
-@deffnx {Fun@value{cedilha}@~{a}o} ssubst (@var{nova}, @var{antiga}, @var{seq_caracte}, @var{test}) 
-@deffnx {Fun@value{cedilha}@~{a}o} ssubst (@var{nova}, @var{antiga}, @var{seq_caracte}, @var{test}, @var{in@'{i}cio}) 
-@deffnx {Fun@value{cedilha}@~{a}o} ssubst (@var{nova}, @var{antiga}, @var{seq_caracte}, @var{test}, @var{in@'{i}cio}, @var{fim}) 
+@deffn {Fun@,{c}@~{a}o} ssubst (@var{nova}, @var{antiga}, @var{seq_caracte}) 
+@deffnx {Fun@,{c}@~{a}o} ssubst (@var{nova}, @var{antiga}, @var{seq_caracte}, @var{test}) 
+@deffnx {Fun@,{c}@~{a}o} ssubst (@var{nova}, @var{antiga}, @var{seq_caracte}, @var{test}, @var{in@'{i}cio}) 
+@deffnx {Fun@,{c}@~{a}o} ssubst (@var{nova}, @var{antiga}, @var{seq_caracte}, @var{test}, @var{in@'{i}cio}, @var{fim}) 
 Retorna uma seq@"{u}@^{e}ncia de caracteres como @var{seq_caracte} exceto que todas as subseq@"{u}@^{e}ncias de caracteres que coincidirem com @var{antiga} s@~{a}o substitu@'{i}das por @var{nova}.
 @var{antiga} e @var{nova} n@~{a}o precisam ser de mesmo comprimento.
-A fun@value{cedilha}@~{a}o padr@~{a}o de teste para coincid@^{e}ncia @'{e} para coincid@^{e}ncias @'{e} @code{sequal}.
-Se @code{ssubst} puder ignorar a cixa alta/baixa enquanto procurando por @var{antiga}, use @code{sequalignore} como fun@value{cedilha}@~{a}o de teste.
+A fun@,{c}@~{a}o padr@~{a}o de teste para coincid@^{e}ncia @'{e} para coincid@^{e}ncias @'{e} @code{sequal}.
+Se @code{ssubst} puder ignorar a cixa alta/baixa enquanto procurando por @var{antiga}, use @code{sequalignore} como fun@,{c}@~{a}o de teste.
 Use @var{in@'{i}cio} e @var{fim} para limitar a busca.
-Note que o primeiro caractere em @var{seq_caracte} est@'{a} na posi@value{cedilha}@~{a}o 1.
+Note que o primeiro caractere em @var{seq_caracte} est@'{a} na posi@,{c}@~{a}o 1.
 
 @c ===beg===
 @c load("stringproc")$
@@ -832,15 +832,15 @@ Note que o primeiro caractere em @var{seq_caracte} est@'{a} na posi@value{cedilh
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} ssubstfirst (@var{nova}, @var{antiga}, @var{seq_caracte}) 
-@deffnx {Fun@value{cedilha}@~{a}o} ssubstfirst (@var{nova}, @var{antiga}, @var{seq_caracte}, @var{test}) 
-@deffnx {Fun@value{cedilha}@~{a}o} ssubstfirst (@var{nova}, @var{antiga}, @var{seq_caracte}, @var{test}, @var{in@'{i}cio}) 
-@deffnx {Fun@value{cedilha}@~{a}o} ssubstfirst (@var{nova}, @var{antiga}, @var{seq_caracte}, @var{test}, @var{in@'{i}cio}, @var{fim}) 
+@deffn {Fun@,{c}@~{a}o} ssubstfirst (@var{nova}, @var{antiga}, @var{seq_caracte}) 
+@deffnx {Fun@,{c}@~{a}o} ssubstfirst (@var{nova}, @var{antiga}, @var{seq_caracte}, @var{test}) 
+@deffnx {Fun@,{c}@~{a}o} ssubstfirst (@var{nova}, @var{antiga}, @var{seq_caracte}, @var{test}, @var{in@'{i}cio}) 
+@deffnx {Fun@,{c}@~{a}o} ssubstfirst (@var{nova}, @var{antiga}, @var{seq_caracte}, @var{test}, @var{in@'{i}cio}, @var{fim}) 
 Como em @code{subst} exceto que somente a primeira subseq@"{u}@^{e}ncia de caracteres que coincidir com @var{antiga} @'{e} substitu@'{i}da. 
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} strim (@var{seq},@var{seq_caracte}) 
+@deffn {Fun@,{c}@~{a}o} strim (@var{seq},@var{seq_caracte}) 
 Retorna uma seq@"{u}@^{e}ncia de caracteres como @var{seq_caracte},
 mas com todos os caracteres que aparecerem em @var{seq} removidos de ambas as extremidades. 
 
@@ -861,22 +861,22 @@ mas com todos os caracteres que aparecerem em @var{seq} removidos de ambas as ex
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} striml (@var{seq}, @var{seq_caracte}) 
+@deffn {Fun@,{c}@~{a}o} striml (@var{seq}, @var{seq_caracte}) 
 Como em @code{strim} exceto que somente a extremidade esquerda de @var{seq_caracte} @'{e} recordada. 
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} strimr (@var{seq}, @var{seq_caracte}) 
+@deffn {Fun@,{c}@~{a}o} strimr (@var{seq}, @var{seq_caracte}) 
 Como em @code{strim} exceto que somente a extremidade direita de seq@"{u}@^{e}ncia de caracteres @'{e} recortada. 
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} substring (@var{seq_caracte}, @var{in@'{i}cio})
-@deffnx {Fun@value{cedilha}@~{a}o} substring (@var{seq_caracte}, @var{in@'{i}cio}, @var{fim}) 
-Retorna a subseq@"{u}@^{e}ncia de caracteres de @var{seq_caracte} come@value{cedilha}ando na posi@value{cedilha}@~{a}o @var{in@'{i}cio} e terminando na posi@value{cedilha}@~{a}o @var{fim}.
-O caractere na posi@value{cedilha}@~{a}o @var{fim} n@~{a}o @'{e} inclu@'{i}do.
+@deffn {Fun@,{c}@~{a}o} substring (@var{seq_caracte}, @var{in@'{i}cio})
+@deffnx {Fun@,{c}@~{a}o} substring (@var{seq_caracte}, @var{in@'{i}cio}, @var{fim}) 
+Retorna a subseq@"{u}@^{e}ncia de caracteres de @var{seq_caracte} come@,{c}ando na posi@,{c}@~{a}o @var{in@'{i}cio} e terminando na posi@,{c}@~{a}o @var{fim}.
+O caractere na posi@,{c}@~{a}o @var{fim} n@~{a}o @'{e} inclu@'{i}do.
 Se @var{fim} n@~{a}o for fornecido, a subseq@"{u}@^{e}ncia de caracteres cont@'{e}m o restante da seq@"{u}@^{e}ncia de caracteres.
-Note que o primeiro caractere em @var{seq_caracte} est@'{a} na posi@value{cedilha}@~{a}o 1.
+Note que o primeiro caractere em @var{seq_caracte} est@'{a} na posi@,{c}@~{a}o 1.
 
 @c ===beg===
 @c load("stringproc")$
@@ -893,10 +893,10 @@ Note que o primeiro caractere em @var{seq_caracte} est@'{a} na posi@value{cedilh
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} supcase (@var{seq_caracte}) 
-@deffnx {Fun@value{cedilha}@~{a}o} supcase (@var{seq_caracte}, @var{in@'{i}cio}) 
-@deffnx {Fun@value{cedilha}@~{a}o} supcase (@var{seq_caracte}, @var{in@'{i}cio}, @var{fim}) 
-Retorna @var{seq_caracte} exceto que caracteres em caixa baixa a partir da posi@value{cedilha}@~{a}o @var{in@'{i}cio} at@'{e} a posi@value{cedilha}@~{a}o @var{fim} s@~{a}o substitu@'{i}dos pelo correspondente caracteres em cixa alta.
+@deffn {Fun@,{c}@~{a}o} supcase (@var{seq_caracte}) 
+@deffnx {Fun@,{c}@~{a}o} supcase (@var{seq_caracte}, @var{in@'{i}cio}) 
+@deffnx {Fun@,{c}@~{a}o} supcase (@var{seq_caracte}, @var{in@'{i}cio}, @var{fim}) 
+Retorna @var{seq_caracte} exceto que caracteres em caixa baixa a partir da posi@,{c}@~{a}o @var{in@'{i}cio} at@'{e} a posi@,{c}@~{a}o @var{fim} s@~{a}o substitu@'{i}dos pelo correspondente caracteres em cixa alta.
 Se @var{fim} n@~{a}o for fornecido,
 todos os caracteres em caixa baixa de @var{in@'{i}cio} at@'{e} o fim de @var{seq_caracte} s@~{a}o substitu@'{i}dos.
 
@@ -912,12 +912,12 @@ todos os caracteres em caixa baixa de @var{in@'{i}cio} at@'{e} o fim de @var{seq
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} tokens (@var{seq_caracte}) 
-@deffnx {Fun@value{cedilha}@~{a}o} tokens (@var{seq_caracte}, @var{test}) 
+@deffn {Fun@,{c}@~{a}o} tokens (@var{seq_caracte}) 
+@deffnx {Fun@,{c}@~{a}o} tokens (@var{seq_caracte}, @var{test}) 
 Retorna uma lista de fichas, que tiverem sido extr@'{i}dos de @var{seq_caracte}.
-As fichas s@~{a}o subseq@"{u}@^{e}ncias de caracteres cujos caracteres satisfazem a uma determinada fun@value{cedilha}@~{a}o de teste.
+As fichas s@~{a}o subseq@"{u}@^{e}ncias de caracteres cujos caracteres satisfazem a uma determinada fun@,{c}@~{a}o de teste.
 Se o teste n@~{a}o for fornecido, @var{constituent} @'{e} usada como teste padr@~{a}o.
-@code{@{constituent, alphacharp, digitcharp, lowercasep, uppercasep, charp, characterp, alphanumericp@}} @'{e} o conjunto de fn@value{cedilha}òes de teste. 
+@code{@{constituent, alphacharp, digitcharp, lowercasep, uppercasep, charp, characterp, alphanumericp@}} @'{e} o conjunto de fn@,{c}òes de teste. 
 (A ver@~{a}o Lisp de @code{tokens} @'{e} escrita por Paul Graham. ANSI Common Lisp, 1996, page 67.)
 
 @c ===beg===

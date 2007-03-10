@@ -1,11 +1,11 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /zeilberger.texi/1.5/Thu Dec 28 05:44:18 2006//
 @menu
-* Introdu@value{cedilha}@~{a}o a zeilberger::
-* Defini@value{cedilha}@~{o}es para zeilberger::
+* Introdu@,{c}@~{a}o a zeilberger::
+* Defini@,{c}@~{o}es para zeilberger::
 @end menu
 
-@node Introdu@value{cedilha}@~{a}o a zeilberger, Defini@value{cedilha}@~{o}es para zeilberger, zeilberger, zeilberger
+@node Introdu@,{c}@~{a}o a zeilberger, Defini@,{c}@~{o}es para zeilberger, zeilberger, zeilberger
 @section Introdu@,{c}@~{a}o a zeilberger
 
 @code{zeilberger} @'{e} uma implementa@,{c}@~{a}o do algor@'{i}tmo de Zeilberger
@@ -62,7 +62,7 @@ Por exemplo:
 @code{ZeilbergerExtra}, @code{AntiDifferenceSummary}.
 
 
-@node Defini@value{cedilha}@~{o}es para zeilberger, , Introdu@value{cedilha}@~{a}o a zeilberger, zeilberger
+@node Defini@,{c}@~{o}es para zeilberger, , Introdu@,{c}@~{a}o a zeilberger, zeilberger
 @section Defini@,{c}@~{o}es para zeilberger
 
 @deffn {Fun@,{c}@~{a}o} AntiDifference (@var{F_k}, @var{k})
@@ -142,33 +142,33 @@ Dependent equations eliminated:  (1)
 @end example
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} parGosper (@var{F_@{n,k@}}, @var{k}, @var{n}, @var{d})
+@deffn {Fun@,{c}@~{a}o} parGosper (@var{F_@{n,k@}}, @var{k}, @var{n}, @var{d})
 Tenta encontrar uma recorr@^{e}ncia de @var{d}-@'{e}sima ordem para @var{F_@{n,k@}}.
 
 O algor@'{i}tmo retorna uma seq@"{u}@^{e}ncia
-@math{[s_1, s_2, ..., s_m]} de solu@value{cedilha}@~{o}es.
-Cada solu@value{cedilha}@~{a}o tem a forma
+@math{[s_1, s_2, ..., s_m]} de solu@,{c}@~{o}es.
+Cada solu@,{c}@~{a}o tem a forma
 
 @math{[R(n, k), [a_0, a_1, ..., a_d]]}
 
 @code{parGosper} retorna @code{[]} caso n@~{a}o consiga encontrar uma recorr@^{e}ncia.
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} Zeilberger (@var{F_@{n,k@}}, @var{k}, @var{n})
+@deffn {Fun@,{c}@~{a}o} Zeilberger (@var{F_@{n,k@}}, @var{k}, @var{n})
 Tenta calcular o somat@'{o}rio hipergeom@'{e}trico indefinido de @var{F_@{n,k@}}.
 
-@code{Zeilberger} primeiro invoca @code{Gosper}, e se @code{Gosper} n@~{a}o conseguir encontrar uma solu@value{cedilha}@~{a}o, ent@~{a}o @code{Zeilberger} invoca
+@code{Zeilberger} primeiro invoca @code{Gosper}, e se @code{Gosper} n@~{a}o conseguir encontrar uma solu@,{c}@~{a}o, ent@~{a}o @code{Zeilberger} invoca
 @code{parGosper}com ordem 1, 2, 3, ..., acima de @code{MAX_ORD}.
-Se Zeilberger encontrar uma solu@value{cedilha}@~{a}o antes de esticar @code{MAX_ORD},
-Zeilberger para e retorna a solu@value{cedilha}@~{a}o.
+Se Zeilberger encontrar uma solu@,{c}@~{a}o antes de esticar @code{MAX_ORD},
+Zeilberger para e retorna a solu@,{c}@~{a}o.
 
 O algor@'{i}tmo retorna uma seq@"{u}@^{e}ncia
-@math{[s_1, s_2, ..., s_m]} de solu@value{cedilha}@~{o}es.
-Cada solu@value{cedilha}@~{a}o tem a forma
+@math{[s_1, s_2, ..., s_m]} de solu@,{c}@~{o}es.
+Cada solu@,{c}@~{a}o tem a forma
 
 @math{[R(n,k), [a_0, a_1, ..., a_d]]}
 
-@code{Zeilberger} retorna @code{[]} se n@~{a}o conseguir encontrar uma solu@value{cedilha}@~{a}o.
+@code{Zeilberger} retorna @code{[]} se n@~{a}o conseguir encontrar uma solu@,{c}@~{a}o.
 
 @code{Zeilberger} invoca @code{Gosper} somente se @code{gosper_in_zeilberger} for @code{true}.
 @end deffn
@@ -185,30 +185,30 @@ Valor padr@~{a}o: 5
 Valor padr@~{a}o: @code{false}
 
 Quando @code{simplified_output} for @code{true},
-fun@value{cedilha}@~{o}es no pacote @code{zeilberger} tentam
-simplifica@value{cedilha}@~{a}o adicional da solu@value{cedilha}@~{a}o.
+fun@,{c}@~{o}es no pacote @code{zeilberger} tentam
+simplifica@,{c}@~{a}o adicional da solu@,{c}@~{a}o.
 @end defvr
 
 @defvr {Vari@'{a}vel global} linear_solver
 Valor padr@~{a}o: @code{linsolve}
 
 @code{linear_solver} nomeia o resolvedor que @'{e} usado para resolver o sistema
-de equa@value{cedilha}@~{o}es no algor@'{i}tmo de Zeilberger.
+de equa@,{c}@~{o}es no algor@'{i}tmo de Zeilberger.
 @end defvr
 
 @defvr {Vari@'{a}vel global} warnings
 Valor padr@~{a}o: @code{true}
 
 Quando @code{warnings} for @code{true},
-fun@value{cedilha}@~{o}es no pacote @code{zeilberger} imprimem
-mensagens de alerta durante a execu@value{cedilha}@~{a}o.
+fun@,{c}@~{o}es no pacote @code{zeilberger} imprimem
+mensagens de alerta durante a execu@,{c}@~{a}o.
 @end defvr
 
 @defvr {Vari@'{a}vel global} gosper_in_zeilberger
 Valor padr@~{a}o: @code{true}
 
 Quando @code{gosper_in_zeilberger} for @code{true},
-a fun@value{cedilha}@~{a}o @code{Zeilberger} chama @code{Gosper} antes de chamar @code{parGosper}.
+a fun@,{c}@~{a}o @code{Zeilberger} chama @code{Gosper} antes de chamar @code{parGosper}.
 De outra forma, @code{Zeilberger} vai imediatamente para @code{parGosper}.
 @end defvr
 
@@ -216,7 +216,7 @@ De outra forma, @code{Zeilberger} vai imediatamente para @code{parGosper}.
 Valor padr@~{a}o: @code{true}
 
 Quando @code{trivial_solutions} for @code{true},
-@code{Zeilberger} retorna solu@value{cedilha}@~{o}es
+@code{Zeilberger} retorna solu@,{c}@~{o}es
 que possuem certificado igual a zero, ou todos os coeficientes iguais a zero.
 @end defvr
 
@@ -227,7 +227,7 @@ Valor padr@~{a}o: @code{false}
 
 Quando @code{mod_test} for @code{true},
 @code{parGosper} executa um
-teste modular discartando sistemas sem solu@value{cedilha}@~{a}o.
+teste modular discartando sistemas sem solu@,{c}@~{a}o.
 @end defvr
 
 @defvr {Vari@'{a}vel global} modular_linear_solver
@@ -240,7 +240,7 @@ Valor padr@~{a}o: @code{linsolve}
 Valor padr@~{a}o: @code{big_primes[10]}
 
 @code{ev_point} @'{e} o valor no qual a vari@'{a}vel @var{n} @'{e} avaliada
-no momento da execu@value{cedilha}@~{a}o do teste modular em @code{parGosper}.
+no momento da execu@,{c}@~{a}o do teste modular em @code{parGosper}.
 @end defvr
 
 @defvr {Vari@'{a}vel global} mod_big_prime

@@ -2,11 +2,11 @@
 @c /Polynomials.texi/1.22/Sun May 21 07:18:29 2006/-ko/
 @c FOR THE FUNCTIONS WHICH RETURN A CRE, BE SURE TO MENTION THAT
 @menu
-* Introdu@value{cedilha}@~{a}o a Polin@^{o}mios::  
-* Defini@value{cedilha}@~{o}es para Polin@^{o}mios::  
+* Introdu@,{c}@~{a}o a Polin@^{o}mios::  
+* Defini@,{c}@~{o}es para Polin@^{o}mios::  
 @end menu
 
-@node Introdu@value{cedilha}@~{a}o a Polin@^{o}mios, Defini@value{cedilha}@~{o}es para Polin@^{o}mios, Polin@^{o}mios, Polin@^{o}mios
+@node Introdu@,{c}@~{a}o a Polin@^{o}mios, Defini@,{c}@~{o}es para Polin@^{o}mios, Polin@^{o}mios, Polin@^{o}mios
 @section Introdu@,{c}@~{a}o a Polin@^{o}mios
 
 Polin@^{o}mios s@~{a}o armazenados no Maxima ou na forma geral ou na
@@ -34,54 +34,54 @@ qualquer subexpress@~{a}o cujo principal operador n@~{a}o for + - * / or ^ com e
 inteiro ser@'{a} considerado uma "vari@'{a}vel" da express@~{a}o (na forma CRE) na
 qual essa ocorrer.  Por exemplo as vari@'{a}veis CRE da express@~{a}o
 X+SIN(X+1)+2*SQRT(X)+1 s@~{a}o X, SQRT(X), e SIN(X+1).  Se o usu@'{a}rio
-n@~{a}o especifica uma ordem de vari@'{a}veis pelo uso da fun@value{cedilha}@~{a}o RATVARS
+n@~{a}o especifica uma ordem de vari@'{a}veis pelo uso da fun@,{c}@~{a}o RATVARS
 Maxima escolher@'{a} a alfab@'{e}tica por conta pr@'{o}pria.  Em geral, CREs representam
 express@~{o}es racionais, isto @'{e}, raz@~{o}es de polin@^{o}mios, onde o
 numerador e o denominador n@~{a}o possuem fatores comuns, e o denominador for
 positivo.  A forma interna @'{e} essencialmente um par de polin@^{o}mios (o
-numerador e o denominador) precedidos pela lista de ordena@value{cedilha}@~{a}o de vari@'{a}vel.  Se
+numerador e o denominador) precedidos pela lista de ordena@,{c}@~{a}o de vari@'{a}vel.  Se
 uma express@~{a}o a ser mostrada estiver na forma CRE ou se contiver quaisquer
 subexpress@~{o}es na forma CRE, o s@'{i}mbolo /R/ seguir@'{a} o r@'{o}tulo da linha.
-Veja a fun@value{cedilha}@~{a}o RAT para saber como converter uma express@~{a}o para a forma CRE.  Uma
-forma CRE extendida @'{e} usada para a representa@value{cedilha}@~{a}o de s@'{e}ries de Taylor.  A
-no@value{cedilha}@~{a}o de uma express@~{a}o racional @'{e} extendida de modo que os expoentes das
+Veja a fun@,{c}@~{a}o RAT para saber como converter uma express@~{a}o para a forma CRE.  Uma
+forma CRE extendida @'{e} usada para a representa@,{c}@~{a}o de s@'{e}ries de Taylor.  A
+no@,{c}@~{a}o de uma express@~{a}o racional @'{e} extendida de modo que os expoentes das
 vari@'{a}veis podem ser n@'{u}meros racionais positivos ou negativos em lugar de apenas
 inteiros positivos e os coeficientes podem eles mesmos serem express@~{o}es
 racionais como descrito acima em lugar de apenas polin@^{o}mios.  Estes s@~{a}o
 representados internamente por uma forma polinomial recursiva que @'{e} similar
-@`a forma CRE e @'{e} a generaliza@value{cedilha}@~{a}o dessa mesma forma CRE, mas carrega informa@value{cedilha}@~{a}o
-adicional tal com o grau de trunca@value{cedilha}@~{a}o.  Do mesmo modo que na forma CRE, o
+@`a forma CRE e @'{e} a generaliza@,{c}@~{a}o dessa mesma forma CRE, mas carrega informa@,{c}@~{a}o
+adicional tal com o grau de trunca@,{c}@~{a}o.  Do mesmo modo que na forma CRE, o
 s@'{i}mbolo /T/ segue o r@'{o}tulo de linha que cont@'{e}m as tais express@~{o}es.
 
-@node Defini@value{cedilha}@~{o}es para Polin@^{o}mios,  , Introdu@value{cedilha}@~{a}o a Polin@^{o}mios, Polin@^{o}mios
-@section Defini@value{cedilha}@~{o}es para Polin@^{o}mios
+@node Defini@,{c}@~{o}es para Polin@^{o}mios,  , Introdu@,{c}@~{a}o a Polin@^{o}mios, Polin@^{o}mios
+@section Defini@,{c}@~{o}es para Polin@^{o}mios
 
-@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} algebraic
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} algebraic
 Valor Padr@~{a}o: @code{false}
 
 @code{algebraic} deve ser escolhida para @code{true} com o objetivo de que a
-simplifica@value{cedilha}@~{a}o de inteiros alg@'{e}bricos tenha efeito.
+simplifica@,{c}@~{a}o de inteiros alg@'{e}bricos tenha efeito.
 
 @end defvr
 
-@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} berlefact
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} berlefact
 Valor Padr@~{a}o: @code{true}
 
-Quando @code{berlefact} for @code{false} ent@~{a}o o algor@'{i}tmo de fatora@value{cedilha}@~{a}o de
+Quando @code{berlefact} for @code{false} ent@~{a}o o algor@'{i}tmo de fatora@,{c}@~{a}o de
 Kronecker ser@'{a} usado.  De outra forma o algor@'{i}tmo de Berlekamp, que @'{e} o
 padr@~{a}o, ser@'{a} usado.
 
 @end defvr
 
 @c WHAT IS THIS ABOUT EXACTLY ??
-@deffn {Fun@value{cedilha}@~{a}o} bezout (@var{p1}, @var{p2}, @var{x})
+@deffn {Fun@,{c}@~{a}o} bezout (@var{p1}, @var{p2}, @var{x})
 uma alternativa para o comando @code{resultant}.  Isso
 retorna uma matriz.  @code{determinant} dessa matriz @'{e} o resultante desejado.
 
 @end deffn
 
 @c REWORD THIS ITEM -- COULD BE MORE CONCISE
-@deffn {Fun@value{cedilha}@~{a}o} bothcoef (@var{expr}, @var{x})
+@deffn {Fun@,{c}@~{a}o} bothcoef (@var{expr}, @var{x})
 Retorna uma lista da qual o primeiro membro @'{e} o
 coeficiente de @var{x} em @var{expr} (como achado por @code{ratcoef} se @var{expr} est@'{a} na forma CRE
 de outro modo por @code{coeff}) e cujo segundo membro @'{e} a parte restante de
@@ -104,7 +104,7 @@ Exemplo:
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} coeff (@var{expr}, @var{x}, @var{n})
+@deffn {Fun@,{c}@~{a}o} coeff (@var{expr}, @var{x}, @var{n})
 Retorna o coeficiente de @code{@var{x}^@var{n}} em @var{expr}.  @var{n} pode ser
 omitido se for 1.  @var{x} pode ser um @'{a}tomo, ou subexpress@~{a}o completa de
 @var{expr} e.g., @code{sin(x)}, @code{a[i+1]}, @code{x + y}, etc. (No @'{u}ltimo caso a
@@ -126,14 +126,14 @@ Exemplos:
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} combine (@var{expr})
-Simplifica a adi@value{cedilha}@~{a}o @var{expr} por termos combinados com o mesmo
+@deffn {Fun@,{c}@~{a}o} combine (@var{expr})
+Simplifica a adi@,{c}@~{a}o @var{expr} por termos combinados com o mesmo
 denominador dentro de um termo simples.
 
 @c NEED EXAMPLE HERE
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} content (@var{p_1}, @var{x_1}, ..., @var{x_n})
+@deffn {Fun@,{c}@~{a}o} content (@var{p_1}, @var{x_1}, ..., @var{x_n})
 Retorna uma lista cujo primeiro elemento @'{e}
 o m@'{a}ximo divisor comum dos coeficientes dos termos do
 polin@^{o}mio @var{p_1} na vari@'{a}vel @var{x_n} (isso @'{e} o conte@'{u}do) e cujo
@@ -153,17 +153,17 @@ Exemplos:
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} denom (@var{expr})
+@deffn {Fun@,{c}@~{a}o} denom (@var{expr})
 Retorna o denominador da express@~{a}o racional @var{expr}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} divide (@var{p_1}, @var{p_2}, @var{x_1}, ..., @var{x_n})
+@deffn {Fun@,{c}@~{a}o} divide (@var{p_1}, @var{p_2}, @var{x_1}, ..., @var{x_n})
 calcula o quocietne e o resto
 do polin@^{o}mio @var{p_1} dividido pelo polin@^{o}mio @var{p_2}, na vari@'{a}vel
 principal do polin@^{o}mio, @var{x_n}.
 @c SPELL OUT THE PURPOSE OF THE OTHER VARIABLES
-As outras vari@'{a}veis s@~{a}o como na fun@value{cedilha}@~{a}o @code{ratvars}.
+As outras vari@'{a}veis s@~{a}o como na fun@,{c}@~{a}o @code{ratvars}.
 O resultado @'{e} uma lista cujo primeiro elemento @'{e} o quociente
 e cujo segundo elemento @'{e} o resto.
 
@@ -184,9 +184,9 @@ Note que @code{y} @'{e} a vari@'{a}vel principal no segundo exemplo.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} eliminate ([@var{eqn_1}, ..., @var{eqn_n}], [@var{x_1}, ..., @var{x_k}])
+@deffn {Fun@,{c}@~{a}o} eliminate ([@var{eqn_1}, ..., @var{eqn_n}], [@var{x_1}, ..., @var{x_k}])
 Elimina vari@'{a}veis de
-equa@value{cedilha}@~{o}es (ou express@~{o}es assumidas iguais a zero) pegando resultantes
+equa@,{c}@~{o}es (ou express@~{o}es assumidas iguais a zero) pegando resultantes
 sucessivos. Isso retorna uma lista de @code{@var{n} - @var{k}} express@~{o}es com @var{k}
 vari@'{a}veis @var{x_1}, ..., @var{x_k} eliminadas.  Primeiro @var{x_1} @'{e} eliminado retornando @code{@var{n} - 1}
 express@~{o}es, ent@~{a}o @code{x_2} @'{e} eliminado, etc.  Se @code{@var{k} = @var{n}} ent@~{a}o uma express@~{a}o simples em uma
@@ -219,7 +219,7 @@ Exemplo:
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} ezgcd (@var{p_1}, @var{p_2}, @var{p_3}, ...)
+@deffn {Fun@,{c}@~{a}o} ezgcd (@var{p_1}, @var{p_2}, @var{p_3}, ...)
 Retorna uma lista cujo primeiro elemento @'{e} o m.d.c. dos
 polin@^{o}mios @var{p_1}, @var{p_2}, @var{p_3}, ...  e cujos restantes elementos s@~{a}o os
 polin@^{o}mios divididos pelo mdc.  Isso sempre usa o algor@'{i}tmo
@@ -227,7 +227,7 @@ polin@^{o}mios divididos pelo mdc.  Isso sempre usa o algor@'{i}tmo
 
 @end deffn
 
-@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} facexpand
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} facexpand
 Valor Padr@~{a}o: @code{true}
 
 @code{facexpand} controla se os fatores irredut@'{i}veis
@@ -236,7 +236,7 @@ retornados por @code{factor} est@~{a}o na forma expandida (o padr@~{a}o) ou na f
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~{a}o} factcomb (@var{expr})
+@deffn {Fun@,{c}@~{a}o} factcomb (@var{expr})
 Tenta combinar os coeficientes de fatoriais em @var{expr}
 com os pr@'{o}prios fatoriais convertendo, por exemplo, @code{(n + 1)*n!}
 em @code{(n + 1)!}.
@@ -252,36 +252,36 @@ aplicado ap@'{o}s um @code{factcomb}.
 @c factcomb (%);
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} factor (@var{expr})
+@deffn {Fun@,{c}@~{a}o} factor (@var{expr})
 Fatora a express@~{a}o @var{expr}, contendo qualquer n@'{u}mero de
-vari@'{a}veis ou fun@value{cedilha}@~{o}es, em fatores irredut@'{i}veis sobre os inteiros.
+vari@'{a}veis ou fun@,{c}@~{o}es, em fatores irredut@'{i}veis sobre os inteiros.
 @code{factor (@var{expr}, p)} fatora @var{expr} sobre o campo dos inteiros com um elemento
 adjunto cujo menor polin@^{o}mio @'{e} p.
 
-@code{factor} usa a fun@value{cedilha}@~{a}o @code{ifactors} para fatorar inteiros.
+@code{factor} usa a fun@,{c}@~{a}o @code{ifactors} para fatorar inteiros.
 
-@code{factorflag} se @code{false} suprime a fatora@value{cedilha}@~{a}o de fatores inteiros
+@code{factorflag} se @code{false} suprime a fatora@,{c}@~{a}o de fatores inteiros
 de express@~{o}es racionais.
 
-@code{dontfactor} pode ser escolhida para uma lista de vari@'{a}veis com rela@value{cedilha}@~{a}o @`a qual
-fatora@value{cedilha}@~{a}o n@~{a}o @'{e} para ocorrer.  (Essa @'{e} inicialmente vazia).  Fatora@value{cedilha}@~{a}o tamb@'{e}m
-n@~{a}o acontece com rela@value{cedilha}@~{a}o a quaisquer vari@'{a}veis que s@~{a}o menos
-importantes (usando a ordena@value{cedilha}@~{a}o de vari@'{a}vel assumida pela forma CRE) como
+@code{dontfactor} pode ser escolhida para uma lista de vari@'{a}veis com rela@,{c}@~{a}o @`a qual
+fatora@,{c}@~{a}o n@~{a}o @'{e} para ocorrer.  (Essa @'{e} inicialmente vazia).  Fatora@,{c}@~{a}o tamb@'{e}m
+n@~{a}o acontece com rela@,{c}@~{a}o a quaisquer vari@'{a}veis que s@~{a}o menos
+importantes (usando a ordena@,{c}@~{a}o de vari@'{a}vel assumida pela forma CRE) como
 essas na lista @code{dontfactor}.
 
 @code{savefactors} se @code{true} faz com que os fatores de uma express@~{a}o que
-@'{e} um produto de fatores seja guardada por certas fun@value{cedilha}@~{o}es com o objetivo de
-aumentar a velocidade de futuras fatora@value{cedilha}@~{o}es de express@~{o}es contendo alguns dos
+@'{e} um produto de fatores seja guardada por certas fun@,{c}@~{o}es com o objetivo de
+aumentar a velocidade de futuras fatora@,{c}@~{o}es de express@~{o}es contendo alguns dos
 mesmos fatores.
 
-@code{berlefact} se @code{false} ent@~{a}o o algor@'{i}tmo de fatora@value{cedilha}@~{a}o de Kronecker ser@'{a}
+@code{berlefact} se @code{false} ent@~{a}o o algor@'{i}tmo de fatora@,{c}@~{a}o de Kronecker ser@'{a}
 usado de outra forma o algor@'{i}tmo de Berlekamp, que @'{e} o padr@~{a}o, ser@'{a}
 usado.
 
-@code{intfaclim} se @code{true} maxima ir@'{a} interromper a fatora@value{cedilha}@~{a}o de
+@code{intfaclim} se @code{true} maxima ir@'{a} interromper a fatora@,{c}@~{a}o de
 inteiros se nenhum fator for encontrado ap@'{o}s tentar divis@~{o}es e o m@'{e}todo rho de
 Pollard.  Se escolhida para @code{false} (esse @'{e} o caso quando o usu@'{a}rio chama
-@code{factor} explicitamente), a fatora@value{cedilha}@~{a}o completa do inteiro ser@'{a}
+@code{factor} explicitamente), a fatora@,{c}@~{a}o completa do inteiro ser@'{a}
 tentada.  A escolha do usu@'{a}rio para @code{intfaclim} @'{e} usada para chamadas
 internas a @code{factor}. Dessa forma, @code{intfaclim} pode ser resetada para evitar que o
 Maxima gaste um tempo muito longo fatorando inteiros grandes.
@@ -402,26 +402,26 @@ Exemplos:
 
 @end deffn
 
-@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} factorflag
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} factorflag
 Valor Padr@~{a}o: @code{false}
 
 @c WHAT IS THIS ABOUT EXACTLY ??
-Quando @code{factorflag} for @code{false}, suprime a fatora@value{cedilha}@~{a}o de
+Quando @code{factorflag} for @code{false}, suprime a fatora@,{c}@~{a}o de
 fatores inteiros em express@~{o}es racionais.
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~{a}o} factorout (@var{expr}, @var{x_1}, @var{x_2}, ...)
-Rearranja a adi@value{cedilha}@~{a}o @var{expr} em uma adi@value{cedilha}@~{a}o de
+@deffn {Fun@,{c}@~{a}o} factorout (@var{expr}, @var{x_1}, @var{x_2}, ...)
+Rearranja a adi@,{c}@~{a}o @var{expr} em uma adi@,{c}@~{a}o de
 parcelas da forma @code{f (@var{x_1}, @var{x_2}, ...)*g} onde @code{g} @'{e} um produto de
 express@~{o}es que n@~{a}o possuem qualquer @var{x_i} e @code{f} @'{e} fatorado.
 @c NEED EXAMPLE HERE
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} factorsum (@var{expr})
-Tenta agrupar parcelas em fatores de @var{expr} que s@~{a}o adi@value{cedilha}@~{o}es
-em grupos de parcelas tais que sua adi@value{cedilha}@~{a}o @'{e} fator@'{a}vel.  @code{factorsum} pode
+@deffn {Fun@,{c}@~{a}o} factorsum (@var{expr})
+Tenta agrupar parcelas em fatores de @var{expr} que s@~{a}o adi@,{c}@~{o}es
+em grupos de parcelas tais que sua adi@,{c}@~{a}o @'{e} fator@'{a}vel.  @code{factorsum} pode
 recuperar o resultado de @code{expand ((x + y)^2 + (z + w)^2)} mas n@~{a}o pode recuperar
 @code{expand ((x + 1)^2 + (x + y)^2)} porque os termos possuem vari@'{a}veis em comum.
 
@@ -444,10 +444,10 @@ Exemplo:
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} fasttimes (@var{p_1}, @var{p_2})
+@deffn {Fun@,{c}@~{a}o} fasttimes (@var{p_1}, @var{p_2})
 Retorna o produto dos polin@^{o}mios @var{p_1} e @var{p_2} usando um
-algor@'{i}tmo especial para a multiplica@value{cedilha}@~{a}o de polin@^{o}mios.  @code{p_1} e @code{p_2} podem ser
-de v@'{a}rias vari@'{a}veis, densos, e aproximadamente do mesmo tamanho.  A multiplica@value{cedilha}@~{a}o
+algor@'{i}tmo especial para a multiplica@,{c}@~{a}o de polin@^{o}mios.  @code{p_1} e @code{p_2} podem ser
+de v@'{a}rias vari@'{a}veis, densos, e aproximadamente do mesmo tamanho.  A multiplica@,{c}@~{a}o
 cl@'{a}ssica @'{e} de ordem @code{n_1 n_2} onde
 @code{n_1} @'{e} o grau de @code{p_1}
 and @code{n_2} @'{e} o grau de @code{p_2}.
@@ -455,14 +455,14 @@ and @code{n_2} @'{e} o grau de @code{p_2}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} fullratsimp (@var{expr})
+@deffn {Fun@,{c}@~{a}o} fullratsimp (@var{expr})
 @code{fullratsimp} aplica
-repetidamente @code{ratsimp} seguido por simplifica@value{cedilha}@~{a}o n@~{a}o racional a uma
-express@~{a}o at@'{e} que nenhuma mudan@value{cedilha}a adicional ocorra,
+repetidamente @code{ratsimp} seguido por simplifica@,{c}@~{a}o n@~{a}o racional a uma
+express@~{a}o at@'{e} que nenhuma mudan@,{c}a adicional ocorra,
 e retorna o resultado.
 
 Quando express@~{o}es n@~{a}o racionais est@~{a}o envolvidas, uma chamada
-a @code{ratsimp} seguida como @'{e} usual por uma simplifica@value{cedilha}@~{a}o n@~{a}o racional
+a @code{ratsimp} seguida como @'{e} usual por uma simplifica@,{c}@~{a}o n@~{a}o racional
 ("geral") pode n@~{a}o ser suficiente para retornar um resultado simplificado.
 Algumas vezes, mais que uma tal chamada pode ser necess@'{a}ria. 
 @code{fullratsimp} faz esse processo convenientemente.
@@ -505,15 +505,15 @@ Exemplo:
 
 @c SPELL OUT WHAT fullratsubst DOES INSTEAD OF ALLUDING TO ratsubst AND lratsubst
 @c THIS ITEM NEEDS MORE WORK
-@deffn {Fun@value{cedilha}@~{a}o} fullratsubst (@var{a}, @var{b}, @var{c})
+@deffn {Fun@,{c}@~{a}o} fullratsubst (@var{a}, @var{b}, @var{c})
 @'{e} o mesmo que @code{ratsubst} exceto que essa chama
 a si mesma recursivamente sobre esse resultado at@'{e} que o resultado para de mudar.
-Essa fun@value{cedilha}@~{a}o @'{e} @'{u}til quando a express@~{a}o de substitui@value{cedilha}@~{a}o e a
+Essa fun@,{c}@~{a}o @'{e} @'{u}til quando a express@~{a}o de substitui@,{c}@~{a}o e a
 express@~{a}o substitu@'{i}da tenham uma ou mais vari@'{a}veis em comum.
 
 @code{fullratsubst} ir@'{a} tamb@'{e}m aceitar seus argumentos no formato de
-@code{lratsubst}.  Isto @'{e}, o primeiro argumento pode ser uma substitui@value{cedilha}@~{a}o simples
-de equa@value{cedilha}@~{a}o ou uma lista de tais equa@value{cedilha}@~{o}es, enquanto o segundo argumento @'{e} a
+@code{lratsubst}.  Isto @'{e}, o primeiro argumento pode ser uma substitui@,{c}@~{a}o simples
+de equa@,{c}@~{a}o ou uma lista de tais equa@,{c}@~{o}es, enquanto o segundo argumento @'{e} a
 express@~{a}o sendo processada.
 
 @code{load ("lrats")} chama @code{fullratsubst} e @code{lratsubst}.
@@ -536,7 +536,7 @@ Exemplos:
 @end example
 @itemize @bullet
 @item
-@code{subst} pode realizar multiplas substitui@value{cedilha}@~{o}es.
+@code{subst} pode realizar multiplas substitui@,{c}@~{o}es.
 @code{lratsubst} @'{e} analogo a @code{subst}.
 @end itemize
 @example
@@ -547,7 +547,7 @@ Exemplos:
 @end example
 @itemize @bullet
 @item
-Se somente uma substitui@value{cedilha}@~{a}o @'{e} desejada, ent@~{a}o uma equa@value{cedilha}@~{a}o
+Se somente uma substitui@,{c}@~{a}o @'{e} desejada, ent@~{a}o uma equa@,{c}@~{a}o
 simples pode ser dada como primeiro argumento.
 @end itemize
 @example
@@ -569,7 +569,7 @@ exceto que essa executa recursivamente at@'{e} que seu resultado para de mudar.
 @end example
 @itemize @bullet
 @item
-@code{fullratsubst} tamb@'{e}m aceita uma lista de equa@value{cedilha}@~{o}es ou uma equa@value{cedilha}@~{a}o
+@code{fullratsubst} tamb@'{e}m aceita uma lista de equa@,{c}@~{o}es ou uma equa@,{c}@~{a}o
 simples como primeiro argumento.
 @end itemize
 @example
@@ -594,18 +594,18 @@ simples como primeiro argumento.
 
 @c GCD IS A VARIABLE AND A FUNCTION
 @c THIS ITEM NEEDS A LOT OF WORK
-@deffn {Fun@value{cedilha}@~{a}o} gcd (@var{p_1}, @var{p_2}, @var{x_1}, ...)
+@deffn {Fun@,{c}@~{a}o} gcd (@var{p_1}, @var{p_2}, @var{x_1}, ...)
 Retorna o m@'{a}ximo divisor comum entre @var{p_1} e @var{p_2}.
 O sinalizador @code{gcd} determina qual algor@'{i}tmo @'{e} empregado.
 Escolhendo @code{gcd} para @code{ez}, @code{subres}, @code{red}, ou @code{spmod} seleciona o algor@'{i}tmo @code{ezgcd},
 subresultante @code{prs}, reduzido, ou modular,
 respectivamente.  Se @code{gcd} for @code{false} ent@~{a}o @code{gcd (@var{p_1}, @var{p_2}, @var{x})} sempre retorna 1
-para todo @var{x}.  Muitas fun@value{cedilha}@~{o}es (e.g.  @code{ratsimp}, @code{factor}, etc.) fazem com que mdc's
+para todo @var{x}.  Muitas fun@,{c}@~{o}es (e.g.  @code{ratsimp}, @code{factor}, etc.) fazem com que mdc's
 sejam feitos implicitamente.  Para polin@^{o}mios homog@^{e}neos @'{e} recomendado
 que @code{gcd} igual a @code{subres} seja usado.  Para pegar o mdc quando uma express@~{a}o alg@'{e}brica est@'{a}
 presente, e.g. @code{gcd (@var{x}^2 - 2*sqrt(2)*@var{x} + 2, @var{x} - sqrt(2))}, @code{algebraic} deve ser
 @code{true} e @code{gcd} n@~{a}o deve ser @code{ez}.  @code{subres} @'{e} um novo algor@'{i}tmo, e pessoas
-que tenham estado usando a op@value{cedilha}@~{a}o @code{red} podem provavelmente alterar isso para
+que tenham estado usando a op@,{c}@~{a}o @code{red} podem provavelmente alterar isso para
 @code{subres}.
 
 O sinalizador @code{gcd}, padr@~{a}o: @code{subres}, se @code{false} ir@'{a} tamb@'{e}m evitar o m@'{a}ximo
@@ -617,8 +617,8 @@ requeridos.
 @end deffn
 
 @c IN NEED OF SERIOUS CLARIFICATION HERE
-@deffn {Fun@value{cedilha}@~{a}o} gcdex (@var{f}, @var{g})
-@deffnx {Fun@value{cedilha}@~{a}o} gcdex (@var{f}, @var{g}, @var{x})
+@deffn {Fun@,{c}@~{a}o} gcdex (@var{f}, @var{g})
+@deffnx {Fun@,{c}@~{a}o} gcdex (@var{f}, @var{g}, @var{x})
 Retornam uma lista @code{[@var{a}, @var{b}, @var{u}]}
 onde @var{u} @'{e} o m@'{a}ximo divisor comum (mdc) entre @var{f} e @var{g},
 e @var{u} @'{e} igual a @code{@var{a} @var{f} + @var{b} @var{g}}.
@@ -626,7 +626,7 @@ Os argumentos @var{f} e @var{g} podem ser polin@^{o}mios de uma vari@'{a}vel,
 ou de outra forma polin@^{o}mios em @var{x} uma @b{main}(principal) vari@'{a}vel suprida
 desde que n@'{o}s precisamos estar em um dom@'{i}nio de ideal principal para isso trabalhar.
 O mdc significa o mdc considerando @var{f} e @var{g} como polin@^{o}mios de uma @'{u}nica vari@'{a}vel com coeficientes
-sendo fun@value{cedilha}@~{o}es racionais em outras vari@'{a}veis.
+sendo fun@,{c}@~{o}es racionais em outras vari@'{a}veis.
 
 @code{gcdex} implementa o algor@'{i}tmo Euclideano,
 onde temos a seq@"{u}@^{e}ncia
@@ -668,17 +668,17 @@ uma vez que trabalhamos em @code{k(y)[x]}, o @code{y+1} n@~{a}o pode ser esperad
 
 
 @c CHOOSE ONE CHARACTERIZATION OF "GAUSSIAN INTEGERS" AND USE IT WHERE GAUSSIAN INTEGERS ARE REFERENCED
-@deffn {Fun@value{cedilha}@~{a}o} gcfactor (@var{n})
+@deffn {Fun@,{c}@~{a}o} gcfactor (@var{n})
 Fatora o inteiro Gaussiano @var{n} sobre os inteiros Gaussianos, i.e.,
 n@'{u}meros da forma @code{@var{a} + @var{b} @code{%i}} onde @var{a} e @var{b} s@~{a}o inteiros raconais
-(i.e.,  inteiros comuns).  Fatora@value{cedilha}@~{o}es s@~{a}o normalizadas fazendo @var{a} e @var{b}
+(i.e.,  inteiros comuns).  Fatora@,{c}@~{o}es s@~{a}o normalizadas fazendo @var{a} e @var{b}
 n@~{a}o negativos.
 @c NEED EXAMPLES HERE
 
 @end deffn
 
 @c CHOOSE ONE CHARACTERIZATION OF "GAUSSIAN INTEGERS" AND USE IT WHERE GAUSSIAN INTEGERS ARE REFERENCED
-@deffn {Fun@value{cedilha}@~{a}o} gfactor (@var{expr})
+@deffn {Fun@,{c}@~{a}o} gfactor (@var{expr})
 Fatora o polin@^{o}mio @var{expr} sobre os inteiros de Gauss
 (isto @'{e}, os inteiros com a unidade imagin@'{a}ria @code{%i} adjunta).
 @c "This is like" -- IS IT THE SAME OR NOT ??
@@ -697,13 +697,13 @@ Exemplo:
 
 @c DESCRIBE THIS INDEPENDENTLY OF factorsum
 @c THIS ITEM NEEDS MORE WORK
-@deffn {Fun@value{cedilha}@~{a}o} gfactorsum (@var{expr})
+@deffn {Fun@,{c}@~{a}o} gfactorsum (@var{expr})
 @'{e} similar a @code{factorsum} mas aplica @code{gfactor} em lugar
 de @code{factor}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} hipow (@var{expr}, @var{x})
+@deffn {Fun@,{c}@~{a}o} hipow (@var{expr}, @var{x})
 Retorna o maior expoente expl@'{i}cito de @var{x} em @var{expr}.
 @var{x} pode ser uma vari@'{a}vel ou uma express@~{a}o geral.
 Se @var{x} n@~{a}o aparece em @var{expr},
@@ -731,15 +731,15 @@ Exemplos:
 
 @end deffn
 
-@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} intfaclim
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} intfaclim
 Valor padr@~{a}o: true
 
-Se @code{true}, maxima ir@'{a} interromper a fatora@value{cedilha}@~{a}o de
+Se @code{true}, maxima ir@'{a} interromper a fatora@,{c}@~{a}o de
 inteiros se nenhum fator for encontrado ap@'{o}s tentar divis@~{o}es e o m@'{e}todo rho de
-Pollard e a fatora@value{cedilha}@~{a}o n@~{a}o ser@'{a} completada.
+Pollard e a fatora@,{c}@~{a}o n@~{a}o ser@'{a} completada.
 
 Quando @code{intfaclim} for @code{false} (esse @'{e} o caso quando o usu@'{a}rio
-chama @code{factor} explicitamente), a fatora@value{cedilha}@~{a}o completa ser@'{a}
+chama @code{factor} explicitamente), a fatora@,{c}@~{a}o completa ser@'{a}
 tentada.  @code{intfaclim} @'{e} escolhida para @code{false} quando fatores s@~{a}o
 calculados em @code{divisors}, @code{divsum} e @code{totient}.
 @c ANY OTHERS ??
@@ -753,7 +753,7 @@ o tempo gasto fatorando grandes inteiros.
 
 @end defvr
 
-@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} keepfloat
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} keepfloat
 Valor Padr@~{a}o: @code{false}
 
 Quando @code{keepfloat} for @code{true}, evitamos que n@'{u}meros
@@ -765,14 +765,14 @@ s@~{a}o ent@~{a}o convertidas para a forma de express@~{a}o racional can@^{o}nic
 
 @c DESCRIBE lratsubst INDEPENDENTLY OF subst
 @c THIS ITEM NEEDS MORE WORK
-@deffn {Fun@value{cedilha}@~{a}o} lratsubst (@var{L}, @var{expr})
+@deffn {Fun@,{c}@~{a}o} lratsubst (@var{L}, @var{expr})
 @'{e} an@'{a}logo a @code{subst (@var{L}, @var{expr})}
 exceto que esse usa @code{ratsubst} em lugar de @code{subst}.
 
 O primeiro argumento de
-@code{lratsubst} @'{e} uma equa@value{cedilha}@~{a}o ou uma lista de equa@value{cedilha}@~{o}es id@^{e}nticas em
+@code{lratsubst} @'{e} uma equa@,{c}@~{a}o ou uma lista de equa@,{c}@~{o}es id@^{e}nticas em
 formato para que sejam aceitas por @code{subst}.  As
-substitui@value{cedilha}@~{o}es s@~{a}o feitas na ordem dada pela lista de equa@value{cedilha}@~{o}es,
+substitui@,{c}@~{o}es s@~{a}o feitas na ordem dada pela lista de equa@,{c}@~{o}es,
 isto @'{e}, da esquerda para a direita.
 
 @code{load ("lrats")} chama @code{fullratsubst} e @code{lratsubst}.
@@ -790,7 +790,7 @@ Exemplos:
 @end example
 @itemize @bullet
 @item
-@code{subst} pode realizar multiplas substitui@value{cedilha}@~{o}es.
+@code{subst} pode realizar multiplas substitui@,{c}@~{o}es.
 @code{lratsubst} @'{e} analoga a @code{subst}.
 @end itemize
 @example
@@ -801,7 +801,7 @@ Exemplos:
 @end example
 @itemize @bullet
 @item
-Se somente uma substitui@value{cedilha}@~{a}o for desejada, ent@~{a}o uma equa@value{cedilha}@~{a}o
+Se somente uma substitui@,{c}@~{a}o for desejada, ent@~{a}o uma equa@,{c}@~{a}o
 simples pode ser dada como primeiro argumento.
 @end itemize
 @example
@@ -811,11 +811,11 @@ simples pode ser dada como primeiro argumento.
 
 @end deffn
 
-@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} modulus
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} modulus
 Valor Padr@~{a}o: @code{false}
 
 Quando @code{modulus} for um n@'{u}mero positivo @var{p},
-opera@value{cedilha}@~{o}es sobre os n@'{u}meros racionais (como retornado por @code{rat} e fun@value{cedilha}@~{o}es relacionadas)
+opera@,{c}@~{o}es sobre os n@'{u}meros racionais (como retornado por @code{rat} e fun@,{c}@~{o}es relacionadas)
 s@~{a}o realizadas m@'{o}dulo @var{p},
 usando o ent@~{a}o chamado sistema de m@'{o}dulo "balanceado"
 no qual @code{@var{n} m@'{o}dulo @var{p}} @'{e} definido como 
@@ -851,7 +851,7 @@ embora isso n@~{a}o seja limpo se aquele tiver quaisquer conseq@"{u}@^{e}ncias @
 @c 
 @c @end defvar
 
-@deffn {Fun@value{cedilha}@~{a}o} num (@var{expr})
+@deffn {Fun@,{c}@~{a}o} num (@var{expr})
 Retorna o numerador de @var{expr} se isso for uma raz@~{a}o.
 Se @var{expr} n@~{a}o for uma raz@~{a}o, @var{expr} @'{e} retornado.
 
@@ -860,10 +860,10 @@ Se @var{expr} n@~{a}o for uma raz@~{a}o, @var{expr} @'{e} retornado.
 @c NEED SOME EXAMPLES HERE
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} polydecomp (@var{p}, @var{x})
+@deffn {Fun@,{c}@~{a}o} polydecomp (@var{p}, @var{x})
 
 Decomp@~{o}es o polin@^{o}mio @var{p} na vari@'{a}vel  @var{x}
-em uma composi@value{cedilha}@~{a}o funcional de polin@^{o}mios em @var{x}.
+em uma composi@,{c}@~{a}o funcional de polin@^{o}mios em @var{x}.
 @code{polydecomp} retorna uma lista @code{[@var{p_1}, ..., @var{p_n}]} tal que
 
 @example
@@ -873,7 +873,7 @@ lambda ([x], p_1) (lambda ([x], p_2) (... (lambda ([x], p_n) (x)) ...))
 seja igual a @var{p}.
 O grau de @var{p_i} @'{e} maior que 1 para @var{i} menor que @var{n}.
 
-Tal decomposi@value{cedilha}@~{a}o n@~{a}o @'{e} @'{u}nica.
+Tal decomposi@,{c}@~{a}o n@~{a}o @'{e} @'{u}nica.
 
 Exemplos:
 
@@ -894,8 +894,8 @@ Exemplos:
 (%o3)                 [x  - a, x  - x - 1]
 @end example
 
-As seguintes fun@value{cedilha}@~{o}es comp@~{o}em @code{L = [e_1, ..., e_n]} como fun@value{cedilha}@~{o}es em @code{x};
-essa fun@value{cedilha}@`ao @'{e} a inversa de @code{polydecomp}:
+As seguintes fun@,{c}@~{o}es comp@~{o}em @code{L = [e_1, ..., e_n]} como fun@,{c}@~{o}es em @code{x};
+essa fun@,{c}@`ao @'{e} a inversa de @code{polydecomp}:
 
 @c ===beg===
 @c compose (L, x) :=
@@ -939,8 +939,8 @@ necess@'{a}riamente retorna @code{[@var{p_1}, ..., @var{p_n}]}:
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} quotient (@var{p_1}, @var{p_2})
-@deffnx {Fun@value{cedilha}@~{a}o} quotient (@var{p_1}, @var{p_2}, @var{x_1}, ..., @var{x_n})
+@deffn {Fun@,{c}@~{a}o} quotient (@var{p_1}, @var{p_2})
+@deffnx {Fun@,{c}@~{a}o} quotient (@var{p_1}, @var{p_2}, @var{x_1}, ..., @var{x_n})
 Retorna o polin@^{o}mio @var{p_1} dividido pelo polin@^{o}mio @var{p_2}.
 Os argumentos @var{x_1}, ..., @var{x_n} s@~{a}o interpretados como em @code{ratvars}.
 
@@ -950,8 +950,8 @@ Os argumentos @var{x_1}, ..., @var{x_n} s@~{a}o interpretados como em @code{ratv
 @end deffn
 
 @c THIS ITEM CAN PROBABLY BE IMPROVED
-@deffn {Fun@value{cedilha}@~{a}o} rat (@var{expr})
-@deffnx {Fun@value{cedilha}@~{a}o} rat (@var{expr}, @var{x_1}, ..., @var{x_n})
+@deffn {Fun@,{c}@~{a}o} rat (@var{expr})
+@deffnx {Fun@,{c}@~{a}o} rat (@var{expr}, @var{x_1}, ..., @var{x_n})
 Converte @var{expr} para a forma de express@~{a}o racional can@^{o}nica (CRE) expandindo e
 combinando todos os termos sobre um denominador comum e cancelando para fora o
 m@'{a}ximo divisor comum entre o numerador e o denominador, tamb@'{e}m
@@ -960,21 +960,21 @@ toler@^{a}ncia de @code{ratepsilon}.
 As vari@'{a}veis s@~{a}o ordenadas de acordo com
 @var{x_1}, ..., @var{x_n}, se especificado, como em @code{ratvars}.
 
-@code{rat} geralmente n@~{a}o simplifica fun@value{cedilha}@~{o}es outras que n@~{a}o sejam
-adi@value{cedilha}@~{a}o @code{+}, subtra@value{cedilha}@~{a}o @code{-}, multiplica@value{cedilha}@~{a}o @code{*}, divis@~{a}o @code{/}, e
-exponencia@value{cedilha}@~{a}o com expoente inteiro,
+@code{rat} geralmente n@~{a}o simplifica fun@,{c}@~{o}es outras que n@~{a}o sejam
+adi@,{c}@~{a}o @code{+}, subtra@,{c}@~{a}o @code{-}, multiplica@,{c}@~{a}o @code{*}, divis@~{a}o @code{/}, e
+exponencia@,{c}@~{a}o com expoente inteiro,
 uma vez que @code{ratsimp} n@~{a}o manuseia esses casos.
 Note que @'{a}tomos (n@'{u}meros e vari@'{a}veis) na forma CRE n@~{a}o s@~{a}o os
 mesmos que eles s@~{a}o na forma geral.
 Por exemplo, @code{rat(x)- x} retorna 
-@code{rat(0)} que tem uma representa@value{cedilha}@~{a}o interna diferente de 0.
+@code{rat(0)} que tem uma representa@,{c}@~{a}o interna diferente de 0.
 
 @c WHAT'S THIS ABOUT EXACTLY ??
 Quando @code{ratfac} for @code{true}, @code{rat} retorna uma forma parcialmente fatorada para CRE.
-Durante opera@value{cedilha}@~{o}es racionais a express@~{a}o @'{e}
+Durante opera@,{c}@~{o}es racionais a express@~{a}o @'{e}
 mantida como totalmente fatorada como poss@'{i}vel sem uma chamada ao
-pacote de fatora@value{cedilha}@~{a}o (@code{factor}).  Isso pode sempre economizar espa@value{cedilha}o de mem@'{o}ria e algum tempo
-em algumas computa@value{cedilha}@~{o}es.  O numerador e o denominador s@~{a}o ainda tidos como
+pacote de fatora@,{c}@~{a}o (@code{factor}).  Isso pode sempre economizar espa@,{c}o de mem@'{o}ria e algum tempo
+em algumas computa@,{c}@~{o}es.  O numerador e o denominador s@~{a}o ainda tidos como
 relativamente primos
 (e.g.  @code{rat ((x^2 - 1)^4/(x + 1)^2)} retorna @code{(x - 1)^4 (x + 1)^2)},
 mas os fatores dentro de cada parte podem n@~{a}o ser relativamente primos.
@@ -1011,18 +1011,18 @@ Exemplos:
 
 @end deffn
 
-@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} ratalgdenom
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} ratalgdenom
 Valor Padr@~{a}o: @code{true}
 
-Quando @code{ratalgdenom} for @code{true}, permite racionaliza@value{cedilha}@~{a}o de
+Quando @code{ratalgdenom} for @code{true}, permite racionaliza@,{c}@~{a}o de
 denominadores com respeito a radicais tenham efeito.
 @code{ratalgdenom} tem efeito somente quando express@~{o}es racionais can@^{o}nicas (CRE) forem usadas no modo alg@'{e}brico.
 
 @end defvr
 
 @c THIS ITEM NEEDS MORE WORK
-@deffn {Fun@value{cedilha}@~{a}o} ratcoef (@var{expr}, @var{x}, @var{n})
-@deffnx {Fun@value{cedilha}@~{a}o} ratcoef (@var{expr}, @var{x})
+@deffn {Fun@,{c}@~{a}o} ratcoef (@var{expr}, @var{x}, @var{n})
+@deffnx {Fun@,{c}@~{a}o} ratcoef (@var{expr}, @var{x})
 Retorna o coeficiente da express@~{a}o @code{@var{x}^@var{n}}
 dentro da express@~{a}o @var{expr}.
 Se omitido, @var{n} @'{e} assumido ser 1.
@@ -1038,7 +1038,7 @@ sint@'{a}tica.
 @c MOVE THIS TO EXAMPLES SECTION
 Dessa forma @code{ratcoef ((x + 1)/y + x, x)} retorna @code{(y + 1)/y} ao passo que @code{coeff} retorna 1.
 
-@code{ratcoef (@var{expr}, @var{x}, 0)}, visualiza @var{expr} como uma adi@value{cedilha}@~{a}o,
+@code{ratcoef (@var{expr}, @var{x}, 0)}, visualiza @var{expr} como uma adi@,{c}@~{a}o,
 retornando uma soma desses termos que n@~{a}o possuem @var{x}.
 @c "SHOULD NOT" -- WHAT DOES THIS MEAN ??
 portanto se @var{x} ocorre para quaisquer expoentes negativos, @code{ratcoef} pode n@~{a}o ser usado.
@@ -1062,13 +1062,13 @@ Exemplo:
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} ratdenom (@var{expr})
+@deffn {Fun@,{c}@~{a}o} ratdenom (@var{expr})
 Retorna o denominador de @var{expr},
-ap@'{o}s for@value{cedilha}ar a convers@~{a}o de @var{expr} para express@~{a}o racional can@^{o}nica (CRE).
+ap@'{o}s for@,{c}ar a convers@~{a}o de @var{expr} para express@~{a}o racional can@^{o}nica (CRE).
 O valor de retorno @'{e} a CRE.
 
 @c ACTUALLY THE CONVERSION IS CARRIED OUT BY ratf BUT THAT'S WHAT $rat CALLS
-@var{expr} @'{e} for@value{cedilha}ada para uma CRE por @code{rat}
+@var{expr} @'{e} for@,{c}ada para uma CRE por @code{rat}
 se n@~{a}o for j@'{a} uma CRE.
 Essa convers@~{a}o pode mudar a forma de @var{expr} colocando todos os termos
 sobre um denominador comum.
@@ -1081,15 +1081,15 @@ n@~{a}o s@~{a}o consideradas raz@~{o}es por @code{denom}.
 @c NEEDS AN EXAMPLE HERE
 @end deffn
 
-@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} ratdenomdivide
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} ratdenomdivide
 Valor Padr@~{a}o: @code{true}
 
 Quando @code{ratdenomdivide} for @code{true},
-@code{ratexpand} expande uma raz@~{a}o cujo o numerador for uma adi@value{cedilha}@~{a}o 
+@code{ratexpand} expande uma raz@~{a}o cujo o numerador for uma adi@,{c}@~{a}o 
 dentro de uma soma de raz@~{o}es,
 tendo todos um denominador comum.
-De outra forma, @code{ratexpand} colapsa uma adi@value{cedilha}@~{a}o de raz@~{o}es dentro de uma raz@~{a}o simples,
-cujo numerador seja a adi@value{cedilha}@~{a}o dos numeradores de cada raz@~{a}o.
+De outra forma, @code{ratexpand} colapsa uma adi@,{c}@~{a}o de raz@~{o}es dentro de uma raz@~{a}o simples,
+cujo numerador seja a adi@,{c}@~{a}o dos numeradores de cada raz@~{a}o.
 
 Exemplos:
 
@@ -1130,8 +1130,8 @@ Exemplos:
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~{a}o} ratdiff (@var{expr}, @var{x})
-Realiza a deriva@value{cedilha}@~{a}o da express@~{a}o racional @var{expr} com rela@value{cedilha}@~{a}o a @var{x}.
+@deffn {Fun@,{c}@~{a}o} ratdiff (@var{expr}, @var{x})
+Realiza a deriva@,{c}@~{a}o da express@~{a}o racional @var{expr} com rela@,{c}@~{a}o a @var{x}.
 @var{expr} deve ser uma raz@~{a}o de polin@^{o}mios ou um polin@^{o}mio em @var{x}.
 O argumento @var{x} pode ser uma vari@'{a}vel ou uma subexpress@~{a}o de @var{expr}.
 @c NOT CLEAR (FROM READING CODE) HOW x OTHER THAN A VARIABLE IS HANDLED --
@@ -1190,7 +1190,7 @@ Exemplo:
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} ratdisrep (@var{expr})
+@deffn {Fun@,{c}@~{a}o} ratdisrep (@var{expr})
 Retorna seu argumento como uma express@~{a}o geral.
 Se @var{expr} for uma express@~{a}o geral, @'{e} retornada inalterada.
 
@@ -1198,13 +1198,13 @@ Tipicamente @code{ratdisrep} @'{e} chamada para converter uma express@~{a}o raci
 em uma express@~{a}o geral.
 @c NOT REALLY FOND OF YOU-CAN-DO-THIS-YOU-CAN-DO-THAT STATEMENTS
 Isso @'{e} algumas vezes conveniente se deseja-se parar o "cont@'{a}gio", ou
-caso se esteja usando fun@value{cedilha}@~{o}es racionais em contextos n@~{a}o racionais.
+caso se esteja usando fun@,{c}@~{o}es racionais em contextos n@~{a}o racionais.
 
 Veja tamb@'{e}m @code{totaldisrep}.
 
 @end deffn
 
-@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} ratepsilon
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} ratepsilon
 Valor Padr@~{a}o: 2.0e-8
 
 @code{ratepsilon} @'{e} a toler@^{a}ncia usada em convers@~{o}es
@@ -1213,10 +1213,10 @@ de n@'{u}meros em ponto flutuante para n@'{u}meros racionais.
 @c NEED EXAMPLES HERE
 @end defvr
 
-@deffn {Fun@value{cedilha}@~{a}o} ratexpand (@var{expr})
-@deffnx {Vari@'{a}vel de op@value{cedilha}@~{a}o} ratexpand
+@deffn {Fun@,{c}@~{a}o} ratexpand (@var{expr})
+@deffnx {Vari@'{a}vel de op@,{c}@~{a}o} ratexpand
 Expande @var{expr} multiplicando para fora produtos de somas e
-somas exponenciadas, combinando fra@value{cedilha}@~{o}es sobre um denominador comum,
+somas exponenciadas, combinando fra@,{c}@~{o}es sobre um denominador comum,
 cancelando o m@'{a}ximo divisor comum entre entre o numerador e o
 denominador, ent@~{a}o quebrando o numerador (se for uma soma) dentro de suas
 respectivas parcelas divididas pelo denominador.
@@ -1232,8 +1232,8 @@ na forma recursiva.
 Veja tamb@'{e}m @code{ratsimp}.
 
 Quando @code{ratdenomdivide} for @code{true},
-@code{ratexpand} expande uma raz@~{a}o na qual o numerador @'{e} uma adi@value{cedilha}@~{a}o
-dentro de uma adi@value{cedilha}@~{a}o de raz@~{o}es,
+@code{ratexpand} expande uma raz@~{a}o na qual o numerador @'{e} uma adi@,{c}@~{a}o
+dentro de uma adi@,{c}@~{a}o de raz@~{o}es,
 todas tendo um denominador comum.
 De outra forma, @code{ratexpand} contrai uma soma de raz@~{o}es em uma raz@~{a}o simples,
 cujo numerador @'{e} a soma dos numeradores de cada raz@~{a}o.
@@ -1273,20 +1273,20 @@ Exemplos:
 
 @end deffn
 
-@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} ratfac
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} ratfac
 Valor Padr@~{a}o: @code{false}
 
 Quando @code{ratfac} for @code{true},
 express@~{o}es racionais can@^{o}nicas (CRE) s@~{a}o manipuladas na forma parcialmente fatorada.
 
-Durante opera@value{cedilha}@~{o}es racionais a
+Durante opera@,{c}@~{o}es racionais a
 express@~{a}o @'{e} mantida como completamente fatorada como foi poss@'{i}vel sem chamadas a @code{factor}.
-Isso pode sempre economizar espa@value{cedilha}o e pode economizar tempo em algumas computa@value{cedilha}@~{o}es.
+Isso pode sempre economizar espa@,{c}o e pode economizar tempo em algumas computa@,{c}@~{o}es.
 O numerador e o denominador s@~{a}o feitos relativamente primos, por exemplo
 @code{rat ((x^2 - 1)^4/(x + 1)^2)} retorna @code{(x - 1)^4 (x + 1)^2)},
 mas o fator dentro de cada parte pode n@~{a}o ser relativamente primo.
 
-No pacote @code{ctensor} (Manipula@value{cedilha}@~{a}o de componentes de tensores),
+No pacote @code{ctensor} (Manipula@,{c}@~{a}o de componentes de tensores),
 tensores de Ricci, Einstein, Riemann, e de Weyl e a curvatura escalar 
 s@~{a}o fatorados automaticamente quando @code{ratfac} for @code{true}.
 @i{@code{ratfac} pode somente ser
@@ -1299,15 +1299,15 @@ ambos serem usados ao mesmo tempo.
 @c NEED EXAMPLES HERE
 @end defvr
 
-@deffn {Fun@value{cedilha}@~{a}o} ratnumer (@var{expr})
+@deffn {Fun@,{c}@~{a}o} ratnumer (@var{expr})
 Retorna o numerador de @var{expr},
-ap@'{o}s for@value{cedilha}ar @var{expr} para uma express@~{a}o racional can@^{o}nica (CRE).
+ap@'{o}s for@,{c}ar @var{expr} para uma express@~{a}o racional can@^{o}nica (CRE).
 O valor de retorno @'{e} uma CRE.
 
 @c ACTUALLY THE CONVERSION IS CARRIED OUT BY ratf BUT THAT'S WHAT $rat CALLS
-@var{expr} @'{e} for@value{cedilha}ada para uma CRE por @code{rat}
+@var{expr} @'{e} for@,{c}ada para uma CRE por @code{rat}
 se isso n@~{a}o for j@'{a} uma CRE.
-Essa convers@~{a}o pode alterar a forma de @var{expr} pela coloca@value{cedilha}@~{a}o de todos os termos
+Essa convers@~{a}o pode alterar a forma de @var{expr} pela coloca@,{c}@~{a}o de todos os termos
 sobre um denominador comum.
 
 @code{num} @'{e} similar, mas retorna uma express@~{a}o comum em lugar de uma CRE.
@@ -1318,22 +1318,22 @@ n@~{a}o s@~{a}o consideradas raz@~{o}es por @code{num}.
 @c NEEDS AN EXAMPLE HERE
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} ratnump (@var{expr})
+@deffn {Fun@,{c}@~{a}o} ratnump (@var{expr})
 Retorna @code{true} se @var{expr} for um inteiro literal ou raz@~{a}o de inteiros literais,
 de outra forma retorna @code{false}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} ratp (@var{expr})
+@deffn {Fun@,{c}@~{a}o} ratp (@var{expr})
 Retorna @code{true} se @var{expr} for uma express@~{a}o racional can@^{o}nica (CRE) ou CRE extendida,
 de outra forma retorna @code{false}.
 
-CRE s@~{a}o criadas por @code{rat} e fun@value{cedilha}@~{o}es relacionadas.
-CRE extendidas s@~{a}o criadas por @code{taylor} e fun@value{cedilha}@~{o}es relacionadas.
+CRE s@~{a}o criadas por @code{rat} e fun@,{c}@~{o}es relacionadas.
+CRE extendidas s@~{a}o criadas por @code{taylor} e fun@,{c}@~{o}es relacionadas.
 
 @end deffn
 
-@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} ratprint
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} ratprint
 Valor Padr@~{a}o: @code{true}
 
 Quando @code{ratprint} for @code{true},
@@ -1342,21 +1342,21 @@ para n@'{u}meros racionais @'{e} mostrada.
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~{a}o} ratsimp (@var{expr})
-@deffnx {Fun@value{cedilha}@~{a}o} ratsimp (@var{expr}, @var{x_1}, ..., @var{x_n})
+@deffn {Fun@,{c}@~{a}o} ratsimp (@var{expr})
+@deffnx {Fun@,{c}@~{a}o} ratsimp (@var{expr}, @var{x_1}, ..., @var{x_n})
 Simplifica a express@~{a}o @var{expr} e todas as suas subexpress@~{o}es,
-incluindo os argumentos para fun@value{cedilha}@~{o}es n@~{a}o racionais.
+incluindo os argumentos para fun@,{c}@~{o}es n@~{a}o racionais.
 O resultado @'{e} retornado como o quociente de dois polin@^{o}mios na forma recursiva,
 isto @'{e}, os coeficientes de vari@'{a}vel principal s@~{a}o polin@^{o}mios em outras vari@'{a}veis.
-Vari@'{a}veis podem incluir fun@value{cedilha}@~{o}es n@~{a}o racionais (e.g., @code{sin (x^2 + 1)})
-e os argumentos para quaisquer tais fun@value{cedilha}@~{o}es s@~{a}o tamb@'{e}m simplificados racionalmente.
+Vari@'{a}veis podem incluir fun@,{c}@~{o}es n@~{a}o racionais (e.g., @code{sin (x^2 + 1)})
+e os argumentos para quaisquer tais fun@,{c}@~{o}es s@~{a}o tamb@'{e}m simplificados racionalmente.
 
 @code{ratsimp (@var{expr}, @var{x_1}, ..., @var{x_n})}
-habilita simplifica@value{cedilha}@~{a}o racional com a
-especiica@value{cedilha}@~{a}o de vari@'{a}vel ordenando como em @code{ratvars}.
+habilita simplifica@,{c}@~{a}o racional com a
+especiica@,{c}@~{a}o de vari@'{a}vel ordenando como em @code{ratvars}.
 
 Quando @code{ratsimpexpons} for @code{true},
-@code{ratsimp} @'{e} aplicado para os expoentes de express@~{o}es durante a simplifica@value{cedilha}@~{a}o.
+@code{ratsimp} @'{e} aplicado para os expoentes de express@~{o}es durante a simplifica@,{c}@~{a}o.
 
 Veja tamb@'{e}m @code{ratexpand}.
 Note que @code{ratsimp} @'{e} afetado por algum dos
@@ -1401,28 +1401,28 @@ Exemplos:
 
 @end deffn
 
-@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} ratsimpexpons
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} ratsimpexpons
 Valor Padr@~{a}o: @code{false}
 
 Quando @code{ratsimpexpons} for @code{true},
-@code{ratsimp} @'{e} aplicado para os expoentes de express@~{o}es durante uma simplifica@value{cedilha}@~{a}o.
+@code{ratsimp} @'{e} aplicado para os expoentes de express@~{o}es durante uma simplifica@,{c}@~{a}o.
 
 @c NEED AN EXAMPLE HERE -- RECYCLE THE ratsimpexpons EXAMPLE FROM ratsimp ABOVE
 @end defvr
 
-@deffn {Fun@value{cedilha}@~{a}o} ratsubst (@var{a}, @var{b}, @var{c})
+@deffn {Fun@,{c}@~{a}o} ratsubst (@var{a}, @var{b}, @var{c})
 Substitue @var{a} por @var{b} em @var{c} e retorna a express@~{a}o resultante. 
 @c "ETC" SUGGESTS THE READER KNOWS WHAT ELSE GOES THERE -- NOT LIKELY THE CASE
-@var{b} pode tamb@'{e}m ser uma adi@value{cedilha}@~{a}o, produto, expoente, etc.
+@var{b} pode tamb@'{e}m ser uma adi@,{c}@~{a}o, produto, expoente, etc.
 
 @c WHAT, EXACTLY, DOES ratsubst KNOW ??
 @code{ratsubst} sabe alguma coisa do significado de express@~{o}es
-uma vez que @code{subst} n@~{a}o @'{e} uma substitui@value{cedilha}@~{a}o puramente sint@'{a}tica.
+uma vez que @code{subst} n@~{a}o @'{e} uma substitui@,{c}@~{a}o puramente sint@'{a}tica.
 Dessa forma @code{subst (a, x + y, x + y + z)} retorna @code{x + y + z}
 ao passo que @code{ratsubst} retorna @code{z + a}.
 
 Quando @code{radsubstflag} for @code{true},
-@code{ratsubst} faz substitui@value{cedilha}@~{a}o de radicais em express@~{o}es
+@code{ratsubst} faz substitui@,{c}@~{a}o de radicais em express@~{o}es
 que explicitamente n@~{a}o possuem esses radicais.
 
 Exemplos:
@@ -1461,8 +1461,8 @@ Exemplos:
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} ratvars (@var{x_1}, ..., @var{x_n})
-@deffnx {Fun@value{cedilha}@~{a}o} ratvars ()
+@deffn {Fun@,{c}@~{a}o} ratvars (@var{x_1}, ..., @var{x_n})
+@deffnx {Fun@,{c}@~{a}o} ratvars ()
 @deffnx {Vari@'{a}vel de sistema} ratvars
 Declara vari@'{a}veis principais @var{x_1}, ..., @var{x_n} para express@~{o}es racionais.
 @var{x_n}, se presente em uma express@~{a}o racional, @'{e} considerada a vari@'{a}vel principal.
@@ -1473,29 +1473,29 @@ que @'{e} considerada a vari@'{a}vel principal somente se nenhuma das vari@'{a}v
 Se uma vari@'{a}vel em uma express@~{a}o racional n@~{a}o est@'{a} presente na lista @code{ratvars},
 a ela @'{e} dada uma prioridade menor que @var{x_1}.
 
-Os argumentos para @code{ratvars} podem ser ou vari@'{a}veis ou fun@value{cedilha}@~{o}es n@~{a}o racionais
+Os argumentos para @code{ratvars} podem ser ou vari@'{a}veis ou fun@,{c}@~{o}es n@~{a}o racionais
 tais como @code{sin(x)}.
 
 A vari@'{a}vel @code{ratvars} @'{e} uma lista de argumentos da
-fun@value{cedilha}@~{a}o @code{ratvars} quando ela foi chamada mais recentemente.
-Cada chamada para a fun@value{cedilha}@~{a}o @code{ratvars} sobre-grava a lista apagando seu conte@'{u}do anterior.
+fun@,{c}@~{a}o @code{ratvars} quando ela foi chamada mais recentemente.
+Cada chamada para a fun@,{c}@~{a}o @code{ratvars} sobre-grava a lista apagando seu conte@'{u}do anterior.
 @code{ratvars ()} limpa a lista.
 
 @c NEED EXAMPLES HERE
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} ratweight (@var{x_1}, @var{w_1}, ..., @var{x_n}, @var{w_n})
-@deffnx {Fun@value{cedilha}@~{a}o} ratweight ()
+@deffn {Fun@,{c}@~{a}o} ratweight (@var{x_1}, @var{w_1}, ..., @var{x_n}, @var{w_n})
+@deffnx {Fun@,{c}@~{a}o} ratweight ()
 Atribui um peso @var{w_i} para a vari@'{a}vel @var{x_i}.
 Isso faz com que um termo seja substitu@'{i}do por 0 se seu peso exceder o
-valor da vari@'{a}vel @code{ratwtlvl} (o padr@~{a}o retorna sem trunca@value{cedilha}@~{a}o).
+valor da vari@'{a}vel @code{ratwtlvl} (o padr@~{a}o retorna sem trunca@,{c}@~{a}o).
 O peso de um termo @'{e} a soma dos produtos dos
 pesos de uma vari@'{a}vel no termo vezes seu expoente.
 Por exemplo, o peso de @code{3 x_1^2 x_2} @'{e} @code{2 w_1 + w_2}.
-A trunca@value{cedilha}@~{a}o de acordo com @code{ratwtlvl} @'{e} realizada somente quando multiplicando
+A trunca@,{c}@~{a}o de acordo com @code{ratwtlvl} @'{e} realizada somente quando multiplicando
 ou exponencializando express@~{o}es racionais can@^{o}nicas (CRE).
 
-@code{ratweight ()} retorna a lista cumulativa de atribui@value{cedilha}@~{o}es de pesos.
+@code{ratweight ()} retorna a lista cumulativa de atribui@,{c}@~{o}es de pesos.
 
 Nota: Os esquemas de @code{ratfac} e @code{ratweight} s@~{a}o incompat@'{i}veis e n@~{a}o podem
 ambo serem usados ao mesmo tempo.
@@ -1534,17 +1534,17 @@ cada chamada a @code{ratweight} coloca @'{i}tens adicionais na lista.
 
 @end defvr
 
-@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} ratwtlvl
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} ratwtlvl
 Valor Padr@~{a}o: @code{false}
 
-@code{ratwtlvl} @'{e} usada em combina@value{cedilha}@~{a}o com a fun@value{cedilha}@~{a}o 
-@code{ratweight} para controlar a trunca@value{cedilha}@~{a}o de express@~{a}o racionais can@^{o}nicas (CRE).
-Para o valor padr@~{a}o @code{false}, nenhuma trunca@value{cedilha}@~{a}o ocorre.
+@code{ratwtlvl} @'{e} usada em combina@,{c}@~{a}o com a fun@,{c}@~{a}o 
+@code{ratweight} para controlar a trunca@,{c}@~{a}o de express@~{a}o racionais can@^{o}nicas (CRE).
+Para o valor padr@~{a}o @code{false}, nenhuma trunca@,{c}@~{a}o ocorre.
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~{a}o} remainder (@var{p_1}, @var{p_2})
-@deffnx {Fun@value{cedilha}@~{a}o} remainder (@var{p_1}, @var{p_2}, @var{x_1}, ..., @var{x_n})
+@deffn {Fun@,{c}@~{a}o} remainder (@var{p_1}, @var{p_2})
+@deffnx {Fun@,{c}@~{a}o} remainder (@var{p_1}, @var{p_2}, @var{x_1}, ..., @var{x_n})
 Retorna o resto do polin@^{o}mio @var{p_1} dividido pelo polin@^{o}mio @var{p_2}.
 Os argumentos @var{x_1}, ..., @var{x_n} s@~{a}o interpretados como em @code{ratvars}.
 
@@ -1555,7 +1555,7 @@ de uma lista de dois elementos retornada por @code{divide}.
 @end deffn
 
 @c CAN PROBABLY BE CLARIFIED
-@deffn {Fun@value{cedilha}@~{a}o} resultant (@var{p_1}, @var{p_2}, @var{x})
+@deffn {Fun@,{c}@~{a}o} resultant (@var{p_1}, @var{p_2}, @var{x})
 @deffnx {Vari@'{a}vel} resultant
 Calcula o resultante de dois polin@^{o}mios @var{p_1} e @var{p_2},
 eliminando a vari@'{a}vel @var{x}.
@@ -1576,32 +1576,32 @@ e @code{red} para prs reduzido.
 Para muitos problemas @code{subres} pode ser melhor.
 Para alguns problemas com valores grandes de grau de uma @'{u}nica vari@'{a}vel ou de duas vari@'{a}veis @code{mod} pode ser melhor.
 
-A fun@value{cedilha}@~{a}o @code{bezout} pega os mesmos argumentos que @code{resultant} e retorna
+A fun@,{c}@~{a}o @code{bezout} pega os mesmos argumentos que @code{resultant} e retorna
 uma matriz.  O determinante do valor de retorno @'{e} o resultante desejado.
 
 @c NEED AN EXAMPLE HERE
 @end deffn
 
-@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} savefactors
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} savefactors
 Valor Padr@~{a}o: @code{false}
 
 @c "certain functions" -- WHICH ONES ??
 Quando @code{savefactors} for @code{true}, faz com que os fatores de uma
 express@~{a}o que @'{e} um produto de fatores sejam gravados por certas
-fun@value{cedilha}@~{o}es com o objetivo de aumentar a velocidade em posteriores fatora@value{cedilha}@~{o}es de express@~{o}es
+fun@,{c}@~{o}es com o objetivo de aumentar a velocidade em posteriores fatora@,{c}@~{o}es de express@~{o}es
 contendo algum desses mesmos fatores.
 
 @end defvr
 
 @c I CAN'T TELL WHAT THIS IS SUPPOSED TO BE ABOUT
-@deffn {Fun@value{cedilha}@~{a}o} sqfr (@var{expr})
+@deffn {Fun@,{c}@~{a}o} sqfr (@var{expr})
 @'{e} similar a @code{factor} exceto que os fatores do polin@^{o}mio s@~{a}o "livres de ra@'{i}zes".
 Isto @'{e}, eles possuem fatores somente de grau um.
 Esse algor@'{i}tmo, que @'{e} tamb@'{e}m usado no primeiro est@'{a}gio de @code{factor}, utiliza
 o fato que um polin@^{o}mio tem em comum com sua n'@'{e}sima derivada todos
 os seus fatores de grau maior que n.  Dessa forma pegando o maior divisor comum
 com o polin@^{o}mio das
-derivadas com rela@value{cedilha}@~{a}o a cada vari@'{a}vel no polin@^{o}mio, todos
+derivadas com rela@,{c}@~{a}o a cada vari@'{a}vel no polin@^{o}mio, todos
 os fatores de grau maior que 1 podem ser achados.
 
 Exemplo:
@@ -1617,18 +1617,18 @@ Exemplo:
 @end deffn
 
 @c THIS ITEM STILL NEEDS WORK
-@deffn {Fun@value{cedilha}@~{a}o} tellrat (@var{p_1}, ..., @var{p_n})
-@deffnx {Fun@value{cedilha}@~{a}o} tellrat ()
+@deffn {Fun@,{c}@~{a}o} tellrat (@var{p_1}, ..., @var{p_n})
+@deffnx {Fun@,{c}@~{a}o} tellrat ()
 Adiciona ao anel dos inteiros alg@'{e}bricos conhecidos do Maxima
-os elementos que s@~{a}o as solu@value{cedilha}@~{o}es dos polin@^{o}mios @var{p_1}, ..., @var{p_n}.
+os elementos que s@~{a}o as solu@,{c}@~{o}es dos polin@^{o}mios @var{p_1}, ..., @var{p_n}.
 Cada argumento @var{p_i} @'{e} um polin@^{o}mio concoeficientes inteiros.
 
-@code{tellrat (@var{x})} efetivamente significa substituir 0 por @var{x} em fun@value{cedilha}@~{o}es
+@code{tellrat (@var{x})} efetivamente significa substituir 0 por @var{x} em fun@,{c}@~{o}es
 racionais.
 
-@code{tellrat ()} retorna uma lista das substitui@value{cedilha}@~{o}es correntes.
+@code{tellrat ()} retorna uma lista das substitui@,{c}@~{o}es correntes.
 
-@code{algebraic} deve ser escolhida para @code{true} com o objetivo de que a simplifica@value{cedilha}@~{a}o de
+@code{algebraic} deve ser escolhida para @code{true} com o objetivo de que a simplifica@,{c}@~{a}o de
 inteiros alg@'{e}bricos tenha efeito.
 
 Maxima inicialmente sabe sobre a unidade imagin@'{a}ria @code{%i}
@@ -1641,8 +1641,8 @@ Quando fazemos @code{tellrat} em um polin@^{o}mio
 de v@'{a}rias vari@'{a}veis, e.g., @code{tellrat (x^2 - y^2)}, pode existir uma ambig@"{u}idade como para
 ou substituir @code{@var{y}^2} por @code{@var{x}^2}
 ou vice-versa.  
-Maxima seleciona uma ordena@value{cedilha}@~{a}o particular, mas se o usu@'{a}rio desejar especificar qual e.g.
-@code{tellrat (y^2 = x^2)} forne@value{cedilha}e uma sintaxe que diga para substituir
+Maxima seleciona uma ordena@,{c}@~{a}o particular, mas se o usu@'{a}rio desejar especificar qual e.g.
+@code{tellrat (y^2 = x^2)} forne@,{c}e uma sintaxe que diga para substituir
 @code{@var{y}^2} por @code{@var{x}^2}.
 
 @c CAN'T TELL WHAT THIS IS ABOUT -- tellrat(w^3-1)$ algebraic:true$ rat(1/(w^2-w));
@@ -1688,20 +1688,20 @@ Exemplos:
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} totaldisrep (@var{expr})
+@deffn {Fun@,{c}@~{a}o} totaldisrep (@var{expr})
 Converte toda subexpress@~{a}o de @var{expr} da forma de express@~{a}o racionais can@^{o}nicas (CRE) para
 a forma geral e retorna o resultado.
 Se @var{expr} @'{e} em s@'{i} mesma na forma CRE ent@~{a}o @code{totaldisrep} @'{e} identica a
 @code{ratdisrep}.
 
 @code{totaldisrep} pode ser usada para
-fazer um @code{ratdisrep} em express@~{o}es tais como equa@value{cedilha}@~{o}es, listas, matrizes, etc., que
+fazer um @code{ratdisrep} em express@~{o}es tais como equa@,{c}@~{o}es, listas, matrizes, etc., que
 tiverem algumas subexpress@~{o}es na forma CRE.
 
 @c NEED EXAMPLES HERE
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} untellrat (@var{x_1}, ..., @var{x_n})
+@deffn {Fun@,{c}@~{a}o} untellrat (@var{x_1}, ..., @var{x_n})
 Remove propriedades @code{tellrat} de @var{x_1}, ..., @var{x_n}.
 
 @c NEED EXAMPLES HERE

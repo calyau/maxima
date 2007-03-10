@@ -1,24 +1,24 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /implicit_plot.texi/1.1/Fri Dec 15 13:40:06 2006//
 @menu
-* Defini@value{cedilha}@~{o}es para implicit_plot::
+* Defini@,{c}@~{o}es para implicit_plot::
 @end menu
 
-@node Defini@value{cedilha}@~{o}es para implicit_plot,  , implicit_plot, implicit_plot
-@section Defini@value{cedilha}@~{o}es para implicit_plot
+@node Defini@,{c}@~{o}es para implicit_plot,  , implicit_plot, implicit_plot
+@section Defini@,{c}@~{o}es para implicit_plot
 
-@deffn {Fun@value{cedilha}@~{a}o} implicit_plot (@var{expr}, @var{x_range}, @var{y_range})
-@deffnx {Fun@value{cedilha}@~{a}o} implicit_plot ([@var{expr_1}, ..., @var{expr_n}], @var{x_range}, @var{y_range})
+@deffn {Fun@,{c}@~{a}o} implicit_plot (@var{expr}, @var{x_range}, @var{y_range})
+@deffnx {Fun@,{c}@~{a}o} implicit_plot ([@var{expr_1}, ..., @var{expr_n}], @var{x_range}, @var{y_range})
 
 Mostra na tela um gr@'{a}fico de uma ou mais express@~{o}es na forma
 impl@'{i}cita. @var{expr} @'{e} a express@~{a}o a ser montado o gr@'{a}fico, @var{x_range} o
 intervalo do eixo do eixo horizontal e @var{y_range} o intervalo do eixo
 vertical. @var{implicit_plot} somente trabalha com o driver do
 gnuplot. @var{implicit_plot} respeita as escolhas globais para o driver do
-gnuplot escolhidas por meio da fun@value{cedilha}@~{a}o @var{set_plot_option}. Op@value{cedilha}@~{o}es podem tamb;em serem passadas para
-a fun@value{cedilha}@~{a}o @var{implicit_plot} como argumentos opcionais.
+gnuplot escolhidas por meio da fun@,{c}@~{a}o @var{set_plot_option}. Op@,{c}@~{o}es podem tamb;em serem passadas para
+a fun@,{c}@~{a}o @var{implicit_plot} como argumentos opcionais.
 
-@var{implicit_plot} trabalha por meio de mudan@value{cedilha}as de sinal de trilha sobre a @'{a}rea
+@var{implicit_plot} trabalha por meio de mudan@,{c}as de sinal de trilha sobre a @'{a}rea
 fornecida atrav@'{e}s de @var{x_range} e @var{y_range} e pode falhar em express@~{o}es
 complicadas.
 

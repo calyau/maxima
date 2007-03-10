@@ -1,19 +1,19 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /Expressions.texi/1.51/Mon Jan  1 07:27:09 2007/-ko/
 @menu
-* Introdu@value{cedilha}@~{a}o a Express@~{o}es::  
-* Atribui@value{cedilha}@~{a}o::                  
+* Introdu@,{c}@~{a}o a Express@~{o}es::  
+* Atribui@,{c}@~{a}o::                  
 * Complexo::                     
 * Substantivos e Verbos::
 * Identificadores::
 * Seq@"{u}@^{e}ncias de caracteres::
 * Desigualdade::                  
 * Sintaxe::                      
-* Defini@value{cedilha}@~{o}es para Express@~{o}es::  
+* Defini@,{c}@~{o}es para Express@~{o}es::  
 @end menu
 
-@node Introdu@value{cedilha}@~{a}o a Express@~{o}es, Atribui@value{cedilha}@~{a}o, Express@~{o}es, Express@~{o}es
-@section Introdu@value{cedilha}@~{a}o a Express@~{o}es
+@node Introdu@,{c}@~{a}o a Express@~{o}es, Atribui@,{c}@~{a}o, Express@~{o}es, Express@~{o}es
+@section Introdu@,{c}@~{a}o a Express@~{o}es
 
 Existe um conjunto de palavras reservadas que n@~{a}o pode ser usado como
 nome de vari@'{a}vel.   Seu uso pode causar um poss@'{i}vel erro cr@'{i}tico de sintaxe.
@@ -28,7 +28,7 @@ step
 @end example
 
 Muitas coisas em Maxima s@~{a}o express@~{o}es.   Uma seq@"{u}@^{e}ncia de express@~{o}es
-pode ser feita dentro de uma express@~{a}o maior atrav@'{e}s da separa@value{cedilha}@~{a}o dessas atrav@'{e}s de v@'{i}rgulas e
+pode ser feita dentro de uma express@~{a}o maior atrav@'{e}s da separa@,{c}@~{a}o dessas atrav@'{e}s de v@'{i}rgulas e
 colocando par@^{e}ntesis em torno dela.   Isso @'{e} similar ao @b{C}
 @i{express@~{a}o com v@'{i}rgula}.
 
@@ -62,43 +62,43 @@ termo na @i{express@~{a}o com v@'{i}rgula} que fornece de volta o valor atualiza
 
 
 
-@node Atribui@value{cedilha}@~{a}o, Complexo, Introdu@value{cedilha}@~{a}o a Express@~{o}es, Express@~{o}es
-@section Atribui@value{cedilha}@~{a}o
-Existem dois operadores de atribui@value{cedilha}@~{a}o no Maxima, "@code{:}" e "@code{::}".
+@node Atribui@,{c}@~{a}o, Complexo, Introdu@,{c}@~{a}o a Express@~{o}es, Express@~{o}es
+@section Atribui@,{c}@~{a}o
+Existem dois operadores de atribui@,{c}@~{a}o no Maxima, "@code{:}" e "@code{::}".
 E.g., @code{a: 3} escolhe a vari@'{a}vel @code{a} para 3. @code{::} atribui o valor da
 express@~{a}o sobre seu lado direito para o valor da quantidade sobre seu lado esquerdo,
 que deve avaliar para uma vari@'{a}vel at@^{o}mica ou para uma vari@'{a}vel com subscrito.
 
 @c THIS REALLY NEEDS EXPANSION
-@node Complexo, Substantivos e Verbos, Atribui@value{cedilha}@~{a}o, Express@~{o}es
+@node Complexo, Substantivos e Verbos, Atribui@,{c}@~{a}o, Express@~{o}es
 @section Complexo
 Uma express@~{a}o complexa @'{e} especificada no Maxima atrav@'{e}s da adi@,{c}@~{a}o da
 parte real da express@~{a}o a @code{%i} vezes a parte imagin@'{a}ria.  Dessa forma as
-ra@'{i}zes da equa@value{cedilha}@~{a}o @code{x^2 - 4*x + 13 = 0} s@~{a}o @code{2 + 3*%i} e @code{2 - 3*%i}.  Note que
-produtos de simplifica@value{cedilha}@~{a}o de express@~{o}es complexas podem ser efetuadas atrav@'{e}s da
-expans@~{a}o do produto.  Simplifica@value{cedilha}@~{a}o de quocientes, ra@'{i}zes, e outras
-fun@value{cedilha}@~{o}es de express@~{o}es complexas podem usualmente serem realizadas atrav@'{e}s do uso
-das fun@value{cedilha}@~{o}es @code{realpart}, @code{imagpart}, @code{rectform}, @code{polarform}, @code{abs}, @code{carg}.
+ra@'{i}zes da equa@,{c}@~{a}o @code{x^2 - 4*x + 13 = 0} s@~{a}o @code{2 + 3*%i} e @code{2 - 3*%i}.  Note que
+produtos de simplifica@,{c}@~{a}o de express@~{o}es complexas podem ser efetuadas atrav@'{e}s da
+expans@~{a}o do produto.  Simplifica@,{c}@~{a}o de quocientes, ra@'{i}zes, e outras
+fun@,{c}@~{o}es de express@~{o}es complexas podem usualmente serem realizadas atrav@'{e}s do uso
+das fun@,{c}@~{o}es @code{realpart}, @code{imagpart}, @code{rectform}, @code{polarform}, @code{abs}, @code{carg}.
 
 @node Substantivos e Verbos, Identificadores, Complexo, Express@~{o}es
 @section Substantivos e Verbos
 Maxima distingue entre operadores que s@~{a}o "substantivos" e operadores que s@~{a}o "verbos".
 Um verbo @'{e} um operador que pode ser executado.
 Um substantivo @'{e} um operador que aparece como um s@'{i}mbolo em uma express@~{a}o, sem ser executado.
-Por padr@~{a}o, nomes de fun@value{cedilha}@~{a}o s@~{a}o verbos.
-Um verbo pode ser mudado em um substantivo atrav@'{e}s da adi@value{cedilha}@~{a}o de um ap@'{o}strofo no in@'{i}cio do nome da fun@value{cedilha}@~{a}o
-ou aplicando a fun@value{cedilha}@~{a}o @code{nounify}.
-Um substantivo pode ser mudado em um verbo atrav@'{e}s da aplica@value{cedilha}@~{a}o da fun@value{cedilha}@~{a}o @code{verbify}.
-O sinalizador de avalia@value{cedilha}@~{a}o @code{nouns} faz com que @code{ev} avalie substantivos em uma express@~{a}o.
+Por padr@~{a}o, nomes de fun@,{c}@~{a}o s@~{a}o verbos.
+Um verbo pode ser mudado em um substantivo atrav@'{e}s da adi@,{c}@~{a}o de um ap@'{o}strofo no in@'{i}cio do nome da fun@,{c}@~{a}o
+ou aplicando a fun@,{c}@~{a}o @code{nounify}.
+Um substantivo pode ser mudado em um verbo atrav@'{e}s da aplica@,{c}@~{a}o da fun@,{c}@~{a}o @code{verbify}.
+O sinalizador de avalia@,{c}@~{a}o @code{nouns} faz com que @code{ev} avalie substantivos em uma express@~{a}o.
 
 A forma verbal @'{e} distinguida atrav@'{e}s de
 um sinal de d@'{o}lar @code{$} no in@'{i}cio do s@'{i}mbolo Lisp correspondente.
 De forma oposta,
 a forma substantiva @'{e} distinguida atrav@'{e}s de 
 um sinal de @code{%} no in@'{i}cio do s@'{i}mbolo Lisp correspondente.
-Alguns substantivos possuem propriedades especiais de exibi@value{cedilha}@~{a}o, tais como @code{'integrate} e @code{'derivative}
+Alguns substantivos possuem propriedades especiais de exibi@,{c}@~{a}o, tais como @code{'integrate} e @code{'derivative}
 (retornado por @code{diff}), mas muitos n@~{a}o.
-Por padr@~{a}o, as formas substantiva e verbal de uma fun@value{cedilha}@~{a}o s@~{a}o id@^{e}nticas quando mostradas.
+Por padr@~{a}o, as formas substantiva e verbal de uma fun@,{c}@~{a}o s@~{a}o id@^{e}nticas quando mostradas.
 O sinalizador global @code{noundisp} faz com que Maxima mostre substantivos com um ap@'{o}strofo no in@'{i}cio @code{'}.
 
 Veja tamb@'{e}m @code{noun}, @code{nouns}, @code{nounify}, e @code{verbify}.
@@ -164,7 +164,7 @@ Um numeral pode ser o primeiro caractere de um identificador
 se esse numeral for precedido por uma contra-barra.
 Numerais que forem o segundo ou o @'{u}ltimo caractere n@~{a}o precisam ser precedidos por uma contra barra.
 
-Caracteres podem ser declarados para serem alfab@'{e}ticos por meio da fun@value{cedilha}@~{a}o @code{declare}.
+Caracteres podem ser declarados para serem alfab@'{e}ticos por meio da fun@,{c}@~{a}o @code{declare}.
 Se ent@~{a}o declarados alfab@'{e}ticos, eles n@~{a}o precisam serem precedidos de uma contrabarra em um identificador.
 Os caracteres alfab@'{e}ticos v@~{a}o inicialmente 
 de @code{A} a @code{Z}, de @code{a} a @code{z}, @code{%}, e @code{_}.
@@ -172,8 +172,8 @@ de @code{A} a @code{Z}, de @code{a} a @code{z}, @code{%}, e @code{_}.
 Maxima @'{e} sens@'{i}vel @`a caixa . Os identificadores @code{algumacoisa}, @code{ALGUMACOISA}, e @code{Algumacoisa} s@~{a}o distintos.
 Veja @ref{Lisp e Maxima} para mais sobre esse ponto.
 
-Um identificador Maxima @'{e} um s@'{i}mbolo Lisp que come@value{cedilha}a com um sinal de d@'{o}lar @code{$}.
-Qualquer outro s@'{i}mbolo Lisp @'{e} precedido por um ponto de interroga@value{cedilha}@~{a}o @code{?} quando aparecer no Maxima.
+Um identificador Maxima @'{e} um s@'{i}mbolo Lisp que come@,{c}a com um sinal de d@'{o}lar @code{$}.
+Qualquer outro s@'{i}mbolo Lisp @'{e} precedido por um ponto de interroga@,{c}@~{a}o @code{?} quando aparecer no Maxima.
 Veja @ref{Lisp e Maxima} para maiores detalhes sobre esse ponto.
 
 Exemplos:
@@ -231,19 +231,19 @@ e mostradas com ou sem as aspas duplas,
 dependendo do valor escolhido para a vari@'{a}vel global @code{stringdisp}.
 
 Seq@"{u}@^{e}ncias de caracteres podem conter quaisquer caracteres,
-incluindo tabula@value{cedilha}@~{o}es (tab), nova linha (ou fim de linha), e caracteres de retorno da cabe@value{cedilha}a de impress@~{a}o (carriage return).
+incluindo tabula@,{c}@~{o}es (tab), nova linha (ou fim de linha), e caracteres de retorno da cabe@,{c}a de impress@~{a}o (carriage return).
 A seq@"{u}@^{e}ncia @code{\"} @'{e} reconhecida com uma aspa dupla literal,
 e @code{\\} como uma contrabarra literal.
 Quando a contrabarra aparecer no final de uma linha,
-a contrabarra e a termina@value{cedilha}@~{a}o de linha
+a contrabarra e a termina@,{c}@~{a}o de linha
 (ou nova linha ou retorno de carro e nova linha)
 s@~{a}o ignorados,
 de forma que a seq@"{u}@^{e}ncia de caracteres continue na pr@'{o}xima linha.
-Nenhuma outra combina@value{cedilha}@~{a}o especial de contrabarra com outro caractere @'{e} reconhecida;
+Nenhuma outra combina@,{c}@~{a}o especial de contrabarra com outro caractere @'{e} reconhecida;
 quando a contrabarra aparecer antes de qualquer outro caractere que n@~{a}o seja @code{"}, @code{\},
 ou um fim de linha, a contrabarra @'{e} ignorada.
 N@~{a}o exite caminho para representar um caractere especial
-(tal como uma tabula@value{cedilha}@~{a}o, nova linha, ou retorno da cabe@value{cedilha}a de impress@~{a}o)
+(tal como uma tabula@,{c}@~{a}o, nova linha, ou retorno da cabe@,{c}a de impress@~{a}o)
 exceto atrav@'{e}s de encaixar o caractere literal na seq@"{u}@^{e}ncia de caracteres.
 
 N@~{a}o existe tipo de caractere no Maxima;
@@ -252,10 +252,10 @@ um caractere simples @'{e} representado como uma seq@"{u}@^{e}ncia de caracteres
 Seq@"{u}@^{e}ncias de caracteres no Maxima s@~{a}o implementadas como s@'{i}mbolos do Lisp, n@~{a}o como seq@"{u}encias de caracteres do not Lisp;
 o que pode mudar em futuras vers@~{o}es do Maxima.
 Maxima pode mostrar seq@"{u}@^{e}ncias de caracteres do Lisp e caracteres do Lisp,
-embora algumas outras opera@value{cedilha}@~{o}es (por exemplo, testes de igualdade) possam falhar.
+embora algumas outras opera@,{c}@~{o}es (por exemplo, testes de igualdade) possam falhar.
 @c DISCOMFORT WITH LISP STRINGS AND CHARACTERS IS A BUG.
 
-O pacote adicional @code{stringproc} cont@'{e}m muitas fun@value{cedilha}@~{o}es que trabalham com seq@"{u}@^{e}ncias de caracteres.
+O pacote adicional @code{stringproc} cont@'{e}m muitas fun@,{c}@~{o}es que trabalham com seq@"{u}@^{e}ncias de caracteres.
 
 Exemplos:
 
@@ -300,42 +300,42 @@ seq@"{u}@^{e}ncia de caracteres.";
 @node Desigualdade, Sintaxe, Seq@"{u}@^{e}ncias de caracteres, Express@~{o}es
 @section Desigualdade
 Maxima tem os operadores de desigualdade @code{<}, @code{<=}, @code{>=}, @code{>}, @code{#}, e @code{notequal}.
-Veja @code{if} para uma descri@value{cedilha}@~{a}o de express@~{o}es condicionais.
+Veja @code{if} para uma descri@,{c}@~{a}o de express@~{o}es condicionais.
 
-@node Sintaxe, Defini@value{cedilha}@~{o}es para Express@~{o}es, Desigualdade, Express@~{o}es
+@node Sintaxe, Defini@,{c}@~{o}es para Express@~{o}es, Desigualdade, Express@~{o}es
 @section Sintaxe
 @'{E} poss@'{i}vel definir novos operadores com preced@^{e}ncia especificada,
-remover a defini@value{cedilha}@~{a}o de operadores existentes,
+remover a defini@,{c}@~{a}o de operadores existentes,
 ou redefinir a preced@^{e}ncia de operadores existentes.  
 Um operador pode ser un@'{a}rio prefixado ou un@'{a}rio p@'{o}sfixado, binario infixado, n-@'{a}rio infixado, matchfix, ou nofix.
-"Matchfix" significa um par de s@'{i}mbolos que abra@value{cedilha}am seu argumento ou seus argumentos,
+"Matchfix" significa um par de s@'{i}mbolos que abra@,{c}am seu argumento ou seus argumentos,
 e "nofix" significa um operador que n@~{a}o precisa de argumentos.
 Como exemplos dos diferentes tipos de operadores, existe o seguinte.
 
 @table @asis
 @item un@'{a}rio prefixado
-nega@value{cedilha}@~{a}o @code{- a}
+nega@,{c}@~{a}o @code{- a}
 @item un@'{a}rio posfixado
 fatorial @code{a!}
 @item bin@'{a}rio infixado
-exponencia@value{cedilha}@~{a}o @code{a^b}
+exponencia@,{c}@~{a}o @code{a^b}
 @item n-@'{a}rio infixado
-adi@value{cedilha}@~{a}o @code{a + b}
+adi@,{c}@~{a}o @code{a + b}
 @item matchfix
-constru@value{cedilha}@~{a}o de lista @code{[a, b]}
+constru@,{c}@~{a}o de lista @code{[a, b]}
 @end table
 
 (N@~{a}o existe operadores internos nofix;
 para um exemplo de tal operador, veja @code{nofix}.)
 
 O mecanismo para definir um novo operador @'{e} direto.
-Somente @'{e} necess@'{a}rio declarar uma fun@value{cedilha}@~{a}o como um operador;
-a fun@value{cedilha}@~{a}o operador pode ou n@~{a}o estar definida previamente.
+Somente @'{e} necess@'{a}rio declarar uma fun@,{c}@~{a}o como um operador;
+a fun@,{c}@~{a}o operador pode ou n@~{a}o estar definida previamente.
 
 Um exemplo de operadores definidos pelo usu@'{a}rio @'{e} o seguinte.
-Note que a chamada expl@'{i}cita de fun@value{cedilha}@~{a}o @code{"dd" (a)} @'{e} equivalente a @code{dd a},
+Note que a chamada expl@'{i}cita de fun@,{c}@~{a}o @code{"dd" (a)} @'{e} equivalente a @code{dd a},
 da mesma forma @code{"<-" (a, b)} @'{e} equivalente a @code{a <- b}.
-Note tamb@'{e}m que as fun@value{cedilha}@~{o}es @code{"dd"} e @code{"<-"} s@~{a}o indefinidas nesse exemplo.
+Note tamb@'{e}m que as fun@,{c}@~{o}es @code{"dd"} e @code{"<-"} s@~{a}o indefinidas nesse exemplo.
 
 @c ===beg===
 @c prefix ("dd");
@@ -360,13 +360,13 @@ Note tamb@'{e}m que as fun@value{cedilha}@~{o}es @code{"dd"} e @code{"<-"} s@~{a
 (%o6)                      a <- dd b
 @end example
 
-As fun@value{cedilha}@~{o}es m@'{a}xima que definem novos operadores est@~{a}o sumarizadas nessa tabela,
+As fun@,{c}@~{o}es m@'{a}xima que definem novos operadores est@~{a}o sumarizadas nessa tabela,
 equilibrando expoente associado esquerdo (padr@~{a}o) e o expoente associado direito ("eae" e "ead", respectivamente).
 @c REWORK FOLLOWING COMMENT. IT'S NOT CLEAR ENOUGH, GIVEN THAT IT'S FAIRLY IMPORTANT
-(Associa@value{cedilha}@~{a}o de expoentes determina a preced@^{e}ncia do operador. todavia, uma vez que os expoentes
-esquerdo e direito podem ser diferentes, associa@value{cedilha}@~{a}o de expoentes @'{e} at@'{e} certo ponto mais complicado que preced@^{e}ncia.)
-Alguma das fun@value{cedilha}@~{o}es de defini@value{cedilha}@~{a}o de opera@value{cedilha}@~{o}es tomam argumentos adicionais;
-veja as descri@value{cedilha}@~{o}es de fun@value{cedilha}@~{a}o para maiores detalhes.
+(Associa@,{c}@~{a}o de expoentes determina a preced@^{e}ncia do operador. todavia, uma vez que os expoentes
+esquerdo e direito podem ser diferentes, associa@,{c}@~{a}o de expoentes @'{e} at@'{e} certo ponto mais complicado que preced@^{e}ncia.)
+Alguma das fun@,{c}@~{o}es de defini@,{c}@~{a}o de opera@,{c}@~{o}es tomam argumentos adicionais;
+veja as descri@,{c}@~{o}es de fun@,{c}@~{a}o para maiores detalhes.
 
 @c MAKE ANCHORS FOR ALL 6 FUNCTIONS AND CHANGE @code TO @ref ACCORDINGLY
 @table @code
@@ -379,12 +379,12 @@ eae=180, ead=180
 @item n@'{a}rio
 eae=180, ead=180
 @item matchfix
-(associa@value{cedilha}@~{a}o de expoentes n@~{a}o @'{e} aplic@'{a}vel)
+(associa@,{c}@~{a}o de expoentes n@~{a}o @'{e} aplic@'{a}vel)
 @item nofix
-(associa@value{cedilha}@~{a}o de expoentes n@~{a}o @'{e} aplic@'{a}vel)
+(associa@,{c}@~{a}o de expoentes n@~{a}o @'{e} aplic@'{a}vel)
 @end table
 
-Para compara@value{cedilha}@~{a}o,
+Para compara@,{c}@~{a}o,
 aqui est@'{a} alguns operadores internos e seus expoentes associados esquerdo e direito.
 
 @example
@@ -419,7 +419,7 @@ Operador   eae     ead
 @code{remove} e @code{kill} removem propriedades de operador de um @'{a}tomo.
 @code{remove ("@var{a}", op)} remove somente as propriedades de operador de @var{a}.
 @code{kill ("@var{a}")} remove todas as propriedades de @var{a}, incluindo as propriedades de operador.
-Note que o nome do operador dever estar abra@value{cedilha}ado por aspas duplas.
+Note que o nome do operador dever estar abra@,{c}ado por aspas duplas.
 
 @c MAYBE COPY THIS EXAMPLE TO remove AND/OR kill
 @c ===beg===
@@ -465,23 +465,23 @@ Incorrect syntax: @@ is not an infix operator
 (%o9)                        @@(5, 3)
 @end example
 
-@node Defini@value{cedilha}@~{o}es para Express@~{o}es,  , Sintaxe, Express@~{o}es
-@section Defini@value{cedilha}@~{o}es para Express@~{o}es
+@node Defini@,{c}@~{o}es para Express@~{o}es,  , Sintaxe, Express@~{o}es
+@section Defini@,{c}@~{o}es para Express@~{o}es
 
-@deffn {Fun@value{cedilha}@~{a}o} at (@var{expr}, [@var{eqn_1}, ..., @var{eqn_n}])
-@deffnx {Fun@value{cedilha}@~{a}o} at (@var{expr}, @var{eqn})
+@deffn {Fun@,{c}@~{a}o} at (@var{expr}, [@var{eqn_1}, ..., @var{eqn_n}])
+@deffnx {Fun@,{c}@~{a}o} at (@var{expr}, @var{eqn})
 Avalia a express@~{a}o @var{expr} com
 as vari@'{a}veis assumindo os valores como especificado para elas na lista de
-equa@value{cedilha}@~{o}es @code{[@var{eqn_1}, ..., @var{eqn_n}]} ou a equa@value{cedilha}@~{a}o simples @var{eqn}.
+equa@,{c}@~{o}es @code{[@var{eqn_1}, ..., @var{eqn_n}]} ou a equa@,{c}@~{a}o simples @var{eqn}.
 
 Se uma subexpress@~{a}o depender de qualquer das vari@'{a}veis para a qual um valor foi especificado
 mas n@~{a}o existe @code{atvalue} especificado e essa subexpress@~{a}o n@~{a}o pode ser avaliada de outra forma,
 ent@~{a}o uma forma substantiva de @code{at} @'{e} retornada que mostra em uma forma bidimensional.
 
-@code{at} realiza m@'{u}ltiplas substitui@value{cedilha}@~{o}es em s@'{e}rie, n@~{a}o em paralelo.
+@code{at} realiza m@'{u}ltiplas substitui@,{c}@~{o}es em s@'{e}rie, n@~{a}o em paralelo.
 
 Veja tamb@'{e}m @code{atvalue}.
-Para outras fun@value{cedilha}@~{o}es que realizam substitui@value{cedilha}@~{o}es,
+Para outras fun@,{c}@~{o}es que realizam substitui@,{c}@~{o}es,
 veja tamb@'{e}m @code{subst} e @code{ev}.
 
 Exemplos:
@@ -525,8 +525,8 @@ Exemplos:
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} box (@var{expr})
-@deffnx {Fun@value{cedilha}@~{a}o} box (@var{expr}, @var{a})
+@deffn {Fun@,{c}@~{a}o} box (@var{expr})
+@deffnx {Fun@,{c}@~{a}o} box (@var{expr}, @var{a})
 Retorna @var{expr} dentro de uma caixa.
 O valor de retorno @'{e} uma express@~{a}o com @code{box} como o operador e @var{expr} como o argumento.
 Uma caixa @'{e} desenhada sobre a tela quando @code{display2d} for @code{true}.
@@ -540,7 +540,7 @@ Todavia, uma express@~{a}o dentro de uma caixa n@~{a}o avalia para seu conte@'{u
 ent@~{a}o express@~{o}es dentro de caixas s@~{a}o efetivamente exclu@'{i}das de c@'{a}lculos.
 
 @code{boxchar} @'{e} o caractere usado para desenhar a caixa em @code{box}
-e nas fun@value{cedilha}@~{o}es @code{dpart} e @code{lpart}.
+e nas fun@,{c}@~{o}es @code{dpart} e @code{lpart}.
 
 Exemplos:
 
@@ -588,11 +588,11 @@ Exemplos:
 
 @end deffn
 
-@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} boxchar
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} boxchar
 Valor padr@~{a}o: @code{"}
 
 @code{boxchar} @'{e} o caractere usado para desenhar a caixa por @code{box}
-e nas fun@value{cedilha}@~{o}es @code{dpart} e @code{lpart}.
+e nas fun@,{c}@~{o}es @code{dpart} e @code{lpart}.
 
 Todas as caixas em uma express@~{a}o s@~{a}o desenhadas com o valor atual de @code{boxchar};
 o caractere de desenho n@~{a}o @'{e} armazenado com a express@~{a}o de caixa. Isso quer dizer que se voc@^{e}
@@ -601,18 +601,18 @@ desenhada ser@'{a} redesenhada com o caractere mudado caso isso seja solicitado.
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~{a}o} carg (@var{z})
+@deffn {Fun@,{c}@~{a}o} carg (@var{z})
 Retorna o argumento complexo de @var{z}.
 O argumento complexo @'{e} um @^{a}ngulo @code{theta} no intervalo de @code{(-%pi, %pi]}
 tal que @code{r exp (theta %i) = @var{z}} onde @code{r} @'{e} o m@'{o}dulo de @var{z}.
 @c ACTUALLY carg DOESN'T ALWAYS RETURN A VALUE IN (-%pi, %pi]; SEE SF BUG REPORT # 816166
 
-@code{carg} @'{e} uma fun@value{cedilha}@~{a}o computacional,
-n@~{a}o uma fun@value{cedilha}@~{a}o de simplifica@value{cedilha}@~{a}o.
+@code{carg} @'{e} uma fun@,{c}@~{a}o computacional,
+n@~{a}o uma fun@,{c}@~{a}o de simplifica@,{c}@~{a}o.
 @c PROBABLY NEED TO EXPLAIN IMPLICATIONS OF ABOVE STATEMENT
 @c SEE ALSO SF BUG REPORT # 902290
 
-@code{carg} ignora a declara@value{cedilha}@~{a}o @code{declare (@var{x}, complex)},
+@code{carg} ignora a declara@,{c}@~{a}o @code{declare (@var{x}, complex)},
 e trata @var{x} como uma vari@'{a}vel real.
 Isso @'{e} um erro. @c SEE SF BUG REPORT # 620246
 
@@ -660,7 +660,7 @@ Veja @code{declare}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} constantp (@var{expr})
+@deffn {Fun@,{c}@~{a}o} constantp (@var{expr})
 Retorna @code{true} se @var{expr} for uma express@~{a}o constante,
 de outra forma retorna @code{false}.
 @c WHAT DOES MAXIMA KNOW ABOUT CONSTANT EXPRESSIONS ??
@@ -669,7 +669,7 @@ Uma express@~{a}o @'{e} considerada uma express@~{a}o constante se seus argument
 n@'{u}meros (incluindo n@'{u}meros racionais, como mostrado com @code{/R/}),
 constantes simb@'{o}licas como @code{%pi}, @code{%e}, e @code{%i},
 vari@'{a}veis associadas a uma constante ou constante declarada atrav@'{e}s de @code{declare},
-ou fun@value{cedilha}@~{o}es cujos argumentos forem constantes.
+ou fun@,{c}@~{o}es cujos argumentos forem constantes.
 
 @code{constantp} avalia seus argumentos.
 
@@ -709,7 +709,7 @@ Exemplos:
 @c THIS ITEM IS EXTREMELY IMPORTANT
 @c ENSURE THAT ALL KEYWORDS RECOGNIZED BY declare HAVE THEIR OWN DOCUMENTATION ITEMS !!
 @c ALSO: HOW TO FIND THE LIST OF ALL SYMBOLS WHICH HAVE A GIVEN PROPERTY ??
-@deffn {Fun@value{cedilha}@~{a}o} declare (@var{a_1}, @var{p_1}, @var{a_2}, @var{p_2}, ...)
+@deffn {Fun@,{c}@~{a}o} declare (@var{a_1}, @var{p_1}, @var{a_2}, @var{p_2}, ...)
 Atribui aos @'{a}tomos ou lista de @'{a}tomos @var{a_i} a propriedade ou lista de propriedades @var{p_i}.
 Quando @var{a_i} e/ou @var{p_i} forem listas,
 cada um dos @'{a}tomos recebe todas as propriedades.
@@ -717,7 +717,7 @@ cada um dos @'{a}tomos recebe todas as propriedades.
 @code{declare} n@~{a}o avalia seus argumentos.
 @code{declare} sempre retorna @code{done}.
 
-Como colocado na descri@value{cedilha}@~{a}o para cada sinalizador de declara@value{cedilha}@~{a}o,
+Como colocado na descri@,{c}@~{a}o para cada sinalizador de declara@,{c}@~{a}o,
 para alguns sinalizadores
 @code{featurep(@var{objeto}, @var{recurso})}
 retorna @code{true} se @var{objeto} tiver sido declarado para ter @var{recurso}.
@@ -729,13 +729,13 @@ Veja tamb@'{e}m @code{features}.
 
 @table @asis
 @item @code{evfun}
-Torna @var{a_i} conhecido para @code{ev} de forma que a fun@value{cedilha}@~{a}o nomeada por @var{a_i}
+Torna @var{a_i} conhecido para @code{ev} de forma que a fun@,{c}@~{a}o nomeada por @var{a_i}
 @'{e} aplicada quando @var{a_i} aparece como um sinalizador argumento de @code{ev}.
 Veja @code{evfun}.
 
 @item @code{evflag}
-Torna @var{a_i} conhecido para a fun@value{cedilha}@~{a}o @code{ev} de forma que @var{a_i} @'{e} associado a @code{true}
-durante a execu@value{cedilha}@~{a}o de @code{ev} quando @var{a_i} aparece como um sinalizador argumento de @code{ev}.
+Torna @var{a_i} conhecido para a fun@,{c}@~{a}o @code{ev} de forma que @var{a_i} @'{e} associado a @code{true}
+durante a execu@,{c}@~{a}o de @code{ev} quando @var{a_i} aparece como um sinalizador argumento de @code{ev}.
 Veja @code{evflag}.
 
 @c OBSOLETE @code{special} (RECONHECIDA POR DECLARE MAS NUNCA USADA EM LUGAR ALGUM)
@@ -743,7 +743,7 @@ Veja @code{evflag}.
 @c OBSOLETE @code{nonarray} (RECONHECIDA POR DECLARE MAS NUNCA USADA EM LUGAR ALGUM)
 
 @item @code{bindtest}
-Diz ao Maxima para disparar um erro quando @var{a_i} for avaliado como sendo livre de associa@value{cedilha}@~{a}o.
+Diz ao Maxima para disparar um erro quando @var{a_i} for avaliado como sendo livre de associa@,{c}@~{a}o.
 
 @item @code{noun}
 Diz ao Maxima para passar @var{a_i} como um substantivo. 
@@ -765,7 +765,7 @@ The usual application is to declare a variable as a symbolic vector or matrix.
 
 @item @code{mainvar}
 Diz ao Maxima para considerar @var{a_i} uma "vari@'{a}vel principal" (@code{mainvar}).
-@code{ordergreatp} determina a ordena@value{cedilha}@~{a}o de @'{a}tomos como segue:
+@code{ordergreatp} determina a ordena@,{c}@~{a}o de @'{a}tomos como segue:
 
 (vari@'{a}veis principais) > (outras vari@'{a}veis) > (vari@'{a}veis escalares) > (constantes) > (n@'{u}meros)
 
@@ -780,20 +780,20 @@ Other atoms may then be declared to have the @var{a_i} property.
 Diz ao Maxima para reconhecer @var{a_i} como uma func@~{a}o associativa a direita ou associativa a esquerda.
 
 @item @code{nary}
-Diz ao Maxima para reconhecer @var{a_i} como uma fun@value{cedilha}@~{a}o n-@'{a}ria (com muitos argumentos).
+Diz ao Maxima para reconhecer @var{a_i} como uma fun@,{c}@~{a}o n-@'{a}ria (com muitos argumentos).
 
-A declara@value{cedilha}@~{a}o @code{nary} n@~{a}o tem o mesmo objetivo que uma chamada @`a fun@value{cedilha}@~{a}o @code{nary}.
+A declara@,{c}@~{a}o @code{nary} n@~{a}o tem o mesmo objetivo que uma chamada @`a fun@,{c}@~{a}o @code{nary}.
 O @'{u}nico efeito de @code{declare(foo, nary)} @'{e} para instruir o simplificador do Maxima
 a melhorar as pr@'{o}ximas express@~{o}es,
 por exemplo, para simplificar @code{foo(x, foo(y, z))} para @code{foo(x, y, z)}.
 
 @item @code{symmetric}, @code{antisymmetric}, @code{commutative}
-Diz ao Maxima para reconhecer @var{a_i} como uma fun@value{cedilha}@~{a}o sim@'{e}trica ou antisim@'{e}trica.
+Diz ao Maxima para reconhecer @var{a_i} como uma fun@,{c}@~{a}o sim@'{e}trica ou antisim@'{e}trica.
 @code{commutative} @'{e} o mesmo que @code{symmetric}.
 
 @item
 @code{oddfun}, @code{evenfun}
-Diz ao Maxima para reconhecer @var{a_i} como uma fun@value{cedilha}@~{a}o par ou uma fun@value{cedilha}@~{a}o @'{i}mpar.
+Diz ao Maxima para reconhecer @var{a_i} como uma fun@,{c}@~{a}o par ou uma fun@,{c}@~{a}o @'{i}mpar.
  
 @item @code{outative}
 Diz ao Maxima para simplificar express@~{o}es @var{a_i}
@@ -809,15 +809,15 @@ e o fator estiver livre do segundo argumento.
 
 @item @code{multiplicative}
 Diz ao Maxima para simplificar express@~{o}es do tipo @var{a_i}
-atrav@'{e}s da substitui@value{cedilha}@~{a}o @code{@var{a_i}(x * y * z * ...)} @code{-->}
+atrav@'{e}s da substitui@,{c}@~{a}o @code{@var{a_i}(x * y * z * ...)} @code{-->}
 @code{@var{a_i}(x) * @var{a_i}(y) * @var{a_i}(z) * ...}.
-A substitui@value{cedilha}@~{a}o @'{e} realizada no primeiro argumento somente.
+A substitui@,{c}@~{a}o @'{e} realizada no primeiro argumento somente.
 
 @item @code{additive}
 Diz ao Maxima para simplificar express@~{o}es do tipo @var{a_i}
-atrav@'{e}s da substitui@value{cedilha}@~{a}o @code{@var{a_i}(x + y + z + ...)} @code{-->}
+atrav@'{e}s da substitui@,{c}@~{a}o @code{@var{a_i}(x + y + z + ...)} @code{-->}
 @code{@var{a_i}(x) + @var{a_i}(y) + @var{a_i}(z) + ...}.
-A substitui@value{cedilha}@~{a}o @'{e} realizada no primeiro argumento somente.
+A substitui@,{c}@~{a}o @'{e} realizada no primeiro argumento somente.
 
 @item @code{linear}
 Equivalente a declarar @var{a_i} ao mesmo tempo @code{outative} e @code{additive}.
@@ -839,22 +839,22 @@ Diz ao Maxima para reconhecer @var{a_i} como uma vari@'{a}vel real e racional ou
 Dia ao Maxima para reconhecer @var{a_i} como uma vari@'{a}vel real, imagin@'{a}ria pura ou complexa.
  
 @item @code{increasing}, @code{decreasing}
-Dia ao Maxima para reconhecer @var{a_i} como uma fun@value{cedilha}@~{a}o de incremento ou decremento.
+Dia ao Maxima para reconhecer @var{a_i} como uma fun@,{c}@~{a}o de incremento ou decremento.
 @c MAXIMA FAILS TO DEDUCE F(2) > F(1) FOR INCREASING FUNCTION F
 @c AND FAILS TO DEDUCE ANYTHING AT ALL ABOUT DECREASING FUNCTIONS
 @c REPORTED AS SF BUG # 1483194
 
 @item @code{posfun}
-Diz ao Maxima para reconhecer @var{a_i} como uma fun@value{cedilha}@~{a}o positiva.
+Diz ao Maxima para reconhecer @var{a_i} como uma fun@,{c}@~{a}o positiva.
 
 @item @code{integervalued}
-Diz ao Maxima para reconhecer @var{a_i} como uma fun@value{cedilha}@~{a}o de valores inteiros.
+Diz ao Maxima para reconhecer @var{a_i} como uma fun@,{c}@~{a}o de valores inteiros.
 
 @end table
 
 Exemplos:
 
-Declara@value{cedilha}@~{o}es @code{evfun} e @code{evflag}.
+Declara@,{c}@~{o}es @code{evfun} e @code{evflag}.
 @c ===beg===
 @c declare (expand, evfun);
 @c (a + b)^3;
@@ -882,7 +882,7 @@ Declara@value{cedilha}@~{o}es @code{evfun} e @code{evflag}.
 (%o6)               %e  (%i sin(b) + cos(b))
 @end example
 
-Declara@value{cedilha}@~{a}o @code{bindtest}.
+Declara@,{c}@~{a}o @code{bindtest}.
 @c ===beg===
 @c aa + bb;
 @c declare (aa, bindtest);
@@ -904,7 +904,7 @@ aa unbound variable
 (%o5)                       bb + 1234
 @end example
 
-Declara@value{cedilha}@~{a}o @code{noun}.
+Declara@,{c}@~{a}o @code{noun}.
 @c ===beg===
 @c factor (12345678);
 @c declare (factor, noun);
@@ -924,7 +924,7 @@ Declara@value{cedilha}@~{a}o @code{noun}.
 (%o4)                     2 3  47 14593
 @end example
 
-Declara@value{cedilha}@~{o}es @code{constant}, @code{scalar}, @code{nonscalar}, e @code{mainvar}.
+Declara@,{c}@~{o}es @code{constant}, @code{scalar}, @code{nonscalar}, e @code{mainvar}.
 @c ===beg===
 @c declare (bb, constant);
 @c declare (cc, scalar);
@@ -934,7 +934,7 @@ Declara@value{cedilha}@~{o}es @code{constant}, @code{scalar}, @code{nonscalar}, 
 @example
 @end example
 
-Declara@value{cedilha}@~{a}o @code{alphabetic}.
+Declara@,{c}@~{a}o @code{alphabetic}.
 @c ===beg===
 @c xx\~yy\`\@ : 1729;
 @c declare ("~`@", alphabetic);
@@ -952,7 +952,7 @@ Declara@value{cedilha}@~{a}o @code{alphabetic}.
 (%o4)                  [@@yy`xx, `xx@@@@yy~]
 @end example
 
-Declara@value{cedilha}@~{a}o @code{feature}.
+Declara@,{c}@~{a}o @code{feature}.
 @c ===beg===
 @c declare (FOO, feature);
 @c declare (x, FOO);
@@ -967,7 +967,7 @@ Declara@value{cedilha}@~{a}o @code{feature}.
 (%o3)                         true
 @end example
 
-Declara@value{cedilha}@~{o}es @code{rassociative} e @code{lassociative}.
+Declara@,{c}@~{o}es @code{rassociative} e @code{lassociative}.
 @c ===beg===
 @c declare (F, rassociative);
 @c declare (G, lassociative);
@@ -975,7 +975,7 @@ Declara@value{cedilha}@~{o}es @code{rassociative} e @code{lassociative}.
 @example
 @end example
 
-Declara@value{cedilha}@~{a}o @code{nary}.
+Declara@,{c}@~{a}o @code{nary}.
 @c ===beg===
 @c H (H (a, b), H (c, H (d, e)));
 @c declare (H, nary);
@@ -990,7 +990,7 @@ Declara@value{cedilha}@~{a}o @code{nary}.
 (%o3)                   H(a, b, c, d, e)
 @end example
 
-Declara@value{cedilha}@~{o}es @code{symmetric} e @code{antisymmetric}.
+Declara@,{c}@~{o}es @code{symmetric} e @code{antisymmetric}.
 @c ===beg===
 @c S (b, a);
 @c declare (S, symmetric);
@@ -1020,7 +1020,7 @@ Declara@value{cedilha}@~{o}es @code{symmetric} e @code{antisymmetric}.
 (%o8)                   T(a, b, c, d, e)
 @end example
 
-Declara@value{cedilha}@~{o}es @code{oddfun} e @code{evenfun}.
+Declara@,{c}@~{o}es @code{oddfun} e @code{evenfun}.
 @c ===beg===
 @c o (- u) + o (u);
 @c declare (o, oddfun);
@@ -1044,7 +1044,7 @@ Declara@value{cedilha}@~{o}es @code{oddfun} e @code{evenfun}.
 (%o6)                           0
 @end example
 
-Declara@value{cedilha}@~{a}o @code{outative}.
+Declara@,{c}@~{a}o @code{outative}.
 @c ===beg===
 @c F1 (100 * x);
 @c declare (F1, outative);
@@ -1065,7 +1065,7 @@ Declara@value{cedilha}@~{a}o @code{outative}.
 (%o5)                       zz F1(y)
 @end example
 
-Declara@value{cedilha}@~{a}o @code{multiplicative}.
+Declara@,{c}@~{a}o @code{multiplicative}.
 @c ===beg===
 @c F2 (a * b * c);
 @c declare (F2, multiplicative);
@@ -1080,7 +1080,7 @@ Declara@value{cedilha}@~{a}o @code{multiplicative}.
 (%o3)                   F2(a) F2(b) F2(c)
 @end example
 
-Declara@value{cedilha}@~{a}o @code{additive}.
+Declara@,{c}@~{a}o @code{additive}.
 @c ===beg===
 @c F3 (a + b + c);
 @c declare (F3, additive);
@@ -1095,7 +1095,7 @@ Declara@value{cedilha}@~{a}o @code{additive}.
 (%o3)                 F3(c) + F3(b) + F3(a)
 @end example
 
-Declara@value{cedilha}@~{a}o @code{linear}.
+Declara@,{c}@~{a}o @code{linear}.
 @c ===beg===
 @c 'sum (F(k) + G(k), k, 1, inf);
 @c declare (nounify (sum), linear);
@@ -1125,25 +1125,25 @@ Declara@value{cedilha}@~{a}o @code{linear}.
 @end deffn
 
 @c NEEDS WORK
-@deffn {Fun@value{cedilha}@~{a}o} disolate (@var{expr}, @var{x_1}, ..., @var{x_n})
+@deffn {Fun@,{c}@~{a}o} disolate (@var{expr}, @var{x_1}, ..., @var{x_n})
 @'{e} similar a @code{isolate (@var{expr}, @var{x})}
-exceto que essa fun@value{cedilha}@~{a}o habilita ao usu@'{a}rio isolar
+exceto que essa fun@,{c}@~{a}o habilita ao usu@'{a}rio isolar
 mais que uma vari@'{a}vel simult@^{a}neamente.  Isso pode ser @'{u}til, por
-exemplo, se se tiver tentado mudar vari@'{a}veis em uma integra@value{cedilha}@~{a}o
-m@'{u}ltipla, e em mudan@value{cedilha}a de vari@'{a}vel envolvendo duas ou mais das
-vari@'{a}veis de integra@value{cedilha}@~{a}o.  Essa fun@value{cedilha}@~{a}o @'{e} chamada automaticamente de
-@file{simplification/disol.mac}.  Uma demostra@value{cedilha}@~{a}o est@'{a} dispon@'{i}vel atrav@'{e}s de
+exemplo, se se tiver tentado mudar vari@'{a}veis em uma integra@,{c}@~{a}o
+m@'{u}ltipla, e em mudan@,{c}a de vari@'{a}vel envolvendo duas ou mais das
+vari@'{a}veis de integra@,{c}@~{a}o.  Essa fun@,{c}@~{a}o @'{e} chamada automaticamente de
+@file{simplification/disol.mac}.  Uma demostra@,{c}@~{a}o est@'{a} dispon@'{i}vel atrav@'{e}s de
 @code{demo("disol")$}.
 
 @end deffn
 
 @c NEEDS WORK
-@deffn {Fun@value{cedilha}@~{a}o} dispform (@var{expr})
-Retorna a representa@value{cedilha}@~{a}o externa de @var{expr} com rela@value{cedilha}@~{a}o a seu
-principal operador.  Isso pode ser @'{u}til em conjun@value{cedilha}@~{a}o com @code{part} que
-tamb@'{e}m lida com a representa@value{cedilha}@~{a}o externa.  Suponha que @var{expr} seja -A .
-Ent@~{a}o a representa@value{cedilha}@~{a}o interna de @var{expr} @'{e}  "*"(-1,A), enquanto que
-a representa@value{cedilha}@~{a}o externa @'{e} "-"(A). @code{dispform (@var{expr}, all)} converte a
+@deffn {Fun@,{c}@~{a}o} dispform (@var{expr})
+Retorna a representa@,{c}@~{a}o externa de @var{expr} com rela@,{c}@~{a}o a seu
+principal operador.  Isso pode ser @'{u}til em conjun@,{c}@~{a}o com @code{part} que
+tamb@'{e}m lida com a representa@,{c}@~{a}o externa.  Suponha que @var{expr} seja -A .
+Ent@~{a}o a representa@,{c}@~{a}o interna de @var{expr} @'{e}  "*"(-1,A), enquanto que
+a representa@,{c}@~{a}o externa @'{e} "-"(A). @code{dispform (@var{expr}, all)} converte a
 express@~{a}o inteira (n@~{a}o apenas o n@'{i}vel mais alto) para o formato externo.  Por
 exemplo, se @code{expr: sin (sqrt (x))}, ent@~{a}o @code{freeof (sqrt, expr)} e
 @code{freeof (sqrt, dispform (expr))} fornece @code{true}, enquanto
@@ -1152,11 +1152,11 @@ exemplo, se @code{expr: sin (sqrt (x))}, ent@~{a}o @code{freeof (sqrt, expr)} e
 @end deffn
 
 @c NEEDS WORK
-@deffn {Fun@value{cedilha}@~{a}o} distrib (@var{expr})
-Distribue adi@value{cedilha}@~{o}es sobre produtos.  @code{distrib} difere de @code{expand}
+@deffn {Fun@,{c}@~{a}o} distrib (@var{expr})
+Distribue adi@,{c}@~{o}es sobre produtos.  @code{distrib} difere de @code{expand}
 no fato de que @code{distrib} trabalha em somente no n@'{i}vel mais alto de uma express@~{a}o, i.e., @code{distrib} n@~{a}o
 @'{e} recursiva e @code{distrib} @'{e} mais r@'{a}pida que @code{expand}.  @code{distrib} difere de @code{multthru} no
-que @code{distrib} expande todas as adi@value{cedilha}@~{o}es naquele n@'{i}vel.
+que @code{distrib} expande todas as adi@,{c}@~{o}es naquele n@'{i}vel.
 
 Exemplos:
 
@@ -1178,7 +1178,7 @@ Exemplos:
 @end deffn
 
 @c NEEDS WORK
-@deffn {Fun@value{cedilha}@~{a}o} dpart (@var{expr}, @var{n_1}, ..., @var{n_k})
+@deffn {Fun@,{c}@~{a}o} dpart (@var{expr}, @var{n_1}, ..., @var{n_k})
 Seleciona a mesma subexpress@~{a}o que @code{part}, mas
 em lugar de apenas retornar aquela subexpress@~{a}o como seu valor, isso retorna
 a express@~{a}o completa com a subexpress@~{a}o selecionada mostrada dentro
@@ -1197,8 +1197,8 @@ de uma caixa.  A caixa @'{e} atualmente parte da express@~{a}o.
 @end deffn
 
 @c PROBABLY MORE TO BE SAID HERE
-@deffn {Fun@value{cedilha}@~{a}o} exp (@var{x})
-Representa fun@value{cedilha}@~{a}o exponencial.  
+@deffn {Fun@,{c}@~{a}o} exp (@var{x})
+Representa fun@,{c}@~{a}o exponencial.  
 Inst@^{a}ncias de @code{exp (@var{x})} em uma entrada s@~{a}o simplificadas para @code{%e^@var{x}};
 @code{exp} n@~{a}o aparece em express@~{o}es simplificadas.
 
@@ -1214,7 +1214,7 @@ faz com que @code{%e^(%pi %i x)} seja simplificado. Veja @code{%emode}.
 @c NEED EXAMPLES HERE
 @end deffn
 
-@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} %emode
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} %emode
 Valor padr@~{a}o: @code{true}
 
 Quando @code{%emode} for @code{true},
@@ -1229,19 +1229,19 @@ Para outro @code{x} num@'{e}rico,
 para algum inteiro @code{k} tal que @code{abs(y) < 1}.  
 
 Quando @code{%emode} for @code{false}, nenhuma
-simplifica@value{cedilha}@~{a}o adicional de @code{%e^(%pi %i x)} @'{e} realizada.
+simplifica@,{c}@~{a}o adicional de @code{%e^(%pi %i x)} @'{e} realizada.
 
 @c NEED EXAMPLES HERE
 @end defvr
 
-@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} %enumer
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} %enumer
 Valor padr@~{a}o: @code{false}
 
 Quando @code{%enumer} for @code{true},
 @code{%e} @'{e} substituido por seu valor num@'{e}rico
 2.718...  mesmo que @code{numer} seja @code{true}. 
 
-Quando @code{%enumer} for @code{false}, essa substitui@value{cedilha}@~{a}o @'{e} realizada
+Quando @code{%enumer} for @code{false}, essa substitui@,{c}@~{a}o @'{e} realizada
 somente se o expoente em @code{%e^x} avaliar para um n@'{u}mero.
 
 Veja tamb@'{e}m @code{ev} e @code{numer}.
@@ -1249,7 +1249,7 @@ Veja tamb@'{e}m @code{ev} e @code{numer}.
 @c NEED EXAMPLES HERE
 @end defvr
 
-@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} exptisolate
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} exptisolate
 Valor padr@~{a}o: @code{false}
 
 @c WHAT DOES THIS MEAN EXACTLY ??
@@ -1259,50 +1259,50 @@ examine expoentes de @'{a}tomos (tais como @code{%e}) que contenham @code{var}.
 @c NEED EXAMPLES HERE
 @end defvr
 
-@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} exptsubst
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} exptsubst
 Valor padr@~{a}o: @code{false}
 
-@code{exptsubst}, quando @code{true}, permite substitui@value{cedilha}@~{o}es tais como @code{y}
+@code{exptsubst}, quando @code{true}, permite substitui@,{c}@~{o}es tais como @code{y}
 para @code{%e^x} em @code{%e^(a x)}.
 
 @c NEED EXAMPLES HERE
 @end defvr
 
-@deffn {Fun@value{cedilha}@~{a}o} freeof (@var{x_1}, ..., @var{x_n}, @var{expr})
+@deffn {Fun@,{c}@~{a}o} freeof (@var{x_1}, ..., @var{x_n}, @var{expr})
 @code{freeof (@var{x_1}, @var{expr})}
 Retorna @code{true}
 se nenhuma subexpress@~{a}o de @var{expr} for igual a @var{x_1}
-ou se @var{x_1} ocorrer somente uma vari@'{a}vel que n@~{a}o tenha associa@value{cedilha}@~{a}o fora da express@~{a}o @var{expr},
+ou se @var{x_1} ocorrer somente uma vari@'{a}vel que n@~{a}o tenha associa@,{c}@~{a}o fora da express@~{a}o @var{expr},
 e retorna @code{false} de outra forma.
 
 @code{freeof (@var{x_1}, ..., @var{x_n}, @var{expr})}
 @'{e} equivalente a @code{freeof (@var{x_1}, @var{expr}) and ... and freeof (@var{x_n}, @var{expr})}.
 
 Os argumentos @var{x_1}, ..., @var{x_n} 
-podem ser nomes de fun@value{cedilha}@~{o}es e vari@'{a}veis, nomes subscritos,
+podem ser nomes de fun@,{c}@~{o}es e vari@'{a}veis, nomes subscritos,
 operadores (empacotados em aspas duplas), ou express@~{o}es gerais.
 @code{freeof} avalia seus argumentos.
 
-@code{freeof} opera somente sobre @var{expr} como isso representa (ap@'{o}s simplifica@value{cedilha}@~{a}o e avalia@value{cedilha}@~{a}o) e
+@code{freeof} opera somente sobre @var{expr} como isso representa (ap@'{o}s simplifica@,{c}@~{a}o e avalia@,{c}@~{a}o) e
 n@~{a}o tenta determinar se alguma express@~{a}o equivalente pode fornecer um resultado diferente.
-Em particular, simplifica@value{cedilha}@~{a}o pode retornar uma express@~{a}o equivalente mas diferente que compreende
+Em particular, simplifica@,{c}@~{a}o pode retornar uma express@~{a}o equivalente mas diferente que compreende
 alguns diferentes elementos da forma original de @var{expr}.
 
-Uma vari@'{a}vel @'{e} uma vari@'{a}vel dummy em uma express@~{a}o se n@~{a}o tiver associa@value{cedilha}@~{a}o fora da express@~{a}o.
+Uma vari@'{a}vel @'{e} uma vari@'{a}vel dummy em uma express@~{a}o se n@~{a}o tiver associa@,{c}@~{a}o fora da express@~{a}o.
 Vari@'{a}veis dummy recoreconhecidas atrav@'{e}s de @code{freeof} s@~{a}o
 o @'{i}ndice de um somat@'{o}rio ou produt@'{o}rio, o limite da vari@'{a}vel em @code{limit},
-a vari@'{a}vel de integra@value{cedilha}@~{a}o na forma de integral definida de @code{integrate},
+a vari@'{a}vel de integra@,{c}@~{a}o na forma de integral definida de @code{integrate},
 a vari@'{a}vel original em @code{laplace},
 vari@'{a}veis formais em expressoes @code{at},
 e argumentos em express@~{o}es @code{lambda}.
 Vari@'{a}veis locais em @code{block} n@~{a}o s@~{a}o reconhecidas por @code{freeof} como vari@'{a}veis dummy;
 isso @'{e} um bug.
 
-A forma indefinida de @code{integrate} @i{not} @'{e} livre de suas vari@'{a}veis de integra@value{cedilha}@~{a}o.
+A forma indefinida de @code{integrate} @i{not} @'{e} livre de suas vari@'{a}veis de integra@,{c}@~{a}o.
 
 @itemize @bullet
 @item
-Argumentos s@~{a}o nomes de fun@value{cedilha}@~{o}es, vari@'{a}veis, nomes subscritos, operadores, e express@~{o}es.
+Argumentos s@~{a}o nomes de fun@,{c}@~{o}es, vari@'{a}veis, nomes subscritos, operadores, e express@~{o}es.
 @code{freeof (a, b, expr)} @'{e} equivalente a
 @code{freeof (a, expr) and freeof (b, expr)}.
 
@@ -1339,7 +1339,7 @@ Argumentos s@~{a}o nomes de fun@value{cedilha}@~{o}es, vari@'{a}veis, nomes subs
 
 @item
 @code{freeof} n@~{a}o considera express@~{o}es equivalentes.
-Simplifica@value{cedilha}@~{a}o pode retornar uma express@~{a}o equivalente mas diferente.
+Simplifica@,{c}@~{a}o pode retornar uma express@~{a}o equivalente mas diferente.
 
 @example
 (%i1) expr: (a+b)^5$
@@ -1358,7 +1358,7 @@ Simplifica@value{cedilha}@~{a}o pode retornar uma express@~{a}o equivalente mas 
 @end example
 
 @item Um somat@'{o}rio ou uma integral definida est@'{a} livre de uma vari@'{a}vel dummy.
-Uma integral indefinida n@~{a}o @'{e} livre de suas vari@'{a}veis de integra@value{cedilha}@~{a}o.
+Uma integral indefinida n@~{a}o @'{e} livre de suas vari@'{a}veis de integra@,{c}@~{a}o.
 
 @example
 (%i1) freeof (i, 'sum (f(i), i, 0, n));
@@ -1373,18 +1373,18 @@ Uma integral indefinida n@~{a}o @'{e} livre de suas vari@'{a}veis de integra@val
 @end deffn
 
 @c IS THIS DEFINITION CORRECT ??
-@deffn {Fun@value{cedilha}@~{a}o} genfact (@var{x}, @var{y}, @var{z})
+@deffn {Fun@,{c}@~{a}o} genfact (@var{x}, @var{y}, @var{z})
 Retorna o fatorial generalizado, definido como
 @code{x (x-z) (x - 2 z) ... (x - (y - 1) z)}.  Dessa forma, para integral @var{x},
 @code{genfact (x, x, 1) = x!} e @code{genfact (x, x/2, 2) = x!!}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} imagpart (@var{expr})
+@deffn {Fun@,{c}@~{a}o} imagpart (@var{expr})
 Retorna a parte imagin@'{a}ria da express@~{a}o @var{expr}.
 
-@code{imagpart} @'{e} uma fun@value{cedilha}@~{a}o computacional,
-n@~{a}o uma fun@value{cedilha}@~{a}o de simplifica@value{cedilha}@~{a}o.
+@code{imagpart} @'{e} uma fun@,{c}@~{a}o computacional,
+n@~{a}o uma fun@,{c}@~{a}o de simplifica@,{c}@~{a}o.
 @c PROBABLY NEED TO EXPLAIN IMPLICATIONS OF ABOVE STATEMENT
 @c SEE ALSO SF BUG REPORT # 902290
 
@@ -1394,13 +1394,13 @@ e @code{realpart}.
 @c NEED EXAMPLES HERE
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} infix (@var{op})
-@deffnx {Fun@value{cedilha}@~{a}o} infix (@var{op}, @var{lbp}, @var{rbp})
-@deffnx {Fun@value{cedilha}@~{a}o} infix (@var{op}, @var{lbp}, @var{rbp}, @var{lpos}, @var{rpos}, @var{pos})
+@deffn {Fun@,{c}@~{a}o} infix (@var{op})
+@deffnx {Fun@,{c}@~{a}o} infix (@var{op}, @var{lbp}, @var{rbp})
+@deffnx {Fun@,{c}@~{a}o} infix (@var{op}, @var{lbp}, @var{rbp}, @var{lpos}, @var{rpos}, @var{pos})
 Declara @var{op} para ser um operador infixo.
-Um operador infixo @'{e} uma fun@value{cedilha}@~{a}o de dois argumentos,
-com o nome da fun@value{cedilha}@~{a}o escrito entre os argumentos.
-Por exemplo, o operador de subtra@value{cedilha}@~{a}o @code{-} @'{e} um operador infixo.
+Um operador infixo @'{e} uma fun@,{c}@~{a}o de dois argumentos,
+com o nome da fun@,{c}@~{a}o escrito entre os argumentos.
+Por exemplo, o operador de subtra@,{c}@~{a}o @code{-} @'{e} um operador infixo.
 
 @code{infix (@var{op})} declara @var{op} para ser um operador infixo
 com expoentes associados padr@~{a}o (esquerdo e direito ambos iguais a 180)
@@ -1418,13 +1418,13 @@ declara @var{op} para ser um operdor infixo
 com expoentes associados padr@~{a}o e podendo ser um entre 
 prefixado, infixado, posfixado, n@'{a}rio, matchfix e nofix.
 
-A preced@^{e}ncia de @var{op} com rela@value{cedilha}@~{a}o a outros operadores
+A preced@^{e}ncia de @var{op} com rela@,{c}@~{a}o a outros operadores
 derivam dos expoentes associados diretiro e esquerdo dos operadores em quest@~{a}o.
 Se os expoentes associados esquerdo e direito de @var{op} forem ambos maiores
 que o expoente associado esquerdo e o direito de algum outro operador,
 ent@~{a}o @var{op} tem preded@^{e}ncia sobre o outro operador.
 Se os expoentes associados n@~{a}o forem ambos maior ou menor,
-alguma rela@value{cedilha}@~{a}o mais complicada ocorre.
+alguma rela@,{c}@~{a}o mais complicada ocorre.
 
 A associatividade de @var{op} depende de seus expoentes associados.
 Maior expoente associado esquerdo (@var{eae}) implica uma inst@^{a}ncia de
@@ -1476,10 +1476,10 @@ enquanto grande @var{ead} torna @var{op} associativa @`a esquerda.
 
 @end deffn
 
-@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} inflag
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} inflag
 Velor padr@~{a}o: @code{false}
 
-Quando @code{inflag} for @code{true}, fun@value{cedilha}@~{o}es para extra@value{cedilha}@~{a}o de
+Quando @code{inflag} for @code{true}, fun@,{c}@~{o}es para extra@,{c}@~{a}o de
 partes inspecionam a forma interna de @code{expr}.
 
 Note que o simplificador re-organiza express@~{o}es.
@@ -1490,7 +1490,7 @@ for @code{true} e @code{y} se @code{inflag} for @code{false}.
 Tamb@'{e}m, escolhendo @code{inflag} para @code{true} e chamando @code{part} ou @code{substpart} @'{e}
 o mesmo que chamar @code{inpart} ou @code{substinpart}.
 
-As fun@value{cedilha}@~{o}es afetadas pela posi@value{cedilha}@~{a}o do sinalizador @code{inflag} s@~{a}o:
+As fun@,{c}@~{o}es afetadas pela posi@,{c}@~{a}o do sinalizador @code{inflag} s@~{a}o:
 @code{part}, @code{substpart}, @code{first}, @code{rest}, @code{last}, @code{length},
 a estrutura @code{for} ... @code{in},
 @code{map}, @code{fullmap}, @code{maplist}, @code{reveal} e @code{pickapart}.
@@ -1499,16 +1499,16 @@ a estrutura @code{for} ... @code{in},
 @end defvr
 
 @c NEEDS WORK
-@deffn {Fun@value{cedilha}@~{a}o} inpart (@var{expr}, @var{n_1}, ..., @var{n_k})
-@'{E} similar a @code{part} mas trabalha sobre a representa@value{cedilha}@~{a}o
-interna da express@~{a}o em lugar da forma de exibi@value{cedilha}@~{a}o e
-dessa forma pode ser mais r@'{a}pida uma vez que nenhuma formata@value{cedilha}@~{a}o @'{e} realizada.  Cuidado deve ser tomado
-com rela@value{cedilha}@~{a}o @`a ordem de subexpress@~{o}es em adi@value{cedilha}@~{o}es e produtos
+@deffn {Fun@,{c}@~{a}o} inpart (@var{expr}, @var{n_1}, ..., @var{n_k})
+@'{E} similar a @code{part} mas trabalha sobre a representa@,{c}@~{a}o
+interna da express@~{a}o em lugar da forma de exibi@,{c}@~{a}o e
+dessa forma pode ser mais r@'{a}pida uma vez que nenhuma formata@,{c}@~{a}o @'{e} realizada.  Cuidado deve ser tomado
+com rela@,{c}@~{a}o @`a ordem de subexpress@~{o}es em adi@,{c}@~{o}es e produtos
 (uma vez que a ordem das vari@'{a}veis na forma interna @'{e} muitas vezes diferente
 daquela na forma mostrada) e no manuseio com menos un@'{a}rio,
-subtra@value{cedilha}@~{a}o, e divis@~{a}o (uma vez que esses operadores s@~{a}o removidos da
+subtra@,{c}@~{a}o, e divis@~{a}o (uma vez que esses operadores s@~{a}o removidos da
 express@~{a}o). @code{part (x+y, 0)} ou @code{inpart (x+y, 0)} retorna @code{+}, embora com o objetivo de
-referirse ao operador isso deva ser abra@value{cedilha}ado por aspas duplas.  Por exemplo
+referirse ao operador isso deva ser abra@,{c}ado por aspas duplas.  Por exemplo
 @code{... if inpart (%o9,0) = "+" then ...}.
 
 Exemplos:
@@ -1531,31 +1531,31 @@ Exemplos:
 @end deffn
 
 @c NEEDS WORK
-@deffn {Fun@value{cedilha}@~{a}o} isolate (@var{expr}, @var{x})
-Retorna @var{expr} com subexpress@~{o}es que s@~{a}o adi@value{cedilha}@~{o}es e
+@deffn {Fun@,{c}@~{a}o} isolate (@var{expr}, @var{x})
+Retorna @var{expr} com subexpress@~{o}es que s@~{a}o adi@,{c}@~{o}es e
 que n@~{a}o possuem @var{x} substituido por r@'{o}tulos de express@~{a}o intermedi@'{a}ria
 (esses sendo s@'{i}mbolos at@^{o}micos como @code{%t1}, @code{%t2}, ...).  Isso @'{e} muitas vezes @'{u}til
 para evitar expans@~{o}es desnecess@'{a}rias de subexpress@~{o}es que n@~{a}o possuam
 a vari@'{a}vel de interesse.  Uma vez que os r@'{o}tulos intermedi@'{a}rios s@~{a}o associados @`as
-subexpress@~{o}es eles podem todos ser substitu@'{i}dos de volta por avalia@value{cedilha}@~{a}o da
+subexpress@~{o}es eles podem todos ser substitu@'{i}dos de volta por avalia@,{c}@~{a}o da
 express@~{a}o em que ocorrerem.
 
 @code{exptisolate} (valor padr@~{a}o: @code{false}) se @code{true} far@'{a} com que @code{isolate} examine expoentes de
 @'{a}tomos (como @code{%e}) que contenham @var{x}.
 
-@code{isolate_wrt_times} se @code{true}, ent@~{a}o @code{isolate} ir@'{a} tamb@'{e}m isolar com rela@value{cedilha}@~{a}o a 
+@code{isolate_wrt_times} se @code{true}, ent@~{a}o @code{isolate} ir@'{a} tamb@'{e}m isolar com rela@,{c}@~{a}o a 
 produtos. Veja @code{isolate_wrt_times}.
 
-Fa@value{cedilha}a @code{example (isolate)} para exemplos.
+Fa@,{c}a @code{example (isolate)} para exemplos.
 
 @end deffn
 
 @c NEEDS WORK
-@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} isolate_wrt_times
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} isolate_wrt_times
 Valor padr@~{a}o: @code{false}
 
 Quando @code{isolate_wrt_times} for @code{true}, @code{isolate}
-ir@'{a} tamb@'{e}m isolar com rela@value{cedilha}@~{a}o a produtos.  E.g. compare ambas as escolhas do
+ir@'{a} tamb@'{e}m isolar com rela@,{c}@~{a}o a produtos.  E.g. compare ambas as escolhas do
 comutador em
 
 @example
@@ -1582,7 +1582,7 @@ comutador em
 @end defvr
 
 @c NEEDS EXAMPLES
-@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} listconstvars
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} listconstvars
 Valor padr@~{a}o: @code{false}
 
 Quando @code{listconstvars} for @code{true}, isso far@'{a} com que @code{listofvars}
@@ -1592,7 +1592,7 @@ O comportamento padr@~{a}o @'{e} omitir isso.
 
 @end defvr
 
-@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} listdummyvars
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} listdummyvars
 Valor padr@~{a}o: @code{true}
 
 Quando @code{listdummyvars} for @code{false}, "vari@'{a}veis dummy" na
@@ -1614,7 +1614,7 @@ Exemplo:
 @end defvr
 
 @c NEEDS WORK
-@deffn {Fun@value{cedilha}@~{a}o} listofvars (@var{expr})
+@deffn {Fun@,{c}@~{a}o} listofvars (@var{expr})
 Retorna uma lista de vari@'{a}veis em @var{expr}.
 
 @code{listconstvars} se @code{true} faz com que @code{listofvars} inclua @code{%e}, @code{%pi},
@@ -1630,12 +1630,12 @@ aparecer em @var{expr}.  O comportamento padr@~{a}o @'{e} omitir isso.
 @end deffn
 
 @c NEEDS WORK
-@deffn {Fun@value{cedilha}@~{a}o} lfreeof (@var{lista}, @var{expr})
+@deffn {Fun@,{c}@~{a}o} lfreeof (@var{lista}, @var{expr})
 Para cada um dos membros @var{m} de lista, chama @code{freeof (@var{m}, @var{expr})}.
 Retorna @code{false} se qualquer chamada a @code{freeof} for feita e @code{true} de outra forma.
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} lopow (@var{expr}, @var{x})
+@deffn {Fun@,{c}@~{a}o} lopow (@var{expr}, @var{x})
 Retorna o menor expoente de @var{x} que explicitamente aparecer em
 @var{expr}.  Dessa forma
 
@@ -1647,7 +1647,7 @@ Retorna o menor expoente de @var{x} que explicitamente aparecer em
 @end deffn
 
 @c NEEDS WORK
-@deffn {Fun@value{cedilha}@~{a}o} lpart (@var{r@'{o}tulo}, @var{expr}, @var{n_1}, ..., @var{n_k})
+@deffn {Fun@,{c}@~{a}o} lpart (@var{r@'{o}tulo}, @var{expr}, @var{n_1}, ..., @var{n_k})
 @'{e} similar a @code{dpart} mas usa uma
 caixa rotulada. Uma moldura rotulada @'{e} similar @`a que @'{e} produzida por @code{dpart}
 mas a produzida por @code{lpart} tem o nome na linha do topo.
@@ -1655,20 +1655,20 @@ mas a produzida por @code{lpart} tem o nome na linha do topo.
 @end deffn
 
 @c NEEDS WORK
-@deffn {Fun@value{cedilha}@~{a}o} multthru (@var{expr})
-@deffnx {Fun@value{cedilha}@~{a}o} multthru (@var{expr_1}, @var{expr_2})
-Multiplica um fator (que pode ser uma adi@value{cedilha}@~{a}o) de @var{expr} pelos
+@deffn {Fun@,{c}@~{a}o} multthru (@var{expr})
+@deffnx {Fun@,{c}@~{a}o} multthru (@var{expr_1}, @var{expr_2})
+Multiplica um fator (que pode ser uma adi@,{c}@~{a}o) de @var{expr} pelos
 outros fatores de @var{expr}.  Isto @'{e}, @var{expr} @'{e} @code{@var{f_1} @var{f_2} ... @var{f_n}}
 onde ao menos
 um fator, digamos @var{f_i}, @'{e} uma soma de termos.  Cada termo naquela soma @'{e}
 multiplicado por outros fatores no produto.  (A saber todos os
 fatores exceto @var{f_i}).  @code{multthru} n@~{a}o expande somas exponenciais.
-Essa fun@value{cedilha}@~{a}o @'{e} o caminho mais r@'{a}pido para distribuir produtos (comutativos
-ou n@~{a}o) sobre adi@value{cedilha}@~{o}es.  Uma vez que quocientes s@~{a}o representados como
-produtos @code{multthru} podem ser usados para dividir adi@value{cedilha}@~{o}es por produtos tamb@'{e}m.
+Essa fun@,{c}@~{a}o @'{e} o caminho mais r@'{a}pido para distribuir produtos (comutativos
+ou n@~{a}o) sobre adi@,{c}@~{o}es.  Uma vez que quocientes s@~{a}o representados como
+produtos @code{multthru} podem ser usados para dividir adi@,{c}@~{o}es por produtos tamb@'{e}m.
 
 @code{multthru (@var{expr_1}, @var{expr_2})} multiplica cada termo em @var{expr_2} (que pode ser uma
-adi@value{cedilha}@~{a}o ou uma equ@value{cedilha}@~{a}o) por @var{expr_1}.  Se @var{expr_1} n@~{a}o for por si mesmo uma adi@value{cedilha}@~{a}o ent@~{a}o essa
+adi@,{c}@~{a}o ou uma equ@,{c}@~{a}o) por @var{expr_1}.  Se @var{expr_1} n@~{a}o for por si mesmo uma adi@,{c}@~{a}o ent@~{a}o essa
 forma @'{e} equivalente a @code{multthru (@var{expr_1}*@var{expr_2})}.
 
 @example
@@ -1704,28 +1704,28 @@ forma @'{e} equivalente a @code{multthru (@var{expr_1}*@var{expr_2})}.
 @end deffn
 
 @c NEEDS WORK
-@deffn {Fun@value{cedilha}@~{a}o} nounify (@var{f})
-Retorna a forma substantiva do nome da fun@value{cedilha}@~{a}o @var{f}.  Isso @'{e}
-necess@'{a}rio se se quer referir ao nome de uma fun@value{cedilha}@~{a}o verbo como se esse nome
-fosse um substantivo.  Note que algumas fun@value{cedilha}@~{o}es verbos ir@~{a}o retornar sua forma
+@deffn {Fun@,{c}@~{a}o} nounify (@var{f})
+Retorna a forma substantiva do nome da fun@,{c}@~{a}o @var{f}.  Isso @'{e}
+necess@'{a}rio se se quer referir ao nome de uma fun@,{c}@~{a}o verbo como se esse nome
+fosse um substantivo.  Note que algumas fun@,{c}@~{o}es verbos ir@~{a}o retornar sua forma
 substantiva sen@~{a}o puderem ser avaliadas para certos argumentos.  A forma substantiva @'{e} tamb@'{e}m
-a forma retornada se uma chamada de fun@value{cedilha}@~{a}o @'{e} precedida por um ap@'{o}strofo.
+a forma retornada se uma chamada de fun@,{c}@~{a}o @'{e} precedida por um ap@'{o}strofo.
 
 @end deffn
 
 @c NEEDS WORK
-@deffn {Fun@value{cedilha}@~{a}o} nterms (@var{expr})
+@deffn {Fun@,{c}@~{a}o} nterms (@var{expr})
 Retorna o n@'{u}mero de termos que @var{expr} pode ter se for
-completamente expandida e nenhum cancelamento ou combina@value{cedilha}@~{a}o de termos
+completamente expandida e nenhum cancelamento ou combina@,{c}@~{a}o de termos
 acontecer.
 Note express@~{o}es como @code{sin (@var{expr})}, @code{sqrt (@var{expr})}, @code{exp (@var{expr})}, etc.
 contam como apenas um termo independentemente de quantos termos @var{expr} tenha (se @var{expr} for uma
-adi@value{cedilha}@~{a}o).
+adi@,{c}@~{a}o).
 
 @end deffn
 
 @c NEEDS WORK
-@deffn {Fun@value{cedilha}@~{a}o} op (@var{expr})
+@deffn {Fun@,{c}@~{a}o} op (@var{expr})
 Retorna o operador principal da express@~{a}o @var{expr}.
 @code{op (@var{expr})} @'{e} equivalente a @code{part (@var{expr}, 0)}. 
 
@@ -1783,8 +1783,8 @@ Exemplos:
 @end deffn
 
 @c NEEDS WORK
-@deffn {Fun@value{cedilha}@~{a}o} operatorp (@var{expr}, @var{op})
-@deffnx {Fun@value{cedilha}@~{a}o} operatorp (@var{expr}, [@var{op_1}, ..., @var{op_n}])
+@deffn {Fun@,{c}@~{a}o} operatorp (@var{expr}, @var{op})
+@deffnx {Fun@,{c}@~{a}o} operatorp (@var{expr}, [@var{op_1}, ..., @var{op_n}])
 
 @code{operatorp (@var{expr}, @var{op})} retorna @code{true}
 se @var{op} for igual ao operador de @var{expr}.
@@ -1795,17 +1795,17 @@ se algum elementos de @var{op_1}, ..., @var{op_n} for igual ao operador de @var{
 @end deffn
 
 @c NEEDS WORK
-@deffn {Fun@value{cedilha}@~{a}o} optimize (@var{expr})
+@deffn {Fun@,{c}@~{a}o} optimize (@var{expr})
 Retorna uma express@~{a}o que produz o mesmo valor e
 efeito que @var{expr} mas faz de forma mais eficientemente por evitar a
-recomputa@value{cedilha}@~{a}o de subexpress@~{o}es comuns.  @code{optimize} tamb@'{e}m tem o mesmo
+recomputa@,{c}@~{a}o de subexpress@~{o}es comuns.  @code{optimize} tamb@'{e}m tem o mesmo
 efeito de "colapsar" seus argumentos de forma que todas as subexpress@~{o}es comuns
 s@~{a}o compartilhadas.
-Fa@value{cedilha}a @code{example (optimize)} para exemplos.
+Fa@,{c}a @code{example (optimize)} para exemplos.
 
 @end deffn
 
-@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} optimprefix
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} optimprefix
 Valor padr@~{a}o: @code{%}
 
 @code{optimprefix} @'{e} o prefixo usado para s@'{i}mbolos gerados pelo
@@ -1815,7 +1815,7 @@ comando @code{optimize}.
 
 @c NEEDS WORK
 @c WHAT DOES ">" MEAN IN THIS CONTEXT ??
-@deffn {Fun@value{cedilha}@~{a}o} ordergreat (@var{v_1}, ..., @var{v_n})
+@deffn {Fun@,{c}@~{a}o} ordergreat (@var{v_1}, ..., @var{v_n})
 Escolhe aliases para as vari@'{a}veis @var{v_1}, ..., @var{v_n}
 tais que @var{v_1} > @var{v_2} > ...  > @var{v_n},
 e @var{v_n} > qualquer outra vari@'{a}vel n@~{a}o mencionada como um
@@ -1827,25 +1827,25 @@ Veja tamb@'{e}m @code{orderless}.
 
 @c NEEDS WORK
 @c WHAT DOES "PRECEDES" MEAN IN THIS CONTEXT ??
-@deffn {Fun@value{cedilha}@~{a}o} ordergreatp (@var{expr_1}, @var{expr_2})
+@deffn {Fun@,{c}@~{a}o} ordergreatp (@var{expr_1}, @var{expr_2})
 Retorna @code{true} se @var{expr_2} precede @var{expr_1} na
-ordena@value{cedilha}@~{a}o escolhida com a fun@value{cedilha}@~{a}o @code{ordergreat}.
+ordena@,{c}@~{a}o escolhida com a fun@,{c}@~{a}o @code{ordergreat}.
 
 @end deffn
 
 @c NEEDS WORK
 @c WHAT DOES "<" MEAN IN THIS CONTEXT ??
-@deffn {Fun@value{cedilha}@~{a}o} orderless (@var{v_1}, ..., @var{v_n})
+@deffn {Fun@,{c}@~{a}o} orderless (@var{v_1}, ..., @var{v_n})
 Escolhe aliases para as vari@'{a}veis @var{v_1}, ..., @var{v_n}
 tais que @var{v_1} < @var{v_2} < ...  < @var{v_n},
 and @var{v_n} < qualquer outra vari@'{a}vel n@~{a}o mencionada como um
 argumento.
 
 @c EXPRESS THIS ORDER IN A MORE COMPREHENSIBLE FASHION
-Dessa forma a escala de ordena@value{cedilha}@~{a}o completa @'{e}: constantes num@'{e}ricas <
+Dessa forma a escala de ordena@,{c}@~{a}o completa @'{e}: constantes num@'{e}ricas <
 constantes declaradas < escalares declarados < primeiro argumento para @code{orderless} <
-...  < @'{u}ltimo argumento para @code{orderless} < vari@'{a}veis que come@value{cedilha}am com A < ...
-< vari@'{a}veis que come@value{cedilha}am com Z < @'{u}ltimo argumento para @code{ordergreat} <
+...  < @'{u}ltimo argumento para @code{orderless} < vari@'{a}veis que come@,{c}am com A < ...
+< vari@'{a}veis que come@,{c}am com Z < @'{u}ltimo argumento para @code{ordergreat} <
  ... < primeiro argumento para @code{ordergreat} < @code{mainvar}s - vari@'{a}veis principais declaradas.
 
 Veja tamb@'{e}m @code{ordergreat} e @code{mainvar}.
@@ -1854,15 +1854,15 @@ Veja tamb@'{e}m @code{ordergreat} e @code{mainvar}.
 
 @c NEEDS WORK
 @c WHAT DOES "PRECEDES" MEAN IN THIS CONTEXT ??
-@deffn {Fun@value{cedilha}@~{a}o} orderlessp (@var{expr_1}, @var{expr_2})
+@deffn {Fun@,{c}@~{a}o} orderlessp (@var{expr_1}, @var{expr_2})
 Retorna @code{true} se @var{expr_1} precede @var{expr_2} na
-ordena@value{cedilha}@~{a}o escolhida pelo comando @code{orderless}.
+ordena@,{c}@~{a}o escolhida pelo comando @code{orderless}.
 
 @end deffn
 
 @c NEEDS WORK
-@deffn {Fun@value{cedilha}@~{a}o} part (@var{expr}, @var{n_1}, ..., @var{n_k})
-Retorna partes da forma exibida de @code{expr}. Essa fun@value{cedilha}@~{a}o
+@deffn {Fun@,{c}@~{a}o} part (@var{expr}, @var{n_1}, ..., @var{n_k})
+Retorna partes da forma exibida de @code{expr}. Essa fun@,{c}@~{a}o
 obt@'{e}m a parte de @code{expr} como especificado pelos @'{i}ndices @var{n_1}, ..., @var{n_k}.  A primeira
 parte @var{n_1} de @code{expr} @'{e} obtida, ent@~{a}o a parte @var{n_2} daquela  @'{e} obtida, etc.  O resultado @'{e}
 parte @var{n_k} de ... parte @var{n_2} da parte @var{n_1} da @code{expr}.
@@ -1871,13 +1871,13 @@ parte @var{n_k} de ... parte @var{n_2} da parte @var{n_1} da @code{expr}.
 
 @c "If the last argument to a part function" => FOLLOWING APPLIES TO OTHER FUNCTIONS ??
 @c ATTEMPT TO VERIFY; IF SO, COPY THIS COMMENTARY TO DESCRIPTIONS OF OTHER FUNCTIONS
-Se o @'{u}ltimo argumento para uma fun@value{cedilha}@~{a}o @code{part} for uma lista de @'{i}ndices ent@~{a}o
-muitas subexpress@~{o}es ser@~{a}o pin@value{cedilha}adas, cada uma correspondendo a um
+Se o @'{u}ltimo argumento para uma fun@,{c}@~{a}o @code{part} for uma lista de @'{i}ndices ent@~{a}o
+muitas subexpress@~{o}es ser@~{a}o pin@,{c}adas, cada uma correspondendo a um
 @'{i}ndice da lista.  Dessa forma @code{part (x + y + z, [1, 3])} @'{e} @code{z+x}.
 
-@code{piece} mant@'{e}m a @'{u}ltima express@~{a}o selecionada quando usando as fun@value{cedilha}@~{o}es
-@code{part}.  Isso @'{e} escolhido durante a execu@value{cedilha}@~{a}o da fun@value{cedilha}@~{a}o e dessa forma
-pode referir-se @`a fun@value{cedilha}@~{a}o em si mesma como mostrado abaixo.
+@code{piece} mant@'{e}m a @'{u}ltima express@~{a}o selecionada quando usando as fun@,{c}@~{o}es
+@code{part}.  Isso @'{e} escolhido durante a execu@,{c}@~{a}o da fun@,{c}@~{a}o e dessa forma
+pode referir-se @`a fun@,{c}@~{a}o em si mesma como mostrado abaixo.
 
 Se @code{partswitch} for escolhido para @code{true} ent@~{a}o @code{end} @'{e} retornado quando uma
 parte selecionada de uma express@~{a}o n@~{a}o existir, de outra forma uma mensagem de
@@ -1893,10 +1893,10 @@ Exemplo: @code{part (z+2*y, 2, 1)} retorna 2.
 @end deffn
 
 @c NEEDS WORK
-@deffn {Fun@value{cedilha}@~{a}o} partition (@var{expr}, @var{x})
+@deffn {Fun@,{c}@~{a}o} partition (@var{expr}, @var{x})
 Retorna uma lista de duas express@~{o}es.  Elas s@~{a}o (1)
 os fatores de @var{expr} (se essa express@~{a}o for um produto), os termos de @var{expr} (se isso for uma
-adi@value{cedilha}@~{a}o), ou a lista (se isso for uma lsita) que n@~{a}o contiver @code{var} e, (2)
+adi@,{c}@~{a}o), ou a lista (se isso for uma lsita) que n@~{a}o contiver @code{var} e, (2)
 os fatores, termos, ou lista que faz.
 
 @example
@@ -1911,7 +1911,7 @@ os fatores, termos, ou lista que faz.
 @end deffn
 
 @c NEEDS EXAMPLE
-@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} partswitch
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} partswitch
 Valor padr@~{a}o: @code{false}
 
 Quando @code{partswitch} for @code{true}, @code{end} @'{e} retornado
@@ -1920,7 +1920,7 @@ mensagem de erro @'{e} fornecida.
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~{a}o} pickapart (@var{expr}, @var{n})
+@deffn {Fun@,{c}@~{a}o} pickapart (@var{expr}, @var{n})
 Atribui r@'{o}tulos de express@~{a}o intermedi@'{a}ria a subexpress@~{o}es de
 @var{expr} de comprimento @var{n}, um inteiro.
 A subexpress@~{o}es maiores ou menores n@~{a}o s@~{a}o atribuidos r@'{o}tulos.
@@ -2013,18 +2013,18 @@ Exemplos:
 
 @c NEEDS WORK
 @defvr {Vari@'{a}vel de sistema} piece
-Mant@'{e}m a ultima express@~{a}o selecionada quando usando fun@value{cedilha}@~{o}es
+Mant@'{e}m a ultima express@~{a}o selecionada quando usando fun@,{c}@~{o}es
 @code{part}.
 @c WHAT DOES THIS MEAN EXACTLY ??
-Isso @'{e} escolhido durante a execu@value{cedilha}@~{a}o da fun@value{cedilha}@~{a}o e dessa forma
-pode referir-se @`a fun@value{cedilha}@~{a}o em si mesma.
+Isso @'{e} escolhido durante a execu@,{c}@~{a}o da fun@,{c}@~{a}o e dessa forma
+pode referir-se @`a fun@,{c}@~{a}o em si mesma.
 
 @c NEED "SEE ALSO" TO POINT TO LIST OF ALL RELEVANT FUNCTIONS
 
 @end defvr
 
 @c NEEDS EXAMPLES
-@deffn {Fun@value{cedilha}@~{a}o} polarform (@var{expr})
+@deffn {Fun@,{c}@~{a}o} polarform (@var{expr})
 Retorna uma express@~{a}o @code{r %e^(%i theta)} equivalente a @var{expr},
 tal que @code{r} e @code{theta} sejam puramente reais.
 
@@ -2032,10 +2032,10 @@ tal que @code{r} e @code{theta} sejam puramente reais.
 
 @c ISN'T THERE AN EQUIVALENT FUNCTION SOMEWHERE ??
 @c NEEDS WORK (IF KEPT)
-@deffn {Fun@value{cedilha}@~{a}o} powers (@var{expr}, @var{x})
+@deffn {Fun@,{c}@~{a}o} powers (@var{expr}, @var{x})
 Fornece os expoentes de @var{x} que ocorrem em express@~{a}o @var{expr}.
 
-@code{load (powers)} chama essa fun@value{cedilha}@~{a}o.
+@code{load (powers)} chama essa fun@,{c}@~{a}o.
 @c HMM, THERE'S A BUNCH OF MAXIMA FUNCTIONS IN src/powers.lisp ...
 @c FOR SOME REASON src/powers.lisp IS NOT PART OF THE USUAL BUILD -- STRANGE
 
@@ -2053,7 +2053,7 @@ Fornece os expoentes de @var{x} que ocorrem em express@~{a}o @var{expr}.
 @end deffn
 
 @c NEEDS WORK
-@deffn {Fun@value{cedilha}@~{a}o} product (@var{expr}, @var{i}, @var{i_0}, @var{i_1})
+@deffn {Fun@,{c}@~{a}o} product (@var{expr}, @var{i}, @var{i_0}, @var{i_1})
 Representa um produto dos velores de @code{expr} com
 o @'{i}ndice @var{i} variando de @var{i_0} a @var{i_1}.
 A forma substantiva @code{'product} @'{e} mostrada como um pi mai@'{i}sculo.
@@ -2068,7 +2068,7 @@ e o resultado  um produto expl@'{i}cito.
 de outra forma, o intervalo do @'{i}ndice @'{e} indefinido.
 Algumas regras s@~{a}o aplicads para simplificar o produto.
 Quando a vari@'{a}vel global @code{simpproduct} for @code{true}, regras adicionais s@~{a}o aplicadas.
-Em alguns casos, simplifica@value{cedilha}@~{a}o um resultado que n@~{a}o @'{e} um produto;
+Em alguns casos, simplifica@,{c}@~{a}o um resultado que n@~{a}o @'{e} um produto;
 de outra forma, o resultado @'{e} uma forma substantiva @code{'product}.
 
 Veja tamb@'{e}m @code{nouns} e @code{evflag}.
@@ -2128,23 +2128,23 @@ Exemplos:
 @end deffn
 
 @c NEEDS EXAMPLES
-@deffn {Fun@value{cedilha}@~{a}o} realpart (@var{expr})
+@deffn {Fun@,{c}@~{a}o} realpart (@var{expr})
 Retorna a parte real de @var{expr}. @code{realpart} e @code{imagpart} ir@~{a}o
-trabalhar sobre express@~{o}es envolvendo fun@value{cedilha}@~{o}es trigonom@'{e}tricas e hiperb@'{o}licas,
-bem como ra@'{i}zes quadradas, logar@'{i}tmos, e exponencia@value{cedilha}@~{a}o.
+trabalhar sobre express@~{o}es envolvendo fun@,{c}@~{o}es trigonom@'{e}tricas e hiperb@'{o}licas,
+bem como ra@'{i}zes quadradas, logar@'{i}tmos, e exponencia@,{c}@~{a}o.
 
 @end deffn
 
 @c NEEDS EXAMPLES
-@deffn {Fun@value{cedilha}@~{a}o} rectform (@var{expr})
+@deffn {Fun@,{c}@~{a}o} rectform (@var{expr})
 Retorna uma express@~{a}o @code{a + b %i} equivalente a @var{expr},
 tal que @var{a} e @var{b} sejam puramente reais.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} rembox (@var{expr}, unlabelled)
-@deffnx {Fun@value{cedilha}@~{a}o} rembox (@var{expr}, @var{r@'{o}tulo})
-@deffnx {Fun@value{cedilha}@~{a}o} rembox (@var{expr})
+@deffn {Fun@,{c}@~{a}o} rembox (@var{expr}, unlabelled)
+@deffnx {Fun@,{c}@~{a}o} rembox (@var{expr}, @var{r@'{o}tulo})
+@deffnx {Fun@,{c}@~{a}o} rembox (@var{expr})
 Remove caixas de @var{expr}.
 
 @code{rembox (@var{expr}, unlabelled)} remove todas as caixas sem r@'{o}tulos de @var{expr}.
@@ -2153,7 +2153,7 @@ Remove caixas de @var{expr}.
 
 @code{rembox (@var{expr})} remove todas as caixas, rotuladas e n@~{a} rotuladas.
 
-Caixas s@~{a}o desenhadas pelas fun@value{cedilha}@~{o}es @code{box}, @code{dpart}, e @code{lpart}.
+Caixas s@~{a}o desenhadas pelas fun@,{c}@~{o}es @code{box}, @code{dpart}, e @code{lpart}.
 
 Exemplos:
 
@@ -2221,7 +2221,7 @@ Exemplos:
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} sum (@var{expr}, @var{i}, @var{i_0}, @var{i_1})
+@deffn {Fun@,{c}@~{a}o} sum (@var{expr}, @var{i}, @var{i_0}, @var{i_1})
 Representa um somat@'{o}rio dos valores de @var{expr} com
 o @'{i}ndice @var{i} variando de @var{i_0} a @var{i_1}.
 A forma substantiva @code{'sum} @'{e} mostrada com uma letra sigma mai@'{u}scula.
@@ -2230,17 +2230,17 @@ A forma substantiva @code{'sum} @'{e} mostrada com uma letra sigma mai@'{u}scula
 
 Se os limites superiores e inferiores diferirem de um n@'{u}mero inteiro,
 o somatoriando @var{expr} @'{e} avaliado para cada valor do @'{i}ndice do somat@'{o}rio @var{i},
-e o resultado @'{e} uma adi@value{cedilha}@~{a}o expl@'{i}cita.
+e o resultado @'{e} uma adi@,{c}@~{a}o expl@'{i}cita.
 
 De outra forma, o intervalo dos @'{i}ndices @'{e} indefinido.
 Algumas regras s@~{a}o aplicadas para simplificar o somat@'{o}rio.
 Quando a vari@'{a}vel global @code{simpsum} for @code{true}, regras adicionais s@~{a}o aplicadas.
-Em alguns casos, simplifica@value{cedilha}@~{o}es retornam um resultado que n@~{a}o @'{e} um somat@'{o}rio;
+Em alguns casos, simplifica@,{c}@~{o}es retornam um resultado que n@~{a}o @'{e} um somat@'{o}rio;
 de outra forma, o resultado @'{e} uma forma substantiva @code{'sum}.
 
-Quando o @code{evflag} (sinalizador de avalia@value{cedilha}@~{a}o) @code{cauchysum} for @code{true},
+Quando o @code{evflag} (sinalizador de avalia@,{c}@~{a}o) @code{cauchysum} for @code{true},
 um produto de somat@'{o}rios @'{e} mostrado como um produto de Cauchy,
-no qual o @'{i}ndice do somat@'{o}rio mais interno @'{e} uma fun@value{cedilha}@~{a}o de
+no qual o @'{i}ndice do somat@'{o}rio mais interno @'{e} uma fun@,{c}@~{a}o de
 @'{i}ndice de um n@'{i}vel acima, em lugar de variar independentemente.
 
 A vari@'{a}vel global @code{genindex} @'{e} o prefixo alfab@'{e}tico usado para gerar o pr@'{o}ximo @'{i}ndice do somat@'{o}rio,
@@ -2353,8 +2353,8 @@ else b^k, k, 1, 10))
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} lsum (@var{expr}, @var{x}, @var{L})
-Representas a adi@value{cedilha}@~{a}o de @var{expr} a cada elemento @var{x} em @var{L}.
+@deffn {Fun@,{c}@~{a}o} lsum (@var{expr}, @var{x}, @var{L})
+Representas a adi@,{c}@~{a}o de @var{expr} a cada elemento @var{x} em @var{L}.
 
 Uma forma substantiva @code{'lsum} @'{e} retornada
 se o argumento @var{L} n@~{a}o avaliar para uma lista.
@@ -2381,8 +2381,8 @@ Exemplos:
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} verbify (@var{f})
-Retorna a forma verbal da fun@value{cedilha}@~{a}o chamada @var{f}.
+@deffn {Fun@,{c}@~{a}o} verbify (@var{f})
+Retorna a forma verbal da fun@,{c}@~{a}o chamada @var{f}.
 
 Veja tamb@'{e}m @code{verb}, @code{noun}, e @code{nounify}.
 

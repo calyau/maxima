@@ -17,11 +17,11 @@
 
 @node N-Argumentos, Operador n@~{a}o fixado, Operadores, Operadores
 @section N-Argumentos
-Um operador @code{nary} @'{e} usado para denotar uma fun@value{cedilha}@~{a}o com qualquer n@'{u}mero de
+Um operador @code{nary} @'{e} usado para denotar uma fun@,{c}@~{a}o com qualquer n@'{u}mero de
 argumentos, cada um dos quais @'{e} separado por uma ocorr@^{e}ncia do
-operador, e.g. A+B ou A+B+C.  A fun@value{cedilha}@~{a}o @code{nary("x")}  @'{e} uma fun@value{cedilha}@~{a}o
+operador, e.g. A+B ou A+B+C.  A fun@,{c}@~{a}o @code{nary("x")}  @'{e} uma fun@,{c}@~{a}o
 de extens@~{a}o sint@'{a}tica para declarar x como sendo um operador @code{nary}.
-Fun@value{cedilha}@~{o}es podem ser declaradas para serem
+Fun@,{c}@~{o}es podem ser declaradas para serem
 @code{nary}.  Se @code{declare(j,nary);} @'{e} conclu@'{i}da, diz ao simplicador para
 simplificar, e.g. @code{j(j(a,b),j(c,d))} para @code{j(a, b, c, d)}.
 
@@ -29,30 +29,30 @@ Veja tamb@'{e}m @code{syntax}.
 
 @node Operador n@~{a}o fixado, Operador P@'{o}sfixado, N-Argumentos, Operadores
 @section Operador n@~{a}o fixado
-Operadores @code{nofix} s@~{a}o usados para denotar fun@value{cedilha}@~{o}es sem argumentos.
-A mera presen@value{cedilha}a de tal operador em um comando far@'{a} com que a
-fun@value{cedilha}@~{a}o correspondente seja avaliada.  Por exemplo, quando se digita
+Operadores @code{nofix} s@~{a}o usados para denotar fun@,{c}@~{o}es sem argumentos.
+A mera presen@,{c}a de tal operador em um comando far@'{a} com que a
+fun@,{c}@~{a}o correspondente seja avaliada.  Por exemplo, quando se digita
 "exit;" para sair de uma parada do Maxima, "exit" tem comportamento similar a um
-operador @code{nofix}.  A fun@value{cedilha}@~{a}o @code{nofix("x")} @'{e} uma fun@value{cedilha}@~{a}o de extens@~{a}o
+operador @code{nofix}.  A fun@,{c}@~{a}o @code{nofix("x")} @'{e} uma fun@,{c}@~{a}o de extens@~{a}o
 sint@'{a}tica que declara x como sendo um operador @code{nofix}. 
 
 Veja tamb@'{e}m @code{syntax}.
 
 @node Operador P@'{o}sfixado, Operador Pr@'{e}fixado, Operador n@~{a}o fixado, Operadores
 @section Operador P@'{o}sfixado
-Operadores @code{postfix} como a variedade @code{prefix} denotam fun@value{cedilha}@~{o}es
+Operadores @code{postfix} como a variedade @code{prefix} denotam fun@,{c}@~{o}es
 de um argumento simples, mas nesse caso  o argumento sucede
 imediatamente uma ocorr@^{e}ncia do operador na seq@"{u}@^{e}ncia de caracteres de entrada, e.g. 3! .
-Uma fun@value{cedilha}@~{a}o @code{postfix("x")} @'{e} uma fun@value{cedilha}@~{a}o de extens@~{a}o
+Uma fun@,{c}@~{a}o @code{postfix("x")} @'{e} uma fun@,{c}@~{a}o de extens@~{a}o
 sint@'{a}tica que declara x como sendo um operador @code{postfix}.
 
 Veja tamb@'{e}m @code{syntax}.
 
 @node Operador Pr@'{e}fixado, Operadores Aritm@'{e}ticos, Operador P@'{o}sfixado, Operadores
 @section Operador Pr@'{e}fixado
-Um operador @code{prefix} @'{e} um que significa uma fun@value{cedilha}@~{a}o de um
+Um operador @code{prefix} @'{e} um que significa uma fun@,{c}@~{a}o de um
 argumento, o qual imediatamente segue uma ocorr@^{e}ncia do
-operador.  @code{prefix("x")} @'{e} uma fun@value{cedilha}@~{a}o de extens@~{a}o
+operador.  @code{prefix("x")} @'{e} uma fun@,{c}@~{a}o de extens@~{a}o
 sint@'{a}tica que declara x como sendo um operador @code{prefix}.
 
 Veja tamb@'{e}m @code{syntax}.
@@ -62,15 +62,15 @@ Veja tamb@'{e}m @code{syntax}.
 
 @deffn {Operador} +
 @ifinfo
-@fnindex Adi@value{cedilha}@~{a}o
+@fnindex Adi@,{c}@~{a}o
 @end ifinfo
 @deffnx {Operador} -
 @ifinfo
-@fnindex Subtra@value{cedilha}@~{a}o
+@fnindex Subtra@,{c}@~{a}o
 @end ifinfo
 @deffnx {Operador} *
 @ifinfo
-@fnindex Multiplica@value{cedilha}@~{a}o
+@fnindex Multiplica@,{c}@~{a}o
 @end ifinfo
 @deffnx {Operador} /
 @ifinfo
@@ -78,50 +78,50 @@ Veja tamb@'{e}m @code{syntax}.
 @end ifinfo
 @deffnx {Operador} ^
 @ifinfo
-@fnindex Exponencia@value{cedilha}@~{a}o
+@fnindex Exponencia@,{c}@~{a}o
 @end ifinfo
 
 Os s@'{i}mbolos @code{+} @code{*} @code{/} e @code{^} representam
-adi@value{cedilha}@~{a}o, multiplica@value{cedilha}@~{a}o, divis@~{a}o, e exponencia@value{cedilha}@~{a}o, respectivamente.
+adi@,{c}@~{a}o, multiplica@,{c}@~{a}o, divis@~{a}o, e exponencia@,{c}@~{a}o, respectivamente.
 O nome desses operadores s@~{a}o @code{"+"} @code{"*"} @code{"//"} e @code{"^"},
-os quais podem aparecer em lugares onde o nome da fun@value{cedilha}@~{a}o ou operador @'{e} requerido.
+os quais podem aparecer em lugares onde o nome da fun@,{c}@~{a}o ou operador @'{e} requerido.
 
-Os s@'{i}mbolos @code{+} e @code{-} representam a adi@value{cedilha}@~{a}o un@'{a}ria e a nega@value{cedilha}@~{a}o un@'{a}ria, respectivamente,
+Os s@'{i}mbolos @code{+} e @code{-} representam a adi@,{c}@~{a}o un@'{a}ria e a nega@,{c}@~{a}o un@'{a}ria, respectivamente,
 e os nomes desses operadores s@~{a}o @code{"+"} e @code{"-"}, respectivamente.
 
-A subtra@value{cedilha}@~{a}o @code{a - b} @'{e} representada dentro do Maxima como a adi@value{cedilha}@~{a}o, @code{a + (- b)}.
-Express@~{o}es tais como @code{a + (- b)} s@~{a}o mostradas como subtra@value{cedilha}@~{a}o.
-Maxima reconhece @code{"-"} somente como o nome do operador un@'{a}rio de nega@value{cedilha}@~{a}o,
-e n@~{a}o como o nome do operador bin@'{a}rio de subra@value{cedilha}@~{a}o.
+A subtra@,{c}@~{a}o @code{a - b} @'{e} representada dentro do Maxima como a adi@,{c}@~{a}o, @code{a + (- b)}.
+Express@~{o}es tais como @code{a + (- b)} s@~{a}o mostradas como subtra@,{c}@~{a}o.
+Maxima reconhece @code{"-"} somente como o nome do operador un@'{a}rio de nega@,{c}@~{a}o,
+e n@~{a}o como o nome do operador bin@'{a}rio de subra@,{c}@~{a}o.
 
-A divis@~{a}o @code{a / b} @'{e} representada dentro do Maxima como multiplica@value{cedilha}@~{a}o, @code{a * b^(- 1)}.
+A divis@~{a}o @code{a / b} @'{e} representada dentro do Maxima como multiplica@,{c}@~{a}o, @code{a * b^(- 1)}.
 Express@~{o}es tais como @code{a * b^(- 1)} s@~{a}o mostradas como divis@~{a}o.
 Maxima reconhece @code{"//"} como o nome do operador de divis@~{a}o.
 
-A adi@value{cedilha}@~{a}o e a multiplica@value{cedilha}@~{a}o s@~{a}o operadores en@'{a}rios e comutativos.
-a divis@~{a}o e a exponencia@value{cedilha}@~{a}o s@~{a}o operadores bin@'{a}rios e n@~{a}o comutativos.
+A adi@,{c}@~{a}o e a multiplica@,{c}@~{a}o s@~{a}o operadores en@'{a}rios e comutativos.
+a divis@~{a}o e a exponencia@,{c}@~{a}o s@~{a}o operadores bin@'{a}rios e n@~{a}o comutativos.
 
-Maxima ordena os operandos de operadores n@~{a}o comutativos para construir uma representa@value{cedilha}@~{a}o can@^{o}nica.
+Maxima ordena os operandos de operadores n@~{a}o comutativos para construir uma representa@,{c}@~{a}o can@^{o}nica.
 Para armazenamento interno, a ordem @'{e} determinada por @code{orderlessp}.
-Para mostrar na tela, a ordem para adi@value{cedilha}@~{a}o @'{e} determinada por @code{ordergreatp},
-e para a multiplica@value{cedilha}@~{a}o, a ordem @'{e} a mesma da ordena@value{cedilha}@~{a}o para armazenamento interno.
+Para mostrar na tela, a ordem para adi@,{c}@~{a}o @'{e} determinada por @code{ordergreatp},
+e para a multiplica@,{c}@~{a}o, a ordem @'{e} a mesma da ordena@,{c}@~{a}o para armazenamento interno.
 
-Computa@value{cedilha}@~{o}es aritim@'{e}ticas s@~{a}o realizadas sobre n@'{u}meros literais
+Computa@,{c}@~{o}es aritim@'{e}ticas s@~{a}o realizadas sobre n@'{u}meros literais
 (inteiro, racionais, n@'{u}meros comuns em ponto flutuante, e grandes n@'{u}meros em ponto flutuante de dupla precis@~{a}o).
-Execto a exponencia@value{cedilha}@~{a}o, todas as opera@value{cedilha}@~{o}es aritm@'{e}ticas sobre n@'{u}meros s@~{a}o simplificadas para n@'{u}meros.
-A exponencia@value{cedilha}@~{a}o @'{e} simplificada para um n@'{u}mero se ou o operando @'{e} um n@'{u}mero comum em ponto flutuante ou um grande n@'{u}mero em ponto flutuante de dupla precis@~{a}o
+Execto a exponencia@,{c}@~{a}o, todas as opera@,{c}@~{o}es aritm@'{e}ticas sobre n@'{u}meros s@~{a}o simplificadas para n@'{u}meros.
+A exponencia@,{c}@~{a}o @'{e} simplificada para um n@'{u}mero se ou o operando @'{e} um n@'{u}mero comum em ponto flutuante ou um grande n@'{u}mero em ponto flutuante de dupla precis@~{a}o
 ou se o resultado for um inteiro exato ou um racional exato;
-de outra forma uma exponencia@value{cedilha}@~{a}o pode ser simplificada para @code{sqrt} ou outra exponencia@value{cedilha}@~{a}o ou permanecer inalterada.
+de outra forma uma exponencia@,{c}@~{a}o pode ser simplificada para @code{sqrt} ou outra exponencia@,{c}@~{a}o ou permanecer inalterada.
 
-A propaga@value{cedilha}@~{a}o de n@'{u}meros em ponto flutuante aplica-se a computa@value{cedilha}@~{o}es aritim@'{e}ticas:
+A propaga@,{c}@~{a}o de n@'{u}meros em ponto flutuante aplica-se a computa@,{c}@~{o}es aritim@'{e}ticas:
 Se qualquer operando for um grande n@'{u}mero em ponto flutuante, o resultado @'{e} um grande n@'{u}mero em ponto flutuante;
 de outra forma, se qualquer operando for um n@'{u}mero em ponto flutuante comum, o resultado @'{e} um n@'{u}mero comum em ponto flutuante;
 de outra forma, se os operandos forem racioanis ou inteiros e o resultado ser@'{a} um racional ou inteiro.
 
-Computa@value{cedilha}@~{a}oes aritim@'{e}ticas s@~{a}o uma simplifica@value{cedilha}@~{a}o, n@~{a}o uma avalia@value{cedilha}@~{a}o.
+Computa@,{c}@~{a}oes aritim@'{e}ticas s@~{a}o uma simplifica@,{c}@~{a}o, n@~{a}o uma avalia@,{c}@~{a}o.
 Dessa forma a aritm@'{e}tica @'{e} realizada em  express@~{o}es com ap@'{o}strofo (mas simplificadas).
 
-Opera@value{cedilha}@~{o}es aritm@'{e}ticas s@~{a}o aplicadas elemento-por-elemento
+Opera@,{c}@~{o}es aritm@'{e}ticas s@~{a}o aplicadas elemento-por-elemento
 para listas quando a vari@'{a}vel global @code{listarith} for @code{true},
 e sempre aplicada elemento-por-elemento para matrizes.
 Quando um operando for uma lista ou uma matriz e outro for um operando de algum outro tipo,
@@ -129,8 +129,8 @@ o outro operando @'{e} combinado com cada um dos elementos da lista ou matriz.
 
 Exemplos:
 
-Adi@value{cedilha}@~{a}o e multiplica@value{cedilha}@~{a}o s@~{a}o opeadores en@'{a}rios comutativos.
-Maxima ordena os operandos para construir uma representa@value{cedilha}@~{a}o can@^{o}nica.
+Adi@,{c}@~{a}o e multiplica@,{c}@~{a}o s@~{a}o opeadores en@'{a}rios comutativos.
+Maxima ordena os operandos para construir uma representa@,{c}@~{a}o can@^{o}nica.
 Os nomes desses operadores s@~{a}o @code{"+"} e @code{"*"}.
 @c ===beg===
 @c c + g + d + a + b + e + f;
@@ -157,7 +157,7 @@ Os nomes desses operadores s@~{a}o @code{"+"} e @code{"*"}.
 (%o6)                       144 a  x
 @end example
 
-Divis@~{a}o e exponencia@value{cedilha}@~{a}o s@~{a}o operadores bin@'{a}rios e n@~{a}o comutativos.
+Divis@~{a}o e exponencia@,{c}@~{a}o s@~{a}o operadores bin@'{a}rios e n@~{a}o comutativos.
 Os nomes desses operadores s@~{a}o @code{"//"} e @code{"^"}.
 @c ===beg===
 @c [a / b, a ^ b];
@@ -178,8 +178,8 @@ Os nomes desses operadores s@~{a}o @code{"//"} e @code{"^"}.
                               b
 @end example
 
-Subtra@value{cedilha}@~{a}o e divis@~{a}o s@~{a}o representados internamente
-em termos de adi@value{cedilha}@~{a}o e multiplica@value{cedilha}@~{a}o, respectivamente.
+Subtra@,{c}@~{a}o e divis@~{a}o s@~{a}o representados internamente
+em termos de adi@,{c}@~{a}o e multiplica@,{c}@~{a}o, respectivamente.
 @c ===beg===
 @c [inpart (a - b, 0), inpart (a - b, 1), inpart (a - b, 2)];
 @c [inpart (a / b, 0), inpart (a / b, 1), inpart (a / b, 2)];
@@ -195,7 +195,7 @@ em termos de adi@value{cedilha}@~{a}o e multiplica@value{cedilha}@~{a}o, respect
 @end example
 
 C@'{a}lculos s@~{a}o realizados sobre n@'{u}meros lterais.
-A propaga@value{cedilha}@~{a}o de n@'{u}meros em poto flutuante aplica-se.
+A propaga@,{c}@~{a}o de n@'{u}meros em poto flutuante aplica-se.
 @c ===beg===
 @c 17 + b - (1/2)*29 + 11^(2/4);
 @c [17 + 29, 17 + 29.0, 17 + 29b0];
@@ -210,7 +210,7 @@ A propaga@value{cedilha}@~{a}o de n@'{u}meros em poto flutuante aplica-se.
 (%o2)                   [46, 46.0, 4.6b1]
 @end example
 
-Computa@value{cedilha}òes aritm@'{e}ticas s@~{a}o uma simplifica@value{cedilha}@~{a}o, n@~{a}o uma avalia@value{cedilha}@~{a}o.
+Computa@,{c}òes aritm@'{e}ticas s@~{a}o uma simplifica@,{c}@~{a}o, n@~{a}o uma avalia@,{c}@~{a}o.
 @c ===beg===
 @c simp : false;
 @c '(17 + 29*11/7 - 5^3);
@@ -278,12 +278,12 @@ A aritm@'{e}tica @'{e} realizada elemento-por-elemento para listas lists (depend
 
 @deffn {Operador} **
 
-Operador de exponencia@value{cedilha}@~ao.
+Operador de exponencia@,{c}@~{a}o.
 Maxima reconhece @code{**} como o mesmo operador que @code{^} em entrada,
-e @code{**} @'e mostrado como @code{^} em sa@'ida unidimensional,
-ou colocando o expoente  como sobrescrito em sa@'ida bidimensional.
+e @code{**} @'{e} mostrado como @code{^} em sa@'{i}da unidimensional,
+ou colocando o expoente  como sobrescrito em sa@'{i}da bidimensional.
 
-A fun@value{cedilha}@~ao @code{fortran} mostra o operador de exponencia@value{cedilha}@~ao com como @code{**},
+A fun@,{c}@~{a}o @code{fortran} mostra o operador de exponencia@,{c}@~{a}o com como @code{**},
 independente de a entrada ter sido na forma @code{**} ou a forma @code{^}.
 
 Exemplos:
@@ -336,7 +336,7 @@ Exemplos:
 
 @deffn {Operador} ^^
 @ifinfo
-@fnindex exponencia@value{cedilha}@~{a}o n@~{a}o comutativa
+@fnindex exponencia@,{c}@~{a}o n@~{a}o comutativa
 @end ifinfo
 
 @end deffn
@@ -359,12 +359,12 @@ Se @code{x} for qualquer outra coisa,
 @code{x!} n@~{a}o @'{e} simplificado.
 
 As vari@'{a}veis
-@code{factlim}, @code{minfactorial}, e @code{factcomb} controlam a simplifica@value{cedilha}@~{a}o
+@code{factlim}, @code{minfactorial}, e @code{factcomb} controlam a simplifica@,{c}@~{a}o
 de express@~{o}es contendo fatoriais.
 
-As fun@value{cedilha}@~{o}es @code{gamma}, @code{bffac}, e @code{cbffac}
-s@~{a}o variedades da fun@value{cedilha}@~{a}o @code{gamma}. 
-@code{makegamma} substitui @code{gamma} para fun@value{cedilha}@~{o}es relacionadas a fatoriais.
+As fun@,{c}@~{o}es @code{gamma}, @code{bffac}, e @code{cbffac}
+s@~{a}o variedades da fun@,{c}@~{a}o @code{gamma}. 
+@code{makegamma} substitui @code{gamma} para fun@,{c}@~{o}es relacionadas a fatoriais.
 
 Veja tamb@'{e}m @code{binomial}.
 
@@ -438,7 +438,7 @@ Para um n@'{u}mero inteiro, n@'{u}mero em ponto flutuante, ou n@'{u}mero raciona
 @code{n!!} avalia para o produto @code{n (n-2) (n-4) (n-6) ... (n - 2 (k-1))}
 onde @code{k} @'{e} igual a @code{entier (n/2)},
 que @'{e}, o maior inteiro menor que ou igual a @code{n/2}.
-Note que essa defini@value{cedilha}@~{a}o n@~{a}o coincide com outras defini@value{cedilha}@~{o}es publicadas
+Note que essa defini@,{c}@~{a}o n@~{a}o coincide com outras defini@,{c}@~{o}es publicadas
 para argumentos que n@~{a}o s@~{a}o inteiros.
 @c REPORTED TO BUG TRACKER AS BUG # 1093138 !!!
 
@@ -455,14 +455,14 @@ Para um argumento @code{n} que n@~{a}o @'{e} um n@'{u}mero inteiro, um n@'{u}mer
 @ifinfo
 @fnindex N@~{a}o igual (desigualdade sint@'{a}tica)
 @end ifinfo
-Representa a nega@value{cedilha}@~{a}o da igualdade sint@'{a}tica @code{=}.
+Representa a nega@,{c}@~{a}o da igualdade sint@'{a}tica @code{=}.
 
-Note que pelo fato de as regras de avalia@value{cedilha}@~{a}o de express@~{o}es predicadas
-(em particular pelo fato de @code{not @var{expr}} fazer com que ocorra a avalia@value{cedilha}@~{a}o de @var{expr}),
+Note que pelo fato de as regras de avalia@,{c}@~{a}o de express@~{o}es predicadas
+(em particular pelo fato de @code{not @var{expr}} fazer com que ocorra a avalia@,{c}@~{a}o de @var{expr}),
 a forma @code{not @var{a} = @var{b}} n@~{a}o @'{e} equivalente @`a forma @code{@var{a} # @var{b}} em alguns casos.
 
-Note que devido @`as regras para avalia@value{cedilha}@~{a}o de express@~{o}es predicadas
-(em particular devido a @code{not @var{expr}} fazer com que a avalia@value{cedilha}@~{a}o de @var{expr} ocorra),
+Note que devido @`as regras para avalia@,{c}@~{a}o de express@~{o}es predicadas
+(em particular devido a @code{not @var{expr}} fazer com que a avalia@,{c}@~{a}o de @var{expr} ocorra),
 @code{not @var{a} = @var{b}} @'{e} equivalente a @code{is(@var{a} # @var{b})},
 em lugar de ser equivalente a @code{@var{a} # @var{b}}.
 
@@ -494,10 +494,10 @@ Exemplos:
 
 @deffn {Operador} .
 @ifinfo
-@fnindex Multiplica@value{cedilha}@~{a}o n@~{a}o comutativa matricial
+@fnindex Multiplica@,{c}@~{a}o n@~{a}o comutativa matricial
 @end ifinfo
-O operador ponto, para multiplica@value{cedilha}@~{a}o (n@~{a}o comutativa) de matrizes.
-Quando "." @'{e} usado com essa finalidade, espa@value{cedilha}os devem ser colocados em ambos os lados desse
+O operador ponto, para multiplica@,{c}@~{a}o (n@~{a}o comutativa) de matrizes.
+Quando "." @'{e} usado com essa finalidade, espa@,{c}os devem ser colocados em ambos os lados desse
 operador, e.g. A . B.  Isso disting@"{u}e o operador ponto plenamente de um ponto decimal em
 um n@'{u}mero em ponto flutuante.
 
@@ -518,9 +518,9 @@ e
 
 @deffn {Operador} :
 @ifinfo
-@fnindex Operador de atribui@value{cedilha}@~{a}o
+@fnindex Operador de atribui@,{c}@~{a}o
 @end ifinfo
-O operador de atribui@value{cedilha}@~{a}o.  E.g. A:3 escolhe a vari@'{a}vel A para 3.
+O operador de atribui@,{c}@~{a}o.  E.g. A:3 escolhe a vari@'{a}vel A para 3.
 
 @end deffn
 
@@ -623,7 +623,7 @@ at@'{e} a avalia@,{c}@~{a}o expl@'{i}cita @code{''%}.
 
 @code{macroexpand} retorna uma expans@~{a}o de macro.
 @code{macroexpand (foo (x))} seguido por @code{''%} @'{e} equivalente a @code{foo (x)}
-quando @code{foo} for uma fun@value{cedilha}@~{a}o de macro.
+quando @code{foo} for uma fun@,{c}@~{a}o de macro.
 
 @c ===beg===
 @c x: %pi;
@@ -779,7 +779,7 @@ Alguns operadores avaliam @code{=} e @code{#} para @code{true} ou @code{false}.
 (%o4)                  [false, true, true]
 @end example
 
-Devido a @code{not @var{expr}} fazer com que a avalia@value{cedilha}@~{a}o de @var{expr} ocorra,
+Devido a @code{not @var{expr}} fazer com que a avalia@,{c}@~{a}o de @var{expr} ocorra,
 @code{not @var{a} = @var{b}} @'{e} equivalente a @code{is(@var{a} # @var{b})}.
 
 @c ===beg===
@@ -798,14 +798,14 @@ Devido a @code{not @var{expr}} fazer com que a avalia@value{cedilha}@~{a}o de @v
 @c NEEDS EXAMPLES
 @deffn {Operador} and
 @ifinfo
-@fnindex Conjun@value{cedilha}@~{a}o l@'{o}gica
+@fnindex Conjun@,{c}@~{a}o l@'{o}gica
 @end ifinfo
-O operador l@'{o}gico de conjun@value{cedilha}@~{a}o.
+O operador l@'{o}gico de conjun@,{c}@~{a}o.
 @code{and} @'{e} um operador n-@'{a}rio infixo;
 seus operandos s@~{a}o express@~{o}es Booleanas, e seu resultado @'{e} um valor Booleano.
 
-@code{and} for@value{cedilha}a avalia@value{cedilha}@~{a}o (como @code{is}) de um ou mais operandos,
-e pode for@value{cedilha}ar a avalia@value{cedilha}@~{a}o de todos os operandos.
+@code{and} for@,{c}a avalia@,{c}@~{a}o (como @code{is}) de um ou mais operandos,
+e pode for@,{c}ar a avalia@,{c}@~{a}o de todos os operandos.
 
 Operandos s@~{a}o avaliados na ordem em que aparecerem.
 @code{and} avalia somente quantos de seus operandos forem necess@'{a}rios para determinar o resultado.
@@ -825,14 +825,14 @@ De outra forma, @code{and} retorna @code{unknown} (desconhecido).
 @c NEEDS EXAMPLES
 @deffn {Operador} or
 @ifinfo
-@fnindex Disjun@value{cedilha}@~{a}o l@'{o}gica
+@fnindex Disjun@,{c}@~{a}o l@'{o}gica
 @end ifinfo
-O operador l@'{o}gico de disjun@value{cedilha}@~{a}o.
+O operador l@'{o}gico de disjun@,{c}@~{a}o.
 @code{or} @'{e} um operador n-@'{a}rio infixo;
 seus operandos s@~{a}o express@~{o}es Booleanas, e seu resultado @'{e} um valor Booleano.
 
-@code{or} for@value{cedilha}a avalia@value{cedilha}@~{a}o (como @code{is}) de um ou mais operandos,
-e pode for@value{cedilha}ar a avalia@value{cedilha}@~{a}o de todos os operandos.
+@code{or} for@,{c}a avalia@,{c}@~{a}o (como @code{is}) de um ou mais operandos,
+e pode for@,{c}ar a avalia@,{c}@~{a}o de todos os operandos.
 
 Operandos s@~{a}o avaliados na ordem em que aparecem.
 @code{or} avalia somente quantos de seus operandos forem necess@'{a}rios para determinar o resultado.
@@ -852,13 +852,13 @@ De outra forma, @code{or} retorna @code{unknown}.
 @c NEEDS EXAMPLES
 @deffn {Operador} not
 @ifinfo
-@fnindex Nega@value{cedilha}@~{a}o l@'{o}gica
+@fnindex Nega@,{c}@~{a}o l@'{o}gica
 @end ifinfo
-O operador l@'{o}gico de nega@value{cedilha}@~{a}o.
+O operador l@'{o}gico de nega@,{c}@~{a}o.
 @code{not} @'{e} operador prefixado;
 Seu operando @'{e} uma express@~{a}o Booleana, e seu resultado @'{e} um valor Booleano.
 
-@code{not} for@value{cedilha}a a avalia@value{cedilha}@~{a}o (como @code{is}) de seu operando.
+@code{not} for@,{c}a a avalia@,{c}@~{a}o (como @code{is}) de seu operando.
 
 O sinalizador global @code{prederror} governa o comportamento de @code{not}
 quando seu operando n@~{a}o pode ser determinado em termos de @code{true} ou @code{false}.
@@ -867,7 +867,7 @@ De outra forma, @code{not} retorna @code{unknown}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} abs (@var{expr})
+@deffn {Fun@,{c}@~{a}o} abs (@var{expr})
 Retorna o valor absoluto de @var{expr}.  Se @var{expr} for um n@'{u}mero complexo, retorna o m@'{o}dulo
 complexo de @var{expr}.
 
@@ -876,14 +876,14 @@ complexo de @var{expr}.
 @defvr {Palavra chave} additive
 Se @code{declare(f,additive)} tiver sido executado, ent@~{a}o:
 
-(1) Se @code{f} for uma fun@value{cedilha}@~{a}o de uma @'{u}nica vari@'{a}vel, sempre que o simplificador encontrar @code{f} aplicada
-a uma adi@value{cedilha}@~{a}o, @code{f} ser@'{a} distribu@'{i}do sobre aquela adi@value{cedilha}@~{a}o.  I.e. @code{f(y+x)} ir@'{a}
+(1) Se @code{f} for uma fun@,{c}@~{a}o de uma @'{u}nica vari@'{a}vel, sempre que o simplificador encontrar @code{f} aplicada
+a uma adi@,{c}@~{a}o, @code{f} ser@'{a} distribu@'{i}do sobre aquela adi@,{c}@~{a}o.  I.e. @code{f(y+x)} ir@'{a}
 simplificar para @code{f(y)+f(x)}.
 
-(2) Se @code{f} for uma fun@value{cedilha}@~{a}o de 2 ou mais argumentos, a adi@value{cedilha}@~{a}o @'{e} definida como 
-adi@value{cedilha}@~{a}o no primeiro argumento para @code{f}, como no caso de @code{sum} ou  
+(2) Se @code{f} for uma fun@,{c}@~{a}o de 2 ou mais argumentos, a adi@,{c}@~{a}o @'{e} definida como 
+adi@,{c}@~{a}o no primeiro argumento para @code{f}, como no caso de @code{sum} ou  
 @code{integrate}, i.e. @code{f(h(x)+g(x),x)} ir@'{a} simplificar para @code{f(h(x),x)+f(g(x),x)}.
-Essa simplifica@value{cedilha}@~{a}o n@~{a}o ocorre quando @code{f} @'{e} aplicada para express@~{o}es da
+Essa simplifica@,{c}@~{a}o n@~{a}o ocorre quando @code{f} @'{e} aplicada para express@~{o}es da
 forma @code{sum(x[i],i,lower-limit,upper-limit)}.
 
 @end defvr
@@ -939,22 +939,22 @@ exceto que n@~{a}o elimina os s@'{i}mbolos @var{a_1}, @var{a_2}, ... .
 
 @end defvr
 
-@defvr {Declara@value{cedilha}@~{a}o} antisymmetric
+@defvr {Declara@,{c}@~{a}o} antisymmetric
 Se @code{declare(h,antisymmetric)} @'{e} conclu@'{i}da, diz ao
-simplicador que @code{h} @'{e} uma fun@value{cedilha}@~{a}o antisim@'{e}trica.  E.g. @code{h(x,z,y)} simplificar@'{a} para
+simplicador que @code{h} @'{e} uma fun@,{c}@~{a}o antisim@'{e}trica.  E.g. @code{h(x,z,y)} simplificar@'{a} para
 @code{- h(x, y, z)}.  Isto @'{e}, dar@'{a} (-1)^n vezes o resultado dado por
 @code{symmetric} ou @code{commutative}, quando n for o n@'{u}mero de interescolhas de dois
 argumentos necess@'{a}rios para converter isso naquela forma.
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~{a}o} cabs (@var{expr})
+@deffn {Fun@,{c}@~{a}o} cabs (@var{expr})
 Retorna o valor absoluto complexo (o m@'{o}dulo complexo) de
 @var{expr}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} ceiling (@var{x})
+@deffn {Fun@,{c}@~{a}o} ceiling (@var{x})
 
 Quando @var{x} for um n@'{u}mero real, retorna o @'{u}ltimo inteiro que 
 @'{e} maior que ou igual a @var{x}.  
@@ -962,13 +962,13 @@ Quando @var{x} for um n@'{u}mero real, retorna o @'{u}ltimo inteiro que
 Se @var{x} for uma express@~{a}o constante (@code{10 * %pi}, por exemplo), 
 @code{ceiling} avalia @var{x} usando grandes n@'{u}meros em ponto flutuante, e 
 aplica @code{ceiling} para o grande n@'{u}mero em ponto flutuante resultante. Porque @code{ceiling} usa
-avalia@value{cedilha}@~{a}o de ponto flutuante, @'{e} poss@'{i}vel, embora improv@'{a}vel, 
+avalia@,{c}@~{a}o de ponto flutuante, @'{e} poss@'{i}vel, embora improv@'{a}vel, 
 que @code{ceiling} possa retornar uma valor err@^{o}neo para entradas
-constantes. Para prevenir erros, a avalia@value{cedilha}@~{a}o de ponto flutuante
+constantes. Para prevenir erros, a avalia@,{c}@~{a}o de ponto flutuante
 @'{e} conclu@'{i}da usando tr@^{e}s valores para @code{fpprec}.
 
 Para entradas n@~{a}o constantes, @code{ceiling} tenta retornar um valor
-simplificado.  Aqui est@'{a} um exemplo de simplifica@value{cedilha}@~{o}es que @code{ceiling}
+simplificado.  Aqui est@'{a} um exemplo de simplifica@,{c}@~{o}es que @code{ceiling}
 conhece:
 
 @c ===beg===
@@ -996,13 +996,13 @@ $$\left \lceil a \right \rceil$$
 (%o7)                         false
 @end example
 
-A fun@value{cedilha}@~{a}o @code{ceiling} n@~{a}o mapeia automaticamente sobre listas ou matrizes.
+A fun@,{c}@~{a}o @code{ceiling} n@~{a}o mapeia automaticamente sobre listas ou matrizes.
 Finalmente, para todas as entradas que forem manifestamente complexas, @code{ceiling} retorna 
 uma forma substantiva.
 
-Se o intervalo de uma fun@value{cedilha}@~{a}o @'{e} um subconjunto dos inteiros, o intervalo pode ser
-declarado @code{integervalued}. Ambas as fun@value{cedilha}@~{o}es @code{ceiling} e @code{floor}
-podem usar essa informa@value{cedilha}@~{a}o; por exemplo:
+Se o intervalo de uma fun@,{c}@~{a}o @'{e} um subconjunto dos inteiros, o intervalo pode ser
+declarado @code{integervalued}. Ambas as fun@,{c}@~{o}es @code{ceiling} e @code{floor}
+podem usar essa informa@,{c}@~{a}o; por exemplo:
 
 @c ===beg===
 @c declare (f, integervalued)$
@@ -1019,7 +1019,7 @@ podem usar essa informa@value{cedilha}@~{a}o; por exemplo:
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} charfun (@var{p})
+@deffn {Fun@,{c}@~{a}o} charfun (@var{p})
 
 Retorna 0 quando o predicado @var{p} avaliar para @code{false}; retorna
 1 quando o predicado avaliar para @code{true}.  Quando o predicado
@@ -1046,16 +1046,16 @@ Exemplos:
 
 @end deffn
 
-@defvr {Declara@value{cedilha}@~{a}o} commutative
+@defvr {Declara@,{c}@~{a}o} commutative
 Se @code{declare(h,commutative)} @'{e} conclu@'{i}da, diz ao
-simplicador que @code{h} @'{e} uma fun@value{cedilha}@~{a}o comutativa.  E.g. @code{h(x,z,y)} ir@'{a}
+simplicador que @code{h} @'{e} uma fun@,{c}@~{a}o comutativa.  E.g. @code{h(x,z,y)} ir@'{a}
 simplificar para @code{h(x, y, z)}.  Isto @'{e} o mesmo que @code{symmetric}.
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~{a}o} compare (@var{x}, @var{y})
+@deffn {Fun@,{c}@~{a}o} compare (@var{x}, @var{y})
 
-Retorna um operador de compara@value{cedilha}@~{a}o @var{op}
+Retorna um operador de compara@,{c}@~{a}o @var{op}
 (@code{<}, @code{<=}, @code{>}, @code{>=}, @code{=}, ou @code{#}) tal que
 @code{is (@var{x} @var{op} @var{y})} avalia para @code{true};
 quando ou @var{x} ou @var{y} dependendo de @code{%i} e
@@ -1088,7 +1088,7 @@ Exemplos:
 (%o6)                          <=
 @end example
 
-A fun@value{cedilha}@~{a}o @code{compare} n@~{a}o tenta de terminar se o dom@'{i}nio real de
+A fun@,{c}@~{a}o @code{compare} n@~{a}o tenta de terminar se o dom@'{i}nio real de
 seus argumentos @'{e} n@~{a}o vazio; dessa forma
 
 @c ===beg===
@@ -1103,23 +1103,23 @@ O dom@'{i}nio real de @code{acos (x^2 + 1)} @'{e} vazio.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} entier (@var{x})
+@deffn {Fun@,{c}@~{a}o} entier (@var{x})
 Retorna o @'{u}ltimo inteiro menor que ou igual a @var{x} onde @var{x} @'{e} num@'{e}rico.  @code{fix} (como em
 @code{fixnum}) @'{e} um sin@^{o}nimo disso, ent@~{a}o @code{fix(@var{x})} @'{e} precisamente o mesmo.
 
 @end deffn
 
 @c NEEDS CLARIFICATION
-@deffn {Fun@value{cedilha}@~{a}o} equal (@var{a}, @var{b})
+@deffn {Fun@,{c}@~{a}o} equal (@var{a}, @var{b})
 
 Representa a equival@^{e}ncia, isto @'{e}, valor igual.
  
 Por si mesma, @code{equal} n@~{a}o avalia ou simplifica.
-A fun@value{cedilha}@~{a}o @code{is} tenta avaliar @code{equal} para um valor Booleano.
+A fun@,{c}@~{a}o @code{is} tenta avaliar @code{equal} para um valor Booleano.
 @code{is(equal(@var{a}, @var{b}))} 
 retorna @code{true} (ou @code{false}) se
 e somente se @var{a} e @var{b} forem iguais (ou n@~{a}o iguais) para todos os poss@'{i}veis
-valores de suas vari@'{a}veis, como determinado atrav@'{e}s da avalia@value{cedilha}@~{a}o de @code{ratsimp(@var{a} - @var{b})};
+valores de suas vari@'{a}veis, como determinado atrav@'{e}s da avalia@,{c}@~{a}o de @code{ratsimp(@var{a} - @var{b})};
 se @code{ratsimp} retornar 0, as duas express@~{o}es s@~{a}o consideradas equivalentes.
 Duas express@~{o}es podem ser equivalentes mesmo se mesmo se elas n@~{a}o forem sintaticamente iguais (i.e., identicas).
 
@@ -1138,9 +1138,9 @@ a saber @code{if}, @code{and}, @code{or}, e @code{not}.
 @c for variables appearing in @var{a} and @var{b} are ignored by @code{equal}.
 @c All variables are effectively assumed to be real-valued.
 
-A nega@value{cedilha}@~{a}o de @code{equal} @'{e} @code{notequal}.
-Note que devido @`as regras de avalia@value{cedilha}@~{a}o de express@~{o}es predicadas
-(em particular pelo fato de @code{not @var{expr}} causar a avalia@value{cedilha}@~{a}o de @var{expr}),
+A nega@,{c}@~{a}o de @code{equal} @'{e} @code{notequal}.
+Note que devido @`as regras de avalia@,{c}@~{a}o de express@~{o}es predicadas
+(em particular pelo fato de @code{not @var{expr}} causar a avalia@,{c}@~{a}o de @var{expr}),
 @code{not equal(@var{a}, @var{b})}
 @'{e} equivalente a @code{is(notequal(@var{a}, @var{b}))}
 em lugar de ser equivalente a @code{notequal(@var{a}, @var{b})}.
@@ -1164,7 +1164,7 @@ Por si mesmo, @code{equal} n@~{a}o avalia ou simplifica.
 (%o3)                      equal(x, y)
 @end example
 
-A fun@value{cedilha}@~{a}o @code{is} tenta avaliar @code{equal} para um valor Booleano.
+A fun@,{c}@~{a}o @code{is} tenta avaliar @code{equal} para um valor Booleano.
 @code{is(equal(@var{a}, @var{b}))} retorna @code{true} quando @code{ratsimp(@var{a} - @var{b})} retornar 0.
 Duas express@~{o}es podem ser equivalentes mesmo se n@~{a}o forem sintaticamente iguais (i.e., identicas).
 
@@ -1254,7 +1254,7 @@ equal(a, b)
 (%o4)                  [false, true, true]
 @end example
 
-Devido a @code{not @var{expr}} fazer com que ocorra a avalia@value{cedilha}@~{a}o de @var{expr},
+Devido a @code{not @var{expr}} fazer com que ocorra a avalia@,{c}@~{a}o de @var{expr},
 @code{not equal(@var{a}, @var{b})} @'{e} equivalente a @code{is(notequal(@var{a}, @var{b}))}.
 
 @c ===beg===
@@ -1270,7 +1270,7 @@ Devido a @code{not @var{expr}} fazer com que ocorra a avalia@value{cedilha}@~{a}
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} floor (@var{x})
+@deffn {Fun@,{c}@~{a}o} floor (@var{x})
 
 Quando @var{x} for um n@'{u}mero real, retorna o maior inteiro que 
 @'{e} menor que ou igual a @var{x}.
@@ -1278,13 +1278,13 @@ Quando @var{x} for um n@'{u}mero real, retorna o maior inteiro que
 Se @var{x} for uma express@~{a}o constante (@code{10 * %pi}, for exemplo), 
 @code{floor} avalia @var{x} usando grandes n@'{u}meros em ponto flutuante, e 
 aplica @code{floor} ao grande n@'{u}mero em ponto flutuante resultante. Porque @code{floor} usa
-avalia@value{cedilha}@~{a}o em ponto flutuante, @'{e} poss@'{i}vel, embora improv@'{a}vel, 
+avalia@,{c}@~{a}o em ponto flutuante, @'{e} poss@'{i}vel, embora improv@'{a}vel, 
 que @code{floor} n@~{a}o possa retornar um valor err@^{o}neo para entradas
-constantes.  Para prevenir erros, a avalia@value{cedilha}@~{a}o de ponto flutuante
+constantes.  Para prevenir erros, a avalia@,{c}@~{a}o de ponto flutuante
 @'{e} conclu@'{i}da usando tr@^{e}s valores para @code{fpprec}.
 
 Para entradas n@~{a}o constantes, @code{floor} tenta retornar um valor
-simplificado.  Aqui est@'{a} exemplos de simplifica@value{cedilha}@~{o}es que @code{floor}
+simplificado.  Aqui est@'{a} exemplos de simplifica@,{c}@~{o}es que @code{floor}
 conhece:
 
 @c ===beg===
@@ -1312,13 +1312,13 @@ $$\left \lfloor a \right \rfloor$$
 (%o7)                         false
 @end example
 
-A fun@value{cedilha}@~{a}o @code{floor} n@~{a}o mapeia automaticamente sobre listas ou matrizes.
+A fun@,{c}@~{a}o @code{floor} n@~{a}o mapeia automaticamente sobre listas ou matrizes.
 Finalmente, para todas as entradas que forem manifestamente complexas, @code{floor} retorna
 uma forma substantiva.
 
-Se o intervalo de uma fun@value{cedilha}@~{a}o for um subconjunto dos inteiros, o intervalo pode ser
-declarado @code{integervalued}. Ambas as fun@value{cedilha}@~{o}es @code{ceiling} e @code{floor}
-podem usar essa informa@value{cedilha}@~{a}o; por exemplo:
+Se o intervalo de uma fun@,{c}@~{a}o for um subconjunto dos inteiros, o intervalo pode ser
+declarado @code{integervalued}. Ambas as fun@,{c}@~{o}es @code{ceiling} e @code{floor}
+podem usar essa informa@,{c}@~{a}o; por exemplo:
 
 @c ===beg===
 @c declare (f, integervalued)$
@@ -1335,11 +1335,11 @@ podem usar essa informa@value{cedilha}@~{a}o; por exemplo:
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} notequal (@var{a}, @var{b})
+@deffn {Fun@,{c}@~{a}o} notequal (@var{a}, @var{b})
 Represents the negation of @code{equal(@var{a}, @var{b})}.
 
-Note que pelo fato de as regras de avalia@value{cedilha}@~{a}o de express@~{o}es predicadas
-(em particular pelo fato de @code{not @var{expr}} causar a avalia@value{cedilha}@~{a}o de @var{expr}),
+Note que pelo fato de as regras de avalia@,{c}@~{a}o de express@~{o}es predicadas
+(em particular pelo fato de @code{not @var{expr}} causar a avalia@,{c}@~{a}o de @var{expr}),
 @code{not equal(@var{a}, @var{b})}
 @'{e} equivalente a @code{is(notequal(@var{a}, @var{b}))}
 em lugar de ser equivalente a @code{notequal(@var{a}, @var{b})}.
@@ -1399,30 +1399,30 @@ equal(a, b)
 @c BUT FOR SOME REASON eval DOES NOT HAVE THE evflag PROPERTY
 @deffn {Operador} eval
 Como um argumento em uma chamada a @code{ev (@var{expr})},
-@code{eval} causa uma avalia@value{cedilha}@~{a}o extra de @var{expr}.
+@code{eval} causa uma avalia@,{c}@~{a}o extra de @var{expr}.
 Veja @code{ev}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} evenp (@var{expr})
+@deffn {Fun@,{c}@~{a}o} evenp (@var{expr})
 Retorna @code{true} se @var{expr} for um inteiro sempre.
 @c THIS IS STRANGE -- SHOULD RETURN NOUN FORM IF INDETERMINATE
 @code{false} @'{e} retornado em todos os outros casos.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} fix (@var{x})
+@deffn {Fun@,{c}@~{a}o} fix (@var{x})
 Um sin@^{o}nimo para @code{entier (@var{x})}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} fullmap (@var{f}, @var{expr_1}, ...)
+@deffn {Fun@,{c}@~{a}o} fullmap (@var{f}, @var{expr_1}, ...)
 Similar a @code{map}, mas @code{fullmap} mant@'{e}m mapeadas para
 baixo todas as subexpress@~{o}es at@'{e} que os operadores principais n@~{a}o mais sejam os
 mesmos.
 
 @code{fullmap} @'{e} usada pelo simplificador do
-Maxima para certas manipula@value{cedilha}@~{o}es de matrizes; dessa forma, Maxima algumas vezes gera
+Maxima para certas manipula@,{c}@~{o}es de matrizes; dessa forma, Maxima algumas vezes gera
 uma mensagem de erro concernente a @code{fullmap} mesmo apesar de @code{fullmap} n@~{a}o ter sido
 explicitamente chamada pelo usu@'{a}rio.
 
@@ -1444,7 +1444,7 @@ Exemplos:
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} fullmapl (@var{f}, @var{list_1}, ...)
+@deffn {Fun@,{c}@~{a}o} fullmapl (@var{f}, @var{list_1}, ...)
 Similar a @code{fullmap}, mas @code{fullmapl} somente mapeia sobre
 listas e matrizes.
 
@@ -1460,7 +1460,7 @@ Exemplo:
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} is (@var{expr})
+@deffn {Fun@,{c}@~{a}o} is (@var{expr})
 Tenta determinar se a @var{expr} predicada (express@~{o}es que avaliam para @code{true}
 ou @code{false}) @'{e} dedut@'{i}vel de fatos localizados na base de dados de @code{assume}.
 
@@ -1479,7 +1479,7 @@ Veja tamb@'{e}m @code{assume}, @code{facts}, e @code{maybe}.
 
 Exemplos:
 
-@code{is} causa avalia@value{cedilha}@~{a}o de predicados.
+@code{is} causa avalia@,{c}@~{a}o de predicados.
 @c GENERATED FROM:
 @c %pi > %e;
 @c @'{e} (%pi > %e);
@@ -1538,7 +1538,7 @@ a > 0
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} maybe (@var{expr})
+@deffn {Fun@,{c}@~{a}o} maybe (@var{expr})
 Tenta determinar se a @var{expr} predicada
 @'{e} dedut@'{i}vel dos fatos na base de dados de @code{assume}.
 
@@ -1569,31 +1569,31 @@ Exemplos:
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} isqrt (@var{x})
+@deffn {Fun@,{c}@~{a}o} isqrt (@var{x})
 Retorna o "inteiro ra@'{i}z quadrada"
 do valor absoluto de @var{x},
 que @'{e} um inteiro.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} lmax (@var{L})
+@deffn {Fun@,{c}@~{a}o} lmax (@var{L})
 
 Quando @var{L} for uma lista ou um conjunto, retorna @code{apply ('max, args (@var{L}))}.  Quando @var{L} n@~{a}o for uma
 lista ou tamb@'{e}m n@~{a}o for um conjunto, sinaliza um erro.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} lmin (@var{L})
+@deffn {Fun@,{c}@~{a}o} lmin (@var{L})
 
 Quando @var{L} for uma lista ou um conjunto, retorna @code{apply ('min, args (@var{L}))}. Quando @var{L} n@~{a}o for uma
 lista ou ou tamb@'{e}m n@~{a}o for um conjunto, sinaliza um erro.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} max (@var{x_1}, ..., @var{x_n})
+@deffn {Fun@,{c}@~{a}o} max (@var{x_1}, ..., @var{x_n})
 
 Retorna um valor simplificado para o m@'{a}ximo entre as express@~{o}es @var{x_1} a @var{x_n}.
-Quando @code{get (trylevel, maxmin)}, for dois ou mais, @code{max} usa a simplifica@value{cedilha}@~{a}o 
+Quando @code{get (trylevel, maxmin)}, for dois ou mais, @code{max} usa a simplifica@,{c}@~{a}o 
 @code{max (e, -e) --> |e|}.  Quando @code{get (trylevel, maxmin)} for 3 ou mais, @var{max} tenta
 eliminar express@~{o}es que estiverem entre dois outros argumentos; por exemplo,
 @code{max (x, 2*x, 3*x) --> max (x, 3*x)}. Para escolher o valor de @code{trylevel} para 2, use
@@ -1601,10 +1601,10 @@ eliminar express@~{o}es que estiverem entre dois outros argumentos; por exemplo,
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} min (@var{x_1}, ..., @var{x_n})
+@deffn {Fun@,{c}@~{a}o} min (@var{x_1}, ..., @var{x_n})
 
 Retorna um valor simplificado para o m@'{i}nimo entre as express@~{o}es @code{x_1} at@'{e} @code{x_n}.
-Quando @code{get (trylevel, maxmin)}, for 2 ou mais, @code{min} usa a simplifica@value{cedilha}@~{a}o 
+Quando @code{get (trylevel, maxmin)}, for 2 ou mais, @code{min} usa a simplifica@,{c}@~{a}o 
 @code{min (e, -e) --> -|e|}.  Quando @code{get (trylevel, maxmin)} for 3 ou mais, @code{min} tenta
 eliminar express@~{o}es que estiverem entre dois outros argumentos; por exemplo,
 @code{min (x, 2*x, 3*x) --> min (x, 3*x)}. Para escolher o valor de @code{trylevel} para 2, use
@@ -1612,10 +1612,10 @@ eliminar express@~{o}es que estiverem entre dois outros argumentos; por exemplo,
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} polymod (@var{p})
-@deffnx {Fun@value{cedilha}@~{a}o} polymod (@var{p}, @var{m})
-Converte o polin@^{o}mio @var{p} para uma representa@value{cedilha}@~{a}o modular
-com rela@value{cedilha}@~{a}o ao m@'{o}dulo corrente que @'{e} o valor da vari@'{a}vel
+@deffn {Fun@,{c}@~{a}o} polymod (@var{p})
+@deffnx {Fun@,{c}@~{a}o} polymod (@var{p}, @var{m})
+Converte o polin@^{o}mio @var{p} para uma representa@,{c}@~{a}o modular
+com rela@,{c}@~{a}o ao m@'{o}dulo corrente que @'{e} o valor da vari@'{a}vel
 @code{modulus}.  
 
 @code{polymod (@var{p}, @var{m})} especifica um m@'{o}dulo @var{m} para ser usado 
@@ -1625,27 +1625,27 @@ Veja @code{modulus}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} mod (@var{x}, @var{y})
+@deffn {Fun@,{c}@~{a}o} mod (@var{x}, @var{y})
 
 Se @var{x} e @var{y} forem n@'{u}meros reais e @var{y} for n@~{a}o nulo,
 retorna @code{@var{x} - @var{y} * floor(@var{x} / @var{y})}.
 Adicionalmente para todo real @var{x}, n@'{o}s temos @code{mod (@var{x}, 0) = @var{x}}. Para uma discurs@~{a}o da
-defini@value{cedilha}@~{a}o @code{mod (@var{x}, 0) = @var{x}}, veja a Se@value{cedilha}@~{a}o 3.4, de "Concrete Mathematics," 
-por Graham, Knuth, e Patashnik. A fun@value{cedilha}@~{a}o @code{mod (@var{x}, 1)} 
-@'{e} uma fun@value{cedilha}@~{a}o dente de serra com per@'{i}odo 1 e com @code{mod (1, 1) = 0} e 
+defini@,{c}@~{a}o @code{mod (@var{x}, 0) = @var{x}}, veja a Se@,{c}@~{a}o 3.4, de "Concrete Mathematics," 
+por Graham, Knuth, e Patashnik. A fun@,{c}@~{a}o @code{mod (@var{x}, 1)} 
+@'{e} uma fun@,{c}@~{a}o dente de serra com per@'{i}odo 1 e com @code{mod (1, 1) = 0} e 
 @code{mod (0, 1) = 0}.
 
 Para encontrar o argumento (um n@'{u}mero no intervalo @code{(-%pi, %pi]}) de um 
-n@'{u}mero complexo, use a fun@value{cedilha}@~{a}o @code{@var{x} |-> %pi - mod (%pi - @var{x}, 2*%pi)}, onde 
+n@'{u}mero complexo, use a fun@,{c}@~{a}o @code{@var{x} |-> %pi - mod (%pi - @var{x}, 2*%pi)}, onde 
 @var{x} @'{e} um argumento.
 
 Quando @var{x} e @var{y} forem express@~{o}es constantes (@code{10 * %pi}, por exemplo), @code{mod}
-usa o mesmo esquema de avalia@value{cedilha}@~{a}o em ponto flutuante que @code{floor} e @code{ceiling} usam.
+usa o mesmo esquema de avalia@,{c}@~{a}o em ponto flutuante que @code{floor} e @code{ceiling} usam.
 Novamente, @'{e} poss@'{i}vel, embora improv@'{a}vel, que @code{mod} possa retornar um
 valor err@^{o}neo nesses casos.
 
 Para argumentos n@~{a}o num@'{e}ricos @var{x} ou @var{y}, @code{mod }conhece muitas regras de
-simplifica@value{cedilha}@~{a}o:
+simplifica@,{c}@~{a}o:
 
 @c ===beg===
 @c mod (x, 0);
@@ -1663,7 +1663,7 @@ simplifica@value{cedilha}@~{a}o:
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} oddp (@var{expr})
+@deffn {Fun@,{c}@~{a}o} oddp (@var{expr})
 @'{e} @code{true} se @var{expr} for um inteiro @'{i}mpar.
 @c THIS IS STRANGE -- SHOULD RETURN NOUN FORM IF INDETERMINATE
 @code{false} @'{e} retornado em todos os outros casos.
@@ -1681,10 +1681,10 @@ Veja @code{ev}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} make_random_state (@var{n})
-@deffnx {Fun@value{cedilha}@~{a}o} make_random_state (@var{s})
-@deffnx {Fun@value{cedilha}@~{a}o} make_random_state (true)
-@deffnx {Fun@value{cedilha}@~{a}o} make_random_state (false)
+@deffn {Fun@,{c}@~{a}o} make_random_state (@var{n})
+@deffnx {Fun@,{c}@~{a}o} make_random_state (@var{s})
+@deffnx {Fun@,{c}@~{a}o} make_random_state (true)
+@deffnx {Fun@,{c}@~{a}o} make_random_state (false)
 @c OMIT THIS FOR NOW. SEE COMMENT BELOW.
 @c @defunx make_random_state (@var{a})
 Um objeto de estado rand@^{o}mico representa o estado do gerador de n@'{u}meros rand@^{o}micos (aleat@'{o}rios).
@@ -1708,24 +1708,24 @@ do gerador de n@'{u}meros rand@^{o}micos.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} set_random_state (@var{s})
+@deffn {Fun@,{c}@~{a}o} set_random_state (@var{s})
 Copia @var{s} para o estado do gerador de n@'{u}meros rand@^{o}micos.
 
 @code{set_random_state} sempre retorna @code{done}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} random (@var{x})
+@deffn {Fun@,{c}@~{a}o} random (@var{x})
 Retorna um n@'{u}mero pseudorand@^{o}mico. Se @var{x} @'{e} um inteiro, @code{random (@var{x})} retorna um
 inteiro de 0 a @code{@var{x} - 1} inclusive. Se @var{x} for um n@'{u}mero em ponto flutuante,
 @code{random (@var{x})} retorna um n@'{u}mero n@~{a}o negativo em ponto flutuante menor que @var{x}.
 @code{random} reclama com um erro se @var{x} n@~{a}o for nem um inteiro nem um n@'{u}mero em ponto flutuante,
 ou se @var{x} n@~{a}o for positivo.
 
-As fun@value{cedilha}@~{o}es @code{make_random_state} e @code{set_random_state}
+As fun@,{c}@~{o}es @code{make_random_state} e @code{set_random_state}
 mant@'{e}m o estado do gerador de n@'{u}meros rand@^{o}micos.
 
-O gerador de n@'{u}meros rand@^{o}micos do Maxima @'{e} uma implementa@value{cedilha}@~{a}o do algor@'{i}tmo de Mersenne twister MT 19937.
+O gerador de n@'{u}meros rand@^{o}micos do Maxima @'{e} uma implementa@,{c}@~{a}o do algor@'{i}tmo de Mersenne twister MT 19937.
 
 Exemplos:
 
@@ -1773,13 +1773,13 @@ Exemplos:
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} rationalize (@var{expr})
+@deffn {Fun@,{c}@~{a}o} rationalize (@var{expr})
 
 Converte todos os n@'{u}meros em ponto flutuante de precis@~{a}o dupla e grandes n@'{u}meros em ponto flutuante na express@~{a}o do Maxima
 @var{expr} para seus exatos equivalentes racionais. Se voc@^{e} n@~{a}o estiver faminilarizado com
-a representa@value{cedilha}@~{a}o bin@'{a}ria de n@'{u}meros em ponto flutuante, voc@^{e} pode se
+a representa@,{c}@~{a}o bin@'{a}ria de n@'{u}meros em ponto flutuante, voc@^{e} pode se
 surpreender que @code{rationalize (0.1)} n@~{a}o seja igual a 1/10.  Esse comportamento
-n@~{a}o @'{e} especial para o Maxima -- o n@'{u}mero 1/10 tem uma representa@value{cedilha}@~{a}o bin@'{a}ria
+n@~{a}o @'{e} especial para o Maxima -- o n@'{u}mero 1/10 tem uma representa@,{c}@~{a}o bin@'{a}ria
 repetitiva e n@~{a}o terminada.
 
 @c ===beg===
@@ -1816,7 +1816,7 @@ repetitiva e n@~{a}o terminada.
                               10   5
 @end example
 
-Exemplo de utiliza@value{cedilha}@~{a}o:
+Exemplo de utiliza@,{c}@~{a}o:
 
 @c ===beg===
 @c unitfrac(r) := block([uf : [], q],
@@ -1875,7 +1875,7 @@ reverse(uf))
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} sign (@var{expr})
+@deffn {Fun@,{c}@~{a}o} sign (@var{expr})
 Tenta determinar o sinal de @var{expr}
 a partir dos fatos na base de dados corrente.  Retorna uma das
 seguintes respostar: @code{pos} (positivo), @code{neg} (negativo), @code{zero}, @code{pz}
@@ -1884,7 +1884,7 @@ ou @code{pnz} (positivo, negativo, ou zero, i.e. nada se sabe sobre o sinal da e
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} signum (@var{x})
+@deffn {Fun@,{c}@~{a}o} signum (@var{x})
 Para um @var{x} num@'{e}rico retorna 0 se @var{x} for 0, de outra forma retorna -1 ou +1
 @`a medida que @var{x} seja menor ou maior que 0, respectivamente.
 
@@ -1894,12 +1894,12 @@ Por exemplo, @code{signum(-x)} fornece @code{-signum(x)}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} sort (@var{L}, @var{P})
-@deffnx {Fun@value{cedilha}@~{a}o} sort (@var{L})
+@deffn {Fun@,{c}@~{a}o} sort (@var{L}, @var{P})
+@deffnx {Fun@,{c}@~{a}o} sort (@var{L})
 Organiza uma lista @var{L} coforme o predicado @code{P} de dois argumentos,
 de forma que @code{@var{P} (@var{L}[k], @var{L}[k + 1])} seja @code{true}
 para qualquer dois elementos sucessivos.
-O predicado pode ser especificado como o nome de uma fun@value{cedilha}@~{a}o ou operador bin@'{a}rio infixo,
+O predicado pode ser especificado como o nome de uma fun@,{c}@~{a}o ou operador bin@'{a}rio infixo,
 ou como uma express@~{a}o @code{lambda}.
 Se especificado como o nome de um operador,
 o nome deve ser contido entre "aspas duplas".
@@ -1917,7 +1917,7 @@ mas os resultados s@~{a}o indefinidos.
 que n@~{a}o seja @code{true} ou @code{false}.
 
 @code{sort (@var{L})} @'{e} equivalente a @code{sort (@var{L}, orderlessp)}.
-Isto @'{e}, a ordem padr@~{a}o de organiza@value{cedilha}@~{a}o @'{e} ascendente,
+Isto @'{e}, a ordem padr@~{a}o de organiza@,{c}@~{a}o @'{e} ascendente,
 como determinado por @code{orderlessp}.
 Todos os @'{a}tomos do Maxima e express@~{o}es s@~{a}o compar@'{a}veis sob @code{orderlessp},
 embora exista exemplos isolados de express@~{o}es para as quais @code{orderlessp} n@~{a}o @'{e} transitiva;
@@ -1957,7 +1957,7 @@ Exemplos:
  
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} sqrt (@var{x})
+@deffn {Fun@,{c}@~{a}o} sqrt (@var{x})
 A ra@'{i}z quadrada de @var{x}. @'{E} representada internamente por
 @code{@var{x}^(1/2)}.  Veja tamb@'{e}m @code{rootscontract}.
 
@@ -1967,7 +1967,7 @@ que forem pot@^{e}ncias de n sejam colocados fora do radical, e.g.
 
 @end deffn
 
-@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} sqrtdispflag
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} sqrtdispflag
 Valor padr@~{a}o: @code{true}
 
 Quando @code{sqrtdispflag} for @code{false},
@@ -1978,10 +1978,10 @@ faz com que @code{sqrt} seja mostrado como expoente 1/2.
 
 @c NEEDS EXPANSION, CLARIFICATION, MORE EXAMPLES
 @c sublis CAN ONLY SUBSTITUTE FOR ATOMS, RIGHT ?? IF SO, SAY SO
-@deffn {Fun@value{cedilha}@~{a}o} sublis (@var{lista}, @var{expr})
-Faz multiplas substitui@value{cedilha}@~{o}es paralelas dentro de uma express@~{a}o.
+@deffn {Fun@,{c}@~{a}o} sublis (@var{lista}, @var{expr})
+Faz multiplas substitui@,{c}@~{o}es paralelas dentro de uma express@~{a}o.
 
-A vari@'{a}vel @code{sublis_apply_lambda} controla a simplifica@value{cedilha}@~{a}o ap@'{o}s
+A vari@'{a}vel @code{sublis_apply_lambda} controla a simplifica@,{c}@~{a}o ap@'{o}s
 @code{sublis}.
 
 Exemplo:
@@ -1994,7 +1994,7 @@ Exemplo:
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} sublist (@var{lista}, @var{p})
+@deffn {Fun@,{c}@~{a}o} sublist (@var{lista}, @var{p})
 Retorna a lista de elementos da @var{lista} da qual o
 predicado @code{p} retornar @code{true}.
 
@@ -2013,16 +2013,16 @@ Exemplo:
 
 @end deffn
 
-@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} sublis_apply_lambda
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} sublis_apply_lambda
 Valor padr@~{a}o: @code{true} - controla se os substitutos de
-@code{lambda} s@~{a}o aplicados na simplifica@value{cedilha}@~{a}o ap@'{o}s as @code{sublis} serem usadas ou
-se voc@^{e} tem que fazer um @code{ev} para pegar coisas para aplicar.  @code{true} significa fa@value{cedilha}a a
-aplica@value{cedilha}@~{a}o.
+@code{lambda} s@~{a}o aplicados na simplifica@,{c}@~{a}o ap@'{o}s as @code{sublis} serem usadas ou
+se voc@^{e} tem que fazer um @code{ev} para pegar coisas para aplicar.  @code{true} significa fa@,{c}a a
+aplica@,{c}@~{a}o.
 
 @end defvr
 
 @c NEEDS CLARIFICATION, MORE EXAMPLES
-@deffn {Fun@value{cedilha}@~{a}o} subst (@var{a}, @var{b}, @var{c})
+@deffn {Fun@,{c}@~{a}o} subst (@var{a}, @var{b}, @var{c})
 Substitue @var{a} por @var{b} em @var{c}.  @var{b} deve ser um @'{a}tomo ou uma
 subexpress@~{a}o completa de @var{c}.  Por exemplo, @code{x+y+z} @'{e} uma subexpress@~{a}o
 completa de @code{2*(x+y+z)/w} enquanto @code{x+y} n@~{a}o @'{e}. Quando @var{b} n@~{a}o tem
@@ -2032,19 +2032,19 @@ usar @code{subst (a*f, e, c)} enquanto se @var{b} for da forma @code{e^(1/f)} en
 usar @code{subst (a^f, e, c)}.  O comando @code{subst} tamb@'{e}m discerne o @code{x^y} de @code{x^-y}
 de modo que @code{subst (a, sqrt(x), 1/sqrt(x))} retorna @code{1/a}.  @var{a} e @var{b} podem tamb@'{e}m ser
 operadores de uma express@~{a}o contida entre aspas duplas @code{"} ou eles podem ser nomes de
-fun@value{cedilha}@~{a}o.  Se se desejar substituir por uma vari@'{a}vel independente em
-formas derivadas ent@~{a}o a fun@value{cedilha}@~{a}o @code{at} (veja abaixo) poder@'{a} ser usada.
+fun@,{c}@~{a}o.  Se se desejar substituir por uma vari@'{a}vel independente em
+formas derivadas ent@~{a}o a fun@,{c}@~{a}o @code{at} (veja abaixo) poder@'{a} ser usada.
 
 @c UMM, REVERSE THIS AND MOVE IT TO substitute ??
 @code{subst} @'{e} um @'{a}lias para @code{substitute}.
 
 @code{subst (@var{eq_1}, @var{expr})} ou @code{subst ([@var{eq_1}, ..., @var{eq_k}], @var{expr})}
 s@~{a}o outras formas
-permitidas.  As @var{eq_i} s@~{a}o equa@value{cedilha}@~{o}es indicando substitui@value{cedilha}@~{o}es a serem feitas.
-Para cada equa@value{cedilha}@~{a}o, o lado direito ser@'{a} substitu@'{i}do pelo lado esquerdo na
+permitidas.  As @var{eq_i} s@~{a}o equa@,{c}@~{o}es indicando substitui@,{c}@~{o}es a serem feitas.
+Para cada equa@,{c}@~{a}o, o lado direito ser@'{a} substitu@'{i}do pelo lado esquerdo na
 express@~{a}o @var{expr}.
 
-@code{exptsubst} se @code{true} permite que substitui@value{cedilha}@~{o}es
+@code{exptsubst} se @code{true} permite que substitui@,{c}@~{o}es
 como @code{y} por @code{%e^x} em @code{%e^(a*x)} ocorram.
 
 @c WHAT IS THIS ABOUT ??
@@ -2063,14 +2063,14 @@ Exemplos:
 @end example
 
 @noindent
-Para exemplos adicionais, fa@value{cedilha}a @code{example (subst)}.
+Para exemplos adicionais, fa@,{c}a @code{example (subst)}.
 
 @end deffn
 
 @c NEEDS CLARIFICATION
-@deffn {Fun@value{cedilha}@~{a}o} substinpart (@var{x}, @var{expr}, @var{n_1}, ..., @var{n_k})
+@deffn {Fun@,{c}@~{a}o} substinpart (@var{x}, @var{expr}, @var{n_1}, ..., @var{n_k})
 Similar a @code{substpart}, mas @code{substinpart} trabalha sobre a
-representa@value{cedilha}@~{a}o interna de @var{expr}.
+representa@,{c}@~{a}o interna de @var{expr}.
 
 Exemplos:
 
@@ -2093,7 +2093,7 @@ Exemplos:
 (%o3)                       f1(x + 1)
 @end example
 
-Se o @'{u}ltimo argumento para a fun@value{cedilha}@~{a}o @code{part} for uma lista de @'{i}ndices ent@~{a}o
+Se o @'{u}ltimo argumento para a fun@,{c}@~{a}o @code{part} for uma lista de @'{i}ndices ent@~{a}o
 muitas subexpress@~{o}es s@~{a}o escolhidas, cada uma correspondendo a um
 @'{i}ndice da lista.  Dessa forma
 
@@ -2106,8 +2106,8 @@ muitas subexpress@~{o}es s@~{a}o escolhidas, cada uma correspondendo a um
 @end example
 
 @code{piece} recebe o valor da @'{u}ltima express@~{a}o selecionada quando usando as
-fun@value{cedilha}@~{o}es @code{part}.  @code{piece} @'{e} escolhida durante a execu@value{cedilha}@~{a}o da fun@value{cedilha}@~{a}o e
-dessa forma pode ser referenciada para a pr@'{o}pria fun@value{cedilha}@~{a}o como mostrado abaixo.
+fun@,{c}@~{o}es @code{part}.  @code{piece} @'{e} escolhida durante a execu@,{c}@~{a}o da fun@,{c}@~{a}o e
+dessa forma pode ser referenciada para a pr@'{o}pria fun@,{c}@~{a}o como mostrado abaixo.
 Se @code{partswitch} for escolhida para @code{true} ent@~{a}o @code{end} @'{e} retornado quando uma
 parte selecionada de uma express@~{a}o n@~{a}o existir, de outra forma uma mensagem
 de erro @'{e} fornecida.
@@ -2142,13 +2142,13 @@ de erro @'{e} fornecida.
                               x     z
 @end example
 
-Tamb@'{e}m, escolhendo a op@value{cedilha}@~{a}o @code{inflag} para @code{true} e chamando @code{part} ou @code{substpart} @'{e}
+Tamb@'{e}m, escolhendo a op@,{c}@~{a}o @code{inflag} para @code{true} e chamando @code{part} ou @code{substpart} @'{e}
 o mesmo que chamando @code{inpart} ou @code{substinpart}.
 
 @end deffn
 
 @c NEEDS CLARIFICATION
-@deffn {Fun@value{cedilha}@~{a}o} substpart (@var{x}, @var{expr}, @var{n_1}, ..., @var{n_k})
+@deffn {Fun@,{c}@~{a}o} substpart (@var{x}, @var{expr}, @var{n_1}, ..., @var{n_k})
 Substitue @var{x} para a subexpress@~{a}o
 selecionada pelo resto dos argumentos como em @code{part}.  Isso retorna o
 novo valor de @var{expr}.  @var{x} pode ser algum operador a ser substitu@'{i}do por um
@@ -2178,19 +2178,19 @@ operador de @var{expr}.  Em alguns casos @var{x} precisa ser contido em aspas du
 (%o4)                    x + f(b, y) + a
 @end example
 
-Tamb@'{e}m, escolhendo a op@value{cedilha}@~{a}o @code{inflag} para @code{true} e chamando @code{part} ou @code{substpart} @'{e}
+Tamb@'{e}m, escolhendo a op@,{c}@~{a}o @code{inflag} para @code{true} e chamando @code{part} ou @code{substpart} @'{e}
 o mesmo que chamando @code{inpart} ou @code{substinpart}.
 
 @end deffn
 
 @c NEEDS EXPANSION AND EXAMPLES
-@deffn {Fun@value{cedilha}@~{a}o} subvarp (@var{expr})
+@deffn {Fun@,{c}@~{a}o} subvarp (@var{expr})
 Retorna @code{true} se @var{expr} for uma vari@'{a}vel subscrita (i.e. que possui @'{i}ndice ou subscrito em sua grafia), por exemplo
 @code{a[i]}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} symbolp (@var{expr})
+@deffn {Fun@,{c}@~{a}o} symbolp (@var{expr})
 Retorna @code{true} se @var{expr} for um s@'{i}mbolo, de outra forma retorna @code{false}.
 com efeito, @code{symbolp(x)} @'{e} equivalente ao predicado @code{atom(x) and not numberp(x)}.
 
@@ -2238,17 +2238,17 @@ Exemplos:
 
 @c THIS ITEM SEEMS OUT OF PLACE -- IS IT FROM A SHARE PACKAGE ??
 @c NEEDS EXAMPLES
-@deffn {Fun@value{cedilha}@~{a}o} vectorpotential (@var{givencurl})
+@deffn {Fun@,{c}@~{a}o} vectorpotential (@var{givencurl})
 Retorna o potencial do vetor de um dado
-vetor de tor@value{cedilha}@~{a}o, no sistema de coordenadas corrente.
+vetor de tor@,{c}@~{a}o, no sistema de coordenadas corrente.
 @code{potentialzeroloc} tem um papel similar ao de @code{potential}, mas a ordem dos
-lados esquerdos das equa@value{cedilha}@~{o}es deve ser uma permuta@value{cedilha}@~{a}o c@'{i}clica das
+lados esquerdos das equa@,{c}@~{o}es deve ser uma permuta@,{c}@~{a}o c@'{i}clica das
 vari@'{a}veis de coordenadas.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} xthru (@var{expr})
-Combina todos os termos de @var{expr} (o qual pode ser uma adi@value{cedilha}@~{a}o) sobre um
+@deffn {Fun@,{c}@~{a}o} xthru (@var{expr})
+Combina todos os termos de @var{expr} (o qual pode ser uma adi@,{c}@~{a}o) sobre um
 denominador comum sem produtos e somas exponenciadas
 como @code{ratsimp} faz.  @code{xthru} cancela fatores comuns no numerador e
 denominador de express@~{o}es racionais mas somente se os fatores s@~{a}o
@@ -2283,25 +2283,25 @@ express@~{a}o a ser aplicado o @code{ratsimp}.
 
 @c THIS FUNCTION APPEARS TO BE A HACK; SEE 4'TH ITEM BELOW
 @c DUNNO WHETHER WE CAN CLEAR THIS UP
-@deffn {Fun@value{cedilha}@~{a}o} zeroequiv (@var{expr}, @var{v})
+@deffn {Fun@,{c}@~{a}o} zeroequiv (@var{expr}, @var{v})
 Testa se a express@~{a}o @var{expr} na vari@'{a}vel
 @var{v} @'{e} equivalente a zero, retornando @code{true}, @code{false}, ou
 @code{dontknow} (n@~{a}o sei).
 
-@code{zeroequiv} Tem essas restri@value{cedilha}@~{o}es:
+@code{zeroequiv} Tem essas restri@,{c}@~{o}es:
 @enumerate
 @item
-N@~{a}o use fun@value{cedilha}@~{o}es que o Maxima n@~{a}o sabe como
+N@~{a}o use fun@,{c}@~{o}es que o Maxima n@~{a}o sabe como
 diferenciar e avaliar.
 @item
 Se a express@~{a}o tem postes sobre o eixo real, podem existir erros
 no resultado (mas isso @'{e} improv@'{a}vel ocorrer).
 @item
-Se a express@~{a}o contem fun@value{cedilha}@~{o}es que n@~{a}o s@~{a}o solu@value{cedilha}@~{o}es para
-equa@value{cedilha}@~{o}es diferenciais de primeira ordem (e.g.  fun@value{cedilha}@~{o}es de Bessel) pode ocorrer
+Se a express@~{a}o contem fun@,{c}@~{o}es que n@~{a}o s@~{a}o solu@,{c}@~{o}es para
+equa@,{c}@~{o}es diferenciais de primeira ordem (e.g.  fun@,{c}@~{o}es de Bessel) pode ocorrer
 resultados incorretos.
 @item
-O algor@'{i}tmo usa avalia@value{cedilha}@~{a}o em pontos aleat@'{o}riamente escolhidos para
+O algor@'{i}tmo usa avalia@,{c}@~{a}o em pontos aleat@'{o}riamente escolhidos para
 subexpress@~{o}es selecionadas cuidadosamente.  Isso @'{e} sempre neg@'{o}cio um tanto
 quanto perigoso, embora o algor@'{i}tmo tente minimizar o
 potencial de erro.
@@ -2311,6 +2311,6 @@ Por exemplo
  @code{zeroequiv (sin(2*x) - 2*sin(x)*cos(x), x)} retorna
 @code{true} e @code{zeroequiv (%e^x + x, x)} retorna @code{false}.
 Por outro lado @code{zeroequiv (log(a*b) - log(a) - log(b), a)} retorna @code{dontknow} devido @`a
-presen@value{cedilha}a de um par@^{a}metro extra @code{b}.
+presen@,{c}a de um par@^{a}metro extra @code{b}.
 
 @end deffn

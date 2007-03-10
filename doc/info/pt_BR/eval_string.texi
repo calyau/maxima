@@ -1,13 +1,13 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /eval_string.texi/1.1/Mon Feb 27 22:09:17 2006//
 @menu
-* Defini@value{cedilha}@~{o}es para eval_string::
+* Defini@,{c}@~{o}es para eval_string::
 @end menu
 
-@node Defini@value{cedilha}@~{o}es para eval_string,  , eval_string, eval_string
-@section Defini@value{cedilha}@~{o}es para eval_string
+@node Defini@,{c}@~{o}es para eval_string,  , eval_string, eval_string
+@section Defini@,{c}@~{o}es para eval_string
 
-@deffn {Fun@value{cedilha}@~{a}o} eval_string (@var{str})
+@deffn {Fun@,{c}@~{a}o} eval_string (@var{str})
 Entrega a seq@"{u}@^{e}ncia de caracteres do Maxima @var{str} como uma express@~{a}o do Maxima e a avalia.
 @var{str} @'{e} uma seq@"{u}@^{e}ncia de caracteres do Maxima. Essa seq@"{u}@^{e}ncia pode ou n@~{a}o ter um marcador de final (sinal de d@'{o}lar @code{$} ou ponto e v@'{i}rgula @code{;}).
 Somente a primeira express@~{a}o @'{e} entregue e avaliada, se ouver mais de uma.
@@ -24,12 +24,12 @@ Exemplos:
 (%o3)                   baz + 1764
 @end example
 
-Para usar essa fun@value{cedilha}@~{a}o escreva primeiro @code{load("eval_string")}. Veja tamb@'{e}m @code{parse_string}.
+Para usar essa fun@,{c}@~{a}o escreva primeiro @code{load("eval_string")}. Veja tamb@'{e}m @code{parse_string}.
 @end deffn
 
 
-@deffn {Fun@value{cedilha}@~{a}o} parse_string (@var{str})
-Entrega a seq@"{u}@^{e}ncia de caracteres do Maxima @var{str} como uma express@~{a}o do Maxima (sem fazer nenhuma avalia@value{cedilha}@~{a}o dessa express@~{a}o).
+@deffn {Fun@,{c}@~{a}o} parse_string (@var{str})
+Entrega a seq@"{u}@^{e}ncia de caracteres do Maxima @var{str} como uma express@~{a}o do Maxima (sem fazer nenhuma avalia@,{c}@~{a}o dessa express@~{a}o).
 @var{str} @'{e} uma seq@"{u}@^{e}ncia de caracteres do Maxima. Essa seq@"{u}@^{e}ncia pode ou n@~{a}o ter um marcador de final (sinal de d@'{o}lar @code{$} ou ponto e v@'{i}rgula @code{;}).
 Somente a primeira express@~{a}o @'{e} entregue e avaliada, se ouver mais de uma.
 
@@ -46,5 +46,5 @@ Exemplos:
 (%o3)          (foo : 42, bar : foo  + baz)
 @end example
 
-Para usar essa fun@value{cedilha}@~{a}o escreva primeiro @code{load("eval_string")}. Veja tamb@'{e}m a fun@value{cedilha}@~{a}o @code{eval_string}.
+Para usar essa fun@,{c}@~{a}o escreva primeiro @code{load("eval_string")}. Veja tamb@'{e}m a fun@,{c}@~{a}o @code{eval_string}.
 @end deffn

@@ -1,13 +1,13 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /Limits.texi/1.10/Thu Jun 16 17:05:35 2005/-ko/
 @menu
-* Defini@value{cedilha}@~{o}es para Limites::
+* Defini@,{c}@~{o}es para Limites::
 @end menu
 
-@node Defini@value{cedilha}@~{o}es para Limites,  , Limites, Limites
-@section Defini@value{cedilha}@~{o}es para Limites
+@node Defini@,{c}@~{o}es para Limites,  , Limites, Limites
+@section Defini@,{c}@~{o}es para Limites
 
-@defvr {Vari@'{a}vel de Op@value{cedilha}@~{a}o} lhospitallim
+@defvr {Vari@'{a}vel de Op@,{c}@~{a}o} lhospitallim
 Valor padr@~{a}o: 4
 
 @code{lhospitallim} @'{e} o m@'{a}ximo n@'{u}mero de vezes que a regra
@@ -16,17 +16,17 @@ L'Hospital @'{e} usada em @code{limit}.  Isso evita ciclos infinitos em casos co
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~{a}o} limit (@var{expr}, @var{x}, @var{val}, @var{dir})
-@deffnx {Fun@value{cedilha}@~{a}o} limit (@var{expr}, @var{x}, @var{val})
-@deffnx {Fun@value{cedilha}@~{a}o} limit (@var{expr})
+@deffn {Fun@,{c}@~{a}o} limit (@var{expr}, @var{x}, @var{val}, @var{dir})
+@deffnx {Fun@,{c}@~{a}o} limit (@var{expr}, @var{x}, @var{val})
+@deffnx {Fun@,{c}@~{a}o} limit (@var{expr})
 Calcula o limite de @var{expr} com a vari@'{a}vel real
-@var{x} aproximando-se do valor @var{val} pela dire@value{cedilha}@~{a}o @var{dir}.  @var{dir} pode ter o
+@var{x} aproximando-se do valor @var{val} pela dire@,{c}@~{a}o @var{dir}.  @var{dir} pode ter o
 valor @code{plus} para um limite pela direita, @code{minus} para um limite pela esquerda, ou
 pode ser omitido (implicando em um limite em ambos os lados @'{e} para ser computado).
 
 @code{limit} usa os
 seguintes s@'{i}mbolos especiais: @code{inf} (infinito positivo) e @code{minf} (infinito
-negativo).  Em sa@'{i}das essa fun@value{cedilha}@~{a}o pode tamb@'{e}m usar @code{und} (undefined - n@~{a}o definido), @code{ind} (indefinido
+negativo).  Em sa@'{i}das essa fun@,{c}@~{a}o pode tamb@'{e}m usar @code{und} (undefined - n@~{a}o definido), @code{ind} (indefinido
 mas associado) e @code{infinity} (infinito complexo).
 
 @code{lhospitallim} @'{e} o m@'{a}ximo n@'{u}mero de vezes que a regra
@@ -36,10 +36,10 @@ L'Hospital @'{e} usada em @code{limit}.  Isso evita ciclos infinitos em casos co
 @code{tlimswitch} quando @code{true} far@'{a} o pacote @code{limit} usar
 s@'{e}rie de Taylor quando poss@'{i}vel.
 
-@code{limsubst} evita que @code{limit} tente substitui@value{cedilha}@~{o}es sobre
+@code{limsubst} evita que @code{limit} tente substitui@,{c}@~{o}es sobre
 formas desconhecidas.  Isso @'{e} para evitar erros como @code{limit (f(n)/f(n+1), n, inf)}
 dando igual a 1.  Escolhendo @code{limsubst} para @code{true} permitir@'{a} tais
-substitui@value{cedilha}@~{o}es.
+substitui@,{c}@~{o}es.
 
 @code{limit} com um argumento @'{e} muitas vezes chamado em ocasi@~{o}es para simplificar express@~{o}es de constantes,
 por exemplo, @code{limit (inf-1)}.
@@ -52,22 +52,22 @@ Manipulation", tese de Ph.D., MAC TR-92, Outubro de 1971.
 
 @end deffn
 
-@defvr {Vari@'{a}vel de Op@value{cedilha}@~{a}o} limsubst
-valor padr@~{a}o: @code{false} - evita que @code{limit} tente substitui@value{cedilha}@~{o}es sobre
+@defvr {Vari@'{a}vel de Op@,{c}@~{a}o} limsubst
+valor padr@~{a}o: @code{false} - evita que @code{limit} tente substitui@,{c}@~{o}es sobre
 formas desconhecidas.  Isso @'{e} para evitar erros como @code{limit (f(n)/f(n+1), n, inf)}
 dando igual a 1.  Escolhendo @code{limsubst} para @code{true} permitir@'{a} tais
-substitui@value{cedilha}@~{o}es.
+substitui@,{c}@~{o}es.
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~{a}o} tlimit (@var{expr}, @var{x}, @var{val}, @var{dir})
-@deffnx {Fun@value{cedilha}@~{a}o} tlimit (@var{expr}, @var{x}, @var{val})
-@deffnx {Fun@value{cedilha}@~{a}o} tlimit (@var{expr})
+@deffn {Fun@,{c}@~{a}o} tlimit (@var{expr}, @var{x}, @var{val}, @var{dir})
+@deffnx {Fun@,{c}@~{a}o} tlimit (@var{expr}, @var{x}, @var{val})
+@deffnx {Fun@,{c}@~{a}o} tlimit (@var{expr})
 Retorna @code{limit} com @code{tlimswitch} escolhido para @code{true}.
 
 @end deffn
 
-@defvr {Vari@'{a}vel de Op@value{cedilha}@~{a}o} tlimswitch
+@defvr {Vari@'{a}vel de Op@,{c}@~{a}o} tlimswitch
 Valor padr@~{a}o: @code{false}
 
 Quando @code{tlimswitch} for @code{true}, far@'{a} o pacote @code{limit} usar

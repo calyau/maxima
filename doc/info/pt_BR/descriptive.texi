@@ -1,23 +1,23 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /descriptive.texi/1.9/Mon Jan 22 12:53:44 2007//
 @menu
-* Introdu@value{cedilha}@~{a}o ao pacote descriptive::
-* Defini@value{cedilha}@~{o}es para manipula@value{cedilha}@~{a}o da dados::
-* Defini@value{cedilha}@~{o}es para estat@'{i}stica descritiva::
-* Defini@value{cedilha}@~{o}es espec@'{i}ficas para estat@'{i}stica descritiva de v@'{a}rias vari@'{a}veis::
-* Defini@value{cedilha}@~{o}es para gr@'{a}ficos estat@'{i}sticos::
+* Introdu@,{c}@~{a}o ao pacote descriptive::
+* Defini@,{c}@~{o}es para manipula@,{c}@~{a}o da dados::
+* Defini@,{c}@~{o}es para estat@'{i}stica descritiva::
+* Defini@,{c}@~{o}es espec@'{i}ficas para estat@'{i}stica descritiva de v@'{a}rias vari@'{a}veis::
+* Defini@,{c}@~{o}es para gr@'{a}ficos estat@'{i}sticos::
 @end menu
 
-@node Introdu@value{cedilha}@~{a}o ao pacote descriptive, Defini@value{cedilha}@~{o}es para manipula@value{cedilha}@~{a}o da dados, descriptive, descriptive
-@section Introdu@value{cedilha}@~{a}o ao pacote descriptive
+@node Introdu@,{c}@~{a}o ao pacote descriptive, Defini@,{c}@~{o}es para manipula@,{c}@~{a}o da dados, descriptive, descriptive
+@section Introdu@,{c}@~{a}o ao pacote descriptive
 
-O pacote @code{descriptive} cont@'{e}m um conjunto de fun@value{cedilha}@~{o}es para fazer c@'{a}lculos de estat@'{i}stica descritiva e desenhar gr@'{a}ficos. Juntamente com o c@'{o}digo fonte tr@^{e}s conjuntos de dados em suar @'{a}rvore do Maxima: @code{pidigits.data}, @code{wind.data} e @code{biomed.data}. Eles tamb@'{e}m podem ser baixados a partir de @code{www.biomates.net}.
+O pacote @code{descriptive} cont@'{e}m um conjunto de fun@,{c}@~{o}es para fazer c@'{a}lculos de estat@'{i}stica descritiva e desenhar gr@'{a}ficos. Juntamente com o c@'{o}digo fonte tr@^{e}s conjuntos de dados em suar @'{a}rvore do Maxima: @code{pidigits.data}, @code{wind.data} e @code{biomed.data}. Eles tamb@'{e}m podem ser baixados a partir de @code{www.biomates.net}.
 
-Qualque manual de estat@'{i}stica pode ser usado como refer@^{e}ncia para as fun@value{cedilha}@~{o}es no pacote @code{descriptive}.
+Qualque manual de estat@'{i}stica pode ser usado como refer@^{e}ncia para as fun@,{c}@~{o}es no pacote @code{descriptive}.
 
 Para coment@'{a}rios, erros ou sugest@~{o}es, por favor entre em contato comigo em @var{'mario AT edu DOT xunta DOT es'}.
 
-Aqui est@'{a} um exemplo sobre como as fun@value{cedilha}@~{o}es de estat@'{i}stica descritiva no pacote @code{descriptive} fazem esse trabalho, dependendo da natureza de seus argumentos, listas e matrizes,
+Aqui est@'{a} um exemplo sobre como as fun@,{c}@~{o}es de estat@'{i}stica descritiva no pacote @code{descriptive} fazem esse trabalho, dependendo da natureza de seus argumentos, listas e matrizes,
 
 @c ===beg===
 @c load (descriptive)$
@@ -45,7 +45,7 @@ Aqui est@'{a} um exemplo sobre como as fun@value{cedilha}@~{o}es de estat@'{i}st
 
 Note que em amostras de v@'{a}rias vari@'{a}veis a m@'{e}dia @'{e} calculada em cada coluna.
 
-No caso de muitas amostras amostras com poss@'{i}veis tamanhos diferentes, A fun@value{cedilha}@~{a}o do Maxima @code{map} pode ser usada para pegar os resultados desejados de cada amostra,
+No caso de muitas amostras amostras com poss@'{i}veis tamanhos diferentes, A fun@,{c}@~{a}o do Maxima @code{map} pode ser usada para pegar os resultados desejados de cada amostra,
 
 @c ===beg===
 @c load (descriptive)$
@@ -123,7 +123,7 @@ Com o objetivo de chamar esses d@'{i}gitos no Maxima,
 (%o3)                          100
 @end example
 
-Por outro lado, o arquivo @code{wind.data} cont@'{e}m a m@'{e}dia di@'{a}ria de velocidades do ventoem 5 esta@value{cedilha}@~{o}es meteorol@'{o}gicas na Rep@'{u}blica da Irlanda (Esses dados s@~{a}o parte de um conjunto de dados tomados em 12 esta@value{cedilha}@~{o}es meteorol@'{o}gicas. O arquivo original est@'{a} disponivel livremente para download no Reposit@'{o}rio de Dados StatLib e sua an@'{a}lise @'{e} discutida em Haslett, J., Raftery, A. E. (1989) @var{Space-time Modelling with Long-memory Dependence: Assessing Ireland's Wind Power Resource, with Discussion}. Applied Statistics 38, 1-50). As linhas seguintes mostram como tornar os dados dispon@'{i}veis para o Maxima:
+Por outro lado, o arquivo @code{wind.data} cont@'{e}m a m@'{e}dia di@'{a}ria de velocidades do ventoem 5 esta@,{c}@~{o}es meteorol@'{o}gicas na Rep@'{u}blica da Irlanda (Esses dados s@~{a}o parte de um conjunto de dados tomados em 12 esta@,{c}@~{o}es meteorol@'{o}gicas. O arquivo original est@'{a} disponivel livremente para download no Reposit@'{o}rio de Dados StatLib e sua an@'{a}lise @'{e} discutida em Haslett, J., Raftery, A. E. (1989) @var{Space-time Modelling with Long-memory Dependence: Assessing Ireland's Wind Power Resource, with Discussion}. Applied Statistics 38, 1-50). As linhas seguintes mostram como tornar os dados dispon@'{i}veis para o Maxima:
 
 @c ===beg===
 @c load (numericalio)$
@@ -175,12 +175,12 @@ Se deve tomar cuidado quando se trabalha com dados divididos por categorias. no 
 
 
 
-@node Defini@value{cedilha}@~{o}es para manipula@value{cedilha}@~{a}o da dados, Defini@value{cedilha}@~{o}es para estat@'{i}stica descritiva, Introdu@value{cedilha}@~{a}o ao pacote descriptive, descriptive
-@section Defini@value{cedilha}@~{o}es para manipula@value{cedilha}@~{a}o da dados
+@node Defini@,{c}@~{o}es para manipula@,{c}@~{a}o da dados, Defini@,{c}@~{o}es para estat@'{i}stica descritiva, Introdu@,{c}@~{a}o ao pacote descriptive, descriptive
+@section Defini@,{c}@~{o}es para manipula@,{c}@~{a}o da dados
 
-@deffn {Fun@value{cedilha}@~{a}o} continuous_freq (@var{list})
-@deffnx {Fun@value{cedilha}@~{a}o} continuous_freq (@var{list}, @var{m})
-O argumetno de @code{continuous_freq} deve ser uma lista de n@'{u}meros, que ser@~{a}o ent@~{a}o agrupadas em intervalos e contado quantos desses dados pertencem a cada grupo. Opcionalmente, a fun@value{cedilha}@~{a}o @code{continuous_freq} admite um segundo argumento indicando o n@'{u}mero de classes, 10 @'{e} o valor padr@~{a}o,
+@deffn {Fun@,{c}@~{a}o} continuous_freq (@var{list})
+@deffnx {Fun@,{c}@~{a}o} continuous_freq (@var{list}, @var{m})
+O argumetno de @code{continuous_freq} deve ser uma lista de n@'{u}meros, que ser@~{a}o ent@~{a}o agrupadas em intervalos e contado quantos desses dados pertencem a cada grupo. Opcionalmente, a fun@,{c}@~{a}o @code{continuous_freq} admite um segundo argumento indicando o n@'{u}mero de classes, 10 @'{e} o valor padr@~{a}o,
 
 @c ===beg===
 @c load (numericalio)$
@@ -201,7 +201,7 @@ A primeira lista cont@'{e}m os limites de intervalos e o segundo a correspondent
 
 
 
-@deffn {Fun@value{cedilha}@~{a}o} discrete_freq (@var{list})
+@deffn {Fun@,{c}@~{a}o} discrete_freq (@var{list})
 Conta as freq@"{u}@^{e}ncias absolutas em amostras discretas, em amostras num@'{e}ricas e em amostras divididas em categorias. Seu @'{u}nico argumento @'{e} uma lista,
 
 @c ===beg===
@@ -229,9 +229,9 @@ A primeira lista fornece os valores da amostra e a segunda seuas freq@"{u}@^{e}n
 
 
 
-@deffn {Fun@value{cedilha}@~{a}o} subsample (@var{matriz_de_dados}, @var{express@~{a}o_l@'{o}gica})
-@deffnx {Fun@value{cedilha}@~{a}o} subsample (@var{matriz_de_dados}, @var{express@~{a}o_l@'{o}gica}, @var{col_num}, @var{col_num}, ...)
-Essas fun@value{cedilha}@~{o}es s@~{a}o um tipo de varia@value{cedilha}@~{a}o da fun@value{cedilha}@~{a}o @code{submatrix} do Maxima. O primeiro argumento @'{e} o nome da matriz de dados, o segundo argumento @'{e} uma express@~{a}o l@'{o}gica que recebeu ap@'{o}strofo e os argumentos opcionais adicionais s@~{a}o o n@'{u}mero de colunas a serem tomadas. Esse comportamento @'{e} melhor entendido com exemplos,
+@deffn {Fun@,{c}@~{a}o} subsample (@var{matriz_de_dados}, @var{express@~{a}o_l@'{o}gica})
+@deffnx {Fun@,{c}@~{a}o} subsample (@var{matriz_de_dados}, @var{express@~{a}o_l@'{o}gica}, @var{col_num}, @var{col_num}, ...)
+Essas fun@,{c}@~{o}es s@~{a}o um tipo de varia@,{c}@~{a}o da fun@,{c}@~{a}o @code{submatrix} do Maxima. O primeiro argumento @'{e} o nome da matriz de dados, o segundo argumento @'{e} uma express@~{a}o l@'{o}gica que recebeu ap@'{o}strofo e os argumentos opcionais adicionais s@~{a}o o n@'{u}mero de colunas a serem tomadas. Esse comportamento @'{e} melhor entendido com exemplos,
 
 @c ===beg===
 @c load (descriptive)$
@@ -253,7 +253,7 @@ Essas fun@value{cedilha}@~{o}es s@~{a}o um tipo de varia@value{cedilha}@~{a}o da
               [ 18.79  18.96  14.46  26.38  21.84 ]
 @end example
 
-Existem registros de v@'{a}rias vari@'{a}veis nos quais a velocidade do vento na primeira esta@value{cedilha}@~{a}o meteorol@'{o}gica foram maiores que 18. Veja que na express@~{a}o l@'{o}gica que recebeu ap@'{o}strofo o @var{i}-@'{e}simo componente @'{e} referenciado como @code{%c[i]}. O s@'{i}mbolo @code{%c[i]} @'{e} usado dentro da fun@value{cedilha}@~{a}o @code{subsample}, portanto quando usado como uma vari@'{a}vel de uma categoria, Maxima fica confuso. No seguinte exemplo, requisitamos somente o primeiro, o segundo e o quinto componentes desses registro com velocidades de vento maiores que ou igual a 16 n@'{o}s na esta@value{cedilha}@~{a}o meteorol@'{o}gica n@'{u}mero 1 e menor que 25 n@'{o}s na esta@value{cedilha}@~{a}o meteorol@'{o}gica n@'{u}mero 4,
+Existem registros de v@'{a}rias vari@'{a}veis nos quais a velocidade do vento na primeira esta@,{c}@~{a}o meteorol@'{o}gica foram maiores que 18. Veja que na express@~{a}o l@'{o}gica que recebeu ap@'{o}strofo o @var{i}-@'{e}simo componente @'{e} referenciado como @code{%c[i]}. O s@'{i}mbolo @code{%c[i]} @'{e} usado dentro da fun@,{c}@~{a}o @code{subsample}, portanto quando usado como uma vari@'{a}vel de uma categoria, Maxima fica confuso. No seguinte exemplo, requisitamos somente o primeiro, o segundo e o quinto componentes desses registro com velocidades de vento maiores que ou igual a 16 n@'{o}s na esta@,{c}@~{a}o meteorol@'{o}gica n@'{u}mero 1 e menor que 25 n@'{o}s na esta@,{c}@~{a}o meteorol@'{o}gica n@'{u}mero 4,
 
 @c ===beg===
 @c load (descriptive)$
@@ -357,7 +357,7 @@ Essa @'{e} a m@'{e}dia de v@'{a}rias vari@'{a}veis de @code{s3},
                                                     ------------]
                                                         100
 @end example
-Aqui, a primeira componente @'{e} sem sentido, uma vez que @code{A} e @code{B} s@~{a}o categorias, o segundo componente @'{e} a idade m@'{e}dia dos indiv@'{i}duos na forma racional, e o quarto eo @'{u}ltimo valores exibem um comportamento estranho. Isso ocorre porque o s@'{i}mbolo @code{NA} @'{e} usado aqui para indicar dado n@~{a}o dispon@'{i}vel (@var{non available} em ingl@^{e}s), e as duas m@'{e}dias s@~{a}o certamente sem sentido. Uma solu@value{cedilha}@~{a}o poss@'{i}vel pode ser jogar fora a matriz cujas linhas possuam s@'{i}mbolos @code{NA}, embora isso cause alguma perda de informa@value{cedilha}@~{a}o,
+Aqui, a primeira componente @'{e} sem sentido, uma vez que @code{A} e @code{B} s@~{a}o categorias, o segundo componente @'{e} a idade m@'{e}dia dos indiv@'{i}duos na forma racional, e o quarto eo @'{u}ltimo valores exibem um comportamento estranho. Isso ocorre porque o s@'{i}mbolo @code{NA} @'{e} usado aqui para indicar dado n@~{a}o dispon@'{i}vel (@var{non available} em ingl@^{e}s), e as duas m@'{e}dias s@~{a}o certamente sem sentido. Uma solu@,{c}@~{a}o poss@'{i}vel pode ser jogar fora a matriz cujas linhas possuam s@'{i}mbolos @code{NA}, embora isso cause alguma perda de informa@,{c}@~{a}o,
 
 @c ===beg===
 @c load (descriptive)$
@@ -378,14 +378,14 @@ Aqui, a primeira componente @'{e} sem sentido, uma vez que @code{A} e @code{B} s
 @end deffn
 
 
-@node Defini@value{cedilha}@~{o}es para estat@'{i}stica descritiva, Defini@value{cedilha}@~{o}es espec@'{i}ficas para estat@'{i}stica descritiva de v@'{a}rias vari@'{a}veis, Defini@value{cedilha}@~{o}es para manipula@value{cedilha}@~{a}o da dados, descriptive
-@section Defini@value{cedilha}@~{o}es para estat@'{i}stica descritiva
+@node Defini@,{c}@~{o}es para estat@'{i}stica descritiva, Defini@,{c}@~{o}es espec@'{i}ficas para estat@'{i}stica descritiva de v@'{a}rias vari@'{a}veis, Defini@,{c}@~{o}es para manipula@,{c}@~{a}o da dados, descriptive
+@section Defini@,{c}@~{o}es para estat@'{i}stica descritiva
 
 
 
-@deffn {Fun@value{cedilha}@~{a}o} mean (@var{lista})
-@deffnx {Fun@value{cedilha}@~{a}o} mean (@var{matriz})
-Essa fun@value{cedilha}@~{a}o calcula a m@'{e}dia de uma amostra, definida como
+@deffn {Fun@,{c}@~{a}o} mean (@var{lista})
+@deffnx {Fun@,{c}@~{a}o} mean (@var{matriz})
+Essa fun@,{c}@~{a}o calcula a m@'{e}dia de uma amostra, definida como
 @ifhtml
 @example
                        n
@@ -441,8 +441,8 @@ Exemplo:
 
 
 
-@deffn {Fun@value{cedilha}@~{a}o} var (@var{list})
-@deffnx {Fun@value{cedilha}@~{a}o} var (@var{matrix})
+@deffn {Fun@,{c}@~{a}o} var (@var{list})
+@deffnx {Fun@,{c}@~{a}o} var (@var{matrix})
 This is the sample variance, defined as
 @ifhtml
 @example
@@ -491,9 +491,9 @@ See also function @code{var1}.
 
 
 
-@deffn {Fun@value{cedilha}@~{a}o} var1 (@var{lista})
-@deffnx {Fun@value{cedilha}@~{a}o} var1 (@var{matriz})
-Essa fun@value{cedilha}@~{a}o calcula a vari@^{a}ncia da amostra, definida como
+@deffn {Fun@,{c}@~{a}o} var1 (@var{lista})
+@deffnx {Fun@,{c}@~{a}o} var1 (@var{matriz})
+Essa fun@,{c}@~{a}o calcula a vari@^{a}ncia da amostra, definida como
 @ifhtml
 @example
                      n
@@ -547,9 +547,9 @@ See also function @code{var}.
 
 
 
-@deffn {Fun@value{cedilha}@~{a}o} std (@var{lista})
-@deffnx {Fun@value{cedilha}@~{a}o} std (@var{matriz})
-A ra@'{i}z quadrada da fun@value{cedilha}@~{a}o @code{var}, a vari@^{a}ncia com denominador @math{n}.
+@deffn {Fun@,{c}@~{a}o} std (@var{lista})
+@deffnx {Fun@,{c}@~{a}o} std (@var{matriz})
+A ra@'{i}z quadrada da fun@,{c}@~{a}o @code{var}, a vari@^{a}ncia com denominador @math{n}.
 
 Exemplo:
 
@@ -573,14 +573,14 @@ Exemplo:
                             5.672434260526957, 4.941970881136392]
 @end example
 
-Veja tamb@'{e}m as fun@value{cedilha}@~{o}es @code{var} e @code{std1}.
+Veja tamb@'{e}m as fun@,{c}@~{o}es @code{var} e @code{std1}.
 @end deffn
 
 
 
-@deffn {Fun@value{cedilha}@~{a}o} std1 (@var{lista})
-@deffnx {Fun@value{cedilha}@~{a}o} std1 (@var{matriz})
-@'{E} a ra@'{i}z quadrada da fun@value{cedilha}@~{a}o @code{var1}, a vari@^{a}ncia com denominador @math{n-1}.
+@deffn {Fun@,{c}@~{a}o} std1 (@var{lista})
+@deffnx {Fun@,{c}@~{a}o} std1 (@var{matriz})
+@'{E} a ra@'{i}z quadrada da fun@,{c}@~{a}o @code{var1}, a vari@^{a}ncia com denominador @math{n-1}.
 
 Exemplo:
 
@@ -604,13 +604,13 @@ Exemplo:
                             5.701010936401517, 4.966867617451963]
 @end example
 
-Veja tamb@'{e}m as fun@value{cedilha}@~{o}es @code{var1} e @code{std}.
+Veja tamb@'{e}m as fun@,{c}@~{o}es @code{var1} e @code{std}.
 @end deffn
 
 
 
-@deffn {Fun@value{cedilha}@~{a}o} noncentral_moment (@var{lista}, @var{k})
-@deffnx {Fun@value{cedilha}@~{a}o} noncentral_moment (@var{matriz}, @var{k})
+@deffn {Fun@,{c}@~{a}o} noncentral_moment (@var{lista}, @var{k})
+@deffnx {Fun@,{c}@~{a}o} noncentral_moment (@var{matriz}, @var{k})
 O momento n@~{a}o central de ordem @math{k}, definido como
 @ifhtml
 @example
@@ -660,13 +660,13 @@ Exemplo:
                             2502278.205988911, 1691881.797742255]
 @end example
 
-Veja tamb@'{e}m a fun@value{cedilha}@~{a}o @code{central_moment}.
+Veja tamb@'{e}m a fun@,{c}@~{a}o @code{central_moment}.
 @end deffn
 
 
 
-@deffn {Fun@value{cedilha}@~{a}o} central_moment (@var{lista}, @var{k})
-@deffnx {Fun@value{cedilha}@~{a}o} central_moment (@var{matriz}, @var{k})
+@deffn {Fun@,{c}@~{a}o} central_moment (@var{lista}, @var{k})
+@deffnx {Fun@,{c}@~{a}o} central_moment (@var{matriz}, @var{k})
 O momento central de ordem @math{k}, definido como
 @ifhtml
 @example
@@ -716,14 +716,14 @@ Exemplo:
                              37.5986572057918, 25.85981904394192]
 @end example
 
-Veja tamb@'{e}m as fun@value{cedilha}@~{o}es @code{central_moment} e @code{mean}.
+Veja tamb@'{e}m as fun@,{c}@~{o}es @code{central_moment} e @code{mean}.
 @end deffn
 
 
 
-@deffn {Fun@value{cedilha}@~{a}o} cv (@var{lista})
-@deffnx {Fun@value{cedilha}@~{a}o} cv (@var{matriz})
-O coeficiente de varia@value{cedilha}@~{a}o @'{e} o quociente entre o desvio padr@~{a}o da amostra (@code{std}) e a m@'{e}dia @code{mean},
+@deffn {Fun@,{c}@~{a}o} cv (@var{lista})
+@deffnx {Fun@,{c}@~{a}o} cv (@var{matriz})
+O coeficiente de varia@,{c}@~{a}o @'{e} o quociente entre o desvio padr@~{a}o da amostra (@code{std}) e a m@'{e}dia @code{mean},
 
 @c ===beg===
 @c load (descriptive)$
@@ -745,13 +745,13 @@ O coeficiente de varia@value{cedilha}@~{a}o @'{e} o quociente entre o desvio pad
                             .3627381836021478, .3346021393989506]
 @end example
 
-Veja tamb@'{e}m as fun@value{cedilha}@~{o}es @code{std} e @code{mean}.
+Veja tamb@'{e}m as fun@,{c}@~{o}es @code{std} e @code{mean}.
 @end deffn
 
 
 
-@deffn {Fun@value{cedilha}@~{a}o} mini (@var{lista})
-@deffnx {Fun@value{cedilha}@~{a}o} mini (@var{matriz})
+@deffn {Fun@,{c}@~{a}o} mini (@var{lista})
+@deffnx {Fun@,{c}@~{a}o} mini (@var{matriz})
 Ë o vaor m@'{i}nimo da amostra @var{lista},
 
 @c ===beg===
@@ -773,13 +773,13 @@ Veja tamb@'{e}m as fun@value{cedilha}@~{o}es @code{std} e @code{mean}.
 (%o6)             [0.58, 0.5, 2.67, 5.25, 5.17]
 @end example
 
-Veja tamb@'{e}m fun@value{cedilha}@~{a}o @code{maxi}.
+Veja tamb@'{e}m fun@,{c}@~{a}o @code{maxi}.
 @end deffn
 
 
 
-@deffn {Fun@value{cedilha}@~{a}o} maxi (@var{lista})
-@deffnx {Fun@value{cedilha}@~{a}o} maxi (@var{matriz})
+@deffn {Fun@,{c}@~{a}o} maxi (@var{lista})
+@deffnx {Fun@,{c}@~{a}o} maxi (@var{matriz})
 @'{E} o valor m@'{a}ximo da amostra @var{lista},
 
 @c ===beg===
@@ -801,14 +801,14 @@ Veja tamb@'{e}m fun@value{cedilha}@~{a}o @code{maxi}.
 (%o6)          [20.25, 21.46, 20.04, 29.63, 27.63]
 @end example
 
-Veja tamb@'{e}m a fun@value{cedilha}@~{a}o @code{mini}.
+Veja tamb@'{e}m a fun@,{c}@~{a}o @code{mini}.
 @end deffn
 
 
 
-@deffn {Fun@value{cedilha}@~{a}o} range (@var{lista})
-@deffnx {Fun@value{cedilha}@~{a}o} range (@var{matriz})
-A amplitude @'{e} a diferen@value{cedilha}a entre os valores de maximo e de m@'{i}nimo.
+@deffn {Fun@,{c}@~{a}o} range (@var{lista})
+@deffnx {Fun@,{c}@~{a}o} range (@var{matriz})
+A amplitude @'{e} a diferen@,{c}a entre os valores de maximo e de m@'{i}nimo.
 
 Exemplo:
 
@@ -834,10 +834,10 @@ Exemplo:
 
 
 
-@deffn {Fun@value{cedilha}@~{a}o} quantile (@var{lista}, @var{p})
-@deffnx {Fun@value{cedilha}@~{a}o} quantile (@var{matriz}, @var{p})
+@deffn {Fun@,{c}@~{a}o} quantile (@var{lista}, @var{p})
+@deffnx {Fun@,{c}@~{a}o} quantile (@var{matriz}, @var{p})
 @'{E} o @var{p}-@code{quantile} (quantil de ordem @var{p}), com @var{p} sendo um n@'{u}mero em @math{[0, 1]} (intervalo fechado), da amostra @var{lista}.
-Embora exista muitas Defini@value{cedilha}@~{o}es para quantil de uma amostra (Hyndman, R. J., Fan, Y. (1996) @var{Sample quantiles in statistical packages}. American Statistician, 50, 361-365), aquela que se baseia em interpola@value{cedilha}@~{a}o linear @'{e} a que foi implementada no pacote @code{descriptive}.
+Embora exista muitas Defini@,{c}@~{o}es para quantil de uma amostra (Hyndman, R. J., Fan, Y. (1996) @var{Sample quantiles in statistical packages}. American Statistician, 50, 361-365), aquela que se baseia em interpola@,{c}@~{a}o linear @'{e} a que foi implementada no pacote @code{descriptive}.
 
 Exemplo:
 
@@ -863,8 +863,8 @@ Exemplo:
 
 
 
-@deffn {Fun@value{cedilha}@~{a}o} median (@var{lista})
-@deffnx {Fun@value{cedilha}@~{a}o} median (@var{matriz})
+@deffn {Fun@,{c}@~{a}o} median (@var{lista})
+@deffnx {Fun@,{c}@~{a}o} median (@var{matriz})
 Uma vez que a amostra est@'{a} ordenada, se o tamanho da amostra for @'{i}mpar a mediana @'{e} o valor central, de outra forma a mediana ser@'{a} a m@'{e}dia dos dois valores centrais.
 
 Exemplo:
@@ -897,9 +897,9 @@ Veja tamb@'{e}m function @code{quantile}.
 
 
 
-@deffn {Fun@value{cedilha}@~{a}o} qrange (@var{lista})
-@deffnx {Fun@value{cedilha}@~{a}o} qrange (@var{matriz})
-A amplitude do interquartil @'{e} a diferen@value{cedilha}a entre o terceiro e o primeiro quartil, @code{quantile(@var{lista},3/4) - quantile(@var{lista},1/4)},
+@deffn {Fun@,{c}@~{a}o} qrange (@var{lista})
+@deffnx {Fun@,{c}@~{a}o} qrange (@var{matriz})
+A amplitude do interquartil @'{e} a diferen@,{c}a entre o terceiro e o primeiro quartil, @code{quantile(@var{lista},3/4) - quantile(@var{lista},1/4)},
 
 @c ===beg===
 @c load (descriptive)$
@@ -923,13 +923,13 @@ A amplitude do interquartil @'{e} a diferen@value{cedilha}a entre o terceiro e o
                                                6.650000000000002]
 @end example
 
-Veja tamb@'{e}m a fun@value{cedilha}@~{a}o @code{quantile}.
+Veja tamb@'{e}m a fun@,{c}@~{a}o @code{quantile}.
 @end deffn
 
 
 
-@deffn {Fun@value{cedilha}@~{a}o} mean_deviation (@var{lista})
-@deffnx {Fun@value{cedilha}@~{a}o} mean_deviation (@var{matriz})
+@deffn {Fun@,{c}@~{a}o} mean_deviation (@var{lista})
+@deffnx {Fun@,{c}@~{a}o} mean_deviation (@var{matriz})
 O desvio m@'{e}dio, definido como
 @ifhtml
 @example
@@ -981,13 +981,13 @@ Exemplo:
                                                4.028546000000002]
 @end example
 
-Veja tamb@'{e}m a fun@value{cedilha}@~{a}o @code{mean}.
+Veja tamb@'{e}m a fun@,{c}@~{a}o @code{mean}.
 @end deffn
 
 
 
-@deffn {Fun@value{cedilha}@~{a}o} median_deviation (@var{lista})
-@deffnx {Fun@value{cedilha}@~{a}o} median_deviation (@var{matriz})
+@deffn {Fun@,{c}@~{a}o} median_deviation (@var{lista})
+@deffnx {Fun@,{c}@~{a}o} median_deviation (@var{matriz})
 O desvio da mediana, definido como
 @ifhtml
 @example
@@ -1039,13 +1039,13 @@ Exemplo:
 (%o6)           [2.75, 2.755, 3.08, 4.315, 3.31]
 @end example
 
-Veja tamb@'{e}m a fun@value{cedilha}@~{a}o @code{mean}.
+Veja tamb@'{e}m a fun@,{c}@~{a}o @code{mean}.
 @end deffn
 
 
 
-@deffn {Fun@value{cedilha}@~{a}o} harmonic_mean (@var{lista})
-@deffnx {Fun@value{cedilha}@~{a}o} harmonic_mean (@var{matriz})
+@deffn {Fun@,{c}@~{a}o} harmonic_mean (@var{lista})
+@deffnx {Fun@,{c}@~{a}o} harmonic_mean (@var{matriz})
 A m@'{e}dia harm@^{o}nica, definida como
 @ifhtml
 @example
@@ -1099,13 +1099,13 @@ Exemplo:
                             13.44199028193692, 13.01439145898509]
 @end example
 
-Veja tamb@'{e}m as fun@value{cedilha}@~{o}es @code{mean} e @code{geometric_mean}.
+Veja tamb@'{e}m as fun@,{c}@~{o}es @code{mean} e @code{geometric_mean}.
 @end deffn
 
 
 
-@deffn {Fun@value{cedilha}@~{a}o} geometric_mean (@var{lista})
-@deffnx {Fun@value{cedilha}@~{a}o} geometric_mean (@var{matriz})
+@deffn {Fun@,{c}@~{a}o} geometric_mean (@var{lista})
+@deffnx {Fun@,{c}@~{a}o} geometric_mean (@var{matriz})
 A m@'{e}dia geom@'{e}trica, definida como
 @ifhtml
 @example
@@ -1155,13 +1155,13 @@ Exemplo:
                             14.61274126349021, 13.96184163444275]
 @end example
 
-Veja tamb@'{e}m as fun@value{cedilha}@~{o}es @code{mean} e @code{harmonic_mean}.
+Veja tamb@'{e}m as fun@,{c}@~{o}es @code{mean} e @code{harmonic_mean}.
 @end deffn
 
 
 
-@deffn {Fun@value{cedilha}@~{a}o} kurtosis (@var{lista})
-@deffnx {Fun@value{cedilha}@~{a}o} kurtosis (@var{matriz})
+@deffn {Fun@,{c}@~{a}o} kurtosis (@var{lista})
+@deffnx {Fun@,{c}@~{a}o} kurtosis (@var{matriz})
 O coeficiente de curtose, definido como
 @ifhtml
 @example
@@ -1211,13 +1211,13 @@ Exemplo:
    - .4275233490482866, - .6405361979019522, - .4952382132352935]
 @end example
 
-Veja tamb@'{e}m as fun@value{cedilha}@~{o}es @code{mean}, @code{var} e @code{skewness}.
+Veja tamb@'{e}m as fun@,{c}@~{o}es @code{mean}, @code{var} e @code{skewness}.
 @end deffn
 
 
 
-@deffn {Fun@value{cedilha}@~{a}o} skewness (@var{lista})
-@deffnx {Fun@value{cedilha}@~{a}o} skewness (@var{matriz})
+@deffn {Fun@,{c}@~{a}o} skewness (@var{lista})
+@deffnx {Fun@,{c}@~{a}o} skewness (@var{matriz})
 O coeficiente de assimetria, definido como
 @ifhtml
 @example
@@ -1267,13 +1267,13 @@ Exemplo:
                             .2059984348148687, .2142520248890832]
 @end example
 
-Veja tamb@'{e}m as fun@value{cedilha}@~{o}es @code{mean}, @code{var} e @code{kurtosis}.
+Veja tamb@'{e}m as fun@,{c}@~{o}es @code{mean}, @code{var} e @code{kurtosis}.
 @end deffn
 
 
 
-@deffn {Fun@value{cedilha}@~{a}o} pearson_skewness (@var{lista})
-@deffnx {Fun@value{cedilha}@~{a}o} pearson_skewness (@var{matriz})
+@deffn {Fun@,{c}@~{a}o} pearson_skewness (@var{lista})
+@deffnx {Fun@,{c}@~{a}o} pearson_skewness (@var{matriz})
 O coeficiente de assimetria de pearson, definido como 
 @ifhtml
 @example
@@ -1318,13 +1318,13 @@ Exemplo:
          .1050904062491204, .1245042340592368, .4464181795804519]
 @end example
 
-Veja tamb@'{e}m as fun@value{cedilha}@~{o}es @code{mean}, @code{var} e @code{median}.
+Veja tamb@'{e}m as fun@,{c}@~{o}es @code{mean}, @code{var} e @code{median}.
 @end deffn
 
 
 
-@deffn {Fun@value{cedilha}@~{a}o} quartile_skewness (@var{lista})
-@deffnx {Fun@value{cedilha}@~{a}o} quartile_skewness (@var{matriz})
+@deffn {Fun@,{c}@~{a}o} quartile_skewness (@var{lista})
+@deffnx {Fun@,{c}@~{a}o} quartile_skewness (@var{matriz})
 O coeficiented de assimetria do quartil, definido como 
 @ifhtml
 @example
@@ -1372,17 +1372,17 @@ Exemplo:
        0.0336239103362392, .03780068728522298, 0.210526315789474]
 @end example
 
-Veja tamb@'{e}m a fun@value{cedilha}@~{a}o @code{quantile}.
+Veja tamb@'{e}m a fun@,{c}@~{a}o @code{quantile}.
 @end deffn
 
 
 
-@node Defini@value{cedilha}@~{o}es espec@'{i}ficas para estat@'{i}stica descritiva de v@'{a}rias vari@'{a}veis, Defini@value{cedilha}@~{o}es para gr@'{a}ficos estat@'{i}sticos, Defini@value{cedilha}@~{o}es para estat@'{i}stica descritiva, descriptive
-@section Defini@value{cedilha}@~{o}es espec@'{i}ficas para estat@'{i}stica descritiva de v@'{a}rias vari@'{a}veis
+@node Defini@,{c}@~{o}es espec@'{i}ficas para estat@'{i}stica descritiva de v@'{a}rias vari@'{a}veis, Defini@,{c}@~{o}es para gr@'{a}ficos estat@'{i}sticos, Defini@,{c}@~{o}es para estat@'{i}stica descritiva, descriptive
+@section Defini@,{c}@~{o}es espec@'{i}ficas para estat@'{i}stica descritiva de v@'{a}rias vari@'{a}veis
 
 
 
-@deffn {Fun@value{cedilha}@~{a}o} cov (@var{matriz})
+@deffn {Fun@,{c}@~{a}o} cov (@var{matriz})
 A matriz de covari@^{a}ncia da amostra de v@'{a}rias vari@'{a}veis, definida como
 @ifhtml
 @example
@@ -1437,12 +1437,12 @@ Exemplo:
       [ 15.42162  14.9711   16.18171  20.44685  24.42308 ]
 @end example
 
-Veja tamb@'{e}m a fun@value{cedilha}@~{a}o @code{cov1}.
+Veja tamb@'{e}m a fun@,{c}@~{a}o @code{cov1}.
 @end deffn
 
 
 
-@deffn {Fun@value{cedilha}@~{a}o} cov1 (@var{matriz})
+@deffn {Fun@,{c}@~{a}o} cov1 (@var{matriz})
 A matriz de covari@^{a}ncia da amostra de v@'{a}rias vari@'{a}veis, definida como
 @ifhtml
 @example
@@ -1497,14 +1497,14 @@ Exemplo:
       [ 15.5774   15.12232  16.34516  20.65338  24.66977 ]
 @end example
 
-Veja tamb@'{e}m a fun@value{cedilha}@~{a}o @code{cov}.
+Veja tamb@'{e}m a fun@,{c}@~{a}o @code{cov}.
 @end deffn
 
 
 
-@deffn {Fun@value{cedilha}@~{a}o} global_variances (@var{matriz})
-@deffnx {Fun@value{cedilha}@~{a}o} global_variances (@var{matriz}, @var{valor_l@'{o}gico})
-A fun@value{cedilha}@~{a}o @code{global_variances} retorna uma lista de medidas de vari@^{a}ncia global:
+@deffn {Fun@,{c}@~{a}o} global_variances (@var{matriz})
+@deffnx {Fun@,{c}@~{a}o} global_variances (@var{matriz}, @var{valor_l@'{o}gico})
+A fun@,{c}@~{a}o @code{global_variances} retorna uma lista de medidas de vari@^{a}ncia global:
 
 @itemize @bullet
 @item
@@ -1539,7 +1539,7 @@ Exemplo:
          113.4651792608502, 6.636590811800794, 2.576158149609762]
 @end example
 
-A fun@value{cedilha}@~{a}o @code{global_variances} tem um argumento l@'{o}gico opcional: @code{global_variances(x,true)} diz ao Maxima que @code{x} @'{e} a matriz de dados, fazendo o mesmo que @code{global_variances(x)}. Por outro lado, @code{global_variances(x,false)} significa que @code{x} n@~{a}o @'{e} a matriz de dados, mas a matriz de covari@^{a}ncia, evitando a repeti@value{cedilha}@~{a}o seu c@'{a}lculo,
+A fun@,{c}@~{a}o @code{global_variances} tem um argumento l@'{o}gico opcional: @code{global_variances(x,true)} diz ao Maxima que @code{x} @'{e} a matriz de dados, fazendo o mesmo que @code{global_variances(x)}. Por outro lado, @code{global_variances(x,false)} significa que @code{x} n@~{a}o @'{e} a matriz de dados, mas a matriz de covari@^{a}ncia, evitando a repeti@,{c}@~{a}o seu c@'{a}lculo,
 
 @c ===beg===
 @c load (descriptive)$
@@ -1563,9 +1563,9 @@ Veja tamb@'{e}m @code{cov} e @code{cov1}.
 
 
 
-@deffn {Fun@value{cedilha}@~{a}o} cor (@var{matriz})
-@deffnx {Fun@value{cedilha}@~{a}o} cor (@var{matriz}, @var{valor_l@'{o}gico})
-A matriz de correla@value{cedilha}@~{a}o da maostra de v@'{a}rias vari@'{a}veis.
+@deffn {Fun@,{c}@~{a}o} cor (@var{matriz})
+@deffnx {Fun@,{c}@~{a}o} cor (@var{matriz}, @var{valor_l@'{o}gico})
+A matriz de correla@,{c}@~{a}o da maostra de v@'{a}rias vari@'{a}veis.
 
 Exemplo:
 
@@ -1593,7 +1593,7 @@ Exemplo:
       [ .7519506  0.782502  .8323358  .7293848    1.0    ]
 @end example
 
-A fun@value{cedilha}@~{a}o @code{cor} tem um argumento l@'{o}gico opcional: @code{cor(x,true)} diz ao Maxima que @code{x} @'{e} a matriz de dados, fazendo o mesmo que @code{cor(x)}. Por outro lado, @code{cor(x,false)} significa que @code{x} n@~{a}o @'{e} a matriz de dados, mas a matriz de covari@^{a}ncia, evitando a repeti@value{cedilha}@~{a}o de seu c@'{a}lculo,
+A fun@,{c}@~{a}o @code{cor} tem um argumento l@'{o}gico opcional: @code{cor(x,true)} diz ao Maxima que @code{x} @'{e} a matriz de dados, fazendo o mesmo que @code{cor(x)}. Por outro lado, @code{cor(x,false)} significa que @code{x} n@~{a}o @'{e} a matriz de dados, mas a matriz de covari@^{a}ncia, evitando a repeti@,{c}@~{a}o de seu c@'{a}lculo,
 
 @c ===beg===
 @c load (descriptive)$
@@ -1626,9 +1626,9 @@ Veja tamb@'{e}m @code{cov} e @code{cov1}.
 
 
 
-@deffn {Fun@value{cedilha}@~{a}o} list_correlations (@var{matriz})
-@deffnx {Fun@value{cedilha}@~{a}o} list_correlations (@var{matriz}, @var{valor_l@'{o}gico})
-A fun@value{cedilha}@~{a}o @code{list_correlations} retorna uma lista de medidas de correla@value{cedilha}@~{a}o:
+@deffn {Fun@,{c}@~{a}o} list_correlations (@var{matriz})
+@deffnx {Fun@,{c}@~{a}o} list_correlations (@var{matriz}, @var{valor_l@'{o}gico})
+A fun@,{c}@~{a}o @code{list_correlations} retorna uma lista de medidas de correla@,{c}@~{a}o:
 
 @itemize @bullet
 
@@ -1653,7 +1653,7 @@ $${S_{1}^{-1}}={\left(s^{ij}\right)_{i,j=1,2,\ldots, p}}$$
 @end tex
 
 @item
-@var{vetor de correla@value{cedilha}@~{a}o multipla}:  @math{(R_1^2, R_2^2, ..., R_p^2)}, com 
+@var{vetor de correla@,{c}@~{a}o multipla}:  @math{(R_1^2, R_2^2, ..., R_p^2)}, com 
 @ifhtml
 @example
        2          1
@@ -1678,7 +1678,7 @@ $${R_{i}^{2}}={1-{{1}\over{s^{ii}s_{ii}}}}$$
 sendo um indicador do melhor do ajuste do modelo de regress@~{a}o linear de v@'{a}rias vari@'{a}veis dobre @math{X_i} quando o resto das vari@'{a}veis s@~{a}o usados como regressores.
 
 @item
-@var{matriz de correla@value{cedilha}@~{a}o parcial}: como elemento @math{(i, j)} sendo
+@var{matriz de correla@,{c}@~{a}o parcial}: como elemento @math{(i, j)} sendo
 @ifhtml
 @example
                          ij
@@ -1714,8 +1714,8 @@ Exemplo:
 @c z : list_correlations (s2)$
 @c fpprintprec : 5$ /* for pretty output */
 @c z[1];  /* matriz de precis@~{a}o */
-@c z[2];  /* vetor de correla@value{cedilha}@~{a}o multipla */
-@c z[3];  /* matriz parcial de correla@value{cedilha}@~{a}o */
+@c z[2];  /* vetor de correla@,{c}@~{a}o multipla */
+@c z[3];  /* matriz parcial de correla@,{c}@~{a}o */
 @c ===end===
 @example
 (%i1) load (descriptive)$
@@ -1747,23 +1747,23 @@ Exemplo:
        [ - .13049   .23492   .37956   .26719    - 1.0   ]
 @end example
 
-A fun@value{cedilha}@~{a}o @code{list_correlations} tamb@'{e}m tem um argumento l@'{o}gico opcional: @code{list_correlations(x,true)} diz ao Maxima que @code{x} @'{e} a matriz de dados, fazendo o mesmo que @code{list_correlations(x)}. Por outro lado, @code{list_correlations(x,false)} significa que @code{x} n@~{a}o @'{e} a matriz de correla@value{cedilha}@~{a}o, mas a matriz de covariancia, evitando a repeti@value{cedilha}@~{a}o de seu c@'{a}lculo.
+A fun@,{c}@~{a}o @code{list_correlations} tamb@'{e}m tem um argumento l@'{o}gico opcional: @code{list_correlations(x,true)} diz ao Maxima que @code{x} @'{e} a matriz de dados, fazendo o mesmo que @code{list_correlations(x)}. Por outro lado, @code{list_correlations(x,false)} significa que @code{x} n@~{a}o @'{e} a matriz de correla@,{c}@~{a}o, mas a matriz de covariancia, evitando a repeti@,{c}@~{a}o de seu c@'{a}lculo.
 
 Veja tamb@'{e}m @code{cov} e @code{cov1}.
 @end deffn
 
 
 
-@node Defini@value{cedilha}@~{o}es para gr@'{a}ficos estat@'{i}sticos,  , Defini@value{cedilha}@~{o}es espec@'{i}ficas para estat@'{i}stica descritiva de v@'{a}rias vari@'{a}veis, descriptive
-@section Defini@value{cedilha}@~{o}es para gr@'{a}ficos estat@'{i}sticos
+@node Defini@,{c}@~{o}es para gr@'{a}ficos estat@'{i}sticos,  , Defini@,{c}@~{o}es espec@'{i}ficas para estat@'{i}stica descritiva de v@'{a}rias vari@'{a}veis, descriptive
+@section Defini@,{c}@~{o}es para gr@'{a}ficos estat@'{i}sticos
 
 
 
-@deffn {Fun@value{cedilha}@~{a}o} dataplot (@var{lista})
-@deffnx {Fun@value{cedilha}@~{a}o} dataplot (@var{lista}, @var{op@value{cedilha}@~{a}o_1}, @var{op@value{cedilha}@~{a}o_2}, ...)
-@deffnx {Fun@value{cedilha}@~{a}o} dataplot (@var{matriz})
-@deffnx {Fun@value{cedilha}@~{a}o} dataplot (@var{matriz}, @var{op@value{cedilha}@~{a}o_1}, @var{op@value{cedilha}@~{a}o_2}, ...)
-A fun@value{cedilha}@~{a}o @code{dataplot} permite visualiza@value{cedilha}@~{a}o direta de dados de amostra, ambas d uma @'{u}nica vari@'{a}vel (@var{lista}) e de v@'{a}rias vari@'{a}veis (@var{matriz}). Fornecendo valores para as seguintes @var{op@value{cedilha}@~{o}es} que s@~{a}o alguns asp@'{e}ctos de impress@~{a}o que podem ser controlados:
+@deffn {Fun@,{c}@~{a}o} dataplot (@var{lista})
+@deffnx {Fun@,{c}@~{a}o} dataplot (@var{lista}, @var{op@,{c}@~{a}o_1}, @var{op@,{c}@~{a}o_2}, ...)
+@deffnx {Fun@,{c}@~{a}o} dataplot (@var{matriz})
+@deffnx {Fun@,{c}@~{a}o} dataplot (@var{matriz}, @var{op@,{c}@~{a}o_1}, @var{op@,{c}@~{a}o_2}, ...)
+A fun@,{c}@~{a}o @code{dataplot} permite visualiza@,{c}@~{a}o direta de dados de amostra, ambas d uma @'{u}nica vari@'{a}vel (@var{lista}) e de v@'{a}rias vari@'{a}veis (@var{matriz}). Fornecendo valores para as seguintes @var{op@,{c}@~{o}es} que s@~{a}o alguns asp@'{e}ctos de impress@~{a}o que podem ser controlados:
 
 @itemize @bullet
 
@@ -1786,7 +1786,7 @@ A fun@value{cedilha}@~{a}o @code{dataplot} permite visualiza@value{cedilha}@~{a}
 @code{'threedim}, o valor padr@~{a}o @'{e} @code{true}, diz ao Maxima se ou monta-se o gr@'{a}fico de uma matriz de tr@^{e}s colunas como um diagrama 3D ou se monta-se o gr@'{a}fico como um diagrama de dispers@~{a}o de v@'{a}rias vari@'{a}veis. Veja exemplos abaixo.
 
 @item
-@code{'axisrot}, o valor padr@~{a}o @'{e} @code{[60, 30]}, modifica o ponto de visualiza@value{cedilha}@~{a}o quando @code{'threedim} for escolhido para @code{true} dados forem armazenados em uma matriz de tr@^{e}s colunas. O primeiro n@'{u}mero @'{e} o @^{a}ngulo de rota@value{cedilha}@~{a}o do eixo @var{x}, e o segundo n@'{u}mero @'{e} o angulo de rota@value{cedilha}@~{a}o do eixo @var{z}-axis, ambas as medidas em graus.
+@code{'axisrot}, o valor padr@~{a}o @'{e} @code{[60, 30]}, modifica o ponto de visualiza@,{c}@~{a}o quando @code{'threedim} for escolhido para @code{true} dados forem armazenados em uma matriz de tr@^{e}s colunas. O primeiro n@'{u}mero @'{e} o @^{a}ngulo de rota@,{c}@~{a}o do eixo @var{x}, e o segundo n@'{u}mero @'{e} o angulo de rota@,{c}@~{a}o do eixo @var{z}-axis, ambas as medidas em graus.
 
 @item
 @code{'nclasses}, o valor padr@~{a}o @'{e} @code{10}, @'{e} o n@'{u}mero de classes para histogramas na diagonal de gr@'{a}ficos de dispers@~{a}o de v@'{a}rias vari@'{a}veis.
@@ -1811,7 +1811,7 @@ Por exemplo, com a seguite entrada um gr@'{a}fico simples dos primeiros vinte d@
 (%i4) dataplot (makelist (s1[k], k, 1, 20), 'pointstyle = 3)$
 @end example
 
-Note que dados unidimensionais s@~{a}o colocados no gr@'{a}fico como uma s@'{e}rie de tempo. No caso seguinte, ocorre a mesma coisa s@'{o} que com mais dados e com mais configura@value{cedilha}@~{o}es,
+Note que dados unidimensionais s@~{a}o colocados no gr@'{a}fico como uma s@'{e}rie de tempo. No caso seguinte, ocorre a mesma coisa s@'{o} que com mais dados e com mais configura@,{c}@~{o}es,
 
 @c ===beg===
 @c load (descriptive)$
@@ -1830,7 +1830,7 @@ Note que dados unidimensionais s@~{a}o colocados no gr@'{a}fico como uma s@'{e}r
  'joined = true)$
 @end example
 
-A fun@value{cedilha}@~{a}o @code{dataplot} pode ser usada para montar gr@'{a}ficos de pontos no plano. O exemplo seguinte @'{e} gr@'{a}fico de dispers@~{a}o de pares de pontos de velocidades de vento para o primeira e para o quinta esta@value{cedilha}@~{a}o meteorol@'{o}gica,
+A fun@,{c}@~{a}o @code{dataplot} pode ser usada para montar gr@'{a}ficos de pontos no plano. O exemplo seguinte @'{e} gr@'{a}fico de dispers@~{a}o de pares de pontos de velocidades de vento para o primeira e para o quinta esta@,{c}@~{a}o meteorol@'{o}gica,
 
 @c ===beg===
 @c load (descriptive)$
@@ -1864,7 +1864,7 @@ Se pontos forem armazenados em uma matriz de duas colunas, @code{dataplot} pode 
  'joined = true, 'axisnames = ["", ""], 'picturescales = [0.5, 1.0])$
 @end example
 
-Pontos no espa@value{cedilha}o tridimensional podem ser vistos como uma proje@value{cedilha}@~{a}o no plano. Nesse exemplo, o gr@'{a}fico de velocidades do vento correspondendo a tr@^{e}s esta@value{cedilha}òes meteorol@'{o}gicas s@~{a}o requisitados, primeiramente em um gr@'{a}fico em 3D e a seguir em um gr@'{a}fico de dispers@`ao de v@'{a}rias vari@'{a}veis.
+Pontos no espa@,{c}o tridimensional podem ser vistos como uma proje@,{c}@~{a}o no plano. Nesse exemplo, o gr@'{a}fico de velocidades do vento correspondendo a tr@^{e}s esta@,{c}òes meteorol@'{o}gicas s@~{a}o requisitados, primeiramente em um gr@'{a}fico em 3D e a seguir em um gr@'{a}fico de dispers@`ao de v@'{a}rias vari@'{a}veis.
 
 @c ===beg===
 @c load (descriptive)$
@@ -1872,7 +1872,7 @@ Pontos no espa@value{cedilha}o tridimensional podem ser vistos como uma proje@va
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c /* Gr@'{a}fico em 3Dt */ dataplot (submatrix (s2, 4, 5), 'pointstyle = 2,
 @c  'maintitle = "Pares de medidas de velocidades do vento em n@'{o}s",
-@c  'axisnames = ["Esta@value{cedilha}@~{a}o A", "Esta@value{cedilha}@~{a}o B", "Esta@value{cedilha}@~{a}o C"])$
+@c  'axisnames = ["Esta@,{c}@~{a}o A", "Esta@,{c}@~{a}o B", "Esta@,{c}@~{a}o C"])$
 @c /* Gr@'{a}fico de dispers@~{a}o de v@'{a}rias vari@'{a}veis */ dataplot (submatrix (s2, 4, 5),
 @c  'nclasses = 6, 'threedim = false)$
 @c ===end===
@@ -1882,11 +1882,11 @@ Pontos no espa@value{cedilha}o tridimensional podem ser vistos como uma proje@va
 (%i3) s2 : read_matrix (file_search ("wind.data"))$
 (%i4) /* 3D plot */ dataplot (submatrix (s2, 4, 5), 'pointstyle = 2,
  'maintitle = "Pares de medidas de velocidades do vento em n@'{o}s",
- 'axisnames = ["Esta@value{cedilha}@~{a}o A", "Esta@value{cedilha}@~{a}o B", "Esta@value{cedilha}@~{a}o C"])$
+ 'axisnames = ["Esta@,{c}@~{a}o A", "Esta@,{c}@~{a}o B", "Esta@,{c}@~{a}o C"])$
 (%i5) /* Gr@'{a}fico de dispers@~{a}o de v@'{a}rias vari@'{a}veis */ dataplot (submatrix (s2, 4, 5),
  'nclasses = 6, 'threedim = false)$
 @end example
-Note que no @'{u}ltimo exemplo, o n@'{u}mero de classes no histogramas da diagonal @'{e} escolhido para 6, e aquela op@value{cedilha}@~{a}o @code{'threedim} for escolhida para @code{false}.
+Note que no @'{u}ltimo exemplo, o n@'{u}mero de classes no histogramas da diagonal @'{e} escolhido para 6, e aquela op@,{c}@~{a}o @code{'threedim} for escolhida para @code{false}.
 
 Para mais que tr@^{e}s dimens@~{o}es somente gr@'{a}ficos de dispers@~{a}o de v@'{a}rias vari@'{a}veis s@~{a}o poss@'{i}vel, como em
 
@@ -1906,11 +1906,11 @@ Para mais que tr@^{e}s dimens@~{o}es somente gr@'{a}ficos de dispers@~{a}o de v@
 
 
 
-@deffn {Fun@value{cedilha}@~{a}o} histogram (@var{lista})
-@deffnx {Fun@value{cedilha}@~{a}o} histogram (@var{lista}, @var{op@value{cedilha}@~{a}o_1}, @var{op@value{cedilha}@~{a}o_2}, ...)
-@deffnx {Fun@value{cedilha}@~{a}o} histogram (@var{one_column_matrix})
-@deffnx {Fun@value{cedilha}@~{a}o} histogram (@var{one_column_matrix}, @var{op@value{cedilha}@~{a}o_1}, @var{op@value{cedilha}@~{a}o_2}, ...)
-Essa fun@value{cedilha}@~{a}o monta um gr@'{a}fico de um histograma. Dados de amostras devem ser armazenados em uma lista de n@'{u}meros ou em uma matriz de uma coluna. Fornecendo valores para as seguintes @var{op@value{cedilha}@~{o}es} alguns asp@'{e}ctos do gr@'{a}fico podem ser controlados:
+@deffn {Fun@,{c}@~{a}o} histogram (@var{lista})
+@deffnx {Fun@,{c}@~{a}o} histogram (@var{lista}, @var{op@,{c}@~{a}o_1}, @var{op@,{c}@~{a}o_2}, ...)
+@deffnx {Fun@,{c}@~{a}o} histogram (@var{one_column_matrix})
+@deffnx {Fun@,{c}@~{a}o} histogram (@var{one_column_matrix}, @var{op@,{c}@~{a}o_1}, @var{op@,{c}@~{a}o_2}, ...)
+Essa fun@,{c}@~{a}o monta um gr@'{a}fico de um histograma. Dados de amostras devem ser armazenados em uma lista de n@'{u}meros ou em uma matriz de uma coluna. Fornecendo valores para as seguintes @var{op@,{c}@~{o}es} alguns asp@'{e}ctos do gr@'{a}fico podem ser controlados:
 
 @itemize @bullet
 
@@ -1940,7 +1940,7 @@ Essa fun@value{cedilha}@~{a}o monta um gr@'{a}fico de um histograma. Dados de am
 
 @end itemize
 
-Nos pr@'{o}ximos dois exemplos, histogramas s@~{a}o requisitados para os primeiros 100 d@'{i}gitos do n@'{u}mero @code{%pi} e para velocidades do vento na terceira esta@value{cedilha}@~{a}o meteorol@'{o}gica.
+Nos pr@'{o}ximos dois exemplos, histogramas s@~{a}o requisitados para os primeiros 100 d@'{i}gitos do n@'{u}mero @code{%pi} e para velocidades do vento na terceira esta@,{c}@~{a}o meteorol@'{o}gica.
 
 @c ===beg===
 @c load (descriptive)$
@@ -1962,16 +1962,16 @@ Nos pr@'{o}ximos dois exemplos, histogramas s@~{a}o requisitados para os primeir
 @end example
 Note tque no primeiro caso, @code{s1} @'{e} uma lista  e o segundo exemplo, @code{col(s2,3)} @'{e} uma matriz.
 
-Veja tamb@'{e}m a fun@value{cedilha}@~{a}o @code{barsplot}.
+Veja tamb@'{e}m a fun@,{c}@~{a}o @code{barsplot}.
 @end deffn
 
 
 
-@deffn {Fun@value{cedilha}@~{a}o} barsplot (@var{lista})
-@deffnx {Fun@value{cedilha}@~{a}o} barsplot (@var{lista}, @var{op@value{cedilha}@~{a}o_1}, @var{op@value{cedilha}@~{a}o_2}, ...)
-@deffnx {Fun@value{cedilha}@~{a}o} barsplot (@var{one_column_matrix})
-@deffnx {Fun@value{cedilha}@~{a}o} barsplot (@var{one_column_matrix}, @var{op@value{cedilha}@~{a}o_1}, @var{op@value{cedilha}@~{a}o_2}, ...)
-Similar a @code{histogram} mas para vari@'{a}veis estat@'{i}sticas, num@'{e}ricas ou divididas em categorias. As op@value{cedilha}@~{o}es est@~{a}o abaixo,
+@deffn {Fun@,{c}@~{a}o} barsplot (@var{lista})
+@deffnx {Fun@,{c}@~{a}o} barsplot (@var{lista}, @var{op@,{c}@~{a}o_1}, @var{op@,{c}@~{a}o_2}, ...)
+@deffnx {Fun@,{c}@~{a}o} barsplot (@var{one_column_matrix})
+@deffnx {Fun@,{c}@~{a}o} barsplot (@var{one_column_matrix}, @var{op@,{c}@~{a}o_1}, @var{op@,{c}@~{a}o_2}, ...)
+Similar a @code{histogram} mas para vari@'{a}veis estat@'{i}sticas, num@'{e}ricas ou divididas em categorias. As op@,{c}@~{o}es est@~{a}o abaixo,
 
 @itemize @bullet
 
@@ -2035,14 +2035,14 @@ A primeira coluna na amostra @code{s3} armazena os valores das categorias @code{
 @end example
 
 
-Veja tamb@'{e}m a fun@value{cedilha}@~{a}o @code{histogram}.
+Veja tamb@'{e}m a fun@,{c}@~{a}o @code{histogram}.
 @end deffn
 
 
 
-@deffn {Fun@value{cedilha}@~{a}o} boxplot (@var{data})
-@deffnx {Fun@value{cedilha}@~{a}o} boxplot (@var{data}, @var{op@value{cedilha}@~{a}o_1}, @var{op@value{cedilha}@~{a}o_2}, ...)
-Essa fun@value{cedilha}@~{a}o monta diagramas em caixas. O argumento @var{data} pode ser uma lista, que n@~{a}o @'{e} de grande interesse, uma vez que esses diagramas s@~{a}o principalmente usados para compara@value{cedilha}@~{a}o entre diferentes amostras, ou uma matriz, eent@~{a}o @'{e} poss@'{i}vel comparar dois ou mais componentes de uma vari@'{a}vel estat@'{i}stica de v@'{a}rias vari@'{a}veis. Mas @'{e} tamb@'{e}m permitido @var{data} se uma lista de amostras com tamanhos diferentes de amostra, de fato essa @'{e} aa @'{u}nica fun@value{cedilha}@~{a}o no pacote @code{descriptive} que admite esse tipo de estrutura de dados. Veja o exemplo abaixo.  Abaixo et@~{a}o as op@value{cedilha}@~{o}es,
+@deffn {Fun@,{c}@~{a}o} boxplot (@var{data})
+@deffnx {Fun@,{c}@~{a}o} boxplot (@var{data}, @var{op@,{c}@~{a}o_1}, @var{op@,{c}@~{a}o_2}, ...)
+Essa fun@,{c}@~{a}o monta diagramas em caixas. O argumento @var{data} pode ser uma lista, que n@~{a}o @'{e} de grande interesse, uma vez que esses diagramas s@~{a}o principalmente usados para compara@,{c}@~{a}o entre diferentes amostras, ou uma matriz, eent@~{a}o @'{e} poss@'{i}vel comparar dois ou mais componentes de uma vari@'{a}vel estat@'{i}stica de v@'{a}rias vari@'{a}veis. Mas @'{e} tamb@'{e}m permitido @var{data} se uma lista de amostras com tamanhos diferentes de amostra, de fato essa @'{e} aa @'{u}nica fun@,{c}@~{a}o no pacote @code{descriptive} que admite esse tipo de estrutura de dados. Veja o exemplo abaixo.  Abaixo et@~{a}o as op@,{c}@~{o}es,
 
 @itemize @bullet
 
@@ -2067,7 +2067,7 @@ Examples:
 @c load (numericalio)$
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c boxplot (s2, 'maintitle = "Velocidade do vento em n@'{o}s",
-@c  'axisnames = ["Esta@value{cedilha}@~{a}o do ano", ""])$
+@c  'axisnames = ["Esta@,{c}@~{a}o do ano", ""])$
 @c A :
 @c  [[6, 4, 6, 2, 4, 8, 6, 4, 6, 4, 3, 2],
 @c   [8, 10, 7, 9, 12, 8, 10],
@@ -2079,7 +2079,7 @@ Examples:
 (%i2) load (numericalio)$
 (%i3) s2 : read_matrix (file_search ("wind.data"))$
 (%i4) boxplot (s2, 'maintitle = "Velocidade do vento em n@'{o}s",
- 'axisnames = ["Esta@value{cedilha}@~{a}o do ano", ""])$
+ 'axisnames = ["Esta@,{c}@~{a}o do ano", ""])$
 (%i5) A :
  [[6, 4, 6, 2, 4, 8, 6, 4, 6, 4, 3, 2],
   [8, 10, 7, 9, 12, 8, 10],

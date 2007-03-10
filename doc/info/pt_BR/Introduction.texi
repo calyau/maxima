@@ -108,7 +108,7 @@ Maxima pode fazer c@'{a}lculos diferenciais e integrais:
                   6             sqrt(3)          3
 @end example
 
-Maxima pode resolver sistemas lineares e equa@value{cedilha}@~{o}es c@'{u}bicas:
+Maxima pode resolver sistemas lineares e equa@,{c}@~{o}es c@'{u}bicas:
 
 @example
 (%i1) linsolve ([3*x + 4*y = 7, 2*x + a*y = 13], [x, y]);
@@ -119,7 +119,7 @@ Maxima pode resolver sistemas lineares e equa@value{cedilha}@~{o}es c@'{u}bicas:
 (%o2)       [x = - sqrt(5) %i, x = sqrt(5) %i, x = 3]
 @end example
 
-Maxima pode resolver sistemas de equa@value{cedilha}@~{o}es n@~{a}o lineares.  Note que se voc@^{e} n@~{a}o
+Maxima pode resolver sistemas de equa@,{c}@~{o}es n@~{a}o lineares.  Note que se voc@^{e} n@~{a}o
 quer um resultado impresso, voc@^{e} pode encerrar seu comando com @kbd{$} em lugar de
 encerrar com @kbd{;}.
 
@@ -137,7 +137,7 @@ encerrar com @kbd{;}.
 @end example
 
 Maxima pode gerar gr@'{a}ficos de uma ou mais
-fun@value{cedilha}@~{o}es:
+fun@,{c}@~{o}es:
 
 @example
 (%i1) eq_1: x^2 + 3*x*y + y^2 = 0$

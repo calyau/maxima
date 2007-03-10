@@ -1,13 +1,13 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /stirling.texi/1.1/Mon Feb 27 22:09:17 2006//
 @menu
-* Defini@value{cedilha}@~{o}es para stirling::
+* Defini@,{c}@~{o}es para stirling::
 @end menu
 
-@node Defini@value{cedilha}@~{o}es para stirling,  , stirling, stirling
-@section Defini@value{cedilha}@~{o}es para stirling
+@node Defini@,{c}@~{o}es para stirling,  , stirling, stirling
+@section Defini@,{c}@~{o}es para stirling
 
-@deffn {Fun@value{cedilha}@~{a}o} stirling (@var{z},@var{n})
+@deffn {Fun@,{c}@~{a}o} stirling (@var{z},@var{n})
 Substitui @code{gamma(x)} pela f@'{o}rmula de Stirling @math{O(1/x^(2n-1))}. Quando @var{n} for
 um inteiro estritamente negativo, sinaliza um erro.
 
@@ -36,8 +36,8 @@ Exemplos:
                                   2
 @end example
 
-A fun@value{cedilha}@~{a}o @code{stirling} conhece a diferen@value{cedilha}a entre a vari@'{a}vel @var{gamma} e
-a fun@value{cedilha}@~{a}o @code{gamma}:
+A fun@,{c}@~{a}o @code{stirling} conhece a diferen@,{c}a entre a vari@'{a}vel @var{gamma} e
+a fun@,{c}@~{a}o @code{gamma}:
 
 @example
 (%i5) stirling(gamma + gamma(x),0);
@@ -50,5 +50,5 @@ a fun@value{cedilha}@~{a}o @code{gamma}:
                          + sqrt(2) sqrt(%pi) x        %e
 @end example
 
-Para usar essa fun@value{cedilha}@~{a}o escreva primeiro @code{load("stirling")}.
+Para usar essa fun@,{c}@~{a}o escreva primeiro @code{load("stirling")}.
 @end deffn

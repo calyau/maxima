@@ -1,11 +1,11 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /Trigonometric.texi/1.14/Fri Jun 17 00:57:35 2005/-ko/
 @menu
-* Introdu@value{cedilha}@~{a}o ao Pacote Trigonom@'{e}trico::  
-* Defini@value{cedilha}@~{o}es para Trigonometria::  
+* Introdu@,{c}@~{a}o ao Pacote Trigonom@'{e}trico::  
+* Defini@,{c}@~{o}es para Trigonometria::  
 @end menu
 
-@node Introdu@value{cedilha}@~{a}o ao Pacote Trigonom@'{e}trico, Defini@value{cedilha}@~{o}es para Trigonometria, Trigonometria, Trigonometria
+@node Introdu@,{c}@~{a}o ao Pacote Trigonom@'{e}trico, Defini@,{c}@~{o}es para Trigonometria, Trigonometria, Trigonometria
 @section Introdu@,{c}@~{a}o ao Pacote Trigonom@'{e}trico
 
 Maxima tem muitas fun@,{c}@~{o}es trigonom@'{e}tricas definidas.  N@~{a}o todas as identidades
@@ -24,7 +24,7 @@ compartilhados extendem as regras de simplifica@,{c}@~{a}o constru@'{i}das no Ma
 @code{ntrig} e @code{atrig1}.  Fa@,{c}a @code{describe(@var{comando})}
 para detalhes.
 
-@node Defini@value{cedilha}@~{o}es para Trigonometria,  , Introdu@value{cedilha}@~{a}o ao Pacote Trigonom@'{e}trico, Trigonometria
+@node Defini@,{c}@~{o}es para Trigonometria,  , Introdu@,{c}@~{a}o ao Pacote Trigonom@'{e}trico, Trigonometria
 @section Defini@,{c}@~{o}es para Trigonometria
 
 @deffn {Fun@,{c}@~{a}o} acos (@var{x})
@@ -231,18 +231,18 @@ Exemplos:
 
 @end deffn
 
-@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} trigexpandplus
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} trigexpandplus
 Valor padr@~{a}o: @code{true}
 
 @code{trigexpandplus} controla a regra da "soma" para
 @code{trigexpand}.  Dessa forma, quando o comando @code{trigexpand} for usado ou o
-comutador @code{trigexpand} escolhido para @code{true}, expans@~{a}o de adi@value{cedilha}@~{o}es
+comutador @code{trigexpand} escolhido para @code{true}, expans@~{a}o de adi@,{c}@~{o}es
 (e.g. @code{sin(x+y))} ter@~{a}o lugar somente se @code{trigexpandplus} for
 @code{true}.
 
 @end defvr
 
-@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} trigexpandtimes
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} trigexpandtimes
 Valor padr@~{a}o: @code{true}
 
 @code{trigexpandtimes} controla a regra "produto" para
@@ -252,31 +252,31 @@ ter@~{a}o lugar somente se @code{trigexpandtimes} for @code{true}.
 
 @end defvr
 
-@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} triginverses
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} triginverses
 Valor padr@~{a}o: @code{all}
 
-@code{triginverses} controla a simplifica@value{cedilha}@~{a}o de
-composi@value{cedilha}@~{o}es de fun@value{cedilha}@~{o}es trigonom@'{e}tricas e hiperb@'{o}licas com suas fun@value{cedilha}@~{o}es
+@code{triginverses} controla a simplifica@,{c}@~{a}o de
+composi@,{c}@~{o}es de fun@,{c}@~{o}es trigonom@'{e}tricas e hiperb@'{o}licas com suas fun@,{c}@~{o}es
 inversas.
 
 Se @code{all}, ambas e.g. @code{atan(tan(@var{x}))} 
 e @code{tan(atan(@var{x}))} simplificar@~{a}o para @var{x}.  
 
-Se @code{true}, a simplifica@value{cedilha}@~{a}o  de @code{@var{arcfun}(@var{fun}(@var{x}))} 
+Se @code{true}, a simplifica@,{c}@~{a}o  de @code{@var{arcfun}(@var{fun}(@var{x}))} 
 @'{e} desabilitada.
 
-Se @code{false}, ambas as simplifica@value{cedilha}@~{o}es  
+Se @code{false}, ambas as simplifica@,{c}@~{o}es  
 @code{@var{arcfun}(@var{fun}(@var{x}))} e  
 @code{@var{fun}(@var{arcfun}(@var{x}))}
 s@~{a}o desabilitadas.
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~{a}o} trigreduce (@var{expr}, @var{x})
-@deffnx {Fun@value{cedilha}@~{a}o} trigreduce (@var{expr})
+@deffn {Fun@,{c}@~{a}o} trigreduce (@var{expr}, @var{x})
+@deffnx {Fun@,{c}@~{a}o} trigreduce (@var{expr})
 Combina produtos e expoentes de senos e cossenso
 trigonom@'{e}tricos e hiperb@'{o}licos de @var{x} dentro daqueles de m@'{u}ltiplos de @var{x}.
-Tamb@'{e}m tenta eliminar essas fun@value{cedilha}@~{o}es quando elas ocorrerem em
+Tamb@'{e}m tenta eliminar essas fun@,{c}@~{o}es quando elas ocorrerem em
 denominadores.  Se @var{x} for omitido ent@~{a}o todas as vari@'{a}veis em @var{expr} s@~{a}o usadas.
 
 Veja tamb@'{e}m @code{poissimp}.
@@ -292,8 +292,8 @@ Veja tamb@'{e}m @code{poissimp}.
 
 @end example
 
-As rotinas de simplifica@value{cedilha}@~{a}o trigonom@'{e}trica ir@~{a}o usar informa@value{cedilha}@~{o}es
-declaradas em alguns casos simples.  Declara@value{cedilha}@~{o}es sobre vari@'{a}veis s@~{a}o
+As rotinas de simplifica@,{c}@~{a}o trigonom@'{e}trica ir@~{a}o usar informa@,{c}@~{o}es
+declaradas em alguns casos simples.  Declara@,{c}@~{o}es sobre vari@'{a}veis s@~{a}o
 usadas como segue, e.g.
 
 @c ===beg===
@@ -312,22 +312,22 @@ usadas como segue, e.g.
 
 @end deffn
 
-@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} trigsign
+@defvr {Vari@'{a}vel de op@,{c}@~{a}o} trigsign
 Valor padr@~{a}o: @code{true}
 
-Quando @code{trigsign} for @code{true}, permite simplifica@value{cedilha}@~{a}o de argumentos
-negativos para fun@value{cedilha}@~{o}es trigonom@'{e}tricas. E.g., @code{sin(-x)} transformar-se-@'{a} em
+Quando @code{trigsign} for @code{true}, permite simplifica@,{c}@~{a}o de argumentos
+negativos para fun@,{c}@~{o}es trigonom@'{e}tricas. E.g., @code{sin(-x)} transformar-se-@'{a} em
 @code{-sin(x)} somente se @code{trigsign} for @code{true}.
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~{a}o} trigsimp (@var{expr})
+@deffn {Fun@,{c}@~{a}o} trigsimp (@var{expr})
 Utiliza as identidades @math{sin(x)^2 + cos(x)^2 = 1} and
 @math{cosh(x)^2 - sinh(x)^2 = 1} para simplificar express@~{o}es contendo @code{tan}, @code{sec},
 etc., para @code{sin}, @code{cos}, @code{sinh}, @code{cosh}.
 
 @code{trigreduce}, @code{ratsimp}, e @code{radcan} podem estar
-habilitadas a adicionar simplifica@value{cedilha}@~{o}es ao resultado.
+habilitadas a adicionar simplifica@,{c}@~{o}es ao resultado.
 
 @code{demo ("trgsmp.dem")} mostra alguns exemplos de @code{trigsimp}.
 @c MERGE EXAMPLES INTO THIS ITEM
@@ -335,12 +335,12 @@ habilitadas a adicionar simplifica@value{cedilha}@~{o}es ao resultado.
 @end deffn
 
 @c NEEDS CLARIFICATION
-@deffn {Fun@value{cedilha}@~{a}o} trigrat (@var{expr})
+@deffn {Fun@,{c}@~{a}o} trigrat (@var{expr})
 Fornece uma forma quase-linear simplificada can@^{o}nica de uma
-express@~{a}o trigonom@'{e}trica; @var{expr} @'{e} uma fra@value{cedilha}@~{a}o racional de muitos @code{sin},
+express@~{a}o trigonom@'{e}trica; @var{expr} @'{e} uma fra@,{c}@~{a}o racional de muitos @code{sin},
 @code{cos} ou @code{tan}, os argumentos delas s@~{a}o formas lineares em algumas vari@'{a}veis (ou
 kernels-n@'{u}cleos) e @code{%pi/@var{n}} (@var{n} inteiro) com coeficientes inteiros. O resultado @'{e} uma
-fra@value{cedilha}@~{a}o simplificada com numerador e denominador ambos lineares em @code{sin} e @code{cos}.
+fra@,{c}@~{a}o simplificada com numerador e denominador ambos lineares em @code{sin} e @code{cos}.
 Dessa forma @code{trigrat} lineariza sempre quando isso for pass@'{i}vel.
 
 @c ===beg===
@@ -354,7 +354,7 @@ Dessa forma @code{trigrat} lineariza sempre quando isso for pass@'{i}vel.
 
 O seguinte exemplo encontra-se em
 Davenport, Siret, and Tournier, @i{Calcul Formel}, Masson (ou em ingl@^{e}s,
-Addison-Wesley), se@value{cedilha}@~{a}o 1.5.5, teorema de Morley.
+Addison-Wesley), se@,{c}@~{a}o 1.5.5, teorema de Morley.
 
 @c ===beg===
 @c c: %pi/3 - a - b;
