@@ -1723,7 +1723,11 @@ Returns the main operator of the expression @var{expr}.
 @code{op} returns a string if the main operator is
 a built-in or user-defined
 prefix, binary or n-ary infix, postfix, matchfix, or nofix operator.
-Otherwise @code{op} returns a symbol.
+Otherwise, if @var{expr} is a subscripted function expression,
+@code{op} returns the subscripted function;
+in this case the return value is not an atom.
+Otherwise, @var{expr} is an array function or ordinary function expression,
+and @code{op} returns a symbol.
 
 @code{op} observes the value of the global flag @code{inflag}.
 
@@ -1745,6 +1749,8 @@ Examples:
 @c op ('foo (a));
 @c prefix (foo);
 @c op (foo a);
+@c op (F [x, y] (a, b, c));
+@c op (G [u, v, w]);
 @c ===end===
 
 @example
@@ -1769,6 +1775,11 @@ Examples:
 (%o10)                        "foo"
 (%i11) op (foo a);
 (%o11)                        "foo"
+(%i12) op (F [x, y] (a, b, c));
+(%o12)                        F
+                               x, y
+(%i13) op (G [u, v, w]);
+(%o13)                          G
 @end example
 
 @end deffn
