@@ -1727,7 +1727,7 @@ Duas amostras tridimensionais,
 (%i3) s2 : read_matrix (file_search ("wind.data"))$
 (%i4) draw3d(title      = "Velocidades di@'{a}rias de ventos dispon@'{i}veis. Dois conjuntos de dados",
              point_size = 2,
-             key        = "Amostras das esta@value{cedilha}òes 1, 2 e 3",
+             key        = "Amostras das esta@value{cedilha}@~oes 1, 2 e 3",
              points(args(submatrix (s2, 4, 5))),
              point_type = 4,
              key        = "Amostras das esta@value{cedilha}@~{o}es 1, 4 e 5",

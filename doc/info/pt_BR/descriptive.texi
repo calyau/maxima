@@ -1864,7 +1864,7 @@ Se pontos forem armazenados em uma matriz de duas colunas, @code{dataplot} pode 
  'joined = true, 'axisnames = ["", ""], 'picturescales = [0.5, 1.0])$
 @end example
 
-Pontos no espa@value{cedilha}o tridimensional podem ser vistos como uma proje@value{cedilha}@~{a}o no plano. Nesse exemplo, o gr@'{a}fico de velocidades do vento correspondendo a tr@^{e}s esta@value{cedilha}òes meteorol@'{o}gicas s@~{a}o requisitados, primeiramente em um gr@'{a}fico em 3D e a seguir em um gr@'{a}fico de dispers@`ao de v@'{a}rias vari@'{a}veis.
+Pontos no espa@value{cedilha}o tridimensional podem ser vistos como uma proje@value{cedilha}@~{a}o no plano. Nesse exemplo, o gr@'{a}fico de velocidades do vento correspondendo a tr@^{e}s esta@value{cedilha}@~oes meteorol@'{o}gicas s@~{a}o requisitados, primeiramente em um gr@'{a}fico em 3D e a seguir em um gr@'{a}fico de dispers@@~ao de v@'{a}rias vari@'{a}veis.
 
 @c ===beg===
 @c load (descriptive)$

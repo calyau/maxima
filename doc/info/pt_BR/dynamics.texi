@@ -11,7 +11,7 @@
 O pacote adicional @code{dynamics} inclui muitas
 fun@value{cedilha}@~{o}es para criar v@'{a}rias representa@value{cedilha}@~{o}es gr@'{a}ficas de sistemas
 din@^{a}micos discretos e fractais, e uma implementa@value{cedilha}@~{a}o deo m@'{e}todo
-num@'{e}rico de Runge-Kutta de quarta ordem para a resolu@value{cedilha}@~{a}o de sistemas de equa@value{cedilha}òes diferenciais.
+num@'{e}rico de Runge-Kutta de quarta ordem para a resolu@value{cedilha}@~{a}o de sistemas de equa@value{cedilha}@~oes diferenciais.
 
 Para usar as fun@value{cedilha}@~{o}es nesse pacote voc@^{e} deve primeiramente torn@'{a}-lo dispon@'{i}vel para uso com
 @code{load("dynamics")}, e as fun@value{cedilha}@~{o}es que ir@~{a}o criar gr@'{a}ficos

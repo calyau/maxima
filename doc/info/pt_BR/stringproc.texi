@@ -789,7 +789,7 @@ Note que o primeiro caractere em @var{seq_caracte} est@'{a} na posi@value{cedilh
 @deffnx {Fun@value{cedilha}@~{a}o} ssort (@var{seq_caracte}, @var{test}) 
 Retorna uma seq@"{u}@^{e}ncia de caracteres que cont@'{e}m todos os caracteres de @var{seq_caracte} em uma ordem tal que n@~{a}o existam dois caracteres @var{c} sucessivos e @var{d} seja tal que @code{test (@var{c}, @var{d})} seja @code{false} e @code{test (@var{d}, @var{c})} seja @code{true}.
 A fun@value{cedilha}@~{a}o padr@~{a}o de teste para ordena@value{cedilha}@`ao @'{e} @var{clessp}.
-O conjunto de fun@value{cedilha}òes de teste @'{e} @code{@{clessp, clesspignore, cgreaterp, cgreaterpignore, cequal, cequalignore@}}.
+O conjunto de fun@value{cedilha}@~oes de teste @'{e} @code{@{clessp, clesspignore, cgreaterp, cgreaterpignore, cequal, cequalignore@}}.
 
 @c ===beg===
 @c load("stringproc")$
@@ -917,7 +917,7 @@ todos os caracteres em caixa baixa de @var{in@'{i}cio} at@'{e} o fim de @var{seq
 Retorna uma lista de fichas, que tiverem sido extr@'{i}dos de @var{seq_caracte}.
 As fichas s@~{a}o subseq@"{u}@^{e}ncias de caracteres cujos caracteres satisfazem a uma determinada fun@value{cedilha}@~{a}o de teste.
 Se o teste n@~{a}o for fornecido, @var{constituent} @'{e} usada como teste padr@~{a}o.
-@code{@{constituent, alphacharp, digitcharp, lowercasep, uppercasep, charp, characterp, alphanumericp@}} @'{e} o conjunto de fn@value{cedilha}òes de teste. 
+@code{@{constituent, alphacharp, digitcharp, lowercasep, uppercasep, charp, characterp, alphanumericp@}} @'{e} o conjunto de fn@value{cedilha}@~oes de teste. 
 (A ver@~{a}o Lisp de @code{tokens} @'{e} escrita por Paul Graham. ANSI Common Lisp, 1996, page 67.)
 
 @c ===beg===

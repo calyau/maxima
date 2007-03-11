@@ -38,7 +38,7 @@ de outra forma o tamanho @'e escolhido para @var{n}.
 
 
 @deffn {Fun@value{cedilha}@~{a}o} ele2pui (@var{m}, @var{L})
-vai de fun@value{cedilha}@~{o}es sim@'{e}tricas elementares para as fun@value{cedilha}òes completas.
+vai de fun@value{cedilha}@~{o}es sim@'{e}tricas elementares para as fun@value{cedilha}@~oes completas.
 Similar a @code{comp2ele} e @code{comp2pui}.
 
 Outras fun@value{cedilha}@~{o}es para mudan@value{cedilha}as de base: @code{comp2ele}.
@@ -303,7 +303,7 @@ primeiras @var{m} fun@value{cedilha}@~{o}es.
 uma dessas vari@'{a}veis represetna uma fun@value{cedilha}@~{a}o sim@'{e}trica completa.  Na
 lista @var{l_var} o @var{i}-@'{e}sima fun@value{cedilha}@~{a}o sim@'{e}trica completa @'{e} representada atrav@'{e}s da
 concatena@value{cedilha}@~{a}o da letra @code{h} com o inteiro @var{i}:
-@code{h@var{i}}.  Essa fun@value{cedilha}@~{a}o expressa @var{P} em termos de fun@value{cedilha}òes de
+@code{h@var{i}}.  Essa fun@value{cedilha}@~{a}o expressa @var{P} em termos de fun@value{cedilha}@~oes de
 Schur.
 
 
@@ -560,7 +560,7 @@ Dados 2 polin@^{o}mio sim@'{e}tricos em @var{x}, @var{y}:  @code{3*(x + y)
 @noindent
 isso @'{e} @code{10*(x^3*y + y^3*x) + 15*(x^2*y + y^2*x) + 15*(x^3 + y^3)}.
  
-Fun@value{cedilha}òes para mudar as representac@~{o}es de um polin@^{o}mio sim@'{e}trico:
+Fun@value{cedilha}@~oes para mudar as representac@~{o}es de um polin@^{o}mio sim@'{e}trico:
  
 @code{contract}, @code{cont2part}, @code{explose}, @code{part2cont},
 @code{partpol}, @code{tcontract}, @code{tpartpol}.
@@ -671,7 +671,7 @@ escrita por P. Esperet, calcula o n@'{u}mero de Kostka da parti@value{cedilha}@~
 @end deffn
 
 @deffn {Fun@value{cedilha}@~{a}o} lgtreillis (@var{n}, @var{m})
-retorna a lista de parti@value{cedilha}òes de peso @var{n} e comprimento @var{m}.
+retorna a lista de parti@value{cedilha}@~oes de peso @var{n} e comprimento @var{m}.
 
 @c GENERATED FROM THE FOLLOWING
 @c lgtreillis (4, 2);
@@ -699,7 +699,7 @@ Veja tamb@'{e}m: @code{lgtreillis}, @code{treillis} e @code{treinat}.
 @end deffn
 
 @deffn {Fun@value{cedilha}@~{a}o} treillis (@var{n})
-retorna todas as parti@value{cedilha}òes de peso @var{n}.
+retorna todas as parti@value{cedilha}@~oes de peso @var{n}.
 
 @c GENERATED FROM THE FOLLOWING
 @c treillis (4);
@@ -713,7 +713,7 @@ Veja tamb@'{e}m: @code{lgtreillis}, @code{ltreillis} e @code{treinat}.
 @end deffn
 
 @deffn {Fun@value{cedilha}@~{a}o} treinat (@var{part})
-retorna a lista de parti@value{cedilha}òes inferiores @`{a} parti@value{cedilha}@`{a}o @var{part} com rela@value{cedilha}@~{a}o @`{a}
+retorna a lista de parti@value{cedilha}@~oes inferiores @`{a} parti@value{cedilha}@`{a}o @var{part} com rela@value{cedilha}@~{a}o @`{a}
 ordem natural.
 
 @c GENERATED FROM THE FOLLOWING
@@ -741,7 +741,7 @@ Veja tamb@'{e}m: @code{lgtreillis}, @code{ltreillis} e @code{treillis}.
 @subsection Polin@^{o}mios e suas ra@'{i}zes
 
 @deffn {Fun@value{cedilha}@~{a}o} ele2polynome (@var{L}, @var{z})
-retorna o polin@^{o}mio em @var{z} de forma que as fun@value{cedilha}òes elementares
+retorna o polin@^{o}mio em @var{z} de forma que as fun@value{cedilha}@~oes elementares
 sim@'{e}tricas de suas ra@'{i}zes estejam na lista @code{@var{L} = [@var{n},
 @var{e_1}, ..., @var{e_n}]}, onde @var{n} @'{e} o grau dos
 polin@^{o}mios e @var{e_i} @'{e} a @var{i}-@'{e}sima fun@value{cedilha}@~{a}o sim@'{e}trica elementar.

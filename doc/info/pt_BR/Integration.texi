@@ -581,7 +581,7 @@ n@~{a}o est@'{a} claro no que aquela vers@~{a}o difere da vers@~{a}o existente e
 As fun@value{cedilha}@~{o}es QUADPACK inclu@'{i}das no Maxima s@~{a}o toda autom@'{a}ticas,
 no sentido de que essas fun@value{cedilha}@~{o}es tentam calcular um resultado para uma precis@~{a}o espec@'{i}fica,
 requerendo um n@'{u}mero n@~{a}o especificado de avalia@value{cedilha}@~{o}es de fun@value{cedilha}@~{a}o.
-A tradu@value{cedilha}@~{a}o do Lisp do Maxima da iblioteca QUADPACK tamb@'{e}m inclui algumas fun@value{cedilha}òes n@~{a}o autom@'{a}ticas,
+A tradu@value{cedilha}@~{a}o do Lisp do Maxima da iblioteca QUADPACK tamb@'{e}m inclui algumas fun@value{cedilha}@~es n@~{a}o autom@'{a}ticas,
 mas elas n@~{a}o s@~{a}o expostas a n@'{i}vel de Maxima.
 
 Informa@value{cedilha}@~{a}o adicionalsobre a bilioteca QUADPACK pode ser encontrada no livro do QUADPACK
