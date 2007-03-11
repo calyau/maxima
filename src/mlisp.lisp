@@ -33,7 +33,7 @@
 	  $mapprint featurel outfiles fundefsimp mfexprp transp
 	  $macros linel $ratfac $ratwtlvl
 	  $operators noevalargs $piece $partswitch *gcdl*
-	  scanmapp *builtin-$props*))
+	  scanmapp *builtin-$props* $infolists))
 
 (declare-top (unspecial args))
 
@@ -640,7 +640,140 @@ wrapper for this."
 	    (return (arrstore x y)))
 	   (t (merror "Improper value assignment:~%~M" x)))))
 
-;; ---------- begin code copied from defstruct.lisp
+;; ---------- begin code copied & modified from defstruct.lisp
+
+;; CHANGES WRT FATEMAN'S STUFF.
+;; (1) $NEW BARFS IF #ARGUMENTS != 1, OR ARGUMENT HAS NO DEFSTRUCT, OR WRONG NUMBER OF INITIALIZERS.
+;; (2) $DEFSTRUCT ALLOWS 1 OR MORE ARGUMENTS, RETURNS A LIST OF DEFSTRUCTS.
+;; (3) USE $PUT AND $GET TO MAINTAIN DEFSTRUCT PROPERTIES 
+;;     (RENAMED TO $DEFSTRUCT_DEFAULT AND $DEFSTRUCT_TEMPLATE).
+;;     THIS MAKES DEFSTRUCT PROPERTIES VISIBLE TO USER VIA GET AND PROPVARS.
+;;     ALSO, THIS MAKES `KILL' KILL DEFSTRUCTS.
+;; (4) @ EVALUATES LHS AND QUOTES RHS
+;; (5) $STRUCTURES INFOLIST
+;; (6) LBP = 190, RBP = 191 (HIGHER PRECEDENCE, LEFT-ASSOCIATIVE)
+
+(setf (get '$@ 'mset_extension_operator) '$mrecordassign)
+
+;;  defstruct(f(x,y,z));
+;;  myrecord: new(f);
+;;  myrecord@y:45;
+;;  myrecord;  ==>   f(x,45,z)
+
+;; initializers are possible
+;; defstruct(f(x,y=3.14159, z));
+;; ff:new(f)  ==>   f(x,3.14159,z)
+;; ff@y:2.71828 ==>  ff is  f(x,2.71828,z).
+
+;; the @ syntax can also be used instead of substinpart.
+
+;; k:  h(g(aa,bb),cc);
+;; k@1@2:dd; change aa to dd.
+;; k;
+
+(defmfun $mrecordassign (atted value)
+  ;; assume atted is  (($@..)  instance-name  field-name)
+  ;; should insert some checking code here
+  (let* ((in (cadr atted))		;instance
+	 (fn (caddr atted))		;field
+	 (obj (meval in))
+	 (index (if (integerp fn) fn ;;; allow foo@3, also
+	      (position fn ($get (caar obj) '$defstruct_template))))
+	 ) ;field->integer
+    
+    (if (null index) (merror "Unknown field in record:~%~M" fn))
+    (if  (< 0 index (length obj)) (setf (elt obj index) value)
+      (merror "Illegal instance:~%~M @ ~M" in fn))
+    value))
+
+(defmspec $@ (L)
+  (let ((a (cadr L)) (b (caddr L)))
+    ($@-function (meval a) b)))
+
+(defun $@-function (in fn)
+  (if (not (listp in))(list '(%@) in fn) ;noun form
+    (let* ((index  
+	    (if (integerp fn) fn ;;; allow foo@3, also
+	      (position fn ($get (caar in) '$defstruct_template))))) ;field->integer
+    (if (null index) (merror "Unknown field in record:~%~M" fn))
+    (if  (< 0 index (length in))
+	(elt in index) (merror "Illegal instance:~%~M @ ~M" in fn))
+   )))
+
+;; L looks like defstruct (foo(...), bar(...), baz(...)).
+;; Process each argument and return a list of declared structures.
+
+(defmspec $defstruct (L)
+  `((mlist) ,@(mapcar 'defstruct1 (cdr L))))
+
+(defvar $structures '((mlist)))
+
+(eval-when
+    #+gcl (compile eval)
+    #-gcl (:compile-toplevel :execute)
+    (nconc $infolists '($structures)))
+
+(defun defstruct1 (z) ;; z will look like (($whatever) $a $b $c)
+   ;; store the template on $whatever
+  ($put (caar z) (namesonly z) '$defstruct_template)
+  ;; set the initialization on $whatever
+  ($put (caar z) (initializersmostly z) '$defstruct_default)
+  (nconc $structures (list z))
+  z)
+
+(defun namesonly(r)			; f(a,b,c) unchanged, f(a=3,b=4,c=5) -> f(a,b,c)
+  (cons (car r)(mapcar #'(lambda(z)
+			   (cond((symbolp z) z)
+				((eq (caar z) 'mequal)(second z))
+				(t (merror "~% Expected record initializer, not ~M." z))))
+		       (cdr r))))
+
+(defun initializersmostly(r);; f(a=3,b,c=5) -> f(3,b,5)
+  (cons (car r)(mapcar #'(lambda(z)
+			   (cond((symbolp z) z)
+				((eq (caar z) 'mequal)(third z))
+				(t (merror "~% Expected record initializer, not ~M." z))))
+		       (cdr r))))
+
+(defmspec $new (h)
+  (if (not (= (length (cdr h)) 1))
+    (merror "~% new: expected exactly one argument, not ~M." (length (cdr h))))
+
+  (let ((recordname (cadr h)))
+    (cond
+      ((symbolp recordname)  ;; the case of, e.g.  new(f);
+       (if (null ($get recordname '$defstruct_default))
+         (merror "~% new: don't know anything about `~M'." recordname))
+
+       (copy-tree ($get recordname '$defstruct_default)))
+
+      ;; assume there is some initialization here e.g. new (f(5,6,7))
+      (t
+        (let ((recordop (caar recordname)) (recordargs (cdr recordname)))
+          (if (null ($get recordop '$defstruct_default))
+            (merror "~% new: don't know anything about `~M'." recordop))
+
+          (if (not (= (length recordargs) (length (cdr ($get recordop '$defstruct_default)))))
+            (merror "~% new: wrong number of arguments in initializer; expected ~M, not ~M."
+                    (length (cdr ($get recordop '$defstruct_default))) (length recordargs)))
+
+          (copy-tree recordname))))))
+
+;; Following property assignments comprise the Lisp code equivalent to infix("@", 190, 191)
+
+(defprop $@ %@ verb) 
+(defprop $@ &@ op) 
+(defprop &@ $@ opr) 
+(define-symbol '&@) 
+(defprop $@ dimension-infix dimension) 
+(defprop $@ (#\@) dissym) 
+(defprop $@ msize-infix grind) 
+(defprop $@ 190 lbp) 
+(defprop $@ 191 rbp) 
+(defprop $@ parse-infix led) 
+(defprop %@ dimension-infix dimension) 
+(defprop %@ (#\@) dissym) 
+(defprop %@ $@ noun) 
 
 ;; The follow code implements PARALLEL LIST assignment.
 ;; it is consistent with commercial macsyma.  [a,b,c]:[x,y,z] means
@@ -685,7 +818,7 @@ wrapper for this."
   (map nil #'mset (cdr tlist)(cdr vlist))
    vlist)
 
-;; ---------- end code copied from defstruct.lisp
+;; ---------- end code copied & modified from defstruct.lisp
 
 (defmspec $ev (l)
   (setq l (cdr l))
