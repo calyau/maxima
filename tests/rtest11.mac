@@ -209,22 +209,22 @@ false;
  * Is there a way to make such tests independent of environment stuff like $LANG ??
  */
 
-declare ("@~`", alphabetic);
+declare ("|~`", alphabetic);
 done;
 
-[member ('alphabetic, properties ("@")), member ('alphabetic, properties ("`")), member ('alphabetic, properties ("~"))];
+[member ('alphabetic, properties ("|")), member ('alphabetic, properties ("`")), member ('alphabetic, properties ("~"))];
 [true, true, true];
 
-~`@@`~ : ~@^`~ - @~^~`;
-~@^`~ - @~^~`;
+~`||`~ : ~|^`~ - |~^~`;
+~|^`~ - |~^~`;
 
-(kill (~`@@`~), ~`@@`~);
-'~`@@`~;
+(kill (~`||`~), ~`||`~);
+'~`||`~;
 
-(remove ("`~", alphabetic), remove ("@", alphabetic));
+(remove ("`~", alphabetic), remove ("|", alphabetic));
 done;
 
-[member ('alphabetic, properties ("@")), member ('alphabetic, properties ("`")), member ('alphabetic, properties ("~"))];
+[member ('alphabetic, properties ("|")), member ('alphabetic, properties ("`")), member ('alphabetic, properties ("~"))];
 [false, false, false];
 
 /* Verify that time functions are defined and return numbers.
