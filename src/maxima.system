@@ -104,7 +104,8 @@
                         :components ((:file "comm")
                                      (:file "comm2")))
                (:module evaluator :source-pathname ""
-                        :components ((:file "mlisp") 
+                        :components ((:file "suprv1")
+                                     (:file "mlisp")
                                      (:file "mmacro") 
                                      (:file "buildq")))
 	       (:module numerical
@@ -394,7 +395,6 @@
 			:depends-on (compatibility-macros)
                         :components ((:file "macsys") 
                                      (:file "mload") 
-                                     (:file "suprv1")
                                      (:file "dskfn")))
                (:module factoring :source-pathname ""
                         :components ((:file "lesfac") 
