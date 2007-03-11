@@ -309,7 +309,7 @@ Com grande folga, o melhor caminho para fazer avalia@value{cedilha}@~{a}o num@'{
 argumentos da fun@value{cedilha}@~{a}o serem n@'{u}meros em ponto flutuante. Em fun@value{cedilha}@~{a}o disso, 
 algor@'{i}tmos especializados em ponto flutuante s@~{a}o usados para avalia@value{cedilha}@~{a}o.
 
-A fun@value{cedilha}@~{a}o @code{float} do Maxima @'{e} at@'{e} certo ponto indiscriminat@'{o}ria; se voc@^{e} aplicar 
+A fun@value{cedilha}@~{a}o @code{float} do Maxima @'{e} at@'{e} certo ponto indiscriminada; se voc@^{e} aplicar 
 @code{float} a uma express@~{a}o envolvendo um polin@^{o}mio ortogonal com um
 grau simb@'{o}lico ou um par@^{a}metro de ordem, esses par@^{a}metos (inteiros) podem ser 
 convertido em n@'{u}meros em ponto flutuante; ap@'{o}s o que, a express@~{a}o n@~{a}o ir@'{a} avaliar 

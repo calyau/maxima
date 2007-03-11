@@ -1,5 +1,5 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
-@c /draw.texi/1.2/Tue Feb 20 06:59:00 2007//
+@c /draw.texi/1.7/Mon Feb 26 21:01:35 2007//
 @menu
 * Introdu@value{cedilha}@~{a}o a draw::
 * Defini@value{cedilha}@~{o}es para draw::
@@ -38,6 +38,19 @@ calculado automaticamente.
 
 Caso o usu@'{a}rio deseje um intervalo espec@'{i}fico para @var{x}, esse intervalo deve ser fornecido como uma 
 lista da forma definida pelo Maxima, como em @code{xrange=[-2, 3]}.
+
+Uma vez que essa @'{e} uma op@value{cedilha}@~{a}o gr@'{a}fica global, sua posi@value{cedilha}@~{a}o na descri@value{cedilha}@~{a}o do fundo
+n@~{a}o @'{e} importante.
+
+Exemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(xrange = [-3,5],
+             explicit(x^2,x,-1,1))$
+@end example
+
+Veja tamb@'{e}m @code{yrange} e @code{zrange}.
 @end defvr
 
 
@@ -50,6 +63,20 @@ computed automatically.
 
 Se o usu@'{a}rio sesejar um intervalo espec@'{i}fico para @var{y}, esse intervalo deve ser fornecido como uma 
 lista da forma definida pelo Maxima, como em @code{yrange=[-2, 3]}.
+
+Uma vez que essa @'{e} uma op@value{cedilha}@~{a}o gr@'{a}fica global, sua posi@value{cedilha}@~{a}o na descri@value{cedilha}@~{a}o do fundo
+n@~{a}o @'{e} importante.
+
+Exemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(yrange = [-2,3],
+             explicit(x^2,x,-1,1),
+             xrange = [-3,3])$
+@end example
+
+Veja tamb@'{e}m @code{xrange} e @code{zrange}.
 @end defvr
 
 
@@ -62,6 +89,21 @@ calculado automaticamente.
 
 Se o usu@'{a}rio sesejar um intervalo espec@'{i}fico para @var{z}, esse intervalo deve ser fornecido como uma 
 lista da forma definida pelo Maxima, como em @code{zrange=[-2, 3]}.
+
+Uma vez que essa @'{e} uma op@value{cedilha}@~{a}o gr@'{a}fica global, sua posi@value{cedilha}@~{a}o na descri@value{cedilha}@~{a}o do fundo
+n@~{a}o @'{e} importante.
+
+Exemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(yrange = [-3,3],
+             zrange = [-2,5],
+             explicit(x^2+y^2,x,-1,1,y,-1,1),
+             xrange = [-3,3])$
+@end example
+
+Veja tamb@'{e}m @code{yrange} e @code{zrange}.
 @end defvr
 
 
@@ -71,6 +113,19 @@ Valor padr@~{a}o: @code{false}
 
 Se @code{logx} for @code{true}, o eixo @var{x}ser@'{a} desenhado em
 escala logar@'{i}tmica.
+
+Uma vez que essa @'{e} uma op@value{cedilha}@~{a}o gr@'{a}fica global, sua posi@value{cedilha}@~{a}o na descri@value{cedilha}@~{a}o do fundo
+n@~{a}o @'{e} importante.
+
+Exemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(explicit(log(x),x,0.01,5),
+             logx = true)$
+@end example
+
+Veja tamb@'{e}m @code{logy} e @code{logz}.
 @end defvr
 
 
@@ -80,6 +135,19 @@ Valor padr@~{a}o: @code{false}
 
 Se @code{logy} for @code{true}, o eixo @var{y}ser@'{a} desenhado em
 escala logar@'{i}tmica.
+
+Uma vez que essa @'{e} uma op@value{cedilha}@~{a}o gr@'{a}fica global, sua posi@value{cedilha}@~{a}o na descri@value{cedilha}@~{a}o do fundo
+n@~{a}o @'{e} importante.
+
+Exemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(logy = true,
+             explicit(exp(x),x,0,5))$
+@end example
+
+Veja tamb@'{e}m @code{logx} e @code{logz}.
 @end defvr
 
 
@@ -89,6 +157,19 @@ Valor padr@~{a}o: @code{false}
 
 Se @code{logz} for @code{true}, o eixo @var{z}ser@'{a} desenhado em
 escala logar@'{i}tmica.
+
+Uma vez que essa @'{e} uma op@value{cedilha}@~{a}o gr@'{a}fica global, sua posi@value{cedilha}@~{a}o na descri@value{cedilha}@~{a}o do fundo
+n@~{a}o @'{e} importante.
+
+Exemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(logz = true,
+             explicit(exp(u^2+v^2),u,-2,2,v,-2,2))$
+@end example
+
+Veja tamb@'{e}m @code{logx} e @code{logy}.
 @end defvr
 
 
@@ -99,6 +180,30 @@ Valor padr@~{a}o: @code{screen}
 Seleciona o terminal a ser usado pelo Gnuplot; os valores poss@'{i}veis s@~{a}o:
 @code{screen} (o valor padr@~{a}o), @code{png}, @code{jpg}, @code{eps}, e @code{eps_color}.
 
+Uma vez que essa @'{e} uma op@value{cedilha}@~{a}o gr@'{a}fica global, sua posi@value{cedilha}@~{a}o na descri@value{cedilha}@~{a}o do fundo
+n@~{a}o @'{e} importante.
+
+Exemplos:
+
+@example
+(%i1) load(draw)$
+(%i2) /* screen terminal (default) */
+      draw2d(explicit(x^2,x,-1,1))$
+(%i3) /* png file */
+      draw2d(terminal  = 'png,
+             pic_width = 300,
+             explicit(x^2,x,-1,1))$
+(%i4) /* jpg file */
+      draw2d(terminal   = 'jpg,
+             pic_width  = 300,
+             pic_height = 300,
+             explicit(x^2,x,-1,1))$
+(%i5) /* eps file */
+      draw2d(file_name = "myfile",
+             explicit(x^2,x,-1,1),
+             terminal  = 'eps)$
+@end example
+
 Veja tamb@'{e}m @code{file_name}, @code{pic_width}, e @code{pic_height}.
 @end defvr
 
@@ -108,6 +213,17 @@ Veja tamb@'{e}m @code{file_name}, @code{pic_width}, e @code{pic_height}.
 Valor padr@~{a}o: @code{false}
 
 Se @code{grid} for @code{true}, uma malha ser@'{a} desenhada sobre o plano @var{xy}.
+
+Uma vez que essa @'{e} uma op@value{cedilha}@~{a}o gr@'{a}fica global, sua posi@value{cedilha}@~{a}o na descri@value{cedilha}@~{a}o do fundo
+n@~{a}o @'{e} importante.
+
+Exemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(grid = true,
+             explicit(exp(u),u,-2,2))$
+@end example
 @end defvr
 
 
@@ -115,8 +231,19 @@ Se @code{grid} for @code{true}, uma malha ser@'{a} desenhada sobre o plano @var{
 @defvr {Op@value{cedilha}@~{a}o gr@'{a}fica} title
 Valor padr@~{a}o: @code{""} (a seq@"{u}@^{e}ncia de caracteres vazia)
 
-Variable @code{title} armazena uma seq@"{u}@^{e}ncia de caracteres do Maxima com o t@'{i}tulo principal de um fundo gr@'{a}fico.
+A op@value{cedilha}@~ao @code{title} armazena uma seq@"{u}@^{e}ncia de caracteres do Maxima com o t@'{i}tulo principal de um fundo gr@'{a}fico.
 Por padr@~{a}o, nenhum t@'{i}tulo @'{e} escrito.
+
+Uma vez que essa @'{e} uma op@value{cedilha}@~{a}o gr@'{a}fica global, sua posi@value{cedilha}@~{a}o na descri@value{cedilha}@~{a}o do fundo
+n@~{a}o @'{e} importante.
+
+Exemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(explicit(exp(u),u,-2,2),
+             title = "Exponential function")$
+@end example
 @end defvr
 
 
@@ -124,8 +251,22 @@ Por padr@~{a}o, nenhum t@'{i}tulo @'{e} escrito.
 @defvr {Op@value{cedilha}@~{a}o gr@'{a}fica} xlabel
 Valor padr@~{a}o: @code{""} (a seq@"{u}@^{e}ncia de caracteres vazia)
 
-A vari@'{a}vel @code{xlabel} armazena uma seq@"{u}@^{e}ncia de caracteres do Maxima com o r@'{o}tulo para o eixo @var{x}.
+A op@value{cedilha}@~ao @code{xlabel} armazena uma seq@"{u}@^{e}ncia de caracteres do Maxima com o r@'{o}tulo para o eixo @var{x}.
 Por padr@~{a}o, nenhum r@'{o}tulo @'{e} escrito.
+
+Uma vez que essa @'{e} uma op@value{cedilha}@~{a}o gr@'{a}fica global, sua posi@value{cedilha}@~{a}o na descri@value{cedilha}@~{a}o do fundo
+n@~{a}o @'{e} importante.
+
+Exemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(xlabel = "Time",
+             explicit(exp(u),u,-2,2),
+             ylabel = "Population")$
+@end example
+
+Veja tamb@'{e}m @code{ylabel}, e @code{zlabel}.
 @end defvr
 
 
@@ -133,8 +274,22 @@ Por padr@~{a}o, nenhum r@'{o}tulo @'{e} escrito.
 @defvr {Op@value{cedilha}@~{a}o gr@'{a}fica} ylabel
 Valor padr@~{a}o: @code{""} (a seq@"{u}@^{e}ncia de caracteres vazia)
 
-A vari@'{a}vel @code{ylabel} armazena uma seq@"{u}@^{e}ncia de caracteres do Maxima com o r@'{o}tulo para o eixo @var{y}.
+A op@value{cedilha}@~ao @code{ylabel} armazena uma seq@"{u}@^{e}ncia de caracteres do Maxima com o r@'{o}tulo para o eixo @var{y}.
 Por padr@~{a}o, nenhum r@'{o}tulo @'{e} escrito.
+
+Uma vez que essa @'{e} uma op@value{cedilha}@~{a}o gr@'{a}fica global, sua posi@value{cedilha}@~{a}o na descri@value{cedilha}@~{a}o do fundo
+n@~{a}o @'{e} importante.
+
+Exemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(xlabel = "Time",
+             ylabel = "Population",
+             explicit(exp(u),u,-2,2) )$
+@end example
+
+Veja tamb@'{e}m @code{xlabel}, e @code{zlabel}.
 @end defvr
 
 
@@ -142,8 +297,23 @@ Por padr@~{a}o, nenhum r@'{o}tulo @'{e} escrito.
 @defvr {Op@value{cedilha}@~{a}o gr@'{a}fica} zlabel
 Valor padr@~{a}o: @code{""} (a seq@"{u}@^{e}ncia de caracteres vazia)
 
-A vari@'{a}vel @code{zlabel} armazena uma seq@"{u}@^{e}ncia de caracteres do Maxima com o r@'{o}tulo para o eixo @var{z}.
+A op@value{cedilha}@~ao @code{zlabel} armazena uma seq@"{u}@^{e}ncia de caracteres do Maxima com o r@'{o}tulo para o eixo @var{z}.
 Por padr@~{a}o, nenhum r@'{o}tulo @'{e} escrito.
+
+Uma vez que essa @'{e} uma op@value{cedilha}@~{a}o gr@'{a}fica global, sua posi@value{cedilha}@~{a}o na descri@value{cedilha}@~{a}o do fundo
+n@~{a}o @'{e} importante.
+
+Exemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(zlabel = "Z variable",
+             ylabel = "Y variable",
+             explicit(sin(x^2+y^2),x,-2,2,y,-2,2),
+             xlabel = "X variable" )$
+@end example
+
+Veja tamb@'{e}m @code{xlabel}, e @code{ylabel}.
 @end defvr
 
 
@@ -152,6 +322,20 @@ Por padr@~{a}o, nenhum r@'{o}tulo @'{e} escrito.
 Valor padr@~{a}o: @code{true}
 
 Se @code{xtics} for @code{true}, a marca@value{cedilha}@~{a}o num@'{e}rica ser@'{a} feitas sobre o eixo @var{x}.
+
+Uma vez que essa @'{e} uma op@value{cedilha}@~{a}o gr@'{a}fica global, sua posi@value{cedilha}@~{a}o na descri@value{cedilha}@~{a}o do fundo
+n@~{a}o @'{e} importante.
+
+Exemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) /* No tics in the x-axis */
+      draw2d(xtics = false,
+             explicit(exp(u),u,-2,2))$
+@end example
+
+Veja tamb@'{e}m @code{ytics}, e @code{ztics}.
 @end defvr
 
 
@@ -160,6 +344,20 @@ Se @code{xtics} for @code{true}, a marca@value{cedilha}@~{a}o num@'{e}rica ser@'
 Valor padr@~{a}o: @code{true}
 
 Se @code{ytics} for @code{true}, a marca@value{cedilha}@~{a}o num@'{e}rica ser@'{a} feitas sobre o eixo @var{y}.
+
+Uma vez que essa @'{e} uma op@value{cedilha}@~{a}o gr@'{a}fica global, sua posi@value{cedilha}@~{a}o na descri@value{cedilha}@~{a}o do fundo
+n@~{a}o @'{e} importante.
+
+Exemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(ytics = false,
+             explicit(exp(u),u,-2,2),
+             xtics = false)$
+@end example
+
+Veja tamb@'{e}m @code{xtics}, e @code{ztics}.
 @end defvr
 
 
@@ -168,6 +366,20 @@ Se @code{ytics} for @code{true}, a marca@value{cedilha}@~{a}o num@'{e}rica ser@'
 Valor padr@~{a}o: @code{true}
 
 Se @code{ztics} for @code{true}, a marca@value{cedilha}@~{a}o num@'{e}rica ser@'{a} feitas sobre o eixo @var{z}.
+
+Uma vez que essa @'{e} uma op@value{cedilha}@~{a}o gr@'{a}fica global, sua posi@value{cedilha}@~{a}o na descri@value{cedilha}@~{a}o do fundo
+n@~{a}o @'{e} importante.
+
+Exemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) /* No tics in the z-axis */
+      draw3d(ztics = false,
+             explicit(sin(x^2+y^2),x,-2,2,y,-2,2) )$
+@end example
+
+Veja tamb@'{e}m @code{xtics}, e @code{ytics}.
 @end defvr
 
 
@@ -179,6 +391,19 @@ Valor padr@~{a}o: 60
 do eixo @var{x}) para escolher o ponto de visualiza@value{cedilha}@~{a}o em fundos gr@'{a}ficos tridimensionais.
 
 O @^{a}ngulo @'{e} associado ao intervalo @math{[0, 180]}.
+
+Uma vez que essa @'{e} uma op@value{cedilha}@~{a}o gr@'{a}fica global, sua posi@value{cedilha}@~{a}o na descri@value{cedilha}@~{a}o do fundo
+n@~{a}o @'{e} importante.
+
+Exemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(rot_vertical = 170,
+             explicit(sin(x^2+y^2),x,-2,2,y,-2,2) )$
+@end example
+
+Veja tamb@'{e}m @code{rot_horizontal}.
 @end defvr
 
 
@@ -190,6 +415,20 @@ Valor padr@~{a}o: 30
 do eixo @var{z})  para escolher o ponto de visualiza@value{cedilha}@~{a}o em fundos gr@'{a}ficos tridimensionais.
 
 O @^{a}ngulo @'{e} associado ao intervalo @math{[0, 180]}.
+
+Uma vez que essa @'{e} uma op@value{cedilha}@~{a}o gr@'{a}fica global, sua posi@value{cedilha}@~{a}o na descri@value{cedilha}@~{a}o do fundo
+n@~{a}o @'{e} importante.
+
+Exemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(rot_vertical = 170,
+             rot_horizontal = 360,
+             explicit(sin(x^2+y^2),x,-2,2,y,-2,2) )$
+@end example
+
+Veja tamb@'{e}m @code{rot_vertical}.
 @end defvr
 
 
@@ -200,6 +439,9 @@ Valor padr@~{a}o: @code{""} (a seq@"{u}@^{e}ncia de caracteres vazia)
 @code{xy_file} @'{e} o nome do arquivo onde as coordenada ser@~{a}o armazenadas
 ap@'{o}s um clique com o bot@~{a}o do mouse e pressionar a tecla 'x'. Por padr@~{a}o,
 nenhuma coordenada @'{e} armazenada.
+
+Uma vez que essa @'{e} uma op@value{cedilha}@~{a}o gr@'{a}fica global, sua posi@value{cedilha}@~{a}o na descri@value{cedilha}@~{a}o do fundo
+n@~{a}o @'{e} importante.
 @end defvr
 
 
@@ -210,6 +452,20 @@ Valor padr@~{a}o: @code{""} (a seq@"{u}@^{e}ncia de caracteres vazia)
 Usu@'{a}rios experientes de Gnuplot podem fazer uso dessa op@value{cedilha}@~{a}o para ajuste fino do comportamento
 do Gnuplot escolhendo op@value{cedilha}@~{o}es para serem enviadas antes do comando @code{plot} ou do
 comando @code{splot}.
+
+Uma vez que essa @'{e} uma op@value{cedilha}@~{a}o gr@'{a}fica global, sua posi@value{cedilha}@~{a}o na descri@value{cedilha}@~{a}o do fundo
+n@~{a}o @'{e} importante.
+
+Exemplo:
+
+O terminal @i{dumb} n@~{a}o @'{e} suportado pelo pacote @code{draw},
+mas @'{e} poss@'{i}vel escolher o terminal @i{dumb} fazendo uso da op@value{cedilha}@~{a}o @code{user_preamble},
+@example
+(%i1) load(draw)$
+(%i2) draw2d(explicit(exp(x)-1,x,-1,1),
+             parametric(cos(u),sin(u),u,0,2*%pi),
+             user_preamble="set terminal dumb")$
+@end example
 @end defvr
 
 
@@ -220,7 +476,19 @@ Valor padr@~{a}o: @code{"maxima_out"}
 Esse @'{e} o nome do arquivo onde os terminais @code{png}, @code{jpg}, @code{eps}
 e @code{eps_color} guardar@~{a}o o gr@'{a}fico.
 
-Veja tamb@'{e}m @code{terminal}.
+Uma vez que essa @'{e} uma op@value{cedilha}@~{a}o gr@'{a}fica global, sua posi@value{cedilha}@~{a}o na descri@value{cedilha}@~{a}o do fundo
+n@~{a}o @'{e} importante.
+
+Exemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(file_name = "myfile",
+             explicit(x^2,x,-1,1),
+             terminal  = 'png)$
+@end example
+
+Veja tamb@'{e}m @code{terminal}, @code{pic_width}, e @code{pic_height}.
 @end defvr
 
 
@@ -230,7 +498,20 @@ Valor padr@~{a}o: 640
 
 Essa @'{e} a largura do arquivo de bitmap gerado pelos terminais @code{png} e @code{jpg}.
 
-Veja tamb@'{e}m @code{terminal}.
+Uma vez que essa @'{e} uma op@value{cedilha}@~{a}o gr@'{a}fica global, sua posi@value{cedilha}@~{a}o na descri@value{cedilha}@~{a}o do fundo
+n@~{a}o @'{e} importante.
+
+Exemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(terminal   = 'png,
+             pic_width  = 300,
+             pic_height = 300,
+             explicit(x^2,x,-1,1))$
+@end example
+
+Veja tamb@'{e}m @code{terminal}, @code{file_name}, e @code{pic_height}.
 @end defvr
 
 
@@ -240,7 +521,20 @@ Valor padr@~{a}o: 640
 
 Essa @'{e} a altura do arquivo de bitmap gerado pelos terminais @code{png} e @code{jpg}.
 
-Veja tamb@'{e}m @code{terminal}.
+Uma vez que essa @'{e} uma op@value{cedilha}@~{a}o gr@'{a}fica global, sua posi@value{cedilha}@~{a}o na descri@value{cedilha}@~{a}o do fundo
+n@~{a}o @'{e} importante.
+
+Exemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(terminal   = 'png,
+             pic_width  = 300,
+             pic_height = 300,
+             explicit(x^2,x,-1,1))$
+@end example
+
+Veja tamb@'{e}m @code{terminal}, @code{file_name}, e @code{pic_width}.
 @end defvr
 
 
@@ -249,6 +543,17 @@ Veja tamb@'{e}m @code{terminal}.
 Valor padr@~{a}o: @code{true}
 
 Se @code{axis_bottom} for @code{true}, o eixo inferior @'{e} mostrado em fundos gr@'{a}ficos bidimensionais.
+
+Uma vez que essa @'{e} uma op@value{cedilha}@~{a}o gr@'{a}fica global, sua posi@value{cedilha}@~{a}o na descri@value{cedilha}@~{a}o do fundo
+n@~{a}o @'{e} importante.
+
+Exemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(axis_bottom = false,
+             explicit(x^3,x,-1,1))$
+@end example
 
 Veja tamb@'{e}m @code{axis_left},  @code{axis_top}, @code{axis_right}, e @code{axis_3d}.
 @end defvr
@@ -260,6 +565,17 @@ Valor padr@~{a}o: @code{true}
 
 Se @code{axis_left} for @code{true}, o eixo da esquerda @'{e} mostrado em fundos gr@'{a}ficos bidimensionais.
 
+Uma vez que essa @'{e} uma op@value{cedilha}@~{a}o gr@'{a}fica global, sua posi@value{cedilha}@~{a}o na descri@value{cedilha}@~{a}o do fundo
+n@~{a}o @'{e} importante.
+
+Exemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(axis_left = false,
+             explicit(x^3,x,-1,1))$
+@end example
+
 Veja tamb@'{e}m @code{axis_bottom},  @code{axis_top}, @code{axis_right}, e @code{axis_3d}.
 @end defvr
 
@@ -269,6 +585,17 @@ Veja tamb@'{e}m @code{axis_bottom},  @code{axis_top}, @code{axis_right}, e @code
 Valor padr@~{a}o: @code{true}
 
 Se @code{axis_top} for @code{true}, o eixo superior @'{e} mostrado em fundos gr@'{a}ficos bidimensionais.
+
+Uma vez que essa @'{e} uma op@value{cedilha}@~{a}o gr@'{a}fica global, sua posi@value{cedilha}@~{a}o na descri@value{cedilha}@~{a}o do fundo
+n@~{a}o @'{e} importante.
+
+Exemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(axis_top = false,
+             explicit(x^3,x,-1,1))$
+@end example
 
 Veja tamb@'{e}m @code{axis_bottom},  @code{axis_left}, @code{axis_right}, e @code{axis_3d}.
 @end defvr
@@ -280,7 +607,18 @@ Valor padr@~{a}o: @code{true}
 
 Se @code{axis_right} for @code{true}, o eixo da direita @'{e} mostrado em fundos gr@'{a}ficos bidimensionais.
 
-Veja tamb@'{e}m @code{axis_bottom},  @code{axis_left}, @code{axis_top}, and @code{axis_3d}.
+Uma vez que essa @'{e} uma op@value{cedilha}@~{a}o gr@'{a}fica global, sua posi@value{cedilha}@~{a}o na descri@value{cedilha}@~{a}o do fundo
+n@~{a}o @'{e} importante.
+
+Exemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(axis_right = false,
+             explicit(x^3,x,-1,1))$
+@end example
+
+Veja tamb@'{e}m @code{axis_bottom},  @code{axis_left}, @code{axis_top}, e @code{axis_3d}.
 @end defvr
 
 
@@ -289,6 +627,17 @@ Veja tamb@'{e}m @code{axis_bottom},  @code{axis_left}, @code{axis_top}, and @cod
 Valor padr@~{a}o: @code{true}
 
 Se @code{axis_3d} for @code{true}, os eixos @var{x}, @var{y} e @var{z} s@~{a}o mostrados em fundos gr@'{a}ficos tridimensionais.
+
+Uma vez que essa @'{e} uma op@value{cedilha}@~{a}o gr@'{a}fica global, sua posi@value{cedilha}@~{a}o na descri@value{cedilha}@~{a}o do fundo
+n@~{a}o @'{e} importante.
+
+Exemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(axis_3d = false,
+             explicit(sin(x^2+y^2),x,-2,2,y,-2,2) )$
+@end example
 
 Veja tamb@'{e}m @code{axis_bottom},  @code{axis_left}, @code{axis_top}, e @code{axis_right} para eixos em duas dimens@~{o}es.
 @end defvr
@@ -300,6 +649,24 @@ Valor padr@~{a}o: 1
 
 @code{point_size} escolhe o tamanho para os pontos do gr´afico. Esse valor deve ser um
 n@'{u}mero n@~{a}o negativo.
+
+Essa op@value{cedilha}@~{a}o afeta os seguintes objetos gr@'{a}ficos:
+@itemize @bullet
+@item
+@code{gr2d}: @code{points}.
+
+@item
+@code{gr3d}: @code{points}.
+@end itemize
+
+Exemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(points(makelist([random(20),random(50)],k,1,10)),
+             point_size = 5,
+             points(makelist(k,k,1,20),makelist(random(30),k,1,20)))$
+@end example
 @end defvr
 
 
@@ -309,6 +676,47 @@ Valor padr@~{a}o: 1
 
 @code{point_type} @'{e} um @'{i}ndice (maior ou igual a -1) para especificar como os pontos s@~{a}o mostrados.
 As cores dos pontos s@~{a}o controladas com essa op@value{cedilha}@~{a}o.
+
+Essa op@value{cedilha}@~{a}o afeta os seguintes objetos gr@'{a}ficos:
+@itemize @bullet
+@item
+@code{gr2d}: @code{points}, @code{explicit}, @code{implicit}, @code{parametric}, e @code{polar}.
+
+@item
+@code{gr3d}: @code{points}.
+@end itemize
+
+Exemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(xrange = [0,10],
+             yrange = [0,10],
+             point_size = 3,
+             point_type = 1,
+             points([[1,1],[5,1],[9,1]]),
+             point_type = 2,
+             points([[1,2],[5,2],[9,2]]),
+             point_type = 3,
+             points([[1,3],[5,3],[9,3]]),
+             point_type = 4,
+             points([[1,4],[5,4],[9,4]]),
+             point_type = 5,
+             points([[1,5],[5,5],[9,5]]),
+             point_type = 6,
+             points([[1,6],[5,6],[9,6]]),
+             point_type = 7,
+             points([[1,7],[5,7],[9,7]]),
+             point_type = 8,
+             points([[1,8],[5,8],[9,8]]),
+             point_type = 9,
+             points([[1,9],[5,9],[9,9]]) )$
+(%i3) draw2d(function_style = 'dots,
+             point_type = -1,
+             explicit(x^2,x,-1,1),
+             point_type = 7,
+             explicit(x^4,x,-1,1))$
+@end example
 @end defvr
 
 
@@ -317,6 +725,35 @@ As cores dos pontos s@~{a}o controladas com essa op@value{cedilha}@~{a}o.
 Valor padr@~{a}o: @code{false}
 
 Se @code{points_joined} for @code{true}, pontos s@~{a}o unidos por linhas retas.
+
+Essa op@value{cedilha}@~{a}o afeta os seguintes objetos gr@'{a}ficos:
+@itemize @bullet
+@item
+@code{gr2d}: @code{points}.
+
+@item
+@code{gr3d}: @code{points}.
+@end itemize
+
+Exemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(xrange        = [0,10],
+             yrange        = [0,4],
+             point_size    = 3,
+             point_type    = 1,
+             line_type     = 3,
+             points([[1,1],[5,1],[9,1]]),
+             points_joined = true,
+             point_type    = 3,
+             line_type     = 5,
+             points([[1,2],[5,2],[9,2]]),
+             point_type    = 5,
+             line_type     = 8,
+             line_width    = 7,
+             points([[1,3],[5,3],[9,3]]) )$
+@end example
 @end defvr
 
 
@@ -325,6 +762,24 @@ Se @code{points_joined} for @code{true}, pontos s@~{a}o unidos por linhas retas.
 Valor padr@~{a}o: 1
 
 @code{fill_type} @'{e} um @'{i}ndice (maior ou igual a -1) para especificar a cor para regi@~{o}es a serem preenchidas.
+
+Essa op@value{cedilha}@~{a}o afeta os seguintes objetos gr@'{a}ficos:
+@itemize @bullet
+@item
+@code{gr2d}: @code{polygon}, @code{rectangle}, @code{ellipse}, @code{explicit}, e @code{implicit}.
+
+@end itemize
+
+Exemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(fill_type      = 6,
+             polygon([[3,2],[7,2],[5,5]]),
+             fill_type      = 2,
+             function_style = filled,
+             explicit(sin(x),x,0,10) )$
+@end example
 @end defvr
 
 
@@ -334,6 +789,22 @@ Valor padr@~{a}o: @code{false}
 
 Se @code{transparent} for @code{true}, regi@~{o}es internas de poligonos s@~{a}o
 preenchidas de acordo com @code{fill_type}.
+
+Essa op@value{cedilha}@~{a}o afeta os seguintes objetos gr@'{a}ficos:
+@itemize @bullet
+@item
+@code{gr2d}: @code{polygon}, @code{rectangle}, e @code{ellipse}.
+@end itemize
+
+Exemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(polygon([[3,2],[7,2],[5,5]]),
+             transparent = true,
+             line_type   = 3,
+             polygon([[5,2],[9,2],[7,5]]) )$
+@end example
 @end defvr
 
 
@@ -343,6 +814,24 @@ Valor padr@~{a}o: @code{true}
 
 Se @code{border} for @code{true}, bordas de pol@'{i}gonos s@~{a}o colorizadas
 de acordo com @code{line_type} e @code{line_width}.
+
+Essa op@value{cedilha}@~{a}o afeta os seguintes objetos gr@'{a}ficos:
+@itemize @bullet
+@item
+@code{gr2d}: @code{polygon}, @code{rectangle}, e @code{ellipse}.
+@end itemize
+
+Exemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(line_type   = 3,
+             line_width  = 8,
+             polygon([[3,2],[7,2],[5,5]]),
+             border      = false,
+             fill_type   = 6,
+             polygon([[5,2],[9,2],[7,5]]) )$
+@end example
 @end defvr
 
 
@@ -352,6 +841,22 @@ Valor padr@~{a}o: @code{false}
 
 Se @code{head_both} for @code{true}, vetores s@~{a}o mostrados com seta dupla na ponta.
 Se @code{false}, somente uma seta @'{e} mostrada.
+
+Essa op@value{cedilha}@~{a}o somente @'{e} relevante para objetos do tipo @code{vector}.
+
+Exemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(xrange      = [0,8],
+             yrange      = [0,8],
+             head_length = 0.7,
+             vector([1,1],[6,0]),
+             head_both   = true,
+             vector([1,7],[6,0]) )$
+@end example
+
+Veja tamb@'{e}m @code{head_length}, @code{head_angle}, e @code{head_type}. 
 @end defvr
 
 
@@ -360,6 +865,25 @@ Se @code{false}, somente uma seta @'{e} mostrada.
 Valor padr@~{a}o: 2
 
 @code{head_length} indica, em unidades do eixo @var{x}, o comprimento da ponta da seta do vetor.
+
+Essa op@value{cedilha}@~{a}o @'{e} relevante somente para objetos do tipo @code{vector}.
+
+Exemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(xrange      = [0,12],
+             yrange      = [0,8],
+             vector([0,1],[5,5]),
+             head_length = 1,
+             vector([2,1],[5,5]),
+             head_length = 0.5,
+             vector([4,1],[5,5]),
+             head_length = 0.25,
+             vector([6,1],[5,5]))$
+@end example
+
+Veja tamb@'{e}m @code{head_both}, @code{head_angle}, e @code{head_type}. 
 @end defvr
 
 
@@ -369,6 +893,37 @@ Valor padr@~{a}o: 45
 
 @code{head_angle} indica o @^{a}ngulo, em graus, entre a ponta da seta do vetor e
 o segmento que forma o corpo do vetor.
+
+Essa op@value{cedilha}@~{a}o @'{e} relevante somente para objetos do tipo @code{vector}.
+
+Exemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(xrange      = [0,10],
+             yrange      = [0,9],
+             head_length = 0.7,
+             head_angle  = 10,
+             vector([1,1],[0,6]),
+             head_angle  = 20,
+             vector([2,1],[0,6]),
+             head_angle  = 30,
+             vector([3,1],[0,6]),
+             head_angle  = 40,
+             vector([4,1],[0,6]),
+             head_angle  = 60,
+             vector([5,1],[0,6]),
+             head_angle  = 90,
+             vector([6,1],[0,6]),
+             head_angle  = 120,
+             vector([7,1],[0,6]),
+             head_angle  = 160,
+             vector([8,1],[0,6]),
+             head_angle  = 180,
+             vector([9,1],[0,6]) )$
+@end example
+
+Veja tamb@'{e}m @code{head_both}, @code{head_length}, e @code{head_type}. 
 @end defvr
 
 
@@ -379,6 +934,24 @@ Valor padr@~{a}o: @code{filled}
 @code{head_type} @'{e} usada para especificar como a ponta @'{e} mostrada. Valores
 poss@'{i}veis s@~{a}o: @code{filled} (ponta fechada e preenchida), @code{empty}
 (ponta fechada mas n@~{a}o preenchida), e @code{nofilled} (ponta aberta).
+
+Essa op@value{cedilha}@~{a}o @'{e} relevante somente para objetos do tipo @code{vector}.
+
+Exemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(xrange      = [0,12],
+             yrange      = [0,10],
+             head_length = 1,
+             vector([0,1],[5,5]), /* default type */
+             head_type = 'empty,
+             vector([3,1],[5,5]),
+             head_type = 'nofilled,
+             vector([6,1],[5,5]))$
+@end example
+
+Veja tamb@'{e}m @code{head_both}, @code{head_angle}, e @code{head_length}. 
 @end defvr
 
 
@@ -386,9 +959,29 @@ poss@'{i}veis s@~{a}o: @code{filled} (ponta fechada e preenchida), @code{empty}
 @defvr {Op@value{cedilha}@~{a}o gr@'{a}fica} label_alignment
 Valor padr@~{a}o: @code{center}
 
-@code{label_alignment} \'e usado para especificar onde escrever r@'{o}tulos com
+@code{label_alignment} @'{e} usado para especificar onde escrever r@'{o}tulos com
 rela@value{cedilha}@~{a}o @`as coordenadas fornecidas. Valores poss@'{i}veis s@~{a}o: @code{center},
 @code{left}, e @code{right}.
+
+Essa op@value{cedilha}@~{a}o @'{e} relevante somente para objetos do tipo @code{label}.
+
+Exemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(xrange          = [0,10],
+             yrange          = [0,10],
+             points_joined   = true,
+             points([[5,0],[5,10]]),
+             label_color     = 3,
+             label("Centered alignment (default)",5,2),
+             label_alignment = 'left,
+             label("Left alignment",5,5),
+             label_alignment = 'right,
+             label("Right alignment",5,8))$
+@end example
+
+Veja tamb@'{e}m @code{label_orientation}, e @code{label_color}. 
 @end defvr
 
 
@@ -398,6 +991,25 @@ Valor padr@~{a}o: @code{horizontal}
 
 @code{label_orientation} @'{e} usada para especificar a orienta@value{cedilha}@~{a}o dos r@'{o}tulos.
 Valores poss@'{i}veis s@~{a}o: @code{horizontal}, e @code{vertical}.
+
+Essa op@value{cedilha}@~{a}o @'{e} relevante somente para objetos do tipo @code{label}.
+
+Exemplo:
+
+Nesse exemplo, um ponto fict@'{i}cio @'{e} adicionado para firmar uma imagem.
+o pacote @code{draw} precisa sempre de dados para montar um fundo.
+@example
+(%i1) load(draw)$
+(%i2) draw2d(xrange     = [0,10],
+             yrange     = [0,10],
+             point_size = 0,
+             points([[5,5]]),
+             label("Horizontal orientation (default)",5,2),
+             label_orientation = 'vertical,
+             label("Vertical orientation",1,5))$
+@end example
+
+Veja tamb@'{e}m @code{label_alignment}, e @code{label_color}. 
 @end defvr
 
 
@@ -406,6 +1018,41 @@ Valores poss@'{i}veis s@~{a}o: @code{horizontal}, e @code{vertical}.
 Valor padr@~{a}o: 1
 
 @code{label_color} @'{e} um @'{i}ndice (maior ou igual a -1) para especificar a cor da fonte usada no r@'{o}tulo.
+
+Essa op@value{cedilha}@~{a}o @'{e} relevante somente para objetos do tipo @code{label}.
+
+Exemplo:
+
+Nesse exemplo, um ponto imagin@'{a}rio @'{e} adicionado para firmar uma imagem.
+O pacote @code{draw} precisa sempre de dados para desenharum fundo.
+Essas cores podem mudar em diferentes terminais.
+@example
+(%i1) load(draw)$
+(%i2) draw2d(xrange     = [0,10],
+             yrange     = [0,10],
+             point_size = 0,
+             points([[0,0]]),
+             label_color = -1,
+             label("Cor de r@'{o}tulo -1",5,1),
+             label_color = 1,
+             label("Cor de r@'{o}tulo 1 (default)",5,2),
+             label_color = 2,
+             label("Cor de r@'{o}tulo 2",5,3),
+             label_color = 3,
+             label("Cor de r@'{o}tulo 3",5,4),
+             label_color = 4,
+             label("Cor de r@'{o}tulo 4",5,5),
+             label_color = 5,
+             label("Cor de r@'{o}tulo 5",5,6),
+             label_color = 6,
+             label("Cor de r@'{o}tulo 6",5,7),
+             label_color = 7,
+             label("Cor de r@'{o}tulo 7",5,8),
+             label_color = 8,
+             label("Cor de r@'{o}tulo 8",5,9) )$
+@end example
+
+Veja tamb@'{e}m @code{label_alignment}, e @code{label_orientation}. 
 @end defvr
 
 
@@ -414,6 +1061,30 @@ Valor padr@~{a}o: 1
 Valor padr@~{a}o: 1
 
 @code{line_width} @'{e} a lagura para linhas do gr@'{a}fico.
+
+Essa op@value{cedilha}@~{a}o afeta os seguintes objetos gr@'{a}ficos:
+@itemize @bullet
+@item
+@code{gr2d}: @code{points}, @code{polygon}, @code{rectangle}, 
+@code{ellipse}, @code{vector}, @code{explicit}, @code{implicit}, 
+@code{parametric} e @code{polar}.
+
+@item
+@code{gr3d}: @code{points} e @code{parametric}.
+@end itemize
+
+Exemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(explicit(x^2,x,-1,1), /* default width */
+             line_width = 5,
+             explicit(1 + x^2,x,-1,1),
+             line_width = 10,
+             explicit(2 + x^2,x,-1,1))$
+@end example
+
+Veja tamb@'{e}m @code{line_type}.
 @end defvr
 
 
@@ -423,6 +1094,30 @@ Valor padr@~{a}o: 1
 
 @code{line_type} @'{e} um @'{i}ndice (maior ou igual a -1) para especificar como linhas s@~{a}o mostradas.
 A cor das linhas @'{e} controlada com essa op@value{cedilha}@~{a}o.
+
+Essa op@value{cedilha}@~{a}o afeta os seguintes objetos gr@'{a}ficos:
+@itemize @bullet
+@item
+@code{gr2d}: @code{points}, @code{polygon}, @code{rectangle}, 
+@code{ellipse}, @code{vector}, @code{explicit}, @code{implicit}, 
+@code{parametric} e @code{polar}.
+
+@item
+@code{gr3d}: @code{points}, @code{explicit}, @code{parametric} e @code{parametric_surface}.
+@end itemize
+
+Exemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(explicit(x^2,x,-1,1), /* default type */
+             line_type = 5,
+             explicit(1 + x^2,x,-1,1),
+             line_type = 10,
+             explicit(2 + x^2,x,-1,1))$
+@end example
+
+Veja tamb@'{e}m @code{line_width}.
 @end defvr
 
 
@@ -431,6 +1126,25 @@ A cor das linhas @'{e} controlada com essa op@value{cedilha}@~{a}o.
 Valor padr@~{a}o: 30
 
 @code{nticks} @'{e} o n@'{u}mero de amostra de pontos usado pelas rotinas de montagem de gr@'{a}fico.
+
+Essa op@value{cedilha}@~{a}o afeta os seguintes objetos gr@'{a}ficos:
+@itemize @bullet
+@item
+@code{gr2d}: @code{ellipse}, @code{explicit}, @code{parametric} e @code{polar}.
+
+@item
+@code{gr3d}: @code{parametric}.
+@end itemize
+
+Exemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(transparent = true,
+             ellipse(0,0,4,2,0,180),
+             nticks = 5,
+             ellipse(0,0,4,2,180,180) )$
+@end example
 @end defvr
 
 
@@ -439,6 +1153,8 @@ Valor padr@~{a}o: 30
 Valor padr@~{a}o: 10
 
 @code{adapt_depth} @'{e} o n@'{u}mero m@'{a}ximo de quebras usado pelas rotinas adaptativos de impress@~{a}o.
+
+Essa op@value{cedilha}@~{a}o @'{e} relevante somente para fun@value{cedilha}@~{o}es 2d @code{explicitas}.
 @end defvr
 
 
@@ -448,6 +1164,29 @@ Valor padr@~{a}o: @code{""} (a seq@"{u}@^{e}ncia de caracteres vazia)
 
 @code{key} @'{e} o nome de uma fun@value{cedilha}@~{a}o na legenda. Se @code{key} @'{e} uma
 seq@"{u}@^{e}ncia de caracteres vazia, nenhuma chave @'{e} atribu@'{i}da @`a fun@value{cedilha}@~{a}o.
+
+Essa op@value{cedilha}@~{a}o afeta os seguintes objetos gr@'{a}ficos:
+@itemize @bullet
+@item
+@code{gr2d}: @code{points}, @code{polygon}, @code{rectangle},
+@code{ellipse}, @code{vector}, @code{explicit}, @code{implicit},
+@code{parametric}, e @code{polar}.
+
+@item
+@code{gr3d}: @code{points}, @code{explicit}, @code{parametric},
+e @code{parametric_surface}.
+@end itemize
+
+Exemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(key = "Seno",
+             explicit(sin(x),x,0,10),
+             key = "Cosseno",
+             line_type = 3,
+             explicit(cos(x),x,0,10) )$
+@end example
 @end defvr
 
 
@@ -456,6 +1195,24 @@ seq@"{u}@^{e}ncia de caracteres vazia, nenhuma chave @'{e} atribu@'{i}da @`a fun
 Valor padr@~{a}o: @code{lines}
 
 @code{function_style} indica como fun@value{cedilha}@~{o}es s@~{a}o mostradas: com linhas (@code{lines}) ou com pontos (@code{dots}).
+
+Essa op@value{cedilha}@~{a}o afeta os seguintes objetos gr@'{a}ficos:
+@itemize @bullet
+@item
+@code{gr2d}: @code{explicit}, @code{implicit},
+@code{parametric}, e @code{polar}.
+@end itemize
+
+Exemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(key = "Seno",
+             explicit(sin(x),x,0,10),
+             key = "Cosseno",
+             function_style = 'dots,
+             explicit(cos(x),x,0,10) )$
+@end example
 @end defvr
 
 
@@ -466,6 +1223,21 @@ Valor padr@~{a}o: 30
 @code{xu_grid} @'{e} o n@'{u}mero de coordenadas da primeira vari@'{a}vel
 (@code{x} na forma expl@'{i}cita e o n@'{u}mero de coordenadas de @code{u} em superf@'{i}cies tridimensionais na forma param@'{e}trica) para 
 contruir a grade dos pontos de amostra.
+
+Essa op@value{cedilha}@~{a}o afeta os seguintes objetos gr@'{a}ficos:
+@itemize @bullet
+@item
+@code{gr3d}: @code{explicit} e @code{parametric_surface}.
+@end itemize
+
+Exemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(xu_grid = 10,
+             yv_grid = 50,
+             explicit(x^2+y^2,x,-3,3,y,-3,3) )$
+@end example
 
 Veja tamb@'{e}m @code{yv_grid}.
 @end defvr
@@ -479,6 +1251,21 @@ Valor padr@~{a}o: 30
 (@code{y} na forma expl@'{i}cita e o n@'{u}mero de coordenadas de @code{v} em superf@'{i}cies tridimensionais na forma param@'{e}trica) para 
 construir a grade dos pontos de amostra.
 
+Essa op@value{cedilha}@~{a}o afeta os seguintes objetos gr@'{a}ficos:
+@itemize @bullet
+@item
+@code{gr3d}: @code{explicit} e @code{parametric_surface}.
+@end itemize
+
+Exemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(xu_grid = 10,
+             yv_grid = 50,
+             explicit(x^2+y^2,x,-3,3,y,-3,3) )$
+@end example
+
 Veja tamb@'{e}m @code{xu_grid}.
 @end defvr
 
@@ -488,6 +1275,19 @@ Veja tamb@'{e}m @code{xu_grid}.
 Valor padr@~{a}o: @code{false}
 
 Se @code{surface_hide} for @code{true}, partes escondidas n@~{a}o s@~{a}o mostradas no gr@'{a}fico em superf@'{i}cies tridimensioais.
+
+Uma vez que essa @'{e} uma op@value{cedilha}@~{a}o gr@'{a}fica global, sua posi@value{cedilha}@~{a}o na descri@value{cedilha}@~{a}o do fundo
+n@~{a}o @'{e} importante.
+
+Exemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw(columns=2,
+           gr3d(explicit(exp(sin(x)+cos(x^2)),x,-3,3,y,-3,3)),
+           gr3d(surface_hide = true,
+                explicit(exp(sin(x)+cos(x^2)),x,-3,3,y,-3,3)) )$
+@end example
 @end defvr
 
 
@@ -523,6 +1323,18 @@ escolhido na vertical.
 
 @end itemize
 
+Uma vez que essa @'{e} uma op@value{cedilha}@~{a}o gr@'{a}fica global, sua posi@value{cedilha}@~{a}o na descri@value{cedilha}@~{a}o do fundo
+n@~{a}o @'{e} importante.
+
+Exemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(explicit(20*exp(-x^2-y^2)-10,x,0,2,y,-3,3),
+             contour_levels = 15,
+             contour        = both,
+             surface_hide   = true) $
+@end example
 @end defvr
 
 
@@ -531,6 +1343,19 @@ escolhido na vertical.
 Valor padr@~{a}o: 5
 
 @code{contour_levels} @'{e} o n@'{u}mero de n@'{i}veis em gr@'{a}ficos de contorno.
+
+Uma vez que essa @'{e} uma op@value{cedilha}@~{a}o gr@'{a}fica global, sua posi@value{cedilha}@~{a}o na descri@value{cedilha}@~{a}o do fundo
+n@~{a}o @'{e} importante.
+
+Exemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(explicit(20*exp(-x^2-y^2)-10,x,0,2,y,-3,3),
+             contour_levels = 15,
+             contour        = both,
+             surface_hide   = true) $
+@end example
 @end defvr
 
 
@@ -538,7 +1363,23 @@ Valor padr@~{a}o: 5
 @defvr {Op@value{cedilha}@~{a}o gr@'{a}fica} columns
 Valor padr@~{a}o: 1
 
-@code{columns} @'{e} o n;umero de colunas em gr@'{a}ficos multiplos.
+@code{columns} @'{e} o n@'{u}mero de colunas em gr@'{a}ficos multiplos.
+
+Note que essa op@value{cedilha}@~{a}o deve ser escrita fora de objetos @code{gr2d}
+e de objetos @code{gr3d}.
+
+Exemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) scene1: gr2d(title="Elipse",
+                   nticks=30,
+                   parametric(2*cos(t),5*sin(t),t,0,2*%pi))$
+(%i3) scene2: gr2d(title="Tri@^{a}ngulo",
+                   polygon([4,5,7],[6,4,2]))$
+(%i4) draw(scene1, scene2, columns = 2)$
+@end example
+
 @end defvr
 
 
@@ -547,6 +1388,8 @@ Valor padr@~{a}o: 1
 Valor padr@~{a}o: @code{[50, 50]}
 
 @code{ip_grid} escolhe a grade para a primeira amostragem em gr@'{a}ficos impl@'{i}citos.
+
+Essa op@value{cedilha}@~{a}o @'{e} relevante somente para @code{implicit} objects.
 @end defvr
 
 
@@ -555,6 +1398,8 @@ Valor padr@~{a}o: @code{[50, 50]}
 Valor padr@~{a}o: @code{[5, 5]}
 
 @code{ip_grid_in} escolhe a grade para a segunda amostragem em gr@'{a}ficos impl@'{i}citos.
+
+Essa op@value{cedilha}@~{a}o @'{e} relevante somente para @code{implicit} objects.
 @end defvr
 
 
@@ -572,62 +1417,189 @@ A fun@value{cedilha}@~{a}o @code{gr2d} constr@'{o}i um objeto descrevendo um fun
 seq@"{u}@^{e}ncialmente: @i{op@value{cedilha}@~{o}es gr@'{a}ficas} afetam aqueles @i{objetos gr@'{a}ficos} colocados
 imediatamente @`a sua direita.
 
+Para fazer uso dessa fun@value{cedilha}@~{a}o escreva primeiramente @code{load(draw)}.
+
 Adiante encontra-se uma lista de @i{objetos gr@'{a}ficos} dispon@'{i}vies para fundos gr@'{a}ficos em duas dimens@~{o}es:
 
 @itemize @bullet
 @item
 @code{points([[x1,y1], [x2,y2], [x3,y3],...])} ou @code{points([x1,x2,x3,...], [y1,y2,y3,...])}:
 posiciona os pontos @code{[x1,y1]}, @code{[x2,y2]}, @code{[x2,y2]}, ... no gr@'{a}fico.
+
 Esse objeto @'{e} efetado pelas seguintes @i{op@value{cedilha}@~{o}es gr@'{a}ficas}: @code{point_size}, 
 @code{point_type}, @code{points_joined}, @code{line_width}, @code{key} e @code{line_type}.
 
+Exemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(key           = "Small points",
+             points(makelist([random(20),random(50)],k,1,10)),
+             point_type    = 6,
+             point_size    = 3,
+             points_joined = true,
+             key           = "Great points",
+             points(makelist(k,k,1,20),makelist(random(30),k,1,20)))$
+@end example
 
 @item
 @code{polygon([[x1,y1], [x2,y2], [x3,y3],...])} ou @code{polygon([x1,x2,x3,...], [y1,y2,y3,...])}:
 desenha um pol@'{i}gono com v@'{e}rtices @code{[x1,y1]}, @code{[x2,y2]}, @code{[x2,y2]}, ... no plano.
+
 Esse objeto @'{e} afetado pelas seguintes @i{op@value{cedilha}s gr@'{a}ficas}: @code{transparent}, 
 @code{fill_type}, @code{border}, @code{line_width}, @code{key} e @code{line_type}.
+
+Exemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(line_type   = 3,
+             line_width  = 8,
+             polygon([[3,2],[7,2],[5,5]]),
+             border      = false,
+             fill_type   = 6,
+             polygon([[5,2],[9,2],[7,5]]) )$
+@end example
+
 
 
 @item
 @code{rectangle([x1,y1], [x2,y2])}:
 desenha um ret@^{a}ngulo partindo do v@'{e}rtice @code{[x1,y1]} e terminando no v@'{e}rtice @code{[x2,y2]} oposto ao primeiro.
+
 Esse objeto @'{e} afetado pelas seguintes @i{op@value{cedilha}@~{o}es gr@'{a}ficas}: @code{transparent}, 
 @code{fill_type}, @code{border}, @code{line_width}, @code{key} e @code{line_type}.
 
+Exemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(fill_type   = 6,
+             line_width  = 6,
+             line_type   = 2,
+             transparent = false,
+             fill_type   = 8,
+             rectangle([-2,-2],[8,-1]),   /* opposite vertices */
+             transparent = true,
+             line_type   = 5,
+             line_width  = 1,
+             rectangle([9,4],[2,-1.5]),
+             xrange      = [-3,10],
+             yrange      = [-3,4.5] )$
+@end example
+
 
 @item
-@code{ellipse(xc, yc, a, b, angulo_inicial, @^{a}ngulo_final)}:
-desenha uma elipse com centro em @code{[xc, yc]} com semi-eixo horizontal @code{a} e
-semi-eixo vertial @code{b} tra@value{cedilha}ando um arco de elipse que se inicia no @^{a}ngulo @code{@^{a}ngulo_inicial} e indo
-at@'{e} o @^{a}ngulo @code{@^{a}ngulo_final}.
+@code{ellipse(xc, yc, a, b, ang1, ang2)}:
+desenha uma elipse com centro em @code{[xc, yc]} com semi-eixo maior @code{a} e
+semi-eixo menor @code{b} tra@value{cedilha}ando um arco de elipse que se inicia no @^{a}ngulo @code{ang1} e que vai
+at@'{e} o @^{a}ngulo @code{ang2}.
+semi axis @code{a} e @code{b}, respectively, from angle @code{ang1} to angle
+@code{ang2}.
+
 Esse objeto @'{e} afetado pelas seguintes @i{op@value{cedilha}@~{o}es gr@'{a}ficas}: @code{nticks}, 
 @code{transparent}, @code{fill_type}, @code{border}, @code{line_width}, 
 @code{line_type} e @code{key}.
+
+Exemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(transparent = false,
+             fill_type   = 8,
+             line_type   = 5,
+             transparent = false,
+             line_width  = 5,
+             ellipse(0,6,3,2,270,-270),  /* center (x,y), a, b, start & end in degrees */
+             transparent = true,
+             line_type   = 7,
+             line_width  = 3,
+             ellipse(2.5,6,2,3,30,-90),
+             xrange      = [-3,6],
+             yrange      = [2,9] )$
+@end example
 
 
 @item
 @code{label(r@'{o}tulo,x,y)}:
 escreve o @code{r@'{o}tulo} no ponto @code{[x,y]}.
+
 Esse objeto @'{e} afetado pelas seguintes @i{op@value{cedilha}@~{o}es gr@'{a}ficas}: @code{label_alignment}, 
 @code{label_orientation} e @code{label_color}.
+
+Exemplo:
+
+Nesse exemplo, um ponto imagin@'{a}rio @'{e} adicionado para firmar a imagem.
+O pacote @code{draw} precisa sempre da dados para desenhar um fundo.
+Essas cores podem mudar em diferentes terminais.
+@example
+(%i1) load(draw)$
+(%i2) draw2d(xrange     = [0,10],
+             yrange     = [0,10],
+             point_size = 0,
+             points([[0,0]]),
+             label_color = -1,
+             label("Cor de r@'{o}tulo -1",5,1),
+             label_color = 1,
+             label("Cor de r@'{o}tulo 1 (default)",5,2),
+             label_color = 2,
+             label("Cor de r@'{o}tulo 2",5,3),
+             label_color = 3,
+             label("Cor de r@'{o}tulo 3",5,4),
+             label_color = 4,
+             label("Cor de r@'{o}tulo 4",5,5),
+             label_color = 5,
+             label("Cor de r@'{o}tulo 5",5,6),
+             label_color = 6,
+             label("Cor de r@'{o}tulo 6",5,7),
+             label_color = 7,
+             label("Cor de r@'{o}tulo 7",5,8),
+             label_color = 8,
+             label("Cor de r@'{o}tulo 8",5,9) )$
+@end example
 
 
 @item
 @code{vector([x,y], [dx,dy])}:
 desenha um vetor de componentes ortogonais @code{[dx,dy]} com or@'{i}gem eno ponto @code{[x,y]}.
+
 Esse objeto @'{e} afetado pelas seguintes @i{op@value{cedilha}@~{o}es gr@'{a}ficas}: @code{head_both}, 
 @code{head_length}, @code{head_angle}, @code{head_type}, @code{line_width}, 
 @code{line_type} e @code{key}.
+
+Exemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(xrange      = [0,12],
+             yrange      = [0,10],
+             head_length = 1,
+             vector([0,1],[5,5]), /* default type */
+             head_type = 'empty,
+             vector([3,1],[5,5]),
+             head_both = true,
+             head_type = 'nofilled,
+             vector([6,1],[5,5]))$
+@end example
 
 
 @item
 @code{explicit(fcn,var,minval,maxval)}:
 monta o gr@'{a}fico da fun@value{cedilha}@~{a}o expl@'{i}cita @code{fcn}, com vari@'{a}vel @code{var} assumindo valores
 de @code{minval} a @code{maxval}.
+
 Esse objeto @'{e} afetado pelas seguintes @i{op@value{cedilha}@~{o}es gr@'{a}ficas}: @code{nticks}, 
-@code{adapt_depth}, @code{line_width}, @code{line_type}, @code{key}, 
+@code{adapt_depth}, @code{line_width}, @code{line_type}, @code{key}, @code{point_type},
 @code{function_style} e @code{fill_type}.
+
+Exemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(xu_grid = 10,
+             yv_grid = 50,
+             explicit(x^2+y^2,x,-3,3,y,-3,3) )$
+@end example
 
 
 @item
@@ -635,27 +1607,67 @@ Esse objeto @'{e} afetado pelas seguintes @i{op@value{cedilha}@~{o}es gr@'{a}fic
 monta o gr@'{a}fico da fun@value{cedilha}@~{a}o impl@'{i}cita definida por @code{fcn}, com vari@'{a}vel @code{x-var} assumindo
 de @code{x-minval} a @code{x-maxval}, e vari@'{a}vel @code{y-var} assumindo valores
 de @code{y-minval} a @code{y-maxval}.
+
 Esse objeto @'{e} afetado pelas seguintes @i{op@value{cedilha}@~{o}es gr@'{a}ficas}: @code{ip_grid}, 
 @code{ip_grid_in}, @code{line_width}, @code{line_type}, @code{key}, 
-@code{filled_function} e @code{fill_type}.
+@code{filled_function} e @code{fill_type}, e @code{fill_type}.
 
+Exemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(grid      = true,
+             line_type = -1,
+             key       = "y^2=x^3-2*x+1",
+             implicit(y^2=x^3-2*x+1, x, -4,4, y, -4,4),
+             line_type = 0,
+             key       = "x^3+y^3 = 3*x*y^2-x-1",
+             implicit(x^3+y^3 = 3*x*y^2-x-1, x, -4,4, y, -4,4),
+             title     = "Two implicit functions" )$
+@end example
 
 @item
 @code{polar(radius,ang,minang,maxang)}:
 plots function @code{radius(ang)} defined in polar coordinates, com a vari@'{a}vel @code{ang}
 assumindo valores de @code{minang} a @code{maxang}.
+
 Esse objeto @'{e} afetado pelas seguintes @i{op@value{cedilha}@~{o}es gr@'{a}ficas}: @code{nticks}, 
 @code{line_width}, @code{line_type}, @code{key}, 
 @code{function_style} e @code{point_type}.
+
+Exemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(user_preamble = "set grid polar",
+             nticks        = 200,
+             xrange        = [-5,5],
+             yrange        = [-5,5],
+             line_type     = 6,
+             line_width    = 3,
+             title         = "Hyperbolic Spiral",
+             polar(10/theta,theta,1,10*%pi) )$
+@end example
 
 
 @item
 @code{parametric(xfun,yfun,par,parmin,parmax)}:
 monta o gr@'{a}fico da fun@value{cedilha}@~{a}o param@'{e}trica @code{[xfun,yfun]}, com par@^{a}metro @code{par}
 assumindo valores de @code{parmin} a @code{parmax}.
+
 Esse objeto @'{e} afetado pelas seguintes @i{op@value{cedilha}@~{o}es gr@'{a}ficas}: @code{nticks}, 
-@code{line_width}, @code{line_type}, @code{key}, 
+@code{line_width}, @code{line_type}, @code{key}, @code{point_type}, 
 @code{function_style} e @code{point_type}.
+
+Exemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(explicit(exp(x),x,-1,3),
+             line_type = 3,
+             key       = "This is the parametric one!!",
+             parametric(2*cos(rrr),rrr^2,rrr,0,2*%pi))$
+@end example
 
 @end itemize
 
@@ -683,6 +1695,8 @@ A fun@value{cedilha}@~{a}o @code{gr3d} constr@'{o}i um objeto descrevendo um fun
 seq@"{u}@^{e}ncialmente: @i{op@value{cedilha}@~{o}es gr@'{a}ficas} afetam aqueles @i{objetos gr@'{a}ficos} colocados
 imediatamente @`a sua direita.
 
+Para fazer uso dessa fun@value{cedilha}@~{a}o escreva primeiramente @code{load(draw)}.
+
 Essa @'{e} a lista dos @i{objetos gr@'{a}ficos} dispon@'{i}veis para fundos gr@'{a}ficos tridimensionais:
 
 @itemize @bullet
@@ -690,15 +1704,54 @@ Essa @'{e} a lista dos @i{objetos gr@'{a}ficos} dispon@'{i}veis para fundos gr@'
 @code{points([[x1,y1,z1], [x2,y2,z2], [x3,y3,z3],...])} ou 
 @code{points([x1,x2,x3,...], [y1,y2,y3,...], [z1,z2,z3,...])}:
 posiciona os pontos @code{[x1,y1,z1]}, @code{[x2,y2,z2]}, @code{[x2,y2,z3]}, ... no gr@'{a}fico.
+
 Esse objeto @'{e} afetado pelas seguintes @i{op@value{cedilha}@~{o}es gr@'{a}ficas}: @code{point_size}, 
 @code{point_type}, @code{points_joined}, @code{line_width}, @code{key} e @code{line_type}.
+
+Exemplos:
+
+Uma amostra tridimensional,
+@example
+(%i1) load(draw)$
+(%i2) load (numericalio)$
+(%i3) s2 : read_matrix (file_search ("wind.data"))$
+(%i4) draw3d(title      = "Velocidades di@'{a}rias de ventos dispon@'{i}veis",
+             point_size = 2,
+             points(args(submatrix (s2, 4, 5))) )$
+@end example
+
+Duas amostras tridimensionais,
+@example
+(%i1) load(draw)$
+(%i2) load (numericalio)$
+(%i3) s2 : read_matrix (file_search ("wind.data"))$
+(%i4) draw3d(title      = "Velocidades di@'{a}rias de ventos dispon@'{i}veis. Dois conjuntos de dados",
+             point_size = 2,
+             key        = "Amostras das esta@value{cedilha}òes 1, 2 e 3",
+             points(args(submatrix (s2, 4, 5))),
+             point_type = 4,
+             key        = "Amostras das esta@value{cedilha}@~{o}es 1, 4 e 5",
+             points(args(submatrix (s2, 2, 3))) )$
+@end example
 
 
 @item
 @code{label(r@'{o}tulo,x,y,z)}:
 escreve @code{r@'{o}tulo} no ponto @code{[x,y,z]}.
+
 Esse objeto @'{e} afetado pelas seguintes @i{op@value{cedilha}@~{o}es gr@'{a}ficas}: @code{label_alignment}, 
 @code{label_orientation} e @code{label_color}.
+
+Exemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(explicit(exp(sin(x)+cos(x^2)),x,-3,3,y,-3,3),
+             label_color = 6,
+             label("UP",-2,0,3),
+             label_color = 3,
+             label("DOWN",2,0,-3) )$
+@end example
 
 
 @item
@@ -706,16 +1759,46 @@ Esse objeto @'{e} afetado pelas seguintes @i{op@value{cedilha}@~{o}es gr@'{a}fic
 monta o gr@'{a}fico da fun@value{cedilha}@~{a}o expl@'{i}cita @code{fcn}, com a vari@'{a}vel @code{var1} assumindo valores
 de @code{minval1} a @code{maxval1} e vari@'{a}vel @code{var2} assumindo valores
 de @code{minval2} a @code{maxval2}.
+
 Esse objeto @'{e} afetado pelas seguintes @i{op@value{cedilha}@~{o}es gr@'{a}ficas}: @code{xu_grid}, 
 @code{yv_grid}, @code{line_type} e @code{key}.
+
+Exemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(key       = "Gauss",
+             line_type = 2,
+             explicit(20*exp(-x^2-y^2)-10,x,-3,3,y,-3,3),
+             yv_grid     = 10,
+             line_type = 5,
+             key="Plane",
+             explicit(x+y,x,-5,5,y,-5,5),
+             surface_hide = true)$
+@end example
 
 
 @item
 @code{parametric(xfun,yfun,zfun,par,parmin,parmax)}:
 monta o gr@'{a}fico da curva param@'{e}trica @code{[xfun,yfun,zfun]}, com par@^{a}metro @code{par}
 assumindo valores de @code{parmin} a @code{parmax}.
+
 Esse objeto @'{e} afetado pelas seguintes @i{op@value{cedilha}@~{o}es gr@'{a}ficas}: @code{nticks}, 
 @code{line_width}, @code{line_type} e @code{key}.
+
+Exemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(explicit(exp(sin(x)+cos(x^2)),x,-3,3,y,-3,3),
+             line_type  = 3,
+             parametric(cos(5*u)^2,sin(7*u),u-2,u,0,2),
+             line_type  = 6,
+             line_width = 2,
+             parametric(t^2,sin(t),2+t,t,0,2),
+             surface_hide = true,
+             title = "Surface & curves" )$
+@end example
 
 
 @item
@@ -723,8 +1806,25 @@ Esse objeto @'{e} afetado pelas seguintes @i{op@value{cedilha}@~{o}es gr@'{a}fic
 monta o gr@'{a}fico da superf@'{i}cie param@'{e}trica @code{[xfun,yfun,zfun]}, com par@^{a}metro @code{par1}
 assumindo valores de @code{par1min} a @code{par1max} e o par@^{a}metro @code{par2}
 assumindo valores de @code{par2min} a @code{par2max}.
+
 Esse objeto @'{e} afetado pelas seguintes @i{op@value{cedilha}@~{o}es gr@'{a}ficas}: @code{nticks}, 
 @code{line_width}, @code{line_type}, e @code{key}.
+
+Exemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(title          = "Concha do mar",
+             xu_grid        = 100,
+             yv_grid        = 25,
+             rot_vertical   = 100,
+             rot_horizontal = 20,
+             surface_hide   = true,
+             parametric_surface(0.5*u*cos(u)*(cos(v)+1),
+                                0.5*u*sin(u)*(cos(v)+1),
+                                u*sin(v) - ((u+3)/8*%pi)^2 - 20,
+                                u, 0, 13*%pi, v, -%pi, %pi) )$
+@end example
 
 @end itemize
 
@@ -758,6 +1858,19 @@ e @code{columns}.
 As fun@value{cedilha}@~{o}es @code{draw2d} e @code{draw3d} s@~{a}o atalhos para serem usados 
 quando somente um fundo gr@'{a}fico @'{e} requerido, em duas ou tr@^{e}s dimens@~{o}es, respectivamente.
 
+Para fazer uso dessa fun@value{cedilha}@~{a}o escreva primeiramente @code{load(draw)}.
+
+Exemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) scene1: gr2d(title="Ellipse",
+                   nticks=30,
+                   parametric(2*cos(t),5*sin(t),t,0,2*%pi))$
+(%i3) scene2: gr2d(title="Triangle",
+                   polygon([4,5,7],[6,4,2]))$
+(%i4) draw(scene1, scene2, columns = 2)$
+@end example
 @end deffn
 
 
@@ -768,6 +1881,8 @@ Essa fun@value{cedilha}@~{a}o @'{e} um atalho para
 
 Pode ser usada para montar gr@'{a}fico de um @'{u}nico fundo bidimensional.
 
+Para fazer uso dessa fun@value{cedilha}@~{a}o escreva primeiramente @code{load(draw)}.
+
 @end deffn
 
 
@@ -777,6 +1892,8 @@ Essa fun@value{cedilha}@~{a}o @'{e} um atalho para
 @code{draw3d(gr3d(@var{op@value{cedilha}@~{o}es}, ..., @var{objeto gr@'{a}fico}, ...))}.
 
 Pode ser usada para montar o fundo gr@'{a}fico @'{u}nico tridmensional.
+
+Para fazer uso dessa fun@value{cedilha}@~{a}o escreva primeiramente @code{load(draw)}.
 
 @end deffn
 

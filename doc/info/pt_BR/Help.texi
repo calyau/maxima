@@ -1,5 +1,5 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
-@c /Help.texi/1.20/Sun Dec  3 09:51:33 2006/-ko/
+@c /Help.texi/1.21/Thu Mar  8 03:54:16 2007/-ko/
 @iftex
 @hyphenation{cor-res-pon-de}
 @end iftex

@@ -1,5 +1,5 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
-@c /Expressions.texi/1.51/Mon Jan  1 07:27:09 2007/-ko/
+@c /Expressions.texi/1.52/Sun Mar 11 02:32:14 2007/-ko/
 @menu
 * Introdu@value{cedilha}@~{a}o a Express@~{o}es::  
 * Atribui@value{cedilha}@~{a}o::                  
@@ -1732,7 +1732,11 @@ Retorna o operador principal da express@~{a}o @var{expr}.
 @code{op} retorna uma seq@"{u}@^{e}ncia de caracteres se o operador principal for uma
 operador interno ou definido pelo usu@'{a}rio como
 prefixado, bin@'{a}rio ou n-@'{a}rio infixo, posfixado, matchfix ou nofix.
-De outra forma @code{op} retorna um s@'{i}mbolo.
+De outra forma, se @var{expr} for uma express@~ao de fun@value{cedilha}@~ao subscrita,
+@code{op} retorna uma fun@value{cedilha}@~ao subscrita;
+nesse caso o valor de retorno n@~ao @'e um @'atomo.
+De outro modo, @var{expr} @'e uma fun@value{cedilha}@~ao de array ou uma express@~ao de fun@value{cedilha}@~ao comum,
+e @code{op} retorna um s@'imbolo.
 
 @code{op} observa o valor do sinalizador global @code{inflag}.
 
@@ -1754,6 +1758,8 @@ Exemplos:
 @c op ('foo (a));
 @c prefix (foo);
 @c op (foo a);
+@c op (F [x, y] (a, b, c));
+@c op (G [u, v, w]);
 @c ===end===
 
 @example
@@ -1778,6 +1784,11 @@ Exemplos:
 (%o10)                        "foo"
 (%i11) op (foo a);
 (%o11)                        "foo"
+(%i12) op (F [x, y] (a, b, c));
+(%o12)                        F
+                               x, y
+(%i13) op (G [u, v, w]);
+(%o13)                          G
 @end example
 
 @end deffn

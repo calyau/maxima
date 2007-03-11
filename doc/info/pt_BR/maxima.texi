@@ -1,5 +1,5 @@
 \input texinfo
-@c /maxima.texi/1.44/Sat Feb 17 06:34:16 2007/-ko/
+@c /maxima.texi/1.45/Thu Mar  8 03:54:16 2007/-ko/
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c -*-texinfo-*-
 
