@@ -80,7 +80,7 @@ tellsimpafter (aa% ` mm%, (constant_factors(mm%) * aa%) ` everything_else(mm%));
 tellsimpafter (aa% ` cc%, aa%*cc%);
 simp: true$
 
-unitop_p (e%) := is (nounify (op(e%)) = nounify ("`"));
+unitop_p (e%) := atom (op(e%)) and is (nounify (op(e%)) = nounify ("`"));
 unitp (e%) :=
   if atom(e%) then featurep (e%, dimensional)
   else if unitop_p (e%) then true
@@ -89,7 +89,7 @@ unitp (e%) :=
 constantp_not1 (x%) := constantp(x%) and x% # 1;
 constantp_not0 (x%) := constantp(x%) and x% # 0;
 nonconstantp (x%) := not constantp (x%);
-mult_exprp (e%) := not atom(e%) and (nounify (op(e%)) = nounify ("*") or nounify (op(e%)) = nounify ("//"));
+mult_exprp (e%) := not atom(e%) and atom (op(e%)) and (nounify (op(e%)) = nounify ("*") or nounify (op(e%)) = nounify ("//"));
 mult_expr_nontrivialconstfactorsp (e%) := mult_exprp (e%) and constant_factors (e%) # 1;
 nondimensional (e%) := atom(e%) or (op(e%) # "`" and apply ("and", map (nondimensional, args(e%))));
 nondimensional_not1 (e%) := e% # 1 and nondimensional (e%);
@@ -127,3 +127,5 @@ everything_else(e%) := e%/constant_factors(e%);
 
 simplify_units (e%) := e%;
 
+/* Compile matchdeclare predicate functions in hopes of greater speed */
+compile (constantp_not0, constantp_not1, mult_expr_nontrivialconstfactorsp, nondimensional, unitp, nonconstantp);
