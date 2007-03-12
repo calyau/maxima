@@ -9,6 +9,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :maxima)
+
 (macsyma-module limit)
 
 
@@ -26,27 +27,18 @@
 
 ;;; TOP LEVEL FUNCTION(S): $LIMIT $LDEFINT
 
-(declare-top(genprefix l)
-	    (special errorsw errrjfflag raterr origval $lhospitallim low*
-		     ind* *indicator limfunc 
-		     half%pi nn* dn* numer denom exp var val varlist
-		     *zexptsimp? $tlimswitch origval
-		     $logarc *limorder taylored logcombed
-		     $exponentialize lhp? lhcount
-		     $ratfac genvar complex-limit lnorecurse
-		     loginprod? $limsubst $logabs a 
-		     context global-assumptions limit-assumptions
-		     limit-top limitp integer-info old-integer-info
-		     behavior-count behavior-count-now $keepfloat $logexpand)
-	    (*lexpr $limit limit-list $factor factor $expand
-		    $ratsimp $rat $ratcoef context)
-	    (*expr $trigexpand)
-	    (fixnum nargs behavior-count behavior-count-now))
+(declare-top (special errorsw errrjfflag raterr origval $lhospitallim low*
+		      ind* *indicator limfunc half%pi nn* dn* numer denom exp var val varlist
+		      *zexptsimp? $tlimswitch origval $logarc *limorder taylored logcombed
+		      $exponentialize lhp? lhcount $ratfac genvar complex-limit lnorecurse
+		      loginprod? $limsubst $logabs a context global-assumptions limit-assumptions
+		      limit-top limitp integer-info old-integer-info
+		      behavior-count behavior-count-now $keepfloat $logexpand))
 
 (load-macsyma-macros rzmac)
 
-(defmvar infinities '($inf $minf $infinity) 
-  "The types of infinities recognized by Maxima. 
+(defmvar infinities '($inf $minf $infinity)
+  "The types of infinities recognized by Maxima.
    INFINITY is complex infinity")
 
 (defmvar real-infinities '($inf $minf)
@@ -73,11 +65,11 @@ It appears in LIMIT and DEFINT.......")
 (if (not (boundp 'behavior-count)) (setq behavior-count 4))
 
 ;; This should be made to give more information about the error.
-;;(DEFun DISCONT () 
+;;(DEFun DISCONT ()
 ;;       (cond (errorsw (throw 'errorsw t))
 ;;	     (t (merror "Discontinuity Encountered"))))
 
-;;(DEFUN PUTLIMVAL (E V) 
+;;(DEFUN PUTLIMVAL (E V)
 ;;  (let ((exp (cons '(%limit) (list e var val))))
 ;;    (cond ((not (assolike exp limit-answers))
 ;;	   (setq limit-answers (cons (cons exp v) limit-answers))
@@ -90,17 +82,17 @@ It appears in LIMIT and DEFINT.......")
     (setq limit-answers (cons (cons exp v) limit-answers)))
   v)
 
-(defun getlimval (e) 
+(defun getlimval (e)
   (let ((exp (cons '(%limit) (list e var val))))
     (assolike exp limit-answers)))
 
-(defmacro limit-catch (exp var val) 
+(defmacro limit-catch (exp var val)
   `(let ((errorsw t))
-    (let ((ans (catch 'errorsw 
+    (let ((ans (catch 'errorsw
 		 (catch 'limit (limit ,exp ,var ,val 'think)))))
       (cond ((or (null ans) (eq ans t))  ())
 	    (t ans)))))
-
+
 (defmfun $limit nargs
   (let ((global-assumptions ())  (limit-assumptions ())
 	(old-integer-info ())
@@ -112,11 +104,11 @@ It appears in LIMIT and DEFINT.......")
 	       (setq integer-info ())))
 
     (unwind-protect
-	 (let ((exp1 ()) (rd* t) (lhcount $lhospitallim) (behavior-count-now 0)     
-	       (d ()) (exp ()) (var ()) (val ()) (dr ()) 
+	 (let ((exp1 ()) (rd* t) (lhcount $lhospitallim) (behavior-count-now 0)
+	       (d ()) (exp ()) (var ()) (val ()) (dr ())
 	       (*indicator ()) (taylored ()) (origval ())
 	       (logcombed ()) (lhp? ()) ($logexpand t)
-	       (varlist ()) (ans ()) (genvar ()) (loginprod? ()) 
+	       (varlist ()) (ans ()) (genvar ()) (loginprod? ())
 	       (limit-answers ()) (limitp t) (simplimplus-problems ()))
 	   (declare (special lhcount behaviour-count-now exp var val *indicator
 			     taylored origval logcombed lhp?
@@ -128,14 +120,14 @@ It appears in LIMIT and DEFINT.......")
 	      (setq exp1 (specrepcheck (arg 1)))
 	      (cond ((= nargs 1) (setq var 'foo val 0))
 		    (t (setq var (arg 2))
-		       (cond (($constantp var) 
-			      (merror 
+		       (cond (($constantp var)
+			      (merror
 			       "Second argument cannot be a constant - `limit'")))
 		       (setq val (arg 3))
 		       (if (eq val '$zeroa) (setq dr '$plus))
 		       (if (eq val '$zerob) (setq dr '$minus))))
 	      (cond ((= nargs 4)
-		     (if (not (memq (arg 4) '($plus $minus)))
+		     (if (not (member (arg 4) '($plus $minus) :test #'eq))
 			 (merror
 			  "Fourth argument must be either `plus' or `minus' - `limit'"))
 		     (setq dr (arg 4))))
@@ -155,7 +147,7 @@ It appears in LIMIT and DEFINT.......")
 	      ;; knows. Old assumptions are saved for restoration upon
 	      ;; exit.
 	      (if (not (= nargs 1)) (limit-context (arg 2) origval dr))
-	      ;; Transform the limit value.	     
+	      ;; Transform the limit value.
 	      (cond ((not (infinityp val))
 		     (if (not (zerop2 val))
 			 (setq exp (subin (m+ var val) exp)))
@@ -165,7 +157,7 @@ It appears in LIMIT and DEFINT.......")
 		     (setq origval 0)))
 	      ;; Transform limits to minf to limits to inf by
 	      ;; replacing var with -var everywhere.
-	      (if (eq val '$minf) (setq val '$inf 
+	      (if (eq val '$minf) (setq val '$inf
 					origval '$inf
 					exp (subin (m* -1 var) exp)))
 	      (setq exp (resimplify
@@ -215,7 +207,7 @@ It appears in LIMIT and DEFINT.......")
 	  (t ()))))
 
 (defun limit-context (var val direction) ;Only works on entry!
-  (cond (limit-top 
+  (cond (limit-top
 	 (mapc 'forget (setq global-assumptions (cdr ($facts var))))
 	 (assume '((mgreaterp) epsilon 0))
 	 (assume '((mlessp) epsilon 1.0e-8))
@@ -260,8 +252,8 @@ It appears in LIMIT and DEFINT.......")
 	   (setq pred (caar (car list))
 		 part1 (cadr (car list))
 		 part2 (caddr (car list)))
-	   (if (memq pred '(mgreaterp mlessp))
-	       (push (make-assump pred part1 part2 var val) 
+	   (if (member pred '(mgreaterp mlessp) :test #'eq)
+	       (push (make-assump pred part1 part2 var val)
 		     assumptions))))))
 
 (defun make-assump (pred part1 part2 var val)
@@ -277,7 +269,7 @@ It appears in LIMIT and DEFINT.......")
 		     (free part1 '$infinity))
 		`((,pred) ,(m+t part1 (m*t -1 val)) ,part2))
 	       (t `((,pred) ,part1 ,part2))))))
-		
+
 (defun restore-assumptions ()
 ;;;Hackery until assume and forget take reliable args. Nov. 9 1979.
 ;;;JIM.
@@ -316,7 +308,7 @@ It appears in LIMIT and DEFINT.......")
 (defun limunknown1 (f)
   (cond ((mapatom f) nil)
 	((or (not (safe-get (caar f) 'operators))
-	     (memq (caar f) '(%sum %product %signum mncexpt))
+	     (member (caar f) '(%sum %product %signum mncexpt) :test #'eq)
 	     ;;Special function code here i.e. for li[2](x).
 	     (and (eq (caar f) 'mqapply)
 		  (not (get (subfunname f) 'specsimp))))
@@ -324,7 +316,7 @@ It appears in LIMIT and DEFINT.......")
 	(t (mapc #'limunknown1 (cdr f)) nil)))
 
 (defun factosimp(e)
-  (if (involve e '(%gamma)) (setq e ($makefact e))) 
+  (if (involve e '(%gamma)) (setq e ($makefact e)))
   (cond ((involve e '(mfactorial))
 	 (setq e (simplify ($minfactorial e))))
 	(t e)))
@@ -373,7 +365,7 @@ It appears in LIMIT and DEFINT.......")
 		      ((null ans) exp)
 		    (setq a (mabs-subst ans var val))
 		    (setq d (limit a var val t))
-		    (cond 
+		    (cond
 		      ((or (null a) (null d))
 		       (if (not (or (eq val '$zeroa)
 				    (eq val '$zerob)
@@ -391,12 +383,12 @@ It appears in LIMIT and DEFINT.......")
 			   (throw 'mabs '$und)))
 		      (t
 		       (throw 'mabs 'retn))))))))))
-
+
 (defun infcount (exp)
   (cond ((atom exp)
 	 (cond ((infinityp exp) 1)
 	       (t 0)))
-	(t (f+ (infcount (car exp)) (infcount (cdr exp))))))
+	(t (+ (infcount (car exp)) (infcount (cdr exp))))))
 
 (defun simpinf (exp)
   (declare (special exp val))
@@ -405,28 +397,27 @@ It appears in LIMIT and DEFINT.......")
       ((= infc 0)  exp)
       ((= infc 1)  (setq infc (inf-typep exp))
        ($limit (subst var infc exp) var infc))
-      (t 
+      (t
        (setq nexp (cons (car exp) (mapcar 'simpinf (cdr exp))))
        (setq infc (infcount nexp))
        (cond
 	 ((among '$und nexp)  '$und)
 	 ((amongl '(%limit $ind) nexp)  exp)
 	 ((mtimesp nexp)
-	  (cond ((zl-member 0 nexp)
+	  (cond ((member 0 nexp)
 		 (cond ((> infc 0) '$und)
 		       (t 0)))
-		((memq '$infinity nexp) '$infinity)
+		((member '$infinity nexp :test #'eq) '$infinity)
 		(t (simplimit nexp var val))))
 	 ((mexptp nexp)
 	  (cond ((and (eq (cadr nexp) '$inf) (eq (caddr nexp) '$inf)) '$inf)
 		(t (simpinf (m^ '$%e (m* (caddr exp) `((%log) ,(cadr exp))))))))
 	 ((< infc 2)  (simpinf nexp))
 	 ((mplusp nexp)
-	  (cond ((memq '$infinity (cdr nexp)) '$infinity)
+	  (cond ((member '$infinity (cdr nexp) :test #'eq) '$infinity)
 		(t (setq infc (inf-typep nexp))
-		   (cond 
-		     ((amongl (zl-delete infc 
-					 (copy-list '($infinity $minf inf)))
+		   (cond
+		     ((amongl (delete infc (copy-list '($infinity $minf inf)) :test #'equal)
 			      nexp)
 		      '$und)
 		     (t infc)))))
@@ -434,7 +425,7 @@ It appears in LIMIT and DEFINT.......")
 
 (defun simpab (small)
   (cond ((null small) ())
-	((memq small '($zeroa $zerob $inf $minf $infinity)) small)
+	((member small '($zeroa $zerob $inf $minf $infinity) :test #'eq) small)
 	((not (free small '$ind)) '$ind) ;Not exactly right but not
 	((not (free small '$und)) '$und) ;causing trouble now.
 	((mapatom small)  small)
@@ -443,13 +434,13 @@ It appears in LIMIT and DEFINT.......")
 		  (not (free small '$zerob))))
 	 (throw 'limit t))		;Terrible loss, can do better
 	(t (let ((preserve-direction t)
-		 (new-small (subst 'epsilon '$zeroa 
+		 (new-small (subst 'epsilon '$zeroa
 				   (subst (m- 'epsilon) '$zerob small))))
 	     (limit new-small 'epsilon '$zeroa 'think)))))
 
 
 ;;;*I* INDICATES: T => USE LIMIT1,THINK, NIL => USE SIMPLIMIT.
-(defmfun limit (exp var val *i*) 
+(defmfun limit (exp var val *i*)
   (cond
     ((among '$und exp)  '$und)
     ((eq var exp)  val)
@@ -466,12 +457,12 @@ It appears in LIMIT and DEFINT.......")
 			    ((ratp exp var) (ratlim exp))
 			    ((or (eq *i* t) (radicalp exp var))
 			     (limit1 exp var val))
-			    ((eq *i* 'think)		
+			    ((eq *i* 'think)
 			     (cond ((or (mtimesp exp) (mexptp exp))
 				    (limit1 exp var val))
 				   (t (simplimit exp var val))))
 			    (t (simplimit exp var val)))))))
-      
+
 (defun limitsimp (exp var)
   (limitsimp-dispatch (sin-sq-cos-sq-sub exp) var))
 ;;Hack for sin(x)^2+cos(x)^2.
@@ -502,7 +493,7 @@ It appears in LIMIT and DEFINT.......")
       ((null arg) exp)
       (t (let ((new-exp ($substitute (m+t 1 (m- (m^t `((%sin) ,arg) 2)))
 				     (m^t `((%cos) ,arg) 2)
-				     ($substitute 
+				     ($substitute
 				      (m+t 1 (m- (m^t `((%cos) ,arg) 2)))
 				      (m^t `((%sin) ,arg) 2)
 				      exp))))
@@ -525,7 +516,7 @@ It appears in LIMIT and DEFINT.......")
 				   (cdr x)))))))
 
 
-(defun tansc (e) 
+(defun tansc (e)
   (cond ((not (involve e
 		       '(%cot %csc %binomial
 			 %sec %coth %sech %csch
@@ -534,29 +525,29 @@ It appears in LIMIT and DEFINT.......")
 			 %jacobi_ns %jacobi_nc %jacobi_cs
 			 %jacobi_ds %jacobi_dc)))
 	 e)
-	(t ($ratsimp (tansc1 e))))) 
-
+	(t ($ratsimp (tansc1 e)))))
+
 (defun tansc1 (e &aux tem)
   (cond ((atom e) e)
 	((and (setq e (cons (car e) (mapcar 'tansc1 (cdr e))))  ()))
-	((setq tem (assq (caar e) '((%cot . %tan) (%coth . %tanh)
+	((setq tem (assoc (caar e) '((%cot . %tan) (%coth . %tanh)
 				    (%sec . %cos) (%sech . %cosh)
-				    (%csc . %sin) (%csch . %sinh))))
+				    (%csc . %sin) (%csch . %sinh)) :test #'eq))
 	 (tansc1 (m^ (list (ncons (cdr tem)) (cadr e)) -1.)))
-	((setq tem (assq (caar e) '((%jacobi_nc . %jacobi_cn)
+	((setq tem (assoc (caar e) '((%jacobi_nc . %jacobi_cn)
 				    (%jacobi_ns . %jacobi_sn)
 				    (%jacobi_cs . %jacobi_sc)
 				    (%jacobi_ds . %jacobi_sd)
-				    (%jacobi_dc . %jacobi_cd))))
+				    (%jacobi_dc . %jacobi_cd)) :test #'eq))
 	 ;; Converts Jacobi elliptic function to its reciprocal
 	 ;; function.
 	 (tansc1 (m^ (list (ncons (cdr tem)) (cadr e) (third e)) -1.)))
-	((setq tem (memq (caar e) '(%sinh %cosh %tanh)))
-	 (let (($exponentialize t)) 
+	((setq tem (member (caar e) '(%sinh %cosh %tanh) :test #'eq))
+	 (let (($exponentialize t))
 	   (resimplify e)))
-	((setq tem (assq (caar e) '((%acsc . %asin) (%asec . %acos)
+	((setq tem (assoc (caar e) '((%acsc . %asin) (%asec . %acos)
 				    (%acot . %atan) (%acsch . %asinh)
-				    (%asech . %acosh) (%acoth . %atanh))))
+				    (%asech . %acosh) (%acoth . %atanh)) :test #'eq))
 	 (list (ncons (cdr tem)) (m^t (cadr e) -1.)))
 	((and (eq (caar e) '%binomial) (among var (cdr e)))
 	 (m//  `((mfactorial) ,(cadr e))
@@ -564,14 +555,13 @@ It appears in LIMIT and DEFINT.......")
 		   `((mfactorial) ,(caddr e)))))
 	(t e)))
 
-(defun hyperex (ex) 
-  (cond ((not (involve ex
-		       '(%sin %cos %tan %asin %acos %atan
-			 %sinh %cosh %tanh %asinh %acosh %atanh)))
+(defun hyperex (ex)
+  (cond ((not (involve ex '(%sin %cos %tan %asin %acos %atan
+			    %sinh %cosh %tanh %asinh %acosh %atanh)))
 	 ex)
-	(t (hyperex0 ex)))) 
-
-(defun hyperex0 (ex) 
+	(t (hyperex0 ex))))
+
+(defun hyperex0 (ex)
   (cond ((atom ex) ex)
 	((eq (caar ex) '%sinh)
 	 (m// (m+ (m^ '$%e (cadr ex)) (m- (m^ '$%e (m- (cadr ex)))))
@@ -579,54 +569,45 @@ It appears in LIMIT and DEFINT.......")
 	((eq (caar ex) '%cosh)
 	 (m// (m+ (m^ '$%e (cadr ex)) (m^ '$%e (m- (cadr ex))))
 	      2))
-	((and (memq (caar ex)
+	((and (member (caar ex)
 		    '(%sin %cos %tan %asin %acos %atan %sinh
-		      %cosh %tanh %asinh %acosh %atanh))
+		      %cosh %tanh %asinh %acosh %atanh) :test #'eq)
 	      (among var ex))
 	 (hyperex1 ex))
-	(t (cons (car ex) (mapcar #'hyperex0 (cdr ex)))))) 
+	(t (cons (car ex) (mapcar #'hyperex0 (cdr ex))))))
 
-(defun hyperex1 (ex) 
-  (let ( ;; Can't exponentialize now because complex plane isn't handled right yet
-	#+(or)
-	($exponentialize t)
-	;; Can't $logarc either for the same reason!
-	#+(or)
-	($logarc t)
-	)
-    (ssimplifya ex)))
+(defun hyperex1 (ex)
+  (ssimplifya ex))
 
 ;;Used by tlimit also.
-(defmfun limit1 (exp var val) 
+(defmfun limit1 (exp var val)
   (prog ()
      (let ((lhprogress? lhp?)  (lhp? ())  (ans ()))
        (cond ((setq ans (and (not (atom exp))
-			     (getlimval exp))) 
+			     (getlimval exp)))
 	      (return ans))
 	     ((and (not (infinityp val))
 		   (setq ans (simplimsubst val exp)))
 	      (return ans))
 	     (t nil))
 
-;;;NUMDEN* => (numerator . denominator)	     
-       (destructuring-let (((n . dn) (numden* exp)))    
+;;;NUMDEN* => (numerator . denominator)
+       (destructuring-let (((n . dn) (numden* exp)))
 	 (cond
 	   ((not (among var dn))
-	    (return (simplimit (m// (simplimit n var val) dn) 
+	    (return (simplimit (m// (simplimit n var val) dn)
 			       var
 			       val)))
 	   ((not (among var n))
 	    (return (simplimit (m* n
 				   (simplimexpt dn
-						-1.
-						(simplimit dn
-							   var
-							   val)
-						-1.))
+						-1
+						(simplimit dn var val)
+						-1))
 			       var
 			       val)))
 	   ((and (radicalp n var) (radicalp dn var))
-	    (return (radlim (m* n (m^ dn -1.))
+	    (return (radlim (m* n (m^ dn -1))
 			    n
 			    dn)))
 	   ((and lhprogress?
@@ -645,8 +626,6 @@ It appears in LIMIT and DEFINT.......")
 		    t)
 		   (t nil))))))
 
-;;(DECLARE (SPECIAL N DN)) 
-
 (defun limit2 (n dn var val)
   (prog (n1 d1 lim-sign gcp sheur-ans)
      (setq n (hyperex n) dn (hyperex dn))
@@ -671,8 +650,8 @@ It appears in LIMIT and DEFINT.......")
 		    (return (liminv (m// n dn))))
 		   ((setq n1 (try-lhospital-quit n dn nil))
 		    (return n1))))
-	   ((and (zerop2 n1) (not (memq d1 '($ind $und)))) (return 0))
-	   ((zerop2 d1) 
+	   ((and (zerop2 n1) (not (member d1 '($ind $und) :test #'eq))) (return 0))
+	   ((zerop2 d1)
 	    (setq n1 (ridofab n1))
 	    (return (simplimtimes `(,n1 ,(simplimexpt dn -1 d1 -1))))))
      (setq n1 (ridofab n1))
@@ -684,7 +663,7 @@ It appears in LIMIT and DEFINT.......")
 	   ((eq n1 '$ind) (return (cond ((infinityp d1) 0)
 					((equal d1 0) '$und)
 					(t '$ind)))) ;SET LB
-	   ((and (real-infinityp d1) (memq n1 '($inf $und $minf)))
+	   ((and (real-infinityp d1) (member n1 '($inf $und $minf) :test #'eq))
 	    (cond ((expfactorp n dn)  (return (expfactor n dn var)))
 		  ((and (not (atom dn)) (not (atom n))
 			(cond ((not (equal (setq gcp (gcpower n dn)) 1))
@@ -720,14 +699,14 @@ It appears in LIMIT and DEFINT.......")
 	      (setq d1 (car maxi-terms))))
 	   (t (setq d1 dn)))
      (setq sheur-ans (sheur0 n1 d1))
-     (cond ((or (memq sheur-ans '($inf $zeroa))
+     (cond ((or (member sheur-ans '($inf $zeroa) :test #'eq)
 		(free sheur-ans var))
 	    (return (simplimtimes `(,lim-sign ,sheur-ans))))
 	   ((and (alike1 sheur-ans dn)
 		 (not (mplusp n))))
-	   ((memq (setq n1 (cond ((expfactorp n1 d1)  (expfactor n1 d1 var))
+	   ((member (setq n1 (cond ((expfactorp n1 d1)  (expfactor n1 d1 var))
 				 (t ())))
-		  '($inf $zeroa))
+		  '($inf $zeroa) :test #'eq)
 	    (return n1))
 	   ((not (null (setq n1 (cond ((expfactorp n dn)  (expfactor n dn var))
 				      (t ())))))
@@ -777,13 +756,13 @@ It appears in LIMIT and DEFINT.......")
 	     highest-deg (max highest-deg (cdr new-exp))))
      (cond ((null dn) (return nil)))
      (return
-       (do ((answer 1.)
-	    (degree highest-deg (f1- degree))
+       (do ((answer 1)
+	    (degree highest-deg (1- degree))
 	    (numerator n)
 	    (denomenator dn)
 	    (numfactors nil)
 	    (denfactors nil))
-	   ((= degree -1.)
+	   ((= degree -1)
 	    (m* answer
 		(limit (m// numerator denomenator)
 		       var
@@ -808,7 +787,7 @@ It appears in LIMIT and DEFINT.......")
 			     var
 			     '$inf 'think))
 	 (cond ((eq answer '$und) (return nil))
-	       ((zl-member answer '($inf $minf 0)) ;Really? ZEROA ZEROB?
+	       ((member answer '($inf $minf 0) :test #'equal) ;Really? ZEROA ZEROB?
 		(return answer))
 	       (t nil))))))
 
@@ -842,10 +821,10 @@ It appears in LIMIT and DEFINT.......")
 (defun get-newexp&factors (exp degree var) ;RETURNS (CONS NEWEXP FACTORS)
   (do ((terms (cond ((mtimesp exp)(cdr exp)) ; SUCH THAT
 		    (t (ncons exp)))	; NEWEXP*FACTORS^(VAR^DEGREE)
-	      (cdr terms))		; IS EQUAL TO EXP.        
-       (factors 1)                 
-       (newexp 1)                          
-       (factor nil))                
+	      (cdr terms))		; IS EQUAL TO EXP.
+       (factors 1)
+       (newexp 1)
+       (factor nil))
       ((null terms)
        (cons newexp
 	     factors))
@@ -872,8 +851,8 @@ It appears in LIMIT and DEFINT.......")
 
 (defun ratdegree (rat)
   (let ((n-dn (numden* rat)))
-    (f- (deg (car n-dn))
-	(deg (cdr n-dn)))))
+    (- (deg (car n-dn))
+       (deg (cdr n-dn)))))
 
 (defun limfact2 (n d var val)
   (let ((n1 (reflect0 n var val))
@@ -898,15 +877,15 @@ It appears in LIMIT and DEFINT.......")
 			 (cdr exp))))))
 
 (defun reflect (arg)
-  (m* -1.
+  (m* -1
       '$%pi
       (m^ (list (ncons 'mfactorial)
-		(m+ -1.
-		    (m* -1. arg)))
-	  -1.)
+		(m+ -1
+		    (m* -1 arg)))
+	  -1)
       (m^ (list (ncons '%sin)
 		(m* '$%pi arg))
-	  -1.)))
+	  -1)))
 
 (defun limfact (n d)
   (let ((ans ()))
@@ -914,11 +893,11 @@ It appears in LIMIT and DEFINT.......")
 	  d (stirling0 d))
     (setq ans ($limit (m// n d) var '$inf))
     (cond ((and (atom ans)
-		(not (memq ans '(und ind ))))  ans)
+		(not (member ans '(und ind ) :test #'eq)))  ans)
 	  ((eq (caar ans) '%limit)  ())
 	  (t ans))))
 
-(defun stirling0 (e) 
+(defun stirling0 (e)
   (cond ((atom e) e)
 	((and (setq e (cons (car e) (mapcar 'stirling0 (cdr e))))
 	      nil))
@@ -931,14 +910,14 @@ It appears in LIMIT and DEFINT.......")
 	(t e)))
 
 (defun stirling (x)
-  (maxima-substitute x '$z 
+  (maxima-substitute x '$z
 		     '((mtimes simp)
 		       ((mexpt simp) 2 ((rat simp) 1 2))
 		       ((mexpt simp) $%pi ((rat simp) 1 2))
 		       ((mexpt simp) $z ((mplus simp) ((rat simp) -1 2) $z))
 		       ((mexpt simp) $%e ((mtimes simp) -1 $z)))))
 
-(defun no-err-sub (v e &aux ans) 
+(defun no-err-sub (v e &aux ans)
   (let ((errorsw t) (errrjfflag t) (*zexptsimp? t)
 	(errcatch t)
 	;; Don't print any error messages
@@ -947,49 +926,49 @@ It appears in LIMIT and DEFINT.......")
     ;; Should we just use IGNORE-ERRORS instead HANDLER-CASE here?  I
     ;; (rtoy) am choosing the latter so that unexpected errors will
     ;; actually show up instead of being silently discarded.
-    (handler-case 
+    (handler-case
 	(setq ans (catch 'errorsw
-		    (catch 'raterr 
+		    (catch 'raterr
 		      (sratsimp (subin v e)))))
       (maxima-$error ()
 	(setq ans nil)))
     (cond ((null ans) t)     ; Ratfun package returns NIL for failure.
 	  (t ans))))
 
-(defun simplimsubst (v e) 
-  (prog (ans)  
+(defun simplimsubst (v e)
+  (prog (ans)
      (setq ans (no-err-sub (ridofab v) e))
      (cond ((eq ans t)
 	    (return nil))
 	   ((involve e '(mfactorial)) nil)
-	   ((and (memq v '($zeroa $zerob)) (=0 ans))
+	   ((and (member v '($zeroa $zerob) :test #'eq) (=0 ans))
 	    (setq ans (behavior e var v))
 	    (return (cond ((equal ans 1) '$zeroa)
 			  ((equal ans -1) '$zerob)
 			  (t ans))))
-	   (t (return ans))))) 
+	   (t (return ans)))))
 
 ;;;returns (cons numerator denomenator)
-(defun numden* (e)    
+(defun numden* (e)
   (let ((e (factor (simplify e)))
 	(numer ())  (denom ()))
-    (cond ((atom e) 
+    (cond ((atom e)
 	   (setq numer (cons e numer)))
 	  ((mtimesp e)
 	   (mapc 'forq (cdr e)))
 	  (t (forq e)))
-    (cond ((null numer) 
+    (cond ((null numer)
 	   (setq numer 1.))
 	  ((null (cdr numer))
 	   (setq numer (car numer)))
 	  (t (setq numer (m*l numer))))
-    (cond ((null denom) 
+    (cond ((null denom)
 	   (setq denom 1.))
 	  ((null (cdr denom))
 	   (setq denom (car denom)))
 	  (t (setq denom (m*l denom))))
     (cons (factor numer) (factor denom))))
-
+
 ;;;FACTOR OR QUOTIENT
 ;;;Setq's the special vars numer and denom from numden*
 (defun forq (e)
@@ -1002,7 +981,7 @@ It appears in LIMIT and DEFINT.......")
 ;;;returns T if pos,zero. () if negative or don't know.
 (defun pos-neg-p (exp)
   (let ((ans (limit exp var val 'think)))
-    (cond ((and (not (memq ans '($und $ind $infinity)))
+    (cond ((and (not (member ans '($und $ind $infinity) :test #'eq))
 		(equal ($imagpart ans) 0))
 	   (let ((sign (getsignl ans)))
 	     (cond ((or (equal sign 1)
@@ -1011,36 +990,36 @@ It appears in LIMIT and DEFINT.......")
 		   ((equal sign -1)  nil))))
 	  (t 'unknown))))
 
-(declare-top(unspecial n dn)) 
+(declare-top (unspecial n dn))
 
 (setq limfunc '(%log %sin %cos %tan %sinh %cosh %tanh mfactorial
-		%asin %acos %atan %asinh %acosh %atanh)) 
+		%asin %acos %atan %asinh %acosh %atanh))
 
-(defun expp (e) 
+(defun expp (e)
   (cond ((radicalp e var) nil)
-	((memq (caar e) limfunc) nil)
+	((member (caar e) limfunc :test #'eq) nil)
 	((simplexp e) t)
 	((do ((e (cdr e) (cdr e)))
 	     ((null e) nil)
-	   (and (expp (car e)) (return t)))))) 
+	   (and (expp (car e)) (return t))))))
 
-(defun simplexp (e) 
+(defun simplexp (e)
   (and (mexptp e)
        (radicalp (cadr e) var)
        (among var (caddr e))
-       (radicalp (caddr e) var))) 
-
+       (radicalp (caddr e) var)))
+
 
 (defun gcpower (a b)
   ($gcd (getexp a) (getexp b)))
-	
+
 (defun getexp (exp)
   (cond ((and (mexptp exp)
 	      (free (caddr exp) var)
 	      (eq (ask-integer (caddr exp) '$integer) '$yes))
 	 (caddr exp))
 	((mtimesp exp) (getexplist (cdr exp)))
-	(t 1.)))
+	(t 1)))
 
 (defun getexplist (list)
   (cond ((null (cdr list))
@@ -1049,7 +1028,7 @@ It appears in LIMIT and DEFINT.......")
 		 (getexplist (cdr list))))))
 
 (defun limroot (exp power)
-  (cond ((or (atom exp) (not (memq (caar exp) '(mtimes mexpt))))
+  (cond ((or (atom exp) (not (member (caar exp) '(mtimes mexpt) :test #'eq)))
 	 (limroot (list '(mexpt) exp 1) power)) ;This is strange-JIM.
 	((mexptp exp)  (m^ (cadr exp)
 			   (sratsimp (m* (caddr exp) (m^ power -1.)))))
@@ -1063,15 +1042,15 @@ It appears in LIMIT and DEFINT.......")
 ;;; from bas.
 
 (defun colexpt (n dn gcp)
-  (let ((bas (m* (limroot n gcp) (limroot dn (m*  -1. gcp))))
-	(expo gcp) 
+  (let ((bas (m* (limroot n gcp) (limroot dn (m* -1 gcp))))
+	(expo gcp)
 	baslim expolim)
     (setq baslim (limit bas var val 'think))
     (setq expolim (limit expo var val 'think))
-    (simplimexpt bas expo baslim expolim))) 
+    (simplimexpt bas expo baslim expolim)))
 
 ;;; This function will transform an expression such that either all logarithms
-;;; contain arguments not becoming infinite or are of the form 
+;;; contain arguments not becoming infinite or are of the form
 ;;; LOG(LOG( ... LOG(VAR))) This reduction takes place only over the operators
 ;;; MPLUS, MTIMES, MEXPT, and %LOG.
 
@@ -1083,7 +1062,7 @@ It appears in LIMIT and DEFINT.......")
        (if log (cons (cadr log) (m*l consts))
 	   ()))
     (cond ((freeof var (car l)) (push (car l) consts))
-	  ((mlogp (car l)) 
+	  ((mlogp (car l))
 	   (if (null log) (setq log (car l))
 	       (return ())))
 	  (t (return ())))))
@@ -1098,7 +1077,7 @@ It appears in LIMIT and DEFINT.......")
 	      (strong-logs ())
 	      (temp))
 	     ((null l) (m+l `(((%log) ,(m*l strong-logs))
-			      ((%log) ,(m*l weak-logs)) 
+			      ((%log) ,(m*l weak-logs))
 			      ,@sum)))
 	   (setq x (log-reduce (car l)))
 	   (cond ((mlogp x)
@@ -1139,9 +1118,9 @@ It appears in LIMIT and DEFINT.......")
 			     (log-reduce red-log)))))))
 	(t x)))
 
-
-(defun ratlim (e) 
-  (cond ((memq val '($inf $infinity))
+
+(defun ratlim (e)
+  (cond ((member val '($inf $infinity) :test #'eq)
 	 (setq e (maxima-substitute (m^t 'x -1) var e)))
 	((eq val '$minf)
 	 (setq e (maxima-substitute (m^t -1 (m^t 'x -1)) var e)))
@@ -1156,19 +1135,19 @@ It appears in LIMIT and DEFINT.......")
 		       (g (genfind h 'x))
 		       (nd (lodeg n g))
 		       (dd (lodeg d g)))
-    (cond ((and 
+    (cond ((and
 	    (setq e
-		  (subst var 
-			 'x 
+		  (subst var
+			 'x
 			 (sratsimp
 			  (m//
 			   ($ratdisrep `(,h ,(locoef n g) . 1))
 			   ($ratdisrep `(,h ,(locoef d g) . 1))))))
-	    (greaterp nd dd))
-	   (cond ((not (memq val
-			     '($zerob $zeroa $inf $minf)))
+	    (> nd dd))
+	   (cond ((not (member val
+			     '($zerob $zeroa $inf $minf) :test #'eq))
 		  0)
-		 ((not (equal ($imagpart e) 0)) 
+		 ((not (equal ($imagpart e) 0))
 		  0)
 		 ((null (setq e (getsignl ($realpart e))))
 		  0)
@@ -1176,7 +1155,7 @@ It appears in LIMIT and DEFINT.......")
 		 ((equal e -1) '$zerob)
 		 (t 0)))
 	  ((equal nd dd) e)
-	  ((not (memq val '($zerob $zeroa $infinity $inf $minf)))
+	  ((not (member val '($zerob $zeroa $infinity $inf $minf) :test #'eq))
 	   (throw 'limit t))
 	  ((eq val '$infinity)  '$infinity)
 	  ((not (equal ($imagpart e) 0)) '$infinity)
@@ -1185,15 +1164,15 @@ It appears in LIMIT and DEFINT.......")
 	  ((equal e -1) '$minf)
 	  (t 0))))
 
-(defun lodeg (n x) (if (or (atom n) (not (eq (car n) x))) 0 (lowdeg (cdr n)))) 
+(defun lodeg (n x) (if (or (atom n) (not (eq (car n) x))) 0 (lowdeg (cdr n))))
 
-(defun locoef (n x) (if (or (atom n) (not (eq (car n) x))) n (car (last n)))) 
+(defun locoef (n x) (if (or (atom n) (not (eq (car n) x))) n (car (last n))))
 
-
+
 (defun behavior (exp var val)		; returns either -1, 0, 1.
   (if (= behavior-count-now behavior-count)
       0
-      (let ((behavior-count-now (f1+ behavior-count-now)) pair sign)
+      (let ((behavior-count-now (1+ behavior-count-now)) pair sign)
 	(cond ((real-infinityp val)
 	       (setq val (cond ((eq val '$inf) '$zeroa)
 			       ((eq val '$minf) '$zerob)))
@@ -1205,7 +1184,7 @@ It appears in LIMIT and DEFINT.......")
 	       (setq sign (getsignl (car pair)))
 	       (if (not (fixnump sign))
 		   0
-		   (f* sign (behavior (cdr pair) var val))))
+		   (* sign (behavior (cdr pair) var val))))
 	      ((and (=0 (no-err-sub (ridofab val) exp))
 		    (mexptp exp)
 		    (free (caddr exp) var)
@@ -1213,7 +1192,7 @@ It appears in LIMIT and DEFINT.......")
 	       (let ((bas (cadr exp)) (expo (caddr exp)))
 		 (behavior-expt bas expo)))
 	      (t (behavior-by-diff exp var val))))))
-		  
+
 (defun behavior-expt (bas expo)
   (let ((behavior (behavior bas var val)))
     (cond ((= behavior 1) 1)
@@ -1231,18 +1210,18 @@ It appears in LIMIT and DEFINT.......")
   (cond ((not (or (eq val '$zeroa) (eq val '$zerob))) 0)
 	(t (let ((old-val val) (old-exp exp))
 	     (setq val (ridofab val))
-	     (do ((ct 0 (f1+ ct))
+	     (do ((ct 0 (1+ ct))
 		  (exp (sratsimp (sdiff exp var)) (sratsimp (sdiff exp var)))
 		  (n () (not n))
 		  (ans ()))
-	         ((> ct 4) 0)		;This do wins by a return.
+		 ((> ct 4) 0)		;This do wins by a return.
 	       (setq ans (no-err-sub val exp)) ;Why not do an EVENFN and ODDFN
 					;test here.
-	       (cond ((eq ans t)  
+	       (cond ((eq ans t)
 		      (return (behavior-numden old-exp var old-val)))
 		     ((=0 ans) ())	;Do it again.
 		     (t (setq ans (getsignl ans))
-			(cond (n (return ans)) 
+			(cond (n (return ans))
 			      ((equal ans 1)
 			       (return (if (eq old-val '$zeroa) 1 -1)))
 			      ((equal ans -1)
@@ -1301,7 +1280,7 @@ It appears in LIMIT and DEFINT.......")
     (desetq (dconst . d) (var-or-const d))
     (setq n (sdiff n var) d (sdiff d var))
     (if (or (not (free n '%derivative)) (not (free d '%derivative)))
-        (throw 'lhospital ()))
+	(throw 'lhospital ()))
     (setq n (expand-trigs (tansc n) var))
     (setq d (expand-trigs (tansc d) var))
     (desetq (const . (n . d)) (remove-singularities n d))
@@ -1309,7 +1288,7 @@ It appears in LIMIT and DEFINT.......")
     (simpinf
      (cond (ind (let ((ans (limit2 n d var val)))
 		  (if ans (m* const ans))))
-	   (t (let ((ans (limit 
+	   (t (let ((ans (limit
 			  (cond ((mplusp n)
 				 (m+l (mapcar #'(lambda (x)
 						  (sratsimp (m// x d)))
@@ -1382,7 +1361,7 @@ It appears in LIMIT and DEFINT.......")
 ;;i don't know what to do here for some cases, may have to be refined.
 (defun num-of-logs (exp)
   (cond ((mapatom exp) 0)
-	((equal (caar exp) '%log) 
+	((equal (caar exp) '%log)
 	 (m+ 1 (num-of-log-l (cdr exp))))
 	((and (mexptp exp) (mnump (caddr exp)))
 	 (m* (simplify `((mabs) ,(caddr exp)))
@@ -1433,12 +1412,12 @@ It appears in LIMIT and DEFINT.......")
 	 (not (mtimesp numer))		;Leave this here for a while.
 	 (not (mtimesp denom)))
      (cons 1 (cons numer denom)))
-    (t 
+    (t
      (destructuring-let (((num-consts . num-vars) (var-or-const numer))
 			 ((denom-consts . denom-vars) (var-or-const denom))
 			 (const 1))
        (if (not (mtimesp num-vars))
-	   (setq num-vars (list num-vars)) 
+	   (setq num-vars (list num-vars))
 	   (setq num-vars (cdr num-vars)))
        (if (not (mtimesp denom-vars))
 	   (setq denom-vars (list denom-vars))
@@ -1454,7 +1433,7 @@ It appears in LIMIT and DEFINT.......")
 	   (cond ((or (%einvolve (car nl))
 		      (%einvolve (car nl))) t)
 		 (t (let ((lim (catch 'limit
-				 (simpinf 
+				 (simpinf
 				  (simpab (limit (m// (car nl) (car dl))
 						 var val 'think))))))
 		      (cond ((or (eq lim t) (eq lim ())
@@ -1466,12 +1445,10 @@ It appears in LIMIT and DEFINT.......")
 				 (not (free lim '$ind))
 				 (not (free lim '$und)))
 			     ())
-			    (t (setq const (m* lim const))	
-			       (setq num-list (zl-delete (car nl) 
-							 num-list 1))
+			    (t (setq const (m* lim const))
+			       (setq num-list (delete (car nl) num-list :count 1 :test #'equal))
 			       (setq den-list-temp
-				     (zl-delete (car dl) 
-						den-list-temp 1))
+				     (delete (car dl) den-list-temp :count 1 :test #'equal))
 			       (return t))))))))))))
 
 (defun var-or-const (expr)
@@ -1498,20 +1475,20 @@ It appears in LIMIT and DEFINT.......")
 	((not (eq (caar term) 'mfactorial))  term)
 	(t
 	 (let ((term-value (limit term var val 'think)))
-	   (cond ((not (memq term-value
-			     '($inf $minf $und $ind $infinity $zeroa $zerob)))
+	   (cond ((not (member term-value
+			     '($inf $minf $und $ind $infinity $zeroa $zerob) :test #'eq))
 		  term-value)
 		 (t term))))))
-
+
 (defun bylog (expo bas)
-  (simplimexpt '$%e 
-	       (setq bas 
+  (simplimexpt '$%e
+	       (setq bas
 		     (try-lhospital-quit (simplify `((%log) ,(tansc bas)))
 					 (m^ expo -1)
 					 nil))
 	       '$%e bas))
 
-(defun simplimexpt (bas expo bl el) 
+(defun simplimexpt (bas expo bl el)
   (cond
     ((or (eq bl '$und) (eq el '$und)) '$und)
     ((zerop2 bl)
@@ -1535,7 +1512,7 @@ It appears in LIMIT and DEFINT.......")
 				    ((equal bas -1) '$minf)
 				    (t (throw 'limit t))))))
 		    ((and (mnump el)
-			  (memq bl '($zeroa $zerob)))
+			  (member bl '($zeroa $zerob) :test #'eq))
 		     (cond ((even1 el) '$zeroa)
 			   ((and (eq bl '$zerob)
 				 (ratnump el)
@@ -1548,7 +1525,7 @@ It appears in LIMIT and DEFINT.......")
      (cond ((zerop2 el) (bylog expo bas))
 	   ((eq el '$minf) 0)
 	   ((eq el '$inf) '$infinity)
-	   ((memq el '($infinity $ind)) '$und)
+	   ((member el '($infinity $ind) :test #'eq) '$und)
 	   ((equal (setq el (getsignl el)) 1) '$infinity)
 	   ((null el) '$und)
 	   ((equal el -1) 0)))
@@ -1556,7 +1533,7 @@ It appears in LIMIT and DEFINT.......")
      (cond ((eq el '$inf) '$inf)
 	   ((equal el '$minf) 0)
 	   ((zerop2 el) (bylog expo bas))
-	   ((memq el '($infinity $ind)) '$und)
+	   ((member el '($infinity $ind) :test #'eq) '$und)
 	   (t (cond ((eql 0 (getsignl el)) 1)
 		    ((ratgreaterp 0 el) '$zeroa)
 		    (t '$inf)))))
@@ -1605,7 +1582,7 @@ It appears in LIMIT and DEFINT.......")
 	 (destructuring-let (((real-el . imag-el) (trisplit expo)))
 	   (setq real-el (limit real-el var origval nil))
 	   (cond ((eq real-el '$minf) 0)
-		 ((and (eq real-el '$inf) 
+		 ((and (eq real-el '$inf)
 		       (not (equal (ridofab (limit imag-el var origval nil))
 				   0)))   '$infinity)
 		 (t  '$ind)))))
@@ -1614,17 +1591,17 @@ It appears in LIMIT and DEFINT.......")
     ((zerop2 el) 1)
     (t (m^ bl el))))
 
-(defun even1 (x) 
+(defun even1 (x)
   (cond ((numberp x) (and (integerp x) (evenp x)))
 	((and (mnump x) (evenp (cadr x))))))
-
-(defun abless1 (bl) 
+
+(defun abless1 (bl)
   (setq bl (nmr bl))
   (cond ((mnump bl)
 	 (and (ratgreaterp 1. bl) (ratgreaterp bl -1.)))
 	(t (equal (getsignl (m1- `((mabs) ,bl))) -1.))))
 
-(defmfun simplimit (exp var val) 
+(defmfun simplimit (exp var val)
   (cond
     ((eq var exp) val)
     ((or (atom exp) (mnump exp)) exp)
@@ -1640,17 +1617,17 @@ It appears in LIMIT and DEFINT.......")
 				(limit (cadr exp) var val 'think)
 				(limit (caddr exp) var val 'think)))
     ((mlogp exp)  (simplimln (cadr exp)))
-    ((memq (caar exp) '(%sin %cos))
+    ((member (caar exp) '(%sin %cos) :test #'eq)
      (simplimsc exp (caar exp) (limit (cadr exp) var val 'think)))
     ((eq (caar exp) '%tan) (simplim%tan (cadr exp)))
     ((eq (caar exp) '%atan) (simplim%atan (limit (cadr exp) var val 'think)))
-    ((memq (caar exp) '(%sinh %cosh))
+    ((member (caar exp) '(%sinh %cosh) :test #'eq)
      (simplimsch (caar exp) (limit (cadr exp) var val 'think)))
     ((eq (caar exp) 'mfactorial)
      (simplimfact (cadr exp) var val (limit (cadr exp) var val 'think)))
-    ((memq (caar exp) '(%erf %tanh))
+    ((member (caar exp) '(%erf %tanh) :test #'eq)
      (simplim%erf-%tanh (caar exp) (cadr exp)))
-    ((memq (caar exp) '(%acos %asin))
+    ((member (caar exp) '(%acos %asin) :test #'eq)
      (simplim%asin-%acos (caar exp) (limit (cadr exp) var val 'think)))
     ((eq (caar exp) '%atanh)
      (simplim%atanh (limit (cadr exp) var val 'think) val))
@@ -1677,21 +1654,21 @@ It appears in LIMIT and DEFINT.......")
 	  (eq (subfunname exp) '$psi))
      (simplim$psi (subfunsubs exp) (subfunargs exp) val))
     ((and (eq (caar exp) var)
-	  (memq 'array (car exp))
+	  (member 'array (car exp) :test #'eq)
 	  (andmapc #'(lambda (sub-exp)
 		       (free sub-exp var))
 		   (cdr exp)))
      exp)				;LIMIT(B[I],B,INF); -> B[I]
-    (t (if $limsubst 
-	   (let ((head (cond ((memq 'array (car exp))
+    (t (if $limsubst
+	   (let ((head (cond ((member 'array (car exp) :test #'eq)
 			      (list (caar exp) 'array))
 			     (t (list (caar exp))))))
 	     (simplify (cons head
-			     (mapcar #'(lambda (a) 
+			     (mapcar #'(lambda (a)
 					 (limit a var val 'think))
 				     (cdr exp)))))
 	   (nounlimit exp var val)))))
-
+
 (defun liminv (e)
   (setq e (resimplify (subst (m// 1 var) var e)))
   (let ((new-val (cond ((eq val '$zeroa)  '$inf)
@@ -1712,11 +1689,11 @@ It appears in LIMIT and DEFINT.......")
 		   (cond (zf nil)
 			 (t (setq zf 1))))
 		  ((eq y '$zerob)
-		   (cond (zf (setq zf (times -1 zf)))
+		   (cond (zf (setq zf (* -1 zf)))
 			 (t (setq zf -1))))))
-	   ((not (memq y '($inf $minf $infinity $ind $und)))
+	   ((not (member y '($inf $minf $infinity $ind $und) :test #'eq))
 	    (setq prod (m* prod y)))
-	   ((eq y '$und) 
+	   ((eq y '$und)
 	    (return '$und))
 	   ((eq y '$ind)
 	    (setq flag2 t))
@@ -1734,7 +1711,7 @@ It appears in LIMIT and DEFINT.......")
 		   (cond ((null zf) (return 0))
 			 (t (setq sign (getsignl prod))
 			    (cond ((eq sign 'complex) (return 0))
-				  (sign (setq zf (times zf sign))
+				  (sign (setq zf (* zf sign))
 					(return
 					  (cond ((equal zf 1) '$zeroa)
 						((equal zf -1) '$zerob)
@@ -1757,16 +1734,16 @@ It appears in LIMIT and DEFINT.......")
 		(not (among var num)))
 	    (throw 'limit t)))
      (return (let ((ans (limit2 num (m^ denom -1) var val)))
-	       (if ans 
+	       (if ans
 		   (simplimtimes (list prod ans))
 		   (throw 'limit t))))))
-		   
+
 ;;;PUT CODE HERE TO ELIMINATE FAKE SINGULARITIES??
-
+
 (defun simplimplus (exp)
   (cond ((memalike exp simplimplus-problems)
 	 (throw 'limit t))
-	(t (unwind-protect 
+	(t (unwind-protect
 		(progn (push exp simplimplus-problems)
 		       (let ((ans (catch 'limit (simplimplus1 exp))))
 			 (cond ((or (eq ans ())
@@ -1782,22 +1759,22 @@ It appears in LIMIT and DEFINT.......")
 					(t ans))))
 			       (t ans))))
 	     (pop simplimplus-problems)))))
-	  
-(defun simplimplus1 (exp) 
-  (prog (sum y infl infinityl minfl indl) 
+
+(defun simplimplus1 (exp)
+  (prog (sum y infl infinityl minfl indl)
      (setq sum 0.)
      (do ((exp (cdr exp) (cdr exp)) (f))
 	 ((or y (null exp)) nil)
        (setq f (limit (car exp) var val 'think))
        (cond ((eq f '$und) (setq y t))
-	     ((not (memq f '($inf $minf $infinity $ind)))
+	     ((not (member f '($inf $minf $infinity $ind) :test #'eq))
 	      (setq sum (m+ sum f)))
 	     ((eq f '$ind)  (push (car exp) indl))
 	     (infinityl (throw 'limit t))
 ;;;Don't know what to do with an '$infinity and an $inf or $minf
 	     ((eq f '$inf)  (push (car exp) infl))
 	     ((eq f '$minf)  (push (car exp) minfl))
-	     ((eq f '$infinity) 
+	     ((eq f '$infinity)
 	      (cond ((or infl minfl)
 		     (throw 'limit t))
 		    (t (push (car exp) infinityl))))))
@@ -1814,7 +1791,7 @@ It appears in LIMIT and DEFINT.......")
 			   (minfl (return '$minf))
 			   (t (return '$ind))))
 		    (t (setq infl (append infl infinityl))))))
-	
+
      oon  (setq y (m+l (append minfl infl)))
      (cond ((alike1 exp (setq y (sratsimp (log-reduce (hyperex y)))))
 	    (cond ((not (infinityp val))
@@ -1832,23 +1809,23 @@ It appears in LIMIT and DEFINT.......")
 	   (t (return (m+ sum y))))))
 
 ;; Limit n/d, using heuristics on the order of growth.
-(defun sheur0 (n d) 
+(defun sheur0 (n d)
   (let ((orig-n n))
     (cond ((/#alike n d) 1)
 	  ((and (free n var)
 		(free d var))
 	   (m// n d))
 	  (t (setq n (cpa n d nil))
-	     (cond ((equal n 1.)
+	     (cond ((equal n 1)
 		    (cond ((oscip orig-n)  '$und)
 			  (t '$inf)))
-		   ((equal n -1.)  '$zeroa)
-		   ((equal n 0.)  (m// orig-n d)))))))
+		   ((equal n -1)  '$zeroa)
+		   ((equal n 0)  (m// orig-n d)))))))
 
-
+
 ;;;L1 is a list of INF's and L2 is a list of MINF's. Added together
 ;;;it is indeterminate.
-(defun sheur (l1 l2) 
+(defun sheur (l1 l2)
   (let ((term (sheur1 l1 l2)))
     (cond ((equal term '$inf)  '$inf)
 	  ((equal term '$minf)   '$minf)
@@ -1856,79 +1833,60 @@ It appears in LIMIT and DEFINT.......")
 					     (m// num-term (car l1)))
 					 (append l1 l2)))))
 	       (cond ((limit2 new-num (m// 1 (car l1)) var val))))))))
-	       
-;;To chicken to throw this code out yet. 
-(comment ((not (alike1 term (m+ (m+l l1) (m+l l2))))
-	  (let ((lim1 (limit1 term var val))
-		(lim2 (m+l (mapcar #'(lambda (j)
-				       (limit1 (m// j term) var val))
-				   `(,@l1 ,@l2)))))
-	    (cond
-	      ((or (and (equal lim1 0.)
-			(memq lim2 '($inf $minf $und $ind)))
-		   (and (equal lim2 0.)
-			(memq lim1 '($inf $minf $und $ind))))
-	       (limit2 ($ratsimp (m// (m+ (m+l l1) (m+l l2)) term))
-		       (m^ term -1) var val))
-	      (t (simplimtimes `(,lim1 ,lim2))))))
-	 (t (throw 'limit t)))
 
-(defun frac (exp) 
+(defun frac (exp)
   (cond ((atom exp) nil)
 	(t (setq exp (nformat exp))
 	   (cond ((and (eq (caar exp) 'mquotient)
 		       (among var (caddr exp)))
-		  t))))) 
+		  t)))))
 
-(defun zerop2 (z) (=0 (ridofab z))) 
+(defun zerop2 (z) (=0 (ridofab z)))
 
-(defun raise (a) (m+ a '$zeroa)) 
+(defun raise (a) (m+ a '$zeroa))
 
-(defun lower (a) (m+ a '$zerob)) 
+(defun lower (a) (m+ a '$zerob))
 
-(defun sincoshk (exp1 l sc) 
+(defun sincoshk (exp1 l sc)
   (cond ((equal l 1) (lower l))
 	((equal l -1) (raise l))
 	((among sc l) l)
-	((memq val '($zeroa $zerob)) (spangside exp1 l))
-	(t l))) 
+	((member val '($zeroa $zerob) :test #'eq) (spangside exp1 l))
+	(t l)))
 
-(defun spangside (e l) 
+(defun spangside (e l)
   (setq e (behavior e var val))
   (cond ((equal e 1) (raise l))
 	((equal e -1) (lower l))
-	(t l))) 
+	(t l)))
 
-(defmfun ridofab (e) 
+(defmfun ridofab (e)
   (if (among '$zeroa e) (setq e (maxima-substitute 0 '$zeroa e)))
   (if (among '$zerob e) (setq e (maxima-substitute 0 '$zerob e)))
   e)
-
-(defun simplerd (exp) 
+
+(defun simplerd (exp)
   (and (mexptp exp)
        (or (and rd* (not (among var (caddr exp))))
 	   (mnump (caddr exp)))
-       (polyp (cadr exp)))) 
+       (polyp (cadr exp))))
 
-(defun branch1 (exp val) 
+(defun branch1 (exp val)
   (cond ((polyp exp) nil)
 	((simplerd exp) (zerop2 (subin val (cadr exp))))
-	(t ;(APPLY 'OR (MAPCAR #'(LAMBDA (J) (BRANCH1 J VAL)) (CDR EXP)))
+	(t
 	 (loop for v on (cdr exp)
 		when (branch1 (car v) val)
-		do (return v))
-					;(zl-SOME #'(lambda (j) (branch1 j val)) (the list (cdr exp)))
-	 ))) 
+		do (return v)))))
 
-(defun branch (exp val) 
+(defun branch (exp val)
   (cond ((polyp exp) nil)
 	((or (simplerd exp) (mtimesp exp))
 	 (branch1 exp val))
 	((mplusp exp)
-					;(ANDMAPC #'(LAMBDA (J) (BRANCH J VAL)) (CDR EXP))
 	 (every #'(lambda (j) (branch j val)) (the list (cdr exp))))))
 
-(defun ser0 (e n d val) 
+(defun ser0 (e n d val)
   (cond ((and (branch n val) (branch d val))
 	 (setq nn* nil)
 	 (setq n (ser1 n))
@@ -1937,13 +1895,13 @@ It appears in LIMIT and DEFINT.......")
 	 (setq nn* (ratmin nn*))
 	 (setq n (sratsimp (m^ n (m^ var nn*))))
 	 (setq d (sratsimp (m^ d (m^ var nn*))))
-	 (cond ((memq val '($zeroa $zerob)) nil)
+	 (cond ((member val '($zeroa $zerob) :test #'eq) nil)
 	       (t (setq val 0.)))
 	 (radlim e n d))
-	(t (try-lhospital-quit n d nil)))) 
-
-(defun rheur (l1 l2) 
-  (prog (ans m1 m2) 
+	(t (try-lhospital-quit n d nil))))
+
+(defun rheur (l1 l2)
+  (prog (ans m1 m2)
      (setq m1 (mapcar (function asymredu) l1))
      (setq m2 (mapcar (function asymredu) l2))
      (setq ans (m+l (append m1 m2)))
@@ -1953,47 +1911,47 @@ It appears in LIMIT and DEFINT.......")
 			   val
 			   nil)))
 	   ((mplusp ans)  (return (sheur m1 m2)))
-	   (t (return (limit ans var val t)))))) 
+	   (t (return (limit ans var val t))))))
 
-(defun rptrouble (rp) 
-  (not (equal (rddeg rp nil) (rddeg (asymredu rp) nil)))) 
+(defun rptrouble (rp)
+  (not (equal (rddeg rp nil) (rddeg (asymredu rp) nil))))
 
-(defun radicalp (exp var) 
+(defun radicalp (exp var)
   (cond ((polyinx exp var ()))
 	((mexptp exp)  (cond ((equal (caddr exp) -1.)
 			      (radicalp (cadr exp) var))
 			     ((simplerd exp))))
-	((memq (caar exp) '(mplus mtimes))
+	((member (caar exp) '(mplus mtimes) :test #'eq)
 	 (andmapc (function (lambda (j) (radicalp j var)))
-		  (cdr exp))))) 
+		  (cdr exp)))))
 
 (defun involve (e nn*)
   (declare (special var))
   (cond ((atom e) nil)
 	((mnump e) nil)
-	((and (memq (caar e) nn*) (among var (cadr e))) (cadr e))
+	((and (member (caar e) nn* :test #'eq) (among var (cadr e))) (cadr e))
 	(t (ormapc (function (lambda (j) (involve j nn*)))
 		   (cdr e)))))
 
 
-  
 
-(defun notinvolve (exp nn*) 
+
+(defun notinvolve (exp nn*)
   (cond ((atom exp) t)
 	((mnump exp) t)
-	((memq (caar exp) nn*) (not (among var (cadr exp))))
+	((member (caar exp) nn* :test #'eq) (not (among var (cadr exp))))
 	((andmapc (function (lambda (j) (notinvolve j nn*)))
-		  (cdr exp))))) 
+		  (cdr exp)))))
 
-(defun sheur1 (l1 l2) 
-  (prog (ans) 
+(defun sheur1 (l1 l2)
+  (prog (ans)
      (setq l1 (car (maxi l1)))
      (setq l2 (car (maxi l2)))
      (setq ans (cpa l1 l2 t))
      (return (cond ((=0 ans)  (m+  l1 l2))
 		   ((equal ans 1.) '$inf)
-		   (t '$minf))))) 
-
+		   (t '$minf)))))
+
 (defun zero-lim (cpa-list)
   (do ((l cpa-list (cdr l)))
       ((null l) ())
@@ -2005,18 +1963,18 @@ It appears in LIMIT and DEFINT.......")
 ;; depending on the relative order of growth.  0 is returned if R1 and
 ;; R2 have the same growth; -1 if R1 grows much more slowly than R2;
 ;; +1 if R1 grows much more quickly than R2.
-(defun cpa (r1 r2 flag) 
+(defun cpa (r1 r2 flag)
   (let ((t1 r1)
 	(t2 r2))
     (cond ((alike1 t1 t2)   0.)
 	  ((free t1 var)
 	   (cond ((free t2 var)  0.)
 		 (t (let ((lim-ans (limit1 t2 var val)))
-		      (cond ((not (memq lim-ans '($inf $minf $und $ind)))  0.)
+		      (cond ((not (member lim-ans '($inf $minf $und $ind) :test #'eq))  0.)
 			    (t  -1.))))))
 	  ((free t2 var)
 	   (let ((lim-ans (limit1 t1 var val)))
-	     (cond ((not (memq lim-ans '($inf $minf $und $ind)))  0.)
+	     (cond ((not (member lim-ans '($inf $minf $und $ind) :test #'eq))  0.)
 		   (t  1.))))
 	  (t
 	   ;; Make T1 and T2 be a list of terms that are multipled
@@ -2038,8 +1996,8 @@ It appears in LIMIT and DEFINT.......")
 	       ;; Cant just just compare dominating terms if there are
 	       ;; indeterm-inates present; e.g. X-X^2*LOG(1+1/X). So
 	       ;; check for this.
-	       (cond ((or (zero-lim t1) 
-			  (zero-lim t2))  
+	       (cond ((or (zero-lim t1)
+			  (zero-lim t2))
 		      (cpa-indeterm ans d t1 t2 flag))
 		     ((isgreaterp ans d)  1.)
 		     ((isgreaterp d ans)  -1.)
@@ -2048,7 +2006,7 @@ It appears in LIMIT and DEFINT.......")
 (defun cpa-indeterm (ans d t1 t2 flag)
   (cond ((not (eq (car ans) 'var))
 	 (setq ans (gather ans t1)  d (gather d t2))))
-  (let ((*indicator (and (eq (car ans) 'exp) 
+  (let ((*indicator (and (eq (car ans) 'exp)
 			 flag))
 	(test ()))
     (setq test (cpa1 ans d))
@@ -2071,9 +2029,9 @@ It appears in LIMIT and DEFINT.......")
     (cond ((eq (caar stl) 'var)
 	   (push (cadar stl) poxl)
 	   (push (caddar stl) degl)))))
-
-(defun cpa1 (p1 p2) 
-  (prog (flag s1 s2) 
+
+(defun cpa1 (p1 p2)
+  (prog (flag s1 s2)
      (cond ((eq (car p1) 'gen) (return 0.)))
      (setq flag (car p1))
      (setq p1 (cadr p1))
@@ -2126,7 +2084,7 @@ It appears in LIMIT and DEFINT.......")
 	(setq p1 (try-lhospital (asymredu p1) (asymredu p2) nil))
 	(return (cond ((zerop2 p1) -1.)
 		      ((real-infinityp p1) 1.)
-		      (t 0.))))))) 
+		      (t 0.)))))))
 
 (setq *limorder '(num log var exp fact gen))
 
@@ -2137,7 +2095,7 @@ It appears in LIMIT and DEFINT.......")
 ;;;	("FACT"	<A FACTORIAL EXPRESSION>)
 ;;;	("GEN" <ANY OTHER TYPE OF EXPRESSION>)
 
-(defun isgreaterp (a b) 
+(defun isgreaterp (a b)
   (let ((ta (car a))
 	(tb (car b)))
     (cond ((or (eq ta 'gen)
@@ -2146,9 +2104,9 @@ It appears in LIMIT and DEFINT.......")
 	   (ratgreaterp (caddr a) (caddr b)))
 	  ((and (eq ta tb) (eq ta 'exp))
 	   ;; Both are exponential order of infinity.  Check the
-           ;; exponents to determine which exponent is bigger.
+	   ;; exponents to determine which exponent is bigger.
 	   (ratgreaterp (third (second a)) (third (second b))))
-	  ((memq ta (cdr (memq tb *limorder)))))))
+	  ((member ta (cdr (memq tb *limorder)) :test #'eq)))))
 
 (defun ismax (l)
   ;; Preprocess the list of products.  Separate the terms that
@@ -2172,23 +2130,23 @@ It appears in LIMIT and DEFINT.......")
 	  (ismax-core (cons product non-exp-terms)))
 	(ismax-core l))))
 
-(defun ismax-core (l) 
+(defun ismax-core (l)
   (cond ((null l)  ())
 	((atom l)   ())
 	((= (length l) 1)  (car l)) ;If there is only 1 thing give it back.
-	((andmapc #'(lambda (x) 
+	((andmapc #'(lambda (x)
 		      (not (eq (car x) 'gen))) l)
-			  
+
 	 (do ((l1 (cdr l) (cdr l1))
 	      (temp-ans (car l))
 	      (ans ()))
 	     ((null l1) ans)
-	   (cond ((isgreaterp temp-ans (car l1)) 
+	   (cond ((isgreaterp temp-ans (car l1))
 		  (setq ans temp-ans))
 		 ((isgreaterp (car l1) temp-ans)
 		  (setq temp-ans (car l1))
 		  (setq ans temp-ans))
-		 (t (setq ans ()))))) 
+		 (t (setq ans ())))))
 	(t ())))
 
 (defun maxi (l)				;RETURNS LIST OF HIGH TERMS
@@ -2211,25 +2169,25 @@ It appears in LIMIT and DEFINT.......")
 ;;;COMPARE IS IND OR FINITE-VALUED
 	       (t (setq hi-terms (append hi-terms (ncons (car l))))))))))
 
-(defun ratmax (l) 
-  (prog (ans) 
+(defun ratmax (l)
+  (prog (ans)
      (cond ((atom l) (return nil)))
      l1   (setq ans (car l))
      l2   (setq l (cdr l))
      (cond ((null l) (return ans))
 	   ((ratgreaterp ans (car l)) (go l2))
-	   (t (go l1))))) 
-
-(defun ratmin (l) 
-  (prog (ans) 
+	   (t (go l1)))))
+
+(defun ratmin (l)
+  (prog (ans)
      (cond ((atom l) (return nil)))
      l1   (setq ans (car l))
      l2   (setq l (cdr l))
      (cond ((null l) (return ans))
 	   ((ratgreaterp (car l) ans) (go l2))
-	   (t (go l1))))) 
+	   (t (go l1)))))
 
-(defun pofx (e) 
+(defun pofx (e)
   (cond ((atom e)
 	 (cond ((eq e var)
 		(setq nn* (cons 1 nn*)))
@@ -2238,16 +2196,16 @@ It appears in LIMIT and DEFINT.......")
 	((and (mexptp e) (eq (cadr e) var))
 	 (setq nn* (cons (caddr e) nn*)))
 	((simplerd e) nil)
-	(t (mapc (function pofx) (cdr e))))) 
+	(t (mapc (function pofx) (cdr e)))))
 
-(defun ser1 (e) 
-  (cond ((memq val '($zeroa $zerob)) nil)
+(defun ser1 (e)
+  (cond ((member val '($zeroa $zerob) :test #'eq) nil)
 	(t (setq e (subin (m+ var val) e))))
   (setq e (rdfact e))
-  (cond ((pofx e) e))) 
+  (cond ((pofx e) e)))
 
-(defun gather (ind l) 
-  (prog (ans) 
+(defun gather (ind l)
+  (prog (ans)
      (setq ind (car ind))
      loop (cond ((null l)
 		 (return (list ind (m*l ans))))
@@ -2255,19 +2213,19 @@ It appears in LIMIT and DEFINT.......")
 		 (setq ans (cons (cadar l) ans))))
      (setq l (cdr l))
      (go loop)))
-
-(defun istrength (term) 
+
+(defun istrength (term)
   (cond ((mnump term)  (list 'num term))
 	((atom term)   (cond ((eq term var)
 			      (list 'var var 1.))
 			     (t (list 'num term))))
 	((not (among var term))  (list 'num term))
 	((radicalp term var)  (list 'var term (rddeg term nil)))
-	((mplusp term)  
+	((mplusp term)
 	 (let ((temp (ismax (mapcar (function istrength) (cdr term)))))
 	   (cond ((not (null temp))  temp)
 		 (t `(gen ,term)))))
-	((mtimesp term) 
+	((mtimesp term)
 	 (let ((temp (mapcar (function istrength) (cdr term)))
 	       (temp1 ()))
 	   (setq temp1 (ismax temp))
@@ -2278,8 +2236,8 @@ It appears in LIMIT and DEFINT.......")
 	((and (mexptp term)
 	      (real-infinityp (limit term var val t)))
 	 (cond ((and (among var (caddr term))
-		     (memq (car (istrength (setq term (logred term))))
-			   '(var exp fact))
+		     (member (car (istrength (setq term (logred term))))
+			   '(var exp fact) :test #'eq)
 		     (real-infinityp (limit term var val t)))
 		(list 'exp (m^ '$%e term)))
 	       ((not (among var (caddr term)))
@@ -2295,7 +2253,7 @@ It appears in LIMIT and DEFINT.......")
 	((and (eq (caar term) '%log)
 	      (real-infinityp (limit term var val t)))
 	 (let ((stren (istrength (cadr term))))
-	   (cond ((memq (car stren) '(log var))
+	   (cond ((member (car stren) '(log var) :test #'eq)
 		  `(log ,term))
 		 ((eq (car stren) 'exp)
 		  (istrength (car (cddadr stren))))
@@ -2307,18 +2265,18 @@ It appears in LIMIT and DEFINT.......")
 		(istrength temp))))
 	(t (list 'gen term))))
 
-(defun logred (s1) 
+(defun logred (s1)
   (or (and (eq (cadr s1) '$%e) (caddr s1))
-      (m*t (caddr s1) `((%log) ,(cadr s1))))) 
-
-(defun asymredu (rd) 
+      (m*t (caddr s1) `((%log) ,(cadr s1)))))
+
+(defun asymredu (rd)
   (cond ((atom rd) rd)
 	((mnump rd) rd)
 	((not (among var rd)) rd)
 	((polyinx rd var t))
 	((simplerd rd)
 	 (cond ((eq (cadr rd) var) rd)
-	       (t (mabs-subst 
+	       (t (mabs-subst
 		   (factor ($expand (m^ (polyinx (cadr rd) var t)
 					(caddr rd))))
 		   var
@@ -2327,7 +2285,7 @@ It appears in LIMIT and DEFINT.......")
 			   (mapcar (function asymredu)
 				   (cdr rd)))))))
 
-(defun rdfact (rd) 
+(defun rdfact (rd)
   (let ((dn** ())  (nn** ()))
     (cond ((atom rd) rd)
 	  ((mnump rd) rd)
@@ -2346,9 +2304,9 @@ It appears in LIMIT and DEFINT.......")
 			  (t rd)))))
 	  (t (simplify (cons (ncons (caar rd))
 			     (mapcar #'rdfact (cdr rd))))))))
-
-(defun cnv (expl val) 
-  (mapcar #'(lambda (e) 
+
+(defun cnv (expl val)
+  (mapcar #'(lambda (e)
 	      (maxima-substitute (cond ((eq val '$zerob)
 					(m* -1 (m^ var -1)))
 				       ((eq val '$zeroa)
@@ -2359,19 +2317,19 @@ It appears in LIMIT and DEFINT.......")
 				 var
 				 e))
 	  expl))
-
-(defun pwtaylor (exp var l terms) 
-  (prog (coef ans c mc) 
+
+(defun pwtaylor (exp var l terms)
+  (prog (coef ans c mc)
      (cond ((=0 terms) (return nil)) ((=0 l) (setq mc t)))
      (setq c 0.)
      (go tag1)
-     loop (setq c (add1 c))
-     (cond ((or (greaterp c 10.) (equal c terms))
+     loop (setq c (1+ c))
+     (cond ((or (> c 10.) (equal c terms))
 	    (return (m+l ans)))
 	   (t (setq exp (sdiff exp var))))
      tag1 (setq coef ($radcan (subin l exp)))
-     (cond ((=0 coef) (setq terms (add1 terms)) (go loop)))
-     (setq 
+     (cond ((=0 coef) (setq terms (1+ terms)) (go loop)))
+     (setq
       ans
       (append
        ans
@@ -2379,32 +2337,32 @@ It appears in LIMIT and DEFINT.......")
 	(m* coef
 	    (m^ `((mfactorial) ,c) -1)
 	    (m^ (if mc var (m+t (m*t -1 l) var)) c)))))
-     (go loop))) 
+     (go loop)))
 
-(defun rdsget (e) 
+(defun rdsget (e)
   (cond ((polyp e) e)
 	((simplerd e) (rdtay e))
 	(t (cons (list (caar e))
-		 (mapcar (function rdsget) (cdr e)))))) 
+		 (mapcar (function rdsget) (cdr e))))))
 
-(defun rdtay (rd) 
+(defun rdtay (rd)
   (cond ($tlimswitch ($ratdisrep ($taylor rd var val 1.)))
-	(t (lrdtay rd)))) 
-
-(defun lrdtay (rd) 
+	(t (lrdtay rd))))
+
+(defun lrdtay (rd)
   (prog (varlist p c e d $ratfac)
      (setq varlist (ncons var))
      (setq p (ratnumerator (cdr (ratrep* (cadr rd)))))
-     (cond ((lessp (length p) 3.) (return rd)))
+     (cond ((< (length p) 3.) (return rd)))
      (setq e (caddr rd))
      (setq d (pdegr p))
      (setq c (m^ var (m* d e)))
      (setq d ($ratsimp (varinvert (m* (pdis p) (m^ var (m- d)))
 				  var)))
      (setq d (pwtaylor (m^ d e) var 0. 3.))
-     (return (m* c (varinvert d var))))) 
+     (return (m* c (varinvert d var)))))
 
-(defun varinvert (e var) (subin (m^t var -1.) e)) 
+(defun varinvert (e var) (subin (m^t var -1.) e))
 
 (defun deg (p)
   (prog (varlist)
@@ -2419,27 +2377,27 @@ It appears in LIMIT and DEFINT.......")
      (newvar e)
      (ratrep* e))
    nil))
-(setq low* nil) 
+(setq low* nil)
 
-(defun rddeg (rd low*) 
+(defun rddeg (rd low*)
   (cond ((or (mnump rd)
-	     (not (among var rd))) 
+	     (not (among var rd)))
 	 0.)
 	((polyp rd)
 	 (deg rd))
 	((simplerd rd)
 	 (m* (deg (cadr rd)) (caddr rd)))
 	((mtimesp rd)
-	 (addn (mapcar #'(lambda (j) 
+	 (addn (mapcar #'(lambda (j)
 			   (rddeg j low*))
 		       (cdr rd)) nil))
 	((and (mplusp rd)
 	      (setq rd (andmapcar #'(lambda (j) (rddeg j low*))
 				  (cdr rd))))
 	 (cond (low* (ratmin rd))
-	       (t (ratmax rd)))))) 
-
-(defun pdegr (pf) 
+	       (t (ratmax rd))))))
+
+(defun pdegr (pf)
   (cond ((or (atom pf) (not (eq (caadr (ratf var)) (car pf))))
 	 0.)
 	(low* (cadr (reverse pf)))
@@ -2452,7 +2410,7 @@ It appears in LIMIT and DEFINT.......")
 ;;I'm not sure that this code can ever be called with VAL other than $INF but
 ;;there is a hook in the first important cond clause to cathc them anyway.
 
-(defun asy (n d) 
+(defun asy (n d)
   (let ((num-power (rddeg n nil))
 	(den-power (rddeg d nil))
 	(coef ())  (coef-sign ())  (power ()))
@@ -2477,9 +2435,9 @@ It appears in LIMIT and DEFINT.......")
 		 ((equal coef-sign 0)   0) ;Questionable!
 		 ((null coef-sign)   '$infinity)))
 	  (t coef))))
-
+
 (defun radlim (e n d)
-  (prog (nl dl) 
+  (prog (nl dl)
      (cond ((eq val '$infinity) (throw 'limit nil))
 	   ((eq val '$minf)
 	    (setq nl (m* var -1))
@@ -2489,7 +2447,7 @@ It appears in LIMIT and DEFINT.......")
      (cond ((eq val '$inf)
 	    (setq nl (asymredu n))
 	    (setq dl (asymredu d))
-	    (cond 
+	    (cond
 	      ((or (rptrouble n) (rptrouble d))
 	       (return (limit (m* (rdsget n) (m^ (rdsget d) -1.)) var val t)))
 	      (t (return (asy nl dl))))))
@@ -2500,9 +2458,9 @@ It appears in LIMIT and DEFINT.......")
 		   (return (try-lhospital-quit n d t)))
 		  (t (return (ser0 e n d val)))))
 	   (t (return ($radcan (ratrad (m// n d) n d nl dl)))))))
-
-(defun ratrad (e n d nl dl) 
-  (prog (n1 d1) 
+
+(defun ratrad (e n d nl dl)
+  (prog (n1 d1)
      (cond ((equal nl 0) (return 0))
 	   ((zerop2 dl)
 	    (setq n1 nl)
@@ -2542,8 +2500,8 @@ It appears in LIMIT and DEFINT.......")
 				  ((equal dir -1) '$infinity)
 				  (t (throw 'limit t))))))
 		 (cond ((eq arglim '$inf) '$inf)
-		       ((memq arglim '($minf $infinity)) '$infinity)
-		       ((memq arglim '($ind $und)) '$und)
+		       ((member arglim '($minf $infinity) :test #'eq) '$infinity)
+		       ((member arglim '($ind $und) :test #'eq) '$und)
 		       ((equal arglim 1)
 			(let ((dir (behavior arg var val)))
 			  (if (equal dir 1) '$zeroa 0)))
@@ -2554,7 +2512,7 @@ It appears in LIMIT and DEFINT.......")
 
 (defun simplimfact (exp var val arg)
   (cond ((eq arg '$inf) '$inf)
-	((memq arg '($minf $infinity $und $ind)) '$und)
+	((member arg '($minf $infinity $und $ind) :test #'eq) '$und)
 	((and (maxima-integerp arg) (> 0 arg))
 	 (let ((dir (limit (m+ exp (m* arg -1)) var val 'think))
 	       (evenp (maxima-integerp (quotient arg 2.0))))
@@ -2569,9 +2527,9 @@ It appears in LIMIT and DEFINT.......")
 			   (eq dir '$zeroa)))
 		  '$inf)
 		 (t (throw 'limit nil)))))
-	(t (simpfact (list '(mfactorial) (ridofab arg)) 1 nil)))) 
+	(t (simpfact (list '(mfactorial) (ridofab arg)) 1 nil))))
 
-(defun simplim%erf-%tanh (fn arg) 
+(defun simplim%erf-%tanh (fn arg)
   (let ((arglim (limit arg var val 'think)))
     (cond ((eq arglim '$inf) 1)
 	  ((eq arglim '$minf) -1)
@@ -2592,54 +2550,54 @@ It appears in LIMIT and DEFINT.......")
 				 (t '$und)))
 			  (t '$und))))))
 	  ((eq arglim '$und) '$und)
-	  ((memq arglim '($zeroa $zerob $ind)) arg)
+	  ((member arglim '($zeroa $zerob $ind) :test #'eq) arg)
 ;;;Ignore tanh(%pi/2*%I) and multiples of the argument.
 	  (t
 	   ;; erf (or tanh) of a known value is just erf(arglim).
 	   (simplify (list (ncons fn) arglim))))))
-
-(defun simplim%atan (exp1) 
+
+(defun simplim%atan (exp1)
   (cond ((zerop2 exp1) exp1)
 	((eq exp1 '$inf) half%pi)
 	((eq exp1 '$minf)
 	 (m*t -1. half%pi))
-	(t `((%atan) ,exp1)))) 
+	(t `((%atan) ,exp1))))
 
-(defun simplimsch (sch arg) 
+(defun simplimsch (sch arg)
   (cond ((real-infinityp arg)
 	 (cond ((eq sch '%sinh) arg) (t '$inf)))
 	((eq arg '$infinity) '$infinity)
 	((eq arg '$und) '$und)
 	(t (let (($exponentialize t))
-	     (resimplify (list (ncons sch) (ridofab arg))))))) 
+	     (resimplify (list (ncons sch) (ridofab arg)))))))
 
-(defun simplimsc (exp fn arg) 
-  (cond ((memq arg '($inf $minf $ind)) '$ind)
-	((memq arg '($und $infinity)) '$und)
-	((memq arg '($zeroa $zerob))
+(defun simplimsc (exp fn arg)
+  (cond ((member arg '($inf $minf $ind) :test #'eq) '$ind)
+	((member arg '($und $infinity) :test #'eq) '$und)
+	((member arg '($zeroa $zerob) :test #'eq)
 	 (cond ((eq fn '%sin) arg)
 	       (t (m+ 1 '$zerob))))
 	((sincoshk exp
 		   (simplify (list (ncons fn) (ridofab arg)))
 		   fn))))
 
-(defun simplim%tan (arg) 
+(defun simplim%tan (arg)
   (let ((arg1 (ridofab (limit arg var val 'think))))
     (cond
-      ((memq arg1 '($inf $minf $infinity $ind $und))  '$und)
-      ((pip arg1)  
+      ((member arg1 '($inf $minf $infinity $ind $und) :test #'eq)  '$und)
+      ((pip arg1)
        (let ((c (trigred (pip arg1))))
 	 (cond ((not (equal ($imagpart arg1) 0)) '$infinity)
 	       ((and (eq (caar c) 'rat)
-		     (equal (caddr c) 2) 
-		     (greaterp (cadr c) 0))
+		     (equal (caddr c) 2)
+		     (> (cadr c) 0))
 		(setq arg1 (behavior arg var val))
 		(cond ((= arg1 1) '$inf)
 		      ((= arg1 -1) '$minf)
 		      (t '$und)))
 	       ((and (eq (caar c) 'rat)
-		     (equal (caddr c) 2) 
-		     (lessp (cadr c) 0))
+		     (equal (caddr c) 2)
+		     (< (cadr c) 0))
 		(setq arg1 (behavior arg var val))
 		(cond ((= arg1 1) '$minf)
 		      ((= arg1 -1) '$inf)
@@ -2650,26 +2608,26 @@ It appears in LIMIT and DEFINT.......")
        (cond ((equal arg1 1) '$zeroa)
 	     ((equal arg1 -1) '$zerob)
 	     (t 0)))
-      (t (simp-%tan (list '(%tan) arg1) 1. nil)))))
+      (t (simp-%tan (list '(%tan) arg1) 1 nil)))))
 
-(defun simplim%asinh (arg) 
-  (cond ((memq arg '($inf $minf $zeroa $zerob $ind $und))
+(defun simplim%asinh (arg)
+  (cond ((member arg '($inf $minf $zeroa $zerob $ind $und) :test #'eq)
 	 arg)
 	((eq arg '$infinity) '$und)
-	(t (simplify (list '(%asinh) (ridofab arg)))))) 
-
-(defun simplim%acosh (arg) 
-  (cond ((equal (ridofab arg) 1.) '$zeroa)
+	(t (simplify (list '(%asinh) (ridofab arg))))))
+
+(defun simplim%acosh (arg)
+  (cond ((equal (ridofab arg) 1) '$zeroa)
 	((eq arg '$inf) arg)
 	((eq arg '$minf) '$infinity)
-	((memq arg '($und $ind $infinity)) '$und)
+	((member arg '($und $ind $infinity) :test #'eq) '$und)
 	(t (simplify (list '(%acosh) (ridofab arg))))))
 
 (defun simplim%atanh (arg dir)
   ;; Compute limit(atanh(x),x,arg).  If ARG is +/-1, we need to take
   ;; into account which direction we're approaching ARG.
   (cond ((zerop2 arg) arg)
-	((memq arg '($ind $und $infinity $minf $inf))
+	((member arg '($ind $und $infinity $minf $inf) :test #'eq)
 	 '$und)
 	((equal (setq arg (ridofab arg)) 1.)
 	 ;; The limit at 1 should be complex infinity because atanh(x)
@@ -2683,13 +2641,13 @@ It appears in LIMIT and DEFINT.......")
 	 (if (eq dir '$zeroa)
 	     '$minf
 	     '$infinity))
-	(t (simplify (list '(%atanh) arg))))) 
+	(t (simplify (list '(%atanh) arg)))))
 
-(defun simplim%asin-%acos (fn arg) 
-  (cond ((memq arg '($und $ind $inf $minf $infinity))
+(defun simplim%asin-%acos (fn arg)
+  (cond ((member arg '($und $ind $inf $minf $infinity) :test #'eq)
 	 '$und)
 	((and (eq fn '%asin)
-	      (memq arg '($zeroa $zerob)))
+	      (member arg '($zeroa $zerob) :test #'eq))
 	 arg)
 	(t (simplify (list (ncons fn) (ridofab arg))))))
 
@@ -2762,7 +2720,7 @@ It appears in LIMIT and DEFINT.......")
 
 
 
-(comment more functions for limit to handle)
+;; more functions for limit to handle
 
 (defun lfibtophi (e)
   (cond ((not (involve e '($fib))) e)
@@ -2776,30 +2734,30 @@ It appears in LIMIT and DEFINT.......")
 ;;;     FOLLOWING CODE MAKES $LDEFINT WORK
 
 (defmfun $ldefint (exp var ll ul &aux $logabs ans a1 a2)
-  (setq $logabs t ans (sinint exp var) 
-	a1 ($limit ans var ul '$minus) 
+  (setq $logabs t ans (sinint exp var)
+	a1 ($limit ans var ul '$minus)
 	a2 ($limit ans var ll '$plus))
-  (and (memq a1 '($inf $minf $infinity $und $ind))
+  (and (member a1 '($inf $minf $infinity $und $ind) :test #'eq)
        (setq a1 (nounlimit ans var ul)))
-  (and (memq a2 '($inf $minf $infinity $und $ind))
+  (and (member a2 '($inf $minf $infinity $und $ind) :test #'eq)
        (setq a2 (nounlimit ans var ll)))
   ($expand (m- a1 a2)))
 
-(defun nounlimit (exp var val) 
+(defun nounlimit (exp var val)
   (setq exp (restorelim exp))
   (nconc (list '(%limit) exp var (ridofab val))
 	 (cond ((eq val '$zeroa) '($plus))
-	       ((eq val '$zerob) '($minus))))) 
+	       ((eq val '$zerob) '($minus)))))
 
-(defun hide (exp) 
+(defun hide (exp)
   (cond ((atom exp) exp)
-	((let ((func (memq (caar exp) '(%integrate %limit %derivative %sum))))
+	((let ((func (member (caar exp) '(%integrate %limit %derivative %sum) :test #'eq)))
 	   (cond ((not (null func))
 		  (hidelim exp (car func)))
 		 (t ()))))
 	(t (cons (car exp) (mapcar 'hide (cdr exp))))))
-
-(defun hidelim (exp func) 
+
+(defun hidelim (exp func)
   (cond ((or (eq func '%integrate) (eq func '%sum))
 	 (setq func (gensym))
 	 (putprop func
@@ -2824,17 +2782,20 @@ It appears in LIMIT and DEFINT.......")
 		  'limitsub))
 	(t (setq func (gensym))
 	   (putprop func (hidelima exp) 'limitsub)))
-  func) 
+  func)
 
-(defun hidelima (e) 
-  (cond ((among var e) (nounlimit e var val)) (t e))) 
+(defun hidelima (e)
+  (if (among var e)
+      (nounlimit e var val)
+      e))
 
 ;;;Used by Defint also.
 (defun oscip (e)
   (or (involve e '(%sin %cos %tan))
       (among '$%i (%einvolve e))))
 
-(defun %einvolve (e) (cond ((among '$%e e) (%einvolve01 e)))) 
+(defun %einvolve (e)
+  (when (among '$%e e) (%einvolve01 e)))
 
 (defun %einvolve01 (e)
   (cond ((atom e) nil)
@@ -2843,10 +2804,8 @@ It appears in LIMIT and DEFINT.......")
 	      (eq (cadr e) '$%e)
 	      (among var (caddr e)))
 	 (caddr e))
-	(t (ormapc (function %einvolve) (cdr e))))) 
+	(t (ormapc (function %einvolve) (cdr e)))))
 
 
-#-nil
-(declare-top(unspecial *indicator nn* dn* exp var val
-		       origval *limorder taylored 
-		       $tlimswitch logcombed lhp? lhcount $ratfac))
+(declare-top (unspecial *indicator nn* dn* exp var val origval *limorder taylored
+			$tlimswitch logcombed lhp? lhcount $ratfac))
