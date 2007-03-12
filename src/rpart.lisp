@@ -9,6 +9,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :maxima)
+
 (macsyma-module rpart)
 
 ;;;	Complex variable utilities
@@ -19,11 +20,8 @@
 
 (load-macsyma-macros rzmac)
 
-(declare-top (special negp* $%emode $radexpand rp-polylogp
-		      $domain $m1pbranch $logarc rischp $keepfloat
-		      complexsign)
-	     (*lexpr $expand)
-	     (genprefix ~rp))
+(declare-top (special $%emode $radexpand rp-polylogp $domain $m1pbranch
+		      $logarc rischp $keepfloat complexsign))
 
 (defmvar implicit-real nil "If t RPART assumes radicals and logs
          of real quantities are real and doesn't ask sign questions")
@@ -44,11 +42,11 @@
 ;;;Polarform gives a result of the form a*%e^(%i*b).
 
 (defmfun $polarform (xx)
-  (cond ((and (not (atom xx)) (memq (caar xx) '(mequal mlist $matrix)))
+  (cond ((and (not (atom xx)) (member (caar xx) '(mequal mlist $matrix) :test #'eq))
 	 (cons (car xx) (mapcar #'$polarform (cdr xx))))
-	(t ((lambda (aas $%emode)
-	      (mul (car aas) (powers '$%e (mul '$%i (cdr aas)))))
-	    (absarg xx) nil))))
+	(t
+	 (let ((aas (absarg xx)) ($%emode nil))
+	   (mul (car aas) (powers '$%e (mul '$%i (cdr aas))))))))
 
 ;;; Cabs gives the complex absolute value.  Nota bene: an expression may
 ;;; be syntactically real without being real (e.g. sqrt(x), x<0).  Thus
@@ -100,19 +98,18 @@
 (defun dot--ri (el ind) 
   (do ((i el (cdr i)) (k))
       ((null i) (cons (cons ind (nreverse k)) (cons ind el)))
-    ((lambda (cdari) (setq k (rplacd (car i) k))
-	     (rplaca i cdari))
-     (cdar i))))
-
+    (let ((cdari (cdar i)))
+      (setq k (rplacd (car i) k))
+      (rplaca i cdari))))
+
 (defun risplit-mplus (l)
   (do ((rpart) (ipart) (m (cdr l) (cdr m)))
       ((null m) (cons (addn rpart t) (addn ipart t)))
-    ((lambda (sp) 
-       (cond ((=0 (car sp)))
-	     (t (setq rpart (cons (car sp) rpart))))
-       (cond ((=0 (cdr sp)))
-	     (t (setq ipart (cons (cdr sp) ipart)))))
-     (risplit (car m)))))
+    (let ((sp (risplit (car m)))) 
+      (cond ((=0 (car sp)))
+	    (t (setq rpart (cons (car sp) rpart))))
+      (cond ((=0 (cdr sp)))
+	    (t (setq ipart (cons (cdr sp) ipart)))))))
 
 (defun risplit-times (l)
   ((lambda (risl)
@@ -152,69 +149,68 @@
 
 (defun risplit-expt (l)
   ((lambda (pow $radexpand ris)	   ; Don't want 'simplifications' like
-     (cond				; Sqrt(-x) -> %i*sqrt(x)
-       ((fixnump pow) 
-	((lambda (sp)
-	   (cond ((= pow -1)
-		  ((lambda (a2+b2)
-		     (cons (div (car sp) a2+b2)
-			   (mul -1 (div (cdr sp) a2+b2))))
-		   (spabs sp)))
-		 ((> (abs pow) $maxposex)
-		  (cond ((=0 (cdr sp)) (cons (powers (car sp) pow) 0))
-			(t ((lambda (abs^n natan)
-			      (cons (mul abs^n
-					 (take '(%cos) natan))
-				    (mul abs^n (take '(%sin) natan))))
-			    (powers (add (powers (car sp) 2)
-					 (powers (cdr sp) 2))
-				    (*red pow 2))
-			    (mul pow (genatan (cdr sp) (car sp)))))))
-		 ((> pow 0) (expanintexpt sp pow))
-		 (t ((lambda (abbas basspli)
-		       (cons (div (car basspli) abbas)
-			     (neg (div (cdr basspli) abbas))))
-		     (powers (spabs sp) (f- pow))
-		     (expanintexpt sp (f- pow))))))
-	 (risplit (cadr l))))
-       ((and (ratnump pow)
-	     (fixnump (cadr pow))
-	     (not (< (cadr pow) (f- $maxnegex)))
-	     (not (> (cadr pow) $maxposex))
-	     (prog2 (setq ris (risplit (cadr l)))
-		 (or (= (caddr pow) 2) (=0 (cdr ris)))))
-	(cond ((=0 (cdr ris))
-	       (case (cond ((mnegp (car ris)) '$negative)
-			   (implicit-real '$positive)
-			   (t (asksign (car ris))))
-		 ($negative (risplit (mul2 (power -1 pow) (power (neg (car ris)) pow))))
-		 ($zero (cons (power 0 pow) 0))
-		 (t (cons (power (car ris) pow) 0))))
-	      (t ((lambda (abs2 n pos?)
-		    ((lambda (abs)
-		       (divcarcdr
-			(expanintexpt 
-			 (cons (power (add abs (car ris)) (1//2))
-			       (porm ((lambda (a b) (cond (a (not b)) (b t))) ;Xor
-				      pos? (eq (asksign (cdr ris)) '$negative))
-				     (power (sub abs (car ris)) (1//2))))
-			 n)
-			(cond (pos? (power 2 (div n 2)))
-			      (t (power (mul 2 abs2) (div n 2))))))
-		     (power abs2 (1//2))))
-		  (spabs ris) (abs (cadr pow)) (> (cadr pow) -1)))))
-       ((and (floatp (setq ris (cadr l))) (floatp pow))
-	(risplit ((lambda ($numer) (exptrl ris pow)) t)))
-       (t ((lambda (sp aa)
-	     ;;If all else fails, we use the trigonometric form.
-	     ((lambda (pre post)
-		(cons (mul pre (take '(%cos) post))
-		      (mul pre (take '(%sin) post))))
-	      (mul (powers '$%e (mul (cdr aa) (mul (cdr sp) -1)))
-		   (powers (car aa) (car sp)))
-	      (add (mul (cdr sp) (take '(%log) (car aa)))
-		   (mul (car sp) (cdr aa)))))
-	   (risplit (caddr l)) (absarg1 (cadr l))))))
+     (cond ((fixnump pow)		; Sqrt(-x) -> %i*sqrt(x)
+	    ((lambda (sp)
+	       (cond ((= pow -1)
+		      ((lambda (a2+b2)
+			 (cons (div (car sp) a2+b2)
+			       (mul -1 (div (cdr sp) a2+b2))))
+		       (spabs sp)))
+		     ((> (abs pow) $maxposex)
+		      (cond ((=0 (cdr sp)) (cons (powers (car sp) pow) 0))
+			    (t ((lambda (abs^n natan)
+				  (cons (mul abs^n
+					     (take '(%cos) natan))
+					(mul abs^n (take '(%sin) natan))))
+				(powers (add (powers (car sp) 2)
+					     (powers (cdr sp) 2))
+					(*red pow 2))
+				(mul pow (genatan (cdr sp) (car sp)))))))
+		     ((> pow 0) (expanintexpt sp pow))
+		     (t ((lambda (abbas basspli)
+			   (cons (div (car basspli) abbas)
+				 (neg (div (cdr basspli) abbas))))
+			 (powers (spabs sp) (f- pow))
+			 (expanintexpt sp (f- pow))))))
+	     (risplit (cadr l))))
+	   ((and (ratnump pow)
+		 (fixnump (cadr pow))
+		 (not (< (cadr pow) (f- $maxnegex)))
+		 (not (> (cadr pow) $maxposex))
+		 (prog2 (setq ris (risplit (cadr l)))
+		     (or (= (caddr pow) 2) (=0 (cdr ris)))))
+	    (cond ((=0 (cdr ris))
+		   (case (cond ((mnegp (car ris)) '$negative)
+			       (implicit-real '$positive)
+			       (t (asksign (car ris))))
+		     ($negative (risplit (mul2 (power -1 pow) (power (neg (car ris)) pow))))
+		     ($zero (cons (power 0 pow) 0))
+		     (t (cons (power (car ris) pow) 0))))
+		  (t ((lambda (abs2 n pos?)
+			((lambda (abs)
+			   (divcarcdr
+			    (expanintexpt 
+			     (cons (power (add abs (car ris)) (1//2))
+				   (porm ((lambda (a b) (cond (a (not b)) (b t))) ;Xor
+					  pos? (eq (asksign (cdr ris)) '$negative))
+					 (power (sub abs (car ris)) (1//2))))
+			     n)
+			    (cond (pos? (power 2 (div n 2)))
+				  (t (power (mul 2 abs2) (div n 2))))))
+			 (power abs2 (1//2))))
+		      (spabs ris) (abs (cadr pow)) (> (cadr pow) -1)))))
+	   ((and (floatp (setq ris (cadr l))) (floatp pow))
+	    (risplit ((lambda ($numer) (exptrl ris pow)) t)))
+	   (t ((lambda (sp aa)
+		 ;;If all else fails, we use the trigonometric form.
+		 ((lambda (pre post)
+		    (cons (mul pre (take '(%cos) post))
+			  (mul pre (take '(%sin) post))))
+		  (mul (powers '$%e (mul (cdr aa) (mul (cdr sp) -1)))
+		       (powers (car aa) (car sp)))
+		  (add (mul (cdr sp) (take '(%log) (car aa)))
+		       (mul (car sp) (cdr aa)))))
+	       (risplit (caddr l)) (absarg1 (cadr l))))))
    (caddr l) nil nil))
 
 (defun risplit-noun (l)
@@ -233,119 +229,118 @@
 			(absarg arg))
 		 (forget `(($notequal) ,arg 0)))))
 	  (t (absarg arg)))))
-
+
 ;;;	Main function
 ;;; Takes an expression and returns the dotted pair
 ;;; (<Real part> . <imaginary part>).
 
 (defun risplit (l) 
   (let (($domain '$complex) ($m1pbranch t) $logarc op)
-    (cond
-      ((atom l) (cond ((eq l '$%i) (cons 0 1))
-		      ((eq l '$infinity) (cons '$und '$und))
-		      ((decl-complexp l) (risplit-noun l))
-		      (t (cons l 0))))
-      ((eq (caar l) 'rat) (cons l 0))
-      ((eq (caar l) 'mplus) (risplit-mplus l))
-      ((eq (caar l) 'mtimes) (risplit-times l))
-      ((eq (caar l) 'mexpt) (risplit-expt l))
-      ((eq (caar l) '%log)
-       (let ((aa (absarg1 (cadr l))))
-	 (rplaca aa (take '(%log) (car aa)))))
-      ((eq (caar l) 'bigfloat) (cons l 0)) ;All numbers are real.
-      ((and (memq (caar l) '(%integrate %derivative %laplace %sum))
-	    (freel (cddr l) '$%i))
-       (let ((ris (risplit (cadr l))))
-	 (cons (simplify (list* (ncons (caar l)) (car ris) (cddr l)))
-	       (simplify (list* (ncons (caar l)) (cdr ris) (cddr l))))))
-      (((lambda (ass)
+    (cond ((atom l)
+	   (cond ((eq l '$%i) (cons 0 1))
+		 ((eq l '$infinity) (cons '$und '$und))
+		 ((decl-complexp l) (risplit-noun l))
+		 (t (cons l 0))))
+	  ((eq (caar l) 'rat) (cons l 0))
+	  ((eq (caar l) 'mplus) (risplit-mplus l))
+	  ((eq (caar l) 'mtimes) (risplit-times l))
+	  ((eq (caar l) 'mexpt) (risplit-expt l))
+	  ((eq (caar l) '%log)
+	   (let ((aa (absarg1 (cadr l))))
+	     (rplaca aa (take '(%log) (car aa)))))
+	  ((eq (caar l) 'bigfloat) (cons l 0)) ;All numbers are real.
+	  ((and (member (caar l) '(%integrate %derivative %laplace %sum) :test #'eq)
+		(freel (cddr l) '$%i))
+	   (let ((ris (risplit (cadr l))))
+	     (cons (simplify (list* (ncons (caar l)) (car ris) (cddr l)))
+		   (simplify (list* (ncons (caar l)) (cdr ris) (cddr l))))))
+	  (((lambda (ass)
 ;;;This clause handles the very similar trigonometric and hyperbolic functions.
 ;;; It is driven by the table at the end of the lambda.
-	  (and ass
-	       ((lambda (ri)
-		  (cond ((=0 (cdr ri))	;Pure real case.
-			 (cons (take (list (car ass)) (car ri)) 0))
-			(t (cons (mul (take (list (car ass)) (car ri))
-				      (take (list (cadr ass)) (cdr ri)))
-				 (negate-if (eq (caar l) '%cos)
-					    (mul (take (list (caddr ass))
-						       (car ri))
-						 (take (list (cdddr ass))
-						       (cdr ri))))))))
-		(risplit (cadr l)))))
-	(assq (caar l)
-	      '((%sin %cosh %cos . %sinh)
-		(%cos %cosh %sin . %sinh)
-		(%sinh %cos %cosh . %sin)
-		(%cosh %cos %sinh . %sin)))))
-      ((memq (caar l) '(%tan %tanh))
-       ((lambda (sp)
+	      (and ass
+		   ((lambda (ri)
+		      (cond ((=0 (cdr ri)) ;Pure real case.
+			     (cons (take (list (car ass)) (car ri)) 0))
+			    (t (cons (mul (take (list (car ass)) (car ri))
+					  (take (list (cadr ass)) (cdr ri)))
+				     (negate-if (eq (caar l) '%cos)
+						(mul (take (list (caddr ass))
+							   (car ri))
+						     (take (list (cdddr ass))
+							   (cdr ri))))))))
+		    (risplit (cadr l)))))
+	    (assoc (caar l)
+		   '((%sin %cosh %cos . %sinh)
+		     (%cos %cosh %sin . %sinh)
+		     (%sinh %cos %cosh . %sin)
+		     (%cosh %cos %sinh . %sin)) :test #'eq)))
+	  ((member (caar l) '(%tan %tanh) :test #'eq)
+	   ((lambda (sp)
 ;;;The similar tan and tanh cases.
-	  (cond ((=0 (cdr sp)) (cons l 0))
-		(t 
-		 ((lambda (2rl 2im)
-		    ((lambda (denom)
-		       (cond ((eq (caar l) '%tan)
-			      (cons (mul (take '(%sin) 2rl) denom)
-				    (mul (take '(%sinh) 2im) denom)))
-			     (t (cons (mul (take '(%sinh) 2rl) denom)
-				      (mul (take '(%sin) 2im) denom)))))
-		     (inv (cond ((eq (caar l) '%tan)
-				 (add (take '(%cosh) 2im) (take '(%cos) 2rl)))
-				(t (add (take '(%cos) 2im) (take '(%cosh) 2rl)))))))
-		  (mul (car sp) 2)
-		  (mul (cdr sp) 2)) )))
-	(risplit (cadr l))))
-      ((and (memq (caar l) '(%atan %csc %sec %cot %csch %sech %coth))
-	    (=0 (cdr (risplit (cadr l)))))
-       (cons l 0))
-      ((and (eq (caar l) '$atan2) (=0 (cdr (risplit (div (cadr l) (caddr l))))))
-       (cons l 0))
-      ((or (arcp (caar l)) (eq (caar l) '$atan2))
-       (let ((ans (risplit ((lambda ($logarc) (ssimplifya l)) t))))
-	 (cond ((eq (caar l) '$atan2)
-		(setq ans (cons (sratsimp (car ans)) (sratsimp (cdr ans))))))
-	 (cond ((and (free l '$%i) (=0 (cdr ans))) (cons l 0)) (t ans))))
-      ((eq (caar l) '%plog)
-					;  (princ '|Warning: Principal value not guaranteed for Plog in Rectform/
-					;|)
-       (risplit (cons '(%log) (cdr l))))
-      ((memq (caar l) '(%realpart %imagpart mabs)) (cons l 0))
-      ((eq (caar l) '%erf)
-       (let ((ris (risplit (cadr l))) orig cc)
-	 (setq orig (simplify (list '(%erf) (add (car ris) (mul '$%i (cdr ris))))))
-	 (setq cc (simplify (list '(%erf) (sub (car ris) (mul '$%i (cdr ris))))))
-	 (cons (div (add orig cc) 2) (div (sub orig cc) (mul 2 '$%i)))))
+	      (cond ((=0 (cdr sp)) (cons l 0))
+		    (t 
+		     ((lambda (2rl 2im)
+			((lambda (denom)
+			   (cond ((eq (caar l) '%tan)
+				  (cons (mul (take '(%sin) 2rl) denom)
+					(mul (take '(%sinh) 2im) denom)))
+				 (t (cons (mul (take '(%sinh) 2rl) denom)
+					  (mul (take '(%sin) 2im) denom)))))
+			 (inv (cond ((eq (caar l) '%tan)
+				     (add (take '(%cosh) 2im) (take '(%cos) 2rl)))
+				    (t (add (take '(%cos) 2im) (take '(%cosh) 2rl)))))))
+		      (mul (car sp) 2)
+		      (mul (cdr sp) 2)) )))
+	    (risplit (cadr l))))
+	  ((and (member (caar l) '(%atan %csc %sec %cot %csch %sech %coth) :test #'eq)
+		(=0 (cdr (risplit (cadr l)))))
+	   (cons l 0))
+	  ((and (eq (caar l) '$atan2) (=0 (cdr (risplit (div (cadr l) (caddr l))))))
+	   (cons l 0))
+	  ((or (arcp (caar l)) (eq (caar l) '$atan2))
+	   (let ((ans (risplit ((lambda ($logarc) (ssimplifya l)) t))))
+	     (cond ((eq (caar l) '$atan2)
+		    (setq ans (cons (sratsimp (car ans)) (sratsimp (cdr ans))))))
+	     (cond ((and (free l '$%i) (=0 (cdr ans))) (cons l 0)) (t ans))))
+	  ((eq (caar l) '%plog)
+	   ;;  (princ '|Warning: Principal value not guaranteed for Plog in Rectform/|)
+	   (risplit (cons '(%log) (cdr l))))
+	  ((member (caar l) '(%realpart %imagpart mabs) :test #'eq) (cons l 0))
+	  ((eq (caar l) '%erf)
+	   (let ((ris (risplit (cadr l))) orig cc)
+	     (setq orig (simplify (list '(%erf) (add (car ris) (mul '$%i (cdr ris))))))
+	     (setq cc (simplify (list '(%erf) (sub (car ris) (mul '$%i (cdr ris))))))
+	     (cons (div (add orig cc) 2) (div (sub orig cc) (mul 2 '$%i)))))
 ;;; ^ All the above are guaranteed pure real.
 ;;; The handling of lists and matrices below has to be thought through.
-      ((eq (caar l) 'mlist) (dsrl l))
-      ((eq (caar l) '$matrix)
-       (dot--ri (mapcar #'dsrl (cdr l)) '($matrix simp)))
-      ((memq (caar l) '(mlessp mleqp mgreaterp mgeqp))
-       (let ((ris1 (risplit (cadr l))) (ris2 (risplit (caddr l))))
-	 (cons (simplify (list (ncons (caar l)) (car ris1) (car ris2)))
-	       (simplify (list (ncons (caar l)) (cdr ris1) (cdr ris2))))))
+	  ((eq (caar l) 'mlist) (dsrl l))
+	  ((eq (caar l) '$matrix)
+	   (dot--ri (mapcar #'dsrl (cdr l)) '($matrix simp)))
+	  ((member (caar l) '(mlessp mleqp mgreaterp mgeqp) :test #'eq)
+	   (let ((ris1 (risplit (cadr l))) (ris2 (risplit (caddr l))))
+	     (cons (simplify (list (ncons (caar l)) (car ris1) (car ris2)))
+		   (simplify (list (ncons (caar l)) (cdr ris1) (cdr ris2))))))
 ;;;The Coversinemyfoot clause covers functions which can be converted
 ;;; to functions known by risplit, such as the more useless trigonometrics.
-      (((lambda (foot) (and foot (risplit foot)))
-	(coversinemyfoot l)))
+	  (((lambda (foot) (and foot (risplit foot)))
+	    (coversinemyfoot l)))
 ;;; A MAJOR ASSUMPTION:
 ;;;  All random functions are pure real, regardless of argument.
 ;;;  This is evidently assumed by some of the integration functions.
 ;;;  Perhaps the best compromise is to return 'realpart/'imagpart
 ;;;   under the control of a switch set by the integrators.  First
 ;;;   all such dependencies must be found in the integ
-      ((and rp-polylogp (mqapplyp l) (eq (subfunname l) '$li)) (cons l 0))
-      ((prog2 (setq op (if (eq (caar l) 'mqapply) (caaadr l) (caar l)))
-	   (decl-complexp op))
-       (risplit-noun l))
-      ((and (eq (caar l) '%product) (not (free (cadr l) '$%i)))
-       (risplit-noun l))
-      (t (cons l 0)))))
+	  ((and rp-polylogp (mqapplyp l) (eq (subfunname l) '$li)) (cons l 0))
+	  ((prog2 (setq op (if (eq (caar l) 'mqapply) (caaadr l) (caar l)))
+	       (decl-complexp op))
+	   (risplit-noun l))
+	  ((and (eq (caar l) '%product) (not (free (cadr l) '$%i)))
+	   (risplit-noun l))
+	  (t (cons l 0)))))
 
 (defun coversinemyfoot (l)
   (prog (recip)
-     (cond ((not (memq (caar l) '(%csc %sec %cot %csch %sech %coth))))
+     (cond ((not (member (caar l) '(%csc %sec %cot %csch %sech %coth) :test #'eq)))
 	   ((null (setq recip (get (caar l) 'recip))))
 	   (t (return (div 1 (cons (list recip) (cdr l))))))))
 
@@ -358,13 +353,12 @@
 
 (defun spabs (sp) (add (powers (car sp) 2) (powers (cdr sp) 2)))
 
-(progn (setq negp* '(nil nil t t))
-       (nconc negp* negp*)
-       0)
 
-(defun divcarcdr (a b) (cons (div (car a) b) (div (cdr a) b)))
+(defvar negp* (let ((l (list nil nil t t))) (nconc l l)))
 
-(declare-top (notype (expanintexpt notype fixnum)))
+(defun divcarcdr (a b)
+  (cons (div (car a) b) (div (cdr a) b)))
+
 
 ;;Expand bas^n, where bas is (<real part> . <imaginary part>)
 
@@ -387,7 +381,7 @@
 			       (cond (rori rpt) (t ipt))))))))
 
  
-
+
 ;;;   Subtract out multiples of 2*%pi with a minimum of consing.
 ;;;   Attempts to reduce to interval (-pi,pi].
 
@@ -427,10 +421,11 @@
 		    ((and (eq 2pfmd (cdr fm)) (eq 2pfma (car fm))) fm)
 		    (t (cons 2pfma 2pfmd))))
 	    (2pistrip (car fm)) (2pirec (cdr fm))))))
-
+
 ;;;	Rectify into polar form; Arguments similar to risplit
 
-(defun argnum (n) (cond ((minusp n) (simplify '$%pi)) (t 0)))
+(defun argnum (n)
+  (cond ((minusp n) (simplify '$%pi)) (t 0)))
 
 (defun absarg (l)
   (setq l ($expand l))
@@ -439,7 +434,7 @@
 		(cons 1 (simplify '((mtimes) ((rat simp) 1 2) $%pi))))
 	       ((numberp l)
 		(cons (abs l) (argnum l)))
-	       ((memq l '($%e $%pi)) (cons l 0))
+	       ((member l '($%e $%pi) :test #'eq) (cons l 0))
 	       ((eq l '$infinity) (cons '$inf '$ind))
 	       (absflag (cons (take '(mabs) l) 0))
 	       (t ((lambda (gs)
@@ -449,7 +444,7 @@
 			    (cons (neg l) (simplify '$%pi)))
 			   (t (cons (take '(mabs) l) 0))))
 		   (cond ((eq rischp l) '$positive) (t (asksign l)))))))
-	((memq (caar l) '(rat bigfloat))
+	((member (caar l) '(rat bigfloat) :test #'eq)
 	 (cons (list (car l) (abs (cadr l)) (caddr l))
 	       (argnum (cadr l))))
 	((eq (caar l) 'mtimes)
@@ -470,7 +465,7 @@
 		      (powers '$%e (neg (mul (cdr aa) (cdr sp)))))
 		 (add (mul (cdr aa) (car sp))
 		      (mul (cdr sp) (take '(%log) (car aa)))))))
-	((and (memq (caar l) '(%tan %tanh))
+	((and (member (caar l) '(%tan %tanh) :test #'eq)
 	      (not (=0 (cdr (risplit (cadr l))))))
 	 ((lambda (sp)
 	    ((lambda (2frst 2scnd)
@@ -516,5 +511,5 @@
 
 (defun absarg-mabs (l)
   (if (eq (csign l) t)
-      (if (memq (caar l) '(mabs %cabs)) l (list '(%cabs simp) l))
+      (if (member (caar l) '(mabs %cabs) :test #'eq) l (list '(%cabs simp) l))
       (take '(mabs) l)))
