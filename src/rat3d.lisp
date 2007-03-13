@@ -20,13 +20,11 @@
 
 (declare-top (special *min* *mx* *odr* nn* scanmapp *checkagain adn*))
 
-(declare-top (special $factorflag $intfaclim $dontfactor $algebraic $ratfac)
-	     (special errrjfflag)
-	     )
+(declare-top (special $factorflag $intfaclim $dontfactor $algebraic $ratfac
+		      errrjfflag))
 
 ;;There really do seem to be two such variables...
-(declare-top (special alpha *alpha)
-	     (special gauss genvar minpoly*))
+(declare-top (special alpha *alpha gauss genvar minpoly*))
 
 (defmvar *irreds nil)
 (defmvar algfac* nil)
@@ -34,8 +32,6 @@
 
 (defmvar $intfaclim t)
 (defmvar $berlefact t)
-
-
 
 (defmfun listovars (q)
   (cond ((pcoefp q) nil)
@@ -46,7 +42,7 @@
 (defun listovars0 (q)
   (declare (special ans))
   (cond ((pcoefp q) ans)
-	((memq (car q) ans) (listovars1 (cdr q)))
+	((member (car q) ans :test #'eq) (listovars1 (cdr q)))
 	(t (push (car q) ans)
 	   (listovars1 (cdr q)))))
 
@@ -68,7 +64,7 @@
        (gv genvar (cdr gv))
        (ans 1))
       ((null l) ans)
-    (and (f> (car l) 0)
+    (and (> (car l) 0)
 	 (setq ans (list (car gv) (car l) ans)))))
 
 (defun ptermcont (p)
@@ -78,13 +74,13 @@
 
 (defun pmindegvec (p)
   (minlist (let ((*odr* (putodr (reverse genvar)))
-		 (nn* (f1+ (length genvar)))
+		 (nn* (1+ (length genvar)))
 		 (*min* t))
 	     (degvector nil 1 p))))
 
 (defun pdegreevector (p)
   (maxlist (let ((*odr* (putodr (reverse genvar)))
-		 (nn* (f1+ (length genvar)))
+		 (nn* (1+ (length genvar)))
 		 (*mx* t))
 	     (degvector nil 1 p))))
 
@@ -100,17 +96,18 @@
 	 (v2 (car ll) (cdr v2)))
 	((null v1))
       (cond (switch
-	     (cond ((f> (car v2) (car v1))
+	     (cond ((> (car v2) (car v1))
 		    (rplaca v1 (car v2)))))
-	    (t (cond ((f< (car v2) (car v1))
+	    (t (cond ((< (car v2) (car v1))
 		      (rplaca v1 (car v2)))))))))
 
-(defun nzeros (n l) (do ((j n (f1- j))
-			 (l l (cons 0 l)))
-			((= 0 j) l)))
-
+(defun nzeros (n l)
+  (do ((j n (1- j))
+       (l l (cons 0 l)))
+      ((= 0 j) l)))
+
 (defun quick-sqfr-check (p var)
-  (let ((gv (zl-delete var (listovars p)))
+  (let ((gv (delete var (listovars p) :test #'equal))
 	(modulus (or modulus *alpha))
 	(l) (p0))
     (if $algebraic (setq gv (removealg gv)))
@@ -154,7 +151,7 @@
 	   p (car p))
      a (setq r (pgcdcofacts r p)
 	     p (caddr r)
-	     mult (f1+ mult))
+	     mult (1+ mult))
      (and algfac* (cadddr r) (setq adn* (ptimes adn* (cadddr r)))) 
      (cond ((not (pcoefp (cadr r)))
 	    (setq factors
@@ -173,12 +170,14 @@
      (return (append p factors))))
 
 (defun fixmult (l n)
-  (do ((l l (cddr l))) ((null l)) (rplaca (cdr l) (f* n (cadr l))))
+  (do ((l l (cddr l)))
+      ((null l))
+    (rplaca (cdr l) (* n (cadr l))))
   l)
 
 (defun pmodroot (p)
   (cond ((pcoefp p) p)
-	((alg p) (pexpt p (expt modulus (f1- (car (alg p))))))
+	((alg p) (pexpt p (expt modulus (1- (car (alg p))))))
 	(t (cons (car p) (pmodroot1 (cdr p))))))
 
 (defun pmodroot1 (x)
@@ -186,7 +185,7 @@
 	(t (cons (// (car x) modulus)
 		 (cons (pmodroot (cadr x))
 		       (pmodroot1 (cddr x)))))))
-
+
 (defmvar $savefactors nil "If t factors of ratreped forms will be saved")
 
 (defvar checkfactors () "List of saved factors")
@@ -200,13 +199,13 @@
 (defun savefactor1 (p)
   (unless (or (pcoefp p)
 	      (ptzerop (p-red p))
-	      (zl-member p checkfactors))
+	      (member p checkfactors :test #'equal))
     (push p checkfactors)))
 
 (defun heurtrial1 (poly facs)
   (prog (h j)
      (setq h (pdegreevector poly))
-     (cond ((or (zl-member 1 h) (zl-member 2 h)) (return (list poly))))
+     (cond ((or (member 1 h :test #'equal) (member 2 h :test #'equal)) (return (list poly))))
      (cond ((null facs) (return (list poly))))
      (setq h (pgcd poly (car facs)))
      (return (cond ((pcoefp h) (heurtrial1 poly (cdr facs)))
@@ -219,12 +218,12 @@
 	(t (nconc (heurtrial1 (car x) facs)
 		  (heurtrial (cdr x) facs)))))
 
-
+
 (defun pfactorquad (p)
   (prog (a b c d $dontfactor l v)
      (cond((or (onevarp p)(equal modulus 2))(return (list p))))
      (setq l (pdegreevector p))
-     (cond ((not (zl-member 2 l)) (return (list p))))
+     (cond ((not (member 2 l :test #'equal)) (return (list p))))
      (setq l (nreverse l) v (reverse genvar)) ;FIND MOST MAIN VAR
      loop (cond ((eqn (car l) 2) (setq v (car v)))
 		(t (setq l (cdr l)) (setq v (cdr v)) (go loop)))
@@ -255,7 +254,7 @@
 	(t (car (iroot (abs x) n)))))
 
 (defun iroot (a n)   ; computes a^(1/n)  see Fitch, SIGSAM Bull Nov 74
-  (cond ((< (haulong a) n) (list 1 (sub1 a)))
+  (cond ((< (haulong a) n) (list 1 (1- a)))
 	(t				;assumes integer a>0 n>=2
 	 (do ((x (expt 2 (1+ (quotient (haulong a) n)))
 		 (difference x (quotient (plus n1 bk) n)))
@@ -272,21 +271,6 @@
   (let ((errrjfflag t))
     (catch 'raterr (pnthroot p n))))
 
-;;(defun pnthroot (poly n)
-;;   (cond ((pcoefp poly) (cnthroot poly n))
-;;	 (t (let* ((var (p-var poly))
-;;		   (ans (make-poly var (cquotient (p-le poly) n)
-;;				   (pnthroot (p-lc poly) n)))
-;;		   (ae (p-terms (pquotient (pctimes n (leadterm poly)) ans))))
-;;		  (do ((p (psimp var (p-red poly))
-;;			  (pdifference poly (pexpt ans n))))
-;;		      ((pzerop p) ans)
-;;		      (cond ((or (pcoefp p) (not (eq (p-var p) var))
-;;				 (f> (car ae) (p-le p)))
-;;			     (throw 'raterr nil)))
-;;		      (setq ans (nconc ans (pquotient1 (cdr (leadterm p)) ae)))
-;;		      )))))
-;;New version from F302 --gsb
 (defun pnthroot (poly n)
   (cond ((equal n 1) poly)
 	((pcoefp poly) (cnthroot poly n))
@@ -298,7 +282,7 @@
 		     (pdifference poly (pexpt ans n))))
 		 ((pzerop p) ans)
 	       (cond ((or (pcoefp p) (not (eq (p-var p) var))
-			  (f> (car ae) (p-le p)))
+			  (> (car ae) (p-le p)))
 		      (throw 'raterr nil)))
 	       (setq ans (nconc ans (pquotient1 (cdr (leadterm p)) ae)))
 	       )))))
@@ -327,18 +311,18 @@
 			 (cond ((equal a 1) nil)
 			       (t (pfactor1 a)))))))))
 
-
+
 (defun ffactor (l fn &aux (alpha alpha))
   ;;  (declare (special varlist))		;i suppose...
   (prog (q)
      (cond ((and (null $factorflag) (mnump l)) (return l))
 	   ((or (atom l) algfac* modulus) nil)
-	   ((and (not gauss)(memq 'irreducible (cdar l)))(return l))
-	   ((and gauss (memq 'irreducibleg (cdar l))) (return l))
-	   ((and (not gauss)(memq 'factored (cdar l)))(return l))
-	   ((and gauss (memq 'gfactored (cdar l))) (return l)))
+	   ((and (not gauss)(member 'irreducible (cdar l) :test #'eq))(return l))
+	   ((and gauss (member 'irreducibleg (cdar l) :test #'eq)) (return l))
+	   ((and (not gauss)(member 'factored (cdar l) :test #'eq))(return l))
+	   ((and gauss (member 'gfactored (cdar l) :test #'eq)) (return l)))
      (newvar l)
-     (if algfac* (setq varlist (cons alpha (zl-remove alpha varlist))))
+     (if algfac* (setq varlist (cons alpha (remove alpha varlist :test #'equal))))
      (setq q (ratrep* l))
      (when algfac*
        (setq alpha (cadr (ratrep* alpha)))
@@ -400,7 +384,7 @@
 			 (ans nil (cons (car l) (cons (cadr p) ans))))
 			((null l) ans))
 		    (pfactor11 (cddr p)))))))
-
+
 (defun pfactor1 (p)			;ASSUMES P SQFR
   (prog (factors *irreds *checkagain)
      (cond ((dontfactor (car p)) (return (list p)))
@@ -426,8 +410,7 @@
 
 (defmvar $homog_hack nil)  ; If T tries to eliminate homogeneous vars.
 
-(declare-top (special *hvar *hmat)
-	     (*lexpr hreduce hexpand))
+(declare-top (special *hvar *hmat))
 
 (defun pfactorany (p)
   (cond (*checkagain (let (checkfactors) (pfactor1 p)))
@@ -437,7 +420,7 @@
 	($berlefact (factor1972 p))
 	(t (pkroneck p))))
 
-
+
 (defun retfactor (x fn l &aux (a (ratfact x fn)))
   (prog ()
    b    (cond ((null (cddr a))
@@ -448,7 +431,7 @@
 			     (t a))))
 	      ((equal (car a) 1) (setq a (cddr a)) (go b))
 	      (t (setq a (map2c #'retfactor1 a))
-		 (return (cond ((memq 0 a) 0)
+		 (return (cond ((member 0 a :test #'eq) 0)
 			       (t (setq a (let (($expop 0) ($expon 0)
 						$negdistrib)
 					    (muln (sortgreat a) t)))
@@ -461,7 +444,7 @@
   (power (tagirr (simplify (pdisrep p))) e))
 
 (defun tagirr (x)
-  (cond ((or (atom x) (memq 'irreducible (cdar x))) x)
+  (cond ((or (atom x) (member 'irreducible (cdar x) :test #'eq)) x)
 	(t (cons (append (car x) '(irreducible)) (cdr x)))))
 
 (defun revsign (x)
@@ -470,6 +453,3 @@
 		 (cons (minus (cadr x)) (revsign (cddr x)))))))
 	 
 ;;	THIS IS THE END OF THE NEW RATIONAL FUNCTION PACKAGE PART 4
-
-
-;;(DECLARE (UNSPECIAL ALPHA GAUSS GENVAR *MIN* *MX* *ODR* NN* LOW* ADN*))
