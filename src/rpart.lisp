@@ -133,17 +133,17 @@
 ;;;Try risplit z/w and notice denominator.  If this check were not made,
 ;;; the real and imaginary parts would not each be over a common denominator.
 		    (eq (caadr sp) 'mtimes)
-		    ((lambda (nr ni)
-		       (cond ((equal (car nr) (car ni))
-			      (setq
-			       purerl (cons (car nr) purerl)
-			       compl
-			       (cons (cons (muln (nreverse (cdr nr)) t)
-					   (muln (nreverse (cdr ni)) t))
-				     compl)))
-			     (t (nreverse nr) (nreverse ni) nil)))
-		     (nreverse (cdar sp))
-		     (nreverse (cddr sp)))))
+		    (let ((nr (nreverse (cdar sp)))
+			  (ni (nreverse (cddr sp))))
+		      (cond ((equal (car nr) (car ni))
+			     (setq purerl (cons (car nr) purerl)
+				   compl (cons (cons (muln (nreverse (cdr nr)) t)
+						     (muln (nreverse (cdr ni)) t))
+					       compl)))
+			    (t
+			     (setq nr (nreverse nr))
+			     (setq ni (nreverse ni))
+			     nil)))))
 	      (t (setq compl (cons sp compl)))))
       (risplit (car l))))))
 
@@ -366,8 +366,8 @@
   (cond ((= n 1) bas)
         (t (do ((rp (car bas))
 		(ip (cdr bas))
-		(c 1 (quotient (times c ex) i))
-		(ex n (f1- ex)) (i 1 (f1+ i))
+		(c 1 (quotient (* c ex) i))
+		(ex n (1- ex)) (i 1 (1+ i))
 		(rori t (not rori)) (negp negp* (cdr negp))
 		(rpt nil) (ipt nil))
 	       ((< ex 0) (cons (addn rpt t) (addn ipt t)))
@@ -377,7 +377,7 @@
 			 (cons (negate-if (car negp)
 					  (mul c
 					       (powers rp ex)
-					       (powers ip (f1- i))))
+					       (powers ip (1- i))))
 			       (cond (rori rpt) (t ipt))))))))
 
  
@@ -392,13 +392,13 @@
 		     (eq (caddr exp) '$%pi)
 		     (null (cdddr exp)))
 		(cond ((integerp (cadr exp)) ;5*%pi
-		       (mul (abs (remainder (cadr exp) 2)) '$%pi))
+		       (mul (abs (rem (cadr exp) 2)) '$%pi))
 					;Neither 0 nor 1 appears as a coef
 		      ((and (listp (cadr exp))
 			    (eq 'rat (caaadr exp))) ;5/2*%pi
 		       (mul (list* '(rat simp)
-				   (sub1 (remainder (add1 (cadadr exp))
-						    (times 2 (caddadr exp))))
+				   (1- (rem (1+ (cadadr exp))
+						    (* 2 (caddadr exp))))
 				   (cddadr exp))
 			    '$%pi))
 		      (t exp)))

@@ -9,13 +9,11 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :maxima)
+
 (macsyma-module nrat4)
 
-(declare-top(genprefix fqz_)
-	    (special $ratsimpexpons *exp *exp2 *radsubst *loglist $radsubstflag 
-		     $radexpand $logsimp *v *var fr-factor radcanp ratsubvl)
-	    (*lexpr $ratsimp)
-	    (fixnum nargs))
+(declare-top (special $ratsimpexpons *exp *exp2 *radsubst *loglist $radsubstflag 
+		      $radexpand $logsimp *v *var fr-factor radcanp ratsubvl))
 
 (load-macsyma-macros rzmac ratmac)
 
@@ -34,7 +32,7 @@
 (defun rform (x) (cdr (ratf x)))
 
 (setq radcanp nil)
-
+
 (defmfun $ratcoef nargs
   (cond ((= nargs 3) (ratcoeff (arg 1) (arg 2) (arg 3)))
 	((= nargs 2) (ratcoeff (arg 1) (arg 2) 1))
@@ -112,7 +110,7 @@
   (cond ((null p) 0)
 	((zerop (car p)) (cadr p))
 	(t (constcoef (cddr p)))))
-
+
 (setq *radsubst nil ratsubvl t)		;SUBST ON VARLIST
 
 (defmfun $ratsubst (a b c)		;NEEDS CODE FOR FAC. FORM 
@@ -183,7 +181,7 @@
 	     varlist nil
 	     c (ratf c)))
      (return (cond (dontdisrepit c) (t ($ratdisrep c))))))
-
+
 (defun xptimes (x y) (if $ratwtlvl (wtptimes x y 0) (ptimes x y)))
 
 (defun allsubst00 (a b c)
@@ -213,7 +211,7 @@
   (do ((ptr l (cddr ptr)))
       ((null ptr) l)
     (setf (cadr ptr) (ptimes h (cadr ptr)))))
-
+
 
 (defun pairoff (l m)
   (cond ((null m) l) (t (cons (car m) (pairoff (cdr l) (cdr m))))))
@@ -266,9 +264,9 @@
     (setf (cadr ptr)
 	  (ptimes (psimp k (list (f- j (f* n (car ptr))) 1))
 		  (cadr ptr)))))
-
+
 (defun substforsum (a b maxpow)
-  (do ((pow 0 (add1 pow))
+  (do ((pow 0 (1+ pow))
        (quot) (zl-rem) (ans))
       ((not (lessp pow maxpow)) (list* maxpow b ans))
     (desetq (quot zl-rem) (pdivide b a))
@@ -310,7 +308,7 @@
       (and (not (atom (cdr x)))
 	   (null (cdddr x))
 	   (pureprod (caddr x)))))
-
+
 (defmfun $bothcoef (r var) 
   (prog (*var h varlist genvar $ratfac)
      (unless ($ratp r)
@@ -394,7 +392,7 @@
 (defmfun hand-side (e flag)
   (setq e (if (eq (caar e) 'mequal) (ncons e) (cdr e)))
   (mapcar #'(lambda (u) (if (eq flag 'l) (cadr u) (caddr u))) e))
-
+
 (comment subtitle radcan)
 
 (defmfun $radcan (exp)
@@ -435,7 +433,7 @@
 
 (defun allatoms (l)
   (loop for x in l always (atom x)))
-
+
 (defun rjfsimp (x &aux expon) 
   (cond ((and *radsubst $radsubstflag) x)
 	((not (m$exp? (setq x (let ($logsimp) (resimplify x))))) x)
@@ -465,7 +463,7 @@
   (if *radsubst (setq *exp2 (allsubst00 a b *exp2))))
 
 (setq *var nil)
-
+
 (defun spc1 (x)
   (cond ((mlogp x) (putonloglist x))
 	((and (mexptp x) (not (eq (cadr x) '$%e)))
@@ -504,7 +502,7 @@
 				    (cdr y))))
     (radsubst (rform y) (rget v))
     (dsubsta y x varlist)))
-
+
 (defun spc4 (x) 
   (if (and (m$exp? x)
 	   (not (memalike (caddr x) *v)))
@@ -566,7 +564,7 @@
       (radsubst (ratexpt rbase (cadr expon))
 		(ratexpt rad (caddr expon))))))
 
-
+
 (defun goodform (l) ;;bad -> good
   (loop for (exp coef) on l by #'pt-red
 	 collect (cons exp coef)))
@@ -583,7 +581,7 @@
      (setq negl (flsort negl) posl (flsort posl) l (append negl posl))
      (setq negl (mapcar (function cdr) negl)
 	   posl (mapcar (function cdr) posl))
-     a     (setq negl (zl-delete '((-1 . 1)) negl))
+     a     (setq negl (delete '((-1 . 1)) negl :test #'equal))
      (or negl
 	 (return (mapc #'(lambda (x) (rplacd x (spc2a (cdr x)))) l)))
      (setq maxnl (flmaxl negl)
@@ -598,8 +596,8 @@
      (cond ((and (flevenp maxpl) (not (flevenp maxnl)))
 	    (mapc #'(lambda (fp) (rplaca (car fp) (pminus (caar fp)))
 			    (cond ((oddp (cdar fp))
-				   (zl-delete '(-1 . 1) fp)
-				   (setq negl (zl-delete fp negl))
+				   (setq fp (delete '(-1 . 1) fp :test #'equal))
+				   (setq negl (delete fp negl :test #'equal))
 				   (and (cdr fp) (push (cdr fp) posl)))))
 		  maxnl)
 	    (go a))
@@ -614,7 +612,7 @@
   (mapl #'(lambda (x) (if (equal p (caaar x))
 			  (rplaca x (cdar x))))
 	pl)
-  (zl-delete nil pl))
+  (delete nil pl :test #'equal))
 
 (defun flmaxl (fpl)			;lists of fac. polys
   (cond ((null fpl) nil)
@@ -658,9 +656,3 @@
 	((> (cadr p) (cadr q)) t)
 	((< (cadr p) (cadr q)) nil)
 	(t (flgreat1 (caddr p) (caddr q)))))
-
-
-;; Undeclarations for the file:
-#-nil
-(declare-top(notype nargs))
-

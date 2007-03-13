@@ -644,9 +644,7 @@
     (0 1)
     (1  cf(list 1))
     (t
-     (setq pp (list (add1
-		     (* (first cf) (second cf)))
-		    (car cf)))
+     (setq pp (list (1+ (* (first cf) (second cf))) (car cf)))
      (setq qq (list (second cf) 1))
      (show pp qq)
      (setq cf (cddr cf))

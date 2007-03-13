@@ -54,21 +54,11 @@
 ;; in case a file-name is supplied, the output will be sent
 ;; (perhaps appended) to that file.
 
-;;(macsyma-module tex ); based on "mrg/grind"
-
-(declare-top
- (special lop rop ccol $gcprint texport $labels $inchar
-	  vaxima-main-dir
-	  )
- (*expr tex-lbp tex-rbp))
+(declare-top (special lop rop ccol $gcprint texport $labels $inchar vaxima-main-dir))
 
 ;; top level command the result of tex'ing the expression x.
 ;; Lots of messing around here to get C-labels verbatim printed
 ;; and function definitions verbatim "ground"
-
-;;(defmspec $tex(l) ;; mexplabel, and optional filename
-;;  (let ((args (cdr l)))
-;;  (apply 'tex1  args)))
 
 (defmspec $tex(l) ;; mexplabel, and optional filename
   ;;if filename supplied but 'nil' then return a string
@@ -183,7 +173,7 @@
 	    (myprinc " ")	    ; lead off with a space for safety
 	    ))				;so we split it up.
      (do ((ch chlst (cdr ch))
-	  (colc ccol (add1 colc)))
+	  (colc ccol (1+ colc)))
 	 ((null ch) (setq ccol colc))
        (write-char (car ch) texport))))
 

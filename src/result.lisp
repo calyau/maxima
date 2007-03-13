@@ -9,9 +9,10 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :maxima)
+
 (macsyma-module result)
 
-(declare-top(special varlist genvar $ratfac $keepfloat modulus *alpha xv))
+(declare-top (special varlist genvar $ratfac $keepfloat modulus *alpha xv))
 
 (load-macsyma-macros ratmac)
 
@@ -29,7 +30,7 @@
 	  ((or (= n 0) (not (atom  (cdr rform))))
 	   (merror "The first argument to 'poly_discriminant' must be a polynomial in ~:M" var))
 	  (t (pdis (presign
-		    (// (f* n (f1- n)) 2)
+		    (ash (* n (1- n)) -1)
 		    (pquotient (resultant poly (pderivative poly rvar))
 			       (p-lc poly))))))))
 
@@ -51,9 +52,9 @@
 				      (t (ptimeschk (car res)
 						    (pexpt (makprod (cadr res) nil)
 							   (caddr res)))))
-				(times (cdar l1) (cdar l2)))))))
+				(* (cdar l1) (cdar l2)))))))
      (return (cond (formflag (pdis* ans)) (t (pdis ans))))))
-
+
 (defun result1 (p1 p2 var)
   (cond ((or (pcoefp p1) (pointergp var (car p1)))
 	 (list 1 p1 (pdegree p2 var)))
@@ -79,7 +80,7 @@
 
 (defmfun resultant (p1 p2)		;assumes same main var
   (if (> (p-le p2) (p-le p1))
-      (presign (f* (p-le p1) (p-le p2)) (resultant p2 p1)) 
+      (presign (* (p-le p1) (p-le p2)) (resultant p2 p1)) 
       (case $resultant
 	($subres (subresult p1 p2))
 	#+broken ($mod (modresult p1 p2))
@@ -88,22 +89,19 @@
 
 (defun presign (n p)
   (if (oddp n) (pminus p) p))
-
-(declare-top (splitfile subres))
+
 ;;computes resultant using subresultant p.r.s. TOMS Sept. 1978
 
 (defun subresult (p q)
   (loop for g = 1 then (p-lc p)
 	 for h = 1 then (pquotient (pexpt g d) h^1-d)
 	 for degq = (pdegree q (p-var p))
-	 for d = (f- (p-le p) degq)
-	 for h^1-d = (if (equal h 1) 1 (pexpt h (f1- d)))
+	 for d = (- (p-le p) degq)
+	 for h^1-d = (if (equal h 1) 1 (pexpt h (1- d)))
 	 if (zerop degq) return (if (pzerop q) q (pquotient (pexpt q d) h^1-d))
 	 do (psetq p q
-		   q (presign (f1+ d) (pquotient (prem p q)
+		   q (presign (1+ d) (pquotient (prem p q)
 						 (ptimes g (ptimes h h^1-d)))))))
-
-(declare-top (splitfile redres))
 
 ;;	PACKAGE FOR CALCULATING MULTIVARIATE POLYNOMIAL RESULTANTS 
 ;;	USING MODIFIED REDUCED P.R.S.
@@ -115,21 +113,19 @@
      (setq c 1)
      a    (if (pzerop (setq r (prem u v))) (return (pzero)))
      (setq c (ptimeschk c (pexpt (p-lc v)
-				 (f* (f- (p-le u) (p-le v))
-				     (f- (p-le v) (pdegree r (p-var u))
+				 (* (- (p-le u) (p-le v))
+				     (- (p-le v) (pdegree r (p-var u))
 					 1)))))
-     (setq sigma (f+ sigma (f* (p-le u) (p-le v))))
+     (setq sigma (+ sigma (* (p-le u) (p-le v))))
      (if (zerop (pdegree r (p-var u)))
 	 (return
 	   (presign sigma
 		    (pquotient (pexpt (pquotientchk r a) (p-le v)) c))))
      (psetq u v
 	    v (pquotientchk r a)
-	    a (pexpt (p-lc v) (f+ (p-le u) 1 (f- (p-le v)))))
+	    a (pexpt (p-lc v) (+ (p-le u) 1 (- (p-le v)))))
      (go a)))
 
-
-(declare-top (splitfile modres))
 
 ;;	PACKAGE FOR CALCULATING MULTIVARIATE POLYNOMIAL RESULTANTS 
 ;;	USING MODULAR AND EVALUATION HOMOMORPHISMS.
@@ -165,7 +161,7 @@
        (setq c* (cpres a* b* xr1 varl))
        (setqmodulus nil)
        (setq c (lagrange3 c c* p q))
-       (setq q (times p q))
+       (setq q (* p q))
        (cond ((greaterp q f) (return c))
 	     (t (go step2)) ) ))
 
@@ -173,11 +169,11 @@
     (not (eqn (pdegree a xv) m)))
 
   (defun coefbound (m n d e)
-    (times 2 (expt (f1+ m) (// n 2))
-	   (expt (f1+ n) (// m 2))
-	   (cond ((oddp n) (f1+ ($isqrt (f1+ m))))
+    (* 2 (expt (1+ m) (ash n -1))
+	   (expt (1+ n) (ash m -1))
+	   (cond ((oddp n) (1+ ($isqrt (1+ m))))
 		 (t 1))
-	   (cond ((oddp m) (f1+ ($isqrt (f1+ n))))
+	   (cond ((oddp m) (1+ ($isqrt (1+ n))))
 		 (t 1))
 	   ;; (FACTORIAL (PLUS M N)) USED TO REPLACE PREV. 4 LINES. KNU II P. 375
 	   (expt d n)
@@ -187,7 +183,7 @@
     (cond ((null a) (cons exp tot))
 	  (t (main2 (cddr a) var
 		    (max (setq var (pdegree (cadr a) var)) exp)
-		    (max (f+ (car a) var) tot))) ))
+		    (max (+ (car a) var) tot))) ))
 
   (defun cpres (a b xr1 varl)		;XR1 IS MAIN VAR WHICH
     (cond ((null varl) (cpres1 (cdr a) (cdr b))) ;RESULTANT ELIMINATES
@@ -200,18 +196,18 @@
 		   (setq varl (cdr varl))
 		   (setq m2 (main2 (cdr a) xv 0 0)) ;<XV DEG . TOTAL DEG>
 		   (setq n2 (main2 (cdr b) xv 0 0))
-		   (cond ((zerop (f+ (car m2) (car n2)))
+		   (cond ((zerop (+ (car m2) (car n2)))
 			  (cond ((null varl) (return (cpres1 (cdr a) (cdr b))))
 				(t (go step2)) ) ))
-		   (setq k (f1+ (min (f+ (f* m1 (car n2)) (f* n1 (car m2)))
-				     (f+ (f* m1 (cdr n2)) (f* n1 (cdr m2))
-					 (f- (f* m1 n1))) )))
+		   (setq k (1+ (min (+ (* m1 (car n2)) (* n1 (car m2)))
+				     (+ (* m1 (cdr n2)) (* n1 (cdr m2))
+					 (- (* m1 n1))) )))
 		   (setq c 0)
 		   (setq d 1)
 		   (setq m2 (car m2) n2 (car n2))
 		   (setq bp (minus 1))
 		   step3
-		   (cond ((equal (setq bp (add1 bp)) modulus)
+		   (cond ((equal (setq bp (1+ bp)) modulus)
 			  (merror "Resultant primes too small."))
 			 ((zerop m2) (setq a* a))
 			 (t (setq a* (pcsubst a bp xv))
@@ -223,10 +219,8 @@
 		   (setq c (lagrange33 c c* d bp))
 		   (setq d (ptimeschk d (list xv 1 1 0 (cminus bp))))
 		   (cond ((> (cadr d) k) (return c))
-			 (t (go step3))) )) ))
-  )
-
-(declare-top (splitfile bezout))
+			 (t (go step3))))))))
+
 
 ;; *** NOTE THAT MATRIX PRODUCED IS ALWAYS SYMETRIC
 ;; *** ABOUT THE MINOR DIAGONAL.
@@ -244,7 +238,7 @@
 		  p))))
 
 (defun vmake (poly n *l)
-  (do ((i (f1- n) (f1- i))) ((minusp i))
+  (do ((i (1- n) (1- i))) ((minusp i))
     (cond ((or (null poly) (< (car poly) i))
 	   (setq *l (cons 0 *l)))
 	  (t (setq *l (cons (cadr poly) *l))
@@ -252,15 +246,15 @@
   (nreverse *l))
 
 (defun bezout (p q)
-  (let* ((n (f1+ (p-le p)))
-	 (n2 (f- n (p-le q)))
+  (let* ((n (1+ (p-le p)))
+	 (n2 (- n (p-le q)))
 	 (a (vmake (p-terms p) n nil))
 	 (b (vmake (p-terms q) n nil))
 	 (ar (reverse (nthcdr n2 a)))
 	 (br (reverse (nthcdr n2 b)))
 	 (l (nzeros n nil)))
-    (rplacd (nthcdr (f1- (p-le p)) a) nil)
-    (rplacd (nthcdr (f1- (p-le p)) b) nil)
+    (rplacd (nthcdr (1- (p-le p)) a) nil)
+    (rplacd (nthcdr (1- (p-le p)) b) nil)
     (nconc
      (mapcar
       #'(lambda (ar br)
