@@ -91,8 +91,8 @@ seta apontando na direita da linha. Poder@'a avan@,{c}ar uma linha por
 vez digitando M-n (Alt-n).
 
 No Emacs pode executar o Maxima numa shell @code{dbl}, o qual requer o
-ficheiro @code{dbl.el} no diret@'orio elisp.
-Verifique que tenha instalado os ficheiros elisp ou adicionado o diret@'orio elisp do Maxima ao seu caminho:
+ficheiro @code{dbl.el} no direct@'orio elisp.
+Verifique que tenha instalado os ficheiros elisp ou adicionado o direct@'orio elisp do Maxima ao seu caminho:
 e.g., adicione o seguinte ao seu ficheiro @file{.emacs} ou ao seu ficheiro
 @code{site-init.el}
 
@@ -157,10 +157,10 @@ Imprime na tela uma lista da pilha de frames
 Continua a computa@,{c}@~ao
 @c CAN'T SEEM TO GET :delete TO WORK !!!
 @item :delete
-Remove o ponto de parada selecionado, ou todos se nenum for especificado
+Remove o ponto de parada seleccionado, ou todos se nenum for especificado
 @c CAN'T SEEM TO GET :disable TO WORK !!!
 @item :disable
-Desabilita os pontos de parada selecionados, ou todos se nenhum for especificado
+Desabilita os pontos de parada seleccionados, ou todos se nenhum for especificado
 @c CAN'T SEEM TO GET :enable TO WORK !!!
 @item :enable
 Habilita os pontos de de parada especificados, ou todos se nenhum for especificado
@@ -194,7 +194,7 @@ completar a computa@,{c}@~ao
 @section Defini@value{cedilha}@~oes para Depura@value{cedilha}@~ao
 
 @defvr {Vari@'avel de op@,{c}@~ao} refcheck
-Valor padr@~ao: @code{false}
+Valor por omiss@~ao: @code{false}
 
 Quando @code{refcheck} for @code{true}, Maxima imprime uma mensagem
 cada vez que uma vari@'avel associada for usada pela primeira vez em uma
@@ -203,7 +203,7 @@ computa@,{c}@~ao.
 @end defvr
 
 @defvr {Vari@'avel de op@,{c}@~ao} setcheck
-Valor padr@~ao: @code{false}
+Valor por omiss@~ao: @code{false}
 
 Se @code{setcheck} for escolhido para uma lista de vari@'aveis (as quais podem
 ser subscritas), 
@@ -224,7 +224,7 @@ para verificar, e quaisquer vari@'aveis previamente atribu@'{@dotless{i}}das a @
 
 Os nomes atribu@'{@dotless{i}}dos a @code{setcheck} devem ter um ap@'ostrofo no in@'{@dotless{i}}cio se eles forem de outra forma
 avaliam para alguma outra coisa que n@~ao eles mesmo.
-Por exemplo, se @code{x}, @code{y}, e @code{z} estiverem atualmente associados, ent@~ao digite
+Por exemplo, se @code{x}, @code{y}, e @code{z} estiverem actualmente associados, ent@~ao digite
 
 @example
 setcheck: ['x, 'y, 'z]$
@@ -238,7 +238,7 @@ vari@'avel na lista @code{setcheck} for atribu@'{@dotless{i}}da a s@'{@dotless{i
 @end defvr
 
 @defvr {Vari@'avel de op@,{c}@~ao} setcheckbreak
-Valor padr@~ao: @code{false}
+Valor por omiss@~ao: @code{false}
 
 Quando @code{setcheckbreak} for @code{true},
 Maxima mostrar@'a um ponto de parada 
@@ -292,12 +292,12 @@ Veja tamb@'em @code{timer_devalue}.
 Dadas as fun@,{c}@~oes @var{f_1}, ..., @var{f_n},
 @code{untimer} remove cada uma das fun@,{c}@~oes listadas da lista de fun@,{c}@~oes estatisticamente monitoradas.
 
-Sem argumentos, @code{untimer} remove todas as fun@,{c}@~oes atualmente na  lista de fun@,{c}@~oes estatisticamente monitoradas.
+Sem argumentos, @code{untimer} remove todas as fun@,{c}@~oes actualmente na  lista de fun@,{c}@~oes estatisticamente monitoradas.
 
 Ap@'os @code{untimer (f)} ser executada, @code{timer_info (f)} ainda retorna
 estatisticas de tempo previamente coletadas,
 embora @code{timer_info()} (sem argumentos) n@~ao
-retorna informa@,{c}@~oes sobre qualquer fun@,{c}@~ao que n@~ao estiver atualmente na lista de fun@,{c}@~oes tempo estatisticamente monitoradas.
+retorna informa@,{c}@~oes sobre qualquer fun@,{c}@~ao que n@~ao estiver actualmente na lista de fun@,{c}@~oes tempo estatisticamente monitoradas.
 @code{timer (f)} reposiciona todas as estatisticas de tempo para zero
 e coloca @code{f} na lista de fun@,{c}@~oes estatisticamente monitoradas novamente.
 
@@ -321,7 +321,7 @@ Veja tamb@'em @code{timer} e @code{timer_info}.
 Dadas as fun@,{c}@~oes @var{f_1}, ..., @var{f_n},
 @code{timer_info} retorna uma matriz contendo informa@,{c}@~oes de cronometragem para cada fun@,{c}@~ao.
 Sem argumentos, @code{timer_info} retorna informa@,{c}@~oes de cronometragem para
-todas as fun@,{c}@~oes atualmente na lista de fun@,{c}@~oes estatisticamente monitoradas.
+todas as fun@,{c}@~oes actualmente na lista de fun@,{c}@~oes estatisticamente monitoradas.
 
 A matriz retornada atrav@'es de @code{timer_info} cont@'em o nome da fun@,{c}@~ao,
 tempo por chamda de fun@,{c}@~ao, n@'umero de chamadas a fun@,{c}@~oes,tempo total,
@@ -348,7 +348,7 @@ informa@,{c}@~oes de depura@,{c}@~ao quando essas fun@,{c}@~oes forem chamadas.
 para serem colocadas sob a a@,{c}@~ao de @code{trace}; a lista acumula de uma chamada para a seguinte.
 
 Sem argumentos,
-@code{trace} retorna uma lista de todas as fun@,{c}@~oes atualmente sob a a@,{c}@~ao de @code{trace}.
+@code{trace} retorna uma lista de todas as fun@,{c}@~oes actualmente sob a a@,{c}@~ao de @code{trace}.
 
 A fun@,{c}@~ao @code{untrace} desabilita a a@,{c}@~ao de @code{trace}.
 Veja tamb@'em @code{trace_options}. 
@@ -386,7 +386,7 @@ Coloque um ponto de parada antes da fun@,{c}@~ao ser inserida,
 e ap@'os a fun@,{c}@~aos er retirada. Veja @code{break}.
 @item
 @code{lisp_print}
-Mostre argumentos e valores de retorno com objetos Lisp.
+Mostre argumentos e valores de retorno com objectos Lisp.
 @item
 @code{info}
 Mostre @code{-> true} na entrada da fun@,{c}@`ao e saia.

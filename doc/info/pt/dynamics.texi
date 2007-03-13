@@ -88,7 +88,7 @@ aleatoriamente, as duas coordenadas do @'ultimo ponto multiplicam-se por
 uma matriz 2 por 2 @var{Ai} correspondente ao ponto que tenha sido
 escolhido aleatoriamente.
 
-A sele@,{c}@~ao aleat@'oria de um dos @var{m} pontos
+A selec@,{c}@~ao aleat@'oria de um dos @var{m} pontos
 atractivos pode se realizada com uma fun@,{c}@~ao de
 probabilidade n@~ao uniforme, definida com os pesos
 @var{r1},...,@var{rm}. Pesos esses que dever@~ao ser dados em forma

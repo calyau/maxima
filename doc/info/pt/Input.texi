@@ -49,8 +49,8 @@ Exemplos:
 @node Ficheiros, Defini@value{cedilha}@~oes para Entrada e Sa@'{@dotless{i}}da, Coment@'arios, Entrada e Sa@'{@dotless{i}}da
 @section Ficheiros
 Um ficheiro @'e simplesmente uma @'area sobre um dispositivo particular de armazenagem que cont@'em dados ou texto.
-Ficheiros em disco s@~ao figurativamente agrupados dentro de "diret@'orios".
-Um diret@'orio @'e apenas uma lista de ficheiros.
+Ficheiros em disco s@~ao figurativamente agrupados dentro de "direct@'orios".
+Um direct@'orio @'e apenas uma lista de ficheiros.
 Comandos que lidam com ficheiros s@~ao:
 @code{save},
 @code{load},
@@ -67,9 +67,9 @@ e
 @section Defini@value{cedilha}@~oes para Entrada e Sa@'{@dotless{i}}da de Dados
 @defvr {Vari@'avel de sistema} __
 @ifinfo
-@vrindex Express@~ao de entrada atual
+@vrindex Express@~ao de entrada actual
 @end ifinfo
-@code{__} @'e a express@~ao de entrada atualmente sendo avaliada.
+@code{__} @'e a express@~ao de entrada actualmente sendo avaliada.
 Isto @'e, enquanto um express@~ao de entrada @var{expr} est@'a sendo avaliada, @code{__} @'e @var{expr}.
 
 @code{__} @'e atribu@'{@dotless{i}}da @`a express@~ao de entrada antes de a entrada ser simplificada ou avaliada.
@@ -93,7 +93,7 @@ Exemplos:
 @c ===beg===
 @c print ("Eu fui chamada como", __);
 @c foo (__);
-@c g (x) := (print ("Express@~ao atual de entrada =", __), 0);
+@c g (x) := (print ("Express@~ao actual de entrada =", __), 0);
 @c [aa : 1, bb : 2, cc : 3];
 @c (aa + bb + cc)/(dd + ee + g(x));
 @c ===end===
@@ -103,13 +103,13 @@ Eu fui chamada como print(Eu fui chamada como, __)
 (%o1)              print(Eu fui chamada como, __)
 (%i2) foo (__);
 (%o2)                     foo(foo(__))
-(%i3) g (x) := (print ("Express@~ao atual de entrada =", __), 0);
-(%o3) g(x) := (print("Express@~ao atual de entrada =", __), 0)
+(%i3) g (x) := (print ("Express@~ao actual de entrada =", __), 0);
+(%o3) g(x) := (print("Express@~ao actual de entrada =", __), 0)
 (%i4) [aa : 1, bb : 2, cc : 3];
 (%o4)                       [1, 2, 3]
 (%i5) (aa + bb + cc)/(dd + ee + g(x));
                                cc + bb + aa
-Express@~ao atual de entrada = -------------- 
+Express@~ao actual de entrada = -------------- 
                               g(x) + ee + dd
                                 6
 (%o5)                        -------
@@ -253,7 +253,7 @@ Veja tamb@'em @code{%}.
 @end defvr
 
 @defvr {Vari@'avel de op@,{c}@~ao} %edispflag
-Valor padr@~ao: @code{false}
+Valor por omiss@~ao: @code{false}
 
 Quando @code{%edispflag} @'e @code{true},
 Maxima mostra @code{%e} para um expoente negativo como um quociente.
@@ -319,7 +319,7 @@ de outra forma n@~ao @'e reconhecido com um pedido de documenta@,{c}@~ao.
 @end deffn
 
 @defvr {Vari@'avel de op@,{c}@~ao} absboxchar
-Valor padr@~ao: @code{!}
+Valor por omiss@~ao: @code{!}
 
 @code{absboxchar} @'e o caracter usado para para desenhar o sinal de valor
 absoluto em torno de express@~oes que s@~ao maiores que uma linha de altura.
@@ -327,7 +327,7 @@ absoluto em torno de express@~oes que s@~ao maiores que uma linha de altura.
 @end defvr
 
 @defvr {Vari@'avel de op@,{c}@~ao} file_output_append
-Valor padr@~ao: @code{false}
+Valor por omiss@~ao: @code{false}
 
 @code{file_output_append} governa se fun@value{cedilha}@~oes de sa@'{@dotless{i}}da de ficheiro
 anexam ao final ou truncam seu ficheiro de sa@'{@dotless{i}}da.
@@ -376,7 +376,7 @@ R@'otulos de entrada s@~ao atribu@'{@dotless{i}}dos para express@~oes de entrada
 e r@'otulos de sa@'{@dotless{i}}da s@~ao atribu@'{@dotless{i}}dos para express@~oes de sa@'{@dotless{i}}da.
 @code{batch} avalia toda express@~ao de entrada no ficheiro
 a menos que exista um erro.
-Se uma entrada de usu@'ario for requisitada (by @code{asksign} ou @code{askinteger}, por exemplo)
+Se uma entrada de utilizador for requisitada (by @code{asksign} ou @code{askinteger}, por exemplo)
 @code{batch} interrompe para coletar a entrada requisitada e ent@~ao continua.
 
 @c CTRL-C BREAKS batch IN CMUCL, BUT CLISP (ALTHO IT SHOWS "User break") KEEPS GOING !!!
@@ -425,14 +425,14 @@ Fecha o ficheiro transcrito aberto por @code{writefile} ou @code{appendfile}.
 
 @c NEEDS CLARIFICATION !!!
 @deffn {Fun@,{c}@~ao} collapse (@var{expr})
-Reduz @var{expr} fazendo com que todas as suas
-subexpress@~oes comuns (i.e., iguais)  serem compartilhadas (i.e., usam a mesma c@'elulas),
-dessa forma exonomizando espa@,{c}o.  (@code{collapse} @'e uma subrotina usada pelo comando
-@code{optimize}.)  Dessa forma, chamar @code{collapse} pode ser @'util
-ap@'os um @code{save} ficheiro.  Voc@^e pode diminuir muitas express@~oes
-juntas pelo uso de @code{collapse ([@var{expr_1}, ..., @var{expr_n}])}.  Similarmente, voc@^e pode
-diminuir os elementos de um array @code{A} fazendo
-@code{collapse (listarray ('A))}.
+Reduz @var{expr} fazendo com que todas as suas subexpress@~oes comuns
+(i.e., iguais) serem compartilhadas (i.e., usam a mesma c@'elulas),
+dessa forma exonomizando espa@,{c}o.  (@code{collapse} @'e uma subrotina
+usada pelo comando @code{optimize}.)  Dessa forma, chamar
+@code{collapse} pode ser @'util ap@'os um @code{save} ficheiro.  Pode
+diminuir muitas express@~oes juntas pelo uso de @code{collapse
+([@var{expr_1}, ..., @var{expr_n}])}.  Similarmente, pode diminuir os
+elementos de um array @code{A} fazendo @code{collapse (listarray ('A))}.
 
 @end deffn
 
@@ -551,7 +551,7 @@ chamadas de fun@,{c}@~ao.  Veja tamb@'em @code{disp}.
 @end deffn
 
 @defvr {Vari@'avel de op@,{c}@~ao} display2d
-Valor padr@~ao: @code{true}
+Valor por omiss@~ao: @code{true}
 
 Quando @code{display2d} @'e @code{false},
 O console visualizador @'e unidimensional ao inv@'es de bidimensional.
@@ -559,7 +559,7 @@ O console visualizador @'e unidimensional ao inv@'es de bidimensional.
 @end defvr
 
 @defvr {Vari@'avel de op@,{c}@~ao} display_format_internal
-Valor padr@~ao: @code{false}
+Valor por omiss@~ao: @code{false}
 
 Quando @code{display_format_internal} @'e @code{true},
 express@~oes s@~ao mostradas sem ser por caminhos que
@@ -590,7 +590,7 @@ X*4/3;    ---        - X
 @deffn {Fun@,{c}@~ao} dispterms (@var{expr})
 Mostra @var{expr} em partes uma abaixo da outra.
 Isto @'e, primeiro o operador de @var{expr} @'e mostrado, ent@~ao cada parcela em
-uma adi@,{c}@~ao, ou fatores em um produto, ou parte de uma express@~ao mais geral @'e
+uma adi@,{c}@~ao, ou factores em um produto, ou parte de uma express@~ao mais geral @'e
 mostrado separadamente.  Isso @'e @'util se @var{expr} @'e muito larga para ser
 mostrada de outra forma.  Por exemplo se @code{P1}, @code{P2}, ...  s@~ao express@~oes
 muito largas ent@~ao o programa visualizador pode sair fora do espa@,{c}o de armazenamento na
@@ -603,7 +603,7 @@ caso de @code{A^^B}).
 @end deffn
 
 @defvr {Vari@'avel de op@,{c}@~ao} error_size
-Valor padr@~ao: 10
+Valor por omiss@~ao: 10
 
 @code{error_size} modifica mensagens de erro conforme o tamanho das express@~oes que aparecem nelas.
 Se o tamanho de uma express@~ao (como determinado pela fun@,{c}@~ao Lisp @code{ERROR-SIZE})
@@ -658,7 +658,7 @@ Express@~ao exemplo @'e --------------
 @end defvr
 
 @defvr {Vari@'avel de op@,{c}@~ao} error_syms
-Valor padr@~ao: @code{[errexp1, errexp2, errexp3]}
+Valor por omiss@~ao: @code{[errexp1, errexp2, errexp3]}
 
 Em mensagens de erro,
 express@~oes mais largas que @code{error_size} s@~ao substitu@'{@dotless{i}}das por s@'{@dotless{i}}mbolos, e os
@@ -687,7 +687,7 @@ cmo @code{@var{a}^@var{b}} isso aparece como @code{expt (@var{a}, @var{b})} (ou 
 @end deffn
 
 @defvr {Vari@'avel de op@,{c}@~ao} exptdispflag
-Valor padr@~ao: @code{true}
+Valor por omiss@~ao: @code{true}
 
 Quando @code{exptdispflag} @'e @code{true}, Maxima mostra express@~oes
 com expoente negativo usando quocientes, e.g., @code{X^(-1)} como @code{1/X}.
@@ -710,15 +710,15 @@ De outra forma, o componente final @'e simplesmente substitu@'{@dotless{i}}do po
 
 @code{file_search} procura pelo ficheiro @var{filename} e retorna o caminho para o ficheiro
 (como uma sequ@^encia de caracteres) se ele for achado; de outra forma @code{file_search} retorna @code{false}.
-@code{file_search (@var{filename})} procura nos diret@'orios padr@~oes de busca,
+@code{file_search (@var{filename})} procura nos direct@'orios padr@~oes de busca,
 que s@~ao especificados pelas vari@'aveis @code{file_search_maxima}, @code{file_search_lisp}, e @code{file_search_demo}.
 
-@code{file_search} primeiro verifica se o nome atual passado existe,
-antes de tentar coincidir esse nome atual com o modelo ``coringa'' de busca do ficheiro.
+@code{file_search} primeiro verifica se o nome actual passado existe,
+antes de tentar coincidir esse nome actual com o modelo ``coringa'' de busca do ficheiro.
 Veja @code{file_search_maxima} concernente a modelos de busca de ficheiros.
 
 O argumento @var{filename} pode ser um caminho e nome de ficheiro,
-ou apenas um nome de ficheiro, ou, se um diret@'orio de busca de ficheiro inclui um modelo de busca de ficheiro,
+ou apenas um nome de ficheiro, ou, se um direct@'orio de busca de ficheiro inclui um modelo de busca de ficheiro,
 apenas a base do nome de ficheiro (sem uma extens@~ao).
 Por exemplo,
 
@@ -731,31 +731,31 @@ file_search ("zeta");
 todos acham o mesmo ficheiro, assumindo que o ficheiro exista e @code{/home/wfs/special/###.mac}
 est@'a em @code{file_search_maxima}.
 
-@code{file_search (@var{filename}, @var{pathlist})} procura somente nesses diret@'orios
+@code{file_search (@var{filename}, @var{pathlist})} procura somente nesses direct@'orios
 especificados por @var{pathlist},
 que @'e uma lista de sequ@^encias de caracteres.
-O argumento @var{pathlist} substitui os diret@'orios de busca padr@~ao,
+O argumento @var{pathlist} substitui os direct@'orios de busca padr@~ao,
 ent@~ao se a lista do caminho @'e dada, @code{file_search} procura somente nesses especificados,
-e n@~ao qualquer dos diret@'orios padr@~ao de busca.
-Mesmo se existe somente um diret@'orio em @var{pathlist}, esse deve ainda ser dado como uma lista de um @'unico elemento.
+e n@~ao qualquer dos direct@'orios padr@~ao de busca.
+Mesmo se existe somente um direct@'orio em @var{pathlist}, esse deve ainda ser dado como uma lista de um @'unico elemento.
 
-O usu@'ario pode modificar o diret@'orio de busca padr@~ao.  Veja @code{file_search_maxima}.
+O utilizador pode modificar o direct@'orio de busca padr@~ao.  Veja @code{file_search_maxima}.
 
 @code{file_search} @'e invocado por @code{load} com @code{file_search_maxima} e @code{file_search_lisp}
-como diret@'orios de busca.
+como direct@'orios de busca.
 
 @end deffn
 
 @defvr {Vari@'avel de op@,{c}@~ao} file_search_maxima
 @defvrx {Vari@'avel de op@,{c}@~ao} file_search_lisp
 @defvrx {Vari@'avel de op@,{c}@~ao} file_search_demo
-Essas vari@'aveis especificam listas de diret@'orios a serem procurados
+Essas vari@'aveis especificam listas de direct@'orios a serem procurados
 por @code{load}, @code{demo}, e algumas outras fun@,{c}@~oes do Maxima.
 O valor padr@~ao dessas vari@'aveis
-nomeia v@'arios diret@'orios na instala@,{c}@~a padr@~ao do Maxima.
+nomeia v@'arios direct@'orios na instala@,{c}@~a padr@~ao do Maxima.
 
 O usu@'aro pode modificar essas vari@'aveis,
-quer substituindo os valores padr@~ao ou colocando no final diret@'orios adicionais.
+quer substituindo os valores padr@~ao ou colocando no final direct@'orios adicionais.
 Por exemplo,
 
 @example
@@ -771,7 +771,7 @@ file_search_maxima: append (file_search_maxima,
     ["/usr/local/foo/###.mac", "/usr/local/bar/###.mac"])$
 @end example
 
-adiciona no final da lista dois diret@'orios adicionais.
+adiciona no final da lista dois direct@'orios adicionais.
 Isso pode ser conveniente para colocar assim uma express@~ao no ficheiro @code{maxima-init.mac}
 de forma que o caminho de busca de ficheiro @'e atribu@'{@dotless{i}}do automaticamente quando o Maxima inicia.
 
@@ -793,7 +793,7 @@ expande em @code{/home/wfs/neumann.lisp}, @code{/home/gcj/neumann.lisp}, @code{/
 @deffn {Fun@,{c}@~ao} file_type (@var{filename})
 Retorna uma suposta informa@,{c}@~ao sobre o conte@'udo de @var{filename},
 baseada na extens@~ao do ficheiro.
-@var{filename} n@~ao precisa referir-se a um ficheiro atual;
+@var{filename} n@~ao precisa referir-se a um ficheiro actual;
 nenhuma tentativa @'e feita para abrir o ficheiro e inspecionar seu conte@'udo.
 
 O valor de retorno @'e um s@'{@dotless{i}}mbolo, qualquer um entre @code{object}, @code{lisp}, ou @code{maxima}.
@@ -927,7 +927,7 @@ n do (for j from i+1 thru n do L[i,j]:0),L)
 @end deffn
 
 @defvr {Vari@'avel de op@,{c}@~ao} ibase
-Valor padr@~ao: 10
+Valor por omiss@~ao: 10
 
 Inteiros fornecidos dentro do Maxima s@~ao interpretados
 com respeito @`a base @code{ibase}.
@@ -949,9 +949,9 @@ Veja tamb@'em @code{obase}.
 @end defvr
 
 @defvr {Vari@'avel de op@,{c}@~ao} inchar
-Valor padr@~ao: @code{%i}
+Valor por omiss@~ao: @code{%i}
 
-@code{inchar} @'e o prefixo dos r@'otulos de express@~oes fornecidas pelo usu@'ario.
+@code{inchar} @'e o prefixo dos r@'otulos de express@~oes fornecidas pelo utilizador.
 Maxima automaticamente constr@'oi um r@'otulo para cada express@~ao de entrada
 por concatena@,{c}@~ao de @code{inchar} e @code{linenum}.
 A @code{inchar} pode ser atribu@'{@dotless{i}}do qualquer sequ@^encia de caracteres ou s@'{@dotless{i}}mbolo, n@~ao necessariamente um caracter simples.
@@ -1040,7 +1040,7 @@ Veja tamb@'em @code{display}.
 @end deffn
 
 @defvr {Vari@'avel de op@,{c}@~ao} linechar
-Valor padr@~ao: @code{%t}
+Valor por omiss@~ao: @code{%t}
 
 @code{linechar} @'e o refixo de r@'otulos de express@~oes intermedi@'arias gerados pelo Maxima.
 Maxima constr@'oi um r@'otulo para cada express@~ao intermedi@'aria (se for mostrada)
@@ -1053,11 +1053,11 @@ See @code{programmode} e @code{labels}.
 @end defvr
 
 @defvr {Vari@'avel de op@,{c}@~ao} linel
-Valor padr@~ao: 79
+Valor por omiss@~ao: 79
 
 @code{linel} @'e a largura assumida (em caracteres) do console
 para o prop@'osito de mostrar express@~oes.
-A @code{linel} pode ser atribu@'{@dotless{i}}do qualquer valor pelo usu@'ario,
+A @code{linel} pode ser atribu@'{@dotless{i}}do qualquer valor pelo utilizador,
 embora valores muio pequenos ou muito grandes possam ser impratic@'aveis.
 Textos impressos por fun@,{c}@~oes internas do Maxima, tais como mensagens de erro e a sa@'{@dotless{i}}da de @code{describe},
 n@~ao s@~ao afetadas por @code{linel}.
@@ -1065,7 +1065,7 @@ n@~ao s@~ao afetadas por @code{linel}.
 @end defvr
 
 @defvr {Vari@'avel de op@,{c}@~ao} lispdisp
-Valor padr@~ao: @code{false}
+Valor por omiss@~ao: @code{false}
 
 Quando @code{lispdisp} for @code{true},
 s@'{@dotless{i}}mbolos Lisp s@~ao mostrados com um ponto de interroga@,{c}@~ao @code{?} na frente.
@@ -1093,11 +1093,11 @@ Exemplos:
 
 @deffn {Fun@,{c}@~ao} load (@var{nomeficheiro})
 Avalia express@~oes em @var{nomeficheiro}, 
-dessa forma conduzindo vari@'aveis, fun@,{c}@~oes, e outros objetos dentro do Maxima.
-A associa@,{c}@~ao de qualquer objeto existente @'e substitu@'{@dotless{i}}da pela associa@,{c}@~ao recuperada de @var{nomeficheiro}.  
+dessa forma conduzindo vari@'aveis, fun@,{c}@~oes, e outros objectos dentro do Maxima.
+A associa@,{c}@~ao de qualquer objecto existente @'e substitu@'{@dotless{i}}da pela associa@,{c}@~ao recuperada de @var{nomeficheiro}.  
 Para achar o ficheiro,
 @code{load} chama @code{file_search} com @code{file_search_maxima} e @code{file_search_lisp}
-como diret@'orios de busca.
+como direct@'orios de busca.
 Se @code{load} obt@'em sucesso, isso retorna o nome do ficheiro.
 De outra forma @code{load} imprime uma mensagem e erro.
 
@@ -1129,7 +1129,7 @@ Avalia express@~oes Lisp em @var{nomeficheiro}.
 a extens@~ao do ficheiro e tanto quanto o caminho como necess@'ario para achar o ficheiro.
 
 @code{loadfile} pode processar ficheiros criados por @code{save}, @code{translate_file}, e @code{compile_file}.
-O usu@'ario pode achar isso mais conveniente para usar @code{load} em lugar de @code{loadfile}.
+O utilizador pode achar isso mais conveniente para usar @code{load} em lugar de @code{loadfile}.
 
 @code{loadfile} avalia seu argumento, ent@~ao @code{nomeficheiro} deve obrigat@'oriamente ser uma sequ@^encia de caracteres literal,
 n@~ao uma vari@'avel do tipo sequ@^encia de caracteres.
@@ -1140,7 +1140,7 @@ O operador ap@'ostrofo-ap@'ostrofo @code{'@w{}'} n@~ao aceita avalia@,{c}@~ao.
 @c loadprint DOESN'T EXACTLY WORK LIKE THIS, BUT IT HARDLY SEEMS WORTH FIXING
 @c I GUESS THIS COULD BE UPDATED TO DESCRIBE THE WAY IT ACTUALLY WORKS
 @defvr {Vari@'avel de op@,{c}@~ao} loadprint
-Valor padr@~ao: @code{true}
+Valor por omiss@~ao: @code{true}
 
 @code{loadprint} diz se deve imprimir uma mensagem quando um ficheiro @'e chamado.
 
@@ -1161,7 +1161,7 @@ Quando @code{loadprint} @'e @code{false}, nunca imprime uma mensagem.
 @end defvr
 
 @defvr {Vari@'avel de op@,{c}@~ao} obase
-Valor padr@~ao: 10
+Valor por omiss@~ao: 10
 
 @code{obase} @'e a base para inteiros mostrados pelo Maxima.
 
@@ -1178,7 +1178,7 @@ Veja tamb@'em @code{ibase}.
 @end defvr
 
 @defvr {Vari@'avel de op@,{c}@~ao} outchar
-Valor padr@~ao: @code{%o}
+Valor por omiss@~ao: @code{%o}
 
 @code{outchar} @'e o prefixo dos r@'otulos de express@~oes calculadas pelo Maxima.
 Maxima automaticamente constr@'oi um r@'otulo para cada express@~ao calculada
@@ -1200,7 +1200,7 @@ Veja tamb@'em @code{labels}.
 
 @c STILL EXISTS, NEEDS CLARIFICATION !!!
 @defvr {Vari@'avel de op@,{c}@~ao} packagefile
-Valor padr@~ao: @code{false}
+Valor por omiss@~ao: @code{false}
 
 Projetistas de pacotes que usam @code{save}
 ou @code{translate} para criar pacotes (ficheiros) para outros
@@ -1208,8 +1208,8 @@ usarem podem querer escolher @code{packagefile: true} para prevenir qu informa@,
 sejam acrescentadas @`a lista de informa@,{c}@~oes do Maxima (e.g. @code{values},
 @code{fun@,{c}@~oes}) exceto onde necess@'ario quando o ficheiro @'e carregado.
 Nesse caminho, o conte@'udo do pacote n@~ao pegar@'a no
-caminho do usu@'ario quando ele adicionar seus pr@'oprios dados.  Note que isso n@~ao
-resolve o problema de poss@'{@dotless{i}}veis conflitos de nome.  Tamb@'em note que
+caminho do utilizador quando ele adicionar seus pr@'oprios dados.  Note que isso n@~ao
+resolve o problema de poss@'{@dotless{i}}veis conflictos de nome.  Tamb@'em note que
 o sinalizador simplesmente afeta o que @'e sa@'{@dotless{i}}da para o ficheiro pacote.
 Escolhendo o sinalizador para @code{true} @'e tamb@'em @'util para criar ficheiros de
 init do Maxima.
@@ -1217,7 +1217,7 @@ init do Maxima.
 @end defvr
 
 @defvr {Vari@'avel de op@,{c}@~ao} pfeformat
-Valor padr@~ao: @code{false}
+Valor por omiss@~ao: @code{false}
 
 Quando @code{pfeformat} @'e @code{true}, uma raz@~ao de inteiros @'e
 mostrada com o caractere s@'olido (barra normal),
@@ -1445,7 +1445,7 @@ Exemplo:
 @end deffn
 
 @defvr {Vari@'avel de op@,{c}@~ao} rmxchar
-Valor padr@~ao: @code{]}
+Valor por omiss@~ao: @code{]}
 
 @code{rmxchar} @'e the caractere desenhado lado direito de uma matriz.
 
@@ -1462,7 +1462,7 @@ Veja tamb@'em @code{lmxchar}.
 @deffnx {Fun@,{c}@~ao} save (@var{filename}, @var{nome_1}=@var{expr_1}, @var{nome_2}=@var{expr_2}, ...)
 
 Armazena os valores correntes de @var{nome_1}, @var{nome_2}, @var{nome_3}, ..., em @var{filename}.
-Os argumentos s@~ao os nomes das vari@'aveis, fun@,{c}@~oes, ou outros objetos.
+Os argumentos s@~ao os nomes das vari@'aveis, fun@,{c}@~oes, ou outros objectos.
 Se um nome n@~ao possui valore ou fun@,{c}@~ao associada a ele, esse nome sem nenhum valor ou fun@,{c}@~ao associado ser@'a ignorado.
 @code{save} retorna @var{filename}.
 
@@ -1479,7 +1479,7 @@ Nesse caso, @code{save} cria o ficheiro se ele n@~ao existir ainda.
 A forma especial @code{save (@var{filename}, values, functions, labels, ...)}
 armazena os @'{@dotless{i}}tens nomeados por @code{values}, @code{fun@,{c}@~oes}, @code{labels}, etc.
 Os nomes podem ser quaisquer especificados pela vari@'avel @code{infolists}.
-@code{values} compreende todas as vari@'aveis definidas pelo usu@'ario.
+@code{values} compreende todas as vari@'aveis definidas pelo utilizador.
 
 A forma especial @code{save (@var{filename}, [@var{m}, @var{n}])} armazena os valores de
 r@'otulos de entrada e sa@'{@dotless{i}}da de @var{m} at@'e @var{n}.
@@ -1500,10 +1500,10 @@ Essa forma especial e a forma geral de @code{save} podem ser misturados.
 Por exemplo, @code{save (@var{filename}, aa, bb, cc=42, fun@,{c}@~oes, [11, 17])}.
 
 A forma especial @code{save (@var{filename}, all)} armazena o estado corrente do Maxima.
-Isso inclui todas as vari@'aveis definidas pelo usu@'ario, fun@,{c}@~oes, arrays, etc., bem como
+Isso inclui todas as vari@'aveis definidas pelo utilizador, fun@,{c}@~oes, arrays, etc., bem como
 alguns @'{@dotless{i}}tens definidos automaticamente.
 Os @'{@dotless{i}}tes salvos incluem vari@'aveis de sistema,
-tais como @code{file_search_maxima} ou @code{showtime}, se a elas tiverem sido atribu@'{@dotless{i}}dos novos valores pelo usu@'ario;
+tais como @code{file_search_maxima} ou @code{showtime}, se a elas tiverem sido atribu@'{@dotless{i}}dos novos valores pelo utilizador;
 veja @code{myoptions}.
 
 @code{save} avalia seus argumentos.  
@@ -1525,10 +1525,10 @@ e vari@'aveis inteiras para seus valores inteiros, e.g., @code{m: 5$ n: 12$ save
 
 @c NEEDS MORE WORK !!!
 @defvr {Vari@'avel de op@,{c}@~ao} savedef
-Valor padr@~ao: @code{true}
+Valor por omiss@~ao: @code{true}
 
 Quando @code{savedef} @'e @code{true}, a ves@~ao Maxima de uma
-fun@,{c}@~ao de usu@'ario @'e preservada quando a fun@,{c}@~ao @'e traduzida.
+fun@,{c}@~ao de utilizador @'e preservada quando a fun@,{c}@~ao @'e traduzida.
 Isso permite que a defini@,{c}@~ao seja mostrada por @code{dispfun} e autoriza a fun@,{c}@~ao a
 ser editada.
 
@@ -1540,7 +1540,7 @@ removidos da lista de @code{fun@,{c}@~oes}.
 @c THIS FUNCTION IS IN THE SHARE PACKAGE itensor.lisp
 @c MOVE THIS DESCRIPTION TO Itensor.texi
 @deffn {Fun@,{c}@~ao} show (@var{expr})
-Mostra @code{expr} com os objetos indexados
+Mostra @code{expr} com os objectos indexados
 tendo @'{@dotless{i}}ndices covariantes como subscritos, @'{@dotless{i}}ndices contravariantes como
 sobrescritos.  Os @'{@dotless{i}}ndices derivativos s@~ao mostrados como subscritos,
 separados dos @'{@dotless{i}}ndices covariantes por uma v@'{@dotless{i}}rgula.
@@ -1555,7 +1555,7 @@ Veja tamb@'em @code{ratvars}.
 @end deffn
 
 @defvr {Vari@'avel de op@,{c}@~ao} stardisp
-Valor padr@~ao: @code{false}
+Valor por omiss@~ao: @code{false}
 
 Quando @code{stardisp} @'e @code{true}, multiplica@,{c}@~ao @'e
 mostrada com um asterisco @code{*} entre os operandos.
@@ -1575,7 +1575,7 @@ e dessa forma n@~ao pode ser usada em um c@'alculo.
 @c SHOULD BE WRITTEN WITH LEADING ? BUT THAT CONFUSES CL-INFO SO WORK AROUND
 @c @defvr {Vari@~avel de op@,{c}@~ao} stringdisp
 @defvr {Vari@~avel de op@,{c}@~ao} stringdisp
-Valor padr@~ao: @code{false}
+Valor por omiss@~ao: @code{false}
 
 Quando @code{stringdisp} for @code{true},
 sequ@^encias de caracteres ser@~ao mostradas contidas em aspas duplas.
@@ -1641,10 +1641,10 @@ A forma especial @code{stringout (@var{filename}, input)} escreve todos
 os r@'otulos de entrada para o ficheiro.
 
 A forma especial @code{stringout (@var{filename}, functions)} escreve todas
-as fun@,{c}@~oes definidas pelo usu@'ario (nomeadas pela lista global @code{functions}) para o ficheiro.
+as fun@,{c}@~oes definidas pelo utilizador (nomeadas pela lista global @code{functions}) para o ficheiro.
 
 A forma especial @code{stringout (@var{filename}, values)} escreve todas as
-vari@'aveis atribu@'{@dotless{i}}das pelo usu@'ario (nomeadas pela lista global @code{values})
+vari@'aveis atribu@'{@dotless{i}}das pelo utilizador (nomeadas pela lista global @code{values})
 para o ficheiro.  Cada vari@'avel @'e impressa como uma
 declara@,{c}@~ao de atribui@,{c}@~ao, com o nome da vari@'avel seguida de dois pontos, e seu
 valor.  Note que a forma geral de @code{stringout} n@~ao imprime 
@@ -1662,7 +1662,7 @@ Imprime uma representa@,{c}@~ao de uma express@~ao
 adequada para o sistema TeX  de prepara@,{c}@~ao de documento.
 O resultado @'e um fragmento de um documento,
 que pode ser copiado dentro de um documento maior.
-Esse fragmento n@~ao pode ser processado de forma direta e isolada.
+Esse fragmento n@~ao pode ser processado de forma directa e isolada.
 
 @code{tex (@var{expr})} imprime uma representa@,{c}@~ao TeX da @var{expr} no console.
 
@@ -1890,9 +1890,8 @@ O comando @'e passado ao shell padra@~o para execu@,{c}@~ao.
 @code{system} n@~ao @'e suportado por todos os sistemas
 operacionais, mas geralmente existe em ambientes Unix e Unix-like.
 
-Supondo que @code{_hist.out}
-@'e uma lista de frequ@^encia que voc@^e deseja imprimir como um gr@'afico em barras
-usando @code{xgraph}.  
+Supondo que @code{_hist.out} @'e uma lista de frequ@^encias que deseja
+imprimir como um gr@'afico em barras usando @code{xgraph}.
 
 @example
 (%i1) (with_stdout("_hist.out",
@@ -1911,7 +1910,7 @@ system("(xgraph -bar -brw .7 -nl < _hist.out;  rm -f _hist.out)&")
 @end deffn
 
 @defvr {Vari@'avel de op@,{c}@~ao} ttyoff
-Valor padr@~ao: @code{false}
+Valor por omiss@~ao: @code{false}
 
 Quando @code{ttyoff} @'e @code{true}, express@~oes de sa@'{@dotless{i}}da n@~ao s@~ao mostradas.
 Express@~oes de sa@'{@dotless{i}}da s@~ao ainda calculadas e atribu@'{@dotless{i}}das r@'otulos.  Veja @code{labels}.
@@ -1969,7 +1968,7 @@ Veja tamb@'em @code{writefile}.
 
 @deffn {Fun@,{c}@~ao} writefile (@var{filename})
 Come@,{c}a escrevendo uma transcri@,{c}@~ao da sess@~ao Maxima para @var{filename}.
-Toda intera@,{c}@~ao entre o usu@'ario e Maxima @'e ent@~ao gravada nesse ficheiro,
+Toda intera@,{c}@~ao entre o utilizador e Maxima @'e ent@~ao gravada nesse ficheiro,
 @c FOLLOWING CLAIM PROBABLY NEEDS TO BE QUALIFIED
 da mesma forma que aparece no console.
 

@@ -13,7 +13,7 @@
 @c WHEN [plot_format, openmath] IS SET.
 @c NOT CONVINCED WE REALLY WANT TO DOCUMENT THIS VARIABLE
 @defvr {Vari@'avel} in_netmath
-Valor padr@~ao: @code{false}
+Valor por omiss@~ao: @code{false}
 
 Quando @code{in_netmath} @'e @code{true}, @code{plot3d} imprime uma
 sa@'{@dotless{i}}da OpenMath para a consola se @code{plot_format} @'e
@@ -385,7 +385,7 @@ ser@'a usado por @code{plot2d} e @code{plot3d}.
 
 @itemize @bullet
 @item
-Valor padr@~ao: @code{gnuplot}
+Valor por omiss@~ao: @code{gnuplot}
 O padr@~ao @'e Gnuplot, o pacote gr@'afico mais avan@,{c}ado. Ser@'a
 preciso que o pacote externo gnuplot esteja instalado.
 @item
@@ -415,7 +415,7 @@ visualizador apropriado para o formato do gr@'afico.
 @itemize @bullet
 @item
 @c DOES FALSE IMPLY THE OUTPUT FILE IS GENERATED AND NOT SHOWN ?? OR IS NOTHING GENERATED ??
-Valor padr@~ao: @code{true}, executa-se o programa visualizador.
+Valor por omiss@~ao: @code{true}, executa-se o programa visualizador.
 @item
 Valor: @code{false}, n@~ao se executa o programa visualizador.
 @end itemize
@@ -424,7 +424,7 @@ Valor: @code{false}, n@~ao se executa o programa visualizador.
 @code{gnuplot_term} Define o tipo terminal de sa@'{@dotless{i}}da para gnuplot.
 @itemize @bullet
 @item
-Valor padr@~ao: @code{default} A sa@'{@dotless{i}}da do Gnuplot @'e
+Valor por omiss@~ao: @code{default} A sa@'{@dotless{i}}da do Gnuplot @'e
 mostrada em uma janela gr@'afica separada.
 
 @item
@@ -461,7 +461,7 @@ Op@,{c}@~ao: @code{gnuplot_out_file} Grava o gr@'afico criado por gnuplot para u
 
 @itemize @bullet
 @item
-Valor padr@~ao: @code{false} Nenhum ficheiro de sa@'{@dotless{i}}da especificado.
+Valor por omiss@~ao: @code{false} Nenhum ficheiro de sa@'{@dotless{i}}da especificado.
 @item
 Valor: @var{filename}
 Exemplo: @code{[gnuplot_out_file, "myplot.ps"]}

@@ -20,8 +20,8 @@ Para disponibilizar @code{stringproc.lisp} para uso digite @code{load("stringpro
 No Maxima uma sequ@^encia de caracteres @'e facilmente contru@'{@dotless{i}}da digitando "texto" (qualquer texto desejado entre aspas duplas).
 Note que sequ@^encias de caracteres do Maxima n@~ao s@~ao sequ@^encias de caracteres do Lisp e vice-versa.
 Testes podem ser conclu@'{@dotless{i}}dos com @code{stringp} e @code{lstringp}.
-Se por alguma raz@~ao voce tiver um valor,
-que @'e uma sequ@^encia de caracteres do Lisp, talvez quando estiver usando a fun@,{c}@~ao @code{sconcat} do Maxima, voc@^e pode converter via @code{sunlisp}. 
+Se por alguma raz@~ao tiver um valor,
+que @'e uma sequ@^encia de caracteres do Lisp, talvez quando estiver usando a fun@,{c}@~ao @code{sconcat} do Maxima, poder@'a converter via @code{sunlisp}. 
 
 
 @c ===beg===
@@ -72,24 +72,29 @@ Testes podem ser realizados com @code{charp} ( @code{lcharp} e convers@~oes do L
 (%o5)                         true
 @end example
 
-Novamente, todas as fun@,{c}@~oes em @code{stringproc.lisp}, que retornam caracteres, retornam caracteres do Maxima.
-devido a esse fato, que os caracteres introduzidos s@~ao sequ@^encias de caracteres comprimento 1,
-voc@^e pode usar muitas das fun@,{c}@~oes de sequ@^encia de caracteres tamb@'em para caracteres.
-Como visto, @code{supcase} @'e um exemplo.
+Novamente, todas as fun@,{c}@~oes em @code{stringproc.lisp}, que
+retornam caracteres, retornam caracteres do Maxima.  devido a esse
+facto, que os caracteres introduzidos s@~ao sequ@^encias de caracteres
+de comprimento 1, pode usar muitas das fun@,{c}@~oes de sequ@^encia de
+caracteres tamb@'em para caracteres. Como visto, @code{supcase} @'e um
+exemplo.
 
 @'E importante saber,
 que o primeiro caractere em uma sequ@^encia de caracteres do Maxima @'est@'a na posi@,{c}@~ao 1.
-Isso @'e designado devido ao fato de o primeiro elemento em uma lista do Maxima est@'a na posi@,{c}@~ao 1 tamb@'em.
+Isso @'e designado devido ao facto de o primeiro elemento em uma lista do Maxima est@'a na posi@,{c}@~ao 1 tamb@'em.
 Veja defini@,{c}@~oes de @code{charat} e de @code{charlist} para obter exemplos.
 
-Em aplica@,{c}@~oes fn@,{c}@~oes de sequ@^encia de caractere s@~ao muitas vezes usadas quando estamos trabalhando com ficheiros.
-Voc@^e encontrar@'a algumas @'uteis fun@,{c}@~oes de fluxo e fun@,{c}@~oes de impress@~oes em @code{stringproc.lisp}.
-O seguinte exemplo mostra algumas das fun@,{c}@~oes aqui introduzidas no trabalho.
+Em aplica@,{c}@~oes fn@,{c}@~oes de sequ@^encia de caractere s@~ao
+muitas vezes usadas quando estamos trabalhando com ficheiros.  Poder@'a
+encontrar@'a algumas fun@,{c}@~oes @'uteis de fluxo e de impress@~ao em
+@code{stringproc.lisp}.  O seguinte exemplo mostra algumas das
+fun@,{c}@~oes aqui introduzidas no trabalho.
 
 Exemplo: 
 
-@code{openw} retorna um fluxo de sa@'{@dotless{i}}da para um ficheiro, @code{printf} ent@~ao permite escrita formatada 
-para esse ficheiro. Veja @code{printf} para detalhes.
+@code{openw} retorna um fluxo de sa@'{@dotless{i}}da para um ficheiro,
+@code{printf} ent@~ao permite escrita formatada para esse ficheiro. Veja
+@code{printf} para detalhes.
 
 @example
 (%i1) load("stringproc")$
@@ -104,9 +109,11 @@ para esse ficheiro. Veja @code{printf} para detalhes.
 (%o5)                                true
 @end example
 
-Ap@'os fechar o fluxo voc@^e pode abr@'{@dotless{i}}-lo novamente, dessa vez com dire@,{c}@~ao de entrada. 
-@code{readline} retorna a linha completa como uma sequ@^encia de caracteres. O pacote @code{stringproc} 
-agora oferece muitas fun@,{c}@~oes para manipula@,{c}@~ao de sequ@^encias de caracteres. A troca de indica@,{c}@~oes/fichas pode ser realizada por 
+Ap@'os fechar o fluxo pode abr@'{@dotless{i}}-lo novamente, dessa vez
+com dire@,{c}@~ao de entrada.  @code{readline} retorna a linha completa
+como uma sequ@^encia de caracteres. O pacote @code{stringproc} agora
+oferece muitas fun@,{c}@~oes para manipula@,{c}@~ao de sequ@^encias de
+caracteres. A troca de indica@,{c}@~oes/fichas pode ser realizada por
 @code{split} ou por @code{tokens}.
 
 @example
@@ -197,7 +204,7 @@ o primeiro elemento em @var{fluxo} est@'a na posi@,{c}@~ao 1.
 @deffn {Fun@,{c}@~ao} freshline () 
 @deffnx {Fun@,{c}@~ao} freshline (@var{fluxo}) 
 escreve uma nova linha (em @var{fluxo}),
-se a posi@,{c}@~ao atual n@~ao for um in@'{@dotless{i}}cio de linha.
+se a posi@,{c}@~ao actual n@~ao for um in@'{@dotless{i}}cio de linha.
 Veja tamb@'em @code{newline}.
 @end deffn
 
@@ -261,16 +268,18 @@ Veja um refer@^encia de Lisp para maiores informa@,{c}@~oes.
    ~~       ~
    ~<       justifica@,{c}@~ao de texto, ~> terminador de justifica@,{c}@~ao de texto
    ~(       convers@~ao de caixa alta/baixa, ~) terminador de convers@~ao de caixa
-   ~[       sele@,{c}@~ao, ~] terminador de sele@,{c}@~ao 
+   ~[       selec@,{c}@~ao, ~] terminador de selec@,{c}@~ao 
    ~@{       itera@,{c}@~ao, ~@} terminador de itera@,{c}@~ao
 @end example
 
-Por favor note que n@~ao existe especificador de formato para grandes n@'umeros em ponto flutuante. Todavia grandes n@'umeros em ponto flutuante podem 
-simplesmente serem mostrados por meio da diretiva @code{~a}. 
-@code{~s} mostra a sequ@^encias de caracteres entre "aspas duplas", voc@^e pode evitar isso usando @code{~a}.
-Note que a diretiva de sele@,{c}@~ao @code{~[} @'e indexada em zero.
-Tamb@'em note que existem algumas diretivas, que n@~ao trabalham no Maxima.
-Por exemplo, @code{~:[} falha.
+Por favor note que n@~ao existe especificador de formato para grandes
+n@'umeros em ponto flutuante. Todavia grandes n@'umeros em ponto
+flutuante podem simplesmente serem mostrados por meio da directiva
+@code{~a}.  @code{~s} mostra as sequ@^encias de caracteres entre "aspas
+duplas"; pode evitar isso usando @code{~a}.  Note que a directiva de
+selec@,{c}@~ao @code{~[} @'e indexada em zero.  Tamb@'em note que existem
+algumas directivas, que n@~ao trabalham no Maxima.  Por exemplo,
+@code{~:[} falha.
 
 @c ===beg===
 @c load("stringproc")$
@@ -310,10 +319,12 @@ Retorna uma sequ@^encia de caracteres contendo os caracteres a partir da posi@,{
 @end deffn
 
 @deffn {Fun@,{c}@~ao} sprint (@var{expr_1}, ..., @var{expr_n})
-Avalia e mostra seus argumentos um ap@'os o outro `sobre uma linha' iniciando na posi@,{c}@~ao mais @`a esquerda.
-Os n@'umeros s@~ao mostrados com o '-' @`a direita do n@'umero,
-e isso desconsidera o comprimento da linha. @code{newline()}, que pode ser chamada a partir de @code{stringproc.lisp} 
-pode ser @'util, se voc@^e desejar colocar uma parada de linha intermedi@'aria.
+Avalia e mostra seus argumentos um ap@'os o outro `sobre uma linha'
+iniciando na posi@,{c}@~ao mais @`a esquerda.  Os n@'umeros s@~ao
+mostrados com o '-' @`a direita do n@'umero, e isso desconsidera o
+comprimento da linha. @code{newline()}, que pode ser chamada a partir de
+@code{stringproc.lisp} pode ser @'util, se desejar colocar uma parada de
+linha intermedi@'aria.
 
 @c ===beg===
 @c for n:0 thru 22 do sprint( fib(n) )$
@@ -429,8 +440,8 @@ d e f g h i j k l m n o p q r s t u v w x y z @{ | @} ~
 @end deffn
 
 @deffn {Fun@,{c}@~ao} cunlisp (@var{lisp_char}) 
-Converte um caractere do Lisp em um caractere do Maxima.
-(Voc@^e pode n@~ao precisar dessa fun@,{c}@~ao.)
+Converte um caractere do Lisp em um caractere do Maxima.  (@'E
+poss@'{@dotless{i}}vel que n@~ao chegue a precisar dessa fun@,{c}@~ao.)
 
 @end deffn
 
@@ -441,7 +452,7 @@ Retorna @code{true} se @var{caractere} for um d@'{@dotless{i}}gito (algarismo de
 
 @deffn {Fun@,{c}@~ao} lcharp (@var{obj}) 
 Retorna @code{true} se @var{obj} for um caractere do Lisp.
-(Voc@^e pode n@~ao precisar dessa fun@,{c}@~ao.)
+(Pode n@~ao precisar dessa fun@,{c}@~ao.)
 
 @end deffn
 
@@ -475,13 +486,13 @@ Retorna @code{true} se @var{caractere} for um caractere em caixa alta.
 
 @deffn {Fun@,{c}@~ao} sunlisp (@var{lisp_string}) 
 Converte uma sequ@^encia de caracteres do Lisp em uma sequ@^encia de caracteres do Maxima.
-(Em geral voc@^e pode n@~ao precisar dessa fun@,{c}@~ao.)
+(Em geral, pode n@~ao chegar a precisar dessa fun@,{c}@~ao.)
 
 @end deffn
 
 @deffn {Fun@,{c}@~ao} lstringp (@var{obj}) 
 Retorna @code{true} se @var{obj} is uma sequ@^encia de caracteres do Lisp.
-(Em geral voc@^e pode n@~ao precisar dessa fun@,{c}@~ao.)
+(Em geral, pode n@~ao chegar a precisar dessa fun@,{c}@~ao.)
 
 @end deffn
 
@@ -542,8 +553,8 @@ espa@,{c}o, v@'{@dotless{i}}rgula, ponto e v@'{@dotless{i}}rgula, tabula@,{c}@~a
 (%o2)                         2.468
 @end example
 
-Para analizar voc@^e pode tamb@'em usar  a fun@,{c}@~ao @code{parse_string}.
-Veja a descri@,{c}@~ao no ficheiro 'share\contrib\eval_string.lisp'. 
+Para analizar, pode tamb@'em usar a fun@,{c}@~ao @code{parse_string}.
+Veja a descri@,{c}@~ao no ficheiro 'share\contrib\eval_string.lisp'.
 
 @end deffn
 

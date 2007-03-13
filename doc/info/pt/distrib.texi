@@ -160,7 +160,7 @@ E o @var{coeficiente de curtose} mede o grau de achatamento de uma distribui@,{c
 $$KU\left[X\right]={{\int_{ -\infty }^{\infty }{f\left(x\right)\,
  \left(x-E\left[X\right]\right)^4\;dx}}\over{D\left[X\right]^4}}-3$$
 @end tex
-Se @math{X} for gaussiana, @math{KU[X]=0}. De fato, ambos assimetria e curtose s@~ao
+Se @math{X} for gaussiana, @math{KU[X]=0}. De facto, ambos assimetria e curtose s@~ao
 par@^ametros de ajuste usados para medir a n@~ao gaussianidade de uma distribui@,{c}@~ao.
 
 Se a vari@'avel aleat@'oria @math{X} for discreta, a fun@,{c}@~ao densidade
@@ -319,7 +319,7 @@ respectively.
 O Pacote @code{distrib} inclui fun@,{c}@~oes para simula@,{c}@~ao de
 vari@'aveis estat@'{@dotless{i}}sticas pseudo-aleat@'orias. Algumas dessas fun@,{c}@~oes
 fazem uso de vari@'aveis opcionais que indicam o algor@'{@dotless{i}}tmo a ser usado.
-O m@'etodo inverso gen@'erico (baseado no fato que se
+O m@'etodo inverso gen@'erico (baseado no facto que se
 @var{u} for um n@'umero aleat@'orio uniforme no intervalo @math{(0,1)},
 ent@~ao @var{F^(-1)(u)} @'e uma vari@'avel estat@'{@dotless{i}}stica pseudo-aleat@'oria
 com distribui@,{c}@~ao @math{F}) est@'a implementada para a maioria dos casos;
@@ -493,9 +493,9 @@ escreva primeiramente @code{load(distrib)}.
 
 
 @defvr {Vari@'avel de op@,{c}@~ao} random_normal_algorithm
-Valor padr@~ao: @code{box_mueller}
+Valor por omiss@~ao: @code{box_mueller}
 
-Esse @'e o algor@'{@dotless{i}}tmo selecionado para simular vari@'aveis aleat@'orias normais.
+Esse @'e o algor@'{@dotless{i}}tmo seleccionado para simular vari@'aveis aleat@'orias normais.
 O algor@'{@dotless{i}}tmos implementados s@~ao @code{box_mueller} e @code{inverse}:
 @itemize @bullet
 @item
@@ -517,7 +517,7 @@ com @math{s>0}. Chamando @code{random_normal} com um terceiro argumento
 @var{n}, uma amostra aleat@'oria de tamanho @var{n} ser@'a simulada.
 
 Existem dois algor@'{@dotless{i}}tmos implementados para essa fun@,{c}@~ao, e o algor@'{@dotless{i}}tmo
-a ser usado pode ser selecionado fornecendo um certo valor para a vari@'avel global
+a ser usado pode ser seleccionado fornecendo um certo valor para a vari@'avel global
 @code{random_normal_algorithm}, cujo valor padr@~ao @'e
 @code{box_mueller}.
 
@@ -613,9 +613,9 @@ com @math{n>4}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{l
 
 
 @defvr {Vari@'avel de op@,{c}@~ao} random_student_t_algorithm
-Valor padr@~ao: @code{ratio}
+Valor por omiss@~ao: @code{ratio}
 
-Esse @'e o  algor@'{@dotless{i}}tmo selecionado para simular vari@'aveis estat@'{@dotless{i}}sticas pseudo-aleat@'orias
+Esse @'e o  algor@'{@dotless{i}}tmo seleccionado para simular vari@'aveis estat@'{@dotless{i}}sticas pseudo-aleat@'orias
 de Student. Algor@'{@dotless{i}}tmos implementados s@~ao @code{inverse} e @code{ratio}:
 @itemize @bullet
 @item
@@ -623,7 +623,7 @@ de Student. Algor@'{@dotless{i}}tmos implementados s@~ao @code{inverse} e @code{
 
 
 @item
-@code{ratio}, baseado no fato que se @var{Z} for uma vari@'avel aleat@'oria normal @math{N(0,1)} e
+@code{ratio}, baseado no facto que se @var{Z} for uma vari@'avel aleat@'oria normal @math{N(0,1)} e
 @math{S^2} for uma vari@'avel aleat@'oria chi quadrada com @var{n} graus de liberdade,
 @math{Chi^2(n)}, ent@~ao
 @ifhtml
@@ -663,7 +663,7 @@ com @math{n>0}. Chamando @code{random_student_t} com um segundo argumento
 @var{m}, uma amostra aleat@'oria de tamanho @var{m} ser@'a simulada.
 
 Existem dois algor@'{@dotless{i}}tmos implementados para essa fun@,{c}@~ao, se pode
-selecionar o algor@'{@dotless{i}}tmo a ser usado fornecendo um certo valor @`a vari@'avel
+seleccionar o algor@'{@dotless{i}}tmo a ser usado fornecendo um certo valor @`a vari@'avel
 global @code{random_student_t_algorithm}, cujo valor padr@~ao @'e @code{ratio}.
 
 Veja tamb@'em @code{random_student_t_algorithm}. Para fazer uso dessa
@@ -891,9 +891,9 @@ uma forma nominal baseada no coeficiente de curtose da fun@,{c}@~ao gama @'e ret
 
 
 @defvr {Vari@'avel de op@,{c}@~ao} random_chi2_algorithm
-Valor padr@~ao: @code{ahrens_cheng}
+Valor por omiss@~ao: @code{ahrens_cheng}
 
-Esse @'e o algor@'{@dotless{i}}tmo selecionado para simular vari@'aveis estat@'{@dotless{i}}stica pseudo-aleat@'orias
+Esse @'e o algor@'{@dotless{i}}tmo seleccionado para simular vari@'aveis estat@'{@dotless{i}}stica pseudo-aleat@'orias
 Chi-quadradas. Os algor@'{@dotless{i}}tmos implementados s@~ao @code{ahrens_cheng} e @code{inverse}:
 @itemize @bullet
 
@@ -916,7 +916,7 @@ Retorna uma vari@'avel estat@'{@dotless{i}}stica pseudo-aleat@'oria Chi-square @
 com @math{n>0}. Chamando @code{random_chi2} com um segundo argumento @var{m},
 uma amostra aleat@'oria de tamanho @var{m} ser@'a simulada.
 
-Existem dois algor@'{@dotless{i}}tmos implementados para essa fun@,{c}@~ao, se pode selecionar o
+Existem dois algor@'{@dotless{i}}tmos implementados para essa fun@,{c}@~ao, se pode seleccionar o
 algor@'{@dotless{i}}tmo a ser usado fornecendo um certo valor @`a vari@'avel global
 @code{random_chi2_algorithm}, cujo valor padr@~ao @'e
 @code{ahrens_cheng}.
@@ -1016,15 +1016,15 @@ primeiramente @code{load(distrib)}.
 
 
 @defvr {Vari@'avel de op@,{c}@~ao} random_f_algorithm
-Valor padr@~ao: @code{inverse}
+Valor por omiss@~ao: @code{inverse}
 
-Esse @'e o algor@'{@dotless{i}}tmo selecionado para simular vari@'aveis estat@'{@dotless{i}}sticas
+Esse @'e o algor@'{@dotless{i}}tmo seleccionado para simular vari@'aveis estat@'{@dotless{i}}sticas
 pseudo-aleat@'orias F. Os algor@'{@dotless{i}}tmos implementados s@~ao @code{ratio}
 e @code{inverse}:
 @itemize @bullet
 
 @item
-@code{ratio}, baseado no fato de que se @var{X} for uma vari@'avel aleat@'oria
+@code{ratio}, baseado no facto de que se @var{X} for uma vari@'avel aleat@'oria
 @math{Chi^2(m)} e @math{Y} for uma vari@'avel aleat@'oria @math{Chi^2(n)},
 ent@~ao
 @ifhtml
@@ -1061,7 +1061,7 @@ Retorna uma vari@'avel estat@'{@dotless{i}}stica pseudo-aleat@'oria F, @math{F(m
 com @math{m,n>0}. Chamando @code{random_f} com um terceiro argumento
 @var{k}, uma amostra aleat@'oria de tamanho @var{k} ser@'a simulada.
 
-Existem dois algor@'{@dotless{i}}tmos implementados para essa fun@,{c}@~ao, se pode selecionar
+Existem dois algor@'{@dotless{i}}tmos implementados para essa fun@,{c}@~ao, se pode seleccionar
 o algor@'{@dotless{i}}tmo a ser usado fornecendo um certo valor @`a vari@'avel global
 @code{random_f_algorithm}, cujo valor padr@~ao @'e @code{inverse}.
 
@@ -1284,9 +1284,9 @@ baseada no coeficiente de curtose de Weibull @'e retornada.
 
 
 @defvr {Vari@'avel de op@,{c}@~ao} random_exp_algorithm
-Valor padr@~ao: @code{inverse}
+Valor por omiss@~ao: @code{inverse}
 
-Esse @'e o algor@'{@dotless{i}}tmo selecionado para simular vari@'aveis exponenciais estat@'{@dotless{i}}stica
+Esse @'e o algor@'{@dotless{i}}tmo seleccionado para simular vari@'aveis exponenciais estat@'{@dotless{i}}stica
 pseudo-aleat@'orias. Os algor@'{@dotless{i}}tmos implementados s@~ao @code{inverse},
 @code{ahrens_cheng} e @code{ahrens_dieter}
 @itemize @bullet
@@ -1295,7 +1295,7 @@ pseudo-aleat@'orias. Os algor@'{@dotless{i}}tmos implementados s@~ao @code{inver
 @code{inverse}, baseado no m@'etodo inverso gen@'erico.
 
 @item
-@code{ahrens_cheng}, baseado no fato de que a vari@'avel aleat@'oria @math{Exp(m)}
+@code{ahrens_cheng}, baseado no facto de que a vari@'avel aleat@'oria @math{Exp(m)}
 @'e equivalente a @math{Gamma(1,1/m)}. Veja @code{random_gamma_algorithm}
 para maiores detalhes.
 
@@ -1317,7 +1317,7 @@ com @math{m>0}. Chamando @code{random_exp} com um segundo argumento
 @var{k}, uma amostra aleat@'oria de tamanho @var{k} ser@'a simulada.
 
 Existem tr@^es algor@'{@dotless{i}}tmos implementados para essa fun@,{c}@~ao, se pode
-selecionar o algor@'{@dotless{i}}tmo a ser usado fornecendo um certo valor @`a vari@'avel global
+seleccionar o algor@'{@dotless{i}}tmo a ser usado fornecendo um certo valor @`a vari@'avel global
 @code{random_exp_algorithm}, cujo valor padr@~ao @'e @code{inverse}.
 
 Veja tamb@'em @code{random_exp_algorithm}. Para fazer uso dessa fun@,{c}@~ao,
@@ -1404,7 +1404,7 @@ com @math{s>0}. Chamando @code{random_lognormal} com um terceiro argumento
 
 Vari@'aveis Log-normal s@~ao simuladas por meio de vari@'aveis estat@'{@dotless{i}}sticas normais
 pseudo-aleat@'orias. Existem dois algor@'{@dotless{i}}tmos implementados para essa fun@,{c}@~ao, se
-pode selecionar o algor@'{@dotless{i}}tmo a ser usado fornecendo um certo valor
+pode seleccionar o algor@'{@dotless{i}}tmo a ser usado fornecendo um certo valor
 @`a vari@'avel global
 @code{random_normal_algorithm}, cujo valor padr@~ao @'e @code{box_mueller}.
 
@@ -1483,9 +1483,9 @@ com @math{a,b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code
 
 
 @defvr {Vari@'avel de op@,{c}@~ao} random_gamma_algorithm
-Valor padr@~ao: @code{ahrens_cheng}
+Valor por omiss@~ao: @code{ahrens_cheng}
 
-Esse @'e o algor@'{@dotless{i}}tmo selecionado para simular vari@'aveis estat@'{@dotless{i}}stica gama
+Esse @'e o algor@'{@dotless{i}}tmo seleccionado para simular vari@'aveis estat@'{@dotless{i}}stica gama
 pseudo-aleat@'orias. Os algor@'{@dotless{i}}tmos implementados s@~ao @code{ahrens_cheng}
 e @code{inverse}
 @itemize @bullet
@@ -1515,7 +1515,7 @@ Retorna uma vari@'avel estat@'{@dotless{i}}stica pseudo-aleat@'oria @math{Gamma(
 com @math{a,b>0}. Chamando @code{random_gamma} com um terceiro argumento
 @var{n}, uma amostra aleat@'oria de tamanho @var{n} ser@'a simulada.
 
-Existem dois algor@'{@dotless{i}}tmos implementados para essa fun@,{c}@~ao, se pode selecionar
+Existem dois algor@'{@dotless{i}}tmos implementados para essa fun@,{c}@~ao, se pode seleccionar
 o algor@'{@dotless{i}}tmo a ser usado fornecendo um certo valor @`a vari@'avel global @code{random_gamma_algorithm}, cujo valor padr@~ao @'e
 @code{ahrens_cheng}.
 
@@ -1598,9 +1598,9 @@ com @math{a,b>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code
 
 
 @defvr {Vari@'avel de op@,{c}@~ao} random_beta_algorithm
-Valor padr@~ao: @code{cheng}
+Valor por omiss@~ao: @code{cheng}
 
-Esse @'e o algor@'{@dotless{i}}tmo selecionado para simular vari@'aveis estat@'{@dotless{i}}sticas beta
+Esse @'e o algor@'{@dotless{i}}tmo seleccionado para simular vari@'aveis estat@'{@dotless{i}}sticas beta
 pseudo-aleat@'orias. Os algor@'{@dotless{i}}tmos implementados s@~ao @code{cheng},
 @code{inverse} e @code{ratio}
 @itemize @bullet
@@ -1614,7 +1614,7 @@ Communications of the ACM, 21:317-322
 @code{inverse}, baseado no m@'etodo inverso gen@'erico.
 
 @item
-@code{ratio}, baseado no fato de que se @var{X} for uma vari@'avel aleat@'oria
+@code{ratio}, baseado no facto de que se @var{X} for uma vari@'avel aleat@'oria
 @math{Gamma(a,1)} e @var{Y} for @math{Gamma(b,1)}, ent@~ao a raz@~ao @math{X/(X+Y)}
 est@'a distribu@'{@dotless{i}}da como @math{Beta(a,b)}.
 
@@ -1630,7 +1630,7 @@ Retorna uma vari@'avel estat@'{@dotless{i}}stica pseudo-aleat@'oria @math{Beta(a
 com @math{a,b>0}. Chamando @code{random_beta} com um terceiro argumento @var{n},
 uma amostra aleat@'oria de tamanho @var{n} ser@'a simulada.
 
-Existem tr@^es algor@'{@dotless{i}}tmos implementados para essa fun@,{c}@~ao, se pode selecionar
+Existem tr@^es algor@'{@dotless{i}}tmos implementados para essa fun@,{c}@~ao, se pode seleccionar
 o algor@'{@dotless{i}}tmo a ser usado fornecendo um certo valor @`a vari@'avel global
 @code{random_beta_algorithm}, cujo valor padr@~ao @'e @code{cheng}.
 
@@ -1700,7 +1700,7 @@ Retorna uma vari@'avel estat@'{@dotless{i}}stica pseudo-aleat@'oria @math{Contin
 com @math{a<b}. Chamando @code{random_continuous_uniform} com um terceiro
 argumento @var{n}, uma amostra aleat@'oria de tamanho @var{n} ser@'a simulada.
 
-Essa @'e uma aplica@,{c}@~ao direta da fun@,{c}@~ao @code{random} interna do Maxima.
+Essa @'e uma aplica@,{c}@~ao directa da fun@,{c}@~ao @code{random} interna do Maxima.
 
 Veja tamb@'em @code{random}. Para fazer uso dessa fun@,{c}@~ao, escreva
 primeiramente @code{load(distrib)}.
@@ -2421,9 +2421,9 @@ escreva primeiramente @code{load(distrib)}.
 
 
 @defvr {Vari@'avel de op@,{c}@~ao} random_binomial_algorithm
-Valor padr@~ao: @code{kachit}
+Valor por omiss@~ao: @code{kachit}
 
-Esse @'e o algor@'{@dotless{i}}tmo selecionado para simular rvari@'aveis estat@'{@dotless{i}}sticas pseudo-aleat@'orias
+Esse @'e o algor@'{@dotless{i}}tmo seleccionado para simular rvari@'aveis estat@'{@dotless{i}}sticas pseudo-aleat@'orias
 binomiais. Os algor@'{@dotless{i}}tmos implementados s@~ao @code{kachit}, @code{bernoulli} e @code{inverse}:
 @itemize @bullet
 
@@ -2451,7 +2451,7 @@ com um terceiro argumento @var{m}, uma amostra aleat@'oria de tamanho @var{m} se
 simulada.
 
 Existem tr@^es algor@'{@dotless{i}}tmos implementado para essa fun@,{c}@~ao, se pode
-selecionar o algor@'{@dotless{i}}tmo a ser usado fornecendo um certo valor @`a vari@'avel
+seleccionar o algor@'{@dotless{i}}tmo a ser usado fornecendo um certo valor @`a vari@'avel
 global @code{random_binomial_algorithm}, cujo valor padr@~ao @'e @code{kachit}.
 
 Veja tamb@'em @code{random_binomial_algorithm}. Para fazer uso dessa
@@ -2530,9 +2530,9 @@ com @math{m>0}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code{l
 
 
 @defvr {Vari@'avel de op@,{c}@~ao} random_poisson_algorithm
-Valor padr@~ao: @code{ahrens_dieter}
+Valor por omiss@~ao: @code{ahrens_dieter}
 
-Esse @'e o algor@'{@dotless{i}}tmo selecionado para simular vari@'aveis estat@'{@dotless{i}}sticas
+Esse @'e o algor@'{@dotless{i}}tmo seleccionado para simular vari@'aveis estat@'{@dotless{i}}sticas
 pseudo-aleat@'orias de Poisson.Os algor@'{@dotless{i}}tmos implementados s@~ao @code{ahrens_dieter} e @code{inverse}:
 @itemize @bullet
 
@@ -2556,7 +2556,7 @@ Retorna uma vari@'avel estat@'{@dotless{i}}stica pseudo-aleat@'oria @math{Poisso
 Chamando @code{random_poisson} com um segundo argumento @var{n}, uma amostra
 aleat@'oria de tamanho @var{n} ser@'a simulada.
 
-Existem dois algor@'{@dotless{i}}tmos implementado para essa fun@,{c}@~ao, se pode selecionar o
+Existem dois algor@'{@dotless{i}}tmos implementado para essa fun@,{c}@~ao, se pode seleccionar o
 algor@'{@dotless{i}}tmo a ser usado fornecendo um certo valor @`a vari@'avel global 
 @code{random_poisson_algorithm}, cujo valor padr@~ao @'e
 @code{ahrens_dieter}.
@@ -2726,7 +2726,7 @@ Retorna uma vari@'avel estat@'{@dotless{i}}stica pseudo-aleat@'oria @math{Bernou
 com @math{0<p<1}. Chamando @code{random_bernoulli} com um segundo
 argumento @var{n}, uma amostra aleat@'oria de tamanho @var{n} ser@'a simulada.
 
-Essa @'e uma aplica@,{c}@~ao direta da fun@,{c}@~ao @code{random} built-in fun@,{c}@~ao do Maxima.
+Essa @'e uma aplica@,{c}@~ao directa da fun@,{c}@~ao @code{random} built-in fun@,{c}@~ao do Maxima.
 
 Veja tamb@'em @code{random}. Para fazer uso dessa fun@,{c}@~ao, escreva
 primeiramente @code{load(distrib)}.
@@ -2786,9 +2786,9 @@ com @math{0<p<1}. Para fazer uso dessa fun@,{c}@~ao, escreva primeiramente @code
 
 
 @defvr {Vari@'avel de op@,{c}@~ao} random_geometric_algorithm
-Valor padr@~ao: @code{bernoulli}
+Valor por omiss@~ao: @code{bernoulli}
 
-Esse @'e o algor@'{@dotless{i}}tmo selecionado para simular vari@'aveis estat@'{@dotless{i}}sticas pseudo-aleat@'orias
+Esse @'e o algor@'{@dotless{i}}tmo seleccionado para simular vari@'aveis estat@'{@dotless{i}}sticas pseudo-aleat@'orias
 geom@'etricas. Algor@'{@dotless{i}}tmos implementados s@~ao @code{bernoulli}, @code{devroye} e @code{inverse}:
 @itemize @bullet
 
@@ -2815,7 +2815,7 @@ Chamando @code{random_geometric} com um segundo argumento @var{n}, uma amostra a
 de tamanho @var{n} ser@'a simulada.
 
 Existem tr@^es algor@'{@dotless{i}}tmos implementados para essa fun@,{c}@~ao, se
-pode selecionar o algor@'{@dotless{i}}tmo a ser usado fornecendo um certo valor @`a
+pode seleccionar o algor@'{@dotless{i}}tmo a ser usado fornecendo um certo valor @`a
 vari@'avel global @code{random_geometric_algorithm}, cujo valor padr@~ao @'e
 @code{bernoulli}.
 
@@ -2891,7 +2891,7 @@ com @math{n} um inteiro estritamente positivo. Chamando @code{random_discrete_un
 com um segundo argumento @var{m}, uma amostra aleat@'oria de
 tamanho @var{m} ser@'a simulada.
 
-Isso @'e uma aplica@,{c}@~ao direta da fun@,{c}@~ao @code{random} built-in fun@,{c}@~ao do Maxima.
+Isso @'e uma aplica@,{c}@~ao directa da fun@,{c}@~ao @code{random} built-in fun@,{c}@~ao do Maxima.
 
 Veja tamb@'em @code{random}. Para fazer uso dessa fun@,{c}@~ao, escreva
 primeiramente @code{load(distrib)}.
@@ -2960,9 +2960,9 @@ dessa fun@,{c}@~ao, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 @defvr {Vari@'avel de op@,{c}@~ao} random_hypergeometric_algorithm
-Valor padr@~ao: @code{kachit}
+Valor por omiss@~ao: @code{kachit}
 
-Esse @'e o algor@'{@dotless{i}}tmo selecionado para simular vari@'aveis estat@'{@dotless{i}}sticas pseudo
+Esse @'e o algor@'{@dotless{i}}tmo seleccionado para simular vari@'aveis estat@'{@dotless{i}}sticas pseudo
 aleat@'orias hipergeom@'etricas.Os algor@'{@dotless{i}}tmos implementados s@~ao @code{kachit} e @code{inverse}:
 @itemize @bullet
 
@@ -2987,7 +2987,7 @@ com @var{n1}, @var{n2} e @var{n} inteiros n@~ao negativos e @math{n<=n1+n2}. Cha
 @code{random_hypergeometric} com um quarto argumento @var{m}, uma amostra
 aleat@'oria de tamanho @var{m} ser@'a simulada.
 
-Existem dois algor@'{@dotless{i}}tmos implementados para essa fun@,{c}@~ao, se pode selecionar o
+Existem dois algor@'{@dotless{i}}tmos implementados para essa fun@,{c}@~ao, se pode seleccionar o
 algor@'{@dotless{i}}tmo a ser usado fornecendo um certo valor @`a vari@'avel global @code{random_hypergeometric_algorithm},
 cujo valor padr@~ao @'e @code{kachit}.
 
@@ -3072,9 +3072,9 @@ primeiramente @code{load(distrib)}.
 
 
 @defvr {Vari@'avel de op@,{c}@~ao} random_negative_binomial_algorithm
-Valor padr@~ao: @code{bernoulli}
+Valor por omiss@~ao: @code{bernoulli}
 
-Esse @'e o algor@'{@dotless{i}}tmo selecionado para simular vari@'aveis estat@'{@dotless{i}}sticas pseuso-aleat@'orias
+Esse @'e o algor@'{@dotless{i}}tmo seleccionado para simular vari@'aveis estat@'{@dotless{i}}sticas pseuso-aleat@'orias
 binomiais negativas. Os algor@'{@dotless{i}}tmos implementados s@~ao @code{devroye}, @code{bernoulli}
 e @code{inverse}:
 @itemize @bullet
@@ -3103,7 +3103,7 @@ com um terceiro argumento @var{m}, uma amostra aleat@'oria de tamanho
 @var{m} ser@'a simulada.
 
 Existem tr@^es algor@'{@dotless{i}}tmos implementados para essa fun@,{c}@~ao, se pode
-selecionar o algor@'{@dotless{i}}tmo a ser usado fornecendo um certo valor @`a vari@'avel global
+seleccionar o algor@'{@dotless{i}}tmo a ser usado fornecendo um certo valor @`a vari@'avel global
 @code{random_negative_binomial_algorithm}, cujo valor padr@~ao @'e @code{bernoulli}.
 
 Veja tamb@'em @code{random_negative_binomial_algorithm}. Para fazer uso dessa

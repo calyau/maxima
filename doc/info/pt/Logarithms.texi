@@ -8,7 +8,7 @@
 @section Defini@value{cedilha}@~oes para Logar@'{@dotless{i}}tmos
 
 @defvr {Vari@'avel de op@,{c}@~ao} %e_to_numlog
-Valor padr@~ao: @code{false}
+Valor por omiss@~ao: @code{false}
 
 Quando @code{true}, sendo @code{r} algum n@'umero racional, e @code{x}
 alguma express@~ao, @code{%e^(r*log(x))} ser@'a simplificado em
@@ -146,7 +146,7 @@ contendo @code{log}.
 @end deffn
 
 @defvr {Vari@'avel de op@,{c}@~ao} logabs
-Valor padr@~ao: @code{false}
+Valor por omiss@~ao: @code{false}
 
 No c@'alculo de primitivas em que sejam gerados
 logar@'{@dotless{i}}tmos, por exemplo, @code{integrate(1/x,x)}, a
@@ -175,7 +175,7 @@ valor da vari@'avel global @code{logarc}.
 @end defvr
 
 @defvr {Vari@'avel de op@,{c}@~ao} logconcoeffp
-Valor padr@~ao: @code{false}
+Valor por omiss@~ao: @code{false}
 
 Controla quais coeficientes s@~ao contra@'{@dotless{i}}dos quando se
 usa @code{logcontract}. Poder@'a ser igual ao nome de uma fun@,{c}@~ao
@@ -219,7 +219,7 @@ ratnump(m)$}. E assim, @code{logcontract(1/2*log(x));} produzir@'a
 @end deffn
 
 @defvr {Vari@'avel de op@,{c}@~ao} logexpand
-Valor padr@~ao: @code{true}
+Valor por omiss@~ao: @code{true}
 
 Faz com que @code{log(a^b)} se transfome em @code{b*log(a)}. Se
 @code{logexpand} tiver o valor @code{all}, @code{log(a*b)} ir@'a
@@ -233,7 +233,7 @@ essas simplifica@,{c}@~oes ir@~ao ser desabilitadas.
 @end defvr
 
 @defvr {Vari@'avel de op@,{c}@~ao} lognegint
-Valor padr@~ao: @code{false}
+Valor por omiss@~ao: @code{false}
 
 Se for igual a @code{true}, implementa a regra @code{log(-n)} ->
 @code{log(n)+%i*%pi} para @code{n} um inteiro positivo.
@@ -241,7 +241,7 @@ Se for igual a @code{true}, implementa a regra @code{log(-n)} ->
 @end defvr
 
 @defvr {Vari@'avel de op@,{c}@~ao} lognumer
-Valor padr@~ao: @code{false}
+Valor por omiss@~ao: @code{false}
 
 Se tiver valor @code{true}, os argumentos negativos em ponto flutuante
 para @code{log} ir@'a sempre ser convertidos para seu valor absoluto
@@ -252,7 +252,7 @@ ir@~ao tamb@'em ser convertidos para os seus valores absolutos.
 @end defvr
 
 @defvr {Vari@'avel de op@,{c}@~ao} logsimp
-Valor padr@~ao: @code{true}
+Valor por omiss@~ao: @code{true}
 
 Se tiver valor @code{false}, n@~ao ser@'a feita nenhuma
 simplifica@,{c}@~ao de @code{%e} para um expoente contendo

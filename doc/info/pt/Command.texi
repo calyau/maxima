@@ -343,7 +343,7 @@ Qualquer n@'umero de argumentos pode ser usado.
 @end deffn
 
 @defvr {Vari@'avel de op@,{c}@~ao} debugmode
-Valor padr@~ao: @code{false}
+Valor por omiss@~ao: @code{false}
 
 Quando um erro do Maxima ocorre, Maxima iniciar@'a o depurador se @code{debugmode} for @code{true}.
 O utilizador pode informar comandos para examinar o hist@'orico de chamadas, marcar pontos de parada, percorrer uma linha por vez
@@ -861,7 +861,7 @@ Retorna o n@'umero da linha do par corrente de express@~oes de entrada e sa@'{@d
 
 @c NEEDS WORK
 @defvr {Vari@'avel de sistema} myoptions
-Valor padr@~ao: @code{[]}
+Valor por omiss@~ao: @code{[]}
 
 @code{myoptions} @'e a lista de todas as op@,{c}@~oes alguma vez alteradas pelo utilizador,
 tenha ou n@~ao ele retornado a altera@,{c}@~ao para o seu valor padr@~ao.
@@ -869,7 +869,7 @@ tenha ou n@~ao ele retornado a altera@,{c}@~ao para o seu valor padr@~ao.
 @end defvr
 
 @defvr {Vari@'avel de op@,{c}@~ao} nolabels
-Valor padr@~ao: @code{false}
+Valor por omiss@~ao: @code{false}
 
 @c PREVIOUS DESCRIPTION OF nolabels: THIS IS OUT OF DATE
 @c When @code{nolabels} is @code{true}, then no labels will be bound
@@ -895,7 +895,7 @@ Veja tamb@'em @code{batch}, @code{batchload}, e @code{labels}.
 
 @c NEEDS WORK
 @defvr {Vari@'avel de op@,{c}@~ao} optionset
-Valor padr@~ao: @code{false}
+Valor por omiss@~ao: @code{false}
 
 Quando @code{optionset} for @code{true}, Maxima mostrar@'a uma
 mensagem sempre que uma op@,{c}@~ao do Maxima for alterada.  Isso @'e @'util se o
@@ -977,7 +977,7 @@ propriedades que n@~ao podem  ser mostradas de outra forma, i.e. para
 @end deffn
 
 @defvr {Vari@'avel de op@,{c}@~ao} prompt
-Valor padr@~ao: @code{_}
+Valor por omiss@~ao: @code{_}
 
 @code{prompt} @'e o s@'{@dotless{i}}mbolo de linha de comando da fun@,{c}@~ao @code{demo},
 modo @code{playback (slow)}, e da interrup@,{c}@~ao de ciclos do Maxima (como invocado por @code{break}).
@@ -1024,7 +1024,7 @@ Muitas, mas n@~ao todas, vari@'aveis globais e op@,{c}@~oes s@~ao definidas por 
 @end deffn
 
 @defvr {Vari@'avel de op@,{c}@~ao} showtime
-Valor padr@~ao: @code{false}
+Valor por omiss@~ao: @code{false}
 
 Quando @code{showtime} for @code{true}, o tempo de computa@,{c}@~ao e o tempo decorrido s@~ao
 impressos na tela com cada express@~ao de sa@'{@dotless{i}}da.

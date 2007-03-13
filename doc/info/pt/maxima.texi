@@ -1,6 +1,6 @@
 \input texinfo
 @c Language: Portuguese
-@c Source: maxima.texi (en) 1.40
+@c English version: 1.46
 @c -*-texinfo-*-
 
 @c Maxima Texinfo Coodinator: Robert Dodier
@@ -11,11 +11,6 @@
 @synindex vr fn
 @documentencoding ISO-8859-1
 @set cedilha @,{c}
-@set i_agu @'i
-@set I_agu @'I
-@set a_til @~a
-@set a_agu @'a
-@set o_til @~o
 @settitle Manual do Maxima
 @c %**end of header
 @setchapternewpage odd
@@ -59,7 +54,7 @@ agora chamado Maxima.
 Notas de tradu@,{c}@~ao:
 
 Esta vers@~ao portuguesa, para Portugal, @'e mantida por Jaime Villate, e
-est@'a baseada na tradu@'{c}@~ao Brasileira de Jorge Barros de Abreu.
+est@'a baseada na tradu@,{c}@~ao Brasileira de Jorge Barros de Abreu.
 Se quiser contribuir, por favor entre em contacto com villate ARROBA fe
 PONTO up PONTO pt.
 
@@ -88,7 +83,7 @@ agora chamado Maxima.
 @i{Notas de tradu@,{c}@~ao:}
 
 Esta vers@~ao portuguesa, para Portugal, @'e mantida por Jaime Villate, e
-est@'a baseada na tradu@'{c}@~ao Brasileira de Jorge Barros de Abreu.
+est@'a baseada na tradu@,{c}@~ao Brasileira de Jorge Barros de Abreu.
 Se quiser contribuir, por favor entre em contacto com villate ARROBA fe
 PONTO up PONTO pt.
 
@@ -99,10 +94,8 @@ PONTO up PONTO pt.
 Infraestrutura do Maxima
 
 * Introdu@value{cedilha}@~ao ao Maxima::        Exemplo de sess@~oes do Maxima.
-* Detec@value{cedilha}@~ao e Relato de Erros::  Como encontrar erros e informar os
-                                      respons@'aveis.
-* Ajuda::                       Obten@value{cedilha}@~ao de ajuda dentro de uma 
-                                sess@~ao do Maxima.
+* Detec@value{cedilha}@~ao e Relato de Erros::  Como encontrar erros e informar os respons@'aveis.
+* Ajuda::                       Obten@value{cedilha}@~ao de ajuda dentro de uma sess@~ao do Maxima.
 * Linha de Comandos::           Sintaxe da linha de comandos do Maxima.
 * Operadores::                  Operadores usados em express@~oes do Maxima.
 * Express@~oes::                Express@~oes no Maxima.
@@ -114,24 +107,18 @@ Infraestrutura do Maxima
 
 Suporte a @'areas espec@'{@dotless{i}}ficas da matem@'atica
 
-* Polin@^omios::                Formas padr@~ao para polin@^omios, e
-                                fun@value{cedilha}@~oes de polin@^omios.
+* Polin@^omios::                Formas padr@~ao para polin@^omios, e fun@value{cedilha}@~oes de polin@^omios.
 * Constantes::                  Constantes num@'ericas.
-* Logar@'{@dotless{i}}tmos::    Manipula@value{cedilha}@~ao de express@~oes com
-                                logar@'{@dotless{i}}tmos.
-* Trigonometria::               Manipula@value{cedilha}@~ao de express@~oes
-                                e fun@value{cedilha}@~oes trigonom@'etricas.
+* Logar@'{@dotless{i}}tmos::    Manipula@value{cedilha}@~ao de express@~oes com logar@'{@dotless{i}}tmos.
+* Trigonometria::               Manipula@value{cedilha}@~ao de express@~oes e fun@value{cedilha}@~oes trigonom@'etricas.
 * Fun@value{cedilha}@~oes Especiais::     Fun@value{cedilha}@~oes especiais.
 * Fun@value{cedilha}@~oes El@'{@dotless{i}}pticas::   Fun@value{cedilha}@~oes e integrais El@'{@dotless{i}}pticas.
 * Limites::                     Limites de express@~oes.
 * Diferencia@value{cedilha}@~ao::         C@'alculo diferencial.
 * Integra@value{cedilha}@~ao::            C@'alculo integral.
-* Equa@value{cedilha}@~oes::              Defini@value{cedilha}@~ao e resolu@value{cedilha}@~ao de
-                                equa@value{cedilha}@~oes.
-* Equa@value{cedilha}@~oes Diferenciais:: Defini@value{cedilha}@~ao e resolu@value{cedilha}@~ao de
-                                equa@value{cedilha}@~oes diferenciais.
-* Num@'erico::                  Integra@value{cedilha}@~ao num@'erica, transformadas
-                                de Fourier, etc.
+* Equa@value{cedilha}@~oes::              Defini@value{cedilha}@~ao e resolu@value{cedilha}@~ao de equa@value{cedilha}@~oes.
+* Equa@value{cedilha}@~oes Diferenciais:: Defini@value{cedilha}@~ao e resolu@value{cedilha}@~ao de equa@value{cedilha}@~oes diferenciais.
+* Num@'erico::                  Integra@value{cedilha}@~ao num@'erica, transformadas de Fourier, etc.
 * Arrays ::                     Cria@value{cedilha}@~ao e manipula@value{cedilha}@~ao de arranjos.
 * Matrizes e @'Algebra Linear:: Opera@value{cedilha}@~oes com Matrizes.
 * Fun@value{cedilha}@~oes Afins::                        
@@ -147,8 +134,7 @@ Facilidades avan@value{cedilha}adas e programa@value{cedilha}@~ao
 
 * Ambiente em Tempo de Execu@value{cedilha}@~ao:: Customiza@value{cedilha}@~ao do ambiente Maxima.
 * Op@value{cedilha}@~oes Diversas::       Op@value{cedilha}@~oes com efeito global sobre o Maxima.
-* Regras e Modelos::            Coincid@^encia de express@~oes definidas pelo
-                                utilizador e regras de simplifica@value{cedilha}@~ao.
+* Regras e Modelos::            Coincid@^encia de express@~oes definidas pelo utilizador e regras de simplifica@value{cedilha}@~ao.
 * Listas::                      Manipula@value{cedilha}@~ao de listas.
 * Conjuntos::                   Manipula@value{cedilha}@~ao de conjuntos.
 * Defini@value{cedilha}@~ao de Fun@value{cedilha}@~ao:: Defini@value{cedilha}@~ao de fun@value{cedilha}@~oes.
@@ -162,17 +148,14 @@ Pacotes Adicionais
 * descriptive::                 Estat@'{@dotless{i}}stica descritiva.
 * diag::                        Matrizes de Jordan.
 * distrib::                     Distribui@value{cedilha}@~oes de probabilidade.
-* dynamics::                    Gr@'aficos para sistemas din@^amicos e
-                                fractais.
+* dynamics::                    Gr@'aficos para sistemas din@^amicos e fractais.
 * eval_string::                 Express@~oes do Maxima como cadeias de texto.
 * f90::                         Tradutor do Maxima para o Fortran.
 * ggf::                         Fun@value{cedilha}@~ao geradora para sequ@^encias.
 * impdiff::                     Derivadas impl@'{@dotless{i}}citas.
-* implicit_plot::               Gr@'aficos de fun@value{cedilha}@~oes
-                                impl@'{@dotless{i}}tas.
+* implicit_plot::               Gr@'aficos de fun@value{cedilha}@~oes impl@'{@dotless{i}}tas.
 * interpol::                    Pacote de interpola@value{cedilha}@~ao.
-* lbfgs::                       L-BFGS pacote de minimiza@value{cedilha}@~ao n@~ao
-                                limitada.
+* lbfgs::                       L-BFGS pacote de minimiza@value{cedilha}@~ao n@~ao limitada.
 * lindstedt::                   Pacote Lindstedt.
 * linearalgebra::               Fun@value{cedilha}@~oes de @'algebra linear.
 * lsquares::                    M@'etodo dos m@'{@dotless{i}}nimos quadrados.
@@ -182,13 +165,11 @@ Pacotes Adicionais
 * opsubst::                     Comandos para substitui@value{cedilha}@~oes.
 * orthopoly::                   Polin@'omios ortogonais.
 * plotdf::                      Gr@'aficos de campos de direc@value{cedilha}@~oes.
-* romberg::                     M@'etodo de Romberg para integra@value{cedilha}@~ao
-                                num@'erica.
+* romberg::                     M@'etodo de Romberg para integra@value{cedilha}@~ao num@'erica.
 * simplex::                     Programa@value{cedilha}@~ao linear.
 * simplification::              Fun@value{cedilha}@~oes e regras de simplifica@value{cedilha}@~ao.
 * solve_rec::                   Rela@value{cedilha}@~oes de recorr@^encia lineares.
-* stats::                       Pacote de infer@^encias
-                                estat@'{@dotless{i}}sticas.
+* stats::                       Pacote de infer@^encias estat@'{@dotless{i}}sticas.
 * stirling::                    F@'ormula de Stirling.
 * stringproc::                  Processamento de cadeias de texto.
 * unit::                        Pacote de unidades e dimens@~oes.
@@ -307,6 +288,7 @@ Equa@value{cedilha}@~oes
 
 Equa@value{cedilha}@~oes Diferenciais
 
+* Introdu@value{cedilha}@~ao @`as Equa@value{cedilha}@~oes Diferenciais::
 * Defini@value{cedilha}@~oes para Equa@value{cedilha}@~oes Diferenciais::  
 
 Num@'erico
@@ -565,15 +547,15 @@ zeilberger
 
 @node Introdu@value{cedilha}@~ao ao Maxima, Detec@value{cedilha}@~ao e Relato de Erros, Top, Top
 @chapter Introdu@value{cedilha}@~ao ao Maxima
-@include ../pt_BR/Introduction.texi
+@include Introduction.texi
 
 @node Detec@value{cedilha}@~ao e Relato de Erros, Ajuda, Introdu@value{cedilha}@~ao ao Maxima, Top
 @chapter Detec@value{cedilha}@~ao e Relato de Erros
-@include ../pt_BR/Bugs.texi
+@include Bugs.texi
 
 @node Ajuda, Linha de Comandos, Detec@value{cedilha}@~ao e Relato de Erros, Top
 @chapter Ajuda
-@include ../pt_BR/Help.texi
+@include Help.texi
 
 @node Linha de Comandos, Operadores, Ajuda, Top
 @chapter Linha de Comandos
@@ -581,15 +563,15 @@ zeilberger
 
 @node Operadores, Express@~oes, Linha de Comandos, Top
 @chapter Operadores
-@include ../pt_BR/Operators.texi
+@include Operators.texi
 
 @node Express@~oes, Simplifica@value{cedilha}@~ao, Operadores, Top
 @chapter Express@~oes
-@include ../pt_BR/Expressions.texi
+@include Expressions.texi
 
 @node Simplifica@value{cedilha}@~ao, Cria@value{cedilha}@~ao de Gr@'aficos, Express@~oes, Top
 @chapter Simplifica@value{cedilha}@~ao
-@include ../pt_BR/Simplification.texi
+@include Simplification.texi
 
 @node Cria@value{cedilha}@~ao de Gr@'aficos, Entrada e Sa@'{@dotless{i}}da, Simplifica@value{cedilha}@~ao, Top
 @chapter Cria@value{cedilha}@~ao de Gr@'aficos
@@ -601,19 +583,19 @@ zeilberger
 
 @node Ponto Flutuante, Contextos, Entrada e Sa@'{@dotless{i}}da, Top
 @chapter Ponto Flutuante
-@include ../pt_BR/Floating.texi
+@include Floating.texi
 
 @node Contextos, Polin@^omios, Ponto Flutuante, Top
 @chapter Contextos
-@include ../pt_BR/Contexts.texi
+@include Contexts.texi
 
 @node Polin@^omios, Constantes, Contextos, Top
 @chapter Polin@^omios
-@include ../pt_BR/Polynomials.texi
+@include Polynomials.texi
 
 @node Constantes, Logar@'{@dotless{i}}tmos, Polin@^omios, Top
 @chapter Constantes
-@include ../pt_BR/Constants.texi
+@include Constants.texi
 
 @node Logar@'{@dotless{i}}tmos, Trigonometria, Constantes, Top
 @chapter Logar@'{@dotless{i}}tmos
@@ -621,11 +603,11 @@ zeilberger
 
 @node Trigonometria, Fun@value{cedilha}@~oes Especiais, Logar@'{@dotless{i}}tmos, Top
 @chapter Trigonometria
-@include ../pt_BR/Trigonometric.texi
+@include Trigonometric.texi
 
 @node Fun@value{cedilha}@~oes Especiais, Fun@value{cedilha}@~oes El@'{@dotless{i}}pticas, Trigonometria, Top
 @chapter Fun@value{cedilha}@~oes Especiais
-@include ../pt_BR/Special.texi
+@include Special.texi
 
 @node Fun@value{cedilha}@~oes El@'{@dotless{i}}pticas, Limites, Fun@value{cedilha}@~oes Especiais, Top
 @chapter Fun@value{cedilha}@~oes El@'{@dotless{i}}pticas
@@ -633,97 +615,95 @@ zeilberger
 
 @node Limites, Diferencia@value{cedilha}@~ao, Fun@value{cedilha}@~oes El@'{@dotless{i}}pticas, Top
 @chapter Limites
-@include ../pt_BR/Limits.texi
+@include Limits.texi
 
 @node Diferencia@value{cedilha}@~ao, Integra@value{cedilha}@~ao, Limites, Top
 @chapter Diferencia@value{cedilha}@~ao
-@include ../pt_BR/Differentiation.texi
+@include Differentiation.texi
 
 @node Integra@value{cedilha}@~ao, Equa@value{cedilha}@~oes, Diferencia@value{cedilha}@~ao, Top
 @chapter Integra@value{cedilha}@~ao
-@include ../pt_BR/Integration.texi
+@include Integration.texi
 
 @node Equa@value{cedilha}@~oes, Equa@value{cedilha}@~oes Diferenciais, Integra@value{cedilha}@~ao, Top
 @chapter Equa@value{cedilha}@~oes
-@include ../pt_BR/Equations.texi
+@include Equations.texi
 
 @node Equa@value{cedilha}@~oes Diferenciais, Num@'erico, Equa@value{cedilha}@~oes, Top
 @chapter Equa@value{cedilha}@~oes Diferenciais
-@include ../pt_BR/Differential.texi
-
-@c @include ../pt_BR/NonCommutative.texi
+@include Differential.texi
 
 @node Num@'erico, Arrays, Equa@value{cedilha}@~oes Diferenciais, Top
 @chapter Num@'erico
-@include ../pt_BR/Numerical.texi
+@include Numerical.texi
 
 @node Arrays, Matrizes e @'Algebra Linear, Num@'erico, Top
 @chapter Arrays
-@include ../pt_BR/Arrays.texi
+@include Arrays.texi
 
 @node Matrizes e @'Algebra Linear, Fun@value{cedilha}@~oes Afins, Arrays, Top
 @chapter Matrizes e @'Algebra Linear
-@include ../pt_BR/Matrices.texi
+@include Matrices.texi
 
 @node Fun@value{cedilha}@~oes Afins, itensor, Matrizes e @'Algebra Linear, Top
 @chapter Fun@value{cedilha}@~oes Afins
-@include ../pt_BR/Affine.texi
+@include Affine.texi
 
 @node itensor, ctensor, Fun@value{cedilha}@~oes Afins, Top
 @chapter itensor
-@include ../pt_BR/Itensor.texi
+@include Itensor.texi
 
 @node ctensor, Pacote atensor, itensor, Top
 @chapter ctensor
-@include ../pt_BR/Ctensor.texi
+@include Ctensor.texi
 
 @node Pacote atensor, S@'eries, ctensor, Top
 @chapter Pacote atensor
-@include ../pt_BR/Atensor.texi
+@include Atensor.texi
 
 @node S@'eries, Teoria dos N@'umeros, Pacote atensor, Top
 @chapter S@'eries
-@include ../pt_BR/Series.texi
+@include Series.texi
 
 @node Teoria dos N@'umeros, Simetrias, S@'eries, Top
 @chapter Teoria dos N@'umeros
-@include ../pt_BR/Number.texi
+@include Number.texi
 
 @node Simetrias, Grupos, Teoria dos N@'umeros, Top
 @chapter Simetrias
-@include ../pt_BR/Symmetries.texi
+@include Symmetries.texi
 
 @node Grupos, Ambiente em Tempo de Execu@value{cedilha}@~ao, Simetrias, Top
 @chapter Grupos
-@include ../pt_BR/Groups.texi
+@include Groups.texi
 
 @node Ambiente em Tempo de Execu@value{cedilha}@~ao, Op@value{cedilha}@~oes Diversas, Grupos, Top
 @chapter Ambiente em Tempo de Execu@value{cedilha}@~ao
-@include ../pt_BR/Runtime.texi
+@include Runtime.texi
 
 @node Op@value{cedilha}@~oes Diversas, Regras e Modelos, Ambiente em Tempo de Execu@value{cedilha}@~ao, Top
 @chapter Op@value{cedilha}@~oes Diversas
-@include ../pt_BR/Miscellaneous.texi
+@include Miscellaneous.texi
 
 @node Regras e Modelos, Listas, Op@value{cedilha}@~oes Diversas, Top
 @chapter Regras e Modelos
-@include ../pt_BR/Rules.texi
+@include Rules.texi
 
 @node Listas, Conjuntos, Regras e Modelos, Top
 @chapter Listas
-@include ../pt_BR/Lists.texi
+@include Lists.texi
 
 @node Conjuntos, Defini@value{cedilha}@~ao de Fun@value{cedilha}@~ao, Listas, Top
 @chapter Conjuntos
-@include ../pt_BR/nset.texi
+@include nset.texi
 
 @node Defini@value{cedilha}@~ao de Fun@value{cedilha}@~ao, Fluxo de Programa, Conjuntos, Top
 @chapter Defini@value{cedilha}@~ao de Fun@value{cedilha}@~ao
-@include ../pt_BR/Function.texi
+@include Function.texi
 
 @node Fluxo de Programa, Depura@value{cedilha}@~ao, Defini@value{cedilha}@~ao de Fun@value{cedilha}@~ao, Top
 @chapter Fluxo de Programa
-@include ../pt_BR/Program.texi
+@include Program.texi
 
 @node Depura@value{cedilha}@~ao, augmented_lagrangian, Fluxo de Programa, Top
 @chapter Depura@value{cedilha}@~ao
@@ -731,11 +711,11 @@ zeilberger
 
 @node augmented_lagrangian, bode, Depura@value{cedilha}@~ao, Top
 @chapter augmented_lagrangian
-@include ../pt_BR/augmented_lagrangian.texi
+@include augmented_lagrangian.texi
 
 @node bode, descriptive, augmented_lagrangian, Top
 @chapter bode
-@include ../pt_BR/bode.texi
+@include bode.texi
 
 @node descriptive, diag, bode, Top
 @chapter descriptive
@@ -743,7 +723,7 @@ zeilberger
 
 @node diag, distrib, descriptive, Top
 @chapter diag
-@include ../pt_BR/diag.texi
+@include diag.texi
 
 @node distrib, dynamics, diag, Top
 @chapter distrib
@@ -755,63 +735,63 @@ zeilberger
 
 @node eval_string, f90, dynamics, Top
 @chapter eval_string
-@include ../pt_BR/eval_string.texi
+@include eval_string.texi
 
 @node f90, ggf, eval_string, Top
 @chapter f90
-@include ../pt_BR/f90.texi
+@include f90.texi
 
 @node ggf, impdiff, f90, Top
 @chapter ggf
-@include ../pt_BR/ggf.texi
+@include ggf.texi
 
 @node impdiff, implicit_plot, ggf, Top
 @chapter impdiff
-@include ../pt_BR/impdiff.texi
+@include impdiff.texi
 
 @node implicit_plot, interpol, impdiff, Top
 @chapter implicit_plot
-@include ../pt_BR/implicit_plot.texi
+@include implicit_plot.texi
 
 @node interpol, lbfgs, implicit_plot, Top
 @chapter interpol
-@include ../pt_BR/interpol.texi
+@include interpol.texi
 
 @node lbfgs, lindstedt, interpol, Top
 @chapter lbfgs
-@include ../pt_BR/lbfgs.texi
+@include lbfgs.texi
 
 @node lindstedt, linearalgebra, lbfgs, Top
 @chapter lindstedt
-@include ../pt_BR/lindstedt.texi
+@include lindstedt.texi
 
 @node linearalgebra, lsquares, lindstedt, Top
 @chapter linearalgebra
-@include ../pt_BR/linearalgebra.texi
+@include linearalgebra.texi
 
 @node lsquares, makeOrders, linearalgebra, Top
 @chapter lsquares
-@include ../pt_BR/lsquares.texi
+@include lsquares.texi
 
 @node makeOrders, mnewton, lsquares, Top
 @chapter makeOrders
-@include ../pt_BR/makeOrders.texi
+@include makeOrders.texi
 
 @node mnewton, numericalio, makeOrders, Top
 @chapter mnewton
-@include ../pt_BR/mnewton.texi
+@include mnewton.texi
 
 @node numericalio, opsubst, mnewton, Top
 @chapter numericalio
-@include ../pt_BR/numericalio.texi
+@include numericalio.texi
 
 @node opsubst, orthopoly, numericalio, Top
 @chapter opsubst
-@include ../pt_BR/opsubst.texi
+@include opsubst.texi
 
 @node orthopoly, plotdf, opsubst, Top
 @chapter orthopoly
-@include ../pt_BR/orthopoly.texi
+@include orthopoly.texi
 
 @node plotdf, romberg, orthopoly, Top
 @chapter plotdf
@@ -819,27 +799,27 @@ zeilberger
 
 @node romberg, simplex, plotdf, Top
 @chapter romberg
-@include ../pt_BR/romberg.texi
+@include romberg.texi
 
 @node simplex, simplification, romberg, Top
 @chapter simplex
-@include ../pt_BR/simplex.texi
+@include simplex.texi
 
 @node simplification, solve_rec, simplex, Top
 @chapter simplification
-@include ../pt_BR/simplifications.texi
+@include simplifications.texi
 
 @node solve_rec, stats, simplification, Top
 @chapter solve_rec
-@include ../pt_BR/solve_rec.texi
+@include solve_rec.texi
 
 @node stats, stirling, solve_rec, Top
 @chapter stats
-@include ../pt_BR/stats.texi
+@include stats.texi
 
 @node stirling, stringproc, stats, Top
 @chapter stirling
-@include ../pt_BR/stirling.texi
+@include stirling.texi
 
 @node stringproc, unit, stirling, Top
 @chapter stringproc
@@ -847,15 +827,15 @@ zeilberger
 
 @node unit, zeilberger, stringproc, Top
 @chapter unit
-@include ../pt_BR/unit.texi
+@include unit.texi
 
 @node zeilberger, @'Indice de Fun@value{cedilha}@~oes e Vari@'aveis, unit, Top
 @chapter zeilberger
-@include ../pt_BR/zeilberger.texi
+@include zeilberger.texi
 
 @node @'Indice de Fun@value{cedilha}@~oes e Vari@'aveis,  , zeilberger, Top
 @chapter @'Indice de Fun@value{cedilha}@~oes e Vari@'aveis
-@include ../pt_BR/Indices.texi
+@include Indices.texi
 
 @c end includes
 

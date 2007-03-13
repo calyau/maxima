@@ -1763,7 +1763,7 @@ Veja tamb@'em @code{cov} e @code{cov1}.
 @deffnx {Fun@,{c}@~ao} dataplot (@var{lista}, @var{op@,{c}@~ao_1}, @var{op@,{c}@~ao_2}, ...)
 @deffnx {Fun@,{c}@~ao} dataplot (@var{matriz})
 @deffnx {Fun@,{c}@~ao} dataplot (@var{matriz}, @var{op@,{c}@~ao_1}, @var{op@,{c}@~ao_2}, ...)
-A fun@,{c}@~ao @code{dataplot} permite visualiza@,{c}@~ao direta de dados de amostra, ambas d uma @'unica vari@'avel (@var{lista}) e de v@'arias vari@'aveis (@var{matriz}). Fornecendo valores para as seguintes @var{op@,{c}@~oes} que s@~ao alguns asp@'ectos de impress@~ao que podem ser controlados:
+A fun@,{c}@~ao @code{dataplot} permite visualiza@,{c}@~ao directa de dados de amostra, ambas d uma @'unica vari@'avel (@var{lista}) e de v@'arias vari@'aveis (@var{matriz}). Fornecendo valores para as seguintes @var{op@,{c}@~oes} que s@~ao alguns asp@'ectos de impress@~ao que podem ser controlados:
 
 @itemize @bullet
 
@@ -1777,10 +1777,10 @@ A fun@,{c}@~ao @code{dataplot} permite visualiza@,{c}@~ao direta de dados de amo
 @code{'axisnames}, o valor padr@~ao @'e @code{["x","y","z"]}, @'e uma lista de nomes dos eixos @code{x}, @code{y} e @code{z}.
 
 @item
-@code{'joined}, o valor padr@~ao @'e @code{false}, um valor l@'ogico para selecionar pontos em 2D para serem unidos ou isolados.
+@code{'joined}, o valor padr@~ao @'e @code{false}, um valor l@'ogico para seleccionar pontos em 2D para serem unidos ou isolados.
 
 @item
-@code{'picturescales}, o valor padr@~ao @'e @code{[1.0, 1.0]}, fator de proporcionalidade para o tamanho do gr@'afico.
+@code{'picturescales}, o valor padr@~ao @'e @code{[1.0, 1.0]}, factor de proporcionalidade para o tamanho do gr@'afico.
 
 @item
 @code{'threedim}, o valor padr@~ao @'e @code{true}, diz ao Maxima se ou monta-se o gr@'afico de uma matriz de tr@^es colunas como um diagrama 3D ou se monta-se o gr@'afico como um diagrama de dispers@~ao de v@'arias vari@'aveis. Veja exemplos abaixo.
@@ -1849,7 +1849,7 @@ A fun@,{c}@~ao @code{dataplot} pode ser usada para montar gr@'aficos de pontos n
  'axisnames = ["Velocidade do vento em A", "Velocidade do vento em E"])$
 @end example
 
-Se pontos forem armazenados em uma matriz de duas colunas, @code{dataplot} pode montar o gr@'afico desses pontos diretamente, mas se eles forem formatados em uma lista de pares, essa lista deve ser transformada em uma matriz como no seguinte exemplo.
+Se pontos forem armazenados em uma matriz de duas colunas, @code{dataplot} pode montar o gr@'afico desses pontos directamente, mas se eles forem formatados em uma lista de pares, essa lista deve ser transformada em uma matriz como no seguinte exemplo.
 
 @c ===beg===
 @c load (descriptive)$
@@ -1924,7 +1924,7 @@ Essa fun@,{c}@~ao monta um gr@'afico de um histograma. Dados de amostras devem s
 @code{'axisnames}, o valor padr@~ao @'e @code{["x", "Fr."]}, @'e uma lista de nomes dos eixos @code{x} e @code{y}.
 
 @item
-@code{'picturescales}, o valor padr@~ao @'e @code{[1.0, 1.0]}, fator de proporcionalidade para o tamanho do gr@'afico.
+@code{'picturescales}, o valor padr@~ao @'e @code{[1.0, 1.0]}, factor de proporcionalidade para o tamanho do gr@'afico.
 
 @item
 @code{'nclasses}, o valor padr@~ao @'e @code{10}, @'e o n@'umero de classes ou o n@'umero de barras.
@@ -1985,7 +1985,7 @@ Similar a @code{histogram} mas para vari@'aveis estat@'{@dotless{i}}sticas, num@
 @code{'axisnames}, o valor padr@~ao @'e @code{["x", "Fr."]}, @'e uma lista de nomes dos eixos @code{x} e @code{y}.
 
 @item
-@code{'picturescales}, o valor padr@~ao @'e @code{[1.0, 1.0]}, fator de proporcionalidade para o tamanho do gr@'afico.
+@code{'picturescales}, o valor padr@~ao @'e @code{[1.0, 1.0]}, factor de proporcionalidade para o tamanho do gr@'afico.
 
 @item
 @code{'relbarwidth}, o valor padr@~ao @'e @code{0.9}, um n@'umero decimao entre 0 e 1 para controlar a largura das barras.
@@ -2015,7 +2015,7 @@ Esse exemplo monta um gr@'afico de barras para os grupos @code{A} e @code{B} de 
 (%i4) barsplot (col (s3, 1), 'maintitle = "Grupos de pacientes",
  'axisnames = ["Grupo", "# de indiv@'{@dotless{i}}duos"], 'colorintensity = 0.2)$
 @end example
-A primeira coluna na amostra @code{s3} armazena os valores das categorias @code{A} e @code{B}, tamb@'em conhecidos algumas vezes como fatores. Por outro lado, os n@'umeros inteiros positivos na segunda coluna s@`ao idades, em anos, que se comportam como vari@'avel discreta, ent@~ao podemos montar um gr@'afico as freqyu@^encias absolutas para esses valores,
+A primeira coluna na amostra @code{s3} armazena os valores das categorias @code{A} e @code{B}, tamb@'em conhecidos algumas vezes como factores. Por outro lado, os n@'umeros inteiros positivos na segunda coluna s@`ao idades, em anos, que se comportam como vari@'avel discreta, ent@~ao podemos montar um gr@'afico as freqyu@^encias absolutas para esses valores,
 
 @c ===beg===
 @c load (descriptive)$
@@ -2042,7 +2042,7 @@ Veja tamb@'em a fun@,{c}@~ao @code{histogram}.
 
 @deffn {Fun@,{c}@~ao} boxplot (@var{data})
 @deffnx {Fun@,{c}@~ao} boxplot (@var{data}, @var{op@,{c}@~ao_1}, @var{op@,{c}@~ao_2}, ...)
-Essa fun@,{c}@~ao monta diagramas em caixas. O argumento @var{data} pode ser uma lista, que n@~ao @'e de grande interesse, uma vez que esses diagramas s@~ao principalmente usados para compara@,{c}@~ao entre diferentes amostras, ou uma matriz, eent@~ao @'e poss@'{@dotless{i}}vel comparar dois ou mais componentes de uma vari@'avel estat@'{@dotless{i}}stica de v@'arias vari@'aveis. Mas @'e tamb@'em permitido @var{data} se uma lista de amostras com tamanhos diferentes de amostra, de fato essa @'e aa @'unica fun@,{c}@~ao no pacote @code{descriptive} que admite esse tipo de estrutura de dados. Veja o exemplo abaixo.  Abaixo et@~ao as op@,{c}@~oes,
+Essa fun@,{c}@~ao monta diagramas em caixas. O argumento @var{data} pode ser uma lista, que n@~ao @'e de grande interesse, uma vez que esses diagramas s@~ao principalmente usados para compara@,{c}@~ao entre diferentes amostras, ou uma matriz, eent@~ao @'e poss@'{@dotless{i}}vel comparar dois ou mais componentes de uma vari@'avel estat@'{@dotless{i}}stica de v@'arias vari@'aveis. Mas @'e tamb@'em permitido @var{data} se uma lista de amostras com tamanhos diferentes de amostra, de facto essa @'e aa @'unica fun@,{c}@~ao no pacote @code{descriptive} que admite esse tipo de estrutura de dados. Veja o exemplo abaixo.  Abaixo et@~ao as op@,{c}@~oes,
 
 @itemize @bullet
 
@@ -2056,7 +2056,7 @@ Essa fun@,{c}@~ao monta diagramas em caixas. O argumento @var{data} pode ser uma
 @code{'axisnames}, o valor padr@~ao @'e @code{["sample", "y"]}, @'e uma lista de nomes dos eixos @code{x} e @code{y}.
 
 @item
-@code{'picturescales}, o valor padr@~ao @'e @code{[1.0, 1.0]}, fator de proporcionalidade para o tamanho do gr@'afico.
+@code{'picturescales}, o valor padr@~ao @'e @code{[1.0, 1.0]}, factor de proporcionalidade para o tamanho do gr@'afico.
 
 @end itemize
 
