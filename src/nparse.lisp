@@ -1455,6 +1455,10 @@ entire input string to be printed out when an MAXIMA-ERROR occurs."
     |::=|
     )
 
+;; !! FOLLOWING MOVED HERE FROM MLISP.LISP (DEFSTRUCT STUFF)
+;; !! SEE NOTE THERE
+(define-symbol '&@) 
+
 ;;; User extensibility:
 (defmfun $prefix (operator &optional (rbp  180.)
 			             (rpos '$any)

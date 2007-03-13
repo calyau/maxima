@@ -94,7 +94,7 @@
 
 (setq $infolists '((mlist simp) $labels $values $functions $macros $arrays
 		   $myoptions $props $aliases $rules $gradefs
-		   $dependencies $let_rule_packages))
+		   $dependencies $let_rule_packages $structures))
 
 (setq $labels (list '(mlist simp)))
 

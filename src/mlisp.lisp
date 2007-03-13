@@ -708,11 +708,6 @@ wrapper for this."
 
 (defvar $structures '((mlist)))
 
-(eval-when
-    #+gcl (compile eval)
-    #-gcl (:compile-toplevel :execute)
-    (nconc $infolists '($structures)))
-
 (defun defstruct1 (z) ;; z will look like (($whatever) $a $b $c)
    ;; store the template on $whatever
   ($put (caar z) (namesonly z) '$defstruct_template)
@@ -764,7 +759,9 @@ wrapper for this."
 (defprop $@ %@ verb) 
 (defprop $@ &@ op) 
 (defprop &@ $@ opr) 
-(define-symbol '&@) 
+;; !! FOLLOWING LINE MOVED TO NPARSE.LISP TO AVOID COMPILER ERROR
+;; !! (MOVING SUPRV1.LISP HIGHER IN MAXIMA.SYSTEM CAUSES MYSTERIOUS ERROR)
+;; !! (define-symbol '&@) 
 (defprop $@ dimension-infix dimension) 
 (defprop $@ (#\@) dissym) 
 (defprop $@ msize-infix grind) 
