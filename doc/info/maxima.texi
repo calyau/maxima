@@ -283,6 +283,7 @@ Equations
 
 Differential Equations
 
+* Introduction to Differential Equations::  
 * Definitions for Differential Equations::  
 
 Numerical
