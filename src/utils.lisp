@@ -110,15 +110,6 @@
 	((atom l) (memq l x))
 	(t (or (amongl x (car l)) (amongl x (cdr l)))))) 
 
-;;; (RECONC '(A B C) '(D E F)) --> (C B A D E F)
-;;; Like NRECONC, but not destructive.
-;;;
-;;; Is this really faster than macroing into (NCONC (REVERSE L1) L2)?
-;;; > Yes, it is. -kmp
-
-(defmfun reconc (l1 l2)
-  (revappend l1 l2))
-
 ;;; Reverse ASSQ -- like ASSQ but tries to find an element of the alist whose
 ;;; cdr (not car) is EQ to the object.  To be renamed to RASSQ in the near
 ;;; future.
@@ -162,4 +153,4 @@
 
 (defmfun concat n
   (let ((*print-base* 10.))
-    (implode (mapcan 'exploden (listify n)))))
+    (implode (mapcan #'exploden (listify n)))))

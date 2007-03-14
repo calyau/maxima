@@ -304,7 +304,7 @@
   (prog (dissym (symlength 0))
      (setq dissym (safe-get (caar form) 'dissym)
 	   symlength (length dissym))
-     (setq result (dimension (cadr form) (reconc dissym result) (caar form) rop symlength right)
+     (setq result (dimension (cadr form) (revappend dissym result) (caar form) rop symlength right)
 	   width (+ symlength width))
      (return result)))
 
@@ -332,7 +332,7 @@
 	   w width
 	   h height
 	   d depth)
-     (setq result (reconc dissym result))
+     (setq result (revappend dissym result))
      (checkbreak result (+ symlength w))
      (setq result (dimension (caddr form) result (caar form) rop (+ symlength w) right)
 	   width (+ w symlength width)
@@ -355,7 +355,7 @@
 	    (do ((l (cddr form) (cdr l)))
 		(nil)
 	      (checkbreak result w)
-	      (setq result (reconc dissym result) w (+ symlength w))
+	      (setq result (revappend dissym result) w (+ symlength w))
 	      (cond ((null (cdr l))
 		     (setq result (dimnary (car l) result (caar form) (caar form) rop w)
 			   width (+ w width)
@@ -382,12 +382,12 @@
 	   symlength (length dissym))
      (setq result (dimension (cadr form) result lop (caar form) 0 (+ symlength right))
 	   width (+ symlength width))
-     (return (reconc dissym result))))
+     (return (revappend dissym result))))
 
 (defmfun dimension-nofix (form result)
   (setq form (safe-get (caar form) 'dissym)
 	width (length form))
-  (reconc form result))
+  (revappend form result))
 
 (defun dimension-match (form result)
   (prog (dissym (symlength 0))
@@ -397,14 +397,14 @@
 	    (setq width (+ symlength (length (cdr dissym)))
 		  height 1
 		  depth 0)
-	    (return (reconc (cdr dissym) (reconc (car dissym) result))))
+	    (return (revappend (cdr dissym) (revappend (car dissym) result))))
 	   (t (setq result (let ((lop 'mparen)
 				 (rop 'mparen)
 				 (break (if break (+ symlength break)))
 				 (right (+ symlength right)))
-			     (dimension-list form (reconc (car dissym) result))))
+			     (dimension-list form (revappend (car dissym) result))))
 	      (setq width (+ (length (cdr dissym)) symlength width))
-	      (return (reconc (cdr dissym) result))))))
+	      (return (revappend (cdr dissym) result))))))
 
 (defmfun dimension-superscript (form result)
   (prog (exp (w 0) (h 0) (d 0) bas)

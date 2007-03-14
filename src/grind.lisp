@@ -209,7 +209,7 @@
 (defun msize-array (x l r &aux f)
   (if (eq (caar x) 'mqapply) (setq f (cadr x) x (cdr x)) (setq f (caar x)))
   (cond ((and (symbolp (caar x)) (get (caar x) 'verb) (get (caar x) 'alias))
-	 (setq l (reconc '(#\' #\') l)))
+	 (setq l (revappend '(#\' #\') l)))
 	((and (symbolp (caar x))
 	      (get (caar x) 'noun)
 	      (not (memq (caar x) (cdr $aliases)))
@@ -222,7 +222,7 @@
 (defun msize-function (x l r op)
   (cond ((not (symbolp (caar x))))
 	((and (get (caar x) 'verb) (get (caar x) 'alias))
-	 (setq l (reconc '(#\' #\') l)))
+	 (setq l (revappend '(#\' #\') l)))
 	((and (get (caar x) 'noun) (not (memq (caar x) (cdr $aliases)))
 	      (not (get (caar x) 'reversealias)))
 	 (setq l (cons #\' l))))
@@ -241,7 +241,7 @@
 	      w (+ w (caar nl)) x (cdr x) l nil))))
 
 (defun msize-prefix (x l r)
-  (msize (cadr x) (reconc (strsym (caar x)) l) r (caar x) rop))
+  (msize (cadr x) (revappend (strsym (caar x)) l) r (caar x) rop))
 
 (defun msize-infix (x l r)
   (if (not (= (length (cdr x)) 2))
