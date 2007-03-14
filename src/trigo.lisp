@@ -9,20 +9,13 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :maxima)
+
 (macsyma-module trigo)
 
 (load-macsyma-macros mrgmac)
 
-(declare-top (genprefix tri)
-	     (special varlist errorsw)
-	     (flonum (tan) (cot) (sec) (csc)
-		     (atan2) (atan1) (acot)
-		     (sinh) (cosh) (tanh) (coth) (csch) (sech)
-		     (asinh) (acsch)
-		     (t//$ flonum flonum notype))
-	     (*expr $bfloat teval signum1 zerop1 islinear
-		    timesk addk maxima-integerp evod logarc mevenp halfangle coeff))
-
+(declare-top (special varlist errorsw))
+
 (declare-top (splitfile hyper))
 
 (defmfun simp-%sinh (form y z) 
@@ -120,8 +113,6 @@
 	((apply-reflection-simp (mop form) y $trigsign))
 	;((and $trigsign (mminusp* y)) (cons-exp '%sech (neg y)))
 	(t (eqtest (list '(%sech) y) form))))
-
-(declare-top (splitfile atrig))
 
 (defmfun simp-%asin (form y z) 
   (oneargcheck form)
@@ -231,7 +222,7 @@
 	((apply-reflection-simp (mop form) y $trigsign))
 	;;((and $trigsign (mminusp* y)) (sub '$%pi (cons-exp '%asec (neg y))))
 	(t (eqtest (list '(%asec) y) form))))
-
+
 (declare-top (splitfile ahyper))
 
 (defmfun simp-%asinh (form y z)
@@ -321,8 +312,8 @@
 	((apply-reflection-simp (mop form) y $trigsign))
 	;((and $trigsign (mminusp* y)) (cons-exp '%asech (neg y)))
 	(t (eqtest (list '(%asech) y) form))))
-
-(declare-top (splitfile trigex) (special $trigexpandplus $trigexpandtimes))
+
+(declare-top (special $trigexpandplus $trigexpandtimes))
 
 (defmfun $trigexpand (e)
   (cond ((atom e) e)
@@ -360,26 +351,36 @@
 	       ((eq '%sech op) (csc/sec-times (cddr arg) 0 (cadr arg) '%csch '%sech 1))))))
 
 (defun sin/cos-plus (l n f1 f2 flag)
-  (do ((i n (f+ 2 i)) (len (length l)) (sign 1 (f* flag sign)) (result))
+  (do ((i n (+ 2 i))
+       (len (length l))
+       (sign 1 (* flag sign))
+       (result))
       ((> i len) (simplify (cons '(mplus) result)))
-    (setq result (mpc (cond ((minusp sign) '(-1 (mtimes))) (t '((mtimes)))) l result f1 f2 len i))))
+    (setq result (mpc (cond ((minusp sign) '(-1 (mtimes)))
+			    (t '((mtimes)))) l result f1 f2 len i))))
 
 (defun tan-plus (l f flag) 
-  (do ((i 1 (f+ 2 i)) (sign 1 (f* flag sign)) (len (length l)) (num) (den (list 1)))
+  (do ((i 1 (+ 2 i))
+       (sign 1 (* flag sign))
+       (len (length l))
+       (num)
+       (den (list 1)))
       ((> i len) (div* (cons '(mplus) num) (cons '(mplus) den)))
     (setq num (mpc1 (list sign '(mtimes)) l num f len i)
 	  den (cond ((= len i) den)
-		    (t (mpc1 (list (f* flag sign) '(mtimes)) l den f len (f1+ i)))))))
+		    (t (mpc1 (list (* flag sign) '(mtimes)) l den f len (1+ i)))))))
 
 (defun cot-plus (l f flag)
-  (do ((i (length l) (f- i 2)) (len (length l)) (sign 1 (f* flag sign)) (num) (den))
+  (do ((i (length l) (- i 2)) (len (length l)) (sign 1 (* flag sign)) (num) (den))
       ((< i 0) (div* (cons '(mplus) num) (cons '(mplus) den)))
     (setq num (mpc1 (list sign '(mtimes)) l num f len i)
 	  den (cond ((= 0 i) den)
-		    (t (mpc1 (list sign '(mtimes)) l den f len (f1- i)))))))
+		    (t (mpc1 (list sign '(mtimes)) l den f len (1- i)))))))
 
 (defun csc/sec-plus (l n f1 f2 flag)
-  (div* (do ((l l (cdr l)) (result)) ((null l) (cons '(mtimes) result))
+  (div* (do ((l l (cdr l))
+	     (result))
+	    ((null l) (cons '(mtimes) result))
 	  (setq result (cons (cons-exp f1 (car l)) (cons (cons-exp f2 (car l)) result))))
 	(sin/cos-plus l n f2 f1 flag)))
 
@@ -387,33 +388,45 @@
   ;; Assume m,n < 2^17, but Binom may become big
   ;; Flag is 1 or -1
   (setq f1 (cons-exp f1 (cons '(mtimes) l)) f2 (cons-exp f2 (cons '(mtimes) l)))
-  (do ((i m (f+ 2 i)) (end (abs n)) (result)
-       (binom (cond ((= 0 m) 1) (t (abs n))) (quotient (times (f* flag (f- end i 1) (f- end i)) binom) (f* (f+ 2 i) (f1+ i)))))
+  (do ((i m (+ 2 i))
+       (end (abs n))
+       (result)
+       (binom (cond ((= 0 m) 1)
+		    (t (abs n)))
+	      (quotient (* flag (- end i 1) (- end i) binom) (* (+ 2 i) (1+ i)))))
       ((> i end) (setq result (simplify (cons '(mplus) result)))
        (cond ((and (= 1 m) (minusp n)) (neg result)) (t result)))
-    (setq result (cons (mul binom (power f1 i) (power f2 (f- end i))) result))))
+    (setq result (cons (mul binom (power f1 i) (power f2 (- end i))) result))))
 
 (defun tan-times (l n f flag)
   (setq f (cons-exp f (cons '(mtimes) l)))
-  (do ((i 1 (f+ 2 i)) (end (abs n)) (num) (den (list 1))
-       (binom (abs n) (quotient (times (f- end i 1) binom) (f+ 2 i))))
+  (do ((i 1 (+ 2 i))
+       (end (abs n))
+       (num)
+       (den (list 1))
+       (binom (abs n) (quotient (* (- end i 1) binom) (+ 2 i))))
       ((> i end) (setq num (div* (cons '(mplus) num) (cons '(mplus) den)))
-       (cond ((minusp n) (neg num)) (t num)))
+       (cond ((minusp n) (neg num))
+	     (t num)))
     (setq num (cons (mul binom (power f i)) num) 
 	  den (cond ((= end i) den)
-		    (t (cons (mul (setq binom (// (f* flag (f- end i) binom) (f1+ i)))
-				  (power f (f1+ i)))
+		    (t (cons (mul (setq binom (// (* flag (- end i) binom) (1+ i)))
+				  (power f (1+ i)))
 			     den))))))
 
 (defun cot-times (l n f flag)
   (setq f (cons-exp f (cons '(mtimes) l)))
-  (do ((i (abs n) (f- i 2)) (end (abs n)) (num) (den)
-       (binom 1 (// (f* flag (f1- i) binom) (f- end i -2))))
+  (do ((i (abs n) (- i 2))
+       (end (abs n))
+       (num)
+       (den)
+       (binom 1 (// (* flag (1- i) binom) (- end i -2))))
       ((< i 0) (setq num (div* (cons '(mplus) num) (cons '(mplus) den)))
        (if (minusp n) (neg num) num))
     (setq num (cons (mul binom (power f i)) num)
-	  den (if (= 0 i) den
-		  (cons (mul (setq binom (// (f* i binom) (f- end i -1))) (power f (f1- i))) den)))))
+	  den (if (= 0 i)
+		  den
+		  (cons (mul (setq binom (// (* i binom) (- end i -1))) (power f (1- i))) den)))))
 
 (defun csc/sec-times (l m n f1 f2 flag)
   (div* (mul (power (cons-exp f1 (cons '(mtimes) l)) (abs n))
@@ -422,24 +435,22 @@
 
 (defun mpc (dl ul result f1 f2 di ui) 
   (cond ((= 0 ui)
-	 (cons (reconc dl (mapcar #'(lambda (l) (cons-exp f2 l)) ul))
-	       result))
+	 (cons (revappend dl (mapcar #'(lambda (l) (cons-exp f2 l)) ul)) result))
 	((= di ui)
-	 (cons (reconc dl (mapcar #'(lambda (l) (cons-exp f1 l)) ul))
-	       result))
+	 (cons (revappend dl (mapcar #'(lambda (l) (cons-exp f1 l)) ul)) result))
 	(t (mpc (cons (cons-exp f1 (car ul)) dl) (cdr ul)
 		(mpc (cons (cons-exp f2 (car ul)) dl)
-		     (cdr ul) result f1 f2 (f1- di) ui) f1 f2
-		(f1- di) (f1- ui)))))
+		     (cdr ul) result f1 f2 (1- di) ui) f1 f2
+		(1- di) (1- ui)))))
 
 (defun mpc1 (dl ul result f di ui) 
   (cond ((= 0 ui) (cons (reverse dl) result))
 	((= di ui)
-	 (cons (reconc dl (mapcar #'(lambda (l) (cons-exp f l)) ul)) result))
+	 (cons (revappend dl (mapcar #'(lambda (l) (cons-exp f l)) ul)) result))
 	(t (mpc1 (cons (cons-exp f (car ul)) dl) (cdr ul)
-		 (mpc1 dl (cdr ul) result f (f1- di) ui) f
-		 (f1- di) (f1- ui)))))
-
+		 (mpc1 dl (cdr ul) result f (1- di) ui) f
+		 (1- di) (1- ui)))))
+
 ;; Local Modes:
 ;; Mode: LISP
 ;; Comment Col: 40

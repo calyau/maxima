@@ -61,7 +61,7 @@
 (defmfun arcp (func)
   (member func '(%asin %acos %atan %acsc %asec %acot %asinh %acosh %atanh %acsch %asech %acoth)
 	  :test #'eq))
-
+
 (defprop %sin simp-%sin operators)
 (defprop %cos simp-%cos operators)
 (defprop %tan simp-%tan operators)
@@ -185,8 +185,7 @@
     (cl:atanh x)))
 
 ;; Fill the hash table.
-(macrolet ((frob (mfun dfun)
-	     `(setf (gethash ',mfun *double-float-op*) ,dfun)))
+(macrolet ((frob (mfun dfun) `(setf (gethash ',mfun *double-float-op*) ,dfun)))
   (frob mplus #'+)
   (frob mtimes #'*)
   (frob mquotient #'/)
@@ -282,11 +281,9 @@
   (frob %log #'(lambda (x)
 		 (let ((y (ignore-errors (cl:log x))))
 		   (if y y (domain-error x 'log)))))
-  (frob %sqrt #'cl:sqrt)
-  )
+  (frob %sqrt #'cl:sqrt))
 
-(macrolet ((frob (mfun dfun)
-	     `(setf (gethash ',mfun *big-float-op*) ,dfun)))
+(macrolet ((frob (mfun dfun) `(setf (gethash ',mfun *big-float-op*) ,dfun)))
   ;; All big-float implementation functions MUST support a required x
   ;; arg and an optional y arg for the real and imaginary parts.  The
   ;; imaginary part does not have to be given.
@@ -297,8 +294,7 @@
   (frob %atanh #'big-float-atanh)
   (frob %acos 'big-float-acos)
   (frob %log 'big-float-log)
-  (frob %sqrt 'big-float-sqrt)
-  )
+  (frob %sqrt 'big-float-sqrt))
 
 ;; Here is a general scheme for defining and applying reflection rules. A 
 ;; reflection rule is something like f(-x) --> f(x), or  f(-x) --> %pi - f(x). 
@@ -630,7 +626,7 @@
 	((apply-reflection-simp (mop form) y $trigsign))
 	;((and $trigsign (mminusp* y)) (neg (cons-exp '%atan (neg y))))
 	(t (eqtest (list '(%atan) y) form))))
-
+
 (defun %piargs (x ratcoeff)
   (cond ((and (integerp (car x)) (integerp (cdr x))) 0)
 	((not (mevenp (car x))) 
@@ -690,9 +686,9 @@
 
 (defun maxima-reduce (x y)
   (prog (gcd)
-     (setq gcd (gcd x y) x (quotient x gcd) y (quotient y gcd))
-     (if (minusp y) (setq x (minus x) y (minus y)))
-     (return (if (equal y 1) x (list '(rat simp) x y)))))
+     (setq gcd (gcd x y) x (truncate x gcd) y (truncate y gcd))
+     (if (minusp y) (setq x (- x) y (- y)))
+     (return (if (eql y 1) x (list '(rat simp) x y)))))
 
 ;; The following four functions are generated in code by TRANSL. - JPG 2/1/81
 
@@ -706,10 +702,10 @@
   (cond ((equal 0 y) (dbz-err))
 	((integerp x)
 	 (cond ((integerp y) (maxima-reduce x y))
-	       (t (maxima-reduce (times x (caddr y)) (cadr y)))))
-	((integerp y) (maxima-reduce (cadr x) (times (caddr x) y)))
-	(t (maxima-reduce (times (cadr x) (caddr y)) (times (caddr x) (cadr y))))))
-
+	       (t (maxima-reduce (* x (caddr y)) (cadr y)))))
+	((integerp y) (maxima-reduce (cadr x) (* (caddr x) y)))
+	(t (maxima-reduce (* (cadr x) (caddr y)) (* (caddr x) (cadr y))))))
+
 (defmfun $exponentialize (exp)
   (let ($demoivre)
     (cond ((atom exp) exp)
@@ -750,14 +746,14 @@
 	 (div 2 (sub (power '$%e arg) (power '$%e (neg arg)))))
 	((eq '%sech op)
 	 (div 2 (add (power '$%e arg) (power '$%e (mul -1 arg)))))))
-
+
 (defun coefficient (exp var pow)
   (coeff (expand1 exp 1 0) var pow))
 
 (defun mmod (x mod)
   (cond ((and (integerp x) (integerp mod))
-	 (if (minusp (if (zerop mod) x (setq x (f- x (f* mod (// x mod))))))
-	     (f+ x mod)
+	 (if (minusp (if (zerop mod) x (setq x (- x (* mod (truncate x mod))))))
+	     (+ x mod)
 	     x))
         ((and ($ratnump x) ($ratnump mod))
 	 (let

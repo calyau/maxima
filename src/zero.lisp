@@ -9,13 +9,10 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :maxima)
+
 (macsyma-module zero)
 
-(declare-top (special
-					;S VAR  V1 V R1 R2 ;; added declares
-	      #-cl exp		  ;I don't think exp is necessary--wfs
-	      $numer $listconstvars varlist genvar)
-	     (*lexpr $rat))
+(declare-top (special $numer $listconstvars varlist genvar))
 
 (defmfun $zeroequiv (exp var)
   (declare (special var ))
@@ -46,12 +43,11 @@
      (when (zeroequiv1 coeff)
        (setq v (cons (car v) (cdddr v)))
        (go coeffloop))
-     (setq v1 ($rat (sdiff (ratdisrep (cons s (cons v (caddr v))))
-			   var)))
+     (setq v1 ($rat (sdiff (ratdisrep (cons s (cons v (caddr v)))) var)))
      (setq v2 (cadr ($rat (ratdisrep v1))))
      (if (equal (pdegree v2 (car v)) (cadr v))
 	 (return (zeroequiv2 v)))
-     (if (lessp (pdegree v2 (car v)) (cadr v))
+     (if (< (pdegree v2 (car v)) (cadr v))
 	 (return (if (zeroequiv1 v2) (zeroequiv2 v))))
      (return '$dontknow)))
 
@@ -59,10 +55,10 @@
   (declare (special var v s))
   (prog (r r1 r2)
      (declare (special r1 r2))
-     (setq r (sin (times 0.001 (random 1000.))))
+     (setq r (sin (* 1d-3 (random 1000.))))
      (setq v (maxima-substitute r var (ratdisrep (cons s (cons v 1)))))
      (setq v (meval '(($ev) v $numer)))
-     (cond ((and (numberp v) (lessp (abs v) (times r 0.01)))
+     (cond ((and (numberp v) (< (abs v) (* r 1d-2)))
 	    (return t))
 	   ((numberp v) (return nil)))
      (if (and (free v '$%i) (not (isinop v '%log)))
@@ -73,12 +69,7 @@
      (setq r2 ($imagpart v))
      (setq r2 (meval '(($ev) r2 $numer)))
      (if (not (numberp r2)) (return '$dontknow))
-     (cond ((and (lessp (abs r1) (times r 0.01))
-		 (lessp (abs r2) (times r 0.01)))
+     (cond ((and (< (abs r1) (* r 1d-2))
+		 (< (abs r2) (* r 1d-2)))
 	    (return t))
 	   (t (return nil)))))
-
-
-
-
-
