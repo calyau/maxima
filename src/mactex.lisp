@@ -96,7 +96,7 @@
      ;; go back and analyze the first arg more thoroughly now.
      ;; do a normal evaluation of the expression in macsyma
      (setq mexp (meval mexplabel))
-     (cond ((memq mexplabel $labels)	; leave it if it is a label
+     (cond ((member mexplabel $labels :test #'eq)	; leave it if it is a label
 	    (setq mexplabel (concatenate 'string "(" (print-invert-case (stripdollar mexplabel))
 					 ")"))
 	    (setq itsalabel t))
@@ -112,7 +112,7 @@
 		 ((setq y (mget x 'aexpr))
 		  (setq mexp (list '(mdefine) (cons (list x 'array) (cdadr y)) (caddr y)))))))
      (cond ((and (null(atom mexp))
-		 (memq (caar mexp) '(mdefine mdefmacro)))
+		 (member (caar mexp) '(mdefine mdefmacro) :test #'eq))
 	    (format texport "~%\\begin{verbatim}~%")
 	    (cond (mexplabel (format texport "~a " mexplabel)))
 	    (mgrind mexp texport)	;write expression as string
@@ -166,12 +166,11 @@
 
 (defun myprinc (chstr)
   (prog (chlst)
-     (cond ((and (greaterp (plus (length (setq chlst (exploden chstr))) ccol) 70.)
+     (cond ((and (> (+ (length (setq chlst (exploden chstr))) ccol) 70.)
                  (or (stringp chstr) (equal chstr '| |)))
 	    (terpri texport)      ;would have exceeded the line length
 	    (setq ccol 1.)
-	    (myprinc " ")	    ; lead off with a space for safety
-	    ))				;so we split it up.
+	    (myprinc " "))) ; lead off with a space for safetyso we split it up.			
      (do ((ch chlst (cdr ch))
 	  (colc ccol (1+ colc)))
 	 ((null ch) (setq ccol colc))
@@ -192,7 +191,7 @@
 	((or (<= (tex-lbp (caar x)) (tex-rbp lop)) (> (tex-lbp rop) (tex-rbp (caar x))))
 	 (tex-paren x l r))
 	;; special check needed because macsyma notates arrays peculiarly
-	((memq 'array (cdar x)) (tex-array x l r))
+	((member 'array (cdar x) :test #'eq) (tex-array x l r))
 	;; dispatch for object-oriented tex-ifiying
 	((get (caar x) 'tex) (funcall (get (caar x) 'tex) x l r))
 	(t (tex-function x l r nil))))
@@ -523,11 +522,11 @@
 		 (expon (caddr x)) ;; this is the exponent
 		 (doit (and
 			f		; there is such a function
-			(memq (getchar f 1) '(% $)) ;; insist it is a % or $ function
+			(member (getchar f 1) '(% $) :test #'eq) ;; insist it is a % or $ function
 			(not (eq (car (last (car fx))) 'array))	; fix for x[i]^2
 					; Jesper Harder <harder@ifa.au.dk>
-			(not (memq f '(%sum %product %derivative %integrate %at
-				       %lsum %limit))) ;; what else? what a hack...
+			(not (member f '(%sum %product %derivative %integrate %at
+				       %lsum %limit) :test #'eq)) ;; what else? what a hack...
 			(or (and (atom expon) (not (numberp expon))) ; f(x)^y is ok
 			    (and (atom expon) (numberp expon) (> expon 0))))))
 					; f(x)^3 is ok, but not f(x)^-1, which could
@@ -694,7 +693,7 @@
 
 (defun tex-mplus (x l r)
 					;(declare (fixnum w))
-  (cond ((memq 'trunc (car x))(setq r (cons "+\\cdots " r))))
+  (cond ((member 'trunc (car x) :test #'eq) (setq r (cons "+\\cdots " r))))
   (cond ((null (cddr x))
 	 (if (null (cdr x))
 	     (tex-function x l r t)

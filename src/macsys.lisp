@@ -123,8 +123,8 @@
 	(nil)
       (catch 'return-from-debugger
 	(when (or (not (checklabel $inchar))
-              (not (checklabel $outchar)))
-	  (setq $linenum (f1+ $linenum)))
+		  (not (checklabel $outchar)))
+	  (incf $linenum))
 	#+akcl(si::reset-stack-limits)
 	(setq c-tag (makelabel $inchar))
 	(let ((*mread-prompt* (if batch-or-demo-flag nil (main-prompt)))
@@ -144,11 +144,11 @@
 		  (boundp '*socket-connection*))
 		 (progn
 		   (setq input-stream *standard-input*)
-           (if batch-or-demo-flag
-             (return '$done)
-             (progn
-               (setq *mread-prompt* nil)
-               (setq r (dbm-read input-stream nil eof))))))
+		   (if batch-or-demo-flag
+		       (return '$done)
+		       (progn
+			 (setq *mread-prompt* nil)
+			 (setq r (dbm-read input-stream nil eof))))))
 
 	     (cond ((and (eq r eof) (boundp '*socket-connection*)
 			 (eq input-stream *socket-connection*))
@@ -181,11 +181,11 @@
 	      etime-used (quotient 
 			  (float (difference etime-after etime-before))
 			  internal-time-units-per-second))
-	(setq accumulated-time (plus accumulated-time time-used))
+	(incf accumulated-time time-used)
 	(setq d-tag (makelabel $outchar))
 	(unless $nolabels (set d-tag $%))
 	(setq $_ $__)
-	(when $showtime  ;; we don't distinguish showtime:all?? /RJF
+	(when $showtime	;; we don't distinguish showtime:all?? /RJF
 	  (format t "Evaluation took ~$ seconds (~$ elapsed)"
 		  time-used etime-used )  
           #+gcl 
@@ -205,13 +205,11 @@
 		(other (- (cadr area-after) (cadr area-before)))
 		(gctime (- (caddr area-after) (caddr area-before))))
 	    (if (= 0 gctime) nil (format t " including GC time  ~s sec ,"(* 0.001 gctime)))
-	    (format t " using ~s cons-cells and ~s other bytes.~%" conses other))
-	  
-	  )
+	    (format t " using ~s cons-cells and ~s other bytes.~%" conses other)))
 	(unless $nolabels
 	  (putprop d-tag (cons time-used  0) 'time))
 	(if (eq (caar r) 'displayinput)
-	    (displa `((mlable) ,d-tag ,$%)))  ;; consistently misspelling label.
+	    (displa `((mlable) ,d-tag ,$%))) ;; consistently misspelling label.
 	(when (eq batch-or-demo-flag ':demo)
 	  (mtell "~A_~A" *prompt-prefix* *prompt-suffix*)
 	  (let (quitting)	  
@@ -226,8 +224,7 @@
 		((#\space #\; #\n #\e #\x #\t))
 		((#\newline )
 		 (if quitting (throw 'abort-demo nil) (return nil))) 
-		(t (setq quitting t)
-		   )))))
+		(t (setq quitting t))))))
 	;; This is sort of a kludge -- eat newlines and blanks so that
 	;; they don't echo
 	(and batch-or-demo-flag

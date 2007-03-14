@@ -29,43 +29,13 @@
 (def%tr mncexpt (form)
   `($any . (ncpower ,@(tr-args (cdr form)))))
 
-;; maybe this ?
-(comment 
- (defun strict-union-mode-of-tforms (l)
-   (do ((m (caar l))
-	(l (cdr l)(cdr l)))
-       ((null l) m)
-     (and (not (eq m (caar l))) (return '$any))))
-
- (defmacro def%modal1%tr (name args &rest cases)
-   `(def%tr ,name (*tr-form-argument*)
-     (cond ((= (length *tr-form-argument*) ,(f1+ (length args)))
-	    (let* ((*tr-args* (mapcar #'translate
-				      (cdr *tr-form-argument*)))
-		   (*mode* (strict-union-mode-of-tforms  *tr-args*)))
-	      (setq *tr-args* (mapcar #'cdr *tr-args*)))))))
-				
-
- (def-modal-tr $beta (x y)
-   ($float (//$ (*$ ($gamma x) ($gamma y))
-		($gamma (+$ x y))))
-   ($number (quotient (times ($gamma x) ($gamma y))
-		      ($gamma (plus x y))))
-   ($any (simplify (list '($beta) x y))))
-
- (def-modal-tr $gamma (x)
-   ($float ($gamma x))
-   ($any (simplify ($gamma x)))))
-
-;;; end of commented out code.
-
 (def%tr $remainder (form)
   (let ((n (tr-nargs-check form '(2 . nil)))
 	(tr-args (mapcar 'translate (cdr form))))
     (cond ((and (= n 2)
 		(eq (caar tr-args) '$fixnum)
 		(eq (car (cadr tr-args)) '$fixnum))
-	   `($fixnum . (remainder ,(cdr (car tr-args))
+	   `($fixnum . (rem ,(cdr (car tr-args))
 			,(cdr (cadr tr-args)))))
 	  (t
 	   (call-and-simp '$any '$remainder (mapcar 'cdr tr-args))))))
@@ -85,12 +55,7 @@
 (def%tr %sum $batcon)
 (def%tr %product $batcon)
 
-;;(DEF%TR %BINOMIAL (FORM)
-;;	(TR-NARGS-CHECK FORM '(2 .2))
-;;	`($ANY . ($BINOMIAL ,@(TR-ARGS (CDR FORM)))))
 
-
-
 ;; From MATCOM.
 ;; Temp autoloads needed for pdp-10. There is a better way
 ;; to distribute this info, too bad I never implemented it.
@@ -109,20 +74,20 @@
   (let ((meta-prop-p t)
 	(meta-prop-l nil))
     (funcall f (cdr form))
-    `($any . (progn 'compile ,@(mapcar #'patch-up-meval-in-fset (nreverse meta-prop-l))))))
+    `($any . (progn ,@(mapcar #'patch-up-meval-in-fset (nreverse meta-prop-l))))))
 
 (def%tr $matchdeclare (form)
   (do ((l (cdr form) (cddr l))
        (vars ()))
       ((null l)
-       `($any . (progn 'compile
-		       ,@(mapcar #'(lambda (var)
-				     (dtranslate `(($define_variable)
-						   ,var
-						   ((mquote) ,var)
-						   $any)))
-				 vars)
-		       ,(dtranslate `((sub_$matchdeclare) ,@(cdr form))))))
+       `($any . (progn 
+		  ,@(mapcar #'(lambda (var)
+				(dtranslate `(($define_variable)
+					      ,var
+					      ((mquote) ,var)
+					      $any)))
+			    vars)
+		  ,(dtranslate `((sub_$matchdeclare) ,@(cdr form))))))
     (cond ((atom (car l))
 	   (push (car l) vars))
 	  ((eq (caaar l) 'mlist)

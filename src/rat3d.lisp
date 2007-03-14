@@ -20,8 +20,7 @@
 
 (declare-top (special *min* *mx* *odr* nn* scanmapp *checkagain adn*))
 
-(declare-top (special $factorflag $intfaclim $dontfactor $algebraic $ratfac
-		      errrjfflag))
+(declare-top (special $factorflag $intfaclim $dontfactor $algebraic $ratfac errrjfflag))
 
 ;;There really do seem to be two such variables...
 (declare-top (special alpha *alpha gauss genvar minpoly*))
@@ -254,14 +253,14 @@
 	(t (car (iroot (abs x) n)))))
 
 (defun iroot (a n)   ; computes a^(1/n)  see Fitch, SIGSAM Bull Nov 74
-  (cond ((< (haulong a) n) (list 1 (1- a)))
+  (cond ((< (integer-length a) n) (list 1 (1- a)))
 	(t				;assumes integer a>0 n>=2
-	 (do ((x (expt 2 (1+ (quotient (haulong a) n)))
-		 (difference x (quotient (plus n1 bk) n)))
+	 (do ((x (expt 2 (1+ (quotient (integer-length a) n)))
+		 (- x (quotient (+ n1 bk) n)))
 	      (n1 (1- n)) (xn) (bk))
 	     (nil)
 	   (cond ((signp le (setq bk (- x (*quo a (setq xn (expt x n1))))))
-		  (return (list x (difference a (times x xn))))))))))
+		  (return (list x (- a (* x xn))))))))))
 
 (defmfun $nthroot(p n)
   (cond ((setq n (pnthrootp (cadr ($rat p)) n)) (pdis n))
@@ -379,7 +378,7 @@
 	(t (let* ((adn* 1)
 		  (f (pfactor1 (car p))))
 	     (nconc (if (equal adn* 1) nil
-			(list adn* (f- (cadr p))))
+			(list adn* (- (cadr p))))
 		    (do ((l f (cdr l))
 			 (ans nil (cons (car l) (cons (cadr p) ans))))
 			((null l) ans))
@@ -396,7 +395,7 @@
 			     factors nil))
 		   (go out))
 		  ((and (not algfac*) (not modulus)
-			(not (equal (cadr p) 2.)) (estcheck (cdr p)))
+			(not (equal (cadr p) 2)) (estcheck (cdr p)))
 		   (return (list p))))))
      (and (setq factors (pfactorlin p (pdegreevector p)))
 	  (return factors))
