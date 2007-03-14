@@ -698,7 +698,7 @@
 	       (if (member 'trunc (cdar p) :test #'eq) ($taytorat p) p))))
   (let ((formflag ($ratp p)) (varlist) (genvar))
     (newvar x) (newvar p)
-    (or (andmapc #'(lambda (exp)
+    (or (every #'(lambda (exp)
 		     (or (alike1 x exp) (free exp x)))
 		 varlist)
 	(merror "`ratdiff' variable is embedded in kernel"))

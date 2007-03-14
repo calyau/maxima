@@ -600,8 +600,8 @@
 	((and $ratfac (assolike x genpairs)))
 	((eq (caar x) 'mplus)
 	 (cond ($ratfac
-		(setq x (mapcar 'prep1 (cdr x)))
-		(cond ((andmapc 'frpoly? x)
+		(setq x (mapcar #'prep1 (cdr x)))
+		(cond ((every #'frpoly? x)
 		       (cons (mfacpplus (mapl #'(lambda (x) (rplaca x (caar x))) x)) 1))
 		      (t (do ((a (car x) (facrplus a (car l)))
 			      (l (cdr x) (cdr l)))

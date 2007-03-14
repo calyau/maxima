@@ -1427,7 +1427,7 @@
 
 (defun sum-of-intsp (ans)
   (cond ((atom ans) (not (eq ans var)))
-	((mplusp ans) (andmapc #'sum-of-intsp (cdr ans)))
+	((mplusp ans) (every #'sum-of-intsp (cdr ans)))
 	((eq (caar ans) '%integrate) t)
 	((mtimesp ans)
 	 (do ((facs (cdr ans) (cdr facs))

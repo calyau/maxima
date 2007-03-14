@@ -162,7 +162,7 @@
   (do ((l lst (cdr l)) (fl) (vl)) ((null l) vl)
     (cond ((atom (setq fl (car l)))
 	   (unless (maxima-constantp fl) (push fl vl)))
-	  ((andmapc #'$constantp (cdr fl)) (push fl vl)))))
+	  ((every #'$constantp (cdr fl)) (push fl vl)))))
 
 ;; List of multiplicities.  Why is this special?
 

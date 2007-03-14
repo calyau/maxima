@@ -45,9 +45,6 @@
   )
 
 
-(defmfun *make-list (size &optional (val nil))
-  (make-list size :initial-element val))
-
 ;;; F is assumed to be a function of two arguments.  It is mapped down L
 ;;; and applied to consequtive pairs of elements of the list.
 ;;; Useful for iterating over property lists.
@@ -57,20 +54,13 @@
       ((null llt) lans)
     (setq lans (cons (funcall f (car llt) (cadr llt)) lans))))
 
-;;; (ANDMAPC #'INTEGERP '(1 2 3)) --> T
-;;; (ANDMAPC #'INTEGERP '(1 2 A)) --> NIL
 ;;; (ORMAPC  #'INTEGERP '(1 2 A)) --> T
 ;;; (ORMAPC  #'INTEGERP '(A B C)) --> NIL
 
 ;;; If you want the do loop generated inline rather than doing a function call,
-;;; use the macros SOME and EVERY.  See LMLisp manual for more information.
+;;; use the macros SOME.
 ;;; Note that the value returned by ORMAPC is slightly different from that
 ;;; returned by SOME.
-
-(defmfun andmapc (f l)
-  (do ((l l (cdr l)))
-      ((null l) t)
-    (if (not (funcall f (car l))) (return nil))))
 
 (defmfun ormapc (f l &aux answer)
   (do ((l l (cdr l)))

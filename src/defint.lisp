@@ -2661,12 +2661,12 @@
 	      (eq (cadr exp) '$%e))
 	 (eq (ask-integer ($coeff (caddr exp) var) '$integer)
 	     '$yes))
-	(t (andmapc '%e-integer-coeff (cdr exp)))))
+	(t (every '%e-integer-coeff (cdr exp)))))
 
 (defun wlinearpoly (e var)
   (cond ((and (setq e (polyinx e var t))
-	      (equal (deg e) 1.))
-	 (subin 1. e)))) 
+	      (equal (deg e) 1))
+	 (subin 1 e)))) 
 
 ;; Test to see if exp is of the form f(exp(x)), and if so, replace
 ;; exp(x) with 'z*.  That is, basically return f(z*).

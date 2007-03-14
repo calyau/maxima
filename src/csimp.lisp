@@ -9,14 +9,13 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :maxima)
+
 (macsyma-module csimp)
 
 (declare-top (special rsn* $factlim $exponentialize 
 		      var varlist genvar $%emode $ratprint 
 		      nn* dn* $errexp sqrt3//2 sqrt2//2 -sqrt2//2 -sqrt3//2
-		      $demoivre errorsw islinp $keepfloat $ratfac)
-	     (*lexpr $ratcoef)
-	     (genprefix %))
+		      $demoivre errorsw islinp $keepfloat $ratfac))
 
 (load-macsyma-macros rzmac)
 
@@ -285,7 +284,7 @@
 (defun polyp (a)
   (cond ((atom a) t)
 	((memq (caar a) '(mplus mtimes))
-	 (andmapc (function polyp) (cdr a)))
+	 (every #'polyp (cdr a)))
 	((eq (caar a) 'mexpt)
 	 (cond ((free (cadr a) var)
 		(free (caddr a) var))

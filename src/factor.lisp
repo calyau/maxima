@@ -213,7 +213,7 @@
 	   (and (null (car p)) (null (cdadr p)))))))
 
 (defun zerolp (a)
-  (andmapc #'zerop1 a))
+  (every #'zerop1 a))
 
 (defmfun testdivide (x y)
   (let ((errrjfflag t))
@@ -255,8 +255,8 @@
      (go loop)))
 
 (defun onevarp (p)
-  (if algfac* (andmapc #'pacoefp (cdr p))
-      (andmapc #'numberp (cdr p))))
+  (if algfac* (every #'pacoefp (cdr p))
+      (every #'numberp (cdr p))))
 
 (defun putodr (l)
   (do ((l l (cdr l))
@@ -289,7 +289,7 @@
   (cond ((atom p)
 	 (cond ((equal p 1) (throw 'cnt 1))
 	       (t (list p))))
-	((andmapc #'numberp (cdr p))
+	((every #'numberp (cdr p))
 	 (setq p (oddelm p))
 	 (cond ((member 1 p) (throw 'cnt 1))
 	       (t (cdr p))))
