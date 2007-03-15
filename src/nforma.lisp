@@ -9,6 +9,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :maxima)
+
 (macsyma-module nforma)
 
 (declare-top (special 1//2 -1//2 displayp aliaslist in-p))
@@ -19,20 +20,15 @@
 (defmvar $exptdispflag t)
 (defmvar $sqrtdispflag t)
 (defmvar $negsumdispflag t)
+
 (setq in-p nil)
-
-;;(defun $extendp (xxxx)
-;;  (declare (ignore xxxx))
-;;  nil)
-
-;;for new types that answer (send x :macsyma-extended-type) and such like.
 
 (defmfun nformat (form)
   (cond ((atom form)
 	 (cond ((and (numberp form) (minusp form)) (list '(mminus) (minus form)))
 	       ((eq t form) (if in-p t '$true))
 	       ((eq nil form) (if in-p nil '$false))
-	       ((and displayp (car (assqr form aliaslist))))
+	       ((and displayp (car (rassoc form aliaslist :test #'eq))))
 	       ;;	       (($EXTENDP FORM)
 	       ;;		(NFORMAT (transform-extends form)))
 	       (t form)))

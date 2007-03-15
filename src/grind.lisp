@@ -165,7 +165,7 @@
 	   ((and (setq y (safe-get x 'reversealias))
 		 (not (and (memq x $aliases) (get x 'noun))))
 	    (setq y (exploden y)))
-	   ((setq y (assqr x aliaslist)) (return (msize (car y) l r lop rop)))
+	   ((setq y (rassoc x aliaslist :test #'eq)) (return (msize (car y) l r lop rop)))
        ((null (setq y (exploden x))))
        ((safe-get x 'noun) (return (msize-atom (get x 'noun) l r)))
 	   ((char= #\$ (car y)) (setq y (slash (cdr y))))

@@ -100,14 +100,6 @@
 	((atom l) (memq l x))
 	(t (or (amongl x (car l)) (amongl x (cdr l)))))) 
 
-;;; Reverse ASSQ -- like ASSQ but tries to find an element of the alist whose
-;;; cdr (not car) is EQ to the object.  To be renamed to RASSQ in the near
-;;; future.
-
-(defmfun assqr (object alist)
-  (dolist (pair alist)
-    (if (eq object (cdr pair)) (return pair))))
-
 ;;; Should be open-coded at some point.  (Moved here from RAT;FACTOR)
 (defmfun log2 (n)
   (1- (integer-length n)))
