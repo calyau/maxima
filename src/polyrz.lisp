@@ -88,13 +88,12 @@
   (prog (n lcf loglcf coef logb)
      (setq n (car p))
      (setq lcf (abs (cadr p)))
-     (setq loglcf (1- (log2 lcf)))
+     (setq loglcf (- (integer-length lcf) 2))
      (setq logb 1)
      loop (cond ((null (setq p (cddr p))) (return (expt 2 logb)))
-		((lessp (setq coef (abs (cadr p))) lcf) (go loop)) )
-     (setq logb (max logb (+ 1 (ceil (- (log2 coef) loglcf)
-				      (- n (car p)) )))) 
-     (go loop) ))
+		((< (setq coef (abs (cadr p))) lcf) (go loop)))
+     (setq logb (max logb (1+ (ceil (- (integer-length coef) loglcf 1) (- n (car p)))))) 
+     (go loop)))
 
 (defun ceil (a b)
   (+ (quotient a b)			;CEILING FOR POS A,B
@@ -193,7 +192,8 @@
 	   (t (merror "Wrong number of arguments - `nroots'")))
      (return (nroots (unipoly (meqhk (arg 1))) (makpoint l) (makpoint r)))))
 
-(defun nroots (p l r) (rootaddup (psqfr p) l r))
+(defun nroots (p l r)
+  (rootaddup (psqfr p) l r))
 
 (defun rootaddup (llist l r)
   (cond ((null llist) 0)
@@ -214,7 +214,7 @@
      (setq rv (ivar seq r))
      (setq tlist (setq islist nil))
      (cond ((equal lv rv) (return nil)))
-     a	(cond ((greaterp (setq rts (difference lv rv)) 1)(go b))
+     a	(cond ((> (setq rts (difference lv rv)) 1)(go b))
 	      ((equal rts 1)(setq islist (cons (cons l r) islist))))
      (cond ((null tlist) (return islist)))
      (setq lv (car tlist))
@@ -229,7 +229,7 @@
 	    (setq tlist (append (list lv midv l mid) tlist))))
      (setq l mid)
      (setq lv midv)
-     (go a) ))
+     (go a)))
 
 (defun refine (p l r eps)
   (prog (sr mid smid)
@@ -242,7 +242,7 @@
      (cond ((zerop smid)(return (list mid mid)))
 	   ((equal smid sr)(setq r mid))
 	   (t (setq l mid)) )
-     (go a) ))
+     (go a)))
 
 (defun rhalf (r) (rreduce (car r) (* 2 (cdr r))))
 
@@ -258,8 +258,8 @@
   (rplus* a (cons (minus (car b)) (cdr b))) )
 
 (defun rlessp (a b)
-  (lessp (* (car a) (cdr b))
-	 (* (car b) (cdr a)) ))
+  (< (* (car a) (cdr b))
+     (* (car b) (cdr a)) ))
 
 
 ;;; This next function is to do what SOLVE2 should do in programmode

@@ -52,7 +52,7 @@
 (defmfun map2c (f l)
   (do ((llt l (cddr llt)) (lans))
       ((null llt) lans)
-    (setq lans (cons (funcall f (car llt) (cadr llt)) lans))))
+    (push (funcall f (car llt) (cadr llt)) lans)))
 
 ;;; (ORMAPC  #'INTEGERP '(1 2 A)) --> T
 ;;; (ORMAPC  #'INTEGERP '(A B C)) --> NIL
@@ -99,10 +99,6 @@
   (cond ((null l) nil)
 	((atom l) (memq l x))
 	(t (or (amongl x (car l)) (amongl x (cdr l)))))) 
-
-;;; Should be open-coded at some point.  (Moved here from RAT;FACTOR)
-(defmfun log2 (n)
-  (1- (integer-length n)))
 
 ;;; Takes a list in "alist" form and converts it to one in
 ;;; "property list" form, i.e. ((A . B) (C . D)) --> (A B C D).

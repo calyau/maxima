@@ -811,7 +811,7 @@ One extra decimal digit in actual representation for rounding purposes.")
 		      (list man exp))))))
 
 (defun fptimes* (a b)
-  (if (or (equal (car a) 0) (equal (car b) 0))
+  (if (or (zerop (car a)) (zerop (car b)))
       '(0 0)
       (list (fpround (* (car a) (car b)))
 	    (+ *m (cadr a) (cadr b) (- fpprec)))))
@@ -819,7 +819,7 @@ One extra decimal digit in actual representation for rounding purposes.")
 ;; Don't use the symbol BASE since it is SPECIAL.
 
 (defun fpintexpt (int nn fixprec)	;INT is integer
-  (setq fixprec (quotient fixprec (log2 int))) ;NN is pos
+  (setq fixprec (truncate fixprec (1- (integer-length int)))) ;NN is pos
   (let ((bas (intofp (expt int (min nn fixprec)))))
     (if (> nn fixprec)
 	(fptimes* (intofp (expt int (remainder nn fixprec)))
@@ -829,8 +829,8 @@ One extra decimal digit in actual representation for rounding purposes.")
 ;; NN is positive or negative integer
 
 (defun fpexpt (p nn)
-  (cond ((equal nn 0) (fpone))
-	((equal nn 1) p)
+  (cond ((zerop nn) (fpone))
+	((eql nn 1) p)
 	((< nn 0) (fpquotient (fpone) (fpexpt p (- nn))))
 	(t (prog (u)
 	      (if (oddp nn)

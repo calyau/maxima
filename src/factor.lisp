@@ -605,13 +605,12 @@
 	(t (quick-sqfr-check u var))))
 
 (defun logtwo (x)
-  (prog (ans)
-     (cond ((equal x 0) (return 0))
-	   ((equal x 1) (return 1)))
-     (setq ans (log2 x))
-     (if (> x (expt 2 ans))
-	 (return (1+ ans))
-	 (return ans))))
+  (cond ((eql x 0) 0)
+	((eql x 1) 1)
+	(t (let ((ans (1- (integer-length x))))
+	     (if (> x (expt 2 ans))
+		 (1+ ans)
+		 ans)))))
 
 (declare-top (special p))
 
