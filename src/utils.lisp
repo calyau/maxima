@@ -97,7 +97,7 @@
 
 (defmfun amongl (x l) 
   (cond ((null l) nil)
-	((atom l) (memq l x))
+	((atom l) (member l x :test #'eq))
 	(t (or (amongl x (car l)) (amongl x (cdr l)))))) 
 
 ;;; Takes a list in "alist" form and converts it to one in
@@ -108,24 +108,21 @@
   (cond ((null l) nil)
 	(t (list* (caar l) (cdar l) (dot2l (cdr l))))))
 
-;;; (A-ATOM sym selector value   )
 ;;; (C-PUT  sym value    selector)
 ;;;
-;;;  They make a symbol's property list look like a structure.
+;;;  Make a symbol's property list look like a structure.
 ;;;
 ;;;  If the value to be stored is NIL,
 ;;;     then flush the property.
 ;;;     else store the value under the appropriate property.
 ;;;
-;;; >>> Note: Since they do essentially the same thing, one (A-ATOM)
-;;; >>>       should eventually be flushed...
-
-(defmfun a-atom (bas sel val)
-  (cput bas val sel))
 
 (defmfun cput (bas val sel)
-  (cond ((null val) (zl-remprop bas sel) nil)
-	(t (putprop bas val sel))))
+  (cond ((null val)
+	 (zl-remprop bas sel)
+	 nil)
+	(t
+	 (putprop bas val sel))))
 
 ;;; This is like the function SYMBOLCONC except that it binds base
 

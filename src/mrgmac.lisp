@@ -141,7 +141,7 @@
 			 (t `(list 'cdr (list 'rplacd ,(caddr bas) (cadddr x))))))
 	 (cons `((eq ',(cadr desc) (caddr x)) ,bas) result))
 	((eq  (quote atom) (car desc))
-	 (list `(t (list 'a-atom (cadr x) (list 'quote (caddr x)) (cadddr x)))))
+	 (list `(t (list 'cput (cadr x) (cadddr x) (list 'quote (caddr x))))))
 	((eq 'cons (car desc))
 	 (setq result (defa1 (cadr desc) `(list 'car ,bas) nil result))
 	 (defa1 (caddr desc) `(list 'cdr ,bas) t result))
