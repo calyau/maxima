@@ -1,5 +1,5 @@
 \input texinfo
-@c /maxima.texi/1.45/Thu Mar  8 03:54:16 2007/-ko/
+@c /maxima.texi/1.46/Wed Mar 14 00:42:56 2007/-ko/
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c -*-texinfo-*-
 
@@ -73,29 +73,14 @@ O c@'{o}digo fonte deste documento encontra-se no formato texinfo.  Para
 contribuir com a equipe do Maxima na tarefa de manter a tradu@value{cedilha}@~{a}o para o
 portugu@^{e}s sempre atualizada envie um e-mail para @value{mail}.
 
-A se@value{cedilha}@~{a}o "Pacotes adicionais" foi anexada ao manual em fevereiro/2006).
-
 Em caso de d@'{u}vida sobre algum trecho deste manual consulte o original
 ingl@^{e}s. Caso sua d@'{u}vida persista ou tenha alguma sugest@~{a}o/aperfei@value{cedilha}oamento/
-cr@'{@dotless{i}}tica mande por e-mail para Jorge Barros de Abreu <ficmatin01 at solar dot
-com dot br>
-
-Vers@~{a}o do manual no formato pdf: maxima.pdf
+cr@'{@dotless{i}}tica mande-nos um e-mail no endere@value{cedilha}o acima.
 
 Vers@~{a}o do manual no formato info: maxima-info.tar.gz
 
-Mantenedores:
+Veja o arquivo AUTHORS para conhecer todos os mantenedores do Maxima.
 
-@itemize @bullet
-@item
-Vadim V. Zhytnikov (UTF-8 support)
-@item
-Jaime E. Villate
-@item
-Mario Rodriguez
-@item
-Jorge Barros de Abreu
-@end itemize
 @end titlepage
 
 @summarycontents
@@ -131,29 +116,14 @@ e desenvolver o Macsyma DOE, agora chamado Maxima.
  tradu@value{cedilha}@~{a}o para o portugu@^{e}s sempre atualizada envie um 
  e-mail para @value{mail}.
 
-    A se@value{cedilha}@~{a}o "Pacotes adicionais" foi anexada ao manual em fevereiro/2006).
-
-    Em caso de d@'{u}vida sobre algum trecho deste manual consulte o 
- original ingl@^{e}s. Caso sua d@'{u}vida persista ou tenha alguma sugest@~{a}o/aperfei@value{cedilha}oamen-
- to/cr@'{i}tica mande por e-mail para Jorge Barros de Abreu 
- <ficmatin01 at solar dot com dot br>
-
-  Vers@~{a}o do manual no formato pdf: maxima.pdf
+ Em caso de d@'{u}vida sobre algum trecho deste manual consulte o original
+ ingl@^{e}s. Caso sua d@'{u}vida persista ou tenha alguma sugest@~{a}o/aperfei@value{cedilha}oamento/
+ cr@'{@dotless{i}}tica mande-nos um e-mail no endere@value{cedilha}o acima.
 
   Vers@~{a}o do manual no formato info: maxima-info.tar.gz
 
-Mantenedores:
-
-@itemize @bullet
-@item
-Vadim V. Zhytnikov (UTF-8 support)
-@item
-Jaime E. Villate
-@item
-Mario Rodriguez
-@item
-Jorge Barros de Abreu
-@end itemize
+  Veja o arquivo AUTHORS para conhecer todos os mantenedores do Maxima.
+  
 @end ifnottex
 @c includes
 
@@ -361,6 +331,7 @@ Equa@value{cedilha}@~{o}es
 
 Equa@value{cedilha}@~{o}es Diferenciais
 
+* Introdu@value{cedilha}@~{a}o a Equa@value{cedilha}@~{o}es Diferenciais::
 * Defini@value{cedilha}@~{o}es para Equa@value{cedilha}@~{o}es Diferenciais::  
 
 Num@'{e}rico
