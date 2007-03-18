@@ -27,7 +27,7 @@
 	    (return (eqtest (list '(%plog) x) check))))
      (newvar x)
      (cond
-       ((and (eq '$%i (car varlist)) (not (ormapc #'atom (cdr varlist))))
+       ((and (eq '$%i (car varlist)) (not (some #'atom (cdr varlist))))
 	(setq dd (trisplit x))
 	(cond ((setq z (patan (car dd) (cdr dd)))
 	       (return (add2* (simpln (list '(%log) 

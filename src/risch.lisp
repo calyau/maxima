@@ -118,7 +118,7 @@
      (setq varlist (caddr ratform))
      (setq mainvar (caadr (ratf intvar)))
      (setq genvar (cadddr ratform))
-     (unless (ormapc #'algpget varlist)
+     (unless (some #'algpget varlist)
        (setq $algebraic nil)
        (setq $gcd (car *gcdl*)))
      (setq var (getrischvar))

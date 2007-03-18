@@ -118,7 +118,7 @@
      ;;hard to maintain user ordering info.
      (if ($ratp c) (setq dontdisrepit t))
      (when (and $radsubstflag
-		(prog2 (newvar b) (ormapc #'mexptp varlist)))
+		(prog2 (newvar b) (some #'mexptp varlist)))
        (let (($factorflag t) *exp *exp2 *radsubst)
 	 (setq b (fullratsimp b))
 	 (setq c (fullratsimp c))

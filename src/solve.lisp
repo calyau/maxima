@@ -125,7 +125,7 @@
 	 (mtell "~&Got a null variable list, continuing - `solve'~%"))
      (if (and (null eql) $solvenullwarn)
 	 (mtell "~&Got a null equation list, continuing - `solve'~%"))
-     (if (ormapc #'mnump varl)
+     (if (some #'mnump varl)
 	 (merror "A number was found where a variable was expected -`solve'"))
 
      (cond ((equal eql '(0)) (return '$all))

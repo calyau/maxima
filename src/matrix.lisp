@@ -544,7 +544,7 @@
 (defmfun $rank (x)
   (let ((*rank* t) ($ratmx t) ($algebraic $algebraic))
     (newvarmat1 (setq x (check x)))
-    (and (not $algebraic) (ormapc #'algp varlist) (setq $algebraic t))
+    (and (not $algebraic) (some #'algp varlist) (setq $algebraic t))
     (setq x (replist1 (mcx (cdr x))))
     (mtoa '*mat* (length x) (length (car x)) x)
     (tfgeli '*mat* (length x) (length (car x)))))

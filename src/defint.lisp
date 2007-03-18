@@ -67,7 +67,7 @@
 ;;dintegrate also tries indefinite integration based on certain 
 ;;predicates (such as abconv) and tries breaking up the integrand
 ;;over a sum or tries a change of variable.
-;;
+;;
 ;;	ztoinf is the routine for doing integrals over the range 0,inf.
 ;;          it goes over a series of routines and sees if any will work:
 ;;
@@ -535,7 +535,7 @@
 	       (t (dintegrate exp var ll ul)))
       (restore-defint-assumptions old-assumptions *defint-assumptions*))))
        
-
+
 (defun dintegrate (exp var ll ul)
   (let ((ans nil) (arg nil) (*scflag* nil) 
 	(*dflag nil) ($%emode t))
@@ -615,7 +615,7 @@
 	     (among '$und ans))
 	 (diverg))
 	(t (principal) ans)))
-
+
 (defun interval-list (pole-list ll ul)
   (let ((first (car (first pole-list)))
 	(last (caar (last pole-list))))
@@ -632,7 +632,7 @@
 		 (setq ll (m- 'prin-inf)))
 	     (setq pole-list (append (list (cons ll 'ignored)) pole-list)))))
   pole-list)
-
+
 ;; Assumes EXP is a rational expression with no polynomial part and
 ;; converts the finite integration to integration over a half-infinite
 ;; interval.  The substitution y = (x-a)/(b-x) is used.  Equivalently,
@@ -700,7 +700,7 @@
     (setq dn* (pdis (ratdenominator e)))
     (setq e (pdivide (ratnumerator e) (ratdenominator e)))
     (cons (simplify (rdis (car e))) (simplify (rdis (cadr e))))))
-
+
 
 (defun intbyterm (exp *nodiverg)
   (let ((saved-exp exp))
@@ -1129,7 +1129,7 @@
 				  (t nil)))
 		      (t (setq downans 0))))
 	   (sratsimp (m* '$%pi (m+ upans (m- downans))))))))
-
+
 
 (defun evenfn (e var)
   (let ((temp (m+ (m- e)
@@ -1197,7 +1197,7 @@
 		 (setq ans (zmtorat n (cond ((mtimesp d) d)
 					    (t ($sqfr d)))
 				    s #'ztorat)))
-	    	   (return (m* (m// nc dc) ans)))
+	    	   (return (m* (m// nc dc) ans)))
 	   ((and (evenfn d var) 
 		 (setq nn* (p*lognxp n s)))
 	    (setq ans (log*rat (car nn*) d (cadr nn*)))
@@ -1398,7 +1398,7 @@
 		(setq s (difapply n d s #'mtorat)))
 	   s)
 	  (t (csemiup n d var)))))
-
+
 (defun zmtorat (n d s fn1)
   (prog (c) 
      (cond ((eq ($sign (m+ s (m+ 1 (setq nn* (deg n))))) 
@@ -1504,7 +1504,7 @@
   ;;If rd* is () the m^ts must be mnump's.
   (let ((rd* ())) 
     (radicalp e v)))
-
+
 ;; Compute the integral(n/d,x,0,inf) by computing the negative of the
 ;; sum of residues of log(-x)*n/d over the poles of n/d inside the
 ;; keyhole contour.  This contour is basically an disk with a slit
@@ -1554,7 +1554,7 @@
 		     (eq (cdr e) var))
 		(car e))))))
 
-
+
 
 ;; integrate(a*sc(r*x)^k/x^n,x,0,inf).
 (defun ssp (exp)
@@ -1706,7 +1706,7 @@
 	 (fpart (caddr e)))
 	((mtimesp e)
 	 (m+l (mapcar #'thrad e)))))
-
+
 
 ;;; THE FOLLOWING FUNCTION IS FOR TRIG FUNCTIONS OF THE FOLLOWING TYPE:
 ;;; LOWER LIMIT=0 B A MULTIPLE OF %PI SCA FUNCTION OF SIN (X) COS (X)
@@ -1740,7 +1740,7 @@
   ;; r - fpart(r)
   (m+ r (m* -1. (fpart r)))) 
 
-
+
 ;;;Try making exp(%i*var) --> yy, if result is rational then do integral
 ;;;around unit circle. Make corrections for limits of integration if possible.
 (defun scrat (sc b)
@@ -2029,7 +2029,7 @@
 
 
 (comment (the following func is not complete)) 
-
+
 ;;(DEFUN ZTO1 (E)
 ;;  (prog (ans k l)
 ;;    (COND ((NOTINVOLVE E '(%SIN %COS %TAN %LOG))
@@ -2084,7 +2084,7 @@
 	   (setq k 0.)
 	   (values k c)))))
 
-
+
 ;;(DEFUN BATAP (E) 
 ;;  (PROG (K C L) 
 ;;    (COND ((NOT (BATA0 E)) (RETURN NIL))
@@ -2276,7 +2276,7 @@
     (cond (result (m* '$%pi result))
 	  (t nil))))
 
-
+
 (defun logx1 (exp ll ul)
   (let ((arg nil))
     (cond
@@ -2289,7 +2289,7 @@
 			   (t (intcv1 (m^t '$%e var) () `((%log) ,var)))))))
 	     (t (intcv arg nil nil)))))))
 
-
+
 ;; Wang 81-83.  Unfortunately, the pdf version has page 82 as all
 ;; black, so here is, as best as I can tell, what Wang is doing.
 ;; Fortunately, p. 81 has the necessary hints.
@@ -2412,7 +2412,7 @@
 			(list (cond ((setq nn* (append rl* rlm*))
 				     (m+l nn*)))
 			      (cond (rl*1 (m+l rl*1))))))))))
-
+
 (defun lognx2 (nn dn pl rl)
   (do ((pl pl (cdr pl))
        (rl rl (cdr rl))
@@ -2421,7 +2421,7 @@
 	   (null rl))  ans)
     (setq ans (cons (m* dn (car rl) (m^ `((%plog) ,(car pl)) nn))
 		    ans))))
-
+
 (defun logcpj (n d i)
   (setq n (append
 	   (cond (plm* (list (mul* (m*t '$%i %pi2)
@@ -2847,7 +2847,7 @@
 ;; Compute diff(e,var,n) at the point pt.
 (defun derivat (var n e pt)
   (subin pt (apply '$diff (list e var n)))) 
-
+
 ;;; GGR and friends
 
 ;; MAYBPC returns (COEF EXPO CONST)
@@ -3054,7 +3054,7 @@
 	 ;; expression x^m*exp(b*x^n+a).
 	 (rplaca nn* dn*))))
 
-
+
 ;; Match b*x^n+a.  If a match is found, return the list (a n b).
 ;; Otherwise, return NIL
 (defun bx**n+a (e)
@@ -3078,7 +3078,7 @@
 				   ($maxnegex 1))
 			       ($expand (m// e (m^t var n)))))))
 	 (list n e))))
-
+
 (defun xexponget (e nn*)
   (cond ((atom e) (cond ((eq e var) 1.)))
 	((mnump e) nil)
@@ -3086,10 +3086,8 @@
 	      (eq (cadr e) nn*)
 	      (not (among nn* (caddr e))))
 	 (caddr e))
-	(t (ormapc #'(lambda (j)
-		       (xexponget j nn*))
-		   (cdr e)))))
-
+	(t (some #'(lambda (j) (xexponget j nn*)) (cdr e)))))
+
 
 ;;; given (b*x^n+a)^m returns (m a n b)
 (defun bxm (e ind)
@@ -3186,7 +3184,7 @@
 		   (equal (caddr (caddr e)) 2.))
 	      (among var (cadr e)))
 	 (cadr e))
-	(t (ormapc #'sqrtinvolve (cdr e)))))
+	(t (some #'sqrtinvolve (cdr e)))))
 
 (defun bydif (r s d)
   (let ((b 1)  p)
@@ -3201,7 +3199,7 @@
 					    '((rat) 3. 2.)))
 			   '((rat) 3. 2.) '*z* r 0.)
 		   '((rat) 3. 2.) 'z** p 0.)))))
-
+
 (defun dintrad0 (n d)
   (let (l r s) 
     (cond ((and (mexptp d) 
@@ -3225,7 +3223,7 @@
 		 ((polyinx n var nil)
 		  (radbyterm d (cdr n))))))))
 
-
+
 ;;;Looks at the IMAGINARY part of a log and puts it in the interval 0 2*%pi.
 (defun log-imag-0-2%pi (x)
   (let ((plog (simplify ($rectform `((%plog) ,x)))))

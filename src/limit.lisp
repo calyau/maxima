@@ -1930,11 +1930,7 @@ It appears in LIMIT and DEFINT.......")
   (cond ((atom e) nil)
 	((mnump e) nil)
 	((and (member (caar e) nn* :test #'eq) (among var (cadr e))) (cadr e))
-	(t (ormapc (function (lambda (j) (involve j nn*)))
-		   (cdr e)))))
-
-
-
+	(t (some #'(lambda (j) (involve j nn*)) (cdr e)))))
 
 (defun notinvolve (exp nn*)
   (cond ((atom exp) t)
@@ -2801,8 +2797,7 @@ It appears in LIMIT and DEFINT.......")
 	      (eq (cadr e) '$%e)
 	      (among var (caddr e)))
 	 (caddr e))
-	(t (ormapc #'%einvolve (cdr e)))))
-
+	(t (some #'%einvolve (cdr e)))))
 
 (declare-top (unspecial *indicator nn* dn* exp var val origval *limorder taylored
 			$tlimswitch logcombed lhp? lhcount $ratfac))

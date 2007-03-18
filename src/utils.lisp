@@ -54,20 +54,6 @@
       ((null llt) lans)
     (push (funcall f (car llt) (cadr llt)) lans)))
 
-;;; (ORMAPC  #'INTEGERP '(1 2 A)) --> T
-;;; (ORMAPC  #'INTEGERP '(A B C)) --> NIL
-
-;;; If you want the do loop generated inline rather than doing a function call,
-;;; use the macros SOME.
-;;; Note that the value returned by ORMAPC is slightly different from that
-;;; returned by SOME.
-
-(defmfun ormapc (f l &aux answer)
-  (do ((l l (cdr l)))
-      ((null l) nil)
-    (setq answer (funcall f (car l)))
-    (if answer (return answer))))
-
 ;;; Like MAPCAR, except if an application of F to any of the elements of L
 ;;; returns NIL, then the function returns NIL immediately.
 

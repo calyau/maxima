@@ -51,7 +51,7 @@
      (setq varlist varl)
      (mapc #'newvar eql)
      (and (not $algebraic)
-	  (ormapc #'algp varlist) 
+	  (some #'algp varlist) 
 	  (setq $algebraic t))
      (setf (symbol-value nam) (make-array (list (1+ (setq xn* (length eql)))
 						(1+ (setq xm* (1+ (length varl)))))))

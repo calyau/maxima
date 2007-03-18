@@ -796,7 +796,7 @@
      (setq genpairs (mapcar #'(lambda (x y) (cons x (rget y))) varlist genvar))
      (let (($algebraic $algebraic) ($ratalgdenom $ratalgdenom) radlist)
        (and (not $algebraic)
-	    (ormapc #'algpget varlist)	;NEEDS *RATSIMP*=T
+	    (some #'algpget varlist)	;NEEDS *RATSIMP*=T
 	    (setq $algebraic t $ratalgdenom nil))
        (ratsetup varlist genvar)
        (setq genpairs
