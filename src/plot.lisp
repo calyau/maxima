@@ -1524,10 +1524,8 @@
            (tcl-output-list st (cdr lis)))))
 
 
-
-
 (defun $openplot_curves (lis &aux (linel 100000))
- (let (($display2d nil))
+ (let (($display2d nil) ($numer t) ($float t) ($%enumer t))
   (declare (special linel))
   (show-open-plot
    (with-output-to-string
@@ -1553,19 +1551,19 @@
             (loop while v
                    with this with xvals with yvals
                    do
-                   (cond   ((numberp (car v))
+                   (cond   ((numberp (meval (car v)))
                             (setq this v) (setq v (cddr v))
-                            (push (car this) xvals)
-                            (push (second this) yvals)                     
+                            (push (meval (car this)) xvals)
+                            (push (meval (second this)) yvals)
                             )
                            (($listp (car v))
                             (setq this (cdar v))
-                            (push (car this) xvals)
-                            (push (second this) yvals)
-                            (and (third this) (push (third this ) yvals))
+                            (push (meval (car this)) xvals)
+                            (push (meval (second this)) yvals)
+                            (and (third this) (push (meval (third this)) yvals))
                             (setq v (cdr v)))
-                           (t (princ (list 'bad (car v))) (setq v (cdr v))))
-
+                           (t (merror "Unacceptable type of data: ~M" (car v)))
+                   )
                    finally
                    (tcl-output-list st (nreverse xvals))
                    (tcl-output-list st (nreverse yvals)))
