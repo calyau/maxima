@@ -4,7 +4,7 @@
 @end menu
 
 @node Introduction to Differential Equations, Definitions for Differential Equations, Differential Equations, Differential Equations
-@section Definitions for Differential Equations
+@section Introduction to Differential Equations
 
 This section describes the functions available in Maxima to obtain
 analytic solutions for some specific types of first and second-order
@@ -12,9 +12,6 @@ equations. To obtain a numerical solution for a system of differential
 equations, see the additional package @code{dynamics}. For graphical
 representations in phase space, see the additional package
 @code{plotdf}.
-
-@menu
-@end menu
 
 @node Definitions for Differential Equations,  , Introduction to Differential Equations, Differential Equations
 @section Definitions for Differential Equations
