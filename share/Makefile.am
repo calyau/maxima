@@ -776,7 +776,8 @@ sym/chbase.lisp\
 sym/compile.lisp\
 sym/direct.lisp\
 sym/doconline\
-sym/docsym.tex\
+sym/docsym-en.tex\
+sym/docsym-fr.tex\
 sym/docsymidx.tex\
 sym/ecrivain.lisp\
 sym/elem.lisp\
