@@ -12,7 +12,7 @@
     (setq tem ($file_search1 file '((mlist)
 				    $file_search_lisp
 				    $system)))
-    (and tem (load tem))))
+    (and tem #-sbcl (load tem) #+sbcl (with-compilation-unit nil (load tem)))))
 
 (defun $aload_mac (file &aux *load-verbose* tem)
   (let (($system  (list  '(mlist)

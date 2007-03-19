@@ -492,9 +492,8 @@
 			   :action #'(lambda (file)
 				       (setf input-stream
 					     (make-string-input-stream
-					      (format nil
-						      ":lisp (load \"~a\");"
-						      file)))
+					      #-sbcl (format nil ":lisp (load \"~a\");" file)
+					      #+sbcl (format nil ":lisp (with-compilation-unit nil (load \"~a\"));" file)))
 				       (setf batch-flag :batch))
 			   :help-string 
 			   "Process lisp file <file> in batch mode.")
@@ -538,7 +537,7 @@
 	   (make-cl-option :names '("-p" "--preload-lisp")
 			   :argument "<lisp-file>"
 			   :action #'(lambda (file)
-				       (load file))
+				       #-sbcl (load file) #+sbcl (with-compilation-unit nil (load file)))
 			   :help-string "Preload <lisp-file>.")
        (make-cl-option :names '("-q" "--quiet")
                :action #'(lambda () (declare (special *maxima-quiet*)) (setq *maxima-quiet* t))

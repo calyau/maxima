@@ -257,7 +257,8 @@
 	 #+allegro "fasl"
 	 #-(or gcl cmu clisp allegro) ""))
     (if (member type (list bin-ext "lisp" "lsp")  :test 'equalp)
-    (load file :verbose 't) ($batchload file))))
+      #-sbcl (load file :verbose 't) #+sbcl (with-compilation-unit nil (load file :verbose 't))
+      ($batchload file))))
 
 (defvar autoload 'generic-autoload)
 
@@ -309,7 +310,7 @@
   ;; Should really get the truename of FILE.
   (if printp (format t "~%~A being loaded.~%" file))
   (let* ((path (pathname file))
-	 (tem (errset (load (pathname file)))))
+	 (tem (errset #-sbcl (load (pathname file)) #+sbcl (with-compilation-unit nil (load (pathname file))))))
     (or tem (merror "Load failed for ~A" (namestring path)))
     (namestring path)))
 
