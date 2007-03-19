@@ -229,7 +229,7 @@
 		(list (setq maxpow
 			    (do ((b b (quotient b a))
 				 (ans 0 (f1+ ans)))
-				((or (greaterp (abs a) (abs b))
+				((or (> (abs a) (abs b))
 				     (eqn maxpow ans))
 				 ans)))
 		      (quotient b (setq maxpow (expt a maxpow)))
@@ -243,7 +243,7 @@
 	(t (everysubst1 a b maxpow))))
 
 (defun everypterms (x p n maxpow)
-  (if (lessp (cadr x) n) (list 0 x)
+  (if (< (cadr x) n) (list 0 x)
       (prog (k ans q part)
 	 (setq k (car x))
 	 (setq x (cdr x))
@@ -262,13 +262,13 @@
   (do ((ptr l (cddr ptr)))
       ((null ptr) l)
     (setf (cadr ptr)
-	  (ptimes (psimp k (list (f- j (f* n (car ptr))) 1))
+	  (ptimes (psimp k (list (- j (f* n (car ptr))) 1))
 		  (cadr ptr)))))
 
 (defun substforsum (a b maxpow)
   (do ((pow 0 (1+ pow))
        (quot) (zl-rem) (ans))
-      ((not (lessp pow maxpow)) (list* maxpow b ans))
+      ((not (< pow maxpow)) (list* maxpow b ans))
     (desetq (quot zl-rem) (pdivide b a))
     (unless (and (eqn (cdr quot) 1)
 		 (not (pzerop (car quot)))
@@ -648,7 +648,7 @@
 
 (defun flgreat1 (p q)
   (cond ((numberp p)
-	 (cond ((numberp q) (greaterp p q))
+	 (cond ((numberp q) (> p q))
 	       (t nil)))
 	((numberp q) t)
 	((pointergp (car p) (car q)) t)

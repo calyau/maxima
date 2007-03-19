@@ -1075,7 +1075,7 @@
   (setq flag t)
   (cond ((not (numberp pow)) (setq powers (cons pow powers)))
 	((null num) (setq num pow))
-	(hiflg (if (greaterp pow num) (setq num pow)))
-	((lessp pow num) (setq num pow))))
+	(hiflg (if (> pow num) (setq num pow)))
+	((< pow num) (setq num pow))))
 
 (declare-top (unspecial powers var hiflg num flag))

@@ -9,18 +9,16 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :maxima)
+
 (macsyma-module series)
 
-(declare-top (genprefix ps)
-	     (*lexpr factor $gcd $rat)
-	     (fixnum %n %nn)
-	     (special var *n *a *m *c *index $cauchysum *gcd*
+(declare-top (special var *n *a *m *c *index $cauchysum *gcd*
 		      nn* dn* $ratsimpexpons *infsumsimp
 		      *ratexp splist *var usexp $verbose ans *trigred
 		      *form indl *noexpand $ratexpand))
 
 (load-macsyma-macros rzmac)
-
+
 ;;
 ;;******************************************************************************
 ;;				driver 	stage
@@ -82,7 +80,7 @@
       (mtell "In the first simplification we have returned:")
       (show-exp w))
     w))
-
+
 ;;
 ;;*****************************************************************************
 ;;	pass two		expansion phase
@@ -125,7 +123,7 @@
 	       (list '(mlable) nil exp)))
     (numden exp)
     (sratexpnd nn* dn*)))
-
+
 (defun sratexpnd (n d)
     (let ((ans (list nil))
         (splist)
@@ -190,7 +188,7 @@
 						      "Partial fraction expansion failed")))))
 				     ($partfrac (div* n d) var)))))
 	   t))
-
+
 (defun sratsubst (gcd num den)
   (and $verbose
        (prog2 (mtell "We are substituting for the occurrences of")
@@ -237,7 +235,7 @@
 
 (defun psp2form (coeff exp bas)
   (list '(%sum) (m* coeff (m^ var exp)) *index bas '$inf))
-
+
 (defun srintegexpd (n a m c)
   (and $verbose
        (prog2 (mtell "Using a special rule for expressions of form ")
@@ -258,12 +256,12 @@
 		       (m^ (m* -1 c) *index))
 		   (if (equal m 1) *index (m* *index m))
 		   0))
-	(t (psp2form (m* (do ((nn (f1- n) (f1- nn))
+	(t (psp2form (m* (do ((nn (1- n) (1- nn))
 			      (l nil (cons (list '(mplus) *index nn) l)))
 			     ((= nn 0)
-			      (m*l (cons (m// 1 (factorial (f1- n))) l))))
+			      (m*l (cons (m// 1 (factorial (1- n))) l))))
 			 (m^ (m* -1 c (m^ a -1)) *index)
-			 (m^ a (f- n)))
+			 (m^ a (- n)))
 		     (if (equal m 1) *index (m* *index m))
 		     0))))
 
@@ -277,7 +275,7 @@
 	(t (free (cadr a) var))))
 
 (defun sandmap (l) (or (null l) (and (sratp (car l) var) (sandmap (cdr l)))))
-
+
 (defun sp2trig (exp) (subst *index '*index (oldget (caar exp) 'sp2)))
 
 (defun sp2log (e)
@@ -311,7 +309,7 @@
 		      (m* (caddr exp) (caddr (cadr exp))))))
 	((and (free (caddr exp) var)
 	      (signp g (caddr exp))
-	      (lessp (caddr exp) $maxposex))
+	      (< (caddr exp) $maxposex))
 	 (m*l (dup (sp2expand (cadr exp)) (caddr exp))))
 	((free (cadr exp) var)
 	 (sp2sub (subst *index
@@ -325,8 +323,11 @@
 		 (caddr exp)))
 	(t (throw 'psex nil))))
 
-(defun dup (x %n) (if (= %n 1) (ncons x) (cons x (dup x (f1- %n)))))
-
+(defun dup (x %n)
+  (if (= %n 1)
+      (ncons x)
+      (cons x (dup x (1- %n)))))
+
 (defun sp2diff (exp l)
   (let (indl)
     (cond ((free exp var)
@@ -336,7 +337,7 @@
 		  (if ll (sp3form exp (cons '(%derivative) (nreverse ll)))
 		      exp))
 	       (cond ((eq (car l) var)
-		      (do ((%i (cadr l) (f1- %i)))
+		      (do ((%i (cadr l) (1- %i)))
 			  ((= %i 0) exp)
 			(setq indl nil
 			      exp (sp2diff1 (sp2expand exp) nil nil))))
@@ -373,7 +374,7 @@
 		   (m* fr (caddr e) (m^ (cadr e) (m- (caddr e) 1))))
 		  (t (sdiff exp var))))
 	   (t (sdiff exp var))))))
-
+
 (defun sp2integ (exp v l)
   (if (null l)
       (if (eq var v)
@@ -434,7 +435,7 @@
 			   (list '(%integrate) v lo hi)))))
 	(t (m+ (sp2sub (setq exp (sp2expand (subst var v exp))) hi)
 	       (m* -1 (sp2sub exp lo))))))
-
+
 ;;
 ;;************************************************************************************
 ;;	phase three		miscellaneous garbage and final simplification
@@ -463,7 +464,7 @@
 	((eq (caar e) '%sum)
 	 (list* '(%sum) (sp3form1 (cadr e)) (cddr e)))
 	(t (list* (car *form) e (cdr *form)))))
-
+
 ;; These are the series expansions for circular functions
 
 (defprop %sin
@@ -518,7 +519,7 @@
 	     ((mexpt) sp2var ((mtimes) 2 *index)))
      *index 0 $inf)
   sp2)
-
+
 ;; These are the series definitions of exponential functions.
 
 (defprop mexpt
@@ -578,7 +579,7 @@
       ((mexpt) sp2var ((mplus) ((mtimes) 2 *index) -1)))
      *index 0 $inf)
   sp2)
-
+
 ;;arc trigonometric function expansions
 
 (defprop %asin

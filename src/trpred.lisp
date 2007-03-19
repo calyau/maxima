@@ -119,7 +119,7 @@
 	       (and (member (car arg1) *number-types* :test #'eq)
 		    (member (car arg2) *number-types* :test #'eq)))
 	   `(> ,(dconv arg1 mode) ,(dconv arg2 mode)))
-	  ((eq '$number mode) `(greaterp ,(cdr arg1) ,(cdr arg2)))
+	  ((eq '$number mode) `(> ,(cdr arg1) ,(cdr arg2)))
 	  ('else
 	   (wrap-an-is `(mgrp ,(dconvx arg1) ,(dconvx arg2))
 		       form)))))
@@ -132,7 +132,7 @@
 	       (and (member (car arg1) *number-types* :test #'eq)
 		    (member (car arg2) *number-types* :test #'eq)))
 	   `(< ,(dconv arg1 mode) ,(dconv arg2 mode)))
-	  ((eq '$number mode) `(lessp ,(cdr arg1) ,(cdr arg2)))
+	  ((eq '$number mode) `(< ,(cdr arg1) ,(cdr arg2)))
 	  ('else
 	   (wrap-an-is `(mlsp ,(dconvx arg1) ,(dconvx arg2))
 		       form)))))

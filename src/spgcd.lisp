@@ -470,7 +470,7 @@
 		       (clear-lobjs lobjs))
 		(coef-bound *alpha (* modulus coef-bound))
 		(cm) (fm) (gm))
-	       ((greaterp coef-bound h)
+	       ((> coef-bound h)
 		(setq modulus nil)
 		(lobj->poly (car vars) (cdr vars) linsols))
 	     (setq modulus (newprime modulus))
@@ -510,11 +510,8 @@
 	   (rplaca (cddar l)
 		   (mapcar
 		    #'(lambda (a b)
-			(cond ((greaterp
-				(abs
-				 (setq n
-				       (cplus b (ctimes c (cdifference a b)))))
-				new-coef-bound)
+			(cond ((> (abs (setq n (cplus b (ctimes c (cdifference a b)))))
+				  new-coef-bound)
 			       (throw 'relprime 1))
 			      (n)))
 		    (cadddr (cddar l2)) (caddar l)))))))
@@ -555,9 +552,9 @@
   (let* ((fv (dlf-mumblify f-degv gcd-degv))
 	 (gv (dlf-mumblify g-degv gcd-degv))
 	 (gcdv (apply '+ gcd-degv)))
-    (if (lessp fv gcdv)
-	(if (lessp fv gv) 2 3)
-	(if (lessp gv gcdv) 3 1))))
+    (if (< fv gcdv)
+	(if (< fv gv) 2 3)
+	(if (< gv gcdv) 3 1))))
 
 (defun excise-extra-variables (degv vars)
   (do ((l (reverse degv) (cdr l))

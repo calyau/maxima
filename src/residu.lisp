@@ -215,7 +215,7 @@
   (prog (temp coef1r coef2r fac coef1s coef2s zeropolb f1 f2)
      (setq coef2r (setq coef1s 0))
      (setq coef2s (setq coef1r 1))
-     b1   (cond ((not (lessp (pdegree p1b var) (pdegree p2b var))) (go b2)))
+     b1   (cond ((not (< (pdegree p1b var) (pdegree p2b var))) (go b2)))
      (setq temp p2b)
      (setq p2b p1b)
      (setq p1b temp)
