@@ -675,7 +675,7 @@
      (setq a (pdis (caddr exp)))
      (setq c (pdis (list (car exp) 1 1)))
      (cond ((null (cdddr exp))
-	    (return (solve c *var (times (cadr exp) mult)))))
+	    (return (solve c *var (* (cadr exp) mult)))))
      (setq b (pdis (pminus (cadddr (cdr exp)))))
      (return (solvespec1 c
 			 (simpnrt (div* b a) (cadr exp))
@@ -738,9 +738,9 @@
 ;; This function is called for side-effect only.
 
 (defun solvelin (exp) 
-  (cond ((equal 0. (pterm (cdr exp) 0.))
+  (cond ((equal 0 (pterm (cdr exp) 0))
 	 (solve1a (caddr exp) mult)))
-  (solve3 (rdis (ratreduce (pminus (pterm (cdr exp) 0.))
+  (solve3 (rdis (ratreduce (pminus (pterm (cdr exp) 0))
 			   (caddr exp)))
 	  mult))
 
@@ -759,10 +759,10 @@
   (setq a (pdis (ptimes 2. a)))
   ;; At this point, everything is back in general representation.
   (let ((varlist nil)) ;;2/6/2002 RJF
-    (cond ((equal 0. discrim)
+    (cond ((equal 0 discrim)
 	   (solve3 (fullratsimp `((mquotient) ,b ,a))
-		   (times 2. mult)))
-	  (t (setq discrim (simpnrt discrim 2.))
+		   (* 2 mult)))
+	  (t (setq discrim (simpnrt discrim 2))
 	     (solve3 (fullratsimp `((mquotient) ((mplus) ,b ,discrim) ,a))
 		     mult)
 	     (solve3 (fullratsimp `((mquotient) ((mplus) ,b ((mminus) ,discrim)) ,a))

@@ -9,6 +9,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :maxima)
+
 (macsyma-module nisimp)
 
 ;;;programs for the LET LETSIMP LETRULES and REMLET commands
@@ -16,9 +17,7 @@
 ;;;property list of atoms
 ;;;except for the top level programs all program names have the prefix NIS
 
-(declare-top (*expr $ratexpand)
-	     (*lexpr $disp)
-	     (special nistree nisrules nisflag $ratexpand varlist $ratfac)) 
+(declare-top (special nistree nisrules nisflag $ratexpand varlist $ratfac)) 
 
 (defmvar $letvarsimp nil)
 
@@ -26,14 +25,17 @@
 
 (defmvar $default_let_rule_package '$default_let_rule_package
   "The name of the default rule package used by `let' and `letsimp'")
+
 (putprop '$default_let_rule_package 'let-rule-setter 'assign)
 
 (defmvar $current_let_rule_package '$default_let_rule_package
   "The name of the current rule package used by `let' and `letsimp'")
+
 (putprop '$current_let_rule_package 'let-rule-setter 'assign)
 
 (defmvar $let_rule_packages '((mlist) $default_let_rule_package)
   "The names of the various let rule simplification packages")
+
 (putprop '$let_rule_packages 'let-rule-setter 'assign)
 
 (setq nisrules nil nistree nil) 
@@ -95,22 +97,22 @@
      (setq tree (nistreebuilder tree (car permlist) function))
      (setq permlist (cdr permlist))
      (go step))) 
-
+
 (defun nispermutations (llist) 
   (cond
     ((null (cdr llist)) (list llist))
     (t
      (prog (permlist a) 
-      step (setq 
-	    permlist
-	    (append
-	     (nisaddon (car llist)
-		       (nispermutations (append a (cdr llist))))
-	     permlist))
+      step (setq permlist
+		 (append
+		  (nisaddon (car llist)
+			    (nispermutations (append a (cdr llist))))
+		  permlist))
       (if (null (cdr llist)) (return permlist))
-      (setq a (cons (car llist) a))
+      (push (car llist) a)
       (setq llist (cdr llist))
       (go step))))) 
+
 (defun nisaddon (x llist) 
   (if llist (cons (cons x (car llist)) (nisaddon x (cdr llist))))) 
 
@@ -130,33 +132,36 @@
 				     perm
 				     function))))) 
 
-(defun nisswcar (x y) (cons y (cdr x))) 
+(defun nisswcar (x y)
+  (cons y (cdr x))) 
 
-(defun nisswcdr (x y) (cons (car x) y)) 
-
-(defmspec $remlet (x) (setq x (cdr x))
-	  ;; REMLET(PROD,NAME) REMLET(PROD) REMLET() REMLET(FALSE,NAME)
-	  (prog (pattern text treename)
-	     (cond ((cddr x) (wna-err '$remlet))
-		   ((null (cdr x)) (setq treename $current_let_rule_package))
-		   (t (setq treename (cadr x))
-		      (if (not (symbolp treename))
-			  (improper-arg-err treename '$remlet))))
-	     (setq pattern (meval (car x)))
-	     (when (or (not pattern) (eq '$all pattern))
-	       (setq nisrules nil nistree nil)
-	       (if (not (eq treename '$default_let_rule_package))
-		   (delq treename $let_rule_packages 1))
-	       (go a))
-	     (setq nistree (mget treename 'letsimptree))
-	     (if (setq text (nisremlet pattern)) (return text))
-	     (if nistree
-		 (setq nisrules
-		       (nistreelister (mget treename 'letrules) pattern))
-		 (setq nisrules nil))
-	     a    (mputprop treename nistree 'letsimptree)
-	     (mputprop treename nisrules 'letrules)
-	     (return '$done)))
+(defun nisswcdr (x y)
+  (cons (car x) y)) 
+
+(defmspec $remlet (x)
+  (setq x (cdr x))
+  ;; REMLET(PROD,NAME) REMLET(PROD) REMLET() REMLET(FALSE,NAME)
+  (prog (pattern text treename)
+     (cond ((cddr x) (wna-err '$remlet))
+	   ((null (cdr x)) (setq treename $current_let_rule_package))
+	   (t (setq treename (cadr x))
+	      (if (not (symbolp treename))
+		  (improper-arg-err treename '$remlet))))
+     (setq pattern (meval (car x)))
+     (when (or (not pattern) (eq '$all pattern))
+       (setq nisrules nil nistree nil)
+       (unless (eq treename '$default_let_rule_package)
+	 (setq $let_rule_packages (delete treename $let_rule_packages :count 1 :test #'eq)))
+       (go a))
+     (setq nistree (mget treename 'letsimptree))
+     (if (setq text (nisremlet pattern)) (return text))
+     (if nistree
+	 (setq nisrules
+	       (nistreelister (mget treename 'letrules) pattern))
+	 (setq nisrules nil))
+     a    (mputprop treename nistree 'letsimptree)
+     (mputprop treename nisrules 'letrules)
+     (return '$done)))
 
 (defun nistreelister (llist pattern) 
   (prog (x) 
@@ -174,7 +179,7 @@
      (if (null nisflag) (merror "~M not found - `remlet'" pat))
      (setq permlist (cdr permlist))
      (go step))) 
-
+
 (defun nistreetrimmer (perm tree) 
   (cond ((null perm)
 	 (cond ((null tree) (setq nisflag nil))
@@ -189,12 +194,13 @@
 	    (return (nisswcar tree (nisswcdr (car tree) x)))))
 	(t (nisswcdr tree (nistreetrimmer perm (cdr tree)))))) 
 
-(defmspec $letrules (name) (setq name (cdr name)) ;LETRULES(NAME)
-	  (let ((treename (if name (car name) $current_let_rule_package)))
-	    (if (not (symbolp treename)) (improper-arg-err treename '$letrules))
-	    (setq nistree (mget treename 'letsimptree)
-		  nisrules (mget treename 'letrules))
-	    (apply #'$disp nisrules)))
+(defmspec $letrules (name)
+  (setq name (cdr name))		;LETRULES(NAME)
+  (let ((treename (if name (car name) $current_let_rule_package)))
+    (if (not (symbolp treename)) (improper-arg-err treename '$letrules))
+    (setq nistree (mget treename 'letsimptree)
+	  nisrules (mget treename 'letrules))
+    (apply #'$disp nisrules)))
 
 (defmspec $letsimp (form)		;letsimp(expr,tree1,...,treen)
   (setq form (cdr form))
@@ -203,7 +209,7 @@
 	 $ratfac)
     (progv (unless sw '(varlist genvar))
 	(unless sw (list varlist genvar))
-      (when (and sw (memq 'trunc (cdar expr)))
+      (when (and sw (member 'trunc (cdar expr) :test #'eq))
 	(setq expr ($taytorat expr)))
       (dolist (rulepackage (or form (list $current_let_rule_package))
 	       (if sw (ratf expr) expr))
@@ -225,7 +231,7 @@
 	       (and (eq (caar e) 'mtimes) (setq x (cdr e))))
 	   (setq x (nisnewlist x))
 	   (if x (nisletsimp ($ratexpand (cons '(mtimes) x))) e))
-	  ((memq (caar e) '(mplus mequal mlist $matrix))
+	  ((member (caar e) '(mplus mequal mlist $matrix) :test #'eq)
 	   (cons (if (eq (caar e) 'mplus) '(mplus) (car e))
 		 (mapcar #'nisletsimp (cdr e))))
 	  ((or (eq (caar e) 'mrat) 
@@ -320,7 +326,8 @@
 				   newexpt))))))
      (return nil))) 
 
-(defun niskernel (a) (if (mexptp a) (cadr a) a))
+(defun niskernel (a)
+  (if (mexptp a) (cadr a) a))
 
 (defun nisextract (x)
   (cond ((or (atom x) (eq (caar x) 'rat))
@@ -328,14 +335,15 @@
 	((eq 'mexpt (caar x))
 	 (cond ((atom (cadr x))
 		(cons (cadr x) (cons nil (caddr x))))
-	       (t (cons (if (memq 'array (cdaadr x))
+	       (t (cons (if (member 'array (cdaadr x) :test #'eq)
 			    (list (caaadr x) 'array)
 			    (caaadr x))
 			(cons (cdadr x) (caddr x))))))
-	(t (cons (if (memq 'array (cdar x)) (list (caar x) 'array)
+	(t (cons (if (member 'array (cdar x) :test #'eq)
+		     (list (caar x) 'array)
 		     (caar x))
 		 (cons (cdr x) 1))))) 
-
+
 (defun nisargschecker (listargs treeargs argasslist) 
   (prog (c) 
      (cond ((and listargs treeargs) (go check))
@@ -364,12 +372,11 @@
 		((eq 'rat (caar listpower))
 		 (setq p (cadr listpower) q (caddr listpower)))
 		(t (return nil)))
-     (setq xx (times (times q s)
-		     (difference (times p s) (times q r))))
-     (setq a (lessp (times r s) 0))
-     (setq b (lessp xx 0))
+     (setq xx (* (* q s) (- (* p s) (* q r))))
+     (setq a (< (* r s) 0))
+     (setq b (< xx 0))
      (cond ((or (not (or a b)) (and a (or b (equal 0 xx))))
-	    (return (list '(rat) xx (times q s)))))
+	    (return (list '(rat) xx (* q s)))))
      (return nil))) 
 
 (defun nisargmatch (x y c) 
@@ -383,7 +390,7 @@
      (go up)
      down (setq w (mget y 'matchdeclare))
      (cond ((null w) (if (equal x y) (go out) (return nil)))
-	   ((memq (car w) '($true t)) (go out))
+	   ((member (car w) '($true t) :test #'eq) (go out))
 	   ((and (atom (car w))
 		 (meval (cons (ncons (car w))
 			      (append (cdr w) (list x)))))
@@ -419,4 +426,3 @@
 	       (t (cons (cdar asslist)
 			(nisreplace (cdr llist) (cdr asslist))))))
 	(t (cons (car llist) (nisreplace (cdr llist) asslist))))) 
-

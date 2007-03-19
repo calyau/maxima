@@ -24,7 +24,7 @@
 (defmvar $context '$initial
   "Whenever a user assumes a new fact, it is placed in the context
 named as the current value of the variable CONTEXT.  Similarly, FORGET
-references the current value of CONTEXT.  To add or zl-DELETE a fact from a
+references the current value of CONTEXT.  To add or DELETE a fact from a
 different context, one must bind CONTEXT to the intended context and then
 perform the desired additions or deletions.  The context specified by the
 value of CONTEXT is automatically activated.  All of MACSYMA's built-in
@@ -148,8 +148,8 @@ relational knowledge is contained in the default context GLOBAL."
 
 ;;; This function switches contexts, creating one if necessary.
 
-(defun asscontext (x y)
-  (declare (ignore x))
+(defun asscontext (xx y)
+  (declare (ignore xx))
   (cond ((not (symbolp y)) (nc-err))
 	((member y $contexts :test #'eq) (setq context y $context y))
 	(t ($newcontext y))))
@@ -357,8 +357,8 @@ relational knowledge is contained in the default context GLOBAL."
 	(flag (true* (munformat pat)))
 	(t (untrue (munformat pat)))))
 
-(defmacro def-learn (name pat flag)
-  (declare (ignore name))
+(defmacro def-learn (nname pat flag)
+  (declare (ignore nname))
   `(learn ,pat ,flag))
 
 (defmspec $forget (x)
@@ -572,7 +572,7 @@ relational knowledge is contained in the default context GLOBAL."
 	       sign (cdr (assol $askexp locals)))
 	 (do ()
 	     (nil)
-	   (cond ((zl-member sign '($zero |$Z| |$z| 0 0.0))
+	   (cond ((member sign '($zero |$Z| |$z| 0 0.0) :test #'equal)
 		  (tdzero $askexp) (setq sign '$zero) (return t))
 		 ((member sign '($pn $nonzero |$N| |$n| $nz $nonz $non0) :test #'eq)
 		  (tdpn $askexp) (setq sign '$pos) (return t))
@@ -596,7 +596,7 @@ relational knowledge is contained in the default context GLOBAL."
 		   ((and (member ans '($neg |$N| |$n| $negative) :test #'eq)
 			 (member sign '($nz $pn $pnz) :test #'eq))
 		    (tdneg $askexp) (setq sign '$neg) (return t))
-		   ((and (zl-member ans '($zero |$Z| |$z| 0 0.0))
+		   ((and (member ans '($zero |$Z| |$z| 0 0.0) :test #'equal)
 			 (member sign '($pz $nz $pnz) :test #'eq))
 		    (tdzero $askexp) (setq sign '$zero) (return t)))
 	     (setq ans (ask "Is  " $askexp dom)))
@@ -1026,8 +1026,8 @@ relational knowledge is contained in the default context GLOBAL."
 	((member sign '($neg $pn) :test #'eq) (setq sign '$pos))
 	(t (setq sign '$pz minus nil evens (nconc odds evens) odds nil))))
 
-(defun sign-posfun (x)
-  (declare (ignore x))
+(defun sign-posfun (xx)
+  (declare (ignore xx))
   (setq sign '$pos minus nil odds nil evens nil))
 
 (defun sign-oddinc (x)
@@ -1399,11 +1399,11 @@ relational knowledge is contained in the default context GLOBAL."
 	 (setq x (let (($float2bf t)) (cadr ($bfloat (sub x y)))) y 0))
 	((numberp x)
 	 (cond ((numberp y))
-	       (t (setq x (times x (caddr y)) y (cadr y)))))
-	((numberp y) (setq y (times (caddr x) y) x (cadr x)))
+	       (t (setq x (* x (caddr y)) y (cadr y)))))
+	((numberp y) (setq y (* (caddr x) y) x (cadr x)))
 	(t (let ((dummy x))
-	     (setq x (times (cadr x) (caddr y)))
-	     (setq y (times (caddr dummy) (cadr y))))))
+	     (setq x (* (cadr x) (caddr y)))
+	     (setq y (* (caddr dummy) (cadr y))))))
   (cond ((greaterp x y) '$pos)
 	((greaterp y x) '$neg)
 	(t '$zero)))

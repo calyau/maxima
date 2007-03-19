@@ -119,7 +119,7 @@
   ;; This value is correct for IEEE double precision
   (let ((zmax 92.5747007268d0))
     (declare (type double-float zmax))
-    (if (< z zmax) (slatec:dai z) 0.0d0))) 
+    (if (< z zmax) (slatec:dai z) 0d0))) 
 
 (defun airy-ai-complex (z)
   "Airy function Ai(z) for complex z"
@@ -136,7 +136,7 @@
   "Derivative dAi/dz of Airy function Ai(z) for real z"
   (declare (type double-float z))
   (let ((rz (sqrt (abs z)))
-	(c (* 2 (expt (abs z) 3/2) (/ 3.0))))
+	(c (* 2/3 (expt (abs z) 3/2))))
     (declare (type double-float rz c))
     (multiple-value-bind (var-0 var-1 var-2 ai dai)
 	(slatec:djairy z rz c 0d0 0d0)
@@ -183,7 +183,7 @@
     (declare (type double-float zmax))
     (if (< z zmax)
 	(let ((rz (sqrt (abs z)))
-	      (c (times 2.0 (expt (abs z) 3/2) (/ 3.0))))
+	      (c (* 2/3 (expt (abs z) 3/2))))
         (declare (type double-float rz c))
         (multiple-value-bind (var-0 var-1 var-2 bi dbi)
 	    (slatec:dyairy z rz c 0d0 0d0)
