@@ -42,7 +42,7 @@
 	 %coth %acoth %sech %asech %csch %acsch)
        by #'cddr
        do  (putprop a b '$inverse) (putprop b a '$inverse))
-
+
 (defmfun $demoivre (exp)
   (let ($exponentialize nexp)
     (cond ((atom exp) exp)
@@ -107,7 +107,7 @@
 ;; ((lambda (*ask*) 
 ;;    (integerp10 (ssimplifya (sublis '((z** . 0) (*z* . 0)) x)))) 
 ;;  t))
-
+
 ;;(defun integerp10 (x) 
 ;; ((lambda (d) 
 ;;   (cond ((or (null x) (not (free x '$%i))) nil)
@@ -131,7 +131,7 @@
      (setq nn*
 	   (simplifya (pdis (ratnumerator e))
 		      nil))))
-
+
 (defun fmt (exp) 
   (let (nn*) 
     (cond ((atom exp) exp)
@@ -170,7 +170,9 @@
 (defun spexp (expl dn*) 
   (cons '(mtimes) (mapcar #'(lambda (e) (list '(mexpt) dn* e)) expl)))
 
-(defun subin (y x) (cond ((not (among var x)) x) (t (maxima-substitute y var x))))
+(defun subin (y x)
+  (cond ((not (among var x)) x)
+	(t (maxima-substitute y var x))))
 
 ;; Right-hand side (rhs) and left-hand side (lhs) of binary infix expressions.
 ;; These are unambiguous for relational operators, some other built-in infix operators,
@@ -217,8 +219,6 @@
 	 (great x y))
 	((equal ($asksign (m- x y)) '$pos))))
 
-
-
 (defun %especial (e) 
   (prog (varlist y k j ans $%emode $ratprint genvar)
      ((lambda ($float $keepfloat) 
@@ -245,7 +245,7 @@
      (cond ((minusp m) (setq m (minus m)) (setq flag t)))
      (setq n (caddr r))
      loop (cond ((greaterp m n)
-		 (setq m (difference m n))
+		 (setq m (- m n))
 		 (setq eo (not eo))
 		 (go loop)))
      (setq m (list '(rat)
@@ -294,7 +294,7 @@
 	(t (andmapcar #'(lambda (subexp)
 			  (free subexp var))
 		      (cdr a)))))
-
+
 (defun pip (e)
   (prog (varlist d c) 
      (newvar e)
@@ -359,24 +359,9 @@
 				'$%pi))
 		(cond (ind (cond (ep (list '(mtimes simp)
 					   -1
-					   (list '(%sin simp)
-						 ang)))
-				 (t (list '(%sin simp)
-					  ang))))
+					   (list '(%sin simp) ang)))
+				 (t (list '(%sin simp) ang))))
 		      (t (list '(%cos simp) ang)))))))) 
-
-;;(defun scsign (e) 
-;;       ((lambda (varlist genvar $ratprint) 
-;;	 (setq *sign* nil)
-;;	 (setq e (ratf e))
-;;	 (setq *pform*
-;;	       (simplifya (rdis (cond ((pminusp (cadr e))
-;;				       (setq *sign* t)
-;;				       (cons (pminus (cadr e))
-;;					     (cddr e)))
-;;				      (t (cdr e))))
-;;			  nil)))
-;;	nil nil nil)) 
 
 (defun archk (a b v) 
   (simplify
@@ -393,4 +378,3 @@
        (genl (cadddr h) (cdr genl)))
 ;;;is car of rat form
       ((eq (car varl) v) (car genl))))
-

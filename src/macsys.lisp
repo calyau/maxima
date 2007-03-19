@@ -28,8 +28,9 @@
   ;; a FUNARG as the prompt. -gjc
   (declare (special *display-labels-p*))
   (if *display-labels-p*
-    (format () "~A(~A~D) ~A" *prompt-prefix* 
-	  (print-invert-case (stripdollar $inchar)) $linenum *prompt-suffix*)
+    (format () "~A(~A~D) ~A"
+	    *prompt-prefix* (print-invert-case (stripdollar $inchar))
+	    $linenum *prompt-suffix*)
     ""))
 
 (defun break-prompt ()
@@ -176,10 +177,10 @@
 	      time-after (get-internal-run-time))
 	(setq area-after (used-area))
 	(setq time-used (quotient 
-			 (float (difference time-after time-before))
+			 (float (- time-after time-before))
 			 internal-time-units-per-second)
 	      etime-used (quotient 
-			  (float (difference etime-after etime-before))
+			  (float (- etime-after etime-before))
 			  internal-time-units-per-second))
 	(incf accumulated-time time-used)
 	(setq d-tag (makelabel $outchar))

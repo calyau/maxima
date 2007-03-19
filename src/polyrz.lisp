@@ -203,7 +203,7 @@
 
 (defun nroot1 (p l r)
   (let ((seq (sturm p)))
-    (difference (ivar2 seq l) (ivar2 seq r))))
+    (- (ivar2 seq l) (ivar2 seq r))))
 
 ;;	RETURNS ROOT IN INTERVAL OF FORM (A,B])
 
@@ -214,7 +214,7 @@
      (setq rv (ivar seq r))
      (setq tlist (setq islist nil))
      (cond ((equal lv rv) (return nil)))
-     a	(cond ((> (setq rts (difference lv rv)) 1)(go b))
+     a	(cond ((> (setq rts (- lv rv)) 1)(go b))
 	      ((equal rts 1)(setq islist (cons (cons l r) islist))))
      (cond ((null tlist) (return islist)))
      (setq lv (car tlist))

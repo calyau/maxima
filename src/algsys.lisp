@@ -40,7 +40,7 @@
 
 ;;note if $algepsilon is too large you may lose some roots.
 
-(defmvar $algdelta 1.0e-4 )
+(defmvar $algdelta 1d-4 )
 
 (defmvar $%rnum_list '((mlist))
   "Upon exit from ALGSYS this is bound to a list of the %RNUMS
@@ -318,7 +318,7 @@
 
 (defun memberroot (a x eps)
   (cond ((null x) nil)
-	((< (abs (difference a (car x)))
+	((< (abs (- a (car x)))
 		(/ (+ 0d0 (car eps)) (cdr eps)))
 	 t)
 	(t (memberroot a (cdr x) eps))))
