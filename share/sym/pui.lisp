@@ -30,7 +30,9 @@
     ((lambda ()) ((mlist) $valpi $sym $lvar)
      ((mprog) (($operation)) (($pui_init) $valpi $sym $lvar)))
     mexpr)
-(args $pui '(3 . 3))
+;; IT APPEARS ARGS WAS A MACRO. THERE IS NO ARGS MACRO AT PRESENT.
+;; DUNNO IF THE ABSENCE OF ARGS CAUSES ANY INCORRECT BEHAVIOR IN SYM
+;; (args $pui '(3 . 3))
 (add2lnc '(($pui) $valpi $sym $lvar) $functions)
 (mdefprop $multi_pui
     ((lambda ()) ((mlist) $lvalpi $pc $llvar)

@@ -33,7 +33,9 @@
      ((mprog) (($operation)) (($elem_init) $valei $sym $lvar)))
     mexpr)
 
-(args $elem '(3 . 3))
+;; IT APPEARS ARGS WAS A MACRO. THERE IS NO ARGS MACRO AT PRESENT.
+;; DUNNO IF THE ABSENCE OF ARGS CAUSES ANY INCORRECT BEHAVIOR IN SYM
+;; (args $elem '(3 . 3))
 
 (add2lnc '(($elem) $valei $sym $lvar) $functions)
 
@@ -96,7 +98,6 @@
 ;                MULTIDECOMPOSITION
 ; Le polynome donne est multi-symetrique sous forme contractee
 ;----------------------------------------------------------------------------
-(defun $bidon ())
 (defun $multi_elem_init ($multi_lelem $multi_pc $llvar)
   (multi_elem (mapcar 'cdr (cdr $multi_lelem)) $multi_pc
               (cdr $llvar)))
