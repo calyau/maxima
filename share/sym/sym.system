@@ -2,9 +2,7 @@
 
 (mk:defsystem "sym"
     :source-extension "lisp"
-    :binary-pathname (make-pathname
-		      :directory 
-		      (pathname-directory *load-truename*))
+    :binary-pathname *maxima-symdir*
     ;; Don't use separate directories because the files should be in $chemin
     ;; #+clisp "binary-clisp"
     ;; #+cmu "binary-cmucl"

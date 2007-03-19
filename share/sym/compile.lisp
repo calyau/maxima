@@ -16,7 +16,5 @@
 ;       *              e-mail : avb@sysal.ibp.fr                      *
 ;       ***************************************************************
 
-(load (make-pathname :directory (pathname-directory *load-truename*)
-		     :name "sym" :type "system"))
-
+(load (concatenate 'string *maxima-symdir* "/" "sym.system"))
 (mk:compile-system "sym")
