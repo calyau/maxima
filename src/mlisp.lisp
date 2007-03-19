@@ -614,7 +614,7 @@ wrapper for this."
 
            ;; Check to see if the operator has an mset_extension_operator.
            ;; If so, this says how to do assignments. Examples, a@b:x. Put mset_extension_operator
-           ;; of $mrecordassign on the atom $@.  To allow [a,b]:[3,4] put op on mlist.
+           ;; of mrecord-assign on the atom $@.  To allow [a,b]:[3,4] put op on mlist.
            ;; arguably we could use mget, mfuncall, and $mset_extension_operator  and
            ;; allow this to be done at the maxima level instead of lisp.
 
@@ -629,7 +629,7 @@ wrapper for this."
                    ((get (caar x) 'mset_extension_operator))
                    ((and
                       (not (atom x-value))
-                      (get (caar x-value) '$defstruct_template)
+                      (get (caar x-value) 'defstruct-template)
                       (get (caar x-value) 'mset_extension_operator))))))
               (if mset-extension-op
                 (return-from mset (funcall mset-extension-op x y)))))
@@ -652,8 +652,16 @@ wrapper for this."
 ;; (4) @ EVALUATES LHS AND QUOTES RHS
 ;; (5) $STRUCTURES INFOLIST
 ;; (6) LBP = 190, RBP = 191 (HIGHER PRECEDENCE, LEFT-ASSOCIATIVE)
+;; (7) A@B => A@B WHEN B IS NOT BOUND TO SOMETHING OTHER THAN ITSELF
+;; (8) DISALLOW @ APPLIED TO EXPRESSIONS W/ OPERATOR NOT DECLARED BY DEFSTRUCT
+;; (9) MAKE RECORD AND LIST ASSIGNMENT FUNCTIONS LISP FUNCTIONS (STRIP OFF $ FROM NAME)
+;;     ALSO MAKE PROPERTY SYMBOLS LISP SYMBOLS (STRIP OFF $ FROM NAME)
+;; (10) EXTEND KILL TO TAKE ITEMS OFF $STRUCTURES AND REMOVE DEFSTRUCT PROPERTIES
+;; (11) EXTEND KILL TO RECOGNIZE KILL(X@Y)
+;; (12) EVALUATE INITIALIZERS IN $DEFSTRUCT AND IN $NEW
+;; (13) DISPLAY FIELDS WHICH HAVE BEEN ASSIGNED VALUES AS FOO(X = BAR, Y = BAZ)
 
-(setf (get '$@ 'mset_extension_operator) '$mrecordassign)
+(setf (get '$@ 'mset_extension_operator) 'mrecord-assign)
 
 ;;  defstruct(f(x,y,z));
 ;;  myrecord: new(f);
@@ -671,34 +679,66 @@ wrapper for this."
 ;; k@1@2:dd; change aa to dd.
 ;; k;
 
-(defmfun $mrecordassign (atted value)
-  ;; assume atted is  (($@..)  instance-name  field-name)
-  ;; should insert some checking code here
-  (let* ((in (cadr atted))		;instance
-	 (fn (caddr atted))		;field
-	 (obj (meval in))
-	 (index (if (integerp fn) fn ;;; allow foo@3, also
-	      (position fn ($get (caar obj) '$defstruct_template))))
-	 ) ;field->integer
-    
-    (if (null index) (merror "Unknown field in record:~%~M" fn))
-    (if  (< 0 index (length obj)) (setf (elt obj index) value)
-      (merror "Illegal instance:~%~M @ ~M" in fn))
-    value))
+(defmfun mrecord-assign (@-expr value)
+  ;; assume @-expr is  (($@..)  instance-name  field-name)
+  (let*
+    ((instance (cadr @-expr))
+	 (field (caddr @-expr))
+	 (object (meval instance))
+     template)
+    (if (not (and (consp object) (consp (car object)) (setq template (get (caar object) 'defstruct-template))))
+      (merror "Left-hand side doesn't appear to be a defstruct object:~%~M" instance)
+      (let
+        ((index
+           (if (integerp field)
+             field ;;; allow foo@3, also
+             (position field template)))) ;field->integer
+        (if (null index) (merror "Unknown field in record:~%~M" field))
+        (if (< 0 index (length object)) (setf (elt object index) value)
+          (merror "Illegal instance:~%~M @ ~M" instance field))
+        value))))
+
+;; MRECORD-KILL is very similar to MRECORD-ASSIGN. Might consider merging the two somehow.
+
+(defmfun mrecord-kill (@-expr)
+  (let*
+    ((instance (cadr @-expr))
+     (field (caddr @-expr))
+     (object (meval instance))
+     template)
+    (if (not (and (consp object) (consp (car object)) (setq template (get (caar object) 'defstruct-template))))
+      (merror "Left-hand side doesn't appear to be a defstruct object:~%~M" instance)
+      (let
+        ((index
+           (if (integerp field)
+             field
+             (position field template))))
+        (if (null index) (merror "Unknown field in record:~%~M" field))
+        (if (< 0 index (length object)) (setf (elt object index) (elt template index))
+          (merror "Illegal instance:~%~M @ ~M" instance field))))))
 
 (defmspec $@ (L)
-  (let ((a (cadr L)) (b (caddr L)))
-    ($@-function (meval a) b)))
+  (let*
+    ((a (cadr L))
+     (b (caddr L))
+     (e ($@-function (meval a) b)))
+    (if (eq e b) L e)))
 
 (defun $@-function (in fn)
   (if (not (listp in))(list '(%@) in fn) ;noun form
     (let* ((index  
 	    (if (integerp fn) fn ;;; allow foo@3, also
-	      (position fn ($get (caar in) '$defstruct_template))))) ;field->integer
+	      (position fn (get (caar in) 'defstruct-template))))) ;field->integer
     (if (null index) (merror "Unknown field in record:~%~M" fn))
     (if  (< 0 index (length in))
 	(elt in index) (merror "Illegal instance:~%~M @ ~M" in fn))
    )))
+
+(defun dimension-defstruct (form result)
+  (let
+    ((L1 (cdr (get (caar form) 'defstruct-template)))
+     (L2 (cdr form)))
+    (dimension-function (cons (car form) (mapcar #'(lambda (e1 e2) (if (eq e1 e2) e1 `((mequal) ,e1 ,e2))) L1 L2)) result)))
 
 ;; L looks like defstruct (foo(...), bar(...), baz(...)).
 ;; Process each argument and return a list of declared structures.
@@ -709,12 +749,13 @@ wrapper for this."
 (defvar $structures '((mlist)))
 
 (defun defstruct1 (z) ;; z will look like (($whatever) $a $b $c)
-   ;; store the template on $whatever
-  ($put (caar z) (namesonly z) '$defstruct_template)
-  ;; set the initialization on $whatever
-  ($put (caar z) (initializersmostly z) '$defstruct_default)
-  (nconc $structures (list z))
-  z)
+   ;; store the template
+  (putprop (caar z) (namesonly z) 'defstruct-template)
+  ;; set the initialization
+  (putprop (caar z) (initializersmostly z) 'defstruct-default)
+  (setf (get (caar z) 'dimension) 'dimension-defstruct)
+  (nconc $structures (list (get (caar z) 'defstruct-default)))
+  (get (caar z) 'defstruct-default))
 
 (defun namesonly(r)			; f(a,b,c) unchanged, f(a=3,b=4,c=5) -> f(a,b,c)
   (cons (car r)(mapcar #'(lambda(z)
@@ -726,7 +767,7 @@ wrapper for this."
 (defun initializersmostly(r);; f(a=3,b,c=5) -> f(3,b,5)
   (cons (car r)(mapcar #'(lambda(z)
 			   (cond((symbolp z) z)
-				((eq (caar z) 'mequal)(third z))
+				((eq (caar z) 'mequal) (meval (third z)))
 				(t (merror "~% Expected record initializer, not ~M." z))))
 		       (cdr r))))
 
@@ -737,22 +778,22 @@ wrapper for this."
   (let ((recordname (cadr h)))
     (cond
       ((symbolp recordname)  ;; the case of, e.g.  new(f);
-       (if (null ($get recordname '$defstruct_default))
+       (if (null (get recordname 'defstruct-default))
          (merror "~% new: don't know anything about `~M'." recordname))
 
-       (copy-tree ($get recordname '$defstruct_default)))
+       (copy-tree (get recordname 'defstruct-default)))
 
       ;; assume there is some initialization here e.g. new (f(5,6,7))
       (t
         (let ((recordop (caar recordname)) (recordargs (cdr recordname)))
-          (if (null ($get recordop '$defstruct_default))
+          (if (null (get recordop 'defstruct-default))
             (merror "~% new: don't know anything about `~M'." recordop))
 
-          (if (not (= (length recordargs) (length (cdr ($get recordop '$defstruct_default)))))
+          (if (not (= (length recordargs) (length (cdr (get recordop 'defstruct-default)))))
             (merror "~% new: wrong number of arguments in initializer; expected ~M, not ~M."
-                    (length (cdr ($get recordop '$defstruct_default))) (length recordargs)))
+                    (length (cdr (get recordop 'defstruct-default))) (length recordargs)))
 
-          (copy-tree recordname))))))
+          `(,(car recordname) ,@(mapcar #'meval (cdr recordname))))))))
 
 ;; Following property assignments comprise the Lisp code equivalent to infix("@", 190, 191)
 
@@ -792,9 +833,9 @@ wrapper for this."
 ;; add MLIST to possible operators on the left hand side of 
 ;; an assignment statement.
 
-(setf (get 'mlist 'mset_extension_operator) '$mlistassign)
+(setf (get 'mlist 'mset_extension_operator) 'mlist-assign)
 
-(defmfun $mlistassign (tlist vlist)
+(defmfun mlist-assign (tlist vlist)
   ;;  tlist is  ((mlist..)  var[0]... var[n])  of targets
   ;; vlist is either((mlist..)  val[0]... val[n]) of values
   ;; or possibly just one value.

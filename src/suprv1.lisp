@@ -394,6 +394,12 @@
 	  (setf $gradefs (delete y $gradefs :count 1 :test #'equal))))
       (setf $dependencies
 	    (delete (assoc (ncons x) $dependencies :test #'equal) $dependencies :count 1 :test #'equal))
+      (let ((y (assoc-if #'(lambda (e) (equal x (car e))) (cdr $structures))))
+        (when y
+          (remprop x 'dimension)
+          (remprop x 'defstruct-template)
+          (remprop x 'defstruct-default)
+          (setf $structures (delete y $structures :count 1 :test #'equal))))
       (when (and (member x *builtin-symbols* :test #'equal)
 		 (gethash x *builtin-symbol-props*))
 	(setf (symbol-plist x)
@@ -414,7 +420,7 @@
 	     ((member x '($values $arrays $aliases $rules $props
 			$let_rule_packages) :test #'equal)
 	      (mapc #'kill1 (cdr (symbol-value x))))
-	     ((member x '($functions $macros $gradefs $dependencies) :test #'equal)
+	     ((member x '($functions $macros $gradefs $dependencies $structures) :test #'equal)
 	      (mapc #'(lambda (y) (kill1 (caar y))) (cdr (symbol-value x))))
 	     ((eq x '$myoptions))
 	     ((eq x '$tellrats) (setq tellratlist nil))
@@ -443,6 +449,7 @@
 			    (not (> (cadr x) (caddr x))))))
 	      (let (($linenum (caddr x))) (remlabels (- (caddr x) (cadr x)))))
 	     ((setq z (mgetl (caar x) '(hashar array))) (remarrelem z x))
+         ((eq (caar x) '$@) (mrecord-kill x))
 	     ((and (eq (caar x) '$allbut)
 		   (not (dolist (u (cdr x))
 			  (if (not (symbolp u)) (return t)))))
