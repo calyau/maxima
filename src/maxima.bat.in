@@ -13,7 +13,7 @@ set arg9=%9
 
 rem Uncomment line below and set required value to MAXIMA_LANG_SUBDIR 
 rem to get localized describe in command line Maxima
-rem set MAXIMA_LANG_SUBDIR="es"
+rem set MAXIMA_LANG_SUBDIR=es
 
 set lisp=@DEFAULTLISP@
 set version=@VERSION@
@@ -32,16 +32,16 @@ if "%MAXIMA_USERDIR%" == "" set MAXIMA_USERDIR=%maxima_prefix%\user
 if "%MAXIMA_TEMPDIR%" == "" set MAXIMA_TEMPDIR=%maxima_prefix%
 
 :startparseargs
-if "%1" == "-l" goto foundlisp
-if "%1" == "--lisp" goto foundlisp
-if "%1" == "-u" goto foundversion
-if "%1" == "--use-version" goto foundversion
-if "%1" == "-v" goto foundverbose
-if "%1" == "--verbose" goto foundverbose
+if x%1 == x-l goto foundlisp
+if x%1 == x--lisp goto foundlisp
+if x%1 == x-u goto foundversion
+if x%1 == x--use-version goto foundversion
+if x%1 == x-v goto foundverbose
+if x%1 == x--verbose goto foundverbose
 
 :continueparseargs
 shift
-if not "%1" == "" goto startparseargs
+if not x%1 == x goto startparseargs
 goto endparseargs
 
 :foundlisp
@@ -95,20 +95,20 @@ if "%verbose%" == "true" @echo on
 if "%lisp%" == "gcl" goto dogcl
 if "%lisp%" == "clisp" goto doclisp
 
-@echo "maxima error: lisp %lisp% not known."
+@echo Maxima error: lisp %lisp% not known.
 goto end
 
 :dogcl
-%maxima_imagesdir%\binary-gcl\maxima.exe -eval "(cl-user::run)" -f -- "%arg1%" "%arg2%" "%arg3%" "%arg4%" "%arg5%" "%arg6%" "%arg7%" "%arg8%" "%arg9%"
+%maxima_imagesdir%\binary-gcl\maxima.exe -eval "(cl-user::run)" -f -- %arg1% %arg2% %arg3% %arg4% %arg5% %arg6% %arg7% %arg8% %arg9%
 goto end
 
 :doclisp
 if "%layout_autotools%" == "true" goto clisp_autotools
-clisp -q -M %maxima_image_base%.mem "" -- "%arg1%" "%arg2%" "%arg3%" "%arg4%" "%arg5%" "%arg6%" "%arg7%" "%arg8%" "%arg9%"
+clisp -q -M %maxima_image_base%.mem "" -- %arg1% %arg2% %arg3% %arg4% %arg5% %arg6% %arg7% %arg8% %arg9%
 goto end
 
 :clisp_autotools
-%maxima_imagesdir%\binary-clisp\lisp.exe -q -M %maxima_image_base%.mem "" -- "%arg1%" "%arg2%" "%arg3%" "%arg4%" "%arg5%" "%arg6%" "%arg7%" "%arg8%" "%arg9%"
+%maxima_imagesdir%\binary-clisp\lisp.exe -q -M %maxima_image_base%.mem "" -- %arg1% %arg2% %arg3% %arg4% %arg5% %arg6% %arg7% %arg8% %arg9%
 goto end
 
 :end
