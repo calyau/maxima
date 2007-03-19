@@ -782,6 +782,7 @@ sym/docsymidx.tex\
 sym/ecrivain.lisp\
 sym/elem.lisp\
 sym/kak.lisp\
+sym/load-sym-lisp-files.lisp\
 sym/lecteur.lisp\
 sym/macros.lisp\
 sym/makefile\
