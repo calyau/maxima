@@ -1404,8 +1404,8 @@ relational knowledge is contained in the default context GLOBAL."
 	(t (let ((dummy x))
 	     (setq x (* (cadr x) (caddr y)))
 	     (setq y (* (caddr dummy) (cadr y))))))
-  (cond ((greaterp x y) '$pos)
-	((greaterp y x) '$neg)
+  (cond ((> x y) '$pos)
+	((> y x) '$neg)
 	(t '$zero)))
 
 (defun mcons (x l)

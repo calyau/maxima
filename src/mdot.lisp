@@ -8,6 +8,7 @@
 ;; (c) Copyright 1982 Massachusetts Institute of Technology 
 
 (in-package :maxima)
+
 ;; Non-commutative product and exponentiation simplifier
 ;; Written:	July 1978 by CWH
 
@@ -84,15 +85,12 @@ is no need to rely on the setting of this switch.")
 
 ;; Specials defined elsewhere.
 
-(declare-top(special $expop $expon	; Controls behavior of EXPAND
-		     sign		; Something to do with BBSORT1
-		     errorsw)
-	    (fixnum $expop $expon)
-	    (*expr firstn $ident powerx mxorlistp1 onep1
-		   scalar-or-constant-p eqtest bbsort1 outermap1 timex))
-
+(declare-top (special $expop $expon	; Controls behavior of EXPAND
+		      sign		; Something to do with BBSORT1
+		      errorsw))
+
 (defun simpnct (exp vestigial simp-flag) 
-  vestigial				;ignored
+  (declare (ignore vestigial))
   (let ((check exp)
 	(first-factor (simpcheck (cadr exp) simp-flag))
 	(remainder (if (cdddr exp)
@@ -170,7 +168,7 @@ is no need to rely on the setting of this switch.")
 	   (simpnct-antisym-check (cons first-factor (cdr remainder)) check))
 
 	  (t (eqtest (list '(mnctimes) first-factor remainder) check)))))
-
+
 ;;  Predicate functions for simplifying a non-commutative product to a
 ;;  commutative one.  SIMPNCT-CONSTANTP actually determines if a term is a
 ;;  constant and is not a nonscalar, i.e. not declared nonscalar and not a
@@ -238,7 +236,7 @@ is no need to rely on the setting of this switch.")
 
 (defun outer-constant (constant nonscalar1 nonscalar2)
   (muln (nconc constant (ncons (ncmul nonscalar1 nonscalar2))) t))
-
+
 (defun simpnct-base (term) (if (mncexptp term) (cadr term) term))
 
 (defun simpnct-power (term) (if (mncexptp term) (caddr term) 1))
@@ -260,10 +258,9 @@ is no need to rely on the setting of this switch.")
        (mxorlistp1 term1)
        (scalar-or-constant-p term2 (eq $assumescalar '$all))))
 
-(declare-top(muzzled t))
 
 (defun simpncexpt (exp vestigial simp-flag)
-  vestigial				;ignored
+  (declare (ignore vestigial))
   (let ((factor (simpcheck (cadr exp) simp-flag))
 	(power (simpcheck (caddr exp) simp-flag))
 	(check exp))
@@ -290,9 +287,9 @@ is no need to rely on the setting of this switch.")
 
 	  ((and (or (mplusp factor) (not $dotexptsimp))
 		(fixnump power)
-		(not (greaterp power $expop))
+		(not (> power $expop))
 		(plusp power))
-	   (ncmul factor (ncpower factor (f1- power))))
+	   (ncmul factor (ncpower factor (1- power))))
 
 	  ;; This does the same thing as above for (A+B)^^(-2)
 	  ;; and (A.B)^^(-2).  Here the "-" operator does the trick
@@ -300,7 +297,7 @@ is no need to rely on the setting of this switch.")
 
 	  ((and (or (mplusp factor) (not $dotexptsimp))
 		(fixnump power)
-		(not (greaterp (minus power) $expon))
+		(not (> (minus power) $expon))
 		(< power -1))
 	   (let (($expop $expon))
 	     (ncpower (ncpower factor (- power)) -1)))
@@ -313,7 +310,6 @@ is no need to rely on the setting of this switch.")
 	   (ncpower (cadr factor) (mul2 (caddr factor) power)))
 	  (t (eqtest (list '(mncexpt) factor power) check)))))
 
-(declare-top(muzzled nil))
 
 (defun simpnct-invert (exp)
   (cond ((mnctimesp exp)
@@ -326,7 +322,7 @@ is no need to rely on the setting of this switch.")
   (if (and ($listp (cadr x)) (= (length (cdr x)) (length (cdadr x))))
       (simplifya (cons (car x) (cdr ($ident (length (cdr x))))) t)
       $dotident))
-
+
 ;;  This function incorporates the hairy search which enables such
 ;;  simplifications as (. a b a b) --> (^^ (. a b) 2).  It assumes
 ;;  that FIRST-FACTOR is not a dot product and that REMAINDER is.
@@ -348,10 +344,10 @@ is no need to rely on the setting of this switch.")
 ;;  is clobbered as new terms are added.
 
 (defun simpnct-merge-product (first-factor remainder)
-  (let ((half-product-length (// (f1+ (length remainder)) 2))
+  (let ((half-product-length (ash (1+ (length remainder)) -1))
 	(inner-product (car remainder))
 	(outer-product (list '(mnctimes) first-factor (car remainder))))
-    (do ((merge-length 2 (f1+ merge-length))
+    (do ((merge-length 2 (1+ merge-length))
 	 (rest (cdr remainder) (cdr rest)))
 	((null rest) outer-product)
       (cond ((simpnct-alike first-factor inner-product)

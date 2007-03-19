@@ -162,7 +162,7 @@
        (setqmodulus nil)
        (setq c (lagrange3 c c* p q))
        (setq q (* p q))
-       (cond ((greaterp q f) (return c))
+       (cond ((> q f) (return c))
 	     (t (go step2)) ) ))
 
   (defun reject (a m xv)
@@ -269,7 +269,13 @@
 	      ((not (pzerop (car b))) (cons b m))))) ))
 
 (defun rot* (b)
-  (setq b (copy-list b)) (prog2 (nconc b b) (cdr b) (rplacd b nil)))
+  (setq b (copy-list b))
+  (prog2
+      (nconc b b)
+      (cdr b)
+    (rplacd b nil)))
 
 
-(defun ppluschk (p q) (cond ((pzerop p) q) (t (pplus p q))))
+(defun ppluschk (p q)
+  (cond ((pzerop p) q)
+	(t (pplus p q))))

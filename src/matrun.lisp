@@ -9,17 +9,15 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :maxima)
+
 (macsyma-module matrun)
 
 ;;; TRANSLATION properties for the FSUBRs in this file
 ;;; can be found in MAXSRC;TRANS5 >.  Be sure to check on those
 ;;; if any semantic changes are made.
 
-(declare-top (genprefix m_)
-	     (*lexpr $factor $ldisp)
-	     (special *expr *rulelist $rules $factorflag
-		      $maxapplyheight $maxapplydepth)
-	     (fixnum $maxapplyheight $maxapplydepth max depth))
+(declare-top (special *expr *rulelist $rules $factorflag
+		      $maxapplyheight $maxapplydepth))
 
 ;;  $MAXAPPLYDEPTH is the maximum depth within an expression to which
 ;;  APPLYi will delve.  If $MAXAPPLYDEPTH is 0, it is applied only to 
@@ -31,7 +29,7 @@
 (defmvar $maxapplyheight 10000.)
 
 (defmvar matchreverse nil)
-
+
 (defmspec $disprule (l) (setq l (cdr l))
     (if (and (eq (car l) '$all) (null (cdr l)))
       (disprule1 (cdr $rules))
@@ -88,7 +86,7 @@
         (if (eq (get op 'operators) rule)
             (putprop op othrulename 'operators))
         (return (mputprop op (delq rule (mget op 'oldrules)) 'oldrules))))))
-
+
 (defmfun findbe (e)
   (cond ((equal e 1) '(1 . 0))
 	((equal e 0) '(0 . 1))
@@ -134,7 +132,7 @@
 	    (if (and (eq c 'mexpt) (not (equal 1 e))) (matcherr))
 	    (return 1))
 	   ((equal expon 1) (return e))
-	   ((and (numberp expon) (greaterp expon 0) (equal e 0))
+	   ((and (numberp expon) (> expon 0) (equal e 0))
 	    (return 0))
 	   ((and (mexptp e) (alike1 expon (caddr e)))
 	    (return (cadr e)))
@@ -147,12 +145,12 @@
 		((and (mexptp (car e)) (alike1 expon (caddar e)))
 		 (return (cadar e))))
      (go a)))
-
+
 (defmfun part+ (e p preds) 
   (prog (flag saved val) 
      (cond ((> (length p) (length preds))
 	    (setq p (reverse p))
-	    (setq p (nthkdr p (f- (length p) (length preds))))
+	    (setq p (nthkdr p (- (length p) (length preds))))
 	    (setq p (nreverse p))))
      (setq e (copy-tree e)) ; PREVIOUSLY: (setq e ($ratexpand e))
      (setq e (cond ((not (mplusp e)) (ncons e)) (t (cdr e))))
@@ -180,7 +178,7 @@
   (prog (flag saved val $factorflag) 
      (cond ((> (length p) (length preds))
 	    (setq p (reverse p))
-	    (setq p (nthkdr p (f- (length p) (length preds))))
+	    (setq p (nthkdr p (- (length p) (length preds))))
 	    (setq p (nreverse p))))
      (setq e (copy-tree e)) ; PREVIOUSLY: (setq e ($factor e))
      (setq e (cond ((not (mtimesp e)) (ncons e)) (t (cdr e))))
@@ -212,7 +210,7 @@
      (mset (car p) saved)
      b    (setq preds (cdr preds) p (cdr p))
      (go a)))
-
+
 ;;; TRANSLATE property in MAXSRC;TRANS5 >
 
 (defmspec $apply1 (l) (setq l (cdr l))
@@ -236,7 +234,7 @@
 		  (simplifya
 		   (cons
 		    (delsimp (car expr))
-		    (mapcar #'(lambda (z) (apply1 z *rule (f1+ depth)))
+		    (mapcar #'(lambda (z) (apply1 z *rule (1+ depth)))
 			    (cdr expr)))
 		   t))))))))
 
@@ -261,7 +259,7 @@
 			   t))
      (cond ((= max $maxapplyheight) (return (cons expr max))))
      (setq expr (rule-apply *rule expr))
-     (return (cons expr (f1+ max)))))
+     (return (cons expr (1+ max)))))
 
 (defun *rulechk (*rule)
   (if (and (symbolp *rule) (not (fboundp *rule)) (not (mfboundp *rule)))
@@ -294,7 +292,7 @@
 		   (simplifya
 		    (cons
 		     (delsimp (car expr))
-		     (mapcar #'(lambda (z) (apply2 z (f1+ depth)))
+		     (mapcar #'(lambda (z) (apply2 z (1+ depth)))
 			     (cdr expr)))
 		    t))))))
       (cond ((progn (multiple-value-setq (ans rule-hit) (mcall (car ruleptr) expr)) rule-hit)
@@ -315,5 +313,4 @@
      (mapc #'(lambda (l) (setq max (max max (cdr l)))) pairs)
      (setq e (simplifya (cons (delsimp (car e)) (mapcar #'car pairs)) t))
      (cond ((= max $maxapplyheight) (return (cons e max)))
-	   (t (return (cons (apply2 e -1) (f1+ max)))))))
-
+	   (t (return (cons (apply2 e -1) (1+ max)))))))

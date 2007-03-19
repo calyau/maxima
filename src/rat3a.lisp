@@ -9,6 +9,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :maxima)
+
 (macsyma-module rat3a)
 
 ;; This is the new Rational Function Package Part 1.
@@ -63,7 +64,7 @@
     (setq p (bctimes p p))
     (and (oddp n) (setq s (bctimes s p)))))
 
-
+
 ;; Coefficient Arithmetic -- coefficients are assumed to be something
 ;; that is NUMBERP in lisp.  If MODULUS is non-NIL, then all coefficients
 ;; are assumed to be less than its value.  Some functions use LOGAND
@@ -74,46 +75,44 @@
 ;; where P is a fixnum, N is also assumed to be one.
 
 (defmfun crecip (n)
-  (cond
-    ;; Have to use bignum arithmetic if modulus is a bignum
-    ((bigp modulus) 
-     (prog (a1 a2 y1 y2 q (big-n n))
-	(if (minusp big-n) (setq big-n (+ big-n modulus)))
-	(setq a1 modulus a2 big-n)
-	(setq y1 0 y2 1)
-	(go step3)
-	step2 (setq q (truncate a1 a2))
-	(psetq a1 a2 a2 (- a1 (* a2 q)))
-	(psetq y1 y2 y2 (- y1 (* y2 q)))
-	step3 (cond ((zerop a2) (merror "Inverse of zero divisor?"))
-		    ((not (equal a2 1)) (go step2)))
-	(return (cmod y2))))
-    ;; Here we can use fixnum arithmetic
-    (t (prog ((a1 0) (a2 0) (y1 0) (y2 0) (q 0) (nn 0) (pp 0))
-	  (declare (fixnum a1 a2 y1 y2 q nn pp))
-	  (setq nn n pp modulus)
-	  (cond ((minusp nn) (setq nn (+ nn pp))))
-	  (setq a1 pp a2 nn)
-	  (setq y1 0 y2 1)
-	  (go step3)
-	  step2 (setq q (truncate a1 a2))
-	  (psetq a1 a2 a2 (rem a1 a2))
-	  (psetq y1 y2 y2 (- y1 (f* y2 q)))
-	  step3 (cond ((= a2 0) (merror "Inverse of zero divisor?"))
-		      ((not (= a2 1)) (go step2)))
-	  ;; Is there any reason why this can't be (RETURN (CMOD Y2)) ? -cwh
-	  (return  (cmod y2)
-		   ;;                    (COND ((= PP 2) (LOGAND 1 Y2))
-		   ;;			   (T (LET ((NN (rem Y2 PP)))
-		   ;;				(DECLARE (FIXNUM NN))
-		   ;;				(COND ((MINUSP NN)
-		   ;;				       (AND (< NN (- (ASH PP -1)))
-		   ;;					    (SETQ NN (+ NN PP))))
-		   ;;				      ((f> NN (ASH PP -1))
-		   ;;				       (SETQ NN (- NN PP))))
-		   ;;				NN)))
-		   )
-	  ))))
+  (cond ((bigp modulus)	;; Have to use bignum arithmetic if modulus is a bignum
+	 (prog (a1 a2 y1 y2 q (big-n n))
+	    (if (minusp big-n) (setq big-n (+ big-n modulus)))
+	    (setq a1 modulus a2 big-n)
+	    (setq y1 0 y2 1)
+	    (go step3)
+	    step2 (setq q (truncate a1 a2))
+	    (psetq a1 a2 a2 (- a1 (* a2 q)))
+	    (psetq y1 y2 y2 (- y1 (* y2 q)))
+	    step3 (cond ((zerop a2) (merror "Inverse of zero divisor?"))
+			((not (equal a2 1)) (go step2)))
+	    (return (cmod y2))))
+	;; Here we can use fixnum arithmetic
+	(t (prog ((a1 0) (a2 0) (y1 0) (y2 0) (q 0) (nn 0) (pp 0))
+	      (declare (fixnum a1 a2 y1 y2 q nn pp))
+	      (setq nn n pp modulus)
+	      (cond ((minusp nn) (setq nn (+ nn pp))))
+	      (setq a1 pp a2 nn)
+	      (setq y1 0 y2 1)
+	      (go step3)
+	      step2 (setq q (truncate a1 a2))
+	      (psetq a1 a2 a2 (rem a1 a2))
+	      (psetq y1 y2 y2 (- y1 (* y2 q)))
+	      step3 (cond ((= a2 0) (merror "Inverse of zero divisor?"))
+			  ((not (= a2 1)) (go step2)))
+	      ;; Is there any reason why this can't be (RETURN (CMOD Y2)) ? -cwh
+	      (return  (cmod y2)
+		       ;;                    (COND ((= PP 2) (LOGAND 1 Y2))
+		       ;;			   (T (LET ((NN (rem Y2 PP)))
+		       ;;				(DECLARE (FIXNUM NN))
+		       ;;				(COND ((MINUSP NN)
+		       ;;				       (AND (< NN (- (ASH PP -1)))
+		       ;;					    (SETQ NN (+ NN PP))))
+		       ;;				      ((f> NN (ASH PP -1))
+		       ;;				       (SETQ NN (- NN PP))))
+		       ;;				NN)))
+		       )
+	      ))))
 
 (defun cexpt (n e)
   (cond	((null modulus) (expt n e))
@@ -127,8 +126,7 @@
   (defmacro mcmod (n) ;;; gives answers from -modulus/2 ...0 1 2 +modulus/2
     `(let ((.n. (mod ,n modulus)))
       (cond ((<= (* 2 .n.) modulus) .n.)
-	    (t 
-	     (- .n. modulus)))))
+	    (t (- .n. modulus)))))
 
   (defun cplus (a b)
     (cond ((null modulus)(+ a b))
@@ -146,10 +144,9 @@
     (cond ((null modulus) (- a b))
 	  (t (mcmod (- a b))))))
 
-
 (defun setqmodulus (m)
   (cond ((numberp m)
-	 (cond ((greaterp m 0)
+	 (cond ((> m 0)
 		(setq hmodulus (truncate m 2))
 		(setq modulus m))
 	       (t (merror "Modulus must be a number > 0"))))
@@ -190,7 +187,7 @@
 	((pzerop (car x)) (pcoefadd 0 (pplus c (cadr x)) nil))
 	(t (cons (car x) (cons (cadr x) (pcplus1 c (cddr x)))))))
 	 
-
+
 (defmfun pdifference (x y)
   (cond ((pcoefp x) (pcdiffer x y))
 	((pcoefp y) (pcplus (cminus y) x))
@@ -227,7 +224,7 @@
   (cond ((null x) (cond ((pzerop c) nil) (t (list 0 (pminus c)))))
 	((pzerop (car x)) (pcoefadd 0 (pdifference (cadr x) c) nil))
 	(t (cons (car x) (cons (cadr x) (pcdiffer2 (cddr x) c))))))
-
+
 (defun pcsubsty (vals vars p)		;list of vals for vars
   (cond ((null vars) p)
 	((atom vars) (pcsub p (list vals) (list vars)))	;one val hack
@@ -266,7 +263,7 @@
 	 nconc (list exp coef)))
 
 
-
+
 (defmfun pderivative (p vari)
   (if (pcoefp p)
       0
@@ -312,7 +309,6 @@
      (setq r (ratplus r  (rattimes (cons (pminus v) 1) inc t)))
      (go a)))
 	 
-
 (defmfun pexpt (p n)
   (cond ((= n 0) 1)
 	((= n 1) p)
@@ -321,7 +317,7 @@
 	((alg p) (pexptsq p n))
 	((null (p-red p))
 	 (psimp (p-var p)
-		(pcoefadd (f* n (p-le p)) (pexpt (p-lc p) n) nil)))
+		(pcoefadd (* n (p-le p)) (pexpt (p-lc p) n) nil)))
 	(t (let ((*a* (1+ n))
 		 (*x* (psimp (p-var p) (p-red p)))
 		 (b (make-poly (p-var p) (p-le p) (p-lc p))))
@@ -361,7 +357,7 @@
 	     (loop for (exp coef) on (p-terms p) by #'pt-red
 		    unless (pzerop (setq coef (pmod coef)))
 		    nconc (list exp coef)))))
-
+
 (defmfun pquotient (x y)
   (cond ((pcoefp x)
 	 (cond ((pzerop x) (pzero))
@@ -409,7 +405,7 @@
 	(t (cons (pt-le x) (cons (pt-lc x) (pquotient2 (pt-red x) y))))))
 
 (declare-top (unspecial k q*))
-
+
 (defun algord (var)
   (and $algebraic (get var 'algord)))
 
@@ -445,7 +441,7 @@
     (cond ((< (pt-le p) n) (return (pzero)))
 	  ((= (pt-le p) n) (return (pt-lc p))))))
 
-
+
 (defmfun ptimes (x y)
   (cond ((pcoefp x) (if (pzerop x) (pzero) (pctimes x y)))
 	((pcoefp y) (if (pzerop y) (pzero) (pctimes y x)))
@@ -506,7 +502,7 @@
   (loop for (exp coef) on terms by #'pt-red
 	 unless (pzerop (setq coef (ptimes c coef)))
 	 nconc (list exp coef)))
-
+
 (defun leadalgcoef (p)
   (cond ((pacoefp p) p)
 	(t (leadalgcoef (p-lc p))) ))
@@ -551,7 +547,7 @@
 	       ((null p) p1)
 	     (setq mult (ptimes mult (pexpt lc (- deg (pt-le p)))))
 	     (nconc p1 (list (pt-le p) (ptimes mult (pt-lc p))))))))
-
+
 ;;	THESE ARE ROUTINES FOR MANIPULATING ALGEBRAIC NUMBERS
 
 (defun algnormal (p) (car (rquotient p (leadalgcoef p))))

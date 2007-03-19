@@ -104,7 +104,7 @@
 	 (simplifya (makegamma1 (list '(mfactorial) y)) nil))
 	((or (not (fixnump y)) (not (> y -1)))
 	 (eqtest (list '(mfactorial) y) x))
-	((or (minusp $factlim) (not (greaterp y $factlim)))
+	((or (minusp $factlim) (not (> y $factlim)))
 	 (factorial y))
 	(t (eqtest (list '(mfactorial) y) x))))
 

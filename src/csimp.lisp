@@ -20,7 +20,7 @@
 (load-macsyma-macros rzmac)
 
 (declare-top (special $nointegrate $lhospitallim $tlimswitch $limsubst
-		      $abconvtest complex-limit plogabs $intanalysis ))
+		      $abconvtest complex-limit plogabs $intanalysis))
 
 
 (setq $demoivre nil rsn* nil $nointegrate nil $lhospitallim 4 
@@ -244,7 +244,7 @@
      (setq m (cadr r))
      (cond ((minusp m) (setq m (minus m)) (setq flag t)))
      (setq n (caddr r))
-     loop (cond ((greaterp m n)
+     loop (cond ((> m n)
 		 (setq m (- m n))
 		 (setq eo (not eo))
 		 (go loop)))
@@ -289,7 +289,7 @@
 	 (cond ((free (cadr a) var)
 		(free (caddr a) var))
 	       (t (and (integerp (caddr a))
-		       (greaterp (caddr a) 0)
+		       (> (caddr a) 0)
 		       (polyp (cadr a))))))
 	(t (andmapcar #'(lambda (subexp)
 			  (free subexp var))

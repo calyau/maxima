@@ -218,7 +218,7 @@
 	   (eq (caar ex) '%log)	     ; Experimentally treat logs also.
 	   (and (eq (caar ex) 'mexpt)
 		(integerp2 (caddr ex))
-		(greaterp (integerp2 (caddr ex)) 0)
+		(> (integerp2 (caddr ex)) 0)
 		(arcfuncp (cadr ex))))))
 
 (defun integrator (exp var)
@@ -765,7 +765,7 @@
 	  (format t "  n1 = ~A~%" n1)
 	  (format t "  n2 = ~A~%" n2))
 	(return nil))
-       ((and (integerp2 r1) (greaterp r1 0))
+       ((and (integerp2 r1) (> r1 0))
 	#+nil (format t "integer r1 > 0~%")
 	;; (r1+q-1)/q is positive integer.
 	;;
@@ -925,7 +925,7 @@
 
 (defun greaterratp (x1 x2) 
   (cond ((and (numberp x1) (numberp x2))
-	 (greaterp x1 x2))
+	 (> x1 x2))
 	((ratnump x1)
 	 (greaterratp (quotient (float (cadr x1))
 				(caddr x1))
@@ -1150,7 +1150,7 @@
 		 (list '(mtimes) -1 '((%sin) x) (sinnx (1- n)))))))
 	 
 (defun poseven (x)
-  (and (even x) (greaterp x -1)))
+  (and (even x) (> x -1)))
 
 (defun trigfree (x) 
   (cond ((atom x)
@@ -1565,13 +1565,12 @@
 
 (defun diffdiv (exp var) 
   (prog (y *a* x v *d* z w r) 
-     (cond
-       ((and (mexptp exp)
-	     (mplusp (cadr exp))
-	     (integerp2 (caddr exp))
-	     (< (caddr exp) 6)
-	     (greaterp (caddr exp) 0))
-	(return (integrator (expandexpt (cadr exp) (caddr exp)) var))))
+     (cond ((and (mexptp exp)
+		 (mplusp (cadr exp))
+		 (integerp2 (caddr exp))
+		 (< (caddr exp) 6)
+		 (> (caddr exp) 0))
+	    (return (integrator (expandexpt (cadr exp) (caddr exp)) var))))
      (setq exp (cond ((mtimesp exp) exp) (t (list '(mtimes) exp))))
      (setq z (cdr exp))
      a    (setq y (car z))
