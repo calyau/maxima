@@ -102,16 +102,19 @@ simplify_sum(expr) :=
         [hi1 : ?gensym(), lo1 : ?gensym()],
         ss_print_message(1, "Trying with Gosper ..."),
         sm1 : nusum(summand, var, lo1, hi1),
-        ss_print_message(1, "Gosper returns:", sm1),
-        if lo=minf or lo=-inf then
-          sm1 : limit(sm1, lo1, lo)
-        else
-          sm1 : subst(lo1=lo, sm1),
-        if hi=inf then
-          sm1 : limit(sm1, hi1, hi)
-        else
-          sm1 : subst(hi1=hi, sm1)
-      )
+        if freeof_sum(sm1) then (
+          ss_print_message(1, "Gosper returns:", sm1),
+          if lo=minf or lo=-inf then
+            sm1 : limit(sm1, lo1, lo)
+          else
+            sm1 : subst(lo1=lo, sm1),
+          if hi=inf then
+            sm1 : limit(sm1, hi1, hi)
+          else
+            sm1 : subst(hi1=hi, sm1)
+          )
+          else sm1 : expr
+        )
     ) = [] then sm1 : expr,
 
     /* Try converting the sum to finite sum of psi functions            */
