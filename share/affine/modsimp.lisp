@@ -61,7 +61,7 @@
 	     )))
 
 (defun $find_sygy (degn &aux monoms general-term eqns sols simp)
-  (setq monoms ($mono $current_variables (sub1 degn)))
+  (setq monoms ($mono $current_variables (1- degn)))
   (setq monoms
 	(cons '(mlist)
 	(sloop for v in (cdr monoms)
@@ -192,7 +192,7 @@ multiplication A^m <--- A^n:B    Bv<----|v"
 	do
 	(setq tem  ($scalar_sum ($concat '$ccc i)
 				($mono $current_variables
-				       (add1 (f- in-degree ($nc_degree v))))))
+				       (1+ (f- in-degree ($nc_degree v))))))
 	collecting (ncmul* tem v)))
  (setq allrelats (meval* (cons '(mplus) relats)))
   (mshow allrelats)
@@ -304,7 +304,7 @@ multiplication A^m <--- A^n:B    Bv<----|v"
 		 (or (and (zl-listp (car v))
 			  (>= leng (setq leng-first-v(length (car v))))
 			  (equal (nthcdr (f- leng leng-first-v) (cdr monom)) (cdar v)))
-		     (eql (car v) (nth (sub1 (length monom)) monom)))
+		     (eql (car v) (nth (1- (length monom)) monom)))
 		 do (loop-return (list (first v) (cond ((numberp (second v)) (second v))
 						  (t (cdr (second v))))))))))
 ;(defun module-must-replacep (poly)
@@ -467,7 +467,7 @@ multiplication A^m <--- A^n:B    Bv<----|v"
 	 (and (equal ($nc_degree mon) n)
 	      mon))
 	(t (sloop 
-		 for i downfrom (sub1 (length mon)) to 1
+		 for i downfrom (1- (length mon)) to 1
 		 for u = (nth i mon)
 		 summing ($nc_degree u) into tot
 		 when (>= tot n)
@@ -613,7 +613,7 @@ multiplication A^m <--- A^n:B    Bv<----|v"
 	       (t (fsignal "not tail"))))
 	(t
 	 (sloop for v in (cdr b)
-	       for w in (nthcdr (setq tem  (add1 (f- (length a) (length b)))) a)
+	       for w in (nthcdr (setq tem  (1+ (f- (length a) (length b)))) a)
 ;	       do ;(show v w tem)
 	       when (not (equal v w))
 		 do (fsignal "b is not a tail of a"))
@@ -766,7 +766,7 @@ multiplication A^m <--- A^n:B    Bv<----|v"
 	 (cons '(mlist)
 	       (sloop for v in (cdr variables)
 		     appending
-		       (sloop for w in   (cdr (cyclic-module-basis variables (sub1 deg) dot-replacements module-replacements))
+		       (sloop for w in   (cdr (cyclic-module-basis variables (1- deg) dot-replacements module-replacements))
 			     do (setq tem (ncmul* v w ))
 			     unless (or (module-monom-must-replacep tem) ($must_replacep tem))
 			       collecting tem))))))

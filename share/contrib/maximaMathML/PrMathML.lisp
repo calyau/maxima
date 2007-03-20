@@ -160,27 +160,26 @@
 ;-              by the crazy top level os routines)
  
 (defun row-begin(str)
-    (myterpri) (princ str  mPrport)
-    (setq *indent* (add1 *indent*))
-    (setq *row* t)
-)
+  (myterpri)
+  (princ str  mPrport)
+  (incf *indent*)
+  (setq *row* t))
 
 (defun myindent()
-    (do ((i *indent*))
-	((equal i  0) nil)
-	(princ "   " mPrport) (setq i (sub1 i))
-    )
-)
+  (do ((i *indent*))
+      ((equal i 0) nil)
+    (princ "   " mPrport)
+    (decf i)))
 
 (defun row-end(str)
-    (setq *indent* (sub1 *indent*)) (myterpri)
-    (princ str mPrport) (setq *row* t)
-)
+  (decf *indent*)
+  (myterpri)
+  (princ str mPrport)
+  (setq *row* t))
 
 (defun tpchar (c)
-   (setq ccol (1+ ccol))
-   (princ c mPrport)
-)
+  (incf ccol)
+  (princ c mPrport))
 
 ;would have exceeded the line length
 ; lead off with a space for safety
