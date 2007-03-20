@@ -347,7 +347,7 @@
 	      ((funcall ordexp e1 e2)
 		(setq p (cdr p)))
 	      ((equal e1 e2)
-		(let ((a (difference (caadr p) (caar q))))
+		(let ((a (- (caadr p) (caar q))))
 		  (cond ((zerop a)
 			  (rplacd p (cddr p)))
 		        (t
@@ -357,7 +357,7 @@
 	      (t
 		(setq p (cdr (rplacd p (cons
 					  (cons
-					    (difference 0 (caar q))
+					    (- (caar q))
 					    (cdar q))
 					  (cdr p)))))
 		(setq q (cdr q))))))

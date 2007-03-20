@@ -133,7 +133,7 @@
                           (alike1 xbase (cadr obj))
                           (let ((inquir-expon (caddr obj)))
                             (let ((both-fix (and nstate (fixp inquir-expon))))
-                              (let ((dif (cond (both-fix (difference xexpon inquir-expon))
+                              (let ((dif (cond (both-fix (- xexpon inquir-expon))
                                                (t (sub xexpon inquir-expon))))
                                     (gcd (cond (both-fix (gcd xexpon inquir-expon))
                                                (t ($gcd xexpon inquir-expon)))))

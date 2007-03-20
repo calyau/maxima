@@ -671,7 +671,7 @@
                                (and (mexptp powered?)
                                     (let ((expon-2 (exponent powered?)))
                                       (and (fixp expon-2)
-                                           (let* ((intdif (difference expon expon-2))
+                                           (let* ((intdif (- expon expon-2))
                                                   (pf (plusp intdif)))
                                              (declare (fixnum intdif))
                                              (cond ((or (zerop intdif)
