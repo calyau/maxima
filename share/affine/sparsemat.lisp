@@ -288,7 +288,7 @@ constants-column
 	(t (mod (+ ,@ l) (sp-characteristic sp-mat)))))
 
 (defmacro non-negative-remainder (x y)
-  `(progn (setf ,x (remainder ,x ,y))
+  `(progn (setf ,x (rem ,x ,y))
 	  (cond ((minusp ,x)   (+ ,x ,y))
 		(t  ,x))))
 ;
@@ -1140,17 +1140,17 @@ constants-column
 ;(defun te (n   c &aux a aa)
 ;  (setq a c)   ;;96 ms. this is best.93 ms. if put the aa let outside the do loop
 ;  (sloop for i below n do (let(( aa (* i 2))) (cond ((zerop a) aa)
-;						 (t (remainder aa a))))))
+;						 (t (rem aa a))))))
 ;
 ;(defun te (n   c &aux d)  ;;130ms.
 ;  (local-declare ((special d)) (setq d c)
 ;  (sloop for i below n do ((lambda(a b)(cond  ((eql d 0) (* a b))
-;					    (t (remainder (* a b) d)))) i 2 ))))
+;					    (t (rem (* a b) d)))) i 2 ))))
 ;
 ;(defun te (n c &aux d)
 ;  (let ((d c))       ;;108 ms. slower than if you set up variable for (* i 2)
 ;    (sloop for i below n do (cond ((zerop d) (* i 2))
-;				 (t (remainder (* i 2) d))))))
+;				 (t (rem (* i 2) d))))))
 ;(defun te (n c &aux d) ;;faster than without the setq d! approx 75ms.
 ;  (sloop for i below n do  (setq d (aref c 500)) ))
 ;
@@ -1167,10 +1167,10 @@ constants-column
 ;(defun te (n   c &aux )
 ;  (let ((d c))             ;;120 ms.
 ;  (sloop for i below n do ((lambda(a b d)(cond  ((eql d 0) (* a b))
-;					    (t (remainder (* a b) d)))) i 2 d ))))
+;					    (t (rem (* a b) d)))) i 2 d ))))
 ;
 ;(progn 'compile (setf (function sp-ti) (function (lambda(a b d)(cond  ((eql d 0) (* a b))
-;					    (t (remainder (* a b) d)))) )))
+;					    (t (rem (* a b) d)))) )))
 ;(defun sp-test (sp-mat n)
 ;  (let (((sp-type-of-entries sp-mat) type-of-entries))  ;;fairly-fast
 ;  (sloop for i below n do (hh i 2 type-of-entries))))
@@ -1179,7 +1179,7 @@ constants-column
 ; (let ((type-of-entries type-of-entries))
 ;  (sloop for i below n do 
 ;	(setq a (* i 2)) (cond ((zerop type-of-entries) a)
-;						(t (remainder type-of-entries a))))))
+;						(t (rem type-of-entries a))))))
 ;
 ;(defun sp-test (sp-mat n)
 ;  (with-characteristic ; 77ms. in characteristic=0 this is best!!
@@ -1189,16 +1189,15 @@ constants-column
 ;(defun-method  h sparse-matrix (a b)  ;;slow
 ;  
 ;				      (cond ((eql type-of-entries 0) (* a b))
-;					    (t (remainder (* a b) type-of-entries))))
-;
-
+;					    (t (rem (* a b) type-of-entries))))
 
 (defun sp-number-of-pivots(sp-mat &optional (below-row (sp-number-of-rows sp-mat)))
   (let ((count 0))
       (sloop for i below below-row
 	when (aref (sp-column-used-in-row sp-mat) i) do (setf count (f1+ count))
 	finally (return count))))
-;(defun te (&rest l &aux with bar five)
+
+					;(defun te (&rest l &aux with bar five)
 ; (keyword-extract l vv    ((:with bar)  five ))
 ; (print (list bar five)))
   

@@ -6,10 +6,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :maxima)
-;(eval-when (compile)(or (find-package "TV") (make-package "TV")))
 
-
-;#+ti ;;while there's a bug
 #+old
 (defmacro defstruct (options &body items)
    (sloop for v in options when (and (listp v) (member 'list (member :type v)))
@@ -23,18 +20,11 @@
 				     (t 'tem) ))))
 	 finally (return `(cli:defstruct ,options ,@ items))))
 
-
-
 (defmacro iassert (expr)
   `(cond ((null ,expr) (fsignal "The expression ~A was not true" ',expr))))
 
-
-
 (defun alphagreatp (x y)
   (and (not (alphalessp x y)) (not (equal x y))))
-
-
-
 
 (defun $monomial_alphalessp (x y)
   (cond ((atom x)
@@ -96,7 +86,7 @@
 	for i from 1
 	when (eq u '&aux) do (return (firstn (f1- i) list))
 	finally (return list)))
-;(defun clear-hash (table) (send table :clear-hash))
+
 (defun clear-memory-function (f &aux tem)
   (cond ((setq tem  (get f ':memory-table))
 	 (clrhash tem))))
@@ -152,24 +142,9 @@
 
 (defmacro disable-remember (f)
   `(putprop ',f t :dont-remember))
+
 (defmacro enable-remember (f)
   `(remprop ',f :dont-remember))
-
-
-;
-;(defmacro function-let (alist &body body &aux sym)
-;  (sloop for v in alist
-;	for i from 1
-;	do (setq sym (gensym))
-;        collecting sym into locals
-;	collecting `(setq ,sym (function ,(first v))) into initial
-;	collecting `(setf (function ,(first v)) (function ,(second v))) into initial
-;	collecting `(cond (,sym (setf(function ,(first v)) ,sym))) into protects
-;	finally (return `(let ,locals
-;			   (unwind-protect
-;			     (progn   ,@ initial
-;			     ,@ body)
-;			   ,@ protects)))))
 
 (defmacro function-let (alist &body body &aux sym)
   (sloop for v in alist
@@ -195,8 +170,6 @@
   `(function-let ((fquery (lambda( ignore ctrl &rest args)(apply 'format  t ctrl args ) nil)))
 		,@ body))
 
-
-
 (defmacro find-minimal (in-list ordering &optional   such-that ind   )
   (cond (such-that
 	 (cond ((functionp such-that)(setq ind '-ind-)
@@ -220,43 +193,12 @@
 		    finally (return prev-min)))))
 
 
-#+lispm
-(DEFUN $pbi_pop_up (from-line  &aux input-symbol)
-  (let ((*print-base* 10.)(*read-base* 10.) *print-radix* ;(*nopoint t)
-	)
-  (cond ((null from-line)(setq from-line (max 1 (f- $linenum 40)))))
-  (si::USING-RESOURCE (WINDOW tv:POP-UP-FINGER-WINDOW)
-    (SETF (tv:SHEET-TRUNCATE-LINE-OUT-FLAG WINDOW) 1)
-    (FUNCALL WINDOW ':SET-LABEL (zl-string "Macsyma Input Playback"))
-    #+ti
-    (funcall window :set-process current-process)
-    (tv:window-call (window :deactivate)
-      (let ((*standard-input* (send window :io-buffer))(stream window))
-	(setq #-ti tv:kbd-esc-time #+ti tv:kbd-terminal-time nil)
-	(format window "Playback of Macsyma input lines:  ")
-	(let ((linel 
-		(f- (quotient (send window :width)
-			    (send window :char-width)) 10.)))
-	      (sloop for i from from-line below $linenum
-		    do
-		    (setq input-symbol (intern (format nil "$C~A" i) 'maxima ))
-		    (cond ( (boundp input-symbol) 
-			   (format stream "~% C~3A: ~:M"   i (symbol-value  input-symbol)  ))))
-	#+ti (tv:await-user-typeahead window)
-	 #-ti(tv:type-a-space-to-flush window)
-	))))))
-
-
-
-
-
 (defmacro user-supply (var)
   `(setq ,var (user-supply1 ',var ,var)))
 
 
 (defun user-supply1 (var val)
-  (let (#-cl(*print-level* 3)
-	#-cl(prinlength 3)
+  (let ((*print-level* 3)
 	.new.
 	.ch.)
     (sloop do
@@ -279,44 +221,8 @@
 
 (defvar  *timed-process-priority* 1)
 
-#+ti
-(defmacro tim (&body body ) "If you do (ti (f a)) it will evaluate (f a) and print time"
-       `(let ((prev (send current-process :priority)))
-	  (unwind-protect
-		(progn (send current-process :set-priority *timed-process-priority*)
-		(let ((time0 (time)) answer
-		      (short-time (get-internal-run-time)) elapsed-time
-		      short-elapsed-time )    
-		  (setq answer (multiple-value-list  (progn ,@body)))
-		  (setq short-elapsed-time (quotient (#+symbolics
-						      time-difference
-						      #-symbolics -
-						       (get-internal-run-time) short-time)
-						     (float internal-time-units-per-second)))
-;		  (show short-elapsed-time short-time
-;			(f- (get-internal-run-time) short-time)
-;			(time-difference
-;						       (get-internal-run-time) short-time))
-		  (setq elapsed-time (quotient  (fixr (* (quotient (time-difference
-								     (time)
-								     time0) 60.00) 10000))
-						10.0))
-		  (cond ((> elapsed-time 179000) (format t
-							 "%~D minutes and ~D seconds"
-							 (quotient elapsed-time 60000)
-							 (quotient (remainder elapsed-time
-									      60000) 1000)
-							 ))
-			(t 
-			 (format t "~%~D msec. at priority ~A"  short-elapsed-time *timed-process-priority*)))
-		  (apply 'values answer)))
-	 (send current-process :set-priority prev))))
-
-#+cl
-(defmacro tim ( &rest body)
-	  `(time (progn ,@ body)))
-
-
+(defmacro tim (&rest body)
+  `(time (progn ,@body)))
 
 ;;Idea is that you have two function definitions possibly with the
 ;;same name, and lots of places where the first one is called.
@@ -327,7 +233,7 @@
 ;;them as to speed (and value) in the applications.  It might be reasonable to implement
 ;;this as an emacs macro wrapping it around a region.
 
-(defmacro compare-functions ( defa defb &rest assertions)
+(defmacro compare-functions (defa defb &rest assertions)
   (let (.fa. .fb.
 	.boda. .bodb.
 	(.assert. (sloop for v in assertions
@@ -504,9 +410,6 @@
   big-monom-list)
 
  
-;(defmacro sp (&rest message)
-;  `(send (pv-the-sparse-matrix self) ,@ message))
-
 (defmacro gshow (form)
   `(progn (format t "~%The value of ~A is" ',form)
 	  (grind-top-level ,form)))
@@ -521,25 +424,13 @@
 	  (cond ((= (length factors) 2) `(ncmul2* . ,factors))
 		(t `(ncmuln (list . ,factors) nil))))
 
-
-
 (defstruct (matrix (:type list) :named (:conc-name matrix-))
-  rows  ;; list of open sets
-   )
+  rows)  ;; list of open sets
 
-
-(defmacro matrix-p (mat) `(and (listp ,mat) (eq (car ,mat) 'matrix)))
-
-
+(defmacro matrix-p (mat)
+  `(and (listp ,mat) (eq (car ,mat) 'matrix)))
 
 (defvar *verbose-check-overlaps* nil)
+
 (defmacro if-verbose (&rest l)
   `(cond (*verbose-check-overlaps*  ,@l)))
-
-
-
-
-
-
-
-
