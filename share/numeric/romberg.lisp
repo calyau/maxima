@@ -46,9 +46,9 @@
 	 (user-timesofar (cons 'romb-timesofar user-timesofar))
 	 (romb-print nil))
      (setq x (-$ b a))
-     (setf (aref$ tt 0)
+     (setf (aref tt 0)
 	   (*$ x (+$ (fcall$ f b) (fcall$ f a)) 0.5))
-     (setf	(aref$ rr 0.)
+     (setf	(aref rr 0.)
 		(*$ x (fcall$ f (*$ (+$ b a) 0.5))))
      (do ((l 1. (f1+ l)) (m 4. (f* m 2.)) (y 0.0) (z 0.0) (cerr 0.0))
 	 ((= l $rombergit)
@@ -56,9 +56,9 @@
        (declare (flonum y z cerr)
 		(fixnum l m))
        (setq y (float m) z (//$ x y))
-       (setf (aref$ tt l) (*$ (+$ (aref$ tt (f1- l))
-				  (aref$ rr (f1- l))) 0.5))
-       (setf (aref$ rr l) 0.0)
+       (setf (aref tt l) (*$ (+$ (aref tt (f1- l))
+				  (aref rr (f1- l))) 0.5))
+       (setf (aref rr l) 0.0)
        (do ((i 1. (f+ i 2.)))
 	   ((> i m))
 	 (cond (romb-print
@@ -68,30 +68,30 @@
 		       i
 		       cerr
 		       (+$ (*$ z (float i)) a))))
-	 (setf (aref$ rr l) (+$ (fcall$ f (+$ (*$ z (float i)) a))
-				(aref$ rr l))))
-       (setf (aref$ rr l) (*$ z (aref$ rr l) 2.0))
+	 (setf (aref rr l) (+$ (fcall$ f (+$ (*$ z (float i)) a))
+				(aref rr l))))
+       (setf (aref rr l) (*$ z (aref rr l) 2.0))
        (setq y 0.0)
        (do ((k l (f1- k))) ((= k 0.))
 	 (declare (fixnum k))
 	 (setq y (+$ (*$ y 4.0) 3.0))
-	 (setf (aref$  tt (f1- k))
-	       (+$ (//$ (-$ (aref$ tt k)
-			    (aref$ tt (f1- k))) y)
-		   (aref$ tt k)))
-	 (setf (aref$ rr (f1- k))
-	       (+$ (//$ (-$ (aref$ rr k)
-			    (aref$ rr (f1- k))) y)
-		   (aref$ rr k))))
-       (setq y (*$ (+$ (aref$ tt 0.)
-		       (aref$ rr 0.)) 0.5))
+	 (setf (aref  tt (f1- k))
+	       (+$ (//$ (-$ (aref tt k)
+			    (aref tt (f1- k))) y)
+		   (aref tt k)))
+	 (setf (aref rr (f1- k))
+	       (+$ (//$ (-$ (aref rr k)
+			    (aref rr (f1- k))) y)
+		   (aref rr k))))
+       (setq y (*$ (+$ (aref tt 0.)
+		       (aref rr 0.)) 0.5))
        ;;; this is the WIN condition test.
        (cond ((and
 	       (or (not
 		    (< $rombergabs
 		       (setq cerr
-			     (abs (-$ (aref$ tt 0.)
-				      (aref$ rr 0.))))))
+			     (abs (-$ (aref tt 0.)
+				      (aref rr 0.))))))
 		   (not (< $rombergtol
 			   ;; cerr = "calculated error"; used for ^]
 			   (setq cerr (//$ cerr
