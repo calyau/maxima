@@ -121,11 +121,11 @@
 	 (let ((fac (*$ (expt (log x) 2) 0.5d0))) 
 	   (m+t (+$ 1.20205690d0 
 		    (-$ (*$ (log x)
-			    (-$ 1.64493407d0 (chebyli2 (-$ 1.0 x))))
+			    (-$ 1.64493407d0 (chebyli2 (- 1d0 x))))
 			(chebys12 (-$ 1d0 x))
 			(*$ fac
-			    (log (cond ((< x 1d0) (-$ 1d0 x))
-				       ((1-$ x)))))))
+			    (log (cond ((< x 1d0) (- 1d0 x))
+				       ((1- x)))))))
 		(cond ((< x 1d0) 0)
 		      ((m*t (*$ fac -3.14159265d0) '$%i))))))
 	(t (m+t (+$ (chebyli3 (//$ x)) (*$ 3.28986813d0 (log x))
@@ -156,14 +156,14 @@
 			  :element-type 'double-float))
 
 (defun chebyli2 (x)
-  (*$ x (cheby-prime (//$ (1+$ (*$ x 4.0)) 3.0) *li2*)))
+  (*$ x (cheby-prime (//$ (1+ (*$ x 4.0)) 3.0) *li2*)))
 
 (defun chebyli3 (x)
-  (*$ x (cheby-prime (//$ (1+$ (*$ 4.0 x)) 3.0) *li3*)))
+  (*$ x (cheby-prime (//$ (1+ (*$ 4.0 x)) 3.0) *li3*)))
 
 (defun chebys12 (x)
   (*$ (//$ (expt x 2) 4.0)
-      (cheby-prime (//$ (1+$ (*$ 4.0 x)) 3.0) *s12*)))
+      (cheby-prime (//$ (1+ (*$ 4.0 x)) 3.0) *s12*)))
 
 ;; subtitle polygamma routines
 
