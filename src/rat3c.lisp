@@ -27,7 +27,7 @@
 (defun cgcd (a b)
   (cond (modulus 1)
 	((and $keepfloat (or (floatp a) (floatp b))) 1)
-	(t (gcd a b)))) 
+	(t (gcd a b))))
 
 (defmfun pquotientchk (a b)
   (if (eqn b 1) a (pquotient a b)))
@@ -35,7 +35,7 @@
 (defun ptimeschk (a b)
   (cond ((eqn a 1) b)
 	((eqn b 1) a)
-	(t (ptimes a b)))) 
+	(t (ptimes a b))))
 
 (defun pfloatp (x)
   (catch 'float (if (pcoefp x) (floatp x) (pfloatp1 x))))
@@ -61,7 +61,7 @@
   (list (ptimes (car x) (ptimes (cadr x) (caddr x)))
 	(caddr x) (cadr x)))
 
-(defun pgcdcofacts (x y) 
+(defun pgcdcofacts (x y)
   (let ((a (pgcda x y t)))
     (cond ((cdr a) a)
 	  ((equal (setq a (car a)) 1) (list 1 x y))
@@ -76,7 +76,7 @@
 	  ((eq a y) (list a (pquotient x y) 1))
 	  (t (list a (pquotient x a) (pquotient y a))))))
 
-(defun pgcda (x y cofac? &aux a c) 
+(defun pgcda (x y cofac? &aux a c)
   (cond ((not $gcd) (list 1 x y))
 	((and $keepfloat (or (pfloatp x) (pfloatp y)))
 	 (cond ((or (pcoefp x) (pcoefp y)
@@ -121,14 +121,14 @@
 	((eq $gcd '$ez) (ezgcd2 x y))
 	((eq $gcd '$red) (list (oldgcd x y)))
 	((eq $gcd '$mod) (newgcd x y modulus))
-	((not (memq $gcd *gcdl*))
+	((not (member $gcd *gcdl* :test #'eq))
 	 (merror "`gcd' set incorrectly:~%~M" $gcd))
 	(t (list 1 x y))))
 
 (defun monomgcdco (p q cofac?)
   (let ((gcd (monomgcd p q)))
     (cons gcd (if cofac? (list (pquotient p gcd) (pquotient q gcd)) ()))))
-  
+
 (defun monomgcd (p q)
   (cond ((or (pcoefp p) (pcoefp q)) 1)
 	((eq (p-var p) (p-var q))
@@ -136,7 +136,7 @@
 		    (monomgcd (p-lc p) (p-lc q))))
 	((pointergp (car p) (car q)) (monomgcd (p-lc p) q))
 	(t (monomgcd p (p-lc q)))))
-	
+
 (defun linhack (pol1 pol2 nonlindeg var cofac?)
   (prog (coeff11 coeff12 gcdab rpol1 rpol2 gcdcd gcdcoef)
      (desetq (coeff11 . coeff12) (bothprodcoef (make-poly var) pol1))
@@ -158,7 +158,7 @@
 			  (return (list (ptimes gcdcoef rpol1)
 					coeff11
 					(ptimes coeff12 gcdcd))))
-			 (t (return (list gcdcoef 
+			 (t (return (list gcdcoef
 					  (ptimes coeff11 rpol1)
 					  (ptimes coeff12 rpol2))))))
 	   (t (setq gcdcoef (pgcd gcdcd gcdab))
@@ -177,7 +177,7 @@
 (defun linhackcontent (var pol nonlindeg &aux (npol pol) coef gcd)
   (do ((i nonlindeg (1- i)))
       ((= i 0) (list (setq gcd (pgcd gcd npol)) (pquotient pol gcd)))
-    (desetq (coef . npol) (bothprodcoef (make-poly var i 1) npol)) 
+    (desetq (coef . npol) (bothprodcoef (make-poly var i 1) npol))
     (unless (pzerop coef)
       (setq gcd (if (null gcd) coef (pgcd coef gcd)))
       (if (equal gcd 1) (return (list 1 pol))))))
@@ -191,7 +191,7 @@
   (if (> egcd 1)
       (setq u (pexpon*// u egcd nil)
 	    v (pexpon*// v egcd nil)))
-  (if (f> (p-le v) (p-le u)) (exch u v))
+  (if (> (p-le v) (p-le u)) (exch u v))
   (setq s (case $gcd
 	    ($red (redgcd u v))
 	    ($subres (subresgcd u v))
@@ -206,7 +206,7 @@
   (and $algebraic (not (pcoefp (setq u (leadalgcoef s))))
        (not (equal u s)) (setq s (algnormal s)))
   (cond (modulus (monize s))
-	((pminusp s) (pminus s)) 
+	((pminusp s) (pminus s))
 	(t s)))
 
 (defun pgcdexpon (p)
@@ -231,16 +231,16 @@
   (loop until (zerop (pdegree q (p-var p)))
 	 do (psetq p q
 		   q (pquotientchk (prem p q) (pexpt (p-lc p) d))
-		   d (f+ (p-le p) 1 (f- (p-le q))))
+		   d (+ (p-le p) 1 (- (p-le q))))
 	 finally (return (if (pzerop q) p 1))))
 
 ;;computes gcd's using subresultant prs TOMS Sept. 1978
 
-(defun subresgcd (p q)					
+(defun subresgcd (p q)
   (loop for g = 1 then (p-lc p)
 	 for h = 1 then (pquotient (pexpt g d) h^1-d)
-	 for d = (f- (p-le p) (p-le q))
-	 for h^1-d = (if (equal h 1) 1 (pexpt h (f1- d)))
+	 for d = (- (p-le p) (p-le q))
+	 for h^1-d = (if (equal h 1) 1 (pexpt h (1- d)))
 	 do (psetq p q
 		   q (pquotientchk (prem p q) (ptimes g (ptimes h h^1-d))))
 	 if (zerop (pdegree q (p-var p))) return (if (pzerop q) p 1)))
@@ -251,20 +251,20 @@
   (prog (k (m 0) lcu lcv quo lc)
      (declare (special k lcu lcv))
      (setq lcv (pt-lc v))
-     (setq k (f- (pt-le u) (pt-le v)))
+     (setq k (- (pt-le u) (pt-le v)))
      (cond ((minusp k) (return (list 1 '(0 0) u))))
-     (if quop (setq lc (pexpt (pt-lc v) (f1+ k))))
+     (if quop (setq lc (pexpt (pt-lc v) (1+ k))))
      a     (setq lcu (pminus (pt-lc u)))
      (if quop (setq quo (cons (ptimes (pt-lc u) (pexpt (pt-lc v) k))
 			      (cons k quo))))
      (cond ((null (setq u (pgcd2 (pt-red u) (pt-red v))))
 	    (return (list lc (nreverse quo) '(0 0))))
-	   ((minusp (setq m (f- (pt-le u) (pt-le v))))
+	   ((minusp (setq m (- (pt-le u) (pt-le v))))
 	    (setq u (cond ((zerop k) u)
 			  (t (pctimes1 (pexpt lcv k) u))))
 	    (return (list lc (nreverse quo) u)))
-	   ((f> (f1- k) m)
-	    (setq u (pctimes1 (pexpt lcv (f- (f1- k) m)) u))))
+	   ((> (1- k) m)
+	    (setq u (pctimes1 (pexpt lcv (- (1- k) m)) u))))
      (setq k m)
      (go a)))
 
@@ -279,12 +279,12 @@
   (declare (special k lcu lcv) (fixnum k i))
   (cond ((null u) (pcetimes1 v k lcu))
 	((null v) (pctimes1 lcv u))
-	((zerop (setq i (f+ (pt-le u) (f- k) (f- (car v)))))
+	((zerop (setq i (+ (pt-le u) (- k) (- (car v)))))
 	 (pcoefadd (pt-le u) (pplus (ptimes lcv (pt-lc u))
 				    (ptimes lcu (pt-lc v)))
 		   (pgcd2 (pt-red u) (pt-red v))))
 	((minusp i)
-	 (list* (f+ (pt-le v) k) (ptimes lcu (pt-lc v)) (pgcd2 u (pt-red v))))
+	 (list* (+ (pt-le v) k) (ptimes lcu (pt-lc v)) (pgcd2 u (pt-red v))))
 	(t (list* (pt-le u) (ptimes lcv (pt-lc u)) (pgcd2 (pt-red u) v)))))
 
 ;;;*** OLDCONTENT REMOVES ALL BUT MAIN VARIABLE AND PUTS THAT IN CONTENT
@@ -311,9 +311,10 @@
 	     (cond ((pminusp v) (list (pminus u) (pminus v)))
 		   (t (list u v)))))))
 
-(defun oldcontent1 (x gcd) (cond ((equal gcd 1) 1)
-				 ((null x) gcd)
-				 (t (oldcontent2 (contsort x) gcd))))
+(defun oldcontent1 (x gcd)
+  (cond ((equal gcd 1) 1)
+	((null x) gcd)
+	(t (oldcontent2 (contsort x) gcd))))
 
 (defun oldcontent2 (x gcd)
   (do ((x x (cdr x))
@@ -322,9 +323,9 @@
 
 (defun contsort (x)
   (setq x (coefl x))
-  (cond ((zl-member 1 x)'(1))
-	((null (cdr x))x)
-	(t (sort x (function contodr)))))
+  (cond ((member 1 x) '(1))
+	((null (cdr x)) x)
+	(t (sort x #'contodr))))
 
 (defun coefl (x)
   (do ((x x (cddr x))
@@ -334,7 +335,7 @@
 (defun contodr (a b)
   (cond ((pcoefp a) t)
 	((pcoefp b) nil)
-	((eq (car a) (car b)) (not (f> (cadr a) (cadr b))))
+	((eq (car a) (car b)) (not (> (cadr a) (cadr b))))
 	(t (pointergp (car b)(car a)))))
 
 ;;;*** PCONTENT COMPUTES INTEGER CONTENT
@@ -359,7 +360,7 @@
   (cond ((pcoefp p) (abs p))
 	(t (setq p (mapcar #'abs (coefl (cdr p))))
 	   (let ((m (apply #'min p)))
-	     (oldcontent2 (zl-delete m p) m)))))
+	     (oldcontent2 (delete m p :test #'equal) m)))))
 
 ;;***	PGCDU CORRESPONDS TO BROWN'S ALGORITHM U
 
@@ -394,7 +395,7 @@
 (defun pgcdu1 (u v pquo*)
   (let ((invv (painvmod (pt-lc v))) (k 0) q*)
     (declare (special k quo q*) (fixnum k))
-    (loop until (minusp (setq k (f- (pt-le u) (pt-le v))))
+    (loop until (minusp (setq k (- (pt-le u) (pt-le v))))
 	   do (setq q* (ptimes invv (pt-lc u)))
 	   if pquo* do (setq quo (nconc quo (list k q*)))
 	   when (ptzerop (setq u (pquotient2 (pt-red u) (pt-red v))))
@@ -412,7 +413,7 @@
 	     (if (< (car pl) p) (return (car pl)))))))
 
 (defun fnewprime (p)	     ; Finds biggest prime less than fixnum P.
-  (do ((pp (if (oddp p) (f- p 2) (f- p 1)) (f- pp 2))) ((f< pp 0))
+  (do ((pp (if (oddp p) (- p 2) (- p 1)) (- pp 2))) ((< pp 0))
     (if (primep pp) (return pp))))
 
 ;; #O <form> reads <form> in octal (base 8)
@@ -422,7 +423,7 @@
 (eval-when
     #+gcl (load)
     #-gcl (:load-toplevel)
- 
+
     ;; it is convenient to have the bigprimes be actually less than
     ;; half the size of the most positive fixnum, so that arithmetic is
     ;; easier
@@ -445,7 +446,7 @@
 	;; Could always use the following, but it takes several seconds to compute
 	;; so if we want to autoload this file, it is tiresome.
 	(t '(do ((i 0 (1+ i))
-		 (p (truncate most-positive-fixnum 2) (newprime p)))
+		 (p (ash most-positive-fixnum -1) (newprime p)))
 	     ((= i 20)))))
 
     (setq *alpha (car bigprimes)))
@@ -514,6 +515,6 @@
 
 
 ;;;*************************************************************
- 
+
 ;;	THIS IS THE END OF THE NEW RATIONAL FUNCTION PACKAGE PART 3.
 ;;	IT INCLUDES THE GCD ROUTINES AND THEIR SUPPORTING FUNCTIONS

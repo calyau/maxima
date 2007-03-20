@@ -278,7 +278,7 @@
 		 (setq minpoly* (cadr (ratrep* alpha)))
 		 (if (or (pcoefp minpoly*)
 			 (not (univar (cdr minpoly*)))
-			 (f< (cadr minpoly*) 2))
+			 (< (cadr minpoly*) 2))
 		     (merror "The second argument to `factor' must be a non-linear, univariate polynomial:~%~M"
 		      alpha))
 		 (setq alpha (pdis (list (car minpoly*) 1 1))
@@ -468,7 +468,7 @@
 	((and (m$exp? $x) (mtimesp (setq temp (caddr $x)))
 	      (equal (cddr temp) '($%i $%pi))
 	      (ratnump (setq temp (cadr temp))))
-	 (if mpflag (primcyclo (f* 2 (caddr temp))) t))
+	 (if mpflag (primcyclo (* 2 (caddr temp))) t))
 	((not mpflag) (assolike $x tellratlist))
 	((setq temp (copy-list (assolike $x tellratlist)))
 	 (do ((p temp (cddr p))) ((null p))
@@ -478,7 +478,7 @@
 		     ((zerop (pt-le (pt-red temp)))
 		      (list (pt-le temp) (pminus (pt-lc (pt-red temp)))))
 		     (t temp)))
-	 (if (and (f= (pt-le temp) 1) (setq $x (assol $x genpairs)))
+	 (if (and (= (pt-le temp) 1) (setq $x (assol $x genpairs)))
 	     (rplacd $x (cons (cadr temp) 1)))
 	 temp)))
 
@@ -522,7 +522,7 @@
        (mv 0))
       ((null p)
        (do ((l gl (cdr l)))
-	   ((or (null l) (f> (valget (car l)) mv)))
+	   ((or (null l) (> (valget (car l)) mv)))
 	 (putprop (car l) t 'algord)))
     (setq mv (max mv (porder (cadr p))))))
 
@@ -852,7 +852,6 @@
        (putprop g p 'tellrat))
      (return (rget g))))
 
-
 ;;  Any program which calls RATF on
 ;;  a floating point number but does not wish to see "RAT replaced ..."
 ;;  message, must bind $RATPRINT to NIL.
@@ -905,7 +904,6 @@
   (when $ratprint
     (mtell " ~A/~A = ~A~%"  (car f) (cdr f) (fpcofrat1 (car f) (cdr f))))
   f)
-
 
 (defun pdisrep (p)
   (if (atom p)
@@ -1045,7 +1043,8 @@
 (defun sortgreat (l)
   (and l (nreverse (sort l 'great))))
 
-(defun fnewvar (l &aux (*fnewvarsw t)) (newvar l))
+(defun fnewvar (l &aux (*fnewvarsw t))
+  (newvar l))
 
 (defun nestlev (exp)
   (if (atom exp)
