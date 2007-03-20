@@ -1,6 +1,3 @@
-
-
-
 ;*******************************************************************************
 ;*                                                                             *
 ;*  copyright (c) 1988 kent state univ.  kent, ohio 44242                      *
@@ -15,6 +12,7 @@
 	*lisplogexpops* *lispstmtops* *lispstmtgpops*))
 
 (declare-top (special *gendecs *endofloopstack* fortcurrind* tablen*))
+
 ;;  -----------  ;;
 ;;  lspfor.l     ;;    lisp-to-fortran translation module
 ;;  -----------  ;;
@@ -24,29 +22,29 @@
 (put 'not      '*fortranprecedence* 3)
 (put 'equal    '*fortranprecedence* 4)
 (put 'notequal '*fortranprecedence* 4)
-(put 'greaterp '*fortranprecedence* 4)
+(put '>        '*fortranprecedence* 4)
 (put 'geqp     '*fortranprecedence* 4)
-(put 'lessp    '*fortranprecedence* 4)
+(put '<        '*fortranprecedence* 4)
 (put 'leqp     '*fortranprecedence* 4)
-(put 'plus     '*fortranprecedence* 5)
-(put 'times    '*fortranprecedence* 6)
+(put '+        '*fortranprecedence* 5)
+(put '*        '*fortranprecedence* 6)
 (put 'quotient '*fortranprecedence* 6)
-(put 'minus    '*fortranprecedence* 7)
+(put '-        '*fortranprecedence* 7)
 (put 'expt     '*fortranprecedence* 8)
 (put 'or       '*fortranop* '| .or. |)
 (put 'and      '*fortranop* '| .and. |)
 (put 'not      '*fortranop* '| .not. |)
 (put 'equal    '*fortranop* '| .eq. |)
 (put 'notequal '*fortranop* '| .ne. |)
-(put 'greaterp '*fortranop* '| .gt. |)
+(put '>        '*fortranop* '| .gt. |)
 (put 'geqp     '*fortranop* '| .ge. |)
-(put 'lessp    '*fortranop* '| .lt. |)
+(put '<        '*fortranop* '| .lt. |)
 (put 'leqp     '*fortranop* '| .le. |)
-(put 'plus     '*fortranop* '|+|)
-(put 'times    '*fortranop* '|*|)
+(put '+        '*fortranop* '|+|)
+(put '*        '*fortranop* '|*|)
 (put 'quotient '*fortranop* '|//|)
 (put 'expt     '*fortranop* '|**|)
-(put 'minus    '*fortranop* '|-|)
+(put '-        '*fortranop* '|-|)
 (put nil '*fortranname* ".false.")
 
 ;;                                         ;;
@@ -225,8 +223,7 @@
   (prog (n1 hi incr result)
 	(setq n1 (genstmtno))
 	(setq *endofloopstack* (cons n1 *endofloopstack*))
-	(setq hi (car (delete1 'greaterp
-			       (delete1 'lessp (delete1 var exitcond)))))
+	(setq hi (car (delete1 '> (delete1 '< (delete1 var exitcond)))))
 	(setq incr (car (delete1 'plus (delete1 var nextexp))))
 	(setq result (mkffortdo n1 var lo hi incr))
 	(indentfortlevel (+ 1))
@@ -351,7 +348,7 @@
 		    lo
 		    (equal (car nextexp) 'plus)
 		    (member var nextexp)
-		    (member (car exitcond) '(greaterp lessp))
+		    (member (car exitcond) '(> <))
 		    (member var exitcond))
 	       (return (fortdo var lo nextexp exitcond body)))
 	      ((and exitcond

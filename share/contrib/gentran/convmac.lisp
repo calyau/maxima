@@ -1,4 +1,3 @@
-
 ;*******************************************************************************
 ;*                                                                             *
 ;*  copyright (c) 1988 kent state univ.  kent, ohio 44242                      *
@@ -189,7 +188,7 @@
 (defmacro spaces (m)
 ;                                       ;
 ; (spaces n)  -->  (do ((i n (sub1 i))) ;
-;		       ((lessp i 1))    ;
+;		       ((< i 1))    ;
 ;		       (princ " "))     ;
 ;                                       ;
   `(dotimes (i ,m) (princ " ")))

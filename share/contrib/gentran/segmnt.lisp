@@ -285,7 +285,7 @@
 
 
 (defun toolongexpp (exp)
-  (greaterp (numprintlen exp) maxexpprintlen*))
+  (> (numprintlen exp) maxexpprintlen*))
 
 (defun toolongstmtp (stmt)
   (cond ((atom stmt) nil)  ;; pwang 11/11/86
