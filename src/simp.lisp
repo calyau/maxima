@@ -37,7 +37,7 @@
 	 simplified to -A-B.")
 
 (defmvar $numer nil
-  "Causes zl-SOME mathematical functions (including exponentiation)
+  "Causes SOME mathematical functions (including exponentiation)
 	 with numerical arguments to be evaluated in floating point.
 	 It causes variables in an expression which have been given
 	 NUMERVALs to be replaced by their values.  It also turns
@@ -396,7 +396,7 @@
 
 (defmfun mequalp (x) (and (not (atom x)) (eq (caar x) 'mequal)))
 
-(defmfun mxorlistp (x) (and (not (atom x)) (memq (caar x) '(mlist $matrix))))
+(defmfun mxorlistp (x) (and (not (atom x)) (member (caar x) '(mlist $matrix) :test #'eq)))
 
 (defun mxorlistp1 (x)
   (and (not (atom x))
@@ -446,8 +446,7 @@
 		;; with carefully chosen names should use this feature.
 		x)
 	       (t (cons (car x)
-			(mapcar (function (lambda (x) (simplifya x y)))
-				(cdr x))))))
+			(mapcar #'(lambda (x) (simplifya x y)) (cdr x))))))
 	((eq (caar x) 'rat) (*red1 x))
 	((and (not dosimp) (member 'simp (cdar x) :test #'eq)) x)
 	((eq (caar x) 'mrat) x)
@@ -944,7 +943,7 @@
 		       (t x)))
 
 (defun simpmin (x vestigial z)
-  vestigial				;Ignored       
+  (declare (ignore vestigial))
   (oneargcheck x)
   (cond ((numberp (cadr x)) (minus (cadr x)))
 	((atom (cadr x)) (list '(mtimes simp) -1 (cadr x)))
@@ -1165,7 +1164,7 @@
 			(t (mul2 x y))))
 
 (defmfun simp-limit (x vestigial z) 
-  vestigial				;Ignored.
+  (declare (ignore vestigial))
   ((lambda (l1 y) 
      (cond ((not (or (= l1 2) (= l1 4) (= l1 5))) (wna-err '%limit)))
      (setq y (simpmap (cdr x) z))
@@ -1179,7 +1178,7 @@
    (length x) nil))
 
 (defmfun simpinteg (x vestigial z) 
-  vestigial				;Ignored.
+  (declare (ignore vestigial))
   ((lambda (l1 y) 
      (cond ((not (or (= l1 3) (= l1 5)))
 	    (merror "Wrong number of arguments to '`integrate'")))
@@ -1198,21 +1197,21 @@
    (length x) nil))
 
 (defmfun simpbigfloat (x vestigial simp-flag)
-  vestigial				;Ignored.
+  (declare (ignore vestigial))
   simp-flag				;No interesting subexpressions
   (bigfloatm* x))
 
 (defmfun simpexp (x vestigial z)
-  vestigial				;Ignored.
+  (declare (ignore vestigial))
   (oneargcheck x) (simplifya (list '(mexpt) '$%e (cadr x)) z))
 
 (defmfun simplambda (x vestigial simp-flag)
-  vestigial				;Ignored.
+  (declare (ignore vestigial))
   simp-flag				;No interesting subexpressions
   (cons '(lambda simp) (cdr x)))
 
 (defmfun simpmdef (x vestigial simp-flag)
-  vestigial				;Ignored.
+  (declare (ignore vestigial))
   simp-flag				;No interesting subexpressions
   (twoargcheck x)
   (cons '(mdefine simp) (cdr x)))
@@ -1393,8 +1392,9 @@
 		     ((lambda (y z)
 			(cond ((mexptp y) (list (car y) (cadr y) (mul2 (caddr y) z)))
 			      (t (power y z))))
-		      (let ($keepfloat $ratprint) (simpnrt r1 (caddr r2)))
-		      (remainder (cadr r2) (caddr r2))))
+		      (let ($keepfloat $ratprint)
+			(simpnrt r1 (caddr r2)))
+		      (rem (cadr r2) (caddr r2))))
 	       1 t))
 	    t))))
 
@@ -1820,8 +1820,8 @@
     del
      (return (rplacd fm (cddr fm)))
     %i
-     (if (minusp (setq w (remainder w 4)))
-	 (setq w (f+ 4 w)))
+     (if (minusp (setq w (rem w 4)))
+	 (incf w 4))
      (return (cond ((zerop w)
 		    fm) 
 		   ((= w 2)
@@ -2212,8 +2212,8 @@
 			  (t (cons '(mtimes simp) negprods))))
      (cond ((null sums) (go down))
 	   (t (setq expsums (car sums))
-	      (mapc (function (lambda (c)
-		      (setq expsums (expandsums expsums c))))
+	      (mapc #'(lambda (c)
+			(setq expsums (expandsums expsums c)))
 		    (cdr sums))))
      (setq prods (cond ((equal prods 1) expsums)
 		       (t (expandterms prods (fixexpand expsums)))))
@@ -2224,8 +2224,8 @@
 	       ((mplusp prods) (return (expandterms (power negprods -1) (cdr prods))))
 	       (t (return ((lambda (expandflag) (mul2 prods (power negprods -1))) t)))))
 	    (t (setq expnegsums (car negsums))
-	       (mapc (function (lambda (c)
-		       (setq expnegsums (expandsums expnegsums c))))
+	       (mapc #'(lambda (c)
+			 (setq expnegsums (expandsums expnegsums c)))
 		     (cdr negsums))))
      (setq expnegsums (expandterms negprods (fixexpand expnegsums)))
      (return
@@ -2287,7 +2287,7 @@
 	   (push y *out))
 	  (t (cond ((not (> *n (abs (cadr x))))
 		    (push (list '(mexpt) (car x) (quotient (cadr x) *n)) *out)))
-	     (push (list '(mexpt) (car x) (remainder (cadr x) *n)) *in)))))
+	     (push (list '(mexpt) (car x) (rem (cadr x) *n)) *in)))))
 
 (defun nrthk (in *n) 
   (cond ((equal in 1) 1)

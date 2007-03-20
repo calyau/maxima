@@ -822,7 +822,7 @@ One extra decimal digit in actual representation for rounding purposes.")
   (setq fixprec (truncate fixprec (1- (integer-length int)))) ;NN is pos
   (let ((bas (intofp (expt int (min nn fixprec)))))
     (if (> nn fixprec)
-	(fptimes* (intofp (expt int (remainder nn fixprec)))
+	(fptimes* (intofp (expt int (rem nn fixprec)))
 		  (fpexpt bas (quotient nn fixprec)))
 	bas)))
 
@@ -1003,7 +1003,7 @@ One extra decimal digit in actual representation for rounding purposes.")
 	     (when *fpsincheck*
 	       (print `(*canc= ,*cancelled fpprec= ,fpprec oldprec= ,oldprec)))
 	     (cond ((not (> oldprec (- fpprec *cancelled)))
-		    (setq r (remainder r 4))
+		    (setq r (rem r 4))
 		    (setq res
 			  (cond (fl (cond ((= r 0) (fpsin1 x))
 					  ((= r 1) (fpcos1 x))

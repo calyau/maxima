@@ -1691,7 +1691,7 @@
 	((mnump a)
 	 ;; If we're here, this basically assumes a is a rational.
 	 ;; Compute the remainder and return the result.
-	 (list (car a) (remainder (cadr a) (caddr a)) (caddr a)))
+	 (list (car a) (rem (cadr a) (caddr a)) (caddr a)))
 	((and (atom a) (abless1 a)) a)
 	((and (mplusp a)
 	      (null (cdddr a))
@@ -2028,27 +2028,6 @@
 	((funcall p e) e))) 
 
 
-(comment (the following func is not complete)) 
-
-;;(DEFUN ZTO1 (E)
-;;  (prog (ans k l)
-;;    (COND ((NOTINVOLVE E '(%SIN %COS %TAN %LOG))
-;;	   (cond ((SETQ ANS (BATAP E))
-;;		  (return ans)))))
-;;    (cond ((AND (NOTINVOLVE E '(%SIN %COS %TAN))
-;;		(AMONG '%LOG E))
-;;	   (COND ((SETQ ANS (BATAP (M// E `((%LOG) ,VAR))))
-;;		  (SETQ K NN* L DN*)
-;;		  (SETQ ANS (m* ANS
-;;				(m+ (subfunmake '$PSI '(0) (list K))
-;;				    (m* -1. (subfunmake '$PSI
-;;							'(0)
-;;							(ncons (m+ K
-;;								   L)))))))
-;;		  (return ans)))))))
-
-
-
 ;; Check e for an expression of the form x^kk*(b*x^n+a)^l.  If it
 ;; matches, Return the two values kk and (list l a n b).
 (defun bata0 (e)
@@ -2358,7 +2337,7 @@
 		      e)))))))
 		      
 
-(comment this is the second part of the definite integral package) 
+;; this is the second part of the definite integral package
 
 (declare-top(special var plm* pl* rl* pl*1 rl*1)) 
 
@@ -2382,8 +2361,6 @@
 	      (numberp (caddr a))
 	      (lognxp (cadr a)))
 	 (caddr a)))) 
-
-(comment check the following function for unused prog var a) 
 
 (defun logcpi0 (n d)
   (prog (pl dp) 

@@ -153,7 +153,7 @@
   (cond ((atom l) l)
 	((not (among 'mrat l)) l)
 	((eq (caar l) 'mrat) (ratdisrep l))
-	(t (cons (delq 'ratsimp (car l)) (mapcar '$totaldisrep (cdr l))))))
+	(t (cons (delete 'ratsimp (car l) :test #'eq) (mapcar '$totaldisrep (cdr l))))))
 
 ;;;VARLIST HAS MAIN VARIABLE AT END
 
@@ -374,7 +374,7 @@
      (if (and ($ratp y) (setq formflag t) (integerp (cadr y)) (equal (cddr y) 1))
 	 (setq y (cadr y)))
      (if (and (integerp x) (integerp y))
-	 (return (list '(mlist) (*quo x y) (remainder x y))))
+	 (return (list '(mlist) (*quo x y) (rem x y))))
      (setq varlist (cddr (listify nargs)))
      (mapc #'newvar (reverse (cdr $ratvars)))
      (newvar y)
