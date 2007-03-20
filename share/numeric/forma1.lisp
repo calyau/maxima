@@ -6,16 +6,14 @@
 
 ;;; defaults
 
-(defmvar floatmax 6. )
-(defmvar floatmin -4. )
-(defmvar floatbig 2. )
-(defmvar floatbigbig 1. )
-(defmvar floatsmall 3. )
-(defmvar float-enote 2.) 
+(defmvar floatmax 6)
+(defmvar floatmin -4)
+(defmvar floatbig 2)
+(defmvar floatbigbig 1)
+(defmvar floatsmall 3)
+(defmvar float-enote 2) 
 
-(putprop 'makestring1
-	 (get 'makestring 'subr)
-	 'subr) 
+(putprop 'makestring1 (get 'makestring 'subr) 'subr) 
 
 (defun makestring (form) 
        (cond ((and $floatformat (floatp form)) (nicefloat form))
@@ -28,15 +26,15 @@
 	     ((niceflt (abs flt))))) 
 
 (defun niceflt (aflt) 
-       (declare (fixnum i) (flonum simflt fac aflt))
-       (do ((i 0.)
-	    (simflt aflt)
-	    (fac (cond ((< aflt 1.0) 10.0) (0.1)))
-	    (inc (cond ((< aflt 1.0) -1.) (1.))))
-	   ((and (< simflt 10.0) (not (< simflt 1.0)))
-	    (floatcheck (exploden simflt) i))
-	   (setq simflt (* simflt fac))
-	   (setq i (+ i inc)))) 
+  (declare (fixnum i) (flonum simflt fac aflt))
+  (do ((i 0)
+       (simflt aflt)
+       (fac (cond ((< aflt 1.0) 10.0) (0.1)))
+       (inc (cond ((< aflt 1.0) -1.) (1.))))
+      ((and (< simflt 10.0) (not (< simflt 1.0)))
+       (floatcheck (exploden simflt) i))
+    (setq simflt (* simflt fac))
+    (incf i inc))) 
 
 (defun floatcheck (repres pwr) 
     (declare (fixnum pwr))
@@ -65,11 +63,11 @@
 
 (defun fraczeros (n) 
        (declare (fixnum n))
-       (cond ((= n 0.) nil) ((cons 48. (fraczeros (1- n)))))) 
+       (cond ((zerop n) nil) ((cons 48. (fraczeros (1- n)))))) 
 
 (defun floatnone (repres pwr floatfrac) 
        (declare (fixnum pwr floatfrac))
-       (cond ((= pwr 0.) (cons 46. (fracgen repres floatfrac nil)))
+       (cond ((zerop pwr) (cons 46. (fracgen repres floatfrac nil)))
 	     ((cons (cond (repres (car repres)) (48.))
 		    (floatnone (cdr repres) (1- pwr) floatfrac))))) 
 
@@ -81,10 +79,7 @@
 (defun fracgen (repres floatfrac result) 
        (declare (fixnum floatfrac))
        (cond ((null repres) (felimin result))
-	     ((= floatfrac 0.) (felimin result))
+	     ((zerop floatfrac) (felimin result))
 	     ((fracgen (cdr repres)
 		       (1- floatfrac)
 		       (cons (car repres) result))))) 
-
-#-nil
-(sstatus uuolinks)

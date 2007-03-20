@@ -5,9 +5,7 @@
 (macsyma-module format)
 
 (declare (special $floatformat $floatint $floatfrac $floatprec $floatwidth
-		  $floatoptions $aliases $stringdisp $lispdisp aliaslist)
-	 (*expr print-fixed-field-floating print-fixed-precision-floating
-		string*1 assqr))
+		  $floatoptions $aliases $stringdisp $lispdisp aliaslist))
 
 (defmvar $floatformat nil)
 (defmvar $floatint 1)
@@ -58,11 +56,10 @@
    nil))
 
 (defun string* (x)
- (or (and (numberp x) (number-exploden x))
-     ((lambda (u) (cond (u (string*1 (car u))))) (assqr x aliaslist))
-     (string*1 x)))
+  (or (and (numberp x) (number-exploden x))
+      ((lambda (u) (cond (u (string*1 (car u))))) (assqr x aliaslist))
+      (string*1 x)))
 
 (declare (eval (read)))
-(setsyntax '/# 'macro nil)
 
-(sstatus uuolinks)
+(setsyntax '/# 'macro nil)

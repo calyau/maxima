@@ -75,4 +75,3 @@
 		    (STORE (RANARY I 0) -1)
 		    (SETQ COUNT (1+ COUNT))))))
 
-(SSTATUS UUOLINKS)		; so it will work immediately

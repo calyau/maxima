@@ -25,8 +25,7 @@
 (macsyma-module itensor) ;; added 9/24/82 at UCB
 
 (cond (($get '$itensor '$version) (merror "ITENSOR already loaded"))
-      (t ($put '$itensor '$v20041126 '$version))
-)
+      (t ($put '$itensor '$v20041126 '$version)))
 
 ;    Various functions in Itensor have been parceled out to separate files. A
 ;    function in one of these files will only be loaded in (automatically) if
@@ -41,25 +40,6 @@
 ;                      IGEODESIC_COORDS
 ;    SYMTRY FASL       CANFORM, DECSYM, DISPSYM, REMSYM
 
-#+maclisp(progn
-(putprop '$ic_convert '((dsk tensor) gener fasl) 'autoload)
-(putprop '$decsym '((dsk tensor) symtry fasl) 'autoload)
-(putprop '$canform '((dsk tensor) symtry fasl) 'autoload)
-(putprop '$canten '((dsk tensor) canten fasl) 'autoload)
-(putprop '$makebox '((dsk tensor) gener fasl) 'autoload)
-(putprop '$igeodesic_coords '((dsk tensor) gener fasl) 'autoload)
-(putprop '$conmetderiv '((dsk tensor) gener fasl) 'autoload))
-#+Franz (progn
-(putprop '$ic_convert (concat vaxima-main-dir '|//tensor//gener|) 'autoload)
-(putprop '$decsym (concat vaxima-main-dir  '|//tensor//symtry| )'autoload)
-(putprop '$canform (concat vaxima-main-dir  '|//tensor//symtry| )'autoload)
-(putprop '$canten (concat vaxima-main-dir  '|//tensor//canten| )'autoload)
-(putprop '$makebox (concat vaxima-main-dir  '|//tensor//gener| )'autoload)
-(putprop '$igeodesic_coords (concat vaxima-main-dir '|//tensor//gener| )'autoload)
-(putprop '$conmetderiv (concat vaxima-main-dir '|//tensor//gener| )'autoload))
-
-#+cl
-(progn
 (autof '$ic_convert '|gener|)
 (autof '$decsym '|symtry|)
 (autof '$canform '|symtry|)
@@ -68,21 +48,15 @@
 (autof '$igeodesic_coords '|gener|)
 (autof '$conmetderiv '|gener|)
 (autof '$name '|canten|)
-)
+  
 
-#+cl
+
 (eval-when (eval compile)
-  (defmacro fixp (x) `(typep ,x 'fixnum))
-)
+  (defmacro fixp (x) `(typep ,x 'fixnum)))
 
-#+maclisp ($UUO) 	           ;Restore calls to SDIFF so it can be redefined	
-
-(declare-top
-  (special smlist $idummyx $vect_coords $imetric $icounter $dim
-           $contractions $coord $allsym $metricconvert $iframe_flag
-           $itorsion_flag $inonmet_flag)
-  (*lexpr $rename $diff $idiff $coord $remcoord $lorentz_gauge)
-)
+(declare-top (special smlist $idummyx $vect_coords $imetric $icounter $dim
+		      $contractions $coord $allsym $metricconvert $iframe_flag
+		      $itorsion_flag $inonmet_flag))
 
 (setq $idummyx '$%                   ;Prefix for dummy indices
       $icounter 0.                   ;Dummy variable numeric index
@@ -102,7 +76,7 @@
 (defmacro m+or*or^p (&whole cl &rest ign) ign
        (subst (cadr cl)
 	      'x
-	      '(memq (caar x) '(mtimes mplus mexpt))))
+	      '(member (caar x) '(mtimes mplus mexpt) :test #'eq)))
 
 (defmfun $idummy nil                              ;Sets arguments to dummy indices
        (progn (setq $icounter (1+ $icounter))
@@ -175,7 +149,7 @@
 (meval '(($declare) $levi_civita $constant))
 
 (setq $dim 4. $contractions '((mlist simp))) 
-
+
 (defmfun $defcon n            ;Defines contractions: A contracts with B to form C
        ((lambda (a)
 	 (add2lnc a $contractions)
@@ -225,7 +199,7 @@
 		(t (zl-get e 'contractions))
 	)
 )
-
+
 (defun rpobj (e)                  ;"True" if an indexed object and not a matrix
        (cond ((and (not (atom e)) (eq (caar e) 'mqapply)) (rpobj (cdr e)))
 	     (t 
@@ -344,7 +318,7 @@
               (list '(mtimes) (contr c d) ($ichr1 (list smlist a b d)))
             )
             (setq d ($idummy))
-            (and (not (memq d l)) (setq flag t))
+            (and (not (member d l :test #'eq)) (setq flag t))
           )
         )
       )
@@ -792,7 +766,7 @@
 (defun lorentz (e l)
        (cond ((atom e) e)
 	     ((rpobj e)
-	      (cond ((and (or (null l) (memq (caar e) l))
+	      (cond ((and (or (null l) (member (caar e) l :test #'eq))
 			  (intersect (cdaddr e) (cdddr e)))
 		     0.)
 		    (t e)))
@@ -886,7 +860,7 @@
     )
     (return
       (cond
-        ((or (null symbol) (memq (caar e) christoffels)) e)
+        ((or (null symbol) (member (caar e) christoffels :test #'eq)) e)
         (
           t
           (prog (cov con f sgn)
@@ -941,7 +915,7 @@
     ((j s1 (cdr j)) (a))
     ((null j) (reverse a))
     (or
-      (and (not (numberp (car j))) (memq (car j) s2))
+      (and (not (numberp (car j))) (member (car j) s2 :test #'eq))
       (setq a (cons (car j) a))
     )
   )
@@ -966,7 +940,7 @@
 	     (and (null lst) (return nil))
 	     (setq rest (cons frst rest))
 	     (go loop))) 
-
+
 (defun contract4 (l)                                        ;contracts products
        (prog (l1 l2 l3 f cl sf)
 	     (setq cl (cdr l)) ;Following loop sets up 3 lists from the factors
@@ -1129,7 +1103,7 @@
 ;; Removes items not in i from l.
 (defun removenotin (i l)
   (cond ((null l) l)
-        ((memq (car l) i) (cons (car l) (removenotin i (cdr l))))
+        ((member (car l) i :test #'eq) (cons (car l) (removenotin i (cdr l))))
         (t (removenotin i (cdr l)))
   )
 )
@@ -1139,7 +1113,7 @@
   (cond ((null l) l)
         ((atom (car l)) (cons (car l) (removenotinm i (cdr l))))
         ((and (isprod (caar l)) (eq (cadar l) -1)
-             (not (memq (caddar l) i))) (removenotinm i (cdr l)))
+             (not (member (caddar l) i :test #'eq))) (removenotinm i (cdr l)))
         (t (cons (car l) (removenotinm i (cdr l))))
   )
 )
@@ -1180,10 +1154,10 @@
           (simplifya
             (cond
               (
-                (and (cdr c) (not (numberp b)) (memq b (cdr c)))
+                (and (cdr c) (not (numberp b)) (member b (cdr c) :test #'eq))
                 (setq c (subst a b (cdr c)))
                 (and
-                  (not (memq (caar g) christoffels))
+                  (not (member (caar g) christoffels :test #'eq))
                   (cdr d)
                   (setq a (contract2 c (cdr d)))
                   (setq c (car a) d (cons smlist (cdr a)))
@@ -1192,7 +1166,7 @@
                 (nconc (list (car g) (cons smlist c) d) e)
               )
               (
-                (and e (not (numberp b)) (memq b e))
+                (and e (not (numberp b)) (member b e :test #'eq))
                 (nconc (list (car g) c d) 
                   (cond
                     ($iframe_flag (subst a b e))
@@ -1201,7 +1175,7 @@
                 )
               )
               (
-                (and (cdr d) (not (numberp a)) (memq a (cdr d)))
+                (and (cdr d) (not (numberp a)) (member a (cdr d) :test #'eq))
                 (setq d (subst b a (cdr d)))
                 (and
                   (cdr c)
@@ -1465,40 +1439,7 @@
 		      (list '(%kdels) l1 l2)
 		      ))
 	     (t (delta (cdr l1) (cdr l2) 1)))) 
-;;
-;;(declare-top (fixnum i)) 
-;;
-;;(defun delta (lower upper &optional (eps -1))
-;;       (cond ((null lower) $dim)
-;;	     ((null (cdr lower))
-;;	      (cond ((equal (car upper) (car lower))
-;;		     (cond ((numberp (car upper)) 1.) (t $dim)))
-;;		    ((and (numberp (car upper)) (numberp (car lower))) 0.)
-;;		    (t (list '(%kdelta)
-;;			     (cons smlist lower)
-;;			     (cons smlist upper)))))
-;;	     (t (do ((i (length lower) (1- i))
-;;		     (sl lower)
-;;		     (term)
-;;		     (result)
-;;		     (f (ncons (car upper)))
-;;		     (r (cdr upper))
-;;		     (sign (oddp (length lower))))
-;;		    ((= i 0.)
-;;		     (simplus (cons '(mplus) result) 1. t))
-;;		    (setq term (list (delta (ncons (car sl)) f eps)
-;;				     (delta (cdr sl) r eps)))
-;;		    (setq sl (cdr (append sl (ncons (car sl)))))
-;;		    (setq result
-;;			  (cons (simptimes (cons '(mtimes)
-;;						 (cond ((or sign
-;;							    (oddp i))
-;;							(cons eps
-;;							      term))
-;;						       (t term)))
-;;					   1.
-;;					   nil)
-;;				result)))))) 
+
 (defun delta (lower upper &optional (eps -1))
   (cond ((null lower) $dim)
         ((null (cdr lower))
@@ -1518,8 +1459,6 @@
                                   ) result)
               )))))
 
-(declare-top (notype i))
-
 (declare-top (special $outchar $dispflag linelable foobar derivlist))
 
 
@@ -1571,13 +1510,13 @@
   (cond ((fixp x)(explode x))
 	(t (cdr (explodec x)))))
 ;	(t (cdr (explodec (print-invert-case x))))))
-
+
 (defun deriv (e) 
        (prog (exp z count v) 
 	     (cond ((null (cdr e)) (return (stotaldiff (car e))))
 		   ((null (cddr e)) (nconc e '(1.))))
 	     (setq exp (car e) z (setq e (append e nil)))
-	loop (cond ((or (null derivlist) (zl-member (cadr z) derivlist))
+	loop (cond ((or (null derivlist) (member (cadr z) derivlist :test #'equal))
 		    (go doit)))
 						       ;DERIVLIST is set by $EV
 	     (setq z (cdr z))
@@ -1632,12 +1571,10 @@
 ;Redefined so that the derivative of any indexed object appends on the
 ;coordinate index in sorted order unless the indexed object was declared
 ;constant in which case 0 is returned.
-#+Franz (sstatus translink nil) ; make sdiff take hold
-#+Franz (sstatus translink t)
 (defun sdiff (e x) 
        (cond ((mnump e) 0.)
 	     ((alike1 e x) 1.)
-	     ((or (atom e) (memq 'array (cdar e)))
+	     ((or (atom e) (member 'array (cdar e) :test #'eq))
 	      (chainrule1 e x))
 	     ((mget (caar e) '$constant) 0.)                    ;New line added
 	     ((eq (caar e) 'mrat) (ratdx e x))
@@ -1686,11 +1623,11 @@
 	     ((eq (caar e) '%integrate) (diffint e x))
 	     ((eq (caar e) '%derivative)
 	      (cond ((or (atom (cadr e))
-			 (memq 'array (cdaadr e)))
+			 (member 'array (cdaadr e) :test #'eq))
 		     (chainrule1 e x))
 		    ((freel (cdr e) x) 0.)
 		    (t (diff%deriv (list e x 1.)))))
-	     ((memq (caar e) '(%sum %product)) (diffsumprod e x))
+	     ((member (caar e) '(%sum %product) :test #'eq) (diffsumprod e x))
 	     (t (sdiffgrad e x)))) 
 
 ; VTT: several of these functions have been copied verbatim from comm.lisp and
@@ -1757,7 +1694,7 @@
        ((null (cdr e)) (return (stotaldiff (car e))))
        ((null (cddr e)) (nconc e '(1))))
      (setq exp (car e) z (setq e (copy-list e)))
-     loop (if (or (null derivlist) (zl-member (cadr z) derivlist)) (go doit))
+     loop (if (or (null derivlist) (member (cadr z) derivlist :test #'equal)) (go doit))
                     ; DERIVLIST is set by $EV
      (setq z (cdr z))
      loop2(cond ((cdr z) (go loop))
@@ -1843,7 +1780,7 @@
   (cond
          (($constantp e) 0.)
 	     ((alike1 e x) 1.)
-	     ((or (atom e) (memq 'array (cdar e)))
+	     ((or (atom e) (member 'array (cdar e) :test #'eq))
 ;;	      (ichainrule e x))
 ;;        (idiff%deriv (list e x 1)))
           0)
@@ -1889,13 +1826,13 @@
 	     ((eq (caar e) '%integrate) (idiffint e x))
 	     ((eq (caar e) '%derivative)
 	      (cond ((or (atom (cadr e))
-			 (memq 'array (cdaadr e)))
+			 (member 'array (cdaadr e) :test #'eq))
 ;;		     (ichainrule e x))
 ;;           (idiff%deriv (list e x 1)))
              0)
 ;;		    ((freel (cdr e) x) 0.)
 		    (t (idiff%deriv (list e x 1.)))))
-	     ((memq (caar e) '(%sum %product)) (idiffsumprod e x))
+	     ((member (caar e) '(%sum %product) :test #'eq) (idiffsumprod e x))
 	     (t (idiffgrad e x))
   )
 )
@@ -1904,7 +1841,7 @@
   (cond
     (               ; Special case: functions declared with coord()
       (and
-        (memq (caar e) $coord) (null (cdadr e))
+        (member (caar e) $coord :test #'eq) (null (cdadr e))
         (equal (length (cdaddr e)) 1) (null (cdddr e))
       )
       (delta (ncons x) (cdaddr e))
@@ -2004,7 +1941,7 @@
 
 (add2lnc '$lc_l $rules)
 (add2lnc '$lc_u $rules)
-
+
 (declare-top (special e empty $flipflag))
 
 (setq $flipflag nil empty '((mlist simp) ((mlist simp)) ((mlist simp)))) 
@@ -2043,7 +1980,7 @@
                             top (append top (cadr x)))
       )
       (
-        (and (memq (caar e) '(%derivative $diff))
+        (and (member (caar e) '(%derivative $diff) :test #'eq)
              (or (eq (length e) 3) (eq (cadddr e) 1)))
         (setq x (indices (cadr e)) bottom (append bottom (cadr x))
                             top (append top (car x)))
@@ -2051,14 +1988,14 @@
                             top (append top (cadr x)))
       )
       (
-        (memq (caar e) '(mtimes mnctimes mncexpt))
+        (member (caar e) '(mtimes mnctimes mncexpt) :test #'eq)
         (dolist (v (cdr e))
           (setq x (indices v) bottom (append bottom (cadr x))
                               top (append top (car x)))
         )
       )
       (
-        (memq (caar e) '(mplus mequal))
+        (member(caar e) '(mplus mequal) :test #'eq)
         (setq top (indices (cadr e)) bottom (cadr top) top (car top))
         (setq p (intersect top bottom) q (removeindex p bottom)
               p (removeindex p top))
@@ -2073,11 +2010,11 @@
         )
       )
       (
-        (memq (caar e) '($sum %sum))
+        (member (caar e) '($sum %sum) :test #'eq)
         (setq top (list (caddr e)) bottom (list (caddr e)))
       )
       (
-        (memq (caar e) '(%idiff $idiff))
+        (member (caar e) '(%idiff $idiff) :test #'eq)
 ;;; This code would count derivative indices as covariant. However, it is
 ;;; not needed. If the user wants to count derivative indices, those should
 ;;; be part of the tensor expression; if the expression is undiff'd, there
@@ -2094,11 +2031,6 @@
         (setq x (indices (cadr e)) bottom (append bottom (cadr x))
               top (append top (car x)))
       )
-;      (
-;        (memq (caar e) '(%derivative $diff))
-;        (setq x (indices (cadr e)) bottom (append bottom (cadr x))
-;              top (append top (car x)))
-;      )
     )
     (return (list top bottom))
   )
@@ -2120,9 +2052,9 @@
 		(cdr l)))
 		(nil)
 		(cond ((null l) (return t))
-		      ((memq (car l) b))
+		      ((member (car l) b :test #'eq))
 		      (t (return nil)))))) 
-
+
 (defmfun $flush n           ;Replaces the given (as arguments to FLUSH) indexed
        (prog (l)          ;objects by zero if they have no derivative indices.
 	     (cond ((< n 2) (merror "FLUSH takes at least 2 arguments"))
@@ -2149,7 +2081,7 @@ indexed objects")) (t (return (flush (arg 1) l nil))))))
 (defun flush (e l flag)
        (cond ((atom e) e)
 	     ((rpobj e)
-	      (cond ((not (memq (caar e) l)) e)
+	      (cond ((not (member (caar e) l :test #'eq)) e)
 		    ((not (null (cdddr e)))
 		     (cond (flag e)
 			   (t 0)))
@@ -2171,7 +2103,7 @@ indexed objects")) (t (return (flush (arg 1) l nil))))))
 				       (lambda (q) ($flushnd q name n)))
 				      (cdr e))) e))))
 
-(declare-top (fixnum index n) (special index n dumx))
+(declare-top (special index n dumx))
 
 (defmfun $rename nargs
  (cond ((= nargs 1) (setq index 1)) (t (setq index (arg 2)))) (rename (arg 1)))
@@ -2180,7 +2112,7 @@ indexed objects")) (t (return (flush (arg 1) l nil))))))
        (cond
 	((atom e) e)
 	((or (rpobj e) (eq (caar e) 'mtimes););If an indexed object or a product
-        (and (memq (caar e) '(%derivative $diff)) ; or a derivative expression
+        (and (member (caar e) '(%derivative $diff) :test #'eq) ; or a derivative expression
              (or (eq (length e) 3) (eq (cadddr e) 1)))
     )
 	 ((lambda  (l) 
@@ -2231,7 +2163,7 @@ indexed objects")) (t (return (flush (arg 1) l nil))))))
 
 (defun itensor-sort (l) (cond ((cdr l) (sort l 'less)) (t l)))
 ;Sort into ascending order
-
+
 (defmfun $remcomps (tensor)
        (zl-remprop tensor 'expr) (zl-remprop tensor 'carrays)
        (zl-remprop tensor 'texprs) (zl-remprop tensor 'indexed)
@@ -2285,7 +2217,7 @@ indexed objects")) (t (return (flush (arg 1) l nil))))))
 	  (t (merror "Args to COMPONENTS do not have the same free indices")))
     (setq tensor (caar tensor) len1 (list len1 len2 len3))
     (cond ((and (setq name (zl-get tensor prop))
-		(setq len2 (zl-assoc len1 name))) (rplacd len2 comp))
+		(setq len2 (assoc len1 name :test #'equal))) (rplacd len2 comp))
 	  (t (putprop tensor (cons (cons len1 comp) name) prop)))
     (or (zl-get tensor 'indexed) ($indexed_tensor tensor))
     '$done) nil nil nil nil nil))
@@ -2303,7 +2235,7 @@ indexed objects")) (t (return (flush (arg 1) l nil))))))
               (and
                 (allfixed subs)
                 (setq prop (zl-get tensor 'carrays))
-                (setq prop (zl-assoc idx prop))
+                (setq prop (assoc idx prop :test #'equal))
               )
               (cond
                 (
@@ -2317,9 +2249,9 @@ indexed objects")) (t (return (flush (arg 1) l nil))))))
               )
             )
             (
-              (setq prop (zl-assoc idx (zl-get tensor 'texprs)))
+              (setq prop (assoc idx (zl-get tensor 'texprs) :test #'equal))
               (sublis
-                (mapcar (function cons)(cddr prop) subs)
+                (mapcar #'cons(cddr prop) subs)
                 ($rename (cadr prop) (cond ((boundp 'n) n) (t 1)))
               )
             )
@@ -2393,7 +2325,7 @@ indexed objects")) (t (return (flush (arg 1) l nil))))))
 	((and (eq (caar e) 'mlist)
 	      (sloop for v in (cdr e) always (atom v))
 ;	      (apply 'and (mapcar 'atom (cdr e)))
-	      (not (memq f e))) e)
+	      (not (member f e :test #'eq))) e)
 	(t (merror "Indices must be atoms different from the tensor name"))))
 
 (defun memberl (a b)
@@ -2402,8 +2334,8 @@ indexed objects")) (t (return (flush (arg 1) l nil))))))
       ((null l) nil)
     (setq carl (car l))
     (cond ((and (eq (ml-typep carl) 'symbol)
-		(zl-member carl b)) (return t)))))
-
+		(member carl b :test #'equal)) (return t)))))
+
 (defun consmlist (l) (cons smlist l))			;Converts from Lisp list to Macsyma list
 
 ;$INDICES2 is similar to $INDICES except that here dummy indices are picked off
@@ -2413,7 +2345,7 @@ indexed objects")) (t (return (flush (arg 1) l nil))))))
 
 (defmfun $indices2 (e)
   (cond ((atom e) empty)
-	((not (or (memq (caar e) '(mtimes mnctimes)) (rpobj e)))
+	((not (or (member (caar e) '(mtimes mnctimes) :test #'eq) (rpobj e)))
 	 ($indices e))
 	(t ((lambda (indices)
 	      (do ((ind indices) (free) (dummy) (index))
@@ -2421,16 +2353,16 @@ indexed objects")) (t (return (flush (arg 1) l nil))))))
 		   (consmlist (list (consmlist (nreverse free))
 				    (consmlist (nreverse dummy)))))
 		(setq index (car ind))
-		(cond ((zl-member index dummy)
+		(cond ((member index dummy :test #'equal)
 		       (merror "~M has improper indices"
 			       (ishow e)))
-		      ((zl-member index (cdr ind))
+		      ((member index (cdr ind) :test #'equal)
 		       (setq dummy (cons index dummy)
-			     ind (zl-delete index (copy-tree (cdr ind))
-					 1)))
+			     ind (delete index (copy-tree (cdr ind))
+					 :count 1 :test #'equal)))
 		      (t (setq free (cons index free)
 			       ind (cdr ind))))))
-	    (do ((e (cond ((memq (caar e) '(mtimes mnctimes)) (cdr e))
+	    (do ((e (cond ((member (caar e) '(mtimes mnctimes) :test #'eq) (cdr e))
 			  (t (ncons e))) (cdr e))
 		 (a) (l))
 		((null e) l)
@@ -2467,7 +2399,7 @@ indexed objects")) (t (return (flush (arg 1) l nil))))))
 				      (changename a indspec ncov
 						  ncontr b q)))
 				   (cdr e))) e))))
-
+
 (defmfun $coord n
   (do ((l (listify n) (cdr l)) (a))
       ((null l) '$done)
@@ -2586,19 +2518,11 @@ indexed objects")) (t (return (flush (arg 1) l nil))))))
   (prog (tensor)
     (setq tensor (implode (nconc (exploden name) (ncons 45)
                                  (exploden ncov) (ncons 45)
-                                 (exploden ncontr)
-                          )
-                 )
-    )
-    (cond
-      ((zl-member tensor (cdr $symmetries))
-       (zl-delete tensor $symmetries)
-       (zl-remprop tensor '$sym) (zl-remprop tensor '$anti)
-       (zl-remprop tensor '$cyc)
-      )
-    )
-  )
-)
+                                 (exploden ncontr))))
+    (cond ((member tensor (cdr $symmetries) :test #'equal)
+	   (delete tensor $symmetries :test #'equal)
+	   (zl-remprop tensor '$sym) (zl-remprop tensor '$anti)
+	   (zl-remprop tensor '$cyc)))))
 
 ; This function sets the metric dimensions and Levi-Civita symmetries.
 

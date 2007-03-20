@@ -13,7 +13,6 @@
 	     (cond (($listp (car l))
 		    (setq filespec (filestrip (cdar l)))
 		    (apply 'crunit (cddr filespec))
-		    (apply 'sstatus (list 'crfile (car filespec) (cadr filespec)))
 		    (setq l (cdr l)))
 		   (t (setq filespec (filestrip nil))))
 	     (cond ((null l) (error '|must have something to save|)))
@@ -39,7 +38,6 @@
        (cond ((> (length l) 4.) (error '|too many args to loadplots|)))
        (setq l (filestrip l))
        (apply 'crunit (cddr l))
-       (apply 'sstatus (list 'crfile (car l) (cadr l)))
        (cond ((null (apply 'uprobe l)) (princ l) (error '| file not found|)))
        (cond ((null (prog2 nil (or (status featur newio) (apply 'dumpp l))
 			   (comment	; newio LOADARRAYS checks this itself
