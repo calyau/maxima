@@ -137,18 +137,14 @@
 		      (power* . mexpt)) :test #'equal))
       op))
 
-
+
 ;;; From COMBIN >
 
 (def%tr $cf (form)
   (setq form (car (tr-args (cdr form))))
   (push-autoload-def '$cf '(cfeval))
-  `($any . ((lambda (divov $listarith)
-	      (sstatus divov t)
-	      (unwind-protect (cfeval ,form)
-		(sstatus divov divov)))
-	    (status divov)
-	    nil)))
+  `($any . (let (($listarith nil))
+	     (cfeval ,form))))
 
 ;;; from TRGRED >
 
@@ -179,12 +175,9 @@
 	      (apply2hack ,(dtranslate (cadr form))))
 	    ',(cddr form))))
 
-
-
 ;;; this nice translation property written by REH.
 ;;; He is the first macsyma system program to ever
 ;;; write the translation property for his own special form!
-
 
 (def%tr $buildq (form)
   (let ((alist				;would be nice to output
