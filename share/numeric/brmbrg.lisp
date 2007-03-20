@@ -1,11 +1,10 @@
 ; -*- Lisp -*-
 (declare-top (special $brombergit $brombergmin $brombergtol $brombergabs
-		  $bfloat $float2bf)
-	 (fixnum m l i k $brombergit $brombergmin))
+		  $bfloat $float2bf))
 
 (defun fpscale (x m)
        (cond ((equal (car x) 0) x)
-	     (t (list (car x) (plus (cadr x) m)))))
+	     (t (list (car x) (+ (cadr x) m)))))
 
 (defun bfmeval3 (x1) 
        (cond (($bfloatp (setq x1 ($bfloat (meval x1)))) (cdr x1))

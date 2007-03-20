@@ -1,6 +1,4 @@
-
-#-nil
-(declare (*expr makestring1)(special $floatformat floatmax floatmin floatsmall
+(declare (special $floatformat floatmax floatmin floatsmall
 		  floatbig floatbigbig float-enote)) 
 
 
@@ -37,32 +35,33 @@
 	    (inc (cond ((< aflt 1.0) -1.) (1.))))
 	   ((and (< simflt 10.0) (not (< simflt 1.0)))
 	    (floatcheck (exploden simflt) i))
-	   (setq simflt (times simflt fac))
+	   (setq simflt (* simflt fac))
 	   (setq i (+ i inc)))) 
-(defun floatcheck (repres pwr) 
-       (declare (fixnum pwr))
-       (cond
-	((or (> pwr (1- floatmax)) (< pwr floatmin))
-	 (cons (car repres)
-	       (cons 46.
-		     (append (fracgen (cddr repres) float-enote nil)
-			     (cons 69.(cond ((> pwr 0.)
-						(cons 43.
-						      (exploden pwr)))
-					       ((exploden pwr))))))))
-	((< pwr 0.)
-	 ((lambda (frac) 
-	   (cons 48.
-		 (cons 46.
-		       (cond ((equal frac '(48.)) frac)
-			     ((append (fraczeros (1- (abs pwr)))
-				      frac))))))
-	  (fracgen (delq 46. repres) floatsmall nil)))
-	((cons (car repres)
-	       (floatnone (cddr repres)
-			  pwr
-			  (cond ((< pwr 3.) floatbig)
-				(floatbigbig))))))) 
+
+(defun floatcheck (repres pwr) 
+    (declare (fixnum pwr))
+    (cond
+      ((or (> pwr (1- floatmax)) (< pwr floatmin))
+       (cons (car repres)
+	     (cons 46.
+		   (append (fracgen (cddr repres) float-enote nil)
+			   (cons 69.(cond ((> pwr 0.)
+					   (cons 43.
+						 (exploden pwr)))
+					  ((exploden pwr))))))))
+      ((< pwr 0.)
+       ((lambda (frac) 
+	  (cons 48.
+		(cons 46.
+		      (cond ((equal frac '(48.)) frac)
+			    ((append (fraczeros (1- (abs pwr)))
+				     frac))))))
+	(fracgen (delq 46. repres) floatsmall nil)))
+      ((cons (car repres)
+	     (floatnone (cddr repres)
+			pwr
+			(cond ((< pwr 3.) floatbig)
+			      (floatbigbig))))))) 
 
 (defun fraczeros (n) 
        (declare (fixnum n))

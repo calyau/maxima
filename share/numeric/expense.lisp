@@ -66,23 +66,21 @@
          "A MACSYMA list of currently known CRAY-1 vector merge operations."
          modified-commands '($block_optimize $expense))
 
-; (declare (fixnum ($expense notype) (multiplies-in-nth-power notype)))
-
 (defun multiplies-in-nth-power (nth)
    (cond ((< nth 2) 0)
          (t
           (let ((slow (bigp nth)))
-            (do ((exin nth (cond (slow (difference exin (times pw2 rem)))
+            (do ((exin nth (cond (slow (- exin (* pw2 rem)))
                                  (t (- exin (* pw2 rem)))))
                  (rem 0)
                  (in-cut -2 (+ 1 in-cut rem))
-                 (pw2 1 (cond (slow (plus pw2 pw2))
+                 (pw2 1 (cond (slow (+ pw2 pw2))
                               (t (+ pw2 pw2)))))
                 ((or (zerop exin) (> in-cut $cost_float_power))
                  (cond ((< in-cut $cost_float_power) in-cut)
                        (t $cost_float_power)))
               (declare (fixnum exin rem in-cut pw2))
-              (setq rem (cond (slow (remainder (quotient exin pw2) 2))
+              (setq rem (cond (slow (rem (quotient exin pw2) 2))
                               (t (\ (// exin pw2) 2)))))))))
 
 ;;; the following macro is courtesy of gjc.

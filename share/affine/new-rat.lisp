@@ -740,14 +740,14 @@ into genvar ordering and adds to genpairs"
 
 	      ;; x=b^n for n a number
 	      ((fixp e)
-	       (setq topexp (times topexp e))
+	       (setq topexp (* topexp e))
 	       (setq x (cadr x)))
 	      ((atom e) nil)
 
 	      ;; x=b^(p/q) for p and q integers
 	      ((eq (caar e) 'rat)
 	       (cond ((or (minusp (cadr e)) (greaterp (cadr e) 1))
-		      (setq topexp (times topexp (cadr e)))
+		      (setq topexp (* topexp (cadr e)))
 		      (setq x (list '(mexpt)
 				    (cadr x)
 				    (list '(rat) 1 (caddr e))))))
@@ -765,14 +765,14 @@ into genvar ordering and adds to genpairs"
 		     ;; x=b^(n *c)
 		     (and (atom (cadr e))
 			  (fixp (cadr e))
-			  (setq topexp (times topexp (cadr e)))
+			  (setq topexp (* topexp (cadr e)))
 			  (setq e (cddr e)))
 
 		     ;; x=b^(p/q *c)
 		     (and (not (atom (cadr e)))
 			  (eq (caaadr e) 'rat)
 			  (not (equal 1 (cadadr e)))
-			  (setq topexp (times topexp (cadadr e)))
+			  (setq topexp (* topexp (cadadr e)))
 			  (setq e (cons (list '(rat)
 					      1
 					      (caddr (cadr e)))

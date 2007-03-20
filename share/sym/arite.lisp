@@ -62,7 +62,7 @@
         ; la longueur de la partition n'est pas en tete : (lg coeff . I)
              (let ((lg (longueur (cddr $part))))
                 (rplaca  (cdr $part)
-                         (times (cadr $part)
+                         (* (cadr $part)
                                   (binomial (- n lg)
                                             (- p lg))))))
           (cdr $puissance_resolvante)))

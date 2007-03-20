@@ -393,7 +393,7 @@
 (defun franzfor (stmt)
   ; return the franz lisp representation for a for statement      ;
   ; ((mdo) var lo incr nextexp hi exitcond dobody)                ;
-  ;   -->  (do ((var lo (plus var incr))  =or=  (var lo nextexp)) ;
+  ;   -->  (do ((var lo (+ var incr))  =or=  (var lo nextexp)) ;
   ;            ((or (greaterp var hi) exitcond))                  ;
   ;            dobody)                                            ;
   (let (((var lo incr nextexp hi exitcond dobody) (cdr stmt))
@@ -422,7 +422,7 @@
 		     (cond ((numberp lo) (setq lo (fix lo))))
 		     (cond ((numberp hi) (setq hi (fix hi))))
 		     (cond ((numberp incr) (setq incr (fix incr))))))
-	      (setq dovars `((,var ,lo (plus ,var ,incr))))))
+	      (setq dovars `((,var ,lo (+ ,var ,incr))))))
        (cond (nextexp
 	      (setq dovars `((,var ,lo ,nextexp)))))
        (cond (hi
@@ -442,7 +442,7 @@
 (defun franzforin (stmt)
   ; return the franz lisp representation for a for-in statement             ;
   ; ((mdoin) dovar dolist nil nil nil doexitcond dobody)                    ;
-  ;   -->  (do ((genvar 1 (plus genvar 1)))                                 ;
+  ;   -->  (do ((genvar 1 (+ genvar 1)))                                 ;
   ;            ((greaterp genvar listlength))                               ;
   ;            (cond ((equal genvar 1) (setq dovar list(1)))                ;
   ;                  ((equal genvar 2) (setq dovar list(2)))                ;
@@ -467,14 +467,14 @@
 			    (setq ,dovar ,(franzexp (nthelem i dolist)
 						  0  (nthelem i dolist))))))))
        (cond (doexitcond
-	      `(do ((,gvar 1 (plus ,gvar 1)))
+	      `(do ((,gvar 1 (+ ,gvar 1)))
 		   ((greaterp ,gvar ,(length dolist)))
 		   (progn
 		    ,(cons 'cond condbody)
 		    (cond (,(franzexp doexitcond 0 doexitcond ) (break)))
 		    ,(franz dobody))))
 	     (t
-	      `(do ((,gvar 1 (plus ,gvar 1)))
+	      `(do ((,gvar 1 (+ ,gvar 1)))
 		   ((greaterp ,gvar ,(length dolist)))
 		   (progn
 		    ,(cons 'cond condbody)

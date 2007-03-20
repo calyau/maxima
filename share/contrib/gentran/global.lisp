@@ -94,10 +94,8 @@
 ;;  2. statement number generation function  ;;
 ;;                                           ;;
 
-
 (defun genstmtno ()
-  (setq genstmtno* (plus genstmtno* genstmtincr*)))
-
+  (incf genstmtno* genstmtincr*))
 
 ;;                                                             ;;
 ;;  3. symbol table insertion, retrieval & deletion functions  ;;

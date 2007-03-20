@@ -306,8 +306,8 @@
 
 (defun *iterm (m1 m2)
 	(cons
-	  (times (car m1) (car m2))
-	  (mapcar '+ (cdr m1) (cdr m2))))
+	  (* (car m1) (car m2))
+	  (mapcar #'+ (cdr m1) (cdr m2))))
 
 (defun isyz (pair)
 	(let ((f (caddr pair))
@@ -326,7 +326,7 @@
 ;OPERATIONS ELEMENTAIRES DESTRUCTIVES (POLYNOMES) COEFFICIENTS ENTIERS
 
 (defun *icofpol (c p)	;destructif resultat dans p
-	(mapc #'(lambda(u) (rplaca u (times c (car u))))   p))
+	(mapc #'(lambda(u) (rplaca u (* c (car u))))   p))
 
 	;Cette fonction retourne et lie a p1 la difference (cdr p1) - p2
 	;iteratif et destructif
