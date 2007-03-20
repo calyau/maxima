@@ -2,9 +2,12 @@
 (in-package :maxima)
 ;; see bottom of file for examples
 
-(defun $join (x y)
-  (cons '(mlist)(loop for w in (cdr x) for u in (cdr y)
-                       collect w collect u)))
+(defmfun $join (x y)
+  (if (and ($listp x) ($listp y))
+      (cons '(mlist) (loop for w in (cdr x) for u in (cdr y)
+                       collect w collect u))
+    (merror "Both arguments to 'join' must be lists")))
+
 
 ;; I (RLT) don't think we should compile this with safety = 0.
 
