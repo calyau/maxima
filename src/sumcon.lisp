@@ -60,7 +60,7 @@
 		    (setq notsum (cons (car x) notsum)))
 		   ((eq (caaar x) '%sum)
 		    (setq sum (if (null sum)
-				  (car x)
+				  (copy-tree (car x))
 				  (muln (list sum (car x)) t))))
 		   (t (setq notsum (cons ($sumcontract (car x))
 					 notsum))))))
