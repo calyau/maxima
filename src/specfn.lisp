@@ -67,16 +67,14 @@
 (defun cheby (x chebarr)
   (let ((bn+2 0d0) (bn+1 0d0))
     (do ((i (floor (aref chebarr 0)) (1- i)))
-	((< i 1) (-$ bn+1 (*$ bn+2 x)))
+	((< i 1) (- bn+1 (* bn+2 x)))
      (setq bn+2
-	    (prog1 bn+1 (setq bn+1
-			      (+$ (aref chebarr i)
-				  (-$ (*$ 2d0 x bn+1)
-				      bn+2))))))))
+	    (prog1 bn+1 (setq bn+1 (+ (aref chebarr i)
+				      (- (* 2d0 x bn+1) bn+2))))))))
 
 (defun cheby-prime (x chebarr)
-  (-$ (cheby x chebarr)
-      (*$ (aref chebarr 1) 0.5d0)))
+  (- (cheby x chebarr)
+      (* (aref chebarr 1) 0.5d0)))
 
 ;; These should really be calculated with minimax rational approximations.
 ;; Someone has done LI[2] already, and this should be updated; I haven't
@@ -114,23 +112,23 @@
   (cond ((= x 0d0) 0d0)
 	((= x 1d0) 1.20205690d0)
 	((< x -1d0)
-	 (-$ (chebyli3 (//$ x)) (*$ 1.64493407d0 (log (-$ x)))
-	     (//$ (expt (log (-$ x)) 3) 6d0)))
+	 (- (chebyli3 (/ x)) (* 1.64493407d0 (log (- x)))
+	     (/ (expt (log (- x)) 3) 6d0)))
 	((not (> x .5d0)) (chebyli3 x))
 	((not (> x 2d0))
-	 (let ((fac (*$ (expt (log x) 2) 0.5d0))) 
-	   (m+t (+$ 1.20205690d0 
-		    (-$ (*$ (log x)
-			    (-$ 1.64493407d0 (chebyli2 (- 1d0 x))))
-			(chebys12 (-$ 1d0 x))
-			(*$ fac
+	 (let ((fac (* (expt (log x) 2) 0.5d0))) 
+	   (m+t (+ 1.20205690d0 
+		    (- (* (log x)
+			    (- 1.64493407d0 (chebyli2 (- 1d0 x))))
+			(chebys12 (- 1d0 x))
+			(* fac
 			    (log (cond ((< x 1d0) (- 1d0 x))
 				       ((1- x)))))))
 		(cond ((< x 1d0) 0)
-		      ((m*t (*$ fac -3.14159265d0) '$%i))))))
-	(t (m+t (+$ (chebyli3 (//$ x)) (*$ 3.28986813d0 (log x))
-		    (//$ (expt (log x) 3) -6d0))
-		(m*t (*$ -1.57079633d0 (expt (log x) 2)) '$%i)))))
+		      ((m*t (* fac -3.14159265d0) '$%i))))))
+	(t (m+t (+ (chebyli3 (/ x)) (* 3.28986813d0 (log x))
+		    (/ (expt (log x) 3) -6d0))
+		(m*t (* -1.57079633d0 (expt (log x) 2)) '$%i)))))
 
 (defvar *li2* (make-array 15. :initial-contents '(14.0d0 1.93506430d0 .166073033d0 2.48793229d-2
 						  4.68636196d-3 1.0016275d-3 2.32002196d-4
@@ -156,14 +154,14 @@
 			  :element-type 'double-float))
 
 (defun chebyli2 (x)
-  (*$ x (cheby-prime (//$ (1+ (*$ x 4.0)) 3.0) *li2*)))
+  (* x (cheby-prime (/ (1+ (* x 4)) 3) *li2*)))
 
 (defun chebyli3 (x)
-  (*$ x (cheby-prime (//$ (1+ (*$ 4.0 x)) 3.0) *li3*)))
+  (* x (cheby-prime (/ (1+ (* 4 x)) 3) *li3*)))
 
 (defun chebys12 (x)
-  (*$ (//$ (expt x 2) 4.0)
-      (cheby-prime (//$ (1+ (*$ 4.0 x)) 3.0) *s12*)))
+  (* (/ (expt x 2) 4)
+      (cheby-prime (/ (1+ (* 4 x)) 3) *s12*)))
 
 ;; subtitle polygamma routines
 
@@ -331,7 +329,7 @@
       (tay-err "Unable to expand at a subscript in")
       (prog ((e 0) (sign 0) npw)
 	 (declare (fixnum e) (fixnum sign))
-	 (setq npw (//$ (float (car pw)) (float (cdr pw))))
+	 (setq npw (/ (float (car pw)) (float (cdr pw))))
 	 (setq
 	  l (cond ((= subl -1)
 		   `(((1 . 1) . ,(prep1 '((mtimes) -1 $%gamma)))))
