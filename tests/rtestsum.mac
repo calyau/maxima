@@ -828,3 +828,9 @@ true;
 
 (kill(f), f(x) := sum (x^n/n!, n, 0, inf), f(2*x));
 'sum (2^n*x^n/n!, n, 0, inf);
+
+
+/* Test for intosum */
+
+intosum(2*sum(k,k,1,inf));
+'sum(2*k,k,1,inf);
