@@ -40,19 +40,19 @@
 	 (full-exp (cond ((not (> exp *max-expt$-expand*))
 			  `(internal-expt$ ,bas ,abs-exp))
 			 (t
-			  `(^$ ,bas ,abs-exp)))))
+			  `(expt ,bas ,abs-exp)))))
     (cond ((minusp exp)
-	   `(//$ ,full-exp))
+	   `(/ ,full-exp))
 	  (t full-exp))))
 
 (defopt internal-expt$ (exp-base pos-exp)
-  (cond ((= pos-exp 0)
+  (cond ((zerop pos-exp)
 	 ;; BROM  wrote X^0 for symmetry in his code, and this
 	 ;; macro did some infinite looping! oops.
 	 ;; X^0 can only happen in hand-written code, in macros
 	 ;; the general-representation simplifier will get rid
 	 ;; of it.
-	 1.0)
+	 1d0)
 	((= pos-exp 1)
 	 exp-base)
 	((not (atom exp-base))
@@ -60,18 +60,18 @@
 	   `(let ((,sym ,exp-base))
 	     (internal-expt$ ,sym ,pos-exp))))
 	((= pos-exp 2)
-	 `(*$ ,exp-base ,exp-base))
-	((= pos-exp 3) `(*$ (*$ ,exp-base ,exp-base) ,exp-base))
+	 `(* ,exp-base ,exp-base))
+	((= pos-exp 3) `(* ,exp-base ,exp-base ,exp-base))
 	((= pos-exp 4)
 	 `(internal-expt$ (internal-expt$ ,exp-base 2) 2))
 	((= pos-exp 5)
-	 `(*$ (internal-expt$ ,exp-base 4) ,exp-base))
+	 `(* (internal-expt$ ,exp-base 4) ,exp-base))
 	((= pos-exp 6)
 	 `(internal-expt$ (internal-expt$ ,exp-base 3) 2))
 	((= pos-exp 7)
-	 `(*$ ,exp-base (internal-expt$ ,exp-base 6)))
+	 `(* ,exp-base (internal-expt$ ,exp-base 6)))
 	(t
-	 `(*$ ,@(make-list pos-exp :initial-element exp-base)))))
+	 `(* ,@(make-list pos-exp :initial-element exp-base)))))
 
 ;;; There is a real neat and fancy way to do the above for arbitrary N
 ;;; repeated squaring in a recrusive fashion.  It is trivial to do
