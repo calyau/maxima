@@ -288,7 +288,7 @@
 	       ((and (ratgreaterp a '((rat) 1 2))
 		     (ratgreaterp 1 a))
 		(m*t
-		 (^ -1 s)
+		 (expt -1 s)
 		 (m+t (psisimp1 s (m- 1 a))
 		      (let ((dif (m* '$%pi
 				     ($diff `((%cot) ,(m* '$%pi '$z)) '$z s)))
@@ -297,7 +297,7 @@
 			(meval dif)))))))
 	    ((ratgreaterp a $maxpsinegint)  ;;; Reflection Formula
 	     (m*t
-	      (^ -1 s)
+	      (expt -1 s)
 	      (m+t (m+t (psisimp1 s (m- a))
 			(let ((dif (m* '$%pi
 				       ($diff `((%cot) ,(m* '$%pi '$z)) '$z s)))
@@ -340,10 +340,10 @@
 				. ,(prep1 '((mtimes) -1 $%gamma)))))))
 		  (t (setq *last* (factorial subl))
 		     `(((,(- (1+ subl)) . 1)
-			,(* (^ -1 (1+ subl))
+			,(* (expt -1 (1+ subl))
 				(factorial subl)) . 1))))
 	  e (if (< subl 1) (- subl) -1)
-	  sign (if (< subl 1) -1 (^ -1 subl)))
+	  sign (if (< subl 1) -1 (expt -1 subl)))
 	 a (setq e (1+ e) sign (- sign))
 	 (if (> e npw) (return l)
 	     (rplacd (last l)
@@ -422,11 +422,11 @@
 	  (expand (m+t a (- const)) func)
 	  (if (> const 0)
 	      (pstimes
-	       (cons (* (^ -1 sub) (factorial sub)) 1)
+	       (cons (* (expt -1 sub) (factorial sub)) 1)
 	       (tsprsum `((mexpt) ,(m+t a (m-t '%%taylor-index%%)) ,(- (1+ sub)))
 			`(%%taylor-index%% 1 ,const) '%sum))
 	      (pstimes
-	       (cons (* (^ -1 (1+ sub)) (factorial sub)) 1)
+	       (cons (* (expt -1 (1+ sub)) (factorial sub)) 1)
 	       (tsprsum `((mexpt) ,(m+t a '%%taylor-index%%) ,(- (1+ sub)))
 			`(%%taylor-index%% 0 ,(- (1+ const))) '%sum))))))))
 

@@ -2897,7 +2897,7 @@
 	    (if (eq type '%sum) (taylor2 0) (taylor2 1))
 	    (progn
 	      (if (eq type '%sum) (setq type '()))
-	      (do ((m (* ([max-trunc]) (^ 2 $taylordepth)))
+	      (do ((m (* ([max-trunc]) (ash 1 $taylordepth)))
 		   (k 0 (1+ k))
 		   (ans (taylor2 (maxima-substitute (car lv) (car li) f))))
 		  ((equal hi (car lv)) ans)

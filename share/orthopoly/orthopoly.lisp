@@ -603,7 +603,7 @@
       (setq q (add (mul (sub 1 `((rat) 1 ,(* 2 i))) q)
 		   (div x (mul 2 i (power z i)))))
       (incf i))
-    (mul (^ -2 n) (factorial n) (power z (div n 2)) q)))
+    (mul (expt -2 n) (factorial n) (power z (div n 2)) q)))
 
 ;; Use degree recursion to find the assoc_legendre_q function. 
 ;; See A&S 8.5.3. When i = m in the while loop, we have a special
