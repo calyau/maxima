@@ -1261,7 +1261,8 @@ but their difference is a floating point number.
 (%o1)                          0.0
 (%i2) 1/10 - 0.1;
 (%o2)                          0.0
-(%i3) Warning:  Float to bigfloat conversion of 0.250.25 - 0.25b0;
+(%i3) 0.25 - 0.25b0;
+Warning:  Float to bigfloat conversion of 0.25
 (%o3)                         0.0b0
 (%i4) kron_delta (1/4, 0.25);
                                   1
@@ -1271,7 +1272,8 @@ but their difference is a floating point number.
                                   1
 (%o5)                  kron_delta(--, 0.1)
                                   10
-(%i6) Warning:  Float to bigfloat conversion of 0.25kron_delta (0.25, 0.25b0);
+(%i6) kron_delta (0.25, 0.25b0);
+Warning:  Float to bigfloat conversion of 0.25
 (%o6)               kron_delta(0.25, 2.5b-1)
 @end example
 
