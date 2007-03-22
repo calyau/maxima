@@ -17,7 +17,7 @@ ou 4 ent@~ao a lista de coordenadas padr@~ao @'e @code{[x,y]},
 ser mudados atrav@'es da atribui@value{cedilha}@~ao de uma nova lista de
 coordenadas para a vari@'avel @code{ct_coords} (descrita abaixo) e o
 utilizador @'e questionado sobre isso. Deve ter o cuidado de evitar
-conflictos de nomes de coordenadas com outras defini@value{cedilha}@~oes
+conflitos de nomes de coordenadas com outras defini@value{cedilha}@~oes
 de objectos.
 
 No pr@'oximo passo, o utilizador informa a m@'etrica ou directamente ou

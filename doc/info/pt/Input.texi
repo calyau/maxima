@@ -1209,7 +1209,7 @@ sejam acrescentadas @`a lista de informa@,{c}@~oes do Maxima (e.g. @code{values}
 @code{fun@,{c}@~oes}) exceto onde necess@'ario quando o ficheiro @'e carregado.
 Nesse caminho, o conte@'udo do pacote n@~ao pegar@'a no
 caminho do utilizador quando ele adicionar seus pr@'oprios dados.  Note que isso n@~ao
-resolve o problema de poss@'{@dotless{i}}veis conflictos de nome.  Tamb@'em note que
+resolve o problema de poss@'{@dotless{i}}veis conflitos de nome.  Tamb@'em note que
 o sinalizador simplesmente afeta o que @'e sa@'{@dotless{i}}da para o ficheiro pacote.
 Escolhendo o sinalizador para @code{true} @'e tamb@'em @'util para criar ficheiros de
 init do Maxima.
