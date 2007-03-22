@@ -190,7 +190,7 @@
   ;;Removes contraction definitions
        (and (eq (car a) '$all) (setq a (cdr $contractions)))
        (cons smlist (mapc (function (lambda (e) (zl-remprop e 'contractions)
-					    (delq e $contractions)))
+					    (delete e $contractions :test #'eq)))
 			  a)))
 
 (defun getcon (e)
@@ -2413,7 +2413,7 @@ indexed objects")) (t (return (flush (arg 1) l nil))))))
 	 (setq $coord '((mlist))) '$done)
 	(t (do ((l (listify n) (cdr l)))
 	       ((null l) '$done)
-	     (delq (car l) $coord)))))
+	     (delete (car l) $coord :test #'eq)))))
 
 
 ;; Additions on 5/19/2004 -- VTT
@@ -2421,31 +2421,27 @@ indexed objects")) (t (return (flush (arg 1) l nil))))))
 (defun memberlist (e l)
 	(cond ((null l) nil)
 	      ((equal e (car l)) t)
-	      (t (memberlist e (cdr l)))
-	)
-)
+	      (t (memberlist e (cdr l)))))
 
 (defun unionlist (l1 l2)
 	(cond ((null l1) l2)
 	      ((memberlist (car l1) l2) (unionlist (cdr l1) l2))
-	      (t (cons (car l1) (unionlist (cdr l1) l2)))
-	)
-)
+	      (t (cons (car l1) (unionlist (cdr l1) l2)))))
 
-(defmfun $listoftens (e) (itensor-sort (cons smlist (listoftens e))))
+(defmfun $listoftens (e)
+  (itensor-sort (cons smlist (listoftens e))))
+
 (defun listoftens (e)
-	(cond
-	  ((atom e) nil)
-	  ((rpobj e) (list e))
-	  (t (prog (l) (setq l nil)
-		(mapcar (lambda (x) (setq l (unionlist l (listoftens x)))) (cdr e))
-		(return l)
-	     )
-	  )
-	)
-)
+  (cond
+    ((atom e) nil)
+    ((rpobj e) (list e))
+    (t (prog (l) (setq l nil)
+	     (mapcar (lambda (x) (setq l (unionlist l (listoftens x)))) (cdr e))
+	     (return l)))))
 
-(defun numlist (&optional (n '1)) (cond ((>= n $dim) (list n)) (t (cons n (numlist (1+ n))))))
+(defun numlist (&optional (n '1))
+  (cond ((>= n $dim) (list n))
+	(t (cons n (numlist (1+ n))))))
 
 ;;showcomps(tensor):=block([i1,i2,ind:indices(tensor)[1]],
 ;;	if length(ind)=0 then ishow(ev(tensor))
