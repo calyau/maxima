@@ -1,29 +1,29 @@
 @c /Polynomials.texi/1.22/Sun May 21 07:18:29 2006/-ko/
 @c FOR THE FUNCTIONS WHICH RETURN A CRE, BE SURE TO MENTION THAT
 @menu
-* Introdu@value{cedilha}@~ao a Polin@^omios::  
-* Defini@value{cedilha}@~oes para Polin@^omios::  
+* Introdu@value{cedilha}@~ao a Polin@'omios::  
+* Defini@value{cedilha}@~oes para Polin@'omios::  
 @end menu
 
-@node Introdu@value{cedilha}@~ao a Polin@^omios, Defini@value{cedilha}@~oes para Polin@^omios, Polin@^omios, Polin@^omios
-@section Introdu@value{cedilha}@~ao a Polin@^omios
+@node Introdu@value{cedilha}@~ao a Polin@'omios, Defini@value{cedilha}@~oes para Polin@'omios, Polin@'omios, Polin@'omios
+@section Introdu@value{cedilha}@~ao a Polin@'omios
 
-Polin@^omios s@~ao armazenados no Maxima ou na forma geral ou na
+Polin@'omios s@~ao armazenados no Maxima ou na forma geral ou na
 forma de Express@~oes Racionais Can@^onicas (CRE).  Essa @'ultima @'e uma forma
 padr@~ao, e @'e usada internamente por opera@value{cedilha}@~oes tais como @code{factor}, @code{ratsimp}, e
 assim por diante.
 
 Express@~oes Racionais Can@^onicas constituem um tipo de representa@value{cedilha}@~ao
-que @'e especialmente adequado para polin@^omios expandidos e fun@value{cedilha}@~oes
-racionais (tamb@'em para polin@^omios parcialmente factorados e fun@value{cedilha}@~oes
+que @'e especialmente adequado para polin@'omios expandidos e fun@value{cedilha}@~oes
+racionais (tamb@'em para polin@'omios parcialmente factorados e fun@value{cedilha}@~oes
 racionais quando RATFAC for escolhida para @code{true}).  Nessa forma CRE uma
 ordena@value{cedilha}@~ao de vari@'aveis (da mais para a menos importante) @'e assumida para cada
-express@~ao.  Polin@^omios s@~ao representados recursivamente por uma lista
+express@~ao.  Polin@'omios s@~ao representados recursivamente por uma lista
 consistindo da vari@'avel principal seguida por uma s@'erie de pares de
-express@~oes, uma para cada termo do polin@^omio.  O primeiro membro de
+express@~oes, uma para cada termo do polin@'omio.  O primeiro membro de
 cada par @'e o expoente da vari@'avel principal naquele termo e o
 segundo membro @'e o coeficiente daquele termo que pode ser um n@'umero ou
-um polin@^omio em outra vari@'avel novamente respresentado nessa forma.  Sendo assim
+um polin@'omio em outra vari@'avel novamente respresentado nessa forma.  Sendo assim
 a parte principal da forma CRE de 3*X^2-1 @'e (X 2 3 0 -1) e que a parte principal da
 forma CRE de 2*X*Y+X-3 @'e (Y 1 (X 1 2) 0 (X 1 1 0 -3)) assumindo Y como sendo a
 vari@'avel principal, e @'e (X 1 (Y 1 2 0 1) 0 -3) assumindo X como sendo a
@@ -35,9 +35,9 @@ qual essa ocorrer.  Por exemplo as vari@'aveis CRE da express@~ao
 X+SIN(X+1)+2*SQRT(X)+1 s@~ao X, SQRT(X), e SIN(X+1).  Se o utilizador
 n@~ao especifica uma ordem de vari@'aveis pelo uso da fun@value{cedilha}@~ao RATVARS
 Maxima escolher@'a a alfab@'etica por conta pr@'opria.  Em geral, CREs representam
-express@~oes racionais, isto @'e, raz@~oes de polin@^omios, onde o
+express@~oes racionais, isto @'e, raz@~oes de polin@'omios, onde o
 numerador e o denominador n@~ao possuem factores comuns, e o denominador for
-positivo.  A forma interna @'e essencialmente um par de polin@^omios (o
+positivo.  A forma interna @'e essencialmente um par de polin@'omios (o
 numerador e o denominador) precedidos pela lista de ordena@value{cedilha}@~ao de vari@'avel.  Se
 uma express@~ao a ser mostrada estiver na forma CRE ou se contiver quaisquer
 subexpress@~oes na forma CRE, o s@'{@dotless{i}}mbolo /R/ seguir@'a o r@'otulo da linha.
@@ -46,14 +46,14 @@ forma CRE extendida @'e usada para a representa@value{cedilha}@~ao de s@'eries d
 no@value{cedilha}@~ao de uma express@~ao racional @'e extendida de modo que os expoentes das
 vari@'aveis podem ser n@'umeros racionais positivos ou negativos em lugar de apenas
 inteiros positivos e os coeficientes podem eles mesmos serem express@~oes
-racionais como descrito acima em lugar de apenas polin@^omios.  Estes s@~ao
+racionais como descrito acima em lugar de apenas polin@'omios.  Estes s@~ao
 representados internamente por uma forma polinomial recursiva que @'e similar
 @`a forma CRE e @'e a generaliza@value{cedilha}@~ao dessa mesma forma CRE, mas carrega informa@value{cedilha}@~ao
 adicional tal com o grau de trunca@value{cedilha}@~ao.  Do mesmo modo que na forma CRE, o
 s@'{@dotless{i}}mbolo /T/ segue o r@'otulo de linha que cont@'em as tais express@~oes.
 
-@node Defini@value{cedilha}@~oes para Polin@^omios,  , Introdu@value{cedilha}@~ao a Polin@^omios, Polin@^omios
-@section Defini@value{cedilha}@~oes para Polin@^omios
+@node Defini@value{cedilha}@~oes para Polin@'omios,  , Introdu@value{cedilha}@~ao a Polin@'omios, Polin@'omios
+@section Defini@value{cedilha}@~oes para Polin@'omios
 
 @defvr {Vari@'avel de op@value{cedilha}@~ao} algebraic
 Valor Padr@~ao: @code{false}
@@ -135,8 +135,8 @@ denominador dentro de um termo simples.
 @deffn {Fun@value{cedilha}@~ao} content (@var{p_1}, @var{x_1}, ..., @var{x_n})
 Retorna uma lista cujo primeiro elemento @'e
 o m@'aximo divisor comum dos coeficientes dos termos do
-polin@^omio @var{p_1} na vari@'avel @var{x_n} (isso @'e o conte@'udo) e cujo
-segundo elemento @'e o polin@^omio @var{p_1} dividido pelo conte@'udo.
+polin@'omio @var{p_1} na vari@'avel @var{x_n} (isso @'e o conte@'udo) e cujo
+segundo elemento @'e o polin@'omio @var{p_1} dividido pelo conte@'udo.
 @c APPEARS TO WORK AS ADVERTISED -- ONLY x_n HAS ANY EFFECT ON THE RESULT
 @c WHAT ARE THE OTHER VARIABLES x_1 THROUGH x_{n-1} FOR ??
 
@@ -159,8 +159,8 @@ Retorna o denominador da express@~ao racional @var{expr}.
 
 @deffn {Fun@value{cedilha}@~ao} divide (@var{p_1}, @var{p_2}, @var{x_1}, ..., @var{x_n})
 calcula o quocietne e o resto
-do polin@^omio @var{p_1} dividido pelo polin@^omio @var{p_2}, na vari@'avel
-principal do polin@^omio, @var{x_n}.
+do polin@'omio @var{p_1} dividido pelo polin@'omio @var{p_2}, na vari@'avel
+principal do polin@'omio, @var{x_n}.
 @c SPELL OUT THE PURPOSE OF THE OTHER VARIABLES
 As outras vari@'aveis s@~ao como na fun@value{cedilha}@~ao @code{ratvars}.
 O resultado @'e uma lista cujo primeiro elemento @'e o quociente
@@ -220,8 +220,8 @@ Exemplo:
 
 @deffn {Fun@value{cedilha}@~ao} ezgcd (@var{p_1}, @var{p_2}, @var{p_3}, ...)
 Retorna uma lista cujo primeiro elemento @'e o m.d.c. dos
-polin@^omios @var{p_1}, @var{p_2}, @var{p_3}, ...  e cujos restantes elementos s@~ao os
-polin@^omios divididos pelo mdc.  Isso sempre usa o algor@'{@dotless{i}}tmo
+polin@'omios @var{p_1}, @var{p_2}, @var{p_3}, ...  e cujos restantes elementos s@~ao os
+polin@'omios divididos pelo mdc.  Isso sempre usa o algor@'{@dotless{i}}tmo
 @code{ezgcd}.
 
 @end deffn
@@ -255,7 +255,7 @@ aplicado ap@'os um @code{factcomb}.
 Factora a express@~ao @var{expr}, contendo qualquer n@'umero de
 vari@'aveis ou fun@value{cedilha}@~oes, em factores irredut@'{@dotless{i}}veis sobre os inteiros.
 @code{factor (@var{expr}, p)} factora @var{expr} sobre o campo dos inteiros com um elemento
-adjunto cujo menor polin@^omio @'e p.
+adjunto cujo menor polin@'omio @'e p.
 
 @code{factor} usa a fun@value{cedilha}@~ao @code{ifactors} para factorar inteiros.
 
@@ -444,8 +444,8 @@ Exemplo:
 @end deffn
 
 @deffn {Fun@value{cedilha}@~ao} fasttimes (@var{p_1}, @var{p_2})
-Retorna o produto dos polin@^omios @var{p_1} e @var{p_2} usando um
-algor@'{@dotless{i}}tmo especial para a multiplica@value{cedilha}@~ao de polin@^omios.  @code{p_1} e @code{p_2} podem ser
+Retorna o produto dos polin@'omios @var{p_1} e @var{p_2} usando um
+algor@'{@dotless{i}}tmo especial para a multiplica@value{cedilha}@~ao de polin@'omios.  @code{p_1} e @code{p_2} podem ser
 de v@'arias vari@'aveis, densos, e aproximadamente do mesmo tamanho.  A multiplica@value{cedilha}@~ao
 cl@'assica @'e de ordem @code{n_1 n_2} onde
 @code{n_1} @'e o grau de @code{p_1}
@@ -600,7 +600,7 @@ Escolhendo @code{gcd} para @code{ez}, @code{subres}, @code{red}, ou @code{spmod}
 subresultante @code{prs}, reduzido, ou modular,
 respectivamente.  Se @code{gcd} for @code{false} ent@~ao @code{gcd (@var{p_1}, @var{p_2}, @var{x})} sempre retorna 1
 para todo @var{x}.  Muitas fun@value{cedilha}@~oes (e.g.  @code{ratsimp}, @code{factor}, etc.) fazem com que mdc's
-sejam feitos implicitamente.  Para polin@^omios homog@^eneos @'e recomendado
+sejam feitos implicitamente.  Para polin@'omios homog@^eneos @'e recomendado
 que @code{gcd} igual a @code{subres} seja usado.  Para pegar o mdc quando uma express@~ao alg@'ebrica est@'a
 presente, e.g. @code{gcd (@var{x}^2 - 2*sqrt(2)*@var{x} + 2, @var{x} - sqrt(2))}, @code{algebraic} deve ser
 @code{true} e @code{gcd} n@~ao deve ser @code{ez}.  @code{subres} @'e um novo algor@'{@dotless{i}}tmo, e pessoas
@@ -621,10 +621,10 @@ requeridos.
 Retornam uma lista @code{[@var{a}, @var{b}, @var{u}]}
 onde @var{u} @'e o m@'aximo divisor comum (mdc) entre @var{f} e @var{g},
 e @var{u} @'e igual a @code{@var{a} @var{f} + @var{b} @var{g}}.
-Os argumentos @var{f} e @var{g} podem ser polin@^omios de uma vari@'avel,
-ou de outra forma polin@^omios em @var{x} uma @b{main}(principal) vari@'avel suprida
+Os argumentos @var{f} e @var{g} podem ser polin@'omios de uma vari@'avel,
+ou de outra forma polin@'omios em @var{x} uma @b{main}(principal) vari@'avel suprida
 desde que n@'os precisamos estar em um dom@'{@dotless{i}}nio de ideal principal para isso trabalhar.
-O mdc significa o mdc considerando @var{f} e @var{g} como polin@^omios de uma @'unica vari@'avel com coeficientes
+O mdc significa o mdc considerando @var{f} e @var{g} como polin@'omios de uma @'unica vari@'avel com coeficientes
 sendo fun@value{cedilha}@~oes racionais em outras vari@'aveis.
 
 @code{gcdex} implementa o algor@'{@dotless{i}}tmo Euclideano,
@@ -678,7 +678,7 @@ n@~ao negativos.
 
 @c CHOOSE ONE CHARACTERIZATION OF "GAUSSIAN INTEGERS" AND USE IT WHERE GAUSSIAN INTEGERS ARE REFERENCED
 @deffn {Fun@value{cedilha}@~ao} gfactor (@var{expr})
-Factora o polin@^omio @var{expr} sobre os inteiros de Gauss
+Factora o polin@'omio @var{expr} sobre os inteiros de Gauss
 (isto @'e, os inteiros com a unidade imagin@'aria @code{%i} adjunta).
 @c "This is like" -- IS IT THE SAME OR NOT ??
 Isso @'e como @code{factor (@var{expr}, @var{a}^2+1)} trocando @var{a} por @code{%i}.
@@ -861,8 +861,8 @@ Se @var{expr} n@~ao for uma raz@~ao, @var{expr} @'e retornado.
 
 @deffn {Fun@value{cedilha}@~ao} polydecomp (@var{p}, @var{x})
 
-Decomp@~oes o polin@^omio @var{p} na vari@'avel  @var{x}
-em uma composi@value{cedilha}@~ao funcional de polin@^omios em @var{x}.
+Decomp@~oes o polin@'omio @var{p} na vari@'avel  @var{x}
+em uma composi@value{cedilha}@~ao funcional de polin@'omios em @var{x}.
 @code{polydecomp} retorna uma lista @code{[@var{p_1}, ..., @var{p_n}]} tal que
 
 @example
@@ -940,7 +940,7 @@ necess@'ariamente retorna @code{[@var{p_1}, ..., @var{p_n}]}:
 
 @deffn {Fun@value{cedilha}@~ao} quotient (@var{p_1}, @var{p_2})
 @deffnx {Fun@value{cedilha}@~ao} quotient (@var{p_1}, @var{p_2}, @var{x_1}, ..., @var{x_n})
-Retorna o polin@^omio @var{p_1} dividido pelo polin@^omio @var{p_2}.
+Retorna o polin@'omio @var{p_1} dividido pelo polin@'omio @var{p_2}.
 Os argumentos @var{x_1}, ..., @var{x_n} s@~ao interpretados como em @code{ratvars}.
 
 @code{quotient} retorna o primeiro elemento de uma lista de dois elementos retornada por @code{divide}.
@@ -1131,7 +1131,7 @@ Exemplos:
 
 @deffn {Fun@value{cedilha}@~ao} ratdiff (@var{expr}, @var{x})
 Realiza a deriva@value{cedilha}@~ao da express@~ao racional @var{expr} com rela@value{cedilha}@~ao a @var{x}.
-@var{expr} deve ser uma raz@~ao de polin@^omios ou um polin@^omio em @var{x}.
+@var{expr} deve ser uma raz@~ao de polin@'omios ou um polin@'omio em @var{x}.
 O argumento @var{x} pode ser uma vari@'avel ou uma subexpress@~ao de @var{expr}.
 @c NOT CLEAR (FROM READING CODE) HOW x OTHER THAN A VARIABLE IS HANDLED --
 @c LOOKS LIKE (a+b), 10*(a+b), (a+b)^2 ARE ALL TREATED LIKE (a+b);
@@ -1345,8 +1345,8 @@ para n@'umeros racionais @'e mostrada.
 @deffnx {Fun@value{cedilha}@~ao} ratsimp (@var{expr}, @var{x_1}, ..., @var{x_n})
 Simplifica a express@~ao @var{expr} e todas as suas subexpress@~oes,
 incluindo os argumentos para fun@value{cedilha}@~oes n@~ao racionais.
-O resultado @'e retornado como o quociente de dois polin@^omios na forma recursiva,
-isto @'e, os coeficientes de vari@'avel principal s@~ao polin@^omios em outras vari@'aveis.
+O resultado @'e retornado como o quociente de dois polin@'omios na forma recursiva,
+isto @'e, os coeficientes de vari@'avel principal s@~ao polin@'omios em outras vari@'aveis.
 Vari@'aveis podem incluir fun@value{cedilha}@~oes n@~ao racionais (e.g., @code{sin (x^2 + 1)})
 e os argumentos para quaisquer tais fun@value{cedilha}@~oes s@~ao tamb@'em simplificados racionalmente.
 
@@ -1544,7 +1544,7 @@ Para o valor padr@~ao @code{false}, nenhuma trunca@value{cedilha}@~ao ocorre.
 
 @deffn {Fun@value{cedilha}@~ao} remainder (@var{p_1}, @var{p_2})
 @deffnx {Fun@value{cedilha}@~ao} remainder (@var{p_1}, @var{p_2}, @var{x_1}, ..., @var{x_n})
-Retorna o resto do polin@^omio @var{p_1} dividido pelo polin@^omio @var{p_2}.
+Retorna o resto do polin@'omio @var{p_1} dividido pelo polin@'omio @var{p_2}.
 Os argumentos @var{x_1}, ..., @var{x_n} s@~ao interpretados como em @code{ratvars}.
 
 @code{remainder} retorna o segundo elemento
@@ -1556,7 +1556,7 @@ de uma lista de dois elementos retornada por @code{divide}.
 @c CAN PROBABLY BE CLARIFIED
 @deffn {Fun@value{cedilha}@~ao} resultant (@var{p_1}, @var{p_2}, @var{x})
 @deffnx {Vari@'avel} resultant
-Calcula o resultante de dois polin@^omios @var{p_1} e @var{p_2},
+Calcula o resultante de dois polin@'omios @var{p_1} e @var{p_2},
 eliminando a vari@'avel @var{x}.
 O resultante @'e um determinante dos coeficientes de @var{x}
 em @var{p_1} e @var{p_2},
@@ -1594,13 +1594,13 @@ contendo algum desses mesmos factores.
 
 @c I CAN'T TELL WHAT THIS IS SUPPOSED TO BE ABOUT
 @deffn {Fun@value{cedilha}@~ao} sqfr (@var{expr})
-@'e similar a @code{factor} exceto que os factores do polin@^omio s@~ao "livres de ra@'{@dotless{i}}zes".
+@'e similar a @code{factor} exceto que os factores do polin@'omio s@~ao "livres de ra@'{@dotless{i}}zes".
 Isto @'e, eles possuem factores somente de grau um.
 Esse algor@'{@dotless{i}}tmo, que @'e tamb@'em usado no primeiro est@'agio de @code{factor}, utiliza
-o facto que um polin@^omio tem em comum com sua n'@'esima derivada todos
+o facto que um polin@'omio tem em comum com sua n'@'esima derivada todos
 os seus factores de grau maior que n.  Dessa forma pegando o maior divisor comum
-com o polin@^omio das
-derivadas com rela@value{cedilha}@~ao a cada vari@'avel no polin@^omio, todos
+com o polin@'omio das
+derivadas com rela@value{cedilha}@~ao a cada vari@'avel no polin@'omio, todos
 os factores de grau maior que 1 podem ser achados.
 
 Exemplo:
@@ -1619,8 +1619,8 @@ Exemplo:
 @deffn {Fun@value{cedilha}@~ao} tellrat (@var{p_1}, ..., @var{p_n})
 @deffnx {Fun@value{cedilha}@~ao} tellrat ()
 Adiciona ao anel dos inteiros alg@'ebricos conhecidos do Maxima
-os elementos que s@~ao as solu@value{cedilha}@~oes dos polin@^omios @var{p_1}, ..., @var{p_n}.
-Cada argumento @var{p_i} @'e um polin@^omio concoeficientes inteiros.
+os elementos que s@~ao as solu@value{cedilha}@~oes dos polin@'omios @var{p_1}, ..., @var{p_n}.
+Cada argumento @var{p_i} @'e um polin@'omio concoeficientes inteiros.
 
 @code{tellrat (@var{x})} efetivamente significa substituir 0 por @var{x} em fun@value{cedilha}@~oes
 racionais.
@@ -1636,7 +1636,7 @@ e todas as ra@'{@dotless{i}}zes de inteiros.
 Existe um comando @code{untellrat} que pega kernels (n@'ucleos) e
 remove propriedades @code{tellrat}.
 
-Quando fazemos @code{tellrat} em um polin@^omio
+Quando fazemos @code{tellrat} em um polin@'omio
 de v@'arias vari@'aveis, e.g., @code{tellrat (x^2 - y^2)}, pode existir uma ambiguidade como para
 ou substituir @code{@var{y}^2} por @code{@var{x}^2}
 ou vice-versa.  

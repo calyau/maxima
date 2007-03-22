@@ -1,11 +1,11 @@
 @c Language: Portuguese
 @c /Logarithms.texi/1.16/Sat Jul  8 08:14:48 2006/-ko/
 @menu
-* Defini@value{cedilha}@~oes para Logar@'{@dotless{i}}tmos::
+* Defini@value{cedilha}@~oes para Logaritmos::
 @end menu
 
-@node Defini@value{cedilha}@~oes para Logar@'{@dotless{i}}tmos,  , Logar@'{@dotless{i}}tmos, Logar@'{@dotless{i}}tmos
-@section Defini@value{cedilha}@~oes para Logar@'{@dotless{i}}tmos
+@node Defini@value{cedilha}@~oes para Logaritmos,  , Logaritmos, Logaritmos
+@section Defini@value{cedilha}@~oes para Logaritmos
 
 @defvr {Vari@'avel de op@,{c}@~ao} %e_to_numlog
 Valor por omiss@~ao: @code{false}
@@ -20,7 +20,7 @@ contendo @code{log}.
 @end defvr
 
 @deffn {Fun@,{c}@~ao} li [@var{s}] (@var{z})
-Representa a fun@,{c}@~ao polilogar@'{@dotless{i}}tmo de ordem @var{s}
+Representa a fun@,{c}@~ao polilogaritmo de ordem @var{s}
 e argumento @var{z}, definida por meio da s@'erie infinita
 
 @example
@@ -34,16 +34,16 @@ e argumento @var{z}, definida por meio da s@'erie infinita
 @end example
 
 @code{li [1]} @'e @code{- log (1 - z)}.  @code{li [2]} e @code{li [3]}
-s@~ao as fun@,{c}@~oes dilogar@'{@dotless{i}}tmo e
-trilogar@'{@dotless{i}}tmo, respectivamente.
+s@~ao as fun@,{c}@~oes dilogaritmo e
+trilogaritmo, respectivamente.
 
-Quando a ordem for 1, o polilogar@'{@dotless{i}}tmo simplifica para
+Quando a ordem for 1, o polilogaritmo simplifica para
 @code{- log (1 - z)}, o qual por sua vez simplifica para um valor
 num@'erico se @var{z} for um n@'umero em ponto flutuante real ou
 complexo ou o sinalizador de avalia@,{c}@~ao @code{numer} estiver
 presente.
 
-Quando a ordem for 2 ou 3, o polilogar@'{@dotless{i}}tmo simplifica
+Quando a ordem for 2 ou 3, o polilogaritmo simplifica
 para um valor num@'erico se @var{z} for um n@'umero real em ponto
 flutuante ou o sinalizador de avalia@,{c}@~ao @code{numer} estiver
 presente.
@@ -98,14 +98,14 @@ Exemplos:
 @end deffn
 
 @deffn {Fun@,{c}@~ao} log (@var{x})
-Representa o logar@'{@dotless{i}}tmo natural (base @math{e}) de
+Representa o logaritmo natural (base @math{e}) de
 @var{x}.
 
 Maxima n@~ao possui uma fun@,{c}@~ao interna para
-logar@'{@dotless{i}}tmo de base 10 ou de outras bases. @code{log10(x)
+logaritmo de base 10 ou de outras bases. @code{log10(x)
 := log(x) / log(10)} @'e uma defini@,{c}@~ao @'util.
 
-A simplifica@,{c}@~ao e avalia@,{c}@~ao de logar@'{@dotless{i}}tmos
+A simplifica@,{c}@~ao e avalia@,{c}@~ao de logaritmos
 s@~ao governadas por v@'arios sinalizadores globais:
 
 @code{logexpand} - faz com que @code{log(a^b)} se transfome em
@@ -149,7 +149,7 @@ contendo @code{log}.
 Valor por omiss@~ao: @code{false}
 
 No c@'alculo de primitivas em que sejam gerados
-logar@'{@dotless{i}}tmos, por exemplo, @code{integrate(1/x,x)}, a
+logaritmos, por exemplo, @code{integrate(1/x,x)}, a
 resposta ser@'a dada em termos de @code{log(abs(...))} se
 @code{logabs} for @code{true}, mas em termos de @code{log(...)} se
 @code{logabs} for @code{false}. Para integrais definidos, usa-se
@@ -261,7 +261,7 @@ simplifica@,{c}@~ao de @code{%e} para um expoente contendo
 @end defvr
 
 @deffn {Fun@,{c}@~ao} plog (@var{x})
-Representa o ramo principal dos logar@'{@dotless{i}}tmos naturais no
+Representa o ramo principal dos logaritmos naturais no
 plano complexo, com @code{-%pi} < @code{carg(@var{x})} <= @code{+%pi}.
 
 @end deffn

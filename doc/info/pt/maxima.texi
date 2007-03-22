@@ -53,10 +53,10 @@ agora chamado Maxima.
 
 Notas de tradu@,{c}@~ao:
 
-Esta vers@~ao portuguesa, para Portugal, @'e mantida por Jaime Villate, e
-est@'a baseada na tradu@,{c}@~ao Brasileira de Jorge Barros de Abreu.
-Se quiser contribuir, por favor entre em contacto com villate ARROBA fe
-PONTO up PONTO pt.
+Esta vers@~ao portuguesa, para Portugal, @'e mantida por Jaime Villate e
+Ari Const@^ancio, e est@'a baseada na tradu@,{c}@~ao Brasileira de Jorge
+Barros de Abreu.  Se quiser contribuir, por favor entre em contacto com
+villate ARROBA fe PONTO up PONTO pt.
 
 @end titlepage
 
@@ -107,9 +107,9 @@ Infraestrutura do Maxima
 
 Suporte a @'areas espec@'{@dotless{i}}ficas da matem@'atica
 
-* Polin@^omios::                Formas padr@~ao para polin@^omios, e fun@value{cedilha}@~oes de polin@^omios.
+* Polin@'omios::                Formas padr@~ao para polin@'omios, e fun@value{cedilha}@~oes de polin@'omios.
 * Constantes::                  Constantes num@'ericas.
-* Logar@'{@dotless{i}}tmos::    Manipula@value{cedilha}@~ao de express@~oes com logar@'{@dotless{i}}tmos.
+* Logaritmos::    Manipula@value{cedilha}@~ao de express@~oes com logaritmos.
 * Trigonometria::               Manipula@value{cedilha}@~ao de express@~oes e fun@value{cedilha}@~oes trigonom@'etricas.
 * Fun@value{cedilha}@~oes Especiais::     Fun@value{cedilha}@~oes especiais.
 * Fun@value{cedilha}@~oes El@'{@dotless{i}}pticas::   Fun@value{cedilha}@~oes e integrais El@'{@dotless{i}}pticas.
@@ -159,7 +159,7 @@ Pacotes Adicionais
 * lindstedt::                   Pacote Lindstedt.
 * linearalgebra::               Fun@value{cedilha}@~oes de @'algebra linear.
 * lsquares::                    M@'etodo dos m@'{@dotless{i}}nimos quadrados.
-* makeOrders::                  Expoentes de polin@^omios.
+* makeOrders::                  Expoentes de polin@'omios.
 * mnewton::                     M@'etodo de Newton.
 * numericalio::                 Leitura e escritura de ficheiros.
 * opsubst::                     Comandos para substitui@value{cedilha}@~oes.
@@ -240,18 +240,18 @@ Contextos
 
 * Defini@value{cedilha}@~oes para Contextos::    
 
-Polin@^omios
+Polin@'omios
 
-* Introdu@value{cedilha}@~ao a Polin@^omios::  
-* Defini@value{cedilha}@~oes para Polin@^omios::  
+* Introdu@value{cedilha}@~ao a Polin@'omios::  
+* Defini@value{cedilha}@~oes para Polin@'omios::  
 
 Constantes
 
 * Defini@value{cedilha}@~oes para Constantes::
 
-Logar@'{@dotless{i}}tmos
+Logaritmos
 
-* Defini@value{cedilha}@~oes para Logar@'{@dotless{i}}tmos::  
+* Defini@value{cedilha}@~oes para Logaritmos::  
 
 Trigonometria
 
@@ -482,8 +482,8 @@ opsubst
 
 orthopoly
 
-* Introdu@value{cedilha}@~ao a polin@^omios ortogonais::
-* Defini@value{cedilha}@~oes para polin@^omios ortogonais::
+* Introdu@value{cedilha}@~ao a polin@'omios ortogonais::
+* Defini@value{cedilha}@~oes para polin@'omios ortogonais::
 
 plotdf
 
@@ -585,23 +585,23 @@ zeilberger
 @chapter Ponto Flutuante
 @include Floating.texi
 
-@node Contextos, Polin@^omios, Ponto Flutuante, Top
+@node Contextos, Polin@'omios, Ponto Flutuante, Top
 @chapter Contextos
 @include Contexts.texi
 
-@node Polin@^omios, Constantes, Contextos, Top
-@chapter Polin@^omios
+@node Polin@'omios, Constantes, Contextos, Top
+@chapter Polin@'omios
 @include Polynomials.texi
 
-@node Constantes, Logar@'{@dotless{i}}tmos, Polin@^omios, Top
+@node Constantes, Logaritmos, Polin@'omios, Top
 @chapter Constantes
 @include Constants.texi
 
-@node Logar@'{@dotless{i}}tmos, Trigonometria, Constantes, Top
-@chapter Logar@'{@dotless{i}}tmos
+@node Logaritmos, Trigonometria, Constantes, Top
+@chapter Logaritmos
 @include Logarithms.texi
 
-@node Trigonometria, Fun@value{cedilha}@~oes Especiais, Logar@'{@dotless{i}}tmos, Top
+@node Trigonometria, Fun@value{cedilha}@~oes Especiais, Logaritmos, Top
 @chapter Trigonometria
 @include Trigonometric.texi
 

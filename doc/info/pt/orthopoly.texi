@@ -1,14 +1,14 @@
 @c /orthopoly.texi/1.10/Fri Mar  2 00:44:47 2007//
 @menu
-* Introdu@value{cedilha}@~ao a polin@^omios ortogonais::
-* Defini@value{cedilha}@~oes para polin@^omios ortogonais::
+* Introdu@value{cedilha}@~ao a polin@'omios ortogonais::
+* Defini@value{cedilha}@~oes para polin@'omios ortogonais::
 @end menu
 
-@node Introdu@value{cedilha}@~ao a polin@^omios ortogonais, Defini@value{cedilha}@~oes para polin@^omios ortogonais, orthopoly, orthopoly
-@section Introdu@value{cedilha}@~ao a polin@^omios ortogonais
+@node Introdu@value{cedilha}@~ao a polin@'omios ortogonais, Defini@value{cedilha}@~oes para polin@'omios ortogonais, orthopoly, orthopoly
+@section Introdu@value{cedilha}@~ao a polin@'omios ortogonais
 
 @code{orthopoly} @'e um pacote para avalia@value{cedilha}@~ao simb@'olica e num@'erica de
-muitos tipos de polin@^omios ortogonais, incluindo polin@^omios de Chebyshev,
+muitos tipos de polin@'omios ortogonais, incluindo polin@'omios de Chebyshev,
 Laguerre, Hermite, Jacobi, Legendre, e ultraesf@'erico
 (Gegenbauer). Adicionalmentey, @code{orthopoly} inclui suporte fun@value{cedilha}@~oes esf@'ericas segundo o crit@'erio de
 Bessel, esf@'ericas segundo o crit@'erio de Hankel, e fun@value{cedilha}@~oes harm@^onica esf@'ericas.
@@ -39,7 +39,7 @@ o pacote @code{orthopoly} e sua documeta@value{cedilha}@~ao. O pacote
 
 @code{load (orthopoly)} torna o pacote @code{orthopoly} dispon@'{@dotless{i}}vel para uso.
 
-Para encontrar o polin@^omio de Legendre de terceira ordem,
+Para encontrar o polin@'omio de Legendre de terceira ordem,
 
 @c ===beg===
 @c legendre_p (3, x);
@@ -52,7 +52,7 @@ Para encontrar o polin@^omio de Legendre de terceira ordem,
                  2             2
 @end example
 
-Para expressar esse polin@^omio como uma soma de pot@^encias de @var{x}, aplique @var{ratsimp} ou @var{rat}
+Para expressar esse polin@'omio como uma soma de pot@^encias de @var{x}, aplique @var{ratsimp} ou @var{rat}
 para o resultado anterior.
 
 @c CONTINUING PREVIOUS EXAMPLE HERE
@@ -240,7 +240,7 @@ $$P_@{n@}^@{\left(a,a-b\right)@}\left(@{@{x@}\over@{2@}@}\right)$$
 
 @subsection Limitations
 
-Quando uma express@~ao envolve muitos polin@^omios ortogonais com
+Quando uma express@~ao envolve muitos polin@'omios ortogonais com
 ordens simb@'olicas, @'e poss@'{@dotless{i}}vel que a express@~ao actualmente
 tenda para zero, e ainda ocorre tamb@'em que Maxima estar incapacitado de simplificar essa express@~ao para zero. Se voc@^e
 faz uma divis@~ao por tal quantidade que tende a zero, voc@^e pode estar em apuros. Por exemplo,
@@ -267,7 +267,7 @@ Para um @var{n} espec@'{@dotless{i}}fico, podemos reduzir a express@~ao a zero.
 (%o2)                           0
 @end example
 
-Geralmente, a forma polinomial de um polin@^omio ortogonal esteja adequada de forma hostil
+Geralmente, a forma polinomial de um polin@'omio ortogonal esteja adequada de forma hostil
 para avalia@value{cedilha}ao em ponto flutuante. Aqui est@'a um exemplo.
 
 @c ACTUALLY NEEDS load(orthopoly); BEFORE ANYTHING ELSE
@@ -289,7 +289,7 @@ para avalia@value{cedilha}ao em ponto flutuante. Aqui est@'a um exemplo.
 @end example
 
 O verdadeiro valor est@'a em torno de 0.184; ess calculo suporta erro de 
-cancelamento por extremo subtrativo.Expandindo o polin@^omio e ent@~ao
+cancelamento por extremo subtrativo.Expandindo o polin@'omio e ent@~ao
 avaliando, fornecendo um melhor resultado.
 @c CONTINUING PREVIOUS EXAMPLE HERE
 @c ===beg===
@@ -302,14 +302,14 @@ avaliando, fornecendo um melhor resultado.
 (%o6) 0.18413609766122982
 @end example
 
-Essa n@~ao @'e uma regra geral; expandindo o polin@^omio n@~ao resulta sempre 
+Essa n@~ao @'e uma regra geral; expandindo o polin@'omio n@~ao resulta sempre 
 em express@~oes que s@~ao melhores adaptadas a avalia@value{cedilha}@~ao num@'erica.
 Com grande folga, o melhor caminho para fazer avalia@value{cedilha}@~ao num@'erica @'e fazer um ou mais
 argumentos da fun@value{cedilha}@~ao serem n@'umeros em ponto flutuante. Em fun@value{cedilha}@~ao disso, 
 algor@'{@dotless{i}}tmos especializados em ponto flutuante s@~ao usados para avalia@value{cedilha}@~ao.
 
 A fun@value{cedilha}@~ao @code{float} do Maxima @'e at@'e certo ponto indiscriminada; se voc@^e aplicar 
-@code{float} a uma express@~ao envolvendo um polin@^omio ortogonal com um
+@code{float} a uma express@~ao envolvendo um polin@'omio ortogonal com um
 grau simb@'olico ou um par@^ametro de ordem, esses par@^ametos (inteiros) podem ser 
 convertido em n@'umeros em ponto flutuante; ap@'os o que, a express@~ao n@~ao ir@'a avaliar 
 completamente. Considere
@@ -376,7 +376,7 @@ O valor padr@~ao de @code{pochhammer_max_index} @'e 100;
 modifique esse valor ap@'os chama @code{orthopoly}.
 
 Finalmente, tenha consci@^encia que os livros citados nas refer@^encias adotam diferentes defini@value{cedilha}@~oes de 
-polin@^omios ortogonais; geralmente adotamos as conven@value{cedilha}@~oes 
+polin@'omios ortogonais; geralmente adotamos as conven@value{cedilha}@~oes 
 citadas nas conven@value{cedilha}@~oes de Abramowitz e Stegun.
 
 Antes de voc@^e suspeitar de um erro no pacote @code{orthopoly}, verifique alguns casos especiais 
@@ -384,7 +384,7 @@ para determinar se suas defini@value{cedilha}@~oes coincidem com aquelas usadas 
 Definitions muitas vezes diferem por uma normaliza@value{cedilha}@~ao; ocasionalmente, autores
 utilizam vers@~oes ``modificadas'' das fun@value{cedilha}@~oes que fazem a fam@'{@dotless{i}}lia
 ortogonal sobre um intervalo diferente do intervalo @math{(-1, 1)}. Para definir, por exemplo,
-um polin@^omio de Legendre que @'e ortogonal a @math{(0, 1)}, defina
+um polin@'omio de Legendre que @'e ortogonal a @math{(0, 1)}, defina
 
 @c ===beg===
 @c shifted_legendre_p (n, x) := legendre_p (n, 2*x - 1)$
@@ -409,10 +409,10 @@ um polin@^omio de Legendre que @'e ortogonal a @math{(0, 1)}, defina
 
 Muitas fun@value{cedilha}@~oes em @code{orthopoly} utilizam an@'alise de erro durante a execu@value{cedilha}@~ao para 
 estimar o erro em avalia@value{cedilha}@~oes em ponto flutuante; as 
-exce@value{cedilha}@~oes s@~ao fun@value{cedilha}@~oes de Bessel esf@'ericas e os polin@^omios associados de
+exce@value{cedilha}@~oes s@~ao fun@value{cedilha}@~oes de Bessel esf@'ericas e os polin@'omios associados de
 Legendre do segundo tipo. Para avalia@value{cedilha}@~oes num@'ericas, as fun@value{cedilha}@~oes 
 de Bessel esf@'ericas chamam fun@value{cedilha}@~oes da colec@,{c}@~ao de programas @code{SLATEC}. Nenhum m@'etodo especializado @'e usado
-para avalia@value{cedilha}@~ao num@'erica dos polin@^omios associados  de Legendre do
+para avalia@value{cedilha}@~ao num@'erica dos polin@'omios associados  de Legendre do
 segundo tipo.
 
 A an@'alise de erro durante a execu@value{cedilha}@~ao ignora erros que s@~ao de segunda ordem ou maior
@@ -519,7 +519,7 @@ e o resultado final @'e n@'umero em ponto flutuante de precis@~ao dupla.
 
 @subsection Gr@'aficos e @code{orthopoly}
 
-Para montar gr@'aficos de express@~oes que envolvem polin@^omios ortogonais, voc@^e 
+Para montar gr@'aficos de express@~oes que envolvem polin@'omios ortogonais, voc@^e 
 deve azer duas coisas:
 @enumerate
 @item 
@@ -527,10 +527,10 @@ Escolher a vari@'avel de op@value{cedilha}@~ao @code{orthopoly_returns_intervals
 @item
 Colocar ap@'ostrofo em qualquer chamada a fun@value{cedilha}@~oes do pacote @code{orthopoly}.
 @end enumerate
-Se chamadas a fun@value{cedilha}@~oes n@~ao receberem ap@'ostrofo, Maxima ir@'a avali@'a-las para polin@^omios antes 
+Se chamadas a fun@value{cedilha}@~oes n@~ao receberem ap@'ostrofo, Maxima ir@'a avali@'a-las para polin@'omios antes 
 de montar o gr@'afico; consequ@^entemente, as rotinas especializadas em ponto flutuante n@~ao ser@~ao chamadas.
 Aqui est@'a um exemplo de como montar o gr@'afico de uma express@~ao que envolve
-um polin@^omio de Legendre.
+um polin@'omio de Legendre.
 
 @c ===beg===
 @c plot2d ('(legendre_p (5, x)), [x, 0, 1]), orthopoly_returns_intervals : false;
@@ -589,8 +589,8 @@ function.
 @end example
 
 Voc@^eprecisa ser cuidadoso com express@~oes como (%o1); a diferen@value{cedilha}a das
-fun@value{cedilha}@~oes @code{psi} possuem polin@^omios quando @code{@var{x} = -1, -2, .., -@var{n}}. Esses polin@^omios
-cacelam-se com factores em @code{pochhammer (@var{x}, @var{n})} fazendo da derivada um polin@^omio
+fun@value{cedilha}@~oes @code{psi} possuem polin@'omios quando @code{@var{x} = -1, -2, .., -@var{n}}. Esses polin@'omios
+cacelam-se com factores em @code{pochhammer (@var{x}, @var{n})} fazendo da derivada um polin@'omio
 de grau @code{@var{n} - 1} quando @var{n} for um inteiro positivo.
 
 O s@'{@dotless{i}}mbolo de Pochhammer @'e definido de ordens negativas at@'e sua
@@ -655,7 +655,7 @@ requerem que a fun@value{cedilha}@~ao de passo de unidade seja cont@'{@dotless{i
 @subsection Algor@'{@dotless{i}}tmos
 
 Geralmente, @code{orthopoly} faz avalia@value{cedilha}@~oes simb@'olicas pelo uso de uma representa@value{cedilha}@~ao 
-hipergeom@'etrica de polin@^omios ortogonais. As fun@value{cedilha}@~oes 
+hipergeom@'etrica de polin@'omios ortogonais. As fun@value{cedilha}@~oes 
 hipegeom@'etricas s@~ao avaliadas usando as fun@value{cedilha}@~oes (n@~ao documetadas) @code{hypergeo11} 
 e @code{hypergeo21}. As excess@~oes s@~ao as fun@value{cedilha}@~oes de Bessel metade inteiras 
 e a fun@value{cedilha}@~ao de Legendre associada de segundo tipo. As fun@value{cedilha}@~oes de Bessel metade inteiras s@~ao
@@ -668,8 +668,8 @@ recursividade para frente. Novamente, as excess@~oes s@~ao as fun@value{cedilha}
 e a fun@value{cedilha}@~ao de Legendre associada de segundo tipo. Numericamente, 
 as fun@value{cedilha}@~oes de Bessel meio inteiras s@~ao avaliadas usando o c@'odigo SLATEC.
 
-@node Defini@value{cedilha}@~oes para polin@^omios ortogonais,  , Introdu@value{cedilha}@~ao a polin@^omios ortogonais, orthopoly
-@section Defini@value{cedilha}@~oes para polin@^omios ortogonais
+@node Defini@value{cedilha}@~oes para polin@'omios ortogonais,  , Introdu@value{cedilha}@~ao a polin@'omios ortogonais, orthopoly
+@section Defini@value{cedilha}@~oes para polin@'omios ortogonais
 
 @deffn {Fun@value{cedilha}@~ao} assoc_legendre_p (@var{n}, @var{m}, @var{x})
 As fun@value{cedilha}@~oes de Legendre associadas de primeiro tipo. 
@@ -703,7 +703,7 @@ Refer@^encia: Abramowitz e Stegun, equa@value{cedilha}@~ao 22.5.54,p@'agina 780.
 @end deffn
 
 @deffn {Fun@value{cedilha}@~ao} hermite (@var{n}, @var{x})
-O polin@^omio de Hermite.
+O polin@'omio de Hermite.
 
 Refer@^encia: Abramowitz e Stegun, equa@value{cedilha}@~ao 22.5.55,p@'agina 780.
 @end deffn
@@ -713,10 +713,10 @@ Retorna @code{true} se a entrada for um intervalo e retorna @code{false} se n@~a
 @end deffn
 
 @deffn {Fun@value{cedilha}@~ao} jacobi_p (@var{n}, @var{a}, @var{b}, @var{x})
-o polin@^omio de Jacobi.
+o polin@'omio de Jacobi.
 
-Os polin@^omios de Jacobi s@~ao actualmente definidos para todo
-@var{a} e @var{b}; todavia, o peso do polin@^omio de
+Os polin@'omios de Jacobi s@~ao actualmente definidos para todo
+@var{a} e @var{b}; todavia, o peso do polin@'omio de
 Jacobi @code{(1 - @var{x})^@var{a} (1 + @var{x})^@var{b}} n@~ao @'e integr@'avel para @code{@var{a} <= -1} ou
 @code{@var{b} <= -1}. 
 
@@ -724,19 +724,19 @@ Refer@^encia: Abramowitz e Stegun, equa@value{cedilha}@~ao 22.5.42,p@'agina 779.
 @end deffn
 
 @deffn {Fun@value{cedilha}@~ao} laguerre (@var{n}, @var{x})
-O polin@^omio de Laguerre.
+O polin@'omio de Laguerre.
 
 Refer@^encia: Abramowitz e Stegun, equat@value{cedilha}@~oes 22.5.16 e 22.5.54,p@'agina 780.
 @end deffn
 
 @deffn {Fun@value{cedilha}@~ao} legendre_p (@var{n}, @var{x})
-O polin@^omio de Legendre de primeiro tipo.
+O polin@'omio de Legendre de primeiro tipo.
 
 Refer@^encia: Abramowitz e Stegun, equa@value{cedilha}@~oes 22.5.50 e 22.5.51,p@'agina 779.
 @end deffn
 
 @deffn {Fun@value{cedilha}@~ao} legendre_q (@var{n}, @var{x})
-O polin@^omio de Legendre de primeiro tipo.
+O polin@'omio de Legendre de primeiro tipo.
 
 Refer@^encia: Abramowitz e Stegun, equa@value{cedilha}@~oes 8.5.3 e 8.1.8.
 @end deffn
@@ -744,7 +744,7 @@ Refer@^encia: Abramowitz e Stegun, equa@value{cedilha}@~oes 8.5.3 e 8.1.8.
 @deffn {Fun@value{cedilha}@~ao} orthopoly_recur (@var{f}, @var{args})
 Retorna uma rela@value{cedilha}@~ao recursiva para a fam@'{@dotless{i}}lia de fun@value{cedilha}@~oes ortogonais
 @var{f} com argumentos @var{args}. A recursividade @'e com 
-rela@value{cedilha}@~ao ao grau do polin@^omio.
+rela@value{cedilha}@~ao ao grau do polin@'omio.
 
 @c ===beg===
 @c orthopoly_recur (legendre_p, [n, x]);
@@ -772,7 +772,7 @@ Function jacobi_p needs 4 arguments, instead it received 2
 @end example
 
 Adicionalmente, quando @var{f} n@~ao for o nome de uma das
-fam@'{@dotless{i}}lias de polin@^omios ortogonais, um erro @'e sinalizado.
+fam@'{@dotless{i}}lias de polin@'omios ortogonais, um erro @'e sinalizado.
 
 @c ===beg===
 @c orthopoly_recur (foo, [n, x]);
@@ -797,7 +797,7 @@ caso, o intervalo @'e um disco no plano complexo.
 @deffn {Fun@value{cedilha}@~ao} orthopoly_weight (@var{f}, @var{args})
 
 Retorna uma lista de tr@^es elementos; o primeiro elemento @'e 
-a f@'ormula do peso para a fam@'{@dotless{i}}lia de polin@^omios ortogonais
+a f@'ormula do peso para a fam@'{@dotless{i}}lia de polin@'omios ortogonais
 @var{f} com argumentos fornecidos pela lista @var{args}; os 
 segundos e terceiros elementos fornecem os pontos finais inferior e superior
 do intervalo de ortogonalidade. Por exemplo,
