@@ -285,10 +285,9 @@
   (or (member fun trace-handling-stack :test #'eq)
       (setf (trace-level fun) nil))
   (setf (trace-type fun) nil)
-  (delq fun ilist)
+  (setq ilist (delete fun ilist :test #'eq))
   (list fun))
 
-
 ;; Placing the TRACE functional hook.
 ;; Because the function properties in macsyma are used by the EDITOR, SAVE,
 ;; and GRIND commands it is not possible to simply replace the function

@@ -156,7 +156,7 @@
 	(cond ((not (free ($gcd dn* (cdr l4)) 'mfactorial))
 	       (numden (list '(mplus) (div* nn* dn*)
 			     (div* (car l4) (cdr l4))))
-	       (setq l2 (delq l4 l2 1))))))))
+	       (setq l2 (delete l4 l2 :count 1 :test #'eq))))))))
 
 (defun factpluscomb (e)
   (prog (donel fact indl tt)

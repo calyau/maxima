@@ -548,7 +548,7 @@
   (car (nthcdr (1- n) e)))
 
 (defmfun delsimp (e)
-  (delq 'simp (copy-list e) 1))
+  (delete 'simp (copy-list e) :count 1 :test #'eq))
 
 (defmfun remsimp (e)
   (if (atom e) e (cons (delsimp (car e)) (mapcar #'remsimp (cdr e)))))

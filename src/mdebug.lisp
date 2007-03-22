@@ -780,7 +780,7 @@ Command      Description~%~
 	 (push var *diff-bindlist*)
 	 (push (symbol-value var) *diff-mspeclist*)
 	 (cond ((eq (car mspeclist) munbound)
-		(makunbound var) (delq var $values 1))
+		(makunbound var) (setq $values (delete var $values :count 1 :test #'eq)))
 	       (t (let ((munbindp t)) (mset var (car mspeclist)))))
 	 (setq mspeclist (cdr mspeclist) bindlist (cdr bindlist))))
 
@@ -792,6 +792,5 @@ Command      Description~%~
     (remove-bindings bdlist)
     (when lineinfo
       (fresh-line *debug-io*)
-      (format *debug-io* "~a:~a::~%" (cadr lineinfo)
-	      (+ 0 (car lineinfo))))
+      (format *debug-io* "~a:~a::~%" (cadr lineinfo) (+ 0 (car lineinfo))))
     (values)))

@@ -1598,7 +1598,7 @@ APPLY means like APPLY.")
     (prog1
 	(teval var)
       (cond (old
-	     (setq tstack (delq old tstack)) ; POP should be all we need.
+	     (setq tstack (delete old tstack :test #'eq)) ; POP should be all we need.
 	     (setq old (cdr old))
 	     (putprop1 var (tstack-slot-mode old) 'mode)
 	     (putprop1 var (tstack-slot-tbind old) 'tbind)

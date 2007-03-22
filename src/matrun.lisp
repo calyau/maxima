@@ -81,11 +81,11 @@
         (mremprop rule '$ruletype)
         (mremprop rule 'ruleof)
         (remprop rule 'expr)
-        (delq rule $rules 1)
+        (setq $rules (delete rule $rules :count 1 :test #'eq))
         (putprop rule othrulename 'expr)
         (if (eq (get op 'operators) rule)
             (putprop op othrulename 'operators))
-        (return (mputprop op (delq rule (mget op 'oldrules)) 'oldrules))))))
+        (return (mputprop op (delete rule (mget op 'oldrules) :test #'eq) 'oldrules))))))
 
 (defmfun findbe (e)
   (cond ((equal e 1) '(1 . 0))
