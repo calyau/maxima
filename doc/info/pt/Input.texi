@@ -308,7 +308,7 @@ de outra forma o ponto de interroga@,{c}@~ao n@~ao @'e reconhecido com um pedido
 
 @deffn {S@'{@dotless{i}}mbolo especial} ??
 @ifinfo
-@fnindex Consulta documenta@,{c}@~ao (busca inexata)
+@fnindex Consulta documenta@,{c}@~ao (busca inexacta)
 @end ifinfo
 
 A nota@,{c}@~ao @code{?? palavra} (@code{??} seguido de um espa@,{c}o em branco e uma palavra)
@@ -536,7 +536,7 @@ propriedades de contra@,{c}@~ao que foram definidas.
 Mostra equa@,{c}@~oes cujo lado esquerdo @'e
 @var{expr_i} n@~ao avaliado, e cujo lado direito @'e o valor da express@~ao
 centrada na linha.  Essa fun@,{c}@~ao @'e @'util em blocos e em @code{for}
-declara@,{c}@~oes com o objetivo de ter resultados intermedi@'arios mostrados.  The
+declara@,{c}@~oes com o objectivo de ter resultados intermedi@'arios mostrados.  The
 Os argumentos para @code{display} s@~ao usualmente @'atomos, vari@'aveis subscritas, ou
 chamadas de fun@,{c}@~ao.  Veja tamb@'em @code{disp}.
 
@@ -1900,7 +1900,7 @@ imprimir como um gr@'afico em barras usando @code{xgraph}.
        system("xgraph -bar -brw .7 -nl < _hist.out"));
 @end example
 
-Com o objetivo de fazer com que a impress@~ao do gr@'afico seja conclu@'{@dotless{i}}da em segundo plano (retornando o controle para o Maxima)
+Com o objectivo de fazer com que a impress@~ao do gr@'afico seja conclu@'{@dotless{i}}da em segundo plano (retornando o controle para o Maxima)
 e remover o ficheiro tempor@'ario ap@'os isso ter sido conclu@'{@dotless{i}}do fa@,{c}a:
 
 @example

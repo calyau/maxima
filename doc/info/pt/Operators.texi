@@ -1613,7 +1613,7 @@ eliminar express@~oes que estiverem entre dois outros argumentos; por exemplo,
 
 @deffn {Fun@value{cedilha}@~ao} polymod (@var{p})
 @deffnx {Fun@value{cedilha}@~ao} polymod (@var{p}, @var{m})
-Converte o polin@^omio @var{p} para uma representa@value{cedilha}@~ao modular
+Converte o polin@'omio @var{p} para uma representa@value{cedilha}@~ao modular
 com rela@value{cedilha}@~ao ao m@'odulo corrente que @'e o valor da vari@'avel
 @code{modulus}.  
 
@@ -2258,7 +2258,7 @@ expl@'{@dotless{i}}citos.
 
 @c REPHRASE IN NEUTRAL TONE (GET RID OF "IT IS BETTER")
 Algumas vezes @'e melhor usar @code{xthru} antes de @code{ratsimp} em uma
-express@~ao com o objetivo de fazer com que factores explicitos do m@'aximo divisor comum entre o
+express@~ao com o objectivo de fazer com que factores explicitos do m@'aximo divisor comum entre o
 numerador e o denominador seja cancelado simplificando dessa forma a
 express@~ao a ser aplicado o @code{ratsimp}.
 

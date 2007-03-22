@@ -38,15 +38,15 @@ o eliminante n@~ao for de uma vari@'avel, ou se for uma quadr@'atica ou uma
 biquadrada.
 
 Dessa forma @code{algexact: true} n@~ao garante solu@value{cedilha}@~oes
-exatas, apenas que @code{algsys} tentar@'a primeiro pegar
-solu@value{cedilha}@~oes exatas, e somente retorna aproxima@value{cedilha}@~oes quando tudo mais falha.
+exactas, apenas que @code{algsys} tentar@'a primeiro pegar
+solu@value{cedilha}@~oes exactas, e somente retorna aproxima@value{cedilha}@~oes quando tudo mais falha.
 
 @c ABOVE DESCRIPTION NOT TOO CLEAR -- MAYBE EXAMPLES WILL HELP
 @end defvr
 
 @deffn {Fun@value{cedilha}@~ao} algsys ([@var{expr_1}, ..., @var{expr_m}], [@var{x_1}, ..., @var{x_n}])
 @deffnx {Fun@value{cedilha}@~ao} algsys ([@var{eqn_1}, ..., @var{eqn_m}], [@var{x_1}, ..., @var{x_n}])
-Resolve polin@^omios simult@^aneos @var{expr_1}, ..., @var{expr_m}
+Resolve polin@'omios simult@^aneos @var{expr_1}, ..., @var{expr_m}
 ou equa@value{cedilha}@~oes polin@^omiais @var{eqn_1}, ..., @var{eqn_m}
 para as vari@'aveis @var{x_1}, ..., @var{x_n}.
 Uma express@~ao @var{expr} @'e equivalente a uma equa@value{cedilha}@~ao @code{@var{expr} = 0}.
@@ -76,7 +76,7 @@ O processo agora retorna ao passo (1).
 (3) Eventualmente, um subsistema consistindo de uma equa@value{cedilha}@~ao simples @'e
 obtido.  Se a equa@value{cedilha}@~ao @'e de v@'arias vari@'aveis e aproxima@value{cedilha}@~oes na
 forma de n@'umeros em ponto flutuante n@~a tenham sido introduzidas, ent@~ao @code{solve} @'e
-chamada para achar uma solu@value{cedilha}@~ao exata.
+chamada para achar uma solu@value{cedilha}@~ao exacta.
 
 Em alguns casos, @code{solve} n@~ao est@'a habilitada a achar uma solu@value{cedilha}@~ao,
 ou se isso @'e feito a solu@value{cedilha}@~ao pode ser uma express@~ao express@~ao muito larga.
@@ -105,7 +105,7 @@ dos n@'{@dotless{i}}veis pr@'evios e o processo de solu@value{cedilha}@~ao retor
 
 Quando @code{algsys} encontrar uma equa@value{cedilha}@~ao de v@'arias vari@'aveis que cont@'em
 aproxima@value{cedilha}@~oes em ponto flutuante (usualmente devido a suas falhas em achar
-solu@value{cedilha}@~oes exatas por um est@'agio mais f@'acil), ent@~ao n@~ao tentar@'a
+solu@value{cedilha}@~oes exactas por um est@'agio mais f@'acil), ent@~ao n@~ao tentar@'a
 aplicar m@'etodos exatos para tais equa@value{cedilha}@~oes e em lugar disso imprime a mensagem:
 "@code{algsys} cannot solve - system too complicated."
 
@@ -165,28 +165,28 @@ Exemplos:
 @deffn {Fun@value{cedilha}@~ao} allroots (@var{expr})
 @deffnx {Fun@value{cedilha}@~ao} allroots (@var{eqn})
 Calcula aproxima@value{cedilha}@~oes num@'ericas de ra@'{@dotless{i}}zes reais e complexas do
-polin@^omio @var{expr} ou equa@value{cedilha}@~ao polin@^omial @var{eqn} de uma vari@'avel.
+polin@'omio @var{expr} ou equa@value{cedilha}@~ao polin@^omial @var{eqn} de uma vari@'avel.
 
 @c polyfactor IS NOT OTHERWISE DOCUMENTED
 O sinalizador @code{polyfactor} quando @code{true} faz com que
-@code{allroots} factore o polin@^omio sobre os n@'umeros reais se o
-polin@^omio for real, ou sobre os n@'umeros complexos, se o polin@^omio for
+@code{allroots} factore o polin@'omio sobre os n@'umeros reais se o
+polin@'omio for real, ou sobre os n@'umeros complexos, se o polin@'omio for
 complexo.
 
 @code{allroots} pode retornar resultados imprecisos no caso de multiplas ra@'{@dotless{i}}zes.
-Se o polin@^omio for real, @code{allroots (%i*@var{p})}) pode retornar
+Se o polin@'omio for real, @code{allroots (%i*@var{p})}) pode retornar
 aproxima@value{cedilha}@~oes mais precisas que @code{allroots (@var{p})},
 como @code{allroots} invoca um algor@'{@dotless{i}}tmo diferente naquele caso.
 
-@code{allroots} rejeita n@~ao-polin@^omios.  Isso requer que o numerador
-ap@'os a classifica@value{cedilha}@~ao (@code{rat}'ing) poder@'a ser um polin@^omio, e isso requer que o
+@code{allroots} rejeita n@~ao-polin@'omios.  Isso requer que o numerador
+ap@'os a classifica@value{cedilha}@~ao (@code{rat}'ing) poder@'a ser um polin@'omio, e isso requer que o
 denominador seja quando muito um n@'umero complexo.  Com um resultado disso @code{allroots}
 ir@'a sempre retornar uma express@~ao equivalente (mas factorada), se
 @code{polyfactor} for @code{true}.
 
-Para polin@^omios complexos um algor@'{@dotless{i}}tmo por Jenkins e Traub @'e
+Para polin@'omios complexos um algor@'{@dotless{i}}tmo por Jenkins e Traub @'e
 usado (Algorithm 419, @i{Comm.  ACM}, vol.  15, (1972), p.  97).
-Para polin@^omios reais o algor@'{@dotless{i}}tmo usado @'e devido a Jenkins (Algorithm 493, @i{ACM TOMS},
+Para polin@'omios reais o algor@'{@dotless{i}}tmo usado @'e devido a Jenkins (Algorithm 493, @i{ACM TOMS},
 vol.  1, (1975), p.178).
 
 Exemplos:
@@ -344,7 +344,7 @@ dentro de @code{block}.  Terminando @code{block} com um sinal de dolar, $, escol
 @deffn {Fun@value{cedilha}@~ao} funcsolve (@var{eqn}, @var{g}(@var{t}))
 Retorna @code{[@var{g}(@var{t}) = ...]}  ou @code{[]}, dependendo de existir
 ou n@~ao uma fun@value{cedilha}@~ao racional @code{@var{g}(@var{t})} satisfazendo @var{eqn},
-que deve ser de primeira ordem, polin@^omio linear em (para esse caso) 
+que deve ser de primeira ordem, polin@'omio linear em (para esse caso) 
 @code{@var{g}(@var{t})} e @code{@var{g}(@var{t}+1)}
 
 @example
@@ -467,10 +467,10 @@ retornado pelo comando @code{ieqn}.  Quando @code{ieqnprint} @'e
 
    [@var{solu@value{cedilha}@~ao}, @var{tecnica usada}, @var{nterms}, @var{sinalizador}]
 
-onde @var{sinalizador} @'e retirado se a solu@value{cedilha}@~ao for exata.
+onde @var{sinalizador} @'e retirado se a solu@value{cedilha}@~ao for exacta.
 
 De outra forma, isso @'e a
-palavra @code{approximate} ou @code{incomplete} correspondendo @`a forma inexata ou
+palavra @code{approximate} ou @code{incomplete} correspondendo @`a forma inexacta ou
 forma aberta de solu@value{cedilha}@~ao, respectivamente.  Se um m@'etodo de s@'erie foi usado,
 @var{nterms} fornece o n@'umero de termos usados (que poder@'a ser menor que os n
 dados para @code{ieqn} se ocorrer um erro evita a gera@value{cedilha}@~ao de termos adicionais).
@@ -541,7 +541,7 @@ Exemplos:
 @deffn {Fun@value{cedilha}@~ao} linsolve ([@var{expr_1}, ..., @var{expr_m}], [@var{x_1}, ..., @var{x_n}])
 Resolve a lista de
 equa@value{cedilha}@~oes lineares simult@^aneas para a lista de vari@'aveis.  As express@~oes
-devem ser cada uma polin@^omios nas vari@'aveis e podem ser equa@value{cedilha}@~oes.
+devem ser cada uma polin@'omios nas vari@'aveis e podem ser equa@value{cedilha}@~oes.
 
 Quando @code{globalsolve} @'e @code{true} ent@~ao vari@'aveis que foram resolvidas
 ser@~ao escolhidas para a solu@value{cedilha}@~ao do conjunto de equa@value{cedilha}@~oes simult@^aneas.
@@ -661,7 +661,7 @@ multiplicidades das solu@value{cedilha}@~oes individuais retornadas por @code{so
 @end defvr
 
 @deffn {Fun@value{cedilha}@~ao} nroots (@var{p}, @var{low}, @var{high})
-Retorna o n@'umero de ra@'{@dotless{i}}zes reais do polin@^omio 
+Retorna o n@'umero de ra@'{@dotless{i}}zes reais do polin@'omio 
 real de uma @'unica vari@'avel @var{p} no intervalo semi-aberto
 @code{(@var{low}, @var{high}]}.
 Uma extremidade do intervalo podem ser @code{minf} ou @code{inf}.
@@ -679,8 +679,8 @@ infinito e mais infinito.
 
 @c NEEDS WORK
 @deffn {Fun@value{cedilha}@~ao} nthroot (@var{p}, @var{n})
-Onde p @'e um polin@^omio com coeficientes inteiros e
-n @'e um inteiro positivo retorna q, um polin@^omio sobre os inteiros, tal
+Onde p @'e um polin@'omio com coeficientes inteiros e
+n @'e um inteiro positivo retorna q, um polin@'omio sobre os inteiros, tal
 que q^n=p ou imprime uma mensagem de erro indicando que p n@~ao @'e uma pot@^encia n-@'esima
 perfeita.  Essa rotina @'e mais r@'apida que @code{factor} ou mesmo @code{sqfr}.
 
@@ -727,11 +727,11 @@ para a vari@'avel global @code{multiplicities}.
 @code{realroots} constr@'oi uma sequ@^encia de Sturm para delimitar cada ra@'{@dotless{i}}z,
 e ent@~ao palica a bisec@value{cedilha}@~ao para redefinir as aproxima@value{cedilha}@~oes.
 Todos os coeficientes s@~ao convertidos para os equivalentes racionais antes da busca por ra@'{@dotless{i}}zes,
-e c@'alculos s@~ao realizados por meio de aritm@'etica racional exata.
+e c@'alculos s@~ao realizados por meio de aritm@'etica racional exacta.
 Mesmo se alguns coeficientes forem n@'umeros em ponto flutuante,
 os resultados s@~ao racionais (a menos que for@value{cedilha}ados a n@'umeros em ponto flutuante por @code{float} ou por @code{numer} flags).
 
-Quando @var{bound} for menor que 1, todas as ra@'{@dotless{i}}zes inteiras s@~ao encontradas exatamente.
+Quando @var{bound} for menor que 1, todas as ra@'{@dotless{i}}zes inteiras s@~ao encontradas exactamente.
 Quando @var{bound} n@~ao for especificado, ser@'a assumido como sendo igual @`a vari@'avel globa @code{rootsepsilon}.
 
 Quando a var@'avel global @code{programmode} for @code{true},
@@ -958,7 +958,7 @@ Se @var{E} for dada em factores ent@~ao @code{solve} @'e chamada sobre cada um d
 @code{solve} usar@'a as f@'ormulas quadr@'aticas, c@'ubicas, ou qu@'articas onde
 necess@'ario.
 
-No caso onde @var{E} for um polin@^omio em alguma fun@value{cedilha}@~ao de vari@'avel a ser
+No caso onde @var{E} for um polin@'omio em alguma fun@value{cedilha}@~ao de vari@'avel a ser
 resolvida, digamos @code{F(X)}, ent@~ao isso @'e primeiro resolvida para @code{F(X)} (chama o
 resultado @var{C}), ent@~ao a equa@value{cedilha}@~ao @code{F(X)=C} pode ser resolvida para @var{X} fornecendo o
 inverso da fun@value{cedilha}@~ao @var{F} que @'e conhecida.
@@ -1099,7 +1099,7 @@ y = - .1535675710019696]]
 Valor por omiss@~ao: @code{true}
 
 Quando @code{solvedecomposes} @'e @code{true}, @code{solve} chama
-@code{polydecomp} se perguntado para resolver polin@^omios.
+@code{polydecomp} se perguntado para resolver polin@'omios.
 @c OTHERWISE WHAT HAPPENS -- CAN'T SOLVE POLYNOMIALS, OR SOME OTHER METHOD IS USED ??
 
 @end defvr
@@ -1139,7 +1139,7 @@ Valor por omiss@~ao: @code{false}
 
 Quando @code{solveradcan} @'e @code{true}, @code{solve} chama @code{radcan}
 que faz @code{solve} lento mas permitir@'a certamente que problemas
-contendo exponeniais e logar@'{@dotless{i}}tmos sejam resolvidos.
+contendo exponeniais e logaritmos sejam resolvidos.
 @c NEED AN EXAMPLE HERE
 
 @end defvr

@@ -98,7 +98,7 @@ parcelas, e os produtos (comutativos e n@~ao comutativos) s@~ao
 distribu@'{@dotless{i}}dos sobre as somas em todos os
 n@'{@dotless{i}}veis de @var{expr}.
 
-Para polin@^omios se pode usar frequ@^entemente @code{ratexpand} que
+Para polin@'omios se pode usar frequ@^entemente @code{ratexpand} que
 possui um algor@'{@dotless{i}}tmo mais eficiente.
 
 @code{maxnegex} e @code{maxposex} controlam o m@'aximo expoente negativo
@@ -503,7 +503,7 @@ positiva.  @code{is (f(x) > 0)} retorna @code{true}.
 @end defvr
 
 @deffn {Fun@value{cedilha}@~ao} radcan (@var{expr})
-Simplifica @var{expr}, que pode conter logar@'{@dotless{i}}tmos,
+Simplifica @var{expr}, que pode conter logaritmos,
 exponenciais, e radicais, convertendo essa express@~ao numa forma
 can@^onica sobre uma ampla classe de express@~oes e com uma dada
 ordena@value{cedilha}@~ao de vari@'aveis; isto @'e, todas as formas

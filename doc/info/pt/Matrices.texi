@@ -124,7 +124,7 @@ os termos independentes em cada equa@value{cedilha}@~ao (i.e., esses termos n@~a
 @end deffn
 
 @deffn {Fun@value{cedilha}@~ao} charpoly (@var{M}, @var{x})
-Retorna um polin@^omio caracter@'{@dotless{i}}stico para a matriz @var{M}
+Retorna um polin@'omio caracter@'{@dotless{i}}stico para a matriz @var{M}
 em rela@value{cedilha}@~ao @`a vari@'avel @var{x}.  Que @'e,
 @code{determinant (@var{M} - diagmatrix (length (@var{M}), @var{x}))}.
 
@@ -560,8 +560,8 @@ multiplicidade dos autovalores na ordem correspondente.
 @code{eivals} @'e um sin@^onimo de @code{eigenvalues}.
 
 @code{eigenvalues} chama a fun@value{cedilha}@~ao @code{solve} para achar as ra@'{@dotless{i}}zes do
-polin@^omio caracter@'{@dotless{i}}stico da matriz.
-Algumas vezes @code{solve} pode n@~ao estar habilitado a achar as ra@'{@dotless{i}}zes do polin@^omio;
+polin@'omio caracter@'{@dotless{i}}stico da matriz.
+Algumas vezes @code{solve} pode n@~ao estar habilitado a achar as ra@'{@dotless{i}}zes do polin@'omio;
 nesse caso algumas outras fun@value{cedilha}@~oes nesse
 pacote (except @code{innerproduct}, @code{unitvector}, @code{columnvector} e
 @code{gramschmidt}) n@~ao ir@~ao trabalhar.
@@ -822,7 +822,7 @@ Retorna a inversa da matriz @var{M}.
 A inversa @'e calculada pelo m@'etodo adjunto.
 
 Isso permite a um utilizador calcular a inversa de uma matriz com
-entradas bfloat ou polin@^omios com coeficientes em ponto flutuante sem
+entradas bfloat ou polin@'omios com coeficientes em ponto flutuante sem
 converter para a forma CRE.
 
 Cofactores s@~ao calculados pela fun@value{cedilha}@~ao  @code{determinant},
@@ -1243,14 +1243,14 @@ o nome somente aparece em sa@'{@dotless{i}}das, e n@~ao @'e reconhecido em entra
 @end deffn
 
 @deffn {Fun@value{cedilha}@~ao} ncharpoly (@var{M}, @var{x})
-Retorna o polin@^omio caracter@'{@dotless{i}}stico da matriz @var{M}
+Retorna o polin@'omio caracter@'{@dotless{i}}stico da matriz @var{M}
 com rela@value{cedilha}@~ao a @var{x}.  Essa @'e uma alternativa para @code{charpoly} do Maxima.
 
 @code{ncharpoly} trabalha pelo c@'alculo dos tra@value{cedilha}os das pot@^encias na dada matriz,
 que s@~ao sabidos serem iguais a somas de pot@^encias das ra@'{@dotless{i}}zes do
-polin@^omio caracter@'{@dotless{i}}stico.  Para essas quantidade a fun@value{cedilha}@~ao
+polin@'omio caracter@'{@dotless{i}}stico.  Para essas quantidade a fun@value{cedilha}@~ao
 sim@'etrica das ra@'{@dotless{i}}zes pode ser calculada, que nada mais s@~ao que
-os coeficientes do polin@^omio caracter@'{@dotless{i}}stico.  @code{charpoly} trabalha
+os coeficientes do polin@'omio caracter@'{@dotless{i}}stico.  @code{charpoly} trabalha
 @c SHOULD THAT BE "m" INSTEAD OF "a" IN THE NEXT LINE ??
 formatando o determinante de @code{@var{x} * ident [n] - a}.  Dessa forma @code{ncharpoly} @'e vencedor,
 por exemplo, no caso de largas e densas matrizes preencidas com inteiros,
@@ -1381,7 +1381,7 @@ ent@~ao @code{leftmatrix} @'e o conjugado complexo da transposta de
 @code{rightmatrix} @'e a matriz cujas colunas s@~ao os autovetores
 unit@'arios de @var{M}.  Os outros sinalizadores (veja @code{eigenvalues} e
 @code{eigenvectors}) possuem o mesmo efeito desde que
-@code{similaritytransform} chama as outras fun@value{cedilha}@~oes no pacote com o objetivo de
+@code{similaritytransform} chama as outras fun@value{cedilha}@~oes no pacote com o objectivo de
 estar habilitado para a forma @code{rightmatrix}.
 
 @code{load ("eigen")} chama essa fun@value{cedilha}@~ao.

@@ -342,7 +342,7 @@ Evaluation took 0.00 seconds (0.00 elapsed) using 32 bytes.
 Evaluation took 10.15 seconds (10.17 elapsed) using 322.098 MB.
 @end example
 
-Com o objetivo de fazer compara@,{c}@~oes visuais entre algor@'{@dotless{i}}tmos para uma
+Com o objectivo de fazer compara@,{c}@~oes visuais entre algor@'{@dotless{i}}tmos para uma
 vari@'avel estat@'{@dotless{i}}stica discreta, a fun@,{c}@~ao @code{barsplot} do pacote
 @code{descriptive} pode ser usada.
 
@@ -406,7 +406,7 @@ Pareto com par@^ametros @var{a} e @var{b} e @code{kurtosis_poisson(m)}
 @'e o coeficiente de curtose da distribui@,{c}@~ao de Poisson com m@'edia @var{m}.
 
 
-Com o objetivo de fazer uso do pacote @code{distrib} voc@^e precisa primeiro
+Com o objectivo de fazer uso do pacote @code{distrib} voc@^e precisa primeiro
 tornar esse pacote dispon@'{@dotless{i}}vel para uso escrevendo
 @example
 (%i1) load(distrib)$

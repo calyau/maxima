@@ -21,7 +21,7 @@ atrav@'es do simplificador do Maxima.
 Regras definidas atrav@'es de @code{defmatch}, @code{defrule}, e @code{let} s@~ao aplicadas
 atrav@'es de uma chamada expl@'{@dotless{i}}cita de fun@value{cedilha}@~ao.
 
-Existe mecanismos adicionais para regras aplicadas a polin@^omios atrav@'es de @code{tellrat},
+Existe mecanismos adicionais para regras aplicadas a polin@'omios atrav@'es de @code{tellrat},
 e para @'algebra comutativa e n@~ao comutativa no pacote @code{affine}. 
 
 @c end concepts Rules and Patterns

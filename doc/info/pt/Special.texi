@@ -14,7 +14,7 @@ bessel_j (index, expr)         Fun@value{cedilha}@~ao de Bessel, primeiro tipo
 bessel_y (index, expr)         Fun@value{cedilha}@~ao de Bessel, segundo tipo
 bessel_i (index, expr)         Fun@value{cedilha}@~ao de Bessel modificada, primeiro tipo
 bessel_k (index, expr)         Fun@value{cedilha}@~ao de Bessel modificada, segundo tipo
-%he[n] (z)                     Polin@^omio de Hermite (Note bem: @code{he}, n@~ao @code{h}. Veja A&S 22.5.18)
+%he[n] (z)                     Polin@'omio de Hermite (Note bem: @code{he}, n@~ao @code{h}. Veja A&S 22.5.18)
 %p[u,v] (z)                    Fun@value{cedilha}@~ao de Legendre
 %q[u,v] (z)                    Fun@value{cedilha}@~ao de Legendre, segundo tipo
 hstruve[n] (z)                 Fun@value{cedilha}@~ao H de Struve H

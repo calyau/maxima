@@ -726,7 +726,7 @@ Cada vetor no intervalo de @var{v_1} at@'e @var{v_n} deve ser um vetor coluna.
 @deffnx {Fun@value{cedilha}@~ao} polynomialp (@var{p}, @var{L}, @var{coeffp})
 @deffnx {Fun@value{cedilha}@~ao} polynomialp (@var{p}, @var{L})
 
-Retorna @code{true} se @var{p} for um polin@^omio nas vari@'aveis da lista @var{L},
+Retorna @code{true} se @var{p} for um polin@'omio nas vari@'aveis da lista @var{L},
 O predicado @var{coeffp} deve avaliar para @code{true} para cada
 coeficiente, e o predicado @var{exponp} deve avaliar para @code{true} para todos os 
 expoentes das vari@'aveis na lista @var{L}. Se voc@^e quiser usar um valor
@@ -740,7 +740,7 @@ o valor padr@~ao para @var{coeffp}.
 @code{polynomialp (@var{p}, @var{L})} @'e equivalente a
 @code{polynomialp (@var{p}, L@var{,} 'constantp, 'nonnegintegerp)}.
 
-O polin@^omio n@~ao precisa ser expandido:
+O polin@'omio n@~ao precisa ser expandido:
 
 @c ===beg===
 @c load (linearalgebra);
@@ -778,7 +778,7 @@ Warning - you are redefining the Maxima function rank
 (%o3)                         true
 @end example
 
-Polin@^omios com duas vari@'aveis:
+Polin@'omios com duas vari@'aveis:
 
 @c ===beg===
 @c load (linearalgebra);
@@ -801,28 +801,28 @@ Warning - you are redefining the Maxima function rank
 
 @deffn {Fun@value{cedilha}@~ao} polytocompanion (@var{p}, @var{x})
 
-Se @var{p} for um polin@^omio em @var{x}, retorna a atriz companheira de @var{p}. Para
-um polin@^omio m@^onico @var{p} de grau @var{n},
+Se @var{p} for um polin@'omio em @var{x}, retorna a atriz companheira de @var{p}. Para
+um polin@'omio m@^onico @var{p} de grau @var{n},
 temos @code{@var{p} = (-1)^@var{n} charpoly (polytocompanion (@var{p}, @var{x}))}.
 
-Quando @var{p} n@~ao for um polin@^omio em @var{x}, emite uma mensagem de erro.
+Quando @var{p} n@~ao for um polin@'omio em @var{x}, emite uma mensagem de erro.
 
 @end deffn
 
 @deffn {Fun@value{cedilha}@~ao} ptriangularize (@var{M}, @var{v})
 
-Se @var{M} for uma matriz onde cada entrada dessa matriz for um polin@^omio em @var{v}, retorna 
+Se @var{M} for uma matriz onde cada entrada dessa matriz for um polin@'omio em @var{v}, retorna 
 a matriz @var{M2} tal que
 
 (1) @var{M2} @'e triangular alta,
 
 (2) @code{@var{M2} = @var{E_n} ... @var{E_1} @var{M}},
 onde os elemetnos de @var{E_1} a @var{E_n} s@~ao matrizes elementares 
-cujas entrada s@~ao polin@^omios em @var{v},
+cujas entrada s@~ao polin@'omios em @var{v},
 
 (3) @code{|det (@var{M})| = |det (@var{M2})|},
 
-Nota: Essa fun@value{cedilha}@~ao n@~ao verifica se toda entrada @'e um polin@^omio em @var{v}.  
+Nota: Essa fun@value{cedilha}@~ao n@~ao verifica se toda entrada @'e um polin@'omio em @var{v}.  
 
 @end deffn
 

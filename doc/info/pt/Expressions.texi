@@ -783,7 +783,7 @@ Diz ao Maxima para reconhecer @var{a_i} como uma func@~ao associativa a direita 
 @item @code{nary}
 Diz ao Maxima para reconhecer @var{a_i} como uma fun@value{cedilha}@~ao n-@'aria (com muitos argumentos).
 
-A declara@value{cedilha}@~ao @code{nary} n@~ao tem o mesmo objetivo que uma chamada @`a fun@value{cedilha}@~ao @code{nary}.
+A declara@value{cedilha}@~ao @code{nary} n@~ao tem o mesmo objectivo que uma chamada @`a fun@value{cedilha}@~ao @code{nary}.
 O @'unico efeito de @code{declare(foo, nary)} @'e para instruir o simplificador do Maxima
 a melhorar as pr@'oximas express@~oes,
 por exemplo, para simplificar @code{foo(x, foo(y, z))} para @code{foo(x, y, z)}.
@@ -1508,7 +1508,7 @@ com rela@value{cedilha}@~ao @`a ordem de subexpress@~oes em adi@value{cedilha}@~
 (uma vez que a ordem das vari@'aveis na forma interna @'e muitas vezes diferente
 daquela na forma mostrada) e no manuseio com menos un@'ario,
 subtra@value{cedilha}@~ao, e divis@~ao (uma vez que esses operadores s@~ao removidos da
-express@~ao). @code{part (x+y, 0)} ou @code{inpart (x+y, 0)} retorna @code{+}, embora com o objetivo de
+express@~ao). @code{part (x+y, 0)} ou @code{inpart (x+y, 0)} retorna @code{+}, embora com o objectivo de
 referirse ao operador isso deva ser abra@value{cedilha}ado por aspas duplas.  Por exemplo
 @code{... if inpart (%o9,0) = "+" then ...}.
 
@@ -2143,7 +2143,7 @@ Exemplos:
 @deffn {Fun@value{cedilha}@~ao} realpart (@var{expr})
 Retorna a parte real de @var{expr}. @code{realpart} e @code{imagpart} ir@~ao
 trabalhar sobre express@~oes envolvendo fun@value{cedilha}@~oes trigonom@'etricas e hiperb@'olicas,
-bem como ra@'{@dotless{i}}zes quadradas, logar@'{@dotless{i}}tmos, e exponencia@value{cedilha}@~ao.
+bem como ra@'{@dotless{i}}zes quadradas, logaritmos, e exponencia@value{cedilha}@~ao.
 
 @end deffn
 

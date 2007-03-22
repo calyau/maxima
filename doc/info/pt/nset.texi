@@ -2287,7 +2287,7 @@ Exemplos:
 @deffn {Fun@value{cedilha}@~ao} symmdifference (@var{a_1}, ..., @var{a_n})
 
 Retorna a diferen@value{cedilha}a sim@'etrica, isto @'e,
-o conjunto dos elemetnos que ocorrem em exatamente um conjunto @var{a_k}.
+o conjunto dos elemetnos que ocorrem em exactamente um conjunto @var{a_k}.
 
 Given two arguments, @code{symmdifference(@var{a}, @var{b})} is
 the same as @code{union(setdifference(@var{a}, @var{b}), setdifference(@var{b}, @var{a}))}.
@@ -2438,7 +2438,7 @@ o resultado @'e equivalente a @code{xreduce(@var{s}, cons(@var{s_0}, @var{s}))}.
 
 @c NOT SURE WHAT IS THE RELEVANCE OF THE FOLLOWING COMMENT
 @c MAXIMA IS NEVER SO CAREFUL ABOUT FLOATING POINT ASSOCIATIVITY SO FAR AS I KNOW
-Adi@value{cedilha}@~oes em ponto flutuante n@~ao s@~ao exatamente associativas; quando a associatividade ocorrer,
+Adi@value{cedilha}@~oes em ponto flutuante n@~ao s@~ao exactamente associativas; quando a associatividade ocorrer,
 @code{xreduce} aplica a adi@value{cedilha}@~ao en@'aria do Maxima quando @var{s} contiver n@'umeros em ponto flutuante.
 
 Exemplos:

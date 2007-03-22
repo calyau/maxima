@@ -155,7 +155,7 @@ uma lista com os resultados correspondentes.
 Exemplo:
 
 Fornece um objecto @code{inference_result}, a fun@value{cedilha}@~ao @code{take_inference} @'e
-chamada com o objetivo de extrair alguma informa@value{cedilha}@~ao armazenada nesse objecto.
+chamada com o objectivo de extrair alguma informa@value{cedilha}@~ao armazenada nesse objecto.
 
 @c ===beg===
 @c load (inference_result)$
@@ -1293,7 +1293,7 @@ intervalo de confid@^encia para uma nova previs@~ao quando @code{x=113} s@~ao ta
 
 
 @deffn {Fun@value{cedilha}@~ao} pdf_signed_rank (@var{x}, @var{n})
-Fun@value{cedilha}@~ao densidade de probabilidade da distribui@value{cedilha}@~ao exata da
+Fun@value{cedilha}@~ao densidade de probabilidade da distribui@value{cedilha}@~ao exacta da
 estat@'{@dotless{i}}stica do rank sinalizado. O argumento @var{x} @'e um n@'umero
 real e @var{n} um inteiro positivo.
 
@@ -1301,7 +1301,7 @@ Veja tamb@'em @code{test_signed_rank}.
 @end deffn
 
 @deffn {Fun@value{cedilha}@~ao} cdf_signed_rank (@var{x}, @var{n})
-Fun@value{cedilha}@~ao de densidade cumulativa da distribui@value{cedilha}@~ao exata da
+Fun@value{cedilha}@~ao de densidade cumulativa da distribui@value{cedilha}@~ao exacta da
 estat@'{@dotless{i}}stica do rank sinalizado. O argumento @var{x} @'e um n@'umero
 real e @var{n} um inteiro positivo. 
 
@@ -1309,7 +1309,7 @@ Veja tamb@'em @code{test_signed_rank}.
 @end deffn
 
 @deffn {Fun@value{cedilha}@~ao} pdf_rank_sum (@var{x}, @var{n}, @var{m})
-Fun@value{cedilha}@~ao densidade de probabilidade da distribui@value{cedilha}@~ao exata da
+Fun@value{cedilha}@~ao densidade de probabilidade da distribui@value{cedilha}@~ao exacta da
 estat@'{@dotless{i}}stica do somat@'orio do rank. O argumento @var{x} @'e um n@'umero
 real e @var{n} e @var{m} s@~ao ambos inteiros positivos. 
 
@@ -1317,7 +1317,7 @@ Veja tamb@'em @code{test_rank_sum}.
 @end deffn
 
 @deffn {Fun@value{cedilha}@~ao} cdf_rank_sum (@var{x}, @var{n}, @var{m})
-Fun@value{cedilha}@~ao de densidade cumulativa da distribui@value{cedilha}@~ao exata da
+Fun@value{cedilha}@~ao de densidade cumulativa da distribui@value{cedilha}@~ao exacta da
 estat@'{@dotless{i}}stica do somat@'orio do rank. O argumento @var{x} @'e um n@'umero
 real e @var{n} e @var{m} s@~ao ambos inteiro positivos. 
 

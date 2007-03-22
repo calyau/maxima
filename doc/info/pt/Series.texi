@@ -56,7 +56,7 @@ Exemplo:
 @deffn {Fun@value{cedilha}@~ao} deftaylor (@var{f_1}(@var{x_1}), @var{expr_1}, ..., @var{f_n}(@var{x_n}), @var{expr_n})
 Para cada fun@value{cedilha}@~ao @var{f_i} de uma vari@'avel @var{x_i}, 
 @code{deftaylor} define @var{expr_i} como a s@'eries de Taylor sobre zero.
-@var{expr_i} @'e tipicamente um polin@^omio em @var{x_i} ou um somat@'orio;
+@var{expr_i} @'e tipicamente um polin@'omio em @var{x_i} ou um somat@'orio;
 express@~oes mais gerais s@~ao aceitas por @code{deftaylor} sem reclama@value{cedilha}@~oes.
 
 @code{powerseries (@var{f_i}(@var{x_i}), @var{x_i}, 0)}
@@ -275,7 +275,7 @@ O comprimento de s@'eries de pot@^encia @'e definido como
 N@~ao existe fun@value{cedilha}@~ao racional de grau 4 numerador/denominador, com essa
 expans@~ao de s@'erie de pot@^encia.  Voc@^e obrigatoriamente em geral tem grau do numerador e
 grau do denominador adicionando para cima ao menor grau das s@'eries de pot@^encia,
-com o objetivo de ter dispon@'{@dotless{i}}vel coeficientes desconhecidos para resolver.
+com o objectivo de ter dispon@'{@dotless{i}}vel coeficientes desconhecidos para resolver.
 
 @example
 (%i5) pade (t, 5, 5);
@@ -299,7 +299,7 @@ Valor por omiss@~ao: @code{false}
 
 Quando @code{powerdisp} for @code{true},
 uma adi@value{cedilha}@~ao @'e mostrada com seus termos em ordem do crescimento do expoente.
-Dessa forma um polin@^omio @'e mostrado como s@'eries de pot@^encias truncadas,
+Dessa forma um polin@'omio @'e mostrado como s@'eries de pot@^encias truncadas,
 com o termo constante primeiro e o maior expoente por @'ultimo.
 
 Por pad@~ao, termos de uma adi@value{cedilha}@~ao s@~ao mostrados em ordem do expoente decrescente.
@@ -368,8 +368,8 @@ ent@~ao termos com o mesmo grau total nas vari@'aveis s@~ao agrupados juntos.
 @deffn {Fun@value{cedilha}@~ao} revert (@var{expr}, @var{x})
 @deffnx {Fun@value{cedilha}@~ao} revert2 (@var{expr}, @var{x}, @var{n})
 Essas fun@value{cedilha}@~oes retornam a revers@~ao de @var{expr}, uma s@'erie de Taylor sobre zero na vari@'avel @var{x}.
-@code{revert} retorna um polin@^omio de grau igual ao maior expoente em @var{expr}.
-@code{revert2} retorna um polin@^omio de grau @var{n},
+@code{revert} retorna um polin@'omio de grau igual ao maior expoente em @var{expr}.
+@code{revert2} retorna um polin@'omio de grau @var{n},
 o qual pode ser maior que, igual a, ou menor que o grau de @var{expr}.
 
 @code{load ("revert")} chama essas fun@value{cedilha}@~oes.
@@ -637,10 +637,10 @@ e @code{false} de outra forma.
 @defvr {Vari@'avel de op@value{cedilha}@~ao} taylor_logexpand
 Valor por omiss@~ao: @code{true}
 
-@code{taylor_logexpand} controla expans@~ao de logar@'{@dotless{i}}tmos em
+@code{taylor_logexpand} controla expans@~ao de logaritmos em
 s@'eries de @code{taylor}.
 
-Quando @code{taylor_logexpand} for @code{true}, todos  logar@'{@dotless{i}}tmos s@~ao expandidos completamente dessa forma
+Quando @code{taylor_logexpand} for @code{true}, todos  logaritmos s@~ao expandidos completamente dessa forma
 problemas de reconhecimento de zero envolvendo envolvendo identidades logar@'{@dotless{i}}tmicas n@~ao
 atrapalham o processo de expans@~ao.  Todavia, esse esquema n@~ao @'e sempre
 maematicamente correto uma vez que isso ignora informa@value{cedilha}@~oes de ramo.
@@ -676,10 +676,10 @@ Valor por omiss@~ao: @code{true}
 
 @c WHAT IS THE "INPUT TRUNCATION LEVEL" ?? THE ARGUMENT n OF taylor ??
 Quando @code{taylor_truncate_polynomials} for @code{true},
-polin@^omios s@~ao truncados baseados sobre a entrada de n@'{@dotless{i}}veis de trunca@value{cedilha}@~ao.
+polin@'omios s@~ao truncados baseados sobre a entrada de n@'{@dotless{i}}veis de trunca@value{cedilha}@~ao.
 
 De outra forma,
-entrada de polin@^omios para @code{taylor} s@~ao consideradas terem precis@~ao infinita.
+entrada de polin@'omios para @code{taylor} s@~ao consideradas terem precis@~ao infinita.
 @c WHAT IS "INFINITE PRECISION" IN THIS CONTEXT ??
 
 @end defvr

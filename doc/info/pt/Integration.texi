@@ -170,7 +170,7 @@ come@value{cedilha}ar.
 @deffn {Fun@value{cedilha}@~ao} ilt (@var{expr}, @var{t}, @var{s})
 Calcula a transforma@value{cedilha}@~ao inversa de Laplace de @var{expr} em
 rela@value{cedilha}@~ao a @var{t} e par@^ametro @var{s}.  @var{expr} deve ser uma raz@~ao de
-polin@^omios cujo denominador tem somente factores lineares e quadr@'aticos.
+polin@'omios cujo denominador tem somente factores lineares e quadr@'aticos.
 Usando a fun@value{cedilha}@~oes @code{laplace} e @code{ilt} juntas com as fun@value{cedilha}@~oes @code{solve} ou
 @code{linsolve} o utilizador pode resolver uma diferencial simples ou
 uma equa@value{cedilha}@~ao integral de convolu@value{cedilha}@~ao ou um conjunto delas.
@@ -461,7 +461,7 @@ integral ser@'a expressa como um somat@'orio sobre as ra@'{@dotless{i}}zes do de
 Alternativamente o utilizador pode calcular as ra@'{@dotless{i}}zes do denominador separadamente,
 e ent@~ao expressar o integrando em termos dessas ra@'{@dotless{i}}zes,
 e.g., @code{1/((x - a)*(x - b)*(x - c))} ou @code{1/((x^2 - (a+b)*x + a*b)*(x - c))}
-se o denominador for um polin@^omio c@'ubico.
+se o denominador for um polin@'omio c@'ubico.
 Algumas vezes isso ajudar@'a Maxima a obter resultados mais @'uteis.
 
 @end defvr
@@ -525,7 +525,7 @@ para @var{expr}.
 Integra @var{expr} em rela@value{cedilha}@~ao a @var{x} usando um
 caso transcendental do algor@'{@dotless{i}}tmo de Risch.  (O caso alg@'ebrico do
 algor@'{@dotless{i}}tmo de Risch foi implementado.)  Isso actualmente
-manuseia os casos de exponenciais aninhadas e logar@'{@dotless{i}}tmos que a parte
+manuseia os casos de exponenciais aninhadas e logaritmos que a parte
 principal de @code{integrate} n@~ao pode fazer.  @code{integrate} ir@'a aplicar automaticamente @code{risch}
 se dados esses casos.
 

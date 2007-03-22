@@ -20,7 +20,7 @@ Note bem: Por favor veja a nota sobre 'nova nota@value{cedilha}@~ao de tensor' a
 Manipula@value{cedilha}@~ao de componentes de tensores significa que objectos do tipo
 tensor geom@'etrico s@~ao representados como arrays ou matrizes. Opera@value{cedilha}@~oes com tensores tais com
 contra@value{cedilha}@~ao ou diferencia@value{cedilha}@~ao covariante s@~ao realizadas
-sobre @'{@dotless{i}}ndices (que ocorrem exatamente duas vezes) repetidos com declara@value{cedilha}@~oes @code{do}.
+sobre @'{@dotless{i}}ndices (que ocorrem exactamente duas vezes) repetidos com declara@value{cedilha}@~oes @code{do}.
 Isto @'e, se executa explicitamente opera@value{cedilha}@~oes sobre as componentes apropriadas do
 tensor armazenadas em um array ou uma matriz.
 
@@ -301,7 +301,7 @@ atrav@'es desse documento).
 
 Retorna uma lista de dois elementos.  O primeiro @'e uma lista de @'{@dotless{i}}ndices
 livres em @var{expr} (aqueles que ocorrem somente uma vez). O segundo @'e uma
-lista de indices que ocorrem exatamente duas vezes em @var{expr} (dummy)
+lista de indices que ocorrem exactamente duas vezes em @var{expr} (dummy)
 como demonstra o seguinte exemplo.
 
 @example
@@ -328,10 +328,10 @@ express@~ao ilegal, seu comportamento pode ser considerado indefinido.
 @deffn {Fun@value{cedilha}@~ao} rename (@var{expr})
 @deffnx {Fun@value{cedilha}@~ao} rename (@var{expr}, @var{contador})
 
-Retorna uma express@~ao equivalente para @var{expr} mas com @'{@dotless{i}}ndices que ocorrem exatamente duas vezes
+Retorna uma express@~ao equivalente para @var{expr} mas com @'{@dotless{i}}ndices que ocorrem exactamente duas vezes
 em cada termo alterado do conjunto @code{[%1, %2,...]}, se o segundo argumento
-opcional for omitido. De outra forma, os @'{@dotless{i}}ndices que ocorrem exatamente duas vezes s@~ao indexados
-come@value{cedilha}ando no valor de @var{contador}.  Cada @'{@dotless{i}}ndice que ocorre exatamente duas vezes em um produto
+opcional for omitido. De outra forma, os @'{@dotless{i}}ndices que ocorrem exactamente duas vezes s@~ao indexados
+come@value{cedilha}ando no valor de @var{contador}.  Cada @'{@dotless{i}}ndice que ocorre exactamente duas vezes em um produto
 ser@'a diferente. Para uma adi@value{cedilha}@~ao, @code{rename} ir@'a operar sobre cada termo na
 a adi@value{cedilha}@~ao zerando o contador com cada termo. Nesse caminho @code{rename} pode
 servir como um simplificador tensorial. Adicionalmente, os @'{@dotless{i}}ndices ser@~ao
@@ -397,7 +397,7 @@ de outra forma ser@~ao ordenados conforme a ordem dos @'{@dotless{i}}ndices cova
 Se @code{flipflag} for @code{false} ent@~ao @code{rename} forma uma lista
 de @'{@dotless{i}}ndices contravariantes na ordem em que forem encontrados da esquerda para a direita
 (se @code{true} ent@~ao de @'{@dotless{i}}ndices contravariantes). O primeiro @'{@dotless{i}}ndice
-que ocorre exatamente duas vezes na lista @'e renomeado para @code{%1}, o seguinte para @code{%2}, etc.
+que ocorre exactamente duas vezes na lista @'e renomeado para @code{%1}, o seguinte para @code{%2}, etc.
 Ent@~ao a ordena@value{cedilha}@~ao ocorre ap@'os a ocorr@^encia do @code{rename} (veja o exemplo
 sob @code{rename}).
 
@@ -460,8 +460,8 @@ todos os seus @'{@dotless{i}}ndices. O tensor deve ser da forma @code{t([...],[.
 onde qualquer lista pode ser vazia. @var{expr} pode ser qualquer express@~ao indexada
 envolvendo outros objectos com os mesmos @'{@dotless{i}}ndices livres que @var{tensor}. Quando
 usada para atribuir valores a um tensor m@'etrico no qual as componentes
-possuem @'{@dotless{i}}ndices que ocorrem exatamente duas vezes se deve ser cuidadoso para definir esses @'{@dotless{i}}ndices de forma a
-evitar a gera@value{cedilha}@~ao de @'{@dotless{i}}ndices que ocorrem exatamente duas vezes e que s@~ao multiplos. a remo@value{cedilha}@~ao dessas
+possuem @'{@dotless{i}}ndices que ocorrem exactamente duas vezes se deve ser cuidadoso para definir esses @'{@dotless{i}}ndices de forma a
+evitar a gera@value{cedilha}@~ao de @'{@dotless{i}}ndices que ocorrem exactamente duas vezes e que s@~ao multiplos. a remo@value{cedilha}@~ao dessas
 atribui@value{cedilha}@~oes @'e dada para a fun@value{cedilha}@~ao @code{remcomps}.
 
 @'E importante ter em mente que @code{components} cuida somente da
@@ -610,7 +610,7 @@ categoria maior que 2.
 @deffn {Fun@value{cedilha}@~ao} idummy ()
 
 Incrementos @code{icounter} e retorno como seu valor um @'{@dotless{i}}ndice da forma
-@code{%n} onde n @'e um inteiro positivo.  Isso garante que @'{@dotless{i}}ndices que ocorrem exatamente duas vezes
+@code{%n} onde n @'e um inteiro positivo.  Isso garante que @'{@dotless{i}}ndices que ocorrem exactamente duas vezes
 e que s@~ao necess@'arios na forma@value{cedilha}@~ao de express@~oes n@~ao ir@~ao conflitar com @'{@dotless{i}}ndices
 que j@'a estiverem sendo usados (veja o exemplo sob @code{indices}).
 
@@ -619,7 +619,7 @@ que j@'a estiverem sendo usados (veja o exemplo sob @code{indices}).
 @defvr {Vari@'avel de op@value{cedilha}@~ao} idummyx
 Valor por omiss@~ao: @code{%}
 
-@'E o prefixo para @'{@dotless{i}}ndices que ocorrem exatamente duas vezes (veja o exemplo sob @'{@dotless{i}}ndices @code{indices}).
+@'E o prefixo para @'{@dotless{i}}ndices que ocorrem exactamente duas vezes (veja o exemplo sob @'{@dotless{i}}ndices @code{indices}).
 
 @end defvr
 
@@ -627,7 +627,7 @@ Valor por omiss@~ao: @code{%}
 Valor por omiss@~ao: @code{1}
 
 Determina o sufixo num@'erico a ser usado na
-gera@value{cedilha}@~ao do pr@'oximo @'{@dotless{i}}ndice que ocorre exatamente duas vezes no pacote tensor.  O prefixo @'e
+gera@value{cedilha}@~ao do pr@'oximo @'{@dotless{i}}ndice que ocorre exactamente duas vezes no pacote tensor.  O prefixo @'e
 determinado atrav@'es da op@value{cedilha}@~ao @code{idummy} (padr@~ao: @code{%}).
 @end defvr
 
@@ -794,7 +794,7 @@ Para detalhes, veja @code{lc_l}.
 
 @deffn {Fun@value{cedilha}@~ao} canten (@var{expr})
 Simplifica @var{expr} por renomea@value{cedilha}@~ao (veja @code{rename})
-e permutando @'{@dotless{i}}ndices que ocorrem exatamente duas vezes. @code{rename} @'e restrito a adi@value{cedilha}@~oes de produto
+e permutando @'{@dotless{i}}ndices que ocorrem exactamente duas vezes. @code{rename} @'e restrito a adi@value{cedilha}@~oes de produto
 de tensores nos quais nenhum @'{@dotless{i}}ndice derivativo estiver presente. Como tal isso @'e limitado
 e pode somente ser usado se @code{canform} n@~ao for capaz de realizar a
 simplifica@value{cedilha}@~ao requerida.
@@ -884,10 +884,10 @@ Remove todas as propriedades de simetria de @var{tensor} que tem @var{m}
 
 @deffn {Fun@value{cedilha}@~ao} canform (@var{expr})
 Simplifica @var{expr} atrav@'es de mudan@value{cedilha}a de nome de @'{@dotless{i}}ndices
-que ocorrem exatamente duas vezes e reordena@value{cedilha}@~ao de todos os @'{@dotless{i}}ndices como ditados pelas condi@value{cedilha}@~oes de simetria
+que ocorrem exactamente duas vezes e reordena@value{cedilha}@~ao de todos os @'{@dotless{i}}ndices como ditados pelas condi@value{cedilha}@~oes de simetria
 impostas sobre eles. Se @code{allsym} for @code{true} ent@~ao todos os @'{@dotless{i}}ndices s@~ao assumidos
 sim@'etricos, de outra forma a informa@value{cedilha}@~ao de simetria fornecida pelas declara@value{cedilha}@~oes
-@code{decsym} ir@~ao ser usadas. Os @'{@dotless{i}}ndices que ocorrem exatamente duas vezes s@~ao renomeados da mesma
+@code{decsym} ir@~ao ser usadas. Os @'{@dotless{i}}ndices que ocorrem exactamente duas vezes s@~ao renomeados da mesma
 maneira que na fun@value{cedilha}@~ao @code{rename}. Quando @code{canform} @'e aplicada a uma express@~ao
 larga o c@'alculo pode tomar um consider@'avel montante de tempo.
 Esse tempo pode ser diminu@'{@dotless{i}}do atrav@'es do uso de @code{rename} sobre a express@~ao em primeiro lugar.
@@ -924,7 +924,7 @@ seja escolhida para @code{true}.
 @code{idiff} pode tamb@'em ser o determinante de um tensor
 m@'etrico. Dessa forma, se @code{imetric} tiver sido associada a @code{G} ent@~ao
 @code{idiff(determinant(g),k)} ir@'a retornar
-@code{2*determinant(g)*ichr2([%i,k],[%i])} onde o @'{@dotless{i}}ndice que ocorre exatamente duas vezes @code{%i}
+@code{2*determinant(g)*ichr2([%i,k],[%i])} onde o @'{@dotless{i}}ndice que ocorre exactamente duas vezes @code{%i}
 @'e escolhido apropriadamente.
 
 
@@ -1211,7 +1211,7 @@ e @code{conmetderiv} juntos para simplificar contra@value{cedilha}@~oes do tenso
 @deffn {Fun@value{cedilha}@~ao} flush1deriv (@var{expr}, @var{tensor})
 
 Escolhe para zero, em @code{expr}, todas as ocorr@^encias de @code{tensor} que possuem
-exatamente um @'{@dotless{i}}ndice derivativo.
+exactamente um @'{@dotless{i}}ndice derivativo.
 
 @end deffn
 
@@ -1274,7 +1274,7 @@ tipo (@code{ichr2}).  A seguinte nota@value{cedilha}@~ao @'e usada:
 @deffn {Fun@value{cedilha}@~ao} covdiff (@var{expr}, @var{v_1}, @var{v_2}, ...)
 Retorna a derivada da covariante de @var{expr} com
 rela@value{cedilha}@~ao @`as vari@'aveis @var{v_i} em termos de s@'{@dotless{i}}mbolos de Christoffel de
-segundo tipo (@code{ichr2}).  Com o objetivo de avaliar esses, se pode usar
+segundo tipo (@code{ichr2}).  Com o objectivo de avaliar esses, se pode usar
 @code{ev(@var{expr},ichr2)}.
 
 @example
@@ -2020,7 +2020,7 @@ essa tarefa @'e @code{ic_convert}.
 @deffn {Fun@value{cedilha}@~ao} ic_convert (@var{eqn})
 
 Converte a equa@value{cedilha}@~ao @var{eqn} na sintaxe @code{itensor} para uma declara@value{cedilha}@~ao de atribui@value{cedilha}@~ao @code{ctensor}.
-Adi@value{cedilha}@~oes impl@'{@dotless{i}}citas sobre @'{@dotless{i}}ndices que ocorrem exatamente duas vezes s@~ao tornadas expl@'{@dotless{i}}citas enquanto objectos
+Adi@value{cedilha}@~oes impl@'{@dotless{i}}citas sobre @'{@dotless{i}}ndices que ocorrem exactamente duas vezes s@~ao tornadas expl@'{@dotless{i}}citas enquanto objectos
 indexados s@~ao transformados em arrays (os arrays subscritos est@~ao na
 ordem de covari@^ancia seguidos de @'{@dotless{i}}ndices contravariantes dos objectos
 indexados). A derivada de um objecto indexado ser@'a substitu@'{@dotless{i}}da pela

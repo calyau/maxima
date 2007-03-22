@@ -109,7 +109,7 @@ Dados podem ser introduzidos manualmente, mas grandes amostras s@~ao usualmente 
       3 ...
 @end example
 
-Com o objetivo de chamar esses d@'{@dotless{i}}gitos no Maxima,
+Com o objectivo de chamar esses d@'{@dotless{i}}gitos no Maxima,
 
 @c ===beg===
 @c load (numericalio)$

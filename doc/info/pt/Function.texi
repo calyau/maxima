@@ -107,7 +107,7 @@ Usando apenas @code{block ([x], ...} faremos com que o @code{x} ter a si mesmo
 como valor, apenas como tivesse voc@^e entrar numa breve sess@~ao
 @b{Maxima}.
 
-Os atuais argumentos para uma fun@value{cedilha}@~ao s@~ao tratados exatamente da mesma que
+Os atuais argumentos para uma fun@value{cedilha}@~ao s@~ao tratados exactamente da mesma que
 as vari@'aveis em um bloco.  Dessa forma em
 
 @example
@@ -147,7 +147,7 @@ O comando @code{arraymake} contr@'oi uma chamada de fun@value{cedilha}@~ao de ar
 an@'alogamente a @code{funmake} para fun@value{cedilha}@~oes comuns.
 O comando @code{arrayapply} aplica uma fun@value{cedilha}@~ao de array a seus argmentos,
 an@'alogamente a @code{apply} para fun@value{cedilha}@~oes comuns.
-N@~ao existe nada exatamente an@'alogo a @code{map} para fun@value{cedilha}@~oes de array,
+N@~ao existe nada exactamente an@'alogo a @code{map} para fun@value{cedilha}@~oes de array,
 embora @code{map(lambda([@var{x}], @var{a}[@var{x}]), @var{L})} ou
 @code{makelist(@var{a}[@var{x}], @var{x}, @var{L})}, onde @var{L} @'e uma lista,
 n@~ao estejam t@~ao longe disso.
@@ -1569,7 +1569,7 @@ Tipicamente as fun@value{cedilha}@~oes traduzidas executam mais r@'apido que as 
 @code{translate (all)} ou @code{translate (fun@value{cedilha}@~oes)} traduz todas as fun@value{cedilha}@~oes definidas pelo utilizador.
 
 Fun@value{cedilha}@~oes a serem traduzidas incluir~ao uma chamada para @code{mode_declare} no
-in@'{@dotless{i}}cio quando poss@'{@dotless{i}}vel com o objetivo de produzir um c@'odigo mais eficiente.  Por
+in@'{@dotless{i}}cio quando poss@'{@dotless{i}}vel com o objectivo de produzir um c@'odigo mais eficiente.  Por
 exemplo:
 
 @example

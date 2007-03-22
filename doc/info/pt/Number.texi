@@ -31,7 +31,7 @@ Veja tamb@'em @code{burn}.
 @end deffn
 
 @deffn {Fun@value{cedilha}@~ao} bernpoly (@var{x}, @var{n})
-Retorna o @var{n}'@'esimo polin@^omio de Bernoulli na
+Retorna o @var{n}'@'esimo polin@'omio de Bernoulli na
 vari@'avel @var{x}.
 
 @end deffn
@@ -65,7 +65,7 @@ O coeficiente binomial @code{@var{x}!/(@var{y}! (@var{x} - @var{y})!)}.
 Se @var{x} e @var{y} forem inteiros, ent@~ao o valor num@'erico do coeficiente
 binomial @'e calculado.
 Se @var{y}, ou @var{x - y}, for um inteiro,
-o the coeficiente binomial @'e expresso como um polin@^omio.
+o the coeficiente binomial @'e expresso como um polin@'omio.
 
 Exemplos:
 
@@ -427,7 +427,7 @@ Os argumentos podem ser express@~oes gerais tamb@'em inteiras.
 @deffn {Fun@value{cedilha}@~ao} minfactorial (@var{expr})
 Examina @var{expr} procurando por ocorr@^encias de dois factoriais
 que diferem por um inteiro.  
-@code{minfactorial} ent@~ao converte um em um polin@^omio vezes o outro.
+@code{minfactorial} ent@~ao converte um em um polin@'omio vezes o outro.
 
 @c I CAN'T TELL WHAT THIS IS SUPPOSED TO MEAN. !!!
 @c minfactorial DOESN'T SEEM TO DO ANYTHING binomial DOESN'T DO BY ITSELF !!!

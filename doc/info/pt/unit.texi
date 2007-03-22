@@ -21,7 +21,7 @@ gerenciar a convers@~ao e tamb@'em uma variedade de op@value{cedilha}@~oes de si
 convers@~ao autom@'atica, @emph{units} tamb@'em fornede um manual tradicional 
 de op@value{cedilha}@~oes de convers@~ao.  
 
-Nota -quando convers@~oes de unidade forem n@~ao exatas Maxima ir@'a fazer aproxima@value{cedilha}@~oes resultando 
+Nota -quando convers@~oes de unidade forem n@~ao exactas Maxima ir@'a fazer aproxima@value{cedilha}@~oes resultando 
 em fra@value{cedilha}@~oes. Esso @'e uma concequ@^encia das t@'ecnicas usadas para simplificar unidades.
 A mensagem de alerta desse tipo de substitui@value{cedilha}@~ao est@'a desabilitada por padr@~ao no
 caso de inidades (normalmente essas mensagens est@~ao habilitadas) uma vez que essa situa@value{cedilha}@~ao de iemiss@~ao de mensagens de alerta ocorre frequ@^entemente
@@ -227,7 +227,7 @@ Veja tamb@'em @code{setunits}. To use this function write first @code{load("unit
 Quando do restabelecimento dos valores padr@~ao o ambiente global @'e destru@'{@dotless{i}}do, existe o comando
 @code{convert}, que permite convers@~oes imediatas.  @code{convert} pode aceitar  um argumetno
 simples ou uma lista de unidades a serem usadas na convers@~ao.  Quando uma opera@value{cedilha}@~ao de convers@~ao for
-conclu@'{@dotless{i}}da, o sistema normal de avalia@value{cedilha}@~ao global @'e contornado, com o objetivo de evitar que
+conclu@'{@dotless{i}}da, o sistema normal de avalia@value{cedilha}@~ao global @'e contornado, com o objectivo de evitar que
 o resultado desejado seja convertido novamente.  Como consequ@^encia, em c@'alculos aproximados
 alertas de "rat" ir@~ao ser vis@'{@dotless{i}}veis se o ambiente global que controla esse comportamento
 (@code{ratprint}) for @code{true}.  @code{convert} tamb@'em @'e @'util para uma verifica@value{cedilha}@~ao pontual e imediata da

@@ -137,7 +137,7 @@ Para usar essa fun@value{cedilha}@~ao escreva primeiramente @code{load("diag")}.
 
 
 @deffn {Fun@value{cedilha}@~ao} minimalPoly (@var{l})
-Retorna o menor polin@^omio associado @`a codifica@value{cedilha}@~ao fornecida pela lista do Maxima @var{l}, que @'e a sa@'{@dotless{i}}da fornecida pela fun@value{cedilha}@~ao @code{jordan}.
+Retorna o menor polin@'omio associado @`a codifica@value{cedilha}@~ao fornecida pela lista do Maxima @var{l}, que @'e a sa@'{@dotless{i}}da fornecida pela fun@value{cedilha}@~ao @code{jordan}.
 
 Exemplo:
 @example

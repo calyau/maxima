@@ -207,7 +207,7 @@ Desnhoo de uma estrela: ligam-se oito pontos sobre de uma circunfer@^encia.
 @end ifnotinfo
 
 @item
-Gr@'afico de um polin@^omio c@'ubico, obtido com a forma normal de
+Gr@'afico de um polin@'omio c@'ubico, obtido com a forma normal de
 plot2d, e de um c@'{@dotless{i}}rculo definido na forma param@'etrica.
 @example
 (%i3) plot2d ([x^3 + 2, [parametric, cos(t), sin(t), [t, -5, 5],

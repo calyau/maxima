@@ -71,7 +71,7 @@ Esses s@~ao pesos usados em c@'alculos @code{nc_degree}.
 @end deffn
 
 @deffn {Fun@value{cedilha}@~ao} nc_degree (@var{p})
-Retorna o grau de um polin@^omio n@~ao comutativo @var{p}.  Veja @code{declare_weights}.
+Retorna o grau de um polin@'omio n@~ao comutativo @var{p}.  Veja @code{declare_weights}.
 
 @end deffn
 
@@ -83,7 +83,7 @@ se e somente se @var{f} for uma combina@value{cedilha}@~ao polinomial dos elemen
 @end deffn
 
 @deffn {Fun@value{cedilha}@~ao} fast_central_elements ([@var{x_1}, ..., @var{x_n}], @var{n})
-Se @code{set_up_dot_simplifications} tiver sido feito previamente, ache o polin@^omio central
+Se @code{set_up_dot_simplifications} tiver sido feito previamente, ache o polin@'omio central
 nas vari@'aveis @var{x_1}, ..., @var{x_n} no grau dado, @var{n}.
 
 Por exemplo:
@@ -123,7 +123,7 @@ Calcula a s@'erie de Hilbert atrav@'es do grau @var{n} para a algebra corrente.
 
 @deffn {Fun@value{cedilha}@~ao} extract_linear_equations ([@var{p_1}, ..., @var{p_n}], [@var{m_1}, ..., @var{m_n}])
 
-Faz uma lista dos coeficientes dos polin@^omios n@~ao comutativos @var{p_1}, ..., @var{p_n}
+Faz uma lista dos coeficientes dos polin@'omios n@~ao comutativos @var{p_1}, ..., @var{p_n}
 dos monomios n@~ao comutatvos @var{m_1}, ..., @var{m_n}.
 Os coeficientes podem ser escalares.   Use @code{list_nc_monomials} para construir a lista dos
 mon@^omios.
@@ -133,8 +133,8 @@ mon@^omios.
 @deffn {Fun@value{cedilha}@~ao} list_nc_monomials ([@var{p_1}, ..., @var{p_n}])
 @deffnx {Fun@value{cedilha}@~ao} list_nc_monomials (@var{p})
 
-Retorna uma lista de mon@^omios n@~ao comutativos que ocorrem em um polin@^omio @var{p}
-ou em uma lista de polin@^omios @var{p_1}, ..., @var{p_n}.
+Retorna uma lista de mon@^omios n@~ao comutativos que ocorrem em um polin@'omio @var{p}
+ou em uma lista de polin@'omios @var{p_1}, ..., @var{p_n}.
 
 @end deffn
 

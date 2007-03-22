@@ -148,7 +148,7 @@ ent@~ao @code{a + b} @'e tamb@'em positivo.
 
 Todavia, n@~ao existe caminho para desviar todos os questionamentos de @code{asksign}.
 Particularmente, quando o argumento de @code{asksign} for uma
-diferen@value{cedilha}a @code{@var{x} - @var{y}} ou um logar@'{@dotless{i}}tmo @code{log(@var{x})},
+diferen@value{cedilha}a @code{@var{x} - @var{y}} ou um logaritmo @code{log(@var{x})},
 @code{asksign} sempre solicita uma entrada ao utilizador,
 mesmo quando @code{assume_pos} for @code{true} e @code{assume_pos_pred} for
 uma fun@value{cedilha}@~ao que retorna @code{true} para todos os argumentos.

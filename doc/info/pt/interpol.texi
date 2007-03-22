@@ -149,7 +149,7 @@ Examples:
 
 @deffn {Fun@value{cedilha}@~ao} cspline (@var{pontos})
 @deffnx {Fun@value{cedilha}@~ao} cspline (@var{pontos}, @var{op@value{cedilha}@~ao1}, @var{op@value{cedilha}@~ao2}, ...)
-Calcula a interpola@value{cedilha}@~ao polnomial pelo m@'etodo de splines ( polin@^omios de ordem k que interpolam os dados e t@^em k-1 derivadas cont@'{@dotless{i}}nuas em todo o intervalo ) c@'ubicos. O argumento @var{pontos} deve ser um dos
+Calcula a interpola@value{cedilha}@~ao polnomial pelo m@'etodo de splines ( polin@'omios de ordem k que interpolam os dados e t@^em k-1 derivadas cont@'{@dotless{i}}nuas em todo o intervalo ) c@'ubicos. O argumento @var{pontos} deve ser um dos
 seguintes:
 
 @itemize @bullet

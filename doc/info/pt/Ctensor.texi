@@ -850,7 +850,7 @@ for escolhida para @code{true}, os valores de @code{nmc} s@~ao subtra@'{@dotless
 coeficientes de conec@value{cedilha}@~ao indexados mistos.
 
 Se necess@'ario, @code{christof} chama as fun@value{cedilha}@~oes @code{contortion} e
-@code{nonmetricity} com o objetivo de calcular @code{kt} e @code{nm}.
+@code{nonmetricity} com o objectivo de calcular @code{kt} e @code{nm}.
 
 @deffn {Fun@value{cedilha}@~ao} contortion (@var{tr})
 
@@ -1598,7 +1598,7 @@ n@~ao devem ser redefinidos:
 @subsection Modifica@value{cedilha}@~oes
 
 Em Novembro de 2004, o pacote @code{ctensor} foi extensivamente reescrito.
-Muitas fun@value{cedilha}@~oes e vari@'aveis foram renomeadas com o objetivo de tornar o
+Muitas fun@value{cedilha}@~oes e vari@'aveis foram renomeadas com o objectivo de tornar o
 pacote com a vers@~ao comercial do Macsyma.
 
 

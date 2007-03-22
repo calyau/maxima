@@ -58,7 +58,7 @@ s@'{@dotless{i}}mbolo /T/ segue o r@'otulo de linha que cont@'em as tais express
 @defvr {Vari@'avel de op@value{cedilha}@~ao} algebraic
 Valor Padr@~ao: @code{false}
 
-@code{algebraic} deve ser escolhida para @code{true} com o objetivo de que a
+@code{algebraic} deve ser escolhida para @code{true} com o objectivo de que a
 simplifica@value{cedilha}@~ao de inteiros alg@'ebricos tenha efeito.
 
 @end defvr
@@ -108,7 +108,7 @@ Retorna o coeficiente de @code{@var{x}^@var{n}} em @var{expr}.  @var{n} pode ser
 omitido se for 1.  @var{x} pode ser um @'atomo, ou subexpress@~ao completa de
 @var{expr} e.g., @code{sin(x)}, @code{a[i+1]}, @code{x + y}, etc. (No @'ultimo caso a
 express@~ao @code{(x + y)} pode ocorrer em @var{expr}).  Algumas vezes isso pode ser necess@'ario
-para expandir ou factorar @var{expr} com o objetivo de fazer @code{@var{x}^@var{n}} explicito.  Isso n@~ao @'e
+para expandir ou factorar @var{expr} com o objectivo de fazer @code{@var{x}^@var{n}} explicito.  Isso n@~ao @'e
 realizado por @code{coeff}.
 
 Exemplos:
@@ -269,7 +269,7 @@ importantes (usando a ordena@value{cedilha}@~ao de vari@'avel assumida pela form
 essas na lista @code{dontfactor}.
 
 @code{savefactors} se @code{true} faz com que os factores de uma express@~ao que
-@'e um produto de factores seja guardada por certas fun@value{cedilha}@~oes com o objetivo de
+@'e um produto de factores seja guardada por certas fun@value{cedilha}@~oes com o objectivo de
 aumentar a velocidade de futuras factora@value{cedilha}@~oes de express@~oes contendo alguns dos
 mesmos factores.
 
@@ -827,7 +827,7 @@ tal que @code{@var{a} @var{p} + @var{k}} seja igual a @var{n} para algum inteiro
 @c "... in order to get correct results" -- WHAT DO YOU GET IF YOU DON'T RE-RAT ??
 Se @var{expr} j@'a estiver na forma de express@~ao racional can@^onica (CRE) quando @code{modulus} for colocado em seu valor original,
 ent@~ao voc@^e pode precisar repetir o rat @var{expr}, e.g., @code{expr: rat (ratdisrep (expr))},
-com o objetivo de pegar resultados corretos.
+com o objectivo de pegar resultados corretos.
 
 Tipicamente @code{modulus} @'e escolhido para um n@'umero primo.
 Se @code{modulus} for escolhido para um inteiro n@~ao primo positivo,
@@ -1587,7 +1587,7 @@ Valor Padr@~ao: @code{false}
 @c "certain functions" -- WHICH ONES ??
 Quando @code{savefactors} for @code{true}, faz com que os factores de uma
 express@~ao que @'e um produto de factores sejam gravados por certas
-fun@value{cedilha}@~oes com o objetivo de aumentar a velocidade em posteriores factora@value{cedilha}@~oes de express@~oes
+fun@value{cedilha}@~oes com o objectivo de aumentar a velocidade em posteriores factora@value{cedilha}@~oes de express@~oes
 contendo algum desses mesmos factores.
 
 @end defvr
@@ -1627,7 +1627,7 @@ racionais.
 
 @code{tellrat ()} retorna uma lista das substitui@value{cedilha}@~oes correntes.
 
-@code{algebraic} deve ser escolhida para @code{true} com o objetivo de que a simplifica@value{cedilha}@~ao de
+@code{algebraic} deve ser escolhida para @code{true} com o objectivo de que a simplifica@value{cedilha}@~ao de
 inteiros alg@'ebricos tenha efeito.
 
 Maxima inicialmente sabe sobre a unidade imagin@'aria @code{%i}
