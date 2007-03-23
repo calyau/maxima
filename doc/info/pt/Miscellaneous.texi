@@ -43,7 +43,7 @@ das fun@value{cedilha}@~oes @code{alias}, @code{ordergreat}, @code{orderless} ou
 A express@~ao @code{declare(@var{s}, alphabetic)} diz ao Maxima para reconhecer
 como alfab@'etico todos os caracteres em @var{s}, que deve ser uma sequ@^encia de caracteres.
  
-Veja tamb@'em @ref{Identificadores}.
+Veja tamb@'em @emph{Identificadores}.
 
 Exemplo:
 

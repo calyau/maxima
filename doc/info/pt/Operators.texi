@@ -2198,7 +2198,7 @@ com efeito, @code{symbolp(x)} @'e equivalente ao predicado @code{atom(x) and not
 
 @c FOLLOWING REALLY WANTS TO BE @xref{Identiifers} BUT THAT
 @c LEAVES THE UNPLEASANT RESIDUE *Note ...:: IN THE OUTPUT OF describe
-Veja tamb@'em @ref{Identificadores}
+Veja tamb@'em @emph{Identificadores}
 
 @end deffn
 

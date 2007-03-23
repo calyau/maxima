@@ -170,11 +170,11 @@ Os caracteres alfab@'eticos v@~ao inicialmente
 de @code{A} a @code{Z}, de @code{a} a @code{z}, @code{%}, e @code{_}.
 
 Maxima @'e sens@'{@dotless{i}}vel @`a caixa . Os identificadores @code{algumacoisa}, @code{ALGUMACOISA}, e @code{Algumacoisa} s@~ao distintos.
-Veja @ref{Lisp e Maxima} para mais sobre esse ponto.
+Veja @emph{Lisp e Maxima} para mais sobre esse ponto.
 
 Um identificador Maxima @'e um s@'{@dotless{i}}mbolo Lisp que come@value{cedilha}a com um sinal de d@'olar @code{$}.
 Qualquer outro s@'{@dotless{i}}mbolo Lisp @'e precedido por um ponto de interroga@value{cedilha}@~ao @code{?} quando aparecer no Maxima.
-Veja @ref{Lisp e Maxima} para maiores detalhes sobre esse ponto.
+Veja @emph{Lisp e Maxima} para maiores detalhes sobre esse ponto.
 
 Exemplos:
 
@@ -368,7 +368,7 @@ esquerdo e direito podem ser diferentes, associa@value{cedilha}@~ao de expoentes
 Alguma das fun@value{cedilha}@~oes de defini@value{cedilha}@~ao de opera@value{cedilha}@~oes tomam argumentos adicionais;
 veja as descri@value{cedilha}@~oes de fun@value{cedilha}@~ao para maiores detalhes.
 
-@c MAKE ANCHORS FOR ALL 6 FUNCTIONS AND CHANGE @code TO @ref ACCORDINGLY
+@c MAKE ANCHORS FOR ALL 6 FUNCTIONS AND CHANGE @code TO @emph ACCORDINGLY
 @table @code
 @item prefixado
 ead=180

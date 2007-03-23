@@ -312,7 +312,7 @@ e @code{?? foo} @'e equivalente a @code{describe("foo", inexact)}.
 @code{describe} n@~ao avalia seu argumento.
 @code{describe} retorna @code{true} se alguma documenta@value{cedilha}@~ao for encontrada, de outra forma retorna @code{false}.
 
-Veja tamb@'em @ref{Documenta@value{cedilha}@~ao}.
+Veja tamb@'em @emph{Documenta@value{cedilha}@~ao}.
 
 Exemplo:
 

@@ -247,7 +247,7 @@ A integral el@'{@dotless{i}}ptica incompleta de primeiro tipo, definida como
 $$\int_0^\phi {{d\theta}\over{\sqrt{1 - m\sin^2\theta}}}$$
 @end tex
 
-Veja tamb@'em @ref{elliptic_e} e @ref{elliptic_kc}.
+Veja tamb@'em @emph{elliptic_e} e @emph{elliptic_kc}.
 
 @end deffn
 
@@ -264,7 +264,7 @@ A integral el@'{@dotless{i}}ptica incompleta de segundo tipo, definida como
 @tex
 $$\int_0^\phi \sqrt{1 - m\sin^2\theta} d\theta$$
 @end tex
-Veja tamb@'em @ref{elliptic_e} e @ref{elliptic_ec}.
+Veja tamb@'em @emph{elliptic_e} e @emph{elliptic_ec}.
 
 @end deffn
 
@@ -297,7 +297,7 @@ $$E(u,m) = E(\phi, m)$$
 
 onde $\phi = \sin^{-1} {\rm sn}(u, m)$
 @end tex
-Veja tamb@'em @ref{elliptic_e}.
+Veja tamb@'em @emph{elliptic_e}.
 @end deffn
 
 @deffn {Fun@,{c}@~ao} elliptic_pi (@var{n}, @var{phi}, @var{m})

@@ -297,7 +297,7 @@ Veja tamb@'em @code{%}.
 Como prefixo para uma fun@,{c}@~ao ou nome de vari@'avel, @code{?} significa que
 o nome @'e um nome Lisp, n@~ao um nome Maxima.
 Por exemplo, @code{?round} significa a fun@,{c}@~ao Lisp @code{ROUND}.
-Veja @ref{Lisp e Maxima} para mais sobre esse ponto.
+Veja @emph{Lisp e Maxima} para mais sobre esse ponto.
 
 A nota@,{c}@~ao @code{? palavra} (um ponto de interroga@,{c}@~ao seguido de uma palavra e separado desta por um espa@,{c}o em branco)
 @'e equivalente a @code{describe("palavra")}.
