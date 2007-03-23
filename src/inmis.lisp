@@ -35,7 +35,7 @@
 (defmfun $listofvars (e) 
   (let ((listofvars (ncons '(mlist))))
     (when ($ratp e)
-      (and (memq 'trunc (cddar e)) (setq e ($taytorat e)))
+      (and (member 'trunc (cddar e) :test #'eq) (setq e ($taytorat e)))
       (setq e (cons '(mlist)
 		    (sublis (mapcar #'cons
 				    (car (cdddar e))
@@ -47,7 +47,8 @@
     (atomvars e)
     (if (not $listdummyvars)
 	(dolist (u (cdr listofvars))
-	  (if (freeof u e) (zl-delete u listofvars 1))))
+	  (if (freeof u e)
+	      (setq listofvars (delete u listofvars :count 1 :test #'equal)))))
     listofvars))
 
 (defun atomvars (e) 
@@ -55,7 +56,7 @@
 	 (add2lnc e listofvars))
 	((atom e))
 	((specrepp e) (atomvars (specdisrep e)))
-	((memq 'array (car e)) (myadd2lnc e listofvars))
+	((member 'array (car e) :test #'eq) (myadd2lnc e listofvars))
 	(t (mapc #'atomvars (margs e))))) 
 
 (defun myadd2lnc (item list) 

@@ -9,6 +9,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :maxima)
+
 (macsyma-module mhayat macro)
 
 ;;;   **************************************************************
@@ -48,7 +49,6 @@
 ;;; increasing degree.
 
 (declare-top (special tlist ivars key-vars last-exp))
-
 
 ;; subtitle hayat macros
 
@@ -186,7 +186,8 @@
 
 (defmacro switches (datum) `(cadddr ,datum))
 
-(defmacro switch (sw datum) `(cdr (assq ,sw (switches ,datum))))
+(defmacro switch (sw datum)
+  `(cdr (assoc ,sw (switches ,datum) :test #'eq)))
 
 (defmacro int-var (datum) `(cddddr ,datum))
 
@@ -196,23 +197,29 @@
 
 (defmacro data-gvar (data) `(car (data-gvar-o ,data)))
 
-(defmacro get-inverse (gensym) `(cdr (assq ,gensym ivars)))
+(defmacro get-inverse (gensym)
+  `(cdr (assoc ,gensym ivars :test #'eq)))
 
-(defmacro gvar->kvar (gvar) `(cdr (assq ,gvar ivars)))
+(defmacro gvar->kvar (gvar)
+  `(cdr (assoc ,gvar ivars :test #'eq)))
 
-(defmacro get-key-var (gensym) `(cdr (assq ,gensym key-vars)))
+(defmacro get-key-var (gensym)
+  `(cdr (assoc ,gensym key-vars :test #'eq)))
 
-(defmacro gvar->var (gvar) `(cdr (assq ,gvar key-vars)))
+(defmacro gvar->var (gvar)
+  `(cdr (assoc ,gvar key-vars :test #'eq)))
 
 (defmacro dummy-var () '(cdar key-vars))
 
 (defmacro first-datum () '(car tlist))
 
 (defmacro get-datum (expr &optional not-canonicalized?)
-  (if not-canonicalized? `(assol ,expr tlist)
-      `(zl-assoc ,expr tlist)))
+  (if not-canonicalized?
+      `(assol ,expr tlist)
+      `(assoc ,expr tlist :test #'equal)))
 
-(defmacro var-data (var) `(zl-assoc ,var tlist))
+(defmacro var-data (var)
+  `(assoc ,var tlist :test #'equal))
 
 (defmacro gvar-data (gvar) `(var-data (gvar->var ,gvar)))
 

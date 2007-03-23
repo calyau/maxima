@@ -12,54 +12,14 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :maxima)
-;;; This file handles System FSUBR translation properties that
-;;; were not handled in TRANSL. 
+
+;;; This file handles System FSUBR translation properties that were not handled in TRANSL. 
 
 (macsyma-module trans1)
 
-
 (transl-module trans1)
 
-;; Also defined in TRANSL;TRANSS
-#-cl (defvar $tr_windy t)
-
-
 ;;;;;;;; THE FOLLOWING ARE MOSTLY FROM JPG MLISP ;;;;;;;;;;;;;;;;;;;;;
-;;;
-;;; MMAPEV DOES error checking and a macar of MEVAL down the arguments.
-;;; The second arg to MMAPEV is purely for printing of error messages
-;;; except for SCANMAP, which is obscure.
-
-;;(comment
-
-;;(DEFMFUN MMAPEV (MAPFUN L) 
-;;	 (IF (< (LENGTH L) 2)
-;;	     (MERROR "~:M called with fewer than 2 args" MAPFUN))
-;;	 (LET ((U (GETOPR (MEVAL (CAR L)))))
-;;	      (AUTOLDCHK U)
-;;	      (BADFUNCHK (CAR L) U NIL)
-;;	      (IF (ATOM U)
-;;		  ;; number of argument checking before mapping,
-;;		  ;; some efficiency gain, really, how minor.
-;;		  ;; he should instead do some trampolining and
-;;		  ;; get some real efficiency gains.
-;;		  (MARGCHK U (COND ((EQ MAPFUN '$SCANMAP)
-;;				    (NCONS (CADR L)))
-;;				   (T (CDR L)))))
-;;	      (CONS U (MAPCAR 'MEVAL (CDR L)))))
-;;)
-
-;;(comment
-;; (DEFMFUN $APPLY FEXPR (L)
-;; (TWO-ARG-CHECK L)
-;; ((LAMBDA (FUN ARG)
-;;   (COND ((NOT ($LISTP ARG))
-;;	  (DISPLA FUN) (DISPLA ARG) (MERROR "Second arg to `apply' must be a list")))
-;;   (AUTOLDCHK (SETQ FUN (GETOPR FUN)))
-;;   (COND ((EQ (GET FUN 'DIMENSION) 'DIMENSION-INFIX) (TWOARGCHK ARG FUN)))
-;;   (MAPPLY FUN (CDR ARG) (CAR L)))
-;;  (MEVAL (CAR L)) (MEVAL (CADR L))))
-;;)
 
 ;;; APPLY(F,[X]) is an idiom for funcall.
 
@@ -86,19 +46,9 @@
 	     (call-and-simp mode 'mapply-tr
 			    `(,fun ,arg)))))))
 
-;;; (DEFMFUN $MAP FEXPR (L) (APPLY 'MAP1 (MMAPEV 'MAP L)))
-
 (def%tr $map (form)
   (destructuring-let (((fun . args) (tr-args (cdr form))))
     (call-and-simp '$any 'map1 `((getopr ,fun) . ,args))))
-
-;;; (DEFMFUN $MAPLIST FEXPR (L) 
-;;;  ((LAMBDA (MAPLP RES)
-;;;   (SETQ RES (APPLY 'MAP1 (MMAPEV 'MAPLIST L)))
-;;;   (COND ((ATOM RES) (LIST '(MLIST) RES))
-;;;	 ((EQ (CAAR RES) 'MLIST) RES)
-;;;	 (T (CONS '(MLIST) (CDR RES)))))
-;;;    T NIL))
 
 (def%tr $maplist (form)
   (destructuring-let (((fun . args) (tr-args (cdr form))))
@@ -107,15 +57,9 @@
     (push-autoload-def 'marrayref '(maplist_tr))
     `($any . (maplist_tr ,fun ,@args))))
 
-;;; (DEFMFUN $FULLMAP FEXPR (L)
-;;;        (SETQ L (MMAPEV 'FULLMAP L)) (FMAP1 (CAR L) (CDR L) NIL))
-
 (def%tr $fullmap (form)
   (destructuring-let (((fun . args) (tr-args (cdr form))))
     (call-and-simp '$any 'fmap1 `((getopr ,fun) (list . ,args) nil))))
-
-;;; (DEFMFUN $MATRIXMAP FEXPR (L)
-;;;        ((LAMBDA (FMAPLVL) (APPLY 'FMAPL1 (MMAPEV 'MATRIXMAP L))) 2))
 
 (def%tr $matrixmap (form)
   (destructuring-let (((fun . args) (tr-args (cdr form))))
@@ -123,14 +67,9 @@
 			   (fmapl1 (getopr ,fun) . ,args))
 		   '(2))))
 		       
-;;; (DEFMFUN $FULLMAPL FEXPR (L) (APPLY 'FMAPL1 (MMAPEV 'FULLMAPL L)))
-
 (def%tr $fullmapl (form)
   (destructuring-let (((fun . args) (tr-args (cdr form))))
     (call-and-simp '$any 'fmapl1 `((getopr ,fun) . ,args))))
-
-;;;(DEFMFUN $OUTERMAP FEXPR (L)
-;;; (APPLY (COND ((= (LENGTH L) 2) 'FMAPL1) (T 'OUTERMAP1)) (MMAPEV 'OUTERMAP L)))
 
 (def%tr $outermap (form)
   (destructuring-let (((fun . args) (tr-args (cdr form))))
@@ -139,9 +78,6 @@
 		   `((getopr ,fun)  ,@args))))
 
 
-;;;(DEFMFUN $SCANMAP FEXPR (L)
-;;; (LET ((SCANMAPP T)) (SSIMPLIFYA (APPLY 'SCANMAP1 (MMAPEV '$SCANMAP L)))))
-
 (def%tr $scanmap (form)
   (push-autoload-def '$scanmap '(scanmap1))
   ;; there's something more fundamental about the above than
@@ -149,30 +85,11 @@
   (destructuring-let (((fun . args) (tr-args (cdr form))))
     (call-and-simp '$any 'scanmap1 `((getopr ,fun) ,@args))))
 
-;;;(DEFMFUN $QPUT FEXPR (L)
-;;; (COND ((NOT (= (LENGTH L) 3)) (ERLIST '|Wrong number of args to QPUT|)))
-;;; ($PUT (CAR L) (CADR L) (CADDR L)))
-
 (def%tr $qput (form)
   `($any $put ',(cadr form) ',(caddr form) ',(cadddr form)))
 
-;;;(DEFMFUN $SUBVAR FEXPR (L)
-;;; (COND ((NULL L) (ERLIST "Wrong number of args to `subvar'")))
-;;; (MEVAL (CONS '(MQAPPLY ARRAY) L)))
-
 (def%tr $subvar (form)
   (translate (cons '(mqapply array) (cdr form))))
-
-;;; From JPG;COMM >
-;;;(DEFMFUN $PART N (PART1 (LISTIFY N) NIL NIL $INFLAG))
-;;;
-;;;(DEFMFUN $INPART N (PART1 (LISTIFY N) NIL NIL T))
-;;;
-;;;(DEFMFUN $SUBSTPART FEXPR (L) (PART1 L T NIL $INFLAG))
-;;;
-;;;(DEFMFUN $SUBSTINPART FEXPR (L) (PART1 L T NIL T))
-;;;
-;;;(DEFUN PART1 (ARGLIST SUBSTFLAG DISPFLAG INFLAG) ....)
 
 ;;; If the evaluation of the first argument does not depend on the
 ;;; setting of the special variable PIECE, then it need not be 
@@ -207,7 +124,7 @@
   (let* ((subst-item (dtranslate (cadr form)))
 	 (freevars (free-lisp-vars subst-item))
 	 (argl (tr-args (cddr form))))
-    (cond ((null (assq '$piece freevars))
+    (cond ((null (assoc '$piece freevars :test #'eq))
 					; this code is just to screw the people who
 					; would use $PIECE non lexicaly. Not really, the
 					; closure hacking is a lot slower at run time than
@@ -224,23 +141,10 @@
 	   (side-effect-free-check (cadr freevars) (cadr form))
 	   `($any . (simplify
 		     (part1 (list (fungen&env-for-meval
-				   ,(zl-delete '$piece (car freevars))
+				   ,(delete '$piece (car freevars) :test #'equal)
 				   ($piece) ,subst-item)
 				  ,@(for-eval-then-mquote-simp-argl argl))
 		      ,flag1 ,flag2 ,flag3)))))))
-
-
-
-;;; From JPG;SUPRV >
-;;(comment
-;;(DEFMFUN $ERRCATCH FEXPR (X)
-;;       ((LAMBDA (ERRCATCH RET)
-;;		(COND ((NULL (SETQ RET
-;;				   (ERRSET (APPLY 'MPROGN X)
-;;					   LISPERRPRINT)))
-;;		       (ERRLFUN1 ERRCATCH)))
-;;		(CONS '(MLIST) RET))
-;;	(CONS BINDLIST LOCLIST) NIL)))
 
 ;;; This is could be done better on the LISPM
 
@@ -260,13 +164,6 @@
 		   (cons bindlist loclist) nil)))
 
 
-;;(COMMENT 
-;; (DEFMFUN $CATCH FEXPR (X)
-;;	((LAMBDA (MCATCH)
-;;		 (PROG2 NIL (CATCH 'MCATCH (APPLY 'MPROGN X))
-;;			(ERRLFUN1 MCATCH)))
-;;  (CONS BINDLIST LOCLIST))))
-
 ;;; The MODE of a CATCH could either be the MODE of the last of the PROGN
 ;;; or the mode of the THROW. The THROW may be hard to find, so this goes
 ;;; on the assumption that the mode of the PROGN is enough to tell.
@@ -280,10 +177,6 @@
 			    'mcatch ,body)
 		      (errlfun1 mcatch)))
 		  (cons bindlist loclist)))))))
-;;(COMMENT
-;; (DEFMFUN $THROW (X)
-;; (COND ((NULL MCATCH) (DISPLA X) (ERLIST '|THROW not within CATCH|)))
-;; (THROW 'MCATCH X)))
 
 (def%tr $throw (form)
   (destructuring-let (((mode . exp) (translate (cadr form))))
@@ -303,54 +196,50 @@
   (setq form (cdr form))
   (cond ((= (length form) 3)
 	 (destructuring-let (((exp x llist) form)
-			      (sum (tr-gensym))
-			      (lil (tr-gensym)))
-	   `($any . (do ((,lil (cdr ,(dtranslate llist)) (cdr ,lil))
-			 (,sum nil)
-			 (,x))
-			((null ,lil)
-			 `((mlist) ,@(nreverse ,sum)))
-		      (setq ,x (car ,lil)
-			    ,sum (cons ,(cdr (tr-local-exp exp
-							   x
-							   (value-mode x)))
-				       ,sum))))))
+			     (sum (tr-gensym))
+			     (lil (tr-gensym)))
+			    `($any . (do ((,lil (cdr ,(dtranslate llist)) (cdr ,lil))
+					  (,sum nil)
+					  (,x))
+					 ((null ,lil)
+					  `((mlist) ,@(nreverse ,sum)))
+				       (setq ,x (car ,lil)
+					     ,sum (cons ,(cdr (tr-local-exp exp
+									    x
+									    (value-mode x)))
+							,sum))))))
 	((= (length form) 4)
 	 (destructuring-let (((exp x |0| n) form)
 			     (|00| (tr-gensym))
 			     (nn (tr-gensym))
 			     (sum (tr-gensym)))
-	   (setq |0| (dtranslate |0|)	; I had forgotten this before!
-		 n (dtranslate n))	; never noticed.
-	   `($any . ((lambda (,|00| ,nn)
+			    (setq |0| (dtranslate |0|) ; I had forgotten this before!
+				  n (dtranslate n)) ; never noticed.
+			    `($any . ((lambda (,|00| ,nn)
 					; bogus -gjc
 					;(DECLARE (FIXNUM ,|00| ,NN))
-		       (cond ((not (< ,nn ,|00|))
-			      (do ((,x ,|00| (f1+ ,x))
-				   (,sum
-				    nil
-				    (cons
-				     ,(cdr (tr-local-exp exp
-							 x
-							 '$fixnum))
+					(cond ((not (< ,nn ,|00|))
+					       (do ((,x ,|00| (1+ ,x))
+						    (,sum
+						     nil
+						     (cons
+						      ,(cdr (tr-local-exp exp
+									  x
+									  '$fixnum))
 
-				     ,sum)))
-				  ((> ,x ,nn)
-				   `((mlist) ,@(nreverse ,sum)))
-				(declare (fixnum ,x))))
-			     (t
-			      (interval-error
-			       '$makelist ,|00| ,nn))))
-		     ,|0| ,n))))
+						      ,sum)))
+						   ((> ,x ,nn)
+						    `((mlist) ,@(nreverse ,sum)))
+						 (declare (fixnum ,x))))
+					      (t
+					       (interval-error
+						'$makelist ,|00| ,nn))))
+				      ,|0| ,n))))
 	(t
 	 (mformat *translation-msgs-files*
 		  "Wrong number of args to `makelist'")
 	 (setq tr-abort t)
 	 '($any . '$**error**))))
-
-;;(comment
-;; |jpg;suprv >|
-;; (DEFMFUN $KILL FEXPR (L) (MAPC 'KILL1 L) #+GC (GCTWA) '$DONE))
 
 (def%tr $kill (form)
   (cond ($tr_windy
@@ -363,7 +252,7 @@ a replacement form. Translating anyway though.")))
 ;;; Macsyma arrays are the biggest crock since STATUS PUNT NIL days.
 ;;; The basic idea of ARRAY(<frob>,type,dims...) is that
 ;;; if type is of
-;;;(ASSQ (CADR X) '(($COMPLETE . T) ($INTEGER . FIXNUM) ($FIXNUM . FIXNUM)
+;;; (ASSoc (CADR X) '(($COMPLETE . T) ($INTEGER . FIXNUM) ($FIXNUM . FIXNUM)
 ;;;			  ($FLOAT . FLONUM) ($FLONUM . FLONUM)))
 ;;; then the dims are evaluated. But, if type is not one of those,
 ;;; it "must" be a dim spec! Of course, I must make this "analysis"
@@ -373,9 +262,9 @@ a replacement form. Translating anyway though.")))
 (def%tr $array (form)
   (setq form (cdr form))
   (let ((name (car form))
-	(specp (assq (cadr form)
+	(specp (assoc (cadr form)
 		     '(($complete . t) ($integer . fixnum) ($fixnum . fixnum)
-		       ($float . flonum) ($flonum . flonum)))))
+		       ($float . flonum) ($flonum . flonum)) :test #'eq)))
     (cond (specp
 	   `($any . (apply '$array (list ',name
 				    ',(cadr form)
@@ -384,15 +273,6 @@ a replacement form. Translating anyway though.")))
 	   `($any . (apply '$array (list ',name
 				    ,@(tr-args (cdr form)))))))))
 
-
-;;(comment
-;;(DEFMFUN $DEFINE FEXPR (L)
-;; (COND ((OR (NULL L) (NULL (CDR L)) (CDDR L))
-;;	(ERLIST '|Wrong number of args to DEFINE|)))
-;; (APPLY 'MDEFINE
-;;	(LIST (COND ((MQUOTEP (CAR L)) (CADAR L)) (T (DISP2 (CAR L)))) (MEVAL (CADR L))))))
-
-;;; MDEFINE is an FSUBR also.
 
 (def%tr $define (form)
   (destructuring-let (((header body) (cdr form)))
@@ -421,17 +301,11 @@ a replacement form. Translating anyway though.")))
 
 (def%tr mrat (form)
   (let ((t-form (translate ($ratdisrep form))))
-    (cond ((memq (car t-form) '($float $fixnum $number)) t-form)
+    (cond ((member (car t-form) '($float $fixnum $number) :test #'eq) t-form)
 	  (t `($any . (ratf ,(cdr t-form)))))))
 
 
 ;;; The following special forms do not call the evaluator.
-
-
-
-
-
-
 
 (def%tr $batcon (form)
   `($any . (meval ',form)))  
@@ -445,7 +319,6 @@ a replacement form. Translating anyway though.")))
 (def%tr $alloc $batcon)
 (def%tr $batch $batcon)
 (def%tr $batchload          $batcon)
-;;(DEF%TR $BATCON $batcon)
 (def%tr $closefile $batcon)
 (def%tr $compfile           $batcon)
 (def%tr $delfile $batcon)

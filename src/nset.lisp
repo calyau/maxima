@@ -12,6 +12,7 @@
 ;; A Maxima set package
 
 (in-package :maxima)
+
 (macsyma-module nset)
 
 ($put '$nset 1.21 '$version)
@@ -31,14 +32,16 @@
 ;; where FOO is something other than MAXIMA, but that awaits
 ;; regularization of package use within Maxima.)
 
-(eval-when (compile load eval)
-  ; matchfix ("{", "}")
-  (meval '(($matchfix) &{ &}))
-  ; "{" ([L]) ::= buildq ([L], set (splice (L)));
-  (let
-    ((new-defn (meval '((mdefmacro) ((${) ((mlist) $l)) (($buildq) ((mlist) $l) (($set) (($splice) $l)))))))
-    ; Simpler to patch up $MACROS here, than to replicate the functionality of MDEFMACRO.
-    (zl-delete (cadr new-defn) $macros)))
+(eval-when
+    #+gcl (compile load eval)
+    #-gcl (:compile-toplevel :load-toplevel :execute)
+    ;; matchfix ("{", "}")
+    (meval '(($matchfix) &{ &}))
+    ;; "{" ([L]) ::= buildq ([L], set (splice (L)));
+    (let ((new-defn
+	   (meval '((mdefmacro) ((${) ((mlist) $l)) (($buildq) ((mlist) $l) (($set) (($splice) $l)))))))
+      ;; Simpler to patch up $MACROS here, than to replicate the functionality of MDEFMACRO.
+      (setq $macros (delete (cadr new-defn) $macros :test #'equal))))
 
 ;; Support for TeXing sets. If your mactex doesn't TeX the empty set
 ;; correctly, get the latest mactex.lisp.
@@ -99,8 +102,8 @@
 
 ;; Simplify a set. 
 
-(defun simp-set (a y z)
-  (declare (ignore y))
+(defun simp-set (a yy z)
+  (declare (ignore yy))
   (setq a (mapcar #'(lambda (x) (simplifya x z)) (cdr a)))
   (setq a (sorted-remove-duplicates (sort a '$orderlessp)))
   `(($set simp) ,@a))
@@ -551,7 +554,7 @@
 		 (if ,only2fun (funcall ,only2fun (car ,l2var)))
 		 (setq ,l2var (cdr ,l2var))
 		 nil))
-	  (nreverse res)))))
+	  (reverse res)))))
 
 ;;; Test
 ; (do-merge-asym '(a a a b c g h k l)
@@ -613,7 +616,7 @@
      #'like
      #'$orderlessp
      nil
-     #'(lambda (x) (declare (ignore x)) (throw 'subset nil))
+     #'(lambda (xx) (declare (ignore xx)) (throw 'subset nil))
      nil)
     t))
 
@@ -631,7 +634,7 @@
      l1 l2
      #'like
      #'$orderlessp
-     #'(lambda (x) (declare (ignore x)) (throw 'disjoint nil))
+     #'(lambda (xx) (declare (ignore xx)) (throw 'disjoint nil))
      nil)
     t))
    
@@ -908,17 +911,20 @@ a positive integer; instead found ~:M" n))))
 
 (defprop $kron_delta simp-kron-delta operators)
 
-(eval-when (compile load eval)
-  ;(kind '$kron_delta '$symmetric)) <-- This doesn't work. Why?
-  ; Put new fact in global context; 
-  ; otherwise it goes in initial context, which is meant for the user.
-  (let (($context '$global) (context '$global))
-    (meval* '(($declare) $kron_delta $symmetric))))
+(eval-when
+    #+gcl (compile load eval)
+    #-gcl (:compile-toplevel :load-toplevel :execute)
+    ;; (kind '$kron_delta '$symmetric)) <-- This doesn't work. Why?
+    ;; Put new fact in global context; 
+    ;; otherwise it goes in initial context, which is meant for the user.
+    (let (($context '$global) (context '$global))
+      (meval* '(($declare) $kron_delta $symmetric))))
 		 	
 (defun simp-kron-delta (x y z)
   (twoargcheck x)
   (setq y (mapcar #'(lambda (s) (simplifya s z)) (margs x)))
-  (let ((p (nth 0 y)) (q (nth 1 y)) (sgn))
+  (let ((p (nth 0 y))
+	(q (nth 1 y)))
     (let ((sgn (meqp p q)))
       (cond ((eq sgn t) 1)
 	    ((eq sgn nil) 0)
@@ -951,8 +957,8 @@ a positive integer; instead found ~:M" n))))
 ;; (5) stirling1 (n + 1, 1) = n!,
 ;; (6) stirling1 (n + 1, 2) = 2^n  - 1.
 
-(defun simp-stirling1 (n y z)
-  (declare (ignore y))
+(defun simp-stirling1 (n yy z)
+  (declare (ignore yy))
   (twoargcheck n)
   (setq n (mapcar #'(lambda (x) (simplifya x z)) (cdr n)))
   (let ((m (nth 1 n)))
@@ -1018,12 +1024,12 @@ a positive integer; instead found ~:M" n))))
 
 (defun nonnegative-integerp (e)
   (and ($featurep e '$integer)
-       (memq ($sign (specrepcheck e)) `($pos $zero $pz))))
+       (member ($sign (specrepcheck e)) `($pos $zero $pz) :test #'eq)))
       
 (defprop $stirling2 simp-stirling2 operators)
 
-(defun simp-stirling2 (n y z)
-  (declare (ignore y))
+(defun simp-stirling2 (n yy z)
+  (declare (ignore yy))
   (twoargcheck n)
   (setq n (mapcar #'(lambda (x) (simplifya x z)) (cdr n)))
   (let ((m (nth 1 n)))
@@ -1157,12 +1163,12 @@ a positive integer; instead found ~:M" n))))
 ;; returns nil) we give up and use rl-reduce with left-associativity.
 
 (defun $xreduce (f s &optional (init 'no-init))
-  (let ((op (if (atom f) ($verbify f) nil)) (id))
+  (let ((op (if (atom f) ($verbify f) nil)))
     (cond ((get op '$nary)
 	   (setq s (require-list-or-set s "$xreduce"))
 	   (if (not (equal init 'no-init)) (setq s (cons init s)))
-	   ;(print "...using nary function")
-       (mapply1 op s f nil))
+					;(print "...using nary function")
+	   (mapply1 op s f nil))
 	  (t
 	   (rl-reduce f ($listify s) nil init "$xreduce")))))
 
@@ -1359,7 +1365,7 @@ a positive integer; instead found ~:M" n))))
 		(let (($intfaclim))
 		  (setq n (cfactorw n))
 		  (if (every #'(lambda (x) (= 1 x)) (odds n 0))
-		      (if (evenp (/ (length n) 2)) 1 -1)
+		      (if (evenp (ash (length n) -1)) 1 -1)
 		    0)))))
 	((or ($listp n) ($setp n) ($matrixp n) (mequalp n))
 	 (thread y (cdr n) (caar n)))
