@@ -10,7 +10,7 @@
 @deffn {Fun@value{cedilha}@~ao} opsubst (@var{f},@var{g},@var{e})
 @deffnx {Fun@value{cedilha}@~ao} opsubst (@var{g}=@var{f},@var{e})
 @deffnx {Fun@value{cedilha}@~ao} opsubst ([@var{g1}=@var{f1},@var{g2}=@var{f2},..., @var{gn}=@var{fn}],@var{e})
-A fun@value{cedilha}@~ao @code{opsubst}  similar @`a fun@value{cedilha}@~ao @code{subst}, exceto que
+A fun@value{cedilha}@~ao @code{opsubst}  similar @`a fun@value{cedilha}@~ao @code{subst}, excepto que
 @code{opsubst} somente faz substitui@value{cedilha}@~oes para as opera@value{cedilha}@~oes em uma express@~oes. Em geral, 
 quando @var{f} for um operador em uma express@~ao @var{e}, substitui @var{g} 
 por @var{f} na express@~ao @var{e}.

@@ -8,7 +8,7 @@
 @section Introdu@value{cedilha}@~ao a S@'eries
 Maxima cont@'em fun@value{cedilha}@~oes @code{taylor} e @code{powerseries} (s@'eries de pot@^encia) para encontrar as
 s@'eries de fun@value{cedilha}@~oes diferenci@'aveis.   Maxima tamb@'em tem ferramentas  tais como @code{nusum}
-capazes de encontrar a forma fechada de algumas s@'eries.   Opera@value{cedilha}@~oes tais como adi@value{cedilha}@~ao e multiplica@value{cedilha}@~ao travalham da forma usual sobre s@'eries.  Essa se@value{cedilha}@~ao apresenta as vari@'aveis globais que controlam a
+capazes de encontrar a forma fechada de algumas s@'eries.   Opera@value{cedilha}@~oes tais como adi@value{cedilha}@~ao e multiplica@value{cedilha}@~ao travalham da forma usual sobre s@'eries.  Essa sec@value{cedilha}@~ao apresenta as vari@'aveis globais que controlam a
 expans@~ao.
 @c end concepts Series
 @node Defini@value{cedilha}@~oes para S@'eries,  , Introdu@value{cedilha}@~ao a S@'eries, S@'eries
@@ -94,7 +94,7 @@ Valor por omiss@~ao: @code{true}
 @c REPHRASE
 Quando @code{maxtayorder} for @code{true}, durante a manipula@value{cedilha}@~ao
 alg@'ebrica de s@'eries (truncadas) de Taylor, @code{taylor} tenta reter
-tantos termos quantos forem conhecidos serem corretos.
+tantos termos quantos forem conhecidos serem correctos.
 
 @end defvr
 
@@ -140,7 +140,7 @@ Exemplo:
 Valor por omiss@~ao: @code{[i, j, k, l, m, n]}
 
 @code{niceindicespref} @'e a lista da qual @code{niceindices}
-pega os nomes dos @'{@dotless{i}}ndices de adi@value{cedilha}@~oes e produtos products.
+obt@'em os nomes dos @'{@dotless{i}}ndices de adi@value{cedilha}@~oes e produtos products.
 
 Os elementos de @code{niceindicespref} s@~ao tipicamente nomes de vari@'aveis,
 embora que n@~ao seja imposto por @code{niceindices}.
@@ -447,7 +447,7 @@ O termo de maior ordem @'e @code{(@var{x} - @var{a})^@var{-n}}.
 
 Quando @code{maxtayorder} for @code{true}, ent@~ao durante maniplula@value{cedilha}@~ao
 alg@'ebrica da s@'eries de Taylor (truncada), @code{taylor} tenta reter
-tantos termos quantos forem conhecidos serem corretos.
+tantos termos quantos forem conhecidos serem correctos.
 
 Quando @code{psexpand} for @code{true},
 uma express@~ao de fun@value{cedilha}@~ao racional extendida @'e mostrada completamente expandida.
@@ -643,7 +643,7 @@ s@'eries de @code{taylor}.
 Quando @code{taylor_logexpand} for @code{true}, todos  logaritmos s@~ao expandidos completamente dessa forma
 problemas de reconhecimento de zero envolvendo envolvendo identidades logar@'{@dotless{i}}tmicas n@~ao
 atrapalham o processo de expans@~ao.  Todavia, esse esquema n@~ao @'e sempre
-maematicamente correto uma vez que isso ignora informa@value{cedilha}@~oes de ramo.
+matematicamente correcto uma vez que isso ignora informa@value{cedilha}@~oes de ramo.
 
 Quando @code{taylor_logexpand} for escolhida para @code{false}, ent@~ao a expans@~ao logar@'{@dotless{i}}tmica que ocorre
 @'e somente aquela que for necess@'aria para obter uma s@'eries de pot@^encia formal.
@@ -685,7 +685,7 @@ entrada de polin@'omios para @code{taylor} s@~ao consideradas terem precis@~ao i
 @end defvr
 
 @deffn {Fun@value{cedilha}@~ao} taytorat (@var{expr})
-Converte @var{expr} da forma @code{taylor} para a forma de express@~ao racional can@^onica (CRE).
+Converte @var{expr} da forma @code{taylor} para a forma de express@~ao racional can@'onica (CRE).
 O efeito @'e o mesmo que @code{rat (ratdisrep (@var{expr}))}, mas mais r@'apido.
 
 @end deffn

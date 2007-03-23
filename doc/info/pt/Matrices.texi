@@ -42,18 +42,18 @@ e @code{dotscrules}.
 
 @node Vetores, auto, Ponto, Introdu@value{cedilha}@~ao a Matrizes e @'Algebra Linear
 @subsection Vetores
-@code{vect} @'e um pacote de fun@value{cedilha}@~oes para an@'alise vetorial.
+@code{vect} @'e um pacote de fun@value{cedilha}@~oes para an@'alise vectorial.
 @code{load ("vect")} chama esse pacote, e @code{demo ("vect")} permite visualizar uma demonstra@value{cedilha}@~ao.
 @c find maxima -name \*orth\* YIELDS NOTHING; ARE THESE FUNCTIONS IN ANOTHER FILE NOW ??
 @c and SHARE;VECT ORTH contains definitions of various orthogonal curvilinear coordinate systems.
 
-O pacote de an@'alise vetorial pode combinar e simplificar expres@~oes
+O pacote de an@'alise vectorial pode combinar e simplificar expres@~oes
 simb@'olicas incluindo produtos dos pontos e productos dos x, juntamente com
 o gradiente, divergencia, tor@value{cedilha}@~ao, e operadores Laplacianos.  A 
 distribui@value{cedilha}@~ao desses operadores sobre adi@value{cedilha}@~oes ou produtos @'e governada
 por muitos sinalizadores, como s@~ao v@'arias outras expans@~oes, incluindo expans@~ao
 dentro de componentes em qualquer sistema de coordenadas ortogonais.
-Existem tamb@'em fun@value{cedilha}@~oes para derivar o escalar ou vetor potencial
+Existem tamb@'em fun@value{cedilha}@~oes para derivar o escalar ou vector potencial
 de um campo.
 
 O pacote @code{vect} cont@'em essas fun@value{cedilha}@~oes:
@@ -69,7 +69,7 @@ como sendo um operador comutativo.
 @subsection auto
 
 O pacote @code{eigen} cont@'em muitas fun@value{cedilha}@~oes devotadas para a
-computa@value{cedilha}@~ao simb@'olica de autovalores e autovetores.
+computa@value{cedilha}@~ao simb@'olica de autovalores e autovectores.
 Maxima chama o pacote automaticamente se uma das fun@value{cedilha}@~oes
 @code{eigenvalues} ou @code{eigenvectors} @'e invocada.
 O pacote pode ser chamado explicitamente com @code{load ("eigen")}.
@@ -204,7 +204,7 @@ Exemplo:
 @example
 (%i1) load ("eigen")$
 Warning - you are redefining the Macsyma function autovalores
-Warning - you are redefining the Macsyma function autovetores
+Warning - you are redefining the Macsyma function autovectores
 (%i2) columnvector ([aa, bb, cc, dd]);
                              [ aa ]
                              [    ]
@@ -283,7 +283,7 @@ matriz cuja inversa @'e calculada @'e factorado fora da inversa.
 
 Para esse comutador ter efeito @code{doallmxops} e @code{doscmxops} deveram ambos serem
 @code{false} (veja suas transcri@value{cedilha}@~oes).  Alternativamente esses comutadores podem ser
-dados para @code{ev} o que faz com que os outros dois sejam escolhidos corretamente.
+dados para @code{ev} o que faz com que os outros dois sejam escolhidos correctamente.
 
 Exemplo:
 
@@ -341,7 +341,7 @@ uma matriz exponencial, @code{exp (@var{M})} onde @var{M} @'e a matriz,
 de outra forma @code{exp (@var{M})} avalia para @code{exp (@var{ev(M)}}.
 
 @code{domxexpt}
-afeta todas as expres@~oes da forma @code{@var{base}^@var{expoente}} onde @var{base} @'e uma
+afecta todas as expres@~oes da forma @code{@var{base}^@var{expoente}} onde @var{base} @'e uma
 expres@~ao assumida escalar ou constante, e @var{expoente} @'e uma lista ou
 matriz.
 
@@ -396,7 +396,7 @@ Valor por omiss@~ao: @code{[]}
 @code{dontfactor} pode ser escolhido para uma lista de vari@'aveis em rela@value{cedilha}@~ao
 a qual factora@value{cedilha}@~ao n@~ao @'e para ocorrer.  (A lista @'e inicialmente vazia.)
 Factora@value{cedilha}@~ao tamb@'em n@~ao pegar@'a lugares com rela@value{cedilha}@~ao a quaisquer vari@'aveis que
-s@~ao menos importantes, conforme a hierarqu@'{@dotless{i}}a de vari@'avel assumida para a forma expres@~ao racional can@^onica (CRE),
+s@~ao menos importantes, conforme a hierarqu@'{@dotless{i}}a de vari@'avel assumida para a forma expres@~ao racional can@'onica (CRE),
 que essas na lista @code{dontfactor}.
 
 @end defvr
@@ -469,7 +469,7 @@ Valor por omiss@~ao: @code{true}
 Quando @code{dotconstrules} @'e @code{true}, um produto n@~ao comutativo de uma
 constante e outro termo @'e simplificado para um produto comutativo.
 @c TERMINOLOGY: (1) SWITCH/FLAG/SOME OTHER TERM ?? (2) ASSIGN/SET/TURN ON/SOME OTHER TERM ??
-Ativando esse sinalizador efetivamente ativamos @code{dot0simp}, @code{dot0nscsimp}, e
+Ativando esse sinalizador efectivamente ativamos @code{dot0simp}, @code{dot0nscsimp}, e
 @code{dot1simp} tamb@'em.
 
 @c NEED EXAMPLE HERE
@@ -589,10 +589,10 @@ Ap@'os ser chamado, todas as fun@value{cedilha}@~oes e vari@'aveis no pacote est
 @deffnx {Fun@value{cedilha}@~ao} eivects (@var{M})
 pegam uma matriz @var{M} como seu argumento e retorna uma lista
 de listas cuja primeira sublista @'e a sa@'{@dotless{i}}da de @code{eigenvalues}
-e as outras sublistas s@~ao os autovetores da
+e as outras sublistas s@~ao os autovectores da
 matriz correspondente para esses autovalores respectivamente.
-Os autovetores e os autovetores unit@'arios da matriz s@~ao os
-autovetores direitos e os autovetores unit@'arios direitos.
+Os autovectores e os autovectores unit@'arios da matriz s@~ao os
+autovectores direitos e os autovectores unit@'arios direitos.
 
 @code{eivects} @'e um sin@^onimo para @code{eigenvectors}.
 
@@ -602,13 +602,13 @@ Se @code{eigen.mac} n@~ao tiver sido ainda chamado,
 @code{load ("eigen")} chama-o.
 Ap@'os ser chamado, todas as fun@value{cedilha}@~oes e vari@'aveis no pacote estar@~ao dispon@'{@dotless{i}}veis.
 
-Os sinalizadores que afetam essa fun@value{cedilha}@~ao s@~ao:
+Os sinalizadores que afectam essa fun@value{cedilha}@~ao s@~ao:
 
 @code{nondiagonalizable} @'e escolhido para @code{true} ou @code{false} dependendo de
 se a matriz @'e n@~ao diagonaliz@'avel ou diagonaliz@'avel ap@'os o
 retorno de @code{eigenvectors}.
 
-@code{hermitianmatrix} quando @code{true}, faz com que os autovetores
+@code{hermitianmatrix} quando @code{true}, faz com que os autovectores
 degenerados da matriz Hermitiana sejam ortogonalizados usando o
 algor@'{@dotless{i}}tmo de Gram-Schmidt.
 
@@ -617,7 +617,7 @@ autovalores da matriz s@~ao conhecidos para o utilizador e armazenados sob o
 nome global @code{listeigvals}.  @code{listeigvals} poder@'a ser escolhido para uma lista similar
 @`a sa@'{@dotless{i}}da de @code{eigenvalues}.
 
-A fun@value{cedilha}@~ao @code{algsys} @'e usada aqui para resolver em rela@value{cedilha}@~ao aos autovetores.  Algumas vezes se os
+A fun@value{cedilha}@~ao @code{algsys} @'e usada aqui para resolver em rela@value{cedilha}@~ao aos autovectores.  Algumas vezes se os
 autovalores est@~ao aus@^entes, @code{algsys} pode n@~ao estar habilitado a achar uma solu@value{cedilha}@~ao.
 Em alguns casos, isso pode ser poss@'{@dotless{i}}vel para simplificar os autovalores por
 primeiro achando e ent@~ao usando o comando @code{eigenvalues} e ent@~ao usando outras fun@value{cedilha}@~oes
@@ -629,7 +629,7 @@ com o sinalizador @code{knowneigvals} escolhido para @code{true}.
 
 @deffn {Fun@value{cedilha}@~ao} ematrix (@var{m}, @var{n}, @var{x}, @var{i}, @var{j})
 Retorna uma matriz @var{m} por @var{n}, todos os elementos da qual
-s@~ao zero exceto para o elemento @code{[@var{i}, @var{j}]} que @'e @var{x}.
+s@~ao zero excepto para o elemento @code{[@var{i}, @var{j}]} que @'e @var{x}.
 @c WOW, THAT SEEMS PRETTY SPECIALIZED ...
 
 @end deffn
@@ -778,7 +778,7 @@ Exemplo:
 @example
 (%i1) load ("eigen")$
 Warning - you are redefining the Macsyma function autovalores
-Warning - you are redefining the Macsyma function autovetores
+Warning - you are redefining the Macsyma function autovectores
 (%i2) x: matrix ([1, 2, 3], [9, 18, 30], [12, 48, 60]);
                          [ 1   2   3  ]
                          [            ]
@@ -1342,8 +1342,8 @@ indetermina@value{cedilha}@~ao1, indetermina@value{cedilha}@~ao2, ...], onde ind
 indetermina@value{cedilha}@~ao2, etc.  s@~ao as vari@'aveis de coordenadas curvil@'{@dotless{i}}neas e
 onde a escolha de componentes cartesianas retangulares @'e dada em termos das
 coordenadas curvil@'{@dotless{i}}neas por [expres@~ao1, expres@~ao2, ...].
-@code{coordinates} @'e escolhida para o vetor [indetermina@value{cedilha}@~ao1, indetermina@value{cedilha}@~ao2,...],
-e @code{dimension} @'e escolhida para o comprimento desse vetor.  SF[1], SF[2],
+@code{coordinates} @'e escolhida para o vector [indetermina@value{cedilha}@~ao1, indetermina@value{cedilha}@~ao2,...],
+e @code{dimension} @'e escolhida para o comprimento desse vector.  SF[1], SF[2],
 ..., SF[DIMENSION] s@~ao escohidos para factores de escala de coordenada, e @code{sfprod}
 @'e escohido para o produto desse factores de escala.  Inicialmente, @code{coordinates}
 @'e [X, Y, Z], @code{dimension} @'e 3, e SF[1]=SF[2]=SF[3]=SFPROD=1,
@@ -1378,7 +1378,7 @@ Se o sinalizador @code{hermitianmatrix} @'e @code{true}
 ent@~ao @code{leftmatrix} @'e o conjugado complexo da transposta de
 @code{rightmatrix}.  De outra forma @code{leftmatrix} @'e a inversa de @code{rightmatrix}.
 
-@code{rightmatrix} @'e a matriz cujas colunas s@~ao os autovetores
+@code{rightmatrix} @'e a matriz cujas colunas s@~ao os autovectores
 unit@'arios de @var{M}.  Os outros sinalizadores (veja @code{eigenvalues} e
 @code{eigenvectors}) possuem o mesmo efeito desde que
 @code{similaritytransform} chama as outras fun@value{cedilha}@~oes no pacote com o objectivo de
@@ -1423,7 +1423,7 @@ e o valor de retorno @'e uma express@~ao substantiva @code{'transpose (@var{M})}
 @deffn {Fun@value{cedilha}@~ao} triangularize (@var{M})
 Retorna a maior forma triangular da matriz @code{M}, como produzido atrav@'es da elimina@value{cedilha}@~ao de Gauss.
 O valor de retorno @'e o mesmo que @code{echelon},
-exceto que o o coeficiente lider n@~ao nulo em cada linha n@~ao @'e normalizado para 1.
+excepto que o o coeficiente lider n@~ao nulo em cada linha n@~ao @'e normalizado para 1.
 
 @code{lu_factor} e @code{cholesky} s@~ao outras fun@value{cedilha}@~oes que retornam matrizes triangularizadas.
 
@@ -1450,10 +1450,10 @@ exceto que o o coeficiente lider n@~ao nulo em cada linha n@~ao @'e normalizado 
 
 @deffn {Fun@value{cedilha}@~ao} uniteigenvectors (@var{M})
 @deffnx {Fun@value{cedilha}@~ao} ueivects (@var{M})
-Calcula autovetores unit@'arios da matriz @var{M}.
+Calcula autovectores unit@'arios da matriz @var{M}.
 O valor de retorno @'e uma lista de listas, a primeiro sublista @'e a
 sa@'{@dotless{i}}da do comando @code{eigenvalues}, e as outras sublistas s@~ao
-os autovetores unit@'arios da matriz correspondente a esses autovalores
+os autovectores unit@'arios da matriz correspondente a esses autovalores
 respectivamente.
 
 @c COPY DESCRIPTIONS OF THOSE FLAGS HERE
@@ -1461,16 +1461,16 @@ Os sinalizadores mencionados na descri@value{cedilha}@~ao do
 comando @code{eigenvectors} possuem o mesmo efeito aqui tamb@'em.
 
 Quando @code{knowneigvects} @'e @code{true}, o pacote @code{eigen} assume
-que os autovetores da matriz s@~ao conhecidos para o utilizador s@~ao
+que os autovectores da matriz s@~ao conhecidos para o utilizador s@~ao
 armazenados sob o nome global @code{listeigvects}.  @code{listeigvects} pode ser ecolhido
 para uma lista similar @`a sa@'{@dotless{i}}da do comando @code{eigenvectors}.
 
 @c FOLLOWING PARAGRAPH IS IN NEED OF SERIOUS CLARIFICATION
-Se @code{knowneigvects} @'e escolhido para @code{true} e a lista de autovetores @'e dada a
-escolha do sinalizador @code{nondiagonalizable} pode n@~ao estar correta.  Se esse @'e
-o caso por favor ecolha isso para o valor correto.  O autor assume que
+Se @code{knowneigvects} @'e escolhido para @code{true} e a lista de autovectores @'e dada a
+escolha do sinalizador @code{nondiagonalizable} pode n@~ao estar correcta.  Se esse @'e
+o caso por favor ecolha isso para o valor correcto.  O autor assume que
 o utilizador sabe o que est@'a fazendo e que n@~ao tentar@'a diagonalizar uma
-matriz cujos autovetores n@~ao geram o mesmo espa@value{cedilha}o vetorial de
+matriz cujos autovectores n@~ao geram o mesmo espa@value{cedilha}o vectorial de
 dimens@~ao apropriada.
 
 @code{load ("eigen")} chama essa fun@value{cedilha}@~ao.
@@ -1482,7 +1482,7 @@ dimens@~ao apropriada.
 @deffn {Fun@value{cedilha}@~ao} unitvector (@var{x})
 @deffnx {Fun@value{cedilha}@~ao} uvect (@var{x})
 Retorna @math{@var{x}/norm(@var{x})};
-isso @'e um vetor unit@'ario na mesma dire@value{cedilha}@~ao que @var{x}.
+isso @'e um vector unit@'ario na mesma dire@value{cedilha}@~ao que @var{x}.
 
 @code{load ("eigen")} chama essa fun@value{cedilha}@~ao.
 

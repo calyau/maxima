@@ -244,7 +244,7 @@ quando a contrabarra aparecer antes de qualquer outro caractere que n@~ao seja @
 ou um fim de linha, a contrabarra @'e ignorada.
 N@~ao exite caminho para representar um caractere especial
 (tal como uma tabula@value{cedilha}@~ao, nova linha, ou retorno da cabe@value{cedilha}a de impress@~ao)
-exceto atrav@'es de encaixar o caractere literal na sequ@^encia de caracteres.
+excepto atrav@'es de encaixar o caractere literal na sequ@^encia de caracteres.
 
 N@~ao existe tipo de caractere no Maxima;
 um caractere simples @'e representado como uma sequ@^encia de caracteres de um @'unico caractere.
@@ -537,7 +537,7 @@ O r@'otulo @'e truncado se for maior que a largura da caixa.
 
 @code{box} avalia seu argumento.
 Todavia, uma express@~ao dentro de uma caixa n@~ao avalia para seu conte@'udo,
-ent@~ao express@~oes dentro de caixas s@~ao efetivamente exclu@'{@dotless{i}}das de c@'alculos.
+ent@~ao express@~oes dentro de caixas s@~ao efectivamente exclu@'{@dotless{i}}das de c@'alculos.
 
 @code{boxchar} @'e o caractere usado para desenhar a caixa em @code{box}
 e nas fun@value{cedilha}@~oes @code{dpart} e @code{lpart}.
@@ -1128,7 +1128,7 @@ Declara@value{cedilha}@~ao @code{linear}.
 @c NEEDS WORK
 @deffn {Fun@value{cedilha}@~ao} disolate (@var{expr}, @var{x_1}, ..., @var{x_n})
 @'e similar a @code{isolate (@var{expr}, @var{x})}
-exceto que essa fun@value{cedilha}@~ao habilita ao utilizador isolar
+excepto que essa fun@value{cedilha}@~ao habilita ao utilizador isolar
 mais que uma vari@'avel simult@^aneamente.  Isso pode ser @'util, por
 exemplo, se se tiver tentado mudar vari@'aveis em uma integra@value{cedilha}@~ao
 m@'ultipla, e em mudan@value{cedilha}a de vari@'avel envolvendo duas ou mais das
@@ -1223,7 +1223,7 @@ Quando @code{%emode} for @code{true},
 segue.
 
 @code{%e^(%pi %i x)} simplifica para @code{cos (%pi x) + %i sin (%pi x)} se @code{x} for um inteiro ou
-um multiplo de 1/2, 1/3, 1/4, ou 1/6, e ent@~ao @'e adicionalmente simplificado.
+um m@'ultiplo de 1/2, 1/3, 1/4, ou 1/6, e ent@~ao @'e adicionalmente simplificado.
 
 Para outro @code{x} num@'erico,
 @code{%e^(%pi %i x)} simplifica para @code{%e^(%pi %i y)} onde @code{y} @'e @code{x - 2 k}
@@ -1491,7 +1491,7 @@ for @code{true} e @code{y} se @code{inflag} for @code{false}.
 Tamb@'em, escolhendo @code{inflag} para @code{true} e chamando @code{part} ou @code{substpart} @'e
 o mesmo que chamar @code{inpart} ou @code{substinpart}.
 
-As fun@value{cedilha}@~oes afetadas pela posi@value{cedilha}@~ao do sinalizador @code{inflag} s@~ao:
+As fun@value{cedilha}@~oes afectadas pela posi@value{cedilha}@~ao do sinalizador @code{inflag} s@~ao:
 @code{part}, @code{substpart}, @code{first}, @code{rest}, @code{last}, @code{length},
 a estrutura @code{for} ... @code{in},
 @code{map}, @code{fullmap}, @code{maplist}, @code{reveal} e @code{pickapart}.
@@ -1663,7 +1663,7 @@ outros factores de @var{expr}.  Isto @'e, @var{expr} @'e @code{@var{f_1} @var{f_
 onde ao menos
 um factor, digamos @var{f_i}, @'e uma soma de termos.  Cada termo naquela soma @'e
 multiplicado por outros factores no produto.  (A saber todos os
-factores exceto @var{f_i}).  @code{multthru} n@~ao expande somas exponenciais.
+factores excepto @var{f_i}).  @code{multthru} n@~ao expande somas exponenciais.
 Essa fun@value{cedilha}@~ao @'e o caminho mais r@'apido para distribuir produtos (comutativos
 ou n@~ao) sobre adi@value{cedilha}@~oes.  Uma vez que quocientes s@~ao representados como
 produtos @code{multthru} podem ser usados para dividir adi@value{cedilha}@~oes por produtos tamb@'em.

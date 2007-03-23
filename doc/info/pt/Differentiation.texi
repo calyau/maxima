@@ -230,7 +230,7 @@ aplica@value{cedilha}@~oes na teoria das equa@value{cedilha}@~oes diferenciais p
 O pacote @code{cartan}
 implementa as fun@value{cedilha}@~oes @code{ext_diff} e @code{lie_diff},
 juntamente com os operadores @code{~} (produto da cunha) e @code{|} (contra@value{cedilha}@~ao
-de uma forma com um vetor.)
+de uma forma com um vector.)
 Digite @code{demo (tensor)} para ver uma breve
 descri@value{cedilha}@~ao desses comandos juntamente com exemplos.
 

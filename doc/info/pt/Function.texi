@@ -107,7 +107,7 @@ Usando apenas @code{block ([x], ...} faremos com que o @code{x} ter a si mesmo
 como valor, apenas como tivesse voc@^e entrar numa breve sess@~ao
 @b{Maxima}.
 
-Os atuais argumentos para uma fun@value{cedilha}@~ao s@~ao tratados exactamente da mesma que
+Os actuais argumentos para uma fun@value{cedilha}@~ao s@~ao tratados exactamente da mesma que
 as vari@'aveis em um bloco.  Dessa forma em
 
 @example
@@ -160,7 +160,7 @@ armazenado para o argumento @var{x};
 a pr@'oxima vez que @var{a} foor chamada com o argumento @var{x},
 o valor da fun@value{cedilha}@~ao @'e recomputado.
 Todavia, n@~ao exite caminho para remover todos os valores armazenados de uma vez,
-exceto para @code{kill(@var{a})} ou @code{remarray(@var{a})},
+excepto para @code{kill(@var{a})} ou @code{remarray(@var{a})},
 o qual remove tamb@'em remove a defini@value{cedilha}@~ao da fun@value{cedilha}@~ao de array.
 
 @node Macros, Defini@value{cedilha}@~oes para Defini@value{cedilha}@~ao de Fun@value{cedilha}@~ao, Fun@value{cedilha}@~ao, Defini@value{cedilha}@~ao de Fun@value{cedilha}@~ao
@@ -391,7 +391,7 @@ Para uma fun@value{cedilha}@~ao @code{f}, a express@~ao @code{f (splice (@var{a}
 expande para @code{f (@var{a}[1], @var{a}[2], @var{a}[3], ...)}.
 Para um operador @code{o}, a express@~ao @code{"o" (splice (@var{a})} dentro de @code{buildq}
 expande para @code{"o" (@var{a}[1], @var{a}[2], @var{a}[3], ...)},
-onde @code{o} pode ser qualquer tipo de operador (tipicamente um que toma multiplos argumentos).
+onde @code{o} pode ser qualquer tipo de operador (tipicamente um que toma m@'ultiplos argumentos).
 Note que o operador deve ser contido dentro de aspas duplas @code{"}.
 
 Exemplos
@@ -536,7 +536,7 @@ de outra forma, seu valor @'e o valor da vari@'avel no ambiente global.
 Essa pol@'{@dotless{i}}tica pode coincidir com o entendimento usual de "escopo din@^amico".
 
 Se isso for desejado para salvar e restaurar outras propriedades locais
-ao lado de @code{value}, por exemplo @code{array} (exceto para arrays completos),
+ao lado de @code{value}, por exemplo @code{array} (excepto para arrays completos),
 @code{function}, @code{dependencies}, @code{atvalue}, @code{matchdeclare}, @code{atomgrad}, @code{constant}, e
 @code{nonscalar} ent@~ao a fun@value{cedilha}@~ao @code{local} pode ser usada dentro do bloco
 com argumentos sendo o nome das vari@'aveis.
@@ -653,8 +653,8 @@ ou uma fun@value{cedilha}@~ao de array (com argumentos contidos entre colch@^ete
 
 Quando o @'ultimo ou @'unico argumento da fun@value{cedilha}@~ao @var{x_n} for uma lista de um elemento,
 a fun@value{cedilha}@~ao definida por @code{define} aceita um n@'umero vari@'avel de argumentos.
-Os argumentos atuais s@~ao atribu@'{@dotless{i}}dos um a um a argumentos formais @var{x_1}, ..., @var{x_(n - 1)},
-e quaisquer argumentos adicionais atuais, se estiverem presentes, s@~ao atribu@'{@dotless{i}}dos a @var{x_n} como uma lista.
+Os argumentos actuais s@~ao atribu@'{@dotless{i}}dos um a um a argumentos formais @var{x_1}, ..., @var{x_(n - 1)},
+e quaisquer argumentos adicionais actuais, se estiverem presentes, s@~ao atribu@'{@dotless{i}}dos a @var{x_n} como uma lista.
 
 Quando o primeiro argumento de @code{define} for uma express@~ao da forma
 @code{@var{f}(@var{x_1}, ..., @var{x_n})} or @code{@var{f}[@var{x_1}, ..., @var{x_n}]},
@@ -670,7 +670,7 @@ n@~ao limita o escopo de @code{f} a @code{g}.
 
 Se algum argumento formal @var{x_k} for um s@'{@dotless{i}}mbolo com ap@'ostrofo (ap@'os ter sido feita uma avalia@value{cedilha}@~ao),
 a fun@value{cedilha}@~ao definida por @code{define} n@~ao avalia o correspondente actual argumento.
-de outra forma todos os argumentos atuais s@~ao avaliados.
+de outra forma todos os argumentos actuais s@~ao avaliados.
 
 Veja tamb@'em @code{:=} and @code{::=}.
 
@@ -1405,7 +1405,7 @@ ocorr@^ecia @'e permitida em cada.
 Valor por omiss@~ao: @code{false}
 
 @code{macroexpansion} controla recursos avan@value{cedilha}ados que
-afetam a efici@^encia de macros.  Escolhas poss@'{@dotless{i}}veis:
+afectam a efici@^encia de macros.  Escolhas poss@'{@dotless{i}}veis:
 
 @itemize @bullet
 @item
@@ -1589,7 +1589,7 @@ e s@~ao adicionados nas listas @code{props}.
 Fun@value{cedilha}@~oes n@~ao poder@~ao ser traduzidas
 a menos que elas sejam totalmente depuradas.
 
-Express@~oes s@~ao assumidas simplificadas; se n@~ao forem, um c@'odigo correto ser@'a gerado mas n@~ao ser@'a um c@'odigo
+Express@~oes s@~ao assumidas simplificadas; se n@~ao forem, um c@'odigo correcto ser@'a gerado mas n@~ao ser@'a um c@'odigo
 @'otimo.  Dessa forma, o utilizador n@~ao poder@'a escolher o comutador @code{simp} para @code{false}
 o qual inibe simplifica@value{cedilha}@~ao de express@~oes a serem traduzidas.
 
@@ -1601,7 +1601,7 @@ traduzidas podem n@~ao executar identicamente para o caminho que elas faziam ant
 tradu@value{cedilha}@~ao como certas incompatabilidades podem existir entre o Lisp
 e vers@~oes do Maxima.  Principalmente, a fun@value{cedilha}@~ao  @code{rat} com mais de
 um argumento e a fun@value{cedilha}@~ao @code{ratvars} n@~ao poder@'a ser usada se quaisquer
-vari@'aveis s@~ao declaradas com @code{mode_declare} como sendo express@~oes rotacionais can@^onicas(CRE).
+vari@'aveis s@~ao declaradas com @code{mode_declare} como sendo express@~oes rotacionais can@'onicas(CRE).
 Tamb@'em a escolha @code{prederror: false}
 n@~ao traduzir@'a.
 @c WHAT ABOUT % AND %% ???
@@ -1629,7 +1629,7 @@ contendo informa@value{cedilha}@~oes adicionais sobre a tradu@value{cedilha}@~ao
 @code{translate_file} avalia seus argumentos.
 
 @code{translate_file ("foo.mac"); load("foo.LISP")} @'e o mesmo que
-@code{batch ("foo.mac")} exceto por certas restri@value{cedilha}@~oes,
+@code{batch ("foo.mac")} excepto por certas restri@value{cedilha}@~oes,
 o uso de @code{'@w{}'} e @code{%}, por exemplo.
 @c FIGURE OUT WHAT THE RESTRICTIONS ARE AND STATE THEM
 
@@ -1702,7 +1702,7 @@ em lugar de vers@~ao traduzidas.
 Valor por omiss@~ao: @code{true}
 
 Se @code{translate_fast_arrays} for @code{false}, refer@^encias a arrays no
-C@'odigo Lisp emitidas por @code{translate_file} s@~ao afetadas por @code{tr_array_as_ref}.
+C@'odigo Lisp emitidas por @code{translate_file} s@~ao afectadas por @code{tr_array_as_ref}.
 Quando @code{tr_array_as_ref} @'e @code{true},
 nomes de arrays s@~ao avaliados,
 de outra forma nomes de arrays aparecem como s@'{@dotless{i}}mbolos literais no c@'odigo traduzido.
@@ -1718,7 +1718,7 @@ Valor por omiss@~ao: @code{true}
 
 Quando @code{tr_bound_function_applyp} for @code{true}, Maxima emite um alerta se uma associa@value{cedilha}@~ao
 de vari@'avel (tal como um argumento de fun@value{cedilha}@~ao) @'e achada sendo usada como uma fun@value{cedilha}@~ao.
-@code{tr_bound_function_applyp} n@~ao afeta o c@'odigo gerado em tais casos.
+@code{tr_bound_function_applyp} n@~ao afecta o c@'odigo gerado em tais casos.
 
 Por exemplo, uma express@~ao tal como @code{g (f, x) := f (x+1)} ir@'a disparar
 a mensagem de alerta.
@@ -1761,7 +1761,7 @@ Valor por omiss@~ao: @code{general}
 @code{false} significa abandonando e
 chamando @code{meval}, @code{expr} significa que Lisp assume fun@value{cedilha}@~ao de argumento fixado.  @code{general}, o
 c@'odigo padr@~ao dado como sendo bom para @code{mexprs} e @code{mlexprs} mas n@~ao @code{macros}.
-@code{general} garante que associa@value{cedilha}@~oes de vari@'avel s@~ao corretas em c@'odigos compilados.  No
+@code{general} garante que associa@value{cedilha}@~oes de vari@'avel s@~ao correctas em c@'odigos compilados.  No
 modo @code{general}, quando traduzindo F(X), se F for uma vari@'avel associada, ent@~ao isso
 assumir@'a que @code{apply (f, [x])} @'e significativo, e traduz como tal, com
 o alerta apropriado.  N@~ao @'e necess@'ario desabilitar isso.  Com as
@@ -1806,7 +1806,7 @@ tr_warn_fexpr, tr_warn_mode, tr_warn_undefined_variable,
 tr_function_call_default, tr_array_as_ref,tr_numer]
 @end example
 
-A lista de comutadores que afetam a forma de sa@'{@dotless{i}}da da
+A lista de comutadores que afectam a forma de sa@'{@dotless{i}}da da
 tradu@value{cedilha}@~ao.
 @c DOES THE GENERAL USER REALLY CARE ABOUT DEBUGGING THE TRANSLATOR ???
 Essa informa@value{cedilha}@~ao @'e @'util para sistemas populares quando
@@ -1829,7 +1829,7 @@ tradutor durante a tradu@value{cedilha}@~ao corrente.
 Valor por omiss@~ao: @code{true}
 
 - Emite um alerta quando
-chamadas de fun@value{cedilha}@~ao est@~ao sendo feitas por um caminho que pode n@~ao ser correto devido
+chamadas de fun@value{cedilha}@~ao est@~ao sendo feitas por um caminho que pode n@~ao ser correcto devido
 a declara@value{cedilha}@~oes impr@'oprias que foram feitas em tempo de tradu@value{cedilha}@~ao.
 
 @end defvr

@@ -346,7 +346,7 @@ e @code{tex} e @code{appendfile} sempre anexam ao final.
 @deffn {Fun@,{c}@~ao} appendfile (@var{filename})
 Adiciona ao final de @var{filename} uma transcri@,{c}@~ao do console.
 @code{appendfile} @'e o mesmo que @code{writefile}, 
-exceto que o ficheiro transcrito, se j@'a existe, ter@'a sempre alguma coisa adicionada ao seu final.
+excepto que o ficheiro transcrito, se j@'a existe, ter@'a sempre alguma coisa adicionada ao seu final.
 
 @code{closefile} fecha o ficheiro transcrito que foi aberto anteriormente por @code{appendfile} ou por @code{writefile}.
 
@@ -377,7 +377,7 @@ e r@'otulos de sa@'{@dotless{i}}da s@~ao atribu@'{@dotless{i}}dos para express@~
 @code{batch} avalia toda express@~ao de entrada no ficheiro
 a menos que exista um erro.
 Se uma entrada de utilizador for requisitada (by @code{asksign} ou @code{askinteger}, por exemplo)
-@code{batch} interrompe para coletar a entrada requisitada e ent@~ao continua.
+@code{batch} interrompe para colectar a entrada requisitada e ent@~ao continua.
 
 @c CTRL-C BREAKS batch IN CMUCL, BUT CLISP (ALTHO IT SHOWS "User break") KEEPS GOING !!!
 @c DON'T KNOW ABOUT GCL !!!
@@ -775,11 +775,11 @@ adiciona no final da lista dois direct@'orios adicionais.
 Isso pode ser conveniente para colocar assim uma express@~ao no ficheiro @code{maxima-init.mac}
 de forma que o caminho de busca de ficheiro @'e atribu@'{@dotless{i}}do automaticamente quando o Maxima inicia.
 
-Multiplas extens@~oes de ficheiro e e multiplos caminhos podem ser especificados por
+M@'ultiplas extens@~oes de ficheiro e e m@'ultiplos caminhos podem ser especificados por
 constru@,{c}@~oes ``coringa'' especiais.
 A sequ@^encia de caracteres @code{###} expande a busca para al@'em do nome b@'asico,
 enquanto uma lista separada por v@'{@dotless{i}}rgulas e entre chaves @code{@{foo,bar,baz@}} expande
-em multiplas sequ@^encias de caracteres.
+em m@'ultiplas sequ@^encias de caracteres.
 Por exemplo, supondo que o nome b@'asico a ser procurado seja @code{neumann},
 
 @example
@@ -1060,7 +1060,7 @@ para o prop@'osito de mostrar express@~oes.
 A @code{linel} pode ser atribu@'{@dotless{i}}do qualquer valor pelo utilizador,
 embora valores muio pequenos ou muito grandes possam ser impratic@'aveis.
 Textos impressos por fun@,{c}@~oes internas do Maxima, tais como mensagens de erro e a sa@'{@dotless{i}}da de @code{describe},
-n@~ao s@~ao afetadas por @code{linel}.
+n@~ao s@~ao afectadas por @code{linel}.
 
 @end defvr
 
@@ -1206,11 +1206,11 @@ Projetistas de pacotes que usam @code{save}
 ou @code{translate} para criar pacotes (ficheiros) para outros
 usarem podem querer escolher @code{packagefile: true} para prevenir qu informa@,{c}@~oes
 sejam acrescentadas @`a lista de informa@,{c}@~oes do Maxima (e.g. @code{values},
-@code{fun@,{c}@~oes}) exceto onde necess@'ario quando o ficheiro @'e carregado.
+@code{fun@,{c}@~oes}) excepto onde necess@'ario quando o ficheiro @'e carregado.
 Nesse caminho, o conte@'udo do pacote n@~ao pegar@'a no
 caminho do utilizador quando ele adicionar seus pr@'oprios dados.  Note que isso n@~ao
 resolve o problema de poss@'{@dotless{i}}veis conflitos de nome.  Tamb@'em note que
-o sinalizador simplesmente afeta o que @'e sa@'{@dotless{i}}da para o ficheiro pacote.
+o sinalizador simplesmente afecta o que @'e sa@'{@dotless{i}}da para o ficheiro pacote.
 Escolhendo o sinalizador para @code{true} @'e tamb@'em @'util para criar ficheiros de
 init do Maxima.
 
@@ -1548,7 +1548,7 @@ separados dos @'{@dotless{i}}ndices covariantes por uma v@'{@dotless{i}}rgula.
 @end deffn
 
 @deffn {Fun@,{c}@~ao} showratvars (@var{expr})
-Retorna uma lista de vari@'aveis express@~ao racional can@^onica (CRE) na express@~ao @code{expr}.
+Retorna uma lista de vari@'aveis express@~ao racional can@'onica (CRE) na express@~ao @code{expr}.
 
 Veja tamb@'em @code{ratvars}.
 
@@ -1916,7 +1916,7 @@ Quando @code{ttyoff} @'e @code{true}, express@~oes de sa@'{@dotless{i}}da n@~ao 
 Express@~oes de sa@'{@dotless{i}}da s@~ao ainda calculadas e atribu@'{@dotless{i}}das r@'otulos.  Veja @code{labels}.
 
 Textos impresso por fun@,{c}@~oes internas do Maxima, tais como mensagens de erro e a sa@'{@dotless{i}}da de @code{describe},
-n@~ao s@~ao afetadas por @code{ttyoff}.
+n@~ao s@~ao afectadas por @code{ttyoff}.
 
 @end defvr
 

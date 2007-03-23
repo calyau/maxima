@@ -827,7 +827,7 @@ kt   = g   kt
 Note que somente o tensor de @'{@dotless{i}}ndice misto @'e calculao e armazenado no
 array @code{kt}.
 
-Os coeficientes de n@~ao metricidade s@~ao calculados a partir  do vetor de n@~ao metricidade
+Os coeficientes de n@~ao metricidade s@~ao calculados a partir  do vector de n@~ao metricidade
 fornecido pelo utilizador @code{nm}. A partir disso, os coeficientes de n@~ao metricidade
 @code{nmc} s@~ao calculados como segue:
 
@@ -860,7 +860,7 @@ Calcula os coeficientes de contors@~ao de categoria (2,1) a partir do tensor de 
 
 @deffn {Fun@value{cedilha}@~ao} nonmetricity (@var{nm})
 
-Calcula o coeficiente de n@~ao metricidade de categoria (2,1) a partir do vetor de
+Calcula o coeficiente de n@~ao metricidade de categoria (2,1) a partir do vector de
 n@~ao metricidade @var{nm}.
 
 @end deffn
@@ -881,7 +881,7 @@ fun@value{cedilha}@~aoes que definem a transforma@value{cedilha}@~ao.  (Formalme
 
 Retorna uma lista de equa@value{cedilha}@~oes diferenciais @'unicas (express@~oes)
 correspondendo aos elementos do array quadrado @var{n} dimensional
-@var{A}. Atualmente, @var{n} pode ser 2 ou 3. @code{deindex} @'e uma lista global
+@var{A}. Actualmente, @var{n} pode ser 2 ou 3. @code{deindex} @'e uma lista global
 contendo os @'{@dotless{i}}ndices de @var{A} correspondendo a essas @'unicas
 equa@value{cedilha}@~oes diferenciais. Para o tensor de Einstein (@code{ein}), que
 @'e um array dimensional, se calculado para a m@'etrica no exemplo
@@ -930,14 +930,14 @@ abaixo, @code{findde} fornece as seguintes equa@value{cedilha}@~oes diferenciais
 @end deffn
 @deffn {Fun@value{cedilha}@~ao} cograd ()
 Calcula o gradiente covariante de uma fun@value{cedilha}@~ao escalar permitindo ao
-utilizador escolher o nome do vetor correspondente como o exemplo sob
+utilizador escolher o nome do vector correspondente como o exemplo sob
 @code{contragrad} ilustra.
 @end deffn
 @deffn {Fun@value{cedilha}@~ao} contragrad ()
 
 Calcula o gradiente contravariante de uma fun@value{cedilha}@~ao escalar permitindo
 @c "vector^F2name^F*" LOOKS LIKE IT NEEDS TO BE FIXED UP, NOT SURE HOW THOUGH
-ao utilizador escolher o nome do vetor correspondente como o exemplo
+ao utilizador escolher o nome do vector correspondente como o exemplo
 abaixo como ilustra a m@'etrica de Schwarzschild:
 
 @example
@@ -993,10 +993,10 @@ as depend@^encias tiverem sido declaradas sobre a fun@value{cedilha}@~ao. Po exe
 
 Calcula a diverg@^encia covariante do tensor de segunda categoria misto
 (cujo primeiro @'{@dotless{i}}ndice deve ser covariante) imprimindo as
-correspondentes n componentes do campo do vetor (a diverg@^encia) onde
+correspondentes n componentes do campo do vector (a diverg@^encia) onde
 n = @code{dim}. Se o argumento para a fun@value{cedilha}@~ao for @code{g} ent@~ao a
 diverg@^encia do tensor de Einstein ser@'a formada e pode ser zero.
-Adicionalmente, a diverg@^encia (vetor) @'e dada no array chamado @code{div}.
+Adicionalmente, a diverg@^encia (vector) @'e dada no array chamado @code{div}.
 @end deffn
 
 @deffn {Fun@value{cedilha}@~ao} cgeodesic (@var{dis})
@@ -1320,15 +1320,15 @@ automaticamente por @code{csetup} se uma m@'etrica diagonal for especificada.
 
 @defvr {Vari@'avel de op@value{cedilha}@~ao} ctrgsimp
 
-Faz com que simplifica@value{cedilha}@~oes trigonom@'etricas sejam usadas quando tensores forem calculados. Atualmente,
-@code{ctrgsimp} afeta somente c@'alculos envolvendo uma moldura m@'ovel.
+Faz com que simplifica@value{cedilha}@~oes trigonom@'etricas sejam usadas quando tensores forem calculados. Actualmente,
+@code{ctrgsimp} afecta somente c@'alculos envolvendo uma moldura m@'ovel.
 
 @end defvr
 
 @defvr {Vari@'avel de op@value{cedilha}@~ao} cframe_flag
 
 Faz com que c@'alculos sejam executados relativamente a uma moldura m@'ovel em oposi@value{cedilha}@~ao a
-uma m@'etrica holon@^omica. A moldura @'e definida atrav@'es do array da moldura inversa @code{fri}
+uma m@'etrica holon@'omica. A moldura @'e definida atrav@'es do array da moldura inversa @code{fri}
 e da m@'etrica da moldura @code{lfg}. Para c@'alculos usando uma moldura Cartesiana,
 @code{lfg} pode ser a matriz unit@'aria de dimens@~ao apropriada; para
 c@'alculos em uma moldura de Lorentz, @code{lfg} pode ter a assinatura
@@ -1348,7 +1348,7 @@ coeficientes de conec@value{cedilha}@~ao. O tensor de contors@~ao por si mesmo @
 
 Faz com que os coeficientes de n@~ao metricidade sejam inclu@'{@dotless{i}}dos no c@'alculo dos
 coeficientes de conec@value{cedilha}@~ao. Os coeficientes de n@~ao metricidade s@~ao calculados
-a partir do vetor de n@~ao metricidade @code{nm} fornecido pelo utilizador atrav@'es da fun@value{cedilha}@~ao
+a partir do vector de n@~ao metricidade @code{nm} fornecido pelo utilizador atrav@'es da fun@value{cedilha}@~ao
 @code{nonmetricity}.
 
 @end defvr

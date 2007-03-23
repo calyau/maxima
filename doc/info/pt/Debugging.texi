@@ -177,7 +177,7 @@ Avalia @code{alguma-forma} como uma forma Lisp
 @item :lisp-quiet alguma-forma
 Avalia a forma Lisp @code{alguma-forma} sem qualquer sa@'{@dotless{i}}da
 @item :next
-Como @code{:step}, exceto @code{:next} passos sobre chamadas de fu@,{c}@~ao
+Como @code{:step}, excepto @code{:next} passos sobre chamadas de fu@,{c}@~ao
 @item :quit
 Sai do n@'{@dotless{i}}vel corrente do depurador sem concluir a computa@,{c}@~ao
 @item :resume
@@ -264,7 +264,7 @@ Veja tamb@'em @code{setcheck} e @code{setcheckbreak}.
 @deffn {Fun@,{c}@~ao} timer (@var{f_1}, ..., @var{f_n})
 @deffnx {Fun@,{c}@~ao} timer ()
 Dadas as fun@,{c}@~oes @var{f_1}, ..., @var{f_n},
-@code{timer} coloca cada uma na lista de fun@,{c}@~oes para as quais cronometragens estat@'{@dotless{i}}sticas s@~ao coletadas.
+@code{timer} coloca cada uma na lista de fun@,{c}@~oes para as quais cronometragens estat@'{@dotless{i}}sticas s@~ao colectadas.
 @code{timer(f)$ timer(g)$} coloca @code{f} e ent@~ao @code{g} sobre a lista;
 a lista acumula de uma chamada para a chamada seguinte.
 
@@ -295,7 +295,7 @@ Dadas as fun@,{c}@~oes @var{f_1}, ..., @var{f_n},
 Sem argumentos, @code{untimer} remove todas as fun@,{c}@~oes actualmente na  lista de fun@,{c}@~oes estatisticamente monitoradas.
 
 Ap@'os @code{untimer (f)} ser executada, @code{timer_info (f)} ainda retorna
-estatisticas de tempo previamente coletadas,
+estatisticas de tempo previamente colectadas,
 embora @code{timer_info()} (sem argumentos) n@~ao
 retorna informa@,{c}@~oes sobre qualquer fun@,{c}@~ao que n@~ao estiver actualmente na lista de fun@,{c}@~oes tempo estatisticamente monitoradas.
 @code{timer (f)} reposiciona todas as estatisticas de tempo para zero

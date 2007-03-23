@@ -140,7 +140,7 @@ e @code{gcd}.
 @node Descartando, Documenta@value{cedilha}@~ao, Lisp e Maxima, Ajuda
 @section Descartando
 Computa@value{cedilha}@~ao simb@'olica tende a criar um bom volume
-de ficheiros tempor@'arios, e o efetivo manuseio disso pode ser crucial para sucesso
+de ficheiros tempor@'arios, e o efectivo manuseio disso pode ser crucial para sucesso
 completo de alguns programas.
 
 @c HOW MUCH OF THE FOLLOWING STILL HOLDS ??

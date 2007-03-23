@@ -141,7 +141,7 @@ que a fun@value{cedilha}@~ao @code{go} n@~ao pode ser usada para sair de dentro 
 @code{block} que o envolve.
 
 A vari@'avel de controle @'e sempre local para o @code{do} e dessa forma qualquer
-vari@'avel pode ser usada sem afetar o valor de uma vari@'avel com
+vari@'avel pode ser usada sem afectar o valor de uma vari@'avel com
 o mesmo nome fora da declara@value{cedilha}@~ao @code{do}.  A vari@'avel de controle @'e liberada
 ap@'os o encerramento da declara@value{cedilha}@~ao @code{do}.
 
@@ -310,7 +310,7 @@ que junta todas as sequ@^encias de caracteres entre os argumentos @var{expr_1}, 
 e os elementos restantes s@~ao os valores de quaisquer argumentos que n@~ao s@~ao sequ@^encias de caracteres.
 
 @code{errormsg()} formata e imprime @code{error}.
-Isso efetivamente reimprime a mais recente mensagem de erro.
+Isso efectivamente reimprime a mais recente mensagem de erro.
 
 @end deffn
 
@@ -475,7 +475,7 @@ em todas as partes das express@~oes @var{expr_1}, ..., @var{expr_n}.
 
 @code{maplist} difere de @code{map (@var{f}, @var{expr_1}, ..., @var{expr_n})}
 que retorna uma express@~ao com o mesmo operador principal que @var{expr_i} tem
-(exceto para simplifica@value{cedilha}@~oes  e o caso onde @code{map} faz um @code{apply}).
+(excepto para simplifica@value{cedilha}@~oes  e o caso onde @code{map} faz um @code{apply}).
 
 @end deffn
 
@@ -582,7 +582,7 @@ Ent@~ao @var{x} tem a mesma estrutura da primeira lista, lista aninhada, ou argu
 e assim por diante,
 onde @var{m}, @var{n}, ... s@~ao os n@'umeros dos @'{@dotless{i}}ndices requeridos para acessar os
 elementos de cada argumento (um para uma lista, dois para uma matriz, um ou mais para uma lista aninhada).
-Argumentos que n@~ao forem listas ou matrizes n@~ao afetam a estrutura do valor de retorno.
+Argumentos que n@~ao forem listas ou matrizes n@~ao afectam a estrutura do valor de retorno.
 
 Note que o efeito de @code{outermap} @'e diferente daquele de aplicar @var{f}
 a cada um dos elementos do produto externo retornado por @code{cartesian_product}.

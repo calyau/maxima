@@ -266,7 +266,7 @@ Outras fun@value{cedilha}@~oes para mudan@value{cedilha}as de base: @code{comp2e
 
 
 @deffn {Fun@value{cedilha}@~ao} pui2ele (@var{n}, @var{lpui})
-efetiva a passagem de fun@value{cedilha}@~oes exponenciais para as fun@value{cedilha}@~oes elementares sim@'etricas.
+efectiva a passagem de fun@value{cedilha}@~oes exponenciais para as fun@value{cedilha}@~oes elementares sim@'etricas.
 Se o sinalizador @code{pui2ele} for @code{girard}, @code{pui2ele} ir@'a retornar a lista de
 fun@value{cedilha}@~oes elementares sim@'etricas de 1 a @var{n}, e se o sinalizador for
 @code{close}, @code{pui2ele} retornar@'a a @var{n}-@'esima fun@value{cedilha}@~ao sim@'etrica elementar.

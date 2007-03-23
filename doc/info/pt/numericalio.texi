@@ -41,7 +41,7 @@ Se o nome do ficheiro termina em alguma outra coisa que n@~ao @code{.csv} e @cod
 Para sa@'{@dotless{i}}da, os mesmos quatro sinalizadores s@~ao reconhecidos como na entrada,
 e tamb@'em @code{tab}, para valores separados pelo caractere de tabula@value{cedilha}ao.
 
-Em entrada, m@'ultiplos espa@value{cedilha}os e multiplas tabula@value{cedilha}@~oes sucessivas contam como um separador simples.
+Em entrada, m@'ultiplos espa@value{cedilha}os e m@'ultiplas tabula@value{cedilha}@~oes sucessivas contam como um separador simples.
 Todavia, m@'ultiplas v@'{@dotless{i}}rgulas, barras verticais, ou ponto-e-v@'{@dotless{i}}rgulas s@~ao significativos.
 Sucessivas v@'{@dotless{i}}rgulas, barras verticais, ou ponto-e-v@'{@dotless{i}}rgulas (com ou sem intercala@value{cedilha}@~ao de espa@value{cedilha}os ou tabula@value{cedilha}@~oes)
 s@~ao considerados como tendo @code{false} entre os separadores.
@@ -53,7 +53,7 @@ e n@~ao @'e tentado colapsar a sa@'{@dotless{i}}da para @code{1234,,Foo}.
 @node Defini@value{cedilha}@~oes para numericalio,  , Introdu@value{cedilha}@~ao a numericalio, numericalio
 @section Defini@value{cedilha}@~oes para numericalio
 
-@deffn {Fun@value{cedilha}@~ao} read_matrix (@var{nomeficheiro})
+   @deffn {Fun@value{cedilha}@~ao} read_matrix (@var{nomeficheiro})
 @deffnx {Fun@value{cedilha}@~ao} read_matrix (@var{nomeficheiro}, @var{separator_flag})
 L@^e o ficheiro @var{nomeficheiro} e retorna seu conte@'udo completo como uma matriz.
 Se @var{separator_flag} n@~ao for especificado, o ficheiro @'e assumido como delimitado por espa@value{cedilha}os em branco.

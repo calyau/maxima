@@ -68,7 +68,7 @@ para o resultado anterior.
 @end example
 
 Alternativamente, fa@value{cedilha}a o segundo argumento  para @code{legendre_p} (sua vari@'avel ``principal'') 
-uma express@~ao racional can@^onica (CRE)  usando @code{rat(x)} em lugar de somente @code{x}.
+uma express@~ao racional can@'onica (CRE)  usando @code{rat(x)} em lugar de somente @code{x}.
 
 @c ===beg===
 @c legendre_p (3, rat (x));
@@ -110,7 +110,7 @@ op@value{cedilha}@~ao @code{orthopoly_returns_intervals} para @code{false}.
 (%o2)                  - 0.062017037936715
 @end example
 
-Veja a se@value{cedilha}@~ao @pxref{Avalia@value{cedilha}@~ao em Ponto Flutuante} para maiores informa@value{cedilha}@~oesfor more information.
+Veja a sec@value{cedilha}@~ao @pxref{Avalia@value{cedilha}@~ao em Ponto Flutuante} para maiores informa@value{cedilha}@~oes.
 
 Muitas fun@value{cedilha}@~oes em @code{orthopoly} possuem uma propriedade @code{gradef}; dessa forma
 
@@ -758,7 +758,7 @@ rela@value{cedilha}@~ao ao grau do polin@'omio.
 @end example
 
 O segundo argumento a @code{orthopoly_recur} deve ser uma lista com o 
-n@'umero correto de argumentos para a fun@value{cedilha}@~ao @var{f}; se o n@'umero de argumetnos n@~ao for o correto, 
+n@'umero correcto de argumentos para a fun@value{cedilha}@~ao @var{f}; se o n@'umero de argumentos n@~ao for o correcto, 
 Maxima sinaliza com um erro.
 
 @c ===beg===

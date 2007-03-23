@@ -289,7 +289,7 @@ externa (mostrada) de @var{expr}.  Para listas isso @'e o n@'umero de elementos,
 para matrizes isso @'e o n@'umero de linhas, e para adi@value{cedilha}@~oes isso @'e o n@'umero
 de parcelas (veja @code{dispform}).
 
-O comando @code{length} @'e afetado pelo comutador
+O comando @code{length} @'e afectado pelo comutador
 @code{inflag}.  Ent@~ao, e.g. @code{length(a/(b*c));} retorna 2 se
 @code{inflag} for @code{false} (Assumindo @code{exptdispflag} sendo @code{true}), mas 3 se @code{inflag} for
 @code{true} (A representa@value{cedilha}@~ao interna @'e essencialmente @code{a*b^-1*c^-1}).

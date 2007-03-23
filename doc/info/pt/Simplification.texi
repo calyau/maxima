@@ -505,7 +505,7 @@ positiva.  @code{is (f(x) > 0)} retorna @code{true}.
 @deffn {Fun@value{cedilha}@~ao} radcan (@var{expr})
 Simplifica @var{expr}, que pode conter logaritmos,
 exponenciais, e radicais, convertendo essa express@~ao numa forma
-can@^onica sobre uma ampla classe de express@~oes e com uma dada
+can@'onica sobre uma ampla classe de express@~oes e com uma dada
 ordena@value{cedilha}@~ao de vari@'aveis; isto @'e, todas as formas
 funcionalmente equivalentes s@~ao mapeadas numa @'unica forma.  Para uma
 classe ampla de express@~oes, @code{radcan} produz uma forma regular.

@@ -104,7 +104,7 @@ Os argumentos podem ser quaisquer formas adequadas para @code{ratvars}, ou eles 
 listas  de tais formas.  Se os argumentos n@~ao forem listas, ent@~ao a forma
 retornada @'e completamente expandida com rela@value{cedilha}@~ao aos argumentos,  e os
 coeficientes dos argumentos foram factorados.  Esses coeficientes s@~ao
-livres dos argumentos, exceto talvez no sentido n@~ao racional.
+livres dos argumentos, excepto talvez no sentido n@~ao racional.
 
 Se quaisquer dos argumentos forem listas, ent@~ao todas as tais listas s@~ao combinadas
 em uma lista simples,   e em lugar de chamar @code{factor}   sobre os
@@ -130,7 +130,7 @@ pode-se avaliar @code{facsum (@var{expr}, operator (@var{op_1}, ..., @var{op_n})
 A forma @code{operator} pode tamb@'em aparecer dentro de uma lista de argumentos.
 
 Adicionalmente,  a escolha de comutadores @code{facsum_combine}  e
-@code{nextlayerfactor} pode afetar o ressultado de @code{facsum}.
+@code{nextlayerfactor} pode afectar o ressultado de @code{facsum}.
 @end deffn
 
 @defvr {Vari@'avel global} nextlayerfactor
@@ -224,7 +224,7 @@ Para usar essa fun@value{cedilha}@~ao escreva primeiramente @code{load(functs)}.
 @deffn {Fun@value{cedilha}@~ao} rational (@code{z})
 Multiplica o numerador e o denominador de @var{z} pelo complexo conjugado do denominador,
 racionando dessa forma o denominador complexo.
-Retorna a forma de express@~ao racional can@^onica (CRE) se fornecida uma CRE, caso contr@'ario retorna a forma geral.
+Retorna a forma de express@~ao racional can@'onica (CRE) se fornecida uma CRE, caso contr@'ario retorna a forma geral.
 
 Para usar essa fun@value{cedilha}@~ao escreva primeiramente @code{load(functs)}.
 @end deffn
@@ -529,7 +529,7 @@ para escolher a base de dados das quantidades constantes ocorrendo em suas
 express@~oes.
 
 Se est@'a a planear gerar sa@'{@dotless{i}}das em Fortran ap@'os esses
-c@'alculos simb@'olicos, uma das primeiras se@value{cedilha}@~oes de
+c@'alculos simb@'olicos, uma das primeiras sec@value{cedilha}@~oes de
 c@'odigo pode ser o c@'alculo de todas as constantes.  Para gerar esse
 segmento de c@'odigo, fa@value{cedilha}a
 
@@ -537,7 +537,7 @@ segmento de c@'odigo, fa@value{cedilha}a
 map ('fortran, const_eqns)$
 @end example
 
-Variables como @code{const_eqns} que afetam @code{reduce_consts} s@~ao:
+Variables como @code{const_eqns} que afectam @code{reduce_consts} s@~ao:
 
 @code{const_prefix} (valor padr@~ao: @code{xx}) @'e a sequ@^encia de caracteres usada para prefixar todos
 os s@'{@dotless{i}}mbolos gerados por @code{reduce_consts} para representar subexpress@~oes constantes.

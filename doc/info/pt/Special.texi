@@ -375,7 +375,7 @@ Retorna o factor num@'erico multiplicando a express@~ao
 Converte @var{a} de um c@'odigo de Poisson para uma representa@value{cedilha}@~ao
 geral.  Se @var{a} n@~ao for uma forma de Poisson, @code{outofpois} realiza a convers@~ao,
 i.e., o valor de retorno @'e @code{outofpois (intopois (@var{a}))}.
-Essa fun@value{cedilha}@~ao @'e desse modo um simplificador can@^onico
+Essa fun@value{cedilha}@~ao @'e desse modo um simplificador can@'onico
 para adi@value{cedilha}@~oes e pot@^encias de termos de seno e cosseno de um tipo particular.
 
 @end deffn

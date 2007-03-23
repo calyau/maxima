@@ -274,16 +274,16 @@ ser@~ao todas matrizes de tamanho apropriado; por exemplo:
 
 @deffn {Fun@value{cedilha}@~ao} dotproduct (@var{u}, @var{v})
 
-Retorna o produto do ponto (produto escalar) dos vetores @var{u} e @var{v}.  Isso @'e o mesmo
+Retorna o produto do ponto (produto escalar) dos vectores @var{u} e @var{v}.  Isso @'e o mesmo
 que @code{conjugate (transpose (@var{u})) . @var{v}}.  Os argumentos @var{u} e @var{v} devem ser
-vetores coluna.
+vectores coluna.
 
 @end deffn
 
 @deffn {Fun@value{cedilha}@~ao} eigens_by_jacobi (@var{A})
 @deffnx {Fun@value{cedilha}@~ao} eigens_by_jacobi (@var{A}, @var{tipo_corpo})
 
-Calculam os autovalores e autovetores de @var{A} pelo m@'etodo de rota@value{cedilha}@~oes de Jacobi.
+Calculam os autovalores e autovectores de @var{A} pelo m@'etodo de rota@value{cedilha}@~oes de Jacobi.
 @var{A} deve ser uma matriz sim@'etrica (mas essa matriz sim@'etrica precisa n@~ao ser nem definida positiva e nem semidefinida positiva).
 @var{tipo_corpo} indica o corpo computacional, pode ser ou @code{floatfield} ou @code{bigfloatfield}.
 Se @var{tipo_corpo} n@~ao for especificado, o padr@~ao @'e @code{floatfield}.
@@ -365,8 +365,8 @@ a diagonal preenchida com a unidade, e @var{U} @'e triangular alta, e @code{@var
 @deffnx {Fun@value{cedilha}@~ao} hankel (@var{col}, @var{lin})
 
 Retorna uma matriz de Hankel @var{H}. A primeira coluna de @var{H} @'e @var{col};
-exceto para a primeira entrada, a @'ultima linha de @var{H} @'e @var{lin}. O
-valor padr@~ao para @var{lin} @'e o vetor nulo com o mesmo comprimento que @var{col}.
+excepto para a primeira entrada, a @'ultima linha de @var{H} @'e @var{lin}. O
+valor padr@~ao para @var{lin} @'e o vector nulo com o mesmo comprimento que @var{col}.
 
 @end deffn
 
@@ -437,7 +437,7 @@ Existem tr@^es casos:
 (1) @code{@var{rel} = 'bool} e @var{f} um predicado: 
 
 Examina a sub-matriz da esquerda para a direita e de cima para baixo,
-e retorna o @'{@dotless{i}}ndice da primeria entrada que satisfizer o 
+e retorna o @'{@dotless{i}}ndice da primeira entrada que satisfizer o 
 predicado @var{f}. Se nenhuma entrada da matriz satisfizer o predicado @var{f}, retorna @code{false}.
 
 (2) @code{@var{rel} = 'max} e @var{f} avaliar para um n@'umero real:
@@ -489,7 +489,7 @@ ou da forma @code{[@var{LU}, @var{perm}, @var{cmp}, @var{baixo-cnd} @var{alto-cn
     (b) @code{floatfield} --  o corpo dos n@'umeros em ponto flutuante do tipo de precis@~ao dupla,
     (c) @code{complexfield} --  o corpo dos n@'umeros complexos em ponto flutuante do 
         tipo de precis@~ao dupla,
-    (d) @code{crering}  -- o anel das express@~oes racionais can@^onicas (CRE) do Maxima,
+    (d) @code{crering}  -- o anel das express@~oes racionais can@'onicas (CRE) do Maxima,
     (e) @code{rationalfield} -- o corpo dos n@'umeros racionais,
     (f) @code{runningerror} -- rastro de todos os erros de arredondamento de n@'umeros em ponto flutuante,
      (g) @code{noncommutingring} -- o anel de express@~oes do Maxima onde multiplica@value{cedilha}@~ao for o
@@ -718,7 +718,7 @@ Se @var{M} for uma matriz, retorna a dimens@~ao do espa@value{cedilha}o nulo de 
 Retorna @code{span (u_1, ..., u_m)}, onde o conjunto @code{@{u_1, ..., u_m@}} @'e uma 
 base para o complemento ortogonal do conjunto @code{(v_1, ..., v_n)}.
 
-Cada vetor no intervalo de @var{v_1} at@'e @var{v_n} deve ser um vetor coluna.
+Cada vector no intervalo de @var{v_1} at@'e @var{v_n} deve ser um vector coluna.
 
 @end deffn
 
@@ -870,7 +870,7 @@ Se @var{M} for uma matriz, permuta as linha @var{i} e @var{j}. Se @var{M} n@~ao 
 @deffnx {Fun@value{cedilha}@~ao} toeplitz (@var{col}, @var{lin})
 
 Retorna uma matriz de Toeplitz @var{T}. a primeira coluna de @var{T} @'e @var{col};
-exceto para a primeira entrada, a primeira linha de @var{T} @'e @var{lin}. O
+excepto para a primeira entrada, a primeira linha de @var{T} @'e @var{lin}. O
 padr@~ao para @var{lin} @'e o conjugado complexo de @var{col}. Exemplo:
 @c ===beg===
 @c load(linearalgebra)$

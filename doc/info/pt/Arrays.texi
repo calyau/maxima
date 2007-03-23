@@ -34,7 +34,7 @@ o codigo desordenado termina nos subscritos), s@~ao mais gerais que arrays
 declarados.  O utilizador n@~ao declara seu tamanho m@'aximo, e ele cresce
 dinamicamente e desordenadamente @`a medida que s@~ao atribu@'{@dotless{i}}dos valores a mais elementos.  Os
 subscritos de um array n@~ao declarado n@~ao precisam sempre ser n@'umeros.  Todavia,
-exceto para um array um tanto quanto esparso, @'e provavelmente mais eficiente
+excepto para um array um tanto quanto esparso, @'e provavelmente mais eficiente
 declarar isso quando poss@'{@dotless{i}}vel que deixar n@~ao declarado.  A fun@value{cedilha}@~ao @code{array}
 pode ser usada para transformar um array n@~ao declarado em um array
 declarado.
@@ -46,7 +46,7 @@ declarado.
 Avalia @code{@var{A} [@var{i_1}, ..., @var{i_n}]},
 quando @var{A} for um array e @var{i_1}, ..., @var{i_n} s@~ao inteiros.
 
-Ela @'e remanescente de @code{apply}, exceto o primeiro argumento que @'e um array ao inv@'es de uma fun@value{cedilha}@~ao.
+Ela @'e remanescente de @code{apply}, excepto o primeiro argumento que @'e um array ao inv@'es de uma fun@value{cedilha}@~ao.
 
 @end deffn
 
@@ -184,7 +184,7 @@ Retorna a express@~ao @code{@var{A}[@var{i_1}, ..., @var{i_n}]}.
 O resultado @'e uma refer@^encia a um array n@~ao avaliado.
 
 @code{arraymake} @'e remanic@^encia de @code{funmake},
-exceto o valor retornado @'e um array de refer@^encia n@~ao avaliado
+excepto o valor retornado @'e um array de refer@^encia n@~ao avaliado
 ao inv@'es de uma chamada de fun@value{cedilha}@~ao n@~ao avaliada.
 
 Exemplos:

@@ -49,9 +49,9 @@ As @var{eqns} s@~ao
 equa@value{cedilha}@~oes polinomiais em vari@'aveis n@~ao comutativas.
 O valor de @code{current_variables}  @'e uma 
 lista de vari@'aveis usadas para calcular graus.  As equa@value{cedilha}@~oes podem ser
-homog@^eneas, em ordem para o procedimento terminar.  
+homog@'eneas, de forma a que o procedimento termine.  
 
-Se tiver optado por sobreposi@,{c}@~ao de simplifica@value{cedilha}@~oes
+Se tiver optado por sobreposi@value{cedilha}@~ao de simplifica@value{cedilha}@~oes
 em @code{dot_simplifications} acima do grau de @var{f}, ent@~ao o
 seguinte @'e verdadeiro: @code{dotsimp (@var{f})} retorna 0 se, e
 somente se, @var{f} est@'a no ideal gerado pelas
@@ -60,7 +60,7 @@ combina@value{cedilha}@~ao polinomial dos elementos das
 equa@value{cedilha}@~oes.
 
 O grau @'e aquele retornado por @code{nc_degree}.  Isso por sua vez @'e
-nfluenciado pelos pesos das vari@'aveis individuais.
+influenciado pelos pesos das vari@'aveis individuais.
 
 @end deffn
 
@@ -97,11 +97,11 @@ fast_central_elements ([x, y], 2);
 
 @c THIS IS NOT AT ALL CLEAR
 @deffn {Fun@value{cedilha}@~ao} check_overlaps (@var{n}, @var{add_to_simps})
-Verifica as sobreposi@,{c}@~oes atrav@'es do grau @var{n}, garantindo
+Verifica as sobreposi@value{cedilha}@~oes atrav@'es do grau @var{n}, garantindo
 que tem regras de simplifica@value{cedilha}@~o suficientes em cada grau,
-para @code{dotsimp} trabalhar corretamente.  Esse processo pode ser mais
+para @code{dotsimp} trabalhar correctamente.  Esse processo pode ser mais
 r@'apido se souber de antem@~ao a dimens@~ao do espa@value{cedilha}o de
-mon@^omios.  Se for de dimens@~ao global finita, ent@~ao @code{hilbert}
+mon@'omios.  Se for de dimens@~ao global finita, ent@~ao @code{hilbert}
 pode ser usada.  Se n@~ao conhece as dimens@~oes monomiais, n@~ao
 especifique nenhum @code{rank_function}.  Um terceiro argumento
 opcional, @code{reset}, @code{false} diz para n@~ao se incomodar em
@@ -110,7 +110,7 @@ perguntar sobre reiniciar coisas.
 @end deffn
 
 @deffn {Fun@value{cedilha}@~ao} mono ([@var{x_1}, ..., @var{x_n}], @var{n})
-Retorna a lista de mon@^omios independentes
+Retorna a lista de mon@'omios independentes
 relativamente @`a simplifica@value{cedilha}@~ao actual do grau @var{n}
 nas vari@'aveis @var{x_1}, ..., @var{x_n}.
 
@@ -126,14 +126,14 @@ Calcula a s@'erie de Hilbert atrav@'es do grau @var{n} para a algebra corrente.
 Faz uma lista dos coeficientes dos polin@'omios n@~ao comutativos @var{p_1}, ..., @var{p_n}
 dos monomios n@~ao comutatvos @var{m_1}, ..., @var{m_n}.
 Os coeficientes podem ser escalares.   Use @code{list_nc_monomials} para construir a lista dos
-mon@^omios.
+mon@'omios.
 
 @end deffn
 
 @deffn {Fun@value{cedilha}@~ao} list_nc_monomials ([@var{p_1}, ..., @var{p_n}])
 @deffnx {Fun@value{cedilha}@~ao} list_nc_monomials (@var{p})
 
-Retorna uma lista de mon@^omios n@~ao comutativos que ocorrem em um polin@'omio @var{p}
+Retorna uma lista de mon@'omios n@~ao comutativos que ocorrem em um polin@'omio @var{p}
 ou em uma lista de polin@'omios @var{p_1}, ..., @var{p_n}.
 
 @end deffn
@@ -184,7 +184,7 @@ os denominadores encontrados por @code{dotsimp} s@~ao adicionados ao final da li
 @code{all_dotsimp_denoms} pode ser iniciado como uma lista vazia @code{[]}
 antes chamando @code{dotsimp}.
 
-Por padr@~ao, denominadores n@~ao s@~ao coletados por @code{dotsimp}.
+Por padr@~ao, denominadores n@~ao s@~ao colectados por @code{dotsimp}.
 
 @end defvr
 

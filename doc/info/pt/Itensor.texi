@@ -61,7 +61,7 @@ de fun@value{cedilha}@~ao, e a avalia@value{cedilha}@~ao de objectos "indexados"
 @subsection Nova nota@value{cedilha}@~ao d tensores
 
 At@'e agora, o pacote @code{itensor} no Maxima tinha usado uma nota@value{cedilha}@~ao que algumas vezes
-conduzia a ordena@value{cedilha}@~ao incorreta de @'{@dotless{i}}ndices. Considere o seguinte, por exemplo:
+conduzia a ordena@value{cedilha}@~ao incorrecta de @'{@dotless{i}}ndices. Considere o seguinte, por exemplo:
 
 @example
 (%i2) imetric(g);
@@ -75,8 +75,8 @@ conduzia a ordena@value{cedilha}@~ao incorreta de @'{@dotless{i}}ndices. Conside
 (%t4)                                a
 @end example
 
-O resultado est@'a incorreto a menos que ocorra ser @code{a} um tensor sim@'etrico.
-A raz@~ao para isso @'e que embora @code{itensor} mantenha corretamente
+O resultado est@'a incorrecto a menos que ocorra ser @code{a} um tensor sim@'etrico.
+A raz@~ao para isso @'e que embora @code{itensor} mantenha correctamente
 a ordem dentro do conjunto de @'{@dotless{i}}ndices covariantes e contravariantes, assim que um
 @'{@dotless{i}}ndice @'e incrementado ou decrementado, sua posi@value{cedilha}@~ao relativa para o outro conjunto de
 @'{@dotless{i}}ndices @'e perdida.
@@ -88,7 +88,7 @@ apropriada na lista de @'{@dotless{i}}ndices covariantes, mas com um sinal de me
 Fun@value{cedilha}@~oes como @code{contract} e @code{ishow} est@~ao agora consciente dessa
 nova nota@value{cedilha}@~ao de @'{@dotless{i}}ndice e podem processar tensores apropriadamente.
 
-Nessa nova nota@value{cedilha}@~ao, o exemplo anterior retorna um resultado correto:
+Nessa nova nota@value{cedilha}@~ao, o exemplo anterior retorna um resultado correcto:
 
 @example
 (%i5) ishow(g([-j,-k],[])*g([-i,-l],[])*a([i,j],[]))$
@@ -132,7 +132,7 @@ Eles podem ser explicitamente especificado pelo utilizador ou serem criados no
 processo de diferencia@value{cedilha}@~ao com rela@value{cedilha}@~ao a alguma vari@'avel coordenada.
 Uma vez que diferencia@value{cedilha}@~ao ordin@'aria @'e comutativa, os @'{@dotless{i}}ndices de deriva@value{cedilha}@~ao
 s@~ao ordenados alfanumericamente, a menos que @code{iframe_flag} seja escolhida para @code{true},
-indicando que uma moldura m@'etrica est@'a sendo usada. Essa ordena@value{cedilha}@~ao can@^onica torna
+indicando que uma moldura m@'etrica est@'a sendo usada. Essa ordena@value{cedilha}@~ao can@'onica torna
 poss@'{@dotless{i}}vel para Maxima reconhecer que, por exemplo, @code{t([a],[b],i,j)} @'e
 o mesmo que @code{t([a],[b],j,i)}.  Diferencia@value{cedilha}@~ao de um objecto indexado com
 rela@value{cedilha}@~ao a alguma coordenada cujos @'{@dotless{i}}ndices n@~ao aparecem como um argumento
@@ -148,7 +148,7 @@ incrementar @'{@dotless{i}}ndices derivativos, e ent@~ao eles s@~ao sempre trata
 covariantes.
 
 As seguintes fun@value{cedilha}@~oes est@~ao dispon@'{@dotless{i}}veis no pacote tensor para
-manipula@value{cedilha}@~ao de objectos.  Atualmente, com rela@value{cedilha}@~ao @`as
+manipula@value{cedilha}@~ao de objectos.  Actualmente, com rela@value{cedilha}@~ao @`as
 rotinas de simplifica@value{cedilha}@~ao, @'e assumido que objectos indexados n@~ao
 possuem por padr@~ao propriedades sim@'etricas. Isso pode ser modificado atrav@'es
 da escolha da vari@'avel @code{allsym[false]} para @code{true}, o que ir@'a
@@ -461,7 +461,7 @@ onde qualquer lista pode ser vazia. @var{expr} pode ser qualquer express@~ao ind
 envolvendo outros objectos com os mesmos @'{@dotless{i}}ndices livres que @var{tensor}. Quando
 usada para atribuir valores a um tensor m@'etrico no qual as componentes
 possuem @'{@dotless{i}}ndices que ocorrem exactamente duas vezes se deve ser cuidadoso para definir esses @'{@dotless{i}}ndices de forma a
-evitar a gera@value{cedilha}@~ao de @'{@dotless{i}}ndices que ocorrem exactamente duas vezes e que s@~ao multiplos. a remo@value{cedilha}@~ao dessas
+evitar a gera@value{cedilha}@~ao de @'{@dotless{i}}ndices que ocorrem exactamente duas vezes e que s@~ao m@'ultiplos. a remo@value{cedilha}@~ao dessas
 atribui@value{cedilha}@~oes @'e dada para a fun@value{cedilha}@~ao @code{remcomps}.
 
 @'E importante ter em mente que @code{components} cuida somente da
@@ -799,7 +799,7 @@ de tensores nos quais nenhum @'{@dotless{i}}ndice derivativo estiver presente. C
 e pode somente ser usado se @code{canform} n@~ao for capaz de realizar a
 simplifica@value{cedilha}@~ao requerida.
 
-A fun@value{cedilha}@~ao @code{canten} retorna um resultado matematicamente correto somente
+A fun@value{cedilha}@~ao @code{canten} retorna um resultado matematicamente correcto somente
 se seu argumento for uma express@~ao que @'e completamente sim@'etrica em seus @'{@dotless{i}}ndices.
 Por essa raz@~ao, @code{canten} retorna um erro se @code{allsym} n@~ao for
 posicionada em @code{true}.
@@ -893,7 +893,7 @@ larga o c@'alculo pode tomar um consider@'avel montante de tempo.
 Esse tempo pode ser diminu@'{@dotless{i}}do atrav@'es do uso de @code{rename} sobre a express@~ao em primeiro lugar.
 Tamb@'em veja o exemplo sob @code{decsym}. Nota: @code{canform} pode n@~ao estar apta a
 reduzir um express@~ao completamente para sua forma mais simples embora
-retorne sempre um resultado matem@'aticamente correto.
+retorne sempre um resultado matem@'aticamente correcto.
 @end deffn
 
 @subsection C@'alculo de tensores indiciais
@@ -933,9 +933,9 @@ m@'etrico. Dessa forma, se @code{imetric} tiver sido associada a @code{G} ent@~a
 @deffn {Fun@value{cedilha}@~ao} liediff (@var{v}, @var{ten})
 
 Calcula a derivada de Lie da express@~ao tensorial @var{ten} com
-rela@value{cedilha}@~ao ao campo vetorial @var{v}. @var{ten} pode ser qualquer express@~ao tensorial
+rela@value{cedilha}@~ao ao campo vectorial @var{v}. @var{ten} pode ser qualquer express@~ao tensorial
 indexada; @var{v} pode ser o nome (sem @'{@dotless{i}}ndices) de um campo
-vetorial. Por exemplo:
+vectorial. Por exemplo:
 
 @example
 
@@ -1072,7 +1072,7 @@ ocorr@^encias do objecto diferenciado @var{tensor} que tem @var{n} ou mais
 @deffn {Fun@value{cedilha}@~ao} coord (@var{tensor_1}, @var{tensor_2}, ...)
 
 Dados os @var{tensor_i} a propriedade de diferencia@value{cedilha}@~ao da coordenada que a
-derivada do vetor contravariante cujo nome @'e um dos
+derivada do vector contravariante cujo nome @'e um dos
 @var{tensor_i} retorna um delta de Kronecker. Por exemplo, se @code{coord(x)} tiver
 sido conclu@'{@dotless{i}}da ent@~ao @code{idiff(x([],[i]),j)} fornece @code{kdelta([i],[j])}.
 @code{coord} que @'e uma lista de todos os objectos indexados tendo essa propriedade.
@@ -1377,7 +1377,7 @@ A moldura @'e definida atrav@'es de dois tensores: o campo de moldura inversa (@
 a base tetrad dual),
 e a m@'etrica da moldura @code{ifg}. A m@'etrica da moldura @'e a matriz identidade para
 molduras ortonormais, ou a m@'etrica de Lorentz para molduras ortonormais no espa@value{cedilha}o-tempo de
-Minkowski. O campo de moldura inversa define a base da moldura (vetores unit@'arios).
+Minkowski. O campo de moldura inversa define a base da moldura (vectores unit@'arios).
 Propriedades de contra@value{cedilha}@~ao s@~ao definidas para o campo de moldura e para a m@'etrica da moldura.
 
 Quando @code{iframe_flag} for @code{true}, muitas express@~oes @code{itensor} usam a m@'etrica da
@@ -1573,7 +1573,7 @@ moldura para formar a m@'etrica da moldura (@code{ifg}).
 
 @defvr {Vari@'avel} ifri
 
-O campo inverso da moldura. Especifica a base da moldura (vetores base duais). Juntamente
+O campo inverso da moldura. Especifica a base da moldura (vectores base duais). Juntamente
 com a m@'etrica da moldura, forma a base de todos os c@'alculos baseados em
 molduras.
 
@@ -1609,7 +1609,7 @@ Maxima pode trabalhar com tors@~ao e n@~ao metricidade. Quando o sinalizador
 
 @defvr {Vari@'avel} inm
 
-O vetor de n@~ao metricidade. Conforme a n@~ao metricidade est@'a definida atrav@'es da
+O vector de n@~ao metricidade. Conforme a n@~ao metricidade est@'a definida atrav@'es da
 derivada covariante do tensor m@'etrico. Normalmente zero, o tensor da
 m@'etrica derivada covariante ir@'a avaliar para o seguinte quando
 @code{inonmet_flag} for escolhido para @code{true}:
@@ -1626,7 +1626,7 @@ g     =- g  inm
 
 @defvr {Vari@'avel} inmc1
 
-Permuta@value{cedilha}@~ao covariante de componentes do vetor de n@~ao metricidade. Definida como
+Permuta@value{cedilha}@~ao covariante de componentes do vector de n@~ao metricidade. Definida como
 
 @example
 
@@ -1643,7 +1643,7 @@ inmc1    = ------------------------------
 
 @defvr {Vari@'avel} inmc2
 
-Permuta@value{cedilha}@~ao covariante de componentes do vetor de n@~ao metricidade. Usada
+Permuta@value{cedilha}@~ao covariante de componentes do vector de n@~ao metricidade. Usada
 nos coeficicientes de conec@value{cedilha}@~ao se @code{inonmet_flag} for @code{true}. Definida
 como:
 
@@ -1766,7 +1766,7 @@ opera@value{cedilha}@~ao de multiplica@value{cedilha}@~ao funciona como um produ
 Desafortunadamente, nem todos os autores concordam sobre a defini@value{cedilha}@~ao de produto
 cunha. Alguns autores preferem uma defini@value{cedilha}@~ao que corresponde @`a
 no@value{cedilha}@~ao de antisimetriza@value{cedilha}@~ao: nessas palavras, o produto cunha de
-dois campos vetoriais, por exemplo, pode ser definido como
+dois campos vectoriais, por exemplo, pode ser definido como
 
 @example
             a a  - a a
@@ -1850,15 +1850,15 @@ sinalizador @code{igeowedge_flag}, como no seguinte exemplo:
 
 @defvr {Operador} |
 @ifinfo
-@fnindex Contra@value{cedilha}@~ao com um vetor
+@fnindex Contra@value{cedilha}@~ao com um vector
 @end ifinfo
 A barra vertical @code{|} denota a opera@value{cedilha}@~ao bin@'aria
-"contra@value{cedilha}@~ao com um vetor". Quando um tensor covariante totalmente antisim@'etrico @'e contra@'{@dotless{i}}do
-com um vetor contravariante, o resultado @'e o mesmo independente de qual @'{@dotless{i}}ndice
+"contra@value{cedilha}@~ao com um vector". Quando um tensor covariante totalmente antisim@'etrico @'e contra@'{@dotless{i}}do
+com um vector contravariante, o resultado @'e o mesmo independente de qual @'{@dotless{i}}ndice
 foi usado para a contra@value{cedilha}@~ao. Dessa forma, @'e poss@'{@dotless{i}}vel definir a
 opera@value{cedilha}@~ao de contra@value{cedilha}@~ao de uma forma livre de @'{@dotless{i}}ndices.
 
-No pacote @code{itensor}, contra@value{cedilha}@~ao com um vetor @'e sempre realizada
+No pacote @code{itensor}, contra@value{cedilha}@~ao com um vector @'e sempre realizada
 com rela@value{cedilha}@~ao ao primeiro @'{@dotless{i}}ndice na ordem literal de ordena@value{cedilha}@~ao. Isso garante
 uma melhor simplifica@value{cedilha}@~ao de express@~oes envolvendo o operador @code{|}. Por exemplo:
 
@@ -1879,7 +1879,7 @@ uma melhor simplifica@value{cedilha}@~ao de express@~oes envolvendo o operador @
 
 Note que isso @'e essencial que os tensores usado como o operador @code{|} seja
 declarado totalmente antisim@'etrico em seus @'{@dotless{i}}ndices covariantes. De outra forma,
-os resultados ser@~ao incorretos.
+os resultados ser@~ao incorrectos.
 
 @end defvr
 

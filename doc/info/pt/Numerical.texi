@@ -246,7 +246,7 @@ cada linha mostrada com espa@value{cedilha}os em branco at@'e completar 80 colum
 Retorna uma representa@value{cedilha}@~ao rearranjada de @var{expr} como
 na regra de Horner, usando @var{x} como vari@'avel principal se isso for especificado.
 @code{x} pode ser omitido e nesse caso a vari@'avel principal da forma de express@~ao racional
-can@^onica de @var{expr} @'e usada.
+can@'onica de @var{expr} @'e usada.
 
 @code{horner} algumas vezes melhora a estabilidade se @code{expr} for
 ser numericamente avaliada.  Isso tamb@'em @'e @'util se Maxima @'e usado para

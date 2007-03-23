@@ -8,7 +8,7 @@
 @node Introdu@value{cedilha}@~ao a Regras e Modelos, Defini@value{cedilha}@~oes para Regras e Modelos, Regras e Modelos, Regras e Modelos
 @section Introdu@value{cedilha}@~ao a Regras e Modelos
 
-Essa se@value{cedilha}@~ao descreve coincid@^encias de modelos definidos pelo utilizador e
+Essa sec@value{cedilha}@~ao descreve coincid@^encias de modelos definidos pelo utilizador e
 regras de simplifica@value{cedilha}@~ao.
 Existem dois grupos de fun@value{cedilha}@~oes que implementam at@'e certo ponto diferentes esquemas de coincid@^encia de modelo.
 Em um grupo est@~ao @code{tellsimp}, @code{tellsimpafter}, @code{defmatch}, @code{defrule},
@@ -484,7 +484,7 @@ de forma que n@~ao @'e necess@'ario chamar @code{is} dentro do predicado.
 
 Se uma express@~ao satisfaz uma coincid@^encia de predicado,
 a vari@'avel de coincid@^encia @'e atribu@'{@dotless{i}}da @`a express@~ao,
-exceto para vari@'aveis de coincid@^encia que s@~ao operandos de adi@value{cedilha}@~ao @code{+} ou multiplica@value{cedilha}@~ao @code{*}.
+excepto para vari@'aveis de coincid@^encia que s@~ao operandos de adi@value{cedilha}@~ao @code{+} ou multiplica@value{cedilha}@~ao @code{*}.
 Somente adi@value{cedilha}@~ao e multiplica@value{cedilha}@~ao s@~ao manuseadas de forma especial;
 outros operadores en@'arios (ambos os definidos internamente e os definidos pelo utilizador) s@~ao tratados como fun@value{cedilha}@~oes comuns.
 @c WOULD BE GREAT TO EXTEND PART+/PART* PROCESSING TO ALL N-ARY OPERATORS
@@ -516,7 +516,7 @@ muda a propriedade @code{matchdeclare} para @var{a}, se a vari@'avel @var{a} tiv
 somente o @code{matchdeclare} mais recente est@'a em efeito quando uma regra @'e definida,
 mudan@value{cedilha}as posteriores para a propriedade @code{matchdeclare}
 (via @code{matchdeclare} ou @code{remove})
-n@~ao afetam regras existentes.
+n@~ao afectam regras existentes.
 
 @code{propvars (matchdeclare)} retorna a lista de todas as vari@'aveis
 para as quais exista uma propriedade @code{matchdeclare}.
@@ -981,9 +981,9 @@ para garantir que todas as regras s@~ao aplicadas.
 
 Vari@'aveis de modelo s@~ao tratadas como vari@'aveis locais em regras de simplifica@value{cedilha}@~ao.
 Assim que uma regra @'e definida, o valor de uma vari@'avel de modelo
-n@~ao afeta a regra, e n@~ao @'e afetado pela regra.
+n@~ao afecta a regra, e n@~ao @'e afectado pela regra.
 Uma atribui@value{cedilha}@~ao para uma vari@'avel de modelo que resulta em uma coincid@^encia de regra com sucesso
-n@~ao afeta a atribui@value{cedilha}@~ao corrente (ou necessita disso) da vari@'avel de modelo.
+n@~ao afecta a atribui@value{cedilha}@~ao corrente (ou necessita disso) da vari@'avel de modelo.
 Todavia,
 como com todos os @'atomos no Maxima,
 as propriedades de vari@'aveis de modelo (como declarado por @code{put} e fun@value{cedilha}@~oes relacionadas) s@~ao globais.

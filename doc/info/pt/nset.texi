@@ -352,7 +352,7 @@ To reenable the Lisp debugger set *debugger-hook* to nil.
 
 At@'e que essas falhas forem corrigidas, n@~ao construa conjuntos com
 elementos que sejam listas ou matrizes contendo express@~oes na forma
-racional can@^onica (CRE); um conjunto com um elemento na forma CRE,
+racional can@'onica (CRE); um conjunto com um elemento na forma CRE,
 contudo, pode n@~ao ser um problema:
 
 @c ===beg===
@@ -1766,7 +1766,7 @@ Extende a fun@value{cedilha}@~ao de dois argumentos @var{F} para uma fun@value{c
 onde @var{s} @'e uma lista.
 
 @code{rreduce(@var{F}, @var{s})} retorna @code{F(s_1, ... F(s_@{n - 2@}, F(s_@{n - 1@}, s_n)))}.
-Quando o argumetno opcional @var{s_@{n + 1@}} estiver presente,
+Quando o argumento opcional @var{s_@{n + 1@}} estiver presente,
 o resultado @'e equivalente a @code{rreduce(@var{F}, endcons(@var{s_@{n + 1@}}, @var{s}))}.
 
 A fun@value{cedilha}@~ao @var{F} @'e primeiro aplicada @`a
@@ -1789,7 +1789,7 @@ Exemplos:
 (%o2)                  f(1, f(2, f(3, 4)))
 @end example
 
-@code{rreduce} com o argumetno opcional.
+@code{rreduce} com o argumento opcional.
 
 @c ===beg===
 @c rreduce (f, [1, 2, 3], 4);
@@ -2052,7 +2052,7 @@ Dado um conjunto vazio @code{@{@}} ou uma lista vazia @code{[]} como argumentos,
 Quando o sinalizador global @code{maperror} for @code{true}, todas as listas
 @var{L_1}, ..., @var{L_n} devem ter obrigat@'oriamente comprimentos iguais.
 Quando @code{maperror} for @code{false}, argumentos do tipo lista s@~ao
-efetivamente truncados para o comprimento da menor lista. 
+efectivamente truncados para o comprimento da menor lista. 
 
 Retorna o valor de um predicado @var{f} o qual avalia (por meio de @code{is})
 para alguma coisa outra que n@~ao @code{true} ou @code{false}
@@ -2133,7 +2133,7 @@ inteiros, a magnitude de @code{stirling1 (@var{n}, @var{m})} @'e o n@'umero de
 permuta@value{cedilha}@~oes de um conjunto com @var{n} elementos que possui @var{m} ciclos.
 Para detalhes, veja Graham, Knuth e Patashnik @i{Concrete Mathematics}.
 Maxima utiliza uma rela@value{cedilha}@~ao recursiva para definir @code{stirling1 (@var{n}, @var{m})} para
-@var{m} menor que 0; @code{stirling1} n@~ao @'e definida para @var{n} menor que 0 e para argumetnos
+@var{m} menor que 0; @code{stirling1} n@~ao @'e definida para @var{n} menor que 0 e para argumentos
 n@~ao inteiros.
 
 @code{stirling1} @'e uma fun@value{cedilha}@~ao de simplifica@value{cedilha}@~ao.

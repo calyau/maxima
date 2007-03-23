@@ -125,7 +125,7 @@ Retorna @code{true} se @var{expr} for um n@'umero em ponto flutuante, de outra f
 Valor por omiss@~ao: 16
 
 @code{fpprec} @'e o n@'umero de algarismos significativos para aritm@'etica sobre grandes n@'umeros em ponto flutuante
-@code{fpprec} n@~ao afeta c@'alculos sobre n@'umeros em ponto flutuante comuns.
+@code{fpprec} n@~ao afecta c@'alculos sobre n@'umeros em ponto flutuante comuns.
 
 Veja tamb@'em @code{bfloat} e @code{fpprintprec}.
 

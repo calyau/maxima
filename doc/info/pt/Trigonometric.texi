@@ -335,7 +335,7 @@ habilitadas a adicionar simplifica@value{cedilha}@~oes ao resultado.
 
 @c NEEDS CLARIFICATION
 @deffn {Fun@value{cedilha}@~ao} trigrat (@var{expr})
-Fornece uma forma quase-linear simplificada can@^onica de uma
+Fornece uma forma quase-linear simplificada can@'onica de uma
 express@~ao trigonom@'etrica; @var{expr} @'e uma fra@value{cedilha}@~ao racional de muitos @code{sin},
 @code{cos} ou @code{tan}, os argumentos delas s@~ao formas lineares em algumas vari@'aveis (ou
 kernels-n@'ucleos) e @code{%pi/@var{n}} (@var{n} inteiro) com coeficientes inteiros. O resultado @'e uma
@@ -353,7 +353,7 @@ Dessa forma @code{trigrat} lineariza sempre quando isso for pass@'{@dotless{i}}v
 
 O seguinte exemplo encontra-se em
 Davenport, Siret, and Tournier, @i{Calcul Formel}, Masson (ou em ingl@^es,
-Addison-Wesley), se@value{cedilha}@~ao 1.5.5, teorema de Morley.
+Addison-Wesley), sec@value{cedilha}@~ao 1.5.5, teorema de Morley.
 
 @c ===beg===
 @c c: %pi/3 - a - b;

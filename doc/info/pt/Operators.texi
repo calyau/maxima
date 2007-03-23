@@ -100,7 +100,7 @@ Maxima reconhece @code{"//"} como o nome do operador de divis@~ao.
 A adi@value{cedilha}@~ao e a multiplica@value{cedilha}@~ao s@~ao operadores en@'arios e comutativos.
 a divis@~ao e a exponencia@value{cedilha}@~ao s@~ao operadores bin@'arios e n@~ao comutativos.
 
-Maxima ordena os operandos de operadores n@~ao comutativos para construir uma representa@value{cedilha}@~ao can@^onica.
+Maxima ordena os operandos de operadores n@~ao comutativos para construir uma representa@value{cedilha}@~ao can@'onica.
 Para armazenamento interno, a ordem @'e determinada por @code{orderlessp}.
 Para mostrar na tela, a ordem para adi@value{cedilha}@~ao @'e determinada por @code{ordergreatp},
 e para a multiplica@value{cedilha}@~ao, a ordem @'e a mesma da ordena@value{cedilha}@~ao para armazenamento interno.
@@ -129,7 +129,7 @@ o outro operando @'e combinado com cada um dos elementos da lista ou matriz.
 Exemplos:
 
 Adi@value{cedilha}@~ao e multiplica@value{cedilha}@~ao s@~ao opeadores en@'arios comutativos.
-Maxima ordena os operandos para construir uma representa@value{cedilha}@~ao can@^onica.
+Maxima ordena os operandos para construir uma representa@value{cedilha}@~ao can@'onica.
 Os nomes desses operadores s@~ao @code{"+"} e @code{"*"}.
 @c ===beg===
 @c c + g + d + a + b + e + f;
@@ -345,7 +345,7 @@ Exemplos:
 @fnindex Factorial
 @end ifinfo
 O operador factorial.
-Para qualquer n@'umero complexo @code{x} (inclu@'{@dotless{i}}ndo n@'umeros inteiros, racionais, e reais) exceto para
+Para qualquer n@'umero complexo @code{x} (inclu@'{@dotless{i}}ndo n@'umeros inteiros, racionais, e reais) excepto para
 inteiros negativos, @code{x!} @'e definido como @code{gamma(x+1)}.
 
 Para um inteiro @code{x}, @code{x!} simplifica para o produto de inteiros de 1 a @code{x} inclusive.
@@ -934,7 +934,7 @@ enquanto
 @end example
 
 @code{kill(allbut(@var{a_1}, @var{a_2}, ...))} tem o mesmo efeito que @code{kill(all)}
-exceto que n@~ao elimina os s@'{@dotless{i}}mbolos @var{a_1}, @var{a_2}, ... .
+excepto que n@~ao elimina os s@'{@dotless{i}}mbolos @var{a_1}, @var{a_2}, ... .
 
 @end defvr
 
@@ -1980,7 +1980,7 @@ faz com que @code{sqrt} seja mostrado como expoente 1/2.
 @c NEEDS EXPANSION, CLARIFICATION, MORE EXAMPLES
 @c sublis CAN ONLY SUBSTITUTE FOR ATOMS, RIGHT ?? IF SO, SAY SO
 @deffn {Fun@value{cedilha}@~ao} sublis (@var{lista}, @var{expr})
-Faz multiplas substitui@value{cedilha}@~oes paralelas dentro de uma express@~ao.
+Faz m@'ultiplas substitui@value{cedilha}@~oes paralelas dentro de uma express@~ao.
 
 A vari@'avel @code{sublis_apply_lambda} controla a simplifica@value{cedilha}@~ao ap@'os
 @code{sublis}.
@@ -2241,8 +2241,8 @@ Exemplos:
 @c THIS ITEM SEEMS OUT OF PLACE -- IS IT FROM A SHARE PACKAGE ??
 @c NEEDS EXAMPLES
 @deffn {Fun@value{cedilha}@~ao} vectorpotential (@var{givencurl})
-Retorna o potencial do vetor de um dado
-vetor de tor@value{cedilha}@~ao, no sistema de coordenadas corrente.
+Retorna o potencial do vector de um dado
+vector de tor@value{cedilha}@~ao, no sistema de coordenadas corrente.
 @code{potentialzeroloc} tem um papel similar ao de @code{potential}, mas a ordem dos
 lados esquerdos das equa@value{cedilha}@~oes deve ser uma permuta@value{cedilha}@~ao c@'{@dotless{i}}clica das
 vari@'aveis de coordenadas.
@@ -2301,7 +2301,7 @@ no resultado (mas isso @'e improv@'avel ocorrer).
 @item
 Se a express@~ao contem fun@value{cedilha}@~oes que n@~ao s@~ao solu@value{cedilha}@~oes para
 equa@value{cedilha}@~oes diferenciais de primeira ordem (e.g.  fun@value{cedilha}@~oes de Bessel) pode ocorrer
-resultados incorretos.
+resultados incorrectos.
 @item
 O algor@'{@dotless{i}}tmo usa avalia@value{cedilha}@~ao em pontos aleat@'oriamente escolhidos para
 subexpress@~oes seleccionadas cuidadosamente.  Isso @'e sempre neg@'ocio um tanto

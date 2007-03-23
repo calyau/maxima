@@ -9,11 +9,11 @@
 @section Introdu@value{cedilha}@~ao a Polin@'omios
 
 Polin@'omios s@~ao armazenados no Maxima ou na forma geral ou na
-forma de Express@~oes Racionais Can@^onicas (CRE).  Essa @'ultima @'e uma forma
+forma de Express@~oes Racionais Can@'onicas (CRE).  Essa @'ultima @'e uma forma
 padr@~ao, e @'e usada internamente por opera@value{cedilha}@~oes tais como @code{factor}, @code{ratsimp}, e
 assim por diante.
 
-Express@~oes Racionais Can@^onicas constituem um tipo de representa@value{cedilha}@~ao
+Express@~oes Racionais Can@'onicas constituem um tipo de representa@value{cedilha}@~ao
 que @'e especialmente adequado para polin@'omios expandidos e fun@value{cedilha}@~oes
 racionais (tamb@'em para polin@'omios parcialmente factorados e fun@value{cedilha}@~oes
 racionais quando RATFAC for escolhida para @code{true}).  Nessa forma CRE uma
@@ -185,7 +185,7 @@ Note que @code{y} @'e a vari@'avel principal no segundo exemplo.
 
 @deffn {Fun@value{cedilha}@~ao} eliminate ([@var{eqn_1}, ..., @var{eqn_n}], [@var{x_1}, ..., @var{x_k}])
 Elimina vari@'aveis de
-equa@value{cedilha}@~oes (ou express@~oes assumidas iguais a zero) pegando resultantes
+equa@value{cedilha}@~oes (ou express@~oes assumidas iguais a zero) obtendo resultantes
 sucessivos. Isso retorna uma lista de @code{@var{n} - @var{k}} express@~oes com @var{k}
 vari@'aveis @var{x_1}, ..., @var{x_k} eliminadas.  Primeiro @var{x_1} @'e eliminado retornando @code{@var{n} - 1}
 express@~oes, ent@~ao @code{x_2} @'e eliminado, etc.  Se @code{@var{k} = @var{n}} ent@~ao uma express@~ao simples em uma
@@ -466,8 +466,8 @@ a @code{ratsimp} seguida como @'e usual por uma simplifica@value{cedilha}@~ao n@
 Algumas vezes, mais que uma tal chamada pode ser necess@'aria. 
 @code{fullratsimp} faz esse processo convenientemente.
 
-@code{fullratsimp (@var{expr}, @var{x_1}, ..., @var{x_n})} pega um ou mais argumentos similar
-a @code{ratsimp} e @code{rat}.
+@code{fullratsimp (@var{expr}, @var{x_1}, ..., @var{x_n})} aceita um ou
+mais argumentos similar a @code{ratsimp} e @code{rat}.
 
 Exemplo:
 @c FOLLOWING GENERATED FROM THESE EXPRESSIONS
@@ -505,7 +505,7 @@ Exemplo:
 @c SPELL OUT WHAT fullratsubst DOES INSTEAD OF ALLUDING TO ratsubst AND lratsubst
 @c THIS ITEM NEEDS MORE WORK
 @deffn {Fun@value{cedilha}@~ao} fullratsubst (@var{a}, @var{b}, @var{c})
-@'e o mesmo que @code{ratsubst} exceto que essa chama
+@'e o mesmo que @code{ratsubst} excepto que essa chama
 a si mesma recursivamente sobre esse resultado at@'e que o resultado para de mudar.
 Essa fun@value{cedilha}@~ao @'e @'util quando a express@~ao de substitui@value{cedilha}@~ao e a
 express@~ao substitu@'{@dotless{i}}da tenham uma ou mais vari@'aveis em comum.
@@ -556,7 +556,7 @@ simples pode ser dada como primeiro argumento.
 @itemize @bullet
 @item
 @code{fullratsubst} @'e equivalente a @code{ratsubst}
-exceto que essa executa recursivamente at@'e que seu resultado para de mudar.
+excepto que essa executa recursivamente at@'e que seu resultado para de mudar.
 @end itemize
 @example
 (%i5) ratsubst (b*a, a^2, a^3);
@@ -601,7 +601,7 @@ subresultante @code{prs}, reduzido, ou modular,
 respectivamente.  Se @code{gcd} for @code{false} ent@~ao @code{gcd (@var{p_1}, @var{p_2}, @var{x})} sempre retorna 1
 para todo @var{x}.  Muitas fun@value{cedilha}@~oes (e.g.  @code{ratsimp}, @code{factor}, etc.) fazem com que mdc's
 sejam feitos implicitamente.  Para polin@'omios homog@^eneos @'e recomendado
-que @code{gcd} igual a @code{subres} seja usado.  Para pegar o mdc quando uma express@~ao alg@'ebrica est@'a
+que @code{gcd} igual a @code{subres} seja usado.  Para obter o mdc quando uma express@~ao alg@'ebrica est@'a
 presente, e.g. @code{gcd (@var{x}^2 - 2*sqrt(2)*@var{x} + 2, @var{x} - sqrt(2))}, @code{algebraic} deve ser
 @code{true} e @code{gcd} n@~ao deve ser @code{ez}.  @code{subres} @'e um novo algor@'{@dotless{i}}tmo, e pessoas
 que tenham estado usando a op@value{cedilha}@~ao @code{red} podem provavelmente alterar isso para
@@ -609,7 +609,7 @@ que tenham estado usando a op@value{cedilha}@~ao @code{red} podem provavelmente 
 
 O sinalizador @code{gcd}, padr@~ao: @code{subres}, se @code{false} ir@'a tamb@'em evitar o m@'aximo
 divisor comum de ser usado quando express@~oes s@~ao convertidas para a forma de express@~ao racional
-can@^onica (CRE).  Isso ir@'a algumas vezes aumentar a velocidade dos c@'alculos se mdc's n@~ao s@~ao
+can@'onica (CRE).  Isso ir@'a algumas vezes aumentar a velocidade dos c@'alculos se mdc's n@~ao s@~ao
 requeridos.
 @c NEEDS EXAMPLES HERE
 
@@ -757,7 +757,7 @@ Valor Padr@~ao: @code{false}
 
 Quando @code{keepfloat} for @code{true}, evitamos que n@'umeros
 em ponto flutuante sejam racionalizados quando express@~oes que os possuem
-s@~ao ent@~ao convertidas para a forma de express@~ao racional can@^onica (CRE).
+s@~ao ent@~ao convertidas para a forma de express@~ao racional can@'onica (CRE).
 @c NEED EXAMPLES HERE
 
 @end defvr
@@ -766,7 +766,7 @@ s@~ao ent@~ao convertidas para a forma de express@~ao racional can@^onica (CRE).
 @c THIS ITEM NEEDS MORE WORK
 @deffn {Fun@value{cedilha}@~ao} lratsubst (@var{L}, @var{expr})
 @'e an@'alogo a @code{subst (@var{L}, @var{expr})}
-exceto que esse usa @code{ratsubst} em lugar de @code{subst}.
+excepto que esse usa @code{ratsubst} em lugar de @code{subst}.
 
 O primeiro argumento de
 @code{lratsubst} @'e uma equa@value{cedilha}@~ao ou uma lista de equa@value{cedilha}@~oes id@^enticas em
@@ -825,9 +825,9 @@ tal que @code{@var{a} @var{p} + @var{k}} seja igual a @var{n} para algum inteiro
 
 @c WHAT CAN THIS MEAN ?? IS THE MODULUS STORED WITH THE EXPRESSION ??
 @c "... in order to get correct results" -- WHAT DO YOU GET IF YOU DON'T RE-RAT ??
-Se @var{expr} j@'a estiver na forma de express@~ao racional can@^onica (CRE) quando @code{modulus} for colocado em seu valor original,
+Se @var{expr} j@'a estiver na forma de express@~ao racional can@'onica (CRE) quando @code{modulus} for colocado em seu valor original,
 ent@~ao voc@^e pode precisar repetir o rat @var{expr}, e.g., @code{expr: rat (ratdisrep (expr))},
-com o objectivo de pegar resultados corretos.
+com o objectivo de obter resultados correctos.
 
 Tipicamente @code{modulus} @'e escolhido para um n@'umero primo.
 Se @code{modulus} for escolhido para um inteiro n@~ao primo positivo,
@@ -951,7 +951,7 @@ Os argumentos @var{x_1}, ..., @var{x_n} s@~ao interpretados como em @code{ratvar
 @c THIS ITEM CAN PROBABLY BE IMPROVED
 @deffn {Fun@value{cedilha}@~ao} rat (@var{expr})
 @deffnx {Fun@value{cedilha}@~ao} rat (@var{expr}, @var{x_1}, ..., @var{x_n})
-Converte @var{expr} para a forma de express@~ao racional can@^onica (CRE) expandindo e
+Converte @var{expr} para a forma de express@~ao racional can@'onica (CRE) expandindo e
 combinando todos os termos sobre um denominador comum e cancelando para fora o
 m@'aximo divisor comum entre o numerador e o denominador, tamb@'em
 convertendo n@'umeros em ponto flutuante para n@'umeros racionais dentro da
@@ -1015,7 +1015,7 @@ Valor Padr@~ao: @code{true}
 
 Quando @code{ratalgdenom} for @code{true}, permite racionaliza@value{cedilha}@~ao de
 denominadores com respeito a radicais tenham efeito.
-@code{ratalgdenom} tem efeito somente quando express@~oes racionais can@^onicas (CRE) forem usadas no modo alg@'ebrico.
+@code{ratalgdenom} tem efeito somente quando express@~oes racionais can@'onicas (CRE) forem usadas no modo alg@'ebrico.
 
 @end defvr
 
@@ -1027,7 +1027,7 @@ dentro da express@~ao @var{expr}.
 Se omitido, @var{n} @'e assumido ser 1.
 
 O valor de retorno est@'a livre
-(exceto possivelmente em um senso n@~ao racional) das vari@'aveis em @var{x}.
+(excepto possivelmente em um senso n@~ao racional) das vari@'aveis em @var{x}.
 Se nenhum coeficiente desse tipo existe, 0 @'e retornado.
 
 @code{ratcoef}
@@ -1063,7 +1063,7 @@ Exemplo:
 
 @deffn {Fun@value{cedilha}@~ao} ratdenom (@var{expr})
 Retorna o denominador de @var{expr},
-ap@'os for@value{cedilha}ar a convers@~ao de @var{expr} para express@~ao racional can@^onica (CRE).
+ap@'os for@value{cedilha}ar a convers@~ao de @var{expr} para express@~ao racional can@'onica (CRE).
 O valor de retorno @'e a CRE.
 
 @c ACTUALLY THE CONVERSION IS CARRIED OUT BY ratf BUT THAT'S WHAT $rat CALLS
@@ -1140,7 +1140,7 @@ O argumento @var{x} pode ser uma vari@'avel ou uma subexpress@~ao de @var{expr}.
 O resultado @'e equivalente a @code{diff}, embora talvez em uma forma diferente.
 @code{ratdiff} pode ser mais r@'apida que @code{diff}, para express@~oes racionais.
 
-@code{ratdiff} retorna uma express@~ao racional can@^onica (CRE) se @code{expr} for uma CRE.
+@code{ratdiff} retorna uma express@~ao racional can@'onica (CRE) se @code{expr} for uma CRE.
 De outra forma, @code{ratdiff} retorna uma express@~ao geral.
 
 @code{ratdiff} considera somente as depend@^encias de @var{expr} sobre @var{x},
@@ -1193,7 +1193,7 @@ Exemplo:
 Retorna seu argumento como uma express@~ao geral.
 Se @var{expr} for uma express@~ao geral, @'e retornada inalterada.
 
-Tipicamente @code{ratdisrep} @'e chamada para converter uma express@~ao racional can@^onica (CRE)
+Tipicamente @code{ratdisrep} @'e chamada para converter uma express@~ao racional can@'onica (CRE)
 em uma express@~ao geral.
 @c NOT REALLY FOND OF YOU-CAN-DO-THIS-YOU-CAN-DO-THAT STATEMENTS
 Isso @'e algumas vezes conveniente se deseja-se parar o "cont@'agio", ou
@@ -1221,7 +1221,7 @@ denominador, ent@~ao quebrando o numerador (se for uma soma) dentro de suas
 respectivas parcelas divididas pelo denominador.
 
 O valor de retorno de @code{ratexpand} @'e uma express@~ao geral,
-mesmo se @var{expr} for uma express@~ao racional can@^onica (CRE).
+mesmo se @var{expr} for uma express@~ao racional can@'onica (CRE).
 
 @c WHAT DOES THE FOLLOWING MEAN EXACTLY ??
 O comutador @code{ratexpand} se @code{true} far@'a com que express@~oes
@@ -1239,7 +1239,7 @@ cujo numerador @'e a soma dos numeradores de cada raz@~ao.
 
 Quando @code{keepfloat} for @code{true}, evita que n@'umeros
 em ponto flutuante sejam racionalizados quando express@~oes que contenham
-n@'umeros em ponto flutuante forem convertidas para a forma de express@~ao racional can@^onica (CRE).
+n@'umeros em ponto flutuante forem convertidas para a forma de express@~ao racional can@'onica (CRE).
 
 Exemplos:
 @c FOLLOWING GENERATED FROM THESE EXPRESSIONS
@@ -1276,7 +1276,7 @@ Exemplos:
 Valor Padr@~ao: @code{false}
 
 Quando @code{ratfac} for @code{true},
-express@~oes racionais can@^onicas (CRE) s@~ao manipuladas na forma parcialmente factorada.
+express@~oes racionais can@'onicas (CRE) s@~ao manipuladas na forma parcialmente factorada.
 
 Durante opera@value{cedilha}@~oes racionais a
 express@~ao @'e mantida como completamente factorada como foi poss@'{@dotless{i}}vel sem chamadas a @code{factor}.
@@ -1300,7 +1300,7 @@ ambos serem usados ao mesmo tempo.
 
 @deffn {Fun@value{cedilha}@~ao} ratnumer (@var{expr})
 Retorna o numerador de @var{expr},
-ap@'os for@value{cedilha}ar @var{expr} para uma express@~ao racional can@^onica (CRE).
+ap@'os for@value{cedilha}ar @var{expr} para uma express@~ao racional can@'onica (CRE).
 O valor de retorno @'e uma CRE.
 
 @c ACTUALLY THE CONVERSION IS CARRIED OUT BY ratf BUT THAT'S WHAT $rat CALLS
@@ -1324,7 +1324,7 @@ de outra forma retorna @code{false}.
 @end deffn
 
 @deffn {Fun@value{cedilha}@~ao} ratp (@var{expr})
-Retorna @code{true} se @var{expr} for uma express@~ao racional can@^onica (CRE) ou CRE extendida,
+Retorna @code{true} se @var{expr} for uma express@~ao racional can@'onica (CRE) ou CRE extendida,
 de outra forma retorna @code{false}.
 
 CRE s@~ao criadas por @code{rat} e fun@value{cedilha}@~oes relacionadas.
@@ -1358,8 +1358,8 @@ Quando @code{ratsimpexpons} for @code{true},
 @code{ratsimp} @'e aplicado para os expoentes de express@~oes durante a simplifica@value{cedilha}@~ao.
 
 Veja tamb@'em @code{ratexpand}.
-Note que @code{ratsimp} @'e afetado por algum dos
-sinalizadores que afetam @code{ratexpand}.
+Note que @code{ratsimp} @'e afectado por algum dos
+sinalizadores que afectam @code{ratexpand}.
 
 Exemplos:
 @c FOLLOWING GENERATED FROM THESE EXPRESSIONS
@@ -1492,7 +1492,7 @@ O peso de um termo @'e a soma dos produtos dos
 pesos de uma vari@'avel no termo vezes seu expoente.
 Por exemplo, o peso de @code{3 x_1^2 x_2} @'e @code{2 w_1 + w_2}.
 A trunca@value{cedilha}@~ao de acordo com @code{ratwtlvl} @'e realizada somente quando multiplicando
-ou exponencializando express@~oes racionais can@^onicas (CRE).
+ou exponencializando express@~oes racionais can@'onicas (CRE).
 
 @code{ratweight ()} retorna a lista cumulativa de atribui@value{cedilha}@~oes de pesos.
 
@@ -1537,7 +1537,7 @@ cada chamada a @code{ratweight} coloca @'{@dotless{i}}tens adicionais na lista.
 Valor Padr@~ao: @code{false}
 
 @code{ratwtlvl} @'e usada em combina@value{cedilha}@~ao com a fun@value{cedilha}@~ao 
-@code{ratweight} para controlar a trunca@value{cedilha}@~ao de express@~ao racionais can@^onicas (CRE).
+@code{ratweight} para controlar a trunca@value{cedilha}@~ao de express@~ao racionais can@'onicas (CRE).
 Para o valor padr@~ao @code{false}, nenhuma trunca@value{cedilha}@~ao ocorre.
 
 @end defvr
@@ -1575,7 +1575,7 @@ e @code{red} para prs reduzido.
 Para muitos problemas @code{subres} pode ser melhor.
 Para alguns problemas com valores grandes de grau de uma @'unica vari@'avel ou de duas vari@'aveis @code{mod} pode ser melhor.
 
-A fun@value{cedilha}@~ao @code{bezout} pega os mesmos argumentos que @code{resultant} e retorna
+A fun@value{cedilha}@~ao @code{bezout} aceita os mesmos argumentos que @code{resultant} e retorna
 uma matriz.  O determinante do valor de retorno @'e o resultante desejado.
 
 @c NEED AN EXAMPLE HERE
@@ -1594,11 +1594,11 @@ contendo algum desses mesmos factores.
 
 @c I CAN'T TELL WHAT THIS IS SUPPOSED TO BE ABOUT
 @deffn {Fun@value{cedilha}@~ao} sqfr (@var{expr})
-@'e similar a @code{factor} exceto que os factores do polin@'omio s@~ao "livres de ra@'{@dotless{i}}zes".
+@'e similar a @code{factor} excepto que os factores do polin@'omio s@~ao "livres de ra@'{@dotless{i}}zes".
 Isto @'e, eles possuem factores somente de grau um.
 Esse algor@'{@dotless{i}}tmo, que @'e tamb@'em usado no primeiro est@'agio de @code{factor}, utiliza
 o facto que um polin@'omio tem em comum com sua n'@'esima derivada todos
-os seus factores de grau maior que n.  Dessa forma pegando o maior divisor comum
+os seus factores de grau maior que n.  Dessa forma obtendo o maior divisor comum
 com o polin@'omio das
 derivadas com rela@value{cedilha}@~ao a cada vari@'avel no polin@'omio, todos
 os factores de grau maior que 1 podem ser achados.
@@ -1622,7 +1622,7 @@ Adiciona ao anel dos inteiros alg@'ebricos conhecidos do Maxima
 os elementos que s@~ao as solu@value{cedilha}@~oes dos polin@'omios @var{p_1}, ..., @var{p_n}.
 Cada argumento @var{p_i} @'e um polin@'omio concoeficientes inteiros.
 
-@code{tellrat (@var{x})} efetivamente significa substituir 0 por @var{x} em fun@value{cedilha}@~oes
+@code{tellrat (@var{x})} efectivamente significa substituir 0 por @var{x} em fun@value{cedilha}@~oes
 racionais.
 
 @code{tellrat ()} retorna uma lista das substitui@value{cedilha}@~oes correntes.
@@ -1633,7 +1633,7 @@ inteiros alg@'ebricos tenha efeito.
 Maxima inicialmente sabe sobre a unidade imagin@'aria @code{%i}
 e todas as ra@'{@dotless{i}}zes de inteiros.
 
-Existe um comando @code{untellrat} que pega kernels (n@'ucleos) e
+Existe um comando @code{untellrat} que recebe n@'ucleos e
 remove propriedades @code{tellrat}.
 
 Quando fazemos @code{tellrat} em um polin@'omio
@@ -1688,7 +1688,7 @@ Exemplos:
 @end deffn
 
 @deffn {Fun@value{cedilha}@~ao} totaldisrep (@var{expr})
-Converte toda subexpress@~ao de @var{expr} da forma de express@~ao racionais can@^onicas (CRE) para
+Converte toda subexpress@~ao de @var{expr} da forma de express@~ao racionais can@'onicas (CRE) para
 a forma geral e retorna o resultado.
 Se @var{expr} @'e em s@'{@dotless{i}} mesma na forma CRE ent@~ao @code{totaldisrep} @'e identica a
 @code{ratdisrep}.

@@ -8,7 +8,7 @@
 @node Introdu@value{cedilha}@~ao a Op@value{cedilha}@~oes Diversas, Compartilhado, Op@value{cedilha}@~oes Diversas, Op@value{cedilha}@~oes Diversas
 @section Introdu@value{cedilha}@~ao a Op@value{cedilha}@~oes Diversas
 
-Nessa se@value{cedilha}@~ao v@'arias op@value{cedilha}@~oes s@~ao tratadas pelo facto de possuirem um efeito global
+Nessa sec@value{cedilha}@~ao v@'arias op@value{cedilha}@~oes s@~ao tratadas pelo facto de possuirem um efeito global
 sobre a opera@value{cedilha}@~ao do Maxima.   Tamb@'em v@'arias listas tais como a lista de todas as
 fun@value{cedilha}@~oes definidas pelo utilizador, s@~ao discutidas.
 
@@ -332,7 +332,7 @@ Exemplos:
 @deffn {Fun@value{cedilha}@~ao} qput (@var{@'atomo}, @var{valor}, @var{indicador})
 Atribui @var{valor} para a propriedade (especificada atrav@'es de @var{indicador}) do @var{@'atomo}.
 Isso @'e o mesmo que @code{put},
-exceto que os argumentos n@~a s@~ao avaliados.
+excepto que os argumentos n@~a s@~ao avaliados.
 
 Exemplo:
 
@@ -429,7 +429,7 @@ Veja tamb@'em @code{values}.
 Transforma @var{expr} combinando todos os termos de @var{expr} que possuem
 denominadores id@^enticos ou denominadores que diferem de cada um dos outros apenas por
 factores num@'ericos somente.  Isso @'e ligeiramente diferente do comportamento de
-de @code{combine}, que coleta termos que possuem denominadores id@^enticos.
+de @code{combine}, que colecta termos que possuem denominadores id@^enticos.
 
 Escolhendo @code{pfeformat: true} e usando @code{combine} retorna resultados similares
 a esses que podem ser obtidos com @code{rncombine}, mas @code{rncombine} pega o

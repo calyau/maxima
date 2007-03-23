@@ -653,7 +653,7 @@ Note que o primeiro caractere est@'a em @var{seq_caracte} e est@'a na posi@,{c}@
 @deffn {Fun@,{c}@~ao} sinvertcase (@var{seq_caracte})  
 @deffnx {Fun@,{c}@~ao} sinvertcase (@var{seq_caracte}, @var{in@'{@dotless{i}}cio})  
 @deffnx {Fun@,{c}@~ao} sinvertcase (@var{seq_caracte}, @var{in@'{@dotless{i}}cio}, @var{fim})  
-Retorna @var{seq_caracte} exceto que cada caractere da posi@,{c}@~ao @var{in@'{@dotless{i}}cio} at@'e a posi@,{c}@~ao @var{fim} est@'a invertido.
+Retorna @var{seq_caracte} excepto que cada caractere da posi@,{c}@~ao @var{in@'{@dotless{i}}cio} at@'e a posi@,{c}@~ao @var{fim} est@'a invertido.
 Se a posi@,{c}@~ao @var{fim} n@~ao for fornecida,
 todos os caracteres do in@'{@dotless{i}}cio ao @var{fim} de @var{seq_caracte} s@~ao substitu@'{@dotless{i}}dos.
 
@@ -770,7 +770,7 @@ Note que o primeiro caractere em @var{seq_caracte} est@'a na posi@,{c}@~ao 1.
 @deffnx {Fun@,{c}@~ao} sremovefirst (@var{seq}, @var{seq_caracte}, @var{test})  
 @deffnx {Fun@,{c}@~ao} sremovefirst (@var{seq}, @var{seq_caracte}, @var{test}, @var{in@'{@dotless{i}}cio})  
 @deffnx {Fun@,{c}@~ao} sremovefirst (@var{seq}, @var{seq_caracte}, @var{test}, @var{in@'{@dotless{i}}cio}, @var{fim})  
-Como em @code{sremove} exceto qie a primeira subsequ@^encia de caracteres que coincide com @code{seq} @'e removida. 
+Como em @code{sremove} excepto que a primeira subsequ@^encia de caracteres que coincide com @code{seq} @'e removida. 
 
 @end deffn
 
@@ -787,7 +787,7 @@ Retorna a posi@,{c}@~ao da primeira subsequ@^encia de caracteres de @var{seq_car
 A fun@,{c}@~ao padr@~ao de teste de coincid@^encia @'e @code{sequal}.
 Se @code{ssearch} puder igonorar a caixa alta/baixa, use @code{sequalignore} como fun@,{c}@~ao de teste.
 Use @var{in@'{@dotless{i}}cio} e @var{fim} para limitar a busca.
-Note que o primeiro caractere em @var{seq_caracte} est@'a na posi@,{c}@~ao 1.
+Note que o primeiro caracter em @var{seq_caracte} est@'a na posi@,{c}@~ao 1.
 
 @example
 (%i1) ssearch("~s","~@{~S ~@}~%",'sequalignore);
@@ -799,8 +799,8 @@ Note que o primeiro caractere em @var{seq_caracte} est@'a na posi@,{c}@~ao 1.
 @deffn {Fun@,{c}@~ao} ssort (@var{seq_caracte}) 
 @deffnx {Fun@,{c}@~ao} ssort (@var{seq_caracte}, @var{test}) 
 Retorna uma sequ@^encia de caracteres que cont@'em todos os caracteres de @var{seq_caracte} em uma ordem tal que n@~ao existam dois caracteres @var{c} sucessivos e @var{d} seja tal que @code{test (@var{c}, @var{d})} seja @code{false} e @code{test (@var{d}, @var{c})} seja @code{true}.
-A fun@,{c}@~ao padr@~ao de teste para ordena@,{c}@`ao @'e @var{clessp}.
-O conjunto de fun@,{c}òes de teste @'e @code{@{clessp, clesspignore, cgreaterp, cgreaterpignore, cequal, cequalignore@}}.
+A fun@,{c}@~ao padr@~ao de teste para ordena@,{c}@~ao @'e @var{clessp}.
+O conjunto de fun@,{c}@~oes de teste @'e @code{@{clessp, clesspignore, cgreaterp, cgreaterpignore, cequal, cequalignore@}}.
 
 @c ===beg===
 @c load("stringproc")$
@@ -821,7 +821,7 @@ O conjunto de fun@,{c}òes de teste @'e @code{@{clessp, clesspignore, cgreaterp, 
 @deffnx {Fun@,{c}@~ao} ssubst (@var{nova}, @var{antiga}, @var{seq_caracte}, @var{test}) 
 @deffnx {Fun@,{c}@~ao} ssubst (@var{nova}, @var{antiga}, @var{seq_caracte}, @var{test}, @var{in@'{@dotless{i}}cio}) 
 @deffnx {Fun@,{c}@~ao} ssubst (@var{nova}, @var{antiga}, @var{seq_caracte}, @var{test}, @var{in@'{@dotless{i}}cio}, @var{fim}) 
-Retorna uma sequ@^encia de caracteres como @var{seq_caracte} exceto que todas as subsequ@^encias de caracteres que coincidirem com @var{antiga} s@~ao substitu@'{@dotless{i}}das por @var{nova}.
+Retorna uma sequ@^encia de caracteres como @var{seq_caracte} excepto que todas as subsequ@^encias de caracteres que coincidirem com @var{antiga} s@~ao substitu@'{@dotless{i}}das por @var{nova}.
 @var{antiga} e @var{nova} n@~ao precisam ser de mesmo comprimento.
 A fun@,{c}@~ao padr@~ao de teste para coincid@^encia @'e para coincid@^encias @'e @code{sequal}.
 Se @code{ssubst} puder ignorar a cixa alta/baixa enquanto procurando por @var{antiga}, use @code{sequalignore} como fun@,{c}@~ao de teste.
@@ -847,7 +847,7 @@ Note que o primeiro caractere em @var{seq_caracte} est@'a na posi@,{c}@~ao 1.
 @deffnx {Fun@,{c}@~ao} ssubstfirst (@var{nova}, @var{antiga}, @var{seq_caracte}, @var{test}) 
 @deffnx {Fun@,{c}@~ao} ssubstfirst (@var{nova}, @var{antiga}, @var{seq_caracte}, @var{test}, @var{in@'{@dotless{i}}cio}) 
 @deffnx {Fun@,{c}@~ao} ssubstfirst (@var{nova}, @var{antiga}, @var{seq_caracte}, @var{test}, @var{in@'{@dotless{i}}cio}, @var{fim}) 
-Como em @code{subst} exceto que somente a primeira subsequ@^encia de caracteres que coincidir com @var{antiga} @'e substitu@'{@dotless{i}}da. 
+Como em @code{subst} excepto que somente a primeira subsequ@^encia de caracteres que coincidir com @var{antiga} @'e substitu@'{@dotless{i}}da. 
 
 @end deffn
 
@@ -873,12 +873,12 @@ mas com todos os caracteres que aparecerem em @var{seq} removidos de ambas as ex
 @end deffn
 
 @deffn {Fun@,{c}@~ao} striml (@var{seq}, @var{seq_caracte}) 
-Como em @code{strim} exceto que somente a extremidade esquerda de @var{seq_caracte} @'e recordada. 
+Como em @code{strim} excepto que somente a extremidade esquerda de @var{seq_caracte} @'e recordada. 
 
 @end deffn
 
 @deffn {Fun@,{c}@~ao} strimr (@var{seq}, @var{seq_caracte}) 
-Como em @code{strim} exceto que somente a extremidade direita de sequ@^encia de caracteres @'e recortada. 
+Como em @code{strim} excepto que somente a extremidade direita de sequ@^encia de caracteres @'e recortada. 
 
 @end deffn
 
@@ -907,7 +907,7 @@ Note que o primeiro caractere em @var{seq_caracte} est@'a na posi@,{c}@~ao 1.
 @deffn {Fun@,{c}@~ao} supcase (@var{seq_caracte}) 
 @deffnx {Fun@,{c}@~ao} supcase (@var{seq_caracte}, @var{in@'{@dotless{i}}cio}) 
 @deffnx {Fun@,{c}@~ao} supcase (@var{seq_caracte}, @var{in@'{@dotless{i}}cio}, @var{fim}) 
-Retorna @var{seq_caracte} exceto que caracteres em caixa baixa a partir da posi@,{c}@~ao @var{in@'{@dotless{i}}cio} at@'e a posi@,{c}@~ao @var{fim} s@~ao substitu@'{@dotless{i}}dos pelo correspondente caracteres em cixa alta.
+Retorna @var{seq_caracte} excepto que caracteres em caixa baixa a partir da posi@,{c}@~ao @var{in@'{@dotless{i}}cio} at@'e a posi@,{c}@~ao @var{fim} s@~ao substitu@'{@dotless{i}}dos pelo correspondente caracteres em cixa alta.
 Se @var{fim} n@~ao for fornecido,
 todos os caracteres em caixa baixa de @var{in@'{@dotless{i}}cio} at@'e o fim de @var{seq_caracte} s@~ao substitu@'{@dotless{i}}dos.
 

@@ -180,7 +180,7 @@ Se deve tomar cuidado quando se trabalha com dados divididos por categorias. no 
 
 @deffn {Fun@,{c}@~ao} continuous_freq (@var{list})
 @deffnx {Fun@,{c}@~ao} continuous_freq (@var{list}, @var{m})
-O argumetno de @code{continuous_freq} deve ser uma lista de n@'umeros, que ser@~ao ent@~ao agrupadas em intervalos e contado quantos desses dados pertencem a cada grupo. Opcionalmente, a fun@,{c}@~ao @code{continuous_freq} admite um segundo argumento indicando o n@'umero de classes, 10 @'e o valor padr@~ao,
+O argumento de @code{continuous_freq} deve ser uma lista de n@'umeros, que ser@~ao ent@~ao agrupadas em intervalos e contado quantos desses dados pertencem a cada grupo. Opcionalmente, a fun@,{c}@~ao @code{continuous_freq} admite um segundo argumento indicando o n@'umero de classes, 10 @'e o valor padr@~ao,
 
 @c ===beg===
 @c load (numericalio)$
@@ -1516,9 +1516,9 @@ A fun@,{c}@~ao @code{global_variances} retorna uma lista de medidas de vari@^anc
 @item
 @var{desvio padr@~ao generalizado}: @code{sqrt(determinant(S_1))},
 @item
-@var{vari@^ancia efetiva} @code{determinant(S_1)^(1/p)}, (defined in: Pe@~na, D. (2002) @var{An@'alisis de datos multivariantes}; McGraw-Hill, Madrid.)
+@var{vari@^ancia efectiva} @code{determinant(S_1)^(1/p)}, (defined in: Pe@~na, D. (2002) @var{An@'alisis de datos multivariantes}; McGraw-Hill, Madrid.)
 @item
-@var{desvio padr@~ao efetivo}: @code{determinant(S_1)^(1/(2*p))}.
+@var{desvio padr@~ao efectivo}: @code{determinant(S_1)^(1/(2*p))}.
 @end itemize
 onde @var{p} @'e a dimens@~ao das v@'arias vari@'aveis aleat@'orias e @math{S_1} a matriz de covari@^ancia retornada por @code{cov1}.
 
@@ -1653,7 +1653,7 @@ $${S_{1}^{-1}}={\left(s^{ij}\right)_{i,j=1,2,\ldots, p}}$$
 @end tex
 
 @item
-@var{vetor de correla@,{c}@~ao multipla}:  @math{(R_1^2, R_2^2, ..., R_p^2)}, com 
+@var{vector de correla@,{c}@~ao m@'ultipla}:  @math{(R_1^2, R_2^2, ..., R_p^2)}, com 
 @ifhtml
 @example
        2          1
@@ -1714,7 +1714,7 @@ Exemplo:
 @c z : list_correlations (s2)$
 @c fpprintprec : 5$ /* for pretty output */
 @c z[1];  /* matriz de precis@~ao */
-@c z[2];  /* vetor de correla@,{c}@~ao multipla */
+@c z[2];  /* vector de correla@,{c}@~ao m@'ultipla */
 @c z[3];  /* matriz parcial de correla@,{c}@~ao */
 @c ===end===
 @example
@@ -1768,7 +1768,7 @@ A fun@,{c}@~ao @code{dataplot} permite visualiza@,{c}@~ao directa de dados de am
 @itemize @bullet
 
 @item
-@code{'outputdev}, o valor padr@~ao @'e @code{"x"}, indica o formato de dispositivo/ficheiro da figura de sa@'{@dotless{i}}da; valores corretos s@~ao @code{"x"}, @code{"eps"} e @code{"png"}, para a tela, formato de ficheiro postscript e formato de ficheiro png, respectivamente.
+@code{'outputdev}, o valor padr@~ao @'e @code{"x"}, indica o formato de dispositivo/ficheiro da figura de sa@'{@dotless{i}}da; valores correctos s@~ao @code{"x"}, @code{"eps"} e @code{"png"}, para a tela, formato de ficheiro postscript e formato de ficheiro png, respectivamente.
 
 @item
 @code{'maintitle}, o valor padr@~ao @'e @code{""}, @'e o t@'{@dotless{i}}tulo principal entre aspas duplas.
@@ -1915,7 +1915,7 @@ Essa fun@,{c}@~ao monta um gr@'afico de um histograma. Dados de amostras devem s
 @itemize @bullet
 
 @item
-@code{'outputdev}, o valor padr@~ao @'e @code{"x"}, indica o formato de ficheiro da figura de sa@'{@dotless{i}}da; valores corretos s@~ao @code{"x"}, @code{"eps"} e @code{"png"}, para a tela, formato de ficheiro postscript e formato de ficheiro png, respectivamente.
+@code{'outputdev}, o valor padr@~ao @'e @code{"x"}, indica o formato de ficheiro da figura de sa@'{@dotless{i}}da; valores correctos s@~ao @code{"x"}, @code{"eps"} e @code{"png"}, para a tela, formato de ficheiro postscript e formato de ficheiro png, respectivamente.
 
 @item
 @code{'maintitle}, o valor padr@~ao @'e @code{""}, @'e o t@'{@dotless{i}}tulo principal entre aspas duplas.
@@ -1976,7 +1976,7 @@ Similar a @code{histogram} mas para vari@'aveis estat@'{@dotless{i}}sticas, num@
 @itemize @bullet
 
 @item
-@code{'outputdev}, o valor padr@~ao @'e @code{"x"}, indica o formato de ficheiro da figura de sa@'{@dotless{i}}da; valores corretos s@~ao @code{"x"}, @code{"eps"} e @code{"png"}, para a tela, formato de ficheiro postscript e formato de ficheiro png, respectivamente.
+@code{'outputdev}, o valor padr@~ao @'e @code{"x"}, indica o formato de ficheiro da figura de sa@'{@dotless{i}}da; valores correctos s@~ao @code{"x"}, @code{"eps"} e @code{"png"}, para a tela, formato de ficheiro postscript e formato de ficheiro png, respectivamente.
 
 @item
 @code{'maintitle}, o valor padr@~ao @'e @code{""}, @'e o t@'{@dotless{i}}tulo principal entre aspas duplas.
@@ -2047,7 +2047,7 @@ Essa fun@,{c}@~ao monta diagramas em caixas. O argumento @var{data} pode ser uma
 @itemize @bullet
 
 @item
-@code{'outputdev}, o valor padr@~ao @'e @code{"x"}, indica o formato de ficheiro da figura de sa@'{@dotless{i}}da; valores corretos s@~ao @code{"x"}, @code{"eps"} e @code{"png"}, para a tela, formato de ficheiro postscript e formato de ficheiro png, respectivamente.
+@code{'outputdev}, o valor padr@~ao @'e @code{"x"}, indica o formato de ficheiro da figura de sa@'{@dotless{i}}da; valores correctos s@~ao @code{"x"}, @code{"eps"} e @code{"png"}, para a tela, formato de ficheiro postscript e formato de ficheiro png, respectivamente.
 
 @item
 @code{'maintitle}, o valor padr@~ao @'e @code{""}, @'e o t@'{@dotless{i}}tulo principal entre aspas duplas.
