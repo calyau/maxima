@@ -331,7 +331,7 @@ A integral el@'{@dotless{i}}ptica completa de primeiro tipo, definida como
 $$\int_0^{{\pi}\over{2}} {{d\theta}\over{\sqrt{1 - m\sin^2\theta}}}$$
 @end tex
 Para certos valores de @math{m}, o valor da integral @'e conhecido em
-termos de fun@value{cedilha}@~oes @math{Gamma}.  Use @code{makegamma} para avaliar esse valor.
+termos de fun@value{cedilha}@~oes @math{Gama}.  Use @code{makegamma} para avaliar esse valor.
 @end deffn
 
 @anchor{elliptic_ec}
@@ -349,6 +349,6 @@ A integral el@'{@dotless{i}}ptica completa de segundo tipo, definida como
 $$\int_0^{{\pi}\over{2}} \sqrt{1 - m\sin^2\theta} d\theta$$
 @end tex
 Para certos valores de @math{m}, o valor da integral @'e conhecido em
-termos de fun@value{cedilha}@~oesv@math{Gamma}.  Use @code{makegamma} para avaliar esse valor.
+termos de fun@value{cedilha}@~oes @math{Gama}.  Use @code{makegamma} para avaliar esse valor.
 @end deffn
 
