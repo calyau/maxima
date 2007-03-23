@@ -7,28 +7,7 @@
 
 (in-package :maxima)
 
-;;;Poly selector functions
-;
-;(defmacro P-VAR (p) `(car ,p))
-;
-;(defmacro P-TERMS (p) `(cdr ,p))
-;
-;(defmacro P-LC (p) `(caddr ,p))			;leading coefficient
-;
-;(defmacro P-LE (p) `(cadr ,p))
-;
-;(defmacro P-RED (p) `(cdddr ,p))
-;
-;;;poly terms selectors
-;
-;(defmacro PT-LC (terms) `(cadr ,terms))
-;
-;(defmacro PT-LE (terms) `(car ,terms))
-;
-;(defmacro PT-RED (terms) `(cddr ,terms))
-
 (defun rational-subst (poly var denom )
-;  (declare (values . numerator))
   "does a substitution like var --> var/denom  where var is a genvar 
 and denom is a poly.  It calculates the numerator after bringing a common
 denominator of denom^(pdegree poly var)"
@@ -37,41 +16,13 @@ denominator of denom^(pdegree poly var)"
      (sub-rat2 poly var denom deg)))
     
 
-(cond ((not (fboundp 'p-var))(load "msm:ratmac.fasl")))
-;worked but assumed the denom was lower than the var to be replaced.
-;(defun sub-rat1 (poly var denom deg)
-;  (cond ((atom poly) (setq poly (ptimes poly (pexpt denom deg))))
-;	((eq (car poly) var)
-;	 (do ((tail (cdr poly) (cddr tail)))
-;	     ((null tail))
-;	   (setf (cadr tail)
-;		 (ptimes (cadr tail)
-;			 (pexpt denom (- deg (car tail)))))))
-;	((pointergp (car poly) var)
-;	 (do ((tail (cdr poly) (cddr tail)))
-;	     ((null tail))
-;	   (setf (cadr tail)
-;		 (sub-rat1 (cadr tail) var denom deg))))
-;	(t (setq poly (ptimes poly (pexpt denom deg)))))
-;  poly)
-
-;(defun polynomialp (poly) (or (numberp poly)
-;			      (and (listp poly)
-;				   (and (symbolp (car poly))
-;					(get (car poly ) 'disrep)))))
-;
-;(defun rational-functionp (pol) (and (listp pol)
-;				     (Polynomialp (car pol))
-;				     (polynomialp (cdr pol))))
-
+(cond ((not (fboundp 'p-var)) (load "msm:ratmac.fasl")))
 
 (defmacro with-main-variable ( mvar &body body)
   `(let ((,mvar (make-symbol "zzzzzz")))
     (set ,mvar 40000)
     (setf (get ,mvar 'disrep) 'zzzzzzz)
     ,@ body))
-
-
 
 (defmacro with-main  (main form-to-reorder resubstitute &body body)
   (cond ((null resubstitute)
@@ -143,34 +94,13 @@ denominator of denom^(pdegree poly var)"
 	(t(setq poly (ptimes poly (pexpt denom deg)))))
   poly)
 
-#|
-(setq me (st-rat $d1))
-(setq y (car (st-rat '$y)
-
-(defun h ()
-  (rational-subst me y (st-rat '$u) 2))|#
-#+M
-(defun copy-tree (tree) (subst 'zzzz 'zzzz tree))
-#+M
-(defun header-poly (poly)
-  (cond ((atom poly) poly)
-	((symbolp (car poly ))(setq poly (cons poly 1))
-		  (cons(list 'mrat 'simp varlist genvar) poly))
-	(t 	(cons(list 'mrat 'simp varlist genvar) poly))))
-#+M
-(defun sh (poly) (displa (header-poly poly)))
-
 (defun $sub1 (poly var denom &optional deg)
   deg
   (setq poly (st-rat poly))
   (setq var (car (st-rat var)))
   (setq denom (st-rat denom))
   (header-poly (rational-subst poly var denom )))
-#+M
-(defun st-rat (poly)
-  (setq poly (cdr ($rat poly)))
-  (cond ((eq (cdr poly) 1) (car poly))
-	(t poly)))
+
 
 (defun poly-subst (poly var repl)
   "This substitutes for var (a genvar) the repl (a poly) staying in cre form"
@@ -212,18 +142,6 @@ poly)
   (setq var (car (st-rat var)))
   (setq repl (st-rat repl))
   (header-poly (poly-subst poly var repl )))
-;
-;(defun poly-degree (poly varl)
-;  (cond ((atom poly) 0)
-;	((memq (p-var poly) varl)
-;	 (sloop for (deg cof) on (cdr poly) by 'cddr
-;	       maximize (+ deg (poly-degree cof varl))))
-;	(t
-;	 (sloop for (deg cof) on (cdr poly) by 'cddr
-;	       maximize (poly-degree cof varl)))))
-;
-;(defun zero-sublis (poly &rest list-vars)
-;  (pcoeff poly 1 list-vars))
 
 (defun rsublis (a-list denom poly &key degree vars-to-sub reduce &aux answ)
   "does a general sublis : a-list of form (list (cons old-var repl-poly)....)
@@ -249,55 +167,6 @@ poly)
 				 vars-to-sub)))
 	  (t (ferror "bad type for poly : should be ratl fn or poly")))))
 
-;(defun psublis (a-list denom poly &key degree vars-to-sub)
-;  "does a general sublis : a-list of form (list (cons old-var repl-poly)....)
-;   denom is a poly "
-;  (let ((tem (cond (vars-to-sub vars-to-sub)
-;		   (t (sloop for v in a-list collecting (car v)))))
-;	deg)
-;    (cond ((polynomialp poly)
-;	   (cond (degree (setq deg degree))
-;		 (t (setq deg (poly-degree poly tem))))
-;	   (psublis1 a-list denom poly
-;		     deg  tem))
-;	  ((rational-functionp poly) (rsublis a-list denom poly :degree degree :vars-to-sub
-;					      vars-to-sub :reduce t))
-;	  ((atom poly) poly)
-;	  (t (sloop for v in poly collecting (psublis a-list denom v :degree degree
-;						   :vars-to-sub vars-to-sub))))))
-
-
-;;should take into account when the variables don't need replacing.
-;(defun psublis1 (a-list denom poly degree varl)
-;   (cond ((atom poly) (ptimes poly (pexpt denom degree)))
-;	((memq (p-var poly) varl)
-;	 (sloop for (deg cof) on (cdr poly) by 'cddr
-;	       with answer = 0
-;	       do (setq answer
-;			(pplus answer
-;			       (ptimes
-;					(psublis1 a-list denom cof
-;
-;						      (- degree deg) varl)
-;				       (pexpt (cdr(assoc (p-var poly)
-;							 a-list))
-;					      deg))))
-;
-;	       finally (return answer)))
-;	((> (valget (p-var poly))
-;	    (setq hi   (sloop for v in varl 
-;			     minimize (valget v))))
-;	 (sloop for (deg cof) on  (cdr poly ) by 'cddr
-;	       with answer = 0
-;	       with mon = (list (p-var poly ) 1 1)
-;	       do (setq answer (pplus answer
-;				      (ptimes
-;				       (pexpt mon deg)
-;				       (psublis1 a-list denom cof degree varl))))
-;
-;	       finally (return answer)))
-;	(t (ptimes (pexpt denom degree) poly))))
-
 (defun $psublis (a-list denom poly)
   "use psublis([y=x^2,v=u^3],denom,poly)"
   (header-poly(psublis  (sloop for (u v  repl)  in (cdr a-list) by  'cdr
@@ -306,14 +175,6 @@ poly)
 			      (cons (p-var (st-rat v))
 				    (st-rat repl)))
 			(st-rat denom) (st-rat poly))))
-
-;(defun test (repl pol)
-;  (sub* ($sublis repl pol)
-;	($psublis (sloop for v in (cdr repl)
-;                        appending (cdr v) into tem
-;			finally (return (cons '(mlist) tem)))
-;		   1 pol)))
-
 
 (defun $coll_linear (expr &aux answ)
   (cond ((mbagp expr)
@@ -355,7 +216,6 @@ poly)
 
 ;;incorrect needs 
 (defun gen-vrem (b divisor &aux tem)
-;  (declare (values . (list quot zl-REM c-reqd)))
   (cond 
     ((atom divisor) 0)		
     ((atom b)b )
@@ -379,7 +239,6 @@ poly)
 ;;up appropriateley.
 ;;won't work for x^2*y+x+1 where  
 (defun gen-vrem (b divisor &aux tem)
-;  (declare (values . (list quot zl-REM c-reqd)))
   (cond 
     ((atom divisor) 0)		
     ((atom b)b )
@@ -422,7 +281,6 @@ poly)
 
 ;c-reqd*f=g*quot+remaind
 (defun gen-prem (f g var &aux remainder c-reqd)
-;    (declare (values .   (zl-REM c-reqd)))
   (cond ((< (pdegree f var) (pdegree g var))
 	 
 	 (setq remainder f)(setq c-reqd 1))
@@ -458,7 +316,6 @@ poly)
 						
 ;;works now c*b=q*divisor +r
 (defun vdivide (b divisor &aux rnew rfactor leading-gcd deltaq)
-;  (declare (values . (list quot zl-REM c-reqd)))
   (let ((q 0)(c 1)(r  b)) 
     (cond 
       ((atom divisor) (list b 0 divisor)) ;;should b/gcd(c(b),divisor) 0 a/same
@@ -515,14 +372,6 @@ poly)
 	(coll-linear1 f)
 	*linear*)
 
-;(defmacro push-new (item llist &optional (test 'eq))
-;  (case test
-;    (eq
-;     `(cond ((not (memq  ,item ,llist) )
-;	     (push ,item ,llist))))
-;    (equal 
-;     `(cond ((not (member  ,item ,llist) )
-;	     (push ,item ,llist))))))
 (defun constant-polyp (f)
   (cond ((atom f) t)
 	(t (cond ((get (car f)'constant) t)
@@ -556,29 +405,11 @@ poly)
 	 (sloop for (deg cof) on  (cdr poly) by 'cddr while
 	       (> deg 0)
 	       when (> (pdegree cof u) ldeg)
-	       do  (setq *linear* (zl-DELETE u *linear*)))))))
+	       do  (setq *linear* (delete u *linear* :test #'equal)))))))
   )
 	
-;;returns does gcd of numbers
-;;on lispm its in sparse-matrix-structure
-#+M
-(defun ggcd (a b )
-  (let ((bp 0 ) (b 1)(ap 1)( a 0)
-		(rp a ) (rpp b)r q)
-    (do ((i 0 (f+ i 1)))
-	(())
-      (setq q (quotient rpp rp))
-            (print (list i r q a b))
-      (setq r (- rpp (* q rp)))
-            (cond ((eq r 0) (return (list   b a  r)))
-	    )
-      (setq b (prog1 (- bp (* b q))
-		     (setq bp b)))
-      (setq a (prog1 (- ap (* a q))
-		     (setq ap a)))
-      (setq rpp rp rp r))))
-
 ;(compare-functions
+
 (defun gen-psublis (old new poly)
   (multiple-value-bind (subs denom)
       (subs-for-psublis old new)
@@ -629,7 +460,7 @@ poly)
   (cond ((atom f) (cons f 1))
 	((and (numberp (car f))(numberp (cdr f))) f)
 	((polynomialp f)
-	 (setq sub (cdr (zl-ASSOC  (p-var f) subs)))
+	 (setq sub (cdr (assoc  (p-var f :test #'equal) subs)))
 	 (cond ((null sub)(setq sub (cons  (list  (p-var f) 1 1) 1))))
 	 (sloop for ( deg cof) on (cdr f) by 'cddr
 	       with answ = (cons 0 1)

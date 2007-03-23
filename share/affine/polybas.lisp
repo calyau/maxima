@@ -11,7 +11,6 @@
 (defvar *varlist* nil)
 (defvar *genvar* nil)
 
-
 (defun polynomialp (x)
   (cond  ((numberp x))
 	 ((atom x) nil)
@@ -28,28 +27,22 @@
 	 ((rational-functionp expr)(cons (list 'mrat 'simp *varlist* *genvar* ) expr ))
 	 (t expr)))
 
-;  `(cond ((variable-boundp ,x) ,x)
-;	 (t nil)))
-
 (defun $zerop ( n &aux type-of-n tem )
   (cond ((numberp n) (zerop n))
 	((atom n) nil)
 	((polynomialp n) nil)
 	((rational-functionp n)(rzerop   n))
 	(($bfloatp n) (eql (car n) 0))
-	(t (setf type-of-n (caar n))		
+	(t (setf type-of-n (caar n))
 	   (cond ((memq type-of-n '(mrat rat))
 		  (equal (cdr n) (rzero)))
 		 (t (and (numberp (setq tem ($ratsimp n)))(zerop tem)))))))
 
-(defun rational-functionp (x) (cond ((numberp x))
-				    ((atom x) nil)
-				    (t (and (polynomialp (car x))
-					    (polynomialp (cdr x))))))
-
-
-
-
+(defun rational-functionp (x)
+  (cond ((numberp x))
+	((atom x) nil)
+	(t (and (polynomialp (car x))
+		(polynomialp (cdr x))))))
 
 (defun psublis (a-list denom poly &key degree vars-to-sub)
   "does a general sublis : a-list of form (list (cons old-var repl-poly)....)
@@ -80,13 +73,12 @@
 					(psublis1 a-list denom cof
 
 						      (f- degree deg) varl)
-				       (pexpt (cdr(zl-ASSOC (p-var poly)
-							 a-list))
+				       (pexpt (cdr (assoc (p-var poly) a-list :test #'equal))
 					      deg))))
 
 	       finally (return answer)))
 	((> (valget (p-var poly))
-	     (sloop for v in varl 
+	     (sloop for v in varl
 			     minimize (valget v)))
 	 (sloop for (deg cof) on  (cdr poly ) by 'cddr
 	       with answer = 0
@@ -101,7 +93,7 @@
 
 (defun zero-sublis (poly &rest list-vars)
   (pcoeff poly 1 list-vars))
- 
+
 (defun pcomplexity  (poly)
   (cond ((atom poly) 0)
 	(t (sloop for (deg cof) on (cdr poly) by 'cddr
@@ -119,21 +111,21 @@
 
 (defmacro allow-rest-argument (new-funct binary-op  answer-for-null-argument rest-arg)
  `(cond  ((null ,rest-arg) ,answer-for-null-argument)
-        (t	(case (length ,rest-arg)
+	(t	(case (length ,rest-arg)
 	  (,2 (,binary-op (first ,rest-arg)(second ,rest-arg)))
 	  (,1 (car ,rest-arg))
 	  (otherwise (apply ',new-funct (,binary-op (first ,rest-arg)
 					   (second ,rest-arg)) (cddr ,rest-arg)))))))
-	     
 
-  
+
+
 (defmacro polyop (x y identity-x identity-y number-op poly-op rat-op &optional rat-switch )
   (cond (rat-switch (setq rat-switch '(t))))
   `(cond
      ((and (numberp ,x)(numberp ,y))(,number-op ,x ,y))
      ((eq ,x ,identity-x) ,y)
      ((eq ,y ,identity-y) ,x)
-     (t 
+     (t
       (let ((xx (poly-type ,x)) answer
 	    (yy (poly-type ,y)))
 
@@ -143,7 +135,7 @@
 	       (setq ,x (cdr ,x) xx ':rational-function))
 	      ((eq xx ':rat ) (setq ,x (cons (second ,x) (third ,x))
 				   xx ':rational-function)))
-	       
+
 	(cond
 	  ((null yy)(setq ,y (cdr ($new_rat ,y)) yy ':rational-function))
 	  ((eq yy ':$rat)(setq ,y (cdr ,y) yy ':rational-function))
@@ -173,7 +165,7 @@
 		   (:rational-function (,rat-op ,x ,y ,@ rat-switch))))
 		(otherwise (ferror "unknown arg"))))
 	(cond ((polynomialp answer) answer)
-	      ((rational-functionp answer)	
+	      ((rational-functionp answer)
 	       (cond ((eq 1 (cdr answer))(car answer))
 		     (t answer)))
 	      (t answer))))))
@@ -185,17 +177,21 @@
     (2 (n1* (car l) (second l)))
     (t (n1* (car l) (apply 'n* (cdr l))))))
 
-(defun n+ (x y) (polyop x y  0 0 + pplus ratplus ))
-(defun n1* (x y)(polyop x y 1 1 * ptimes rattimes t))
-(defun n- (x y)(polyop x y nil 0 - pdifference ratdifference))
+(defun n+ (x y)
+  (polyop x y  0 0 + pplus ratplus ))
+
+(defun n1* (x y)
+  (polyop x y 1 1 * ptimes rattimes t))
+
+(defun n- (x y)
+  (polyop x y nil 0 - pdifference ratdifference))
+
 (defun nred (x y &aux answer)
   (setq answer (polyop x y nil 1  ratreduce ratreduce ratquotient))
   (setq answer (rationalize-denom-zeta3 answer))
   (cond ((numberp answer) answer)
 	((eq (denom answer) 1) (car answer))
 	(t answer)))
-
-
 
 (defun new-disrep (expr)
   (cond ((atom expr) expr)
@@ -207,16 +203,16 @@
 	     (:rational-function
 	      (cond (($numberp expr)
 		     (cond ((zerop (num expr)) 0)
-			   (t 
+			   (t
 		     (list '(rat simp) (num expr) (denom expr)))))
-		    (t 
+		    (t
 		     ($ratdisrep (header-poly expr)))))
 	     (otherwise  (cond ((mbagp expr)(cons (car expr) (mapcar 'new-disrep expr)))
 			       (($ratp expr)($ratdisrep expr))
 			       (t expr))))))))
  (defun poly-degree (poly varl)
   (cond ((atom poly) 0)
- 	((memq (p-var poly) varl)
+	((memq (p-var poly) varl)
 	 (sloop for (deg cof) on (cdr poly) by 'cddr
 	       maximize (f+ deg (poly-degree cof varl))))
 	(t
@@ -226,7 +222,7 @@
 (defun shl (l)
   (cond ($display2d (mapcar 'sh l))
        (t (sloop for v in l
-		for i from 0 
+		for i from 0
 		initially (format t "~%[")
 		when (numberp v) do (princ v)
 		else
@@ -243,18 +239,18 @@
 		    ((rational-functionp expr)(funcall disp (cons *fake-rat* expr)))
 		    (t (funcall disp expr))))
     (cond (answ (format t "~A" answ)))))
- 
+
 (defmacro setq-num-den (num den expr &aux form .expr.)
   (cond ((symbolp expr) (setq .expr. expr))
 	(t (setq .expr. '.expr.)))
   (setq form
-        `(cond ((polynomialp  , .expr.) (setq ,num , .expr. , den  1))
+	`(cond ((polynomialp  , .expr.) (setq ,num , .expr. , den  1))
 	       ((rational-functionp , .expr.) (setq ,num (num , .expr.) ,den (denom , .expr.)))
 	       (t (fsignal "expr is supposed to be poly or rational-functionp"))))
   (cond ((symbolp expr)
 	 form)
 	(t `(let ((.expr. ,expr))
-              ,form))))
+	      ,form))))
 
 (defun splice-in (after-nth item a-list )
   (cond ((eq after-nth -1)(cons item a-list))
@@ -287,13 +283,13 @@
 			     (mid 0) (ub 0) (lbound 0) already-there)
   (declare (fixnum leng mid ub lbound after))
   (setq leng (length a-list))
-  
+
   (cond ((funcall order-function x (car a-list))(setq after -1))
 	((funcall order-equal  x (car a-list))(setq after 0)(setq already-there a-list))
 	((funcall order-equal  x (car(setq tem  (last a-list))))(setq after (f1- leng))
 	 (setq already-there tem))
 	((not (funcall order-function x (car tem)))(setq after (f1- leng)))
-	 
+
 	(t (setq offset 0 lbound 0 ub (f1- leng))
 	   (sloop while (> (f- ub lbound) 1)
 		 do
@@ -314,7 +310,7 @@
 
 
 
-		   
+
 (defun disrep-list (expr)
   "Just substitutes the any disrep property for a symbol for the symbol"
   (cond ((atom expr)(cond ((symbolp expr)(get expr 'disrep))
@@ -324,30 +320,20 @@
 
 ;;Perhaps we should have our own prep1 function
 ;;It just goes through a general form converting it to cre, and
-;;when it comes to a symbol it can't find in genpairs it 
+;;when it comes to a symbol it can't find in genpairs it
 ;;calls newsym which is much like our add-newvar . We could
 ;;have it look things up in a hash table rather than genpairs
 ;;The checking for being on tellratlist is done by the ratsetup2
 ;;One has to be careful with the with-vgp form since nested ones
 ;;will cause havoc.  Also if inside one you must refer to varlist
 ;;not *varlist* yet outside you may want *varlist*.  So for example
-;;in 
-
-
+;;in
 
 
 (defun check-repeats (varl)
   (sloop for v on varl
 	when (member (car v) (cdr v) :test 'nc-equal)
 	  do (show (car v) ) (fsignal "repeat in varlist")))
-
-;(defun check-order (varl)
-;  (sloop for v on varl
-;	do
-;    (sloop for w in (cdr v)
-;	  when (not (funcall $order_function (car v) w))
-;	    do (fsignal "bad order ~A and ~A " (car v) w ))))
-
 
 (defun check-order (varl)
   (declare (special $order_function))
@@ -365,16 +351,16 @@
 
 (defmacro with-vg (&rest body)
   `(let ((varlist *varlist*)
-	(genvar *genvar*))
-    ,@ body
-	(setq *varlist* varlist)
-	(setq *genvar* genvar)))
+	 (genvar *genvar*))
+     ,@body
+     (setq *varlist* varlist)
+     (setq *genvar* genvar)))
 
 (defmacro with-vgp (&rest body)
   `(let ((varlist *varlist*)
 	(genvar *genvar*)
 	(genpairs *genpairs*))
-        (prog1 (progn ,@ body)
+	(prog1 (progn ,@ body)
 	(setq *varlist* varlist *genpairs* genpairs)
 	(setq *genvar* genvar))))
 
@@ -387,4 +373,3 @@
 		  collect v into result
 		  finally (return (nconc result (zl-union sec)))))
 	(t (zl-union (car l) (apply 'zl-union (cdr l))))))
-		  

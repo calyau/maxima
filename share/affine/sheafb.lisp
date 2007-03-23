@@ -16,9 +16,6 @@
 	(compose-rmap 
 		 (zopen-inv zopen)
 		 (zopen-inv ichart)))
-;  (setq subs (my-pairlis *xxx* (zopen-inv ichart)))
-;  (setq ineq          ;(plcm (list (xxx i) 1 1)
-;		    (psublis subs 1 (zopen-inequality zopen)))
   (setq ineq (function-numerator (apply-rmap (zopen-inv ichart) (zopen-inequality zopen))))
   (setq answ (zl-copy-structure zopen zopen- coord pss inv qss inequality ineq))
   answ)
@@ -335,12 +332,12 @@
 	   (sloop for ii from 0   
 		 for op in (pls-opens new-pls)
 		 when
-		 (and (null (zl-MEMBER ii opens-not-to-try))
+		 (and (null (member ii opens-not-to-try :test #'equal))
 		      (or 
-			(< (length some-red) number-to-reduce) (zl-MEMBER ii opens-to-try)))
+			(< (length some-red) number-to-reduce) (member ii opens-to-try :test #'equal)))
 		 do  (push ii opens-not-to-try) (format t "~%Reducing the ~A open" ii)
-		 (show ii opens-not-to-try (zl-MEMBER ii opens-not-to-try)
-		       (null (zl-MEMBER ii opens-not-to-try)))
+		 (show ii opens-not-to-try (member ii opens-not-to-try :test #'equal)
+		       (null (member ii opens-not-to-try :test #'equal)))
 		 (setq red-pls 
 		       (simplify-svar-ldata (open-sub-scheme new-pls ii)))
 		 (push (car (make-component-history red-pls))(zopen-history op))
@@ -351,7 +348,7 @@
 		 else collecting red-pls into some-red
 		 finally
 		 (show the-max opens-not-to-try where-the-max)
-		 (cond ((and check-the-worst (null (memq where-the-max opens-not-to-try)))
+		 (cond ((and check-the-worst (null (mem where-the-max opens-not-to-try :test #'eq)))
 			(setq some-red-pls
 			      (cons (simplify-svar-ldata
 				      (open-sub-scheme new-pls where-the-max)) some-red)))
@@ -544,8 +541,8 @@
 ;    (sloop for op in opens
 ;	  for  dl in data
 ;	  for ii from 0
-;	  when (or (and (null opens-to-blowup) (not (memq ii opens-not-to-blowup)))
-;		   (memq ii opens-to-blowup))
+;	  when (or (and (null opens-to-blowup) (not (member ii opens-not-to-blowup :test #'eq)))
+;		   (mem ii opens-to-blowup :test #'eq))
 ;	  do (format t "~%Blowing up open number ~A " ii)
 ;	  and
 ;	  appending
@@ -597,8 +594,8 @@
 
 	  for ii from 0
 	  	  do  	  (des dl)
-	  when (or (and (null opens-to-blowup) (not (memq ii opens-not-to-blowup)))
-		   (memq ii opens-to-blowup))
+	  when (or (and (null opens-to-blowup) (not (member ii opens-not-to-blowup :test #'eq)))
+		   (member ii opens-to-blowup :test #'eq))
 	  do (format t "~%Blowing up open number ~A " ii)
 
 	  and
@@ -873,7 +870,7 @@
 		     (ferror "this equation contains no linear " (sh v))))))
   (setq other-variables  (sloop for v in *xxx*
 			       for i below dim
-			       when (not (memq v variables))
+			       when (not (member v variables :test #'eq))
 			       collecting v))
   (setq all-variables (append variables other-variables))
   (setq other-monoms
@@ -1006,10 +1003,10 @@
   pls)
 (defun copy-list-structure (expr)
   (cond ((atom expr) expr)
-	((memq  (car expr) '(zopens pre-ldata-sheaves rmap s-var ldata))
+	((member (car expr) '(zopens pre-ldata-sheaves rmap s-var ldata) :test #'eq)
 	 (copy-list expr))
 	(t (sloop for v on expr
-		 do (setf (car v)(copy-list-structure (car v)))))))
+		 do (setf (car v) (copy-list-structure (car v)))))))
 ;
 ;(defun open-all-refinement ( list-eqns open-g )
 ;  (sloop for v in list-eqns
@@ -1060,7 +1057,7 @@
 			  (setq inv-list
 				(sloop for gg in tem
 				      appending
-				      (best-open-cover (zl-DELETE v (copy-list prep-fns))
+				      (best-open-cover (delete v (copy-list prep-fns) :test #'equal)
 							(sftimes open-g gg))))
 			  (show inv-list)
 			  (setq inv-list (eliminate-multiples inv-list))
@@ -1255,7 +1252,7 @@
 	  (format t "~%Open Number : ~A"(find-position-in-list (car w) (pls-opens pls)))
 	  (setq gg (zopen-inequality (car w)))
 	  (setq *stop-simplify* nil)
-	  when (not (zl-MEMBER (car w) opens-not-to-simplify))
+	  when (not (member (car w) opens-not-to-simplify :test #'equal))
 	  do
 	  (sloop for ld on (cdr w)
 		do (setq some-ld (LDATA-SIMPLIFICATIONS (car ld) :open-g gg))
@@ -1289,7 +1286,7 @@
 								       (car w)))))
 	   (show (length v))
 	   else do (setq simped-ld (cdr w))
-	  when (and (null *stop-simplify*) (or (zl-MEMBER (car w) opens-not-to-simplify)
+	  when (and (null *stop-simplify*) (or (member (car w) opens-not-to-simplify :test #'equal)
 					     keep-opens-with-empty-ldata simped-ld))
 	  do
 	  (cond (simped-ld
@@ -1399,7 +1396,7 @@
 
 (defun variable-doesnt-occur (var &rest lists-fns)
   (sloop for v in lists-fns
-	when (memq var (list-variables v))
+	when (member var (list-variables v :test #'eq))
 	do (loop-return nil)
 	finally (loop-return t)))
 
@@ -1455,12 +1452,10 @@
 	     (setf (car r) (replace-rmaps-by-new-ones (car r)))))))
 
 (defun rerat (form)
-  (cond 
-	((null form) nil)
+  (cond ((null form) nil)
 	((and (symbolp form)
-	      (not (memq form '(ldata s-var zopens rmap zopen pre-ldata-sheaves
-                                quote
-                               inequality eqns))))
+	      (not (member form '(ldata s-var zopens rmap zopen pre-ldata-sheaves
+				  quote inequality eqns) :test #'eq)))
 	 (add-newvar (intern (string-append "$" (string form)))))
 	(t (do ((r form (cdr r)))
 	       ((not (consp r)) form)
@@ -1879,8 +1874,8 @@
 (defun intersection-equal1 (&rest l)
   (cond ((eq (length l) 1) (car l))
 	(t (apply 'intersection-equal (sloop for v in (car l)
-						    when(zl-MEMBER v (second l))
-						    collecting v )
+						    when (member v (second l) :test #'equal)
+						    collecting v)
 			  (cddr l)))))
 
 (defun intersectp (a b &key test)
@@ -1904,7 +1899,8 @@
 	do (sloop for w in lis
 		 when (and (not (eql v w)) (intersectp v w :test test))
 		 do
-		 (setq lis (cons (union-equal v w) (zl-DELETE w (zl-DELETE v lis))))
+		 (setq lis (cons (union-equal v w)
+				 (delete w (delete v lis :test #'equal) :test #'equal)))
 		 (return-from sue (build-equiv lis :test test)))
 	finally (loop-return (mapcar 'union-equal  lis))))
 
@@ -2168,7 +2164,7 @@
 		 do
 		 (setq an-answ
 		 (sloop for com in components-to-cover
-		       when (not (assq op com))
+		       when (not (assoc op com :test #'eq))
 		       collecting com into tem
 		       finally (loop-return (short-list-open-numbers tem
 							       (cons op opens-used)))))
@@ -2207,7 +2203,7 @@
 	      (setq   to-lis-dat  (nth to-op-num (pls-data pls)))
 	      (sloop for lld in lis-dat
 		    for lld-num from 0
-		    when (not (memq lld accounted-for))
+		    when (not (member lld accounted-for :test #'eq))
 		    do
 		    (multiple-value-setq
 		      (transl hh) (translate-reduced-component-and-reduce
@@ -2231,7 +2227,7 @@
 			    (t (fsignal "containment one way")))))
 	      finally (sloop for lld in lis-dat
 			    for lld-num from 0
-			    when (not (memq lld accounted-for))
+			    when (not (member lld accounted-for :test #'eq))
 			    do (show to-op-num lld-num)
 			    and 
 			    collecting (list (cons op-num  lld-num)) into comps
@@ -2243,7 +2239,7 @@
 					
 (defun get-component (components cons-op-ld)
   (sloop for com in components
-	when (zl-MEMBER cons-op-ld com)
+	when (member cons-op-ld com :test #'equal)
 	do (loop-return com)))
 (defun list-opens-with-component (pls open-num compon-num &aux answ)
   (setq answ (nth compon-num (match-components pls open-num)))
@@ -2251,10 +2247,10 @@
   (format t "~%is in opens: ")
   (sloop for op in (pls-opens pls)
 	for i from 0
-        when  (eq (cdr (zl-ASSOC i answ)) compon-num)
+        when  (eq (cdr (assoc i answ :test #'equal)) compon-num)
 	collecting i))
 
-(defun match-all-components (pls &key ( ignore-empty-opens t)
+(defun match-all-components (pls &key (ignore-empty-opens t)
 			     &aux all equiv opens *bad-components*)
   
   (setq opens (pls-opens pls))
@@ -2316,12 +2312,12 @@
   "operation may be :minimize, maximize, general-summing, or general-product;
    and the the quantity will ususually involve the variable v.  The result of the
    minimize is where the minimum is"
-  (iassert (memq   in-or-on '(in on)))
+  (iassert (member in-or-on '(in on) :test #'eq))
   (cond ((equal (car body) 'when)
 	 (setq when-clause (firstn 2 body) body (cddr body)))
 	(t (iassert (eq (length body) 2))))
   (setq operation (first body) quantity (second body))
-  (cond ((zl-MEMBER operation '(minimize maximize))
+  (cond ((member operation '(minimize maximize) :test #'equal)
 	 (cond ((eq operation 'minimize)
 		(setq pred	  '<)
 		(setq init 10000000))
@@ -2337,7 +2333,7 @@
 		do (setq .where. ,v)
 		(setq .prev-min. .tem.)
 		finally (loop-return .where.)))
-	((zl-MEMBER operation '(general-summing general-product))
+	((member operation '(general-summing general-product) :test #'equal)
 	 (cond ((eq operation 'general-summing)
 		(setq op 'N+) (setq init 0))
 	       ((eq operation 'general-product)
@@ -2423,11 +2419,11 @@
 		     (cons v
 			   (sloop for w in variable-occurs
 				 for f in eqns
-				 when (memq v w)
+				 when (member v w :test #'eq)
 				   count 1 into the-mult
 				 finally (loop-return (* the-mult (sloop for com in compl
 								   for ww in variable-occurs
-								   when (memq v ww)
+								   when (member v ww :test #'eq)
 								     minimize com)))))))
        (setq mult  (sort mult #'(lambda (u v)
 				  (< (cdr u) (cdr v)))))
@@ -2440,10 +2436,10 @@
   (setq highest-vars
 	(sloop for v in (setq  occurs (second lis))
 	collecting (sloop for u in ordered-vars
-			 when (memq u v)
+			 when (member u v :test #'eq)
 			 do (loop-return u))))
   (setq answ (sloop for v on highest-vars
-	when (memq (car v) (cdr v))
+	when (member (car v) (cdr v) :test #'eq)
 	do (loop-return nil)
 	finally (loop-return t)))
   (values answ ordered-vars occurs highest-vars))
@@ -2474,7 +2470,7 @@
 (defun highest-variables (variables occurs)
   (sloop for oc in occurs
         collecting (sloop for v in variables
-			 when (memq v oc)do (loop-return v))))
+			 when (member v oc :test #'eq) do (loop-return v))))
 
 
 (defun all-linear-variables (f &optional g &aux varl)
@@ -2521,7 +2517,7 @@
   (setq orig-ldata ldata)
   ;;should be wrt open-g
   (cond
-    ((zl-MEMBER(setq tem (list ldata open-g)) *already-tried*)
+    ((member(setq tem (list ldata open-g)) *already-tried* :test #'equal)
      (list ldata))
     
     (*dont-try-factor-irreducible-ldata* (list ldata))
@@ -2787,23 +2783,19 @@
 
 (defvar *used-divisors* nil)
  
-
-
-
 (defun find-repeats (highest-variables eqns &aux first-repeat repeat-eqns)
-;  (declare   (values  repeat-eqns first-repeat))
   (setq first-repeat
 	(sloop for v on highest-variables
-	      for eqnss on eqns
-	      when  (memq (car v) (cdr v))
-		do (cond ((cddr (setq repeat-eqns
-				      (sloop for eqn in eqnss
+	       for eqnss on eqns
+	       when  (member (car v) (cdr v) :test #'eq)
+	       do (cond ((cddr (setq repeat-eqns
+				     (sloop for eqn in eqnss
 					    for va in v
 					    when (and (eq va v)
-						      (not (zl-MEMBER eqn *used-divisors*)))
-					      collecting v)))
+						      (not (member eqn *used-divisors* :test #'equal)))
+					    collecting v)))
 			 (loop-return (car v))))))
-  (cond ((null (cddr repeat-eqns))(setq repeat-eqns nil)))
+  (cond ((null (cddr repeat-eqns)) (setq repeat-eqns nil)))
   (values  repeat-eqns first-repeat))
 
 ;
@@ -2874,7 +2866,7 @@
   (setq highest-vars
 	(sloop for v in occurs
 	      collecting (sloop for u in vars
-			       when (memq u v)
+			       when (member u v :test #'eq)
 			       do (loop-return u))))
   (show vars highest-vars)  
                 
@@ -2904,8 +2896,7 @@
 	     (gen-prem  f (first eqns-rep) repeat)
 	   (push f *used-divisors*)
 	   (mshow f (first eqns-rep))
-	   (setq new-eqns (zl-DELETE f
-				  (copy-list eqns)))
+	   (setq new-eqns (delete f (copy-list eqns)))
 	   (cond (($zerop zl-REM) nil)
 		 (t  (setq new-eqns  ;;these have f replaced by rem
 			   (append new-eqns (list zl-REM)))))
@@ -2941,7 +2932,7 @@
 		       (t
 			(format t "~%The c-reqd was invertible: ")
 			(sh c-reqd)
-			(iassert (not (zl-MEMBER f (ldata-eqns ld2))))
+			(iassert (not (member f (ldata-eqns ld2) :test #'equal)))
 			(des ld2)
 			(ldata-simplifications
 			  ld2 :open-g open-g :recursive-p t))))))
@@ -3170,11 +3161,11 @@
   (setq occurs (second vars))
   (setq vars (first vars))
   (sloop for v in *used-divisors*
-	do (setq vars (zl-DELETE v vars)))
+	do (setq vars (delete v vars :test #'equal)))
   (setq highest-vars
 	(sloop for v in occurs
 	      collecting (sloop for u in vars
-			       when (memq u v)
+			       when (member u v :test #'eq)
 			       do (loop-return u))))
   (show vars highest-vars)  
   (setq repeat
@@ -3182,7 +3173,7 @@
 	      do
 	      (sloop for w on highest-vars
 		    when (and (eq (car w) v)
-			      (memq v (cdr w)))
+			      (member v (cdr w) :test #'eq))
 		    do (return-from rep v)))))
 
 (defun sort-expensive-key (a-list pred key &aux clist)

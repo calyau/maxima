@@ -248,7 +248,7 @@
 					(funcall maybe-not (funcall test  (funcall key v)
 								 (funcall key w))))
 			      do
-			      (setq answ (zl-DELETE w answ))))
+			      (setq answ (delete w answ :test #'equal))))
   (cond (verify
 	 (sloop for v in orig
 		      do (sloop for w in answ
@@ -283,7 +283,7 @@
 					(funcall maybe-not (funcall test  (funcall key v)
 								 (funcall key w))))
 			      do
-			      (setq answ (zl-DELETE v answ))))
+			      (setq answ (delete v answ :test #'equal))))
   (cond (verify
 	 (sloop for v in orig
 		      do (sloop for w in answ
@@ -322,13 +322,13 @@
 						       (nth nth-open lis-data)))))
   (setq comp
 	(sloop for v in comp
-	when (eq (cdr (zl-ASSOC nth-open v)) ld-number)
+	when (eq (cdr (assoc nth-open v :test #'equal)) ld-number)
 	do (loop-return v)))
   
   (sloop for op  in opens
 	for lis-ld in lis-data
 	for i from 0
-	when (setq ld-number  (cdr (zl-ASSOC i comp)))
+	when (setq ld-number  (cdr (assoc i comp :test #'equal)))
 	do
 	(setq refs (open-refinement-for-list op (ldata-eqns (nth ld-number lis-ld))))
 	(sloop for op1 in refs
@@ -422,7 +422,7 @@
 		 collecting eqn into tem
 		 when (may-invertp eqn may-invert) do (return-from sue (setq answ 'unit))
 		 finally (setq simpler tem))
-	   finally (setq eqns (append  (zl-DELETE 0 simpler) used)))))
+	   finally (setq eqns (append  (delete 0 simpler :test #'equal) used)))))
   (setq answ  (cond ((eq answ 'unit) (format t "~%It turned out to be trivial")
 		     (cond (*leave-unit-ldata* (list (make-ldata :eqns '(1))) )))
 		    (t (format t "~%There are ~A equations of complexity ~A of which ~A ~
@@ -756,7 +756,7 @@
 	      ;;check vv doesn't occur in remaining equations
 	      ;;and if not put it in collection
 	      (sloop for ww in (cdr w)
-		    when (memq vv ww)do (loop-return nil)
+		    when (member vv ww :test #'eq) do (loop-return nil)
 		    finally (return-from kay vv))
 	      finally (return-from sue nil)))))
 
@@ -970,8 +970,8 @@
 	       for varl in varlist-of-fns
 	       do (sloop for va in varl
 			when (and
-			       (not (memq va variables-solved-for))
-			       (not (memq va variables-in-prev-eqns))
+			       (not (member va variables-solved-for :test #'eq))
+			       (not (member va variables-in-prev-eqns :test #'eq))
 			       (eq (pdegree f va) 1)
 			       (setq tem  (linear-triangularp
 						 (delete-nth i fns)
@@ -998,12 +998,12 @@
 	       for varl in varlist-of-fns
 	       do (sloop for va in varl
 			when (and
-			       (not (memq va variables-solved-for))
-			       (not (memq va variables-in-prev-eqns))
+			       (not (member va variables-solved-for :test #'eq))
+			       (not (member va variables-in-prev-eqns :test #'eq))
 			       (not (sloop for lis in varlist-of-fns
 					  for j from 0
 					  when (and  (not (eql i j))
-						     (memq va lis))
+						     (member va lis :test #'eq))
 					  do (loop-return t)))
 			       (eq (pdegree f va) 1)
 			       (setq tem
@@ -1031,12 +1031,12 @@
 	       for varl in varlist-of-fns
 	       do (sloop for va in varl
 			when (and
-			       (not (memq va variables-solved-for))
-			       (not (memq va variables-in-prev-eqns))
+			       (not (member va variables-solved-for :test #'eq))
+			       (not (member va variables-in-prev-eqns :test #'eq))
 			       (not (sloop for lis in varlist-of-fns
 					  for j from 0
 					  when (and  (not (eql i j))
-						     (memq va lis))
+						     (member va lis :test #'eq))
 					  do (loop-return t)))
 			       (eq (pdegree f va) 1)
 			       (progn (multiple-value-setq
@@ -1065,7 +1065,7 @@
 	  for fn-number from 0
 	  do (sloop named sue for i in degs
 		   for j from 0
-		   when (and (eql i 1) (not (memq j bad)))
+		   when (and (eql i 1) (not (member j bad :test #'eq)))
 		     do  
 			 (sloop for vv in all-degs
 			       when (not (eql degs vv))
@@ -1230,7 +1230,7 @@
 (defun non-trivial-open-sub-scheme (pls &aux non-trivial)
   (setq non-trivial (sloop for lis in (pls-data pls)
 			  for i from 0
-			  when (and lis (not (zl-MEMBER 1 (ldata-eqns (car lis)))))
+			  when (and lis (not (member 1 (ldata-eqns (car lis)) :test #'equal)))
 			  collecting i))
   (show non-trivial) (break t)
   (apply 'open-sub-scheme pls non-trivial))
