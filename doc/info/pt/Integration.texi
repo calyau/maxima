@@ -615,7 +615,7 @@ A componente de avalia@value{cedilha}@~ao da regra @'e baseada na t@'ecnica modi
 @code{quad_qawo} aplica subdivis@~ao adaptativa com extrapola@value{cedilha}@~ao, similar a @code{quad_qags}.
 
 @item quad_qawf
-Calcula uma transforma@value{cedilha}@~ao de cosseno de Fourier ou de um seno de Fourier sobre um intervalo semi-finito.
+Calcula uma transforma@value{cedilha}@~ao de co-seno de Fourier ou de um seno de Fourier sobre um intervalo semi-finito.
 O mesmo aproxima como @code{quad_qawo} aplicado sobre intervalos finitos sucessivos,
 e acelera@value{cedilha}@~ao de converg@^encia por meio d algor@'{@dotless{i}}timo de Epsilon (Wynn, 1956) 
 aplicado a s@'eries de contribui@value{cedilha}@~oes de integrais.
@@ -1007,7 +1007,7 @@ Principal Value
 @deffn {Fun@value{cedilha}@~ao} quad_qawf (@var{f(x)}, @var{x}, @var{a}, @var{omega}, @var{trig}, @var{epsabs}, @var{limit}, @var{maxp1}, @var{limlst})
 @deffnx {Fun@value{cedilha}@~ao} quad_qawf (@var{f}, @var{x}, @var{a}, @var{omega}, @var{trig}, @var{epsabs}, @var{limit}, @var{maxp1}, @var{limlst})
 
-Calcula uma transforma@value{cedilha}@~ao de cosseno de Fourier ou de um seno de Fourier sobre um intervalo semi-finito.
+Calcula uma transforma@value{cedilha}@~ao de co-seno de Fourier ou de um seno de Fourier sobre um intervalo semi-finito.
 usando a fun@value{cedilha}@~ao QAWF do pacote Quadpack.
 A mesma aproxima como em @code{quad_qawo} quando aplicada sobre intervalos finitos sucessivos,
 e acelera@value{cedilha}@~ao de converg@^encia por meio d algor@'{@dotless{i}}timo de Epsilon (Wynn, 1956) 

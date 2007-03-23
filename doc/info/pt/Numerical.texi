@@ -135,8 +135,8 @@ declara um array unidimensional com n elementos, indexado de 0 a
 n-1 inclusive. O n@'umero de elementos n deve ser igual a 2^m para algum m.
 
 @code{fft} pode ser aplicada a dados reais (todos os arrays imagin@'arios s@~ao iguais a zero) para obter
-coeficientes seno e cosseno.  Ap@'os chamar @code{fft}, os coeficientes
-seno e cosseno, digamos @code{a} e @code{b}, podem ser calculados como
+coeficientes seno e co-seno.  Ap@'os chamar @code{fft}, os coeficientes
+seno e co-seno, digamos @code{a} e @code{b}, podem ser calculados como
 
 @example
 a[0]: real_array[0]
@@ -522,7 +522,7 @@ pode ser @code{inf}). @var{x} e @var{p} possuem o mesmo significado que em
 
 @c NEEDS EXPANSION. WHAT IS THE ARGUMENT p ??
 @deffn {Fun@value{cedilha}@~ao} fourcos (@var{f}, @var{x}, @var{p})
-Retorna os coeficientes do cosseno de Fourier para @code{@var{f}(@var{x})} definida sobre @code{[0, %pi]}.
+Retorna os coeficientes do co-seno de Fourier para @code{@var{f}(@var{x})} definida sobre @code{[0, %pi]}.
 
 @c NEEDS EXAMPLES
 @end deffn
@@ -551,7 +551,7 @@ definida sobre @code{[minf, inf]}.
 
 @c NEEDS EXPANSION
 @deffn {Fun@value{cedilha}@~ao} fourintcos (@var{f}, @var{x})
-Retorna os coeficientes da integral do cosseno de Fourier para @code{@var{f}(@var{x})} on @code{[0, inf]}.
+Retorna os coeficientes da integral do co-seno de Fourier para @code{@var{f}(@var{x})} on @code{[0, inf]}.
 
 @c NEEDS EXAMPLES
 @end deffn

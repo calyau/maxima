@@ -192,14 +192,14 @@ adi@value{cedilha}@~oes de @^angulos e de @^angulos multiplos que ocorram em @va
 resultados, @var{expr} deve ser expandida.  Para intensificar o controle do utilizador
 na simplifica@value{cedilha}@~ao, essa fun@value{cedilha}@~ao expande somente um n@'{@dotless{i}}vel de cada vez,
 expandindo adi@value{cedilha}@~oes de @^angulos ou @^angulos multiplos.  Para obter expans@~ao completa
-dentro de senos e cossenos imediatamente, escolha o comutador @code{trigexpand: true}.
+dentro de senos e co-senos imediatamente, escolha o comutador @code{trigexpand: true}.
 
 @code{trigexpand} @'e governada pelos seguintes sinalizadores globais:
 
 @table @code
 @item trigexpand
 Se @code{true} causa expans@~ao de todas as
-express@~oes contendo senos e cossenos ocorrendo subsequ@^entemente.
+express@~oes contendo senos e co-senos ocorrendo subsequ@^entemente.
 @item halfangles
 Se @code{true} faz com que meios-@^angulos sejam simplificados
 imediatamente.
