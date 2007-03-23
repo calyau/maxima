@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Bindings.tcl,v 1.9 2006-12-04 12:44:21 villate Exp $
+#       $Id: Bindings.tcl,v 1.10 2007-03-23 00:05:06 villate Exp $
 #
 ###### Bindings.tcl ######
 ############################################################
@@ -64,17 +64,26 @@ proc vMAXSetCNTextBindings {w} {
 
     # Special keys (see NCtextHelp above for explanation)
     bind CNtext <Control-g> "CMinterrupt %W "
+    bind CNtext <Control-G> "CMinterrupt %W "
     bind CNtext <Control-u> "CNclearinput %W "
+    bind CNtext <Control-U> "CNclearinput %W "
     bind CNtext "\)"  "CNblinkMatchingParen %W %A"
     bind CNtext "\]"  "CNblinkMatchingParen %W %A"
     bind CNtext "\}"  "CNblinkMatchingParen %W %A"
     bind CNtext <Control-j> "tkTextInsert %W %A ; openMathAnyKey %W %K  %A"
+    bind CNtext <Control-J> "tkTextInsert %W %A ; openMathAnyKey %W %K  %A"
     bind CNtext <Alt-p>  "CNpreviousInput $w -1"
+    bind CNtext <Alt-P>  "CNpreviousInput $w -1"
     bind CNtext <Alt-n>  "CNpreviousInput $w 1"
+    bind CNtext <Alt-N>  "CNpreviousInput $w 1"
     bind CNtext <Alt-s>  {sendMaxima %W ":s\n" }
+    bind CNtext <Alt-S>  {sendMaxima %W ":s\n" }
     bind CNtext <Control-Key-c>  {tk_textCopy %W ;break}
+    bind CNtext <Control-Key-C>  {tk_textCopy %W ;break}
     bind CNtext <Control-Key-x>  {tk_textCut %W ;break}
+    bind CNtext <Control-Key-X>  {tk_textCut %W ;break}
     bind CNtext <Control-Key-v>  {tk_textPaste %W ;break}
+    bind CNtext <Control-Key-V>  {tk_textPaste %W ;break}
 }
 
 
@@ -82,6 +91,9 @@ global maxima_priv
 set maxima_priv(doublek) 0
 
 bind OpenMathText <Control-Key-k><Control-Key-k> {
+    set maxima_priv(doublek) 1
+}
+bind OpenMathText <Control-Key-K><Control-Key-K> {
     set maxima_priv(doublek) 1
 }
 
@@ -97,6 +109,7 @@ if {0} {
     }
 } else {
     bind OpenMathText <Control-Key-k> "+openMathControlK %W"
+    bind OpenMathText <Control-Key-K> "+openMathControlK %W"
 }
 
 
