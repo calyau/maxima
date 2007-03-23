@@ -9,12 +9,12 @@
 
 
 ;;(newvar expr) will add in a sorted manner all the new variables to the beginning
-;;of the varlist.  
+;;of the varlist.
 
 (defvar *genpairs* nil)
 
 (defun reset-vgp ()  (setq *genpairs* nil  *genvar*  nil  *varlist* nil)
-       (setq *xxx* 
+       (setq *xxx*
 	     (let ((*nopoint t) *print-radix*)
 	       (sloop for i from 1 to 30 collecting
 		      (add-newvar (intern (format nil "$X~A" i))))))
@@ -36,10 +36,10 @@
   (cond ((null mon)(setq mon 1))
 	((null mon1) (setq mon1 1)))
   (cond ((not (polynomialp poly))(break t)))
-  
+
   (cond ((and (numberp mon)(numberp mon1))
 	 (n* poly (n* mon mon1)))
-        ((or (numberp poly)($scalarp (setq monom (get (car poly) 'disrep))))
+	((or (numberp poly)($scalarp (setq monom (get (car poly) 'disrep))))
 	 (setq gen-sym (add-newvar (setq monom (ncmul* mon mon1))))
 	 (n* (list gen-sym 1 1) ;;(assolike monom *genpairs*);;might be long list to look in
 	     poly))
@@ -55,9 +55,9 @@
 			 (setq tem (poly-ncmul1 mon (fifth poly) mon1))
 			 (cond
 			   ((eq tem 0)(list gen-sym 1 (third poly)))
-			   (t 
+			   (t
 			    (list gen-sym 1 (third poly) 0
-				   tem)))) 
+				   tem))))
 			((eq (second poly) 1)
 			 (list gen-sym 1 (third poly)))
 			(t (ferror "There is a bad order in nc polynomial ~A" poly))))))))
@@ -68,7 +68,7 @@
 ;  (cond ((null mon)(setq mon 1))
 ;	((null mon1) (setq mon1 1)))
 ;  (cond ((not (polynomialp poly))(break t)))
-;  
+;
 ;  (cond ((and (numberp mon)(numberp mon1))
 ;	 (n* poly (n* mon mon1)))
 ;        ((or (numberp poly)($scalarp (setq monom (get (car poly) 'disrep))))
@@ -76,7 +76,7 @@
 ;	 (n* (list gen-sym 1 1) ;;(assolike monom *genpairs*);;might be long list to look in
 ;	     poly))
 ;	(t (setq new-monom (ncmul* mon monom mon1))
-;	   
+;
 ;	   (setq gen-sym (add-newvar new-monom))
 ;	   (cond ((and (eq (second poly) 1)(eq (fourth poly) 0))
 ;		  (list gen-sym 1 (third poly) 0 (poly-ncmul1 mon (fifth poly) mon1)))
@@ -85,7 +85,7 @@
 ;		 (t (ferror "There is a bad order in nc polynomial ~A" poly))))))
 ;(defun new-rat-ncmul (a nc-rat-expr c)
 ;  (cons (poly-ncmul1 a (num nc-rat-expr) c) (denom nc-rat-expr)))
-  
+
 (defun poly-ncmul (&rest ll)
   "broken"
   (sloop for v in ll when (not (polynomialp v))do (break t))
@@ -123,7 +123,7 @@
 	while (nthcdr n v)
 	finally (return v)))
 
-  
+
 
 (defun choose (m n)
  (quotient (factorial m) (f* (factorial n) (factorial (f- m n)))))
@@ -171,13 +171,13 @@
     ((eq (caar poly) 'mtimes)
      (cons '(mlist) (cdr poly)))
     (t poly)))
- 
+
 (defun $list_equations (a-list)
   (check-arg a-list '$listp "macsyma list")
   (sloop for v in (cdr a-list)
 	appending (list-equations-macsyma1 v) into tem
 	finally (return (cons '(mlist) tem))))
-	
+
 (defun $sub_list (eqns expr)
   (check-arg eqns '$listp "macsyma list")
   (setq eqns ($list_equations eqns))
@@ -218,7 +218,7 @@
   (cdr ($new_rat (meval* tem))))
 
 (defvar *fake-rat* '(mrat nil nil nil))
-; 
+;
 ;(defun sh (expr)
 ;  (cond ((numberp expr)(displa expr))
 ;	((polynomialp expr)(displa (cons  *fake-rat* (cons expr 1))))
@@ -234,7 +234,7 @@
 	do (setq $homework_done (append $homework_done (list  (setq work (meval* v)) )))
 	else
 	do (setq $homework_done  (append $homework_done (list  (setq work  v))))
-	do (format t "~%Working on ...") (displa work) 
+	do (format t "~%Working on ...") (displa work)
 	do  (setq $homework_done (append $homework_done (list  (setq answer(meval* work)))))
 	(displa answer))
   $homework_done)
@@ -245,18 +245,18 @@
 (defun $unipotent_invariant_vectors (representation n1 n2 &aux answer eqns)
   "representation should take two arguments a (size n1) and b (size n2) where a is
    in GLn1 and b is a macsyma list of length n2. It returns the general vector b left invariant  by the upper triangular (unipotent)  matrices."
-  (sloop for i from 1 below n1 
+  (sloop for i from 1 below n1
      appending (cdr ($list_equations
 		      (list '(mlist)
 			    (list '(mequal)
-				  (mfuncall representation ($eij n1 i (f1+ i))
+				  (mfuncall representation ($eij n1 i (1+ i))
 					    ($firstn n2 $aaaa))
 				  ($firstn n2 $aaaa))))) into tem
     finally (setq answer ($fast_linsolve (setq eqns (cons '(mlist) tem)) ($firstn n2 $aaaa))))
 
   ($separate_parameters ($sublis answer ($firstn n2 $aaaa))))
 (defun $matrix_from_list (a-list &aux tem)
-  (let ((n (fixr (setq tem (expt   ($length a-list) .5)))))
+  (let ((n (round (setq tem (expt ($length a-list) .5)))))
     (cond ((eq (expt  n 2) ($length a-list)) 'fine)
 	  (t (ferror "The length of list is not a square")))
     (setq a-list (cdr a-list))
@@ -270,7 +270,7 @@
 	appending
 	(sloop for w in (cdr a)
 		 collecting (mul* v w) )
-	into tem 
+	into tem
 	finally (return (cons '(mlist) tem))))
 
 (defun $kronecker_product (m n)
@@ -284,7 +284,7 @@
 (defun $standard_rep (mat v)($list_matrix_entries(ncmul* mat v)))
 (defun $unlist_matrix_entries (vect &optional size  )
   (cond (size nil)
-	(t (setq size (fixr (expt  (length vect) .5)))))
+	(t (setq size (round (expt  (length vect) .5)))))
   (setq vect (cdr vect))
   (sloop for i below size
 	collecting (cons '(mlist) (firstn size vect)) into tem
@@ -304,7 +304,7 @@
 	    (sub-list (list (first info) ,mat
 			    (second info) ,v)
 		      (third info)))
-	   (t 	 (setq gen-mat ($general_matrix (f1- (length (second ,mat))) '$p))
+	   (t	 (setq gen-mat ($general_matrix (1- (length (second ,mat))) '$p))
 		 (setq gen-vector (firstn (length ,v) $aaaa))
 		 (setq image (progn ,@body))
 		 (putprop  '$tensor4 (list gen-mat gen-vector image) 'representation)
@@ -315,13 +315,13 @@
 
 (defun $tensor4 (mat v &aux info gen-mat gen-vector image)
   (cond ((setq info (get '$tensor4 'representation))
-	 
+
 	 (sub-list (list (first info) mat
 			 (second info) v)
 		   (third info)))
-	(t 	 (setq gen-mat ($general_matrix (f1- (length (second mat))) '$p))
+	(t	 (setq gen-mat ($general_matrix (1- (length (second mat))) '$p))
 		 (setq gen-vector (firstn (length v) $aaaa))
-		 
+
 		 (setq image ($tensor_product_representation
 			       '$tensor2
 			       4
@@ -347,7 +347,7 @@
 			 mat v))
 
 (defun $tensor3 (mat v)($tensor_product_representation
-			 
+
 			 '$tensor2
 			 4
 			 '$standard_rep
@@ -364,12 +364,12 @@
 			 mat v))
 
 (defun $tensor3 (mat v)($tensor_product_representation
-                        
+
 			 '$tensor2
 			 9
 			'$standard_rep
-			 3 
-			 
+			 3
+
 			 mat v))
 
 (defun $tensor3 (mat v)($tensor_product_representation
@@ -401,30 +401,30 @@
 ;  e2^Ve2^Ve2]
 
 
-;;the first two are in the above representation and the second two are for reversed 
+;;the first two are in the above representation and the second two are for reversed
 ;;indexing where the subscripts vary the fastest at the right.(as usual in zeta lisp)
 
 (defun list-ind-to-tensor-ind (dimv tensor-power ind)
-  (setq ind (f1- ind))
+  (setq ind (1- ind))
   (sloop for i below tensor-power
-	collecting (1+ (mod ind dimv) ) 
+	collecting (1+ (mod ind dimv) )
 	do (setq ind (quotient ind dimv))))
 
 
 (defun tensor-ind-to-list-ind (dimv &rest ll)
   (sloop for m in ll
-	for i from 0 
-	summing (f* (expt  dimv i) (f1- m)) into tem
+	for i from 0
+	summing (f* (expt  dimv i) (1- m)) into tem
 	finally (return (1+ tem))))
 
 (defun tensor-ind-to-list-ind (dimv &rest ll)
   (sloop for m in ll
-	for i to 0 downfrom (f1- (length ll))
-	summing (f* (expt  dimv i) (f1- m)) into tem
+	for i to 0 downfrom (1- (length ll))
+	summing (f* (expt  dimv i) (1- m)) into tem
 	finally (return (1+ tem))))
 
 (defun list-ind-to-tensor-ind (dimv tensor-power ind)
-  (setq ind (f1- ind))
+  (setq ind (1- ind))
   (sloop for i below tensor-power
 	collecting (1+ (mod ind dimv) ) into tem
 	do (setq ind (quotient ind dimv))
@@ -458,14 +458,14 @@
     (setq gen-a ($sublis answer unknowns))
     (setq zero-b (sloop for w in (cdr gen-b)
 		       collecting (cons w 0)))
-    
-    
+
+
     (sloop for v in (cdr gen-b)
 	  collecting (meval* (sublis zero-b (subst 1 v  gen-a)))
 	  into tem
-	  finally (return 
+	  finally (return
 		    ($transpose  (cons '($matrix simp) tem))))))
-	  
+
 (defun $find_matrix_of_operator (operator basis &aux answer zero-b
 				 unknowns gen-a gen-sum gen-b rhs lhs eqns)
   "operator acts on the space spanned by basis"
@@ -481,11 +481,11 @@
   (setq zero-b (sloop for w in (cdr gen-b)
 		     collecting (cons w 0)))
 
- 
+
   (sloop for v in (cdr gen-b)
 	collecting (meval* (sublis zero-b (subst 1 v  gen-a)))
 	into tem
-	finally (return 
+	finally (return
 		  ($transpose  (cons '($matrix simp) tem)))))
 
 (defun $restriction_representation (repr elt-gln vector sub-basis)
@@ -508,8 +508,8 @@
   (setq diag ($ident n1))
   (sloop for i from 1 to n1
 	do
- 	(setq diag ($setelmx (nth (f1- i) *some-primes* ) i i diag )))
-  
+	(setq diag ($setelmx (nth (1- i) *some-primes* ) i i diag )))
+
   (setq tem `(lambda (x)
 	       (mfuncall ',representation ',diag x)))
   (setq mat  ($find_matrix_of_operator tem basis))
@@ -549,11 +549,11 @@
   ($unlist_matrix_entries a-list n))
 	(t (sloop for i from 1 to n
 		 appending
-		 (sloop for j from 1 to n 
+		 (sloop for j from 1 to n
 		       collecting (new-concat a-list i j))
 		 into tem
 		 finally (return ($unlist_matrix_entries (cons '(mlist ) tem) n ))))))
-		 
+
 (defun exponent-vector (n &optional (length-vector 10) &aux wnum denom num wdnom)
   (cond ((numberp n)
   (sloop for u in *some-primes*
@@ -561,7 +561,7 @@
 	collecting
 	(sloop for i from 1
 	      when (not (zerop (mod n (expt  u i))))
-	      do (return (f1- i)))))
+	      do (return (1- i)))))
 	((equal (caar n) 'rat)(setq num (second n) denom (third n))
 	 (setq wnum (exponent-vector num length-vector))
 	 (setq wdnom (exponent-vector denom length-vector))
@@ -571,7 +571,7 @@
 
 
 (defun replace-parameters-by-aa (expr &aux unknowns  parameters tem1)
-  	  (setq unknowns ($list_variables expr "aa" "par"))
+	  (setq unknowns ($list_variables expr "aa" "par"))
 	  (setq parameters (sloop for vv in (cdr unknowns)
 				 when (string-search "par" (string vv))
 				 collecting vv))
@@ -597,13 +597,13 @@
 
 (defun function-denominator (pol)
   (cond ((numberp pol) (denominator pol))
-        ((polynomialp pol) 1)
+	((polynomialp pol) 1)
 	((rational-functionp pol) (denom pol))
 	(t (denom (new-rat pol)))))
 
 (defun function-numerator (pol)
   (cond ((rationalp pol) (numerator pol))
-        ((polynomialp pol) pol)
+	((polynomialp pol) pol)
 	((rational-functionp pol) (car pol))
 	(t (car (new-rat pol)))))
 
@@ -624,7 +624,7 @@
   (sloop for v in varlist
 	for w in genvar
 	when (or (not (equal v (get w 'disrep)))
-    	         (not (eq w (get-genvar v))))
+		 (not (eq w (get-genvar v))))
        do (ferror "bad ~A and ~A" v w)))
 
 
@@ -648,16 +648,16 @@
 ;	  (,1 (car ,rest-arg))
 ;	  (otherwise (apply ',new-funct (,binary-op (first ,rest-arg)
 ;					   (second ,rest-arg)) (cddr ,rest-arg)))))))
-	     
 
-  
+
+
 ;(defmacro polyop (x y identity-x identity-y number-op poly-op rat-op &optional rat-switch )
 ;  (cond (rat-switch (setq rat-switch '(t))))
 ;  `(cond
 ;     ((and (numberp ,x)(numberp ,y))(,number-op ,x ,y))
 ;     ((eq ,x ,identity-x) ,y)
 ;     ((eq ,y ,identity-y) ,x)
-;     (t 
+;     (t
 ;      (let ((xx (poly-type ,x)) answer
 ;	    (yy (poly-type ,y)))
 ;
@@ -667,7 +667,7 @@
 ;	       (setq ,x (cdr ,x) xx ':rational-function))
 ;	      ((eq xx ':rat ) (setq ,x (cons (second ,x) (third ,x))
 ;				   xx ':rational-function)))
-;	       
+;
 ;	(cond
 ;	  ((null yy)(setq ,y (cdr ($new_rat ,y)) yy ':rational-function))
 ;	  ((eq yy ':$rat)(setq ,y (cdr ,y) yy ':rational-function))
@@ -697,7 +697,7 @@
 ;		   (:rational-function (,rat-op ,x ,y ,@ rat-switch))))
 ;		(otherwise (ferror "unknown arg"))))
 ;	(cond ((polynomialp answer) answer)
-;	      ((rational-functionp answer)	
+;	      ((rational-functionp answer)
 ;	       (cond ((eq 1 (cdr answer))(car answer))
 ;		     (t answer)))
 ;	      (t answer))))))
@@ -731,9 +731,9 @@
 ;	     (:rational-function
 ;	      (cond (($numberp expr)
 ;		     (cond ((zerop (num expr) 0))
-;			   (t 
+;			   (t
 ;		     (list '(rat simp) (num expr) (denom expr)))))
-;		    (t 
+;		    (t
 ;		     ($ratdisrep (header-poly expr)))))
 ;	     (otherwise  (cond ((mbagp expr)(cons (car expr) (mapcar 'new-disrep expr)))
 ;			       (($ratp expr)($ratdisrep expr))
@@ -756,7 +756,7 @@
 (defun sp-mul* (&rest a-list)
   (let ((varlist ))
     (cond ((< (length a-list) 3)(apply 'mul* a-list))
-   	  (t (sp-mul* (car a-list) (apply 'sp-mul* (cdr a-list)))))))
+	  (t (sp-mul* (car a-list) (apply 'sp-mul* (cdr a-list)))))))
 
 (defun sp-div* (a b)
   (let ((varlist))
@@ -788,8 +788,8 @@
 	((setq tem(polynomialp a)) ($scalarp tem))
 	((and (setq tem(polynomialp (car a))) (polynomialp (cdr a)))
 	 ($scalarp tem))))
-	 
-	     
+
+
 (defun $coefficient_matrix (a-list variables)
   (check-arg a-list  '$listp nil)
   (check-arg variables  '$listp nil)
@@ -797,10 +797,10 @@
 	collecting
 	(sloop for v in (cdr variables)
 	      collecting
-	      ($nc_coeff w v) into tem 
+	      ($nc_coeff w v) into tem
 	      finally (return (cons '(mlist) tem)))
-        into bil
-	finally (return (cons '($matrix) bil))))  
+	into bil
+	finally (return (cons '($matrix) bil))))
 ;
 ;
 ;
@@ -811,12 +811,12 @@
 ;
 ;
 ;
-;(DEFMFUN new-RATREP* (X) 
+;(DEFMFUN new-RATREP* (X)
 ;  (LET ()					; (GENPAIRS)
 ;;	    (ORDERPOINTER VARLIST)  ;;creates enough new genvar and numbers them done
 ;    (RATSETUP1 VARLIST GENVAR)
 ;    ;which is now in new-ratf
-;    
+;
 ;    (MAPC #'(LAMBDA (Y Z) (cond ((assolike y genpairs)  nil)
 ;				(t (PUSH (CONS Y (RGET Z)) GENPAIRS))))
 ;	  VARLIST GENVAR)
@@ -827,12 +827,12 @@
 ;		  (IF (AND (NOT (ATOM X)) (MEMQ 'IRREDUCIBLE (CDAR X)))
 ;		      '(IRREDUCIBLE))))))
 ;
-;(DEFMFUN new-RATREP* (X) 
+;(DEFMFUN new-RATREP* (X)
 ;  (LET ()					; (GENPAIRS)
 ;;	    (ORDERPOINTER VARLIST)  ;;creates enough new genvar and numbers them done
 ;    (RATSETUP1 VARLIST GENVAR)
 ;    ;which is now in new-ratf
-;;      
+;;
 ;;    (MAPC #'(LAMBDA (Y Z) (cond ((assolike y genpairs)  nil)           ;;do this in new
 ;;				(t (PUSH (CONS Y (RGET Z)) GENPAIRS))))
 ;;	  VARLIST GENVAR)
@@ -890,9 +890,9 @@
     ((mbagp expr) (cons (car expr) (mapcar #'$new_rat (cdr expr))) ($new_rat expr))
     ((and (not (atom expr))(not (atom (car expr))))(cond ((equal (caar expr) 'rat) expr)
 							 (t (new-ratf expr))))
-						       
+
     (t (new-ratf expr))))
-;(if (mbagp exp) (cons (car exp) (mapcar #'rat0 (cdr exp))) (ratf exp))) 
+;(if (mbagp exp) (cons (car exp) (mapcar #'rat0 (cdr exp))) (ratf exp)))
 
 
 (defun $shift (expr &optional (variables $current_variables) &aux tem)
@@ -900,11 +900,11 @@
 	when (second v)
 	do (setq tem  (second v))
 	else do (setq tem (second variables))
-		      
+
 	collecting (cons (car v) tem)) expr))
 (defun $spur (expr function n &aux (tem expr) (answer 0))
   (sloop for i below n
-	do 
+	do
 	(setq answer (add* answer (setq tem (funcall function tem)))))
  ($ratsimp answer))
 
@@ -913,7 +913,7 @@
 				 monoms trace_monoms f new-f eqns solns tem ar sp pivots)
      (setq monoms ($mono variables n))
 	(setq trace_monoms (sloop for u in (cdr monoms)
-			    collecting ($spur u '$shift (f1- (length variables)) ) into tem
+			    collecting ($spur u '$shift (1- (length variables)) ) into tem
 			    finally (return (cons '(mlist ) tem))))
 	(break t)
 	(setq f ($general_sum trace_monoms $aaaa))
@@ -926,12 +926,12 @@
 	  when (setq tem (aref ar i))
 	  collecting tem into tem1
 	  finally (return  tem1)))
-   (sloop 	 for i in pivots
-		 collecting (nth (f1+ i) trace_monoms)
+   (sloop	 for i in pivots
+		 collecting (nth (1+ i) trace_monoms)
 		 into tem1
-		 finally (return (cons '(mlist ) tem1)))) 
+		 finally (return (cons '(mlist ) tem1))))
 
-  
+
 
 
 (defvar $mmm )
@@ -942,12 +942,12 @@
   (setq subs (list (cons '$%alpha (first triple))
 		   (cons '$%beta (second triple))
 		   (cons '$%gamma (third triple))))
-  
+
   (let ((mmm (sublis subs $mmm)))
     (setq mmm ($ratsimp mmm))
     (displa mmm)
     (sloop for  v in (cdr $conditions_on_q)
-	  for i from 1 
+	  for i from 1
 	  when ($zerop ($ratsimp (sublis subs v)))
 	  collecting (nth i mmm) into tem
 	  and
@@ -957,11 +957,11 @@
     (show ind-used)
     (setq vmmm
 	  (sloop for i from 1 to (length ind-used)
-		collecting (mul* (nth i vect)(nth (f1- i) relat-mat)) into tem
+		collecting (mul* (nth i vect)(nth (1- i) relat-mat)) into tem
 		finally (return (meval* (cons '(mplus) tem)))))
     (setq mat.rtx (ncmul* mat '(($matrix simp)
 				((mlist simp) $x) ((mlist simp) $y) ((mlist simp) $z))))
-    
+
     (setq prod
 	  (ncmul*  ($transpose mat)
 		   ($sub_list `((mlist simp) ((mequal simp) (($matrix simp)
@@ -973,6 +973,6 @@
     (sloop for i in ind-used
 	  collecting (nth i answer) into tem
 	  finally (return (cons '(mlist) tem)))))
+
 (defun $make_commutative (expr)
   (resimplify (subst 'mtimes 'mnctimes expr)))
-

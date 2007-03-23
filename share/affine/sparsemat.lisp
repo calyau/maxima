@@ -4,10 +4,8 @@
 ;;;     Copyright (c) 1984 by William Schelter,University of Texas     ;;;;;
 ;;;     All rights reserved                                            ;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(in-package :maxima)
 
-;; (eval-when (compile)
-;; 	   (proclaim '(declaration values)))
+(in-package :maxima)
 
 (defstruct (sparse-matrix :named (:conc-name sp-))
   rows
@@ -79,18 +77,6 @@
 
 (deff sp-rational-quotient  #'/)
 
-;(defmacro array-push-extend-replace (aarray data &key amount-to-grow replace &aux forms)
-;  (setq forms  (sloop for v in replace collecting `(setf ,v .new.)))
-;  (cond ((symbolp data)
-;        `(cond ((vector-push ,data ,aarray))
-;	    (t (let ((.new. (adjust-array v (+ ,(or amount-to-grow 100)
-;					       (array-total-size ,aarray)))))
-;		 (vector-push ,data ,aarray),@ forms))))
-;	(t`(let ((.data. ,data))
-;	     (array-push-extend-replace ,aarray .data. :amount-to-grow amount-to-grow
-;					:replace replace)))))
-
-
 (defmacro without-double-evaluation (list-of-forms &body body &aux repl)
   (setq repl (sloop for v in list-of-forms
 	when (atom v) do nil
@@ -110,7 +96,7 @@
   `(without-double-evaluation ( ,data)
      (cond ((vector-push ,data ,aarray))
 	    (t (let ((.new. (adjust-array ,aarray
-					  (f+ ,(or amount-to-grow 100)
+					  (+ ,(or amount-to-grow 100)
 					      (array-total-size ,aarray))
 					  :fill-pointer (fill-pointer ,aarray)
 					       )))
@@ -200,20 +186,7 @@
   `(mod (* ,@l) .characteristic.))
 
 (defmacro finite-characteristic-plus (&rest l)
-  `(mod (f+ ,@l) .characteristic.))
-;
-;(defmacro special-times (a b )
-;  "these won't usually be called but will be substituted"
-;	  
-;  `(let (.prod.)
-;     (setq .prod. (* ,a ,b))		;for in the code by the with-characteristic 
-;     (cond ((zerop (sp-characteristic sp-mat)) .prod.)		;macro.  They can be used
-;	   (t (mod .prod. (sp-characteristic sp-mat))))))
-;
-;(defmacro special-plus (a b )
-;  `(let (.sum.) (setq .sum. (+ ,a ,b))
-;	  (cond ((zerop (sp-characteristic sp-mat)) .sum.)
-;		(t (mod .sum. (sp-characteristic sp-mat))))))
+  `(mod (+ ,@l) .characteristic.))
 
 (defmacro special-minus (a) `(special-times -1 ,a))
 
@@ -221,10 +194,11 @@
   `(cond ((equal (sp-type-of-entries sp-mat) ':any-macsyma)(sp-mul*  ,@ l))
 	((zerop (sp-characteristic sp-mat))(* ,@ l))
 	(t (mod (* ,@ l) (sp-characteristic sp-mat)))))
+
 (defmacro special-plus (&rest l)
   `(cond ((eq (sp-type-of-entries sp-mat) ':any-macsyma) (sp-add* ,@ l))
-	((zerop (sp-characteristic sp-mat)) (+ ,@ l))
-	(t (mod (+ ,@ l) (sp-characteristic sp-mat)))))
+	 ((zerop (sp-characteristic sp-mat)) (+ ,@ l))
+	 (t (mod (+ ,@ l) (sp-characteristic sp-mat)))))
 
 (defmacro non-negative-remainder (x y)
   `(progn (setf ,x (rem ,x ,y))
@@ -243,7 +217,7 @@
   (catch 'entry
     (sloop for ii below (length (the cl:array arow)) by 2
 	  when (and (setf col (aref arow ii )) (eql j col))
-	 do (throw 'entry (aref arow (f1+ ii ))))))
+	 do (throw 'entry (aref arow (1+ ii ))))))
 
 ;(defmacro row-dot (.this-row. brow ) "dot product of rows arow and brow"
 ; 
@@ -283,7 +257,7 @@
 				    (special-plus ans
 				      (special-times
 				      val
-				      (aref arow (f1+ iii) )))))))
+				      (aref arow (1+ iii) )))))))
   ans)
 
 
@@ -291,7 +265,7 @@
   ( sp-row-dot sp-mat (aref (sp-rows sp-mat) i) (aref (sp-rows sp-mat) j)))
  
 (defmacro below-fill (a)
-  `(max (f- (length (the cl:array ,a)) 2) 0))
+  `(max (- (length (the cl:array ,a)) 2) 0))
 ;(defsubst set-fill-pointer (aarray n)
 ;  (store-array-leader n aarray 0))
 ;
@@ -309,7 +283,7 @@
 	(t  
 	 (sloop for i downfrom (below-fill arow) to 0 by 2
 	       when (aref arow i)
-	       do (setf (fill-pointer arow) (f+ i 2)) (return 'done)
+	       do (setf (fill-pointer arow) (+ i 2)) (return 'done)
 	       finally (setf (fill-pointer arow) 0)))))
 
 
@@ -321,11 +295,11 @@
 	      do (let ((this-row (aref (sp-rows sp-mat) iii)))
 		   (sloop for ii below (length (the cl:array  this-row)) by 2
 		       when (aref this-row ii )
-		       do (let ((value (aref this-row (f1+ ii))))
+		       do (let ((value (aref this-row (1+ ii))))
 			    (cond (value
 				   (setq value (mod value (sp-type-of-entries sp-mat)))
 				   (cond ((eql value 0)(setf (aref this-row ii  )  nil))
-					 (t (setf (aref this-row (f1+ ii)) value)))))))
+					 (t (setf (aref this-row (1+ ii)) value)))))))
 		   ;(setf;(aref this-row ii 1)  value)))))))
 		   (maybe-move-back-fill-pointer this-row))))))
 
@@ -354,7 +328,7 @@
   (setf (sp-number-of-rows sp-mat) (fill-pointer (sp-rows sp-mat)))
  ; (cond ((zerop (fill-pointer the-rows)) (break 'why-no-rows)))
  ; (show (sp-rows sp-mat))
-  (setf (sp-last-good-row sp-mat) (f1- (sp-number-of-rows sp-mat)))
+  (setf (sp-last-good-row sp-mat) (1- (sp-number-of-rows sp-mat)))
   (cond ((null list-of-columns) ( sp-reset-list-of-all-columns-occurring sp-mat))
 	(t (setf (sp-list-of-all-columns-occurring sp-mat) list-of-columns)))
   (setf (sp-column-used-in-row sp-mat)
@@ -416,10 +390,10 @@
     (catch 'entry
       (sloop for ii below (length (the cl:array this-row)) by 2
 	    when (eql j (aref this-row ii ))
-	    do (throw 'entry (aref this-row (f1+ ii))))))
+	    do (throw 'entry (aref this-row (1+ ii))))))
 
 (defun fix-even (n)
-  (* 2 (fixr (quotient n 2.0))))
+  (* 2 (round (quotient n 2.0))))
 
 (defun sp-grow-current-row (sp-mat  &optional (ratio 1.3))
   (let ((new-length
@@ -449,7 +423,7 @@
 ;  `(progn (cond ((equal ,element 0) (aset nil (sp-current-row sp-mat)  ,sslot )
 ;		 (maybe-move-back-fill-pointer (sp-current-row sp-mat)))
 ;		(t (cond (< ,sslot
-;		 (aset  ,element (sp-current-row sp-mat) (f1+ ,sslot) )
+;		 (aset  ,element (sp-current-row sp-mat) (1+ ,sslot) )
 ;		 (aset  ,index (sp-current-row sp-mat) , sslot )))))
 
 ;(defmacro this-row-set ( element index sslot)
@@ -457,7 +431,7 @@
 ;		 (maybe-move-back-fill-pointer this-row))
 ;		
 ;		(t
-;		 (aset  ,element this-row (f1+ ,sslot) )
+;		 (aset  ,element this-row (1+ ,sslot) )
 ;		 (aset  ,index this-row , sslot )))))
 ;
 ;(defsubst set-entry ( value arow index)
@@ -476,7 +450,7 @@
 ;				    (maybe-move-back-fill-pointer .this-row.))
 ;				)
 ;			       (t
-;				(aset .val. .this-row. (f1+ ii ))
+;				(aset .val. .this-row. (1+ ii ))
 ;				(aset .ind. .this-row. ii)))
 ;			 (throw 'entry-is-set t)))))
 ;      (cond (first-empty-slot
@@ -488,12 +462,12 @@
 ;			      (maybe-move-back-fill-pointer .this-row.))
 ;			  )
 ;			 (t
-;			  (aset .val. .this-row. (f1+ ii ))
+;			  (aset .val. .this-row. (1+ ii ))
 ;			  (aset .ind. .this-row. ii)))
 ;		   (throw 'entry-is-set t)
 ;		   finally
 ;		   (cond (($zerop  .val.) nil)
-;			 (t (aset .val. .this-row. (f1+ first-empty-slot))
+;			 (t (aset .val. .this-row. (1+ first-empty-slot))
 ;			    (aset .ind. .this-row. first-empty-slot)))))
 ;	    ((not ($zerop  .val.))
 ;	     (array-push-extend .this-row. .ind.)
@@ -511,11 +485,11 @@
 		(cond ((null (setq j (aref aarow ii))) (return ii))
 		      ((eql j index)
 		       (cond (($zerop value)(setf (aref aarow index)  nil)
-			      (if (eql ii (f- active-length 2))
+			      (if (eql ii (- active-length 2))
 				  (maybe-move-back-fill-pointer aarow))
 			      )
 			     (t
-			     (setf (aref aarow (f1+ ii ))  value)
+			     (setf (aref aarow (1+ ii ))  value)
 			     (setf (aref aarow ii)  index)))
 		       (throw 'entry-is-set t)))))
     (cond (first-empty-slot
@@ -523,16 +497,16 @@
 		 when (eql index (aref aarow ii))
 		 do
 		 (cond (($zerop  value)(setf (aref aarow index)  nil)
-			(if (eql ii (f- active-length 2))
+			(if (eql ii (- active-length 2))
 			    (maybe-move-back-fill-pointer aarow))
 			)
 		       (t
-		(setf	(aref aarow (f1+ ii ))  value)
+		(setf	(aref aarow (1+ ii ))  value)
 		(setf	(aref aarow ii)  index)))
 		 (throw 'entry-is-set t)
 		 finally
 		 (cond (($zerop  value) nil)
-		       (t(setf (aref aarow (f1+ first-empty-slot))  value)
+		       (t(setf (aref aarow (1+ first-empty-slot))  value)
 			 (setf (aref aarow first-empty-slot)  index)))))
 	  ((not ($zerop  value))
 	   (vector-push-extend  index aarow)
@@ -567,20 +541,20 @@
 ;	     (this-row-set value j first-empty-slot))
 ;	    (t 
 ;	     (let ((last-spot (row-length this-row)))
-;	       (array-grow this-row (list (fixr (* 1.3 (row-length this-row))) 2))
+;	       (array-grow this-row (list (round (* 1.3 (row-length this-row))) 2))
 ;	       (this-row-set value j last-spot)))))))
 
 ;(defmacro pivot-row-ref (index)
 ;  `(catch 'pivot-row-ref
 ;     (sloop for .ii. below (array-active-length pivot-row) by 2
 ;	   do (cond ((eql ,index (aref pivot-row .ii.))
-;		     (throw 'pivot-row-ref (aref pivot-row (f1+ .ii. ))))))))
+;		     (throw 'pivot-row-ref (aref pivot-row (1+ .ii. ))))))))
 
 ;(defmacro current-row-ref (index)
 ;  `(catch 'current-row-ref
 ;     (sloop for .ii. below (array-active-length (sp-current-row sp-mat)) by 2
 ;	   do (cond ((eql ,index (aref (sp-current-row sp-mat) .ii. ))
-;		     (throw 'current-row-ref (aref (sp-current-row sp-mat) (f1+ .ii.) )))))))
+;		     (throw 'current-row-ref (aref (sp-current-row sp-mat) (1+ .ii.) )))))))
 
 ;(defmacro current-row-slot (index)
 ;  `(catch 'current-row-slot
@@ -628,7 +602,7 @@
   (sloop for ii below (length (the cl:array ,row)) by 2
 	when (null (aref ,row ii))
 	do(setf (aref ,row ii)  .ind.)
-(setf	(aref ,row (f1+ ii))  .val.)  
+(setf	(aref ,row (1+ ii))  .val.)  
 	(return 'entry-is-set)   
 	finally (array-push-extend-replace ,row .ind.
 					   :replace ((aref (sp-rows sp-mat) (sp-current-row-number sp-mat))))	
@@ -656,17 +630,17 @@
 			  (setq  new-value
 				 (special-plus
 				   (special-times
-				     factor (aref (sp-pivot-row sp-mat) (f1+ ii )))
+				     factor (aref (sp-pivot-row sp-mat) (1+ ii )))
 				   (aref (sp-current-row sp-mat)
-					 (f1+ current-row-slot))))
+					 (1+ current-row-slot))))
 			  (cond (($zerop  new-value )
 				(setf (aref (sp-current-row sp-mat) current-row-slot )  nil))
 				(t(setf (aref
 					 (sp-current-row sp-mat)
-					 (f1+ current-row-slot ))  new-value))))
+					 (1+ current-row-slot ))  new-value))))
 			 (t (set-current-row-entry-in-new-column
 			      (special-times factor
-					     (aref (sp-pivot-row sp-mat) (f1+ ii)))
+					     (aref (sp-pivot-row sp-mat) (1+ ii)))
 			      (sp-current-row sp-mat) piv-col))))
 	  (maybe-move-back-fill-pointer (sp-current-row sp-mat)))))
       (cond ((and (sp-constants-column sp-mat)
@@ -709,14 +683,14 @@
 	(this-row (aref (sp-rows sp-mat) i)))
        (sloop for ii below (length (the cl:array this-row)) by 2
 	     when (aref this-row ii )
-	     do (setq ans (gcd ans (aref this-row (f1+ ii ))))
+	     do (setq ans (gcd ans (aref this-row (1+ ii ))))
 	     finally (return ans))))
 (defun sp-first-element-of-row (sp-mat ii)
   (catch 'first-element
     (let ((this-row (aref (sp-rows sp-mat) ii)))
    (sloop for i below (length (the cl:array this-row)) by 2
 	 when (aref this-row i )
-	 do (throw 'first-element (aref this-row (f1+ i )))))))
+	 do (throw 'first-element (aref this-row (1+ i )))))))
 
 
 (defmacro show-row (arow)
@@ -724,7 +698,7 @@
      (sloop for jj below (length (the cl:array this-row)) by 2
 	   when (setq ind (aref this-row jj))
 	   do (format t "~%In slot ~D ~D-->~D "
-		      (// jj 2) ind (aref this-row (f1+ jj))))))
+		      (// jj 2) ind (aref this-row (1+ jj))))))
 	   
 (defun sp-show-row (sp-mat i)
   (let ((this-row (aref (sp-rows sp-mat) i)))
@@ -769,7 +743,7 @@
 	  (sloop for ii below (length (the cl:array a-row)) by 2
 		when (aref a-row ii)
 		do
-		(cond ((numberp (setq tem1 (aref a-row (f1+ ii))))
+		(cond ((numberp (setq tem1 (aref a-row (1+ ii))))
 		       (cond ((or float (floatp tem1))(setq float t))
 			     ((rationalp tem1) (setq rational t))))
 		      (t (sp-set-type-of-entries sp-mat ':any-macsyma)
@@ -805,7 +779,7 @@
 		 (sloop for j below (array-total-size this-row) by 2
 		       when (aref this-row j)
 		       do(setf (aref
-				this-row (f1+ j))  (sp-rat (aref this-row (f1+ j))))))))
+				this-row (1+ j))  (sp-rat (aref this-row (1+ j))))))))
 	((and (fixnump y) (> y 0))
 	 (setf (sp-characteristic sp-mat) y))
 	(t (ferror "At present only positive integers (ie finite char)
@@ -833,7 +807,7 @@
   (let ((this-row (aref (sp-rows sp-mat) i)))
     (sloop for ii below (length (the cl:array this-row)) by 2
 	  when (aref this-row ii )
-	  do (if (null (aref this-row (f1+ ii) ))(setf (aref this-row ii 0)  nil)))
+	  do (if (null (aref this-row (1+ ii) ))(setf (aref this-row ii 0)  nil)))
     (maybe-move-back-fill-pointer this-row))) 
 	  
 (defun show-hash (tabl )
@@ -960,7 +934,7 @@
 		    (minus-inverse-pivot-entry
 		      (special-minus (special-inverse
 				       (sp-pivot-entry sp-mat)))))
-		(sloop for ii from (f+ 1 i) below (sp-number-of-rows sp-mat)
+		(sloop for ii from (+ 1 i) below (sp-number-of-rows sp-mat)
 		      do
 		      ( sp-set-current-row sp-mat ii)
 		      (cond ((setq current-row-entry
@@ -997,8 +971,8 @@
 	   (with-characteristic
 	     (sloop for i below (length (the cl:array this-row)) by 2
 		   when (aref this-row i )
-		   do(setf (aref this-row (f1+ i) )    (special-times
-				(aref this-row (f1+ i ))
+		   do(setf (aref this-row (1+ i) )    (special-times
+				(aref this-row (1+ i ))
 				factor ))))))))
 
 
@@ -1038,7 +1012,7 @@
 	(actual-size (aref aarray 1))
 	(index 0)
 	ans  val )
-    (setq ans (MAKE-ARRAY  (fixr (* actual-size 2 grow-ratio)) :fill-pointer 0 :adjustable t))
+    (setq ans (MAKE-ARRAY  (round (* actual-size 2 grow-ratio)) :fill-pointer 0 :adjustable t))
     (sloop for i from 3 below (car (array-dimensions aarray))
 	  do (cond ((setq val (aref aarray i))
 		    (sloop for u in val do
@@ -1128,7 +1102,7 @@
 (defun sp-number-of-pivots(sp-mat &optional (below-row (sp-number-of-rows sp-mat)))
   (let ((count 0))
       (sloop for i below below-row
-	when (aref (sp-column-used-in-row sp-mat) i) do (setf count (f1+ count))
+	when (aref (sp-column-used-in-row sp-mat) i) do (setf count (1+ count))
 	finally (return count))))
 
 					;(defun te (&rest l &aux with bar five)
@@ -1157,7 +1131,7 @@
 	      collecting u))
   (let*	((number-of-columns (length (sp-list-of-all-columns-occurring sp-mat)))
 	 (number-of-pivots ( sp-number-of-pivots sp-mat))
-	 (number-of-solutions (f- number-of-columns number-of-pivots))
+	 (number-of-solutions (- number-of-columns number-of-pivots))
 	 a-solution a-new-entry a-special-solution
 	 (solution-rows
 	   (MAKE-ARRAY (length (sp-columns-with-no-pivot sp-mat))
@@ -1172,7 +1146,7 @@ something is wrong" (length (sp-list-of-all-columns-occurring sp-mat)) number-of
        (with-characteristic
 
 	 (sloop for u in  (sp-columns-with-no-pivot sp-mat)
-	       do (setf a-solution (MAKE-ARRAY (f* (f1+ number-of-pivots) 2)
+	       do (setf a-solution (MAKE-ARRAY (f* (1+ number-of-pivots) 2)
 					       ;:leader-list (list 0 u)
 						  :fill-pointer 0 :adjustable t
 					       ))
@@ -1180,7 +1154,7 @@ something is wrong" (length (sp-list-of-all-columns-occurring sp-mat)) number-of
 	       (vector-push  a-solution solution-rows)
 	     (fmat t "~%solution-rows ~A"  (listarray solution-rows))
 	       (set-entry 1 a-solution u)
-	       (sloop for nn downfrom (f1- (fill-pointer (sp-rows sp-mat))) to 0
+	       (sloop for nn downfrom (1- (fill-pointer (sp-rows sp-mat))) to 0
 		     when (aref (sp-column-used-in-row sp-mat) nn)
 		     do
 		     (setf (sp-pivot-entry sp-mat)
@@ -1207,9 +1181,9 @@ something is wrong" (length (sp-list-of-all-columns-occurring sp-mat)) number-of
                    ~%  ******************************" i (aref  (sp-constants-column sp-mat) i)))))
 	   (show (sp-type-of-entries sp-mat))
 	   (with-characteristic      
-	     (setq a-special-solution (MAKE-ARRAY (f* (f1+ number-of-pivots) 2)
+	     (setq a-special-solution (MAKE-ARRAY (f* (1+ number-of-pivots) 2)
 						     :fill-pointer 0 :adjustable t))
-	     (sloop for nn downfrom (f1- (fill-pointer (sp-rows sp-mat))) to 0
+	     (sloop for nn downfrom (1- (fill-pointer (sp-rows sp-mat))) to 0
 		   when (aref (sp-column-used-in-row sp-mat) nn)
 		   do
 		   (setf (sp-pivot-entry sp-mat)
@@ -1261,13 +1235,13 @@ something is wrong" (length (sp-list-of-all-columns-occurring sp-mat)) number-of
 ;       (with-characteristic
 ;	 
 ;	 (sloop for u in  (sp-columns-with-no-pivot sp-mat)
-;	       do (setf a-solution (make-array (* (f1+ number-of-pivots) 2)
+;	       do (setf a-solution (make-array (* (1+ number-of-pivots) 2)
 ;					       :leader-list (list 0 u)))
 ;
 ;	       (array-push solution-rows a-solution)
 ;	     (fmat t "~%solution-rows ~A"  (listarray solution-rows))
 ;	       (set-entry 1 a-solution u)
-;	       (sloop for nn downfrom (f1- (row-length (sp-rows sp-mat))) downto 0
+;	       (sloop for nn downfrom (1- (row-length (sp-rows sp-mat))) downto 0
 ;		     when (aref (sp-column-used-in-row sp-mat) nn)
 ;		     do
 ;		     (setf (sp-pivot-entry sp-mat) ( sp-entry sp-mat nn (aref (sp-column-used-in-row sp-mat) nn)))
@@ -1291,9 +1265,9 @@ something is wrong" (length (sp-list-of-all-columns-occurring sp-mat)) number-of
 ;                   ~%The special-solution is NOT VALID.
 ;                   ~%  ******************************" i (aref  (sp-constants-column sp-mat) i)))))
 ;	   (with-characteristic      
-;	     (setq a-special-solution (make-array (* (f1+ number-of-pivots) 2)
+;	     (setq a-special-solution (make-array (* (1+ number-of-pivots) 2)
 ;						  :leader-list (list 0 )))
-;	     (sloop for nn downfrom (f1- (row-length (sp-rows sp-mat))) downto 0
+;	     (sloop for nn downfrom (1- (row-length (sp-rows sp-mat))) downto 0
 ;		   when (aref (sp-column-used-in-row sp-mat) nn)
 ;		   do
 ;		   (setf (sp-pivot-entry sp-mat) ( sp-entry sp-mat nn (aref (sp-column-used-in-row sp-mat) nn)))
@@ -1392,7 +1366,7 @@ something is wrong" (length (sp-list-of-all-columns-occurring sp-mat)) number-of
 	 for test-name in (sp-pivot-test-list sp-mat)
 	 when (may-have-pivot (sp-pivot-row-number sp-mat))
 	 do
-	 (setf (sp-last-good-row sp-mat) (f1- (sp-number-of-rows sp-mat)))
+	 (setf (sp-last-good-row sp-mat) (1- (sp-number-of-rows sp-mat)))
 	 (let ((fresh-row t)
 	       best no-gcd test col-to-pivot)
 	   
@@ -1442,7 +1416,7 @@ something is wrong" (length (sp-list-of-all-columns-occurring sp-mat)) number-of
 ;					   (null (gethash  ;;these entries should be zero!!
 ;						   (aref (sp-pivot-row sp-mat) ii )
 ;						   (sp-columns-used-to-pivot sp-mat))))
-		    do  (setq value (abs (aref (sp-pivot-row sp-mat) (f1+ ii ))))
+		    do  (setq value (abs (aref (sp-pivot-row sp-mat) (1+ ii ))))
 		    
 		    (cond ((funcall test value best)
 			   (setq col-to-pivot (aref (sp-pivot-row sp-mat) ii))
@@ -1464,7 +1438,7 @@ something is wrong" (length (sp-list-of-all-columns-occurring sp-mat)) number-of
 					(aref (sp-rows sp-mat)
 					      (sp-pivot-row-number sp-mat))))
 				 (t (setf (sp-pivot-entry sp-mat)
-					  (aref (sp-pivot-row sp-mat) (f1+ ii) ))))
+					  (aref (sp-pivot-row sp-mat) (1+ ii) ))))
 			   ( sp-enter-pivot-data sp-mat col-to-pivot )
 			   (throw 'done 'here-is-pivot)))))))
 	     (cond ( no-gcd nil)
@@ -1491,7 +1465,7 @@ something is wrong" (length (sp-list-of-all-columns-occurring sp-mat)) number-of
 	 (setf (sp-sign-of-row-permutation sp-mat) (minus (sp-sign-of-row-permutation sp-mat)))
 	 (cond ((setq tem (sp-current-column-above-pivot-row-number sp-mat))
 		(rotatef (aref tem ,m) (aref tem ,n))))
-	 ;(cond (-boundp sign)(setq sign (f- sign))) ;;keep track of sign for det
+	 ;(cond (-boundp sign)(setq sign (- sign))) ;;keep track of sign for det
 	 (cond ((sp-constants-column sp-mat)
 		(rotatef (aref (sp-constants-column sp-mat) ,m) (aref (sp-constants-column sp-mat) ,n))))))
 (defun sp-put-back-row-with-no-pivot(sp-mat )
@@ -1515,7 +1489,7 @@ something is wrong" (length (sp-list-of-all-columns-occurring sp-mat)) number-of
 	  ;(rotatef (aref (sp-rows sp-mat) (sp-pivot-row-number sp-mat)) (aref (sp-rows sp-mat) j))
 	  (setf (sp-pivot-row sp-mat) (aref (sp-rows sp-mat) (sp-pivot-row-number sp-mat)))
 
-	(setf (sp-last-good-row sp-mat) (f1- j) )
+	(setf (sp-last-good-row sp-mat) (1- j) )
 	(setf (sp-row-number-before-swap sp-mat) j)	       
 	(fmat t " Exchanging Row ~D for Row ~D." (sp-pivot-row-number sp-mat) j)
 	(throw 'exchanged t))
@@ -1530,7 +1504,7 @@ something is wrong" (length (sp-list-of-all-columns-occurring sp-mat)) number-of
 ;	when (aref (sp-pivot-row sp-mat) i)
 ;	do
 ;	
-;	(setf (sp-pivot-entry sp-mat) (aref (sp-pivot-row sp-mat) (f1+ i)))
+;	(setf (sp-pivot-entry sp-mat) (aref (sp-pivot-row sp-mat) (1+ i)))
 ;	(cond ((numberp (sp-pivot-entry sp-mat)) nil)
 ;	      (t (cond (($numberp (sp-pivot-entry sp-mat))
 ;			(setf (sp-pivot-entry sp-mat)
@@ -1544,7 +1518,7 @@ something is wrong" (length (sp-list-of-all-columns-occurring sp-mat)) number-of
 ;		       (t
 ;			(setq (sp-pivot-entry sp-mat) (sp-rat (sp-pivot-entry sp-mat)))
 ;			))
-;		 (aset  (sp-pivot-entry sp-mat) (sp-pivot-row sp-mat) (f1+ i) )))
+;		 (aset  (sp-pivot-entry sp-mat) (sp-pivot-row sp-mat) (1+ i) )))
 ;	(send self :enter-pivot-data (aref (sp-pivot-row sp-mat) i))
 ;	(return 'done)
 ;	finally (cond (( sp-swap-pivot-row-with-later-one sp-mat)
@@ -1554,16 +1528,16 @@ something is wrong" (length (sp-list-of-all-columns-occurring sp-mat)) number-of
 ;  (cond ((sloop for i below (array-active-length (sp-pivot-row sp-mat)) by 2
 ;	       when (and (aref (sp-pivot-row sp-mat) i)
 ;			 ($numberp
-;			   (aref (sp-pivot-row sp-mat) (f1+ i))))
+;			   (aref (sp-pivot-row sp-mat) (1+ i))))
 ;	       do
-;	       (setq (sp-pivot-entry sp-mat) (aref (sp-pivot-row sp-mat) (f1+ i)))
+;	       (setq (sp-pivot-entry sp-mat) (aref (sp-pivot-row sp-mat) (1+ i)))
 ;	       (send self :enter-pivot-data (aref (sp-pivot-row sp-mat) i))
 ;	       (return 'done)))
 ;	(t
 ;	 (sloop for i below (array-active-length (sp-pivot-row sp-mat)) by 2
 ;	       when  (aref (sp-pivot-row sp-mat) i)
 ;	       do
-;	       (setq (sp-pivot-entry sp-mat) (aref (sp-pivot-row sp-mat) (f1+ i)))
+;	       (setq (sp-pivot-entry sp-mat) (aref (sp-pivot-row sp-mat) (1+ i)))
 ;	       (send self :enter-pivot-data (aref (sp-pivot-row sp-mat) i))
 ;	       (return 'done)
 ;	       finally (cond ((send self :swap-pivot-row-with-later-one)
@@ -1580,9 +1554,9 @@ something is wrong" (length (sp-list-of-all-columns-occurring sp-mat)) number-of
         (sloop for i below (length (the cl:array (sp-pivot-row sp-mat))) by 2
 	      when (and (aref (sp-pivot-row sp-mat) i)
 			(funcall test
-				 (aref (sp-pivot-row sp-mat) (f1+ i))))
+				 (aref (sp-pivot-row sp-mat) (1+ i))))
 	      do
-	      (setf (sp-pivot-entry sp-mat) (aref (sp-pivot-row sp-mat) (f1+ i)))
+	      (setf (sp-pivot-entry sp-mat) (aref (sp-pivot-row sp-mat) (1+ i)))
 	      ( sp-enter-pivot-data sp-mat (aref (sp-pivot-row sp-mat) i))
 	      (return-from sue 'done))
 	finally (cond (( sp-swap-pivot-row-with-later-one sp-mat)
@@ -1594,7 +1568,7 @@ something is wrong" (length (sp-list-of-all-columns-occurring sp-mat)) number-of
 				  (.pivot-row. (sp-pivot-row sp-mat)))
   (sloop for ii below (length (the cl:array  .pivot-row.)) by 2
 	when (aref .pivot-row. ii)
-		       minimize (abs (aref .pivot-row. (f1+ ii )))))
+		       minimize (abs (aref .pivot-row. (1+ ii )))))
 ;
 ;(defun test (m n   &key mat
 ;	     (type :rational) solve
@@ -1769,7 +1743,7 @@ something is wrong" (length (sp-list-of-all-columns-occurring sp-mat)) number-of
 	      when (eql (aref this-row ii) j)
 	      do
 	     (setf (aref this-row ii)  nil)
- (setf	(aref (sp-constants-column sp-mat) i)  (aref this-row (f1+ ii))))))
+ (setf	(aref (sp-constants-column sp-mat) i)  (aref this-row (1+ ii))))))
   
 ;(defun where-the-min (an-array &aux temp the-min where-the-min)
 ;  "Where an-array has its minimum"
@@ -1855,7 +1829,7 @@ something is wrong" (length (sp-list-of-all-columns-occurring sp-mat)) number-of
 			(setq where-the-min-gcd i))))
 
 	   (setq gcdfacts (general-gcd piv-entry (aref colj where-the-min-gcd)))
-	   ;;add new row (first gcdfacts)*pivot-row +(second gcdfacts)*(sp-row self (f+ pivot-row-number where-the-min-gcd)
+	   ;;add new row (first gcdfacts)*pivot-row +(second gcdfacts)*(sp-row self (+ pivot-row-number where-the-min-gcd)
 	   ;;and fix  constants. redo force pivot row;
 ;	   (show (listarray colj))
 ;	   (sp-show-matrix sp-mat)
@@ -1879,8 +1853,8 @@ something is wrong" (length (sp-list-of-all-columns-occurring sp-mat)) number-of
   'done)
 
 (defun sp-add-new-row (self a-row &key constant &aux ok)
-  (let ((dim (f1+ (sp-number-of-rows self))))
-    (sloop for i below (f1- dim)
+  (let ((dim (1+ (sp-number-of-rows self))))
+    (sloop for i below (1- dim)
 	  do
 	  (maybe-move-back-fill-pointer (sp-row self i))
 	  when (eql (fill-pointer (sp-row self i)) 0)
@@ -1979,7 +1953,7 @@ something is wrong" (length (sp-list-of-all-columns-occurring sp-mat)) number-of
 	do ( sp-set-current-column-above-pivot-row-number sp-mat
 	    (aref (sp-pivot-row sp-mat) ii))
 	(setq the-gcd (gcd-array (sp-current-column-above-pivot-row-number sp-mat)))
-	(cond ((eql (abs (aref (sp-pivot-row sp-mat) (f1+ ii))) the-gcd)(return (aref (sp-pivot-row sp-mat) ii))))))
+	(cond ((eql (abs (aref (sp-pivot-row sp-mat) (1+ ii))) the-gcd)(return (aref (sp-pivot-row sp-mat) ii))))))
 (defun sp-gcd-column (sp-mat j )
   (setf (sp-pivot-row-number sp-mat) 0)
   ( sp-set-current-column-above-pivot-row-number sp-mat j)
@@ -2029,7 +2003,7 @@ something is wrong" (length (sp-list-of-all-columns-occurring sp-mat)) number-of
 	when (setq col (aref (sp-column-used-in-row sp-mat) i))
 	do
 	(setq ok t)
-	(sloop for ii from (f1+ i) below (sp-number-of-rows sp-mat)
+	(sloop for ii from (1+ i) below (sp-number-of-rows sp-mat)
 	      when ( sp-entry  sp-mat ii col)
 	      do (format t "~%Pivot in row ~A has nonzero entry above it in column ~A row ~D."
 			 i col ii)
@@ -2055,7 +2029,7 @@ something is wrong" (length (sp-list-of-all-columns-occurring sp-mat)) number-of
 	(setq factor
 	      (special-times -1
 			     (special-inverse (sp-pivot-entry sp-mat))
-			     (aref a-row (f1+ ii))))
+			     (aref a-row (1+ ii))))
 	( sp-row-operation sp-mat factor)
 	(return 'try-again)
 	finally (setq not-done nil)))
@@ -2091,7 +2065,7 @@ something is wrong" (length (sp-list-of-all-columns-occurring sp-mat)) number-of
 	(setq entry ( sp-entry sp-mat i col)) 
 	(setq answer (sp-mul* answer entry))
 	and
-	collecting (f+ col correct) into tem
+	collecting (+ col correct) into tem
 	else
 	do (format t "~%There is no pivot in row ~A" i)(return (setq answer 0 ))
 	finally
@@ -2159,7 +2133,7 @@ something is wrong" (length (sp-list-of-all-columns-occurring sp-mat)) number-of
 	into rows
 	and
 	do
-	(setq jj (f1- renumber-columns))
+	(setq jj (1- renumber-columns))
 	(sloop for w
 	      in v
 	      for j from old-index-base
@@ -2228,7 +2202,7 @@ something is wrong" (length (sp-list-of-all-columns-occurring sp-mat)) number-of
 ;  (setq mat (copy-list mat))
 ;  (setf (car mat) (mapcar 'float (car mat)))
 ;  (convert-to-sparse-matrix mat :re-use-sparse-matrix *sparse-matrix*)
-; (fixr (sp-determinant *sparse-matrix*)))
+; (round (sp-determinant *sparse-matrix*)))
 ;)
  
 (defun make-test (n)
