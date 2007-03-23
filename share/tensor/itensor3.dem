@@ -29,7 +29,7 @@ canform(exp);
 allsym:true;
 canform(a([i,j],[])-a([j,i],[]));
 
-("But this setting can lead to incorrect results, to it's off by default")$
+("But this setting can lead to incorrect results, so it's off by default")$
 allsym:false;
 
 ("The function rename can be used on dummy indices")$

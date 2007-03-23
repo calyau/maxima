@@ -24,8 +24,8 @@
 
 (macsyma-module itensor) ;; added 9/24/82 at UCB
 
-(cond (($get '$itensor '$version) (merror "ITENSOR already loaded"))
-      (t ($put '$itensor '$v20041126 '$version)))
+;(cond (($get '$itensor '$version) (merror "ITENSOR already loaded"))
+;      (t ($put '$itensor '$v20041126 '$version)))
 
 ;    Various functions in Itensor have been parceled out to separate files. A
 ;    function in one of these files will only be loaded in (automatically) if
@@ -1490,7 +1490,7 @@
 				    foobar
 ;				     (cons '(mtimes simp)  ;Make indices appear
 ;					  (conti f))))    ;as exponents for
-					(maknam (splice (conti f) nil))))	; Changed for wxmaxima
+					(maknam (cons '$ (splice (conti f) nil)))))	; Changed for wxmaxima
 			     (t foobar)))                  ;proper display
 		      (t
 		       (cons (car f) (mapcar 'ishow (cdr f))))))
@@ -2175,7 +2175,7 @@ indexed objects")) (t (return (flush (arg 1) l nil))))))
   (let (fp new)
     (and (zl-get tensor 'expr) 
 	 (merror "~M has expr" tensor))
-    (args tensor  nil)
+;    (args tensor  nil)
     (and (setq fp (zl-get tensor 'subr))
 	 (progn (setq new (gensym))(putprop new fp 'subr)
 		(zl-remprop tensor 'subr)(putprop tensor new 'tsubr)))
@@ -2196,31 +2196,41 @@ indexed objects")) (t (return (flush (arg 1) l nil))))))
 
 (defmfun $components (tensor comp)
   ((lambda (len1 len2 len3 name prop)
-    (cond ((not (rpobj tensor))
-	   (merror "Improper 1st arg to COMPONENTS: ~M"
-		   tensor
-		   )))
-;    (setq len1 (length (cdadr tensor)) len2 (length (cdaddr tensor)) len3 (length (cdddr tensor)))
+    (cond ((not (rpobj tensor)) (merror "Improper 1st arg to COMPONENTS: ~M" tensor)))
     (setq len1 (length (covi tensor)) len2 (length (conti tensor)) len3 (length (deri tensor)))
-    (and (not (atom comp))(eq (caar comp) '$matrix)
-	 (cond ((= (f+ (f+ len1 len2) len3) 2)(setq name (gensym))
-		(set name comp)(setq comp name))
-	       (t 
-		(merror "Needs two indices for COMPONENTS from matrix:~%~M"
-			tensor))))
+    (and (not (atom comp))
+         (eq (caar comp) '$matrix)
+         (cond ((= (f+ (f+ len1 len2) len3) 2)
+                (setq name (gensym))
+                (set name comp)
+                (setq comp name)
+               )
+               (t (merror "Needs two indices for COMPONENTS from matrix:~%~M" tensor))
+         )
+    )
+
     (cond ((and (eq (ml-typep comp) 'symbol) (> (f+ (f+ len1 len2) len3) 0))
-	   (setq prop 'carrays))
-;	  ((samelists (setq name (append (cdadr tensor) (cdaddr tensor) (cdddr tensor)))
-	  ((samelists (setq name (append (covi tensor) (conti tensor) (deri tensor)))
-		      (cdadr ($indices comp)))
-	   (setq prop 'texprs comp (cons comp name)))
-	  (t (merror "Args to COMPONENTS do not have the same free indices")))
+           (setq prop 'carrays)
+          )
+          ((samelists (setq name (append (covi tensor) (conti tensor) (deri tensor))) (cdadr ($indices comp)))
+           (setq prop 'texprs comp (cons comp name))
+          )
+          (t (merror "Args to COMPONENTS do not have the same free indices"))
+    )
     (setq tensor (caar tensor) len1 (list len1 len2 len3))
     (cond ((and (setq name (zl-get tensor prop))
-		(setq len2 (assoc len1 name :test #'equal))) (rplacd len2 comp))
-	  (t (putprop tensor (cons (cons len1 comp) name) prop)))
+                (setq len2 (assoc len1 name :test #'equal))
+           )
+           (rplacd len2 comp)
+          )
+          (t (putprop tensor (cons (cons len1 comp) name) prop))
+    )
     (or (zl-get tensor 'indexed) ($indexed_tensor tensor))
-    '$done) nil nil nil nil nil))
+    '$done
+   )
+   nil nil nil nil nil
+  )
+)
 
 (defun select (tensor l1 l2 l3)
   (prog
