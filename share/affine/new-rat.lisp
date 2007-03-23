@@ -56,12 +56,11 @@
 
 ;;the following are faster than the previous ones in the ratmac
 
-(defun safe-putprop ( sym value indicator &aux #+lispm(working-storage-area default-cons-area))
+(defun safe-putprop ( sym value indicator)
   (putprop sym value indicator))
+
 ;;(defun POINTERGP (A B) (> (VALGET A) (VALGET B)))
 ;;as a subst it is faster any problems 'wfs
-;#+lispm
-;(defsubst POINTERGP (A B) (> (VALGET A) (VALGET B)))
 
 (defun new-prep1 (x &aux temp) 
        (cond ((floatp x)
@@ -131,33 +130,8 @@
 
 ;;because symbolics will assign a common lisp print name only when the symbol is referred to
 (defun safe-string (symb)
-  (let (#+lispm (default-cons-area working-storage-area))
+  (let ()
     (string symb)))
-#+symbolics
-(defun check-pnames ( &aux *exceptions*)
-  (declare (special *exceptions*))
-  (mapatoms #'(lambda (at &aux tem name)
-		(declare (special *exceptions*))
-		(cond (
-		       (setq tem (get at 'scl::print-name))
-		       (cond ((or (not (stringp tem))
-				  (eql (%area-number tem) *temporary-polynomial-area*)
-				  (not (eql (string-length tem)
-					    (array-total-size
-					     (setq name
-						   (symbol-name at)))))
-				  (sloop for i from 0 below (string-length tem)
-					when (not (eql (aref tem i)
-						       (int-char (aref name i))))
-					do (return t)))
-			      (push (list at tem) *exceptions*))))))
-	    'maxima nil)
-  *exceptions*)
-#+symbolics
-(defun fix-pnames (lis)
-  (sloop for v in lis do (setf (get (car v) 'scl::print-name) (format nil "~A" (car v)))))
-
-
 
 (defun new-ratf (l &aux  genpairs)
     (prog (u *withinratf*)
@@ -206,19 +180,6 @@
 	  (setq u (catch 'ratf (new-prep1 x)))  ;;truncations
 	  (return (or u (prog2 (setq *withinratf* nil) (srf x)))))))))))
 
-;(defun my-newvar1 (x &aux caarx)
-;       (cond ((numberp x) nil)
-;	     ((assolike x genpairs) nil)
-;	     ((atom x) (add-newvar-to-genpairs x )nil)
-;	     ((memq (setq caarx (caar x))
-;		    '(mplus mtimes rat mdifference
-;			    mquotient mminus bigfloat mlist))
-;	      (mapc (function my-newvar1) (cdr x)))
-;	     (t (case caarx
-;		  (mexpt (my-newvar1 (second x)))
-;		  (mnctimes (add-newvar-to-genpairs x))
-;		  (mrat (ferror "how did you get here"))
-;		  (otherwise (ferror "What is x like"))))))
 
 (defun my-newvar1 (x)
        (cond ((numberp x) nil)
@@ -229,7 +190,7 @@
 	     ((member (caar x)
 		    '(mplus mtimes rat mdifference
 			    mquotient mminus bigfloat) :test #'eq)
-	      (mapc (function my-newvar1) (cdr x)))
+	      (mapc #'my-newvar1 (cdr x)))
 	     
 	     ((eq (caar x) 'mexpt)
 	       (my-newvar1 (second  x) ))
@@ -237,7 +198,7 @@
 	     ((eq (caar x) 'mrat)(ferror " how did you get here Bill?")
 	      (and *withinratf* (member 'trunc (cdddar x) :test #'eq) (throw 'ratf '%%))
 	      (cond ($ratfac (mapc 'newvar3 (caddar x)))
-		    (t (mapc (function my-newvar1) (reverse (caddar x))))))
+		    (t (mapc #'my-newvar1 (reverse (caddar x))))))
 	     ((eq (caar x) 'mnctimes)(add-newvar-to-genpairs x ))
 	     (t (ferror "What is x like ? ~A" x))))
 
@@ -262,8 +223,8 @@
 ;;you reset-vgp then you don't just discard them you reuse them via the gensym call
 
 (defmacro with-working-storage-area(&body body)
-  `(let  (#+lispm(default-cons-area working-storage-area))
-    ,@ body))
+  `(let  ()
+    ,@body))
  
 (defvar *genvar-resemble* t)
 
@@ -274,7 +235,7 @@ into genvar ordering and adds to genpairs"
  (declare (special $order_function))
    use-*genpairs*  ;;don't use it
   (cond ((and (symbolp va) (not (eql (aref  (safe-string va) 0) #\$))) (ferror "doesn't begin with $")))
-  (let (#+lispm(default-cons-area working-storage-area))
+  (let ()
    (multiple-value-bind (after there)
        (find-in-ordered-list va *varlist* $order_function)
      (cond ((not there)
@@ -283,8 +244,7 @@ into genvar ordering and adds to genpairs"
 ;                   (setq the-gensym (make-symbol (string-trim "$" (safe-string va)))))
 ;		  (t
 ;		   (setq the-gensym (gensym))))
-	    #+lispm
-	    (setq va (new-copy-from-temporary-area va))
+
 	    (safe-putprop the-gensym va 'disrep)
 ;	    (cond (use-*genpairs* (push (cons va (rget the-gensym)) *genpairs*)))
 ;	    (rat-setup1 va the-gensym)(rat-setup2 va the-gensym)
@@ -302,22 +262,19 @@ into genvar ordering and adds to genpairs"
 			 (fsignal "bad-correspondence" )))))
   (values the-gensym (not there)))))
 
-
-
-
 (defun rat-setup1 (v g)
   (and $ratwtlvl
-	        (setq v (assolike v *ratweights))
-	        (if v (safe-putprop g v '$ratweight) (remprop g '$ratweight))))
+       (setq v (assolike v *ratweights))
+       (if v (safe-putprop g v '$ratweight) (remprop g '$ratweight))))
 
 
 
 (defun rat-setup2 (v g)
   (when $algebraic
-		(cond ((setq v (algpget  v))
-		       (let (#+lispm(default-cons-area working-storage-area))
-		       (safe-putprop  g  v 'tellrat)))
-		      (t (remprop  g 'tellrat)))))
+    (cond ((setq v (algpget  v))
+	   (let ()
+	     (safe-putprop  g  v 'tellrat)))
+	  (t (remprop  g 'tellrat)))))
 
 
 
@@ -364,24 +321,24 @@ into genvar ordering and adds to genpairs"
 
 #+debug
 (progn
-(defmfun pplus (x y)
-  (cond ((pcoefp x) (pcplus x y))
-	((pcoefp y) (pcplus y x))
-	((eq (p-var x) (p-var y))
-	 (psimp (p-var x) (pplus1 (p-terms y) (p-terms x))))
-	((pointergp (p-var x) (p-var y))
-	 (psimp (p-var x) (pcplus1 y (p-terms x))))
-	(t (psimp (p-var y) (pcplus1 x (p-terms y))))))
+  (defmfun pplus (x y)
+    (cond ((pcoefp x) (pcplus x y))
+	  ((pcoefp y) (pcplus y x))
+	  ((eq (p-var x) (p-var y))
+	   (psimp (p-var x) (pplus1 (p-terms y) (p-terms x))))
+	  ((pointergp (p-var x) (p-var y))
+	   (psimp (p-var x) (pcplus1 y (p-terms x))))
+	  (t (psimp (p-var y) (pcplus1 x (p-terms y))))))
 
-(defmfun ptimes (x y)
-  (cond ((pcoefp x) (if (pzerop x) 0 (pctimes x y)))
-	((pcoefp y) (if (pzerop y) 0 (pctimes y x)))
-	((eq (p-var x) (p-var y))
-	 (palgsimp (p-var x) (ptimes1 (p-terms x) (p-terms y)) (alg x)))
-	((pointergp (p-var x) (p-var y))
-	 (psimp (p-var x) (pctimes1 y (p-terms x))))
-	(t (psimp (p-var y) (pctimes1 x (p-terms y))))))
-(defun ptimes (x y)
+  (defmfun ptimes (x y)
+    (cond ((pcoefp x) (if (pzerop x) 0 (pctimes x y)))
+	  ((pcoefp y) (if (pzerop y) 0 (pctimes y x)))
+	  ((eq (p-var x) (p-var y))
+	   (palgsimp (p-var x) (ptimes1 (p-terms x) (p-terms y)) (alg x)))
+	  ((pointergp (p-var x) (p-var y))
+	   (psimp (p-var x) (pctimes1 y (p-terms x))))
+	  (t (psimp (p-var y) (pctimes1 x (p-terms y))))))
+  (defun ptimes (x y)
     (cond ((atom x)
            (cond ((and (numberp x)
                        (zerop x))
@@ -398,171 +355,44 @@ into genvar ordering and adds to genpairs"
            (psimp (car x) (pctimes1 y (cdr x))))
           (t (psimp (car y) (pctimes1 x (cdr y))))))
 
-(defmfun pdifference (x y)
-  (cond ((pcoefp x) (pcdiffer x y))
-	((pcoefp y) (pcplus (cminus y) x))
-	((eq (p-var x) (p-var y))
-	 (psimp (p-var x) (pdiffer1 (p-terms x) (p-terms y))))
-	((pointergp (p-var x) (p-var y))
-	 (psimp (p-var x) (pcdiffer2 (p-terms x) y)))
-	(t (psimp (p-var y) (pcdiffer1 x (p-terms y))))))
+  (defmfun pdifference (x y)
+    (cond ((pcoefp x) (pcdiffer x y))
+	  ((pcoefp y) (pcplus (cminus y) x))
+	  ((eq (p-var x) (p-var y))
+	   (psimp (p-var x) (pdiffer1 (p-terms x) (p-terms y))))
+	  ((pointergp (p-var x) (p-var y))
+	   (psimp (p-var x) (pcdiffer2 (p-terms x) y)))
+	  (t (psimp (p-var y) (pcdiffer1 x (p-terms y))))))
 
 
-(defun pfactor (p &aux ($algebraic algfac*))
-       (cond ((pcoefp p) (cfactor p))
-	     ($ratfac (pfacprod p))
-	     (t (setq p (factorout p))
-		(cond ((equal (cadr p) 1) (car p))
-		      ((numberp (cadr p)) (append (cfactor (cadr p)) (car p)))
-		      (t ((lambda (cont)
-		            (nconc
-			     (cond ((equal (car cont) 1) nil)
-				   (algfac*
-				    (cond (modulus (list (car cont) 1))
-					  ((equal (car cont) '(1 . 1)) nil)
-					  ((equal (cdar cont) 1)
-					   (list (caar cont) 1))
-					  (t (list (caar cont) 1 (cdar cont) -1))))
-				   (t (cfactor (car cont))))
-			     (pfactor11 (psqfr (cadr cont)))
-			     (car p)))
-			  (cond (modulus (list (leadalgcoef (cadr p))
-					       (monize (cadr p))))
-				(algfac* (algcontent (cadr p)))
+  (defun pfactor (p &aux ($algebraic algfac*))
+    (cond ((pcoefp p) (cfactor p))
+	  ($ratfac (pfacprod p))
+	  (t (setq p (factorout p))
+	     (cond ((equal (cadr p) 1) (car p))
+		   ((numberp (cadr p)) (append (cfactor (cadr p)) (car p)))
+		   (t ((lambda (cont)
+			 (nconc
+			  (cond ((equal (car cont) 1) nil)
+				(algfac*
+				 (cond (modulus (list (car cont) 1))
+				       ((equal (car cont) '(1 . 1)) nil)
+				       ((equal (cdar cont) 1)
+					(list (caar cont) 1))
+				       (t (list (caar cont) 1 (cdar cont) -1))))
+				(t (cfactor (car cont))))
+			  (pfactor11 (psqfr (cadr cont)))
+			  (car p)))
+		       (cond (modulus (list (leadalgcoef (cadr p))
+					    (monize (cadr p))))
+			     (algfac* (algcontent (cadr p)))
 
-				(t (pcontent (cadr p))))))))))
-
-
-(defun fullratsimp (l)
- (let (($expop 0) ($expon 0) (inratsimp t) $ratsimpexpons)
-      (setq l ($totaldisrep l)) (fr1 l varlist)))    
-)
-
-#+lispm
-(progn
-(defun pplus (x y)
-  (with-polynomial-area ()
-      (cond ((pcoefp x) (pcplus x y))
-	((pcoefp y) (pcplus y x))
-	((eq (p-var x) (p-var y))
-	 (psimp (p-var x) (pplus1 (p-terms y) (p-terms x))))
-	((pointergp (p-var x) (p-var y))
-	 (psimp (p-var x) (pcplus1 y (p-terms x))))
-	(t (psimp (p-var y) (pcplus1 x (p-terms y)))))))
-
-(defun ptimes (x y)
-  (with-polynomial-area ()
-    (cond ((pcoefp x) (if (pzerop x) (pzero) (pctimes x y)))
-	       ((pcoefp y) (if (pzerop y) (pzero) (pctimes y x)))
-	       ((eq (p-var x) (p-var y))
-		(palgsimp (p-var x) (ptimes1 (p-terms x) (p-terms y)) (alg x)))
-	       ((pointergp (p-var x) (p-var y))
-		(psimp (p-var x) (pctimes1 y (p-terms x))))
-	       (t (psimp (p-var y) (pctimes1 x (p-terms y)))))))
+			     (t (pcontent (cadr p))))))))))
 
 
-(defmfun pdifference (x y)
-  (with-polynomial-area ()
-  (cond ((pcoefp x) (pcdiffer x y))
-	((pcoefp y) (pcplus (cminus y) x))
-	((eq (p-var x) (p-var y))
-	 (psimp (p-var x) (pdiffer1 (p-terms x) (p-terms y))))
-	((pointergp (p-var x) (p-var y))
-	 (psimp (p-var x) (pcdiffer2 (p-terms x) y)))
-	(t (psimp (p-var y) (pcdiffer1 x (p-terms y)))))))
-
-
-(defun pfactor (p &aux ($algebraic algfac*))
-      (with-polynomial-area () (cond ((pcoefp p) (cfactor p))
-	     ($ratfac (pfacprod p))
-	     (t (setq p (factorout p))
-		(cond ((equal (cadr p) 1) (car p))
-		      ((numberp (cadr p)) (append (cfactor (cadr p)) (car p)))
-		      (t ((lambda (cont)
-		            (nconc
-			     (cond ((equal (car cont) 1) nil)
-				   (algfac*
-				    (cond (modulus (list (car cont) 1))
-					  ((equal (car cont) '(1 . 1)) nil)
-					  ((equal (cdar cont) 1)
-					   (list (caar cont) 1))
-					  (t (list (caar cont) 1 (cdar cont) -1))))
-				   (t (cfactor (car cont))))
-			     (pfactor11 (psqfr (cadr cont)))
-			     (car p)))
-			  (cond (modulus (list (leadalgcoef (cadr p))
-					       (monize (cadr p))))
-				(algfac* (algcontent (cadr p)))
-				(t (pcontent (cadr p)))))))))))
-
-;;timings of factoring (x+y+z)^10
-;;on explorer feb 2 microcode ?? 6.6sec
-;;on 3600     feb 10 rel60d microcode 313 5.1 sec maxima 2.6
-    ;;;(tried loading all the new compiled files) and it was 4.6sec
-;;on 3600     feb 10 microcode 315 4.45 seconds 
-
-;;timings of factoring (x+y+z)^20
-;;3600 rel6 betaII mic.315 20.7 seconds
-
-
-(defmfun $factor (&rest args)
-  (check-arg args (and (listp args) (member (length args) '(1 2))) "one or two args")
-  (with-polynomial-area-new ()
-    :reset
-  (let ($intfaclim (varlist (cdr $ratvars)) genvar ans)
-    (setq ans (apply #'factor args))
-    (if (and factorresimp $negdistrib
-	     (mtimesp ans) (null (cdddr ans))
-	     (equal (cadr ans) -1) (mplusp (caddr ans)))
-	(let (($expop 0) ($expon 0)) ($multthru ans))
-	ans))) )
-
-
-(defmfun ratreduce (x y &aux b)
-  (with-polynomial-area ()
-  (cond ((pzerop y) (errrjf "QUOTIENT by ZERO"))
-	((pzerop x) (rzero))
-	((eqn y 1) (cons x 1))
-	((and $keepfloat (pcoefp y) (or $float (floatp y) (pfloatp x)))
-	 (cons (pctimes (quotient 1.0 y) x) 1))
-	(t (setq b (pgcdcofacts x y))
-	   (setq b (ratalgdenom (rplacd (cdr b) (caddr b))))
-	   (cond ((and modulus (pcoefp (cdr b)))
-		  (cons (pctimes (crecip (cdr b)) (car b)) 1))
-		 ((pminusp (cdr b))
-		  (cons (pminus (car b)) (pminus (cdr b))))
-		 (t b))))))
-
-
-(defmfun ratquotient (x y)
-  (with-polynomial-area ()
-    (rattimes x (ratinvert y) t)) )
-
-
-
-(defun fullratsimp (l)
-  (with-polynomial-area ()
+  (defun fullratsimp (l)
     (let (($expop 0) ($expon 0) (inratsimp t) $ratsimpexpons)
-	     (setq l ($totaldisrep l)) (fr1 l varlist))))
-
-(defun fullratsimp (l)
-  (with-polynomial-area ()
-    (let (($expop 0) ($expon 0) (inratsimp t) $ratsimpexpons)
-      (cond ((mbagp l)(cons (car l) (mapcar  #'fullratsimp (cdr l))))
-	    (t 
-	     (setq l ($totaldisrep l)) (fr1 l varlist))) )))
-
-
-(defmfun $trigreduce n
- (let ((*trigred t) (*noexpand t) var $trigexpand $verbose $ratprint)
- (declare (special *trigred *noexpand $trigexpand $verbose $ratprint ans var $verbose))   
-      (cond ((= n 2) (setq var (arg 2)))
-	    ((= n 1) (setq var '*novar))
-	    (t (merror "wrong number of args to TRIGREDUCE")))
-     (with-polynomial-area ()
-      (gcdred (sp1 (arg 1))))))
-
-)
+      (setq l ($totaldisrep l)) (fr1 l varlist))))
 
 
 ;;the following works but is slow see projective
@@ -784,12 +614,12 @@ into genvar ordering and adds to genpairs"
 		(cons
 		 '(mtimes)
 		 (mapcar 
-		  (function (lambda (ll) 
-				    (list '(mexpt)
-					  (cadr x)
-					  (simplify (list '(mtimes)
-							   topexp
-							   ll)))))
+		  #'(lambda (ll) 
+		      (list '(mexpt)
+			    (cadr x)
+			    (simplify (list '(mtimes)
+					    topexp
+					    ll))))
 		  (cdr e))))
 	       (cond (flag (return (new-prep1 x)))
 		     (t (return (newvar1 x))))))
@@ -803,8 +633,7 @@ into genvar ordering and adds to genpairs"
 			  (t (cond ((or (atom x) (null *fnewvarsw))
 				    (putonvlist x))
 				   (t (setq x (littlefr1 x))
-				      (mapc (function newvar1)
-					    (cdr x))
+				      (mapc #'newvar1 (cdr x))
 				     (or (memalike x vlist)
 					 (memalike x varlist)
 					 (putonvlist x)))))))
@@ -824,14 +653,11 @@ into genvar ordering and adds to genpairs"
 	       (t (ratexpt (new-prep1 x) topexp))))))
 
 
-(defun new-newsym (e &aux #+lispm(working-storage-area default-cons-area))
+(defun new-newsym (e)
   (prog (g p)
 	(cond ((setq g (assolike e genpairs))
 	       (return g)))
-	#-lispm
 	(setq g (gensym))
-	#+lispm
-	(setq g (gensym-readable e))
 	(putprop g e 'disrep)
 	(add-newvar e)
 ;	(push e varlist)
