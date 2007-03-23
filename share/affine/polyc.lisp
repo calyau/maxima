@@ -12,18 +12,19 @@
 ;;of the varlist.  
 
 (defvar *genpairs* nil)
+
 (defun reset-vgp ()  (setq *genpairs* nil  *genvar*  nil  *varlist* nil)
        (setq *xxx* 
 	     (let ((*nopoint t) *print-radix*)
 	       (sloop for i from 1 to 30 collecting
-		     (add-newvar (intern (format nil "$X~A" i))))))
+		      (add-newvar (intern (format nil "$X~A" i))))))
        'done)
 
 
-(defun show-vgp ()(show 	*genpairs* genpairs	*genvar* genvar  	*varlist*
-				varlist))
-(defvar vlist nil)
+(defun show-vgp ()
+  (show *genpairs* genpairs *genvar* genvar *varlist* varlist))
 
+(defvar vlist nil)
 
 (defun put-tellrat-property (va the-gensym)
   (sloop for v in tellratlist
@@ -140,7 +141,7 @@
   (cond ((and (listp (car expr))(eq (caar expr) 'mequal))(setq expr (cdr expr)))
 	(t (ferror "not a equation ~A " expr)))
   (cond ((atom (first expr))(list (cons (first expr) (second expr))))
-	((memq (caar (first expr)) '($matrix mlist))
+	((member (caar (first expr)) '($matrix mlist) :test #'eq)
 	 (sloop for v in (cdr (first expr))
 	       for w in (cdr (second expr))
 	       appending (list-equations1 (list v w))))))
@@ -148,9 +149,9 @@
 (defun list-equations-macsyma1 (expr)
   (cond ((and (listp (car expr))(eq (caar expr) 'mequal))
 	 (cond ((atom (second expr)) (list expr))
-	       ((not (memq (caar (second expr)) '($matrix mlist))) (list expr))
+	       ((not (member (caar (second expr)) '($matrix mlist) :test #'eq)) (list expr))
 	       (t (setq expr (cdr expr))
-		  (cond ((memq (caar (first expr)) '($matrix mlist))
+		  (cond ((member (caar (first expr)) '($matrix mlist) :test #'eq)
 			 (cond ((or (atom (second expr))(not (eql (caar (first expr))
 							    (caar (second expr)))))
 				(sloop for v in (cdr (first expr))
@@ -193,18 +194,15 @@
 	  (t (setq answer (sublis subs expr))(cond (rat-form ($new_rat answer))
 						   (t (meval* expr))))))
 
-
-
-
 (defun remove-from-*genpairs* (expr)
-  (setq *genvar* (zl-delete (get-genvar expr) *genvar*))
+  (setq *genvar* (delete (get-genvar expr) *genvar* :test #'equal))
   (sloop for v in *genpairs*
 	for i from 0
 	when (equal (car v) expr)
 	do
 	(cond ((eq i 0)(setq *genpairs* (cdr *genpairs*)))
-	      (t (setq *genpairs* (zl-delete v *genpairs*)))))
-  (setq *varlist* (zl-delete expr *varlist*)))
+	      (t (setq *genpairs* (delete v *genpairs* :test #'equal)))))
+  (setq *varlist* (delete expr *varlist* :test #'equal)))
 
 ;
 ;(defmacro must-replacep (symbol-to-set rat-poly)
@@ -581,7 +579,7 @@
 
       (sloop for vv in parameters
 	    appending (sloop while tem1
-			    when (not (memq (car tem1) unknowns ))
+			    when (not (member (car tem1) unknowns :test #'eq))
 			    collecting (cons vv (car tem1)) into subs1
 			    and do
 			    (let ((*print-level* 3))

@@ -148,7 +148,8 @@
 		   do (return t)))
 	    (t (sloop for v on (cdr $dot_simplifications) by 'cddr
 		     when (eq 0 (second v))
-		     do (cond ((atom (setq u (car v)))(cond ((zl-member u form)(return t))))
+		     do (cond ((atom (setq u (car v)))
+			       (cond ((member u form :test #'equal) (return t))))
 			      (t (cond ((ordered-sublist (cdr u) form)(return t))))))))))
 
 (defun	contains-a-replacement (form &aux tem1 u)
@@ -163,7 +164,7 @@
 	 (sloop while tem1
 	       do (setq u (car tem1))
 	       (setq tem1 (cddr tem1))
-	       (cond ((atom u)(cond ((zl-member u form)(return t))))
+	       (cond ((atom u)(cond ((member u form :test #'equal) (return t))))
 		     (t (cond ((ordered-sublist (cdr u) form )(return t)))))))))
 
 
@@ -185,7 +186,7 @@
 		      when (numberp       (setq poly (fifth poly)))
 		      do (return nil)))))
 	(($ratp expression)
-	 (cond ((memq (caadr expression) *genvar*)
+	 (cond ((member (caadr expression) *genvar* :test #'eq)
 		($must_replacep (cadr expression)))
 	       (t (fsignal "this cre form should not be here, since its leading monom is not in *genvar*"))))
 ;		
@@ -1174,7 +1175,7 @@ and modulo-p not prime gives false answer"
 	       when (not (sloop for key in key-strings
 			       when  (string-search key string-v)
 			       do (return t)))
-	       do (setq tem (zl-delete v tem))
+	       do (setq tem (delete v tem :test #'equal))
 	       finally (return tem)))))
 (defun $socle (variables deg &aux  f unknowns eqns tem1 parameters answer )
   (setq variables (cons '(mlist) (sort (cdr variables) $order_function)))
@@ -1191,7 +1192,7 @@ and modulo-p not prime gives false answer"
 	  (setq tem1 (cdr $aaaa))
 	  (sloop for vv in parameters
 		do (sloop while tem1
-			 when (not (memq (car tem1) unknowns ))
+			 when (not (member (car tem1) unknowns :test #'eq))
 			 do (setq f (subst (car tem1) vv f))
 			 (setq unknowns (subst (car tem1) vv unknowns))
 			 (format t "~%Replacing ~A by ~A in f." vv (car tem1))
@@ -1236,7 +1237,7 @@ and modulo-p not prime gives false answer"
 	  (setq tem1 (cdr $aaaa))
 	  (sloop for vv in parameters
 		do (sloop while tem1
-			 when (not (memq (car tem1) unknowns ))
+			 when (not (member (car tem1) unknowns :test #'eq))
 			 do (setq f (subst (car tem1) vv f))
 			 (setq unknowns (subst (car tem1) vv unknowns))
 			 (format t "~%Replacing ~A by ~A in f." vv (car tem1))
@@ -1269,7 +1270,7 @@ and modulo-p not prime gives false answer"
 	  (setq tem1 (cdr $aaaa))
 	  (sloop for vv in parameters
 		do (sloop while tem1
-			 when (not (memq (car tem1) unknowns ))
+			 when (not (member (car tem1) unknowns :test #'eq))
 			 do (setq f (subst (car tem1) vv f))
 			 (setq unknowns (subst (car tem1) vv unknowns))
 			 (format t "~%Replacing ~A by ~A in f." vv (car tem1))
@@ -1319,72 +1320,7 @@ and modulo-p not prime gives false answer"
 	collecting (cons v w) into tem
 	finally (return (sublis tem expr))))
 
-#+lispm
-(progn
-(defvar *my-stream* (make-array '(0) :element-type 'standard-char
-				:fill-pointer 0 :adjustable t))
 
-(defun my-stream (op &optional arg1 &rest rest)
-  (case op
-    (:tyo
-     (vector-push-extend  arg1 *my-stream*))
-    (:set-cursorpos (set-fill-pointer *my-stream* (car rest)))
-    (:read-cursorpos (fill-pointer *my-stream*) )
-    (:which-operations '(:tyo :set-cursorpos :read-cursorpos))
-    (otherwise
-     (stream-default-handler (function my-stream)
-			     op arg1 rest))))
-  
-(defun my-displa (x &optional fromx fromy ($display2d )&aux answer)
- 
-  (set-fill-pointer *my-stream* 0)
-  (let (($linedisp nil)(smart-tty)($cursordisp nil)($display2d t))
-    (let ((*standard-output* 'my-stream))
-      (displa x)))
-  (setq answer  (string-trim '(141 #\space) *my-stream*))
-  (let ((stream *standard-output*))
-    (multiple-value-bind (xpos ypos) (send stream :read-cursorpos :character)
-      (cond ((null fromx)(setq fromx xpos fromy (f+ 2 ypos))))
-      (my-draw-string answer xpos (f1+ ypos)))))
-
-(defun my-draw-string ( a-string fromx fromy &optional (stream *standard-output*))
-  (multiple-value-bind (x y) (send stream :read-cursorpos :character)
-  (send stream :set-cursorpos  (f1+ fromx) fromy :character)
-  (sloop for i from 0 below (length (the cl:array a-string))
-	unless (eq (aref a-string i) 141)
-	do (send stream :tyo (aref a-string i))
-        else  do (incf fromy) (send stream :set-cursorpos   fromx fromy :character)
-	finally (send stream :set-cursorpos x (f+ 2 y) :character))))
-
-
-
-(defun string-displa (x &optional ($display2d )&aux answer)
-  "Converts the displa into a string"
-  (setf (fill-pointer *my-stream* )0)
-    (let (($linedisp nil)(smart-tty)($cursordisp nil))
-  (let ((*standard-output* 'my-stream)(linel 40))
-    (displa x)
-   (setq answer  (string-trim-replace '(#\newline) '#\space *my-stream*)))))
-
-
-(defun string-trim-replace ( replace  replace-by sstring)
-  (cond ((stringp replace-by )(setq replace-by (aref replace-by 0))))
-  (cond ((stringp replace) (setq replace (listarray replace))))
-  (sloop for i from 0 below (length (the cl:array sstring))
-	while (memq (aref sstring i) replace)
-		    do (setf (aref sstring i) replace-by))
-  (sloop for i downfrom (f1- (length (the cl:array sstring))) to 0
-	while (memq (aref sstring i) replace)
-		    do (setf (aref sstring i) replace-by))
-  sstring)
-
- 
-
-
-
-
-
-)
 (defun string-grind (x &key ($display2d) stream &aux answ)
   (setq answ(with-output-to-string (st)
 	      (cond ((null $display2d)  (mgrind x st))
@@ -1392,15 +1328,12 @@ and modulo-p not prime gives false answer"
 			  (displa x))))))
   (setq answ (string-trim '(#\newline #\space  #\$) answ))
   (cond (stream  (format stream "~A" answ)) ; 
-	(t answ))
-  )
+	(t answ)))
+
 (defun macsyma-typep (x)
   "acceptable to displa"
   (or (numberp x)
       (and (consp x)(consp (car x))(get (caar x) 'dimension))))
-
-
-
 
 ;If foo is (#:X2 1 1 0 (#:X1 1 1)) for instance, then 
 ;(format t "The functions  ~VQ  are the inverses" foo 'fsh)

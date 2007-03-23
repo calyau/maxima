@@ -6,6 +6,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :maxima)
+
 (declare-top (unspecial p y)) 
 
 ;;   These functions can be used to keep an alphabetical masterlist in
@@ -55,9 +56,6 @@
 
 ;;the following are faster than the previous ones in the ratmac
 
-;(defvar *safe* nil)
-
-
 (defun safe-putprop ( sym value indicator &aux #+lispm(working-storage-area default-cons-area))
   (putprop sym value indicator))
 ;;(defun POINTERGP (A B) (> (VALGET A) (VALGET B)))
@@ -96,7 +94,7 @@
 	      (do ((a (savefactors (new-prep1 (cadr x)))
 		      (rattimes a (savefactors (new-prep1 (car l))) sw))
 		   (l (cddr x) (cdr l))
-		   (sw (not (and $norepeat (memq 'ratsimp (cdar x))))))
+		   (sw (not (and $norepeat (member 'ratsimp (cdar x) :test #'eq)))))
 		  ((null l) a)))
 	     ((eq (caar x) 'mexpt)
 	      (newvarmexpt x (caddr x) t))
@@ -110,7 +108,7 @@
 		    (t (cons (cadr x) (caddr x)))))
 	     ((eq (caar x) 'bigfloat)(bigfloat2rat x))
 	     ((eq (caar x) 'mrat)
-	      (cond ((and *withinratf* (memq 'trunc (car x)))
+	      (cond ((and *withinratf* (member 'trunc (car x) :test #'eq))
 		     (throw 'ratf nil))
 		    ((catch 'compatvl
 		       (progn (setq temp (compatvarl (caddar x)
@@ -118,7 +116,7 @@
 						     (cadddr (car x))
 						     genvar))
 			      t))
-		     (cond ((memq 'trunc (car x))
+		     (cond ((member 'trunc (car x) :test #'eq)
 			    (cdr ($taytorat x)))
 			   ((and (not $keepfloat)
 				 (or (pfloatp (cadr x)) (pfloatp (cddr x))))
@@ -185,7 +183,7 @@
   ;;the ratsetup is done in my-newvar1
     (xcons (new-prep1 x)
 	   (list* 'mrat 'simp *varlist* *genvar*
-		  		  (if (and (not (atom x)) (memq 'irreducible (cdar x)))
+		  		  (if (and (not (atom x)) (member 'irreducible (cdar x) :test #'eq))
 		      '(irreducible)))))
 	  
 (defun new-rat (x &aux genpairs)
@@ -193,7 +191,7 @@
     ((polynomialp x) (cons x 1))
     ((rational-functionp x) x)
     ((and (listp x) (eq (caar x) 'mrat))
-	 (cond ((memq (car (num (cdr x))) *genvar*)
+	 (cond ((member (car (num (cdr x))) *genvar* :test #'eq)
 		(cdr x))
 	       (t (format t "~%disrepping")(new-rat  ($totaldisrep x)))))
 	(t 
@@ -228,16 +226,16 @@
 	    ;;; ((memalike x varlist))we 're using *varlist*
 ;	;     ((memalike x vlist) nil)
 	     ((atom x) (add-newvar-to-genpairs x )nil)
-	     ((memq (caar x)
+	     ((member (caar x)
 		    '(mplus mtimes rat mdifference
-			    mquotient mminus bigfloat))
+			    mquotient mminus bigfloat) :test #'eq)
 	      (mapc (function my-newvar1) (cdr x)))
 	     
 	     ((eq (caar x) 'mexpt)
 	       (my-newvar1 (second  x) ))
 	     ;; ;(newvarmexpt x (caddr x) nil))
 	     ((eq (caar x) 'mrat)(ferror " how did you get here Bill?")
-	      (and *withinratf* (memq 'trunc (cdddar x)) (throw 'ratf '%%))
+	      (and *withinratf* (member 'trunc (cdddar x) :test #'eq) (throw 'ratf '%%))
 	      (cond ($ratfac (mapc 'newvar3 (caddar x)))
 		    (t (mapc (function my-newvar1) (reverse (caddar x))))))
 	     ((eq (caar x) 'mnctimes)(add-newvar-to-genpairs x ))
@@ -508,7 +506,7 @@ into genvar ordering and adds to genpairs"
 
 
 (defmfun $factor (&rest args)
-  (check-arg args (and (listp args)(memq (length args) '( 1 2))) "one or two args")
+  (check-arg args (and (listp args) (member (length args) '(1 2))) "one or two args")
   (with-polynomial-area-new ()
     :reset
   (let ($intfaclim (varlist (cdr $ratvars)) genvar ans)
@@ -618,7 +616,7 @@ into genvar ordering and adds to genpairs"
 
 (defun factoredp (poly)
   (cond ((atom poly) t)
-	(t (memq  'factored (car poly)))))
+	(t (member 'factored (car poly) :test #'eq))))
 (defun exponent (expr prod)
   (cond ((atom prod) 0)
 	((eq (caar prod) 'mexpt)(cond ((eq (second prod) expr)(third prod))
@@ -652,7 +650,7 @@ into genvar ordering and adds to genpairs"
 	do (setq first-one v)(setq where i) (return 'done))
   (cond ((null where) 'image_not_in_projective_space)
 	(t
-	 (setq factored-vector (zl-delete first-one factored-vector 1))
+	 (setq factored-vector (delete first-one factored-vector :count 1 :test #'equal))
 	 (setq proj (sloop for w in  factored-vector collecting (div* w first-one)))
 	 (sloop for term in proj
 	       when (not (numberp term) )
@@ -663,7 +661,7 @@ into genvar ordering and adds to genpairs"
 			    (cond ((atom v)(setq fac v))
 				  ((eq (caar v) 'mexpt)(setq fac (second v)))
 				  ((eq (caar v) 'mplus )(setq fac v)))
-			    (cond ((not (zl-member fac factors))(push fac factors)))))))
+			    (cond ((not (member fac factors :test #'equal)) (push fac factors)))))))
 	 (sloop for w in factors
 	       do (setq expon 0)
 	       (setq expon (sloop for v in proj
@@ -729,12 +727,7 @@ into genvar ordering and adds to genpairs"
        ;; when flag is t, call returns ratform
        (prog (topexp) 
 	     (cond ((and (fixp e) (not flag))
-		    (return (newvar1 (cadr x))))
-
-		   ;; this makes problems for risch ((and(not(fixp
-		   ;;e))(memq 'ratsimp (cdar x))) (return(setq vlist
-		   ;;(cons x vlist))))
-		   )
+		    (return (newvar1 (cadr x)))))
 	     (setq topexp 1)
 	top  (cond
 
@@ -867,7 +860,7 @@ into genvar ordering and adds to genpairs"
   (do ((p (pt-red x) (pt-red p))) ((ptzerop p)) (setf (pt-lc p) (pdis (pt-lc p))))
   (setq algvar (cons algvar x))
   (if (setq x (assol (car algvar) tellratlist))
-      (setq tellratlist (zl-remove x tellratlist)))
+      (setq tellratlist (remove x tellratlist :test #'equal)))
   (push algvar tellratlist))
 
 

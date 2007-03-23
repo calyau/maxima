@@ -11,23 +11,23 @@
     #+gcl (compile load eval)
     #-gcl (:compile-toplevel :load-toplevel :execute)
 
-  (defmacro p-cof (f)			;leading coefficient of f
-    `(third ,f))
+    (defmacro p-cof (f)			;leading coefficient of f
+      `(third ,f))
 
-(defmacro p-next-term (f) `(cddr ,f))
+    (defmacro p-next-term (f) `(cddr ,f))
 
-(defmacro p-deg (f)
-  `(second ,f))
+    (defmacro p-deg (f)
+      `(second ,f))
 
-(defmacro term-cof (terms)
-  `(second ,terms))
+    (defmacro term-cof (terms)
+      `(second ,terms))
 
-(defmacro term-deg (terms)
-  `(first ,terms)))
+    (defmacro term-deg (terms)
+      `(first ,terms)))
 
 
 (defmacro macsyma-module (&rest l)
-  (delcare (ignore l))
+  (declare (ignore l))
   nil)
 
 ;;(make-poly var x)==> (list x 1 1)
@@ -315,7 +315,7 @@
 	 (sloop
 	       with quot with deg-dif with main-var = (p-var f) with minus-quot
                do
-	       (setq  deg-dif (f- (p-deg f) (p-deg g)))
+	       (setq  deg-dif (- (p-deg f) (p-deg g)))
 	       while (>= deg-dif 0)
        	       collecting deg-dif into q
 	       collecting  (setq quot (afp-quotient (p-cof f) (p-cof g)))
@@ -370,9 +370,9 @@
 		       ((and (numberp (p-cof g))
 			     (eql (abs (p-cof g)) 1)) f)
 		       (t 	(ptimes f (setq creqd (pexpt (p-cof g)
-							      (+ 1 (f- (p-deg f) (p-deg g))))))))
+							      (+ 1 (- (p-deg f) (p-deg g))))))))
                do
-	   (setq  deg-dif (f- (p-deg remainder) (p-deg g)))
+	   (setq  deg-dif (- (p-deg remainder) (p-deg g)))
 	       while (>= deg-dif 0)
        	       collecting deg-dif into q
 	       collecting  (setq quot (afp-quotient (p-cof remainder) (p-cof g)))
@@ -499,7 +499,7 @@
 	 (assume-greater-equal-degree u v)
 	 (setq answ (sloop with gg = 1 with h = 1 with g^delta with unused
 			  do
-		      (setq delta (f- (p-deg u) (p-deg v)))
+		      (setq delta (- (p-deg u) (p-deg v)))
 		      (multiple-value-setq (unused  r) (afp-pseudo-quotient u v))
 			  when (pzerop r)
 			    do (return (ptimes d (principal-part v)))
@@ -511,7 +511,7 @@
 			     (setq g^delta (pexpt gg delta))
 			     (setq h (cond ((eql delta 1)  g^delta)
 					   ((> delta 1) (afp-quotient g^delta
-								      (pexpt h (f- delta 1))))
+								      (pexpt h (- delta 1))))
 					   ;;here delta=0
 					   (t (ptimes g^delta h))))))
 	 (afp-try-make-monic answ))))
@@ -536,7 +536,7 @@
         do (setq denom (one-ptimes denom fact))
         else
         when (< deg -1)
-        do (setq denom (one-ptimes denom (pexpt fact (f- deg))))
+        do (setq denom (one-ptimes denom (pexpt fact (- deg))))
         finally (return (afp-quotient numer denom))))
 
 (defun same-main-and-degree (f g)
@@ -1130,8 +1130,10 @@
      (let (empty (*print-level* 2)(*print-length* 3) ansa ansb)
        
        
-       (cond ((memq ':empty rest-args)(setq rest-args(firstn (f- (length rest-args) (length (memq ':empty rest-args)))
-					     rest-args))
+       (cond ((member ':empty rest-args :test #'eq)
+	      (setq rest-args (firstn (- (length rest-args)
+					 (length (member ':empty rest-args :test #'eq)))
+				     rest-args))
 	      (setq empty t)))
        (format t "~%For functions ~A and ~A respectively, ~
       ~%with argument list ~A being ~A" ',f1 ',f2 (arglist ',f1) rest-args)
@@ -1282,7 +1284,7 @@
 
 (defun berlekamp-get-factors-little-prime (u reduced-sparse-matrix prime &aux number-of-factors b-polys poly tem
 					   			      (factor-list (list u)))
-  (setq number-of-factors   (f- (p-deg u) (sp-number-of-pivots reduced-sparse-matrix)  ))
+  (setq number-of-factors   (- (p-deg u) (sp-number-of-pivots reduced-sparse-matrix)  ))
   (show number-of-factors)
   (sp-show-matrix reduced-sparse-matrix)
   (cond ((eql 1 number-of-factors) ;;irreducible
@@ -1293,7 +1295,7 @@
 		 for v in b-polys
 		 with half-p = (ash prime -1)
 		 do
-	     (sloop for j from (f- half-p) to half-p
+	     (sloop for j from (- half-p) to half-p
 		   do
                (sloop for u-fact in factor-list
 		     do
@@ -1306,13 +1308,13 @@
 			(setq factor-list (cons tem
 						(cons (afp-quotient u-fact
 								    tem)
-						      (zl-delete u-fact factor-list))))
+						      (delete u-fact factor-list :test #'equal))))
 			when (eql (length factor-list) number-of-factors)
 			  do (return-from sue factor-list)))))))
 
 (defun berlekamp-get-factors-big-prime (u reduced-sparse-matrix prime &aux number-of-factors b-polys 
 			      (factor-list (list u)))
-  (setq number-of-factors   (f- (p-deg u) (sp-number-of-pivots reduced-sparse-matrix)  ))
+  (setq number-of-factors   (- (p-deg u) (sp-number-of-pivots reduced-sparse-matrix)  ))
   	(show number-of-factors)
 
   (cond ((eql 1 number-of-factors) ;;irreducible
@@ -1461,7 +1463,7 @@
 	  (sloop named sue for i from 1
 		do
 	    (sloop  do (setq tt (generate-t-for-one-degree-factors u deg p i))
-		   unless (or  (numberp tt) (zl-member tt used-tt))
+		   unless (or  (numberp tt) (member tt used-tt :test #'equal))
 		     do (push tt used-tt) (return tt))
 	    (working-modulo (list u)
 	      (setq tt  (afp-expt tt pow) ))
@@ -1475,9 +1477,9 @@
 			    (push (afp-make-monic tem) answ))
 ;			   ((numberp tem))
 			   (t (push tem facts)))
-		     (setq facts(zl-delete v facts))))
+		     (setq facts (delete v facts :test #'equal))))
 		  when (null facts) do (return-from sue answ)))))
-  (cond ((memq 1 answ) (fsignal 'bad)))
+  (cond ((member 1 answ) (fsignal 'bad)))
   (iassert (eql (p-deg  u)
 		(sloop for pol  in answ  
 		      when (and (consp pol))
@@ -1540,7 +1542,7 @@
 
 
 (defun gen-afp-times (&rest lis)
-  (setq lis (zl-delete 1 (copy-list lis)))
+  (setq lis (delete 1 (copy-list lis) :test #'equal))
   (cond ((null lis) 1)
 	((null (cdr lis))(car lis))
 	(t (afp-times (car lis) (cond ((cddr lis)
@@ -1633,7 +1635,7 @@
 	when (and (q-primep p)
 		  (let ((modulus p))(and (not (pzerop (afp-mod cof)))
 					 (or (numberp (setq the-gcd (afp-gcd (afp-mod poly) (afp-mod deriv))))
-					     (not (memq variable (list-variables the-gcd)))))))
+					     (not (member variable (list-variables the-gcd) :test #'eq))))))
 	  do (return p)))
 (defun integer-univariate-factor1 (pol &aux p ( up-to 1000) facts lifts mod)
   "Argument pol is square free"
@@ -1667,7 +1669,7 @@
 	(cond ((> (* d 2) (length factors))
 	       (push pol answ) (return answ)))
 	(sloop for v in (sub-lists d factors)
-	      when (zl-member v tried)
+	      when (member v tried :test #'equal)
 		do nil
 	      else
 		do (push v tried)
@@ -1677,14 +1679,14 @@
 			  (setq pol quot)
 			  (push prod answ)
 			  (sloop for vv in v
-				do (setq factors (zl-delete vv factors 1)))
+				do (setq factors (delete vv factors :count 1 :test #'equal)))
 			  (go look-for-factors)))
 	      finally (incf d)
 		      (go look-for-factors))))
 
 
 (defun q-primep (i &aux lis)
-  (cond ((car (memq i (setq lis '(2 3 5 7 11 13 )))))
+  (cond ((car (member i (setq lis '(2 3 5 7 11 13)))))
 	((evenp i) nil)
 	((sloop for v in (cdr lis)
 			 when  (zerop (mod i v))
@@ -1740,38 +1742,38 @@
 ;;speed hacks: The following has two areas which can be improved
 ;; 1.  should not truncate the polynomial, should multiply with truncation.
 ;; 2.  should make express-x^i a defremember.
-(defun wr-lift (u fi gi up-to-k big-mod  point &aux (modulus big-mod)(main-var (p-var u))tem fi+1 gi+1 v f0 g0 varl w
-		aw bw )
+(defun wr-lift (u fi gi up-to-k big-mod  point
+		&aux (modulus big-mod) (main-var (p-var u)) tem fi+1 gi+1 v f0 g0 varl w aw bw)
   (setq v (psublis (subs-translate-sublis point) 1  u))
-  (setq varl (zl-delete (car u) (list-variables u)))
-  (setq f0 fi )
-  (setq g0 gi )
+  (setq varl (delete (car u) (list-variables u) :test #'equal))
+  (setq f0 fi)
+  (setq g0 gi)
   (sloop for i from 1 to up-to-k
-	do 
-    (setq w (pdifference  (afp-times fi gi) u))
-    (setq w (afp-truncate-powers w varl i))
-        (mshow  w)
-    (cond ((pzerop w) 'nothing-to-do)
-	  (t
-	   (cond   ((or (numberp w) (not (eql (p-var w) main-var)))
-		    (setq aw (afp-times w (first (setq tem (express-x^i f0 g0 0)))))
-		    (setq aw (afp-times w (second tem))))
-		   (t
-		    (sloop for (deg cof) on (cdr w) by 'cddr
-			  initially  (setq aw 0 bw 0)
-			  do
-		      (setq aw (afp-plus aw (afp-times (first (setq tem
-								    (express-x^i f0 g0 deg))) cof)))
-		      (setq bw (afp-plus bw (afp-times (second tem) cof))))
+	 do 
+	 (setq w (pdifference  (afp-times fi gi) u))
+	 (setq w (afp-truncate-powers w varl i))
+	 (mshow  w)
+	 (cond ((pzerop w) 'nothing-to-do)
+	       (t
+		(cond   ((or (numberp w) (not (eql (p-var w) main-var)))
+			 (setq aw (afp-times w (first (setq tem (express-x^i f0 g0 0)))))
+			 (setq aw (afp-times w (second tem))))
+			(t
+			 (sloop for (deg cof) on (cdr w) by 'cddr
+				initially  (setq aw 0 bw 0)
+				do
+				(setq aw (afp-plus aw (afp-times (first (setq tem
+									      (express-x^i f0 g0 deg))) cof)))
+				(setq bw (afp-plus bw (afp-times (second tem) cof))))
 		    
-		    (setq fi+1 (pdifference fi bw))
-		    (setq gi+1 (pdifference gi aw))
+			 (setq fi+1 (pdifference fi bw))
+			 (setq gi+1 (pdifference gi aw))
 		    
-		    (setq fi fi+1 gi gi+1)
-		    (mshow aw bw fi gi)))))
-    finally
-      (show (pdifference v (ptimes fi gi)))
-      (return (list fi gi))))
+			 (setq fi fi+1 gi gi+1)
+			 (mshow aw bw fi gi)))))
+	 finally
+	 (show (pdifference v (ptimes fi gi)))
+	 (return (list fi gi))))
   
 
 (defun afp-truncate-powers (pol varl deg)
@@ -1782,10 +1784,10 @@
   (cond ((< above-deg 0) 0)
 	((numberp pol) pol)
 	((null varl) pol)
-	((memq (p-var pol) varl)
+	((member (p-var pol) varl :test #'eq)
 	 (psimp (p-var pol)
          	(sloop for (exp cof) on (cdr pol) by 'cddr
-		      do (setq tem (f- above-deg exp))
+		      do (setq tem (- above-deg exp))
 		      when (< tem 0)
 			do nil
 		      else

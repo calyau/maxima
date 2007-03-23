@@ -340,26 +340,26 @@
 
 (defun $sub_matrix (mat  rows-to-take cols-to-take &aux row)
   (sloop for ii in rows-to-take
-        do (setq row (nth ii mat))
-	collecting
-	(sloop    for i from 1
-		 for v  in (cdr  row)
-		 when (memq i cols-to-take)
-		 collecting v into new-row
-		 finally (loop-return (cons '(mlist) new-row)))
-	into matrix
-	finally (loop-return (cons '($matrix simp) matrix))))
+	 do (setq row (nth ii mat))
+	 collecting
+	 (sloop for i from 1
+		for v  in (cdr  row)
+		when (member i cols-to-take)
+		collecting v into new-row
+		finally (loop-return (cons '(mlist) new-row)))
+	 into matrix
+	 finally (loop-return (cons '($matrix simp) matrix))))
 
 (defun $sub_matrix_columns (mat &rest cols-to-take)
   (sloop for row in (cdr mat)
-	collecting
-	(sloop    for i from 1
-		 for v  in (cdr  row)
-		 when (memq i cols-to-take)
-		 collecting v into new-row
-		 finally (loop-return (cons '(mlist) new-row)))
-	into matrix
-	finally (loop-return (cons '($matrix simp) matrix))))
+	 collecting
+	 (sloop for i from 1
+		for v  in (cdr  row)
+		when (member i cols-to-take)
+		collecting v into new-row
+		finally (loop-return (cons '(mlist) new-row)))
+	 into matrix
+	 finally (loop-return (cons '($matrix simp) matrix))))
 
 (defun $plucker (vector-list)
   (check-arg vector-list '$listp "macsyma list")
@@ -376,7 +376,7 @@
 	collecting v))
 
 (defmacro from-case (a-list)
-  `(and (listp ,a-list) (cdr (memq '$case ,a-list))))
+  `(and (listp ,a-list) (cdr (member '$case ,a-list :test #'eq))))
 
 (defvar $solution_tree '(mlist))
 (defun $sort_solution_tree ()
@@ -506,7 +506,7 @@
 			       (t nil)))
 	       (t
 		(sloop for v in (list-variables poly)
-		      when (and  (memq v linear-variables)
+		      when (and  (member v linear-variables :test #'eq)
 				 (setq tem (gm-all-prepared
 					     (zero-sublis poly v)
 					     :linear-variables linear-variables
@@ -534,7 +534,7 @@
 			       (list tem))))
 	       (t (sloop for v in (list-variables poly)
 			when
-			  (memq v linear-variables)
+			  (member v linear-variables :test #'eq)
 			  do (setq tem (zero-sublis poly v))
 			     (cond ((setq answ (gm-prepared tem :m (f1- m) :inequal inequal
 							    :linear-variables linear-variables))
@@ -589,7 +589,7 @@
 			    (list-polys (ldata-eqns ldata))
 			    (gg (ldata-inequality ldata)))
   (setq gg (nplcm gg open-g))
-  (cond ((memq nil list-polys)(break 'here)))
+  (cond ((member nil list-polys :test #'eq) (break 'here)))
   (setq list-factors 
 	(sloop for v in list-polys
 	      ;;only collect non trivial factors
@@ -609,14 +609,14 @@
 	      into terms
 	      
 	      finally
-	      (cond ((not (memq 1 terms))
+	      (cond ((not (member 1 terms))
 		     (setf (ldata-eqns ldata) terms))
 		    (t (setf (ldata-usedup ldata) 1)
 		       (setf (ldata-eqns ldata) '(1))))
 	      (setq *all-factors* all-factors)
 	      (loop-return multiple-factors)))
 
-  (cond ((zl-MEMBER '(nil 1) *all-factors*)(break 'hii)))
+  (cond ((member '(nil 1) *all-factors* :test #'equal) (break 'hii)))
   (cond
     ((eq list-factors 'done-unit-ideal) nil)
     (t
@@ -675,11 +675,11 @@
 	(sloop for v in dich
 	      collecting
 	      (sloop for u in *all-factors*
-		    when (zl-MEMBER v u)
+		    when (member v u :test #'equal)
 		    count 1 )))
   (setq dich
 	(sloop for i downfrom (length *all-factors*) to 0
-	      when  (memq i mult)
+	      when  (member i mult)
 	      appending
 	      (sloop for v in mult
 		    for u in dich
@@ -717,14 +717,14 @@
   (cond ((null among-variables)(setq among-variables (list-variables f))))
   (sloop for v in among-variables
 	
-	when (and (not (memq v variables-to-exclude)) (poly-linearp f v g))
+	when (and (not (member v variables-to-exclude :test #'eq)) (poly-linearp f v g))
 	do (loop-return v)))
 (defvar *clear-above* nil)
 (defun any-invertible-leading-coefficient
        (f g &aux deg (varl (list-variables f)))
   (sloop for v in varl
 	 when  (may-invertp (list v 1 1) g)
-	 do (setq varl (zl-DELETE v varl)))
+	 do (setq varl (delete v varl :test #'equal)))
   (sloop for v in varl
 	 when (and (or (null *clear-above*) (not (<= (sloop for w in *clear-above*
 							    when (eq (car w) v)
@@ -892,7 +892,7 @@
 						    :inequality (ldata-inequality
 								 orig-ldata))))
     
-    (cond ((sloop for f in (setq unused  (zl-UNION  (zl-DELETE 0 fns)))
+    (cond ((sloop for f in (setq unused  (zl-UNION  (delete 0 fns)))
 		 when(numberp f) do(setq used-up '(1) unused nil)(loop-return 'done)))
 	  (t
 ;	   nil))
@@ -1036,14 +1036,14 @@
 			(progn
 			  (setq eqns-modv 
 				(sloop for facs in all-facs
-				      when (not (zl-MEMBER v facs))
+				      when (not (member v facs :test #'equal))
 					collecting
 					  (apply 'gen-ptimes (sloop for ter in facs by 'cddr
 								   when (not
 									  (may-invertp
 									    ter so-far))
 								     collecting ter))))
-			  (cond ((memq nil eqns-modv) (ferror "nil should not be here")))
+			  (cond ((member nil eqns-modv :test #'eq) (ferror "nil should not be here")))
 			  (cond ((eq v nil) (ferror "nil should not be here")))
 			  (setq ld (make-ldata))
 			  (setf (ldata-eqns ld) (cons v eqns-modv))
@@ -1122,14 +1122,14 @@
 			(progn
 			  (setq eqns-modv 
 				(sloop for facs in all-facs
-				      when (not (zl-MEMBER v facs))
+				      when (not (member v facs :test #'equal))
 					collecting
 					  (apply 'gen-ptimes (sloop for ter in facs by 'cddr
 								   when (not
 									  (may-invertp
 									    ter so-far))
 								     collecting ter))))
-			  (cond ((memq nil eqns-modv) (ferror "nil should not be here")))
+			  (cond ((member nil eqns-modv :test #'eq) (ferror "nil should not be here")))
 			  (cond ((eq v nil) (ferror "nil should not be here")))
 			  (setq ld (make-ldata))
 			  (setf (ldata-eqns ld) (cons v eqns-modv))
@@ -1155,12 +1155,12 @@
   (setq var-lists
 	(sloop for v in list-eqns
 	collecting (list-variables v) ))
- (setq all-vars (apply 'zl-UNION var-lists))
+ (setq all-vars (apply #'zl-UNION var-lists))
  (sloop for v in all-vars
        collecting v
        collecting
        (sloop for lis in var-lists
-	     when (memq v lis)
+	     when (member v lis :test #'eq)
 	     count 1 )))
 
 
@@ -1205,7 +1205,7 @@
        (setq tem var)
 	  (setq deg-vector  (sloop for u in eqns
 				  collecting (pdegree u var)))
-	  (sloop for i in (sort (zl-UNION (zl-DELETE 0 (copy-list  deg-vector))) 'alphalessp)
+	  (sloop for i in (sort (zl-UNION (delete 0 (copy-list  deg-vector))) 'alphalessp)
 		do
 		(sloop for j in deg-vector
 		      for f in eqns
@@ -1226,7 +1226,7 @@
 							     (pcoeff ff (list var jj 1))
 							     cof)))
 					      open-g)
-			    do (setq eqns (zl-DELETE ff eqns))
+			    do (setq eqns (delete ff eqns :test #'equal))
 ;			    (format t "replacing for variable ~A .."var)
 ;			    (sh ff)
 ;			    (format t "using " ) (sh f)
@@ -1422,8 +1422,8 @@
 	do
 	(sloop for w in list-ld
 	      for wi from 0
-	      when (not (or (zl-MEMBER vi redundant)
-			    (zl-MEMBER wi redundant)
+	      when (not (or (member vi redundant :test #'equal)
+			    (member wi redundant :test #'equal)
 			    (eql vi wi)))
 	      when
 	      (variety-ldata-subset v w :open-g gg :ignore-ldata-inequalities
@@ -1434,7 +1434,7 @@
 	      (format t "~%contained in ") (fsh w)))
   (sloop for v in list-ld
 	for vi from 0
-	when (not (zl-MEMBER vi redundant))
+	when (not (member vi redundant :test #'equal))
 	collecting v))
   
 (defun describe-ldata (ld)
@@ -1481,7 +1481,7 @@
 
 (defun $simplify_relative (system poly)
   ($grobner_basis (list '(mlist) poly))
-   (append  (zl-DELETE 0 ($totaldisrep ($polysimp system))) (list poly)))
+   (append  (delete 0 ($totaldisrep ($polysimp system))) (list poly)))
 
 
 (defun $list_irreducible_factors(poly &aux answer)
@@ -1489,7 +1489,7 @@
     ((atom poly ) (list '(mlist) poly))
     ((MBAGP poly) (CONS (CAR poly) (MAPCAR #'$list_irreducible_factors (CDR poly))))
     ((eq (caar poly) 'mtimes)
-     (cond ((memq 'factored (car poly) )
+     (cond ((member 'factored (car poly) :test #'eq)
 	    (sloop for u in (cdr poly)
 		  do 
 		  (cond ((atom u)
@@ -1502,7 +1502,7 @@
 	   (t ($list_irreducible_factors ($factor poly)))))
     ((eq (caar poly) 'mexpt) ($list_irreducible_factors ($factor (second poly))))
     ((eq (caar poly) 'mplus)
-     (cond ((memq 'irreducible (car poly)) (list '(mlist) poly))
+     (cond ((member 'irreducible (car poly) :test ##eq) (list '(mlist) poly))
 				   (t ($list_irreducible_factors ($factor poly)))))
     (t (ferror "how did you get here"))))
 
@@ -1694,7 +1694,7 @@
 		       (format t "~%Eliminating linear variables ~A" lin-vars)
 		       ))
 	(cond (subs  (setq eqns ($sublis subs eqns))
-		     (setq eqns (append (zl-DELETE 0 ($ratsimp eqns))
+		     (setq eqns (append (delete 0 ($ratsimp eqns))
 					(sloop for v in subs collecting
 					      ($numerator
 						(sub* (second v) (third v)))))))
@@ -1762,7 +1762,7 @@
   (setq vars (mapcar '$list_variables (cdr ideal)))
   (setq vars  (mapcar 'cdr vars))
    (setq all-vars (zl-UNION (apply 'append  vars)))
-  (setq f #'(lambda (v) (sloop for w in vars when (memq v vars) count 1 into tem
+  (setq f #'(lambda (v) (sloop for w in vars when (member v vars) count 1 into tem
 			      finally (loop-return tem))))
    (sort all-vars #'(lambda( u v)(< (funcall f u) (funcall f v)))))
  
@@ -1923,7 +1923,7 @@
 	(t  (sloop for v in chain
 		       when (eq (p-var poly)(p-var v))
 		       do (cond ((< (p-le poly) (p-le v))(show 'deleting)
-				 (setq chain (zl-DELETE v chain)))
+				 (setq chain (delete v chain :test #'equal)))
 				((>= (p-le poly)(p-le v))
 				 (mshow poly v)(ferror "not reduced")))
 		       finally(format t "~%adding .." )
@@ -2271,7 +2271,7 @@ would restore the list"
 		     (sloop for v in obj
 		    for i from 0
 		    do
-		    (cond ((and (listp v)(memq (car v) '(ldata zopen)))
+		    (cond ((and (listp v)(member (car v) '(ldata zopen) :test #'eq))
 			   (format t "~%Number ~D :" i)))
 		    (des v stream))))))))
     obj))
@@ -2295,16 +2295,17 @@ would restore the list"
 		     (sloop for v in obj
 		    for i from 0
 		    do
-		    (cond ((and (listp v)(memq (car v) '(ldata zopen)))
+		    (cond ((and (listp v) (member (car v) '(ldata zopen) :test #'eq))
 			   (format t "Number ~D :" i)))
 		    (des v stream))))))))
     obj))
 
 
 
-(eval-when (compile eval load)  ;;symbolics bug
-(defmacro pls-opens (pls) `(sv-zopens (pls-s-var ,pls)))
-)
+(eval-when
+    #+gcl (compile eval load)
+    #-gcl (:compile-toplevel :load-toplevel :execute)
+  (defmacro pls-opens (pls) `(sv-zopens (pls-s-var ,pls))))
 
 (defvar *reorder-eqns* t)
 (defun describe-pls (pls &aux dim eqns  ch-set)

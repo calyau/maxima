@@ -49,39 +49,6 @@
   number
   data)
 
-#|	  
-rows (sp-rows sp-mat)
-number-of-rows (sp-number-of-rows sp-mat)
-type-of-entries (sp-type-of-entries sp-mat)
-current-row  (sp-current-row  sp-mat)
-current-row-number (sp-current-row-number sp-mat)
-current-row-length (sp-current-row-length sp-mat)
-pivot-row  (sp-pivot-row  sp-mat)
-pivot-row-number (sp-pivot-row-number sp-mat)
-characteristic  (sp-characteristic  sp-mat)
-inverse-array (sp-inverse-array sp-mat)   
-minimum-size-to-grow 
-allow-reorder  ;;never
-last-good-row  
-columns-used-to-pivot  
-column-used-in-row  
-list-of-all-columns-occurring  
-pivot-entry  
-pivot-test-list  
-row-number-before-swap  
-transpose  
-reduced  
-sort-pivot  ;;never
-sign-of-row-permutation  
-current-column-above-pivot-row-number  
-columns-with-no-pivot  
-rows-with-no-pivot  
-solutions  
-constants-column-number  
-special-solution  
-special-inverse  
-constants-column  
-|#
 
 (defmacro row-length (arow)
   `(array-dimension-n 1 ,arow))
@@ -112,31 +79,6 @@ constants-column
 
 (deff sp-rational-quotient  #'/)
 
-#-cl  ;;lets not replace it for cl unless we have a really big job.
-(defmacro array-push-extend-replace (aarray data &key amount-to-grow replace
-				     &aux  body)
-  "Keywords :AMOUNT-TO-GROW :REPLACE.
-  Like array-push-extend but makes ARRAY point at the new array. It takes the keyword
- :REPLACE which should be followed by a list eg. :REPLACE ((aref rows i) bb) will put
-  the new array in slot i of rows, and as value of bb, using setf. and also setf's any
-  replacement forms to point to the new array.  This will increase speed of reference."
-  (setq body (sloop for u in replace
-	collecting `(setf ,u ,aarray)))
-  `(cond ((vector-push  ,data ,aarray))
-	 (t (setq ,aarray
-		  (adjust-array ,aarray
-				     (f+ (array-total-size ,aarray)
-					;; If amount to extend by not specified,
-					;; try to guess a reasonable amount
-					(cond (,amount-to-grow)
-					      ((< (si:%structure-total-size ,aarray)
-						  si:page-size)
-					       (max (array-total-size ,aarray) 100))
-					      (t (// (array-total-size ,aarray) 4))))))
-		   (catch-error  ,@body nil)
-		  (vector-push  ,data ,aarray))))
-
-
 ;(defmacro array-push-extend-replace (aarray data &key amount-to-grow replace &aux forms)
 ;  (setq forms  (sloop for v in replace collecting `(setf ,v .new.)))
 ;  (cond ((symbolp data)
@@ -162,7 +104,7 @@ constants-column
 		    body :test 'equal)))
 	(t `,body)))
 
-#+cl ;;this is really like vector-push-extend except it may speed up later references.
+;;this is really like vector-push-extend except it may speed up later references.
 (defmacro array-push-extend-replace (aarray data &key amount-to-grow replace &aux forms)
   replace
   `(without-double-evaluation ( ,data)
@@ -174,9 +116,6 @@ constants-column
 					       )))
 		 (vector-push ,data .new.),@ forms)))))
 
-
-
-;
 ;(defun sp-add* (&rest llist)
 ;  (let ((varlist))
 ;    (apply 'add*  llist)))
@@ -400,7 +339,7 @@ constants-column
 	      appending 
 	      (sloop for jj below (length (the cl:array  this-row)) by 2
 		    when (and (setq ind (aref this-row jj ))
-			      (not (memq ind temp)))
+			      (not (member ind temp :test #'eq)))
 		    collecting ind)
 		    into temp
 	      finally 
@@ -474,7 +413,6 @@ constants-column
 
   
 (defun sp-entry (sp-mat  i j &aux (this-row (aref (sp-rows sp-mat) i)))
- #+symbolics (declare ( sys:array-register this-row))
     (catch 'entry
       (sloop for ii below (length (the cl:array this-row)) by 2
 	    when (eql j (aref this-row ii ))
@@ -566,7 +504,6 @@ constants-column
                   (aarow arow) ;; so can declare it an array-register
 		  j first-empty-slot (active-length (fill-pointer arow)))
   
-  #+symbolics  (declare ( sys:array-register aarow))
   (catch 'entry-is-set
     (setf first-empty-slot
 	  (sloop for ii below (fill-pointer aarow) by 2
@@ -676,7 +613,6 @@ constants-column
   "Returns the slot that the INDEX (column) appears in ROW"
   `(catch 'row-slot
      (let ((.row. ,row))
-      #+symbolics (declare (sys:array-register .row.))
      (sloop for .ii. below (length (the cl:array .row.)) by 2
 	   do (cond ((eql ,index (aref .row. .ii. ))
 		     (throw 'row-slot .ii.)))))))
@@ -710,7 +646,6 @@ constants-column
   (with-characteristic
      (with-once-only
        ((sp-pivot-row sp-mat) (sp-current-row sp-mat))
-      #+symbolics (declare (sys:array-register (sp-pivot-row sp-mat) (sp-current-row sp-mat)))
        (cond
 	 ((equal factor 0) nil)
 	 (t
@@ -831,7 +766,6 @@ constants-column
   (sloop named sue for i below (length (the cl:array rows))
 	do
         (let ((a-row (aref rows i)))
-	 #+symbolics (declare (sys:array-register a-row))
 	  (sloop for ii below (length (the cl:array a-row)) by 2
 		when (aref a-row ii)
 		do
@@ -1717,19 +1651,6 @@ something is wrong" (length (sp-list-of-all-columns-occurring sp-mat)) number-of
 ;(once (piv div ) (setq div 4)(setq piv 3));;watch out if control leaves in middle of body the
 		;values of the variables may not be restored!!
 
-#-cl
-(defun create-sparse-matrix (&rest options)
-
-  (LET* ((PLIST (CONS NIL (COPY-LIST OPTIONS)))
-	 (FLAVOR (GET PLIST ':FLAVOR)))
-    flavor
-    (REMPROP PLIST ':FLAVOR)
-    (INSTANTIATE-FLAVOR 'sparse-matrix PLIST ':MAYBE NIL
-			(GET PLIST ':AREA))))
-
-
-
-
 ;;The t in the instantiate-flavor tells it to send the :init message to
 ;;the newly created flavor.  It uses the values present in the options-present
 ;;list.  The catch-error is for those instance variables which may be unbound.
@@ -1839,8 +1760,8 @@ something is wrong" (length (sp-list-of-all-columns-occurring sp-mat)) number-of
   (sloop for i below (array-total-size (sp-constants-column sp-mat))
 	 do (setf  (aref (sp-constants-column sp-mat) i) 0))
   (setf (sp-list-of-all-columns-occurring sp-mat)
-	(zl-DELETE (sp-constants-column-number sp-mat)
-		(sp-list-of-all-columns-occurring sp-mat)))
+	(delete (sp-constants-column-number sp-mat)
+		(sp-list-of-all-columns-occurring sp-mat) :test #'equal))
   (sloop for i below (sp-number-of-rows sp-mat)
 	do
 	(setf this-row (aref (sp-rows sp-mat) i))
@@ -2229,8 +2150,8 @@ something is wrong" (length (sp-list-of-all-columns-occurring sp-mat)) number-of
   (sloop for v in row-list-matrix
 	for i from old-index-base
 	do (setq v (if ($listp v) (cdr v) v))
-	when (and (or (null ruse) (memq i rows-to-use))
-		  ( or (null  rnuse) (not (memq i rows-not-to-use))))
+	when (and (or (null ruse) (member i rows-to-use))
+		  ( or (null  rnuse) (not (member i rows-not-to-use))))
 	collecting
 	(setq ar (MAKE-ARRAY
 		   (f* 2 (sloop for u in v when (not ($zerop u)) counting u))
@@ -2243,8 +2164,8 @@ something is wrong" (length (sp-list-of-all-columns-occurring sp-mat)) number-of
 	      in v
 	      for j from old-index-base
 	      when
-	      (and (or (null cuse) (memq j columns-to-use))
-		   ( or (null  cnuse) (not (memq j columns-not-to-use))))
+	      (and (or (null cuse) (member j columns-to-use))
+		   ( or (null  cnuse) (not (member j columns-not-to-use))))
 	      do
       	      (cond (renumber-columns (incf jj))
 			 (t (setq jj j)))
@@ -2363,7 +2284,7 @@ something is wrong" (length (sp-list-of-all-columns-occurring sp-mat)) number-of
 	(t
 	 (let (tem type-of-n)
 	   (setf type-of-n (caar n))		
-	   (cond ((memq type-of-n '(mrat rat))
+	   (cond ((member type-of-n '(mrat rat) :test #'eq)
 		  (equal (cdr n) (rzero)))
 		 (t (and (numberp (setq tem ($ratsimp n)))(zerop tem))))))))
 
