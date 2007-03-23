@@ -376,7 +376,7 @@ Converte @var{a} de um c@'odigo de Poisson para uma representa@value{cedilha}@~a
 geral.  Se @var{a} n@~ao for uma forma de Poisson, @code{outofpois} realiza a convers@~ao,
 i.e., o valor de retorno @'e @code{outofpois (intopois (@var{a}))}.
 Essa fun@value{cedilha}@~ao @'e desse modo um simplificador can@'onico
-para adi@value{cedilha}@~oes e pot@^encias de termos de seno e cosseno de um tipo particular.
+para adi@value{cedilha}@~oes e pot@^encias de termos de seno e co-seno de um tipo particular.
 
 @end deffn
 
@@ -418,7 +418,7 @@ pode ser alterado para [-2^(n-1)+1, 2^(n-1)].
 @c UMM, WHAT IS THIS ABOUT EXACTLY ?? EXAMPLES NEEDED
 @deffn {Fun@value{cedilha}@~ao} poismap (@var{series}, @var{sinfn}, @var{cosfn})
 mapear@'a as fun@value{cedilha}@~oes @var{sinfn} sobre os
-termos de seno e @var{cosfn} ssobre os termos de cosseno das s@'eries de Poisson dadas.
+termos de seno e @var{cosfn} ssobre os termos de co-seno das s@'eries de Poisson dadas.
 @var{sinfn} e @var{cosfn} s@~ao fun@value{cedilha}@~oes de dois argumentos que s@~ao um coeficiente
 e uma parte trigonom@'etrica de um termo em s@'eries respectivamente.
 
@@ -451,7 +451,7 @@ ent@~ao @var{a} deve ser uma
 express@~ao linear nessas vari@'aveis (e.g., @code{6*u + 4*v}).
 
 (2) Quando @var{b} for outra que n@~ao essas vari@'aveis, ent@~ao @var{a} deve tamb@'em ser
-livre dessas vari@'aveis, e al@'e disso, livre de senos ou cossenos.
+livre dessas vari@'aveis, e al@'em disso, livre de senos ou co-senos.
 
 @code{poissubst (@var{a}, @var{b}, @var{c}, @var{d}, @var{n})} @'e um tipo especial d substitui@value{cedilha}@~ao que
 opera sobre @var{a} e @var{b} como no tipo (1) acima, mas onde @var{d} @'e uma s@'erie de
