@@ -1820,7 +1820,7 @@ wrapper for this."
 	      (let ((x (car l)))
 		(cond (($ratp x) (merror "Subscripts may not be in CRE form."))
 		      ((or (fixnump x) (floatp x))
-		       (+ (if (fixnump x) x (fix (+$ x 0.0005)))
+		       (+ (if (fixnump x) x (floor (+ x 5d-4)))
 			   (* 7 (hasher (cdr l)))))
 		      ((atom x) (+ (sxhash x) (hasher (cdr l))))
 		      (t (+ 1 (sxhash (caar x)) (hasher (cdr x))
