@@ -14,6 +14,7 @@
 ;;
 
 ;	** (c) Copyright 1979 Massachusetts Institute of Technology **
+
 (in-package :maxima)
 
 
@@ -55,7 +56,7 @@
 	     (setq indlist (unique indlist))
 	     (do ((q (mapcar 'car indlist) (cdr q)))
 		 ((null q))
-		 (cond ((memq (car q) (cdr q))
+		 (cond ((member (car q) (cdr q) :test #'eq)
 			(merror "~
 IC_CONVERT cannot currently handle indexed objects of the same name~
 ~%with different numbers of covariant and//or contravariant indices:~%~M"
@@ -65,9 +66,9 @@ IC_CONVERT cannot currently handle indexed objects of the same name~
 			(flag)
 			(setq test (list (caar lhs) (length (cdadr lhs))
 					 (length (cdaddr lhs))))
-			(cond ((or (zl-member test indlist)
-				   (not (memq (car test)
-					      (mapcar 'car indlist))))
+			(cond ((or (member test indlist :test #'equal)
+				   (not (member (car test)
+						(mapcar 'car indlist) :test #'eq)))
 			       (setq flag t))
 			      (t
 			       (mtell "Assignment is to be made to ~M~
@@ -102,7 +103,7 @@ IC_CONVERT cannot currently handle indexed objects of the same name~
 (defun unique (l)                   ;Returns a list of the unique elements of L
        (do ((a l (cdr a)) (b))
 	   ((null a) b)
-	   (cond ((not (zl-member (car a) b))
+	   (cond ((not (member (car a) b :test #'equal))
 		  (setq b (cons (car a) b))))))
 
 (defun summer1 (e)     ;Applies SUMMER to the products and indexed objects in E
@@ -197,8 +198,8 @@ IC_CONVERT cannot currently handle indexed objects of the same name~
 	     (t e)))
 
 (defun equiv-table (a)                ;Makes appropiate name changes converting
-       (cond ((memq a '($ichr1 %ichr1)) '$lcs)            ;from ITENSOR to ETENSR
-	     ((memq a '($ichr2 %ichr2)) '$mcs)
+       (cond ((member a '($ichr1 %ichr1) :test #'eq) '$lcs)            ;from ITENSOR to ETENSR
+	     ((member a '($ichr2 %ichr2) :test #'eq) '$mcs)
 	     (t a)))
 
 (declare-top (unspecial indlist))
@@ -244,8 +245,8 @@ IC_CONVERT cannot currently handle indexed objects of the same name~
 	      loop
 	      (setq x (car l))
 	      (cond
-	       ((and (memq (car (cdaddr x)) (cdddar l2))
-		     (memq (cadr (cdaddr x))(cdddar l2)))
+	       ((and (member (car (cdaddr x)) (cdddar l2) :test #'eq)
+		     (member (cadr (cdaddr x))(cdddar l2) :test #'eq))
 		(setq 
 		 l3
 		 (cons (nconc
@@ -256,13 +257,13 @@ IC_CONVERT cannot currently handle indexed objects of the same name~
 		   (cadar l2)
 		   (caddar l2)) (setdiff (cdddar l2)(cdaddr x)))
 		  l3))
-		(setq l1 (zl-delete x l1 1.)))
+		(setq l1 (delete x l1 :count 1 :test #'equal)))
 	       ((setq l (cdr l)) (go loop))
 	       (t (setq l3 (cons (car l2) l3))))))
 	     (return (simptimes (cons '(mtimes) (nconc l1 l3))
 				1.
 				nil)))) 
-
+
 (declare-top (special tensr))
 
 (defmfun $average n ((lambda (tensr) (simplifya (average (arg 1)) nil))
@@ -332,7 +333,7 @@ IC_CONVERT cannot currently handle indexed objects of the same name~
 			     (list '($ichr2 simp) (list smlist dummy k)
 				   (list smlist i)))))
 	   (setq dummy ($idummy))
-	   (and (not (memq dummy indexl)) (setq flag t))))
+	   (and (not (member dummy indexl :test #'eq)) (setq flag t))))
 
 (add2lnc '(($conmetderiv) $exp $name) $funcs)
 

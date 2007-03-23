@@ -49,8 +49,8 @@
 					  (exploden ncontr))))
 	     (do ((covl (cdr covl) (cdr covl)) (carl) (arglist) (prop))
 		 ((null covl))
-		 (cond ((not (zl-member (setq prop (caar (setq carl (car covl))))
-				     symtypes))
+		 (cond ((not (member (setq prop (caar (setq carl (car covl))))
+				     symtypes :test #'equal))
 			(merror "Invalid symmetry operator: ~M" carl))
 		       ((and (null (cddr carl)) (eq (cadr carl) '$all))
 			(setq arglist (interval 1 ncov)))
@@ -60,8 +60,8 @@
 			  prop))
 	     (do ((contl (cdr contrl) (cdr contl)) (carl) (arglist) (prop))
 		 ((null contl))
-		 (cond ((not (zl-member (setq prop (caar (setq carl (car contl))))
-				     symtypes))
+		 (cond ((not (member (setq prop (caar (setq carl (car contl))))
+				     symtypes :test #'equal))
 			(merror "Invalid symmetry operator: ~M" carl))
 		       ((and (null (cddr carl)) (eq (cadr carl) '$all))
 			(setq arglist (interval 1 ncontr)))
@@ -71,7 +71,7 @@
 			  prop))
 	     (add2lnc tensor $symmetries)
 	     (return '$done)))
-
+
 ;(defun interval (i j)     ;INTERVAL returns the list of integers from I thru J.
 ;       (do ((n i (1+ n)) (ans))             ;Thus (INTERVAL 3 5) yields (3 4 5)
 ;           ((> n j) (nreverse ans))
@@ -86,14 +86,14 @@
 	   (setq c (car l))
 	   (cond ((not (and (eq (ml-typep c) 'fixnum) (> c 0) (< c n)))
 		  (merror "Bad argument encountered for symmetry operator"))
-		 ((not (zl-member c ans)) (setq ans (cons c ans))))))
+		 ((not (member c ans :test #'equal)) (setq ans (cons c ans))))))
 
 (defun $dispsym (name ncov ncontr)                          ;DISPlay SYMmetries
        (prog (tensor)
              (setq tensor (implode (nconc (exploden name) (ncons 45)
 				          (exploden ncov) (ncons 45)
 					  (exploden ncontr))))
-	     (cond ((not (zl-member tensor (cdr $symmetries)))
+	     (cond ((not (member tensor (cdr $symmetries) :test #'equal))
 		    (return (ncons smlist))))
 	     (return
 	      (do ((q symtypes (cdr q)) (l) (prop))
@@ -110,18 +110,18 @@
 ))))))))))
 
 (defun $remsym (name ncov ncontr)
-  ;;Zl-remove SYMmetries
   (prog (tensor)
     (setq tensor (implode (nconc (exploden name) (ncons 45)
 				 (exploden ncov) (ncons 45)
 				 (exploden ncontr))))
-    (cond ((not (zl-member tensor (cdr $symmetries)))
+    (cond ((not (member tensor (cdr $symmetries) :test #'equal))
 	   (mtell "~&No symmetries have been declared for this tensor.~%"))
-	  (t (zl-delete tensor $symmetries)
-	   (zl-remprop tensor '$sym) (zl-remprop tensor '$anti)
+	  (t (setq $symmetries (delete tensor $symmetries :test #'equal))
+	   (zl-remprop tensor '$sym)
+	   (zl-remprop tensor '$anti)
 	   (zl-remprop tensor '$cyc)))
     (return '$done)))
-
+
 (defun $canform (e)                              ;Convert E into CANonical FORM
        (cond ((atom e) e)
 	     ((eq (caar e) 'mequal)
@@ -135,45 +135,48 @@
 	     (t (mysubst0 (simplifya (cons (ncons (caar e))
 					   (mapcar '$canform (cdr e))) t) e))))
 
-(defun canten (e nfprpobjs)                                   ;CANonical TENsor
-       (prog (cov contr deriv tensor)
-	     ((lambda (dummy) (and nfprpobjs dummy (setq e (rename1 e dummy))))
-	      (nonumber (cdaddr ($indices e)))) ;NFPRPOBJS is Not From Product
-	     (setq cov (copy-tree (cdadr e))          ;of RP (indexed) OBJects
-		   contr (copy-tree (cdaddr e))
-		   deriv (copy-tree (cdddr e))
-		   tensor (implode (nconc (exploden (caar e)) (ncons 45)
-					  (exploden (length cov)) (ncons 45)
-					  (exploden (length contr))))
-		   csign nil)       ;Set when reordering antisymmetric indices.
-                                    ;Indicates whether overall sign of
-                                    ;expression needs changing.
-	     (cond
-		   ((or (or (eq (caar e) '$levi_civita) (eq (caar e) '%levi_civita)) (or (eq (caar e) '$kdelta) (eq (caar e) '%kdelta))) (setq cov (antisort cov) contr (antisort contr)))
-		   ((or $allsym (eq (caar e) '$kdels) (eq (caar e) '%kdels)) (setq cov (itensor-sort cov) contr (itensor-sort contr)))
-		   ((zl-member ($verbify tensor) (cdr $symmetries))
-		    (do ((q symtypes (cdr q)) (type))
-			((null q))
-			(setq type (car q))
-			(do ((props (car (zl-get ($verbify tensor) type)) (cdr props)) (p))
-			    ((null props))
-			    (setq p (car props)
-				  cov (inserts (symsort (extract-elements p cov) type)
-					       cov p)))
-			(do ((props (cdr (zl-get ($verbify tensor) type)) (cdr props)) (p))
-			    ((null props))
-			    (setq p (car props)
-				    contr (inserts (symsort (extract-elements p contr)
-							    type)
-						   contr p))))))
-	     (setq tensor (mysubst0 (append (list (car e)
-						  (consmlist cov)
-						  (consmlist contr))
-(cond ($iframe_flag deriv) (t   (itensor-sort deriv) ))
-) e))
-	     (cond (csign (setq tensor (neg tensor))))
-	     (return tensor)))
-
+(defun canten (e nfprpobjs)		;CANonical TENsor
+  (prog (cov contr deriv tensor)
+     ((lambda (dummy) (and nfprpobjs dummy (setq e (rename1 e dummy))))
+      (nonumber (cdaddr ($indices e)))) ;NFPRPOBJS is Not From Product
+     (setq cov (copy-tree (cdadr e))	;of RP (indexed) OBJects
+	   contr (copy-tree (cdaddr e))
+	   deriv (copy-tree (cdddr e))
+	   tensor (implode (nconc (exploden (caar e)) (ncons 45)
+				  (exploden (length cov)) (ncons 45)
+				  (exploden (length contr))))
+	   csign nil)	   ;Set when reordering antisymmetric indices.
+					;Indicates whether overall sign of
+					;expression needs changing.
+     (cond ((or (or (eq (caar e) '$levi_civita) (eq (caar e) '%levi_civita))
+		(or (eq (caar e) '$kdelta) (eq (caar e) '%kdelta)))
+	    (setq cov (antisort cov) contr (antisort contr)))
+	   ((or $allsym (eq (caar e) '$kdels) (eq (caar e) '%kdels))
+	    (setq cov (itensor-sort cov) contr (itensor-sort contr)))
+	   ((member ($verbify tensor) (cdr $symmetries) :test #'equal)
+	    (do ((q symtypes (cdr q)) (type))
+		((null q))
+	      (setq type (car q))
+	      (do ((props (car (zl-get ($verbify tensor) type)) (cdr props)) (p))
+		  ((null props))
+		(setq p (car props)
+		      cov (inserts (symsort (extract-elements p cov) type)
+				   cov p)))
+	      (do ((props (cdr (zl-get ($verbify tensor) type)) (cdr props)) (p))
+		  ((null props))
+		(setq p (car props)
+		      contr (inserts (symsort (extract-elements p contr)
+					      type)
+				     contr p))))))
+     (setq tensor (mysubst0 (append (list (car e)
+					  (consmlist cov)
+					  (consmlist contr))
+				    (cond ($iframe_flag deriv)
+					  (t (itensor-sort deriv) ))
+				    ) e))
+     (cond (csign (setq tensor (neg tensor))))
+     (return tensor)))
+
 (defun rename1 (e dummy)          ;Renames dummy indices in a consistent manner
        (sublis (cleanup0 dummy) e))
 
