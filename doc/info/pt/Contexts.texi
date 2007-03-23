@@ -14,15 +14,15 @@ fazer dedu@value{cedilha}@~oes e recuperar informa@value{cedilha}@~ao.
 Os factos nesses contextos n@~ao s@~ao listadas atrav@'es de @code{facts ()}.
 
 A vari@'avel @code{activecontexts} @'e a lista
-de contextos que est@~ao ativos pelo caminho da fun@value{cedilha}@~ao @code{activate}.
+de contextos que est@~ao activos pelo caminho da fun@value{cedilha}@~ao @code{activate}.
 
 @end deffn
 
 @defvr {Vari@'avel de sistema} activecontexts
 Valor por omiss@~ao: @code{[]}
 
-@code{activecontexts} @'e a lista de contextos que est@~ao ativos
-pelo caminho da fun@value{cedilha}@~ao @code{activate}, em oposi@value{cedilha}@~ao a sendo ativo porque
+@code{activecontexts} @'e a lista de contextos que est@~ao activos
+pelo caminho da fun@value{cedilha}@~ao @code{activate}, em oposi@value{cedilha}@~ao a sendo activo porque
 eles s@~ao subcontextos do contexto corrente.
 
 @end defvr
@@ -253,7 +253,7 @@ Associando @code{context} para um nome @var{foo} altera o contexto corrente para
 Se o contexto especificado @var{foo} n@~ao existe ainda,
 ele @'e criado automaticamente atrav@'es de uma chamada a @code{newcontext}.
 @c ISN'T THIS NEXT BIT EQUIVALENT TO THE FIRST ??
-O contexto especificado @'e ativado automaticamente.
+O contexto especificado @'e activado automaticamente.
 
 Veja @code{contexts} para uma descri@value{cedilha}@~ao geral do mecanismo de contexto.
 
@@ -265,12 +265,12 @@ Veja @code{contexts} para uma descri@value{cedilha}@~ao geral do mecanismo de co
 Valor por omiss@~ao: @code{[initial, global]}
 
 @code{contexts} @'e uma lista dos contextos que
-existem actualmente, incluindo o contexto ativo actualmente.
+existem actualmente, incluindo o contexto activo actualmente.
 
 O mecanismo de contexto torna poss@'{@dotless{i}}vel para um utilizador associar
 e nomear uma por@value{cedilha}@~ao seleccionada de factos, chamada um contexto.
 Assim que isso for conclu@'{@dotless{i}}do, o utilizador pode ter o Maxima assumindo ou esquecendo grande quantidade
-de factos meramente atrav@'es da ativa@value{cedilha}@~ao ou desativa@value{cedilha}@~ao seu contexto.
+de factos meramente atrav@'es da activa@value{cedilha}@~ao ou desativa@value{cedilha}@~ao seu contexto.
 
 Qualquer @'atomo simb@'olico pode ser um contexto, e os factos contidos naquele
 contexto ir@~ao ser retidos em armazenamento at@'e que sejam destru@'{@dotless{i}}dos um por um
@@ -282,7 +282,7 @@ o contexto @code{global}, que cont@'em informa@value{cedilha}@~oes sobre Maxima 
 fun@value{cedilha}@~ao precisa.  Quando em um contexto dado, todos os factos naquele
 contexto est@~ao "ativos" (significando que eles s@~ao usados em dedu@value{cedilha}@~oes e
 recuperados) como est@~ao tamb@'em todos os factos em qualquer contexto que for um subcontexto
-do contexto ativo.
+do contexto activo.
 
 Quando um novo Maxima for iniciado, o utilizador est@'a em um
 contexto chamado @code{initial}, que tem @code{global} como um subcontexto.
@@ -372,7 +372,7 @@ actual, ou atrav@'es do uso da fun@value{cedilha}@~ao @code{activate}.
 @deffn {Fun@value{cedilha}@~ao} newcontext (@var{nome})
 Cria um novo contexto, por@'em vazio, chamado @var{nome}, que
 tem @code{global} como seu @'unico subcontexto.  O contexto recentemente criado
-torna-se o contexto ativo actualmente.
+torna-se o contexto activo actualmente.
 
 @code{newcontext} avalia seu argumento.
 @code{newcontext} retorna @var{nome}.

@@ -13,7 +13,7 @@ digite @code{load(atensor)}, seguido por uma chamada @`a fun@value{cedilha}@~ao
 
 A ess@^encia de @code{atensor} @'e um conjunto de regras de simplifica@value{cedilha}@~ao para o operador
 de produto (ponto) n@~ao comutativo ("@code{.}").  @code{atensor} reconhece
-muitos tipos de @'algebra; as regras de simplifica@value{cedilha}@~ao correspondentes s@~ao ativadas quando
+muitos tipos de @'algebra; as regras de simplifica@value{cedilha}@~ao correspondentes s@~ao activadas quando
 a fun@value{cedilha}@~ao @code{init_atensor} @'e chamada.
 
 A compatibilidade de @code{atensor} pode ser demonstrada pela

@@ -17,12 +17,12 @@ primitivas tais como @code{go}.
 @deffn {Fun@value{cedilha}@~ao} backtrace ()
 @deffnx {Fun@value{cedilha}@~ao} backtrace (@var{n})
 Imprime a pilha de chamadas, que @'e, a lista de fun@value{cedilha}@~oes que
-foram chamadas pela fun@value{cedilha}@~ao correntemente ativa.
+foram chamadas pela fun@value{cedilha}@~ao correntemente activa.
 
 @code{backtrace()} imprime toda a pilha de chamadas.
 
 @code{backtrace (@var{n})} imprime as @var{n} mais recentes chamadas a
-fun@value{cedilha}@~oes, incluindo a fun@value{cedilha}@~ao correntemente ativa.
+fun@value{cedilha}@~oes, incluindo a fun@value{cedilha}@~ao correntemente activa.
 
 @c IS THIS STATMENT REALLY NEEDED ?? 
 @c (WHY WOULD ANYONE BELIEVE backtrace CANNOT BE CALLED OUTSIDE A DEBUGGING CONTEXT??)
@@ -54,7 +54,7 @@ Exemplos:
 @itemize @bullet
 @item
 @code{backtrace (@var{n})} imprime as @var{n} mais recentes chamadas a
-fun@value{cedilha}@~oes, incluindo a fun@value{cedilha}@~ao correntemente ativa.
+fun@value{cedilha}@~oes, incluindo a fun@value{cedilha}@~ao correntemente activa.
 
 @example
 (%i1) h(x) := (backtrace(1), g(x/7))$

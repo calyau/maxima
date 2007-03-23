@@ -469,7 +469,7 @@ Valor por omiss@~ao: @code{true}
 Quando @code{dotconstrules} @'e @code{true}, um produto n@~ao comutativo de uma
 constante e outro termo @'e simplificado para um produto comutativo.
 @c TERMINOLOGY: (1) SWITCH/FLAG/SOME OTHER TERM ?? (2) ASSIGN/SET/TURN ON/SOME OTHER TERM ??
-Ativando esse sinalizador efectivamente ativamos @code{dot0simp}, @code{dot0nscsimp}, e
+Ativando esse sinalizador efectivamente activamos @code{dot0simp}, @code{dot0nscsimp}, e
 @code{dot1simp} tamb@'em.
 
 @c NEED EXAMPLE HERE

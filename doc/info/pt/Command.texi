@@ -403,7 +403,7 @@ flutuante.
 @code{numer} faz com que algumas fun@,{c}@~oes matem@'aticas (incluindo a exponencia@,{c}@~ao)
 com argumentos sejam valiadas em ponto flutuante.  Isso faz com que
 vari@'avels em @var{expr} que tenham sido dados numervals (valores num@'ericos) sejam substitu@'{@dotless{i}}das por
-seus valores.  Isso tamb@'em modifica o comutador @code{float} para ativado.
+seus valores.  Isso tamb@'em modifica o comutador @code{float} para activado.
 @item
 @code{pred} faz com que predicados (express@~oes que podem ser avaliados em @code{true} ou @code{false})
 sejam avaliadas.
