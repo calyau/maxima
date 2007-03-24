@@ -69,7 +69,7 @@
 (defun multiplies-in-nth-power (nth)
    (cond ((< nth 2) 0)
          (t
-          (let ((slow (bigp nth)))
+          (let ((slow (bignump nth)))
             (do ((exin nth (cond (slow (- exin (* pw2 rem)))
                                  (t (- exin (* pw2 rem)))))
                  (rem 0)
