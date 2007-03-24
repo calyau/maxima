@@ -12,7 +12,6 @@
 
 (macsyma-module combin)
 
-
 (declare-top (special *mfactl *factlist donel nn* dn* *ans* *var*
 		      dict ans var
 		      a* $zerobern *a *n $cflength *a* $prevfib hi lo
@@ -573,8 +572,8 @@
 				   (m- (caddr a) '((rat) 1 2)))))
 		 ((integerp (cadr a)) (cfnroot a)) ; <=== new case x
 		 ((cfexpt (cfeval (cadr a)) (caddr a)))))
-	  ((setq temp (assq (caar a) '((mplus . cfplus) (mtimes . cftimes) (mquotient . cfquot)
-				       (mdifference . cfdiff) (mminus . cfminus))))
+	  ((setq temp (assoc (caar a) '((mplus . cfplus) (mtimes . cftimes) (mquotient . cfquot)
+				       (mdifference . cfdiff) (mminus . cfminus)) :test #'eq))
 	   (cf (cfeval (cadr a)) (cddr a) (cdr temp)))
 	  ((eq (caar a) 'mrat)
 	   (cfeval ($ratdisrep a)))
@@ -971,10 +970,10 @@
   (prog (n d l h fl)
      (cond ((null (setq n (m2 (cadr e) (list 'n 'linear* *var*) nil)))
 	    (return (adusum e))))
-     (setq n (cdr (assq 'n n)))
+     (setq n (cdr (assoc 'n n :test #'eq)))
      (cond ((null (setq d (m2 (caddr e) (list 'd 'linear* *var*) nil)))
 	    (return (adusum e))))
-     (setq d (cdr (assq 'd d)))
+     (setq d (cdr (assoc 'd d :test #'eq)))
      (cond ((equal (cdr n) (cdr d))
 	    (setq d (cons (simplus (list '(mplus) (car n) 
 					 (list '(mtimes) -1 (car d))) 1 nil) 0))))

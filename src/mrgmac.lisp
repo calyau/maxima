@@ -184,7 +184,7 @@
 	   (if (setq m (fsel (cdar l) (cdr sels)))
 	       (return (cons (caar l) (cons (car sels) m))))))
 	((let (dum)
-	   (if (setq dum (assq (car sels) (zl-get m 'sels)))
+	   (if (setq dum (assoc (car sels) (zl-get m 'sels) :test #'eq))
 	       (cons m (cons (car sels) (fsel (cdr dum) (cdr sels)))))))
 	(t (do ((l (zl-get m 'sels) (cdr l)) (dum))
 	       ((null l))

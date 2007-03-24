@@ -622,7 +622,7 @@
 			  (copy-tree keys )) keys)
        ,@(mapcar #'(lambda (data)
 		     `(defprop ,(car data)
-			       ,(do ((i 0 (logior i  (cdr (assq (car lis) keys))))
+			       ,(do ((i 0 (logior i  (cdr (assoc (car lis) keys :test #'eq))))
 				     (lis (cdr data) (cdr lis)))
 				    ((null lis) i))
 			       ,op))
@@ -652,7 +652,7 @@
 			    (mopstrip op)
 			    (mopstrip key)
 			    (mopstrip collision))))
-      (logior (cdr (assq key (get op 'keys))) active-bitmask))))
+      (logior (cdr (assoc key (get op 'keys) :test #'eq)) active-bitmask))))
 
 ;;;; Data abstraction
 

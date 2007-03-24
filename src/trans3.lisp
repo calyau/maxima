@@ -11,12 +11,10 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :maxima)
+
 (macsyma-module trans3)
 
 (transl-module trans3)
-
-(declare-top(*lexpr sum-var-sets)
-	    (genprefix trans3_))
 
 ;;; The translation of macsyma LAMBDA into lexicaly scoped closures.
 ;;; Two cases [1] the downward transmission of variable binding environment,
@@ -36,7 +34,7 @@
 ;;; N.B. This code does a veritable storm of consing, it need not
 ;;; do any if it used the lambda-bound plist scheme of GJC;UTRANS >
 ;;; a compiler is allowed to cons though, isn't it?
-
+
 (deftrfun free-lisp-vars (exp &aux prop)
   (cond ((atom exp)
 	 (cond ((or (null exp)(eq t exp)) nil)
@@ -64,7 +62,7 @@
 
 (defun free-lisp-vars-of-argl (argl)
   (union-var-set (mapcar #'free-lisp-vars argl)))
-
+
 ;;; (REDUCE-VAR-SET '((A . NIL) NIL (B . T) (B . NIL))) => ((A . NIL) (B . T))
 ;;;  mult-set reduction.
 
@@ -76,11 +74,10 @@
       ((null var-set) reduced-var-set)
     (setq var1 (car var-set))
     (cond ((null var1))
-	  ((setq var2 (assq (car var1) reduced-var-set))
+	  ((setq var2 (assoc (car var1) reduced-var-set :test #'eq))
 	   (rplacd var2 (funcall op (cdr var1) (cdr var2))))
 	  (t
 	   (push var1 reduced-var-set)))))
-
 
 (defun reduce-var-set (var-set)
   (reduce-var-set&op var-set #'(lambda (p1 p2)(or p1 p2))))
@@ -91,7 +88,7 @@
   (setq s1 (reduce-var-set s1))
   (do ((s nil))
       ((null s1) s)
-    (cond ((assq (caar s1) s2))	;;; is the first elem of S1 a member of S2?
+    (cond ((assoc (caar s1) s2 :test #'eq))	;;; is the first elem of S1 a member of S2?
 	  (t
 	   (push (car s1) s)))  ;;; yes. shove it in.
     (pop s1)))
@@ -108,7 +105,7 @@
 
 (defun make-var-set (vars)
   (loop for v in vars collect (ncons v)))
-
+
 ;;; (LAMBDA <BVL> . <BODY>)
 
 (defun-prop (lambda free-lisp-vars) (form)
@@ -134,8 +131,6 @@
 ;;; no computed gos please.
 (defun-prop (go free-lisp-vars) (ignor)ignor nil)
 
-
-
 ;;; (DO ((<V> <V> <V>) ...) ((<in-scope>) ..) ...)
 
 (defun-prop (do free-lisp-vars) (form)
@@ -143,17 +138,15 @@
    (sum-var-sets (free-lisp-vars-of-argl (cdddr form))
 		 (free-lisp-vars-of-argl (caddr form))
 		 (union-var-set (mapcar #'(lambda (do-iter)
-					    (free-lisp-vars-of-argl 
+					    (free-lisp-vars-of-argl
 					     (cdr do-iter)))
 					(cadr form))))
    (make-var-set (mapcar #'car (cadr form)))))
-
 
 ;;; (COND (<I> ..) (<J> ..) ...)
 
 (defun-prop (cond free-lisp-vars) (form)
   (union-var-set (mapcar #'free-lisp-vars-of-argl (cdr form))))
-			      
 
 (defun-prop (quote free-lisp-vars) (ignor)ignor nil)
 (defun-prop (function free-lisp-vars) (ignor)ignor nil)
@@ -186,39 +179,44 @@
       ()))
 
 (defun-prop (mfunction-call free-lisp-vars) (form)
-					; it is not strictly known if the name of the function being called
-					; is a variable or not. lets say its not.
+  ;; it is not strictly known if the name of the function being called
+  ;; is a variable or not. lets say its not.
   (free-lisp-vars-of-argl (cddr form)))
 
 ;;; (FUNGEN&ENV-FOR-MEVAL () () EXP)
 (defun-prop (fungen&env-for-meval free-lisp-vars) (form)
   (free-lisp-vars (car (cdddr form))))
+
 ;;; (FUNGEN&ENV-FOR-MEVALSUMARG () () EXP MACSYMA-EXP)
 (defun-prop (fungen&env-for-mevalsumarg free-lisp-vars) (form)
   (free-lisp-vars (car (cddr form))))
+
 ;;; the various augmented lambda forms.
 
 (defun free-lisp-vars-m-tlambda (form)
   (difference-var-sets (free-lisp-vars-of-argl (cddr form))
 		       (free-lisp-vars-of-argl (cadr form))))
-(mapc #'(lambda (u)(putprop u 'free-lisp-vars-m-tlambda 'free-lisp-vars))
+
+(mapc #'(lambda (u) (putprop u 'free-lisp-vars-m-tlambda 'free-lisp-vars))
       '(m-tlambda m-tlambda&))
+
 (defun free-lisp-vars-m-tlambda&env (form)
   (difference-var-sets (free-lisp-vars-of-argl (cddr form))
 		       (free-lisp-vars-of-argl (car (cadr form)))))
+
 (defprop m-tlambda&env free-lisp-vars-m-tlambda&env free-lisp-vars)
 (defprop m-tlambda&env& free-lisp-vars-m-tlambda&env free-lisp-vars)
+
 ;; (m-tlambda-i mode env ...)
 (defun-prop (m-tlambda-i free-lisp-vars-macro) (form)
   `(lambda ,@(cdddr form)))
 
-
-;;; Other entry points: 
+;;; Other entry points:
 
 (defun tbound-free-vars (free-varl)
-					; Takes a FREE-VAR list and returns a list of two lists.
-					; the tbound free vars and the tbound free vars that are
-					; side effected also.
+  ;; Takes a FREE-VAR list and returns a list of two lists.
+  ;; the tbound free vars and the tbound free vars that are
+  ;; side effected also.
   (do ((free nil)
        (free&s nil))
       ((null free-varl) (list free free&s))
@@ -239,7 +237,7 @@
 		  "(at this time)")
 	 nil)))
 
-
+
 ;;; O.K. here is the translate property for LAMBDA.
 ;;; given catch and throw we don't know where a funarg lambda
 ;;; may end up.
@@ -260,7 +258,7 @@
 ;;;       F(L):=BLOCK([SUM:0],FULLMAP(LAMBDA([U],SUM:SUM+U),L),SUM);
 ;;;       every function which guarantees the order of argument evalation
 ;;;       (MPROG and MPROGN), must translate and expression and get information
-;;;       about environment propagation. 
+;;;       about environment propagation.
 ;;;       (PROGN (FULLMAP (PROGN (SET-ENV) '(LAMBDA ...)) L)
 ;;;              (GET-ENV)), uhm. this is pretty tricky anyway.
 ;;;    B. side effects only have to be maintained inside the LAMBDA.
@@ -272,7 +270,7 @@
 ;;; by the mapping functions. We have a single instance of the LAMBDA
 ;;; and its environment.
 
-
+
 ;;; ((LAMBDA) ((MLIST) X Y ((MLIST Z))) . <BODY>)
 ;;; must also handle the &REST arguments. N.B. MAPPLY correctly handles
 ;;; the application of a lisp lambda form.
@@ -291,7 +289,9 @@
 
 (def%tr $lambda_i (form)
   (gen-tr-lambda form))
+
 (def%tr lambda-i (form) (gen-tr-lambda form))
+
 (def%tr lambda (form)
   (gen-tr-lambda form))
 
@@ -307,7 +307,7 @@
 				   (t '*bad*)))
 			 (cdr (cadr form))))
   (cond ((or (memq '*bad* arg-info)
-	     (and (memq t arg-info) 
+	     (and (memq t arg-info)
 		  (cdr (memq t arg-info)))) ;;; the &REST is not the last one.
 	 (tr-tell (cadr form) " bad `lambda' list. -`translate'")
 	 (setq tr-abort t)
@@ -337,13 +337,9 @@
 	       (t
 		`($any . (,(cond ((null arg-info) 'm-tlambda&env)
 				 (t               'm-tlambda&env&))
-			  (,(cadr t-form) ,(car frees))
-			  ,@(cddr t-form))))))
+			   (,(cadr t-form) ,(car frees))
+			   ,@(cddr t-form))))))
 	(t
 	 (warn-meval form)
 	 (side-effect-free-check (cadr frees) form)
 	 `($any . (meval ',form)))))
-
-	       
-
-

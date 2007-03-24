@@ -9,13 +9,10 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :maxima)
+
 (macsyma-module ar)
 
-(declare-top (special evarrp munbound flounbound fixunbound #+cl $use_fast_arrays))
-
-;;; This code needs to be checked carefully for the lispm.
-
-
+(declare-top (special evarrp munbound flounbound fixunbound $use_fast_arrays))
 
 (defstruct (mgenarray (:conc-name mgenarray-) (:type vector))
   aref
@@ -25,14 +22,6 @@
   generator
   content)
 
-;;#-cl
-;;(DEFUN MARRAY-TYPE (X)
-  
-;;  (OR (CDR (ASSQ (ARRAY-TYPE X)
-;;		 '((FLONUM . $FLOAT)
-;;		   (FIXNUM . $FIXNUM))))
-;;      (MGENARRAY-TYPE X)))
-
 (defun marray-type (x)
   (case (ml-typep x)
     (array (array-element-type x))
@@ -41,15 +30,15 @@
 		  (array-element-type x))
     (otherwise
  
-     (or (cdr (assq (array-type x)
+     (or (cdr (assoc (array-type x)
 		    '((flonum . $float)
-		      (fixnum . $fixnum))))
+		      (fixnum . $fixnum)) :test #'eq))
 	 (mgenarray-type x)))))
 
 
 (defmfun $make_array (type &rest diml)
-  (let ((ltype (assq type '(($float . flonum) ($flonum . flonum)
-			    ($fixnum . fixnum)))))
+  (let ((ltype (assoc type '(($float . flonum) ($flonum . flonum)
+			    ($fixnum . fixnum)) :test #'eq)))
     (cond ((not ltype)
 	   (cond ((eq type '$any)
 		  (make-array diml :initial-element nil))
@@ -129,9 +118,6 @@
 	(t
 	 (marray-type-unknown a)))
       (merror "Not an array: ~M" a)))
-
-;;(DEFMFUN $ARRAY_NUMBER_OF_DIMENSIONS (A)
-;;  (ARRAY-/#-DIMS (MARRAY-CHECK A)))
 
 (defmfun $array_dimension_n (n a)
   (array-dimension  (marray-check a) n))

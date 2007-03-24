@@ -19,7 +19,6 @@
 
 (load-macsyma-macros rzmac)
 
-;;
 ;;******************************************************************************
 ;;				driver 	stage
 ;;******************************************************************************
@@ -155,11 +154,11 @@
                      (m1 d linpat)))
 
              ;; fix for powerseries(1/sqrt(1+x),x,) bug--------------
-             (cond ((not (integerp (cdr (assq 'n ans))))
+             (cond ((not (integerp (cdr (assoc 'n ans :test #'eq))))
                   (setf (cdadr ans) (mul -1 (cdadr ans)))))
              ;; end of bug fix---------------------------------------
 
-             (m// (srbinexpnd (cdr ans)) (cdr (assq 'cc (cdr ans)))))
+             (m// (srbinexpnd (cdr ans)) (cdr (assoc 'cc (cdr ans) :test #'eq))))
             (t
              (and *ratexp (throw 'psex nil))
              (if (not (eq (caar d) 'mtimes)) (ratexand1 n d))
@@ -221,10 +220,10 @@
 	(t (exlist (cdr exp)))))
 
 (defun srbinexpnd (ans)
-  (let ((n (cdr (assq 'n ans)))
-	(a (cdr (assq 'a ans)))
-	(m (cdr (assq 'm ans)))
-	(c (cdr (assq 'c ans))))
+  (let ((n (cdr (assoc 'n ans :test #'eq)))
+	(a (cdr (assoc 'a ans :test #'eq)))
+	(m (cdr (assoc 'm ans :test #'eq)))
+	(c (cdr (assoc 'c ans :test #'eq))))
     (cond ((integerp n) (srintegexpd n a m c))
 	  (t (list '(%sum)
 		   (m// (m* (m^ (m* c var) (m* m *index))
@@ -362,8 +361,8 @@
     (setq e (m2 exp '((mtimes) ((coefftt) (fr freevar))
 		      ((coefftt) (e true)))
 		nil)
-	  fr (cdr (assq 'fr e))
-	  e  (cdr (assq 'e e)))
+	  fr (cdr (assoc 'fr e :test #'eq))
+	  e  (cdr (assoc 'e e :test #'eq)))
     (sp3reconst
      (cond ((and (mexptp e) (eq (cadr e) var))
 	    (cond ((equal 0 (mbinding (ind lol)
@@ -417,8 +416,8 @@
     (setq e (m2 exp '((mtimes) ((coefftt) (fr freevar))
 		      ((coefftt) (e true)))
 		nil)
-	  fr (cdr (assq 'fr e))
-	  e  (cdr (assq 'e e)))
+	  fr (cdr (assoc 'fr e :test #'eq))
+	  e  (cdr (assoc 'e e :test #'eq)))
     (cond ((and (mexptp e) (eq (cadr e) var))
 	   (cond ((mgrp -1 (mbinding (ind lol)
 				     (meval (caddr e))))
@@ -436,11 +435,9 @@
 	(t (m+ (sp2sub (setq exp (sp2expand (subst var v exp))) hi)
 	       (m* -1 (sp2sub exp lo))))))
 
-;;
 ;;************************************************************************************
 ;;	phase three		miscellaneous garbage and final simplification
 ;;************************************************************************************
-;;
 
 (defun sp3reconst (e)
   (do ((l indl (cdr l)) (e e (list* '(%sum) e (car l))))

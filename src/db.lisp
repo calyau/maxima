@@ -9,6 +9,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :maxima)
+
 (macsyma-module db)
 
 (load-macsyma-macros mrgmac)
@@ -52,7 +53,7 @@
 (defmvar lab-high-lab (list lab-high-bit))
 
 (declare-top (special +s +sm +sl -s -sm -sl labs lprs labindex lprindex world db*))
-
+
 ;; Macro for indirecting through the contents of a cell.
 
 (defmacro unlab (cell)
@@ -175,7 +176,7 @@
 
 (defun marknd (nd)
   (cond ((+labs nd))
-  	((= lprindex (setq labindex (1+ labindex)))
+	((= lprindex (setq labindex (1+ labindex)))
 	 (break 'marknd t))
 	(t (setq labs (cons (cons nd (lab labindex)) labs))
 	   (beg nd (lab labindex))
@@ -240,7 +241,7 @@
 
 (defun beg (nd lab)
   (setq-copyn lab)
-  (if (queue+p nd lab) 
+  (if (queue+p nd lab)
       (if (null +s)
 	  (setq +s (ncons nd) +sm +s +sl +s)
 	  (setq +s (cons nd +s)))))
@@ -453,7 +454,7 @@
 	   (not (atom (car x)))
 	   (member (caar x) '(rat bigfloat) :test #'eq))))
 
-(defun semant (pat) 
+(defun semant (pat)
   (cond ((symbolp pat) (or (zl-get pat 'var) pat))
 	((db-mnump pat) (dintnum pat))
 	(t (mapcar #'semant pat))))
@@ -796,6 +797,6 @@
 	 (uni (cdr p1) (cdr p2) al))))
 
 (defun dbunivar (p v al)
-  (let ((dum (assq p al)))
+  (let ((dum (assoc p al :test #'eq)))
     (cond ((null dum) (cons (cons p v) al))
 	  (t (uni (cdr dum) v al)))))

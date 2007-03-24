@@ -9,6 +9,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :maxima)
+
 (macsyma-module buildq)
 
 ;; Exported functions are $BUILDQ and MBUILDQ-SUBST
@@ -20,12 +21,10 @@
 ;;******                                                              ******
 ;;**************************************************************************
 
-
-
 ;;DESCRIPTION:
 
 
-;; Syntax: 
+;; Syntax:
 
 ;; BUILDQ([<varlist>],<expression>);
 
@@ -37,14 +36,10 @@
 
 ;; the <value>s in the <varlist> are evaluated left to right (the syntax
 ;; <atom> is equivalent to <atom>:<atom>).  then these values are substituted
-;; into <expression> in parallel.  If any <atom> appears as a single 
+;; into <expression> in parallel.  If any <atom> appears as a single
 ;; argument to the special form SPLICE (i.e. SPLICE(<atom>) ) inside
 ;; <expression>, then the value associated with that <atom> must be a macsyma
 ;; list, and it is spliced into <expression> instead of substituted.
-
-
-
-
 
 ;;SIMPLIFICATION:
 
@@ -58,8 +53,7 @@
 ;; This is modeled after SIMPMDEF, SIMPLAMBDA etc. in JM;SIMP >
 
 (defun simpbuildq (x *ignore* simp-flags)
-  *ignore*			      ; no simplification takes place.
-  simp-flags				; ditto.
+  (declare (ignore *ignore* simp-flags))
   (cons '($buildq simp) (cdr x)))
 
 ;; Note that supression of simplification is very important to the semantics
@@ -108,7 +102,7 @@
 		     ((and (eq (caar form) 'msetq)
 			   (symbolp (cadr form)))
 		      (cons (cadr form) (meval (caddr form))))
-		     (t 
+		     (t
 		      (merror "Illegal form in variable list--`buildq': ~M"
 			      form
 			      ))))
@@ -130,7 +124,7 @@
 	   ((mbuildq-splice-associate expression alist)
 					; if the expression is a legal SPLICE, this clause is taken.
 					; a SPLICE should never occur here.  It corresponds to `,@form
-	      
+
 	    (merror "`splice' used in illegal context: ~M" expression))
 	   ((atom (caar expression))
 	    (setq new-car (mbuildq-associate (caar expression) alist))
@@ -142,7 +136,7 @@
 		       `(,(cons 'mqapply (cdar expression))
 			 ,new-car
 			 ,@(mbuildq-subst alist (cdr expression)))))))
-	   ((setq new-car 
+	   ((setq new-car
 		  (mbuildq-splice-associate (car expression) alist))
 	    (return (append (cdr new-car)
 			    (mbuildq-subst alist (cdr expression)))))
@@ -154,7 +148,6 @@
 		expression)
 	       (t (cons new-car new-cdr)))))))
 
-
 ;; this function returns the appropriate thing to substitute for an atom
 ;; appearing inside a backquote.  If it's not in the varlist, it's the
 ;; atom itself.
@@ -163,13 +156,13 @@
   (let ((form))
     (cond ((not (symbolp atom))
 	   atom)
-	  ((setq form (assq atom alist))
+	  ((setq form (assoc atom alist :test #'eq))
 	   (cdr form))
-	  ((setq form (assq ($verbify atom) alist))
+	  ((setq form (assoc ($verbify atom) alist :test #'eq))
 					;trying to match a nounified substitution variable
 	   (cond ((atom (cdr form))
 		  ($nounify (cdr form)))
-		 ((memq (caar (cdr form)) 
+		 ((memq (caar (cdr form))
 			'(mquote mlist mprog mprogn lambda))
 					;list gotten from the parser.
 		  `((mquote) ,(cdr form)))
@@ -183,14 +176,14 @@
 ;; the basic philosophy is that the SPLICE is ours if it has exactly
 ;; one symbolic argument and that arg appears in the current varlist.
 ;; if it's one of ours, this function returns the list it's bound to.
-;; otherwise it returns nil.  Notice that the list returned is an 
+;; otherwise it returns nil.  Notice that the list returned is an
 ;; MLIST and hence the cdr of the return value is what gets spliced in.
 
 (defun mbuildq-splice-associate (expression alist)
   (and (eq (caar expression) '$splice)
        (cdr expression)
        (null (cddr expression))
-       (let ((match (assq (cadr expression) alist)))
+       (let ((match (assoc (cadr expression) alist :test #'eq)))
 	 (cond ((null match) () )
 	       ((not ($listp (cdr match)))
 		(merror "~M returned ~M~%But `splice' must return a list"

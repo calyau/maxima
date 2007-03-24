@@ -79,14 +79,14 @@
   (setq simplifier
 	(and (not (atom operator))
 	     (eq (car operator) 'quote)
-	     (cdr (assq (caadr operator) '((%atan  . simp-%atan)
+	     (cdr (assoc (caadr operator) '((%atan  . simp-%atan)
 					   (%tan   . simp-%tan)
 					   (%log   . simpln)
 					   (mabs   . simpabs)
 					   (%sin   . simp-%sin)
 					   (%cos   . simp-%cos)
 					   ($atan2 . simpatan2)
-					   )))))
+					   ) :test #'eq))))
   (cond (simplifier `(,simplifier (list ,operator . ,args) 1 t))
 	(t `(simplifya (list ,operator . ,args) t))))
 
@@ -119,4 +119,3 @@
 
 (defmacro defgrad (name arguments . body)
   `(defprop ,name (,arguments . ,body) grad))
-
