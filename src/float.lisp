@@ -111,7 +111,7 @@ One extra decimal digit in actual representation for rounding purposes.")
 ;;	       The actual number represented is (* fraction (^ 2 exponent)).
 
 (defun hipart (x nn)
-  (if (bigp nn)
+  (if (bignump nn)
       (abs x)
       (haipart x nn)))
 
@@ -527,13 +527,13 @@ One extra decimal digit in actual representation for rounding purposes.")
 ;; EXPT tries to LSH when possible.
 
 (defun biglsh (x n)
-  (cond ((and (not (bigp x))
+  (cond ((and (not (bignump x))
 	      (< n #.(- +machine-fixnum-precision+)))
 	 0)
 	;; Either we are shifting a fixnum to the right, or shifting
 	;; a fixnum to the left, but not far enough left for it to become
 	;; a bignum.
-	((and (not (bigp x))
+	((and (not (bignump x))
 	      (or (<= n 0)
 		  (< (+ (integer-length x) n) #.+machine-fixnum-precision+)))
 	 ;; The form which follows is nearly identical to (ASH X N), however

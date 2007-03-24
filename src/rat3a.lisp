@@ -75,7 +75,7 @@
 ;; where P is a fixnum, N is also assumed to be one.
 
 (defmfun crecip (n)
-  (cond ((bigp modulus)	;; Have to use bignum arithmetic if modulus is a bignum
+  (cond ((bignump modulus)	;; Have to use bignum arithmetic if modulus is a bignum
 	 (prog (a1 a2 y1 y2 q (big-n n))
 	    (if (minusp big-n) (setq big-n (+ big-n modulus)))
 	    (setq a1 modulus a2 big-n)
@@ -154,7 +154,7 @@
 
 (defmfun pcoefadd (e c x)
   (cond ((pzerop c) x)
-	((bigp e) (merror "Exponent out of range"))
+	((bignump e) (merror "Exponent out of range"))
 	(t (cons e (cons c x)))))
 
 (defmfun pplus (x y)

@@ -235,7 +235,7 @@
 		(let ((p (cadr a)) (q (caddr a)))
 		  (cond
 		    ((or (> p $maxpsifracnum)
-			 (> q $maxpsifracdenom) (bigp p) (bigp q)) ())
+			 (> q $maxpsifracdenom) (bignump p) (bignump q)) ())
 		    ((and (= p 1)
 			  (cond ((= q 2)
 				 (m+ (m* -2 '((%log) 2)) (m- '$%gamma)))

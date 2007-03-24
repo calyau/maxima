@@ -617,7 +617,7 @@
     (defconstant machine-mantissa-precision (float-digits 1d0)))
 
 (defun fpcofrat1 (nu d)
-  (if (and (bigp nu) (bigp d))
+  (if (and (bignump nu) (bignump d))
       (let ((sign (if (minusp nu) (plusp d) (minusp d)))
 	    (ln (integer-length nu)) (ld (integer-length d)))
 	(if (> ln ld)
