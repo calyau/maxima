@@ -383,15 +383,11 @@
 		(not (fixnump columns)))
 	    (merror "`entermatrix' called with non-integer arguments")))
      (setq row 0)
-     (cond ((not (= rows columns)) (setq sym nil) (go oloop)))
-     ;; 	QUEST(PRINC "
-     ;; Is the matrix  1. Diagonal  2. Symmetric  3. Antisymmetric  4. General
-     ;; Answer 1, 2, 3 or 4 : ")	     (SETQ SYM (RETRIEVE NIL NIL))
-     quest(princ "
-Is the matrix  1. Diagonal  2. Symmetric  3. Antisymmetric  4. General
-")	     (setq sym (retrieve "Answer 1, 2, 3 or 4 : " nil))
-     (cond ((not (zl-member sym '(1 2 3 4))) (go quest)))
-     oloop(cond ((> (incf row) rows)
+     (unless (= rows columns) (setq sym nil) (go oloop))
+     quest (format t "~%Is the matrix  1. Diagonal  2. Symmetric  3. Antisymmetric  4. General~%")
+     (setq sym (retrieve "Answer 1, 2, 3 or 4 : " nil))
+     (unless (member sym '(1 2 3 4)) (go quest))
+     oloop (cond ((> (incf row) rows)
 		 (format t "~%Matrix entered.~%")
 		 (return (cons '($matrix) (mxc matrix)))))
      (cond ((equal sym 1)
@@ -420,7 +416,7 @@ Is the matrix  1. Diagonal  2. Symmetric  3. Antisymmetric  4. General
 		  symvector (mapcar 'cdr symvector))
 	    (go iloop)))	 	
      (setq column 0 vector nil)
-     iloop(cond ((> (incf column) columns)
+     iloop (cond ((> (incf column) columns)
 		 (setq matrix (nconc matrix (ncons vector)))
 		 (go oloop)))
      (let ((prompt (format nil "Row ~a Column ~a: " row column)))

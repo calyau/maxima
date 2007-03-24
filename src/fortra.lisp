@@ -120,7 +120,7 @@
 	((and (eq (caar e) 'mexpt) (alike1 (caddr e) -1//2))
 	 (list '(mquotient simp) 1 (list '(%sqrt simp) (fortscan (cadr e)))))
 	((and (eq (caar e) 'mtimes) (ratnump (cadr e))
-	      (zl-member (cadadr e) '(1 -1)))
+	      (member (cadadr e) '(1 -1) :test #'equal))
 	 (cond ((equal (cadadr e) 1) (fortscan-mtimes e))
 	       (t (list '(mminus simp) (fortscan-mtimes e)))))
 	((eq (caar e) 'rat)

@@ -1,8 +1,8 @@
 ;;********************************************************
-;; file:        init-cl.lisp                              
-;; description: Initialize Maxima                         
-;; date:        Wed Jan 13 1999 - 20:27                   
-;; author:      Liam Healy <Liam.Healy@nrl.navy.mil>      
+;; file:        init-cl.lisp
+;; description: Initialize Maxima
+;; date:        Wed Jan 13 1999 - 20:27
+;; author:      Liam Healy <Liam.Healy@nrl.navy.mil>
 ;;********************************************************
 
 (in-package :maxima)
@@ -15,6 +15,7 @@
 ;;; redundant. It is kept for consistency with the same variables in
 ;;; shell scripts, batch scripts and environment variables.
 ;;; jfa 02/07/04
+
 (defvar *maxima-prefix*)
 (defvar *maxima-imagesdir*)
 (defvar *maxima-sharedir*)
@@ -74,8 +75,6 @@
 	#+openmcl "openmcl"
 	#-(or clisp cmu scl sbcl gcl allegro openmcl) "unknownlisp")
 
-
-
 (defvar $file_search_lisp nil
   "Directories to search for Lisp source code.")
 
@@ -92,7 +91,6 @@
 
 (defvar $chemin nil)
 
-
 (defun maxima-parse-dirstring (str)
   (let ((sep "/"))
     (if (position (character "\\") str)
@@ -104,13 +102,10 @@
 		       (setf dev (first dev)))
 		   (if (and dev (not (eq dev :unspecific))
 			    (not (string= dev "")))
-		       (concatenate 'string
-				    (string-right-trim 
-				     ":" dev) ":")
+		       (concatenate 'string (string-right-trim ":" dev) ":")
 		       ""))
 		 "/"
-		 (combine-path
-		  (rest (pathname-directory str))))))
+		 (combine-path (rest (pathname-directory str))))))
 
 (defun set-pathnames-with-autoconf (maxima-prefix-env)
   (let ((libdir)
@@ -119,7 +114,7 @@
 	(infodir)
 	(package-version (combine-path (list *autoconf-package*
 					     *autoconf-version*)))
-	(binary-subdirectory (concatenate 'string 
+	(binary-subdirectory (concatenate 'string
 					  "binary-" *maxima-lispname*)))
     (if maxima-prefix-env
 	(progn
@@ -153,10 +148,10 @@
 	  (combine-path (list libexecdir package-version)))))
 
 (defun set-pathnames-without-autoconf (maxima-prefix-env)
-  (let ((maxima-prefix (if maxima-prefix-env 
+  (let ((maxima-prefix (if maxima-prefix-env
 			   maxima-prefix-env
 			   (maxima-parse-dirstring *autoconf-prefix*)))
-	(binary-subdirectory (concatenate 'string 
+	(binary-subdirectory (concatenate 'string
 					  "binary-" *maxima-lispname*)))
 
     (setq *maxima-imagesdir*
@@ -180,10 +175,10 @@
 (defun default-userdir ()
   (let ((home-env (maxima-getenv "HOME"))
 	(base-dir "")
-	(maxima-dir (if (string= *autoconf-win32* "true") 
-			"maxima" 
+	(maxima-dir (if (string= *autoconf-win32* "true")
+			"maxima"
 			".maxima")))
-    (setf base-dir 
+    (setf base-dir
 	  (if (and home-env (string/= home-env ""))
 	      ;; use home-env...
 	      (if (string= home-env "c:\\")
@@ -200,7 +195,7 @@
 (defun default-tempdir ()
   (let ((home-env (maxima-getenv "HOME"))
 	(base-dir ""))
-    (setf base-dir 
+    (setf base-dir
 	  (if (and home-env (string/= home-env ""))
 	      (if (string= home-env "c:\\")
 		  "c:\\user\\"
@@ -212,49 +207,44 @@
 
 (defun set-locale ()
   (let (locale language territory codeset)
-    ;; Determine *maxima-lang-subdir* 
+    ;; Determine *maxima-lang-subdir*
     ;;   1. from MAXIMA_LANG_SUBDIR environment variable
-    ;;   2. if 1. isn't set from user locale 
+    ;;   2. if 1. isn't set from user locale
     (unless  (setq *maxima-lang-subdir* (maxima-getenv "MAXIMA_LANG_SUBDIR"))
       (setq locale
-            (or
-              (let ((x (maxima-getenv "LC_ALL"))) (if (and x (not (equal x ""))) x))
-              (let ((x (maxima-getenv "LC_MESSAGES"))) (if (and x (not (equal x ""))) x))
-              (let ((x (maxima-getenv "LANG"))) (if (and x (not (equal x ""))) x))))
-	(cond
-	    ((or (null locale) (equal locale ""))
-		(setq *maxima-lang-subdir* nil))
-	    ((zl-member locale '("C" "POSIX" "c" "posix")) 		 
-		(setq *maxima-lang-subdir* nil))
-	    (t  (when (eql (position #\. locale) 5)
+	    (or
+	      (let ((x (maxima-getenv "LC_ALL"))) (if (and x (not (equal x ""))) x))
+	      (let ((x (maxima-getenv "LC_MESSAGES"))) (if (and x (not (equal x ""))) x))
+	      (let ((x (maxima-getenv "LANG"))) (if (and x (not (equal x ""))) x))))
+	(cond ((or (null locale) (equal locale ""))
+	       (setq *maxima-lang-subdir* nil))
+	      ((member locale '("C" "POSIX" "c" "posix") :test #'equal)
+	       (setq *maxima-lang-subdir* nil))
+	      (t  (when (eql (position #\. locale) 5)
 		    (setq codeset (string-downcase (subseq locale 6))))
-		(when (eql (position #\_ locale) 2)
+		  (when (eql (position #\_ locale) 2)
 		    (setq territory (string-downcase (subseq locale 3 5))))
-		(setq language (string-downcase (subseq locale 0 2)))
-		;; Set *maxima-lang-subdir* only for known languages.
-		;; Extend procedure below as soon as new translation
-		;; is available. 
-		(cond
-		    ;; English
-		    ((equal language "en")
-			(setq *maxima-lang-subdir* nil))
-		    ;; Latin-1 aka iso-8859-1 languages 
-		    ((zl-member language '("es" "pt" "fr" "de" "it"))
-		      (if (and (string= language "pt") (string= territory "br"))
-		    	    (setq *maxima-lang-subdir* (concatenate 'string language "_BR"))
-		    	    (setq *maxima-lang-subdir* language))    
-		      (if (zl-member codeset '("utf-8" "utf8"))
-		    	    (setq *maxima-lang-subdir* (concatenate 'string *maxima-lang-subdir* ".utf8"))))
-		    ;; Russian. Default codepage cp1251 
-		    ((string= language "ru")
-		      (setq *maxima-lang-subdir* language)    
-		      (cond 
-		          ((zl-member codeset '("utf-8" "utf8"))
-		    	      (setq *maxima-lang-subdir* (concatenate 'string *maxima-lang-subdir* ".utf8")))
-			  ((zl-member codeset '("koi8-r" "koi8r"))
-		    	      (setq *maxima-lang-subdir* (concatenate 'string *maxima-lang-subdir* ".koi8r")))))
-		    (t  (setq *maxima-lang-subdir* nil)))
-	    )))))    
+		  (setq language (string-downcase (subseq locale 0 2)))
+		  ;; Set *maxima-lang-subdir* only for known languages.
+		  ;; Extend procedure below as soon as new translation
+		  ;; is available.
+		  (cond ((equal language "en") ;; English
+			 (setq *maxima-lang-subdir* nil))
+			;; Latin-1 aka iso-8859-1 languages
+			((member language '("es" "pt" "fr" "de" "it") :test #'equal)
+			 (if (and (string= language "pt") (string= territory "br"))
+			     (setq *maxima-lang-subdir* (concatenate 'string language "_BR"))
+			     (setq *maxima-lang-subdir* language))
+			 (if (member codeset '("utf-8" "utf8") :test #'equal)
+			     (setq *maxima-lang-subdir* (concatenate 'string *maxima-lang-subdir* ".utf8"))))
+			;; Russian. Default codepage cp1251
+			((string= language "ru")
+			 (setq *maxima-lang-subdir* language)
+			 (cond ((member codeset '("utf-8" "utf8") :test #'equal)
+				(setq *maxima-lang-subdir* (concatenate 'string *maxima-lang-subdir* ".utf8")))
+			       ((member codeset '("koi8-r" "koi8r") :test #'equal)
+				(setq *maxima-lang-subdir* (concatenate 'string *maxima-lang-subdir* ".koi8r")))))
+			(t  (setq *maxima-lang-subdir* nil))))))))
 
 (defun set-pathnames ()
   (let ((maxima-prefix-env (maxima-getenv "MAXIMA_PREFIX"))
@@ -287,7 +277,7 @@
     (setf (gethash '$maxima_userdir *variable-initial-values*) *maxima-userdir*)
     (setq $maxima_tempdir *maxima-tempdir*)
     (setf (gethash '$maxima_tempdir *variable-initial-values*) *maxima-tempdir*))
-  
+
   (let* ((ext #+gcl "o"
 	      #+(or cmu scl) (c::backend-fasl-file-type c::*target-backend*)
 	      #+sbcl "fasl"
@@ -297,7 +287,7 @@
 	      #+(and openmcl linuxppc-target) "pfsl"
 	      #-(or gcl cmu scl sbcl clisp allegro openmcl)
 	      "")
-	 (lisp-patterns (concatenate 
+	 (lisp-patterns (concatenate
 			 'string "###.{"
 			 (concatenate 'string ext ",lisp,lsp}")))
 	 (maxima-patterns "###.{mac,mc}")
@@ -305,61 +295,61 @@
 	 (usage-patterns "##.{usg,texi}")
 	 (share-subdirs-list
        '("affine"
-         "algebra"
-         "algebra/charsets"
-         "algebra/solver"
-         "calculus"
-         "combinatorics"
-         "contrib"
-         "contrib/boolsimp"
-         "contrib/descriptive"
-         "contrib/diffequations"
-         "contrib/diffequations/tests"
-         "contrib/distrib"
-         "contrib/dynamics"
-         "contrib/ezunits"
-         "contrib/format"
-         "contrib/fractals"
-         "contrib/gentran"
-         "contrib/gentran/test"
-         "contrib/Grobner"
-         "contrib/lurkmathml"
-         "contrib/maximaMathML"
-         "contrib/mcclim"
-         "contrib/numericalio"
-         "contrib/pdiff"
-         "contrib/prim"
-         "contrib/rand"
-         "contrib/sarag"
-         "contrib/simplex"
-         "contrib/simplex/Tests"
-         "contrib/solve_rec"
-         "contrib/state"
-         "contrib/stats"
-         "contrib/stringproc"
-         "contrib/unit"
-         "contrib/Zeilberger"
-         "diff_form"
-         "diffequations"
-         "draw"
+	 "algebra"
+	 "algebra/charsets"
+	 "algebra/solver"
+	 "calculus"
+	 "combinatorics"
+	 "contrib"
+	 "contrib/boolsimp"
+	 "contrib/descriptive"
+	 "contrib/diffequations"
+	 "contrib/diffequations/tests"
+	 "contrib/distrib"
+	 "contrib/dynamics"
+	 "contrib/ezunits"
+	 "contrib/format"
+	 "contrib/fractals"
+	 "contrib/gentran"
+	 "contrib/gentran/test"
+	 "contrib/Grobner"
+	 "contrib/lurkmathml"
+	 "contrib/maximaMathML"
+	 "contrib/mcclim"
+	 "contrib/numericalio"
+	 "contrib/pdiff"
+	 "contrib/prim"
+	 "contrib/rand"
+	 "contrib/sarag"
+	 "contrib/simplex"
+	 "contrib/simplex/Tests"
+	 "contrib/solve_rec"
+	 "contrib/state"
+	 "contrib/stats"
+	 "contrib/stringproc"
+	 "contrib/unit"
+	 "contrib/Zeilberger"
+	 "diff_form"
+	 "diffequations"
+	 "draw"
 	 "lapack"
-         "lbfgs"
-         "linearalgebra"
-         "integequations"
-         "integration"
-         "macro"
-         "matrix"
-         "misc"
-         "numeric"
-         "orthopoly"
-         "physics"
-         "simplification"
-         "sym"
-         "tensor"
-         "tensor/tests"
-         "trigonometry"
-         "utils"
-         "vector"))
+	 "lbfgs"
+	 "linearalgebra"
+	 "integequations"
+	 "integration"
+	 "macro"
+	 "matrix"
+	 "misc"
+	 "numeric"
+	 "orthopoly"
+	 "physics"
+	 "simplification"
+	 "sym"
+	 "tensor"
+	 "tensor/tests"
+	 "trigonometry"
+	 "utils"
+	 "vector"))
      ; Smash the list of share subdirs into a string of the form "{affine,algebra,...,vector}" .
 	 (share-subdirs (format nil "{~{~A~^,~}}" share-subdirs-list)))
 
@@ -370,23 +360,23 @@
 		;; lisp code. jfa 04/11/02
 		(combine-path (list *maxima-userdir* lisp-patterns))
 		(combine-path (list *maxima-sharedir* lisp-patterns))
-		(combine-path (list *maxima-sharedir* share-subdirs 
+		(combine-path (list *maxima-sharedir* share-subdirs
 				    lisp-patterns))
 		(combine-path (list *maxima-srcdir* lisp-patterns))))
     (setq $file_search_maxima
 	  (list '(mlist)
 		(combine-path (list *maxima-userdir* maxima-patterns))
 		(combine-path (list *maxima-sharedir* maxima-patterns))
-		(combine-path (list *maxima-sharedir* share-subdirs 
+		(combine-path (list *maxima-sharedir* share-subdirs
 				    maxima-patterns))))
     (setq $file_search_demo
 	  (list '(mlist)
 		(combine-path (list *maxima-sharedir* demo-patterns))
-		(combine-path (list *maxima-sharedir* share-subdirs 
+		(combine-path (list *maxima-sharedir* share-subdirs
 				    demo-patterns))
 		(combine-path (list *maxima-demodir* demo-patterns))))
     (setq $file_search_usage
-	  (list '(mlist) 
+	  (list '(mlist)
 		(combine-path (list *maxima-sharedir* usage-patterns))
 		(combine-path (list *maxima-sharedir* share-subdirs
 				    usage-patterns))
@@ -397,19 +387,19 @@
 	  (list '(mlist)
 		(combine-path (list *maxima-symdir* lisp-patterns))
 		(combine-path (list *maxima-symdir* maxima-patterns))))
-    ;; If *maxima-lang-subdir* is not nil test whether corresponding info directory 
+    ;; If *maxima-lang-subdir* is not nil test whether corresponding info directory
     ;; with some data really exists.  If not this probably means that required
     ;; language pack wasn't installed and we reset *maxima-lang-subdir* to nil.
-    (when (and *maxima-lang-subdir* 
-               (not (probe-file (concatenate 'string *maxima-infodir* 
-		                                     "/" *maxima-lang-subdir* 
-       						     "/maxima-index.lisp"))))	    
+    (when (and *maxima-lang-subdir*
+	       (not (probe-file (concatenate 'string *maxima-infodir*
+						     "/" *maxima-lang-subdir*
+						     "/maxima-index.lisp"))))
        (setq *maxima-lang-subdir* nil))
     ;; Autoload for Maxima documantation index file
-    (let 
+    (let
       ((subdir-bit (if (null *maxima-lang-subdir*) "" (concatenate 'string "/" *maxima-lang-subdir*))))
       (autof 'cl-info::cause-maxima-index-to-load
-             (concatenate 'string *maxima-infodir* subdir-bit "/maxima-index.lisp")))))
+	     (concatenate 'string *maxima-infodir* subdir-bit "/maxima-index.lisp")))))
 
 (defun get-dirs (path)
   #+(or :clisp :sbcl)
@@ -423,7 +413,8 @@
     (if (equal (subseq pathstring (- len 1) len) "/")
 	(progn (setf len (- len 1))
 	       (setf pathstring (subseq pathstring 0 len))))
-    (subseq pathstring (+ (or (position #\/ pathstring :from-end t) (position #\\ pathstring :from-end t)) 1) len)))
+    (subseq pathstring (1+ (or (position #\/ pathstring :from-end t)
+			      (position #\\ pathstring :from-end t))) len)))
 
 (defun unix-like-dirname (path)
   (let* ((pathstring (namestring path))
@@ -431,22 +422,22 @@
     (if (equal (subseq pathstring (- len 1) len) "/")
 	(progn (setf len (- len 1))
 	       (setf pathstring (subseq pathstring 0 len))))
-    (subseq pathstring 0 (or (position #\/ pathstring :from-end t) (position #\\ pathstring :from-end t)))))
+    (subseq pathstring 0 (or (position #\/ pathstring :from-end t)
+			     (position #\\ pathstring :from-end t)))))
 
 (defun list-avail-action ()
   (let* ((maxima-verpkglibdir (if (maxima-getenv "MAXIMA-VERPKGLIBDIR")
 				  (maxima-getenv "MAXIMA-VERPKGLIBDIR")
 				  (if (maxima-getenv "MAXIMA_PREFIX")
-				      (concatenate 
+				      (concatenate
 				       'string (maxima-getenv "MAXIMA_PREFIX")
 				       "/lib/" *autoconf-package* "/"
 				       *autoconf-version*)
-				      (concatenate 
-				       'string (maxima-parse-dirstring 
-						*autoconf-libdir*) 
-				       "/"
-				       *autoconf-package* "/"
-				       *autoconf-version*))))
+				      (concatenate 'string
+						   (maxima-parse-dirstring *autoconf-libdir*)
+						   "/"
+						   *autoconf-package* "/"
+						   *autoconf-version*))))
 	 (len (length maxima-verpkglibdir))
 	 (base-dir nil)
 	 (versions nil)
@@ -455,7 +446,7 @@
 	 (lisp-string nil))
     (format t "Available versions:~%")
     (if (not (equal (subseq maxima-verpkglibdir (- len 1) len) "/"))
-	(setf maxima-verpkglibdir (concatenate 
+	(setf maxima-verpkglibdir (concatenate
 				   'string maxima-verpkglibdir "/")))
     (setf base-dir (unix-like-dirname maxima-verpkglibdir))
     (setf versions (get-dirs base-dir))
@@ -465,7 +456,7 @@
       (dolist (lisp lisps)
 	(setf lisp-string (unix-like-basename lisp))
 	(when (search "binary-" lisp-string)
-	  (setf lisp-string (subseq lisp-string (length "binary-") 
+	  (setf lisp-string (subseq lisp-string (length "binary-")
 				    (length lisp-string)))
 	  (format t "version ~a, lisp ~a~%" version-string lisp-string))))
     (bye)))
@@ -476,13 +467,13 @@
   ;;    (terpri)
   (let ((maxima-options nil))
     (setf maxima-options
-	  (list 
+	  (list
 	   (make-cl-option :names '("-b" "--batch")
 			   :argument "<file>"
 			   :action #'(lambda (file)
 				       (setf input-stream
 					     (make-string-input-stream
-					      (format nil "batch(\"~a\");" 
+					      (format nil "batch(\"~a\");"
 						      file)))
 				       (setf batch-flag :batch))
 			   :help-string
@@ -495,15 +486,15 @@
 					      #-sbcl (format nil ":lisp (load \"~a\");" file)
 					      #+sbcl (format nil ":lisp (with-compilation-unit nil (load \"~a\"));" file)))
 				       (setf batch-flag :batch))
-			   :help-string 
+			   :help-string
 			   "Process lisp file <file> in batch mode.")
 	   (make-cl-option :names '("--batch-string")
 			   :argument "<string>"
 			   :action #'(lambda (string)
-				       (setf input-stream 
+				       (setf input-stream
 					     (make-string-input-stream string))
 				       (setf batch-flag :batch))
-			   :help-string 
+			   :help-string
 			   "Process maxima command(s) <string> in batch mode.")
 	   (make-cl-option :names '("-d" "--directories")
 			   :action 'print-directories
@@ -521,7 +512,7 @@
 			   :help-string
 			   "Enable underlying lisp debugger.")
 	   (make-cl-option :names '("-h" "--help")
-			   :action #'(lambda () 
+			   :action #'(lambda ()
 				       (format t "usage: maxima [options]~%")
 				       (list-cl-options maxima-options)
 				       (bye))
@@ -532,7 +523,7 @@
 			   :help-string "Use lisp implementation <lisp>.")
 	   (make-cl-option :names '("--list-avail")
 			   :action 'list-avail-action
-			   :help-string 
+			   :help-string
 			   "List the installed version/lisp combinations.")
 	   (make-cl-option :names '("-p" "--preload-lisp")
 			   :argument "<lisp-file>"
@@ -540,20 +531,20 @@
 				       #-sbcl (load file) #+sbcl (with-compilation-unit nil (load file)))
 			   :help-string "Preload <lisp-file>.")
        (make-cl-option :names '("-q" "--quiet")
-               :action #'(lambda () (declare (special *maxima-quiet*)) (setq *maxima-quiet* t))
-               :help-string "Suppress Maxima start-up message.")
+	       :action #'(lambda () (declare (special *maxima-quiet*)) (setq *maxima-quiet* t))
+	       :help-string "Suppress Maxima start-up message.")
 	   (make-cl-option :names '("-r" "--run-string")
 			   :argument "<string>"
 			   :action #'(lambda (string)
 				       (setf input-stream
 					     (make-string-input-stream string))
 				       (setf batch-flag nil))
-			   :help-string 
+			   :help-string
 			   "Process maxima command(s) <string> in interactive mode.")
 	   (make-cl-option :names '("-s" "--server")
 			   :argument "<port>"
 			   :action #'(lambda (port-string)
-				       (start-server (parse-integer 
+				       (start-server (parse-integer
 						      port-string)))
 			   :help-string "Start maxima server on <port>.")
 	   (make-cl-option :names '("-u" "--use-version")
@@ -562,19 +553,19 @@
 			   :help-string "Use maxima version <version>.")
 	   (make-cl-option :names '("-v" "--verbose")
 			   :action nil
-			   :help-string 
+			   :help-string
 			   "Display lisp invocation in maxima wrapper script.")
 	   (make-cl-option :names '("--version")
 			   :action #'(lambda ()
-				       (format t "Maxima ~a~%" 
+				       (format t "Maxima ~a~%"
 					       *autoconf-version*)
 				       ($quit))
-			   :help-string 
+			   :help-string
 			   "Display the default installed version.")
        (make-cl-option :names '("--very-quiet")
-               :action #'(lambda () (declare (special *maxima-quiet* *display-labels-p*))
-                           (setq *maxima-quiet* t *display-labels-p* nil))
-               :help-string "Suppress expression labels and Maxima start-up message.")))
+	       :action #'(lambda () (declare (special *maxima-quiet* *display-labels-p*))
+			   (setq *maxima-quiet* t *display-labels-p* nil))
+	       :help-string "Suppress expression labels and Maxima start-up message.")))
     (process-args (get-application-args) maxima-options))
   (values input-stream batch-flag))
 
@@ -589,15 +580,15 @@
     (progn
       (set-readtable-for-macsyma)
       (setf *read-default-float-format* 'lisp::double-float))
-    
+
     (catch 'to-lisp
       (initialize-real-and-run-time)
       (set-locale)
       (set-pathnames)
-      (setf (values input-stream batch-flag) 
+      (setf (values input-stream batch-flag)
 	    (process-maxima-args input-stream batch-flag))
       (progn
-	(loop 
+	(loop
 	 (with-simple-restart (macsyma-quit "Maxima top-level")
 	     (macsyma-top-level input-stream batch-flag)))))))
 
@@ -610,8 +601,7 @@
       (unwind-protect
 	   (maxima-read-eval-print-loop)
 	(setf *debugger-hook* old-debugger-hook)
-	(format t "Returning to Maxima~%"))))
-  )
+	(format t "Returning to Maxima~%")))))
 
 (defun to-maxima ()
   (throw 'to-maxima t))
@@ -620,7 +610,7 @@
   (setf *debugger-hook* #'maxima-lisp-debugger-repl)
   (loop
    (catch 'to-maxima-repl
-     (format t "~a~%~a> ~a" *prompt-prefix* 
+     (format t "~a~%~a> ~a" *prompt-prefix*
 	     (package-name *package*) *prompt-suffix*)
      (finish-output)
      (let ((form (read)))
@@ -634,10 +624,9 @@
 
 (defvar $help "type `describe(topic);' or `example(topic);' or `? topic'")
 
-(defun $help (&rest args)
-  (declare (ignore args))
+(defun $help (&rest dummy)
+  (declare (ignore dummy))
   $help)
-
 
 ;;; Now that all of maxima has been loaded, define the various lists
 ;;; and hashtables of builtin symbols and values.

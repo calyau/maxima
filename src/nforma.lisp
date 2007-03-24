@@ -110,8 +110,7 @@
     (rdis1 form)
     (if (and trunc (or (atom form)
 		       ;; A constant, e.g. ((mplus) $a 1)
-		       (not (zl-member (car form)
-				       '((mplus exact) (mplus trunc))))))
+		       (not (member (car form) '((mplus exact) (mplus trunc)) :test #'equal))))
 	(cons (if exact '(mplus exact) '(mplus trunc)) (ncons form))
 	(nformat form))))
 
