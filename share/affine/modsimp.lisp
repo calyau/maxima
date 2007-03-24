@@ -13,7 +13,6 @@
 	  (n+ (car l) (apply 'nn+ (cdr l))))
 	 (t (n+ (car l)  (second l)))))
 
-
 ;;a and b should be polynomials or rational-functions with the following
 ;;restrictions:  Any noncommutative variables or monomials occur with
 ;;higher pointergp than any scalars.  This will be the case with
@@ -171,7 +170,7 @@ multiplication A^m <--- A^n:B    Bv<----|v"
   (setq pars (cdr ($list_variables expr "par")))
   (setq olds ($list_variables expr prefix))
   (sloop for i from 0 while pars
-	when (not (zl-member (setq tem ($concat prefix i)) olds))
+	when (not (member (setq tem ($concat prefix i)) olds :test #'equal))
 	  collecting (cons (car pars) tem) into repl
 	and
 	do (setq pars (cdr pars))
@@ -696,7 +695,7 @@ multiplication A^m <--- A^n:B    Bv<----|v"
 			 ;;should really use
 			 ;;(setq tem (list mon monmod i)) ;but only maximal overlaps need to be checked and since we go up in degree
 			 (setq tem1 (cons mon monmod)) 
-			 (cond ((not (zl-member tem1 *module-overlaps-checked*))
+			 (cond ((not (member tem1 *module-overlaps-checked* :test #'equal))
 				(push tem1 *module-overlaps-checked*)
 				(iassert (nc-equal (ncmul* (first tem) (second tem)) mon))
 				(iassert (nc-equal (ncmul* (second tem) (third tem)) monmod))
@@ -759,7 +758,8 @@ multiplication A^m <--- A^n:B    Bv<----|v"
 
 (defremember  cyclic-module-basis (variables deg  dot-replacements module-replacements &aux tem
 					     (default-cons-area working-storage-area))
-  (cond ((eql deg 0)(cond ((not (or (zl-member 1 dot-replacements) (zl-member 1 module-replacements)))
+  (cond ((eql deg 0)(cond ((not (or (member 1 dot-replacements :test #'equal)
+				    (member 1 module-replacements :test #'equal)))
 			   '((mlist) 1))
 			  (t '((mlist)))))
 	(t
