@@ -29,8 +29,7 @@
     (cl:array  (princ "confusion over `array' and `cl:array'")
 		  (array-element-type x))
     (otherwise
- 
-     (or (cdr (assoc (array-type x)
+     (or (cdr (assoc (array-element-type x)
 		    '((flonum . $float)
 		      (fixnum . $fixnum)) :test #'eq))
 	 (mgenarray-type x)))))
@@ -112,7 +111,7 @@
 	(($fixnum $float) a)
 	(($any) (mgenarray-content a))
 	(($hashed $functional)
-	
+
 	 ;; BUG: It does have a number of dimensions! Gosh. -GJC
 	 (merror "Hashed array has no dimension info: ~M" a))
 	(t
@@ -125,7 +124,7 @@
 (defun marray-type-unknown (x)
   (merror "Bug: Array of unhandled type: ~S" x))
 
-(defun marrayref-gensub (aarray ind1 inds)  
+(defun marrayref-gensub (aarray ind1 inds)
   (case (marray-type aarray)
     ;; We are using a CASE on the TYPE instead of a FUNCALL, (or SUBRCALL)
     ;; because we are losers. All this stuff uses too many functions from
@@ -160,11 +159,11 @@
 	   value)))
     (t
      (marray-type-unknown aarray))))
-	  
+
 (defmfun $make_art_q (&rest l)
   (make-array l))
 
-(defun marrayset-gensub (val aarray ind1 inds) 
+(defun marrayset-gensub (val aarray ind1 inds)
   (case (marray-type aarray)
     ((t) (setf (apply #'aref aarray ind1 inds) val))
     (($hashed)
@@ -186,5 +185,3 @@
 
 (defmfun arrstore-extend (a l r)
   (marrayset-gensub r a (car l) (cdr l)))
-
-

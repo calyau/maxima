@@ -41,9 +41,9 @@
   (declare (special fixunbound flounbound))
   (case (ml-typep aarray)
     ((array)
-     (case (array-type aarray)
+     (case (array-element-type aarray)
        ((flonum fixnum t)
-	(apply 'aref aarray ind1 inds))
+	(apply #'aref aarray ind1 inds))
        (t
 	(merror "Bug: Non-handled array created. ~M" aarray))))
     ((hash-table)
@@ -69,7 +69,7 @@
 					    (funcall ap ind1)
 					    (apply ap ind1 inds))))
 			       ;; Check for KLUDGING array function implementation.
-			       (if (case (array-type ap)
+			       (if (case (array-element-type ap)
 				     ((flonum) (= val flounbound))
 				     ((fixnum) (= val fixunbound))
 				     ((t) (eq val munbound))
@@ -104,7 +104,7 @@
 (defmfun marrayset (val aarray &rest all-inds &aux ap (ind1 (first all-inds)) (inds (cdr all-inds)))
   (case (ml-typep aarray)
     ((array)
-     (case (array-type aarray)
+     (case (array-element-type aarray)
        ((fixnum flonum t)
 	(setf (apply #'aref aarray ind1 inds) val))
        (t
@@ -339,7 +339,7 @@
 (defun marrayref1$ (aarray index)
   (case (ml-typep aarray)
     ((aarray)
-     (case (array-type aarray)
+     (case (array-element-type aarray)
        ((flonum) (aref aarray index))
        (t (merror "Bad type of array to call for `float' value: ~M" aarray))))
     (t
@@ -348,7 +348,7 @@
 (defun marrayset1$ (value aarray index)
   (case (ml-typep aarray)
     ((aarray)
-     (case (array-type aarray)
+     (case (array-element-type aarray)
        ((flonum) (setf (aref aarray index) value))
        (t (merror "Bad type of array to set `float' into: ~M" aarray))))
     (t
