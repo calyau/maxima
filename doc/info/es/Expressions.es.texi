@@ -1,4 +1,4 @@
-@c english version 1.51
+@c english version 1.52
 @menu
 * Introducci@'on a las Expresiones::  
 * Asignaci@'on::
@@ -1586,7 +1586,11 @@ Devuelve el operador principal de la expresi@'on @var{expr}. La llamada
 @code{op (@var{expr})} equivale a @code{part (@var{expr}, 0)}. 
 
 La funci@'on @code{op} devuelve una cadena si el operador principal es un operador prefijo, infijo (binario o @code{n}-ario), postfijo, "bi-fijo" o "no-fijo" ("bi-fijo"  se refiere a un par de s@'{@dotless{i}}mbolos que encierran su o sus argumentos, y "no-fijo" es un operador que no necesita argumentos).
-En cualquier otro caso @code{op} devuelve un s@'{@dotless{i}}mbolo.
+Si @var{expr} es la expresi@'on de una funci@'on
+subindicada, @code{op} devuelve la funci@'on subindicada;
+en cuyo caso el valor devuelto no es un @'atomo.
+En otro caso, @var{expr} es la expresi@'on de una funci@'on array u
+ordinaria, y entonces @code{op} devuelve un s@'{@dotless{i}}mbolo.
 
 La funci@'on @code{op} observa el valor de la variable global @code{inflag}.
 
@@ -1608,6 +1612,8 @@ Ejemplos:
 @c op ('foo (a));
 @c prefix (foo);
 @c op (foo a);
+@c op (F [x, y] (a, b, c));
+@c op (G [u, v, w]);
 @c ===end===
 
 @example
@@ -1632,6 +1638,11 @@ Ejemplos:
 (%o10)                        "foo"
 (%i11) op (foo a);
 (%o11)                        "foo"
+(%i12) op (F [x, y] (a, b, c));
+(%o12)                        F
+                               x, y
+(%i13) op (G [u, v, w]);
+(%o13)                          G
 @end example
 
 @end deffn

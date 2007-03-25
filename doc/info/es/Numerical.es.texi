@@ -1,4 +1,4 @@
-@c version 1.23
+@c version 1.24
 @menu
 * Introducci@'on a los m@'etodos num@'ericos::   
 * Series de Fourier::                     
@@ -431,21 +431,21 @@ Calcula y devuelve la serie de Fourier a partir de la lista de los coeficientes 
 @c NEEDS EXAMPLES
 @end deffn
 
-@c NEEDS EXPANSION. WHAT IS THE ARGUMENT p ??
+@c NEEDS EXPANSION.
 @deffn {Funci@'on} fourcos (@var{f}, @var{x}, @var{p})
-Devuelve los coeficientes de los cosenos de Fourier de @code{@var{f}(@var{x})} definida en @code{[0, %pi]}.
+Devuelve los coeficientes de los cosenos de Fourier de @code{@var{f}(@var{x})} definida en @code{[0, @var{p}]}.
 
 @c NEEDS EXAMPLES
 @end deffn
 
-@c NEEDS EXPANSION. WHAT IS THE ARGUMENT p ??
+@c NEEDS EXPANSION.
 @deffn {Funci@'on} foursin (@var{f}, @var{x}, @var{p})
-Devuelve los coeficientes de los senos de Fourier de @code{@var{f}(@var{x})} definida en @code{[0, %pi]}.
+Devuelve los coeficientes de los senos de Fourier de @code{@var{f}(@var{x})} definida en @code{[0, @var{p}]}.
 
 @c NEEDS EXAMPLES
 @end deffn
 
-@c NEEDS EXPANSION. WHAT IS THE ARGUMENT p ??
+@c NEEDS EXPANSION.
 @deffn {Funci@'on} totalfourier (@var{f}, @var{x}, @var{p})
 Devuelve @code{fourexpand (foursimp (fourier (@var{f}, @var{x}, @var{p})), @var{x}, @var{p}, 'inf)}.
 

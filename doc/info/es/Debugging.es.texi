@@ -1,4 +1,4 @@
-@c version 1.16
+@c version 1.17
 @menu
 * Depuraci@'on del c@'odigo fuente::
 * Claves de depuraci@'on::
@@ -189,8 +189,13 @@ V@'eanse tambi@'en @code{setcheck} y @code{setcheckbreak}.
 @end defvr
 
 @deffn {Funci@'on} timer (@var{f_1}, ..., @var{f_n})
+@deffnx {Funci@'on} timer (all)
 @deffnx {Funci@'on} timer ()
 Dadas las funciones @var{f_1}, ..., @var{f_n}, @code{timer} coloca cada una de ellas en la lista de funciones para las cuales se generar@'an estad@'{@dotless{i}}sticas relativas al tiempo de c@'omputo. As@'{@dotless{i}}, @code{timer(f)$ timer(g)$} coloca a @code{f} y luego a @code{g} en dicha lista de forma acumulativa.
+
+La sentencia @code{timer(all)} coloca todas las funciones de usuario 
+(las referenciadas por la variable global @code{functions}) en la lista
+de funciones cuyos tiempos de ejecuci@'on se quieren monitorizar.
 
 Si no se le pasan argumentos a @code{timer} se obtendr@'a la lista de funciones cuyos tiempos de ejecuci@'on se quieren monitorizar.
 
@@ -241,9 +246,14 @@ V@'ease tambi@'en @code{timer}.
 
 
 @deffn {Funci@'on} trace (@var{f_1}, ..., @var{f_n})
+@deffnx {Funci@'on} trace (all)
 @deffnx {Funci@'on} trace ()
 
 Dadas las funciones @var{f_1}, ..., @var{f_n}, @code{trace} imprime informaci@'on sobre depuraci@'on cada vez que estas funciones son llamadas; @code{trace(f)$ trace(g)$} coloca de forma acumulativa a @code{f} y luego a @code{g} en la lista de funciones a ser rastradas.
+
+La sentencia @code{trace(all)} coloca todas las funciones de usuario 
+(las referenciadas por la variable global @code{functions}) en la lista
+de funciones a ser rastreadas.
 
 Si no se suministran argumentos, @code{trace} devuelve una lista con todas las funciones a ser rastreadas.
 

@@ -1,4 +1,4 @@
-@c english version 1.16
+@c english version 1.18
 @menu
 * Introducci@'on a los conjuntos::       
 * Definiciones para los conjuntos::       
@@ -1222,7 +1222,8 @@ pero su diferencia es un decimal en coma flotante,
 (%o1)                          0.0
 (%i2) 1/10 - 0.1;
 (%o2)                          0.0
-(%i3) Warning:  Float to bigfloat conversion of 0.250.25 - 0.25b0;
+(%i3) 0.25 - 0.25b0;
+Warning:  Float to bigfloat conversion of 0.25
 (%o3)                         0.0b0
 (%i4) kron_delta (1/4, 0.25);
                                   1
@@ -1232,7 +1233,8 @@ pero su diferencia es un decimal en coma flotante,
                                   1
 (%o5)                  kron_delta(--, 0.1)
                                   10
-(%i6) Warning:  Float to bigfloat conversion of 0.25kron_delta (0.25, 0.25b0);
+(%i6) kron_delta (0.25, 0.25b0);
+Warning:  Float to bigfloat conversion of 0.25
 (%o6)               kron_delta(0.25, 2.5b-1)
 @end example
 
