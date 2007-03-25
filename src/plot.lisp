@@ -1268,14 +1268,21 @@
               (if (not ($listp subfun))
                   (setf no-range-required nil))))
         (unless no-range-required
-          (setq range (check-range range)))
+          (setq range (check-range range))
+	  ;;; set up x range for plotting program
+	  (setf xmin (coerce-float (nth 2 range)))
+	  (setf xmax (coerce-float (nth 3 range))))
         (if (and no-range-required range)
-      ;;; second argument was really a plot option, not a range
-            ($set_plot_option range)))
-      ;; set up x range for plotting program
-      (when (nth 3 range)
-	(setf xmin (coerce-float (nth 2 range)))
-	(setf xmax (coerce-float (nth 3 range))))
+            ;;; second argument was really a plot option, not a range
+            (progn ($set_plot_option range)
+               ;;; set up ranges for plotting program
+	       (when (and ($listp range) (eq (nth 1 range) '$x) (nth 3 range))
+		 (setf xmin (coerce-float (nth 2 range)))
+		 (setf xmax (coerce-float (nth 3 range))))
+	       (when (and ($listp range) (eq (nth 1 range) '$y) (nth 3 range))
+		 (setf ymin (coerce-float (nth 2 range)))
+		 (setf ymax (coerce-float (nth 3 range)))))))
+ 
       (setf plot-format  ($get_plot_option '$plot_format 2))
       (setf gnuplot-term ($get_plot_option '$gnuplot_term 2))
       (if ($get_plot_option '$gnuplot_out_file 2)
@@ -1291,8 +1298,10 @@
           ($gnuplot
            (gnuplot-print-header st :log-x log-x :log-y log-y)
 	   (format st "plot")
-	   (when (and xmin xmax) (format st " [~g:~g]" xmin xmax)
-		 (when (and ymin ymax) (format st " [~g:~g]" ymin ymax))))
+	   (when (and xmin xmax) (format st " [~g:~g]" xmin xmax))
+	   (when (and ymin ymax)
+	     (unless (and xmin xmax) (format st " []")) 
+	     (format st " [~g:~g]" ymin ymax)))
 	  ($gnuplot_pipes
 	   (check-gnuplot-process)
 	   ($gnuplot_reset)
@@ -1301,11 +1310,14 @@
 	   (when (and xmin xmax)
 	     (setq *gnuplot-command*
 		   ($sconcat *gnuplot-command* 
-			     (format nil " [~g:~g]"  xmin xmax)))
-	     (when (and ymin ymax) 
+			     (format nil " [~g:~g]"  xmin xmax))))
+	   (when (and ymin ymax) 
+	     (unless (and xmin xmax)
+	       (setq *gnuplot-command* ($sconcat *gnuplot-command*
+						 (format nil " []"))))
 	       (setq *gnuplot-command*
 		     ($sconcat *gnuplot-command* 
-			       (format nil " [~g:~g]"  ymin ymax)))))))
+			       (format nil " [~g:~g]"  ymin ymax))))))
         (dolist (v (cdr fun))
 	  (case plot-format
 	    ($gnuplot_pipes
