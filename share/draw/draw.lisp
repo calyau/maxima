@@ -51,7 +51,6 @@
       (gethash '$logx *gr-options*)  nil
       (gethash '$logy *gr-options*)  nil
       (gethash '$logz *gr-options*)  nil
-      (gethash '$terminal *gr-options*) '$screen
       (gethash '$grid *gr-options*) nil
       (gethash '$title *gr-options*) ""
       (gethash '$xlabel *gr-options*) ""
@@ -68,11 +67,6 @@
       ; implicit plot options
       (gethash '$ip_grid *gr-options*) '((mlist simp) 50 50)
       (gethash '$ip_grid_in *gr-options*) '((mlist simp) 5 5)
-
-      ; pictures
-      (gethash '$file_name *gr-options*) "maxima_out"
-      (gethash '$pic_width *gr-options*)  640    ; only for bitmap pictures
-      (gethash '$pic_height *gr-options*) 480    ; only for bitmap pictures
 
       ; 2d-axis
       (gethash '$axis_bottom *gr-options*) t
@@ -119,6 +113,11 @@
       (gethash '$contour *gr-options*) '$none  ; other options are: $base, $surface, $both and $map
       (gethash '$contour_levels *gr-options*) 5  ; maximum: 50
 
+      ; image options
+      (gethash '$colorbox *gr-options*) t       ; in pm3d mode, always show colorbox
+      (gethash '$palette  *gr-options*) '$color ; '$color is a short cut for [7,5,15]
+                                                ; and '$gray is a short cut for [3,3,3].
+                                                ; See command 'show palette rgbformulae' in gnuplot.
   ) )
 
 
@@ -126,6 +125,10 @@
 (defun ini-global-options ()
   (setf ; global options
       (gethash '$columns *gr-options*) 1
+      (gethash '$terminal *gr-options*) '$screen
+      (gethash '$pic_width *gr-options*)  640    ; only for bitmap pictures
+      (gethash '$pic_height *gr-options*) 480    ; only for bitmap pictures
+      (gethash '$file_name *gr-options*) "maxima_out"
   ) )
 
 
@@ -180,7 +183,7 @@
                 (setf (gethash opt *gr-options*) val)
                 (merror "Non positive integer: ~M " val)))
       (($points_joined $transparent $border $logx $logy $logz $head_both $grid $xtics $ytics $ztics
-        $axis_bottom $axis_left $axis_top $axis_right $axis_3d $surface_hide) ; defined as true or false
+        $axis_bottom $axis_left $axis_top $axis_right $axis_3d $surface_hide $colorbox) ; true or false
             (if (or (equal val t)
                     (equal val nil))
                 (setf (gethash opt *gr-options*) val)
@@ -233,7 +236,16 @@
 			 (integerp ($second val))))
 	       (merror "Illegal value for grid")
 	       (setf (gethash opt *gr-options*) val))))
-
+      ($palette ; defined as $color, $gray or [f1,f2,f3], with -36<=fi<=36
+            (cond ((member val '($color $gray))
+                    (setf (gethash opt *gr-options*) val))
+                  ((and ($listp val)
+                        (= ($length val) 3)
+                        (every #'(lambda (x) (and (integerp x) (<= (abs x) 36)))
+                               (cdr val)) )
+                    (setf (gethash opt *gr-options*) (list (cadr val) (caddr val) (cadddr val))))
+                  (t
+                    (merror "Illegal palette description: ~M" val)))  )
 
       (otherwise (merror "Unknown option ~M " opt))  ) )
 
@@ -275,7 +287,7 @@
 
 
 (defstruct gr-object
-   name command points)
+   name command groups points)
 
 (defun make-obj-title (str)
   (if (> (length str) 80)
@@ -313,7 +325,8 @@
                (setf x (map 'list #'convert-to-float (rest arg1))
                      y (map 'list #'convert-to-float (rest arg2))))
             (t (merror "draw (points2d): bad input format"))  )
-      (setf pts (mapcan #'list x y))
+      (setf pts (make-array (* 2 (length x)) :element-type 'double-float
+                                             :initial-contents (mapcan #'list x y)))
       (setf xmin ($tree_reduce 'min (cons '(mlist simp) x))
             xmax ($tree_reduce 'max (cons '(mlist simp) x))
             ymin ($tree_reduce 'min (cons '(mlist simp) y))
@@ -333,14 +346,8 @@
                                  (make-obj-title (get-option '$key))
                                  (get-option '$point_size)
                                  (get-option '$point_type)) )
-         :points (list (cons 2 pts))) ; 2 => how many numbers are sent together to gnuplot
-       ))
-
-
-
-
-
-
+         :groups '((2)) ; numbers are sent to gnuplot in groups of 2
+         :points (list pts) ) ))
 
 
 
@@ -374,7 +381,8 @@
                      y (map 'list #'convert-to-float (rest arg2))
                      z (map 'list #'convert-to-float (rest arg3))  ))
             (t (merror "draw (points3d): bad input format"))  )
-      (setf pts (mapcan #'list x y z))
+      (setf pts (make-array (* 3 (length x)) :element-type 'double-float
+                                             :initial-contents (mapcan #'list x y z)))
       (setf xmin ($tree_reduce 'min (cons '(mlist simp) x))
             xmax ($tree_reduce 'max (cons '(mlist simp) x))
             ymin ($tree_reduce 'min (cons '(mlist simp) y))
@@ -396,9 +404,8 @@
                                  (make-obj-title (get-option '$key))
                                  (get-option '$point_size)
                                  (get-option '$point_type)) )
-         :points (list (append '(3 0) pts))) ; 3 => how many numbers are sent together to gnuplot
-                                             ; 0 => no blank lines
-          ))
+         :groups '((3 0)) ; numbers are sent to gnuplot in groups of 3, without blank lines
+         :points (list pts) )  ))
 
 
 
@@ -421,19 +428,18 @@
    (if (and (gethash '$transparent  *gr-options*)
             (not (gethash '$border  *gr-options*)))
        (merror "draw (polygon): transparent is true and border is false; this is not consistent"))
-   (let (pltcmd pts x y xmin xmax ymin ymax)
+   (let (pltcmd pts grps x y xmin xmax ymin ymax)
       (cond ((and ($listp arg1)
                   (every #'$listp (rest arg1)))     ; xy format
                (let ((tmp (mapcar #'rest (rest arg1))))
                   (setf x (map 'list #'first tmp)
                         y (map 'list #'second tmp) ) ) )
             ((and ($listp arg1)
-                  ($listp arg1)
+                  ($listp arg2)
                   (= (length arg1) (length arg2)))  ; xx yy format
                (setf x (map 'list #'convert-to-float (rest arg1))
                      y (map 'list #'convert-to-float (rest arg2))))
             (t (merror "draw (polygon): bad input format"))  )
-      (setf pts (mapcan #'list x y))
       (setf xmin ($tree_reduce 'min (cons '(mlist simp) x))
             xmax ($tree_reduce 'max (cons '(mlist simp) x))
             ymin ($tree_reduce 'min (cons '(mlist simp) y))
@@ -446,24 +452,41 @@
                                       (make-obj-title (get-option '$key))
                                       (get-option '$line_width)
                                       (get-option '$line_type)))
-             (setf pts (list (append '(2) pts (list (first pts) (second pts))))))
+             (setf grps '((2)))  ; numbers are sent to gnuplot in groups of 2
+             (setf pts (list (make-array (+ (* 2 (length x)) 2)
+                                         :element-type 'double-float
+                                         :initial-contents (append (mapcan #'list x y)
+                                                                   (list (first x) (first y))) )) ) )
          ((not (get-option '$border)) ; no transparent, no border
              (setf pltcmd (format nil "'-' ~a w filledcurves ~a"
                                       (make-obj-title (get-option '$key))
                                       (get-option '$fill_type)))
-             (setf pts (list (cons 2 pts))) )
+             (setf grps '((2)))  ; numbers are sent to gnuplot in groups of 2
+             (setf pts (list (make-array (* 2 (length x))
+                                         :element-type 'double-float
+                                         :initial-contents (mapcan #'list x y)) ) ))
          (t ; no transparent with border
              (setf pltcmd (format nil "'-' ~a w filledcurves ~a, '-' t '' w l lw ~a lt ~a" 
                                       (make-obj-title (get-option '$key))
                                       (get-option '$fill_type)
                                       (get-option '$line_width)
                                       (get-option '$line_type)))
-             (setf pts (list (cons 2 pts)
-                             (append '(2) pts (list (first pts) (second pts))))) ))
+             (setf grps '((2) (2)))  ; both sets of vertices (interior and border)
+                                     ; are sent to gnuplot in groups of 2
+             (setf pts (list (make-array (* 2 (length x))
+                                         :element-type 'double-float
+                                         :initial-contents (mapcan #'list x y))
+                             (make-array (+ (* 2 (length x)) 2)
+                                         :element-type 'double-float
+                                         :initial-contents (append (mapcan #'list x y)
+                                                                   (list (first x) (first y))))))))
       (make-gr-object
          :name   'polygon
          :command pltcmd
+         :groups  grps
          :points  pts )))
+
+
 
 
 
@@ -508,7 +531,7 @@
 
 ;; Object: 'ellipse'
 ;; Usage:
-;;     ellipse(xc, yc, a, b, startang, endang),  both angles in degrees [-360, 360]
+;;     ellipse(xc, yc, a, b, ang1 ang2),  both angles in degrees [-360, 360]
 ;; Options:
 ;;     nticks
 ;;     transparent
@@ -522,18 +545,18 @@
            (not (gethash '$border  *gr-options*)))
       (merror "draw (ellipse): transparent is true and border is false; this is not consistent"))
   (let ((fxc (convert-to-float xc))
-         (fyc (convert-to-float yc))
-         (fa (convert-to-float a))
-         (fb (convert-to-float b))
-         (fang1 (convert-to-float ang1))
-         (fang2 (convert-to-float ang2))
-         (nticks (gethash '$nticks  *gr-options*))
-         (xmin 1.75555970201398d+305)
-         (xmax -1.75555970201398d+305)
-         (ymin 1.75555970201398d+305)
-         (ymax -1.75555970201398d+305)
-         (result nil)
-         tmin tmax eps x y tt pltcmd)
+        (fyc (convert-to-float yc))
+        (fa (convert-to-float a))
+        (fb (convert-to-float b))
+        (fang1 (convert-to-float ang1))
+        (fang2 (convert-to-float ang2))
+        (nticks (gethash '$nticks  *gr-options*))
+        (xmin 1.75555970201398d+305)
+        (xmax -1.75555970201398d+305)
+        (ymin 1.75555970201398d+305)
+        (ymax -1.75555970201398d+305)
+        (result nil)
+        pts grps tmin tmax eps x y tt pltcmd)
     (if (or (notevery #'floatp (list fxc fyc fa fb fang1 fang2))
             (< fang1 -360.0) (< fang2 -360.0)
             (> fang1  360.0) (> fang2  360.0))
@@ -568,13 +591,17 @@
                                     (make-obj-title (get-option '$key))
                                     (get-option '$line_width)
                                     (get-option '$line_type)))
-           (setf result (list (cons 2 result))))
+           (setf grps '((2)))
+           (setf pts `( ,(make-array (length result) :element-type 'double-float
+                                                    :initial-contents result)))  )
        ((not (get-option '$border)) ; no transparent, no border
            (setf pltcmd (format nil "'-' ~a w filledcurves xy=~a,~a ~a"
                                     (make-obj-title (get-option '$key))
                                     fxc fyc
                                     (get-option '$fill_type)))
-           (setf result (list (cons 2 result))) )
+           (setf grps '((2)))
+           (setf pts `( ,(make-array (length result) :element-type 'double-float
+                                                    :initial-contents result)))  )
        (t ; no transparent with border
            (setf pltcmd (format nil "'-' ~a w filledcurves xy=~a,~a ~a, '-' t '' w l lw ~a lt ~a" 
                                     (make-obj-title (get-option '$key))
@@ -582,13 +609,16 @@
                                     (get-option '$fill_type)
                                     (get-option '$line_width)
                                     (get-option '$line_type)))
-           (setf result (list (cons 2 result) (cons 2 result))) ))
+           (setf grps '((2) (2)))
+           (setf pts (list (make-array (length result) :element-type 'double-float
+                                                       :initial-contents result)
+                           (make-array (length result) :element-type 'double-float
+                                                       :initial-contents result)))  ))
     (make-gr-object
-       :name   'ellipse
+       :name    'ellipse
        :command pltcmd
-       :points  result ) ))
-
-
+       :groups  grps
+       :points  pts ) ))
 
 
 
@@ -623,8 +653,8 @@
                                  ($horizontal "norotate")
                                  ($vertical  "rotate"))
                               (get-option '$label_color))
-         :points nil) ; labels are in the preamble, this will change in gnuplot 4.2
-         ))
+         :groups nil
+         :points nil)  ))
 
 
 
@@ -661,8 +691,8 @@
                                  ($horizontal "norotate")
                                  ($vertical  "rotate"))
                               (get-option '$label_color))
-         :points nil) ; labels are in the preamble, this will change in gnuplot 4.2
-         ))
+         :groups nil
+         :points nil)  ))
 
 
 
@@ -707,8 +737,9 @@
                               (get-option '$head_angle)
                               (get-option '$line_width)
                               (get-option '$line_type) )
-         :points (list (list 4 x y dx dy))) ))
-
+         :groups '((4))
+         :points `(,(make-array 4 :element-type 'double-float
+                                  :initial-contents (list x y dx dy))) ) ))
 
 
 
@@ -771,8 +802,7 @@
                                             depth 1d-5)))
                     (adaptive-plot #'fun (car x-start) (car x-mid) (car x-end)
                                    (car y-start) (car y-mid) (car y-end)
-                                   depth 1d-5)))))
-
+                                   depth 1d-5)))  ))
         ;; update x-y ranges if necessary
         (do ((y (cdr result) (cddr y)))
            ((null y))
@@ -797,7 +827,9 @@
         (make-gr-object
            :name   'explicit
            :command pltcmd
-           :points  (list (cons 2 result))) )))
+           :groups '((2))  ; numbers are sent to gnuplot in groups of 2
+           :points  `(,(make-array (length result) :element-type 'double-float
+                                                   :initial-contents result))    ) )))
 
 
 
@@ -817,6 +849,7 @@
 ;;     filled_function
 ;;     fill_type
 ;;     point_type
+;;     function_style
 ;; Note: taken from implicit_plot.lisp
 
 (defvar pts ())
@@ -940,7 +973,9 @@
     (make-gr-object
        :name   'implicit
        :command pltcmd
-       :points  (list (cons 2 pts))) ))
+       :groups '((2))
+       :points  `(,(make-array (length pts) :element-type 'double-float
+                                            :initial-contents pts)) ) ))
 
 
 
@@ -962,36 +997,45 @@
 (defun explicit3d (fcn var1 minval1 maxval1 var2 minval2 maxval2)
   (let* ((xu_grid (gethash '$xu_grid  *gr-options*))
          (yv_grid (gethash '$yv_grid  *gr-options*))
-         (epsx (convert-to-float (/ (- maxval1 minval1) xu_grid)))
-         (epsy (convert-to-float (/ (- maxval2 minval2) yv_grid)))
+         (fminval1 (convert-to-float minval1))
+         (fminval2 (convert-to-float minval2))
+         (fmaxval1 (convert-to-float maxval1))
+         (fmaxval2 (convert-to-float maxval2))
+         (epsx (convert-to-float (/ (- fmaxval1 fminval1) xu_grid)))
+         (epsy (convert-to-float (/ (- fmaxval2 fminval2) yv_grid)))
          (x 0.0)
          (y 0.0)
          (zmin 1.75555970201398d+305)
          (zmax -1.75555970201398d+305)
          (nx (+ xu_grid 1))
          (ny (+ yv_grid 1))
-         (result nil)
-         ($numer t) z)
+         ($numer t)
+         (count -1)
+         result z)
     (setq fcn (coerce-float-fun fcn `((mlist),var1 ,var2)))
+    (setf result (make-array (* 3 nx ny) :element-type 'double-float))
     (loop for j below ny
-           initially (setq y minval2)
-           do (setq x minval1)
+           initially (setq y fminval2)
+           do (setq x fminval1)
            (loop for i below nx
                   do
                   (setf z (funcall fcn x y))
                   (if (> z zmax) (setf zmax z))
                   (if (< z zmin) (setf zmin z))
-                  (setf result (append result (list x y z)))
+                  (setf (aref result (incf count)) x)
+                  (setf (aref result (incf count)) y)
+                  (setf (aref result (incf count)) z)
                   (setq x (+ x epsx))
                   )
            (setq y (+ y epsy)))
-    (update-ranges minval1 maxval1 minval2 maxval2 zmin zmax)
+    (update-ranges fminval1 fmaxval1 fminval2 fmaxval2 zmin zmax)
     (make-gr-object
        :name   'explicit
        :command (format nil "'-' ~a w l lt ~a"
                             (make-obj-title (get-option '$key))
                             (get-option '$line_type))
-       :points  (list (append `(3 ,nx) result)))   ))
+       :groups `((3 ,nx))
+       :points  (list result)  )))
 
 
 
@@ -1054,8 +1098,9 @@
                                        (make-obj-title (get-option '$key)) 
                                        (get-option '$line_width)
                                        (get-option '$line_type)) ) )
-       :points (list (cons 2 result))) ; 2 => how many numbers are sent together to gnuplot
-       ) )
+       :groups '((2))
+       :points `(,(make-array (length result) :element-type 'double-float
+                                              :initial-contents result)))   ) )
 
 
 
@@ -1140,9 +1185,9 @@
                             (make-obj-title (get-option '$key))
                             (get-option '$line_width)
                             (get-option '$line_type))
-       :points (list (append '(3 0) result))) ; 3 => how many numbers are sent together to gnuplot
-                                              ; 0 => no blank lines
-        ) )
+       :groups '((3 0))  ; numbers are sent to gnuplot in groups of 3, without blank lines
+       :points `(,(make-array (length result) :element-type 'double-float
+                                              :initial-contents result))  )) )
 
 
 
@@ -1211,11 +1256,78 @@
        :command (format nil "'-' ~a w l lt ~a"
                             (make-obj-title (get-option '$key))
                             (get-option '$line_type))
-       :points (list (append `(3 ,nu) result))) ; 3 => how many numbers are sent together to gnuplot
-                                               ; nu => blank line every nu lines
-       ) )
+       :groups `((3 ,nu))  ; numbers are sent to gnuplot in groups of 3, with blank lines every nu lines
+       :points `(,(make-array (length result) :element-type 'double-float
+                                              :initial-contents result))   )) )
 
 
+
+
+
+
+
+;; Object: 'image'
+;; Usages:
+;;     image(matrix_of_reals,x0,y0,width,height)
+;;     image(matrix_of_[r,g,b],x0,y0,width,height)
+;; Options:
+;;     colorbox (this is global)
+;;     palette  (this is global)
+(defun image (mat x0 y0 width height)
+  (let ( (fx0 (convert-to-float x0))
+         (fy0 (convert-to-float y0))
+         (fwidth (convert-to-float width))
+         (fheight (convert-to-float height))
+         result nrows ncols dx dy n
+         )
+    (if (not ($matrixp mat))
+      (merror "draw2d (image): first argument is not a matrix") )
+    (setf nrows (length (cdr mat))
+          ncols (length (cdadr mat)))
+    (setf dx (/ fwidth ncols)
+          dy (/ fheight nrows))
+    (if (not ($listp (cadadr mat)))  ; it's a matrix of reals
+        (setf n 3)   ; 3 numbers to be sent to gnuplot: x,y,value
+        (setf n 5))  ; 5 numbers to be sent: x,y,r,g,b
+    (case n
+      (3 (setf result (make-array (* 3 nrows ncols) :element-type 'double-float))
+         (let ((yi (+ fy0 height (* dy -0.5)))
+               (counter -1)
+                xi)
+            (loop for row on (cdr mat) by #'cdr do
+              (setf xi (+ fx0 (* dx 0.5)))
+              (loop for col on (cdar row) by #'cdr do
+                (setf (aref result (incf counter)) xi
+                      (aref result (incf counter)) yi
+                      (aref result (incf counter)) (convert-to-float (car col)))
+                (setf xi (+ xi dx)))
+              (setf yi (- yi dy)) )))
+      (5 (setf result (make-array (* 5 nrows ncols) :element-type 'double-float))
+         (let ((yi (+ fy0 height (* dy -0.5)))
+               (counter -1)
+                xi colors)
+            (loop for row on (cdr mat) by #'cdr do
+              (setf xi (+ fx0 (* dx 0.5)))
+              (loop for col on (cdar row) by #'cdr do
+                (setf colors (cdar col))
+                (setf (aref result (incf counter)) xi
+                      (aref result (incf counter)) yi
+                      (aref result (incf counter)) (convert-to-float (car colors))
+                      (aref result (incf counter)) (convert-to-float (cadr colors))
+                      (aref result (incf counter)) (convert-to-float (caddr colors)))
+                (setf xi (+ xi dx)))
+              (setf yi (- yi dy)) ))))
+    ; update x-y ranges if necessary
+    (update-ranges fx0 (+ fx0 fwidth) fy0 (+ fy0 fheight))
+    (make-gr-object
+       :name 'image
+       :command (case n
+                   (3 (format nil "'-' t '' w image"))
+                   (5 (format nil "'-' t '' w rgbimage")))
+       :groups (case n
+                   (3 '((3 0)))   ; numbers are sent to gnuplot in gropus of 3, no blank lines
+                   (5 '((5))  ))  ; numbers in groups of 5
+       :points (list result)) ) )
 
 
 
@@ -1247,11 +1359,12 @@
                                      ($vector     (apply #'vect (rest x)))
                                      ($label      (apply #'label (rest x)))
                                      ($polar      (apply #'polar (rest x)))
+                                     ($image      (apply #'image (rest x)))
                                      (otherwise (merror "Graphical 2d object ~M is not recognized" x)))))))))
       ; save in plotcmd the plot command to be sent to gnuplot
       (setf plotcmd
          (concatenate 'string
-            ; this let statement is to prevent error messages in gnuplot when
+            ; this let statement is to prevent error messages from gnuplot when
             ; the amplitude of the ranges equals zero
             (let ((xi (first  (get-option '$xrange)))
                   (xf (second (get-option '$xrange)))
@@ -1288,6 +1401,15 @@
             (if (get-option '$ytics)
                (format nil "set ytics~%")
                (format nil "unset ytics~%"))
+            (if (get-option '$colorbox)
+               (format nil "set colorbox~%")
+               (format nil "unset colorbox~%"))
+            (let ((pal (get-option '$palette)))
+              (case pal
+                 ($gray     (format nil "set palette gray~%"))
+                 ($color    (format nil "set palette rgbformulae 7,5,15~%"))
+                 (otherwise (format nil "set palette rgbformulae ~a,~a,~a~%"
+                                        (car pal) (cadr pal) (caddr pal))) ) )
             (if (not (string= (get-option '$user_preamble) ""))
                (format nil "~a~%" (get-option '$user_preamble))) ) )
       ; scene description: (dimensions, gnuplot preamble in string format, list of objects)
@@ -1422,12 +1544,15 @@
         (scenes-list '((mlist simp)))   ; these two variables will be used
         scene-short-description         ; to build the output of function draw
         pltcmd   ; the entire plot command is stored here
-        dest is1stobj biglist ncols nrows width height)
+        dest is1stobj biglist grouplist ncols nrows width height)
     (dolist (x args)
       (cond ((equal ($op x) '&=)
               (case ($lhs x)
-                ($terminal  (update-gr-option '$terminal ($rhs x)))
-                ($columns   (update-gr-option '$columns ($rhs x)))
+                ($terminal   (update-gr-option '$terminal ($rhs x)))
+                ($columns    (update-gr-option '$columns ($rhs x)))
+                ($pic_width  (update-gr-option '$pic_width ($rhs x)))
+                ($pic_height (update-gr-option '$pic_height ($rhs x)))
+                ($file_name  (update-gr-option '$file_name ($rhs x)))
                 (otherwise (merror "Unknown global option ~M " ($lhs x)))  ))
             ((equal (caar x) '$gr3d)
               (setf scenes (append scenes (list (funcall #'make-scene-3d (rest x))))))
@@ -1475,7 +1600,8 @@
       (format dest "set origin ~a, ~a~%" (* width (mod counter ncols))
                                        (* height (- nrows 1.0 (floor (/ counter ncols)))))
       (setf is1stobj t
-            biglist nil)
+            biglist '()
+            grouplist '())
       (format dest "~a" (second scn))
       (cond ((= (first scn) 2)    ; it's a 2d scene
                (setf scene-short-description '(($gr2d simp)))
@@ -1492,41 +1618,70 @@
                     (setf is1stobj nil)
                     (setf pltcmd (concatenate 'string pltcmd (format nil ", "))))
                   (setf pltcmd (concatenate 'string pltcmd (gr-object-command obj)))
-                  (setf biglist (append biglist (gr-object-points obj))))
+                  (setf grouplist (append grouplist (gr-object-groups obj)))
+                  (setf biglist (append biglist (gr-object-points obj))) )
                (t ; if it's a label, write directly to dest, since in gnuplot 4.0
                   ; labels are in the preamble; this will be changed in gnuplot 4.2
                   (format dest "~a" (gr-object-command obj)))))
+
+
 
       ; write sets of points
       (if biglist  ; no points, no drawing
           (format dest "~a" pltcmd))
       (format dest "~%")
-      (dolist (blis biglist 'done)
-         ; the first element of blis indicates how many numbers are
-         ; sent together to gnuplot
-         (case (car blis)
-             (2 (loop for (v w) on (cdr blis) by #'cddr do    ; 2d points
-		      (if (and (numberp v) (numberp w))
-                              (format dest "~a ~a ~%" v w)
-			      (format dest "~%"))) )
-             (3 (let ((l 0)                                   ; 3d points
-                      (m (cadr blis)))
+
+      (do ( (blis biglist (cdr blis))
+            (glis grouplist (cdr grouplist) ))
+          ((null blis) 'done)
+        (let* ((vect (car blis))
+               (k (length vect)))
+          (case (caar glis)
+             (2  ; 2d points
+                 (do ((cont 0 (+ cont 2)))
+                   ((= cont k) 'done)
+                   (if (and (numberp (aref vect cont)) (numberp (aref vect (1+ cont))))
+                       (format dest "~a ~a ~%" (aref vect cont) (aref vect (1+ cont)))
+                       (format dest "~%")))   )
+             (3  ; 3d points, gray image and palette image
+                (let ((l 0)
+                      (m (cadar glis)))
                    (cond
-                      ((= m 0)     ; 3d points without blank lines
-                         (loop for (v w y) on (cddr blis) by #'cdddr do
-                                    (format dest "~a ~a ~a ~%" v w y)) )
-                      (t          ; 3d points with blank lines every m lines
-                         (loop for (v w y) on (cddr blis) by #'cdddr do
-                                    (when (eql l m)
-                                       (format dest "~%")
-                                       (setf l 0) )
-                                    (format dest "~a ~a ~a ~%" v w y)
-                                    (incf l))) )))
-             (4 (loop for (v w y z) on (cdr blis) by #'cddddr do     ; for vectors (x,y,dx,xy)
-                              (format dest "~a ~a ~a ~a~%" v w y z)  ))    )
-         (format dest "e~%")  )
-      (setf counter (1+ counter))
-      (setf scenes-list (cons (reverse scene-short-description) scenes-list))     )    ; end of dolist
+                     ((= m 0)     ; 3d points without blank lines
+                        (do ((cont 0 (+ cont 3)))
+                            ((= cont k) 'done)
+                          (format dest "~a ~a ~a ~%" (aref vect cont)
+                                                     (aref vect (1+ cont))
+                                                     (aref vect (+ 2 cont)))  )  )
+                     (t           ; 3d points with blank lines every m lines
+                        (do ((cont 0 (+ cont 3)))
+                            ((= cont k) 'done)
+                          (when (eql l m)
+                                (format dest "~%")
+                                (setf l 0) )
+                          (format dest "~a ~a ~a ~%" (aref vect cont)
+                                                     (aref vect (1+ cont))
+                                                     (aref vect (+ 2 cont)))
+                          (incf l)  ))))  )
+             (4  ; for vectors (x,y,dx,xy)
+                 (do ((cont 0 (+ cont 4)))
+                     ((= cont k) 'done)
+                   (format dest "~a ~a ~a ~a~%" (aref vect cont)
+                                                (aref vect (1+ cont))
+                                                (aref vect (+ 2 cont))
+                                                (aref vect (+ 3 cont))) ) )
+             (5  ; for rgb images
+                 (do ((cont 0 (+ cont 5)))
+                     ((= cont k) 'done)
+                   (format dest "~a ~a ~a ~a ~a~%" (aref vect cont)
+                                                   (aref vect (1+ cont))
+                                                   (aref vect (+ 2 cont))
+                                                   (aref vect (+ 3 cont))
+                                                   (aref vect (+ 4 cont)))))))
+        (format dest "e~%"))
+
+      (incf counter)
+      (setf scenes-list (cons (reverse scene-short-description) scenes-list)) )
 
     (cond ((> (length scenes) 1)
              (format dest "unset multiplot~%"))
