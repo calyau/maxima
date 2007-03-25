@@ -13,7 +13,7 @@
 (macsyma-module dskfn)
 
 (declare-top (special $filename $device $direc $storenum $filenum $dskall
-		      $filesize filelist filelist1 opers $packagefile
+		      $filesize filelist opers $packagefile
 		      fasdumpfl fasdeqlist fasdnoneqlist savenohack
 		      dsksavep aaaaa errset lessorder greatorder indlist
 		      $labels $aliases varlist mopl $props defaultf
@@ -22,7 +22,7 @@
 		      $contexts context $activecontexts))
 
 
-(setq filelist nil filelist1 nil $packagefile nil
+(setq filelist nil $packagefile nil
       indlist '(evfun evflag bindtest nonarray sp2 sp2subs opers
 		 special autoload assign mode))
 
@@ -88,7 +88,7 @@
 (defvar *macsyma-extend-types-saved* nil)
 
 (defun dsksetup (x storefl fasdumpfl fn)
-  (let (prinlength prinlevel ofile file (fname (nsubstring (print-invert-case (car x)) 1))
+  (let (prinlength prinlevel file (fname (nsubstring (print-invert-case (car x)) 1))
 		   *print-gensym* list fasdeqlist fasdnoneqlist maxima-error)
     (setq savefile
 	  (if (or (eq $file_output_append '$true) (eq $file_output_append t))
@@ -104,8 +104,7 @@
 	    ((listargp u))
 	    ((or (not (eq (caar u) 'mequal)) (not (symbolp (cadr u))))
 	     (improper-arg-err u fn))))
-    (cond (dsksavep (setq filelist (cons file filelist)))
-	  (ofile (setq filelist1 (cons file filelist1))))
+    (when dsksavep (push file filelist))
     (setq list (ncons (car x))
 	  x (cdr x)
 	  *macsyma-extend-types-saved* nil)
@@ -196,7 +195,7 @@
 		 (remprop item 'expr)
 		 (if (setq val1 (get item 'expr))
 		     (dskdefprop rename val1 'expr))
-		 (setplist item (list* 'expr val (symbol-plist item))))
+		 (setf (symbol-plist item) (list* 'expr val (symbol-plist item))))
 	       (dskdefprop rename val 'expr))
 	   (propschk item rename 'translated))
 	 (when (setq val (get item 'operators))

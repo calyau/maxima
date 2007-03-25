@@ -2013,7 +2013,7 @@
 	;; This drastic initialization ensures that ALGEBRAIC, TELLRAT, DISREP,
 	;; etc. prop's are removed from our gensyms. RATSETUP does not appear
 	;; to do this correctly, e.g. see ASB's bug of 1/10/83 (MQUERY 17).
-	(mapc #'(lambda (g) (setplist g () )) genvar)
+	(mapc #'(lambda (g) (setf (symbol-plist g) nil)) genvar)
 	(ratsetup varlist genvar)
 	(when (and $taylor_order_coefficients (not *within-srf?*)) (newvar e))
 	(orderpointer varlist)

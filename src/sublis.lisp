@@ -10,16 +10,15 @@
 ;;; ** (c) Copyright 1980 Massachusetts Institute of Technology **
 
 (in-package :maxima)
+
 (macsyma-module sublis)
 
-(defmvar $sublis_apply_lambda t 
+(defmvar $sublis_apply_lambda t
   "a flag which controls whether LAMBDA's substituted are applied in
    simplification after the SUBLIS or whether you have to do an
    EV to get things to apply. A value of TRUE means perform the application.")
 
-					; The EXPR stuff here should eventually be flushed.
-(declare-top #-cl (*expr $listp $rat $ratp $ratdisrep getopr) 
-	     (special *msublis-marker*))
+(declare-top (special *msublis-marker*))
 
 ;;; SUBLIS([sym1=form1,sym2=form2,...],expression)$
 ;;;
@@ -29,21 +28,20 @@
 ;;;  the `desired' (non-interfering) effect.
 
 (defmfun $sublis (substitutions form)
-  (cond
-    (($listp substitutions)
-     (do ((l  (cdr substitutions) (cdr l))
-	  (nl ())
-	  (temp))
-	 ((null l) (setq substitutions nl))
-       (setq temp (car l))
-       (cond ((and (not (atom temp))
-		   (not (atom (car temp)))
-		   (eq (caar temp) 'mequal)
-		   (symbolp (car (pop temp))))
-	      (push (cons (pop temp) (pop temp)) nl))
-	     (t (merror "Usage is sublis([sym1=form1,...],expression)")))))
-    (t
-     (merror "Usage is sublis([sym1=form1,...],expression)")))
+  (cond (($listp substitutions)
+	 (do ((l (cdr substitutions) (cdr l))
+	      (nl ())
+	      (temp))
+	     ((null l) (setq substitutions nl))
+	   (setq temp (car l))
+	   (cond ((and (not (atom temp))
+		       (not (atom (car temp)))
+		       (eq (caar temp) 'mequal)
+		       (symbolp (car (pop temp))))
+		  (push (cons (pop temp) (pop temp)) nl))
+		 (t (merror "Usage is sublis([sym1=form1,...],expression)")))))
+	(t
+	 (merror "Usage is sublis([sym1=form1,...],expression)")))
   (msublis substitutions form))
 
 (defun msublis (s y)
@@ -57,9 +55,9 @@
   (do ((x s (cdr x)) (temp) (temp1)) ((null x))
     (cond ((not (symbolp (setq temp (caar x))))
 	   (merror "`sublis': Bad 1st arg")))
-    (setplist temp (list* *msublis-marker* (cdar x) (symbol-plist temp)))
+    (setf (symbol-plist temp) (list* *msublis-marker* (cdar x) (symbol-plist temp)))
     (cond ((not (eq temp (setq temp1 (getopr temp))))
-	   (setplist temp1 (list* *msublis-marker* (cdar x) (symbol-plist temp1)))
+	   (setf (symbol-plist temp1) (list* *msublis-marker* (cdar x) (symbol-plist temp1)))
 	   (push (ncons temp1) s)))))	; Remember extra cleanup
 
 (defun msublis-unsetup ()
@@ -96,7 +94,7 @@
 			      (not (atom (car cdr-value)))
 			      (eq (caar (car cdr-value)) 'lambda))
 			 (cons (cons (car cdr-value)
-				     (cond ((memq 'array (car form))
+				     (cond ((member 'array (car form) :test #'eq)
 					    '(array))
 					   (t nil)))
 			       (cdr cdr-value)))
@@ -105,13 +103,13 @@
 					   (eq (caar caar-value) 'lambda)))
 				  (not $sublis_apply_lambda)))
 			 (list* (cons 'mqapply
-				      (cond ((memq 'array (car form))
+				      (cond ((member 'array (car form) :test #'eq)
 					     '(array))
 					    (t nil)))
 				caar-value
 				cdr-value))
 			(t (cons (cons caar-value
-				       (cond ((memq 'array (car form))
+				       (cond ((member 'array (car form) :test #'eq)
 					      '(array))
 					     (t nil)))
 				 cdr-value)))))))
@@ -123,4 +121,3 @@
 		  form)
 		 (t
 		  (cons car-value cdr-value)))))))
-

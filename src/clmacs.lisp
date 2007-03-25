@@ -82,9 +82,6 @@
 	 `(member ,(intern (string item) (find-package 'keyword)) *features*))
 	((equal option 'gctime) 0)))
 
-(defun setplist (sym val)
-  (setf (symbol-plist sym) val))
-
 (defun sortcar (lis &optional (test #'alphalessp))
   (sort lis test :key #'car))
 
@@ -186,7 +183,6 @@
   (setf (symbol-function sym) val))
 
 (defun oldget (plist indic)
-  (declare (object plist))
   (cond ((symbolp plist)
 	 (setq plist (symbol-plist plist)))
 	((consp plist) (setq plist (cdr plist)))
@@ -212,9 +208,6 @@
 
 (defmacro ncons (x)
   `(cons ,x nil)) ;;can one optimize this??
-
-(defun zl-remove (item list &optional n)
-  (remove item list :count n :test #'equal))
 
 (defvar *acursor* (make-array 11 :element-type 'fixnum :initial-element 0))
 

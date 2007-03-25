@@ -203,13 +203,9 @@
   (setf (trace-options (cadr form))
 	`((mlist) ,@(cddr form))))
 
-
-
 ;;; System interface functions.
 
-(defvar hard-to-trace '(trace-handler listify args setplist trace-apply
-			*apply mapply))
-
+(defvar hard-to-trace '(trace-handler listify args trace-apply *apply mapply))
 
 ;; A list of functions called by the TRACE-HANDLEr at times when
 ;; it cannot possibly shield itself from a continuation which would
@@ -322,7 +318,7 @@
 	   (setf (trace-oldfun fun) (and (fboundp fun) (symbol-function fun)))
 	   (setf (symbol-function fun) value))
 	  (t
-	   (setplist fun `(,shadow ,value ,@(symbol-plist fun)))))))
+	   (setf (symbol-plist fun) `(,shadow ,value ,@(symbol-plist fun)))))))
 
 (defun trace-unfshadow (fun type)
   ;; At this point, we know that FUN is traced.
@@ -603,7 +599,7 @@
       ((expr)
        (apply prop largs))
       ((subr lsubr)
-       (setplist 'the-trace-apply-hack (list type prop))
+       (setf (symbol-plist 'the-trace-apply-hack) (list type prop))
        (apply (second (getl 'the-trace-apply-hack '(subr lsubr))) largs))
       ((mfexpr* mfexpr*s)
        (funcall prop (car largs))))))
