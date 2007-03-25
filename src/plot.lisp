@@ -1236,9 +1236,14 @@
         (*plot-realpart* *plot-realpart*)
         (i 0)
         ($plot_options $plot_options)
-        plot-format gnuplot-term gnuplot-out-file file plot-name)
+        plot-format gnuplot-term gnuplot-out-file file plot-name
+	xmin xmax ymin ymax)
     (dolist (v options)
-      ($set_plot_option v))
+      ($set_plot_option v)
+      ;; set up y range for plotting program
+      (when (and ($listp v) (eq (nth 1 v) '$y) (nth 3 v))
+         (setf ymin (coerce-float (nth 2 v)))
+         (setf ymax (coerce-float (nth 3 v)))))
   
     (setq *plot-realpart* ($get_plot_option '$plot_realpart 2))
     (when (and (consp fun) (eq (cadr fun) '$parametric))
@@ -1267,6 +1272,10 @@
         (if (and no-range-required range)
       ;;; second argument was really a plot option, not a range
             ($set_plot_option range)))
+      ;; set up x range for plotting program
+      (when (nth 3 range)
+	(setf xmin (coerce-float (nth 2 range)))
+	(setf xmax (coerce-float (nth 3 range))))
       (setf plot-format  ($get_plot_option '$plot_format 2))
       (setf gnuplot-term ($get_plot_option '$gnuplot_term 2))
       (if ($get_plot_option '$gnuplot_out_file 2)
@@ -1275,18 +1284,28 @@
                (eq gnuplot-term '$default) 
                gnuplot-out-file)
           (setf file gnuplot-out-file)
-          (setf file (plot-temp-file (format nil "maxout.~(~a~)" (stripdollar plot-format)))))
+	(setf file (plot-temp-file (format nil "maxout.~(~a~)" (stripdollar plot-format)))))
   
       (with-open-file (st file :direction :output :if-exists :supersede)
         (case plot-format
           ($gnuplot
            (gnuplot-print-header st :log-x log-x :log-y log-y)
-           (format st "plot"))
+	   (format st "plot")
+	   (when (and xmin xmax) (format st " [~g:~g]" xmin xmax)
+		 (when (and ymin ymax) (format st " [~g:~g]" ymin ymax))))
 	  ($gnuplot_pipes
 	   (check-gnuplot-process)
 	   ($gnuplot_reset)
 	   (gnuplot-print-header *gnuplot-stream* :log-x log-x :log-y log-y)
-	   (setq *gnuplot-command* "plot")))
+	   (setq *gnuplot-command* (format nil "plot"))
+	   (when (and xmin xmax)
+	     (setq *gnuplot-command*
+		   ($sconcat *gnuplot-command* 
+			     (format nil " [~g:~g]"  xmin xmax)))
+	     (when (and ymin ymax) 
+	       (setq *gnuplot-command*
+		     ($sconcat *gnuplot-command* 
+			       (format nil " [~g:~g]"  ymin ymax)))))))
         (dolist (v (cdr fun))
 	  (case plot-format
 	    ($gnuplot_pipes
