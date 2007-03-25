@@ -384,7 +384,7 @@
 	 (setq const (car const))
 	 ;; Try to get the datum
 	 (if (pscoefp arg)
-	     (setq arg-c (get-lexp (m+t a (minus const)) (rcone)
+	     (setq arg-c (get-lexp (m+t a (- const)) (rcone)
 				   (signp le const))))
 	 (if (and arg-c (not (psp arg-c))) ; must be zero
 	     (taylor2 (simplify `((%gamma) ,const)))
@@ -396,18 +396,18 @@
 	       (if (> const 0)
 		   (pstimes 
 		    (let-pw datum (e- func ord)
-			    (expand (m+t a (minus const)) '%gamma))
+			    (expand (m+t a (- const)) '%gamma))
 		    (let-pw datum (e+ func ord)
 			    (tsprsum (m+t a (m-t '%%taylor-index%%))
 				     `(%%taylor-index%% 1 ,const)
 				     '%product)))
 		   (pstimes 
-		    (expand (m+t a (minus const)) '%gamma)
+		    (expand (m+t a (- const)) '%gamma)
 		    (let-pw datum (e+ func ord)
 			    (psexpt 
 			     (tsprsum (m+t a '%%taylor-index%%)
 				      `(%%taylor-index%% 0
-					,(minus (1+ const))) '%product)
+					,(- (1+ const))) '%product)
 			     (rcmone))))))))))
 
 (defun plygam-const (a arg func)

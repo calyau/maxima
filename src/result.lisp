@@ -205,7 +205,7 @@
 		   (setq c 0)
 		   (setq d 1)
 		   (setq m2 (car m2) n2 (car n2))
-		   (setq bp (minus 1))
+		   (setq bp (- 1))
 		   step3
 		   (cond ((equal (setq bp (1+ bp)) modulus)
 			  (merror "Resultant primes too small."))

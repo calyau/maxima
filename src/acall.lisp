@@ -363,7 +363,7 @@
 
 (defun *mminus (x)
   (if (numberp x)
-      (minus x)
+      (- x)
       (simplify (list '(mminus) x))))
 
 (defmfun retlist_tr n

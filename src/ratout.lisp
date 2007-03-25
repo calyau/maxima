@@ -643,7 +643,7 @@
 							       (disrep  coef)
 							       (list '(mexpt)
 								     (disrep poly)
-								     (minus exp)))))
+								     (- exp)))))
 				  (cdr exp))))))))
 
 (defun partfraca (llist)

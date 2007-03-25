@@ -255,7 +255,7 @@
 		(cond ((minusp (caddr e))
 		       (setq sd* (cons (cond ((equal (caddr e) -1) (cadr e))
 					     (t (m^ (cadr e)
-						    (minus (caddr e)))))
+						    (- (caddr e)))))
 				       sd*)))
 		      (t (setq sn* (cons e sn*)))))))
 	((polyinx e var nil)

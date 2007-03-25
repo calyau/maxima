@@ -203,7 +203,7 @@
 (defmfun ratexpt (x n)
   (cond ((equal n 0) '(1 . 1))
 	((equal n 1) x)
-	((minusp n) (ratinvert (ratexpt x (minus n))))
+	((minusp n) (ratinvert (ratexpt x (- n))))
 	($ratwtlvl (ratreduce (wtpexpt (car x) n) (wtpexpt (cdr x) n)))
 	($algebraic (ratreduce (pexpt (car x) n) (pexpt (cdr x) n)))
 	(t (cons (pexpt (car x) n) (pexpt (cdr x) n)))))

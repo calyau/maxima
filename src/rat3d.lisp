@@ -288,7 +288,7 @@
 
 (defun cnthroot(c n)
   (cond ((minusp c)
-	 (cond ((oddp n) (minus (cnthroot (minus c) n)))
+	 (cond ((oddp n) (- (cnthroot (- c) n)))
 	       (t (throw 'raterr nil))))
 	((zerop c) c)
 	((zerop (cadr (setq c (iroot c n)))) (car c))
@@ -449,6 +449,6 @@
 (defun revsign (x)
   (cond ((null x) nil)
 	(t (cons (car x)
-		 (cons (minus (cadr x)) (revsign (cddr x)))))))
+		 (cons (- (cadr x)) (revsign (cddr x)))))))
 	 
 ;;	THIS IS THE END OF THE NEW RATIONAL FUNCTION PACKAGE PART 4

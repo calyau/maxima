@@ -61,8 +61,7 @@
     (def-op f1- fixnum 1-)
     (def-op f1+ fixnum 1+)
     (def-op quotient t quot)
-    (def-op // t quot)
-    (def-op minus t -))
+    (def-op // t quot))
 
 ;;this is essentially what the quotient is supposed to do.
 
@@ -81,9 +80,6 @@
   (cond ((equal (symbol-name option) (symbol-name '#:feature))
 	 `(member ,(intern (string item) (find-package 'keyword)) *features*))
 	((equal option 'gctime) 0)))
-
-(defun sortcar (lis &optional (test #'alphalessp))
-  (sort lis test :key #'car))
 
 ;;numbers<strings<symbols<lists<?
 (defun alphalessp (x y)

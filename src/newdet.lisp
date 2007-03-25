@@ -100,7 +100,7 @@
      (cond
        ((equal k (aref *i* (1+ j)))
 	(incf j)
-	(setq sign (minus sign)))
+	(setq sign (- sign)))
        (t
 	(setf (aref *minor1* new addr)
 	      (ratplus

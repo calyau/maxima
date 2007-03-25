@@ -317,7 +317,7 @@
 
 (defun erecip (e)
        (if (minusp (car e))
-	   (cons (minus (cdr e)) (minus (car e)))
+	   (cons (- (cdr e)) (- (car e)))
 	   (cons (cdr e) (car e))))
 
 (defun equo (x y)
@@ -349,7 +349,7 @@
 			(equal (cdr e1) (cdr e2))))))
 
 (defun ereduce (n d)
-       (if (signp l d) (setq d (minus d) n (minus n)))
+       (if (signp l d) (setq d (- d) n (- n)))
        (if (zerop n) (rczero)
 	   (let ((gcd (gcd n d)))
 		(cons (*quo n gcd) (*quo d gcd)))))

@@ -81,7 +81,7 @@
 
 (defmfun sturm1 (poly eps &aux b llist)
   (setq b (cons (root-bound (cdr poly)) 1))
-  (setq llist (isolat poly (cons (minus (car b)) (cdr b)) b))
+  (setq llist (isolat poly (cons (- (car b)) (cdr b)) b))
   (mapcar #'(lambda (int) (refine poly (car int) (cdr int) eps)) llist))
 
 (defun root-bound (p)
@@ -255,7 +255,7 @@
 	(* (cdr a) (cdr b))))
 
 (defun rdifference* (a b)
-  (rplus* a (cons (minus (car b)) (cdr b))) )
+  (rplus* a (cons (- (car b)) (cdr b))) )
 
 (defun rlessp (a b)
   (< (* (car a) (cdr b))

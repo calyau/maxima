@@ -19,7 +19,7 @@
 (def%tr mminus (form)
   (setq form (translate (cadr form)))
   (cond ((numberp (cdr form))
-	 `(,(car form) . ,(minus (cdr form))))
+	 `(,(car form) . ,(- (cdr form))))
 	((eq '$fixnum (car form)) `($fixnum - ,(cdr form)))
 	((eq '$float (car form)) `($float - ,(cdr form)))
 	((eq '$number (car form)) `($number - ,(cdr form)))

@@ -29,7 +29,7 @@
 
 (defmacro denom (r) `(cdr ,r))
 
-(defmacro eneg (exp) `(cons (minus (car ,exp)) (cdr ,exp)))
+(defmacro eneg (exp) `(cons (- (car ,exp)) (cdr ,exp)))
 
 (defmacro pade-lexp (poly) `(cond ((p0? ,poly) (ezero))
 			     (t (le ,poly))))

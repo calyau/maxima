@@ -283,12 +283,12 @@
 		     ((null (smono exp var)) (throw 'psex nil))
 		     ((or (and (numberp *a)
 			       (minusp *a)
-			       (setq *a (minus *a)))
+			       (setq *a (- *a)))
 			  (and (mtimesp *a)
 			       (numberp (cadr *a))
 			       (minusp (cadr *a))
 			       (setq *a (simptimes
-					 (list* (car *a) (minus (cadr *a)) (cddr *a))
+					 (list* (car *a) (- (cadr *a)) (cddr *a))
 					 1 t))))
 		      (list '(%sum)
 			    (m* -1

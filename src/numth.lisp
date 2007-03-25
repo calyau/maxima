@@ -87,7 +87,7 @@
   (cond ((null (and (integerp p) (integerp q)))
 	 (list '($jacobi) p q))
 	((zerop q) (merror "Zero denominator?"))
-	((minusp q) ($jacobi p (minus q)))
+	((minusp q) ($jacobi p (- q)))
 	((and (evenp (setq q (rtzerl2 q)))
 	      (setq q (ash q -1))
 	      (evenp p)) 0)
@@ -181,7 +181,7 @@
 		  (t (setq e2 (cadr nl))
 		     (setq dc (reverse cd))))
 	    (setq dc (gcexpt dc (cadr nl)) ;
-		  dc (gctimes a b (car dc) (minus (cadr dc)))
+		  dc (gctimes a b (car dc) (- (cadr dc)))
 		  a (quotient (car dc) p)
 		  b (quotient (cadr dc) p)
 		  nl (cddr nl))))

@@ -62,7 +62,7 @@
 (declare-top (special $negdistrib))
 
 (defmfun neg (x)
-  (cond ((numberp x) (minus x))
+  (cond ((numberp x) (- x))
 	(t (let (($negdistrib t))
 	     (simplifya `((mtimes) -1 ,x) t)))))
 

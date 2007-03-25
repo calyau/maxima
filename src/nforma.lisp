@@ -25,7 +25,7 @@
 
 (defmfun nformat (form)
   (cond ((atom form)
-	 (cond ((and (numberp form) (minusp form)) (list '(mminus) (minus form)))
+	 (cond ((and (numberp form) (minusp form)) (list '(mminus) (- form)))
 	       ((eq t form) (if in-p t '$true))
 	       ((eq nil form) (if in-p nil '$false))
 	       ((and displayp (car (rassoc form aliaslist :test #'eq))))
@@ -36,7 +36,7 @@
 	 form)
 	((eq 'rat (caar form))
 	 (cond ((minusp (cadr form))
-		(list '(mminus) (list '(rat) (minus (cadr form)) (caddr form))))
+		(list '(mminus) (list '(rat) (- (cadr form)) (caddr form))))
 	       (t (cons '(rat) (cdr form)))))
 	((eq 'mmacroexpanded (caar form)) (nformat (caddr form)))
 	((null (cdar form)) form)
@@ -47,7 +47,7 @@
 	((eq 'mpois (caar form)) (nformat ($outofpois form)))
 	((eq 'bigfloat (caar form))
 	 (if (minusp (cadr form))
-	     (list '(mminus) (list (car form) (minus (cadr form)) (caddr form)))
+	     (list '(mminus) (list (car form) (- (cadr form)) (caddr form)))
 	     (cons (car form) (cdr form))))
 	(t form)))
 
