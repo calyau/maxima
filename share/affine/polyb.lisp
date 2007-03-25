@@ -1175,7 +1175,7 @@ and modulo-p not prime gives false answer"
   where phi is the auto  which defaults to the identity and can be specified by
   the list of images of VARIABLES"
      (cond ((null auto) (setq auto variables)))
-     (setq tem (sortcar (pairlis (cdr variables) (cdr auto)) $order_function))
+     (setq tem (sort (pairlis (cdr variables) (cdr auto)) #'$order_function :key #'car))
      (setq variables (cons '(mlist) (mapcar 'car tem)) auto (cons'(mlist)
 							      (mapcar 'cdr tem)))
   (setq $commutators nil $centralizers nil)

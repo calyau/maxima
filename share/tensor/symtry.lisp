@@ -202,7 +202,7 @@
 		 (t (setq l (cons (car b) l))))))
 
 (defun symsort (l type)
-       (cond ((eq type '$sym) (sort l 'less))           ;SORT SYMmetric indices
+       (cond ((eq type '$sym) (sort l #'less))           ;SORT SYMmetric indices
 	     ((eq type '$anti) (antisort l))
 	     (t (cycsort l))))
 
@@ -210,7 +210,7 @@
        ((lambda (q) (cond ((equal ($levi_civita (consmlist (mapcar 'cdr q))) -1)
 		           (setq csign (not csign))))
 		    (mapcar 'car q))
-	(sortcar (index l) 'less)))
+	(sort (index l) #'less :key #'car)))
 
 (defun index (l)             ;(INDEX '(A B C)) yields ((A . 1) (B . 2) (C . 3))
        (do ((l l (cdr l)) (n 1 (1+ n)) (q))
@@ -229,7 +229,7 @@
        (do ((l (cdr l) (cdr l)) (a (cons (car l) 1)) (n 2 (1+ n)))
 	   ((null l) a)
 	   (cond ((less (car l) (car a)) (setq a (cons (car l) n))))))
-
+
 (declare-top (special free-indices))
 
 (defun canprod (e)

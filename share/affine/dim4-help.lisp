@@ -1,14 +1,6 @@
 ;;; -*- Mode:Lisp; Package:CL-MAXIMA; Base:10 -*-
 (in-package :maxima)
 
-
-;#+kcl
-;(defmacro sloop (&rest body) (sloop::parse-loop  body))
-
-#+lispm
-(defmacro sloop (&rest l) `(si::loop ,@ l))
-
-
 (defun $complexity(v &optional sum)
   (cond ((eql v 0)(if sum -1 '$z))
 	((mbagp v)
@@ -132,9 +124,8 @@
 (defun $reorder_matrix(mat &aux rows)
   (setq rows
 	(loop for u in (cdr mat)
-	collect (cons (loop for v in (cdr u) sum (gen-pcomplexity (st-rat v)))
-		      u)))
-  (setq rows (sortcar rows '<))
+	collect (cons (loop for v in (cdr u) sum (gen-pcomplexity (st-rat v))) u)))
+  (setq rows (sort rows #'< :key #'car))
   (cons '($matrix) (mapcar 'cdr rows)))
 
 (defun $best_row(mat &aux  tem at)

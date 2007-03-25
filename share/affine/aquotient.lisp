@@ -887,7 +887,7 @@
 
 
 (defun constant-psublis (alist polynomial)
-  (setq alist (sortcar alist 'pointergp))
+  (setq alist (sort alist #'pointergp :key #'car))
   (constant-psublis1 alist polynomial))
 
 (defun constant-psublis1 (alist polynomial)
