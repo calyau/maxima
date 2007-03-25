@@ -1251,16 +1251,11 @@
       (setf fun `((mlist) ,fun)))
     (when (and (consp fun) (eq (cadr fun) '$discrete))
       (setf fun `((mlist) ,fun)))
-    (when (eq ($get_plot_option '$plot_format 2) '$openmath)
-      (return-from $plot2d (apply '$plot2dopen fun range options)))
 
     ;; See if we're doing log plots.
     (let ((log-x ($get_plot_option '$logx 2))
           (log-y ($get_plot_option '$logy 2)))
-  
-      ;; this has to come after the check for openmath 
-      ;; (see bug report #834729)
-      (or ($listp fun ) (setf fun `((mlist) ,fun)))     
+      (unless ($listp fun ) (setf fun `((mlist) ,fun)))     
       (let ((no-range-required t))
         (if (not ($listp fun))
             (setf no-range-required nil)
@@ -1287,124 +1282,170 @@
       (setf gnuplot-term ($get_plot_option '$gnuplot_term 2))
       (if ($get_plot_option '$gnuplot_out_file 2)
           (setf gnuplot-out-file (get-plot-option-string '$gnuplot_out_file)))
-      (if (and (eq plot-format '$gnuplot) 
-               (eq gnuplot-term '$default) 
+      (if (and (eq plot-format '$gnuplot) (eq gnuplot-term '$default) 
                gnuplot-out-file)
           (setf file gnuplot-out-file)
-	(setf file (plot-temp-file (format nil "maxout.~(~a~)" (stripdollar plot-format)))))
-  
-      (with-open-file (st file :direction :output :if-exists :supersede)
-        (case plot-format
-          ($gnuplot
-           (gnuplot-print-header st :log-x log-x :log-y log-y)
-	   (format st "plot")
-	   (when (and xmin xmax) (format st " [~g:~g]" xmin xmax))
-	   (when (and ymin ymax)
-	     (unless (and xmin xmax) (format st " []")) 
-	     (format st " [~g:~g]" ymin ymax)))
-	  ($gnuplot_pipes
-	   (check-gnuplot-process)
-	   ($gnuplot_reset)
-	   (gnuplot-print-header *gnuplot-stream* :log-x log-x :log-y log-y)
-	   (setq *gnuplot-command* (format nil "plot"))
-	   (when (and xmin xmax)
-	     (setq *gnuplot-command*
-		   ($sconcat *gnuplot-command* 
-			     (format nil " [~g:~g]"  xmin xmax))))
-	   (when (and ymin ymax) 
-	     (unless (and xmin xmax)
-	       (setq *gnuplot-command* ($sconcat *gnuplot-command*
-						 (format nil " []"))))
-	       (setq *gnuplot-command*
-		     ($sconcat *gnuplot-command* 
-			       (format nil " [~g:~g]"  ymin ymax))))))
-        (dolist (v (cdr fun))
-	  (case plot-format
-	    ($gnuplot_pipes
-	     (if (> i 0)
-		 (setq *gnuplot-command* ($sconcat *gnuplot-command* ", ")))
-	     (setq *gnuplot-command* ($sconcat *gnuplot-command* 
-					       (format nil "'~a' index ~a " file i)))))
-          (incf i)
-          (setq plot-name
-                (let ((string ""))
-                  (cond ((atom v) 
-                         (setf string (coerce (mstring v) 'string)))
-                        ((eq (second v) '$parametric)
-                         (setf string 
-                               (concatenate 
-                                'string (coerce (mstring (third v)) 'string)
-                                ", " (coerce (mstring (fourth v)) 'string))))
-                        ((eq (second v) '$discrete)
-                         (setf string (format nil "discrete~a" i)))
-                        (t (setf string (coerce (mstring v) 'string))))
-                  (cond ((< (length string) 80) string)
+          (setf file (plot-temp-file
+                      (format nil "maxout.~(~a~)" (stripdollar plot-format)))))
+      ;; old function $plot2dopen incorporated here
+      (case plot-format
+        ($openmath
+         (show-open-plot
+          (with-output-to-string
+            (st)
+            (cond ($show_openplot (format st "plot2d -data {~%"))
+                  (t (format st "{plot2d ~%")))
+            (when (and xmin xmax) (format st " {xrange ~g ~g}" xmin xmax))
+            (when (and ymin ymax) (format st " {yrange ~g ~g}" ymin ymax))
+            (dolist (f (cdr fun))
+              (incf i)
+              (setq plot-name
+                    (let ((string ""))
+                      (cond ((atom f) 
+                        (setf string (coerce (mstring f) 'string)))
+                            ((eq (second f) '$parametric)
+                             (setf string 
+                                   (concatenate 
+                                    'string (coerce (mstring (third f)) 'string)
+                                    ", " (coerce (mstring (fourth f)) 'string))))
+                            ((eq (second f) '$discrete)
+                             (setf string (format nil "discrete~a" i)))
+                            (t (setf string (coerce (mstring f) 'string))))
+                      (cond ((< (length string) 80) string)
                         (t (format nil "fun~a" i)))))
+              (format st " {label \"~a\"}~%" plot-name)
+              (format st " {xversusy~%")
+              (let ((lis (cdr (draw2d f range log-x log-y))))
+                (loop while lis
+                  do
+                  (loop while (and lis (not (eq (car lis) 'moveto)))
+                        collecting (car lis) into xx
+                        collecting (cadr lis) into yy
+                        do (setq lis (cddr lis))
+                        finally
+                        ;; only output if at least two points for line
+                        (cond ((cdr xx)
+                               (tcl-output-list st xx)
+                               (tcl-output-list st yy))))
+                  ;; remove the moveto
+                  (setq lis (cddr lis))))
+              (format st "}"))
+            (format st "} "))))
+
+      (t
+        (with-open-file (st file :direction :output :if-exists :supersede)
           (case plot-format
             ($gnuplot
-             (if (> i 1)
-                 (format st ","))
-             (let ((title (get-plot-option-string '$gnuplot_curve_titles i)))
-               (if (equal title "default")
-                   (setf title (format nil "title '~a'" plot-name)))
-               (format st " '-' ~a ~a" title 
-                       (get-plot-option-string '$gnuplot_curve_styles i))))
-	    ($gnuplot_pipes
-	     (let ((title (get-plot-option-string '$gnuplot_curve_titles i)))
-               (if (equal title "default")
-                   (setf title (format nil "title '~a'" plot-name)))
+             (gnuplot-print-header st :log-x log-x :log-y log-y)
+             (format st "plot")
+             (when (and xmin xmax) (format st " [~g:~g]" xmin xmax))
+             (when (and ymin ymax)
+               (unless (and xmin xmax) (format st " []")) 
+               (format st " [~g:~g]" ymin ymax)))
+            ($gnuplot_pipes
+             (check-gnuplot-process)
+             ($gnuplot_reset)
+             (gnuplot-print-header *gnuplot-stream* :log-x log-x :log-y log-y)
+             (setq *gnuplot-command* (format nil "plot"))
+             (when (and xmin xmax)
                (setq *gnuplot-command*
-		     ($sconcat *gnuplot-command*
-			       (format nil " ~a ~a" title 
-				       (get-plot-option-string '$gnuplot_curve_styles i))))))))
-        (case plot-format
-          ($gnuplot
-           (format st "~%"))
-	  ($gnuplot_pipes
-	   (format st "~%")))
-        (setf i 0)
-        (dolist (v (cdr fun))
-          (incf i)
-
-      ; Assign PLOT-NAME only if not already assigned.
-      ; I (Robert Dodier) would just cut it, but it's not clear
-      ; that it is always assigned by the time we arrive here.
-      (if (null plot-name)
+                     ($sconcat *gnuplot-command* 
+                               (format nil " [~g:~g]"  xmin xmax))))
+             (when (and ymin ymax) 
+               (unless (and xmin xmax)
+                 (setq *gnuplot-command* ($sconcat *gnuplot-command*
+                                                   (format nil " []"))))
+                 (setq *gnuplot-command*
+                       ($sconcat *gnuplot-command* 
+                                 (format nil " [~g:~g]"  ymin ymax))))))
+          (dolist (v (cdr fun))
+	    (case plot-format
+	      ($gnuplot_pipes
+	       (if (> i 0)
+		   (setq *gnuplot-command* ($sconcat *gnuplot-command* ", ")))
+	       (setq *gnuplot-command* ($sconcat *gnuplot-command* 
+					         (format nil "'~a' index ~a " file i)))))
+            (incf i)
             (setq plot-name
-                  (let ((string (coerce (mstring v) 'string)))
-                    (cond ((< (length string) 20) string)
-                          (t (format nil "Fun~a" i))))))
-
+                  (let ((string ""))
+                    (cond ((atom v) 
+                           (setf string (coerce (mstring v) 'string)))
+                          ((eq (second v) '$parametric)
+                           (setf string 
+                                 (concatenate 
+                                  'string (coerce (mstring (third v)) 'string)
+                                  ", " (coerce (mstring (fourth v)) 'string))))
+                          ((eq (second v) '$discrete)
+                           (setf string (format nil "discrete~a" i)))
+                          (t (setf string (coerce (mstring v) 'string))))
+                    (cond ((< (length string) 80) string)
+                          (t (format nil "fun~a" i)))))
+            (case plot-format
+              ($gnuplot
+               (if (> i 1)
+                   (format st ","))
+               (let ((title (get-plot-option-string '$gnuplot_curve_titles i)))
+                 (if (equal title "default")
+                     (setf title (format nil "title '~a'" plot-name)))
+                 (format st " '-' ~a ~a" title 
+                         (get-plot-option-string '$gnuplot_curve_styles i))))
+	      ($gnuplot_pipes
+	       (let ((title (get-plot-option-string '$gnuplot_curve_titles i)))
+                 (if (equal title "default")
+                     (setf title (format nil "title '~a'" plot-name)))
+                 (setq *gnuplot-command*
+		       ($sconcat *gnuplot-command*
+			         (format nil " ~a ~a" title 
+				         (get-plot-option-string '$gnuplot_curve_styles i))))))))
           (case plot-format
-            ($xgraph
-             (format st "~%~% \"~a\"~%" plot-name))
             ($gnuplot
-             (if (> i 1)
-                 (format st "e~%")))
+             (format st "~%"))
 	    ($gnuplot_pipes
-	     (if (> i 1)
-		 (format st "~%~%")))
-            ($mgnuplot
-             (format st "~%~%# \"~a\"~%" plot-name))
-            )
-	  (let (in-discontinuity)
-	    (loop for (v w) on (cdr (draw2d v range log-x log-y)) by #'cddr
-		  do
-		  (cond ((eq v 'moveto)
-			 (cond 
-			   ((find plot-format '($gnuplot_pipes $gnuplot))
-			    ;; A blank line means a discontinuity
-			    (if (null in-discontinuity)
-				(progn
-				  (format st "~%")
-				  (setq in-discontinuity t))))
-			   ((equal plot-format '$mgnuplot)
-			    ;; A blank line means a discontinuity
-			    (format st "~%"))
-			   (t
-			    (format st "move "))))
-			(t  (format st "~g ~g ~%" v w)
-			    (setq in-discontinuity nil))))))))
+	     (format st "~%")))
+          (setf i 0)
+          (dolist (v (cdr fun))
+            (incf i)
+
+        ; Assign PLOT-NAME only if not already assigned.
+        ; I (Robert Dodier) would just cut it, but it's not clear
+        ; that it is always assigned by the time we arrive here.
+        (if (null plot-name)
+              (setq plot-name
+                    (let ((string (coerce (mstring v) 'string)))
+                      (cond ((< (length string) 20) string)
+                            (t (format nil "Fun~a" i))))))
+
+            (case plot-format
+              ($xgraph
+               (format st "~%~% \"~a\"~%" plot-name))
+              ($gnuplot
+               (if (> i 1)
+                   (format st "e~%")))
+	      ($gnuplot_pipes
+	       (if (> i 1)
+		   (format st "~%~%")))
+              ($mgnuplot
+               (format st "~%~%# \"~a\"~%" plot-name))
+              )
+	    (let (in-discontinuity)
+	      (loop for (v w) on (cdr (draw2d v range log-x log-y)) by #'cddr
+		    do
+		    (cond ((eq v 'moveto)
+			   (cond 
+			     ((find plot-format '($gnuplot_pipes $gnuplot))
+			      ;; A blank line means a discontinuity
+			      (if (null in-discontinuity)
+				  (progn
+				    (format st "~%")
+				    (setq in-discontinuity t))))
+			     ((equal plot-format '$mgnuplot)
+			      ;; A blank line means a discontinuity
+			      (format st "~%"))
+			     (t
+			      (format st "move "))))
+			  (t  (format st "~g ~g ~%" v w)
+			      (setq in-discontinuity nil))))))))))
+
       (case plot-format
         ($gnuplot 
          (gnuplot-process file))
@@ -1423,58 +1464,6 @@
 ;;                  `((mlist) , (maxima-path "bin" "###")))
 ;;               command))
     
-
-
-(defun $plot2dopen (fun range &rest options &aux ($numer t)  $display2d
-                    (i 0)
-                    ($plot_options $plot_options))
-  (declare (special linel))
-  (dolist (v options) ($set_plot_option v))
-  (setq range (check-range range))
-  (or ($listp fun ) (setf fun `((mlist) ,fun)))
-  (show-open-plot
-   (with-output-to-string
-     (st )
-     (cond ($show_openplot (format st "plot2d -data {~%"))
-           (t (format st "{plot2d ~%")))
-     (loop for f in (cdr fun)
-            do
-            (incf i)
-            (format st " {label \"~a\"}~%"
-                    (let ((string (coerce (mstring f) 'string)))
-                      (cond ((< (length string) 9) string)
-                            (t (format nil "Fun~a" i))))
-                    )
-            (format st " {xversusy~%")
-            (let ((lis (cdr (draw2d f range ))))
-
-              (loop while lis
-                     do
-
-                     (loop while (and lis (not (eq (car lis) 'moveto)))
-
-                            collecting (car lis) into xx
-                            collecting (cadr lis) into yy
-                            do (setq lis (cddr lis))
-                            finally
-                            ;; only output if at least two points for line
-                            (cond ((cdr xx)
-                                   (tcl-output-list st xx)
-                                   (tcl-output-list st yy)
-                                   ))
-                                        ; remove the moveto
-                            )
-                     (setq lis (cddr lis))
-                     ))
-            (format st "}"))
-     (format st "} "))))
-
-
-(eval-when (load)
-  (cond ($in_netmath
-         (setf (symbol-function '$plot2d) (symbol-function '$plot2dopen))
-         (setf $show_openplot nil)
-         )))
 
 ; Adapted from MSTRINGP (change & to $).
 (defun msymbolp (x)
