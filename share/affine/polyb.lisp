@@ -713,11 +713,11 @@ and modulo-p not prime gives false answer"
   (let ((p0 (length l)))
     (show p0)
     (add*  (mul* p0 (sloop for i from 1 to (1- p0)
-			  collecting (mul* (nth i l) (power '$sig (mod (minus i) p0)))
+			  collecting (mul* (nth i l) (power '$sig (mod (- i) p0)))
 			  into tem
 			  finally (return (meval* (cons '(mplus) tem))))
 		 (car l)
-		 (mul* (minus p0) (sloop for i from 1 to (1- p0)
+		 (mul* (- p0) (sloop for i from 1 to (1- p0)
 					collecting (nth i l) into tem
 					finally (return (meval* (cons '(mplus) tem)))))))))
 
@@ -1062,7 +1062,7 @@ and modulo-p not prime gives false answer"
 				   (<  (third v) 0))
 		       collecting (progn
 				    (setq tem1 (copy-list v))
-				    (setf (third tem1) (minus (third v)))
+				    (setf (third tem1) (- (third v)))
 				    tem1)
 				  into tem
 		       finally (return (simplifya (cons '(mtimes) tem) nil))))

@@ -603,7 +603,7 @@
 	((eq (setq tem (car (last perm))) sub1-leng)
 	 (nsign-of-permutation (nbutlast perm)))
 	(t (nsubst tem sub1-leng perm)
-	   (minus (nsign-of-permutation (nbutlast perm)))))))
+	   (- (nsign-of-permutation (nbutlast perm)))))))
 (defun $make_art_q (&rest indices)
   (make-array indices :adjustable t))
 

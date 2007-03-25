@@ -1462,7 +1462,7 @@ something is wrong" (length (sp-list-of-all-columns-occurring sp-mat)) number-of
 	     (setf fresh-row ( sp-swap-pivot-row-with-later-one sp-mat)))))))))
 (defmacro swap-rows-and-constants (m n)
   `(prog (tem) (rotatef (aref (sp-rows sp-mat) ,m) (aref (sp-rows sp-mat) ,n))
-	 (setf (sp-sign-of-row-permutation sp-mat) (minus (sp-sign-of-row-permutation sp-mat)))
+	 (setf (sp-sign-of-row-permutation sp-mat) (- (sp-sign-of-row-permutation sp-mat)))
 	 (cond ((setq tem (sp-current-column-above-pivot-row-number sp-mat))
 		(rotatef (aref tem ,m) (aref tem ,n))))
 	 ;(cond (-boundp sign)(setq sign (- sign))) ;;keep track of sign for det

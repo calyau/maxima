@@ -1,6 +1,3 @@
-
-
-
 ;*******************************************************************************
 ;*                                                                             *
 ;*  copyright (c) 1988 kent state univ.  kent, ohio 44242                      *
@@ -218,7 +215,7 @@
 	(setq r (mkfratdo var lo hi incr))
 	(indentratlevel (+ 1))
 	(setq r (append r (ratstmt body)))
-	(indentratlevel (minus 1))
+	(indentratlevel (- 1))
 	(return r)))
 
 (defun ratend (stmt)
@@ -236,7 +233,7 @@
 	       (setq r (mkfratfor var lo cond nil nil))))
 	(indentratlevel (+ 1))
 	(setq r (append r (ratstmt body)))
-	(indentratlevel (minus 1))
+	(indentratlevel (- 1))
 	(return r)))
 
 (defun ratgoto (stmt)
@@ -255,7 +252,7 @@
 		    (equal (length st) 2))
 	       (setq st (mkstmtgp 0 (list st)))))
 	(setq r (append r (ratstmt st)))
-	(indentratlevel (minus 1))
+	(indentratlevel (- 1))
 	(setq stmt (cdr stmt))
 	(while (and (setq stmt (cdr stmt))
 		    (neq (caar stmt) t))
@@ -268,7 +265,7 @@
 			    (equal (length st) 2))
 		       (setq st (mkstmtgp 0 (list st)))))
 		(setq r (append r (ratstmt st)))
-		(indentratlevel (minus 1))))
+		(indentratlevel (- 1))))
 	(cond (stmt
 	       (progn
 		(setq r (append r (mkfratelse)))
@@ -279,7 +276,7 @@
 			    (equal (length st) 2))
 		       (setq st (mkstmtgp 0 (list st)))))
 		(setq r (append r (ratstmt st)))
-		(indentratlevel (minus 1)))))
+		(indentratlevel (- 1)))))
 	(return r)))
 
 (defun ratliteral (stmt)
@@ -324,7 +321,7 @@
 	(setq r (mkfratrepeat))
 	(indentratlevel (+ 1))
 	(setq r (append r (ratstmt body)))
-	(indentratlevel (minus 1))
+	(indentratlevel (- 1))
 	(return (append r (mkfratuntil exitcond)))))
 
 (defun ratreturn (stmt)
@@ -339,7 +336,7 @@
 	(setq r (mkfratbegingp))
 	(indentratlevel (+ 1))
 	(setq r (append r (foreach stmt in stmtgp conc (ratstmt stmt))))
-	(indentratlevel (minus 1))
+	(indentratlevel (- 1))
 	(return (append r (mkfratendgp)))))
 
 (defun ratstmtno (label)
@@ -358,7 +355,7 @@
 	(setq r (mkfratwhile cond))
 	(indentratlevel (+ 1))
 	(setq r (append r (ratstmt body)))
-	(indentratlevel (minus 1))
+	(indentratlevel (- 1))
 	(return r)))
 
 (defun ratwrite (stmt)

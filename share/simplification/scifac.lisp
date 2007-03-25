@@ -78,7 +78,7 @@
                      ((null ge)
                       (and (or minuslogic all-minus)
                            (or (minusp intgcd)
-                               (setq intgcd (minus intgcd)))
+                               (setq intgcd (- intgcd)))
                            (setq minuslogic nil))
                       (or (equal intgcd 1)
                           (progn

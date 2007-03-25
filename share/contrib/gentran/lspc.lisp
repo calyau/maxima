@@ -1,6 +1,3 @@
-
-
-
 ;*******************************************************************************
 ;*                                                                             *
 ;*  copyright (c) 1988 kent state univ.  kent, ohio 44242                      *
@@ -102,7 +99,7 @@
 	       (indentclevel (+ 1))
 	       (cond (*gendecs (setq r (append r (cdecs vartypes)))))
 	       (setq r (append r (foreach s in body conc (cstmt s))))
-	       (indentclevel (minus 1))
+	       (indentclevel (- 1))
 	       (setq r (append r (mkfcendgp)))))
 	(cond (*gendecs
 	       (progn
@@ -221,7 +218,7 @@
 	       (setq r (mkfcfor var lo cond nil nil))))
 	(indentclevel (+ 1))
 	(setq r (append r (cstmt body)))
-	(indentclevel (minus 1))
+	(indentclevel (- 1))
 	(return r)))
 
 (defun cgoto (stmt)
@@ -237,7 +234,7 @@
 		    (equal (length st) 2))
 	       (setq st (mkstmtgp 0 (list st)))))
 	(setq r (append r (cstmt st)))
-	(indentclevel (minus 1))
+	(indentclevel (- 1))
 	(setq stmt (cdr stmt))
 	(while (and (setq stmt (cdr stmt))
 		    (neq (caar stmt) t))
@@ -250,7 +247,7 @@
 			    (equal (length st) 2))
 		       (setq st (mkstmtgp 0 (list st)))))
 		(setq r (append r (cstmt st)))
-		(indentclevel (minus 1))))
+		(indentclevel (- 1))))
 	(cond (stmt (progn
 		     (setq r (append r (mkfcelse)))
 		     (indentclevel (+ 1))
@@ -260,7 +257,7 @@
 				 (equal (length st) 2))
 			    (setq st (mkstmtgp 0 (list st)))))
 		     (setq r (append r (cstmt st)))
-		     (indentclevel (minus 1)))))
+		     (indentclevel (- 1)))))
 	(return r)))
 
 (defun clabel (label)
@@ -297,7 +294,7 @@
 	(setq r (mkfcdo))
 	(indentclevel (+ 1))
 	(setq r (append r (cstmt body)))
-	(indentclevel (minus 1))
+	(indentclevel (- 1))
 	(return (append r (mkfcdowhile (list 'not logexp))))))
 
 (defun creturn (stmt)
@@ -312,7 +309,7 @@
 	(setq r (mkfcbegingp))
 	(indentclevel (+ 1))
 	(setq r (append r (foreach stmt in stmtgp conc (cstmt stmt))))
-	(indentclevel (minus 1))
+	(indentclevel (- 1))
 	(return (append r (mkfcendgp)))))
 
 (defun cwhile (cond body)
@@ -321,7 +318,7 @@
 	(setq r (mkfcwhile cond))
 	(indentclevel (+ 1))
 	(setq r (append r (cstmt body)))
-	(indentclevel (minus 1))
+	(indentclevel (- 1))
 	(return r)))
 
 

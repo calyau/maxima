@@ -228,7 +228,7 @@
 	(setq result (mkffortdo n1 var lo hi incr))
 	(indentfortlevel (+ 1))
 	(setq result (append result (foreach st in body conc (fortstmt st))))
-	(indentfortlevel (minus 1))
+	(indentfortlevel (- 1))
 	(setq result (append result (mkffortcontinue n1)))
 	(cond ((listp (car *endofloopstack*))
 	       (setq result
@@ -259,7 +259,7 @@
 		(cond ((equal nextexp '(nil)) (setq nextexp nil)))
 		(setq result (append result (mkffortassign var nextexp))))))
 	(setq result (append result (mkffortgo n1)))
-	(indentfortlevel (minus 1))
+	(indentfortlevel (- 1))
 	(setq result (append result (mkffortcontinue n2)))
 	(cond ((listp (car *endofloopstack*))
 	       (setq result
@@ -289,7 +289,7 @@
 			(indentfortlevel (+ 1))
 			(setq res (append res (foreach st in (cdar stmt) conc
 						       (fortstmt st))))
-			(indentfortlevel (minus 1))
+			(indentfortlevel (- 1))
 			(append res (mkffortcontinue n1)))))))
 	      (t
 	       (return
@@ -301,11 +301,11 @@
 		 (setq res (append res (foreach st in (cdar stmt) conc
 						(fortstmt st))))
 		 (setq res (append res (mkffortgo n2)))
-		 (indentfortlevel (minus 1))
+		 (indentfortlevel (- 1))
 		 (setq res (append res (mkffortcontinue n1)))
 		 (indentfortlevel (+ 1))
 		 (setq res (append res (fortif (cons 'cond (cdr stmt)))))
-		 (indentfortlevel (minus 1))
+		 (indentfortlevel (- 1))
 		 (append res (mkffortcontinue n2))))))))
 
 (defun fortliteral (stmt)
