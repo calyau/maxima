@@ -165,9 +165,9 @@
   (prog (k l delta variableorder inconsistentrows
 	 dependentrows nrow nvar rank permsign result)
      (setq ax (get-array-pointer ax))
-     (setq *col* (make-array (1+ m)))
-     (setq *row* (make-array (1+ n)))
-     (setq *colinv* (make-array (1+ m)))
+     (setq *col* (make-array (1+ m) :initial-element 0))
+     (setq *row* (make-array (1+ n) :initial-element 0))
+     (setq *colinv* (make-array (1+ m) :initial-element 0))
      ;; (PRINT 'ONESTEP-LIPSON-WITH-PIVOTTING)
      (setq nrow n)
      (setq nvar (cond (*rank* m) (*det* m) (*inv* n) (*ech* m) (*tri* m) (t (1- m))))
