@@ -35,8 +35,8 @@
 		   `(the , .return ,body))))))
 
     #+fix-debug
-    (progn ;; these allow running of code and they print out where the error
-      ;; occurred
+    (progn
+      ;; these allow running of code and they print out where the error occurred
 
       (defvar *dbreak* t)
 
@@ -52,10 +52,6 @@
 	   `(progn (chk-type (list ,@l) ',',name ',',type ',l)
 		   (,',old ,@l)))))
 
-    ;;note 1+ and 1- in the main macsyma code were for fixnum 1+,
-    ;;so we should replace them by f1+ and f1- and then add the appropriate
-    ;;definitions here.
-
     (def-op f+ fixnum +)
     (def-op f* fixnum *)
     (def-op f- fixnum -)
@@ -66,10 +62,7 @@
     (def-op f1+ fixnum 1+)
     (def-op quotient t quot)
     (def-op // t quot)
-    (def-op minus t -)
-
-    ;;exp is shadowed to save trouble for other packages--its declared special
-    (setf (symbol-function 'exp) (symbol-function 'cl:exp)))
+    (def-op minus t -))
 
 ;;this is essentially what the quotient is supposed to do.
 
@@ -133,8 +126,6 @@
 	(t				;neither is of known type:
 	 (alphalessp (format nil "~s" x)(format nil "~s" y)))))
 
-
-
 (defmacro symbol-array (sym)
   `(get ,sym 'array))
 
@@ -144,10 +135,7 @@
 (defun arraydims (ar)
   (when (symbolp ar)
     (setq ar (symbol-array ar)))
-  (cons (array-type ar) (array-dimensions ar)))
-
-(defun array-type (ar)
-  (array-element-type ar))
+  (cons (array-element-type ar) (array-dimensions ar)))
 
 (defun firstn (n lis)
   (subseq lis 0 n))
@@ -155,15 +143,8 @@
 (defun fixnump (n)
   (typep n 'fixnum))
 
-(defun fix (n) (values (floor n)))
-
-;;did result of fix have to  be fixnum in maclisp??
-;;so could this be more efficient??
-(setf (symbol-function 'fixr) #'round)
-
-(defun mapatoms (func &optional (pack *package*))
-  (do-symbols (x pack)
-    (funcall func x)))
+(defun  bignump (x)
+  (typep x 'bignum))
 
 ;;actually this was for lists too.
 
@@ -171,7 +152,6 @@
   (if (consp sym)
       (setf (getf (cdr sym) indic) val)
       (setf (get sym indic) val)))
-
 
 (defmacro defprop (sym val indic)
   (if (eq indic 'expr)
@@ -184,18 +164,6 @@
 
 (defun memq (x lis)
   (member x lis :test #'eq))
-
-(defun zl-member (x lis)
-  (member x lis :test #'equal))
-
-(defun assq (x alist)
-  (assoc x alist :test #'eq))
-
-(defun bigp (x)
-  (typep x 'bignum))
-
-(defun  bignump (x)
-  (typep x 'bignum))
 
 ;; Find the N most significant or least significant bits of the
 ;; absolute value of X.  If N is positive, take the most significant;
@@ -212,10 +180,6 @@
 ;;    (if (minusp count)
 ;;      (ldb (byte (- count) 0) x)
 ;;      (ldb (byte count (max 0 (- (integer-length x) count))) x))))
-
-(defmacro aset (val ar &rest inds)
-  `(setf (aref ,ar ,@inds) ,val))
-
 
 ;;used in translation
 (defun fset (sym val)
@@ -238,23 +202,13 @@
   `(and (symbolp ,sym) (getl ,sym ,prop)))
 
 (defun getl (plist indicator-list )
-  (declare (object plist))
   (cond ((symbolp plist)
 	 (setq plist (symbol-plist plist)))
 	((consp plist) (setq plist (cdr plist)))
 	(t (return-from getl nil)))
   (loop for tail on plist by #'cddr
-	 when (memq (car tail) indicator-list)
+	 when (member (car tail) indicator-list :test #'eq)
 	 do (return tail)))
-
-;;this is the get of maclisp
-;; works on symbols and plists
-;;(defun maclisp-get (sym-or-plist prop)
-;;  (cond ((symbolp sym-or-plist)
-;;	 (get sym-or-plist prop))
-;;	((consp sym-or-plist)
-;;	 (getf (cdr sym-or-plist) prop))
-;;	(t nil)))
 
 (defmacro ncons (x)
   `(cons ,x nil)) ;;can one optimize this??
@@ -262,8 +216,7 @@
 (defun zl-remove (item list &optional n)
   (remove item list :count n :test #'equal))
 
-(defvar *acursor* (make-array 11 :element-type 'fixnum
-			      :initial-element 0))
+(defvar *acursor* (make-array 11 :element-type 'fixnum :initial-element 0))
 
 ;; Format of *acursor*.
 ;; 0                 1  2  3  4  5    6  7  8  9  10
@@ -300,47 +253,18 @@
     (setq ar (get ar 'array)))
   (when (/= (array-rank ar) 1)
     (setq ar (make-array (array-total-size ar) :displaced-to ar)))
-  (setq x
-	(cond ((null x)
-	       (ecase (array-element-type ar)
-		 (fixnum '(0))
-		 (float '(0.0))
-		 ((t) '(nil))))
-	      ((arrayp x)(listarray x))
-	      ((atom x) (list x))
-	      (t x)))
+  (setq x (cond ((null x)
+		 (ecase (array-element-type ar)
+		   (fixnum '(0))
+		   (float '(0d0))
+		   ((t) '(nil))))
+		((arrayp x)(listarray x))
+		((atom x) (list x))
+		(t x)))
   (when (> (length ar) 0)
     (set-up-cursor ar)
     (loop while (aset-by-cursor ar (car x))
-	   do (and (cdr x) (setq x (cdr x))))))
-
-;;(defun fillarray (ar x)
-;;  (when (symbolp ar)
-;;    (setq ar (get ar 'ARRAY)))
-;;  (let ((leng (length (the (lisp:array  t ) ar))))
-;;    (declare (fixnum leng))
-;;  (cond ((null x)
-;;	 (setq x (ecase (array-element-type ar)
-;;			     (fixnum 0)
-;;			     (float 0.0)
-;;			     ((t) nil)))
-;;	 (loop for i below leng
-;;		do (setf (aref ar i) x)))
-;;	((consp x)
-;;	 (loop for i below leng
-;;		for u in x
-;;		do (setf (aref ar i) u)
-;;		finally
-;;		(loop for j from i below leng
-;;		       do (setf (aref ar j) u))))
-;;	((arrayp x)
-;;	 (loop for i below (min leng (length x))
-;;		do (setf (aref ar i) (aref x i))
-;;		finally (loop for j from i below leng
-;;			       with u = (aref x (f- i 1))
-;;			       do (setf (aref ar j ) u))))
-;;	(t (error "bad second arg to fillarray")))))
-
+       do (and (cdr x) (setq x (cdr x))))))
 
 (defun listarray (x)
   (when (symbolp x)
@@ -370,7 +294,6 @@
     (or not-dim1 (setf (gethash 'dim1 table) t))
     table))
 
-
 ;;range of atan should be [0,2*pi]
 (defun atan (y x)
   (let ((tem (cl:atan y x)))
@@ -380,11 +303,12 @@
 
 ;;range of atan2 should be (-pi,pi]
 ;;CL manual says that's what lisp::atan is supposed to have.
+(deff atan2 #'cl:atan)
 
-(setf (symbol-function 'atan2) (symbol-function 'cl:atan))
+;;exp is shadowed to save trouble for other packages--its declared special
+(deff exp #'cl:exp)
 
 (setq *read-default-float-format* 'double-float)
-
 
 #+clisp
 (progn
@@ -396,8 +320,7 @@
 
   ;; (setq custom:*default-float-format* 'double-float)
 
-  ;; We currently don't want any warnings about floating-point
-  ;; contagion happening.
+  ;; We currently don't want any warnings about floating-point contagion.
   (setq custom::*warn-on-floating-point-contagion* nil)
 
   ;; We definitely want ANSI-style floating-point contagion.
@@ -408,8 +331,7 @@
   ;; in those few cases when the mathematical result is exact although
   ;; one of the arguments is a floating-point number, such as (* 0
   ;; 1.618), (/ 0 1.618), (atan 0 1.0), (expt 2.0 0)
-  (let ((fprca (find-symbol "*FLOATING-POINT-RATIONAL-CONTAGION-ANSI*" :CUSTOM)))
-    (if fprca (set fprca t)))
-)
+  (setq custom:*floating-point-rational-contagion-ansi* t))
 
-(defmacro float (x &optional (y 1.0d0)) `(cl:float ,x ,y))
+(defmacro float (x &optional (y 1d0))
+  `(cl:float ,x ,y))
