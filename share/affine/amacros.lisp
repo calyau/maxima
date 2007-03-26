@@ -77,14 +77,14 @@
 		 collecting (intern (string-upcase (string tem)) 'keyword) into opts
 		 collecting tem into opts
 		 finally
-		 (setq args (append (firstn i args)  opts (cdr w)))(return 'done))
+		 (setq args (append (subseq args 0 i)  opts (cdr w)))(return 'done))
 		 (return 'done))
   args)
 
 (defun delete-from-&aux (list)
   (sloop for u in list
 	for i from 1
-	when (eq u '&aux) do (return (firstn (f1- i) list))
+	when (eq u '&aux) do (return (subseq list 0 (1- i)))
 	finally (return list)))
 
 (defun clear-memory-function (f &aux tem)

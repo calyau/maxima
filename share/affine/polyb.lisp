@@ -396,7 +396,7 @@
 					      (list left right1) *previously-checked-pairs*)
 				    t)
 			      (setq assoc-list
-				    (list (ncmuln (cdr (firstn ii left)) t)
+				    (list (ncmuln (cdr (subseq left 0 ii)) t)
 					  (ncmuln (nthcdr ii left) t)
 					  (ncmuln tem t)))
 			      (format t "~%Checking the overlap for")
@@ -679,7 +679,7 @@
   (sloop for u in $dot_simplifications
 	for i from 0
 	when (and (oddp i) (not (funcall ordering  (car a-list) u)))
-	do (setq $dot_simplifications (append (firstn i $dot_simplifications)
+	do (setq $dot_simplifications (append (subseq $dot_simplifications 0 i)
 					       a-list
 				       (nthcdr i $dot_simplifications)))
 	(return 'done)

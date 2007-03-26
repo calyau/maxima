@@ -1487,15 +1487,13 @@
 	 (setq list-ldata (list (make-ldata :eqns eqns :inequality ld-inequality)))))
       (construct-pre-ldata-sheaves
 	:s-var
-	(make-s-var :zopens (list (affine-open (firstn
-						dim *xxx*) inequality)))
+	(make-s-var :zopens (list (affine-open (subseq *xxx* 0 dim) inequality)))
 	:data (list list-ldata)))
 
 (defun affine-ldata (n eqns inequality)
       (construct-pre-ldata-sheaves
 	:s-var
-	(make-s-var :zopens (list (affine-open (firstn
-						n *xxx*) inequality)))
+	(make-s-var :zopens (list (affine-open (subseq *xxx* 0 n) inequality)))
 	:data (list (list
 		      (make-ldata :eqns  eqns
 				  :inequality inequality)))))
@@ -2314,7 +2312,7 @@
    minimize is where the minimum is"
   (iassert (member in-or-on '(in on) :test #'eq))
   (cond ((equal (car body) 'when)
-	 (setq when-clause (firstn 2 body) body (cddr body)))
+	 (setq when-clause (subseq body 0 2) body (cddr body)))
 	(t (iassert (eq (length body) 2))))
   (setq operation (first body) quantity (second body))
   (cond ((member operation '(minimize maximize) :test #'equal)
@@ -2886,7 +2884,7 @@
 		    (pdegree (second eqns-rep) repeat))
 		;;choose the least complex leading coefficient to divide by
 		(setq eqns-rep
-		      (sort-key (firstn 2 eqns-rep) '<
+		      (sort-key (subseq eqns-rep 0 2) '<
 				#'(lambda (u var) (pcomplexity
 						    (leading-coefficient u var)))
 				repeat))))

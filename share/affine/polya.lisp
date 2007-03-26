@@ -821,7 +821,7 @@ dot_products, much the same as can be obtained by doing $dotsimp")
 		 (format t "adding it to answer")
 	         (cond ((fifth the-num)(setq expr (nred  (fifth the-num) the-denom)))	;cons?
 		       (t (setq expr 0)))
-	     (setq answer (n+ answer (nred (firstn 3 the-num) the-denom)))
+	     (setq answer (n+ answer (nred (subseq the-num 0 3) the-denom)))
 	     do
 	     (setq repl nil)
 	     (setq tem nil the-num nil the-denom nil )
@@ -1012,9 +1012,8 @@ dot_products, much the same as can be obtained by doing $dotsimp")
 			      when
 			      (initial-sublist pattern monom)
 			      do
-			      (setq tema (firstn (f- (length init-monom)
-						    (length monom) 1)
-						 (cdr init-monom)))
+			      (setq tema (subseq (cdr init-monom) 0
+						 (- (length init-monom) (length monom) 1)))
 			      (cond ($new_fast_dotsimp
 				     (setq answer
 					   (new-rat-ncmul1
@@ -1208,7 +1207,7 @@ dot_products, much the same as can be obtained by doing $dotsimp")
   (sloop for i from 1 to (length a-list)
 	do
        
-	(cond ((member-even  (firstn i a-list) (cdr $dot_simplifications))(return t)))))))
+	(cond ((member-even  (subseq a-list 0 i) (cdr $dot_simplifications)) (return t)))))))
 ;
 ;(defun $mono (a-list n &optional $sort &aux answer tem ans1 sorted-cdr-list)
 ;  "Returns the dot-monomials which will not be replaced by $dot_simplifications
@@ -1354,7 +1353,7 @@ dot_products, much the same as can be obtained by doing $dotsimp")
 		  (rational-functionp v)))
 	do
 	(cond ((rational-functionp v)(setq denom (denom v))))
-	(return (cons (poly-ncmul1 (ncmuln (firstn i list-of-terms) nil)
+	(return (cons (poly-ncmul1 (ncmuln (subseq list-of-terms 0 i) nil)
 			   (num v)		
 			   (ncmuln (nthcdr (f1+ i) list-of-terms) nil)) denom))
 	finally  (return (ncmuln list-of-terms nil))))
@@ -1365,7 +1364,7 @@ dot_products, much the same as can be obtained by doing $dotsimp")
 	for i from 0
 	when ($ratp v)
 	do
-	(return (ncmul1 (ncmuln (firstn i list-of-terms) nil)
+	(return (ncmul1 (ncmuln (subseq list-of-terms 0 i) nil)
 			   v
 			   (ncmuln (nthcdr (f1+ i) list-of-terms) nil)))
 	finally (return (ncmuln list-of-terms nil))))
@@ -1684,8 +1683,8 @@ dot_products, much the same as can be obtained by doing $dotsimp")
 	       do
 	       (aux_to_list_of_variables u var1)))))
 
-(defun $firstn ( n a-list)
-  (firstn (f1+ n) a-list))
+(defun $firstn (n a-list)
+  (subseq a-list 0 (1+ n)))
 
 (defun $general_sum (terms &optional coefficients &aux answer)
   (cond ((null coefficients)
@@ -2049,9 +2048,7 @@ dot_products, much the same as can be obtained by doing $dotsimp")
   (sloop  while some-of-big
 	 when (initial-sublist small some-of-big)
 	 do (setf answer (append 
-			      (list  (firstn
-			    (f- (length big)
-			       (length some-of-big)) big)
+			      (list  (subseq big 0 (- (length big) (length some-of-big)))
 			    (nthcdr (length small) some-of-big))
 			      answer))
 		  	 do
@@ -2067,7 +2064,7 @@ dot_products, much the same as can be obtained by doing $dotsimp")
   (setf $dot_simplifications (copy-list l))
 
 	(show l)
-	(setf $dot_simplifications (firstn 3 l))
+	(setf $dot_simplifications (subseq l 0 3))
 	(setf l (cdddr l))
 	
         (sloop while l
@@ -2219,7 +2216,7 @@ dot_products, much the same as can be obtained by doing $dotsimp")
 ;
 ;   (sloop for v in (cdr all-eqns) do (displa v))
 
-  (setf answer ($fast_linsolve all-eqns (firstn (length terms) $aaaa)))
+  (setf answer ($fast_linsolve all-eqns (subseq $aaaa 0 (length terms))))
   (setf answer ($sublis answer gen-sum)))
 ;  (break aft)
 ;  ($express_in_terms_of_basis variables answer relations))
@@ -2536,7 +2533,7 @@ dot_products, much the same as can be obtained by doing $dotsimp")
 			 collecting ($rat (aref a-row (f1+ i)))))
 	
 	(setf all-eqns (cons '(mlist simp) eqns))
-  (setf answer ($fast_linsolve all-eqns (firstn (length monoms) $aaaa)))
+  (setf answer ($fast_linsolve all-eqns (subseq $aaaa 0 (length monoms))))
   (setf answer ($sublis answer  gen-sum)))
 (defvar *show-entry-type* t)
 
@@ -2709,7 +2706,7 @@ scalars in the alphabet"
   (setq big-pd (poly-data-from-nc-matrix big-mat))
   (setq all-rows (listarray (pd-rows big-pd)))
   (multiple-value-bind (sp1 sp2) 
-      (sp-quotient-space-basis (firstn ($length modulo-mat) all-rows)
+      (sp-quotient-space-basis (subseq all-rows 0 ($length modulo-mat))
 			       (nthcdr  ($length modulo-mat) all-rows))
     sp2
    (setf (pd-rows big-pd) (sp-rows sp1))

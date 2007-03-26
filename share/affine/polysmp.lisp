@@ -498,7 +498,7 @@ substituting them to be zero."
 	   repl(nth (f- i 1) *poly-simplifications*))
      (setq old-simps *poly-simplifications*)
      (setq *poly-simplifications* (append     ;;;nconac ok..
-				   (firstn (f- i 2) *poly-simplifications*)
+				   (subseq *poly-simplifications* 0 (- i 2))
 				   (nthcdr i *poly-simplifications*)))
      (cond ((must-replacep (setq mono (convert-deg-sequence-to-monomial seq)))
 	    (cond (*show-grob*  (sh mono) (format t "   is not  reduced")))

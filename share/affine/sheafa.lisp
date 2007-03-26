@@ -850,7 +850,7 @@
 		     (loop-return (setq fns '(1)))
 		     else
 		     collecting  tem))
-    (setq used-up (firstn (ldata-usedup ldata) fns))
+    (setq used-up (subseq fns 0 (ldata-usedup ldata)))
     (setq fns (nthcdr (ldata-usedup ldata) fns))
     (setq fns  (sort (copy-list fns) 'plength-order))
     (setq vars (list-variables fns))

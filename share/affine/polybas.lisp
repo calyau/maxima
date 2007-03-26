@@ -254,7 +254,7 @@
 
 (defun splice-in (after-nth item a-list )
   (cond ((eq after-nth -1)(cons item a-list))
-	(t (nconc (firstn (f1+ after-nth) a-list)
+	(t (nconc (subseq a-list 0 (1+ after-nth))
 		  (cons item (cdr (nthcdr after-nth a-list)))))))
 
 

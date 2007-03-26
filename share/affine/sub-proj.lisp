@@ -447,7 +447,7 @@ poly)
 	       else
 	       do (setf (car v) (gen-ptimes
 				  (num (car v)) (pquotient lcd (denom (car v)))))))
-	(t (setq new (firstn (length old) new))))
+	(t (setq new (subseq new 0 (length old)))))
   (sloop for v in old
 	for w on new
 	do (setf (car w)
@@ -512,7 +512,7 @@ poly)
 		 else
 		 appending
 		  (collect-monomial-coefficients
-		    (pcoeff poly 1 (firstn 1 variables)) (cdr variables))))))
+		    (pcoeff poly 1 (subseq variables 0 1)) (cdr variables))))))
 
 
 (defun collect-monomial-coefficients-and-monomials (poly variables &optional (monomial 1))
@@ -531,7 +531,7 @@ poly)
 		 else
 		 appending
 		 (collect-monomial-coefficients-and-monomials
-		   (pcoeff poly 1 (firstn 1 variables)) (cdr variables) monomial)))))
+		   (pcoeff poly 1 (subseq variables 0 1)) (cdr variables) monomial)))))
 
 
 (defun collect-and-verify-coefficients (poly variables &aux answ)

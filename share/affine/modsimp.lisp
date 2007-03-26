@@ -44,9 +44,9 @@
 					      (<= (p-deg b) 1)) "an nc polynomial")
 			    (setq ncprod(add-newvar  (ncmul* va vb)))
 			    (nn+ (ptimes (list ncprod 1 1) (ptimes (p-cof a) (p-cof b)))
-				 (cond ((cdddr a) (n. (fifth a) (firstn 3 b)))
+				 (cond ((cdddr a) (n. (fifth a) (subseq b 0 3)))
 				       (t 0))
-				 (cond ((cdddr b) (n.   (firstn 3 a) (fifth b) ))
+				 (cond ((cdddr b) (n.   (subseq a 0 3) (fifth b) ))
 				       (t 0))
 				 (cond ((and (cdddr a) (cdddr b))
 					(n. (fifth a ) (fifth b)))
@@ -355,7 +355,7 @@ multiplication A^m <--- A^n:B    Bv<----|v"
 		  (equal (second v) repl))
 	  do ( loop-return (cons '(mlist)(nconc tem (cddr v))))
 	  else
-	  nconc (firstn 2 v) into tem))
+	  nconc (subseq v 0 2) into tem))
 
 
 ;;;needs work:note that we have not been using new-rat-dotsimp and we need to!
@@ -488,7 +488,7 @@ multiplication A^m <--- A^n:B    Bv<----|v"
 		 when (>= tot n)
 		   do
 		     (cond ((eql tot n)
-			    (loop-return (coerce-nctimes (firstn i mon))))
+			    (loop-return (coerce-nctimes (subseq mon 0 i))))
 			   (t (loop-return nil)))))))
 
 
@@ -501,8 +501,6 @@ multiplication A^m <--- A^n:B    Bv<----|v"
     (setq size-lap (f- (f+ ld rd) tot-deg ))
     (cond ((<= size-lap 0) nil)
 	  (t (setq a-lap ($lastn_ncdegree left size-lap))
-;	    (cond( a-lap
-;	    (setq b-lap ($firstn_ncdegree right size-lap))))
 	    (cond((and a-lap
 		 (or
 		   (equal a-lap right)
@@ -522,7 +520,6 @@ multiplication A^m <--- A^n:B    Bv<----|v"
     (setq size-lap (f- (f+ ld rd) tot-deg ))
     (cond ((<= size-lap 0) nil)
 	  (t (setq a-lap ($lastn_ncdegree left size-lap))
-;	    (setq b-lap ($firstn_ncdegree right size-lap))))
 	   (cond ((and a-lap  ;;have match
 		    (cond ((equal a-lap right))
 			  ((and (zl-listp a-lap) (zl-listp right)
@@ -616,7 +613,7 @@ multiplication A^m <--- A^n:B    Bv<----|v"
 ;	       do ;(show v w tem)
 	       when (not (equal v w))
 		 do (fsignal "b is not a tail of a"))
-	 (setq answ (firstn tem a))))
+	 (setq answ (subseq a 0 tem))))
   (cond ((cddr answ) answ)
 	((cdr answ) (second answ))
 	(t 1)))
@@ -643,14 +640,13 @@ multiplication A^m <--- A^n:B    Bv<----|v"
   (sloop named sue for tail-simps on (cdr old-simps) by 'cddr
 	for i from 3 by  2
 	do
-    (let (($module_simplifications (cons '(mlist) (firstn 2 tail-simps))))
+    (let (($module_simplifications (cons '(mlist) (subseq tail-simps 0 2))))
       (sloop for  (mon repl) on (cddr tail-simps) by 'cddr
 	    for jj from (f+ i 2) by 2
 	    when (or  (module-monom-must-replacep mon)
 		      (and (zl-listp repl)
 			   (module-must-replacep (function-numerator (cdr repl)))))
 	      do (setq relat  (make-relation mon repl))
-;		 (show mon repl i jj (firstn i old-simps) (nthcdr jj old-simps))
 		 (setq new-relat (module-simp relat))
 		 (setq new-relat (new-rat-dotsimp new-relat))
                  (cond ((numberp new-relat)
@@ -658,7 +654,7 @@ multiplication A^m <--- A^n:B    Bv<----|v"
 		       (t (setq new-relat (cdr new-relat))
 			  (iassert (rational-functionp new-relat))
 			  (setq new-relat (num new-relat))))
-		 (return-from sue (values (nconc (firstn (f- jj 2) old-simps)
+		 (return-from sue (values (nconc (subseq old-simps 0 (- jj 2))
 						 (make-simp new-relat)
 						 (nthcdr jj old-simps))
 					  t))

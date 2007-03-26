@@ -261,7 +261,7 @@
 	  (t (ferror "The length of list is not a square")))
     (setq a-list (cdr a-list))
     (sloop while a-list
-	  collecting (cons '(mlist) (firstn n a-list)) into tem1
+	  collecting (cons '(mlist) (subseq a-list 0 n)) into tem1
 	  do (setq a-list (nthcdr n a-list))
 	  finally (return  (cons '($matrix ) tem1)))))
 
@@ -287,7 +287,7 @@
 	(t (setq size (round (expt  (length vect) .5)))))
   (setq vect (cdr vect))
   (sloop for i below size
-	collecting (cons '(mlist) (firstn size vect)) into tem
+	collecting (cons '(mlist) (subseq vect 0 size)) into tem
 	do (setq vect (nthcdr  size vect))
 	finally (return (cons '($matrix) tem))))
 
@@ -305,7 +305,7 @@
 			    (second info) ,v)
 		      (third info)))
 	   (t	 (setq gen-mat ($general_matrix (1- (length (second ,mat))) '$p))
-		 (setq gen-vector (firstn (length ,v) $aaaa))
+		 (setq gen-vector (subseq $aaaa 0 (length ,v)))
 		 (setq image (progn ,@body))
 		 (putprop  '$tensor4 (list gen-mat gen-vector image) 'representation)
 		 ($tensor4 mat v)))))
@@ -320,7 +320,7 @@
 			 (second info) v)
 		   (third info)))
 	(t	 (setq gen-mat ($general_matrix (1- (length (second mat))) '$p))
-		 (setq gen-vector (firstn (length v) $aaaa))
+		 (setq gen-vector (subseq $aaaa 0 (length v)))
 
 		 (setq image ($tensor_product_representation
 			       '$tensor2
@@ -453,7 +453,7 @@
 			   (list '(mequal)
 				 (mfuncall operator gen-sum)
 				 ($general_sum basis (setq unknowns
-							   (firstn (length basis) $aaaa))))))
+							   (subseq $aaaa 0 (length basis)))))))
 		   unknowns))
     (setq gen-a ($sublis answer unknowns))
     (setq zero-b (sloop for w in (cdr gen-b)
@@ -472,8 +472,7 @@
   (setq gen-b ($firstn ($length basis) $bbbb))
   (setq gen-sum ($general_sum basis $bbbb))
   (setq lhs (mfuncall operator gen-sum))
-  (setq rhs    ($general_sum basis (setq unknowns
-							 (firstn (length basis) $aaaa))))
+  (setq rhs    ($general_sum basis (setq unknowns (subseq $aaaa 0 (length basis)))))
 
   (setq eqns ($list_equations (list '(mlist) (list '(mequal) lhs rhs))))
   (setq answer ($fast_linsolve eqns unknowns))
@@ -919,7 +918,7 @@
 	(setq f ($general_sum trace_monoms $aaaa))
 	(setq new-f ($dotsimp f))
 	(setq eqns ($extract_linear_equations (list '(mlist) new-f) monoms))
-	(setq solns ($fast_linsolve eqns (firstn (length monoms) $aaaa)))
+	(setq solns ($fast_linsolve eqns (subseq $aaaa 0 (length monoms))))
 	(setq sp(send $poly_vector :the-sparse-matrix))
     (setq ar (send sp ':column-used-in-row))
    (setq pivots  (sloop for i below (length (the cl:array ar))

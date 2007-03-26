@@ -232,7 +232,7 @@
   (case n
     (1 `(list (car ,l)))
     (2 `(list (car ,l) (second ,l)))
-    (t `(firstn ,n ,l))))
+    (t `(subseq ,l 0 ,n))))
 
 (defun afp-minus (f)
   "makes no check that keeping in the modulus range nor that the result is reduced,
@@ -1131,9 +1131,8 @@
        
        
        (cond ((member ':empty rest-args :test #'eq)
-	      (setq rest-args (firstn (- (length rest-args)
-					 (length (member ':empty rest-args :test #'eq)))
-				     rest-args))
+	      (setq rest-args (subseq rest-args 0 (- (length rest-args)
+						     (length (member ':empty rest-args :test #'eq)))))
 	      (setq empty t)))
        (format t "~%For functions ~A and ~A respectively, ~
       ~%with argument list ~A being ~A" ',f1 ',f2 (arglist ',f1) rest-args)
@@ -1804,8 +1803,9 @@
 (defun normalize-factor-list (factor-list &aux tot-deg)
   "checks factor-list and eliminates repeats.  All integer factors are grouped at the beginning if any"
   (let (numerical-factor(facts (collect-number-factors factor-list)))
-    (cond ((numberp (car facts))(setq numerical-factor (firstn 2 facts))
-				(setq facts (cddr facts))))
+    (cond ((numberp (car facts))
+	   (setq numerical-factor (subseq facts 0 2))
+	   (setq facts (cddr facts))))
     (nconc numerical-factor
 	   (sloop for (pol deg) on facts by 'cddr
 		 for rest-facts on facts by 'cddr

@@ -52,7 +52,7 @@
 			    (ncmul*  elmt (setq oth ($general_sum $current_variables $aaaa )))))
 	(setq answ ($totaldisrep ($numerator ($dotsimp tem))))
 	(setq eqns ($extract_linear_equations  (list '(mlist) answ)))
-	(setq solns ($fast_linsolve eqns (firstn (length $current_variables) $aaaa)))
+	(setq solns ($fast_linsolve eqns (subseq $aaaa 0 (length $current_variables))))
 	collecting ($sublis solns oth) into final
 	do (mshow (cons '(mlist)final))
 	finally (return (cons '(mlist) final))))
@@ -114,7 +114,7 @@
 		    (cons (car matrix)
 			  (sloop for u in (cdr matrix)
 				with max =  (1+ (max i j))
-				collecting (nconc (firstn max u) (nthcdr max u)))))))
+				collecting (nconc (subseq u 0 max) (nthcdr max u)))))))
 				
   (sloop for u in (cdr matrix)
 	do (swapf (nth i u) (nth j u)))
@@ -122,7 +122,7 @@
 
 (defun $interchange_matrix_rows (matrix i j &optional copy)
   "interchange MATRIX rows I and J.  If COPY then copy then don't do it destructively"
-  (cond (copy (setq matrix (nconc (firstn (setq copy(1+ (max i j))) matrix)
+  (cond (copy (setq matrix (nconc (subseq matrix 0 (setq copy (1+ (max i j))))
 				   (nthcdr copy matrix )))))
   (swapf (nth i matrix) (nth j matrix))
   matrix)
@@ -183,7 +183,7 @@
 						   (>= ($length replacements)
 						       ($length vari))) "long enough macsyma-list")
 		      (cond (prefix (setf (cdr vari) (sort (cdr vari) 'alphalessp))))
-		      (pairlis (cdr vari) (firstn ($length vari) (cdr replacements))))))
+		      (pairlis (cdr vari) (subseq (cdr replacements) 0 ($length vari))))))
   (sublis subs form))
 
 (defun check-cases (roots-of-one &aux relats)
@@ -480,7 +480,7 @@
   "if trace-matrix is the <ui,uj> for an inner product, find the elt u, such that
    <u,ui>=1 and <u,uj>=0 for i not = j, where i= number-of-element-in-basis."
   (setq cond0 ($list_matrix_entries
-		(ncmul* trace-matrix (setq vari(firstn (length basis) $aaaa)))))
+		(ncmul* trace-matrix (setq vari (subseq $aaaa 0 (length basis))))))
   (setq actual-conditions   (cons '(mlist) (sloop for v in (cdr cond0 )
 						for i from 1
 						when (eql i number-of-element-in-basis)
