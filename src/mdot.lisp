@@ -365,7 +365,7 @@ is no need to rely on the setting of this switch.")
 	    ((and (not (> merge-length half-product-length))
 		  (alike1 outer-product
 			  (cons '(mnctimes)
-				(firstn merge-length rest))))
+				(subseq rest 0 merge-length))))
 	     (return
 	       (ncmuln (cons (ncpower outer-product 2)
 			     (nthcdr merge-length rest))

@@ -197,8 +197,8 @@
   (let (rootfactor pardenom parnumer logptdx wholepart switch1)
     (cons (cdr (ratrep* (dprog rat)))
 	  (let ((varlist varlist)
-		(genvar (firstn (length varlist) genvar)))
-	    (mapcar 'eprog logptdx)))))
+		(genvar (subseq genvar 0 (length varlist))))
+	    (mapcar #'eprog logptdx)))))
 
 (defun rischlogdprog (ratarg)
   (prog (klth arootf deriv thebpg thetop thebot prod1 prod2 ans)

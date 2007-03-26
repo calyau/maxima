@@ -130,9 +130,6 @@
     (setq ar (symbol-array ar)))
   (cons (array-element-type ar) (array-dimensions ar)))
 
-(defun firstn (n lis)
-  (subseq lis 0 n))
-
 (defun fixnump (n)
   (typep n 'fixnum))
 
