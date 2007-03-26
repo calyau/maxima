@@ -47,9 +47,9 @@
                         ((mlist) $transform_xy nil)
                         ((mlist) $run_viewer t)
                         ((mlist) $plot_format
-			 ,(if (string= *autoconf-win32* "true")
-			      '$gnuplot
-			      '$gnuplot_pipes))
+                         ,(if (string= *autoconf-win32* "true")
+                              '$gnuplot
+                              '$gnuplot_pipes))
                         ((mlist) $gnuplot_term $default)
                         ((mlist) $gnuplot_out_file nil)
                         ;; With adaptive plotting, 100 is probably too
@@ -60,7 +60,7 @@
                         ;; adaptive-plotting will do.
                         ((mlist) $adapt_depth 10)
                         ((mlist) $gnuplot_pm3d
-			 ,(if (string= *autoconf-win32* "true") t nil))
+                         ,(if (string= *autoconf-win32* "true") t nil))
                         ((mlist) $gnuplot_preamble "")
                         ((mlist) $gnuplot_curve_titles 
                          ((mlist) $default))
@@ -78,9 +78,7 @@
                          "set term dumb 79 22")
                         ((mlist) $gnuplot_ps_term_command
                          "set size 1.5, 1.5;set term postscript eps enhanced color solid 24")
-			((mlist) $gnuplot_pipes_term "x11")
-                        ((mlist) $logx nil)
-                        ((mlist) $logy nil)
+                        ((mlist) $gnuplot_pipes_term "x11")
                         ((mlist) $plot_realpart nil)
                         ))
 
@@ -101,19 +99,19 @@
 
 (defun start-gnuplot-process (path)
   #+clisp (setq *gnuplot-stream*
-		(ext:make-pipe-output-stream path))
+                (ext:make-pipe-output-stream path))
   #+cmu (setq *gnuplot-stream*
-	      (ext:process-input (ext:run-program path nil :input :stream
-						  :output nil :wait nil)))
+              (ext:process-input (ext:run-program path nil :input :stream
+                                                  :output nil :wait nil)))
   #+sbcl (setq *gnuplot-stream*
-	       (sb-ext:process-input (sb-ext:run-program path nil
-							 :input :stream
-							 :output nil :wait nil
-							 :search t)))
+               (sb-ext:process-input (sb-ext:run-program path nil
+                                                         :input :stream
+                                                         :output nil :wait nil
+                                                         :search t)))
 ;;  #+gcl (setq *gnuplot-stream*
-;;	      (si::fp-output-stream (si:run-process path nil)))
+;;            (si::fp-output-stream (si:run-process path nil)))
   #+gcl (setq *gnuplot-stream*
-	      (open (concatenate 'string "| " path) :direction :output))
+              (open (concatenate 'string "| " path) :direction :output))
   #-(or clisp cmu sbcl gcl)
   (merror "Gnuplot not supported with your lisp!")
   
@@ -139,8 +137,8 @@
 (defun stop-gnuplot-process ()
   (unless (null *gnuplot-stream*)
       (progn
-	(close *gnuplot-stream*)
-	(setq *gnuplot-stream* nil))))
+        (close *gnuplot-stream*)
+        (setq *gnuplot-stream* nil))))
 
 (defun send-gnuplot-command (command)
   (if (null *gnuplot-stream*)
@@ -151,19 +149,19 @@
 (defun $gnuplot_reset ()
   (send-gnuplot-command "unset output")
   (send-gnuplot-command (format nil "set term ~a" 
-				(get-plot-option-string '$gnuplot_pipes_term)))
+                                (get-plot-option-string '$gnuplot_pipes_term)))
   (send-gnuplot-command "reset"))
 
 (defun $gnuplot_replot (&optional s)
   (if (null *gnuplot-stream*)
       (merror "Gnuplot is not running."))
   (cond ((null s)
-	 (send-gnuplot-command "replot"))
-	((mstringp s)
-	 (send-gnuplot-command ($sconcat s))
-	 (send-gnuplot-command "replot"))
-	(t
-	 (merror "Input to 'gnuplot_replot' is not a string!")))
+         (send-gnuplot-command "replot"))
+        ((mstringp s)
+         (send-gnuplot-command ($sconcat s))
+         (send-gnuplot-command "replot"))
+        (t
+         (merror "Input to 'gnuplot_replot' is not a string!")))
   "")
 
 ;; allow this to be set in a system init file (sys-init.lsp)
@@ -208,24 +206,24 @@
           (($run_viewer $transform_xy $gnuplot_pm3d)
            (check-list-items name (cddr value) 't 1))
           ($plot_format (or (member (nth 2 value)
-				    (if (string= *autoconf-win32* "true")
-					'($zic $geomview
-					      $gnuplot
-					      $mgnuplot
-					      $openmath
-					      )
-					'($zic $geomview
-					      $gnuplot
-					      $gnuplot_pipes
-					      $mgnuplot
-					      $openmath
-					      )
-					))
-			    (merror "plot_format: only [gnuplot,mgnuplot,openmath,geomview] are available"))
+                                    (if (string= *autoconf-win32* "true")
+                                        '($zic $geomview
+                                              $gnuplot
+                                              $mgnuplot
+                                              $openmath
+                                              )
+                                        '($zic $geomview
+                                              $gnuplot
+                                              $gnuplot_pipes
+                                              $mgnuplot
+                                              $openmath
+                                              )
+                                        ))
+                            (merror "plot_format: only [gnuplot,mgnuplot,openmath,geomview] are available"))
                         value)
           ($gnuplot_term (or (symbolp (nth 2 value)) (stringp (nth 2 value))
                              (merror "gnuplot_term: must be symbol or string"))
-	                value)
+                        value)
           ($gnuplot_out_file value)
           ($gnuplot_curve_titles (if ($listp value)
                                      value
@@ -238,10 +236,8 @@
           ($gnuplot_dumb_term_command value)
           ($gnuplot_ps_term_command value)
           ($adapt_depth (check-list-items name (cddr value) 'fixnum 1))
-          ($logx value)
-          ($logy value)
           ($plot_realpart value)
-	  ($gnuplot_pipes_term value)
+          ($gnuplot_pipes_term value)
           (t
            (merror "Unknown plot option specified:  ~M" name))))
   (loop for v on (cdr $plot_options)
@@ -252,7 +248,7 @@
 
 (defun get-gnuplot-term (term)
   (let* ((sterm (string-downcase (format nil "~a" (stripdollar term))))
-	 (pos   (search " " sterm)))
+         (pos   (search " " sterm)))
     (if pos  
       (subseq sterm 0 pos)
       sterm)))
@@ -578,8 +574,8 @@
      (let ((args (cdr (nth 1 expr))))
        (coerce-maxima-function-or-maxima-lambda args expr)))
 
-	(t
-	 (let* ((vars (or lvars ($sort ($listofvars expr))))
+        (t
+         (let* ((vars (or lvars ($sort ($listofvars expr))))
             (subscripted-vars ($sublist vars '((lambda) ((mlist) $x) ((mnot) (($atom) $x)))))
             gensym-vars save-list-gensym subscripted-vars-save
             subscripted-vars-mset subscripted-vars-restore)
@@ -605,53 +601,53 @@
                        (reverse (cdr subscripted-vars)))))
 
        (coerce
-	`(lambda ,(cdr vars)
-	   (declare (special ,@(cdr vars) errorsw))
+        `(lambda ,(cdr vars)
+           (declare (special ,@(cdr vars) errorsw))
 
-	   ;; Nothing interpolated here when there are no subscripted variables.
-	   ,@(if save-list-gensym `((declare (special ,save-list-gensym))))
+           ;; Nothing interpolated here when there are no subscripted variables.
+           ,@(if save-list-gensym `((declare (special ,save-list-gensym))))
 
-	   ;; Nothing interpolated here when there are no subscripted variables.
-	   ,@(if (cdr subscripted-vars)
-		 `((progn (setq ,save-list-gensym nil)
-			  ,@(append subscripted-vars-save subscripted-vars-mset))))
+           ;; Nothing interpolated here when there are no subscripted variables.
+           ,@(if (cdr subscripted-vars)
+                 `((progn (setq ,save-list-gensym nil)
+                          ,@(append subscripted-vars-save subscripted-vars-mset))))
 
-	   (let (($ratprint nil) ($numer t)
-		 (errorsw t)
-		 (errcatch t))
-	     (declare (special errcatch))
-	     ;; Catch any errors from evaluating the
-	     ;; function.  We're assuming that if an error
-	     ;; is caught, the result is not a number.  We
-	     ;; also assume that for such errors, it's
-	     ;; because the function is not defined there,
-	     ;; not because of some other maxima error.
-	     ;;
-	     ;; GCL 2.6.2 has handler-case but not quite ANSI yet. 
-	     (let ((result
-		    #-gcl
-		     (handler-case 
-			 (catch 'errorsw
-			   ($float ($realpart (meval* ',expr))))
-		       ;; Should we just catch all errors here?  It is
-		       ;; rather nice to only catch errors we care
-		       ;; about and let other errors fall through so
-		       ;; that we don't pretend to do something when
-		       ;; it is better to let the error through.
-		       (arithmetic-error () t)
-		       (maxima-$error () t))
-		     #+gcl
-		     (handler-case 
-			 (catch 'errorsw
-			   ($float ($realpart (meval* ',expr))))
-		       (cl::error () t))
-		     ))
+           (let (($ratprint nil) ($numer t)
+                 (errorsw t)
+                 (errcatch t))
+             (declare (special errcatch))
+             ;; Catch any errors from evaluating the
+             ;; function.  We're assuming that if an error
+             ;; is caught, the result is not a number.  We
+             ;; also assume that for such errors, it's
+             ;; because the function is not defined there,
+             ;; not because of some other maxima error.
+             ;;
+             ;; GCL 2.6.2 has handler-case but not quite ANSI yet. 
+             (let ((result
+                    #-gcl
+                     (handler-case 
+                         (catch 'errorsw
+                           ($float ($realpart (meval* ',expr))))
+                       ;; Should we just catch all errors here?  It is
+                       ;; rather nice to only catch errors we care
+                       ;; about and let other errors fall through so
+                       ;; that we don't pretend to do something when
+                       ;; it is better to let the error through.
+                       (arithmetic-error () t)
+                       (maxima-$error () t))
+                     #+gcl
+                     (handler-case 
+                         (catch 'errorsw
+                           ($float ($realpart (meval* ',expr))))
+                       (cl::error () t))
+                     ))
 
-	       ;; Nothing interpolated here when there are no subscripted variables.
-	       ,@(if (cdr subscripted-vars) `((progn ,@subscripted-vars-restore)))
+               ;; Nothing interpolated here when there are no subscripted variables.
+               ,@(if (cdr subscripted-vars) `((progn ,@subscripted-vars-restore)))
 
-	       result)))
-	'function)))))
+               result)))
+        'function)))))
 
 (defun coerce-maxima-function-or-maxima-lambda (args expr)
   (let ((gensym-args (loop for x in args collect (gensym))))
@@ -971,19 +967,19 @@
            ;; (fb,fb1) subinterval (using points a, a1, b, b1.
            ;;
            ;; quad-b is the Simpson quadrature for the (fb,f1) subinterval.
-	   ;;
-	   ;; This used to test for diff <= 0.  But in some
-	   ;; situations, like plot2d(0.99,[x,0,5]), roundoff prevents
-	   ;; this from happening.  So we do diff < delta instead, for
-	   ;; some value of delta.
-	   ;;
-	   ;; XXX: What is the right value for delta?  Does this break
-	   ;; other things?  Simple tests thus far show that
-	   ;; 100*double-float-epsilon is ok.
-	   (let ((diff (- (abs quad)
-			  (* eps (- quad-b (min f-a f-a1 f-b f-b1 f-c)))))
-		 (delta (* 100 double-float-epsilon)))
-	     (<= diff delta))))
+           ;;
+           ;; This used to test for diff <= 0.  But in some
+           ;; situations, like plot2d(0.99,[x,0,5]), roundoff prevents
+           ;; this from happening.  So we do diff < delta instead, for
+           ;; some value of delta.
+           ;;
+           ;; XXX: What is the right value for delta?  Does this break
+           ;; other things?  Simple tests thus far show that
+           ;; 100*double-float-epsilon is ok.
+           (let ((diff (- (abs quad)
+                          (* eps (- quad-b (min f-a f-a1 f-b f-b1 f-c)))))
+                 (delta (* 100 double-float-epsilon)))
+             (<= diff delta))))
         (t
          ;; Something is not a number, so assume it's not smooth enough.
          nil)))
@@ -1169,7 +1165,7 @@
              (null gnuplot-out-file))
       (setq gnuplot-out-file 
         (plot-temp-file (format nil "maxplot.~(~a~)" 
-	                   (get-gnuplot-term ($get_plot_option '$gnuplot_term 2)))) ))
+                           (get-gnuplot-term ($get_plot_option '$gnuplot_term 2)))) ))
     (case ($get_plot_option '$gnuplot_term 2)
       ($default
        (format dest "~a~%" 
@@ -1201,7 +1197,7 @@
         (gnuplot-out-file ($get_plot_option '$gnuplot_out_file 2))
         (gnuplot-out-file-string (get-plot-option-string '$gnuplot_out_file))
         (run-viewer ($get_plot_option '$run_viewer 2))
-	(gnuplot-preamble (string-downcase (get-plot-option-string '$gnuplot_preamble)))
+        (gnuplot-preamble (string-downcase (get-plot-option-string '$gnuplot_preamble)))
         (view-file))
     ;; default output file name for for all formats except default
     (when (and (not (eq ($get_plot_option '$gnuplot_term 2) '$default)) 
@@ -1220,9 +1216,9 @@
         ($default
          ($system (format nil "~a ~a" $gnuplot_command
                           (format nil (if (search "set out " gnuplot-preamble) 
-			                 $gnuplot_file_args 
-					 $gnuplot_view_args)
-				      view-file))))
+                                         $gnuplot_file_args 
+                                         $gnuplot_view_args)
+                                      view-file))))
         ($dumb
          (if gnuplot-out-file
              ($printfile view-file)
@@ -1231,53 +1227,51 @@
         (format t "Output file \"~a\".~%" gnuplot-out-file-string))))
 
 (defun $plot2d (fun &optional range &rest options)
-  (let (($numer t)
-        ($display2d nil)
+  (let (($numer t) ($display2d nil) ($float t) ($%enumer t)
         (*plot-realpart* *plot-realpart*)
-        (i 0)
-        ($plot_options $plot_options)
+        ($plot_options $plot_options) (i 0) 
         plot-format gnuplot-term gnuplot-out-file file plot-name
-	xmin xmax ymin ymax)
-    (dolist (v options)
-      ($set_plot_option v)
-      ;; set up y range for plotting program
-      (when (and ($listp v) (eq (nth 1 v) '$y) (nth 3 v))
-         (setf ymin (coerce-float (nth 2 v)))
-         (setf ymax (coerce-float (nth 3 v)))))
-  
-    (setq *plot-realpart* ($get_plot_option '$plot_realpart 2))
+        log-x log-y xmin xmax ymin ymax styles)
+ 
     (when (and (consp fun) (eq (cadr fun) '$parametric))
       (or range (setq range (nth 4 fun)))
       (setf fun `((mlist) ,fun)))
     (when (and (consp fun) (eq (cadr fun) '$discrete))
       (setf fun `((mlist) ,fun)))
 
-    ;; See if we're doing log plots.
-    (let ((log-x ($get_plot_option '$logx 2))
-          (log-y ($get_plot_option '$logy 2)))
-      (unless ($listp fun ) (setf fun `((mlist) ,fun)))     
-      (let ((no-range-required t))
-        (if (not ($listp fun))
-            (setf no-range-required nil)
-            (dolist (subfun (rest fun))
-              (if (not ($listp subfun))
-                  (setf no-range-required nil))))
-        (unless no-range-required
-          (setq range (check-range range))
-	  ;;; set up x range for plotting program
-	  (setf xmin (coerce-float (nth 2 range)))
-	  (setf xmax (coerce-float (nth 3 range))))
-        (if (and no-range-required range)
-            ;;; second argument was really a plot option, not a range
-            (progn ($set_plot_option range)
-               ;;; set up ranges for plotting program
-	       (when (and ($listp range) (eq (nth 1 range) '$x) (nth 3 range))
-		 (setf xmin (coerce-float (nth 2 range)))
-		 (setf xmax (coerce-float (nth 3 range))))
-	       (when (and ($listp range) (eq (nth 1 range) '$y) (nth 3 range))
-		 (setf ymin (coerce-float (nth 2 range)))
-		 (setf ymax (coerce-float (nth 3 range)))))))
+    (unless ($listp fun ) (setf fun `((mlist) ,fun)))     
+    (let ((no-range-required t))
+      (if (not ($listp fun))
+        (setf no-range-required nil)
+        (dolist (subfun (rest fun))
+          (if (not ($listp subfun))
+            (setf no-range-required nil))))
+      (unless no-range-required
+        (setq range (check-range range))
+        ;;; set up x range for plotting program
+        (setf xmin (coerce-float (nth 2 range)))
+        (setf xmax (coerce-float (nth 3 range))))
+      (if (and no-range-required range)
+        ;;; second argument was really a plot option, not a range
+        (setf options (cons range options))))
+
+    (dolist (v options)
+      (if ($listp v)
+        (case (nth 1 v)
+          ($logx (setf log-x t))
+          ($logy (setf log-y t))
+          ($x (when (nth 3 v)
+                (setf xmin (meval (nth 2 v)))
+                (setf xmax (meval (nth 3 v)))
+                ($set_plot_option `((mlist) $x ,xmin ,xmax))))
+          ($y (when (nth 3 v)
+                (setf ymin (meval (nth 2 v)))
+                (setf ymax (meval (nth 3 v)))
+                ($set_plot_option `((mlist) $y ,ymin ,ymax))))
+          (t ($set_plot_option v)))
+        (merror "Option ~M should be a list" v)))
  
+    (setq *plot-realpart* ($get_plot_option '$plot_realpart 2))
       (setf plot-format  ($get_plot_option '$plot_format 2))
       (setf gnuplot-term ($get_plot_option '$gnuplot_term 2))
       (if ($get_plot_option '$gnuplot_out_file 2)
@@ -1359,12 +1353,12 @@
                        ($sconcat *gnuplot-command* 
                                  (format nil " [~g:~g]"  ymin ymax))))))
           (dolist (v (cdr fun))
-	    (case plot-format
-	      ($gnuplot_pipes
-	       (if (> i 0)
-		   (setq *gnuplot-command* ($sconcat *gnuplot-command* ", ")))
-	       (setq *gnuplot-command* ($sconcat *gnuplot-command* 
-					         (format nil "'~a' index ~a " file i)))))
+            (case plot-format
+              ($gnuplot_pipes
+               (if (> i 0)
+                   (setq *gnuplot-command* ($sconcat *gnuplot-command* ", ")))
+               (setq *gnuplot-command* ($sconcat *gnuplot-command* 
+                                                 (format nil "'~a' index ~a " file i)))))
             (incf i)
             (setq plot-name
                   (let ((string ""))
@@ -1389,19 +1383,19 @@
                      (setf title (format nil "title '~a'" plot-name)))
                  (format st " '-' ~a ~a" title 
                          (get-plot-option-string '$gnuplot_curve_styles i))))
-	      ($gnuplot_pipes
-	       (let ((title (get-plot-option-string '$gnuplot_curve_titles i)))
+              ($gnuplot_pipes
+               (let ((title (get-plot-option-string '$gnuplot_curve_titles i)))
                  (if (equal title "default")
                      (setf title (format nil "title '~a'" plot-name)))
                  (setq *gnuplot-command*
-		       ($sconcat *gnuplot-command*
-			         (format nil " ~a ~a" title 
-				         (get-plot-option-string '$gnuplot_curve_styles i))))))))
+                       ($sconcat *gnuplot-command*
+                                 (format nil " ~a ~a" title 
+                                         (get-plot-option-string '$gnuplot_curve_styles i))))))))
           (case plot-format
             ($gnuplot
              (format st "~%"))
-	    ($gnuplot_pipes
-	     (format st "~%")))
+            ($gnuplot_pipes
+             (format st "~%")))
           (setf i 0)
           (dolist (v (cdr fun))
             (incf i)
@@ -1421,36 +1415,36 @@
               ($gnuplot
                (if (> i 1)
                    (format st "e~%")))
-	      ($gnuplot_pipes
-	       (if (> i 1)
-		   (format st "~%~%")))
+              ($gnuplot_pipes
+               (if (> i 1)
+                   (format st "~%~%")))
               ($mgnuplot
                (format st "~%~%# \"~a\"~%" plot-name))
               )
-	    (let (in-discontinuity)
-	      (loop for (v w) on (cdr (draw2d v range log-x log-y)) by #'cddr
-		    do
-		    (cond ((eq v 'moveto)
-			   (cond 
-			     ((find plot-format '($gnuplot_pipes $gnuplot))
-			      ;; A blank line means a discontinuity
-			      (if (null in-discontinuity)
-				  (progn
-				    (format st "~%")
-				    (setq in-discontinuity t))))
-			     ((equal plot-format '$mgnuplot)
-			      ;; A blank line means a discontinuity
-			      (format st "~%"))
-			     (t
-			      (format st "move "))))
-			  (t  (format st "~g ~g ~%" v w)
-			      (setq in-discontinuity nil))))))))))
+            (let (in-discontinuity)
+              (loop for (v w) on (cdr (draw2d v range log-x log-y)) by #'cddr
+                    do
+                    (cond ((eq v 'moveto)
+                           (cond 
+                             ((find plot-format '($gnuplot_pipes $gnuplot))
+                              ;; A blank line means a discontinuity
+                              (if (null in-discontinuity)
+                                  (progn
+                                    (format st "~%")
+                                    (setq in-discontinuity t))))
+                             ((equal plot-format '$mgnuplot)
+                              ;; A blank line means a discontinuity
+                              (format st "~%"))
+                             (t
+                              (format st "move "))))
+                          (t  (format st "~g ~g ~%" v w)
+                              (setq in-discontinuity nil)))))))))
 
       (case plot-format
         ($gnuplot 
          (gnuplot-process file))
-	($gnuplot_pipes
-	 (send-gnuplot-command *gnuplot-command*))
+        ($gnuplot_pipes
+         (send-gnuplot-command *gnuplot-command*))
         ($mgnuplot 
          ($system (concatenate 'string *maxima-plotdir* "/" $mgnuplot_command) 
                   (format nil " -plot2d \"~a\" -title '~a'" file plot-name)))
@@ -1709,8 +1703,8 @@
          (with-open-file (st1 (plot-temp-file "maxout.openmath") :direction :output :if-exists :supersede)
            (princ  ans st1))
          ($system (concatenate 'string *maxima-prefix* 
-	                               (if (string= *autoconf-win32* "true") "\\bin\\" "/bin/") 
-	                               $openmath_plot_command)
+                                       (if (string= *autoconf-win32* "true") "\\bin\\" "/bin/") 
+                                       $openmath_plot_command)
                   (format nil " \"~a\"" (plot-temp-file "maxout.openmath"))))
         (t (princ ans) "")))
 
@@ -1904,8 +1898,8 @@
                         (get-plot-option-string '$gnuplot_curve_styles 1)))
               (output-points pl (nth 2 grid)))
              ($gnuplot_pipes
-	      (check-gnuplot-process)
-	      ($gnuplot_reset)
+              (check-gnuplot-process)
+              ($gnuplot_reset)
               (gnuplot-print-header *gnuplot-stream* :const-expr const-expr)
               (let ((title (get-plot-option-string '$gnuplot_curve_titles 1))
                     (plot-name
@@ -1915,8 +1909,8 @@
                 (if (equal title "default")
                     (setf title (format nil "title '~a'" plot-name)))
                 (setq *gnuplot-command*
-		      (format nil "splot '~a' ~a ~a~%" file title 
-			      (get-plot-option-string '$gnuplot_curve_styles 1))))
+                      (format nil "splot '~a' ~a ~a~%" file title 
+                              (get-plot-option-string '$gnuplot_curve_styles 1))))
               (output-points pl (nth 2 grid)))
              ($mgnuplot
               (output-points pl (nth 2 grid)))
@@ -1990,14 +1984,14 @@
                    ($zic ($view_zic))
                    ($openmath
                      ($system (concatenate 'string *maxima-prefix* 
-		                                   (if (string= *autoconf-win32* "true") "\\bin\\" "/bin/")
-		                                   $openmath_plot_command) 
+                                                   (if (string= *autoconf-win32* "true") "\\bin\\" "/bin/")
+                                                   $openmath_plot_command) 
                               (format nil " \"~a\"" file)))
                    ($geomview 
                      ($system $geomview_command
                               (format nil " \"~a\"" file)))
-		   ($gnuplot_pipes
-		    (send-gnuplot-command *gnuplot-command*))
+                   ($gnuplot_pipes
+                    (send-gnuplot-command *gnuplot-command*))
                    ($mgnuplot 
                      ($system (concatenate 'string *maxima-plotdir* "/" $mgnuplot_command)
                               (format nil " -parametric3d \"~a\"" file)))
