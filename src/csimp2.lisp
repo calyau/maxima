@@ -360,7 +360,7 @@
      (if (not ($listp eql)) (improper-arg-err eql '$coefmatrix))
      (if (not ($listp varl)) (improper-arg-err varl '$coefmatrix))
      (dolist (v (cdr varl))
-       (if (and (not (atom v)) (memq (caar v) '(mplus mtimes)))
+       (if (and (not (atom v)) (member (caar v) '(mplus mtimes) :test #'eq))
 	   (merror "Improper variable to `coefmatrix':~%~M" v)))
      (setq eql (nreverse (mapcar #'meqhk (cdr eql)))
 	   varl (reverse (cdr varl)))
@@ -430,7 +430,7 @@
 	((mtimesp e) (muln (mapcar '$xthru (cdr e)) nil))
 	((mplusp e) (simplify (comdenom (mapcar '$xthru (cdr e)) t)))
 	((mexptp e) (power ($xthru (cadr e)) (caddr e)))
-	((memq (caar e) '(mequal mlist $matrix))
+	((member (caar e) '(mequal mlist $matrix) :test #'eq)
 	 (cons (car e) (mapcar '$xthru (cdr e))))
 	(t e))) 
 

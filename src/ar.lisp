@@ -88,9 +88,9 @@
 		 (cdr (exploden mtype))
 		 (exploden " ")
 		 (exploden (maknum form))
-		 (if (memq mtype '($float $fixnum $any))
+		 (if (member mtype '($float $fixnum $any) :test #'eq)
 		     (nconc (exploden "[")
-			    (do ((l (cdr (arraydims (if (memq mtype '($float $fixnum))
+			    (do ((l (cdr (arraydims (if (member mtype '($float $fixnum) :test #'eq)
 							form
 							(mgenarray-content form))))
 				    (cdr l))

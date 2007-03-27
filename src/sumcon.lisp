@@ -142,7 +142,7 @@
 (defmfun $bashindices (e)	       ; e is assumed to be simplified
   (let (($genindex '$j))
     (cond ((atom e) e)
-	  ((memq (caar e) '(%sum %product))
+	  ((member (caar e) '(%sum %product) :test #'eq)
 	   (sumconsimp (subst (gensumindex) (caddr e) e)))
 	  (t (recur-apply #'$bashindices e)))))
 
@@ -150,11 +150,11 @@
   (if (atom e) e
       (let ((e (recur-apply #'$niceindices e)))
 	(cond ((atom e) e)
-	      ((memq (caar e) '(%sum %product))
+	      ((member (caar e) '(%sum %product) :test #'eq)
 	       (sumconsimp (subst (get-free-index e (caddr e)) (caddr e) e)))
 	      (t e)))))
 
 (defun sumconsimp (e)
-  (if (and (not (atom e)) (memq (caar e) '(%sum %product)))
+  (if (and (not (atom e)) (member (caar e) '(%sum %product) :test #'eq))
       (list* (car e) (sumconsimp (cadr e)) (cddr e))
       (resimplify e)))

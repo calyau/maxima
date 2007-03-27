@@ -1,5 +1,7 @@
 ;;Copyright William F. Schelter 1990, All Rights Reserved
+
 (in-package :maxima)
+
 ;; see bottom of file for examples
 
 (defmfun $join (x y)
@@ -14,10 +16,11 @@
 ;;(eval-when (compile) (proclaim '(optimize (safety 0))))
 
 
-(eval-when (compile eval load)
-  (defmacro coerce-float (x)
-   `(cl:float (meval* ,x) 1.d0))
-  )
+(eval-when
+    #+gcl (compile eval load)
+    #-gcl (:compile-toplevel :execute :load-toplevel)
+    (defmacro coerce-float (x)
+      `(cl:float (meval* ,x) 1.d0)))
 
 
 (defvar *maxima-plotdir* "")
@@ -1752,9 +1755,9 @@
     (if
       (or
         (and plot-format-in-arguments
-             (not (memq plot-format-in-arguments gnuplot-formats)))
+             (not (member plot-format-in-arguments gnuplot-formats :test #'eq)))
         (and (not plot-format-in-arguments)
-             (not (memq plot-format-in-plot-options gnuplot-formats))))
+             (not (member plot-format-in-plot-options gnuplot-formats :test #'eq))))
 
       (merror "contour_plot: plot_format = ~a not understood; must be a gnuplot format."
               (print-invert-case (stripdollar (or plot-format-in-arguments plot-format-in-plot-options))))

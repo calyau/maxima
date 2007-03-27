@@ -29,17 +29,15 @@
 ;;;
 
 (in-package :maxima)
+
 (macsyma-module askp)
 
-(declare-top(special limitp integer-info)
-	    (fixnum n)
-	    (*expr evod free $numberp maxima-integerp retrieve $featurep
-		   sratsimp ssimplifya ratnump))
+(declare-top (special limitp integer-info))
    
 (defmfun $askinteger n
   (if (or (> n 2) (< n 1)) (wna-err '$askinteger))
   (if (= n 1) (ask-integer (arg 1) '$integer)
-      (if (memq (arg 2) '($even $odd $integer))
+      (if (member (arg 2) '($even $odd $integer) :test #'eq)
 	  (ask-integer (arg 1) (arg 2))
 	  (improper-arg-err (arg 2) '$askinteger))))
 
@@ -95,9 +93,9 @@
 ;;; Asks the user a question about the property of an object.
 ;;; Returns only $yes, $no or $unknown.
   (do ((end-flag) (answer))
-      (end-flag (cond ((memq answer '($yes |$Y| |$y|)) '$yes)
-		      ((memq answer '($no |$N| |$n|)) '$no)
-		      ((memq answer '($unknown $uk)) '$unknown)))
+      (end-flag (cond ((member answer '($yes |$Y| |$y|) :test #'eq) '$yes)
+		      ((member answer '($no |$N| |$n|) :test #'eq) '$no)
+		      ((member answer '($unknown $uk) :test #'eq) '$unknown)))
     (setq answer (retrieve
 		  `((mtext) |Is  | ,object 
 		    ,(if (member (getcharn property 1)
@@ -108,10 +106,7 @@
 		    ,property ,@fun-or-number |?|)
 		  nil))
     (cond 
-      ((memq answer '($yes |$Y| |$y| |$N| |$n| $no $unknown $uk))
+      ((member answer '($yes |$Y| |$y| |$N| |$n| $no $unknown $uk) :test #'eq)
        (setq end-flag t))
       (t (mtell
 	  "~%Acceptable answers are Yes, Y, No, N, Unknown, Uk~%")))))
-
-#-nil
-(declare-top(notype n))

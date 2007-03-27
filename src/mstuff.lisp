@@ -9,9 +9,8 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :maxima)
-(macsyma-module mstuff)
 
-(declare-top(splitfile msort) (fixnum n))
+(macsyma-module mstuff)
 
 (defmfun $sort n
   (if (or (= n 0) (> n 2)) (merror "`sort' takes 1 or 2 arguments."))
@@ -21,7 +20,7 @@
     (setq llist (copy-list (cdr llist) )
 	  comparfun 
 	  (mfunction1 (setq bfun (if (= n 2) (getopr (arg 2)) 'lessthan))))
-    (if (memq bfun '(lessthan great))
+    (if (member bfun '(lessthan great) :test #'eq)
 	(setq llist (mapcar #'ratdisrep llist)))
     (cons '(mlist simp) (sort llist comparfun))))
 
@@ -36,12 +35,10 @@
   #+(or cmu scl)
   (lambda (x y) (mevalp `((,fun) ((mquote) ,x) ((mquote) ,y))))
   #-(or cmu scl)
-  (function (lambda (x y) (mevalp `((,fun) ((mquote) ,x) ((mquote) ,y)))))
-  )
+  #'(lambda (x y) (mevalp `((,fun) ((mquote) ,x) ((mquote) ,y)))))
 
-(defun lessthan (a b) (if (great b a) t))
-
-(declare-top (splitfile makel))
+(defun lessthan (a b)
+  (if (great b a) t))
 
 (defmspec $makelist (x) (setq x (cdr x))
 	  (prog (n form arg a b lv d)
@@ -86,9 +83,3 @@ and 4th arguments should evaluate to a non-negative integer:~%~M" d)
 	(if (mevalp (list (ncons f) (car a)))
 	    (setq x (cons (car a) x))))
       (merror "The first argument to `sublist' must be a list:~%~M" a)))
-
-;; Undeclarations for the file:
-#-nil
-(declare-top(notype n))
-
-

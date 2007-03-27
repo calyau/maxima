@@ -638,9 +638,9 @@
 (let ((problematic-symbols '($%gamma $%phi $global $%pi $%e)))
   (do-symbols (s (find-package :maxima))
     (when (and (eql (symbol-package s) (find-package :maxima))
-	       (memq (getchar s 1) '($ % &)))
+	       (member (getchar s 1) '($ % &) :test #'eq))
       (push s *builtin-symbols*)
-      (when (not (memq s problematic-symbols))
+      (when (not (member s problematic-symbols :test #'eq))
 	(setf (gethash s *builtin-symbol-props*)
 	      (copy-tree (symbol-plist s)))))))
 

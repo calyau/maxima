@@ -199,7 +199,7 @@
   (defmfun $rhs (rel)
      (if (atom rel)
        0
-       (if (or (memq (caar rel) (append relational-ops other-infix-ops))
+       (if (or (member (caar rel) (append relational-ops other-infix-ops) :test #'eq)
                ;; This test catches user-defined infix operators.
                (eq (get (caar rel) 'led) 'parse-infix))
          (caddr rel)
@@ -208,7 +208,7 @@
   (defmfun $lhs (rel)
      (if (atom rel)
        rel
-       (if (or (memq (caar rel) (append relational-ops other-infix-ops)) 
+       (if (or (member (caar rel) (append relational-ops other-infix-ops) :test #'eq) 
                ;; This test catches user-defined infix operators.
                (eq (get (caar rel) 'led) 'parse-infix))
          (cadr rel)
@@ -283,7 +283,7 @@
 
 (defun polyp (a)
   (cond ((atom a) t)
-	((memq (caar a) '(mplus mtimes))
+	((member (caar a) '(mplus mtimes) :test #'eq)
 	 (every #'polyp (cdr a)))
 	((eq (caar a) 'mexpt)
 	 (cond ((free (cadr a) var)
@@ -298,7 +298,7 @@
 (defun pip (e)
   (prog (varlist d c) 
      (newvar e)
-     (cond ((not (memq '$%pi varlist)) (return nil)))
+     (cond ((not (member '$%pi varlist :test #'eq)) (return nil)))
      (setq varlist '($%pi))
      (newvar e)
      (setq e (cdr (ratrep* e)))

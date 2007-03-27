@@ -2102,7 +2102,7 @@ It appears in LIMIT and DEFINT.......")
 	   ;; Both are exponential order of infinity.  Check the
 	   ;; exponents to determine which exponent is bigger.
 	   (ratgreaterp (third (second a)) (third (second b))))
-	  ((member ta (cdr (memq tb *limorder)) :test #'eq)))))
+	  ((member ta (cdr (member tb *limorder :test #'eq)) :test #'eq)))))
 
 (defun ismax (l)
   ;; Preprocess the list of products.  Separate the terms that

@@ -9,6 +9,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :maxima)
+
 (macsyma-module mmacro)
 
 ;; Exported functions are MDEFMACRO, $MACROEXPAND, $MACROEXPAND1, MMACRO-APPLY
@@ -34,18 +35,11 @@ call."
   setting-list      '( () $expand $displace ) )
 
 
-
-
-
 ;;; LOCAL MACRO ;;;
 
 (defmacro copy1cons (name) `(cons (car ,name) (cdr ,name)))
 
-
-
-
 ;;; DEFINING A MACRO ;;;
-
 
 (defmspec mdefmacro (form) (setq form (cdr form))
 	  (cond ((or (null (cdr form)) (cdddr form))
@@ -59,9 +53,9 @@ call."
   (let ((name) (args))
     (cond ((or (atom fun)
 	       (not (atom (caar fun)))                
-	       (memq 'array (cdar fun))              
+	       (member 'array (cdar fun) :test #'eq)              
 	       (mopp (setq name ($verbify (caar fun))))
-	       (memq name '($all $% $%% mqapply)))
+	       (member name '($all $% $%% mqapply) :test #'eq))
 	   (merror "Illegal macro definition: ~M" ;ferret out all the
 		   fun))		;  illegal forms
 	  ((not (eq name (caar fun)))	;efficiency hack I guess
@@ -182,7 +176,7 @@ call."
   (let ((funname) (macro-defn))
     (cond ((or (atom form)
 	       (atom (car form))
-	       (memq 'array (cdar form))
+	       (member 'array (cdar form) :test #'eq)
 	       (not (symbolp (setq funname (mop form)))))
 	   form)
 	  ((eq funname 'mmacroexpanded)
@@ -194,20 +188,15 @@ call."
 	   (mmacro-apply macro-defn form))
 	  (t form))))
 
-
-
 ;;; SIMPLIFICATION ;;;
 
 (defprop mdefmacro simpmdefmacro operators)
 
 ;; emulating simpmdef (for mdefine) in jm;simp
 (defmfun simpmdefmacro (x *ignored* simp-flag)
-  *ignored*				;Ignored.
-  simp-flag			      ;No interesting sub-expressions.
+  (delacre (ignore *ignored* simp-flag))
   (cons '(mdefmacro simp) (cdr x)))
 
-
-#+(or cl nil)
 (defun displace (x y)
   (setf (car x) (car y))
   (setf (cdr x) (cdr y))

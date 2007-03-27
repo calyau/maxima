@@ -1066,7 +1066,7 @@ entire input string to be printed out when an MAXIMA-ERROR occurs."
     (cond ((eq '|$(| (first-c))
 	   (list '$any (mheader '|$'|) (parse '$any 190.)))
 	  ((or (atom (setq right (parse '$any 190.)))
-	       (memq (caar right) '(mquote mlist mprog mprogn lambda)))
+	       (member (caar right) '(mquote mlist mprog mprogn lambda) :test #'eq))
 	   (list '$any (mheader '|$'|) right))
 	  ((eq 'mqapply (caar right))
 	   (cond ((eq (caaadr right) 'lambda)
@@ -1208,7 +1208,7 @@ entire input string to be printed out when an MAXIMA-ERROR occurs."
 		     (parse '$expr 100.))
 		 left)
 	   (cons (parse '$expr 100.) nl)))
-      ((not (memq (first-c) '($+ $-)))
+      ((not (member (first-c) '($+ $-) :test #'eq))
        (list* '$expr (mheader '$+) (nreverse nl)))
     (if (eq (first-c) '$+) (pop-c))))
 
@@ -1565,7 +1565,7 @@ entire input string to be printed out when an MAXIMA-ERROR occurs."
 		   (implode (cons '& (string* op))))))
     (putprop op    dummy 'op )
     (putprop dummy op    'opr)
-    (if (and (operatorp1 op) (not (memq dummy (cdr $props))))
+    (if (and (operatorp1 op) (not (member dummy (cdr $props) :test #'eq)))
 	(push dummy mopl))
     (add2lnc dummy $props)))
 

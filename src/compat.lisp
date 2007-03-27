@@ -52,10 +52,10 @@
 	   (otherwise (error "Cannot expand `store' for array reference ~S" array-ref))))))
 
 (defmacro store (array-ref new-value &aux expand-1 &environment env)
-  (cond ((not (memq (car array-ref ) '(aref arraycall)))
+  (cond ((not (member (car array-ref) '(aref arraycall) :test #'eq))
 	 (setq expand-1 (macroexpand-1 array-ref env))
 	 (setq array-ref
-	       (cond ((memq (car expand-1 ) '(aref arraycall))
+	       (cond ((member (car expand-1) '(aref arraycall) :test #'eq)
 		      expand-1)
 		     (t  (macroexpand array-ref env))))))
   

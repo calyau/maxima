@@ -9,9 +9,10 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :maxima)
+
 (macsyma-module pade)
 
-(declare-top(special tlist tpf))
+(declare-top (special tlist tpf))
 
 (load-macsyma-macros rzmac mhayat ratmac)
 
@@ -43,7 +44,7 @@
   `(make-ps (gvar-o tpf) (poly-data tpf) (reverse ,p)))
 
 (defmfun $pade (taylor-form n-bound d-bound)
-  (cond ((not (and ($ratp taylor-form) (memq 'trunc (car taylor-form))))
+  (cond ((not (and ($ratp taylor-form) (member 'trunc (car taylor-form) :test #'eq)))
 	 (merror "First argument to Pade must be a taylor series")))
   (destructuring-let (((nil nil varlist genvar tlist) (car taylor-form)))
     (cons '(mlist)

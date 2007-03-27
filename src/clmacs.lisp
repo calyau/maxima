@@ -149,9 +149,6 @@
   (or (assoc item alist :test #'eq)
       (funcall fun)))
 
-(defun memq (x lis)
-  (member x lis :test #'eq))
-
 ;; Find the N most significant or least significant bits of the
 ;; absolute value of X.  If N is positive, take the most significant;
 ;; otherwise, the least significant.

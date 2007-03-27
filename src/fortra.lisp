@@ -127,7 +127,7 @@
 	 (list '(mquotient simp) (float (cadr e)) (float (caddr e))))
 	((eq (caar e) 'mrat) (fortscan (ratdisrep e)))
 	;;  complex numbers to f77 syntax a+b%i ==> (a,b)
-	((and (memq (caar e) '(mtimes mplus))
+	((and (member (caar e) '(mtimes mplus) :test #'eq)
 	      ((lambda (a) 
 		 (and (numberp (cadr a))
 		      (numberp (caddr a))

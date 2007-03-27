@@ -306,14 +306,14 @@
 				    t)
 				   (t '*bad*)))
 			 (cdr (cadr form))))
-  (cond ((or (memq '*bad* arg-info)
-	     (and (memq t arg-info)
-		  (cdr (memq t arg-info)))) ;;; the &REST is not the last one.
+  (cond ((or (member '*bad* arg-info :test #'eq)
+	     (and (member t arg-info :test #'eq)
+		  (cdr (member t arg-info :test #'eq)))) ;;; the &REST is not the last one.
 	 (tr-tell (cadr form) " bad `lambda' list. -`translate'")
 	 (setq tr-abort t)
 	 nil)
 	(t
-	 (setq arg-info (memq t arg-info) ;; &RESTP
+	 (setq arg-info (member t arg-info :test #'eq) ;; &RESTP
 	       t-form
 	       (tr-lambda `((lambda)
 			    ((mlist) ,@(mapcar #'(lambda (v)

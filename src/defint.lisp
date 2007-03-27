@@ -324,7 +324,7 @@
 	(val ()) (var ()) (exp ()) (dir ()))
     (cond ((and ans (not (among '%limit ans)))  ans)
 	  (t (cond ((and (or (equal nargs 3) (equal nargs 4))
-			 (memq (setq val (arg 3)) '($inf $minf)))
+			 (member (setq val (arg 3)) '($inf $minf) :test #'eq))
 		    (setq var (arg 2))
 		    (setq exp (maxima-substitute (m^t var -1) var (arg 1)))
 		    (cond ((eq val '$inf)  (setq dir '$plus))
@@ -439,8 +439,8 @@
 			 (alike1 ul ll))
 		     (return 0.))
 		    ((not (among var exp))
-		     (cond ((or (memq ul '($inf $minf))
-				(memq ll '($inf $minf)))
+		     (cond ((or (member ul '($inf $minf) :test #'eq)
+				(member ll '($inf $minf) :test #'eq))
 			    (diverg))
 			   (t (setq ans (m* exp (m+ ul (m- ll))))
 			      (return ans)))))
@@ -450,13 +450,13 @@
 		(cond ((and (not $nointegrate)
 			    (not (atom exp))
 			    (or (among 'mqapply exp)
-				(not (memq (caar exp)
+				(not (member (caar exp)
 					   '(mexpt mplus mtimes %sin %cos
 					     %tan %sinh %cosh %tanh
 					     %log %asin %acos %atan
 					     %cot %acot %sec 
 					     %asec %csc %acsc 
-					     %derivative)))))
+					     %derivative) :test #'eq))))
 		       (cond ((setq ans (antideriv exp))
 			      (setq ans (intsubs ans ll ul))
 			      (return (m* c ans)))
@@ -469,8 +469,8 @@
 
 (defun defint-list (exp var ll ul)
   (cond ((and (not (atom exp)) 
-	      (memq (caar exp)
-		    '(mequal mlist $matrix)))
+	      (member (caar exp)
+		    '(mequal mlist $matrix) :test #'eq))
 	 (let ((ans (cons (car exp)
 			  (mapcar
 			   #'(lambda (sub-exp)
@@ -895,14 +895,14 @@
 	(t (setq e ($multthru e))
 	   (let ((a1 ($limit e var ll '$plus))	
 		 (a2 ($limit e var ul '$minus)))
-	     (cond ((memq a1 '($inf $minf $infinity ))
-		    (cond ((memq a2 '($inf $minf $infinity))
+	     (cond ((member a1 '($inf $minf $infinity ) :test #'eq)
+		    (cond ((member a2 '($inf $minf $infinity) :test #'eq)
 			   (cond ((eq a2 a1)  (diverg))
 				 (t ())))
 			  (t (diverg))))
-		   ((memq a2 '($inf $minf $infinity))  (diverg))
-		   ((or (memq a1 '($und $ind))
-			(memq a2 '($und $ind)))  ())
+		   ((member a2 '($inf $minf $infinity) :test #'eq)  (diverg))
+		   ((or (member a1 '($und $ind) :test #'eq)
+			(member a2 '($und $ind) :test #'eq))  ())
 		   (t (m- a2 a1)))))))
 
 ;;;This function works only on things with ATAN's in them now.
@@ -3297,7 +3297,7 @@
 
 ;;;Returns $YES if there is no pole and $NO if there is one.
 (defun limit-pole (exp var limit direction)
-  (let ((ans (cond ((memq limit '($minf $inf))
+  (let ((ans (cond ((member limit '($minf $inf) :test #'eq)
 		    (cond ((eq (special-convergent-formp exp limit) '$yes)
 			   '$no)
 			  (t (get-limit (m* exp var) var limit direction))))
@@ -3425,7 +3425,7 @@
 	  ((eq y '$minf)
 	   '$yes)
 	  (t (let ((ans ($asksign (m+ x (m- y)))))
-	       (cond ((memq ans '($zero $pos))
+	       (cond ((member ans '($zero $pos) :test #'eq)
 		      '$yes)
 		     ((eq ans '$neg)
 		      '$no)

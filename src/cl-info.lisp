@@ -132,7 +132,8 @@
     (setq L (cons #\^ L))
 
     (coerce (apply #'append
-                   (mapcar #'(lambda (c) (if (maxima::memq c L) `(#\\ ,c) `(,c))) (coerce s 'list)))
+                   (mapcar #'(lambda (c) (if (member c L :test #'eq)
+					     `(#\\ ,c) `(,c))) (coerce s 'list)))
             'string)))
 
 (defun find-regex-matches (regex-string hashtable)

@@ -162,8 +162,8 @@
 					;trying to match a nounified substitution variable
 	   (cond ((atom (cdr form))
 		  ($nounify (cdr form)))
-		 ((memq (caar (cdr form))
-			'(mquote mlist mprog mprogn lambda))
+		 ((member (caar (cdr form))
+			'(mquote mlist mprog mprogn lambda) :test #'eq)
 					;list gotten from the parser.
 		  `((mquote) ,(cdr form)))
 		 (t `( (,($nounify (caar (cdr form)))

@@ -44,7 +44,7 @@
 
 (defmfun $laplace (fun var parm)
   (setq fun (mratcheck fun))
-  (cond ((or nounsflag (memq '%laplace nounl)) (setq fun (remlaplace fun))))
+  (cond ((or nounsflag (member '%laplace nounl :test #'eq)) (setq fun (remlaplace fun))))
   (cond ((and (null (atom fun)) (eq (caar fun) 'mequal))
 	 (list '(mequal simp)
 	       (laplace (cadr fun))
@@ -277,8 +277,8 @@
      (return
        (cond
 	 ((and (posint power)
-	       (memq (caar base-of-fun)
-		     '(mplus %sin %cos %sinh %cosh)))
+	       (member (caar base-of-fun)
+		     '(mplus %sin %cos %sinh %cosh) :test #'eq))
 	  (laptimes (cons base-of-fun
 			  (cons (cond ((= power 2) base-of-fun)
 				      (t (list '(mexpt simp)
@@ -317,7 +317,7 @@
 
 (defun lapshift (fun rest)
   (cond ((atom fun) (merror "Internal error"))
-	((or (memq 'laplace (car fun)) (null rest))
+	((or (member 'laplace (car fun) :test #'eq) (null rest))
 	 (lapdefint (cond (rest (simptimes (cons '(mtimes)
 						 (cons fun rest)) 1 t))
 			  (t fun))))

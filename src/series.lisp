@@ -99,7 +99,7 @@
 	((eq (caar exp) '%derivative) (sp2diff (cadr exp) (cddr exp)))
 	((eq (caar exp) '%integrate)
 	 (sp2integ (cadr exp) (caddr exp) (cdddr exp)))
-	((memq (caar exp) '(%product %sum))
+	((member (caar exp) '(%product %sum) :test #'eq)
 	 (list* (car exp) (sp2expand (cadr exp)) (cddr exp)))
 	(t (list '(%sum)
 		 (m* (m^ var *index)
@@ -266,7 +266,7 @@
 
 (defun sratp (a var)
   (cond ((atom a) t)
-	((memq (caar a) '(mplus mtimes)) (sandmap (cdr a)))
+	((member (caar a) '(mplus mtimes) :test #'eq) (sandmap (cdr a)))
 	((eq (caar a) 'mexpt)
 	 (cond ((free (cadr a) var) (free (caddr a) var))
 	       ((smono a var) t)
