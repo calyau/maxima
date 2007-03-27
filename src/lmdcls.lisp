@@ -70,7 +70,7 @@
   $dotconstrules $dotdistrib $dotexptsimp $dotident $dotscrules
   $dskgc $erfflag $errexp $error $error_size $error_syms $expon
   $exponentialize $expop $exptdispflag $exptisolate $exptsubst
-  $facexpand $factorflag $features $file_search $file_string_print
+  $facexpand $factorflag $features $file_search
   $file_types $float $float2bf $floatformat $floatfrac $floatint
   $floatoptions $floatprec $floatwidth $fortfloat $fortindent
   $fortspaces $fpprec $fpprintprec $fptrunc $functions $gammalim $gcd

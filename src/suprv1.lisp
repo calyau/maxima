@@ -149,9 +149,6 @@
 (defun sys-gctime ()
   (status gctime))
 
-(defmvar $file_string_print t
-  "If `true', filenames are output as strings; if `false', as lists.")
-
 (defmvar $showtime nil)
 
 (defmfun meval* (test)
@@ -1049,20 +1046,6 @@
   #+excl "don't know quit function")
 
 (defmfun $logout () (bye))
-
-(defmfun fileprint (fname)	  ; Takes filename in NAMELIST format.
-  (cond ($file_string_print (princ (namestring fname)) (princ "  "))
-	(t (princ "[")
-	   (princ (cadr fname)) (princ ", ")
-	   (princ (caddr fname)) (princ ", ")
-	   (when (cdddr fname) (princ (cadddr fname)) (princ ", ")) ; For TOPS-20
-	   (princ (caar fname)) (princ ", ")
-	   (princ (cadar fname)) (princ "]  "))))
-
-(defmfun mfile-out (fname) ; Takes filename in NAMELIST or OldIO list format.
-  (if $file_string_print
-      (implode (cons #\& (exploden (namestring fname))))
-      (dollarify (if (atom (car fname)) fname (append (cdr fname) (car fname))))))
 
 ;; File-processing stuff.
 
