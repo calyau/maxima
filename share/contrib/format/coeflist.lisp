@@ -334,7 +334,7 @@
 					(list (clist-mbag op (mapcar #'car elements))
 					      (clist-mbag op (mapcar #'cadr elements)))))
 			((or (null op)(not (dependsall expr vars))) `(()((,expr . ,zeros))))
-			((memq op '(%sin %cos))  (encode-tlist expr vars))
+			((member op '(%sin %cos) :test #'eq)  (encode-tlist expr vars))
 			((eq op 'mplus)  (cl-reduce #'tlist-add (cdr expr) #'gcf))
 			((eq op 'mtimes) (cl-reduce #'tlist-mul (cdr expr) #'gcf))
 			((and (eq op 'mexpt)	; x^y Check that we can actually compute:

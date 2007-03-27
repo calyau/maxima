@@ -24,17 +24,20 @@
 ;;;; with look-ahead disabled
 
 (in-package :maxima)
+
 (declaim (special *tag* *special-proc* *PARSE-STREAM* *in* parse-tyipeek))
+
 (defvar *in* *PARSE-STREAM*  "input stream to read")
-(setq parse-tyipeek nil)   ;; look-ahead in nparse.lisp
+
+(setq parse-tyipeek nil) ;; look-ahead in nparse.lisp
+
 (defvar *tag* nil "tag of element returned by ml2ma")
 
 
 ;;;;; mltoma is the top-level mathml input function
 
 (defun $mathml()
-  (meval (mltoma *PARSE-STREAM*))
-)
+  (meval (mltoma *PARSE-STREAM*)))
 
 (defun mltoma(&optional *in*)
 (prog(ans)
@@ -43,37 +46,32 @@
    (if (not (eq g 'math)) (return nil))
    (setq ans (ml2ma))
    (setq g (get-tag)) ;; this should be </math>
-   (return ans)
-))
+   (return ans)))
 
 (defun ml2ma ()
-(prog(tag)
-   (setq *tag* (setq tag (get-tag)))
-   (return 
-     (cond ((eq tag 'ci) (ml-ci))
-	 ((eq tag 'cn) (ml-cn))
-	 ((eq tag 'apply) (ml-apply))
-	 ((memq tag '(bvar lowlimit uplimit))
-	     (setq ans (ml2ma)) (get-tag) ans)
-	 ((eq tag '/apply) nil)
-	 (t (merror "unknown or invalid mathml tag: ~A" tag))
-     )
-   )
-))
+  (prog(tag)
+     (setq *tag* (setq tag (get-tag)))
+     (return 
+       (cond ((eq tag 'ci) (ml-ci))
+	     ((eq tag 'cn) (ml-cn))
+	     ((eq tag 'apply) (ml-apply))
+	     ((member tag '(bvar lowlimit uplimit) :test #'eq)
+	      (setq ans (ml2ma)) (get-tag) ans)
+	     ((eq tag '/apply) nil)
+	     (t (merror "unknown or invalid mathml tag: ~A" tag))))))
 
 (defun ml-apply()
-(prog(op *special-proc* ans)
-    (setq op (get-op))
-    (cond ((null op)
-	 (if *special-proc* (return (apply *special-proc* nil))
-		   (merror "internal error: null mct-proc"))
-    ))
-    (do ((operand (ml2ma) (ml2ma))) ;; returns nil after seeing </apply>
-        ((null operand) (setq ans (cons op (nreverse ans)))) ;; done
-        (setq ans (cons operand ans))
-    )
-    (return ans)
-))
+  (prog(op *special-proc* ans)
+     (setq op (get-op))
+     (cond ((null op)
+	    (if *special-proc* (return (apply *special-proc* nil))
+		(merror "internal error: null mct-proc"))
+	    ))
+     (do ((operand (ml2ma) (ml2ma))) ;; returns nil after seeing </apply>
+	 ((null operand) (setq ans (cons op (nreverse ans)))) ;; done
+       (setq ans (cons operand ans))
+       )
+     (return ans)))
 
 ;; <apply>
 ;; <diff/> <apply> <fn>G</fn><ci>X</ci> </apply>
@@ -84,28 +82,26 @@
 (defun mctdiff()
   (let ((fn (ml2ma)) (var-deg (diff-bvar))) 
        (get-tag) ;; lose </apply>
-       (cons (list '$diff) (cons fn var-deg)))
-)
+       (cons (list '$diff) (cons fn var-deg))))
 
 (defun mctintegrate()
-(prog(var nt ll up grand)
-    (setq var (get-bvar))
-    (setq nt (ml2ma)) 
-    (cond ((eq *tag* 'lowlimit)
-	     (setq ll nt)
-	     (setq up (ml2ma))
-	     (cond ((eq *tag* 'uplimit)
-	         (setq grand (ml2ma))
-	         (get-tag) ;; lose </apply> for <int\>  
-	         (return (list '($integrate) grand var ll up)))
-	      (t (merror "definite intergral error"))
-            ))
-    )
-    ;; indefinte integral
-    (setq grand nt)
-    (get-tag) ;; lose </apply>
-    (return (list '($integrate) grand var))
-))
+  (prog(var nt ll up grand)
+     (setq var (get-bvar))
+     (setq nt (ml2ma)) 
+     (cond ((eq *tag* 'lowlimit)
+	    (setq ll nt)
+	    (setq up (ml2ma))
+	    (cond ((eq *tag* 'uplimit)
+		   (setq grand (ml2ma))
+		   (get-tag) ;; lose </apply> for <int\>  
+		   (return (list '($integrate) grand var ll up)))
+		  (t (merror "definite intergral error"))
+		  ))
+	   )
+     ;; indefinte integral
+     (setq grand nt)
+     (get-tag) ;; lose </apply>
+     (return (list '($integrate) grand var))))
 	  
 (defun get-bvar()
 (prog(tag v)

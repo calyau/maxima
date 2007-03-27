@@ -276,12 +276,12 @@
 
 (defun mac$literalp (stmt)
   ; is stmt a $literal function? ;
-  (memq (caar stmt) '($literal literal $data data)))
+  (member (caar stmt) '($literal literal $data data) :test #'eq))
 
 (defun franzliteral (fn stmt)
   (cons fn
 	(foreach exp in (cdr stmt) collect
-		 (cond ((memq exp '($tab $cr)) exp)
+		 (cond ((member exp '($tab $cr) :test #'eq) exp)
 		       ((listp exp) (franzexp exp 0 stmt))
 		       (t (stripdollar1 exp))))))
 
@@ -518,19 +518,19 @@
   (cond ((null exp) nil)
 	((atom exp))
 	((atom (car exp)) nil)
-	((not (memq (caar exp) '(mcond mdefine mdo mdoin mgo mprog mprogn
+	((not (member (caar exp) '(mcond mdefine mdo mdoin mgo mprog mprogn
 				 mreturn msetq $end $ev $literal $print
-				 $readonly $stop $data))))))
+				 $readonly $stop $data) :test #'eq)))))
 
 (defun maclogexpp (exp)
   ; is exp a macsyma logical expression? ;
   (cond ((atom exp)
 	 (not (numberp exp)))
 	((listp (car exp))
-	 (not (memq (caar exp)
+	 (not (member (caar exp)
 		    '(mcond mdefine mdo mdoin mgo mexpt mminus mplus mprog
 		      mprogn mquotient mreturn msetq mtimes rat $end $ev
-		      $print $readonly $stop))))))
+		      $print $readonly $stop) :test #'eq)))))
 
 (defun macstmtp (stmt)
   ; is stmt a macsyma statement? ;

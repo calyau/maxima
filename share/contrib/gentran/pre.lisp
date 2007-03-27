@@ -1,6 +1,3 @@
-
-
-
 ;*******************************************************************************
 ;*                                                                             *
 ;*  copyright (c) 1988 kent state univ.  kent, ohio 44242                      *
@@ -148,7 +145,7 @@
 	 ; (($subroutine/$function/$cprocedure) {&type} (($name) $p1..$pn)) ;
 	 ;  --> ((mdefine) (($name) $p1..$pn))                              ;
 	 (prog (decs)
-	       (cond ((memq *gentranlang '(fortran ratfor))
+	       (cond ((member *gentranlang '(fortran ratfor) :test #'eq)
 		      (setq decs (list `(($type) ,(caar exp)
 						 ,(caaar (last exp)))))))
 	       (cond ((equal (length exp) 3)

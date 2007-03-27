@@ -169,7 +169,7 @@
 (defmfun $is (pat)
   (multiple-value-bind (ans patevalled) (mevalp1 pat)
     (cond
-      ((memq ans '(t nil)) ans)
+      ((member ans '(t nil) :test #'eq) ans)
       ; I'D RATHER HAVE ($PREDERROR ($THROW `(($PREDERROR) ,PATEVALLED))) HERE
       ($prederror (pre-err patevalled))
       (t '$unknown))))
@@ -177,18 +177,18 @@
 (defmfun $maybe (pat)
   (multiple-value-bind (ans patevalled) (let (($prederror nil)) (mevalp1 pat))
     (cond
-      ((memq ans '(t nil)) ans)
+      ((member ans '(t nil) :test #'eq) ans)
       (t '$unknown))))
 
 (defun mevalp1 (pat)
   (let (patevalled ans)
     (setq ans 
-      (cond ((and (not (atom pat)) (memq (caar pat) '(mnot mand mor)))
+      (cond ((and (not (atom pat)) (member (caar pat) '(mnot mand mor) :test #'eq))
 	   (cond ((eq 'mnot (caar pat)) (is-mnot (cadr pat)))
 	         ((eq 'mand (caar pat)) (is-mand (cdr pat)))
 	         (t (is-mor (cdr pat)))))
 	  ((atom (setq patevalled (meval pat))) patevalled)
-	  ((memq (caar patevalled) '(mnot mand mor)) (mevalp1 patevalled))
+	  ((member (caar patevalled) '(mnot mand mor) :test #'eq) (mevalp1 patevalled))
 	  (t (mevalp2 patevalled (caar patevalled) (cadr patevalled) (caddr patevalled)))))
     (values ans patevalled)))
 
@@ -205,7 +205,7 @@
 
 (defmfun mevalp (pat)
   (multiple-value-bind (ans patevalled) (mevalp1 pat)
-    (cond ((memq ans '(#.(not ()) ()))
+    (cond ((member ans '(#.(not ()) ()) :test #'eq)
        ans)
       ; I'D RATHER HAVE ($PREDERROR ($THROW `(($PREDERROR) ,PATEVALLED))) HERE
       ($prederror (pre-err patevalled))
@@ -232,7 +232,7 @@
   (setq x (mevalp (car l)))
   (cond
     ((null x) (return nil))
-    ((not (memq x '(t nil))) (push x unevaluated)))))
+    ((not (member x '(t nil) :test #'eq)) (push x unevaluated)))))
 
 (defmspec mor (form) (setq form (cdr form))
   (do ((l form (cdr l)) (x) (unevaluated))
@@ -244,12 +244,12 @@
   (setq x (mevalp (car l)))
   (cond
     ((eq x t) (return t))
-    ((not (memq x '(t nil))) (push x unevaluated)))))
+    ((not (member x '(t nil) :test #'eq)) (push x unevaluated)))))
 
 (defmspec mnot (form) (setq form (cdr form))
   (let ((x (mevalp (car form))))
     (cond
-      ((memq x '(t nil)) (not x))
+      ((member x '(t nil) :test #'eq) (not x))
       (t `((mnot) ,x)))))
 
 ; X is an expression of the form ((OP) B1 G1 B2 G2 B3 G3 ...)
@@ -386,8 +386,8 @@
   (setq a (maybe-simplifya (car l) z))
   (cond
     ((null a) (return nil))
-    ((eq a '$unknown) (if (not (memq '$unknown simplified)) (push a simplified)))
-    ((not (memq a '(t nil))) (push a simplified)))))
+    ((eq a '$unknown) (if (not (member '$unknown simplified :test #'eq)) (push a simplified)))
+    ((not (member a '(t nil) :test #'eq)) (push a simplified)))))
 
 (defun simp-mor (x y z)
   (declare (ignore y))
@@ -400,8 +400,8 @@
   (setq a (maybe-simplifya (car l) z))
   (cond
     ((eq a t) (return t))
-    ((eq a '$unknown) (if (not (memq '$unknown simplified)) (push a simplified)))
-    ((not (memq a '(t nil))) (push a simplified)))))
+    ((eq a '$unknown) (if (not (member '$unknown simplified :test #'eq)) (push a simplified)))
+    ((not (member a '(t nil) :test #'eq)) (push a simplified)))))
 
 ; ALSO CUT STUFF ABOUT NOT EQUAL => NOTEQUAL AT TOP OF ASSUME
 
@@ -539,18 +539,18 @@
 (defun mevalp_tr (pat error? meval?)
   (let (patevalled ans)
     (setq ans (mevalp1_tr pat error? meval?))
-    (cond ((memq ans '(t nil)) ans)
+    (cond ((member ans '(t nil) :test #'eq) ans)
 	  (error?
 	   (pre-err patevalled))
 	  ('else '$unknown))))
 
 (defun mevalp1_tr (pat error? meval?)
-  (cond ((and (not (atom pat)) (memq (caar pat) '(mnot mand mor)))
+  (cond ((and (not (atom pat)) (member (caar pat) '(mnot mand mor) :test #'eq))
 	 (cond ((eq 'mnot (caar pat)) (is-mnot_tr (cadr pat) error? meval?))
 	       ((eq 'mand (caar pat)) (is-mand_tr (cdr pat) error? meval?))
 	       (t (is-mor_tr (cdr pat) error? meval?))))
 	((atom (setq patevalled (if meval? (meval pat) pat))) patevalled)
-	((memq (caar patevalled) '(mnot mand mor)) (mevalp1_tr patevalled
+	((member (caar patevalled) '(mnot mand mor) :test #'eq) (mevalp1_tr patevalled
 							       error?
 							       meval?))
 	(t (mevalp2 patevalled (caar patevalled) (cadr patevalled) (caddr patevalled)))))

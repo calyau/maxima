@@ -43,13 +43,13 @@
 	((eq (car exp) 'data) (fortdata exp))
 	((eq (car exp) 'literal) (fortliteral exp))
 	((null (cdr exp)) exp)
-	((memq (car exp) '(minus not))
+	((member (car exp) '(minus not) :test #'eq)
 	 (let* ((wt (fortranprecedence (car exp)))
 		(res (cons (fortranop (car exp)) (fortexp1 (cadr exp) wt))))
 	       (cond ((< wt wtin) (aconc (cons '|(| res) '|)|))
 		     (t res))))
-	((or (memq (car exp) *lisparithexpops*)
-	     (memq (car exp) *lisplogexpops*))
+	((or (member (car exp) *lisparithexpops* :test #'eq)
+	     (member (car exp) *lisplogexpops* :test #'eq))
 	 (let* ((wt (fortranprecedence (car exp)))
 		(op (fortranop (car exp)))
 		(res (fortexp1 (cadr exp) wt))
@@ -109,12 +109,12 @@
 
 (defun mac$literalp (stmt)
   ; is stmt a $literal function? ;
-  (memq (caar stmt) '($literal literal $data data)))
+  (member (caar stmt) '($literal literal $data data) :test #'eq))
 
 (defun franzliteral (fn stmt)
   (cons fn
 	(foreach exp in (cdr stmt) collect
-		 (cond ((memq exp '($tab $cr)) exp)
+		 (cond ((member exp '($tab $cr) :test #'eq) exp)
 		       ((listp exp) (franzexp exp 0 stmt))
 		       (t (stripdollar1 exp))))))
 	
@@ -123,6 +123,6 @@
   (cond ((null exp) nil)
 	((atom exp))
 	((atom (car exp)) nil)
-	((not (memq (caar exp) '(mcond mdefine mdo mdoin mgo mprog mprogn
+	((not (member (caar exp) '(mcond mdefine mdo mdoin mgo mprog mprogn
 			         mreturn msetq $end $ev $literal $print
-				 $readonly $stop $data))))))
+				 $readonly $stop $data) :test #'eq)))))

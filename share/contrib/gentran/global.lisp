@@ -1,5 +1,3 @@
-
-
 ;*******************************************************************************
 ;*                                                                             *
 ;*  copyright (c) 1988 kent state univ.  kent, ohio 44242                      *
@@ -194,12 +192,12 @@
 
 (defun $gentranlang(a)
 	(setq a (stripdollar1 a))
-	(cond ((not (memq a '(fortran ratfor c)))
+	(cond ((not (member a '(fortran ratfor c) :test #'eq))
 		(merror "arg must be one of fortran c or ratfor")))
 	(setq *gentranlang a))
 
 (defun imptype(var)
-   (cond ((memq (car (explode var)) '(|i| |j| |k| |l| |m| |n|)) 'integer)
+   (cond ((member (car (explode var)) '(|i| |j| |k| |l| |m| |n|) :test #'eq) 'integer)
 	 (t 'real)))
 
 (defun arrayeltp (exp)
@@ -526,14 +524,7 @@
 		(merror "atomic arg required" x))))
 	((numberp x)
 	 x)
-	((memq (getchar x 1) '($ % &))
+	((member (getchar x 1) '($ % &) :test #'eq)
 	 (concat (substring x 1)))
 	(t
 	 x)))
-
-;;(de stripquotes (a)
-  ;;(cond ((atom a)
-	 ;;(intern (compress (foreach c in (explode2 a) conc (list '// c)))))
-	;;((equal (car a) 'quote)
-	 ;;(stripquotes (cadr a)))
-	;;(a)))

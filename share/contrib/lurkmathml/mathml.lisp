@@ -67,7 +67,7 @@
 	;; go back and analyze the first arg more thoroughly now.
 	;; do a normal evaluation of the expression in macsyma
 	(setq mexp (meval mexplabel))
-	(cond ((memq mexplabel $labels); leave it if it is a label
+	(cond ((member mexplabel $labels :test #'eq); leave it if it is a label
 	       (setq mexplabel (concat "(" (stripdollar mexplabel) ")"))
 	       (setq itsalabel t))
 	      (t (setq mexplabel nil)));flush it otherwise
@@ -82,7 +82,7 @@
 		    ((setq y (mget x 'aexpr))
 		     (setq mexp (list '(mdefine) (cons (list x 'array) (cdadr y)) (caddr y)))))))
 	(cond ((and (null (atom mexp))
-		    (memq (caar mexp) '(mdefine mdefmacro)))
+		    (member (caar mexp) '(mdefine mdefmacro) :test #'eq))
 	       (format texport "<pre>~%" ) 
 	       (cond (mexplabel (format texport "~a " mexplabel)))
                ;; need to get rid of "<" signs
@@ -131,7 +131,7 @@
                    (> (mathml-lbp rop) (mathml-rbp (caar x))))
 	       (mathml-paren x l r))
 	      ;; special check needed because macsyma notates arrays peculiarly
-	      ((memq 'array (cdar x)) (mathml-array x l r))
+	      ((member 'array (cdar x) :test #'eq) (mathml-array x l r))
 	      ;; dispatch for object-oriented mathml-ifiying
 	      ((get (caar x) 'mathml) (funcall (get (caar x) 'mathml) x l r))
 	      (t (mathml-function x l r nil))))
@@ -390,9 +390,9 @@
 		   (expon (caddr x)) ;; this is the exponent
 		   (doit (and
 			  f ; there is such a function
-			  (memq (getchar f 1) '(% $)) ;; insist it is a % or $ function
-                          (not (memq f '(%sum %product %derivative %integrate %at
-					      %lsum %limit))) ;; what else? what a hack...
+			  (member (getchar f 1) '(% $) :test #'eq) ;; insist it is a % or $ function
+                          (not (member f '(%sum %product %derivative %integrate %at
+					      %lsum %limit) :test #'eq)) ;; what else? what a hack...
 			  (or (and (atom expon) (not (numberp expon))) ; f(x)^y is ok
 			      (and (atom expon) (numberp expon) (> expon 0))))))
 			      ; f(x)^3 is ok, but not f(x)^-1, which could
@@ -557,7 +557,8 @@
 
 (defun mathml-mplus (x l r)
  ;(declare (fixnum w))
- (cond ((memq 'trunc (car x))(setq r (cons "<mo>+</mo><mtext>&ctdot;</mtext> " r))))
+ (cond ((member 'trunc (car x) :test #'eq)
+	(setq r (cons "<mo>+</mo><mtext>&ctdot;</mtext> " r))))
  (cond ((null (cddr x))
 	(if (null (cdr x))
 	    (mathml-function x l r t)
