@@ -468,7 +468,7 @@
   (declare (special $file_output_append))
   (setq arg (cdr arg))
   (let*
-    ((fname (namestring (maxima-string (car arg))))
+    ((fname (namestring (maxima-string (meval (car arg)))))
      (filespec
        (if (or (eq $file_output_append '$true)
 	       (eq $file_output_append t))
