@@ -267,7 +267,7 @@
 ;(defmacro simp-zerop (n )
 ;  `(cond ((numberp ,n) (zerop ,n))
 ;	 ((atom ,n) nil)
-;	 (t (cond ((memq (caar ,n) '(mrat rat))
+;	 (t (cond ((member (caar ,n) '(mrat rat) :test #'eq)
 ;		   (cond ((eq (second (car ,n)) 'simp)
 ;			  (equal (cdr ,n) (rzero)))
 ;			 (t (zerop (setq ,n ($ratsimp ,n)))

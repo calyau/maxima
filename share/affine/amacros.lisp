@@ -7,19 +7,6 @@
 
 (in-package :maxima)
 
-#+old
-(defmacro defstruct (options &body items)
-   (sloop for v in options when (and (listp v) (member 'list (member :type v)))
-	 do (return `(eval-when (compile eval load) (cli:defstruct ,options ,@ items)
-			    (defun ,(intern (format nil "MAKE-~A" (car options)))
-				   (&key ,@ items &aux tem)
-			      (setq tem (list ,@ (sloop for s in items
-							    when (listp s)collecting (car s)
-							    else collecting s)))
-			      ,(cond ((member :named options) `(cons ',(car options) tem))
-				     (t 'tem) ))))
-	 finally (return `(cli:defstruct ,options ,@ items))))
-
 (defmacro iassert (expr)
   `(cond ((null ,expr) (fsignal "The expression ~A was not true" ',expr))))
 
@@ -110,14 +97,14 @@
 ;; (show call-arglist)
   
   (setq call-arglist  (fix-optional(delete-from-&aux call-arglist)))
-  (cond ((memq '&aux call-arglist )
+  (cond ((member '&aux call-arglist  :test #'eq)
 	 (format t "~%It is inadvisable to use &aux with defremember")))
 ;;  (show call-arglist)
   (cond ((equal (length arglist) 1)(setq hash-put-args (setq hash-args (car arglist))))
 	((equal (car arglist) '&rest) (setq hash-args (second arglist))
 	 (setq hash-put-args `(copy-list ,(second arglist)))
 	 (setq call-arglist (second arglist)))
-	((memq '&rest arglist) (setq hash-args `(list ,@ (DELETE '&rest call-arglist)))
+	((member '&rest arglist :test #'eq) (setq hash-args `(list ,@ (DELETE '&rest call-arglist)))
 	 (setq hash-put-args (copy-list hash-args))
 	 (setf (nth (f1- (length hash-put-args)) hash-put-args)
 	       `(copy-list ,(car (last hash-put-args)))))
@@ -133,7 +120,7 @@
 		    (t (setf (get ',func-spec :memory-table)
 			      (make-hash-table :test 'equal)
 			      )
-		       ,(cond ((memq '&rest arglist )
+		       ,(cond ((member '&rest arglist  :test #'eq)
 			       `(apply ',func-spec ,@
 				       ` ,(DELETE '&rest
 						     (copy-list call-arglist))))

@@ -1405,7 +1405,7 @@ dot_products, much the same as can be obtained by doing $dotsimp")
 ;	 (format t "~%find-worst-nc-monomial was applied to a non sum.  Expanding and continuing with " )(displa expr)))
 ;  (cond ((atom expr) (setq answer expr coefficient 1 answeru expr))
 ;	((eq (caar expr) 'mnctimes)(setq answer expr coefficient 1 answeru expr))
-;;	((memq (caar expr) '(mlist mequal)) (sloop for u in (cdr expr)
+;;	((member (caar expr) '(mlist mequal) :test #'eq) (sloop for u in (cdr expr)
 ;;			     appending (cdr ($list_nc_monomials u)) into a-list
 ;;			     finally (return (cons '(mlist simp) ($setfy a-list)))))
 ;	((eq (caar expr) 'mplus) (sloop for u in (cdr expr)

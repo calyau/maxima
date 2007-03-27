@@ -1,8 +1,5 @@
 ; compile in OLDIO (otherwise DUMPP won't be able to be fasloaded into QA).
-(declare (special $arrays) (fixnum i)
-	 (notype (add2lnc notype notype) (mputprop notype notype notype)
-		 (displa notype) (filestrip notype) ($listp notype)
-		 (dumpp notype)))
+(declare (special $arrays))
 
 (cond ((status featur newio)
        (defprop dumparrays (dumpar fasl dsk share) autoload)
@@ -22,14 +19,14 @@
 		 ((null l1) (*rearray ary 'fixnum i))
 		 (setq l2 (car l1))
 		 (cond ((not (and (get l2 'array)
-				  (memq (car (setq l2 (arraydims l2)))
-					'(fixnum flonum))))
+				  (member (car (setq l2 (arraydims l2)))
+					'(fixnum flonum) :test #'eq)))
 			(*rearray ary) (displa l2)
 			(error '| not a number array|)))
 		 (do ((l3 (cdr l2) (cdr l3))) ((null l3))
 		     (store (arraycall fixnum aryv i) (car l3))
-		     (setq i (1+ i)))
-		 (setq i (1+ i)))
+		     (incf i))
+		 (incf i))
 	     (dumparrays (cons ary l) filespec)
 	     (*rearray ary))
        (cons '(mlist) (cons (append '((mlist)) (status crfile) (status crunit)) l)))
@@ -39,16 +36,9 @@
        (setq l (filestrip l))
        (apply 'crunit (cddr l))
        (cond ((null (apply 'uprobe l)) (princ l) (error '| file not found|)))
-       (cond ((null (prog2 nil (or (status featur newio) (apply 'dumpp l))
-			   (comment	; newio LOADARRAYS checks this itself
-			    (cond ((status featur newio)
-				   ((lambda (file)
-					    (prog2 nil
-						   (= (in file) -262143.) ;-1,,1
-						   (close file)))
-				    (open l '(in fixnum))))
-				  (t (apply 'dumpp l))))
-			   (setq l (append (status crfile) (status crunit)))))
+       (cond ((null (prog1
+			(or (status featur newio) (apply 'dumpp l))
+		      (setq l (append (status crfile) (status crunit)))))
 	      (princ l) (error '| not a file of saved arrays|)))
        (setq l (loadarrays l))
        (do ((aryv (get (caar l) 'array)) (l (cdr l) (cdr l)) (l1) (i 0.))

@@ -918,7 +918,7 @@
 ;		    for possible in tem
 ;			do
 ;			(sloop for var in possible
-;			      when (not (memq var variables-in-gm-coefficients))
+;			      when (not (member var variables-in-gm-coefficients :test #'eq))
 ;			      do (return-from sue 'ok-gm))))))
 ;	(t (sloop for f in fns
 ;	             collecting (setq var-1 (degree-one-variables f)) into vars-1

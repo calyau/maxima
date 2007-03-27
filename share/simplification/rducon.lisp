@@ -168,7 +168,7 @@
          (($constantp x) (obtain-constant x newconst))
          (t
           (let ((opr (caar x)))
-            (cond ((memq opr '(mtimes mplus))
+            (cond ((member opr '(mtimes mplus) :test #'eq)
                    (let* ((product (eq opr 'mtimes))
                           (negative (and product (equal (cadr x) -1))))
                      (or (and negative (null (cdddr x))

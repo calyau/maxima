@@ -34,7 +34,7 @@
 	((rational-functionp n)(rzerop   n))
 	(($bfloatp n) (eql (car n) 0))
 	(t (setf type-of-n (caar n))
-	   (cond ((memq type-of-n '(mrat rat))
+	   (cond ((member type-of-n '(mrat rat) :test #'eq)
 		  (equal (cdr n) (rzero)))
 		 (t (and (numberp (setq tem ($ratsimp n)))(zerop tem)))))))
 
@@ -64,7 +64,7 @@
 ;;should take into account when the variables don't need replacing.
 (defun psublis1 (a-list denom poly degree varl)
    (cond ((atom poly) (ptimes poly (pexpt denom degree)))
-	((memq (p-var poly) varl)
+	((member (p-var poly) varl :test #'eq)
 	 (sloop for (deg cof) on (cdr poly) by 'cddr
 	       with answer = 0
 	       do (setq answer
@@ -212,7 +212,7 @@
 			       (t expr))))))))
  (defun poly-degree (poly varl)
   (cond ((atom poly) 0)
-	((memq (p-var poly) varl)
+	((member (p-var poly) varl :test #'eq)
 	 (sloop for (deg cof) on (cdr poly) by 'cddr
 	       maximize (f+ deg (poly-degree cof varl))))
 	(t

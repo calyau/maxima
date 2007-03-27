@@ -1675,7 +1675,7 @@
 ;  (cond (used-eqns
 ;	 (cons '(mlist) (append (sloop for v in rat-eqns
 ;		       collecting (header-poly v))	
-;		 (memq '$case eqns)
+;		 (member '$case eqns :test #'eq)
 ;		 (sloop for v in used-eqns
 ;		       collecting (header-poly v)))))))
 
@@ -1750,7 +1750,7 @@
 ; (setq vars  (mapcar 'cdr vars))
 ; (setq all-vars (union (apply 'append vars)))
 ; (setq f #'(lambda (v) (sloop for w in vars
-;			     when (memq v) vars
+;			     when (member v :test #'eq) vars
 ;			     count1
 ; (sort all-vars #'(lambda (u v)
 ;		    
@@ -2454,7 +2454,7 @@ would restore the list"
 ;								    (may-invertp
 ;								      ter so-far))
 ;							     collecting ter))))
-;			(cond ((memq nil eqns-modv) (ferror "nil should not be here")))
+;			(cond ((member nil eqns-modv :test #'eq) (ferror "nil should not be here")))
 ;			(cond ((eq v nil) (ferror "nil should not be here")))
 ;			(setq ld (make-ldata))
 ;			(setf (ldata-eqns ld) (cons v eqns-modv))
@@ -2491,7 +2491,7 @@ would restore the list"
 ;  (setq highest-vars
 ;	(sloop for v in occurs
 ;	      collecting (sloop for u in vars
-;			       when (memq u v)
+;			       when (member u v :test #'eq)
 ;			       do (return u))))
 ;  (show vars highest-vars)  
 ;  (setq repeat
@@ -2499,7 +2499,7 @@ would restore the list"
 ;	      do
 ;	      (sloop for w on highest-vars
 ;		    when (and (eq (car w) v)
-;			      (memq v (cdr w)))
+;			      (member v (cdr w) :test #'eq))
 ;		    do (return-from rep v))))
 ;  (cond
 ;    (repeat

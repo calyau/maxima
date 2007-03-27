@@ -1448,7 +1448,7 @@ something is wrong" (length (sp-list-of-all-columns-occurring sp-mat)) number-of
 ;			 (fmat t "~%Row ~D has no possible pivot." (sp-pivot-row-number sp-mat))
 ;						(aset 1 (sp-rows-with-no-pivot sp-mat) (sp-pivot-row-number sp-mat))
 ;						(throw 'done 'no-pivot)))
-;		  (cond ((memq test-name '(min any gcd-column))
+;		  (cond ((member test-name '(min any gcd-column) :test #'eq)
 ;			 (fmat t "There  is no possible pivot in row ~D." (sp-pivot-row-number sp-mat))
 ;			 (aset 1 (sp-rows-with-no-pivot sp-mat) (sp-pivot-row-number sp-mat))))
 	     (cond (no-gcd (format t "~%Row ~D has no gcd." (sp-pivot-row-number sp-mat)))

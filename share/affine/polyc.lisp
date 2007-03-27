@@ -823,7 +823,7 @@
 ;    (RATSETUP2 VARLIST GENVAR)
 ;    (XCONS (PREP1 X)				; PREP1 changes VARLIST
 ;	   (LIST* 'MRAT 'SIMP VARLIST GENVAR	;    when $RATFAC is T.
-;		  (IF (AND (NOT (ATOM X)) (MEMQ 'IRREDUCIBLE (CDAR X)))
+;		  (IF (AND (NOT (ATOM X)) (MEMber 'IRREDUCIBLE (CDAR X) :test #'eq))
 ;		      '(IRREDUCIBLE))))))
 ;
 ;(DEFMFUN new-RATREP* (X)
@@ -839,7 +839,7 @@
 ;    (RATSETUP2 VARLIST GENVAR)
 ;    (XCONS (PREP1 X)				; PREP1 changes VARLIST
 ;	   (LIST* 'MRAT 'SIMP VARLIST GENVAR	;    when $RATFAC is T.
-;		  (IF (AND (NOT (ATOM X)) (MEMQ 'IRREDUCIBLE (CDAR X)))
+;		  (IF (AND (NOT (ATOM X)) (MEMber 'IRREDUCIBLE (CDAR X) :test #'eq))
 ;		      '(IRREDUCIBLE))))))
 ;
 ;(Defun New-RATF (L &aux tem)

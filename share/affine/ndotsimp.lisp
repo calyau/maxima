@@ -35,10 +35,10 @@
   (cond ((atom big)
 	 (cond ((eql big small) (list 1  1))))
 	((atom small)
-	 (cond ((setq tem (memq small big))
-		(list (ncdot-list (firstn (f- (length big) (length tem) 1) (cdr big)))
+	 (cond ((setq tem (member small big :test #'eq))
+		(list (ncdot-list (subseq (cdr big) 0 (- (length big) (length tem) 1)))
 		      (ncdot-list (cdr tem))))))
-	(t (setq leng (f-  (length small) 1))
+	(t (setq leng (-  (length small) 1))
 	   (sloop for v on (cdr big)
 		 when ;;first part of v is equal to small
 		 (sloop
@@ -49,8 +49,7 @@
 		   do (loop-return nil)
 		   finally (loop-return t))
 		 do (loop-return (list  (ncdot-list
-				     (firstn (f- (length big) (length v) 1)
-					     (cdr big)))
+				     (subseq (cdr big) 0 (- (length big) (length v) 1)))
 				   (ncdot-list (nthcdr (length (cdr small)) v))))))))
 
 (defun split-numerator (reduced rest)
@@ -60,7 +59,7 @@
 	((poly-scalarp rest) (values (n+ rest reduced) 0))
 	(($must_replacep (get (p-var rest) 'disrep))
 	 (values reduced rest))
-	(t (split-numerator  (n+ (firstn 3 rest) reduced) (or (fifth rest) 0)))))
+	(t (split-numerator  (n+ (subseq rest 0 3) reduced) (or (fifth rest) 0)))))
 
 (defun new-dotsimp (ratl-fun &aux mon repl num den)
   (format t "~%Beginning to simplify:")

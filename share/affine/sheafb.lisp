@@ -752,7 +752,7 @@
 ;;		     else do (ferror "Hey this is not linear ~A" v)))
 ;;  (setq other (sloop for w in *xxx*
 ;;		    for i below dim
-;;		    when (not (memq w vari))
+;;		    when (not (member w vari :test #'eq))
 ;;		    collecting w))
 ;;  (setq all-vari (append vari other))
 ;;  (setq newvars (unused-variables dim))
@@ -802,7 +802,7 @@
 ;		     else do (ferror "Hey this is not linear ~A" v)))
 ;  (setq other (sloop for w in *xxx*
 ;		    for i below dim
-;		    when (not (memq w vari))
+;		    when (not (member w vari :test #'eq))
 ;		    collecting w))
 ;  (setq vari (append vari other))
 ;  (setq newvars (unused-variables dim))
@@ -919,7 +919,7 @@
 ;	      (ferror "this equation contains no linear " (sh v))))
 ;  (setq other-variables  (sloop for v in *xxx*
 ;			       for i below dim
-;			       when (not (memq v variables))
+;			       when (not (member v variables :test #'eq))
 ;			       collecting v))
 ;  (setq all-variables (append variables other-variables))
 ;  (setq other-monoms
@@ -2362,7 +2362,7 @@
 ;	(cons v 
 ;	(sloop for w in variable-occurs
 ;	      for f in eqns
-;	      when (memq v w)
+;	      when (member v w :test #'eq)
 ;	      count 1    ))))
 ;  (setq mult  (sort mult #'(lambda (u v)
 ;			    (< (cdr u) (cdr v)))))
@@ -2385,11 +2385,11 @@
 ;	(cons v
 ;	(sloop for w in variable-occurs
 ;	      for f in eqns
-;	      when (memq v w)
+;	      when (member v w :test #'eq)
 ;	      count 1 into the-mult
 ;	      finally (return (* the-mult (sloop for com in compl
 ;						for ww in variable-occurs
-;						when (memq v ww)
+;						when (member v ww :test #'eq)
 ;						minimize com)))))))
 ;  (setq mult  (sort mult #'(lambda (u v)
 ;			    (< (cdr u) (cdr v)))))
@@ -2450,7 +2450,7 @@
 ;	appending
 ;    (sloop for eqn in eqns
 ;	  for oc in occurs
-;	  when (memq va oc)
+;	  when (member va oc :test #'eq)
 ;	  do (push-new eqn all-eqns)))
 ; (nreverse all-eqns))
 
@@ -2625,7 +2625,7 @@
 ;  (setq highest-vars
 ;	(sloop for v in occurs
 ;	      collecting (sloop for u in vars
-;			       when (memq u v)
+;			       when (member u v :test #'eq)
 ;			       do (return u))))
 ;  (show vars highest-vars)  
 ;  (setq repeat
@@ -2633,7 +2633,7 @@
 ;	      do
 ;	      (sloop for w on highest-vars
 ;		    when (and (eq (car w) v)
-;			      (memq v (cdr w)))
+;			      (member v (cdr w) :test #'eq))
 ;		    do (return-from rep v))))
 ;  (cond
 ;    (repeat
@@ -2713,7 +2713,7 @@
 ;  (setq highest-vars
 ;	(sloop for v in occurs
 ;	      collecting (sloop for u in vars
-;			       when (memq u v)
+;			       when (member u v :test #'eq)
 ;			       do (return u))))
 ;  (show vars highest-vars)  
 ;  (setq repeat
@@ -2721,7 +2721,7 @@
 ;	      do
 ;	      (sloop for w on highest-vars
 ;		    when (and (eq (car w) v)
-;			      (memq v (cdr w)))
+;			      (member v (cdr w) :test #'eq))
 ;		    do (return-from rep v))))
 ;  (cond
 ;    (repeat
@@ -2961,7 +2961,7 @@
 ;  (setq highest-vars
 ;	(sloop for v in occurs
 ;	      collecting (sloop for u in vars
-;			       when (memq u v)
+;			       when (member u v :test #'eq)
 ;			       do (return u))))
 ;  (show vars highest-vars)  
 ;  (setq repeat
@@ -2969,7 +2969,7 @@
 ;	      do
 ;	      (sloop for w on highest-vars
 ;		    when (and (eq (car w) v)
-;			      (memq v (cdr w)))
+;			      (member v (cdr w) :test #'eq))
 ;		    do (return-from rep v))))
 ;
 ;  (unwind-protect
@@ -3067,7 +3067,7 @@
 ;  (setq highest-vars
 ;	(sloop for v in occurs
 ;	      collecting (sloop for u in vars
-;			       when (memq u v)
+;			       when (member u v :test #'eq)
 ;			       do (return u))))
 ;  (show vars highest-vars)  
 ;  (setq repeat
@@ -3075,7 +3075,7 @@
 ;	      do
 ;	      (sloop for w on highest-vars
 ;		    when (and (eq (car w) v)
-;			      (memq v (cdr w)))
+;			      (member v (cdr w) :test #'eq))
 ;		    do (return-from rep v))))
 ;
 ;  (unwind-protect

@@ -291,9 +291,8 @@ multiplication A^m <--- A^n:B    Bv<----|v"
 (defvar $module_simplifications nil)
 
 (defun module-monom-must-replacep (monom &aux repl)
-;  (declare (values (list  repl-monom  replacement)))
   (cond ((atom monom)
-	 (setq repl (memq monom (cdr $module_simplifications)))
+	 (setq repl (member monom (cdr $module_simplifications) :test #'eq))
 	 (cond (repl (list monom (second repl)))))
 	(t
 	 (sloop for v on (cdr $module_simplifications) by 'cddr
@@ -311,7 +310,6 @@ multiplication A^m <--- A^n:B    Bv<----|v"
 ;    (mod-must-replace1 poly)))
 
 (defun module-must-replacep (poly &aux monom)
-;  (declare (values (list gensym-needing-replacement monom monoms-replacement)))
   (sloop while poly
 	do
     (cond ((atom poly) (loop-return nil))
