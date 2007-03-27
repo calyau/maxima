@@ -122,9 +122,6 @@
 (defmacro symbol-array (sym)
   `(get ,sym 'array))
 
-(defmacro afuncall (sym &rest ind)
-  `(aref (symbol-array ,sym) ,@ind))
-
 (defun arraydims (ar)
   (when (symbolp ar)
     (setq ar (symbol-array ar)))
