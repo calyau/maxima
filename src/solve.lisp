@@ -919,5 +919,5 @@
 
 (defun linsort (meq-list var-list)
   (mapcar #'(lambda (x) (cons (caar meq-list) x))
-	  (sortcar (mapcar #'cdr meq-list)
-		   #'(lambda (x y) (member y (member x var-list :test #'equal) :test #'equal)))))
+	  (sort (mapcar #'cdr meq-list)
+		   #'(lambda (x y) (member y (member x var-list :test #'equal) :test #'equal)) :key #'car)))

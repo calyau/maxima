@@ -702,7 +702,7 @@
                          )
                   (setf (aref edges i) at)
                   collect (cons z i0)))
-    (setq lis (sortcar lis))
+    (setq lis (sort lis #'alphalessp :key #'car))
     (setq i 0)
     (loop for v in lis
            do

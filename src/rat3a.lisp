@@ -228,7 +228,7 @@
 (defun pcsubsty (vals vars p)		;list of vals for vars
   (cond ((null vars) p)
 	((atom vars) (pcsub p (list vals) (list vars)))	;one val hack
-	(t (setq vars (sortcar (mapcar #'cons vars vals) #'pointergp))
+	(t (setq vars (sort (mapcar #'cons vars vals) #'pointergp :key #'car))
 	   (pcsub p (mapcar (function cdr) vars)
 		  (mapcar (function car) vars)))))
 

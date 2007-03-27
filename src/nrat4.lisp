@@ -610,7 +610,7 @@
 	       ((null ll) maxl)))))
 
 (defun flsort (fpl)
-  (mapc #'(lambda (x) (rplacd x (sortcar (cdr x) #'flgreat)))
+  (mapc #'(lambda (x) (rplacd x (sort (cdr x) #'flgreat :key #'car)))
 	fpl))
 
 (defun nmt (p any)
