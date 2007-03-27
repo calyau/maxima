@@ -130,8 +130,8 @@ The function 'cl_eval' evaluates the generated CL code; for example
        		
 (defun mapatom-expr-to-cl (e)
   (cond ((eq e '$%i) (complex 0 1))
-	((memq e '($true t)) 't)
-	((memq e '($false nil)) 'nil)
+	((member e '($true t) :test #'eq) 't)
+	((member e '($false nil) :test #'eq) 'nil)
 	((integerp e) e)
 	(($ratnump e) `(/ ,($num e) ,($denom e)))
 	((eq e '$%pi) pi)
@@ -144,6 +144,3 @@ The function 'cl_eval' evaluates the generated CL code; for example
 	(apply (get (mop e) 'cl-translation-function) (margs e)))
        (t 
 	`(,(or (get (mop e) 'cl-function) (stripdollar (mop e))) ,@(mapcar 'expr-to-cl (margs e))))))
-
-
-

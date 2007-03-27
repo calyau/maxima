@@ -68,11 +68,11 @@
     (setq n ($first ($matrix_size m)))
     (setq matrix-sign (csign (ratdisrep (newdet m i nil))))
     
-    (while (and (memq matrix-sign '($neg $nz $pz $pos)) (< i n))
+    (while (and (member matrix-sign '($neg $nz $pz $pos) :test #'eq) (< i n))
       (incf i)
       (setq sgn (csign (ratdisrep (newdet m i nil))))      
       (cond
-       ((and (eq matrix-sign '$neg) (memq sgn '($nz $neg)))
+       ((and (eq matrix-sign '$neg) (member sgn '($nz $neg) :test #'eq))
 	(setq matrix-sign sgn))
        
        ((and (eq matrix-sign '$neg) (eq sgn '$zero))
@@ -81,19 +81,19 @@
        ((eq matrix-sign '$neg)
 	(setq matrix-sign '$pnz))
        
-       ((and (eq matrix-sign '$nz) (memq sgn '($neg $nz $zero)))
+       ((and (eq matrix-sign '$nz) (member sgn '($neg $nz $zero) :test #'eq))
 	(setq matrix-sign '$nz))
 	
        ((eq matrix-sign '$nz) 
 	(setq matrix-sign '$pnz))
 
-       ((and (eq matrix-sign '$pz) (memq sgn '($pz $pos $zero)))
+       ((and (eq matrix-sign '$pz) (member sgn '($pz $pos $zero) :test #'eq))
 	(setq matrix-sign '$pz))
 
        ((eq matrix-sign '$pz) 
 	(setq matrix-sign '$pnz))
 
-       ((and (eq matrix-sign '$pos) (memq sgn '($pz $pos)))
+       ((and (eq matrix-sign '$pos) (member sgn '($pz $pos) :test #'eq))
 	(setq matrix-sign sgn))
 
        ((and (eq matrix-sign '$pos) (eq sgn '$zero))
@@ -105,5 +105,3 @@
        (t (setq matrix-sign '$pnz))))
     
     (if (eq matrix-sign '$zero) '$pnz matrix-sign)))
-
-  

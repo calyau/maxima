@@ -39,7 +39,7 @@
      ;; go back and analyze the first arg more thoroughly now.
      ;; do a normal evaluation of the expression in macsyma
      (setq mexp (meval mexplabel))
-     (cond ((memq mexplabel $labels)	; leave it if it is a label
+     (cond ((member mexplabel $labels :test #'eq)	; leave it if it is a label
 	    (setq mexplabel (concatenate 'string "(" (print-invert-case (stripdollar mexplabel))
 					 ")"))
 	    (setq itsalabel t))
@@ -55,7 +55,7 @@
 		 ((setq y (mget x 'aexpr))
 		  (setq mexp (list '(mdefine) (cons (list x 'array) (cdadr y)) (caddr y)))))))
      (cond ((and (null(atom mexp))
-		 (memq (caar mexp) '(mdefine mdefmacro)))
+		 (member (caar mexp) '(mdefine mdefmacro) :test #'eq))
 	    (if mexplabel (setq mexplabel (quote-% mexplabel)))
 	    (format texport "|~%" )	;delimit with |marks
 	    (cond (mexplabel (format texport "~a " mexplabel)))
@@ -243,11 +243,11 @@
 		 (expon (caddr x)) ;; this is the exponent
 		 (doit (and
 			f		; there is such a function
-			(memq (getchar f 1) '(% $)) ;; insist it is a % or $ function
+			(member (getchar f 1) '(% $) :test #'eq) ;; insist it is a % or $ function
 			(not (eq (car (last (car fx))) 'array))	; fix for x[i]^2
 					; Jesper Harder <harder@ifa.au.dk>
-			(not (memq f '(%sum %product %derivative %integrate %at
-				       %lsum %limit))) ;; what else? what a hack...
+			(not (member f '(%sum %product %derivative %integrate %at
+				       %lsum %limit) :test #'eq)) ;; what else? what a hack...
 			(or (and (atom expon) (not (numberp expon))) ; f(x)^y is ok
 			    (and (atom expon) (numberp expon) (> expon 0))))))
 					; f(x)^3 is ok, but not f(x)^-1, which could
@@ -386,9 +386,8 @@
     ,@r))
 
 (defun tex-mplus (x l r)
-					;(declare (fixnum w))
-;-  (cond ((memq 'trunc (car x))(setq r (cons "+\\cdots " r))))
-    (cond ((memq 'trunc (car x))(setq r (cons " + dotsaxis " r))))
+;-  (cond ((member 'trunc (car x) :test #'eq)(setq r (cons "+\\cdots " r))))
+    (cond ((member 'trunc (car x) :test #'eq)(setq r (cons " + dotsaxis " r))))
   (cond ((null (cddr x))
 	 (if (null (cdr x))
 	     (tex-function x l r t)

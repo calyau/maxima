@@ -215,21 +215,11 @@
 	 
    ;;-------- end pdiff stuff --------------------------
 
-   #+cl
    ((functionp fn)
     (apply fn args))
-   #-cl
-   ((eq (car fn) 'lambda) (apply fn args))
-   #+(and lispm (not cl))
-   ((memq (car fn)
-	  '(named-lambda si:digested-lambda)) (apply fn args))
-   #-cl
-   ((and (eq (caar fn) 'mfile)
-	 (setq fn (eval (dskget (cadr fn) (caddr fn) 'value nil)))
-	 nil))
    ((eq (caar fn) 'lambda) (mlambda fn args fnname t form))
    ((eq (caar fn) 'mquote) (cons (cdr fn) args))
-   ((and aryp (memq (caar fn) '(mlist $matrix)))
+   ((and aryp (member (caar fn) '(mlist $matrix) :test #'eq))
     (if (not (or (= (length args) 1)
 		 (and (eq (caar fn) '$matrix) (= (length args) 2))))
 	(merror "wrong number of indices:~%~:M" (cons '(mlist) args)))
@@ -240,7 +230,7 @@
 	(if evarrp (throw 'evarrp 'notexist))
 	(merror "subscript must be an integer:~%~:M" (car args1)))))
    (aryp (cons '(mqapply array) (cons fn args)))
-   ((memq 'array (cdar fn)) (cons '(mqapply) (cons fn args)))
+   ((member 'array (cdar fn) :test #'eq) (cons '(mqapply) (cons fn args)))
    (t (badfunchk fnname fn t))))
 
 (defun pderivop (f x n)
@@ -499,8 +489,8 @@
 		 (expon (caddr x)) ;; this is the exponent
 		 (doit (and
 			f ; there is such a function
-			(memq (getchar f 1) '(% $)) ;; insist it is a % or $ function
-			(not (memq f '(%sum %product %derivative %integral %at %pderivop))) ;; what else? what a hack...
+			(member (getchar f 1) '(% $) :test #'eq) ;; insist it is a % or $ function
+			(not (member f '(%sum %product %derivative %integral %at %pderivop) :test #'eq)) ;; what else? what a hack...
 			(or (and (atom expon) (not (numberp expon))) ; f(x)^y is ok
 			    (and (atom expon) (numberp expon) (> expon 0))))))
 					; f(x)^3 is ok, but not f(x)^-1, which could

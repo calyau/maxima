@@ -23,12 +23,7 @@
 ;; mario @@@ edu DOT xunta DOT es
 ;; www.biomates.net
 
-
-
-
 (in-package :maxima)
-
-
 
 ;; Constructs the 'inference_result' object, with
 ;;    title: string with the name of the inference procedure
@@ -39,15 +34,11 @@
   (list '($inference_result) title val selection))
 
 
-
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                                              ;;
 ;;    DISPLAY PROPERTIES FOR inference_result   ;;
 ;;                                              ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-
 
 
 ;; Functions d-matrixz, matoutz, coloutz and dim-$inference_result are similar to
@@ -110,7 +101,7 @@
 (defun dim-$inference_result (form result)
   (prog (dmstr rstr cstr consp)
      (if (or (null (cdr form))
-	     (not (memq 'simp (cdar form)))
+	     (not (member 'simp (cdar form) :test #'eq))
 	     (memalike '((mlist simp)) (cdr form))
 	     (dolist (row (cdr form)) (if (not ($listp row)) (return t))))
 	 (return (dimension-function form result)))
@@ -166,8 +157,6 @@
    (dim-$inference_result output result) ))
 
 
-
-
 ;; The following two functions make wxmaxima to be happy
 ;; with $inference_result. Code written by Andrej Vodopivec.
 (defun wxxml-inference (x l r)
@@ -185,12 +174,6 @@
       (wxxml m l r 'mparen 'mparen))))
 
 (defprop $inference_result wxxml-inference wxxml)
-
-
-
-
-
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                                  ;;
@@ -231,6 +214,3 @@
                      (merror "Wrong label in 'take_inference' call")
                      (caddr (nth m (cdaddr obj)))))))
       (merror "Wrong object in 'take_inference' call")  ))
-
-
-
