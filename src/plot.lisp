@@ -628,7 +628,7 @@
                     #-gcl
                      (handler-case 
                          (catch 'errorsw
-                           ($float ($realpart (meval* ',expr))))
+                           ($float (maybe-realpart (meval* ',expr))))
                        ;; Should we just catch all errors here?  It is
                        ;; rather nice to only catch errors we care
                        ;; about and let other errors fall through so
@@ -639,7 +639,7 @@
                      #+gcl
                      (handler-case 
                          (catch 'errorsw
-                           ($float ($realpart (meval* ',expr))))
+                           ($float (maybe-realpart (meval* ',expr))))
                        (cl::error () t))
                      ))
 
