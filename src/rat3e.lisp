@@ -866,7 +866,7 @@
 (defmfun maxima-rationalize (x)
   (cond ((not (floatp x)) x)
 	((< x 0d0)
-	 (setq x (ration1 (*$ -1.0 x)))
+	 (setq x (ration1 (* -1d0 x)))
 	 (rplaca x (* -1 (car x))))
 	(t (ration1 x))))
 
