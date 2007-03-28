@@ -155,7 +155,6 @@
 		     sn* sd* leadcoef checkfactors 
 		     *nodiverg rd* exp1
 		     *ul1* *ll1* *dflag bptu bptd plm* zn
-		     #+nil zd
 		     *updn ul ll exp pe* pl* rl* pl*1 rl*1
 		     loopstop* var nn* nd* dn* p*
 		     ind* factors rlm*
@@ -352,7 +351,7 @@
     (cond ((and (eq ul '$inf)
 		(equal ll 0)
 		(equal (cadr d) 1)) ())
-	  (t (solve (m+t 'yx (m*t -1. nv)) var 1.)
+	  (t (solve (m+t 'yx (m*t -1 nv)) var 1.)
 	     (format t "*roots = ~A~%" *roots)
 	     (format t "subst ~A~%" (caddar *roots))
 	     (cond (*roots
@@ -385,7 +384,7 @@
 				   (t (intcv1 d ind nv))))
 			    ))))
 		 (t
-		  (solve (m+t 'yx (m*t -1. nv)) var 1.)
+		  (solve (m+t 'yx (m*t -1 nv)) var 1.)
 		  (cond (*roots
 			 (setq d (subst var 'yx (caddar *roots)))
 			 (cond (flag (intcv2 d ind nv))
@@ -837,7 +836,7 @@
 		  (setq exp (m- exp))))
 	   ;;Fix limits so that ll < ul. 
 	   (let ((d (complm ask-or-not)))
-	     (cond ((equal d -1.)
+	     (cond ((equal d -1)
 		    (setq exp (m- exp))
 		    (setq d ll)
 		    (setq ll ul)
@@ -853,7 +852,7 @@
 			     (t ($sign ($limit (m+t ul (m- ll)))))))
 	       '$pos)
 	   1.)
-	  ((eq a '$neg)  -1.)
+	  ((eq a '$neg)  -1)
 	  (t 1.))))
 
 
@@ -1001,7 +1000,7 @@
 	((and (mexptp term)
 	      (eq (cadr term) '$%e)
 	      (polyinx (caddr term) var nil)
-	      (eq ($sign (m+ (deg ($realpart (caddr term))) -1.))
+	      (eq ($sign (m+ (deg ($realpart (caddr term))) -1))
 		  '$neg)
 	      (eq ($sign (m+ (deg (setq nn* ($imagpart (caddr term)))) 
 			     -2.))
@@ -1053,7 +1052,7 @@
   (cond ((atom e) e)
 	((polyinx e var nil) e)
 	((eq (caar e) '%sin)
-	 (m* '((rat) -1. 2.)
+	 (m* '((rat) -1 2)
 	     '$%i
 	     (m+t (m^t '$%e (m*t '$%i (cadr e)))
 		  (m- (m^t '$%e (m*t (m- '$%i) (cadr e)))))))
@@ -1313,10 +1312,10 @@
 		   (cond ((and (setq ans (apply 'fan (cons (m+ 1. p*) pe*)))
 			       (setq nn* (fan (m+ 1. p*)
 					      (car pe*)
-					      (m* -1.(cadr pe*))
+					      (m* -1 (cadr pe*))
 					      (caddr pe*)
 					      (cadddr pe*))))
-			  (setq ans (m+ ans (m*t (m^ -1. p*) nn*)))
+			  (setq ans (m+ ans (m*t (m^ -1 p*) nn*)))
 			  (return (m* (m// nc dc) ans))))))))
      (cond ((ratp grand var)
 	    (setq ans (m*t '$%pi (zmtorat n (cond ((mtimesp d) d)
@@ -1451,7 +1450,7 @@
 	  (not (among (car d)
 		      (cadr f)))
 	  (return (list (car d)
-			(f* -1 (cadr d))
+			(- (cadr d))
 			(ptimes (cadr f) (caddr d)))))
      (merror "Bug from `pfrnum' in `residu'")))
 
@@ -1474,15 +1473,15 @@
 	    (setq *mtoinf* nil)
 	    (setq mb (m- (subin 0. (cadr l))))
 	    (setq poly (m+ (subin (m+t mb var) poly)
-			   (subin (m+t mb (m*t -1. var)) poly))))
+			   (subin (m+t mb (m*t -1 var)) poly))))
 	   (t (return nil)))
      (setq expo (caddr l)
 	   c (cadddr l)
-	   l (m* -1. (car l))
+	   l (m* -1 (car l))
 	   e nil)
      (newvar poly)
      (setq poly (cdr (ratrep* poly)))
-     (setq mb (m^ (pdis (cdr poly)) -1.) 
+     (setq mb (m^ (pdis (cdr poly)) -1) 
 	   poly (car poly))
      (setq gvar (caadr (ratrep* var)))
      (cond ((or (atom poly)
@@ -1491,7 +1490,7 @@
 	   (t (setq poly (cdr poly))))
      (return (do ((poly poly (cddr poly)))
 		 ((null poly)
-		  (mul* (m^t '$%e c) (m^t expo -1.) mb (m+l e)))
+		  (mul* (m^t '$%e c) (m^t expo -1) mb (m+l e)))
 	       (setq e (cons (ggrm1 (car poly) (pdis (cadr poly)) l expo)
 			     e))))))
 
@@ -1631,7 +1630,7 @@
 ;; integrate(sin(x)^n/x^2,x,0,inf) = pi/2*binomial(n-3/2,n-1).
 ;; Express in terms of Gamma functions, though.
 (defun sevn (n)
-  (m* half%pi ($makegamma `((%binomial) ,(m+t (m+ n -1) '((rat) -1. 2.))
+  (m* half%pi ($makegamma `((%binomial) ,(m+t (m+ n -1) '((rat) -1 2))
 			    ,(m+ n -1)))))
 
 
@@ -1675,10 +1674,10 @@
 	   ;;    = l*(l-1)/(k-1)/(k-2)*i(sin(y)^(l-2)/y^k)
 	   ;;      - l^2/(k-1)/(k-1)*i(sin(y)^l/y^(k-2))
 	   (m+ (m* l (m+ l -1)
-		   (m^t i -1.)
+		   (m^t i -1)
 		   (sinsp (m+ l -2.) j))
 	       (m* (m- (m^ l 2))
-		   (m^t i -1.)
+		   (m^t i -1)
 		   (sinsp l j)))))))
 
 ;; Returns the fractional part of a?  
@@ -1738,7 +1737,7 @@
 ;; Return the integer part of r.
 (defun igprt (r)
   ;; r - fpart(r)
-  (m+ r (m* -1. (fpart r)))) 
+  (m+ r (m* -1 (fpart r)))) 
 
 
 ;;;Try making exp(%i*var) --> yy, if result is rational then do integral
@@ -1761,7 +1760,7 @@
 		 ((and (alike1 b half%pi)
 		       (evenfn exp-form var)
 		       (alike1 rat-form 
-			       (no-err-sub (m+t '$%pi (m*t -1. var))
+			       (no-err-sub (m+t '$%pi (m*t -1 var))
 					   rat-form)))
 		  (let ((ans (zto%pi2 rat-form 'yy)))
 		    (cond (ans (m*t '((rat) 1. 4.) ans))
@@ -1829,7 +1828,7 @@
        (setq l (infr l))
        ;; Compute -integrate(f,x,0,d)
        (setq limit-diff
-	     (m*t -1. (cond ((setq ans (intsc e (cdr l) var)) 
+	     (m*t -1 (cond ((setq ans (intsc e (cdr l) var)) 
 			     ans)
 			    (t (return nil)))))
        ;; Compute n = q - p (stored in nzp2)
@@ -1867,8 +1866,8 @@
 #+nil
 (defun intsc (sc b var)
   (cond ((eq ($sign b) '$neg)
-	 (setq b (m*t -1. b))
-	 (setq sc (m* -1. (subin (m*t -1. var) sc)))))
+	 (setq b (m*t -1 b))
+	 (setq sc (m* -1 (subin (m*t -1 var) sc)))))
   (setq sc (partition sc var 1))
   (cond ((setq b (intsc0 (cdr sc) b var))
 	 (m* (resimplify (car sc)) b))))
@@ -1878,8 +1877,8 @@
       0
       (multiple-value-bind (b sc)
 	  (cond ((eq ($sign b) '$neg)
-		 (values (m*t -1. b)
-			 (m* -1. (subin (m*t -1. var) sc))))
+		 (values (m*t -1 b)
+			 (m* -1 (subin (m*t -1 var) sc))))
 		(t
 		 (values b sc)))
 	;; Partition the integrand SC into the factors that do not
@@ -1907,7 +1906,7 @@
 		  ;;
 		  ;; int(f(sin(x),cos(x)), x, 0, %pi) =
 		  ;;   int(f(sin(x),cos(x)) + f(sin(x),-cos(x)),x,0,%pi/2)
-		  (cond ((eq (real-branch (cadr nn*) -1.) '$yes)
+		  (cond ((eq (real-branch (cadr nn*) -1) '$yes)
 			 (m* (m+ 1. (m^ -1 (cadr nn*)))
 			     (bygamma (car nn*) (cadr nn*))))))
 		 ((alike1 b %pi2)
@@ -1916,10 +1915,10 @@
 				  (eq (ask-integer (cadr nn*) '$even)
 				      '$yes))
 			     (and (ratnump (car nn*))
-				  (eq (real-branch (car nn*) -1.)
+				  (eq (real-branch (car nn*) -1)
 				      '$yes)
 				  (ratnump (cadr nn*))
-				  (eq (real-branch (cadr nn*) -1.)
+				  (eq (real-branch (cadr nn*) -1)
 				      '$yes)))
 			 (m* 4.	(bygamma (car nn*) (cadr nn*))))
 			((or (eq (ask-integer (car nn*) '$odd) '$yes)
@@ -1966,7 +1965,7 @@
 	  ;; signaling an error?
 	  #+nil  
 	  ((not (equal ($asksign denom) '$zero))
-	   0.)
+	   0)
 	  ((equal ($asksign denom) '$zero)
 	   '$undefined)
 	  (t (let (($%piargs ()))
@@ -2224,11 +2223,11 @@
 	     (let ((new-k (m// (m+ 1 k) al)))
 	       (when (and (ratgreaterp al 0.)
 			  (eq ($asksign new-k) '$pos)
-			  (ratgreaterp (setq l (m* -1. l))
+			  (ratgreaterp (setq l (m* -1 l))
 				       new-k)
 			  (eq ($asksign (m* d c))
 			      '$pos))
-		 (setq l (m+ l (m*t -1. new-k)))
+		 (setq l (m+ l (m*t -1 new-k)))
 		 (m// `(($beta) ,new-k ,l)
 		      (mul* al (m^ c new-k) (m^ d l))))))))))
 
@@ -2237,8 +2236,7 @@
 ;; the value of integrate(x^c*exp(d-a*x^b),x,0,inf).
 (defun gamma1 (c a b d)
   (m* (m^t '$%e d)
-      (m^ (m* b (m^ a (setq c (m// (m+t c 1.) b))))
-	  -1.)
+      (m^ (m* b (m^ a (setq c (m// (m+t c 1) b)))) -1)
       `((%gamma) ,c)))
        
 (defun zto%pi2 (grand var)
@@ -2331,9 +2329,9 @@
 		  (setq g (gamma1 0. (m* s (cadr e)) (car e) 0.))
 		  (setq e (m* g `((,ind) ,(m// half%pi (car e))))) 
 		  (m* (cond ((and (eq ind '%sin)
-				  (equal s -1.))
-			     -1.)
-			    (t 1.))
+				  (equal s -1))
+			     -1)
+			    (t 1))
 		      e)))))))
 		      
 
@@ -2430,19 +2428,19 @@
      (setq *i* (*array nil t (m+ 1 m)))
      (setq *j* (*array nil t (m+ 1 m)))
      (setq c 0.)
-     (store (aref *j* c) 0.)
+     (setf (aref *j* c) 0.)
      (do ((c 0. (m+ 1 c)))
 	 ((equal c m)
 	  (return (logcpi n d m)))
-       (store (aref *i* c) (logcpi n d c))
-       (store (aref *j* c) (logcpj n factors c)))))
+       (setf (aref *i* c) (logcpi n d c))
+       (setf (aref *j* c) (logcpj n factors c)))))
 
 (defun logcpi (n d c)
   (declare (special *j*))
   (cond ((equal c 0.)
 	 (logcpi0 n d))
 	(t (m* '((rat) 1. 2.)
-	       (m+ (aref *j* c) (m* -1. (sumi c)))))))
+	       (m+ (aref *j* c) (m* -1 (sumi c)))))))
 
 (defun sumi (c)
   (declare (special *i*))
@@ -2467,8 +2465,8 @@
 		 ((eq ind '$neg) nil)
 		 ((not (ratgreaterp m povern)) nil)
 		 (t (m// (m* '$%pi
-			     ($makegamma `((%binomial) ,(m+ -1. m (m- povern))
-					   ,(m+t -1. m)))
+			     ($makegamma `((%binomial) ,(m+ -1 m (m- povern))
+					   ,(m+t -1 m)))
 			     `((mabs) ,(m^ a (m+ povern (m- m)))))
 			 (m* (m^ b povern)
 			     n
@@ -2543,7 +2541,7 @@
 	 (return ()))
      ;; At this point denom-exponential has converted d(exp(x)) to the
      ;; polynomial d(z), where z = exp(x).
-     (setq n (m* (cond ((null p) -1.)
+     (setq n (m* (cond ((null p) -1)
 		       (t ($expand (m*t '$%i %pi2 (makpoly p)))))
 		 pe))
      (let ((var 'z*)
@@ -2711,7 +2709,7 @@
 	    (return nil)))
      ag (setq nvar (cond ((eq r '%log) `((%log) ,arg))
 			 (t (m^t '$%e arg))))
-     (setq ans (maxima-substitute (m^t 'yx -1.) (m^t nvar -1.) (maxima-substitute 'yx nvar e)))
+     (setq ans (maxima-substitute (m^t 'yx -1) (m^t nvar -1) (maxima-substitute 'yx nvar e)))
      (cond ((not (among var ans))  (return (list (subst var 'yx ans) nvar)))
 	   ((and (null r) 
 		 (setq arg (findsub arg)))
@@ -2767,7 +2765,7 @@
 		  ;; Use the substitution s + 1 = exp(k*x).  The
 		  ;; integral becomes integrate(f(s+1)/(s+1),s,0,inf)
 		  (setq exp (subin (m+t 1. arg) (car ans)))
-		  (setq ans (m+t -1. (cadr ans))))
+		  (setq ans (m+t -1 (cadr ans))))
 		 (t
 		  ;; Use the substitution y=exp(k*x) because the
 		  ;; limits are minf to inf.
@@ -2778,14 +2776,14 @@
 
 ;; integrate(log(g(x))*f(x),x,0,inf)
 (defun dintlog (exp arg)
-  (let ((*dintlog-recur* (f1+ *dintlog-recur*))) ;recursion stopper
+  (let ((*dintlog-recur* (1+ *dintlog-recur*))) ;recursion stopper
     (prog (ans d) 
        (cond ((and (eq ul '$inf)
 		   (equal ll 0.)
 		   (eq arg var)
-		   (equal 1. ($ratsimp (m// exp (m* (m- (subin (m^t var -1.)
+		   (equal 1 ($ratsimp (m// exp (m* (m- (subin (m^t var -1)
 							       exp))
-						    (m^t var -2.))))))
+						    (m^t var -2))))))
 	      ;; Make the substitution y=1/x.  If the integrand has
 	      ;; exactly the same form, the answer has to be 0.
 	      (return 0.))
@@ -2846,12 +2844,12 @@
 	 ;;
 	 ;; Set var to the same sign as zn.
 	 (cond ((eq ($asksign zn) '$neg)
-		(setq var -1.)
+		(setq var -1)
 		(setq zn (m- zn)))
-	       (t (setq var 1.)))
+	       (t (setq var 1)))
 	 ;; zd = exp(var*%i*%pi*(1+nd)/(2*n). (ZD is special!)
-	 (setq *zd* (m^t '$%e (m// (mul* var '$%i '$%pi (m+t 1. nd*))
-				   (m*t 2. (cadr e)))))
+	 (setq *zd* (m^t '$%e (m// (mul* var '$%i '$%pi (m+t 1 nd*))
+				   (m*t 2 (cadr e)))))
 	 ;; Return zn, n, a.
 	 `(,(caddr e) ,(cadr e) ,(car e)))
 	((and (or (eq (setq var ($asksign ($realpart (caddr e)))) '$neg)
@@ -3036,12 +3034,12 @@
 ;; Otherwise, return NIL
 (defun bx**n+a (e)
   (cond ((eq e var) 
-	 (list 0. 1. 1.))
+	 (list 0 1 1))
 	((or (atom e) 
 	     (mnump e)) ())
 	(t (let ((a (no-err-sub 0. e)))
 	     (cond ((null a)  ())
-		   (t (setq e (m+ e (m*t -1. a)))
+		   (t (setq e (m+ e (m*t -1 a)))
 		      (cond ((setq e (bx**n e))
 			     (cons a e))
 			    (t ()))))))))
@@ -3087,8 +3085,7 @@
 	   (cond 
 	     ((and (setq r (bx**n+a ($ratsimp r)))
 		   (not (among var (setq m (m// m (m* (cadr r) (caddr r)
-						      (m^t var (m+t -1.
-								    (cadr r))))))))
+						      (m^t var (m+t -1 (cadr r))))))))
 		   (setq e (m// (subin 0. e) (m^t (car r) m))))
 	      (cond ((equal e 1.)
 		     (cons m r))
@@ -3112,10 +3109,10 @@
 	 (caddr e)))) 
 
 (defun tbf (l)
-  (m^ (m* (m^ (caddr l) '((rat) 1. 2.))
+  (m^ (m* (m^ (caddr l) '((rat) 1 2))
 	  (m+ (cadr l) (m^ (m* (car l) (caddr l))
-			   '((rat) 1. 2.))))
-      -1.))
+			   '((rat) 1 2))))
+      -1))
 
 (defun radbyterm (d l)
   (do ((l l (cdr l))
@@ -3131,11 +3128,11 @@
      (setq varlist (list var))
      (newvar e)
      (setq e (cdadr (ratrep* e)))
-     (setq c (pdis (pterm e 0.)))
-     (setq b (m*t (m//t 1. 2.) (pdis (pterm e 1.))))
-     (setq a (pdis (pterm e 2.)))
+     (setq c (pdis (pterm e 0)))
+     (setq b (m*t (m//t 1 2) (pdis (pterm e 1))))
+     (setq a (pdis (pterm e 2)))
      (cond ((and (eq ($asksign (m+ b (m^ (m* a c)
-					 '((rat) 1. 2.))))
+					 '((rat) 1 2))))
 		     '$pos)
 		 (or (and ind
 			  (not (eq ($asksign a) '$neg))
@@ -3146,8 +3143,8 @@
 
 (defun difap1 (e pwr var m pt)
   (m// (mul* (cond ((eq (ask-integer m '$even) '$yes)
-		    1.)
-		   (t -1.))
+		    1)
+		   (t -1))
 	     `((%gamma) ,pwr)
 	     (derivat var m e pt))
        `((%gamma) ,(m+ pwr m)))) 
@@ -3166,16 +3163,16 @@
 (defun bydif (r s d)
   (let ((b 1)  p)
     (setq d (m+ (m*t '*z* var) d))
-    (cond ((or (zerop1 (setq p (m+ s (m*t -1. r))))
-	       (and (zerop1 (m+ 1. p))
+    (cond ((or (zerop1 (setq p (m+ s (m*t -1 r))))
+	       (and (zerop1 (m+ 1 p))
 		    (setq b var)))
-	   (difap1 (dintrad0 b (m^ d '((rat) 3. 2.)))
-		   '((rat) 3. 2.) '*z* r 0.))
+	   (difap1 (dintrad0 b (m^ d '((rat) 3 2)))
+		   '((rat) 3 2) '*z* r 0))
 	  ((eq ($asksign p) '$pos)
-	   (difap1 (difap1 (dintrad0 1. (m^ (m+t 'z** d)
-					    '((rat) 3. 2.)))
-			   '((rat) 3. 2.) '*z* r 0.)
-		   '((rat) 3. 2.) 'z** p 0.)))))
+	   (difap1 (difap1 (dintrad0 1 (m^ (m+t 'z** d)
+					    '((rat) 3 2)))
+			   '((rat) 3 2) '*z* r 0)
+		   '((rat) 3 2) 'z** p 0)))))
 
 (defun dintrad0 (n d)
   (let (l r s) 
