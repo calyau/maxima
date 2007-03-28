@@ -19,8 +19,7 @@
 
 ;; Maxima needs to be loaded before this file can work!
 (eval-when (:compile-toplevel :load-toplevel)
-  (require :maxima)
-  )
+  (require :maxima))
 
 (in-package :maxima)
 ;; Replace some of maxima's display routines with own.
@@ -78,14 +77,14 @@
   (declare (fixnum w h ))
   (setq oldrow (car (cursorpos))
 	oldcol 0
-	h (f+ oldrow bkptht bkptdp))
+	h (+ oldrow bkptht bkptdp))
   (cursorpos* oldrow 0)
   ;; Move the cursor vertically until we are at the bottom line of the
   ;; new expression.
   (do ()
       ((= h oldrow))
     ;;(tyo* #\newline)
-    (increment oldrow))
+    (incf oldrow))
   (cursorpos* oldrow 0)
   (draw-2d result (f- oldrow bkptdp 1) w)
   (cursorpos* (setq h (min (f- ttyheight 2) h)) 0))
@@ -109,9 +108,9 @@
 			      (integerp (caar l))))))
 	     (cond
 	       ((null (cddar l))
-		(setq col (f+ col (caar l))))
+		(setq col (+ col (caar l))))
 	       (t (draw-2d (reverse (cddar l))
-			   (f-  row (cadar l)) (f+ col (caar l)))
+			   (-  row (cadar l)) (+ col (caar l)))
 		  (setq col oldcol)))
 	     (pop l))
 	   (cursorpos* row col))

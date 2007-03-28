@@ -329,7 +329,7 @@
    (let ((newvar (implode (nconc (exploden $sequence_optim_prefix)
                                  (exploden $sequence_optim_counter)
                                  (exploden $sequence_optim_suffix)))))
-     (increment $sequence_optim_counter)
+     (incf $sequence_optim_counter)
      (if optim-vars (setq optim-vars `(,.optim-vars ,newvar)))
      newvar))
 

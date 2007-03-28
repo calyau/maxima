@@ -8,8 +8,9 @@
 
 (macsyma-module rducon)
 
-(eval-when (load eval) (or (get 'expens 'version)
-			   (load "expense")))
+(eval-when (load eval)
+  (or (get 'expens 'version)
+      (load "expense")))
 
 (defmvar $const_eqns (list '(mlist simp))
          "List of equations of constant expressions found by REDUCE_CONSTS."
@@ -26,9 +27,10 @@
          fixnum
          modified-commands '$reduce_consts)
 
-(defmacro minus-constantp (x) `(and (eq (caar ,x) 'mtimes)
-                                    (= (length ,x) 3)
-                                    (equal (cadr ,x) -1)))
+(defmacro minus-constantp (x)
+  `(and (eq (caar ,x) 'mtimes)
+	(= (length ,x) 3)
+	(equal (cadr ,x) -1)))
 
 (defun query-const-table (x)
    (do ((p (cdr $const_eqns) (cdr p)))
@@ -41,7 +43,7 @@
                    (prog1
                     (implode (nconc (exploden $const_prefix)
                                     (exploden $const_counter)))
-                    (increment $const_counter)))))
+                    (incf $const_counter)))))
      (MFUNCALL '$declare name '$constant)
      name))
 
@@ -198,7 +200,7 @@
                                   (result (reduce-constants exam)))
                              (cond ((eq exam result)
                                     (cond (($constantp exam)
-                                           (increment itot)
+                                           (incf itot)
                                            (if (and (null new)
                                                     (cond (negative (> itot 2))
                                                           (t (> itot 1))))

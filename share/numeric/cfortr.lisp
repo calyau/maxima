@@ -189,7 +189,7 @@
                        (let ((char (pop x)))
                          (tyo char stream)
                          (and pure-fortran (tyo char fortran-wallpaper))))
-                   (increment column))
+                   (incf column))
       ;; columns 73 to 80 contain spaces
                (if $fortspaces (print-spaces 8 stream))
                (terpri stream)
@@ -338,7 +338,7 @@
   (let ((cp-sym (implode (nconc (exploden $break_prefix)
                                 (exploden $fbreak_temp_counter)
                                 (exploden $sequence_optim_suffix)))))
-    (increment $fbreak_temp_counter)
+    (incf $fbreak_temp_counter)
     (fortran-print `((mequal) ,cp-sym ,x) t)
     cp-sym))
 

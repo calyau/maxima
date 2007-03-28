@@ -20,18 +20,19 @@
 
 ;;;; Based on fortra.lisp. Copyright statements for fortra.lisp follow:
 ;;;;  Copyright (c) 1984,1987 by William Schelter,University of Texas
-;;;;     All rights reserved                                         
-;;;;  (c) Copyright 1980 Massachusetts Institute of Technology    
+;;;;     All rights reserved
+;;;;  (c) Copyright 1980 Massachusetts Institute of Technology
 
 (in-package :maxima)
+
 (macsyma-module f90)
 
 (defun f90-print (x
-		  &aux 
+		  &aux
 		  ;; This is a poor way of saying that array references
 		  ;; are to be printed with parens instead of brackets.
-		  (lb #. left-parentheses-char ) 
-		  (rb #. right-parentheses-char ))
+		  (lb #\()
+		  (rb #\)))
   ;; Restructure the expression for displaying.
   (setq x (fortscan x))
   ;; Linearize the expression using MSTRING.  Some global state must be
@@ -39,9 +40,9 @@
   ;; undone so as not to modifiy the toplevel behavior of MSTRING.
   (unwind-protect
        (defprop mexpt msize-infix grind)
-    (defprop mminus 100. lbp)
-    
-    (defprop msetq (#\:) strsym)  
+    (defprop mminus 100 lbp)
+
+    (defprop msetq (#\:) strsym)
     (setq x (mstring x))
     ;; Make sure this gets done before exiting this frame.
     (defprop mexpt msz-mexpt grind)
@@ -49,17 +50,17 @@
   (do ((char 0 (1+ char))
        (line ""))
       ((>= char (length x)))
-    (setf line (concatenate 'string line (make-sequence 
-					  'string 1 
+    (setf line (concatenate 'string line (make-sequence
+					  'string 1
 					  :initial-element (nth char x))))
     (if (>= (length line) 65)
 	(let ((break_point -1))
 	  (mapc #'(lambda (x)
-		    (let ((p (search x line :from-end t))) 
+		    (let ((p (search x line :from-end t)))
 		      (if (and p (> p 0))
 			  (setf break_point p))))
 		'("+" "-" "*" "/"))
-	  (increment break_point)
+	  (incf break_point)
 	  (if (= break_point 0)
 	      (progn (princ line) (setf line "     "))
 	      (progn
