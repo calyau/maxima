@@ -310,6 +310,7 @@ float.lisp \
 fortra.lisp \
 generate-sys-proclaim.lisp \
 generr.lisp \
+gnuplot.lisp \
 grind.lisp \
 hayat.lisp \
 homog.lisp \
@@ -370,6 +371,7 @@ numer.lisp \
 numerm.lisp \
 nummod.lisp \
 numth.lisp \
+openmath.lisp \
 opers.lisp \
 optim.lisp \
 optimize.lisp \

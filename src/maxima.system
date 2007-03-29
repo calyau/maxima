@@ -538,6 +538,9 @@
 			 (:file "todd-coxeter")
 			 (:file "mactex")
 			 (:file "plot")))
+	       (:module graphics-drivers :source-pathname ""
+			:components ((:file "gnuplot")
+				     (:file "openmath")))
 	       (:module final :source-pathname ""
 			;; These are not compiled, for whatever reason
 			:load-only t
