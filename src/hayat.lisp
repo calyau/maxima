@@ -1501,7 +1501,7 @@
 	  (do ((facs (cdr e) (cdr facs)) (log-term))
 	      ((null facs)
 	       (when log-term
-		     (m^t (cadr log-term) (m*l (remq log-term (cdr e))))))
+		     (m^t (cadr log-term) (m*l (remove log-term (cdr e) :test #'eq)))))
 	      (if (and (null (atom (car facs))) (eq (caaar facs) '%log))
 		  (if log-term (return ()) (setq log-term (car facs)))
 		  (unless (mfree (car facs) tvars) (return nil)))))
