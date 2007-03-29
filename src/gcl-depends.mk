@@ -290,6 +290,8 @@ binary-gcl/maxima : hypgeo.lisp
 binary-gcl/maxima : hyp.lisp
 binary-gcl/maxima : todd-coxeter.lisp
 binary-gcl/maxima : mactex.lisp
+binary-gcl/maxima : gnuplot.lisp
+binary-gcl/maxima : openmath.lisp
 binary-gcl/maxima : plot.lisp
 binary-gcl/maxima : autol.lisp
 binary-gcl/maxima : max_ext.lisp

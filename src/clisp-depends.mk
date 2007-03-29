@@ -285,6 +285,8 @@ binary-clisp/maxima.mem : hyp.lisp
 binary-clisp/maxima.mem : todd-coxeter.lisp
 binary-clisp/maxima.mem : mactex.lisp
 binary-clisp/maxima.mem : plot.lisp
+binary-clisp/maxima.mem : gnuplot.lisp
+binary-clisp/maxima.mem : openmath.lisp
 binary-clisp/maxima.mem : autol.lisp
 binary-clisp/maxima.mem : max_ext.lisp
 binary-clisp/maxima.mem : init-cl.lisp

@@ -284,6 +284,8 @@ binary-sbcl/maxima.core : hypgeo.lisp
 binary-sbcl/maxima.core : hyp.lisp
 binary-sbcl/maxima.core : todd-coxeter.lisp
 binary-sbcl/maxima.core : mactex.lisp
+binary-sbcl/maxima.core : gnuplot.lisp
+binary-sbcl/maxima.core : openmath.lisp
 binary-sbcl/maxima.core : plot.lisp
 binary-sbcl/maxima.core : autol.lisp
 binary-sbcl/maxima.core : max_ext.lisp
