@@ -4,7 +4,7 @@
 
        SOME ALGORITHMS IN REAL ALGEBRAIC GEOMETRY
 
-                    BETA Version 0.1
+                    BETA Version 0.3
 
 ---------------------------------------------------------------
 developed by Fabrizio Caruso 
@@ -15,6 +15,9 @@ at the University of Rennes 1, France
 
 with support from the RAAG network
 
+further developed
+
+at the University of Pisa, Italy
 ---------------------------------------------------------------
 
 Please report bugs to: fabrizio.caruso@posso.dm.unipi.it
@@ -76,7 +79,11 @@ sarag.mac
 
 The library is contained in the following files:
 
+sarag.mac (it loads all the files)
+
 settings.mac (general settings)
+constants.mac
+sarag_initialization.mac
 aliases.mac (name conventions)
 lowLevel.mac (low level routines)
 sarag_linear_algebra.mac (linear algebra and matrix manipulation)
@@ -86,16 +93,21 @@ signDetermination.mac (sign determination)
 intervalArithmetic.mac (interval arithmetic)
 topology.mac (topology of curves)
 
+arag_test.mac (test file for "Alg. in Real Alg. Geom.")
+hard_test.mac (test files with mostly topology computations)
+
+readme.txt (this manual)
+
 In order to load the library either load each single file
 with the "LOAD" Maxima command
-or edit a file that takes care of loading all the files. 
+or edit a file that takes care of loading all the files 
+or load the file "sarag.mac" that will load the files 
+if they are in the current directory.
 
-Together with the files you find the file
-"sarag.mac" that will load the files if they are
-in the current directory.
-
-The file "examples.mac" contains some examples
-from the book.
+In order to test the library use:
+batch(<path>/arag_test.mac,test);
+and
+batch(<path>/hard_test.mac,test);
 
 ---------------------------------------------------------------
 ---------------------------------------------------------------

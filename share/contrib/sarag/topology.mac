@@ -608,7 +608,7 @@ getTopologyPoints(tpg) :=
    if PLOT_AT_INFINITY then
     (
     newPtsAtInf : getPointsOnProj(tpg[1],0,PLOT_HEIGHT),
-    ptsAtInf : append(nonCritPts,newPtsAtInf),
+    ptsAtInf : append(ptsAtInf,newPtsAtInf),
     newNonCritPts : getPointsOnProj(tpg[1],1*PLOT_SPACING,PLOT_HEIGHT),
     for j : 1 thru tpg[1] do
       lineSegsAtInf : append(lineSegsAtInf,[[discrete,
@@ -685,7 +685,7 @@ getTopologyPoints(tpg) :=
     ptsAtInf : append(ptsAtInf,newPtsAtInf),
 
     newNonCritPts : getPointsOnProj(tpg[length(tpg)],length(tpg)*PLOT_SPACING,PLOT_HEIGHT),
-    for j : 1 thru tpg[1] do
+    for j : 1 thru tpg[length(tpg)] do
       lineSegsAtInf : append(lineSegsAtInf,[[discrete,
                                              float([newPtsAtInf[j],
                                              newNonCritPts[j]    ])]])
@@ -716,7 +716,8 @@ drawTopology(tpg) :=
   drawTopologyVerbose(tpg,DEFAULT_VERBOSITY);
 
 drawTopologyVerbose(tpg,verbosity) :=
-  block([nonCritPoints,critPoints,topologyPoints,style,preamble,i,leftMost,rightMost,top,bottom],
+  block([nonCritPoints,critPoints,topologyPoints,style,preamble,i,
+         leftMost,rightMost,top,bottom],
     topologyPoints : getTopologyPoints(tpg),
     if topologyPoints=false then
       (
@@ -730,7 +731,9 @@ drawTopologyVerbose(tpg,verbosity) :=
      lineSegs : topologyPoints[3],
 
 /* DEBUGGING */
+/*
 nonCritPoints : append(nonCritPoints,topologyPoints[4]),
+*/
 lineSegs : append(lineSegs,topologyPoints[5]),
 
 

@@ -2,6 +2,8 @@
 /* SARAG - Low Level Routines                                          */
 /* by Fabrizio Caruso                                                  */
 
+/* ------------------------------------------------------ */
+/* Polynomial related functions */
 
 /* It expands a polynomial if ASSUME_EXPANDED is false */
 expandIf(pol)::=
@@ -13,7 +15,6 @@ expandIf(pol)::=
 
 
 /* Degree of a polynomial (MACRO) */
-
 degree(poly,indet) ::=
   buildq([poly,indet],if poly = 0 then -1 else hipow(poly,indet));
 
@@ -40,12 +41,14 @@ Tail(poly,indet) ::=
           poly-leadMono(poly,indet));
 
 
+/* ------------------------------------------------------ */
 /* Sign function */
 
 sgn(val) ::=
   buildq([val], if val = 0 then 0 else if val < 0 then -1 else 1); 
 
 
+/* ------------------------------------------------------ */
 /* Array-related routines */
 
 /* Number of dimensions */
@@ -130,3 +133,58 @@ poly2array(pol,var) :=
 
 array2poly(arr,var) :=
   list2poly(array2singleList(arr),var);
+
+
+/* ------------------------------------------------------ */
+/* List manipulation */
+
+/* It removes the zeroes from a list */
+trimZeros(seq) :=
+  if seq = [] then
+    [] 
+  else
+    if first(seq) = 0 then
+      trimZeros(rest(seq))
+    else
+      cons(first(seq),trimZeros(rest(seq)));
+
+
+
+/* Mergesort of two sorted lists wrt to a given total ordering*/
+
+mergeSorted(lhs,rhs,ordering) :=
+  block([i,j,k,lhsLen,rhsLen,res],
+  lhsLen : length(lhs),
+  rhsLen : length(rhs),
+  i : 1,
+  j : 1,
+  res : [],
+  while (i<= lhsLen) and (j<= rhsLen) do
+    (
+
+    if ordering(lhs[i],rhs[j]) then
+      (
+      res : endcons(lhs[i],res),
+      i : i + 1
+      )
+    else
+      if lhs[i]=rhs[j] then
+        (
+        res : endcons(lhs[i],res),
+        i : i + 1,
+        j : j + 1
+        )
+      else
+        (
+        res : endcons(rhs[j],res),
+        j : j + 1
+        )
+     ),
+  if i<= lhsLen then
+    res : append(res, makelist(lhs[k],k,i,lhsLen))
+  else 
+     if j <= rhsLen then
+        res : append(res, makelist(rhs[k],k,j,rhsLen)),
+  return(res)
+       
+ );

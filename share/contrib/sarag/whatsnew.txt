@@ -1,0 +1,26 @@
+SARAG v3.0
+
+(1) bug fixes
+- drawTopology: 
+it now computes
+the correct topology of points
+at infinity
+
+(2) new functions
+- echelonMod : 
+it computes
+the Echelon form of a matrix
+
+(3) test files:
+- "arag_test.mac"
+It tests the examples contained
+in the book "Algorithms in Real
+Algebraic Geometry" (which contains
+SARAG and uses Maxima in its electronic version)
+- "hard_test.mac"
+It tests some other commands involve
+more computation  (mostly topology computations)
+
+(4) updated "readme.txt"
+
+

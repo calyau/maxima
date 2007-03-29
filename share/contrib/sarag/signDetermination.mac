@@ -7,8 +7,11 @@
 /* Backward compatibility issues since 5.9.2 */
 
 /* Auxiliary floor function */
+/* unsed */
+/*
 comp_floor(x) :=
   fix(x);
+*/
 
 /* Auxiliary ceiling function */
 comp_ceiling(x) :=
@@ -696,6 +699,10 @@ extThomEncoding(p,q,var) :=
 
 /* Merge two thom-sorted encodings and remove duplicates */
 thomMerge(lhs,rhs) :=
+  mergeSorted(lhs,rhs,thomLess);
+
+/*
+thomMerge(lhs,rhs) :=
   block([i,j,k,lhsLen,rhsLen,res],
   lhsLen : length(lhs),
   rhsLen : length(rhs),
@@ -731,6 +738,7 @@ thomMerge(lhs,rhs) :=
   return(res)
        
  );
+*/
 
 
 extThomMerge(lhs,degLhs,rhs,degRhs) :=

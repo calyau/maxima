@@ -781,14 +781,6 @@ nonZeroSignChanges(seq) :=
      else
        nonZeroSignChanges(rest(seq));
 
-trimZeros(seq) :=
-  if seq = [] then
-    [] 
-  else
-    if first(seq) = 0 then
-      trimZeros(rest(seq))
-    else
-      cons(first(seq),trimZeros(rest(seq)));
 
 signChanges(seq) :=
   nonZeroSignChanges(trimZeros(seq));
@@ -1226,11 +1218,11 @@ hankelMatrix(seq) :=
 
 evenPart(pol,var) :=
   sum(ratcoeff(pol,var,i*2)*var^i,
-      i,0,comp_floor(degree(pol,var)/2));
+      i,0,floor(degree(pol,var)/2));
 
 oddPart(pol,var) :=
   sum(ratcoeff(pol,var,i*2+1)*var^i,
-      i,0,comp_ceiling(degree(pol,var)/2));
+      i,0,ceiling(degree(pol,var)/2));
 
 lienardChipartConditions(pol,var) :=
   block([F,G,SR,degP,m],
@@ -1305,7 +1297,7 @@ posNegDiffVerbose(p,var,verbosity) :=
   );
 
 
-horner(pol,var,value) :=
+saragHorner(pol,var,value) :=
   block([res,i,degP],
 
   degP : degree(pol,var),
