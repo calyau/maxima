@@ -481,7 +481,7 @@
 (defmfun $poistimes (a b)
   (prog (slc clc temp ae aa zero trim t1 t2 f1 f2)
      (setq a (intopois a) b (intopois b))
-     (cond ((or (getl-fun '$poistrim '(expr subr))
+     (cond ((or (getl-lm-fcn-prop '$poistrim '(expr subr))
 		(mget '$poistrim 'mexpr))
 	    (setq trim t)))
      (cond ((nonperiod a) (return ($poisctimes (cadr (caddr a)) b)))

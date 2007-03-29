@@ -32,7 +32,7 @@
 ;;                      which are both usefull debugging hacks.
 ;;
 ;;                      You probably want to give this a short alias
-;;                      for typing convenience. 
+;;                      for typing convenience.
 ;;                    */
 ;;
 ;; An option is either a keyword, FOO.
@@ -75,7 +75,7 @@
 ;; When TRACE_SAFETY:FALSE; F(X); will give an infinite recursion,
 ;; which it would not if safety were turned on.
 ;; [Just thinking about this gives me a headache.]
-
+
 ;; Internal notes on this package:				-jkf
 ;; Trace works by storing away the real definition of a function and
 ;; replacing it by a 'shadow' function.  The shadow function prints a
@@ -108,7 +108,6 @@
 ;; the macsyma functions (mfexpr*,...) are stored on the property list.
 ;;
 
-
 ;; 1) The variety of maxima functions is much more restricted than
 ;;    what the table above shows.  I think the following table gives
 ;;    the correct picture (like its counterpart, it ignores maxima
@@ -154,7 +153,7 @@
 ;; functions).  I think that this has to be fixed somewhere in the
 ;; translation package. -wj
 
-
+
 ;;; Structures.
 
 (eval-when
@@ -180,16 +179,16 @@
   (let (trace-allp)
     (if (null llist)
 	default
-        `((mlist) ,@(mapcan fun
+	`((mlist) ,@(mapcan fun
 			    (if (member (car llist) '($all $functions) :test #'eq)
-			        (prog2
+				(prog2
 				    (setq trace-allp t)
 				    (mapcar #'caar (cdr $functions)))
-			        llist))))))
+				llist))))))
 
 (defmspec $trace (form)
   (mlistcan-$all #'macsyma-trace (cdr form) $trace))
-  
+
 (defmfun $trace_it (function)
   `((mlist) ,@(macsyma-trace function)))
 
@@ -303,7 +302,7 @@
 
 (defprop subr t uuolinks)
 (defprop lsubr t uuolinks)
-(defprop fsubr t uuolinks)		; believe it or not. 
+(defprop fsubr t uuolinks)		; believe it or not.
 
 (defprop mexpr t mget)
 (defprop mexpr expr shadow)
@@ -348,7 +347,7 @@
 		  (get fun type-of)))))
    (trace-fsymeval
     (merror "Maxima bug: Trace property for ~:@M went away without hook." fun))))
-
+
 ;;; The handling of a traced call.
 
 (defvar trace-indent-level -1)
@@ -427,7 +426,7 @@
 (defmvar $trace_safety t "This is subtle")
 
 (defun trace-option-p (function keyword)
-  (do ((options					
+  (do ((options
 	(let ((options (trace-options (getop function))))
 	  (cond ((null options) nil)
 		(($listp options) (cdr options))
@@ -444,7 +443,7 @@
 	   (let ((return-to-trace-handle $trace_safety))
 	     (return (mapply (cadr option) predicate-arglist
 			     (make-mstring "A trace option predicate"))))))))
-			
+
 
 (defun trace-enter-print (fun lev largs &aux (mlargs `((mlist) ,@largs)))
   (if (not (trace-option-p fun '$noprint))
@@ -469,7 +468,7 @@
 			     (if info " -> " "")
 			     (if info info "")))))))
 
-(defmvar $trace_break_arg '$trace_break_arg 
+(defmvar $trace_break_arg '$trace_break_arg
   "During trace Breakpoints bound to the argument list or return value")
 
 (defun trace-enter-break (fun lev largs)
@@ -535,11 +534,10 @@
 				      "Enter new argument list for"
 				      (mopstringnam fun))
 				     "please enter a list.")))))
-					   
+
     ((3)
      (cons 'exit ($read "Enter value to return")))))
 
-
 ;;; application dispatch, and the consing up of the trace hook.
 
 (defun macsyma-fsymeval (fun)
@@ -562,7 +560,7 @@
 
   (let ((mprops (mgetl fun '(mexpr mmacro)))
 	(lprops (getl  fun '(translated-mmacro mfexpr* mfexpr*s)))
-	(fcell-props (getl-fun fun '(subr lsubr expr macro))))
+	(fcell-props (getl-lm-fcn-prop fun '(subr lsubr expr macro))))
     (cond ($transrun
 	   ;; the default, so its really a waste to have looked for
 	   ;; those mprops. Its better to fix the crock than to
@@ -584,7 +582,7 @@
   (declare (ignore type))
   #'(lambda (&rest trace-args)
       (funcall handler fun trace-args)))
-       
+
 (defmacro trace-setup-call (prop fun type)
   (declare (ignore fun type))
   `(setf (symbol-function 'the-trace-apply-hack) ,prop))

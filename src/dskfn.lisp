@@ -188,7 +188,7 @@
 	   (if (setq val (ruleof item))
 	       (setq x (list* nil val (cdr x))))
 	   (pradd2lnc (getop rename) '$rules))
-	 (when (and (setq val (cadr (getl-fun item '(expr))))
+	 (when (and (setq val (cadr (getl-lm-fcn-prop item '(expr))))
 		    (or (mget item '$rule) (get item 'translated)))
 	   (if (mget item 'trace)
 	       (let (val1)
