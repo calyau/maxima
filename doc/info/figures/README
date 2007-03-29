@@ -1,0 +1,66 @@
+INTRODUCTION
+------------
+
+The figures in this directory will be used in the Maxima manual.
+Each figure should be in two versions, PDF and GIF. The PDF version
+will be used in the PDF version of the manual, and the GIF version
+will be used in the HTML version.
+
+CREATING FIGURES FOR THE MAXIMA MANUAL
+--------------------------------------
+
+The figures can be obtained from the Postcript files created by the
+Maxima plotting drivers. For example, figures plotting2.pdf and
+plotting2.gif where obtained from the file plotting2.ps created with
+the following Maxima commands:
+
+  set_plot_option([gnuplot_ps_term_command,
+     "set size 1.3, 1.3; set term postscript eps color solid lw 2.5 30"])$
+  plot2d (sin(x), [x, -5, 5], [gnuplot_term,ps],
+     [gnuplot_out_file,"plotting2.ps"])$
+
+The size scaling of 1.3 was used to obtain a figure with a reasonable
+size in the HTML manual. The size of the figure in the PDF manual can
+be adjusted in the info file, as explained in the next section. "lw
+2.5" makes the lines 2.5 thicker than the default value, and 30 is the
+size of the font which will be used (Helvetica by default).
+
+The two figures plotting2.gif and plotting2.pdf where created using
+two commands from the packages Imagemagick and Tetex:
+
+  convert plotting2.ps plotting2.gif
+  epstopdf plotting2.ps
+
+The file plotting.ps has been included (in compressed form) in this
+directory just for reference.
+
+ADDING FIGURES TO THE MANUAL
+----------------------------
+
+To add a figure to the manual, for instance figure plotting2, use the
+following lines in the info document:
+
+@ifnotinfo
+@image{figures/plotting2, 8cm}
+@end ifnotinfo
+
+notice that the file path and name shoud be written without including
+the name extension (neither .gif nor .pdf need to be given). The 8cm
+width will be used in the PDF manual only, and not in the HTML manual.
+You might want to adjust that size for different figures.
+
+In the translations of the manual into other languages, the above
+lines should be translated into:
+
+@ifnotinfo
+@image{../figures/plotting2, 8cm}
+@end ifnotinfo
+
+
+------------
+Jaime Villate, March 29, 2007.
+
+
+
+
+
