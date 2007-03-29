@@ -465,9 +465,9 @@
   (assert (typep pts '(vector double-float)))
   (loop for i below (length pts) by 3
          do (setq r (aref pts i))
-         (setq th (aref pts (f+ i 1)))
+         (setq th (aref pts (+ i 1)))
          (setf (aref pts i) (* r (cos th)))
-         (setf (aref pts (f+ i 1)) (* r (sin th)))))
+         (setf (aref pts (+ i 1)) (* r (sin th)))))
 
 ;; return a function suitable for the transform function in plot3d.
 ;; FX, FY, and FZ are functions of three arguments.
