@@ -246,7 +246,7 @@ APPLY means like APPLY.")
 (defun specialp (var)
   (cond ((or (optionp var)
 	     (get var 'special))
-	 (if $transcompile (addl var specials))
+	 (if $transcompile (pushnew var specials :test #'eq))
 	 t)))
 
 
@@ -800,7 +800,7 @@ APPLY means like APPLY.")
 	(t
 	 (cond ((not (specialp form))
 		(warn-undefined-variable form)
-		(if $transcompile (addl form specials))))
+		(if $transcompile (pushnew form specials :test #'eq))))
 	 ;; note that the lisp analysis code must know that
 	 ;; the TRD-MSYMEVAL form is a semantic variable.
 	 (let* ((mode (value-mode form))		
@@ -901,13 +901,13 @@ APPLY means like APPLY.")
     (setq args (cond ((member type '(subr lsubr expr) :test #'eq)
 		      (if $transcompile
 			  (case type
-			    ((subr) (addl op exprs))
-			    ((lsubr) (addl op lexprs))
+			    ((subr) (pushnew op exprs :test #'eq))
+			    ((lsubr) (pushnew op lexprs :test #'eq))
 			    (t nil)))
 		      (mapcar #'(lambda (llis) (dconvx (translate llis)))
 			      (cdr form)))
 		     (t
-		      (if $transcompile (addl op fexprs))
+		      (if $transcompile (pushnew op fexprs :test #'eq))
 		      (mapcar 'dtranslate (cdr form))))
 	  mode (function-mode op))
     (call-and-simp mode op args)))
@@ -950,11 +950,10 @@ APPLY means like APPLY.")
 (defun implied-quotep (atom)
   (cond ((get atom 'implied-quotep)
 	 atom)
-	((char= (getcharn atom 1)  #\&)    ;;; mstring hack
+	((char= (getcharn atom 1) #\&)    ;;; mstring hack
 	 (cond ((eq atom '|&**|) ;;; foolishness. The PARSER should do this.
 		;; Losing Fortran hackers.
-		(tr-format
-		 "~% `**' is obsolete, use `^' !!!")
+		(tr-format "~% `**' is obsolete, use `^' !!!")
 		'|&^|)
 	       (t atom)))
 	(t nil)))
@@ -968,13 +967,13 @@ APPLY means like APPLY.")
 	       ((tboundp form)
 		(if $transcompile
 		    (or (specialp form)
-			(addl form specials)))
+			(pushnew form specials :test #'eq)))
 		form)
 	       (t
-		(if $transcompile (addl form specials))
+		(if $transcompile (pushnew form specials :test #'eq))
 		form)))
 	((eq 'mquote (caar form)) form)
-	(t (cons (car form) (mapcar 'translate-atoms (cdr form))))))
+	(t (cons (car form) (mapcar #'translate-atoms (cdr form))))))
 
 
 ;;; the Translation Properties. the heart of TRANSL.
@@ -1018,7 +1017,7 @@ APPLY means like APPLY.")
 	  (t (mapcar 'spec (cdar l))))))
 
 (defun spec (var)
-  (addl var specials)
+  (pushnew var specials :test #'eq)
   (putprop var t 'special)
   (putprop var var 'tbind))
 
@@ -1131,14 +1130,14 @@ APPLY means like APPLY.")
       ((null l))
     (setq mode (array-mode (car l)))
     (cond ((eq '$fixnum mode)
-	   (addl `(array* (fixnum (,(car l) 1))) declares))
+	   (pushnew `(array* (fixnum (,(car l) 1))) declares :test #'eq))
 	  ((eq '$float mode)
-	   (addl `(array* (flonum (,(car l) 1))) declares))))
-  (if specials (addl `(special ,@specials) declares))
+	   (pushnew `(array* (flonum (,(car l) 1))) declares :test #'eq))))
+  (if specials (pushnew `(special ,@specials) declares :test #'eq))
   (if specials
       (setq declares (nconc (cdr (make-declares specials nil)) declares)))
-  (if lexprs (addl `(*lexpr . ,(reverse lexprs)) declares))
-  (if fexprs (addl `(*fexpr . ,(reverse fexprs)) declares)))
+  (if lexprs (pushnew `(*lexpr . ,(reverse lexprs)) declares :test #'eq))
+  (if fexprs (pushnew `(*fexpr . ,(reverse fexprs)) declares :test #'eq)))
 
 (defun make-declares (varlist localp &aux (dl) (fx) (fl) specs)
   (when $transcompile
@@ -1157,11 +1156,11 @@ APPLY means like APPLY.")
 	(setq var (teval (car l)) mode (value-mode var))
 	(setq specs (cons var specs))
 		
-	(cond ((eq '$fixnum mode) (addl var fx))
-	      ((eq '$float mode)  (addl var fl)))))
-    (if fx (addl `(fixnum  . ,fx) dl))
-    (if fl (addl `(flonum  . ,fl) dl))
-    (if specs (addl `(special  . ,specs) dl))
+	(cond ((eq '$fixnum mode) (pushnew var fx :test #'eq))
+	      ((eq '$float mode)  (pushnew var fl :test #'eq)))))
+    (if fx (pushnew `(fixnum  . ,fx) dl :test #'eq))
+    (if fl (pushnew `(flonum  . ,fl) dl :test #'eq))
+    (if specs (pushnew `(special  . ,specs) dl :test #'eq))
     (if dl `(declare . ,dl))))
 
 (def%tr dolist (form)
@@ -1448,7 +1447,7 @@ APPLY means like APPLY.")
 	mode)
     (cond ((atom var)
 	   (setq mode (value-mode var) val (translate val))
-	   (ifn (tboundp var) (addl var specials))
+	   (ifn (tboundp var) (pushnew var specials :test #'eq))
 	   (warn-mode var mode (car val))
 	   (if (eq '$any mode)
 	       (setq mode (car val) val (cdr val))
