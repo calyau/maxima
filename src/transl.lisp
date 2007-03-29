@@ -419,11 +419,16 @@ APPLY means like APPLY.")
   (cond ((member (car x) '($fixnum $number) :test #'eq)
 	 (if (integerp (cdr x)) (float (cdr x)) (list 'float (cdr x))))
 	((eq '$rational (car x))
-	 (ifn (eq 'quote (cadr x)) `($float ,(cdr x))
-	      (/ (float (cadadr (cdr x))) (float (caddr (caddr x))))))
+	 (cond ((not (eq 'quote (cadr x)))
+		`($float ,(cdr x)))
+	       (t
+		(/ (float (cadadr (cdr x))) (float (caddr (caddr x)))))))
 	(t (cdr x))))
 
-(defun dconv-$cre (x) (if (eq '$cre (car x)) (cdr x) `(ratf ,(cdr x))))
+(defun dconv-$cre (x)
+  (if (eq '$cre (car x))
+      (cdr x)
+      `(ratf ,(cdr x))))
 
 (defmvar *$any-modes* '($any $list))
 
@@ -432,7 +437,6 @@ APPLY means like APPLY.")
 	((eq '$float mode1) (member mode2 '($float $fixnum $rational) :test #'eq))
 	((eq '$number mode1) (member mode2 '($fixnum $float) :test #'eq))
 	((member mode1 *$any-modes* :test #'eq) t)))
-
 
 ;;; takes a function name as input.
 
@@ -1371,7 +1375,8 @@ APPLY means like APPLY.")
       (specialp var)
       (tbind var)
       (setq init (if (caddr form) (translate (caddr form)) '($fixnum . 1)))
-      (ifn (setq varmode (get var 'mode)) (declvalue var (car init) t))
+      (cond ((not (setq varmode (get var 'mode)))
+	     (declvalue var (car init) t)))
       (setq next (translate (cond ((cadddr form) (list '(mplus) (cadddr form) var))
 				  ((car (cddddr form)))
 				  (t (list '(mplus) 1 var)))))
@@ -1379,8 +1384,10 @@ APPLY means like APPLY.")
       ;;to make the end test for thru be numberp if the index is numberp
       ;;and to eliminate reevaluation
       tem
-      (ifn varmode (declvalue var (*union-mode (car init) (car next)) t)
-	   (warn-mode var varmode (*union-mode (car init) (car next))))
+      (cond ((not varmode)
+	     (declvalue var (*union-mode (car init) (car next)) t))
+	    (t
+	     (warn-mode var varmode (*union-mode (car init) (car next)))))
       (setq test (translate-predicate
 		  (list '(mor)
 			(cond ((null (cadr (cddddr form)))  nil)
@@ -1447,7 +1454,8 @@ APPLY means like APPLY.")
 	mode)
     (cond ((atom var)
 	   (setq mode (value-mode var) val (translate val))
-	   (ifn (tboundp var) (pushnew var specials :test #'eq))
+	   (cond ((not (tboundp var))
+		  (pushnew var specials :test #'eq)))
 	   (warn-mode var mode (car val))
 	   (if (eq '$any mode)
 	       (setq mode (car val) val (cdr val))
@@ -1467,7 +1475,6 @@ APPLY means like APPLY.")
 	   (tr-format "~%Dubious first LHS argument to ~:@M~%~:M" (caar form) var)
 	   (setq val (translate val))
 	   `(,(car val) mset ',(translate-atoms var) ,(cdr val))))))
-
 
 (def%tr $rat (form)
   (cond ((null (cddr form)) (cons '$cre (dconv-$cre (translate (cadr form)))))

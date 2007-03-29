@@ -59,10 +59,11 @@
 (defmacro pscoefp (e) `(null (psp ,e)))
 
 (defmacro psquo (ps1 &optional ps2)
-  (ifn ps2 `(psexpt ,ps1 (rcmone))
-       `(pstimes ,ps1 (psexpt ,ps2 (rcmone)))))
+  (cond ((not ps2) `(psexpt ,ps1 (rcmone)))
+	(t `(pstimes ,ps1 (psexpt ,ps2 (rcmone))))))
 
-(defmacro pslog-gvar (gvar) `(pslog2 (get-inverse ,gvar)))
+(defmacro pslog-gvar (gvar)
+  `(pslog2 (get-inverse ,gvar)))
 
 (defmacro gvar-o (e) `(cadr ,e))
 

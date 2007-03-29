@@ -98,8 +98,8 @@
 		       (- (/ (cl:expt (coerce pi 'double-float) 2) 6))))
 		   ((< x 1)
 		    (slatec:dspenc x))
-           ((= x 1)
-            (/ (cl:expt (coerce pi 'double-float) 2) 6))
+	   ((= x 1)
+	    (/ (cl:expt (coerce pi 'double-float) 2) 6))
 		   (t
 		    ;; li[2](x) = -li[2](1/x)-log(-x)^2/2-%pi^2/6
 		    (- (+ (li2 (/ x))
@@ -116,8 +116,8 @@
 	     (/ (expt (log (- x)) 3) 6d0)))
 	((not (> x .5d0)) (chebyli3 x))
 	((not (> x 2d0))
-	 (let ((fac (* (expt (log x) 2) 0.5d0))) 
-	   (m+t (+ 1.20205690d0 
+	 (let ((fac (* (expt (log x) 2) 0.5d0)))
+	   (m+t (+ 1.20205690d0
 		    (- (* (log x)
 			    (- 1.64493407d0 (chebyli2 (- 1d0 x))))
 			(chebys12 (- 1d0 x))
@@ -141,7 +141,7 @@
 (defvar *li3* (make-array 15. :initial-contents '(14.0d0 1.95841721d0 8.51881315d-2 8.55985222d-3
 						  1.21177214d-3 2.07227685d-4 3.99695869d-5
 						  8.38064066d-6 1.86848945d-6 4.36660867d-7
-						  1.05917334d-7 2.6478920d-8 6.787d-9 
+						  1.05917334d-7 2.6478920d-8 6.787d-9
 						  1.776536d-9 4.73417d-10)
 			  :element-type 'double-float))
 
@@ -239,7 +239,7 @@
 		    ((and (= p 1)
 			  (cond ((= q 2)
 				 (m+ (m* -2 '((%log) 2)) (m- '$%gamma)))
-				((= q 3)                            
+				((= q 3)
 				 (m+ (m* '((rat simp) -1 2)
 					 (m^t 3 '((rat simp) -1 2)) '$%pi)
 				     (m* '((rat simp) -3 2) '((%log) 3))
@@ -269,7 +269,7 @@
 			     '$%gamma)))
 		    ;; Gauss's Formula
 		    ((let ((f (m* `((%cos) ,(m* 2 a '$%pi '*k*))
-				  `((%log) ,(m-t 2 (m* 2 `((%cos) 
+				  `((%log) ,(m-t 2 (m* 2 `((%cos)
 							   ,(m//t (m* 2 '$%pi '*k*)
 								  q))))))))
 		       (m+t (msum f 1 (1- (// q 2)))
@@ -379,40 +379,30 @@
 
 (defun gam-const (a arg func)
   (let ((const (ps-lc* arg)) (arg-c))
-    (ifn (rcintegerp const)
-	 (taylor2 (diff-expand `((%gamma) ,a) tlist))
-	 (setq const (car const))
-	 ;; Try to get the datum
-	 (if (pscoefp arg)
-	     (setq arg-c (get-lexp (m+t a (- const)) (rcone)
-				   (signp le const))))
-	 (if (and arg-c (not (psp arg-c))) ; must be zero
-	     (taylor2 (simplify `((%gamma) ,const)))
-	     (let ((datum (get-datum (get-key-var
-				      (gvar (or arg-c arg)))))
-		   (ord (if arg-c (le (terms arg-c))
-			    (le (n-term (terms arg))))))
-	       (setq func (current-trunc datum))
-	       (if (> const 0)
-		   (pstimes 
-		    (let-pw datum (e- func ord)
-			    (expand (m+t a (- const)) '%gamma))
-		    (let-pw datum (e+ func ord)
-			    (tsprsum (m+t a (m-t '%%taylor-index%%))
-				     `(%%taylor-index%% 1 ,const)
-				     '%product)))
-		   (pstimes 
-		    (expand (m+t a (- const)) '%gamma)
-		    (let-pw datum (e+ func ord)
-			    (psexpt 
-			     (tsprsum (m+t a '%%taylor-index%%)
-				      `(%%taylor-index%% 0
-					,(- (1+ const))) '%product)
-			     (rcmone))))))))))
+    (cond ((not (rcintegerp const))
+	   (taylor2 (diff-expand `((%gamma) ,a) tlist)))
+	  (t
+	   (setq const (car const))
+	   (if (pscoefp arg) (setq arg-c (get-lexp (m+t a (- const)) (rcone) (signp le const))))
+	   (if (and arg-c (not (psp arg-c)))
+	       (taylor2 (simplify `((%gamma) ,const)))
+	       (let ((datum (get-datum (get-key-var (gvar (or arg-c arg)))))
+		     (ord (if arg-c (le (terms arg-c)) (le (n-term (terms arg))))))
+		 (setq func (current-trunc datum))
+		 (if (> const 0)
+		     (pstimes (let-pw datum (e- func ord) (expand (m+t a (- const)) '%gamma))
+			      (let-pw datum (e+ func ord)
+				      (tsprsum (m+t a (m-t '%%taylor-index%%))
+					       `(%%taylor-index%% 1 ,const) '%product)))
+		     (pstimes (expand (m+t a (- const)) '%gamma)
+			      (let-pw datum (e+ func ord)
+				      (psexpt (tsprsum (m+t a '%%taylor-index%%)
+						       `(%%taylor-index%% 0 ,(- (1+ const))) '%product)
+					      (rcmone)))))))))))
 
 (defun plygam-const (a arg func)
   (let ((const (ps-lc* arg)) (sub (cadr func)))
-    (cond 
+    (cond
       ((or (not (integerp sub)) (< sub -1))
        (tay-err "Unable to expand at a subscript in"))
       ((not (rcintegerp const))

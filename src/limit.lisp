@@ -1096,28 +1096,19 @@ It appears in LIMIT and DEFINT.......")
 	   (setq ans ($expand (m* (log-reduce (car l)) ans)))))
 	((mexptp x) (m^t (log-reduce (cadr x)) (caddr x)))
 	((mlogp x)
-	 (ifn (infinityp (limit (cadr x) var val 'think))
-	      x
-	      (cond ((eq (cadr x) var) x)
-		    ((mplusp (cadr x))
-		     (let ((strongl (maxi (cdadr x))))
-		       (m+ (log-reduce `((%log) ,(car strongl)))
-			   `((%log) ,(m// (cadr x) (car strongl))))))
-		    ((mtimesp (cadr x))
-		     (do ((l (cdadr x) (cdr l))
-			  (ans 0))
-			 ((null l) ans)
-		       (setq ans
-			     (m+ (log-reduce
-				  (simplify `((%log) ,(log-reduce (car l)))))
-				 ans))))
-		    (t (let ((red-log (simplify `((%log)
-						  ,(log-reduce (cadr x))))))
-			 (if (alike1 red-log x)
-			     x
-			     (log-reduce red-log)))))))
+	 (cond ((not (infinityp (limit (cadr x) var val 'think))) x)
+	       (t
+		(cond ((eq (cadr x) var) x)
+		      ((mplusp (cadr x))
+		       (let ((strongl (maxi (cdadr x))))
+			 (m+ (log-reduce `((%log) ,(car strongl))) `((%log) ,(m// (cadr x) (car strongl))))))
+		      ((mtimesp (cadr x))
+		       (do ((l (cdadr x) (cdr l)) (ans 0)) ((null l) ans)
+			 (setq ans (m+ (log-reduce (simplify `((%log) ,(log-reduce (car l))))) ans))))
+		      (t
+		       (let ((red-log (simplify `((%log) ,(log-reduce (cadr x))))))
+			 (if (alike1 red-log x) x (log-reduce red-log))))))))
 	(t x)))
-
 
 (defun ratlim (e)
   (cond ((member val '($inf $infinity) :test #'eq)
@@ -1135,39 +1126,40 @@ It appears in LIMIT and DEFINT.......")
 		       (g (genfind h 'x))
 		       (nd (lodeg n g))
 		       (dd (lodeg d g)))
-    (cond ((and
-	    (setq e
-		  (subst var
-			 'x
-			 (sratsimp
-			  (m//
-			   ($ratdisrep `(,h ,(locoef n g) . 1))
-			   ($ratdisrep `(,h ,(locoef d g) . 1))))))
-	    (> nd dd))
-	   (cond ((not (member val
-			     '($zerob $zeroa $inf $minf) :test #'eq))
-		  0)
-		 ((not (equal ($imagpart e) 0))
-		  0)
-		 ((null (setq e (getsignl ($realpart e))))
-		  0)
-		 ((equal e 1) '$zeroa)
-		 ((equal e -1) '$zerob)
-		 (t 0)))
-	  ((equal nd dd) e)
-	  ((not (member val '($zerob $zeroa $infinity $inf $minf) :test #'eq))
-	   (throw 'limit t))
-	  ((eq val '$infinity)  '$infinity)
-	  ((not (equal ($imagpart e) 0)) '$infinity)
-	  ((null (setq e (getsignl ($realpart e)))) '$infinity)
-	  ((equal e 1) '$inf)
-	  ((equal e -1) '$minf)
-	  (t 0))))
+		      (cond ((and (setq e
+					(subst var
+					       'x
+					       (sratsimp (m// ($ratdisrep `(,h ,(locoef n g) . 1))
+							      ($ratdisrep `(,h ,(locoef d g) . 1))))))
+				  (> nd dd))
+			     (cond ((not (member val '($zerob $zeroa $inf $minf) :test #'eq))
+				    0)
+				   ((not (equal ($imagpart e) 0))
+				    0)
+				   ((null (setq e (getsignl ($realpart e))))
+				    0)
+				   ((equal e 1) '$zeroa)
+				   ((equal e -1) '$zerob)
+				   (t 0)))
+			    ((equal nd dd) e)
+			    ((not (member val '($zerob $zeroa $infinity $inf $minf) :test #'eq))
+			     (throw 'limit t))
+			    ((eq val '$infinity)  '$infinity)
+			    ((not (equal ($imagpart e) 0)) '$infinity)
+			    ((null (setq e (getsignl ($realpart e)))) '$infinity)
+			    ((equal e 1) '$inf)
+			    ((equal e -1) '$minf)
+			    (t 0))))
 
-(defun lodeg (n x) (if (or (atom n) (not (eq (car n) x))) 0 (lowdeg (cdr n))))
+(defun lodeg (n x)
+  (if (or (atom n) (not (eq (car n) x)))
+      0
+      (lowdeg (cdr n))))
 
-(defun locoef (n x) (if (or (atom n) (not (eq (car n) x))) n (car (last n))))
-
+(defun locoef (n x)
+  (if (or (atom n) (not (eq (car n) x)))
+      n
+      (car (last n))))
 
 (defun behavior (exp var val)		; returns either -1, 0, 1.
   (if (= behavior-count-now behavior-count)

@@ -104,7 +104,7 @@
   (cond ((numberp x))
 	((or (atom x) (numberp (car x))) (unmrk x))
 	(t (mapc #'unmrks x))))
-
+
 
 (defmode type ()
   (atom (selector +labs) (selector -labs) (selector data))
@@ -342,7 +342,7 @@
 	-labs nil
 	ulabs nil)
   (contextmark))
-
+
 (defmfun truep (pat)
   (clear)
   (cond ((atom pat) pat)
@@ -442,7 +442,7 @@
 		(_ (sel d con data) (delete d (sel d con data) :test #'eq))
 		(rplacd ds (cddr ds)) (return t))))
        data)))
-
+
 (defun semantics (pat)
   (if (atom pat)
       pat
@@ -494,7 +494,7 @@
 
 (defmfun doutern (x)
   (if (atom x) x (car x)))
-
+
 (defmfun untrue (pat)
   (kill (car pat) (semant (cadr pat)) (semant (caddr pat))))
 
@@ -560,7 +560,7 @@
   (zl-remprop cl 'var)
   (zl-remprop cl 'fact)
   (zl-remprop cl 'wn))
-
+
 (defmfun activate n
   (do ((i 1 (1+ i)))
       ((> i n))
@@ -661,7 +661,7 @@
 	 (zl-remprop con 'cmark)
 	 (zl-remprop con 'subc)))
   t)
-
+
 (defun propg ()
   (do ((x)
        (lab))
@@ -684,13 +684,13 @@
 
 (defun mark+3 (cl lab dat)
   (declare (ignore cl lab))
-  (ifn (= 0 (logand (unlab (+labz (caddar dat)))
-		    (unlab (dbv (+labz (cadar dat)) (-labz (caar dat))))))
-       (beg- (sel dat wn) world)))
+  (cond ((not (= 0 (logand (unlab (+labz (caddar dat)))
+			   (unlab (dbv (+labz (cadar dat)) (-labz (caar dat)))))))
+	 (beg- (sel dat wn) world))))
 
 (defun mark+0 (cl lab fact)
   (when dbcheck
-    (mtell "~%Checking ~A from ~A+" (car fact) cl)
+    (mtell "~%checking ~a from ~A+" (car fact) cl)
     (prlab lab))
   (cond ((onpu lab fact))
 	((not (cntp fact)))
@@ -714,9 +714,6 @@
 	     (end (caddar dat) (dbv lab (+labs (caar dat)))))
 	 (if (-labs (caddar dat))	; F4
 	     (end- (caar dat) (lpr lab (-labs (caddar dat))))))))
-
-
-
 
 (defun mark- (cl lab)
   (when dbtrace
@@ -758,7 +755,7 @@
 	     (end- (cadar dat) (dba (+labs (caar dat)) lab)))
 	 (if (+labs (cadar dat))	; F6
 	     (end- (caar dat) (lpr (+labs (cadar dat)) lab))))))
-
+
 ;;	     in out                    in out                  ins  in out
 ;;	-----------		-------------             ----------------
 ;;	E1 |     +		INV1 |     +              AB1 |(+)  +   +
