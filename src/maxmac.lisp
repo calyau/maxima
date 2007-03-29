@@ -17,60 +17,16 @@
 ;; General purpose macros which are used in Lisp code, but not widely enough
 ;; accepted to be a part of Lisp systems.
 
-;; All these updating macros should be made from the same generalized
-;; push/pop scheme as I mentioned to LispForum. As they are defined now
-;; they have inconsistent return-values and multiple-evaluations of
-;; arguments. -gjc
-
-(defmacro addl (item list)
-  `(or (member ,item ,list :test #'eq)
-    (setq ,list (cons ,item ,list))))
-
-(defmacro increment (counter &optional increment)
-  (if increment
-      `(setf ,counter (+ ,counter ,increment))
-      `(setf ,counter (1+ ,counter))))
-
-(defmacro decrement (counter &optional decrement)
-  (if decrement
-      `(setf ,counter (- ,counter ,decrement))
-      `(setf ,counter (1- ,counter))))
-
 ;; 'writefilep' and 'ttyoff' are system independent ways of expressing
 ;; the Maclisp ^R and ^W.
 
 (defvar writefilep '^r)
 (defvar ttyoff    '^w)
 
-;; (IFN A B) --> (COND ((NOT A) B))
-;; (IFN A B C D) --> (COND ((NOT A) B) (T C D))
-;; (IFN A B) is equivalent to (OR A B) as (IF A B) is equivalent to (AND A B).
-
-(defmacro ifn (predicate then . else)
-  (cond ((null else) `(cond ((not ,predicate) ,then)))
-	(t `(cond ((not ,predicate) ,then) (t . ,else)))))
-
-(defmacro fn (bvl &rest body)
-  `(function (lambda ,bvl . ,body)))
-
 ;; Like PUSH, but works at the other end.
 
 (defmacro tuchus (list object)
   `(setf ,list (nconc ,list (ncons ,object))))
-
-;; Use this instead of GETL when looking for "function" properties,
-;; i.e. one of EXPR, SUBR, LSUBR, FEXPR, FSUBR, MACRO.
-;; Use FBOUNDP, SYMBOL-FUNCTION, or FMAKUNBOUND if possible.
-
-(defmacro getl-fun (fun l)
-  `(getl-lm-fcn-prop ,fun ,l))
-
-;; Non-destructive versions of DELQ and DELETE.  Already part of NIL
-;; and LMLisp.  These should be rewritten as SUBRS and placed
-;; in UTILS.  The subr versions can be more memory efficient.
-
-(defmacro remq (item list &optional (count () counting?))
-  `(remove ,item ,list :test 'eq ,@ (and counting? `(:count ,count))))
 
 ;; (EXCH A B) exchanges the bindings of A and B
 ;; Maybe it should turn into (PSETF A B B A)?
