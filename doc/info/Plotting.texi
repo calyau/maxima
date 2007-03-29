@@ -20,42 +20,6 @@ otherwise @code{in_netmath} (even if @code{true}) has no effect.
 
 @end defvr
 
-@c THIS DESCRIPTION IS IN NEED OF HEAVY REVISION (BUT ONLY IF OPENPLOT IS STILL SUPPORTED)
-@deffn {Function} openplot_curves (@var{list}, @var{rest_options})
-Takes a list of curves such as
-@example
-[[x1, y1, x2, y2, ...], [u1, v1, u2, v2, ...], ..]
-@end example
-or 
-@example
-[[[x1, y1], [x2, y2], ...], ...]
-@end example
-and plots them. It will only work if Xmaxima is installed.  This is
-similar to xgraph_curves, but uses the openmath routines.
- 
-Addtional symbol arguments may be given such as
-@code{"@{xrange -3 4@}"}
-The following plots two curves, using big points, labeling the first one
-@code{jim} and the second one @code{jane}.   
-@example
-(%i1) openplot_curves ([["@{plotpoints 1@} @{pointsize 6@}
-      @{label jim@} @{xaxislabel @{joe is nice@}@}"],
-      [1, 2, 3, 4, 5, 6, 7, 8], ["@{label jane@} @{color pink @}"],
-      [3, -1, 4, 2, 5, 7]]);
-@end example
-
-@ifnotinfo
-@image{figures/plotting1,8cm}
-@end ifnotinfo
-
-Some other special keywords are @code{xfun}, @code{color}, @code{plotpoints}, @code{linecolors},
-@code{pointsize}, @code{nolines}, @code{bargraph}, @code{labelposition}, @code{xaxislabel}, and
-@code{yaxislabel}.
-
-@end deffn
-
-
-
 @deffn {Function} plot2d (@var{expr}, @var{range}, ..., @var{options}, ...)
 @deffnx {Function} plot2d (@var{parametric_expr})
 @deffnx {Function} plot2d (@var{discrete_expr})
@@ -70,57 +34,88 @@ Some other special keywords are @code{xfun}, @code{color}, @code{plotpoints}, @c
 @deffnx {Function} plot2d ([@var{expr_1}, ..., @var{expr_n}], @var{x_range}, ..., @var{options}, ...)
 @deffnx {Function} plot2d ([..., @var{expr}, ..., @var{parametric_expr}, ...], @var{x_range}, ..., @var{options})
 
-Displays a plot of one or more expressions
-as a function of one variable.
+Displays a plot of one or more expressions as a function of one
+variable.
 
-In all cases, @var{expr}
-is an expression to be plotted on the vertical axis as
-a function of one variable.
-@var{x_range}, the range of the horizontal axis,
-is a list of the form @code{[@var{variable}, @var{min}, @var{max}]},
-where @var{variable} is a variable which appears in @var{expr}.
-@var{y_range}, the range of the vertical axis,
-is a list of the form @code{[y, @var{min}, @var{max}]}.
+@code{plot2d} plots one expression @var{expr} or several expressions
+@code{[@var{name_1}, ..., @var{name_n}]} which all depend only on one
+variable that must be named in @var{x_range}. The range of the
+horizontal axis, is a list of the form @code{[@var{variable},
+@var{min}, @var{max}]}, where @var{variable} is the name of the
+variable and @var{min} and @var{max} are the minimum and maximum
+values that will be plotted in the horizontal axis.
 
-@code{plot2d (@var{expr}, @var{x_range})}
-plots @var{expr} as a function of the variable named in @var{x_range},
-over the range specified in @var{x_range}.
-If the vertical range is not otherwise specified by @code{set_plot_option},
-it is chosen automatically.
-All options are assumed to have default values unless otherwise specified by @code{set_plot_option}.
+The range of the vertical axis is not mandatory. If given, it should
+be a list of the form @code{[y, @var{min}, @var{max}]} and the plot
+will show that entire range, even if the expressions do not reach all
+that range. Otherwise, if the vertical range is not specified by
+@code{set_plot_option}, it is chosen automatically and the plot will
+show the vertical range where the expressions take values.
 
-@code{plot2d (@var{expr}, @var{x_range}, @var{y_range})}
-plots @var{expr} as a function of the variable named in @var{x_range},
-over the range specified in @var{x_range}.
-The vertical range is set to @var{y_range}.
-All options are assumed to have default values unless otherwise specified by @code{set_plot_option}.
+All other options should also be lists, starting with the name of the
+option. The option @var{xlabel} can be used to give a label for the
+horizontal axis; if that option is not given, the horizontal axis will
+be labeled with the name of the variable specified in @var{x_range}. A
+label for the vertical axis can be given with the @var{ylabel}
+option. If there is only one expression to be plotted and the
+@var{ylabel} option was not used, the vertical axis will be labeled
+with the expression plotted, unless it is too large, or with the text
+``discrete data'' in the case of discrete plots; if the only
+expression is of the parametric type, the two expressions that give
+the horizontal and vertical coordinates will be used to label the two
+axis.
 
-@code{plot2d ([@var{expr_1}, ..., @var{expr_n}], @var{x_range})}
-plots @var{expr_1}, ..., @var{expr_n} as a function of the variable named in @var{x_range},
-over the range specified in @var{x_range}.
-If the vertical range is not otherwise specified by @code{set_plot_option},
-it is chosen automatically.
-All options are assumed to have default values unless otherwise specified by @code{set_plot_option}.
+The options @code{[logx]} and @code{[logy]} do not need any
+parameters. They will make the horizontal and vertical axes be
+scaled logarithmically.
 
-@code{plot2d ([@var{expr_1}, ..., @var{expr_n}], @var{x_range}, @var{y_range})}
-plots @var{expr_1}, ..., @var{expr_n} as a function of the variable named in @var{x_range},
-over the range specified in @var{x_range}.
-The vertical range is set to @var{y_range}.
-All options are assumed to have default values unless otherwise specified by @code{set_plot_option}.
+Any of the expressions to be plotted can be a list starting with the
+word ``discrete'' or ``parametric''. The keyword ``discrete'' must be
+followed by two lists of values, both with the same length, which are
+the horizontal and vertical coordinates of a set of points;
+alternatively, the coordinates of each point can be given in a list
+with two values, and all the coordinates of the points should be
+inside another list. The keyword @var{parametric} must be followed by
+two expressions @var{x_expr} and @var{y_expr}, and a range of the form
+@code{[@var{var}, @var{min}, @var{max}]}. The two expressions must
+depend only on the variable named in the range, and the plot will show
+the path traced out by the pair @code{[@var{x_expr}, @var{y_expr}]} as
+@var{var} varies from @var{min} to @var{max}.
 
-A function to be plotted
-may be specified as the name of a Maxima or Lisp function or operator,
-a Maxima lambda expression, or a general Maxima expression.
-If specified as a name or a lambda expression,
-the function must be a function of one argument.
+If there are several expressions to be plotted, a legend will be
+written to identiy each of the expressions. The labels that should be
+used in that legend can be given with the option @var{legend}. If that
+option is not used, Maxima will create labels from the expressions.
+
+By default, the expressions are plotted as a set of line segments
+joining points which are either given in the @var{discrete} form, or
+calculated automatically from the expression given and according to
+the number of points set by the @var{nticks} option. The option
+@var{style} can be used to show the points isolated, or the points and
+the lines that join them.
+
+There are several global options stored in the list @var{plot_options}
+which can be modified with the function @code{set_plot_option}; any of
+those global options can be overriden with options given in the
+@var{plot2d} command.
+
+A function to be plotted may be specified as the name of a Maxima or
+Lisp function or operator, a Maxima lambda expression, or a general
+Maxima expression.  If specified as a name or a lambda expression, the
+function must be a function of one argument.
 
 @c PUT EXAMPLES FOR PRECEDING SIMPLE FORMS OF plot2d HERE
 @b{Examples:}
 
-Plotting an expression, and setting some commonly-used parameters.
+Plots of common functions.
 
+@c ===beg===
+@c plot2d (sin(x), [x, -5, 5])$
+@c plot2d (sec(x), [x, -2, 2], [y, -20, 20], [nticks, 200])$
+@c ===end===
 @example
 (%i1) plot2d (sin(x), [x, -5, 5])$
+
 (%i2) plot2d (sec(x), [x, -2, 2], [y, -20, 20], [nticks, 200])$
 @end example
 
@@ -128,75 +123,74 @@ Plotting an expression, and setting some commonly-used parameters.
 @image{figures/plotting2,8cm}@image{figures/plotting3,8cm}
 @end ifnotinfo
 
-@b{Plotting functions by name.}
+Plotting functions by name.
 
 @c ===beg===
 @c F(x) := x^2 $
 @c :lisp (defun |$g| (x) (m* x x x))
 @c H(x) := if x < 0 then x^4 - 1 else 1 - x^5 $
 @c plot2d (F, [u, -1, 1])$
-@c plot2d ([F, G, H], [u, -1, 1])$
+@c plot2d ([F, G, H], [u, -1, 1], [y, -1.5, 1.5])$
 @c ===end===
 @example
-(%i1) F(x) := x^2 $
+(%i3) F(x) := x^2 $
 
-(%i2) :lisp (defun |$g| (x) (m* x x x))
+(%i4) :lisp (defun |$g| (x) (m* x x x))
 
 $g
-(%i2) H(x) := if x < 0 then x^4 - 1 else 1 - x^5 $
+(%i5) H(x) := if x < 0 then x^4 - 1 else 1 - x^5 $
 
-(%i3) plot2d (F, [u, -1, 1])$
+(%i6) plot2d (F, [u, -1, 1])$
 
-(%i4) plot2d ([F, G, H], [u, -1, 1])$
+(%i7) plot2d ([F, G, H], [u, -1, 1], [y, -1.5, 1.5])$
 @end example
 
 @ifnotinfo
 @image{figures/plotting4,8cm}@image{figures/plotting5,8cm}
 @end ifnotinfo
 
-Anywhere there may be an ordinary expression, there may be a parametric expression: 
-@var{parametric_expr} is a list of the form
-@code{[parametric, @var{x_expr}, @var{y_expr}, @var{t_range}, @var{options}]}.
-Here @var{x_expr} and @var{y_expr} are expressions of 1 variable @var{var} which is
-the first element of the range @var{trange}.  
-The plot is of the path traced out by the pair
-@code{[@var{x_expr}, @var{y_expr}]} as @var{var} varies in @var{trange}.
+We can plot a circle using a parametric plot with a parameter
+@var{t}. It is not necessary to give a range for the horizontal range,
+since the range of the parameter @var{t} determines the
+domain. However, since the graph's horizontal and vertical axes
+lengths are in the 4 to 3 proportion, we will use the @var{xrange}
+option to obtain the same scaling in both axes:
 
-@b{Parametric plot examples:}
-@c PUT PARAMETRIC EXAMPLES HERE
-
-In the following example, we plot a circle, then we do
-the plot with only a few points used, so that we get a star,
-and finally we plot this together with an ordinary function of X.
-
-@itemize @bullet
-@item
-Plot a circle with a parametric plot.
+@c ===beg===
+@c plot2d ([parametric, cos(t), sin(t), [t, -%pi, %pi], [nticks, 80]], [x, -4/3, 4/3])$
+@c ===end===
 @example
-(%i1) plot2d ([parametric, cos(t), sin(t), [t, -%pi*2, %pi*2],
-        [nticks, 80]])$
+(%i8) plot2d ([parametric, cos(t), sin(t), [t,-%pi,%pi], [nticks,80]],
+           [x, -4/3, 4/3])$
 @end example
 
 @ifnotinfo
 @image{figures/plotting6,8cm}
 @end ifnotinfo
 
-@item 
-Plot a star: join eight points on the circumference of a circle.
+If we repeat that plot with only 8 points and extending the range
+of the parameter to give two turns, we will obtain the plot of a star:
+
+@c ===beg===
+@c plot2d ([parametric, cos(t), sin(t), [t, -%pi*2, %pi*2], [nticks, 8]], [x, -2, 2], [y, -1.5, 1.5])$
+@c ===end===
 @example
-(%i2) plot2d ([parametric, cos(t), sin(t), [t, -%pi*2, %pi*2],
-        [nticks, 8]])$
+(%i9) plot2d ([parametric, cos(t), sin(t), [t, -%pi*2, %pi*2],
+        [nticks, 8]], [x, -2, 2], [y, -1.5, 1.5])$
 @end example
 
 @ifnotinfo
 @image{figures/plotting7,8cm}
 @end ifnotinfo
 
-@item
-Plot a cubic polynomial with an ordinary plot and a circle with a parametric
-plot.
+Combination of an ordinary plot of a cubic polynomial with a
+parametric plot of a circle:
+
+@c ===beg===
+@c plot2d ([x^3+2, [parametric, cos(t), sin(t), [t, -5, 5], [nticks, 80]]], [x, -3, 3])$
+@c ===end===
 @example
-(%i3) plot2d ([x^3+2, [parametric, cos(t), sin(t), [t, -5, 5],
+(%i10) plot2d ([x^3+2, [parametric, cos(t), sin(t), [t, -5, 5],
         [nticks, 80]]], [x, -3, 3])$
 @end example
 
@@ -204,73 +198,73 @@ plot.
 @image{figures/plotting8,8cm}
 @end ifnotinfo
 
-@end itemize
-
-Discrete expressions may also be used instead of ordinary or
-parametric expressions:
-@var{discrete_expr} is a list of the form
-@code{[discrete, @var{x_list}, @var{y_list}]}
-or
-@code{[discrete, @var{xy_list}]},
-where @var{xy_list} is a list of @code{[@var{x},@var{y}]} pairs.
-
-@b{Discrete plot examples:}
-@c PUT DISCRETE EXAMPLES HERE
-
-@itemize @bullet
-@item
-Create some lists.
+Example of a logarithmic plot:
+@c ===beg===
+@c plot2d (exp(3*s), [s, -2, 2], [logy])$
+@c ===end===
 @example
-(%i1) xx:makelist(x,x,0,10)$
-(%i2) yy:makelist(exp(-x*1.0),x,0,10)$
-(%i3) xy:makelist([x,x*x],x,0,5)$
-@end example
-
-@item
-Plot with line segments.
-@example
-(%i4) plot2d([discrete,xx,yy])$
+(%i11) plot2d (exp(3*s), [s, -2, 2], [logy])$
 @end example
 
 @ifnotinfo
 @image{figures/plotting9,8cm}
 @end ifnotinfo
 
-@item
-Plot with line segments, using a list of pairs.
+To show some examples of discrete plots, we will start by entering the
+coordinates of 5 points, in the two different ways that can be used:
+
+@c ===beg===
+@c xx:[10, 20, 30, 40, 50]$
+@c yy:[.6, .9, 1.1, 1.3, 1.4]$
+@c xy:[[10,.6], [20,.9], [30,1.1], [40,1.3], [50,1.4]]$
+@c ===end===
 @example
-(%i5) plot2d([discrete,xy])$
+(%i12) xx:[10, 20, 30, 40, 50]$
+(%i13) yy:[.6, .9, 1.1, 1.3, 1.4]$
+(%i14) xy:[[10,.6], [20,.9], [30,1.1], [40,1.3], [50,1.4]]$
+@end example
+
+To plot those data points, joined with line segments, we use:
+@c ===beg===
+@c plot2d([discrete,xx,yy])$
+@c ===end===
+@example
+(%i15) plot2d([discrete,xx,yy])$
 @end example
 
 @ifnotinfo
 @image{figures/plotting10,8cm}
 @end ifnotinfo
 
-@item
-Plot with points.
+We will now show the plot with only points, and illustrating the use of
+the second way of giving the points coordinates:
+
+@c ===beg===
+@c plot2d([discrete, xy], [style, points])$
+@c ===end===
 @example
-(%i6) plot2d([discrete,xx,yy],[gnuplot_curve_styles,
-      ["with points"]])$
+(%i16) plot2d([discrete, xy], [style, points])$
 @end example
 
 @ifnotinfo
 @image{figures/plotting11,8cm}
 @end ifnotinfo
 
-@item
-Plot the curve @code{cos(@var{x})} using lines and (@var{xx},@var{yy})
-using points.
+The plot of the data points can be shown together with a plot of the
+theoretical function that predicts the data:
+
+@c ===beg===
+@c plot2d([[discrete,xy], 2*%pi*sqrt(l/980)], [l,0,50], [style, [points,3,5], [lines,1,3]], [legend,"experiment","theory"], [xlabel,"pendulum's length (cm)"], [ylabel,"period (s)"])$
+@c ===end===
 @example
-(%i7) plot2d([cos(x),[discrete,xx,yy]],[x,0,10],
-     [gnuplot_curve_styles,
-     ["with lines","with points pointsize 3"]])$
+(%i17) plot2d([[discrete,xy], 2*%pi*sqrt(l/980)], [l,0,50],
+        [style, [points,3,5], [lines,1,3]], [legend,"experiment","theory"],
+        [xlabel,"pendulum's length (cm)"], [ylabel,"period (s)"])$
 @end example
 
 @ifnotinfo
 @image{figures/plotting12,8cm}
 @end ifnotinfo
-
-@end itemize
 
 See also @code{plot_options}, which describes plotting options and has more examples.
 
@@ -362,15 +356,19 @@ The plot options which are recognized by @code{plot2d} and @code{plot3d} are the
 
 @itemize @bullet
 @item
-Option: @code{plot_format} determines which plotting package is used by @code{plot2d} and @code{plot3d}.
+Option: @code{plot_format}
+
+Determines which plotting package is used by @code{plot2d} and @code{plot3d}.
 
 @itemize @bullet
 @item
 Default value: @code{gnuplot}
+
 Gnuplot is the default, and most advanced, plotting package. It
 requires an external gnuplot installation.
 @item
 Value: @code{mgnuplot}
+
 Mgnuplot is a Tk-based wrapper around gnuplot. It is included in the
 Maxima distribution. Mgnuplot offers a rudimentary GUI for gnuplot,
 but has fewer overall features than the plain gnuplot
@@ -378,36 +376,232 @@ interface. Mgnuplot requires an external gnuplot installation and
 Tcl/Tk.
 @item
 Value: @code{openmath}
+
 Openmath is a Tcl/Tk GUI plotting program. This format is provided by
 Xmaxima, which is distributed together with Maxima; you should install
 Xmaxima in order to use this format.
 @end itemize
 
 @item
-Option: @code{run_viewer} controls whether or not the appropriate viewer for the plot
+Option: @code{run_viewer}
+
+Controls whether or not the appropriate viewer for the plot
 format should be run.
 
 @itemize @bullet
 @item
 @c DOES FALSE IMPLY THE OUTPUT FILE IS GENERATED AND NOT SHOWN ?? OR IS NOTHING GENERATED ??
-Default value: @code{true} Execute the viewer program.
+Default value: @code{true}
+
+Execute the viewer program.
 @item
-Value: @code{false} Do not execute the viewer program.
+Value: @code{false}
+
+Do not execute the viewer program.
 @end itemize
 
 @item
-@code{gnuplot_term} Sets the output terminal type for gnuplot.
+Option: @code{y}
+
+The vertical range of the plot.
+
+Example:
+
+@example
+[y, - 3, 3]
+@end example
+Sets the vertical range to [-3, 3].
+
+@item
+Option: @code{plot_realpart}
+
+When @code{plot_realpart} is @code{true},
+the real part of a complex value @var{x} is plotted;
+this is equivalent to plotting @code{realpart(@var{x})} instead of @var{x}.
+Otherwise,
+only values with imaginary part equal to 0 are plotted,
+and complex values are ignored.
+
+Example:
+
+@example
+plot2d (log(x), [x, -5, 5], [plot_realpart, false]);
+plot2d (log(x), [x, -5, 5], [plot_realpart, true]);
+@end example
+The default value is @code{false}.
+
+@item
+Option: @code{nticks}
+
+In plot2d, it is gives the initial number of points used by the
+adaptive plotting routine for plotting functions. It is also the
+number of points that will be shown in a parametric plot.
+
+Example:
+
+@example
+[nticks, 20]
+@end example
+The default for @code{nticks} is 10.
+
+@item
+Option: @code{adapt_depth}
+
+The maximum number of splittings used by the adaptive plotting routine.
+
+Example:
+
+@example
+[adapt_depth, 5]
+@end example
+The default for @code{adapt_depth} is 10.
+
+@item
+Option: @code{xlabel}
+
+The label for the horizontal axis in a 2d plot.
+
+Example:
+@example
+[xlabel, "Time in seconds"]
+@end example
+
+@item
+Option: @code{ylabel}
+
+The label of the vertical axis in a 2d plot.
+
+Example:
+@example
+[ylabel, "Temperature"]
+@end example
+
+@item
+Option: @code{logx}
+
+It makes the horizontal axis of a 2d plot to be rendered in a
+logarithmic scale. It does not need any aditional parameters.
+
+@item
+Option: @code{logy}
+
+It makes the vertical axis of a 2d plot to be rendered in a
+logarithmic scale. It does not need any aditional parameters.
+
+@item
+Option: @code{legend}
+
+The labels for the various expressions in a 2d plot with several
+expressions. If there are more expressions than the number of labels
+given, they will be repeated. By default, the names of the expressions
+or functions will be used, or the words discrete1, discrete2, ..., for
+discrete sets of points.
+
+Example:
+@example
+[legend, "Set 1", "Set 2", "Set 3"]
+@end example
+
+@item
+Option: @code{style}
+
+The styles that will be used for the various functions or sets of data
+in a 2d plot. The name of the option must be followed by one or more
+styles. If there are more functions and data sets than the styles
+given, the styles will be repeated. Each style can be either
+@var{lines} for line segments, @var{points} for isolated points,
+@var{linespoints} for segments and points, or @var{dots} for small
+isolated dots. Gnuplot accepts also an @var{impulses} style.
+
+Each of the styles can be enclosed inside a list with some aditional
+parameters. @var{lines} accepts one or two numbers: the width of the
+line and an integer that identifies a color. @var{points} accepts one
+or two parameters; the first parameter is the radius of the points and
+the second parameter is an integer that in Gnuplot selects different
+shapes and colors for the points and in Openmath changes the color
+used for the points. @var{linesdots} accepts up to four parameters;
+the first two are the same as for @var{lines} and the last two are the
+same as for @var{points}.
+
+Example:
+@example
+[style,[lines,2,3],[points,1,4]]
+@end example
+
+In Gnuplot, this will plot the first (and third, fifth, etc)
+expression with blue line segments of width 2, and the second (and
+fourth, sixth, etc) expression with green squares of size 1. In
+Openmath, the first expression will be plotted with magenta lines of
+width 2, and the second with orange points of radius 1; notice that
+openmath_color(3) and openmath_color(4) return ``magenta'' and
+``orange''.
+
+The default for the style option is @var{lines} with a width of 1, and
+different colors.
+
+@item
+Option: @code{grid}
+
+Sets the number of grid points to use in the x- and y-directions
+for three-dimensional plotting.
+
+Example:
+
+@example
+[grid, 50, 50]
+@end example
+sets the grid to 50 by 50 points. The default grid is 30 by 30.
+
+@item
+Option: @code{transform_xy}
+
+Allows transformations to be applied to three-dimensional plots.
+
+Example:
+
+@example
+[transform_xy, false]
+@end example
+The default @code{transform_xy} is @code{false}. If it is not @code{false}, it should be
+the output of
+
+Example:
+
+@example
+make_transform([x,y,z], f1(x,y,z), f2(x,y,z), f3(x,y,z))$
+@end example
+The @code{polar_xy} transformation is built in. It gives the same
+transformation as
+@example
+make_transform ([r, th, z], r*cos(th), r*sin(th), z)$
+@end example
+@end itemize
+
+@b{Gnuplot options:}
+
+There are several plot options specific to gnuplot.  Some of these
+options are raw gnuplot commands, specified as strings. Refer to the
+gnuplot documentation for more details.
+
+@itemize @bullet
+@item
+Option: @code{gnuplot_term}
+
+Sets the output terminal type for gnuplot.
 @itemize @bullet
 @item
 Default value: @code{default}
+
 Gnuplot output is displayed in a separate graphical window.
 
 @item
 Value: @code{dumb}
+
 Gnuplot output is displayed in the Maxima console by an "ASCII art" approximation to graphics.
 
 @item
 Value: @code{ps}
+
 Gnuplot generates commands in the PostScript page description language.
 If the option
 @code{gnuplot_out_file} is set to @var{filename}, gnuplot writes the PostScript commands to @var{filename}.
@@ -415,6 +609,7 @@ Otherwise, it is saved as @code{maxplot.ps} file.
 
 @item
 Value: any other valid gnuplot term specification
+
 Gnuplot can generate output in many other graphical formats such
 as png, jpeg, svg etc.  To create plot in all these formats the
 @code{gnuplot_term} can be set to any supported gnuplot term name (symbol) 
@@ -426,17 +621,21 @@ If the option @code{gnuplot_out_file} is set to @var{filename}, gnuplot
 writes the output to @var{filename}. Otherwise, it is saved as 
 @code{maxplot.@var{term}} file, where @var{term} is gnuplot 
 terminal name.
-
 @end itemize
 
 @item
-Option: @code{gnuplot_out_file} Write gnuplot output to a file.
+Option: @code{gnuplot_out_file}
+
+Write gnuplot output to a file.
 
 @itemize @bullet
 @item
-Default value: @code{false} No output file specified.
+Default value: @code{false}
+
+No output file specified.
 @item
 Value: @var{filename}
+
 Example: @code{[gnuplot_out_file, "myplot.ps"]}
 This example sends PostScript output to the file @code{myplot.ps} when
 used in conjunction with the PostScript gnuplot terminal.
@@ -445,94 +644,9 @@ used in conjunction with the PostScript gnuplot terminal.
 @end itemize
 
 @item
-Option: @code{x}
-The default horizontal range.
-@example
-[x, - 3, 3]
-@end example
-Sets the horizontal range to [-3, 3].
+Option: @code{gnuplot_pm3d}
 
-@item
-Option: @code{y}
-The default vertical range.
-@example
-[y, - 3, 3]
-@end example
-Sets the vertical range to [-3, 3].
-
-@item
-Option: @code{t}
-The default range for the parameter in parametric plots.
-@example
-[t, 0, 10]
-@end example
-Sets the parametric variable range to [0, 10].
-
-@item
-Option: @code{plot_realpart}
-When @code{plot_realpart} is @code{true},
-the real part of a complex value @var{x} is plotted;
-this is equivalent to plotting @code{realpart(@var{x})} instead of @var{x}.
-Otherwise,
-only values with imaginary part equal to 0 are plotted,
-and complex values are ignored.
-@example
-plot2d (log(x), [x, -5, 5], [plot_realpart, false]);
-plot2d (log(x), [x, -5, 5], [plot_realpart, true]);
-@end example
-The default value is @code{false}.
-
-@item
-Option: @code{nticks}
-Initial number of points 
-used by the adaptive plotting routine.
-@example
-[nticks, 20]
-@end example
-The default for @code{nticks} is 10.
-
-@item
-Option: @code{adapt_depth}
-The maximum number of splittings used by the adaptive plotting routine.
-@example
-[adapt_depth, 5]
-@end example
-The default for @code{adapt_depth} is 10.
-
-@item
-Option: @code{grid}
-Sets the number of grid points to use in the x- and y-directions
-for three-dimensional plotting.
-@example
-[grid, 50, 50]
-@end example
-sets the grid to 50 by 50 points. The default grid is 30 by 30.
-
-@item
-Option: @code{transform_xy}
-Allows transformations to be applied to three-dimensional plots.
-@example
-[transform_xy, false]
-@end example
-The default @code{transform_xy} is @code{false}. If it is not @code{false}, it should be
-the output of
-@example
-make_transform([x,y,z], f1(x,y,z), f2(x,y,z), f3(x,y,z))$
-@end example
-The @code{polar_xy} transformation is built in. It gives the same
-transformation as
-@example
-make_transform ([r, th, z], r*cos(th), r*sin(th), z)$
-@end example
-@end itemize
-
-There are several plot options specific to gnuplot.
-All of these options (except @code{gnuplot_pm3d}) are raw
-gnuplot commands, specified as strings. Refer to the gnuplot documentation for more details.
-
-@itemize @bullet
-@item
-Option: @code{gnuplot_pm3d} Controls the usage PM3D mode, which has advanced 3D
+Controls the usage PM3D mode, which has advanced 3D
 features. PM3D is only available in gnuplot versions after 3.7. The
 default value for @code{gnuplot_pm3d} is @code{false}.
 
@@ -543,7 +657,9 @@ Example:
 @end example
 
 @item
-Option: @code{gnuplot_preamble} Inserts gnuplot commands before the plot is
+Option: @code{gnuplot_preamble}
+
+Inserts gnuplot commands before the plot is
 drawn. Any valid gnuplot commands may be used. Multiple commands
 should be separated with a semi-colon. The example shown produces a
 log scale plot. The default value for @code{gnuplot_preamble} is the empty string @code{""}.
@@ -555,7 +671,9 @@ Example:
 @end example
 
 @item
-Option: @code{gnuplot_curve_titles} Controls the titles given in the plot key. The
+Option: @code{gnuplot_curve_titles}
+
+Controls the titles given in the plot key. The
 default value is @code{[default]}, which automatically sets the title of each
 curve to the function plotted. If not @code{[default]}, @code{gnuplot_curve_titles}
 should contain a list of strings,
@@ -570,7 +688,9 @@ Example:
 @end example
 
 @item
-Option: @code{gnuplot_curve_styles} A list of strings controlling the appearance
+Option: @code{gnuplot_curve_styles}
+
+A list of strings controlling the appearance
 of curves, i.e., color, width, dashing, etc., to be sent to the
 gnuplot plot command. The default value is
 @code{["with lines 3", "with lines 1", "with lines 2", "with lines 5", "with lines 4", "with lines 6", "with lines 7"]}, which cycles through different colors. See the
@@ -583,9 +703,12 @@ Example:
 @end example
 
 @item
-Option: @code{gnuplot_default_term_command} The gnuplot command to set the
-terminal type for the default terminal. The default value is the empty string @code{""},
-i.e., use gnuplot's default.
+Option: @code{gnuplot_default_term_command}
+
+The gnuplot command to set the
+terminal type for the default terminal. The default value is @code{set
+term windows "Verdana" 15} in Windows systems, and @code{set term x11
+font "Helvetica,16"} in X11 windows systems.
 
 Example:
 
@@ -594,7 +717,9 @@ Example:
 @end example
 
 @item
-Option: @code{gnuplot_dumb_term_command} The gnuplot command to set the
+Option: @code{gnuplot_dumb_term_command}
+
+The gnuplot command to set the
 terminal type for the dumb terminal. The default value is @code{"set term dumb 79 22"},
 which makes the text output 79 characters by 22
 characters.
@@ -606,7 +731,9 @@ Example:
 @end example
 
 @item
-Option: @code{gnuplot_ps_term_command} The gnuplot command to set the terminal
+Option: @code{gnuplot_ps_term_command}
+
+The gnuplot command to set the terminal
 type for the PostScript terminal. The default value is
 @code{"set size 1.5, 1.5;set term postscript eps enhanced color solid 24"},
 which sets the
@@ -615,9 +742,13 @@ other things. See the gnuplot documentation for @code{set term postscript} for m
 
 Example:
 
+All the figures in the examples for the @var{plot2d} function in this
+manual were obtained from Postscript files that were generated after
+setting @code{gnuplot_ps_term_command} as:
+
 @example
 [gnuplot_ps_term_command,
-"set term postscript eps enhanced color solid 18"]
+"set size 1.3, 1.3; set term postscript eps color solid lw 2.5 30"]
 @end example
 
 @end itemize
