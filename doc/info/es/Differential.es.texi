@@ -1,37 +1,54 @@
-@c version 1.8
+@c version 1.10
 @menu
+* Introducci@'on a las Ecuaciones Diferenciales::
 * Definiciones para Ecuaciones Diferenciales::  
 @end menu
 
-@node Definiciones para Ecuaciones Diferenciales,  , Ecuaciones Diferenciales, Ecuaciones Diferenciales
+@node Introducci@'on a las Ecuaciones Diferenciales, Definiciones para Ecuaciones Diferenciales, Ecuaciones Diferenciales, Ecuaciones Diferenciales
+@section Introducci@'on a las Ecuaciones Diferenciales
+
+Esta secci@'on describe las funciones disponibles en Maxima para
+el c@'alculo de las soluciones anal@'{@dotless{i}}ticas de ciertos
+tipos de ecuaciones de primer y segundo orden. Para las soluciones
+num@'ericas de sistemas de ecuaciones diferenciales, v@'ease el
+paquete adicional @code{dynamics}. Para las representaciones
+gr@'aficas en el espacio de fases, v@'ease el paquete @code{plotdf}.
+
+
+@node Definiciones para Ecuaciones Diferenciales,  , Introducci@'on a las Ecuaciones Diferenciales, Ecuaciones Diferenciales
 @section Definiciones para Ecuaciones Diferenciales.
+
 
 @deffn {Funci@'on} bc2 (@var{soluc}, @var{xval1}, @var{yval1}, @var{xval2}, @var{yval2})
 Resuelve el problema del valor en la frontera para ecuaciones diferenciales de segundo orden. 
-Aqu@'{@dotless{i}}, @var{soluc} es una soluci@'on general de la ecuaci@'on, como las que calcula @code{ode2}, @var{xval1} es una ecuaci@'on de la forma @code{@var{x} = @var{x0}} para la variable independiente y @var{yval1} es una ecuaci@'on de la forma @code{@var{y} = @var{y0}} para la variable dependiente.  Los argumentos @var{xval2} y @var{yval2} son ecuaciones a verificar por estas mismas variables en otro punto. V@'ease @code{ode2} para un ejemplo sobre su utilizaci@'on.
+Aqu@'{@dotless{i}}, @var{soluc} es una soluci@'on general de la ecuaci@'on, como las que calcula @code{ode2}, @var{xval1} especifica el valor de la variable independiente en el primer punto mediante una expresi@'on de la forma @code{@var{x} = @var{x0}}, mientras que @var{yval1} hace lo propio para la variable dependiente.  Las expresiones @var{xval2} y @var{yval2} dan los valores de estas mismas variables en un segundo punto, utilizando el mismo formato.
 
 @end deffn
 
 @deffn {Funci@'on} desolve (@var{ecu}, @var{x})
 @deffnx {Funci@'on} desolve ([@var{eqn_1}, ..., @var{eqn_n}], [@var{x_1}, ..., @var{x_n}])
 
-La funci@'on @code{dsolve} resuelve sistemas de ecuaciones diferenciales ordinarias lineales utilizando la transformada de Laplace.  Aqu@'{@dotless{i}} las @var{eqi} (@code{i}=1,..,n) son ecuaciones diferenciales con variables dependientes @var{x_1}, ..., @var{x_n}. Las relaciones funcionales deben indicarse expl@'{@dotless{i}}citamente tanto para las ecuaciones como para las variables. Por ejemplo,
+La funci@'on @code{dsolve} resuelve sistemas de ecuaciones diferenciales ordinarias lineales utilizando la transformada de Laplace.  Aqu@'{@dotless{i}} las @var{eqi} (@code{i}=1,..,n) son ecuaciones diferenciales con variables dependientes @var{x_1}, ..., @var{x_n}. La dependencia funcional de @var{x_1}, ..., @var{x_n} respecto de una variable independiente, por ejemplo @var{x}, debe indicarse expl@'{@dotless{i}}citamente, tanto en las variables como en las derivadas. Por ejemplo, 
+
 
 @example
-'diff(f,x,2)=sin(x)+'diff(g,x);
-'diff(f,x)+x^2-f=2*'diff(g,x,2);
+eqn_1: 'diff(f,x,2) = sin(x) + 'diff(g,x);
+eqn_2: 'diff(f,x) + x^2 - f = 2*'diff(g,x,2);
 @end example
 
 no es el formato apropiado. El m@'etodo correcto es
 
 @example
-'diff(f(x),x,2)=sin(x)+'diff(g(x),x);
-'diff(f(x),x)+x^2-f=2*'diff(g(x),x,2);
+eqn_1: 'diff(f(x),x,2) = sin(x) + 'diff(g(x),x);
+eqn_2: 'diff(f(x),x) + x^2 - f(x) = 2*'diff(g(x),x,2);
 @end example
 
-La llamada a la funci@'on debe ser entonces @code{desolve([%o3,%o4],[f(x),g(x)]);} .
+La llamada a la funci@'on @code{desolve} ser@'{@dotless{i}}a entonces
+@example
+desolve([eqn_1, eqn_2], [f(x),g(x)]);
+@end example
 
-Si las condiciones iniciales en 0 son conocidas, deben ser suministradas antes de llamar a @code{desolve} haciendo uso previo de la funci@'on @code{atvalue}, 
+Si las condiciones iniciales en @code{x=0} son conocidas, deben ser suministradas antes de llamar a @code{desolve} haciendo uso previo de la funci@'on @code{atvalue},
 
 @c ===beg===
 @c 'diff(f(x),x)='diff(g(x),x)+sin(x);
@@ -82,9 +99,11 @@ Aqu@'{@dotless{i}}, @var{soluc} es una soluci@'on general de la ecuaci@'on, como
 @deffn {Funci@'on} ic2 (@var{soluc}, @var{xval}, @var{yval}, @var{dval})
 
 Resuelve el problema del valor inicial en ecuaciones diferenciales de segundo orden.
-Aqu@'{@dotless{i}}, @var{soluc} es una soluci@'on general de la ecuaci@'on, como las que calcula @code{ode2}, @var{xval} es una ecuaci@'on de la forma @code{@var{x} = @var{x0}} para la variable independiente y @var{yval} es una ecuaci@'on de la forma @code{@var{y} = @var{y0}} para la variable dependiente, siendo @var{dval} una ecuaci@'on para la derivada de la variable dependiente respecto de la independiente en el punto @var{xval}. V@'ease @code{ode2} para un ejemplo sobre su utilizaci@'on.
+Aqu@'{@dotless{i}}, @var{soluc} es una soluci@'on general de la ecuaci@'on, como las que calcula @code{ode2}, @var{xval} es una ecuaci@'on de la forma @code{@var{x} = @var{x0}} para la variable independiente y @var{yval} es una ecuaci@'on de la forma @code{@var{y} = @var{y0}} para la variable dependiente, siendo @var{dval} una expresi@'on de la forma @code{diff(@var{y},@var{x}) = @var{dy0}} que especifica la primera derivada de la variable dependiente respecto de la independiente en el punto @var{xval}.
 
+V@'ease @code{ode2} para un ejemplo de su uso.
 @end deffn
+
 
 @deffn {Funci@'on} ode2 (@var{ecu}, @var{dvar}, @var{ivar})
 La funci@'on @code{ode2} resuelve ecuaciones diferenciales ordinarias de primer y segundo orden. Admite tres argumentos: 

@@ -241,13 +241,36 @@ El argumento de @code{go} debe ser el nombre de una etiqueta que aparezca en el 
 @end deffn
 
 @deffn {Operador especial} if
-La sentencia @code{if} se utiliza para la ejecuci@'on condicionada.  Su sintaxis es:
+Evaluaci@'on condicionada. Se reconocen varias formas de expresiones @code{if}.
 
-@example
-if <condici@'on> then <expr_1> else <expr_2>
-@end example
+La expresi@'on @code{if @var{cond_1} then @var{expr_1} else @var{expr_0}}
+devuelve @var{expr_1} si @var{cond_1} vale @code{true},
+en caso contrario la respuesta es @code{expr_0}.
 
-El resultado de una sentencia @code{if} es @var{expr_1} si la condici@'on es verdadera (@code{true}) y @var{expr_2} si es falsa. Tanto @var{expr_1} como @var{expr_2} son expresiones correctas en Maxima (incluyendo sentencias @code{if} anidadas) y  @var{condition} es una expresi@'on que puede ser verdadera (@code{true}) o falsa (@code{false}), formada con los operadores relacionales y l@'ogicos siguientes:
+La expresi@'on @code{if @var{cond_1} then @var{expr_1} elseif @var{cond_2}
+then @var{expr_2} elseif ... else @var{expr_0}}
+devuelve @var{expr_k} si @var{cond_k} vale @code{true} y todas las
+condiciones anteriores toman el valor @code{false}.
+Si ninguna de las condiciones vale @code{true}, la respuesta es @code{expr_0}.
+
+La falta de un @code{else} final se interpreta como un @code{else false};
+esto es, la expresi@'on @code{if @var{cond_1} then @var{expr_1}}
+equivale a @code{if @var{cond_1} then @var{expr_1} else false},
+y @code{if @var{cond_1} then @var{expr_1} elseif ... elseif @var{cond_n} then @var{expr_n}}
+equivale a su vez a
+@code{if @var{cond_1} then @var{expr_1} elseif ... elseif @var{cond_n} then @var{expr_n} else false}.
+
+Las alternativas @var{expr_0}, ..., @var{expr_n} pueden ser expresiones
+v@'alidas de Maxima, incluidas expresiones @code{if} anidadas.
+Las alternativas ni se simplifican ni se eval@'uan, a menos que su
+condici@'on asociada valga @code{true}.
+
+Las condiciones @var{cond_1}, ..., @var{cond_n} deben ser expresiones 
+tales que @code{is(@var{cond_k})} eval@'uen a @code{true} o @code{false};
+en caso contrario se produce un error.
+Las condiciones pueden contener operadores l@'ogicos y relacionales, 
+as@'{@dotless{i}} como otros elementos, tal como se indica a continuaci@'on:
+
 
 @example
 Operaci@'on               S@'{@dotless{i}}mbolo     Tipo
@@ -286,8 +309,6 @@ Uno de los usos que tiene @code{map} es la de aplicar (o mapear) una funci@'on (
                                     x + 1
 (%i4) map("=",[a,b],[-0.5,3]);
 (%o4)                          [a = - 0.5, b = 3]
-
-
 @end example
 @end deffn
 

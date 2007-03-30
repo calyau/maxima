@@ -1,4 +1,4 @@
-@c english version 1.26
+@c english version 1.28
 @menu
 * Introducci@'on a las Matrices y al @'Algebra Lineal::
 * Definiciones para las Matrices y el @'Algebra Lineal::
@@ -744,6 +744,7 @@ Warning - you are redefining the Macsyma function eigenvectors
 
 @end deffn
 
+
 @deffn {Funci@'on} ident (@var{n})
 Devuelve la matriz identidad de orden @var{n}.
 
@@ -1224,6 +1225,8 @@ Si @var{M} es una matriz, el valor devuelto es otra matriz @var{N} tal que @code
 
 Si @var{M} es una lista, el valor devuelto es una matriz @var{N} de @code{length (m)} filas y 1 columna, tal que @code{N[i,1] = M[i]}.
 
+En caso de no ser @var{M} ni matriz ni lista, se devuelve la
+expresi@'on nominal @code{'transpose (@var{M})}.
 @end deffn
 
 @deffn {Funci@'on} triangularize (@var{M})

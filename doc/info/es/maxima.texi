@@ -1,6 +1,6 @@
 \input texinfo
 @c -*-texinfo-*-
-@c english version 1.43
+@c english version 1.46
 
 @c 2000-04-17 Jim Van Zandt <jrv@vanzandt.mv.com> Added header,
 @c info directory entry, reference to introduction chapter, and menu
@@ -293,6 +293,7 @@ Ecuaciones
 
 Ecuaciones Diferenciales
 
+* Introducci@'on a las Ecuaciones Diferenciales::
 * Definiciones para Ecuaciones Diferenciales::
 
 M@'etodos num@'ericos
