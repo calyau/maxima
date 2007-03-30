@@ -1810,11 +1810,7 @@ wrapper for this."
     (case (car arrfun)
       (aexpr (mapply1 (cadr arrfun) subs (cadr arrfun) form))
       (a-expr (apply (cadr arrfun) subs))
-      (a-subr
-       (comment "This is what the code used to look like:"
-		(eval (nconc (list 'subrcall nil
-				   (list 'quote (cadr arrfun))) subs)))
-       (system-subrcall* (cadr arrfun) subs)))))
+      (a-subr (system-subrcall* (cadr arrfun) subs)))))
 
 (defun hasher (l)  ; This is not the best way to write a hasher.  But,
   (if (null l)	   ; please don't change this code or you're liable to

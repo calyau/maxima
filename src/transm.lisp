@@ -124,10 +124,6 @@
 (defmacro tprop-call (op form)
   `(subr-call ,op ,form))
 
-(defmacro def-autoload-translate (&rest funs)
-  `(comment *autoloading?* ,@funs))
-
-
 ;;; declarations for the TRANSL PACKAGE.
 
 (declare-top (special *transl-sources*)

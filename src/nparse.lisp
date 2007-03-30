@@ -576,19 +576,19 @@
   (cond ((not (consp op))
 	 (let ((existing-lbp (get op 'lbp))
 	       (existing-rbp (get op 'rbp)))
-	   (cond ((not lbp)
-		  (comment ignore omitted arg))
+	   (cond ((not lbp) ;; ignore ommitted arg
+		  )
 		 ((not existing-lbp)
 		  (putprop op lbp 'lbp))
 		 ((not (equal existing-lbp lbp))
 		  (maxima-error "Incompatible LBP's defined for this operator ~a" op)))
-	   (cond ((not rbp)
-		  (comment ignore omitted arg))
+	   (cond ((not rbp) ;; ignore ommitted arg
+		  )
 		 ((not existing-rbp)
 		  (putprop op rbp 'rbp))
 		 ((not (equal existing-rbp rbp))
 		  (maxima-error "Incompatible RBP's defined for this operator ~a" op)))))
-	('else
+	(t
 	 (mapcar #'(lambda (x) (set-lbp-and-rbp x lbp rbp))
 		 op))))
 

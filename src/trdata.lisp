@@ -11,6 +11,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :maxima)
+
 (macsyma-module trdata)
 
 ;;; N.B. This is some data. Boy, does it have subtle effect on the code
@@ -18,56 +19,55 @@
 ;;; Since it is so small, and compiles so quickly it sometimes serves
 ;;; as a fix (i.e. hack) file. so be careful.
 
-
 (transl-module trdata)
 
-(eval-when (compile)
-  (setq *def%tr-produces-autoload-file* nil))
-
-;; this should go someplace else perhaps.
-
-(def-autoload-translate $find_root)
+(eval-when
+    #+gcl (compile)
+    #-gcl (:compile-toplevel)
+    (setq *def%tr-produces-autoload-file* nil))
 
 ;;; MODEDECLARE(FUNCTION(LENGTH),FIXNUM)
 
 ;;I think all this can be done at load time only:--wfs
-(eval-when (load)
+(eval-when
+    #+gcl (load)
+    #-gcl (:load-toplevel)
 
-  (mapc #'(lambda (x) (putprop x '$fixnum 'function-mode))
-	'($length $nterms random $nroots $rank $polysign $time
-	  $array_dimension_n))
+    (mapc #'(lambda (x) (putprop x '$fixnum 'function-mode))
+	  '($length $nterms random $nroots $rank $polysign $time
+	    $array_dimension_n))
 
-  (mapc #'(lambda (x) (putprop x '$float 'function-mode))
-	'($find_root_subr))
+    (mapc #'(lambda (x) (putprop x '$float 'function-mode))
+	  '($find_root_subr))
 
 ;;; Functions of BOOLEAN return VALUE. i.e. PREDICATES
 
-  (mapc #'(lambda (x) (putprop x '$boolean 'function-mode))
-	'($array $bfloatp $listp $matrixp $ratnump $constantp
-	  $atom $freeof $subvarp $symbolp
-	  $evenp $oddp $orderlessp $ordergreatp $mapatom
-	  $integerp $floatnump $nonscalarp $numberp $ratp $member
-	  $emptyp))
+    (mapc #'(lambda (x) (putprop x '$boolean 'function-mode))
+	  '($array $bfloatp $listp $matrixp $ratnump $constantp
+	    $atom $freeof $subvarp $symbolp
+	    $evenp $oddp $orderlessp $ordergreatp $mapatom
+	    $integerp $floatnump $nonscalarp $numberp $ratp $member
+	    $emptyp))
 
 ;;; MODEDECLARE(TRUE,BOOLEAN)
 
-  (mapc #'(lambda (x) (putprop x '$boolean 'mode))
-	'($true $false $doallmxops $domxmxops $doscmxops $detout
-	  $dotassoc $dotdistrib $dotscrules $exponentialize
-	  $keepfloat $listarith $logsimp
-	  $maxapplyheight $maxapplydepth $maperror $powerdisp
-	  $scalarmatrix $simp $ttyoff $underflow $infeval
-	  $xaxis $yaxis $ratfac))
+    (mapc #'(lambda (x) (putprop x '$boolean 'mode))
+	  '($true $false $doallmxops $domxmxops $doscmxops $detout
+	    $dotassoc $dotdistrib $dotscrules $exponentialize
+	    $keepfloat $listarith $logsimp
+	    $maxapplyheight $maxapplydepth $maperror $powerdisp
+	    $scalarmatrix $simp $ttyoff $underflow $infeval
+	    $xaxis $yaxis $ratfac))
 
-  (mapc #'(lambda (x) (putprop x (stripdollar x) 'lisp-function-to-use))
-	'(%log %sin %cos %tan %cot %csc %sec %acot
-	  %asin %acos %acsc %asec
-	  %sinh %cosh %tanh %coth %csch %sech %asinh %acsch %erf))
+    (mapc #'(lambda (x) (putprop x (stripdollar x) 'lisp-function-to-use))
+	  '(%log %sin %cos %tan %cot %csc %sec %acot
+	    %asin %acos %acsc %asec
+	    %sinh %cosh %tanh %coth %csch %sech %asinh %acsch %erf))
 
-  (mapc #'(lambda (x) (putprop x t 'implied-quotep))
-	'($eval $done $%i $%pi $%e $%phi $%gamma
-	  mqapply	; important for array referencing conventions.
-	  ))
+    (mapc #'(lambda (x) (putprop x t 'implied-quotep))
+	  '($eval $done $%i $%pi $%e $%phi $%gamma
+	    mqapply	; important for array referencing conventions.
+	    ))
 
 
 ;;; The result of a part function never needs simplification.
@@ -80,41 +80,33 @@
 ;;; cost of the extra SIMPLFY call is not much compared with the
 ;;; consing involved. Above all, we must have correct code !!!
 
-  (mapc #'(lambda (l) (putprop l t 'tr-nosimp))
-	'(				;$first $rest $last
-	  $print
-	  $num $denom $lhs $rhs $part
-	  $cons $reverse $endcons $append
-	  $union $intersection $setdiff $symdiff
-	  $mapset $predset |${| $elementof
-	  ))
+    (mapc #'(lambda (l) (putprop l t 'tr-nosimp))
+	  '($print $num $denom $lhs $rhs $part
+	    $cons $reverse $endcons $append
+	    $union $intersection $setdiff $symdiff
+	    $mapset $predset |${| $elementof))
 
-  (defprop $realpart $realpart lisp-function-to-use)
+    (defprop $realpart $realpart lisp-function-to-use)
 
 
-  (setq transl-modules '(
+    (setq transl-modules '(transs
+			   transl
+			   trutil
+			   trans1
+			   trans2
+			   trans3
+			   trans4
+			   trans5
+			   transf
+			   troper
+			   trpred
 
-			 transs
-			 transl
-			 trutil
-			 trans1
-			 trans2
-			 trans3
-			 trans4
-			 trans5
-			 transf
-			 troper
-			 trpred
-
-			 mtags
-			 mdefun
-			 transq
-			 fcall
-			 acall
-			 trdata
-			 mcompi
-			 trmode
-			 trhook
-			 ))
-
-  )
+			   mtags
+			   mdefun
+			   transq
+			   fcall
+			   acall
+			   trdata
+			   mcompi
+			   trmode
+			   trhook)))

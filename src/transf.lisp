@@ -21,7 +21,7 @@
 
 ;;; some floating point translations. with tricks.
 
-(def%tr %log (form) 
+(def%tr %log (form)
   (let   (arg)
     (setq arg (translate (cadr form)))
     (cond ((and (eq (car arg) '$float) (get (caar form) 'lisp-function-to-use))
@@ -44,16 +44,6 @@
 (def-same%tr %asinh %log)
 (def-same%tr %acsch %log)
 (def-same%tr %erf %log)
-
-(comment not used
-	 ;; defsubr1 is also obsolete. see DEF-PROCEDURE-PROPERTY.
-	 (defsubr1 translate-$number (form) 
-	   (let   (arg)
-	     (setq arg (translate (cadr form)))
-	     (if (and (covers '$number (car arg)) (get (caar form) 'lisp-function-to-use))
-		 (list (car arg) (get (caar form) 'lisp-function-to-use) (cdr arg))
-		 (cons (car arg) `(simplify (list ',(list (caar form)) ,(cdr arg))))))))
-
 
 (defmvar $tr_float_can_branch_complex t
   "States wether the arc functions might return complex
@@ -78,4 +68,3 @@
 (def-same%tr %asec %acos)
 (def-same%tr %asec %acos)
 (def-same%tr %acsc %acos)
-
