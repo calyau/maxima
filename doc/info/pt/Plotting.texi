@@ -39,7 +39,7 @@ vari@'avel.
 
 @code{plot2d} produz o gr@'afico de uma express@~ao @var{expr} ou de
 v@'arias express@~oes @code{[@var{expr_1}, ..., @var{expr_n}]}. As
-expressões que não forem do tipo param@'etrico ou discreto, dever@~ao
+express@~oes que n@~ao forem do tipo param@'etrico ou discreto, dever@~ao
 depender todas de uma @'unica vari@'avel @var{var} e ser@'a
 obrigat@'orio usar @var{intervalo_x} para indicar o nome dessa
 vari@'avel, e os seus valores m@'{@dotless{i}}nimo e m@'aximo, usando a
@@ -49,8 +49,8 @@ mostrar@'a o eixo horizontal delimitado pelos valores @var{min} e
 
 Uma express@~ao a ser representada no gr@'afico pode ser dada tamb@'em
 na forma discreta, ou param@'etrica. Nomeadamente, por meio de uma lista
-a começar pela palavra ``discrete'' ou ``parametric''. A palavra chave
-@var{discrete} dever@'a ir seguida por duas listas, ambas do mesmo
+a come@,{c}ar pela palavra ``discrete'' ou ``parametric''. A palavra
+chave @var{discrete} dever@'a ir seguida por duas listas, ambas do mesmo
 comprimento, que ser@~ao as coordenadas horizontais e verticais de um
 conjunto de pontos; em alternativa, as coordenadas de cada ponto podem
 ser colocadas numa lista de dois valores, e todas essas coordenadas
@@ -73,7 +73,7 @@ seleccionadas automaticamente.
 
 Todas as outras op@,{c}@~oes dever@~ao ser listas, a come@,{c}ar pelo
 nome da op@,{c}@~ao. A op@,{c}@~ao @var{xlabel} pode ser usada para dar
-um texto que identificar@'a o eixo horizontal; se essa opção n@~ao for
+um texto que identificar@'a o eixo horizontal; se essa op@,{c}@~ao n@~ao for
 usada, o eixo ser@'a identificado com o nome da vari@'avel indicada em
 @var{intervalo_x}, ou com a express@~ao @var{expr_x}, se houver
 unicamente uma express@~ao param@'etrica, ou caso contr@'ario ficar@'a
@@ -187,8 +187,8 @@ escala nos dois eixos:
 @end ifnotinfo
 
 Se repetirmos esse gr@'afico com apenas 8 pontos e etndendo o intevalo
-do par@^ametro para que faça duas voltas, obteremos um desenho de uma
-estrela: 
+do par@^ametro para que fa@,{c}a duas voltas, obteremos um desenho de
+uma estrela:
 
 @c ===beg===
 @c plot2d ([parametric, cos(t), sin(t), [t, -%pi*2, %pi*2], [nticks, 8]], [x, -2, 2], [y, -1.5, 1.5])$
@@ -373,7 +373,7 @@ As op@,{c}@~oes globais que s@~ao reconhecidas por @code{plot2d} e
 @item
 Op@,{c}@~ao: @code{plot_format}
 
-D@etermina a interface gr@'afica que ser@'a usada por @code{plot2d} e
+Determina a interface gr@'afica que ser@'a usada por @code{plot2d} e
 @code{plot3d}.
 
 @itemize @bullet
