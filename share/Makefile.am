@@ -114,6 +114,7 @@ contrib/augmented_lagrangian.mac\
 contrib/bode.mac\
 contrib/boolsimp/boolsimp.lisp\
 contrib/boolsimp/rtest_boolsimp.mac\
+contrib/clebsch_gordan.mac\
 contrib/defstruct.lisp\
 contrib/descriptive/biomed.data\
 contrib/descriptive/descriptive.mac\
@@ -272,6 +273,7 @@ contrib/mcclim/formula.lisp\
 contrib/mcclim/listeneroutput.png\
 contrib/mcclim/maxima-repl-mcclim.lisp\
 contrib/mcclim/postscriptoutput.png\
+contrib/meijer_gv2.mac\
 contrib/mnewton.mac\
 contrib/nset/README\
 contrib/nset/announce-1.2.txt\
