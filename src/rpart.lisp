@@ -398,7 +398,7 @@
 			    (eq 'rat (caaadr exp))) ;5/2*%pi
 		       (mul (list* '(rat simp)
 				   (1- (rem (1+ (cadadr exp))
-						    (* 2 (caddadr exp))))
+					    (* 2 (car (cddadr exp)))))
 				   (cddadr exp))
 			    '$%pi))
 		      (t exp)))
