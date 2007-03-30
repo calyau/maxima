@@ -430,15 +430,16 @@
        (merror "draw (polygon): transparent is true and border is false; this is not consistent"))
    (let (pltcmd pts grps x y xmin xmax ymin ymax)
       (cond ((and ($listp arg1)
-                  (every #'$listp (rest arg1)))     ; xy format
+                  (every #'$listp (rest arg1))
+                  (null arg2) )                    ; xy format
                (let ((tmp (mapcar #'rest (rest arg1))))
-                  (setf x (map 'list #'first tmp)
-                        y (map 'list #'second tmp) ) ) )
+                  (setf x (map 'list #'(lambda (z) (convert-to-float (first z))) tmp)
+                        y (map 'list #'(lambda (z) (convert-to-float (second z))) tmp) ) )  )
             ((and ($listp arg1)
                   ($listp arg2)
                   (= (length arg1) (length arg2)))  ; xx yy format
                (setf x (map 'list #'convert-to-float (rest arg1))
-                     y (map 'list #'convert-to-float (rest arg2))))
+                     y (map 'list #'convert-to-float (rest arg2))) )
             (t (merror "draw (polygon): bad input format"))  )
       (setf xmin ($tree_reduce 'min (cons '(mlist simp) x))
             xmax ($tree_reduce 'max (cons '(mlist simp) x))
@@ -974,7 +975,8 @@
        :name   'implicit
        :command pltcmd
        :groups '((2))
-       :points  `(,(make-array (length pts) :element-type 'double-float
+       :points  `(,(make-array (length pts) ; element-type 'double-float removed,
+                                            ; since pts contains non floats
                                             :initial-contents pts)) ) ))
 
 
