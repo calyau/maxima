@@ -9,6 +9,16 @@ References are Landau and Lifshitz t. 3: Quantum Mechanics (Pergamon)
 GPL Licence 2007  
 */ 
 
+    /* Quoting Edmond Orignac (the author) from an email 2007-03-26:
+
+    "clebsch-gordan.mac computes the Wigner 3j, 6j, and 9j symbols.
+    These symbols are used in quantum mechanics to represent the addition
+    of respectively 2, 3 and 4 angular momenta. I have checked the 3j and
+    6j symbols against the table of 3j symbols of Abramowitz and Stegun
+    and a table from the Particle Data Group I found on the internet.
+    I haven't tested the 9j symbols."
+
+    */
 
 wigner_3j(j1,j2,m1,m2,j,m):=block([u,v,w,k,k1,k2],
 /* Check that j1,j2,j are admissible */ 

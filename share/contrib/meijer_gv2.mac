@@ -3,6 +3,43 @@ a=[a_1,...a_n]
 b=[b_1,...b_m] 
 */
 
+    /* Quoting Edmond Orignac (the author) from an email 2007-03-26:
+
+    "The second script [i.e. this one] attempts to reduce the E-function of MacRobert
+    and the G-function of Meijer to simpler formulas with generalized
+    hypergeometric functions or Bessel/Trig/exponentials/powers.
+    The E-function and G-function generalize hypergeometric functions
+    and are described in the Bateman Manuscript Project (vol.1).
+    The simplification  is done by application of some simplification
+    formulas valid for some special cases and
+    by application of Slater's theorem when no two indices differ by
+    an integer. I have done some simple tests
+    comparing the output of the program with the formulas from
+    functions.wolfram.com and the result was satisfactory.
+    However, my script remains incomplete."
+
+    "First, I have not succeeded to implement some of the formulas
+    quoted by CS Meijer in the Compositio Mathematicae (available
+    at http://www.numdam.com) article mentioned in the comments
+    of my program. The problem is simply that I could not devise
+    a simple way to find the indices of two elements in a list of 4
+    coefficients whose sum would be zero.
+    I was thinking of using nested loops with a while condition
+    as I would do in a C program but I was unsure how to exit
+    from the nested loops while preserving the values of the
+    two loop indices. Maybe there is a more natural way of doing
+    this in Maxima, that does not use nested loops at all, but
+    I did not find it."
+
+    "Second, there exists an article by Kelly Roach (presented at
+    Issac in 1997) and available from citeseer at Penn State
+    which is discussing another method based on contiguity relations
+    to simplify Meijer G-functions. I have not understood how exactly
+    the contiguity relations are used in that case, but I think that
+    quite a few extra cases could be treated by this method."
+
+     */
+
 macrobert_ered(a,b,x):=block([aa,bb,c,d,y], 
 c:[1],
 d:[],
