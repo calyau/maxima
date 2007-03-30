@@ -34,31 +34,22 @@
 (defmacro exch (x y)
   `(setf ,x (prog1 ,y (setf ,y ,x))))
 
-;; These are here for old code only.
-;; Better, use DEFSTRUCT.
-
-(defmacro caddadr (x)
-  `(car (cddadr ,x)))
-
 ;; The following macros pertain only to Macsyma.
 
 ;; Except on the Lisp Machine, load the specified macro files.
 ;; On the Lisp Machine, the DEFSYSTEM facility is used for loading
 ;; macro files, so just check that the file is loaded. This is
-;; a useful error check, has saved a lot of time since Defsystem
-;; is far from fool-proof. See LMMAX;SYSDEF for the Lispm
-;; definition of MACSYMA-MODULE.
+;; a useful error check that has saved a lot of time since Defsystem
+;; is far from fool-proof. 
 
 (defun load-macsyma-macros-at-runtime (&rest l)
-  (mapcar #'(lambda (x)
-	      (if (get x 'macsyma-module)
-		  x
-		  (error  "Missing Maxima macro file -- ~A" x)))
+  (mapcar #'(lambda (x) (unless (get x 'macsyma-module)
+			  (error  "Missing Maxima macro file -- ~A" x)))
 	  l))
 
 (defmacro load-macsyma-macros (&rest macro-files)
-  `(comment *macro*files*
-    ,(apply #'load-macsyma-macros-at-runtime macro-files)))
+  (apply #'load-macsyma-macros-at-runtime macro-files)
+  (values))
 
 ;; Used to temporarily bind contexts in such a way as to not cause
 ;; the context garbage collector to run. Used when you don't want to
@@ -69,8 +60,8 @@
 
 (defmacro with-new-context (sub-context &rest forms)
   `(let ((context (context ,@sub-context)))
-    (prog1 ,@forms
-      (context-unwinder))))
+     (prog1 ,@forms
+       (context-unwinder))))
 
 ;; For creating a macsyma evaluator variable binding context.
 ;; (MBINDING (VARIABLES &OPTIONAL VALUES FUNCTION-NAME)
@@ -78,48 +69,35 @@
 
 (defmacro mbinding (variable-specification &rest body &aux (temp (gensym)))
   `(let ((,temp ,(car variable-specification)))
-    ;; Don't optimize out this temporary, even if (CAR VARIABLE-SPECICIATION)
-    ;; is an ATOM. We don't want to risk side-effects.
-    ,(case (length variable-specification)
-	   ((1)
-	    `(mbinding-sub ,temp ,temp nil ,@body))
-	   ((2)
-	    `(mbinding-sub ,temp ,(cadr variable-specification) nil ,@body))
-	   ((3)
-	    `(mbinding-sub ,temp ,(cadr variable-specification)
-	      ,(caddr variable-specification)
-	      ,@body))
-	   (t
-	    (maxima-error "Bad variable specification: ~a" variable-specification)))))
+     ;; Don't optimize out this temporary, even if (CAR VARIABLE-SPECICIATION)
+     ;; is an ATOM. We don't want to risk side-effects.
+     ,(case (length variable-specification)
+	    ((1)
+	     `(mbinding-sub ,temp ,temp nil ,@body))
+	    ((2)
+	     `(mbinding-sub ,temp ,(cadr variable-specification) nil ,@body))
+	    ((3)
+	     `(mbinding-sub ,temp ,(cadr variable-specification)
+			    ,(caddr variable-specification)
+			    ,@body))
+	    (t
+	     (maxima-error "Bad variable specification: ~a" variable-specification)))))
 
 (defmacro mbinding-sub (variables values function-name &rest body &aux (win (gensym)))
   `(let ((,win nil))
-    (unwind-protect
-	 (progn
-	   (mbind ,variables ,values ,function-name)
-	   (setq ,win t)
-	   ,@body)
-      (if ,win (munbind ,variables)))))
+     (unwind-protect
+	  (progn
+	    (mbind ,variables ,values ,function-name)
+	    (setq ,win t)
+	    ,@body)
+       (if ,win (munbind ,variables)))))
 
-
-;; For MLISTP its arg is known not to be an atom.
-;; Otherwise, just use $listp.
-;; MLISTP exists just to support a Franz hack, so you can just 
-;;   ignore it. - JPG
-
-(defmacro mlistp (x)
-  `(eq (caar ,x) 'mlist))
-
-;; How About MTYPEP like (MTYPEP EXP 'TAN) or (MTYPEP EXP '*) - Jim.
-;; Better, (EQ (MTYPEP EXP) 'TAN).
-
-(defmacro mtanp (x)
-  `(let ((thing ,x))
-    (and (not (atom thing)) (eq (caar thing) '%tan))))
+;; How About MTYPEP like (MTYPEP EXP 'ATAN) or (MTYPEP EXP '*) - Jim.
+;; Better, (EQ (MTYPEP EXP) 'ATAN).
 
 (defmacro matanp (x)
   `(let ((thing ,x))
-    (and (not (atom thing)) (eq (caar thing) '%atan))))
+     (and (not (atom thing)) (eq (caar thing) '%atan))))
 
 ;; Macros used in LIMIT, DEFINT, RESIDU.
 ;; If we get a lot of these, they can be split off into a separate macro
@@ -136,13 +114,13 @@
 
 (defmacro free-epsilonp (x)
   `(do ((one-eps infinitesimals (cdr one-eps)))
-    ((null one-eps) t)
-    (if (not (free (car one-eps) ,x))  (return ()))))
+       ((null one-eps) t)
+     (unless (free (car one-eps) ,x) (return ()))))
 
 (defmacro free-infp (x)
   `(do ((one-inf infinities (cdr one-inf)))
-    ((null one-inf) t)
-    (if (not (free (car one-inf) ,x))  (return ()))))
+       ((null one-inf) t)
+     (unless (free (car one-inf) ,x) (return ()))))
 
 (defmacro inf-typep (x)
   `(car (amongl infinities ,x)))
@@ -152,10 +130,7 @@
 
 (defmacro defmspec (function . rest)
   `(progn
-    (defun-prop (,function mfexpr*) . ,rest)))
-
-(defmacro sys-user-id ()
-  '(status userid))
+     (defun-prop (,function mfexpr*) ,@rest)))
 
 ;; Setf hacking.
 
@@ -169,13 +144,11 @@
 (defmacro old-get (plist tag)
   `(getf (cdr ,plist) ,tag))
 
-(defmfun $get (atom ind) (prop1 '$get atom nil ind))
+(defmfun $get (atom ind)
+  (prop1 '$get atom nil ind))
 
 (defsetf $get (sym tag) (value)
   `($put ,sym ,value ,tag))
-
-(defmacro *break (breakp mess)
-  `(apply 'break `(,,mess ,',breakp)))
 
 (defmacro  mdefprop (sym val indicator)
   `(mputprop ',sym ',val ',indicator))
