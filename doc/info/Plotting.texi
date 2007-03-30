@@ -20,67 +20,66 @@ otherwise @code{in_netmath} (even if @code{true}) has no effect.
 
 @end defvr
 
-@deffn {Function} plot2d (@var{expr}, @var{range}, ..., @var{options}, ...)
-@deffnx {Function} plot2d (@var{parametric_expr})
-@deffnx {Function} plot2d (@var{discrete_expr})
-@deffnx {Function} plot2d ([@var{expr_1}, ..., @var{expr_n}], @var{x_range}, @var{y_range})
-@deffnx {Function} plot2d ([@var{expr_1}, ..., @var{expr_n}], @var{x_range})
-@deffnx {Function} plot2d (@var{expr}, @var{x_range}, @var{y_range})
-@deffnx {Function} plot2d (@var{expr}, @var{x_range})
-@deffnx {Function} plot2d ([@var{name_1}, ..., @var{name_n}], @var{x_range}, @var{y_range})
-@deffnx {Function} plot2d ([@var{name_1}, ..., @var{name_n}], @var{x_range})
-@deffnx {Function} plot2d (@var{name}, @var{x_range}, @var{y_range})
-@deffnx {Function} plot2d (@var{name}, @var{x_range})
-@deffnx {Function} plot2d ([@var{expr_1}, ..., @var{expr_n}], @var{x_range}, ..., @var{options}, ...)
-@deffnx {Function} plot2d ([..., @var{expr}, ..., @var{parametric_expr}, ...], @var{x_range}, ..., @var{options})
+@deffn {Function} plot2d (@var{expr}, @var{x_range}, ..., @var{options}, ...)
+@deffnx {Function} plot2d ([@var{expr_1}, ..., @var{expr_n}], ..., @var{options}, ...)
+@deffnx {Function} plot2d ([@var{expr_1}, ..., @var{expr_n}], @var{x_range},..., @var{options}, ...)
+
+Where @var{expr}, @var{expr_1}, ..., @var{expr_n} can be either
+expressions, or Maxima or Lisp functions or operators, or a list with
+the any of the forms: @code{[discrete, [@var{x1}, ..., @var{xn}],
+[@var{y1}, ..., @var{yn}]]}, @code{[discrete, [[@var{x1}, @var{y1}],
+..., [@var{xn}, ..., @var{yn}]]} or @code{[parametric, @var{x_expr},
+@var{y_expr}, @var{t_range}]}.
 
 Displays a plot of one or more expressions as a function of one
 variable.
 
 @code{plot2d} plots one expression @var{expr} or several expressions
-@code{[@var{name_1}, ..., @var{name_n}]} which all depend only on one
-variable that must be named in @var{x_range}. The range of the
-horizontal axis, is a list of the form @code{[@var{variable},
-@var{min}, @var{max}]}, where @var{variable} is the name of the
-variable and @var{min} and @var{max} are the minimum and maximum
-values that will be plotted in the horizontal axis.
+@code{[@var{name_1}, ..., @var{name_n}]}. The expressions that are not
+of the parametic or discrete types should all depend only on one
+variable @var{var} and it will be mandatory the use of @var{x_range} to
+name that variable and gives its minimum and maximum values, using the
+syntax: @code{[@var{variable}, @var{min}, @var{max}]}. The plot will
+show the horizontal axis bound by the values of @var{min} and @var{max}.
 
-The range of the vertical axis is not mandatory. If given, it should
-be a list of the form @code{[y, @var{min}, @var{max}]} and the plot
-will show that entire range, even if the expressions do not reach all
-that range. Otherwise, if the vertical range is not specified by
-@code{set_plot_option}, it is chosen automatically and the plot will
-show the vertical range where the expressions take values.
+A expression to be plotted can also be given in the discrete or
+parametric forms. Namely, as a list starting with the word ``discrete''
+or ``parametric''. The keyword @var{discrete} must be followed by two
+lists of values, both with the same length, which are the horizontal and
+vertical coordinates of a set of points; alternatively, the coordinates
+of each point can be put into a list with two values, and all the
+coordinates of the points should be inside another list. The keyword
+@var{parametric} must be followed by two expressions @var{x_expr} and
+@var{y_expr}, and a range of the form @code{[@var{param}, @var{min},
+@var{max}]}. The two expressions must depend only on the parameter
+@var{param}, and the plot will show the path traced out by the point
+with coordinates (@var{x_expr}, @var{y_expr}) as @var{param} increases
+from @var{min} to @var{max}.
+
+The range of the vertical axis is not mandatory. It is one more of the
+options for the command, with the syntax: @code{[y, @var{min},
+@var{max}]}. If that option is used, the plot will show that entire
+range, even if the expressions do not reach all that range. Otherwise,
+if a vertical range is not specified by @code{set_plot_option}, the
+boundaries of the vertical axis will be set up automatically.
 
 All other options should also be lists, starting with the name of the
 option. The option @var{xlabel} can be used to give a label for the
-horizontal axis; if that option is not given, the horizontal axis will
-be labeled with the name of the variable specified in @var{x_range}. A
-label for the vertical axis can be given with the @var{ylabel}
+horizontal axis; if that option is not used, the horizontal axis will
+be labeled with the name of the variable specified in @var{x_range}, or
+with the expression @var{x_expr} in the case of just one parametric
+expresssion, or it will be left blank otherwise.
+
+A label for the vertical axis can be given with the @var{ylabel}
 option. If there is only one expression to be plotted and the
-@var{ylabel} option was not used, the vertical axis will be labeled
-with the expression plotted, unless it is too large, or with the text
-``discrete data'' in the case of discrete plots; if the only
-expression is of the parametric type, the two expressions that give
-the horizontal and vertical coordinates will be used to label the two
-axis.
+@var{ylabel} option was not used, the vertical axis will be labeled with
+that expression, unless it is too large, or with the expression
+@var{y_expr} if the expression is parametric, or with the text
+``discrete data'' if the expression is discrete.
 
 The options @code{[logx]} and @code{[logy]} do not need any
 parameters. They will make the horizontal and vertical axes be
 scaled logarithmically.
-
-Any of the expressions to be plotted can be a list starting with the
-word ``discrete'' or ``parametric''. The keyword ``discrete'' must be
-followed by two lists of values, both with the same length, which are
-the horizontal and vertical coordinates of a set of points;
-alternatively, the coordinates of each point can be given in a list
-with two values, and all the coordinates of the points should be
-inside another list. The keyword @var{parametric} must be followed by
-two expressions @var{x_expr} and @var{y_expr}, and a range of the form
-@code{[@var{var}, @var{min}, @var{max}]}. The two expressions must
-depend only on the variable named in the range, and the plot will show
-the path traced out by the pair @code{[@var{x_expr}, @var{y_expr}]} as
-@var{var} varies from @var{min} to @var{max}.
 
 If there are several expressions to be plotted, a legend will be
 written to identiy each of the expressions. The labels that should be
@@ -88,11 +87,13 @@ used in that legend can be given with the option @var{legend}. If that
 option is not used, Maxima will create labels from the expressions.
 
 By default, the expressions are plotted as a set of line segments
-joining points which are either given in the @var{discrete} form, or
-calculated automatically from the expression given and according to
-the number of points set by the @var{nticks} option. The option
-@var{style} can be used to show the points isolated, or the points and
-the lines that join them.
+joining adjacent points within a set of points which is either given in
+the @var{discrete} form, or calculated automatically from the expression
+given, using an algorithm that atomatically adapts the steps among
+points using as an intial estimate of the total number of points the
+value set with the @var{nticks} option. The option @var{style} can be
+used to make one of the expressions to be represented as a set of
+isolated points, or as points and line segments.
 
 There are several global options stored in the list @var{plot_options}
 which can be modified with the function @code{set_plot_option}; any of
@@ -358,14 +359,15 @@ The plot options which are recognized by @code{plot2d} and @code{plot3d} are the
 @item
 Option: @code{plot_format}
 
-Determines which plotting package is used by @code{plot2d} and @code{plot3d}.
+Determines which graphic interface is used by @code{plot2d} and
+@code{plot3d}.
 
 @itemize @bullet
 @item
 Default value: @code{gnuplot}
 
-Gnuplot is the default, and most advanced, plotting package. It
-requires an external gnuplot installation.
+Gnuplot is the most advanced plotting package among the packages
+available in Maxima. It requires an external gnuplot installation.
 @item
 Value: @code{mgnuplot}
 
@@ -378,8 +380,10 @@ Tcl/Tk.
 Value: @code{openmath}
 
 Openmath is a Tcl/Tk GUI plotting program. This format is provided by
-Xmaxima, which is distributed together with Maxima; you should install
-Xmaxima in order to use this format.
+Xmaxima, which is distributed together with Maxima; in order to use this
+format you should install the package Xmaxima, and it will work not only
+from Xmaxima itself, but also from the command line and other GUI's for
+Maxima.
 @end itemize
 
 @item
@@ -506,7 +510,7 @@ Example:
 Option: @code{style}
 
 The styles that will be used for the various functions or sets of data
-in a 2d plot. The name of the option must be followed by one or more
+in a 2d plot. The word @var{style} must be followed by one or more
 styles. If there are more functions and data sets than the styles
 given, the styles will be repeated. Each style can be either
 @var{lines} for line segments, @var{points} for isolated points,
@@ -546,7 +550,6 @@ Sets the number of grid points to use in the x- and y-directions
 for three-dimensional plotting.
 
 Example:
-
 @example
 [grid, 50, 50]
 @end example
@@ -558,14 +561,11 @@ Option: @code{transform_xy}
 Allows transformations to be applied to three-dimensional plots.
 
 Example:
-
 @example
 [transform_xy, false]
 @end example
 The default @code{transform_xy} is @code{false}. If it is not @code{false}, it should be
 the output of
-
-Example:
 
 @example
 make_transform([x,y,z], f1(x,y,z), f2(x,y,z), f3(x,y,z))$
