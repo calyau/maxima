@@ -861,7 +861,7 @@
 (defun mcons-exp-args (e args)
   (if (eq (caar e) 'mqapply)
       (list* (delsimp (car e)) (cadr e) args)
-      (cons (if (mlistp e) (car e) (delsimp (car e))) args)))
+      (cons (if (eq (caar e) 'mlist) (car e) (delsimp (car e))) args)))
 
 (defmfun $member (x e)
   (atomchk (setq e ($totaldisrep e)) '$member t)
@@ -869,8 +869,7 @@
 
 (defmfun atomchk (e fun 2ndp)
   (if (or (atom e) (eq (caar e) 'bigfloat))
-      (merror "~Margument value `~M' to ~:M was not a list"
-	      (if 2ndp '|2nd | "") e fun)))
+      (merror "~Margument value `~M' to ~:M was not a list" (if 2ndp "2nd " "") e fun)))
 
 (defmfun format1 (e)
   (cond (($listp e) e) ($inflag (specrepcheck e)) (t (nformat e))))
