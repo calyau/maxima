@@ -9,17 +9,18 @@
 ;;;; FORMAT: Package for restructuring expressions in Macsyma
 ;;;;******************************************************************************************
 
-;(in-package 'climax)				; for Macsyma Inc, Macsyma
-
-;;; To run in Schelter's Maxima comment the above and uncomment these:
 (in-package :maxima)
-(defmacro mlist* (arg1 &rest more-args) `(list* '(mlist simp) ,arg1 ,@more-args))
+
+(defmacro mlist* (arg1 &rest more-args)
+  `(list* '(mlist simp) ,arg1 ,@more-args))
+
 (defun mrelationp (expr)
-  (and (listp expr)(member (caar expr) '(mequal mnotequal mgreaterp mlessp mgeqp mleqp))))
+  (and (listp expr)
+       (member (caar expr) '(mequal mnotequal mgreaterp mlessp mgeqp mleqp))))
 
 ;;;;******************************************************************************************
 ;;; format(expr,template,...)
-;;; Formats EXPR according to the TEMPLATEs given: 
+;;; Formats EXPR according to the TEMPLATEs given:
 
 (defvar *template* nil "The current template")
 (defvar *templates* nil "The current template chain")
@@ -43,7 +44,7 @@
 
 ;;; Format a `piece' of an expression, accounting for any current subtemplates.
 ;;; If NTH is given, use NTH subtemplate for this piece, else use next subtemplate.
-;;; Account for %DITTO'd templates. 
+;;; Account for %DITTO'd templates.
 (defun $format_piece (piece &optional nth)
   (flet ((dittop (ptrn)				; If %ditto form, return repeated template
 	   (and (listp ptrn)(eq (caar ptrn) '$%ditto) (cadr ptrn))))
@@ -63,7 +64,7 @@
   (format-from-chain expr))
 
 ;;; given a candidate format template, return:
-;;; template name, formatter function, parameters (if any) and subtemplates (if any), 
+;;; template name, formatter function, parameters (if any) and subtemplates (if any),
 (defun parse-template (template)
   (let (op name formatter)
     (flet ((getform (symbol)
@@ -90,7 +91,7 @@
 	 (fmtr (if (atom parms) parms
 		   (make-symbol (concatenate 'string (string (car names))
 					     (symbol-name '#:-formatter))))))
-    `(progn 
+    `(progn
        ,(unless (atom parms) `(defun ,fmtr ,parms ,@body))
        ,@(mapcar #'(lambda (name) `(setf (get ',name 'formatter) ',fmtr)) names))))
 
@@ -136,12 +137,12 @@
 ;;;;******************************************************************************************
 ;;; Control templates
 
-;;; IF ... ELSEIF ... ELSE 
+;;; IF ... ELSEIF ... ELSE
 (def-formatter $%if (expr &rest predicates)
   ($format_piece expr (do ((ps predicates (cdr ps))
 			   (i 1 (1+ i)))
 			  ((or (null ps)(is-boole-check (mfuncall (car ps) expr))) i))))
-    
+
 (def-formatter ($%expr $%expression)(expr)	; format arguments/operands
   (when ($atom expr)
     (merror "FORMAT %EXPR: ~M doesn't have parts" expr))
@@ -159,9 +160,9 @@
 ;;; `Bag' & Relation templates.
 
 ;;; This function tries to get OPER at the top level of EXPR.
-;;; OPER must be a BAG or RELATION, as must the top layers of EXPR 
+;;; OPER must be a BAG or RELATION, as must the top layers of EXPR
 ;;; (down to wherever OPER is found).
-;;; The interpretation is that a list of equations is equivalent to an equation 
+;;; The interpretation is that a list of equations is equivalent to an equation
 ;;; whose rhs & lhs are lists.  (and ditto for all permutations).
 (defun $coerce_bag (oper expr)
   (unless (or (mbagp expr)(mrelationp expr))
@@ -226,7 +227,7 @@
   (when (and (listp var)(eq (caar var) 'mexpt))
     (setq var (cadr var) n (mul n (caddr var))))
   (let ((coefs ($coeffs expr var)))
-    (add (mul ($format_piece ($get_coef coefs n)) (power (caddadr coefs) n))
+    (add (mul ($format_piece ($get_coef coefs n)) (power (car (cddadr coefs)) n))
 	 ($format_piece ($uncoef (delete n coefs :test #'alike1 :key #'caddr))))))
 
 ;;;;******************************************************************************************
@@ -257,7 +258,7 @@
   (format-clist (apply #'$trig_coeffs expr vars)))
 
 ;; %SERIES(var,order), %TAYLOR(var,order): expand EXPR as series in VAR to order ORDER,
-;; formats the coeffs.  %SERIES only expands arithmetic expressions. 
+;; formats the coeffs.  %SERIES only expands arithmetic expressions.
 (def-formatter ($%series $%s) (expr var order)
   (autoldchk '$series_coeffs)
   (format-clist ($series_coeffs expr var order)))
@@ -329,17 +330,17 @@
 ;;;********************************************************************************
 ;;; Examples of user defined templates:
 ;;; format_piece automatically handles the piecewise templates & remaining templates.
-#|| 
+#||
 put(%myrectform,
      lambda([expr],
        block([pair:rectformlist(expr)],
-          format_piece(pair[1]) +%I* format_piece(pair[2]))),
+	  format_piece(pair[1]) +%I* format_piece(pair[2]))),
      formatter)$
 
 put(%myif,
      lambda([expr,test],
 	if test(expr) then format_piece(expr,1)
-        else               format_piece(expr,2)),
+	else               format_piece(expr,2)),
      formatter)$
 
 put(%part, /* Note workaround for substpart (a special form!) */
@@ -347,4 +348,3 @@ put(%part, /* Note workaround for substpart (a special form!) */
        apply(substpart,cons(format_piece(apply(part,cons(expr,spec))),cons(expr,spec)))),
     formatter)$
 ||#
-
