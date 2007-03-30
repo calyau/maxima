@@ -591,7 +591,7 @@
 (defun errbreak2 (ign) ;; An alternate ERRSET interr. function used by PARSE and DISPLAY
   (declare (ignore ign))
   (let ((state-pdl (cons 'lisp-break state-pdl)))
-    (*break errbrksw 'erst)))
+    (break "erst ~S" '(errbrksw))))
 
 (defmspec $tobreak (x)
   (if mbreak (throw 'mbreak (cdr x))

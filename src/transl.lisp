@@ -238,7 +238,7 @@ APPLY means like APPLY.")
   (apply #'tr-tell
 	 (nconc l '("***BARFO*** gasp. Internal TRANSLATE error. i.e. *BUG*")))
   (cond (*transl-debug*
-	 (*break t '|Transl Barfo|))
+	 (break "transl barfo ~S" t))
 	(t
 	 (setq tr-abort t)
 	 nil)))
@@ -278,7 +278,7 @@ APPLY means like APPLY.")
   " if in debug mode `warning's signaled go to lisp break loops ")
 
 (defmacro tr-warnbreak ()
-  `(and *transl-debug* *tr-warn-break* (*break t 'transl)))
+  `(and *transl-debug* *tr-warn-break* (break "transl ~S" t )))
 
 (defun tr-warnp (val)
   (and val
