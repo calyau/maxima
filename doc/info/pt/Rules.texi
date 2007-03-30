@@ -259,7 +259,7 @@ Mostra regras com os nomes @var{nomeregra_1}, ..., @var{nomeregra_n},
 como retornado por @code{defrule}, @code{tellsimp}, ou @code{tellsimpafter},
 ou um modelo definido por meio de @code{defmatch}.
 
-Cada regra @'e mostrada com um r@'otulo de express@~ao intermedi@'aria (@code{%t}).
+Cada regra @'e mostrada com um r@'otulo de express@~ao interm@'edia (@code{%t}).
 
 @code{disprule (all)} mostra todas as regras.
 
@@ -503,7 +503,7 @@ se 0 ou 1 (respectivamente) satisfazem um predicado de coincid@^encia,
 e n@~ao existe outros termos que satisfa@value{cedilha}am o predicado,
 0 ou 1 @'e atribu@'{@dotless{i}}do para a vari@'avel de coincid@^encia associada com o predicado.
 
-O algor@'{@dotless{i}}tmo para processar modelos contendo adi@value{cedilha}@~ao e multiplica@value{cedilha}@~ao faz alguns resultados de coincid@^encia
+O algoritmo para processar modelos contendo adi@value{cedilha}@~ao e multiplica@value{cedilha}@~ao faz alguns resultados de coincid@^encia
 (por exemplo, um modelo no qual uma vari@'avel "coincida com qualquer coisa" aparecer)
 dependerem da ordem dos termos no modelo de coincid@^encia e na express@~ao a ser testada a coincid@^encia.
 Todavia,

@@ -15,7 +15,7 @@ assim por diante.
 
 Express@~oes Racionais Can@'onicas constituem um tipo de representa@value{cedilha}@~ao
 que @'e especialmente adequado para polin@'omios expandidos e fun@value{cedilha}@~oes
-racionais (tamb@'em para polin@'omios parcialmente factorados e fun@value{cedilha}@~oes
+racionais (tamb@'em para polin@'omios parcialmente factorizados e fun@value{cedilha}@~oes
 racionais quando RATFAC for escolhida para @code{true}).  Nessa forma CRE uma
 ordena@value{cedilha}@~ao de vari@'aveis (da mais para a menos importante) @'e assumida para cada
 express@~ao.  Polin@'omios s@~ao representados recursivamente por uma lista
@@ -66,8 +66,8 @@ simplifica@value{cedilha}@~ao de inteiros alg@'ebricos tenha efeito.
 @defvr {Vari@'avel de op@value{cedilha}@~ao} berlefact
 Valor Padr@~ao: @code{true}
 
-Quando @code{berlefact} for @code{false} ent@~ao o algor@'{@dotless{i}}tmo de factora@value{cedilha}@~ao de
-Kronecker ser@'a usado.  De outra forma o algor@'{@dotless{i}}tmo de Berlekamp, que @'e o
+Quando @code{berlefact} for @code{false} ent@~ao o algoritmo de factoriza@value{cedilha}@~ao de
+Kronecker ser@'a usado.  De outra forma o algoritmo de Berlekamp, que @'e o
 padr@~ao, ser@'a usado.
 
 @end defvr
@@ -108,7 +108,7 @@ Retorna o coeficiente de @code{@var{x}^@var{n}} em @var{expr}.  @var{n} pode ser
 omitido se for 1.  @var{x} pode ser um @'atomo, ou subexpress@~ao completa de
 @var{expr} e.g., @code{sin(x)}, @code{a[i+1]}, @code{x + y}, etc. (No @'ultimo caso a
 express@~ao @code{(x + y)} pode ocorrer em @var{expr}).  Algumas vezes isso pode ser necess@'ario
-para expandir ou factorar @var{expr} com o objectivo de fazer @code{@var{x}^@var{n}} explicito.  Isso n@~ao @'e
+para expandir ou factorizar @var{expr} com o objectivo de fazer @code{@var{x}^@var{n}} explicito.  Isso n@~ao @'e
 realizado por @code{coeff}.
 
 Exemplos:
@@ -221,7 +221,7 @@ Exemplo:
 @deffn {Fun@value{cedilha}@~ao} ezgcd (@var{p_1}, @var{p_2}, @var{p_3}, ...)
 Retorna uma lista cujo primeiro elemento @'e o m.d.c. dos
 polin@'omios @var{p_1}, @var{p_2}, @var{p_3}, ...  e cujos restantes elementos s@~ao os
-polin@'omios divididos pelo mdc.  Isso sempre usa o algor@'{@dotless{i}}tmo
+polin@'omios divididos pelo mdc.  Isso sempre usa o algoritmo
 @code{ezgcd}.
 
 @end deffn
@@ -252,38 +252,38 @@ aplicado ap@'os um @code{factcomb}.
 @end deffn
 
 @deffn {Fun@value{cedilha}@~ao} factor (@var{expr})
-Factora a express@~ao @var{expr}, contendo qualquer n@'umero de
+Factoriza a express@~ao @var{expr}, contendo qualquer n@'umero de
 vari@'aveis ou fun@value{cedilha}@~oes, em factores irredut@'{@dotless{i}}veis sobre os inteiros.
-@code{factor (@var{expr}, p)} factora @var{expr} sobre o campo dos inteiros com um elemento
+@code{factor (@var{expr}, p)} factoriza @var{expr} sobre o campo dos inteiros com um elemento
 adjunto cujo menor polin@'omio @'e p.
 
-@code{factor} usa a fun@value{cedilha}@~ao @code{ifactors} para factorar inteiros.
+@code{factor} usa a fun@value{cedilha}@~ao @code{ifactors} para factorizar inteiros.
 
-@code{factorflag} se @code{false} suprime a factora@value{cedilha}@~ao de factores inteiros
+@code{factorflag} se @code{false} suprime a factoriza@value{cedilha}@~ao de factores inteiros
 de express@~oes racionais.
 
 @code{dontfactor} pode ser escolhida para uma lista de vari@'aveis com rela@value{cedilha}@~ao @`a qual
-factora@value{cedilha}@~ao n@~ao @'e para ocorrer.  (Essa @'e inicialmente vazia).  Factora@value{cedilha}@~ao tamb@'em
+factoriza@value{cedilha}@~ao n@~ao @'e para ocorrer.  (Essa @'e inicialmente vazia).  Factoriza@value{cedilha}@~ao tamb@'em
 n@~ao acontece com rela@value{cedilha}@~ao a quaisquer vari@'aveis que s@~ao menos
 importantes (usando a ordena@value{cedilha}@~ao de vari@'avel assumida pela forma CRE) como
 essas na lista @code{dontfactor}.
 
 @code{savefactors} se @code{true} faz com que os factores de uma express@~ao que
 @'e um produto de factores seja guardada por certas fun@value{cedilha}@~oes com o objectivo de
-aumentar a velocidade de futuras factora@value{cedilha}@~oes de express@~oes contendo alguns dos
+aumentar a velocidade de futuras factoriza@value{cedilha}@~oes de express@~oes contendo alguns dos
 mesmos factores.
 
-@code{berlefact} se @code{false} ent@~ao o algor@'{@dotless{i}}tmo de factora@value{cedilha}@~ao de Kronecker ser@'a
-usado de outra forma o algor@'{@dotless{i}}tmo de Berlekamp, que @'e o padr@~ao, ser@'a
+@code{berlefact} se @code{false} ent@~ao o algoritmo de factoriza@value{cedilha}@~ao de Kronecker ser@'a
+usado de outra forma o algoritmo de Berlekamp, que @'e o padr@~ao, ser@'a
 usado.
 
-@code{intfaclim} se @code{true} maxima ir@'a interromper a factora@value{cedilha}@~ao de
+@code{intfaclim} se @code{true} maxima ir@'a interromper a factoriza@value{cedilha}@~ao de
 inteiros se nenhum factor for encontrado ap@'os tentar divis@~oes e o m@'etodo rho de
 Pollard.  Se escolhida para @code{false} (esse @'e o caso quando o utilizador chama
-@code{factor} explicitamente), a factora@value{cedilha}@~ao completa do inteiro ser@'a
+@code{factor} explicitamente), a factoriza@value{cedilha}@~ao completa do inteiro ser@'a
 tentada.  A escolha do utilizador para @code{intfaclim} @'e usada para chamadas
 internas a @code{factor}. Dessa forma, @code{intfaclim} pode ser resetada para evitar que o
-Maxima gaste um tempo muito longo factorando inteiros grandes.
+Maxima gaste um tempo muito longo factorizando inteiros grandes.
 
 Exemplos:
 @c EXAMPLES BELOW ADAPTED FROM examples (factor)
@@ -405,7 +405,7 @@ Exemplos:
 Valor Padr@~ao: @code{false}
 
 @c WHAT IS THIS ABOUT EXACTLY ??
-Quando @code{factorflag} for @code{false}, suprime a factora@value{cedilha}@~ao de
+Quando @code{factorflag} for @code{false}, suprime a factoriza@value{cedilha}@~ao de
 factores inteiros em express@~oes racionais.
 
 @end defvr
@@ -413,7 +413,7 @@ factores inteiros em express@~oes racionais.
 @deffn {Fun@value{cedilha}@~ao} factorout (@var{expr}, @var{x_1}, @var{x_2}, ...)
 Rearranja a adi@value{cedilha}@~ao @var{expr} em uma adi@value{cedilha}@~ao de
 parcelas da forma @code{f (@var{x_1}, @var{x_2}, ...)*g} onde @code{g} @'e um produto de
-express@~oes que n@~ao possuem qualquer @var{x_i} e @code{f} @'e factorado.
+express@~oes que n@~ao possuem qualquer @var{x_i} e @code{f} @'e factorizado.
 @c NEED EXAMPLE HERE
 
 @end deffn
@@ -445,7 +445,7 @@ Exemplo:
 
 @deffn {Fun@value{cedilha}@~ao} fasttimes (@var{p_1}, @var{p_2})
 Retorna o produto dos polin@'omios @var{p_1} e @var{p_2} usando um
-algor@'{@dotless{i}}tmo especial para a multiplica@value{cedilha}@~ao de polin@'omios.  @code{p_1} e @code{p_2} podem ser
+algoritmo especial para a multiplica@value{cedilha}@~ao de polin@'omios.  @code{p_1} e @code{p_2} podem ser
 de v@'arias vari@'aveis, densos, e aproximadamente do mesmo tamanho.  A multiplica@value{cedilha}@~ao
 cl@'assica @'e de ordem @code{n_1 n_2} onde
 @code{n_1} @'e o grau de @code{p_1}
@@ -595,15 +595,15 @@ simples como primeiro argumento.
 @c THIS ITEM NEEDS A LOT OF WORK
 @deffn {Fun@value{cedilha}@~ao} gcd (@var{p_1}, @var{p_2}, @var{x_1}, ...)
 Retorna o m@'aximo divisor comum entre @var{p_1} e @var{p_2}.
-O sinalizador @code{gcd} determina qual algor@'{@dotless{i}}tmo @'e empregado.
-Escolhendo @code{gcd} para @code{ez}, @code{subres}, @code{red}, ou @code{spmod} selecciona o algor@'{@dotless{i}}tmo @code{ezgcd},
+O sinalizador @code{gcd} determina qual algoritmo @'e empregado.
+Escolhendo @code{gcd} para @code{ez}, @code{subres}, @code{red}, ou @code{spmod} selecciona o algoritmo @code{ezgcd},
 subresultante @code{prs}, reduzido, ou modular,
 respectivamente.  Se @code{gcd} for @code{false} ent@~ao @code{gcd (@var{p_1}, @var{p_2}, @var{x})} sempre retorna 1
 para todo @var{x}.  Muitas fun@value{cedilha}@~oes (e.g.  @code{ratsimp}, @code{factor}, etc.) fazem com que mdc's
 sejam feitos implicitamente.  Para polin@'omios homog@^eneos @'e recomendado
 que @code{gcd} igual a @code{subres} seja usado.  Para obter o mdc quando uma express@~ao alg@'ebrica est@'a
 presente, e.g. @code{gcd (@var{x}^2 - 2*sqrt(2)*@var{x} + 2, @var{x} - sqrt(2))}, @code{algebraic} deve ser
-@code{true} e @code{gcd} n@~ao deve ser @code{ez}.  @code{subres} @'e um novo algor@'{@dotless{i}}tmo, e pessoas
+@code{true} e @code{gcd} n@~ao deve ser @code{ez}.  @code{subres} @'e um novo algoritmo, e pessoas
 que tenham estado usando a op@value{cedilha}@~ao @code{red} podem provavelmente alterar isso para
 @code{subres}.
 
@@ -627,7 +627,7 @@ desde que n@'os precisamos estar em um dom@'{@dotless{i}}nio de ideal principal 
 O mdc significa o mdc considerando @var{f} e @var{g} como polin@'omios de uma @'unica vari@'avel com coeficientes
 sendo fun@value{cedilha}@~oes racionais em outras vari@'aveis.
 
-@code{gcdex} implementa o algor@'{@dotless{i}}tmo Euclideano,
+@code{gcdex} implementa o algoritmo Euclideano,
 onde temos a sequ@^encia
 of @code{L[i]: [a[i], b[i], r[i]]} que s@~ao todos perpendiculares
 a @code{[f, g, -1]} e o pr@'oximo se @'e constru@'{@dotless{i}}do como
@@ -668,9 +668,9 @@ uma vez que trabalhamos em @code{k(y)[x]}, o @code{y+1} n@~ao pode ser esperado 
 
 @c CHOOSE ONE CHARACTERIZATION OF "GAUSSIAN INTEGERS" AND USE IT WHERE GAUSSIAN INTEGERS ARE REFERENCED
 @deffn {Fun@value{cedilha}@~ao} gcfactor (@var{n})
-Factora o inteiro Gaussiano @var{n} sobre os inteiros Gaussianos, i.e.,
+Factoriza o inteiro Gaussiano @var{n} sobre os inteiros Gaussianos, i.e.,
 n@'umeros da forma @code{@var{a} + @var{b} @code{%i}} onde @var{a} e @var{b} s@~ao inteiros raconais
-(i.e.,  inteiros comuns).  Factora@value{cedilha}@~oes s@~ao normalizadas fazendo @var{a} e @var{b}
+(i.e.,  inteiros comuns).  Factoriza@value{cedilha}@~oes s@~ao normalizadas fazendo @var{a} e @var{b}
 n@~ao negativos.
 @c NEED EXAMPLES HERE
 
@@ -678,7 +678,7 @@ n@~ao negativos.
 
 @c CHOOSE ONE CHARACTERIZATION OF "GAUSSIAN INTEGERS" AND USE IT WHERE GAUSSIAN INTEGERS ARE REFERENCED
 @deffn {Fun@value{cedilha}@~ao} gfactor (@var{expr})
-Factora o polin@'omio @var{expr} sobre os inteiros de Gauss
+Factoriza o polin@'omio @var{expr} sobre os inteiros de Gauss
 (isto @'e, os inteiros com a unidade imagin@'aria @code{%i} adjunta).
 @c "This is like" -- IS IT THE SAME OR NOT ??
 Isso @'e como @code{factor (@var{expr}, @var{a}^2+1)} trocando @var{a} por @code{%i}.
@@ -733,12 +733,12 @@ Exemplos:
 @defvr {Vari@'avel de op@value{cedilha}@~ao} intfaclim
 Valor por omiss@~ao: true
 
-Se @code{true}, maxima ir@'a interromper a factora@value{cedilha}@~ao de
+Se @code{true}, maxima ir@'a interromper a factoriza@value{cedilha}@~ao de
 inteiros se nenhum factor for encontrado ap@'os tentar divis@~oes e o m@'etodo rho de
-Pollard e a factora@value{cedilha}@~ao n@~ao ser@'a completada.
+Pollard e a factoriza@value{cedilha}@~ao n@~ao ser@'a completada.
 
 Quando @code{intfaclim} for @code{false} (esse @'e o caso quando o utilizador
-chama @code{factor} explicitamente), a factora@value{cedilha}@~ao completa ser@'a
+chama @code{factor} explicitamente), a factoriza@value{cedilha}@~ao completa ser@'a
 tentada.  @code{intfaclim} @'e escolhida para @code{false} quando factores s@~ao
 calculados em @code{divisors}, @code{divsum} e @code{totient}.
 @c ANY OTHERS ??
@@ -747,7 +747,7 @@ calculados em @code{divisors}, @code{divsum} e @code{totient}.
 Chamadas internas a @code{factor} respeitam o valor especificado pelo utilizador para
 @code{intfaclim}.  Setting @code{intfaclim} to @code{true} may reduce
 @code{intfaclim}.  Escolhendo @code{intfaclim} para @code{true} podemos reduzir
-o tempo gasto factorando grandes inteiros.
+o tempo gasto factorizando grandes inteiros.
 @c NEED EXAMPLES HERE
 
 @end defvr
@@ -825,9 +825,10 @@ tal que @code{@var{a} @var{p} + @var{k}} seja igual a @var{n} para algum inteiro
 
 @c WHAT CAN THIS MEAN ?? IS THE MODULUS STORED WITH THE EXPRESSION ??
 @c "... in order to get correct results" -- WHAT DO YOU GET IF YOU DON'T RE-RAT ??
-Se @var{expr} j@'a estiver na forma de express@~ao racional can@'onica (CRE) quando @code{modulus} for colocado em seu valor original,
-ent@~ao voc@^e pode precisar repetir o rat @var{expr}, e.g., @code{expr: rat (ratdisrep (expr))},
-com o objectivo de obter resultados correctos.
+Se @var{expr} j@'a estiver na forma de express@~ao racional can@'onica
+(CRE) quando @code{modulus} for colocado no seu valor original, ent@~ao
+pode precisar repetir o rat @var{expr}, e.g., @code{expr: rat (ratdisrep
+(expr))}, com o objectivo de obter resultados correctos.
 
 Tipicamente @code{modulus} @'e escolhido para um n@'umero primo.
 Se @code{modulus} for escolhido para um inteiro n@~ao primo positivo,
@@ -969,10 +970,10 @@ Por exemplo, @code{rat(x)- x} retorna
 @code{rat(0)} que tem uma representa@value{cedilha}@~ao interna diferente de 0.
 
 @c WHAT'S THIS ABOUT EXACTLY ??
-Quando @code{ratfac} for @code{true}, @code{rat} retorna uma forma parcialmente factorada para CRE.
+Quando @code{ratfac} for @code{true}, @code{rat} retorna uma forma parcialmente factorizada para CRE.
 Durante opera@value{cedilha}@~oes racionais a express@~ao @'e
-mantida como totalmente factorada como poss@'{@dotless{i}}vel sem uma chamada ao
-pacote de factora@value{cedilha}@~ao (@code{factor}).  Isso pode sempre economizar espa@value{cedilha}o de mem@'oria e algum tempo
+mantida como totalmente factorizada como poss@'{@dotless{i}}vel sem uma chamada ao
+pacote de factoriza@value{cedilha}@~ao (@code{factor}).  Isso pode sempre economizar espa@value{cedilha}o de mem@'oria e algum tempo
 em algumas computa@value{cedilha}@~oes.  O numerador e o denominador s@~ao ainda tidos como
 relativamente primos
 (e.g.  @code{rat ((x^2 - 1)^4/(x + 1)^2)} retorna @code{(x - 1)^4 (x + 1)^2)},
@@ -1276,10 +1277,10 @@ Exemplos:
 Valor Padr@~ao: @code{false}
 
 Quando @code{ratfac} for @code{true},
-express@~oes racionais can@'onicas (CRE) s@~ao manipuladas na forma parcialmente factorada.
+express@~oes racionais can@'onicas (CRE) s@~ao manipuladas na forma parcialmente factorizada.
 
 Durante opera@value{cedilha}@~oes racionais a
-express@~ao @'e mantida como completamente factorada como foi poss@'{@dotless{i}}vel sem chamadas a @code{factor}.
+express@~ao @'e mantida como completamente factorizada como foi poss@'{@dotless{i}}vel sem chamadas a @code{factor}.
 Isso pode sempre economizar espa@value{cedilha}o e pode economizar tempo em algumas computa@value{cedilha}@~oes.
 O numerador e o denominador s@~ao feitos relativamente primos, por exemplo
 @code{rat ((x^2 - 1)^4/(x + 1)^2)} retorna @code{(x - 1)^4 (x + 1)^2)},
@@ -1287,7 +1288,7 @@ mas o factor dentro de cada parte pode n@~ao ser relativamente primo.
 
 No pacote @code{ctensor} (Manipula@value{cedilha}@~ao de componentes de tensores),
 tensores de Ricci, Einstein, Riemann, e de Weyl e a curvatura escalar 
-s@~ao factorados automaticamente quando @code{ratfac} for @code{true}.
+s@~ao factorizados automaticamente quando @code{ratfac} for @code{true}.
 @i{@code{ratfac} pode somente ser
 escolhido para casos onde as componentes tensoriais sejam sabidametne consistidas de
 poucos termos.}
@@ -1563,14 +1564,14 @@ em @var{p_1} e @var{p_2},
 que @'e igual a zero
 se e somente se @var{p_1} e @var{p_2} tiverem um factor em comum n@~ao constante.
 
-Se @var{p_1} ou @var{p_2} puderem ser factorados,
+Se @var{p_1} ou @var{p_2} puderem ser factorizados,
 pode ser desej@'avel chamar @code{factor} antes de chamar @code{resultant}.
 
-A vari@'avel @code{resultant} controla que algor@'{@dotless{i}}tmo ser@'a usado para calcular
+A vari@'avel @code{resultant} controla que algoritmo ser@'a usado para calcular
 o resultante.
 @c WHAT DOES THE FOLLOWING MEAN EXACTLY ??
 @code{subres} para o prs subresultante,
-@code{mod} para o algor@'{@dotless{i}}tmo resultante modular,
+@code{mod} para o algoritmo resultante modular,
 e @code{red} para prs reduzido.
 Para muitos problemas @code{subres} pode ser melhor.
 Para alguns problemas com valores grandes de grau de uma @'unica vari@'avel ou de duas vari@'aveis @code{mod} pode ser melhor.
@@ -1587,7 +1588,7 @@ Valor Padr@~ao: @code{false}
 @c "certain functions" -- WHICH ONES ??
 Quando @code{savefactors} for @code{true}, faz com que os factores de uma
 express@~ao que @'e um produto de factores sejam gravados por certas
-fun@value{cedilha}@~oes com o objectivo de aumentar a velocidade em posteriores factora@value{cedilha}@~oes de express@~oes
+fun@value{cedilha}@~oes com o objectivo de aumentar a velocidade em posteriores factoriza@value{cedilha}@~oes de express@~oes
 contendo algum desses mesmos factores.
 
 @end defvr
@@ -1596,7 +1597,7 @@ contendo algum desses mesmos factores.
 @deffn {Fun@value{cedilha}@~ao} sqfr (@var{expr})
 @'e similar a @code{factor} excepto que os factores do polin@'omio s@~ao "livres de ra@'{@dotless{i}}zes".
 Isto @'e, eles possuem factores somente de grau um.
-Esse algor@'{@dotless{i}}tmo, que @'e tamb@'em usado no primeiro est@'agio de @code{factor}, utiliza
+Esse algoritmo, que @'e tamb@'em usado no primeiro est@'agio de @code{factor}, utiliza
 o facto que um polin@'omio tem em comum com sua n'@'esima derivada todos
 os seus factores de grau maior que n.  Dessa forma obtendo o maior divisor comum
 com o polin@'omio das

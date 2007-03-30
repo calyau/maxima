@@ -8,9 +8,9 @@
 @node Introdu@value{cedilha}@~ao a lbfgs, Defini@value{cedilha}@~oes para lbfgs, Top, Top
 @section Introdu@value{cedilha}@~ao a lbfgs
 
-@code{lbfgs} @'e uma implementa@value{cedilha}@~ao do algor@'{@dotless{i}}tmo[1] L-BFGS (Broyden-Fletcher-Goldfarb-Shanno)
-para resolver problemas de minimiza@value{cedilha}@~ao n@~ao limitada atrav@'es de um algor@'{@dotless{i}}tmo de mem@'oria limitada quasi-Newton (BFGS).
-Esse algor@'{@dotless{i}}tmo @'e chamado de m@'etodo de mem@'oria limitada porque uma aproxima@value{cedilha}@~ao de baixo ranque da
+@code{lbfgs} @'e uma implementa@value{cedilha}@~ao do algoritmo[1] L-BFGS (Broyden-Fletcher-Goldfarb-Shanno)
+para resolver problemas de minimiza@value{cedilha}@~ao n@~ao limitada atrav@'es de um algoritmo de mem@'oria limitada quasi-Newton (BFGS).
+Esse algoritmo @'e chamado de m@'etodo de mem@'oria limitada porque uma aproxima@value{cedilha}@~ao de baixo ranque da
 inverso da matriz Hessiana @'e armazenado em lugar da inversa da matriz Hessiana completa.
 O programa foi escrito origin@'ariamente em Fortran [2] por Jorge Nocedal,
 incorporando algumas fun@value{cedilha}@~oes originalmente escritas por Jorge J. Mor@'e e David J. Thuente,
@@ -35,8 +35,8 @@ sobre a lista de vari@'aveis @var{X},
 come@value{cedilha}ando a partir da estimativa inicial @var{X0},
 tal que @math{norm grad FOM < epsilon max(1, norm X)}.
 
-O algor@'{@dotless{i}}tmo aplicado @'e um algor@'{@dotless{i}}tmo de mem@'oria limitada[1] quasi-Newton (BFGS).
-Esse algor@'{@dotless{i}}tmo @'e chamado de m@'etodo de mem@'oria limitada porque uma aproxima@value{cedilha}@~ao de baixo ranque da
+O algoritmo aplicado @'e um algoritmo de mem@'oria limitada[1] quasi-Newton (BFGS).
+Esse algoritmo @'e chamado de m@'etodo de mem@'oria limitada porque uma aproxima@value{cedilha}@~ao de baixo ranque da
 inverso da matriz Hessiana @'e armazenado em lugar da inversa da matriz Hessiana completa.
 
 @var{iprint} controla as messaens de progresso mostradas atrav@'es de @code{lbfgs}.

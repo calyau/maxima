@@ -496,7 +496,7 @@ ou da forma @code{[@var{LU}, @var{perm}, @var{cmp}, @var{baixo-cnd} @var{alto-cn
         operador ponto n@~ao comutativo.       
 
 Quando o corpo for @code{floatfield}, @code{complexfield}, ou
-@code{runningerror}, o algor@'{@dotless{i}}tmo usa pivotagem parcial; para todos
+@code{runningerror}, o algoritmo usa pivotagem parcial; para todos
 os outros corpos, linhas s@~ao comutadas somente quando necess@'ario para evitar um piv@^o
 nulo.
 
@@ -655,7 +655,7 @@ Dessa forma se cada entrada de @var{M} for matriz, @code{mat_unblocker (M)} reto
 matriz "desblocada", mas se cada entrada de @var{M} for uma matriz de bloco, @code{mat_unblocker (M)} 
 retorna uma matriz de bloco com um n@'{@dotless{i}}vel de bloco a menos.
 
-Se voc@^e usa matrizes de bloco, muito provavelmente voc@^e ir@'a querer escolher @code{matrix_element_mult} para 
+Se usar matrizes de bloco, muito provavelmente ir@'a querer escolher @code{matrix_element_mult} para 
 @code{"."} e @code{matrix_element_transpose} para @code{'transpose}. Veja tamb@'em @code{mat_fullunblocker}.
 
 Exemplo:
@@ -729,8 +729,8 @@ Cada vector no intervalo de @var{v_1} at@'e @var{v_n} deve ser um vector coluna.
 Retorna @code{true} se @var{p} for um polin@'omio nas vari@'aveis da lista @var{L},
 O predicado @var{coeffp} deve avaliar para @code{true} para cada
 coeficiente, e o predicado @var{exponp} deve avaliar para @code{true} para todos os 
-expoentes das vari@'aveis na lista @var{L}. Se voc@^e quiser usar um valor
-personalizado para @var{exponp}, voc@^e deve fornecer @var{coeffp} com um valor mesmo se voc@^e quiser
+expoentes das vari@'aveis na lista @var{L}. Se quiser usar um valor
+personalizado para @var{exponp}, dever@'a fornecer @var{coeffp} com um valor mesmo se quiser
 o valor padr@~ao para @var{coeffp}.
 
 @c WORK THE FOLLOWING INTO THE PRECEDING

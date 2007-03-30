@@ -63,7 +63,8 @@ essas vari@'aveis s@~ao tamb@'em anexadas @`a lista @code{%rnum_list}.
 
 O m@'etodo usado @'e o seguinte:
 
-(1) Primeiro as equa@value{cedilha}@~oes s@~ao factoradas e quebradas em subsistemas.
+(1) Primeiro as equa@value{cedilha}@~oes s@~ao factorizaadas e quebradas
+em subsistemas.
 
 (2) Para cada subsistema @var{S_i}, uma equa@value{cedilha}@~ao @var{E} e uma vari@'avel @var{x} s@~ao
 seleccionados.
@@ -176,17 +177,18 @@ complexo.
 @code{allroots} pode retornar resultados imprecisos no caso de m@'ultiplas ra@'{@dotless{i}}zes.
 Se o polin@'omio for real, @code{allroots (%i*@var{p})}) pode retornar
 aproxima@value{cedilha}@~oes mais precisas que @code{allroots (@var{p})},
-como @code{allroots} invoca um algor@'{@dotless{i}}tmo diferente naquele caso.
+como @code{allroots} invoca um algoritmo diferente naquele caso.
 
-@code{allroots} rejeita n@~ao-polin@'omios.  Isso requer que o numerador
-ap@'os a classifica@value{cedilha}@~ao (@code{rat}'ing) poder@'a ser um polin@'omio, e isso requer que o
-denominador seja quando muito um n@'umero complexo.  Com um resultado disso @code{allroots}
-ir@'a sempre retornar uma express@~ao equivalente (mas factorada), se
-@code{polyfactor} for @code{true}.
+@code{allroots} rejeita expresso@~oes que n@~ao sejam polin@'omios.
+Isso requer que o numerador ap@'os a classifica@value{cedilha}@~ao
+(@code{rat}'ing) poder@'a ser um polin@'omio, e isso requer que o
+denominador seja quando muito um n@'umero complexo.  Com esse tipo
+resultado @code{allroots} ir@'a sempre produzir uma express@~ao
+equivalente (mas factorizada), se @code{polyfactor} for @code{true}.
 
-Para polin@'omios complexos um algor@'{@dotless{i}}tmo por Jenkins e Traub @'e
+Para polin@'omios complexos um algoritmo por Jenkins e Traub @'e
 usado (Algorithm 419, @i{Comm.  ACM}, vol.  15, (1972), p.  97).
-Para polin@'omios reais o algor@'{@dotless{i}}tmo usado @'e devido a Jenkins (Algorithm 493, @i{ACM TOMS},
+Para polin@'omios reais o algoritmo usado @'e devido a Jenkins (Algorithm 493, @i{ACM TOMS},
 vol.  1, (1975), p.178).
 
 Exemplos:
@@ -249,7 +251,7 @@ Valor por omiss@~ao: @code{true}
 
 Quando @code{breakup} @'e @code{true}, @code{solve} expressa solu@value{cedilha}@~oes
 de equa@value{cedilha}@~oes c@'ubicas e qu@'articas em termos de subexpress@~oes comuns,
-que s@~ao atribu@'{@dotless{i}}das a r@'otulos de express@~oes intermedi@'arias (@code{%t1}, @code{%t2}, etc.).
+que s@~ao atribu@'{@dotless{i}}das a r@'otulos de express@~oes interm@'edias (@code{%t1}, @code{%t2}, etc.).
 De outra forma, subexpress@~oes comuns n@~ao s@~ao identificadas.
 
 @code{breakup: true} tem efeito somente quando @code{programmode} @'e @code{false}.
@@ -560,7 +562,7 @@ De outra forma, @code{linsolve} resolve um menor-determinado sistema de
 equa@value{cedilha}@~oes com algumas vari@'aveis expressas em termos de outras.
 
 Quando @code{programmode} for @code{false},
-@code{linsolve} mostra a solu@value{cedilha}@~ao com express@~oes intermedi@'arias com r@'otulos (@code{%t}),
+@code{linsolve} mostra a solu@value{cedilha}@~ao com express@~oes interm@'edias com r@'otulos (@code{%t}),
 e retorna a lista de r@'otulos.
 
 @c ===beg===
@@ -697,7 +699,7 @@ retornam solu@value{cedilha}@~oes como elementos em uma lista.
 @code{programmode: false} @'e assumido.)
 
 Quando @code{programmode} @'e @code{false}, @code{solve}, etc.
-cria r@'otulos de express@~oes intermedi@'arias
+cria r@'otulos de express@~oes interm@'edias
 @code{%t1}, @code{t2}, etc., e atribui as solu@value{cedilha}@~oes para eles.
 @c NEED AN EXAMPLE HERE
 
@@ -737,7 +739,7 @@ Quando @var{bound} n@~ao for especificado, ser@'a assumido como sendo igual @`a 
 Quando a var@'avel global @code{programmode} for @code{true},
 @code{realroots} retorna uma lista da forma @code{[x = @var{x_1}, x = @var{x_2}, ...]}.
 Quando @code{programmode} for @code{false},
-@code{realroots} cria r@'otulos de express@~oes intermedi@'arias @code{%t1}, @code{%t2}, ...,
+@code{realroots} cria r@'otulos de express@~oes interm@'edias @code{%t1}, @code{%t2}, ...,
 atribui os resultados a eles, e retorna a lista de r@'otulos.
 
 Exemplos:
@@ -1119,8 +1121,9 @@ Valor por omiss@~ao: @code{true}
 
 @c WHAT IS THIS ABOUT EXACTLY ??
 Quando @code{solvefactors} @'e @code{false}, @code{solve} n@~ao tenta
-factorar a express@~ao.  O @code{false} escolhido pode ser desejado em alguns casos
-onde a factora@value{cedilha}@~ao n@~ao @'e necess@'aria.
+factorizar a express@~ao. A escolha do @code{false} poder@'a ser @'util
+em alguns casos onde a factoriza@value{cedilha}@~ao n@~ao @'e
+necess@'aria.
 @c NEED AN EXAMPLE HERE
 
 @end defvr

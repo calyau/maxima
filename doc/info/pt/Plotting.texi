@@ -578,7 +578,7 @@ Op@,{c}@~ao: @code{gnuplot_preamble} Insere comandos antes que o
 gr@'afico seja desenhado. Quaisquer comandos v@'alidos para o gnuplot
 podem ser usados. Multiplos comandos podem ser separados com um ponto
 e v@'{@dotless{i}}rgula. O exemplo mostrado produz uma escala
-logar@'{@dotless{i}}tmica no gr@'afico. O valor padr@~ao para
+logaritmica no gr@'afico. O valor padr@~ao para
 @code{gnuplot_preamble} @'e uma sequ@^encia de caracteres vazia
 @code{""}.
 

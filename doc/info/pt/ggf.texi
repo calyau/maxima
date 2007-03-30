@@ -16,8 +16,8 @@ fun@value{cedilha}@~ao geradora, um quociente parcial tendo um grau
 (estritamente) maior que @var{GGFINFINITY} ser@'a descartado e
 o convergente actual ser@'a considerado como o valor exato
 da fun@value{cedilha}@~ao geradora; na grande mioria dos casos o grau de todos
-os quocientes parciais ser@'a ou 0 ou 1; se voc@^e usar um valor muito grande,
-ent@~ao voc@^e poder@'a fornecer termos suficientes com o objectivo de fazer o
+os quocientes parciais ser@'a ou 0 ou 1; se usar um valor muito grande,
+ent@~ao poder@'a fornecer termos suficientes com o objectivo de fazer o
 c@'alculo preciso o bastante.
 
 Veja tamb@'em @code{ggf}.

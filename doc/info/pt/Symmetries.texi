@@ -840,7 +840,7 @@ important to not include in the list @code{[@var{x_1}, ..., @var{x_d}]}
 variables which do not appear in the transformation function @var{f}.
 
 Para melhorar a efici@^encia do c@'alculo se pode escolher sinalizadores em
-@code{resolvante} de fora a usar os algor@'{@dotless{i}}tmos apropriados:
+@code{resolvante} de fora a usar os algoritmos apropriados:
 
 Se a fun@value{cedilha}@~ao @var{f} for unit@'aria :
 @itemize @bullet

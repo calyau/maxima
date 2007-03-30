@@ -7,12 +7,12 @@
 @node Introdu@value{cedilha}@~ao a zeilberger, Defini@value{cedilha}@~oes para zeilberger, zeilberger, zeilberger
 @section Introdu@value{cedilha}@~ao a zeilberger
 
-@code{zeilberger} @'e uma implementa@value{cedilha}@~ao do algor@'{@dotless{i}}tmo de Zeilberger
+@code{zeilberger} @'e uma implementa@value{cedilha}@~ao do algoritmo de Zeilberger
 para somat@'orio hipergeom@'etricos definidos, e tamb@'em 
-para o algor@'{@dotless{i}}tmo de Gosper para somat@'orios hipergeom@'etricos
+para o algoritmo de Gosper para somat@'orios hipergeom@'etricos
 indefinidos.
 
-@code{zeilberger} faz uso do m@'etodo de otimiza@value{cedilha}@~ao "filtering" desenvolvido por Axel Riese.
+@code{zeilberger} faz uso do m@'etodo de optimiza@value{cedilha}@~ao "filtering" desenvolvido por Axel Riese.
 
 @code{zeilberger} foi desenvolvido por Fabrizio Caruso.
 
@@ -20,14 +20,14 @@ indefinidos.
 
 @subsubsection O problema dos somat@'orios hipergeom@'etricos indefinidos
 
-@code{zeilberger} implementa o algor@'{@dotless{i}}tmo de Gosper
+@code{zeilberger} implementa o algoritmo de Gosper
 para somat@'orio hipergeom@'etrico indefinido.
 Dado um termo hipergeom@'etrico @math{F_k} em @math{k} queremos encontrar sua anti-diferen@value{cedilha}a
 hipergeom@'etrica, isto @'e, um termo hipergeom@'etrico @math{f_k} tal que @math{F_k = f_(k+1) - f_k}.
 
 @subsubsection O problema dos somat@'orios hipergeom@'etricos definidos
 
-@code{zeilberger} implementa o algor@'{@dotless{i}}tmo de Zeilberger
+@code{zeilberger} implementa o algoritmo de Zeilberger
 para somat@'orio hipergeom@'etrico definido.
 Dado um termo hipergeom@'etrico apropriado (em @math{n} e @math{k}) @math{F_(n,k)} e um
 inteiro positivo @math{d} queremos encontrar um @math{d}-@'esima ordem de recorr@^encia
@@ -48,12 +48,12 @@ que s@~ao chamados (os n@'{@dotless{i}}veis) atrav@'es da adi@value{cedilha}@~ao
 @item Summary
 Apenas um sum@'ario @'e mostrado no final
 @item Verbose
-Algumas informa@value{cedilha}@~oes nos passos intermedi@'arios
+Algumas informa@value{cedilha}@~oes nos passos interm@'edios
 @item VeryVerbose
 Muita informa@value{cedilha}@~ao
 @item Extra
 Muito mais informa@value{cedilha}@~ao incluindo informa@value{cedilha}@~ao sobre
-o sistema linear no algor@'{@dotless{i}}tmo de Zeilberger
+o sistema linear no algoritmo de Zeilberger
 @end table
 
 Por exemplo:
@@ -144,7 +144,7 @@ Dependent equations eliminated:  (1)
 @deffn {Fun@value{cedilha}@~ao} parGosper (@var{F_@{n,k@}}, @var{k}, @var{n}, @var{d})
 Tenta encontrar uma recorr@^encia de @var{d}-@'esima ordem para @var{F_@{n,k@}}.
 
-O algor@'{@dotless{i}}tmo retorna uma sequ@^encia
+O algoritmo retorna uma sequ@^encia
 @math{[s_1, s_2, ..., s_m]} de solu@value{cedilha}@~oes.
 Cada solu@value{cedilha}@~ao tem a forma
 
@@ -161,7 +161,7 @@ Tenta calcular o somat@'orio hipergeom@'etrico indefinido de @var{F_@{n,k@}}.
 Se Zeilberger encontrar uma solu@value{cedilha}@~ao antes de esticar @code{MAX_ORD},
 Zeilberger para e retorna a solu@value{cedilha}@~ao.
 
-O algor@'{@dotless{i}}tmo retorna uma sequ@^encia
+O algoritmo retorna uma sequ@^encia
 @math{[s_1, s_2, ..., s_m]} de solu@value{cedilha}@~oes.
 Cada solu@value{cedilha}@~ao tem a forma
 
@@ -192,7 +192,7 @@ simplifica@value{cedilha}@~ao adicional da solu@value{cedilha}@~ao.
 Valor por omiss@~ao: @code{linsolve}
 
 @code{linear_solver} nomeia o resolvedor que @'e usado para resolver o sistema
-de equa@value{cedilha}@~oes no algor@'{@dotless{i}}tmo de Zeilberger.
+de equa@value{cedilha}@~oes no algoritmo de Zeilberger.
 @end defvr
 
 @defvr {Vari@'avel global} warnings

@@ -99,7 +99,7 @@ distribu@'{@dotless{i}}dos sobre as somas em todos os
 n@'{@dotless{i}}veis de @var{expr}.
 
 Para polin@'omios se pode usar frequ@^entemente @code{ratexpand} que
-possui um algor@'{@dotless{i}}tmo mais eficiente.
+possui um algoritmo mais eficiente.
 
 @code{maxnegex} e @code{maxposex} controlam o m@'aximo expoente negativo
 e o m@'aximo expoente positivo, respectivamente, que ir@~ao expandir.

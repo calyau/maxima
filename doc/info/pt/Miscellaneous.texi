@@ -74,9 +74,10 @@ Exemplo:
 Procura por nomes Maxima que possuem @var{string} aparecendo em qualquer lugar dentro
 de seu nome.  Dessa forma, @code{apropos (exp)} retorna uma lista de todos os sinalizadores
 e fun@value{cedilha}@~oes que possuem @code{exp} como parte de seus nomes, tais como @code{expand},
-@code{exp}, e @code{exponentialize}.  Dessa forma voc@^e pode somente lembra parte do nome
-de alguma coisa voc@^e pode usar esse comando para achar o restante do nome.
-Similarmente, voc@^e pode dizer @code{apropos (tr_)} para achar uma lista de muitos dos
+@code{exp}, e @code{exponentialize}.  Dessa forma, se lembrar apenas uma
+parte do nome
+de alguma coisa, pode usar este comando para achar o restante do nome.
+Similarmente, pode dizer @code{apropos (tr_)} para achar uma lista de muitos dos
 comutadores relatando para o tradutor, muitos dos quais come@value{cedilha}am com @code{tr_}.
 
 @end deffn

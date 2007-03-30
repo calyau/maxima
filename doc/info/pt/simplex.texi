@@ -7,7 +7,7 @@
 @node Introdu@value{cedilha}@~ao a simplex, Defini@value{cedilha}@~oes para simplex, simplex, simplex
 @section Introdu@value{cedilha}@~ao a simplex
 
-@code{simplex} @'e um pacote para otimiza@value{cedilha}@~ao linear usando o algor@'{@dotless{i}}tmo simplex.
+@code{simplex} @'e um pacote para optimiza@value{cedilha}@~ao linear usando o algoritmo simplex.
 
 Exemplo:
 
@@ -37,7 +37,7 @@ Veja tamb@'em: @code{linear_program}.
 
 @deffn {Fun@value{cedilha}@~ao} linear_program (@var{A}, @var{b}, @var{c})
 
-@code{linear_program} @'e uma implementa@value{cedilha}@~ao do algor@'{@dotless{i}}tmo simplex.
+@code{linear_program} @'e uma implementa@value{cedilha}@~ao do algoritmo simplex.
 @code{linear_program(A, b, c)} calcula um vetor @var{x} para o qual @code{c.x} @'e o m@'{@dotless{i}}nimo
 poss@'{@dotless{i}}vel entre vetores para os quais @code{A.x = b} e @code{x >= 0}. O argumento
 @var{A} @'e uma matriz e os argumentos @var{b} e @var{c} s@~ao listas.
@@ -101,7 +101,7 @@ Se somente algumas das vari@'aveis de decis@~ao forem positivas, coloque-as ent@
 opcional @var{pos} (note que isso @'e mais eficiente que adicionar
 restri@value{cedilha}@~oes).
 
-@code{minimize_sx} utiliza o algor@'{@dotless{i}}tmo simplex que @'e implementado na fun@value{cedilha}@~ao
+@code{minimize_sx} utiliza o algoritmo simplex que @'e implementado na fun@value{cedilha}@~ao
 @code{linear_program} do Maxima.
 
 Para usar essa fun@value{cedilha}@~ao primeiramente chame o pacote @code{simplex} com @code{load(simplex);}.

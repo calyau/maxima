@@ -95,7 +95,7 @@ para estimar uma associa@value{cedilha}@~ao superior para o erro. Por exemplo,
 intervalos possuem a forma @code{interval (@var{c}, @var{r})}, onde @var{c} @'e o
 centro e @var{r} @'e o raio do intervalo. Uma vez que Maxima
 n@~ao suporta aritm@'etica sobre intervalos, em algumas situa@value{cedilha}@~oes, tais
-como em gr@'aficos, voc@^e vai querer suprimir o erro e sair somente com o
+como em gr@'aficos, vai querer suprimir o erro e sair somente com o
 centro do intervalo. Para fazer isso, escolha a vari@'avel de
 op@value{cedilha}@~ao @code{orthopoly_returns_intervals} para @code{false}.
 
@@ -200,7 +200,7 @@ No segundo exemplo, o elemento @code{i, j} do valor
                     [     0      4 x y - 2 ]
 @end example
 
-Se voc@^e avaliar uma fun@value{cedilha}@~ao em um ponto fora do seu dom@'{@dotless{i}}nio, geralmente
+Se avaliar uma fun@value{cedilha}@~ao em um ponto fora do seu dom@'{@dotless{i}}nio, geralmente
 @code{orthopoly} retorna uma fun@value{cedilha}@~ao n@~ao avaliada. Por exemplo,
 
 @c ===beg===
@@ -240,12 +240,14 @@ $$P_@{n@}^@{\left(a,a-b\right)@}\left(@{@{x@}\over@{2@}@}\right)$$
 
 @subsection Limitations
 
-Quando uma express@~ao envolve muitos polin@'omios ortogonais com
-ordens simb@'olicas, @'e poss@'{@dotless{i}}vel que a express@~ao actualmente
-tenda para zero, e ainda ocorre tamb@'em que Maxima estar incapacitado de simplificar essa express@~ao para zero. Se voc@^e
-faz uma divis@~ao por tal quantidade que tende a zero, voc@^e pode estar em apuros. Por exemplo,
-a seguinte express@~ao tende para zero para inteiros @var{n} maiores que 1, e ainda ocorre tamb@'em que  Maxima
-est@'a incapacitado de simplificar essa express@~ao para zero.
+Quando uma express@~ao envolve muitos polin@'omios ortogonais com ordens
+simb@'olicas, @'e poss@'{@dotless{i}}vel que a express@~ao actualmente
+tenda para zero, e ainda ocorre tamb@'em que Maxima estar incapacitado
+de simplificar essa express@~ao para zero. Se fizer uma divis@~ao por
+tal quantidade que tende a zero, poder@'a ficar em apuros. Por exemplo,
+a seguinte express@~ao tende para zero para inteiros @var{n} maiores que
+1, e ainda ocorre tamb@'em que Maxima est@'a incapacitado de simplificar
+essa express@~ao para zero.
 
 @c ===beg===
 @c (2*n - 1) * legendre_p (n - 1, x) * x - n * legendre_p (n, x) + (1 - n) * legendre_p (n - 2, x);
@@ -306,9 +308,9 @@ Essa n@~ao @'e uma regra geral; expandindo o polin@'omio n@~ao resulta sempre
 em express@~oes que s@~ao melhores adaptadas a avalia@value{cedilha}@~ao num@'erica.
 Com grande folga, o melhor caminho para fazer avalia@value{cedilha}@~ao num@'erica @'e fazer um ou mais
 argumentos da fun@value{cedilha}@~ao serem n@'umeros em ponto flutuante. Em fun@value{cedilha}@~ao disso, 
-algor@'{@dotless{i}}tmos especializados em ponto flutuante s@~ao usados para avalia@value{cedilha}@~ao.
+algoritmos especializados em ponto flutuante s@~ao usados para avalia@value{cedilha}@~ao.
 
-A fun@value{cedilha}@~ao @code{float} do Maxima @'e at@'e certo ponto indiscriminada; se voc@^e aplicar 
+A fun@value{cedilha}@~ao @code{float} do Maxima @'e at@'e certo ponto indiscriminada; se aplicar 
 @code{float} a uma express@~ao envolvendo um polin@'omio ortogonal com um
 grau simb@'olico ou um par@^ametro de ordem, esses par@^ametos (inteiros) podem ser 
 convertido em n@'umeros em ponto flutuante; ap@'os o que, a express@~ao n@~ao ir@'a avaliar 
@@ -360,7 +362,7 @@ Aplicando @code{float} n@~ao avalia @var{x} para um n@'umero em ponto flutuante
                                  10.0
 @end example
 
-Para avaliar @var{x} para um n@'umero em ponto flutuante, voc@^e ir@'a precisar associar
+Para avaliar @var{x} para um n@'umero em ponto flutuante, ir@'a precisar associar
 @code{pochhammer_max_index} a 11 ou mais e aplicar @code{float} a @var{x}.
 
 @c CONTINUING PREVIOUS EXAMPLE HERE
@@ -379,7 +381,7 @@ Finalmente, tenha consci@^encia que os livros citados nas refer@^encias adotam d
 polin@'omios ortogonais; geralmente adotamos as conven@value{cedilha}@~oes 
 citadas nas conven@value{cedilha}@~oes de Abramowitz e Stegun.
 
-Antes de voc@^e suspeitar de um erro no pacote @code{orthopoly}, verifique alguns casos especiais 
+Antes de suspeitar de um erro no pacote @code{orthopoly}, verifique alguns casos especiais 
 para determinar se suas defini@value{cedilha}@~oes coincidem com aquelas usadas por @code{orthopoly}. 
 Definitions muitas vezes diferem por uma normaliza@value{cedilha}@~ao; ocasionalmente, autores
 utilizam vers@~oes ``modificadas'' das fun@value{cedilha}@~oes que fazem a fam@'{@dotless{i}}lia
@@ -519,8 +521,8 @@ e o resultado final @'e n@'umero em ponto flutuante de precis@~ao dupla.
 
 @subsection Gr@'aficos e @code{orthopoly}
 
-Para montar gr@'aficos de express@~oes que envolvem polin@'omios ortogonais, voc@^e 
-deve azer duas coisas:
+Para desenhar gr@'aficos de express@~oes que envolvem polin@'omios
+ortogonais, dever@'a fazer duas coisas:
 @enumerate
 @item 
 Escolher a vari@'avel de op@value{cedilha}@~ao @code{orthopoly_returns_intervals} para @code{false},
@@ -588,7 +590,7 @@ function.
                            n    0
 @end example
 
-Voc@^eprecisa ser cuidadoso com express@~oes como (%o1); a diferen@value{cedilha}a das
+@'E preciso ser cuidadoso com express@~oes como (%o1); a diferen@value{cedilha}a das
 fun@value{cedilha}@~oes @code{psi} possuem polin@'omios quando @code{@var{x} = -1, -2, .., -@var{n}}. Esses polin@'omios
 cacelam-se com factores em @code{pochhammer (@var{x}, @var{n})} fazendo da derivada um polin@'omio
 de grau @code{@var{n} - 1} quando @var{n} for um inteiro positivo.
@@ -633,8 +635,10 @@ A fun@value{cedilha}@~ao passo de unidade @'e cont@'{@dotless{i}}nua @`a esquerd
 (%o1)                       [0, 0, 1]
 @end example
 
-Se voc@^e precisa de uma fun@value{cedilha}@~ao de unidade de passo que @'e ou cont@'{@dotless{i}}nua @`a esquerda ou cont@'{@dotless{i}}nua @`a direita
-em zero, defina sua pr@'opria fun@value{cedilha}@~ao de unidade de passo usando @code{signum}; por exemplo,
+Se precisar de uma fun@value{cedilha}@~ao de degrau unit@'ario que seja
+ou cont@'{@dotless{i}}nua @`a esquerda ou cont@'{@dotless{i}}nua @`a
+direita do zero, defina a sua pr@'opria fun@value{cedilha}@~ao usando
+@code{signum}; por exemplo,
 
 @c ===beg===
 @c xunit_step (x) := (1 + signum (x))/2$
@@ -927,8 +931,8 @@ A fun@value{cedilha}@~ao de passo de unidade cont@'{@dotless{i}}nua @`a esquerda
 @code{unit_step (@var{x})} tende para @code{@var{x} <= 0} e @'e igual a
 1 para @code{@var{x} > 0}.
 
-Se voc@^e quiser uma fun@value{cedilha}@~ao de passo de unidade que
-tome o valor 1/2 em zero, use @code{(1 + signum (@var{x}))/2}.
+Se quiser uma fun@value{cedilha}@~ao de degrau unit@'ario que tome o
+valor 1/2 em zero, use @code{(1 + signum (@var{x}))/2}.
 @end deffn
 
 @deffn {Fun@value{cedilha}@~ao} ultraspherical (@var{n}, @var{a}, @var{x})

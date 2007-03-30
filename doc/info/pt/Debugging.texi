@@ -129,17 +129,18 @@ Comandos palavra chave s@~ao palavras chaves especiais que n@~ao s@~ao interpret
 Um comando palavra chave pode ser inserido na linha de comando do Maxima ou na linha de comando do depurador,
 embora n@~ao possa ser inserido na linha de comando de parada.
 Comandos palavra chave iniciam com um dois pontos Keyword commands start with a colon, ':'.
-Por exemplo, para avaliar uma forma Lisp voc@^e
-pode digitar @code{:lisp} seguido pela forma a ser avaliada.  
+Por exemplo, para avaliar um comando do Lisp,
+pode escrever @code{:lisp} seguido pelo comando a ser avaliado.  
 
 @example
 (%i1) :lisp (+ 2 3) 
 5
 @end example
 
-O n@'umero de argumentos tomados depende do comando em particular.  Tamb@'em,
-voc@^e n@~ao precisa digitar o comando completo, apenas o suficiente para ser @'unico no meio
-das palavras chave de parada.   Dessa forma @code{:br} ser@'a suficiente para @code{:break}.
+O n@'umero de argumentos necess@'arios depende do comando em particular.
+Tamb@'em, n@~ao precisa escrever o comando completo, apenas o suficiente
+para ser @'unico no meio das palavras chave de parada. Dessa forma
+@code{:br} ser@'a suficiente para @code{:break}.
 
 Os comandos de palavra chave s@~ao listados abaixo.
 

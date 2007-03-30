@@ -15,8 +15,8 @@
 @section Fun@value{cedilha}@~ao
 @subsection Ordinary functions
 
-Para definir uma fun@value{cedilha}@~ao no Maxima voc@^e usa o operador :=.
-E.g.
+Para definir uma fun@value{cedilha}@~ao no Maxima usa-se o operador :=.
+Por exemplo,
 
 @example
 f(x) := sin(x)
@@ -43,9 +43,9 @@ map (lambda ([i], i+1), l)
 @noindent
 retornar@'a uma lista com 1 adicionado a cada termo.
 
-Voc@^e pode tamb@'em definir uma fun@value{cedilha}@~ao com um n@'umero vari@'avel de argumentos,
-teno um argumento final que @'e atribu@'{@dotless{i}}do para uma lista de argumentos
-extras:
+Pode tamb@'em definir uma fun@value{cedilha}@~ao com um n@'umero
+vari@'avel de argumentos, usando um argumento final que seja uma lista,
+na qual ser@~ao inseridos todos os argumentos adicionais:
 
 @example
 (%i1) f ([u]) := u;
@@ -58,17 +58,18 @@ extras:
 (%o4)                 [1, 2, [3, 4, 5, 6]]
 @end example
 
-O lado direito de uma fun@value{cedilha}@~ao @'e uma express@~ao.  Desse modo
-Se voc@^e quer uma sequ@^encia de express@~oes, voc@^e faz
-
+O lado direito na defini@value{cedilha}@~ao de uma
+fun@value{cedilha}@~ao @'e uma express@~ao. Assim, quando quiser que a
+defini@value{cedilha}@~ao seja uma sequ@^encia de express@~oes, poder@'a
+usar a forma
 @example
 f(x) := (expr1, expr2, ...., exprn);
 @end example
 
 e o valor de @var{exprn} @'e que @'e retornado pela fun@value{cedilha}@~ao.
 
-Se voc@^e deseja fazer um @code{return} de alguma express@~ao dentro da
-fun@value{cedilha}@~ao ent@~ao voc@^e deve usar @code{block} e @code{return}.
+Se quiser introduzir um ponto de @code{retorno} em alguma express@~ao dentro da
+fun@value{cedilha}@~ao, dever@'a usar @code{block} e @code{return}.
 
 @example
 block ([], expr1, ..., if (a > 10) then return(a), ..., exprn)
@@ -81,31 +82,35 @@ que o retorno aconte@value{cedilha}a mais facilmente que no exemplo anterior a e
 @c COPY THIS STUFF TO @defun block AS NEEDED
 @c ESPECIALLY STUFF ABOUT LOCAL VARIABLES
 O primeiro @code{[]} no bloco, pode conter uma lista de vari@'aveis e
-atribui@value{cedilha}@~oes de vari@'aveis, tais como @code{[a: 3, b, c: []]}, que far@~ao com que as
-tr@^es vari@'aveis @code{a},@code{b},e @code{c} n@~ao se refiram a seus
-valores globais, mas ao contr@'ario tenham esses valores especiais enquanto o
-c@'odigo estiver executando a parte dentro do bloco @code{block}, ou dentro da fun@value{cedilha}@~oes chamadas de
-dentro do bloco @code{block}.  Isso @'e chamado associa@value{cedilha}@~ao @i{dynamic}, uma vez que as
-vari@'aveis permanecem do in@'{@dotless{i}}cio do bloco pelo tempo que ele existir.  Uma vez que
-voc@^e retorna do @code{block}, ou descarta-o, os valores antigos (quaisquer que
-sejam) das vari@'aveis ser@~ao restaurados.   @'E certamente uma boa id@'eia
-para proteger suas vari@'aveis nesse caminho.   Note que as atribui@value{cedilha}@~oes
-em vari@'aveis do bloco, s@~ao conclu@'{@dotless{i}}das em paralelo.   Isso significa, que se
-tiver usado @code{c: a} acima, o valor de @code{c} ser@'a
-o valor de @code{a} a partir do momento em que voc@^entrou no bloco,
-mas antes @code{a} foi associado.   Dessa forma fazendo alguma coisa como
+atribui@value{cedilha}@~oes de vari@'aveis, tais como @code{[a: 3, b, c:
+[]]}, que far@~ao com que as tr@^es vari@'aveis @code{a},@code{b},e
+@code{c} n@~ao se refiram a seus valores globais, mas ao contr@'ario
+tenham esses valores especiais enquanto o c@'odigo estiver executando a
+parte dentro do bloco @code{block}, ou dentro da fun@value{cedilha}@~oes
+chamadas de dentro do bloco @code{block}.  Isso @'e chamado
+associa@value{cedilha}@~ao @i{dynamic}, uma vez que as vari@'aveis
+permanecem do in@'{@dotless{i}}cio do bloco pelo tempo que ele
+existir. Quando regressar do bloco @code{block}, ou o descartar, os
+valores antigos (quaisquer que sejam) das vari@'aveis ser@~ao
+restaurados.  @'E certamente uma boa id@'eia para proteger as suas
+vari@'aveis nesse caminho.  Note que as atribui@value{cedilha}@~oes em
+vari@'aveis do bloco, s@~ao realizadas em paralelo.  Isso
+significa, que se tivesse usado @code{c: a} acima, o valor de @code{c}
+seria o valor que @code{a} tinha antes do bloco, antes de ter obtido o
+seu novo valor atribu@'{@dotless{i}}do no bloco.  Dessa forma fazendo alguma
+coisa como
 
 @example
 block ([a: a], expr1, ...  a: a+3, ..., exprn)
 @end example
 
-proteger@'a o valor externo de @code{a} de ser alterado, mas
-impedir@'a voc@^e acessar o valor antigo.   Dessa forma o lado direito
-de atribui@value{cedilha}@~oes, @'e avaliado no contexto inserido, antes que
-qualquer avalia@value{cedilha}@~ao ocorra.
-Usando apenas @code{block ([x], ...} faremos com que o @code{x} ter a si mesmo
-como valor, apenas como tivesse voc@^e entrar numa breve sess@~ao
-@b{Maxima}.
+proteger@'a o valor externo de @code{a} de ser alterado, mas impedir@'a
+aceder ao valor antigo. Assim, o lado direito de
+atribui@value{cedilha}@~oes, @'e avaliado no contexto inserido, antes
+que qualquer avalia@value{cedilha}@~ao ocorra.  Usando apenas
+@code{block ([x], ...} faremos com que o @code{x} tenho como valor a si
+pr@'oprio; esse @'e o mesmo valor que teria no in@'{@dotless{i}}cio de
+uma sess@~ao do @b{Maxima}.
 
 Os actuais argumentos para uma fun@value{cedilha}@~ao s@~ao tratados exactamente da mesma que
 as vari@'aveis em um bloco.  Dessa forma em
@@ -908,7 +913,7 @@ ou uma fun@value{cedilha}@~ao subscrita definida com uma constante subscrita.
 dadas pelas @code{functions}, @code{arrays}, e listas de @code{macros},
 omitindo fun@value{cedilha}@~oes subscritas definidas com constantes subscritas.
 
-@code{dispfun} cria um R@'otulo de express@~ao intermedi@'aria
+@code{dispfun} cria um R@'otulo de express@~ao interm@'edia
 (@code{%t1}, @code{%t2}, etc.)
 para cada fun@value{cedilha}@~ao mostrada, e atribui a defini@value{cedilha}@~ao de fun@value{cedilha}@~ao para o r@'otulo.
 Em contraste, @code{fundef} retorna a defini@value{cedilha}@~ao de fun@value{cedilha}@~ao.
@@ -916,7 +921,7 @@ Em contraste, @code{fundef} retorna a defini@value{cedilha}@~ao de fun@value{ced
 @code{dispfun} n@~ao avalia seus argumentos; 
 O operador ap@'ostrofo-ap@'ostrofo @code{'@w{}'} faz com que ocorra avalia@value{cedilha}@~ao.
 
-@code{dispfun} retorna a lista de r@'otulos de express@~oes intermedi@'arias correspondendo @`as fun@value{cedilha}@~oes mostradas.
+@code{dispfun} retorna a lista de r@'otulos de express@~oes interm@'edias correspondendo @`as fun@value{cedilha}@~oes mostradas.
 
 Exemplos:
 
@@ -1069,7 +1074,7 @@ ou uma fun@value{cedilha}@~ao subscrita definida com uma constante subscrita.
 o operador ap@'ostrofo-ap@'ostrofo @code{'@w{}'} faz com que ocorra avalia@value{cedilha}@~ao.
 
 @code{fundef (@var{f})} retorna a defini@value{cedilha}@~ao de @var{f}.
-Em contraste, @code{dispfun (@var{f})} cria um r@'otulo de express@~ao intermedi@'aria
+Em contraste, @code{dispfun (@var{f})} cria um r@'otulo de express@~ao interm@'edia
 e atribui a defini@value{cedilha}@~ao para o r@'otulo.
 
 @c PROBABLY NEED SOME EXAMPLES HERE
@@ -1519,29 +1524,31 @@ declara que os valores retornados por @code{f_1}, @code{f_2}, ...  s@~ao inteiro
 @c WHAT IS THIS ABOUT ??
 @c NEEDS CLARIFICATION AND EXAMPLES
 @deffn {Fun@value{cedilha}@~ao} mode_identity (@var{arg_1}, @var{arg_2})
-Uma forma especial usada com @code{mode_declare} e
-@code{macros} para declarar, e.g., uma lista de listas de n@'umeros em ponto flutuante ou outros
-objectos de dados.  O primeiro argumento para @code{mode_identity} @'e um valor primitivo
-nome de modo como dado para @code{mode_declare} (i.e., um de @code{float}, @code{fixnum}, @code{number},
-@code{list}, ou @code{any}), e o segundo argumento @'e uma express@~ao que @'e
-avaliada e retornada com o valor de @code{mode_identity}.  Todavia, se o
-valor de retorno n@~ao @'e permitido pelo modo declarado no primeiro
-argumento, um erro ou alerta @'e sinalizado.  Um ponto importante @'e
-que o modo da express@~ao como determinado pelo Maxima para o tradutor
-Lisp, ser@'a aquele dado como o primeiro argumento, independente de
-qualquer coisa que v@'a no segundo argumento.
-E.g., @code{x: 3.3; mode_identity (fixnum, x);} retorna um erro.  @code{mode_identity (flonum, x)}
-returns 3.3 .  
-Isso tem n@'umerosas utilidades, e.g., se voc@^e soube que @code{first (l)} retornou um
-n@'umero ent@~ao voc@^e pode escrever @code{mode_identity (number, first (l))}.  Todavia,
-um mais eficiente caminho para fazer isso @'e definir uma nova primitiva,
+Uma forma especial usada com @code{mode_declare} e @code{macros} para
+declarar, e.g., uma lista de listas de n@'umeros em ponto flutuante ou
+outros objectos de dados.  O primeiro argumento para
+@code{mode_identity} @'e um valor primitivo nome de modo como dado para
+@code{mode_declare} (i.e., um de @code{float}, @code{fixnum},
+@code{number}, @code{list}, ou @code{any}), e o segundo argumento @'e
+uma express@~ao que @'e avaliada e retornada com o valor de
+@code{mode_identity}. No entanto, se o valor de retorno n@~ao @'e
+permitido pelo modo declarado no primeiro argumento, um erro ou alerta
+@'e sinalizado.  Um ponto importante @'e que o modo da express@~ao como
+determinado pelo Maxima para o tradutor Lisp, ser@'a aquele dado como o
+primeiro argumento, independente de qualquer coisa que v@'a no segundo
+argumento.  E.g., @code{x: 3.3; mode_identity (fixnum, x);} retorna um
+erro.  @code{mode_identity (flonum, x)} returns 3.3 .  Isto tem
+n@'umerosas utilidades, por exemplo, se souber que @code{first (l)}
+retornou um n@'umero ent@~ao poder@'a escrever @code{mode_identity
+(number, first (l))}. No entanto, um caminho mais eficiente para fazer a
+mesma coisa @'e definir uma nova primitiva,
 
 @example
 firstnumb (x) ::= buildq ([x], mode_identity (number, x));
 @end example
 
-e usar @code{firstnumb}
-toda vez que voc@^e pegar o primeiro de uma lista de n@'umeros.
+e usar @code{firstnumb} sempre que obtiver o primeiro de uma lista de
+n@'umeros.
 
 @end deffn
 
@@ -1590,7 +1597,7 @@ Fun@value{cedilha}@~oes n@~ao poder@~ao ser traduzidas
 a menos que elas sejam totalmente depuradas.
 
 Express@~oes s@~ao assumidas simplificadas; se n@~ao forem, um c@'odigo correcto ser@'a gerado mas n@~ao ser@'a um c@'odigo
-@'otimo.  Dessa forma, o utilizador n@~ao poder@'a escolher o comutador @code{simp} para @code{false}
+@'optimo.  Dessa forma, o utilizador n@~ao poder@'a escolher o comutador @code{simp} para @code{false}
 o qual inibe simplifica@value{cedilha}@~ao de express@~oes a serem traduzidas.
 
 O comutador @code{translate}, se @code{true}, causa tradu@value{cedilha}@~ao
@@ -1782,9 +1789,9 @@ Quando @code{tr_numer} for @code{true} propriedades @code{numer} s@~ao usadas pa
 Valor por omiss@~ao: 100
 
 @code{tr_optimize_max_loop} @'e n@'umero m@'aximo de vezes do
-passo de macro-expans@~ao e otimiza@value{cedilha}@~ao que o tradutor ir@'a executar
+passo de macro-expans@~ao e optimiza@value{cedilha}@~ao que o tradutor ir@'a executar
 considerando uma forma.  Isso @'e para capturar erros de expans@~ao de macro, e
-propriedades de otimiza@value{cedilha}@~ao n@~ao terminadas.
+propriedades de optimiza@value{cedilha}@~ao n@~ao terminadas.
 
 @end defvr
 

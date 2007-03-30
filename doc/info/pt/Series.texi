@@ -641,11 +641,11 @@ Valor por omiss@~ao: @code{true}
 s@'eries de @code{taylor}.
 
 Quando @code{taylor_logexpand} for @code{true}, todos  logaritmos s@~ao expandidos completamente dessa forma
-problemas de reconhecimento de zero envolvendo envolvendo identidades logar@'{@dotless{i}}tmicas n@~ao
+problemas de reconhecimento de zero envolvendo envolvendo identidades logaritmicas n@~ao
 atrapalham o processo de expans@~ao.  Todavia, esse esquema n@~ao @'e sempre
 matematicamente correcto uma vez que isso ignora informa@value{cedilha}@~oes de ramo.
 
-Quando @code{taylor_logexpand} for escolhida para @code{false}, ent@~ao a expans@~ao logar@'{@dotless{i}}tmica que ocorre
+Quando @code{taylor_logexpand} for escolhida para @code{false}, ent@~ao a expans@~ao logaritmica que ocorre
 @'e somente aquela que for necess@'aria para obter uma s@'eries de pot@^encia formal.
 
 @c NEED EXAMPLES HERE

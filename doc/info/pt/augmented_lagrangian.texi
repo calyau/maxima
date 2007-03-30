@@ -21,7 +21,7 @@ Os argumentos opcionais que podem ser colocados no lugar de @var{s@'{@dotless{i}
  
 @table @code
 @item niter
-N@'umero de itera@value{cedilha}@~oes do algor@'{@dotless{i}}tmo do Langrangiano aumentado
+N@'umero de itera@value{cedilha}@~oes do algoritmo do Langrangiano aumentado
 @item lbfgs_tolerance
 Toler@^ancia forneceida a LBFGS (Limited-memory, Broyden, Fletcher, Goldfarb, Shanno)
 @item iprint
@@ -31,8 +31,8 @@ valor inicial de @code{%lambda} a ser usado durante o c@'alculo do Lagrangiano a
 @end table
 
 Essa implementa@value{cedilha}@~ao minimiza o Lagrangiano aumentado pela
-pela aplica@value{cedilha}@~ao do algor@'{@dotless{i}}tmo de mem@'oria limitada BFGS (LBFGS),
-que @'e um algor@'{@dotless{i}}tmo quasi-Newton.
+pela aplica@value{cedilha}@~ao do algoritmo de mem@'oria limitada BFGS (LBFGS),
+que @'e um algoritmo quasi-Newton.
 
 @code{load(augmented_lagrangian)} chama essa fun@value{cedilha}@~ao.
  

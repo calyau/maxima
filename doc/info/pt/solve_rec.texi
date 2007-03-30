@@ -93,7 +93,7 @@ Veja tamb@'em: @code{solve_rec}.
 
 Tenta simplificar todos os somat@'orios que aparecem na @var{expr} para uma forma a mais simplificada poss@'{@dotless{i}}vel.
 
-@code{simplify_sum} usa os algor@'{@dotless{i}}tmos de Gosper e de Zeilberger para simplificar somat@'orios.
+@code{simplify_sum} usa os algoritmos de Gosper e de Zeilberger para simplificar somat@'orios.
 
 Para usar essa fun@value{cedilha}@~ao primeiramente chame o pacote @code{simplify_sum} com
 @code{load(simplify_sum)}.
@@ -129,7 +129,7 @@ encontrando solu@value{cedilha}@~oes hipergeom@'etricas para recorr@^encias line
 coeficientes polinomiais, solu@value{cedilha}@~oes racionais para recorr@^encias lineares com
 coeficientes polinomiais e pode resolver recorr@^encias do tipo de Ricatti.
 
-Note que o tempo de execu@value{cedilha}@~ao do algor@'{@dotless{i}}tmo usado para encontrar solu@value{cedilha}@~oes
+Note que o tempo de execu@value{cedilha}@~ao do algoritmo usado para encontrar solu@value{cedilha}@~oes
 hipergeom@'etricas aumenta exponencialmente com o grau do coeficiente lider e
 guia.
 

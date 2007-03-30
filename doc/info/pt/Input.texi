@@ -536,7 +536,7 @@ propriedades de contra@,{c}@~ao que foram definidas.
 Mostra equa@,{c}@~oes cujo lado esquerdo @'e
 @var{expr_i} n@~ao avaliado, e cujo lado direito @'e o valor da express@~ao
 centrada na linha.  Essa fun@,{c}@~ao @'e @'util em blocos e em @code{for}
-declara@,{c}@~oes com o objectivo de ter resultados intermedi@'arios mostrados.  The
+declara@,{c}@~oes com o objectivo de ter resultados interm@'edios mostrados.  The
 Os argumentos para @code{display} s@~ao usualmente @'atomos, vari@'aveis subscritas, ou
 chamadas de fun@,{c}@~ao.  Veja tamb@'em @code{disp}.
 
@@ -972,7 +972,7 @@ Veja tamb@'em @code{labels}.
 @deffn {Fun@,{c}@~ao} ldisp (@var{expr_1}, ..., @var{expr_n})
 Mostra express@~oes @var{expr_1}, ..., @var{expr_n} para o console
 como sa@'{@dotless{i}}da impressa na tela.
-@code{ldisp} atribue um r@'otulo de express@~ao intermedi@'aria a cada argumento
+@code{ldisp} atribue um r@'otulo de express@~ao interm@'edia a cada argumento
 e retorna a lista de r@'otulos.
 
 Veja tamb@'em @code{disp}.
@@ -1042,12 +1042,12 @@ Veja tamb@'em @code{display}.
 @defvr {Vari@'avel de op@,{c}@~ao} linechar
 Valor por omiss@~ao: @code{%t}
 
-@code{linechar} @'e o refixo de r@'otulos de express@~oes intermedi@'arias gerados pelo Maxima.
-Maxima constr@'oi um r@'otulo para cada express@~ao intermedi@'aria (se for mostrada)
+@code{linechar} @'e o refixo de r@'otulos de express@~oes interm@'edias gerados pelo Maxima.
+Maxima constr@'oi um r@'otulo para cada express@~ao interm@'edia (se for mostrada)
 pela concatena@,{c}@~ao de @code{linechar} e @code{linenum}.
 A @code{linechar} pode ser atribu@'{@dotless{i}}do qualquer sequ@^encia de caracteres ou s@'{@dotless{i}}mbolo, n@~ao necess@'ariamente um caractere simples.
 
-Express@~oes intermedi@'arias podem ou n@~ao serem mostradas.
+Express@~oes interm@'edias podem ou n@~ao serem mostradas.
 See @code{programmode} e @code{labels}.
 
 @end defvr
@@ -1249,7 +1249,7 @@ uma ap@'os a outra, da esquerda para a direita,
 iniciando no lado esquerdo do console.
 
 O valor retornado por @code{print} @'e o valor de seu @'ultimo argumento.
-@code{print} n@~ao gera r@'otulos de express@~ao intermedi@'aria.
+@code{print} n@~ao gera r@'otulos de express@~ao interm@'edia.
 
 Veja tamb@'em @code{display}, @code{disp}, @code{ldisplay}, e @code{ldisp}.
 Essas fun@,{c}@~oes mostram uma express@~ao por linha, enquanto @code{print} tenta

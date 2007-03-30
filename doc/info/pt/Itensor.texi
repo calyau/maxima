@@ -44,7 +44,7 @@ m@'etrica e o c@'alculo de tensores induzidos e invariantes
 Maxima est@'a em manusear, uma m@'etrica complexa com intrincada depend@^encia funcional
 e de coordenadas pode facilmente conduzir a express@~oes cujo tamanho @'e
 excessivo e cuja estrutura est@'a escondida. Adicionalmente, muitos c@'alculos
-envolvem express@~oes intermedi@'arias cujo crescimento fazem com que os programas
+envolvem express@~oes interm@'edias cujo crescimento fazem com que os programas
 terminem antes de serem completados. Atrav@'es da experi@^encia, um utilizador pode evitar
 muitas dessas dificuldade.
 
@@ -132,7 +132,7 @@ Eles podem ser explicitamente especificado pelo utilizador ou serem criados no
 processo de diferencia@value{cedilha}@~ao com rela@value{cedilha}@~ao a alguma vari@'avel coordenada.
 Uma vez que diferencia@value{cedilha}@~ao ordin@'aria @'e comutativa, os @'{@dotless{i}}ndices de deriva@value{cedilha}@~ao
 s@~ao ordenados alfanumericamente, a menos que @code{iframe_flag} seja escolhida para @code{true},
-indicando que uma moldura m@'etrica est@'a sendo usada. Essa ordena@value{cedilha}@~ao can@'onica torna
+indicando que um referencial m@'etrico est@'a a ser usado. Essa ordena@value{cedilha}@~ao can@'onica torna
 poss@'{@dotless{i}}vel para Maxima reconhecer que, por exemplo, @code{t([a],[b],i,j)} @'e
 o mesmo que @code{t([a],[b],j,i)}.  Diferencia@value{cedilha}@~ao de um objecto indexado com
 rela@value{cedilha}@~ao a alguma coordenada cujos @'{@dotless{i}}ndices n@~ao aparecem como um argumento
@@ -160,7 +160,7 @@ O pacote @code{itensor} geralmente trata tensores como objectos opacos. Equa@val
 tensoriais s@~ao manipuladas baseadas em regras alg@'ebricas, especificamente simetria
 e regras de contra@value{cedilha}@~ao. Adicionalmente, o pacote @code{itensor} n@~ao entende
 diferencia@value{cedilha}@~ao covariante, curvatura, e tors@~ao. C@'alculos podem ser
-executados relativamente a um m@'etrica de molduras de movimento, dependendo da escolha para
+executados relativamente a um m@'etrica de referenciais de movimento, dependendo da escolha para
 a vari@'avel @code{iframe_flag}.
 
 Uma sess@~ao demonstrativa abaixo mostra como chamar o pacote @code{itensor},
@@ -500,7 +500,7 @@ dos quais envolvem o uso do comando @code{components}:
 
 @end example
 
-3) Como uma fun@value{cedilha}@~ao. Voc@^e pode usar uma fun@value{cedilha}@~ao Maxima para especificar as
+3) Como uma fun@value{cedilha}@~ao. Pode usar uma fun@value{cedilha}@~ao Maxima para especificar as
 componentes de um tensor baseado nesses @'{@dotless{i}}ndices. Por exemplo, os seguintes
 c@'odigos atribuem @code{kdelta} a @code{h} se @code{h} tiver o mesmo n@'umero de
 @'{@dotless{i}}ndices covariantes e @'{@dotless{i}}ndices contravariantes e nenhum @'{@dotless{i}}ndice derivativo, e
@@ -1362,35 +1362,35 @@ curvatura de Riemann usando a fun@value{cedilha}@~ao @code{igeodesic_coords}.
 
 @end deffn
 
-@subsection Molduras m@'oveis
+@subsection Referenciais m@'oveis
 
-Maxima actualmente tem a habilidade de executar c@'alculos usando molduras m@'oveis.
-Essas podem ser molduras ortonormais (tetrads, vielbeins) ou uma moldura arbitr@'aria.
+Maxima actualmente tem a habilidade de executar c@'alculos usando referenciais m@'oveis.
+Essas podem ser referenciais ortonormais (tetrads, vielbeins) ou um referencial arbitr@'aria.
 
-Para usar molduras, voc@^e primeiro escolhe @code{iframe_flag} para @code{true}. Isso
+Para usar referenciais,  primeiro escolha @code{iframe_flag} para @code{true}. Isso
 faz com que os s@'{@dotless{i}}mbolos de Christoffel, @code{ichr1} e @code{ichr2}, sejam substitu@'{@dotless{i}}dos
-pelas molduras mais gerais de coeficientes de conec@value{cedilha}@~ao @code{icc1} e @code{icc2}
+pelos referenciais mais gerais de coeficientes de conec@value{cedilha}@~ao @code{icc1} e @code{icc2}
 em c@'alculos. Especialmente, o comportamento de @code{covdiff} e
 @code{icurvature} s@~ao alterados.
 
-A moldura @'e definida atrav@'es de dois tensores: o campo de moldura inversa (@code{ifri}),
+O referencial @'e definido atrav@'es de dois tensores: o campo de referencial inversa (@code{ifri}),
 a base tetrad dual),
-e a m@'etrica da moldura @code{ifg}. A m@'etrica da moldura @'e a matriz identidade para
-molduras ortonormais, ou a m@'etrica de Lorentz para molduras ortonormais no espa@value{cedilha}o-tempo de
-Minkowski. O campo de moldura inversa define a base da moldura (vectores unit@'arios).
-Propriedades de contra@value{cedilha}@~ao s@~ao definidas para o campo de moldura e para a m@'etrica da moldura.
+e a m@'etrica do referencial @code{ifg}. A m@'etrica do referencial @'e a matriz identidade para
+referenciais ortonormais, ou a m@'etrica de Lorentz para referenciais ortonormais no espa@value{cedilha}o-tempo de
+Minkowski. O campo de referencial inverso define a base do referencial (vectores unit@'arios).
+Propriedades de contra@value{cedilha}@~ao s@~ao definidas para o campo de referencial e para a m@'etrica do referencial.
 
-Quando @code{iframe_flag} for @code{true}, muitas express@~oes @code{itensor} usam a m@'etrica da
-moldura @code{ifg} em lugar da m@'etrica definida atrav@'es de @code{imetric} para
+Quando @code{iframe_flag} for @code{true}, muitas express@~oes @code{itensor} usam a m@'etrica do
+referencial @code{ifg} em lugar da m@'etrica definida atrav@'es de @code{imetric} para
 o decremento e para o incremento de @'{@dotless{i}}ndices.
 
 IMPORTANTE: Escolhendo a vari@'avel @code{iframe_flag} para @code{true} N@~{A}O
 remove a defini@value{cedilha}@~ao das propriedades de contra@value{cedilha}@~ao de uma m@'etrica definida atrav@'es de uma chamada a
-@code{defcon} ou @code{imetric}. Se um campo de moldura for usado, ele @'e melhor para
+@code{defcon} ou @code{imetric}. Se um campo de referencial for usado, ele @'e melhor para
 definir a m@'etrica atrav@'es de atribui@value{cedilha}@~ao desse nome para a vari@'avel @code{imetric}
 e N@~{A}O invoque a fun@value{cedilha}@~ao @code{imetric}.
 
-Maxima usa esses dois tensores para definir os coeficientes de moldura (@code{ifc1}
+Maxima usa esses dois tensores para definir os coeficientes de referencial (@code{ifc1}
 e @code{ifc2}) cuja forma parte dos coeficientes de conec@value{cedilha}@~ao (@code{icc1}
 e @code{icc2}), como demonstra o seguinte exemplo:
 
@@ -1421,7 +1421,7 @@ e @code{icc2}), como demonstra o seguinte exemplo:
 
 @end example
 
-Um m@'etodo alternativo @'e usado para calcular o suporte da moldura (@code{ifb}) se
+Um m@'etodo alternativo @'e usado para calcular o suporte do referencial (@code{ifb}) se
 o sinalizador @code{iframe_bracket_form} @'e escolhido para @code{false}:
 
 @example
@@ -1437,15 +1437,15 @@ o sinalizador @code{iframe_bracket_form} @'e escolhido para @code{false}:
 @deffn {Fun@value{cedilha}@~ao} iframes ()
 
 Uma vez que nessa vers@~ao do Maxima, identidades de contra@value{cedilha}@~ao para @code{ifr} e
-@code{ifri} s@~ao sempre definidas, como @'e o suporte da moldura (@code{ifb}), essa
+@code{ifri} s@~ao sempre definidas, como @'e o suporte do referencial (@code{ifb}), essa
 fun@value{cedilha}@~ao n@~ao faz nada.
 
 @end deffn
 
 @defvr {Vari@'avel} ifb
 
-O suporte da moldura. A contribui@value{cedilha}@~ao da m@'etrica da moldura para os coeficientes
-de conec@value{cedilha}@~ao @'e expressa usando o suporte da moldura:
+O suporte do referencial. A contribui@value{cedilha}@~ao da m@'etrica do referencial para os coeficientes
+de conec@value{cedilha}@~ao @'e expressa usando o suporte do referencial:
 
 @example
 
@@ -1456,10 +1456,11 @@ ifc1    = --------------------------------
 
 @end example
 
-O suporte da moldura por si mesmo @'e definido em termos de campo de moldura e m@'etrica da
-moldura. Dois m@'etodos alternativos de c@'alculo s@~ao usados dependendo do
-valor de @code{frame_bracket_form}. Se @code{true} (o padr@~ao) ou se o sinalizador
-@code{itorsion_flag} for @code{true}:
+O suporte do referencial por si mesmo @'e definido em termos de campo de
+referencial e m@'etrica do referencial. Dois m@'etodos alternativos de
+c@'alculo s@~ao usados dependendo do valor de
+@code{frame_bracket_form}. Se @code{true} (o padr@~ao) ou se o
+sinalizador @code{itorsion_flag} for @code{true}:
 
 @example
 
@@ -1496,10 +1497,10 @@ icc1    = ichr1    - ikt1    - inmc1
 @end example
 
 Nessa express@~ao, se @code{iframe_flag} for @code{true}, o s@'{@dotless{i}}mbolo de Christoffel
-@code{ichr1} @'e substitu@'{@dotless{i}}do com o coeficiente de conec@value{cedilha}@~ao da moldura @code{ifc1}.
+@code{ichr1} @'e substitu@'{@dotless{i}}do com o coeficiente de conec@value{cedilha}@~ao do referencial @code{ifc1}.
 Se @code{itorsion_flag} for @code{false}, @code{ikt1}
-ser@'a omitido. @code{ikt1} @'e tamb@'em omitido se uma base de moldura for usada, como a
-tors@~ao est@'a j@'a calculada como parte do suporte da moldura.
+ser@'a omitido. @code{ikt1} @'e tamb@'em omitido se uma base de referencial for usada, como a
+tors@~ao est@'a j@'a calculada como parte do suporte do referencial.
 Ultimamente, como @code{inonmet_flag} @'e @code{false},
 @code{inmc1} n@~ao estar@'a presente.
 
@@ -1521,8 +1522,8 @@ icc2   = ichr2   - ikt2   - inmc2
 Nessa express@~ao, se @code{iframe_flag} for @code{true}, o s@'{@dotless{i}}mbolo de Christoffel
 @code{ichr2} @'e substitu@'{@dotless{i}}do com o coeficiente de conec@value{cedilha}@~ao @code{ifc2}.
 Se @code{itorsion_flag} for @code{false}, @code{ikt2}
-ser@'a omitido. @code{ikt2} tamb@'em ser@'a omitido se uma base de moldura for usada, uma vez que a
-tors@~ao j@'a est@'a calculada como parte do suporte da moldura.
+ser@'a omitido. @code{ikt2} tamb@'em ser@'a omitido se uma base de referencial for usada, uma vez que a
+tors@~ao j@'a est@'a calculada como parte do suporte do referencial.
 Ultimamente, como @code{inonmet_flag} @'e @code{false},
 @code{inmc2} n@~ao estar@'a presente.
 
@@ -1530,9 +1531,9 @@ Ultimamente, como @code{inonmet_flag} @'e @code{false},
 
 @defvr {Vari@'avel} ifc1
 
-Coeficiente de moldura de primeiro tipo (tamb@'em conhecido como coeficientes de
+Coeficiente de referencial de primeiro tipo (tamb@'em conhecido como coeficientes de
 rota@value{cedilha}@~ao de Ricci).  Esse tensor representa a contribui@value{cedilha}@~ao
-da m@'etrica da moldura para o coeficiente de conec@value{cedilha}@~ao de primeiro tipo. Definido
+da m@'etrica do referencial para o coeficiente de conec@value{cedilha}@~ao de primeiro tipo. Definido
 como:
 
 @example
@@ -1549,9 +1550,9 @@ ifc1    = --------------------------------
 
 @defvr {Vari@'avel} ifc2
 
-Coeficiente de moldura de primeiro tipo. Esse tensor representa a contribui@value{cedilha}@~ao
-da m@'etrica da moldura para o coeficiente de conec@value{cedilha}@~ao de primeiro tipo. Definido
-como uma permuta@value{cedilha}@~ao de suporte de moldura (@code{ifb}) com os @'{@dotless{i}}ndices
+Coeficiente de referencial de primeiro tipo. Esse tensor representa a contribui@value{cedilha}@~ao
+da m@'etrica do referencial para o coeficiente de conec@value{cedilha}@~ao de primeiro tipo. Definido
+como uma permuta@value{cedilha}@~ao de suporte de referencial (@code{ifb}) com os @'{@dotless{i}}ndices
 apropriados incrementados e decrementados como necess@'ario:
 
 @example
@@ -1566,29 +1567,30 @@ ifc2   = ifg   ifc1
 
 @defvr {Vari@'avel} ifr
 
-O campo da moldura. Contrai (@code{ifri}) para e com a forma do campo inverso da
-moldura para formar a m@'etrica da moldura (@code{ifg}).
+O campo do referencial. Contrai (@code{ifri}) para e com a forma do
+campo inverso do referencial para formar a m@'etrica do referencial
+(@code{ifg}).
 
 @end defvr
 
 @defvr {Vari@'avel} ifri
 
-O campo inverso da moldura. Especifica a base da moldura (vectores base duais). Juntamente
-com a m@'etrica da moldura, forma a base de todos os c@'alculos baseados em
-molduras.
+O campo inverso do referencial. Especifica a base do referencial (vectores base duais). Juntamente
+com a m@'etrica do referencial, forma a base de todos os c@'alculos baseados em
+referenciais.
 
 @end defvr
 
 @defvr {Vari@'avel} ifg
 
-A m@'etrica da moldura. O valor padr@~ao @'e @code{kdelta}, mas pode ser mudada usando
+A m@'etrica do referencial. O valor padr@~ao @'e @code{kdelta}, mas pode ser mudada usando
 @code{components}.
 
 @end defvr
 
 @defvr {Vari@'avel} ifgi
 
-O inverso da m@'etrica da moldura. Contrai com a m@'etrica da moldura (@code{ifg})
+O inverso da m@'etrica do referencial. Contrai com a m@'etrica do referencial (@code{ifg})
 para @code{kdelta}.
 
 @end defvr
@@ -1596,7 +1598,7 @@ para @code{kdelta}.
 @defvr {Vari@'avel de Op@value{cedilha}@~ao} iframe_bracket_form
 Valor por omiss@~ao: @code{true}
 
-Especifica como o suporte da moldura (@code{ifb}) @'e calculado.
+Especifica como o suporte do referencial (@code{ifb}) @'e calculado.
 
 @end defvr
 
@@ -1637,7 +1639,7 @@ inmc1    = ------------------------------
 
 @end example
 
-(Substitue @code{ifg} em lugar de @code{g} se uma moldura m@'etrica for usada.)
+(Substitue @code{ifg} em lugar de @code{g} se um referencial m@'etrico for usada.)
 
 @end defvr
 
@@ -1657,7 +1659,7 @@ inmc2   = -------------------------------------------
 
 @end example
 
-(Substitue @code{ifg} em lugar de @code{g} se uma moldura m@'etrica for usada.)
+(Substitue @code{ifg} em lugar de @code{g} se um referencial m@'etrico for usada.)
 
 @end defvr
 
@@ -1676,7 +1678,7 @@ ikt1    = ----------------------------------
 
 @end example
 
-(Substitue @code{ifg} em lugar de @code{g} se uma moldura m@'etrica for usada.)
+(Substitue @code{ifg} em lugar de @code{g} se um referencial m@'etrico for usada.)
 
 @end defvr
 
@@ -1693,7 +1695,7 @@ ikt2   = g   ikt1
 
 @end example
 
-(Substitue @code{ifg} em lugar de @code{g} se uma moldura m@'etrica for usada.)
+(Substitue @code{ifg} em lugar de @code{g} se um referencial m@'etrico for usada.)
 
 @end defvr
 
@@ -1978,12 +1980,12 @@ elemento volume.
 O pacote @code{itensor} fornece suporte limitado @`a exporta@value{cedilha}@~ao de express@~oes
 de tensores para o TeX.  Uma vez que express@~oes @code{itensor} aparecem como chamada a fun@value{cedilha}@~oes,
 o comando regular @code{tex} do Maxima n@~ao produzir@'a a sa@'{@dotless{i}}da
-esperada. Voc@^e pode tentar em seu lugar o comando @code{tentex}, o qual tenta
+esperada. Pode tentar no seu lugar o comando @code{tentex}, o qual tenta
 traduzir express@~oes de tensores dentro de objectos TeX indexados apropriadamente.
 
 @deffn {Fun@value{cedilha}@~ao} tentex (@var{expr})
 
-Para usar a fun@value{cedilha}@~ao @code{tentex}, voc@^e deve primeiro chamar @code{tentex},
+Para usar a fun@value{cedilha}@~ao @code{tentex}, deve primeiro chamar @code{tentex},
 como no seguinte exemplo:
 
 @example

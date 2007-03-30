@@ -775,13 +775,13 @@ Muitos argumentos especiais s@~ao reconhecidos.
 Diferentes fam@'{@dotless{i}}lias de argumentos 
 podem ser combinadas, e.g., @code{kill (inlabels, functions, allbut (foo, bar))}
 
-todos os r@'otulos de entrada, de sa@'{@dotless{i}}da, e de express@~oes intermedi@'arias criados at@'e ent@~ao.
+todos os r@'otulos de entrada, de sa@'{@dotless{i}}da, e de express@~oes interm@'edias criados at@'e ent@~ao.
 @code{kill (inlabels)} libera somente r@'otudos de entrada 
 que come@,{c}am com o valor corrente de @code{inchar}.
 De forma semelhante,
 @code{kill (outlabels)} libera somente r@'otulos de sa@'{@dotless{i}}da
 que come@,{c}am com o valor corrente de @code{outchar},
-e @code{kill (linelabels)} libera somente r@'otulos de express@~oes intermedi@'arias
+e @code{kill (linelabels)} libera somente r@'otulos de express@~oes interm@'edias
 que come@,{c}am com o valor corrente de @code{linechar}.
 
 @code{kill (@var{n})}, onde @var{n} @'e um inteiro,
@@ -821,7 +821,7 @@ liberam uma propriedade espec@'{@dotless{i}}fica.
 
 @deffn {Fun@,{c}@~ao} labels (@var{s@'{@dotless{i}}mbolo})
 @deffnx {Vari@'avel de sistema} labels
-Retorna a lista de r@'otulos de entradas, de sa@'{@dotless{i}}da, de express@~oes intermedi@'arias que come@,{c}am com @var{s@'{@dotless{i}}mbolo}.
+Retorna a lista de r@'otulos de entradas, de sa@'{@dotless{i}}da, de express@~oes interm@'edias que come@,{c}am com @var{s@'{@dotless{i}}mbolo}.
 Tipicamente @var{s@'{@dotless{i}}mbolo} @'e o valor de @code{inchar}, @code{outchar}, ou @code{linechar}.
 O caracter r@'otulo pode ser dado com ou sem o sinal de porcentagem,
 ent@~ao, por exemplo, @code{i} e @code{%i} retornam o mesmo resultado.
@@ -833,7 +833,7 @@ O operador ap@'ostrofo-ap@'ostrofo @code{'@w{}'} faz com que ocorra avalia@,{c}@
 Por exemplo,
 @code{labels (''inchar)} retorna os r@'otulos de entrada que come@,{c}am com o caractere corrente do r@'otulo de entrada.
 
-A vari@'avel @code{labels} @'e uma lista de r@'otulos de entrada, sa@'{@dotless{i}}da, e de express@~oes intermedi@'arias,
+A vari@'avel @code{labels} @'e uma lista de r@'otulos de entrada, sa@'{@dotless{i}}da, e de express@~oes interm@'edias,
 incluindo todos os r@'otulos anteriores se @code{inchar}, @code{outchar}, ou @code{linechar} que tiverem sido redefinidos.
 
 Por padr@~ao, Maxima mostra o resultado de cada express@~ao de entrada do utilizador,
@@ -844,10 +844,10 @@ Um r@'otulo de sa@'{@dotless{i}}da @'e construido e associado ao resultado, mas 
 e o r@'otulo pode ser referenciado da mesma forma que r@'otulos de sa@'{@dotless{i}}da mostrados.
 Veja tamb@'em @code{%}, @code{%%}, e @code{%th}.
 
-R@'otulos de express@~oes intermedi@'arias podem ser gerados por algumas fun@,{c}@~oes.
+R@'otulos de express@~oes interm@'edias podem ser gerados por algumas fun@,{c}@~oes.
 O sinalizador @code{programmode} controla se @code{solve} e algumas outras fun@,{c}@~oes
-geram r@'otulos de express@~oes intermedi@'arias em lugar de retornar uma lista de express@~oes.
-Algumas outras fun@,{c}@~oes, tais como @code{ldisplay}, sempre geram r@'otulos de express@~oes intermedi@'arias.
+geram r@'otulos de express@~oes interm@'edias em lugar de retornar uma lista de express@~oes.
+Algumas outras fun@,{c}@~oes, tais como @code{ldisplay}, sempre geram r@'otulos de express@~oes interm@'edias.
 
 Veja tamb@'em @code{inchar}, @code{outchar}, @code{linechar}, e @code{infolists}.
 
@@ -912,7 +912,7 @@ que a vari@'avel por ele atribu@'{@dotless{i}}do um valor foi realmente uma vari
 @deffnx {Fun@,{c}@~ao} playback (slow)
 @deffnx {Fun@,{c}@~ao} playback (time)
 @deffnx {Fun@,{c}@~ao} playback (grind)
-Mostra express@~oes de entrada, de sa@'{@dotless{i}}da, e express@~oes intermedi@'arias,
+Mostra express@~oes de entrada, de sa@'{@dotless{i}}da, e express@~oes interm@'edias,
 sem refazer os c@'alculos.
 @code{playback} somente mostra as express@~oes associadas a r@'otulos;
 qualquer outra sa@'{@dotless{i}}da (tais como textos impressos por @code{print} ou @code{describe}, ou messagens de erro)
@@ -923,16 +923,16 @@ Veja tamb@'em @code{labels}.
 O operador ap@'ostrofo-ap@'ostrofo, @code{'@w{}'}, sobrep@~oe-se @`as aspas.
 @code{playback} sempre retorna @code{done}.
 
-@code{playback ()} (sem argumentos) mostra todas as entradas, sa@'{@dotless{i}}das e express@~oes intermedi@'arias
+@code{playback ()} (sem argumentos) mostra todas as entradas, sa@'{@dotless{i}}das e express@~oes interm@'edias
 geradas at@'e ent@~ao.
 Uma express@~ao de sa@'{@dotless{i}}da @'e mostrada mesmo se for suprimida pelo terminador @code{$}
 quando ela tiver sido originalmente calculada.
 
 @code{playback (@var{n})} mostra as mais recentes @var{n} express@~oes.
-Cada entrada, sa@'{@dotless{i}}da e express@~ao intermedi@'aria
+Cada entrada, sa@'{@dotless{i}}da e express@~ao interm@'edia
 conta como um.
 
-@code{playback ([@var{m}, @var{n}])} mostra entradas, sa@'{@dotless{i}}das e express@~oes intermedi@'arias
+@code{playback ([@var{m}, @var{n}])} mostra entradas, sa@'{@dotless{i}}das e express@~oes interm@'edias
 com os n@'umeros de @var{m} at@'e @var{n}, inclusive.
 
 @code{playback ([@var{m}])} @'e equivalente a @code{playback ([@var{m}, @var{m}])};

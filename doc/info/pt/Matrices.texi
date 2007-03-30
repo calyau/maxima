@@ -194,7 +194,7 @@ contendo os elementos da lista @var{L}.
 @code{load ("eigen")} chama essa fun@value{cedilha}@~ao.
 
 @c FOLLOWING COMMENT PRESERVED.  WHAT DOES THIS MEAN ??
-Isso @'e @'util se voc@^e quer usar partes das sa@'{@dotless{i}}das das
+Isso @'e @'util se quiser usar partes das sa@'{@dotless{i}}das das
 fun@value{cedilha}@~oes nesse pacote em c@'alculos matriciais.
 
 Exemplo:
@@ -610,7 +610,7 @@ retorno de @code{eigenvectors}.
 
 @code{hermitianmatrix} quando @code{true}, faz com que os autovectores
 degenerados da matriz Hermitiana sejam ortogonalizados usando o
-algor@'{@dotless{i}}tmo de Gram-Schmidt.
+algoritmo de Gram-Schmidt.
 
 @code{knowneigvals} quando @code{true} faz com que o pacote @code{eigen} assumir que os
 autovalores da matriz s@~ao conhecidos para o utilizador e armazenados sob o
@@ -753,12 +753,12 @@ Exemplos:
 
 @deffn {Fun@value{cedilha}@~ao} gramschmidt (@var{x})
 @deffnx {Fun@value{cedilha}@~ao} gschmit (@var{x})
-Realiza o algor@'{@dotless{i}}tmo de ortonaliza@value{cedilha}@~ao de Gram-Schmidt sobre @var{x},
+Realiza o algoritmo de ortonaliza@value{cedilha}@~ao de Gram-Schmidt sobre @var{x},
 seja ela uma matriz ou uma lista de listas.
 @var{x} n@~ao @'e modificado por @code{gramschmidt}.
 
-Se @var{x} @'e uma matriz, o algor@'{@dotless{i}}tmo @'e aplicado para as linhas de @var{x}.
-Se @var{x} @'e uma lista de listas, o algor@'{@dotless{i}}tmo @'e aplicado @`as sublistas,
+Se @var{x} @'e uma matriz, o algoritmo @'e aplicado para as linhas de @var{x}.
+Se @var{x} @'e uma lista de listas, o algoritmo @'e aplicado @`as sublistas,
 que devem ter igual n@'umeros de elementos.
 Nos dois casos,
 o valor de retorno @'e uma lista de listas, as sublistas das listas s@~ao ortogonais
@@ -766,7 +766,7 @@ e gera o mesmo spa@value{cedilha}o que @var{x}.
 Se a dimens@~ao do conjunto gerador de @var{x} @'e menor que o n@'umero de linhas ou sublistas,
 algumas sublistas do valor de retorno s@~ao zero.
 
-@code{factor} @'e chamada a cada est@'agio do algor@'{@dotless{i}}tmo para simplificar resultados intermedi@'arios.
+@code{factor} @'e chamada a cada est@'agio do algoritmo para simplificar resultados interm@'edios.
 Como uma consequ@^encia, o valor de retorno pode conter inteiros factorados.
 
 @code{gschmit} (nota ortogr@'afica) @'e um sin@^onimo para @code{gramschmidt}.
@@ -1262,7 +1262,7 @@ desde que isso evite inteiramente a aritm@'etica polinomial.
 
 @deffn {Fun@value{cedilha}@~ao} newdet (@var{M}, @var{n})
 Calcula o determinante de uma matriz ou array @var{M} pelo
-algor@'{@dotless{i}}tmo da @'arvore menor de Johnson-Gentleman.
+algoritmo da @'arvore menor de Johnson-Gentleman.
 @c UGH -- ARRAYS ARE SUCH A MESS
 O argumento @var{n} @'e a ordem; isso @'e opcional se @var{M} for uma matriz.
 

@@ -461,7 +461,7 @@ Retorna o menor primo maior que @var{n}.
 @deffn {Fun@value{cedilha}@~ao} partfrac (@var{expr}, @var{var})
 Expande a express@~ao @var{expr} em fra@value{cedilha}@~oes parciais
 com rela@value{cedilha}@~ao @`a vari@'avel principal @var{var}.  @code{partfrac} faz uma decomposi@value{cedilha}@~ao
-completa de fra@value{cedilha}@~ao parcial.  O algor@'{@dotless{i}}tmo utilizado @'e baseado no
+completa de fra@value{cedilha}@~ao parcial.  O algoritmo utilizado @'e baseado no
 facto que os denominadores de uma expans@~ao de fra@value{cedilha}@~ao parcial (os
 factores do denominador original) s@~ao relativamente primos.  Os
 numeradores podem ser escritos como combina@value{cedilha}@~ao linear dos denominadores, e
@@ -488,7 +488,7 @@ a expans@~ao acontece.
 @end deffn
 
 @deffn {Fun@value{cedilha}@~ao} power_mod (@var{a}, @var{n}, @var{m})
-Usa um algor@'{@dotless{i}}tmo modular para calcular @code{a^n mod m} 
+Usa um algoritmo modular para calcular @code{a^n mod m} 
 onde @var{a} e @var{n} s@~ao inteiros e @var{m} @'e um inteiro positivo. 
 Se @var{n} for negativo, @code{inv_mod} @'e usada para encontrar o inverso modular.
 

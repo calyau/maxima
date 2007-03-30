@@ -1686,10 +1686,10 @@ Veja @code{ev}.
 @deffnx {Fun@value{cedilha}@~ao} make_random_state (false)
 @c OMIT THIS FOR NOW. SEE COMMENT BELOW.
 @c @defunx make_random_state (@var{a})
-Um objecto de estado rand@^omico representa o estado do gerador de n@'umeros rand@^omicos (aleat@'orios).
+Um objecto de estado aleat@'orio representa o estado do gerador de n@'umeros aleat@'orios (aleat@'orios).
 O estado compreende 627 palavras de 32 bits.
 
-@code{make_random_state (@var{n})} retorna um novo objecto de estado rand@^omico
+@code{make_random_state (@var{n})} retorna um novo objecto de estado aleat@'orio
 criado de um valor inteiro semente igual a @var{n} modulo 2^32.  
 @var{n} pode ser negativo.
 
@@ -1697,34 +1697,34 @@ criado de um valor inteiro semente igual a @var{n} modulo 2^32.
 @c @code{make_random_state (@var{a})} returns a new random state object
 @c created from an array @var{a}, which must be a Lisp array of 32 unsigned bytes.
 
-@code{make_random_state (@var{s})} retorna uma copia do estado rand@^omico @var{s}.
+@code{make_random_state (@var{s})} retorna uma copia do estado aleat@'orio @var{s}.
 
-@code{make_random_state (true)} retorna um novo objecto de estado rand@^omico,
+@code{make_random_state (true)} retorna um novo objecto de estado aleat@'orio,
 usando a hora corrente  do rel@'ogio do computador como semente.
 
 @code{make_random_state (false)} retorna uma c@'opia do estado corrente
-do gerador de n@'umeros rand@^omicos.
+do gerador de n@'umeros aleat@'orios.
 
 @end deffn
 
 @deffn {Fun@value{cedilha}@~ao} set_random_state (@var{s})
-Copia @var{s} para o estado do gerador de n@'umeros rand@^omicos.
+Copia @var{s} para o estado do gerador de n@'umeros aleat@'orios.
 
 @code{set_random_state} sempre retorna @code{done}.
 
 @end deffn
 
 @deffn {Fun@value{cedilha}@~ao} random (@var{x})
-Retorna um n@'umero pseudorand@^omico. Se @var{x} @'e um inteiro, @code{random (@var{x})} retorna um
+Retorna um n@'umero pseudoaleat@'orio. Se @var{x} @'e um inteiro, @code{random (@var{x})} retorna um
 inteiro de 0 a @code{@var{x} - 1} inclusive. Se @var{x} for um n@'umero em ponto flutuante,
 @code{random (@var{x})} retorna um n@'umero n@~ao negativo em ponto flutuante menor que @var{x}.
 @code{random} reclama com um erro se @var{x} n@~ao for nem um inteiro nem um n@'umero em ponto flutuante,
 ou se @var{x} n@~ao for positivo.
 
 As fun@value{cedilha}@~oes @code{make_random_state} e @code{set_random_state}
-mant@'em o estado do gerador de n@'umeros rand@^omicos.
+mant@'em o estado do gerador de n@'umeros aleat@'orios.
 
-O gerador de n@'umeros rand@^omicos do Maxima @'e uma implementa@value{cedilha}@~ao do algor@'{@dotless{i}}tmo de Mersenne twister MT 19937.
+O gerador de n@'umeros aleat@'orios do Maxima @'e uma implementa@value{cedilha}@~ao do algoritmo de Mersenne twister MT 19937.
 
 Exemplos:
 
@@ -2303,9 +2303,9 @@ Se a express@~ao contem fun@value{cedilha}@~oes que n@~ao s@~ao solu@value{cedil
 equa@value{cedilha}@~oes diferenciais de primeira ordem (e.g.  fun@value{cedilha}@~oes de Bessel) pode ocorrer
 resultados incorrectos.
 @item
-O algor@'{@dotless{i}}tmo usa avalia@value{cedilha}@~ao em pontos aleat@'oriamente escolhidos para
+O algoritmo usa avalia@value{cedilha}@~ao em pontos aleat@'oriamente escolhidos para
 subexpress@~oes seleccionadas cuidadosamente.  Isso @'e sempre neg@'ocio um tanto
-quanto perigoso, embora o algor@'{@dotless{i}}tmo tente minimizar o
+quanto perigoso, embora o algoritmo tente minimizar o
 potencial de erro.
 @end enumerate
 

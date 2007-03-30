@@ -224,7 +224,9 @@ Conta as frequ@^encias absolutas em amostras discretas, em amostras num@'ericas 
                              [8, 8, 12, 12, 10, 8, 9, 8, 12, 13]]
 @end example
 
-A primeira lista fornece os valores da amostra e a segunda seuas frequ@^encias absolutas. Os comandos @code{? col} e @code{? transpose} podem ajudar a voc@^e a entender a @'ultima entrada.
+A primeira lista fornece os valores da amostra e a segunda as suas
+frequ@^encias absolutas. Os comandos @code{? col} e @code{? transpose}
+podem ajud@'a-lo a entender o @'ultimo comando de entrada.
 @end deffn
 
 

@@ -95,10 +95,10 @@ dotdistrib:true;
 dotexptsimp:false;
 @end example
 
-Se voc@^e deseja experimentar com uma @'algebra n@~ao associativa, voc@^e pode tamb@'em
-considerar a configura@value{cedilha}@~ao de @code{dotassoc} para @code{false}.  Nesse caso, todavia,
-@code{atensimp} n@~ao star@'a sempre habilitado a obter as simplifica@value{cedilha}@~oes
-desejadas.
+Se quiser experimentar com uma @'algebra n@~ao associativa, pode
+tamb@'em considerar a configura@value{cedilha}@~ao de @code{dotassoc}
+para @code{false}.  Nesse caso, todavia, @code{atensimp} n@~ao star@'a
+sempre habilitado a obter as simplifica@value{cedilha}@~oes desejadas.
 
 
 @c end concepts atensor

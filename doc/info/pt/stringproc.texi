@@ -324,7 +324,7 @@ iniciando na posi@,{c}@~ao mais @`a esquerda.  Os n@'umeros s@~ao
 mostrados com o '-' @`a direita do n@'umero, e isso desconsidera o
 comprimento da linha. @code{newline()}, que pode ser chamada a partir de
 @code{stringproc.lisp} pode ser @'util, se desejar colocar uma parada de
-linha intermedi@'aria.
+linha interm@'edia.
 
 @c ===beg===
 @c for n:0 thru 22 do sprint( fib(n) )$

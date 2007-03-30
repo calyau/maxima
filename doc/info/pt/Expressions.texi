@@ -1534,10 +1534,10 @@ Exemplos:
 @c NEEDS WORK
 @deffn {Fun@value{cedilha}@~ao} isolate (@var{expr}, @var{x})
 Retorna @var{expr} com subexpress@~oes que s@~ao adi@value{cedilha}@~oes e
-que n@~ao possuem @var{x} substituido por r@'otulos de express@~ao intermedi@'aria
+que n@~ao possuem @var{x} substituido por r@'otulos de express@~ao interm@'edia
 (esses sendo s@'{@dotless{i}}mbolos at@^omicos como @code{%t1}, @code{%t2}, ...).  Isso @'e muitas vezes @'util
 para evitar expans@~oes desnecess@'arias de subexpress@~oes que n@~ao possuam
-a vari@'avel de interesse.  Uma vez que os r@'otulos intermedi@'arios s@~ao associados @`as
+a vari@'avel de interesse.  Uma vez que os r@'otulos interm@'edios s@~ao associados @`as
 subexpress@~oes eles podem todos ser substitu@'{@dotless{i}}dos de volta por avalia@value{cedilha}@~ao da
 express@~ao em que ocorrerem.
 
@@ -1933,10 +1933,10 @@ mensagem de erro @'e fornecida.
 @end defvr
 
 @deffn {Fun@value{cedilha}@~ao} pickapart (@var{expr}, @var{n})
-Atribui r@'otulos de express@~ao intermedi@'aria a subexpress@~oes de
+Atribui r@'otulos de express@~ao interm@'edia a subexpress@~oes de
 @var{expr} de comprimento @var{n}, um inteiro.
 A subexpress@~oes maiores ou menores n@~ao s@~ao atribuidos r@'otulos.
-@code{pickapart} retorna uma express@~ao em termos de express@~oes intermedi@'arias
+@code{pickapart} retorna uma express@~ao em termos de express@~oes interm@'edias
 equivalentes @`a express@~ao original @var{expr}.
 
 Veja tamb@'em @code{part}, @code{dpart}, @code{lpart}, @code{inpart}, e @code{reveal}.

@@ -791,7 +791,7 @@ da m@'etrica de Kerr:
 
 @end example
 
-A fun@value{cedilha}@~ao de classifica@value{cedilha}@~ao Petrov @'e baseada no algor@'{@dotless{i}}tmo publicado em
+A fun@value{cedilha}@~ao de classifica@value{cedilha}@~ao Petrov @'e baseada no algoritmo publicado em
 "Classifying geometries in general relativity: III Classification in practice"
 por Pollney, Skea, e d'Inverno, Class. Quant. Grav. 17 2885-2902 (2000).
 Exceto para alguns casos de teste simples, a implementa@value{cedilha}@~ao n@~ao est@'a testada at@'e

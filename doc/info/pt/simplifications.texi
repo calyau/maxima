@@ -72,7 +72,7 @@ controlada.   Essa capacidade @'e especialmente @'util quando a express@~ao
 cont@'em vari@'aveis que possuem significado f@'{@dotless{i}}sico, porque @'e muitas vezes verdadeiro
 que a forma mais econ@^omica de uma tal express@~ao pode ser obtida por meio de
 uma expans@~ao completa da express@~ao com rela@value{cedilha}@~ao a essas vari@'aveis, e ent@~ao
-factorar seus coeficientes.  Apesar de ser verdadeiro que esse procedimento @'e
+factorizar seus coeficientes.  Apesar de ser verdadeiro que esse procedimento @'e
 f@'acil de realizar usando as fun@value{cedilha}@~oes padr@~ao do Maxima, ajustes
 adicionais podem se desej@'aveis, e esses toques finais podem ser
 mais dif@'{@dotless{i}}ceis de aplicar.
@@ -103,7 +103,7 @@ argumentos @var{arg_1}, ..., @var{arg_n}.
 Os argumentos podem ser quaisquer formas adequadas para @code{ratvars}, ou eles podem ser
 listas  de tais formas.  Se os argumentos n@~ao forem listas, ent@~ao a forma
 retornada @'e completamente expandida com rela@value{cedilha}@~ao aos argumentos,  e os
-coeficientes dos argumentos foram factorados.  Esses coeficientes s@~ao
+coeficientes dos argumentos foram factorizados.  Esses coeficientes s@~ao
 livres dos argumentos, excepto talvez no sentido n@~ao racional.
 
 Se quaisquer dos argumentos forem listas, ent@~ao todas as tais listas s@~ao combinadas
@@ -137,7 +137,7 @@ Adicionalmente,  a escolha de comutadores @code{facsum_combine}  e
 Valor por omiss@~ao: @code{false}
 
 Quando @code{nextlayerfactor} for @code{true}, chamadas recursivas a @code{facsum}
-s@~ao aplicdas aos factores da forma factorada dos
+s@~ao aplicdas aos factores da forma factorizada dos
 coeficientes dos argumentos.
 
 Quando @code{nextlayerfactor} for @code{false}, @code{facsum} @'e aplicada a
@@ -555,9 +555,9 @@ os s@'{@dotless{i}}mbolos gerados por @code{reduce_consts} para representar sube
 @subsection Pacote scifac
 
 @deffn {Fun@value{cedilha}@~ao} gcfac (@var{expr})
-@code{gcfac} fun@value{cedilha}@~ao de factora@value{cedilha}@~ao que tenta aplicar a mesma heur@'{@dotless{i}}stica que
+@code{gcfac} fun@value{cedilha}@~ao de factoriza@value{cedilha}@~ao que tenta aplicar a mesma heur@'{@dotless{i}}stica que
 cient@'{@dotless{i}}stas aplicam em tentativas de fazer express@~oes extremamente simples.  @code{gcfac} est@'a limitada
-a factora@value{cedilha}@~oes monomiais.  Para um somat@'orio, @code{gcfac} faz o seguinte:
+a factoriza@value{cedilha}@~oes monomiais.  Para um somat@'orio, @code{gcfac} faz o seguinte:
 
 @enumerate
 @item
@@ -566,16 +566,16 @@ Factores sobre os inteiros.
 Coloca em evid@^encia o maior expoente de termos ocorrendo como
 coeficientes, independentemente da complexidade dos termos.
 @item
-Usa (1) e (2) em factora@value{cedilha}@~oes de pares de termos adjascentes.
+Usa (1) e (2) em factoriza@value{cedilha}@~oes de pares de termos adjascentes.
 @item
 Repetidamente e recursivamente aplica essas t@'ecnicas at@'e que
 a express@~ao n@~ao mais mude.
 @end enumerate
 
-O item (3) n@~ao necess@'ariamente faz uma tarefa @'otima factora@value{cedilha}@~ao
+O item (3) n@~ao necess@'ariamente faz uma tarefa @'optima factoriza@value{cedilha}@~ao
 par a par devido @`a dificuldade combinat@'oria natural de encontrar
 qual de todas dos poss@'{@dotless{i}}veis rearranjos de pares retorna o mais
-compacto resultado de factora@value{cedilha}@~ao de um par.
+compacto resultado de factoriza@value{cedilha}@~ao de um par.
 
 @code{load (scifac)} torna essa fun@value{cedilha}@~ao dispon@'{@dotless{i}}vel para uso.
 @code{demo (scifac)} faz uma demonstra@value{cedilha}@~ao dessa fun@value{cedilha}@~ao.
