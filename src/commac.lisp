@@ -603,9 +603,6 @@ values")
 	(t `(let ((.x. ,x))
 	     (signp ,sym .x.)))))
 
-
-(defmacro comment (&rest a) a ''comment)
-
 (defvar *prompt-on-read-hang* nil)
 (defvar *read-hang-prompt* "")
 
