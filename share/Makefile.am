@@ -362,8 +362,10 @@ contrib/rand/vandpol.usg\
 contrib/rtest_opproperties.mac\
 contrib/rtestdefstruct.mac\
 contrib/sarag/aliases.mac\
+contrib/sarag/arag_test.mac\
 contrib/sarag/constants.mac\
 contrib/sarag/examples.mac\
+contrib/sarag/hard_test.mac\
 contrib/sarag/intervalArithmetic.mac\
 contrib/sarag/lowLevel.mac\
 contrib/sarag/readme.txt\
@@ -376,6 +378,7 @@ contrib/sarag/settings.mac\
 contrib/sarag/signDetermination.mac\
 contrib/sarag/topology_examples.mac\
 contrib/sarag/topology.mac\
+contrib/sarag/whatsnew.txt\
 contrib/simplex/simplex.mac\
 contrib/simplex/simplex_algorithm.lisp\
 contrib/simplex/minimize_sx.mac\
