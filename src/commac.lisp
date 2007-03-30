@@ -311,24 +311,6 @@ values")
   "($mkey '$demo)==>:demo"
   (intern (string-left-trim "$" (string variable)) 'keyword))
 
-;;Problems with quote char / and #/ don't want to break editor or compiler.
-;;Solution:
-;; I replace all #/ by #\
-;;II do the replacements indicated below under multiple query replace from buffer
-;;III if a macro requires the actual string eg "//" use #.forward-slash-string for example.
-;;have done this to suprv1,system,displa,nparse,displm.
-
-;;;some solutions for the backslash problem: in general try to avoid
-;;using any quote character.  Use #\a for normal type characters.
-;;to run in common (of course the numbers here need changing if not standard ascii):
-
-(defvar double-quote-char (code-char 34.)) ;; #\")
-(defvar semi-colon-char (code-char 59.)) ;; #\;)
-(defvar back-slash-char (code-char 92.)) ;; #\\)
-(defvar left-parentheses-char (code-char 40.)) ;(
-(defvar right-parentheses-char (code-char 41.)) ;)
-(defvar vertical-stroke-char (code-char 124.)) ;|
-
 (defmacro arg (x)
   `(narg1 ,x narg-rest-argument))
 
