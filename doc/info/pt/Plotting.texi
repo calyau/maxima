@@ -594,7 +594,7 @@ make_transform ([r, th, z], r*cos(th), r*sin(th), z)$
 @end example
 @end itemize
 
-@b{Opções do Gnuplot:}
+@b{Op@,{c}@~oes do Gnuplot:}
 
 Existem muitas op@,{c}@~oes espec@'{@dotless{i}}ficas para o
 Gnuplot. Muitas dessas op@,{c}@~oes s@~ao comandos pr@'oprios do
