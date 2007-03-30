@@ -165,7 +165,7 @@ calcular a primitiva nos extremos.
 Quando a vari@'avel global @code{logarc} for igual a @code{true}, as
 fun@,{c}@~oes trigononom@'etricas inversas, circulares e
 hiperb@'olicas, ser@~ao substitu@'{@dotless{i}}das por suas
-fun@,{c}@~oes logaritmicas equivalentes. O valor
+fun@,{c}@~oes logar@'{@dotless{i}}tmicas equivalentes. O valor
 padr@~ao de @code{logarc} @'e @code{false}.
 
 A fun@,{c}@~ao @code{logarc(@var{expr})} realiza essa

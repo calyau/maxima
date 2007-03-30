@@ -1649,9 +1649,9 @@ Retorna o menor expoente de @var{x} que explicitamente aparecer em
 
 @c NEEDS WORK
 @deffn {Fun@value{cedilha}@~ao} lpart (@var{r@'otulo}, @var{expr}, @var{n_1}, ..., @var{n_k})
-@'e similar a @code{dpart} mas usa uma
-caixa rotulada. Uma moldura rotulada @'e similar @`a que @'e produzida por @code{dpart}
-mas a produzida por @code{lpart} tem o nome na linha do topo.
+@'e similar a @code{dpart} mas usa uma caixa rotulada. Uma caixa
+rotulada @'e similar @`a que @'e produzida por @code{dpart} mas a
+produzida por @code{lpart} tem o nome na linha do topo.
 
 @end deffn
 

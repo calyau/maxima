@@ -150,10 +150,10 @@ sa@'{@dotless{i}}da @'e mostrada ao utilizador pela linha de comando
 para que ele possa ver o inverso da m@'etrica.
 
 Se @code{cframe_flag} for @code{true}, a fun@value{cedilha}@~ao espera
-que o valor de @code{fri} (a matriz moldura inversa) e @code{lfg} (a
-m@'etrica da moldura) sejam definidas. A partir dessas, a matriz da
-moldura @code{fr} e a m@'etrica da moldura inversa @code{ufg} s@~ao
-calculadas.
+que o valor de @code{fri} (a matriz referencial inversa) e @code{lfg} (a
+m@'etrica do referencial) sejam definidas. A partir dessas, a matriz do
+referencial @code{fr} e a m@'etrica do referencial inverso @code{ufg}
+s@~ao calculadas.
 
 @end deffn
 
@@ -280,7 +280,7 @@ A fun@value{cedilha}@~ao @code{init_ctensor} reinicializa o pacote
 @code{ctensor}. Essa fun@value{cedilha}@~ao remove todos os arrays e
 matrizes usados por @code{ctensor}, coloca todos os sinalizadores de
 volta a seus valores padr@~ao, retorna @code{dim} para 4, e retorna a
-m@'etrica da moldura para a m@'etrica da moldura de Lorentz.
+m@'etrica do referencial para a m@'etrica do referencial de Lorentz.
 
 @end deffn
 
@@ -309,7 +309,7 @@ seguintes tensores:
 
 @end example
 
-@code{ctensor} pode tamb@'em usar molduras m@'oveis. Quando
+@code{ctensor} pode tamb@'em usar referenciais m@'oveis. Quando
 @code{cframe_flag} for escolhida para @code{true}, os seguintes tensores
 podem ser calculados:
 
@@ -420,7 +420,7 @@ das componentes ir@'a tamb@'em ser factorada.
 Se a vari@'avel @code{cframe_flag} for @code{false}, o tensor de Riemann
 @'e calculado directamente dos s@'{@dotless{i}}mbolos de Christoffel. Se
 @code{cframe_flag} for @code{true}, o tensor covariante de Riemann @'e
-calculado primeiro dos coeficientes de campo da moldura.
+calculado primeiro dos coeficientes de campo do referencial.
 
 @end deffn
 
@@ -432,8 +432,8 @@ argumento @var{dis} for @code{true}, @'unicos valores n@~ao nulos s@~ao
 mostrados.
 
 Se a vari@'avel @code{cframe_flag} for @code{true}, o tensor covariante
-de Riemann @'e calculado directamente dos coeficientes de campo da
-moldura. De outra forma, o tensor (3,1) de Riemann @'e calculado
+de Riemann @'e calculado directamente dos coeficientes de campo do
+referencial. De outra forma, o tensor (3,1) de Riemann @'e calculado
 primeiro.
 
 Para informa@value{cedilha}@~ao sobre a ordena@value{cedilha}@~ao de
@@ -635,16 +635,16 @@ limite do campo fraco longe de uma fonte gravitacional.
 @end deffn
     
 
-@subsection Campos de moldura
+@subsection Campos de referencial
 
 Quando a vari@'avel @code{cframe_flag} for escolhida para @code{true}, o
-pacote @code{ctensor} executa seus c@'alculos usando uma moldura
+pacote @code{ctensor} executa seus c@'alculos usando um referencial
 m@'ovel.
 
 @deffn {Fun@value{cedilha}@~ao} frame_bracket (@var{fr}, @var{fri}, @var{diagframe})
-O delimitador da moldura (@code{fb[]}).
+O delimitador do referencial (@code{fb[]}).
 
-Calcula o delimitador da moldura conforme a seguinte
+Calcula o delimitador do referencial conforme a seguinte
 defini@value{cedilha}@~ao:
 
 @example
@@ -666,10 +666,10 @@ Para uma demonstra@value{cedilha}@~ao dessa compatibilidade, veja o ficheiro
 Calcula um tetrad nulo de Newman-Penrose (@code{np}) e seus @'{@dotless{i}}ndices ascendentes
 em contrapartida (@code{npi}). Veja @code{petrov} para um exemplo.
 
-O tetrad nulo @'e constru@'{@dotless{i}}do assumindo que uma moldura m@'etrica ortonormal
-tetradimensional com assinatura m@'etrica (-,+,+,+) est@'a sendo usada.
-As componentes do tetrad nulo s@~ao relacionadas para a matriz moldura inversa
-como segue:
+O tetrad nulo @'e constru@'{@dotless{i}}do assumindo que um referencial
+m@'etrico ortonormal tetradimensional com assinatura m@'etrica (-,+,+,+)
+est@'a sendo usada.  As componentes do tetrad nulo s@~ao relacionadas
+para a matriz referencial inversa como segue:
 
 @example
 
@@ -695,22 +695,22 @@ Se @code{psi} for escolhida para @code{true}, os coeficientes s@~ao mostrados.
 Veja @code{petrov} para um exemplo.
 
 Esses coeficientes s@~ao calculados a partir do tensor de Weyl em uma
-base de coordenada.  Se uma base de moldura for usada,o tensor de Weyl
+base de coordenada.  Se uma base de referencial for usada, o tensor de Weyl
 @'e primeiro convertido para a base de coordenada, que pode ser um
 procedimento computacional expans@'{@dotless{i}}vel. Por essa raz@~ao,
 em alguns casos pode ser mais vantajoso usar uma base de coordenada em
 primeiro lugar antes que o tensor de Weyl seja calculado. Note todavia,
 que para a constru@value{cedilha}@~ao de um tetrad nulo de
-Newman-Penrose @'e necess@'ario uma base de moldura. Portanto, uma
+Newman-Penrose @'e necess@'ario uma base de referencial. Portanto, uma
 sequ@^encia de c@'alculo expressiva pode come@value{cedilha}ar com uma
-base de moldura, que @'e ent@~ao usada para calcular @code{lg}
+base de referencial, que @'e ent@~ao usada para calcular @code{lg}
 (calculada automaticamente atrav@'es de @code{cmetric}) e em seguida
 calcula @code{ug}. Nesse ponto, pode comutar de volta para uma base de
 coordenada escolhendo @code{cframe_flag} para @code{false} antes de
 come@value{cedilha}ar a calcular os s@'{@dotless{i}}mbolos de
-Christoffel. Mudando para uma base de moldura em um est@'agio posterior
+Christoffel. Mudando para uma base de referencial num est@'agio posterior
 pode retornar resultados inconsistentes, j@'a que pode terminar com uma
-grande mistura de tensores, alguns calculados numa base de moldura, e
+grande mistura de tensores, alguns calculados numa base de referencial, e
 outros numa base de coordenada, sem nenhum modo para distinguir entre os
 dois tipos.
 
@@ -1321,18 +1321,19 @@ automaticamente por @code{csetup} se uma m@'etrica diagonal for especificada.
 @defvr {Vari@'avel de op@value{cedilha}@~ao} ctrgsimp
 
 Faz com que simplifica@value{cedilha}@~oes trigonom@'etricas sejam usadas quando tensores forem calculados. Actualmente,
-@code{ctrgsimp} afecta somente c@'alculos envolvendo uma moldura m@'ovel.
+@code{ctrgsimp} afecta somente c@'alculos envolvendo um referencial m@'ovel.
 
 @end defvr
 
 @defvr {Vari@'avel de op@value{cedilha}@~ao} cframe_flag
 
-Faz com que c@'alculos sejam executados relativamente a uma moldura m@'ovel em oposi@value{cedilha}@~ao a
-uma m@'etrica holon@'omica. A moldura @'e definida atrav@'es do array da moldura inversa @code{fri}
-e da m@'etrica da moldura @code{lfg}. Para c@'alculos usando uma moldura Cartesiana,
-@code{lfg} pode ser a matriz unit@'aria de dimens@~ao apropriada; para
-c@'alculos em uma moldura de Lorentz, @code{lfg} pode ter a assinatura
-apropriada.
+Faz com que c@'alculos sejam executados relativamente a um referencial
+m@'ovel em oposi@value{cedilha}@~ao a uma m@'etrica holon@'omica. O
+referencial @'e definido atrav@'es do array do referencial inverso
+@code{fri} e da m@'etrica do referencial @code{lfg}. Para c@'alculos
+usando um referencial Cartesiano, @code{lfg} pode ser a matriz
+unit@'aria de dimens@~ao apropriada; para c@'alculos num referencial
+de Lorentz, @code{lfg} pode ter a assinatura apropriada.
 
 @end defvr
 
@@ -1423,11 +1424,13 @@ aplique simplifica@value{cedilha}@~oes racionais aos valores do tensor de Weyl. 
 @end defvr
 
 @defvr {Vari@'avel} lfg
-A moldura m@'etrica covariante. Por padr@~ao, @'e inicializada para a moldura tetradimensional de Lorentz com assinatura (+,+,+,-). Usada quando @code{cframe_flag} for @code{true}.
+O referencial m@'etrico covariante. Por padr@~ao, @'e inicializado para
+o referencial tetradimensional de Lorentz com assinatura
+(+,+,+,-). Usada quando @code{cframe_flag} for @code{true}.
 @end defvr
 
 @defvr {Vari@'avel} ufg
-A m@'etrica da moldura inversa. Calculada de @code{lfg} quando @code{cmetric} for chamada enquanto @code{cframe_flag} for escolhida para @code{true}.
+A m@'etrica do referencial inverso. Calculada de @code{lfg} quando @code{cmetric} for chamada enquanto @code{cframe_flag} for escolhida para @code{true}.
 @end defvr
 
 @defvr {Vari@'avel} riem
@@ -1482,7 +1485,7 @@ O tensor de Weyl. Calculado atrav@'es de @code{weyl}.
 
 @defvr {Vari@'avel} fb
 
-Coeficientes delimitadores da moldura, como calculado atrav@'es de @code{frame_bracket}.
+Coeficientes delimitadores do referencial, como calculado atrav@'es de @code{frame_bracket}.
 
 @end defvr
 
@@ -1564,9 +1567,9 @@ n@~ao devem ser redefinidos:
 @example
   Name         Description
   ---------------------------------------
-  _lg()        Avalia para @code{lfg} se a moldura m@'etrica for usada,
+  _lg()        Avalia para @code{lfg} se for usado o referencial m@'etrico,
                     para @code{lg} de outra forma
-  _ug()        Avalia para @code{ufg} se a moldura m@'etrica for usada,
+  _ug()        Avalia para @code{ufg} se for usado o referencial m@'etrico,
                     para @code{ug} de outra forma
   cleanup()    Remove @'{@dotless{i}}tens da lista @code{deindex}
   contract4()  Usado por psi()
@@ -1583,11 +1586,11 @@ n@~ao devem ser redefinidos:
   sermet()     Usado por csetup() para informar uma m@'etricacom s@'erie
                     de Taylor
   txyzsum()
-  tmetric()    Moldura m@'etrica, usado por cmetric() quando
+  tmetric()    Referencial m@'etrico, usado por cmetric() quando
                     cframe_flag:true
-  triemann()   Tensor de Riemann em base de moldura, usado quando
+  triemann()   Tensor de Riemann na base do referencial, usado quando
                     cframe_flag:true
-  tricci()     Tensor de Ricci em base de moldura, usada quando
+  tricci()     Tensor de Ricci na base do referencial, usado quando
                     cframe_flag:true
   trrc()       Coeficientes de rota@value{cedilha}@~ao de Ricci, usado por
                     christof()

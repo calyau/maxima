@@ -19,7 +19,7 @@ t@'opico @code{QUADPACK}.  Fun@value{cedilha}@~oes hipergeom@'etricas
 est@~ao sendo trabalhadas, veja @code{specint} para detalhes.
 Geralmente falando, Maxima somente calcula integrais que sejam
 integr@'aveis em termos de "fun@value{cedilha}@~oes elementares"
-(fun@value{cedilha}@~oes racionais, trigonometricas, logaritmicas,
+(fun@value{cedilha}@~oes racionais, trigonometricas, logar@'{@dotless{i}}tmicas,
 exponenciais, radicais, etc.) e umas poucas extens@~oes
 (fun@value{cedilha}@~ao de erro, dilogaritmo). N@~a consegue calcular
 integrais em termos de fun@value{cedilha}@~oes desconhecidas tais como
@@ -265,7 +265,7 @@ limites de integra@value{cedilha}@~ao iguais a zero ou infinito
 com limites de integra@value{cedilha}@~ao iguais a zero e @code{%pi} ou
 @code{2 %pi}, fun@value{cedilha}@~oes racionais, integrais relacionados
 com as defini@value{cedilha}@~oes das fun@value{cedilha}@~oes
-@code{beta} e @code{psi}, e alguns integrais logaritmicos e
+@code{beta} e @code{psi}, e alguns integrais logar@'{@dotless{i}}tmicos e
 trigonom@'etricos.  O processamento de fun@value{cedilha}@~oes racionais
 pode incluir c@'alculo de res@'{@dotless{i}}duos.  Se um caso especial
 aplic@'avel n@~ao for encontrado, ser@'a feita uma tentativa para calcular o
@@ -275,7 +275,7 @@ nos casos em que um dos limites do integral for para infinito ou menos
 infinito; veja tamb@'em @code{ldefint}.
 
 Casos especiais de integrais indefinidos incluem fun@value{cedilha}@~oes
-trigonom@'etricas, exponenciais e fun@value{cedilha}@~oes logaritmicas,
+trigonom@'etricas, exponenciais e fun@value{cedilha}@~oes logar@'{@dotless{i}}tmicas,
 e fun@value{cedilha}@~oes racionais.  @code{integrate} pode tamb@'em
 fazer uso de uma pequena tabela de integais elementares.
 
@@ -1243,7 +1243,7 @@ Exemplos:
 @deffnx {Fun@value{cedilha}@~ao} quad_qaws (@var{f}, @var{x}, @var{a}, @var{b}, @var{alpha}, @var{beta}, @var{wfun}, @var{epsabs}, @var{limite})
 
 Integra@value{cedilha}@~ao de @math{w(x) f(x)} sobre um intervalo finito,
-onde @math{w(x)} @'e uma certa fun@value{cedilha}@~ao alg@'ebrica ou logaritmica.
+onde @math{w(x)} @'e uma certa fun@value{cedilha}@~ao alg@'ebrica ou logar@'{@dotless{i}}tmica.
 Uma estrat@'egia de subdivis@~ao globalmente adaptativa @'e aplicada,
 com integra@value{cedilha}@~ao modificada de Clenshaw-Curtis sobre os subintervalos que possu@'{@dotless{i}}rem os pontos finais
 dos intervalos de integra@value{cedilha}@~ao.
