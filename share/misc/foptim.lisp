@@ -46,7 +46,7 @@
 		  (NOT (EQ (CAAR X) 'MLIST))
 		  (NOT (SYMBOLP (CADR X)))
 		  (NOT (SYMBOLP (CADDR X))))
-	      (CURSORPOS 'A TYO)
+	      (fresh-line)
 	      (PRINC '|;FOPTIMIZE called on an illegal form.| TYO)
 	      (ERR))
 	     (T
@@ -62,7 +62,7 @@
 
 (DEFUN FOPTIMIZE-AUX (DEF NAME)
        (COND ((NOT DEF)
-	      (CURSORPOS 'A TYO)
+	      (fresh-line)
 	      (PRINC '|;No function definition for | TYO)
 	      (PRINC (STRIPDOLLAR NAME) TYO)
 	      (PRINC '|. It will be ignored.| TYO)
