@@ -61,9 +61,10 @@ from <http://sourceforge.net/project/showfiles.php?group_id=2435>:
       ftp://ftp.sf.net/m/mi/mingw/binutils-2.14.90-20030807-1.tar.gz
    f) Install msysDTK-1.0.1.exe
       It provides Perl and autotools (autoconf/automake).
-      Perl which comes with comes with msysDTK-1.0.1 is Perl 5.6
-      but Maxima 5.11 requires Perl 5.8.  So for Maxima 5.11 and above
-      get and install ActivePerl at <http://www.activestate.com>.
+      msysDTK-1.0.1 comes with Perl version 5.6, which is too old for
+      Maxima 5.11, it requires version 5.8. The easiest way is to
+      download and install ActivePerl binaries provided by
+      <http://www.activestate.com>.
       Follow the download link at 
       <http://www.activestate.com/Products/ActivePerl/>.
 
@@ -161,22 +162,24 @@ their values according to your preferences.
 <http://www.microsoft.com/downloads/details.aspx?familyid=00535334-c8a6-452f-9aa0-d597d16580cc&displaylang=en>
 and install it.  
 
-Add HHW installation directory to Windows or MSYS path
-to make HTML Help Workshop compiler command hhc.exe available
-in MSYS command prompt.
+Make sure that HHW directory is within PATH (edit PATH environment
+variable with either Windows or MSYS approach), so the HTML Help Workshop
+compiler command "hhc.exe" is available at the MSYS command prompt.
 
-10) Before compiling Maxima check that all required components
+For reference, to change PATH within MSYS only, edit the file
+c:\msys\1.0\etc\profile and add the following line after the initial
+setting of PATH:
+    export PATH="/c/gcl/bin:$PATH"
+
+10) Following components
     a) tcltk (e.g. wish84 command), 
     b) gcl (gcl command),
     c) HTML Help Workshop compiler (hhc command)
-are available in the MSYS command prompt.
+should also be available at the MSYS command prompt.
 
-If this is not the case add required directories either to Windows
-or to MSYS path.  The latter can be done by editing c:\msys\1.0\etc\profile
-For example add the following line after the initial setting of PATH:
-    export PATH="/c/gcl/bin:$PATH"
+If this is not the case, edit your PATH variable again.
 
-10) You should now be ready to compile and install maxima. 
+11) You should now be ready to compile and install maxima. 
 Configure maxima so that it will install in some sort of temporary
 directory. The directory does not need to exist ahead of time.
 
@@ -190,11 +193,11 @@ make iss
 The "check" should pass all tests except those listed as known
 failures.
 
-11) Once "make iss" is complete, run Inno Setup on the maxima.iss
+12) Once "make iss" is complete, run Inno Setup on the maxima.iss
 file. It is recommended to remove the temporary maxima install
 directory (c:/maxima above) before testing the installation.
 
-12) Test the installed package.  For example
+13) Test the installed package.  For example
  o Run the maxima testsuite: run_testsuite()
  o Try compiling a function.  This has been a problem in the past
     - f(x):=x+2;
