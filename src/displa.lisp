@@ -100,7 +100,6 @@
   which does no cursorpositioning it would be top left corner at the call and
   spaced over by at-y. It can't tell where it is in the line, already so you have to tell it
   where to begin, or if it occurs in a format command go back to last % to get offset."
-  (desetq (prev-x . prev-y) (cursorpos))
   (let ((*standard-output* stream) )
     (unwind-protect
 	 (let ((mratp (checkrat form))
@@ -115,13 +114,12 @@
 	       (moremsg d-moremsg))
 	   (setq dim-list (dimension form nil 'mparen 'mparen 0 0))
 	   (cond ($cursordisp  (draw-2d (nreverse dim-list) at-x at-y))
-		 (t (cursorpos (- at-x (1- height)) 0)
-		    (draw-linear (nreverse dim-list) (+ at-x height) at-y)
-		    (loop for i downfrom (1- (length linearray)) to 0
-		       when (aref linearray i)
-		       do (output-linear-one-line i)))))
-      (fill linearray nil))
-    (cursorpos prev-x prev-y)))
+		 (t
+		  (draw-linear (nreverse dim-list) (+ at-x height) at-y)
+		  (loop for i downfrom (1- (length linearray)) to 0
+		     when (aref linearray i)
+		     do (output-linear-one-line i)))))
+      (fill linearray nil))))
 
 (defvar *alt-display2d* nil)
 (defvar *alt-display1d* nil)
@@ -1282,7 +1280,7 @@
 ;; This function is not used if a WRITEFILE is taking place.
 
 (defun output-2d (result w &aux (h 0))
-  (setq oldrow (car (cursorpos))
+  (setq oldrow 0
 	oldcol 0
 	h (+ oldrow bkptht bkptdp))
   (cursorpos* oldrow 0)
@@ -1414,7 +1412,6 @@
 ;; absolute cursor movement.
 
 (defun cursorpos* (row col)
-  (cursorpos row col)
   (setq oldrow row oldcol col))
 
 ;; This function is transmitting ITS output buffer codes in addition to
