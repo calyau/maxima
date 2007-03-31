@@ -18,48 +18,93 @@
 
 (in-package :maxima)
 
-(defun gnuplot-curve-style (style i)
-  (let ((n (nth (mod i 6) '(6 3 1 4 7 -1)))
-	(m (nth (mod i 7) '(30 25 3 28 14 19 11))))
-    (with-output-to-string
-      (st)
-      (case (nth 0 style)
-        ($dots (format st "with dots"))
-        ($impulses (format st "with impulses"))
-        ($lines
-         (format st "with lines")
-         (if (and (nth 1 style) (numberp (nth 1 style)))
-           (progn
-             (format st " linewidth ~g" (nth 1 style))
-             (if (and (nth 2 style) (integerp (nth 2 style)))
-               (format st " linetype ~d" (nth 2 style))
-               (format st " linetype ~d" n)))
-           (format st " ~d" n)))
-        ($points
-         (format st "with points")
-         (if (and (nth 1 style) (numberp (nth 1 style)))
-           (progn
-             (format st " pointsize ~g" (nth 1 style))
-             (if (and (nth 2 style) (integerp (nth 2 style)))
-               (format st " pointtype ~d" (nth 2 style))
-               (format st " pointtype ~d" m)))
-           (format st " ~d" m)))
-        ($linespoints
-         (format st "with linespoints")
-         (if (and (nth 1 style) (numberp (nth 1 style)))
-           (progn
-             (format st " linewidth ~f" (nth 1 style))
-             (if (and (nth 2 style) (numberp (nth 2 style)))
-               (progn
-                 (format st " pointsize ~f" (nth 2 style))
-                 (if (and (nth 3 style) (integerp (nth 3 style)))
-                   (progn
-                     (format st " linetype ~d" (nth 3 style))
-                     (if (and (nth 4 style) (integerp (nth 4 style)))
-                       (format st " pointtype ~d" (nth 4 style))
-                       (format st " pointtype ~d" m)))
-                   (format st " linetype ~d pointtype ~d" n n)))
-               (format st " linetype ~d pointtype ~d" n)))
-           (format st " linetype ~d pointtype ~d" m)))
-        (t (format st "with lines ~d" n))))))
+(defun $gnuplot_color (c)
+  (unless (integerp c) (setf c (round c)))
+  (nth (mod c 7) '(5 3 1 4 7 6 2)))
 
+(defun $gnuplot_pointtype (c)
+  (unless (integerp c) (setf c (round c)))
+  (nth (mod c 13) '(12 7 6 1 2 3 5 4 9 8 11 10 13)))
+
+;; style is a list starting with a symbol from the list: points, lines,
+;; linespoints or dots,
+;; The meaning of the numbers that follow the symbol are:
+;;
+;;   lines, linewidth, color
+;;   points, radius, color, pointtype
+;;   linespoints, linewidth, radius, color, pointtype
+;;   dots, color
+;;
+;; linewidth and radius are measured in the same units and can be
+;; floating-point numbers.
+;;
+;; color must be an integer; values of color from 1 to 7 give the seven
+;; default colors. Other integers with lead to the default color that
+;; has the same "modulus 7" value. The default colors are:
+;;
+;;      1 Blue
+;;      2 Red
+;;      3 Magenta
+;;      4 Orange
+;;      5 SaddleBrown
+;;      6 Lime
+;;      7 Aqua
+;;
+;; pointtype must be an integer; there are 13 default point types. Values
+;; of pointtype less than 1 or bigger than 13 will produce the same type
+;; as the default type with the same "modulus 23" value. The default types
+;; are:
+;;      1 Filled circle      8 Filled triangle
+;;      2 Open circle        9 Open triangle
+;;      3 +                 10 Filled inverted triangle
+;;      4 x                 11 Open inverted triangle
+;;      5 *                 12 Filled losenge
+;;      6 Filled square     13 Open losenge
+;;      7 Open square
+
+(defun gnuplot-curve-style (style i)
+  (with-output-to-string
+    (st)
+    (case (first style)
+      ($dots
+       (format st "with dots")
+       (if (integerp (second style))
+	 (format st " lt ~d" ($gnuplot_color (second style)))
+	 (format st " lt ~d" ($gnuplot_color i))))
+      ($impulses
+       (format st "with impulses")
+       (if (integerp (second style))
+	 (format st " lt ~d" ($gnuplot_color (second style)))
+	 (format st " lt ~d" ($gnuplot_color i))))
+      ($lines
+       (format st "with lines")
+       (if (numberp (second style))
+	 (format st " lw ~f" (second style)))
+       (if (integerp (third style))
+	 (format st " lt ~d" ($gnuplot_color (third style)))
+	 (format st " lt ~d" ($gnuplot_color i))))
+      ($points
+       (format st "with points")
+       (if (numberp (second style))
+	 (format st " ps ~f" (/ (second style) 2))
+	 (format st " ps 1.5"))
+       (if (integerp (third style))
+	 (format st " lt ~d" ($gnuplot_color (third style)))
+	 (format st " lt ~d" ($gnuplot_color i)))
+       (if (integerp (fourth style))
+	 (format st " pt ~d" ($gnuplot_pointtype (fourth style)))
+	 (format st " pt ~d" ($gnuplot_pointtype i))))
+      ($linespoints
+       (format st "with linespoints")
+       (if (numberp (second style))
+	 (format st " lw ~f" (second style)))
+       (if (numberp (third style))
+	 (format st " ps ~f" (/ (third style) 2))
+	 (format st " ps 1.5"))
+       (if (integerp (fourth style))
+	 (format st " lt ~d" ($gnuplot_color (fourth style)))
+	 (format st " lt ~d" ($gnuplot_color i)))
+       (if (integerp (fifth style))
+	 (format st " pt ~d" ($gnuplot_pointtype (fifth style)))
+	 (format st " pt ~d" ($gnuplot_pointtype i))))
+      (t (format st "with lines ~d" ($gnuplot_color i))))))

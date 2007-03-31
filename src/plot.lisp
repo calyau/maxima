@@ -1308,7 +1308,7 @@
                    (cond ((< (length string) 80) string)
                          (t (format nil "fun~a" i)))))))
             (when plot-name (format st " {label \"~a\"}" plot-name))
-            (format st " ~a~%" (openmath-curve-style style))
+            (format st " ~a~%" (openmath-curve-style style i))
             (format st " {xversusy~%")
             (let ((lis (cdr (draw2d f range log-x log-y))))
               (loop while lis

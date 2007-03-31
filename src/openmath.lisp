@@ -20,37 +20,65 @@
 
 (defun $openmath_color (c)
   (unless (integerp c) (setf c (round c)))
-  (nth (mod c 7) '("green" "blue" "red" "magenta" "orange" "black" "brown")))
+  (nth (mod c 7) '("skyblue" "blue" "red" "magenta" "orange" "saddlebrown" "green")))
 
-;; style is a list of the form (type <n1> <n2> <n3> <n4>)
-(defun openmath-curve-style (style)
+;; style is a list starting with a symbol from the list: points, lines,
+;; linespoints or dots,
+;; The meaning of the numbers that follow the symbol are:
+;;
+;;   lines, linewidth, color
+;;   points, radius, color
+;;   linespoints, linewidth, radius, color
+;;   dots, color
+;;
+;; linewidth and radius are measured in the same units and can be
+;; floating-point numbers.
+;;
+;; color must be an integer; values of color from 1 to 7 give the seven
+;; default colors. Other integers with lead to the default color that
+;; has the same "modulus 7". The default colors are:
+;;
+;;      1 Blue
+;;      2 Red
+;;      3 Magenta
+;;      4 Orange
+;;      5 SaddleBrown
+;;      6 Green
+;;      7 SkyBlue
+
+(defun openmath-curve-style (style i)
   (with-output-to-string
     (st)
     (case (first style)
       ($dots
        (format st "{nolines 1} {plotpoints 1} {pointsize 0.7}")
-       (when (numberp (second style))
-	 (format st " {color ~a}" ($openmath_color (second style)))))
+       (if (integerp (second style))
+	 (format st " {color ~a}" ($openmath_color (second style)))
+         (format st " {color ~a}" ($openmath_color i))))
       ($lines
        (format st "{nolines 0} {plotpoints 0}")
-       (when (numberp (second style))
+       (if (numberp (second style))
 	 (format st " {linewidth ~f}" (second style)))
-       (when (numberp (third style))
-	 (format st " {color ~a}" ($openmath_color (third style)))))
+       (if (integerp (third style))
+	 (format st " {color ~a}" ($openmath_color (third style)))
+	 (format st " {color ~a}" ($openmath_color i))))
       ($points
        (format st "{nolines 1} {plotpoints 1}")
-       (when (numberp (second style))
-	 (format st " {pointsize ~f}" (second style)))
-       (when (numberp (third style))
-	 (format st " {color ~a}" ($openmath_color (third style)))))
+       (if (numberp (second style))
+	 (format st " {pointsize ~f}" (second style))
+	 (format st " {pointsize 3}"))
+       (if (integerp (third style))
+	 (format st " {color ~a}" ($openmath_color (third style)))
+	 (format st " {color ~a}" ($openmath_color i))))
       ($linespoints
        (format st "{nolines 0} {plotpoints 1}")
-       (when (numberp (second style))
+       (if (numberp (second style))
 	 (format st " {linewidth ~f}" (second style)))
-       (when (numberp (third style))
-	 (format st " {pointsize ~f}" (third style)))
-       (when (numberp (fourth style))
-	 (format st " {color ~a}" ($openmath_color (fourth style))))))))
-
-
-
+       (if (numberp (third style))
+	 (format st " {pointsize ~f}" (third style))
+	 (format st " {pointsize 3}"))
+       (if (integerp (fourth style))
+	 (format st " {color ~a}" ($openmath_color (fourth style)))
+	 (format st " {color ~a}" ($openmath_color i))))
+      (t
+       (format st "{nolines 0} {plotpoints 0} {color ~a}" ($openmath_color i))))))
