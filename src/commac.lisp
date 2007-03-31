@@ -655,23 +655,8 @@ values")
 	  (return-from eat-continuations ch))))
     ch))
 
-;;I don't think these are terribly useful so why use them.
-
-(defmacro *expr (&rest x)
-  (declare (ignore x))
-  nil)
-
-(defmacro *lexpr (&rest x)
-  (declare (ignore x))
-  nil)
-
-(defmacro *fexpr (&rest x)
-  (declare (ignore x))
-  nil)
-
 (defvar ^w nil)
 (defvar ^r nil)
-
 
 ;;essentially no common lisp support for cursor pos:
 ;;should be adapted for a particular implementation.
