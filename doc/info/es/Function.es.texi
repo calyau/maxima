@@ -1,4 +1,4 @@
-@c english version 1.43
+@c english version 1.46
 @menu
 * Introducci@'on a la definici@'on de funciones::  
 * Funciones::                    
@@ -524,52 +524,126 @@ La funci@'on @code{compile} no eval@'ua sus argumentos, pero con el operador com
 @end deffn
 
 @deffn {Funci@'on} define (@var{f}(@var{x_1}, ..., @var{x_n}), @var{expr})
+@deffnx {Funci@'on} define (@var{f}[@var{x_1}, ..., @var{x_n}], @var{expr})
+@deffnx {Funci@'on} define (funmake (@var{f}, [@var{x_1}, ..., @var{x_n}]), @var{expr})
+@deffnx {Funci@'on} define (arraymake (@var{f}, [@var{x_1}, ..., @var{x_n}]), @var{expr})
+@deffnx {Funci@'on} define (ev (@var{expr_1}), @var{expr_2})
 
 Define una funci@'on de nombre @var{f} con argumentos @var{x_1}, ..., @var{x_n} y cuerpo @var{expr}.
+@code{define} eval@'ua siempre su segundo argumento, a menos que se
+indique lo contrario con el operador de comilla simple. La funci@'on as@'{@dotless{i}}
+definida puede ser una funci@'on ordinaria de Maxima (con sus argumentos
+encerrados entre par@'entesis) o una funci@'on array (con sus argumentos encerrados
+entre corchetes).
 
-@code{define} no eval@'ua su primer argumento en la mayor parte de los casos y eval@'ua su segundo argumento, a menos que vaya precedido de ap@'ostrofo (@code{'}). Sin embargo, si el primer argumento es una expresi@'on de la forma @code{ev (@var{expr})}, @code{funmake (@var{expr})}  o @code{arraymake (@var{expr})}, el primer argumento es evaluado, lo que permite calcular el nombre de la funci@'on junto con su cuerpo.
+Cuando el @'ultimo o @'unico argumento @var{x_n} es una lista de un solo 
+elemento, la funci@'on definida por @code{define} acepta un n@'umero variable
+de argumentos. Los argumentos se van asignando uno a uno a @var{x_1}, ..., @var{x_(n - 1)},
+y los que queden, si los hay, se asignan a @var{x_n} en forma de lista.
 
-@code{define} es similar al operador de definici@'on de funciones @code{:=}, pero cuando @code{define} aparece dentro de una funci@'on, la definici@'on se crea usando el valor de @code{expr} en el momento de su ejecuci@'on, en lugar de la que ten@'{@dotless{i}}a en el momento de la definici@'on de la funci@'on que la contiene.
+Cuando el primer argumento de @code{define} es una expresi@'on de la
+forma @code{@var{f}(@var{x_1}, ..., @var{x_n})} o
+@code{@var{f}[@var{x_1}, ..., @var{x_n}]}, se eval@'uan los argumentos de la funci@'on,
+pero no @var{f}, incluso cuando se trate de una funci@'on o variable ya existente 
+con ese nombre.
 
-La funci@'on @code{define} define tanto funciones array 
-(las llamadas con argumentos entre corchetes @code{[ ]}) como
-funciones ordinarias.
+Cuando el primer argumento es una expresi@'on con operador @code{funmake}, 
+@code{arraymake} o @code{ev}, se eval@'ua este primer argumento, lo que
+permite calcular la funci@'on.
+
+Todas las definiciones de funciones aparecen en el mismo espacio
+de nombres; definiendo una funci@'on @code{f} dentro de otra
+funci@'on @code{g} no limita el alcance de @code{f} a @code{g}.
+
+Si un argumento formal @var{x_k} es un s@'{@dotless{i}}mbolo afectado
+por el operador comilla simple (expresi@'on nominal), la funci@'on definida por
+@code{define} no eval@'ua el argumento correspondiente que se pasa a la funci@'on.
+En cualquier otro caso, los argumentos que se pasan son evaluados.
+
+V@'eanse tambi@'en @code{:=} y @code{::=}.
 
 Ejemplos:
 
+@code{define} eval@'ua siempre su segundo argumento, a menos que se
+indique lo contrario con el operador de comilla simple.
+
+@c ===beg===
+@c expr : cos(y) - sin(x);
+@c define (F1 (x, y), expr);
+@c F1 (a, b);
+@c F2 (x, y) := expr;
+@c F2 (a, b);
+@c ===end===
 @example
-(%i1) foo: 2^bar;
-                               bar
-(%o1)                         2
-(%i2) g(x) := (f_1 (y) :=   foo*x*y,
-               f_2 (y) := ''foo*x*y,
-       define (f_3 (y),     foo*x*y),
-       define (f_4 (y),   ''foo*x*y));
-                                             bar
-(%o2) g(x) := (f_1(y) := foo x y, f_2(y) := 2    x y, 
-                                                        bar
-               define(f_3(y), foo x y), define(f_4(y), 2    x y))
-(%i3) functions;
-(%o3)                        [g(x)]
-(%i4) g(a);
-                                    bar
-(%o4)                  f_4(y) := a 2    y
-(%i5) functions;
-(%o5)        [g(x), f_1(y), f_2(y), f_3(y), f_4(y)]
-(%i6) dispfun (f_1, f_2, f_3, f_4);
-(%t6)                   f_1(y) := foo x y
-
-                                  bar
-(%t7)                  f_2(y) := 2    x y
-
-                                    bar
-(%t8)                  f_3(y) := a 2    y
-
-                                    bar
-(%t9)                  f_4(y) := a 2    y
-
-(%o9)                         done
+(%i1) expr : cos(y) - sin(x);
+(%o1)                    cos(y) - sin(x)
+(%i2) define (F1 (x, y), expr);
+(%o2)              F1(x, y) := cos(y) - sin(x)
+(%i3) F1 (a, b);
+(%o3)                    cos(b) - sin(a)
+(%i4) F2 (x, y) := expr;
+(%o4)                   F2(x, y) := expr
+(%i5) F2 (a, b);
+(%o5)                    cos(y) - sin(x)
 @end example
+
+La funci@'on as@'{@dotless{i}}
+definida puede ser una funci@'on ordinaria de Maxima o una funci@'on array.
+
+@c ===beg===
+@c define (G1 (x, y), x.y - y.x);
+@c define (G2 [x, y], x.y - y.x);
+@c ===end===
+@example
+(%i1) define (G1 (x, y), x.y - y.x);
+(%o1)               G1(x, y) := x . y - y . x
+(%i2) define (G2 [x, y], x.y - y.x);
+(%o2)                G2     := x . y - y . x
+                       x, y
+@end example
+
+Cuando el @'ultimo o @'unico argumento @var{x_n} es una lista de un solo 
+elemento, la funci@'on definida por @code{define} acepta un n@'umero variable
+de argumentos.
+
+@c ===beg===
+@c define (H ([L]), '(apply ("+", L)));
+@c H (a, b, c);
+@c ===end===
+@example
+(%i1) define (H ([L]), '(apply ("+", L)));
+(%o1)                H([L]) := apply("+", L)
+(%i2) H (a, b, c);
+(%o2)                       c + b + a
+@end example
+
+Cuando el primer argumento es una expresi@'on con operador @code{funmake}, 
+@code{arraymake} o @code{ev}, se eval@'ua este primer argumento.
+
+@c ===beg===
+@c [F : I, u : x];
+@c funmake (F, [u]);
+@c define (funmake (F, [u]), cos(u) + 1);
+@c define (arraymake (F, [u]), cos(u) + 1);
+@c define (foo (x, y), bar (y, x));
+@c define (ev (foo (x, y)), sin(x) - cos(y));
+@c ===end===
+@example
+(%i1) [F : I, u : x];
+(%o1)                        [I, x]
+(%i2) funmake (F, [u]);
+(%o2)                         I(x)
+(%i3) define (funmake (F, [u]), cos(u) + 1);
+(%o3)                  I(x) := cos(x) + 1
+(%i4) define (arraymake (F, [u]), cos(u) + 1);
+(%o4)                   I  := cos(x) + 1
+                         x
+(%i5) define (foo (x, y), bar (y, x));
+(%o5)                foo(x, y) := bar(y, x)
+(%i6) define (ev (foo (x, y)), sin(x) - cos(y));
+(%o6)             bar(y, x) := sin(x) - cos(y)
+@end example
+
 @end deffn
 
 

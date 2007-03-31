@@ -1,4 +1,4 @@
-@c english version 1.24
+@c english version 1.25
 @menu
 * Introducci@'on a reglas y patrones::  
 * Definiciones sobre reglas y patrones::  
@@ -67,30 +67,64 @@ La variable @code{default_let_rule_package} es el nombre del paquete de reglas u
 @end defvr
 
 @deffn {Funci@'on} defmatch (@var{nombre_prog}, @var{patr@'on}, @var{x_1}, ..., @var{x_n})
+@deffnx {Funci@'on} defmatch (@var{progname}, @var{pattern})
 
-Crea una funci@'on @code{@var{nombre_prog} (@var{expr}, @var{y_1}, ..., @var{y_n})} que analiza si @var{expr} coincide con el @var{patr@'on}.
+Define una funci@'on @code{@var{nombre_prog}(@var{expr}, @var{x_1}, ..., @var{x_n})} que analiza si @var{expr} coincide con el @var{patr@'on}.
 
-El @var{patr@'on} es una expresi@'on que contiene las variables de patr@'on @var{x_1}, ..., @var{x_n} as@'{@dotless{i}} como par@'ametros de patr@'on, si los hubiere. Las variables de patr@'on se dan de forma expl@'{@dotless{i}}cita como argumentos a @code{defmatch} mientras que los par@'ametros de patr@'on son declarados por la funci@'on @code{matchdeclare}.
+El argumento @var{patr@'on} es una expresi@'on que contiene los
+argumentos de patr@'on @var{x_1}, ..., @var{x_n} y algunas variables de patr@'on.
+Los argumentos de patr@'on se dan de forma expl@'{@dotless{i}}cita
+como argumentos a @code{defmatch}, mientras que las variables de patr@'on
+se declaran mediante la funci@'on @code{matchdeclare}.
+Cualquier variable no declarada bien como variable patr@'on en @code{matchdeclare},
+bien como argumento patr@'on en @code{defmatch} se hace coincidir con ella
+misma.
 
-El primer argumento de la funci@'on creada @var{nombre_prog} es una expresi@'on a ser comparada con el patr@'on y los dem@'as argumentos son las variables @var{y_1}, ..., @var{y_n} en la expresi@'on que se corresponden con las variables ficticias @var{x_1}, ..., @var{x_n} del patr@'on.
+El primer argumento de la funci@'on definida @var{nombre_prog} es una expresi@'on
+a ser comparada con el patr@'on y los dem@'as argumentos son los argumentos 
+que se corresponden con las variables ficticias @var{x_1}, ..., @var{x_n} del patr@'on.
 
-Si el resultado de la comparaci@'on es positivo, @var{nombre_prog} devuelve una lista de ecuaciones cuyos miembros izquierdos son las variables patrones y los par@'ametros de patr@'on, y cuyos miembros derechos son las expresiones en las que se han producido las coincidencias con patrones y par@'ametros. A los par@'ametros de patr@'on, no a las variables, se les asignan las subexpresiones con las que coinciden. Si la comparaci@'on falla, @var{nombre_prog} devuelve @code{false}.  
+Si el resultado de la comparaci@'on es positivo, @var{nombre_prog} devuelve
+una lista de ecuaciones cuyos miembros izquierdos son los argumentos y variables de
+patr@'on, y cuyos miembros derechos son las subexpresiones en las que se han 
+producido las coincidencias con patrones. A las variables de patr@'on, no a los
+argumentos, se les asignan las subexpresiones con las que coinciden. Si la 
+comparaci@'on falla, @var{nombre_prog} devuelve @code{false}.  
 
-Cualquier variable no declarada como par@'ametro de patr@'on en @code{matchdeclare} o como variable en @code{defmatch} solamente coinciden con ellas mismas.
+Un patr@'on literal, es decir, que no contiene ni argumentos ni variables de patr@'on,
+devuelve @code{true} en caso de coincidencia.
 
-Un patr@'on que no contenga variables o par@'ametros de patr@'on devuelve @code{true} en caso de coincidencia.
+
+
+A literal pattern
+(that is, a pattern which contains neither pattern arguments nor pattern variables)
+returns @code{true} if the match succeeds.
 
 V@'ease tambi@'en @code{matchdeclare}, @code{defrule}, @code{tellsimp} y @code{tellsimpafter}.
 
 Ejemplos:
 
-Este @code{defmatch} define la funci@'on @code{linearp (expr, y)}, la cual analiza @code{expr} para comprobar si es de la forma @code{a*y + b} y que ni @code{a} ni @code{b} contengan a @code{y}.
-@c HOW HARD WILL MAXIMA TRY TO COLLECT TERMS AND DO OTHER MUNGEING TO FIT THE PATTERN ??
+Define una funci@'on @code{linearp(expr, x)} que comprueba si
+@code{expr} es de la forma @code{a*x + b}, donde
+ni @code{a} ni @code{b} contienen a @code{x} y @code{a} es no nulo.
+La funci@'on definida reconoce expresiones lineales respecto de
+cualquier variable, pues el argumento de patr@'on @code{x} es
+pasado a @code{defmatch}.
 
+@c ===beg===
+@c matchdeclare (a, lambda ([e], e#0 and freeof(x, e)), b, freeof(x));
+@c defmatch (linearp, a*x + b, x);
+@c linearp (3*z + (y + 1)*z + y^2, z);
+@c a;
+@c b;
+@c x;
+@c ===end===
 @example
-(%i1) matchdeclare (a, freeof(x), b, freeof(x))$
-(%i2) defmatch (linearp, a*x + b, x)$
-(%i3) linearp (3*z + (y+1)*z + y^2, z);
+(%i1) matchdeclare (a, lambda ([e], e#0 and freeof(x, e)), b, freeof(x));
+(%o1)                         done
+(%i2) defmatch (linearp, a*x + b, x);
+(%o2)                        linearp
+(%i3) linearp (3*z + (y + 1)*z + y^2, z);
                          2
 (%o3)              [b = y , a = y + 4, x = z]
 (%i4) a;
@@ -98,36 +132,74 @@ Este @code{defmatch} define la funci@'on @code{linearp (expr, y)}, la cual anali
 (%i5) b;
                                 2
 (%o5)                          y
+(%i6) x;
+(%o6)                           x
 @end example
 
-Si el tercer argumento de @code{defmatch} en la entrada (%i2) hubiese sido omitido, entonces  @code{linear} solamente tratar@'{@dotless{i}}a de hacer coincidir expresiones lineales en @var{x}, pero no respecto de cualquier otra variable.
+Define una funci@'on @code{linearp(expr)} que comprueba si
+@code{expr} es de la forma @code{a*x + b}, donde
+ni @code{a} ni @code{b} contienen a @code{x} y @code{a} es no nulo.
+La funci@'on definida s@'olo reconoce expresiones lineales
+@'unicamente respecto de @code{x}, pues no se le pasa a @code{defmatch}
+nig@'un argumento de patr@'on
 
+@c ===beg===
+@c matchdeclare (a, lambda ([e], e#0 and freeof(x, e)), b, freeof(x));
+@c defmatch (linearp, a*x + b);
+@c linearp (3*z + (y + 1)*z + y^2);
+@c linearp (3*x + (y + 1)*x + y^2);
+@c ===end===
 @example
-(%i1) matchdeclare ([a, f], true)$
-(%i2) constinterval (l, h) := constantp (h - l)$
-(%i3) matchdeclare (b, constinterval (a))$
-(%i4) matchdeclare (x, atom)$
-(%i5) (remove (integrate, outative),
-          defmatch (checklimits, 'integrate (f, x, a, b)),
-          declare (integrate, outative))$
-(%i6) 'integrate (sin(t), t, %pi + x, 2*%pi + x);
+(%i1) matchdeclare (a, lambda ([e], e#0 and freeof(x, e)), b, freeof(x));
+(%o1)                         done
+(%i2) defmatch (linearp, a*x + b);
+(%o2)                        linearp
+(%i3) linearp (3*z + (y + 1)*z + y^2);
+(%o3)                         false
+(%i4) linearp (3*x + (y + 1)*x + y^2);
+                             2
+(%o4)                  [b = y , a = y + 4]
+@end example
+
+Define una funci@'on @code{checklimits(expr)} que comprueba si
+@code{expr} es una integral definida.
+
+@c ===beg===
+@c matchdeclare ([a, f], true);
+@c constinterval (l, h) := constantp (h - l);
+@c matchdeclare (b, constinterval (a));
+@c matchdeclare (x, atom);
+@c simp : false;
+@c defmatch (checklimits, 'integrate (f, x, a, b));
+@c simp : true;
+@c 'integrate (sin(t), t, %pi + x, 2*%pi + x);
+@c checklimits (%);
+@c ===end===
+@example
+(%i1) matchdeclare ([a, f], true);
+(%o1)                         done
+(%i2) constinterval (l, h) := constantp (h - l);
+(%o2)        constinterval(l, h) := constantp(h - l)
+(%i3) matchdeclare (b, constinterval (a));
+(%o3)                         done
+(%i4) matchdeclare (x, atom);
+(%o4)                         done
+(%i5) simp : false;
+(%o5)                         false
+(%i6) defmatch (checklimits, 'integrate (f, x, a, b));
+(%o6)                      checklimits
+(%i7) simp : true;
+(%o7)                         true
+(%i8) 'integrate (sin(t), t, %pi + x, 2*%pi + x);
                        x + 2 %pi
                       /
                       [
-(%o6)                 I          sin(t) dt
+(%o8)                 I          sin(t) dt
                       ]
                       /
                        x + %pi
-(%i7) checklimits (%);
-(%o7)    [b = x + 2 %pi, a = x + %pi, x = t, f = sin(t)]
-(%i8) a;
-(%o8)                        x + %pi
-(%i9) b;
-(%o9)                       x + 2 %pi
-(%i10) f;
-(%o10)                       sin(t)
-(%i11) x;
-(%o11)                          t
+(%i9) checklimits (%);
+(%o9)    [b = x + 2 %pi, a = x + %pi, x = t, f = sin(t)]
 @end example
 
 @end deffn
