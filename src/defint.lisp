@@ -123,76 +123,46 @@
 
 (load-macsyma-macros rzmac)
 
-(declare-top(*lexpr $diff $limit $substitute $ezgcd $ratsimp context)
-	    (*expr subfunmake $coeff $logcontract $radcan $makegamma
-		   $constantp $subvarp maxima-substitute freeof ith
-		   $oddp $hipow $multthru $xthru $num $denom 
-		   stripdollar maxima-find sdiff partition
-		   constant free mapatom
-
-		   $ratdisrep ratdisrep $ratp ratp ratnumerator 
-		   sratsimp ratdenominator $ratsubst ratnump ratcoef
-		   pterm rdis pdis ratrep newvar pdivide pointergp
-		      
-		   $factor factor $sqfr oddelm zerop1
-
-		   $asksign asksign $sign ask-integer assume forget
-		      
-		   $residue residue res res1 polelist partnum
-
-		   solve solvex sinint
-		      
-		   $rectform $realpart $imagpart trisplit cabs
-		      
-		   among involve notinvolve  
-		   numden* ratgreaterp
-		   subin polyinx genfind xor fmt polyp numden andmapcar
-		   abless1 even1 rddeg tansc radicalp deg simplerd
-		   no-err-sub oscip %einvolve sin-sq-cos-sq-sub)
-		      
-;;;rsn* is in comdenom. does a ratsimp of numerator.
-	    (special *def2* pcprntd *mtoinf* rsn*
-		     sn* sd* leadcoef checkfactors 
-		     *nodiverg rd* exp1
-		     *ul1* *ll1* *dflag bptu bptd plm* zn
-		     *updn ul ll exp pe* pl* rl* pl*1 rl*1
-		     loopstop* var nn* nd* dn* p*
-		     ind* factors rlm*
-		     plogabs *zexptsimp? *scflag*
-		     *sin-cos-recur* *rad-poly-recur* *dintlog-recur*
-		     *dintexp-recur* defintdebug *defint-assumptions*
-		     *current-assumptions*
-		     *global-defint-assumptions*)
-	 
-	    (array* (notype *i* 1 *j* 1))
-	    (genprefix def)
-	    (muzzled t)
+(declare-top (special *def2* pcprntd *mtoinf* rsn*
+		      sn* sd* leadcoef checkfactors 
+		      *nodiverg rd* exp1
+		      *ul1* *ll1* *dflag bptu bptd plm* zn
+		      *updn ul ll exp pe* pl* rl* pl*1 rl*1
+		      loopstop* var nn* nd* dn* p*
+		      ind* factors rlm*
+		      plogabs *zexptsimp? *scflag*
+		      *sin-cos-recur* *rad-poly-recur* *dintlog-recur*
+		      *dintexp-recur* defintdebug *defint-assumptions*
+		      *current-assumptions*
+		      *global-defint-assumptions*)
+;;;rsn* is in comdenom. does a ratsimp of numerator.	 
 					;expvar
-	    (special $intanalysis $abconvtest $noprincipal $nointegrate)
+	     (special $intanalysis $abconvtest $noprincipal $nointegrate)
 					;impvar
-	    (special $solveradcan $solvetrigwarn *roots *failures 
-		     $logabs $tlimswitch $maxposex $maxnegex
-		     $trigsign $savefactors $radexpand $breakup $%emode
-		     $float $exptsubst dosimp context rp-polylogp
-		     %p%i half%pi %pi2 half%pi3 varlist genvar
-		     $domain $m1pbranch errorsw errrjfflag raterr
-		     limitp $algebraic
-		     ;;LIMITP T Causes $ASKSIGN to do special things
-		     ;;For DEFINT like eliminate epsilon look for prin-inf
-		     ;;take realpart and imagpart.
-		     integer-info
-		     ;;If LIMITP is non-null ask-integer conses 
-		     ;;its assumptions onto this list.
-		     generate-atan2))
+	     (special $solveradcan $solvetrigwarn *roots *failures 
+		      $logabs $tlimswitch $maxposex $maxnegex
+		      $trigsign $savefactors $radexpand $breakup $%emode
+		      $float $exptsubst dosimp context rp-polylogp
+		      %p%i half%pi %pi2 half%pi3 varlist genvar
+		      $domain $m1pbranch errorsw errrjfflag raterr
+		      limitp $algebraic
+		      ;;LIMITP T Causes $ASKSIGN to do special things
+		      ;;For DEFINT like eliminate epsilon look for prin-inf
+		      ;;take realpart and imagpart.
+		      integer-info
+		      ;;If LIMITP is non-null ask-integer conses 
+		      ;;its assumptions onto this list.
+		      generate-atan2))
 					;If this switch is () then RPART returns ATAN's
 					;instead of ATAN2's
 
-(declare-top(special infinities real-infinities infinitesimals))
-(cond	 ;These are really defined in LIMIT but DEFINT uses them also.
-  ((not (boundp 'infinities))
-   (setq infinities '($inf $minf $infinity))
-   (setq real-infinities '($inf $minf))
-   (setq infinitesimals '($zeroa $zerob))))
+(declare-top (special infinities real-infinities infinitesimals))
+
+;;These are really defined in LIMIT but DEFINT uses them also.
+(cond ((not (boundp 'infinities))
+       (setq infinities '($inf $minf $infinity))
+       (setq real-infinities '($inf $minf))
+       (setq infinitesimals '($zeroa $zerob))))
 
 (defmvar defintdebug () "If true Defint prints out debugging information")
 
