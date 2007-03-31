@@ -213,34 +213,9 @@
 	      (errset (displa (list '(mlable) linelable $%)))))
   (if (null ret) (mtell "~%Error during display~%"))
   (when $disptime
-    (mtell-open "Displaytime= ~A sec.~%" (/ (float (- (get-internal-run-time) tim))
+    (mtell-open "Displaytime= ~A sec.~%" (/ (float (- (get-internal-run-time) tim) 1d0)
 					    internal-time-units-per-second)))
   ret)
-
-
-(defmfun rubout* (stg)
-  (let (#.ttyoff #.writefilep)
-    (cond (rubout-tty
-	   (cond ((or reprint (null stg)
-		      (char= (car stg) #\return) (char= (car stg) #\tab))
-		  (cond (smart-tty
-			 (cursorpos (car pos) (cdr pos)) (cursorpos 'l)
-			 (if (cdr stg) (princ (maknam (reverse (cdr stg)))))
-			 (setq reprint nil))
-			((or reprint stg) (reprint (cdr stg) nil))))
-		 (t (cursorpos 'x))))
-	  (stg (write-char (car stg))))))
-
-
-(defmfun reprint (stg ffp)
-  (let (#.ttyoff #.writefilep)
-    (if (not ffp) (mterpri))
-    (case (car state-pdl)
-      (macsyma-toplevel (printlabel))
-      (retrieve (if (eq mrg-punt 'break) (princ (stripdollar $prompt)))))
-    (setq pos (cursorpos))
-    (if stg (princ (maknam (reverse stg))))
-    (setq reprint nil)))
 
 ; Following GENERIC-AUTOLOAD is copied from orthopoly/orthopoly-init.lisp.
 ; Previous version didn't take Clisp, CMUCL, or SBCL into account.
