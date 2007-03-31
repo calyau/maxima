@@ -279,12 +279,12 @@
                 )
                 (mapcar
                   #'cdr
-                  (sortcar
+                  (sort
                     (progn
                       (setq free-indices (nonumber (cdadr ($indices e))))
                       (mapcar 'describe-tensor indexed)
                     )
-                    #'tensorpred
+                    #'tensorpred :key #'car
                   )
                 )
               )
