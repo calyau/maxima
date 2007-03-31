@@ -78,7 +78,7 @@
     (dpb space1 (byte 24 24) space2)))
 
 
-#+allegro 
+#+allegro
 (defun used-area (&optional unused)
   (declare (ignore unused))
   (declare (optimize (speed 3)))
@@ -88,20 +88,19 @@
     (declare (type (simple-array #-64bit (unsigned-byte 32)
 				 #+64bit (unsigned-byte 64) (*))
 		   .oldspace))
-    
+
     (multiple-value-bind (.olduser .oldsystem .oldgcu .oldgcs)
 	(excl::get-internal-run-times)
       (sys::gsgc-totalloc .oldspace t)
-      ;;(list 'cons-cells  (aref .oldspace 0) 'other-bytes (aref .oldspace 2) 'static-bytes (aref .oldspace 3))
-      (list (aref .oldspace 0) (aref .oldspace 2) .oldgcu) ;; report just two kinds of space, cons-cells and other bytes, also report gc-user time
-      )))
+      (list (aref .oldspace 0) (aref .oldspace 2) .oldgcu)))) ;; report just two kinds of space,
+							      ;; cons-cells and other bytes,
+							      ;; also report gc-user time
 
 
 #-(or cmu scl sbcl clisp allegro)
 (defun used-area (&optional unused)
   (declare (ignore unused))
   0)
-
 
 (defun continue (&optional (input-stream *standard-input*)
 		 batch-or-demo-flag)
@@ -160,7 +159,7 @@
 	     (cond ((and (consp r) (keywordp (car r)))
 		    (break-call (car r) (cdr r) 'break-command)
 		    (go top)))))
-    	(format t "~a" *general-display-prefix*)
+	(format t "~a" *general-display-prefix*)
 	(cond (#.writefilep  ;write out the c line to the dribble file
 	       (let ( (#.ttyoff t) smart-tty  $linedisp)
 		 (displa `((mlable) , c-tag , $__)))))
@@ -176,10 +175,10 @@
 	(setq etime-after (get-internal-real-time)
 	      time-after (get-internal-run-time))
 	(setq area-after (used-area))
-	(setq time-used (quotient 
+	(setq time-used (quotient
 			 (float (- time-after time-before))
 			 internal-time-units-per-second)
-	      etime-used (quotient 
+	      etime-used (quotient
 			  (float (- etime-after etime-before))
 			  internal-time-units-per-second))
 	(incf accumulated-time time-used)
@@ -188,8 +187,8 @@
 	(setq $_ $__)
 	(when $showtime	;; we don't distinguish showtime:all?? /RJF
 	  (format t "Evaluation took ~$ seconds (~$ elapsed)"
-		  time-used etime-used )  
-          #+gcl 
+		  time-used etime-used )
+	  #+gcl
 	  (format t "~%")
 	  #+(or cmu scl sbcl clisp)
 	  (let ((total-bytes (- area-after area-before)))
@@ -200,7 +199,7 @@
 		   (format t " using ~,3F KB.~%" (/ total-bytes 1024.0)))
 		  (t
 		   (format t " using ~:D bytes.~%" total-bytes))))
-	  
+
 	  #+allegro
 	  (let ((conses (- (car area-after) (car area-before)))
 		(other (- (cadr area-after) (cadr area-before)))
@@ -213,29 +212,28 @@
 	    (displa `((mlable) ,d-tag ,$%))) ;; consistently misspelling label.
 	(when (eq batch-or-demo-flag ':demo)
 	  (mtell "~A_~A" *prompt-prefix* *prompt-suffix*)
-	  (let (quitting)	  
+	  (let (quitting)
 	    (do ((char)) (nil)
 	      ;;those are common lisp characters you're reading here
-	      (case
-		  (setq char (read-char *terminal-io*))
-		((#\page) (unless (cursorpos 'c input-stream) 
-			    (terpri *standard-output*))
+	      (case (setq char (read-char *terminal-io*))
+		((#\page)
+		 (terpri *standard-output*)
 		 (princ "_" *standard-output*))
 		((#\?) (mtell "  Pausing.  Type a ';' and Enter to continue demo.~%_"))
 		((#\space #\; #\n #\e #\x #\t))
 		((#\newline )
-		 (if quitting (throw 'abort-demo nil) (return nil))) 
+		 (if quitting (throw 'abort-demo nil) (return nil)))
 		(t (setq quitting t))))))
 	;; This is sort of a kludge -- eat newlines and blanks so that
 	;; they don't echo
 	(and batch-or-demo-flag
 	     (do ((char)) (())
 	       (setq char (read-char input-stream nil nil))
-	       (when (null char) 
-		 (throw 'macsyma-quit nil)) 
+	       (when (null char)
+		 (throw 'macsyma-quit nil))
 	       (unless (member char '(#\space #\newline #\return #\tab) :test #'equal)
-		 (unread-char char input-stream)  
-		 (return nil)))))))) 
+		 (unread-char char input-stream)
+		 (return nil))))))))
 
 
 (defun $break (&rest arg-list)
@@ -262,24 +260,24 @@
 (defun retrieve (msg flag &aux (print? nil))
   (declare (special msg flag print?))
   (or (eq flag 'noprint) (setq print? t))
-  (cond ((not print?) 
+  (cond ((not print?)
 	 (setq print? t)
 	 (princ *prompt-prefix*)
 	 (princ *prompt-suffix*))
 	((null msg)
 	 (princ *prompt-prefix*)
 	 (princ *prompt-suffix*))
-	((atom msg) 
-	 (format t "~a~a~a" *prompt-prefix* msg *prompt-suffix*) 
+	((atom msg)
+	 (format t "~a~a~a" *prompt-prefix* msg *prompt-suffix*)
 	 (mterpri))
 	((eq flag t)
-	 (princ *prompt-prefix*) 
-	 (mapc #'princ (cdr msg)) 
+	 (princ *prompt-prefix*)
+	 (mapc #'princ (cdr msg))
 	 (princ *prompt-suffix*)
 	 (mterpri))
-	(t 
+	(t
 	 (princ *prompt-prefix*)
-	 (displa msg) 
+	 (displa msg)
 	 (princ *prompt-suffix*)
 	 (mterpri)))
   (let ((res (mread-noprompt *query-io* nil)))
@@ -308,7 +306,7 @@
   (setq filename ($file_search filename (symbol-value list)))
   (or filename (merror "Could not find ~M in ~M: ~M"
 		       orig list (symbol-value list)))
-  
+
   (unwind-protect
        (progn (batch-internal (setq file-obj (open filename)) demo-p)
 	      (setq abortp nil)
@@ -379,13 +377,13 @@
 	  (setq *maxima-started* t)))
     (if ($file_search "maxima-init.lisp") ($load ($file_search "maxima-init.lisp")))
     (if ($file_search "maxima-init.mac") ($batchload ($file_search "maxima-init.mac")))
-    
+
     (catch 'quit-to-lisp
       (in-package :maxima)
-      (loop 
+      (loop
 	 do
-	 (catch #+kcl si::*quit-tag* 
-		#+(or cmu scl sbcl) 'continue 
+	 (catch #+kcl si::*quit-tag*
+		#+(or cmu scl sbcl) 'continue
 		#-(or kcl cmu scl sbcl) nil
 		(catch 'macsyma-quit
 		  (continue input-stream batch-flag)
@@ -399,7 +397,7 @@
   (format t "Using Lisp ~a ~a" (lisp-implementation-type)
       #-clisp (lisp-implementation-version)
       #+clisp (subseq (lisp-implementation-version)
-              0 (1+ (search ")" (lisp-implementation-version)))))
+	      0 (1+ (search ")" (lisp-implementation-version)))))
   #+gcl (format t " (aka GCL)")
   (format t "~%")
   (format t "Distributed under the GNU Public License. See the file COPYING.~%")
@@ -408,7 +406,7 @@
   (format t "provides bug reporting information.~%"))
 
 
-  
+
 #+kcl
 (si::putprop :t 'throw-macsyma-top 'si::break-command)
 
@@ -430,7 +428,7 @@
 		       :if-exists :append
 		       :if-does-not-exist :create)))
     (setq *appendfile-data* (list stream *terminal-io* name))
-  
+
     (setq $appendfile (make-two-way-stream
 		       (make-echo-stream *terminal-io* stream)
 		       (make-broadcast-stream *terminal-io* stream))
@@ -440,7 +438,7 @@
       (format t "~&/* Starts dribbling to ~A (~d/~d/~d, ~d:~d:~d).*/"
 	      name year month day hour min sec))
     '$done))
-  
+
 (defmfun $closefile ()
   (cond ($appendfile
 	 (cond ((eq $appendfile *terminal-io*)
@@ -448,21 +446,21 @@
 			(nth 2 *appendfile-data*))
 		(setq *terminal-io* (nth 1 *appendfile-data*)))
 	       (t (warn "*TERMINAL-IO* was rebound while APPENDFILE is on.~%~
-                   You may miss some dribble output.")))
+		   You may miss some dribble output.")))
 	 (close (nth 0 *appendfile-data*))
 	 (setq *appendfile-data* nil $appendfile nil))
 	(t (dribble))))
- 
+
 
 (defmfun $ed (x)
-  (ed (maxima-string x))) 
- 
+  (ed (maxima-string x)))
+
 (defun nsubstring (x y)
-  (subseq x y)) 
- 
+  (subseq x y))
+
 (defun filestrip (x)
-  (subseq (print-invert-case (car x)) 1)) 
-  
+  (subseq (print-invert-case (car x)) 1))
+
 
 (defmspec $with_stdout (arg)
   (declare (special $file_output_append))
@@ -472,14 +470,14 @@
      (filespec
        (if (or (eq $file_output_append '$true)
 	       (eq $file_output_append t))
-         `(*standard-output* ,fname :direction :output :if-exists :append :if-does-not-exist :create)
-         `(*standard-output* ,fname :direction :output :if-exists :supersede :if-does-not-exist :create))))
+	 `(*standard-output* ,fname :direction :output :if-exists :append :if-does-not-exist :create)
+	 `(*standard-output* ,fname :direction :output :if-exists :supersede :if-does-not-exist :create))))
     (eval
       `(with-open-file ,filespec
-         (let ((body ',(cdr arg)) res)
-           (dolist (v body)
-             (setq res (meval* v)))
-           res)))))
+	 (let ((body ',(cdr arg)) res)
+	   (dolist (v body)
+	     (setq res (meval* v)))
+	   res)))))
 
 (defun $sconcat (&rest x)
   (let ((ans "") )
