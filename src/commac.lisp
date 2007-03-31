@@ -658,34 +658,6 @@ values")
 (defvar ^w nil)
 (defvar ^r nil)
 
-;;essentially no common lisp support for cursor pos:
-;;should be adapted for a particular implementation.
-;;perhaps even smart-tty could be set to t.
-
-(defun cursorpos (&rest args &aux q1 q2 )
-  (cond ((null args) (error "cursorpos doesn't know position"))
-	(t
-	 (setq q1 (first args))
-	 (setq q2 (second args))
-	 (cond ((or (null q1) (and (fixnump q1 ) (null q2)))
-		(error "can't set cursor pos"))
-	       ((and (fixnump q1) (fixnump q2))
-		(error "can't set cursor pos") t)
-	       (t (cond ((symbolp q1) (setf q1 (aref (symbol-name q1) 0)) t)
-			(t (error "bad first arg to cursorpos")))
-		  (case (char-downcase q1)
-		    (#\a  (fresh-line) t)
-		    (#\b (error "cant backspace") t)
-		    (#\c (error "cant clear window") t)
-		    (#\e (error "can't clear rest of window") t )
-		    (#\f (princ " ") t )
-		    (#\k (error "can't clear-char") t)
-		    (#\l (error "can't clear end of line") t)
-		    (#\z (error "can't home-down") t)
-		    (#\x (princ " ") t)
-		    (#\t (error "can't home up") t)
-		    (otherwise (error "unknown arg for this simple cursorpos"))))))))
-
 (defun $timedate ()
   (multiple-value-bind (second minute hour date month year day-of-week dst-p tz)
       (get-decoded-time)
