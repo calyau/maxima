@@ -15,15 +15,13 @@ Complain if @var{str} is not a Maxima string.
 
 Examples:
 @example
-(%i1) load("eval_string")$
-
-(%i2) eval_string ("foo: 42; bar: foo^2 + baz");
-(%o2)                       42
-(%i3) eval_string ("(foo: 42, bar: foo^2 + baz)");
-(%o3)                   baz + 1764
+(%i1) eval_string ("foo: 42; bar: foo^2 + baz");
+(%o1)                       42
+(%i2) eval_string ("(foo: 42, bar: foo^2 + baz)");
+(%o2)                   baz + 1764
 @end example
 
-To use this function write first @code{load("eval_string")}. See also @code{parse_string}.
+See also @code{parse_string}.
 @end deffn
 
 
@@ -36,15 +34,13 @@ Complain if @var{str} is not a Maxima string.
 
 Examples:
 @example
-(%i1) load("eval_string")$
-
-(%i2) parse_string ("foo: 42; bar: foo^2 + baz");
-(%o2)                    foo : 42
-(%i3) parse_string ("(foo: 42, bar: foo^2 + baz)");
+(%i1) parse_string ("foo: 42; bar: foo^2 + baz");
+(%o1)                    foo : 42
+(%i2) parse_string ("(foo: 42, bar: foo^2 + baz)");
                                    2
-(%o3)          (foo : 42, bar : foo  + baz)
+(%o2)          (foo : 42, bar : foo  + baz)
 @end example
 
-To use this function write first @code{load("eval_string")}. See also @code{eval_string}.
+See also @code{eval_string}.
 @end deffn
 
