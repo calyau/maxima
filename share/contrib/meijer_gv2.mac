@@ -1,3 +1,7 @@
+/* Copyright 2007 by Edmond Orignac.
+ * This file is released under the terms of the GNU General Public License, version 2.
+ */
+
 /* MacRobert E-function  as defined in Bateman Manuscript Project.
 a=[a_1,...a_n]
 b=[b_1,...b_m] 

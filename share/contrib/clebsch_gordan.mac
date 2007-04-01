@@ -1,3 +1,7 @@
+/* Copyright 2007 by Edmond Orignac.
+ * This file is released under the terms of the GNU General Public License, version 2.
+ */
+
 /* This program computes the 3j, 6j, 9j symbols of Wigner, associated 
 with the irreducible representations of the group SU(2).
 These functions are used in quantum mechanics for addition of angular
@@ -5,8 +9,6 @@ momenta.
 References are Landau and Lifshitz t. 3: Quantum Mechanics (Pergamon) 
                Messiah Quantum Mechanics (Dover) 
                Edmonds Angular momentum in quantum Mechanics (Princeton University Press)
-
-GPL Licence 2007  
 */ 
 
     /* Quoting Edmond Orignac (the author) from an email 2007-03-26:
