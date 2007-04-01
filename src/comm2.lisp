@@ -778,7 +778,7 @@
     (merror "`concat' needs at least one argument."))
   (getalias (implode
 	     (cons (cond ((not (atom (car l))))
-			 ((or (numberp (car l)) (char= (getcharn (car l) 1) #\&)) #\&)
+			 ((or (numberp (car l)) (char= (char (symbol-name (car l)) 0) #\&)) #\&)
 			 (t #\$))
 		   (mapcan #'(lambda (x)
 			       (unless (atom x)
