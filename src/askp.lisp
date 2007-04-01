@@ -54,9 +54,7 @@
 	  ((and ($numberp x) (not is-integer)) '$no)
 	  ((and is-integer evod-ans) '$no)
 	  ((eq (setq evod-ans
-		     (ask-prop x
-			       (if (eq even-odd '$even) 'even 'odd)
-			       'number))
+		     (ask-prop x (if (eq even-odd '$even) 'even 'odd) 'number))
 	       '$yes)
 	   (ask-declare x even-odd) '$yes)
 	  ((eq evod-ans '$no) 
@@ -88,25 +86,22 @@
 	((and limitp (eq property '$noninteger))
 	 (setq nonintegerl (cons x nonintegerl)))))
 
-(defun ask-prop (object property fun-or-number)
-  (if fun-or-number (setq fun-or-number (list '| | fun-or-number)))
 ;;; Asks the user a question about the property of an object.
 ;;; Returns only $yes, $no or $unknown.
+(defun ask-prop (object property fun-or-number)
+  (if fun-or-number (setq fun-or-number (list '| | fun-or-number)))
   (do ((end-flag) (answer))
       (end-flag (cond ((member answer '($yes |$Y| |$y|) :test #'eq) '$yes)
 		      ((member answer '($no |$N| |$n|) :test #'eq) '$no)
 		      ((member answer '($unknown $uk) :test #'eq) '$unknown)))
     (setq answer (retrieve
-		  `((mtext) |Is  | ,object 
-		    ,(if (member (getcharn property 1)
-				 '(#\a #\e #\i #\o #\u)
-				 :test #'char-equal)
-			 '|  AN |
-			 '|  A |)
-		    ,property ,@fun-or-number |?|)
+		  `((mtext) "Is " ,object 
+		    ,(if (member (char (symbol-name property) 0)
+				 '(#\a #\e #\i #\o #\u) :test #'char-equal)
+			 " an "
+			 " a ")
+		    ,property ,@fun-or-number "?")
 		  nil))
-    (cond 
-      ((member answer '($yes |$Y| |$y| |$N| |$n| $no $unknown $uk) :test #'eq)
-       (setq end-flag t))
-      (t (mtell
-	  "~%Acceptable answers are Yes, Y, No, N, Unknown, Uk~%")))))
+    (cond ((member answer '($yes |$Y| |$y| |$N| |$n| $no $unknown $uk) :test #'eq)
+	   (setq end-flag t))
+	  (t (mtell "~%Acceptable answers are Yes, Y, No, N, Unknown, Uk~%")))))
