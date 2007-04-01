@@ -163,8 +163,6 @@ contrib/diffequations/tests/rtestode_murphy_2_5.mac\
 contrib/diffequations/tests/testsuite.lisp\
 contrib/distrib/distrib.mac\
 contrib/distrib/numdistrib.lisp\
-contrib/dynamics/complex_dynamics.lisp\
-contrib/dynamics/dynamics.mac\
 contrib/eval_string.lisp\
 contrib/ezunits/ezunits.mac\
 contrib/ezunits/rtestezunits.mac\
@@ -455,6 +453,8 @@ diffequations/pdvtr.mac\
 diffequations/phypgm.mac\
 diffequations/pivtr.mac\
 diffequations/pmain.mac\
+dynamics/complex_dynamics.lisp\
+dynamics/dynamics.mac\
 draw/draw.lisp\
 integequations/inteqn.mac\
 integequations/inteqn.usg\
