@@ -91,6 +91,91 @@
   (setf (get v 'autoload)        "sym.mac")
   )
 
+(dolist (f       
+     '($close
+       $flength
+       $fposition
+       $freshline
+       $newline
+       $opena
+       $openr
+       $openw
+       $readline
+       $alphacharp
+       $alphanumericp
+       $ascii
+       $cequal
+       $cequalignore
+       $cgreaterp
+       $cgreaterpignore
+       $charp
+       $cint
+       $clessp
+       $clesspignore
+       $constituent
+       $cunlisp
+       $digitcharp
+       $lcharp
+       $lowercasep
+       $uppercasep
+       $sunlisp
+       $lstringp
+       $stringp
+       $charat
+       $charlist
+       $parsetoken
+       $sconc
+       $scopy
+       $sdowncase
+       $sequal
+       $sequalignore
+       $sexplode
+       $simplode
+       $sinsert
+       $sinvertcase
+       $slength
+       $smake
+       $smismatch
+       $split
+       $sposition
+       $sremove
+       $sremovefirst
+       $sreverse
+       $ssearch
+       $ssort
+       $ssubst
+       $ssubstfirst
+       $strim
+       $striml
+       $strimr
+       $substring
+       $supcase
+       $tokens ))
+  (autof f "stringproc"))
+
+;; $printf doesn't work with autol.lisp/autom when calling with streams true and false
+;; don't know if (funcall ... in autom can be replaced by (apply ... 
+;; so here is an intermediate workaround   VvN
+(let ((mf '$printf))
+  (unless (fboundp mf)
+    (setf (macro-function mf)
+          #'(lambda (&rest l)
+              (aload "stringproc")
+              (apply (macro-function mf) l)))))  
+
+(dolist (f       
+     '($read_matrix
+       $read_lisp_array
+       $read_maxima_array
+       $read_hashed_array
+       $read_nested_list
+       $read_list
+       $write_data ))
+  (autof f "numericalio"))
+
+(autof '$eval_string "eval_string")
+(autof '$parse_string "eval_string")
+
 
 '$parametric
 '(defvar $plot_options '((mlist)
