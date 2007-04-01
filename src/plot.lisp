@@ -1195,7 +1195,7 @@
         ($plot_options $plot_options) (i 0) 
         plot-format gnuplot-term gnuplot-out-file file plot-name
         log-x log-y xmin xmax ymin ymax styles style legend
-        xlabel ylabel)
+        xlabel ylabel box)
  
     (when (and (consp fun) (eq (cadr fun) '$parametric))
       (or range (setq range (nth 4 fun)))
@@ -1237,21 +1237,22 @@
     (dolist (v options)
       (if ($listp v)
         (case (second v)
-          ($logx (setf log-x t))
-          ($logy (setf log-y t))
-          ($xlabel (setf xlabel (print-invert-case (stripdollar (third v)))))
-          ($ylabel (setf ylabel (print-invert-case (stripdollar (third v)))))
-          ($x (when (fourth v)
+          ('$logx (setf log-x t))
+          ('$logy (setf log-y t))
+	  ('$box (setf box (cddr v)))
+          ('$xlabel (setf xlabel (print-invert-case (stripdollar (third v)))))
+          ('$ylabel (setf ylabel (print-invert-case (stripdollar (third v)))))
+          ('$x (when (fourth v)
                 (setf xmin (meval (third v)))
                 (setf xmax (meval (fourth v)))
                 ($set_plot_option `((mlist) $x ,xmin ,xmax)))
               (unless xlabel (setf xlabel "x")))
-          ($y (when (fourth v)
+          ('$y (when (fourth v)
                 (setf ymin (meval (third v)))
                 (setf ymax (meval (fourth v)))
                 ($set_plot_option `((mlist) $y ,ymin ,ymax))))
-          ($style (setf styles (cddr v)))
-          ($legend (setf legend (cddr v)))
+          ('$style (setf styles (cddr v)))
+          ('$legend (setf legend (cddr v)))
           (t ($set_plot_option v)))
         (merror "Option ~M should be a list" v)))
     (when (and xlabel log-x) (setf xlabel (format nil "log(~a)" xlabel)))
@@ -1279,6 +1280,8 @@
           (when (and ymin ymax) (format st " {yrange ~g ~g}" ymin ymax))
           (when xlabel (format st " {xaxislabel \"~a\"}" xlabel))
           (when ylabel (format st " {yaxislabel \"~a\"}" ylabel))
+	  (when (and legend (not (first legend)))
+	    (format st " {labelposition {-100000000 1000000000}}"))
           (format st "~%")
           (dolist (f (cdr fun))
             (if styles
@@ -1287,10 +1290,12 @@
                 (setf style (if ($listp style) (cdr style) `(,style))))
               (setf style nil))
             (incf i)
-            (if legend      ;; legend in the command line has priority
+            (if legend         ;; legend in the command line has priority
              (setf plot-name
-                   (print-invert-case (stripdollar
-                        (nth (mod (- i 1) (length legend)) legend))))
+		   (if (first legend)
+		     (print-invert-case (stripdollar
+                                 (nth (mod (- i 1) (length legend)) legend)))
+		     nil))     ;; no legend if option [legend,false]
              (if (= 2 (length fun))
                (setf plot-name nil)     ;; no legend if just one function
                (setq plot-name
@@ -1307,7 +1312,8 @@
                          (t (setf string (coerce (mstring f) 'string))))
                    (cond ((< (length string) 80) string)
                          (t (format nil "fun~a" i)))))))
-            (when plot-name (format st " {label \"~a\"}" plot-name))
+            (when plot-name 
+	      (format st " {label \"~a\"}" plot-name))
             (format st " ~a~%" (openmath-curve-style style i))
             (format st " {xversusy~%")
             (let ((lis (cdr (draw2d f range log-x log-y))))
@@ -1333,6 +1339,10 @@
             (gnuplot-print-header st :log-x log-x :log-y log-y)
             (when xlabel (format st "set xlabel \"~a\"~%" xlabel))
             (when ylabel (format st "set ylabel \"~a\"~%" ylabel))
+	    (when (and legend (not (first legend)))
+	      (format st "unset key~%"))
+	    (when (and box (not (first box)))
+	      (format st "unset border; unset xtics; unset ytics~%"))
             (format st "plot")
             (when (and xmin xmax) (format st " [~g:~g]" xmin xmax))
             (when (and ymin ymax)
@@ -1342,8 +1352,14 @@
             (check-gnuplot-process)
             ($gnuplot_reset)
             (gnuplot-print-header *gnuplot-stream* :log-x log-x :log-y log-y)
-            (when xlabel (format *gnuplot-stream* "set xlabel \"~a\"~%" xlabel))
-            (when ylabel (format *gnuplot-stream* "set ylabel \"~a\"~%" ylabel))
+            (when xlabel
+	      (format *gnuplot-stream* "set xlabel \"~a\"~%" xlabel))
+            (when ylabel
+	      (format *gnuplot-stream* "set ylabel \"~a\"~%" ylabel))
+	    (when (and legend (not (first legend)))
+	      (format *gnuplot-stream* "unset key~%"))
+	    (when (and box (not (first box)))
+	      (format *gnuplot-stream* "unset border; unset xtics; unset ytics~%"))
             (setq *gnuplot-command* (format nil "plot"))
             (when (and xmin xmax)
               (setq *gnuplot-command*
@@ -1372,8 +1388,10 @@
            (incf i)
            (if legend
              (setf plot-name      ;; legend in the command line has priority
-                   (print-invert-case (stripdollar
-                                 (nth (mod (- i 1) (length legend)) legend))))
+		   (if (first legend)
+		     (print-invert-case (stripdollar
+                                 (nth (mod (- i 1) (length legend)) legend)))
+		     nil))        ;; no legend if option [legend,false]
              (if (= 2 (length fun))
                (setf plot-name nil)     ;; no legend if just one function
                (setq plot-name
