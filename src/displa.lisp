@@ -18,7 +18,6 @@
 
 (defconstant +tablen+ 8)
 
-
 (declare-top (special $linel))
 
 (defmvar $cursordisp t
@@ -73,8 +72,7 @@
 ;; evaluation-at-a-point bars, and matrices are drawn.
 
 (defmvar $boxchar '|&"|  "Character used for drawing boxes.")
-(defmvar $absboxchar '|&!|
-  "Character used for drawing absolute value signs and 'evaluation at' signs.")
+(defmvar $absboxchar '|&!| "Character used for drawing absolute value signs and 'evaluation at' signs.")
 (defmvar $lmxchar '|&[|  "Character used for drawing the left edge of a matrix.")
 (defmvar $rmxchar '|&]|  "Character used for drawing the right edge of a matrix.")
 
@@ -685,7 +683,7 @@
      (unless (checkfit (+ 1 w width))
        (return (dimension-function form result)))
      (setq result (cons (cons 0 (cons (- 0 1 d) eqs))
-			(cons `(d-vbar ,(1+ h) ,(1+ d) ,(getcharn $absboxchar 2)) exp))
+			(cons `(d-vbar ,(1+ h) ,(1+ d) ,(char (symbol-name $absboxchar) 1)) exp))
 	   width (+ 1 w width)
 	   height (1+ h)
 	   depth (+ 1 d depth))
@@ -932,7 +930,7 @@
 	 (dimension-function form result))
 	(t (setq width (+ 2 width))
 	   (update-heights height depth)
-	   (setq bar `(d-vbar ,height ,depth ,(getcharn $absboxchar 2)))
+	   (setq bar `(d-vbar ,height ,depth ,(char (symbol-name $absboxchar) 1)))
 	   (cons bar (nconc arg (cons bar result))))))
 
 (displa-def $matrix dim-$matrix)
@@ -1030,9 +1028,9 @@
      (cond ((not (checkfit (+ 2 width)))
 	    (return (dimension-function (cons '($box) (cdr form)) result))))
      (setq width (+ 2 width) height (1+ height) depth (1+ depth))
-     (setq ch (getcharn $boxchar 2))
+     (setq ch (char (symbol-name $boxchar) 1))
      (setq result
-	   (cons (do ((l (mapcar #'(lambda (l) (getcharn l 1))
+	   (cons (do ((l (mapcar #'(lambda (l) (char (symbol-name l) 0))
 				 (makstring (caddr form))) (cdr l))
 		      (w 0) (nl))
 		     ((or (null l) (= width w))
@@ -1367,7 +1365,7 @@
   (setq dmstr `((0 2 #\/) (-1 1 #\[) (-1 0 #\I) (-1 -1 #\]) (-1 -2 #\/)))
   (if linear?
       (draw-linear dmstr oldrow oldcol)
-      (draw-2d	    dmstr oldrow oldcol)))
+      (draw-2d dmstr oldrow oldcol)))
 
 (defun d-prodsign (linear? &aux dmstr)
   (setq dmstr '((0 2 #\\ (d-hbar 3 #\=) #\/) (-4 0) (d-vbar 2 1 #\!) #\space (d-vbar 2 1 #\!) (1 0)))
@@ -1386,15 +1384,14 @@
 ;; dimension strings.
 
 (defun d-matrix (linear? direction h d)
-  (d-vbar linear? h d (getcharn (if (eq direction 'right)
-				    $rmxchar
-				    $lmxchar)
-				2)))
+  (d-vbar linear? h d (char (symbol-name (if (eq direction 'right)
+					     $rmxchar
+					     $lmxchar)) 1)))
 
 ;; There is wired knowledge of character offsets here.
 
 (defun d-box (linear? h d w body &aux (char 0) dmstr) ;char a char?
-  (setq char (getcharn $boxchar 2))
+  (setq char (char (symbol-name $boxchar) 1))
   (setq dmstr `((0 ,h (d-hbar ,(+ 2 w) ,char))
 		(,(- (+ w 2)) 0)
 		(d-vbar ,h ,d ,char)
