@@ -938,12 +938,22 @@ summation when necessary."
 (setq opers (cons '$nary opers)
       *opers-list (cons '($nary . nary1) *opers-list))
 
-(defmfun nary1 (e z)
-  (do ((l (cdr e) (cdr l)) (ans))
-      ((null l) (oper-apply (cons (car e) (nreverse ans)) z))
-    (setq ans (if (and (not (atom (car l))) (eq (caaar l) (caar e)))
-		  (nconc (reverse (cdar l)) ans)
-		  (cons (car l) ans)))))
+(defun nary1 (e z)
+  (do
+    ((l (cdr e) (cdr l)) (ans) (some-change))
+
+    ((null l)
+     (if some-change
+       (nary1 (cons (car e) (nreverse ans)) z)
+       (let ((w (get (caar e) 'operators)))
+         (if w (funcall w e 1 z) (simpargs e z)))))
+
+    (setq
+      ans (if (and (not (atom (car l))) (eq (caaar l) (caar e)))
+            (progn
+              (setq some-change t)
+              (nconc (reverse (cdar l)) ans))
+            (cons (car l) ans)))))
 
 (setq opers (cons '$lassociative opers)
       *opers-list (cons '($lassociative . lassociative) *opers-list))

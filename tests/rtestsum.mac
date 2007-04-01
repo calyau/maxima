@@ -26,8 +26,6 @@ product (integrate (1/x^k, x, a, b), k, 1, n);
 integrate (1/x, x, a, b) * product (integrate (1/x^k, x, a, b), k, 2, n);
  */
 
-/* Known failure: requires code for unevaluated conditionals.
- */
 block ([prederror: false], sum(if k < 1 then a else b,k,0,n));
 '( 'sum(if k < 1 then a else b,k,0,n));
 

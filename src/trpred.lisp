@@ -23,10 +23,6 @@
   (let ((wrap-an-is 'maybe-boole-check))
     (cons '$any (translate-predicate (cadr form)))))
 
-(def%tr mnot (form) (cons '$boolean (translate-predicate form)))
-(def-same%tr mand mnot)
-(def-same%tr mor mnot)
-
 ;;; these don't have an imperitive predicate semantics outside of
 ;;; being used in MNOT, MAND, MOR, MCOND, $IS.
 

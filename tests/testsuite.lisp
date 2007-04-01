@@ -23,7 +23,7 @@
 	"rtestmt19937"
     "rtest_allnummod"
     "rtestconjugate"
-    ((mlist) "rtestsum" 3 4 5 18)
+    ((mlist) "rtestsum" 3 4 18)
     "rtest_trig"
     "rtest_zeta"
     "rtest_diff_invtrig"
@@ -36,4 +36,5 @@
     ((mlist) "rtest_taylor" 66 67 72 88 89 90 91 94 96 99 104 110 112 113 118 119 120 121 122 123 124)
     ((mlist) "rtest_dot")
     "rtest_mset"
+    "rtest_boolean"
     ))

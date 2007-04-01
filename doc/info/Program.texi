@@ -369,9 +369,15 @@ The alternatives @var{expr_0}, ..., @var{expr_n} may be any Maxima expressions,
 including nested @code{if} expressions.
 The alternatives are neither simplified nor evaluated unless the corresponding condition is @code{true}.
 
-The conditions @var{cond_1}, ..., @var{cond_n} are expressions such that @code{is(@var{cond_k})} evaluates
-to @code{true} or @code{false};
-it is an error otherwise.
+The conditions @var{cond_1}, ..., @var{cond_n} are expressions which potentially or actually
+evaluate to @code{true} or @code{false}.
+When a condition does not actually evaluate to @code{true} or @code{false},
+the behavior of @code{if} is governed by the global flag @code{prederror}.
+When @code{prederror} is @code{true},
+it is an error if any evaluated condition does not evaluate to @code{true} or @code{false}.
+Otherwise, conditions which do not evaluate to @code{true} or @code{false} are accepted,
+and the result is a conditional expression.
+
 Among other elements, conditions may comprise relational and logical operators as follows.
 
 @c - SEEMS LIKE THIS TABLE WANTS TO BE IN A DISCUSSION OF PREDICATE FUNCTIONS; PRESENT LOCATION IS OK I GUESS

@@ -49,7 +49,7 @@ relational knowledge is contained in the default context GLOBAL."
 	  This scheme is only very partially developed at this time."
   no-reset)
 
-(defmvar $prederror t)
+(defmvar $prederror nil)
 (defmvar $signbfloat t)
 (defmvar $askexp)
 (defmvar limitp)
@@ -58,7 +58,6 @@ relational knowledge is contained in the default context GLOBAL."
 
 (defmvar factored nil)
 (defmvar locals nil)
-(defmvar patevalled nil)
 (defmvar sign nil)
 (defmvar minus nil)
 (defmvar odds nil)
@@ -231,12 +230,192 @@ relational knowledge is contained in the default context GLOBAL."
 (defun nc-err ()
   (merror "Contexts must be symbolic atoms."))
 
-(defmspec $is (form)
-  (mevalp (fexprcheck form)))
+;; Simplification and evaluation of boolean expressions
+;;
+;; Simplification of boolean expressions:
+;;
+;; and and or are declared nary. The sole effect of this is to allow Maxima to
+;; flatten nested expressions, e.g., a and (b and c) => a and b and c
+;; (The nary declaration does not make and and or commutative, and and and or
+;; are not otherwise declared commutative.)
+;;
+;; and: if any argument simplifies to false, return false
+;;  otherwise omit arguments which simplify to true and simplify others
+;;  if only one argument remains, return it
+;;  if none remain, return true
+;;
+;; or: if any argument simplifies to true, return true
+;;  otherwise omit arguments which simplify to false and simplify others
+;;  if only one argument remains, return it
+;;  if none remain, return false
+;;
+;; not: if argument simplifies to true / false, return false / true
+;;  otherwise reverse sense of comparisons (if argument is a comparison)
+;;  otherwise return not <simplified argument>
+;;
+;; Evaluation (MEVAL) of boolean expressions:
+;; same as simplification except evaluating (MEVALP) arguments instead of simplifying
+;; When prederror = true, complain if expression evaluates to something other than T / NIL
+;; (otherwise return unevaluated boolean expression)
+;;
+;; Evaluation (MEVALP) of boolean expressions:
+;; same as simplification except evaluating (MEVALP) arguments instead of simplifying
+;; When prederror = true, complain if expression evaluates to something other than T / NIL
+;; (otherwise return unevaluated boolean expression)
+;;
+;; Simplification of "is" expressions:
+;; if argument simplifies to true/false, return true/false
+;; otherwise return is (<simplified argument>)
+;;
+;; Evaluation of "is" expressions:
+;; if argument evaluates to true/false, return true/false
+;; otherwise return unknown if prederror = false, else trigger an error
+;;
+;; Simplification of "maybe" expressions:
+;; if argument simplifies to true/false, return true/false
+;; otherwise return maybe (<simplified expression>)
+;;
+;; Evaluation of "maybe" expressions:
+;; if argument evaluates to true/false, return true/false
+;; otherwise return unknown
+
+(defprop $is simp-$is operators)
+(defprop %is simp-$is operators)
+(defprop $maybe simp-$is operators)
+(defprop %maybe simp-$is operators)
+
+; I'VE ASSUMED (NULL Z) => SIMPLIFIY ARGUMENTS
+; SAME WITH SIMPCHECK (SRC/SIMP.LISP)
+; SAME WITH TELLSIMP-GENERATED SIMPLIFICATION FUNCTIONS
+; SAME WITH SIMPLIFICATION OF %SIN
+; PRETTY SURE I'VE SEEN OTHER EXAMPLES AS WELL
+; Z SEEMS TO SIGNIFY "ARE THE ARGUMENTS SIMPLIFIED YET"
+
+(defun maybe-simplifya (x z) (if z x (simplifya x z)))
+
+(defun maybe-simplifya-protected (x z)
+  (let ((errcatch t) ($errormsg nil))
+    (declare (special errcatch $errormsg))
+    (ignore-errors (maybe-simplifya x z) x)))
+
+(defun simp-$is (x y z)
+  (declare (ignore y))
+  (let ((a (maybe-simplifya (cadr x) z)))
+    (if (or (eq a t) (eq a nil))
+      a
+      `((,(caar x) simp) ,a))))
+
+(defmfun $is (pat)
+  (let*
+    ((x (mevalp1 pat))
+     (ans (car x))
+     (patevalled (cadr x)))
+    (cond
+      ((member ans '(t nil) :test #'eq) ans)
+      ; I'D RATHER HAVE ($PREDERROR ($THROW `(($PREDERROR) ,PATEVALLED))) HERE
+      ($prederror (pre-err patevalled))
+      (t '$unknown))))
+
+(defmfun $maybe (pat)
+  (let*
+    ((x (let (($prederror nil)) (mevalp1 pat)))
+     (ans (car x))
+     (patevalled (cadr x)))
+    (cond
+      ((member ans '(t nil) :test #'eq) ans)
+      (t '$unknown))))
 
 (defmfun is (pred)
   (let (($prederror t))
     (mevalp pred)))
+
+; The presence of OPERS tells SIMPLIFYA to call OPER-APPLY,
+; which calls NARY1 to flatten nested "and" and "or" expressions
+; (due to $NARY property of MAND and MOR, declared elsewhere).
+
+(put 'mand t 'opers)
+(put 'mor t 'opers)
+
+(putprop 'mnot 'simp-mnot 'operators)
+(putprop 'mand 'simp-mand 'operators)
+(putprop 'mor 'simp-mor 'operators)
+
+(defun simp-mand (x y z)
+  (declare (ignore y))
+  (do ((l (cdr x) (cdr l)) (a) (simplified))
+    ((null l)
+    (cond
+      ((= (length simplified) 0) t)
+      ((= (length simplified) 1) (car simplified))
+      (t (cons '(mand simp) (reverse simplified)))))
+  (setq a (maybe-simplifya (car l) z))
+  (cond
+    ((null a) (return nil))
+    ((eq a '$unknown) (if (not (member '$unknown simplified :test #'eq)) (push a simplified)))
+    ((not (member a '(t nil) :test #'eq)) (push a simplified)))))
+
+(defun simp-mor (x y z)
+  (declare (ignore y))
+  (do ((l (cdr x) (cdr l)) (a) (simplified))
+    ((null l)
+    (cond
+      ((= (length simplified) 0) nil)
+      ((= (length simplified) 1) (car simplified))
+      (t (cons '(mor simp) (reverse simplified)))))
+  (setq a (maybe-simplifya (car l) z))
+  (cond
+    ((eq a t) (return t))
+    ((eq a '$unknown) (if (not (member '$unknown simplified :test #'eq)) (push a simplified)))
+    ((not (member a '(t nil) :test #'eq)) (push a simplified)))))
+
+; ALSO CUT STUFF ABOUT NOT EQUAL => NOTEQUAL AT TOP OF ASSUME
+
+(defun simp-mnot (x y z)
+  (declare (ignore y))
+  (let ((arg (maybe-simplifya (cadr x) z)))
+    (if (atom arg)
+      (cond
+        ((or (eq arg t) (eq arg '$true))
+         nil)
+        ((or (eq arg nil) (eq arg '$false))
+         t)
+        ((eq arg '$unknown)
+         '$unknown)
+        (t `((mnot simp) ,arg)))
+      (let ((arg-op (caar arg)) (arg-arg (cdr arg)))
+        (setq arg-arg (mapcar #'(lambda (a) (maybe-simplifya a z)) arg-arg))
+        (cond
+          ((eq arg-op 'mlessp)
+           `((mgeqp simp) ,@arg-arg))
+          ((eq arg-op 'mleqp)
+           `((mgreaterp simp) ,@arg-arg))
+          ((eq arg-op 'mequal)
+           `((mnotequal simp) ,@arg-arg))
+          ((eq arg-op '$equal)
+           `(($notequal simp) ,@arg-arg))
+          ((eq arg-op 'mnotequal)
+           `((mequal simp) ,@arg-arg))
+          ((eq arg-op '$notequal)
+           `(($equal simp) ,@arg-arg))
+          ((eq arg-op 'mgeqp)
+           `((mlessp simp) ,@arg-arg))
+          ((eq arg-op 'mgreaterp)
+           `((mleqp simp) ,@arg-arg))
+          ((eq arg-op 'mnot)
+           (car arg-arg))
+
+          ; Distribute negation over conjunction and disjunction;
+          ; analogous to '(- (a + b)) --> - a - b.
+
+          ((eq arg-op 'mand)
+           (let ((L (mapcar #'(lambda (e) `((mnot) ,e)) arg-arg)))
+             (simplifya `((mor) ,@L) nil)))
+
+          ((eq arg-op 'mor)
+           (let ((L (mapcar #'(lambda (e) `((mnot) ,e)) arg-arg)))
+             (simplifya `((mand) ,@L) nil)))
+
+          (t `((mnot simp) ,arg)))))))
 
 ;; =>* N.B. *<=
 ;; The function IS-BOOLE-CHECK, used by the translator, depends
@@ -244,23 +423,29 @@ relational knowledge is contained in the default context GLOBAL."
 ;; ACALL before proceeding.
 
 (defmfun mevalp (pat)
-  (let (patevalled ans)
-    (setq ans (mevalp1 pat))
-    (cond ((member ans '(t nil) :test #'eq)
-	   ans)
-	  ($prederror (pre-err patevalled))
-	  (t '$unknown))))
+  (let*
+    ((x (mevalp1 pat))
+     (ans (car x))
+     (patevalled (cadr x)))
+    (cond ((member ans '(#.(not ()) ()) :test #'eq)
+       ans)
+      ; I'D RATHER HAVE ($PREDERROR ($THROW `(($PREDERROR) ,PATEVALLED))) HERE
+      ($prederror (pre-err patevalled))
+      (t (or patevalled ans)))))
 
 (defun mevalp1 (pat)
-  (cond ((and (not (atom pat)) (member (caar pat) '(mnot mand mor) :test #'eq))
-	 (cond ((eq 'mnot (caar pat)) (is-mnot (cadr pat)))
-	       ((eq 'mand (caar pat)) (is-mand (cdr pat)))
-	       (t (is-mor (cdr pat)))))
-	((atom (setq patevalled (meval pat))) patevalled)
-	((member (caar patevalled) '(mnot mand mor) :test #'eq) (mevalp1 patevalled))
-	(t (mevalp2 (caar patevalled) (cadr patevalled) (caddr patevalled)))))
+  (let (patevalled ans)
+    (setq ans 
+      (cond ((and (not (atom pat)) (member (caar pat) '(mnot mand mor) :test #'eq))
+	   (cond ((eq 'mnot (caar pat)) (is-mnot (cadr pat)))
+	         ((eq 'mand (caar pat)) (is-mand (cdr pat)))
+	         (t (is-mor (cdr pat)))))
+	  ((atom (setq patevalled (meval pat))) patevalled)
+	  ((member (caar patevalled) '(mnot mand mor) :test #'eq) (mevalp1 patevalled))
+	  (t (mevalp2 patevalled (caar patevalled) (cadr patevalled) (caddr patevalled)))))
+    (list ans patevalled)))
 
-(defmfun mevalp2 (pred arg1 arg2)
+(defmfun mevalp2 (patevalled pred arg1 arg2)
   (cond ((eq 'mequal pred) (like arg1 arg2))
 	((eq '$equal pred) (meqp arg1 arg2))
 	((eq 'mnotequal pred) (not (like arg1 arg2)))
@@ -336,7 +521,7 @@ relational knowledge is contained in the default context GLOBAL."
 	   (eq (caar pat) 'mnot)
 	   (eq (caaadr pat) '$equal))
       (setq pat `(($notequal) ,@(cdadr pat))))
-  (let ((dummy (let (patevalled $assume_pos) (mevalp1 pat))))
+  (let ((dummy (let ($assume_pos) (car (mevalp1 pat)))))
     (cond ((eq dummy t) '$redundant)
 	  ((null dummy) '$inconsistent)
 	  ((atom dummy) '$meaningless)
@@ -405,22 +590,35 @@ relational knowledge is contained in the default context GLOBAL."
 (defmfun minimum (l)
   (maximin l '$min))
 
-(defmspec mnot (form)
-  (setq form (cdr form))
+(defmspec mand (form) (setq form (cdr form))
+  (do ((l form (cdr l)) (x) (unevaluated))
+    ((null l)
+    (cond
+      ((= (length unevaluated) 0) t)
+      ((= (length unevaluated) 1) (car unevaluated))
+      (t (cons '(mand) (reverse unevaluated)))))
+  (setq x (mevalp (car l)))
+  (cond
+    ((null x) (return nil))
+    ((not (member x '(t nil) :test #'eq)) (push x unevaluated)))))
+
+(defmspec mor (form) (setq form (cdr form))
+  (do ((l form (cdr l)) (x) (unevaluated))
+  ((null l)
+    (cond
+      ((= (length unevaluated) 0) nil)
+      ((= (length unevaluated) 1) (car unevaluated))
+      (t (cons '(mor) (reverse unevaluated)))))
+  (setq x (mevalp (car l)))
+  (cond
+    ((eq x t) (return t))
+    ((not (member x '(t nil) :test #'eq)) (push x unevaluated)))))
+
+(defmspec mnot (form) (setq form (cdr form))
   (let ((x (mevalp (car form))))
-    (if (eq x '$unknown) x (not x))))
-
-(defmspec mand (form)
-  (setq form (cdr form))
-  (do ((l form (cdr l)) (x)) ((null l) t)
-    (cond ((not (setq x (mevalp (car l)))) (return nil))
-	  ((eq x '$unknown) (return x)))))
-
-(defmspec mor (form)
-  (setq form (cdr form))
-  (do ((l form (cdr l)) (x)) ((null l) nil)
-    (cond ((eq (setq x (mevalp (car l))) '$unknown) (return x))
-	  (x (return t)))))
+    (cond
+      ((member x '(t nil) :test #'eq) (not x))
+      (t `((mnot) ,x)))))
 
 ;;;Toplevel functions- $ASKSIGN, $SIGN.
 ;;;Switches- LIMITP If TRUE $ASKSIGN and $SIGN will look for special

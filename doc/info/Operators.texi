@@ -899,7 +899,8 @@ the result is @code{false} and no further operands are evaluated.
 The global flag @code{prederror} governs the behavior of @code{and}
 when an evaluated operand cannot be determined to be @code{true} or @code{false}.
 @code{and} prints an error message when @code{prederror} is @code{true}.
-Otherwise, @code{and} returns @code{unknown}.
+Otherwise, operands which do not evaluate to @code{true} or @code{false} are accepted,
+and the result is a Boolean expression.
 
 @code{and} is not commutative:
 @code{a and b} might not be equal to @code{b and a} due to the treatment of indeterminate operands.
@@ -926,7 +927,8 @@ the result is @code{true} and no further operands are evaluated.
 The global flag @code{prederror} governs the behavior of @code{or}
 when an evaluated operand cannot be determined to be @code{true} or @code{false}.
 @code{or} prints an error message when @code{prederror} is @code{true}.
-Otherwise, @code{or} returns @code{unknown}.
+Otherwise, operands which do not evaluate to @code{true} or @code{false} are accepted,
+and the result is a Boolean expression.
 
 @code{or} is not commutative:
 @code{a or b} might not be equal to @code{b or a} due to the treatment of indeterminate operands.
@@ -947,7 +949,8 @@ its operand is a Boolean expression, and its result is a Boolean value.
 The global flag @code{prederror} governs the behavior of @code{not}
 when its operand cannot be determined to be @code{true} or @code{false}.
 @code{not} prints an error message when @code{prederror} is @code{true}.
-Otherwise, @code{not} returns @code{unknown}.
+Otherwise, operands which do not evaluate to @code{true} or @code{false} are accepted,
+and the result is a Boolean expression.
 
 @end deffn
 
@@ -1222,11 +1225,6 @@ namely @code{if}, @code{and}, @code{or}, and @code{not}.
 @c All variables are effectively assumed to be real-valued.
 
 The negation of @code{equal} is @code{notequal}.
-Note that because of the rules for evaluation of predicate expressions
-(in particular because @code{not @var{expr}} causes evaluation of @var{expr}),
-@code{not equal(@var{a}, @var{b})}
-is equivalent to @code{is(notequal(@var{a}, @var{b}))}
-instead of @code{notequal(@var{a}, @var{b})}.
 
 Examples:
 
@@ -1278,9 +1276,7 @@ Two expressions may be equivalent even if they are not syntactically equal (i.e.
 (%i7) ratsimp (x - y);
 (%o7)                         x - y
 (%i8) is (equal (x, y));
-Maxima was unable to evaluate the predicate:
-equal(x, y)
- -- an error.  Quitting.  To debug this try debugmode(true);
+(%o8)                        unknown
 (%i9) is (x = y);
 (%o9)                         false
 @end example
@@ -1318,16 +1314,14 @@ equal(x  + 2 x + 1, x  - 2 x - 1)
 Some operators evaluate @code{equal} and @code{notequal} to @code{true} or @code{false}.
 
 @c ===beg===
-@c if equal (a, b) then FOO else BAR;
+@c if equal (y, y - 1) then FOO else BAR;
 @c eq_1 : equal (x, x + 1);
 @c eq_2 : equal (y^2 + 2*y + 1, (y + 1)^2);
 @c [eq_1 and eq_2, eq_1 or eq_2, not eq_1];
 @c ===end===
 @example
-(%i1) if equal (a, b) then FOO else BAR;
-Maxima was unable to evaluate the predicate:
-equal(a, b)
- -- an error.  Quitting.  To debug this try debugmode(true);
+(%i4) if equal (y, y - 1) then FOO else BAR;
+(%o4)                          BAR
 (%i2) eq_1 : equal (x, x + 1);
 (%o2)                    equal(x, x + 1)
 (%i3) eq_2 : equal (y^2 + 2*y + 1, (y + 1)^2);
@@ -1421,12 +1415,6 @@ can use this information; for example:
 @deffn {Function} notequal (@var{a}, @var{b})
 Represents the negation of @code{equal(@var{a}, @var{b})}.
 
-Note that because of the rules for evaluation of predicate expressions
-(in particular because @code{not @var{expr}} causes evaluation of @var{expr}),
-@code{not equal(@var{a}, @var{b})}
-is equivalent to @code{is(notequal(@var{a}, @var{b}))}
-instead of @code{notequal(@var{a}, @var{b})}.
-
 Examples:
 
 @c ===beg===
@@ -1435,14 +1423,11 @@ Examples:
 @c notequal (a, b);
 @c not equal (a, b);
 @c maybe (notequal (a, b));
-@c maybe (not equal (a, b));
 @c assume (a > b);
 @c equal (a, b);
 @c maybe (equal (a, b));
 @c notequal (a, b);
-@c not equal (a, b);
 @c maybe (notequal (a, b));
-@c maybe (not equal (a, b));
 @c ===end===
 @example
 (%i1) equal (a, b);
@@ -1452,27 +1437,19 @@ Examples:
 (%i3) notequal (a, b);
 (%o3)                    notequal(a, b)
 (%i4) not equal (a, b);
-Maxima was unable to evaluate the predicate:
-equal(a, b)
- -- an error.  Quitting.  To debug this try debugmode(true);
+(%o4)                    notequal(a, b)
 (%i5) maybe (notequal (a, b));
 (%o5)                        unknown
-(%i6) maybe (not equal (a, b));
-(%o6)                        unknown
-(%i7) assume (a > b);
-(%o7)                        [a > b]
-(%i8) equal (a, b);
-(%o8)                      equal(a, b)
-(%i9) maybe (equal (a, b));
-(%o9)                         false
-(%i10) notequal (a, b);
-(%o10)                   notequal(a, b)
-(%i11) not equal (a, b);
-(%o11)                        true
-(%i12) maybe (notequal (a, b));
-(%o12)                        true
-(%i13) maybe (not equal (a, b));
-(%o13)                        true
+(%i6) assume (a > b);
+(%o6)                        [a > b]
+(%i7) equal (a, b);
+(%o7)                      equal(a, b)
+(%i8) maybe (equal (a, b));
+(%o8)                         false
+(%i9) notequal (a, b);
+(%o9)                    notequal(a, b)
+(%i10) maybe (notequal (a, b));
+(%o10)                        true
 @end example
 
 @end deffn
