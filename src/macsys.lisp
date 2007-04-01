@@ -28,7 +28,7 @@
   ;; a FUNARG as the prompt. -gjc
   (declare (special *display-labels-p*))
   (if *display-labels-p*
-    (format () "~A(~A~D) ~A"
+    (format nil "~A(~A~D) ~A"
 	    *prompt-prefix* (print-invert-case (stripdollar $inchar))
 	    $linenum *prompt-suffix*)
     ""))
@@ -95,7 +95,6 @@
       (list (aref .oldspace 0) (aref .oldspace 2) .oldgcu)))) ;; report just two kinds of space,
 							      ;; cons-cells and other bytes,
 							      ;; also report gc-user time
-
 
 #-(or cmu scl sbcl clisp allegro)
 (defun used-area (&optional unused)
@@ -235,7 +234,6 @@
 		 (unread-char char input-stream)
 		 (return nil))))))))
 
-
 (defun $break (&rest arg-list)
   (prog1 (apply #'$print arg-list)
     (mbreak-loop)))
@@ -283,7 +281,6 @@
   (let ((res (mread-noprompt *query-io* nil)))
        (princ *general-display-prefix*) res))
 
-
 (defmfun $read (&rest l)
   (meval (apply #'$readonly l)))
 
@@ -291,17 +288,14 @@
   (let ((*mread-prompt*
 	 (if l
 	     (string-right-trim '(#\n)
-				(with-output-to-string (*standard-output*)
-				  (apply '$print l)))
+				(with-output-to-string (*standard-output*) (apply #'$print l)))
 	     "")))
-    (setf *mread-prompt*
-	  (format nil "~a~a~a" *prompt-prefix* *mread-prompt* *prompt-suffix*))
+    (setf *mread-prompt* (format nil "~a~a~a" *prompt-prefix* *mread-prompt* *prompt-suffix*))
     (third (mread *query-io*))))
-
 
 (defun batch (filename &optional demo-p
 	      &aux (orig filename) list
-	      file-obj (accumulated-time 0.0) (abortp t))
+	      file-obj (accumulated-time 0d0) (abortp t))
   (setq list (if demo-p '$file_search_demo '$file_search_maxima))
   (setq filename ($file_search filename (symbol-value list)))
   (or filename (merror "Could not find ~M in ~M: ~M"
@@ -367,8 +361,7 @@
 
 (defvar *maxima-quiet* nil)
 
-(defun macsyma-top-level (&optional (input-stream *standard-input*)
-			  batch-flag)
+(defun macsyma-top-level (&optional (input-stream *standard-input*) batch-flag)
   (let ((*package* (find-package :maxima)))
     (if *maxima-started*
 	(format t "Maxima restarted.~%")
@@ -399,13 +392,10 @@
       #+clisp (subseq (lisp-implementation-version)
 	      0 (1+ (search ")" (lisp-implementation-version)))))
   #+gcl (format t " (aka GCL)")
-  (format t "~%")
-  (format t "Distributed under the GNU Public License. See the file COPYING.~%")
+  (format t "~%Distributed under the GNU Public License. See the file COPYING.~%")
   (format t "Dedicated to the memory of William Schelter.~%")
   (format t "This is a development version of Maxima. The function bug_report()~%")
   (format t "provides bug reporting information.~%"))
-
-
 
 #+kcl
 (si::putprop :t 'throw-macsyma-top 'si::break-command)
@@ -421,7 +411,7 @@
 
 (defmfun $appendfile (name)
   (if (and (symbolp name)
-	   (member (getcharn name 1) '(#\& #\$)))
+	   (member (char (symbol-name name) 0) '(#\& #\$) :test #'char=))
       (setq name (maxima-string name)))
   (if $appendfile (merror "already in appendfile, use closefile first"))
   (let ((stream  (open name :direction :output
@@ -451,7 +441,6 @@
 	 (setq *appendfile-data* nil $appendfile nil))
 	(t (dribble))))
 
-
 (defmfun $ed (x)
   (ed (maxima-string x)))
 
@@ -460,7 +449,6 @@
 
 (defun filestrip (x)
   (subseq (print-invert-case (car x)) 1))
-
 
 (defmspec $with_stdout (arg)
   (declare (special $file_output_append))
@@ -483,7 +471,7 @@
   (let ((ans "") )
     (dolist (v x)
       (setq ans (concatenate 'string ans
-			     (cond ((and (symbolp v) (eql (getcharn v 1) #\&))
+			     (cond ((and (symbolp v) (char= (char (symbol-name v) 0) #\&))
 				    (subseq (print-invert-case v) 1))
 				   ((stringp v) v)
 				   (t
@@ -513,9 +501,8 @@
   (format t "~&~%Automatically continuing.~%To reenable the Lisp debugger set *debugger-hook* to nil.~%")
   (throw 'return-from-debugger t))
 
-(let
-  ((t0-real 0) (t0-run 0)
-   (float-units (float internal-time-units-per-second 1d0)))
+(let ((t0-real 0) (t0-run 0)
+      (float-units (float internal-time-units-per-second 1d0)))
 
   (defun initialize-real-and-run-time ()
     (setq t0-real (get-internal-real-time))
