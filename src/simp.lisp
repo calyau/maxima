@@ -133,7 +133,10 @@
         #+gcl (load)
 	#-gcl (:load-toplevel)
 	(mapc #'(lambda (x) (mputprop x t '$constant) (setf (get x 'sysconst) t))
-	'($%pi $%i $%e $%phi $inf $minf $infinity %i $%gamma)))
+	'($%pi $%i $%e $%phi %i $%gamma	;numeric constants
+	       $inf $minf $und $ind $infinity ;pseudo-constants
+	       t nil)			;logical constants (Maxima names: true, false)
+	))
 
 (defprop mnctimes t associative)
 (defprop lambda t lisp-no-simp)
