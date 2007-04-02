@@ -177,6 +177,104 @@
 (autof '$parse_string "eval_string")
 
 
+;; begin functions from share/linearalgebra 
+
+; loading linearalgebra.mac loads the complete linearalgebra stuff
+(defun autof-linearalgebra (fun)
+  (unless (fboundp fun)
+    (setf (symbol-function fun)
+        #'(lambda (&rest l)
+         ($aload_mac "linearalgebra")
+         (apply fun l)))))
+
+(dolist (f       
+     '($eigens_by_jacobi   ; eigens-by-jacobi.lisp
+     
+       $cholesky           ; linalgcholesky.lisp
+       
+       $circulant          ; linalg-extra.lisp
+       $cauchy_matrix
+       $hessian
+       $jacobian
+       $matrix_sign
+       
+       $blockmatrixp       ; linalg-utilities.lisp
+       $ctranspose
+       $identfor
+       $matrix_size
+       $mytest
+       $require_list 
+       $require_matrix
+       $require_nonempty_matrix 
+       $require_posinteger
+       $require_selfadjoint_matrix
+       $require_square_matrix
+       $require_symmetric_matrix
+       $require_unblockedmatrix 
+       $zerofor
+       $zeromatrixp
+       
+       $get_lu_factors     ; lu.lisp
+       $invert_by_lu 
+       $linsolve_by_lu
+       $lu_backsub
+       $lu_factor
+       $mat_cond
+       
+       $matrixexp          ; matrixexp.lisp
+       $matrixfun
+       $spectral_rep
+       
+       $addmatrices        ; mring.lisp
+       $require_ring
+       
+       $nonnegintegerp     ; polynomialp.lisp
+       $polynomialp ))
+  (autof-linearalgebra f))
+
+(let ((fun '$ringeval))    ; mring.lisp
+  (unless (get fun 'mfexpr*)
+    (setf (get fun 'mfexpr*)
+     #'(lambda (l)
+         ($aload_mac "linearalgebra")
+         (funcall (get fun 'mfexpr*) l)))))
+
+(dolist (mexpr       
+     '($column_reduce      ;linearalgebra.mac
+       $columnop
+       $columnspace 
+       $columnswap
+       $diag_matrix
+       $dotproduct 
+       $good_pivot
+       $hankel
+       $hilbert_matrix
+       $hipow_gzero
+       $kronecker_product
+       $locate_matrix_entry
+       $mat_fullunblocker
+       $mat_norm
+       $mat_trace
+       $mat_unblocker
+       $nullity
+       $nullspace
+       $orthogonal_complement
+       $polytocompanion
+       $ptriangularize
+       $ptriangularize_with_proviso
+       $rank
+       $request_rational_matrix
+       $require_integer
+       $require_symbol
+       $rowop
+       $rowswap
+       $toeplitz
+       $vandermonde_matrix ))
+  ($auto_mexpr mexpr "linearalgebra"))
+
+;; end functions from share/linearalgebra
+
+
 '$parametric
 '(defvar $plot_options '((mlist)
 					;((mlist) $x -3 3)
