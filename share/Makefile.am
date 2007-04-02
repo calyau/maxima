@@ -661,6 +661,7 @@ linearalgebra/test-matrixexp.mac\
 linearalgebra/test-polynomialp.mac\
 linearalgebra/eigens-by-jacobi.lisp\
 linearalgebra/linalg-extra.lisp\
+linearalgebra/load-linearalgebra-lisp-files.lisp\
 macro/autolo.mac\
 macro/basic.mac\
 macro/caseq.mac\
