@@ -364,10 +364,16 @@ Determines which graphic interface is used by @code{plot2d} and
 
 @itemize @bullet
 @item
-Default value: @code{gnuplot}
+Value: @code{gnuplot} default on Windows
 
 Gnuplot is the most advanced plotting package among the packages
 available in Maxima. It requires an external gnuplot installation.
+@item
+Value: @code{gnuplot_pipes} default on non-Windows platforms
+
+Similar to the @code{gnuplot} format except that communication with
+gnuplot is done through a pipe. It should be used to plot on screen,
+for plotting to files it is better to use the @code{gnuplot} format.
 @item
 Value: @code{mgnuplot}
 
@@ -752,6 +758,47 @@ setting @code{gnuplot_ps_term_command} as:
 @end example
 
 @end itemize
+
+@b{Functions for working with the gnuplot_pipes format:}
+
+@deffn {Function} gnuplot_start ()
+
+Opens the pipe to gnuplot used for plotting with the
+@code{gnuplot_pipes} format. Is is not necessary to manually open the
+pipe before plotting.
+
+@end deffn
+
+@deffn {Function} gnuplot_close ()
+
+Closes the pipe to gnuplot which is used with the @code{gnuplot_pipes}
+format.
+
+@end deffn
+
+@deffn {Function} gnuplot_restart ()
+
+Closes the pipe to gnuplot which is used with the @code{gnuplot_pipes}
+format and opens a new pipe.
+
+@end deffn
+
+@deffn {Function} gnuplot_replot ()
+@deffnx {Function} gnuplot_replot (@var{s})
+
+Updates the gnuplot window. If @code{gnuplot_replot} is called with a
+gnuplot command in a string @var{s}, then @code{s} is sent to gnuplot
+before reploting the window.
+
+@end deffn
+
+@deffn {Function} gnuplot_reset ()
+
+Resets the state of gnuplot used with the @code{gnuplot_pipes}
+format. To update the gnuplot window call @code{gnuplot_replot} after
+@code{gnuplot_reset}.
+
+@end deffn
 
 @b{Examples:}
 
