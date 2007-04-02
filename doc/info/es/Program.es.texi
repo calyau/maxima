@@ -1,4 +1,4 @@
-@c version 1.22
+@c version 1.24
 @menu
 * Introducci@'on a la Programaci@'on::  
 * Definiciones para la Programaci@'on::  
@@ -266,8 +266,15 @@ Las alternativas ni se simplifican ni se eval@'uan, a menos que su
 condici@'on asociada valga @code{true}.
 
 Las condiciones @var{cond_1}, ..., @var{cond_n} deben ser expresiones 
-tales que @code{is(@var{cond_k})} eval@'uen a @code{true} o @code{false};
-en caso contrario se produce un error.
+capaces de dar como resultado @code{true} o @code{false} al ser
+evaluadas. Si en un momento dado una condici@'on no da como resultado 
+un valor de verdad (@code{true} o @code{false}), el comportamiento de @code{if} se controla
+con la variable global @code{prederror}. Si @code{prederror} vale @code{true},
+se considera un error que la condici@'on evaluada no d@'e como resultado
+un valor de verdad; en caso contrario, las condiciones que no
+den como resultado un valor de verdad se aceptan, d@'andose el
+resultado como una expresi@'on condicional.
+
 Las condiciones pueden contener operadores l@'ogicos y relacionales, 
 as@'{@dotless{i}} como otros elementos, tal como se indica a continuaci@'on:
 

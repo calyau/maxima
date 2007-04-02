@@ -538,8 +538,9 @@ entre corchetes).
 
 Cuando el @'ultimo o @'unico argumento @var{x_n} es una lista de un solo 
 elemento, la funci@'on definida por @code{define} acepta un n@'umero variable
-de argumentos. Los argumentos se van asignando uno a uno a @var{x_1}, ..., @var{x_(n - 1)},
-y los que queden, si los hay, se asignan a @var{x_n} en forma de lista.
+de argumentos. Los valores de los argumentos se van asignando uno a uno a 
+@var{x_1}, ..., @var{x_(n - 1)}, y los que queden, si los hay, se asignan 
+a @var{x_n} en forma de lista.
 
 Cuando el primer argumento de @code{define} es una expresi@'on de la
 forma @code{@var{f}(@var{x_1}, ..., @var{x_n})} o
@@ -557,7 +558,7 @@ funci@'on @code{g} no limita el alcance de @code{f} a @code{g}.
 
 Si un argumento formal @var{x_k} es un s@'{@dotless{i}}mbolo afectado
 por el operador comilla simple (expresi@'on nominal), la funci@'on definida por
-@code{define} no eval@'ua el argumento correspondiente que se pasa a la funci@'on.
+@code{define} no eval@'ua el correspondiente valor de argumento.
 En cualquier otro caso, los argumentos que se pasan son evaluados.
 
 V@'eanse tambi@'en @code{:=} y @code{::=}.

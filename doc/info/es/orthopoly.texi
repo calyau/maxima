@@ -1,4 +1,4 @@
-@c version 1.9
+@c version 1.10
 @menu
 * Introducci@'on a polinomios ortogonales::
 * Definiciones para polinomios ortogonales::
@@ -664,11 +664,12 @@ continua por la izquierda.
 
 En general, el paquete @code{orthopoly} gestiona la evaluaci@'on
 simb@'olica a trav@'es de la representaci@'on hipergeom@'etrica de 
-varios polinomios ortogonales. Las funciones hipergeom@'etricas se
+los polinomios ortogonales. Las funciones hipergeom@'etricas se
 eval@'uan utilizando las funciones (no documentadas) @code{hypergeo11} 
 y @code{hypergeo21}. Excepciones son las funciones de Bessel de
 @'{@dotless{i}}ndice semi-entero y las funciones asociadas de 
-Legendre de segunda especie; las funciones de Bessel se eval@'uan 
+Legendre de segunda especie; las funciones de Bessel de @'{@dotless{i}}ndice
+semi-entero se eval@'uan 
 utilizando una representaci@'on expl@'{@dotless{i}}cita, mientras que
 la funci@'on asociada de Legendre de segunda especie se eval@'ua 
 recursivamente.
@@ -678,9 +679,7 @@ se convierten a su forma hipergeom@'etrica, evalu@'andolas mediante recursi@'on.
 Adem@'as, las excepciones son las funciones de Bessel de @'{@dotless{i}}ndice
 semi-entero y las funciones asociadas de Legendre de segunda especie.
 Las funciones de Bessel de @'{@dotless{i}}ndice semi-entero se eval@'uan 
-num@'ericamente con c@'odigo SLATEC y las funciones asociadas de Legendre 
-de segunda especie utilizan el mismo algoritmo que en el caso de su
-evaluaci@'on simb@'olica.
+num@'ericamente con c@'odigo SLATEC.
 
 
 @node Definiciones para polinomios ortogonales,  , Introducci@'on a polinomios ortogonales, orthopoly

@@ -1,4 +1,4 @@
-@c english version 1.6
+@c english version 1.7
 @menu
 * Introducci@'on al procesamiento de cadenas::
 * Definiciones para entrada y salida::
@@ -15,9 +15,6 @@ funciones @'utiles para la lectura y escritura de ficheros.
 
 Para dudas y fallos, por favor cont@'actese con van.nek at arcor.de .
 
-Para cargar este paquete basta con
-ejecutar la sentencia @code{load("stringproc")}.
-
 En Maxima, una cadena de caracteres se construye f@'acilmente 
 escribi@'endola entre comillas dobles (@code{"}). T@'engase en
 cuenta que las cadenas de Maxima no son cadenas de Lisp,
@@ -30,7 +27,6 @@ de utilizar la funci@'on conversora @code{sunlisp}.
 
 
 @c ===beg===
-@c load("stringproc")$
 @c m: "text";
 @c [stringp(m),lstringp(m)];
 @c l: sconcat("text");
@@ -38,17 +34,16 @@ de utilizar la funci@'on conversora @code{sunlisp}.
 @c stringp( sunlisp(l) );
 @c ===end===
 @example
-(%i1) load("stringproc")$
-(%i2) m: "text";
-(%o2)                         text
-(%i3) [stringp(m),lstringp(m)];
-(%o3)                     [true, false]
-(%i4) l: sconcat("text");
-(%o4)                         text
-(%i5) [stringp(l),lstringp(l)];
-(%o5)                     [false, true]
-(%i6) stringp( sunlisp(l) );
-(%o6)                         true
+(%i1) m: "text";
+(%o1)                         text
+(%i2) [stringp(m),lstringp(m)];
+(%o2)                     [true, false]
+(%i3) l: sconcat("text");
+(%o3)                         text
+(%i4) [stringp(l),lstringp(l)];
+(%o4)                     [false, true]
+(%i5) stringp( sunlisp(l) );
+(%o5)                         true
 @end example
 
 Todas las cadenas devueltas por las funciones de @code{stringproc} son cadenas
@@ -60,22 +55,20 @@ chequear con las funciones @code{charp} y @code{lcharp}, pudi@'endose
 convertir los caracteres de Lisp a Maxima mediante @code{cunlisp}.
 
 @c ===beg===
-@c load("stringproc")$
 @c c: "e";
 @c [charp(c),lcharp(c)];
 @c supcase(c);
 @c charp(%);
 @c ===end===
 @example
-(%i1) load("stringproc")$
-(%i2) c: "e";
-(%o2)                           e
-(%i3) [charp(c),lcharp(c)];
-(%o3)                     [true, false]
-(%i4) supcase(c);
-(%o4)                           E
-(%i5) charp(%);
-(%o5)                         true
+(%i1) c: "e";
+(%o1)                           e
+(%i2) [charp(c),lcharp(c)];
+(%o2)                     [true, false]
+(%i3) supcase(c);
+(%o3)                           E
+(%i4) charp(%);
+(%o4)                         true
 @end example
 
 Todos los caracteres devueltos por las funciones de @code{stringproc} son caracteres
@@ -98,16 +91,15 @@ un fichero, entonces @code{printf} permitir@'a formatera la escritura en
 este fichero. V@'ease @code{printf} para m@'as detalles.
 
 @example
-(%i1) load("stringproc")$
-(%i2) s: openw("E:/file.txt");
-(%o2)                    #<output stream E:/file.txt>
-(%i3) for n:0 thru 10 do printf( s, "~d ", fib(n) );
-(%o3)                                done
-(%i4) printf( s, "~%~d ~f ~a ~a ~f ~e ~a~%", 
+(%i1) s: openw("E:/file.txt");
+(%o1)                    #<output stream E:/file.txt>
+(%i2) for n:0 thru 10 do printf( s, "~d ", fib(n) );
+(%o2)                                done
+(%i3) printf( s, "~%~d ~f ~a ~a ~f ~e ~a~%", 
               42,1.234,sqrt(2),%pi,1.0e-2,1.0e-2,1.0b-2 );
-(%o4)                                false
-(%i5) close(s);
-(%o5)                                true
+(%o3)                                false
+(%i4) close(s);
+(%o4)                                true
 @end example
 
 Una vez cerrado el flujo, se podr@'a abrir nuevamente. La funci@'on @code{readline}
@@ -116,32 +108,31 @@ dispone de muchas funciones para manipular cadenas. La separaci@'on de palabras 
 puede hacer con @code{split} o @code{tokens}.
 
 @example
-(%i6) s: openr("E:/file.txt");
-(%o6)                     #<input stream E:/file.txt>
-(%i7) readline(s);
-(%o7)                     0 1 1 2 3 5 8 13 21 34 55 
-(%i8) line: readline(s);
-(%o8)               42 1.234 sqrt(2) %pi 0.01 1.0E-2 1.0b-2
-(%i9) list: tokens(line);
-(%o9)           [42, 1.234, sqrt(2), %pi, 0.01, 1.0E-2, 1.0b-2]
-(%i10) map( parsetoken, list );
-(%o10)           [42, 1.234, false, false, 0.01, 0.01, false]
+(%i5) s: openr("E:/file.txt");
+(%o5)                     #<input stream E:/file.txt>
+(%i6) readline(s);
+(%o6)                     0 1 1 2 3 5 8 13 21 34 55 
+(%i7) line: readline(s);
+(%o7)               42 1.234 sqrt(2) %pi 0.01 1.0E-2 1.0b-2
+(%i8) list: tokens(line);
+(%o8)           [42, 1.234, sqrt(2), %pi, 0.01, 1.0E-2, 1.0b-2]
+(%i9) map( parsetoken, list );
+(%o9)           [42, 1.234, false, false, 0.01, 0.01, false]
 @end example
 
 La funci@'on @code{parsetoken} s@'olo analiza sint@'acticamente n@'umeros
 enteros y decimales. El an@'alisis de s@'{@dotless{i}}mbolos y n@'umeros
-decimales grandes (@i{big floats}) necesita @code{parse_string}, que puede
-cargarse desde @code{eval_string.lisp}.
+decimales grandes (@i{big floats}) necesita @code{parse_string}, que se
+cargar autom@'aticamente desde @code{eval_string.lisp}.
 
 @example 
-(%i11) load("eval_string")$
-(%i12) map( parse_string, list );
-(%o12)           [42, 1.234, sqrt(2), %pi, 0.01, 0.01, 1.0b-2]
-(%i13) float(%);
-(%o13) [42.0, 1.234, 1.414213562373095, 3.141592653589793, 0.01, 0.01, 0.01]
-(%i14) readline(s);
-(%o14)                               false
-(%i15) close(s)$
+(%i10) map( parse_string, list );
+(%o10)           [42, 1.234, sqrt(2), %pi, 0.01, 0.01, 1.0b-2]
+(%i11) float(%);
+(%o11) [42.0, 1.234, 1.414213562373095, 3.141592653589793, 0.01, 0.01, 0.01]
+(%i12) readline(s);
+(%o12)                               false
+(%i13) close(s)$
 @end example
 
 La funci@'on @code{readline} devuelve @code{false} cuando se alcanza el
@@ -154,7 +145,6 @@ final del fichero.
 Ejemplo: 
 
 @c ===beg===
-@c load("stringproc")$
 @c s: openw("E:/file.txt");
 @c control: 
 @c  "~2tAn atom: ~20t~a~%~2tand a list: ~20t~@{~r ~@}~%~2tand an integer: ~20t~d~%"$
@@ -165,22 +155,21 @@ Ejemplo:
 @c close(s)$
 @c ===end===
 @example
-(%i1) load("stringproc")$
-(%i2) s: openw("E:/file.txt");
-(%o2)                     #<output stream E:/file.txt>
-(%i3) control: 
+(%i1) s: openw("E:/file.txt");
+(%o1)                     #<output stream E:/file.txt>
+(%i2) control: 
 "~2tAn atom: ~20t~a~%~2tand a list: ~20t~@{~r ~@}~%~2tand an integer: ~20t~d~%"$
-(%i4) printf( s,control, 'true,[1,2,3],42 )$
-(%o4)                                false
-(%i5) close(s);
-(%o5)                                true
-(%i6) s: openr("E:/file.txt");
-(%o6)                     #<input stream E:/file.txt>
-(%i7) while stringp( tmp:readline(s) ) do print(tmp)$
+(%i3) printf( s,control, 'true,[1,2,3],42 )$
+(%o3)                                false
+(%i4) close(s);
+(%o4)                                true
+(%i5) s: openr("E:/file.txt");
+(%o5)                     #<input stream E:/file.txt>
+(%i6) while stringp( tmp:readline(s) ) do print(tmp)$
   An atom:          true 
   and a list:       one two three  
   and an integer:   42 
-(%i8) close(s)$
+(%i7) close(s)$
 @end example
 
 
@@ -285,7 +274,6 @@ Por @'ultimo, indicar que algunas directivas no funcionan en Maxima, como
 por ejemplo @code{~:[}.
 
 @c ===beg===
-@c load("stringproc")$
 @c printf( false, "~a ~a ~4f ~a ~@@r", 
 @c         "String",sym,bound,sqrt(12),144), bound = 1.234;
 @c printf( false,"~@{~a ~@}",["one",2,"THREE"] );
@@ -295,20 +283,19 @@ por ejemplo @code{~:[}.
 @c printf( false,control, n,n,if n=1 then 0 else 1 ), n=2;
 @c ===end===
 @example
-(%i1) load("stringproc")$
-(%i2) printf( false, "~a ~a ~4f ~a ~@@r", 
+(%i1) printf( false, "~a ~a ~4f ~a ~@@r", 
               "String",sym,bound,sqrt(12),144), bound = 1.234;
-(%o2)                 String sym 1.23 2*sqrt(3) CXLIV
-(%i3) printf( false,"~@{~a ~@}",["one",2,"THREE"] );
-(%o3)                          one 2 THREE 
-(%i4) printf( true,"~@{~@{~9,1f ~@}~%~@}",mat ),
+(%o1)                 String sym 1.23 2*sqrt(3) CXLIV
+(%i2) printf( false,"~@{~a ~@}",["one",2,"THREE"] );
+(%o2)                          one 2 THREE 
+(%i3) printf( true,"~@{~@{~9,1f ~@}~%~@}",mat ),
               mat = args( matrix([1.1,2,3.33],[4,5,6],[7,8.88,9]) )$
       1.1       2.0       3.3 
       4.0       5.0       6.0 
       7.0       8.9       9.0 
-(%i5) control: "~:(~r~) bird~p ~[is~;are~] singing."$
-(%i6) printf( false,control, n,n,if n=1 then 0 else 1 ), n=2;
-(%o6)                    Two birds are singing.
+(%i4) control: "~:(~r~) bird~p ~[is~;are~] singing."$
+(%i5) printf( false,control, n,n,if n=1 then 0 else 1 ), n=2;
+(%o5)                    Two birds are singing.
 @end example
 
 Si @var{dest} es un flujo de datos o @code{true}, entonces @code{printf}
@@ -326,20 +313,18 @@ si est@'a al final del fichero.
 Eval@'ua y muestra sus argumentos uno tras otro en un rengl@'on comenzando por 
 su extremo izquierdo. 
 
-La funci@'on @code{newline()}, que se puede cargar desde @code{stringproc.lisp},
+La funci@'on @code{newline()}, que se carga autom@'aticamente desde @code{stringproc.lisp},
 puede ser de utilidad si se quiere intercalar un salto de l@'{@dotless{i}}nea.
 
 @c ===beg===
 @c for n:0 thru 22 do sprint( fib(n) )$
-@c load("stringproc")$
 @c for n:0 thru 22 do ( 
 @c    sprint(fib(n)), if mod(n,10)=9 then newline() )$
 @c ===end===
 @example
 (%i1) for n:0 thru 22 do sprint( fib(n) )$
 0 1 1 2 3 5 8 13 21 34 55 89 144 233 377 610 987 1597 2584 4181 6765 10946 17711 
-(%i2) load("stringproc")$
-(%i3) for n:0 thru 22 do ( 
+(%i2) for n:0 thru 22 do ( 
          sprint(fib(n)), if mod(n,10)=9 then newline() )$
 0 1 1 2 3 5 8 13 21 34 
 55 89 144 233 377 610 987 1597 2584 4181 
@@ -365,13 +350,11 @@ Devuelve el car@'acter correspondiente al n@'umero ASCII @var{int},
 debiendo ser @math{-1 < int < 256}.
 
 @c ===beg===
-@c load("stringproc")$
 @c for n from 0 thru 255 do ( 
 @c    tmp: ascii(n), if alphacharp(tmp) then sprint(tmp), if n=96 then newline() )$
 @c ===end===
 @example
-(%i1) load("stringproc")$
-(%i2) for n from 0 thru 255 do ( 
+(%i1) for n from 0 thru 255 do ( 
 tmp: ascii(n), if alphacharp(tmp) then sprint(tmp), if n=96 then newline() )$
 A B C D E F G H I J K L M N O P Q R S T U V W X Y Z 
 a b c d e f g h i j k l m n o p q r s t u v w x y z
@@ -423,13 +406,11 @@ espacio a@~nadido; @code{constituent} est@'a definido por Paul Graham,
 ANSI Common Lisp, 1996, page 67.
 
 @c ===beg===
-@c load("stringproc")$
 @c for n from 0 thru 255 do ( 
 @c    tmp: ascii(n), if constituent(tmp) then sprint(tmp) )$
 @c ===end===
 @example
-(%i1) load("stringproc")$
-(%i2) for n from 0 thru 255 do ( 
+(%i1) for n from 0 thru 255 do ( 
 tmp: ascii(n), if constituent(tmp) then sprint(tmp) )$
 ! " #  %  ' ( ) * + , - . / 0 1 2 3 4 5 6 7 8 9 : ; < = > ? @@ A B
 C D E F G H I J K L M N O P Q R S T U V W X Y Z [ \ ] ^ _ ` a b c
@@ -495,13 +476,11 @@ Devuelve el @var{n}-@'esimo car@'acter de @var{string}.
 Al primer car@'acter de @var{string} le corresponde @var{n} = 1.
 
 @c ===beg===
-@c load("stringproc")$
 @c charat("Lisp",1);
 @c ===end===
 @example
-(%i1) load("stringproc")$
-(%i2) charat("Lisp",1);
-(%o2)                           L
+(%i1) charat("Lisp",1);
+(%o1)                           L
 @end example
 
 @end deffn
@@ -510,16 +489,14 @@ Al primer car@'acter de @var{string} le corresponde @var{n} = 1.
 Devuelve una lista con todos los caracteres de @var{string}. 
 
 @c ===beg===
-@c load("stringproc")$
 @c charlist("Lisp");
 @c %[1];
 @c ===end===
 @example
-(%i1) load("stringproc")$
-(%i2) charlist("Lisp");
-(%o2)                     [L, i, s, p]
-(%i3) %[1];
-(%o3)                           L
+(%i1) charlist("Lisp");
+(%o1)                     [L, i, s, p]
+(%i2) %[1];
+(%o2)                           L
 @end example
 
 @end deffn
@@ -531,13 +508,11 @@ n@'umero. El conjunto de delimitadores de lexemas es
 @code{@{space, comma, semicolon, tab, newline@}}.
 
 @c ===beg===
-@c load("stringproc")$
 @c 2*parsetoken("1.234 5.678");
 @c ===end===
 @example
-(%i1) load("stringproc")$
-(%i2) 2*parsetoken("1.234 5.678");
-(%o2)                         2.468
+(%i1) 2*parsetoken("1.234 5.678");
+(%o1)                         2.468
 @end example
 
 Tambi@'en se puede utilizar la funci@'on @code{parse_string} para
@@ -550,16 +525,14 @@ Esta funci@'on es similar a @code{sconcat}, pero devuelve una cadena
 de Maxima.
 
 @c ===beg===
-@c load("stringproc")$
 @c sconc("xx[",3,"]:",expand((x+y)^3));
 @c stringp(%);
 @c ===end===
 @example
-(%i1) load("stringproc")$
-(%i2) sconc("xx[",3,"]:",expand((x+y)^3));
-(%o2)             xx[3]:y^3+3*x*y^2+3*x^2*y+x^3
-(%i3) stringp(%);
-(%o3)                         true
+(%i1) sconc("xx[",3,"]:",expand((x+y)^3));
+(%o1)             xx[3]:y^3+3*x*y^2+3*x^2*y+x^3
+(%i2) stringp(%);
+(%o2)                         true
 @end example
 
 @end deffn
@@ -597,19 +570,17 @@ para indicar el delimitador, entonces @code{simplode} actúa como @code{sconc} y 
 hace uso de ninguno. El valor de @var{delim} puede ser cualquier cadena.
 
 @c ===beg===
-@c load("stringproc")$
 @c simplode(["xx[",3,"]:",expand((x+y)^3)]);
 @c simplode( sexplode("stars")," * " );
 @c simplode( ["One","more","coffee."]," " );
 @c ===end===
 @example
-(%i1) load("stringproc")$
-(%i2) simplode(["xx[",3,"]:",expand((x+y)^3)]);
-(%o2)             xx[3]:y^3+3*x*y^2+3*x^2*y+x^3
-(%i3) simplode( sexplode("stars")," * " );
-(%o3)                   s * t * a * r * s
-(%i4) simplode( ["One","more","coffee."]," " );
-(%o4)                   One more coffee.
+(%i1) simplode(["xx[",3,"]:",expand((x+y)^3)]);
+(%o1)             xx[3]:y^3+3*x*y^2+3*x^2*y+x^3
+(%i2) simplode( sexplode("stars")," * " );
+(%o2)                   s * t * a * r * s
+(%i3) simplode( ["One","more","coffee."]," " );
+(%o3)                   One more coffee.
 @end example
 
 @end deffn
@@ -620,18 +591,16 @@ Devuelve la concatenaci@'on de las cadenas @code{substring (@var{string}, 1, @va
 N@'otese que al primer car@'acter de @var{string} le corresponde la posici@'on 1.
 
 @c ===beg===
-@c load("stringproc")$
 @c s: "A submarine."$
 @c sconc( substring(s,1,3),"yellow ",substring(s,3) );
 @c sinsert("hollow ",s,3);
 @c ===end===
 @example
-(%i1) load("stringproc")$
-(%i2) s: "A submarine."$
-(%i3) sconc( substring(s,1,3),"yellow ",substring(s,3) );
-(%o3)                  A yellow submarine.
-(%i4) sinsert("hollow ",s,3);
-(%o4)                  A hollow submarine.
+(%i1) s: "A submarine."$
+(%i2) sconc( substring(s,1,3),"yellow ",substring(s,3) );
+(%o2)                  A yellow submarine.
+(%i3) sinsert("hollow ",s,3);
+(%o3)                  A hollow submarine.
 @end example
 
 @end deffn
@@ -647,13 +616,11 @@ desde @var{start} hasta el final de la cadena.
 
 
 @c ===beg===
-@c load("stringproc")$
 @c sinvertcase("sInvertCase");
 @c ===end===
 @example
-(%i1) load("stringproc")$
-(%i2) sinvertcase("sInvertCase");
-(%o2)                      SiNVERTcASE
+(%i1) sinvertcase("sInvertCase");
+(%o1)                      SiNVERTcASE
 @end example
 
 @end deffn
@@ -668,13 +635,11 @@ Construye una cadena de longitud @var{num} con todos sus
 caracteres iguales a @var{char}. 
 
 @c ===beg===
-@c load("stringproc")$
 @c smake(3,"w");
 @c ===end===
 @example
-(%i1) load("stringproc")$
-(%i2) smake(3,"w");
-(%o2)                          www
+(%i1) smake(3,"w");
+(%o1)                          www
 @end example
 
 @end deffn
@@ -688,13 +653,11 @@ Si se quiere ignorar la diferencia entre may@'usculas y min@'usculas, h@'agase u
 @code{sequalignore} para el argumento @var{test}.
 
 @c ===beg===
-@c load("stringproc")$
 @c smismatch("seven","seventh");
 @c ===end===
 @example
-(%i1) load("stringproc")$
-(%i2) smismatch("seven","seventh");
-(%o2)                           6
+(%i1) smismatch("seven","seventh");
+(%o1)                           6
 @end example
 
 @end deffn
@@ -712,16 +675,14 @@ almacenadas como secuencias de espacios en blanco. Si a @var{multiple} se
 le asigna el valor @code{false}, se consirarar@'an todos los delimitadores.
 
 @c ===beg===
-@c load("stringproc")$
 @c split("1.2   2.3   3.4   4.5");
 @c split("first;;third;fourth",";",false);
 @c ===end===
 @example
-(%i1) load("stringproc")$
-(%i2) split("1.2   2.3   3.4   4.5");
-(%o2)                 [1.2, 2.3, 3.4, 4.5]
-(%i3) split("first;;third;fourth",";",false);
-(%o3)               [first, , third, fourth]
+(%i1) split("1.2   2.3   3.4   4.5");
+(%o1)                 [1.2, 2.3, 3.4, 4.5]
+(%i2) split("first;;third;fourth",";",false);
+(%o2)               [first, , third, fourth]
 @end example
 
 @end deffn
@@ -746,16 +707,14 @@ Util@'{@dotless{i}}cense @var{start} y @var{end} para acotar la b@'usqueda.
 Al primer car@'acter de @var{string} le corresponde la posici@'on 1.
 
 @c ===beg===
-@c load("stringproc")$
 @c sremove("n't","I don't like coffee.");
 @c sremove ("DO ",%,'sequalignore);
 @c ===end===
 @example
-(%i1) load("stringproc")$
-(%i2) sremove("n't","I don't like coffee.");
-(%o2)                   I do like coffee.
-(%i3) sremove ("DO ",%,'sequalignore);
-(%o3)                    I like coffee.
+(%i1) sremove("n't","I don't like coffee.");
+(%o1)                   I do like coffee.
+(%i2) sremove ("DO ",%,'sequalignore);
+(%o2)                    I like coffee.
 @end example
 
 @end deffn
@@ -804,16 +763,14 @@ el conjunto de posibles valores para este argumento
 @code{@{clessp, clesspignore, cgreaterp, cgreaterpignore, cequal, cequalignore@}}.
 
 @c ===beg===
-@c load("stringproc")$
 @c ssort("I don't like Mondays.");
 @c ssort("I don't like Mondays.",'cgreaterpignore);
 @c ===end===
 @example
-(%i1) load("stringproc")$
-(%i2) ssort("I don't like Mondays.");
-(%o2)                    '.IMaddeiklnnoosty
-(%i3) ssort("I don't like Mondays.",'cgreaterpignore);
-(%o3)                 ytsoonnMlkIiedda.'   
+(%i1) ssort("I don't like Mondays.");
+(%o1)                    '.IMaddeiklnnoosty
+(%i2) ssort("I don't like Mondays.",'cgreaterpignore);
+(%o2)                 ytsoonnMlkIiedda.'   
 @end example
 
 @end deffn
@@ -833,16 +790,14 @@ Util@'{@dotless{i}}cense @var{start} y @var{end} para acotar la b@'usqueda.
 Al primer car@'acter de @var{string} le corresponde la posici@'on 1.
 
 @c ===beg===
-@c load("stringproc")$
 @c ssubst("like","hate","I hate Thai food. I hate green tea.");
 @c ssubst("Indian","thai",%,'sequalignore,8,12);
 @c ===end===
 @example
-(%i1) load("stringproc")$
-(%i2) ssubst("like","hate","I hate Thai food. I hate green tea.");
-(%o2)          I like Thai food. I like green tea.
-(%i3) ssubst("Indian","thai",%,'sequalignore,8,12);
-(%o3)         I like Indian food. I like green tea.
+(%i1) ssubst("like","hate","I hate Thai food. I hate green tea.");
+(%o1)          I like Thai food. I like green tea.
+(%i2) ssubst("Indian","thai",%,'sequalignore,8,12);
+(%o2)         I like Indian food. I like green tea.
 @end example
 
 @end deffn
@@ -860,18 +815,16 @@ Devuelve la cadena @var{string} pero recortando los caracteres
 de @var{seq} que tuviese en sus extremos.
 
 @c ===beg===
-@c load("stringproc")$
 @c "/* comment */"$
 @c strim(" /*",%);
 @c slength(%);
 @c ===end===
 @example
-(%i1) load("stringproc")$
-(%i2) "/* comment */"$
-(%i3) strim(" /*",%);
-(%o3)                        comment
-(%i4) slength(%);
-(%o4)                           7
+(%i1) "/* comment */"$
+(%i2) strim(" /*",%);
+(%o2)                        comment
+(%i3) slength(%);
+(%o3)                           7
 @end example
 
 @end deffn
@@ -896,17 +849,16 @@ se extender@'a hasta el final.
 Al primer car@'acter de @var{string} le corresponde la posici@'on 1.
 
 @c ===beg===
-@c load("stringproc")$
 @c substring("substring",4);
 @c substring(%,4,6);
 @c ===end===
 @example
-(%i1) load("stringproc")$
-(%i2) substring("substring",4);
-(%o2)                        string
-(%i3) substring(%,4,6);
-(%o3)                          in
+(%i1) substring("substring",4);
+(%o1)                        string
+(%i2) substring(%,4,6);
+(%o2)                          in
 @end example
+
 
 @end deffn
 
@@ -919,13 +871,11 @@ En caso de no suministrarse el argumento @var{end}, los cambios
 se extender@'an hasta el final.
 
 @c ===beg===
-@c load("stringproc")$
 @c supcase("english",1,2);
 @c ===end===
 @example
-(%i1) load("stringproc")$
-(%i2) supcase("english",1,2);
-(%o2)                        English
+(%i1) supcase("english",1,2);
+(%o1)                        English
 @end example
 
 @end deffn
@@ -939,19 +889,17 @@ Si no se suministra el argumento @var{test}, se utilizar@'a la condici@'on
 @code{@{constituent, alphacharp, digitcharp, lowercasep, uppercasep, charp, characterp, alphanumericp@}}.
 
 @c ===beg===
-@c load("stringproc")$
 @c tokens("24 October 2005");
 @c tokens("05-10-24",'digitcharp);
 @c map(parsetoken,%);
 @c ===end===
 @example
-(%i1) load("stringproc")$
-(%i2) tokens("24 October 2005");
-(%o2)                  [24, October, 2005]
-(%i3) tokens("05-10-24",'digitcharp);
-(%o3)                     [05, 10, 24]
-(%i4) map(parsetoken,%);
-(%o4)                      [5, 10, 24]
+(%i1) tokens("24 October 2005");
+(%o1)                  [24, October, 2005]
+(%i2) tokens("05-10-24",'digitcharp);
+(%o2)                     [05, 10, 24]
+(%i3) map(parsetoken,%);
+(%o3)                      [5, 10, 24]
 @end example
 
 @end deffn

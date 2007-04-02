@@ -1,3 +1,4 @@
+@c English version 1.2
 @menu
 * Definiciones para eval_string::
 @end menu
@@ -17,16 +18,15 @@ analiza y eval@'ua la primera expresi@'on si hay m@'as de una.
 Si @var{str} no es una cadena de Maxima se emite un mensaje de error.
 
 Ejemplos:
-@example
-(%i1) load("eval_string")$
 
-(%i2) eval_string ("foo: 42; bar: foo^2 + baz");
-(%o2)                       42
-(%i3) eval_string ("(foo: 42, bar: foo^2 + baz)");
-(%o3)                   baz + 1764
+@example
+(%i1) eval_string ("foo: 42; bar: foo^2 + baz");
+(%o1)                       42
+(%i2) eval_string ("(foo: 42, bar: foo^2 + baz)");
+(%o2)                   baz + 1764
 @end example
 
-Antes de hacer uso de esta funci@'on ejec@'utese  @code{load("eval_string")}. V@'ease tambi@'en @code{parse_string}.
+V@'ease tambi@'en @code{parse_string}.
 @end deffn
 
 
@@ -41,15 +41,14 @@ analiza y eval@'ua la primera expresi@'on si hay m@'as de una.
 Si @var{str} no es una cadena de Maxima se emite un mensaje de error.
 
 Ejemplos:
-@example
-(%i1) load("eval_string")$
 
-(%i2) parse_string ("foo: 42; bar: foo^2 + baz");
-(%o2)                    foo : 42
-(%i3) parse_string ("(foo: 42, bar: foo^2 + baz)");
+@example
+(%i1) parse_string ("foo: 42; bar: foo^2 + baz");
+(%o1)                    foo : 42
+(%i2) parse_string ("(foo: 42, bar: foo^2 + baz)");
                                    2
-(%o3)          (foo : 42, bar : foo  + baz)
+(%o2)          (foo : 42, bar : foo  + baz)
 @end example
 
-Antes de hacer uso de esta funci@'on ejec@'utese  @code{load("eval_string")}. V@'ease tambi@'en @code{eval_string}.
+V@'ease tambi@'en @code{eval_string}.
 @end deffn

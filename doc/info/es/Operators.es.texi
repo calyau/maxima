@@ -1,4 +1,4 @@
-@c english version 1.35
+@c english version 1.38
 @menu
 * n-arios::
 * no-fijos::
@@ -276,6 +276,43 @@ matrices.
 
 @end deffn
 
+
+@deffn {Operador} **
+
+Operador de exponenciaci@'on.
+Maxima identifica @code{**} con el operador @code{^} en la entrada
+de expresiones, pero se representa como @code{^} en las salidas
+no formateadas (@code{display2d=false}), o colocando un 
+super@'{@dotless{i}}ndice en la salida formateada (@code{display2d=true}).
+
+La funci@'on @code{fortran} representa el operador de exponenciaci@'on
+con @code{**}, tanto si se ha introducido como @code{**} o como @code{^}.
+
+Ejemplos:
+
+@c ===beg===
+@c is (a**b = a^b);
+@c x**y + x^z;
+@c string (x**y + x^z);
+@c fortran (x**y + x^z);
+@c ===end===
+@example
+(%i1) is (a**b = a^b);
+(%o1)                         true
+(%i2) x**y + x^z;
+                              z    y
+(%o2)                        x  + x
+(%i3) string (x**y + x^z);
+(%o3)                        x^z+x^y
+(%i4) fortran (x**y + x^z);
+      x**z+x**y
+(%o4)                         done
+@end example
+
+@end deffn
+
+
+
 @node Operadores relacionales, Operadores generales, Operadores aritm@'eticos, Operadores
 @section Operadores relacionales
 
@@ -301,10 +338,36 @@ matrices.
 @node Operadores generales, , Operadores relacionales, Operadores
 @section Operadores generales
 
+
 @deffn {Operator} ^^
 @ifinfo
 @fnindex Exponenciaci@'on no conmutativa
 @end ifinfo
+
+Operador de exponenciaci@'on no conmutativa.
+Se trata del operador de exponenciaci@'on correspondiente a la
+multiplicaci@'on no conmutativa @code{.}, del mismo modo que el
+operador de exponenciaci@'on ordinario @code{^} se corresponde 
+con la multiplicaci@'on conmutativa @code{*}.
+
+La exponenciaci@'on no conmutativa se representa como @code{^^}
+en las salidas no formateadas (@code{display2d=false}), o colocando un 
+super@'{@dotless{i}}ndice entre @'angulos (@code{< >}) en la salida 
+formateada (@code{display2d=true}).
+
+Ejemplos:
+
+@c ===beg===
+@c a . a . b . b . b + a * a * a * b * b;
+@c string (a . a . b . b . b + a * a * a * b * b);
+@c ===end===
+@example
+(%i1) a . a . b . b . b + a * a * a * b * b;
+                        3  2    <2>    <3>
+(%o1)                  a  b  + a    . b
+(%i2) string (a . a . b . b . b + a * a * a * b * b);
+(%o2)                  a^3*b^2+a^^2 . b^^3
+@end example
 
 @end deffn
 
@@ -614,8 +677,88 @@ x is equal to 1234 - 1729 w
 @ifinfo
 @fnindex Operador de definici@'on de funciones
 @end ifinfo
-El operador de definici@'on de funciones. Por ejemplo, @code{f(x):=sin(x)} define
- una funci@'on @code{f}. 
+
+El operador de definici@'on de funciones. 
+La expresi@'on @code{@var{f}(@var{x_1}, ..., @var{x_n}) := @var{expr}}
+define una funci@'on de nombre @var{f} con argumentos
+@var{x_1}, ..., @var{x_n} y cuerpo @var{expr}.
+El operador @code{:=} no eval@'ua el cuerpo de la funci@'on (a menos que
+se indique lo contrario mediante el operador comilla-comilla @code{'@w{}'}).
+La funci@'on as@'{@dotless{i}} definida puede ser una funci@'on ordinaria
+de Maxima (con argumentos encerrados entre par@'entesis) o una funci@'on
+array (con argumentos encerrados entre corchetes).
+
+Cuando el @'ultimo o @'unico argumento @var{x_n} es una lista de un solo
+elemento, la funci@'on definida por @code{:=} acepta un n@'umero variable
+de argumentos. Los valores de los argumentos se asignan uno a uno a los
+argumentos formales @var{x_1}, ..., @var{x_(n - 1)}, y cualesquiera otros
+valores de argumentos, si existen, se asignan a @var{x_n} en forma de lista.
+
+Todas las definiciones de funciones aparecen en el mismo espacio de
+nombres; definiendo una funci@'on @code{f} dentro de otra funci@'on @code{g}
+no limita el alcance de @code{f} a @code{g}.
+
+Si un argumento formal @var{x_k} es un s@'{@dotless{i}}mbolo afectado por el
+operador comilla (expresi@'on nominal), la funci@'on definida por @code{:=} no eval@'ua el
+correspondiente valor de argumento. 
+En cualquier otro caso, los argumentos que se pasan son evaluados.
+
+V@'eanse tambi@'en @code{define} y @code{::=}.
+
+Ejemplos:
+
+@code{:=} no eval@'ua el cuerpo de la funci@'on (a menos que
+se indique lo contrario mediante el operador comilla-comilla @code{'@w{}'}).
+
+@c ===beg===
+@c expr : cos(y) - sin(x);
+@c F1 (x, y) := expr;
+@c F1 (a, b);
+@c F2 (x, y) := ''expr;
+@c F2 (a, b);
+@c ===end===
+@example
+(%i1) expr : cos(y) - sin(x);
+(%o1)                    cos(y) - sin(x)
+(%i2) F1 (x, y) := expr;
+(%o2)                   F1(x, y) := expr
+(%i3) F1 (a, b);
+(%o3)                    cos(y) - sin(x)
+(%i4) F2 (x, y) := ''expr;
+(%o4)              F2(x, y) := cos(y) - sin(x)
+(%i5) F2 (a, b);
+(%o5)                    cos(b) - sin(a)
+@end example
+
+La funci@'on as@'{@dotless{i}} definida puede ser una funci@'on ordinaria
+de Maxima o una funci@'on array.
+
+@c ===beg===
+@c G1 (x, y) := x.y - y.x;
+@c G2 [x, y] := x.y - y.x;
+@c ===end===
+@example
+(%i1) G1 (x, y) := x.y - y.x;
+(%o1)               G1(x, y) := x . y - y . x
+(%i2) G2 [x, y] := x.y - y.x;
+(%o2)                G2     := x . y - y . x
+                       x, y
+@end example
+
+Cuando el @'ultimo o @'unico argumento @var{x_n} es una lista de un solo
+elemento, la funci@'on definida por @code{:=} acepta un n@'umero variable
+de argumentos.
+
+@c ===beg===
+@c H ([L]) := apply ("+", L);
+@c H (a, b, c);
+@c ===end===
+@example
+(%i1) H ([L]) := apply ("+", L);
+(%o1)                H([L]) := apply("+", L)
+(%i2) H (a, b, c);
+(%o2)                       c + b + a
+@end example
 
 @end deffn
 
@@ -781,7 +924,8 @@ el resultado es @code{false} y ya no se eval@'uan m@'as operandos.
 La variable global @code{prederror} controla el comportamiento de @code{and}
 cuando la evaluaci@'on de un operando no da como resultado @code{true} o @code{false};
 @code{and} imprime un mensaje de error cuando @code{prederror} vale @code{true}.
-En caso contrario, @code{and} devuelve @code{unknown}.
+Cuando los operandos devuelven un valor diferente a @code{true} o @code{false}
+al ser evaluados, el resultado es una expresi@'on booleana.
 
 El operador @code{and} no es conmutativo:
 @code{a and b} puede no ser igual a @code{b and a} debido al tratamiento de operandos indeterminados.
@@ -802,8 +946,12 @@ y puede forzar la evaluaci@'on de todos los operandos.
 
 Los operandos se eval@'uan en el orden en el que aparecen; @code{or} s@'olo eval@'ua tantos operandos como sean necesarios para determinar el resultado. Si un operando vale @code{true}, el resultado es @code{true} y ya no se eval@'uan m@'as operandos.
 
-La variable global @code{prederror} controla el comportamiento de @code{or} cuando la evaluaci@'on de un operando no da como resultado @code{true} o @code{false}; @code{or} imprime un mensaje de error cuando @code{prederror} vale @code{true}.
-En caso contrario, @code{or} devuelve @code{unknown}.
+La variable global @code{prederror} controla el comportamiento 
+de @code{or} cuando la evaluaci@'on de un operando no da como 
+resultado @code{true} o @code{false}; @code{or} imprime un 
+mensaje de error cuando @code{prederror} vale @code{true}.
+Cuando los operandos devuelven un valor diferente a @code{true} o @code{false}
+al ser evaluados, el resultado es una expresi@'on booleana.
 
 El operador @code{or} no es conmutativo: @code{a or b} puede no ser igual a @code{b or a} debido al tratamiento de operandos indeterminados.
 
@@ -818,8 +966,12 @@ su operando es una expresi@'on booleana y su resultado es un valor l@'ogico.
 
 El operador @code{not} impone la evaluaci@'on (igual que @code{is}) de su operando.
 
-La variable global @code{prederror} controla el comportamiento de @code{not} cuando la evaluaci@'on de su operando no da como resultado @code{true} o @code{false}; @code{not} imprime un mensaje de error cuando @code{prederror} vale @code{true}.
-En caso contrario, @code{not} devuelve @code{unknown}.
+La variable global @code{prederror} controla el comportamiento de
+@code{not} cuando la evaluaci@'on de su operando no da como 
+resultado @code{true} o @code{false}; @code{not} imprime un mensaje 
+de error cuando @code{prederror} vale @code{true}.
+Cuando los operandos devuelven un valor diferente a @code{true} o @code{false}
+al ser evaluados, el resultado es una expresi@'on booleana.
 
 @end deffn
 
@@ -1069,11 +1221,6 @@ Adem@'as de @code{is}, otros operadores eval@'uan @code{equal} y @code{notequal}
 a  @code{true} o @code{false}; a saber, @code{if}, @code{and}, @code{or} y @code{not}.
 
 La negaci@'on de @code{equal} es @code{notequal}.
-N@'otese que debido a las reglas de evaluaci@'on de expresiones
-de tipo predicado (en concreto debido a que @code{not @var{expr}}
-obliga a la evaluaci@'on previa de @var{expr}), 
-@code{not equal(@var{a}, @var{b})} equivale a @code{is(notequal(@var{a}, @var{b}))}, 
-pero no a @code{notequal(@var{a}, @var{b})}.
 
 Ejemplos:
 
@@ -1127,9 +1274,7 @@ ser sint@'acticamente iguales (es decir, id@'enticas).
 (%i7) ratsimp (x - y);
 (%o7)                         x - y
 (%i8) is (equal (x, y));
-Maxima was unable to evaluate the predicate:
-equal(x, y)
- -- an error.  Quitting.  To debug this try debugmode(true);
+(%o8)                        unknown
 (%i9) is (x = y);
 (%o9)                         false
 @end example
@@ -1168,16 +1313,14 @@ Otros operadores eval@'uan @code{equal} y @code{notequal}
 a  @code{true} o @code{false}.
 
 @c ===beg===
-@c if equal (a, b) then FOO else BAR;
+@c if equal (y, y - 1) then FOO else BAR;
 @c eq_1 : equal (x, x + 1);
 @c eq_2 : equal (y^2 + 2*y + 1, (y + 1)^2);
 @c [eq_1 and eq_2, eq_1 or eq_2, not eq_1];
 @c ===end===
 @example
-(%i1) if equal (a, b) then FOO else BAR;
-Maxima was unable to evaluate the predicate:
-equal(a, b)
- -- an error.  Quitting.  To debug this try debugmode(true);
+(%i4) if equal (y, y - 1) then FOO else BAR;
+(%o4)                          BAR
 (%i2) eq_1 : equal (x, x + 1);
 (%o2)                    equal(x, x + 1)
 (%i3) eq_2 : equal (y^2 + 2*y + 1, (y + 1)^2);
@@ -1262,12 +1405,6 @@ Si el rango de una funci@'on es subconjunto de los n@'umeros enteros, entonces p
 @deffn {Funci@'on} notequal (@var{a}, @var{b})
 Representa la negaci@'on de @code{equal (@var{a}, @var{b})}.
 
-N@'otese que debido a las reglas de evaluaci@'on de expresiones
-de tipo predicado (en concreto debido a que @code{not @var{expr}}
-obliga a la evaluaci@'on previa de @var{expr}), 
-@code{not equal(@var{a}, @var{b})} equivale a @code{is(notequal(@var{a}, @var{b}))}, 
-pero no a @code{notequal(@var{a}, @var{b})}.
-
 Ejemplos:
 
 @c ===beg===
@@ -1276,14 +1413,11 @@ Ejemplos:
 @c notequal (a, b);
 @c not equal (a, b);
 @c maybe (notequal (a, b));
-@c maybe (not equal (a, b));
 @c assume (a > b);
 @c equal (a, b);
 @c maybe (equal (a, b));
 @c notequal (a, b);
-@c not equal (a, b);
 @c maybe (notequal (a, b));
-@c maybe (not equal (a, b));
 @c ===end===
 @example
 (%i1) equal (a, b);
@@ -1293,27 +1427,19 @@ Ejemplos:
 (%i3) notequal (a, b);
 (%o3)                    notequal(a, b)
 (%i4) not equal (a, b);
-Maxima was unable to evaluate the predicate:
-equal(a, b)
- -- an error.  Quitting.  To debug this try debugmode(true);
+(%o4)                    notequal(a, b)
 (%i5) maybe (notequal (a, b));
 (%o5)                        unknown
-(%i6) maybe (not equal (a, b));
-(%o6)                        unknown
-(%i7) assume (a > b);
-(%o7)                        [a > b]
-(%i8) equal (a, b);
-(%o8)                      equal(a, b)
-(%i9) maybe (equal (a, b));
-(%o9)                         false
-(%i10) notequal (a, b);
-(%o10)                   notequal(a, b)
-(%i11) not equal (a, b);
-(%o11)                        true
-(%i12) maybe (notequal (a, b));
-(%o12)                        true
-(%i13) maybe (not equal (a, b));
-(%o13)                        true
+(%i6) assume (a > b);
+(%o6)                        [a > b]
+(%i7) equal (a, b);
+(%o7)                      equal(a, b)
+(%i8) maybe (equal (a, b));
+(%o8)                         false
+(%i9) notequal (a, b);
+(%o9)                    notequal(a, b)
+(%i10) maybe (notequal (a, b));
+(%o10)                        true
 @end example
 
 @end deffn
