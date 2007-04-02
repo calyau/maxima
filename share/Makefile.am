@@ -298,7 +298,6 @@ contrib/pdiff/history.txt\
 contrib/pdiff/pdiff-doc.pdf\
 contrib/pdiff/pdiff-doc.tex\
 contrib/pdiff/pdiff.lisp\
-contrib/plotdf.lisp\
 contrib/plsquares.mac\
 contrib/powers.lisp\
 contrib/prim/prim-ex.mac\
@@ -453,9 +452,10 @@ diffequations/pdvtr.mac\
 diffequations/phypgm.mac\
 diffequations/pivtr.mac\
 diffequations/pmain.mac\
+draw/draw.lisp\
 dynamics/complex_dynamics.lisp\
 dynamics/dynamics.mac\
-draw/draw.lisp\
+dynamics/plotdf.lisp\
 integequations/inteqn.mac\
 integequations/inteqn.usg\
 integequations/intexs.mac\

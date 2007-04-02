@@ -22,7 +22,7 @@
 ;; See plotdf.usg (which should come together with this program) for
 ;; a usage summary
 ;;
-;; $Id: plotdf.lisp,v 1.5 2006-07-31 13:33:10 villate Exp $
+;; $Id: plotdf.lisp,v 1.1 2007-04-02 23:36:10 villate Exp $
 
 (in-package :maxima)
 
