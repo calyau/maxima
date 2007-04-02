@@ -12,13 +12,33 @@ dynamical systems and fractals, and an implementation of the Runge-Kutta
 4th-order numerical method for solving systems of differential equations.
 
 To use the functions in this package you must first load it with
-@code{load("dynamics")}, and the functions that will create graphics
-require that Xmaxima be installed.
+@code{load("dynamics")}.
+
+@b{Changes introduced in Maxima 5.12}
+
+Starting with Maxima 5.12, the dynamics package now uses the function
+@code{plot2d} to do the graphs. The commands that produce graphics
+(with the exception of @code{julia} and @code{mandelbrot}) now accept
+any options of plot2d, including the option to change among the
+various graphical interfaces, using different plot styles and colors,
+and representing one or both axes in a logarithmic scale. The old
+options @var{domain}, @var{pointsize}, @var{xcenter}, @var{xradius},
+@var{ycenter}, @var{yradius}, @var{xaxislabel} and @var{yaxislabel}
+are not accepted in this new version.
+
+All programs will now accept any variables names, and not just @var{x}
+and @var{y} as in the older versions. Two required parameters have
+changes in two of the programs: @code{evolution2d} now requires a list
+naming explicitely the two independent variables, and the horizontal
+range for @code{orbits} no longer requires a step size; the range
+should only specify the variable name, and the minimum and maximum
+values; the number of steps can now be changed with the option
+@var{nticks}.
 
 @node Definitions for dynamics,  , Introduction to dynamics, dynamics
 @section Definitions for dynamics
 
-@deffn {Function} chaosgame (@code{[[}@var{x1}, @var{y1}@code{]}...@code{[}@var{xm}, @var{ym}@code{]]}, @code{[}@var{x0}, @var{y0}@code{]}, @var{b}, @var{n}, ...options...);
+@deffn {Function} chaosgame (@code{[[}@var{x1}, @var{y1}@code{]}...@code{[}@var{xm}, @var{ym}@code{]]}, @code{[}@var{x0}, @var{y0}@code{]}, @var{b}, @var{n}, ..., options, ...);
 
 Implements the so-called chaos game: the initial point (@var{x0},
 @var{y0}) is plotted and then one of the @var{m} points
@@ -30,7 +50,7 @@ length. The procedure is repeated @var{n} times.
 
 @end deffn
 
-@deffn {Function} evolution (@var{F}, @var{y0}, @var{n},...options...);
+@deffn {Function} evolution (@var{F}, @var{y0}, @var{n}, ..., options, ...);
 
 Draws @var{n+1} points in a two-dimensional graph, where the horizontal
 coordinates of the points are the integers 0, 1, 2, ..., @var{n}, and
@@ -46,31 +66,33 @@ $$y_{n+1} = F(y_n)$$
 @end tex
 
 With initial value @var{y(0)} equal to @var{y0}. @var{F} must be an
-expression that depends only on the variable @var{y} (and not on @var{n}),
+expression that depends only on one variable (in the example, it
+depend on @var{y}, but any other variable can be used),
 @var{y0} must be a real number and @var{n} must be a positive integer.
 
 @end deffn
 
-@deffn {Function} evolution2d (@code{[}@var{F}, @var{G}@code{]}, @code{[}@var{x0}, @var{y0}@code{]}, @var{n}, ...options...);
+@deffn {Function} evolution2d (@code{[}@var{F}, @var{G}@code{]}, @code{[}@var{u}, @var{v}@code{]}, @code{[}@var{u0}, @var{y0}@code{]}, @var{n}, ..., options, ...);
 
 Shows, in a two-dimensional plot, the first @var{n+1} points in the
 sequence of points defined by the two-dimensional discrete dynamical
 system with recurrence relations
 @ifnottex
 @example
-        x(n+1) = F(x(n), y(n))    y(n+1) = G(x(n), y(n))
+        u(n+1) = F(u(n), v(n))    v(n+1) = G(u(n), v(n))
 @end example
 @end ifnottex
 @tex
-$$\cases{x_{n+1} = F(x_n, y_n) &\cr y_{n+1} = G(x_n, y_n)}$$
+$$\cases{u_{n+1} = F(u_n, v_n) &\cr v_{n+1} = G(u_n, v_n)}$$
 @end tex
 
-With initial values @var{x0} and @var{y0}. @var{F} and @var{G} must be
-two expressions that depend just on @var{x} and @var{y}. 
+With initial values @var{u0} and @var{v0}. @var{F} and @var{G} must be
+two expressions that depend only on two variables, @var{u} and
+@var{v}, which must be named explicitely in a list. 
 
 @end deffn
 
-@deffn {Function} ifs (@code{[}@var{r1},...,@var{rm}@code{]},@code{[}@var{A1},...,@var{Am}@code{]}, @code{[[}@var{x1},@var{y1}@code{]}...@code{[}@var{xm}, @var{ym}@code{]]}, @code{[}@var{x0},@var{y0}@code{]}, @var{n}, ...options...);
+@deffn {Function} ifs (@code{[}@var{r1}, ..., @var{rm}@code{]}, @code{[}@var{A1}, ..., @var{Am}@code{]}, @code{[[}@var{x1}, @var{y1}@code{]}, ..., @code{[}@var{xm}, @var{ym}@code{]]}, @code{[}@var{x0}, @var{y0}@code{]}, @var{n}, ..., options, ...);
 
 Implements the Iterated Function System method. This method is similar
 to the method described in the function @code{chaosgame}, but instead of
@@ -230,44 +252,11 @@ is reached.
 Each option is a list of two or more items. The first item is the name
 of the option, and the remainder comprises the arguments for the option.
 
-The options accepted by the functions evolution, evolution2d, staircase,
-orbits, ifs and chaosgame are:
-
-@itemize @bullet
-@item
-@dfn{domain} sets the minimum and maximum values for the
-independent variable in the plot of the function @var{F} shown by
-@code{staircase}.
-
-@item
-@dfn{pointsize} defines the radius of each point plotted, in units of
-points. The default value is 1.
-
-@item
-@dfn{xaxislabel} is a label to put on the horizontal axis.
-
-@item
-@dfn{xcenter} is the x coordinate of the point that should appear at the
-center of the plot. This option is not used by the function
-@code{orbits}.
-
-@item
-@dfn{xradius} is half of the length of the interval of values that will
-be shown in the x direction. This option is not used by the function
-@code{orbits}.
-
-@item
-@dfn{yaxislabel} is a label to put on the vertical axis.
-
-@item
-@dfn{ycenter} is the y coordinate of the point that should
-appear at the center of the plot.
-
-@item
-@dfn{yradius} is half of the length of the range of values that will be
-shown in the y direction.
-
-@end itemize
+The options accepted by the functions evolution, evolution2d,
+staircase, orbits, ifs and chaosgame are the same as the options for
+@code{plot2d}. In addition to those options, @code{orbits} accepts and
+extra option @var{pixels} that sets up the maximum number of different
+points that will be represented in the vertical direction.
 
 The following options are accepted by the functions julia and mandelbrot:
 
@@ -341,8 +330,10 @@ Graphical representation and staircase diagram for the sequence:
 
 @example
 (%i1) load("dynamics")$
-(%i2) evolution(cos(y), 2, 11, [yaxislabel, "y"], [xaxislabel,"n"]);
-(%i3) staircase(cos(y), 1, 11, [domain, 0, 1.2]);
+
+(%i2) evolution(cos(y), 2, 11);
+
+(%i3) staircase(cos(y), 1, 11, [y, 0, 1.2]);
 @end example
 
 @ifnotinfo
@@ -351,22 +342,22 @@ Graphical representation and staircase diagram for the sequence:
 @end ifnotinfo
 
 If your system is slow, you'll have to reduce the number of iterations in
-the following examples. And the @var{pointsize} that gives the best results
-depends on the monitor and the resolution being used. You should
-experiment using different values.
+the following examples. And if the dots appear too small in your
+monitor, you might want to try a different style, such as
+@code{[}@var{style},@code{[}@var{points},0.8@code{]]}.
 
-Orbits diagram for the quadratic map
+Orbits diagram for the quadratic map, with a parameter @var{a}.
 @ifnottex
 @example
-        y(n+1) = x + y(n)^2
+        x(n+1) = a + x(n)^2
 @end example
 @end ifnottex
 @tex
-$$y_{n+1} = x + y_n^2$$
+$$x_{n+1} = a + x_n^2$$
 @end tex
 
 @example
-(%i4) orbits(y^2+x, 0, 50, 200, [x, -2, 0.25, 0.01], [pointsize, 0.9]);
+(%i4) orbits(x^2+a, 0, 50, 200, [a, -2, 0.25], [style, dots]);
 @end example
 
 @ifnotinfo
@@ -375,8 +366,8 @@ $$y_{n+1} = x + y_n^2$$
 
 To enlarge the region around the lower bifurcation near x @code{=} -1.25 use:
 @example
-(%i5) orbits(x+y^2, 0, 100, 400, [x,-1,-1.53,-0.001], [pointsize,0.9],
-             [ycenter,-1.2], [yradius,0.4]);
+(%i5) orbits(x+y^2, 0, 100, 400, [a,-1,-1.53], [x,-1.6,-0.8],
+             [nticks, 400], [style,dots]);
 @end example
 
 @ifnotinfo
@@ -387,8 +378,10 @@ Evolution of a two-dimensional system that leads to a fractal:
 
 @example
 (%i6) f: 0.6*x*(1+2*x)+0.8*y*(x-1)-y^2-0.9$
+
 (%i7) g: 0.1*x*(1-6*x+4*y)+0.1*y*(1+9*y)-0.4$
-(%i8) evolution2d([f,g],[-0.5,0],50000,[pointsize,0.7]);
+
+(%i8) evolution2d([f,g], [x,y], [-0.5,0], 50000, [style,dots]);
 @end example
 
 @ifnotinfo
@@ -398,8 +391,8 @@ Evolution of a two-dimensional system that leads to a fractal:
 And an enlargement of a small region in that fractal:
 
 @example
-(%i9) evolution2d([f,g],[-0.5,0],300000,[pointsize,0.7], [xcenter,-0.7],
-                  [ycenter,-0.3],[xradius,0.1],[yradius,0.1]);
+(%i9) evolution2d([f,g], [x,y], [-0.5,0], 300000, [x,-0.8,-0.6],
+                  [y,-0.4,-0.2], [style, dots]);
 @end example
 
 @ifnotinfo
@@ -410,7 +403,7 @@ A plot of Sierpinsky's triangle, obtained with the chaos game:
 
 @example
 (%i9) chaosgame([[0, 0], [1, 0], [0.5, sqrt(3)/2]], [0.1, 0.1], 1/2,
-                 30000, [pointsize,0.7]);
+                 30000, [style, dots]);
 @end example
 
 @ifnotinfo
@@ -421,15 +414,24 @@ Barnsley's fern, obtained with an Iterated Function System:
 
 @example
 (%i10) a1: matrix([0.85,0.04],[-0.04,0.85])$
+
 (%i11) a2: matrix([0.2,-0.26],[0.23,0.22])$
+
 (%i12) a3: matrix([-0.15,0.28],[0.26,0.24])$
+
 (%i13) a4: matrix([0,0],[0,0.16])$
+
 (%i14) p1: [0,1.6]$
+
 (%i15) p2: [0,1.6]$
+
 (%i16) p3: [0,0.44]$
+
 (%i17) p4: [0,0]$
+
 (%i18) w: [85,92,99,100]$
-(%i19) ifs(w,[a1,a2,a3,a4],[p1,p2,p3,p4],[5,0],50000,[pointsize,0.9]);
+
+(%i19) ifs(w, [a1,a2,a3,a4], [p1,p2,p3,p4], [5,0], 50000, [style,dots]);
 @end example
 
 @ifnotinfo
