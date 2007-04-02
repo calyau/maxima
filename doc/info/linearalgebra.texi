@@ -11,7 +11,6 @@
 Example:
 
 @c ===beg===
-@c load (linearalgebra)$
 @c M : matrix ([1, 2], [1, 2]);
 @c nullspace (M);
 @c columnspace (M);
@@ -27,95 +26,90 @@ Example:
 @c apply ('orthogonal_complement, args (nullspace (transpose (M))));
 @c ===end===
 @example
-(%i1) load (linearalgebra);
-Warning - you are redefining the Maxima function require_list
-Warning - you are redefining the Maxima function matrix_size
-Warning - you are redefining the Maxima function rank
-(%o1) /usr/local/share/maxima/5.9.2/share/linearalgebra/linearalgebra.mac
-(%i2) M : matrix ([1, 2], [1, 2]);
+(%i1) M : matrix ([1, 2], [1, 2]);
                             [ 1  2 ]
-(%o2)                       [      ]
+(%o1)                       [      ]
                             [ 1  2 ]
-(%i3) nullspace (M);
+(%i2) nullspace (M);
                                [  1  ]
                                [     ]
-(%o3)                     span([   1 ])
+(%o2)                     span([   1 ])
                                [ - - ]
                                [   2 ]
-(%i4) columnspace (M);
+(%i3) columnspace (M);
                                 [ 1 ]
-(%o4)                      span([   ])
+(%o3)                      span([   ])
                                 [ 1 ]
-(%i5) ptriangularize (M - z*ident(2), z);
+(%i4) ptriangularize (M - z*ident(2), z);
                          [ 1   2 - z   ]
-(%o5)                    [             ]
+(%o4)                    [             ]
                          [           2 ]
                          [ 0  3 z - z  ]
-(%i6) M : matrix ([1, 2, 3], [4, 5, 6], [7, 8, 9]) - z*ident(3);
+(%i5) M : matrix ([1, 2, 3], [4, 5, 6], [7, 8, 9]) - z*ident(3);
                      [ 1 - z    2      3   ]
                      [                     ]
-(%o6)                [   4    5 - z    6   ]
+(%o5)                [   4    5 - z    6   ]
                      [                     ]
                      [   7      8    9 - z ]
-(%i7) MM : ptriangularize (M, z);
+(%i6) MM : ptriangularize (M, z);
               [ 4  5 - z            6            ]
               [                                  ]
               [                2                 ]
               [     66        z    102 z   132   ]
               [ 0   --      - -- + ----- + ---   ]
-(%o7)         [     49        7     49     49    ]
+(%o6)         [     49        7     49     49    ]
               [                                  ]
               [               3        2         ]
               [           49 z    245 z    147 z ]
               [ 0    0    ----- - ------ - ----- ]
               [            264      88      44   ]
-(%i8) algebraic : true;
-(%o8)                         true
-(%i9) tellrat (MM [3, 3]);
+(%i7) algebraic : true;
+(%o7)                         true
+(%i8) tellrat (MM [3, 3]);
                          3       2
-(%o9)                  [z  - 15 z  - 18 z]
-(%i10) MM : ratsimp (MM);
+(%o8)                  [z  - 15 z  - 18 z]
+(%i9) MM : ratsimp (MM);
                [ 4  5 - z           6           ]
                [                                ]
                [                2               ]
-(%o10)         [     66      7 z  - 102 z - 132 ]
+(%o9)          [     66      7 z  - 102 z - 132 ]
                [ 0   --    - ------------------ ]
                [     49              49         ]
                [                                ]
                [ 0    0             0           ]
-(%i11) nullspace (MM);
+(%i10) nullspace (MM);
                         [        1         ]
                         [                  ]
                         [   2              ]
                         [  z  - 14 z - 16  ]
                         [  --------------  ]
-(%o11)             span([        8         ])
+(%o10)             span([        8         ])
                         [                  ]
                         [    2             ]
                         [   z  - 18 z - 12 ]
                         [ - -------------- ]
                         [         12       ]
-(%i12) M : matrix ([1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16]);
+(%i11) M : matrix ([1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16]);
                        [ 1   2   3   4  ]
                        [                ]
                        [ 5   6   7   8  ]
-(%o12)                 [                ]
+(%o11)                 [                ]
                        [ 9   10  11  12 ]
                        [                ]
                        [ 13  14  15  16 ]
-(%i13) columnspace (M);
+(%i12) columnspace (M);
                            [ 1  ]  [ 2  ]
                            [    ]  [    ]
                            [ 5  ]  [ 6  ]
-(%o13)                span([    ], [    ])
+(%o12)                span([    ], [    ])
                            [ 9  ]  [ 10 ]
                            [    ]  [    ]
                            [ 13 ]  [ 14 ]
-(%i14) apply ('orthogonal_complement, args (nullspace (transpose (M))));
+(%i13) apply ('orthogonal_complement, args (nullspace (transpose (M))));
                            [ 0 ]  [  1  ]
                            [   ]  [     ]
                            [ 1 ]  [  0  ]
-(%o14)                span([   ], [     ])
+(%o13)                span([   ], [     ])
                            [ 2 ]  [ - 1 ]
                            [   ]  [     ]
                            [ 3 ]  [ - 2 ]
@@ -187,7 +181,6 @@ Return a copy of the Maxima expression @var{e}. Although @var{e} can be any
 Maxima expression, the copy function is the most useful when @var{e} is either 
 a list or a matrix; consider:
 @c ===beg===
-load (linearalgebra);
 m : [1,[2,3]]$
 mm : m$
 mm[2][1] : x$
@@ -195,14 +188,13 @@ m;
 mm;
 @c ===end===
 @example 
-(%i1) load("linearalgebra")$
-(%i2) m : [1,[2,3]]$
-(%i3) mm : m$
-(%i4) mm[2][1] : x$
-(%i5) m;
-(%o5) [1,[x,3]]
-(%i6) mm;
-(%o6) [1,[x,3]]
+(%i1) m : [1,[2,3]]$
+(%i2) mm : m$
+(%i3) mm[2][1] : x$
+(%i4) m;
+(%o4)                      [1,[x,3]]
+(%i5) mm;
+(%o5)                      [1,[x,3]]
 @end example
 Let's try the same experiment, but this time let @var{mm} be a copy of @var{m}
 @c ===beg===
@@ -213,13 +205,13 @@ m;
 mm;
 @c ===end===
 @example
-(%i7) m : [1,[2,3]]$
-(%i8) mm : copy(m)$
-(%i9) mm[2][1] : x$
-(%i10) m;
-(%o10) [1,[2,3]]
-(%i11) mm;
-(%o11) [1,[x,3]]
+(%i6) m : [1,[2,3]]$
+(%i7) mm : copy(m)$
+(%i8) mm[2][1] : x$
+(%i9) m;
+(%o9)                     [1,[2,3]]
+(%i10) mm;
+(%o10)                    [1,[x,3]]
 @end example
 This time, the assignment to @var{mm} does not change the value of @var{m}.
 
@@ -247,26 +239,23 @@ Return a diagonal matrix with diagonal entries @var{d_1}, @var{d_2},...,@var{d_n
 When the diagonal entries are matrices, the zero entries of the returned matrix
 are zero matrices of the appropriate size; for example:
 @c ===beg===
-@c load(linearalgebra)$
 @c diag_matrix(diag_matrix(1,2),diag_matrix(3,4));
 @c diag_matrix(p,q);
 @c ===end===
 @example
-(%i1) load(linearalgebra)$
-
-(%i2) diag_matrix(diag_matrix(1,2),diag_matrix(3,4));
+(%i1) diag_matrix(diag_matrix(1,2),diag_matrix(3,4));
 
                             [ [ 1  0 ]  [ 0  0 ] ]
                             [ [      ]  [      ] ]
                             [ [ 0  2 ]  [ 0  0 ] ]
-(%o2)                       [                    ]
+(%o1)                       [                    ]
                             [ [ 0  0 ]  [ 3  0 ] ]
                             [ [      ]  [      ] ]
                             [ [ 0  0 ]  [ 0  4 ] ]
-(%i3) diag_matrix(p,q);
+(%i2) diag_matrix(p,q);
 
                                    [ p  0 ]
-(%o3)                              [      ]
+(%o2)                              [      ]
                                    [ 0  q ]
 @end example
 @end deffn
@@ -292,7 +281,6 @@ via @code{float} or @code{bfloat} (depending on @var{field_type}).
 
 Examples:
 @c ===beg===
-@c load (linearalgebra);
 @c S : matrix ([1/sqrt(2), 1/sqrt(2)], [- 1/sqrt(2), 1/sqrt(2)]);
 @c L : matrix ([sqrt(3), 0], [0, sqrt(5)]);
 @c M : S . L . transpose (S);
@@ -302,49 +290,46 @@ Examples:
 @c ===end===
 
 @example
-(%i1) load (linearalgebra);
-(%o1) /home/robert/tmp/maxima-head/maxima/share/linearalgebra/li\
-nearalgebra.mac
-(%i2) S : matrix ([1/sqrt(2), 1/sqrt(2)], [- 1/sqrt(2), 1/sqrt(2)]);
+(%i1) S : matrix ([1/sqrt(2), 1/sqrt(2)], [- 1/sqrt(2), 1/sqrt(2)]);
                      [     1         1    ]
                      [  -------   ------- ]
                      [  sqrt(2)   sqrt(2) ]
-(%o2)                [                    ]
+(%o1)                [                    ]
                      [      1        1    ]
                      [ - -------  ------- ]
                      [   sqrt(2)  sqrt(2) ]
-(%i3) L : matrix ([sqrt(3), 0], [0, sqrt(5)]);
+(%i2) L : matrix ([sqrt(3), 0], [0, sqrt(5)]);
                       [ sqrt(3)     0    ]
-(%o3)                 [                  ]
+(%o2)                 [                  ]
                       [    0     sqrt(5) ]
-(%i4) M : S . L . transpose (S);
+(%i3) M : S . L . transpose (S);
             [ sqrt(5)   sqrt(3)  sqrt(5)   sqrt(3) ]
             [ ------- + -------  ------- - ------- ]
             [    2         2        2         2    ]
-(%o4)       [                                      ]
+(%o3)       [                                      ]
             [ sqrt(5)   sqrt(3)  sqrt(5)   sqrt(3) ]
             [ ------- - -------  ------- + ------- ]
             [    2         2        2         2    ]
-(%i5) eigens_by_jacobi (M);
+(%i4) eigens_by_jacobi (M);
 The largest percent change was 0.1454972243679
 The largest percent change was 0.0
 number of sweeps: 2
 number of rotations: 1
+(%o4) [[1.732050807568877, 2.23606797749979], 
+                        [  0.70710678118655   0.70710678118655 ]
+                        [                                      ]]
+                        [ - 0.70710678118655  0.70710678118655 ]
+(%i5) float ([[sqrt(3), sqrt(5)], S]);
 (%o5) [[1.732050807568877, 2.23606797749979], 
                         [  0.70710678118655   0.70710678118655 ]
                         [                                      ]]
                         [ - 0.70710678118655  0.70710678118655 ]
-(%i6) float ([[sqrt(3), sqrt(5)], S]);
-(%o6) [[1.732050807568877, 2.23606797749979], 
-                        [  0.70710678118655   0.70710678118655 ]
-                        [                                      ]]
-                        [ - 0.70710678118655  0.70710678118655 ]
-(%i7) eigens_by_jacobi (M, bigfloatfield);
+(%i6) eigens_by_jacobi (M, bigfloatfield);
 The largest percent change was 1.454972243679028b-1
 The largest percent change was 0.0b0
 number of sweeps: 2
 number of rotations: 1
-(%o7) [[1.732050807568877b0, 2.23606797749979b0], 
+(%o6) [[1.732050807568877b0, 2.23606797749979b0], 
                 [  7.071067811865475b-1   7.071067811865475b-1 ]
                 [                                              ]]
                 [ - 7.071067811865475b-1  7.071067811865475b-1 ]
@@ -491,7 +476,7 @@ or @code{[@var{LU}, @var{perm}, @var{fld}, @var{lower-cnd} @var{upper-cnd}]}, wh
     (d) @code{crering}  -- the ring of Maxima CRE expressions,
     (e) @code{rationalfield} -- the field of rational numbers,
     (f) @code{runningerror} -- track the all floating point rounding errors,
-     (g) @code{noncommutingring} -- the ring of Maxima expressions where multiplication is the
+    (g) @code{noncommutingring} -- the ring of Maxima expressions where multiplication is the
         non-commutative dot operator.       
 
 When the field is @code{floatfield}, @code{complexfield}, or
@@ -533,7 +518,6 @@ See also  @code{get_lu_factors}.
 Examples:
 
 @c ===beg===
-@c load (linearalgebra);
 @c w[i,j] := random (1.0) + %i * random (1.0);
 @c showtime : true$
 @c M : genmatrix (w, 100, 100)$
@@ -546,43 +530,38 @@ Examples:
 @c %[1] . %[2] . %[3];
 @c ===end===
 @example
-(%i1) load (linearalgebra);
-Warning - you are redefining the Maxima function require_list
-Warning - you are redefining the Maxima function matrix_size
-Warning - you are redefining the Maxima function rank
-(%o1) /usr/local/share/maxima/5.9.2/share/linearalgebra/linearalgebra.mac
-(%i2) w[i,j] := random (1.0) + %i * random (1.0);
-(%o2)          w     := random(1.) + %i random(1.)
+(%i1) w[i,j] := random (1.0) + %i * random (1.0);
+(%o1)          w     := random(1.) + %i random(1.)
                 i, j
-(%i3) showtime : true$
+(%i2) showtime : true$
 Evaluation took 0.00 seconds (0.00 elapsed)
-(%i4) M : genmatrix (w, 100, 100)$
+(%i3) M : genmatrix (w, 100, 100)$
 Evaluation took 7.40 seconds (8.23 elapsed)
-(%i5) lu_factor (M, complexfield)$
+(%i4) lu_factor (M, complexfield)$
 Evaluation took 28.71 seconds (35.00 elapsed)
-(%i6) lu_factor (M, generalring)$
+(%i5) lu_factor (M, generalring)$
 Evaluation took 109.24 seconds (152.10 elapsed)
-(%i7) showtime : false$
+(%i6) showtime : false$
 
-(%i8) M : matrix ([1 - z, 3], [3, 8 - z]); 
+(%i7) M : matrix ([1 - z, 3], [3, 8 - z]); 
                         [ 1 - z    3   ]
-(%o8)                   [              ]
+(%o7)                   [              ]
                         [   3    8 - z ]
-(%i9) lu_factor (M, generalring);
-               [ 1 - z         3        ]
-               [                        ]
-(%o9)         [[   3            9       ], [1, 2]]
-               [ -----  - z - ----- + 8 ]
-               [ 1 - z        1 - z     ]
-(%i10) get_lu_factors (%);
+(%i8) lu_factor (M, generalring);
+          [ 1 - z         3        ]
+          [                        ]
+(%o8)    [[   3            9       ], [1, 2], generalring]
+          [ -----  - z - ----- + 8 ]
+          [ 1 - z        1 - z     ]
+(%i9) get_lu_factors (%);
                   [   1    0 ]  [ 1 - z         3        ]
         [ 1  0 ]  [          ]  [                        ]
-(%o10) [[      ], [   3      ], [                9       ]]
+(%o9)  [[      ], [   3      ], [                9       ]]
         [ 0  1 ]  [ -----  1 ]  [   0    - z - ----- + 8 ]
                   [ 1 - z    ]  [              1 - z     ]
-(%i11) %[1] . %[2] . %[3];
+(%i10) %[1] . %[2] . %[3];
                         [ 1 - z    3   ]
-(%o11)                  [              ]
+(%o10)                  [              ]
                         [   3    8 - z ]
 @end example
 
@@ -660,33 +639,27 @@ If you use block matrices, most likely you'll want to set @code{matrix_element_m
 Example:
 
 @c ===beg===
-@c load (linearalgebra);
 @c A : matrix ([1, 2], [3, 4]);
 @c B : matrix ([7, 8], [9, 10]);
 @c matrix ([A, B]);
 @c mat_unblocker (%);
 @c ===end===
 @example
-(%i1) load (linearalgebra);
-Warning - you are redefining the Maxima function require_list
-Warning - you are redefining the Maxima function matrix_size
-Warning - you are redefining the Maxima function rank
-(%o1) /usr/local/share/maxima/5.9.2/share/linearalgebra/linearalgebra.mac
-(%i2) A : matrix ([1, 2], [3, 4]);
+(%i1) A : matrix ([1, 2], [3, 4]);
                             [ 1  2 ]
-(%o2)                       [      ]
+(%o1)                       [      ]
                             [ 3  4 ]
-(%i3) B : matrix ([7, 8], [9, 10]);
+(%i2) B : matrix ([7, 8], [9, 10]);
                             [ 7  8  ]
-(%o3)                       [       ]
+(%o2)                       [       ]
                             [ 9  10 ]
-(%i4) matrix ([A, B]);
+(%i3) matrix ([A, B]);
                      [ [ 1  2 ]  [ 7  8  ] ]
-(%o4)                [ [      ]  [       ] ]
+(%o3)                [ [      ]  [       ] ]
                      [ [ 3  4 ]  [ 9  10 ] ]
-(%i5) mat_unblocker (%);
+(%i4) mat_unblocker (%);
                          [ 1  2  7  8  ]
-(%o5)                    [             ]
+(%o4)                    [             ]
                          [ 3  4  9  10 ]
 @end example
 
@@ -742,58 +715,40 @@ to use the default for @var{coeffp}.
 The polynomial needn't be expanded:
 
 @c ===beg===
-@c load (linearalgebra);
 @c polynomialp ((x + 1)*(x + 2), [x]);
 @c polynomialp ((x + 1)*(x + 2)^a, [x]);
 @c ===end===
 @example
-(%i1) load (linearalgebra);
-Warning - you are redefining the Maxima function require_list
-Warning - you are redefining the Maxima function matrix_size
-Warning - you are redefining the Maxima function rank
-(%o1) /usr/local/share/maxima/5.9.2/share/linearalgebra/linearalgebra.mac
-(%i2) polynomialp ((x + 1)*(x + 2), [x]);
-(%o2)                         true
-(%i3) polynomialp ((x + 1)*(x + 2)^a, [x]);
-(%o3)                         false
+(%i1) polynomialp ((x + 1)*(x + 2), [x]);
+(%o1)                         true
+(%i2) polynomialp ((x + 1)*(x + 2)^a, [x]);
+(%o2)                         false
 @end example
 
 An example using non-default values for coeffp and exponp:
 
 @c ===beg===
-@c load (linearalgebra);
 @c polynomialp ((x + 1)*(x + 2)^(3/2), [x], numberp, numberp);
 @c polynomialp ((x^(1/2) + 1)*(x + 2)^(3/2), [x], numberp, numberp);
 @c ===end===
 @example
-(%i1) load (linearalgebra);
-Warning - you are redefining the Maxima function require_list
-Warning - you are redefining the Maxima function matrix_size
-Warning - you are redefining the Maxima function rank
-(%o1) /usr/local/share/maxima/5.9.2/share/linearalgebra/linearalgebra.mac
-(%i2) polynomialp ((x + 1)*(x + 2)^(3/2), [x], numberp, numberp);
+(%i1) polynomialp ((x + 1)*(x + 2)^(3/2), [x], numberp, numberp);
+(%o1)                         true
+(%i2) polynomialp ((x^(1/2) + 1)*(x + 2)^(3/2), [x], numberp, numberp);
 (%o2)                         true
-(%i3) polynomialp ((x^(1/2) + 1)*(x + 2)^(3/2), [x], numberp, numberp);
-(%o3)                         true
 @end example
 
 Polynomials with two variables:
 
 @c ===beg===
-@c load (linearalgebra);
 @c polynomialp (x^2 + 5*x*y + y^2, [x]);
 @c polynomialp (x^2 + 5*x*y + y^2, [x, y]);
 @c ===end===
 @example
-(%i1) load (linearalgebra);
-Warning - you are redefining the Maxima function require_list
-Warning - you are redefining the Maxima function matrix_size
-Warning - you are redefining the Maxima function rank
-(%o1) /usr/local/share/maxima/5.9.2/share/linearalgebra/linearalgebra.mac
-(%i2) polynomialp (x^2 + 5*x*y + y^2, [x]);
-(%o2)                         false
-(%i3) polynomialp (x^2 + 5*x*y + y^2, [x, y]);
-(%o3)                         true
+(%i1) polynomialp (x^2 + 5*x*y + y^2, [x]);
+(%o1)                         false
+(%i2) polynomialp (x^2 + 5*x*y + y^2, [x, y]);
+(%o2)                         true
 @end example
 
 @end deffn
@@ -838,21 +793,15 @@ row operation @code{R_i <- R_i - theta * R_j}. If @var{M} doesn't have a row
 Return the rank of that matrix @var{M}. The rank is the dimension of the
 column space. Example:
 @c ===beg===
-@c load (linearalgebra)$
 @c rank(matrix([1,2],[2,4]));
 @c rank(matrix([1,b],[c,d]));
 @c ===end===
 @example
-(%i1) load (linearalgebra)$
-WARNING: DEFUN/DEFMACRO: redefining function $COPY in
-         /share/maxima/5.11.0/share/linearalgebra/linalg-utilities.lisp,
-         was defined in
-         /maxima-5.11.0/src/binary-clisp/comm2.fas
-(%i2) rank(matrix([1,2],[2,4]));
-(%o2)                                  1
-(%i3) rank(matrix([1,b],[c,d]));
+(%i1) rank(matrix([1,2],[2,4]));
+(%o1)                                  1
+(%i2) rank(matrix([1,b],[c,d]));
 Proviso:  @{d - b c # 0@}
-(%o3)                                  2
+(%o2)                                  2
 @end example
 
 @end deffn
@@ -872,24 +821,21 @@ Return a Toeplitz matrix @var{T}. The first first column of @var{T} is @var{col}
 except for the first entry, the first row of @var{T} is @var{row}. The
 default for @var{row} is complex conjugate of @var{col}. Example:
 @c ===beg===
-@c load(linearalgebra)$
 @c toeplitz([1,2,3],[x,y,z]);
 @c toeplitz([1,1+%i]);
 @c ==end===
 @example
-(%i1) load(linearalgebra)$
-
-(%i2)  toeplitz([1,2,3],[x,y,z]);
+(%i1)  toeplitz([1,2,3],[x,y,z]);
 
                                   [ 1  y  z ]
                                   [         ]
-(%o2)                             [ 2  1  y ]
+(%o1)                             [ 2  1  y ]
                                   [         ]
                                   [ 3  2  1 ]
-(%i3)  toeplitz([1,1+%i]);
+(%i2)  toeplitz([1,1+%i]);
 
                               [   1     1 - %I ]
-(%o3)                         [                ]
+(%o2)                         [                ]
                               [ %I + 1    1    ]
 @end example
 
