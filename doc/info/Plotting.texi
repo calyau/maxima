@@ -759,47 +759,6 @@ setting @code{gnuplot_ps_term_command} as:
 
 @end itemize
 
-@b{Functions for working with the gnuplot_pipes format:}
-
-@deffn {Function} gnuplot_start ()
-
-Opens the pipe to gnuplot used for plotting with the
-@code{gnuplot_pipes} format. Is is not necessary to manually open the
-pipe before plotting.
-
-@end deffn
-
-@deffn {Function} gnuplot_close ()
-
-Closes the pipe to gnuplot which is used with the @code{gnuplot_pipes}
-format.
-
-@end deffn
-
-@deffn {Function} gnuplot_restart ()
-
-Closes the pipe to gnuplot which is used with the @code{gnuplot_pipes}
-format and opens a new pipe.
-
-@end deffn
-
-@deffn {Function} gnuplot_replot ()
-@deffnx {Function} gnuplot_replot (@var{s})
-
-Updates the gnuplot window. If @code{gnuplot_replot} is called with a
-gnuplot command in a string @var{s}, then @code{s} is sent to gnuplot
-before reploting the window.
-
-@end deffn
-
-@deffn {Function} gnuplot_reset ()
-
-Resets the state of gnuplot used with the @code{gnuplot_pipes}
-format. To update the gnuplot window call @code{gnuplot_replot} after
-@code{gnuplot_reset}.
-
-@end deffn
-
 @b{Examples:}
 
 @itemize @bullet
@@ -1100,6 +1059,47 @@ with lines 7]], [gnuplot_default_term_command, ],
 [gnuplot_ps_term_command, set size 1.5, 1.5;set term postscript #
 eps enhanced color solid 24]]
 @end example
+
+@end deffn
+
+@b{Functions for working with the gnuplot_pipes format:}
+
+@deffn {Function} gnuplot_start ()
+
+Opens the pipe to gnuplot used for plotting with the
+@code{gnuplot_pipes} format. Is is not necessary to manually open the
+pipe before plotting.
+
+@end deffn
+
+@deffn {Function} gnuplot_close ()
+
+Closes the pipe to gnuplot which is used with the @code{gnuplot_pipes}
+format.
+
+@end deffn
+
+@deffn {Function} gnuplot_restart ()
+
+Closes the pipe to gnuplot which is used with the @code{gnuplot_pipes}
+format and opens a new pipe.
+
+@end deffn
+
+@deffn {Function} gnuplot_replot ()
+@deffnx {Function} gnuplot_replot (@var{s})
+
+Updates the gnuplot window. If @code{gnuplot_replot} is called with a
+gnuplot command in a string @var{s}, then @code{s} is sent to gnuplot
+before reploting the window.
+
+@end deffn
+
+@deffn {Function} gnuplot_reset ()
+
+Resets the state of gnuplot used with the @code{gnuplot_pipes}
+format. To update the gnuplot window call @code{gnuplot_replot} after
+@code{gnuplot_reset}.
 
 @end deffn
 
