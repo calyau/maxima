@@ -994,8 +994,15 @@ ImmediateAssignments( Solutions, RemainingEqs, Variables, Parameters ) := (
               'DETAIL,
               SolverMsg["Assign"], totaldisrep( Left = Right )
             ),
-            
-            Solutions : endcons( Left = Right, Solutions ),
+
+            if member( Left, map( lhs, Solutions ) ) then (
+              if assoc( Left, Solutions ) # Right then (
+                PrintMsg( 'SHORT, SolverMsg["Incons"], Left = Right ),
+                TerminateSolver()
+              )
+            )
+            else
+              Solutions : endcons( Left = Right, Solutions ),
             RemainingEqs[i] : [],
 
             AssignmentMade : true
@@ -1021,8 +1028,15 @@ ImmediateAssignments( Solutions, RemainingEqs, Variables, Parameters ) := (
               'DETAIL,
               SolverMsg["Assign"], totaldisrep( Right = Left )
             ),
-
-            Solutions : endcons( Right = Left, Solutions ),
+          
+            if member( Right, map( lhs, Solutions ) ) then (
+              if assoc( Right, Solutions ) # Left then (
+                PrintMsg( 'SHORT, SolverMsg["Incons"], Left = Right ),
+                TerminateSolver()
+              )
+            )
+            else
+              Solutions : endcons( Right = Left, Solutions ),
             RemainingEqs[i] : [],
 
             AssignmentMade : true
@@ -2293,8 +2307,9 @@ ExpandSolutionHierarchy( Solutions ) := (
       FlatSolutions, list
     ),
 
+    if length( Solutions ) = 0 then return ( [] )
     /* listp = true indicates an additional recursion level */
-    if listp( last( Solutions ) ) then (
+    else if listp( last( Solutions ) ) then (
 
       FlatSolutions : rest( Solutions, -1 ),
 
