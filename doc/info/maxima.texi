@@ -147,6 +147,7 @@ Additional packages
 * eval_string::                 Maxima expressions as strings.
 * f90::                         Maxima to fortran translator.
 * ggf::                         Generating function of sequences.
+* grobner::                     Functions for working with Groebner bases.
 * impdiff::                     Implicit derivatives.
 * implicit_plot::               Implicit plots package.
 * interpol::                    Interpolation package.
@@ -432,6 +433,11 @@ f90
 ggf
 
 * Definitions for ggf::
+
+grobner
+
+* Introduction to grobner::
+* Definitions for grobner::
 
 impdiff
 
@@ -748,11 +754,15 @@ zeilberger
 @chapter f90
 @include f90.texi
 
-@node ggf, impdiff, f90, Top
+@node ggf, grobner, f90, Top
 @chapter ggf
 @include ggf.texi
 
-@node impdiff, implicit_plot, ggf, Top
+@node grobner, impdiff, ggf, Top
+@chapter grobner
+@include grobner.texi
+
+@node impdiff, implicit_plot, grobner, Top
 @chapter impdiff
 @include impdiff.texi
 
