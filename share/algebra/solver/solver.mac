@@ -893,7 +893,7 @@ SolverAssumeZero( Expression ) := (
       if
         ( Solver_Incons_Params = 'ASK )
         and
-        ( asksign( Expression ) # 'zero )
+        ( AskZeroNonzero( Expression ) # 'zero )
       then
         return( false )
       else
@@ -911,6 +911,15 @@ SolverAssumeZero( Expression ) := (
   )
 )$
 
+AskZeroNonzero( Expression ) :=
+  if equal( x, 0 ) = true then 'zero
+  else block(
+    [s : 'pnz],
+    while s#'zero and s#'nonzero do (
+      s : read( "Is", Expression, "zero or nonzero?" )
+    ),
+    s
+  )$
 
 /******************************************************************************/
 /* ListOfPowers returns the list of powers # 0 of a variable in a set of      */
@@ -1868,6 +1877,13 @@ ValuationSolver( Solutions, Equations, Variables, Parameters ) := (
 
         /* append remaining equations to the solutions if no further */
         /* solutions could be determined.                            */
+
+        for e in Equations do (
+          if is( equal( e, 0 ) ) # 'unknown then (
+            PrintMsg( SHORT, "Inconsistent equation", e = 0),
+            TerminateSolver()
+          )
+        ),
 
         Solutions : endcons( [ Equations ], Solutions )
       ), /* END if Solved */
