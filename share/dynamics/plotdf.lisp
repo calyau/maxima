@@ -22,95 +22,48 @@
 ;; See plotdf.usg (which should come together with this program) for
 ;; a usage summary
 ;;
-;; $Id: plotdf.lisp,v 1.1 2007-04-02 23:36:10 villate Exp $
+;; $Id: plotdf.lisp,v 1.2 2007-04-04 01:07:42 villate Exp $
 
 (in-package :maxima)
 
-;; default plotdf options
-(defvar $plotdf_options '((mlist)
-			  ;; Width in x direction of the x values
-			  ((mlist) $xradius 10)
-			  ;; Height in y direction of the y values
-			  ((mlist) $yradius 10)
-			  ;; Width of canvas in pixels
-			  ((mlist) $width 500)
-			  ;; Height of canvas in pixels
-			  ((mlist) $height 500)
-			  ;; (xcenter,ycenter) is the origin of the window
-			  ((mlist) $xcenter 0)
-			  ((mlist) $ycenter 0)
-			  ;; xmin ymin xmax ymax .. overrides the -xcenter etc
-			  ((mlist) $bbox -10 -10 10 10)
-			  ;; The initial value of variable t
-			  ((mlist) $tinitial 0)
-			  ;; Number of steps to do in one pass
-			  ((mlist) $nsteps 100)
-			  ;; A semi colon separated list of functions to plot
-			  ((mlist) $xfun "")
-			  ;; t step size
-			  ((mlist) $tstep 0.1)
-			  ;; May be both, forward or backward
-			  ((mlist) $direction "both")
-			  ;; Plot in a separate window x and y versus t
-			  ((mlist) $versus_t 0)
-			  ;; Place to calculate trajectory
-			  ((mlist) $trajectory_at 0 0)
-			  ;; List of parameters and values eg k=3,l=7+k
-			  ((mlist) $parameters "")
-			  ;; List of parameters ranges k=3:5,u
-			  ((mlist) $sliders "")
-			  ))
-
-;; gets the value of a plotdf option
-(defun $get_plotdf_option (name &optional n)
-  (sloop for v in (rest $plotdf_options)
-	 when (eq (second v) name) do
-	 (return (if n (nth n  v) v))))
-
 ;; parses a plotdf option into a command-line option for tcl scripts
-(defun tcl-get-plotdf-option (name)
+(defun plotdf-option-to-tcl (value s1 s2)
   (let (vv)
+    (unless (and  ($listp value)
+                  (symbolp (setq name (second value))))
+      (merror "~M is not a plotdf option.  Must be [symbol,..data]" value))
+    (setq value
+      (case name
+        (($xradius $yradius $xcenter $ycenter $tinitial $tstep)
+         (check-list-items name (rest (rest value)) 'number 1))
+        (($width $height $nsteps $versus_t)
+         (check-list-items name (rest (rest value)) 'fixnum 1))
+        ($trajectory_at
+         (check-list-items name (rest (rest value)) 'number 2))
+        ($bbox (check-list-items name (rest (rest value)) 'number 4))
+        (($xfun $parameters $sliders) value)
+        ('$direction
+         (or (member (third value) '($forward $backward $both))
+             (merror "direction: choose one of [forward,backward,both]")) 
+         value)
+        (t (cond
+            ((eql name s1)
+             (check-list-items '$x (rest (rest value)) 'number 2))
+            ((eql name s2)
+             (check-list-items '$y (rest (rest value)) 'number 2))
+            (t (merror "Unknown option ~M" name))))))
+    (setq vv (mapcar #'stripdollar (rest value)))
     (with-output-to-string (st)
-			   (sloop for v in (rest $plotdf_options)
-				  when (eq (second v) name)
-				  do (setq vv (mapcar #'stripdollar (rest v)))
-				  (format st "-~(~a~) " (first vv))
-				  (format st "{~{~(~a~)~^ ~}}" (rest vv))))))
+      (cond ((or (eql (first vv) 'x) (eql (first vv) 'y))
+             (format st "-~(~a~)center " (first vv))
+             (format st "{~a} " (/ (+ (third vv) (second vv)) 2))
+             (format st "-~(~a~)radius " (first vv))
+             (format st "{~a}" (/ (- (third vv) (second vv)) 2)))
+            (t
+             (format st "-~(~a~) " (first vv))
+             (format st "{~{~(~a~)~^ ~}}" (rest vv)))))))
 
-;; changes the value of a plotdf option
-(defun $set_plotdf_option ( value)
-  (setq $plotdf_options ($copylist $plotdf_options))
-  (unless (and  ($listp value)
-		(symbolp (setq name (second value))))
-    (merror "~M is not a plotdf option.  Must be [symbol,..data]" value))
-  (setq value
-	(case name
-	      ($xradius (check-list-items name (rest (rest value)) 'number 1))
-	      ($yradius (check-list-items name (rest (rest value)) 'number 1))
-	      ($width (check-list-items name (rest (rest value)) 'fixnum 1))
-	      ($height (check-list-items name (rest (rest value)) 'fixnum 1))
-	      ($xcenter (check-list-items name (rest (rest value)) 'number 1))
-	      ($ycenter (check-list-items name (rest (rest value)) 'number 1))
-	      ($bbox (check-list-items name (rest (rest value)) 'number 4))
-	      ($tinitial (check-list-items name (rest (rest value)) 'number 1))
-	      ($nsteps (check-list-items name (rest (rest value)) 'fixnum 1))
-	      ($xfun value)
-	      ($tstep (check-list-items name (rest (rest value)) 'number 1))
-	      ($direction (or (member (third value)
-				      '($forward $backward $both))
-			      (merror "direction: choose one of [forward,backward,both]"))
-			  value)
-	      ($versus_t (check-list-items name (rest (rest value)) 'fixnum 1))
-	      ($trajectory_at (check-list-items name (rest (rest value)) 'number 2))
-	      ($parameters value)
-	      ($sliders value)))
-  (sloop for v on (rest $plotdf_options)
-	 when (eq (second (first v)) name)
-	 do (setf (first v) value))
-  $plotdf_options
-  )
- 
-;; applies float(ev(expression, numer)) to an expression, and return a string
+;; applies float(ev(expression, numer)) to an expression, and returns a string
 
 (defun expr_to_str (fun)
   (mstring (mfuncall '$float (mfuncall '$ev fun '$numer))))
@@ -119,23 +72,37 @@
 ;; system of 2 equations dx/dt = f(x,y), dy/dt = g(x,y) 
 ;;
 (defun $plotdf (ode &rest options)
-  (let (cmd (opts " "))
-    ;; parse argument ode and prepare string cmd with the equation(s)
-    (if ($listp ode)
-	(if (= (length ode) 3)
-	    (setq cmd (concatenate 'string " -dxdt \""
-				   (expr_to_str (second ode)) "\" -dydt \""
-				   (expr_to_str (third ode)) "\""))
-	  (merror "Argument must be either dydx or [dxdt, dydt]"))
-      (setq cmd (concatenate 'string " -dydx \"" (expr_to_str ode) "\"")))
+  
+  (let (cmd (opts " ") (s1 '$x) (s2 '$y))
+    (unless ($listp ode) (setf ode `((mlist) ,ode)))
+    ;; parse arguments and prepare string cmd with the equation(s)
+    (if (and (listp (first options)) (= (length (first options)) 3)
+        (symbolp (second (first options))) (symbolp (third (first options))))
+      (progn
+        (setf s1 (second (first options)))
+        (setf s2 (third (first options)))
+        (defun subxy (expr)
+          (if (listp expr)
+              (mapcar #'subxy expr)
+            (cond ((eq expr s1) '$x) ((eq expr s2) '$y) (t expr))))
+        (setf ode (mapcar #'subxy ode))
+        (setf options (cdr options))))
+    (if (delete '$y (delete '$x (rest (mfuncall '$listofvars ode))))
+        (merror "The equation(s) can depend only on 2 variable which must be specified!"))
+    (case (length ode)
+          (3 (setq cmd (concatenate 'string " -dxdt \""
+                                    (expr_to_str (second ode)) "\" -dydt \""
+                                    (expr_to_str (third ode)) "\"")))
+          (2 (setq cmd (concatenate 'string " -dydx \""
+                                    (expr_to_str (second ode)) "\"")))
+          (t (merror "Argument must be either dydx or [dxdt, dydt]")))
     
     ;; parse options and copy them to string opts
     (cond (options
-	   (dolist (v options) 
-	     ($set_plotdf_option v)
-	     (setq opts (concatenate 'string opts " "
-				     (tcl-get-plotdf-option (second v)))))))
+           (dolist (v options) 
+             (setq opts (concatenate 'string opts " "
+                                  (plotdf-option-to-tcl v s1 s2))))))
     (show-open-plot
      (with-output-to-string (st)
-		  (cond ($show_openplot (format st "plotdf ~a ~a~%" cmd opts))
-			      (t (format st "{plotdf ~a ~a}" cmd opts)))))))
+                  (cond ($show_openplot (format st "plotdf ~a ~a~%" cmd opts))
+                              (t (format st "{plotdf ~a ~a}" cmd opts)))))))
