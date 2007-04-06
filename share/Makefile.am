@@ -125,6 +125,10 @@ contrib/diag.mac\
 contrib/diffequations/README\
 contrib/diffequations/contrib_ode.mac\
 contrib/diffequations/contrib_ode.usg\
+contrib/diffequations/extrabessel.lisp\
+contrib/diffequations/gauss.lisp\
+contrib/diffequations/kummer.lisp\
+contrib/diffequations/lazysolver.lisp\
 contrib/diffequations/ode1_abel.mac\
 contrib/diffequations/ode1_clairault.mac\
 contrib/diffequations/ode1_factor.mac\
@@ -132,8 +136,11 @@ contrib/diffequations/ode1_lagrange.mac\
 contrib/diffequations/ode1_lie.mac\
 contrib/diffequations/ode1_nonlinear.mac\
 contrib/diffequations/ode1_riccati.mac\
+contrib/diffequations/odelin.lisp\
 contrib/diffequations/tests/Makefile\
 contrib/diffequations/tests/README\
+contrib/diffequations/spherodialwave.lisp\
+contrib/diffequations/sqfr.lisp\
 contrib/diffequations/tests/rtest_ode1_abel.mac\
 contrib/diffequations/tests/rtest_ode1_riccati.mac\
 contrib/diffequations/tests/rtest_sym.mac\
@@ -160,6 +167,7 @@ contrib/diffequations/tests/rtestode_murphy_2_2.mac\
 contrib/diffequations/tests/rtestode_murphy_2_3.mac\
 contrib/diffequations/tests/rtestode_murphy_2_4.mac\
 contrib/diffequations/tests/rtestode_murphy_2_5.mac\
+contrib/diffequations/tests/rtestode_odelin.mac\
 contrib/diffequations/tests/testsuite.lisp\
 contrib/distrib/distrib.mac\
 contrib/distrib/numdistrib.lisp\
