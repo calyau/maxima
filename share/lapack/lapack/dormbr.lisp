@@ -6,7 +6,7 @@
 ;;;           (:array-slicing t) (:declare-common nil)
 ;;;           (:float-format double-float))
 
-(in-package "LAPACK")
+(in-package :lapack)
 
 
 (defun dormbr (vect side trans m n k a lda tau c ldc work lwork info)

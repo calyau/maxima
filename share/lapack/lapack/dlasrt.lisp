@@ -6,7 +6,7 @@
 ;;;           (:array-slicing t) (:declare-common nil)
 ;;;           (:float-format double-float))
 
-(in-package "LAPACK")
+(in-package :lapack)
 
 
 (let* ((select 20))

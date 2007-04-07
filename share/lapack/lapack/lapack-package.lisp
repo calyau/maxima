@@ -1,2 +1,2 @@
-(defpackage "LAPACK"
-  (:use "BLAS" "COMMON-LISP"))
+(defpackage :lapack
+  (:use :blas :common-lisp))

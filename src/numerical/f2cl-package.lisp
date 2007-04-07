@@ -72,7 +72,7 @@
 
 #+nil
 (defpackage :fortran-to-lisp
-  (:use :CL)
+  (:use :cl)
   (:documentation "The package holding all symbols need by the Fortran to Lisp converter")
   (:nicknames :f2cl)
   (:export
@@ -84,9 +84,13 @@
 ;;;-------------------------------------------------------------------------
 ;;; end of f2cl0.l
 ;;;
-;;; $Id: f2cl-package.lisp,v 1.9 2006-12-20 18:13:05 rtoy Exp $
+;;; $Id: f2cl-package.lisp,v 1.10 2007-04-07 19:09:01 dtc Exp $
 ;;; $Log: f2cl-package.lisp,v $
-;;; Revision 1.9  2006-12-20 18:13:05  rtoy
+;;; Revision 1.10  2007-04-07 19:09:01  dtc
+;;; o Fix some symbol case issues.  This enables the Lapack code to run in a
+;;;   lowercase Common Lisp variant.
+;;;
+;;; Revision 1.9  2006/12/20 18:13:05  rtoy
 ;;; Update to latest f2cl versions.
 ;;;
 ;;; Revision 1.8  2005/11/07 17:37:12  rtoy

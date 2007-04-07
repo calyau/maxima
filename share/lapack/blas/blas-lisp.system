@@ -4,9 +4,13 @@
 ;;; routines to Lisp and compiling the result.  These came with
 ;;; HOMPACK and are used in HOMPACK, among others.
 ;;;
-;;; $Id: blas-lisp.system,v 1.1 2007-01-05 18:17:38 rtoy Exp $
+;;; $Id: blas-lisp.system,v 1.2 2007-04-07 19:08:50 dtc Exp $
 ;;; $Log: blas-lisp.system,v $
-;;; Revision 1.1  2007-01-05 18:17:38  rtoy
+;;; Revision 1.2  2007-04-07 19:08:50  dtc
+;;; o Fix some symbol case issues.  This enables the Lapack code to run in a
+;;;   lowercase Common Lisp variant.
+;;;
+;;; Revision 1.1  2007/01/05 18:17:38  rtoy
 ;;; This large checkin imports large parts of BLAS and LAPACK for use with
 ;;; Maxima.  The Fortran parts are in good shape.  The interface to maxima
 ;;; works but still needs lots of work.
@@ -42,7 +46,7 @@
   :components
   ((:module fortran
 	    :binary-pathname "."
-	    :compiler-options (:package "BLAS"
+	    :compiler-options (:package :blas
 			       :float-format double-float)
 	    :compile-only t
 	    :components

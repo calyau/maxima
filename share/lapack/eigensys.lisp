@@ -1,4 +1,4 @@
-(in-package "MAXIMA")
+(in-package :maxima)
 
 (defun maxima-matrix-dims (a)
   (let ((row (second a)))

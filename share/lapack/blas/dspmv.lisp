@@ -6,7 +6,7 @@
 ;;;           (:array-slicing t) (:declare-common nil)
 ;;;           (:float-format double-float))
 
-(in-package "BLAS")
+(in-package :blas)
 
 
 (let* ((one 1.0) (zero 0.0))

@@ -24,7 +24,7 @@
    (:module fortran
 	    :binary-pathname "."
 	    :language :f2cl-lisp
-	    :compiler-options (:package "LAPACK"
+	    :compiler-options (:package :lapack
 			       :float-format double-float)
 	    :compile-only t
 	    :components

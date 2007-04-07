@@ -6,7 +6,7 @@
 ;;;           (:array-slicing t) (:declare-common nil)
 ;;;           (:float-format double-float))
 
-(in-package "BLAS")
+(in-package :blas)
 
 
 (let* ((zero (f2cl-lib:cmplx 0.0 0.0)))

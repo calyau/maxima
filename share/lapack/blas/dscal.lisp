@@ -6,7 +6,7 @@
 ;;;           (:array-slicing t) (:declare-common nil)
 ;;;           (:float-format double-float))
 
-(in-package "BLAS")
+(in-package :blas)
 
 
 (defun dscal (n da dx incx)
