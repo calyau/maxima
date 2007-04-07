@@ -131,6 +131,7 @@
     (dolist (v options) ($set_plot_option v))
     (setq xrange (check-range xrange))
     (setq yrange (check-range yrange))
+    ($set_plot_option '((mlist simp) $gnuplot_pm3d nil))
     
     (if (not ($listp expr))
 	(setq expr `((mlist simp) ,expr)))

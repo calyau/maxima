@@ -1257,6 +1257,7 @@
         (merror "Option ~M should be a list" v)))
     (when (and xlabel log-x) (setf xlabel (format nil "log(~a)" xlabel)))
     (when (and ylabel log-y) (setf ylabel (format nil "log(~a)" ylabel)))
+    ($set_plot_option '((mlist simp) $gnuplot_pm3d nil))
 
     (setq *plot-realpart* ($get_plot_option '$plot_realpart 2))
     (setf plot-format  ($get_plot_option '$plot_format 2))
@@ -1764,6 +1765,8 @@
                          (list `((mlist) $gnuplot_preamble ,preamble-in-arguments)))))
 
         (let (($plot_options $plot_options))
+        
+          ($set_plot_option '((mlist simp) $gnuplot_pm3d nil))
 
           (if preamble-in-plot-options
             ($set_plot_option
