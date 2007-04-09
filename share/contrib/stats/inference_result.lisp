@@ -124,10 +124,8 @@
 	       (t (rplaca nc (cons (list* width height depth dummy) (car nc)))
 		  (rplaca cs (max width (car cs))))))
        (setq rstr (cons d1 rstr)))
-     (if (> (f+ height depth)
-	    (linearray-dim)
-	    )
-	 (setq consp t))
+     (when (> (+ height depth) (length linearray))
+       (setq consp t))
      (return
        (cond ((and (not consp) (checkfit (f+ 2 width)))
 	      (matoutz dmstr cstr rstr result))
