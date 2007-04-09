@@ -129,8 +129,6 @@
 
 ; Following stuff (from here to end of file) is copied from src/trdata.lisp
 
-(def-autoload-translate $romberg)
-
 (eval-when
     #+gcl (load)
     #-gcl (:load-toplevel)
