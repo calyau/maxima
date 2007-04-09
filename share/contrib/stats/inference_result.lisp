@@ -137,14 +137,13 @@
 (displa-def $inference_result dimension-inference)
 
 (defun dimension-inference (form result)
-  (let ( (title (cadr form))
-         (outputitems (reverse (cdadddr form)))
+  (let ((title (cadr form))
+	(outputitems (reverse (cdr (cadddr form))))
          (output nil) aux)
-   (dolist (k outputitems) 'done
+    (dolist (k outputitems 'done)
       (setf aux (rest (nth k (caddr form))))
-      (setf output
-            (cons (list '(mlist simp) (list '(mequal simp) (car aux) (cadr aux))) 
-                  output)) )
+      (push (list '(mlist simp) (list '(mequal simp) (car aux) (cadr aux))) 
+	    output))
    ; variable output has the following structure:
    ; '(($inference_result simp)
    ;      ((mlist simp) ,title)
@@ -152,7 +151,7 @@
    ;      ((mlist) ((mequal simp) value_name2 value2))
    ;      ((mlist) ((mequal simp) value_name3 value3)))
    (setf output (append (list '($inference_result simp) (list '(mlist simp) title)) output))
-   (dim-$inference_result output result) ))
+   (dim-$inference_result output result)))
 
 
 ;; The following two functions make wxmaxima to be happy
