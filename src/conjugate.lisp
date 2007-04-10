@@ -101,25 +101,23 @@
 ;; negative real axis.
 
 (defun off-negative-real-axisp (z)
-  (setq z ($rectform z))
-  (let ((x ($realpart z)) (y ($imagpart z)) ($prederror nil))
-    (or (eq t (mevalp `((mgreaterp) ,y 0))) 
-	(eq t (mevalp `((mgreaterp) 0 ,y)))
-	(eq t (mevalp `((mgreaterp) ,x 0))))))
+  (setq z (trisplit z))	          ; split into real and imaginary
+  (or (eq t (mnqp (cdr z) 0))     ; y #  0
+      (eq t (mgqp (car z) 0)))))  ; x >= 0
 
 (defun on-negative-real-axisp (z)
-  (setq z ($rectform z))
-  (let ((x ($realpart z)) (y ($imagpart z)) ($prederror nil))
-    (and (like y 0) (eq t (mevalp `((mgreaterp) 0 ,x))))))
+  (setq z (trisplit z))
+  (and (meqp (cdr z) 0)
+       (eq t (mgrp 0 (car z)))))
 
 (defun in-domain-of-asin (z)
-  (setq z ($rectform z))
-  (let ((x ($realpart z)) (y ($imagpart z)) ($prederror nil))
-    (or (eq t (mevalp `((mgreaterp) ,y 0)))
-	(eq t (mevalp `((mgreaterp) 0 ,y)))
+  (setq z (trisplit z))
+  (let ((x (car z)) (y (cdr z)))
+    (or (eq t (mgrp y 0))
+	(eq t (mgrp 0 y))
 	(and 
-	 (eq t (mevalp `((mgreaterp) ,x -1)))
-	 (eq t (mevalp `((mgreaterp) 1 ,x)))))))
+	 (eq t (mgrp x -1))
+	 (eq t (mgrp 1 x))))))
 	     
 ;; Return conjugate(log(x)). Actually, x is a lisp list (x).
 
