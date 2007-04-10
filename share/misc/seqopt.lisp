@@ -282,7 +282,7 @@
                (let* ((carl (car l)) (res (collapse carl)))
                  (or (eq carl res) (rplaca l res))))
              (do ((l (subexp n) (cdr l)))
-                 ((null l) (store (subexp n) (cons (list x) (subexp n))) x)
+                 ((null l) (setf (subexp n) (cons (list x) (subexp n))) x)
                (if (alike1 x (caar l)) (return (caar l)))))))
 
 (defun comexp (x)
