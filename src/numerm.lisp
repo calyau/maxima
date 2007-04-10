@@ -28,6 +28,3 @@
 (defbindtramp$ 1)
 (defbindtramp$ 2)
 (defbindtramp$ 3)
-
-(defmacro fcall$ (&rest l)
-  `(funcall ,@l))

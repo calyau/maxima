@@ -38,9 +38,9 @@
 	 (romb-print nil))
      (setq x (- b a))
      (setf (aref tt 0)
-	   (* x (+ (fcall$ f b) (fcall$ f a)) 0.5d0))
+	   (* x (+ (funcall f b) (funcall f a)) 0.5d0))
      (setf	(aref rr 0)
-		(* x (fcall$ f (* (+ b a) 0.5d0))))
+		(* x (funcall f (* (+ b a) 0.5d0))))
      (do ((l 1 (1+ l))
 	  (m 4 (* m 2))
 	  (y 0d0)
@@ -60,7 +60,7 @@
 	   (mtell "Romberg: ~A iterations; last error =~A;~
 			    calculating F(~A)."
 		  i cerr (+ (* z (float i)) a)))
-	 (setf (aref rr l) (+ (fcall$ f (+ (* z (float i)) a))
+	 (setf (aref rr l) (+ (funcall f (+ (* z (float i)) a))
 			      (aref rr l))))
        (setf (aref rr l) (* z (aref rr l) 2))
        (setq y 0d0)
