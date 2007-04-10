@@ -635,12 +635,14 @@
 ;;; circular data structures. Attempting to copy a circular structure
 ;;; into *builtin-symbol-props* would cause a hang. Lacking a better
 ;;; solution, we simply avoid those symbols.
-(let ((problematic-symbols '($%gamma $%phi $global $%pi $%e)))
-  (do-symbols (s (find-package :maxima))
-    (when (and (eql (symbol-package s) (find-package :maxima))
-	       (member (getchar s 1) '($ % &) :test #'eq))
+(let ((problematic-symbols '($%gamma $%phi $global $%pi $%e))
+      (maxima-package (find-package :maxima)))
+  (do-symbols (s maxima-package)
+    (when (and (eql (symbol-package s) maxima-package)
+	       (not (eq s '||))
+	       (member (char (symbol-name s) 0) '(#\$ #\% #\&) :test #'char=))
       (push s *builtin-symbols*)
-      (when (not (member s problematic-symbols :test #'eq))
+      (unless (member s problematic-symbols :test #'eq)
 	(setf (gethash s *builtin-symbol-props*)
 	      (copy-tree (symbol-plist s)))))))
 
