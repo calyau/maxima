@@ -41,7 +41,8 @@ maxima_TEXINFOS = Introduction.texi Help.texi Command.texi Operators.texi \
   mnewton.texi lsquares.texi plotdf.texi lindstedt.texi impdiff.texi \
   ggf.texi f90.texi eval_string.texi diag.texi dynamics.texi\
   bode.texi augmented_lagrangian.texi opsubst.texi stats.texi stirling.texi\
-  implicit_plot.texi interpol.texi lbfgs.texi romberg.texi grobner.texi
+  implicit_plot.texi interpol.texi lbfgs.texi romberg.texi grobner.texi\
+  contrib_ode.texi
 
 figurefiles = \
 figures/dynamics1.gif\

@@ -139,6 +139,7 @@ Additional packages
 
 * augmented_lagrangian::        augmented_lagrangian package.
 * bode::                        Bode gain and phase plots.
+* contrib_ode::                 Additional routines for ODEs
 * descriptive::                 Descriptive statistics.
 * diag::                        Jordan matrices.
 * distrib::                     Probability distributions.
@@ -393,6 +394,14 @@ augmented_lagrangian
 bode
 
 * Definitions for bode::
+
+contrib_ode
+
+* Introduction to contrib_ode::
+* Definitions for contrib_ode::
+* Possible improvements to contrib_ode::
+* Test cases for contrib_ode::
+* References for contrib_ode::
 
 descriptive
 
@@ -722,11 +731,15 @@ zeilberger
 @chapter augmented_lagrangian
 @include augmented_lagrangian.texi
 
-@node bode, descriptive, augmented_lagrangian, Top
+@node bode, contrib_ode, augmented_lagrangian, Top
 @chapter bode
 @include bode.texi
 
-@node descriptive, diag, bode, Top
+@node contrib_ode, descriptive, bode, Top
+@chapter contrib_ode
+@include contrib_ode.texi
+
+@node descriptive, diag, contrib_ode, Top
 @chapter descriptive
 @include descriptive.texi
 
