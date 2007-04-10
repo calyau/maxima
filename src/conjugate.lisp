@@ -241,7 +241,7 @@
 
 (defun simp-conjugate (e f z)
   (oneargcheck e)
-  (setq e (simplifya (nth 1 e) z))
+  (setq e (simpcheck (cadr e) z))	; simp and disrep if necessary
   (cond ((complexp e) (conjugate e)) ;; never happens, but might someday.
 	((manifestly-real-p e) e)
 	((manifestly-pure-imaginary-p e) (mul -1 e))
