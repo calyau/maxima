@@ -270,5 +270,26 @@ true$
 is(op(conjugate(f[6](x))) = 'conjugate);
 true$
 
+/* Tests for bug 1639890  */
+(assume(notequal(y,0)),0);
+0$
+
+conjugate(log(-1 + %i * y));
+log(-1 - %i * y)$
+
+conjugate(log(x + %i * y));
+log(x - %i * y)$
+
+conjugate(log(%pi + %i * y));
+log(%pi - %i * y)$
+
+(forget(notequal(y,0)),0);
+0$
+
+/* Test for bug (conjugate of atan) fixed by CVS revisions 1.9 and 1.11 */
+
+conjugate(atan(x));
+atan(x);
+
 kill (values);
 done;
