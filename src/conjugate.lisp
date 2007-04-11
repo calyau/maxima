@@ -164,7 +164,7 @@
 (defun conjugate-atan (x)
   (let ((xx))
     (setq xx (mul '$%i (car x)))
-    (if (in-domain-of-asin xx) (simplify `((%atan) ,(mfuncall '$conjugate x)))
+    (if (in-domain-of-asin xx) (simplify `((%atan) ,(take '($conjugate) (car x))))
       `(($conjugate simp) ((%atan) ,x)))))
 
 ;; Integer order Bessel functions are entire; thus they commute with the
@@ -253,7 +253,7 @@
 	((and (symbolp (mop e)) (get (mop e) 'real-valued)) e)
 
 	((and (symbolp (mop e)) (get (mop e) 'commutes-with-conjugate))
-	 (simplify `((,(mop e)) ,@(mapcar #'(lambda (s) (mfuncall '$conjugate s)) (margs e)))))
+	 (simplify `((,(mop e)) ,@(mapcar #'(lambda (s) (take '($conjugate) s)) (margs e)))))
 
 	((setq f (and (symbolp (mop e)) (get (mop e) 'conjugate-function)))
 	 (funcall f (margs e)))
