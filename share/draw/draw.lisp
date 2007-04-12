@@ -17,6 +17,13 @@
 
 ;;; This is a maxima-gnuplot interface.
 
+;;; Visit
+;;; http://www.telefonica.net/web2/biomates/maxima/gpdraw
+;;; for examples
+
+;;; The code for implicit functions was written by
+;;; Andrej Vodopivec. Thanks!
+
 ;;; For questions, suggestions, bugs and the like, feel free
 ;;; to contact me at
 ;;; mario @@@ edu DOT xunta DOT es
@@ -48,21 +55,25 @@
       (gethash '$xrange *gr-options*) nil      ; nil => automatic computation
       (gethash '$yrange *gr-options*) nil      ; nil => automatic computation
       (gethash '$zrange *gr-options*) nil      ; nil => automatic computation
-      (gethash '$logx *gr-options*)  nil
-      (gethash '$logy *gr-options*)  nil
-      (gethash '$logz *gr-options*)  nil
-      (gethash '$grid *gr-options*) nil
-      (gethash '$title *gr-options*) ""
+      (gethash '$logx *gr-options*)   nil
+      (gethash '$logy *gr-options*)   nil
+      (gethash '$logz *gr-options*)   nil
+      (gethash '$grid *gr-options*)   nil
+      (gethash '$title *gr-options*)  ""
       (gethash '$xlabel *gr-options*) ""
       (gethash '$ylabel *gr-options*) ""
       (gethash '$zlabel *gr-options*) ""
-      (gethash '$xtics *gr-options*) t
-      (gethash '$ytics *gr-options*) t
-      (gethash '$ztics *gr-options*) t
-      (gethash '$rot_vertical *gr-options*) 60     ; range: [0,180] (vertical rotation)
+      (gethash '$xtics *gr-options*)  t
+      (gethash '$ytics *gr-options*)  t
+      (gethash '$ztics *gr-options*)  t
+      (gethash '$rot_vertical *gr-options*)   60     ; range: [0,180] (vertical rotation)
       (gethash '$rot_horizontal *gr-options*) 30   ; range: [0,360] (horizontal rotation)
-      (gethash '$xy_file *gr-options*) ""
-      (gethash '$user_preamble *gr-options*) ""
+      (gethash '$xy_file *gr-options*)        ""
+      (gethash '$user_preamble *gr-options*)  ""
+
+      ; colors are specified by name
+      (gethash '$color *gr-options*)      "black"   ; for lines, points, borders and labels
+      (gethash '$fill_color *gr-options*) "red"     ; for filled regions
 
       ; implicit plot options
       (gethash '$ip_grid *gr-options*) '((mlist simp) 50 50)
@@ -70,65 +81,64 @@
 
       ; 2d-axis
       (gethash '$axis_bottom *gr-options*) t
-      (gethash '$axis_left *gr-options*) t
-      (gethash '$axis_top *gr-options*) t
-      (gethash '$axis_right *gr-options*) t
-      (gethash '$axis_3d *gr-options*) t
+      (gethash '$axis_left *gr-options*)   t
+      (gethash '$axis_top *gr-options*)    t
+      (gethash '$axis_right *gr-options*)  t
+      (gethash '$axis_3d *gr-options*)     t
 
       ; point options
-      (gethash '$point_size *gr-options*) 1
-      (gethash '$point_type *gr-options*) 1
+      (gethash '$point_size *gr-options*)    1
+      (gethash '$point_type *gr-options*)    1
       (gethash '$points_joined *gr-options*) nil
 
       ; polygon  options
-      (gethash '$fill_type *gr-options*) 1
       (gethash '$transparent *gr-options*) nil
-      (gethash '$border *gr-options*) t
+      (gethash '$border *gr-options*)      t
 
       ; vector  options
-      (gethash '$head_both *gr-options*) nil
-      (gethash '$head_length *gr-options*) 2       ; in x-axis units
-      (gethash '$head_angle *gr-options*) 45       ; with respect to the segment
-      (gethash '$head_type *gr-options*) '$filled  ; other options are: $empty and $nofilled
+      (gethash '$head_both *gr-options*)   nil
+      (gethash '$head_length *gr-options*) 2        ; in x-axis units
+      (gethash '$head_angle *gr-options*)  45       ; with respect to the segment
+      (gethash '$head_type *gr-options*)   '$filled ; other options are: $empty and $nofilled
 
       ; label options
-      (gethash '$label_alignment *gr-options*) '$center ; other options are: $left and $right
+      (gethash '$label_alignment *gr-options*)   '$center ; other options are: $left and $right
       (gethash '$label_orientation *gr-options*) '$horizontal ; the other option is $vertical
-      (gethash '$label_color *gr-options*) 1 ; as in line_type
 
       ; line options
       (gethash '$line_width *gr-options*) 1
-      (gethash '$line_type *gr-options*) 1
+      (gethash '$line_type *gr-options*)  1    ; two options: 1 (solid) and 0 (dots)
 
       ; function options
-      (gethash '$nticks *gr-options*) 30
+      (gethash '$nticks *gr-options*)      30
       (gethash '$adapt_depth *gr-options*) 10
-      (gethash '$key *gr-options*) ""                  ; by default, no keys
-      (gethash '$function_style *gr-options*) '$lines  ; other options are: $filled and $dots
+      (gethash '$key *gr-options*)         ""    ; by default, no keys
+      (gethash '$filled_func *gr-options*) nil   ; true or false
 
       ; 3d options
-      (gethash '$xu_grid *gr-options*) 30
-      (gethash '$yv_grid *gr-options*) 30
-      (gethash '$surface_hide *gr-options*) nil
-      (gethash '$contour *gr-options*) '$none  ; other options are: $base, $surface, $both and $map
-      (gethash '$contour_levels *gr-options*) 5  ; maximum: 50
-
-      ; image options
-      (gethash '$colorbox *gr-options*) t       ; in pm3d mode, always show colorbox
-      (gethash '$palette  *gr-options*) '$color ; '$color is a short cut for [7,5,15]
-                                                ; and '$gray is a short cut for [3,3,3].
-                                                ; See command 'show palette rgbformulae' in gnuplot.
+      (gethash '$xu_grid *gr-options*)        30
+      (gethash '$yv_grid *gr-options*)        30
+      (gethash '$surface_hide *gr-options*)   nil
+      (gethash '$enhanced3d *gr-options*)     nil
+      (gethash '$contour *gr-options*)        '$none  ; other options are: $base, $surface, $both and $map
+      (gethash '$contour_levels *gr-options*) 5       ; maximum: 50
+      (gethash '$colorbox *gr-options*)       t       ; in pm3d mode, always show colorbox
+      (gethash '$palette  *gr-options*)       '$color ; '$color is a short cut for [7,5,15]
+                                                      ; and '$gray is a short cut for [3,3,3].
+                                                      ; See command 'show palette rgbformulae' in gnuplot.
   ) )
 
 
 ;; Sets default values to global options
 (defun ini-global-options ()
   (setf ; global options
-      (gethash '$columns *gr-options*) 1
-      (gethash '$terminal *gr-options*) '$screen
-      (gethash '$pic_width *gr-options*)  640    ; only for bitmap pictures
-      (gethash '$pic_height *gr-options*) 480    ; only for bitmap pictures
-      (gethash '$file_name *gr-options*) "maxima_out"
+      (gethash '$columns *gr-options*)    1
+      (gethash '$terminal *gr-options*)   '$screen
+      (gethash '$pic_width *gr-options*)  640    ; points for bitmap pictures
+      (gethash '$pic_height *gr-options*) 480    ; points for bitmap pictures
+      (gethash '$eps_width *gr-options*)  12     ; cm for eps pictures
+      (gethash '$eps_height *gr-options*) 8      ; cm for eps pictures
+      (gethash '$file_name *gr-options*)  "maxima_out"
   ) )
 
 
@@ -160,7 +170,7 @@
                      (<= val 360 ))
                 (setf (gethash opt *gr-options*) val)
                 (merror "~M must be angle in [0, 360]" val)))
-      (($line_width $head_length $head_angle) ; defined as positive numbers
+      (($line_width $head_length $head_angle $eps_width $eps_height) ; defined as positive numbers
             (if (and (numberp val)
                      (> val 0 ))
                 (setf (gethash opt *gr-options*) val)
@@ -170,8 +180,12 @@
                      (>= val 0 ))
                 (setf (gethash opt *gr-options*) val)
                 (merror "Negative number: ~M " val)))
-
-      (($fill_type $point_type $line_type $label_color) ; numbers >= -1
+      ($line_type ; defined as $solid and $dots
+            (case val
+               ($solid (setf (gethash opt *gr-options*) 1))
+               ($dots  (setf (gethash opt *gr-options*) 0))
+               (otherwise  (merror "Illegal line type: ~M" val))) )
+      ($point_type ; numbers >= -1
             (if (and (numberp val)
                      (>= val -1 ))
                 (setf (gethash opt *gr-options*) val)
@@ -183,7 +197,8 @@
                 (setf (gethash opt *gr-options*) val)
                 (merror "Non positive integer: ~M " val)))
       (($points_joined $transparent $border $logx $logy $logz $head_both $grid $xtics $ytics $ztics
-        $axis_bottom $axis_left $axis_top $axis_right $axis_3d $surface_hide $colorbox) ; true or false
+        $axis_bottom $axis_left $axis_top $axis_right $axis_3d $surface_hide $colorbox $filled_func
+        $enhanced3d ) ; true or false
             (if (or (equal val t)
                     (equal val nil))
                 (setf (gethash opt *gr-options*) val)
@@ -196,10 +211,6 @@
             (if (member val '($filled $empty $nofilled))
                 (setf (gethash opt *gr-options*) val)
                 (merror "Illegal head type for vectors: ~M" val)))
-      ($function_style ; defined as $filled, $dots and $lines
-            (if (member val '($lines $filled $dots))
-                (setf (gethash opt *gr-options*) val)
-                (merror "Illegal function style: ~M" val)))
       ($contour ; defined as $none, $base, $surface, $both and $map
             (if (member val '($base $surface $both $map))
                 (setf (gethash opt *gr-options*) val)
@@ -246,6 +257,33 @@
                     (setf (gethash opt *gr-options*) (list (cadr val) (caddr val) (cadddr val))))
                   (t
                     (merror "Illegal palette description: ~M" val)))  )
+      (($color $fill_color)  ; defined as a color name or hexadecimal #rrggbb
+         (let ((str (string-downcase (string-trim "\"" (coerce (mstring val) 'string)))))
+            (cond
+              ((some #'(lambda (z) (string= z str))
+                     '("white" "black" "gray0" "grey0" "gray10" "grey10" "gray20" "grey20"
+                       "gray30" "grey30"   "gray40" "grey40" "gray50" "grey50" "gray60" 
+                       "grey60" "gray70" "grey70" "gray80" "grey80" "gray90" "grey90" 
+                       "gray100" "grey100" "gray" "grey" "light-gray" "light-grey" 
+                       "dark-gray" "dark-grey" "red" "light-red" "dark-red" "yellow" 
+                       "light-yellow" "dark-yellow" "green" "light-green" "dark-green" 
+                       "spring-green" "forest-green" "sea-green" "blue" "light-blue" 
+                       "dark-blue" "midnight-blue" "navy" "medium-blue" "royalblue" 
+                       "skyblue" "cyan" "light-cyan" "dark-cyan" "magenta" "light-magenta"
+                       "dark-magenta" "turquoise" "light-turquoise" "dark-turquoise"
+                       "pink" "light-pink" "dark-pink" "coral" "light-coral" "orange-red"
+                       "salmon" "light-salmon" "dark-salmon" "aquamarine" "khaki" 
+                       "dark-khaki" "goldenrod" "light-goldenrod" "dark-goldenrod" "gold"
+                       "beige" "brown" "orange" "dark-orange" "violet" "dark-violet"
+                       "plum" "purple"))
+                 (setf (gethash opt *gr-options*) str))
+              ((and (= (length str) 7)
+                    (char= (schar str 0) #\#)
+                    (every #'(lambda (z) (position z "0123456789abcdef"))
+                           (subseq str 1)))
+                 (setf (gethash opt *gr-options*) str))
+              (t
+                 (merror "Illegal color specification: ~M" str)))))
 
       (otherwise (merror "Unknown option ~M " opt))  ) )
 
@@ -312,6 +350,7 @@
 ;;     line_width
 ;;     key
 ;;     line_type
+;;     color
 (defun points (arg1 &optional (arg2 nil))
    (let (x y xmin xmax ymin ymax pts)
       (cond ((and ($listp arg1)
@@ -336,16 +375,18 @@
       (make-gr-object
          :name 'points
          :command (if (get-option '$points_joined)
-                     (format nil "'-' ~a w lp ps ~a pt ~a lw ~a lt ~a"
+                     (format nil "'-' ~a w lp ps ~a pt ~a lw ~a lt ~a lc rgb '~a'"
                                  (make-obj-title (get-option '$key))
                                  (get-option '$point_size)
                                  (get-option '$point_type)
                                  (get-option '$line_width)
-                                 (get-option '$line_type))
-                     (format nil "'-' ~a w p ps ~a pt ~a"
+                                 (get-option '$line_type)
+                                 (get-option '$color))
+                     (format nil "'-' ~a w p ps ~a pt ~a lc rgb '~a'"
                                  (make-obj-title (get-option '$key))
                                  (get-option '$point_size)
-                                 (get-option '$point_type)) )
+                                 (get-option '$point_type)
+                                 (get-option '$color)) )
          :groups '((2)) ; numbers are sent to gnuplot in groups of 2
          :points (list pts) ) ))
 
@@ -365,6 +406,7 @@
 ;;     line_width
 ;;     key
 ;;     line_type
+;;     color
 (defun points3d (arg1 &optional (arg2 nil) (arg3 nil))
    (let (pts x y z xmin xmax ymin ymax zmin zmax)
       (cond ((and ($listp arg1)
@@ -394,16 +436,18 @@
       (make-gr-object
          :name 'points
          :command (if (get-option '$points_joined)
-                     (format nil "'-' ~a w lp ps ~a pt ~a lw ~a lt ~a"
+                     (format nil "'-' ~a w lp ps ~a pt ~a lw ~a lt ~a lc rgb '~a'"
                                  (make-obj-title (get-option '$key))
                                  (get-option '$point_size)
                                  (get-option '$point_type)
                                  (get-option '$line_width)
-                                 (get-option '$line_type))
-                     (format nil "'-' ~a w p ps ~a pt ~a"
+                                 (get-option '$line_type)
+                                 (get-option '$color))
+                     (format nil "'-' ~a w p ps ~a pt ~a lc rgb '~a'"
                                  (make-obj-title (get-option '$key))
                                  (get-option '$point_size)
-                                 (get-option '$point_type)) )
+                                 (get-option '$point_type)
+                                 (get-option '$color)) )
          :groups '((3 0)) ; numbers are sent to gnuplot in groups of 3, without blank lines
          :points (list pts) )  ))
 
@@ -419,10 +463,11 @@
 ;;     polygon([x1,x2,x3,...], [y1,y2,y3,...])
 ;; Options:
 ;;     transparent
-;;     fill_type
+;;     fill_color
 ;;     border
 ;;     line_width
 ;;     line_type
+;;     color
 ;;     key
 (defun polygon (arg1 &optional (arg2 nil))
    (if (and (gethash '$transparent  *gr-options*)
@@ -449,29 +494,31 @@
       (update-ranges xmin xmax ymin ymax)
       (cond
          ((get-option '$transparent)  ; if transparent, draw only the border
-             (setf pltcmd (format nil "'-' ~a  w l lw ~a lt ~a"
+             (setf pltcmd (format nil "'-' ~a  w l lw ~a lt ~a lc rgb '~a'"
                                       (make-obj-title (get-option '$key))
                                       (get-option '$line_width)
-                                      (get-option '$line_type)))
+                                      (get-option '$line_type)
+                                      (get-option '$color)))
              (setf grps '((2)))  ; numbers are sent to gnuplot in groups of 2
              (setf pts (list (make-array (+ (* 2 (length x)) 2)
                                          :element-type 'double-float
                                          :initial-contents (append (mapcan #'list x y)
                                                                    (list (first x) (first y))) )) ) )
          ((not (get-option '$border)) ; no transparent, no border
-             (setf pltcmd (format nil "'-' ~a w filledcurves ~a"
+             (setf pltcmd (format nil "'-' ~a w filledcurves lc rgb '~a'"
                                       (make-obj-title (get-option '$key))
-                                      (get-option '$fill_type)))
+                                      (get-option '$fill_color)))
              (setf grps '((2)))  ; numbers are sent to gnuplot in groups of 2
              (setf pts (list (make-array (* 2 (length x))
                                          :element-type 'double-float
                                          :initial-contents (mapcan #'list x y)) ) ))
          (t ; no transparent with border
-             (setf pltcmd (format nil "'-' ~a w filledcurves ~a, '-' t '' w l lw ~a lt ~a" 
+             (setf pltcmd (format nil "'-' ~a w filledcurves lc rgb '~a', '-' t '' w l lw ~a lt ~a lc rgb '~a'" 
                                       (make-obj-title (get-option '$key))
-                                      (get-option '$fill_type)
+                                      (get-option '$fill_color)
                                       (get-option '$line_width)
-                                      (get-option '$line_type)))
+                                      (get-option '$line_type)
+                                      (get-option '$color)))
              (setf grps '((2) (2)))  ; both sets of vertices (interior and border)
                                      ; are sent to gnuplot in groups of 2
              (setf pts (list (make-array (* 2 (length x))
@@ -499,10 +546,11 @@
 ;;     rectangle([x1,y1], [x2,y2]), being [x1,y1] & [x2,y2] opposite vertices
 ;; Options:
 ;;     transparent
-;;     fill_type
+;;     fill_color
 ;;     border
 ;;     line_width
 ;;     line_type
+;;     color
 ;;     key
 (defun rectangle (arg1 arg2)
    (if (or (not ($listp arg1))
@@ -536,11 +584,12 @@
 ;; Options:
 ;;     nticks
 ;;     transparent
-;;     fill_type
+;;     fill_color
 ;;     border
 ;;     line_width
 ;;     line_type
 ;;     key
+;;     color
 (defun ellipse (xc yc a b ang1 ang2)
   (if (and (gethash '$transparent  *gr-options*)
            (not (gethash '$border  *gr-options*)))
@@ -588,28 +637,30 @@
     (update-ranges xmin xmax ymin ymax)
     (cond
        ((get-option '$transparent)  ; if transparent, draw only the border
-           (setf pltcmd (format nil "'-' ~a  w l lw ~a lt ~a"
+           (setf pltcmd (format nil "'-' ~a  w l lw ~a lt ~a lc rgb '~a'"
                                     (make-obj-title (get-option '$key))
                                     (get-option '$line_width)
-                                    (get-option '$line_type)))
+                                    (get-option '$line_type)
+                                    (get-option '$color)))
            (setf grps '((2)))
            (setf pts `( ,(make-array (length result) :element-type 'double-float
                                                     :initial-contents result)))  )
        ((not (get-option '$border)) ; no transparent, no border
-           (setf pltcmd (format nil "'-' ~a w filledcurves xy=~a,~a ~a"
+           (setf pltcmd (format nil "'-' ~a w filledcurves xy=~a,~a lc rgb '~a'"
                                     (make-obj-title (get-option '$key))
                                     fxc fyc
-                                    (get-option '$fill_type)))
+                                    (get-option '$fill_color)))
            (setf grps '((2)))
            (setf pts `( ,(make-array (length result) :element-type 'double-float
                                                     :initial-contents result)))  )
        (t ; no transparent with border
-           (setf pltcmd (format nil "'-' ~a w filledcurves xy=~a,~a ~a, '-' t '' w l lw ~a lt ~a" 
+           (setf pltcmd (format nil "'-' ~a w filledcurves xy=~a,~a lc rgb '~a', '-' t '' w l lw ~a lt ~a lc rgb '~a'" 
                                     (make-obj-title (get-option '$key))
                                     fxc fyc
-                                    (get-option '$fill_type)
+                                    (get-option '$fill_color)
                                     (get-option '$line_width)
-                                    (get-option '$line_type)))
+                                    (get-option '$line_type)
+                                    (get-option '$color)))
            (setf grps '((2) (2)))
            (setf pts (list (make-array (length result) :element-type 'double-float
                                                        :initial-contents result)
@@ -627,13 +678,14 @@
 
 
 
+
 ;; Object: 'label'
 ;; Usage:
 ;;     label(string,x,y)
 ;; Options:
 ;;     label_alignment
 ;;     label_orientation
-;;     label_color
+;;     color
 (defun label (str x y)
    (let ((fx (convert-to-float x))
          (fy (convert-to-float y))
@@ -644,7 +696,7 @@
       (update-ranges fx fx fy fy)
       (make-gr-object
          :name 'label
-         :command (format nil "set label ~a at ~a, ~a ~a ~a tc lt ~a~%"
+         :command (format nil "set label ~a at ~a, ~a ~a ~a tc rgb '~a'~%"
                               text fx fy
                               (case (get-option '$label_alignment)
                                  ($center "center")
@@ -653,7 +705,7 @@
                               (case (get-option '$label_orientation)
                                  ($horizontal "norotate")
                                  ($vertical  "rotate"))
-                              (get-option '$label_color))
+                              (get-option '$color))
          :groups nil
          :points nil)  ))
 
@@ -669,7 +721,7 @@
 ;; Options:
 ;;     label_alignment
 ;;     label_orientation
-;;     label_color
+;;     color
 (defun label3d (str x y z)
    (let ((fx (convert-to-float x))
          (fy (convert-to-float y))
@@ -682,7 +734,7 @@
       (update-ranges fx fx fy fy fz fz)
       (make-gr-object
          :name 'label
-         :command (format nil "set label ~a at ~a, ~a, ~a ~a ~a tc lt ~a~%"
+         :command (format nil "set label ~a at ~a, ~a, ~a ~a ~a tc rgb '~a'~%"
                               text fx fy fz
                               (case (get-option '$label_alignment)
                                  ($center "center")
@@ -691,7 +743,7 @@
                               (case (get-option '$label_orientation)
                                  ($horizontal "norotate")
                                  ($vertical  "rotate"))
-                              (get-option '$label_color))
+                              (get-option '$color))
          :groups nil
          :points nil)  ))
 
@@ -712,6 +764,7 @@
 ;;     line_width
 ;;     line_type
 ;;     key
+;;     color
 (defun vect (arg1 arg2)
    (if (or (not ($listp arg1))
            (not (= ($length arg1) 2))
@@ -727,7 +780,7 @@
       (update-ranges (min x xdx) (max x xdx) (min y ydy) (max y ydy))
       (make-gr-object
          :name 'vector
-         :command (format nil "'-' ~a w vect ~a ~a size ~a, ~a lw ~a lt ~a"
+         :command (format nil "'-' ~a w vect ~a ~a size ~a, ~a lw ~a lt ~a lc rgb '~a'"
                               (make-obj-title (get-option '$key))
                               (if (get-option '$head_both) "heads" "head")
                               (case (get-option '$head_type)
@@ -737,7 +790,8 @@
                               (get-option '$head_length)
                               (get-option '$head_angle)
                               (get-option '$line_width)
-                              (get-option '$line_type) )
+                              (get-option '$line_type)
+                              (get-option '$color) )
          :groups '((4))
          :points `(,(make-array 4 :element-type 'double-float
                                   :initial-contents (list x y dx dy))) ) ))
@@ -756,10 +810,10 @@
 ;;     adapt_depth
 ;;     line_width
 ;;     line_type
+;;     color
+;;     filled_func
+;;     fill_color
 ;;     key
-;;     function_style
-;;     fill_type
-;;     point_type
 ;; Note: implements a clon of draw2d (plot.lisp) with some
 ;;       mutations to fit the draw environment.
 ;;       Read source in plot.lisp for more information
@@ -811,20 +865,16 @@
           (if (> yy ymax) (setf ymax yy))
           (if (< yy ymin) (setf ymin yy)) )
         (update-ranges xstart xend ymin ymax)
-        (case (get-option '$function_style)
-           ($lines
-               (setf pltcmd (format nil "'-' ~a w l lw ~a lt ~a"
-                                        (make-obj-title (get-option '$key))
-                                        (get-option '$line_width)
-                                        (get-option '$line_type))) )
-           ($filled
-               (setf pltcmd (format nil "'-' ~a w filledcurves y1=0 ~a"
-                                        (make-obj-title (get-option '$key))
-                                        (get-option '$fill_type)))  )    
-           ($dots
-               (setf pltcmd (format nil "'-' ~a w d ~a" 
-                                        (make-obj-title (get-option '$key))    
-                                        (get-option '$point_type)))  ))
+        (setf pltcmd
+              (if (get-option '$filled_func)
+                  (format nil "'-' ~a w filledcurves x1 lc rgb '~a'"
+                              (make-obj-title (get-option '$key))
+                              (get-option '$fill_color))
+                  (format nil "'-' ~a w l lw ~a lt ~a lc rgb '~a'"
+                              (make-obj-title (get-option '$key))
+                              (get-option '$line_width)
+                              (get-option '$line_type)
+                              (get-option '$color)))  )
         (make-gr-object
            :name   'explicit
            :command pltcmd
@@ -847,10 +897,7 @@
 ;;     line_width
 ;;     line_type
 ;;     key
-;;     filled_function
-;;     fill_type
-;;     point_type
-;;     function_style
+;;     color
 ;; Note: taken from implicit_plot.lisp
 
 (defvar pts ())
@@ -957,20 +1004,11 @@
 			   ssample ip-grid-in)
 	      (print-square xxmin xxmax yymin yymax
 			    ssample ip-grid-in) )) ))
-    (case (get-option '$function_style)
-       ($lines
-           (setf pltcmd (format nil "'-' ~a w l lw ~a lt ~a"
-                                    (make-obj-title (get-option '$key))
-                                    (get-option '$line_width)
-                                    (get-option '$line_type))) )
-       ($filled
-           (setf pltcmd (format nil "'-' ~a w filledcurves y1=0 ~a"
-                                    (make-obj-title (get-option '$key))
-                                    (get-option '$fill_type)))  )    
-       ($dots
-           (setf pltcmd (format nil "'-' ~a w d ~a" 
-                                    (make-obj-title (get-option '$key))    
-                                    (get-option '$point_type)))  ))
+    (setf pltcmd (format nil "'-' ~a w l lw ~a lt ~a lc rgb '~a'"
+                              (make-obj-title (get-option '$key))
+                              (get-option '$line_width)
+                              (get-option '$line_type)
+                              (get-option '$color)))
     (make-gr-object
        :name   'implicit
        :command pltcmd
@@ -992,6 +1030,7 @@
 ;;     xu_grid
 ;;     yv_grid
 ;;     line_type
+;;     color
 ;;     key
 ;; Note: implements a clon of draw3d (plot.lisp) with some
 ;;       mutations to fit the draw environment.
@@ -1033,9 +1072,10 @@
     (update-ranges fminval1 fmaxval1 fminval2 fmaxval2 zmin zmax)
     (make-gr-object
        :name   'explicit
-       :command (format nil "'-' ~a w l lt ~a"
+       :command (format nil "'-' ~a w l lt ~a lc rgb '~a'"
                             (make-obj-title (get-option '$key))
-                            (get-option '$line_type))
+                            (get-option '$line_type)
+                            (get-option '$color))
        :groups `((3 ,nx))
        :points  (list result)  )))
 
@@ -1055,8 +1095,7 @@
 ;;     line_width
 ;;     line_type
 ;;     key
-;;     function_style
-;;     point_type
+;;     color
 ;; Note: similar to draw2d-parametric in plot.lisp
 (defun parametric (xfun yfun par parmin parmax)
   (let* ((nticks (gethash '$nticks  *gr-options*))
@@ -1091,19 +1130,14 @@
     (update-ranges xmin xmax ymin ymax)
     (make-gr-object
        :name 'parametric
-       :command (case (get-option '$function_style)
-                   ('$dots (format nil "'-' ~a w d ~a"
-                                       (make-obj-title (get-option '$key)) 
-                                       (get-option '$point_type)) )
-                   (otherwise ; filled option not yet implemented
-                           (format nil "'-' ~a w l lw ~a lt ~a"
-                                       (make-obj-title (get-option '$key)) 
-                                       (get-option '$line_width)
-                                       (get-option '$line_type)) ) )
+       :command (format nil "'-' ~a w l lw ~a lt ~a lc rgb '~a'"
+                            (make-obj-title (get-option '$key))
+                            (get-option '$line_width)
+                            (get-option '$line_type)
+                            (get-option '$color))
        :groups '((2))
        :points `(,(make-array (length result) :element-type 'double-float
                                               :initial-contents result)))   ) )
-
 
 
 
@@ -1119,8 +1153,7 @@
 ;;     line_width
 ;;     line_type
 ;;     key
-;;     function_style
-;;     point_type
+;;     color
 ;; This object is constructed as a parametric function
 (defun polar (radius ang minang maxang)
   (let ((grobj (parametric `((mtimes simp) ,radius ((%cos simp) ,ang))
@@ -1142,6 +1175,7 @@
 ;;     nticks
 ;;     line_width
 ;;     line_type
+;;     color
 ;;     key
 (defun parametric3d (xfun yfun zfun par parmin parmax)
   (let* ((nticks (gethash '$nticks  *gr-options*))
@@ -1183,10 +1217,11 @@
     (update-ranges xmin xmax ymin ymax zmin zmax)
     (make-gr-object
        :name 'parametric
-       :command (format nil "'-' ~a w l lw ~a lt ~a"
+       :command (format nil "'-' ~a w l lw ~a lt ~a lc rgb '~a'"
                             (make-obj-title (get-option '$key))
                             (get-option '$line_width)
-                            (get-option '$line_type))
+                            (get-option '$line_type)
+                            (get-option '$color))
        :groups '((3 0))  ; numbers are sent to gnuplot in groups of 3, without blank lines
        :points `(,(make-array (length result) :element-type 'double-float
                                               :initial-contents result))  )) )
@@ -1205,6 +1240,7 @@
 ;;     xu_grid
 ;;     yv_grid
 ;;     line_type
+;;     color
 ;;     key
 (defun parametric_surface (xfun yfun zfun par1 par1min par1max par2 par2min par2max)
   (let* ((ugrid (gethash '$xu_grid  *gr-options*))
@@ -1255,9 +1291,10 @@
     (update-ranges xmin xmax ymin ymax zmin zmax)
     (make-gr-object
        :name 'parametric_surface
-       :command (format nil "'-' ~a w l lt ~a"
+       :command (format nil "'-' ~a w l lt ~a lc rgb '~a'"
                             (make-obj-title (get-option '$key))
-                            (get-option '$line_type))
+                            (get-option '$line_type)
+                            (get-option '$color))
        :groups `((3 ,nu))  ; numbers are sent to gnuplot in groups of 3, with blank lines every nu lines
        :points `(,(make-array (length result) :element-type 'double-float
                                               :initial-contents result))   )) )
@@ -1351,17 +1388,17 @@
                          (append
                             objects 
                             (list (case (caar x)
-                                     ($points     (apply #'points (rest x)))
-                                     ($polygon    (apply #'polygon (rest x)))
-                                     ($ellipse    (apply #'ellipse (rest x)))
-                                     ($rectangle  (apply #'rectangle (rest x)))
-                                     ($explicit   (apply #'explicit (rest x)))
-				     ($implicit   (apply #'implicit (rest x)))
-                                     ($parametric (apply #'parametric (rest x)))
-                                     ($vector     (apply #'vect (rest x)))
-                                     ($label      (apply #'label (rest x)))
-                                     ($polar      (apply #'polar (rest x)))
-                                     ($image      (apply #'image (rest x)))
+                                     ($points      (apply #'points (rest x)))
+                                     ($polygon     (apply #'polygon (rest x)))
+                                     ($ellipse     (apply #'ellipse (rest x)))
+                                     ($rectangle   (apply #'rectangle (rest x)))
+                                     ($explicit    (apply #'explicit (rest x)))
+				     ($implicit    (apply #'implicit (rest x)))
+                                     ($parametric  (apply #'parametric (rest x)))
+                                     ($vector      (apply #'vect (rest x)))
+                                     ($label       (apply #'label (rest x)))
+                                     ($polar       (apply #'polar (rest x)))
+                                     ($image       (apply #'image (rest x)))
                                      (otherwise (merror "Graphical 2d object ~M is not recognized" x)))))))))
       ; save in plotcmd the plot command to be sent to gnuplot
       (setf plotcmd
@@ -1470,8 +1507,6 @@
                         zf (+ zf 0.01)))
                (format nil "set xrange [~a:~a]~%set yrange [~a:~a]~%set zrange [~a:~a]~%"
                            xi xf yi yf zi zf))
-            (if (get-option '$surface_hide)
-               (format nil "set hidden3d~%"))
             (case (get-option '$contour)
                ($surface (format nil "set contour surface;set cntrparam levels ~a~%"
                                       (get-option '$contour_levels) ))
@@ -1513,6 +1548,19 @@
                             (get-option '$rot_horizontal))  )
             (if (not (get-option '$axis_3d))
                 (format nil "set border 0~%"))
+            (if (get-option '$enhanced3d)
+               (format nil "set pm3d~%"))
+            (if (get-option '$surface_hide)
+               (format nil "set hidden3d~%"))
+            (if (get-option '$colorbox)
+               (format nil "set colorbox~%")
+               (format nil "unset colorbox~%"))
+            (let ((pal (get-option '$palette)))
+              (case pal
+                 ($gray     (format nil "set palette gray~%"))
+                 ($color    (format nil "set palette rgbformulae 7,5,15~%"))
+                 (otherwise (format nil "set palette rgbformulae ~a,~a,~a~%"
+                                        (car pal) (cadr pal) (caddr pal))) ) )
             (if (not (string= (get-option '$user_preamble) ""))    
                 (format nil "~a~%" (get-option '$user_preamble)))  ))
       ; scene description: (dimensions, gnuplot preamble in string format, list of objects)
@@ -1554,6 +1602,8 @@
                 ($columns    (update-gr-option '$columns ($rhs x)))
                 ($pic_width  (update-gr-option '$pic_width ($rhs x)))
                 ($pic_height (update-gr-option '$pic_height ($rhs x)))
+                ($eps_width  (update-gr-option '$eps_width ($rhs x)))
+                ($eps_height (update-gr-option '$eps_height ($rhs x)))
                 ($file_name  (update-gr-option '$file_name ($rhs x)))
                 (otherwise (merror "Unknown global option ~M " ($lhs x)))  ))
             ((equal (caar x) '$gr3d)
@@ -1578,9 +1628,13 @@
                            (get-option '$pic_width)
                            (get-option '$pic_height)
                            (get-option '$file_name)) )
-      ($eps (format dest "set terminal postscript eps~%set out '~a.eps'~%"
+      ($eps (format dest "set terminal postscript eps size ~acm, ~acm~%set out '~a.eps'~%"
+                           (get-option '$eps_width)
+                           (get-option '$eps_height)
                            (get-option '$file_name)))
-      ($eps_color (format dest "set terminal postscript eps color~%set out '~a.eps'~%"
+      ($eps_color (format dest "set terminal postscript eps color size ~acm, ~acm~%set out '~a.eps'~%"
+                           (get-option '$eps_width)
+                           (get-option '$eps_height)
                            (get-option '$file_name)))
       ($jpg (format dest "set terminal jpeg size ~a, ~a~%set out '~a.jpg'~%"
                            (get-option '$pic_width)
@@ -1634,7 +1688,7 @@
       (format dest "~%")
 
       (do ( (blis biglist (cdr blis))
-            (glis grouplist (cdr grouplist) ))
+            (glis grouplist (cdr glis) ))
           ((null blis) 'done)
         (let* ((vect (car blis))
                (k (length vect)))
@@ -1695,7 +1749,7 @@
              (format dest "set print \"~a\" append~%bind x \"print MOUSE_X,MOUSE_Y\"~%"
                           (gethash '$xy_file *gr-options*))))
 
-    ; get the figure
+    ; get the plot
     (cond ((null $draw_pipes)   ; if not pipes, close the file & call gnuplot
          (close dest)
          ($system (if (equal (gethash '$terminal *gr-options*) '$screen)
@@ -1726,5 +1780,3 @@
 ;; useful for animations.
 (defun $add_zeroes (num)
    (format nil "~10,'0d" num) )
-
-
