@@ -1,4 +1,4 @@
-@c version 1.8
+@c version 1.10
 @menu
 * Introducci@'on a draw::
 * Definiciones para draw::
@@ -12,12 +12,17 @@
 @section Introducci@'on a draw
 
 
-@code{draw} es un nuevo interfaz para comunicar Maxima con Gnuplot.
+@code{draw} es un interfaz para comunicar Maxima con Gnuplot.
 
 Hay tres funciones a utilizar a nivel de Maxima: 
 @code{draw2d}, @code{draw3d} y @code{draw}.
 
+S@'{@dotless{i}}gase este enlace para ver ejemplos m@'as elaborados
+de este paquete:
 
+http://www.telefonica.net/web2/biomates/maxima/gpdraw
+
+Se necesita tener instalado Gnuplot 4.2 para ejecutar este paquete.
 
 
 
@@ -551,6 +556,54 @@ V@'eanse tambi@'en @code{terminal}, @code{file_name} y @code{pic_width}.
 @end defvr
 
 
+@defvr {Opci@'on gr@'afica} eps_width
+Valor por defecto: 12
+
+@code{eps_width} es el ancho (medido en cm) del archivo Postscipt
+generado por los terminales @code{eps} y @code{eps_color}.
+
+Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
+descripci@'on de la escena no reviste importancia. Tambi@'en puede
+usarse como argumento de la funci@'on @code{draw}.
+
+Ejemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(terminal   = 'eps,
+             eps_width  = 3,
+             eps_height = 3,
+             explicit(x^2,x,-1,1))$
+@end example
+
+V@'eanse tambi@'en @code{terminal}, @code{file_name} y @code{eps_height}.
+@end defvr
+
+
+
+@defvr {Opci@'on gr@'afica} eps_height
+Valor por defecto: 8
+
+@code{eps_height} es la altura (medida en cm) del archivo Postscipt
+generado por los terminales @code{eps} y @code{eps_color}.
+
+Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
+descripci@'on de la escena no reviste importancia. Tambi@'en puede
+usarse como argumento de la funci@'on @code{draw}.
+
+Ejemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(terminal   = 'eps,
+             eps_width  = 3,
+             eps_height = 3,
+             explicit(x^2,x,-1,1))$
+@end example
+
+V@'eanse tambi@'en @code{terminal}, @code{file_name} y @code{eps_width}.
+@end defvr
+
 
 @defvr {Opci@'on gr@'afica} axis_bottom
 Valor por defecto: @code{true}
@@ -706,6 +759,8 @@ Ejemplos:
              colorbox=false,
              image(im,0,0,30,30))$
 @end example
+
+V@'ease tambi@'en @code{colorbox}.
 @end defvr
 
 
@@ -728,6 +783,31 @@ Ejemplo:
                  makelist(makelist(random(200),i,1,30),i,1,30))$
 (%i3) draw2d(image(im,0,0,30,30))$
 (%i4) draw2d(colorbox=false, image(im,0,0,30,30))$
+@end example
+
+V@'ease tambi@'en @code{palette}.
+@end defvr
+
+
+
+@defvr {Opci@'on gr@'afica} enhanced3d
+Valor por defecto: @code{false}
+
+Si @code{enhanced3d} vale @code{true}, se coloreaer@'an las superficies
+de los gr@'aficos tridimensionales; en otras palabras, se activa el
+modo pm3d de Gnuplot.
+
+V@'ease la opci@'on @code{palette} para informarse sobre c@'omo
+se especifican las paletas de colores.
+
+Ejemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(surface_hide = true,
+             enhanced3d   = true,
+             palette      = gray,
+             explicit(20*exp(-x^2-y^2)-10,x,-3,3,y,-3,3))$
 @end example
 @end defvr
 
@@ -771,7 +851,7 @@ El color de los puntos se controla mediante esta opci@'on.
 Esta opci@'on afecta a los siguientes objetos gr@'aficos:
 @itemize @bullet
 @item
-@code{gr2d}: @code{points}, @code{explicit}, @code{implicit}, @code{parametric} y @code{polar}.
+@code{gr2d}: @code{points}.
 
 @item
 @code{gr3d}: @code{points}.
@@ -802,11 +882,6 @@ Ejemplo:
              points([[1,8],[5,8],[9,8]]),
              point_type = 9,
              points([[1,9],[5,9],[9,9]]) )$
-(%i3) draw2d(function_style = 'dots,
-             point_type = -1,
-             explicit(x^2,x,-1,1),
-             point_type = 7,
-             explicit(x^4,x,-1,1))$
 @end example
 @end defvr
 
@@ -849,39 +924,32 @@ Ejemplo:
 
 
 
-@defvr {Opci@'on gr@'afica} fill_type
-Valor por defecto: 1
+@defvr {Opci@'on gr@'afica} filled_func
+Valor por defecto: @code{false}
 
-@code{fill_type} es un @'{@dotless{i}}ndice (mayor o igual que -1)
-que permite especificar el color de las regiones del plano que necesitan
-relleno.
+@code{filled_func} indica si la funci@'on se debe rellenar (@code{true})
+o no (@code{false}).
 
-Esta opci@'on afecta a los siguientes objetos gr@'aficos:
-@itemize @bullet
-@item
-@code{gr2d}: @code{polygon}, @code{rectangle}, @code{ellipse}, @code{explicit} y @code{implicit}.
-
-@end itemize
+Esta opci@'on s@'olo afecta al objeto gr@'afico bidimensional @code{explicit}.
 
 Ejemplo:
 
 @example
 (%i1) load(draw)$
-(%i2) draw2d(fill_type      = 6,
-             polygon([[3,2],[7,2],[5,5]]),
-             fill_type      = 2,
-             function_style = filled,
+(%i2) draw2d(fill_color  = red,
+             filled_func = true,
              explicit(sin(x),x,0,10) )$
 @end example
-@end defvr
 
+V@'ease tambi@'en @code{fill_color}.
+@end defvr
 
 
 @defvr {Opci@'on gr@'afica} transparent
 Valor por defecto: @code{false}
 
 Cuando @code{transparent} vale @code{true}, las regiones internas de 
-los pol@'{@dotless{i}}gonos se rellenan de acuerdo con @code{fill_type}.
+los pol@'{@dotless{i}}gonos se rellenan de acuerdo con @code{fill_color}.
 
 Esta opci@'on afecta a los siguientes objetos gr@'aficos:
 @itemize @bullet
@@ -895,7 +963,7 @@ Ejemplo:
 (%i1) load(draw)$
 (%i2) draw2d(polygon([[3,2],[7,2],[5,5]]),
              transparent = true,
-             line_type   = 3,
+             color       = blue,
              polygon([[5,2],[9,2],[7,5]]) )$
 @end example
 @end defvr
@@ -919,11 +987,11 @@ Ejemplo:
 
 @example
 (%i1) load(draw)$
-(%i2) draw2d(line_type   = 3,
+(%i2) draw2d(color       = brown,
              line_width  = 8,
              polygon([[3,2],[7,2],[5,5]]),
              border      = false,
-             fill_type   = 6,
+             fill_color  = blue,
              polygon([[5,2],[9,2],[7,5]]) )$
 @end example
 @end defvr
@@ -1070,7 +1138,7 @@ Ejemplo:
              yrange          = [0,10],
              points_joined   = true,
              points([[5,0],[5,10]]),
-             label_color     = 3,
+             color           = blue,
              label("Centered alignment (default)",5,2),
              label_alignment = 'left,
              label("Left alignment",5,5),
@@ -1078,7 +1146,7 @@ Ejemplo:
              label("Right alignment",5,8))$
 @end example
 
-V@'eanse tambi@'en @code{label_orientation} y @code{label_color}. 
+V@'eanse tambi@'en @code{label_orientation} y @code{color}. 
 @end defvr
 
 
@@ -1103,64 +1171,86 @@ construir la escena.
              yrange     = [0,10],
              point_size = 0,
              points([[5,5]]),
+             color      = navy,
              label("Horizontal orientation (default)",5,2),
              label_orientation = 'vertical,
+             color             = "#654321",
              label("Vertical orientation",1,5))$
 @end example
 
-V@'eanse tambi@'en @code{label_alignment} y @code{label_color}. 
+V@'eanse tambi@'en @code{label_alignment} y @code{color}. 
 @end defvr
 
 
+@defvr {Opci@'on gr@'afica} color
+Valor por defecto: @code{"black"}
 
-@defvr {Opci@'on gr@'afica} label_color
-Valor por defecto: 1
+@code{color} especifica el color para dibujar l@'{@dotless{i}}neas,
+puntos, bordes de pol@'{@dotless{i}}gonos y etiquetas.
 
-@code{label_color} es un @'{@dotless{i}}ndice (mayor o igual que -1)
-para especificar el color de la fuente tipogr@'afica.
+Los colores se pueden dar a partir de sus nombres o en
+c@'odigo hexadecimal @i{rgb}.
 
-Esta opci@'on s@'olo es relevante para objetos de tipo @code{label}.
+Los nombres de colores disponibles son: 
+@code{"white"}, @code{"black"}, @code{"gray0"}, @code{"grey0"}, @code{"gray10"},
+@code{"grey10"}, @code{"gray20"}, @code{"grey20"}, @code{"gray30"}, @code{"grey30"},
+@code{"gray40"}, @code{"grey40"}, @code{"gray50"}, @code{"grey50"}, @code{"gray60"},
+@code{"grey60"}, @code{"gray70"}, @code{"grey70"}, @code{"gray80"}, @code{"grey80"},
+@code{"gray90"}, @code{"grey90"}, @code{"gray100"}, @code{"grey100"}, @code{"gray"},
+@code{"grey"}, @code{"light-gray"}, @code{"light-grey"}, @code{"dark-gray"},
+@code{"dark-grey"}, @code{"red"}, @code{"light-red"}, @code{"dark-red"}, @code{"yellow"},
+@code{"light-yellow"}, @code{"dark-yellow"}, @code{"green"}, @code{"light-green"},
+@code{"dark-green"}, @code{"spring-green"}, @code{"forest-green"}, @code{"sea-green"},
+@code{"blue"}, @code{"light-blue"}, @code{"dark-blue"}, @code{"midnight-blue"}, 
+@code{"navy"}, @code{"medium-blue"}, @code{"royalblue"}, @code{"skyblue"}, 
+@code{"cyan"}, @code{"light-cyan"}, @code{"dark-cyan"}, @code{"magenta"}, 
+@code{"light-magenta"}, @code{"dark-magenta"}, @code{"turquoise"}, 
+@code{"light-turquoise"}, @code{"dark-turquoise"}, @code{"pink"}, @code{"light-pink"},
+@code{"dark-pink"}, @code{"coral"}, @code{"light-coral"}, @code{"orange-red"},
+@code{"salmon"}, @code{"light-salmon"}, @code{"dark-salmon"}, @code{"aquamarine"},
+@code{"khaki"}, @code{"dark-khaki"}, @code{"goldenrod"}, @code{"light-goldenrod"},
+@code{"dark-goldenrod"}, @code{"gold"}, @code{"beige"}, @code{"brown"}, @code{"orange"},
+@code{"dark-orange"}, @code{"violet"}, @code{"dark-violet"}, @code{"plum"} y @code{"purple"}.
+
+Las componentes crom@'aticas en c@'odigo hexadecimal se introducen 
+en el formato @code{"#rrggbb"}.
 
 Ejemplo:
 
-En este ejemplo, el punto ficticio que se a@~nade sirve para obtener
-la imagen, ya que el paquete @code{draw} necesita siempre de datos para
-construir la escena. Estos colores pueden cambiar en diferentes terminales.
 @example
 (%i1) load(draw)$
-(%i2) draw2d(xrange     = [0,10],
-             yrange     = [0,10],
-             point_size = 0,
-             points([[0,0]]),
-             label_color = -1,
-             label("Label color -1",5,1),
-             label_color = 1,
-             label("Label color 1 (default)",5,2),
-             label_color = 2,
-             label("Label color 2",5,3),
-             label_color = 3,
-             label("Label color 3",5,4),
-             label_color = 4,
-             label("Label color 4",5,5),
-             label_color = 5,
-             label("Label color 5",5,6),
-             label_color = 6,
-             label("Label color 6",5,7),
-             label_color = 7,
-             label("Label color 7",5,8),
-             label_color = 8,
-             label("Label color 8",5,9) )$
+(%i2) draw2d(explicit(x^2,x,-1,1), /* default is black */
+             color = "red",
+             explicit(0.5 + x^2,x,-1,1),
+             color = blue,
+             explicit(1 + x^2,x,-1,1),
+             color = "light-blue", /* double quotes if - is used */
+             explicit(1.5 + x^2,x,-1,1),
+             color = "#23ab0f",
+             label("This is a label",0,1.2)  )$
 @end example
 
-V@'eanse tambi@'en @code{label_alignment} y @code{label_orientation}. 
+V@'ease tambi@'en @code{fill_color}.
 @end defvr
 
+
+
+@defvr {Opci@'on gr@'afica} fill_color
+Valor por defecto: @code{"red"}
+
+@code{fill_color} especifica el color para rellenar pol@'{@dotless{i}}gonos
+y funciones expl@'{@dotless{i}}citas bidimensionales.
+
+V@'ease @code{color} para m@'as informaci@'on sobre c@'omo definir 
+colores.
+@end defvr
 
 
 @defvr {Opci@'on gr@'afica} line_width
 Valor por defecto: 1
 
 @code{line_width} es el ancho de las l@'{@dotless{i}}neas a dibujar.
+Su valor debe ser un n@'umero positivo.
 
 Esta opci@'on afecta a los siguientes objetos gr@'aficos:
 @itemize @bullet
@@ -1178,7 +1268,7 @@ Ejemplo:
 @example
 (%i1) load(draw)$
 (%i2) draw2d(explicit(x^2,x,-1,1), /* default width */
-             line_width = 5,
+             line_width = 5.5,
              explicit(1 + x^2,x,-1,1),
              line_width = 10,
              explicit(2 + x^2,x,-1,1))$
@@ -1192,10 +1282,8 @@ V@'ease tambi@'en @code{line_type}.
 @defvr {Opci@'on gr@'afica} line_type
 Valor por defecto: 1
 
-@code{line_type} es un @'{@dotless{i}}ndice (mayor o igual que -1) para
-especificar c@'omo se habr@'an de dibujar las l@'{@dotless{i}}neas.
-Los colores de las l@'{@dotless{i}}neas se controlan mediante esta
-opci@'on.
+@code{line_type} indica c@'omo se van a dibujar las l@'{@dotless{i}}neas;
+valores posibles son @code{solid} y @code{dots}.
 
 Esta opci@'on afecta a los siguientes objetos gr@'aficos:
 @itemize @bullet
@@ -1212,10 +1300,9 @@ Ejemplo:
 
 @example
 (%i1) load(draw)$
-(%i2) draw2d(explicit(x^2,x,-1,1), /* default type */
-             line_type = 5,
+(%i2) draw2d(line_type = dots,
              explicit(1 + x^2,x,-1,1),
-             line_type = 10,
+             line_type = solid, /* default */
              explicit(2 + x^2,x,-1,1))$
 @end example
 
@@ -1289,33 +1376,6 @@ Ejemplo:
              explicit(sin(x),x,0,10),
              key = "Cosinus",
              line_type = 3,
-             explicit(cos(x),x,0,10) )$
-@end example
-@end defvr
-
-
-
-@defvr {Opci@'on gr@'afica} function_style
-Valor por defecto: @code{lines}
-
-@code{function_style} indica c@'omo se habr@'an de representar las funciones:
-con @code{lines} o @code{dots}.
-
-Esta opci@'on afecta a los siguientes objetos gr@'aficos:
-@itemize @bullet
-@item
-@code{gr2d}: @code{explicit}, @code{implicit},
-@code{parametric} y @code{polar}.
-@end itemize
-
-Ejemplo:
-
-@example
-(%i1) load(draw)$
-(%i2) draw2d(key = "Sinus",
-             explicit(sin(x),x,0,10),
-             key = "Cosinus",
-             function_style = 'dots,
              explicit(cos(x),x,0,10) )$
 @end example
 @end defvr
@@ -1540,7 +1600,8 @@ dimensiones:
 dibuja los puntos @code{[x1,y1]}, @code{[x2,y2]}, @code{[x2,y2]}, ....
 
 Este objeto depende de las siguientes @i{opciones gr@'aficas}: @code{point_size}, 
-@code{point_type}, @code{points_joined}, @code{line_width}, @code{key} y @code{line_type}.
+@code{point_type}, @code{points_joined}, @code{line_width}, @code{key},
+@code{line_type} y @code{color}.
 
 Ejemplo:
 
@@ -1563,17 +1624,18 @@ dibuja sobre el plano el pol@'{@dotless{i}}gono de v@'ertices @code{[x1,y1]}, @c
 @code{[x2,y2]}, ....
 
 Este objeto depende de las siguientes @i{opciones gr@'aficas}: @code{transparent}, 
-@code{fill_type}, @code{border}, @code{line_width}, @code{key} y @code{line_type}.
+@code{fill_color}, @code{border}, @code{line_width}, @code{key},
+ @code{line_type} and @code{color}.
 
 Ejemplo:
 
 @example
 (%i1) load(draw)$
-(%i2) draw2d(line_type   = 3,
-             line_width  = 8,
+(%i2) draw2d(color      = "#e245f0",
+             line_width = 8,
              polygon([[3,2],[7,2],[5,5]]),
              border      = false,
-             fill_type   = 6,
+             fill_color  = yellow,
              polygon([[5,2],[9,2],[7,5]]) )$
 @end example
 
@@ -1583,20 +1645,21 @@ Ejemplo:
 dibuja un rect@'angulo con v@'ertices opuestos @code{[x1,y1]} y @code{[x2,y2]}.
 
 Este objeto depende de las siguientes @i{opciones gr@'aficas}: @code{transparent}, 
-@code{fill_type}, @code{border}, @code{line_width}, @code{key} y @code{line_type}.
+@code{fill_color}, @code{border}, @code{line_width}, @code{key},
+@code{line_type} and @code{color}.
 
 Ejemplo:
 
 @example
 (%i1) load(draw)$
-(%i2) draw2d(fill_type   = 6,
+(%i2) draw2d(fill_color  = red,
              line_width  = 6,
-             line_type   = 2,
+             line_type   = dots,
              transparent = false,
-             fill_type   = 8,
+             fill_color  = blue,
              rectangle([-2,-2],[8,-1]),   /* opposite vertices */
              transparent = true,
-             line_type   = 5,
+             line_type   = solid,
              line_width  = 1,
              rectangle([9,4],[2,-1.5]),
              xrange      = [-3,10],
@@ -1611,21 +1674,21 @@ dibuja una elipse de centro @code{[xc, yc]} con semiejes horizontal y vertical
 @'angulo de amplitud @code{ang2}.
 
 Este objeto depende de las siguientes @i{opciones gr@'aficas}: @code{nticks}, 
-@code{transparent}, @code{fill_type}, @code{border}, @code{line_width}, 
-@code{line_type} y @code{key}.
+@code{transparent}, @code{fill_color}, @code{border}, @code{line_width}, 
+@code{line_type}, @code{key} and @code{color}.
 
 Ejemplo:
 
 @example
 (%i1) load(draw)$
 (%i2) draw2d(transparent = false,
-             fill_type   = 8,
-             line_type   = 5,
+             fill_color  = red,
+             color       = gray30,
              transparent = false,
              line_width  = 5,
              ellipse(0,6,3,2,270,-270),  /* center (x,y), a, b, start & end in degrees */
              transparent = true,
-             line_type   = 7,
+             color       = blue,
              line_width  = 3,
              ellipse(2.5,6,2,3,30,-90),
              xrange      = [-3,6],
@@ -1638,7 +1701,7 @@ Ejemplo:
 escribe el texto @code{string} en la posici@'on @code{[x,y]}.
 
 Este objeto depende de las siguientes @i{opciones gr@'aficas}: @code{label_alignment}, 
-@code{label_orientation} y @code{label_color}.
+@code{label_orientation} and @code{color}.
 
 Ejemplo:
 
@@ -1647,28 +1710,13 @@ la imagen, ya que el paquete @code{draw} necesita siempre de datos para
 construir la escena. Estos colores pueden cambiar en diferentes terminales.
 @example
 (%i1) load(draw)$
-(%i2) draw2d(xrange     = [0,10],
-             yrange     = [0,10],
-             point_size = 0,
-             points([[0,0]]),
-             label_color = -1,
-             label("Label color -1",5,1),
-             label_color = 1,
-             label("Label color 1 (default)",5,2),
-             label_color = 2,
-             label("Label color 2",5,3),
-             label_color = 3,
-             label("Label color 3",5,4),
-             label_color = 4,
-             label("Label color 4",5,5),
-             label_color = 5,
-             label("Label color 5",5,6),
-             label_color = 6,
-             label("Label color 6",5,7),
-             label_color = 7,
-             label("Label color 7",5,8),
-             label_color = 8,
-             label("Label color 8",5,9) )$
+(%i2) draw2d(explicit(x^2,x,-1,1),
+             color = "red",
+             label("Label in red",0,0.3),
+             color = "#0000ff",
+             label("Label in blue",0,0.6),
+             color = "light-blue", /* double quotes if - is used */
+             label("Label in light-blue",0,0.9)  )$
 @end example
 
 
@@ -1679,7 +1727,7 @@ dibuja el vector @code{[dx,dy]} con origen en @code{[x,y]}.
 
 Este objeto depende de las siguientes @i{opciones gr@'aficas}: @code{head_both}, 
 @code{head_length}, @code{head_angle}, @code{head_type}, @code{line_width}, 
-@code{line_type} y @code{key}.
+@code{line_type}, @code{key} and @code{color}.
 
 Ejemplo:
 
@@ -1693,6 +1741,7 @@ Ejemplo:
              vector([3,1],[5,5]),
              head_both = true,
              head_type = 'nofilled,
+             line_type = dots,
              vector([6,1],[5,5]))$
 @end example
 
@@ -1704,16 +1753,19 @@ dibuja la funci@'on expl@'{@dotless{i}}cita @code{fcn}, con la variable @code{va
 tomando valores desde @code{minval} hasta @code{maxval}.
 
 Este objeto depende de las siguientes @i{opciones gr@'aficas}: @code{nticks}, 
-@code{adapt_depth}, @code{line_width}, @code{line_type}, @code{key}, @code{point_type},  
-@code{function_style} y @code{fill_type}.
+@code{adapt_depth}, @code{line_width}, @code{line_type}, @code{key}, 
+@code{filled_func}, @code{fill_color} and @code{color}.
 
 Ejemplo:
 
 @example
 (%i1) load(draw)$
-(%i2) draw3d(xu_grid = 10,
-             yv_grid = 50,
-             explicit(x^2+y^2,x,-3,3,y,-3,3) )$
+(%i2) draw2d(line_width = 3,
+             color      = blue,
+             explicit(x^2,x,-3,3) )$
+(%i3) draw2d(fill_color  = brown,
+             filled_func = true,
+             explicit(x^2,x,-3,3) )$
 @end example
 
 
@@ -1725,20 +1777,20 @@ tomando valores desde @code{x-minval} hasta @code{x-maxval} y la variable @code{
 tomando valores desde @code{y-minval} hasta @code{y-maxval}.
 
 Este objeto depende de las siguientes @i{opciones gr@'aficas}: @code{ip_grid}, 
-@code{ip_grid_in}, @code{line_width}, @code{line_type}, @code{key}, 
-@code{filled_function}, @code{point_type} y @code{fill_type}.
+@code{ip_grid_in}, @code{line_width}, @code{line_type}, @code{key} and @code{color}.
 
 Ejemplo:
 
 @example
 (%i1) load(draw)$
-(%i2) draw2d(grid      = true,
-             line_type = -1,
+(%i2) draw2d(terminal  = eps,
+             grid      = true,
+             line_type = solid,
              key       = "y^2=x^3-2*x+1",
-             implicit(y^2=x^3-2*x+1, x, -4,4, y, -4,4),
-             line_type = 0,
+               implicit(y^2=x^3-2*x+1, x, -4,4, y, -4,4),
+             line_type = dots,
              key       = "x^3+y^3 = 3*x*y^2-x-1",
-             implicit(x^3+y^3 = 3*x*y^2-x-1, x, -4,4, y, -4,4),
+              implicit(x^3+y^3 = 3*x*y^2-x-1, x, -4,4, y, -4,4),
              title     = "Two implicit functions" )$
 @end example
 
@@ -1749,8 +1801,7 @@ dibuja la funci@'on @code{radius(ang)} definida en coordenadas polares, con la v
 tomando valores desde @code{minang} hasta @code{maxang}.
 
 Este objeto depende de las siguientes @i{opciones gr@'aficas}: @code{nticks}, 
-@code{line_width}, @code{line_type}, @code{key}, 
-@code{function_style} y @code{point_type}.
+@code{line_width}, @code{line_type}, @code{key} and @code{color}.
 
 Ejemplo:
 
@@ -1774,16 +1825,15 @@ dibuja la funci@'on param@'etrica @code{[xfun,yfun]}, con el par@'ametro @code{p
 tomando valores desde @code{parmin} hasta @code{parmax}.
 
 Este objeto depende de las siguientes @i{opciones gr@'aficas}: @code{nticks}, 
-@code{line_width}, @code{line_type}, @code{key}, @code{point_type}, 
-@code{function_style} y @code{point_type}.
+@code{line_width}, @code{line_type}, @code{key}and @code{color}.
 
 Ejemplo:
 
 @example
 (%i1) load(draw)$
 (%i2) draw2d(explicit(exp(x),x,-1,3),
-             line_type = 3,
-             key       = "This is the parametric one!!",
+             color = red,
+             key   = "This is the parametric one!!",
              parametric(2*cos(rrr),rrr^2,rrr,0,2*%pi))$
 @end example
 
@@ -1866,6 +1916,7 @@ V@'eanse tambi@'en las siguientes opciones gr@'aficas: @code{xrange}, @code{yran
 @code{logx}, @code{logy}, @code{terminal}, @code{grid}, @code{title}, 
 @code{xlabel}, @code{ylabel}, @code{xtics}, @code{ytics}, @code{xy_file}, 
 @code{file_name}, @code{pic_width}, @code{pic_height}, 
+@code{eps_width}, @code{eps_height},
 @code{user_preamble}, @code{axis_bottom}, @code{axis_left}, @code{axis_top} 
 y @code{axis_right}.
 
@@ -1894,7 +1945,8 @@ dimensiones:
 dibuja los puntos @code{[x1,y1,z1]}, @code{[x2,y2,z2]}, @code{[x2,y2,z3]}, ....
 
 Este objeto depende de las siguientes @i{opciones gr@'aficas}: @code{point_size}, 
-@code{point_type}, @code{points_joined}, @code{line_width}, @code{key} y @code{line_type}.
+@code{point_type}, @code{points_joined}, @code{line_width}, @code{key}, @code{line_type}
+and @code{color}.
 
 Ejemplos:
 
@@ -1928,16 +1980,16 @@ Dos muestras tridimensionales,
 escribe el texto @code{string} en la posici@'on @code{[x,y,z]}.
 
 Este objeto depende de las siguientes @i{opciones gr@'aficas}: @code{label_alignment}, 
-@code{label_orientation} y @code{label_color}.
+@code{label_orientation} y @code{color}.
 
 Ejemplo:
 
 @example
 (%i1) load(draw)$
 (%i2) draw3d(explicit(exp(sin(x)+cos(x^2)),x,-3,3,y,-3,3),
-             label_color = 6,
+             color = red,
              label("UP",-2,0,3),
-             label_color = 3,
+             color = blue,
              label("DOWN",2,0,-3) )$
 @end example
 
@@ -1949,18 +2001,18 @@ tomando valores desde @code{minval1} hasta @code{maxval1} y la variable @code{va
 tomando valores desde @code{minval2} hasta @code{maxval2}.
 
 Este objeto depende de las siguientes @i{opciones gr@'aficas}: @code{xu_grid}, 
-@code{yv_grid}, @code{line_type} y @code{key}.
+@code{yv_grid}, @code{line_type}, @code{key} and @code{color}.
 
 Ejemplo:
 
 @example
 (%i1) load(draw)$
-(%i2) draw3d(key       = "Gauss",
-             line_type = 2,
+(%i2) draw3d(key   = "Gauss",
+             color = "#a02c00",
              explicit(20*exp(-x^2-y^2)-10,x,-3,3,y,-3,3),
-             yv_grid     = 10,
-             line_type = 5,
-             key="Plane",
+             yv_grid = 10,
+             color   = blue,
+             key     = "Plane",
              explicit(x+y,x,-5,5,y,-5,5),
              surface_hide = true)$
 @end example
@@ -1972,16 +2024,16 @@ dibuja la funci@'on param@'etrica @code{[xfun,yfun,zfun]}, con el par@'ametro @c
 tomando valores desde @code{parmin} hasta @code{parmax}.
 
 Este objeto depende de las siguientes @i{opciones gr@'aficas}: @code{nticks}, 
-@code{line_width}, @code{line_type} y @code{key}.
+@code{line_width}, @code{line_type}, @code{key} and @code{color}.
 
 Ejemplo:
 
 @example
 (%i1) load(draw)$
 (%i2) draw3d(explicit(exp(sin(x)+cos(x^2)),x,-3,3,y,-3,3),
-             line_type  = 3,
+             color = royalblue,
              parametric(cos(5*u)^2,sin(7*u),u-2,u,0,2),
-             line_type  = 6,
+             color      = turquoise,
              line_width = 2,
              parametric(t^2,sin(t),2+t,t,0,2),
              surface_hide = true,
@@ -1995,8 +2047,8 @@ dibuja la superficie param@'etrica @code{[xfun,yfun,zfun]}, con el par@'ametro @
 tomando valores desde @code{par1min} hasta @code{par1max} y el par@'ametro @code{par2}
 tomando valores desde @code{par2min} hasta @code{par2max}.
 
-Este objeto depende de las siguientes @i{opciones gr@'aficas}: @code{nticks}, 
-@code{line_width}, @code{line_type} y @code{key}.
+Este objeto depende de las siguientes @i{opciones gr@'aficas}: @code{xu_grid}, 
+@code{yv_grid}, @code{line_type}, @code{key} and @code{color}.
 
 Ejemplo:
 
@@ -2022,9 +2074,11 @@ V@'eanse tambi@'en las siguientes opciones gr@'aficas: @code{xrange}, @code{yran
 @code{xtics}, @code{ytics}, @code{ztics}, @code{xy_file}, 
 @code{user_preamble}, @code{axis_bottom}, @code{axis_left}, 
 @code{axis_top}, @code{file_name}, @code{pic_width}, @code{pic_height}, 
+@code{eps_width}, @code{eps_height},
 @code{axis_right}, @code{rot_vertical}, @code{rot_horizontal}, 
 @code{axis_3d}, @code{xu_grid}, @code{yv_grid}, @code{surface_hide}, 
-@code{contour} y @code{contour_levels}.
+@code{contour}, @code{contour_levels}, @code{palette}, @code{colorbox}
+y @code{enhanced3d}.
 
 @end deffn
 
