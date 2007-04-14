@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Gui.tcl,v 1.4 2007-02-16 06:19:29 robert_dodier Exp $
+#       $Id: Gui.tcl,v 1.5 2007-04-14 15:44:25 robert_dodier Exp $
 #
 
 object_class MAXGui {
@@ -73,7 +73,7 @@ object_class MAXGui {
 	pack $fr.bottom -side bottom -fill x
 
 	text $w -yscrollcommand "$fr.scroll set" \
-	    	-selectbackground yellow
+	    	-selectbackground yellow -selectforeground blue
 	set maxima_priv($w,inputTag) input
 	resetMaximaFont $w
 	scrollbar $fr.scroll -command "$w yview"
