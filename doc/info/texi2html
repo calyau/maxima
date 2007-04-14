@@ -55,7 +55,7 @@ use File::Spec;
 #--##############################################################################
 
 # CVS version:
-# $Id: texi2html,v 1.4 2006-07-06 11:22:14 villate Exp $
+# $Id: texi2html,v 1.5 2007-04-14 21:56:43 robert_dodier Exp $
 
 # Homepage:
 my $T2H_HOMEPAGE = "http://texi2html.cvshome.org/";
@@ -635,7 +635,7 @@ sub t2h_gpl_normal_text($)
 # Afterwards, load the file with command-line 
 # option -init-file <your_init_file>
 #
-# $Id: texi2html,v 1.4 2006-07-06 11:22:14 villate Exp $
+# $Id: texi2html,v 1.5 2007-04-14 21:56:43 robert_dodier Exp $
 
 ######################################################################
 # The following variables can also be set by command-line options
@@ -3221,8 +3221,8 @@ $complex_format_map =
 {
  'example' =>
  {
-  'begin' => q{"<table><tr>$EXAMPLE_INDENT_CELL<td>"},
-  'end' => q{'</td></tr></table>'},
+  'begin' => q{""},
+  'end' => q{''},
  },
  'smallexample' =>
  {
@@ -5878,7 +5878,7 @@ package Getopt::MySimple;
 
 # --------------------------------------------------------------------------
 # Locally modified by obachman (Display type instead of env, order by cmp)
-# $Id: texi2html,v 1.4 2006-07-06 11:22:14 villate Exp $
+# $Id: texi2html,v 1.5 2007-04-14 21:56:43 robert_dodier Exp $
 
 # use strict;
 # no strict 'refs';
