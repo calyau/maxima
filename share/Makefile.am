@@ -257,6 +257,7 @@ contrib/ggf.mac\
 contrib/graph2d.lisp\
 contrib/impdiff.mac\
 contrib/implicit_plot.lisp\
+contrib/levin/levin.dem\
 contrib/levin/levin.mac\
 contrib/levin/rtest_levin.mac\
 contrib/lindstedt.mac\
