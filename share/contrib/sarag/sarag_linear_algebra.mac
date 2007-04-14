@@ -43,19 +43,19 @@ fixColumns(m,colEx) :=
 removeElements(lst,blackList) :=
   removeElementsAux(lst,blackList,[],1);
 
-removeElementsAux(lst,blackList,res,ind) :=
+removeElementsAux(lst,blackList,res,indx) :=
    if blackList=[] then
      append(res,lst)
    else
-     if first(blackList)=ind then
-       removeElementsAux(rest(lst,1),rest(blackList,1),res,ind+1)
+     if first(blackList)=indx then
+       removeElementsAux(rest(lst,1),rest(blackList,1),res,indx+1)
      else
-       if ind<first(blackList) then
+       if indx<first(blackList) then
           removeElementsAux(rest(lst,1),blackList,
-                            endcons(first(lst),res),ind+1)
+                            endcons(first(lst),res),indx+1)
        else
           removeElementsAux(rest(lst,1),rest(blackList),
-                            endcons(first(lst),res),ind+1);
+                            endcons(first(lst),res),indx+1);
 
 
 
