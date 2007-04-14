@@ -5,6 +5,46 @@
 @node Definitions for Plotting,  , Plotting, Plotting
 @section Definitions for Plotting
 
+@deffn {Function} contour_plot (@var{expr}, @var{x_range}, @var{y_range}, @var{options}, ...)
+
+Plots the contours (curves of equal value) of @var{expr}
+over the region @var{x_range} by @var{y_range}.
+Any additional arguments are treated the same as in @code{plot3d}.
+
+@code{contour_plot} only works when the plot format is @code{gnuplot} or @code{gnuplot_pipes}.
+
+See also @code{implicit_plot}.
+
+Examples:
+
+@c ===beg===
+@c contour_plot (x^2 + y^2, [x, -4, 4], [y, -4, 4]);
+@c contour_plot (sin(y) * cos(x)^2, [x, -4, 4], [y, -4, 4]);
+@c F(x, y) := x^3 + y^2;
+@c contour_plot (F, [u, -4, 4], [v, -4, 4]);
+@c contour_plot (F, [u, -4, 4], [v, -4, 4], [gnuplot_preamble, "set size ratio -1"]);
+@c set_plot_option ([gnuplot_preamble, "set cntrparam levels 12"])$
+@c contour_plot (F, [u, -4, 4], [v, -4, 4]);
+@c ===end===
+@example
+(%i1) contour_plot (x^2 + y^2, [x, -4, 4], [y, -4, 4]);
+(%o1) 
+(%i2) contour_plot (sin(y) * cos(x)^2, [x, -4, 4], [y, -4, 4]);
+(%o2) 
+(%i3) F(x, y) := x^3 + y^2;
+                                   3    2
+(%o3)                  F(x, y) := x  + y
+(%i4) contour_plot (F, [u, -4, 4], [v, -4, 4]);
+(%o4) 
+(%i5) contour_plot (F, [u, -4, 4], [v, -4, 4], [gnuplot_preamble, "set size ratio -1"]);
+(%o5) 
+(%i6) set_plot_option ([gnuplot_preamble, "set cntrparam levels 12"])$
+
+(%i7) contour_plot (F, [u, -4, 4], [v, -4, 4]);
+@end example
+
+@end deffn
+
 @c INSPECTING src/plot.lisp AND TRYING SOME EXAMPLES,
 @c IT APPEARS THAT in_netmath HAS NO EFFECT ON plot2d
 @c AND ONLY EFFECT ON plot3d IS TO CAUSE OPENMATH OUTPUT TO BE WRITTEN TO CONSOLE
@@ -1062,7 +1102,7 @@ eps enhanced color solid 24]]
 
 @end deffn
 
-@b{Functions for working with the gnuplot_pipes format:}
+@subsection Functions for working with the gnuplot_pipes format
 
 @deffn {Function} gnuplot_start ()
 
