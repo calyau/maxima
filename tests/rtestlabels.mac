@@ -34,19 +34,19 @@
 [g(x) := x^2, n(x) ::= x^2];
 
 ''L3;
-[f(x) := x, g(x) := x^2, h(x) := x^3, m(x) ::= x, n(x) ::= x^2, o(x) := x^3];
+[f(x) := x, g(x) := x^2, h(x) := x^3, m(x) ::= x, n(x) ::= x^2, o(x) ::= x^3];
 
 ''L4;
 '[barrule1 : ?marrow (bar(x), baz(x))];
 
-(my_every (lambda ([x], substring (x, 1, 3) = ensure_string (linechar)), L5)
+(my_every (lambda ([x], substring (ensure_string (x), 1, 3) = ensure_string (linechar)), L5)
  and my_every (lambda ([x], rulep(x)#false), ''L5));
 true;
 
 /* At this point, all labels are %t labels from rules, functions, and macros.
  */
 (map (lambda ([x], rulep(x)#false or fundefp(x)#false or macrodefp(x)#false), ''labels),
- my_every (lambda ([x], substring (x, 1, 3) = ensure_string (linechar)), labels)
+ my_every (lambda ([x], substring (ensure_string (x), 1, 3) = ensure_string (linechar)), labels)
  and my_every (identity, %%));
 true;
 
@@ -72,7 +72,7 @@ linsolve ([x + 2*y = 5, 2*x - y = 5], [x, y]);
  */
 (programmode: false,
  L: append (solve (asin (cos (3*x)), x), linsolve ([x + 2*y = 5, 2*x - y = 5], [x, y])),
- my_every (lambda ([x], substring (x, 1, 3) = ensure_string (linechar)), L)
+ my_every (lambda ([x], substring (ensure_string (x), 1, 3) = ensure_string (linechar)), L)
   and my_every (lambda ([x], my_some (lambda ([y], buildq ([x, y], 'y = 'x)), labels)), L));
 true;
 
@@ -87,7 +87,7 @@ true;
  */
 (globalsolve: true,
  L: append (solve (asin (cos (3*x)), x), linsolve ([x + 2*y = 5, 2*x - y = 5], [x, y])),
- [my_every (lambda ([x], substring (x, 1, 3) = ensure_string (linechar)), L)
+ [my_every (lambda ([x], substring (ensure_string (x), 1, 3) = ensure_string (linechar)), L)
    and my_every (lambda ([x], my_some (lambda ([y], buildq ([x, y], 'y = 'x)), labels)), L),
   x, y]);
 [true, 3, 1];
@@ -153,22 +153,28 @@ false;
 [g(x) := x^2, n(x) ::= x^2];
 
 ''L3;
-[f(x) := x, g(x) := x^2, h(x) := x^3, m(x) ::= x, n(x) ::= x^2, o(x) := x^3];
+[f(x) := x, g(x) := x^2, h(x) := x^3, m(x) ::= x, n(x) ::= x^2, o(x) ::= x^3];
 
 ''L4;
 '[barnewrule1 : ?marrow (barnew(x), baz(x))];
 
-(my_every (lambda ([x], substring (x, 1, 3) = ensure_string (linechar)), L5)
+(my_every (lambda ([x], substring (ensure_string (x), 1, 3) = ensure_string (linechar)), L5)
  and my_every (lambda ([x], rulep(x)#false), ''L5));
 true;
 
 /* Now there should be some labels which are not %t labels.
+ * NOTE: the expected result (false) is observed only if this script is executed
+ * via batch("rtestlabels.mac"), because then Maxima creates input and output labels.
+ * When executed via batch(..., test), no input or output labels are created,
+ * so the test fails.
  */
 (map (lambda ([x], rulep(x)#false or fundefp(x)#false or macrodefp(x)#false), ''labels),
- my_every (lambda ([x], substring (x, 1, 3) = ensure_string (linechar)), labels)
+ my_every (lambda ([x], substring (ensure_string (x), 1, 3) = ensure_string (linechar)), labels)
  and my_every (identity, %%));
 false;
 
+/* See NOTE attached to preceding example
+ */
 labels (inchar) # [] and my_every (?boundp, labels (inchar))
  and labels (outchar) # [] and my_every (?boundp, labels (outchar));
 true;
@@ -193,7 +199,7 @@ linsolve ([x + 2*y = 5, 2*x - y = 5], [x, y]);
  */
 (programmode: false,
  L: append (solve (asin (cos (3*x)), x), linsolve ([x + 2*y = 5, 2*x - y = 5], [x, y])),
- my_every (lambda ([x], substring (x, 1, 3) = ensure_string (linechar)), L)
+ my_every (lambda ([x], substring (ensure_string (x), 1, 3) = ensure_string (linechar)), L)
   and my_every (lambda ([x], my_some (lambda ([y], buildq ([x, y], 'y = 'x)), labels)), L));
 true;
 
@@ -208,7 +214,7 @@ true;
  */
 (globalsolve: true,
  L: append (solve (asin (cos (3*x)), x), linsolve ([x + 2*y = 5, 2*x - y = 5], [x, y])),
- [my_every (lambda ([x], substring (x, 1, 3) = ensure_string (linechar)), L)
+ [my_every (lambda ([x], substring (ensure_string (x), 1, 3) = ensure_string (linechar)), L)
    and my_every (lambda ([x], my_some (lambda ([y], buildq ([x, y], 'y = 'x)), labels)), L),
   x, y]);
 [true, 3, 1];
