@@ -99,6 +99,7 @@
 (displa-def $inference_result dim-$inference_result)
 
 (defun dim-$inference_result (form result)
+  (declare (special linearray))
   (prog (dmstr rstr cstr consp)
      (if (or (null (cdr form))
 	     (not (member 'simp (cdar form) :test #'eq))

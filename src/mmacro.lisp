@@ -194,7 +194,7 @@ call."
 
 ;; emulating simpmdef (for mdefine) in jm;simp
 (defmfun simpmdefmacro (x *ignored* simp-flag)
-  (delacre (ignore *ignored* simp-flag))
+  (declare (ignore *ignored* simp-flag))
   (cons '(mdefmacro simp) (cdr x)))
 
 (defun displace (x y)
