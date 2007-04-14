@@ -16,7 +16,9 @@
 ;;TR_ARRAY_AS_REF:TRUE;
 ;;TR_NUMER:FALSE;
 ;;DEFINE_VARIABLE:FALSE;
-(eval-when (compile eval load)
+(eval-when
+    #+gcl (compile eval load)
+    #-gcl (:compile-toplevel :execute :load-toplevel)
   (defprop $adjoint t translated)
   (add2lnc '$adjoint $props)
   (defmtrfun
@@ -44,7 +46,9 @@
        $adj)
      '$adj
      '$n)))
-(eval-when (compile eval load)
+(eval-when
+    #+gcl (compile eval load)
+    #-gcl (:compile-toplevel :execute :load-toplevel)
   (defprop $invert t translated)
   (add2lnc '$invert $props)
   (defmtrfun ($invert $any mdefine nil nil)

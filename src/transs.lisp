@@ -429,7 +429,7 @@ translated."
   (mformat transl-file
 	   "~%~
 	   ~%~
-	   ~%(eval-when (compile eval) ~
+	   ~%(eval-when (:compile-toplevel :execute) ~
 	   ~%      (setq *infile-name-key*~
 	   ~%               ((lambda (file-name)~
 	   ~%                           ;; temp crock for multics.~
@@ -438,7 +438,7 @@ translated."
 	   ~%                                (t file-name)))~
 	   ~%                  (truename infile))))~
 	   ~%~
-	   ~%(eval-when (compile) ~
+	   ~%(eval-when (:compile-toplevel) ~
 	   ~%   (setq $tr_semicompile '~S)~
 	   ~%   (setq forms-to-compile-queue ()))~
 	   ~%~%;;; ~S~%~%"

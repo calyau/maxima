@@ -8,7 +8,9 @@
 ;; the current row.
 (defvar *this-row* nil)
 
-(eval-when (compile eval)
+(eval-when
+    #+gcl (compile eval)
+    #-gcl (:compile-toplevel :execute)
   (defmacro nvars () '(aref $todd_coxeter_state 0))
   (defmacro ncosets() '(aref $todd_coxeter_state 1))
   (defmacro multiply-table () '(aref $todd_coxeter_state 2))
@@ -66,10 +68,12 @@
 
   ) ;; end of the macros and proclamations.
 
-(eval-when (compile eval load)
-  (deftype coset nil 'fixnum)
-  (proclaim '(type (vector (coset)) *todo*))
-  )
+(eval-when
+    #+gcl (compile eval load)
+    #-gcl (:compile-toplevel :execute :load-toplevel)
+
+    (deftype coset nil 'fixnum)
+    (proclaim '(type (vector (coset)) *todo*)))
 
 ;; The data type we use to enumerate cosets.
 

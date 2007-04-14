@@ -655,7 +655,7 @@ APPLY means like APPLY.")
 	   (cond ((member '$loadfile whens :test #'eq)
 		  `(progn
 		     ,@(mapcar 'translate-macexpr-toplevel body)))
-		 ((setq tr-whens (intersect tr-whens '(compile load eval)))
+		 ((setq tr-whens (intersect tr-whens '(:compile-toplevel :load-toplevel :execute)))
 		  `(eval-when
 		       ,tr-whens
 		     ,@(mapcar 'translate-macexpr-toplevel body)))
