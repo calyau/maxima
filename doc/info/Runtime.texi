@@ -209,3 +209,75 @@ timedate reports current time 08:05:09 Wed, 11/02/2005 (GMT-7)
 @end example
 
 @end deffn
+
+@deffn {Function} absolute_real_time ()
+
+Returns the number of seconds since midnight, January 1, 1900 UTC.
+The return value is an integer.
+
+See also @code{elapsed_real_time} and @code{elapsed_run_time}.
+
+Example:
+
+@c ===beg===
+@c absolute_real_time ();
+@c 1900 + absolute_real_time () / (365.25 * 24 * 3600);
+@c ===end===
+@example
+(%i1) absolute_real_time ();
+(%o1)                      3385045277
+(%i2) 1900 + absolute_real_time () / (365.25 * 24 * 3600);
+(%o2)                   2007.265612087104
+@end example
+
+@end deffn
+
+@deffn {Function} elapsed_real_time ()
+
+Returns the number of seconds (including fractions of a second)
+since Maxima was most recently started or restarted.
+The return value is a floating-point number.
+
+See also @code{absolute_real_time} and @code{elapsed_run_time}.
+
+Example:
+
+@c ===beg===
+@c elapsed_real_time ();
+@c expand ((a + b)^500)$
+@c elapsed_real_time ();
+@c ===end===
+@example
+(%i1) elapsed_real_time ();
+(%o1)                       2.559324
+(%i2) expand ((a + b)^500)$
+(%i3) elapsed_real_time ();
+(%o3)                       7.552087
+@end example
+
+@end deffn
+
+@deffn {Function} elapsed_run_time ()
+
+Returns an estimate of the number of seconds (including fractions of a second)
+which Maxima has spent in computations since Maxima was most recently started or restarted.
+The return value is a floating-point number.
+
+See also @code{absolute_real_time} and @code{elapsed_real_time}.
+
+Example:
+
+@c ===beg===
+@c elapsed_run_time ();
+@c expand ((a + b)^500)$
+@c elapsed_run_time ();
+@c ===end===
+@example
+(%i1) elapsed_run_time ();
+(%o1)                         0.04
+(%i2) expand ((a + b)^500)$
+(%i3) elapsed_run_time ();
+(%o3)                         1.26
+@end example
+
+@end deffn
