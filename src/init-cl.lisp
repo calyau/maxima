@@ -312,6 +312,7 @@
 	 "contrib/gentran"
 	 "contrib/gentran/test"
 	 "contrib/Grobner"
+     "contrib/levin"
 	 "contrib/lurkmathml"
 	 "contrib/maximaMathML"
 	 "contrib/mcclim"
