@@ -430,18 +430,22 @@ substituting them to be zero."
   finally (loop-return (convert-poly-simplifications-to-macsyma-form *poly-simplifications*))))
 (defun $show_simps ()
 	      (convert-poly-simplifications-to-macsyma-form *poly-simplifications*))
+
 ;;tried using occurs-in instead of part-above-degree but wasted time...
-(eval-when (load compile)
-(fmakunbound 'must-replacep)
-(defun must-replacep ( poly &aux part-above monom  replace)
-;  (declare (values part-above monom replace))
-  (sloop for (seq repl) on *poly-simplifications* by 'cddr
-	when (setq part-above (part-above-degree poly seq))
-	do (setq monom (convert-deg-sequence-to-monomial seq) replace repl)
-	(loop-return 'found))
-  (setq *must-replace-data* (list part-above monom replace))
-  (values part-above monom replace))
-)
+
+(eval-when
+    #+gcl (load compile)
+    #-gcl (:load-toplevel :compile-toplevel)
+  (fmakunbound 'must-replacep)
+  (defun must-replacep ( poly &aux part-above monom  replace)
+					;  (declare (values part-above monom replace))
+    (sloop for (seq repl) on *poly-simplifications* by 'cddr
+	   when (setq part-above (part-above-degree poly seq))
+	   do (setq monom (convert-deg-sequence-to-monomial seq) replace repl)
+	   (loop-return 'found))
+    (setq *must-replace-data* (list part-above monom replace))
+    (values part-above monom replace)))
+
 (defvar *must-replace-data* nil)
 (defun monomial-finish-replace ( )
   (destructuring-let (((part-above mon repl) *must-replace-data*))

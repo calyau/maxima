@@ -148,14 +148,16 @@
 	  ((zerop (sp-characteristic sp-mat)) ,@ body1)
 	 (t (let ((.characteristic. (sp-characteristic sp-mat)))
 	      ,@ body2))))
-(eval-when  (compile load eval)
-(defun appears-in ( tree   var)
-  "Yields t if var appears in tree" 
-  (catch 'appears (appears tree var)))
-(defun appears (tree var) (cond ((equal tree var)  (throw 'appears t))
-			   ((atom tree) nil)
-			   (t  (appears  (car tree) var) (appears (cdr tree) var)))
-       nil))
+(eval-when
+    #+gcl (compile load eval)
+    #-gcl (:compile-toplevel :loadl-toplevel :execute)
+    (defun appears-in ( tree   var)
+      "Yields t if var appears in tree" 
+      (catch 'appears (appears tree var)))
+    (defun appears (tree var) (cond ((equal tree var)  (throw 'appears t))
+				    ((atom tree) nil)
+				    (t  (appears  (car tree) var) (appears (cdr tree) var)))
+	   nil))
 
 (defmacro with-once-only (variables &body body1 &aux  ll  var reset)
   "This macro is to save re-evaluation of instance variables again and
@@ -374,10 +376,11 @@
 	(length (the cl:array (sp-current-row sp-mat))))
   (sp-current-row sp-mat))
 
-(eval-when (load compile eval)  ;;because of symbolics bug
-(defmacro sp-row  (sp-mat i)
-  `(aref (sp-rows ,sp-mat) ,i))
-)
+(eval-when
+    #+gcl (load compile eval) ;;because of symbolics bug
+    #-gcl (:load-toplevel :compile-toplevel :execute)
+    (defmacro sp-row  (sp-mat i)
+      `(aref (sp-rows ,sp-mat) ,i)))
 
 (defun sp-set-pivot-row (sp-mat i)
 	   (setf (sp-pivot-row-number sp-mat) i)

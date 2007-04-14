@@ -51,8 +51,10 @@
   
 
 
-(eval-when (eval compile)
-  (defmacro fixp (x) `(typep ,x 'fixnum)))
+(eval-when
+    #+gcl (eval compile)
+    #-gcl (:execute :compile-toplevel)
+    (defmacro fixp (x) `(typep ,x 'fixnum)))
 
 (declare-top (special smlist $idummyx $vect_coords $imetric $icounter $dim
 		      $contractions $coord $allsym $metricconvert $iframe_flag
@@ -66,21 +68,20 @@
       $allsym nil                    ;If T then all indexed objects symmetric
       $metricconvert t               ;Flag used by $ic_convert
       $iframe_flag nil
-      $itorsion_flag nil
-)
+      $itorsion_flag nil)
 
-;(defun ifnot macro (clause) (cons 'or (cdr clause)))
 (defmacro ifnot  (&rest clause) `(or ,@ clause))
 
-;(defun m+or*or^p macro (cl)
-(defmacro m+or*or^p (&whole cl &rest ign) ign
-       (subst (cadr cl)
-	      'x
-	      '(member (caar x) '(mtimes mplus mexpt) :test #'eq)))
+(defmacro m+or*or^p (&whole cl &rest ign)
+  (declare (ignore ign))
+  (subst (cadr cl)
+	 'x
+	 '(member (caar x) '(mtimes mplus mexpt) :test #'eq)))
 
-(defmfun $idummy nil                              ;Sets arguments to dummy indices
-       (progn (setq $icounter (1+ $icounter))
-              (concat $idummyx $icounter)))
+(defmfun $idummy ()                              ;Sets arguments to dummy indices
+  (progn
+    (setq $icounter (1+ $icounter))
+    (concat $idummyx $icounter)))
 
 (defprop $kdelta ((/  . / )) contractions)
 

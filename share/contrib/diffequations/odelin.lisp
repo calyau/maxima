@@ -26,15 +26,17 @@
 (defun mexptp (x)
   (and (consp x) (consp (car x)) (equal (caar x) 'mexpt)))
 
-(eval-when (load compile eval)
-  ($load "nset")
-  ($load "polynomialp")
-  ($load "sqfr")
-  ($load "spherodialwave")
-  ($load "kummer")
-  ($load "extrabessel")
-  ($load "lazysolver")
-  ($load "gauss"))
+(eval-when
+    #+gcl (load compile eval)
+    #-gcl (:load-toplevel :compile-toplevel :execute)
+    ($load "nset")
+    ($load "polynomialp")
+    ($load "sqfr")
+    ($load "spherodialwave")
+    ($load "kummer")
+    ($load "extrabessel")
+    ($load "lazysolver")
+    ($load "gauss"))
 
 (defmvar $de_solver_is_loquacious t)
 

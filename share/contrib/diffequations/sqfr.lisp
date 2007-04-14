@@ -14,8 +14,10 @@
 
 ($put '$sqfr 1 '$version)
 
-(eval-when (load compile eval)
-  ($load "nset"))
+(eval-when
+    #+gcl (load compile eval)
+    #-gcl (:load-toplevel :compile-toplevel :execute)
+    ($load "nset"))
 
 ;; If x is a symbol for a subvarp, return its general representation.
 ;; Otherwise signal an error---the argument f is the string name of

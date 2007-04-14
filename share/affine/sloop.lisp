@@ -88,7 +88,9 @@
 
 ;;; some variables that may be changed to suit different implementations:
 
-(eval-when (compile load eval)
+(eval-when
+    #+gcl (compile load eval)
+    #-gcl (:compile-toplevel :load-toplevel :execute)
 
   (defvar *use-locatives* nil "See sloop.lisp")	;#+lispm t #-lispm nil 
 ;;; If t should have locf, such that if we do
@@ -125,108 +127,111 @@ if there is and automatic declare")
 ;;; *macro-expand-hook* = *macroexpand-hook-for-no-copy*
   )
 
-#+kcl (eval-when (compile) (proclaim '(optimize (safety 2) (space 2))))
+#+kcl (eval-when (compile)
+	(proclaim '(optimize (safety 2) (space 2))))
 
 ;;; *****ONLY CONDITIONALIZATIONS BELOW HERE SHOULD BE FOR BUG FIXES******
 ;;; eg. some kcls don't return nil from a prog by default!
 
 ;;; all macros here in here.
-(eval-when (compile eval load)
+(eval-when
+    #+gcl (compile eval load)
+    #-gcl (:compile-toplevel :execute :load-toplevel)
 
-  (defparameter *sloop-translations* '((appending . append)
-				       ((collecting collect) . collect)
-				       ((maximizing maximize) . maximize)
-				       ((minimizing minimize) . minimize)
-				       (nconcing . nconc)
-				       ((count counting) . count)
-				       (summing . sum)
-				       (if . when)
-				       (as . for)
-				       (in-fringe . in-fringe)
-				       (collate . collate)
-				       (in-table . in-table)
-				       (in-carefully . in-carefully)
-				       (averaging . averaging)
-				       (repeat . repeat)
-				       (first-use . first-use)
-				       (in-array . in-array))
-    "A list of cons's where the translation is the cdr, and the car
+    (defparameter *sloop-translations* '((appending . append)
+					 ((collecting collect) . collect)
+					 ((maximizing maximize) . maximize)
+					 ((minimizing minimize) . minimize)
+					 (nconcing . nconc)
+					 ((count counting) . count)
+					 (summing . sum)
+					 (if . when)
+					 (as . for)
+					 (in-fringe . in-fringe)
+					 (collate . collate)
+					 (in-table . in-table)
+					 (in-carefully . in-carefully)
+					 (averaging . averaging)
+					 (repeat . repeat)
+					 (first-use . first-use)
+					 (in-array . in-array))
+      "A list of cons's where the translation is the cdr, and the car
 is a list of names or name to be translated.  Essentially allows 'globalizing'
 a symbol for the purposes of being a keyword in a sloop")
 
 
-  (defparameter *additional-collections* nil)
+    (defparameter *additional-collections* nil)
 
-  (defmacro lcase (item &body body)
-    (let (bod last-case tem)
-      (do ((rest body (cdr rest)) (v))
-	  ((or last-case (null rest)))
-	(setq  v (car rest))
-	(push
-	 (cond ((eql (car v) t) (setq last-case t) v)
-	       ((eql (car v) :collect)
-		`((loop-collect-keyword-p .item.) ,@ (cdr v)))
-	       ((eql (car v) :no-body)
-		`((parse-no-body  .item.) ,@ (cdr v)))
-	       ((setq tem
-		      (member (car v) '(:sloop-macro :sloop-for :sloop-map)))
-		`((and (symbolp .item.)(get .item. ,(car tem))) ,@ (cdr v)))
-	       (t
-		`((l-equal .item. ',(car v)) ,@ (cdr v))))
-	 bod))
-      (or last-case (push `(t (error "lcase fell off end ~a  " .item.)) bod))
-      `(let ((.item. (translate-name ,item)))
-	(cond ,@ (nreverse bod)))))
+    (defmacro lcase (item &body body)
+      (let (bod last-case tem)
+	(do ((rest body (cdr rest)) (v))
+	    ((or last-case (null rest)))
+	  (setq  v (car rest))
+	  (push
+	   (cond ((eql (car v) t) (setq last-case t) v)
+		 ((eql (car v) :collect)
+		  `((loop-collect-keyword-p .item.) ,@ (cdr v)))
+		 ((eql (car v) :no-body)
+		  `((parse-no-body  .item.) ,@ (cdr v)))
+		 ((setq tem
+			(member (car v) '(:sloop-macro :sloop-for :sloop-map)))
+		  `((and (symbolp .item.)(get .item. ,(car tem))) ,@ (cdr v)))
+		 (t
+		  `((l-equal .item. ',(car v)) ,@ (cdr v))))
+	   bod))
+	(or last-case (push `(t (error "lcase fell off end ~a  " .item.)) bod))
+	`(let ((.item. (translate-name ,item)))
+	   (cond ,@ (nreverse bod)))))
 
-  (defun desetq1 (form val)
-    (cond ((symbolp form)
-	   (and form `(setf ,form ,val)))
-	  ((consp form)
-	   `(progn ,(desetq1 (car form) `(car ,val))
-	     ,@ (if (consp (cdr form))
-		    (list(desetq1 (cdr form) `(cdr ,val)))
-		    (and (cdr form) `((setf ,(cdr form) (cdr ,val)))))))
-	  (t (error ""))))
+    (defun desetq1 (form val)
+      (cond ((symbolp form)
+	     (and form `(setf ,form ,val)))
+	    ((consp form)
+	     `(progn ,(desetq1 (car form) `(car ,val))
+		     ,@ (if (consp (cdr form))
+			    (list(desetq1 (cdr form) `(cdr ,val)))
+			    (and (cdr form) `((setf ,(cdr form) (cdr ,val)))))))
+	    (t (error ""))))
 
-  (defmacro desetq (form val)
-    (cond ((atom val) (desetq1 form val))
-	  (t (let ((value (gensym)))
-	       `(let ((,value ,val)) , (desetq1 form value))))))
+    (defmacro desetq (form val)
+      (cond ((atom val) (desetq1 form val))
+	    (t (let ((value (gensym)))
+		 `(let ((,value ,val)) , (desetq1 form value))))))
 
-  (defmacro loop-return (&rest vals)
-    (cond ((<=  (length vals) 1)
-	   `(return ,@ vals))
-	  (t`(return (values  ,@ vals)))))
+    (defmacro loop-return (&rest vals)
+      (cond ((<=  (length vals) 1)
+	     `(return ,@ vals))
+	    (t`(return (values  ,@ vals)))))
 
-  (defmacro loop-finish ()
-    `(go finish-loop))
+    (defmacro loop-finish ()
+      `(go finish-loop))
 
-  (defmacro local-finish ()
-    `(go finish-loop))
+    (defmacro local-finish ()
+      `(go finish-loop))
 
-  (defmacro sloop (&body body)
-    (parse-loop body))
+    (defmacro sloop (&body body)
+      (parse-loop body))
   
-  (defmacro def-loop-map (name args &body body)
-    (def-loop-internal name args body 'map))
-  (defmacro def-loop-for (name args &body body )
-    (def-loop-internal name args body 'for nil 1))
-  (defmacro def-loop-macro (name args &body body)
-    (def-loop-internal name args body 'macro))
-  (defmacro def-loop-collect (name arglist &body body )
-    "Define function of 2 args arglist= (collect-var value-to-collect)"
-    (def-loop-internal name arglist body 'collect '*additional-collections* 2 2))
+    (defmacro def-loop-map (name args &body body)
+      (def-loop-internal name args body 'map))
+    (defmacro def-loop-for (name args &body body )
+      (def-loop-internal name args body 'for nil 1))
+    (defmacro def-loop-macro (name args &body body)
+      (def-loop-internal name args body 'macro))
+    (defmacro def-loop-collect (name arglist &body body )
+      "Define function of 2 args arglist= (collect-var value-to-collect)"
+      (def-loop-internal name arglist body 'collect '*additional-collections* 2 2))
 
-  (defmacro sloop-swap ()
-    `(progn (rotatef a *loop-bindings*)
-      (rotatef b  *loop-prologue*)
-      (rotatef c *loop-epilogue*)
-      (rotatef e *loop-end-test*)
-      (rotatef f *loop-increment*)
-      (setf *inner-sloop* (not *inner-sloop*))
-      ))
+    (defmacro sloop-swap ()
+      `(progn (rotatef a *loop-bindings*)
+	      (rotatef b  *loop-prologue*)
+	      (rotatef c *loop-epilogue*)
+	      (rotatef e *loop-end-test*)
+	      (rotatef f *loop-increment*)
+	      (setf *inner-sloop* (not *inner-sloop*))
+	      ))
 
-  ) ;;end of macros
+    ) ;;end of macros
 
 (defun l-equal (a b)
   (and (symbolp a)
@@ -904,23 +909,24 @@ recompile."))
 
 ;;; **User Extensible Iteration Facility**
 
-(eval-when (compile eval load)
-  (defun def-loop-internal (name args  body type
-			    &optional list min-args max-args
-			    &aux (*print-case* :upcase)
-			    (helper (intern
-				     (format nil "~a-SLOOP-~a" name type))))
-    (and min-args (or (>= (length args) min-args)(error "need more args")))
-    (and max-args (or (<= (length args) max-args)(error "need less args")))
-    `(eval-when (load compile eval)
-      (defun ,helper ,args
-	,@ body)
-      ,@ (and list `((pushnew ',name ,list)))
-      (setf (get ',name ,(intern (format nil "SLOOP-~a" type)
-				 (find-package 'keyword))) ',helper)
-      (setf (get ',name ,(intern (format nil "SLOOP-~a-ARGS" type)
-				 (find-package 'keyword))) ',args)))
-  )
+(eval-when
+    #+gcl (compile eval load)
+    #-gcl (:compile-toplevel :execute :load-toplevel)
+    (defun def-loop-internal (name args  body type
+			      &optional list min-args max-args
+			      &aux (*print-case* :upcase)
+			      (helper (intern
+				       (format nil "~a-SLOOP-~a" name type))))
+      (and min-args (or (>= (length args) min-args)(error "need more args")))
+      (and max-args (or (<= (length args) max-args)(error "need less args")))
+      `(eval-when (load compile eval)
+	 (defun ,helper ,args
+	   ,@ body)
+	 ,@ (and list `((pushnew ',name ,list)))
+	 (setf (get ',name ,(intern (format nil "SLOOP-~a" type)
+				    (find-package 'keyword))) ',helper)
+	 (setf (get ',name ,(intern (format nil "SLOOP-~a-ARGS" type)
+				    (find-package 'keyword))) ',args))))
 		
 
 ;;; DEF-LOOP-COLLECT lets you get a handle on the collection var.  exactly

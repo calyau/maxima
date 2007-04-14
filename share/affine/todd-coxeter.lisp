@@ -1,4 +1,5 @@
 (in-package :maxima)
+
 (use-package "CL-SLOOP")
 
 (defvar $todd_coxeter_state nil)
@@ -9,59 +10,59 @@
 ;; the current row.
 (defvar *this-row* nil)
 
-(eval-when (compile eval)
-(defmacro nvars () '(aref $todd_coxeter_state 0))
-(defmacro ncosets() '(aref $todd_coxeter_state 1))
-(defmacro multiply-table () '(aref $todd_coxeter_state 2))
-(defmacro relations () '(aref $todd_coxeter_state 3))
-(defmacro subgroup-generators () '(aref $todd_coxeter_state 4))
-(defmacro row1-relations () '(aref $todd_coxeter_state 5))
-(defmacro with-multiply-table (&body body)
-  `(let ((nvars (nvars))(multiply-table (multiply-table)))
-    (declare (fixnum nvars) (type (vector (t)) multiply-table))
-    ,@ body)) 
+(eval-when
+    #+gcl (compile eval)
+    #-gcl (:compile-toplevel :execute)
+    (defmacro nvars () '(aref $todd_coxeter_state 0))
+    (defmacro ncosets() '(aref $todd_coxeter_state 1))
+    (defmacro multiply-table () '(aref $todd_coxeter_state 2))
+    (defmacro relations () '(aref $todd_coxeter_state 3))
+    (defmacro subgroup-generators () '(aref $todd_coxeter_state 4))
+    (defmacro row1-relations () '(aref $todd_coxeter_state 5))
+    (defmacro with-multiply-table (&body body)
+      `(let ((nvars (nvars))(multiply-table (multiply-table)))
+	 (declare (fixnum nvars) (type (vector (t)) multiply-table))
+	 ,@ body)) 
 
-(defmacro  undef (s) `(eql 0 ,s))
+    (defmacro  undef (s) `(eql 0 ,s))
 
-;; Multiply coset K times variable R
-(defmacro mult (k r) `(the coset (aref (table ,r) ,k)))
+    ;; Multiply coset K times variable R
+    (defmacro mult (k r) `(the coset (aref (table ,r) ,k)))
 
-; Force  k . r = s and  k = s . r^-1
-(defmacro define-mult (k r s)
-  `(progn (setf (mult ,k ,r) ,s)
-	  (setf (mult ,s (- ,r)) ,k)))
+					; Force  k . r = s and  k = s . r^-1
+    (defmacro define-mult (k r s)
+      `(progn (setf (mult ,k ,r) ,s)
+	      (setf (mult ,s (- ,r)) ,k)))
 
-;; cosets M < N are to be made equal
-(defmacro push-todo (m n)
-  `(progn (vector-push-extend ,m *todo*)
-	  (vector-push-extend ,n *todo*)))
+    ;; cosets M < N are to be made equal
+    (defmacro push-todo (m n)
+      `(progn (vector-push-extend ,m *todo*)
+	      (vector-push-extend ,n *todo*)))
 
-(defmacro f+ (a b) `(the fixnum (+ (the fixnum ,a) (the fixnum ,b))))
-(defmacro f- (a &optional b) `(the fixnum (- (the fixnum ,a)
-					     ,@ (if b `((the fixnum ,b))))))
+    (defmacro f+ (a b) `(the fixnum (+ (the fixnum ,a) (the fixnum ,b))))
+    (defmacro f- (a &optional b) `(the fixnum (- (the fixnum ,a)
+						 ,@ (if b `((the fixnum ,b))))))
   
-;; The multiplication table for variable I 
-(defmacro table (i)
-  `(the (vector (coset)) (aref  multiply-table (f+ ,i nvars))))
+    ;; The multiplication table for variable I 
+    (defmacro table (i)
+      `(the (vector (coset)) (aref  multiply-table (f+ ,i nvars))))
 
-;; Some optional declarations of functions.
-(proclaim '(ftype (function (fixnum) t) doing-row)) 
-(proclaim '(ftype (function (t t t) t) set-up todd-coxeter )) 
-(proclaim
-    '(ftype (function nil t) fill-in-inverses dprint-state next-coset
-            dcheck-tables replace-coset-in-multiply-table)) 
-(proclaim
-    '(ftype (function (t) t) $todd_coxeter coerce-rel has-repeat)) 
-(proclaim '(ftype (function (t t) t) my-print))
-(proclaim '(ftype (function (t *) t) $todd_coxeter))
+    ;; Some optional declarations of functions.
+    (proclaim '(ftype (function (fixnum) t) doing-row)) 
+    (proclaim '(ftype (function (t t t) t) set-up todd-coxeter )) 
+    (proclaim
+     '(ftype (function nil t) fill-in-inverses dprint-state next-coset
+       dcheck-tables replace-coset-in-multiply-table)) 
+    (proclaim
+     '(ftype (function (t) t) $todd_coxeter coerce-rel has-repeat)) 
+    (proclaim '(ftype (function (t t) t) my-print))
+    (proclaim '(ftype (function (t *) t) $todd_coxeter))) ;; end of the macros and proclamations.
 
-
-) ;; end of the macros and proclamations.
-
-(eval-when (compile eval load)
-(deftype coset nil 'fixnum)
-(proclaim '(type (vector (coset)) *todo*))
-)
+(eval-when
+    #+gcl (compile eval load)
+    #-gcl (:compile-toplevel :execute :load-toplevel)
+    (deftype coset nil 'fixnum)
+    (proclaim '(type (vector (coset)) *todo*)))
 
 ;; The data type we use to enumerate cosets.
 

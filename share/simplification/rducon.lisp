@@ -8,9 +8,11 @@
 
 (macsyma-module rducon)
 
-(eval-when (load eval)
-  (or (get 'expens 'version)
-      (load "expense")))
+(eval-when
+    #+gcl (load eval)
+    #-gcl (:load-toplevel :execute)
+    (or (get 'expens 'version)
+	(load "expense")))
 
 (defmvar $const_eqns (list '(mlist simp))
 	 "List of equations of constant expressions found by REDUCE_CONSTS."

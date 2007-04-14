@@ -132,5 +132,4 @@
 (eval-when
     #+gcl (load)
     #-gcl (:load-toplevel)
-  (mapc #'(lambda (x) (putprop x '$float 'function-mode))
-	'($romberg_subr)))
+    (putprop '$romberg_subr '$float 'function-mode))
