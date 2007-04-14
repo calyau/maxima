@@ -8,6 +8,9 @@
 
 (in-package :maxima)
 
+(defun memq (x lis)
+  (member x lis :test #'eq))
+
 (eval-when
     #+gcl (compile load)
     #-gcl (:compile-toplevel :load-toplevel)
