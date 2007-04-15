@@ -92,6 +92,15 @@
   (setf (get v 'autoload)        "sym.mac")
   )
 
+;; src/autol.lisp/autof causes warnings in clisp
+;; so here is an intermediate workaround   VvN
+(defun autof2 (fun file)
+  (unless (fboundp fun)
+    (mputprop fun
+              `((lambda) ((mlist) ((mlist) |_l|))
+                ((mprogn) ((aload) ',file ) (($apply) ',fun |_l|)))
+              'mexpr)))
+
 (dolist (f       
      '($close
        $flength
@@ -152,17 +161,20 @@
        $substring
        $supcase
        $tokens ))
-  (autof f "stringproc"))
+  (autof2 f "stringproc"))
+
 
 ;; $printf doesn't work with autol.lisp/autom when calling with streams true and false
-;; don't know if (funcall ... in autom can be replaced by (apply ... 
 ;; so here is an intermediate workaround   VvN
-(let ((mf '$printf))
+#+gcl (let ((mf '$printf))
   (unless (fboundp mf)
     (setf (macro-function mf)
-          #'(lambda (&rest l)
-              (aload "stringproc")
-              (apply (macro-function mf) l)))))  
+      #'(lambda (&rest l)
+          (aload "stringproc")
+          (apply (macro-function mf) l)))))  
+
+#-gcl (setf (get '$printf 'autoload) ($file_search "stringproc"))
+
 
 (dolist (f       
      '($read_matrix
@@ -172,34 +184,34 @@
        $read_nested_list
        $read_list
        $write_data ))
-  (autof f "numericalio"))
+  (autof2 f "numericalio"))
 
-(autof '$eval_string "eval_string")
-(autof '$parse_string "eval_string")
+(autof2 '$eval_string "eval_string")
+(autof2 '$parse_string "eval_string")
 
 
 ;; begin functions from share/linearalgebra 
 
 ; loading linearalgebra.mac loads the complete linearalgebra stuff
-(defun autof-linearalgebra (fun)
+(defun autof2-linearalgebra (fun)
   (unless (fboundp fun)
-    (setf (symbol-function fun)
-        #'(lambda (&rest l)
-         ($aload_mac "linearalgebra")
-         (apply fun l)))))
+    (mputprop fun
+              `((lambda) ((mlist) ((mlist) |_l|))
+                ((mprogn) (($aload_mac) "linearalgebra" ) (($apply) ',fun |_l|)))
+              'mexpr)))
 
 (dolist (f       
-     '($eigens_by_jacobi   ; eigens-by-jacobi.lisp
+     '($eigens_by_jacobi       ; eigens-by-jacobi.lisp
      
-       $cholesky           ; linalgcholesky.lisp
+       $cholesky               ; linalgcholesky.lisp
        
-       $circulant          ; linalg-extra.lisp
+       $circulant              ; linalg-extra.lisp
        $cauchy_matrix
        $hessian
        $jacobian
        $matrix_sign
        
-       $blockmatrixp       ; linalg-utilities.lisp
+       $blockmatrixp           ; linalg-utilities.lisp
        $ctranspose
        $identfor
        $matrix_size
@@ -215,33 +227,33 @@
        $zerofor
        $zeromatrixp
        
-       $get_lu_factors     ; lu.lisp
+       $get_lu_factors         ; lu.lisp
        $invert_by_lu 
        $linsolve_by_lu
        $lu_backsub
        $lu_factor
        $mat_cond
        
-       $matrixexp          ; matrixexp.lisp
+       $matrixexp              ; matrixexp.lisp
        $matrixfun
        $spectral_rep
        
-       $addmatrices        ; mring.lisp
+       $addmatrices            ; mring.lisp
        $require_ring
        
-       $nonnegintegerp     ; polynomialp.lisp
+       $nonnegintegerp         ; polynomialp.lisp
        $polynomialp ))
-  (autof-linearalgebra f))
+  (autof2-linearalgebra f))
 
-(let ((fun '$ringeval))    ; mring.lisp
+(let ((fun '$ringeval))        ; mring.lisp
   (unless (get fun 'mfexpr*)
     (setf (get fun 'mfexpr*)
-     #'(lambda (l)
+      #'(lambda (l)
          ($aload_mac "linearalgebra")
          (funcall (get fun 'mfexpr*) l)))))
 
 (dolist (mexpr       
-     '($column_reduce      ;linearalgebra.mac
+     '($column_reduce          ;linearalgebra.mac
        $columnop
        $columnspace 
        $columnswap
