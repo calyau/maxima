@@ -1,1 +1,1 @@
-(setf $testsuite_files '((mlist simp) "../share/tensor/tests/atest" "../share/tensor/tests/ctest" "../share/tensor/tests/itest"))
+(setf $testsuite_files (list '(mlist simp) ($file_search "tests/atest") ($file_search "tests/ctest") ($file_search "tests/itest")))
