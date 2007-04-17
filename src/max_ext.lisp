@@ -92,14 +92,6 @@
   (setf (get v 'autoload)        "sym.mac")
   )
 
-;; src/autol.lisp/autof causes warnings in clisp
-;; so here is an intermediate workaround   VvN
-(defun autof2 (fun file)
-  (unless (fboundp fun)
-    (mputprop fun
-              `((lambda) ((mlist) ((mlist) |_l|))
-                ((mprogn) ((aload) ',file ) (($apply) ',fun |_l|)))
-              'mexpr)))
 
 (dolist (f       
      '($close
@@ -110,6 +102,7 @@
        $opena
        $openr
        $openw
+       $printf
        $readline
        $alphacharp
        $alphanumericp
@@ -161,20 +154,16 @@
        $substring
        $supcase
        $tokens ))
-  (autof2 f "stringproc"))
+  (setf (get f 'autoload) "stringproc"))
 
 
-;; $printf doesn't work with autol.lisp/autom when calling with streams true and false
-;; so here is an intermediate workaround   VvN
-#+gcl (let ((mf '$printf))
-  (unless (fboundp mf)
-    (setf (macro-function mf)
-      #'(lambda (&rest l)
-          (aload "stringproc")
-          (apply (macro-function mf) l)))))  
-
-#-gcl (setf (get '$printf 'autoload) ($file_search "stringproc"))
-
+;; src/autol.lisp/autof causes warnings in some Lisps
+(defun autof2 (fun file)
+  (unless (fboundp fun)
+    (mputprop fun
+              `((lambda) ((mlist) ((mlist) |_l|))
+      ((mprogn) ((aload) ',file ) (($apply) ',fun |_l|)))
+         'mexpr)))
 
 (dolist (f       
      '($read_matrix
@@ -190,16 +179,7 @@
 (autof2 '$parse_string "eval_string")
 
 
-;; begin functions from share/linearalgebra 
-
-; loading linearalgebra.mac loads the complete linearalgebra stuff
-(defun autof2-linearalgebra (fun)
-  (unless (fboundp fun)
-    (mputprop fun
-              `((lambda) ((mlist) ((mlist) |_l|))
-                ((mprogn) (($aload_mac) "linearalgebra" ) (($apply) ',fun |_l|)))
-              'mexpr)))
-
+;; functions from share/linearalgebra 
 (dolist (f       
      '($eigens_by_jacobi       ; eigens-by-jacobi.lisp
      
@@ -240,20 +220,14 @@
        
        $addmatrices            ; mring.lisp
        $require_ring
+       $ringeval
        
        $nonnegintegerp         ; polynomialp.lisp
        $polynomialp ))
-  (autof2-linearalgebra f))
-
-(let ((fun '$ringeval))        ; mring.lisp
-  (unless (get fun 'mfexpr*)
-    (setf (get fun 'mfexpr*)
-      #'(lambda (l)
-         ($aload_mac "linearalgebra")
-         (funcall (get fun 'mfexpr*) l)))))
+  (setf (get f 'autoload) "linearalgebra"))
 
 (dolist (mexpr       
-     '($column_reduce          ;linearalgebra.mac
+     '($column_reduce          ; linearalgebra.mac
        $columnop
        $columnspace 
        $columnswap
@@ -284,8 +258,6 @@
        $toeplitz
        $vandermonde_matrix ))
   ($auto_mexpr mexpr "linearalgebra"))
-
-;; end functions from share/linearalgebra
 
 
 '$parametric
