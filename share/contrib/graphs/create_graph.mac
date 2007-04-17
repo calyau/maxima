@@ -1,0 +1,81 @@
+/*
+
+  GRAPHS - graph theory package for Maxima
+  Copyright (C) 2007 Andrej Vodopivec <andrej.vodopivec@gmail.com>
+
+  This program is free software; you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation; either version 2 of the License, or
+  (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with this program; if not, write to the Free Software
+  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+
+*/
+
+
+random_network(n, p, w) := block(
+  [net, source, sink, u, v],
+  net: empty_digraph(n),
+  source: n,
+  sink: n+1,
+  add_vertex(source, net),
+  add_vertex(sink, net),
+  for i:0 thru n-1 do (
+    for j:0 thru n-1 do(
+      if i#j then (
+        if random(1.0)<p then (
+          add_edge([i, j], net),
+          set_edge_weight([i, j], random(w), net)
+        )
+      )
+    )
+  ),
+  for i:0 thru n-1 do (
+    if random(1.0)<p then (
+      add_edge([i, n+1], net),
+      set_edge_weight([i, n+1], random(w), net)
+      ),
+    if random(1.0)<p then (
+      add_edge([n, i], net),
+      set_edge_weight([n, i], random(w), net)
+    )
+  ),
+  [net, source, sink]
+)$
+
+random_regular_graph(n, [d]) := block(
+  [m, D, edg, i, j, e, i0],
+  if length(d)=1 then d: d[1]
+  else d: 3,
+  m: d*n,
+  if mod(m,2)#0 then (
+    m: m+d,
+    n: n+1
+  ),
+  U: 1,
+  while U=1 do (
+    U: makelist(i0-1,i0,1,m),
+    edg: [],
+    while length(U)#0 do (
+      i: U[random(length(U))+1],
+      U: delete(i, U),
+      j: U[random(length(U))+1],
+      U: delete(j, U),
+      i: divide(i, d)[1],
+      j: divide(j, d)[1],
+      e: [min(i,j), max(i,j)],
+      if i=j or member(e, edg) then U=[]
+      else edg: cons(e, edg)
+    ),
+    if 2*length(edg)<d*n then U: 1
+    else U: 0
+  ),
+  create_graph(makelist(i0-1,i0,1,n), edg)
+)$
