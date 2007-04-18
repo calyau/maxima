@@ -434,6 +434,7 @@ contrib/stats/rtest_stats.mac\
 contrib/stats/stats.mac\
 contrib/stringproc/rteststringproc.mac\
 contrib/stringproc/stringproc.lisp\
+contrib/stringproc/stringproc.mac\
 contrib/unit/unit-functions.lisp\
 contrib/unit/unit.mac\
 contrib/opsubst.lisp\
