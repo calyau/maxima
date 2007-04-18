@@ -89,6 +89,9 @@ Print extra information from the Maxima wrapper script.
 .TP
 \fB\-\-version\fR
 Print the (default) installed version.
+.TP
+\fB\-\-very\-quiet\fR
+Suppress expression labels and the Maxima start-up message.
 
 .SH INTRODUCTORY INSTRUCTIONS
 Upon initialization,
