@@ -32,21 +32,23 @@ fateman@peoplesparc.Berkeley.EDU (Richard Fateman)
 In November, 2001, the Maxima project moved to the Sourceforge
 project hosting site.
 
-As of September 2006, the Maxima developers are:
+As of April 2007, the Maxima developers are:
 
 James Amundson
 Jorge Barros de Abreu
 Jay Belanger
 David Billinghurst
+Marco Ciampa
 Douglas Crosher
 Robert Dodier
+Andreas Eder
 Andrey Grozin
 Yasuaki Honda
-Wolfgang Jenkner
 Stavros Macrakis
 Camm Maguire
 Volker van Nek
 Mario Rodriguez Riotorto
+Juan Pablo Romero Bernal
 Dan Stanger
 Viktor Toth
 Raymond Toy
@@ -56,23 +58,32 @@ Barton Willis
 Cliff Yapp
 Vadim V. Zhytnikov
 
-Former developers as of September 2006:
+Former developers as of April 2007:
 
 Mike Clarkson
 Steve Horne
 Judah Milgram
 Paulo Ney de Souza
 Sergey Semerikov
+Wolfgang Jenkner
 
 Maxima also includes contributions from:
 
-Juan Pablo Hierro Álvarez
+Michel van den Bergh
+Karl Berry
+Salvador Bosch Pérez
 Fedor Bezrukov
 Fabrizio Caruso
+Ari Constancio
 Gosei Furuya
+Juan Pablo Hierro Álvarez
+Vadim Konovalov
 Tim Moore
-Salvador Bosch Pérez
+Guenther Nowak
+Kostas Oikonomou
+Edmond Orignac
 Valerij Pipin
+Jose Ramirez Labrador
 Ole Rohne
 Thomas A. Russ
 Marek Rychlik
