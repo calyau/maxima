@@ -1633,6 +1633,8 @@ in the permutations.
 
 @code{permutations} complains if @var{a} is not a literal list or set.
 
+See also @code{random_permutation}.
+
 Examples:
 
 @c ===beg===
@@ -1686,6 +1688,36 @@ Examples:
 (%o5)                 @{@{w@}, @{x@}, @{y@}, @{z@}@}
 (%i6) powerset (@{w, x, y, z@}, 0);
 (%o6)                         @{@{@}@}
+@end example
+
+@end deffn
+
+@deffn {Function} random_permutation (@var{a})
+
+Returns a random permutation of the set or list @var{a},
+as constructed by the Knuth shuffle algorithm.
+
+The return value is a new list, which is distinct
+from the argument even if all elements happen to be the same.
+However, the elements of the argument are not copied.
+
+Examples:
+
+@c ===beg===
+@c random_permutation ([a, b, c, 1, 2, 3]);
+@c random_permutation ([a, b, c, 1, 2, 3]);
+@c random_permutation ({x + 1, y + 2, z + 3});
+@c random_permutation ({x + 1, y + 2, z + 3});
+@c ===end===
+@example
+(%i1) random_permutation ([a, b, c, 1, 2, 3]);
+(%o1)                  [c, 1, 2, 3, a, b]
+(%i2) random_permutation ([a, b, c, 1, 2, 3]);
+(%o2)                  [b, 3, 1, c, a, 2]
+(%i3) random_permutation (@{x + 1, y + 2, z + 3@});
+(%o3)                 [y + 2, z + 3, x + 1]
+(%i4) random_permutation (@{x + 1, y + 2, z + 3@});
+(%o4)                 [x + 1, y + 2, z + 3]
 @end example
 
 @end deffn
