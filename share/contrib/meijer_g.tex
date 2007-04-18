@@ -1,4 +1,5 @@
 \documentclass[11pt]{article}
+\usepackage{fullpage}
 
 \title{The Meijer G-function\footnote
 {Copyright 2007 by Edmond Orignac.
@@ -53,9 +54,11 @@ generalized hypergeometric functions.\cite{roach1997}
 
 For $p<q$ or for $p=q$ and $|z|<1$ one has:
 
-\begin{equation}\label{slater}
-   G^{mn}_{pq}\left(z,\begin{array}{c} a_1\ldots a_n;a_{n+1} \ldots a_p \\ b_1\ldots b_m;b_{m+1} \ldots b_q \end{array} \right)= \sum_{k=1}^m  \frac{ z^{b_k} \prod_{j=1}^n \Gamma(1+b_k-a_j) \prod_{l=1\atop l\ne k}^m \Gamma(b_j-b_k)}{\prod_{j=n+1}^p \Gamma(a_j-b_k) \prod_{j=m+1}^q \Gamma(1+b_k-b_j)} {}_pF_{q-1} (\{1+b_k-a_j\};\{1+b_k-b_l\}_{l\ne k};(-1)^{m+n-p} z) 
-\end{equation}
+\begin{eqnarray}\label{slater}
+&&G^{mn}_{pq}\left(z,\begin{array}{c} a_1\ldots a_n;a_{n+1} \ldots
+       a_p \\ b_1\ldots b_m;b_{m+1} \ldots b_q \end{array} \right)= \\[6pt]
+&&\sum_{k=1}^m  \frac{ z^{b_k} \prod_{j=1}^n \Gamma(1+b_k-a_j) \prod_{l=1\atop l\ne k}^m \Gamma(b_j-b_k)}{\prod_{j=n+1}^p \Gamma(a_j-b_k) \prod_{j=m+1}^q \Gamma(1+b_k-b_j)} {}_pF_{q-1} (\{1+b_k-a_j\};\{1+b_k-b_l\}_{l\ne k};(-1)^{m+n-p} z)\nonumber
+\end{eqnarray}
 
 The case of $q>p$ or $p=q$ and $|z|>1$ can be treated by applying first (\ref{contin}) and then (\ref{slater}). The condition is then that 
 there are no $a_j-a_k$ that are integer.
@@ -222,7 +225,7 @@ This identity is used by the function \texttt{macrobert\_ered(a,b,x)} to derive 
 \bibitem{meijer1932}
 {\sc Meijer, C.~S.}
 \newblock Asymptotische entwicklungen von besselschen und hankelschen
-  funktionen für grosse...
+  funktionen f\"ur grosse...
 \newblock {\em Math. Ann. 108\/} (1932), 21.
 \newblock available from \texttt{http://www.digizeitschriften.de}.
 
