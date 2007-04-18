@@ -255,6 +255,11 @@ contrib/gentran/vaxinit.lisp\
 contrib/gentran/vaxlsp.lisp\
 contrib/ggf.mac\
 contrib/graph2d.lisp\
+contrib/graphs/create_graph.mac\
+contrib/graphs/draw_graph.mac\
+contrib/graphs/graph_core.lisp\
+contrib/graphs/graph_polynomials.mac\
+contrib/graphs/graphs.mac\
 contrib/impdiff.mac\
 contrib/implicit_plot.lisp\
 contrib/levin/levin.dem\
