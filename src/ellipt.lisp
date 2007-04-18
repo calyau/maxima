@@ -456,29 +456,37 @@
 (defmfun $inverse_jacobi_dn (u m)
   (simplify (list '(%inverse_jacobi_dn) (resimplify u) (resimplify m))))
 
-;; A complex number looks like
+;; Possible forms of a complex number:
 ;;
-;; ((MPLUS SIMP) 0.70710678118654757 ((MTIMES SIMP) 0.70710678118654757 $%I))
+;; 2.3
+;; $%i
+;; ((mplus simp) 2.3 ((mtimes simp) 2.3 $%i))
+;; ((mplus simp) 2.3 $%i))
+;; ((mtimes simp) 2.3 $%i)
 ;;
-;; or
-;;
-;; ((MPLUS SIMP) 1 $%I))
-;;
-;; or
-;;
-;; $%I
-;;
-(defun complex-number-p (u &optional (ntypep 'numberp))
-  ;; Return non-NIL if U is a complex number (or number)
-  (or (funcall ntypep u)
-      (and (consp u)
-	   (funcall ntypep (second u))
-	   (or (and (consp (third u))
-		    (funcall ntypep (second (third u)))
-		    (eq (third (third u)) '$%i))
-	       (and (eq (third u) '$%i))))
-      (and (eq u '$%i) (funcall ntypep 1))))
 
+
+;; Is argument u a complex number with real and imagpart satisfying predicate ntypep?
+(defun complex-number-p (u &optional (ntypep 'numberp))
+  (labels ((a1 (x) (cadr x))
+	   (a2 (x) (caddr x))
+	   (a3+ (x) (cdddr x))
+	   (N (x) (funcall ntypep x))	     ; N
+	   (i (x) (and (eq x '$%i) (N 1)))   ; %i
+	   (N+i (x) (and (null (a3+ x))	     ; mplus test is precondition
+			 (N (a1 x))
+			 (or (i (a2 x))
+			     (and (mtimesp (a2 x)) (N*i (a2 x))))))
+	   (N*i (x) (and (null (a3+ x))	     ; mtimes test is precondition
+			 (N (a1 x))
+			 (i (a2 x)))))
+    (declare (inline a1 a2 a3+ N i N+i N*i))
+    (cond ((N u))			     ;2.3
+	  ((atom u) (i u))		     ;%i
+	  ((mplusp u) (N+i u))		     ;N+%i, N+N*%i
+	  ((mtimesp u) (N*i u))		     ;N*%i
+	  (t nil))))
+	
 (defun complexify (x)
   ;; Convert a Lisp number to a maxima number
   (if (realp x)
