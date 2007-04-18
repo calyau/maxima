@@ -48,7 +48,7 @@
 (defvar *gr-options* (make-hash-table))
 
 
-;; Sets default values to graphics options
+;; Sets default values of graphics options
 (defun ini-gr-options ()
   (setf ; graphics options
       ; header options
@@ -619,10 +619,10 @@
           eps (/ (- tmax tmin) (- nticks 1)))
     (setf tt tmin)
     (loop
-      (setf x (+ xc (* fa (cos tt))))
+      (setf x (+ fxc (* fa (cos tt))))
       (if (> x xmax) (setf xmax x))
       (if (< x xmin) (setf xmin x))
-      (setf y (+ yc (* fb (sin tt))))
+      (setf y (+ fyc (* fb (sin tt))))
       (if (> y ymax) (setf ymax y))
       (if (< y ymin) (setf ymin y))
       (setf result (append (list x y) result))
@@ -630,10 +630,10 @@
       (setf tt (+ tt eps))
       (if (>= tt tmax) (setq tt tmax)) )
     ; update x-y ranges if necessary
-    (setf xmin (min xc xmin)
-          xmax (max xc xmax)
-          ymin (min yc ymin)
-          ymax (max yc ymax))
+    (setf xmin (min fxc xmin)
+          xmax (max fxc xmax)
+          ymin (min fyc ymin)
+          ymax (max fyc ymax))
     (update-ranges xmin xmax ymin ymax)
     (cond
        ((get-option '$transparent)  ; if transparent, draw only the border
