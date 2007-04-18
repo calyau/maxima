@@ -165,6 +165,8 @@
       ((mprogn) ((aload) ',file ) (($apply) ',fun |_l|)))
          'mexpr)))
 
+(auto-mspec '$romberg "romberg")
+
 (dolist (f       
      '($read_matrix
        $read_lisp_array
