@@ -304,7 +304,7 @@ tiempos de procesamiento m@'as elevados.
 @dfn{huerange} define el intervalo de @'angulos usados para la tonalidad
 de los puntos que no pertenecen al conjunto. El valor por omisi@'on es
 360, que hace que los colores usados abarcar@'an todo el rango de
-tonalidades. Valores mayores que 360 implican repetición de algunos
+tonalidades. Valores mayores que 360 implican repetici@'on de algunos
 valores de la tonalidad, y pueden usarse valores negativos para que el
 @'angulo de tonalidad sea menor a medida que el n@'umero de iteraciones
 aumente.

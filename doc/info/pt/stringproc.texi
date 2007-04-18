@@ -928,8 +928,8 @@ todos os caracteres em caixa baixa de @var{in@'{@dotless{i}}cio} at@'e o fim de 
 Retorna uma lista de fichas, que tiverem sido extr@'{@dotless{i}}dos de @var{seq_caracte}.
 As fichas s@~ao subsequ@^encias de caracteres cujos caracteres satisfazem a uma determinada fun@,{c}@~ao de teste.
 Se o teste n@~ao for fornecido, @var{constituent} @'e usada como teste padr@~ao.
-@code{@{constituent, alphacharp, digitcharp, lowercasep, uppercasep, charp, characterp, alphanumericp@}} @'e o conjunto de fn@,{c}òes de teste. 
-(A ver@~ao Lisp de @code{tokens} @'e escrita por Paul Graham. ANSI Common Lisp, 1996, page 67.)
+@code{@{constituent, alphacharp, digitcharp, lowercasep, uppercasep, charp, characterp, alphanumericp@}} @'e o conjunto de fn@,{c}~oes de teste. 
+(A vers@~ao Lisp de @code{tokens} @'e escrita por Paul Graham. ANSI Common Lisp, 1996, page 67.)
 
 @c ===beg===
 @c load("stringproc")$

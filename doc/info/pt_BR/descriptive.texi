@@ -752,7 +752,7 @@ Veja tamb@'{e}m as fun@value{cedilha}@~{o}es @code{std} e @code{mean}.
 
 @deffn {Fun@value{cedilha}@~{a}o} mini (@var{lista})
 @deffnx {Fun@value{cedilha}@~{a}o} mini (@var{matriz})
-Ë o vaor m@'{i}nimo da amostra @var{lista},
+@'E o valor m@'{i}nimo da amostra @var{lista},
 
 @c ===beg===
 @c load (descriptive)$

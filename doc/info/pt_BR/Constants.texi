@@ -14,7 +14,7 @@
 @vrindex Base do logar@'{i}tmo natural
 @end ifinfo
 @code{%e} representa a base do logar@'{i}tmo natural, tamb@'{e}m conhecido como constante de Euler.
-O valor num´erico de @code{%e} @'{e} um n@'{u}mero em ponto flutuante de precis@~{a}o dupla 2.718281828459045d0.
+O valor num@'erico de @code{%e} @'{e} um n@'{u}mero em ponto flutuante de precis@~{a}o dupla 2.718281828459045d0.
 
 @end defvr
 

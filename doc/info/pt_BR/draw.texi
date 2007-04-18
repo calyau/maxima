@@ -647,7 +647,7 @@ Veja tamb@'{e}m @code{axis_bottom},  @code{axis_left}, @code{axis_top}, e @code{
 @defvr {Op@value{cedilha}@~{a}o gr@'{a}fica} point_size
 Valor padr@~{a}o: 1
 
-@code{point_size} escolhe o tamanho para os pontos do gr´afico. Esse valor deve ser um
+@code{point_size} escolhe o tamanho para os pontos do gr@'afico. Esse valor deve ser um
 n@'{u}mero n@~{a}o negativo.
 
 Essa op@value{cedilha}@~{a}o afeta os seguintes objetos gr@'{a}ficos:

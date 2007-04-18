@@ -566,7 +566,7 @@ El nombre @code{sexplode} es un seud@'onimo de la funci@'on @code{charlist}.
 @deffnx {Funci@'on} simplode (@var{list}, @var{delim})  
 La funci@'on @code{simplode} admite como entrada una lista de expresiones para
 luego convertirla en una cadena de caracteres. Si no se utiliza la opci@'on @var{delim}
-para indicar el delimitador, entonces @code{simplode} actúa como @code{sconc} y no 
+para indicar el delimitador, entonces @code{simplode} act@'ua como @code{sconc} y no 
 hace uso de ninguno. El valor de @var{delim} puede ser cualquier cadena.
 
 @c ===beg===

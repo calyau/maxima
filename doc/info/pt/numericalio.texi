@@ -107,7 +107,7 @@ Linhas n@~ao precisam ter o mesmo n@'umero de elementos.
 @deffnx {Fun@value{cedilha}@~ao} read_nested_list (@var{nomeficheiro}, @var{separator_flag})
 
 @code{read_nested_list} retorna uma lista que tem uma sublista para cada
-linha de entrada. Linhas n@~ao precisam ter o mesmo n´umero de elementos.
+linha de entrada. Linhas n@~ao precisam ter o mesmo n@'umero de elementos.
 Linhas vazias @i{n@~ao} s@~ao ignoradas: uma linha vazia retorna uma sublista vazia.
 
 @end deffn

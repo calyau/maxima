@@ -648,7 +648,7 @@ Cuando el primer argumento es una expresi@'on con operador @code{funmake},
 @end deffn
 
 
-@c Parece ser que parte de esta definción está obsoleta; he optado por obviarla (Mario).
+@c Parece ser que parte de esta definici@'on est@'a obsoleta; he optado por obviarla (Mario).
 @deffn {Funci@'on} define_variable (@var{nombre}, @var{valor_por_defecto}, @var{modo})
 
 Introduce una variable global en el entorno de Maxima. 
@@ -1307,7 +1307,7 @@ La funci@'on @code{mode_declare} se utiliza para declarar los modos de variables
 
 Los argumentos de @code{mode_declare} son pares formados por una variable y un modo, el cual debe ser @code{boolean}, @code{fixnum}, @code{number}, @code{rational} o @code{float}. Cada variable puede ser sustituida por una lista de variables, en cuyo caso todas ellas tendr@'an el mismo modo.
 
-@c aquí me salto un párrafo que no está claro en el original (Mario).
+@c aqu@'i me salto un p@'arrafo que no est@'a claro en el original (Mario).
 
 C@'odigo num@'erico que utilice arreglos puede ejecutarse m@'as r@'apido declarando el tama@~no que va a ocupar el arreglo, como en:
 
@@ -1333,7 +1333,7 @@ El nombre @code{modedeclare} es sin@'onimo de @code{mode_declare}.
 @deffn {Funci@'on} mode_identity (@var{arg_1}, @var{arg_2})
 Es una forma especial usada con @code{mode_declare} y @code{macros} para declarar, por ejemplo, una lista de listas de n@'umeros. 
 
-@c Elimino aquí un párrafo. Comentario en la versión inglesa: WHAT IS THIS ABOUT ?? (Mario)
+@c Elimino aqu@'i un p@'arrafo. Comentario en la versi@'on inglesa: WHAT IS THIS ABOUT ?? (Mario)
 
 @end deffn
 

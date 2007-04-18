@@ -160,7 +160,7 @@ Para reduzir esse conjunto a um conjunto simples, apliquemos @code{rat} a cada e
 (%o2)/R/                    @{x  - 1@}
 @end example
 
-Para remover redundâncias de outros conjuntos, voc@^{e} pode precisar usar outras
+Para remover redund@^ancias de outros conjuntos, voc@^{e} pode precisar usar outras
 fun@value{cedilha}@~{o}es de simplifica@value{cedilha}@~{a}o. Aqui est@'{a} um exemplo que usa @code{trigsimp}:
 
 @c ===beg===

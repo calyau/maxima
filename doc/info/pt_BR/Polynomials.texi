@@ -746,8 +746,8 @@ calculados em @code{divisors}, @code{divsum} e @code{totient}.
 
 @c WHAT ARE THESE MYSTERIOUS INTERNAL CALLS ?? (LET'S JUST LIST THE FUNCTIONS INVOLVED)
 Chamadas internas a @code{factor} respeitam o valor especificado pelo usu@'{a}rio para
-@code{intfaclim}.  Setting @code{intfaclim} to @code{true} may reduce
-@code{intfaclim}.  Escolhendo @code{intfaclim} para @code{true} podemos reduzir
+@code{intfaclim}. Setting @code{intfaclim} to @code{true} may reduce
+@code{intfaclim}. Escolhendo @code{intfaclim} para @code{true} podemos reduzir
 o tempo gasto fatorando grandes inteiros.
 @c NEED EXAMPLES HERE
 

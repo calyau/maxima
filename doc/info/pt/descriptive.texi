@@ -754,7 +754,7 @@ Veja tamb@'em as fun@,{c}@~oes @code{std} e @code{mean}.
 
 @deffn {Fun@,{c}@~ao} mini (@var{lista})
 @deffnx {Fun@,{c}@~ao} mini (@var{matriz})
-Ë o vaor m@'{@dotless{i}}nimo da amostra @var{lista},
+@'E o valor m@'{@dotless{i}}nimo da amostra @var{lista},
 
 @c ===beg===
 @c load (descriptive)$
@@ -1866,7 +1866,7 @@ Se pontos forem armazenados em uma matriz de duas colunas, @code{dataplot} pode 
  'joined = true, 'axisnames = ["", ""], 'picturescales = [0.5, 1.0])$
 @end example
 
-Pontos no espa@,{c}o tridimensional podem ser vistos como uma proje@,{c}@~ao no plano. Nesse exemplo, o gr@'afico de velocidades do vento correspondendo a tr@^es esta@,{c}òes meteorol@'ogicas s@~ao requisitados, primeiramente em um gr@'afico em 3D e a seguir em um gr@'afico de dispers@`ao de v@'arias vari@'aveis.
+Pontos no espa@,{c}o tridimensional podem ser vistos como uma proje@,{c}@~ao no plano. Nesse exemplo, o gr@'afico de velocidades do vento correspondendo a tr@^es esta@,{c}@~oes meteorol@'ogicas s@~ao requisitados, primeiramente em um gr@'afico em 3D e a seguir em um gr@'afico de dispers@`ao de v@'arias vari@'aveis.
 
 @c ===beg===
 @c load (descriptive)$

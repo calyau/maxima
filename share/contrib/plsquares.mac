@@ -35,10 +35,10 @@ Dependences:
   makeOrders.mac
 
 History:
-  2003-11 Salvador Bosch Pérez - version 1.1. Multiple dependent variables
+  2003-11 Salvador Bosch PÃ©rez - version 1.1. Multiple dependent variables
     (to return a list of polynomials). maxexpon and maxdegree are now 
     optional. Code more readable.
-  2003-10 Salvador Bosch Pérez - version 1.0 (not released)
+  2003-10 Salvador Bosch PÃ©rez - version 1.0 (not released)
 
 Possible future improvements:
   - Option to read the data from a file instead of from a matrix.
@@ -46,7 +46,7 @@ Possible future improvements:
 
 --
 
-Copyright (C) 2003  Salvador Bosch Pérez
+Copyright (C) 2003  Salvador Bosch PÃ©rez
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public
