@@ -186,6 +186,7 @@ contrib/format/coeflistp.lisp\
 contrib/format/format.announce\
 contrib/format/format.demo\
 contrib/format/format.lisp\
+contrib/format/format.mac\
 contrib/format/format.ps\
 contrib/format/pois2.demo\
 contrib/format/pois2m.ps\
