@@ -440,11 +440,11 @@ eval_when(batch,
  *
  ********************/
 
-expand_sum(expr, k, lo, hi) :=
+expand_sum(expr, k%%, lo%%, hi%%) :=
   if not(atom(expr)) and part(expr, 0)="+" then
-    map(lambda([u], apply(sum, [u, k, lo, hi])), expr)
+    map(lambda([u], apply(sum, [u, k%%, lo%%, hi%%])), expr)
   else
-    apply(sum, [expr, k, lo, hi]);
+    apply(sum, [expr, k%%, lo%%, hi%%]);
 
 split_sum(expr) := block(
   [opsubst:true, s],
