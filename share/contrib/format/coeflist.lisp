@@ -419,7 +419,7 @@
 		 (cond ((like expr v)   1)	; Trivial case: expr is V itself
 		       ((or ($atom expr)(freeof v expr)) 0)	; `constant' case
 		       ((member op '(mplus mlist mequal $matrix))
-			(cl-reduce #'$min (cdr expr) #'mino))
+			(cl-reduce #'(lambda (u v) ($lmin `((mlist simp) ,u ,v))) (cdr expr) #'mino))
 		       ((eq op 'mtimes)  (cl-reduce #'add (cdr expr) #'mino))
 		       ((and (eq op 'mexpt)($numberp (third expr)))	; can we compute?
 			(mul (mino (second expr)) (third expr)))
