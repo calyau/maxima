@@ -543,12 +543,6 @@ values")
 	(intern (string (char str (1- i))))
 	nil)))
 
-(defun getchars (symb start end)
-  (let ((strin (string symb)))
-    (if (<= 1 start (length strin))
-	(intern (string (subseq strin (1- start) (1- end))))
-	nil)))
-
 (defun ascii (n)
   (intern (string n)))
 

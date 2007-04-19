@@ -123,14 +123,14 @@
          ;; WHY CHECK INITIAL SUBSTRING IF SYMBOL IS ON THE $LABELS LIST ??
          ;; PROBABLY IT IS A HOLDOVER FROM THE DAYS WHEN LABELS WERE C AND D INSTEAD OF %I AND %O
 	     (<= (length (string $inchar)) (length (string mexplabel)))
-	     (eq (getchars (maybe-invert-string-case (string $inchar)) 2 (1+ (length (string $inchar))))
-		 (getchars mexplabel 2 (1+ (length (string $inchar)))))
+	     (string= (subseq (maybe-invert-string-case (string $inchar)) 1 (length (string $inchar)))
+		      (subseq (string mexplabel) 1 (length (string $inchar))))
 	     ;; Check to make sure it isn't an outchar in disguise
 	     (not
 	      (and
 	       (<= (length (string $outchar)) (length (string mexplabel)))
-	       (eq (getchars (maybe-invert-string-case (string $outchar)) 2 (1+ (length (string $outchar))))
-		   (getchars mexplabel 2 (1+ (length (string $outchar))))))))
+	       (string= (subseq (maybe-invert-string-case (string $outchar)) 1 (length (string $outchar)))
+			(subseq (string mexplabel) 1 (length (string $outchar)))))))
 	    ;; aha, this is a C-line: do the grinding:
 	    (format texport "~%\\begin{verbatim}~%~a " mexplabel)
 	    (mgrind mexp texport)	;write expression as string

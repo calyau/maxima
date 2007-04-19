@@ -64,14 +64,14 @@
 	   ((and
 	     itsalabel ;; but is it a user-command-label?
 	     (<= (length (string $inchar)) (length (string mexplabel)))
-	     (eq (getchars $inchar 2 (1+ (length (string $inchar))))
-		 (getchars mexplabel 2 (1+ (length (string $inchar)))))
+	     (string= (subseq (string $inchar) 1 (length (string $inchar)))
+		      (subseq (string mexplabel) 1 (length (string $inchar))))
 	     ;; Check to make sure it isn't an outchar in disguise
 	     (not
 	      (and
 	       (<= (length (string $outchar)) (length (string mexplabel)))
-	       (eq (getchars $outchar 2 (1+ (length (string $outchar))))
-		   (getchars mexplabel 2 (1+ (length (string $outchar))))))))
+	       (string= (subseq (string $outchar) 1 (length (string $outchar)))
+			(subseq (string mexplabel) 1 (length (string $outchar)))))))
 	    ;; aha, this is a C-line: do the grinding:
 	    (format texport "~%|~a " mexplabel) ;delimit with |marks
 	    (mgrind mexp texport)	;write expression as string
