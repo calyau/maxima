@@ -234,9 +234,8 @@
   (cond ((macsyma-namestringp x) t)
 	(($listp x) t)
 	((symbolp x)
-	 (char= #\& (getcharn x 1)))
-	('else
-	 nil)))
+	 (char= #\& (char (symbol-name x) 0)))
+	(t nil)))
 
 ;;;; batch & demo search hacks
 
@@ -398,7 +397,7 @@
 ;; multiple possiblities.  eg foo.l{i,}sp or foo.{dem,dm1,dm2}
 (defun $file_search (name &optional paths)
   (if (and (symbolp name)
-	   (member (getcharn name 1) '(#\& #\$)))
+	   (member (char (symbol-name name) 0) '(#\& #\$)))
       (setq name (subseq (print-invert-case name) 1)))
   (if (symbolp name)  (setf name (string name)))
   (if (probe-file name) (return-from $file_search name))

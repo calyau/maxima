@@ -195,7 +195,7 @@
        (setq sl (maknam sl))
        (cons sl (nreverse se)))
     (setq s (pop l))
-    (cond ((and (symbolp s) (char= (getcharn s 1) #\&))
+    (cond ((and (symbolp s) (char= (char (symbol-name s) 0) #\&))
 	   (setq sb (mapcan #'(lambda (x)
 				(if (char= x #\~)
 				    (list x x)

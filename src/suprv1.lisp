@@ -795,7 +795,7 @@
   (nonsymchk x '$verbify)
   (setq x (amperchk x))
   (cond ((get x 'noun))
-	((and (char= (getcharn x 1) #\%)
+	((and (char= (char (symbol-name x) 0) #\%)
 	      (prog2
 		  ($nounify (implode (cons #\$ (cdr (exploden x)))))
 		  (get x 'noun))))

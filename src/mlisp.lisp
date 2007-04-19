@@ -592,7 +592,7 @@ wrapper for this."
 	    (when (or (not (symbolp x))
 		      (member x '(t nil) :test #'eq)
 		      (mget x '$numer)
-		      (char= (getcharn x 1) #\&))
+		      (char= (char (symbol-name x) 0) #\&))
 	      (if munbindp (return nil))
 	      (if (mget x '$numer)
 		  (merror "~:M improper value assignment to a numerical quantity" x)
