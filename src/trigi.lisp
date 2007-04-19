@@ -308,7 +308,7 @@
   (neg (take (list op) (neg x))))
 
 (defun even-function-reflect (op x)
-  (neg (take (list op) (neg x))))
+  (take (list op) (neg x)))
 
 ;; Put the reflection rule on the property list of the exponential-like
 ;; functions.
