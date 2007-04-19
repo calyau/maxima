@@ -916,22 +916,24 @@ relational knowledge is contained in the default context GLOBAL."
       (if (every #'(lambda (s) (eq nil (meqp bk s))) a) (throw 'done t)))
     (throw 'done nil)))
 
-(defmfun mgrp (x y)
-  (compare x y)
-  (cond ((eq '$pos sign))
-	((member sign '($neg $zero $nz) :test #'eq) nil)
-	(t (c-$pos odds evens))))
+(defun mgrp (a b)
+  (setq a (sub a b))
+  (let ((sgn (csign a)))
+    (cond ((eq sgn '$pos) t)
+	  ((eq sgn t) nil) ;; csign thinks a - b isn't real
+	  ((memq sgn '($neg $zero $nz)) nil)
+	  (t `((mgreaterp) ,a 0)))))
 
 (defun mlsp (x y)
   (mgrp y x))
 
-(defmfun mgqp (x y)
-  (compare x y)
-  (cond ((member sign '($pos $zero $pz) :test #'eq) t)
-	((eq '$neg sign) nil)
-	((eq '$nz sign) (c-$zero odds evens))
-	((eq '$pn sign) (c-$pos odds evens))
-	(t (c-$pz odds evens))))
+(defun mgqp (a b)
+  (setq a (sub a b))
+  (let ((sgn (csign a)))
+    (cond ((memq sgn '($pos $zero $pz)) t)
+	  ((eq sgn t) nil) ;; csign thinks a - b isn't real 
+	  ((eq sgn '$neg) nil)
+	  (t `((mgeqp) ,a 0)))))
 
 (defun mnqp (x y)
   (let ((b (meqp x y)))
@@ -956,7 +958,6 @@ relational knowledge is contained in the default context GLOBAL."
 	((null e) (list '(mgeqp) (lmul o) 0))
 	(t (setq e (mapcar #'(lambda (l) (pow l 2)) e))
 	   (list '(mgeqp) (lmul (nconc o e)) 0))))
-
 
 (defun sign* (x)
   (let (sign minus odds evens)
