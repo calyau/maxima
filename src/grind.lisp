@@ -14,8 +14,6 @@
 
 (declare-top (special lop rop *grind-charlist* chrps $aliases aliaslist linel))
 
-(defun chrct () (- linel chrps))
-
 (defun chrct* () (- linel chrps))
 
 (defvar fortranp nil)
@@ -40,25 +38,8 @@
       (t (mgrind x nil) (write-char #\$ nil) (write-char #\Newline nil)))
     '$done))
 
-(defun show-msize (lis)
-  (format t "~%Length is ~A" (car lis))
-  (loop for v in (cdr lis)
-	 when (numberp v) do (princ (ascii v))
-	 else when (consp v)
-	 do   (show-msize v)))
-
 ;;Msize returns a list whose first member is the number of characters
 ;;in the printed representation of the rest of the list.
-;;thus to print something given it's msize you could
-;;use msize-print if you did not care about line breaks etc.
-;;If you care about them then you should send a newline
-;;if the current distance to the margin is bigger than the first element of lis
-
-(defun msize-print (lis)
-  (loop for v in (cdr lis)
-	 when (numberp v)
-	 do (princ (ascii v))
-	 else do (msize-print v)))
 
 (defun i-$grind (x)
   (let (y)
@@ -83,7 +64,8 @@
 
 (defun mprint (x out)
   (cond ((characterp x)
-	 (setq chrps (1+ chrps)) (write-char x out))
+	 (incf chrps)
+	 (write-char x out))
 	((< (car x) (chrct*)) (mapc #'(lambda (l) (mprint l out)) (cdr x)))
 	(t (prog (i) (setq i chrps)
 		 (mprint (cadr x) out)
@@ -101,10 +83,11 @@
 		     (t (setq chrps 0) (terpri out) (mtyotbsp i out)))
 		   (mprint (car l) out))))))
 
-(defun mtyotbsp (n out) (declare (fixnum n))
-       (setq chrps (+ n chrps))
-       (do () ((< n 8)) (write-char #\tab out) (setq n (- n 8)))
-       (do () ((< n 1)) (write-char #\space out) (setq n (1- n))))
+(defun mtyotbsp (n out)
+  (declare (fixnum n))
+  (incf chrps n)
+  (do () ((< n 8)) (write-char #\tab out) (decf n 8))
+  (do () ((< n 1)) (write-char #\space out) (decf n)))
 
 (defun strgrind (x)
   (let (*grind-charlist* (chrps 0))
