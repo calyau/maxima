@@ -1507,6 +1507,30 @@ rationalize(0.09375 < 0.3984375);
 rationalize(0.09375b0 < 0.3984375b0);
 3/32 < 51/128$
 
+/* SF bug 1703298  max leads to UND error */
+
+max(1/(q-1));
+1/(q-1)$
+
+max(1/(q-1),1/(q-1));
+1/(q-1)$
+
+args(max(1/(q-1),1/(q-2)));
+[1/(q-1),1/(q-2)]$
+
+is(compare(1/(q-1),minf) = ">");
+true$
+
+is(compare(minf, 1/(q-1)) = "<");
+true$
+
+/* SF bug 1703376  max(inf, ...) doesn't simplify to inf */
+
+max(1/(1-x),inf);
+inf$
+
+min(1/(1-x),minf);
+minf$
 
 
 
