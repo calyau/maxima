@@ -1500,7 +1500,7 @@
 		     ;;		      (COND ((ALIKE1 Z (SETQ Z (SIMPLIFYA Z NIL)))
 		     ;;			     (SETQ RAD (CONS W RAD)))
 		     ;;			    (T (SETQ W (TIMESIN Z RES 1)))))
-		     ((memq z '($pn $pnz) #'eq) (setq rad (cons w rad)))
+		     ((memq z '($pn $pnz)) (setq rad (cons w rad)))
 		     (t (setq w (testt (tms (simplifya (list '(mexpt) w pot) t)
 					    1 (cons '(mtimes) res))))))
 	       (cond (rulesw (setq rulesw nil res (cdr w))))))
