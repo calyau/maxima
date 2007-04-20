@@ -1,5 +1,5 @@
 ;; Maxima functions for finding the maximum or minimum
-;; Copyright (C) 2005, Barton Willis
+;; Copyright (C) 2005, 2007 Barton Willis
 
 ;; Barton Willis
 ;; Department of Mathematics, 
@@ -40,23 +40,20 @@
 
 ;; The betweenp simplification is done last; this has some interesting effects:
 ;; max(x^2,x^4,x^6,x^2+1) (standard simplification) --> max(x^4,x^6,x^2+1) 
-;; (betweenp) --> max(x^4,x^6,x^2+1).  If the betweenp simplification were done 
+;; (betweenp) --> max(x^4,x^6,x^2+1). If the betweenp simplification were done 
 ;; first, we'd have max(x^2,x^4,x^6,x^2+1) --> max(x^2,x^6,x^2+1) --> max(x^6,x^2+1).
-	  
-(defun betweenp (x p q)
-  (let ((sgn) ($prederror nil))
-    (cond ((or (null p) (null q)) nil)
-	  (t
-	   (setq sgn (csign ($expand (mul ($limit (sub x (car p))) ($limit (sub (car q) x))))))
-	   (or 
-	    (eq sgn '$pos) (eq sgn '$pz)
-	    (betweenp x (list (first p)) (cdr q))
-	    (betweenp x (cdr p) (list (first q))))))))
 
-;; Return true iff expand(x + y) evaluates to zero. 
+(defun betweenp (x p q)
+  (catch 'done
+      (dolist (pk p)
+	(dolist (qk q)
+	  (if (memq (csign ($expand (mul (sub x pk) (sub qk x)))) '($pos $pz)) (throw 'done t))))
+      nil))
+	  	       
+;; Return true if y is the additive inverse of x. 
 
 (defun add-inversep (x y)
-  (like 0 ($expand (add x y))))
+  (eq t (meqp x (neg y))))
 	    
 ;; When get(trylevel,maxmin) is two or greater, max and min try additional 
 ;; O(n^2) and O(n^3) methods.
@@ -66,49 +63,45 @@
 (defprop $max simp-max operators)
 
 (defun simp-max (l tmp z)
-  (let ((limitp t) (acc) (sgn) (num-max '$minf) (issue-warning))
-    (let (($simp nil)) (setq l ($flatten l)))
-    (setq l (mapcar #'(lambda (x) (simplifya x z)) (cdr l)))
-    (setq l (mapcar #'specrepcheck l))
-	   
-    ;; It's reasonable to map $limit onto l. But $limit makes a mess for
-    ;; some (admittedly oddball) cases: try limit(true), limit(false), and
-    ;; limit(?foo).
-
-    ;;(setq l (mapcar #'$limit l))
-	   		 
+  (let ((acc nil) (sgn) (num-max nil) (issue-warning))
+    (setq l (margs (specrepcheck l)))
+    (dolist (li l)
+      (if (op-equalp li '$max) (setq acc (append acc (mapcar #'(lambda (s) (simplifya s z)) (margs li))))
+	(push (simplifya li z) acc)))
+	  
+    (setq l acc)
+    (setq acc nil)
+        	   		 
     ;; We begin by finding the largest number in l. Alternatively,
     ;; we could find the largest constant expression, but we'd need
     ;; to be careful to expunge complex valued constant expressions.
-    ;; Notice that constantp(%i) --> true.  At least for now, (mnump '$%i) 
+    ;; Notice that constantp(%i) --> true. At least for now, (mnump '$%i) 
     ;; is false. If this changes, it will break this code.
 	  	    
     (dolist (li l)
-      (if (mnump li) (setq num-max (if (mgrp li num-max) li num-max)) (push li acc)))
+      (if (mnump li) (setq num-max (if (or (null num-max) (mgrp li num-max)) li num-max)) (push li acc)))
     (setq l acc)
-    (setq acc (list num-max))
-
-    ;; When e and -e are members of l, replace e by |e|. Do this only when
-    ;; trylevel is 2 or higher.  
+    (setq acc (if (null num-max) num-max (list num-max)))
+    
+    (dolist (x l)
+      (setq sgn (mapcar #'(lambda (s) (list ($compare s x) s)) acc))
+      (setq sgn (delete-if #'(lambda (s) (memq (car s) '(&< &= &<=))) sgn))
+      (if (or (null sgn) 
+	      (and (not (memq '&> (mapcar #'car sgn))) (not (memq '&>= (mapcar #'car sgn)))))
+	  (push (list '&= x) sgn))
+      (setq acc (mapcar #'second sgn)))
+	   
+    (setq issue-warning (memq '$notcomparable (mapcar #'car sgn)))
+    
+    ;; When e and -e are members of acc, replace e by |e|. Do this when trylevel is 2 or higher.  
 	   
     (cond ((eq t (mgrp ($get '$trylevel '$maxmin) 1))
 	   (setq sgn nil)
-	   (dolist (li l)
-	     (setq tmp (if (lenient-realp li) (member-if #'(lambda (s) (add-inversep li s)) sgn) nil))
-	     (if tmp (setf (car tmp) (simplify `((mabs) ,li))) (push li sgn)))
-	   (setq l sgn)))
-		    
-    (dolist (x l)
-      (setq sgn (mapcar #'(lambda (s) (list ($compare s x) s)) acc))
-      (setq sgn (delete-if #'(lambda (s) (member (car s) `(&< &= &<=))) sgn))
-      (if (or (null sgn) 
-	      (and (not (member '&> (mapcar #'car sgn)))
-		   (not (member '&>= (mapcar #'car sgn)))))
-	  (push `('&= ,x) sgn))
-      (setq acc (mapcar #'second sgn)))
-	   
-    (setq issue-warning (member '$notcomparable (mapcar #'car sgn)))
-
+	   (dolist (ai acc)
+	     (setq tmp (if (lenient-realp ai) (member-if #'(lambda (s) (add-inversep ai s)) sgn) nil))
+	     (if tmp (setf (car tmp) (take '(mabs) ai)) (push ai sgn)))
+	   (setq acc sgn)))
+ 
     ;; Skip the betweenp simplification when issue-warning is true.  
     ;; Try the betweenp simplification when trylevel is 3 or higher.
 
@@ -124,36 +117,43 @@
 	  ((null (cdr acc)) (car acc))
 	  (t 
 	   (setq acc (delete '$minf acc))
-	   (if issue-warning 
-	       (mtell "Nonorderable argument(s) in 'max' or 'min.' Returning a noun form.~%"))
 	   `(($max simp) ,@(sort acc 'great))))))
 
-(defprop $min simp-min operators)
-
 (defun limitneg (x)
-  (if ($freeof '$minf '$inf x) (neg x) ($limit (neg x))))
+  (cond ((eq x '$minf) '$inf)
+	((eq x '$inf) '$minf)
+	((memq x '($und $ind $infinity)) x)
+	(t (neg x))))
 
+(defprop $min simp-min operators)
+	  
 (defun simp-min (l tmp z)
-  (let (($simp nil)) (setq l ($flatten l)))
-  (setq l (mapcar #'limitneg (margs l)))
-  (setq l (simp-max `(($max) ,@l) tmp z))
-  (if (op-equalp l '$max)
-      `(($min simp) ,@(mapcar #'limitneg (margs l))) (limitneg l)))
+  (declare (ignore tmp))
+  (let ((acc nil))
+    (setq l (margs (specrepcheck l)))
+    (dolist (li l)
+      (if (op-equalp li '$min) (setq acc (append acc (mapcar #'(lambda (s) (simplifya s z)) (margs li))))
+	(push (simplifya li z) acc)))
+    (setq l acc)
+    (setq l (mapcar #'limitneg acc))
+    (setq l (simplify `(($max) ,@l)))
+    (if (op-equalp l '$max)
+	`(($min simp) ,@(mapcar #'limitneg (margs l))) (limitneg l))))
 
-;; Several functions (derivdegree for example) use the maximin function.  Here is 
+;; Several functions (derivdegree for example) use the maximin function. Here is 
 ;; a replacement that uses simp-min or simp-max.
 
 (defun maximin (l op) (simplify `((,op) ,@l)))
  
-(defun $lmax (e)
-  (simp-max `(($max) ,@(require-list-or-set e "$lmax")) nil nil))
+(defmfun $lmax (e)
+  (simplify `(($max) ,@(require-list-or-set e "$lmax")))) 
 
-(defun $lmin (e)
-  (simp-min `(($min) ,@(require-list-or-set e "$lmin")) nil nil))
+(defmfun $lmin (e)
+  (simplify `(($min) ,@(require-list-or-set e "$lmin"))))
 
 ;; Return the narrowest comparison operator op (<, <=, =, >, >=) such that
 ;; a op b evaluates to true. Return 'unknown' when either there is no such 
-;; operator or a Maxima's sign function isn't powerful enough to determine
+;; operator or when  Maxima's sign function isn't powerful enough to determine
 ;; such an operator; when Maxima is able to show that either argument is not 
 ;; real valued, return 'notcomparable.'
 
@@ -162,23 +162,23 @@
 ;; If you want to convert double and big floats to exact rational
 ;; numbers, use $rationalize.
 
-;; I think compare(asin(x), asin(x) +1) should evaluate to < without
-;; being quizzed about the sign of x.  Thus the call to lenient-extended-realp.
+;; I think compare(asin(x), asin(x) + 1) should evaluate to < without
+;; being quizzed about the sign of x. Thus the call to lenient-extended-realp.
 
 (defun $compare (a b)
-  (let ((sgn) ($prederror nil))
-    (cond  
-     ((like ($limit a) ($limit b)) '&=)
-     ((or (not (lenient-extended-realp a)) (not (lenient-extended-realp b))) '$notcomparable)
-     ((eq (setq sgn (csign ($limit ($ratsimp (sub a b))))) '$neg) '&<)
-     ((eq sgn '$nz) '&<=)
-     ((eq sgn '$zero) '&=)
-     ((eq sgn '$pz) '&>=)
-     ((eq sgn '$pos) '&>)
-     ((eq sgn '$pn) '&#)
-     ((eq sgn '$pnz) '$unknown)
-     (t '$unknown))))
-  
+  (cond ((or (not (lenient-extended-realp a)) (not (lenient-extended-realp b)))
+	 (if (eq t (meqp a b)) '&= '$notcomparable))
+	(t
+	 (let ((sgn (csign (specrepcheck (sub a b)))))
+	   (cond ((eq sgn '$neg) '&<)
+		 ((eq sgn '$nz) '&<=)
+		 ((eq sgn '$zero) '&=)
+		 ((eq sgn '$pz) '&>=)
+		 ((eq sgn '$pos) '&>)
+		 ((eq sgn '$pn) '&#)
+		 ((eq sgn '$pnz) '$unknown)
+		 (t '$unknown))))))
+
 ;; When it's fairly likely that the real domain of e is nonempty, return true; 
 ;; otherwise, return false. Even if z has been declared complex, the real domain
 ;; of z is nonempty; thus (lenient-extended-realp z) --> true.  When does this
