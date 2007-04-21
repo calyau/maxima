@@ -281,11 +281,14 @@
   (cond (*collect-errors*
 	 (setq error-log
 	       (if (streamp *collect-errors*) *collect-errors*
-		   (open (alter-pathname filename :type "ERR")
-			 :direction :output :if-exists :supersede)))
-	 (format t "~%Error log on ~a" error-log)
-	 (format error-log "~%/*    maxima-error log for testing of ~A" filename)
-	 (format error-log "*/~2%")))
+             (handler-case
+               (open (alter-pathname filename :type "ERR") :direction :output :if-exists :supersede)
+               #-gcl (file-error () nil)
+               #+gcl (cl::error () nil))))
+     (when error-log
+       (format t "~%Error log on ~a" error-log)
+       (format error-log "~%/*    maxima-error log for testing of ~A" filename)
+       (format error-log "*/~2%"))))
   (setf $ratprint nil)
   (unwind-protect 
        (with-open-file
@@ -331,7 +334,7 @@
 		    (t (format t "~%This differed from the expected result:~%")
 		       (push i all-differences)
 		       (displa next-result)
-		       (cond (*collect-errors*
+		       (cond ((and *collect-errors* error-log)
 			      (mgrind (third expr) error-log)
 			      (list-variable-bindings (third expr) error-log)
 			      (format error-log ";~%")
