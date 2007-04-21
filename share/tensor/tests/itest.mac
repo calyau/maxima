@@ -123,4 +123,6 @@ done;
 apply(ev,[contract(apply(ev,[contract(apply(ev,[det(H),nouns,expand])),nouns])),nouns]);
 1;
 /* TODO: ic_convert */
+ic_convert(f([a],[b])=g([],[b,c])*(B([a],[],c)-C([],[d])*g([a,d],[],c)));
+for a thru dim do (for b thru dim do f[a,b]:sum(ug[b,c]*diff(B[a],ct_coords[c]),c,1,dim)-sum(sum(ug[b,c]*C[d]*diff(lg[a,d],ct_coords[c]),c,1,dim),d,1,dim));
 /* TODO: torsion, nonmetricity tensors, connection coeffs */

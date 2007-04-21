@@ -24,8 +24,9 @@
 ;   ($IMETRIC must be bound) with 2 covariant indices to LG and with 2
 ;   contravariant indices to UG.
 
-(defun $ic_convert (e)
-       (prog (free lhs rhs)
+(defun $ic_convert (ee)
+       (prog (e free lhs rhs)
+         (setq e ($expand ee))
 	     (cond ((or (atom e) (not (eq (caar e) 'mequal)))
 		    (merror "IC_CONVERT requires an equation as an argument"))
 		   ((equal (setq free ($indices e)) empty)
