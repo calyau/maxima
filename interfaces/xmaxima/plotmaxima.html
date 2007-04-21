@@ -34,13 +34,7 @@ direction.
 <eval program=maxima>
 plot3d(r^.33*cos(th/3),[r,0,1],[th,0,6*%pi],
      ['grid,12,80],
-     ['transform_xy,polar_to_xy],['view_direction,1,1,1.4],
-     ['colour_z,true]);</eval>
-     Here the View_direction indicates the direction from which we take
-     a projection.  We actually do this from infinitely far away, but
-     parallel to the line from view_direction to the origin.  This is
-     currently only used in 'ps' plot_format, since the other viewers
-     allow interactive rotating of the object.
+     ['transform_xy,polar_to_xy]);</eval>
 
 <li> a <b>Klein bottle</b>:
 <eval program=maxima>

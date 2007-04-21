@@ -267,8 +267,6 @@
 					;((mlist) $x -3 3)
 					;((mlist) $y -3 3)
 			 ((mlist) $grid 30 30)
-			 ((mlist) $view_direction 1 1 1)
-			 ((mlist) $colour_z nil)
 			 ((mlist) $transform_xy nil)
 			 ((mlist) $run_viewer t)
 			 ((mlist) $plot_format $openmath)
