@@ -1,5 +1,5 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
-@c /Differential.texi/1.9/Wed Mar 14 00:42:54 2007/-ko/
+@c /Differential.texi/1.10/Sat Mar 17 19:22:51 2007/-ko/
 @menu
 * Introdu@value{cedilha}@~{a}o a Equa@value{cedilha}@~{o}es Diferenciais::
 * Defini@value{cedilha}@~{o}es para Equa@value{cedilha}@~{o}es Diferenciais::

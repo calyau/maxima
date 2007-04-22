@@ -1,5 +1,5 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
-@c /Program.texi/1.23/Mon Feb 19 14:23:10 2007/-ko/
+@c /Program.texi/1.24/Sun Apr 22 14:31:48 2007/-ko/
 @menu
 * Introdu@value{cedilha}@~{a}o a Fluxo de Programa::  
 * Defini@value{cedilha}@~{o}es para Fluxo de Programa::  
@@ -369,9 +369,15 @@ As alternativas @var{expr_0}, ..., @var{expr_n} podem ser quaisquer express@~{o}
 inclu@'{i}ndo express@~{o}es @code{if} aninhadas ( if dentro de if).
 As alternativas n@~{a}o s@~{a}o nem simplificadas nem avaliadas a menos que a correspondente condi@value{cedilha}@~{a}o seja @code{true}.
 
-As condi@value{cedilha}@~{o}es @var{cond_1}, ..., @var{cond_n} s@~{a}o express@~{o}es tais que @code{is(@var{cond_k})} avaliem
-para @code{true} ou para @code{false};
-de outra forma @'{e} um erro.
+As condi@value{cedilha}@~{o}es @var{cond_1}, ..., @var{cond_n} s@~{a}o express@~{o}es as quais potencialmente ou atualmente
+avaliem para @code{true} ou para @code{false}.
+Quando uma condi@value{cedilha}@~{a}o n@~{a}o avalia atualmente para para @code{true} ou para @code{false},
+o comportamento de @code{if} @'{e} governado pelo sinalizador global @code{prederror}.
+Quando @code{prederror} for @code{true},
+isso @'{e} um erro se qualquer condi@value{cedilha}@~{a}o avaliada n@~{a}o avaliar para @code{true} ou @code{false}.
+De outra forma, condi@value{cedilha}@~{o}es que n@~{a}o avaliem para @code{true} ou @code{false} s@~{a}o aceitas,
+e o resultado @'{e} uma express@~{a}o condicional.
+
 Entre outros elementos, condi@value{cedilha}@~{o}es podem compreender operadores l@'{o}gicos e relacionais como segue.
 
 @c - SEEMS LIKE THIS TABLE WANTS TO BE IN A DISCUSSION OF PREDICATE FUNCTIONS; PRESENT LOCATION IS OK I GUESS
