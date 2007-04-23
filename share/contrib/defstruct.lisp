@@ -1,4 +1,5 @@
 ;;; from maxima-5.9.0/maxima-5.9.0/src/mlisp.lisp
+
 (in-package :maxima)
 
 ;;; changes, 8/14/05
@@ -22,8 +23,7 @@
 (defparameter mset_extension_operators nil)
 
 (defmfun mset (x y)
-  (declare (object y x))
-  (prog nil
+  (prog ()
     ;; first see if we are supposed to report this assignment
     ;; to the user.  Is $setcheck set to a list containing x?
 	(cond ((or (null $setcheck)

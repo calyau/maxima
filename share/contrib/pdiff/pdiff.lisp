@@ -173,65 +173,53 @@
 ;; Modified mapply1 ---  added evaluation stuff for %pderivop 
 
 (defmfun mapply1 (fn args fnname form)
- 
-  (declare (special aryp) (object fn))
-  ;(print `(fn = ,fn args = ,args fnname =,fnname form = ,form))
+  (declare (special aryp))
+  ;;(print `(fn = ,fn args = ,args fnname =,fnname form = ,form))
   
-  (cond ;((and $operators (mnump fn)) (mul2 fn (car args)))
-   ((atom fn) 
-				
-    (cond
-     #-cl				; #+(or cl nil)
-     ((and (symbolp fn) (fboundp fn)
-	   (not (consp symbol-function fn)))
-      (apply fn args))
-     #+(or cl nil)
-     ((atom fn) 
-      (cond
-       #+(or cl nil)
-       ((functionp fn)
-	(apply fn args))
+  (cond		   ;((and $operators (mnump fn)) (mul2 fn (car args)))
+    ((atom fn) 
+     (cond ((atom fn) 
+	    (cond ((functionp fn)
+		   (apply fn args))
+		  ((fboundp fn)
+		   (if (macro-function fn)
+		       (progn (merror "~:M is a lisp level macro and cannot be applied at maxima level" fn) (eval (cons fn  args)))
+		       (mapply1 (symbol-function fn) args fn form)))
        
-       #+cl;;better be a macro or an array.
-       ((fboundp fn)
-	(if (macro-function fn)
-	    (progn (merror "~:M is a lisp level macro and cannot be applied at maxima level" fn) (eval (cons fn  args)))
-	  (mapply1 (symbol-function fn) args fn form)))
-       
-       ((symbol-array fn)
-	(mapply1 (symbol-array fn) args fn form))
-       (t
-	(setq fn (getopr fn)) (badfunchk fnname fn nil)
-	(let ((noevalargs t)) (meval (cons (ncons fn) args)))))
-      )))
+		  ((symbol-array fn)
+		   (mapply1 (symbol-array fn) args fn form))
+		  (t
+		   (setq fn (getopr fn)) (badfunchk fnname fn nil)
+		   (let ((noevalargs t)) (meval (cons (ncons fn) args)))))
+	    )))
 
-   ;;---------start pdiff stuff  -----------------------
-   ((and $use_pdiff (eq (caar fn) '%pderivop))
-    ;(print `(fn = ,fn args = ,args fnname = ,fnname form = ,form))
-    (cond ((eq (length (cddr fn)) (length args))
-	   `((mqapply simp) ,fn ,@args))
-	  (t
-	   (merror "The function ~:M expected ~:M argument(s), but it received ~:M" (cadr fn) (length (cddr fn)) (length args)))))
+    ;;---------start pdiff stuff  -----------------------
+    ((and $use_pdiff (eq (caar fn) '%pderivop))
+					;(print `(fn = ,fn args = ,args fnname = ,fnname form = ,form))
+     (cond ((eq (length (cddr fn)) (length args))
+	    `((mqapply simp) ,fn ,@args))
+	   (t
+	    (merror "The function ~:M expected ~:M argument(s), but it received ~:M" (cadr fn) (length (cddr fn)) (length args)))))
 	 
-   ;;-------- end pdiff stuff --------------------------
+    ;;-------- end pdiff stuff --------------------------
 
-   ((functionp fn)
-    (apply fn args))
-   ((eq (caar fn) 'lambda) (mlambda fn args fnname t form))
-   ((eq (caar fn) 'mquote) (cons (cdr fn) args))
-   ((and aryp (member (caar fn) '(mlist $matrix) :test #'eq))
-    (if (not (or (= (length args) 1)
-		 (and (eq (caar fn) '$matrix) (= (length args) 2))))
-	(merror "wrong number of indices:~%~:M" (cons '(mlist) args)))
-    (do ((args1 args (cdr args1)))
-	((null args1) (let (($piece $piece) ($partswitch 'mapply))
-			(apply #'$inpart (cons fn args))))
-      (unless (fixnump (car args1))
-	(if evarrp (throw 'evarrp 'notexist))
-	(merror "subscript must be an integer:~%~:M" (car args1)))))
-   (aryp (cons '(mqapply array) (cons fn args)))
-   ((member 'array (cdar fn) :test #'eq) (cons '(mqapply) (cons fn args)))
-   (t (badfunchk fnname fn t))))
+    ((functionp fn)
+     (apply fn args))
+    ((eq (caar fn) 'lambda) (mlambda fn args fnname t form))
+    ((eq (caar fn) 'mquote) (cons (cdr fn) args))
+    ((and aryp (member (caar fn) '(mlist $matrix) :test #'eq))
+     (if (not (or (= (length args) 1)
+		  (and (eq (caar fn) '$matrix) (= (length args) 2))))
+	 (merror "wrong number of indices:~%~:M" (cons '(mlist) args)))
+     (do ((args1 args (cdr args1)))
+	 ((null args1) (let (($piece $piece) ($partswitch 'mapply))
+			 (apply #'$inpart (cons fn args))))
+       (unless (fixnump (car args1))
+	 (if evarrp (throw 'evarrp 'notexist))
+	 (merror "subscript must be an integer:~%~:M" (car args1)))))
+    (aryp (cons '(mqapply array) (cons fn args)))
+    ((member 'array (cdar fn) :test #'eq) (cons '(mqapply) (cons fn args)))
+    (t (badfunchk fnname fn t))))
 
 (defun pderivop (f x n)
   `((mqapply) ((%pderivop) ,f ,@n) ,@x))
@@ -470,58 +458,52 @@
 ;; was added to the list of disallowed % functions.
 
 (defun tex-mexpt (x l r)
-  (let ((nc (eq (caar x) 'mncexpt))); true if a^^b rather than a^b
+  (let ((nc (eq (caar x) 'mncexpt)))	; true if a^^b rather than a^b
     ;; here is where we have to check for f(x)^b to be displayed
     ;; as f^b(x), as is the case for sin(x)^2 .
     ;; which should be sin^2 x rather than (sin x)^2 or (sin(x))^2.
     ;; yet we must not display (a+b)^2 as +^2(a,b)...
     ;; or (sin(x))^(-1) as sin^(-1)x, which would be arcsine x
     (cond ;; this whole clause
-     ;; should be deleted if this hack is unwanted and/or the
-     ;; time it takes is of concern.
-     ;; it shouldn't be too expensive.
+      ;; should be deleted if this hack is unwanted and/or the
+      ;; time it takes is of concern.
+      ;; it shouldn't be too expensive.
     
-     ((and  (eq (caar x) 'mexpt) ; don't do this hack for mncexpt
-	    (let*
-		((fx (cadr x)); this is f(x)
-		 (f (and (not (atom fx)) (atom (caar fx)) (caar fx))) ; this is f [or nil]
-		 (bascdr (and f (cdr fx))) ; this is (x) [maybe (x,y..), or nil]
-		 (expon (caddr x)) ;; this is the exponent
-		 (doit (and
-			f ; there is such a function
-			(member (getchar f 1) '(% $) :test #'eq) ;; insist it is a % or $ function
-			(not (member f '(%sum %product %derivative %integral %at %pderivop) :test #'eq)) ;; what else? what a hack...
-			(or (and (atom expon) (not (numberp expon))) ; f(x)^y is ok
-			    (and (atom expon) (numberp expon) (> expon 0))))))
+      ((and  (eq (caar x) 'mexpt)     ; don't do this hack for mncexpt
+	     (let*
+		 ((fx (cadr x))		; this is f(x)
+		  (f (and (not (atom fx)) (atom (caar fx)) (caar fx))) ; this is f [or nil]
+		  (bascdr (and f (cdr fx))) ; this is (x) [maybe (x,y..), or nil]
+		  (expon (caddr x))	    ;; this is the exponent
+		  (doit (and
+			 f		; there is such a function
+			 (member (getchar f 1) '(% $) :test #'eq) ;; insist it is a % or $ function
+			 (not (member f '(%sum %product %derivative %integral %at %pderivop) :test #'eq)) ;; what else? what a hack...
+			 (or (and (atom expon) (not (numberp expon))) ; f(x)^y is ok
+			     (and (atom expon) (numberp expon) (> expon 0))))))
 					; f(x)^3 is ok, but not f(x)^-1, which could
 					; inverse of f, if written f^-1 x
 					; what else? f(x)^(1/2) is sqrt(f(x)), ??
 
 	  
 
-	      (cond (doit
+	       (cond (doit
 		     
-		     (setq l (tex `((mexpt) ,f ,expon) l nil 'mparen 'mparen))
-		     (setq r (tex
-			      (if (and (null (cdr bascdr)) (eq (get f 'tex) 'tex-prefix))
-				  (car bascdr) (cons '(mprogn) bascdr))
-			      nil r f rop)))
-		    (t nil))))) ; won't doit. fall through
-     (t (setq l (tex (cadr x) l nil lop (caar x))
-	      r (if (mmminusp (setq x (nformat (caddr x))))
-		    ;; the change in base-line makes parens unnecessary
-		    (if nc
-			(tex (cadr x) '("^ {-\\langle ")(cons "\\rangle }" r) 'mparen 'mparen)
-		      (tex (cadr x) '("^ {- ")(cons " }" r) 'mparen 'mparen))
-		  (if nc
-		      (tex x (list "^{\\langle ") (cons "\\rangle}" r) 'mparen 'mparen)
-		    (if (and (numberp x) (< x 10)) ;; was (< x 10)..  blw
-			(tex x (list "^")(cons "" r) 'mparen 'mparen)
-		      (tex x (list "^{")(cons "}" r) 'mparen 'mparen))
-		    )))))
+		      (setq l (tex `((mexpt) ,f ,expon) l nil 'mparen 'mparen))
+		      (setq r (tex
+			       (if (and (null (cdr bascdr)) (eq (get f 'tex) 'tex-prefix))
+				   (car bascdr) (cons '(mprogn) bascdr))
+			       nil r f rop)))
+		     (t nil)))))	; won't doit. fall through
+      (t (setq l (tex (cadr x) l nil lop (caar x))
+	       r (if (mmminusp (setq x (nformat (caddr x))))
+		     ;; the change in base-line makes parens unnecessary
+		     (if nc
+			 (tex (cadr x) '("^ {-\\langle ")(cons "\\rangle }" r) 'mparen 'mparen)
+			 (tex (cadr x) '("^ {- ")(cons " }" r) 'mparen 'mparen))
+		     (if nc
+			 (tex x (list "^{\\langle ") (cons "\\rangle}" r) 'mparen 'mparen)
+			 (if (and (numberp x) (< x 10)) ;; was (< x 10)..  blw
+			     (tex x (list "^")(cons "" r) 'mparen 'mparen)
+			     (tex x (list "^{")(cons "}" r) 'mparen 'mparen)))))))
     (append l r)))
-
-
-	   
-
-
