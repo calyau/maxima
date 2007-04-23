@@ -31,11 +31,7 @@
 
 (macsyma-module mathml)
 
-(declare-top
-	 (special lop rop ccol $gcprint texport $labels $inchar
-		  vaxima-main-dir
-		  )
-	 (*expr mathml-lbp mathml-rbp))
+(declare-top (special lop rop ccol $gcprint texport $labels $inchar vaxima-main-dir))
 
 ;; top level command the result of converting the expression x.
 

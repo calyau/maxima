@@ -20,11 +20,6 @@
 ;;;	element of the list.
 ;;;
 
-;;; Compiler Declarations
-
-(DECLARE (*FEXPR $FOPTIMIZE)
-	 (*EXPR $OPTIMIZE STRIPDOLLAR MGET MPUTPROP))
-
 ;;; $FOPTIMIZE is the name of the driver that gets called from Macsyma
 
 (DEFUN $FOPTIMIZE FEXPR (X) (CONS (NCONS 'MLIST) (MAPCAR 'FOPTIMIZE X)))

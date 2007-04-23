@@ -15,12 +15,6 @@
 
 (in-package :maxima)
 
-;(declare-top
-;	 (special lop rop ccol $gcprint texport $labels $inchar
-;		  vaxima-main-dir
-;		  )
-;	 (*expr tex-lbp tex-rbp))
-
 ;; top level command the result of tex'ing the expression x.
 ;; Lots of messing around here to get C-labels verbatim printed
 ;; and function definitions verbatim "ground"
@@ -98,4 +92,3 @@
     (t (cons (tenreform (car x)) (tenreform (cdr x))))
   )
 )
-

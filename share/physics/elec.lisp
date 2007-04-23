@@ -4,11 +4,7 @@
 
 ;;; Setup for the Macsyma world
 
- ;; Declare Macsyma 
-
-#-NIL(DECLARE (*FEXPR $ALIAS) (*LEXPR $NARY))
-
- ;; Make PARALLEL(arg1,arg2,...,argN) mean arg1 | arg2 | arg3 | ... | argN
+;; Make PARALLEL(arg1,arg2,...,argN) mean arg1 | arg2 | arg3 | ... | argN
 
 (meval '(($ALIAS) $PARALLEL &/| ))
 
@@ -25,7 +21,6 @@
 
  ;; Set up variables
 
-
 ;;; Supporting Macros
 
  ;; (MAKE-CIRCULAR-LIST <list>) returns a pointer to a circular list with
@@ -34,8 +29,6 @@
 (DEFUN MAKE-CIRCULAR-LIST MACRO (FORM)
        `((LAMBDA (X) (NCONC X X)) (APPEND ,(CADR FORM) NIL)))
 
-
-
 ;;; Define a "|" function which computes parallel resistances.
 
 (DEFUN $/| N
@@ -45,14 +38,14 @@
 	      ((MPLUS)  ,@(PERMUTATIONS-OF-<N-1> N COMPONENTS)))))
 
 (DEFUN PERMUTATIONS-OF-<N-1> (N-COMPONENTS COMPONENTS-LIST)
-       (DO ((RETURN-VALUE ())
-	    (I 1. (1+ I))
-	    (CYCLE (MAKE-CIRCULAR-LIST COMPONENTS-LIST)
-		   (CDR CYCLE)))
-	   ((> I N-COMPONENTS) RETURN-VALUE)
-	   (PUSH (DO ((I 2. (1+ I))
-		      (RETURN-VALUE () (CONS (CAR L) RETURN-VALUE))
-		      (L CYCLE (CDR L)))
-		     ((> I N-COMPONENTS)
-		      (CONS '(MTIMES) RETURN-VALUE)))
-		 RETURN-VALUE)))
+  (DO ((RETURN-VALUE ())
+       (I 1. (1+ I))
+       (CYCLE (MAKE-CIRCULAR-LIST COMPONENTS-LIST)
+	      (CDR CYCLE)))
+      ((> I N-COMPONENTS) RETURN-VALUE)
+    (PUSH (DO ((I 2. (1+ I))
+	       (RETURN-VALUE () (CONS (CAR L) RETURN-VALUE))
+	       (L CYCLE (CDR L)))
+	      ((> I N-COMPONENTS)
+	       (CONS '(MTIMES) RETURN-VALUE)))
+	  RETURN-VALUE)))

@@ -10,8 +10,7 @@
 
 
 (declare-top
- (special lop rop ccol $gcprint texport $labels $inchar)
- (*expr tex-lbp tex-rbp))
+ (special lop rop ccol $gcprint texport $labels $inchar))
 
 (defun quote-% (sym)
   (let* ((strsym (string sym))

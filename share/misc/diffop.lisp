@@ -18,8 +18,6 @@
 ;;;  If a variable has no DEPENDS property, UND will be used as the
 ;;;   variable to differentiate by.
 
-#-NIL(DECLARE (*EXPR $LISTOFVARS MGET))
-
 (DEFUN INFER-DEPENDENCY (X)
   (OR (CAR (MGET (CADR ($LISTOFVARS X)) 'DEPENDS)) '$UND))
 
