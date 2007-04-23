@@ -279,10 +279,7 @@
 
 (subc $dscalar (c))
 
-(subc $dskgc (c))
-
 (subc $dummy (c))
-
 
 (subc $editing () $macsyma-line-editor $teco)
 

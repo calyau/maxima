@@ -86,7 +86,7 @@
 
 (setq *in-translate-file* nil)
 
-(setq $debugmode nil $pagepause nil $dskgc nil $poislim 5)
+(setq $debugmode nil $pagepause nil $poislim 5)
 
 (setq $loadprint nil ^s nil loadfiles nil)
 
@@ -1066,14 +1066,6 @@
 	 (setq *features* (delete ($mkey item) *features*)) t)
 	(t (error "know only how to set and remove feature status"))))
 
-(defmfun $dskgc (xx)
-  (declare (ignore xx))
-  nil)
-
-(defun dskgc1 (xx yy)
-  (declare (ignore xx yy))
-  nil)
-
 (do ((l '($sqrt $erf $sin $cos $tan $log $plog $sec $csc $cot $sinh $cosh
 	  $tanh $sech $csch $coth $asin $acos $atan $acot $acsc $asec $asinh
 	  $acosh $atanh $acsch $asech $acoth $binomial $gamma $genfact $del)
@@ -1094,7 +1086,7 @@
 
 (mapc #'(lambda (x) (putprop (car x) (cadr x) 'assign))
       '(($debugmode debugmode1)
-	($pagepause pagepause1) ($dskgc dskgc1)
+	($pagepause pagepause1)
 	($ttyintfun ttyintfunsetup)
 	($fpprec fpprec1) ($poislim poislim1)
 	($default_let_rule_package let-rule-setter)
