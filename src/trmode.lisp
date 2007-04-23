@@ -256,7 +256,6 @@ maybe you want ~:M mode.~%"
 	 (case mode
 	   (($integer $integerp) '$fixnum)
 	   (($complex) "&to ask about this")
-	   (($fucked $shitty) "&to watch your language")
 	   (t "&to see the documentation on"))))
 
 (defmfun fluidize (variable)
