@@ -16,8 +16,6 @@
 
 (declare-top (special varlist errorsw))
 
-(declare-top (splitfile hyper))
-
 (defmfun simp-%sinh (form y z) 
   (oneargcheck form)
   (setq y (simpcheck (cadr form) z))
@@ -222,8 +220,6 @@
 	((apply-reflection-simp (mop form) y $trigsign))
 	;;((and $trigsign (mminusp* y)) (sub '$%pi (cons-exp '%asec (neg y))))
 	(t (eqtest (list '(%asec) y) form))))
-
-(declare-top (splitfile ahyper))
 
 (defmfun simp-%asinh (form y z)
   (oneargcheck form)

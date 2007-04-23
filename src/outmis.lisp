@@ -474,8 +474,6 @@
     ln ld)
    (return (addn (if xl (cons xl r) r) nil))))
 
-;;(declare-top (SPLITFILE FACOUT) (FIXNUM NUM))
-
 (defmfun $factorout num
   (prog (e vl el fl cl l f x)
      (setq e (arg 1) vl (listify (- 1 num)))

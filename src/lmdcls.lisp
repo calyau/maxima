@@ -147,5 +147,5 @@
   $maxtaydiff $verbose $psexpand ps-bmt-disrep
   silent-taylor-flag $define_variable $infolists))
 
-(declaim (declaration splitfile unspecial muzzled no-type genprefix flonum
+(declaim (declaration unspecial muzzled no-type genprefix flonum
 		      *lexpr *fexpr *expr mapex macros array* object))

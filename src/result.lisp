@@ -16,8 +16,6 @@
 
 (load-macsyma-macros ratmac)
 
-(declare-top(splitfile mresul))
-
 (defmfun $poly_discriminant (poly var)
   (let* ((varlist (list var))
 	 ($ratfac nil)
