@@ -63,38 +63,44 @@
 (defprop $max simp-max operators)
 
 (defun simp-max (l tmp z)
-  (let ((acc nil) (sgn) (num-max nil) (issue-warning))
+  (let ((acc nil) (sgn) (num-max nil) (issue-warning) (new-max))
     (setq l (margs (specrepcheck l)))
     (dolist (li l)
       (if (op-equalp li '$max) (setq acc (append acc (mapcar #'(lambda (s) (simplifya s z)) (margs li))))
 	(push (simplifya li z) acc)))
 	  
-    (setq l acc)
+    ;; First, delete duplicate members of l.
+    
+    (setq l (sorted-remove-duplicates (sort acc '$orderlessp)))
     (setq acc nil)
         	   		 
-    ;; We begin by finding the largest number in l. Alternatively,
-    ;; we could find the largest constant expression, but we'd need
-    ;; to be careful to expunge complex valued constant expressions.
-    ;; Notice that constantp(%i) --> true. At least for now, (mnump '$%i) 
-    ;; is false. If this changes, it will break this code.
+    ;; Second, find the largest real number in l. Since (mnump '$%i) --> false, we don't 
+    ;; have to worry that num-max is complex. 
 	  	    
     (dolist (li l)
       (if (mnump li) (setq num-max (if (or (null num-max) (mgrp li num-max)) li num-max)) (push li acc)))
     (setq l acc)
     (setq acc (if (null num-max) num-max (list num-max)))
     
-    (dolist (x l)
-      (setq sgn (mapcar #'(lambda (s) (list ($compare s x) s)) acc))
-      (setq sgn (delete-if #'(lambda (s) (memq (car s) '(&< &= &<=))) sgn))
-      (if (or (null sgn) 
-	      (and (not (memq '&> (mapcar #'car sgn))) (not (memq '&>= (mapcar #'car sgn)))))
-	  (push (list '&= x) sgn))
-      (setq acc (mapcar #'second sgn)))
-	   
-    (setq issue-warning (memq '$notcomparable (mapcar #'car sgn)))
+    ;; Third, accumulate the maximum in the list acc. For each x in l, do:
     
-    ;; When e and -e are members of acc, replace e by |e|. Do this when trylevel is 2 or higher.  
-	   
+    ;; (a) if x is > or >= every member of acc, set acc to (x),
+    ;; (b) if x is < or <= to some member of acc, do nothing,
+    ;; (c) if neither 'a' or 'b', push x into acc,
+    ;; (d) if x cannot be compared to some member of acc, set issue-warning to true.
+    
+    (dolist (x l)
+      (catch 'done
+	(setq new-max t)
+	(dolist (ai acc)
+	  (setq sgn ($compare x ai))
+	  (setq new-max (and new-max (memq sgn '(&> &>=))))
+	  (if (eq sgn '$notcomparable) (setq issue-warning t))
+	  (if (memq sgn '(&< &= &<=)) (throw 'done t)))
+	(if new-max (setq acc (list x)) (push x acc))))
+    
+    ;; Fourth, when when trylevel is 2 or higher e and -e are members of acc, replace e by |e|.
+    
     (cond ((eq t (mgrp ($get '$trylevel '$maxmin) 1))
 	   (setq sgn nil)
 	   (dolist (ai acc)
@@ -102,8 +108,8 @@
 	     (if tmp (setf (car tmp) (take '(mabs) ai)) (push ai sgn)))
 	   (setq acc sgn)))
  
-    ;; Skip the betweenp simplification when issue-warning is true.  
-    ;; Try the betweenp simplification when trylevel is 3 or higher.
+    ;; Fifth, when trylevel is 3 or higher and issue-warning is false, try the
+    ;; betweenp simplification.
 
     (cond ((and (not issue-warning) (eq t (mgrp ($get '$trylevel '$maxmin) 2)))
 	   (setq l nil)
@@ -112,12 +118,14 @@
 	     (if (not (betweenp ai sgn sgn)) (push ai l))
 	     (setq sgn `(,@(cdr sgn) ,ai)))
 	   (setq acc l)))
+
+    ;; Finally, do a few clean ups:
 	   
+    (setq acc (delete '$minf acc))
     (cond ((null acc) '$minf)
+	  ((memq '$inf acc) '$inf)
 	  ((null (cdr acc)) (car acc))
-	  (t 
-	   (setq acc (delete '$minf acc))
-	   `(($max simp) ,@(sort acc 'great))))))
+	  (t  `(($max simp) ,@(sort acc '$orderlessp))))))
 
 (defun limitneg (x)
   (cond ((eq x '$minf) '$inf)
