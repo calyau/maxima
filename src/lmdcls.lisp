@@ -147,4 +147,4 @@
   $maxtaydiff $verbose $psexpand ps-bmt-disrep
   silent-taylor-flag $define_variable $infolists))
 
-(declaim (declaration unspecial flonum))
+(declaim (declaration unspecial))

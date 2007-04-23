@@ -20,13 +20,12 @@
 	     ((makestring1 form))))
 
 (defun nicefloat (flt)
-       (declare (flonum flt))
-       (cond ((= flt 0d0) (list 48. 46. 48.))
-	     ((< flt 0d0) (cons 45. (niceflt (abs flt))))
-	     ((niceflt (abs flt)))))
+  (cond ((= flt 0d0) (list 48. 46. 48.))
+	((< flt 0d0) (cons 45. (niceflt (abs flt))))
+	((niceflt (abs flt)))))
 
 (defun niceflt (aflt)
-  (declare (fixnum i) (flonum simflt fac aflt))
+  (declare (fixnum i))
   (do ((i 0)
        (simflt aflt)
        (fac (cond ((< aflt 1d0) 1d1) (1d-1)))

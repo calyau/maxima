@@ -201,7 +201,6 @@
 (defopt m-tlambda-i (mode env argl &rest body &aux (name (gentemp "maxima"))
 			  (declarep (declare-snarf body)))
   (cond ((eq mode '$float)
-	 (emit-defun `(declare (flonum (,name ,@(make-list (length argl))))))
 	 (emit-defun `(defprop ,name t flonum-compiled))))
   (emit-defun
    `(defun ,name ,argl
