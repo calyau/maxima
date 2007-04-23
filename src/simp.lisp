@@ -196,8 +196,9 @@
 (defmfun $bfloatp (x) (and (not (atom x)) (eq (caar x) 'bigfloat)))
 
 (defmfun mnump (x)
-  (or (numberp x) (and (not (atom x))(not (atom (car x)))
-		       (memq (caar x) '(rat bigfloat)))))
+  (or (numberp x)
+      (and (not (atom x)) (not (atom (car x)))
+	   (member (caar x) '(rat bigfloat)))))
 
 ;; EVEN works for any arbitrary lisp object since it does an integer
 ;; check first.  In other cases, you may want the Lisp EVENP function
@@ -410,7 +411,8 @@
   (declare (ignore ign)) ; Arg ignored.  Function used for mapping down lists.
   *const*)
 
-(defun constmx (*const* x) (simplifya (fmapl1 'constfun x) t))
+(defun constmx (*const* x)
+  (simplifya (fmapl1 'constfun x) t))
 
 (defmfun isinop (exp var)		; VAR is assumed to be an atom
   (cond ((atom exp) nil)
@@ -553,7 +555,8 @@
 			    (t g)))))))
 
 (defun *red1 (x)
-  (cond ((memq 'simp (cdar x)) (cond ($float (fpcofrat x)) (t x)))
+  (cond ((memq 'simp (cdar x))
+	 (if $float (fpcofrat x) x))
 	(t (*red (cadr x) (caddr x)))))
 
 (defun *red (n d)
@@ -1315,7 +1318,6 @@
      (go again)))
 
 (defmfun signum1 (x)
-  (declare (object x))
   (cond ((mnump x)
 	 (setq x (num1 x)) (cond ((plusp x) 1) ((minusp x) -1) (t 0))) 
 	((atom x) 1)
@@ -1929,7 +1931,6 @@
   (and (symbolp e) (kindp e '$real)))
 
 (defmfun great (x y)
-  (declare (object y))
   (cond ((atom x)
 	 (cond ((atom y)
 		(cond ((numberp x)
@@ -2427,7 +2428,8 @@
 
 (defvar *afterflag nil)
 
-(defmfun matcherr nil (throw 'match nil))
+(defmfun matcherr ()
+  (throw 'match nil))
 
 (defmfun kar (x) (if (atom x) (matcherr) (car x)))
 

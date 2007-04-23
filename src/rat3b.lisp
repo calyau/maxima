@@ -130,7 +130,6 @@
   (ratplus x (ratminus y))) 
 
 (defmfun ratfact (x fn)
-  (declare (object fn))
   (cond ((and $keepfloat (or (pfloatp (car x)) (pfloatp (cdr x)))
 	      (setq fn 'floatfact) nil))
 	((not (equal (cdr x) 1))
