@@ -9,11 +9,10 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :maxima)
+
 (macsyma-module sumcon)
 
-(declare-top (special $genindex $niceindicespref $sumexpand)
-	     #-cl
-	     (*lexpr $min $max))
+(declare-top (special $genindex $niceindicespref $sumexpand))
 
 (defmfun $sumcontract (e)	       ; e is assumed to be simplified
   (cond ((atom e) e)
