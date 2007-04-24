@@ -191,7 +191,7 @@
 
 (declare-top (unspecial trflag mode form))
 
-(deftrfun declvalue (v mode trflag)
+(defun declvalue (v mode trflag)
   (when trflag (setq v (teval v)))
   (add2lnc v $props)
   (putprop v mode 'mode))

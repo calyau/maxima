@@ -156,7 +156,7 @@
 
 
 
-(deftrfun tr-arraycall (form &aux all-inds)
+(defun tr-arraycall (form &aux all-inds)
   (cond ((get (caar form) 'array-mode)
 	 (pushnew (caar form) arrays :test #'eq)
 	 `(,(array-mode (caar form))
@@ -172,7 +172,7 @@
 
 
 
-(deftrfun tr-arraysetq (array-ref value)
+(defun tr-arraysetq (array-ref value)
   ;; actually an array SETF, but it comes from A[X]:FOO
   ;; which is ((MSETQ) ... ...)
   (cond ((getl (caar array-ref) '(array-mode))

@@ -36,7 +36,6 @@
 (def-same%tr mlessp    mnotequal)
 (def-same%tr mleqp     mnotequal)
 
-
 ;;; It looks like it was copied from MRG;COMPAR > with 
 ;;; TRP- substituted for MEVALP. What a crockish way to dispatch,
 ;;; and in a system with a limited address space too!
@@ -48,7 +47,7 @@
 ;;; so its suprising this was done. In order to make this change all
 ;;; special-forms need to do targetting.
 
-(deftrfun translate-predicate (form)
+(defun translate-predicate (form)
   ;; N.B. This returns s-exp, not (<mode> . <s-exp>)
   (cond ((atom form)
 	 (let ((tform (translate form)))

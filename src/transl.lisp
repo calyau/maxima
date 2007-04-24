@@ -222,7 +222,7 @@ APPLY means like APPLY.")
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
-(deftrfun tr-tell (&rest x &aux (tp t))
+(defun tr-tell (&rest x &aux (tp t))
   (do ((x x (cdr x)))
       ((null x))
     (cond ((atom (car x)) ;;; simple heuristic that seems to work.
@@ -234,7 +234,7 @@ APPLY means like APPLY.")
 	  (t
 	   (dolist (v *translation-msgs-files*) (mgrind (car x) v))))))
 
-(deftrfun barfo (&rest l)
+(defun barfo (&rest l)
   (apply #'tr-tell
 	 (nconc l '("***BARFO*** gasp. Internal TRANSLATE error. i.e. *BUG*")))
   (cond (*transl-debug*
@@ -291,7 +291,7 @@ APPLY means like APPLY.")
 
 (defvar warned-undefined-variables nil)
 
-(deftrfun warn-undefined-variable (form)
+(defun warn-undefined-variable (form)
   (and (tr-warnp $tr_warn_undefined_variable)
        (cond ((member form warned-undefined-variables :test #'eq))
 	     (t
@@ -299,7 +299,7 @@ APPLY means like APPLY.")
 	      (tr-format "~%Warning-> ~:M is an undefined global variable." form)
 	      (tr-warnbreak)))))
 
-(deftrfun warn-undeclared (form &optional comment)
+(defun warn-undeclared (form &optional comment)
   (and (tr-warnp $tr_warn_undeclared)
        (cond ((member form *warned-un-declared-vars* :test #'equal) t)
 	     (t
@@ -313,7 +313,7 @@ APPLY means like APPLY.")
 	      (tr-warnbreak)
 	      nil))))
 
-(deftrfun warn-meval (form &optional comment)
+(defun warn-meval (form &optional comment)
   (cond ((tr-warnp $tr_warn_meval)
 	 (tr-format
 	  "~%WARNING-> ~:M~
@@ -327,7 +327,7 @@ APPLY means like APPLY.")
 	 'warned)))
 
 
-(deftrfun warn-mode (var mode newmode &optional comment)
+(defun warn-mode (var mode newmode &optional comment)
   (cond ((eq mode newmode))
 	(t
 	 (cond ((and (tr-warnp $tr_warn_mode)
@@ -344,7 +344,7 @@ APPLY means like APPLY.")
 			 (princ comment v))))
 		(tr-warnbreak))))))
 
-(deftrfun warn-fexpr (form &optional comment)
+(defun warn-fexpr (form &optional comment)
   (cond ((and (tr-warnp $tr_warn_fexpr)
 	      (not (member form *warned-fexprs* :test #'equal)))
 	 (push  form *warned-fexprs*)
@@ -440,7 +440,7 @@ APPLY means like APPLY.")
 
 ;;; takes a function name as input.
 
-(deftrfun tr-mfun (name &aux (*transl-backtrace* nil))
+(defun tr-mfun (name &aux (*transl-backtrace* nil))
   (let ((def-form (consfundef name nil nil)))
     (cond ((null def-form)
 	   (setq tr-abort t))
@@ -550,7 +550,7 @@ APPLY means like APPLY.")
 (defun lisp-fcn-typep (fcn type)
   (get fcn type))
 
-(deftrfun translate-function (name)
+(defun translate-function (name)
   (bind-transl-state
    (setq *in-translate* t)
    (let ((lisp-def-form (tr-mfun name))
@@ -574,7 +574,7 @@ APPLY means like APPLY.")
 (defun trfail (x)
   (tr-tell x " failed to translate.") nil)
 
-(deftrfun translate-macexpr-actual (form filepos)
+(defun translate-macexpr-actual (form filepos)
   (declare (special *translate-buffered-forms*))
   ;; Called as the EVAL-PRINT part of the READ-EVAL-PRINT
   (if (and (not (atom form)) (symbolp (caar form)))
@@ -774,7 +774,7 @@ APPLY means like APPLY.")
 	 (cons (car form) (cdr form)))
 	(t form)))
 
-(deftrfun translate (form)
+(defun translate (form)
   (and *transl-debug* (push form *transl-backtrace*))
   (setq form (toplevel-optimize form))
   (and *transl-debug* (pop *transl-backtrace*))

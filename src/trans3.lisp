@@ -35,7 +35,7 @@
 ;;; do any if it used the lambda-bound plist scheme of GJC;UTRANS >
 ;;; a compiler is allowed to cons though, isn't it?
 
-(deftrfun free-lisp-vars (exp &aux prop)
+(defun free-lisp-vars (exp &aux prop)
   (cond ((atom exp)
 	 (cond ((or (null exp)(eq t exp)) nil)
 	       ((symbolp exp) `((,exp . nil)))

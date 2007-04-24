@@ -112,9 +112,6 @@
 		      (maxima-error "No TRANSLATE property to alias. ~a" ',from))))
     (mapc #'(lambda (name) (putprop name tr-prop 'translate))',others)))
 
-(defmacro deftrfun (name argl &rest body)
-  `(defun ,name ,argl ,@body))
-
 (defmacro deftrvar (name value &rest ignore-doc) ignore-doc
 	  ;; to be used to put the simple default value in
 	  ;; the autoload file. Should be generalized to include
