@@ -35,10 +35,10 @@
 (defmvar $tr_windy t
   "Generate helpful comments and programming hints.")
 
-(deftrvar *translation-msgs-files* nil
+(defvar *translation-msgs-files* nil
   "Where the warning and other comments goes.")
 
-(deftrvar $tr_version (get 'transl-autoload 'version))
+(defvar $tr_version (get 'transl-autoload 'version))
 
 (defmvar transl-file nil "output stream of $compfile and $translate_file")
 
@@ -91,7 +91,7 @@
 (defmacro trcomments-outputname-temp ()
   '`,(pathname "_unli_"))
 
-(deftrvar declares nil)
+(defvar declares nil)
 
 (defun rename-tf (newname)
   (let ((in-file (truename transl-file)))

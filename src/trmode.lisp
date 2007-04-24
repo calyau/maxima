@@ -36,9 +36,9 @@
       (mcall user-level value)))
   value)
 
-(deftrvar defined_variables ())
+(defvar defined_variables ())
 
-(deftrvar $define_variable ())
+(defvar $define_variable ())
 
 (def%tr $define_variable (form)	;;VAR INIT MODE.
   (cond ((> (length form) 3)

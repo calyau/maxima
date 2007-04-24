@@ -74,11 +74,8 @@
 
 (defprop dcl maxdoc fasl-dir)
 
-(def-transl-module trmode ttime-auto
-  no-load-auto
-  ;; Temporary hack, TRANSL AUTOLOADs should be
-  ;; in a different file from functional autoloads.
-  )
+(def-transl-module trmode ttime-auto no-load-auto)  ; Temporary hack, TRANSL AUTOLOADs should be
+					            ; in a different file from functional autoloads.
 
 (def-transl-module trhook hyper)
 (def-transl-module transl-autoload pseudo)
@@ -111,12 +108,6 @@
   `(let ((tr-prop (or (get ',from 'translate)
 		      (maxima-error "No TRANSLATE property to alias. ~a" ',from))))
     (mapc #'(lambda (name) (putprop name tr-prop 'translate))',others)))
-
-(defmacro deftrvar (name value &rest ignore-doc) ignore-doc
-	  ;; to be used to put the simple default value in
-	  ;; the autoload file. Should be generalized to include
-	  ;; BINDING methods.
-	  `(defvar ,name ,value))
 
 (defmacro tprop-call (op form)
   `(subr-call ,op ,form))
@@ -233,5 +224,3 @@
 	((consp ar)`(marrayref ,ar ,(first inds) ,@(cdr inds)))
 	(t
 	 `(maref1 ,ar ,@inds))))
-
- 	  	 
