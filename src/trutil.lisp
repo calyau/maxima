@@ -18,19 +18,10 @@
 ;;; and the origonal list with gensyms substututed for non-atom elements
 ;;; of the list. This could be used to define subr-like makros.
 
-(declare-top (special tr-gensym-kounter))
+(defun tr-gensym ()
+  (gentemp "TR-GENSYM"))
 
-(setq tr-gensym-kounter 0)
-
-(deftrfun tr-gensym (&optional k)
-  (and k (setq tr-gensym-kounter k))
-  (prog1
-      (implode (nconc (explodec 'tr-gensym~) (explodec tr-gensym-kounter)))
-    (incf tr-gensym-kounter)))
-
-(declare-top (unspecial tr-gensym-kounter))
-
-(deftrfun conserve-eval-args-data (l)
+(defun conserve-eval-args-data (l)
   (do ((sublis nil)
        (l l (cdr l))
        (nl nil))
@@ -41,7 +32,6 @@
 	   (let ((sym (tr-gensym)))
 	     (push (cons sym (car l)) sublis)
 	     (push sym nl))))))
-
 
 (defun tr-trace-handle (form)
   (let* ((level-sym (get (caar form) 'tr-trace-level))
@@ -69,7 +59,7 @@
   (putprop op (get! op 'otranslate) 'translate)
   (remprop op 'otranslate))
 
-(deftrfun push-defvar (var val)
+(defun push-defvar (var val)
   ;; makes sure there is a form in the beginning of the
   ;; file that insures the special variable is declared and bound.
   (or (member var defined_variables :test #'eq)
@@ -93,48 +83,45 @@
 	       (eq (cadr form) var)
 	       (return ()))))))
 
-(deftrfun push-pre-transl-form (form)
+(defun push-pre-transl-form (form)
   (cond ((member form *pre-transl-forms* :test #'equal))
 	(t
 	 (push form *pre-transl-forms*)
 	 (and *in-translate*
 	      (let ((winp nil))
 		(unwind-protect (progn (eval form) (setq winp t))
-		  (or winp
-		      (barfo "Bad *pre-transl-form*"))))))))
+		  (unless winp
+		    (barfo "Bad *pre-transl-form*"))))))))
 
-(deftrfun push-autoload-def (old-entry new-entries)
+(defun push-autoload-def (old-entry new-entries)
   (and (get old-entry 'autoload)
-					; don't need this if it is IN-CORE.
-					; this automaticaly punts this shit for systems
-					; that don't need it.
+       ;; don't need this if it is IN-CORE.
+       ;; this automaticaly punts this shit for systems
+       ;; that don't need it.
        (do ((entry))
 	   ((null new-entries))
 	 (setq entry (pop new-entries))
 	 (or (member entry *new-autoload-entries* :test #'eq)
 	     (push-pre-transl-form
 	      `(putprop ',entry
-					; this ensures that the autoload definition
-					; will not get out of date.
+			;; this ensures that the autoload definition
+			;; will not get out of date.
 		(or (get ',old-entry 'autoload) t)
 		'autoload))))))
 
-
-
-(deftrfun tr-nargs-check (form &optional (args-p nil) (nargs (length (cdr form))))
+(defun tr-nargs-check (form &optional (args-p nil) (nargs (length (cdr form))))
   ;; the maclisp args info format is NIL meaning no info,
   ;; probably a lexpr. or cons (min . max)
-  (and
-   args-p
-   (let ((nargs (length (cdr form)))
-	 (min (or (car args-p) (cdr args-p)))
-	 (max (cdr args-p)))
-     (cond ((and min (< nargs min))
-	    (mformat *translation-msgs-files* "~%Error: Too few arguments supplied to ~:@M~%"
-		     (caar form))
-	    (mgrind form *translation-msgs-files*))
-	   ((and max (> nargs max))
-	    (tr-format  "~%Error: Too many arguments supplied to ~:@M~%" (caar form))
-	    (mgrind form *translation-msgs-files*)))))
-					; return the number of arguments.
-  nargs)
+  (and args-p
+       (let ((nargs (length (cdr form)))
+	     (min (or (car args-p) (cdr args-p)))
+	     (max (cdr args-p)))
+	 (cond ((and min (< nargs min))
+		(mformat *translation-msgs-files* "~%Error: Too few arguments supplied to ~:@M~%"
+			 (caar form))
+		(mgrind form *translation-msgs-files*))
+	       ((and max (> nargs max))
+		(tr-format  "~%Error: Too many arguments supplied to ~:@M~%" (caar form))
+		(mgrind form *translation-msgs-files*)))))
+  nargs) ;; return the number of arguments.
+
