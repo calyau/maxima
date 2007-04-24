@@ -288,15 +288,16 @@
 	  ('else '$unknown))))
 
 (defun mevalp1_tr (pat error? meval?)
-  (cond ((and (not (atom pat)) (member (caar pat) '(mnot mand mor) :test #'eq))
-	 (cond ((eq 'mnot (caar pat)) (is-mnot_tr (cadr pat) error? meval?))
-	       ((eq 'mand (caar pat)) (is-mand_tr (cdr pat) error? meval?))
-	       (t (is-mor_tr (cdr pat) error? meval?))))
-	((atom (setq patevalled (if meval? (meval pat) pat))) patevalled)
-	((member (caar patevalled) '(mnot mand mor) :test #'eq) (mevalp1_tr patevalled
-							       error?
-							       meval?))
-	(t (mevalp2 patevalled (caar patevalled) (cadr patevalled) (caddr patevalled)))))
+  (let (patevalled)
+    (cond ((and (not (atom pat)) (member (caar pat) '(mnot mand mor) :test #'eq))
+	   (cond ((eq 'mnot (caar pat)) (is-mnot_tr (cadr pat) error? meval?))
+		 ((eq 'mand (caar pat)) (is-mand_tr (cdr pat) error? meval?))
+		 (t (is-mor_tr (cdr pat) error? meval?))))
+	  ((atom (setq patevalled (if meval? (meval pat) pat))) patevalled)
+	  ((member (caar patevalled) '(mnot mand mor) :test #'eq) (mevalp1_tr patevalled
+									      error?
+									      meval?))
+	  (t (mevalp2 patevalled (caar patevalled) (cadr patevalled) (caddr patevalled))))))
 
 (defun is-mnot_tr (pred error? meval?)
   (setq pred (mevalp_tr pred error? meval?))
