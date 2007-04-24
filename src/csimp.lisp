@@ -118,7 +118,7 @@
 ;;		(eq d 'yes))))
 ;; nil))
 
-(setq var (maknam (explode 'foo))) 
+(setq var (make-symbol "foo")) 
 
 (defun numden (e)
   (prog (varlist) 
