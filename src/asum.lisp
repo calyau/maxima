@@ -115,20 +115,24 @@
 
 	;; Begin code copied from orthopoly/orthopoly-init.lisp
 	;; Do pochhammer(x,n) ==> gamma(x+n)/gamma(x).
+
 	((eq (caar e) '$pochhammer)
 	 (let ((x (makegamma1 (nth 1 e)))
 	       (n (makegamma1 (nth 2 e))))
-	   `((mtimes) ((%gamma) ((mplus) ,x ,n)) ((mexpt) ((%gamma) ,x) -1))))
+	   (div (take '(%gamma) (add x n)) (take '(%gamma) x))))
+	 
+	;; (gamma(x/z+1)*z^floor(y))/gamma(x/z-floor(y)+1)
 
 	((eq (caar e) '%genfact)
 	 (let ((x (makegamma1 (nth 1 e)))
 	       (y (makegamma1 (nth 2 e)))
 	       (z (makegamma1 (nth 3 e))))
-	   (setq x (add (div x z) 1))
-	   (setq y (simplify `(($entier) ,y)))
-	   (setq z (power z y))
-	   `((mtimes) ,z ((%gamma) ,x)
-	     ((mexpt) ((%gamma) ((mplus) ,x ((mtimes) -1 ,y))) -1))))
+	   (setq y (take '($floor) y))
+	   (div 
+	    (mul
+	     (take '(%gamma) (add (div x z) 1))
+	     (power z y))
+	    (take '(%gamma) (sub (add (div x z) 1) y)))))
 	;; End code copied from orthopoly/orthopoly-init.lisp
 
 	((eq (caar e) '%elliptic_kc)
@@ -287,17 +291,17 @@
 	(t (recur-apply #'makegamma1 e))))
 
 (defmfun simpgfact (x vestigial z)
-  vestigial				;Ignored.
+  (declare (ignore vestigial))
   (if (not (= (length x) 4)) (wna-err '$genfact))
   (setq z (mapcar #'(lambda (q) (simpcheck q z)) (cdr x)))
-  (let ((a (car z)) (b ($entier (cadr z))) (c (caddr z)))
+  (let ((a (car z)) (b (take '($floor) (cadr z))) (c (caddr z)))
     (cond ((and (fixnump b) (> b -1)) (gfact a b c))
 	  ((integerp b) (merror "Bad second argument to `genfact': ~:M" b))
 	  (t (eqtest (list '(%genfact) a
 			   (if (and (not (atom b))
-				    (eq (caar b) '$entier))
+				    (eq (caar b) '$floor))
 			       (cadr b)
-			       b)
+			     b)
 			   c)
 		     x)))))
 
