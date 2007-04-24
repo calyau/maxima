@@ -649,8 +649,7 @@
   (setq x (cdr x))
   (let ((state-pdl (cons 'playback state-pdl)))
     (prog (l l1 l2 numbp slowp nostringp inputp timep grindp inchar largp)
-       (setq inchar (getlabcharn $inchar))
-					; Only the 1st alphabetic char. of $INCHAR is tested
+       (setq inchar (getlabcharn $inchar)) ; Only the 1st alphabetic char. of $INCHAR is tested
        (setq timep $showtime grindp $grind)
        (do ((x x (cdr x)))( (null x))
 	 (cond ((eq (ml-typep (car x)) 'fixnum) (setq numbp (car x)))
@@ -675,9 +674,11 @@
 	  (errset
 	   (cond ((and (not nostringp) incharp)
 		  (let ((linelable (car l1))) (mterpri) (printlabel))
-		  (if grindp (mgrind (meval1 (car l1)) nil)
-		      (mapc #+gcl #'tyo #-gcl #'write-char (mstring (meval1 (car l1)))))
-		  (if (get (car l1) 'nodisp) (princ '$) (princ '|;|))
+		  (if grindp
+		      (mgrind (meval1 (car l1)) nil)
+		      (mapc #'(lambda (x) (write-char x)) (mstring (meval1 (car l1)))))	;gcl doesn't like a
+					; simple write-char, therefore wrapped it up in a lambda - are_muc
+		  (if (get (car l1) 'nodisp) (princ "$") (princ ";"))
 		  (mterpri))
 		 ((or incharp
 		      (prog2 (when (and timep (setq l (get (car l1) 'time)))
