@@ -1430,9 +1430,10 @@ entire input string to be printed out when an MAXIMA-ERROR occurs."
 	((numberp x) x)
 	((symbolp x)
 	 (or (get x 'reversealias)
-	     (if (member (aref (symbol-name x) 0) '(#\$ #\% #\&))
-		 (implode (cdr (exploden x)))
-		 x)))
+	     (let ((name (symbol-name x)))
+	       (if (member (char name 0) '(#\$ #\% #\&) :test #'char=)
+		   (subseq name 1)
+		   name))))
 	(t (maknam (mstring x)))))
 
 (define-initial-symbols
