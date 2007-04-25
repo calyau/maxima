@@ -492,7 +492,7 @@
 
 
 (defun mstringp (x)
-  (and (symbolp x) (char= (aref (symbol-name x) 0) #\&)))
+  (and (symbolp x) (char= (char (symbol-name x) 0) #\&)))
 
 (defun inherit-propl (op-to op-from getl)
   (let ((propl (getl op-from getl)))
@@ -537,8 +537,7 @@
     (setq res
 	  (if (null tem)
 	      (if (operatorp op)
-		  (mread-synerr "~A is not a prefix operator"
-				(mopstrip op))
+		  (mread-synerr "~A is not a prefix operator" (mopstrip op))
 		  (cons '$any op))
 	      (funcall (cadr tem) op)))
     res))
@@ -737,12 +736,12 @@ entire input string to be printed out when an MAXIMA-ERROR occurs."
 ;;Important for lispm rubout handler
 (defun mread (&rest read-args)
   (progn
-	 (when *mread-prompt*
-	       (and *parse-window* (setf (car *parse-window*) nil
-					 *parse-window* (cdr *parse-window*)))
-	       (princ *mread-prompt*)
-	       (force-output))
-	 (apply 'mread-raw read-args)))
+    (when *mread-prompt*
+      (and *parse-window* (setf (car *parse-window*) nil
+				*parse-window* (cdr *parse-window*)))
+      (princ *mread-prompt*)
+      (force-output))
+    (apply 'mread-raw read-args)))
 
 (defun mread-prompter (stream char)
   (declare (special *mread-prompt-internal*)
@@ -1155,6 +1154,7 @@ entire input string to be printed out when an MAXIMA-ERROR occurs."
 	  (let ((propval (get '$^ prop)))
 	    (if propval (putprop '$** propval prop))))
       '(lbp rbp pos rpos lpos mheader))
+
 (inherit-propl  '$** '$^ (led-propl))
 
 (def-lbp     |$^^| 140.)
@@ -1434,7 +1434,7 @@ entire input string to be printed out when an MAXIMA-ERROR occurs."
 	       (if (member (char name 0) '(#\$ #\% #\&) :test #'char=)
 		   (subseq name 1)
 		   name))))
-	(t (maknam (mstring x)))))
+	(t x)))
 
 (define-initial-symbols
     ;; * Note: /. is looked for explicitly rather than
@@ -1650,8 +1650,7 @@ entire input string to be printed out when an MAXIMA-ERROR occurs."
 			  lis
     (let* ((st (get-instream *parse-stream*))
  	   (n (instream-line st))
-	   (nam (instream-name st))
-	   )
+	   (nam (instream-name st)))
       (or nam (return-from add-lineinfo lis))
       (setq *current-line-info*
 	    (cond ((eq (cadr *current-line-info*) nam)
