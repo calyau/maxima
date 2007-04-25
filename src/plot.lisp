@@ -1498,7 +1498,7 @@
 
 ; Adapted from MSTRINGP (change & to $).
 (defun msymbolp (x)
-    (and (symbolp x) (char= (firstcharn x) #\$)))
+  (and (symbolp x) (char= (char (symbol-value x) 0) #\$)))
 
 ;; OK, here are some test cases for $SPRINT.
 ;; The only strange one is sprint ([s1, s2, s3]) which is printing an expression containing

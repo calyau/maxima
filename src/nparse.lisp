@@ -66,9 +66,6 @@
       (terpri)
       (throw-macsyma-top)))
 
-(defun firstcharn (x)
-  (aref (string x) 0))
-
 (defun tyi-parse-int (stream eof)
   (or *parse-window*
       (progn (setq *parse-window* (make-list 25))
