@@ -38,13 +38,13 @@ ceiling(%phi);
 2$
 
 ceiling(minf);
-und$
+minf$
 
 ceiling(inf);
-und$
+inf$
 
 ceiling(infinity);
-und$
+ceiling(infinity)$
 
 ceiling(zeroa);
 1$
@@ -56,7 +56,7 @@ ceiling(und);
 und$
 
 ceiling(ind);
-und$
+ind$
 
 args(ceiling(rat(x)));
 [x]$
