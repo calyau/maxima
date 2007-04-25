@@ -34,6 +34,9 @@
   (mfuncall '$declare '$integervalued '$feature)
   ($put '$nummod 3 '$version))
 
+(defmacro opcons (op &rest args)
+  `(simplify (list (list ,op) ,@args)))
+
 ;; charfun(pred) evaluates to 1 when the predicate 'pred' evaluates
 ;; to true; it evaluates to 0 when 'pred' evaluates to false; otherwise,
 ;; it evaluates to a noun form.
@@ -60,7 +63,7 @@
 	     (setq n-sum (add ei n-sum)))
 	    (t
 	     (setq o-sum (add ei o-sum)))))
-    (setq n (simplify `(($floor) ,n-sum)))
+    (setq n (opcons '$floor n-sum))
     (setq i-sum (add i-sum n))
     (setq o-sum (add o-sum (sub n-sum n)))
     (values i-sum o-sum)))
@@ -137,20 +140,22 @@
 ;; (a) The function fpentier rounds a bigfloat towards zero--we need to
 ;;     check for that.
 
-;; (b) Mostly for fun, floor(minf) --> und and etc. I suppose floor
-;;     should be undefined for many other arguments---for example
-;;     floor(a < b), floor(true).
+;; (b) Since limit(f(x))=(m)inf implies limit(floor(f(x)))=(m)inf,
+;;     floor(inf/minf) = inf/minf.  Since minf<limit(f(x))<inf implies
+;;     minf<limit(floor(f(x)))<inf, floor(ind)=ind
 
 ;;     I think floor(complex number) should be undefined too.  Some folks
 ;;     might like floor(a + %i b) --> floor(a) + %i floor(b). But
 ;;     this would violate the integer-valuedness of floor.
+;;     So floor(infinity) remains unsimplified
 
 (defun simp-floor (e e1 z)
   (oneargcheck e)
-  (setq e (specrepcheck e))
-  (setq e (simplifya ($ratdisrep (nth 1 e)) z))
-  (if (ratnump e) (setq e (/ (cadr e) (caddr e))))
+  (setq e (simplifya (specrepcheck (nth 1 e)) z))
+
   (cond ((numberp e) (floor e))
+
+	((ratnump e) (floor (cadr e) (caddr e)))
 
 	(($bfloatp e)
 	 (setq e1 (fpentier e))
@@ -158,24 +163,26 @@
 	     (1- e1)
 	     e1))
 
-	(($orderlessp e (neg e))
-	 (sub* 0 (simplifya `(($ceiling) ,(neg e)) nil)))
-
 	((maxima-integerp e) e)
+
+	(($orderlessp e (neg e))
+	 (sub 0 (opcons '$ceiling (neg e))))
 
 	((and (setq e1 (mget e '$numer)) (floor e1)))
 
 	((or (member e infinities) (eq e '$und) (eq e '$ind)) '$und)
-	((or (like e '$zerob)) -1)
-	((or (like e '$zeroa)) 0)
+	;;((memq e '($inf $minf $ind $und)) e) ; Proposed code
+	;; leave floor(infinity) as is
+	((or (eq e '$zerob)) -1)
+	((or (eq e '$zeroa)) 0)
 
 	((and ($constantp e) (pretty-good-floor-or-ceiling e '$floor)))
 
 	((mplusp e)
 	 (let ((i-sum) (o-sum))
 	   (multiple-value-setq (i-sum o-sum) (integer-part-of-sum e))
-	   (setq o-sum (if (like i-sum 0) `(($floor simp) ,o-sum)
-			 (simplifya `(($floor) ,o-sum) nil)))
+	   (setq o-sum (if (equal i-sum 0) `(($floor simp) ,o-sum)
+			 (opcons '$floor o-sum)))
 	   (add i-sum o-sum)))
 
 	;; handle 0 < e < 1 implies floor(e) = 0 and
@@ -193,30 +200,33 @@
 
 (defun simp-ceiling (e e1 z)
   (oneargcheck e)
-  (setq e ($ratdisrep e))
-  (setq e (simplifya ($ratdisrep (nth 1 e)) z))
-  (if (ratnump e) (setq e (/ (cadr e) (caddr e))))
-  (cond ((numberp e) (ceiling e))
-	(($bfloatp e)
-	 (sub 0 (simplify `(($floor) ,(sub 0 e)))))
+  (setq e (simplifya (specrepcheck (nth 1 e)) z))
 
-	(($orderlessp e (neg e))
-	 (sub* 0 (simplifya `(($floor) ,(neg e)) nil)))
+  (cond ((numberp e) (ceiling e))
+
+	((ratnump e) (ceiling (cadr e) (caddr e)))
+
+	(($bfloatp e)
+	 (sub 0 (opcons '$floor (sub 0 e))))
 
 	((maxima-integerp e) e)
+
+	(($orderlessp e (neg e))
+	 (sub* 0 (opcons '$floor (neg e))))
+
 	((and (setq e1 (mget e '$numer)) (ceiling e1)))
 
 	((or (member e infinities) (eq e '$und) (eq e '$ind)) '$und)
-	((or (like e '$zerob)) 0)
-	((or (like e '$zeroa)) 1)
+	((or (eq e '$zerob)) 0)
+	((or (eq e '$zeroa)) 1)
 
 	((and ($constantp e) (pretty-good-floor-or-ceiling e '$ceiling)))
 
 	((mplusp e)
 	 (let ((i-sum) (o-sum))
 	   (multiple-value-setq (i-sum o-sum) (integer-part-of-sum e))
-	   (setq o-sum (if (like i-sum 0) `(($ceiling simp) ,o-sum)
-			 (simplifya `(($ceiling) ,o-sum) nil)))
+	   (setq o-sum (if (equal i-sum 0) `(($ceiling simp) ,o-sum)
+			 (opcons '$ceiling o-sum)))
 	   (add i-sum o-sum)))
 
 
@@ -236,15 +246,15 @@
 
 ;; See "Concrete Mathematics," Section 3.21.
 
+`	     
 (defun simp-nummod (e e1 z)
   (twoargcheck e)
-  (setq e (mapcar #'specrepcheck (margs e)))
-  (setq e (mapcar #'(lambda (s) (simplifya s z)) e))
-  (let ((x (nth 0 e)) (y (nth 1 e)))
-    (cond ((or (like 0 y) (like 0 x)) x)
-	  ((like 1 y) (sub* x `(($floor) ,x)))
-	  ((and ($constantp x) ($constantp y) (not (like 0 y)))
-	   (sub* x (mul* y `(($floor) ,(div x y)))))
-	  ((not (like 1 (setq e1 ($gcd x y))))
-	   (mul* e1 `(($mod) ,(div* x e1) ,(div* y e1))))
+  (let ((x (simplifya (specrepcheck (cadr e)) z))
+	(y (simplifya (specrepcheck (caddr e)) z)))
+    (cond ((or (equal 0 y) (equal 0 x)) x)
+	  ((equal 1 y) (sub x `(($floor) ,x)))
+	  ((and ($constantp x) ($constantp y))
+	   (sub x (mul y (opcons '$floor (div x y)))))
+	  ((not (equal 1 (setq e1 ($gcd x y))))
+	   (mul e1 (opcons '$mod (div x e1) (div y e1))))
 	  (t `(($mod simp) ,x ,y)))))
