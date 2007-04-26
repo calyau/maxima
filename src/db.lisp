@@ -73,10 +73,6 @@
 (defmacro xorm (cell n)
   `(rplaca ,cell (logxor (car ,cell) (car ,n))))
 
-
-(defun xxorm (cell n)
-  (xorm cell n))
-
 (defprop global 1 cmark)
 
 (defvar conunmrk (make-array (1+ connumber) :initial-element nil))
@@ -89,8 +85,9 @@
   (and (symbolp x) (zl-get x 'mark)))
 
 (defun zl-remprop (sym indicator)
-  (cond ((symbolp sym) (remprop sym indicator))
-	(t (remf (cdr sym) indicator))))
+  (if (symbolp sym)
+      (remprop sym indicator)
+      (remf (cdr sym) indicator)))
 
 (defmfun unmrk (x)
   (zl-remprop x 'mark))
@@ -104,7 +101,6 @@
   (cond ((numberp x))
 	((or (atom x) (numberp (car x))) (unmrk x))
 	(t (mapc #'unmrks x))))
-
 
 (defmode type ()
   (atom (selector +labs) (selector -labs) (selector data))
@@ -147,7 +143,7 @@
 
 (defmacro subp (&rest x)
   (setq x (mapcar #'(lambda (form) `(unlab ,form)) x))
-  `(= ,(car x) (logand . ,x)))
+  `(= ,(car x) (logand ,@x)))
 
 (defun dbnode (x)
   (if (symbolp x) x (list x)))
@@ -167,7 +163,7 @@
 	   (if (and (labeq m (caaar l)) (labeq n (cdaar l)))
 	       (return (cdar l)))))
 	((= (setq lprindex (1- lprindex)) labindex)
-	 (break 'lpr t))
+	 (break))
 	(t (setq lprs (cons (cons (cons m n) (ash 1 lprindex)) lprs))
 	   (cdar lprs))))
 
@@ -177,7 +173,7 @@
 (defun marknd (nd)
   (cond ((+labs nd))
 	((= lprindex (setq labindex (1+ labindex)))
-	 (break 'marknd t))
+	 (break))
 	(t (setq labs (cons (cons nd (lab labindex)) labs))
 	   (beg nd (lab labindex))
 	   (cdar labs))))
@@ -300,7 +296,7 @@
 (defun dq+ ()
   (if +s
       (prog2
-	  (xxorm (zl-get (car +s) '+labs) lab-high-lab)
+	  (xorm (zl-get (car +s) '+labs) lab-high-lab)
 	  (car +s)
 	(cond ((not (eq +s +sm))
 	       (setq +s (cdr +s)))
@@ -561,22 +557,20 @@
   (zl-remprop cl 'fact)
   (zl-remprop cl 'wn))
 
-(defmfun activate n
-  (do ((i 1 (1+ i)))
-      ((> i n))
-    (cond ((member (arg i) contexts :test #'eq) nil)
-	  (t (setq contexts (cons (arg i) contexts))
-	     (cmark (arg i))))))
+(defmfun activate (&rest l)
+  (dolist (e l)
+    (cond ((member e contexts :test #'eq) nil)
+	  (t (push e contexts)
+	     (cmark e)))))
 
-(defmfun deactivate n
-  (do ((i 1 (1+ i)))
-      ((> i n))
-    (cond ((not (member (arg i) contexts :test #'eq)) nil)
-	  (t (cunmrk (arg i))
-	     (setq contexts (delete (arg i) contexts :test #'eq))))))
+(defmfun deactivate (&rest l)
+  (dolist (e l)
+    (cond ((not (member e contexts :test #'eq)) nil)
+	  (t (cunmrk e)
+	     (setq contexts (delete e contexts :test #'eq))))))
 
-(defmfun context n
-  (newcon (listify n)))
+(defmfun context (&rest l)
+  (newcon l))
 
 (defun newcon (c)
   (if (> conindex connumber) (gccon))
@@ -655,11 +649,11 @@
 
 (defmfun killc (con)
   (contextmark)
-  (cond ((not (null con))
-	 (mapc #'remov (zl-get con 'data))
-	 (zl-remprop con 'data)
-	 (zl-remprop con 'cmark)
-	 (zl-remprop con 'subc)))
+  (unless (null con)
+    (mapc #'remov (zl-get con 'data))
+    (zl-remprop con 'data)
+    (zl-remprop con 'cmark)
+    (zl-remprop con 'subc))
   t)
 
 (defun propg ()
@@ -795,5 +789,6 @@
 
 (defun dbunivar (p v al)
   (let ((dum (assoc p al :test #'eq)))
-    (cond ((null dum) (cons (cons p v) al))
-	  (t (uni (cdr dum) v al)))))
+    (if (null dum)
+	(cons (cons p v) al)
+	(uni (cdr dum) v al))))
