@@ -75,7 +75,7 @@
     (setf (car *parse-window*) tem *parse-window*
 	  (cdr *parse-window*))
     (if (eql tem #\newline)
-	(newline stream #\newline))
+	(newline stream))
     tem))
 
 (defun *mread-prompt* (out-stream char)
@@ -1630,13 +1630,13 @@ entire input string to be printed out when an MAXIMA-ERROR occurs."
 		   (cons  (make-instream :stream str :stream-name name)
 			  *stream-alist*))))))
 
-(defun newline (str ch) ch
-       (let ((in (get-instream str)))
-	 (setf (instream-line in) (the fixnum (+ 1 (instream-line in)))))
-       ;; if the next line begins with '(',
-       ;; then record all cons's eg arglist )
-       ;;(setq *at-newline*  (if (eql (peek-char nil str nil) #\() :all t))
-       (values))
+(defun newline (str)
+  (let ((in (get-instream str)))
+    (setf (instream-line in) (the fixnum (+ 1 (instream-line in)))))
+  ;; if the next line begins with '(',
+  ;; then record all cons's eg arglist )
+  ;;(setq *at-newline*  (if (eql (peek-char nil str nil) #\() :all t))
+  (values))
 
 (defun find-stream (stream)
    (dolist (v *stream-alist*)

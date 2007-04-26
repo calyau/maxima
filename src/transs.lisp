@@ -217,7 +217,7 @@
 (defun call-batch1 (in-stream out-stream &aux expr transl)
   (cleanup)
   ;; we want the thing to start with a newline..
-  (newline in-stream #\n)
+  (newline in-stream)
   (let ((*readtable* (copy-readtable nil))
 	#-gcl (*print-pprint-dispatch* (copy-pprint-dispatch)))
     #-gcl

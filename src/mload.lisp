@@ -124,7 +124,7 @@
     (when $loadprint
       (format t "~&batching ~A~&" (cl:namestring (truename in-stream))))
     (cleanup)
-    (newline in-stream #\n)
+    (newline in-stream)
     (loop while (and
 		  (setq  expr (mread in-stream nil))
 		  (consp expr))
