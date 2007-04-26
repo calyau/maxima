@@ -14,7 +14,7 @@ MAXIMA's ordinary differential equation (ODE) solver @code{ode2} solves
 elementary linear ODEs of first and second order.  The function
 @code{contrib_ode} extends @code{ode2} with additional methods for linear
 and non-linear first order ODEs and linear homogeneous second order ODEs.  
-The code is still underdevelopment and the calling sequence may change
+The code is still under development and the calling sequence may change
 in future releases.  Once the code has stabilized it may be
 moved from the contib directory and integrated into MAXIMA.
 
@@ -29,7 +29,7 @@ variable.  When successful, it returns a list of solutions.
 
 The form of the solution differs from @code{ode2}.
 As non-linear equations can have multiple solutions, 
-@code{contrb_ode} returns a list of solutions.  Each  solution can 
+@code{contrib_ode} returns a list of solutions.  Each  solution can 
 have a number of forms:
 @itemize @bullet
 @item
@@ -306,19 +306,19 @@ method.
 
 @end defvr
 
-@defvr @code{%c}
+@defvr {variable} @code{%c}
 
 @code{%c} is the integration constant for first order ODEs
 
 @end defvr
 
-@defvr @code{%k1}
+@defvr {variable} @code{%k1}
 
 @code{%k1} is the first integration constant for second order ODEs.
 
 @end defvr
 
-@defvr @code{%k2}
+@defvr {variable} @code{%k2}
 
 @code{%k2} is the second integration constant for second order ODEs.
 
