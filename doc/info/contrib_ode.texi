@@ -216,8 +216,45 @@ put('contrib_ode,true,'verbose) is executed.
 Returns a list of solutions of the ODE @var{eqn} with 
 independent variable @var{x} and dependent variable @var{y}.
 
+@end deffn
 
+@deffn {Function} odelin (@var{eqn}, @var{y}, @var{x})
 
+@code{odelin} solves linear homogeneous ODEs of first and 
+second order with 
+independent variable @var{x} and dependent variable @var{y}.  
+It returns a fundamental solution set of the ODE.
+
+For second order ODEs, @code{odelin} uses a method, due to Bronstein
+and Lafaille, that searches for solutions in terms of given 
+special functions. 
+
+@c ===beg===
+@c load('contrib_ode)$
+@c odelin(x*(x+1)*'diff(y,x,2)+(x+5)*'diff(y,x,1)+(-4)*y,y,x);
+@c ===end===
+@example
+(%i1) load('contrib_ode);
+
+(%i2) odelin(x*(x+1)*'diff(y,x,2)+(x+5)*'diff(y,x,1)+(-4)*y,y,x);
+...trying factor method
+...solving 7 equations in 4 variables
+...trying the Bessel solver
+...solving 1 equations in 2 variables
+...trying the F01 solver
+...solving 1 equations in 3 variables
+...trying the spherodial wave solver
+...solving 1 equations in 4 variables
+...trying the square root Bessel solver
+...solving 1 equations in 2 variables
+...trying the 2F1 solver
+...solving 9 equations in 5 variables
+       gauss_a(- 6, - 2, - 3, - x)  gauss_b(- 6, - 2, - 3, - x)
+(%o2) @{---------------------------, ---------------------------@}
+                    4                            4
+                   x                            x
+
+@end example
 
 @end deffn
 
@@ -287,8 +324,66 @@ method.
 
 @end defvr
 
+@deffn {Function} gauss_a (@var{a}, @var{b}, @var{c}, @var{x})
 
-@node Possible improvements to contrib_ode, Test cases for contrib_ode, Definitions for contrib_ode, contrib_ode
+@code{gauss_a(a,b,c,x)} and @code{gauss_b(a,b,c,x)} are 2F1 
+geometric functions.  They represent any two independent
+solutions of the hypergeometric differential equation 
+@code{x(1-x) diff(y,x,2) + [c-(a+b+1)x diff(y,x) - aby = 0} (A&S 15.5.1).  
+
+The only use of these functions is in solutions of ODEs returned by 
+@code{odelin} and @code{contrib_ode}.  The definition and use of these 
+functions may change in future releases of maxima.
+
+See also @code{gauss_b}, @code{dgauss_a} and @code{gauss_b}.
+
+@end deffn
+
+@deffn {Function} gauss_b (@var{a}, @var{b}, @var{c}, @var{x})
+See @code{gauss_a}.
+@end deffn
+
+@deffn {Function} dgauss_a (@var{a}, @var{b}, @var{c}, @var{x})
+The derivative with respect to x of @code{gauss_a(a,b,c,x)}.
+@end deffn
+
+@deffn {Function} dgauss_b (@var{a}, @var{b}, @var{c}, @var{x})
+The derivative with respect to x of @code{gauss_b(a,b,c,x)}.
+@end deffn
+
+
+@deffn {Function} kummer_m (@var{a}, @var{b}, @var{x})
+
+Kummer's M function, as defined in Abramowitz and Stegun,
+@i{Handbook of Mathematical Functions}, Section 13.1.2.
+
+The only use of this function is in solutions of ODEs returned by 
+@code{odelin} and @code{contrib_ode}.  The definition and use of this 
+function may change in future releases of maxima.
+
+See also @code{kummer_u}, @code{dkummer_m} and @code{dkummer_u}.
+@end deffn
+
+@deffn {Function} kummer_u (@var{a}, @var{b}, @var{x})
+
+Kummer's U function, as defined in Abramowitz and Stegun,
+@i{Handbook of Mathematical Functions}, Section 13.1.3.
+
+See @code{kummer_m}.
+@end deffn
+
+@deffn {Function} dkummer_m (@var{a}, @var{b}, @var{x})
+The derivative with respect to x of @code{kummer_m(a,b,x)}.
+@end deffn
+
+@deffn {Function} dkummer_u (@var{a}, @var{b}, @var{x})
+The derivative with respect to x of @code{kummer_u(a,b,x)}.
+@end deffn
+
+
+
+@node Possible improvements to contrib_ode, Test cases for contrib_ode, 
+Definitions for contrib_ode, contrib_ode
 @section Possible improvements to contrib_ode
 
 
@@ -329,15 +424,15 @@ Add more test cases.
 @section Test cases for contrib_ode
 
 
-The routines have been tested on a approximately one thousnad  test cases 
+The routines have been tested on a approximately one thousand  test cases 
 from Murphy,
 Kamke, Zwillinger and elsewhere.  These are included in the tests subdirectory.
 
 @itemize @bullet
 @item
 The Clairault routine @code{ode1_clairault} finds all known solutions,
-  including singular soultions.  (This statement is asking for
-  trouble).
+  including singular solutions, of the Clairault equations in Murphy and
+  Kamke.
 
 @item
 The other routines often return a single solution when multiple
@@ -392,5 +487,13 @@ E. S. Cheb-Terrab, T. Koloknikov,  First Order ODEs,
 @item
 G W Bluman, S C Anco, Symmetry and Integration Methods for
     Differential Equations, Springer, (2002)
+
+@item 
+M Bronstein, S Lafaille,
+Solutions of linear ordinary differential equations in terms
+of special functions,
+Proceedings of ISSAC 2002, Lille, ACM Press, 23-28. 
+(http://www-sop.inria.fr/cafe/Manuel.Bronstein/publications/issac2002.pdf)
+
 
 @end enumerate
