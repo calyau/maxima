@@ -1631,11 +1631,7 @@ entire input string to be printed out when an MAXIMA-ERROR occurs."
 			  *stream-alist*))))))
 
 (defun newline (str)
-  (let ((in (get-instream str)))
-    (setf (instream-line in) (the fixnum (+ 1 (instream-line in)))))
-  ;; if the next line begins with '(',
-  ;; then record all cons's eg arglist )
-  ;;(setq *at-newline*  (if (eql (peek-char nil str nil) #\() :all t))
+  (incf (instream-line (get-instream str)))
   (values))
 
 (defun find-stream (stream)
