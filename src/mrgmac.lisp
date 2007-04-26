@@ -24,8 +24,6 @@
 (defmacro put (a b c)
   `(putprop ,a ,b ,c))
 
-(defmacro caddaar (x) `(caddar (car ,x)))
-
 (declare-top (special name bas selector))
 
 (defvar *mobjects* nil)

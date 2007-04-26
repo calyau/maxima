@@ -425,7 +425,7 @@
   (cond
     ((and (eq (car fact) (caaar data))
 	  (eq (cadr fact) (cadaar data))
-	  (eq (caddr fact) (caddaar data)))
+	  (eq (caddr fact) (caddar (car data))))
      (cdr data))
     (t
      (do ((ds data (cdr ds))
@@ -506,7 +506,7 @@
 (defun kill3 (fun arg val data)
   (cond ((and (eq fun (caaar data))
 	      (eq arg (cadaar data))
-	      (eq val (caddaar data)))
+	      (eq val (caddar (car data))))
 	 (cdr data))
 	(t
 	 (do ((ds data (cdr ds))
