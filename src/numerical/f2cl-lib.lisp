@@ -36,7 +36,10 @@
 ;;	constant-list
 ;;----------------------------------------------------------------------------
 
-(eval-when (compile load eval) (proclaim '(special *verbose*)))
+(eval-when
+    #+gcl (compile load eval)
+    #-gcl (:compile-toplevel :load-toplevel :execute)
+    (proclaim '(special *verbose*)))
 ;;----------------------------------------------------------------------------
 #+aclpc (defmacro rexpt (x y) `(realpart (expt ,x ,y)))
 #-aclpc (defmacro rexpt (x y) `(expt ,x ,y))
@@ -1046,7 +1049,7 @@ causing all pending operations to be flushed"
 		 (close val)))
 	       *lun-hash*))
 
-(defun %open-file (&key unit file status access form recl blank)
+(defun %open-file (&key file status access recl blank &allow-other-keys)
   ;; We should also check for values of access, form that we don't support.
   (when recl
     (error "F2CL-LIB does not support record lengths"))
@@ -1087,7 +1090,7 @@ causing all pending operations to be flushed"
 	,(if iostat `(setf ,iostat (if ,result 0 1))))))
 	  
 
-(defun %close (&key unit status)
+(defun %close (&key unit &allow-other-keys)
   (cl:close (lun->stream unit)))
 
 (defmacro close$ (&key unit iostat err status)
@@ -1405,9 +1408,13 @@ causing all pending operations to be flushed"
 ;;;-------------------------------------------------------------------------
 ;;; end of macros.l
 ;;;
-;;; $Id: f2cl-lib.lisp,v 1.12 2007-01-11 17:08:41 rtoy Exp $
+;;; $Id: f2cl-lib.lisp,v 1.13 2007-04-27 17:44:45 are_muc Exp $
 ;;; $Log: f2cl-lib.lisp,v $
-;;; Revision 1.12  2007-01-11 17:08:41  rtoy
+;;; Revision 1.13  2007-04-27 17:44:45  are_muc
+;;; changed key argument lists to %open-file and %close by removing unused
+;;; ones and allowing them nevertheless to remove compiler warnings.
+;;;
+;;; Revision 1.12  2007/01/11 17:08:41  rtoy
 ;;; GCL apparently supports
 ;;; least-positive-normalized-{double,single}-float now.
 ;;;
