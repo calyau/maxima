@@ -91,7 +91,7 @@
     (displa form)))
 
 (defun maxima-draw-form (form &key (stream *standard-output*) (at-x 0) (at-y 0)
-			 $linedisp $cursordisp &aux dim-list prev-x prev-y )
+			 $linedisp $cursordisp &aux dim-list)
   "First try at getting an interface to allow one to draw a form at any
   position. The at-x and at-y amount to the initial position which will be in
   the middle left of a matrix, or the main line for a polynomial.  On a stream
