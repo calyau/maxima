@@ -333,8 +333,8 @@ relational knowledge is contained in the default context GLOBAL."
 ; which calls NARY1 to flatten nested "and" and "or" expressions
 ; (due to $NARY property of MAND and MOR, declared elsewhere).
 
-(put 'mand t 'opers)
-(put 'mor t 'opers)
+(putprop 'mand t 'opers)
+(putprop 'mor t 'opers)
 
 (putprop 'mnot 'simp-mnot 'operators)
 (putprop 'mand 'simp-mand 'operators)
