@@ -240,11 +240,12 @@
 
 
 (defun translate-from-stream (from-stream &key to-stream eval pretty (print-function #'prin1)
-			      &aux expr transl )
+			      &aux expr transl)
   (bind-transl-state
-   (loop while (and (setq expr (mread from-stream)) (consp expr))
+   (loop
       with *in-translate-file* = t
       with *print-pretty* = pretty
+      while (and (setq expr (mread from-stream)) (consp expr))
       do (setq transl (translate-macexpr-toplevel (third expr)))
       (cond (eval (eval transl)))
       (cond (to-stream (funcall print-function transl to-stream)))
