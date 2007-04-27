@@ -1009,10 +1009,6 @@ where x >= 0, y >= 0, z >=0, and at most one of x, y, z is zero.
 	   (setf z (* (+ z lam) 1/4))))))))
 
 (let ((errtol (expt (* 4 double-float-epsilon) 1/6))
-      (uplim (/ most-positive-double-float 5))
-      (lolim (* #-gcl least-positive-normalized-double-float
-		#+gcl least-positive-double-float
-		5))
       (c1 (float 1/24 1d0))
       (c2 (float 3/44 1d0))
       (c3 (float 1/14 1d0)))
