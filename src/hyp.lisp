@@ -3141,8 +3141,8 @@
 	      arg n)))
 
 ;; Transform F(a,b;c;z) to F(a,b;c-n;z), given F(a,b;c;z)
-(defun as-15.2.4 (ax bb c n arg fun)
-  (declare (ignore ax bb))
+(defun as-15.2.4 (axax bb c n arg fun)
+  (declare (ignore axax bb))
   (assert (>= n 0))
   ;; A&S 15.2.4
   ;; F(a,b;c-n;z) = 1/poch(c-n,n)/z^(c-n-1)*diff(z^(c-1)*fun,z,n)

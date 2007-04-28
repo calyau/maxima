@@ -224,8 +224,8 @@
 ;; calling intir or intir2 like zs-intir3 or pns-intir3 do because
 ;; they eventually call inti which only handles linear forms (e = 0.)
 ;; We'll need to write custom versions.
-(defun ns-intir3 (xx ee ff gg dd pp r0 e0)
-  (declare (ignore xx ee ff gg dd pp r0 e0))
+(defun ns-intir3 (xx ee fff gg dd pp r0 e0)
+  (declare (ignore xx ee fff gg dd pp r0 e0))
   nil)
 
 (defun cdras (a b)
