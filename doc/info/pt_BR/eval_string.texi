@@ -1,5 +1,5 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
-@c /eval_string.texi/1.1/Mon Feb 27 22:09:17 2006//
+@c /eval_string.texi/1.2/Sun Apr 22 14:31:52 2007//
 @menu
 * Defini@value{cedilha}@~{o}es para eval_string::
 @end menu
@@ -16,15 +16,13 @@ Reclama se @var{str} n@~{a}o for uma seq@"{u}@^{e}ncia de caracteres do Maxima.
 
 Exemplos:
 @example
-(%i1) load("eval_string")$
-
-(%i2) eval_string ("foo: 42; bar: foo^2 + baz");
-(%o2)                       42
-(%i3) eval_string ("(foo: 42, bar: foo^2 + baz)");
-(%o3)                   baz + 1764
+(%i1) eval_string ("foo: 42; bar: foo^2 + baz");
+(%o1)                       42
+(%i2) eval_string ("(foo: 42, bar: foo^2 + baz)");
+(%o2)                   baz + 1764
 @end example
 
-Para usar essa fun@value{cedilha}@~{a}o escreva primeiro @code{load("eval_string")}. Veja tamb@'{e}m @code{parse_string}.
+Veja tamb@'{e}m @code{parse_string}.
 @end deffn
 
 
@@ -37,14 +35,11 @@ Reclama se @var{str} n@~{a}o for uma seq@"{u}@^{e}ncia de caracteres do Maxima.
 
 Exemplos:
 @example
-(%i1) load("eval_string")$
+(%i1) parse_string ("foo: 42; bar: foo^2 + baz");
+(%o1)                    foo : 42
+(%i2) parse_string ("(foo: 42, bar: foo^2 + baz)");
+                                    2
+(%o2)          (foo : 42, bar : foo  + baz)@end example
 
-(%i2) parse_string ("foo: 42; bar: foo^2 + baz");
-(%o2)                    foo : 42
-(%i3) parse_string ("(foo: 42, bar: foo^2 + baz)");
-                                   2
-(%o3)          (foo : 42, bar : foo  + baz)
-@end example
-
-Para usar essa fun@value{cedilha}@~{a}o escreva primeiro @code{load("eval_string")}. Veja tamb@'{e}m a fun@value{cedilha}@~{a}o @code{eval_string}.
+Veja tamb@'{e}m a fun@value{cedilha}@~{a}o @code{eval_string}.
 @end deffn

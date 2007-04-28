@@ -1,5 +1,5 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
-@c /Runtime.texi/1.18/Sat Jul  8 08:15:05 2006/-ko/
+@c /Runtime.texi/1.19/Sun Apr 22 14:31:49 2007/-ko/
 @menu
 * Introdu@value{cedilha}@~{a}o a Ambiente em Tempo de Execu@value{cedilha}@~{a}o::  
 * Interrup@value{cedilha}@~{o}es::                  
@@ -208,6 +208,78 @@ Exemplo:
 (%o1) 08:05:09 Wed, 11/02/2005 (GMT-7)
 (%i2) print ("timedate mostra o tempo atual", d)$
 timedate reports current time 08:05:09 Wed, 11/02/2005 (GMT-7)
+@end example
+
+@end deffn
+
+@deffn {Fun@value{cedilha}@~{a}o} absolute_real_time ()
+
+Retorna o n@'{u}mero de segundos desde a meia noite do dia primeiro de janeiro de 1900 (UTC).
+O valor de retorno @'{e} um inteiro.
+
+Veja tamb@'{e}m @code{elapsed_real_time} e @code{elapsed_run_time}.
+
+Exemplo:
+
+@c ===beg===
+@c absolute_real_time ();
+@c 1900 + absolute_real_time () / (365.25 * 24 * 3600);
+@c ===end===
+@example
+(%i1) absolute_real_time ();
+(%o1)                      3385045277
+(%i2) 1900 + absolute_real_time () / (365.25 * 24 * 3600);
+(%o2)                   2007.265612087104
+@end example
+
+@end deffn
+
+@deffn {Fun@value{cedilha}@~{a}o} elapsed_real_time ()
+
+Retorna o n;umero de segundos (incluindo fra@value{cedilha}@~{o}es de segundo)
+desde que Maxima tenha sido recentemente iniciado ou reiniciado.
+O valor de retorno @'{e} um n@'{u}mero em ponto flutuante.
+
+Veja tamb@'{e}m @code{absolute_real_time} e @code{elapsed_run_time}.
+
+Exemplo:
+
+@c ===beg===
+@c elapsed_real_time ();
+@c expand ((a + b)^500)$
+@c elapsed_real_time ();
+@c ===end===
+@example
+(%i1) elapsed_real_time ();
+(%o1)                       2.559324
+(%i2) expand ((a + b)^500)$
+(%i3) elapsed_real_time ();
+(%o3)                       7.552087
+@end example
+
+@end deffn
+
+@deffn {Fun@value{cedilha}@~{a}o} elapsed_run_time ()
+
+Retorna uma estimativa do n@'{u}mero de segundos (incluindo fra@value{cedilha}@~{o}es de segundo)
+que o Maxima gastou em computa@value{cedilha}@~{o}es desde que Maxima tenha sido recentemente iniciado ou reiniciado.
+O valor de retorno @'{e} um n@'{u}mero em ponto flutuante.
+
+Veja tamb@'{e}m @code{absolute_real_time} e @code{elapsed_real_time}.
+
+Exemplo:
+
+@c ===beg===
+@c elapsed_run_time ();
+@c expand ((a + b)^500)$
+@c elapsed_run_time ();
+@c ===end===
+@example
+(%i1) elapsed_run_time ();
+(%o1)                         0.04
+(%i2) expand ((a + b)^500)$
+(%i3) elapsed_run_time ();
+(%o3)                         1.26
 @end example
 
 @end deffn

@@ -1,5 +1,5 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
-@c /nset.texi/1.17/Sat Jul 29 08:37:20 2006//
+@c /nset.texi/1.19/Sun Apr 22 14:31:58 2007//
 @menu
 * Introdu@value{cedilha}@~{a}o a Conjuntos::       
 * Defini@value{cedilha}@~{o}es para Conjuntos::       
@@ -1263,7 +1263,8 @@ mas a diferen@value{cedilha}a entre eles @'{e} um n@'{u}mero em ponto flutuante.
 (%o1)                          0.0
 (%i2) 1/10 - 0.1;
 (%o2)                          0.0
-(%i3) Warning:  Float to bigfloat conversion of 0.250.25 - 0.25b0;
+(%i3) 0.25 - 0.25b0;
+Warning:  Float to bigfloat conversion of 0.25
 (%o3)                         0.0b0
 (%i4) kron_delta (1/4, 0.25);
                                   1
@@ -1273,7 +1274,8 @@ mas a diferen@value{cedilha}a entre eles @'{e} um n@'{u}mero em ponto flutuante.
                                   1
 (%o5)                  kron_delta(--, 0.1)
                                   10
-(%i6) Warning:  Float to bigfloat conversion of 0.25kron_delta (0.25, 0.25b0);
+(%i6) kron_delta (0.25, 0.25b0);
+Warning:  Float to bigfloat conversion of 0.25
 (%o6)               kron_delta(0.25, 2.5b-1)
 @end example
 
@@ -1633,6 +1635,8 @@ nas permuta@value{cedilha}@~{o}es.
 
 @code{permutations} reclama se @var{a} n@~{a}o for um conjunto literal ou uma lista literal.
 
+Veja tamb@'{e}m @code{random_permutation}.
+
 Exemplos:
 
 @c ===beg===
@@ -1686,6 +1690,36 @@ Exemplos:
 (%o5)                 @{@{w@}, @{x@}, @{y@}, @{z@}@}
 (%i6) powerset (@{w, x, y, z@}, 0);
 (%o6)                         @{@{@}@}
+@end example
+
+@end deffn
+
+@deffn {Fun@value{cedilha}@~{a}o} random_permutation (@var{a})
+
+Retorna uma permuta@value{cedilha}@~{a}o aleat@'{o}ria do conjunto ou da lista @var{a},
+como constru@'{i}do pelo algor@'{i}timo de embaralhar desenvolvido por Knuth.
+
+O valor de retorno @'{e} uma nova lista, que @'{e} diferente
+da lista/conjunto original podendo inclusive ser a propria lista repetida.
+Todavia, os elementos do argumento n@~{a}o s@~{a}o copiados.
+
+Exemplos:
+
+@c ===beg===
+@c random_permutation ([a, b, c, 1, 2, 3]);
+@c random_permutation ([a, b, c, 1, 2, 3]);
+@c random_permutation ({x + 1, y + 2, z + 3});
+@c random_permutation ({x + 1, y + 2, z + 3});
+@c ===end===
+@example
+(%i1) random_permutation ([a, b, c, 1, 2, 3]);
+(%o1)                  [c, 1, 2, 3, a, b]
+(%i2) random_permutation ([a, b, c, 1, 2, 3]);
+(%o2)                  [b, 3, 1, c, a, 2]
+(%i3) random_permutation (@{x + 1, y + 2, z + 3@});
+(%o3)                 [y + 2, z + 3, x + 1]
+(%i4) random_permutation (@{x + 1, y + 2, z + 3@});
+(%o4)                 [x + 1, y + 2, z + 3]
 @end example
 
 @end deffn
@@ -1794,7 +1828,7 @@ Exemplos:
 @deffn {Fun@value{cedilha}@~{a}o} setequalp (@var{a}, @var{b})
 
 Retorna @code{true} se os conjuntos @var{a} e @var{b} possuirem o mesmo n@'{u}mero de elementos
-@c $SETEQUALP CALLS THE LISP FUNCTION LIKE,
+@c $SETEQUALP CALLS THE LISP Fun@value{cedilha}@~{a}o LIKE,
 @c AND SO DOES THE CODE TO EVALUATE IS (X = Y).
 e @code{is(@var{x} = @var{y})} for @code{true}
 para @code{x} nos elementos de @var{a}
@@ -2187,7 +2221,7 @@ terceira edi@value{cedilha}@~{a}o, Volume 1, Se@value{cedilha}@~{a}o 1.2.6, Equa
 
 [2] Graham, Knuth, e Patashnik. @i{Concrete Mathematics}, Tabela 264.
 
-[3] Abramowitz e Stegun. @i{Handbook of Mathematical Functions}, Se@value{cedilha}@~{a}o 24.1.4.
+[3] Abramowitz e Stegun. @i{Handbook of Mathematical Fun@value{cedilha}@~{a}os}, Se@value{cedilha}@~{a}o 24.1.4.
 
 Exemplos:
 
