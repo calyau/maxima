@@ -1049,7 +1049,7 @@ causing all pending operations to be flushed"
 		 (close val)))
 	       *lun-hash*))
 
-(defun %open-file (&key file status access recl blank &allow-other-keys)
+(defun %open-file (&key file status access recl blank unit form)
   ;; We should also check for values of access, form that we don't support.
   (when recl
     (error "F2CL-LIB does not support record lengths"))
@@ -1090,7 +1090,7 @@ causing all pending operations to be flushed"
 	,(if iostat `(setf ,iostat (if ,result 0 1))))))
 	  
 
-(defun %close (&key unit &allow-other-keys)
+(defun %close (&key unit status)
   (cl:close (lun->stream unit)))
 
 (defmacro close$ (&key unit iostat err status)
@@ -1408,9 +1408,13 @@ causing all pending operations to be flushed"
 ;;;-------------------------------------------------------------------------
 ;;; end of macros.l
 ;;;
-;;; $Id: f2cl-lib.lisp,v 1.13 2007-04-27 17:44:45 are_muc Exp $
+;;; $Id: f2cl-lib.lisp,v 1.14 2007-04-28 15:17:27 are_muc Exp $
 ;;; $Log: f2cl-lib.lisp,v $
-;;; Revision 1.13  2007-04-27 17:44:45  are_muc
+;;; Revision 1.14  2007-04-28 15:17:27  are_muc
+;;; reverted back the changes to %close and %open-file, as rtay whishes to
+;;; keep f2cl versions idetical.
+;;;
+;;; Revision 1.13  2007/04/27 17:44:45  are_muc
 ;;; changed key argument lists to %open-file and %close by removing unused
 ;;; ones and allowing them nevertheless to remove compiler warnings.
 ;;;
