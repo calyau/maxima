@@ -298,8 +298,8 @@ relational knowledge is contained in the default context GLOBAL."
     (declare (special errcatch $errormsg))
     (ignore-errors (maybe-simplifya x z) x)))
 
-(defun simp-$is (x y z)
-  (declare (ignore y))
+(defun simp-$is (x yy z)
+  (declare (ignore yy))
   (let ((a (maybe-simplifya (cadr x) z)))
     (if (or (eq a t) (eq a nil))
       a
@@ -317,13 +317,11 @@ relational knowledge is contained in the default context GLOBAL."
       (t '$unknown))))
 
 (defmfun $maybe (pat)
-  (let*
-    ((x (let (($prederror nil)) (mevalp1 pat)))
-     (ans (car x))
-     (patevalled (cadr x)))
-    (cond
-      ((member ans '(t nil) :test #'eq) ans)
-      (t '$unknown))))
+  (let* ((x (let (($prederror nil)) (mevalp1 pat)))
+	 (ans (car x)))
+    (if (member ans '(t nil) :test #'eq)
+	ans
+	'$unknown)))
 
 (defmfun is (pred)
   (let (($prederror t))
@@ -340,8 +338,8 @@ relational knowledge is contained in the default context GLOBAL."
 (putprop 'mand 'simp-mand 'operators)
 (putprop 'mor 'simp-mor 'operators)
 
-(defun simp-mand (x y z)
-  (declare (ignore y))
+(defun simp-mand (x yy z)
+  (declare (ignore yy))
   (do ((l (cdr x) (cdr l)) (a) (simplified))
     ((null l)
     (cond
@@ -354,8 +352,8 @@ relational knowledge is contained in the default context GLOBAL."
     ((eq a '$unknown) (if (not (member '$unknown simplified :test #'eq)) (push a simplified)))
     ((not (member a '(t nil) :test #'eq)) (push a simplified)))))
 
-(defun simp-mor (x y z)
-  (declare (ignore y))
+(defun simp-mor (x yy z)
+  (declare (ignore yy))
   (do ((l (cdr x) (cdr l)) (a) (simplified))
     ((null l)
     (cond
@@ -370,8 +368,8 @@ relational knowledge is contained in the default context GLOBAL."
 
 ; ALSO CUT STUFF ABOUT NOT EQUAL => NOTEQUAL AT TOP OF ASSUME
 
-(defun simp-mnot (x y z)
-  (declare (ignore y))
+(defun simp-mnot (x yy z)
+  (declare (ignore yy))
   (let ((arg (maybe-simplifya (cadr x) z)))
     (if (atom arg)
       (cond
