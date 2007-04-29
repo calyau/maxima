@@ -572,7 +572,7 @@ values")
 ;;for those window labels etc. that are wrong type.
 
 (defun flatc (sym)
-  (length (explodec sym)))
+  (length (symbol-name sym)))
 
 (defun flatsize (sym &aux (*print-circle* t))
   (length (exploden sym)))
