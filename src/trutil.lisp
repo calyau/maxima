@@ -43,7 +43,7 @@
       (mgrind form nil)
       (setq form (subrcall nil (get op 'otranslate) form))
       (mtell-open "~%~S Exit  ~:@M" level op)
-      (sprinter form)
+      (pprint form)
       form)))
 
 (defun tr-trace (op)
