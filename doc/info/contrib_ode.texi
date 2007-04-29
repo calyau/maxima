@@ -382,8 +382,7 @@ The derivative with respect to x of @code{kummer_u(a,b,x)}.
 
 
 
-@node Possible improvements to contrib_ode, Test cases for contrib_ode, 
-Definitions for contrib_ode, contrib_ode
+@node Possible improvements to contrib_ode, Test cases for contrib_ode, Definitions for contrib_ode, contrib_ode
 @section Possible improvements to contrib_ode
 
 
