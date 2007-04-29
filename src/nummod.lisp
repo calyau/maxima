@@ -264,8 +264,8 @@
 (setf (get '$round 'integer-valued) t)
 (setf (get '$round 'reflection-rule) #'odd-function-reflect)
 
-(defun simp-round (e y z)
-  (declare (ignore y))
+(defun simp-round (e yy z)
+  (declare (ignore yy))
   (oneargcheck e)
   (setq e (simplifya (second e) z))
   (cond (($featurep e '$integer) e) ;; takes care of round(round(x)) --> round(x).
@@ -287,8 +287,8 @@
 (setf (get '$truncate 'integer-valued) t)
 (setf (get '$truncate 'reflection-rule) #'odd-function-reflect)
 
-(defun simp-truncate (e y z)
-  (declare (ignore y))
+(defun simp-truncate (e yy z)
+  (declare (ignore yy))
   (oneargcheck e)
   (setq e (simplifya (second e) z))
   (cond (($featurep e '$integer) e) ;; takes care of truncate(truncate(x)) --> truncate(x).
