@@ -35,6 +35,7 @@ SolidCompression=yes
 Uninstallable=yes
 UninstallFilesDir={app}\uninst
 ShowLanguageDialog=yes
+ChangesAssociations=yes
 
 
 [Languages]
@@ -129,6 +130,13 @@ Name: "{group}\{cm:ReferenceManualBrazilianPortuguese}"; Filename: "{app}\share\
 ;Filename: "{app}\wxMaxima\wxMaxima.exe"; Description: "{cm:LaunchProgram,wxMaxima}"; Flags: postinstall skipifsilent skipifdoesntexist
 
 
+[Registry]
+Root: HKCR; Subkey: ".wxm"; ValueType: string; ValueName: ""; ValueData: "Maxima.wxMaxima"; Flags: uninsdeletekey
+Root: HKCR; Subkey: "Maxima.wxMaxima"; ValueType: string; ValueName: ""; ValueData: "{cm:wxMaximaSession}"; Flags: uninsdeletekey
+Root: HKCR; Subkey: "Maxima.wxMaxima\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\wxMaxima\wxMaxima.exe,0"
+Root: HKCR; Subkey: "Maxima.wxMaxima\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\wxMaxima\wxMaxima.exe"" ""%1"""
+
+
 [CustomMessages]
 
 
@@ -138,6 +146,7 @@ FullInstallation=Full installation
 CompactInstallation=Compact installation
 CustomInstallation=Custom installation
 Uninstall=Uninstall
+wxMaximaSession=wxMaxima Session
 
 MaximaCore=Maxima core with command line interface
 wxMaximaGraphicShell=wxMaxima graphic shell
@@ -177,6 +186,7 @@ de.FullInstallation=Vollstдndige Installation
 de.CompactInstallation=Kompakte Installation
 de.CustomInstallation=Benutzerdefinierte Installation
 de.Uninstall=Deinstallation
+de.wxMaximaSession=wxMaxima-Sitzung
 
 de.MaximaCore=Maxima-Programmkern mit Eingabeaufforderung 
 de.wxMaximaGraphicShell=wxMaxima (graphische Oberflдche)
@@ -216,6 +226,7 @@ fr.FullInstallation=Installation complиte
 fr.CompactInstallation=Installation compacte
 fr.CustomInstallation=Installation personnalisйe
 fr.Uninstall=Dйsinstallation
+fr.wxMaximaSession=Session wxMaxima
 
 fr.MaximaCore=Noyau Maxima avec interface en ligne de commande
 fr.wxMaximaGraphicShell=Interface graphique wxMaxima
@@ -255,6 +266,7 @@ it.FullInstallation=Installazione completa
 it.CompactInstallation=Installazione compatta
 it.CustomInstallation=Installazione personalizzata
 it.Uninstall=Disinstallazione
+it.wxMaximaSession=Sessione wxMaxima
 
 it.MaximaCore=Nucleo di Maxima con interfaccia a riga di comando
 it.wxMaximaGraphicShell=Shell grafica wxMaxima
@@ -294,6 +306,7 @@ pt_BR.FullInstallation=Instalaзгo completa
 pt_BR.CompactInstallation=Instalaзгo compacta
 pt_BR.CustomInstallation=Instalaзгo personalizada
 pt_BR.Uninstall=Desinstalar
+pt_BR.wxMaximaSession=Sessгo do wxMaxima
 
 pt_BR.MaximaCore=Nъcleo do Maxima com interface de linha de comandos
 pt_BR.wxMaximaGraphicShell=shell grбfica wxMaxima
@@ -333,6 +346,7 @@ pt.FullInstallation=Instalaзгo completa
 pt.CompactInstallation=Instalaзгo compacta
 pt.CustomInstallation=Instalaзгo personalizada
 pt.Uninstall=Desinstalar
+pt.wxMaximaSession=Sessгo do wxMaxima
 
 pt.MaximaCore=Nъcleo do Maxima com interface de linha de comandos
 pt.wxMaximaGraphicShell=shell grбfica wxMaxima
@@ -372,6 +386,7 @@ ru.FullInstallation=Полная установка
 ru.CompactInstallation=Компактная установка
 ru.CustomInstallation=Выборочная установка
 ru.Uninstall=Деинсталляция
+ru.wxMaximaSession=Сессия wxMaxima
 
 ru.MaximaCore=Ядро Maxima с интерфейсом командной строки
 ru.wxMaximaGraphicShell=Графическая оболочка wxMaxima
@@ -411,6 +426,7 @@ es.FullInstallation=Instalaciуn Completa
 es.CompactInstallation=Instalaciуn Compacta
 es.CustomInstallation=Instalaciуn Personalizada
 es.Uninstall=Desinstalar
+es.wxMaximaSession=Sesiуn de wxMaxima
 
 es.MaximaCore=Nъcleo de Maxima e interfaz de lнnea de comandos
 es.wxMaximaGraphicShell=Entorno grбfico wxMaxima
