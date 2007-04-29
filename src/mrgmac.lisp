@@ -161,7 +161,7 @@
 (defmacro sel (&rest x)
   (push 'sel x )
   (let ((s (fsel (mode (second x)) (cddr x))))
-    (cond ((null s) (sel-err (second x) (cddr x)))
+    (cond ((null s) (merror "sel: ~a ~a" (second x) (cddr x)))
 	  (t (setq x (second x))
 	     (do ()
 		 ((null (cdr s)) x)
