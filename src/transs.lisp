@@ -134,8 +134,8 @@
 		       (cond (tr-abort
 			      (setq t-error (print-abort-msg item 'compfile)))
 			     (t
-			      (cond ($compgrind
-				     (mformat transl-file "~2%;; Function ~:@M~%" item)))
+			      (when $compgrind
+				(mformat transl-file "~2%;; Function ~:@M~%" item))
 			      (print* t-item))))))
 	      (setq out-file-name (rename-tf newname))
 	      (to-macsyma-namestring out-file-name))
@@ -385,12 +385,11 @@ translated."
 	(t
 	 (setq flag (and $tr_semicompile
 			 (not (eq (car p) 'eval-when))))
-	 (when flag (princ* '|(|) (princ* 'progn) (terpri*))
-	 (cond ($compgrind
-		(sprin1 p))
-	       (t
-		(prin1 p transl-file)))
-	 (when flag (princ* '|)|))
+	 (when flag (princ* #\() (princ* 'progn) (terpri*))
+	 (if $compgrind
+	     (prin1 p)
+	     (prin1 p transl-file))
+	 (when flag (princ* #\)))
 	 (terpri transl-file))))
 
 (defun princ* (form)
@@ -446,10 +445,8 @@ translated."
 	   $tr_semicompile source)
   (cond ($transcompile
 	 (update-global-declares)
-	 (if $compgrind
-	     (mformat
-	      transl-file
-	      ";;; General declarations required for translated Maxima code.~%"))
+	 (when $compgrind
+	   (mformat transl-file ";;; General declarations required for translated Maxima code.~%"))
 	 (print* `(declare . ,declares)))))
 
 (defun print-abort-msg (fun from)
