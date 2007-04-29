@@ -237,7 +237,6 @@
 	((and (eq ($compare -1 e) '&<) (eq ($compare e 0) '&<)) 0)
 	(t `(($ceiling simp) ,e))))
 
-
 (defprop $mod simp-nummod operators)
 (defprop $mod tex-infix tex)
 (defprop $mod (" \\rm{mod} ") texsym)
@@ -245,8 +244,7 @@
 (defprop $mod 180. tex-rbp)
 
 ;; See "Concrete Mathematics," Section 3.21.
-
-`	     
+	     
 (defun simp-nummod (e e1 z)
   (twoargcheck e)
   (let ((x (simplifya (specrepcheck (cadr e)) z))
@@ -258,3 +256,47 @@
 	  ((not (equal 1 (setq e1 ($gcd x y))))
 	   (mul e1 (opcons '$mod (div x e1) (div y e1))))
 	  (t `(($mod simp) ,x ,y)))))
+
+;; The function 'round' rounds a number to the nearest integer. For a tie, round to the 
+;; nearest even integer. 
+
+(defprop $round simp-round operators)
+(setf (get '$round 'integer-valued) t)
+(setf (get '$round 'reflection-rule) #'odd-function-reflect)
+
+(defun simp-round (e y z)
+  (declare (ignore y))
+  (oneargcheck e)
+  (setq e (simplifya (second e) z))
+  (cond (($featurep e '$integer) e) ;; takes care of round(round(x)) --> round(x).
+	((memq e '($inf $minf $und $ind)) e)
+	((apply-reflection-simp '$round e t))
+	(t 
+	 (let* ((lb (take '($floor) e))
+		(ub (take '($ceiling) e))
+		(sgn ($compare (sub ub e) (sub e lb))))
+	   (cond ((eq sgn '&<) ub)
+		 ((eq sgn '&>) lb)
+		 ((and (eq sgn '&=) ($featurep lb '$even)) lb)
+		 ((and (eq sgn '&=) ($featurep ub '$even)) ub)
+		 (t `(($round simp) ,e)))))))
+ 
+;; Round a number towards zero.
+	 
+(defprop $truncate simp-truncate operators)
+(setf (get '$truncate 'integer-valued) t)
+(setf (get '$truncate 'reflection-rule) #'odd-function-reflect)
+
+(defun simp-truncate (e y z)
+  (declare (ignore y))
+  (oneargcheck e)
+  (setq e (simplifya (second e) z))
+  (cond (($featurep e '$integer) e) ;; takes care of truncate(truncate(x)) --> truncate(x).
+	((memq e '($inf $minf $und $ind)) e)
+	((apply-reflection-simp '$truncate e t))
+	(t
+	 (let ((sgn (csign e)))
+	   (cond ((memq sgn '($neg $nz)) (take '($ceiling) e))
+		 ((memq sgn '($zero $pz $pos)) (take '($floor) e))
+		 (t `(($truncate simp) ,e)))))))
+	
