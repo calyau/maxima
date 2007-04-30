@@ -804,7 +804,7 @@
 
 
 (defmfun dollarify-name (name)
-  (let ((n (getcharn name 1)))
+  (let ((n (char (symbol-name name) 0)))
     (cond ((char= n #\&)
 	   (or (get name 'opr)
 	       (let ((namel (casify-exploden name)) ampname dolname)
@@ -859,7 +859,7 @@
    &AB ==> $AB,
    &aB ==> $aB,
    |aB| ==> |aB| "
-  (if (char= (getcharn name 1) #\&)
+  (if (char= (char (symbol-name name) 0) #\&)
       (getalias (or (get name 'opr)
 		    (implode (cons #\$ (casify-exploden name)))))
       name))
@@ -867,13 +867,13 @@
 
 #+(and cl (not scl) (not allegro))
 (defun casify-exploden (x)
-  (cond ((char= (getcharn x 1) #\&)
+  (cond ((char= (char (symbol-name x) 0) #\&)
 	 (cdr (exploden (maybe-invert-string-case (string x)))))
 	(t (exploden x))))
 
 #+(or scl allegro)
 (defun casify-exploden (x)
-  (cond ((char= (getcharn x 1) #\&)
+  (cond ((char= (char (symbol-name x) 0) #\&)
 	 (let ((string (string x)))
 	   (unless #+scl (eq ext:*case-mode* :lower)
 		   #+allegro (eq excl:*current-case-mode* :case-sensitive-lower)
@@ -972,7 +972,11 @@
 	(setq l1 (cons (car l) l1)))))
 
 (defmfun getlabcharn (label)
-  (let ((char (getcharn label 2))) (if (char= char #\%) (getcharn label 3) char)))
+  (let ((c (char (symbol-name label) 1)))
+    (if (char= c #\%)
+	(char (symbol-name label) 2)
+	c)))
+
 (defmspec $errcatch (form)
   (let ((errcatch (cons bindlist loclist)) ret)
     (if (null (setq ret (let (*mdebug*)

@@ -954,7 +954,7 @@ APPLY means like APPLY.")
 (defun implied-quotep (atom)
   (cond ((get atom 'implied-quotep)
 	 atom)
-	((char= (getcharn atom 1) #\&)    ;;; mstring hack
+	((char= (char (symbol-name atom) 0) #\&) ;;; mstring hack
 	 (cond ((eq atom '|&**|) ;;; foolishness. The PARSER should do this.
 		;; Losing Fortran hackers.
 		(tr-format "~% `**' is obsolete, use `^' !!!")
