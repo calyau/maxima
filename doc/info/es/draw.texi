@@ -1,4 +1,4 @@
-@c version 1.10
+@c version 1.12
 @menu
 * Introducci@'on a draw::
 * Definiciones para draw::
@@ -20,7 +20,7 @@ Hay tres funciones a utilizar a nivel de Maxima:
 S@'{@dotless{i}}gase este enlace para ver ejemplos m@'as elaborados
 de este paquete:
 
-http://www.telefonica.net/web2/biomates/maxima/gpdraw
+@url{http://es.geocities.com/riotorto/maxima/gpdraw}
 
 Se necesita tener instalado Gnuplot 4.2 para ejecutar este paquete.
 
@@ -466,6 +466,9 @@ Usuarios expertos en Gnuplot pueden hacer uso de esta opci@'on para
 afinar el comportamiento de Gnuplot escribiendo c@'odigo que ser@'a
 enviado justo antes de la instrucci@'on @code{plot} o @code{splot}.
 
+El valor dado a esta opci@'on debe ser una cadena alfanum@'erica o
+una lista de cadenas (una por l@'{@dotless{i}}nea).
+
 Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
 descripci@'on de la escena no reviste importancia.
 
@@ -844,9 +847,13 @@ Ejemplo:
 @defvr {Opci@'on gr@'afica} point_type
 Valor por defecto: 1
 
-@code{point_type} es un @'{@dotless{i}}ndice (mayor o igual que -1)
-que permite especificar c@'omo ser@'an dibujados los puntos aislados.
-El color de los puntos se controla mediante esta opci@'on.
+@code{point_type} indica c@'omo se van a dibujar los puntos aislados. Los valores
+para esta opci@'on pueden ser @'{@dotless{i}}ndices enteros mayores o iguales que -1,
+o tambi@'en nombres de estilos: @code{$none} (-1), @code{dot} (0), @code{plus} (1),
+@code{multiply} (2), @code{asterisk} (3), @code{square} (4), @code{filled_square} (5),
+@code{circle} (6), @code{filled_circle} (7), @code{up_triangle} (8), 
+@code{filled_up_triangle} (9), @code{down_triangle} (10), 
+@code{filled_down_triangle} (11), @code{diamant} (12) and @code{filled_diamant} (13).
 
 Esta opci@'on afecta a los siguientes objetos gr@'aficos:
 @itemize @bullet
@@ -868,7 +875,7 @@ Ejemplo:
              points([[1,1],[5,1],[9,1]]),
              point_type = 2,
              points([[1,2],[5,2],[9,2]]),
-             point_type = 3,
+             point_type = asterisk,
              points([[1,3],[5,3],[9,3]]),
              point_type = 4,
              points([[1,4],[5,4],[9,4]]),
@@ -876,11 +883,11 @@ Ejemplo:
              points([[1,5],[5,5],[9,5]]),
              point_type = 6,
              points([[1,6],[5,6],[9,6]]),
-             point_type = 7,
+             point_type = filled_circle,
              points([[1,7],[5,7],[9,7]]),
              point_type = 8,
              points([[1,8],[5,8],[9,8]]),
-             point_type = 9,
+             point_type = filled_diamant,
              points([[1,9],[5,9],[9,9]]) )$
 @end example
 @end defvr
