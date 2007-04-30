@@ -8,7 +8,6 @@
   (require 'sb-posix)
   (require 'sb-bsd-sockets))
 
-
 (defvar $in_netmath nil)
 (defvar $show_openplot t)
 (defvar *socket-connection*)
@@ -22,11 +21,10 @@
     (setq *error-output* sock)
     (setq *terminal-io* sock)
     (setq *trace-output* sock)
-    (format t "pid=~a~%"        (getpid))
+    (format t "pid=~a~%" (getpid))
     (force-output sock)
-    (setq *debug-io* sock)
-    (values)
-    ))
+    (setq *debug-io* sock))
+  (values))
 
 ;;; from CLOCC: <http://clocc.sourceforge.net>
 (defun open-socket (host port &optional bin)
@@ -70,19 +68,14 @@
       (values (parse-integer (maxima-getenv "PID")))
     ((or type-error parse-error) () -1)))
 
-#+clisp
-(deff getpid (symbol-function
-	      ;; Decide at load time which function to use.
-	      (or (and (member :unix *features* :test #'eq)
-		       (or (find-symbol "PROCESS-ID" "SYS")
-			   (find-symbol "PROGRAM-ID" "SYS")))
-		  'getpid-from-environment)))
-
-#+(or cmu scl)
-(defun getpid () (unix:unix-getpid))
-
-#+sbcl
-(defun getpid () (sb-unix:unix-getpid))
+(defun getpid ()
+#+clisp (os:process-id)
+#+(or cmu scl) (unix:unix-getpid)
+#+sbcl (sb-unix:unix-getpid)
+#+gcl (system:getpid)
+#+openmcl (ccl::getpid)
+#-(or clisp cmu scl sbcl gcl openmcl) (getpid-from-environment)
+)
 
 #+(or gcl clisp cmu scl sbcl)
 (defun xchdir (w)
