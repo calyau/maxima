@@ -461,7 +461,7 @@ values")
 (defun intern-invert-case (string)
   ;; Like read-from-string with readtable-case :invert
   ;;
-  ;; Not explicit package for INTERN.  It seems maxima sets *package*
+  ;; No explicit package for INTERN.  It seems maxima sets *package*
   ;; as needed.
   (intern (maybe-invert-string-case string)))
 
@@ -548,14 +548,14 @@ values")
 
 (defun maknam (lis)
   (loop for v in lis
-	 when (symbolp v)
-	 collecting (getcharn v 1) into tem
-	 else
-	 when (characterp v)
-	 collecting v into tem
-	 else do (maxima-error "bad entry")
-	 finally
-	 (return (make-symbol (maybe-invert-string-case (coerce tem 'string))))))
+     when (symbolp v)
+     collecting (char (symbol-name v) 0) into tem
+     else
+     when (characterp v)
+     collecting v into tem
+     else do (maxima-error "bad entry")
+     finally
+     (return (make-symbol (maybe-invert-string-case (coerce tem 'string))))))
 
 (defmacro make-mstring (string)
   "Make a Maxima string.  The case is inverted for standard CL, and is not
