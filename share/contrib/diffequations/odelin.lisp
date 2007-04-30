@@ -312,36 +312,6 @@
     (setq q ($rat q x))
     (- ($hipow ($ratnumer q) x) ($hipow ($ratdenom q) x))))
 
-;; Called by generic-de-solver implementing method of Bronstein and Lafaille.
-;; Returns the differential equation satisfied by xi(x) [Eq 7 in paper] 
-;;
-;;       2                       2                           4         2
-;; 3*xi'' - 2*xi'*xi''' + (a1(xi) + 2*a1'(xi) - 4*a0(xi))*xi' - 4*v*xi' = 0
-;;
-;; In this routine
-;;    vh is the expression v(x) in DE to be solved (D^2-v)y=0
-;;    v  is the expression -(a1(x)^2 + 2*a1'(x) - 4*a0(x))/4
-;;    We return (-1) times equation above
-;;
-(defun get-de-cnd (xi vh v x)
-  (let ((dxi) (ddxi) (dddxi) (dxi^2) ($gcd '$spmod) ($algebraic t) 
-	($ratfac nil) ($ratprint nil))
-    
-    (setq xi ($ratdisrep xi))
-    (setq dxi ($diff xi x))
-    (setq dxi^2 (mul dxi dxi))
-    (setq ddxi ($diff dxi x))
-    (setq dddxi ($diff ddxi x))
-    
-    ;; 4*dxi^4*v(xi)-4*dxi^2*vh(x)+2*dddxi*dxi-3*ddxi^2
-   
-    ($ratdisrep ($ratnumer
-		 (add
-		  (mul 4 ($substitute xi x v) dxi^2 dxi^2)
-		  (mul -4 vh dxi^2)
-		  (mul 2 dxi dddxi)
-		  (mul -3 ddxi ddxi))))))
-
 (defun xeasy-eqs (p s x)
   (let ((acc `(($set))))
     (setq s (polynomial-filter s x #'(lambda (n) (min 1 n))))
@@ -406,12 +376,27 @@
 ;; we seek functions m(x) and xi(x) st { m(x) F1(xi(x)), m(x) F2{xi(x)) }
 ;; is a fundamental solution set of y'' = v y.
 ;;
+;; xi(x) satisfies a non-linear third-order ODE [Eq 7 in paper] (see get-de-cnd below)
+;; The solution of this DE is a rational function xi(x)=P(x)/Q(x) where P(x) and Q(x)
+;; are polynomials.  It is shown that the denominator Q(x) is given by certain terms
+;; in the square-free factorization of the denominator of v(x), and an upper bound to
+;; the degree of the numerator P(x) can be found.  This allows P(x) to be found, if it
+;; exists, using the method of undetermined coefficients.
+;;
+;; These quantities depend on the behaviour of Delta=(a1)^2+2*a1'-4*a0 and v(x) as
+;; x -> infinity.
+;;
 ;; For each target equation L = D^2 + a1 D + a0 we specialize the solver
 ;; by providing
-;; o  params: a list of additional parameters in the operator
-;; o  denom-filter
-;; o  degree-bound
+;; o  params:       a list of additional parameters in the operator
+;; o  denom-filter: a rule to select the terms in the square-free factorization of the 
+;;                  denominator of v(x) that form Q(x).
+;; o  degree-bound: the upper bound for the degree of the numerator P(x)
 ;; o  de-cnd: -Delta/4, where Delta = (a1)^2  + 2 a1' - 4 a0
+;;
+;; Note:  For the bessel, hypergeo01 and spherodialwave methods we have delta -> constant
+;; as x-> infinity (order at infinity = 0) so denom-filter and degree-bound are
+;; identical.
 ;;
 (defun generic-de-solver (v x params denom-filter degree-bound de-cnd)
   (setq v ($rat v x))
@@ -442,10 +427,42 @@
 	   `(,(div p q) ,params))
 	  (t nil))))
 
+;; Called by generic-de-solver implementing method of Bronstein and Lafaille.
+;; Returns the differential equation satisfied by xi(x) [Eq 7 in paper] 
+;;
+;;       2                       2                           4         2
+;; 3*xi'' - 2*xi'*xi''' + (a1(xi) + 2*a1'(xi) - 4*a0(xi))*xi' - 4*v*xi' = 0
+;;
+;; In this routine
+;;    vh is the expression v(x) in DE to be solved (D^2-v)y=0
+;;    v  is the expression -(a1(x)^2 + 2*a1'(x) - 4*a0(x))/4
+;;    We return (-1) times equation above
+;;
+(defun get-de-cnd (xi vh v x)
+  (let ((dxi) (ddxi) (dddxi) (dxi^2) ($gcd '$spmod) ($algebraic t) 
+	($ratfac nil) ($ratprint nil))
+    
+    (setq xi ($ratdisrep xi))
+    (setq dxi ($diff xi x))
+    (setq dxi^2 (mul dxi dxi))
+    (setq ddxi ($diff dxi x))
+    (setq dddxi ($diff ddxi x))
+    
+    ;; 4*dxi^4*v(xi)-4*dxi^2*vh(x)+2*dddxi*dxi-3*ddxi^2
+   
+    ($ratdisrep ($ratnumer
+		 (add
+		  (mul 4 ($substitute xi x v) dxi^2 dxi^2)
+		  (mul -4 vh dxi^2)
+		  (mul 2 dxi dddxi)
+		  (mul -3 ddxi ddxi))))))
+
 ;; The differential operator with the FSS {bessel_j(mu,x),bessel_y(mu,x)} 
 ;; is L = D^2 + a1*D + a0, with a1 = 1/x and a0 = (1-mu^2/x^2).
 ;; 
-;; Delta = (a1)^2 + 2*a1' - 4*a0  = (4*mu^2 - 1)/x^2 - 4
+;; Delta = (a1)^2+2*a1'-4*a0  = (4*mu^2-1)/x^2-4
+;;       -> constant as x-> infinity.  (order at infinity is 0)
+;;
 ;; de-cnd = -Delta/4 = (4*x^2+1-4*mu^2)/(4*x^2)
 ;;
 ;; Additional parameter [mu]
@@ -486,8 +503,8 @@
 ;;   {bessel_j(mu,sqrt(x)),bessel_y(mu,sqrt(x))} 
 ;; is L = D^2 + a1 D + a0, with a1 = 1/x and a0 = (1/x-mu^2/x^2)/4.
 ;; 
-;; Delta = (a1)^2  + 2 a1' - 4 a0
-;;       = (mu^2-1)/x^2 - 1/x
+;; Delta = (a1)^2 +2*a1'-4*a0 = (mu^2-1)/x^2-1/x
+;;       -> 1/x as x-> infinity.  (order at infinity is -1)
 ;;
 ;; de-cnd = -Delta/4 = (1 + x - mu^2)/(4*x^2)
 ;;
@@ -527,9 +544,9 @@
 ;; The differential operator with the FSS {kummer_m(a,b,x),kummer_u(a,b,x)} 
 ;; is L = D^2 + a1*D + a0, with a1 = b/x - 1 and a0 = -a/x.
 ;;  
-;; Delta = (a1)^2  + 2 a1' - 4 a0  
-;;       = 1 + (4 a - 2 b)/x + (b^2 - 2 b)/x^2
+;; Delta = (a1)^2+2*a1'-4*a0 = 1+(4*a-2*b)/x+(b^2-2*b)/x^2
 ;;       = (x^2 + (4 a - 2 b) x + b^2 -2 b)/x^2
+;;       -> 1 as x-> infinity.  (order at infinity is 0)
 ;;
 ;; de-cnd = -Delta/4 = (-x^2+(2*b-4*a)*x-b^2+2*b)/(4*x^2)
 ;;
@@ -578,6 +595,7 @@
 ;;  
 ;; Delta = (a1)^2  + 2 a1' - 4 a0
 ;;       = 4*(-q*x^4 + (4q+b^2+b+c)*x^2 - (b+c+1)) / (1-x^2)^2
+;;       -> constant as x-> infinity.  (order at infinity is 0)
 ;;
 ;; de-cnd = -Delta/4 = (q*x^4 - (4q+b^2+b+c)*x^2 + (b+c+1)) / (1-x^2)^2
 ;;
@@ -630,14 +648,20 @@
 
 ;; The differential operator for the hypergeometric differential equation 
 ;; (A&S 15.5.1) with the FSS {gauss_a(a,b,c,x),gauss_b(a,b,c,x)} is
-;; L = D^2 + a1 D + a0, with a1=[c-(a+b+1)x]/[x(1-x)] and a0=-ab/[x(1-x)].
+;; L = D^2 + a1 D + a0, with a1=(c-(a+b+1)*x)/(x*(1-x)) and a0=-a*b/(x*(1-x)).
 ;;  
-;; Delta = (a1)^2  + 2 a1' - 4 a0  
-;;       = ... 
+;; Delta = (a1)^2  + 2*a1' - 4*a0
+;;           2            2       2                                      2
+;;         (b  - 2 a b + a  - 1) x  + ((- 2 b - 2 a + 2) c + 4 a b) x + c  - 2 c
+;;       = ---------------------------------------------------------------------
+;;                                           2  2
+;;                                    (x - 1)  x
+;;
+;;       -> constant/x^2 as x-> infinity.  (order at infinity is -2)
+;; CHECKME: Is this what we have below?
 ;;
 ;; Additional parameters to be determined are [a,b,c]
 ;;
-
 (defun hypergeo21-xi-denom-filter (n)
   (declare (ignore n))
   0)
