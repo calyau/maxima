@@ -298,12 +298,12 @@
    (and (not ($unknown f))
 	(errset ($defint f x a '$inf)))))
 
- ;;;CREATES HOPEFULLY UNIQUE NAMES FOR VARIABLE OF INTEGRATION
+ ;;;CREATES UNIQUE NAMES FOR VARIABLE OF INTEGRATION
 (defun createname (head tail)
-  (implode (nconc (explodec head) (explodec tail))))
+  (gentemp (format nil "~S~S" head tail)))
 
+;;;REDUCES LAPLACE(F(T)/T**N,T,S) CASE TO LAPLACE(F(T)/T**(N-1),T,S) CASE
 (defun hackit (exponent rest)
-       ;;;REDUCES LAPLACE(F(T)/T**N,T,S) CASE TO LAPLACE(F(T)/T**(N-1),T,S) CASE
   (cond ((equal exponent -1)
 	 ((lambda (parm) (laptimes rest)) (createname parm 1)))
 	(t (mydefint (hackit (1+ exponent) rest)
