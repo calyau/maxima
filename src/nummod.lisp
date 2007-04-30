@@ -270,7 +270,6 @@
   (setq e (simplifya (second e) z))
   (cond (($featurep e '$integer) e) ;; takes care of round(round(x)) --> round(x).
 	((memq e '($inf $minf $und $ind)) e)
-	((apply-reflection-simp '$round e t))
 	(t 
 	 (let* ((lb (take '($floor) e))
 		(ub (take '($ceiling) e))
@@ -279,10 +278,11 @@
 		 ((eq sgn '&>) lb)
 		 ((and (eq sgn '&=) ($featurep lb '$even)) lb)
 		 ((and (eq sgn '&=) ($featurep ub '$even)) ub)
+		 ((apply-reflection-simp '$round e t))
 		 (t `(($round simp) ,e)))))))
  
 ;; Round a number towards zero.
-	 
+
 (defprop $truncate simp-truncate operators)
 (setf (get '$truncate 'integer-valued) t)
 (setf (get '$truncate 'reflection-rule) #'odd-function-reflect)
@@ -293,10 +293,10 @@
   (setq e (simplifya (second e) z))
   (cond (($featurep e '$integer) e) ;; takes care of truncate(truncate(x)) --> truncate(x).
 	((memq e '($inf $minf $und $ind)) e)
-	((apply-reflection-simp '$truncate e t))
 	(t
 	 (let ((sgn (csign e)))
 	   (cond ((memq sgn '($neg $nz)) (take '($ceiling) e))
 		 ((memq sgn '($zero $pz $pos)) (take '($floor) e))
+		 ((apply-reflection-simp '$truncate e t))
 		 (t `(($truncate simp) ,e)))))))
 	
