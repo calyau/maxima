@@ -14,6 +14,11 @@
 
 ($put '$lazysolver 1 '$version)
 
+(eval-when
+    #+gcl (load compile eval)
+    #-gcl (:load-toplevel :compile-toplevel :execute)
+    ($load "odeutils"))
+
 (defmvar $aalgsys_is_loquacious t)
 
 (defun variablep (e)
@@ -73,9 +78,6 @@
 ;; The function 'checkedalgsys' tries to return the "simplest" solution.
 ;; it uses this simple-minded measure of simple.
 
-(defun mbag-map (f bag)
-  (simplify `((,(mop bag)) ,@(mapcar f (margs bag)))))
-
 (defun nonconstant-factors (e vars)
   (let (acc)
     (setq e ($factor e))
@@ -100,10 +102,6 @@
      (every #'(lambda (s) (like 0 s)) (cdr ($ratsimp ($substitute sol eqs))))
      (every #'(lambda (s) (not (like 0 s)))
 	    (cdr ($ratsimp ($substitute sol nz)))))))
-
-(defun number-of-unks (p unks)
-  (let (($listconstvars nil))
-    ($cardinality ($intersection ($setify ($listofvars p)) unks))))
 
 (defun unks-in-eq (eq unks)
   (let (($listconstvars nil))

@@ -39,7 +39,8 @@
     ($load "kummer")
     ($load "extrabessel")
     ($load "lazysolver")
-    ($load "gauss"))
+    ($load "gauss")
+    ($load "odeutils"))
 
 (defmvar $de_solver_is_loquacious t)
 
@@ -65,23 +66,7 @@
 (defun $rerat (dirtyrat)
   (let ((varlist nil) (genvar nil))
   ($rat ($ratdisrep dirtyrat))))
-
-;; Map the function f onto a mbag and simplify the result.  When the
-;; bag is an equality, list, or matrix, simplification isn't needed;
-;; however, new types of bags (say sets) may need simplification after 
-;; the mapping.
-
-;; Maxima is hit-or-miss about mapping functions over mbags. I suggest
-;; we develop that a function similar to this one and that we use it
-;; everywhere a function is mapped over a mbag. 
-
-;; If the arguments of bag are in CRE form, margs changes them to general 
-;; form---and mbag-map may return an expression in general form. Maybe this 
-;; behavior is impolite?
-
-(defun mbag-map (f bag)
-  (simplify `((,(mop bag)) ,@(mapcar f (margs bag)))))
-    
+   
 (defun require-linear-homogeneous-de (de y x)
   (setq y (require-symbol y "$odelin"))
   (setq x (require-symbol x "$odelin"))
@@ -403,10 +388,6 @@
 		  (t (list p))))
     (dolist (pj p acc)
       (setq acc (mul acc (if (mexptp pj) (car (margs pj)) pj))))))   
-	           
-(defun number-of-unks (p unks)
-  (let (($listconstvars nil))
-    ($cardinality ($intersection ($setify ($listofvars p)) unks))))
 
 ;; generic-de-solver uses a method described by Bronstein and Lafaille, 
 ;; to compute special function solutions of non-Liouvillian 2nd order 

@@ -137,6 +137,7 @@ contrib/diffequations/ode1_lie.mac\
 contrib/diffequations/ode1_nonlinear.mac\
 contrib/diffequations/ode1_riccati.mac\
 contrib/diffequations/odelin.lisp\
+contrib/diffequations/odeutils.lisp\
 contrib/diffequations/tests/Makefile\
 contrib/diffequations/tests/README\
 contrib/diffequations/spherodialwave.lisp\

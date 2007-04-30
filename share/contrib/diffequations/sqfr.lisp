@@ -17,7 +17,7 @@
 (eval-when
     #+gcl (load compile eval)
     #-gcl (:load-toplevel :compile-toplevel :execute)
-    ($load "nset"))
+    ($load "odeutils"))
 
 ;; If x is a symbol for a subvarp, return its general representation.
 ;; Otherwise signal an error---the argument f is the string name of
@@ -29,22 +29,6 @@
   (if (or (symbolp x) ($subvarp x)) x 
     (merror "Function ~:M requires a symbol; instead found ~:M" f x))
   x)
-
-;; Map the function f onto a mbag and simplify the result.  When the
-;; bag is an equality, list, or matrix, simplification isn't needed;
-;; however, new types of bags (say sets) may need simplification after 
-;; the mapping.
-
-;; Maxima is hit-or-miss about mapping functions over mbags. I suggest
-;; we develop that a function similar to this one and that we use it
-;; everywhere a function is mapped over a mbag. 
-
-;; If the arguments of bag are in CRE form, margs changes them to general 
-;; form---and mbag-map may return an expression in general form. Maybe this 
-;; behavior is impolite?
-
-(defun mbag-map (f bag)
-  (simplify `((,(mop bag)) ,@(mapcar f (margs bag)))))
 
 (defun $strictmysqfr (p x)
   (setq p ($expand ($ratdisrep p)))
