@@ -165,7 +165,7 @@ binary-sbcl/maxima.core:
 	test -d binary-sbcl/numerical || mkdir binary-sbcl/numerical
 	test -d binary-sbcl/numerical/slatec || mkdir binary-sbcl/numerical/slatec
 	$(EXECUTESBCL) '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE) (sb-ext:quit))' && \
-	$(EXECUTESBCL) '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMLOAD) (sb-ext:save-lisp-and-die "binary-sbcl/maxima.core" :purify t) (sb-ext:quit))'
+	$(EXECUTESBCL) '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMLOAD) (sb-ext:save-lisp-and-die "binary-sbcl/maxima.core") (sb-ext:quit))'
 
 install-sbcl:
 	$(mkinstalldirs) $(DESTDIR)$(verpkglibdir)/binary-sbcl
