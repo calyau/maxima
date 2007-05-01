@@ -29,8 +29,9 @@ compound statement with the last statement being 0. Thus
 abs(x);
 x$
 
-(4) If a test needs a non-default value for an option variable, try to make the
-change local instead of global. For example
+(4) If a test needs a non-default value for an option variable, try to
+make the change local instead of global. For example
+
 
 is (x < 1), prederror : false;
 unknown$
@@ -76,8 +77,8 @@ well, commit the new regression test.
 (9) Other:
 
 (a) Check that your regression test runs multiple times without error. After
-appending a new test, make sure that run_testsuite() runs multiple times
-without error.
+appending a new test to Maxima's test suite, make sure that run_testsuite() 
+runs multiple times without error.
 
 (b) Always test the simple cases: abs(0), abs(0.0), abs(0.0b0), ... Also,
 check that functions work correctly for CRE expressions, arguments that

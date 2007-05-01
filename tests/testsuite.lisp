@@ -37,4 +37,5 @@
     ((mlist) "rtest_dot")
     "rtest_mset"
     "rtest_boolean"
+    "rtest_round"
     ))

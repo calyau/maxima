@@ -320,7 +320,7 @@ charfun(integerp(sqrt(5)));
 charfun(rat(x));
 charfun(x)$
 
-(p : charfun('not(equal(x,1))),0);
+(p : charfun(not(equal(x,1))),0);
 0$
 
 subst(x=1,p);
@@ -330,9 +330,9 @@ subst(x=5,p);
 1$
 
 subst(x=z,p);
-charfun('not(equal(z,1)))$
+charfun(not(equal(z,1)))$
 
-(p : charfun('"and"(-1 < x, x < 1)),0);
+(p : charfun(-1 < x and x < 1),0);
 0$
 
 subst(x=1/%pi,p);
