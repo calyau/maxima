@@ -381,10 +381,9 @@
 ;; are polynomials.  It is shown that the denominator Q(x) is given by certain terms
 ;; in the square-free factorization of the denominator of v(x), and an upper bound to
 ;; the degree of the numerator P(x) can be found.  This allows P(x) to be found, if it
-;; exists, using the method of undetermined coefficients.
-;;
-;; These quantities depend on the behaviour of Delta=(a1)^2+2*a1'-4*a0 and v(x) as
-;; x -> infinity.
+;; exists, using the method of undetermined coefficients.  These quantities depend on 
+;; the order at infinity of v(x) and Delta=(a1)^2+2*a1'-4*a0
+;; 
 ;;
 ;; For each target equation L = D^2 + a1 D + a0 we specialize the solver
 ;; by providing
@@ -658,7 +657,9 @@
 ;;                                    (x - 1)  x
 ;;
 ;;       -> constant/x^2 as x-> infinity.  (order at infinity is -2)
-;; CHECKME: Is this what we have below?
+;; 
+;; de-cnd = -Delta/4 
+;;        = -((b^2-2*a*b+a^2-1)*x^2+((-2*b-2*a+2)*c+4*a*b)*x+c^2-2*c)/(4*x^2*(x-1)^2)
 ;;
 ;; Additional parameters to be determined are [a,b,c]
 ;;
