@@ -42,17 +42,18 @@
 ;; it evaluates to a noun form.
 
 (defprop $charfun simp-charfun operators)
+(defprop %charfun simp-charfun operators)
 
-(defun simp-charfun (e bool z)
+(defun simp-charfun (e yy z)
+  (declare (ignore yy))
   (oneargcheck e)
-  (setq e (specrepcheck e))
-  (let (($prederror nil))
-    (setq e (simplifya ($ratdisrep (nth 1 e)) z))
-    (setq bool (mevalp (mfuncall '$ev e '$nouns)))
-    (cond ((eq bool t) 1)
-	  ((eq bool nil) 0)
+  (setq e (take '($is) (simplifya (specrepcheck (second e)) z)))
+  (let ((bool (mevalp e)))
+    (cond ((eq t bool) 1)
+	  ((eq nil bool) 0)
+	  ((op-equalp e '$is) `(($charfun simp) ,(second e)))
 	  (t `(($charfun simp) ,e)))))
-
+  
 (defun integer-part-of-sum (e)
   (let ((i-sum 0) (n-sum 0) (o-sum 0) (n))
     (setq e (margs e))
@@ -229,7 +230,6 @@
 			 (opcons '$ceiling o-sum)))
 	   (add i-sum o-sum)))
 
-
 	;; handle 0 < e < 1 implies ceiling(e) = 1 and
 	;; -1 < e < 0 implies ceiling(e) = 0.
 
@@ -261,36 +261,39 @@
 ;; nearest even integer. 
 
 (defprop $round simp-round operators)
+(defprop %round simp-round operators)
 (setf (get '$round 'integer-valued) t)
 (setf (get '$round 'reflection-rule) #'odd-function-reflect)
 
 (defun simp-round (e yy z)
   (declare (ignore yy))
   (oneargcheck e)
-  (setq e (simplifya (second e) z))
+  (setq e (simplifya (specrepcheck (second e)) z))
   (cond (($featurep e '$integer) e) ;; takes care of round(round(x)) --> round(x).
 	((memq e '($inf $minf $und $ind)) e)
 	(t 
 	 (let* ((lb (take '($floor) e))
 		(ub (take '($ceiling) e))
-		(sgn ($compare (sub ub e) (sub e lb))))
-	   (cond ((eq sgn '&<) ub)
-		 ((eq sgn '&>) lb)
-		 ((and (eq sgn '&=) ($featurep lb '$even)) lb)
-		 ((and (eq sgn '&=) ($featurep ub '$even)) ub)
+		(sgn (csign (sub (sub ub e) (sub e lb)))))
+	   (cond ((eq sgn t) `(($round simp) ,e))
+		 ((eq sgn '$neg) ub)
+		 ((eq sgn '$pos) lb)
+		 ((and (eq sgn '$zero) ($featurep lb '$even)) lb)
+		 ((and (eq sgn '$zero) ($featurep ub '$even)) ub)
 		 ((apply-reflection-simp '$round e t))
 		 (t `(($round simp) ,e)))))))
  
 ;; Round a number towards zero.
 
 (defprop $truncate simp-truncate operators)
+(defprop %truncate simp-truncate operators)
 (setf (get '$truncate 'integer-valued) t)
 (setf (get '$truncate 'reflection-rule) #'odd-function-reflect)
 
 (defun simp-truncate (e yy z)
   (declare (ignore yy))
   (oneargcheck e)
-  (setq e (simplifya (second e) z))
+  (setq e (simplifya (specrepcheck (second e)) z))
   (cond (($featurep e '$integer) e) ;; takes care of truncate(truncate(x)) --> truncate(x).
 	((memq e '($inf $minf $und $ind)) e)
 	(t
