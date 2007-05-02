@@ -9,55 +9,51 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :maxima)
+
 (macsyma-module ratpoi)
 
-(declare-top (special $ratvars poiscom1 poishift $lim))
+(declare-top (special $ratvars poiscom1 genvar poisco1))
 
-(declare-top (special $gcdoff $ratexpand genvar varlist poisco1 poiscom1 gen tr tlist)) 
-
-(setq poisco1 '(1. . 1.) poiscom1 '(-1. . 1.)) 
+(setq poisco1 '(1 . 1) poiscom1 '(-1 . 1))
 
 ;;; THESE PROGRAMS MAKE POISSON COEFFICIENTS RATIONAL FUNCTIONS (CRE)
 ;;; POISCDECODE DECODES A COEFFICIENT
 
-(defun poiscdecode (x) 
-  ($ratdisrep (cons (list 'mrat 'simp (cdr $ratvars) genvar) x))) 
+(defun poiscdecode (x)
+  ($ratdisrep (cons (list 'mrat 'simp (cdr $ratvars) genvar) x)))
 
 ;;; INTOPOISCO PUTS AN EXPRESSION INTO POISSON COEFFICIENT FORM
 
-;;(defmacro nonperiod (&rest p)
-;;  (setq p (cons 'nonperiod p))
-;;  (AND (NULL (CADR P)) (EQUAL (CAADDR P) POISHIFT) (NULL (CDDR (CADDR P)))))
-
-(defun intopoisco (x) 
-  (cond ((and (not (atom x)) (numberp (cdr x))) x)
-	(t (cdr(ratrep x (cdr $ratvars))))))
+(defun intopoisco (x)
+  (if (and (not (atom x)) (numberp (cdr x)))
+      x
+      (cdr(ratrep x (cdr $ratvars)))))
 
 ;;; POISCO+ ADDS 2 COEFFICIENTS
 ;;; POISCO* MULTIPLIES 2 COEFFICIENTS
 
-(defun poisco* (x y) (rattimes x y t)) 
+(defun poisco* (x y)
+  (rattimes x y t))
 
-(defun poisco+ (x y) (ratplus x y)) 
+(defun poisco+ (x y)
+  (ratplus x y))
 
 ;;; HALVE DIVIDES A COEFFICIENT BY 2
 
-(defun halve (r) (rattimes '(1. . 2.) r t)) 
+(defun halve (r)
+  (rattimes '(1 . 2) r t))
 
 ;;; POISSUBSTCO SUBSTITUTES AN EXPRESSION FOR  A VARIABLE IN A COEFFICIENT.
 
-(defun poissubstco (a b x) 
-  (intopoisco (maxima-substitute a
-				 b
-				 ($ratdisrep (cons (list 'mrat
-							 'simp
-							 (cdr $ratvars) genvar)
-						   x))))) 
+(defun poissubstco (a b x)
+  (intopoisco
+   (maxima-substitute a b
+		      ($ratdisrep (cons (list 'mrat 'simp (cdr $ratvars) genvar) x)))))
 
-(defun poispzero (x) (equal 0. (car x))) 
-
+(defun poispzero (x)
+  (equal 0 (car x)))
 
 ;;; TEST FOR ZERO
 
-(defun poiscointeg (h var) (intopoisco ($integrate (poiscdecode h) var))) 
-
+(defun poiscointeg (h var)
+  (intopoisco ($integrate (poiscdecode h) var)))
