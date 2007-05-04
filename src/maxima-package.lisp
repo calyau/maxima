@@ -27,15 +27,12 @@
   (:use :common-lisp :command-line)
   (:nicknames :cl-macsyma :cl-maxima :macsyma)
   (:import-from :cl-sloop #:sloop)
-  (:shadow complement                   ;(maxmac)
-	   continue		 ;(macsys): part of the top-level loop
+  (:shadow continue		 ;(macsys): part of the top-level loop
 	   //                           ;(clmacs): arithmetic operator
 	   float		;(clmacs): has 1.0d0 as default format
 	   functionp                    ;(commac): accepts symbols
 	   array                        ;(commac)
 	   exp			   ;various files declare this special
-	   listen		     ;(suprv1): has trivial definition
-					; (listen any) ==> 0
 	   signum                       ;(commac): same except
 					; (cl:signum 1.3)==1.0 not 1 but I (?)
 					; think this is ok for macsyma
