@@ -109,9 +109,3 @@
 	 nil)
 	(t
 	 (putprop bas val sel))))
-
-;;; This is like the function SYMBOLCONC except that it binds base
-
-(defmfun concat n
-  (let ((*print-base* 10.))
-    (implode (mapcan #'exploden (listify n)))))
