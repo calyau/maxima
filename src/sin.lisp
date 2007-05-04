@@ -23,8 +23,6 @@
 		      *powerl* *c* *d* exp varlist genvar repswitch $liflag
 		      noparts top maxparts numparts blank $opsubst))
 
-(defmvar $integration_constant_counter 0)
-
 (defmacro op (frob)
   `(get ,frob 'operators))
 
@@ -1413,8 +1411,7 @@
 	  ((mequalp exp)
 	   (list (car exp) (sinint (cadr exp) var)
 		 (add2 (sinint (caddr exp) var)
-		       (concat '$integrationconstant
-			       (incf $integration_constant_counter)))))
+		       (gentemp "$INTEGRATIONCONSTANT"))))
 	  ((and (atom var)
 		(isinop exp var))
 	   (list '(%integrate) exp var))
