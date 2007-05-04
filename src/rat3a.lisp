@@ -258,7 +258,7 @@
 	(t (psimp (p-var p) (pcsub2 (p-terms p) vals vars)))))
 
 (defun pcsub2 (terms vals vars)
-  (loop for (exp coef) on terms by #'pt-red
+  (loop for (exp coef) on terms by #'cddr
 	 unless (pzerop (setq coef (pcsub coef vals vars)))
 	 nconc (list exp coef)))
 
@@ -348,13 +348,13 @@
       (cons (p-var p) (pminus1 (p-terms p)))))
 
 (defun pminus1 (x)
-  (loop for (exp coef) on x by #'pt-red
+  (loop for (exp coef) on x by #'cddr
 	 nconc (list exp (pminus coef))))
 
 (defmfun pmod (p)
   (if (pcoefp p) (cmod p)
       (psimp (car p)
-	     (loop for (exp coef) on (p-terms p) by #'pt-red
+	     (loop for (exp coef) on (p-terms p) by #'cddr
 		    unless (pzerop (setq coef (pmod coef)))
 		    nconc (list exp coef)))))
 
@@ -379,7 +379,7 @@
   (psimp (p-var p) (pcquotient1 (p-terms p) q)))
 
 (defun pcquotient1 (p1 q)
-  (loop for (exp coef) on p1 by #'pt-red
+  (loop for (exp coef) on p1 by #'cddr
 	 nconc (list exp (pquotient coef q))))
 
 (declare-top(special k q*)
@@ -490,7 +490,7 @@
   uuu)
 
 (defun pcetimes1 (y e c)		;C*V^E*Y
-  (loop for (exp coef) on y by #'pt-red
+  (loop for (exp coef) on y by #'cddr
 	 unless (pzerop (setq coef (ptimes c coef)))
 	 nconc (list (+ e exp) coef)))
 
@@ -499,7 +499,7 @@
       (psimp (p-var p) (pctimes1 c (p-terms p)))))
 
 (defun pctimes1 (c terms)
-  (loop for (exp coef) on terms by #'pt-red
+  (loop for (exp coef) on terms by #'cddr
 	 unless (pzerop (setq coef (ptimes c coef)))
 	 nconc (list exp coef)))
 
