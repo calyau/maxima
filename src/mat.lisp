@@ -111,14 +111,14 @@
 (defmvar $%rnum 0)
 
 (defmfun make-param ()
-  (let ((param (concat '$%r (setq $%rnum (1+ $%rnum)))))
+  (let ((param (intern (format nil "$%R~D" (incf $%rnum)))))
     (tuchus $%rnum_list param)
     param))
 
 (defmvar $linsolve_params t "`linsolve' generates %Rnums")
 
 (defun ith (x n) 
-  (cond ((atom x) nil) (t (nth (1- n) x))))
+  (if (atom x) nil (nth (1- n) x)))
 
 (defun polyize (ax r m mul)
   (declare (fixnum m))
