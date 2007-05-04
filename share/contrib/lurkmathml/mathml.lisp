@@ -64,7 +64,7 @@
 	;; do a normal evaluation of the expression in macsyma
 	(setq mexp (meval mexplabel))
 	(cond ((member mexplabel $labels :test #'eq); leave it if it is a label
-	       (setq mexplabel (concat "(" (stripdollar mexplabel) ")"))
+	       (setq mexplabel (intern (format nil "(~a)" (stripdollar mexplabel))))
 	       (setq itsalabel t))
 	      (t (setq mexplabel nil)));flush it otherwise
 

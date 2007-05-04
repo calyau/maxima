@@ -415,7 +415,7 @@
 (defmvar $dummy_index -1)
 
 (defun $dummy_var ( )
-  (concat $dummy_char (incf $dummy_index)))
+  (intern (format nil "~a~d" $dummy_char (incf $dummy_index))))
 
 ;; Convert all positional derivatives in the expression e to "normal" 
 ;; Maxima derivatives.

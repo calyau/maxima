@@ -204,15 +204,15 @@
 	(cond ((floatp num)
 	       (setq dnum (append (explode num) '(d 0)))
 	       (return (apply 'concat dnum)))
-	      (t (return (concat num '|.| 'd0))) )))
+	      (t (return (intern (format nil "~a.D0" num)))))))
 
 (defun gcomplex (num)
     (prog (cnum)
 	(cond ((floatp num)
-	       (setq cnum (append (explode num) '( |,| 0 |.| 0 |)| ) ))
+	       (setq cnum (append (explode num) '( |,| 0 |.| 0 |)|)))
 	       (setq cnum (cons '|(| cnum ))
 	       (return (apply 'concat cnum)))
-	      (t (return (concat '|(| num '|.| 0 '|,| 0 '|.| 0 '|)| ))) )))
+	      (t (return (intern (format nil "(~a.0,0.0)" num)))))))
 
 (defun simptimes1 (terms fp)
   (let ((neg) (denoms))

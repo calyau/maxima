@@ -178,12 +178,15 @@
      (return tensor)))
 
 (defun rename1 (e dummy)          ;Renames dummy indices in a consistent manner
-       (sublis (cleanup0 dummy) e))
+  (sublis (cleanup0 dummy) e))
 
 (defun cleanup0 (a)
-       (do ((b a (cdr b)) (n 1 (1+ n)) (l) (dumx))
+       (do ((b a (cdr b))
+	    (n 1 (1+ n))
+	    (l)
+	    (dumx))
 	   ((null b) l)
-	   (setq dumx (concat $idummyx n))
+	 (setq dumx (intern (format nil "~a~d" $idummyx n)))
 	   (cond ((not (eq dumx (car b)))
 		  (setq l (cons (cons (car b) dumx) l))))))
 

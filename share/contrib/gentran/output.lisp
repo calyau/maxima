@@ -166,12 +166,9 @@
 	(terpri)
 	(cond (msg2
 	       (repeat
-		(cond ((not (member c (list '| |  *cr*)))
-		       (progn
-			(terpri)
-			(princ "    ")
-			(princ msg2)
-			(princ (concat (concat " (y" *slash*) "n)  ")))))
+		(unless (member c (list '| |  *cr*))
+		  (format t  "~%    ~a" msg2)
+		  (format t " (y~an)  " *slash*))
 		(member (setq c (readc)) '(y y n n)))))
 	(wrs holdoch)
 	(rds holdich)

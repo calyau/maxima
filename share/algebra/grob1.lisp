@@ -513,15 +513,9 @@
 			    q (inserer p $base))
 		      (cond (q
 			      (reduire $base q nil)
-			      (print (concat "
-"
-	" nbsyz = " $nbsyz
-	"    nbred = " $nbred
-	"    nbreduc = " $nbreduc
-	"    nbred0 = " $nbred0
-	"    lbase = " (length (cdr $base))
-	"
-" ))
+			      (format t "~% nbsyz = ~a    nbred = ~a    nbreduc = ~a     nbred0 = ~a    lbase = ~d~%"
+				      $nbsyz $nbred $nbreduc $nbred0 (length (cdr base)))
+
 		              (print (escalier (cdr $base)))
 			      (print "
 ")
@@ -529,19 +523,9 @@
 			      (setq l (vivier paires)))
 			    (t
 			      (setq l (cdr l))
-			      (print (concat 
-	"
-"
-	" nbsyz = " $nbsyz
-	"    nbred = " $nbred
-	"    nbreduc = " $nbreduc
-	"    nbred0 = " $nbred0
-	"    lbase = " (length (cdr $base))
-	"
-"	
-	" paires a voir = " (length l)
-	"
-" ))			      
+			      (format t "~% nbsyz = ~a    nbred = ~a    nbreduc = ~a     nbred0 = ~a    lbase = ~a~% paires a voir = ~d~%"
+				      $nbsyz $nbred $nbreduc $nbred0 (length (cdr base)) (length l))
+			      
 			      )))))	;paire suivante
 	  (setq $base (cdr $base))
 	  (mapc #'(lambda (u) (idivise2 u $base))
@@ -551,8 +535,8 @@
 (defun apparier (p q expp expq)
 	  (cons
 	    (cons
-	      (mapcar 'max expp expq)		;caar
-	      (zerop (apply '+			;cdar ;exposants etrangers
+	      (mapcar #'max expp expq)		;caar
+	      (zerop (apply #'+			;cdar ;exposants etrangers
 		       (mapcar 'min expp expq))))
 	    (cons
 	      (cons expp expq)			;caadr	cdadr

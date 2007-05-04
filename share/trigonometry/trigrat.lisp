@@ -18,7 +18,7 @@
 		    (mtimesp (caddr var))
 		    (eq (cadr (caddr var)) '$%i)) 
 		   (setq $lexp (cons var $lexp))
-		   (setq var  (concat "$_" (car lg)))
+		   (setq var  (intern (format nil "$_~a" (car lg))))
 		   (setq $lg (cons var $lg))
 		   (rplaca lvar var)))))
 

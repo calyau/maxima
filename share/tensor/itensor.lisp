@@ -80,14 +80,14 @@
 
 (defmfun $idummy ()                              ;Sets arguments to dummy indices
   (progn
-    (setq $icounter (1+ $icounter))
-    (concat $idummyx $icounter)))
+    (incf $icounter)
+    (intern (format nil "~a~d" $idummyx $icounter))))
 
 (defprop $kdelta ((/  . / )) contractions)
 
-(defun isprod (x) (or (equal x '(mtimes)) (equal x '(mtimes simp))
-                      (equal x '(mtimes simp ratsimp)))
-)
+(defun isprod (x)
+  (or (equal x '(mtimes)) (equal x '(mtimes simp))
+      (equal x '(mtimes simp ratsimp))))
 
 ;; Remove occurrences of ratsimp from elements of x
 (defun derat (x)

@@ -228,37 +228,38 @@ list of lists call this function on each of the lists independently."
 	     (cond ((numberp tem) (header-poly lis))
 		   (t (header-poly (pquotient lis tem))))))))
 
-#+lispm
-(defmacro sloop (&rest l)(cons 'loop l))
-
 (defun $linearize_nc (x)
-   (cond ((consp x)
-          (cond ((and (consp (car x)) (eq (caar x) 'mnctimes))
-		 (setf (car x) '(mtimes))
-		 (sloop for v on (cdr x)
-			for term in (cdr x)
-			for i from 1
-			do (setf (car v) (concat term i))))
-		(t (cons ($linearize_nc (car x)) ($linearize_nc (cdr x))))))
-	 (t x)))
+  (cond ((consp x)
+	 (cond ((and (consp (car x)) (eq (caar x) 'mnctimes))
+		(setf (car x) '(mtimes))
+		(loop for v on (cdr x)
+		   for term in (cdr x)
+		   for i from 1
+		   do (setf (car v) (intern (format nil "~a~d" term i)))))
+	       (t (cons ($linearize_nc (car x)) ($linearize_nc (cdr x))))))
+	(t x)))
 
 (defun $copy (x) (copy-tree x))
 
 (defun $linearize_nc_to_nc (x)
-   (cond ((consp x)
-          (cond ((and (consp (car x)) (eq (caar x) 'mnctimes))
-		 (sloop for v on (cdr x)
-			for term in (cdr x)
-			for i from 1
-			do (setf (car v) (concat term i))))
-		(t (cons ($linearize_nc_to_nc (car x)) ($linearize_nc_to_nc (cdr x)))))
-	  x)
-	 (t x)))
+  (cond ((consp x)
+	 (cond ((and (consp (car x)) (eq (caar x) 'mnctimes))
+		(loop for v on (cdr x)
+		   for term in (cdr x)
+		   for i from 1
+		   do (setf (car v) (intern (format nil "~a~d" term i)))))
+	       (t (cons ($linearize_nc_to_nc (car x)) ($linearize_nc_to_nc (cdr x)))))
+	 x)
+	(t x)))
 
-(defun times_4_n (n) (cond ((eql n 0) 1)
-			      (t (* 4 n))))
+(defun times_4_n (n)
+  (if (zerop n)
+      1
+      (* 4 n)))
 
-(defun hilbert_4(n) (round ($binomial (+ n 3) 3)))
+(defun hilbert_4(n)
+  (round ($binomial (+ n 3) 3)))
+
 (push 'hilbert_4 *all-rank-functions*)
 
 ;(sloop for i below 10 collect (list i (hilbert_tem i)))

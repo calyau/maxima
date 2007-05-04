@@ -525,6 +525,6 @@
 	((numberp x)
 	 x)
 	((member (getchar x 1) '($ % &) :test #'eq)
-	 (concat (substring x 1)))
+	 (intern (substring x 1)))
 	(t
 	 x)))
