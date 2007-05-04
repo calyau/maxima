@@ -1,6 +1,6 @@
 
 (defpackage :slatec
-  (:use :f2cl-lib :common-lisp)
+  (:use :common-lisp)
   (:export
    ;; Error functions
    #:derf #:derfc
