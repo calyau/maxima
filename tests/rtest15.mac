@@ -658,7 +658,7 @@ expected;
 quad_qags (sin, foobar, 0, %pi, tol);
 expected;
 
-(translate (F1), ?fboundp (F1));
+(translate (F1), ?not(?null(?fboundp (F1))));
 true;
 
 quad_qags (F1, glump, 0, %pi, tol);
