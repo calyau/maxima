@@ -15,9 +15,8 @@ c
 c ref -- k. mitchell, philosophical magazine, 40, p.351 (1949).
 c        stegun and abramowitz, ams 55, p.1004.
 c
-      double precision x, spencs(38), aln, pi26, xbig, d1mach, dcsevl,
-     1  dlog
-      external d1mach, dcsevl, dlog, initds
+      double precision x, spencs(38), aln, pi26, xbig, d1mach, dcsevl
+      external d1mach, dcsevl, initds
 c
 c series for spen       on the interval  0.          to  5.00000e-01
 c                                        with weighted error   4.74e-32
