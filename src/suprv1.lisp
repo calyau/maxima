@@ -23,35 +23,27 @@
 
 (defmvar mopl nil)
 
-(declare-top  (special m$+ $lasttime $disptime
+(declare-top  (special $lasttime $disptime
 		       bindlist loclist errset $labels linelable $filesize
-		       st rephrase $dispflag refchkl baktrcl ttyheight
-		       dskfnp dsksavep *rset
-		       ^w ^r ^q lf tab ff batconl cr ^h ^s
+		       st rephrase $dispflag refchkl baktrcl
+		       dskfnp dsksavep *rset ^q lf tab ff cr
 		       $values $functions $arrays $aliases $gradefs $dependencies
 		       $rules $props $ratvars $ratvarswitch *mdebug* errbrksw errcatch
-		       varlist genvar $device $filename $filenum lbp rbp
+		       varlist genvar $device $filename $filenum
 		       $gensumnum checkfactors $features featurel $backtrace
-		       $weightlevels tellratlist $dontfactor $infolists loadfiles
-		       $dskall allbutl lisperrprint
-		       alarmclock dcount thistime
+		       $weightlevels tellratlist $dontfactor $infolists
+		       $dskall allbutl lisperrprint dcount thistime
 		       $nolabels dispflag saveno mcatch brklvl savefile
-		       $%% $error
-		       *in-translate-file*
+		       $%% $error *in-translate-file*
 		       lessorder greatorder $errorfun mbreak reprint pos $strdisp
-		       $dskuse smart-tty rubout-tty more-^w oldst *alphabet*
-		       $loadprint opers
-		       *ratweights $ratweights quitmsg
-		       loadf display-file $grind scrollp $cursordisp
-		       $stringdisp $lispdisp defaultf
-		       state-pdl command printmsg mrg-punt
+		       $dskuse smart-tty more-^w oldst
+		       $loadprint opers *ratweights $ratweights quitmsg
+		       loadf $grind $stringdisp $lispdisp defaultf
+		       state-pdl command printmsg
 		       transp $contexts $setcheck $macros
 		       autoload))
 
-(defmvar $prompt
-    '_
-  nil
-  no-reset)
+(defvar $prompt '_)
 
 
 (mapc #'(lambda (x) (putprop (car x) (cadr x) 'opalias))
@@ -69,7 +61,7 @@
       thistime 0
       $disptime nil)
 
-(setq batconl nil $strdisp t $grind nil)
+(setq $strdisp t $grind nil)
 
 (setq refchkl nil
       *mdebug* nil
@@ -88,7 +80,7 @@
 
 (setq $debugmode nil $pagepause nil $poislim 5)
 
-(setq $loadprint nil ^s nil loadfiles nil)
+(setq $loadprint nil)
 
 (setq $nolabels nil $aliases '((mlist simp)) lessorder nil greatorder nil)
 
@@ -107,7 +99,8 @@
 
 (setq quitmsg  " "
       more-^w nil
-      lisperrprint t printmsg nil mrg-punt nil)
+      lisperrprint t
+      printmsg nil)
 
 (setq state-pdl (ncons 'lisp-toplevel))
 
@@ -158,18 +151,19 @@
       (clearsign))))
 
 (defmfun makelabel (x)
-  (when (and $dskuse (not $nolabels) (> (setq dcount (1+ dcount)) $filesize))
-    (setq dcount 0) (dsksave))
-  (setq linelable (concat x $linenum))
-  (if (not $nolabels)
-      (if (or (null (cdr $labels))
+  (when (and $dskuse (not $nolabels) (> (incf dcount) $filesize))
+    (setq dcount 0)
+    (dsksave))
+  (setq linelable (intern (format nil "~a~d" x $linenum)))
+  (unless $nolabels
+    (when (or (null (cdr $labels))
 	      (when (member linelable (cddr $labels) :test #'equal)
 		(setf $labels (delete linelable $labels :count 1 :test #'eq)) t)
 	      (not (eq linelable (cadr $labels))))
-	  (setq $labels (cons (car $labels) (cons linelable (cdr $labels))))))
+      (setq $labels (cons (car $labels) (cons linelable (cdr $labels))))))
   linelable)
 
-(defmfun printlabel nil
+(defmfun printlabel ()
   (mtell-open "(~A) " (subseq (print-invert-case linelable) 1)))
 
 (defmfun mexploden (x)
@@ -180,14 +174,14 @@
 (defmfun addlabel (label)
   (setq $labels (cons (car $labels) (cons label (delete label (cdr $labels) :count 1 :test #'eq)))))
 
-(defmfun tyi* nil
+(defmfun tyi* ()
   (clear-input)
   (do ((n (tyi) (tyi))) (nil)
-    (cond ((or (char= n #\newline) (and (> (char-code n) 31) (not (char= n #\rubout))))
+    (cond ((or (char= n #\newline) (and (> (char-code n) 31) (char/= n #\rubout)))
 	   (return n))
 	  ((char= n #\page) (format t "~|") (throw 'retry nil)))))
 
-(defun continuep nil
+(defun continuep ()
   (loop
    (catch 'retry
      (unwind-protect
@@ -199,13 +193,13 @@
        (clear-input)))))
 
 (defun checklabel (x)	; CHECKLABEL returns T iff label is not in use
-  (not (or $nolabels (= $linenum 0) (boundp (concat x $linenum)))))
+  (not (or $nolabels
+	   (= $linenum 0)
+	   (boundp (intern (format nil "~a~a"x $linenum))))))
 
 (defun gctimep (timep tim)
   (cond ((and (eq timep '$all) (not (zerop tim))) (princ "Totaltime= ") t)
 	(t (princ "Time= ") nil)))
-
-(defun listen () 0)			; Doesn't exist yet.
 
 (defun display* (&aux (ret nil) (tim 0))
   (setq tim (get-internal-run-time)
@@ -541,7 +535,7 @@
 				(cond ((catch 'mbreak
 					 (let (st oldst rephrase
 						  (mbreak (cons bindlist loclist)))
-					   (setq $linenum (1+ $linenum))
+					   (incf $linenum)
 					   (continue)))
 				       (go end))
 				      (t (mtell-open "Back to the break~%"))))
@@ -574,7 +568,6 @@
 
 (defun errlfun (x)
   (when (null (errset (progn
-			(setq ^s nil)
 			(if loadf
 			    (setq defaultf loadf
 				  loadf nil)))))
