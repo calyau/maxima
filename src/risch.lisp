@@ -948,7 +948,7 @@
   (cond ((or (pcoefp p) (not (eq 'mexpt (get (p-var p) 'leadop))))
 	 (list (list p oarg (ptimes p exps))))
 	(t (loop with narg = (get (p-var p) 'rischarg)
-		  for (exp coef) on (p-terms p) by #'pt-red
+		  for (exp coef) on (p-terms p) by #'cddr
 		  nconc (explist coef
 				 (r+ oarg (r* exp narg))
 				 (ptimes exps

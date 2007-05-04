@@ -191,18 +191,18 @@
 
 (defun everysubst00 (x i z)
   (loop with ans = (rzero)
-	 for (exp coef) on (everysubst i z *alpha) by #'pt-red
+	 for (exp coef) on (everysubst i z *alpha) by #'cddr
 	 do (setq ans (ratplus ans (rattimes (cons coef 1) (ratexpt x exp) t)))
 	 finally (return ans)))
 
 (defun everysubst0 (x i z)
   (loop with ans = (pzero)
-	 for (exp coef) on (everysubst i z *alpha) by #'pt-red
+	 for (exp coef) on (everysubst i z *alpha) by #'cddr
 	 do (setq ans (pplus ans (xptimes coef (pexpt x exp))))
 	 finally (return ans)))
 
 (defun everysubst1 (a b maxpow)
-  (loop for (exp coef) on (p-terms b) by #'pt-red
+  (loop for (exp coef) on (p-terms b) by #'cddr
 	 for part = (everysubst a coef maxpow)
 	 nconc (if (= 0 exp) part
 		   (everysubst2 part (make-poly (p-var b) exp 1)))))
@@ -297,7 +297,7 @@
 
 (defun prodcoef1 (a b)
   (loop with ans = (pzero)
-	 for (bexp bcoef) on (p-terms b) by #'pt-red
+	 for (bexp bcoef) on (p-terms b) by #'cddr
 	 for part = (prodcoef a bcoef)
 	 unless (pzerop part)
 	 do (setq ans (pplus ans (psimp (p-var b) (list bexp part))))
@@ -551,7 +551,7 @@
 
 
 (defun goodform (l) ;;bad -> good
-  (loop for (exp coef) on l by #'pt-red
+  (loop for (exp coef) on l by #'cddr
 	 collect (cons exp coef)))
 
 (defun factorlogs (l)
@@ -616,7 +616,7 @@
 (defun nmt (p any)
   (cond ((pcoefp p)
 	 (if (or any (cminusp p)) 1 0))
-	(t (loop for lp on (p-terms p) by #'pt-red
+	(t (loop for lp on (p-terms p) by #'cddr
 		  sum (nmt (cadr lp) any)))))
 
 (defun nmterms (p)

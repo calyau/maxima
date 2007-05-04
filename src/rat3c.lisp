@@ -485,7 +485,7 @@
   (cond ((or (pcoefp p) (pointergp v (p-var p))) (list 0 p))
 	((eq (p-var p) v) (p-terms p))
 	((loop with ans
-		for (exp coef) on (p-terms p) by #'pt-red
+		for (exp coef) on (p-terms p) by #'cddr
 		do (setq ans (pplus1 ans
 				     (everysubst2 (poly-in-var coef v)
 						  (list (p-var p) exp 1))))
