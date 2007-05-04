@@ -14,10 +14,43 @@
 
 ;; GENERAL POISSON SERIES
 
-(declare-top (special *argc *coef poisvals poisco1 poiscom1 b* a* *a ss cc h* poishift
-		      poistsm poissiz poists $wtlvl $poisz $pois1))
+(declare-top (special *argc *coef poisvals b* a* *a ss cc h* poishift
+		      poistsm poissiz poists $poisz $pois1))
 
 (defvar trim nil)
+
+;;; THESE ARE THE ONLY COEFFICIENT DEPENDENT ROUTINES.
+
+;;; POISCDECODE DECODES A COEFFICIENT
+(defun poiscdecode (x) x)
+
+;;; INTOPOISCO PUTS AN EXPRESSION INTO POISSON COEFFICIENT FORM
+(defun intopoisco (x) (simplifya x nil))
+
+;;; POISCO+ ADDS 2 COEFFICIENTS
+(defun poisco+ (r s) (simplifya (list '(mplus) r s) nil))
+
+;;; POISCO* MULTIPLIES 2 COEFFICIENTS
+(defun poisco* (r s) (simplifya (list '(mtimes) r s) nil))
+
+;;; HALVE DIVIDES A COEFFICIENT BY 2
+(defun halve (r)
+  (simplifya (list '(mtimes) '((rat) 1 2) r) nil))
+
+;;; POISSUBSTCO SUBSTITUTES AN EXPRESSION FOR A VARIABLE IN A COEFFICIENT.
+(defun poissubstco (a b c)
+  (maxima-substitute a b c))
+
+;;; THIS DIFFERENTIATES A COEFFICIENT
+(defun poiscodif (h var)
+  ($diff h var))
+
+;;; THIS INTEGRATES A COEFFICIENT
+(defun poiscointeg (h var)
+  (intopoisco($integrate (poiscdecode h) var)))
+
+;;; TEST FOR ZERO
+(defun poispzero (x) (zerop1 x))
 
 (defun fumcheck (x)
   (not (and (atom x) (integerp x) (< (abs x) poistsm))))
@@ -89,12 +122,12 @@
 (defun poiscosine (m)
   (setq m (poisencode m))
   (cond ((poisnegpred m) (setq m (poischangesign m))))
-  (list '(mpois simp) nil (list m poisco1)))
+  (list '(mpois simp) nil (list m 1)))
 
 (defun poissine (m)
   (setq m (poisencode m))
-  (cond ((poisnegpred m) (list '(mpois simp) (list (poischangesign m) poiscom1) nil))
-	(t (list '(mpois simp) (list m poisco1) nil))))
+  (cond ((poisnegpred m) (list '(mpois simp) (list (poischangesign m) -1) nil))
+	(t (list '(mpois simp) (list m 1) nil))))
 
 (defmfun $intopois (x)
   (prog (*a)
@@ -424,7 +457,7 @@
 
 (defun poismerges (a ae l)
   (cond ((equal poishift ae) l)		; SINE(0) IS 0
-	((poisnegpred ae) (poismerge (poisco* poiscom1 a) (poischangesign ae) l))
+	((poisnegpred ae) (poismerge (poisco* -1 a) (poischangesign ae) l))
 	(t (poismerge a ae l))))
 
 (defun poismergec (a ae l)
@@ -456,13 +489,11 @@
 
 (defun poismergesx (a ae l)
   (cond ((equal poishift ae) l)		; SINE(0) IS 0
-	((poisnegpred ae) (avlinsert (poischangesign ae) (poisco* poiscom1 a) l))
+	((poisnegpred ae) (avlinsert (poischangesign ae) (poisco* -1 a) l))
 	(t (avlinsert ae a l))))
 
 (defun poismergecx (a ae l)
   (cond ((poisnegpred ae) (avlinsert (poischangesign ae) a l)) (t (avlinsert ae a l))))
-
-(declare-top (special trim poiscom1 poishift))
 
 (defun poisctimes1 (c h)
   (cond ((null h) nil)
@@ -504,7 +535,7 @@
 	 (setq temp (poisco* aa (cadr slb)))
 	 (cond ((poispzero temp) nil)
 	       (t (or f1 (poismergecx temp t1 clc))
-		  (or f2 (poismergecx (poisco* poiscom1 temp) t2 clc)))))
+		  (or f2 (poismergecx (poisco* -1 temp) t2 clc)))))
        ;; SINE*COSINE ==> SINE + SINE
        (do ((clb
 	     (caddr b)
@@ -533,7 +564,7 @@
 	       (t (setq f1 nil f2 nil)))
 	 (cond (t (setq temp (poisco* aa (cadr slb)))
 		  (cond ((poispzero temp) nil)
-			(t (or f1 (poismergesx (poisco* poiscom1 temp) t1 slc))
+			(t (or f1 (poismergesx (poisco* -1 temp) t1 slc))
 			   (or f2 (poismergesx temp t2 slc)))))))
        ;; COSINE*COSINE ==> COSINE + COSINE
        (do ((clb (caddr b) (cddr clb)))
@@ -559,7 +590,6 @@
      (go a)))
 
 (defmfun $poissquare (a) ($poisexpt a 2))
-
 
 ;;; $POISINT INTEGRATES A POISSON SERIES WRT X,Y, Z, U, V, W.  THE VARIABLE OF
 ;;; INTEGRATION MUST OCCUR ONLY IN THE ARGUMENTS OF SIN OR COS,
@@ -673,11 +703,8 @@
 					 (setq dp ($poistimes dp d)))))
 	   (fancypois1s d dp (1+ n) lim))))
 
-
 ;;; COS(R+K*B) ==> K*COS(R+K*A)*DC - K*SIN(R+K*A)*DS
 ;;; SIN(R+K*B) ==> K*COS(R+K*A)*DS + K*SIN(R+K*A)*DC
-
-(declare-top (special *argc *coef))
 
 (defun fancypac (c)
   (prog nil
@@ -695,7 +722,7 @@
 						   (poismergec *coef *argc nil))
 					     dc)
 				 ($poistimes (list '(mpois simp)
-						   (poismerges (poisco* poiscom1 *coef) *argc nil)
+						   (poismerges (poisco* -1 *coef) *argc nil)
 						   nil)
 					     ds))))
      end  (fancypac (cddr c))))
@@ -719,57 +746,3 @@
 							nil)
 						  dc))))
      end  (fancypas (cddr c))))
-
-					;ARGUMENT  DO NOT EXCEED 15 IN ABSOLUTE VALUE
-
-
-;;; THESE ARE THE ONLY COEFFICIENT DEPENDENT ROUTINES. RATIONAL FORM IS
-;;; DEFINED IN FILE RATPOI >.
-
-;;; POISCDECODE DECODES A COEFFICIENT
-
-(defun poiscdecode (x) x)
-
-
-;;; INTOPOISCO PUTS AN EXPRESSION INTO POISSON COEFFICIENT FORM
-
-(defun intopoisco (x) (simplifya x nil))
-
-
-;;; POISCO+ ADDS 2 COEFFICIENTS
-
-(defun poisco+ (r s) (simplifya (list '(mplus) r s) nil))
-
-
-;;; POISCO* MULTIPLIES 2 COEFFICIENTS
-
-(defun poisco* (r s) (simplifya (list '(mtimes) r s) nil))
-
-
-;;; HALVE DIVIDES A COEFFICIENT BY 2
-
-(defun halve (r)
-  (simplifya (list '(mtimes) '((rat) 1. 2.) r) nil))
-
-;;; POISSUBSTCO SUBSTITUTES AN EXPRESSION FOR A VARIABLE IN A COEFFICIENT.
-
-(defun poissubstco (a b c)
-  (maxima-substitute a b c))
-
-;;; THIS DIFFERENTIATES A COEFFICIENT
-
-(defun poiscodif (h var)
-  ($diff h var))
-
-;;; THIS INTEGRATES A COEFFICIENT
-(defun poiscointeg (h var)
-  (intopoisco($integrate (poiscdecode h) var)))
-
-;;; TEST FOR ZERO
-
-(defun poispzero (x) (zerop1 x))
-
-
-;;; THE NUMBER 1 IN COEFFICIENT ARITHMETIC, THE NUMBER -1
-
-(setq poisco1 1 poiscom1 -1)
