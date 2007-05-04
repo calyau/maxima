@@ -129,13 +129,13 @@
 	     (nreverse new-argl)))
     (let ((form (pop l)))
       (cond ((> (error-size form) $error_size)
-	     (setq symbol-number (1+ symbol-number))
+	     (incf symbol-number)
 	     (let ((sym (nthcdr symbol-number $error_syms)))
 	       (cond (sym
 		      (setq sym (car sym)))
 		     (t
-		      (setq sym (concat '$errexp symbol-number))
-		      (setq $error_syms (append $error_syms (list sym)))))
+		      (setq sym (intern (format "$ERREXP~D" symbol-number)))
+		      (tuchus $error_syms sym)))
 	       (push sym error-symbols)
 	       (push form error-values)
 	       (push sym new-argl)))
