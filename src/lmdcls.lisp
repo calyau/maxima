@@ -63,7 +63,7 @@
 	  $floatoptions $floatprec $floatwidth $fortfloat $fortindent
 	  $fortspaces $fpprec $fpprintprec $fptrunc $functions $gammalim $gcd
 	  $genindex $gensumnum $globalsolve $gradefs $halfangles $homog_hack
-	  $inchar $infeval $inflag $integration_constant_counter $intfaclim
+	  $inchar $infeval $inflag $intfaclim
 	  $isolate_wrt_times $keepfloat $labels $leftjust $letrat $letvarsimp
 	  $let_rule_packages $liflag $linechar $linedisp $linenum $linel
 	  $linsolvewarn $linsolve_params $lispdisp $listarith $listconstvars
