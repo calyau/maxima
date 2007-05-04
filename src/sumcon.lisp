@@ -133,9 +133,9 @@
 	(if (or (free llist (car try-list))
 		(eq i (car try-list)))
 	    (return (car try-list))))
-      (do ((n 0 (f1+ n)) (try))
+      (do ((n 0 (1+ n)) (try))
 	  (nil)
-	(setq try (concat (cadr $niceindicespref) n))
+	(setq try (intern (format "~a~d" (cadr $niceindicespref) n)))
 	(if (free llist try) (return try)))))
 
 (defmfun $bashindices (e)	       ; e is assumed to be simplified
