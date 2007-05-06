@@ -28,7 +28,7 @@ gp_file_out : "out.txt"$
 gp_file_in : "in.txt"$
 
 circular_positions(G) := block(
-  [v_list, numer : true],
+  [v_list, numer : true, n : graph_size(G)],
   v_list : vertices(G),
   makelist([v_list[i+1], [2+cos(2*i*%pi/n), 2+sin(2*i*%pi/n)]], i, 0, graph_size(G)-1)
 )$
@@ -118,11 +118,11 @@ draw_graph(G, [options]) := block(
       if directed=true then block(
         [p1 : assoc(e[1], v_pos), p2 : assoc(e[2], v_pos)],
         edges : cons(vector(p1, p2-p1), edges)
-        )
+      )
       else
-      edges : cons(points([assoc(e[1], v_pos), assoc(e[2], v_pos)]), edges)
-      ),
-    
+        edges : cons(points([assoc(e[1], v_pos), assoc(e[2], v_pos)]), edges)
+    ),
+
     vertices : [points(map(second, v_pos))],
     if show_id=true then (
       for v in vertices(G) do block(
