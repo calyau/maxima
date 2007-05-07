@@ -111,8 +111,8 @@ done$
 a[y+2];
 0$
 
-use_fast_arrays: false;
-false;
+(use_fast_arrays : false, kill(a), 0);
+0$
 
 /* ensure that matrix construction works as advertised */
 (L : makelist ([i], i, 1, 100), apply (matrix, L), [op (%%), args (%%)]);
