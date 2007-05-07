@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Menu.tcl,v 1.31 2007-02-25 19:02:12 vvzhy Exp $
+#       $Id: Menu.tcl,v 1.32 2007-05-07 00:35:30 robert_dodier Exp $
 #
 
 proc pMAXSaveTexToFile {text} {
@@ -187,6 +187,10 @@ proc vMAXAddSystemMenu {fr text} {
 	-state $state \
 	-label [mc "Run Tests"] \
 	-command [list sendMaxima $text "run_testsuite()\$\n"]
+    $m add command -underline 0 \
+	-state $state \
+	-label [mc "About Maxima"] \
+	-command [list sendMaxima $text "build_info()\$\n"]
 
 
     # Add a Help menubutton
