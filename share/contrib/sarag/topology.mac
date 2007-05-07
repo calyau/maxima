@@ -2,6 +2,12 @@
 /* SARAG - Topology                                                    */
 /* by Fabrizio Caruso                                                  */
 
+SARAG_LINE_COLOR : 1;
+SARAG_POINT_SIZE : 3;
+SARAG_POINT_STYLE_GENERIC : 3;
+SARAG_POINT_STYLE_CRITICAL : 2;
+SARAG_POINT_STYLE_NONCRITICAL : 1;
+
 signAtRoot(pol,x,polyInX,rootInX) :=
   signsAtRoots([rootInX],polyInX,pol,x)[1][2];
 
@@ -533,7 +539,12 @@ getPointsOnProj(num,projX,height):=makelist([projX,i*height/(num+1)],i,1,num);
 
 
 drawPoints(ptList) :=
-  plot2d([discrete,float(ptList)],[gnuplot_curve_styles,["with points 3"]],[gnuplot_preamble, "set grid; set xrange[-25:25]; set yrange[-10:10]; unset key"]);
+  plot2d([discrete,float(ptList)],
+['style,[points, SARAG_POINT_STYLE_GENERIC]],
+[gnuplot_preamble, "set grid; set xrange[-25:25]; set yrange[-10:10]; unset key"]);
+
+
+
 
 drawPointsOnProj(num,projX,height) :=
   drawPoints(getPointsOnProj(num,projX,height));
@@ -708,10 +719,6 @@ lineSegs : append(lineSegs,lineSegsAtInf),
 getCritPoint(critLine,projX,height) :=
   [projX,critLine[2]*height/critLine[1]];
 
-drawCritPoint(critLine,projX,height) :=
-  [discrete,[getCritPoint],[gnuplot_curve_styles,["with points","with points pointsize 3"]]
-  ];
-
 drawTopology(tpg) :=
   drawTopologyVerbose(tpg,DEFAULT_VERBOSITY);
 
@@ -755,43 +762,46 @@ lineSegs : append(lineSegs,topologyPoints[5]),
   
      if verbosity>= NORMAL then
        print("preamble : ", preamble),
-     
-     style : makelist("with lines 3",i,1,length(lineSegs)),
+
+     style : [],
+     for i : 1 thru length(lineSegs) do
+        style : cons([lines, 1, SARAG_LINE_COLOR],style),
+
      if not(PS_OUTPUT) then 
        if critPoints=[] then
          plot2d(append([ [discrete,float(nonCritPoints)]],
                   lineSegs),
-                  [gnuplot_curve_styles,append(["with points 1"],style)],               
+                  cons('style,cons([points, SARAG_POINT_SIZE, SARAG_POINT_STYLE_NONCRITICAL],style)),
                   [gnuplot_preamble, preamble])
        else
          if nonCritPoints = [] then
             plot2d(append([[discrete,float(critPoints)]],
                    lineSegs),
-                   [gnuplot_curve_styles,append(["with points 4"],style)],
+                   cons('style,cons([points, SARAG_POINT_SIZE, SARAG_POINT_STYLE_CRITICAL],style)),
                    [gnuplot_preamble,preamble])
          else
          plot2d(append([ [discrete,float(nonCritPoints)],
                   [discrete,float(critPoints)]],lineSegs),
-                  [gnuplot_curve_styles,append(["with points 1","with points 4"],style)],
+                  cons('style,append([[points, SARAG_POINT_SIZE, SARAG_POINT_STYLE_NONCRITICAL], [points, SARAG_POINT_SIZE, SARAG_POINT_STYLE_CRITICAL]],style)),
                   [gnuplot_preamble,preamble])
      else
        if critPoints=[] then
          plot2d(append([ [discrete,float(nonCritPoints)]],
                   lineSegs),
-                  [gnuplot_curve_styles,append(["with points 1"],style)],               
+                  cons('style,cons([points, SARAG_POINT_SIZE, SARAG_POINT_STYLE_NONCRITICAL],style)),  
                   [gnuplot_preamble, preamble],
                   [gnuplot_term, ps], [gnuplot_out_file, PS_OUTPUT_FILE_NAME])
        else
          if nonCritPoints = [] then
             plot2d(append([[discrete,float(critPoints)]],
                    lineSegs),
-                   [gnuplot_curve_styles,append(["with points 4"],style)],
+                   cons('style,cons([points, SARAG_POINT_SIZE, SARAG_POINT_STYLE_CRITICAL],style)),
                    [gnuplot_preamble,preamble],
                    [gnuplot_term, ps], [gnuplot_out_file, PS_OUTPUT_FILE_NAME])
          else
          plot2d(append([ [discrete,float(nonCritPoints)],
                   [discrete,float(critPoints)]],lineSegs),
-                  [gnuplot_curve_styles,append(["with points 1","with points 4"],style)],
+                  cons('style,append([[points, SARAG_POINT_SIZE, SARAG_POINT_STYLE_NONCRITICAL], [points, SARAG_POINT_SIZE, SARAG_POINT_STYLE_CRITICAL]],style)),
                   [gnuplot_preamble,preamble],
                   [gnuplot_term, ps], [gnuplot_out_file, PS_OUTPUT_FILE_NAME])
      ),
