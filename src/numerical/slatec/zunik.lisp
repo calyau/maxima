@@ -1,5 +1,5 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2006/12/21 03:18:39 
-;;; Using Lisp CMU Common Lisp Snapshot 2006-12 (19D)
+;;; Compiled by f2cl version 2.0 beta Date: 2007/05/04 17:29:50 
+;;; Using Lisp CMU Common Lisp Snapshot 2007-05 (19D)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -131,7 +131,7 @@
       (setf sr (+ coner (- (* tr tr) (* ti ti))))
       (setf si (+ conei (+ (* tr ti) (* ti tr))))
       (multiple-value-bind (var-0 var-1 var-2 var-3)
-          (f2cl-lib:zsqrt sr si srr sri)
+          (zsqrt sr si srr sri)
         (declare (ignore var-0 var-1))
         (setf srr var-2)
         (setf sri var-3))
@@ -160,10 +160,8 @@
       (setf srr (* tr rfn))
       (setf sri (* ti rfn))
       (multiple-value-bind (var-0 var-1 var-2 var-3)
-          (f2cl-lib:zsqrt srr
-                          sri
-                          (f2cl-lib:fref cwrkr (16) ((1 16)))
-                          (f2cl-lib:fref cwrki (16) ((1 16))))
+          (zsqrt srr sri (f2cl-lib:fref cwrkr (16) ((1 16)))
+           (f2cl-lib:fref cwrki (16) ((1 16))))
         (declare (ignore var-0 var-1))
         (setf (f2cl-lib:fref cwrkr (16) ((1 16))) var-2)
         (setf (f2cl-lib:fref cwrki (16) ((1 16))) var-3))

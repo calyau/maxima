@@ -1,5 +1,5 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2006/12/21 03:18:39 
-;;; Using Lisp CMU Common Lisp Snapshot 2006-12 (19D)
+;;; Compiled by f2cl version 2.0 beta Date: 2007/05/04 17:29:50 
+;;; Using Lisp CMU Common Lisp Snapshot 2007-05 (19D)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -11,7 +11,7 @@
 
 (let ((drt 0.7071067811865476) (dpi 3.141592653589793))
   (declare (type (double-float) dpi drt))
-  (defun f2cl-lib:zsqrt (ar ai br bi)
+  (defun zsqrt (ar ai br bi)
     (declare (type (double-float) bi br ai ar))
     (prog ((zm 0.0) (dtheta 0.0))
       (declare (type (double-float) dtheta zm))

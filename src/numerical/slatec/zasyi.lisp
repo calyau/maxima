@@ -1,5 +1,5 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2006/12/21 03:18:39 
-;;; Using Lisp CMU Common Lisp Snapshot 2006-12 (19D)
+;;; Compiled by f2cl version 2.0 beta Date: 2007/05/04 17:29:50 
+;;; Using Lisp CMU Common Lisp Snapshot 2007-05 (19D)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -45,7 +45,7 @@
       (setf ak1r (* rtpi str raz))
       (setf ak1i (* rtpi sti raz))
       (multiple-value-bind (var-0 var-1 var-2 var-3)
-          (f2cl-lib:zsqrt ak1r ak1i ak1r ak1i)
+          (zsqrt ak1r ak1i ak1r ak1i)
         (declare (ignore var-0 var-1))
         (setf ak1r var-2)
         (setf ak1i var-3))

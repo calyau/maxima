@@ -1,5 +1,5 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2006/12/21 03:18:39 
-;;; Using Lisp CMU Common Lisp Snapshot 2006-12 (19D)
+;;; Compiled by f2cl version 2.0 beta Date: 2007/05/04 17:29:50 
+;;; Using Lisp CMU Common Lisp Snapshot 2007-05 (19D)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -97,7 +97,7 @@
       (setf bii (+ (* c1 s1i) (* c2 (+ (* zr s2i) (* zi s2r)))))
       (if (= kode 1) (go end_label))
       (multiple-value-bind (var-0 var-1 var-2 var-3)
-          (f2cl-lib:zsqrt zr zi str sti)
+          (zsqrt zr zi str sti)
         (declare (ignore var-0 var-1))
         (setf str var-2)
         (setf sti var-3))
@@ -121,7 +121,7 @@
      label60
       (if (= kode 1) (go end_label))
       (multiple-value-bind (var-0 var-1 var-2 var-3)
-          (f2cl-lib:zsqrt zr zi str sti)
+          (zsqrt zr zi str sti)
         (declare (ignore var-0 var-1))
         (setf str var-2)
         (setf sti var-3))
@@ -157,7 +157,7 @@
       (setf aa (f2cl-lib:fsqrt aa))
       (if (> az aa) (setf ierr 3))
       (multiple-value-bind (var-0 var-1 var-2 var-3)
-          (f2cl-lib:zsqrt zr zi csqr csqi)
+          (zsqrt zr zi csqr csqi)
         (declare (ignore var-0 var-1))
         (setf csqr var-2)
         (setf csqi var-3))
