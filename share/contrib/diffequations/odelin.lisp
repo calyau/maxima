@@ -376,26 +376,55 @@
 ;; we seek functions m(x) and xi(x) st { m(x) F1(xi(x)), m(x) F2{xi(x)) }
 ;; is a fundamental solution set of y'' = v y.
 ;;
-;; xi(x) satisfies a non-linear third-order ODE [Eq 7 in paper] (see get-de-cnd below)
-;; The solution of this DE is a rational function xi(x)=P(x)/Q(x) where P(x) and Q(x)
-;; are polynomials.  It is shown that the denominator Q(x) is given by certain terms
-;; in the square-free factorization of the denominator of v(x), and an upper bound to
-;; the degree of the numerator P(x) can be found.  This allows P(x) to be found, if it
-;; exists, using the method of undetermined coefficients.  These quantities depend on 
-;; the order at infinity of v(x) and Delta=(a1)^2+2*a1'-4*a0
+;; xi(x) satisfies a non-linear third-order ODE [Eq 7 in paper] (see 
+;; get-de-cnd below).  The solution of this DE is a rational function 
+;; xi(x)=P(x)/Q(x) where P(x) and Q(x) are polynomials.  It is shown 
+;; that the denominator Q(x) is given by certain terms in the square-free
+;; factorization of the denominator of v(x), and an upper bound to
+;; the degree of the numerator P(x) can be found.  This allows P(x) to be 
+;; found, if it exists, using the method of undetermined coefficients.  
+;; These quantities depend on the order at infinity of v(x) and 
+;; Delta=(a1)^2+2*a1'-4*a0
 ;; 
 ;;
 ;; For each target equation L = D^2 + a1 D + a0 we specialize the solver
 ;; by providing
 ;; o  params:       a list of additional parameters in the operator
-;; o  denom-filter: a rule to select the terms in the square-free factorization of the 
-;;                  denominator of v(x) that form Q(x).
+;; o  denom-filter: a rule to select the terms in the square-free 
+;;                  factorization of the denominator of v(x) that form Q(x).
 ;; o  degree-bound: the upper bound for the degree of the numerator P(x)
 ;; o  de-cnd: -Delta/4, where Delta = (a1)^2  + 2 a1' - 4 a0
 ;;
-;; Note:  For the bessel, hypergeo01 and spherodialwave methods we have delta -> constant
-;; as x-> infinity (order at infinity = 0) so denom-filter and degree-bound are
-;; identical.
+;;
+;;                           i
+;; Theorem 1:  Let Product( Q  ) be the squarefree decomposition of 
+;;                           i
+;; the denominator of v(x)and d = order at infinity of Delta, with d<2.
+;;                                                 i
+;; Then the denominator Q(x) of xi(x) is Product( Q  ) with n=(2-d)*i+2
+;;                                                 n
+;;
+;; The numerator P(x) is a polynomial in x.  Either deg(P) <= deg(Q)+1
+;; or deg(P) = deg(Q) + (2-order_at_infinity(v))/(2-d).  When d<0 the
+;; first bound becomes deg(P) <= deg(Q).
+;;
+;; The function denom-filter(n) returns the exponent i for the term Q_n,
+;; with i=0 for factors Q_n that are not used.
+;;
+;; CASE   |  n      | 1  2  3  4  5  6  7  8 |  Example
+;; -------|---------|------------------------------------------------------
+;; d = -1 | i=3*n+2 | 0  0  0  0  1  0  0  2 | (not used)
+;; d =  0 | i=2*n+2 | 0  0  0  1  0  2  0  3 | bessel-xi-denom-filter
+;; d =  1 | i=n+2   | 0  0  1  2  3  4  5  6 | bessel-sqrt-xi-denom-filter
+;; d =  2 | i=0     | 0  0  0  0  0  0  0  0 | hypergeo21-xi-denom-filter
+;;
+;; The function degree-bound returns the upper bound of the numerator
+;; P(x) of xi(x).  
+;; 
+;; The proof in the paper only applies for the case d<2. It does not apply
+;; for the 2F1 hypergeometric function where d=2, although the method clearly 
+;; works for this case too.
+;;
 ;;
 (defun generic-de-solver (v x params denom-filter degree-bound de-cnd)
   (setq v ($rat v x))
@@ -503,7 +532,7 @@
 ;; is L = D^2 + a1 D + a0, with a1 = 1/x and a0 = (1/x-mu^2/x^2)/4.
 ;; 
 ;; Delta = (a1)^2 +2*a1'-4*a0 = (mu^2-1)/x^2-1/x
-;;       -> 1/x as x-> infinity.  (order at infinity is -1)
+;;       -> 1/x as x-> infinity.  (order at infinity is 1)
 ;;
 ;; de-cnd = -Delta/4 = (1 + x - mu^2)/(4*x^2)
 ;;
@@ -656,7 +685,7 @@
 ;;                                           2  2
 ;;                                    (x - 1)  x
 ;;
-;;       -> constant/x^2 as x-> infinity.  (order at infinity is -2)
+;;       -> constant/x^2 as x-> infinity.  (order at infinity is 2)
 ;; 
 ;; de-cnd = -Delta/4 
 ;;        = -((b^2-2*a*b+a^2-1)*x^2+((-2*b-2*a+2)*c+4*a*b)*x+c^2-2*c)/(4*x^2*(x-1)^2)
