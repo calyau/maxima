@@ -110,7 +110,7 @@ sum (h[i](x), i, 0, n);
 
 /* see SF bug report # 817521 */
 
-(kill (foo), foo (n):= block([m], modedeclare(m,fixnum), m:n, [ aaa[1], aaa[n], aaa[m], aaa[1]+aaa[2], sum(aaa[i],i,1,m) ] ), foo (2));
+(kill (foo), foo (n):= block([aaa,m], modedeclare([m,n], fixnum), m:n, [ aaa[1], aaa[n], aaa[m], aaa[1]+aaa[2], sum(aaa[i],i,1,m) ] ), foo (2));
 [aaa[1],aaa[2],aaa[2],aaa[2]+aaa[1], aaa[2]+aaa[1]];
 
 (translate(foo), 0);
