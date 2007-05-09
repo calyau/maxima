@@ -408,7 +408,7 @@ values")
     (assert (stringp string))
     (coerce string 'list)))
 
-(defun explodec (symb &aux tem)
+(defun explodec (symb &aux tem)		;is called for symbols and numbers
   (loop for v on (setq tem (coerce (print-invert-case symb) 'list))
 	 do (setf (car v) (intern (string (car v)))))
   tem)
@@ -570,9 +570,9 @@ values")
 	    (intern (print-invert-case (make-symbol (concatenate 'string "&" string)))))))
 
 ;;for those window labels etc. that are wrong type.
-
+;; is not only called for symbols, but also on numbers
 (defun flatc (sym)
-  (length (symbol-name sym)))
+  (length (explodec sym)))
 
 (defun flatsize (sym &aux (*print-circle* t))
   (length (exploden sym)))
