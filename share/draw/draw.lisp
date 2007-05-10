@@ -809,6 +809,58 @@
       (update-ranges (min x xdx) (max x xdx) (min y ydy) (max y ydy))
       (make-gr-object
          :name 'vector
+         :command (format nil " ~a w vect ~a size ~a, ~a ~a lw ~a lt ~a lc rgb '~a'"
+                              (make-obj-title (get-option '$key))
+                              (if (get-option '$head_both) "heads" "head")
+                              (get-option '$head_length)
+                              (get-option '$head_angle)
+                              (case (get-option '$head_type)
+                                 ($filled   "filled")
+                                 ($empty    "empty")
+                                 ($nofilled "nofilled"))
+                              (get-option '$line_width)
+                              (get-option '$line_type)
+                              (get-option '$color) )
+         :groups '((4))
+         :points `(,(make-array 4 :element-type 'double-float
+                                  :initial-contents (list x y dx dy))) ) ))
+
+
+
+
+
+
+
+;; Object: 'vector'
+;; Usage:
+;;     vector([x,y,z], [dx,dy,dz]), represents vector from [x,y,z] to [x+dx,y+dy,z+dz]
+;; Options:
+;;     head_both
+;;     head_length
+;;     head_angle
+;;     head_type
+;;     line_width
+;;     line_type
+;;     key
+;;     color
+(defun vect3d (arg1 arg2)
+   (if (or (not ($listp arg1))
+           (not (= ($length arg1) 3))
+           (not ($listp arg2))
+           (not (= ($length arg2) 3)))
+       (merror "draw (vector): coordinates are not correct"))
+   (let* ((x (convert-to-float (cadr arg1)))
+          (y (convert-to-float (caddr arg1)))
+          (z (convert-to-float (cadddr arg1)))
+          (dx (convert-to-float (cadr arg2)))
+          (dy (convert-to-float (caddr arg2)))
+          (dz (convert-to-float (cadddr arg2)))
+          (xdx (convert-to-float (+ x dx)))
+          (ydy (convert-to-float (+ y dy)))
+          (zdz (convert-to-float (+ z dy))))
+      (update-ranges (min x xdx) (max x xdx) (min y ydy) (max y ydy) (min z zdz) (max z zdz))
+      (make-gr-object
+         :name 'vector
          :command (format nil " ~a w vect ~a ~a size ~a, ~a lw ~a lt ~a lc rgb '~a'"
                               (make-obj-title (get-option '$key))
                               (if (get-option '$head_both) "heads" "head")
@@ -821,9 +873,10 @@
                               (get-option '$line_width)
                               (get-option '$line_type)
                               (get-option '$color) )
-         :groups '((4))
-         :points `(,(make-array 4 :element-type 'double-float
-                                  :initial-contents (list x y dx dy))) ) ))
+         :groups '((6))
+         :points `(,(make-array 6 :element-type 'double-float
+                                  :initial-contents (list x y z dx dy dz))) ) ))
+
 
 
 
@@ -1510,6 +1563,7 @@
                             (list (case (caar x)
                                      ($points             (apply #'points3d (rest x)))
                                      ($explicit           (apply #'explicit3d (rest x)))
+                                     ($vector             (apply #'vect3d (rest x)))
                                      ($parametric         (apply #'parametric3d (rest x)))
                                      ($parametric_surface (apply #'parametric_surface (rest x)))
                                      ($label              (apply #'label3d (rest x)))
@@ -1785,7 +1839,7 @@
                                                      (aref vect (1+ cont))
                                                      (aref vect (+ 2 cont)))
                           (incf l)  ))))  )
-             (4  ; for vectors (x,y,dx,xy)
+             (4  ; for 2d vectors (x,y,dx,dy)
                  (do ((cont 0 (+ cont 4)))
                      ((= cont k) 'done)
                    (format datastorage "~a ~a ~a ~a~%" (aref vect cont)
@@ -1799,7 +1853,16 @@
                                                    (aref vect (1+ cont))
                                                    (aref vect (+ 2 cont))
                                                    (aref vect (+ 3 cont))
-                                                   (aref vect (+ 4 cont)))))))
+                                                   (aref vect (+ 4 cont)))))
+             (6  ; for 3d vectors (x,y,z,dx,dy,dz)
+                 (do ((cont 0 (+ cont 6)))
+                     ((= cont k) 'done)
+                   (format datastorage "~a ~a ~a ~a ~a ~a~%" (aref vect cont)
+                                                (aref vect (1+ cont))
+                                                (aref vect (+ 2 cont))
+                                                (aref vect (+ 3 cont)) 
+                                                (aref vect (+ 4 cont))
+                                                (aref vect (+ 5 cont)) )))   ))
           (if (and $draw_pipes (= (length scenes) 1))
             (if (cdr blis) (format datastorage "~%~%"))
             (format datastorage "e~%")) )
