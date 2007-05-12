@@ -585,7 +585,7 @@
                  `((progn (setq ,save-list-gensym nil)
                           ,@(append subscripted-vars-save subscripted-vars-mset))))
 
-           (let (($ratprint nil) ($numer t)
+           (let (($ratprint nil) ($numer t) (nounsflag t)
                  (errorsw t)
                  (errcatch t))
              (declare (special errcatch))
@@ -629,6 +629,7 @@
          (let*
            (($ratprint nil)
             ($numer t)
+            (nounsflag t)
             (result (maybe-realpart (mapply ',expr (list ,@gensym-args) t))))
            (if ($numberp result)
              ($float result)
