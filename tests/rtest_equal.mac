@@ -32,7 +32,7 @@ true$
  
 /* bug 990924 */
 is(equal((%e^(%i*z)-%e^-(%i*z)), 0));
-'unknown$
+unknown$
 
 /* bug 851436 */
 
@@ -51,7 +51,7 @@ is(equal([a,0],[a,1]));
 false$
 
 is(equal([a,b],[a,c]));
-'unknown$
+unknown$
 
 /* bug 812968 */
 
@@ -106,7 +106,7 @@ is(equal(%i, x));
 false$
 
 is(equal(%i,x + %i));
-'unknown$
+unknown$
 
 is(equal(und, x));
 false$
@@ -151,7 +151,7 @@ is(equal((x+1)^2, x^2 + 2*x+1));
 true$
 
 is(equal(x,0));
-'unknown$
+unknown$
 
 is(equal(x,%i));
 false$
@@ -163,10 +163,10 @@ is(equal(x^2+1,x^2/5));
 false$
 
 is(equal(%i*x,%i));
-'unknown$
+unknown$
 
 is(equal([a],[b]));
-'unknown$
+unknown$
 
 is(equal([a],[a,b]));
 false$
@@ -187,10 +187,10 @@ is(equal(matrix([x]), rat(matrix([x]))));
 true$
 
 is(equal(matrix([x,y]), matrix([x,z])));
-'unknown$
+unknown$
 
 is(equal(matrix([x,y],[p,q]), matrix([p,q],[x,y])));
-'unknown$
+unknown$
 
 is(equal(matrix([x,y],[p,q]), matrix([p,q,s],[x,y,8])));
 false$
@@ -199,7 +199,7 @@ is(equal(set(u,n,k), set(u,n,k,u,n,k)));
 true$
 
 is(equal(set(a,b,c), set(b,a,a)));
-'unknown$
+unknown$
 
 is(equal(abs(1 + %i*z), z - %i));
 false$
@@ -287,7 +287,7 @@ is(equal(a = b, a = b));
 true$
 
 is(equal(a = b, b = a));
-'unknown$
+unknown$
 
 is(equal(a < b, b < a));
 unknown$
@@ -401,13 +401,13 @@ is(equal(sum(1/kk,kk,1,n), sum(1/ii,ii,1,n)));
 true$
 
 is(equal(sum(1/kk,kk,1,m), sum(1/ii,ii,1,n)));
-'unknown$
+unknown$
 
 is(equal(sqrt(5) - sum(%pi/kk,kk,1,n), sqrt(5) - sum(%pi/ii,ii,1,n)));
 true$
 
 is(equal(sqrt(5) - sum(%pi/kk,kk,1,m), sqrt(5) - sum(%pi/ii,ii,1,n)));
-'unknown$
+unknown$
 
 is(equal(sum(sqrt(2)/i^2,i,1,inf), sum(sqrt(2)/j^2,j,1,inf)));
 true$
