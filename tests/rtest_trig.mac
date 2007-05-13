@@ -74,7 +74,7 @@ true$
 0$
 
 subst(-%i*x,x, subst(%i*x,x,append(trig,htrig))) - append(trig,htrig);
-makelist(0,i,1,length(append(trig,htrig)));
+''(makelist(0,i,1,length(append(trig,htrig))));
 
 (itrig : subst(%i*x,x,append(trig,htrig)),0);
 0$
@@ -86,13 +86,13 @@ makelist(0,i,1,length(append(trig,htrig)));
 0$
 
 ratsimp(taylor(itrig,x,0,5));
-makelist(0,i,1,length(append(trig,htrig)))$
+''(makelist(0,i,1,length(append(trig,htrig))))$
 
 (exponentialize : false,0);
 0$
 
 taylor(exponentialize(append(trig,htrig)) - append(trig,htrig),x,0,5);
-makelist(0,i,1,length(append(trig,htrig)))$
+''(makelist(taylor(0,x,0,5), i,1,length(append(trig,htrig))))$
 
 
 /*  Test reflection rules  */
@@ -101,7 +101,7 @@ makelist(0,i,1,length(append(trig,htrig)))$
 0$
 
 subst(-x,x, subst(-x,x, append(trig,htrig)));
-append(trig,htrig)$
+''(append(trig,htrig))$
 
 (mtrig : subst(x=5.6, subst(-x,x,append(trig,htrig))),0);
 0$
@@ -110,7 +110,7 @@ append(trig,htrig)$
 0$
 
 mtrig - subst(x=-5.6, append(trig,htrig));
-makelist(0,i,1,length(append(trig,htrig)))$
+''(makelist(0.0,i,1,length(append(trig,htrig))))$
 
 /* Test half angles */
 
@@ -124,7 +124,7 @@ makelist(0,i,1,length(append(trig,htrig)))$
 0$
 
 xtrig : taylor(xtrig - subst(x/2,x, append(trig, htrig)),x,0,5);
-makelist(taylor(0,x,0,5),i,1,length(append(trig,htrig)))$
+''(makelist(taylor(0,x,0,5),i,1,length(append(trig,htrig))))$
 
 /* Test trig expand */
 
@@ -138,7 +138,7 @@ makelist(taylor(0,x,0,5),i,1,length(append(trig,htrig)))$
 0$
 
 xtrig : taylor(xtrig - subst(x=x+y, append(trig, htrig)),[x,y],0,5);
-makelist(taylor(0,x,0,5),i,1,length(append(trig,htrig)))$
+''(makelist(taylor(0,x,0,5),i,1,length(append(trig,htrig))))$
 
 (trigexpand : true, trigexpandplus : true, trigexpandtimes : true, 0);
 0$
@@ -150,7 +150,7 @@ makelist(taylor(0,x,0,5),i,1,length(append(trig,htrig)))$
 0$
 
 xtrig : taylor(xtrig - subst(x=x-y, append(trig, htrig)),[x,y],0,5);
-makelist(taylor(0,x,0,5),i,1,length(append(trig,htrig)))$
+''(makelist(taylor(0,x,0,5),i,1,length(append(trig,htrig))))$
 
 (trigexpand : true, trigexpandplus : true, trigexpandtimes : true, 0);
 0$
@@ -162,7 +162,7 @@ makelist(taylor(0,x,0,5),i,1,length(append(trig,htrig)))$
 0$
 
 xtrig : taylor(xtrig - subst(x=2*x, append(trig, htrig)),[x,y],0,5);
-makelist(taylor(0,x,0,5),i,1,length(append(trig,htrig)))$
+''(makelist(taylor(0,x,0,5),i,1,length(append(trig,htrig))))$
 
 (trigexpand : true, trigexpandplus : true, trigexpandtimes : true, 0);
 0$
@@ -174,7 +174,7 @@ makelist(taylor(0,x,0,5),i,1,length(append(trig,htrig)))$
 0$
 
 xtrig : taylor(xtrig - subst(x=3*x, append(trig, htrig)),[x,y],0,5);
-makelist(taylor(0,x,0,5),i,1,length(append(trig,htrig)))$
+''(makelist(taylor(0,x,0,5),i,1,length(append(trig,htrig))))$
 
 (trigexpand : true, trigexpandplus : true, trigexpandtimes : true, 0);
 0$
@@ -186,7 +186,7 @@ makelist(taylor(0,x,0,5),i,1,length(append(trig,htrig)))$
 0$
 
 xtrig : taylor(xtrig - subst(x=7*x, append(trig, htrig)),[x,y],0,5);
-makelist(taylor(0,x,0,5),i,1,length(append(trig,htrig)))$
+''(makelist(taylor(0,x,0,5),i,1,length(append(trig,htrig))))$
 
 /* Test triginverses  */
 
