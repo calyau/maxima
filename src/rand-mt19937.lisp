@@ -341,7 +341,10 @@
 (defmfun $random (x)
   "Returns the next number from this generator.
   Punt to MT19937::RANDOM."
-  (mt19937::random x))
+  (if (and (or (integerp x) (floatp x))
+	   (> x 0))
+      (mt19937::random x)
+    (merror "Random requires a positive integer or float argument, not ~m" x)))
 
 ;;; end Maxima-specific stuff
 
