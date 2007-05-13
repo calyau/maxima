@@ -831,7 +831,7 @@
 
 
 
-;; Object: 'vector'
+;; Object: 'vector3d'
 ;; Usage:
 ;;     vector([x,y,z], [dx,dy,dz]), represents vector from [x,y,z] to [x+dx,y+dy,z+dz]
 ;; Options:
@@ -857,7 +857,7 @@
           (dz (convert-to-float (cadddr arg2)))
           (xdx (convert-to-float (+ x dx)))
           (ydy (convert-to-float (+ y dy)))
-          (zdz (convert-to-float (+ z dy))))
+          (zdz (convert-to-float (+ z dz))))
       (update-ranges (min x xdx) (max x xdx) (min y ydy) (max y ydy) (min z zdz) (max z zdz))
       (make-gr-object
          :name 'vector

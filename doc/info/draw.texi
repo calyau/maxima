@@ -1955,6 +1955,28 @@ Example:
 @end example
 
 
+
+
+@item
+@code{vector([x,y,z], [dx,dy,dz])}:
+plots vector @code{[dx,dy,dz]} with origin in @code{[x,y,z]}.
+
+This object is affected by the following @i{graphic options}: @code{head_both}, 
+@code{head_type}, @code{line_width}, 
+@code{line_type}, @code{key} and @code{color}.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(color = cyan,
+             vector([0,0,0],[1,1,1]/sqrt(3)),
+             vector([0,0,0],[1,-1,0]/sqrt(2)),
+             vector([0,0,0],[1,1,-2]/sqrt(6)) )$
+@end example
+
+
+
 @item
 @code{explicit(fcn,var1,minval1,maxval1,var2,minval2,maxval2)}:
 plots explicit function @code{fcn}, with variable @code{var1} taking values

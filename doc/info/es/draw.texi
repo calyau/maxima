@@ -853,7 +853,7 @@ o tambi@'en nombres de estilos: @code{$none} (-1), @code{dot} (0), @code{plus} (
 @code{multiply} (2), @code{asterisk} (3), @code{square} (4), @code{filled_square} (5),
 @code{circle} (6), @code{filled_circle} (7), @code{up_triangle} (8), 
 @code{filled_up_triangle} (9), @code{down_triangle} (10), 
-@code{filled_down_triangle} (11), @code{diamant} (12) and @code{filled_diamant} (13).
+@code{filled_down_triangle} (11), @code{diamant} (12) y @code{filled_diamant} (13).
 
 Esta opci@'on afecta a los siguientes objetos gr@'aficos:
 @itemize @bullet
@@ -1632,7 +1632,7 @@ dibuja sobre el plano el pol@'{@dotless{i}}gono de v@'ertices @code{[x1,y1]}, @c
 
 Este objeto depende de las siguientes @i{opciones gr@'aficas}: @code{transparent}, 
 @code{fill_color}, @code{border}, @code{line_width}, @code{key},
- @code{line_type} and @code{color}.
+ @code{line_type} y @code{color}.
 
 Ejemplo:
 
@@ -1653,7 +1653,7 @@ dibuja un rect@'angulo con v@'ertices opuestos @code{[x1,y1]} y @code{[x2,y2]}.
 
 Este objeto depende de las siguientes @i{opciones gr@'aficas}: @code{transparent}, 
 @code{fill_color}, @code{border}, @code{line_width}, @code{key},
-@code{line_type} and @code{color}.
+@code{line_type} y @code{color}.
 
 Ejemplo:
 
@@ -1682,7 +1682,7 @@ dibuja una elipse de centro @code{[xc, yc]} con semiejes horizontal y vertical
 
 Este objeto depende de las siguientes @i{opciones gr@'aficas}: @code{nticks}, 
 @code{transparent}, @code{fill_color}, @code{border}, @code{line_width}, 
-@code{line_type}, @code{key} and @code{color}.
+@code{line_type}, @code{key} y @code{color}.
 
 Ejemplo:
 
@@ -1708,7 +1708,7 @@ Ejemplo:
 escribe el texto @code{string} en la posici@'on @code{[x,y]}.
 
 Este objeto depende de las siguientes @i{opciones gr@'aficas}: @code{label_alignment}, 
-@code{label_orientation} and @code{color}.
+@code{label_orientation} y @code{color}.
 
 Ejemplo:
 
@@ -1734,7 +1734,7 @@ dibuja el vector @code{[dx,dy]} con origen en @code{[x,y]}.
 
 Este objeto depende de las siguientes @i{opciones gr@'aficas}: @code{head_both}, 
 @code{head_length}, @code{head_angle}, @code{head_type}, @code{line_width}, 
-@code{line_type}, @code{key} and @code{color}.
+@code{line_type}, @code{key} y @code{color}.
 
 Ejemplo:
 
@@ -1761,7 +1761,7 @@ tomando valores desde @code{minval} hasta @code{maxval}.
 
 Este objeto depende de las siguientes @i{opciones gr@'aficas}: @code{nticks}, 
 @code{adapt_depth}, @code{line_width}, @code{line_type}, @code{key}, 
-@code{filled_func}, @code{fill_color} and @code{color}.
+@code{filled_func}, @code{fill_color} y @code{color}.
 
 Ejemplo:
 
@@ -1784,7 +1784,7 @@ tomando valores desde @code{x-minval} hasta @code{x-maxval} y la variable @code{
 tomando valores desde @code{y-minval} hasta @code{y-maxval}.
 
 Este objeto depende de las siguientes @i{opciones gr@'aficas}: @code{ip_grid}, 
-@code{ip_grid_in}, @code{line_width}, @code{line_type}, @code{key} and @code{color}.
+@code{ip_grid_in}, @code{line_width}, @code{line_type}, @code{key} y @code{color}.
 
 Ejemplo:
 
@@ -1808,7 +1808,7 @@ dibuja la funci@'on @code{radius(ang)} definida en coordenadas polares, con la v
 tomando valores desde @code{minang} hasta @code{maxang}.
 
 Este objeto depende de las siguientes @i{opciones gr@'aficas}: @code{nticks}, 
-@code{line_width}, @code{line_type}, @code{key} and @code{color}.
+@code{line_width}, @code{line_type}, @code{key} y @code{color}.
 
 Ejemplo:
 
@@ -2001,6 +2001,25 @@ Ejemplo:
 @end example
 
 
+
+@item
+@code{vector([x,y,z], [dx,dy,dz])}:
+dibuja el vector @code{[dx,dy,dz]} con origen en @code{[x,y,z]}.
+
+Este objeto depende de las siguientes @i{opciones gr@'aficas}: @code{head_both}, 
+@code{head_type}, @code{line_width}, @code{line_type}, @code{key} y @code{color}.
+
+Ejemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(color = cyan,
+             vector([0,0,0],[1,1,1]/sqrt(3)),
+             vector([0,0,0],[1,-1,0]/sqrt(2)),
+             vector([0,0,0],[1,1,-2]/sqrt(6)) )$
+@end example
+
+
 @item
 @code{explicit(fcn,var1,minval1,maxval1,var2,minval2,maxval2)}:
 dibuja la funci@'on expl@'{@dotless{i}}cita @code{fcn}, con la variable @code{var1}
@@ -2008,7 +2027,7 @@ tomando valores desde @code{minval1} hasta @code{maxval1} y la variable @code{va
 tomando valores desde @code{minval2} hasta @code{maxval2}.
 
 Este objeto depende de las siguientes @i{opciones gr@'aficas}: @code{xu_grid}, 
-@code{yv_grid}, @code{line_type}, @code{key} and @code{color}.
+@code{yv_grid}, @code{line_type}, @code{key} y @code{color}.
 
 Ejemplo:
 
@@ -2031,7 +2050,7 @@ dibuja la funci@'on param@'etrica @code{[xfun,yfun,zfun]}, con el par@'ametro @c
 tomando valores desde @code{parmin} hasta @code{parmax}.
 
 Este objeto depende de las siguientes @i{opciones gr@'aficas}: @code{nticks}, 
-@code{line_width}, @code{line_type}, @code{key} and @code{color}.
+@code{line_width}, @code{line_type}, @code{key} y @code{color}.
 
 Ejemplo:
 
@@ -2055,7 +2074,7 @@ tomando valores desde @code{par1min} hasta @code{par1max} y el par@'ametro @code
 tomando valores desde @code{par2min} hasta @code{par2max}.
 
 Este objeto depende de las siguientes @i{opciones gr@'aficas}: @code{xu_grid}, 
-@code{yv_grid}, @code{line_type}, @code{key} and @code{color}.
+@code{yv_grid}, @code{line_type}, @code{key} y @code{color}.
 
 Ejemplo:
 
