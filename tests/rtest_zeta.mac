@@ -1,17 +1,17 @@
 (kill (all), 0);
 0;
 
-(zeta%pi : true,0);
+(zeta%pi : true, 0);
 0$
 
-(chk(x) := zeta(1-x) - 2 * cos(x * %pi /2) * gamma(x) * zeta(x) / (2 * %pi)^x,0);
+(chk(x) := zeta(1-x) - 2 * cos(x * %pi /2) * gamma(x) * zeta(x) / (2 * %pi)^x, 0);
 0$
 
-makelist(chk(k),k,2,21);
-makelist(0,k,2,21)$
+every(lambda([e], is(equal(e,0))), makelist(chk(k),k,2,21));
+true$
 
-makelist(zeta(-k) + bern(k+1)/(k+1),k,1,21);
-makelist(0,k,1,21)$
+every(lambda([e], is(equal(e,0))), makelist(zeta(-k) + bern(k+1)/(k+1),k,1,21));
+true$
 
 zeta(-1);
 -1/12$
@@ -37,4 +37,5 @@ zeta(8);
 zeta(10);
 %pi^10/93555$
 
-
+(remfunction(chk),0);
+0$
