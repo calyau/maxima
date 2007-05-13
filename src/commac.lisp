@@ -240,43 +240,6 @@
 (defun set-readtable-for-macsyma ()
   (setq *readtable* (find-lisp-readtable-for-macsyma)))
 
-;;;to handle the maclisp (defun foo narg .. syntax.)
-;;;see below for simpler method, but we have to redefine arg etc.
-;;need to
-;;  I. convert to (defun foo (&rest narg-rest-argument (&aux (narg (length narg-rest-argument)))
-;;  II. replace (arg 1) by (nth-arg 1)  and (listify i)  by  (narg-listify i) using the following definitions.
-;;probably better not to shadow the listify etc. since someone might try to compile some maclisp code
-;;and we should not break that.
-;;REPLACEMENTS:
-;;'(("arg" . "narg-arg")
-;;  ("listify" . "narg-listify")
-;;  ("setarg" . "narg-setarg"))
-
-;;new macros:
-
-(defmacro narg-arg (x)
-  `(nth (1- ,x) narg-rest-argument))
-
-(defun narg-listify1 (x list)
-  (declare (fixnum x))
-  (if (minusp x)
-      (last list (abs x))
-      (subseq list 0 x)))
-
-(defmacro narg-listify (x)
-  `(narg-listify1 ,x narg-rest-argument))
-
-(defmacro narg-setarg (i val)
-  `(setf (narg-arg ,i) ,val))
-
-;;test of above
-;;(defun foo (&rest narg-rest-argument &aux (narg (length narg-rest-argument)))
-;;  (show  (narg-listify 3))
-;;  (show  (narg-listify -3))
-;;  (show  (narg-arg 2))
-;;  (narg-setarg 2 8)
-;;  (show (narg-listify 3)))
-
 (defvar *reset-var* t)
 
 (defvar *variable-initial-values* (make-hash-table)
@@ -316,7 +279,7 @@ values")
 
 (defun narg1 (x l &aux tem)
   (cond ((null x) (length l))
-	(t (setq tem (nthcdr (f1- x) l))
+	(t (setq tem (nthcdr (1- x) l))
 	   (cond ((null tem) (error "arg ~A beyond range ~A " x (length l)))
 		 (t (car tem))))))
 
@@ -327,7 +290,8 @@ values")
   `(setarg1 ,i ,val narg-rest-argument))
 
 (defun setarg1 (i val l)
-  (setf (nth (1- i)l) val) val)
+  (setf (nth (1- i) l) val)
+  val)
 
 (defun listify1 (n narg-rest-argument)
   (cond ((minusp n) (copy-list (last narg-rest-argument (- n))) )
