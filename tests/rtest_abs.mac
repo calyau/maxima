@@ -215,17 +215,6 @@ abs(x+1)$
 abs(rat(1));
 1$
 
-/*-- arrays ----*/
-
-(qq : make_array('any,5),0);
-0$
-
-abs(qq);
-'abs(qq)$
-
-(remvalue(qq),0);
-0$
-
 /*-- misc -----*/
 
 is(equal(op(abs(a.b)), abs));
@@ -235,7 +224,7 @@ is(equal(op(abs(a^^7)), abs));
 true$
 
 abs(taylor(exp(x),x,0,3)) - taylor(exp(x),x,0,3);
-taylor(0,x,0,3);
+''(taylor(0,x,0,3));
 
 
 
