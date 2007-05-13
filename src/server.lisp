@@ -68,6 +68,8 @@
       (values (parse-integer (maxima-getenv "PID")))
     ((or type-error parse-error) () -1)))
 
+;;; For gcl, getpid imported from system in maxima-package.lisp
+#-gcl
 (defun getpid ()
 #+clisp (os:process-id)
 #+(or cmu scl) (unix:unix-getpid)
