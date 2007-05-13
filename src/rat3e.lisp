@@ -91,12 +91,9 @@
 	(setq tellratlist (remove x tellratlist :test #'equal))))
   (cons '(mlist) (mapcar #'tellratdisp tellratlist)))
 
-(defmfun $tellrat (&rest narg-rest-argument &aux (narg (length narg-rest-argument)) n)
-  (setq n narg)
-  (do ((i 1 (1+ i)))
-      ((> i n))
-    (tellrat1 (narg-arg i)))
-  (or (= n 0) (add2lnc 'tellratlist $myoptions))
+(defmfun $tellrat (&rest args)
+  (mapc #'tellrat1 args)
+  (unless (null args) (add2lnc 'tellratlist $myoptions))
   (cons '(mlist) (mapcar 'tellratdisp tellratlist)))
 
 (defun tellrat1 (x &aux varlist genvar $algebraic $ratfac algvar)
