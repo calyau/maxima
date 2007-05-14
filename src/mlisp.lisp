@@ -92,8 +92,6 @@
 		       (badfunchk fnname fn nil)
 		       (let ((noevalargs t))
 			 (meval (cons (ncons fn) args))))))))
-	((functionp fn)
-	 (apply fn args))
 	((eq (car fn) 'lambda)
 	 (apply (coerce fn 'function) args))
 	((eq (caar fn) 'lambda) (mlambda fn args fnname t form))
