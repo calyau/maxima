@@ -16,41 +16,38 @@
 
 ;; TOP LEVEL FUNCTION(S): $TLIMIT $TLDEFINT
 
-(declare-top (special $tlimswitch taylored exp var val ll ul silent-taylor-flag)) 
+(declare-top (special exp var val ll ul))
 
-(defmfun $tlimit nargs 
-  ((lambda ($tlimswitch) (apply '$limit (listify nargs))) t)) 
+(defmfun $tlimit (&rest args)
+  (let (($tlimswitch t))
+    (declare (special $tlimswitch))
+    (apply #'$limit args)))
 
-(defmfun $tldefint (exp var ll ul) 
-  ((lambda ($tlimswitch) ($ldefint exp var ll ul)) t))
+(defmfun $tldefint (exp var ll ul)
+  (let (($tlimswitch t))
+    (declare (special $tlimswitch))
+    ($ldefint exp var ll ul)))
 
 (defun tlimp (exp)		; TO BE EXPANDED TO BE SMARTER (MAYBE)
-  t) 
+  t)
 
-(defun taylim (e *i*) 
+(defun taylim (e *i*)
   (prog (ex)
      (setq ex (catch 'taylor-catch
 		(let ((silent-taylor-flag t))
-		  ($taylor e var (ridofab val) 1.))))
-     (or ex (return (cond ((eq *i* t) (limit1 e var val))
-			  ((eq *i* 'think) (cond ((member (caar exp)
-							'(mtimes mexpt) :test #'eq)
-						  (limit1 e var val))
-						 (t (simplimit e var val))))
-			  (t (simplimit e var val)))))
+		  (declare (special silent-taylor-flag))
+		  ($taylor e var (ridofab val) 1))))
+     (or ex (return (cond ((eq *i* t)
+			   (limit1 e var val))
+			  ((eq *i* 'think)
+			   (if (member (caar exp) '(mtimes mexpt) :test #'eq)
+			       (limit1 e var val)
+			       (simplimit e var val)))
+			  (t
+			   (simplimit e var val)))))
      (return
        (let ((taylored t))
-	 (limit
-	  (simplify
-	   ($logcontract ($ratdisrep ex)))
-	  ;;(COND ((EQ (CADR EX) 'PS)
-	  ;;       (CONS (CAR EX)
-	  ;;             (LIST 'PS (THIRD EX) (FOURTH EX)
-	  ;;                   (FIFTH EX))))
-	  ;;      (t (EX)))
-	  var
-	  val
-	  'think)))))
+	 (declare (special taylored))
+	 (limit (simplify ($logcontract ($ratdisrep ex))) var val 'think)))))
 
-(declare-top (unspecial taylored exp var val ll ul)) 
-
+(declare-top (unspecial exp var val ll ul))
