@@ -39,7 +39,7 @@
 		       $dskuse smart-tty more-^w oldst
 		       $loadprint opers *ratweights $ratweights quitmsg
 		       loadf $grind $stringdisp $lispdisp defaultf
-		       state-pdl command printmsg
+		       state-pdl command
 		       transp $contexts $setcheck $macros
 		       autoload))
 
@@ -99,8 +99,7 @@
 
 (setq quitmsg  " "
       more-^w nil
-      lisperrprint t
-      printmsg nil)
+      lisperrprint t)
 
 (setq state-pdl (ncons 'lisp-toplevel))
 
@@ -628,14 +627,14 @@
     (princ x)
     (write-char #\space)))
 
-(defmfun $print n
-  (if (= n 0)
+(defmfun $print (&rest args)
+  (if (null args)
       '((mlist simp))
-      (let ((l (listify n))
-	    ;; Don't print out strings with quotation marks!
-	    $stringdisp)
-	(do ((l l (cddr l)))( (null l)) (rplacd l (cons " " (cdr l))))
-	(displa (setq printmsg (cons '(mtext) l)))
+      (let ((l args) $stringdisp) ;; Don't print out strings with quotation marks!
+	(do ((l l (cddr l)))
+	    ((null l))
+	  (rplacd l (cons " " (cdr l))))
+	(displa (cons '(mtext) l))
 	(cadr (reverse l)))))
 
 (defmspec $playback (x)
