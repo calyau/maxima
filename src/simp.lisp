@@ -1977,13 +1977,25 @@
 
 (defmfun alike1 (x y)
   (cond ((eq x y))
-	((atom x) (equal x y))
+	((atom x)
+     (if (arrayp x)
+       (and (arrayp y) (array-alike1 x y))
+       (equal x y)))
 	((atom y) nil)
 	(t (and (not (atom (car x)))
 		(not (atom (car y)))
 		(eq (caar x) (caar y))
 		(eq (memqarr (cdar x)) (memqarr (cdar y)))
 		(alike (cdr x) (cdr y)))))) 
+
+(defun array-alike1 (x y)
+  (and
+    (equal (array-dimensions x) (array-dimensions y))
+    (progn
+      (dotimes (i (array-total-size x))
+        (if (not (alike1 (row-major-aref x i) (row-major-aref y i)))
+          (return-from array-alike1 nil)))
+      t)))
 
 ;; Maps ALIKE1 down two lists.
 

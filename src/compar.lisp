@@ -849,27 +849,58 @@ relational knowledge is contained in the default context GLOBAL."
 	  (setq e ($ratsubst (nth 2 fi) (nth 1 fi) e))))))
 
 (defun meqp (a b)
-  (let ((z))
-    (setq a (specrepcheck a))
-    (setq b (specrepcheck b))
-    (cond ((or (like a b)) (not (member a indefinites)))
+  ;; Check for some particular types before falling into the general case.
+  (cond
+    ((stringp a)
+     (and (stringp b) (equal a b)))
+    ((stringp b)
+     (and (stringp a) (equal b a)))
+    ((mstringp a)
+     (and (mstringp b) (equal a b)))
+    ((mstringp b)
+     (and (mstringp a) (equal b a)))
+    ((arrayp a)
+     (and (arrayp b) (array-meqp a b)))
+    ((arrayp b)
+     (and (arrayp a) (array-meqp b a)))
+    (t
+      (let ((z))
+        (setq a (specrepcheck a))
+        (setq b (specrepcheck b))
+        (cond ((or (like a b)) (not (member a indefinites)))
 
-	  ((or (member a indefinites) (member b indefinites)
-	       (member a infinities) (member b infinities)) nil)
+          ((or (member a indefinites) (member b indefinites)
+               (member a infinities) (member b infinities)) nil)
 
-	  ((and (symbolp a) (or (eq t a) (eq nil a) (get a 'sysconst))
-		(symbolp b) (or (eq t b) (eq nil b) (get b 'sysconst))) nil)
+          ((and (symbolp a) (or (eq t a) (eq nil a) (get a 'sysconst))
+            (symbolp b) (or (eq t b) (eq nil b) (get b 'sysconst))) nil)
 
-	  ((or (mbagp a) (mrelationp a) (mbagp b) (mrelationp b))
-	   (cond ((and (or (and (mbagp a) (mbagp b)) (and (mrelationp a) (mrelationp b)))
-		       (eq (mop a) (mop b)) (= (length (margs a)) (length (margs b))))
-		  (setq z (list-meqp (margs a) (margs b)))
-		  (if (or (eq z t) (eq z nil)) z `(($equal) ,a ,b)))
-		 (t nil)))
+          ((or (mbagp a) (mrelationp a) (mbagp b) (mrelationp b))
+           (cond ((and (or (and (mbagp a) (mbagp b)) (and (mrelationp a) (mrelationp b)))
+                   (eq (mop a) (mop b)) (= (length (margs a)) (length (margs b))))
+              (setq z (list-meqp (margs a) (margs b)))
+              (if (or (eq z t) (eq z nil)) z `(($equal) ,a ,b)))
+             (t nil)))
 
-	  ((and (op-equalp a 'lambda) (op-equalp b 'lambda)) (lambda-meqp a b))
-	  (($setp a) (set-meqp a b))
-	  (t (meqp-by-csign (equal-facts-simp ($ratsimp (sub a b))) a b)))))
+          ((and (op-equalp a 'lambda) (op-equalp b 'lambda)) (lambda-meqp a b))
+          (($setp a) (set-meqp a b))
+          (t (meqp-by-csign (equal-facts-simp ($ratsimp (sub a b))) a b)))))))
+
+;; Two arrays are equal (according to MEQP)
+;; if (1) they have the same dimensions,
+;; and (2) their elements are MEQP.
+
+(defun array-meqp (p q)
+  (and
+    (equal (array-dimensions p) (array-dimensions q))
+    (progn
+      (dotimes (i (array-total-size p))
+        (let ((z (meqp (row-major-aref p i) (row-major-aref q i))))
+          (cond
+            ((eq z nil) (return-from array-meqp nil))
+            ((eq z t))
+            (t (return-from array-meqp `(($equal) ,p ,q))))))
+      t)))
 
 (defun list-meqp (p q)
   (let ((z))

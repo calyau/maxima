@@ -445,40 +445,208 @@ false$
 is(equal(set(a,b), set(a,inf)));
 false$
 
+/* Ensure that equal is happy to compare objects of any
+ * Maxima or Lisp types.
+ *
+ * Stuff checked here (various Lisp types omitted):
+ *
+ *  Maxima string
+ *  Lisp string
+ *  Lisp array
+ */
+
+(mstring1a : "FOO",
+ mstring1b : "FOO",
+ mstring2 : "BAR",
+
+ lstring1a : sconcat ("FOO"),
+ lstring1b : sconcat ("FOO"),
+ lstring2 : sconcat ("BAR"),
+
+ larray1a : make_array (any, 5),
+ fillarray (larray1a, makelist (i, i, 1, 5)),
+ larray1b : make_array (any, 5),
+ fillarray (larray1b, makelist (i, i, 1, 5)),
+ larray2 : make_array (any, 5),
+ fillarray (larray2, makelist (i^2, i, 1, 5)),
+ larray3 : make_array (any, 10),
+ fillarray (larray3, makelist (i, i, 1, 10)),
+
+ 0);
+0;
+
+/* Comparisons to same type */
+
+is (equal (mstring1a, mstring1b));
+true;
+
+is (equal (mstring1a, mstring2));
+false;
+
+is (equal (lstring1a, lstring1b));
+true;
+
+is (equal (lstring1a, lstring2));
+false;
+
+is (equal (larray1a, larray1b));
+true;
+
+is (equal (larray1a, larray2));
+false;
+
+is (equal (larray1a, larray3));
+false;
 
 
+/* Comparisons to different type */
+
+/* No automatic type conversion */
+is (equal (mstring1a, lstring1a));
+false;
+
+is (equal (mstring1a, larray1a));
+false;
+
+is (equal (mstring1a, 1234));
+false;
+
+/* No automatic type conversion */
+is (equal (mstring1a, 'FOO));
+false;
+
+is (equal (mstring1a, sin('x)));
+false;
 
 
+/* No automatic type conversion */
+is (equal (lstring1a, mstring1a));
+false;
+
+is (equal (lstring1a, larray1a));
+false;
+
+is (equal (lstring1a, 1234));
+false;
+
+/* No automatic type conversion */
+is (equal (lstring1a, 'FOO));
+false;
+
+is (equal (lstring1a, sin('x)));
+false;
 
 
+is (equal (larray1a, mstring1a));
+false;
+
+is (equal (larray1a, lstring1a));
+false;
+
+is (equal (larray1a, 1234));
+false;
+
+is (equal (larray1a, 'FOO));
+false;
+
+is (equal (larray1a, sin('x)));
+false;
 
 
+/* Comparisons via = */
+
+/* Comparisons to same type */
+
+is (mstring1a = mstring1b);
+true;
+
+is (mstring1a = mstring2);
+false;
+
+is (lstring1a = lstring1b);
+true;
+
+is (lstring1a = lstring2);
+false;
+
+is (larray1a = larray1b);
+true;
+
+is (larray1a = larray2);
+false;
+
+is (larray1a = larray3);
+false;
 
 
+/* Comparisons to different type */
+
+/* No automatic type conversion */
+is (mstring1a = lstring1a);
+false;
+
+is (mstring1a = larray1a);
+false;
+
+is (mstring1a = 1234);
+false;
+
+/* No automatic type conversion */
+is (mstring1a = 'FOO);
+false;
+
+is (mstring1a = sin('x));
+false;
 
 
+/* No automatic type conversion */
+is (lstring1a = mstring1a);
+false;
+
+is (lstring1a = larray1a);
+false;
+
+is (lstring1a = 1234);
+false;
+
+/* No automatic type conversion */
+is (lstring1a = 'FOO);
+false;
+
+is (lstring1a = sin('x));
+false;
 
 
+is (larray1a = mstring1a);
+false;
+
+is (larray1a = lstring1a);
+false;
+
+is (larray1a = 1234);
+false;
+
+is (larray1a = 'FOO);
+false;
+
+is (larray1a = sin('x));
+false;
 
 
+/* Comparison of arrays with multiple dimensions and non-literal elements */
 
+(a1 : make_array (any, 10),
+ a2a : make_array (any, 2, 5),
+ a2b : make_array (any, 2, 5),
+ a3 : make_array (any, 3, 5),
+ 0);
+0;
 
+[is (equal (a1, a2a)), is (equal (a1, a3)), is (equal (a2a, a3))];
+[false, false, false];
 
+(a2a [1, 4] : 1234, a2b [1, 4] : '(x/(1 - x)), is (equal (a2a, a2b)));
+unknown;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+(a2a [1, 4] : '(1/(1/x - 1)), a2b [1, 4] : '(x/(1 - x)), is (equal (a2a, a2b)));
+true;
