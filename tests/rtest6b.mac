@@ -27,7 +27,7 @@ factor(%);
 substpart(ratsimp(piece),%,1,[1,2]);
 (k^2*x^2-1)*(cos(x)+eps)/((3*k+n[1])*(5*k-n[2]))$
 -substpart(-piece,%,1,1);
--(1-k^2*x^2)*(cos(x)+eps)/((3*k+n[1])*(5*k-n[2]))$
+-((1-k^2*x^2)*(cos(x)+eps)/((3*k+n[1])*(5*k-n[2])))$
 a+b/(x*(y+(a+b)*x)+1);
 b/(x*(y+(b+a)*x)+1)+a$
 substpart(multthru(piece),%,1,2,1);

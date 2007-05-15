@@ -19,7 +19,7 @@ done$
 diff(4*f(x,y)^2-u(x,y)^2,x);
 8*f(x,y)*'diff(f(x,y),x,1)-2*u(x,y)*'diff(u(x,y),x,1)$
 at(%,[x = 0,y = 1]);
-16*a^2-2*u(0,1)*(at('diff(u(x,y),x,1),[x = 0,y = 1]))$
+16*a^2-2*u(0,1)*(''(at('diff(u(x,y),x,1),[x = 0,y = 1])))$
 atvalue(f(x,y),[x = 0,y = 1],a^2);
 a^2$
 atvalue('diff(f(x,y),x),x = 0,y+1);
@@ -29,7 +29,7 @@ done$
 diff(4*f(x,y)^2-u(x,y)^2,x);
 8*f(x,y)*'diff(f(x,y),x,1)-2*u(x,y)*'diff(u(x,y),x,1)$
 at(%,[x = 0,y = 1]);
-16*a^2-2*u(0,1)*(at('diff(u(x,y),x,1),[x = 0,y = 1]))$
+16*a^2-2*u(0,1)*(''(at('diff(u(x,y),x,1),[x = 0,y = 1])))$
 listofvars(f(x[1]+y)/g^(2+a));
 [g,a,x[1],y]$
 coeff(2*a*tan(x)+tan(x)+b = 5*tan(x)+3,tan(x));
