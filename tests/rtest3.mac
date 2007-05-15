@@ -46,7 +46,7 @@ x:1000;
 thru 10 while x # 0 do x:0.5*(x+5/x);
 done$
 x;
-2.28242904$
+2.282429035887867$
 remvalue(x);
 [x]$
 newton(f,guess):=block([numer,y],local(f,df,x,guess),numer:true,
@@ -152,21 +152,21 @@ done;
  ev(%e^x*sin(x)^2,exponentialize);
  -%e^x*(%e^(%i*x)-%e^-(%i*x))^2/4;
   integrate(%,x);
--(%e^((2*%i+1)*x)/(2*%i+1)+%e^((1-2*%i)*x)/(1-2*%i)-2*%e^x)/4; 
+-((%e^((2*%i+1)*x)/(2*%i+1)+%e^((1-2*%i)*x)/(1-2*%i)-2*%e^x)/4); 
  ev(%,demoivre);
- -(%e^x*(%i*sin(2*x)+cos(2*x))/(2*%i+1)
+ -((%e^x*(%i*sin(2*x)+cos(2*x))/(2*%i+1)
       +%e^x*(cos(2*x)-%i*sin(2*x))/(1-2*%i)-2*%e^x)
-      /4;
+      /4);
  ans:ev(%,ratexpand);
  -%e^x*sin(2*x)/5-%e^x*cos(2*x)/10+%e^x/2;
  ev(ans,x:1,numer)-ev(ans,x:0,numer);
  0.5779160182042402;
- block([fpprec:35],ev(ans,x:1,bfloat)-ev(ans,x:0,bfloat));
- 5.7791601820424019599988308251707781339427227258443b-1;
+ block([fpprec:35], ev(ans,x:1,bfloat)-ev(ans,x:0,bfloat));
+''(block([fpprec : 35], 5.7791601820424019599988308251707781b-1));
  integrate(%e^x*sin(x)^2,x);
- -(2*%e^x*sin(2*x)+%e^x*cos(2*x)-5*%e^x)/10;
+ -(((2*%e^x*sin(2*x)+%e^x*cos(2*x)-5*%e^x)/10));
  trigreduce(%);
- -(2*%e^x*sin(2*x)+%e^x*cos(2*x)-5*%e^x)/10;
+ -((2*%e^x*sin(2*x)+%e^x*cos(2*x)-5*%e^x)/10);
  % - ans,ratsimp;
  0 ;
 
@@ -182,7 +182,7 @@ ev(%,numer);
 sin(1);
 sin(1)$
 ev(sin(1),numer);
-0.8414709848079;
+0.8414709848078965$
 beta(1/2,2/5);
 beta(1/2,2/5)$
 ev(%,numer);
@@ -247,7 +247,7 @@ trigsimp(%);
 -sech(x)^5*(sinh(x)^5+2*(sinh(x)^4+6*cosh(x)^2*sinh(x)^2+cosh(x)^4)-13*(sinh(x)^3+3*cosh(x)^2*sinh(x))+10*cosh(x)^2*sinh(x)^3-8*(sinh(x)^2+cosh(x)^2)+5*cosh(x)^4*sinh(x)+34*sinh(x)+6)/16;
 -sech(x)^5*(sinh(x)^5+2*(sinh(x)^4+6*cosh(x)^2*sinh(x)^2+cosh(x)^4)-13*(sinh(x)^3+3*cosh(x)^2*sinh(x))+10*cosh(x)^2*sinh(x)^3-8*(sinh(x)^2+cosh(x)^2)+5*cosh(x)^4*sinh(x)+34*sinh(x)+6)/16$
 trigsimp(%);
--(sinh(x)^5+sinh(x)^4-2*sinh(x)^3)/cosh(x)^5$
+-((sinh(x)^5+sinh(x)^4-2*sinh(x)^3)/cosh(x)^5)$
 
 cos(x)*(sec(x)^2*tan(x)+1)-sec(x)^2*sin(x)-cos(x);
 cos(x)*(sec(x)^2*tan(x)+1)-sec(x)^2*sin(x)-cos(x)$
