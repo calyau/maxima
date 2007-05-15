@@ -116,10 +116,10 @@ a[y+2];
 
 /* ensure that matrix construction works as advertised */
 (L : makelist ([i], i, 1, 100), apply (matrix, L), [op (%%), args (%%)]);
-[matrix, L];
+[matrix, ''(makelist ([i], i, 1, 100))];
 
 (L : makelist ([i], i, 1, 100), apply (matrix, L), transpose (%%));
-matrix (tree_reduce (append, L));   /* call tree_reduce instead of append because GCL barfs ... */
+''(matrix (tree_reduce (append, L)));   /* call tree_reduce instead of append because GCL barfs ... */
 
 (matrix (), [op (%%), args (%%)]);
 [matrix, []];
