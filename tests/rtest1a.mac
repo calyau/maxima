@@ -1,5 +1,5 @@
-(use_fast_arrays:true,array(bil,3));
-bil;
+(use_fast_arrays:true,array(bil,3),0);
+0$
 bil[1];
 false;
 bil[1]:3;
@@ -27,7 +27,7 @@ bil1[2]:3;
 bil1[2];
 3;
 listarray(bil1);
-[?munbound,?munbound,3,?munbound];
+[''?munbound,''?munbound,3,''?munbound];
 arrayinfo(bil1);
 [declared, 1, [3]];
 oldha[1]:8;
