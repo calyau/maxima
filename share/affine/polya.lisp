@@ -507,42 +507,6 @@
 	   (vector-push  (make-hash-table :test 'equal) (pv-array-of-tables self))))))
 
 
-(defmacro $create_list(form &rest l)
-  `(create-list2 ',form ',l))
-
-(defun create-list2 (form l)
-  (cons '(mlist) (apply 'create-list1 form l)))
-
-(defun create-list1(form &rest l &aux lis var1 top)
-  (cond ((null l)(list (meval* form)))
-	(t
-	 (setq var1 (car l)
-	       lis (second l)
-	       l (cddr l))
-	 (or (symbolp var1) (error "~a not a symbol" var1))
- 	 (setq lis (meval* lis))
-	 (progv (list var1)
-		(list nil)
-		(cond ((and (numberp lis)
-			    (progn
-			      (setq top (car l) l (cdr l))
-			      (setq top (meval* top))
-			      (numberp top)))
-		       (sloop for i from lis to top
-			      nodeclare t
-			      do (set var1 i)
-			      append
-			      (apply 'create-list1
-				     form l)))
-		      (($listp lis)
-		       (sloop for v in (cdr lis)
-			      do (set var1 v)
-			      append
-			      (apply 'create-list1
-				     form l)
-			      ))
-		      (t (maxima-error "Bad Arg")))))))
-	
 (defun $my_sum (quote-form quote-index  start  &optional end &aux answer)
   (setq quote-form  (subst 'ind quote-index quote-form))
   (setq start (meval start))
@@ -559,23 +523,6 @@
   (setq answer (meval* (cons '(mplus) answer)))
    answer)
 
-;(defun $create_list (quote-form quote-index  start  &optional end &aux answer)
-;  (setq quote-form  (subst 'ind quote-index quote-form))
-;  (setq start (meval start))
-;  (setq end (meval end))
-;  (setq answer
-;	(cond (end
-;		 (sloop for ind from start to end
-;		      		       collecting
-;		       (meval quote-form)))
-;	      (t
-;	       (sloop for ind  in (cdr start)
-;		     collecting
-;		     (meval quote-form)))))
-;  (setq answer (cons '(mlist simp) answer))
-;   answer)
-; 
- 
 (defun $list_dot (l ll)
  (apply 'add*  (sloop for u in (cdr l) for v in (cdr ll)
 	collecting (mul* u v))))
