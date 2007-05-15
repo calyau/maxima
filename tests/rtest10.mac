@@ -21,7 +21,7 @@ expand(%*(sqrt(17)-4));
 cf([1,2,-3]+[1,-2,1]);
 [1,1,1,2]$
 cfdisrep(%);
-1+1/(1+1/(1+1/2))$
+''(cfdisrep(cf(8/5)))$
 cflength:4;
 4$
 cf(sqrt(3));
@@ -29,11 +29,11 @@ cf(sqrt(3));
 cfexpand(%);
 matrix([265,97],[153,56])$
 ev(%[1,2]/%[2,2],numer);
-1.73214285$
+1.7321428571428572$
 cf([1,2,-3]+[1,-2,1]);
 [1,1,1,2]$
 cfdisrep(%);
-1+1/(1+1/(1+1/2))$
+''(cfdisrep(cf(8/5)))$
 cflength:4;
 4$
 cf(sqrt(3));
@@ -41,7 +41,7 @@ cf(sqrt(3));
 cfexpand(%);
 matrix([265,97],[153,56])$
 ev(%[1,2]/%[2,2],numer);
-1.73214285$
+1.7321428571428572$
 
 (foop1(L1, L2) := length(L1) <= length(L2) and L1 = makelist (L2[i], i, 1, length(L1)),
  foop(L1, L2) := foop1(L1, L2) or last(L1) # 1 and foop1 (reverse (append ([1, last(L1) - 1], rest (reverse (L1)))), L2), 
