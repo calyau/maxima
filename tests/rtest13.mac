@@ -12,13 +12,13 @@ x^2*'diff(y,x,1)+3*x*y = sin(x)/x$
 soln1:ode2(%,y,x);
 y = (%c-cos(x))/x^3$
 ic1(soln1,x = %pi,y = 0);
-y = -(cos(x)+1)/x^3$
+y = -((cos(x)+1)/x^3)$
 'diff(y,x,2)+y*('diff(y,x,1))^3 = 0;
 'diff(y,x,2)+y*('diff(y,x,1))^3 = 0$
 soln2:ode2(%,y,x);
 (y^3+6*%k1*y)/6 = x+%k2$
 ratsimp(ic2(soln2,x = 0,y = 0,'diff(y,x,1) = 2));
--(2*y^3-3*y)/6 = x$
+-((2*y^3-3*y)/6) = x$
 bc2(soln2,x = 0,y = 1,x = 1,y = 3);
 (y^3-10*y)/6 = x-3/2$
 exp:k^2*n^2+k^2*m^2*n^2-k^2*l^2*n^2-k^2*l^2*m^2*n^2;
