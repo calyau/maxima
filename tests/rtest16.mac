@@ -99,7 +99,7 @@ string ('"+"(a, b, '"."(c, d), '"^"(e, f)));
 
 /* Bug 626697 */
 limit(atan2(y,x),y,minf);
--limit(atan2(y,x),y,inf);
+-'limit(atan2(y,x),y,inf);
 
 /* Bug 1548643 */
 limit(abs(sqrt(1-1/x)-1),x,0);
@@ -164,7 +164,7 @@ radcan(integrate(exp(-(a+%i*b)*x^2),x,minf,inf)/rectform(sqrt(%pi)/sqrt(a+%i*b))
  * Should return the integral instead of producing false.
  */
 integrate(sin(a*x)^7/x^4,x,0,inf);
-integrate(sin(a*x)^7/x^4,x,0,inf);
+'integrate(sin(a*x)^7/x^4,x,0,inf);
 
 /*
  * [ 1646761 ] limit atanh @ -1 / 1 all wrong...
