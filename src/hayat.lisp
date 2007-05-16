@@ -1863,9 +1863,8 @@
 
 ;;; [var, pt, order, asymp]
 
-(defmfun $taylor n
-   (if (= n 0) (wna-err '$taylor))
-   (taylor* (arg 1) (listify (- 1 n))))
+(defmfun $taylor (e &rest args)
+   (taylor* e args))
 
 (defun taylor* (arg l)
    ;; We must bind $MAXTAYORDER to () below because of the problem of constants
@@ -1883,9 +1882,8 @@
    ;; up when $maxtayorder isn't bound here. Similarly, loadfile(taybad,rl,
    ;; aljabr) and see tomh's bug note of 4/15/81.
    (let ((tlist () ) ($maxtayorder () ) (*within-srf?* () )
-	 (exact-poly (if l (not $taylor_truncate_polynomials)
-			'user-specified)))
-     (declare(special *within-srf?* ))
+	 (exact-poly (if l (not $taylor_truncate_polynomials) 'user-specified)))
+     (declare (special *within-srf?*))
 
       (parse-tay-args l)
       (taylor1 arg (ncons tlist))))
@@ -2434,10 +2432,11 @@
 		       (t (pscsubst1 psarg temp)))))))))
 
 (defun symbolic-expand (arg psarg func) ; should be much stronger
-       arg ;Ignored.
-       (prep1 (simplifya (if (atom func) `((,func) ,(rcdisrep psarg))
-			     `((mqapply) ,func ,(rcdisrep psarg)))
-			 () )))
+  (declare (ignore arg))			;Ignored.
+  (prep1 (simplifya (if (atom func)
+			`((,func) ,(rcdisrep psarg))
+			`((mqapply) ,func ,(rcdisrep psarg)))
+		    () )))
 
 (defun expand-sing-trig? (arg func)
    (cond ((member func *pscirc :test #'eq) (tay-exponentialize arg func))
