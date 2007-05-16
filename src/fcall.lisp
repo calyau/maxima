@@ -116,16 +116,6 @@
 ;;; These are the LAMBDA forms. They have macro properties that set
 ;;; up very different things in compiled code.
 
-(defun make-m-lambda& (argl body)
-  (do ((l nil)
-       (largs argl (cdr largs))
-       (j 1 (1+ j)))
-      ((null (cdr largs))
-       `(lambda *n*
-	 ((lambda ,argl ,@body) ,@(nreverse l) (cons '(mlist) (listify (- ,(1- j) *n*))))))
-    (push `(arg ,j) l)))
-
-
 (defvar *fcall-memory* nil
   "This ALIST will never be very long. Considerably less hairy then
 	a hashing scheme, perhaps faster in normal use. In either case
