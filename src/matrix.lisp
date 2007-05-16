@@ -645,19 +645,18 @@
 	 (meval `((,(getopr $matrix_element_transpose)) ((mquote simp) ,elem))))))
 
 
-(defmfun $submatrix nargs
-  (prog (r c x)
-     (setq x (listify nargs))
+(defmfun $submatrix (&rest x)
+  (prog (r c)
      l1   (when (numberp (car x))
-	    (setq r (cons (car x) r) x (cdr x))
+	    (push (car x) r)
+	    (setq x (cdr x))
 	    (go l1))
-     (setq c (nreverse (bbsort (cdr x) '>))
-	   r (nreverse (bbsort r '>)))
+     (setq c (nreverse (bbsort (cdr x) #'>))
+	   r (nreverse (bbsort r #'>)))
      (setq x (mcx (cdar x)))
-     l2   (cond ((null r)
-		 (go b))
-		(t
-		 (setq x (deleterow (car r) x))))
+     l2   (if (null r)
+	      (go b)
+	      (setq x (deleterow (car r) x)))
      (setq r (cdr r))
      (go l2)
      b    (when (null c) (return (cons '($matrix) (mxc x))))
