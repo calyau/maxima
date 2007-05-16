@@ -12,10 +12,10 @@
 
 (macsyma-module defint)
 
-;;;          this is the definite integration package. 
+;;;          this is the definite integration package.
 ;;	defint does definite integration by trying to find an
 ;;appropriate method for the integral in question.  the first thing that
-;;is looked at is the endpoints of the problem. 
+;;is looked at is the endpoints of the problem.
 ;;
 ;;	i(grand,var,a,b) will be used for integrate(grand,var,a,b)
 
@@ -64,7 +64,7 @@
 ;;               or i(f(x)/x,x,0,inf)/k. First case hold for a=0;
 ;;               the second for a=minf. [wang 96-97]
 ;;
-;;dintegrate also tries indefinite integration based on certain 
+;;dintegrate also tries indefinite integration based on certain
 ;;predicates (such as abconv) and tries breaking up the integrand
 ;;over a sum or tries a change of variable.
 ;;
@@ -84,7 +84,7 @@
 ;;	   logquad0 log(x)/(a*x^2+b*x+c) uses formula
 ;;		    i(log(x)/(x^2+2*x*a*cos(t)+a^2),x,0,inf) =
 ;;		    t*log(a)/sin(t).  a better formula might be
-;;		    i(log(x)/(x+b)/(x+c),x,0,inf) = 
+;;		    i(log(x)/(x+b)/(x+c),x,0,inf) =
 ;;		    (log^2(b)-log^2(c))/(2*(b-c))
 ;;
 ;;	   batapp - x^(p-1)/(b*x^n+a)^m uses formula related to the beta
@@ -94,13 +94,13 @@
 ;;
 ;;          sinnu  - x^-a*n(x)/d(x) [wang, pp 69-70]
 ;;
-;;	   ggr    - x^r*exp(a*x^n+b) 
+;;	   ggr    - x^r*exp(a*x^n+b)
 ;;
 ;;	   dintexp- see dintegrate
 ;;
 ;;     ztoinf also tries 1/2*mtoinf if the integrand is an even function
 ;;
-;; mtoinf is the routine for doing integrals on minf,inf.  
+;; mtoinf is the routine for doing integrals on minf,inf.
 ;;        it too tries a series of routines and sees if any succeed.
 ;;
 ;;	 scaxn  - when the integrand is an even function, see ztoinf
@@ -124,7 +124,7 @@
 (load-macsyma-macros rzmac)
 
 (declare-top (special *def2* pcprntd *mtoinf* rsn*
-		      sn* sd* leadcoef checkfactors 
+		      sn* sd* leadcoef checkfactors
 		      *nodiverg rd* exp1
 		      *ul1* *ll1* *dflag bptu bptd plm* zn
 		      *updn ul ll exp pe* pl* rl* pl*1 rl*1
@@ -135,11 +135,11 @@
 		      *dintexp-recur* defintdebug *defint-assumptions*
 		      *current-assumptions*
 		      *global-defint-assumptions*)
-;;;rsn* is in comdenom. does a ratsimp of numerator.	 
+;;;rsn* is in comdenom. does a ratsimp of numerator.
 					;expvar
 	     (special $intanalysis $abconvtest $noprincipal $nointegrate)
 					;impvar
-	     (special $solveradcan $solvetrigwarn *roots *failures 
+	     (special $solveradcan $solvetrigwarn *roots *failures
 		      $logabs $tlimswitch $maxposex $maxnegex
 		      $trigsign $savefactors $radexpand $breakup $%emode
 		      $float $exptsubst dosimp context rp-polylogp
@@ -150,7 +150,7 @@
 		      ;;For DEFINT like eliminate epsilon look for prin-inf
 		      ;;take realpart and imagpart.
 		      integer-info
-		      ;;If LIMITP is non-null ask-integer conses 
+		      ;;If LIMITP is non-null ask-integer conses
 		      ;;its assumptions onto this list.
 		      generate-atan2))
 					;If this switch is () then RPART returns ATAN's
@@ -184,7 +184,7 @@
 	   (let ((*defint-assumptions* ())  (*def2* ())  (*rad-poly-recur* ())
 		 (*sin-cos-recur* ())  (*dintexp-recur* ())  (*dintlog-recur* 0.)
 		 (ans nil)  (orig-exp exp)  (orig-var var)
-		 (orig-ll ll)  (orig-ul ul) 
+		 (orig-ll ll)  (orig-ul ul)
 		 (pcprntd nil)  (*nodiverg nil)  ($logabs t)  (limitp t)
 		 (rp-polylogp ())
 		 ($domain '$real) ($m1pbranch ())) ;Try this out.
@@ -202,7 +202,7 @@
 	     (cond ((not (atom var))
 		    (merror "Improper variable of integration: ~M" var))
 		   ((or (among var ul)
-			(among var ll)) 
+			(among var ll))
 		    (setq var (stripdollar var))
 		    (setq exp ($substitute var orig-var exp))))
 	     (cond ((not (equal ($ratsimp ($imagpart ll)) 0))
@@ -255,9 +255,9 @@
 		  t))))))
 
 (defun deg-lessp (expr var power)
-  (cond  ((or (atom expr) 
+  (cond  ((or (atom expr)
 	      (mnump expr)) t)
-	 ((or (mtimesp expr) 
+	 ((or (mtimesp expr)
 	      (mplusp expr))
 	  (do ((ops (cdr expr) (cdr ops)))
 	      ((null ops) t)
@@ -284,34 +284,27 @@
 	(ans ())
 	(generate-atan2 ()))
     (setq ans (sinint a var))
-    (cond ((among '%integrate ans)  nil) 
+    (cond ((among '%integrate ans)  nil)
 	  (t (simplify ans)))))
 
-;;;This routine tries to take a limit a couple of ways.
-(defmfun get-limit nargs
-  (let ((ans (apply 'limit-no-err (listify nargs)))
-	(val ()) (var ()) (exp ()) (dir ()))
-    (cond ((and ans (not (among '%limit ans)))  ans)
-	  (t (cond ((and (or (equal nargs 3) (equal nargs 4))
-			 (member (setq val (arg 3)) '($inf $minf) :test #'eq))
-		    (setq var (arg 2))
-		    (setq exp (maxima-substitute (m^t var -1) var (arg 1)))
-		    (cond ((eq val '$inf)  (setq dir '$plus))
-			  (t (setq dir '$minus)))
-					;(setq ans (apply 'limit-no-err `(,exp ,var 0 ,dir)))
-		    (setq ans (limit-no-err exp var 0 dir))
-		    (cond ((not (among '%limit ans))  ans)
-			  (t ()))))))))
+;; This routine tries to take a limit a couple of ways.
+(defmfun get-limit (exp var val &optional (dir '$plus dir?))
+  (let ((ans (if dir?
+		 (funcall #'limit-no-err exp var val dir)
+		 (funcall #'limit-no-err exp var val))))
+    (if (and ans (not (among '%limit ans)))
+	ans
+	(when (member val '($inf $minf) :test #'eq)
+	  (setq ans (limit-no-err (maxima-substitute (m^t var -1) var exp)
+				  var
+				  0
+				  (if (eq val '$inf) '$plus '$minus)))
+	  (if (among '%limit ans) nil ans)))))
 
-;;(defun limit-no-err nargs
-;;  (let ((errorsw t)  (ans ()))
-;;    (setq ans (catch 'errorsw (apply '$limit (listify nargs))))
-;;    (cond ((not (eq ans t))  ans)
-;;	  (t nil))))
 (defun limit-no-err (&rest argvec)
   (declare (special errorsw))
   (let ((errorsw t) (ans nil))
-    (setq ans (catch 'errorsw (apply '$limit argvec)))
+    (setq ans (catch 'errorsw (apply #'$limit argvec)))
     (if (eq ans t) nil ans)))
 
 #+nil
@@ -321,7 +314,7 @@
     (cond ((and (eq ul '$inf)
 		(equal ll 0)
 		(equal (cadr d) 1)) ())
-	  (t (solve (m+t 'yx (m*t -1 nv)) var 1.)
+	  (t (solve (m+t 'yx (m*t -1 nv)) var 1)
 	     (format t "*roots = ~A~%" *roots)
 	     (format t "subst ~A~%" (caddar *roots))
 	     (cond (*roots
@@ -361,7 +354,7 @@
 			       (t (intcv1 d ind nv))))
 			(t ()))))))))
 
-(defun intcv1 (d ind nv) 
+(defun intcv1 (d ind nv)
   (cond ((and (intcv2 d ind nv)
 	      (not (alike1 *ll1* *ul1*)))
 	 (let ((*def2* t))
@@ -376,7 +369,7 @@
 	     (t (setq *ll1* (limcp nv var ll '$plus))))
        (setq *ul1* (limcp nv var ul '$minus))))
 
-(defun limcp (a b c d) 
+(defun limcp (a b c d)
   (let ((ans ($limit a b c d)))
     (cond ((not (or (null ans)
 		    (among '%limit ans)
@@ -396,7 +389,7 @@
     (unwind-protect
 	 (prog ()
 	    (setq *current-assumptions* (make-defint-assumptions 'noask))
-	    (let ((exp (resimplify exp))            
+	    (let ((exp (resimplify exp))
 		  (var (resimplify var))
 		  ($exptsubst t)
 		  (loopstop* 0)
@@ -423,8 +416,8 @@
 					   '(mexpt mplus mtimes %sin %cos
 					     %tan %sinh %cosh %tanh
 					     %log %asin %acos %atan
-					     %cot %acot %sec 
-					     %asec %csc %acsc 
+					     %cot %acot %sec
+					     %asec %csc %acsc
 					     %derivative) :test #'eq))))
 		       (cond ((setq ans (antideriv exp))
 			      (setq ans (intsubs ans ll ul))
@@ -437,7 +430,7 @@
       (restore-defint-assumptions old-assumptions *current-assumptions*))))
 
 (defun defint-list (exp var ll ul)
-  (cond ((and (not (atom exp)) 
+  (cond ((and (not (atom exp))
 	      (member (caar exp)
 		    '(mequal mlist $matrix) :test #'eq))
 	 (let ((ans (cons (car exp)
@@ -474,7 +467,7 @@
 	  (t ()))))
 
 (defun rmconst1 (e)
-  (cond ((among var e) 
+  (cond ((among var e)
 	 (partition e var 1))
 	(t (cons e 1))))
 
@@ -503,10 +496,10 @@
 	       ;;			(equal ll 0.))  (zto1 exp)))
 	       (t (dintegrate exp var ll ul)))
       (restore-defint-assumptions old-assumptions *defint-assumptions*))))
-       
+
 
 (defun dintegrate (exp var ll ul)
-  (let ((ans nil) (arg nil) (*scflag* nil) 
+  (let ((ans nil) (arg nil) (*scflag* nil)
 	(*dflag nil) ($%emode t))
 ;;;NOT COMPLETE for sin's and cos's.
     (cond ((and (not *sin-cos-recur*)
@@ -523,7 +516,7 @@
 	  ((and (not *dintexp-recur*)
 		(setq arg (%einvolve exp))
 		(dintexp exp var)))
-	  ((and (not (ratp exp var)) 
+	  ((and (not (ratp exp var))
 		(setq ans ($expand exp))
 		(not (alike1 ans exp))
 		(intbyterm ans t)))
@@ -535,7 +528,7 @@
 ;;;Recursion stopper
   (let ((*rad-poly-recur* t)		;recursion stopper
 	(result ()))
-    (cond ((and (sinintp exp var) 
+    (cond ((and (sinintp exp var)
 		(setq result (antideriv exp))
 		(intsubs result ll ul)))
 	  ((and (ratp exp var)
@@ -567,17 +560,17 @@
   (do ((current-pole (cdr merged-list) (cdr current-pole))
        (previous-pole merged-list (cdr previous-pole)))
       ((null current-pole)  t)
-    (setq ans (m+ ans	    
+    (setq ans (m+ ans
 		  (intsubs anti-deriv (m+ (caar previous-pole) 'epsilon)
 			   (m+ (caar current-pole) (m- 'epsilon))))))
-			   
+
   ;;Hack answer to simplify "Correctly".
-  (cond ((not (freeof '%log ans)) 
+  (cond ((not (freeof '%log ans))
 	 (setq ans ($logcontract ans))))
   (setq ans (get-limit (get-limit ans 'epsilon 0 '$plus) 'prin-inf '$inf))
   ;;Return setion.
   (cond ((or (null ans)
-	     (not (free ans '$infinity)) 
+	     (not (free ans '$infinity))
 	     (not (free ans '$ind)))  ())
 	((or (among '$minf ans)
 	     (among '$inf ans)
@@ -588,13 +581,13 @@
 (defun interval-list (pole-list ll ul)
   (let ((first (car (first pole-list)))
 	(last (caar (last pole-list))))
-    (cond ((eq ul last)  
+    (cond ((eq ul last)
 	   (if (eq ul '$inf)
 	       (setq pole-list (subst 'prin-inf '$inf pole-list))))
-	  (t (if (eq ul '$inf) 
+	  (t (if (eq ul '$inf)
 		 (setq ul 'prin-inf))
 	     (setq pole-list (append pole-list (list (cons ul 'ignored))))))
-    (cond ((eq ll first) 
+    (cond ((eq ll first)
 	   (if (eq ll '$minf)
 	       (setq pole-list (subst (m- 'prin-inf) '$minf pole-list))))
 	  (t (if (eq ll '$minf)
@@ -674,8 +667,8 @@
 (defun intbyterm (exp *nodiverg)
   (let ((saved-exp exp))
     (cond ((mplusp exp)
-	   (let ((ans (catch 'divergent 
-			(andmapcar #'(lambda (new-exp) 
+	   (let ((ans (catch 'divergent
+			(andmapcar #'(lambda (new-exp)
 				       (let ((*def2* t))
 					 (defint new-exp var ll ul)))
 				   (cdr exp)))))
@@ -762,10 +755,10 @@
   ;;  limit(exp,var,val,dir) -- limit(exp,tvar,0,dir)
   (setq *global-defint-assumptions*
 	(cons (assume '((mgreaterp) epsilon 0.))
-	      *global-defint-assumptions*))	   
+	      *global-defint-assumptions*))
   (setq *global-defint-assumptions*
 	(cons (assume '((mlessp) epsilon 1.0e-8))
-	      *global-defint-assumptions*)) 
+	      *global-defint-assumptions*))
   ;; EPSILON is used in principal vaule code to denote the familiar
   ;; mathematical entity.
   (setq *global-defint-assumptions*
@@ -804,7 +797,7 @@
 		  (setq ll ul)
 		  (setq ul '$inf)
 		  (setq exp (m- exp))))
-	   ;;Fix limits so that ll < ul. 
+	   ;;Fix limits so that ll < ul.
 	   (let ((d (complm ask-or-not)))
 	     (cond ((equal d -1)
 		    (setq exp (m- exp))
@@ -836,7 +829,7 @@
 		     (cond ((not (free e '$%i))
 			    (trisplit e))
 			   (t (cons e 0))))
-	     (cond ((not (equal (sratsimp ipart) 0))  
+	     (cond ((not (equal (sratsimp ipart) 0))
 		    (let ((rans (cond ((limit-subs rpart a b))
 				      (t (m-
 					  `((%limit) ,rpart ,var ,b $minus)
@@ -862,7 +855,7 @@
 (defun limit-subs (e ll ul)
   (cond ((not (free e '%atan))  ())
 	(t (setq e ($multthru e))
-	   (let ((a1 ($limit e var ll '$plus))	
+	   (let ((a1 ($limit e var ll '$plus))
 		 (a2 ($limit e var ul '$minus)))
 	     (cond ((member a1 '($inf $minf $infinity ) :test #'eq)
 		    (cond ((member a2 '($inf $minf $infinity) :test #'eq)
@@ -877,7 +870,7 @@
 ;;;This function works only on things with ATAN's in them now.
 (defun same-sheet-subs (exp ll ul &aux ans)
   (let ((poles (atan-poles exp ll ul)))
-    ;;POLES -> ((mlist) ((mequal) ((%atan) foo) replacement) ......) 
+    ;;POLES -> ((mlist) ((mequal) ((%atan) foo) replacement) ......)
     ;;We can then use $SUBSTITUTE
     (setq ans ($limit exp var ll '$plus))
     (setq exp (sratsimp ($substitute poles exp)))
@@ -887,11 +880,11 @@
   `((mlist) ,@(atan-pole1 exp ll ul)))
 
 (defun atan-pole1 (exp ll ul &aux ipart)
-  (cond 
+  (cond
     ((mapatom exp)  ())
     ((matanp exp)	 ;neglect multiplicity and '$unknowns for now.
      (desetq (exp . ipart) (trisplit exp))
-     (cond 
+     (cond
        ((not (equal (sratsimp ipart) 0))  ())
        (t (let ((pole (poles-in-interval (let (($algebraic t))
 					   (sratsimp (cadr exp)))
@@ -900,7 +893,7 @@
 				      (eq pole '$no))))
 		   (do ((l pole (cdr l)) (llist ()))
 		       ((null l)  llist)
-		     (cond 
+		     (cond
 		       ((eq (caar l) ll)  t) ;Skip this one by definition.
 		       (t (let ((low-lim ($limit (cadr exp) var (caar l) '$minus))
 				(up-lim ($limit (cadr exp) var (caar l) '$plus)))
@@ -918,7 +911,7 @@
 	 (setq llist (append llist (atan-pole1 (car l) ll ul)))))))
 
 (defun difapply (n d s fn1)
-  (prog (k m r $noprincipal) 
+  (prog (k m r $noprincipal)
      (cond ((eq ($asksign (m+ (deg d) (m- s) (m- 2.)))  '$neg)
 	    (return nil)))
      (setq $noprincipal t)
@@ -935,15 +928,15 @@
 	    nil)
 	   (t (setq k (m+ 1 k))))
      (cond ((eq ($sign (m+ r (m- k))) '$pos)
-	    (return (diffhk fn1 n d k (m+ r (m- k)))))))) 
+	    (return (diffhk fn1 n d k (m+ r (m- k))))))))
 
 (defun diffhk (fn1 n d r m)
-  (prog (d1 *dflag) 
+  (prog (d1 *dflag)
      (setq *dflag t)
      (setq d1 (funcall fn1 n
 		       (m^ (m+t '*z* d) r)
 		       (m* r (deg d))))
-     (cond (d1 (return (difap1 d1 r '*z* m 0.)))))) 
+     (cond (d1 (return (difap1 d1 r '*z* m 0.))))))
 
 (defun principal nil
   (cond ($noprincipal (diverg))
@@ -952,7 +945,7 @@
 	 (setq pcprntd t))))
 
 (defun rib (e s)
-  (let (*updn c) 
+  (let (*updn c)
     (cond ((or (mnump e) (constant e))
 	   (setq bptu (cons e bptu)))
 	  (t (setq e (rmconst1 e))
@@ -972,10 +965,10 @@
 	      (polyinx (caddr term) var nil)
 	      (eq ($sign (m+ (deg ($realpart (caddr term))) -1))
 		  '$neg)
-	      (eq ($sign (m+ (deg (setq nn* ($imagpart (caddr term)))) 
+	      (eq ($sign (m+ (deg (setq nn* ($imagpart (caddr term))))
 			     -2.))
 		  '$neg))
-	 (cond ((eq ($asksign (ratcoef nn* var)) '$pos) 
+	 (cond ((eq ($asksign (ratcoef nn* var)) '$pos)
 		(setq *updn t))
 	       (t (setq *updn nil)))
 	 term)
@@ -991,7 +984,7 @@
 (defun csemidown (n d var)
   (let ((pcprntd t)) ;Not sure what to do about PRINCIPAL values here.
     (princip (res n d #'lowerhalf #'(lambda (x)
-	        		      (cond ((equal ($imagpart x) 0)  t)
+				      (cond ((equal ($imagpart x) 0)  t)
 					    (t ())))))))
 
 (defun lowerhalf (j)
@@ -1047,7 +1040,7 @@
 	     (list (m*l poly) (m*l rest))))))
 
 (defun esap (e)
-  (prog (d) 
+  (prog (d)
      (cond ((atom e) (return e))
 	   ((not (among '$%e e)) (return e))
 	   ((and (mexptp e)
@@ -1110,8 +1103,8 @@
 	  ((zerop1 ($ratsimp temp))
 	   t)
 	  (t nil))))
-		
-(defun oddfn (e var)       
+
+(defun oddfn (e var)
   (let ((temp (m+ e (cond ((atom var)
 			   ($substitute (m- var) var e))
 			  (t ($ratsubst (m- var) var e))))))
@@ -1130,7 +1123,7 @@
 		'$pos)
 	    (return nil))
 	   ((setq temp (or (scaxn grand)
-			   (ssp grand))) 
+			   (ssp grand)))
 	    (return temp))
 	   ((involve grand '(%sin %cos %tan))
 	    (setq grand (sconvert grand))
@@ -1154,7 +1147,7 @@
      (setq n (cdr n))
      (setq dc (car d))
      (setq d (cdr d))
-     (cond ((polyinx d var nil) 
+     (cond ((polyinx d var nil)
 	    (setq s (deg d)))
 	   (t (go findout)))
      (cond ((and (setq r (findp n))
@@ -1166,8 +1159,8 @@
 		 (setq ans (zmtorat n (cond ((mtimesp d) d)
 					    (t ($sqfr d)))
 				    s #'ztorat)))
-	    	   (return (m* (m// nc dc) ans)))
-	   ((and (evenfn d var) 
+		   (return (m* (m// nc dc) ans)))
+	   ((and (evenfn d var)
 		 (setq nn* (p*lognxp n s)))
 	    (setq ans (log*rat (car nn*) d (cadr nn*)))
 	    (return (m* (m// nc dc) ans)))
@@ -1176,7 +1169,7 @@
 		   (return (m* (m// nc dc) ans)))
 		  (t (return nil)))))
      findout
-     (cond ((setq temp (batapp grand)) 
+     (cond ((setq temp (batapp grand))
 	    (return temp))
 	   (t nil))
      on
@@ -1197,7 +1190,7 @@
 		 (setq ans (method-by-limits grand var '$minf '$inf)))
 	    (return (m*t '((rat) 1. 2.) ans)))
 	   (t (return nil)))))
-   
+
 (defun ztorat (n d s)
   (cond ((and (null *dflag)
 	      (setq s (difapply n d nn* #'ztorat)))
@@ -1207,7 +1200,7 @@
 	 (m- n))
 	(t (merror "Keyhole failed"))))
 
-(setq *dflag nil) 
+(setq *dflag nil)
 
 (defun logquad0 (exp)
   (let ((a ()) (b ())  (c ()))
@@ -1216,13 +1209,13 @@
 	   ($asksign b)	  ;let the data base know about the sign of B.
 	   (cond ((eq ($asksign c) '$pos)
 		  (setq c (m^ (m// c a) '((rat) 1. 2.)))
-		  (setq b (simplify 
+		  (setq b (simplify
 			   `((%acos) ,(add* 'epsilon (m// b (mul* 2. a c))))))
 		  (setq a (m// (m* b `((%log) ,c))
 			       (mul* a (simplify `((%sin) ,b)) c)))
 		  (get-limit a 'epsilon 0 '$plus))))
 	  (t ()))))
-	
+
 (defun logquad (exp)
   (let ((varlist (list var)))
     (newvar exp)
@@ -1234,7 +1227,7 @@
 		(not (equal (pterm (cddr exp) 0.) 0.)))
 	   (setq exp (mapcar 'pdis (cdr (oddelm (cdr exp)))))))))
 
-(defun mtoinf (grand var) 
+(defun mtoinf (grand var)
   (prog (ans sd* sn* p* pe* n d s nc dc $savefactors checkfactors temp)
      (setq $savefactors t)
      (setq sn* (setq sd* (list 1.)))
@@ -1321,7 +1314,7 @@
 		   ;; Give up.  We don't know how to handle this.
 		   (return nil)))))
      en
-     (cond ((setq ans (ggrm grand)) 
+     (cond ((setq ans (ggrm grand))
 	    (return ans))
 	   ((and (evenfn grand var)
 		 (setq loopstop* (m+ 1 loopstop*))
@@ -1338,20 +1331,20 @@
 
 ;;; given (b*x+a)^n+c returns  (a b n c)
 (defun linpower (exp var)
-  (let (linpart deg lc c varlist) 
+  (let (linpart deg lc c varlist)
     (cond ((not (polyp exp))   nil)
 	  (t (let ((varlist (list var)))
 	       (newvar exp)
 	       (setq linpart (cadr (ratrep* exp)))
 	       (cond ((atom linpart)
 		      nil)
-		     (t (setq deg (cadr linpart)) 
+		     (t (setq deg (cadr linpart))
 ;;;get high degree of poly
-			(setq linpart ($diff exp var (m+ deg -1))) 
+			(setq linpart ($diff exp var (m+ deg -1)))
 ;;;diff down to linear.
-			(setq lc (sdiff linpart var))	
+			(setq lc (sdiff linpart var))
 ;;;all the way to constant.
-			(setq linpart ($ratsimp (m// linpart lc))) 
+			(setq linpart ($ratsimp (m// linpart lc)))
 			(setq lc ($ratsimp (m// lc `((mfactorial) ,deg))))
 ;;;get rid of factorial from differentiation.
 			(setq c ($ratsimp (m+ exp (m* (m- lc)
@@ -1362,15 +1355,15 @@
 		     (t nil)))))))
 
 (defun mtorat (n d s)
-  (let ((*semirat* t)) 
+  (let ((*semirat* t))
     (cond ((and (null *dflag)
 		(setq s (difapply n d s #'mtorat)))
 	   s)
 	  (t (csemiup n d var)))))
 
 (defun zmtorat (n d s fn1)
-  (prog (c) 
-     (cond ((eq ($sign (m+ s (m+ 1 (setq nn* (deg n))))) 
+  (prog (c)
+     (cond ((eq ($sign (m+ s (m+ 1 (setq nn* (deg n)))))
 		'$neg)
 	    (diverg))
 	   ((eq ($sign (m+ s -4))
@@ -1386,12 +1379,12 @@
 	(setq n (partnum n d))
 	(let ((rsn* t))
 	  (setq n ($xthru (m+l
-			   (mapcar #'(lambda (a b) 
-				       (m// (funcall fn1 (car a) b (deg b)) 
+			   (mapcar #'(lambda (a b)
+				       (m// (funcall fn1 (car a) b (deg b))
 					    (cadr a)))
 				   n
 				   d)))))
-	(return (cond (c (m// n c)) 
+	(return (cond (c (m// n c))
 		      (t n)))))
      on
 
@@ -1434,7 +1427,7 @@
       (setq n2 (cadadr nl) n (caadr nl) nl nil))))
 
 (defun ggrm (e)
-  (prog (poly expo *mtoinf* mb  varlist  genvar l c gvar) 
+  (prog (poly expo *mtoinf* mb  varlist  genvar l c gvar)
      (setq varlist (list var))
      (setq *mtoinf* t)
      (cond ((and (setq expo (%einvolve e))
@@ -1451,11 +1444,11 @@
 	   e nil)
      (newvar poly)
      (setq poly (cdr (ratrep* poly)))
-     (setq mb (m^ (pdis (cdr poly)) -1) 
+     (setq mb (m^ (pdis (cdr poly)) -1)
 	   poly (car poly))
      (setq gvar (caadr (ratrep* var)))
      (cond ((or (atom poly)
-		(pointergp gvar (car poly))) 
+		(pointergp gvar (car poly)))
 	    (setq poly (list 0. poly)))
 	   (t (setq poly (cdr poly))))
      (return (do ((poly poly (cddr poly)))
@@ -1466,12 +1459,12 @@
 
 (defun ggrm1 (d k a b)
   (setq b (m// (m+t 1. d) b))
-  (m* k `((%gamma) ,b) (m^ a (m- b)))) 
+  (m* k `((%gamma) ,b) (m^ a (m- b))))
 
-(defun radic (e v) 
+(defun radic (e v)
   ;;If rd* is t the m^ts must just be free of var.
   ;;If rd* is () the m^ts must be mnump's.
-  (let ((rd* ())) 
+  (let ((rd* ()))
     (radicalp e v)))
 
 ;; Compute the integral(n/d,x,0,inf) by computing the negative of the
@@ -1502,7 +1495,7 @@
 ;; of the list is always 1 because I'm not sure what partition is
 ;; trying to do here.)
 (defun skr (e)
-  (prog (m r k) 
+  (prog (m r k)
      (cond ((atom e) (return nil)))
      (setq e (partition e var 1))
      (setq m (car e))
@@ -1512,7 +1505,7 @@
 	   ((and (mexptp e)
 		 (eq (ask-integer (setq k (caddr e)) '$integer) '$yes)
 		 (setq r (sinrx (cadr e))))
-	    (return (list m r k)))))) 
+	    (return (list m r k))))))
 
 ;; Look at an expression e of the form sin(r*x) and return r.
 (defun sinrx (e)
@@ -1579,7 +1572,7 @@
 ;; integrate(sin(x)^2/x^2,x,0,inf) = %pi/2*binomial(q-3/2,q-1)
 ;;
 ;; where q >= 2.
-;; 
+;;
 (defun scmp (c n)
   ;; Compute sign(r)*r^(n-1)*integrate(sin(y)^k/y^n,y,0,inf)
   (destructuring-bind (mult r k)
@@ -1607,9 +1600,9 @@
 ;; integrate(sin(x)^n/x,x,0,inf) = beta((n+1)/2,1/2)/2, for n odd and
 ;; n > 0.
 (defun sforx (n)
-  (cond ((equal n 1.) 
-	 half%pi) 
-	(t (bygamma (m+ n -1) 0.)))) 
+  (cond ((equal n 1.)
+	 half%pi)
+	(t (bygamma (m+ n -1) 0.))))
 
 ;; This implements the recursion for computing
 ;; integrate(sin(y)^l/y^k,y,0,inf).  (Note the change in notation from
@@ -1637,7 +1630,7 @@
 		       (setq j (m+ k -2.))))
 	   ;; j = k-2, i = (k-1)*(k-2)
 	   ;;
-	   ;; 
+	   ;;
 	   ;; The main recursion:
 	   ;;
 	   ;; i(sin(y)^l/y^k)
@@ -1650,7 +1643,7 @@
 		   (m^t i -1)
 		   (sinsp l j)))))))
 
-;; Returns the fractional part of a?  
+;; Returns the fractional part of a?
 (defun fpart (a)
   (cond ((null a) 0.)
 	((numberp a)
@@ -1665,11 +1658,11 @@
 	((and (mplusp a)
 	      (null (cdddr a))
 	      (abless1 (caddr a)))
-	 (caddr a)))) 
+	 (caddr a))))
 
 (defun thrad (e)
   (cond ((polyinx e var nil) 0.)
-	((and (mexptp e) 
+	((and (mexptp e)
 	      (eq (cadr e) var)
 	      (mnump (caddr e)))
 	 (fpart (caddr e)))
@@ -1707,7 +1700,7 @@
 ;; Return the integer part of r.
 (defun igprt (r)
   ;; r - fpart(r)
-  (m+ r (m* -1 (fpart r)))) 
+  (m+ r (m* -1 (fpart r))))
 
 
 ;;;Try making exp(%i*var) --> yy, if result is rational then do integral
@@ -1718,7 +1711,7 @@
 				      exp-form))) ;Try to make Rational fun.
     (cond ((and (ratp rat-form 'yy)
 		(not (among var rat-form)))
-	   (cond ((alike1 b %pi2) 
+	   (cond ((alike1 b %pi2)
 		  (let ((ans (zto%pi2 rat-form 'yy)))
 		    (cond (ans ans)
 			  (t nil))))
@@ -1729,7 +1722,7 @@
 			  (t nil))))
 		 ((and (alike1 b half%pi)
 		       (evenfn exp-form var)
-		       (alike1 rat-form 
+		       (alike1 rat-form
 			       (no-err-sub (m+t '$%pi (m*t -1 var))
 					   rat-form)))
 		  (let ((ans (zto%pi2 rat-form 'yy)))
@@ -1744,7 +1737,7 @@
 	($%emode t)
 	($trigsign t)
 	(*sin-cos-recur* t))		;recursion stopper
-    (prog (ans d nzp2 l) 
+    (prog (ans d nzp2 l)
        (when (or (not (mnump (m// limit-diff '$%pi)))
 		 (not (period %pi2 e var)))
 	 ;; Exit if b-a is not a multiple of pi or if the integrand
@@ -1774,7 +1767,7 @@
 	      ;; Less than 1 full period, so intsc can integrate it.
 	      (return (intsc e b var)))
 	     (t
-	      (setq l a) 
+	      (setq l a)
 	      ;; Why do we need this?  I think if we get here, a is
 	      ;; already 0.
 	      (setq a 0.)))
@@ -1790,7 +1783,7 @@
 
        ;; Compute q and c for the upper limit b.
        (setq b (infr b))
-       (cond ((null l) 
+       (cond ((null l)
 	      (setq nzp2 (car b))
 	      (setq limit-diff 0.)
 	      (go out)))
@@ -1798,7 +1791,7 @@
        (setq l (infr l))
        ;; Compute -integrate(f,x,0,d)
        (setq limit-diff
-	     (m*t -1 (cond ((setq ans (intsc e (cdr l) var)) 
+	     (m*t -1 (cond ((setq ans (intsc e (cdr l) var))
 			     ans)
 			    (t (return nil)))))
        ;; Compute n = q - p (stored in nzp2)
@@ -1921,7 +1914,7 @@
 	 (m+l (mapcar #'sin-cos-intsubs1 (cdr exp))))
 	(t (sin-cos-intsubs1 exp))))
 
-(defun sin-cos-intsubs1 (exp)	 
+(defun sin-cos-intsubs1 (exp)
   (let* ((rat-exp ($rat exp))
 	 (num (pdis (cadr rat-exp)))
 	 (denom (pdis (cddr rat-exp))))
@@ -1933,7 +1926,7 @@
 	  ;; return in that case?  0 seems like a bad choice.  $inf or
 	  ;; $undefined seem like better choices.  Or maybe just
 	  ;; signaling an error?
-	  #+nil  
+	  #+nil
 	  ((not (equal ($asksign denom) '$zero))
 	   0)
 	  ((equal ($asksign denom) '$zero)
@@ -1994,7 +1987,7 @@
 		      (not (among var (caddr e))))
 		 (caddr e))))
   (cond ((null e) nil)
-	((funcall p e) e))) 
+	((funcall p e) e)))
 
 
 ;; Check e for an expression of the form x^kk*(b*x^n+a)^l.  If it
@@ -2033,8 +2026,8 @@
 	   (values k c)))))
 
 
-;;(DEFUN BATAP (E) 
-;;  (PROG (K C L) 
+;;(DEFUN BATAP (E)
+;;  (PROG (K C L)
 ;;    (COND ((NOT (BATA0 E)) (RETURN NIL))
 ;;	  ((AND (EQUAL -1. (CADDDR C))
 ;;		(EQ ($askSIGN (SETQ K (m+ 1. K)))
@@ -2061,7 +2054,7 @@
 ;; function might not even be called for some of these integrals.
 ;; However, this can be palliated by setting intanalysis:false.
 
-(defun zto1 (e)				
+(defun zto1 (e)
   (when (or (mtimesp e) (mexptp e))
     (let ((m 0)
 	  (log (list '(%log) var)))
@@ -2070,9 +2063,9 @@
 	(find-if #'(lambda (fac)
 		     (powerofx fac log #'set-m var))
 		 (cdr e)))
-      (when (and (freeof var m) 
+      (when (and (freeof var m)
 		 (eq (ask-integer m '$integer) '$yes)
-		 (not (eq ($asksign m) '$neg))) 
+		 (not (eq ($asksign m) '$neg)))
 	(setq e (m//t e (list '(mexpt) log m)))
 	(cond
 	  ((eq ul '$inf)
@@ -2122,11 +2115,11 @@
 ;;; of variables (substituting ul*x^(1/n) for x) in order to reduce
 ;;; e to the usual form of the integrand in the Eulerian
 ;;; integral of the first kind.
-;;; N. B: The old version of ZTO1 completely ignored this  
+;;; N. B: The old version of ZTO1 completely ignored this
 ;;; substitution; the log(x)s were just thrown in, which,
 ;;; of course would give wrong results.
 
-(defun batap-new (e) 
+(defun batap-new (e)
   ;; Parse e
   (multiple-value-bind (k c)
       (bata0 e)
@@ -2175,7 +2168,7 @@
 		     (eq ($asksign r) '$pos)
 		     (eq ($asksign (mul cc d)) '$pos))
 	    (values k s d r cc)))))))
-  
+
 
 ;; Handles beta integrals.
 (defun batapp (e)
@@ -2208,7 +2201,7 @@
   (m* (m^t '$%e d)
       (m^ (m* b (m^ a (setq c (m// (m+t c 1) b)))) -1)
       `((%gamma) ,c)))
-       
+
 (defun zto%pi2 (grand var)
   (let ((result (unitcir ($ratsimp (m// grand var)) var)))
     (cond (result (sratsimp (m* (m- '$%i) result)))
@@ -2258,9 +2251,9 @@
 ;; We assume the integral on the circular arc approaches 0 as R ->
 ;; infinity.  (Need to prove this.)
 ;;
-;; Thus, we have 
+;; Thus, we have
 ;;
-;;   integrate(exp(%i*k*t^n),t,0,inf) 
+;;   integrate(exp(%i*k*t^n),t,0,inf)
 ;;     = exp(%i*%pi/2/n) * gamma(1/n)/k^(1/n)/n.
 ;;
 ;; Equating real and imaginary parts gives us the desired results:
@@ -2271,7 +2264,7 @@
 ;; where G = gamma(1/n)/k^(1/n)/n.
 ;;
 (defun scaxn (e)
-  (let (ind s g) 
+  (let (ind s g)
     (cond ((atom e)  nil)
 	  ((and (or (eq (caar e) '%sin)
 		    (eq (caar e) '%cos))
@@ -2297,21 +2290,21 @@
 		 (t
 		  ;; We can apply our formula now.  g = gamma(1/n)/n/b^(1/n)
 		  (setq g (gamma1 0. (m* s (cadr e)) (car e) 0.))
-		  (setq e (m* g `((,ind) ,(m// half%pi (car e))))) 
+		  (setq e (m* g `((,ind) ,(m// half%pi (car e)))))
 		  (m* (cond ((and (eq ind '%sin)
 				  (equal s -1))
 			     -1)
 			    (t 1))
 		      e)))))))
-		      
+
 
 ;; this is the second part of the definite integral package
 
-(declare-top(special var plm* pl* rl* pl*1 rl*1)) 
+(declare-top(special var plm* pl* rl* pl*1 rl*1))
 
 (defun p*lognxp (a s)
-  (let (b) 
-    (cond ((not (among '%log a)) 
+  (let (b)
+    (cond ((not (among '%log a))
 	   ())
 	  ((and (polyinx (setq b (maxima-substitute 1. `((%log) ,var) a))
 			 var t)
@@ -2323,22 +2316,22 @@
 
 (defun lognxp (a)
   (cond ((atom a) nil)
-	((and (eq (caar a) '%log) 
+	((and (eq (caar a) '%log)
 	      (eq (cadr a) var)) 1.)
 	((and (mexptp a)
 	      (numberp (caddr a))
 	      (lognxp (cadr a)))
-	 (caddr a)))) 
+	 (caddr a))))
 
 (defun logcpi0 (n d)
-  (prog (pl dp) 
+  (prog (pl dp)
      (setq pl (polelist d #'upperhalf #'(lambda (j)
 					  (cond ((zerop1 j) nil)
 						((equal ($imagpart j) 0)
 						 t)))))
      (cond ((null pl)
 	    (return nil)))
-     (setq factors (car pl) 
+     (setq factors (car pl)
 	   pl (cdr pl))
      (cond ((or (cadr pl)
 		(caddr pl))
@@ -2347,13 +2340,13 @@
 	    (setq rlm* (residue n (cond (leadcoef factors)
 					(t d))
 				plm*))))
-     (cond ((setq pl* (cadr pl)) 
+     (cond ((setq pl* (cadr pl))
 	    (setq rl* (res1 n dp pl*))))
      (cond ((setq pl*1 (caddr pl))
 	    (setq rl*1 (res1 n dp pl*1))))
      (return (m*t (m//t 1. 2.)
-		  (m*t '$%pi 
-		       (princip 
+		  (m*t '$%pi
+		       (princip
 			(list (cond ((setq nn* (append rl* rlm*))
 				     (m+l nn*)))
 			      (cond (rl*1 (m+l rl*1))))))))))
@@ -2383,7 +2376,7 @@
 
 ;;should replace these references to *i* and *j* to symbol-value arrays.
 ;;here and in SUMI, and LOGCPI.  These are the only references in this file.
-;;I did change I to *I* 
+;;I did change I to *I*
 
 #-cl	      ;in case other lisps don't understand internal declares.
 (declare-top(special *i* *j*))
@@ -2463,11 +2456,11 @@
 					     (genfind (car ans) var)))
 				    (list 0 (cadr ans))) ;No VAR in ans.
 				   ((cdadr ans))))) ;The real Poly.
-    (if (or (null zz) (null gp)) 
+    (if (or (null zz) (null gp))
 	-1
 	($substitute zz gp))))	       ;Substitute Values for gensyms.
 
-(defun coefsolve (n cl e)    
+(defun coefsolve (n cl e)
   (do (($breakup)
        (eql (ncons (pdis (pterm e n))) (cons (pdis (pterm e m)) eql))
        (m (m+ n -1) (m+ m -1)))
@@ -2482,7 +2475,7 @@
 	(new-pe (subst var 'z* (catch 'pin%ex (pin%ex pe))))
 	(new-d (subst var 'z* (catch 'pin%ex (pin%ex d)))))
     (defint (div (div (mul new-p new-pe) new-d) var) var 0 ul)))
-  
+
 ;; This implements Wang's algorithm in Chapter 5.2, pp. 98-100.
 ;;
 ;; This is a very brief description of the algorithm.  Basically, we
@@ -2522,7 +2515,7 @@
        ;; It seems as if polelist returns a list of several items.
        ;; The first element is a list consisting of the pole and (z -
        ;; pole).  We don't care about this, so we take the rest of the
-       ;; result.  
+       ;; result.
        (setq pl (cdr (polelist denom-exponential
 			       #'(lambda (j)
 				   ;; The imaginary part is nonzero,
@@ -2554,7 +2547,7 @@
 	    ;; I think this handles the case of poles outside the
 	    ;; regions.  The sum of these residues are placed in C.
 	    (let ((temp (mapcar #'log-imag-0-2%pi (caddr pl))))
-	      (setq c (append temp (mapcar #'(lambda (j) 
+	      (setq c (append temp (mapcar #'(lambda (j)
 					       (m+ (m*t '$%i %pi2) j))
 					   temp)))
 	      (setq c (res1 n dp c))
@@ -2570,7 +2563,7 @@
 		  (exp (m// n (subst (m^t '$%e var) 'z* denom-exponential))))
 	      ;; Compute the residues at all of these poles and sum
 	      ;; them up.
-	      (setq a (mapcar #'(lambda (j) 
+	      (setq a (mapcar #'(lambda (j)
 				  ($residue exp var j))
 			      poles))
 	      (setq a (m+l a))))
@@ -2587,7 +2580,7 @@
     (setq ans (cons (m* c (m^t var i)) ans))
     (setq cl (cons c cl))))
 
-;;(declare-top(special *failflag *lhflag lhv *indicator cnt *disconflag)) 
+;;(declare-top(special *failflag *lhflag lhv *indicator cnt *disconflag))
 
 #+nil
 (defun %e-integer-coeff (exp)
@@ -2611,7 +2604,7 @@
 (defun wlinearpoly (e var)
   (cond ((and (setq e (polyinx e var t))
 	      (equal (deg e) 1))
-	 (subin 1 e)))) 
+	 (subin 1 e))))
 
 ;; Test to see if exp is of the form f(exp(x)), and if so, replace
 ;; exp(x) with 'z*.  That is, basically return f(z*).
@@ -2661,16 +2654,16 @@
 
 (defun findsub (p)
   (cond ((findp p) nil)
-	((setq nd* (bx**n p)) 
+	((setq nd* (bx**n p))
 	 (m^t var (car nd*)))
 	((setq p (bx**n+a p))
-	 (m* (caddr p) (m^t var (cadr p)))))) 
+	 (m* (caddr p) (m^t var (cadr p))))))
 
 ;; I think this is looking at f(exp(x)) and tries to find some
 ;; rational function R and some number k such that f(exp(x)) =
 ;; R(exp(k*x)).
 (defun funclogor%e (e)
-  (prog (ans arg nvar r) 
+  (prog (ans arg nvar r)
      (cond ((or (ratp e var)
 		(involve e '(%sin %cos %tan))
 		(not (setq arg (xor (and (setq arg (involve e '(%log)))
@@ -2681,7 +2674,7 @@
 			 (t (m^t '$%e arg))))
      (setq ans (maxima-substitute (m^t 'yx -1) (m^t nvar -1) (maxima-substitute 'yx nvar e)))
      (cond ((not (among var ans))  (return (list (subst var 'yx ans) nvar)))
-	   ((and (null r) 
+	   ((and (null r)
 		 (setq arg (findsub arg)))
 	    (go ag)))))
 
@@ -2707,7 +2700,7 @@
 			nil)
 		       (t (let ((p2 (let ((*def2* t))
 				      (defint p2 var a b))))
-			    (cond (p2 (add* p1-part1 
+			    (cond (p2 (add* p1-part1
 					    (m- p1-part2)
 					    (m- p2)))
 				  (t nil)))))))))))
@@ -2747,7 +2740,7 @@
 ;; integrate(log(g(x))*f(x),x,0,inf)
 (defun dintlog (exp arg)
   (let ((*dintlog-recur* (1+ *dintlog-recur*))) ;recursion stopper
-    (prog (ans d) 
+    (prog (ans d)
        (cond ((and (eq ul '$inf)
 		   (equal ll 0.)
 		   (eq arg var)
@@ -2791,7 +2784,7 @@
 
 ;; Compute diff(e,var,n) at the point pt.
 (defun derivat (var n e pt)
-  (subin pt (apply '$diff (list e var n)))) 
+  (subin pt (apply '$diff (list e var n))))
 
 ;;; GGR and friends
 
@@ -2877,7 +2870,7 @@
 			    (let ((*nodiverg t))
 			      (setq e (catch 'divergent
 					(andmapcar
-					 #'(lambda (j) 
+					 #'(lambda (j)
 					     (ggr j nil))
 					 (cdr e))))))
 		       (cond ((eq e 'divergent) nil)
@@ -2896,7 +2889,7 @@
 	      (format t "asksign ~A = ~A~%"
 		      (sub (third e) (add ($realpart (first e)) 1))
 		      ($asksign (sub (third e) (add ($realpart (first e)) 1)))))
-	    
+
 	    (setq e (apply #'gamma1 e))
 	    ;; NOTE: *zd* (Ick!) is special and might be set by maybpc.
 	    (when *zd*
@@ -2918,7 +2911,7 @@
 			    (let ((*nodiverg t))
 			      (setq e (catch 'divergent
 					(andmapcar
-					 #'(lambda (j) 
+					 #'(lambda (j)
 					     (ggr j nil))
 					 (cdr e))))))
 		       (cond ((eq e 'divergent) nil)
@@ -2948,7 +2941,7 @@
 	      (when (and (not (zerop1 ($imagpart b)))
 			 (not (eq ($asksign (sub n (add m 1))) '$pos)))
 		(diverg))
-	      
+
 	      (setq e (gamma1 m (cond ((zerop1 ($imagpart b))
 				       ;; If we're here, b must be negative.
 				       (neg b))
@@ -2969,7 +2962,7 @@
 
 
 ;; Match x^m*exp(b*x^n+a).  If it does, return (list m b n a).
-(defun ggr1 (e var) 
+(defun ggr1 (e var)
   (cond ((atom e) nil)
 	((and (mexptp e)
 	      (eq (cadr e) '$%e))
@@ -3003,9 +2996,9 @@
 ;; Match b*x^n+a.  If a match is found, return the list (a n b).
 ;; Otherwise, return NIL
 (defun bx**n+a (e)
-  (cond ((eq e var) 
+  (cond ((eq e var)
 	 (list 0 1 1))
-	((or (atom e) 
+	((or (atom e)
 	     (mnump e)) ())
 	(t (let ((a (no-err-sub 0. e)))
 	     (cond ((null a)  ())
@@ -3043,7 +3036,7 @@
 	       (%einvolve e))  nil)
 	  ((mtimesp e)  nil)
 	  ((mexptp e)  (cond ((among var (caddr e))  nil)
-			     ((setq r (bx**n+a (cadr e))) 
+			     ((setq r (bx**n+a (cadr e)))
 			      (cons (caddr e) r))))
 	  ((setq r (bx**n+a e))  (cons 1. r))
 	  ((not (null ind))
@@ -3052,7 +3045,7 @@
 	   (numden m)
 	   (setq m nn*)
 	   (setq r dn*)
-	   (cond 
+	   (cond
 	     ((and (setq r (bx**n+a ($ratsimp r)))
 		   (not (among var (setq m (m// m (m* (cadr r) (caddr r)
 						      (m^t var (m+t -1 (cadr r))))))))
@@ -3060,12 +3053,12 @@
 	      (cond ((equal e 1.)
 		     (cons m r))
 		    (t (setq e (m^ e (m// 1. m)))
-		       (list m (m* e (car r)) (cadr r) 
+		       (list m (m* e (car r)) (cadr r)
 			     (m* e (caddr r))))))))
 	  (t ()))))
 
 ;;;Is E = VAR raised to some power? If so return power or 0.
-(defun findp (e) 
+(defun findp (e)
   (cond ((not (among var e)) 0.)
 	(t (xtorterm e var))))
 
@@ -3076,7 +3069,7 @@
 	((and (mexptp e)
 	      (alike1 (cadr e) var1)
 	      (not (among var (caddr e))))
-	 (caddr e)))) 
+	 (caddr e))))
 
 (defun tbf (l)
   (m^ (m* (m^ (caddr l) '((rat) 1 2))
@@ -3094,7 +3087,7 @@
 		      ans)))))
 
 (defun sqdtc (e ind)
-  (prog (a b c varlist) 
+  (prog (a b c varlist)
      (setq varlist (list var))
      (newvar e)
      (setq e (cdadr (ratrep* e)))
@@ -3109,7 +3102,7 @@
 			  (eq ($asksign c) '$pos))
 		     (and (eq ($asksign a) '$pos)
 			  (not (eq ($asksign c) '$neg)))))
-	    (return (list a b c)))))) 
+	    (return (list a b c))))))
 
 (defun difap1 (e pwr var m pt)
   (m// (mul* (cond ((eq (ask-integer m '$even) '$yes)
@@ -3117,12 +3110,12 @@
 		   (t -1))
 	     `((%gamma) ,pwr)
 	     (derivat var m e pt))
-       `((%gamma) ,(m+ pwr m)))) 
+       `((%gamma) ,(m+ pwr m))))
 
 (defun sqrtinvolve (e)
   (cond ((atom e) nil)
 	((mnump e) nil)
-	((and (mexptp e) 
+	((and (mexptp e)
 	      (and (mnump (caddr e))
 		   (not (numberp (caddr e)))
 		   (equal (caddr (caddr e)) 2.))
@@ -3145,8 +3138,8 @@
 		   '((rat) 3 2) 'z** p 0)))))
 
 (defun dintrad0 (n d)
-  (let (l r s) 
-    (cond ((and (mexptp d) 
+  (let (l r s)
+    (cond ((and (mexptp d)
 		(equal (deg (cadr d)) 2.))
 	   (cond ((alike1 (caddr d) '((rat) 3. 2.))
 		  (cond ((and (equal n 1.)
@@ -3186,7 +3179,7 @@
 		   (t t))
 	     (m+ real (m* '$%i imag)))))))
 
-	    
+
 ;;; Temporary fix for a lacking in taylor, which loses with %i in denom.
 ;;; Besides doesn't seem like a bad thing to do in general.
 #+nil
@@ -3290,15 +3283,15 @@
 	       (freeof '$%i exparg))
 	   '$no)
 	  (t (cond
-	       ((and (freeof '$%i 
-			     (%einvolve 
-			      (setq exp 
+	       ((and (freeof '$%i
+			     (%einvolve
+			      (setq exp
 				    (sratsimp (m// exp (m^t '$%e exparg))))))
 		     (equal (get-limit exp var limit)  0))
-	        '$yes)
+		'$yes)
 	       (t '$no))))))
 
-(defun sc-converg-form (exp limit)       
+(defun sc-converg-form (exp limit)
   (prog (scarg trigpow)
      (setq exp ($expand exp))
      (setq scarg (involve (sin-sq-cos-sq-sub exp) '(%sin %cos)))
@@ -3320,7 +3313,7 @@
 	   (t (return '$no)))))
 
 (defun is-a-pole (exp soltn)
-  (get-limit ($radcan 
+  (get-limit ($radcan
 	      (m* (maxima-substitute (m+ 'epsilon soltn) var exp)
 		  'epsilon))
 	     'epsilon 0 '$plus))
@@ -3355,8 +3348,8 @@
 				  rootlist)
 				 (t '$no)))
 			(cond ((equal ($imagpart (caddar dummy)) 0)
-			       (setq rootlist 
-				     (cons (cons 
+			       (setq rootlist
+				     (cons (cons
 					    ($rectform (caddar dummy))
 					    (cadr dummy))
 					   rootlist)))))))))))
