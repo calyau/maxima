@@ -180,8 +180,10 @@
 ;;; in macsyma. Once all functions of this type are rounded up
 ;;; I'll see about implementing signaling. -GJC
 
-(defmfun errrjf n
-  (if errrjfflag (throw 'raterr nil) (apply #'merror (listify n))))
+(defmfun errrjf (&rest args)
+  (if errrjfflag
+      (throw 'raterr nil)
+      (apply #'merror args)))
 
 ;;; The user-error function is called on |&foo| "strings" and expressions.
 ;;; Cons up a format string so that $ERROR can be bound.
