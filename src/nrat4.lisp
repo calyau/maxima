@@ -33,10 +33,8 @@
 
 (setq radcanp nil)
 
-(defmfun $ratcoef nargs
-  (cond ((= nargs 3) (ratcoeff (arg 1) (arg 2) (arg 3)))
-	((= nargs 2) (ratcoeff (arg 1) (arg 2) 1))
-	(t (wna-err '$ratcoeff)))) ; The spelling "ratcoeff" is nicer.
+(defmfun $ratcoef (e x &optional (n 1))
+  (ratcoeff e x n)) ; The spelling "ratcoeff" is nicer.
 
 (defmfun ratcoeff (a b c)
   (let* ((formflag ($ratp a))
@@ -347,9 +345,9 @@
 	   (dolist (var (margs l) t)
 	     (unless (freeof ($totaldisrep var) exp) (return nil)))))
 
-(defmfun $freeof nargs
+(defmfun $freeof (&rest args)
   (prog (l e) 
-     (setq l (mapcar #'$totaldisrep (nreverse (listify nargs)))
+     (setq l (mapcar #'$totaldisrep (nreverse args))
 	   e (car l))
      loop (or (setq l (cdr l)) (return t))
      (if (freeof (getopr (car l)) e) (go loop))
