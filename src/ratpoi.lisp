@@ -8,13 +8,12 @@
 ;;;     (c) Copyright 1980 Massachusetts Institute of Technology         ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(in-package :maxima)
+#+:poisson-cre
+(progn
+  (declare-top (special $ratvars genvar))
 
-(macsyma-module ratpoi)
-
-(declare-top (special $ratvars poiscom1 genvar poisco1))
-
-(setq poisco1 '(1 . 1) poiscom1 '(-1 . 1))
+(defvar poisco1 '(1 . 1))
+(defvar poiscom1 '(-1 . 1))
 
 ;;; THESE PROGRAMS MAKE POISSON COEFFICIENTS RATIONAL FUNCTIONS (CRE)
 ;;; POISCDECODE DECODES A COEFFICIENT
@@ -27,7 +26,7 @@
 (defun intopoisco (x)
   (if (and (not (atom x)) (numberp (cdr x)))
       x
-      (cdr(ratrep x (cdr $ratvars)))))
+      (cdr (ratrep x (cdr $ratvars)))))
 
 ;;; POISCO+ ADDS 2 COEFFICIENTS
 ;;; POISCO* MULTIPLIES 2 COEFFICIENTS
@@ -47,8 +46,9 @@
 
 (defun poissubstco (a b x)
   (intopoisco
-   (maxima-substitute a b
-		      ($ratdisrep (cons (list 'mrat 'simp (cdr $ratvars) genvar) x)))))
+   (maxima-substitute
+    a b
+    ($ratdisrep (cons (list 'mrat 'simp (cdr $ratvars) genvar) x)))))
 
 (defun poispzero (x)
   (equal 0 (car x)))
@@ -57,3 +57,4 @@
 
 (defun poiscointeg (h var)
   (intopoisco ($integrate (poiscdecode h) var)))
+)
