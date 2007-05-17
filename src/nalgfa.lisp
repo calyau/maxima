@@ -132,29 +132,24 @@
 (defun bad-form (l) ;;good -> bad
   (mapcar #'(lambda (q) (list (cdr q) (car q))) l))
 
-(defmfun $algfac n
-  (cond ((= n 3) (apply '$pfactoralg (listify n)))
-	(t (let ((varlist))
-	     (cond ((= n 2)
-		    (newvar (arg 2))
-		    (cond ((alike1 (arg 2) (car varlist))
-			   ($pfactoralg (arg 1) nil (arg 2)))
-			  (t ($pfactoralg (arg 1)
-					  (arg 2)
-					  (car (last varlist))))))
-		   (t (newvar (arg 1))
-		      (setq varlist
-			    (mapcan #'(lambda (q) (cond ((algpget q)
-							 (list q))
-							(t nil)))
-				    varlist))
-		      (cond ((= (length varlist) 1)
-			     ($pfactoralg (arg 1)
-					  nil
-					  (car varlist)))
-			    ((> (length varlist) 1)
-			     (merror "too many algebraics"))
-			    (t (merror "no algebraics")))))))))
+(defmfun $algfac (a1 &optional (a2 nil a2?) (a3 nil a3?))
+  (if a3?
+      ($pfactoralg a1 a2 a3)
+      (let ((varlist))
+	(cond (a2?
+	       (newvar a2)
+	       (if (alike1 a2 (car varlist))
+		   ($pfactoralg a1 nil a2)
+		   ($pfactoralg a1 a2 (car (last varlist)))))
+	      (t
+	       (newvar a1)
+		 (setq varlist (mapcan #'(lambda (q) (if (algpget q) (list q) nil)) varlist))
+		 (cond ((= (length varlist) 1)
+			($pfactoralg a1 nil (car varlist)))
+		       ((> (length varlist) 1)
+			(merror "too many algebraics"))
+		       (t
+			(merror "no algebraics"))))))))
 
 (defmfun $pfactoralg (f p alg)
   (let ((varlist (list alg))
@@ -436,14 +431,13 @@
 
 ;; discriminant of a basis
 
-(defmfun $bdiscr n
+(defmfun $bdiscr (&rest args)
   (let ((varlist) (genvar))
-    (xcons (bdiscr (mapcar #'rform (listify (1- n)))
-		   (car (rform (arg n))))
+    (xcons (bdiscr (mapcar #'rform (butlast args))
+		   (car (rform (car (last args)))))
 	   (list 'mrat 'simp varlist genvar))))
 
 (defun bdiscr (l minp)
   (det (mapcar #'(lambda (q1)
-		   (mapcar #'(lambda (q2) (algtrace (ptimes q1 q2) minp))
-			   l))
+		   (mapcar #'(lambda (q2) (algtrace (ptimes q1 q2) minp)) l))
 	       l)))
