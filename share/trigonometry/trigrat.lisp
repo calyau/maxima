@@ -18,7 +18,7 @@
 		    (mtimesp (caddr var))
 		    (eq (cadr (caddr var)) '$%i)) 
 		   (setq $lexp (cons var $lexp))
-		   (setq var  (intern (format nil "$_~a" (car lg))))
+		   (setq var  (concat "$_" (car lg)))
 		   (setq $lg (cons var $lg))
 		   (rplaca lvar var)))))
 
@@ -26,8 +26,7 @@
 		declare(d2,special,lg,special,lexp,special),
 		alg:algebraic,gcd1:gcd,
 		algebraic:true,gcd:subres,
-		e:ev(exp,exponentialize=true,ratsimp),
-		e:rat(e),
+		e: rat(ratsimp(exponentialize(exp))),
 		n:num(e),d:denom(e),
 		listofei(d),
 		l2:map(lambda([u,v],u^((hipow(d2,v)+lopow(d2,v))/2)),
