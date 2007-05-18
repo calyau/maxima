@@ -250,7 +250,7 @@
   (let ((x (simplifya (specrepcheck (cadr e)) z))
 	(y (simplifya (specrepcheck (caddr e)) z)))
     (cond ((or (equal 0 y) (equal 0 x)) x)
-	  ((equal 1 y) (sub x `(($floor) ,x)))
+	  ((equal 1 y) (sub x (opcons '$floor x)))
 	  ((and ($constantp x) ($constantp y))
 	   (sub x (mul y (opcons '$floor (div x y)))))
 	  ((not (equal 1 (setq e1 ($gcd x y))))
