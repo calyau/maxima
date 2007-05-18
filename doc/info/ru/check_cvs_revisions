@@ -1,0 +1,24 @@
+#!/bin/sh
+
+etexi=`find .. -maxdepth 1 -name '*.texi' -print | sort -f | sed -e 's:\.\./::g'`
+rtexi=`find . -maxdepth 1 -name '*.texi' -print | sort -f | sed -e 's:\./::g'`
+
+for ef in $etexi ; do
+    if [ -f ./$ef ] ; then
+	ef_rev=`sed -n -e "/\/$ef\//{s|\/$ef\/\([0-9.]*\)\/.*|\1|p}" ../CVS/Entries`
+	rf_rev=`sed -n -e "/OriginalRevision=/{s|.*OriginalRevision=\([0-9.]*\).*|\1|p}" ./$ef`
+	if [ "x$ef_rev" = "x$rf_rev" ] ; then
+    	    echo "Translated - $ef"
+	else
+    	    echo "*** CVS revisions don't match: Original=$ef_rev, Translated=$rf_rev - $ef"
+	fi
+    else
+	echo "*** Not translated - $ef"
+    fi
+done
+
+for rf in $rtexi ; do
+    if [ ! -f ../$rf ] ; then
+        echo "*** No such file in the Original doc directory - $rf"
+    fi
+done

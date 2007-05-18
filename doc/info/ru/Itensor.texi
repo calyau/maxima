@@ -1,5 +1,7 @@
-@c Language: Russian, Encoding: CP1251
-@c English original: Itensor.texi CVS 1.36
+@c Language=Russian
+@c Encoding=CP1251
+@c File=Itensor.texi
+@c OriginalRevision=1.36    
 
 @menu
 * Introduction to itensor::

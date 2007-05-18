@@ -1,5 +1,7 @@
-@c Language: Russian, Encoding: CP1251
-@c English original: Affine.texi CVS 1.12
+@c Language=Russian
+@c Encoding=CP1251
+@c File=Affine.texi 
+@c OriginalRevision=1.12
 
 @menu
 * Definitions for Affine::

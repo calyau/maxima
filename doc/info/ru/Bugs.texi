@@ -1,5 +1,7 @@
-@c Language: Russian, Encoding: CP1251
-@c English original: Bugs.texi CVS 1.9
+@c Language=Russian
+@c Encoding=CP1251
+@c File=Bugs.texi
+@c OriginalRevision=1.9
 
 @menu
 * Introduction to Bug Detection and Reporting::
