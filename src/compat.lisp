@@ -33,6 +33,10 @@
 				   (t sym)))
 			 syms))))
 
+;; make a symbol out of the printed represantations of all args
+(defun concat (&rest args)
+  (intern (format nil "~{~A~^~}" args)))
+
 ;;; On the 3600, STORE isn't implemented.  So, implement enough of
 ;;; it here to satisfy the cases the Macsyma uses.  I have yet to find
 ;;; it using complicated side effects of the array reference -- it's either
