@@ -2431,8 +2431,8 @@
 		 (cond ((not (psp temp)) temp)
 		       (t (pscsubst1 psarg temp)))))))))
 
-(defun symbolic-expand (arg psarg func) ; should be much stronger
-  (declare (ignore arg))			;Ignored.
+(defun symbolic-expand (ign psarg func) ; should be much stronger
+  (declare (ignore ign))
   (prep1 (simplifya (if (atom func)
 			`((,func) ,(rcdisrep psarg))
 			`((mqapply) ,func ,(rcdisrep psarg)))
