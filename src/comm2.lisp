@@ -81,7 +81,7 @@
 		(list '(%sum)
 		      (list '(mnctimes) (list '(mncexpt) base* index)
 			    (list '(mnctimes) deriv
-				  (list '(mncexpt) base* 
+				  (list '(mncexpt) base*
 					(list '(mplus) pow -1 (list '(mtimes) -1 index)))))
 		      index 0 (list '(mplus) pow -1)) nil))
 	     (sdiff base* x) (gensumindex)))
@@ -126,7 +126,7 @@
 ;;dummy-variable-operators is defined in COMM, which uses it inside of SUBST1.
 (declare-top (special atvars ateqs atp munbound dummy-variable-operators))
 
-(defmfun $atvalue (exp eqs val) 
+(defmfun $atvalue (exp eqs val)
   (let (dl vl fun)
     (cond ((notloreq eqs) (improper-arg-err eqs '$atvalue))
 	  ((or (atom exp) (and (eq (caar exp) '%derivative) (atom (cadr exp))))
@@ -318,7 +318,7 @@
 					  (rt-separ
 					   (list gcd
 						 (rtcon
-						  (rtc-fixitup 
+						  (rtc-fixitup
 						   (rtc-divide-by-gcd roots gcd)
 						   nil))
 						 1)
@@ -345,7 +345,7 @@
 	 (power (power (rtcon (cadr e)) 2) '((rat simp) 1 2)))
 	(t (recur-apply #'rtcon e))))
 
-;; RT-SEPAR separates like roots into their appropriate "buckets", 
+;; RT-SEPAR separates like roots into their appropriate "buckets",
 ;; where a bucket looks like:
 ;; ((<denom of power> (<term to be raised> <numer of power>)
 ;;		     (<term> <numer>)) etc)
@@ -421,7 +421,7 @@
 	  ((and $%piargs (free x '$%i) (free y '$%i)
 		;; Only use asksign if %piargs is on.
 		(cond ((zerop1 y) (if (atan2negp x) (simplify '$%pi) 0))
-		      ((zerop1 x) 
+		      ((zerop1 x)
 		       (if (atan2negp y) (mul2* -1 half%pi) (simplify half%pi)))
 		      ((alike1 y x)
 		       ;; Should we check if ($sign x) is $zero here?
@@ -494,26 +494,32 @@
 
 ;;;; BOX
 
-(defmfun $dpart n (mpart (listify n) nil t nil '$dpart))
+(defmfun $dpart (&rest args)
+  (mpart args nil t nil '$dpart))
 
-(defmfun $lpart n (mpart (cdr (listify n)) nil (list (arg 1)) nil '$lpart))
+(defmfun $lpart (e &rest args)
+  (mpart args nil (list e) nil '$lpart))
 
-(defmfun $box n
-  (cond ((= n 1) (list '(mbox) (arg 1)))
-	((= n 2) (list '(mlabox) (arg 1) (box-label (arg 2))))
-	(t (wna-err '$box))))
+(defmfun $box (e &optional (l nil l?))
+  (if l?
+      (list '(mlabox) e (box-label l))
+      (list '(mbox) e)))
 
-(defmfun box (e label) (if (eq label t) (list '(mbox) e) ($box e (car label))))
+(defmfun box (e label)
+  (if (eq label t)
+      (list '(mbox) e)
+      ($box e (car label))))
 
-(defun box-label (x) (if (atom x) x (implode (cons #\& (mstring x)))))
+(defun box-label (x)
+  (if (atom x)
+      x
+      (implode (cons #\& (mstring x)))))
 
 (declare-top (special label))
 
-(defmfun $rembox n
-  (let ((label (cond ((= n 1) '(nil))
-		     ((= n 2) (box-label (arg 2)))
-		     (t (wna-err '$rembox)))))
-    (rembox1 (arg 1))))
+(defmfun $rembox (e &optional (l nil l?))
+  (let ((label (if l? (box-label l) '(nil))))
+    (rembox1 e)))
 
 (defun rembox1 (e)
   (cond ((atom e) e)
@@ -528,52 +534,53 @@
 
 ;;;; MAPF
 
-
 (declare-top (special scanmapp))
 
 (defmspec $scanmap (l)
-  (let ((scanmapp t)) (resimplify (apply #'scanmap1 (mmapev l)))))
+  (let ((scanmapp t))
+    (resimplify (apply #'scanmap1 (mmapev l)))))
 
-(defmfun scanmap1 n
-  (let ((func (arg 1)) (arg2 (specrepcheck (arg 2))) newarg2)
-    (cond ((eq func '$rat) (merror "`scanmap' results must be in general representation."))
-	  ((> n 2)
-	   (cond ((eq (arg 3) '$bottomup)
-		  (cond ((mapatom arg2) (funcer func (ncons arg2)))
-			(t (subst0 (funcer func
-					   (ncons (mcons-op-args
-						   (mop arg2)
-						   (mapcar #'(lambda (u)
-							       (scanmap1
-								func u '$bottomup))
-							   (margs arg2)))))
-				   arg2))))
-		 ((> n 3) (wna-err '$scanmap))
-		 (t (merror "Only `bottomup' is an acceptable 3rd arg to `scanmap'."))))
-	  ((mapatom arg2) (funcer func (ncons arg2)))
-	  (t (setq newarg2 (specrepcheck (funcer func (ncons arg2))))
-	     (cond ((mapatom newarg2) newarg2)
+(defmfun scanmap1 (func e &optional (flag nil flag?))
+  (let ((arg2 (specrepcheck e)) newarg2)
+    (cond ((eq func '$rat)
+	   (merror "`scanmap' results must be in general representation."))
+	  (flag?
+	   (unless (eq flag '$bottomup)
+	     (merror "Only `bottomup' is an acceptable 3rd arg to `scanmap'."))
+	   (if (mapatom arg2)
+	       (funcer func (ncons arg2))
+	       (subst0 (funcer func
+			       (ncons (mcons-op-args (mop arg2)
+						     (mapcar #'(lambda (u)
+								 (scanmap1 func u '$bottomup))
+							     (margs arg2)))))
+		       arg2)))
+	  ((mapatom arg2)
+	   (funcer func (ncons arg2)))
+	  (t
+	   (setq newarg2 (specrepcheck (funcer func (ncons arg2))))
+	     (cond ((mapatom newarg2)
+		    newarg2)
 		   ((and (alike1 (cadr newarg2) arg2) (null (cddr newarg2)))
 		    (subst0 (cons (ncons (caar newarg2))
-				  (ncons (subst0 
-					  (mcons-op-args
-					   (mop arg2)
-					   (mapcar #'(lambda (u) (scanmap1 func u))
-						   (margs arg2)))
+				  (ncons (subst0
+					  (mcons-op-args (mop arg2)
+							 (mapcar #'(lambda (u) (scanmap1 func u))
+								 (margs arg2)))
 					  arg2)))
 			    newarg2))
-		   (t (subst0 (mcons-op-args
-			       (mop newarg2)
-			       (mapcar #'(lambda (u) (scanmap1 func u))
-				       (margs newarg2)))
-			      newarg2)))))))
+		   (t
+		    (subst0 (mcons-op-args (mop newarg2)
+					   (mapcar #'(lambda (u) (scanmap1 func u))
+						   (margs newarg2)))
+			    newarg2)))))))
 
 (defun subgen (form)	   ; This function does mapping of subscripts.
   (do ((ds (if (eq (caar form) 'mqapply) (list (car form) (cadr form))
 	       (ncons (car form)))
 	   (outermap1 #'dsfunc1 (simplify (car sub)) ds))
        (sub (reverse (or (and (eq 'mqapply (caar form)) (cddr form))
-			 (cdr form))) 
+			 (cdr form)))
 	    (cdr sub)))
       ((null sub) ds)))
 
@@ -587,62 +594,62 @@
 
 ;;;; GENMAT
 
-(defmfun $genmatrix n
-  (let ((args (listify n)))
-    (if (or (< n 2) (> n 5)) (wna-err '$genmatrix))
-    (if (not (or (symbolp (car args))
-		 (hash-table-p (car args))
-		 (and (not (atom (car args)))
-		      (eq (caaar args) 'lambda))))
-	(improper-arg-err (car args) '$genmatrix))
-    (if (notevery #'fixnump (cdr args))
-	(merror "Invalid arguments to `genmatrix':~%~M"
-		(cons '(mlist) (cdr args))))
-    (let* ((header (list (car args) 'array))
-	   (dim1 (cadr args))
-	   (dim2 (if (= n 2) (cadr args) (caddr args)))
-	   (i (if (> n 3) (arg 4) 1))
-	   (j (if (= n 5) (arg 5) i))
-	   (l (ncons '($matrix))))
-      (cond ((and (or (= dim1 0) (= dim2 0)) (= i 1) (= j 1)))
-	    ((or (> i dim1) (> j dim2))
-	     (merror "Invalid arguments to `genmatrix':~%~M"
-		     (cons '(mlist) args))))
-      (do ((i i (1+ i))) ((> i dim1)) (nconc l (ncons (ncons '(mlist)))))
-      (do ((i i (1+ i)) (l (cdr l) (cdr l))) ((> i dim1))
-	(do ((j j (1+ j))) ((> j dim2))
-	  (nconc (car l) (ncons (meval (list header i j))))))
-      l)))
+(defmfun $genmatrix (a i2 &optional (j2 i2) (i1 1) (j1 i1))
+  (unless (or (symbolp a)
+	      (hash-table-p a)
+	      (and (not (atom a))
+		   (eq (caar a) 'lambda)))
+    (improper-arg-err a '$genmatrix))
+  (when (notevery #'fixnump (list i2 j2 i1 j1))
+    (merror "Invalid arguments to `genmatrix':~%~M" (list '(mlist) a i2 j2 i1 j1)))
+  (let ((header (list a 'array))
+	 (l (ncons '($matrix))))
+    (cond ((and (or (zerop i2) (zerop j2)) (= i1 1) (= j1 1)))
+	  ((or (> i1 i2) (> j1 j2))
+	   (merror "Invalid arguments to `genmatrix':~%~M" (list '(mlist) a i2 j2 i1 j1))))
+    (dotimes (i (1+ (- i2 i1)))
+      (nconc l (ncons (ncons '(mlist)))))
+    (do ((i i1 (1+ i))
+	 (l (cdr l) (cdr l)))
+	((> i i2))
+      (do ((j j1 (1+ j)))
+	  ((> j j2))
+	(nconc (car l) (ncons (meval (list header i j))))))
+    l))
 
 ; Execute deep copy for copymatrix and copylist.
 ; Resolves SF bug report [ 1224960 ] sideeffect with copylist.
 ; An optimization would be to call COPY-TREE only on mutable expressions.
 
 (defmfun $copymatrix (x)
-  (if (not ($matrixp x)) (merror "Argument not a matrix - `copymatrix':~%~M" x))
+  (unless ($matrixp x)
+    (merror "Argument not a matrix - `copymatrix':~%~M" x))
   (copy-tree x))
 
 (defmfun $copylist (x)
-  (if (not ($listp x)) (merror "Argument not a list - `copylist':~%~M" x))
+  (unless ($listp x)
+    (merror "Argument not a list - `copylist':~%~M" x))
   (copy-tree x))
 
-(defmfun $copy (x) (copy-tree x))
+(defmfun $copy (x)
+  (copy-tree x))
 
 ;;;; ADDROW
 
-(defmfun $addrow n
-  (cond ((= n 0) (wna-err '$addrow))
-	((not ($matrixp (arg 1))) (merror "First argument to `addrow' must be a matrix"))
-	((= n 1) (arg 1))
-	(t (do ((i 2 (1+ i)) (m (arg 1))) ((> i n) m)
-	     (setq m (addrow m (arg i)))))))
+(defmfun $addrow (m &rest rows)
+  (declare (dynamic-extent rows))
+  (cond ((not ($matrixp m)) (merror "First argument to `addrow' must be a matrix"))
+	((null rows) m)
+	(t (dolist (r rows m)
+	     (setq m (addrow m r))))))
 
-(defmfun $addcol n
-  (cond ((= n 0) (wna-err '$addcol))
-	((not ($matrixp (arg 1))) (merror "First argument to `addcol' must be a matrix"))
-	((= n 1) (arg 1))
-	(t (do ((i 2 (1+ i)) (m ($transpose (arg 1)))) ((> i n) ($transpose m))
-	     (setq m (addrow m ($transpose (arg i))))))))
+(defmfun $addcol (m &rest cols)
+  (declare (dynamic-extent cols))
+  (cond ((not ($matrixp m)) (merror "First argument to `addcol' must be a matrix"))
+	((null cols) m)
+	(t (let ((m ($transpose m)))
+	     (dolist (c cols ($transpose m))
+	       (setq m (addrow m ($transpose c))))))))
 
 (defun addrow (m r)
   (cond ((not (mxorlistp r)) (merror "Illegal argument to `addrow' or `addcol'"))
@@ -665,86 +672,81 @@
 	(t (cons '(mqapply array) (cons ary (cdr subs))))))
 
 (defmspec $arrayinfo (ary)
-  (setq ary (cdr ary)) 
+  (setq ary (cdr ary))
   (arrayinfo-aux (car ary) (getvalue (car ary))))
 
 (defun arrayinfo-aux (sym val)
-  (prog
-      (arra ary)
-     (setq arra  val)(setq ary sym)
-     (cond (arra
-	    (cond
-	      ((hash-table-p arra)
-	       (let ((dim1 (gethash 'dim1 arra)))
-		 (return
-		   (list* '(mlist) '$hash_table (if dim1 1 t)
-			  (loop for u being the hash-keys in arra using (hash-value v)
-				 when (not (eq u 'dim1))
-				 collect
-				 (if (progn v dim1) ;;ignore v
-				     u (cons '(mlist simp) u)))))))
-	      ((arrayp arra)
-	       (return
-		 (let (dims)
-		   (list '(mlist)
-			 '$declared
-			 ;; they don't want more info (array-type arra)
-			 (length (setq dims (array-dimensions arra)))
-			 (cons '(mlist) (mapcar #'1- dims))))))))
-	   (t
-	    (let ((gen (mgetl  sym '(hashar array))) ary1)
-	      (cond ((null gen) (merror "Not an array - `arrayinfo':~%~M" ary))
-		    ((mfilep (cadr gen))
-		     (i-$unstore (ncons ary))
-		     (setq gen (mgetl ary '(hashar array)))))
-	      (setq ary1 (cadr gen))
-	      (cond ((eq (car gen) 'hashar)
-		     (setq ary1 (symbol-array ary1))
-		     (return
-		       (append '((mlist simp) $hashed)
-			       (cons (aref ary1 2)
-				     (do ((i 3 (1+ i)) (l)
-					  (n (cadr (arraydims ary1))))
-					 ((= i n) (sort l
-							#'(lambda (x y) (great y x))))
-				       (do ((l1 (aref ary1 i)
-						(cdr l1))) ((null l1))
-					 (setq l (cons
-						  (cons
-						   '(mlist simp)
-						   (caar l1))
-						  l))))))))
-		    (t (setq ary1 (arraydims ary1))
-		       (return (list '(mlist simp)
-				     (cond ((safe-get ary 'array)
-					    (cdr (assoc (car ary1)
-						       '((t . $complete) (fixnum . $integer)
-							 (flonum . $float)) :test #'eq)))
-					   (t '$declared))
-				     (length (cdr ary1))
-				     (cons '(mlist simp) (mapcar #'1- (cdr ary1))))))))))))
+  (prog (arra ary)
+     (setq arra val)
+     (setq ary sym)
+     (if arra
+	 (cond ((hash-table-p arra)
+		(let ((dim1 (gethash 'dim1 arra)))
+		  (return (list* '(mlist) '$hash_table (if dim1 1 t)
+				 (loop for u being the hash-keys in arra using (hash-value v)
+				    unless (eq u 'dim1)
+				    collect
+				    (if (progn v dim1) ;;ignore v
+					u
+					(cons '(mlist simp) u)))))))
+	       ((arrayp arra)
+		(return (let ((dims (array-dimensions arra)))
+			  (list '(mlist) '$declared
+				;; they don't want more info (array-type arra)
+				(length dims)
+				(cons '(mlist) (mapcar #'1- dims)))))))
+	 (let ((gen (mgetl sym '(hashar array))) ary1)
+	   (cond ((null gen)
+		  (merror "Not an array - `arrayinfo':~%~M" ary))
+		 ((mfilep (cadr gen))
+		  (i-$unstore (ncons ary))
+		  (setq gen (mgetl ary '(hashar array)))))
+	   (setq ary1 (cadr gen))
+	   (cond ((eq (car gen) 'hashar)
+		  (setq ary1 (symbol-array ary1))
+		  (return (append '((mlist simp) $hashed)
+				  (cons (aref ary1 2)
+					(do ((i 3 (1+ i)) (l)
+					     (n (cadr (arraydims ary1))))
+					    ((= i n) (sort l #'(lambda (x y) (great y x))))
+					  (do ((l1 (aref ary1 i) (cdr l1)))
+					      ((null l1))
+					    (push (cons '(mlist simp) (caar l1)) l)))))))
+		 (t (setq ary1 (arraydims ary1))
+		    (return (list '(mlist simp)
+				  (cond ((safe-get ary 'array)
+					 (cdr (assoc (car ary1)
+						     '((t . $complete) (fixnum . $integer)
+						       (flonum . $float)) :test #'eq)))
+					(t '$declared))
+				  (length (cdr ary1))
+				  (cons '(mlist simp) (mapcar #'1- (cdr ary1)))))))))))
 
 
 ;;;; ALIAS
 
 (declare-top (special aliaslist aliascntr greatorder lessorder))
 
-(defmspec $makeatomic (l) (setq l (cdr l))
-	  (do ((l l (cdr l)) (bas) (x)) ((null l) '$done)
-	    (if (or (atom (car l))
-		    (not (or (setq x (member (caaar l) '(mexpt mncexpt) :test #'eq))
-			     (member 'array (cdaar l) :test #'eq))))
-		(improper-arg-err (car l) '$makeatomic))
-	    (if x (setq bas (cadar l) x (and (atom (caddar l)) (caddar l)))
-		(setq bas (caaar l) x (and (atom (cadar l)) (cadar l))))
-	    (if (not (atom bas)) (improper-arg-err (car l) '$makeatomic))
-	    (setq aliaslist
-		  (cons (cons (car l)
-			      (implode
-			       (nconc (exploden bas)
-				      (or (and x (exploden x)) (ncons '| |))
-				      (cons '$ (mexploden (setq aliascntr (1+ aliascntr)))))))
-			aliaslist))))
+(defmspec $makeatomic (l)
+  (setq l (cdr l))
+  (do ((l l (cdr l)) (bas) (x))
+      ((null l) '$done)
+    (if (or (atom (car l))
+	    (not (or (setq x (member (caaar l) '(mexpt mncexpt) :test #'eq))
+		     (member 'array (cdaar l) :test #'eq))))
+	(improper-arg-err (car l) '$makeatomic))
+    (if x
+	(setq bas (cadar l) x (and (atom (caddar l)) (caddar l)))
+	(setq bas (caaar l) x (and (atom (cadar l)) (cadar l))))
+    (unless (atom bas)
+      (improper-arg-err (car l) '$makeatomic))
+    (setq aliaslist
+	  (cons (cons (car l)
+		      (implode
+		       (nconc (exploden bas)
+			      (or (and x (exploden x)) (ncons '| |))
+			      (cons '$ (mexploden (incf aliascntr))))))
+		aliaslist))))
 
 (defmspec $ordergreat (l)
   (if greatorder (merror "Reordering is not allowed."))
@@ -762,7 +764,7 @@
 	   (implode (nconc (ncons char) (mexploden n)
 			   (exploden (stripdollar (car l))))))))
 
-(defmfun $unorder nil
+(defmfun $unorder ()
   (let ((l (delete nil
 		 (cons '(mlist simp)
 		       (nconc (mapcar #'(lambda (x) (remalias (getalias x))) lessorder)
