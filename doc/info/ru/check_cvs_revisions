@@ -11,6 +11,7 @@ for ef in $etexi ; do
     	    echo "Translated - $ef"
 	else
     	    echo "*** CVS revisions don't match: Original=$ef_rev, Translated=$rf_rev - $ef"
+	    ( cd .. ; cvs diff -u -r $rf_rev -r $ef_rev $ef > ./ru/${ef}_${rf_rev}_${ef_rev}.diff ) 
 	fi
     else
 	echo "*** Not translated - $ef"
