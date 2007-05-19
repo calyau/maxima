@@ -1,11 +1,11 @@
 ;;; maxima.el --- Major modes for writing Maxima code
 
 ;; Copyright (C) 1998,1999 William F. Schelter
-;; Copyright (C) 2001 Jay Belanger
+;; Copyright (C) 2001-2007 Jay Belanger
 
 ;; Author: William F. Schelter
 ;;         Jay Belanger
-;; Maintainer: Jay Belanger <belanger@truman.edu>
+;;
 ;; Keywords: maxima
 
 ;; This program is free software; you can redistribute it and/or
@@ -23,8 +23,6 @@
 ;; Software Foundation, Inc., 59 Temple Place, Suite 330, Boston,
 ;; MA 02111-1307 USA
 ;;
-;;
-;; Please send suggestions and bug reports to <belanger@truman.edu>. 
 ;; You will need both maxima.el and maxima-font-lock.el
 
 ;;; Commentary:
@@ -2804,8 +2802,8 @@ The variable `tab-width' controls the spacing of tab stops."
         (setq inferior-maxima-process (get-buffer-process mbuf))
         (add-hook 'comint-output-filter-functions
                   'inferior-maxima-output-filter nil t)
-;        (add-hook 'comint-output-filter-functions
-;                  'inferior-maxima-replace-tabs-by-spaces nil t)
+        (add-hook 'comint-output-filter-functions
+                  'inferior-maxima-replace-tabs-by-spaces nil t)
 ;        (add-hook 'comint-output-filter-functions
 ;                  'inferior-maxima-remove-double-input-prompt nil t)
 	(if maxima-fix-double-prompt
@@ -3415,7 +3413,10 @@ will be deleted."
       (maxima-forward-over-comment-whitespace)
       (setq realbeg (point))
       (if (re-search-forward (maxima-minor-output-mark) end t)
-          (setq realend (match-beginning 0))
+          (setq realend  
+                (if (eq major-mode 'maxima-mode)
+                    (- (point) (length maxima-mode-minor-output))
+                  (- (point) (length maxima-minor-output))))
         (goto-char end)
         (maxima-back-over-comment-whitespace)
         (setq realend (point))))
