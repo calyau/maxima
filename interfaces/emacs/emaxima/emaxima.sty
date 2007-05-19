@@ -424,7 +424,7 @@
 \newcommand{\maximaoutput}{}
 
 \newenvironment{maxima}[1][]%
-{\renewcommand{\maximaoutput}
+{~\par\renewcommand{\maximaoutput}
  {\@ifstar{\maximatexoutput}{\maximaverbatimoutput}}
  \begingroup
  \m@ximasetname{#1}
@@ -515,7 +515,7 @@
 \newcommand{\maximasessionbottom}{}
 
 \newenvironment{maximasession}[1][]
-{\renewcommand{\maximaoutput}
+{~\par\renewcommand{\maximaoutput}
   {\begingroup
    \@ifstar{\maximasessiontexoutput}{\maximasessionverbatimoutput}}
  \ifthenelse{\equal{#1}{}}
@@ -531,6 +531,22 @@
    {\par\maximasessionbottom
     \endgroup\par\noindent}               % TeX output
    {}}}
+
+\newenvironment{maximanu}
+{\begin{maxima}}
+{\end{maxima}}
+
+\newenvironment{maximasessionnu}
+{\begin{maximasession}}
+{\end{maximasession}}
+
+\newenvironment{maximanu*}
+{\begin{maxima*}}
+{\end{maxima*}}
+
+\newenvironment{maximasessionnu*}
+{\begin{maximasession*}}
+{\end{maximasession*}}
 
 \ifthenelse{\boolean{m@ximapreview}}
 {\RequirePackage{preview}
