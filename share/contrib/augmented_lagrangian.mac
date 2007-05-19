@@ -71,7 +71,7 @@ augmented_lagrangian_method (FOM, xx, constraints, yy, [optional_args]) :=
 
   FOM_augment :
       apply ("+", makelist (%lambda[i] * constraints[i], i, 1, nconstraints))
-    + apply ("+", makelist (%nu[i] * constraints[i]^2, i, 1, nconstraints)),
+    + (1/2) * apply ("+", makelist (%nu[i] * constraints[i]^2, i, 1, nconstraints)),
 
   if listp (FOM)
     then block ([FOM_proper, FOM_grad],
@@ -92,6 +92,8 @@ augmented_lagrangian_method (FOM, xx, constraints, yy, [optional_args]) :=
     
       yy: map (rhs, soln),
 
-      %lambda: %lambda + apply ("+", %nu * map (lambda ([c], subst (soln, c)), constraints))),
+      %lambda: %lambda + apply ("+", %nu * map (lambda ([c], subst (soln, c)), constraints)),
+      
+      %nu : 2 * %nu),
 
     [map ("=", xx, yy), '%lambda = %lambda]));
