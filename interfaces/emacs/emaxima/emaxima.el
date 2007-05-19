@@ -3,11 +3,11 @@
 ;; Modified for Maxima by Jay Belanger
 
 ;; Copyright (C) 1991, 1993 Dan Dill (dan@chem.bu.edu) 
-;;               1999-2001 Jay Belanger (belanger@truman.edu)
+;;               1999-2007 Jay Belanger (belanger@truman.edu)
 
-;; Author: Dan Dill
-;;         Jay Belanger
-;; Maintainer: Jay Belanger <belanger@truman.edu>
+;; Authors: Dan Dill
+;;          Jay Belanger
+;;
 ;; Keywords: maxima, emaxima
 
 ;; This program is free software; you can redistribute it and/or
@@ -26,9 +26,6 @@
 ;; MA 02111-1307 USA
 ;;
 ;;
-;; Please send suggestions and bug reports to <belanger@truman.edu>. 
-;; The latest version of this package should be available at
-;; ftp://vh213601.truman.edu/pub/Maxima
 ;; You will need, in addition to this file,
 ;; maxima.el, maxima-font-lock.el and emaxima.sty
 
@@ -55,6 +52,12 @@ Possible choices are 'auctex, 'tex or nil"
                  (const auctex)
                  (const tex) 
                  (const nil)))
+
+(defcustom emaxima-use-emaxima-indent nil
+  "Use Maxima indent when in cells.
+Only works with AUCTeX."
+  :group 'emaxima
+  :type 'boolean)
 
 (defcustom emaxima-tex-lisp-file (locate-library "emaxima.lisp" t)
   "The file to be loaded that allows TeX output."
@@ -116,27 +119,31 @@ The buffers are used in package and cell assembly.")
   "Buffer from which emaxima-collate-cells works.")
 
 (defconst emaxima-standard-cell-begin-regexp
-  "\\\\begin{maxima\\(?:\\*?}\\)"
+  "\\\\begin{maxima\\(?:\\(?:\\*\\|nu\\*?\\)?}\\)"
   "A regexp matching the beginning of a standard cell.")
 
 (defconst emaxima-standard-cell-end-regexp
-  "\\\\end{maxima\\(?:\\*?}\\)"
+"\\\\end{maxima\\(?:\\(?:\\*\\|nu\\*?\\)?}\\)"
   "A regexp matching the end of a standard cell.")
 
 (defconst emaxima-session-cell-begin-regexp
-  "\\\\begin{maximasession\\(?:\\*?}\\)"
+  "\\\\begin{maximasession\\(?:\\(?:\\*\\|nu\\*?\\)?}\\)"
   "A regexp matching the beginning of a session cell.")
 
 (defconst emaxima-session-cell-end-regexp
-  "\\\\end{maximasession\\(?:\\*?}\\)"
+"\\\\end{maximasession\\(?:\\(?:\\*\\|nu\\*?\\)?}\\)"
   "A regexp matching the end of a session cell.")
 
 (defconst emaxima-any-cell-begin-regexp
+"\\\\begin{maxima\\(?:\\(?:\\*\\|nu\\*?\\|session\\(?:\\*\\|nu\\*?\\)?\\)?}\\)"
+  "A regexp matching the beginning of any cell.")
+
+(defconst emaxima-any-non-nu-cell-begin-regexp
   "\\\\begin{maxima\\(?:\\(?:\\*\\|session\\*?\\)?}\\)"
   "A regexp matching the beginning of any cell.")
 
 (defconst emaxima-any-cell-end-regexp
-  "\\\\end{maxima\\(?:\\(?:\\*\\|session\\*?\\)?}\\)"
+  "\\\\end{maxima\\(?:\\(?:\\*\\|nu\\*?\\|session\\(?:\\*\\|nu\\*?\\)?\\)?}\\)"
   "A regexp matching the end of any cell.")
 
 (defconst emaxima-package-cell-regexp
@@ -197,6 +204,12 @@ The next time the file is loaded, it will then be in EMaxima mode"
   (maxima-start)
   (when emaxima-tex-lisp-file
     (maxima-single-string-wait "block(display2d:origdisplay, linenum:linenum-1)$")))
+
+(defun emaxima-indent-line ()
+  (interactive)
+  (if (emaxima-cell-p)
+      (maxima-indent-line)
+    (LaTeX-indent-line)))
 
 ;;; Which type of cell, if any, is the point in.
 
@@ -388,12 +401,15 @@ The next time the file is loaded, it will then be in EMaxima mode"
               (point))
           cur-pos)))))
               
-(defun emaxima-next-cell-start ()
+(defun emaxima-next-cell-start (&optional arg)
   "Get start of next cell.  If none, return current position."
   (let ((cur-pos (point))
-        (start nil))
+        (start nil)
+        (re (if arg
+                emaxima-any-cell-begin-regexp
+              emaxima-any-non-nu-cell-begin-regexp)))
     (save-excursion
-      (if (re-search-forward emaxima-any-cell-begin-regexp (point-max) t)
+      (if (re-search-forward re (point-max) t)
           (progn
             (if (not (emaxima-cell-p))
                 cur-pos)
@@ -403,13 +419,13 @@ The next time the file is loaded, it will then be in EMaxima mode"
 
 ;;; Cell motion
 
-(defun emaxima-forward-cell ()
+(defun emaxima-forward-cell (&optional arg)
   "Move to next cell."
   (interactive)
     (let ((cur-pos (point))
           (cell-pos (point-max))
           new-pos)
-        (setq new-pos (emaxima-next-cell-start))
+        (setq new-pos (emaxima-next-cell-start arg))
         (if (not (equal new-pos cur-pos))
             (if (> new-pos cell-pos)
                 nil
@@ -449,6 +465,19 @@ point in cell.  Output assumed to follow input, separated by a
           (point))
       nil)))
 
+(defun emaxima-empty-output-p ()
+  "Check if there is not output or only empty lines in output."
+  (save-excursion
+    (goto-char (emaxima-cell-start))
+    (if (re-search-forward "^\\\\maximaoutput"
+                           (emaxima-cell-end) t)
+        (progn
+          (forward-line 1)
+          (while (looking-at "[ \t]*$")
+            (forward-line 1))
+          (looking-at "\\\\end{maxima"))
+      nil)))
+     
 (defun emaxima-delete-output ()
   "Delete current output (if any).  Assumes point in cell.
 Output assumed to follow input, separated by a emaxima-output-marker line.
@@ -1304,7 +1333,9 @@ Return nil if no name or error in name."
    ((emaxima-standard-cell-p)
     (emaxima-update-standard-cell))
    ((emaxima-session-cell-p)
-    (emaxima-update-session-cell))))
+    (emaxima-update-session-cell)))
+  (if (emaxima-empty-output-p)
+      (emaxima-delete-output)))
 
 (defun emaxima-tex-update-cell ()
   "Send the current cell's contents to Maxima, and return the results."
@@ -1312,7 +1343,9 @@ Return nil if no name or error in name."
    ((emaxima-standard-cell-p)
     (emaxima-tex-update-standard-cell))
    ((emaxima-session-cell-p)
-    (emaxima-tex-update-session-cell))))
+    (emaxima-tex-update-session-cell)))
+  (if (emaxima-empty-output-p)
+      (emaxima-delete-output)))
 
 (defun emaxima-update-standard-cell ()
   "Send the current cell's contents to Maxima, and return the results."
@@ -1435,7 +1468,7 @@ With C-u prefix, update without confirmation at each cell."
       (setq ask nil))
     (save-excursion
       (goto-char (point-min))
-      (while (emaxima-forward-cell)
+      (while (emaxima-forward-cell t)
         (if (or ask (y-or-n-p "Update this cell? "))
             (emaxima-update-cell))))
     (if (and emaxima-preview-after-update-all
@@ -1517,9 +1550,13 @@ With C-u prefix, update without confirmation at each cell."
   (save-excursion
     (cond 
      ((emaxima-standard-cell-p)
-      (emaxima-update-standard-cell))
+      (emaxima-update-standard-cell)
+      (if (emaxima-empty-output-p)
+          (emaxima-delete-output)))
      ((emaxima-session-cell-p)
-      (emaxima-update-session-cell))
+      (emaxima-update-session-cell)
+      (if (emaxima-empty-output-p)
+          (emaxima-delete-output)))
      (t
       (error "Not in a cell.")))))
 
@@ -1534,11 +1571,15 @@ With C-u prefix, update without confirmation at each cell."
        ((emaxima-standard-cell-p)
         (emaxima-tex-on)
         (emaxima-tex-update-standard-cell)
-        (emaxima-tex-off))
+        (emaxima-tex-off)
+        (if (emaxima-empty-output-p)
+            (emaxima-delete-output)))
        ((emaxima-session-cell-p)
         (emaxima-tex-on)
         (emaxima-tex-update-session-cell)
-        (emaxima-tex-off))
+        (emaxima-tex-off)
+        (if (emaxima-empty-output-p)
+            (emaxima-delete-output)))
        (t
         (error "Not in a cell."))))))
   
@@ -1862,7 +1903,7 @@ The commands for working with cells are:
  \\[emaxima-forward-cell] go to the next cell 
  \\[emaxima-backward-cell] go to the previous cell
 
-(With a prefix, C-u \\[emaxima-update-all-cells] and C-u \\[emaxima-tex-update-all-cells] will update the cells 
+\(With a prefix, C-u \\[emaxima-update-all-cells] and C-u \\[emaxima-tex-update-all-cells] will update the cells 
 without prompting)
 Since the Maxima output can be returned to the EMaxima buffer,
 the buffer which runs the Maxima process is not shown.
@@ -1897,6 +1938,10 @@ already) so the file will begin in emaxima-mode next time it's opened.
      '(("\\endmaxima" sw-off)))
   (when (eq emaxima-use-tex 'auctex)
     (require 'font-latex)
+    (when emaxima-use-emaxima-indent
+      (make-local-variable 'indent-line-function)
+      (setq indent-line-function 'emaxima-indent-line)))
+        
 ;;     (defvar emaxima-keywords
 ;;       (append font-latex-keywords-2
 ;;               '((emaxima-match-cells (0 font-lock-function-name-face t t))
@@ -1909,7 +1954,7 @@ already) so the file will begin in emaxima-mode next time it's opened.
 ;;             nil nil ((?\( . ".") (?\) . ".") (?$ . "\"")) nil
 ;;             (font-lock-comment-start-regexp . "%")
 ;;             (font-lock-mark-block-function . mark-paragraph)))
-)
+;;)
   (if (inferior-maxima-running)
      (emaxima-load-tex-library))
   (add-hook 'inferior-maxima-mode-hook 'emaxima-load-tex-library)
