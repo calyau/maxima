@@ -215,20 +215,22 @@
 		 (simplifya (cons (cons (caar e) (member 'array (cdar e) :test #'eq)) newargs)
 			    nil))))))
 
-(defmfun $depends n
-  (if (oddp n) (merror "`depends' takes an even number of arguments."))
-  (do ((i 1 (+ i 2)) (l))
-      ((> i n) (i-$dependencies (nreverse l)))
-    (cond (($listp (arg i))
-	   (do ((l1 (cdr (arg i)) (cdr l1))) ((null l1))
-	     (setq l (cons (depends1 (car l1) (arg (1+ i))) l))))
-	  (t (setq l (cons (depends1 (arg i) (arg (1+ i))) l))))))
+(defmfun $depends (&rest args)
+  (when (oddp (length args))
+    (merror "`depends' takes an even number of arguments."))
+  (do ((args args (cddr args))
+       (l))
+      ((null args) (i-$dependencies (nreverse l)))
+    (if ($listp (first args))
+	(mapc #'(lambda (e) (push (depends1 e (second args)) l)) (cdr (first args)))
+	(push (depends1 (first args) (second args)) l))))
 
 (defun depends1 (x y)
   (nonsymchk x '$depends)
   (cons (cons x nil) (if ($listp y) (cdr y) (cons y nil))))
 
-(defmspec $dependencies (form) (i-$dependencies (cdr form)))
+(defmspec $dependencies (form)
+  (i-$dependencies (cdr form)))
 
 (defmfun i-$dependencies (l)
   (dolist (z l)
@@ -275,9 +277,13 @@
 	     (or (cdr $gradefs) (setq $gradefs (copy-list '((mlist simp)))))
 	     (add2lnc (cons (cons (caar z) nil) (cdr z)) $gradefs) z))))
 
-(defmfun $diff n (let (derivlist) (deriv (listify n))))
+(defmfun $diff (&rest args)
+  (declare (dynamic-extent args))
+  (let (derivlist)
+    (deriv args)))
 
-(defmfun $del (e) (stotaldiff e))
+(defmfun $del (e)
+  (stotaldiff e))
 
 (defun deriv (e)
   (prog (exp z count)
@@ -569,14 +575,16 @@
 (defmspec $ldisplay (form)
   (disp1 (cdr form) t t))
 
-(defmfun $ldisp n
-  (disp1 (listify n) t nil))
+(defmfun $ldisp (&rest args)
+  (declare (dynamic-extent args))
+  (disp1 args t nil))
 
-(defmspec $display
-    (form) (disp1 (cdr form) nil t))
+(defmspec $display (form)
+  (disp1 (cdr form) nil t))
 
-(defmfun $disp n
-  (disp1 (listify n) nil nil))
+(defmfun $disp (&rest args)
+  (declare (dynamic-extent args))
+  (disp1 args nil nil))
 
 (defun disp1 (ll lablist eqnsp)
   (if lablist (setq lablist (cons '(mlist simp) nil)))
@@ -632,18 +640,17 @@
 	   (mterpri)))
   '$done)
 
-(defmfun $dispform n
-  (if (not (or (= n 1) (and (= n 2) (eq (arg 2) '$all))))
-      (merror "Incorrect arguments to `dispform'"))
-  (let ((e (arg 1)))
-    (if (or (atom e)
-	    (atom (setq e (if (= n 1) (nformat e) (nformat-all e))))
-	    (member 'simp (cdar e) :test #'eq))
-	e
-	(cons (cons (caar e) (cons 'simp (cdar e)))
-	      (if (and (eq (caar e) 'mplus) (not $powerdisp))
-		  (reverse (cdr e))
-		  (cdr e))))))
+(defmfun $dispform (e &optional (flag nil flag?))
+  (when (and flag? (not (eq flag '$all)))
+    (merror "Incorrect second argument to `dispform'"))
+  (if (or (atom e)
+	  (atom (setq e (if flag? (nformat-all e) (nformat e))))
+	  (member 'simp (cdar e) :test #'eq))
+      e
+      (cons (cons (caar e) (cons 'simp (cdar e)))
+	    (if (and (eq (caar e) 'mplus) (not $powerdisp))
+		(reverse (cdr e))
+		(cdr e)))))
 
 ;;; These functions implement the Macsyma functions $op and $operatorp.
 ;;; Dan Stanger
@@ -655,11 +662,13 @@
       ($member ($op expr) oplist)
       (equal ($op expr) oplist)))
 
-(defmfun $part n
-  (mpart (listify n) nil nil $inflag '$part))
+(defmfun $part (&rest args)
+  (declare (dynamic-extent args))
+  (mpart args nil nil $inflag '$part))
 
-(defmfun $inpart n
-  (mpart (listify n) nil nil t '$inpart))
+(defmfun $inpart (&rest args)
+  (declare (dynamic-extent args))
+  (mpart args nil nil t '$inpart))
 
 (defmspec $substpart (l)
   (let ((substp t))
@@ -693,58 +702,58 @@
 		  ((not specp) (setq exp (nformat exp)))
 		  (t (setq exp (nformat-all exp)))))
 	   ((specrepp exp) (setq exp (specdisrep exp))))
-     (if (and (atom exp) (null $partswitch))
-	 (merror "~:M called on atom: ~:M" fn exp))
-     (if (and inflag specp) (setq exp (copy-tree exp)))
+     (when (and (atom exp) (null $partswitch))
+       (merror "~:M called on atom: ~:M" fn exp))
+     (when (and inflag specp)
+       (setq exp (copy-tree exp)))
      (setq exp* exp)
-     start(cond ((or (atom exp) (eq (caar exp) 'bigfloat)) (go err))
-		((equal (setq arg (cond (substflag (meval (car arglist)))
-					(t (car arglist))))
-			0)
-		 (setq arglist (cdr arglist))
-		 (cond ((mnump substitem)
-			(merror "~M is an invalid operator in ~:M"
-				substitem fn))
-		       ((and specp arglist)
-			(if (eq (caar exp) 'mqapply)
-			    (prog2 (setq exp (cadr exp)) (go start))
-			    (merror "Invalid operator in ~:M" fn)))
-		       (t (setq $piece (getop (mop exp)))
-			  (return
-			    (cond (substflag
-				   (setq substitem (getopr (meval substitem)))
-				   (cond ((mnump substitem)
-					  (merror "Invalid operator in ~:M:~%~M"
-						  fn substitem))
-					 ((not (atom substitem))
-					  (if (not (eq (caar exp) 'mqapply))
-					      (rplaca (rplacd exp (cons (car exp)
-									(cdr exp)))
-						      '(mqapply)))
-					  (rplaca (cdr exp) substitem)
-					  (return (resimplify exp*)))
-					 ((eq (caar exp) 'mqapply)
-					  (rplacd exp (cddr exp))))
-				   (rplaca exp (cons substitem
-						     (if (and (member 'array (cdar exp) :test #'eq)
-							      (not (mopp substitem)))
-							 '(array))))
-				   (resimplify exp*))
-				  (dispflag
-				   (rplacd exp (cdr (box (copy-tree exp) dispflag)))
-				   (rplaca exp (if (eq dispflag t)
-						   '(mbox)
-						   '(mlabox)))
-				   (resimplify exp*))
-				  (t (when arglist (setq exp $piece) (go a))
-				     $piece))))))
-		((not (atom arg)) (go several))
-		((not (fixnump arg))
-		 (merror "Non-integer argument to ~:M:~%~M" fn arg))
-		((< arg 0) (go bad)))
+     start (cond ((or (atom exp) (eq (caar exp) 'bigfloat)) (go err))
+		 ((equal (setq arg (if substflag (meval (car arglist)) (car arglist)))
+			 0)
+		  (setq arglist (cdr arglist))
+		  (cond ((mnump substitem)
+			 (merror "~M is an invalid operator in ~:M" substitem fn))
+			((and specp arglist)
+			 (if (eq (caar exp) 'mqapply)
+			     (prog2 (setq exp (cadr exp)) (go start))
+			     (merror "Invalid operator in ~:M" fn)))
+			(t (setq $piece (getop (mop exp)))
+			   (return
+			     (cond (substflag
+				    (setq substitem (getopr (meval substitem)))
+				    (cond ((mnump substitem)
+					   (merror "Invalid operator in ~:M:~%~M"
+						   fn substitem))
+					  ((not (atom substitem))
+					   (if (not (eq (caar exp) 'mqapply))
+					       (rplaca (rplacd exp (cons (car exp)
+									 (cdr exp)))
+						       '(mqapply)))
+					   (rplaca (cdr exp) substitem)
+					   (return (resimplify exp*)))
+					  ((eq (caar exp) 'mqapply)
+					   (rplacd exp (cddr exp))))
+				    (rplaca exp (cons substitem
+						      (if (and (member 'array (cdar exp) :test #'eq)
+							       (not (mopp substitem)))
+							  '(array))))
+				    (resimplify exp*))
+				   (dispflag
+				    (rplacd exp (cdr (box (copy-tree exp) dispflag)))
+				    (rplaca exp (if (eq dispflag t)
+						    '(mbox)
+						    '(mlabox)))
+				    (resimplify exp*))
+				   (t (when arglist (setq exp $piece) (go a))
+				      $piece))))))
+		 ((not (atom arg)) (go several))
+		 ((not (fixnump arg))
+		  (merror "Non-integer argument to ~:M:~%~M" fn arg))
+		 ((< arg 0) (go bad)))
      (if (eq (caar exp) 'mqapply) (setq exp (cdr exp)))
      loop (cond ((not (zerop arg)) (setq arg (1- arg) exp (cdr exp))
-		 (if (null exp) (go err)) (go loop))
+		 (if (null exp) (go err))
+		 (go loop))
 		((null (setq arglist (cdr arglist)))
 		 (return (cond (substflag (setq $piece (resimplify (car exp)))
 					  (rplaca exp (meval substitem))
@@ -823,7 +832,6 @@
 (defmfun getopr (x)
   (or (and (symbolp x) (get x 'opr)) x))
 
-
 (defmfun $listp (x)
   (and (not (atom x))
        (not (atom (car x)))
@@ -841,22 +849,23 @@
   (atomchk (setq e (format1 e)) '$reverse nil)
   (mcons-exp-args e (reverse (margs e))))
 
-(defmfun $append n
-  (if (= n 0)
+(defmfun $append (&rest args)
+  (if (null args)
       '((mlist simp))
-      (let ((arg1 (specrepcheck (arg 1))) op arrp)
+      (let ((arg1 (specrepcheck (first args))) op arrp)
 	(atomchk arg1 '$append nil)
-	(setq op (mop arg1) arrp (if (member 'array (cdar arg1) :test #'eq) t))
+	(setq op (mop arg1)
+	      arrp (if (member 'array (cdar arg1) :test #'eq) t))
 	(mcons-exp-args
 	 arg1
 	 (apply #'append
 		(mapcar #'(lambda (u)
 			    (atomchk (setq u (specrepcheck u)) '$append nil)
-			    (if (or (not (alike1 op (mop u)))
-				    (not (eq arrp (if (member 'array (cdar u) :test #'eq) t))))
-				(merror "Arguments to `append' are not compatible."))
+			    (unless (and (alike1 op (mop u))
+					 (eq arrp (if (member 'array (cdar u) :test #'eq) t)))
+			      (merror "Arguments to `append' are not compatible."))
 			    (margs u))
-			(listify n)))))))
+			args))))))
 
 (defun mcons-exp-args (e args)
   (if (eq (caar e) 'mqapply)
@@ -872,7 +881,9 @@
       (merror "~Margument value `~M' to ~:M was not a list" (if 2ndp "2nd " "") e fun)))
 
 (defmfun format1 (e)
-  (cond (($listp e) e) ($inflag (specrepcheck e)) (t (nformat e))))
+  (cond (($listp e) e)
+	($inflag (specrepcheck e))
+	(t (nformat e))))
 
 (defmfun $first (e)
   (atomchk (setq e (format1 e)) '$first nil)
@@ -900,53 +911,53 @@
 (make-nth ninth   9)
 (make-nth tenth  10)
 
-(defmfun $rest n
+(defmfun $rest (e &optional (n 1 n?))
   (prog (m fun fun1 revp)
-     (if (and (= n 2) (equal (arg 2) 0)) (return (arg 1)))
-     (atomchk (setq m (format1 (arg 1))) '$rest nil)
-     (cond ((= n 1))
-	   ((not (= n 2)) (wna-err '$rest))
-	   ((not (fixnump (arg 2)))
-	    (merror "2nd argument to `rest' must be an integer:~%~M"
-		    (arg 2)))
-	   ((minusp (setq n (arg 2))) (setq n (- n) revp t)))
+     (when (and n? (equal n 0))
+       (return e))
+     (atomchk (setq m (format1 e)) '$rest nil)
+     (cond ((and n? (not (fixnump n)))
+	    (merror "2nd argument to `rest' must be an integer: ~M" n))
+	   ((minusp n)
+	    (setq n (- n) revp t)))
      (if (< (length (margs m)) n)
-	 (if $partswitch (return '$end) (merror "`rest' fell off end.")))
+	 (if $partswitch
+	     (return '$end)
+	     (merror "`rest' fell off end.")))
      (setq fun (car m))
-     (if (eq (car fun) 'mqapply) (setq fun1 (cadr m) m (cdr m)))
+     (when (eq (car fun) 'mqapply)
+       (setq fun1 (cadr m)
+	     m (cdr m)))
      (setq m (cdr m))
-     (if revp (setq m (reverse m)))
-     (do ((n n (1- n))) ((zerop n)) (setq m (cdr m)))
+     (when revp (setq m (reverse m)))
+     (setq m (nthcdr n m))
      (setq m (cons (if (eq (car fun) 'mlist) fun (delsimp fun))
 		   (if revp (nreverse m) m)))
-     (if (eq (car fun) 'mqapply)
-	 (return (cons (car m) (cons fun1 (cdr m)))))
+     (when (eq (car fun) 'mqapply)
+       (return (cons (car m) (cons fun1 (cdr m)))))
      (return m)))
 
 (defmfun $last (e)
   (atomchk (setq e (format1 e)) '$last nil)
-  (if (null (cdr e)) (merror "Argument to `last' is empty."))
+  (when (null (cdr e))
+    (merror "Argument to `last' is empty."))
   (car (last e)))
 
 (defmfun $args (e)
   (atomchk (setq e (format1 e)) '$args nil)
 	 (cons '(mlist) (margs e)))
 
-(defmfun $delete n
-  (cond ((= n 2) (setq n -1))
-	((not (= n 3)) (wna-err '$delete))
-	((or (not (fixnump (arg 3))) (minusp (setq n (arg 3))))
-	 (merror "Improper 3rd argument to `delete':~%~M" (arg 3))))
-  (let ((x (arg 1)) (l (arg 2)))
-    (atomchk (setq l (specrepcheck l)) '$delete t)
-    (setq x (specrepcheck x) l (cons (delsimp (car l)) (copy-list (cdr l))))
-    (prog (l1)
-       (setq l1 (if (eq (caar l) 'mqapply) (cdr l) l))
-       loop (cond ((or (null (cdr l1)) (zerop n)) (return l))
-		  ((alike1 x (specrepcheck (cadr l1)))
-		   (setq n (1- n)) (rplacd l1 (cddr l1)))
-		  (t (setq l1 (cdr l1))))
-       (go loop))))
+(defmfun $delete (x l &optional (n -1 n?))
+  (when (and n? (or (not (fixnump n)) (minusp n))) ; if n is set, it must be a nonneg fixnum
+    (merror "Improper 3rd argument to `delete': ~M" n))
+  (atomchk (setq l (specrepcheck l)) '$delete t)
+  (setq x (specrepcheck x)
+	l (cons (delsimp (car l)) (copy-list (cdr l))))
+  (do ((l1 (if (eq (caar l) 'mqapply) (cdr l) l) (cdr l1)))
+      ((or (null (cdr l1)) (zerop n)) l)
+     (when (alike1 x (specrepcheck (cadr l1)))
+       (decf n)
+       (rplacd l1 (cddr l1)))))
 
 (defmfun $length (e)
   (setq e (cond (($listp e) e)
@@ -990,21 +1001,8 @@
 	(t 1)))
 
 (defmfun $entier (e) (take '($floor) e))
+
 (defmfun $fix (e) (take '($floor) e))
-
-;; This code is now a part of the floor function.
-
-;(defmfun $entier (e)
-;  (let ((e1 (specrepcheck e)))
-;    (cond ((numberp e1) (floor e1))
-;	  ((ratnump e1) (setq e (quotient (cadr e1) (caddr e1)))
-;	   (if (minusp (cadr e1)) (1- e) e))
-;	  (($bfloatp e1)
-;	   (setq e (fpentier e1))
-;	   (if (and (minusp (cadr e1)) (not (zerop1 (sub e e1))))
-;	       (1- e)
-;	       e))
-;	  (t (list '($entier) e)))))
 
 (defmfun $float (e)
   (cond ((numberp e) (float e))
@@ -1016,12 +1014,10 @@
 	 (list (ncons (caar e)) ($float (cadr e)) (caddr e)))
 	(t (recur-apply #'$float e))))
 
-(defmfun $coeff n
-  (cond ((= n 3) (if (equal (arg 3) 0)
-		     (coeff (arg 1) (arg 2) (arg 3))
-		     (coeff (arg 1) (power (arg 2) (arg 3)) 1)))
-	((= n 2) (coeff (arg 1) (arg 2) 1))
-	(t (wna-err '$coeff))))
+(defmfun $coeff (e x &optional (n 1))
+  (if (equal n 0)
+      (coeff e x 0)
+      (coeff e (power x n) 1)))
 
 (defmfun coeff (e var pow)
   (simplify
