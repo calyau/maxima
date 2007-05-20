@@ -60,6 +60,15 @@
  *  => [[x = 0.6661347183787, y = 0.33306735918935], %lambda = [- 1.331471514325457]]
  */
 
+/* fboundp detects various kinds of Maxima functions */
+fboundp (a) :=
+    ?fboundp (a) # false
+ or ?mget (a, ?mexpr) # false
+ or ?get (a, ?mfexpr\*) # false
+ or ?mget (a, ?mmacro) # false;
+
+if not fboundp (lbfgs) then load (lbfgs);
+
 with_parameters ([L]) ::= buildq ([a : subst (":", "=",  ev (L [1])), e : rest (L)], block (a, splice (e)));
 
 augmented_lagrangian_method (FOM, xx, constraints, yy, [optional_args]) := 
