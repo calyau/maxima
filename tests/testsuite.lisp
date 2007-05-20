@@ -38,4 +38,5 @@
     "rtest_mset"
     "rtest_boolean"
     "rtest_round"
+    "test_map"
     ))
