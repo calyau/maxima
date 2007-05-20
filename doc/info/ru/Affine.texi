@@ -8,9 +8,9 @@
 @end menu
 
 @node Definitions for Affine,  , Affine, Affine
-@section Функции пакета Affine
+@section Функции и переменные пакета Affine
 
-@deffn {Function} fast_linsolve ([@var{expr_1}, ..., @var{expr_m}], [@var{x_1}, ..., @var{x_n}])
+@deffn {Функция} fast_linsolve ([@var{expr_1}, ..., @var{expr_m}], [@var{x_1}, ..., @var{x_n}])
 Решает систему линейных уравнений @var{expr_1}, ..., @var{expr_m}
 относительно переменных  @var{x_1}, ..., @var{x_n}.
 Каждый аргумент @var{expr_i} может быть уравнением или произвольным выражением.
@@ -24,7 +24,7 @@
 
 @end deffn
 
-@deffn {Function} grobner_basis ([@var{expr_1}, ..., @var{expr_m}])
+@deffn {Функция} grobner_basis ([@var{expr_1}, ..., @var{expr_m}])
 Возвращает базис Гребнера для уравнеий  @var{expr_1}, ..., @var{expr_m}.
 После этого функция @code{polysimp} может быть использована для
 упрощения других выражений по функций относительно данной
@@ -44,8 +44,8 @@ polysimp (y^2*x + x^3*9 + 2) ==> -3*x + 2
 @end deffn
 
 @c NEEDS CLARIFICATION IN A SERIOUS WAY
-@deffn {Function} set_up_dot_simplifications (@var{eqns}, @var{check_through_degree})
-@deffnx {Function} set_up_dot_simplifications (@var{eqns})
+@deffn {Функция} set_up_dot_simplifications (@var{eqns}, @var{check_through_degree})
+@deffnx {Функция} set_up_dot_simplifications (@var{eqns})
 Уравнения @var{eqns} являются полиномиальными уравнеиями относительно
 некомутативных переменных.
 Значение @code{current_variables} есть список переменных,
@@ -63,27 +63,27 @@ polysimp (y^2*x + x^3*9 + 2) ==> -3*x + 2
 
 @end deffn
 
-@deffn {Function} declare_weight (@var{x_1}, @var{w_1}, ..., @var{x_n}, @var{w_n})
+@deffn {Функция} declare_weight (@var{x_1}, @var{w_1}, ..., @var{x_n}, @var{w_n})
 Присваивает веса @var{w_1}, ..., @var{w_n} переменным @var{x_1}, ..., @var{x_n}.
 Эти веса используются при вычислении @code{nc_degree}.
 
 @end deffn
 
-@deffn {Function} nc_degree (@var{p})
+@deffn {Функция} nc_degree (@var{p})
 Возвращает степень некоммутативного полинома @var{p}.
 См. также @code{declare_weights}.
 
 @end deffn
 
 @c NEEDS CLARIFICATION -- TO WHICH EQUATIONS DOES THIS DESCRIPTION REFER ??
-@deffn {Function} dotsimp (@var{f})
+@deffn {Функция} dotsimp (@var{f})
 Возвращает 0 тогда и только тогда, когда @var{f} принадлежит идеалу уравнеий, т.е.,
 тогда и только тогда, когда @var{f} является полиномиальной
 комбинацией элементов уравнений.
 
 @end deffn
 
-@deffn {Function} fast_central_elements ([@var{x_1}, ..., @var{x_n}], @var{n})
+@deffn {Функция} fast_central_elements ([@var{x_1}, ..., @var{x_n}], @var{n})
 Если @code{set_up_dot_simplifications} было уже выполнено, тогда
 данная функция возвращает центральные полиномы степени @var{n}
 по переменным @var{x_1}, ..., @var{x_n}.
@@ -98,7 +98,7 @@ fast_central_elements ([x, y], 2);
 @end deffn
 
 @c THIS IS NOT AT ALL CLEAR
-@deffn {Function} check_overlaps (@var{n}, @var{add_to_simps})
+@deffn {Функция} check_overlaps (@var{n}, @var{add_to_simps})
 Проверяет перекрытия до степени @var{n},
 чтобы убедиться, что имеется достаточно правил упрощения для каждой
 степени чтобы @code{dotsimp} работало правильно.  Этот процесс может
@@ -112,18 +112,18 @@ fast_central_elements ([x, y], 2);
 
 @end deffn
 
-@deffn {Function} mono ([@var{x_1}, ..., @var{x_n}], @var{n})
+@deffn {Функция} mono ([@var{x_1}, ..., @var{x_n}], @var{n})
 Возвращает список независимых мономов по отношению к текущим
 упрощениям степени @var{n} по переменным @var{x_1}, ..., @var{x_n}.
 
 @end deffn
 
-@deffn {Function} monomial_dimensions (@var{n})
+@deffn {Функция} monomial_dimensions (@var{n})
 Вычисляет ряд Гильберта до степени @var{n} для текущей алгебры.
 
 @end deffn
 
-@deffn {Function} extract_linear_equations ([@var{p_1}, ..., @var{p_n}], [@var{m_1}, ..., @var{m_n}])
+@deffn {Функция} extract_linear_equations ([@var{p_1}, ..., @var{p_n}], [@var{m_1}, ..., @var{m_n}])
 Возвращает список коеффициентов некоммутативных полиномов @var{p_1}, ..., @var{p_n}
 некоммутативных мономов @var{m_1}, ..., @var{m_n}.
 Коеффициенты должны быть скалярными.  Для получения списка мономов
@@ -131,8 +131,8 @@ fast_central_elements ([x, y], 2);
 
 @end deffn
 
-@deffn {Function} list_nc_monomials ([@var{p_1}, ..., @var{p_n}])
-@deffnx {Function} list_nc_monomials (@var{p})
+@deffn {Функция} list_nc_monomials ([@var{p_1}, ..., @var{p_n}])
+@deffnx {Функция} list_nc_monomials (@var{p})
 Возвращает список некоммутативных мономов полинома @var{p}
 или списка полиномов @var{p_1}, ..., @var{p_n}.
 
@@ -176,7 +176,7 @@ fast_central_elements ([x, y], 2);
 @c
 @c @end defun
 
-@defvr {Option variable} all_dotsimp_denoms
+@defvr {Управляющая переменная} all_dotsimp_denoms
 Значение по умолчанию: @code{false}
 
 Когда @code{all_dotsimp_denoms} является списком,то
