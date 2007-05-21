@@ -87,3 +87,14 @@ div.image
     padding: 1em;
     text-align: center;
 }
+
+div.categorybox
+{
+    border: 1px solid gray;
+    padding-top: 1em;
+    padding-bottom: 1em;
+    padding-left: 1em;
+    padding-right: 1em;
+    background: rgb(247,242,220);
+}
+
