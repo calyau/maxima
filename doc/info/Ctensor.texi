@@ -137,7 +137,7 @@ A function in the @code{ctensor} (component tensor) package
 that computes the metric inverse and sets up the package for
 further calculations.
 
-If @code{cframe_flag} is false, the function computes the inverse metric
+If @code{cframe_flag} is @code{false}, the function computes the inverse metric
 @code{ug} from the (user-defined) matrix @code{lg}. The metric determinant is
 also computed and stored in the variable @code{gdet}. Furthermore, the
 package determines if the metric is diagonal and sets the value
