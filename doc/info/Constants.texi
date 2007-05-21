@@ -104,10 +104,6 @@ Examples:
 (%o4)                           0
 @end example
 
-By default, Maxima does not know the algebraic properties of @code{%phi}.
-After evaluating @code{tellrat (%phi^2 - %phi - 1)} and @code{algebraic: true},
-@code{ratsimp} can simplify some expressions containing @code{%phi}.
-
 @c ===beg===
 @c e : expand ((%phi^2 - %phi - 1) * (A + 1));
 @c ratsimp (e);
