@@ -75,8 +75,6 @@ After evaluating @code{tellrat(%phi^2 - %phi - 1)} and @code{algebraic: true},
 
 Examples:
 
-@code{fibtophi} expresses Fibonacci numbers @code{fib(n)} in terms of @code{%phi}.
-
 @c ===beg===
 @c fibtophi (fib (n));
 @c fib (n-1) + fib (n) - fib (n+1);
