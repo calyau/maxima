@@ -16,8 +16,6 @@
 
 (load-macsyma-macros displm)
 
-(defconstant +tablen+ 8)
-
 (declare-top (special $linel))
 
 (defmvar $cursordisp t
@@ -1214,16 +1212,12 @@
      (loop for v in (cdr line) do (write-char v))
      (mterpri)))
 
-;; Move the cursor over N spaces to the left by outputting tabs and spaces.
+;; Move the cursor over N spaces to the left by outputting spaces.
 ;; This function assumes that the cursor is in the left margin when
 ;; it is called.  This is only called from OUTPUT-LINEAR, so it is
 ;; used only for printing terminals or for file output.
 
 (defun tyotbsp (n)
-  (do ()
-      ((< n +tablen+))
-    (write-char #\tab)
-    (decf n +tablen+))
   (do ()
       ((< n 1))
     (write-char #\space)
@@ -1232,7 +1226,7 @@
 (defun draw-linear (dmstr oldrow oldcol)
   "This puts the LINE lists into LINEARRAY ready to be drawn.
    Each LINE consists of first an initial number of columns to space
-   (or tab over) and then the characters to be printed.
+   and then the characters to be printed.
    oldrow and oldcol are the starting points for the the (dx,dy) offsets
    given in the dimension string DMSTR.  It does not check that oldrow
    is big enough for possible negative y offsets in DMSTR, but BKPTDP is the
@@ -1244,11 +1238,6 @@
 	   (cond ((null line) (setq line (list oldcol)))
 		 (t (prog (n)
 		       (setq n (car line) line (cdr line))
-		       (do ((m (+ +tablen+ (* +tablen+ (truncate n +tablen+)))
-			       (+ +tablen+ m)))
-			   ((not (< m oldcol))
-			    (setq n (max n (- m +tablen+))))
-			 (push #\tab line))
 		       (do ()
 			   ((<= oldcol n))
 			 (push #\space line)

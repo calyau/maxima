@@ -86,7 +86,6 @@
 (defun mtyotbsp (n out)
   (declare (fixnum n))
   (incf chrps n)
-  (do () ((< n 8)) (write-char #\tab out) (decf n 8))
   (do () ((< n 1)) (write-char #\space out) (decf n)))
 
 (defun strgrind (x)
@@ -119,7 +118,6 @@
 (defun sterpri () (setq *grind-charlist* (cons #\newline *grind-charlist*) chrps 0))
 
 (defun styotbsp (n) (declare (fixnum n)) (setq chrps n)
-       (do () ((< n 8)) (setq *grind-charlist* (cons #\tab *grind-charlist*) n (- n 8)))
        (do () ((< n 1)) (setq *grind-charlist* (cons #\space *grind-charlist*) n (1- n))))
 
 (defmfun mstring (x)
