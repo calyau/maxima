@@ -77,14 +77,8 @@
 	 (cond ((atom fn)
 		(cond ((functionp fn)
 		       (apply fn args))
-		      ;;better be a macro or an array.
-		      ((fboundp fn)
-		       (if (macro-function fn)
-			   (progn
-			     (merror
-			      "~M is a lisp level macro and cannot be applied at maxima level" fn)
-			     (eval (cons fn args)))
-			   (mapply1 (symbol-function fn) args fn form)))
+              ((and (fboundp fn) (not (macro-function fn)))
+               (mapply1 (symbol-function fn) args fn form))
 		      ((symbol-array fn)
 		       (mapply1 (symbol-array fn) args fn form))
 		      (t
