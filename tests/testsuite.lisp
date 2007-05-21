@@ -38,5 +38,5 @@
     "rtest_mset"
     "rtest_boolean"
     "rtest_round"
-    "test_map"
+    ((mlist) "rtest_map" 2 3 4)
     ))
