@@ -85,8 +85,8 @@
 			   (pdisrep! (car p) var))
 		 (trdisp1 (cddr p) var)))))
 
-(defmfun $untellrat n
-  (dolist (x (listify n))
+(defmfun $untellrat (&rest args)
+  (dolist (x args)
     (if (setq x (assol x tellratlist))
 	(setq tellratlist (remove x tellratlist :test #'equal))))
   (cons '(mlist) (mapcar #'tellratdisp tellratlist)))
@@ -94,7 +94,7 @@
 (defmfun $tellrat (&rest args)
   (mapc #'tellrat1 args)
   (unless (null args) (add2lnc 'tellratlist $myoptions))
-  (cons '(mlist) (mapcar 'tellratdisp tellratlist)))
+  (cons '(mlist) (mapcar #'tellratdisp tellratlist)))
 
 (defun tellrat1 (x &aux varlist genvar $algebraic $ratfac algvar)
   (setq x ($totaldisrep x))
@@ -123,20 +123,17 @@
 	       (caddar (minimize-varlist e)))
 	      (t (let (varlist) (lnewvar e) varlist)))))
 
-(defmfun $ratvars n
+(defmfun $ratvars (&rest args)
   (add2lnc '$ratvars $myoptions)
-  (setq $ratvars
-	(cons '(mlist simp) (setq varlist (mapfr1 (listify n) varlist)))))
+  (setq $ratvars (cons '(mlist simp) (setq varlist (mapfr1 args varlist)))))
 
 (defun mapfr1 (l varlist)
   (mapcar #'(lambda (z) (fr1 z varlist)) l))
 
 (defmvar inratsimp nil)
 
-(defmfun $fullratsimp n
-  (when (= n 0) (wna-err '$fullratsimp))
-  (prog (exp exp1 argl)
-     (setq exp (arg 1) argl (cdr (listify n)))
+(defmfun $fullratsimp (exp &rest argl)
+  (prog (exp1)
      loop (setq exp1 (simplify (apply #'$ratsimp (cons exp argl))))
      (when (alike1 exp exp1) (return exp))
      (setq exp exp1)
@@ -144,7 +141,8 @@
 
 (defun fullratsimp (l)
   (let (($expop 0) ($expon 0) (inratsimp t) $ratsimpexpons)
-    (setq l ($totaldisrep l)) (fr1 l varlist)))
+    (setq l ($totaldisrep l))
+    (fr1 l varlist)))
 
 (defmfun $totaldisrep (l)
   (cond ((atom l) l)
@@ -155,35 +153,32 @@
 ;;;VARLIST HAS MAIN VARIABLE AT END
 
 (defun joinvarlist (cdrl)
-  (mapc #'(lambda (z) (if (not (memalike z varlist))
-			  (setq varlist (cons z varlist))))
+  (mapc #'(lambda (z) (unless (memalike z varlist) (push z varlist)))
 	(reverse (mapfr1 cdrl nil))))
 
-(defmfun $rat n
-  (when (zerop n) (wna-err '$rat))
-  (cond ((> n 1)
+(defmfun $rat (e &rest vars)
+  (cond ((not (null vars))
 	 (let (varlist)
-	   (joinvarlist (cdr (listify n)))
-	   (lnewvar (arg 1))
-	   (rat0 (arg 1))))
+	   (joinvarlist vars)
+	   (lnewvar e)
+	   (rat0 e)))
 	(t
-	 (lnewvar (arg 1))
-	 (rat0 (arg 1)))))
+	 (lnewvar e)
+	 (rat0 e))))
 
 (defun rat0 (exp)			;SIMP FLAGS?
   (if (mbagp exp)
       (cons (car exp) (mapcar #'rat0 (cdr exp)))
       (ratf exp)))
 
-(defmfun $ratsimp n
-  (when (zerop n) (wna-err '$ratsimp))
-  (cond ((> n 1)
+(defmfun $ratsimp (e &rest vars)
+  (cond ((not (null vars))
 	 (let (varlist)
-	   (joinvarlist (cdr (listify n)))
-	   (fullratsimp (arg 1))))
-	(t (fullratsimp (arg 1)))))
+	   (joinvarlist vars)
+	   (fullratsimp e)))
+	(t (fullratsimp e))))
 
-;; $RATSIMP, $FULLRATSIMP, and $RAT are LEXPRs to allow for optional extra
+;; $RATSIMP, $FULLRATSIMP and $RAT allow for optional extra
 ;; arguments specifying the VARLIST.
 
 ;;;PSQFR HAS NOT BEEN CHANGED TO MAKE USE OF THE SQFR FLAGS YET
@@ -193,7 +188,7 @@
     (sublis '((factored . sqfred) (irreducible . sqfr))
 	    (ffactor x #'psqfr))))
 
-(declare-top (special fn cargs))
+(declare-top (special fn))
 
 (defun whichfn (p)
   (cond ((and (mexptp p) (integerp (caddr p)))
@@ -203,7 +198,7 @@
 	(fn (ffactor p #'pfactor))
 	(t (factoralg p))))
 
-(declare-top(special var))
+(declare-top (special var))
 
 (defmvar adn* 1 "common denom for algebraic coefficients")
 
@@ -243,11 +238,9 @@
   (let (($expop 0) ($expon 0) $negdistrib)
     (maxima-substitute '$%i '%i p)))
 
-(defmfun $factor nargs
-  (unless (or (= nargs 1) (= nargs 2))
-    (wna-err '$factor))
+(defmfun $factor (e &optional (mp nil mp?))
   (let ($intfaclim (varlist (cdr $ratvars)) genvar ans)
-    (setq ans (apply #'factor (listify nargs)))
+    (setq ans (if mp? (factor e mp) (factor e)))
     (if (and factorresimp $negdistrib
 	     (mtimesp ans) (null (cdddr ans))
 	     (equal (cadr ans) -1) (mplusp (caddr ans)))
@@ -257,60 +250,71 @@
 
 (defvar alpha nil)
 
-(defmfun factor nargs
-  ((lambda (tellratlist varlist genvar $gcd $negdistrib)
-     (prog (fn var mm* mplc* intbs* alflag minpoly* alpha p algfac*
-	    $keepfloat $algebraic cargs)
-	(or (member $gcd *gcdl* :test #'eq) (setq $gcd (car *gcdl*)))
-	(let  ($ratfac)
-	  (setq p (arg 1) mm* 1 cargs (cdr (listify nargs)))
-	  (and (eq (ml-typep p) 'symbol) (go out))
-	  (and ($numberp p) (go num))
-	  (cond ((mbagp p)
-		 (return (cons (car p)
-			       (mapcar #'(lambda (x) (apply 'factor (cons x cargs))) (cdr p))))))
-	  (cond ((= nargs 2)
-		 (setq alpha (meqhk (arg 2)))
-		 (newvar alpha)
-		 (setq minpoly* (cadr (ratrep* alpha)))
-		 (if (or (pcoefp minpoly*)
-			 (not (univar (cdr minpoly*)))
-			 (< (cadr minpoly*) 2))
-		     (merror "The second argument to `factor' must be a non-linear, univariate polynomial:~%~M"
-		      alpha))
-		 (setq alpha (pdis (list (car minpoly*) 1 1))
-		       mm* (cadr minpoly*))
-		 (cond ((not (equal (caddr minpoly*) 1))
-			(setq mplc* (caddr minpoly*))
-			(setq minpoly* (pmonz minpoly*))
-			(setq p (maxima-substitute (div alpha mplc*) alpha p)) ))
-		 (setq $algebraic t)
-		 ($tellrat(pdis minpoly*))
-		 (setq algfac* t))
-		(t (setq fn t)))
-	  (if (not scanmapp) (setq p (let (($ratfac t)) (sratsimp p))))
-	  (newvar p)
-	  (and (eq (ml-typep p)  'symbol) (go out))
-	  (cond ((numberp p) (go num)))
-	  (setq $negdistrib nil)
-	  (setq p (let ($factorflag ($ratexpand $facexpand)) (whichfn p))))
+(defmfun factor (e &optional (mp nil mp?))
+  (let ((tellratlist nil)
+	(varlist varlist)
+	(genvar nil)
+	($gcd $gcd)
+	($negdistrib $negdistrib))
+    (prog (fn var mm* mplc* intbs* alflag minpoly* alpha p algfac*
+	   $keepfloat $algebraic cargs)
+       (declare (special cargs fn))
+       (unless (member $gcd *gcdl* :test #'eq)
+	 (setq $gcd (car *gcdl*)))
+       (let ($ratfac)
+	 (setq p e
+	       mm* 1
+	       cargs (if mp? (list mp) nil))
+	 (when (eq (ml-typep p) 'symbol) (return p))
+	 (when ($numberp p)
+	   (return (let (($factorflag (not scanmapp)))
+		     (factornumber p))))
+	 (when (mbagp p)
+	   (return (cons (car p) (mapcar #'(lambda (x) (apply #'factor (cons x cargs))) (cdr p)))))
+	 (cond (mp?
+		(setq alpha (meqhk mp))
+		(newvar alpha)
+		(setq minpoly* (cadr (ratrep* alpha)))
+		(when (or (pcoefp minpoly*)
+			  (not (univar (cdr minpoly*)))
+			  (< (cadr minpoly*) 2))
+		  (merror "The second argument to `factor' must be a non-linear, univariate polynomial: ~M" alpha))
+		(setq alpha (pdis (list (car minpoly*) 1 1))
+		      mm* (cadr minpoly*))
+		(unless (equal (caddr minpoly*) 1)
+		  (setq mplc* (caddr minpoly*))
+		  (setq minpoly* (pmonz minpoly*))
+		  (setq p (maxima-substitute (div alpha mplc*) alpha p)))
+		(setq $algebraic t)
+		($tellrat(pdis minpoly*))
+		(setq algfac* t))
+	       (t
+		(setq fn t)))
+	 (unless scanmapp (setq p (let (($ratfac t)) (sratsimp p))))
+	 (newvar p)
+	 (when (eq (ml-typep p) 'symbol) (return p))
+	 (when (numberp p)
+	   (return (let (($factorflag (not scanmapp)))
+		     (factornumber p))))
+	 (setq $negdistrib nil)
+	 (setq p (let ($factorflag ($ratexpand $facexpand))
+		   (whichfn p))))
 
-	(setq p (let (($expop 0) ($expon 0)) (simplify p)))
-	(cond ((mnump p) (return (factornumber p)))
-	      ((atom p) (go out)))
-	(and $ratfac (not $factorflag) ($ratp (arg 1)) (return ($rat p)))
-	(and $factorflag (mtimesp p) (mnump (cadr p))
-	     (setq alpha (factornumber (cadr p)))
-	     (cond ((alike1 alpha (cadr p)))
-		   ((mtimesp alpha)
-		    (setq p (cons (car p) (append (cdr alpha) (cddr p)))))
-		   (t (setq p (cons (car p) (cons alpha (cddr p)))))))
-	(and (null (member 'factored (car p) :test #'eq))
-	     (setq p (cons (append (car p) '(factored)) (cdr p))))
-	out  (return p)
-	num (return (let (($factorflag (not scanmapp))) (factornumber p)))))
-   nil varlist nil $gcd $negdistrib))
-
+       (setq p (let (($expop 0) ($expon 0))
+		 (simplify p)))
+       (cond ((mnump p) (return (factornumber p)))
+	     ((atom p) (return p)))
+       (and $ratfac (not $factorflag) ($ratp e) (return ($rat p)))
+       (and $factorflag (mtimesp p) (mnump (cadr p))
+	    (setq alpha (factornumber (cadr p)))
+	    (cond ((alike1 alpha (cadr p)))
+		  ((mtimesp alpha)
+		   (setq p (cons (car p) (append (cdr alpha) (cddr p)))))
+		  (t
+		   (setq p (cons (car p) (cons alpha (cddr p)))))))
+       (when (null (member 'factored (car p) :test #'eq))
+	 (setq p (cons (append (car p) '(factored)) (cdr p))))
+       (return p))))
 
 (defun factornumber (n)
   (setq n (nretfactor1 (nratfact (cdr ($rat n)))))
@@ -340,17 +344,15 @@
 
 (declare-top (unspecial var))
 
-
-(defmfun $polymod nargs
-  (unless (or (= nargs 1) (= nargs 2)) (wna-err '$polymod))
+(defmfun $polymod (p &optional (m 0 m?))
   (let ((modulus modulus))
-    (cond ((= nargs 2)
-	   (setq modulus (arg 2))
-	   (when (or (not (integerp modulus)) (zerop modulus))
-	     (merror "Improper value for `modulus':~%~M" modulus))))
+    (when m?
+      (setq modulus m)
+      (when (or (not (integerp modulus)) (zerop modulus))
+	(merror "Improper value for `modulus':~%~M" modulus)))
     (when (minusp modulus)
       (setq modulus (abs modulus)))
-    (mod1 (arg 1))))
+    (mod1 p)))
 
 (defun mod1 (e)
   (if (mbagp e) (cons (car e) (mapcar 'mod1 (cdr e)))
@@ -360,19 +362,15 @@
 	(setq e (cons (car e) (ratreduce (pmod (cadr e)) (pmod (cddr e)))))
 	(cond (formflag e) (t (ratdisrep e))))))
 
-(defmfun $divide nargs
-  (prog (x y h varlist tt ty formflag $ratfac)
-     (when (< nargs 2)
-       (merror "`divide' needs at least two arguments."))
-     (setq x (arg 1))
-     (if (and ($ratp x) (setq formflag t) (integerp (cadr x)) (equal (cddr x) 1))
-	 (setq x (cadr x)))
-     (setq y (arg 2))
-     (if (and ($ratp y) (setq formflag t) (integerp (cadr y)) (equal (cddr y) 1))
-	 (setq y (cadr y)))
-     (if (and (integerp x) (integerp y))
-	 (return (list '(mlist) (*quo x y) (rem x y))))
-     (setq varlist (cddr (listify nargs)))
+(defmfun $divide (x y &rest vars)
+  (prog (h varlist tt ty formflag $ratfac)
+     (when (and ($ratp x) (setq formflag t) (integerp (cadr x)) (equal (cddr x) 1))
+       (setq x (cadr x)))
+     (when (and ($ratp y) (setq formflag t) (integerp (cadr y)) (equal (cddr y) 1))
+       (setq y (cadr y)))
+     (when (and (integerp x) (integerp y))
+       (return (cons '(mlist) (multiple-value-list (truncate x y)))))
+     (setq varlist vars)
      (mapc #'newvar (reverse (cdr $ratvars)))
      (newvar y)
      (newvar x)
@@ -388,25 +386,22 @@
 	      (setq x (list
 		       (ratqu (car x) tt)
 		       (ratqu (cadr x) (ptimes tt ty))))))
-     (setq h (list (quote (mlist)) (cons h (car x)) (cons h (cadr x))))
+     (setq h (list '(mlist) (cons h (car x)) (cons h (cadr x))))
      (return (if formflag h ($totaldisrep h)))))
 
-(defmfun $quotient nargs
-  (cadr (apply '$divide (listify nargs))))
+(defmfun $quotient (&rest args)
+  (cadr (apply '$divide args)))
 
-(defmfun $remainder nargs
-  (caddr (apply '$divide (listify nargs))))
+(defmfun $remainder (&rest args)
+  (caddr (apply '$divide args)))
 
-(defmfun $gcd nargs
-  (prog (x y h varlist genvar $keepfloat formflag)
-     (when (< nargs 2)
-       (merror "`gcd' needs 2 arguments"))
-     (setq formflag ($ratp (setq x (arg 1))))
-     (setq y (arg 2))
+(defmfun $gcd (x y &rest vars)
+  (prog (h varlist genvar $keepfloat formflag)
+     (setq formflag ($ratp x))
      (and ($ratp y) (setq formflag t))
-     (setq varlist (cddr (listify nargs)))
+     (setq varlist vars)
      (dolist (v varlist)
-       (if (numberp v) (improper-arg-err v '$gcd)))
+       (when (numberp v) (improper-arg-err v '$gcd)))
      (newvar x)
      (newvar y)
      (when (and ($ratp x) ($ratp y) (equal (car x) (car y)))
@@ -420,10 +415,10 @@
      (setq h (cons h x))
      (return (if formflag h (ratdisrep h)))))
 
-(defmfun $content nargs
-  (prog (x y h varlist formflag)
-     (setq formflag ($ratp (setq x (arg 1))))
-     (setq varlist (cdr (listify nargs)))
+(defmfun $content (x &rest vars)
+  (prog (y h varlist formflag)
+     (setq formflag ($ratp x))
+     (setq varlist vars)
      (newvar x)
      (desetq (h x . y) (ratrep* x))
      (unless (atom x)
@@ -944,8 +939,10 @@
 (defmvar $ratexpand nil)
 
 (defmfun $ratexpand (x)
-  (cond ((mbagp x) (cons (car x) (mapcar '$ratexpand (cdr x))))
-	(t ((lambda ($ratexpand $ratfac) (ratdisrep (ratf x))) t nil))))
+  (if (mbagp x)
+      (cons (car x) (mapcar '$ratexpand (cdr x)))
+      (let (($ratexpand t) ($ratfac nil))
+	(ratdisrep (ratf x)))))
 
 (defun pdisrep*expand (a b)
   (cond ((eqn a 1) (list b))
@@ -1052,11 +1049,10 @@
 
 (defun radsort (l)
   (sort l #'(lambda (a b)
-	      ((lambda (na nb)
-		 (cond ((< na nb) t)
-		       ((> na nb) nil)
-		       (t (great b a))))
-	       (nestlev a) (nestlev b)))))
+	      (let ((na (nestlev a)) (nb (nestlev b)))
+		(cond ((< na nb) t)
+		      ((> na nb) nil)
+		      (t (great b a)))))))
 
 ;;	THIS IS THE END OF THE NEW RATIONAL FUNCTION PACKAGE PART 5
 ;;	IT INCLUDES THE CONVERSION AND TOP-LEVEL ROUTINES USED
