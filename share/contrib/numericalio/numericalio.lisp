@@ -75,14 +75,16 @@
   (let ((A '()) (L))
     (setq file-name (require-string file-name))
     (with-open-file (in file-name :if-does-not-exist nil)
-      (cond ((not (null in))
-          (let ((sep-ch (get-input-sep-ch sep-ch-flag file-name)))
-            (loop
-              (setq L (read-line in nil 'eof))
-              (if (eq L 'eof) (return (cons '(mlist simp) A)))
-              (setq A (append A (cdr (make-mlist-from-string L sep-ch)))))))
-        (t (merror "read_list: ~S: no such file" file-name))))))
-
+      (cond
+       ((not (null in))
+	(let ((sep-ch (get-input-sep-ch sep-ch-flag file-name)))
+	  (loop
+	   (setq L (read-line in nil 'eof))
+	   (if (eq L 'eof)
+	       (return (cons '(mlist simp) (nreverse A))))
+	   ;; use nreconc accumulation to avoid n^2 cons's
+	   (setq A (nreconc (cdr (make-mlist-from-string L sep-ch)) A)))))
+       (t (merror "read_list: ~S: no such file" file-name))))))
 
 ;; Usage: (make-mlist-from-string "1 2 3 foo bar baz")
 
