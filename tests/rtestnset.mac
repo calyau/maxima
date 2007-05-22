@@ -641,10 +641,10 @@ flatten(%pi);
 %pi$
 
 flatten(rat(x));
-rat(x)$
+''(rat(x))$
 
 flatten(rat(-x));
-rat(-x)$
+''(rat(-x))$
 
 
 flatten(x[5]);
@@ -657,13 +657,13 @@ flatten(-x);
 -x$
 
 flatten(rat(-x));
-rat(-x)$
+''(rat(-x))$
 
 flatten(a+b);
 a+b$
 
 flatten(rat(a+b));
-rat(a+b)$
+''(rat(a+b))$
 
 
 flatten(a*b);
@@ -1004,7 +1004,7 @@ makelist(stirling1(i,0),i,0,5);
 makelist(stirling1(i,i),i,0,5);
 [1,1,1,1,1,1]$
 
-sum(stirling1(3,i)*x^i,i,0,3);
+factor(sum(stirling1(3,i)*x^i,i,0,3));
 x*(x-1)*(x-2)$
 
 makelist(stirling1(i,1) - (-1)^(i-1)*(i-1)!,i,1,5);
@@ -1070,25 +1070,25 @@ sum((-1)^(12-m) * m! * stirling2(12,m),m,0,12);
 0$
 
 makelist(subst(n=i,e) - stirling2(i,0),i,-5,5);
-makelist(0,i,-5,5)$
+''(makelist(0,i,-5,5))$
 
 (e : stirling2(n,1),0);
 0$
 
 makelist(subst(n=i,e) - stirling2(i,1),i,-5,5);
-makelist(0,i,-5,5)$
+''(makelist(0,i,-5,5))$
 
 (e : stirling2(n,2),0);
 0$
 
 makelist(subst(n=i,e) - stirling2(i,2),i,-5,5);
-makelist(0,i,-5,5)$
+''(makelist(0,i,-5,5))$
 
 (e : stirling2(n,n),0);
 0$
 
 makelist(subst(n=i,e) - stirling2(i,i),i,-5,5);
-makelist(0,i,-5,5)$
+''(makelist(0,i,-5,5))$
 
 (remvalue(e),0);
 0$
@@ -1144,11 +1144,11 @@ multinomial_coeff(5);
 multinomial_coeff(2,3,4);
 (2+3+4)! / (2! * 3! * 4!)$
 
-sum(multinomial_coeff(i,5-i) * x^(5-i) * y^i,i,0,5);
+factor(sum(multinomial_coeff(i,5-i) * x^(5-i) * y^i,i,0,5));
 (x+y)^5$
 
 diff((x+y+z)^9,x,3,y,6);
-multinomial_coeff(3,6,0) * 3! * 6!$
+''(multinomial_coeff(3,6,0) * 3! * 6!)$
 
 kron_delta(false,false);
 1$
@@ -1542,7 +1542,3 @@ sublist_indices ([1 > 0, 1 < 0, 2 < 1, 2 > 1, 2 > 0], identity);
 sublist_indices ('[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10], lambda ([x], evenp(x) and primep(x)));
 [3];
 
-/* Finale */
-
-(print("nset version ",get(nset,'version)),0);
-0$
