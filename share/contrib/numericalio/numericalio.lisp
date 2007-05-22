@@ -66,8 +66,8 @@
           (let ((sep-ch (get-input-sep-ch sep-ch-flag file-name)))
             (loop
               (setq L (read-line in nil 'eof))
-              (if (eq L 'eof) (return (cons '(mlist simp) A)))
-              (setq A (append A (list (make-mlist-from-string L sep-ch)))))))
+              (if (eq L 'eof) (return (cons '(mlist simp) (nreverse A))))
+              (setq A (cons (make-mlist-from-string L sep-ch) A)))))
         (t (merror "read_nested_list: ~S: no such file" file-name))))))
 
 
