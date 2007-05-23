@@ -1,17 +1,17 @@
 @c Language=Russian
 @c Encoding=CP1251
 @c File=Itensor.texi
-@c OriginalRevision=1.36    
+@c OriginalRevision=1.40    
 
 @menu
-* Introduction to itensor::
-* Definitions for itensor::
+* Введение в пакет itensor::
+* Функции и переменные пакета itensor::
 @end menu
 
-@node Introduction to itensor, Definitions for itensor, itensor, itensor
-@section Общие сведения о пакете Itensor
+@node Введение в пакет itensor, Функции и переменные пакета itensor, Пакет itensor, Пакет itensor
+@section Введение в пакет itensor
 
-В Maxima реализованы два различныхных типа операций над тензорами:
+В Maxima реализованы два различных типа операций над тензорами:
 операции над компонентами -- пакет @code{ctensor} и операции с индексами -- пакет
 @code{itensor}.
 
@@ -49,8 +49,8 @@ ii) В силу специфики способа, при котором тензора и операции над ними
 иногда сильно упрощены при помощи использования симметрий тензоров и
 специальных функций пакета @code{itensor}, использующих симметрии.  В тоже
 время, индексное представление тензоров в этом пакете создает
-определенные трудности при определении метрики, фнкций
-и вычислении дифференциируемых объекитов.
+определенные трудности при определении метрики, функций
+и вычислении дифференцируемых объектов.
 
 @subsection Новые соглашения для обозначения тензорных индексов
 
@@ -98,9 +98,9 @@ ii) В силу специфики способа, при котором тензора и операции над ними
 играют существенную роль является @code{lc2kdt}. Благодаря этому
 удается получить корректный результат для тензорного произведения
 символов Леви-Чивита, применяя метрический тензор не прибегая
-к пересортировке численных индексов обощенных символов Кронекера.
+к пересортировке численных индексов обобщенных символов Кроннекера.
 
-Поскольку данные нововедения сделаны относительно недавно, можно
+Поскольку данные нововведения сделаны относительно недавно, можно
 ожидать присутствие ошибок.  Код был достаточно тщательно
 протестирован, чтобы убедиться, что ничего не нарушается
 при использовании старых обозначений. В тоже время при работе
@@ -238,12 +238,12 @@ ii) В силу специфики способа, при котором тензора и операции над ними
 @end example
 
 
-@node Definitions for itensor,  , Introduction to itensor, itensor
+@node Функции и переменные пакета itensor,  , Введение в пакет itensor, Пакет itensor
 
-@section Функции пакета @code{itensor}
+@section Функции и переменные пакета @code{itensor}
 @subsection Манипулирование индексными объектами
 
-@deffn {Function} entertensor (@var{name})
+@deffn {Функция} entertensor (@var{name})
 
 это интерактивная функция, которая позволяет создать индексный объект с
 именем @var{name}, содержащий заданные пользователем списки
@@ -253,7 +253,7 @@ ii) В силу специфики способа, при котором тензора и операции над ними
 
 @end deffn
 
-@deffn {Function} changename (@var{old}, @var{new}, @var{expr})
+@deffn {Функция} changename (@var{old}, @var{new}, @var{expr})
 
 заменяет имя тензора со старого @var{old} на новое @var{new}
 в выражении @var{expr}. @var{old} может быть как простым символом,
@@ -264,7 +264,7 @@ ii) В силу специфики способа, при котором тензора и операции над ними
 
 @end deffn
 
-@deffn {Function} listoftens (@var{expr})
+@deffn {Функция} listoftens (@var{expr})
 
 в качестве результата возвращает список всех тензоров выражения
 @var{expr}. Например,
@@ -284,7 +284,7 @@ ii) В силу специфики способа, при котором тензора и операции над ними
 
 @end deffn
 
-@deffn {Function} ishow (@var{expr})
+@deffn {Функция} ishow (@var{expr})
 
 печатает выражение @var{expr}, содержащее индексные объекты,
 в виде, где ковариантные индексы изображены в нижней позиции,
@@ -295,7 +295,7 @@ ii) В силу специфики способа, при котором тензора и операции над ними
 @end deffn
 
 
-@deffn {Function} indices (@var{expr})
+@deffn {Функция} indices (@var{expr})
 
 Возвращает список из двух элементов.  Первый -- список свободных
 индексов, не участвующих в свертке, в  @var{expr}. Второй --
@@ -320,8 +320,8 @@ ii) В силу специфики способа, при котором тензора и операции над ними
 
 @end deffn
 
-@deffn {Function} rename (@var{expr})
-@deffnx {Function} rename (@var{expr}, @var{count})
+@deffn {Функция} rename (@var{expr})
+@deffnx {Функция} rename (@var{expr}, @var{count})
 
 Возвращает выражение эквивалентное исходному @var{expr}, но в
 котором все немые индексы переименованы и пронумерованы. Имена берутся из списка
@@ -389,7 +389,7 @@ ichr2([%3,%5],[%1])*ichr2([%4,%6],[%3])*ichr2([%7,r],[%2]),noeval$
 
 @end deffn
 
-@defvr {Option variable} flipflag
+@defvr {Управляющая переменная} flipflag
 Значение по умолчанию: @code{false}
 
 Если значение @code{flipflag} равно @code{false}, то сортировка и переименование индексов
@@ -406,8 +406,8 @@ ichr2([%3,%5],[%1])*ichr2([%4,%6],[%3])*ichr2([%7,r],[%2]),noeval$
 @end defvr
 
 
-@deffn {Function} defcon (@var{tensor_1})
-@deffnx {Function} defcon (@var{tensor_1}, @var{tensor_2}, @var{tensor_3})
+@deffn {Функция} defcon (@var{tensor_1})
+@deffnx {Функция} defcon (@var{tensor_1}, @var{tensor_2}, @var{tensor_3})
 задает свойства тензорной свертки тензора @var{tensor_1} с @var{tensor_3} так, что в
 результате получается @var{tensor_3} с соответствующими индексами.
 Если задан единственный аргумент, @var{tensor_1}, тогда свертка любого
@@ -428,7 +428,7 @@ ichr2([%3,%5],[%1])*ichr2([%4,%6],[%3])*ichr2([%7,r],[%2]),noeval$
 @end deffn
 
 
-@deffn {Function} remcon (@var{tensor_1} , ..., @var{tensor_n})
+@deffn {Функция} remcon (@var{tensor_1} , ..., @var{tensor_n})
 удаляет все правила свертки для объектов @var{tensor_i}.
 @code{remcon(all)} удаляет все правила свертки для всех
 индексных объектов.
@@ -436,7 +436,7 @@ ichr2([%3,%5],[%1])*ichr2([%4,%6],[%3])*ichr2([%7,r],[%2]),noeval$
 @end deffn
 
 
-@deffn {Function} contract (@var{expr})
+@deffn {Функция} contract (@var{expr})
 
 Выполняет свертку тензорного выражения @var{expr}, которое само по себе может быть
 произвольной комбинацией сумм и произведений тензоров. Правила свертки должны
@@ -452,7 +452,7 @@ ichr2([%3,%5],[%1])*ichr2([%4,%6],[%3])*ichr2([%7,r],[%2]),noeval$
 @end deffn
 
 
-@deffn {Function} indexed_tensor (@var{tensor})
+@deffn {Функция} indexed_tensor (@var{tensor})
 
 Данная операция необходима всяких раз, когда пользователь собирается
 присвоить новые индексные выражения компонентам тензора
@@ -465,7 +465,7 @@ ichr2([%3,%5],[%1])*ichr2([%4,%6],[%3])*ichr2([%7,r],[%2]),noeval$
 @end deffn
 
 
-@deffn {Function} components (@var{tensor}, @var{expr})
+@deffn {Функция} components (@var{tensor}, @var{expr})
 
 Данная функция присваивает тензору @var{tensor} индексное выражение
 @var{expr}. Это приводит к тому, что при последующих вычислениях
@@ -482,7 +482,7 @@ ichr2([%3,%5],[%1])*ichr2([%4,%6],[%3])*ichr2([%7,r],[%2]),noeval$
 ранее определение компонент тензора.
 
 Важно понимать, что для @code{components} важна только валентность
-тензопа а не порядок индексов.  Присваивание значения
+тензора а не порядок индексов.  Присваивание значения
 @code{x([i,-j],[])}, @code{x([-j,i],[])} или @code{x([i],[j])}
 приводит к одному результату -- значение присваивается
 тензору с именем @code{x} и валентностью @code{(1,1)}.
@@ -565,7 +565,7 @@ ichr2([%3,%5],[%1])*ichr2([%4,%6],[%3])*ichr2([%7,r],[%2]),noeval$
 @end deffn
 
 
-@deffn {Function} remcomps (@var{tensor})
+@deffn {Функция} remcomps (@var{tensor})
 
 Удаляет из системы значения компонент тензора
 @code{tensor}, присвоенных при помощи функции @code{components}.
@@ -573,12 +573,12 @@ ichr2([%3,%5],[%1])*ichr2([%4,%6],[%3])*ichr2([%7,r],[%2]),noeval$
 @end deffn
 
 @c NEED LIST OF ARGUMENTS HERE
-@deffn {Function} showcomps (@var{tensor})
+@deffn {Функция} showcomps (@var{tensor})
 
 Печатает значение компонент тензора, которые были присвоены с
 помощью @code{components}.
-Данная функция особенно полезне в случае, когда компоненты
-тензора были заданы с помощю матрицы, как в данном примере:
+Данная функция особенно полезна в случае, когда компоненты
+тензора были заданы с помощью матрицы, как в данном примере:
 
 @example
 
@@ -623,18 +623,18 @@ ichr2([%3,%5],[%1])*ichr2([%4,%6],[%3])*ichr2([%7,r],[%2]),noeval$
 @end deffn
 
 
-@deffn {Function} idummy ()
+@deffn {Функция} idummy ()
 
 Увеличивает значение счетчика @code{icounter} немых индексов на 1 и возвращает
 значение индекса в форме @code{%n}, где n это положительное целое число.
-Примекнение @code{idummy} гарантирует, что немые индексы, встречающиеся в
+Применение @code{idummy} гарантирует, что немые индексы, встречающиеся в
 текущем выражении? не будут конфликтовать с уже использованными
 (см. пример в секции @code{indices}).
 
 @end deffn
 
 
-@defvr {Option variable} idummyx
+@defvr {Управляющая переменная} idummyx
 Значение по умолчанию: @code{%}
 
 Данная переменная задает приставку (префикс) для генерируемых немых индексов
@@ -642,7 +642,7 @@ ichr2([%3,%5],[%1])*ichr2([%4,%6],[%3])*ichr2([%7,r],[%2]),noeval$
 
 @end defvr
 
-@defvr {Option variable} icounter
+@defvr {Управляющая переменная} icounter
 Значение по умолчанию: @code{1}
 
 Определяет численный суффикс для генерируемого
@@ -650,10 +650,10 @@ ichr2([%3,%5],[%1])*ichr2([%4,%6],[%3])*ichr2([%7,r],[%2]),noeval$
 переменной @code{idummyx}
 @end defvr
 
-@deffn {Function} kdelta (@var{l1}, @var{l2})
-Oбобщенный символ Кронекера, где  @var{l1} и @var{l2} -- списки ковариантных и
+@deffn {Функция} kdelta (@var{l1}, @var{l2})
+Обобщенный символ Кроннекера, где  @var{l1} и @var{l2} -- списки ковариантных и
 контравариантных индексов соответственно. @code{kdelta([i],[j])} возвращает обычный
-дельта символ Кронекера. Команда @code{ev(@var{expr},kdelta)} вычисляет @var{expr}, заменяя
+дельта символ Кроннекера. Команда @code{ev(@var{expr},kdelta)} вычисляет @var{expr}, заменяя
 все конструкции вида @code{kdelta([],[])} (след @code{kdelta}) на размерность многообразия.
 
 @code{itensor} также позволяет использование в @code{kdelta()} c  двумя ковариантными или
@@ -665,9 +665,9 @@ Oбобщенный символ Кронекера, где  @var{l1} и @var{l2} -- списки ковариантных и
 
 @end deffn
 
-@deffn {Function} kdels (@var{l1}, @var{l2})
+@deffn {Функция} kdels (@var{l1}, @var{l2})
 
-Симметризованная версия обобщённого дельта-символа Кронекера. Введена для удобства вычислений.
+Симметризованная версия обобщенного дельта-символа Кроннекера. Введена для удобства вычислений.
 Свертка выражения с этим тензором приводит к его симметризации. Примеры:
 
 @example
@@ -691,7 +691,7 @@ Oбобщенный символ Кронекера, где  @var{l1} и @var{l2} -- списки ковариантных и
 
 @end deffn
 
-@deffn {Function} levi_civita (@var{l})
+@deffn {Функция} levi_civita (@var{l})
 Перестановочный тензор Леви-Чивита, который дает 1 если список @var{l}
 является четной перестановкой целых чисел, -1 для нечетной
 перестановки, и 0 когда встречаются повторяющиеся индексы.
@@ -699,9 +699,9 @@ Oбобщенный символ Кронекера, где  @var{l1} и @var{l2} -- списки ковариантных и
 @end deffn
 
 
-@deffn {Function} lc2kdt (@var{expr})
+@deffn {Функция} lc2kdt (@var{expr})
 Приводит к упрощению выражений содержащих символы Леви-Чивита (произведения этих символов
-заменяются на соответствующие дельто-символы Кронекера). Основная разница между действием
+заменяются на соответствующие дельта-символы Кроннекера). Основная разница между действием
 данной функции и непосредственным вычислением перестановочного тензора состоит в том,
 что прямое вычисление тензора Леви-Чивита часто приводит к выражениям
 содержащим дельта тензоры с  целочисленными значения индексов, что затрудняет
@@ -771,7 +771,7 @@ To reenable the Lisp debugger set *debugger-hook* to nil.
 @end deffn
 
 
-@deffn {Function} lc_l
+@deffn {Функция} lc_l
 
 Правило упрощения выражений содержащих индексные символы Леви-Чивита
 (@code{levi_civita}). Данное правило преобразования использует свойства антисимметрии
@@ -798,7 +798,7 @@ To reenable the Lisp debugger set *debugger-hook* to nil.
 
 @end deffn
 
-@deffn {Function} lc_u
+@deffn {Функция} lc_u
 
 Правило упрощения выражений содержащих индексные символы Леви-Чивита
 (@code{levi_civita}), аналогично @code{lc_l}, данное правило преобразования
@@ -807,7 +807,7 @@ To reenable the Lisp debugger set *debugger-hook* to nil.
 
 @end deffn
 
-@deffn {Function} canten (@var{expr})
+@deffn {Функция} canten (@var{expr})
 Функция предназначена для упрощения тензорных выражений путем переименования
 и перестановки немых индексов. Область применения @code{canten} ограничена. Данная функция
 применима только для сумм тензорных произведений в которых отсутствуют индексы производной
@@ -816,9 +816,9 @@ To reenable the Lisp debugger set *debugger-hook* to nil.
 
 @end deffn
 
-@deffn {Function} concan (@var{expr})
+@deffn {Функция} concan (@var{expr})
 
-Аналогична @code{canten} но дополнитнльно производит
+Аналогична @code{canten} но дополнительно производит
 свертку индексов.
 
 @end deffn
@@ -826,7 +826,7 @@ To reenable the Lisp debugger set *debugger-hook* to nil.
 
 @subsection Симметрии тензоров
 
-@defvr {Option variable} allsym
+@defvr {Управляющая переменная} allsym
 Значение по умолчанию: @code{false}
 
 Если данной переменной присвоить  @code{true}, тогда все индексные
@@ -839,7 +839,7 @@ To reenable the Lisp debugger set *debugger-hook* to nil.
 @end defvr
 
 
-@deffn {Function} decsym (@var{tensor}, @var{m}, @var{n}, [@var{cov_1}, @var{cov_2}, ...], [@var{contr_1}, @var{contr_2}, ...])
+@deffn {Функция} decsym (@var{tensor}, @var{m}, @var{n}, [@var{cov_1}, @var{cov_2}, ...], [@var{contr_1}, @var{contr_2}, ...])
 
 Объявляет свойства симметрии тензора @var{tensor} по @var{m} ковариантному и
 @var{n} контравариантным индексам, где @var{cov_i} и @var{contr_i} --
@@ -896,7 +896,7 @@ To reenable the Lisp debugger set *debugger-hook* to nil.
 @end deffn
 
 
-@deffn {Function} remsym (@var{tensor}, @var{m}, @var{n})
+@deffn {Функция} remsym (@var{tensor}, @var{m}, @var{n})
 
 Удаляет все свойства симметрии тензора @var{tensor}, имеющего @var{m}
 ковариантных и @var{n} контравариантных индексов.
@@ -904,7 +904,7 @@ To reenable the Lisp debugger set *debugger-hook* to nil.
 @end deffn
 
 
-@deffn {Function} canform (@var{expr})
+@deffn {Функция} canform (@var{expr})
 Упрощает выражение @var{expr}, используя
 переименование немых индексов и сортировку всех индексов с учетом
 объявленных свойств симметрии. Если @code{allsym} равен @code{true},
@@ -925,8 +925,8 @@ To reenable the Lisp debugger set *debugger-hook* to nil.
 @subsection Операции над индексами тензоров
 
 
-@deffn {Function} diff (@var{expr}, @var{v_1}, [@var{n_1}, [@var{v_2}, @var{n_2}] ...])
-Cтандартная функция дифференцирования Maxima, которая в пакете @code{itensor} имеет
+@deffn {Функция} diff (@var{expr}, @var{v_1}, [@var{n_1}, [@var{v_2}, @var{n_2}] ...])
+Стандартная функция дифференцирования Maxima, которая в пакете @code{itensor} имеет
 дополнительные свойства. Данная конструкция означает взятие
 производной выражения @var{expr} по переменной @var{v_1}, @var{n_1}
 раз, по @var{v_2}, @var{n_2}раз и т.д.
@@ -943,7 +943,7 @@ Cтандартная функция дифференцирования Maxima, которая в пакете @code{itensor} им
 @end deffn
 
 
-@deffn {Function} idiff (@var{expr}, @var{v_1}, [@var{n_1}, [@var{v_2}, @var{n_2}] ...])
+@deffn {Функция} idiff (@var{expr}, @var{v_1}, [@var{n_1}, [@var{v_2}, @var{n_2}] ...])
 Индексное дифференцирование. В отличие от функции @code{diff}, которая
 дифференцирует в отношении некоторой независимой переменной, @code{idiff} может
 быть использован при дифференцировании по координате. Для индексного
@@ -961,7 +961,7 @@ Cтандартная функция дифференцирования Maxima, которая в пакете @code{itensor} им
 @end deffn
 
 
-@deffn {Function} liediff (@var{v}, @var{tensor})
+@deffn {Функция} liediff (@var{v}, @var{tensor})
 
 Вычисляет производную Ли от тензорного выражения @var{tensor} в отношении
 векторного поля @var{v}. @var{tensor} может быть произвольным тензорным
@@ -987,14 +987,14 @@ Cтандартная функция дифференцирования Maxima, которая в пакете @code{itensor} им
 
 
 
-@deffn {Function} rediff (@var{ten})
+@deffn {Функция} rediff (@var{ten})
 
 Вычисляет все команды @code{idiff} в выражении @var{ten}.
 
 @end deffn
 
 
-@deffn {Function} undiff (@var{expr})
+@deffn {Функция} undiff (@var{expr})
 
 Возвращает выражение эквивалентное @var{expr}, но в котором все
 производные индексных объектов заменяются на  не вычисляемую форму
@@ -1007,7 +1007,7 @@ Cтандартная функция дифференцирования Maxima, которая в пакете @code{itensor} им
 @end deffn
 
 
-@deffn {Function} evundiff
+@deffn {Функция} evundiff
 
 Эквивалентно применению @code{undiff}, затем @code{ev} и
 @code{rediff}.
@@ -1072,20 +1072,20 @@ To reenable the Lisp debugger set *debugger-hook* to nil.
 @end deffn
 
 
-@deffn {Function} flush (@var{expr}, @var{tensor_1}, @var{tensor_2}, ...)
+@deffn {Функция} flush (@var{expr}, @var{tensor_1}, @var{tensor_2}, ...)
 Обнуляет в @var{expr} все объекты  @var{tensor_i}, не имеющие индексов
 производной.
 
 @end deffn
 
 
-@deffn {Function} flushd (@var{expr}, @var{tensor_1}, @var{tensor_2}, ...)
+@deffn {Функция} flushd (@var{expr}, @var{tensor_1}, @var{tensor_2}, ...)
 Обнуляет в @var{expr} все объекты  @var{tensor_i}, имеющие индексы
 производной.
 
 @end deffn
 
-@deffn {Function} flushnd (@var{expr}, @var{tensor}, @var{n})
+@deffn {Функция} flushnd (@var{expr}, @var{tensor}, @var{n})
 Обнуляет в @var{expr} все объекты  @var{tensor}, имеющие @var{n} и больше индексов
 производной. Например,
 
@@ -1105,17 +1105,17 @@ To reenable the Lisp debugger set *debugger-hook* to nil.
 @end deffn
 
 
-@deffn {Function} coord (@var{tensor_1}, @var{tensor_2}, ...)
+@deffn {Функция} coord (@var{tensor_1}, @var{tensor_2}, ...)
 
 Дает тензорам @var{tensor_i} свойства координатного дифференцирования,
 такие что производная контравариантного вектора, имя которого  совпадает
-с одним из @var{tensor_i}, дает Кронекеровкую дельту. Например, если
+с одним из @var{tensor_i}, дает Кроннекеровскую дельту. Например, если
 @code{coord(x)}, тогда  вычисление @code{idiff(x([],[i]),j)} дает @code{kdelta([i],[j])}.
 @code{coord} это список всех индексных объектов имеющих это свойство.
 
 @end deffn
 
-@deffn {Function} remcoord (@var{tensor_1}, @var{tensor_2}, ...)
+@deffn {Функция} remcoord (@var{tensor_1}, @var{tensor_2}, ...)
 
 Удаляет свойства координатного дифференцирования для объектов @var{tensor_i}.
 @code{remcoord(all)} удаляет свойства координатного дифференцирования
@@ -1124,7 +1124,7 @@ To reenable the Lisp debugger set *debugger-hook* to nil.
 @end deffn
 
 
-@deffn {Function} makebox (@var{expr})
+@deffn {Функция} makebox (@var{expr})
 Служит для цели аналогичной @code{ishow}. В дополнение,
 все  Д'Аламбертианы, встречающиеся в @var{expr} отображаются символом @code{[]}.
 Например, @code{[]p([m],[n])} представляет сокращение для
@@ -1132,9 +1132,9 @@ To reenable the Lisp debugger set *debugger-hook* to nil.
 
 @end deffn
 
-@deffn {Function} conmetderiv (@var{expr}, @var{tensor})
+@deffn {Функция} conmetderiv (@var{expr}, @var{tensor})
 Используется для упрощения выражений, содержащих
-частные производныековариантных и контравариантных форм метрического
+частные производные ковариантных и контравариантных форм метрического
 тензора.
 Например, при помощи @code{conmetderiv} можно связать частные
 производные  метрического тензора с символами Кристоффеля:
@@ -1157,8 +1157,8 @@ To reenable the Lisp debugger set *debugger-hook* to nil.
 @end deffn
 
 
-@deffn {Function} simpmetderiv (@var{expr})
-@deffnx {Function} simpmetderiv (@var{expr} [, @var{stop}])
+@deffn {Функция} simpmetderiv (@var{expr})
+@deffnx {Функция} simpmetderiv (@var{expr} [, @var{stop}])
 
 Упрощает выражения, содержащие произведения производных метрического
 тензора.  В частности @code{simpmetderiv} использует два тождества:
@@ -1193,7 +1193,7 @@ To reenable the Lisp debugger set *debugger-hook* to nil.
 которое следует из симметрии символов Кристоффеля.
 
 Функция @code{simpmetderiv} имеет один необязательный аргумент,
-который, ести присутствует, вызывает прекращение работы функции
+который, если присутствует, вызывает прекращение работы функции
 сразу после первой успешной подстановки.
 Функция @code{simpmetderiv} использует глобальную опцию
 @var{flipflag}, которая определяет каким образом следует выбирать
@@ -1246,7 +1246,7 @@ errexp1 has improper indices
 @end deffn
 
 
-@deffn {Function} flush1deriv (@var{expr}, @var{tensor})
+@deffn {Функция} flush1deriv (@var{expr}, @var{tensor})
 
 Обнуляет все производные первого порядка от @var{tensor} в @var{expr}.
 
@@ -1256,8 +1256,8 @@ errexp1 has improper indices
 @subsection Тензоры в искривленном пространстве
 
 
-@deffn {Function} imetric (@var{g})
-@deffnx {System variable} imetric
+@deffn {Функция} imetric (@var{g})
+@deffnx {Системная переменная} imetric
 
 Определяет имя метрического тензора, присваивая соответствующее значение
 переменной @code{imetric}, @code{imetric:@var{g}}. В дополнение к этому программа
@@ -1268,7 +1268,7 @@ errexp1 has improper indices
 @end deffn
 
 
-@deffn {Function} ichr1 ([@var{i}, @var{j}, @var{k}])
+@deffn {Функция} ichr1 ([@var{i}, @var{j}, @var{k}])
 Дает значение символа Кристоффеля первого рода, которое по определению равно:
 
 @example
@@ -1276,13 +1276,13 @@ errexp1 has improper indices
          ik,j     jk,i     ij,k
 @end example
 @noindent
-Перед тем как использовать явные выражениядля символов Кристоффеля
+Перед тем как использовать явные выражения для символов Кристоффеля
 необходимо определить имя метрического тензора, присвоив соответствующее
 значение переменной @code{imetric}, см. пример ниже в разделе @code{covdiff}.
 
 @end deffn
 
-@deffn {Function} ichr2 ([@var{i}, @var{j}],[@var{k}])
+@deffn {Функция} ichr2 ([@var{i}, @var{j}],[@var{k}])
 Дает значение символа Кристоффеля 2-го рода, которые по определению равны:
 
 @example
@@ -1293,7 +1293,7 @@ errexp1 has improper indices
 @end deffn
 
 
-@deffn {Function} icurvature ([@var{i}, @var{j}, @var{k}], [@var{h}])
+@deffn {Функция} icurvature ([@var{i}, @var{j}, @var{k}], [@var{h}])
 Дает выражение для тензора кривизны Римана через символы Кристоффеля
 2-го рода (@code{ichr2}).  Используется следующее определение:
 @example
@@ -1307,7 +1307,7 @@ errexp1 has improper indices
 @end deffn
 
 
-@deffn {Function} covdiff (@var{expr}, @var{v_1}, @var{v_2}, ...)
+@deffn {Функция} covdiff (@var{expr}, @var{v_1}, @var{v_2}, ...)
 Вычисляет ковариантную производную от @var{expr} по переменным
 @var{v_i} используя символы Кристоффеля
 2-го рода (@code{ichr2}).  Для получения явных выражений ковариантной
@@ -1356,7 +1356,7 @@ Enter a list of the derivative indices: [];
 @end deffn
 
 
-@deffn {Function} lorentz_gauge (@var{expr})
+@deffn {Функция} lorentz_gauge (@var{expr})
 Налагает условие Лоренцевой калибровки на все индексные объекты в @var{expr},
 приравнивая к нулю те, в которых индекс производной совпадает с
 одним из контравариантных индексов.
@@ -1364,7 +1364,7 @@ Enter a list of the derivative indices: [];
 @end deffn
 
 
-@deffn {Function} igeodesic_coords (@var{expr}, @var{name})
+@deffn {Функция} igeodesic_coords (@var{expr}, @var{name})
 
 Позволяет пользователю обнулить не дифференцированные символы
 Кристоффеля и первые производные метрического тензора в @var{expr} (подразумевая
@@ -1485,7 +1485,7 @@ Maxima использует  поле дуального базиса (@code{ifri})
 @end example
 
 
-@deffn {Function} iframes ()
+@deffn {Функция} iframes ()
 
 Поскольку в данной версии Maxima свойства свертки для @code{ifr} и
 @code{ifri}, а также (@code{ifb}) определены всегда, то
@@ -1494,7 +1494,7 @@ Maxima использует  поле дуального базиса (@code{ifri})
 @end deffn
 
 
-@defvr {Variable} ifb
+@defvr {Переменная} ifb
 
 Скобка тетрады (коммутатор). Вклад метрического тензора тетрады в
 коэффициенты связности выражается через коммутатор тетрады.
@@ -1523,7 +1523,7 @@ ifb =  ifr    ifr   (ifri      - ifri      - ifri    itr   )
 
 @end example
 
-А при @code{itorsion_flag} is @code{true}:
+А при @code{itorsion_flag} равном @code{true}:
 
 @example
              e      d        d      e
@@ -1535,7 +1535,7 @@ ifb    = (ifr    ifr    - ifr    ifr   ) ifri
 @end defvr
 
 
-@defvr {Variable} icc1
+@defvr {Переменная} icc1
 
 Коэффициенты связности первого рода. В @code{itensor}, определяется как:
 
@@ -1557,7 +1557,7 @@ icc1    = ichr1    - ikt1    - inmc1
 @end defvr
 
 
-@defvr {Variable} icc2
+@defvr {Переменная} icc2
 
 Коэффициенты связности второго рода. В @code{itensor}, определяются как,
 
@@ -1580,11 +1580,11 @@ icc2   = ichr2   - ikt2   - inmc2
 @end defvr
 
 
-@defvr {Variable} ifc1
+@defvr {Переменная} ifc1
 
 Структурные коэффициенты 1-го рода, известные, также, как коэффициенты
 вращения Риччи. Этот тензор выражает  вклад метрики тетрады в
-коэффициенты связности 1-го рода.  Определяе как:
+коэффициенты связности 1-го рода.  Определяется как:
 
 @example
 
@@ -1599,7 +1599,7 @@ ifc1    = --------------------------------
 @end defvr
 
 
-@defvr {Variable} ifc2
+@defvr {Переменная} ifc2
 
 Структурные коэффициенты 2-го рода. Получаются сверткой структурных
 коэффициентов 1-го рода и метрики тетрады:
@@ -1615,15 +1615,15 @@ ifc2   = ifg   ifc1
 @end defvr
 
 
-@defvr {Variable} ifr
+@defvr {Переменная} ifr
 
-Базис тетрады. Произведение с дуальным базисом (@code{ifri}) даёт
+Базис тетрады. Произведение с дуальным базисом (@code{ifri}) дает
 метрику тетрады.
 
 @end defvr
 
 
-@defvr {Variable} ifri
+@defvr {Переменная} ifri
 
 Дуальный базис тетрады. Определяется набором векторов.
 Вместе с тензором тетрадной метрики @code{ifg} образует основу тетрадного
@@ -1632,7 +1632,7 @@ ifc2   = ifg   ifc1
 @end defvr
 
 
-@defvr {Variable} ifg
+@defvr {Переменная} ifg
 
 Тензор тетрадной метрики. По умолчанию равен @code{kdelta}. Пользователь может
 определить свой, используя @code{components}.
@@ -1640,14 +1640,14 @@ ifc2   = ifg   ifc1
 @end defvr
 
 
-@defvr {Variable} ifgi
+@defvr {Переменная} ifgi
 
 Обратная тетрадная метрика. Свертка с @code{ifg} дает  @code{kdelta}.
 
 @end defvr
 
 
-@defvr {Option variable} iframe_bracket_form
+@defvr {Управляющая переменная} iframe_bracket_form
 Значение по умолчанию: @code{true}
 
 Определяет метод вычисления скобки тетрады @code{ifb}.
@@ -1662,11 +1662,11 @@ Maxima умеет учитывать кручение и неметричность. Вклад кручения в
 @code{inonmet_flag} равен @code{true}.
 
 
-@defvr {Variable} inm
+@defvr {Переменная} inm
 
 Вектор неметричности.  Конформная неметричность определяется через
 ковариантную производную метрического тензора, которая в обычном случае
-равна нулью. Если @code{inonmet_flag} равен @code{true}, то вычисление
+равна нулю. Если @code{inonmet_flag} равен @code{true}, то вычисление
 ковариантной производной метрики дает:
 
 @example
@@ -1679,7 +1679,7 @@ g     =- g  inm
 @end defvr
 
 
-@defvr {Variable} inmc1
+@defvr {Переменная} inmc1
 
 Ковариантная перестановка компонент вектора неметричности. Определяется путем:
 
@@ -1697,7 +1697,7 @@ inmc1    = ------------------------------
 @end defvr
 
 
-@defvr {Variable} inmc2
+@defvr {Переменная} inmc2
 
 Контравариантная перестановка компонент вектора
 неметричности. Применяется когда @code{inonmet_flag} равен @code{true}.
@@ -1719,7 +1719,7 @@ inmc2   = -------------------------------------------
 @end defvr
 
 
-@defvr {Variable} ikt1
+@defvr {Переменная} ikt1
 
 Ковариантная перестановка тензора кручения.
 Вычисляется посредством:
@@ -1738,7 +1738,7 @@ ikt1    = ----------------------------------
 @end defvr
 
 
-@defvr {Variable} ikt2
+@defvr {Переменная} ikt2
 
 Контравариантная перестановка тензора кручения.
 Вычисляется посредством:
@@ -1756,7 +1756,7 @@ ikt2   = g   ikt1
 @end defvr
 
 
-@defvr {Variable} itr
+@defvr {Переменная} itr
 
 Тензор кручения. Для метрики с кручением индексы ковариантной
 производной не коммутируют. Пример:
@@ -1841,7 +1841,7 @@ A       /\ B       = ------ D              A       B
  i1..ip     j1..jq   (p+q)!  i1..ip j1..jq  k1..kp  l1..lq
 @end example
 
-где @code{D} обозначает дельта символ Кронекера.
+где @code{D} обозначает дельта символ Кроннекера.
 
 Другие авторы предпочитают  "геометрическое" определение,
 соответствующее понятию элемента объема:
@@ -1867,7 +1867,10 @@ A       /\ B       = ----- D              A       B
 антисимметризация.  В противном случае применяется "геометрическое" определение.
 
 
-@defvr {Operator} "~"
+@defvr {Оператор} ~
+@ifinfo
+@fnindex Внешнее произведение
+@end ifinfo
 
 Обозначает операцию внешнего произведения. Это бинарная операция.
 В качестве аргументов можно использовать выражения, включающие
@@ -1906,12 +1909,15 @@ A       /\ B       = ----- D              A       B
 @end defvr
 
 
-@defvr {Operator} "|"
+@defvr {Оператор} |
+@ifinfo
+@fnindex Свертка с вектором
+@end ifinfo
 
 Бинарная операция, обозначающая "внутреннее" произведение -- свертку с
 контравариантным вектором. При этой операции
 результат не зависит от векторных индексов, участвующих в
-свёртке. Поэтому вектор можно задать только именем.
+свертке. Поэтому вектор можно задать только именем.
 
 В пакете @code{itensor}, "внутренняя" свертка с вектором всегда выполняется по
 первому (в отношении алфавитного порядка) индексу. Это позволяет
@@ -1938,7 +1944,7 @@ A       /\ B       = ----- D              A       B
 
 @end defvr
 
-@deffn {Function} extdiff (@var{expr}, @var{ind})
+@deffn {Функция} extdiff (@var{expr}, @var{ind})
 
 Внешнее дифференцирование @var{expr} по индексу @var{ind}.
 В @code{itensor} оператор внешней производной определен как внешнее
@@ -1974,7 +1980,7 @@ A       /\ B       = ----- D              A       B
 @end deffn
 
 
-@deffn {Function} hodge (@var{expr})
+@deffn {Функция} hodge (@var{expr})
 
 Вычисляет форму дуальную @var{expr}. Например:
 
@@ -2018,7 +2024,7 @@ A       /\ B       = ----- D              A       B
 @end deffn
 
 
-@defvr {Variable} igeowedge_flag
+@defvr {Переменная} igeowedge_flag
 Значение по умолчанию: @code{false}
 
 Контролирует результат вычисления внешнего произведения или внешней
@@ -2038,7 +2044,7 @@ A       /\ B       = ----- D              A       B
 @code{tex()} не даст желаемого результата. Для экспорта тензорных
 выражений в TeX можно использовать команду @code{tentex}.
 
-@deffn {Function} tentex (@var{expr})
+@deffn {Функция} tentex (@var{expr})
 
 Команда экспорта тензорных
 выражений в TeX. Перед использованием необходимо загрузить необходимый
@@ -2076,7 +2082,7 @@ $$\Gamma_@{j\,k@}^@{m_1@}\,\Gamma_@{l\,m_1@}^@{i@}-\Gamma_@{j\,l@}^@{m_1@}\,
  @code{ctensor}. Эта задача выполняется вызовом команды @code{ic_convert()}.
 
 
-@deffn {Function} ic_convert (@var{eqn})
+@deffn {Функция} ic_convert (@var{eqn})
 
 Конвертирует тензорное выражение @var{eqn} из формата @code{itensor} в
 компоненты для использования в @code{ctensor}. При этом суммирование по немым
@@ -2163,5 +2169,5 @@ do (for k thru dim do t        : f sum(sum(diff(a , ct_coords ) b
 далеко не полна. Моей цель состоит не в том, чтобы механически воспроизвести все
 возможности Macsyma, включая ошибки, а в том, чтобы в итоге получить
 математически корректную поддержку данных видов вычислений в @code{itensor}.
-Выполнение этой задачи займёт некоторое время.
+Выполнение этой задачи займет некоторое время.
 

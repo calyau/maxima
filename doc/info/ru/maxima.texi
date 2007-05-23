@@ -1,0 +1,879 @@
+\input texinfo
+@c -*-texinfo-*-
+
+@c Language=Russian
+@c Encoding=CP1251
+@c File=maxima.texi 
+@c OriginalRevision=1.48
+
+@c 2000-04-17 Jim Van Zandt <jrv@vanzandt.mv.com> Added header,
+@c info directory entry, reference to introduction chapter, and menu
+@c descriptions.  Rearranged chapters.
+
+@c to update the menus do: 
+@c (texinfo-multiple-files-update "maxima.texi" t t)
+@c
+@c texinfo-multiple-files-update will delete the detailed node listing!
+
+
+@c %**start of header
+@setfilename  maxima.info
+@documentencoding windows-1251
+@synindex vr fn
+@settitle Maxima Manual
+@c %**end of header
+@setchapternewpage odd
+@ifinfo
+This is a Texinfo Maxima Manual
+
+Copyright 1994,2001 William F. Schelter
+
+@format
+START-INFO-DIR-ENTRY
+* Maxima: (maxima).     A computer algebra system.
+END-INFO-DIR-ENTRY
+@end format
+@end ifinfo
+
+@ifinfo 
+@macro var {expr}
+<\expr\>
+@end macro
+@end ifinfo
+
+@titlepage
+@sp 10
+@comment The title is printed in a large font.
+@center @titlefont{Руководство по Maxima}
+@page
+@vskip 0pt plus 1filll
+Maxima -- система аналитических вычислений, написанная на Lisp.
+
+Maxima происходит от системы аналитических вычислений Macsyma,
+разрабатывавшейся в MIT в период 1968 по 1982 в рамках проекта MAC.
+В 1982 году MIT передала копию исходного кода Macsyma Министерству
+энергетики США (Department of Energy). Данная версия известна как
+DOE Macsyma.  Копияия DOE Macsyma поддерживалась профессором Вильямом
+Шелтером (William F. Schelter) из Техасского Университета с 1982 года
+вплоть до его смерти в 2001 году.  В 1998 году Шелтер получил
+разрешение выпустить исходный код DOE Macsyma под публичной 
+лицензией GNU и в 2000 году инициировал проект Maxima на SourceForge 
+для поддержки и развития DOE Macsyma, переименованной в Maxima.
+
+@end titlepage
+
+@summarycontents
+@contents
+
+@ifnottex
+@node Top, Введение в Maxima, (dir), (dir)
+@top
+
+
+Maxima -- система аналитических вычислений, написанная на Lisp.
+
+Maxima происходит от системы аналитических вычислений Macsyma,
+разрабатывавшейся в MIT в период 1968 по 1982 в рамках проекта MAC.
+В 1982 году MIT передала копию исходного кода Macsyma Министерству
+энергетики США (Department of Energy). Данная версия известна как
+DOE Macsyma.  Копияия DOE Macsyma поддерживалась профессором Вильямом
+Шелтером (William F. Schelter) из Техасского Университета с 1982 года
+вплоть до его смерти в 2001 году.  В 1998 году Шелтер получил
+разрешение выпустить исходный код DOE Macsyma под публичной 
+лицензией GNU и в 2000 году инициировал проект Maxima на SourceForge 
+для поддержки и развития DOE Macsyma, переименованной в Maxima.
+@end ifnottex
+
+@c includes
+
+@menu
+Структура Maxima
+
+* Введение в Maxima::      	Пример сессии Maxima.
+* Работа с ошибками::           Обнаружение ошибок и, как сообщить об ошибках в Maxima.
+* Справка::                     Справочная система в сессии Maxima.
+* Командная строка::            Синтаксис командной строки Maxima.
+* Operators::                   Operators used in Maxima expressions.
+* Expressions::                 Expressions in Maxima.
+* Simplification::              Simplifying expressions.
+* Plotting::                    2D and 3D graphical output.
+* Input and Output::            File input and output.
+* Floating Point::              Low level numerical routines.
+* Контексты::                   Наборы известных фактов.
+
+Поддержка специальных разделов математики
+
+* Polynomials::                 Standard forms for polynomials, and
+                                functions operating on them.
+* Константы::                   Числовые и логические константы.
+* Logarithms::                  Manipulation of expressions involving
+                                logarithms.
+* Trigonometric::               Manipulating expressions with trig and
+                                inverse trig functions.
+* Special Functions::           Special functions
+* Elliptic Functions::          Elliptic Functions and Integrals
+* Пределы::                     Вычисление пределов выражений.
+* Differentiation::             Differential calculus.
+* Integration::                 Integral calculus.
+* Equations::                   Defining and solving equations.
+* Differential Equations::      Defining and solving differential equations.
+* Numerical::                   Numerical integration, Fourier
+                                transforms, etc.
+* Массивы::                     Создание массивов и работа с ними.
+* Matrices and Linear Algebra:: Matrix operations.
+* Пакет affine::                      
+* Пакет itensor::               Индексные тензорные вычисления.
+* Пакет ctensor::               Компонентные тензорные вычисления.
+* Пакет atensor::               Вычисления с тензорными алгебрами.
+* Series::                      Taylor and power series.
+* Number Theory::               Number theory.
+* Symmetries::                  
+* Groups::                      Abstract algebra.
+
+Продвинутые возможности и программирование
+
+* Runtime Environment::         Customization of the Maxima environment.
+* Miscellaneous Options::       Options with a global effect on Maxima.
+* Rules and Patterns::          User defined pattern matching and
+                                simplification rules.
+* Lists::                       Manipulation of lists.
+* Sets::                        Manipulation of sets.
+* Function Definition::         Defining functions.
+* Program Flow::                Defining Maxima programs.
+* Debugging::                   Debugging Maxima programs.
+
+Дополнительные пакеты
+
+* augmented_lagrangian::        augmented_lagrangian package.
+* bode::                        Bode gain and phase plots.
+* contrib_ode::                 Additional routines for ODEs
+* descriptive::                 Descriptive statistics.
+* diag::                        Jordan matrices.
+* distrib::                     Probability distributions.
+* draw::                        A Maxima-Gnuplot interface.
+* dynamics::                    Graphics for dynamical systems and fractals.
+* eval_string::                 Maxima expressions as strings.
+* f90::                         Maxima to fortran translator.
+* ggf::                         Generating function of sequences.
+* grobner::                     Functions for working with Groebner bases.
+* impdiff::                     Implicit derivatives.
+* implicit_plot::               Implicit plots package.
+* interpol::                    Interpolation package.
+* lbfgs::                       L-BFGS unconstrained minimization package.
+* lindstedt::                   Lindstedt package.
+* linearalgebra::               Functions for linear algebra.
+* lsquares::                    Least squares.
+* makeOrders::                  Polynomial utility.
+* mnewton::                     Newton's method.
+* numericalio::                 Reading and writing files.
+* opsubst::                     Substitutions utility.
+* orthopoly::                   Orthogonal polynomials.
+* plotdf::                      Direction fields plots.
+* romberg::                     Romberg method for numerical integration.
+* simplex::                     Linear programming.
+* simplification::              Simplification rules and functions.
+* solve_rec::                   Linear recurrences.
+* stats::                       Statistical inference package.
+* stirling::                    Stirling formula.
+* stringproc::                  String processing.
+* unit::                        Units and dimensions package.
+* zeilberger::                  Functions for hypergeometric summation.
+
+
+Индекс
+
+* Function and Variable Index:: Index.
+
+@comment @detailmenu
+ --- The Detailed Node Listing ---
+
+Введение
+
+* Введение в Maxima::
+
+Справка
+
+* Lisp и Maxima::            
+* Сборка мусора::          
+* Документация::               
+* Справочная система::        
+
+Командная строка
+
+* Введение в командную строку::  
+* Функции и переменные для работы в командной строке::  
+
+Operators
+
+* nary::                        
+* nofix::                       
+* postfix::                     
+* prefix::                      
+* Arithmetic operators::    
+* Relational operators::   
+* General operators::
+
+Expressions
+
+* Introduction to Expressions::  
+* Assignment::                  
+* Complex::                     
+* Inequality::                  
+* Syntax::                      
+* Definitions for Expressions::  
+
+Simplification
+
+* Definitions for Simplification::  
+
+Plotting
+
+* Definitions for Plotting::    
+
+Input and Output
+
+* Comments::
+* Files::                       
+* Definitions for Input and Output::  
+
+Floating Point
+
+* Definitions for Floating Point::  
+
+Контексты
+
+* Функции для работы с контекстами::    
+
+Polynomials
+
+* Introduction to Polynomials::  
+* Definitions for Polynomials::  
+
+Константы
+
+* Математические константы::   
+
+Logarithms
+
+* Definitions for Logarithms::  
+
+Trigonometric
+
+* Introduction to Trigonometric::  
+* Definitions for Trigonometric::  
+
+Special Functions
+
+* Introduction to Special Functions::  
+* Definitions for Special Functions::  
+
+Elliptic Functions
+
+* Introduction to Elliptic Functions and Integrals::
+* Definitions for Elliptic Functions::
+* Definitions for Elliptic Integrals::
+
+Пределы
+
+* Функции для работы с пределами::      
+
+Differentiation
+
+* Definitions for Differentiation::  
+
+Integration
+
+* Introduction to Integration::  
+* Definitions for Integration::  
+
+Equations
+
+* Definitions for Equations::   
+
+Differential Equations
+
+* Introduction to Differential Equations::  
+* Definitions for Differential Equations::  
+
+Numerical
+
+* Introduction to Numerical::   
+* Fourier packages::                     
+* Definitions for Numerical::   
+* Definitions for Fourier Series::
+
+Массивы
+
+* Функции и переменные для работы с массивами::  
+
+Matrices and Linear Algebra
+
+* Introduction to Matrices and Linear Algebra::  
+* Dot::                         
+* Vectors::                     
+* eigen::
+* Definitions for Matrices and Linear Algebra::  
+
+Пакет affine
+
+* Функции и переменные пакета affine::      
+
+Пакет itensor
+
+* Введение в пакет itensor::      
+* Функции и переменные пакета itensor::      
+
+Пакет ctensor
+
+* Введение в пакет ctensor::     
+* Функции и переменные пакета ctensor::     
+
+Пакет atensor
+
+* Введение в пакет atensor::     
+* Функции и переменные пакета atensor::     
+
+Series
+
+* Introduction to Series::      
+* Definitions for Series::      
+
+Number Theory
+
+* Definitions for Number Theory::  
+
+Symmetries
+
+* Definitions for Symmetries::  
+
+Groups
+
+* Definitions for Groups::      
+
+Runtime Environment
+
+* Introduction for Runtime Environment::  
+* Interrupts::                  
+* Definitions for Runtime Environment::  
+
+Miscellaneous Options
+
+* Introduction to Miscellaneous Options::  
+* Share::                       
+* Definitions for Miscellaneous Options::  
+
+Rules and Patterns
+
+* Introduction to Rules and Patterns::  
+* Definitions for Rules and Patterns::  
+
+Lists
+
+* Introduction to Lists::       
+* Definitions for Lists::       
+
+Sets
+
+* Introduction to Sets::       
+* Definitions for Sets::       
+
+Function Definition
+
+* Introduction to Function Definition::  
+* Function::                    
+* Macros::                      
+* Definitions for Function Definition::  
+
+Program Flow
+
+* Introduction to Program Flow::  
+* Definitions for Program Flow::  
+
+Debugging
+
+* Definitions for Debugging::   
+
+
+augmented_lagrangian
+
+* Definitions for augmented_lagrangian::
+
+bode
+
+* Definitions for bode::
+
+contrib_ode
+
+* Introduction to contrib_ode::
+* Definitions for contrib_ode::
+* Possible improvements to contrib_ode::
+* Test cases for contrib_ode::
+* References for contrib_ode::
+
+descriptive
+
+* Introduction to descriptive::
+* Definitions for data manipulation::
+* Definitions for descriptive statistics::
+* Definitions for specific multivariate descriptive statistics::
+* Definitions for statistical graphs::
+
+diag
+
+* Definitions for diag::
+
+distrib
+
+* Introduction to distrib::
+* Definitions for continuous distributions::
+* Definitions for discrete distributions::
+
+draw
+
+* Introduction to draw::
+* Definitions for draw::
+
+dynamics
+
+* Introduction to dynamics::
+* Definitions for dynamics::
+
+eval_string
+
+* Definitions for eval_string::
+
+f90
+
+* Definitions for f90::
+
+ggf
+
+* Definitions for ggf::
+
+grobner
+
+* Introduction to grobner::
+* Definitions for grobner::
+
+impdiff
+
+* Definitions for impdiff::
+
+implicit_plot
+
+* Definitions for implicit_plot::
+
+interpol
+
+* Introduction to interpol::
+* Definitions for interpol::
+
+lbfgs
+
+* Introduction to lbfgs::
+* Definitions for lbfgs::
+
+lindstedt
+
+* Definitions for lindstedt::
+
+linearalgebra
+
+* Introduction to linearalgebra::
+* Definitions for linearalgebra::
+
+lsquares
+
+* Definitions for lsquares::
+
+makeOrders
+
+* Definitions for makeOrders::
+
+mnewton
+
+* Definitions for mnewton::
+
+numericalio
+
+* Introduction to numericalio::
+* Definitions for numericalio::
+
+opsubst
+
+* Definitions for opsubst::
+
+orthopoly
+
+* Introduction to orthogonal polynomials::
+* Definitions for orthogonal polynomials::
+
+plotdf
+
+* Introduction to plotdf::
+* Definitions for plotdf::
+
+romberg
+
+* Definitions for romberg::
+
+simplex
+
+* Introduction to simplex::
+* Definitions for simplex::
+
+simplification
+
+* Introduction to simplification::
+* Definitions for simplification::
+
+solve_rec
+
+* Introduction to solve_rec::
+* Definitions for solve_rec::
+
+stats
+
+* Introduction to stats::
+* Definitions for inference_result::
+* Definitions for stats::
+* Definitions for special distributions::
+
+stirling
+
+* Definitions for stirling::
+
+stringproc
+
+* Introduction to string processing::
+* Definitions for input and output::
+* Definitions for characters::
+* Definitions for strings::
+
+unit
+
+* Introduction to Units::       
+* Definitions for Units::
+
+zeilberger
+
+* Introduction to zeilberger::
+* Definitions for zeilberger::
+
+@comment @end detailmenu
+@end menu
+
+@c  Put the @node lines here, rather than in the @included files,
+@c  so emacs can automatically update them with C-c C-u C-e.
+@c  nota bene: C-c C-u C-a and texinfo-multiple-files-update will delete
+@c  the detailed node listing!
+
+@node Введение в Maxima, Работа с ошибками, Top, Top
+@chapter Введение в Maxima
+@include Introduction.texi
+
+@node Работа с ошибками, Справка, Введение в Maxima, Top
+@chapter Работа с ошибками
+@include Bugs.texi
+
+@node Справка, Командная строка, Работа с ошибками, Top
+@chapter Справка
+@include Help.texi
+
+@node Командная строка, Operators, Справка, Top
+@chapter Командная строка
+@include Command.texi
+
+@node Operators, Expressions, Командная строка, Top
+@chapter Operators
+@include Operators.texi
+
+@node Expressions, Simplification, Operators, Top
+@chapter Expressions
+@include Expressions.texi
+
+@node Simplification, Plotting, Expressions, Top
+@chapter Simplification
+@include Simplification.texi
+
+@node Plotting, Input and Output, Simplification, Top
+@chapter Plotting
+@include Plotting.texi
+
+@node Input and Output, Floating Point, Plotting, Top
+@chapter Input and Output
+@include Input.texi
+
+@node Floating Point, Контексты, Input and Output, Top
+@chapter Floating Point
+@include Floating.texi
+
+@node Контексты, Polynomials, Floating Point, Top
+@chapter Контексты
+@include Contexts.texi
+
+@node Polynomials, Константы, Контексты, Top
+@chapter Polynomials
+@include Polynomials.texi
+
+@node Константы, Logarithms, Polynomials, Top
+@chapter Константы
+@include Constants.texi
+
+@node Logarithms, Trigonometric, Константы, Top
+@chapter Logarithms
+@include Logarithms.texi
+
+@node Trigonometric, Special Functions, Logarithms, Top
+@chapter Trigonometric
+@include Trigonometric.texi
+
+@node Special Functions, Elliptic Functions, Trigonometric, Top
+@chapter Special Functions
+@include Special.texi
+
+@node Elliptic Functions, Пределы, Special Functions, Top
+@chapter Elliptic Functions
+@include Elliptic.texi
+
+@node Пределы, Differentiation, Elliptic Functions, Top
+@chapter Пределы
+@include Limits.texi
+
+@node Differentiation, Integration, Пределы, Top
+@chapter Differentiation
+@include Differentiation.texi
+
+@node Integration, Equations, Differentiation, Top
+@chapter Integration
+@include Integration.texi
+
+@node Equations, Differential Equations, Integration, Top
+@chapter Equations
+@include Equations.texi
+
+@node Differential Equations, Numerical, Equations, Top
+@chapter Differential Equations
+@include Differential.texi
+
+@c @include NonCommutative.texi
+
+@node Numerical, Массивы, Differential Equations, Top
+@chapter Numerical
+@include Numerical.texi
+
+@node Массивы, Matrices and Linear Algebra, Numerical, Top
+@chapter Массивы
+@include Arrays.texi
+
+@node Matrices and Linear Algebra, Пакет affine, Массивы, Top
+@chapter Matrices and Linear Algebra
+@include Matrices.texi
+
+@node Пакет affine, Пакет itensor, Matrices and Linear Algebra, Top
+@chapter Пакет affine
+@include Affine.texi
+
+@node Пакет itensor, Пакет ctensor, Пакет affine, Top
+@chapter Пакет itensor
+@include Itensor.texi
+
+@node Пакет ctensor, Пакет atensor, Пакет itensor, Top
+@chapter Пакет ctensor
+@include Ctensor.texi
+
+@node Пакет atensor, Series, Пакет ctensor, Top
+@chapter Пакет atensor
+@include Atensor.texi
+
+@node Series, Number Theory, Пакет atensor, Top
+@chapter Series
+@include Series.texi
+
+@node Number Theory, Symmetries, Series, Top
+@chapter Number Theory
+@include Number.texi
+
+@node Symmetries, Groups, Number Theory, Top
+@chapter Symmetries
+@include Symmetries.texi
+
+@node Groups, Runtime Environment, Symmetries, Top
+@chapter Groups
+@include Groups.texi
+
+@node Runtime Environment, Miscellaneous Options, Groups, Top
+@chapter Runtime Environment
+@include Runtime.texi
+
+@node Miscellaneous Options, Rules and Patterns, Runtime Environment, Top
+@chapter Miscellaneous Options
+@include Miscellaneous.texi
+
+@node Rules and Patterns, Lists, Miscellaneous Options, Top
+@chapter Rules and Patterns
+@include Rules.texi
+
+@node Lists, Sets, Rules and Patterns, Top
+@chapter Lists
+@include Lists.texi
+
+@node Sets, Function Definition, Lists, Top
+@chapter Sets
+@include nset.texi
+
+@node Function Definition, Program Flow, Sets, Top
+@chapter Function Definition
+@include Function.texi
+
+@node Program Flow, Debugging, Function Definition, Top
+@chapter Program Flow
+@include Program.texi
+
+@node Debugging, augmented_lagrangian, Program Flow, Top
+@chapter Debugging
+@include Debugging.texi
+
+@node augmented_lagrangian, bode, Debugging, Top
+@chapter augmented_lagrangian
+@include augmented_lagrangian.texi
+
+@node bode, contrib_ode, augmented_lagrangian, Top
+@chapter bode
+@include bode.texi
+
+@node contrib_ode, descriptive, bode, Top
+@chapter contrib_ode
+@include contrib_ode.texi
+
+@node descriptive, diag, contrib_ode, Top
+@chapter descriptive
+@include descriptive.texi
+
+@node diag, distrib, descriptive, Top
+@chapter diag
+@include diag.texi
+
+@node distrib, draw, diag, Top
+@chapter distrib
+@include distrib.texi
+
+@node draw, dynamics, distrib, Top
+@chapter draw
+@include draw.texi
+
+@node dynamics, eval_string, draw, Top
+@chapter dynamics
+@include dynamics.texi
+
+@node eval_string, f90, dynamics, Top
+@chapter eval_string
+@include eval_string.texi
+
+@node f90, ggf, eval_string, Top
+@chapter f90
+@include f90.texi
+
+@node ggf, grobner, f90, Top
+@chapter ggf
+@include ggf.texi
+
+@node grobner, impdiff, ggf, Top
+@chapter grobner
+@include grobner.texi
+
+@node impdiff, implicit_plot, grobner, Top
+@chapter impdiff
+@include impdiff.texi
+
+@node implicit_plot, interpol, impdiff, Top
+@chapter implicit_plot
+@include implicit_plot.texi
+
+@node interpol, lbfgs, implicit_plot, Top
+@chapter interpol
+@include interpol.texi
+
+@node lbfgs, lindstedt, interpol, Top
+@chapter lbfgs
+@include lbfgs.texi
+
+@node lindstedt, linearalgebra, lbfgs, Top
+@chapter lindstedt
+@include lindstedt.texi
+
+@node linearalgebra, lsquares, lindstedt, Top
+@chapter linearalgebra
+@include linearalgebra.texi
+
+@node lsquares, makeOrders, linearalgebra, Top
+@chapter lsquares
+@include lsquares.texi
+
+@node makeOrders, mnewton, lsquares, Top
+@chapter makeOrders
+@include makeOrders.texi
+
+@node mnewton, numericalio, makeOrders, Top
+@chapter mnewton
+@include mnewton.texi
+
+@node numericalio, opsubst, mnewton, Top
+@chapter numericalio
+@include numericalio.texi
+
+@node opsubst, orthopoly, numericalio, Top
+@chapter opsubst
+@include opsubst.texi
+
+@node orthopoly, plotdf, opsubst, Top
+@chapter orthopoly
+@include orthopoly.texi
+
+@node plotdf, romberg, orthopoly, Top
+@chapter plotdf
+@include plotdf.texi
+
+@node romberg, simplex, plotdf, Top
+@chapter romberg
+@include romberg.texi
+
+@node simplex, simplification, romberg, Top
+@chapter simplex
+@include simplex.texi
+
+@node simplification, solve_rec, simplex, Top
+@chapter simplification
+@include simplifications.texi
+
+@node solve_rec, stats, simplification, Top
+@chapter solve_rec
+@include solve_rec.texi
+
+@node stats, stirling, solve_rec, Top
+@chapter stats
+@include stats.texi
+
+@node stirling, stringproc, stats, Top
+@chapter stirling
+@include stirling.texi
+
+@node stringproc, unit, stirling, Top
+@chapter stringproc
+@include stringproc.texi
+
+@node unit, zeilberger, stringproc, Top
+@chapter unit
+@include unit.texi
+
+@node zeilberger, Function and Variable Index, unit, Top
+@chapter zeilberger
+@include zeilberger.texi
+
+@node Function and Variable Index,  , zeilberger, Top
+@chapter Indices
+@include Indices.texi
+
+@c end includes
+
+@bye

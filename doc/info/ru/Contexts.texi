@@ -1,16 +1,16 @@
 @c Language=Russian
 @c Encoding=CP1251
 @c File=Contexts.texi
-@c OriginalRevision=1.11
+@c OriginalRevision=1.12
 
 @menu
-* Definitions for Contexts::
+* Функции для работы с контекстами::
 @end menu
 
-@node Definitions for Contexts,  , Contexts, Contexts
-@section Функции для упрвления контекстами
+@node Функции для работы с контекстами,  , Контексты, Контексты
+@section Функции для работы с контекстами
 
-@deffn {Function} activate (@var{context_1}, ..., @var{context_n})
+@deffn {Функция} activate (@var{context_1}, ..., @var{context_n})
 Активизирует контексты @var{context_1}, ..., @var{context_n}.
 Факты в этих контекстах становятся доступными для
 процедур дедукции.  Факты в данных контекстах
@@ -21,29 +21,86 @@
 
 @end deffn
 
-@defvr {System variable} activecontexts
+@defvr {Системная переменная} activecontexts
 Значение по умолчанию: @code{[]}
 
 @code{activecontexts} -- список активных контекстов, активизированных
 при помощи функции @code{activate}, в отличии от контекстов, которые
-являются активными как подконтексты текущего конткста.
+являются активными как подконтексты текущего контекста.
 
 @end defvr
 
 
-@deffn {Function} assume (@var{pred_1}, ..., @var{pred_n})
-Добавляет предикаты @var{pred_1}, ..., @var{pred_n} к текущей базе
-данных, после проверки непротиворечивости и избыточности.
-Если предикаты являются противоречивыми или избыточными, то
-никаких действий не производится.
+@deffn {Функция} assume (@var{pred_1}, ..., @var{pred_n})
+Добавляет предикаты @var{pred_1}, ..., @var{pred_n} к текущему контексту.
+Если предикаты являются противоречивыми или избыточными
+в текущем контексте, то добавление не производится.
+Контекст объединяет все предикаты от всех вызовов @code{assume}.
 
-@code{assume} возвращает список предикатов, добавленых к базе данных и
+@code{assume} возвращает список предикатов, добавленных к базе данных и
 атомы @code{redundant} или @code{inconsistent} для избыточных
 или противоречивых предикатов соответственно.
 
+Предикаты @var{pred_1}, ..., @var{pred_n} могут быть только выражениями,
+содержащими операторы сравнения @code{< <= equal notequal >=} и @code{>}.
+Предикаты не могут быть буквальными равенствами @code{=} или неравенствами @code{#} выражений,
+и не могут включать функции-предикаты @code{integerp}.
+
+Распознаются составные предикаты вида @code{@var{pred_1} and ... and @var{pred_n}},
+но не предикаты @code{@var{pred_1} or ... or @var{pred_n}}.
+Распознается @code{not @var{pred_k}} если @var{pred_k} является предикатом сравнения.
+Выражения вида @code{not (@var{pred_1} and @var{pred_2})}
+и @code{not (@var{pred_1} or @var{pred_2})} не распознаются.
+
+Механизм дедукции Maxima не очень силен.  Существует много очевидных следствий,
+которые не могут быть выведены @code{is}.
+Это известная слабость.
+ 
+@code{assume} вычисляет свои аргументы.
+
+См. также @code{is}, @code{facts}, @code{forget}, @code{context} и @code{declare}.
+
+Примеры:
+
+@c ===beg===
+@c assume (xx > 0, yy < -1, zz >= 0);
+@c assume (aa < bb and bb < cc);
+@c facts ();
+@c is (xx > yy);
+@c is (yy < -yy);
+@c is (sinh (bb - aa) > 0);
+@c forget (bb > aa);
+@c prederror : false;
+@c is (sinh (bb - aa) > 0);
+@c is (bb^2 < cc^2);
+@c ===end===
+
+@example
+(%i1) assume (xx > 0, yy < -1, zz >= 0);
+(%o1)              [xx > 0, yy < - 1, zz >= 0]
+(%i2) assume (aa < bb and bb < cc);
+(%o2)                  [bb > aa, cc > bb]
+(%i3) facts ();
+(%o3)     [xx > 0, - 1 > yy, zz >= 0, bb > aa, cc > bb]
+(%i4) is (xx > yy);
+(%o4)                         true
+(%i5) is (yy < -yy);
+(%o5)                         true
+(%i6) is (sinh (bb - aa) > 0);
+(%o6)                         true
+(%i7) forget (bb > aa);
+(%o7)                       [bb > aa]
+(%i8) prederror : false;
+(%o8)                         false
+(%i9) is (sinh (bb - aa) > 0);
+(%o9)                        unknown
+(%i10) is (bb^2 < cc^2);
+(%o10)                       unknown
+@end example
+ 
 @end deffn
 
-@defvr {Option variable} assumescalar
+@defvr {Управляющая переменная} assumescalar
 Значение по умолчанию: @code{true}
 
 @code{assumescalar} определяет, что выражения @code{expr},
@@ -70,18 +127,18 @@
 @end defvr
 
 
-@defvr {Option variable} assume_pos
+@defvr {Управляющая переменная} assume_pos
 Значение по умолчанию: @code{false}
 
 Если @code{assume_pos} равно @code{true}
-и знак параметра @var{x} не может быть определен исходя из базы данных
-@code{assume} или другим способом, тогда
-@code{sign} и @code{asksign (@var{x})} дают @code{true}.
+и знак параметра @var{x} не может быть определен исходя из текущего контекста
+@c WHAT ARE THOSE OTHER CONSIDERATIONS ??
+или другим способом, тогда @code{sign} и @code{asksign (@var{x})} дают @code{true}.
 Таким образом подавить некоторые автоматические запросы @code{asksign},
 возникающие при работе @code{integrate} или других вычислениях.
 
 По умолчанию параметр @var{x} таков, что @code{symbolp (@var{x})} или
-@code{subvarp (@var{x})} истинны.  Класс выражнний, которые могут
+@code{subvarp (@var{x})} истинны.  Класс выражений, которые могут
 рассматриваться в качестве параметров, может в некоторой степени
 изменяться с помощью переменной @code{assume_pos_pred}.
 
@@ -93,7 +150,7 @@
 Однако, невозможно совсем обойтись без интерактивных запросов @code{asksign}.
 В частности, когда аргумент @code{asksign} является разницей
 @code{@var{x} - @var{y}} или логарифмом @code{log(@var{x})},
-тогда @code{asksign} всегда запросит пользователя о знаке паоаметра,
+тогда @code{asksign} всегда запросит пользователя о знаке параметра,
 даже если @code{assume_pos} равно @code{true} и @code{assume_pos_pred}
 есть функция, возвращающая @code{true} для всех аргументов.
 
@@ -101,11 +158,11 @@
 @end defvr
 
 
-@defvr {Option variable} assume_pos_pred
+@defvr {Управляющая переменная} assume_pos_pred
 Значение по умолчанию: @code{false}
 
 Если @code{assume_pos_pred} присвоено значение, являющееся именем
-функции или lambda-выражение с одним аргументом @var{x},
+функции или лямбда-выражение с одним аргументом @var{x},
 тогда эта функция вызывается для того чтобы определить
 является ли @var{x} параметрам для  @code{assume_pos}.
 @code{assume_pos_pred} игнорируется, когда @code{assume_pos} равно @code{false}.
@@ -187,7 +244,7 @@ p;
 @end defvr
 
 
-@defvr {Option variable} context
+@defvr {Управляющая переменная} context
 Значение по умолчанию: @code{initial}
 
 @code{context} служит для обозначения набора фактов формируемого при
@@ -196,26 +253,26 @@ p;
 а @code{forget} удаляет факты.
 
 Присваивание @code{context} имени @var{foo} изменяет текущий контекст
-на @var{foo}.  Если контекст с таким именем @var{foo} пока ещё не
+на @var{foo}.  Если контекст с таким именем @var{foo} пока еще не
 существует, то он автоматически создается вызовом функции
 @code{newcontext}.
 @c ISN'T THIS NEXT BIT EQUIVALENT TO THE FIRST ??
 Указанный контекст автоматически активируется.
 
-См. @code{context} для общего описания механизма контекстов.
+См. @code{contexts} для общего описания механизма контекстов.
 
 @end defvr
 
 @c UMM, I'M HAVING TROUBLE GETTING THE CONTEXT-SWITCHING STUFF TO BEHAVE AS EXPECTED
 @c SOME EXAMPLES WILL HELP A LOT HERE
-@defvr {Option variable} contexts
+@defvr {Управляющая переменная} contexts
 Значение по умолчанию: @code{[initial, global]}
 
 @code{contexts} -- список существующих на данный момент контекстов,
 включая активный.
 
-Механизм контекстов позволяет пользователю объединять
-поименованные части базы данных фактов (контексты).
+Механизм контекстов позволяет пользователю создавать
+поименованные наборы фактов (контексты).
 В результате можно легко активировать или деактивировать
 большие наборы фактов просто активируя или деактивируя
 соответствующие контексты.
@@ -225,7 +282,7 @@ p;
 поодиночке с помощью @code{forget} или целиком с помощью @code{kill},
 уничтожающем весь контекст, которому они принадлежат.
 
-Контексты имеют иерархическую структуру.  Корьневым элементом
+Контексты имеют иерархическую структуру.  Корневым элементом
 всегда является контекст @code{global}, который содержит информацию о
 Maxima нужную некоторым функциям.  Когда мы находимся в определенном
 контексте, все его факты являются активными, т.е. используются
@@ -241,13 +298,13 @@ Maxima нужную некоторым функциям.  Когда мы находимся в определенном
 
 @end defvr
 
-@deffn {Function} deactivate (@var{context_1}, ..., @var{context_n})
+@deffn {Функция} deactivate (@var{context_1}, ..., @var{context_n})
 Деактивирует все указанные контексты @var{context_1}, ..., @var{context_n}.
 
 @end deffn
 
-@deffn {Function} facts (@var{item})
-@deffnx {Function} facts ()
+@deffn {Функция} facts (@var{item})
+@deffnx {Функция} facts ()
 Если @var{item} является именем контекста, тогда
 @code{facts (@var{item})} возвращает список
 содержащихся в нем фактов.
@@ -258,12 +315,12 @@ Maxima нужную некоторым функциям.  Когда мы находимся в определенном
 принадлежащие другим контекстам не отображаются.
 
 @code{facts ()} (т.е. без аргументов) отображает все факты
-текущего конткста.
+текущего контекста.
 
 @end deffn
 
-@defvr {Declaration} features
-Maxima "распознаёт" некоторые математические свойства (features)
+@defvr {Декларация} features
+Maxima "распознает" некоторые математические свойства (features)
 функций и переменных.
 
 @code{declare (@var{x}, @var{foo})} устанавливает свойство @var{foo}
@@ -272,13 +329,13 @@ Maxima "распознаёт" некоторые математические свойства (features)
 @code{declare (@var{foo}, feature)} объявляет новое свойство @var{foo}.
 Например,
 @code{declare ([red, green, blue], feature)} объявляет три свойства
-@code{red}, @code{green}, and @code{blue}.
+@code{red}, @code{green} и @code{blue}.
 
 Предикат @code{featurep (@var{x}, @var{foo})}
 возвращает @code{true} если @var{x} имеет свойство @var{foo},
 и @code{false} в противном случае.
 
-Информационный спмсок @code{features} содержит все известные свойства.
+Информационный список @code{features} содержит все известные свойства.
 А именно
 @code{integer}, @code{noninteger}, @code{even}, @code{odd}, @code{rational},
 @code{irrational}, @code{real}, @code{imaginary}, @code{complex},
@@ -293,8 +350,8 @@ Maxima "распознаёт" некоторые математические свойства (features)
 
 @end defvr
 
-@deffn {Function} forget (@var{pred_1}, ..., @var{pred_n})
-@deffnx {Function} forget (@var{L})
+@deffn {Функция} forget (@var{pred_1}, ..., @var{pred_n})
+@deffnx {Функция} forget (@var{L})
 Удаляет предикаты установленные @code{assume}.
 Предикаты могут быть выражениями эквивалентными (но не
 обязательно идентичными) тем, которые первоначально
@@ -305,7 +362,7 @@ Maxima "распознаёт" некоторые математические свойства (features)
 
 @end deffn
 
-@deffn {Function} killcontext (@var{context_1}, ..., @var{context_n})
+@deffn {Функция} killcontext (@var{context_1}, ..., @var{context_n})
 Уничтожает контексты @var{context_1}, ..., @var{context_n}.
 
 Если один из уничтожаемых контекстов является текущим, то
@@ -323,7 +380,7 @@ Maxima "распознаёт" некоторые математические свойства (features)
 
 @end deffn
 
-@deffn {Function} newcontext (@var{name})
+@deffn {Функция} newcontext (@var{name})
 Создает новый пустой контекст с именем @var{name}, имеющий контекст
 @code{global} в качестве своего подконтекста.  Новый контекст
 становится текущим активным контекстом.
@@ -333,9 +390,9 @@ Maxima "распознаёт" некоторые математические свойства (features)
 
 @end deffn
 
-@deffn {Function} supcontext (@var{name}, @var{context})
-@deffnx {Function} supcontext (@var{name})
-Создаёт новый контекст с именем @var{name}, котрый
+@deffn {Функция} supcontext (@var{name}, @var{context})
+@deffnx {Функция} supcontext (@var{name})
+Создает новый контекст с именем @var{name}, котрый
 имеет @var{context} в качестве подконтекста.
 @var{context} должен существовать.
 

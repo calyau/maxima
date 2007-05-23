@@ -1,0 +1,78 @@
+@c Language=Russian
+@c Encoding=CP1251
+@c File=Limits.texi 
+@c OriginalRevision=1.10
+
+
+@menu
+* Функции для работы с пределами::
+@end menu
+
+@node Функции для работы с пределами,  , Пределы, Пределы
+@section Функции для работы с пределами
+
+@defvr {Управляющая переменная} lhospitallim
+Значение по умолчанию: 4
+
+@code{lhospitallim} есть максимальное число применений правила Лопиталя в
+@code{limit}. Это предотвращает зацикливание в случаях вроде 
+@code{limit (cot(x)/csc(x), x, 0)}.
+
+@end defvr
+
+@deffn {Функция} limit (@var{expr}, @var{x}, @var{val}, @var{dir})
+@deffnx {Функция} limit (@var{expr}, @var{x}, @var{val})
+@deffnx {Функция} limit (@var{expr})
+Рассчитывает предел @var{expr} при стремлении вещественной переменной
+@var{x} к @var{val} по направлению @var{dir}.  @var{dir} может иметь значение
+@code{plus} для предела справа, @code{minus} для предела слева, либо
+опускаться (будет рассчитан двусторонний предел).
+
+@code{limit} использует специальные символы: @code{inf} (плюс бесконечность) и
+@code{minf} (минус бесконечность). Вывод может использовать @code{und} (неопределенность),
+@code{ind} (неопределенность, но ограниченность) и @code{infinity} (комплексная бесконечность).
+
+@code{lhospitallim} есть максимальное число применений правила Лопиталя в
+@code{limit}. Это предотвращает зацикливание в случаях вроде 
+@code{limit (cot(x)/csc(x), x, 0)}.
+
+Если @code{tlimswitch} равно @code{true}, пакет limit будет использовать ряды Тейлора
+там, где это возможно.
+
+@code{limsubst} предотвращает подстановки над неизвестными формами в @code{limit}. Это
+позволяет избежать ошибок, когда выражение вида @code{limit (f(n)/f(n+1), n, inf)}
+дает 1. Подобные подстановки будут использоваться, если @code{limsubst} равно @code{true}.
+
+@code{limit}  с одним аргументом часто вызывается для упрощения константных выражений,
+например @code{limit (inf-1)}.
+
+@c MERGE EXAMPLES INTO THIS FILE
+@code{example (limit)}  выводит некоторые примеры.
+
+Относительно метода см. Wang, P., "Evaluation of Definite Integrals by Symbolic
+Manipulation", Ph.D. thesis, MAC TR-92, October 1971.
+
+@end deffn
+
+@defvr {Управляющая переменная} limsubst
+Значение по умолчанию: @code{false} -- предотвращает подстановки над неизвестными формами в @code{limit}. Это
+позволяет избежать ошибок, когда выражение вида @code{limit (f(n)/f(n+1), n, inf)}
+дает 1. Подобные подстановки будут использоваться, если @code{limsubst} равно @code{true}.
+
+@end defvr
+
+@deffn {Функция} tlimit (@var{expr}, @var{x}, @var{val}, @var{dir})
+@deffnx {Функция} tlimit (@var{expr}, @var{x}, @var{val})
+@deffnx {Функция} tlimit (@var{expr})
+Возвращает @code{limit} с @code{tlimswitch} равным @code{true}.
+
+@end deffn
+
+@defvr {Управляющая переменная} tlimswitch
+Значение по умолчанию: @code{false}
+
+Если @code{tlimswitch} равно @code{true}, то limit будет использовать ряды Тейлора
+там, где это возможно.
+
+@end defvr
+

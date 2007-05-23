@@ -1,47 +1,154 @@
 @c Language=Russian
 @c Encoding=CP1251
 @c File=Constants.texi
-@c OriginalRevision=1.11
+@c OriginalRevision=1.18
 
 @menu
-* Definitions for Constants::
+* Математические константы::
 @end menu
 
-@node Definitions for Constants,  , Constants, Constants
-@section Константы
+@node Математические константы,  , Константы, Константы
+@section Математические константы
 
-@defvr {Constant} %e
- -- осование натурального логарифма @math{e} в Maxima обозначатся @code{%e}.
-
-@end defvr
-
-@defvr {Constant} false
- -- логическая константа "ложь" (NIL в Lisp).
-
-@end defvr
-
-@defvr {Constant} inf
- -- вещественная положительная бесконечность.
+@defvr {Константа} %e
+@ifinfo
+@vrindex e
+@vrindex Число Эйлера
+@vrindex Основание натурального логарифма
+@end ifinfo
+@code{%e} представляет основание натурального логарифма, также известное как число Эйлера.
+Численное значение @code{%e} является числом с плавающей точкой двойной точности 2.718281828459045d0.
 
 @end defvr
 
-@defvr {Constant}  infinity
- -- комплексная бесконечность.
+@defvr {Константа} %i
+@ifinfo
+@vrindex i
+@vrindex Мнимая единица
+@end ifinfo
+@code{%i} представляет мнимую единицу, @math{sqrt(-1)}.
 
 @end defvr
 
-@defvr {Constant} minf
- -- вещественная отрицательная бесконечность.
+@defvr {Константа} false
+@code{false} -- логическая константа "ложь".
+В Maxima @code{false} представляется значением @code{NIL} в Lisp.
 
 @end defvr
 
-@defvr {Constant} %pi
- -- математическая константа "пи" в Maxima обозначается @code{%pi}.
+@defvr {Константа} inf
+@ifinfo
+@vrindex Вещественная бесконечность
+@end ifinfo
+@code{inf} представляет вещественную положительную бесконечность.
 
 @end defvr
 
-@defvr {Constant} true
- -- логическая константа "истина" (T в Lisp).
+@defvr {Константа} infinity
+@ifinfo
+@vrindex Комплексная бесконечность
+@end ifinfo
+@code{infinity} представляет комплексную бесконечность.
+
+@end defvr
+
+@defvr {Константа} minf
+@ifinfo
+@vrindex Минус бесконечность
+@vrindex Отрицательная бесконечность
+@end ifinfo
+@code{minf} представляет вещественную минус (т.е. отрицательную) бесконечность.
+
+@end defvr
+
+@defvr {Константа} %phi
+@ifinfo
+@vrindex phi
+@vrindex Золотое сечение
+@end ifinfo
+
+@code{%phi} представляет так называемое @i{золотое сечение},
+@math{(1 + sqrt(5))/2}.
+Численное значение @code{%phi} является числом с плавающей точкой двойной точности 1.618033988749895d0.
+
+@code{fibtophi} выражает числа Фибоначчи @code{fib(n)} в терминах @code{%phi}.
+
+По умолчанию Maxima не знает алгебраические свойства @code{%phi}.
+После выполнения @code{tellrat(%phi^2 - %phi - 1)} и @code{algebraic: true},
+@code{ratsimp} может упрощать некоторые выражения, содержащие @code{%phi}.
+
+Примеры:
+
+@code{fibtophi} выражает числа Фибоначчи @code{fib(n)} в терминах @code{%phi}.
+
+@c ===beg===
+@c fibtophi (fib (n));
+@c fib (n-1) + fib (n) - fib (n+1);
+@c fibtophi (%);
+@c ratsimp (%);
+@c ===end===
+@example
+(%i1) fibtophi (fib (n));
+                           n             n
+                       %phi  - (1 - %phi)
+(%o1)                  -------------------
+                           2 %phi - 1
+(%i2) fib (n-1) + fib (n) - fib (n+1);
+(%o2)          - fib(n + 1) + fib(n) + fib(n - 1)
+(%i3) fibtophi (%);
+            n + 1             n + 1       n             n
+        %phi      - (1 - %phi)        %phi  - (1 - %phi)
+(%o3) - --------------------------- + -------------------
+                2 %phi - 1                2 %phi - 1
+                                          n - 1             n - 1
+                                      %phi      - (1 - %phi)
+                                    + ---------------------------
+                                              2 %phi - 1
+(%i4) ratsimp (%);
+(%o4)                           0
+@end example
+
+По умолчанию Maxima не знает алгебраические свойства @code{%phi}.
+После выполнения @code{tellrat(%phi^2 - %phi - 1)} и @code{algebraic: true},
+@code{ratsimp} может упрощать некоторые выражения, содержащие @code{%phi}.
+
+@c ===beg===
+@c e : expand ((%phi^2 - %phi - 1) * (A + 1));
+@c ratsimp (e);
+@c tellrat (%phi^2 - %phi - 1);
+@c algebraic : true;
+@c ratsimp (e);
+@c ===end===
+@example
+(%i1) e : expand ((%phi^2 - %phi - 1) * (A + 1));
+                 2                      2
+(%o1)        %phi  A - %phi A - A + %phi  - %phi - 1
+(%i2) ratsimp (e);
+                  2                     2
+(%o2)        (%phi  - %phi - 1) A + %phi  - %phi - 1
+(%i3) tellrat (%phi^2 - %phi - 1);
+                            2
+(%o3)                  [%phi  - %phi - 1]
+(%i4) algebraic : true;
+(%o4)                         true
+(%i5) ratsimp (e);
+(%o5)                           0
+@end example
+
+@end defvr
+
+@defvr {Константа} %pi
+@ifinfo
+@vrindex pi
+@end ifinfo
+@code{%pi} представляет отношение длины окружности к ее диаметру.
+Численное значение @code{%pi} является числом с плавающей точкой двойной точности 3.141592653589793d0.
+
+@end defvr
+
+@defvr {Константа} true
+@code{true} -- логическая константа "истина".
+В Maxima @code{true} представляется значением @code{T} в Lisp.
 
 @end defvr
 

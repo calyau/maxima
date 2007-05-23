@@ -1,19 +1,22 @@
 @c Language=Russian
 @c Encoding=CP1251
 @c File=Command.texi
-@c OriginalRevision=1.36
+@c OriginalRevision=1.43
 
 @menu
-* Introduction to Command Line::
-* Definitions for Command Line::
+* Введение в командную строку::
+* Функции и переменные для работы в командной строке::
 @end menu
 
-@node Introduction to Command Line, Definitions for Command Line, Command Line, Command Line
-@section Общие сведения о коммандной строке
+@node Введение в командную строку, Функции и переменные для работы в командной строке, Командная строка, Командная строка
+@section Введение в командную строку
 
 @c NEEDS EXAMPLES
 @c THIS ITEM IS VERY IMPORTANT !!
-@deffn {Operator} "'"
+@deffn {Оператор} '
+@ifinfo
+@fnindex Оператор "одиночная кавычка"
+@end ifinfo
 Оператор "одиночная кавычка" @code{'} предотвращает вычисление.
 
 Примененный к символу, оператор "одиночная кавычка" предотвращает
@@ -21,22 +24,22 @@
 
 Примененный к вызову функции, оператор "одиночная кавычка"
 предотвращает вычисление этой функции, но не вычисление
-её аргументов (если оно не предотвращено по другим причинам).
-Результатом являеся не вычисляемая (noun) фрма вызова функции.
+ее аргументов (если оно не предотвращено по другим причинам).
+Результатом является невычисляемая (noun) форма вызова функции.
 
-Примененый к выражению в скобках, предотвращает вычисление
+Примененный к выражению в скобках, предотвращает вычисление
 всех функций и символов внутри скобок.
 @c DUNNO IF THESE EXAMPLES ARE STILL NEEDED -- COVERED BY ITEMS UNDER "Examples"
 Например, @code{'(f(x))} означает -- не вычислять выражение
 @code{f(x)}, тогда как @code{'f(x)} (кавычка примененная к @code{f}
-а не к @code{f(x)}) означат -- не вычисляемая форма @code{f},
+а не к @code{f(x)}) означает -- невычисляемая форма @code{f},
 примененная к @code{[x]}.
 
 Одиночная кавычка не предотвращает упрощение.
 
 Когда глобальный флаг @code{noundisp} имеет значение @code{true},
-не вычисляемые формы функций выводятся с одиночной ковычкой.
-Этот пререключкатель всегда установлен равным @code{true} при
+невычисляемые формы функций выводятся с одиночной кавычкой.
+Этот переключатель всегда установлен равным @code{true} при
 печати определений функций.
 
 См. также оператор "двойная кавычка" @code{''} и @code{nouns}.
@@ -67,7 +70,7 @@
 
 Примененный к вызову функции, оператор "одиночная кавычка"
 предотвращает вычисление этой функции.
-Результатом являеся объектная форма вызова функции.
+Результатом является невычисляемая форма вызова функции.
 
 @c ===beg===
 @c x0: 5;
@@ -99,7 +102,7 @@
                                 3
 @end example
 
-Примененый к выражению в скобках, предотвращает вычисление
+Примененный к выражению в скобках, предотвращает вычисление
 всех функций и символов внутри скобок.
 
 @c ===beg===
@@ -137,30 +140,211 @@
 
 @end deffn
 
-@deffn {Operator} "'@w{}'"
-Оператор @code{'@w{}'} (двойная одиночная кавычка) вызывает
-дополнительное вычисление.
-Например, @code{'@w{}'%i4} вызывает перевычисление входной строки @code{%i4}.
-@code{'@w{}'(f(x))} означает -- вычислить выражение @code{f(x)} один
-раз дополнительно.  @code{'@w{}'f(x)} (с двоной одиночной
-кавычкой, примененной к @code{f} а не к @code{f(x)}),
-означает вычисляемую (verb) форму @code{f} примененную к @code{[x]}.
+@deffn {Оператор} ''
+@ifinfo
+@fnindex Оператор "кавычка-кавычка"
+@end ifinfo
+Оператор "кавычка-кавычка"  @code{'@w{}'} (две одиночные кавычки) изменяет
+вычисление вводимого выражения.
+
+Примененный к выражению общего вида @var{expr}, кавычка-кавычка вызывает подстановку значения @var{expr}
+вместо @var{expr} в вводимом выражении.
+
+Примененный к оператору в выражении,
+кавычка-кавычка изменяет невычисляемую форму оператора на вычисляемую (если она не является таковой).
+
+Оператор кавычка-кавычка применяется при синтаксическом анализе вводимого выражения
+и не сохраняется как часть этого выражения.
+Оператор кавычка-кавычка применяется сразу после распознавания и не
+может быть блокирован (квотирован).
+
+Оператор кавычка-кавычка распознается функциями @code{batch} и @code{load}.
+
+См. также оператор "кавычка" @code{'} и @code{nouns}.
+
+Примеры:
+
+Примененный к выражению общего вида @var{expr}, кавычка-кавычка вызывает подстановку значения @var{expr}
+вместо @var{expr} в вводимом выражении.
+
+@c ===beg===
+@c expand ((a + b)^3);
+@c [_, ''_];
+@c [%i1, ''%i1];
+@c [aa : cc, bb : dd, cc : 17, dd : 29];
+@c foo_1 (x) := aa - bb * x;
+@c foo_1 (10);
+@c ''%;
+@c ''(foo_1 (10));
+@c foo_2 (x) := ''aa - ''bb * x;
+@c foo_2 (10);
+@c [x0 : x1, x1 : x2, x2 : x3];
+@c x0;
+@c ''x0;
+@c '' ''x0;
+@c ===end===
+@example
+(%i1) expand ((a + b)^3);
+                     3        2      2      3
+(%o1)               b  + 3 a b  + 3 a  b + a
+(%i2) [_, ''_];
+                         3    3        2      2      3
+(%o2)     [expand((b + a) ), b  + 3 a b  + 3 a  b + a ]
+(%i3) [%i1, ''%i1];
+                         3    3        2      2      3
+(%o3)     [expand((b + a) ), b  + 3 a b  + 3 a  b + a ]
+(%i4) [aa : cc, bb : dd, cc : 17, dd : 29];
+(%o4)                   [cc, dd, 17, 29]
+(%i5) foo_1 (x) := aa - bb * x;
+(%o5)                 foo_1(x) := aa - bb x
+(%i6) foo_1 (10);
+(%o6)                      cc - 10 dd
+(%i7) ''%;
+(%o7)                         - 273
+(%i8) ''(foo_1 (10));
+(%o8)                         - 273
+(%i9) foo_2 (x) := ''aa - ''bb * x;
+(%o9)                 foo_2(x) := cc - dd x
+(%i10) foo_2 (10);
+(%o10)                        - 273
+(%i11) [x0 : x1, x1 : x2, x2 : x3];
+(%o11)                    [x1, x2, x3]
+(%i12) x0;
+(%o12)                         x1
+(%i13) ''x0;
+(%o13)                         x2
+(%i14) '' ''x0;
+(%o14)                         x3
+@end example
+
+Примененный к оператору в выражении,
+кавычка-кавычка изменяет невычисляемую форму оператора на вычисляемую (если она не является таковой).
+
+@c ===beg==
+@c sin (1);
+@c ''sin (1);
+@c declare (foo, noun);
+@c foo (x) := x - 1729;
+@c foo (100);
+@c ''foo (100);
+@c ===end==
+@example
+(%i1) sin (1);
+(%o1)                        sin(1)
+(%i2) ''sin (1);
+(%o2)                    0.8414709848079
+(%i3) declare (foo, noun);
+(%o3)                         done
+(%i4) foo (x) := x - 1729;
+(%o4)                 ''foo(x) := x - 1729
+(%i5) foo (100);
+(%o5)                       foo(100)
+(%i6) ''foo (100);
+(%o6)                        - 1629
+@end example
+
+Оператор кавычка-кавычка применяется при синтаксическом анализе вводимого выражения
+и не сохраняется как часть этого выражения.
+
+@c ===beg===
+@c [aa : bb, cc : dd, bb : 1234, dd : 5678];
+@c aa + cc;
+@c display (_, op (_), args (_));
+@c ''(aa + cc);
+@c display (_, op (_), args (_));
+@c ===end===
+@example
+(%i1) [aa : bb, cc : dd, bb : 1234, dd : 5678];
+(%o1)                 [bb, dd, 1234, 5678]
+(%i2) aa + cc;
+(%o2)                        dd + bb
+(%i3) display (_, op (_), args (_));
+                           _ = cc + aa
+
+                         op(cc + aa) = +
+
+                    args(cc + aa) = [cc, aa]
+
+(%o3)                         done
+(%i4) ''(aa + cc);
+(%o4)                         6912
+(%i5) display (_, op (_), args (_));
+                           _ = dd + bb
+
+                         op(dd + bb) = +
+
+                    args(dd + bb) = [dd, bb]
+
+(%o5)                         done
+@end example
+
+Оператор кавычка-кавычка вызывает вычисление в случаях когда оно
+заблокировано, таких как определения функций, лямбда-выражения и выражения,
+квотированные оператором кавычка @code{'}.
+
+@c ===beg===
+@c foo_1a (x) := ''(integrate (log (x), x));
+@c foo_1b (x) := integrate (log (x), x);
+@c dispfun (foo_1a, foo_1b);
+@c integrate (log (x), x);
+@c foo_2a (x) := ''%;
+@c foo_2b (x) := %;
+@c dispfun (foo_2a, foo_2b);
+@c F : lambda ([u], diff (sin (u), u));
+@c G : lambda ([u], ''(diff (sin (u), u)));
+@c '(sum (a[k], k, 1, 3) + sum (b[k], k, 1, 3));
+@c '(''(sum (a[k], k, 1, 3)) + ''(sum (b[k], k, 1, 3)));
+@c ===end===
+@example
+(%i1) foo_1a (x) := ''(integrate (log (x), x));
+(%o1)               foo_1a(x) := x log(x) - x
+(%i2) foo_1b (x) := integrate (log (x), x);
+(%o2)           foo_1b(x) := integrate(log(x), x)
+(%i3) dispfun (foo_1a, foo_1b);
+(%t3)               foo_1a(x) := x log(x) - x
+
+(%t4)           foo_1b(x) := integrate(log(x), x)
+
+(%o4)                      [%t3, %t4]
+(%i4) integrate (log (x), x);
+(%o4)                     x log(x) - x
+(%i5) foo_2a (x) := ''%;
+(%o5)               foo_2a(x) := x log(x) - x
+(%i6) foo_2b (x) := %;
+(%o6)                    foo_2b(x) := %
+(%i7) dispfun (foo_2a, foo_2b);
+(%t7)               foo_2a(x) := x log(x) - x
+
+(%t8)                    foo_2b(x) := %
+
+(%o8)                      [%t7, %t8]
+(%i8) F : lambda ([u], diff (sin (u), u));
+(%o8)             lambda([u], diff(sin(u), u))
+(%i9) G : lambda ([u], ''(diff (sin (u), u)));
+(%o9)                  lambda([u], cos(u))
+(%i10) '(sum (a[k], k, 1, 3) + sum (b[k], k, 1, 3));
+(%o10)         sum(b , k, 1, 3) + sum(a , k, 1, 3)
+                    k                  k
+(%i11) '(''(sum (a[k], k, 1, 3)) + ''(sum (b[k], k, 1, 3)));
+(%o11)             b  + a  + b  + a  + b  + a
+                    3    3    2    2    1    1
+@end example
 
 @end deffn
 
-
-@node Definitions for Command Line,  , Introduction to Command Line, Command Line
-@section Определения для коммандной строки
+@c end concepts Command Line
+@node Функции и переменные для работы в командной строке,  , Введение в командную строку, Командная строка
+@section Функции и переменные для работы в командной строке
 
 @c NEEDS WORK, ESPECIALLY EXAMPLES
-@deffn {Function} alias (@var{new_name_1}, @var{old_name_1}, ..., @var{new_name_n}, @var{old_name_n})
-создаёт альтернативное имя для пользовательской или системной
+@deffn {Функция} alias (@var{new_name_1}, @var{old_name_1}, ..., @var{new_name_n}, @var{old_name_n})
+создает альтернативное имя для пользовательской или системной
 функции, переменной, массива и т.п.
 Данная функция может иметь любое число парных аргументов.
 
 @end deffn
 
-@defvr {Option variable} debugmode
+@defvr {Управляющая переменная} debugmode
 Значение по умолчанию: @code{false}
 
 Если во время работы Maxima возникла ошибка, Maxima запускает отладчик
@@ -178,8 +362,8 @@
 
 @c NEEDS CLARIFICATION
 @c VERY IMPORTANT !!
-@deffn {Function} ev (@var{expr}, @var{arg_1}, ..., @var{arg_n})
-Вычисляет выражение @var{expr} в окружении определяемом агрументами
+@deffn {Функция} ev (@var{expr}, @var{arg_1}, ..., @var{arg_n})
+Вычисляет выражение @var{expr} в окружении определяемом аргументами
 @var{arg_1}, ..., @var{arg_n}.  Данные аргументы могут быть
 переключателями (логические флаги), присваиваниями, уравнениями и функциями.
 @code{ev} возвращает результат вычисления (выражение).
@@ -202,8 +386,8 @@
 переключателями и вызывает повторное упрощение @var{expr} без
 перевычисления.
 @item
-@code{nouns} вызывает вычисление не вычисляемых (noun) форм
-(обычно это не вычисленные функции, такие как @code{'integrate}
+@code{nouns} вызывает вычисление невычисляемых (noun) форм
+(обычно это невычисляемые функции, такие как @code{'integrate}
 или @code{'diff}) в @var{expr}.
 @item
 @code{expand} вызывает раскрытие скобок.
@@ -212,19 +396,19 @@
 @code{maxnegex} равным  @var{m} и @var{n} соответственно.
 @item
 @code{detout} при вычислении обратных матриц в @var{expr}, сохраняет
-опдеделитель матрицы как общий множитель вместо того чтобы делить
+определитель матрицы как общий множитель вместо того чтобы делить
 на него каждый элемент матрицы в отдельности.
 @item
-@code{diff} вызывает вычислени всех производных в @var{expr}.
+@code{diff} вызывает вычисление всех производных в @var{expr}.
 @item
-@code{derivlist (@var{x}, @var{y}, @var{z}, ...)} вызывет вычисление
+@code{derivlist (@var{x}, @var{y}, @var{z}, ...)} вызовет вычисление
 производных только относительно указанных переменных.
 @item
 @code{float} вызывает преобразование нецелых рациональных чисел
 в числа с плавающей точкой.
 @item
 @code{numer} вызывает численное вычисление математических
-функций (включая экспоненты), имеющих числовые агрументы.  Вызывает
+функций (включая экспоненты), имеющих числовые аргументы.  Вызывает
 замену переменных, имеющих числовые значения (см. @code{numerval}), этими
 значениями.  Устанавливает значение переключателя @code{float}
 равным @code{true}.
@@ -234,6 +418,8 @@
 @item
 @code{eval} вызывает дополнительное пост-вычисление @var{expr}
 (см. шаг (5) ниже).
+@code{eval} может встречаться несколько раз.
+Для каждого @code{eval} выражение вычисляется еще раз.
 @item
 @code{A}, где @code{A} есть атом, являющийся флагом вычисления (см. @code{evflag}),
 устанавливает значение @code{A} равным @code{true} в процессе
@@ -242,7 +428,7 @@
 @code{V: expression} (или альтернативно @code{V=expression})
 присваивает @code{V} значение  @code{expression} в процессе вычисления
 @var{expr}.  Если @code{V} является управляющей переменной (опцией)
-Maxima, тогда значение @code{expression} используется в качастве
+Maxima, тогда значение @code{expression} используется в качестве
 значения опции в процессе вычисления @var{expr}.  Если имеется более
 одного аргумента @code{ev} данного типа, то присваивание осуществляется
 параллельно.  Если @code{V} является не атомарным выражением, то
@@ -264,7 +450,7 @@ Maxima, тогда значение @code{expression} используется в качастве
 вычисляется.  Если результатом вычисления является уравнение или
 присваивание, то выполняется соответствующее присваивание или
 подстановка.  Если результатом вычисления является список, то
-элементы этого списка трактуются как дополнительные агрументы
+элементы этого списка трактуются как дополнительные аргументы
 @code{ev}.  Это, в частности, позволяет использовать список
 уравнений (например @code{[X=1, Y=A**2]}), или список имен
 уравнений (например @code{[%t1, %t2]}, где @code{%t1} и
@@ -288,8 +474,8 @@ Maxima, тогда значение @code{expression} используется в качастве
 
 @item
 На шаге (1), составляется список не-индексированных
-переменных входящих в левые части агрументов, являющихся уравнениями,
-или в значения аргуметов, если эти значения являются уравнениями.
+переменных входящих в левые части аргументов, являющихся уравнениями,
+или в значения аргументов, если эти значения являются уравнениями.
 Переменные (индексированные, которые не имеют соответствующих
 функций массивов, и не-индексированные) в выражении @var{expr}
 заменяются на свои глобальные значения, за исключением тех,
@@ -298,7 +484,7 @@ Maxima, тогда значение @code{expression} используется в качастве
 просто получается выражение, обозначаемое данной меткой.
 
 @item
-Если среди агрументов имеются подстановки, то они выполняются.
+Если среди аргументов имеются подстановки, то они выполняются.
 
 @item
 Полученное выражение снова вычисляется (если одним из аргументов не
@@ -308,7 +494,7 @@ Maxima, тогда значение @code{expression} используется в качастве
 как @code{F(ev(x))}.
 
 @item
-Если одним из аргументов является @code{eval}, шаги (3) и (4) повторяются.
+Для каждого @code{eval}, шаги (3) и (4) повторяются.
 @end enumerate
 
 Примеры:
@@ -332,7 +518,7 @@ Maxima, тогда значение @code{expression} используется в качастве
 @var{expr}, @var{arg_1}, ..., @var{arg_n}
 @end example
 
-Такая конструкция не допустима как часть другого выражения,
+Такая конструкция недопустима как часть другого выражения,
 функции, блока и т.п.
 
 Обратите внимание на параллельное присваивание в следующих
@@ -370,15 +556,16 @@ Solution
 
 @end deffn
 
-@defvr {Property} evflag
-Некоторые переключатели имеют свойство @code{evflag}.
-Функция @code{ev} обрабатывает данные преключатели специальным образом.
-Если такой переключатель указан в аргументах @code{ev}, то на время
-вычисления его значение устанавливается равным @code{true}.
-Например @code{demoivre} и @code{ratfac} равны @code{true}
-при вызове @code{ev (%, demoivre, ratfac)}.
+@defvr {Свойство} evflag
+Если символ @var{x} имеет свойство @code{evflag},
+то выражения @code{ev(@var{expr}, @var{x})} и @code{@var{expr}, @var{x}}
+(в интерактивной командной строке) эквивалентны @code{ev(@var{expr}, @var{x} = true)}.
+Т.е. @var{x} имеет значение @code{true} в процессе вычисления @var{expr}.
 
-Следующие переключатели имеют свойство @code{evflag}:
+Выражение @code{declare(@var{x}, evflag)}
+устанавливает свойство @code{evflag} для переменной @var{x}.
+
+Следующие переключатели имеют по умолчанию свойство @code{evflag}:
 @c FOLLOWING LIST CONSTRUCTED FROM LIST UNDER (prog1 '(evflag properties) ...)
 @c NEAR LINE 2649 OF mlisp.lisp AT PRESENT (2004/11).
 @code{algebraic},
@@ -415,21 +602,75 @@ Solution
 @code{sumexpand} и
 @code{trigexpand}.
 
-Команда @code{:lisp (putprop '|$foo| t 'evflag)}
-устанавливает свойство @code{evflag} для переменной @code{foo},
-так что @code{foo} равно @code{true} при вычислении @code{ev (%, foo)}.
-Это эквивалентно @code{ev (%, foo:true)}.
+Примеры:
+
+@c ===beg===
+@c sin (1/2);
+@c sin (1/2), float;
+@c sin (1/2), float=true;
+@c simp : false;
+@c 1 + 1;
+@c 1 + 1, simp;
+@c simp : true;
+@c sum (1/k^2, k, 1, inf);
+@c sum (1/k^2, k, 1, inf), simpsum;
+@c declare (aa, evflag);
+@c if aa = true then YES else NO;
+@c if aa = true then YES else NO, aa;
+@c ===end===
+@example
+(%i1) sin (1/2);
+                                 1
+(%o1)                        sin(-)
+                                 2
+(%i2) sin (1/2), float;
+(%o2)                   0.479425538604203
+(%i3) sin (1/2), float=true;
+(%o3)                   0.479425538604203
+(%i4) simp : false;
+(%o4)                         false
+(%i5) 1 + 1;
+(%o5)                         1 + 1
+(%i6) 1 + 1, simp;
+(%o6)                           2
+(%i7) simp : true;
+(%o7)                         true
+(%i8) sum (1/k^2, k, 1, inf);
+                            inf
+                            ====
+                            \     1
+(%o8)                        >    --
+                            /      2
+                            ====  k
+                            k = 1
+(%i9) sum (1/k^2, k, 1, inf), simpsum;
+                                 2
+                              %pi
+(%o9)                         ----
+                               6
+(%i10) declare (aa, evflag);
+(%o10)                        done
+(%i11) if aa = true then YES else NO;
+(%o11)                         NO
+(%i12) if aa = true then YES else NO, aa;
+(%o12)                         YES
+@end example
 
 @end defvr
 
-@defvr {Property} evfun
-Некоторые функции имеют свойство @code{evfun}.
-Функция @code{ev} обрабатывает их специальным образом.
-Данные функции применяюся к вычисляемому выражению.
-Например, @code{ratsimp} и @code{radcan} будут применены
-при вызове @code{ev (%, ratsimp, radcan)}.
+@defvr {Свойство} evfun
+Если функция @var{F} имеет свойство @code{evfun},
+то выражения @code{ev(@var{expr}, @var{F})} и @code{@var{expr}, @var{F}}
+(в интерактивной командной строке)
+эквивалентны @code{@var{F}(ev(@var{expr}))}.
 
-Следующие функции имеют свойство @code{evfun}:
+Если заданы две или более @code{evfun} функций @var{F}, @var{G}, то
+функции применяются в порядке задания.
+
+Выражение @code{declare(@var{F}, evfun)}
+устанавливает свойство @code{evfun} для функции @var{F}.
+
+Следующие функции имеют по умолчанию свойство @code{evfun}:
 @c FOLLOWING LIST CONSTRUCTED FROM LIST UNDER (prog1 '(evfun properties) ...)
 @c NEAR LINE 2643 IN mlisp.lisp AT PRESENT (2004/11).
 @code{bfloat},
@@ -445,19 +686,82 @@ Solution
 @code{trigexpand} и
 @code{trigreduce}.
 
-Команда @code{:lisp (putprop '|$foo| t 'evfun)}
-устанвливает свойство @code{evfun} для функции @code{foo},
-так что @code{foo} применяется к значению @code{%} при
-вычислении @code{ev (%, foo)}.
-Это эквивалентно @code{foo (ev (%))}.
+Примеры:
+
+@c ===beg===
+@c x^3 - 1;
+@c x^3 - 1, factor;
+@c factor (x^3 - 1);
+@c cos(4 * x) / sin(x)^4;
+@c cos(4 * x) / sin(x)^4, trigexpand;
+@c cos(4 * x) / sin(x)^4, trigexpand, ratexpand;
+@c ratexpand (trigexpand (cos(4 * x) / sin(x)^4));
+@c declare ([F, G], evfun);
+@c (aa : bb, bb : cc, cc : dd);
+@c aa;
+@c aa, F;
+@c F (aa);
+@c F (ev (aa));
+@c aa, F, G;
+@c G (F (ev (aa)));
+@c ===end===
+@example
+(%i1) x^3 - 1;
+                              3
+(%o1)                        x  - 1
+(%i2) x^3 - 1, factor;
+                                2
+(%o2)                 (x - 1) (x  + x + 1)
+(%i3) factor (x^3 - 1);
+                                2
+(%o3)                 (x - 1) (x  + x + 1)
+(%i4) cos(4 * x) / sin(x)^4;
+                            cos(4 x)
+(%o4)                       --------
+                               4
+                            sin (x)
+(%i5) cos(4 * x) / sin(x)^4, trigexpand;
+                 4           2       2         4
+              sin (x) - 6 cos (x) sin (x) + cos (x)
+(%o5)         -------------------------------------
+                                4
+                             sin (x)
+(%i6) cos(4 * x) / sin(x)^4, trigexpand, ratexpand;
+                           2         4
+                      6 cos (x)   cos (x)
+(%o6)               - --------- + ------- + 1
+                          2          4
+                       sin (x)    sin (x)
+(%i7) ratexpand (trigexpand (cos(4 * x) / sin(x)^4));
+                           2         4
+                      6 cos (x)   cos (x)
+(%o7)               - --------- + ------- + 1
+                          2          4
+                       sin (x)    sin (x)
+(%i8) declare ([F, G], evfun);
+(%o8)                         done
+(%i9) (aa : bb, bb : cc, cc : dd);
+(%o9)                          dd
+(%i10) aa;
+(%o10)                         bb
+(%i11) aa, F;
+(%o11)                        F(cc)
+(%i12) F (aa);
+(%o12)                        F(bb)
+(%i13) F (ev (aa));
+(%o13)                        F(cc)
+(%i14) aa, F, G;
+(%o14)                      G(F(cc))
+(%i15) G (F (ev (aa)));
+(%o15)                      G(F(cc))
+@end example
 
 @end defvr
-
 @c NEEDS WORK
-@defvr {Option variable} infeval
+@defvr {Управляющая переменная} infeval
 Включает режим "бесконечного вычисления".  @code{ev} вычисляет
-выражение повторно до тех пор пока оно не перестаёт изменяться.
-Чтобы предотвратить вычисление оьдельной переменной, скажем @code{X},
+выражение повторно до тех пор пока оно не перестает изменяться.
+Чтобы предотвратить вычисление отдельной переменной, скажем @code{X},
 в данном режиме следует указать @code{X='X} в качестве
 аргумента @code{ev}.  Разумеется, выражения вроде
 @code{ev (X, X=X+1, infeval)} приводят к бесконечному циклу.
@@ -467,19 +771,19 @@ Solution
 @c REVIEW FOR ACCURACY AND COMPLETENESS
 @c THIS ITEM IS VERY IMPORTANT !!
 @c NEEDS EXAMPLES
-@deffn {Function} kill (@var{symbol_1}, ..., @var{symbol_n})
-@deffnx {Function} kill (labels)
-@deffnx {Function} kill (inlabels, outlabels, linelabels)
-@deffnx {Function} kill (@var{n})
-@deffnx {Function} kill ([@var{m}, @var{n}])
-@deffnx {Function} kill (values, functions, arrays, ...)
-@deffnx {Function} kill (all)
-@deffnx {Function} kill (allbut (@var{symbol_1}, ..., @var{symbol_n}))
+@deffn {Функция} kill (@var{a_1}, ..., @var{a_n})
+@deffnx {Функция} kill (labels)
+@deffnx {Функция} kill (inlabels, outlabels, linelabels)
+@deffnx {Функция} kill (@var{n})
+@deffnx {Функция} kill ([@var{m}, @var{n}])
+@deffnx {Функция} kill (values, functions, arrays, ...)
+@deffnx {Функция} kill (all)
+@deffnx {Функция} kill (allbut (@var{a_1}, ..., @var{a_n}))
 
-Очищает аргументы @var{symbol_1}, ..., @var{symbol_n}.
-Т.е. удаляет все связи соответствующего объекта -- значение,
-функцию, массив или правило.  Аргумент может быть
-отдельным элементом массива или индексированной функции.
+Удаляет все связи (значение, функцию, массив или правило) аргументов @var{a_1}, ..., @var{a_n}.
+Аргумент @var{a_k} может быть символом или отдельным элементом массива.
+Если @var{a_k} является отдельным элементом массива, то @code{kill} удаляет
+значение одного этого элемента и не затрагивает другие элементы массива.
 
 Распознается несколько специальных форм аргументов.  При
 этом аргументы различных типов могут быть скомбинированы,
@@ -491,7 +795,7 @@ Solution
 начинаются с текущего значения @code{inchar}.
 Аналогично,
 @code{kill (outlabels)} очищает значение меток результата, имена которых
-начинаются с текущего значения  @code{outchar},
+начинаются с текущего значения @code{outchar},
 и @code{kill (linelabels)} очищает значение меток промежуточных
 выражений, имена которых начинаются с текущего значения @code{linechar}.
 
@@ -503,17 +807,17 @@ Solution
 
 @code{kill (@var{infolist})}, где @var{infolist} есть один из
 информационных списков @code{infolists} (например @code{values}, @code{functions}
-или @code{arrays}), очищает значение всех элеметов в
+или @code{arrays}), очищает значение всех элементов в
 @var{infolist}.  См. также @code{infolists}.
 
 @code{kill (all)} очищает значения всех элементов во всех
 информационных списках (infolists).
 @code{kill (all)} не восстанавливает стандартные значения глобальных
 переменных.  См. @code{reset} по поводу восстановления стандартных
-значений глобаоьных переменных.
+значений глобальных переменных.
 
-@code{kill (allbut (@var{symbol_1}, ..., @var{symbol_n}))}
-очищает все элементы во всех информационных списках кроме  @var{symbol_1}, ..., @var{symbol_n}.
+@code{kill (allbut (@var{a_1}, ..., @var{a_n}))}
+очищает все элементы во всех информационных списках кроме  @var{a_1}, ..., @var{a_n}.
 @code{kill (allbut (@var{infolist}))} очищает все элементы кроме тех,
 которые принадлежат информационному списку @var{infolist},
 где @var{infolist} есть @code{values}, @code{functions}, @code{arrays}
@@ -525,19 +829,19 @@ Solution
 указывающую на его значение.
 
 Функция @code{kill} не вычисляет свои аргументы.
-Для для их вычисления можно использовать оператор @code{'@w{}'}.
+Для их вычисления можно использовать оператор кавычка-кавычка @code{'@w{}'}.
 
 @code{kill (@var{symbol})} очищает все свойства символа @var{symbol} в
 отличии от @code{remvalue}, @code{remfunction}, @code{remarray} и
 @code{remrule}, которые очищают только определенное свойство.
 
-@code{kill} всегда возвращает @code{done} даже если агрументы не имели
+@code{kill} всегда возвращает @code{done} даже если аргументы не имели
 значения.
 
 @end deffn
 
-@deffn {Function} labels (@var{symbol})
-@deffnx {System variable} labels
+@deffn {Функция} labels (@var{symbol})
+@deffnx {Системная переменная} labels
 Возвращает список меток ввода, результата или меток промежуточных
 выражений, имена которых начинаются с символа @var{symbol}.
 Обычно @var{symbol} это значение @code{inchar}, @code{outchar} или @code{linechar}.
@@ -548,11 +852,11 @@ Solution
 пустой список.
 
 Функция @code{labels} не вычисляет свои аргументы.
-Для их вычисления можно использовать оператор @code{'@w{}'}.
+Для их вычисления можно использовать оператор кавычка-кавычка @code{'@w{}'}.
 Например, @code{labels (''inchar)} возвращает список меток ввода,
 имена которых начинаются с текущего значения символа ввода.
 
-Преременная @code{labels} есть список всех меток ввода, результата и
+Переменная @code{labels} есть список всех меток ввода, результата и
 меток промежуточных выражений, включая все предыдущие метки если
 значение @code{inchar}, @code{outchar}  или @code{linechar}
 изменялось.
@@ -560,7 +864,7 @@ Solution
 По умолчанию Maxima выводит результат каждого входного выражения
 присваивая ему результирующую метку.  Печать результата можно подавить
 используя для окончания выражения символ @code{$} вместо обычного
-@code{;}.  В этом случае метка результата создаётся но сам
+@code{;}.  В этом случае метка результата создается но сам
 результат вычисления не печатается.  Тем не менее значение
 метки результата запоминается и в дальнейшем может быть
 использовано как обычно.  См. также @code{%}, @code{%%} и @code{%th}.
@@ -572,23 +876,18 @@ Solution
 такие как @code{ldisplay}, всегда создают метки промежуточных
 выражений.
 
-@c NEED TO EXPLAIN THIS SHORTCUT ???
-Выражение @code{first (rest (labels (''inchar)))} возвращает самую
-первую входную метку.
-
 См. также @code{inchar}, @code{outchar}, @code{linechar} и @code{infolists}.
 
 @end deffn
 
 @c EXPAND; SHOW WHAT HAPPENS WHEN linenum IS ASSIGNED A VALUE
-@defvr {System variable} linenum
-
-Текущей счетчик пары входного и результирующего выражений.
+@defvr {Системная переменная} linenum
+Порядковый номер текущей пары входного и результирующего выражений.
 
 @end defvr
 
 @c NEEDS WORK
-@defvr {System variable} myoptions
+@defvr {Системная переменная} myoptions
 Значение по умолчанию: @code{[]}
 
 @code{myoptions} есть список всех переключателей (флагов) переопределенных
@@ -597,31 +896,34 @@ Solution
 
 @end defvr
 
-@c THIS DESCRIPTION IS AT ODDS WITH OBSERVED BEHAVIOR: !!!
-@c WHEN nolabels IS TRUE, LABELS ARE CREATED AND DISPLAYED BUT NOT PUT INTO THE labels LIST !!!
-@c kill (labels) THEN KILLS THE ONES ON THE LIST BUT NOT ANY CREATED AFTER nolabels: true !!!
-@defvr {Option variable} nolabels
+@defvr {Управляющая переменная} nolabels
 Значение по умолчанию: @code{false}
 
-@c PREVIOUS DESCRIPTION OF nolabels: THIS IS OUT OF DATE
-@c When @code{nolabels} is @code{true}, then no labels will be bound
-@c except for intermediate expression lines generated by the solve functions.  This is most
-@c useful in the batch mode where it eliminates the need to do
-@c @code{kill (labels)} in order to free up storage.
+Если @code{nolabels} равна @code{true},
+то метки ввода и результата
+(@code{%i} и @code{%o}, соответственно)
+печатаются но результирующее значение
+этим меткам не присваивается а сами  метки не
+добавляются к списку @code{labels}.
+Поскольку результаты вычислений не
+присваиваются меткам, то сборщик мусора
+может освободить занимаемую ими память
+для дальнейшего использования.
 
-Когда @code{nolabels} равно @code{true}, метки ввода и результата
-создаются но не добавляются к списку меток @code{labels}.
-Тогда @code{kill (labels)} очищает все метки в списке @code{labels}
-кроме тех, которые были созданы после присваивания @code{nolabels}
-значения @code{true}.
+В противном случае меткам ввода и меткам результата присваиваются
+соответствующие значения а сами метки добавляются к списку @code{labels}.
 
-См. также @code{batch}, @code{batchload} и @code{labels}.
-@c PUT A CROSS REFERENCE IN DESCRIPTION OF labels WHEN STRANGE BEHAVIOR OF nolabels IS CLEARED UP !!!
+Флаг @code{nolabels} не влияет на метки промежуточных выражений (@code{%t}).
+Независимо от значения @code{nolabels} равного @code{true} или @code{false},
+меткам промежуточных выражений присваиваются значение и они 
+добавляются к списку @code{labels}.
+
+См. также @code{batch}, @code{load} и @code{labels}.
 
 @end defvr
 
 @c NEEDS WORK
-@defvr {Option variable} optionset
+@defvr {Управляющая переменная} optionset
 Значение по умолчанию: @code{false}
 
 Если @code{optionset} равно @code{true}, Maxima печатает сообщение
@@ -632,27 +934,27 @@ Solution
 
 @end defvr
 
-@deffn {Function} playback ()
-@deffnx {Function} playback (@var{n})
-@deffnx {Function} playback ([@var{m}, @var{n}])
-@deffnx {Function} playback ([@var{m}])
-@deffnx {Function} playback (input)
-@deffnx {Function} playback (slow)
-@deffnx {Function} playback (time)
-@deffnx {Function} playback (grind)
-Вывовдит значения входных, результирующих и промежуточных
+@deffn {Функция} playback ()
+@deffnx {Функция} playback (@var{n})
+@deffnx {Функция} playback ([@var{m}, @var{n}])
+@deffnx {Функция} playback ([@var{m}])
+@deffnx {Функция} playback (input)
+@deffnx {Функция} playback (slow)
+@deffnx {Функция} playback (time)
+@deffnx {Функция} playback (grind)
+Выводит значения входных, результирующих и промежуточных
 выражений без их перевычисления.
 @code{playback} выводит только выражения связанные с метками --
-любой другой вывод (текст выведеный @code{print} или @code{describe},
+любой другой вывод (текст выведенный @code{print} или @code{describe},
 сообщения об ошибках) не отображается.
 См. также @code{labels}.
 
 Функция @code{playback} не вычисляет свои аргументы.
-Для их вычисления можно использовать оператор @code{'@w{}'}.
+Для их вычисления можно использовать оператор кавычка-кавычка @code{'@w{}'}.
 @code{playback} возвращает значение @code{done}.
 
 @code{playback ()} (без аргументов) печатает все входные, результирующие и
-промежуточные выражения.  Результирующие выраженя печатаются даже в случае,
+промежуточные выражения.  Результирующие выражения печатаются даже в случае,
 когда во время первоначальных вычислений использовался @code{$} для
 подавления печати результата.
 
@@ -693,12 +995,12 @@ Solution
 
 @c NEEDS WORK ESPECIALLY EXAMPLES
 @c WHOLE BUSINESS WITH PROPERTIES IS PRETTY CONFUSING, TRY TO CLEAR IT UP
-@deffn {Function} printprops (@var{a}, @var{i})
-@deffnx {Function} printprops ([@var{a_1}, ..., @var{a_n}], @var{i})
-@deffnx {Function} printprops (all, @var{i})
+@deffn {Функция} printprops (@var{a}, @var{i})
+@deffnx {Функция} printprops ([@var{a_1}, ..., @var{a_n}], @var{i})
+@deffnx {Функция} printprops (all, @var{i})
 Печатает свойство с именем @var{i}, ассоциированное с атомом
 @var{a}.  @var{a} может быть списком атомов или @code{all}.
-В последнем случае будут использованы все атомы меющие данное свойство.
+В последнем случае будут использованы все атомы имеющие данное свойство.
 Например, @code{printprops ([f, g], atvalue)}.  Функция
 @code{printprops} предназначена для свойств, которые не могут быть
 отображены другим способом, например для
@@ -706,8 +1008,8 @@ Solution
 
 @end deffn
 
-@defvr {Option variable} prompt
-Default value: @code{_}
+@defvr {Управляющая переменная} prompt
+Значение по умолчанию: @code{_}
 
 @code{prompt} символ приглашения для функции @code{demo},
 @code{playback (slow)} и диалога прерывания Maxima (break loop)
@@ -715,7 +1017,7 @@ Default value: @code{_}
 
 @end defvr
 
-@deffn {Function} quit ()
+@deffn {Функция} quit ()
 Завершает сессию Maxima.
 Команда должна быть введена именно как @code{quit();} или @code{quit()$},
 а не просто @code{quit}.
@@ -729,12 +1031,12 @@ Default value: @code{_}
 
 @end deffn
 
-@deffn {Function} remfunction (@var{f_1}, ..., @var{f_n})
-@deffnx {Function} remfunction (all)
+@deffn {Функция} remfunction (@var{f_1}, ..., @var{f_n})
+@deffnx {Функция} remfunction (all)
 @c REPHRASE THIS TO SAY "UNBIND" OR SOMETHING OTHER THAN "REMOVE" (LATTER IS AMBIGUOUS) !!!
-Удаляет определенные пользователем фукции @var{f_1}, ..., @var{f_n}.
+Удаляет определенные пользователем функции @var{f_1}, ..., @var{f_n}.
 Аргументы могут быть именами обычных функций, созданных при помощи
-@code{:=} или @code{define}, или макро функций, созданых при помощи
+@code{:=} или @code{define}, или макро функций, созданных при помощи
 @code{::=}.
 
 @code{remfunction (all)} -- удаляет все определенные пользователем
@@ -747,10 +1049,9 @@ Default value: @code{_}
 не было соответствующих определений функций, возвращается
 @code{false}.
 
-
 @end deffn
 
-@deffn {Function} reset ()
+@deffn {Функция} reset ()
 Восстанавливает значения по умолчанию для глобальных переменных,
 опций и некоторых других переменных.
 
@@ -764,11 +1065,11 @@ Lisp макрос @code{defmvar} добавляет переменные в этот список
 
 @end deffn
 
-@defvr {Option variable} showtime
+@defvr {Управляющая переменная} showtime
 Значение по умолчанию: @code{false}
 
 Если @code{showtime} равно @code{true} Maxima печатает время
-высисления для каждого результирующего выражения.
+вычисления для каждого результирующего выражения.
 
 Время вычисления всегда запоминается, так что
 @code{time} и @code{playback} могут показать
@@ -780,7 +1081,7 @@ Lisp макрос @code{defmvar} добавляет переменные в этот список
 
 @c IS THIS ANY DIFFERENT FROM ASSIGNING A PROPERTY ??
 @c THIS REALLY SEEMS LIKE A HACK
-@deffn {Function} sstatus (@var{feature}, @var{package})
+@deffn {Функция} sstatus (@var{feature}, @var{package})
 Устанавливает статус @var{feature} в @var{package}.
 После выполнения @code{sstatus (@var{feature}, @var{package})},
 @code{status (@var{feature}, @var{package})} возвращает @code{true}.
@@ -790,19 +1091,19 @@ Lisp макрос @code{defmvar} добавляет переменные в этот список
 @end deffn
 
 @c NEEDS EXPANSION, EXAMPLES
-@deffn {Function} to_lisp ()
+@deffn {Функция} to_lisp ()
 Запускает интерпретатор используемой Lisp системы.
 Lisp функция @code{(to-maxima)} возвращает на уровень командной
 строки Maxima.
 
 @end deffn
 
-@defvr {System variable} values
+@defvr {Системная переменная} values
 Начальное значение: @code{[]}
 
 @code{values} содержит список всех пользовательских переменных, которым
 присвоено значение (не Maxima опций и переключателей).
-Этот список состоит из символов, котым было присвоено значение при
+Этот список состоит из символов, которым было присвоено значение при
 помощи операторов @code{:}, @code{::} или @code{:=}.
 
 @end defvr

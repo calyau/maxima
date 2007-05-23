@@ -4,12 +4,12 @@
 @c OriginalRevision=1.8
 
 @menu
-* Introduction to atensor::
-* Definitions for atensor::
+* Введение в пакет atensor::
+* Функции и переменные пакета atensor::
 @end menu
 
-@node Introduction to atensor, Definitions for atensor, atensor, atensor
-@section Общие сведения о пакете atensor
+@node Введение в пакет atensor, Функции и переменные пакета atensor, Пакет atensor, Пакет atensor
+@section Введение в пакет atensor
 
 Пакет @code{atensor} предназначен для вычислений с тензорными алгебрами.
 Для того, чтобы использовать @code{atensor}, надо ввести
@@ -21,7 +21,7 @@
 набор правил активизируется при вызове функции @code{init_atensor}.
 
 Возможности пакета @code{atensor} можно продемонстрировать определив
-алгебру кватернионов как алгуру Клиффорда Cl(0,2) с двумя базисными
+алгебру кватернионов как алгебру Клиффорда Cl(0,2) с двумя базисными
 векторами.  В этом случае три кватернионные мнимые единицы
 представляются двумя базисными векторами и их произведением:
 
@@ -77,9 +77,9 @@
 @end example
 
 В качестве базисных векторов @code{atensor} использует переменные с
-индексом.  Симол переменой хранится в @code{asymbol} а индекс
+индексом.  Символ переменой хранится в @code{asymbol} а индекс
 может принимать значения от 1 до @code{adim}.
-Для переменных с индексом вычисляляются билинейные формы
+Для переменных с индексом вычисляются билинейные формы
 @code{sf}, @code{af} и  @code{av}.  Вычисление подставляет значение
 @code{aform[i,j]} вместо @code{fun(v[i],v[j])},
 где @code{v} есть значение @code{asymbol} и @code{fun} есть @code{af}
@@ -103,21 +103,21 @@ dotexptsimp:false;
 данном случае @code{atensimp} не всегда может получить желаемое
 упрощение.
 
-@node Definitions for atensor,  , Introduction to atensor, atensor
+@node Функции и переменные пакета atensor,  , Введение в пакет atensor, Пакет atensor
 
-@section Функции пакета atensor
+@section Функции и переменные пакета atensor
 
-@deffn {Function} init_atensor (@var{alg_type}, @var{opt_dims})
-@deffnx {Function} init_atensor (@var{alg_type})
+@deffn {Функция} init_atensor (@var{alg_type}, @var{opt_dims})
+@deffnx {Функция} init_atensor (@var{alg_type})
 
 Инициализирует пакет @code{atensor} с указанием типа алгебры.
-Здесь @var{alg_type} может примимать одно из следующих
+Здесь @var{alg_type} может принимать одно из следующих
 значений:
 
 @code{universal}: Универсальная алгебра без определенных правил
 коммутации.
 
-@code{grassmann}: Алебра Грассмана, определяемая коммутационным правилом
+@code{grassmann}: Алгебра Грассмана, определяемая коммутационным правилом
 @code{u.v+v.u=0}.
 
 @code{clifford}: Алгебра Клиффорда, определяемая коммутационным
@@ -150,7 +150,7 @@ dotexptsimp:false;
 @code{init_atensor} также распознает несколько предопределенных
 типов алгебр:
 
-@code{complex} реализут алгебру комплексных чисел, как алгебру
+@code{complex} реализует алгебру комплексных чисел, как алгебру
 Клиффорда Cl(0,1).  Вызов @code{init_atensor(complex)} эквивалентен
 @code{init_atensor(clifford,0,0,1)}.
 
@@ -158,7 +158,7 @@ dotexptsimp:false;
 @code{init_atensor(quaternion)} эквивалентен
 @code{init_atensor(clifford,0,0,2)}.
 
-@code{pauli} реализует алгеблу спиноров Паули как алгебру Клиффорда
+@code{pauli} реализует алгебру спиноров Паули как алгебру Клиффорда
 Cl(3,0).  Вызов @code{init_atensor(pauli)} эквивалентен
 @code{init_atensor(clifford,3)}.
 
@@ -169,7 +169,7 @@ Cl(3,1). Вызов @code{init_atensor(dirac)} эквивалентен
 @end deffn
 
 
-@deffn {Function} atensimp (@var{expr})
+@deffn {Функция} atensimp (@var{expr})
 
 Упрощает алгебраическое выражение @var{expr} в соответствии с
 правилами, определенными при вызове @code{init_atensor}.
@@ -181,23 +181,23 @@ Cl(3,1). Вызов @code{init_atensor(dirac)} эквивалентен
 @end deffn
 
 
-@deffn {Function} alg_type
+@deffn {Функция} alg_type
 
 Тип алгебры.  Допустимые значения:  @code{universal}, @code{grassmann},
 @code{clifford}, @code{symmetric}, @code{symplectic} или @code{lie_envelop}.
 
 @end deffn
 
-@defvr {Variable} adim
+@defvr {Переменная} adim
 Значение по умолчанию: 0
 
 Размерность алгебры.  @code{atensor} использует @code{adim}
-дла того чтобы определить является ли индексированный объект
+для того чтобы определить является ли индексированный объект
 допустимым базисным вектором.  См. @code{abasep}.
 
 @end defvr
 
-@defvr {Variable} aform
+@defvr {Переменная} aform
 Значение по умолчанию: @code{ident(3)}
 
 Значение билинейных форм @code{sf}, @code{af} или
@@ -205,37 +205,37 @@ Cl(3,1). Вызов @code{init_atensor(dirac)} эквивалентен
 
 @end defvr
 
-@defvr {Variable} asymbol
+@defvr {Переменная} asymbol
 Значение по умолчанию: @code{v}
 
 Символ, используемый для обозначения базисного вектора.
 
 @end defvr
 
-@deffn {Function} sf (@var{u}, @var{v})
+@deffn {Функция} sf (@var{u}, @var{v})
 
 Симметричная скалярная функция, используемая в коммутационных
 правилах.  По умолчанию с помощью @code{abasep} проверяется, что
 оба аргумента функции являются базисными векторами, и если это так,
-подставляеся соответствующее значение из матрицы @code{aform}.
+подставляется соответствующее значение из матрицы @code{aform}.
 
 @end deffn
 
-@deffn {Function} af (@var{u}, @var{v})
+@deffn {Функция} af (@var{u}, @var{v})
 
 Антисимметричная скалярная функция, используемая в коммутационных
 правилах.  По умолчанию с помощью @code{abasep} проверяется, что
 оба аргумента функции являются базисными векторами, и если это так,
-подставляеся соответствующее значение из матрицы @code{aform}.
+подставляется соответствующее значение из матрицы @code{aform}.
 
 @end deffn
 
-@deffn {Function} av (@var{u}, @var{v})
+@deffn {Функция} av (@var{u}, @var{v})
 
 Антисимметричная скалярная функция, используемая в коммутационных
 правилах.  По умолчанию с помощью @code{abasep} проверяется, что
 оба аргумента функции являются базисными векторами, и если это так,
-подставляеся соответствующее значение из матрицы @code{aform}.
+подставляется соответствующее значение из матрицы @code{aform}.
 
 Например:
 
@@ -260,7 +260,7 @@ Cl(3,1). Вызов @code{init_atensor(dirac)} эквивалентен
 @end deffn
 
 
-@deffn {Function} abasep (@var{v})
+@deffn {Функция} abasep (@var{v})
 
 Проверяет является ли аргумент базисным вектором для @code{atensor}.
 Т.е. проверяет, что: это индексированная переменная, символ этой
