@@ -151,14 +151,17 @@ exp1:outofpois(poisexpt(%,2));
 			    +1/2*(2*a^2-b)^2$
 printpois(%);
 done$
-outofpois(poisint(exp1,y));
-1/8*(2*a^2-b)^2*sin(4*y+2*x)+1/2*(2*a^2-b)*(-a*b-5)*cos(2*y+5*x-u)
-			    -1/2*(2*a^2-b)*(-a*b-5)*cos(2*y-3*x+u)$
-outofpois(poissimp(%));
-1/8*(2*a^2-b)^2*sin(4*y+2*x)+1/2*(2*a^2-b)*(-a*b-5)*cos(2*y+5*x-u)
-			    -1/2*(2*a^2-b)*(-a*b-5)*cos(2*y-3*x+u)$
+
+ratsimp(outofpois(poisint(exp1,y)));
+''(ratsimp(((-1)*(2*a^2-b)*(-5-a*b)*cos(u-3*x+2*y))/2+((2*a^2-b)*(-5-a*b)*cos(-u+5*x+2*y))/2+((2*a^2-b)^2*sin(2*x+4*y))/8))$
+
+ratsimp(outofpois(poissimp(%)));
+''(ratsimp(1/8*(2*a^2-b)^2*sin(4*y+2*x)+1/2*(2*a^2-b)*(-a*b-5)*cos(2*y+5*x-u)
+			    -1/2*(2*a^2-b)*(-a*b-5)*cos(2*y-3*x+u)))$
+
 poissimp(sin(x)^5+cos(x)^5);
 1/16*sin(5*x)+1/16*cos(5*x)-5/16*sin(3*x)+5/16*cos(3*x)+5/8*sin(x)+5/8*cos(x)$
+
 pfeformat:false;
 false$
 

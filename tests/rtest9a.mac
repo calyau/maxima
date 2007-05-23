@@ -29,23 +29,26 @@ cos(x)$
 sin(x+(o+1/2)*%pi);
 -cos(x)$
 (linel:500,diff(exp(x^2+y)/(x+y),x,2));
-4*x^2*%e^(y+x^2)/(y+x)+2*%e^(y+x^2)/(y+x)-4*x*%e^(y+x^2)/(y+x)^2
-		      +2*%e^(y+x^2)/(y+x)^3$
-/* we use sconcat here, because it is not possible to compare the
-  output from optimize which involves gensyms whith something we read.
-*/
+4*x^2*%e^(y+x^2)/(y+x)+2*%e^(y+x^2)/(y+x)-4*x*%e^(y+x^2)/(y+x)^2 +2*%e^(y+x^2)/(y+x)^3$
+
 sconcat(optimize(%));
-sconcat("block([%1,%2,%3,%4],%1:y+x,%2:x^2,%3:%e^(y+%2),%4:1/%1,4*%2*%4*%3+2*%4*%3-4*x*%3/%1^2+2*%3/%1^3)")$
+''(sconcat("block([%1,%2,%3,%4],%1:y+x,%2:x^2,%3:%e^(y+%2),%4:1/%1,4*%2*%4*%3+2*%4*%3-4*x*%3/%1^2+2*%3/%1^3)"))$
+
 linel:79;
 79$
 laplace(%e^(2*t+a)*sin(t)*t,t,s);
 %e^a*(2*s-4)/(s^2-4*s+5)^2$
 'integrate(sinh(a*x)*f(t-x),x,0,t)+b*f(t) = t^2;
 'integrate(f(t-x)*sinh(a*x),x,0,t)+b*f(t) = t^2$
-laplace(%,t,s);
-b*laplace(f(t),t,s)+a*laplace(f(t),t,s)/(s^2-a^2) = 2/s^3$
+
+expand(laplace(%,t,s),0,0);
+''(expand(b*laplace(f(t),t,s)+a*laplace(f(t),t,s)/(s^2-a^2) = 2/s^3,0,0))$
+
 linsolve([%],['laplace(f(t),t,s)]);
-exp:['laplace(f(t),t,s) = (2*s^2-2*a^2)/(b*s^5+(a-a^2*b)*s^3)]$
+['laplace(f(t),t,s) = (2*s^2-2*a^2)/(b*s^5+(a-a^2*b)*s^3)]$
+
+(exp : %,0);
+0$
 
 assume(a>0,b>0,a*b>1);
 [a>0,b>0,a*b>1];
