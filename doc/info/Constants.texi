@@ -75,6 +75,8 @@ After evaluating @code{tellrat(%phi^2 - %phi - 1)} and @code{algebraic: true},
 
 Examples:
 
+@code{fibtophi} expresses Fibonacci numbers @code{fib(n)} in terms of @code{%phi}.
+
 @c ===beg===
 @c fibtophi (fib (n));
 @c fib (n-1) + fib (n) - fib (n+1);
@@ -101,6 +103,10 @@ Examples:
 (%i4) ratsimp (%);
 (%o4)                           0
 @end example
+
+By default, Maxima does not know the algebraic properties of @code{%phi}.
+After evaluating @code{tellrat (%phi^2 - %phi - 1)} and @code{algebraic: true},
+@code{ratsimp} can simplify some expressions containing @code{%phi}.
 
 @c ===beg===
 @c e : expand ((%phi^2 - %phi - 1) * (A + 1));
