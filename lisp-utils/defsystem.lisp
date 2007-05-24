@@ -4123,9 +4123,9 @@ the system definition, if provided."
 (unless *old-require*
   (setf *old-require*
 	(symbol-function
-	 #-(or (and :excl :allegro-v4.0) :mcl :sbcl :lispworks) 'lisp:require
+	 #-(or (and :excl :allegro-v4.0) :mcl :sbcl :scl :lispworks) 'lisp:require
 	 #+(and :excl :allegro-v4.0) 'cltl1:require
-	 #+:sbcl 'cl:require
+	 #+(or :sbcl :scl) 'cl:require
 	 #+:lispworks3.1 'common-lisp::require
 	 #+(and :lispworks (not :lispworks3.1)) 'system::require
 	 #+:openmcl 'cl:require
@@ -4137,10 +4137,10 @@ the system definition, if provided."
 	  (ccl:*warn-if-redefine-kernel* nil))
       #-(or (and allegro-version>= (version>= 4 1)) :lispworks)
       (setf (symbol-function
-	     #-(or (and :excl :allegro-v4.0) :mcl :sbcl :lispworks) 'lisp:require
+	     #-(or (and :excl :allegro-v4.0) :mcl :sbcl :scl :lispworks) 'lisp:require
 	     #+(and :excl :allegro-v4.0) 'cltl1:require
 	     #+:lispworks3.1 'common-lisp::require
-	     #+:sbcl 'cl:require
+	     #+(or :sbcl :scl) 'cl:require
 	     #+(and :lispworks (not :lispworks3.1)) 'system::require
 	     #+:openmcl 'cl:require
 	     #+(and :mcl (not :openmcl)) 'ccl:require
