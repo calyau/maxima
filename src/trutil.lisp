@@ -19,7 +19,7 @@
 ;;; of the list. This could be used to define subr-like makros.
 
 (defun tr-gensym ()
-  (gentemp "TR-GENSYM"))
+  (gentemp (symbol-name 'tr-gensym)))
 
 (defun conserve-eval-args-data (l)
   (do ((sublis nil)

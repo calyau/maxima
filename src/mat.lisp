@@ -111,7 +111,7 @@
 (defmvar $%rnum 0)
 
 (defmfun make-param ()
-  (let ((param (intern (format nil "$%R~D" (incf $%rnum)))))
+  (let ((param (intern (format nil "~A~D" '$%r (incf $%rnum)))))
     (tuchus $%rnum_list param)
     param))
 

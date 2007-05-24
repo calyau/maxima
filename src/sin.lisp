@@ -1411,7 +1411,7 @@
 	  ((mequalp exp)
 	   (list (car exp) (sinint (cadr exp) var)
 		 (add2 (sinint (caddr exp) var)
-		       (gentemp "$INTEGRATIONCONSTANT"))))
+		       (gentemp (symbol-name '$integrationconstant)))))
 	  ((and (atom var)
 		(isinop exp var))
 	   (list '(%integrate) exp var))
