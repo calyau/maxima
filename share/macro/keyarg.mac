@@ -4,7 +4,7 @@
    via keywords. */
 
 eval_when([translate,batch,demo],
-	  load_package(sharem,"max$disk:[sharem]autolo"))$
+	  load_package(sharem,"autolo"))$
 
 herald_package(keyarg)$
 
@@ -27,7 +27,7 @@ def_keyarg(header,body)::=
 	                                else ['key_pair,[part(u,1),part(u,2)]]),
 			  args(header))],
 	(eval_when(loadfile,
-	           setup_autoload("max$disk:[sharem]keyarg",translate_keyarg)),
+	           setup_autoload("keyarg",translate_keyarg)),
          put('mname,'dispatch,'translate_keyarg),
          mname([macro_argl])::=translate_keyarg(macro_argl,'mname,'sname),
 	 sname(splice(sargs)):=body))$

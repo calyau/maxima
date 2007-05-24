@@ -121,12 +121,12 @@ eval_when([translate,batch,demo],
 eval_when([translate],
 	  translate("=>"), /* Yes Virginia, good lisp is reentrant. */
 	  /* This hack deflects the syntax to another file */
-	  save("max$disk:[sharem]defm.syn","=>"))$
+	  save("defm.syn","=>"))$
 
 /* By default, don't load syntax.
 This is evaluated once we are translated and then loaded. 
 EVAL_WHEN([LOADFILE],
-          LOAD("MAX$DISK:[SHAREM]DEFM.SYN"))$
+          LOAD("DEFM.SYN"))$
 */
 
 

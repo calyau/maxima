@@ -1,7 +1,7 @@
 /*-*-macsyma-*-*/
 
 eval_when([translate,batch,demo],
-	  load_package(sharem,"max$disk:[sharem]autolo"))$
+	  load_package(sharem,"autolo"))$
 
 /* a sum convenient for the expression of certain formuli by CMA */
 

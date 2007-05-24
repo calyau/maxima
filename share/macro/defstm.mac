@@ -6,7 +6,7 @@
           certain rights therein.                                     */
 
 eval_when([translate,batch,demo],
-	  load_package(sharem,"max$disk:[sharem]autolo"))$
+	  load_package(sharem,"autolo"))$
 
 herald_package(defstm)$
 
