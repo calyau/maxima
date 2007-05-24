@@ -659,7 +659,7 @@ matrixProdArray(a,b) :=
     print("matrixProd) incompatible matrices"),
     print("matrixProd) a : ", a),
     print("matrixProd) b : ", b),
-    return(FALSE)
+    return(false)
     )
   else
     (

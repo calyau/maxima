@@ -199,7 +199,7 @@ bernsteinCoeffList(pol,var,c,d) :=
 /* Bernstein coefficients */
 /* computed by using Proposition 10.24 */
 convert2Bernstein(pol,polDeg,var,c,d) :=
-  block([auxPol,transMinusC, conDMinusC, recP, TransMinusOne,res,i],
+  block([auxPol,transMinusC, conDMinusC, recP, transMinusOne,res,i],
     pol : expandIf(pol),
     
     transMinusC : expand(translated(pol,var,-c)),

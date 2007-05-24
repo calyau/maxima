@@ -609,7 +609,7 @@ return([padWithZeros(makelist(SR[degA-i],i,0,degA-j),degA+1),
 
 
 lastNonZero(seq) :=
-  lastNonZeroAux(seq,Length(seq));
+  lastNonZeroAux(seq,length(seq));
 
 lastNonZeroAux(seq,res) :=
   if seq = [] then
