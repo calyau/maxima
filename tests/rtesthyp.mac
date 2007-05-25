@@ -53,12 +53,12 @@ exp(z)*sinh(z)/z$
  *
  * He(n,x) = 2^(-n/2)*H(n,x/sqrt(2))
  */
-hgfred([-4],[1/2],z^2/2);
-hermite(8,z/sqrt(2))/1680$
+ratsimp(hgfred([-4],[1/2],z^2/2) - hermite(8,z/sqrt(2))/1680);
+0$
 
 /* A&S 13.6.18 */
-hgfred([-4],[3/2],z^2/2);
-sqrt(2)*hermite(9,z/sqrt(2))/30240/z$
+ratsimp(hgfred([-4],[3/2],z^2/2) - sqrt(2)*hermite(9,z/sqrt(2))/30240/z)$
+0$
 
 /* A&S 13.6.19 */
 ratsimp(hgfred([1/2],[3/2],-z^2));
@@ -302,8 +302,8 @@ laguerre(7,z)$
 hgfred([-2],[1/2],z);
 hermite(4,sqrt(z))/12$
 
-hgfred([-2],[3/2],z);
-hermite(5,sqrt(z))/(120*sqrt(z))$
+ratsimp(hgfred([-2],[3/2],z) - hermite(5,sqrt(z))/(120*sqrt(z)));
+0$
 
 hgfred([a],[a+1],-z);
 a*%gammagreek(a,z)/z^a$
@@ -503,7 +503,7 @@ hgfred([a+2,-a],[1/2],zn)-zn^(1-a)/(a*(a+1))*diff(zn^(a+1)*hgfred([a,-a],[1/2],z
  *    = (1-z)^(3/2)*z^(a+1/2)/(1/2-a)*diff(z^(1/2-a)*(1-z)^(-1/2)*F(a,-a;1/2;z),z,1)
  * 
  */
-hgfred([a-1,-a],[1/2],zn)-(1-zn)^(3/2)*zn^(a+1/2)/(1/2-a)*diff(zn^(1/2-a)*(1-zn)^(-1/2)*hgfred([a,-a],[1/2],zn),zn,1);
+ratsimp(hgfred([a-1,-a],[1/2],zn)-(1-zn)^(3/2)*zn^(a+1/2)/(1/2-a)*diff(zn^(1/2-a)*(1-zn)^(-1/2)*hgfred([a,-a],[1/2],zn),zn,1));
 0$
 
 /*
@@ -522,7 +522,7 @@ hgfred([a-1,-a],[1/2],zn)-(1-zn)^(3/2)*zn^(a+1/2)/(1/2-a)*diff(zn^(1/2-a)*(1-zn)
  * F(a,-a;-1/2;z) = z^(3/2)/poch(-1/2,1)*diff(z^(-1/2)*F(a,-a;1/2;z),z,1)
  * 
  */
-hgfred([a,-a],[-1/2],zn) - zn^(3/2)/(-1/2)*diff(zn^(-1/2)*hgfred([a,-a],[1/2],zn),zn,1);
+ratsimp(hgfred([a,-a],[-1/2],zn) - zn^(3/2)/(-1/2)*diff(zn^(-1/2)*hgfred([a,-a],[1/2],zn),zn,1));
 0$
 
 /*
@@ -544,7 +544,7 @@ hgfred([a,-a],[-1/2],zn) - zn^(3/2)/(-1/2)*diff(zn^(-1/2)*hgfred([a,-a],[1/2],zn
  * F(a-1,-a;-1/2;z) = z^(3/2)*(1-z)^(a+1/2)/poch(-1/2,1)*diff(z^(-1/2)*(1-z)^(-a+1/2)*F(a,-a;1/2;z),z,1)
  * 
  */
-hgfred([a-1,-a],[-1/2],zn) - zn^(3/2)*(1-zn)^(a+1/2)/(-1/2)*diff(zn^(-1/2)*(1-zn)^(-a+1/2)*hgfred([a,-a],[1/2],zn),zn,1);
+ratsimp(hgfred([a-1,-a],[-1/2],zn) - zn^(3/2)*(1-zn)^(a+1/2)/(-1/2)*diff(zn^(-1/2)*(1-zn)^(-a+1/2)*hgfred([a,-a],[1/2],zn),zn,1));
 0$
 
 /*
@@ -580,11 +580,11 @@ hgfred([a-1,-a],[-1/2],zn) - zn^(3/2)*(1-zn)^(a+1/2)/(-1/2)*diff(zn^(-1/2)*(1-zn
  *         *diff(z^a*(1-z)^(2-a)*G(z),z,n)
  * 
  */
-hgfred([a-2,-a],[-1/2],zn) - 
+ratsimp(hgfred([a-2,-a],[-1/2],zn) - 
    zn^(3/2)*(1-zn)^(a+1/2)/(-1/2)*(1/2-a)^(-1)*
    diff(zn^a*(1-zn)^(2-a)
         *diff(zn^(-a+1/2)*(1-zn)^(-1/2)*hgfred([a,-a],[1/2],zn),zn,1)
-        ,zn,1);
+        ,zn,1));
 0$
 
 /*
@@ -822,7 +822,7 @@ ratsimp(rectform(specint(sin(a*t)*%ei(-t)*exp(-p*t),t)));
  * -> -(p^2+a^2)^(-1)*(p/2*log((p+1)^2+a^2) + a*atan(a/(p+1)))
  */
 ratsimp(rectform(specint(cos(a*t)*%ei(-t)*exp(-p*t),t)));
--(2*a*atan(a/(p+1))+p*log(p^2+2*p+a^2+1))/(2*p^2+2*a^2);
+-((2*a*atan(a/(p+1))+p*log(p^2+2*p+a^2+1))/(2*p^2+2*a^2));
 
 /*
  * Formula 34, p. 179
@@ -1279,8 +1279,8 @@ ratsimp(factor(hgfred([1/2,2],[4],zp))-
  * http://functions.wolfram.com/HypergeometricFunctions/Hypergeometric2F1/03/07/24/
  */
 
-hgfred([1/2,3],[-1/2],z);
-(1-7*z)/(z-1)^4;
+ratsimp(hgfred([1/2,3],[-1/2],z) - (1-7*z)/(z-1)^4);
+0$
 
 ratsimp(factor(hgfred([1/2,3],[1],z))-
 (3*z^2-8*z+8)/8/(1-z)^(5/2)
@@ -1311,7 +1311,7 @@ ratsimp(factor(hgfred([1/2,3],[7/2],zp))-
  * Tests for 2F2
  */
 hgfred([a,b],[a,c],z);
-hgfred([b],[c],z)$
+%f[1,1]([b],[c],z)$
 
 /* test with exponentials */ 
 

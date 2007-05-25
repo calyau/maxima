@@ -144,7 +144,7 @@ expr: '(a > b and (equal (c, d) or e = 1) and not f <= g or notequal (h, %pi));
 true;
 
 '(not foo (a));
-funmake ("not", '[foo (a)]);
+''(funmake ("not", '[foo (a)]));
 
 '[is (not a > b or false), is (not a > b or true), is (not a > b and false)];
 '[is (a <= b), true, false];
@@ -327,11 +327,13 @@ false;
  translate (implies, equivalent));
 [implies, equivalent];
 
+/* output not fully simplified -- these next two tests show bugs */
+
 implies (aa and bb, cc or dd);
-not aa or not bb or cc or dd;
+not (aa) or not (bb) or cc or dd;
 
 implies (aa and bb, aa);
-not aa or not bb or aa;
+not (aa) or not (bb) or aa;
 
 equivalent (aa, aa);
 (not aa or aa) and (not aa or aa);

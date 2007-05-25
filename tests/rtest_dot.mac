@@ -40,7 +40,7 @@ dotident . x;
 x$
 
 x^^0;
-dotident$
+''(dotident)$
 
 x^^0, dotident : id;
 id$
@@ -51,16 +51,16 @@ a^^2 . a^^5;
 a^^7$
 
 a^^2 . a^^-2;
-dotident$
+''(dotident)$
 
 (1+x).(1+x)^^-1;
-dotident$
+''(dotident)$
 
 (1 + x - x^2).(1 + x - x^2)^^-1;
-dotident$
+''(dotident)$
 
 (1 + x - x^2)^^2 .(1 + x - x^2)^^-2;
-dotident$
+''(dotident)$
 
 /*--- dotdistrib ---*/
 
@@ -123,7 +123,7 @@ a^^2 - a . b - b . a + b^^2$
 25 * a^^2 + 35 * a . b + 35 * b . a + 49 * b^^2$
 
 (a . b)^^2, expand, dotexptsimp : false;
-a . b . a . b$
+''(block([dotexptsimp : false], a . b . a . b))$
 
 (a . b)^^-1, expand, dotexptsimp : false;
 (a . b)^^-1$
