@@ -1,6 +1,6 @@
 /*               COPYRIGHT NOTICE
 
-Copyright (C) 2005-2006 Mario Rodriguez Riotorto
+Copyright (C) 2005-2007 Mario Rodriguez Riotorto
 
 This program is free software; you can redistribute
 it and/or modify it under the terms of the
@@ -119,24 +119,6 @@ to contact me at
 
 mario AT edu DOT xunta DOT es
 www.biomates.net
-
-2005, june: first release
-2005, november: definition of function 'floor' removed
-2006, march: joining 3d points 
-2006, june: renamed the following functions:
-               cfrec           => continuous_freq
-               dfrec           => discrete_freq
-               ncmoment        => noncentral_moment
-               cmoment         => central_moment
-               vc              => cv
-               meandev         => mean_deviation
-               mediandev       => median_deviation
-               harmean         => harmonic_mean
-               geomean         => geometric_mean
-               pearskewness    => pearson_skewness
-               quarskewness    => quartile_skewness
-               listvar         => global_variances
-               listdep         => list_correlations
 */
 
 
@@ -205,6 +187,8 @@ subsample(mat,cond,[cols]):=block([subm:matrix(),subv],
 /* are inside them. The second argument is optional and      */
 /* equals the number of classes we want; 10 by default.      */
 /* Argument 'lis' must be a list of real numbers.            */
+/* If sample values are all equal, this function returns only */
+/* one class of amplitude 2                                  */
 continuous_freq(lis,[opt]):=block([numer:true,nc,mini,lim,amp,fr,ult,n,k],
    if length(opt)=1
       then nc:opt[1]
@@ -212,17 +196,19 @@ continuous_freq(lis,[opt]):=block([numer:true,nc,mini,lim,amp,fr,ult,n,k],
    mini:tree_reduce('min,lis),
    lim:[mini],
    amp:(tree_reduce('max,lis)-mini)/nc,
-   for i:1 thru nc do lim:endcons(mini+amp*i,lim),
-   lis:sort(lis),
-   fr:makelist(0,i,1,nc),
-   n:length(lis),
-   k:1,
-   for c:1 thru nc-1 do
-      while lis[k]<=lim[c+1] do(
-         fr[c]:fr[c]+1,
-         k:k+1),
-   fr[nc]: n-apply("+",fr),
-   [lim,fr]   )$
+   if amp=0
+     then [[lis[1]-1,lis[1]+1],[length(lis)]]
+     else ( for i:1 thru nc do lim:endcons(mini+amp*i,lim),
+            lis:sort(lis),
+            fr:makelist(0,i,1,nc),
+            n:length(lis),
+            k:1,
+            for c:1 thru nc-1 do
+               while lis[k]<=lim[c+1] do(
+                  fr[c]:fr[c]+1,
+                  k:k+1),
+            fr[nc]: n-apply("+",fr),
+            [lim,fr])   )$
 
 
 /* Counts the frequency of each element in 'lis', its elements */
@@ -836,7 +822,7 @@ barsplot(m,[select]):=
                aux: length(fr[2]),
                str: sconcat("set xtics(\"",fr[1][1],"\" ",1),
                for k:2 thru aux do
-                  str: concat(str,", \"",fr[1][k], "\" ", k),
+                  str: sconcat(str,", \"",fr[1][k], "\" ", k),
                print(str,")"),
                print("set xrange [0.5:",aux+0.5,"]"),
                print("set yrange [0:",tree_reduce('max,fr[2])*1.05,"]"),
