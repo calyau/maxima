@@ -609,10 +609,10 @@ floor(0);
 0$
 
 floor(0.0);
-0.0$
+0$
 
 floor(0.0b0);
-0.0b0$
+0$
 
 floor(5/2);
 2$
@@ -863,7 +863,7 @@ floor(acos(67)) + 42$
 sum(floor(sqrt(k)),k,1,25^2-1);
 25^2 * 25 - 25^3 / 3 - 25^2/2 - 25/6$
 
-floor(sqrt(5) * (sqrt(5) - 1/sqrt(5)));
+expand(floor(sqrt(5) * (sqrt(5) - 1/sqrt(5))));
 4$
 
 floor(10! * sqrt(5) *(sqrt(5) - 1/sqrt(5)) + 1/(10^6 *%pi));
@@ -1229,16 +1229,16 @@ x^2 + 1$
 
 /*--CRE expressions----*/
 
-max(x,rat(x));
+ratdisrep(max(x,rat(x)));
 x$
 
-min(x,rat(x))$
+ratdisrep(min(x,rat(x)))$
 x$
 
-max(rat(x*y));
+ratdisrep(max(rat(x*y)));
 x*y$
 
-max(rat(x^2+y,x), rat(x^2+y,y));
+ratdisrep(max(rat(x^2+y,x), rat(x^2+y,y)));
 x^2+y$
 
 /*--absolute values---*/
@@ -1475,7 +1475,7 @@ rationalize(a^^0.125);
 a^^(1/8)$
 
 rationalize(rat(a+b + 0.125));
-a+b + 1/8$
+(8 * a + 8 * b + 1)/8$
 
 rationalize(rat(1+x+x^2.0));
 1+x+x^2$
@@ -1516,7 +1516,7 @@ max(1/(q-1),1/(q-1));
 1/(q-1)$
 
 sort(args(max(1/(q-1),1/(q-2))));
-sort([1/(q-1),1/(q-2)])$
+''(sort([1/(q-1),1/(q-2)]))$
 
 is(compare(1/(q-1),minf) = ">");
 true$

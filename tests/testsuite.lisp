@@ -22,7 +22,7 @@
 	"rexamples"
 	"rtesthyp"
 	"rtestmt19937"
-	((mlist) "rtest_allnummod" 135 136)
+	((mlist) "rtest_allnummod" 135 136 417 418)
 	"rtestconjugate"
 	((mlist) "rtestsum" 3 4 18)
 	"rtest_trig"
