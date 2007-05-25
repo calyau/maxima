@@ -49,7 +49,7 @@ n + 'sum (f(k), k, 1, n);
 /* further examples in the same vein: part of summand depends on index, part doesn't. */
 
 sum (sin(g(j)) - %pi^j + cos(h(k)) - %e^l, j, 1, m), simpsum;
-m*cos(h(k)) - m*%e^l + 'sum (sin(g(j)), j, 1, m) - ((%pi^(m + 1) - %pi)/(%pi - 1));
+m*cos(h(k)) - m*%e^l + sum (sin(g(j)), j, 1, m) - ((%pi^(m + 1) - %pi)/(%pi - 1));
 
 sum (sum (f(j) + g(k), j, 1, m), k, 1, n), simpsum;
 m * 'sum (g(k), k, 1, n) + n * 'sum (f(j), j, 1, m);
@@ -66,10 +66,10 @@ sum (sum (sum (f(%pi, i) + g(%phi, j) - h(k), i, 1, n_i), j, 1, n_j), k, 1, n_k)
 /* see SF bug report # 649428 */
 
 (factsum3 (mt, ej) := sum ((-1)^(k + 1)/(k*mt^k)*sum((1 - l)^k - l^k, l, 1, ej),k,1,inf), t% : taylor (factsum3 (mt, ej), [mt, 0, 3, asymp])); 
-sum(-2*l+1,l,1,ej)/mt-(sum(-2*l+1,l,1,ej)/(2*mt^2)) + sum(-2*l^3+3*l^2-3*l+1,l,1,ej) /(3*mt^3);
+'sum(1-2*l,l,1,ej)/mt-('sum(1-2*l,l,1,ej)/(2*mt^2))+'sum(-2*l^3+3*l^2-3*l+1,l,1,ej)/(3*mt^3);
 
-''t%, simpsum;
--(6*ej^2*mt^2-3*ej^2*mt+ej^4+ej^2)/(6*mt^3);
+%, simpsum, ratsimp;
+-((6*ej^2*mt^2-3*ej^2*mt+ej^4+ej^2)/(6*mt^3));
 
 /* Known failure: interaction of taylor and simpsum
  */
@@ -142,10 +142,10 @@ u, a=2, simpsum;
 1618091/196035840;
 
 %, numer;
-0.0082540570132481894; 
+0.0082540570132481894$ 
 
 u, a=2, simpsum, numer;
-0.0082540570132481911; 
+0.0082540570132481911$ 
 
 u, a=2, simpsum, bfloat;
 8.25405701324819B-3;
@@ -216,7 +216,7 @@ sum (integrate (x^k, x, 0, 1), k, 1, n);
 product (integrate (x^k, x, 0, 1), k, 1, n);
 'product (1/(k + 1), k, 1, n);
 
-sum ('concat (q, k), k, a, b);
+(kill(b), sum ('concat (q, k), k, a, b));
 'sum ('concat (q, k), k, a, b);
 
 sum ('concat (q, k), k, a, b), nouns, a=1, b=5;
@@ -259,7 +259,7 @@ sum (1/k, k, rat(1), rat(n));
 'sum (1/k, k, 1, n);
 
 sum (taylor (x^i, x, 0, 5), i, 0, 5);
-taylor (x^5 + x^4 + x^3 + x^2 + x + 1);
+''(taylor (x^5 + x^4 + x^3 + x^2 + x + 1,x,0,5));
 
 (i: 888, sum (lambda ([i], i^2), i, 1, 3));
 3 * lambda ([i], i^2);
@@ -303,7 +303,7 @@ sum (aa(baz), baz, 1, 7);
 aa(7) + aa(6) + aa(5) + aa(4) + aa(3) + aa(2) + aa(1);
 
 sum (aa(foo), foo, 1, n);
-'sum (aa('foo), 'foo, 1, n);
+'sum (aa(foo), foo, 1, n);
 
 sum (2^bar + bar^2, bar, 0, n), simpsum;
 2^(n + 1) + (2*n^3 + 3*n^2 + n)/6 - 1;
@@ -315,7 +315,7 @@ sum (foo^2, foo, 1, 4) * sum (1/foo^2, foo, 1, inf), simpsum;
 5*%pi^2;
 
 (gg(bar) := 1/bar^2, sum (gg(bar)^2, bar, 1, inf));
-'sum (1/'bar^4, 'bar, 1, inf);
+sum (1/bar^4, bar, 1, inf);
 
 sum (gg(baz)^2, baz, 1, inf), simpsum;
 %pi^4/90;
@@ -344,7 +344,7 @@ product (1/k, k, rat(1), rat(n));
 'product (1/k, k, 1, n);
 
 product (taylor (x^i, x, 0, 5), i, 0, 5);
-taylor (x^15);
+''(taylor (x^15,x,0,15));
 
 (i: 888, product (lambda ([i], i^2), i, 1, 3));
 (lambda ([i], i^2))^3;
@@ -428,13 +428,13 @@ product (aa(baz), baz, 1, 7);
 aa(7) * aa(6) * aa(5) * aa(4) * aa(3) * aa(2) * aa(1);
 
 product (aa(foo), foo, 1, n);
-'product (aa('foo), 'foo, 1, n);
+product (aa(foo), foo, 1, n);
 
 product (2^bar + bar^2, bar, 0, n), simpsum;
-'product (2^'bar + 'bar^2, 'bar, 0, n);
+product (2^bar + bar^2, bar, 0, n);
 
 product (1/3^baz, baz, 1, inf), simpsum;
-'product (1/3^'baz, 'baz, 1, inf);
+product (1/3^baz, baz, 1, inf);
 
 product (foo^2, foo, 1, 4) * product (1/foo^2, foo, 1, inf), simpsum;
 (4!)^2 * 'product (1/'foo^2, 'foo, 1, inf);
@@ -538,7 +538,7 @@ sum([1,k],k,1,5);
 [5,15];
 
 sum([1,k],k,1,n),simpsum;
-[n,n*(1+n)/2];
+[n, (n^2 + n)/2];
 
 (old_facts : facts(),0);
 0$
@@ -565,7 +565,7 @@ product(diff(log(x),x,k),k,1,2);
 -1/x^3;
 
 sum(x^k * at(diff(sin(x),x,k)/k!,x=0),k,0,5) - taylor(sin(x),x,0,5);
-taylor(0,x,0,5);
+''(taylor(0,x,0,5));
 
 product(%i-x,k,1,inf);
 'product(%i-x,k,1,inf);
@@ -669,8 +669,8 @@ sum(realpart(a + %i * k),k,1,3);
 sum(sum(abs(k),k,1,n),n,1,m);
 sum(sum(k,k,1,n),n,1,m)$
 
-sum(sum(k,k,1,i),i,1,n),simpsum;
-n^3/6+n^2/2+n/3$
+sum(sum(k,k,1,i),i,1,n),simpsum,ratsimp;
+''(ratsimp(n^3/6+n^2/2+n/3))$
 
 sum(sum(abs(k),k,1,n) + sum(abs(k),k,1,n),n,1,m);
 2 * sum(sum(k,k,1,n),n,1,m)$
@@ -741,7 +741,7 @@ n+sum(2*k,k,1,n)+1;
 
 /* sum (1/k^2, ...) not simplified unless specifically requested */
 (sum (1/k^2, k, 1, inf), [op (%%), args (%%)]);
-[nounify (sum), [1/k^2, k, 1, inf]];
+[''(nounify (sum)), [1/k^2, k, 1, inf]];
 
 sum (1/k^2, k, 1, inf), simpsum;
 %pi^2/6;
@@ -831,4 +831,4 @@ true;
 /* Test for intosum */
 
 intosum(2*sum(k,k,1,inf));
-'sum(2*k,k,1,inf);
+sum(2*k,k,1,inf);
