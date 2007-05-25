@@ -44,7 +44,7 @@ block([context:'foobar],
 []$
 
 error;
-[sconcat("Integral is divergent")]$
+''([sconcat("Integral is divergent")])$
 
 killcontext('foobar);
 done$
@@ -330,8 +330,9 @@ trigexpand(sec(x+y));
 csc(x)*sec(x)*csc(y)*sec(y)/(csc(x)*csc(y)-sec(x)*sec(y));
 
 /* Bug 1309377 */
-fpred(x) := (prederror:'false, is(x <= -1));
-fpred(x):=(prederror:'false,is(x <= -1))$
+(fpred(x) := (prederror:'false, is(x <= -1)),0);
+0$
+
 fpred(xyzzy);
 unknown$
 translate(fpred);
@@ -359,7 +360,7 @@ float(0.0b0);
 (assume(cos(x)>0),0);
 0;
 integrate(sin(x)/cos(x)^2,x,0,%pi/3);
-1/cos(%pi/3)-1/cos(0);
+1$
 
 /*
  * Test compiled array access
@@ -398,14 +399,17 @@ aref(har2,3,4);
  * We're basically trying to test that the compiled version of foo
  * returns a fixnum array, just like the interpreted one.
  */
-foo(x) := block([r], r : make_array('fixnum,2), r[0]:x,r[1]:x+1, return(r));
-foo(x) := block([r], r : make_array('fixnum,2), r[0]:x,r[1]:x+1, return(r))$
-foo(7);
-foo(7)$
+(foo(x) := block([r], r : make_array('fixnum,2), r[0]:x,r[1]:x+1, return(r)),0);
+0$
+
+(expr : foo(7), arrayinfo(expr));
+[declared,1,[1]]$
+
 compile(foo);
 [foo];
-foo(7);
-foo(7)$
+
+(expr : foo(7), arrayinfo(expr));
+[declared,1,[1]]$
 
 use_fast_arrays:false;
 false;
@@ -420,7 +424,7 @@ integrate(log(x)/(x^2+1)^2,x,0,inf);
  * Fixed 2006/03/13.  Solution needs work, though.
  */
 multthru(factor(integrate(1/x^5,x,1,2^(1/78))));
-1/4-2^(37/39)/8;
+1/4 - (1/8 ) * (2^(37/39));
 
 /*
  * Bug 938235: integrate((1/2)*u^2-1/u^5,u,1,sqrt(2))
@@ -481,16 +485,16 @@ sqrt(0b0);
 [0b0, 0b0, 0b0];
 
 asin(1b0);
-bfloat(%pi/2);
+''(bfloat(%pi/2));
 
 asin(-1b0);
--bfloat(%pi/2);
+''(-bfloat(%pi/2));
 
 /* li[2](1.0) stack overflow (bug report # 1514861)
  */
 
 li[2](1.0);
-ev (%pi^2/6, numer);
+''(ev (%pi^2/6, numer));
 
 /* bug report [ 782046 ] limit(abs(x),x,0) fails
  * appears to be fixed in 5.9.3cvs -- verify
@@ -538,7 +542,7 @@ und;
  * But there are other bugs related to this one.
  */
 integrate(1/(sin(x)^2+1),x,0,3*%pi);
-3*sqrt(2)*%pi/2;
+(3 / 2) * sqrt(2)*%pi;
 
 /*
  * Bug [1504505] integrate( 1/(x^8-1),x,0,1/2) => internal error
@@ -548,10 +552,10 @@ integrate(1/(sin(x)^2+1),x,0,3*%pi);
  * The call to factor is to get rid of some numerical factors.
  */
 logcontract(ratsimp(factor(integrate(1/(x^8-1),x,0,1/2)))),algebraic;
--(sqrt(2)*log((20*sqrt(2)+33)/17)+2*sqrt(2)*atan((2*sqrt(2)+1)/7)
+-((sqrt(2)*log((20*sqrt(2)+33)/17)+2*sqrt(2)*atan((2*sqrt(2)+1)/7)
 				 +2*sqrt(2)*atan((2*sqrt(2)-1)/7)+log(9)
 				 +4*atan(1/2))
- /16$
+ /16)$
 
 /*
  * Bug [ 1582625 ] integrate(t^2*log(t)/((t^2-1)*(t^4+1)), t, 0, 1) wrong?
@@ -560,7 +564,7 @@ logcontract(ratsimp(factor(integrate(1/(x^8-1),x,0,1/2)))),algebraic;
  *
  */
 integrate(t^2*log(t)/((t^2-1)*(t^4+1)), t, 0, 1);
--(sqrt(2)-2)*%pi^2/32;
+-((sqrt(2)-2)*%pi^2/32);
 
 /*
  * Bug [ 1073338 ] integrate yields incorrect result on rational function
@@ -568,7 +572,7 @@ integrate(t^2*log(t)/((t^2-1)*(t^4+1)), t, 0, 1);
  * Here's one of the tests listed in that bug report.
  */
 logcontract(ratsimp(factor(integrate (1/((x-3)^4+1), x,0,1)))),algebraic;
-(sqrt(2)*log(-(190*sqrt(2)-747)/697)+2*sqrt(2)*atan((7*sqrt(2)+5)/73)
+(sqrt(2)*log(-((190*sqrt(2)-747)/697))+2*sqrt(2)*atan((7*sqrt(2)+5)/73)
 				    +2*sqrt(2)*atan((7*sqrt(2)-5)/73))
  /8$
 /*
@@ -607,7 +611,7 @@ limit(5^n/(2^n*3^n),n,inf);
  * Bug [ 1370433 ] trigsimp(sqrt(%i2)) != sqrt(trigsimp(%i2))
  */
 trigsimp(sqrt(2*(cos(x)^2-sin(x)^2)+2));
-sqrt(trigsimp(2*(cos(x)^2-sin(x)^2)+2));
+''(sqrt(trigsimp(2*(cos(x)^2-sin(x)^2)+2)));
 
 /* Tests for COERCE-FLOAT-FUN via QUADPACK functions.
  * COERCE-FLOAT-FUN is also an important element in plotting.
@@ -644,28 +648,28 @@ sqrt(trigsimp(2*(cos(x)^2-sin(x)^2)+2));
 [2.0, true, true, 0];
 
 quad_qags (F1, blurf, 0, %pi, tol);
-expected;
+''(expected);
 
 quad_qags (F2, mumble, 0, %pi, tol);
-expected;
+''(expected);
 
 quad_qags (F3, gronk, 0, %pi, tol);
-expected;
+''(expected);
 
 quad_qags ("F4", flopt, 0, %pi, tol);
-expected;
+''(expected);
 
 quad_qags (sin, foobar, 0, %pi, tol);
-expected;
+''(expected);
 
 (translate (F1), ?not(?null(?fboundp (F1))));
 true;
 
 quad_qags (F1, glump, 0, %pi, tol);
-expected;
+''(expected);
 
 quad_qags (sin(y[1]), y[1], 0, %pi, tol);
-expected;
+''(expected);
 
 /*
  * [ 1654183 ] integrate(x^2 / (1+x^6)^(3/2),x);
