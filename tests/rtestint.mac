@@ -1,3 +1,6 @@
+(kill(all),0);
+0$
+
 /*
  * This is a set of test integrals for testing various parts of the 
  * integration routines. 

@@ -12,7 +12,7 @@ y=%c;
 ode2(x^2*'diff(y,x)+3*x*y=sin(x)/x, y, x);
 y = (%c-cos(x))/x^3;
 ic1(%, x=1, y=1);
-y = -(cos(x)-cos(1)-1)/x^3;
+y = -((cos(x)-cos(1)-1)/x^3);
 method;
 linear;
 
@@ -23,7 +23,7 @@ variationofparameters;
 ic2(soln, x=0, y=1, diff(y,x)=3);
 y = -sin(x)+cos(x)+4*x;
 bc2(soln, x=0, y=3, x=2, y=1);
-y = -(3*cos(2)+7)*sin(x)/sin(2) + 3*cos(x) + 4*x;
+y = -((3*cos(2)+7)*sin(x)/sin(2)) + 3*cos(x) + 4*x;
 
 ode2((3*x^2+4*x+2)=(2*y-1)*'diff(y,x), y, x);
 y^2-y = x^3+2*x^2+2*x+%c;
@@ -43,7 +43,7 @@ intfactor;
 exp(2*y)/y;
 
 ode2( 'diff(y,x)=(y/x)^2+2*(y/x), y, x);
--(x*y+x^2)/y = %c;
+-((x*y+x^2)/y) = %c;
 method;
 exact;
 
@@ -114,7 +114,7 @@ freeofx;
 eq: 'diff(y,x,2)+x*'diff(y,x)+exp(-x^2)*y=0;
 'diff(y,x,2)+x*'diff(y,x,1)+%e^-x^2*y = 0;
 ans:ode2(eq,y,x);
-y = %k1*sin(sqrt(2)*sqrt(%pi)*erf(x/sqrt(2))/2)+%k2*cos(sqrt(2)*sqrt(%pi)*erf(x/sqrt(2))/2);
+y = %k1*sin((1/2) * sqrt(2)*sqrt(%pi)*erf(x/sqrt(2)))+%k2*cos((1/2) * sqrt(2)*sqrt(%pi)*erf(x/sqrt(2)));
 is(ratsimp(ev(eq,ans,diff)));
 true;
 method;
@@ -156,7 +156,7 @@ desolve([eqn1,eqn2],[f(x),g(x)]);
 eqn3: 'diff(f(x),x,2)+f(x)=2*x;
 'diff(f(x),x,2)+f(x)=2*x;
 desolve(eqn3,f(x));
-f(x) = sin(x)*(at('diff(f(x),x,1),x = 0)-2)+f(0)*cos(x)+2*x;
+''(f(x) = sin(x)*(at('diff(f(x),x,1),x = 0)-2)+f(0)*cos(x)+2*x);
 
 /* Examples mentioned in bug report [ 1063454 ] bug in ode2
  * First one was reported to fail in CMUCL with "run out of heap" message.

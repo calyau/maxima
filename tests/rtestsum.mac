@@ -49,7 +49,7 @@ n + 'sum (f(k), k, 1, n);
 /* further examples in the same vein: part of summand depends on index, part doesn't. */
 
 sum (sin(g(j)) - %pi^j + cos(h(k)) - %e^l, j, 1, m), simpsum;
-m*cos(h(k)) - m*%e^l + 'sum (sin(g(j)), j, 1, m) - (%pi^(m + 1) - %pi)/(%pi - 1);
+m*cos(h(k)) - m*%e^l + 'sum (sin(g(j)), j, 1, m) - ((%pi^(m + 1) - %pi)/(%pi - 1));
 
 sum (sum (f(j) + g(k), j, 1, m), k, 1, n), simpsum;
 m * 'sum (g(k), k, 1, n) + n * 'sum (f(j), j, 1, m);
@@ -66,7 +66,7 @@ sum (sum (sum (f(%pi, i) + g(%phi, j) - h(k), i, 1, n_i), j, 1, n_j), k, 1, n_k)
 /* see SF bug report # 649428 */
 
 (factsum3 (mt, ej) := sum ((-1)^(k + 1)/(k*mt^k)*sum((1 - l)^k - l^k, l, 1, ej),k,1,inf), t% : taylor (factsum3 (mt, ej), [mt, 0, 3, asymp])); 
-('sum(-2*l+1,l,1,ej))/mt-('sum(-2*l+1,l,1,ej))/(2*mt^2) +('sum(-2*l^3+3*l^2-3*l+1,l,1,ej)) /(3*mt^3);
+sum(-2*l+1,l,1,ej)/mt-(sum(-2*l+1,l,1,ej)/(2*mt^2)) + sum(-2*l^3+3*l^2-3*l+1,l,1,ej) /(3*mt^3);
 
 ''t%, simpsum;
 -(6*ej^2*mt^2-3*ej^2*mt+ej^4+ej^2)/(6*mt^3);
@@ -142,10 +142,10 @@ u, a=2, simpsum;
 1618091/196035840;
 
 %, numer;
-0.00825405701325;
+0.0082540570132481894; 
 
 u, a=2, simpsum, numer;
-0.00825405701325;
+0.0082540570132481911; 
 
 u, a=2, simpsum, bfloat;
 8.25405701324819B-3;
