@@ -287,12 +287,20 @@
 	      (cons (m-string ss) (splitrest str dc m p1))))
 	(list str)))))
 
-;;  parser for numbers
-(defun $parsetoken (mstr)
-   (let ((res (with-input-from-string (lstr (l-string mstr))
-		 (read lstr))))
-      (if (numberp res) res)))
-
+;;  parser for numbers  
+(defun $parsetoken (mstr)  
+  (if (not (mstringp mstr)) (merror "parsetoken needs a string argument: ~M" mstr))
+  (let ((res (with-input-from-string
+	       (lstr (l-string mstr))
+	       (handler-case (read lstr)
+			     (error nil nil))))) ; ignore errors
+     (if (or (integerp res)
+	     (floatp res)
+	     ;; Maxima does not accept Lisp rationals, complex numbers, etc.
+	     ;; parsetoken will still accept Lisp syntax, e.g. #C(2 `,0), 2.1s1
+	     ;; but we're not fixing that for now
+	     )
+	 res)))
 
 ;;  $sconcat for lists, allows an optional user defined separator string
 ;;  returns maxima-string
