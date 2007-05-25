@@ -58,6 +58,20 @@ cint("$");
 [true, false]$
 2*parsetoken("1.234 5.678");
 2.468$
+2*parsetoken("1/2");
+1$
+parsetoken("2.3e10");
+2.3e10$
+parsetoken(".25e-1");
+0.025$
+parsetoken("");
+false$
+parsetoken("foo");
+false$
+parsetoken("2.3e");
+false$
+parsetoken("[2]");
+false$
 s: sconc("xx[", 3, "]:", expand((y + x)^3));
 "xx[3]:y^3+3*x*y^2+3*x^2*y+x^3"$
 scopy("Original");
