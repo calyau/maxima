@@ -150,7 +150,7 @@
 	      ,@ body2))))
 (eval-when
     #+gcl (compile load eval)
-    #-gcl (:compile-toplevel :loadl-toplevel :execute)
+    #-gcl (:compile-toplevel :load-toplevel :execute)
     (defun appears-in ( tree   var)
       "Yields t if var appears in tree" 
       (catch 'appears (appears tree var)))

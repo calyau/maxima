@@ -460,7 +460,7 @@ poly)
   (cond ((atom f) (cons f 1))
 	((and (numberp (car f))(numberp (cdr f))) f)
 	((polynomialp f)
-	 (setq sub (cdr (assoc  (p-var f :test #'equal) subs)))
+	 (setq sub (cdr (assoc (p-var f) subs :test #'equal)))
 	 (cond ((null sub)(setq sub (cons  (list  (p-var f) 1 1) 1))))
 	 (sloop for ( deg cof) on (cdr f) by 'cddr
 	       with answ = (cons 0 1)

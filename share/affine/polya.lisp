@@ -824,7 +824,7 @@ dot_products, much the same as can be obtained by doing $dotsimp")
      (cond ($new_fast_dotsimp      (setq answer (new-rat-dotsimp (cdr expr))))
 	   (t  (setq answer (rat-dotsimp  expr)))))
     ((mbagp expr)(setq answer (cons (car expr) (mapcar #'$dotsimp (cdr expr)))))
-    ((member (caar expr) '(mtimes mnctimes) :test ##equal)
+    ((member (caar expr) '(mtimes mnctimes) :test #'equal)
      (setq answer(apply 'dotsimp-one-term
 				(multiple-value-list (find-worst-nc-monomial expr))))
      (cond (($must_replacep answer)

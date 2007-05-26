@@ -1721,7 +1721,7 @@
 			  (homogeneous-ldata-on-to-open
 			   (setq int-transl
 				 (intersect-ldata homogeneous-ldata-on-to-open
-						  answ hh))
+						  answ :open-g hh))
 			   (fsignal "Wrong dimension or not complete intersection ~
                               look at the value of int-transl "))
 			  (t (setq answer answ)))

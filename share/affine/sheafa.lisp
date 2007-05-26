@@ -1502,7 +1502,7 @@
 	   (t ($list_irreducible_factors ($factor poly)))))
     ((eq (caar poly) 'mexpt) ($list_irreducible_factors ($factor (second poly))))
     ((eq (caar poly) 'mplus)
-     (cond ((member 'irreducible (car poly) :test ##eq) (list '(mlist) poly))
+     (cond ((member 'irreducible (car poly) :test #'eq) (list '(mlist) poly))
 				   (t ($list_irreducible_factors ($factor poly)))))
     (t (ferror "how did you get here"))))
 
