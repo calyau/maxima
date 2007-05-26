@@ -1,0 +1,306 @@
+(kill(all),0);
+0$
+
+/* numbers and constants */
+
+sign(minf);
+neg$
+
+sign(-1);
+neg$
+
+sign(-1.0);
+neg$
+
+sign(-1.0b0);
+neg$
+
+sign(0);
+zero$
+
+sign(0.0);
+zero$
+
+sign(0.0b0);
+zero$
+
+sign(1);
+pos$
+
+sign(1.0);
+pos$
+
+sign(1.0b0);
+pos$
+
+sign(inf);
+pos$
+
+sign(%pi);
+pos$
+
+sign(%e);
+pos$
+
+sign(%phi);
+pos$
+
+/* polynomials */
+
+sign(x);
+pnz$
+
+sign(x^2);
+pz$
+
+sign(x^3);
+pnz$
+
+sign(x^4);
+pz$
+
+sign(x^2 + x);
+pnz$
+
+sign(x^2 + x + 42);
+pos$
+
+sign(x^2 + sqrt(5) + 101);
+pos$
+
+sign(%pi * x^2 + sqrt(5) + 101);
+pos$
+
+sign((sqrt(97) - 1) * x^2 + sqrt(5) + 101);
+pos$
+
+sign(-x^2 + x - 42);
+neg$
+
+sign(x^2 - 2 * x + 1);
+pz$
+
+sign(-x^2 + 2 * x - 1);
+nz$
+
+sign(x+y);
+pnz$
+
+sign(x^2 + 2 * x * y + y^2);
+pz$
+
+sign(x^2 + 2 * x * y + y^2 + 1);
+pos$
+
+sign((x+y)^2 + (z-x)^2);
+pz$
+
+sign(sqrt(2) * (x+y)^2 + %e * (z-x)^2);
+pz$
+
+sign(-(x+y)^2 - (z-x)^2);
+nz$
+
+sign(-(x+y)^2 - (z-x)^2 - %pi);
+neg$
+
+sign(-sqrt(2) * (x+y)^2 - %phi * (z-x)^2 - %pi);
+neg$
+
+
+/* rational */
+
+sign(1/x);
+pn$
+
+sign(1/(x-1));
+pn$
+
+sign(1/x + 1);
+pnz$
+
+sign(x/(1+x^2));
+pnz$
+
+sign(1 + x/(1+x^2));
+pos$
+
+sign((1+x^2)/x);
+pn$
+
+/* assumptions */
+
+(assume(a < b, b < c, c < d),0);
+0$
+
+sign(b-a);
+pos$
+
+sign(a-b);
+neg$
+
+sign(c-a);
+pos$
+
+sign(a-c);
+neg$
+
+sign(d-b);
+pos$
+
+sign(b-d);
+neg$
+
+sign(7*(c-a) + %pi * (d-b));
+pos$
+
+sign(-7*(c-a) - %pi * (d-b));
+neg$
+
+sign((b-a) * (d-a));
+pos$
+
+sign((b-a)/(c-b));
+pos$
+
+(forget(a < b, b < c, c < d),0);
+0$
+
+/* algebraic */
+
+sign(sqrt(x));
+pz$
+
+sign(sqrt(x^2 + 1));
+pos$
+
+sign(sqrt(a) + sqrt(b));
+pz$
+
+sign(x^(1/3));
+pnz$
+
+sign(x^(1/4));
+pz$
+
+sign(x^(1/4) + 1);
+pos$
+
+sign(-(x^(1/4) + 1));
+neg$
+
+/* exp-like */
+
+sign(cos(x));
+pnz$
+
+sign(cos(x) + 42);
+pos$
+
+sign(sin(x) - 42);
+neg$
+
+sign(cosh(x));
+pos$
+
+sign(cosh(x)-1);
+pz$
+
+sign(sinh(x));
+pnz$
+
+sign(tanh(x));
+pnz$
+
+sign(exp(x));
+pos$
+
+sign(exp(-x^2));
+pos$
+
+sign(exp(-x) - 1);
+pnz$
+
+sign(exp(-x) + 1);
+pos$
+
+/* log-like */
+
+sign(acos(x));
+pz$
+
+sign(asin(x));
+pnz$
+
+sign(atan(x));
+pnz$
+
+sign(log(x));
+pnz$
+
+(assume(x >= 1),0);
+0$
+
+sign(log(x));
+pn$
+
+(forget(x >= 1),0);
+0$
+
+sign(acosh(x));
+pz$
+
+sign(asinh(x));
+pnz$
+
+sign(tanh(x));
+pnz$
+
+
+
+/* SF bug 798571 */
+
+sign(sqrt(2)/2 - 1/sqrt(2));
+zero$
+
+/* SF bug 1045920 */
+
+(assume(a > 1, b > 1),0);
+0$
+
+sign(a + b -2);
+pos$
+
+(forget(a > 1, b > 1),0);
+0$
+
+/* SF bug 1724592  */
+
+(aaa : 'bbb, bbb : 'ccc, ccc : 23.5,0);
+0$
+
+sign(1.0*aaa);
+pnz$
+
+sign(1.0*bbb);
+pnz$
+
+(remvalue(aaa, bbb, ccc),0);
+0$
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

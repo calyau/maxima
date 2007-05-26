@@ -98,6 +98,7 @@ rtest_mset.mac \
 rtest_boolean.mac \
 rtest_round.mac \
 rtest_map.mac \
+rtest_sign.mac \
 testsuite.lisp
 
 EXTRA_DIST = $(genericdirDATA)
