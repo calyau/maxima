@@ -140,7 +140,7 @@ DOE Macsyma.  Копияия DOE Macsyma поддерживалась профессором Вильямом
 * Sets::                        Manipulation of sets.
 * Function Definition::         Defining functions.
 * Program Flow::                Defining Maxima programs.
-* Debugging::                   Debugging Maxima programs.
+* Отладка::                     Отладка Maxima программ.
 
 Дополнительные пакеты
 
@@ -389,9 +389,9 @@ Program Flow
 * Introduction to Program Flow::  
 * Definitions for Program Flow::  
 
-Debugging
+Отладка
 
-* Definitions for Debugging::   
+* Функции и переменные для отладки::   
 
 
 augmented_lagrangian
