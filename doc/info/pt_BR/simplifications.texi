@@ -124,28 +124,28 @@ Ocasionalmente o usu@'{a}rio pode querer obter quaisquer das formas abaixo
 para express@~{o}es que s@~{a}o especificadas somente por meio de seus operadores l@'{i}deres.
 Por exemplo, algu@'{e}m pode querer usar @code{facsum} com rela@value{cedilha}@~{a}o a todos os @code{log}'s.  Nessa
 situa@value{cedilha}@~{a}o, algu@'{e}m pode incluir no meio dos argumentos ou o c@'{o}digo
-dos @code{log}'s eespec@'{i}ficos que devem ser tratados po esse caminho ou alternativamente a
+dos @code{log}'s espec@'{i}ficos que devem ser tratados po esse caminho ou alternativamente a
 express@~{a}o  @code{operator (log)} ou a express@~{a}o @code{'operator (log)}.   Se algu@'{e}m quiser usar
 @code{facsum} na express@~{a}o @var{expr} com rela@value{cedilha}@~{a}o aos operadores @var{op_1}, ..., @var{op_n},
 pode-se avaliar @code{facsum (@var{expr}, operator (@var{op_1}, ..., @var{op_n}))}.
 A forma @code{operator} pode tamb@'{e}m aparecer dentro de uma lista de argumentos.
 
 Adicionalmente,  a escolha de comutadores @code{facsum_combine}  e
-@code{nextlayerfactor} pode afetar o ressultado de @code{facsum}.
+@code{nextlayerfactor} pode afetar o resultado de @code{facsum}.
 @end deffn
 
 @defvr {Vari@'{a}vel global} nextlayerfactor
 Valor padr@~{a}o: @code{false}
 
 Quando @code{nextlayerfactor} for @code{true}, chamadas recursivas a @code{facsum}
-s@~{a}o aplicdas aos fatores da forma fatorada dos
+s@~{a}o aplicadas aos fatores da forma fatorada dos
 coeficientes dos argumentos.
 
 Quando @code{nextlayerfactor} for @code{false}, @code{facsum} @'{e} aplicada a
 cada coeficiente como um todo mesmo se chamadas recursivas a @code{facsum} acontecerem.
 
 A inclus@~{a}o do @'{a}tomo
-@code{nextlayerfactor} na lista argumento de @code{facsum}  tem o efieto de
+@code{nextlayerfactor} na lista argumento de @code{facsum}  tem o efeito de
 @code{nextlayerfactor: true}, mas para o pr@'{o}ximo n@'{i}vel da express@~{a}o @i{somente}.
 Uma vez que @code{nextlayerfactor} @'{e} sempre associado ou a @code{true} ou a  @code{false}, @code{nextlayerfactor}
 deve ser apresentada com ap@'{o}strofo simples mesmo que @code{nextlayerfactor} apare@value{cedilha}a na lista de argumento de @code{facsum}.
