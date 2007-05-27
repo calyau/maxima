@@ -37,7 +37,7 @@
 	((mlist) "rtest_taylor" 66 67 72 88 89 90 91 94 96 99 104 110 112 113 118 119 120 121 122 123 124)
 	((mlist) "rtest_dot")
 	"rtest_mset"
-	((mlist) "rtest_boolean" 100 101)
+	((mlist) "rtest_boolean" 96 100 101)
 	((mlist) "rtest_round" 79 81)
 	((mlist) "rtest_map" 2 3 4)
 	((mlist) "rtest_sign" 21 25 30 40 62 63 65 72 77 79 84 87 88)
