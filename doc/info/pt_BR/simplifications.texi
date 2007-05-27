@@ -157,12 +157,12 @@ Valor padr@~{a}o: @code{true}
 @code{facsum_combine} controla a forma do resultado final retornada por meio de
 @code{facsum}  quando seu argumento @'{e} um quociente de polin@^{o}mios.   Se
 @code{facsum_combine} for @code{false}  ent@~{a}o a forma ser@'{a} retornada como um somat@'{o}rio
-completametne expandido como descrito acima,  mas se @code{true},  ent@~{a}o a express@~{a}o
+completamente expandido como descrito acima,  mas se @code{true},  ent@~{a}o a express@~{a}o
 retornada @'{e} uma raz@~{a}o de polin@^{o}mios, com cada polin@^{o}mio na forma
 descrita acima.
 
 A escolha de @code{true} desse comutador @'{e} @'{u}til quando se
-deseja para @code{facsum} ambos o dumerador e o denominador de uma express@~{a}o
+deseja para @code{facsum} ambos o numerador e o denominador de uma express@~{a}o
 racional,  mas n@~{a}o se deseja que o denominador seja multiplicado
 de forma completa pelos termos do numerador.
 @end defvr
@@ -224,7 +224,7 @@ Para usar essa fun@value{cedilha}@~{a}o escreva primeiramente @code{load(functs)
 
 @deffn {Fun@value{cedilha}@~{a}o} rational (@code{z})
 Multiplica o numerador e o denominador de @var{z} pelo complexo conjugado do denominador,
-racionando dessa forma o denominador complexo.
+racionalizando dessa forma o denominador complexo.
 Retorna a forma de express@~{a}o racional can@^{o}nica (CRE) se fornecida uma CRE, caso contr@'{a}rio retorna a forma geral.
 
 Para usar essa fun@value{cedilha}@~{a}o escreva primeiramente @code{load(functs)}.
