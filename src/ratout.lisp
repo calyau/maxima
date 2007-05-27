@@ -474,7 +474,8 @@
     (setq a (cons (cadr p) (cons (- (car p) d) a)))))
 
 (defun lsft (p n)
-  (do ((q p (cddr (rplaca q (+ (car q) n))))) ((null q)))
+  (do ((q p (cddr (rplaca q (+ (car q) n)))))
+      ((null q)))
   p)
 
 (declare-top (special wtsofar xweight $ratwtlvl v *x* *i*))
@@ -482,17 +483,21 @@
 ;;; TO TRUNCATE ON E, DO RATWEIGHT(E,1);
 ;;;THEN DO RATWTLVL:N.  ALL POWERS >N GO TO 0.
 
-(defmfun $ratweight n
-  (cond ((oddp n) (merror "`ratweight' takes an even number of arguments.")))
-  (do ((*i* 1 (+ *i* 2))) ((> *i* n))
-    (rplacd (or (assoc (arg *i*) *ratweights :test #'equal)
-		(car (setq *ratweights (cons (list (arg *i*)) *ratweights))))
-	    (arg (1+ *i*))))
+(defmfun $ratweight (&rest args)
+  (when (oddp (length args))
+    (merror "`ratweight' takes an even number of arguments."))
+  (do ((l args (cddr l)))
+      ((null l))
+    (rplacd (or (assoc (first l) *ratweights :test #'equal)
+		(car (push (list (first l)) *ratweights)))
+	    (second l)))
   (setq $ratweights (cons '(mlist simp) (dot2l *ratweights)))
-  (cond ((= n 0) $ratweights) (t (cons '(mlist) (listify n)))))
+  (if (null args)
+      $ratweights
+      (cons '(mlist) args)))
 
 (defun pweight (x)
-  (or (get x '$ratweight) 0.))
+  (or (get x '$ratweight) 0))
 
 (defun wtptimes (x y wtsofar)
   (cond ((or (pzerop x) (pzerop y) (> wtsofar $ratwtlvl))
@@ -586,23 +591,24 @@
 	   (wtptimes xn2 xn2 0)))
 	(t (wtptimes x (wtpexpt x (1- n)) 0))))
 
-(defmfun $horner nargs
-  (declare (fixnum nargs))
-  (if (= nargs 0) (wna-err '$horner))
-  (let (($ratfac nil) (varlist (cdr $ratvars)) genvar (x nil)
-	(arg1 (taychk2rat (arg 1)))
-	(l (cdr (listify nargs))))
+(defmfun $horner (e &rest l)
+  (let (($ratfac nil)
+	(varlist (cdr $ratvars))
+	genvar
+	(x nil)
+	(arg1 (taychk2rat e)))
     (cond ((mbagp arg1)
 	   (cons (car arg1)
-		 (mapcar #'(lambda (u) (apply '$horner (cons u l)))
-			 (cdr arg1))))
-	  (t (setq x (apply '$rat (cons arg1 l)))
-	     (mapc #'(lambda (y z) (putprop y z 'disrep))
-		   (cadddr (car x))
-		   (caddar x))
-	     (div* (hornrep (cadr x)) (hornrep (cddr x)))))))
+		 (mapcar #'(lambda (u) (apply '$horner (cons u l))) (cdr arg1))))
+	  (t
+	   (setq x (apply #'$rat (cons arg1 l)))
+	   (mapc #'(lambda (y z) (putprop y z 'disrep)) (cadddr (car x)) (caddar x))
+	   (div* (hornrep (cadr x)) (hornrep (cddr x)))))))
 
-(defun hornrep (p) (if (pcoefp p) p (horn+ (cdr p) (get (car p) 'disrep))))
+(defun hornrep (p)
+  (if (pcoefp p)
+      p
+      (horn+ (cdr p) (get (car p) 'disrep))))
 
 (defun horn+ (l var)
   (prog (ans last)
