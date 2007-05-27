@@ -1,10 +1,10 @@
 
 @menu
-* Definitions for Limits::
+* Functions and Variables for Limits::
 @end menu
 
-@node Definitions for Limits,  , Limits, Limits
-@section Definitions for Limits
+@node Functions and Variables for Limits,  , Limits, Limits
+@section Functions and Variables for Limits
 
 @defvr {Option variable} lhospitallim
 Default: 4

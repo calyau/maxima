@@ -5,10 +5,10 @@
 
 @menu
 * Introduction to itensor::
-* Definitions for itensor::
+* Functions and Variables for itensor::
 @end menu
 
-@node Introduction to itensor, Definitions for itensor, itensor, itensor
+@node Introduction to itensor, Functions and Variables for itensor, itensor, itensor
 @section Introduction to itensor
 
 Maxima implements symbolic tensor manipulation of two distinct types:
@@ -244,9 +244,9 @@ specify the name of the metric, and perform some simple calculations.
 
 @c end concepts itensor
 
-@node Definitions for itensor,  , Introduction to itensor, itensor
+@node Functions and Variables for itensor,  , Introduction to itensor, itensor
 
-@section Definitions for itensor
+@section Functions and Variables for itensor
 @subsection Managing indexed objects
 
 @deffn {Function} entertensor (@var{name})

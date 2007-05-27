@@ -1,13 +1,13 @@
 
 @menu
 * Introduction to Elliptic Functions and Integrals::
-* Definitions for Elliptic Functions::
-* Definitions for Elliptic Integrals::
+* Functions and Variables for Elliptic Functions::
+* Functions and Variables for Elliptic Integrals::
 @end menu
 
 
 
-@node Introduction to Elliptic Functions and Integrals, Definitions for Elliptic Functions, , top
+@node Introduction to Elliptic Functions and Integrals, Functions and Variables for Elliptic Functions, , top
 @comment  node-name,  next,  previous,  up
 
 @section Introduction to Elliptic Functions and Integrals
@@ -124,10 +124,10 @@ Support for elliptic functions and integrals was written by Raymond
 Toy.  It is placed under the terms of the General Public License (GPL)
 that governs the distribution of Maxima.
 
-@node Definitions for Elliptic Functions, Definitions for Elliptic Integrals, Introduction to Elliptic Functions and Integrals, top
+@node Functions and Variables for Elliptic Functions, Functions and Variables for Elliptic Integrals, Introduction to Elliptic Functions and Integrals, top
 @comment  node-name,  next,  previous,  up
 
-@section Definitions for Elliptic Functions
+@section Functions and Variables for Elliptic Functions
 
 @deffn {Function} jacobi_sn (@var{u}, @var{m})
 The Jacobian elliptic function @math{sn(u,m)}.
@@ -226,10 +226,10 @@ The inverse of the Jacobian elliptic function @math{dc(u,m)}.
 @end deffn
 
 
-@node Definitions for Elliptic Integrals, , Definitions for Elliptic Functions, top
+@node Functions and Variables for Elliptic Integrals, , Functions and Variables for Elliptic Functions, top
 @comment  node-name,  next,  previous,  up
 
-@section Definitions for Elliptic Integrals
+@section Functions and Variables for Elliptic Integrals
 
 @anchor{elliptic_f}
 @deffn {Function} elliptic_f (@var{phi}, @var{m})

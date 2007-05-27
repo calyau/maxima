@@ -2,7 +2,7 @@
 * Introduction to Function Definition::  
 * Function::                    
 * Macros::                      
-* Definitions for Function Definition::  
+* Functions and Variables for Function Definition::  
 @end menu
 
 @node Introduction to Function Definition, Function, Function Definition, Function Definition
@@ -162,7 +162,7 @@ However, there is no way to remove all of the stored values at once,
 except for @code{kill(@var{a})} or @code{remarray(@var{a})},
 which also remove the function definition.
 
-@node Macros, Definitions for Function Definition, Function, Function Definition
+@node Macros, Functions and Variables for Function Definition, Function, Function Definition
 @section Macros
 
 @deffn {Function} buildq (@var{L}, @var{expr})
@@ -422,8 +422,8 @@ Examples
 
 
 @c end concepts Function Definition
-@node Definitions for Function Definition,  , Macros, Function Definition
-@section Definitions for Function Definition
+@node Functions and Variables for Function Definition,  , Macros, Function Definition
+@section Functions and Variables for Function Definition
 
 @deffn {Function} apply (@var{F}, [@var{x_1}, ..., @var{x_n}])
 Constructs and evaluates an expression @code{@var{F}(@var{arg_1}, ..., @var{arg_n})}.

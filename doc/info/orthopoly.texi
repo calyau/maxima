@@ -1,9 +1,9 @@
 @menu
 * Introduction to orthogonal polynomials::
-* Definitions for orthogonal polynomials::
+* Functions and Variables for orthogonal polynomials::
 @end menu
 
-@node Introduction to orthogonal polynomials, Definitions for orthogonal polynomials, orthopoly, orthopoly
+@node Introduction to orthogonal polynomials, Functions and Variables for orthogonal polynomials, orthopoly, orthopoly
 @section Introduction to orthogonal polynomials
 
 @code{orthopoly} is a package for symbolic and numerical evaluation of
@@ -668,8 +668,8 @@ and the associated Legendre function of the second kind. Numerically,
 the half-integer Bessel functions are evaluated using the SLATEC code.
 
 
-@node Definitions for orthogonal polynomials,  , Introduction to orthogonal polynomials, orthopoly
-@section Definitions for orthogonal polynomials
+@node Functions and Variables for orthogonal polynomials,  , Introduction to orthogonal polynomials, orthopoly
+@section Functions and Variables for orthogonal polynomials
 
 @deffn {Function} assoc_legendre_p (@var{n}, @var{m}, @var{x})
 The associated Legendre function of the first kind. 

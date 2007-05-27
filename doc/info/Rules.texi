@@ -1,9 +1,9 @@
 @menu
 * Introduction to Rules and Patterns::  
-* Definitions for Rules and Patterns::  
+* Functions and Variables for Rules and Patterns::  
 @end menu
 
-@node Introduction to Rules and Patterns, Definitions for Rules and Patterns, Rules and Patterns, Rules and Patterns
+@node Introduction to Rules and Patterns, Functions and Variables for Rules and Patterns, Rules and Patterns, Rules and Patterns
 @section Introduction to Rules and Patterns
 
 This section describes user-defined pattern matching and
@@ -23,8 +23,8 @@ There are additional mechanisms for rules applied to polynomials by @code{tellra
 and for commutative and noncommutative algebra in @code{affine} package. 
 
 @c end concepts Rules and Patterns
-@node Definitions for Rules and Patterns,  , Introduction to Rules and Patterns, Rules and Patterns
-@section Definitions for Rules and Patterns
+@node Functions and Variables for Rules and Patterns,  , Introduction to Rules and Patterns, Rules and Patterns
+@section Functions and Variables for Rules and Patterns
 
 @c NEEDS CLARIFICATION AND EXAMPLES
 @deffn {Function} apply1 (@var{expr}, @var{rule_1}, ..., @var{rule_n})

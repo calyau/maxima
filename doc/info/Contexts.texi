@@ -1,10 +1,10 @@
 @c end concepts Contexts
 @menu
-* Definitions for Contexts::
+* Functions and Variables for Contexts::
 @end menu
 
-@node Definitions for Contexts,  , Contexts, Contexts
-@section Definitions for Contexts
+@node Functions and Variables for Contexts,  , Contexts, Contexts
+@section Functions and Variables for Contexts
 
 @deffn {Function} activate (@var{context_1}, ..., @var{context_n})
 Activates the contexts @var{context_1}, ..., @var{context_n}.

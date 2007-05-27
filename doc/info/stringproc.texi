@@ -1,11 +1,11 @@
 @menu
 * Introduction to string processing::
-* Definitions for input and output::
-* Definitions for characters::
-* Definitions for strings::
+* Functions and Variables for input and output::
+* Functions and Variables for characters::
+* Functions and Variables for strings::
 @end menu
 
-@node Introduction to string processing, Definitions for input and output, stringproc, stringproc
+@node Introduction to string processing, Functions and Variables for input and output, stringproc, stringproc
 @section Introduction to string processing
 
 @code{stringproc.lisp} enlarges Maximas capabilities of working with strings 
@@ -129,8 +129,8 @@ needs @code{parse_string}, which will be autoloaded from @code{eval_string.lisp}
 
 @code{readline} returns @code{false} when the end of file occurs.
 
-@node Definitions for input and output, Definitions for characters, Introduction to string processing, stringproc
-@section Definitions for input and output
+@node Functions and Variables for input and output, Functions and Variables for characters, Introduction to string processing, stringproc
+@section Functions and Variables for input and output
 
 Example: 
 
@@ -319,8 +319,8 @@ might be useful, if you whish to place intermediate line breaking.
 
 @end deffn
 
-@node Definitions for characters, Definitions for strings, Definitions for input and output, stringproc
-@section Definitions for characters
+@node Functions and Variables for characters, Functions and Variables for strings, Functions and Variables for input and output, stringproc
+@section Functions and Variables for characters
 
 @deffn {Function} alphacharp (@var{char})    
 Returns @code{true} if @var{char} is an alphabetic character. 
@@ -451,8 +451,8 @@ Returns @code{true} if @var{char} is an uppercase character.
 
 @end deffn
 
-@node Definitions for strings,  , Definitions for characters, stringproc
-@section Definitions for strings
+@node Functions and Variables for strings,  , Functions and Variables for characters, stringproc
+@section Functions and Variables for strings
 
 @deffn {Function} sunlisp (@var{lisp_string}) 
 Converts a Lisp-string into a Maxima-string.

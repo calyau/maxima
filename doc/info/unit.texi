@@ -1,9 +1,9 @@
 @menu
 * Introduction to Units::       
-* Definitions for Units::       
+* Functions and Variables for Units::       
 @end menu
 
-@node Introduction to Units, Definitions for Units, unit, unit
+@node Introduction to Units, Functions and Variables for Units, unit, unit
 @section Introduction to Units
 
 The @emph{unit} package enables the user to convert between arbitrary
@@ -73,8 +73,8 @@ showabbr and friends.  Show examples with addition of quantities containing
 units.
 
 
-@node Definitions for Units,  , Introduction to Units, unit
-@section Definitions for Units
+@node Functions and Variables for Units,  , Introduction to Units, unit
+@section Functions and Variables for Units
 
 @deffn {Function} setunits (@var{list})
 By default, the @emph{unit} package does not use any derived dimensions, but will

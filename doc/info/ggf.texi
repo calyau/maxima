@@ -1,9 +1,9 @@
 @menu
-* Definitions for ggf::
+* Functions and Variables for ggf::
 @end menu
 
-@node Definitions for ggf,  , ggf, ggf
-@section Definitions for ggf
+@node Functions and Variables for ggf,  , ggf, ggf
+@section Functions and Variables for ggf
 
 @defvr {Option variable} GGFINFINITY
 Default value: 3

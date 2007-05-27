@@ -1,9 +1,9 @@
 @menu
 * Introduction to Differential Equations::  
-* Definitions for Differential Equations::  
+* Functions and Variables for Differential Equations::  
 @end menu
 
-@node Introduction to Differential Equations, Definitions for Differential Equations, Differential Equations, Differential Equations
+@node Introduction to Differential Equations, Functions and Variables for Differential Equations, Differential Equations, Differential Equations
 @section Introduction to Differential Equations
 
 This section describes the functions available in Maxima to obtain
@@ -13,8 +13,8 @@ equations, see the additional package @code{dynamics}. For graphical
 representations in phase space, see the additional package
 @code{plotdf}.
 
-@node Definitions for Differential Equations,  , Introduction to Differential Equations, Differential Equations
-@section Definitions for Differential Equations
+@node Functions and Variables for Differential Equations,  , Introduction to Differential Equations, Differential Equations
+@section Functions and Variables for Differential Equations
 
 
 @deffn {Function} bc2 (@var{solution}, @var{xval1}, @var{yval1}, @var{xval2}, @var{yval2})

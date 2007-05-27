@@ -1,9 +1,9 @@
 @menu
-* Definitions for bode::
+* Functions and Variables for bode::
 @end menu
 
-@node Definitions for bode,  , bode, bode
-@section Definitions for bode
+@node Functions and Variables for bode,  , bode, bode
+@section Functions and Variables for bode
 
 
 @deffn {Function} bode_gain (@var{H}, @var{range}, ...@var{plot_opts}...)

@@ -1,9 +1,9 @@
 @menu
-* Definitions for lsquares::
+* Functions and Variables for lsquares::
 @end menu
 
-@node Definitions for lsquares,  , lsquares, lsquares
-@section Definitions for lsquares
+@node Functions and Variables for lsquares,  , lsquares, lsquares
+@section Functions and Variables for lsquares
 
 
 @defvr {Global variable} DETCOEF

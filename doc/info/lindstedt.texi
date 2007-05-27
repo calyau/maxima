@@ -1,9 +1,9 @@
 @menu
-* Definitions for lindstedt::
+* Functions and Variables for lindstedt::
 @end menu
 
-@node Definitions for lindstedt,  , lindstedt, lindstedt
-@section Definitions for lindstedt
+@node Functions and Variables for lindstedt,  , lindstedt, lindstedt
+@section Functions and Variables for lindstedt
 
 
 @deffn {Function} Lindstedt (@var{eq},@var{pvar},@var{torder},@var{ic})

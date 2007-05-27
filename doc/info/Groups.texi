@@ -1,10 +1,10 @@
 
 @menu
-* Definitions for Groups::
+* Functions and Variables for Groups::
 @end menu
 
-@node Definitions for Groups,  , Groups, Groups
-@section Definitions for Groups
+@node Functions and Variables for Groups,  , Groups, Groups
+@section Functions and Variables for Groups
 
 @deffn {Function} todd_coxeter (@var{relations}, @var{subgroup})
 @deffnx {Function} todd_coxeter (@var{relations})

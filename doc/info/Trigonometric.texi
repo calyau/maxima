@@ -1,10 +1,10 @@
 
 @menu
 * Introduction to Trigonometric::  
-* Definitions for Trigonometric::  
+* Functions and Variables for Trigonometric::  
 @end menu
 
-@node Introduction to Trigonometric, Definitions for Trigonometric, Trigonometric, Trigonometric
+@node Introduction to Trigonometric, Functions and Variables for Trigonometric, Trigonometric, Trigonometric
 @section Introduction to Trigonometric
 
 Maxima has many trigonometric functions defined.  Not all trigonometric
@@ -23,8 +23,8 @@ packages extend the simplification rules built into Maxima,
 @code{ntrig} and @code{atrig1}.  Do @code{describe(@var{command})}
 for details.
 
-@node Definitions for Trigonometric,  , Introduction to Trigonometric, Trigonometric
-@section Definitions for Trigonometric
+@node Functions and Variables for Trigonometric,  , Introduction to Trigonometric, Trigonometric
+@section Functions and Variables for Trigonometric
 
 @deffn {Function} acos (@var{x})
  - Arc Cosine.

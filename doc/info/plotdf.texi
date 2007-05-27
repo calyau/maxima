@@ -1,9 +1,9 @@
 @menu
 * Introduction to plotdf::
-* Definitions for plotdf::
+* Functions and Variables for plotdf::
 @end menu
 
-@node Introduction to plotdf, Definitions for plotdf, plotdf, plotdf
+@node Introduction to plotdf, Functions and Variables for plotdf, plotdf, plotdf
 @section Introduction to plotdf
 
 The function @code{plotdf} creates a plot of the direction field of a
@@ -52,8 +52,8 @@ If only one ODE is given, @code{plotdf} will implicitly admit
 @code{x=t}, and @code{G(x,y)=1}, transforming the non-autonomous
 equation into a system of two autonomous equations.
 
-@node Definitions for plotdf,  , Introduction to plotdf, plotdf
-@section Definitions for plotdf
+@node Functions and Variables for plotdf,  , Introduction to plotdf, plotdf
+@section Functions and Variables for plotdf
 
 @deffn {Function} plotdf (@var{dydx},...options...)
 @deffnx {Function} plotdf (@code{[}@var{dxdt},@var{dydt}@code{]},...options...)

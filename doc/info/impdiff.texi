@@ -1,9 +1,9 @@
 @menu
-* Definitions for impdiff::
+* Functions and Variables for impdiff::
 @end menu
 
-@node Definitions for impdiff,  , impdiff, impdiff
-@section Definitions for impdiff
+@node Functions and Variables for impdiff,  , impdiff, impdiff
+@section Functions and Variables for impdiff
 
 @deffn {Function} implicit_derivative (@var{f},@var{indvarlist},@var{orderlist},@var{depvar})
 This subroutine computes implicit derivatives of multivariable functions.

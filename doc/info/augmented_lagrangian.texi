@@ -1,9 +1,9 @@
 @menu
-* Definitions for augmented_lagrangian::
+* Functions and Variables for augmented_lagrangian::
 @end menu
 
-@node Definitions for augmented_lagrangian,  , augmented_lagrangian, augmented_lagrangian
-@section Definitions for augmented_lagrangian
+@node Functions and Variables for augmented_lagrangian,  , augmented_lagrangian, augmented_lagrangian
+@section Functions and Variables for augmented_lagrangian
 
 @deffn {Function} augmented_lagrangian_method (@var{FOM}, @var{xx}, @var{C}, @var{yy})
 @deffnx {Function} augmented_lagrangian_method (@var{FOM}, @var{xx}, @var{C}, @var{yy}, optional_args)

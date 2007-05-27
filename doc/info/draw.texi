@@ -1,13 +1,13 @@
 @menu
 * Introduction to draw::
-* Definitions for draw::
+* Functions and Variables for draw::
 @end menu
 
 
 
 
 
-@node Introduction to draw, Definitions for draw, draw, draw
+@node Introduction to draw, Functions and Variables for draw, draw, draw
 @section Introduction to draw
 
 
@@ -25,8 +25,8 @@ You need Gnuplot 4.2 to run this program.
 
 
 
-@node Definitions for draw,  , Introduction to draw, draw
-@section Definitions for draw
+@node Functions and Variables for draw,  , Introduction to draw, draw
+@section Functions and Variables for draw
 
 
 

@@ -2,7 +2,7 @@
 @menu
 * Source Level Debugging::
 * Keyword Commands::
-* Definitions for Debugging::   
+* Functions and Variables for Debugging::   
 @end menu
 
 @node Source Level Debugging, Keyword Commands, , Debugging
@@ -120,7 +120,7 @@ maxima-mode.el turned on in the window in which the file @code{foobar.mac} is vi
 There are additional commands available in that file window, such as
 evaluating the function into the Maxima, by typing @code{Alt-Control-x}.
 
-@node Keyword Commands, Definitions for Debugging, Source Level Debugging, Debugging
+@node Keyword Commands, Functions and Variables for Debugging, Source Level Debugging, Debugging
 @section Keyword Commands
 
 Keyword commands are special keywords which are not interpreted as Maxima expressions.
@@ -188,8 +188,8 @@ completing the computation
 @end table 
 
 
-@node Definitions for Debugging, , Keyword Commands, Debugging
-@section Definitions for Debugging
+@node Functions and Variables for Debugging, , Keyword Commands, Debugging
+@section Functions and Variables for Debugging
 
 @defvr {Option variable} refcheck
 Default value: @code{false}

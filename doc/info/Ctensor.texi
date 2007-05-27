@@ -1,9 +1,9 @@
 @menu
 * Introduction to ctensor::
-* Definitions for ctensor::
+* Functions and Variables for ctensor::
 @end menu
 
-@node Introduction to ctensor, Definitions for ctensor, ctensor, ctensor
+@node Introduction to ctensor, Functions and Variables for ctensor, ctensor, ctensor
 @section Introduction to ctensor
 
 @code{ctensor} is a component tensor manipulation package.  To use the @code{ctensor}
@@ -119,9 +119,9 @@ y;
 @end example
 
 @c end concepts ctensor
-@node Definitions for ctensor,  , Introduction to ctensor, ctensor
+@node Functions and Variables for ctensor,  , Introduction to ctensor, ctensor
 
-@section Definitions for ctensor
+@section Functions and Variables for ctensor
 
 @subsection Initialization and setup
 

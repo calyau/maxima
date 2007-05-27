@@ -1,10 +1,10 @@
 @c FOR THE FUNCTIONS WHICH RETURN A CRE, BE SURE TO MENTION THAT
 @menu
 * Introduction to Polynomials::  
-* Definitions for Polynomials::  
+* Functions and Variables for Polynomials::  
 @end menu
 
-@node Introduction to Polynomials, Definitions for Polynomials, Polynomials, Polynomials
+@node Introduction to Polynomials, Functions and Variables for Polynomials, Polynomials, Polynomials
 @section Introduction to Polynomials
 
 Polynomials are stored in Maxima either in General Form or as
@@ -52,8 +52,8 @@ information such as the degree of truncation.  As with CRE form, the
 symbol /T/ follows the line label of such expressions.
 
 @c end concepts Polynomials
-@node Definitions for Polynomials,  , Introduction to Polynomials, Polynomials
-@section Definitions for Polynomials
+@node Functions and Variables for Polynomials,  , Introduction to Polynomials, Polynomials
+@section Functions and Variables for Polynomials
 
 @defvr {Option variable} algebraic
 Default value: @code{false}

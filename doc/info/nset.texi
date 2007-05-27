@@ -1,9 +1,9 @@
 @menu
 * Introduction to Sets::       
-* Definitions for Sets::       
+* Functions and Variables for Sets::       
 @end menu
 
-@node Introduction to Sets, Definitions for Sets, Sets, Sets
+@node Introduction to Sets, Functions and Variables for Sets, Sets, Sets
 @section Introduction to Sets
 
 Maxima provides set functions, such as intersection and 
@@ -228,7 +228,7 @@ in a given set that do not depend on a variable @code{z}, use
 (%o1)               @{- y + x + 4, y + x - 5@}
 @end example
 
-The section @ref{Definitions for Sets} has a complete list of
+The section @ref{Functions and Variables for Sets} has a complete list of
 the set functions in Maxima.
 
 @subsection Set Member Iteration
@@ -410,8 +410,8 @@ Stavros Macrakis of Cambridge, Massachusetts and Barton Willis of the
 University of Nebraska at Kearney (UNK) wrote the Maxima set functions and their
 documentation. 
 
-@node Definitions for Sets,  , Introduction to Sets, Sets
-@section Definitions for Sets
+@node Functions and Variables for Sets,  , Introduction to Sets, Sets
+@section Functions and Variables for Sets
 
 @anchor{adjoin}
 @deffn {Function} adjoin (@var{x}, @var{a}) 

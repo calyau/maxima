@@ -1,7 +1,7 @@
 @menu
 * Introduction for Runtime Environment::  
 * Interrupts::                  
-* Definitions for Runtime Environment::  
+* Functions and Variables for Runtime Environment::  
 @end menu
 
 
@@ -32,7 +32,7 @@ The statement @code{showtime: all} tells Maxima to set the @code{showtime} varia
 The @code{maxima-init.mac} file can contain any other assignments or
 other Maxima statements.
 
-@node Interrupts, Definitions for Runtime Environment, Introduction for Runtime Environment, Runtime Environment
+@node Interrupts, Functions and Variables for Runtime Environment, Introduction for Runtime Environment, Runtime Environment
 @section Interrupts
 
 The user can stop a time-consuming computation with the
@@ -62,8 +62,8 @@ The @code{fg} command causes Maxima
 to resume from the point at which it was stopped.
 
 @c end concepts Runtime Environment
-@node Definitions for Runtime Environment,  , Interrupts, Runtime Environment
-@section Definitions for Runtime Environment
+@node Functions and Variables for Runtime Environment,  , Interrupts, Runtime Environment
+@section Functions and Variables for Runtime Environment
 
 @c NEEDS EXPANSION AND CLARIFICATION
 @defvr {Declaration} feature

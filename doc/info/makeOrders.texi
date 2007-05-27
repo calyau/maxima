@@ -1,10 +1,10 @@
 @menu
-* Definitions for makeOrders::
+* Functions and Variables for makeOrders::
 @end menu
 
 
-@node Definitions for makeOrders,  , makeOrders, makeOrders
-@section Definitions for makeOrders
+@node Functions and Variables for makeOrders,  , makeOrders, makeOrders
+@section Functions and Variables for makeOrders
 
 @deffn {Function} makeOrders (@var{indvarlist},@var{orderlist})
 Returns a list of all powers for a polynomial up to and including the arguments. 

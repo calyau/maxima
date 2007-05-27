@@ -1,9 +1,9 @@
 @menu
 * Introduction to Command Line::
-* Definitions for Command Line::
+* Functions and Variables for Command Line::
 @end menu
 
-@node Introduction to Command Line, Definitions for Command Line, Command Line, Command Line
+@node Introduction to Command Line, Functions and Variables for Command Line, Command Line, Command Line
 @section Introduction to Command Line
 
 @c NEEDS EXAMPLES
@@ -325,8 +325,8 @@ such as in function definitions, lambda expressions, and expressions quoted by s
 @end deffn
 
 @c end concepts Command Line
-@node Definitions for Command Line,  , Introduction to Command Line, Command Line
-@section Definitions for Command Line
+@node Functions and Variables for Command Line,  , Introduction to Command Line, Command Line
+@section Functions and Variables for Command Line
 
 @c NEEDS WORK, ESPECIALLY EXAMPLES
 @deffn {Function} alias (@var{new_name_1}, @var{old_name_1}, ..., @var{new_name_n}, @var{old_name_n})

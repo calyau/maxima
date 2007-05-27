@@ -1,10 +1,10 @@
 
 @menu
 * Introduction to Lists::
-* Definitions for Lists::
+* Functions and Variables for Lists::
 @end menu
 
-@node Introduction to Lists, Definitions for Lists, Lists, Lists
+@node Introduction to Lists, Functions and Variables for Lists, Lists, Lists
 @section Introduction to Lists
 
 Lists are the basic building block for Maxima and Lisp.   All data types
@@ -40,8 +40,8 @@ itself, since after it has been through the simplifier the list would become
 ((MLIST SIMP) 1 2 7 ((MPLUS SIMP) $X $Y))
 @end example
 
-@node Definitions for Lists,  , Introduction to Lists, Lists
-@section Definitions for Lists
+@node Functions and Variables for Lists,  , Introduction to Lists, Lists
+@section Functions and Variables for Lists
 
 @c NEED ANOTHER deffn FOR GENERAL EXPRESSIONS ARGUMENTS
 @c NEEDS CLARIFICATION AND EXAMPLES

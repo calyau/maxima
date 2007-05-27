@@ -1,14 +1,14 @@
 @menu
 * Introduction to Numerical::   
 * Fourier packages::                     
-* Definitions for Numerical::   
-* Definitions for Fourier Series::
+* Functions and Variables for Numerical::   
+* Functions and Variables for Fourier Series::
 @end menu
 
 @node Introduction to Numerical, Fourier packages, Numerical, Numerical
 @section Introduction to Numerical
 
-@node Fourier packages, Definitions for Numerical, Introduction to Numerical, Numerical
+@node Fourier packages, Functions and Variables for Numerical, Introduction to Numerical, Numerical
 @section Fourier packages
 The @code{fft} package comprises functions for the numerical (not symbolic) computation
 of the fast Fourier transform.
@@ -20,12 +20,12 @@ of Fourier series.
 @code{load ("fourie")} loads this package.
 There are functions in the @code{fourie} package to calculate Fourier integral
 coefficients and some functions for manipulation of expressions.
-See @code{Definitions for Fourier Series}.
+See @code{Functions and Variables for Fourier Series}.
 
 @c end concepts Numerical
 
-@node Definitions for Numerical, Definitions for Fourier Series, Fourier packages, Numerical
-@section Definitions for Numerical
+@node Functions and Variables for Numerical, Functions and Variables for Fourier Series, Fourier packages, Numerical
+@section Functions and Variables for Numerical
 @c NOTE: Let's keep POLARTORECT, RECTTOPOLAR, and IFT before FFT
 @c in this file. Otherwise DESCRIBE returns the FFT text (because
 @c POLARTORECT, etc are list in the heading of FFT with @defunx).
@@ -426,8 +426,8 @@ Examples:
 
 @end deffn
 
-@node Definitions for Fourier Series, , Definitions for Numerical, Numerical
-@section Definitions for Fourier Series
+@node Functions and Variables for Fourier Series, , Functions and Variables for Numerical, Numerical
+@section Functions and Variables for Fourier Series
 
 @c REPHRASE
 @deffn {Function} equalp (@var{x}, @var{y})

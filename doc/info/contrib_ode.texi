@@ -1,12 +1,12 @@
 @menu
 * Introduction to contrib_ode::
-* Definitions for contrib_ode::
+* Functions and Variables for contrib_ode::
 * Possible improvements to contrib_ode::
 * Test cases for contrib_ode::
 * References for contrib_ode::
 @end menu
 
-@node Introduction to contrib_ode, Definitions for contrib_ode, contrib_ode, contrib_ode
+@node Introduction to contrib_ode, Functions and Variables for contrib_ode, contrib_ode, contrib_ode
 
 @section Introduction to contrib_ode 
 
@@ -208,8 +208,8 @@ For second order ODEs contrib_ode calls @code{ode2} then @code{odelin}.
 Extensive debugging traces and messages are displayed if the command
 put('contrib_ode,true,'verbose) is executed.
 
-@node Definitions for contrib_ode, Possible improvements to contrib_ode, Introduction to contrib_ode, contrib_ode
-@section Definitions for contrib_ode
+@node Functions and Variables for contrib_ode, Possible improvements to contrib_ode, Introduction to contrib_ode, contrib_ode
+@section Functions and Variables for contrib_ode
 
 @deffn {Function} contrib_ode (@var{eqn}, @var{y}, @var{x})
 
@@ -382,7 +382,7 @@ The derivative with respect to x of @code{kummer_u(a,b,x)}.
 
 
 
-@node Possible improvements to contrib_ode, Test cases for contrib_ode, Definitions for contrib_ode, contrib_ode
+@node Possible improvements to contrib_ode, Test cases for contrib_ode, Functions and Variables for contrib_ode, contrib_ode
 @section Possible improvements to contrib_ode
 
 

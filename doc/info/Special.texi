@@ -1,9 +1,9 @@
 @menu
 * Introduction to Special Functions::  
-* Definitions for Special Functions::  
+* Functions and Variables for Special Functions::  
 @end menu
 
-@node Introduction to Special Functions, Definitions for Special Functions, Special Functions, Special Functions
+@node Introduction to Special Functions, Functions and Variables for Special Functions, Special Functions, Special Functions
 @section Introduction to Special Functions
 
 Special function notation follows:
@@ -32,8 +32,8 @@ kelliptic (z)                  Complete elliptic integral of the first kind (K)
 %d [n] (z)                     Parabolic cylinder function
 @end example
 
-@node Definitions for Special Functions,  , Introduction to Special Functions, Special Functions
-@section Definitions for Special Functions
+@node Functions and Variables for Special Functions,  , Introduction to Special Functions, Special Functions
+@section Functions and Variables for Special Functions
 
 @deffn {Function} airy_ai (@var{x})
 The Airy function Ai, as defined in Abramowitz and Stegun,

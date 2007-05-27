@@ -1,7 +1,7 @@
 @menu
 * Introduction to Miscellaneous Options::  
 * Share::                       
-* Definitions for Miscellaneous Options::  
+* Functions and Variables for Miscellaneous Options::  
 @end menu
 
 @node Introduction to Miscellaneous Options, Share, Miscellaneous Options, Miscellaneous Options
@@ -11,7 +11,7 @@ In this section various options are discussed which have a global effect
 on the operation of Maxima.   Also various lists such as the list of all
 user defined functions, are discussed.
 
-@node Share, Definitions for Miscellaneous Options, Introduction to Miscellaneous Options, Miscellaneous Options
+@node Share, Functions and Variables for Miscellaneous Options, Introduction to Miscellaneous Options, Miscellaneous Options
 @section Share
 The Maxima "share" directory contains programs and other files 
 of interest to Maxima users, but not part of the core implementation of Maxima.
@@ -25,8 +25,8 @@ within the user's file system.
 Users may find it more informative to browse the share directory using a file system browser.
 
 
-@node Definitions for Miscellaneous Options,  , Share, Miscellaneous Options
-@section Definitions for Miscellaneous Options
+@node Functions and Variables for Miscellaneous Options,  , Share, Miscellaneous Options
+@section Functions and Variables for Miscellaneous Options
 
 @defvr {System variable} aliases
 Default value: @code{[]}

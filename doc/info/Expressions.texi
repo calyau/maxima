@@ -7,7 +7,7 @@
 * Strings::
 * Inequality::                  
 * Syntax::                      
-* Definitions for Expressions::  
+* Functions and Variables for Expressions::  
 @end menu
 
 @node Introduction to Expressions, Assignment, Expressions, Expressions
@@ -300,7 +300,7 @@ this string.";
 Maxima has the inequality operators @code{<}, @code{<=}, @code{>=}, @code{>}, @code{#}, and @code{notequal}.
 See @code{if} for a description of conditional expressions.
 
-@node Syntax, Definitions for Expressions, Inequality, Expressions
+@node Syntax, Functions and Variables for Expressions, Inequality, Expressions
 @section Syntax
 It is possible to define new operators with specified precedence,
 to undefine existing operators,
@@ -463,8 +463,8 @@ Incorrect syntax: @@ is not an infix operator
 (%o9)                        @@(5, 3)
 @end example
 
-@node Definitions for Expressions,  , Syntax, Expressions
-@section Definitions for Expressions
+@node Functions and Variables for Expressions,  , Syntax, Expressions
+@section Functions and Variables for Expressions
 
 @deffn {Function} at (@var{expr}, [@var{eqn_1}, ..., @var{eqn_n}])
 @deffnx {Function} at (@var{expr}, @var{eqn})

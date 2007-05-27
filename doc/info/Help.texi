@@ -2,7 +2,7 @@
 * Lisp and Maxima::            
 * Garbage Collection::          
 * Documentation::               
-* Definitions for Help::        
+* Functions and Variables for Help::        
 @end menu
 
 @node Lisp and Maxima, Garbage Collection, Help, Help
@@ -149,7 +149,7 @@ written to.    See the GCL documentation under ALLOCATE and GBC.   At the
 Lisp level doing (setq si::*notify-gbc* t) will help you determine which
 areas might need more space.
 
-@node Documentation, Definitions for Help, Garbage Collection, Help
+@node Documentation, Functions and Variables for Help, Garbage Collection, Help
 @section Documentation
 
 @c SHOULD TALK ABOUT OTHER FORMS OF DOCUMENTATION ASIDE FROM ON-LINE MANUAL.
@@ -184,8 +184,8 @@ yields
 
 and additional output.
 
-@node Definitions for Help,  , Documentation, Help
-@section Definitions for Help
+@node Functions and Variables for Help,  , Documentation, Help
+@section Functions and Variables for Help
 
 @deffn {Function} demo (@var{filename})
 Evaluates Maxima expressions in @var{filename} and displays the results.
@@ -311,15 +311,15 @@ Example:
 @example
 (%i1) ?? integ
  0: (maxima.info)Introduction to Elliptic Functions and Integrals.
- 1: Definitions for Elliptic Integrals.
+ 1: Functions and Variables for Elliptic Integrals.
  2: Integration.
  3: Introduction to Integration.
- 4: Definitions for Integration.
- 5: askinteger :Definitions for Simplification.
- 6: integerp :Definitions for Miscellaneous Options.
- 7: integrate :Definitions for Integration.
- 8: integrate_use_rootsof :Definitions for Integration.
- 9: integration_constant_counter :Definitions for Integration.
+ 4: Functions and Variables for Integration.
+ 5: askinteger :Functions and Variables for Simplification.
+ 6: integerp :Functions and Variables for Miscellaneous Options.
+ 7: integrate :Functions and Variables for Integration.
+ 8: integrate_use_rootsof :Functions and Variables for Integration.
+ 9: integration_constant_counter :Functions and Variables for Integration.
 Enter space-separated numbers, `all' or `none': 7 8
 
 Info from file /use/local/maxima/doc/info/maxima.info:

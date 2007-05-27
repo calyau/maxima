@@ -1,7 +1,7 @@
 @menu
 * Comments::
 * Files::                       
-* Definitions for Input and Output::  
+* Functions and Variables for Input and Output::  
 @end menu
 
 @node Comments, Files, Input and Output, Input and Output
@@ -44,7 +44,7 @@ Examples:
 @end example
 
 
-@node Files, Definitions for Input and Output, Comments, Input and Output
+@node Files, Functions and Variables for Input and Output, Comments, Input and Output
 @section Files
 A file is simply an area on a particular storage device which contains data or text.
 Files on the disks are figuratively grouped into "directories".
@@ -61,8 +61,8 @@ Commands which deal with files are:
 and
 @code{appendfile}.
 
-@node Definitions for Input and Output,  , Files, Input and Output
-@section Definitions for Input and Output
+@node Functions and Variables for Input and Output,  , Files, Input and Output
+@section Functions and Variables for Input and Output
 
 @defvr {System variable} __
 @ifinfo

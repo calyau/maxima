@@ -1,9 +1,9 @@
 @menu
-* Definitions for Plotting::    
+* Functions and Variables for Plotting::    
 @end menu
 
-@node Definitions for Plotting,  , Plotting, Plotting
-@section Definitions for Plotting
+@node Functions and Variables for Plotting,  , Plotting, Plotting
+@section Functions and Variables for Plotting
 
 @deffn {Function} contour_plot (@var{expr}, @var{x_range}, @var{y_range}, @var{options}, ...)
 

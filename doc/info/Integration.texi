@@ -1,11 +1,11 @@
 @menu
 * Introduction to Integration::  
-* Definitions for Integration::  
+* Functions and Variables for Integration::  
 * Introduction to QUADPACK::
-* Definitions for QUADPACK::
+* Functions and Variables for QUADPACK::
 @end menu
 
-@node Introduction to Integration, Definitions for Integration, Integration, Integration
+@node Introduction to Integration, Functions and Variables for Integration, Integration, Integration
 @section Introduction to Integration
 
 Maxima has several routines for handling integration.
@@ -23,8 +23,8 @@ extensions (error function, dilogarithm).  It does not handle
 integrals in terms of unknown functions such as @code{g(x)} and @code{h(x)}.
 
 @c end concepts Integration
-@node Definitions for Integration, Introduction to QUADPACK, Introduction to Integration, Integration
-@section Definitions for Integration
+@node Functions and Variables for Integration, Introduction to QUADPACK, Introduction to Integration, Integration
+@section Functions and Variables for Integration
 
 @c NEEDS WORK
 @deffn {Function} changevar (@var{expr}, @var{f(x,y)}, @var{y}, @var{x})
@@ -556,7 +556,7 @@ Equivalent to @code{ldefint} with @code{tlimswitch} set to @code{true}.
 
 @footnotestyle end
 
-@node Introduction to QUADPACK, Definitions for QUADPACK, Definitions for Integration, Integration
+@node Introduction to QUADPACK, Functions and Variables for QUADPACK, Functions and Variables for Integration, Integration
 @section Introduction to QUADPACK
 
 
@@ -637,8 +637,8 @@ Clenshaw-Curtis integration is used on the subranges
 which contain the point @math{x = c}.
 @end table
 
-@node Definitions for QUADPACK, , Introduction to QUADPACK, Integration
-@section Definitions for QUADPACK
+@node Functions and Variables for QUADPACK, , Introduction to QUADPACK, Integration
+@section Functions and Variables for QUADPACK
 
 @c THERE ARE OPTIONAL ARGUMENTS WHICH MAKES LISTING THE VARIANTS A LITTLE TEDIOUS
 @c NEED A MORE CONVENIENT (AND NONAMBIGUOUS) NOTATION FOR OPTIONAL ARGUMENTS

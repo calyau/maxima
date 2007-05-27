@@ -1,9 +1,9 @@
 @menu
 * Introduction to zeilberger::
-* Definitions for zeilberger::
+* Functions and Variables for zeilberger::
 @end menu
 
-@node Introduction to zeilberger, Definitions for zeilberger, zeilberger, zeilberger
+@node Introduction to zeilberger, Functions and Variables for zeilberger, zeilberger, zeilberger
 @section Introduction to zeilberger
 
 @code{zeilberger} is a implementation of Zeilberger's algorithm
@@ -60,8 +60,8 @@ For example:
 @code{ZeilbergerExtra}, @code{AntiDifferenceSummary}.
 
 
-@node Definitions for zeilberger, , Introduction to zeilberger, zeilberger
-@section Definitions for zeilberger
+@node Functions and Variables for zeilberger, , Introduction to zeilberger, zeilberger
+@section Functions and Variables for zeilberger
 
 @deffn {Function} AntiDifference (@var{F_k}, @var{k})
 

@@ -1,9 +1,9 @@
 @menu
 * Introduction to numericalio::
-* Definitions for numericalio::
+* Functions and Variables for numericalio::
 @end menu
 
-@node Introduction to numericalio, Definitions for numericalio, numericalio, numericalio
+@node Introduction to numericalio, Functions and Variables for numericalio, numericalio, numericalio
 @section Introduction to numericalio
 
 @code{numericalio} is a collection of functions to read and write data files.
@@ -49,8 +49,8 @@ In output, @code{false} atoms are written as such;
 a list @code{[1234, false, Foo]} is written @code{1234,false,Foo},
 and there is no attempt to collapse the output to @code{1234,,Foo}.
 
-@node Definitions for numericalio,  , Introduction to numericalio, numericalio
-@section Definitions for numericalio
+@node Functions and Variables for numericalio,  , Introduction to numericalio, numericalio
+@section Functions and Variables for numericalio
 
 @deffn {Function} read_matrix (@var{file_name})
 @deffnx {Function} read_matrix (@var{file_name}, @var{separator_flag})

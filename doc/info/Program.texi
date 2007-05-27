@@ -1,17 +1,17 @@
 @menu
 * Introduction to Program Flow::  
-* Definitions for Program Flow::  
+* Functions and Variables for Program Flow::  
 @end menu
 
-@node Introduction to Program Flow, Definitions for Program Flow, Program Flow, Program Flow
+@node Introduction to Program Flow, Functions and Variables for Program Flow, Program Flow, Program Flow
 @section Introduction to Program Flow
 
 Maxima provides a @code{do} loop for iteration, as well as more primitive
 constructs such as @code{go}.
 
 @c end concepts Program Flow
-@node Definitions for Program Flow,  , Introduction to Program Flow, Program Flow
-@section Definitions for Program Flow
+@node Functions and Variables for Program Flow,  , Introduction to Program Flow, Program Flow
+@section Functions and Variables for Program Flow
 
 @deffn {Function} backtrace ()
 @deffnx {Function} backtrace (@var{n})

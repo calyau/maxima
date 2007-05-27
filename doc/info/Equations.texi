@@ -1,10 +1,10 @@
 @c end concepts Equations
 @menu
-* Definitions for Equations::   
+* Functions and Variables for Equations::   
 @end menu
 
-@node Definitions for Equations,  , Equations, Equations
-@section Definitions for Equations
+@node Functions and Variables for Equations,  , Equations, Equations
+@section Functions and Variables for Equations
 
 @c NEED A DESCRIPTION OF %rnum AS WELL
 @defvr {System variable} %rnum_list

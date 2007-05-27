@@ -1,10 +1,10 @@
 @menu
 * Introduction to distrib::
-* Definitions for continuous distributions::
-* Definitions for discrete distributions::
+* Functions and Variables for continuous distributions::
+* Functions and Variables for discrete distributions::
 @end menu
 
-@node Introduction to distrib, Definitions for continuous distributions, distrib, distrib
+@node Introduction to distrib, Functions and Variables for continuous distributions, distrib, distrib
 @section Introduction to distrib
 
 
@@ -382,8 +382,8 @@ For comments, bugs or suggestions, please contact the author at @var{'mario AT e
 
 
 
-@node Definitions for continuous distributions, Definitions for discrete distributions, Introduction to distrib, distrib
-@section Definitions for continuous distributions
+@node Functions and Variables for continuous distributions, Functions and Variables for discrete distributions, Introduction to distrib, distrib
+@section Functions and Variables for continuous distributions
 
 
 @deffn {Function} pdf_normal (@var{x},@var{m},@var{s})
@@ -1927,8 +1927,8 @@ Only the inverse method is implemented. To make use of this function, write firs
 @end deffn
 
 
-@node Definitions for discrete distributions,  , Definitions for continuous distributions, distrib
-@section Definitions for discrete distributions
+@node Functions and Variables for discrete distributions,  , Functions and Variables for continuous distributions, distrib
+@section Functions and Variables for discrete distributions
 
 
 @deffn {Function} pdf_binomial (@var{x},@var{n},@var{p})

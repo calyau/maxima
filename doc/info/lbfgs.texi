@@ -1,9 +1,9 @@
 @menu
 * Introduction to lbfgs::
-* Definitions for lbfgs::
+* Functions and Variables for lbfgs::
 @end menu
 
-@node Introduction to lbfgs, Definitions for lbfgs, Top, Top
+@node Introduction to lbfgs, Functions and Variables for lbfgs, Top, Top
 @section Introduction to lbfgs
 
 @code{lbfgs} is an implementation of the L-BFGS algorithm [1]
@@ -23,8 +23,8 @@ scale optimization". @i{Mathematical Programming B} 45:503--528 (1989)
 
 [2] http://netlib.org/opt/lbfgs_um.shar
 
-@node Definitions for lbfgs, , Introduction to lbfgs, Top
-@section Definitions for lbfgs
+@node Functions and Variables for lbfgs, , Introduction to lbfgs, Top
+@section Functions and Variables for lbfgs
 
 @deffn {Function} lbfgs (@var{FOM}, @var{X}, @var{X0}, @var{epsilon}, @var{iprint})
 

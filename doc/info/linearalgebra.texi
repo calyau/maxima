@@ -1,9 +1,9 @@
 @menu
 * Introduction to linearalgebra::
-* Definitions for linearalgebra::
+* Functions and Variables for linearalgebra::
 @end menu
 
-@node Introduction to linearalgebra, Definitions for linearalgebra, linearalgebra, linearalgebra
+@node Introduction to linearalgebra, Functions and Variables for linearalgebra, linearalgebra, linearalgebra
 @section Introduction to linearalgebra
 
 @code{linearalgebra} is a collection of functions for linear algebra.
@@ -115,8 +115,8 @@ Example:
                            [ 3 ]  [ - 2 ]
 @end example
 
-@node Definitions for linearalgebra,  , Introduction to linearalgebra, linearalgebra
-@section Definitions for linearalgebra
+@node Functions and Variables for linearalgebra,  , Introduction to linearalgebra, linearalgebra
+@section Functions and Variables for linearalgebra
 
 @deffn {Function} addmatrices (@var{f}, @var{M_1}, ..., @var{M_n})
 

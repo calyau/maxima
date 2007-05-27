@@ -31,15 +31,15 @@ documentation. The question mark @code{?} is an abbreviation for @code{describe}
 (%i1) ? integ
 
  0: (maxima.info)Introduction to Elliptic Functions and Integrals.
- 1: Definitions for Elliptic Integrals.
+ 1: Functions and Variables for Elliptic Integrals.
  2: Integration.
  3: Introduction to Integration.
- 4: Definitions for Integration.
- 5: askinteger :Definitions for Simplification.
- 6: integerp :Definitions for Miscellaneous Options.
- 7: integrate :Definitions for Integration.
- 8: integrate_use_rootsof :Definitions for Integration.
- 9: integration_constant_counter :Definitions for Integration.
+ 4: Functions and Variables for Integration.
+ 5: askinteger :Functions and Variables for Simplification.
+ 6: integerp :Functions and Variables for Miscellaneous Options.
+ 7: integrate :Functions and Variables for Integration.
+ 8: integrate_use_rootsof :Functions and Variables for Integration.
+ 9: integration_constant_counter :Functions and Variables for Integration.
 Enter space-separated numbers, `all' or `none': 6 5
 
 Info from file /usr/local/info/maxima.info:

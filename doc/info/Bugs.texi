@@ -1,10 +1,10 @@
 
 @menu
-* Definitions for Bug Detection and Reporting::
+* Functions and Variables for Bug Detection and Reporting::
 @end menu
 
-@node Definitions for Bug Detection and Reporting
-@section Definitions for Bug Detection and Reporting
+@node Functions and Variables for Bug Detection and Reporting
+@section Functions and Variables for Bug Detection and Reporting
 @deffn {Function} run_testsuite ()
 @deffnx {Function} run_testsuite (@var{boolean})
 @deffnx {Function} run_testsuite (@var{boolean}, @var{boolean})

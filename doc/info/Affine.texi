@@ -1,10 +1,10 @@
 @c end concepts Affine
 @menu
-* Definitions for Affine::
+* Functions and Variables for Affine::
 @end menu
 
-@node Definitions for Affine,  , Affine, Affine
-@section Definitions for Affine
+@node Functions and Variables for Affine,  , Affine, Affine
+@section Functions and Variables for Affine
 
 @deffn {Function} fast_linsolve ([@var{expr_1}, ..., @var{expr_m}], [@var{x_1}, ..., @var{x_n}])
 Solves the simultaneous linear equations @var{expr_1}, ..., @var{expr_m}

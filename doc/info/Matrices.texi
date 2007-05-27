@@ -1,9 +1,9 @@
 @menu
 * Introduction to Matrices and Linear Algebra::  
-* Definitions for Matrices and Linear Algebra::  
+* Functions and Variables for Matrices and Linear Algebra::  
 @end menu
 
-@node Introduction to Matrices and Linear Algebra, Definitions for Matrices and Linear Algebra, Matrices and Linear Algebra, Matrices and Linear Algebra
+@node Introduction to Matrices and Linear Algebra, Functions and Variables for Matrices and Linear Algebra, Matrices and Linear Algebra, Matrices and Linear Algebra
 @section Introduction to Matrices and Linear Algebra
 
 @menu
@@ -84,8 +84,8 @@ The functions in the @code{eigen} package are
 and @code{similaritytransform}.
 
 @c end concepts Matrices and Linear Algebra
-@node Definitions for Matrices and Linear Algebra,  , Introduction to Matrices and Linear Algebra, Matrices and Linear Algebra
-@section Definitions for Matrices and Linear Algebra
+@node Functions and Variables for Matrices and Linear Algebra,  , Introduction to Matrices and Linear Algebra, Matrices and Linear Algebra
+@section Functions and Variables for Matrices and Linear Algebra
 
 @deffn {Function} addcol (@var{M}, @var{list_1}, ..., @var{list_n})
 Appends the column(s) given by the one

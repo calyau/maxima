@@ -1,10 +1,10 @@
 @c end concepts Simplification
 @menu
-* Definitions for Simplification::  
+* Functions and Variables for Simplification::  
 @end menu
 
-@node Definitions for Simplification,  , Simplification, Simplification
-@section Definitions for Simplification
+@node Functions and Variables for Simplification,  , Simplification, Simplification
+@section Functions and Variables for Simplification
 
 @c After studying src/compar.lisp, it appears that askexp would
 @c work as advertised, except that it doesn't appear to be possible

@@ -1,9 +1,9 @@
 @menu
 * Introduction to dynamics::
-* Definitions for dynamics::
+* Functions and Variables for dynamics::
 @end menu
 
-@node Introduction to dynamics, Definitions for dynamics, dynamics, dynamics
+@node Introduction to dynamics, Functions and Variables for dynamics, dynamics, dynamics
 @section Introduction to dynamics
 
 The additional package @code{dynamics} includes several
@@ -35,8 +35,8 @@ should only specify the variable name, and the minimum and maximum
 values; the number of steps can now be changed with the option
 @var{nticks}.
 
-@node Definitions for dynamics,  , Introduction to dynamics, dynamics
-@section Definitions for dynamics
+@node Functions and Variables for dynamics,  , Introduction to dynamics, dynamics
+@section Functions and Variables for dynamics
 
 @deffn {Function} chaosgame (@code{[[}@var{x1}, @var{y1}@code{]}...@code{[}@var{xm}, @var{ym}@code{]]}, @code{[}@var{x0}, @var{y0}@code{]}, @var{b}, @var{n}, ..., options, ...);
 

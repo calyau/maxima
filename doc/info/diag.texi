@@ -1,9 +1,9 @@
 @menu
-* Definitions for diag::
+* Functions and Variables for diag::
 @end menu
 
-@node Definitions for diag,  , diag, diag
-@section Definitions for diag
+@node Functions and Variables for diag,  , diag, diag
+@section Functions and Variables for diag
 
 
 @deffn {Function} diag (@var{lm})

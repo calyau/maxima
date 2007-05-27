@@ -1,12 +1,12 @@
 @menu
 * Introduction to descriptive::
-* Definitions for data manipulation::
-* Definitions for descriptive statistics::
-* Definitions for specific multivariate descriptive statistics::
-* Definitions for statistical graphs::
+* Functions and Variables for data manipulation::
+* Functions and Variables for descriptive statistics::
+* Functions and Variables for specific multivariate descriptive statistics::
+* Functions and Variables for statistical graphs::
 @end menu
 
-@node Introduction to descriptive, Definitions for data manipulation, descriptive, descriptive
+@node Introduction to descriptive, Functions and Variables for data manipulation, descriptive, descriptive
 @section Introduction to descriptive
 
 Package @code{descriptive} contains a set of functions for making descriptive statistical computations and graphing. Together with the source code there are three data sets in your Maxima tree: @code{pidigits.data}, @code{wind.data} and @code{biomed.data}. They can be also downloaded from the web site @code{www.biomates.net}.
@@ -173,8 +173,8 @@ One must take care when working with categorical data. In the next example, symb
 
 
 
-@node Definitions for data manipulation, Definitions for descriptive statistics, Introduction to descriptive, descriptive
-@section Definitions for data manipulation
+@node Functions and Variables for data manipulation, Functions and Variables for descriptive statistics, Introduction to descriptive, descriptive
+@section Functions and Variables for data manipulation
 
 @deffn {Function} continuous_freq (@var{list})
 @deffnx {Function} continuous_freq (@var{list}, @var{m})
@@ -376,8 +376,8 @@ Here, the first component is meaningless, since @code{A} and @code{B} are catego
 @end deffn
 
 
-@node Definitions for descriptive statistics, Definitions for specific multivariate descriptive statistics, Definitions for data manipulation, descriptive
-@section Definitions for descriptive statistics
+@node Functions and Variables for descriptive statistics, Functions and Variables for specific multivariate descriptive statistics, Functions and Variables for data manipulation, descriptive
+@section Functions and Variables for descriptive statistics
 
 
 
@@ -1375,8 +1375,8 @@ See also function @code{quantile}.
 
 
 
-@node Definitions for specific multivariate descriptive statistics, Definitions for statistical graphs, Definitions for descriptive statistics, descriptive
-@section Definitions for specific multivariate descriptive statistics
+@node Functions and Variables for specific multivariate descriptive statistics, Functions and Variables for statistical graphs, Functions and Variables for descriptive statistics, descriptive
+@section Functions and Variables for specific multivariate descriptive statistics
 
 
 
@@ -1752,8 +1752,8 @@ See also @code{cov} and @code{cov1}.
 
 
 
-@node Definitions for statistical graphs,  , Definitions for specific multivariate descriptive statistics, descriptive
-@section Definitions for statistical graphs
+@node Functions and Variables for statistical graphs,  , Functions and Variables for specific multivariate descriptive statistics, descriptive
+@section Functions and Variables for statistical graphs
 
 
 

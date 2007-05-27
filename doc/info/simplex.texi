@@ -1,9 +1,9 @@
 @menu
 * Introduction to simplex::
-* Definitions for simplex::
+* Functions and Variables for simplex::
 @end menu
 
-@node Introduction to simplex, Definitions for simplex, simplex, simplex
+@node Introduction to simplex, Functions and Variables for simplex, simplex, simplex
 @section Introduction to simplex
 
 @code{simplex} is a package for linear optimization using the simplex algorithm.
@@ -22,8 +22,8 @@ Example:
                   10       10      5
 @end example
 
-@node Definitions for simplex,  , Introduction to simplex, simplex
-@section Definitions for simplex
+@node Functions and Variables for simplex,  , Introduction to simplex, simplex
+@section Functions and Variables for simplex
 
 @defvr {Option variable} epsilon_sx
 Default value: @code{10^-8}

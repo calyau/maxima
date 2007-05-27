@@ -1,9 +1,9 @@
 @menu
 * Introduction to atensor::
-* Definitions for atensor::
+* Functions and Variables for atensor::
 @end menu
 
-@node Introduction to atensor, Definitions for atensor, atensor, atensor
+@node Introduction to atensor, Functions and Variables for atensor, atensor, atensor
 @section Introduction to atensor
 
 @code{atensor} is an algebraic tensor manipulation package. To use @code{atensor},
@@ -98,9 +98,9 @@ simplifications.
 
 
 @c end concepts atensor
-@node Definitions for atensor,  , Introduction to atensor, atensor
+@node Functions and Variables for atensor,  , Introduction to atensor, atensor
 
-@section Definitions for atensor
+@section Functions and Variables for atensor
 
 @deffn {Function} init_atensor (@var{alg_type}, @var{opt_dims})
 @deffnx {Function} init_atensor (@var{alg_type})

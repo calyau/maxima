@@ -1,9 +1,9 @@
 @menu
-* Definitions for stirling::
+* Functions and Variables for stirling::
 @end menu
 
-@node Definitions for stirling,  , stirling, stirling
-@section Definitions for stirling
+@node Functions and Variables for stirling,  , stirling, stirling
+@section Functions and Variables for stirling
 
 @deffn {Function} stirling (@var{z},@var{n})
 Replace @code{gamma(x)} with the @math{O(1/x^(2n-1))} Stirling formula. when @var{n} isn't

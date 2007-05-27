@@ -1,9 +1,9 @@
 @menu
 * Introduction to interpol::
-* Definitions for interpol::
+* Functions and Variables for interpol::
 @end menu
 
-@node Introduction to interpol, Definitions for interpol, interpol, interpol
+@node Introduction to interpol, Functions and Variables for interpol, interpol, interpol
 @section Introduction to interpol
 
 Package @code{interpol} defines de Lagrangian, the linear and the cubic 
@@ -15,8 +15,8 @@ For comments, bugs or suggestions, please contact me at @var{'mario AT edu DOT x
 
 
 
-@node Definitions for interpol,  , Introduction to interpol, interpol
-@section Definitions for interpol
+@node Functions and Variables for interpol,  , Introduction to interpol, interpol
+@section Functions and Variables for interpol
 
 
 @deffn {Function} lagrange (@var{points})

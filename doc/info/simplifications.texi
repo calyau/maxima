@@ -1,17 +1,17 @@
 @menu
 * Introduction to simplification::
-* Definitions for simplification::
+* Functions and Variables for simplification::
 @end menu
 
-@node Introduction to simplification, Definitions for simplification, simplification, simplification
+@node Introduction to simplification, Functions and Variables for simplification, simplification, simplification
 @section Introduction to simplification
 
 The directory @code{maxima/share/simplification} contains several scripts
 which implement simplification rules and functions,
 and also some functions not related to simplification.
 
-@node Definitions for simplification,  , Introduction to simplification, simplification
-@section Definitions for simplification
+@node Functions and Variables for simplification,  , Introduction to simplification, simplification
+@section Functions and Variables for simplification
 
 @c Adapted from absimp.usg ----------------------
 

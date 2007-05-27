@@ -1,10 +1,10 @@
 
 @menu
-* Definitions for Arrays::  
+* Functions and Variables for Arrays::  
 @end menu
 
-@node Definitions for Arrays,  , Arrays, Arrays
-@section Definitions for Arrays
+@node Functions and Variables for Arrays,  , Arrays, Arrays
+@section Functions and Variables for Arrays
 
 @deffn {Function} array (@var{name}, @var{dim_1}, ..., @var{dim_n})
 @deffnx {Function} array (@var{name}, @var{type}, @var{dim_1}, ..., @var{dim_n})

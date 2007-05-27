@@ -1,11 +1,11 @@
 @c ITEMS IN THIS FILE ARE IN NEED OF EXPANSION, CLARIFICATION, AND EXAMPLES
 
 @menu
-* Definitions for Floating Point::  
+* Functions and Variables for Floating Point::  
 @end menu
 
-@node Definitions for Floating Point,  , Floating Point, Floating Point
-@section Definitions for Floating Point
+@node Functions and Variables for Floating Point,  , Floating Point, Floating Point
+@section Functions and Variables for Floating Point
 
 @c FOLLOWING FUNCTIONS IN bffac.mac ARE NOT DESCRIBED IN .texi FILES: !!!
 @c obfac, azetb, vonschtoonk, divrlst, obzeta, bfhzeta, bfpsi0 !!!

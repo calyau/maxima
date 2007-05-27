@@ -1,11 +1,11 @@
 
 @c end concepts Number Theory
 @menu
-* Definitions for Number Theory::  
+* Functions and Variables for Number Theory::  
 @end menu
 
-@node Definitions for Number Theory,  , Number Theory, Number Theory
-@section Definitions for Number Theory
+@node Functions and Variables for Number Theory,  , Number Theory, Number Theory
+@section Functions and Variables for Number Theory
 
 @deffn {Function} bern (@var{n})
 Returns the @var{n}'th Bernoulli number for integer @var{n}.

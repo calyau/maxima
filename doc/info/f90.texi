@@ -1,9 +1,9 @@
 @menu
-* Definitions for f90::
+* Functions and Variables for f90::
 @end menu
 
-@node Definitions for f90,  , f90, f90
-@section Definitions for f90
+@node Functions and Variables for f90,  , f90, f90
+@section Functions and Variables for f90
 
 
 @deffn {Function} f90 (@var{expr})

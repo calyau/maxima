@@ -1,9 +1,9 @@
 @menu
-* Definitions for romberg::
+* Functions and Variables for romberg::
 @end menu
 
-@node Definitions for romberg, , Top, Top
-@section Definitions for romberg
+@node Functions and Variables for romberg, , Top, Top
+@section Functions and Variables for romberg
 
 @deffn {Function} romberg (@var{expr}, @var{x}, @var{a}, @var{b})
 @deffnx {Function} romberg (@var{F}, @var{a}, @var{b})

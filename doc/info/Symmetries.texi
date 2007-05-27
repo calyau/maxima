@@ -7,11 +7,11 @@
 
 
 @menu
-* Definitions for Symmetries::  
+* Functions and Variables for Symmetries::  
 @end menu
 
-@node Definitions for Symmetries,  , Symmetries, Symmetries
-@section Definitions for Symmetries
+@node Functions and Variables for Symmetries,  , Symmetries, Symmetries
+@section Functions and Variables for Symmetries
 
 
 @subsection Changing bases

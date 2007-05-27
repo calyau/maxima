@@ -1,9 +1,9 @@
 @menu
-* Definitions for opsubst::
+* Functions and Variables for opsubst::
 @end menu
 
-@node Definitions for opsubst,  , opsubst, opsubst
-@section Definitions for opsubst
+@node Functions and Variables for opsubst,  , opsubst, opsubst
+@section Functions and Variables for opsubst
 
 @deffn {Function} opsubst (@var{f},@var{g},@var{e})
 @deffnx {Function} opsubst (@var{g}=@var{f},@var{e})

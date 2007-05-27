@@ -189,12 +189,12 @@ Help
 * Lisp and Maxima::            
 * Garbage Collection::          
 * Documentation::               
-* Definitions for Help::        
+* Functions and Variables for Help::        
 
 Command Line
 
 * Introduction to Command Line::  
-* Definitions for Command Line::  
+* Functions and Variables for Command Line::  
 
 Operators
 
@@ -213,91 +213,91 @@ Expressions
 * Complex::                     
 * Inequality::                  
 * Syntax::                      
-* Definitions for Expressions::  
+* Functions and Variables for Expressions::  
 
 Simplification
 
-* Definitions for Simplification::  
+* Functions and Variables for Simplification::  
 
 Plotting
 
-* Definitions for Plotting::    
+* Functions and Variables for Plotting::    
 
 Input and Output
 
 * Comments::
 * Files::                       
-* Definitions for Input and Output::  
+* Functions and Variables for Input and Output::  
 
 Floating Point
 
-* Definitions for Floating Point::  
+* Functions and Variables for Floating Point::  
 
 Contexts
 
-* Definitions for Contexts::    
+* Functions and Variables for Contexts::    
 
 Polynomials
 
 * Introduction to Polynomials::  
-* Definitions for Polynomials::  
+* Functions and Variables for Polynomials::  
 
 Constants
 
-* Definitions for Constants::   
+* Functions and Variables for Constants::   
 
 Logarithms
 
-* Definitions for Logarithms::  
+* Functions and Variables for Logarithms::  
 
 Trigonometric
 
 * Introduction to Trigonometric::  
-* Definitions for Trigonometric::  
+* Functions and Variables for Trigonometric::  
 
 Special Functions
 
 * Introduction to Special Functions::  
-* Definitions for Special Functions::  
+* Functions and Variables for Special Functions::  
 
 Elliptic Functions
 
 * Introduction to Elliptic Functions and Integrals::
-* Definitions for Elliptic Functions::
-* Definitions for Elliptic Integrals::
+* Functions and Variables for Elliptic Functions::
+* Functions and Variables for Elliptic Integrals::
 
 Limits
 
-* Definitions for Limits::      
+* Functions and Variables for Limits::      
 
 Differentiation
 
-* Definitions for Differentiation::  
+* Functions and Variables for Differentiation::  
 
 Integration
 
 * Introduction to Integration::  
-* Definitions for Integration::  
+* Functions and Variables for Integration::  
 
 Equations
 
-* Definitions for Equations::   
+* Functions and Variables for Equations::   
 
 Differential Equations
 
 * Introduction to Differential Equations::  
-* Definitions for Differential Equations::  
+* Functions and Variables for Differential Equations::  
 
 Numerical
 
 * Introduction to Numerical::   
 * Fourier packages::                     
-* Definitions for Numerical::   
-* Definitions for Fourier Series::
+* Functions and Variables for Numerical::   
+* Functions and Variables for Fourier Series::
 
 Arrays
 
-* Definitions for Arrays::  
+* Functions and Variables for Arrays::  
 
 Matrices and Linear Algebra
 
@@ -305,100 +305,100 @@ Matrices and Linear Algebra
 * Dot::                         
 * Vectors::                     
 * eigen::
-* Definitions for Matrices and Linear Algebra::  
+* Functions and Variables for Matrices and Linear Algebra::  
 
 Affine
 
-* Definitions for Affine::      
+* Functions and Variables for Affine::      
 
 itensor
 
 * Introduction to itensor::      
-* Definitions for itensor::      
+* Functions and Variables for itensor::      
 
 ctensor
 
 * Introduction to ctensor::     
-* Definitions for ctensor::     
+* Functions and Variables for ctensor::     
 
 atensor
 
 * Introduction to atensor::     
-* Definitions for atensor::     
+* Functions and Variables for atensor::     
 
 Series
 
 * Introduction to Series::      
-* Definitions for Series::      
+* Functions and Variables for Series::      
 
 Number Theory
 
-* Definitions for Number Theory::  
+* Functions and Variables for Number Theory::  
 
 Symmetries
 
-* Definitions for Symmetries::  
+* Functions and Variables for Symmetries::  
 
 Groups
 
-* Definitions for Groups::      
+* Functions and Variables for Groups::      
 
 Runtime Environment
 
 * Introduction for Runtime Environment::  
 * Interrupts::                  
-* Definitions for Runtime Environment::  
+* Functions and Variables for Runtime Environment::  
 
 Miscellaneous Options
 
 * Introduction to Miscellaneous Options::  
 * Share::                       
-* Definitions for Miscellaneous Options::  
+* Functions and Variables for Miscellaneous Options::  
 
 Rules and Patterns
 
 * Introduction to Rules and Patterns::  
-* Definitions for Rules and Patterns::  
+* Functions and Variables for Rules and Patterns::  
 
 Lists
 
 * Introduction to Lists::       
-* Definitions for Lists::       
+* Functions and Variables for Lists::       
 
 Sets
 
 * Introduction to Sets::       
-* Definitions for Sets::       
+* Functions and Variables for Sets::       
 
 Function Definition
 
 * Introduction to Function Definition::  
 * Function::                    
 * Macros::                      
-* Definitions for Function Definition::  
+* Functions and Variables for Function Definition::  
 
 Program Flow
 
 * Introduction to Program Flow::  
-* Definitions for Program Flow::  
+* Functions and Variables for Program Flow::  
 
 Debugging
 
-* Definitions for Debugging::   
+* Functions and Variables for Debugging::   
 
 
 augmented_lagrangian
 
-* Definitions for augmented_lagrangian::
+* Functions and Variables for augmented_lagrangian::
 
 bode
 
-* Definitions for bode::
+* Functions and Variables for bode::
 
 contrib_ode
 
 * Introduction to contrib_ode::
-* Definitions for contrib_ode::
+* Functions and Variables for contrib_ode::
 * Possible improvements to contrib_ode::
 * Test cases for contrib_ode::
 * References for contrib_ode::
@@ -406,152 +406,152 @@ contrib_ode
 descriptive
 
 * Introduction to descriptive::
-* Definitions for data manipulation::
-* Definitions for descriptive statistics::
-* Definitions for specific multivariate descriptive statistics::
-* Definitions for statistical graphs::
+* Functions and Variables for data manipulation::
+* Functions and Variables for descriptive statistics::
+* Functions and Variables for specific multivariate descriptive statistics::
+* Functions and Variables for statistical graphs::
 
 diag
 
-* Definitions for diag::
+* Functions and Variables for diag::
 
 distrib
 
 * Introduction to distrib::
-* Definitions for continuous distributions::
-* Definitions for discrete distributions::
+* Functions and Variables for continuous distributions::
+* Functions and Variables for discrete distributions::
 
 draw
 
 * Introduction to draw::
-* Definitions for draw::
+* Functions and Variables for draw::
 
 dynamics
 
 * Introduction to dynamics::
-* Definitions for dynamics::
+* Functions and Variables for dynamics::
 
 eval_string
 
-* Definitions for eval_string::
+* Functions and Variables for eval_string::
 
 f90
 
-* Definitions for f90::
+* Functions and Variables for f90::
 
 ggf
 
-* Definitions for ggf::
+* Functions and Variables for ggf::
 
 grobner
 
 * Introduction to grobner::
-* Definitions for grobner::
+* Functions and Variables for grobner::
 
 impdiff
 
-* Definitions for impdiff::
+* Functions and Variables for impdiff::
 
 implicit_plot
 
-* Definitions for implicit_plot::
+* Functions and Variables for implicit_plot::
 
 interpol
 
 * Introduction to interpol::
-* Definitions for interpol::
+* Functions and Variables for interpol::
 
 lbfgs
 
 * Introduction to lbfgs::
-* Definitions for lbfgs::
+* Functions and Variables for lbfgs::
 
 lindstedt
 
-* Definitions for lindstedt::
+* Functions and Variables for lindstedt::
 
 linearalgebra
 
 * Introduction to linearalgebra::
-* Definitions for linearalgebra::
+* Functions and Variables for linearalgebra::
 
 lsquares
 
-* Definitions for lsquares::
+* Functions and Variables for lsquares::
 
 makeOrders
 
-* Definitions for makeOrders::
+* Functions and Variables for makeOrders::
 
 mnewton
 
-* Definitions for mnewton::
+* Functions and Variables for mnewton::
 
 numericalio
 
 * Introduction to numericalio::
-* Definitions for numericalio::
+* Functions and Variables for numericalio::
 
 opsubst
 
-* Definitions for opsubst::
+* Functions and Variables for opsubst::
 
 orthopoly
 
 * Introduction to orthogonal polynomials::
-* Definitions for orthogonal polynomials::
+* Functions and Variables for orthogonal polynomials::
 
 plotdf
 
 * Introduction to plotdf::
-* Definitions for plotdf::
+* Functions and Variables for plotdf::
 
 romberg
 
-* Definitions for romberg::
+* Functions and Variables for romberg::
 
 simplex
 
 * Introduction to simplex::
-* Definitions for simplex::
+* Functions and Variables for simplex::
 
 simplification
 
 * Introduction to simplification::
-* Definitions for simplification::
+* Functions and Variables for simplification::
 
 solve_rec
 
 * Introduction to solve_rec::
-* Definitions for solve_rec::
+* Functions and Variables for solve_rec::
 
 stats
 
 * Introduction to stats::
-* Definitions for inference_result::
-* Definitions for stats::
-* Definitions for special distributions::
+* Functions and Variables for inference_result::
+* Functions and Variables for stats::
+* Functions and Variables for special distributions::
 
 stirling
 
-* Definitions for stirling::
+* Functions and Variables for stirling::
 
 stringproc
 
 * Introduction to string processing::
-* Definitions for input and output::
-* Definitions for characters::
-* Definitions for strings::
+* Functions and Variables for input and output::
+* Functions and Variables for characters::
+* Functions and Variables for strings::
 
 unit
 
 * Introduction to Units::       
-* Definitions for Units::
+* Functions and Variables for Units::
 
 zeilberger
 
 * Introduction to zeilberger::
-* Definitions for zeilberger::
+* Functions and Variables for zeilberger::
 
 @comment @end detailmenu
 @end menu

@@ -1,11 +1,11 @@
 @menu
 * Introduction to stats::
-* Definitions for inference_result::
-* Definitions for stats::
-* Definitions for special distributions::
+* Functions and Variables for inference_result::
+* Functions and Variables for stats::
+* Functions and Variables for special distributions::
 @end menu
 
-@node Introduction to stats, Definitions for inference_result, Top, Top
+@node Introduction to stats, Functions and Variables for inference_result, Top, Top
 @section Introduction to stats
 
 
@@ -32,8 +32,8 @@ For comments, bugs or suggestions, please contact the author at
 @var{'mario AT edu DOT xunta DOT es'}.
 
 
-@node Definitions for inference_result, Definitions for stats, Introduction to stats, Top
-@section Definitions for inference_result
+@node Functions and Variables for inference_result, Functions and Variables for stats, Introduction to stats, Top
+@section Functions and Variables for inference_result
 
 @deffn {Function} inference_result (@var{title}, @var{values}, @var{numbers})
 
@@ -210,8 +210,8 @@ See also @code{inference_result} and @code{take_inference}.
 
 
 
-@node Definitions for stats, Definitions for special distributions, Definitions for inference_result, Top
-@section Definitions for stats
+@node Functions and Variables for stats, Functions and Variables for special distributions, Functions and Variables for inference_result, Top
+@section Functions and Variables for stats
 
 
 @defvr {Option variable} stats_numer
@@ -1285,8 +1285,8 @@ confidence interval for a new prediction when @code{x=113} are also calculated.
 
 
 
-@node Definitions for special distributions, , Definitions for stats, Top
-@section Definitions for special distributions
+@node Functions and Variables for special distributions, , Functions and Variables for stats, Top
+@section Functions and Variables for special distributions
 
 
 @deffn {Function} pdf_signed_rank (@var{x}, @var{n})

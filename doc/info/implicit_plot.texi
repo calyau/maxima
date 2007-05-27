@@ -1,9 +1,9 @@
 @menu
-* Definitions for implicit_plot::
+* Functions and Variables for implicit_plot::
 @end menu
 
-@node Definitions for implicit_plot,  , implicit_plot, implicit_plot
-@section Definitions for implicit_plot
+@node Functions and Variables for implicit_plot,  , implicit_plot, implicit_plot
+@section Functions and Variables for implicit_plot
 
 @deffn {Function} implicit_plot (@var{expr}, @var{x_range}, @var{y_range})
 @deffnx {Function} implicit_plot ([@var{expr_1}, ..., @var{expr_n}], @var{x_range}, @var{y_range})
