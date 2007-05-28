@@ -48,6 +48,7 @@ mcset ru "Xmaxima Manual (xmaxima browser)" "Руководство по Xmaxima
 mcset ru "Xmaxima Manual (web browser)" "Руководство по Xmaxima (web обозвеватель)"
 mcset ru "Project Page" "Страница проекта"
 mcset ru "Bug Reports" "Для сообщений об ошибках"
+mcset ru "About Maxima" "О Maxima"
 
 
 ### EHref.tcl
