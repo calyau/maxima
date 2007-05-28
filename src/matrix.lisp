@@ -24,7 +24,6 @@
 (defmvar $matrix_element_add '|&+|)
 (defmvar $matrix_element_transpose nil)
 
-
 ;;I believe that all the code now stores arrays in the value cell 
 (defun get-array-pointer (symbol)
   "There may be nesting of functions and we may well need to apply
@@ -193,7 +192,16 @@
 	    (go loop))
 	   ((equal (setq minor (assoo (delete d (copy-tree id) :test #'equal) mdl)) 0)
 	    (go loop)))
-     (setq ans (simplus (list '(mplus) ans (simptimes (list '(mtimes) sign e minor) 1 nil)) 1 nil))
+     (setq ans
+	   (if (and (eq $matrix_element_mult '|&*|)
+		    (eq $matrix_element_add '|&+|))
+	       (add ans (mul sign e minor)) ;fast common case
+	     (mapply $matrix_element_add
+		     (list ans
+			   (mapply $matrix_element_mult
+				   (list sign e minor)
+				   $matrix_element_mult))
+		     $matrix_element_add)))
      (go loop)))
 
 (defun apdl (l1 l2)
