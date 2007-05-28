@@ -259,8 +259,9 @@ The next time the file is loaded, it will then be in EMaxima mode"
    (save-excursion
      (re-search-backward emaxima-standard-cell-begin-regexp)
      (goto-char (match-end 0))
-     (looking-at "\\["))))
-     
+     (and
+      (looking-at "\\[")
+      (not (looking-at "\\[\\]"))))))
 
 ;;; Create the cells.
 (defun emaxima-new-standard-cell ()
@@ -269,7 +270,7 @@ The next time the file is loaded, it will then be in EMaxima mode"
       (progn
         (open-line 1)
         (forward-line 1)))
-  (insert "\\begin{maxima}\n\n\\end{maxima}")
+  (insert "\\begin{maxima}[]\n\n\\end{maxima}")
   (unless (looking-at " *$")
     (insert "\n")
     (forward-line -1))
@@ -300,6 +301,8 @@ The next time the file is loaded, it will then be in EMaxima mode"
         (re-search-backward emaxima-session-cell-begin-regexp)
         (re-search-forward "maximasession")
         (replace-match "maxima")
+        (search-forward "}")
+        (insert "[]")
         (re-search-forward emaxima-session-cell-end-regexp)
         (search-backward "maximasession")
         (replace-match "maxima")))))
@@ -317,6 +320,9 @@ The next time the file is loaded, it will then be in EMaxima mode"
           (re-search-backward emaxima-standard-cell-begin-regexp)
           (re-search-forward "maxima")
           (replace-match "maximasession")
+          (search-forward "}")
+          (if (looking-at "\\[\\]")
+              (delete-char 2))
           (re-search-forward emaxima-standard-cell-end-regexp)
           (search-backward "maxima")
           (replace-match "maximasession"))))))
