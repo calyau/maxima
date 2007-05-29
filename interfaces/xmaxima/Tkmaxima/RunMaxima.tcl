@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: RunMaxima.tcl,v 1.29 2007-02-25 19:02:12 vvzhy Exp $
+#       $Id: RunMaxima.tcl,v 1.30 2007-05-29 00:44:47 villate Exp $
 #
 proc textWindowWidth { w } {
     set font [$w cget -font]
@@ -46,7 +46,7 @@ proc CMeval { w } {
     set expr [string trimright [$w get lastStart end] \n]
     # puts "command-line: ([$w index lastStart], [$w index end])"
     # puts "command: $expr"
-    if { ![regexp {^[ \n\t]*:|[;\$][ \t]*$|^\?[ \t]+[^ \t]} $expr] } {
+    if { ![regexp {^[ \n\t]*:|[;\$][ \t]*$|^\?[\?!]?[ \t]+[^ \t]} $expr] } {
 	$w insert insert "\n"
 	$w see insert
 	if { [catch {set atprompt [oget $w atMaximaPrompt]}] } {
@@ -241,7 +241,7 @@ proc maximaFilter { win sock } {
 	# puts "plotPending=<$plotPending>,it=<$it>"
 	append plotPending $it
 	set it ""
-	if { [regexp -indices "\n\\((D|%o)\[0-9\]+\\)" $plotPending  inds] } {
+	if { [regexp -indices "\n\\((C|%i)\[0-9\]+\\)" $plotPending  inds] } {
 	    set it [string range $plotPending [lindex $inds 0] end]
 	    set plotPending [string range $plotPending 0 [lindex $inds 0]]
 	    set data $plotPending
