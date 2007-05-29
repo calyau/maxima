@@ -304,7 +304,7 @@
           ((rationalp res)
            (list '(rat simp) (numerator res) (denominator res)))
           ((and (symbolp res) 
-                (setf bf (maxima-nregex::regex "[0-9]*\\.*[0-9]*[b,B]+[+,-]*[0-9]+" (string res))) )
+                (setf bf (maxima-nregex::regex "[0-9]*\\.*[0-9]*[bB]+[+-]*[0-9]+" (string res))) )
            (with-input-from-string 
              (s (concatenate 'string (car bf) "$"))
              (third (mread s)) ))
