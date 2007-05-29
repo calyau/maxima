@@ -64,6 +64,10 @@ parsetoken("2.3e10");
 2.3e10$
 parsetoken(".25e-1");
 0.025$
+2*parsetoken("2.3b1");
+4.6b1$
+parsetoken(".25b-1");
+2.5b-2$
 parsetoken("");
 false$
 parsetoken("foo");
