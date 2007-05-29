@@ -49,10 +49,6 @@ sqrt(5)$
 determinant(7*%i + 5);
 7*%i + 5$
 
-block([matrix_element_add:'f, matrix_element_mult:'g],
-  determinant( [a,b],[c,d] ) );
-f(f(0,g(1,a,d)),g(-1,b,c))$
-
 (remove([a,b],scalar),0);
 0$
 
