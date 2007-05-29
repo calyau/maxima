@@ -1,9 +1,9 @@
-Here are some suggestions and tips for writing regression tests. This isn't 
-official policy.  Barton Willis
+Suggestions and tips for writing test files
+Barton Willis
 
-(1) A regression test file contains pairs of expressions. The first
+(1) test file contains pairs of expressions. The first
 expression is the input, and the second is the expected output; for
-example
+example, here are two tests:
 
 x + 0;
 x$
@@ -13,12 +13,12 @@ x - x;
 
 You may terminate each line with either a semicolon or a dollar
 sign. To keep the file somewhat organized, terminate the input line
-with a semicolon and the output with a dollar sign. It's helpful to
+with a semicolon and the expected output with a dollar sign. It's helpful to
 separate each input / expected output pair with a blank line.
 
 (2) Name your file "rtest_<a word that describes its contents>.mac".
-For example, "rtest_abs.mac" is a good name for a regression
-test for the absolute value function.
+For example, "rtest_abs.mac" is a good name for tests for the absolute 
+value function.
 
 (3) If the input is something that doesn't need to be checked, make a
 compound statement with the last statement being 0. Thus
@@ -29,22 +29,20 @@ compound statement with the last statement being 0. Thus
 abs(x);
 x$
 
-(4) If a test needs a non-default value for an option variable, try to
+(4) If a test needs to use a non-default value for an option variable, try to
 make the change local instead of global. For example
-
 
 is (x < 1), prederror : false;
 unknown$
 
 Doing so keeps your test from modifying the global environment.
 
-(5) The first line of the regression test should be 
+(5) The first line of the test file should be 
 
 (kill(all),0);
 0$
 
-(6) From a Maxima input prompt, use the 'batch' function to run your
-regression test:
+(6) From a Maxima input prompt, use the 'batch' function to run your test:
 
      (%i1) batch("rtest_abs.mac", 'test);
      Error log on #<output stream rtest_abs.ERR>
@@ -62,7 +60,7 @@ should be something like
 (forget(x > 0), remvalue(a), remfunction(f),0);
 0$
 
-(8) To append a regression test to the main Maxima test suite,
+(8) To append a test file to the main Maxima test suite,
 you'll need to append the file name to the list in the file
 /tests/testsuite.lisp. If your test has known errors, you'll need to
 include this data into testsuite.lisp. To illustrate, the tests
@@ -70,13 +68,13 @@ include this data into testsuite.lisp. To illustrate, the tests
 are known bugs, append ((mlist) "rtest_abs" 42 43) to the file 
 list in testsuite.lisp.
 
-Also, you'll need to append the name of the regression test to
+Also, you'll need to append the name of the test file to
 makefile.am. Finally, build Maxima and run the test suite. If all goes
-well, commit the new regression test.
+well, commit the new test file.
 
 (9) Other:
 
-(a) Check that your regression test runs multiple times without error. After
+(a) Check that your test runs multiple times without error. After
 appending a new test to Maxima's test suite, make sure that run_testsuite() 
 runs multiple times without error.
 
@@ -87,7 +85,7 @@ the 'boundary' cases; these are things like max(), min(), apply("*",[]), ....
 
 (c) Check the sourceforge bug list for all reported bugs for the functions(s)
 you are testing. Include tests for these bugs; also put a comment in your
-regression test file that references the bug report:
+test file that references the bug report:
 
 /*  See SF Bug #  771061 */
 
@@ -108,12 +106,35 @@ identity:
 hgfred([v+1/2],[2*v+1],2*%i*z);
 4^(v/2)*bessel_j(v,z)*gamma(v+1)*exp(%i*z)/z^v$
 
-(f) Maxima uses 'ratsimp' to check that the output matches the expected
-output. Thus the test
+(f) Maxima evaluates the input, but only simplifies the expected output. Thus
+a test such as
 
-cos(x)^2 + sin(x)^2;
-1$
+  makelist(sin(k * %pi),k,1,5);
+  makelist(0,k,1,5)$
 
-will fail. 
+will fail. You'll need to write the test as either 
+
+  makelist(sin(k * %pi),k,1,5);
+  ''(makelist(0,k,1,5))$
+
+or 
+
+  makelist(sin(k * %pi),k,1,5);
+  [0,0,0,0,0]$
+
+To get a test to pass,you may need to insert a few parenthesis in the 
+expected output; for example
+
+  -a/2;
+  -(a/2)$
+
+Another way to handle such things is to use explicit calls to ratsimp:
+
+  ratsimp(-a/2);
+  ''(ratsimp(-a/2))$
+
+To test a function such as factor, you do not want to apply ratsimp.
+
+
 
 
