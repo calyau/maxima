@@ -51,6 +51,23 @@ To resolve the problem:
     (the name of the GUI toolkit for xmaxima).
 
 
+Data Execution Prevention (DEP)
+-------------------------------
+Sometimes not only Maxima GUI but also command line Maxima
+doesn't work (maxima.bat starts and immediately quits).
+Quite probably the problem is caused by Windows DEP.
+Some Lisp implementations execute code in data areas of memory. 
+Windows DEP sees that and blocks it (because some malicious programs 
+execute code in data areas too).
+
+Solution:  
+
+  Include the full program path of the Maxima executable, for example: 
+  C:\Program Files\Maxima-5.12.0\lib\maxima\5.12.0\binary-gcl\maxima.exe 
+  in the list of DEP exceptions 
+  (Control Panel -> System -> Advanced -> Performance -> DEP)
+
+
 Out of Environment Space
 ------------------------
 
