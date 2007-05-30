@@ -4,10 +4,13 @@ Clisp, CMUCL, Scieneer Common Lisp (SCL), GCL (ANSI-enabled only)
 and SBCL can compile and execute Maxima.
 Allegro Common Lisp and OpenMCL might also work, but have not
 been fully tested.
+
 Ports to other ANSI Common Lisps should be straightforward
 and are welcome; please post a message on the Maxima mailing list
 if you are interested in working on a port.
-See also the ports page at the Maxima wiki:
+
+For specific Maxima and Lisp version number combinations,
+see the ports page at the Maxima wiki:
 http://maxima.sourceforge.net/wiki/index.php?Maxima%20ports
 
 When Maxima is recompiled, the Lisp implementation is selected by
@@ -31,9 +34,6 @@ Clisp <http://clisp.cons.org>, <http://clisp.sourceforge.net>
 
 	Clisp includes GNU readline support, so Maxima has
 advanced command-line editing facilities when built with it.
-
-Clisp versions: Clisp version 2.33.2 or later is recommended.
-Clisp 2.30 is not compatible with Maxima.
 
 Clisp is compiled to bytecodes, so Maxima running on Clisp is
 substantially slower than on Lisps compiled to machine instructions.
@@ -78,7 +78,6 @@ GCL <http://savannah.gnu.org/projects/gcl>
 support, so Maxima has advanced command-line editing facilities
 when built with it. GCL produces a fast Maxima exectuable.
 
-GCL versions: GCL 2.6.5 and 2.6.7 are known to work for Maxima.
 Only the ANSI-enabled version of GCL works with Maxima, i.e.,
 when GCL is built, it must be configured with the --enable-ansi flag,
 i.e., execute ``./configure --enable-ansi'' in the build directory
@@ -99,8 +98,6 @@ SBCL <http://sbcl.sourceforge.net>
 but most notably, it is simpler to rebuild SBCL than CMUCL.
 
 rmaxima is recommended for use with SBCL. See CMUCL above.
-
-SBCL versions 0.8.9 and 0.9.4 are known to work.
 
 There are SBCL implementations only for Unix-like systems
 (not MS Windows).
