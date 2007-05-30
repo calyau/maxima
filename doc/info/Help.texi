@@ -310,28 +310,38 @@ Example:
 
 @example
 (%i1) ?? integ
- 0: (maxima.info)Introduction to Elliptic Functions and Integrals.
- 1: Functions and Variables for Elliptic Integrals.
- 2: Integration.
- 3: Introduction to Integration.
- 4: Functions and Variables for Integration.
- 5: askinteger :Functions and Variables for Simplification.
- 6: integerp :Functions and Variables for Miscellaneous Options.
- 7: integrate :Functions and Variables for Integration.
- 8: integrate_use_rootsof :Functions and Variables for Integration.
- 9: integration_constant_counter :Functions and Variables for Integration.
+ 0: Functions and Variables for Elliptic Integrals
+ 1: Functions and Variables for Integration
+ 2: Introduction to Elliptic Functions and Integrals
+ 3: Introduction to Integration
+ 4: askinteger  (Functions and Variables for Simplification)
+ 5: integerp  (Functions and Variables for Miscellaneous Options)
+ 6: integer_partitions  (Functions and Variables for Sets)
+ 7: integrate  (Functions and Variables for Integration)
+ 8: integrate_use_rootsof  (Functions and Variables for Integration)
+ 9: integration_constant_counter  (Functions and Variables for Integration)
+ 10: nonnegintegerp  (Functions and Variables for linearalgebra)
 Enter space-separated numbers, `all' or `none': 7 8
 
-Info from file /use/local/maxima/doc/info/maxima.info:
- - Function: integrate (expr, var)
- - Function: integrate (expr, var, a, b)
-     Attempts to symbolically compute the integral of `expr' with
-     respect to `var'.  `integrate (expr, var)' is an indefinite
-     integral, while `integrate (expr, var, a, b)' is a definite
+ -- Function: integrate (<expr>, <x>)
+ -- Function: integrate (<expr>, <x>, <a>, <b>)
+     Attempts to symbolically compute the integral of <expr> with
+     respect to <x>.  `integrate (<expr>, <x>)' is an indefinite
+     integral, while `integrate (<expr>, <x>, <a>, <b>)' is a definite
      integral, [...]
+     
+ -- Option variable: integrate_use_rootsof
+     Default value: `false'
+
+     When `integrate_use_rootsof' is `true' and the denominator of a
+     rational function cannot be factored, `integrate' returns the
+     integral in a form which is a sum over the roots (not yet known)
+     of the denominator.
+     [...]
 @end example
 
-In this example, items 7 and 8 were selected.
+In this example, items 7 and 8 were selected 
+(output is shortened as indicated by @code{[...]}.
 All or none of the items could have been selected by entering @code{all} or @code{none},
 which can be abbreviated @code{a} or @code{n}, respectively.
 
