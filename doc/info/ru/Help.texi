@@ -1,7 +1,7 @@
 @c Language=Russian
 @c Encoding=CP1251
 @c File=Help.texi 
-@c OriginalRevision=1.21
+@c OriginalRevision=1.23
 
 @menu
 * Lisp и Maxima::            
@@ -150,9 +150,9 @@ Lisp функция @code{mfuncall} вызывает Maxima функцию.
 @c WHAT ABOUT GC IN GCL ON MS WINDOWS ??
 @c SHOULD WE SAY SOMETHING ABOUT GC FOR OTHER LISPS ??
 Под GCL, на UNIX системах, где доступны вызовы системы ``mprotect'', 
-(влючая SUN OS 4.0 и некоторые версии BSD) доступна прямая сборка мусора.   
+(включая SUN OS 4.0 и некоторые версии BSD) доступна прямая сборка мусора.   
 Это ограничивает сборку страницами, в которые недавно производилась запись.    
-См. документацию по GCL по клучевым словам ALLOCATE и GBC. На уровне
+См. документацию по GCL по ключевым словам ALLOCATE и GBC. На уровне
 Lisp, установка (setq si::*notify-gbc* t) поможет вам определить, какие области
 памяти, возможно, требуют больше пространства.
 
@@ -315,30 +315,40 @@ _
 
 @example
 (%i1) ?? integ
- 0: (maxima.info)Introduction to Elliptic Functions and Integrals.
- 1: Definitions for Elliptic Integrals.
- 2: Integration.
- 3: Introduction to Integration.
- 4: Definitions for Integration.
- 5: askinteger :Definitions for Simplification.
- 6: integerp :Definitions for Miscellaneous Options.
- 7: integrate :Definitions for Integration.
- 8: integrate_use_rootsof :Definitions for Integration.
- 9: integration_constant_counter :Definitions for Integration.
+ 0: Functions and Variables for Elliptic Integrals
+ 1: Functions and Variables for Integration
+ 2: Introduction to Elliptic Functions and Integrals
+ 3: Introduction to Integration
+ 4: askinteger  (Functions and Variables for Simplification)
+ 5: integerp  (Functions and Variables for Miscellaneous Options)
+ 6: integer_partitions  (Functions and Variables for Sets)
+ 7: integrate  (Functions and Variables for Integration)
+ 8: integrate_use_rootsof  (Functions and Variables for Integration)
+ 9: integration_constant_counter  (Functions and Variables for Integration)
+ 10: nonnegintegerp  (Functions and Variables for linearalgebra)
 Enter space-separated numbers, `all' or `none': 7 8
 
-Info from file /use/local/maxima/doc/info/maxima.info:
- - Function: integrate (expr, var)
- - Function: integrate (expr, var, a, b)
-     Attempts to symbolically compute the integral of `expr' with
-     respect to `var'.  `integrate (expr, var)' is an indefinite
-     integral, while `integrate (expr, var, a, b)' is a definite
+ -- Function: integrate (<expr>, <x>)
+ -- Function: integrate (<expr>, <x>, <a>, <b>)
+     Attempts to symbolically compute the integral of <expr> with
+     respect to <x>.  `integrate (<expr>, <x>)' is an indefinite
+     integral, while `integrate (<expr>, <x>, <a>, <b>)' is a definite
      integral, [...]
+     
+ -- Option variable: integrate_use_rootsof
+     Default value: `false'
+
+     When `integrate_use_rootsof' is `true' and the denominator of a
+     rational function cannot be factored, `integrate' returns the
+     integral in a form which is a sum over the roots (not yet known)
+     of the denominator.
+     [...]
 @end example
 
-В этом примере, элементы были выбраны элементы 7 и 8.
-Все или ни один из элементов могут быть выбраны при вводе @code{all} или @code{none}, 
-что можно сократить до @code{a} и @code{n} соотвественно.
+В этом примере, были выбраны элементы 7 и 8
+(вывод команды сокращен, что обозначено @code{[...]}).
+Все элементы или ни один из элементов могут быть выбраны при помощи @code{all} 
+или @code{none}, что можно также сократить до @code{a} и @code{n} соотвественно.
 
 @pxref{Запрос подсказки из Maxima сессии}
 

@@ -1,7 +1,7 @@
 @c Language=Russian
 @c Encoding=CP1251
 @c File=Introduction.texi 
-@c OriginalRevision=1.5
+@c OriginalRevision=1.7
 Запустите Maxima с помощью команды "maxima". Maxima покажет информацию о версии 
 и приглашение на ввод. Завершайте каждую команду Maxima символом ";" (или 
 "$" в случае, если хотите подавить вывод команды). 
@@ -28,46 +28,71 @@ provides bug reporting information.
 [wfs@@chromium]$
 @end example
 
-Maxima может искать info страницы.  Используйте 
-команду @kbd{describe}  для того, чтобы показать все команды и переменные, 
-содержащие заданную строку, и, возможно, их документацию. 
-Знак вопроса @code{?} - это аббревиатура для команды @code{describe}:
+Maxima может искать в info страницах.  Используйте команду @kbd{describe} 
+для того, чтобы получить информацию об определенной команде или 
+показать все команды и переменные, содержащие в имени заданную строку. 
+Знак вопроса @code{?} (точный поиск) и двойной вопрос @code{??} (поиск по подстроке)
+являются аббревиатурами для команды @code{describe}:
 
 @example
-(%i1) ? integ
+(%i1) ?? integ
+ 0: Functions and Variables for Elliptic Integrals
+ 1: Functions and Variables for Integration
+ 2: Introduction to Elliptic Functions and Integrals
+ 3: Introduction to Integration
+ 4: askinteger  (Functions and Variables for Simplification)
+ 5: integerp  (Functions and Variables for Miscellaneous Options)
+ 6: integer_partitions  (Functions and Variables for Sets)
+ 7: integrate  (Functions and Variables for Integration)
+ 8: integrate_use_rootsof  (Functions and Variables for Integration)
+ 9: integration_constant_counter  (Functions and Variables for Integration)
+ 10: nonnegintegerp  (Functions and Variables for linearalgebra)
+Enter space-separated numbers, `all' or `none': 5 4
 
- 0: (maxima.info)Introduction to Elliptic Functions and Integrals.
- 1: Definitions for Elliptic Integrals.
- 2: Integration.
- 3: Introduction to Integration.
- 4: Definitions for Integration.
- 5: askinteger :Definitions for Simplification.
- 6: integerp :Definitions for Miscellaneous Options.
- 7: integrate :Definitions for Integration.
- 8: integrate_use_rootsof :Definitions for Integration.
- 9: integration_constant_counter :Definitions for Integration.
-Enter space-separated numbers, `all' or `none': 6 5
+ -- Function: integerp (<expr>)
+     Returns `true' if <expr> is a literal numeric integer, otherwise
+     `false'.
 
-Info from file /usr/local/info/maxima.info:
- - Function: integerp (<expr>)
-     Returns `true' if <expr> is an integer, otherwise `false'.
+     `integerp' returns false if its argument is a symbol, even if the
+     argument is declared integer.
+
+     Examples:
+
+          (%i1) integerp (0);
+          (%o1)                         true
+          (%i2) integerp (1);
+          (%o2)                         true
+          (%i3) integerp (-17);
+          (%o3)                         true
+          (%i4) integerp (0.0);
+          (%o4)                         false
+          (%i5) integerp (1.0);
+          (%o5)                         false
+          (%i6) integerp (%pi);
+          (%o6)                         false
+          (%i7) integerp (n);
+          (%o7)                         false
+          (%i8) declare (n, integer);
+          (%o8)                         done
+          (%i9) integerp (n);
+          (%o9)                         false
 
 
- - Function: askinteger (expr, integer)
- - Function: askinteger (expr)
- - Function: askinteger (expr, even)
- - Function: askinteger (expr, odd)
-     `askinteger (expr, integer)' attempts to determine from the
-     `assume' database whether `expr' is an integer.  `askinteger' will
-     ask the user if it cannot tell otherwise, and attempt to install
-     the information in the database if possible.  `askinteger (expr)'
-     is equivalent to `askinteger (expr, integer)'.
+ -- Function: askinteger (<expr>, integer)
+ -- Function: askinteger (<expr>)
+ -- Function: askinteger (<expr>, even)
+ -- Function: askinteger (<expr>, odd)
+     `askinteger (<expr>, integer)' attempts to determine from the
+     `assume' database whether <expr> is an integer.  `askinteger'
+     prompts the user if it cannot tell otherwise, and attempt to
+     install the information in the database if possible.  `askinteger
+     (<expr>)' is equivalent to `askinteger (<expr>, integer)'.
 
-     `askinteger (expr, even)' and `askinteger (expr, odd)' likewise
-     attempt to determine if `expr' is an even integer or odd integer,
-     respectively.
+     `askinteger (<expr>, even)' and `askinteger (<expr>, odd)'
+     likewise attempt to determine if <expr> is an even integer or odd
+     integer, respectively.
 
-(%o1)                         false
+(%o1)                                true
 @end example
 
 Для того, чтобы использовать результат в последующих 
