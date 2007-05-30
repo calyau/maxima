@@ -296,18 +296,19 @@
                              (error nil nil)))) ; ignore errors
          bf)
     (cond ((or (integerp res)
-               (floatp res))
+               (typep res 'long-float))
              ;; Maxima does not accept complex numbers, etc.
-             ;; parsetoken will still accept Lisp syntax, e.g. #C(2 `,0), 2.1s1
+             ;; parsetoken will still accept Lisp syntax, e.g. #C(2 `,0)
              ;; but we're not fixing that for now
            res)
           ((rationalp res)
            (list '(rat simp) (numerator res) (denominator res)))
           ((and (symbolp res) 
-                (setf bf (maxima-nregex::regex "[0-9]*\\.*[0-9]*[bB]+[+-]*[0-9]+" (string res))) )
-           (with-input-from-string 
-             (s (concatenate 'string (car bf) "$"))
-             (third (mread s)) ))
+                (setf bf (car (or (maxima-nregex::regex "^[+-]?[0-9]+\\.?[0-9]*[bB][+-]?[0-9]+$" (string res))
+                                  (maxima-nregex::regex "^[+-]?\\.[0-9]+[bB][+-]?[0-9]+$" (string res)) ))))
+             (with-input-from-string 
+               (s (concatenate 'string bf "$"))
+               (third (mread s)) ))
           (t nil) )))
 
 ;;  $sconcat for lists, allows an optional user defined separator string
