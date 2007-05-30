@@ -510,7 +510,7 @@
 (defun coerce-float-fun (expr &optional lvars)
   (cond ((and (consp expr) (functionp expr))
          expr)
-        ((and (symbolp expr) (not (member expr lvars)))
+        ((and (symbolp expr) (not (member expr lvars)) (not ($constantp expr)))
          (cond
        ((fboundp expr)
         (symbol-function expr))
