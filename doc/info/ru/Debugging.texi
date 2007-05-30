@@ -1,7 +1,7 @@
 @c Language=Russian
 @c Encoding=CP1251
 @c File=Debugging.texi 
-@c OriginalRevision=1.18
+@c OriginalRevision=1.19
 
 
 @c end concepts Debugging

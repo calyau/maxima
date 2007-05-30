@@ -4,7 +4,7 @@
 @c Language=Russian
 @c Encoding=CP1251
 @c File=maxima.texi 
-@c OriginalRevision=1.48
+@c OriginalRevision=1.49
 
 @c 2000-04-17 Jim Van Zandt <jrv@vanzandt.mv.com> Added header,
 @c info directory entry, reference to introduction chapter, and menu
@@ -136,9 +136,9 @@ DOE Macsyma.  Копияия DOE Macsyma поддерживалась профессором Вильямом
 * Miscellaneous Options::       Options with a global effect on Maxima.
 * Rules and Patterns::          User defined pattern matching and
                                 simplification rules.
-* Lists::                       Manipulation of lists.
+* Списки::                      Работа со списками.
 * Sets::                        Manipulation of sets.
-* Function Definition::         Defining functions.
+* Определение функций::         Определение функций.
 * Program Flow::                Defining Maxima programs.
 * Отладка::                     Отладка Maxima программ.
 
@@ -367,22 +367,22 @@ Rules and Patterns
 * Introduction to Rules and Patterns::  
 * Definitions for Rules and Patterns::  
 
-Lists
+Списки
 
-* Introduction to Lists::       
-* Definitions for Lists::       
+* Введение в работу со спискми::       
+* Функции и переменные для работы со списками::       
 
 Sets
 
 * Introduction to Sets::       
 * Definitions for Sets::       
 
-Function Definition
+Определение функций
 
-* Introduction to Function Definition::  
-* Function::                    
-* Macros::                      
-* Definitions for Function Definition::  
+* Введение в определение функций::  
+* Функции::                    
+* Макросы::                      
+* Функции и переменные для определения функций::  
 
 Program Flow
 

@@ -1,7 +1,7 @@
 @c Language=Russian
 @c Encoding=CP1251
 @c File=Arrays.texi
-@c OriginalRevision=1.14
+@c OriginalRevision=1.15
 
 @menu
 * Функции и переменные для работы с массивами::  

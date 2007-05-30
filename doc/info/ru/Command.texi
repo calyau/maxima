@@ -1,7 +1,7 @@
 @c Language=Russian
 @c Encoding=CP1251
 @c File=Command.texi
-@c OriginalRevision=1.43
+@c OriginalRevision=1.44
 
 @menu
 * ¬ведение в командную строку::

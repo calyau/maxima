@@ -1,7 +1,7 @@
 @c Language=Russian
 @c Encoding=CP1251
 @c File=Ctensor.texi 
-@c OriginalRevision=1.32
+@c OriginalRevision=1.33
 
 
 @menu

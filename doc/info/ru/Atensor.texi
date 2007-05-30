@@ -1,7 +1,7 @@
 @c Language=Russian
 @c Encoding=CP1251
 @c File=Atensor.texi
-@c OriginalRevision=1.8
+@c OriginalRevision=1.9
 
 @menu
 * ¬ведение в пакет atensor::

@@ -1,7 +1,7 @@
 @c Language=Russian
 @c Encoding=CP1251
 @c File=Limits.texi 
-@c OriginalRevision=1.10
+@c OriginalRevision=1.11
 
 
 @menu

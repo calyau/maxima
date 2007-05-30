@@ -1,7 +1,7 @@
 @c Language=Russian
 @c Encoding=CP1251
 @c File=Affine.texi 
-@c OriginalRevision=1.12
+@c OriginalRevision=1.13
 
 @menu
 * Функции и переменные пакета affine::
