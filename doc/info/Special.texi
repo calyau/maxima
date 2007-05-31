@@ -529,7 +529,7 @@ return simplified answer, even if it could.
 @end defvr
 
 @defvr {Option variable} maxpsifracnum
-Default value: 4
+Default value: 6
 
 Let @var{x} be a rational number less than one of the form @code{p/q}.
 If @code{p} is greater than @code{maxpsifracnum}, then
@@ -539,10 +539,10 @@ value.
 @end defvr
 
 @defvr {Option variable} maxpsifracdenom
-Default value: 4
+Default value: 6
 
 Let @var{x} be a rational number less than one of the form @code{p/q}.
-If @code{q} is greater than @code{maxpsifracdeonm}, then
+If @code{q} is greater than @code{maxpsifracdenom}, then
 @code{psi[@var{n}](@var{x})} will not try to return a simplified
 value.
 
