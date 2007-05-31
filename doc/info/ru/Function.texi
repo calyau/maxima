@@ -1,0 +1,2047 @@
+@c Language=Russian
+@c Encoding=CP1251
+@c File=Function.texi 
+@c OriginalRevision=1.47
+
+@menu
+* Введение в определение функций::  
+* Функции::                    
+* Макросы::                      
+* Функции и переменные для определения функций::  
+@end menu
+
+@node Введение в определение функций, Функции, Определение функций, Определение функций
+@section Введение в определение функций
+
+@node Функции, Макросы, Введение в определение функций, Определение функций
+@c NEEDS WORK, THIS TOPIC IS IMPORTANT
+@c MENTION DYNAMIC SCOPE (VS LEXICAL SCOPE)
+@section Функции
+@subsection Обычные функции
+
+Для определения функций в Maxima используется оператор @code{:=}.
+Например
+
+@example
+f(x) := sin(x)
+@end example
+
+@noindent
+определяет функцию @code{f}.
+Функции без имени могут быть созданы при помощи @code{lambda}.
+Например
+
+@example
+lambda ([i, j], ...)
+@end example
+
+@noindent
+может быть использовано вместо @code{f}, и
+
+@example
+f(i,j) := block ([], ...);
+map (lambda ([i], i+1), l)
+@end example
+
+@noindent
+возвращает список с каждым элементом увеличенным на 1.
+
+Можно определить функцию с переменным числом аргументов, 
+присваивая последнему аргументу список дополнительных параметров:
+
+@example
+(%i1) f ([u]) := u;
+(%o1)                      f([u]) := u
+(%i2) f (1, 2, 3, 4);
+(%o2)                     [1, 2, 3, 4]
+(%i3) f (a, b, [u]) := [a, b, u];
+(%o3)               f(a, b, [u]) := [a, b, u]
+(%i4) f (1, 2, 3, 4, 5, 6);
+(%o4)                 [1, 2, [3, 4, 5, 6]]
+@end example
+
+Правая часть определения функции является выражением.  Поэтому,
+если требуется последовательность выражений, то можно
+определить правую часть следующим образом
+
+@example
+f(x) := (expr1, expr2, ...., exprn);
+@end example
+
+В этом случае, значение, возвращаемое функцией, будет равно значению @var{exprn}.
+
+Использование команды возврата @code{return} возможно тоько внутри программного 
+блока @code{block}. Блок
+
+@example
+block ([], expr1, ..., if (a > 10) then return(a), ..., exprn)
+@end example
+
+сам по себе является выражением и может использоваться в правой части
+определения функции.  При этом, команда возврата может быть выполнена
+раньше достижения последнего выражения.
+
+@c COPY THIS STUFF TO @defun block AS NEEDED
+@c ESPECIALLY STUFF ABOUT LOCAL VARIABLES
+Первый элемент блока @code{[]} может содержать список переменных
+и присваиваемых им значений, например, такой как @code{[a: 3, b, c: []]}.
+В результате, три переменные @code{a},@code{b} и @code{c} 
+не будут ссылаться на свои глобальные значения, а будут иметь локальные
+значения внутри блока или внутри функций, вызываемых из этого блока.
+Это называется термином @i{динамическое} связывание, поскольку локальные переменные
+сохраняются от начала выполнения блока до его завершения.
+Как только выполнение возвращается из блока, или его выполнение прерывается,
+то старое значения переменных (если существуют) восстанавливаются.
+Это хороший метод защиты значения переменных.
+Отметим, что присваивание начальных значений переменных в блоке выполняется
+параллельно.   Это означает, что если сделать @code{c: a}, в вышеизложенном примере,
+то значение @code{c} будет равно значению @code{a} до входа в блок и до присваивания
+@code{a} локального значения.   Поэтому, выполнение кода
+
+@example
+block ([a: a], expr1, ... a: a+3, ..., exprn)
+@end example
+
+защитит внешнее значение переменной @code{a} от изменения внутри блока, и, с другой
+стороны, обеспечит доступ к этому значению.   Иными словами, правая часть присваивания
+вычисляется до выполнения каких-либо присваиваний.
+Простое использование @code{block ([x], ...} приводит к тому, что @code{x} внутри блока
+равна сама себе, как при запуске новой сессии @b{Maxima}.
+
+Фактические параметры функции трактуются точно так же, как локальные переменные 
+в блоке.  Таким образом, при определении
+
+@example
+f(x) := (expr1, ..., exprn);
+@end example
+
+и вызове
+
+@example
+f(1);
+@end example
+
+создается контекст, аналогичный
+
+@example
+block ([x: 1], expr1, ..., exprn)
+@end example
+
+Внутри функций, если правая часть определения функции может вычисляться
+во время выполнения, полезно использовать @code{define} и, возможно, @code{buildq}.  
+
+@subsection Функции-массивы
+
+Функции-массивы сохраняют значение функции при первом вызове с определенными значениями параметров,
+и возвращают сохраненное значение без перевычисления при последующих вызовах с теми же 
+параметрами.  Такие функции часто называются ``@i{функции с памятью}''.
+
+Имена функций-массивов добавляются к глобальной переменной @code{arrays}
+(не к глобальной переменной @code{functions}).
+Функция @code{arrayinfo} возвращает для таких функций список сохраненных элементов, а
+функция @code{listarray} возвращает сохраненные значения. 
+Функции @code{dispfun} и @code{fundef} возвращают определения функций-массива.
+
+Функция @code{arraymake} создает вызов функции-массива, аналогично тому как
+@code{funmake} делает для обычных функций.
+Функция @code{arrayapply} применяет функцию-массив к аргументам, аналогично тому
+как @code{apply} делает для обычных функций.
+Не существует полного аналога функции @code{map} для функций-массивов, но
+@code{map(lambda([@var{x}], @var{a}[@var{x}]), @var{L})} или 
+@code{makelist(@var{a}[@var{x}], @var{x}, @var{L})}, где @var{L} -- список,
+действует очень похоже.
+
+Функция @code{remarray} удаляет определение функции-массива (включая сохраненные значения),
+аналогично тому как @code{remfunction} делает для обычных функций.
+
+Вызов @code{kill(@var{a}[@var{x}])} удаляет сохраненное значение функции-массива @var{a}
+для аргумента @var{x}. При следующем вызове @var{a} с аргументом @var{x}, функция
+будет перевычислена.
+Не существует способа сразу удалить все сохраненные значения функции-массива кроме как
+вызов @code{kill(@var{a})} или @code{remarray(@var{a})}, что также удаляет определение
+функции.
+
+@node Макросы, Функции и переменные для определения функций, Функции, Определение функций
+@section Макросы
+
+@deffn {Функция} buildq (@var{L}, @var{expr})
+Подставляет значения переменных, определяемых списком @var{L}, в выражение @var{expr}
+параллельно без перевычисления @var{expr}.
+Результирующее выражение упрощается, но не вычисляется после выполнения
+@code{buildq}.
+
+Элементы списка @var{L} являются символами или операторами присваивания @code{@var{symbol}: @var{value}},
+вычисляемые параллельно.
+Т.е. значение переменных в правой части присваиваний вычисляются в контексте, 
+в котором вызван @code{buildq}, но не в контексте списка присваиваний @var{L}.
+Если для некоторых переменных в списке @var{L} не задано значений, то для них
+сохраняются значения из контекста вызова @code{buildq}.
+
+Переменные из списка @var{L} подставляются в @var{expr} параллельно.
+Т.е. значение каждой подстановки определяется до подстановки, и
+одна переменная не оказывает никакого влияния на другую.
+
+Если переменная @var{x} присутствует в @var{expr} в виде @code{splice (@var{x})},
+то @var{x} должна иметь значение в форме списка, и этот список будет вместо подстановки
+интерполирован в @var{expr}.
+
+Любые другие переменные в @var{expr}, не присутствующие в @var{L}, переносятся в результат буквально
+без изменения, даже в том случае, когда имеют значение в контексте вызова @code{buildq}.
+
+Примеры:
+
+Переменной @code{a} явно присвоено значение @code{x},
+тогда как @code{b} имеет значение (а именно 29) из контекста вызова,
+а @code{c} сохраняется неизменным.
+Результат остается невычисленным до явного применения @code{''%}.
+
+@c ===beg===
+@c (a: 17, b: 29, c: 1729)$
+@c buildq ([a: x, b], a + b + c);
+@c ''%;
+@c ===end===
+@example
+(%i1) (a: 17, b: 29, c: 1729)$
+(%i2) buildq ([a: x, b], a + b + c);
+(%o2)                      x + c + 29
+(%i3) ''%;
+(%o3)                       x + 1758
+@end example
+
+Переменная @code{e} равна списку, который подставляется в @code{foo} и
+интерполируется в @code{bar}.
+
+@c ===beg===
+@c buildq ([e: [a, b, c]], foo (x, e, y));
+@c buildq ([e: [a, b, c]], bar (x, splice (e), y));
+@c ===end===
+@example
+(%i1) buildq ([e: [a, b, c]], foo (x, e, y));
+(%o1)                 foo(x, [a, b, c], y)
+(%i2) buildq ([e: [a, b, c]], bar (x, splice (e), y));
+(%o2)                  bar(x, a, b, c, y)
+@end example
+
+Результат подстановки упрощается.
+Если бы упрощение выполнилось до подстановки, то нижеследующие результаты
+совпали бы.
+@c ===beg===
+@c buildq ([e: [a, b, c]], splice (e) + splice (e));
+@c buildq ([e: [a, b, c]], 2 * splice (e));
+@c ===end===
+@example
+(%i1) buildq ([e: [a, b, c]], splice (e) + splice (e));
+(%o1)                    2 c + 2 b + 2 a
+(%i2) buildq ([e: [a, b, c]], 2 * splice (e));
+(%o2)                        2 a b c
+@end example
+
+Значения переменных в @var{L} присваиваются параллельно, при последовательном
+присваивании первый результат был бы равен @code{foo (b, b)}.
+Подстановки осуществляются параллельно. Сравните второй результат с результатом 
+функции @code{subst}, которая выполняет подстановки последовательно.
+
+@c ===beg===
+@c buildq ([a: b, b: a], foo (a, b));
+@c buildq ([u: v, v: w, w: x, x: y, y: z, z: u], bar (u, v, w, x, y, z));
+@c subst ([u=v, v=w, w=x, x=y, y=z, z=u], bar (u, v, w, x, y, z));
+@c ===end===
+@example
+(%i1) buildq ([a: b, b: a], foo (a, b));
+(%o1)                       foo(b, a)
+(%i2) buildq ([u: v, v: w, w: x, x: y, y: z, z: u], bar (u, v, w, x, y, z));
+(%o2)                 bar(v, w, x, y, z, u)
+(%i3) subst ([u=v, v=w, w=x, x=y, y=z, z=u], bar (u, v, w, x, y, z));
+(%o3)                 bar(u, u, u, u, u, u)
+@end example
+
+Составим список уравнений с переменными в левой части и со значениями этих
+переменных в правой. Функция @code{macroexpand} выводит выражение,
+возвращаемое @code{show_values}.
+
+@c ===beg===
+@c show_values ([L]) ::= buildq ([L], map ("=", 'L, L));
+@c (a: 17, b: 29, c: 1729)$
+@c show_values (a, b, c - a - b);
+@c macroexpand (show_values (a, b, c - a - b));
+@c ===end===
+@example
+(%i1) show_values ([L]) ::= buildq ([L], map ("=", 'L, L));
+(%o1)   show_values([L]) ::= buildq([L], map("=", 'L, L))
+(%i2) (a: 17, b: 29, c: 1729)$
+(%i3) show_values (a, b, c - a - b);
+(%o3)          [a = 17, b = 29, c - b - a = 1683]
+(%i4) macroexpand (show_values (a, b, c - a - b));
+(%o4)    map(=, '([a, b, c - b - a]), [a, b, c - b - a])
+@end example
+
+@end deffn
+
+@deffn {Функция} macroexpand (@var{expr})
+Если @code{expr} является вызовом макро-функции, то @code{macroexpand} возвращает макро-расширение 
+@var{expr} без его вычисления.  В противном случае, @code{macroexpand} возвращает @var{expr}.
+
+Если макро-расширение @var{expr} само является макро-вызовом, то оно тоже раскрывается.
+
+Функция @code{macroexpand} не вычисляет свои аргументы.
+Но если раскрытие макро-функций приводит к побочным эффектам, то эти эффекты
+выполняются.
+
+См. также @code{::=}, @code{macros} и @code{macroexpand1}.
+
+Примеры
+
+@c ===beg===
+@c g (x) ::= x / 99;
+@c h (x) ::= buildq ([x], g (x - a));
+@c a: 1234;
+@c macroexpand (h (y));
+@c h (y);
+@c ===end===
+@example
+(%i1) g (x) ::= x / 99;
+                                    x
+(%o1)                      g(x) ::= --
+                                    99
+(%i2) h (x) ::= buildq ([x], g (x - a));
+(%o2)            h(x) ::= buildq([x], g(x - a))
+(%i3) a: 1234;
+(%o3)                         1234
+(%i4) macroexpand (h (y));
+                              y - a
+(%o4)                         -----
+                               99
+(%i5) h (y);
+                            y - 1234
+(%o5)                       --------
+                               99
+@end example
+
+@end deffn
+
+@deffn {Функция} macroexpand1 (@var{expr}) 
+Если @code{expr} является вызовом макро-функции, то @code{macroexpand1} возвращает макро-расширение 
+@var{expr} без его вычисления.  В противном случае, @code{macroexpand1} возвращает @var{expr}.
+
+Функция @code{macroexpand1} не вычисляет свои аргументы.
+Но если раскрытие макро-функций приводит к побочным эффектам, то эти эффекты
+выполняются.
+
+Если макро-расширение @var{expr} само является макро-вызовом, то оно не раскрывается.
+
+См. также @code{::=}, @code{macros}, and @code{macroexpand}.
+
+Примеры:
+
+@c ===beg===
+@c g (x) ::= x / 99;
+@c h (x) ::= buildq ([x], g (x - a));
+@c a: 1234;
+@c macroexpand1 (h (y));
+@c h (y);
+@c ===end===
+@example
+(%i1) g (x) ::= x / 99;
+                                    x
+(%o1)                      g(x) ::= --
+                                    99
+(%i2) h (x) ::= buildq ([x], g (x - a));
+(%o2)            h(x) ::= buildq([x], g(x - a))
+(%i3) a: 1234;
+(%o3)                         1234
+(%i4) macroexpand1 (h (y));
+(%o4)                       g(y - a)
+(%i5) h (y);
+                            y - 1234
+(%o5)                       --------
+                               99
+@end example
+
+@end deffn
+
+@defvr {Глобальная переменная} macros
+Значение по умолчанию: @code{[]}
+
+@code{macros} есть список всех определенных пользователем макро-функций.
+Оператор определения макро-функции @code{::=} добавляет новую макро-функцию к этому списку,
+а @code{kill}, @code{remove} и @code{remfunction} удаляют ее из него.
+
+См.также @code{infolists}.
+
+@end defvr
+
+@deffn {Функция} splice (@var{a})
+Интерполирует список, обозначенный атомом @var{a} в выражение, но только если
+@code{splice} присутствует внутри @code{buildq}.
+В противном случае @code{splice} рассматривается как неопределенная функция.
+Если переменная @var{a} присутствует внутри @code{buildq} сама по себе без @code{splice},
+то вместо @var{a} подставляется (не интерполируется) соответствующий список.
+Аргументом @code{splice} может быть только атом, но не явный список или выражение,
+дающее список в качестве значения.
+
+Обычно, @code{splice} применяется для задания аргументов функции или оператора.
+Для функции @code{f}, выражение @code{f (splice (@var{a}))} внутри @code{buildq}
+преобразуется в @code{f (@var{a}[1], @var{a}[2], @var{a}[3], ...)}.
+Для оператора @code{o}, выражение @code{"o" (splice (@var{a})} внутри @code{buildq}
+преобразуется в @code{"o" (@var{a}[1], @var{a}[2], @var{a}[3], ...)},
+где @code{o} может быть оператором любого вида (обычно оператором с многими аргументами).
+Обратите внимание, что оператор должен быть заключен в двойные кавычки @code{"}.
+
+Примеры:
+
+@c ===beg===
+@c buildq ([x: [1, %pi, z - y]], foo (splice (x)) / length (x));
+@c buildq ([x: [1, %pi]], "/" (splice (x)));
+@c matchfix ("<>", "<>");
+@c buildq ([x: [1, %pi, z - y]], "<>" (splice (x)));
+@c ===end===
+@example
+(%i1) buildq ([x: [1, %pi, z - y]], foo (splice (x)) / length (x));
+                       foo(1, %pi, z - y)
+(%o1)                -----------------------
+                     length([1, %pi, z - y])
+(%i2) buildq ([x: [1, %pi]], "/" (splice (x)));
+                                1
+(%o2)                          ---
+                               %pi
+(%i3) matchfix ("<>", "<>");
+(%o3)                          <>
+(%i4) buildq ([x: [1, %pi, z - y]], "<>" (splice (x)));
+(%o4)                   <>1, %pi, z - y<>
+@end example
+
+@end deffn
+
+
+@c end concepts Function Definition
+@node Функции и переменные для определения функций,  , Макросы, Определение функций
+@section Функции и переменные для определения функций
+
+@deffn {Функция} apply (@var{F}, [@var{x_1}, ..., @var{x_n}])
+Составляет и вычисляет выражение @code{@var{F}(@var{arg_1}, ..., @var{arg_n})}.
+
+Функция @code{apply} не пытается различить функцию-массив и обычную функцию, и
+если @var{F} есть имя функции-массива, то @code{apply} вычисляет @code{@var{F}(...)}
+(т.е. обычный вызов функции с круглыми а не с квадратными скобками).
+Функция @code{arrayapply} вычисляет вызов функции с квадратными скобками.
+
+Примеры:
+
+Функция @code{apply} вычисляет свои аргументы.
+В этом примере, @code{min} применяется к значению @code{L}.
+
+@c ===beg===
+@c L : [1, 5, -10.2, 4, 3];
+@c apply (min, L);
+@c ===end===
+@example
+(%i1) L : [1, 5, -10.2, 4, 3];
+(%o1)                 [1, 5, - 10.2, 4, 3]
+(%i2) apply (min, L);
+(%o2)                        - 10.2
+@end example
+
+Функция @code{apply} вычисляет свои аргументы даже если функция @var{F} не вычисляет их.
+
+@c ===beg===
+@c F (x) := x / 1729;
+@c fname : F;
+@c dispfun (F);
+@c dispfun (fname);
+@c apply (dispfun, [fname]);
+@c ===end===
+@example
+(%i1) F (x) := x / 1729;
+                                   x
+(%o1)                     F(x) := ----
+                                  1729
+(%i2) fname : F;
+(%o2)                           F
+(%i3) dispfun (F);
+                                   x
+(%t3)                     F(x) := ----
+                                  1729
+
+(%o3)                         [%t3]
+(%i4) dispfun (fname);
+fname is not the name of a user function.
+ -- an error.  Quitting.  To debug this try debugmode(true);
+(%i5) apply (dispfun, [fname]);
+                                   x
+(%t5)                     F(x) := ----
+                                  1729
+
+(%o5)                         [%t5]
+@end example
+
+Функция @code{apply} вычисляет имя функции @var{F}.
+Одиночная кавычка @code{'} блокирует это вычисление.
+@code{demoivre} является именем глобальной переменной и, одновременно, именем функции.
+
+@c ===beg===
+@c demoivre;
+@c demoivre (exp (%i * x));
+@c apply (demoivre, [exp (%i * x)]);
+@c apply ('demoivre, [exp (%i * x)]);
+@c ===end===
+@example
+(%i1) demoivre;
+(%o1)                         false
+(%i2) demoivre (exp (%i * x));
+(%o2)                  %i sin(x) + cos(x)
+(%i3) apply (demoivre, [exp (%i * x)]);
+demoivre evaluates to false
+Improper name or value in functional position.
+ -- an error.  Quitting.  To debug this try debugmode(true);
+(%i4) apply ('demoivre, [exp (%i * x)]);
+(%o4)                  %i sin(x) + cos(x)
+@end example
+
+@end deffn
+
+
+@deffn {Функция} block ([@var{v_1}, ..., @var{v_m}], @var{expr_1}, ..., @var{expr_n})
+@deffnx {Функция} block (@var{expr_1}, ..., @var{expr_n})
+Функция @code{block} последовательно вычисляет @var{expr_1}, ..., @var{expr_n} 
+и возвращает значение последнего вычисленного выражения.
+Последовательность вычисления может быть изменена при помощи функций @code{go}, @code{throw} и @code{return}.
+Последнее выражение @var{expr_n} вычисляется если не используется @code{return} или вычисляется выражение,
+содержащие @code{throw}.
+Некоторые переменные @var{v_1}, ..., @var{v_m} могут быть объявлены локальными в блоке, и они
+отличаются от глобальных переменных с теми же именами.
+Если не требуется определять локальные переменные, то список может быть опущен.
+Внутри блока, все другие переменные, отличные от @var{v_1}, ..., @var{v_m},
+являются глобальными.
+
+@code{block} сохраняет текущие значения переменных @var{v_1}, ..., @var{v_m} (если таковые существуют)
+при входе в блок, и затем удаляет их значения, так чтобы эти переменные вычислялись сами в себя.
+Локальные переменные могут принимать любые значения внутри блока, но пр выходе из него
+сохраненные значения восстанавливаются, а локальные в блоке значения теряются.
+
+Блок может существовать внутри другого блока.
+Локальные переменные определяются всякий раз как вычисляется новый @code{block}.
+Локальные переменные объемлющего блока выглядят как глобальные для внутреннего блока.
+Если переменная не локальна в блоке, то ее значение равно последнему, присвоенному 
+в объемлющем блоке, если таковое существует, и значению переменной
+в глобальном окружении в противном случае.
+Эта политика совпадает с обычным понятием "динамической области определения".
+
+Если необходимо сохранять и восстанавливать другие локальные свойства, кроме @code{value}, 
+такие как @code{array} (кроме полных массивов),
+@code{function}, @code{dependencies}, @code{atvalue}, @code{matchdeclare}, @code{atomgrad}, @code{constant} и 
+@code{nonscalar}, то следует использовать функцию @code{local} внутри блока с именем функции в
+качестве параметра.
+
+Значением блока является значение последнего выражения или значение аргумента функции 
+@code{return}, которая может быть использована для явного выхода из блока.
+Функция @code{go} используется для передачи управления на команду блока, помеченную аргументом @code{go}.  
+Для того, чтобы пометить команду нужно поместить перед ней метку в виде атома.  Например:
+@code{block ([x], x:1, loop, x: x+1, ..., go(loop), ...)}.  Аргументом @code{go} должна быть
+метка, определенная в текущем блоке.  Невозможно использовать @code{go} для
+передачи управления в блок отличный от того, в котором находится вызов @code{go}.
+
+Блоки обычно применяются в правых частях определения функций, но могут быть
+использованы и в других местах.
+
+@end deffn
+
+@c REPHRASE, NEEDS EXAMPLE
+@deffn {Функция} break (@var{expr_1}, ..., @var{expr_n})
+Вычисляет и печатает выражения @var{expr_1}, ..., @var{expr_n} и затем 
+вызывает прерывание Maxima с тем, чтобы пользователь мог исследовать и изменить
+окружение.  Ввод @code{exit;} возобновляет вычисление.
+
+@end deffn
+
+@c FOR SOME REASON throw IS IN SOME OTHER FILE. MOVE throw INTO THIS FILE.
+@c NEEDS CLARIFICATION
+@deffn {Функция} catch (@var{expr_1}, ..., @var{expr_n})
+Вычисляет @var{expr_1}, ..., @var{expr_n} одно за другими и, если одно из них
+приводит к вычислению выражения @code{throw (arg)}, то значением @code{catch} 
+становится значение аргумента @code{throw (arg)}, и дальнейшее вычисление не производится.
+Такой "нелокальный возврат" осуществляется из любого уровня вложенности до первого
+объемлющего @code{catch}.
+Если нет объемлющего @code{catch}, то @code{throw} вызывает ошибку.
+
+Если вычисление аргументов не приводит к вычислению @code{throw},
+то значение @code{catch} равно значению @var{expr_n}.
+
+@example
+(%i1) lambda ([x], if x < 0 then throw(x) else f(x))$
+(%i2) g(l) := catch (map (''%, l))$
+(%i3) g ([1, 2, 3, 7]);
+(%o3)               [f(1), f(2), f(3), f(7)]
+(%i4) g ([1, 2, -3, 7]);
+(%o4)                          - 3
+@end example
+
+@c REWORD THIS PART.
+Здесь, если список @code{l} содержит только неотрицательные числа, то функция @code{g} возвращает 
+список функций @code{f}, примененных к элементам @code{l}, иначе, @code{g} "ловит" первое
+отрицательное число в @code{l} и "бросает" его вверх.
+
+@end deffn
+
+@deffn {Функция} compfile (@var{filename}, @var{f_1}, ..., @var{f_n})
+@deffnx {Функция} compfile (@var{filename}, functions)
+@deffnx {Функция} compfile (@var{filename}, all)
+
+Транслирует функции Maxima в Lisp 
+и записывает полученный код в файл @var{filename}.
+
+Вызов @code{compfile(@var{filename}, @var{f_1}, ..., @var{f_n})} транслирует только
+заданные функции.
+Вызов @code{compfile(@var{filename}, functions)} или вызов @code{compfile(@var{filename}, all)}
+транслирует все определенные пользователем функции.
+
+Код Lisp не вычисляется, а результирующий файл не обрабатывается компилятором Lisp.
+@c SO LET'S CONSIDER GIVING THIS FUNCTION A MORE ACCURATE NAME.
+Функция @code{translate} создает и вычисляет Lisp код.
+Функция @code{compile_file} транслирует код Maxima в Lisp, и затем выполняет компилятор Lisp. 
+
+См. также @code{translate}, @code{translate_file} и @code{compile_file}.
+
+@end deffn
+
+@c THIS VARIABLE IS OBSOLETE: ASSIGNING compgrind: true CAUSES compfile
+@c TO EVENTUALLY CALL AN OBSOLETE FUNCTION SPRIN1.
+@c RECOMMENDATION IS TO CUT THIS ITEM, AND CUT $compgrind FROM src/transs.lisp
+@c @defvar compgrind
+@c Значение по умолчанию: @code{false}
+@c 
+@c When @code{compgrind} is @code{true}, function definitions printed by
+@c @code{compfile} are pretty-printed.
+@c 
+@c @end defvar
+
+@deffn {Функция} compile (@var{f_1}, ..., @var{f_n})
+@deffnx {Функция} compile (functions)
+@deffnx {Функция} compile (all)
+Транслирует определения Maxima функций @var{f_1}, ..., @var{f_n} в Lisp, вычисляет Lisp код и 
+вызывает Lisp функцию @code{COMPILE} на каждую транслированную функцию.
+Функция @code{compile} возвращает список скомпилированных функций.
+
+Вызов @code{compile (all)} или @code{compile (functions)} компилирует все определенные
+пользователем функции.
+
+Функция @code{compile} не вычисляет свои аргументы.
+Оператор кавычка-кавычка @code{'@w{}'} может быть использован
+для их вычисления.
+
+@end deffn
+
+@deffn {Функция} define (@var{f}(@var{x_1}, ..., @var{x_n}), @var{expr})
+@deffnx {Функция} define (@var{f}[@var{x_1}, ..., @var{x_n}], @var{expr})
+@deffnx {Функция} define (funmake (@var{f}, [@var{x_1}, ..., @var{x_n}]), @var{expr})
+@deffnx {Функция} define (arraymake (@var{f}, [@var{x_1}, ..., @var{x_n}]), @var{expr})
+@deffnx {Функция} define (ev (@var{expr_1}), @var{expr_2})
+
+Определяет функцию с именем {f}, аргументами @var{x_1}, ..., @var{x_n} и телом функции @var{expr}.
+Функция @code{define} всегда вычисляет свой второй аргумент (если вычисление не квотировано, т.е. блокировано явным образом).
+Функция, определенная данным образом, может быть обычной функцией Maxima (с аргументами в круглых скобках)
+или функцией-массивом (с аргументам в квадратных скобках).
+
+Если последний аргумент @var{x_n} является одноэлементным списком,
+то функция, определенная @code{define}, принимает произвольное число аргументов.
+Фактические параметры присваиваются по одному формальным параметрам @var{x_1}, ..., @var{x_(n - 1)},
+а все последующие фактические параметры, если таковые есть, присваиваются @var{x_n} одним списком.
+
+Если первый параметр @code{define} имеет форму
+@code{@var{f}(@var{x_1}, ..., @var{x_n})} или @code{@var{f}[@var{x_1}, ..., @var{x_n}]}, то
+аргументы функции вычисляются, а @var{f} нет,
+даже если уже есть функция или переменная с таким именем.
+
+Если же первый параметр является выражением с оператором @code{funmake}, @code{arraymake} или @code{ev},
+то первый аргумент вычисляется.  Это позволяет вычислять как имя функции так и ее тело.
+
+Все определяемые функции действуют в одном пространстве имен, т.е. если 
+функция @code{f} определена внутри другой функции @code{g}, то 
+действие @code{f} не ограничено функцией @code{g}.
+
+Если некоторый формальный параметр @var{x_k} является квотированным символом (после вычисления),
+то функция, определенная @code{define}, не будет вычислять соответствующий фактический параметр.
+Все остальные фактические параметры вычисляются.
+
+См. также @code{:=} и @code{::=}.
+
+Примеры:
+
+Функция @code{define} всегда вычисляет свой второй аргумент (если вычисление не блокировано явным образом).
+
+@c ===beg===
+@c expr : cos(y) - sin(x);
+@c define (F1 (x, y), expr);
+@c F1 (a, b);
+@c F2 (x, y) := expr;
+@c F2 (a, b);
+@c ===end===
+@example
+(%i1) expr : cos(y) - sin(x);
+(%o1)                    cos(y) - sin(x)
+(%i2) define (F1 (x, y), expr);
+(%o2)              F1(x, y) := cos(y) - sin(x)
+(%i3) F1 (a, b);
+(%o3)                    cos(b) - sin(a)
+(%i4) F2 (x, y) := expr;
+(%o4)                   F2(x, y) := expr
+(%i5) F2 (a, b);
+(%o5)                    cos(y) - sin(x)
+@end example
+
+Функция, определяемая @code{define}, может быть обычной функцией Maxima или функцией-массивом.
+
+@c ===beg===
+@c define (G1 (x, y), x.y - y.x);
+@c define (G2 [x, y], x.y - y.x);
+@c ===end===
+@example
+(%i1) define (G1 (x, y), x.y - y.x);
+(%o1)               G1(x, y) := x . y - y . x
+(%i2) define (G2 [x, y], x.y - y.x);
+(%o2)                G2     := x . y - y . x
+                       x, y
+@end example
+
+Если последний аргумент @var{x_n} является одноэлементным списком,
+то определенная @code{define} функция принимает произвольное число аргументов.
+
+@c ===beg===
+@c define (H ([L]), '(apply ("+", L)));
+@c H (a, b, c);
+@c ===end===
+@example
+(%i1) define (H ([L]), '(apply ("+", L)));
+(%o1)                H([L]) := apply("+", L)
+(%i2) H (a, b, c);
+(%o2)                       c + b + a
+@end example
+
+Если первый параметр является выражением с оператором @code{funmake}, @code{arraymake} или @code{ev},
+то первый аргумент вычисляется.
+
+@c ===beg===
+@c [F : I, u : x];
+@c funmake (F, [u]);
+@c define (funmake (F, [u]), cos(u) + 1);
+@c define (arraymake (F, [u]), cos(u) + 1);
+@c define (foo (x, y), bar (y, x));
+@c define (ev (foo (x, y)), sin(x) - cos(y));
+@c ===end===
+@example
+(%i1) [F : I, u : x];
+(%o1)                        [I, x]
+(%i2) funmake (F, [u]);
+(%o2)                         I(x)
+(%i3) define (funmake (F, [u]), cos(u) + 1);
+(%o3)                  I(x) := cos(x) + 1
+(%i4) define (arraymake (F, [u]), cos(u) + 1);
+(%o4)                   I  := cos(x) + 1
+                         x
+(%i5) define (foo (x, y), bar (y, x));
+(%o5)                foo(x, y) := bar(y, x)
+(%i6) define (ev (foo (x, y)), sin(x) - cos(y));
+(%o6)             bar(y, x) := sin(x) - cos(y)
+@end example
+
+@end deffn
+
+@c SEE NOTE BELOW ABOUT THE DOCUMENTATION STRING
+@c @deffn {Функция} define_variable (@var{name}, @var{default_value}, @var{mode}, @var{documentation})
+@deffn {Функция} define_variable (@var{name}, @var{default_value}, @var{mode})
+
+Определяет глобальную переменную.
+@c IMPORT OF FOLLOWING STATEMENT UNCLEAR: IN WHAT WAY IS define_variable MORE USEFUL IN TRANSLATED CODE ??
+@code{define_variable} полезна в пользовательских пакетах, которые часто 
+транслируются или компилируются.
+
+Функция @code{define_variable} выполняет следующие шаги:
+
+@enumerate
+@item
+@code{mode_declare (@var{name}, @var{mode})} декларирует тип переменной @var{name} для транслятора.
+См. @code{mode_declare} для списка возможных типов.
+
+@item
+Если переменная не имеет значения, то @var{default_value} устанавливается равным @var{name}.
+
+@item
+@code{declare (@var{name}, special)} объявляет переменную специальной.
+@c CLARIFY THE MEANING OF SPECIAL FOR THE BENEFIT OF READERS OTHER THAN LISP PROGRAMMERS
+
+@item
+Ассоциирует имя @var{name} с тестовой функцией, чтобы обеспечить, что 
+@var{name} будут присваиваться значения только объявленного типа.
+@end enumerate
+
+
+@c FOLLOWING STATEMENT APPEARS TO BE OUT OF DATE.
+@c EXAMINING DEFMSPEC $DEFINE_VARIABLE AND DEF%TR $DEFINE_VARIABLE IN src/trmode.lisp,
+@c IT APPEARS THAT THE 4TH ARGUMENT IS NEVER REFERRED TO.
+@c EXECUTING translate_file ON A MAXIMA BATCH FILE WHICH CONTAINS
+@c define_variable (foo, 2222, integer, "THIS IS FOO");
+@c DOES NOT PUT "THIS IS FOO" INTO THE LISP FILE NOR THE UNLISP FILE.
+@c The optional 4th argument is a documentation string.  When
+@c @code{translate_file} is used on a package which includes documentation
+@c strings, a second file is output in addition to the Lisp file which
+@c will contain the documentation strings, formatted suitably for use in
+@c manuals, usage files, or (for instance) @code{describe}.
+
+Свойство @code{value_check} может быть установлено для любой переменной,
+определенной при помощи @code{define_variable} с типом отличным от @code{any}.
+Значение свойства @code{value_check} является лямбда-выражением или именем функции одной переменной.
+Эта функция вызывается всякий раз, как производится попытка присвоить
+значение данной переменной.  Параметром функции @code{value_check} является 
+предполагаемое новое значение переменной.
+
+Функция @code{define_variable} вычисляет @code{default_value} и не вычисляет @code{name} и @code{mode}.
+Функция @code{define_variable} возвращает текущее значение @code{name},
+что есть @code{default_value} если @code{name} не имела значения до декларации
+и значение @code{name} в противном случае.
+
+Примеры:
+
+@code{foo} -- логическая переменная с начальным значением @code{true}.
+@c GENERATED FROM:
+@c define_variable (foo, true, boolean);
+@c foo;
+@c foo: false;
+@c foo: %pi;
+@c foo;
+
+@example
+(%i1) define_variable (foo, true, boolean);
+(%o1)                         true
+(%i2) foo;
+(%o2)                         true
+(%i3) foo: false;
+(%o3)                         false
+(%i4) foo: %pi;
+Error: foo was declared mode boolean, has value: %pi
+ -- an error.  Quitting.  To debug this try debugmode(true);
+(%i5) foo;
+(%o5)                         false
+@end example
+
+@code{bar} -- целочисленная переменная, которая должна быть простым числом.
+@c GENERATED FROM:
+@c define_variable (bar, 2, integer);
+@c qput (bar, prime_test, value_check);
+@c prime_test (y) := if not primep(y) then error (y, "is not prime.");
+@c bar: 1439;
+@c bar: 1440;
+@c bar;
+
+@example
+(%i1) define_variable (bar, 2, integer);
+(%o1)                           2
+(%i2) qput (bar, prime_test, value_check);
+(%o2)                      prime_test
+(%i3) prime_test (y) := if not primep(y) then error (y, "is not prime.");
+(%o3) prime_test(y) := if not primep(y)
+
+                                   then error(y, "is not prime.")
+(%i4) bar: 1439;
+(%o4)                         1439
+(%i5) bar: 1440;
+1440 is not prime.
+#0: prime_test(y=1440)
+ -- an error.  Quitting.  To debug this try debugmode(true);
+(%i6) bar;
+(%o6)                         1439
+@end example
+
+@code{baz_quux} -- переменная, которой нельзя присвоить значение.
+Тип @code{any_check} аналогичен @code{any}, но позволяет 
+применять механизм @code{value_check}, в то время как тип @code{any} этого не позволяет.
+@c GENERATED FROM:
+@c define_variable (baz_quux, 'baz_quux, any_check);
+@c F: lambda ([y], if y # 'baz_quux then error ("Cannot assign to `baz_quux'."));
+@c qput (baz_quux, ''F, value_check);
+@c baz_quux: 'baz_quux;
+@c baz_quux: sqrt(2);
+@c baz_quux;
+
+@example
+(%i1) define_variable (baz_quux, 'baz_quux, any_check);
+(%o1)                       baz_quux
+(%i2) F: lambda ([y], if y # 'baz_quux then error ("Cannot assign to `baz_quux'."));
+(%o2) lambda([y], if y # 'baz_quux
+
+                        then error(Cannot assign to `baz_quux'.))
+(%i3) qput (baz_quux, ''F, value_check);
+(%o3) lambda([y], if y # 'baz_quux
+
+                        then error(Cannot assign to `baz_quux'.))
+(%i4) baz_quux: 'baz_quux;
+(%o4)                       baz_quux
+(%i5) baz_quux: sqrt(2);
+Cannot assign to `baz_quux'.
+#0: lambda([y],if y # 'baz_quux then error("Cannot assign to `baz_quux'."))(y=sqrt(2))
+ -- an error.  Quitting.  To debug this try debugmode(true);
+(%i6) baz_quux;
+(%o6)                       baz_quux
+@end example
+
+@end deffn
+
+@deffn {Функция} dispfun (@var{f_1}, ..., @var{f_n})
+@deffnx {Функция} dispfun (all)
+Выводит определения пользовательских функций @var{f_1}, ..., @var{f_n}.
+Каждый аргумент должен быть именем: макроса (определенного при помощи @code{::=}),
+обычной функции (определенной @code{:=} или @code{define}),
+функции-массива (определенной @code{:=} или @code{define},
+но с аргументами в квадратных скобках @code{[ ]}),
+функцией с индексом (определенной @code{:=} или @code{define},
+но с частью аргументов в квадратных скобках а с другими в круглых @code{( )}),
+одним из элементов функции с индексом с определенным значением индекса,
+или функцией с постоянным индексом.
+
+Вызов @code{dispfun (all)} выводит все пользовательские функции, которые определяются
+списками @code{functions}, @code{arrays} и @code{macros},
+кроме функций с постоянным индексом.
+
+Функция @code{dispfun} создает метки промежуточных выражений (@code{%t1}, @code{%t2} и т.д.)
+для каждой выводимой функции и присваивает определения функций этим меткам.
+В отличии от этого, @code{fundef} возвращает определение функции.
+
+Функция @code{dispfun} не вычисляет свои аргументы. 
+Оператор кавычка-кавычка @code{'@w{}'} может быть использован для их вычисления.
+Функция @code{dispfun} возвращает список меток промежуточных выражений, соответствующих
+выведенным функциям.
+
+Примеры:
+
+@c ===beg===
+@c m(x, y) ::= x^(-y);
+@c f(x, y) :=  x^(-y);
+@c g[x, y] :=  x^(-y);
+@c h[x](y) :=  x^(-y);
+@c i[8](y) :=  8^(-y);
+@c dispfun (m, f, g, h, h[5], h[10], i[8]);
+@c ''%;
+@c ===end===
+@example
+(%i1) m(x, y) ::= x^(-y);
+                                     - y
+(%o1)                   m(x, y) ::= x
+(%i2) f(x, y) :=  x^(-y);
+                                     - y
+(%o2)                    f(x, y) := x
+(%i3) g[x, y] :=  x^(-y);
+                                    - y
+(%o3)                     g     := x
+                           x, y
+(%i4) h[x](y) :=  x^(-y);
+                                    - y
+(%o4)                     h (y) := x
+                           x
+(%i5) i[8](y) :=  8^(-y);
+                                    - y
+(%o5)                     i (y) := 8
+                           8
+(%i6) dispfun (m, f, g, h, h[5], h[10], i[8]);
+                                     - y
+(%t6)                   m(x, y) ::= x
+
+                                     - y
+(%t7)                    f(x, y) := x
+
+                                    - y
+(%t8)                     g     := x
+                           x, y
+
+                                    - y
+(%t9)                     h (y) := x
+                           x
+
+                                    1
+(%t10)                     h (y) := --
+                            5        y
+                                    5
+
+                                     1
+(%t11)                    h  (y) := ---
+                           10         y
+                                    10
+
+                                    - y
+(%t12)                    i (y) := 8
+                           8
+
+(%o12)       [%t6, %t7, %t8, %t9, %t10, %t11, %t12]
+(%i12) ''%;
+                     - y              - y            - y
+(%o12) [m(x, y) ::= x   , f(x, y) := x   , g     := x   , 
+                                            x, y
+                  - y           1              1             - y
+        h (y) := x   , h (y) := --, h  (y) := ---, i (y) := 8   ]
+         x              5        y   10         y   8
+                                5             10
+@end example
+
+@end deffn
+
+@defvr {Системная переменная} functions
+Значение по умолчанию: @code{[]}
+
+Переменная @code{functions} есть список всех обычных функций Maxima в текущей сессии.
+Обычные функции -- это функции, определенные при помощи @code{define} или @code{:=}, 
+и вызываемые с аргументами в круглых скобках @code{()}.
+Функция может быть определена в командной строке Maxima или в файле,
+загруженном при помощи @code{load} или @code{batch}.
+
+Функции-массивы (вызываемые с квадратными скобками, т.е. @code{F[x]})
+и функции с индексом (вызываемые с круглыми и квадратными скобками, т.е. @code{F[x](y)})
+перечислены в глобальной переменной @code{arrays}, а не в @code{functions}.
+
+Lisp функции не включаются в список.
+
+Примеры:
+
+@c ===beg===
+@c F_1 (x) := x - 100;
+@c F_2 (x, y) := x / y;
+@c define (F_3 (x), sqrt (x));
+@c G_1 [x] := x - 100;
+@c G_2 [x, y] := x / y;
+@c define (G_3 [x], sqrt (x));
+@c H_1 [x] (y) := x^y;
+@c functions;
+@c arrays;
+@c ===end===
+@example
+(%i1) F_1 (x) := x - 100;
+(%o1)                   F_1(x) := x - 100
+(%i2) F_2 (x, y) := x / y;
+                                      x
+(%o2)                    F_2(x, y) := -
+                                      y
+(%i3) define (F_3 (x), sqrt (x));
+(%o3)                   F_3(x) := sqrt(x)
+(%i4) G_1 [x] := x - 100;
+(%o4)                    G_1  := x - 100
+                            x
+(%i5) G_2 [x, y] := x / y;
+                                     x
+(%o5)                     G_2     := -
+                             x, y    y
+(%i6) define (G_3 [x], sqrt (x));
+(%o6)                    G_3  := sqrt(x)
+                            x
+(%i7) H_1 [x] (y) := x^y;
+                                      y
+(%o7)                     H_1 (y) := x
+                             x
+(%i8) functions;
+(%o8)              [F_1(x), F_2(x, y), F_3(x)]
+(%i9) arrays;
+(%o9)                 [G_1, G_2, G_3, H_1]
+@end example
+
+@end defvr
+
+@deffn {Функция} fundef (@var{f})
+Возвращает определение функции @var{f}.
+
+@c PROBABLY THIS WOULD BE CLEARER AS A BULLET LIST
+Аргумент должен быть именем: макроса (определенного при помощи @code{::=}),
+обычной функции (определенной @code{:=} или @code{define}),
+функции-массива (определенной @code{:=} или @code{define},
+но с аргументами в квадратных скобках @code{[ ]}),
+функцией с индексом (определенной @code{:=} или @code{define},
+но с частью аргументов в квадратных скобках а с другими в круглых @code{( )}),
+одним из элементов функции с индексом с определенным значением индекса,
+или функцией с постоянным индексом.
+
+Функция @code{fundef} не вычисляет свои аргументы.
+Оператор кавычка-кавычка @code{'@w{}'} может быть использован для их вычисления.
+
+Вызов @code{fundef (@var{f})} возвращает определение функции @var{f}.
+В отличии от этого, @code{dispfun (@var{f})} присваивает определения функций
+меткам промежуточных выражений.
+
+@c PROBABLY NEED SOME EXAMPLES HERE
+@end deffn
+
+@deffn {Функция} funmake (@var{F}, [@var{arg_1}, ..., @var{arg_n}])
+Возвращает выражение @code{@var{F}(@var{arg_1}, ..., @var{arg_n})}.
+Это выражение упрощается но не вычисляется, т.е. функция @var{F} 
+не вызывается, даже если она определена.
+
+Функция @code{funmake} не различает обычные функции и функции-массивы.
+Если @var{F} есть имя функции-массива, то @code{funmake} все равно
+возвращает @code{@var{F}(...)}
+(т.е вызов функции с круглыми а не с квадратными скобками).
+Для функций-массивом следует использовать @code{arraymake}.
+
+Функция @code{funmake} вычисляет свои аргументы.
+
+Примеры:
+
+Функция @code{funmake}, примененная к обычной Maxima функции.
+
+@c ===beg===
+@c F (x, y) := y^2 - x^2;
+@c funmake (F, [a + 1, b + 1]);
+@c ''%;
+@c ===end===
+@example
+(%i1) F (x, y) := y^2 - x^2;
+                                   2    2
+(%o1)                  F(x, y) := y  - x
+(%i2) funmake (F, [a + 1, b + 1]);
+(%o2)                    F(a + 1, b + 1)
+(%i3) ''%;
+                              2          2
+(%o3)                  (b + 1)  - (a + 1)
+@end example
+
+Функция @code{funmake}, примененная к макросу.
+
+@c ===beg===
+@c G (x) ::= (x - 1)/2;
+@c funmake (G, [u]);
+@c ''%;
+@c ===end===
+@example
+(%i1) G (x) ::= (x - 1)/2;
+                                  x - 1
+(%o1)                    G(x) ::= -----
+                                    2
+(%i2) funmake (G, [u]);
+(%o2)                         G(u)
+(%i3) ''%;
+                              u - 1
+(%o3)                         -----
+                                2
+@end example
+
+Функция @code{funmake}, примененная к функции с индексом.
+
+@c ===beg===
+@c H [a] (x) := (x - 1)^a;
+@c funmake (H [n], [%e]);
+@c ''%;
+@c funmake ('(H [n]), [%e]);
+@c ''%;
+@c ===end===
+@example
+(%i1) H [a] (x) := (x - 1)^a;
+                                        a
+(%o1)                   H (x) := (x - 1)
+                         a
+(%i2) funmake (H [n], [%e]);
+                                       n
+(%o2)               lambda([x], (x - 1) )(%e)
+(%i3) ''%;
+                                    n
+(%o3)                       (%e - 1)
+(%i4) funmake ('(H [n]), [%e]);
+(%o4)                        H (%e)
+                              n
+(%i5) ''%;
+                                    n
+(%o5)                       (%e - 1)
+@end example
+
+Функция @code{funmake}, примененная к символу, не являющемуся функцией какого-либо типа.
+
+@c ===beg===
+@c funmake (A, [u]);
+@c ''%;
+@c ===end===
+@example
+(%i1) funmake (A, [u]);
+(%o1)                         A(u)
+(%i2) ''%;
+(%o2)                         A(u)
+@end example
+
+Функция @code{funmake} вычисляет аргументы, но не результат.
+
+@c ===beg===
+@c det(a,b,c) := b^2 -4*a*c;
+@c (x : 8, y : 10, z : 12);
+@c f : det;
+@c funmake (f, [x, y, z]);
+@c ''%;
+@c ===end===
+@example
+(%i1) det(a,b,c) := b^2 -4*a*c;
+                                    2
+(%o1)              det(a, b, c) := b  - 4 a c
+(%i2) (x : 8, y : 10, z : 12);
+(%o2)                          12
+(%i3) f : det;
+(%o3)                          det
+(%i4) funmake (f, [x, y, z]);
+(%o4)                    det(8, 10, 12)
+(%i5) ''%;
+(%o5)                         - 284
+@end example
+
+Maxima упрощает возвращаемое @code{funmake} значение.
+
+@c ===beg===
+@c funmake (sin, [%pi / 2]);
+@c ===end===
+@example
+(%i1) funmake (sin, [%pi / 2]);
+(%o1)                           1
+@end example
+
+@end deffn
+
+@deffn {Функция} lambda ([@var{x_1}, ..., @var{x_m}], @var{expr_1}, ..., @var{expr_n})
+@deffnx {Функция} lambda ([[@var{L}]], @var{expr_1}, ..., @var{expr_n})
+@deffnx {Функция} lambda ([@var{x_1}, ..., @var{x_m}, [@var{L}]], @var{expr_1}, ..., @var{expr_n})
+Определяет и возвращает лямбда-выражение (т.е. функцию без имени).
+Функция может иметь обязательные параметры @var{x_1}, ..., @var{x_m}
+и/или необязательные параметры @var{L}, представляемые в форме списка.
+Значение, возвращаемое функцией, равно @var{expr_n}.
+Лямбда-выражение может быть присвоено переменной и вычислено, как обычная функция.
+Лямбда-выражение может использоваться в тех же контекстах, где ожидается
+имя функции.
+
+При вычислении функции, создаются неинициализированные
+локальные переменные @var{x_1}, ..., @var{x_m}.
+@code{lambda} может использоваться внутри @code{block} или другого @code{lambda},
+и локальные переменные создаются каждый раз, как вычисляется новый блок @code{block} или @code{lambda}.
+Локальные переменные выглядят как глобальные для каждого внутреннего блока @code{block} или @code{lambda}.
+Если переменная не является локальной, то ее значение равно последнему, присвоенному 
+в объемлющем блоке @code{block} или @code{lambda}, если таковое существует, 
+и значению переменной в глобальном окружении в противном случае.
+Эта политика совпадает с обычным понятием "динамической области определения".
+
+После определения локальных переменных, выражения с @var{expr_1} по @var{expr_n} 
+последовательно вычисляются.
+Специальная переменная @code{%%} обозначает значение предыдущего выражения.
+Среди выражение могут применяться @code{throw} и @code{catch}.
+
+Команда возврата @code{return} не может использоваться в лямбда-выражении если только
+она не заключена в блоке @code{block}.  В этом случае @code{return} определяет
+значение блока а не лямбда-выражения в целом, за исключением случая, когда блок является 
+последним выражением @var{expr_n}.
+Аналогично, @code{go} не может использоваться в лямбда-выражении без объемлющего блока @code{block}.
+
+Функция @code{lambda} не вычисляет свои параметры.
+Оператор кавычка-кавычка @code{'@w{}'} может быть использован для их вычисления.
+
+Примеры:
+
+@itemize @bullet
+@item
+Лямбда-выражение может быть присвоено переменной и вычислено, как обычная функция.
+@end itemize
+@c ===beg===
+@c f: lambda ([x], x^2);
+@c f(a);
+@c ===end===
+@example
+(%i1) f: lambda ([x], x^2);
+                                      2
+(%o1)                    lambda([x], x )
+(%i2) f(a);
+                                2
+(%o2)                          a
+@end example
+@itemize @bullet
+@item
+Лямбда-выражение может использоваться в тех же контекстах, где ожидается
+вычисление функции.
+@end itemize
+@c ===beg===
+@c lambda ([x], x^2) (a);
+@c apply (lambda ([x], x^2), [a]);
+@c map (lambda ([x], x^2), [a, b, c, d, e]);
+@c ===end===
+@example
+(%i3) lambda ([x], x^2) (a);
+                                2
+(%o3)                          a
+(%i4) apply (lambda ([x], x^2), [a]);
+                                2
+(%o4)                          a
+(%i5) map (lambda ([x], x^2), [a, b, c, d, e]);
+                        2   2   2   2   2
+(%o5)                 [a , b , c , d , e ]
+@end example
+@itemize @bullet
+@item
+Параметры являются локальными переменными.
+Все остальные переменные глобальны.
+Глобальные переменные вычисляются в момент вычисления лямбда-выражения, за исключением
+случая, когда вычисление специально вызвано каким-либо способом, например, оператором  @code{'@w{}'}.
+@end itemize
+@c ===beg===
+@c a: %pi$
+@c b: %e$
+@c g: lambda ([a], a*b);
+@c b: %gamma$
+@c g(1/2);
+@c g2: lambda ([a], a*''b);
+@c b: %e$
+@c g2(1/2);
+@c ===end===
+@example
+(%i6) a: %pi$
+(%i7) b: %e$
+(%i8) g: lambda ([a], a*b);
+(%o8)                   lambda([a], a b)
+(%i9) b: %gamma$
+(%i10) g(1/2);
+                             %gamma
+(%o10)                       ------
+                               2
+(%i11) g2: lambda ([a], a*''b);
+(%o11)                lambda([a], a %gamma)
+(%i12) b: %e$
+(%i13) g2(1/2);
+                             %gamma
+(%o13)                       ------
+                               2
+@end example
+@itemize @bullet
+@item
+Лямбда-выражения могут быть вложены.
+Локальные переменные объемлющего лямбда-выражения выглядят глобальными для внутреннего, если
+только во внутреннем лямбда-выражении не определены локальные переменные с теми же именами.
+@end itemize
+@c ===beg===
+@c h: lambda ([a, b], h2: lambda ([a], a*b), h2(1/2));
+@c h(%pi, %gamma);
+@c ===end===
+@example
+(%i14) h: lambda ([a, b], h2: lambda ([a], a*b), h2(1/2));
+                                                   1
+(%o14)    lambda([a, b], h2 : lambda([a], a b), h2(-))
+                                                   2
+(%i15) h(%pi, %gamma);
+                             %gamma
+(%o15)                       ------
+                               2
+@end example
+@itemize @bullet
+@item
+Поскольку @code{lambda} не вычисляет аргументы, нижеприведенное лямбда-выражение @code{i}  
+не определяет функцию "умножить на @code{a}".
+Такая функция может быть определена с помощью @code{buildq}, как сделано в лямбда-выражении @code{i2}.
+@end itemize
+@c ===beg===
+@c i: lambda ([a], lambda ([x], a*x));
+@c i(1/2);
+@c i2: lambda([a], buildq([a: a], lambda([x], a*x)));
+@c i2(1/2);
+@c i2(1/2)(%pi);
+@c ===end===
+@example
+(%i16) i: lambda ([a], lambda ([x], a*x));
+(%o16)            lambda([a], lambda([x], a x))
+(%i17) i(1/2);
+(%o17)                  lambda([x], a x)
+(%i18) i2: lambda([a], buildq([a: a], lambda([x], a*x)));
+(%o18)    lambda([a], buildq([a : a], lambda([x], a x)))
+(%i19) i2(1/2);
+                                     x
+(%o19)                   lambda([x], -)
+                                     2
+(%i20) i2(1/2)(%pi);
+                               %pi
+(%o20)                         ---
+                                2
+@end example
+@itemize @bullet
+@item
+Лямбда-выражение может иметь переменное число аргументов,
+что обозначается @code{[@var{L}]} в качестве единственного или последнего параметра.
+Фактические параметры представлены внутри функции в виде списка.
+@end itemize
+@c ===beg===
+@c f : lambda ([aa, bb, [cc]], aa * cc + bb);
+@c f (foo, %i, 17, 29, 256);
+@c g : lambda ([[aa]], apply ("+", aa));
+@c g (17, 29, x, y, z, %e);
+@c ===end===
+@example
+(%i1) f : lambda ([aa, bb, [cc]], aa * cc + bb);
+(%o1)          lambda([aa, bb, [cc]], aa cc + bb)
+(%i2) f (foo, %i, 17, 29, 256);
+(%o2)       [17 foo + %i, 29 foo + %i, 256 foo + %i]
+(%i3) g : lambda ([[aa]], apply ("+", aa));
+(%o3)             lambda([[aa]], apply(+, aa))
+(%i4) g (17, 29, x, y, z, %e);
+(%o4)                  z + y + x + %e + 46
+@end example
+@end deffn
+
+@c NEEDS CLARIFICATION AND EXAMPLES
+@deffn {Функция} local (@var{v_1}, ..., @var{v_n})
+Объявляет переменные @var{v_1}, ..., @var{v_n} локальными по отношению ко всем
+свойствам в выражении, где используется @code{local}.
+
+Функция @code{local} не вычисляет свои аргументы.
+Функция @code{local} возвращает @code{done}.
+
+Функция @code{local} может использоваться только внутри блока @code{block}, в теле функции или 
+лямбда-выражении @code{lambda}, в функции @code{ev}, и только один раз в каждом случае.
+
+@code{local} независима от @code{context}.
+
+@end deffn
+
+@defvr {Управляющая переменная} macroexpansion
+Значение по умолчанию: @code{false}
+
+Переменная @code{macroexpansion} управляет тем, подставляется ли макро-расширение 
+(т.е. возвращаемое значением) вместо вызова макро-функции.
+Подстановка может ускорить последующие вычисления но за счет увеличения
+памяти для хранения выражений.
+
+@table @code
+@item false
+Макро-расширение не подставляется вместо вызова макро-функции.
+@item expand
+При первом вызове макро-функции, макро-расширение
+сохраняется.
+Для последующих вызовов, макро-расширение не перевычисляется.
+Побочные эффекты (такие как @code{print} или присваивание глобальных переменных) 
+осуществляются только при первом вычислении макро-функции.
+Макро-расширение в выражении не влияет на другие выражения, имеющие 
+такой же вызов макро-функции.
+@item displace
+При первом вызове макро-функции, макро-расширение
+подставляется вместо вызова, изменяя выражение, из которого
+макро-функция вызывается.
+Для последующих вызовов, макро-расширение не перевычисляется.
+Побочные эффекты осуществляются только при первом вычислении макро-функции.
+Макро-расширение в выражении не влияет на другие выражения, имеющие 
+такой же вызов макро-функции.
+@end table
+
+Примеры:
+
+Если @code{macroexpansion} равна @code{false},
+то макро-функция вызывается всякий раз, как вычисляется вызывающее выражение,
+и вызывающее выражение не изменяется.
+
+@c ===beg===
+@c f (x) := h (x) / g (x);
+@c g (x) ::= block (print ("x + 99 is equal to", x), return (x + 99));
+@c h (x) ::= block (print ("x - 99 is equal to", x), return (x - 99));
+@c macroexpansion: false;
+@c f (a * b);
+@c dispfun (f);
+@c f (a * b);
+@c ===end===
+@example
+(%i1) f (x) := h (x) / g (x);
+                                  h(x)
+(%o1)                     f(x) := ----
+                                  g(x)
+(%i2) g (x) ::= block (print ("x + 99 is equal to", x), return (x + 99));
+(%o2) g(x) ::= block(print("x + 99 is equal to", x), 
+                                                  return(x + 99))
+(%i3) h (x) ::= block (print ("x - 99 is equal to", x), return (x - 99));
+(%o3) h(x) ::= block(print("x - 99 is equal to", x), 
+                                                  return(x - 99))
+(%i4) macroexpansion: false;
+(%o4)                         false
+(%i5) f (a * b);
+x - 99 is equal to x 
+x + 99 is equal to x 
+                            a b - 99
+(%o5)                       --------
+                            a b + 99
+(%i6) dispfun (f);
+                                  h(x)
+(%t6)                     f(x) := ----
+                                  g(x)
+
+(%o6)                         done
+(%i7) f (a * b);
+x - 99 is equal to x 
+x + 99 is equal to x 
+                            a b - 99
+(%o7)                       --------
+                            a b + 99
+@end example
+
+Если @code{macroexpansion} равна @code{expand}, то
+макро-функция вызывается один раз, и взывающее 
+выражение не изменяется.
+
+@c ===beg===
+@c f (x) := h (x) / g (x);
+@c g (x) ::= block (print ("x + 99 is equal to", x), return (x + 99));
+@c h (x) ::= block (print ("x - 99 is equal to", x), return (x - 99));
+@c macroexpansion: expand;
+@c f (a * b);
+@c dispfun (f);
+@c f (a * b);
+@c ===end===
+@example
+(%i1) f (x) := h (x) / g (x);
+                                  h(x)
+(%o1)                     f(x) := ----
+                                  g(x)
+(%i2) g (x) ::= block (print ("x + 99 is equal to", x), return (x + 99));
+(%o2) g(x) ::= block(print("x + 99 is equal to", x), 
+                                                  return(x + 99))
+(%i3) h (x) ::= block (print ("x - 99 is equal to", x), return (x - 99));
+(%o3) h(x) ::= block(print("x - 99 is equal to", x), 
+                                                  return(x - 99))
+(%i4) macroexpansion: expand;
+(%o4)                        expand
+(%i5) f (a * b);
+x - 99 is equal to x 
+x + 99 is equal to x 
+                            a b - 99
+(%o5)                       --------
+                            a b + 99
+(%i6) dispfun (f);
+                                  h(x)
+(%t6)                     f(x) := ----
+                                  g(x)
+
+(%o6)                         done
+(%i7) f (a * b);
+                            a b - 99
+(%o7)                       --------
+                            a b + 99
+@end example
+
+Если @code{macroexpansion} равна @code{expand}, то
+макро-функция вызывается один раз, и взывающее 
+выражение изменяется.
+
+@c ===beg===
+@c f (x) := h (x) / g (x);
+@c g (x) ::= block (print ("x + 99 is equal to", x), return (x + 99));
+@c h (x) ::= block (print ("x - 99 is equal to", x), return (x - 99));
+@c macroexpansion: displace;
+@c f (a * b);
+@c dispfun (f);
+@c f (a * b);
+@c ===end===
+@example
+(%i1) f (x) := h (x) / g (x);
+                                  h(x)
+(%o1)                     f(x) := ----
+                                  g(x)
+(%i2) g (x) ::= block (print ("x + 99 is equal to", x), return (x + 99));
+(%o2) g(x) ::= block(print("x + 99 is equal to", x), 
+                                                  return(x + 99))
+(%i3) h (x) ::= block (print ("x - 99 is equal to", x), return (x - 99));
+(%o3) h(x) ::= block(print("x - 99 is equal to", x), 
+                                                  return(x - 99))
+(%i4) macroexpansion: displace;
+(%o4)                       displace
+(%i5) f (a * b);
+x - 99 is equal to x 
+x + 99 is equal to x 
+                            a b - 99
+(%o5)                       --------
+                            a b + 99
+(%i6) dispfun (f);
+                                 x - 99
+(%t6)                    f(x) := ------
+                                 x + 99
+
+(%o6)                         done
+(%i7) f (a * b);
+                            a b - 99
+(%o7)                       --------
+                            a b + 99
+@end example
+
+@end defvr
+
+@defvr {Управляющая переменная} mode_checkp
+Значение по умолчанию: @code{true}
+
+@c WHAT DOES THIS MEAN ??
+Если  @code{mode_checkp} равна @code{true}, то @code{mode_declare} проверяет
+типы переменных, имеющих значение до вызова @code{mode_declare}.
+@c NEED SOME EXAMPLES HERE.
+
+@end defvr
+
+@defvr {Управляющая переменная} mode_check_errorp
+Значение по умолчанию: @code{false}
+
+@c WHAT DOES THIS MEAN ??
+Если @code{mode_check_errorp} равна @code{true}, то @code{mode_declare} 
+вызывает ошибку.
+@c NEED SOME EXAMPLES HERE.
+
+@end defvr
+
+@defvr {Управляющая переменная} mode_check_warnp
+Значение по умолчанию: @code{true}
+
+@c WHAT DOES THIS MEAN ??
+Если @code{mode_check_warnp} равна @code{true}, то выводятся
+предупреждения о ошибках типизации.
+@c NEED SOME EXAMPLES HERE.
+
+@end defvr
+
+@c NEEDS CLARIFICATION AND EXAMPLES
+@deffn {Функция} mode_declare (@var{y_1}, @var{mode_1}, ..., @var{y_n}, @var{mode_n})
+Функция @code{mode_declare} используется для определения типов переменных или
+функций для последующей трансляции и компиляции.
+Вызов @code{mode_declare} обычно располагается в начале определения функции, 
+в начале  Maxima-программы или выполняется интерактивно в командной строке.
+
+Параметры @code{mode_declare} являются парами, состоящими из переменной и ее типа, 
+который может быть @code{boolean}, @code{fixnum}, @code{number}, @code{rational} или @code{float}.
+Вместо переменной можно использовать список переменных, которые 
+все будут объявлены однотипными.
+
+@c WHAT DOES THE FOLLOWING STATEMENT MEAN ???
+Если переменная является массивом, и каждый элемент этого массива, на который будут ссылаться,
+имеет значение, то для первой декларации границ массива следует использовать
+@code{array (yi, complete, dim1, dim2, ...)}
+а не
+@example
+array(yi, dim1, dim2, ...)
+@end example
+@c WHAT DOES THE FOLLOWING STATEMENT MEAN ???
+Если все элементы массива имеют тип @code{fixnum} (@code{float}), то следует
+использовать @code{fixnum} (@code{float}) вместо @code{complete}.
+@c WHAT DOES THE FOLLOWING STATEMENT MEAN ???
+Кроме того, если все элементы массива имеют один тип, скажем @code{m}, то
+для эффективной трансляции следует использовать 
+
+@example
+mode_declare (completearray (yi), m))
+@end example
+
+Численный код с использованием массивов может работать быстрее
+при объявлении ожидаемого размера массива, как сделано в
+
+@example
+mode_declare (completearray (a [10, 10]), float)
+@end example
+
+для массива с плавающей точкой размера 10 x 10.
+
+Можно определить тип результата функции при помощи @code{function (f_1, f_2, ...)},
+где @code{f_1}, @code{f_2}, ... есть имена функций.  
+Например, выражение
+
+@example
+mode_declare ([function (f_1, f_2, ...)], fixnum)
+@end example
+
+объявляет значения, возвращаемые функциями @code{f_1}, @code{f_2}, ..., целыми числами 
+длиной одно слово.
+
+Функция @code{modedeclare} является синонимом @code{mode_declare}.
+
+@end deffn
+
+@c WHAT IS THIS ABOUT ??
+@c NEEDS CLARIFICATION AND EXAMPLES
+@deffn {Функция} mode_identity (@var{arg_1}, @var{arg_2})
+Специальная форма, используемая вместе с @code{mode_declare} и
+@code{macros} для объявления, например, списка списков чисел с плавающей точкой или 
+других подобных составных объектов.
+Первый аргумент @code{mode_identity} есть имя типа, как в @code{mode_declare} 
+(т.е. одно из  @code{float}, @code{fixnum}, @code{number},
+@code{list} или @code{any}), а второй аргумент есть выражение, которое вычисляется и 
+возвращается как значение @code{mode_identity}.  Если возвращаемое значение недопустимо
+для декларации типа, указанного в первом аргументе, то случается ошибка или 
+печатается предупреждение.  Важно то, что тип выражения для транслятора Maxima в Lisp
+будет всегда определяться первым аргументом, вне зависимости от того, что
+происходит со вторым.
+Например, @code{x: 3.3; mode_identity (fixnum, x);} дает ошибку а @code{mode_identity (flonum, x)}
+возвращает 3.3. 
+С этим связан ряд проблем, например, если известно, что @code{first (l)} возврашает число,
+то можно написать @code{mode_identity (number, first (l))}.  
+Но более эффективно будет определить новый примитив 
+
+@example
+firstnumb (x) ::= buildq ([x], mode_identity (number, x));
+@end example
+
+и использовать @code{firstnumb} всякий раз при обращении
+к первому элементу списка чисел.
+
+@end deffn
+
+@c IS THERE ANY REASON TO SET transcompile: false ??
+@c MAYBE THIS VARIABLE COULD BE PERMANENTLY SET TO true AND STRUCK FROM THE DOCUMENTATION.
+@defvr {Управляющая переменная} transcompile
+Значение по умолчанию: @code{true}
+
+Если @code{transcompile} равно @code{true}, то @code{translate} и @code{translate_file} 
+создают декларации, которые делают транслируемый код более удобным для компиляции.
+@c BUT THE DECLARATIONS DON'T SEEM TO BE NECESSARY, SO WHAT'S THE POINT AGAIN ??
+
+Функция @code{compfile} устанавливает @code{transcompile: true} на время своей работы.
+
+@end defvr
+
+@deffn {Функция} translate (@var{f_1}, ..., @var{f_n})
+@deffnx {Функция} translate (functions)
+@deffnx {Функция} translate (all)
+Транслирует определенные пользователем функции
+@var{f_1}, ..., @var{f_n} из языка Maxima в Lisp и вычисляет
+результат трансляции.
+Обычно, транслированные функции работают быстрее оригиналов.
+
+Вызов @code{translate (all)} или @code{translate (functions)} транслирует все
+определенные пользователем функции.
+
+Транслируемые функции должны, где это возможно, содержать в начале кода вызовы @code{mode_declare}, 
+для генерации более эффективного кода.  
+
+Например:
+
+@example
+f (x_1, x_2, ...) := block ([v_1, v_2, ...],
+    mode_declare (v_1, mode_1, v_2, mode_2, ...), ...)
+@end example
+
+@noindent
+
+где @var{x_1}, @var{x_2}, ... -- параметры функции, а @var{v_1}, @var{v_2}, ... 
+-- локальные переменные.
+
+Имена транслированных функций удаляются из списка @code{functions} если значение @code{savedef} 
+равно @code{false} (см. ниже) и добавляются к списку @code{props}.
+
+Не следует транслировать недостаточно отлаженные функции.
+
+При трансляции, выражения предполагаются уже упрощенными.
+Если это не так, то будет сгенерирован правильный но неоптимальный код.
+Таким образом, не следует устанавливать переключатель @code{simp} равным @code{false},
+что подавляет упрощение транслируемых выражений.
+
+Если переключатель @code{translate} равен @code{true}, то все определяемые пользователем функции
+автоматически транслируются в Lisp.
+
+Отметим, что транслируемые функции могут работать не совсем так,
+как до трансляции, т.к. существуют некоторые несовместимости
+между Lisp и Maxima версиями функции.  Главным образом, функция @code{rat}, имеющая более одного
+параметра, и функция @code{ratvars} не должны использоваться, если некоторые 
+переменные объявлены @code{mode_declare} каноническими рациональными выражениями (КРВ).
+Кроме того, @code{prederror: false} не транслируется.
+@c WHAT ABOUT % AND %% ???
+
+Если @code{savedef} равна @code{true}, то Maxima версия сохраняется при трансляции.
+Это позволяет выводить определение функции при помощи @code{dispfun} и редактировать его.
+
+Если @code{transrun} равна @code{false}, то интерпретируемые 
+варианты будут выполняться (если они еще доступны) вместо транслированных для всех вызовов функций.
+
+Функция @code{translate} возвращает список транслированных функций.
+
+@end deffn
+
+@deffn {Функция} translate_file (@var{maxima_filename})
+@deffnx {Функция} translate_file (@var{maxima_filename}, @var{lisp_filename})
+Транслирует файл кода Maxima в файлд кода Lisp.
+Функция @code{translate_file} возвращает список трех имен файлов:
+имя файла Maxima, имя файла Lisp и имя файла, содержащего дополнительную
+информацию о трансляции.
+Функция @code{translate_file} вычисляет свои аргументы.
+
+Команды @code{translate_file ("foo.mac"); load("foo.LISP")} дают тот же
+результат, что и @code{batch ("foo.mac")} за исключением некоторых
+ограничений, например, на использование @code{'@w{}'} и @code{%}.
+@c FIGURE OUT WHAT THE RESTRICTIONS ARE AND STATE THEM
+
+Вызов @code{translate_file (@var{maxima_filename})} транслирует файл Maxima @var{maxima_filename}
+в Lisp файл с аналогичным именем.  Например, @code{foo.mac} транслируется в @code{foo.LISP}.
+Имя файла Maxima может включать имена директорий, и результирующий Lisp файл
+будет записан в ту же директорию, где располагается исходный файл Maxima.
+
+Вызов @code{translate_file (@var{maxima_filename}, @var{lisp_filename})} транслирует файл 
+Maxima @var{maxima_filename} в Lisp файл @var{lisp_filename}.
+@code{translate_file} игнорирует расширение имени файла для @code{lisp_filename},
+если таковое задано.
+Расширение Lisp файла всегда будет @code{LISP}.
+Имя Lisp файла может содержать имена директорий, и в этом случае файл будет записан
+в заданную директорию.
+
+@code{translate_file} также записывает файл предупреждений транслятора, разной 
+степени важности.
+Расширение имени этого файла -- @code{UNLISP}.
+Этот файл может содержать ценную информацию, возможно туманную,
+для обнаружения ошибок в транслированном коде.
+Файл @code{UNLISP} всегда записывается в ту же директорию, где
+расположен исходный файл Maxima.
+
+@code{translate_file} генерирует код, в котором некоторые
+декларации и определения вступают в силу сразу в процессе 
+компиляции Lisp кода.
+См. также  @code{compile_file} по этому поводу.
+
+@c CHECK ALL THESE AND SEE WHICH ONES ARE OBSOLETE
+См. также @code{tr_array_as_ref},
+@c tr_bind_mode_hook EXISTS BUT IT APPEARS TO BE A GROTESQUE UNDOCUMENTED HACK
+@c WE DON'T WANT TO MENTION IT
+@c @code{tr_bind_mode_hook}, 
+@code{tr_bound_function_applyp},
+@c tr_exponent EXISTS AND WORKS AS ADVERTISED IN src/troper.lisp
+@c NOT OTHERWISE DOCUMENTED; ITS EFFECT SEEMS TOO WEAK TO MENTION
+@code{tr_exponent},
+@code{tr_file_tty_messagesp}, 
+@code{tr_float_can_branch_complex},
+@code{tr_function_call_default}, 
+@code{tr_numer},
+@code{tr_optimize_max_loop}, 
+@code{tr_semicompile},
+@code{tr_state_vars}, 
+@code{tr_warnings_get},
+@code{tr_warn_bad_function_calls},
+@code{tr_warn_fexpr}, 
+@code{tr_warn_meval},
+@code{tr_warn_mode},
+@code{tr_warn_undeclared}, 
+@code{tr_warn_undefined_variable}
+и @code{tr_windy}.
+
+@end deffn
+
+@defvr {Управляющая переменная} transrun
+Значение по умолчанию: @code{true}
+
+Если @code{transrun} равна @code{false}, то для всех функций интерпретируемые 
+варианты будут выполняться (если они еще доступны) вместо транслированных.
+
+@end defvr
+
+@c IN WHAT CONTEXT IS tr_array_as_ref: false APPROPRIATE ??? NOT SEEING THE USEFULNESS HERE.
+@c ALSO, I GUESS WE SHOULD HAVE AN ITEM FOR translate_fast_arrays, ANOTHER CONFUSING FLAG ...
+@defvr {Управляющая переменная} tr_array_as_ref
+Значение по умолчанию: @code{true}
+
+Если @code{translate_fast_arrays} равна @code{false}, то ссылки на массивы в Lisp коде,
+созданном @code{translate_file}, зависят от  @code{tr_array_as_ref}.
+Если @code{tr_array_as_ref} равна @code{true}, то имена массивов вычисляются,
+иначе они рассматриваются в транслированном коде как буквальные символы.
+
+@code{tr_array_as_ref} не действует если @code{translate_fast_arrays} равна @code{true}.
+
+@end defvr
+
+@c WHY IS THIS FLAG NEEDED ??? UNDER WHAT CIRCUMSTANCES CAN TRANSLATION
+@c OF A BOUND VARIABLE USED AS A FUNCTION GO WRONG ???
+@defvr {Управляющая переменная} tr_bound_function_applyp
+Значение по умолчанию: @code{true}
+
+Если @code{tr_bound_function_applyp} равна @code{true}, то Maxima выдает предупреждение,
+если имеющая значение переменная (такая, как аргумент функции) используется как 
+имя функции.
+
+Например, выражение @code{g (f, x) := f (x+1)} вызовет предупреждение.
+
+@end defvr
+
+@defvr {Управляющая переменная} tr_file_tty_messagesp
+Значение по умолчанию: @code{false}
+
+Если @code{tr_file_tty_messagesp} равна @code{true}, то сообщения,
+генерируемые @code{translate_file} в процессе трансляции, отображаются на консоли
+и выводятся в UNLISP файл. 
+Если @code{false}, то сообщения выводятся только в UNLISP файл.
+
+@end defvr
+
+@c THIS FLAG APPEARS TO HAVE NO EFFECT. SHOULD CUT OUT THIS ITEM AND RELATED CODE.
+@c NOTE THAT THERE IS CODE IN src/transf.lisp WHICH USES THIS FLAG BUT THE MODE
+@c FLAG IS LOST SOMEWHERE ALONG THE WAY TO THE LISP OUTPUT FILE.
+@defvr {Управляющая переменная} tr_float_can_branch_complex
+Значение по умолчанию: @code{true}
+
+Сообщает Maxima-Lisp транслятору, что функции  
+@code{acos}, @code{asin}, @code{asec} и @code{acsc} могут возвращать
+комплексные значения.
+
+Эффект @code{tr_float_can_branch_complex} заключается в следующем.
+Хотя, явного влияния на результат трансляции нет, но  
+если этот флаг равен @code{true}, то @code{acos(x)} имеет тип @code{any},
+даже если @code{x} имеет тип @code{float} (как определено @code{mode_declare}).
+Если ли же он равен @code{false}, то @code{acos(x)} имеет тип @code{float} тогда и тоько тогда,
+когда @code{x} имеет тип @code{float}.
+
+@end defvr
+
+@defvr {Управляющая переменная} tr_function_call_default
+Значение по умолчанию: @code{general}
+
+Если равна @code{false}, то следует вызывать @code{meval};
+если @code{expr}, то предполагать Lisp функцию с фиксированными аргументами; если @code{general},
+то генерируется код, подходящий для @code{mexprs} и @code{mlexprs} но не @code{macros}.
+@code{general} обеспечивает правильное связывание переменных в компилируемом коде.  
+В режиме @code{general}, при трансляции F(X), если F является связанной переменной, то 
+предполагается @code{apply (f, [x])}, и в таком виде транслируется с печатью соответствующего
+предупреждения.  Нет необходимости выключать этот механизм.  С установками по умолчанию,
+отсутствие предупреждений не означает полную совместимость транслированного и
+интерпретируемого кода.
+
+@end defvr
+
+@defvr {Управляющая переменная} tr_numer
+Значение по умолчанию: @code{false}
+
+Если @code{tr_numer} равна @code{true}, то для атомов, имеющих свойство @code{numer}, 
+например, @code{%pi}, это свойство принимается во внимание транслятором.
+
+@end defvr
+
+@defvr {Управляющая переменная} tr_optimize_max_loop
+Значение по умолчанию: 100
+
+@code{tr_optimize_max_loop} есть максимальное число раз, которое 
+цикл макро-расширения и оптимизации транслятора будет повторен
+при трансляции формы.  Данный предел установлен для обнаружения
+ошибок макро-расширения и зацикливания оптимизатора.
+
+@end defvr
+
+@defvr {Управляющая переменная} tr_semicompile
+Значение по умолчанию: @code{false}
+
+Если @code{tr_semicompile} равна @code{true}, то @code{translate_file} и @code{compfile}
+генерируют формы, которые будут макро-расширены но не скомпилированы в машинный код 
+Lisp компилятором.
+
+@end defvr
+
+@c ARE ANY OF THESE OBSOLETE ??
+@defvr {Системная переменная} tr_state_vars
+Значение по умолчанию:
+@example
+[transcompile, tr_semicompile, tr_warn_undeclared, tr_warn_meval,
+tr_warn_fexpr, tr_warn_mode, tr_warn_undefined_variable,
+tr_function_call_default, tr_array_as_ref,tr_numer]
+@end example
+
+Список переключателей, которые влияют на форму транслированного кода.
+@c DOES THE GENERAL USER REALLY CARE ABOUT DEBUGGING THE TRANSLATOR ???
+Эта информация полезна для отладки транслятора.  
+Сравнивая результат трансляции с ожидаемым для данного состояния результатом,
+можно обнаружить ошибки транслятора.
+
+@end defvr
+
+@c tr_warnings_get EXISTS AND FUNCTIONS AS ADVERTISED (SORT OF) -- RETURNS *tr-runtime-warned*
+@c WHICH HAS ONLY A FEW KINDS OF WARNINGS PUSHED ONTO IT; IT'S CERTAINLY NOT COMPREHENSIVE
+@c DO WE REALLY NEED THIS SLIGHTLY WORKING FUNCTION ??
+@deffn {Функция} tr_warnings_get ()
+Печатает список предупреждений, сгенерированных транслятором в процессе текущей
+трансляции.
+
+@end deffn
+
+@defvr {Управляющая переменная} tr_warn_bad_function_calls
+Значение по умолчанию: @code{true}
+
+-- выдает предупреждение в случае вызова функции, который может быть неверным
+из-за неправильных деклараций, сделанных во время трансляции.
+
+@end defvr
+
+@defvr {Управляющая переменная} tr_warn_fexpr
+Значение по умолчанию: @code{compfile}
+
+-- выдает предупреждение если встречается FEXPR.  Обычно, FEXPR не должны присутствовать 
+в транслированном коде.
+
+@end defvr
+
+@defvr {Управляющая переменная} tr_warn_meval
+Значение по умолчанию: @code{compfile}
+
+-- выдает предупреждение при вызове функции @code{meval}.  Вызов @code{meval} означает проблему
+в транслированном коде.
+
+@end defvr
+
+@defvr {Управляющая переменная} tr_warn_mode
+Значение по умолчанию: @code{all}
+
+-- выдает предупреждение, когда переменной присваивается значение, несовместимое
+с ее типом.
+
+@end defvr
+
+@defvr {Управляющая переменная} tr_warn_undeclared
+Значение по умолчанию: @code{compile}
+
+-- управляет тем, когда печатать сообщения о
+необъявленных переменных.
+
+@end defvr
+
+@defvr {Управляющая переменная} tr_warn_undefined_variable
+Значение по умолчанию: @code{all}
+
+-- печатает предупреждение, когда встречается необъявленная переменная.
+
+@end defvr
+
+@c $tr_windy IS USED IN EXACTLY ONE PLACE (def%tr $kill IN src/trans1.lisp)
+@c WHERE IT CAUSES A WARNING ABOUT USING kill. 
+@c HOW ABOUT IF WE PERMANENTLY ENABLE THE WARNING MESSAGE
+@c AND CUT OUT tr_windy FROM CODE AND DOCS.
+@defvr {Управляющая переменная} tr_windy
+Значение по умолчанию: @code{true}
+
+-- вызывает печать полезных комментариев и советов по программированию.
+
+@end defvr
+
+@deffn {Функция} compile_file (@var{filename})
+@deffnx {Функция} compile_file (@var{filename}, @var{compiled_filename})
+@deffnx {Функция} compile_file (@var{filename}, @var{compiled_filename}, @var{lisp_filename})
+Транслирует файл Maxima @var{filename} в Lisp,
+выполняет компилятор Lisp и, если трансляция и компиляция успешны, 
+то загружает скомпилированный код в Maxima.
+
+@code{compile_file} возвращает список имен четырех файлов:
+изначального файла кода Maxima, транслированного Lisp файла, файла замечаний по трансляции и файла
+скомпилированного кода.  Если компиляция неуспешна, то последний элемент равен @code{false}.
+
+Некоторые декларации и определения активизируются сразу в процессе
+компиляции Lisp кода (без загрузки скомпилированного кода).
+Сюда относятся функции, определенные при помощи оператора @code{:=},
+макросы, определенные при помощи @code{::=}, @c HEDGE -- DON'T KNOW IF THERE IS ANOTHER WAY
+@code{alias}, @code{declare},
+@code{define_variable},  @code{mode_declare}
+и
+@code{infix}, @code{matchfix},
+@code{nofix}, @code{postfix}, @code{prefix} а также
+@code{compfile}.
+
+Присваивания и вызовы функций не вычисляются до загрузки скомпилированного файла.
+В частности, присваивания флагам трансляции (@code{tr_numer} и т.п.) внутри Maxima файла не оказывают
+влияния на результат трансляции.
+
+@c @code{compile_file} may mistake warnings for errors and
+@c return @code{false} as the name of the compiled code when, in fact,
+@c the compilation succeeded. This is a bug. 
+@c REPORTED AS SOURCEFORGE BUG # 1103722.
+
+Файл @var{filename} не может содержать специальные @code{:lisp} команды.
+
+Функция @code{compile_file} вычисляет свои аргументы.
+
+@end deffn
+
+@c NEEDS CLARIFICATION
+@deffn {Функция} declare_translated (@var{f_1}, @var{f_2}, ...)
+При трансляции кода Maxima в код Lisp, транслятору важно знать, какие функции
+следует вызывать как транслированные или компилированные, а какие как обычные Maxima 
+функции или неопределенные.  Данная деклараця, помещенная в начале транслируемого
+файла, дает транслятору информацию, что хотя @var{f_n} и не имеет свойство Lisp функции
+во время трансляции, но будет иметь таковое в момент вызова.
+Если транслятор не знает, что @code{fn} будет Lisp функцией, то
+генерируется код @code{(MFUNCTION-CALL fn arg1 arg2 ...)}.
+
+@end deffn
+
