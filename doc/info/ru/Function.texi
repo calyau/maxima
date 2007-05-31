@@ -1,7 +1,7 @@
 @c Language=Russian
 @c Encoding=CP1251
 @c File=Function.texi 
-@c OriginalRevision=1.47
+@c OriginalRevision=1.48
 
 @menu
 * Введение в определение функций::  
