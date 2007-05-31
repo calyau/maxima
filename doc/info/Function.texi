@@ -14,7 +14,7 @@
 @section Function
 @subsection Ordinary functions
 
-To define a function in Maxima you use the := operator.
+To define a function in Maxima you use the @code{:=} operator.
 E.g.
 
 @example
@@ -103,7 +103,7 @@ would let you access what that value was.   Thus the right hand
 side of the assignments, is evaluated in the entering context, before
 any binding occurs.
 Using just @code{block ([x], ...} would cause the @code{x} to have itself
-as value, just as if it would have if you entered a fresh @b{Maxima}
+as value, just as if it would have if you entered a fresh Maxima
 session.
 
 The actual arguments to a function are treated in exactly same way as
@@ -1730,7 +1730,7 @@ and are added to the @code{props} lists.
 Functions should not be translated
 unless they are fully debugged.
 
-Expressions are assumed simplified; if they are not, correct but non- optimal code gets
+Expressions are assumed simplified; if they are not, correct but non-optimal code gets
 generated.  Thus, the user should not set the @code{simp} switch to @code{false}
 which inhibits simplification of the expressions to be translated.
 
@@ -1842,7 +1842,7 @@ rather than the translated version.
 @defvr {Option variable} tr_array_as_ref
 Default value: @code{true}
 
-If @code{translate_fast_arrays} is false, array references in
+If @code{translate_fast_arrays} is @code{false}, array references in
 Lisp code emitted by @code{translate_file} are affected by @code{tr_array_as_ref}.
 When @code{tr_array_as_ref} is @code{true},
 array names are evaluated,
@@ -1859,6 +1859,7 @@ Default value: @code{true}
 
 When @code{tr_bound_function_applyp} is @code{true}, Maxima gives a warning if a bound
 variable (such as a function argument) is found being used as a function.
+@c WHAT DOES THIS MEAN ??
 @code{tr_bound_function_applyp} does not affect the code generated in such cases.
 
 For example, an expression such as @code{g (f, x) := f (x+1)} will trigger
@@ -1914,7 +1915,7 @@ translated and compiled code with the Maxima interpreter.
 @defvr {Option variable} tr_numer
 Default value: @code{false}
 
-When @code{tr_numer} is @code{true} numer properties are used for
+When @code{tr_numer} is @code{true} @code{numer} properties are used for
 atoms which have them, e.g. @code{%pi}.
 
 @end defvr
@@ -2076,7 +2077,7 @@ and which ones are just Maxima functions or undefined.  Putting this
 declaration at the top of the file, lets it know that although a symbol
 does which does not yet have a Lisp function value, will have one at
 call time. @code{(MFUNCTION-CALL fn arg1 arg2 ...)} is generated when
-the translator does not know fn is going to be a Lisp function.
+the translator does not know @code{fn} is going to be a Lisp function.
 
 @end deffn
 
