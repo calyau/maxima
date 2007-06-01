@@ -11,14 +11,16 @@
 Displays a plot of one or more expressions in implicit
 form. @var{expr} is the expression to be plotted, @var{x_range} the
 range of the horizontal axis and @var{y_range} the range of vertical
-axis. @var{implicit_plot} only works with the gnuplot
-driver. @var{implicit_plot} respects global setting for the gnuplot
+axis. @code{implicit_plot} only works with the gnuplot
+driver. @code{implicit_plot} respects global setting for the gnuplot
 driver set by the @var{set_plot_option} function. Options can also be passed to
-@var{implicit_plot} function as optional arguments.
+@code{implicit_plot} function as optional arguments.
 
-@var{implicit_plot} works by tracking sign changes on the area
+@code{implicit_plot} works by tracking sign changes on the area
 given by @var{x_range} and @var{y_range} and can fail for complicated
 expressions.
+
+@code{load(implicit_plot)} loads this function.
 
 Example:
 @example
