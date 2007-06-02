@@ -1,0 +1,482 @@
+@c Language=Russian
+@c Encoding=CP1251
+@c File=Lists.texi 
+@c OriginalRevision=1.30
+
+@menu
+* Ведение в работу со списками::
+* Функции и переменные для работы со списками::
+@end menu
+
+@node Ведение в работу со списками, Функции и переменные для работы со списками, Списки, Списки
+@section Ведение в работу со списками
+
+Списки являются основными строительными блоками в Maxima и Lisp.   Все типы данных,
+за исключением массивов, хеш-таблиц и чисел, представлены, как Lisp списки.
+Эти списки имеют вид
+
+@example
+((MPLUS) $A 2)
+@end example
+
+@noindent
+для обозначения @code{a+2}.  На уровне Maxima мы увидим в инфиксной нотации @code{a+2}.   
+Maxima тоже имеет свои собственные списки, которые печатаются как
+
+@example
+[1, 2, 7, x+y]
+@end example
+
+@noindent
+для списка из 4 элементов.  Внутренне, это выражение соответствует Lisp списку
+
+@example
+((MLIST) 1  2  7  ((MPLUS)  $X $Y ))
+@end example
+
+@noindent
+Флаг, который обозначает тип выражения Maxima, сам является списком, и после 
+упрощения, данный список приобретет вид
+
+@example
+((MLIST SIMP) 1 2 7 ((MPLUS SIMP) $X $Y))
+@end example
+
+@node Функции и переменные для работы со списками,  , Ведение в работу со списками, Списки
+@section Функции и переменные для работы со списками
+
+@c NEED ANOTHER deffn FOR GENERAL EXPRESSIONS ARGUMENTS
+@c NEEDS CLARIFICATION AND EXAMPLES
+@deffn {Функция} append (@var{list_1}, ..., @var{list_n})
+Возвращает новый список элементов @var{list_1} с последующими элементами @var{list_2} и т.д.  
+@code{append} работает и с выражениями общего вида, например, @code{append (f(a,b), f(c,d,e));} дает
+@code{f(a,b,c,d,e)}.
+
+См. @code{example(append);} для примера.
+
+@end deffn
+
+@c NEEDS CLARIFICATION AND EXAMPLES
+@deffn {Функция} assoc (@var{key}, @var{list}, @var{default})
+@deffnx {Функция} assoc (@var{key}, @var{list})
+Эта функция ищет ключ @var{key} в правых частях списка @var{list},
+имеющего форму @code{[x,y,z,...]}, где каждый элемент @var{list} есть выражение с бинарным
+оператором и двумя операндами.  Например, @code{x=1}, @code{2^3}, @code{[a,b]} и т.д.
+Ключ @var{key} сравнивается с первым операндом.  
+Если ключ @code{key} найден, то @code{assoc} возвращает второй операнд.
+В противном случае возвращается значение @var{default}.  Параметр @var{default} не
+обязателен и по умолчанию равен @code{false}.
+
+@end deffn
+
+@c REPHRASE
+@c SPLIT OFF EXAMPLES INTO EXAMPLE SECTION
+@deffn {Функция} atom (@var{expr})
+Возвращает @code{true} если @var{expr} является атомарным (т.е. число, имя или строка) и @code{false}
+в противном случае.  Т.е. @code{atom(5)} равно @code{true}, тогда как @code{atom(a[1])} и @code{atom(sin(x))} 
+равны @code{false} (предполагая, что @code{a[1]} и @code{x} не имеют значения).
+
+@end deffn
+
+@c NEED ANOTHER deffn FOR GENERAL EXPRESSIONS ARGUMENTS
+@c SPLIT OFF EXAMPLES INTO EXAMPLE SECTION
+@deffn {Функция} cons (@var{expr}, @var{list})
+Возвращает новый список, составленный из первого элемента равного @var{expr} с последующими
+элементами @var{list}.  Функция @code{cons} работает и с произвольными выражениями,
+например, @code{cons(x, f(a,b,c));}  ->  @code{f(x,a,b,c)}.
+
+@end deffn
+
+@deffn {Функция} copylist (@var{list})
+Возвращает копию списка @var{list}.
+
+@end deffn
+
+@deffn {Функция} create_list (@var{form}, @var{x_1}, @var{list_1}, ..., @var{x_n}, @var{list_n})
+
+Создает список, вычисляя выражение @var{form} с @var{x_1} последовательно равным элементам
+@var{list_1}, @var{x_2} последовательно равным элементам @var{list_2} и т.д.
+Общее число элементов в результирующем списке равно произведению числа
+элементов во всех списках.
+Каждая переменная @var{x_i} должна быть символом.  Переменные не вычисляются.
+Списки вычисляются однажды в начале итерации.
+
+@example
+(%i1) create_list(x^i,i,[1,3,7]);
+                 3   7
+(%o1)       [x, x , x ]
+@end example
+
+@noindent
+Двойная итерация:
+
+@example
+(%i1) create_list([i,j],i,[a,b],j,[e,f,h]);
+(%o1) [[a, e], [a, f], [a, h], [b, e], [b, f], [b, h]]
+@end example
+
+Вместо списка @var{list_i} можно использовать два параметра, которые 
+должны иметь числовые значения.  Они будут рассматриваться как нижняя и верхняя
+границы итерации (включительно).
+
+@example
+(%i1) create_list([i,j],i,[1,2,3],j,1,i);
+(%o1) [[1, 1], [2, 1], [2, 2], [3, 1], [3, 2], [3, 3]]
+@end example
+
+Отметим, что пределы для переменной @code{j} могут зависеть от @code{i}.
+
+@end deffn
+
+@deffn {Функция} delete (@var{expr_1}, @var{expr_2})
+@deffnx {Функция} delete (@var{expr_1}, @var{expr_2}, @var{n})
+Удаляет все элементы, равные @var{expr_1}, из @var{expr_2}.  При этом @var{expr_1}
+может быть слагаемым @var{expr_2} (если это сумма) или множителем @var{expr_2}
+(если это произведение).
+
+@c ===beg===
+@c delete(sin(x), x+sin(x)+y);
+@c ===end===
+@example
+(%i1) delete(sin(x), x+sin(x)+y);
+(%o1)                         y + x
+
+@end example
+
+Вызов @code{delete(@var{expr_1}, @var{expr_2}, @var{n})} удаляет первые @var{n} случаев
+@var{expr_1} из @var{expr_2}.  Если число включений @var{expr_1} в @var{expr_2} меньше @var{n},
+то будут удалены все.
+
+@c ===beg===
+@c delete(a, f(a,b,c,d,a));
+@c delete(a, f(a,b,a,c,d,a), 2);
+@c ===end===
+@example
+(%i1) delete(a, f(a,b,c,d,a));
+(%o1)                      f(b, c, d)
+(%i2) delete(a, f(a,b,a,c,d,a), 2);
+(%o2)                     f(b, c, d, a)
+
+@end example
+
+@end deffn
+
+@deffn {Функция} eighth (@var{expr})
+Возвращает восьмой элемент выражения или списка @var{expr}.
+См. @code{first} по поводу подробностей.
+
+@end deffn
+
+@c NEED ANOTHER deffn FOR GENERAL EXPRESSIONS ARGUMENTS
+@c SPLIT OFF EXAMPLES INTO EXAMPLE SECTION
+@deffn {Функция} endcons (@var{expr}, @var{list})
+Возвращает новый список, состоящий из элементов @code{list} с последующим @var{expr}.  
+Функция @code{endcons} работает и с общими выражениями, например,
+@code{endcons(x, f(a,b,c));}  ->  @code{f(a,b,c,x)}.
+
+@end deffn
+
+@deffn {Функция} fifth (@var{expr})
+Возвращает пятый элемент выражения или списка @var{expr}.
+См. @code{first} по поводу подробностей.
+
+@end deffn
+
+@c NEEDS CLARIFICATION AND EXAMPLES
+@deffn {Функция} first (@var{expr})
+Возвращает первый элемент @var{expr}, что может быть первым элементом списка, 
+первой строкой в матрице, первым слагаемым суммы и т.д.
+Заметим, что @code{first} и другие подобные функции, такие как @code{rest} и @code{last}, 
+работают с результирующей (печатной) формой выражения @var{expr}, 
+а не с тем, как это выражение было введено.  
+Если значение @code{inflag} равно @code{true}, то эти функции будут 
+работать с внутренним представлением выражения @var{expr}.  Отметим, что упрощатель
+изменяет порядок членов в выражениях.  Так, @code{first(x+y)} будет равно @code{x}, если @code{inflag}
+равна @code{true}, и @code{y}, если @code{inflag} равна @code{false} (@code{first(y+x)} даст одинаковый
+результат в обоих случаях).  Функции @code{second} .. @code{tenth} дают со второго по десятый
+элемент выражения.
+
+@end deffn
+
+@deffn {Функция} fourth (@var{expr})
+Возвращает четвертый элемент выражения или списка @var{expr}.
+См. @code{first} по поводу подробностей.
+
+@end deffn
+
+@deffn {Функция} get (@var{a}, @var{i})
+Возвращает определенное пользователем свойство атома @var{a}, обозначенное @var{i}, или 
+@code{false}, если атом не имеет свойства @var{i}.
+
+Функция @code{get} вычисляет свои аргументы.
+
+@c ===beg===
+@c put (%e, 'transcendental, 'type);
+@c put (%pi, 'transcendental, 'type)$
+@c put (%i, 'algebraic, 'type)$
+@c typeof (expr) := block ([q],
+@c         if numberp (expr)
+@c         then return ('algebraic),
+@c         if not atom (expr)
+@c         then return (maplist ('typeof, expr)),
+@c         q: get (expr, 'type),
+@c         if q=false
+@c         then errcatch (error(expr,"is not numeric.")) else q)$
+@c typeof (2*%e + x*%pi);
+@c typeof (2*%e + %pi);
+@c ===end===
+@example
+(%i1) put (%e, 'transcendental, 'type);
+(%o1)                    transcendental
+(%i2) put (%pi, 'transcendental, 'type)$
+(%i3) put (%i, 'algebraic, 'type)$
+(%i4) typeof (expr) := block ([q],
+        if numberp (expr)
+        then return ('algebraic),
+        if not atom (expr)
+        then return (maplist ('typeof, expr)),
+        q: get (expr, 'type),
+        if q=false
+        then errcatch (error(expr,"is not numeric.")) else q)$
+(%i5) typeof (2*%e + x*%pi);
+x is not numeric.
+(%o5)  [[transcendental, []], [algebraic, transcendental]]
+(%i6) typeof (2*%e + %pi);
+(%o6)     [transcendental, [algebraic, transcendental]]
+
+@end example
+
+@end deffn
+
+@deffn {Функция} join (@var{l}, @var{m})
+Возвращает новый список, состоящий из чередующихся элементов списков @var{l} и @var{m}.
+Результат будет иметь вид @code{[@var{l}[1], @var{m}[1], @var{l}[2], @var{m}[2], ...]}.
+Списки @var{l} и @var{m} могут иметь элементы любого типа.
+
+Если списки имеют разную длину, то @code{join} отбросит последние элементы более длинного списка.
+
+Ситуация, когда либо @var{l}, либо @var{m} не является списком, считается ошибкой.
+
+Примеры:
+
+@c ===beg===
+@c L1: [a, sin(b), c!, d - 1];
+@c join (L1, [1, 2, 3, 4]);
+@c join (L1, [aa, bb, cc, dd, ee, ff]);
+@c ===end===
+@example
+(%i1) L1: [a, sin(b), c!, d - 1];
+(%o1)                [a, sin(b), c!, d - 1]
+(%i2) join (L1, [1, 2, 3, 4]);
+(%o2)          [a, 1, sin(b), 2, c!, 3, d - 1, 4]
+(%i3) join (L1, [aa, bb, cc, dd, ee, ff]);
+(%o3)        [a, aa, sin(b), bb, c!, cc, d - 1, dd]
+@end example
+
+@end deffn
+
+@c NEEDS EXAMPLES
+@c HOW IS "LAST" PART DETERMINED ??
+@deffn {Функция} last (@var{expr})
+Возвращает последний элемент @var{expr} (элемент, слагаемое, множитель, строку и т.п.).
+
+@end deffn
+
+@c NEEDS CLARIFICATION AND EXAMPLES
+@deffn {Функция} length (@var{expr})
+По умолчанию возвращает число частей внешней (печатной) формы выражения @var{expr}.  
+Для списка -- это число элементов, для матрицы -- число строк, для суммы -- число
+слагаемых (см. @code{dispform}).
+
+Результат @code{length} зависит от переключателя @code{inflag}.  
+Например, @code{length(a/(b*c));} дает 2, если @code{inflag} равен @code{false} 
+(предполагается, что @code{exptdispflag} равна @code{true}), и дает 3, если @code{inflag} 
+равен @code{true}, т.к. внутренние представление есть @code{a*b^-1*c^-1}.
+
+@end deffn
+
+@defvr {Управляющая переменная} listarith
+Значение по умолчанию: @code{true}
+Если равна @code{false}, то все арифметические операции со списками не работают.
+Если равна @code{true}, то все операции список-матрица вызывают преобразование списков
+в матрицы и дают результат матричного типа.  Однако, операции список-список
+продолжают давать списки.
+
+@end defvr
+
+@deffn {Функция} listp (@var{expr})
+Возвращает @code{true}, если @var{expr} является списком и @code{false} в противном случае.
+
+@end deffn
+
+@deffn {Функция} makelist (@var{expr}, @var{i}, @var{i_0}, @var{i_1})
+@deffnx {Функция} makelist (@var{expr}, @var{x}, @var{list})
+Создает и возвращает список, каждый элемент которого
+построен из выражения @var{expr}.
+
+Вызов @code{makelist (@var{expr}, @var{i}, @var{i_0}, @var{i_1})} возвращает список,
+с @code{j}-м элементом равным @code{ev (@var{expr}, @var{i}=j)} для
+@code{j}, пробегающего значения от @var{i_0} до @var{i_1}.
+
+Вызов @code{makelist (@var{expr}, @var{x}, @var{list})} возвращает список,
+с @code{j}-м элементом равным @code{ev (@var{expr}, @var{x}=@var{list}[j])}
+для @code{j}, пробегающего значения от 1 до @code{length (@var{list})}.
+
+Примеры:
+
+@c ===beg===
+@c makelist(concat(x,i),i,1,6);
+@c makelist(x=y,y,[a,b,c]);
+@c ===end===
+@example
+(%i1) makelist(concat(x,i),i,1,6);
+(%o1)               [x1, x2, x3, x4, x5, x6]
+(%i2) makelist(x=y,y,[a,b,c]);
+(%o2)                 [x = a, x = b, x = c]
+
+@end example
+
+@end deffn
+
+@deffn {Функция} member (@var{expr_1}, @var{expr_2})
+
+Возвращает @code{true} если @code{is(@var{expr_1} = @var{a})},
+для некоторого элемента @var{a} из @code{args(@var{expr_2})},
+и @code{false} в противном случае.
+
+Обычно, @code{expr_2} является списком.
+В этом случае @code{args(@var{expr_2}) = @var{expr_2}}
+и @code{is(@var{expr_1} = @var{a})} для некоторого элемента @var{a} из @code{expr_2}.
+
+Функция @code{member} не анализирует составные части аргументов @code{expr_2},
+и может возвратить @code{false} даже если @code{expr_1} является частью какого-либо из
+аргументов @code{expr_2}.
+
+См. также @code{elementp}.
+
+Примеры:
+
+@c ===beg===
+@c member (8, [8, 8.0, 8b0]);
+@c member (8, [8.0, 8b0]);
+@c member (b, [a, b, c]);
+@c member (b, [[a, b], [b, c]]);
+@c member ([b, c], [[a, b], [b, c]]);
+@c F (1, 1/2, 1/4, 1/8);
+@c member (1/8, %);
+@c member ("ab", ["aa", "ab", sin(1), a + b]);
+@c ===end===
+@example
+(%i1) member (8, [8, 8.0, 8b0]);
+(%o1)                         true
+(%i2) member (8, [8.0, 8b0]);
+(%o2)                         false
+(%i3) member (b, [a, b, c]);
+(%o3)                         true
+(%i4) member (b, [[a, b], [b, c]]);
+(%o4)                         false
+(%i5) member ([b, c], [[a, b], [b, c]]);
+(%o5)                         true
+(%i6) F (1, 1/2, 1/4, 1/8);
+                               1  1  1
+(%o6)                     F(1, -, -, -)
+                               2  4  8
+(%i7) member (1/8, %);
+(%o7)                         true
+(%i8) member ("ab", ["aa", "ab", sin(1), a + b]);
+(%o8)                         true
+@end example
+
+@end deffn
+
+@deffn {Функция} ninth (@var{expr})
+Возвращает девятый элемент выражения или списка @var{expr}.
+См. @code{first} по поводу подробностей.
+
+@end deffn
+
+@c NEEDS EXAMPLES
+@deffn {Функция} rest (@var{expr}, @var{n})
+@deffnx {Функция} rest (@var{expr})
+Возвращает @var{expr} без первых @var{n} элементов, если @var{n} положительно,
+или без последних @code{- @var{n}} элементов, если @var{n} отрицательно.  
+Если @var{n} равен 1, то он может быть опущен.  
+Выражение @var{expr} может быть списком, матрицей или выражением.
+
+@end deffn
+
+@c NEED ANOTHER deffn FOR GENERAL EXPRESSIONS ARGUMENTS
+@c SPLIT OFF EXAMPLES INTO EXAMPLE SECTION
+@deffn {Функция} reverse (@var{list})
+Изменяет порядок членов @var{list} (но не сами члены) на обратный.  
+Функция @code{reverse} также работает с выражениями общего вида,
+например,  @code{reverse(a=b);} дает @code{b=a}.
+
+@end deffn
+
+@deffn {Функция} second (@var{expr})
+Возвращает второй элемент выражения или списка @var{expr}.
+См. @code{first} по поводу подробностей.
+
+@end deffn
+
+@deffn {Функция} seventh (@var{expr})
+Возвращает седьмой элемент выражения или списка @var{expr}.
+См. @code{first} по поводу подробностей.
+
+@end deffn
+
+@deffn {Функция} sixth (@var{expr})
+Возвращает шестой элемент выражения или списка @var{expr}.
+См. @code{first} по поводу подробностей.
+
+@end deffn
+
+@deffn {Функция} sublist_indices (@var{L}, @var{P})
+
+Возвращает список индексов элементов @code{x} списка @var{L}, для которых
+предикат @code{maybe(@var{P}(x))} возвращает @code{true},
+за исключением элементов @code{unknown} и @code{false}.
+Параметр @var{P} может быть именем функции или лямбда-выражением.
+Параметр @var{L} должен быть списком.
+
+Примеры:
+
+@c ===beg===
+@c sublist_indices ('[a, b, b, c, 1, 2, b, 3, b], lambda ([x], x='b));
+@c sublist_indices ('[a, b, b, c, 1, 2, b, 3, b], symbolp);
+@c sublist_indices ([1 > 0, 1 < 0, 2 < 1, 2 > 1, 2 > 0], identity);
+@c assume (x < -1);
+@c map (maybe, [x > 0, x < 0, x < -2]);
+@c sublist_indices ([x > 0, x < 0, x < -2], identity);
+@c ===end===
+
+@example
+(%i1) sublist_indices ('[a, b, b, c, 1, 2, b, 3, b], lambda ([x], x='b));
+(%o1)                     [2, 3, 7, 9]
+(%i2) sublist_indices ('[a, b, b, c, 1, 2, b, 3, b], symbolp);
+(%o2)                  [1, 2, 3, 4, 7, 9]
+(%i3) sublist_indices ([1 > 0, 1 < 0, 2 < 1, 2 > 1, 2 > 0], identity);
+(%o3)                       [1, 4, 5]
+(%i4) assume (x < -1);
+(%o4)                       [x < - 1]
+(%i5) map (maybe, [x > 0, x < 0, x < -2]);
+(%o5)                [false, true, unknown]
+(%i6) sublist_indices ([x > 0, x < 0, x < -2], identity);
+(%o6)                          [2]
+@end example
+
+@end deffn
+
+@deffn {Функция} tenth (@var{expr})
+Возвращает десятый элемент выражения или списка @var{expr}.
+См. @code{first} по поводу подробностей.
+
+@end deffn
+
+@deffn {Функция} third (@var{expr})
+Возвращает третий элемент выражения или списка @var{expr}.
+См. @code{first} по поводу подробностей.
+
+@end deffn
+

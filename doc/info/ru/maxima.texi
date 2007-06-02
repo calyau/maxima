@@ -133,7 +133,7 @@ DOE Macsyma.  Копияия DOE Macsyma поддерживалась профессором Вильямом
 Продвинутые возможности и программирование
 
 * Runtime Environment::         Customization of the Maxima environment.
-* Miscellaneous Options::       Options with a global effect on Maxima.
+* Вспомогательные опции::       Опции, имеющие глобальное влияние на работу Maxima.
 * Rules and Patterns::          User defined pattern matching and
                                 simplification rules.
 * Списки::                      Работа со списками.
@@ -356,11 +356,11 @@ Runtime Environment
 * Interrupts::                  
 * Definitions for Runtime Environment::  
 
-Miscellaneous Options
+Вспомогательные опции
 
-* Introduction to Miscellaneous Options::  
-* Share::                       
-* Definitions for Miscellaneous Options::  
+* Введение в вспомогательные опции::  
+* Библиотека Share::                       
+* Вспомогательные функции и переменные::  
 
 Rules and Patterns
 
