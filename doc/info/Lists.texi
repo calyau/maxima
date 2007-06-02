@@ -8,7 +8,7 @@
 @section Introduction to Lists
 
 Lists are the basic building block for Maxima and Lisp.   All data types
-other than arrays, hash tables, numbers are represented as Lisp lists,
+other than arrays, hash tables, numbers are represented as Lisp lists.
 These Lisp lists have the form
 
 @example
@@ -125,8 +125,8 @@ upper bounds for the iteration.
 (%o1) [[1, 1], [2, 1], [2, 2], [3, 1], [3, 2], [3, 3]]
 @end example
 
-Note that the limits or list for the @var{j} variable can
-depend on the current value of @var{i}.
+Note that the limits or list for the @code{j} variable can
+depend on the current value of @code{i}.
 
 @end deffn
 
@@ -256,7 +256,7 @@ The lists @var{l} and @var{m} may contain any type of elements.
 
 If the lists are different lengths, @code{join} ignores elements of the longer list.
 
-Maxima complains if @var{L_1} or @var{L_2} is not a list.
+Maxima complains if @var{l} or @var{m} is not a list.
 
 Examples:
 

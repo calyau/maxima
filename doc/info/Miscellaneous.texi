@@ -89,9 +89,7 @@ of the list of arguments.
 The order of the items in the list may depend on the global flag @code{inflag}.
 
 @code{args (@var{expr})} is equivalent to @code{substpart ("[", @var{expr}, 0)}.
-See also @code{substpart}.
-
-See also @code{op}.
+See also @code{substpart}, and @code{op}.
 
 @c NEEDS EXAMPLES
 @end deffn
@@ -179,7 +177,7 @@ one is not explicitly set by the user.)
 @deffn {Function} integerp (@var{expr})
 Returns @code{true} if @var{expr} is a literal numeric integer, otherwise @code{false}.
 
-@code{integerp} returns false if its argument is a symbol,
+@code{integerp} returns @code{false} if its argument is a symbol,
 even if the argument is declared integer.
 
 Examples:
@@ -233,10 +231,11 @@ m1pbranch:false          m1pbranch:true
 Returns @code{true} if @var{expr} is a literal integer, rational number, 
 floating point number, or bigfloat, otherwise @code{false}.
 
-@code{numberp} returns false if its argument is a symbol,
+@code{numberp} returns @code{false} if its argument is a symbol,
 even if the argument is a symbolic number such as @code{%pi} or @code{%i},
 or declared to be 
-even, odd, integer, rational, irrational, real, imaginary, or complex.
+@code{even}, @code{odd}, @code{integer}, @code{rational}, @code{irrational}, 
+@code{real}, @code{imaginary}, or @code{complex}.
 
 Examples:
 
@@ -273,8 +272,8 @@ properties associated with the atom @var{a}.
 @c WHAT IS HIDDEN IN THE "etc" HERE ??
 @defvr {Special symbol} props
 @code{props} are atoms which have any property other than those explicitly
-mentioned in @code{infolists}, such as atvalues, matchdeclares, etc., as well
-as properties specified in the @code{declare} function.
+mentioned in @code{infolists}, such as cpecofied by @code{atvalue}, @code{matchdeclare}, etc., 
+as well as properties specified in the @code{declare} function.
 
 @end defvr
 
