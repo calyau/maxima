@@ -1,12 +1,13 @@
+/Differentiation.texi/1.20/Sat Jun  2 00:12:38 2007/-ko/
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
-@c /Differentiation.texi/1.19/Sun Jun 12 19:13:47 2005/-ko/
+@c /Differentiation.texi/1.20/Sat Jun  2 00:12:38 2007/-ko/
 @c end concepts Differentiation
 @menu
-* Defini@value{cedilha}@~{o}es para Diferencia@value{cedilha}@~{a}o::  
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Diferencia@value{cedilha}@~{a}o::  
 @end menu
 
-@node Defini@value{cedilha}@~{o}es para Diferencia@value{cedilha}@~{a}o,  , Diferencia@value{cedilha}@~{a}o, Diferencia@value{cedilha}@~{a}o
-@section Defini@value{cedilha}@~{o}es para Diferencia@value{cedilha}@~{a}o
+@node Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Diferencia@value{cedilha}@~{a}o,  , Diferencia@value{cedilha}@~{a}o, Diferencia@value{cedilha}@~{a}o
+@section Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Diferencia@value{cedilha}@~{a}o
 
 @deffn {Fun@value{cedilha}@~{a}o} antid (@var{expr}, @var{x}, @var{u(x)}) 
 Retorna uma lista de dois elementos,

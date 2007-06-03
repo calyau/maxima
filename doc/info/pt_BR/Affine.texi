@@ -1,12 +1,12 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
-@c /Affine.texi/1.12/Sat Nov 19 06:51:23 2005/-ko/
+@c /Affine.texi/1.13/Sat Jun  2 00:12:30 2007/-ko/
 @c end concepts Affine
 @menu
-* Defini@value{cedilha}@~{o}es para Fun@value{cedilha}@~{o}es Afins::      
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Fun@value{cedilha}@~{o}es Afins::      
 @end menu
 
-@node Defini@value{cedilha}@~{o}es para Fun@value{cedilha}@~{o}es Afins,  , Fun@value{cedilha}@~{o}es Afins, Fun@value{cedilha}@~{o}es Afins
-@section Defini@value{cedilha}@~{o}es para Fun@value{cedilha}@~{o}es Afins
+@node Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Fun@value{cedilha}@~{o}es Afins,  , Fun@value{cedilha}@~{o}es Afins, Fun@value{cedilha}@~{o}es Afins
+@section Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Fun@value{cedilha}@~{o}es Afins
 
 @deffn {Fun@value{cedilha}@~{a}o} fast_linsolve ([@var{expr_1}, ..., @var{expr_m}], [@var{x_1}, ..., @var{x_n}])
 Resolve equa@value{cedilha}@~{o}es lineares simult@^{a}neas @var{expr_1}, ..., @var{expr_m}
@@ -47,8 +47,8 @@ se e somente se @var{f} for uma combina@value{cedilha}@~{a}o polinomial dos elem
 As @var{eqns} s@~{a}o
 equa@value{cedilha}@~{o}es polinomiais em vari@'{a}veis n@~{a}o comutativas.
 O valor de @code{current_variables}  @'{e} uma 
-lista de vari@'{a}veis usadas para calcular graus.  As equa@value{cedilha}@~{o}es podem ser
-homog@^{e}neas, em ordem para o procedimento terminar.  
+lista de vari@'{a}veis usadas para calcular graus.  As equa@value{cedilha}@~{o}es devem ser
+homog@^{e}neas, com o objetivo de que o procedimento termine.  
 
 Se voc@^{e} checou simplifica@value{cedilha}@~{o}es de envolt@'{o}rio em @code{dot_simplifications}
 acima do grau de @var{f}, ent@~{a}o o seguinte @'{e} verdadeiro:
@@ -56,11 +56,6 @@ acima do grau de @var{f}, ent@~{a}o o seguinte @'{e} verdadeiro:
 ideal gerado pelas equa@value{cedilha}@~{o}es, i.e.,
 se e somente se @var{f} for uma combina@value{cedilha}@~{a}o polinomial
 dos elementos das equa@value{cedilha}@~{o}es.
-
-
-acima do grau de f, ent@~{a}o o seguinte @'{e} verdadeiro:
-@code{dotsimp (f)} retorna 0 se e somente se @var{f} est@'{a} no ideal gerado pelas equa@value{cedilha}@~{o}es, i.e.,
-se e somente se @var{f} for uma combina@value{cedilha}@~{a}o polinomial dos elementos das equa@value{cedilha}@~{o}es.
 
 O grau @'{e} aquele retornado por @code{nc_degree}.   Isso por sua vez @'{e} nfluenciado pelos
 pesos das vari@'{a}veis individuais.
@@ -189,6 +184,3 @@ antes chamando @code{dotsimp}.
 Por padr@~{a}o, denominadores n@~{a}o s@~{a}o coletados por @code{dotsimp}.
 
 @end defvr
-
-
-

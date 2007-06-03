@@ -1,12 +1,12 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
-@c /Equations.texi/1.24/Thu Nov  2 05:46:56 2006/-ko/
+@c /Equations.texi/1.25/Sat Jun  2 00:12:41 2007/-ko/
 @c end concepts Equations
 @menu
-* Defini@value{cedilha}@~{o}es para Equa@value{cedilha}@~{o}es::   
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Equa@value{cedilha}@~{o}es::   
 @end menu
 
-@node Defini@value{cedilha}@~{o}es para Equa@value{cedilha}@~{o}es,  , Equa@value{cedilha}@~{o}es, Equa@value{cedilha}@~{o}es
-@section Defini@value{cedilha}@~{o}es para Equa@value{cedilha}@~{o}es
+@node Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Equa@value{cedilha}@~{o}es,  , Equa@value{cedilha}@~{o}es, Equa@value{cedilha}@~{o}es
+@section Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Equa@value{cedilha}@~{o}es
 
 @c NEED A DESCRIPTION OF %rnum AS WELL
 @defvr {Vari@'{a}vel} %rnum_list
@@ -38,7 +38,7 @@ Se @code{algexact} @'{e} @code{false}, @code{solve} @'{e} chamada somente se
 o eliminante n@~{a}o for de uma vari@'{a}vel, ou se for uma quadr@'{a}tica ou uma
 biquadrada.
 
-Dessa forma @code{algexact: true} n@~{a}o garante solu@value{cedilha}@~{o}es
+Dessa forma @code{algexact: true} n@~{a}o garante somente solu@value{cedilha}@~{o}es
 exatas, apenas que @code{algsys} tentar@'{a} primeiro pegar
 solu@value{cedilha}@~{o}es exatas, e somente retorna aproxima@value{cedilha}@~{o}es quando tudo mais falha.
 
@@ -372,6 +372,7 @@ Valor padr@~{a}o: @code{false}
 When @code{globalsolve} for @code{true},
 vari@'{a}veis para as quais as equa@value{cedilha}@~{o}es s@~{a}o resolvidas s@~{a}o atribuidas aos valores da solu@value{cedilha}@~{a}o encontrados por @code{linsolve},
 e por @code{solve} quando resolvendo duas ou mais equa@value{cedilha}@~{o}es lineares.
+
 Quando @code{globalsolve} for @code{false},
 solu@value{cedilha}@~{o}es encontradas por @code{linsolve} e por @code{solve} quando resolvendo duas ou mais equa@value{cedilha}@~{o}es lineares
 s@~{a}o espressas como equa@value{cedilha}@~{o}es,
@@ -429,7 +430,7 @@ Solution
 @c MERGE IN TEXT FROM share/integequations/inteqn.usg
 @c AND EXAMPLES FROM .../intexs.mac
 @deffn {Fun@value{cedilha}@~{a}o} ieqn (@var{ie}, @var{unk}, @var{tech}, @var{n}, @var{guess})
-@code{inteqn} @'{e} um pacote para resolver equa@value{cedilha}@~{o}es integrais.
+@code{inteqn} @'{e} um pacote para resolver equa@value{cedilha}@~{o}es com integrais.
 @code{load ("inteqn")} carrega esse pacote.
 
 @var{ie} @'{e} a equa@value{cedilha}@~{a}o integral; @var{unk} @'{e} a fun@value{cedilha}@~{a}o desconhecida; @var{tech} @'{e} a
@@ -988,8 +989,16 @@ equa@value{cedilha}@~{o}es n@~{a}o s@~{a}o compat@'{i}veis, a mensagem @code{inc
 mostrada (veja o comutador @code{solve_inconsistent_error} ); se n@~{a}o existe
 solu@value{cedilha}@~{a}o @'{u}nica, ent@~{a}o @code{singular} ser@'{a} mostrado.
 
+Quando @code{programmode} for @code{false},
+@code{solve} mostra solu@value{cedilha}@~{o}es com r@'{o}tulos de express@~{o}es intermedi@'{a}rias (@code{%t}),
+e retorna a lista de r@'{o}tulos.
+
+Quando @code{globalsolve} for @code{true} e o problema for resolver duas ou mais equa@value{cedilha}@~{o}es lineares,
+cada vari@'{a}vel para a qual a equa@value{cedilha}@~{a}o for resolvida @'{e} associada a seu valor na solu@value{cedilha}@~{a}o das equa@value{cedilha}@~{o}es.
+
 Exemplos:
 @c FOLLOWING ADAPTED FROM example (solve)
+@c ===beg===
 @c solve (asin (cos (3*x))*(f(x) - 1), x);
 @c ev (solve (5^f(x) = 125, f(x)), solveradcan);
 @c [4*x^2 - y^2 = 12, x*y - x = 2];
@@ -1002,12 +1011,12 @@ Exemplos:
 @c x^2 - 1;
 @c solve (%, x);
 @c ev (%th(2), %[1]);
-
+@c ===end===
 @example
 (%i1) solve (asin (cos (3*x))*(f(x) - 1), x);
 
 SOLVE is using arc-trig functions to get a solution.
-Some solu@value{cedilha}@~{o}es will be lost.
+Some solutions will be lost.
                             %pi
 (%o1)                  [x = ---, f(x) = 1]
                              6
@@ -1160,9 +1169,8 @@ solu@value{cedilha}@~{o}es.
 @defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} solve_inconsistent_error
 Valor padr@~{a}o: @code{true}
 
-Quando @code{solve_inconsistent_error} @'{e} 
-@code{true}, @code{solve} e
-@code{linsolve} resultam em erro se as equa@value{cedilha}@~{o}es a serem resolvidas s@~{a}o inconsistentes.
+Quando @code{solve_inconsistent_error} for @code{true}, @code{solve} e
+@code{linsolve} resultam em erro se as equa@value{cedilha}@~{o}es a serem resolvidas forem inconsistentes.
 
 Se @code{false}, @code{solve} e @code{linsolve} retornam uma lista vazia @code{[]} 
 se as equa@value{cedilha}@~{o}es forem inconsistentes.

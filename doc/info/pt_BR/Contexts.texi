@@ -1,12 +1,12 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
-@c /Contexts.texi/1.12/Thu Feb  9 00:55:29 2006/-ko/
+@c /Contexts.texi/1.13/Sat Jun  2 00:12:34 2007/-ko/
 @c end concepts Contexts
 @menu
-* Defini@value{cedilha}@~{o}es para Contextos::    
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Contextos::    
 @end menu
 
-@node Defini@value{cedilha}@~{o}es para Contextos,  , Contextos, Contextos
-@section Defini@value{cedilha}@~{o}es para Contextos
+@node Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Contextos,  , Contextos, Contextos
+@section Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Contextos
 
 @deffn {Fun@value{cedilha}@~{a}o} activate (@var{context_1}, ..., @var{context_n})
 Ativa os contextos @var{context_1}, ..., @var{context_n}.
@@ -173,7 +173,8 @@ que @'{e} ou um @'{a}tomo, uma vari@'{a}vel subscrita, ou uma express@~{a}o de c
 Se a fun@value{cedilha}@~{a}o @code{assume_pos_pred} retorna @code{true},
 @var{x} @'{e} considerado um par@^{a}metro para o prop@'{o}sito de @code{assume_pos}.
 
-Por padr@~{a}o, um par@^{a}metro @'{e} @var{x} tal que @code{symbolp (x)} ou @code{subvarp (x)}.
+Por padr@~{a}o, um par@^{a}metro @'{e} @var{x} tal que @code{symbolp (x)}
+ou @code{subvarp (x)}.
 
 Veja tamb@'{e}m @code{assume} e @code{assume_pos}.
 

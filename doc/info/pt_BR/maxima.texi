@@ -77,6 +77,8 @@ Em caso de d@'{u}vida sobre algum trecho deste manual consulte o original
 ingl@^{e}s. Caso sua d@'{u}vida persista ou tenha alguma sugest@~{a}o/aperfei@value{cedilha}oamento/
 cr@'{@dotless{i}}tica mande-nos um e-mail no endere@value{cedilha}o acima.
 
+Vers@~{a}o do manual no formato pdf: maxima.pdf
+
 Vers@~{a}o do manual no formato info: maxima-info.tar.gz
 
 Veja o arquivo AUTHORS para conhecer todos os mantenedores do Maxima.
@@ -119,6 +121,8 @@ e desenvolver o Macsyma DOE, agora chamado Maxima.
  Em caso de d@'{u}vida sobre algum trecho deste manual consulte o original
  ingl@^{e}s. Caso sua d@'{u}vida persista ou tenha alguma sugest@~{a}o/aperfei@value{cedilha}oamento/
  cr@'{@dotless{i}}tica mande-nos um e-mail no endere@value{cedilha}o acima.
+
+  Vers@~{a}o do manual no formato pdf: maxima.pdf
 
   Vers@~{a}o do manual no formato info: maxima-info.tar.gz
 
@@ -240,7 +244,7 @@ Ajuda
 Linha de Comando
 
 * Introdu@value{cedilha}@~{a}o a Linha de Comando::  
-* Defini@value{cedilha}@~{o}es para Linha de Comando::  
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Linha de Comando::  
 
 Operadores
 
@@ -281,7 +285,7 @@ Ponto Flutuante
 
 Contextos
 
-* Defini@value{cedilha}@~{o}es para Contextos::    
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Contextos::    
 
 Polin@^{o}mios
 
@@ -290,7 +294,7 @@ Polin@^{o}mios
 
 Constantes
 
-* Defini@value{cedilha}@~{o}es para Constantes::
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Constantes::
 
 Logar@'{i}tmos
 
@@ -318,7 +322,7 @@ Limites
 
 Diferencia@value{cedilha}@~{a}o
 
-* Defini@value{cedilha}@~{o}es para Diferencia@value{cedilha}@~{a}o::  
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Diferencia@value{cedilha}@~{a}o::  
 
 Integra@value{cedilha}@~{a}o
 
@@ -327,12 +331,12 @@ Integra@value{cedilha}@~{a}o
 
 Equa@value{cedilha}@~{o}es
 
-* Defini@value{cedilha}@~{o}es para Equa@value{cedilha}@~{o}es::   
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Equa@value{cedilha}@~{o}es::   
 
 Equa@value{cedilha}@~{o}es Diferenciais
 
 * Introdu@value{cedilha}@~{a}o a Equa@value{cedilha}@~{o}es Diferenciais::
-* Defini@value{cedilha}@~{o}es para Equa@value{cedilha}@~{o}es Diferenciais::  
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Equa@value{cedilha}@~{o}es Diferenciais::  
 
 Num@'{e}rico
 
@@ -343,7 +347,7 @@ Num@'{e}rico
 
 Arrays
 
-* Defini@value{cedilha}@~{o}es para Arrays::  
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Arrays::  
 
 Matrizes e @'{A}lgebra Linear
 
@@ -355,7 +359,7 @@ Matrizes e @'{A}lgebra Linear
 
 Fun@value{cedilha}@~{o}es Afins
 
-* Defini@value{cedilha}@~{o}es para Fun@value{cedilha}@~{o}es Afins::      
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Fun@value{cedilha}@~{o}es Afins::      
 
 itensor
 
@@ -370,7 +374,7 @@ ctensor
 Pacote atensor
 
 * Introdu@value{cedilha}@~{a}o ao Pacote atensor::
-* Defini@value{cedilha}@~{o}es para o Pacote atensor::
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para o Pacote atensor::
 
 S@'{e}ries
 
@@ -438,7 +442,7 @@ augmented_lagrangian
 
 bode
 
-* Defini@value{cedilha}@~{o}es para bode::
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para bode::
 
 descriptive
 
@@ -450,7 +454,7 @@ descriptive
 
 diag
 
-* Defini@value{cedilha}@~{o}es para diag::
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para diag::
 
 distrib
 

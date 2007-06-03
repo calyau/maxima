@@ -1,11 +1,11 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
-@c /Arrays.texi/1.14/Mon Jan  1 07:26:48 2007/-ko/
+@c /Arrays.texi/1.15/Sat Jun  2 00:12:31 2007/-ko/
 @menu
-* Defini@value{cedilha}@~{o}es para Arrays::  
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Arrays::  
 @end menu
 
-@node Defini@value{cedilha}@~{o}es para Arrays,  , Arrays, Arrays
-@section Defini@value{cedilha}@~{o}es para Arrays
+@node Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Arrays,  , Arrays, Arrays
+@section Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Arrays
 
 @deffn {Fun@value{cedilha}@~{a}o} array (@var{name}, @var{dim_1}, ..., @var{dim_n})
 @deffnx {Fun@value{cedilha}@~{a}o} array (@var{name}, @var{type}, @var{dim_1}, ..., @var{dim_n})

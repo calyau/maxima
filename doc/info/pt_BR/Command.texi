@@ -1,5 +1,5 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
-@c /Command.texi/1.43/Sat Nov  4 16:10:35 2006/-ko/
+@c /Command.texi/1.44/Sat Jun  2 00:12:33 2007/-ko/
 @iftex
 @hyphenation{si-na-li-za-do-res}
 @hyphenation{de-mo-ra-da-men-te}
@@ -7,10 +7,10 @@
 @end iftex
 @menu
 * Introdu@value{cedilha}@~{a}o a Linha de Comando::  
-* Defini@value{cedilha}@~{o}es para Linha de Comando::  
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Linha de Comando::  
 @end menu
 
-@node Introdu@value{cedilha}@~{a}o a Linha de Comando, Defini@value{cedilha}@~{o}es para Linha de Comando, Linha de Comando, Linha de Comando
+@node Introdu@value{cedilha}@~{a}o a Linha de Comando, Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Linha de Comando, Linha de Comando, Linha de Comando
 @section Introdu@value{cedilha}@~{a}o a Linha de Comando
 
 @c NEEDS EXAMPLES
@@ -331,8 +331,8 @@ da mesma forma que em defini@value{cedilha}@~{o}es de fun@value{cedilha}@~{a}o, 
 
 @end deffn
 
-@node Defini@value{cedilha}@~{o}es para Linha de Comando,  , Introdu@value{cedilha}@~{a}o a Linha de Comando, Linha de Comando
-@section Defini@value{cedilha}@~{o}es para Linha de Comando
+@node Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Linha de Comando,  , Introdu@value{cedilha}@~{a}o a Linha de Comando, Linha de Comando
+@section Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Linha de Comando
 
 @c NEEDS WORK, ESPECIALLY EXAMPLES
 @deffn {Fun@value{cedilha}@~{a}o} alias (@var{new_name_1}, @var{old_name_1}, ..., @var{new_name_n}, @var{old_name_n})

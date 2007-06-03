@@ -1,11 +1,11 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
-@c /Atensor.texi/1.8/Mon Nov 21 00:19:56 2005//
+@c /Atensor.texi/1.9/Sat Jun  2 00:12:32 2007//
 @menu
 * Introdu@value{cedilha}@~{a}o ao Pacote atensor::
-* Defini@value{cedilha}@~{o}es para o Pacote atensor::
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para o Pacote atensor::
 @end menu
 
-@node Introdu@value{cedilha}@~{a}o ao Pacote atensor, Defini@value{cedilha}@~{o}es para o Pacote atensor, Pacote atensor, Pacote atensor
+@node Introdu@value{cedilha}@~{a}o ao Pacote atensor, Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para o Pacote atensor, Pacote atensor, Pacote atensor
 @section Introdu@value{cedilha}@~{a}o ao Pacote atensor
 
 @code{atensor} @'{e} um pacote de manipul@value{cedilha}@~{a}o de tensores alg@'{e}bricos.  Para usar @code{atensor},
@@ -100,9 +100,9 @@ desejadas.
 
 
 @c end concepts atensor
-@node Defini@value{cedilha}@~{o}es para o Pacote atensor,  , Introdu@value{cedilha}@~{a}o ao Pacote atensor, Pacote atensor
+@node Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para o Pacote atensor,  , Introdu@value{cedilha}@~{a}o ao Pacote atensor, Pacote atensor
 
-@section Defini@value{cedilha}@~{o}es para o Pacote atensor
+@section Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para o Pacote atensor
 
 @deffn {Fun@value{cedilha}@~{a}o} init_atensor (@var{alg_type}, @var{opt_dims})
 @deffnx {Fun@value{cedilha}@~{a}o} init_atensor (@var{alg_type})
@@ -181,6 +181,7 @@ O tipo de @'{a}lgebra.  Valores v@'{a}lidos s@'{a}o @code{universal}, @code{gras
 @end deffn
 
 @defvr {Vari@'{a}vel} adim
+Valor padr@~{a}o: 0
 
 A dimensionalidade da @'{a}lgebra.  @code{atensor} usa o valor de @code{adim}
 para determinar se um objeto indexado @'{e} uma base vetorial v@'{a}lida. Veja @code{abasep}.
@@ -195,6 +196,7 @@ Valor padr@~{a}o para as formas bilineares @code{sf}, @code{af}, e
 @end defvr
 
 @defvr {Vari@'{a}vel} asymbol
+Valor padr@~{a}o: @code{v}
 
 O s@'{i}mbolo para bases vetoriais.
 
@@ -250,9 +252,7 @@ Por exemplo:
 
 @deffn {Fun@value{cedilha}@~{a}o} abasep (@var{v})
 
-Verifica se esse argumento @'{e} uma base vetorial @code{atensor} .  
-
-E ser@'{a}, se ele for
+Verifica se esse argumento @'{e} uma base vetorial @code{atensor} .  E ser@'{a}, se ele for
 um s@'{i}mbolo indexado, com o s@'{i}mbolo sendo o mesmo que o valor de
 @code{asymbol}, e o @'{i}ndice tiver o mesmo valor num@'{e}rico entre 1
 e @code{adim}.
