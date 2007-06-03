@@ -41,7 +41,7 @@ The default action is to stop the computation
 and print another user prompt.
 In this case, it is not possible to restart a stopped computation.
 
-If the variable @code{*debugger-hook*} is set to @code{nil}, by executing
+If the Lisp variable @code{*debugger-hook*} is set to @code{nil}, by executing
 
 @example
 :lisp (setq *debugger-hook* nil)
