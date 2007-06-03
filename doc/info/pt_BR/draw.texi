@@ -1,31 +1,36 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
-@c /draw.texi/1.7/Mon Feb 26 21:01:35 2007//
+@c /draw.texi/1.13/Sat Jun  2 00:13:20 2007//
 @menu
 * Introdu@value{cedilha}@~{a}o a draw::
-* Defini@value{cedilha}@~{o}es para draw::
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para draw::
 @end menu
 
 
 
 
 
-@node Introdu@value{cedilha}@~{a}o a draw, Defini@value{cedilha}@~{o}es para draw, draw, draw
+@node Introdu@value{cedilha}@~{a}o a draw, Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para draw, draw, draw
 @section Introdu@value{cedilha}@~{a}o a draw
 
 
-@code{draw} @'{e} uma uma nova interface entre o Maxima e o Gnuplot.
+@code{draw} @'{e} uma interface entre o Maxima e o Gnuplot.
 
 Existem tr@^{e}s fun@value{cedilha}@~{o}es a serem usadas n n@'{i}vel do Maxima: 
 @code{draw2d}, @code{draw3d} e @code{draw}.
 
+Siga o link abaixo para exemplos mais elaborados deste pacote:
+ 
+@url{http://es.geocities.com/riotorto/maxima/gpdraw}
+ 
+Voce precisar@'{a} do Gnuplot 4.2 para executar este programa.
 
 
 
 
 
 
-@node Defini@value{cedilha}@~{o}es para draw,  , Introdu@value{cedilha}@~{a}o a draw, draw
-@section Defini@value{cedilha}@~{o}es para draw
+@node Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para draw,  , Introdu@value{cedilha}@~{a}o a draw, draw
+@section Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para draw
 
 
 
@@ -181,7 +186,7 @@ Seleciona o terminal a ser usado pelo Gnuplot; os valores poss@'{i}veis s@~{a}o:
 @code{screen} (o valor padr@~{a}o), @code{png}, @code{jpg}, @code{eps}, e @code{eps_color}.
 
 Uma vez que essa @'{e} uma op@value{cedilha}@~{a}o gr@'{a}fica global, sua posi@value{cedilha}@~{a}o na descri@value{cedilha}@~{a}o do fundo
-n@~{a}o @'{e} importante.
+n@~{a}o @'{e} importante. Pode tamb@'{e}m ser usada como um argumento da fun@value{cedilha}@~{a}o @code{draw}
 
 Exemplos:
 
@@ -453,6 +458,8 @@ Usu@'{a}rios experientes de Gnuplot podem fazer uso dessa op@value{cedilha}@~{a}
 do Gnuplot escolhendo op@value{cedilha}@~{o}es para serem enviadas antes do comando @code{plot} ou do
 comando @code{splot}.
 
+O valor dessa op@value{cedilha}@~{a}o deve ser uma seq@"u@^encia de caracteres ou uma lista de seq@"u@^encia de caracteres (um por linha).
+
 Uma vez que essa @'{e} uma op@value{cedilha}@~{a}o gr@'{a}fica global, sua posi@value{cedilha}@~{a}o na descri@value{cedilha}@~{a}o do fundo
 n@~{a}o @'{e} importante.
 
@@ -477,7 +484,7 @@ Esse @'{e} o nome do arquivo onde os terminais @code{png}, @code{jpg}, @code{eps
 e @code{eps_color} guardar@~{a}o o gr@'{a}fico.
 
 Uma vez que essa @'{e} uma op@value{cedilha}@~{a}o gr@'{a}fica global, sua posi@value{cedilha}@~{a}o na descri@value{cedilha}@~{a}o do fundo
-n@~{a}o @'{e} importante.
+n@~{a}o @'{e} importante. Pode tamb@'{e}m ser usada como um argumento da fun@value{cedilha}@~{a}o @code{draw}.
 
 Exemplo:
 
@@ -499,7 +506,7 @@ Valor padr@~{a}o: 640
 Essa @'{e} a largura do arquivo de bitmap gerado pelos terminais @code{png} e @code{jpg}.
 
 Uma vez que essa @'{e} uma op@value{cedilha}@~{a}o gr@'{a}fica global, sua posi@value{cedilha}@~{a}o na descri@value{cedilha}@~{a}o do fundo
-n@~{a}o @'{e} importante.
+n@~{a}o @'{e} importante. Pode tamb@'{e}m ser usada como um argumento da fun@value{cedilha}@~{a}o @code{draw}.
 
 Exemplo:
 
@@ -522,7 +529,7 @@ Valor padr@~{a}o: 640
 Essa @'{e} a altura do arquivo de bitmap gerado pelos terminais @code{png} e @code{jpg}.
 
 Uma vez que essa @'{e} uma op@value{cedilha}@~{a}o gr@'{a}fica global, sua posi@value{cedilha}@~{a}o na descri@value{cedilha}@~{a}o do fundo
-n@~{a}o @'{e} importante.
+n@~{a}o @'{e} importante. Pode tamb@'{e}m ser usada como um argumento da fun@value{cedilha}@~{a}o @code{draw}.
 
 Exemplo:
 
@@ -535,6 +542,53 @@ Exemplo:
 @end example
 
 Veja tamb@'{e}m @code{terminal}, @code{file_name}, e @code{pic_width}.
+@end defvr
+
+
+@defvr {Op@value{cedilha}@~{a}o gr@'{a}fica} eps_width
+Valor padr@~{a}o: 12
+
+Essa @'{e} a largura (medida em cm) do arquivo Postscript
+gerado pelos terminais @code{eps} e @code{eps_color}.
+
+Uma vez que essa @'{e} uma op@value{cedilha}@~{a}o gr@'{a}fica global, sua posi@value{cedilha}@~{a}o na descri@value{cedilha}@~{a}o do fundo gr@'{a}fico
+n@~{a}o @'{e} importante. Pode tamb@'{e}m ser usada como um argumento da fun@value{cedilha}@~{a}o @code{draw}.
+
+Exemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(terminal   = 'eps,
+             eps_width  = 3,
+             eps_height = 3,
+             explicit(x^2,x,-1,1))$
+@end example
+
+Veja tamb@'{e}m @code{terminal}, @code{file_name}, e @code{eps_height}.
+@end defvr
+
+
+
+@defvr {Op@value{cedilha}@~{a}o gr@'{a}fica} eps_height
+Valor padr@~{a}o: 8
+
+Essa @'{e} a altura (medida em cm) do arquivo Postscript
+gerado pelos terminais @code{eps} e @code{eps_color}.
+
+Uma vez que essa @'{e} uma op@value{cedilha}@~{a}o gr@'{a}fica global, sua posi@value{cedilha}@~{a}o na descri@value{cedilha}@~{a}o do fundo gr@'{a}fico
+n@~{a}o @'{e} importante. Pode tamb@'{e}m ser usada como um argumento da fun@value{cedilha}@~{a}o @code{draw}.
+
+Exemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(terminal   = 'eps,
+             eps_width  = 3,
+             eps_height = 3,
+             explicit(x^2,x,-1,1))$
+@end example
+
+Veja tamb@'{e}m @code{terminal}, @code{file_name}, e @code{eps_width}.
 @end defvr
 
 
@@ -644,6 +698,105 @@ Veja tamb@'{e}m @code{axis_bottom},  @code{axis_left}, @code{axis_top}, e @code{
 
 
 
+
+@defvr {Op@value{cedilha}@~{a}o gr@'{a}fica} palette
+Valor padr@~{a}o: @code{color}
+
+@code{palette} indica como mapear os valores reais de uma matriz
+passada para o objeto @code{image} sobre componentes de cor.
+
+@code{palette} @'{e} um vetor comprimento tr@^{e}s com componentes 
+variando de -36 a +36; cada valor @'{e} um @'{i}ndice para uma f@'{o}rmula mapeando os n@'{i}veis
+sobre as cores vermelho, verde e blue, respectivamente:
+@example
+ 0: 0               1: 0.5           2: 1
+ 3: x               4: x^2           5: x^3
+ 6: x^4             7: sqrt(x)       8: sqrt(sqrt(x))
+ 9: sin(90x)       10: cos(90x)     11: |x-0.5|
+12: (2x-1)^2       13: sin(180x)    14: |cos(180x)|
+15: sin(360x)      16: cos(360x)    17: |sin(360x)|
+18: |cos(360x)|    19: |sin(720x)|  20: |cos(720x)|
+21: 3x             22: 3x-1         23: 3x-2
+24: |3x-1|         25: |3x-2|       26: (3x-1)/2
+27: (3x-2)/2       28: |(3x-1)/2|   29: |(3x-2)/2|
+30: x/0.32-0.78125 31: 2*x-0.84     32: 4x;1;-2x+1.84;x/0.08-11.5
+33: |2*x - 0.5|    34: 2*x          35: 2*x - 0.5
+36: 2*x - 1
+@end example
+n@'{u}meros negativos significam componentes negativos de cores.
+
+@code{palette = gray} and @code{palette = color} are short cuts for
+@code{palette = [3,3,3]} and @code{palette = [7,5,15]}, respectively.
+
+Uma vez que essa @'{e} uma op@value{cedilha}@~{a}o gr@'{a}fica global, sua posi@value{cedilha}@~{a}o na descri@value{cedilha}@~{a}o do fundo do gr@'{a}fico
+n@~{a}o @'{e} importante.
+
+Exemplos:
+
+@example
+(%i1) load(draw)$
+(%i2) im: apply(
+           'matrix,
+            makelist(makelist(random(200),i,1,30),i,1,30))$
+(%i3) /* palette = color, default */
+      draw2d(image(im,0,0,30,30))$
+(%i4) draw2d(palette = gray, image(im,0,0,30,30))$
+(%i5) draw2d(palette = [15,20,-4],
+             colorbox=false,
+             image(im,0,0,30,30))$
+@end example
+
+Veja tamb@'{e}m @code{colorbox}. 
+@end defvr
+
+
+
+
+@defvr {Op@value{cedilha}@~{a}o gr@'{a}fica} colorbox
+Valor padr@~{a}o: @code{true}
+
+If @code{colorbox} is @code{true}, a color scale is drawn together with
+@code{image} objects.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+Exemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) im: apply('matrix,
+                 makelist(makelist(random(200),i,1,30),i,1,30))$
+(%i3) draw2d(image(im,0,0,30,30))$
+(%i4) draw2d(colorbox=false, image(im,0,0,30,30))$
+@end example
+
+Veja tamb@'{e}m @code{palette}.
+@end defvr
+
+
+
+@defvr {Op@value{cedilha}@~{a}o gr@'{a}fica} enhanced3d
+Valor padr@~{a}o: @code{false}
+
+Se @code{enhanced3d} for @code{true}, superf@'{i}cies s@~{a}o coloridas em gr@'{a}ficos tridimensionais;
+em outras palavras, pode escolher o modo pm3d do Gnuplot.
+
+Veja a op@value{cedilha}@~{a}o @code{palette} para aprender como paletas s@~{a}o especificadas.
+
+Exemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(surface_hide = true,
+             enhanced3d   = true,
+             palette      = gray,
+             explicit(20*exp(-x^2-y^2)-10,x,-3,3,y,-3,3))$
+@end example
+@end defvr
+
+
+
 @defvr {Op@value{cedilha}@~{a}o gr@'{a}fica} point_size
 Valor padr@~{a}o: 1
 
@@ -674,13 +827,18 @@ Exemplo:
 @defvr {Op@value{cedilha}@~{a}o gr@'{a}fica} point_type
 Valor padr@~{a}o: 1
 
-@code{point_type} @'{e} um @'{i}ndice (maior ou igual a -1) para especificar como os pontos s@~{a}o mostrados.
-As cores dos pontos s@~{a}o controladas com essa op@value{cedilha}@~{a}o.
+@code{point_type} indica como pontos isolados s@~{a}o mostrados; o valor dessa
+op@value{cedilha}@~{a}o pode ser qualquer @'{i}ndice inteiro maior que ou igual a -1, ou o nome de
+um estilo de ponto: @code{$none} (-1), @code{dot} (0), @code{plus} (1), @code{multiply} (2),
+@code{asterisk} (3), @code{square} (4), @code{filled_square} (5), @code{circle} (6),
+@code{filled_circle} (7), @code{up_triangle} (8), @code{filled_up_triangle} (9),
+@code{down_triangle} (10), @code{filled_down_triangle} (11), @code{diamant} (12) e
+@code{filled_diamant} (13).
 
 Essa op@value{cedilha}@~{a}o afeta os seguintes objetos gr@'{a}ficos:
 @itemize @bullet
 @item
-@code{gr2d}: @code{points}, @code{explicit}, @code{implicit}, @code{parametric}, e @code{polar}.
+@code{gr2d}: @code{points}.
 
 @item
 @code{gr3d}: @code{points}.
@@ -697,7 +855,7 @@ Exemplo:
              points([[1,1],[5,1],[9,1]]),
              point_type = 2,
              points([[1,2],[5,2],[9,2]]),
-             point_type = 3,
+             point_type = asterisk,
              points([[1,3],[5,3],[9,3]]),
              point_type = 4,
              points([[1,4],[5,4],[9,4]]),
@@ -705,17 +863,12 @@ Exemplo:
              points([[1,5],[5,5],[9,5]]),
              point_type = 6,
              points([[1,6],[5,6],[9,6]]),
-             point_type = 7,
+             point_type = filled_circle,
              points([[1,7],[5,7],[9,7]]),
              point_type = 8,
              points([[1,8],[5,8],[9,8]]),
-             point_type = 9,
+             point_type = filled_diamant,
              points([[1,9],[5,9],[9,9]]) )$
-(%i3) draw2d(function_style = 'dots,
-             point_type = -1,
-             explicit(x^2,x,-1,1),
-             point_type = 7,
-             explicit(x^4,x,-1,1))$
 @end example
 @end defvr
 
@@ -758,28 +911,24 @@ Exemplo:
 
 
 
-@defvr {Op@value{cedilha}@~{a}o gr@'{a}fica} fill_type
-Valor padr@~{a}o: 1
+@defvr {Op@value{cedilha}@~{a}o gr@'{a}fica} filled_func
+Valor padr@~{a}o: @code{false}
 
-@code{fill_type} @'{e} um @'{i}ndice (maior ou igual a -1) para especificar a cor para regi@~{o}es a serem preenchidas.
+@code{filled_func} indica se uma fun@value{cedilha}@~{a}o @'{e} preenchida (@code{true})
+ou n@~{a}o (@code{false}).
 
-Essa op@value{cedilha}@~{a}o afeta os seguintes objetos gr@'{a}ficos:
-@itemize @bullet
-@item
-@code{gr2d}: @code{polygon}, @code{rectangle}, @code{ellipse}, @code{explicit}, e @code{implicit}.
-
-@end itemize
+Essa op@value{cedilha}@~{a}o afeta somente objetos gr@'{a}fico bidimensional @code{explicit}.
 
 Exemplo:
 
 @example
 (%i1) load(draw)$
-(%i2) draw2d(fill_type      = 6,
-             polygon([[3,2],[7,2],[5,5]]),
-             fill_type      = 2,
-             function_style = filled,
+(%i2) draw2d(fill_color  = red,
+             filled_func = true,
              explicit(sin(x),x,0,10) )$
 @end example
+
+Veja tamb@'{e}m @code{fill_color}.
 @end defvr
 
 
@@ -788,7 +937,7 @@ Exemplo:
 Valor padr@~{a}o: @code{false}
 
 Se @code{transparent} for @code{true}, regi@~{o}es internas de poligonos s@~{a}o
-preenchidas de acordo com @code{fill_type}.
+preenchidas de acordo com @code{fill_color}.
 
 Essa op@value{cedilha}@~{a}o afeta os seguintes objetos gr@'{a}ficos:
 @itemize @bullet
@@ -802,7 +951,7 @@ Exemplo:
 (%i1) load(draw)$
 (%i2) draw2d(polygon([[3,2],[7,2],[5,5]]),
              transparent = true,
-             line_type   = 3,
+             color       = blue,
              polygon([[5,2],[9,2],[7,5]]) )$
 @end example
 @end defvr
@@ -825,11 +974,11 @@ Exemplo:
 
 @example
 (%i1) load(draw)$
-(%i2) draw2d(line_type   = 3,
+(%i2) draw2d(color       = brown,
              line_width  = 8,
              polygon([[3,2],[7,2],[5,5]]),
              border      = false,
-             fill_type   = 6,
+             fill_color  = blue,
              polygon([[5,2],[9,2],[7,5]]) )$
 @end example
 @end defvr
@@ -973,7 +1122,7 @@ Exemplo:
              yrange          = [0,10],
              points_joined   = true,
              points([[5,0],[5,10]]),
-             label_color     = 3,
+             color           = blue,
              label("Centered alignment (default)",5,2),
              label_alignment = 'left,
              label("Left alignment",5,5),
@@ -981,7 +1130,7 @@ Exemplo:
              label("Right alignment",5,8))$
 @end example
 
-Veja tamb@'{e}m @code{label_orientation}, e @code{label_color}. 
+Veja tamb@'{e}m @code{label_orientation}, e @code{color}. 
 @end defvr
 
 
@@ -1004,55 +1153,76 @@ o pacote @code{draw} precisa sempre de dados para montar um fundo.
              yrange     = [0,10],
              point_size = 0,
              points([[5,5]]),
+             color      = navy,
              label("Horizontal orientation (default)",5,2),
              label_orientation = 'vertical,
+             color             = "#654321",
              label("Vertical orientation",1,5))$
 @end example
 
-Veja tamb@'{e}m @code{label_alignment}, e @code{label_color}. 
+Veja tamb@'{e}m @code{label_alignment}, e @code{color}. 
 @end defvr
 
 
 
-@defvr {Op@value{cedilha}@~{a}o gr@'{a}fica} label_color
-Valor padr@~{a}o: 1
+@defvr {Op@value{cedilha}@~{a}o gr@'{a}fica} color
+Valor padr@~{a}o: @code{"black"}
 
-@code{label_color} @'{e} um @'{i}ndice (maior ou igual a -1) para especificar a cor da fonte usada no r@'{o}tulo.
+@code{color} especifica a cor para o desenho de linhas, pontos, bordas de
+pol@'{i}gonos e r@'{o}tulos.
 
-Essa op@value{cedilha}@~{a}o @'{e} relevante somente para objetos do tipo @code{label}.
+Cores podem ser fornecidas como nomes ou em c@'{o}digo hexadecimal @i{rgb}.
+
+Nomes de cores dispon@'{i}veis atualmente s@~{a}o: 
+@code{"white"}, @code{"black"}, @code{"gray0"}, @code{"grey0"}, @code{"gray10"},
+@code{"grey10"}, @code{"gray20"}, @code{"grey20"}, @code{"gray30"}, @code{"grey30"},
+@code{"gray40"}, @code{"grey40"}, @code{"gray50"}, @code{"grey50"}, @code{"gray60"},
+@code{"grey60"}, @code{"gray70"}, @code{"grey70"}, @code{"gray80"}, @code{"grey80"},
+@code{"gray90"}, @code{"grey90"}, @code{"gray100"}, @code{"grey100"}, @code{"gray"},
+@code{"grey"}, @code{"light-gray"}, @code{"light-grey"}, @code{"dark-gray"},
+@code{"dark-grey"}, @code{"red"}, @code{"light-red"}, @code{"dark-red"}, @code{"yellow"},
+@code{"light-yellow"}, @code{"dark-yellow"}, @code{"green"}, @code{"light-green"},
+@code{"dark-green"}, @code{"spring-green"}, @code{"forest-green"}, @code{"sea-green"},
+@code{"blue"}, @code{"light-blue"}, @code{"dark-blue"}, @code{"midnight-blue"}, 
+@code{"navy"}, @code{"medium-blue"}, @code{"royalblue"}, @code{"skyblue"}, 
+@code{"cyan"}, @code{"light-cyan"}, @code{"dark-cyan"}, @code{"magenta"}, 
+@code{"light-magenta"}, @code{"dark-magenta"}, @code{"turquoise"}, 
+@code{"light-turquoise"}, @code{"dark-turquoise"}, @code{"pink"}, @code{"light-pink"},
+@code{"dark-pink"}, @code{"coral"}, @code{"light-coral"}, @code{"orange-red"},
+@code{"salmon"}, @code{"light-salmon"}, @code{"dark-salmon"}, @code{"aquamarine"},
+@code{"khaki"}, @code{"dark-khaki"}, @code{"goldenrod"}, @code{"light-goldenrod"},
+@code{"dark-goldenrod"}, @code{"gold"}, @code{"beige"}, @code{"brown"}, @code{"orange"},
+@code{"dark-orange"}, @code{"violet"}, @code{"dark-violet"}, @code{"plum"} and @code{"purple"}.
+
+Componentes crom@'{a}ticos em c@'{o}digo hexadecimal s@~{a}o introduzidos na forma @code{"#rrggbb"}.
 
 Exemplo:
 
-Nesse exemplo, um ponto imagin@'{a}rio @'{e} adicionado para firmar uma imagem.
-O pacote @code{draw} precisa sempre de dados para desenharum fundo.
-Essas cores podem mudar em diferentes terminais.
 @example
 (%i1) load(draw)$
-(%i2) draw2d(xrange     = [0,10],
-             yrange     = [0,10],
-             point_size = 0,
-             points([[0,0]]),
-             label_color = -1,
-             label("Cor de r@'{o}tulo -1",5,1),
-             label_color = 1,
-             label("Cor de r@'{o}tulo 1 (default)",5,2),
-             label_color = 2,
-             label("Cor de r@'{o}tulo 2",5,3),
-             label_color = 3,
-             label("Cor de r@'{o}tulo 3",5,4),
-             label_color = 4,
-             label("Cor de r@'{o}tulo 4",5,5),
-             label_color = 5,
-             label("Cor de r@'{o}tulo 5",5,6),
-             label_color = 6,
-             label("Cor de r@'{o}tulo 6",5,7),
-             label_color = 7,
-             label("Cor de r@'{o}tulo 7",5,8),
-             label_color = 8,
-             label("Cor de r@'{o}tulo 8",5,9) )$
+(%i2) draw2d(explicit(x^2,x,-1,1), /* default is black */
+             color = "red",
+             explicit(0.5 + x^2,x,-1,1),
+             color = blue,
+             explicit(1 + x^2,x,-1,1),
+             color = "light-blue", /* double quotes if - is used */
+             explicit(1.5 + x^2,x,-1,1),
+             color = "#23ab0f",
+             label("Esse @'{e} um r@'{o}tulo",0,1.2)  )$
 @end example
 
-Veja tamb@'{e}m @code{label_alignment}, e @code{label_orientation}. 
+Veja tamb@'{e}m @code{fill_color}.
+@end defvr
+
+
+
+@defvr {Op@value{cedilha}@~{a}o gr@'{a}fica} fill_color
+Valor padr@~{a}o: @code{"red"}
+
+@code{fill_color} especifica a cor para preenchimento de pol@'{i}gonos e
+fun@value{cedilha}@~{o}es explicitamente bidimensionais.
+
+Veja @code{color} para aprender como cores s@~{a}o especificadas.
 @end defvr
 
 
@@ -1060,7 +1230,8 @@ Veja tamb@'{e}m @code{label_alignment}, e @code{label_orientation}.
 @defvr {Op@value{cedilha}@~{a}o gr@'{a}fica} line_width
 Valor padr@~{a}o: 1
 
-@code{line_width} @'{e} a lagura para linhas do gr@'{a}fico.
+@code{line_width} @'{e} a lagura das linhas do gr@'{a}fico.
+Seu valor deve ser um n@'{u}mero positivo.
 
 Essa op@value{cedilha}@~{a}o afeta os seguintes objetos gr@'{a}ficos:
 @itemize @bullet
@@ -1078,7 +1249,7 @@ Exemplo:
 @example
 (%i1) load(draw)$
 (%i2) draw2d(explicit(x^2,x,-1,1), /* default width */
-             line_width = 5,
+             line_width = 5.5,
              explicit(1 + x^2,x,-1,1),
              line_width = 10,
              explicit(2 + x^2,x,-1,1))$
@@ -1090,10 +1261,10 @@ Veja tamb@'{e}m @code{line_type}.
 
 
 @defvr {Op@value{cedilha}@~{a}o gr@'{a}fica} line_type
-Valor padr@~{a}o: 1
+Valor padr@~{a}o: @code{solid}
 
-@code{line_type} @'{e} um @'{i}ndice (maior ou igual a -1) para especificar como linhas s@~{a}o mostradas.
-A cor das linhas @'{e} controlada com essa op@value{cedilha}@~{a}o.
+@code{line_type} indica como linhas s@~{a}o mostradas; valores poss@'{i}veis s@~{a}o
+@code{solid} e @code{dots}.
 
 Essa op@value{cedilha}@~{a}o afeta os seguintes objetos gr@'{a}ficos:
 @itemize @bullet
@@ -1110,10 +1281,9 @@ Exemplo:
 
 @example
 (%i1) load(draw)$
-(%i2) draw2d(explicit(x^2,x,-1,1), /* default type */
-             line_type = 5,
+(%i2) draw2d(line_type = dots,
              explicit(1 + x^2,x,-1,1),
-             line_type = 10,
+             line_type = solid, /* default */
              explicit(2 + x^2,x,-1,1))$
 @end example
 
@@ -1185,32 +1355,6 @@ Exemplo:
              explicit(sin(x),x,0,10),
              key = "Cosseno",
              line_type = 3,
-             explicit(cos(x),x,0,10) )$
-@end example
-@end defvr
-
-
-
-@defvr {Op@value{cedilha}@~{a}o gr@'{a}fica} function_style
-Valor padr@~{a}o: @code{lines}
-
-@code{function_style} indica como fun@value{cedilha}@~{o}es s@~{a}o mostradas: com linhas (@code{lines}) ou com pontos (@code{dots}).
-
-Essa op@value{cedilha}@~{a}o afeta os seguintes objetos gr@'{a}ficos:
-@itemize @bullet
-@item
-@code{gr2d}: @code{explicit}, @code{implicit},
-@code{parametric}, e @code{polar}.
-@end itemize
-
-Exemplo:
-
-@example
-(%i1) load(draw)$
-(%i2) draw2d(key = "Seno",
-             explicit(sin(x),x,0,10),
-             key = "Cosseno",
-             function_style = 'dots,
              explicit(cos(x),x,0,10) )$
 @end example
 @end defvr
@@ -1365,8 +1509,8 @@ Valor padr@~{a}o: 1
 
 @code{columns} @'{e} o n@'{u}mero de colunas em gr@'{a}ficos multiplos.
 
-Note que essa op@value{cedilha}@~{a}o deve ser escrita fora de objetos @code{gr2d}
-e de objetos @code{gr3d}.
+Uma vez que essa @'{e} uma op@value{cedilha}@~{a}o gr@'{a}fica global, sua posi@value{cedilha}@~{a}o na descri@value{cedilha}@~{a}o do fundo do gr@'{a}fico
+n@~{a}o @'{e} importante. Pode tamb@'{e}m ser usado como um argumento da fun@value{cedilha}@~{a}o @code{draw}.
 
 Exemplo:
 
@@ -1427,7 +1571,8 @@ Adiante encontra-se uma lista de @i{objetos gr@'{a}ficos} dispon@'{i}vies para f
 posiciona os pontos @code{[x1,y1]}, @code{[x2,y2]}, @code{[x2,y2]}, ... no gr@'{a}fico.
 
 Esse objeto @'{e} efetado pelas seguintes @i{op@value{cedilha}@~{o}es gr@'{a}ficas}: @code{point_size}, 
-@code{point_type}, @code{points_joined}, @code{line_width}, @code{key} e @code{line_type}.
+@code{point_type}, @code{points_joined}, @code{line_width}, @code{key},
+@code{line_type} e @code{color}.
 
 Exemplo:
 
@@ -1447,17 +1592,18 @@ Exemplo:
 desenha um pol@'{i}gono com v@'{e}rtices @code{[x1,y1]}, @code{[x2,y2]}, @code{[x2,y2]}, ... no plano.
 
 Esse objeto @'{e} afetado pelas seguintes @i{op@value{cedilha}s gr@'{a}ficas}: @code{transparent}, 
-@code{fill_type}, @code{border}, @code{line_width}, @code{key} e @code{line_type}.
+@code{fill_color}, @code{border}, @code{line_width}, @code{key},
+@code{line_type} @code{color}.
 
 Exemplo:
 
 @example
 (%i1) load(draw)$
-(%i2) draw2d(line_type   = 3,
-             line_width  = 8,
+(%i2) draw2d(color      = "#e245f0",
+             line_width = 8,
              polygon([[3,2],[7,2],[5,5]]),
              border      = false,
-             fill_type   = 6,
+             fill_color  = yellow,
              polygon([[5,2],[9,2],[7,5]]) )$
 @end example
 
@@ -1468,20 +1614,21 @@ Exemplo:
 desenha um ret@^{a}ngulo partindo do v@'{e}rtice @code{[x1,y1]} e terminando no v@'{e}rtice @code{[x2,y2]} oposto ao primeiro.
 
 Esse objeto @'{e} afetado pelas seguintes @i{op@value{cedilha}@~{o}es gr@'{a}ficas}: @code{transparent}, 
-@code{fill_type}, @code{border}, @code{line_width}, @code{key} e @code{line_type}.
+@code{fill_color}, @code{border}, @code{line_width}, @code{key},
+@code{line_type} e @code{color}.
 
 Exemplo:
 
 @example
 (%i1) load(draw)$
-(%i2) draw2d(fill_type   = 6,
+(%i2) draw2d(fill_color  = red,
              line_width  = 6,
-             line_type   = 2,
+             line_type   = dots,
              transparent = false,
-             fill_type   = 8,
+             fill_color   = blue,
              rectangle([-2,-2],[8,-1]),   /* opposite vertices */
              transparent = true,
-             line_type   = 5,
+             line_type   = solid,
              line_width  = 1,
              rectangle([9,4],[2,-1.5]),
              xrange      = [-3,10],
@@ -1498,21 +1645,21 @@ semi axis @code{a} e @code{b}, respectively, from angle @code{ang1} to angle
 @code{ang2}.
 
 Esse objeto @'{e} afetado pelas seguintes @i{op@value{cedilha}@~{o}es gr@'{a}ficas}: @code{nticks}, 
-@code{transparent}, @code{fill_type}, @code{border}, @code{line_width}, 
-@code{line_type} e @code{key}.
+@code{transparent}, @code{fill_color}, @code{border}, @code{line_width}, 
+@code{line_type}, @code{key} e @code{color}.
 
 Exemplo:
 
 @example
 (%i1) load(draw)$
 (%i2) draw2d(transparent = false,
-             fill_type   = 8,
-             line_type   = 5,
+             fill_color  = 8,
+             color       = gray30,
              transparent = false,
              line_width  = 5,
              ellipse(0,6,3,2,270,-270),  /* center (x,y), a, b, start & end in degrees */
              transparent = true,
-             line_type   = 7,
+             color       = blue,
              line_width  = 3,
              ellipse(2.5,6,2,3,30,-90),
              xrange      = [-3,6],
@@ -1525,7 +1672,7 @@ Exemplo:
 escreve o @code{r@'{o}tulo} no ponto @code{[x,y]}.
 
 Esse objeto @'{e} afetado pelas seguintes @i{op@value{cedilha}@~{o}es gr@'{a}ficas}: @code{label_alignment}, 
-@code{label_orientation} e @code{label_color}.
+@code{label_orientation} e @code{color}.
 
 Exemplo:
 
@@ -1534,28 +1681,13 @@ O pacote @code{draw} precisa sempre da dados para desenhar um fundo.
 Essas cores podem mudar em diferentes terminais.
 @example
 (%i1) load(draw)$
-(%i2) draw2d(xrange     = [0,10],
-             yrange     = [0,10],
-             point_size = 0,
-             points([[0,0]]),
-             label_color = -1,
-             label("Cor de r@'{o}tulo -1",5,1),
-             label_color = 1,
-             label("Cor de r@'{o}tulo 1 (default)",5,2),
-             label_color = 2,
-             label("Cor de r@'{o}tulo 2",5,3),
-             label_color = 3,
-             label("Cor de r@'{o}tulo 3",5,4),
-             label_color = 4,
-             label("Cor de r@'{o}tulo 4",5,5),
-             label_color = 5,
-             label("Cor de r@'{o}tulo 5",5,6),
-             label_color = 6,
-             label("Cor de r@'{o}tulo 6",5,7),
-             label_color = 7,
-             label("Cor de r@'{o}tulo 7",5,8),
-             label_color = 8,
-             label("Cor de r@'{o}tulo 8",5,9) )$
+(%i2) draw2d(explicit(x^2,x,-1,1),
+             color = "red",
+             label("Label in red",0,0.3),
+             color = "#0000ff",
+             label("Label in blue",0,0.6),
+             color = "light-blue", /* double quotes if - is used */
+             label("R@'{o}tulo em light-blue",0,0.9)  )$
 @end example
 
 
@@ -1579,6 +1711,7 @@ Exemplo:
              vector([3,1],[5,5]),
              head_both = true,
              head_type = 'nofilled,
+             line_type = dots,
              vector([6,1],[5,5]))$
 @end example
 
@@ -1589,16 +1722,19 @@ monta o gr@'{a}fico da fun@value{cedilha}@~{a}o expl@'{i}cita @code{fcn}, com va
 de @code{minval} a @code{maxval}.
 
 Esse objeto @'{e} afetado pelas seguintes @i{op@value{cedilha}@~{o}es gr@'{a}ficas}: @code{nticks}, 
-@code{adapt_depth}, @code{line_width}, @code{line_type}, @code{key}, @code{point_type},
-@code{function_style} e @code{fill_type}.
+@code{adapt_depth}, @code{line_width}, @code{line_type}, @code{key},
+@code{filled_func}, @code{fill_color} e @code{color}.
 
 Exemplo:
 
 @example
 (%i1) load(draw)$
-(%i2) draw3d(xu_grid = 10,
-             yv_grid = 50,
-             explicit(x^2+y^2,x,-3,3,y,-3,3) )$
+(%i2) draw2d(line_width = 3,
+             color      = blue,
+             explicit(x^2,x,-3,3) )$
+(%i3) draw2d(fill_color  = brown,
+             filled_func = true,
+             explicit(x^2,x,-3,3) )$
 @end example
 
 
@@ -1609,21 +1745,21 @@ de @code{x-minval} a @code{x-maxval}, e vari@'{a}vel @code{y-var} assumindo valo
 de @code{y-minval} a @code{y-maxval}.
 
 Esse objeto @'{e} afetado pelas seguintes @i{op@value{cedilha}@~{o}es gr@'{a}ficas}: @code{ip_grid}, 
-@code{ip_grid_in}, @code{line_width}, @code{line_type}, @code{key}, 
-@code{filled_function} e @code{fill_type}, e @code{fill_type}.
+@code{ip_grid_in}, @code{line_width}, @code{line_type}, @code{key} e @code{color}.
 
 Exemplo:
 
 @example
 (%i1) load(draw)$
-(%i2) draw2d(grid      = true,
-             line_type = -1,
+(%i2) draw2d(terminal  = eps,
+             grid      = true,
+             line_type = solid,
              key       = "y^2=x^3-2*x+1",
              implicit(y^2=x^3-2*x+1, x, -4,4, y, -4,4),
-             line_type = 0,
+             line_type = dots,
              key       = "x^3+y^3 = 3*x*y^2-x-1",
              implicit(x^3+y^3 = 3*x*y^2-x-1, x, -4,4, y, -4,4),
-             title     = "Two implicit functions" )$
+             title     = "Duas fun@value{cedilha}@~{o}es impl@'{i}citas" )$
 @end example
 
 @item
@@ -1632,8 +1768,8 @@ plots function @code{radius(ang)} defined in polar coordinates, com a vari@'{a}v
 assumindo valores de @code{minang} a @code{maxang}.
 
 Esse objeto @'{e} afetado pelas seguintes @i{op@value{cedilha}@~{o}es gr@'{a}ficas}: @code{nticks}, 
-@code{line_width}, @code{line_type}, @code{key}, 
-@code{function_style} e @code{point_type}.
+@code{line_width}, @code{line_type}, @code{key} e @code{color}.
+
 
 Exemplo:
 
@@ -1656,17 +1792,85 @@ monta o gr@'{a}fico da fun@value{cedilha}@~{a}o param@'{e}trica @code{[xfun,yfun
 assumindo valores de @code{parmin} a @code{parmax}.
 
 Esse objeto @'{e} afetado pelas seguintes @i{op@value{cedilha}@~{o}es gr@'{a}ficas}: @code{nticks}, 
-@code{line_width}, @code{line_type}, @code{key}, @code{point_type}, 
-@code{function_style} e @code{point_type}.
+@code{line_width}, @code{line_type}, @code{key} e @code{color}.
 
 Exemplo:
 
 @example
 (%i1) load(draw)$
 (%i2) draw2d(explicit(exp(x),x,-1,3),
-             line_type = 3,
-             key       = "This is the parametric one!!",
+             color = red,
+             key   = "Esse @'{e} a unidade param@'{e}trica!!",
              parametric(2*cos(rrr),rrr^2,rrr,0,2*%pi))$
+@end example
+
+
+
+
+
+@item
+@code{image(im,x0,y0,width,height)}:
+monta o gr@'{a}fico da im@'{a}gem @code{im} em uma regi@~{a}o retangular do v@'{e}rtice @code{(x0,y0)} ao v@'{e}rtice
+@code{(x0+width,y0+height)} no plano real. O argumeto @code{im} deve ser uma
+matriz de n@'{u}meros reais, ou uma matriz de vetores de comprimento tr@^{e}s.
+
+Se @code{im} for uma matriz de n@'{u}meros reais, valores de pixel s@~{a}o interpretados conforme
+a op@value{cedilha}@~{a}o gr@'{a}fica @code{palette}, que @'{e} um vetor de comprimento tr@^{e}s com componentes
+num@'{e}ricas variando de -36 a +36; cada valor @'{e} um @'{i}ndice para uma f@'{o}rmula mapeando os n@'{i}veis
+sobre as cores vermelha, verde e azul, respectivamente:
+@example
+ 0: 0               1: 0.5           2: 1
+ 3: x               4: x^2           5: x^3
+ 6: x^4             7: sqrt(x)       8: sqrt(sqrt(x))
+ 9: sin(90x)       10: cos(90x)     11: |x-0.5|
+12: (2x-1)^2       13: sin(180x)    14: |cos(180x)|
+15: sin(360x)      16: cos(360x)    17: |sin(360x)|
+18: |cos(360x)|    19: |sin(720x)|  20: |cos(720x)|
+21: 3x             22: 3x-1         23: 3x-2
+24: |3x-1|         25: |3x-2|       26: (3x-1)/2
+27: (3x-2)/2       28: |(3x-1)/2|   29: |(3x-2)/2|
+30: x/0.32-0.78125 31: 2*x-0.84     32: 4x;1;-2x+1.84;x/0.08-11.5
+33: |2*x - 0.5|    34: 2*x          35: 2*x - 0.5
+36: 2*x - 1
+@end example
+n@'{u}meros negativos significam componente de cor negativa.
+
+@code{palette = gray} e @code{palette = color} s@~{a}o atalhos para
+@code{palette = [3,3,3]} e @code{palette = [7,5,15]}, respectivamente.
+
+Se @code{im} for uma matriz de vetores de comprimento tr@^{e}s, eles s@~{a}o interpretados
+como componenetes das cores vermelho, verde e azul.
+
+Exemplos:
+
+se @code{im} for uma matriz de n@'{u}meros reais, valores de pixel s@~{a}o interpretados conforme
+a op@value{cedilha}@~{a}o gr@'{a}fica @code{palette}.
+@example
+(%i1) load(draw)$
+(%i2) im: apply(
+           'matrix,
+            makelist(makelist(random(200),i,1,30),i,1,30))$
+(%i3) /* palette = color, default */
+      draw2d(image(im,0,0,30,30))$
+(%i4) draw2d(palette = gray, image(im,0,0,30,30))$
+(%i5) draw2d(palette = [15,20,-4],
+             colorbox=false,
+             image(im,0,0,30,30))$
+@end example
+
+Veja tamb@'{e}m @code{colorbox}.
+
+Se @code{im} for uma matriz de vetores de comprimento tr@^{e}s, eles s@~{a}o interpretados
+como componentes da cores vermelho, verde e azul.
+@example
+(%i1) load(draw)$
+(%i2) im: apply(
+            'matrix,
+             makelist(
+               makelist([random(300),
+                         random(300),
+                         random(300)],i,1,30),i,1,30))$
+(%i3) draw2d(image(im,0,0,30,30))$
 @end example
 
 @end itemize
@@ -1675,6 +1879,7 @@ Veja tamb@'{e}m as seguintes op@value{cedilha}@~{o}es gr@'{a}ficas: @code{xrange
 @code{logx}, @code{logy}, @code{terminal}, @code{grid}, @code{title}, 
 @code{xlabel}, @code{ylabel}, @code{xtics}, @code{ytics}, @code{xy_file}, 
 @code{file_name}, @code{pic_width}, @code{pic_height}, 
+@code{eps_width}, @code{eps_height},
 @code{user_preamble}, @code{axis_bottom}, @code{axis_left}, @code{axis_top}, 
 e @code{axis_right}.
 
@@ -1706,7 +1911,8 @@ Essa @'{e} a lista dos @i{objetos gr@'{a}ficos} dispon@'{i}veis para fundos gr@'
 posiciona os pontos @code{[x1,y1,z1]}, @code{[x2,y2,z2]}, @code{[x2,y2,z3]}, ... no gr@'{a}fico.
 
 Esse objeto @'{e} afetado pelas seguintes @i{op@value{cedilha}@~{o}es gr@'{a}ficas}: @code{point_size}, 
-@code{point_type}, @code{points_joined}, @code{line_width}, @code{key} e @code{line_type}.
+@code{point_type}, @code{points_joined}, @code{line_width}, @code{key}, @code{line_type}
+e @code{color}.
 
 Exemplos:
 
@@ -1740,18 +1946,40 @@ Duas amostras tridimensionais,
 escreve @code{r@'{o}tulo} no ponto @code{[x,y,z]}.
 
 Esse objeto @'{e} afetado pelas seguintes @i{op@value{cedilha}@~{o}es gr@'{a}ficas}: @code{label_alignment}, 
-@code{label_orientation} e @code{label_color}.
+@code{label_orientation} e @code{color}.
 
 Exemplo:
 
 @example
 (%i1) load(draw)$
 (%i2) draw3d(explicit(exp(sin(x)+cos(x^2)),x,-3,3,y,-3,3),
-             label_color = 6,
-             label("UP",-2,0,3),
-             label_color = 3,
-             label("DOWN",2,0,-3) )$
+             color = red,
+             label("SUBINDO",-2,0,3),
+             color = blue,
+             label("DESCENDO",2,0,-3) )$
 @end example
+
+
+
+
+@item
+@code{vector([x,y,z], [dx,dy,dz])}:
+monta o gr@'{a}fico do vetor @code{[dx,dy,dz]} com or@'{i}gem em @code{[x,y,z]}.
+
+Esse objeto @'{e} afetado pelas seguintes @i{op@value{cedilha}@~{o}es gr@'{a}ficas}: @code{head_both}, 
+@code{head_type}, @code{line_width}, 
+@code{line_type}, @code{key} e @code{color}.
+
+Exemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(color = cyan,
+             vector([0,0,0],[1,1,1]/sqrt(3)),
+             vector([0,0,0],[1,-1,0]/sqrt(2)),
+             vector([0,0,0],[1,1,-2]/sqrt(6)) )$
+@end example
+
 
 
 @item
@@ -1761,18 +1989,17 @@ de @code{minval1} a @code{maxval1} e vari@'{a}vel @code{var2} assumindo valores
 de @code{minval2} a @code{maxval2}.
 
 Esse objeto @'{e} afetado pelas seguintes @i{op@value{cedilha}@~{o}es gr@'{a}ficas}: @code{xu_grid}, 
-@code{yv_grid}, @code{line_type} e @code{key}.
+@code{yv_grid}, @code{line_type}, @code{key} e @code{color}.
 
 Exemplo:
 
 @example
 (%i1) load(draw)$
-(%i2) draw3d(key       = "Gauss",
-             line_type = 2,
+(%i2) draw3d(key   = "Gauss",
+             color = "#a02c00",
              explicit(20*exp(-x^2-y^2)-10,x,-3,3,y,-3,3),
-             yv_grid     = 10,
-             line_type = 5,
-             key="Plane",
+             color = blue,
+             key   = "Plane",
              explicit(x+y,x,-5,5,y,-5,5),
              surface_hide = true)$
 @end example
@@ -1784,16 +2011,16 @@ monta o gr@'{a}fico da curva param@'{e}trica @code{[xfun,yfun,zfun]}, com par@^{
 assumindo valores de @code{parmin} a @code{parmax}.
 
 Esse objeto @'{e} afetado pelas seguintes @i{op@value{cedilha}@~{o}es gr@'{a}ficas}: @code{nticks}, 
-@code{line_width}, @code{line_type} e @code{key}.
+@code{line_width}, @code{line_type}, @code{key} e @code{color}.
 
 Exemplo:
 
 @example
 (%i1) load(draw)$
 (%i2) draw3d(explicit(exp(sin(x)+cos(x^2)),x,-3,3,y,-3,3),
-             line_type  = 3,
+             color = royalblue,
              parametric(cos(5*u)^2,sin(7*u),u-2,u,0,2),
-             line_type  = 6,
+             color      = turquoise,
              line_width = 2,
              parametric(t^2,sin(t),2+t,t,0,2),
              surface_hide = true,
@@ -1807,8 +2034,8 @@ monta o gr@'{a}fico da superf@'{i}cie param@'{e}trica @code{[xfun,yfun,zfun]}, c
 assumindo valores de @code{par1min} a @code{par1max} e o par@^{a}metro @code{par2}
 assumindo valores de @code{par2min} a @code{par2max}.
 
-Esse objeto @'{e} afetado pelas seguintes @i{op@value{cedilha}@~{o}es gr@'{a}ficas}: @code{nticks}, 
-@code{line_width}, @code{line_type}, e @code{key}.
+Esse objeto @'{e} afetado pelas seguintes @i{op@value{cedilha}@~{o}es gr@'{a}ficas}: @code{xu_grid}, 
+@code{yv_grid}, @code{line_type}, @code{key} e @code{color}.
 
 Exemplo:
 
@@ -1834,9 +2061,12 @@ Veja tamb@'{e}m as seguintes op@value{cedilha}@~{o}es gr@'{a}ficas: @code{xrange
 @code{xtics}, @code{ytics}, @code{ztics}, @code{xy_file}, 
 @code{user_preamble}, @code{axis_bottom}, @code{axis_left}, 
 @code{axis_top}, @code{file_name}, @code{pic_width}, @code{pic_height}, 
+@code{eps_width}, @code{eps_height},
 @code{axis_right}, @code{rot_vertical}, @code{rot_horizontal}, 
 @code{axis_3d}, @code{xu_grid}, @code{yv_grid}, @code{surface_hide}, 
-@code{contour}, e @code{contour_levels}.
+@code{contour}, @code{contour_levels}, @code{palette}, @code{colorbox}
+e @code{enhanced3d}.
+
 
 @end deffn
 

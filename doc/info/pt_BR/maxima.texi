@@ -465,7 +465,7 @@ distrib
 draw
 
 * Introdu@value{cedilha}@~{a}o a draw::
-* Defini@value{cedilha}@~{o}es para draw::
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para draw::
 
 dynamics
 
