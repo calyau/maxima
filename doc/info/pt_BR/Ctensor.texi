@@ -1,11 +1,11 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
-@c /Ctensor.texi/1.31/Sun Jul 30 08:49:51 2006/-ko/
+@c /Ctensor.texi/1.33/Sat Jun  2 00:12:36 2007/-ko/
 @menu
 * Introdu@value{cedilha}@~{a}o a ctensor::     
-* Defini@value{cedilha}@~{o}es para ctensor::     
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para ctensor::     
 @end menu
 
-@node Introdu@value{cedilha}@~{a}o a ctensor, Defini@value{cedilha}@~{o}es para ctensor, ctensor, ctensor
+@node Introdu@value{cedilha}@~{a}o a ctensor, Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para ctensor, ctensor, ctensor
 @section Introdu@value{cedilha}@~{a}o a ctensor
 
 @code{ctensor} @'{e} um pacote de manipula@value{cedilha}@~{a}o de componentes.  Para usar o pacote
@@ -119,9 +119,9 @@ y;
 @end example
 
 @c end concepts ctensor
-@node Defini@value{cedilha}@~{o}es para ctensor,  , Introdu@value{cedilha}@~{a}o a ctensor, ctensor
+@node Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para ctensor,  , Introdu@value{cedilha}@~{a}o a ctensor, ctensor
 
-@section Defini@value{cedilha}@~{o}es para ctensor
+@section Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para ctensor
 
 @subsection Inicializa@value{cedilha}@~{a}o e configura@value{cedilha}@~{a}o
 

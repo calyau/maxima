@@ -1,14 +1,14 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
-@c /descriptive.texi/1.9/Mon Jan 22 12:53:44 2007//
+@c /descriptive.texi/1.10/Sat Jun  2 00:13:14 2007//
 @menu
 * Introdu@value{cedilha}@~{a}o ao pacote descriptive::
-* Defini@value{cedilha}@~{o}es para manipula@value{cedilha}@~{a}o da dados::
-* Defini@value{cedilha}@~{o}es para estat@'{i}stica descritiva::
-* Defini@value{cedilha}@~{o}es espec@'{i}ficas para estat@'{i}stica descritiva de v@'{a}rias vari@'{a}veis::
-* Defini@value{cedilha}@~{o}es para gr@'{a}ficos estat@'{i}sticos::
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para manipula@value{cedilha}@~{a}o da dados::
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para estat@'{i}stica descritiva::
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas espec@'{i}ficas para estat@'{i}stica descritiva de v@'{a}rias vari@'{a}veis::
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para gr@'{a}ficos estat@'{i}sticos::
 @end menu
 
-@node Introdu@value{cedilha}@~{a}o ao pacote descriptive, Defini@value{cedilha}@~{o}es para manipula@value{cedilha}@~{a}o da dados, descriptive, descriptive
+@node Introdu@value{cedilha}@~{a}o ao pacote descriptive, Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para manipula@value{cedilha}@~{a}o da dados, descriptive, descriptive
 @section Introdu@value{cedilha}@~{a}o ao pacote descriptive
 
 O pacote @code{descriptive} cont@'{e}m um conjunto de fun@value{cedilha}@~{o}es para fazer c@'{a}lculos de estat@'{i}stica descritiva e desenhar gr@'{a}ficos. Juntamente com o c@'{o}digo fonte tr@^{e}s conjuntos de dados em suar @'{a}rvore do Maxima: @code{pidigits.data}, @code{wind.data} e @code{biomed.data}. Eles tamb@'{e}m podem ser baixados a partir de @code{www.biomates.net}.
@@ -175,8 +175,8 @@ Se deve tomar cuidado quando se trabalha com dados divididos por categorias. no 
 
 
 
-@node Defini@value{cedilha}@~{o}es para manipula@value{cedilha}@~{a}o da dados, Defini@value{cedilha}@~{o}es para estat@'{i}stica descritiva, Introdu@value{cedilha}@~{a}o ao pacote descriptive, descriptive
-@section Defini@value{cedilha}@~{o}es para manipula@value{cedilha}@~{a}o da dados
+@node Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para manipula@value{cedilha}@~{a}o da dados, Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para estat@'{i}stica descritiva, Introdu@value{cedilha}@~{a}o ao pacote descriptive, descriptive
+@section Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para manipula@value{cedilha}@~{a}o da dados
 
 @deffn {Fun@value{cedilha}@~{a}o} continuous_freq (@var{list})
 @deffnx {Fun@value{cedilha}@~{a}o} continuous_freq (@var{list}, @var{m})
@@ -378,8 +378,8 @@ Aqui, a primeira componente @'{e} sem sentido, uma vez que @code{A} e @code{B} s
 @end deffn
 
 
-@node Defini@value{cedilha}@~{o}es para estat@'{i}stica descritiva, Defini@value{cedilha}@~{o}es espec@'{i}ficas para estat@'{i}stica descritiva de v@'{a}rias vari@'{a}veis, Defini@value{cedilha}@~{o}es para manipula@value{cedilha}@~{a}o da dados, descriptive
-@section Defini@value{cedilha}@~{o}es para estat@'{i}stica descritiva
+@node Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para estat@'{i}stica descritiva, Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas espec@'{i}ficas para estat@'{i}stica descritiva de v@'{a}rias vari@'{a}veis, Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para manipula@value{cedilha}@~{a}o da dados, descriptive
+@section Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para estat@'{i}stica descritiva
 
 
 
@@ -837,7 +837,7 @@ Exemplo:
 @deffn {Fun@value{cedilha}@~{a}o} quantile (@var{lista}, @var{p})
 @deffnx {Fun@value{cedilha}@~{a}o} quantile (@var{matriz}, @var{p})
 @'{E} o @var{p}-@code{quantile} (quantil de ordem @var{p}), com @var{p} sendo um n@'{u}mero em @math{[0, 1]} (intervalo fechado), da amostra @var{lista}.
-Embora exista muitas Defini@value{cedilha}@~{o}es para quantil de uma amostra (Hyndman, R. J., Fan, Y. (1996) @var{Sample quantiles in statistical packages}. American Statistician, 50, 361-365), aquela que se baseia em interpola@value{cedilha}@~{a}o linear @'{e} a que foi implementada no pacote @code{descriptive}.
+Embora exista muitas defini@value{cedilha}@~{o}es para quantil de uma amostra (Hyndman, R. J., Fan, Y. (1996) @var{Sample quantiles in statistical packages}. American Statistician, 50, 361-365), aquela que se baseia em interpola@value{cedilha}@~{a}o linear @'{e} a que foi implementada no pacote @code{descriptive}.
 
 Exemplo:
 
@@ -1377,8 +1377,8 @@ Veja tamb@'{e}m a fun@value{cedilha}@~{a}o @code{quantile}.
 
 
 
-@node Defini@value{cedilha}@~{o}es espec@'{i}ficas para estat@'{i}stica descritiva de v@'{a}rias vari@'{a}veis, Defini@value{cedilha}@~{o}es para gr@'{a}ficos estat@'{i}sticos, Defini@value{cedilha}@~{o}es para estat@'{i}stica descritiva, descriptive
-@section Defini@value{cedilha}@~{o}es espec@'{i}ficas para estat@'{i}stica descritiva de v@'{a}rias vari@'{a}veis
+@node Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas espec@'{i}ficas para estat@'{i}stica descritiva de v@'{a}rias vari@'{a}veis, Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para gr@'{a}ficos estat@'{i}sticos, Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para estat@'{i}stica descritiva, descriptive
+@section Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas espec@'{i}ficas para estat@'{i}stica descritiva de v@'{a}rias vari@'{a}veis
 
 
 
@@ -1754,8 +1754,8 @@ Veja tamb@'{e}m @code{cov} e @code{cov1}.
 
 
 
-@node Defini@value{cedilha}@~{o}es para gr@'{a}ficos estat@'{i}sticos,  , Defini@value{cedilha}@~{o}es espec@'{i}ficas para estat@'{i}stica descritiva de v@'{a}rias vari@'{a}veis, descriptive
-@section Defini@value{cedilha}@~{o}es para gr@'{a}ficos estat@'{i}sticos
+@node Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para gr@'{a}ficos estat@'{i}sticos,  , Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas espec@'{i}ficas para estat@'{i}stica descritiva de v@'{a}rias vari@'{a}veis, descriptive
+@section Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para gr@'{a}ficos estat@'{i}sticos
 
 
 

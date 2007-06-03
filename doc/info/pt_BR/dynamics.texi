@@ -1,11 +1,11 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
-@c /dynamics.texi/1.11/Mon Jan 22 13:45:03 2007//
+@c /dynamics.texi/1.13/Sat Jun  2 00:13:21 2007//
 @menu
 * Introdu@value{cedilha}@~{a}o a dynamics::
-* Defini@value{cedilha}@~{o}es para dynamics::
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para dynamics::
 @end menu
 
-@node Introdu@value{cedilha}@~{a}o a dynamics, Defini@value{cedilha}@~{o}es para dynamics, dynamics, dynamics
+@node Introdu@value{cedilha}@~{a}o a dynamics, Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para dynamics, dynamics, dynamics
 @section Introdu@value{cedilha}@~{a}o a dynamics
 
 O pacote adicional @code{dynamics} inclui muitas
@@ -14,12 +14,31 @@ din@^{a}micos discretos e fractais, e uma implementa@value{cedilha}@~{a}o deo m@
 num@'{e}rico de Runge-Kutta de quarta ordem para a resolu@value{cedilha}@~{a}o de sistemas de equa@value{cedilha}@~oes diferenciais.
 
 Para usar as fun@value{cedilha}@~{o}es nesse pacote voc@^{e} deve primeiramente torn@'{a}-lo dispon@'{i}vel para uso com
-@code{load("dynamics")}, e as fun@value{cedilha}@~{o}es que ir@~{a}o criar gr@'{a}ficos
-requerem que o Xmaxima esteja instalado.
+@code{load("dynamics")}.
 
+@b{Modifica@value{cedilha}@~{o}es introduzidas no Maxima 5.12}
 
-@node Defini@value{cedilha}@~{o}es para dynamics,  , Introdu@value{cedilha}@~{a}o a dynamics, dynamics
-@section Defini@value{cedilha}@~{o}es para dynamics
+Iniciando no Maxima 5.12, o pacote dynamics agora utiliza a fun@value{cedilha}@~{a}o
+@code{plot2d} para monar os gr@'{a}ficos. Os comandos que produzem gr@'{a}ficos
+(com exce@value{cedilha}@~{a}o de @code{julia} e de @code{mandelbrot}) agora aceitam
+qualquer op@value{cedilha}@~{a}o de @code{plot2d}, incluindo a op@value{cedilha}@~{a}o que modificam o montante das
+v@'{a}rias interfaces gr@'{a}ficas, usando diferentes estilos de montagem de gr@'{a}fico e cores,
+e representando um ou ambos os eixos em uma escala logar@'{i}tmica. As antigas
+op@value{cedilha}@~{o}es @var{domain}, @var{pointsize}, @var{xcenter}, @var{xradius},
+@var{ycenter}, @var{yradius}, @var{xaxislabel} e @var{yaxislabel}
+n@~{a}o s@~{a}o aceitas nessa nova vers@~{a}o.
+
+Todos os programas ir@~{a}o agora aceitar quaisquer nomes de vari@'{a}veis, e n@~{a}o apenas @var{x}
+e @var{y} como nas antigas vers@~{o}es. Dois par@^{a}metros requeridos tiveram
+modifica@value{cedilha}@~{o}es em dois desses programas: @code{evolution2d} agora requer uma lista
+nomeando explicitamente as duas vari@'{a}veis independentes, e o intervalo
+horizontal para @code{orbits} n@~{a}o mais requer um tamanho de passo; o intervalo
+pode somente espcificar o nome da vari@'{a}vel, e o menor e o maior
+valores; o n@'{u}mero de passos pode agora ser modificado com a op@value{cedilha}@~{a}o
+@var{nticks}.
+
+@node Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para dynamics,  , Introdu@value{cedilha}@~{a}o a dynamics, dynamics
+@section Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para dynamics
 
 @deffn {Fun@value{cedilha}@~{a}o} chaosgame (@code{[[}@var{x1}, @var{y1}@code{]}...@code{[}@var{xm}, @var{ym}@code{]]}, @code{[}@var{x0}, @var{y0}@code{]}, @var{b}, @var{n}, ...op@value{cedilha}@~{o}es...);
 
@@ -33,7 +52,7 @@ segmento. o procedimento @'{e} repetido @var{n} vezes.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} evolution (@var{F}, @var{y0}, @var{n},...op@value{cedilha}@~{o}es...);
+@deffn {Fun@value{cedilha}@~{a}o} evolution (@var{F}, @var{y0}, @var{n}, ..., op@value{cedilha}@~{o}es, ...);
 
 Desenha @var{n+1} pontos em gr@'{a}fico bidimensional, onde as coordenadas
 horizontais dos pontos s@~{a}o os inteiros 0, 1, 2, ..., @var{n}, e
@@ -49,31 +68,33 @@ $$y_{n+1} = F(y_n)$$
 @end tex
 
 com valor inicial @var{y(0)} igual a @var{y0}. @var{F} deve ser uma
-express@~{a}o que depende somente da vari@'{a}vel @var{y} (e n@~{a}o da vari@'{a}vel @var{n}),
+express@~{a}o que depende somente de uma vari@'{a}vel (no exemplo, essa vari@'{a}vel
+dependente de @var{y}, mas qualquer outra vari@'{a}vel pode ser usada em lugar de @var{y}),
 @var{y0} deve ser um n@'{u}mero real e @var{n} deve ser um inteiro positivo.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} evolution2d (@code{[}@var{F}, @var{G}@code{]}, @code{[}@var{x0}, @var{y0}@code{]}, @var{n}, ...op@value{cedilha}@~{o}es...);
+@deffn {Fun@value{cedilha}@~{a}o} evolution2d (@code{[}@var{F}, @var{G}@code{]}, @code{[}@var{u}, @var{v}@code{]}, @code{[}@var{u0}, @var{y0}@code{]}, @var{n}, ..., op@value{cedilha}@~{o}es, ...);
 
 Mostra, em um gr@'{a}fico bidimensional, os primeiros @var{n+1} pontos na
 seq@"{u}@^{e}ncia de pontos definida por meio do sistema din@^{a}mico discreto
 bidimensional com rela@value{cedilha}@~{o}es de recorr@^{e}ncia
 @ifnottex
 @example
-        x(n+1) = F(x(n), y(n))    y(n+1) = G(x(n), y(n))
+        u(n+1) = F(u(n), v(n))    v(n+1) = G(u(n), v(n))
 @end example
 @end ifnottex
 @tex
-$$\cases{x_{n+1} = F(x_n, y_n) &\cr y_{n+1} = G(x_n, y_n)}$$
+$$\cases{u_{n+1} = F(u_n, v_n) &\cr v_{n+1} = G(u_n, v_n)}$$
 @end tex
 
-Com valores iniciais @var{x0} e @var{y0}. @var{F} e @var{G} devem ser
-duas express@~{o}es que dependem apenas de @var{x} e @var{y}. 
+Com valores iniciais @var{u0} e @var{v0}. @var{F} e @var{G} devem ser
+duas express@~{o}es que dependem somente de duas vari@'{a}veis @var{u} e
+@var{v}, que devem ser nomeadas explicitamente em uma lista. 
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} ifs (@code{[}@var{r1},...,@var{rm}@code{]},@code{[}@var{A1},...,@var{Am}@code{]}, @code{[[}@var{x1},@var{y1}@code{]}...@code{[}@var{xm}, @var{ym}@code{]]}, @code{[}@var{x0},@var{y0}@code{]}, @var{n}, ...op@value{cedilha}@~{o}es...);
+@deffn {Fun@value{cedilha}@~{a}o} ifs (@code{[}@var{r1}, ..., @var{rm}@code{]}, @code{[}@var{A1}, ..., @var{Am}@code{]}, @code{[[}@var{x1}, @var{y1}@code{]}, ..., @code{[}@var{xm}, @var{ym}@code{]]}, @code{[}@var{x0}, @var{y0}@code{]}, @var{n}, ..., op@value{cedilha}@~{o}es, ...);
 
 Implemanta o m@'{e}todo de Sistemas de Fun@value{cedilha}@~{o}es iteradas. Esse m@'{e}todo @'{e} similar
 ao m@'{e}todo descrito na fun@value{cedilha}@~{a}o @code{chaosgame}, mas em lugar de
@@ -233,44 +254,11 @@ o procedimento @'{e} repetido @var{n} vezes at@'{e} que o ponto (@var{yn}, @var{
 Cada op@value{cedilha}@~{a}o @'{e} uma lista de dois ou mais itens. O primeiro item @'{e} o nome
 da op@value{cedilha}@~{a}o, e os restantes compreendem os argumentos para a op@value{cedilha}@~{a}o.
 
-As op@value{cedilha}@~{o}es aceitas pela fun@value{cedilha}@~{a}o @code{evolution}, @code{evolution2d}, @code{staircase},
-@code{orbits}, @code{ifs} e @code{chaosgame} s@~{a}o:
-
-@itemize @bullet
-@item
-@dfn{domain} escolhe os valores de m@'{i}nimo e de maximo paraa a
-vari@'{a}vel independente na coonstru@value{cedilha}@~{a}o do gr@'{a}fico da fun@value{cedilha}@~{a}o @var{F} mostrada por
-@code{staircase}.
-
-@item
-@dfn{pointsize} define o raio de cada ponto mostrado, em unidades de
-pontos. O valor padr@~{a}o @'{e} 1.
-
-@item
-@dfn{xaxislabel} @'{e} o r@'{o}tulo a ser colocado no eixo horizontal do gr@'{a}fico.
-
-@item
-@dfn{xcenter} @'{e} a coordenada x do ponto que pode aparecer no
-centro do gr@'{a}fico. Essa op@value{cedilha}@~{a}o n@~{a}o @'{e} utilizada na fun@value{cedilha}@~{a}o
-@code{orbits}.
-
-@item
-@dfn{xradius} @'{e} metade do comprimento do intervalo de valores que ser@~{a}o
-mostrados na dire@value{cedilha}@~{a}o x. Essa op@value{cedilha}@~{a}o n@~{a}o @'{e} usada pela fun@value{cedilha}@~{a}o
-@code{orbits}.
-
-@item
-@dfn{yaxislabel} @'{e} o r@'{o}tulo a ser colocado sobre o eixo vertical.
-
-@item
-@dfn{ycenter} @'{e} a coordenada  y do ponto que ir@'{a}
-aparecer no centro do gr@'{a}fico.
-
-@item
-@dfn{yradius} @'{e} a metade do comprimento do intervalo de valores que ser@~{a}o
-mostrados na dire@value{cedilha}@~{a}o y.
-
-@end itemize
+As op@value{cedilha}@~{o}es aceitas pelas fun@value{cedilha}@~{o}es @code{evolution}, @code{evolution2d},
+@code{staircase}, @code{orbits}, @code{ifs} e @code{chaosgame} s@~{a}o as mesmas op@value{cedilha}@~{o}es para
+@code{plot2d}. Adicionalmente para aquelas op@value{cedilha}@~{o}es, @code{orbits} aceita a
+op@value{cedilha}@~{a}o extra @var{pixels} que escolhe o n@'{u}mero m@'{a}ximo de pontos
+diferentes que ir@~{a}o ser representados na dire@value{cedilha}@~{a}o vertical.
 
 As seguintes op@value{cedilha}@~{o}es s@~{a}o aceitas pelas fu@value{cedilha}@~{o}es @code{julia} e @code{mandelbrot}:
 
@@ -344,8 +332,10 @@ Representa@value{cedilha}@~{a}o gr@'{a}fica e diagrama em escada para a seq@"{u}
 
 @example
 (%i1) load("dynamics")$
-(%i2) evolution(cos(y), 2, 11, [yaxislabel, "y"], [xaxislabel,"n"]);
-(%i3) staircase(cos(y), 1, 11, [domain, 0, 1.2]);
+
+(%i2) evolution(cos(y), 2, 11);
+
+(%i3) staircase(cos(y), 1, 11, [y, 0, 1.2]);
 @end example
 
 @ifnotinfo
@@ -354,14 +344,14 @@ Representa@value{cedilha}@~{a}o gr@'{a}fica e diagrama em escada para a seq@"{u}
 @end ifnotinfo
 
 Se seu sistema for lento, voc@^{e} dever@'{a} reduzir o n@'{u}mero de itera@value{cedilha}@~{o}es nos
-seguites exemplos. E o tamanho do ponto, @var{pointsize},  que fornece melhores resultados
-depende do monitor e da resolu@value{cedilha}@~{a}o que est@'{a} sendo usada.Voc@^{e} pode
-experimentar usando diferentes valores.
+seguintes exemplos. E se os pontos parecerem muito pequenos no seu
+monitor, voc@^{e} pode querer tentar um estilo diferente, tal como
+@code{[}@var{style},@code{[}@var{points},0.8@code{]]}.
 
-Diagrama de @'{o}rbitas para o mapa quadr@'{a}tico
+Diagrama de @'{o}rbitas para o mapa quadr@'{a}tico, com um par@^{a}metro @var{a}.
 @ifnottex
 @example
-        y(n+1) = x + y(n)^2
+        x(n+1) = a + x(n)^2
 @end example
 @end ifnottex
 @tex
@@ -369,7 +359,7 @@ $$y_{n+1} = x + y_n^2$$
 @end tex
 
 @example
-(%i4) orbits(y^2+x, 0, 50, 200, [x, -2, 0.25, 0.01], [pointsize, 0.9]);
+(%i4) orbits(x^2+a, 0, 50, 200, [a, -2, 0.25], [style, dots]);
 @end example
 
 @ifnotinfo
@@ -378,8 +368,8 @@ $$y_{n+1} = x + y_n^2$$
 
 Para ampliar a regi@~{a}o em torno da bifurca@value{cedilha}@~{a}o menor perto de x @code{=} -1.25 use:
 @example
-(%i5) orbits(x+y^2, 0, 100, 400, [x,-1,-1.53,-0.001], [pointsize,0.9],
-             [ycenter,-1.2], [yradius,0.4]);
+(%i5) orbits(x+y^2, 0, 100, 400, [a,-1,-1.53], [x,-1.6,-0.8],
+             [nticks, 400], [style,dots]);
 @end example
 
 @ifnotinfo
@@ -390,8 +380,10 @@ Evolu@value{cedilha}@~{a}o de um sistemma bidimensional que leva a um fractal:
 
 @example
 (%i6) f: 0.6*x*(1+2*x)+0.8*y*(x-1)-y^2-0.9$
+
 (%i7) g: 0.1*x*(1-6*x+4*y)+0.1*y*(1+9*y)-0.4$
-(%i8) evolution2d([f,g],[-0.5,0],50000,[pointsize,0.7]);
+
+(%i8) evolution2d([f,g], [x,y], [-0.5,0], 50000, [style,dots]);
 @end example
 
 @ifnotinfo
@@ -401,8 +393,8 @@ Evolu@value{cedilha}@~{a}o de um sistemma bidimensional que leva a um fractal:
 E uma amplia@value{cedilha}@~{a}o de uma pequena regial naquele fractal:
 
 @example
-(%i9) evolution2d([f,g],[-0.5,0],300000,[pointsize,0.7], [xcenter,-0.7],
-                  [ycenter,-0.3],[xradius,0.1],[yradius,0.1]);
+(%i9) evolution2d([f,g], [x,y], [-0.5,0], 300000, [x,-0.8,-0.6],
+                  [y,-0.4,-0.2], [style, dots]);
 @end example
 
 @ifnotinfo
@@ -413,7 +405,7 @@ Um gr@'{a}fico do tri@^{a}ngulo de Sierpinsky, obtido com o jogo do caos:
 
 @example
 (%i9) chaosgame([[0, 0], [1, 0], [0.5, sqrt(3)/2]], [0.1, 0.1], 1/2,
-                 30000, [pointsize,0.7]);
+                 30000, [style, dots]);
 @end example
 
 @ifnotinfo
@@ -424,15 +416,24 @@ A samambaia de Barnsley, obtida com um Sistema de Fun@value{cedilha}@~{o}es Iter
 
 @example
 (%i10) a1: matrix([0.85,0.04],[-0.04,0.85])$
+
 (%i11) a2: matrix([0.2,-0.26],[0.23,0.22])$
+
 (%i12) a3: matrix([-0.15,0.28],[0.26,0.24])$
+
 (%i13) a4: matrix([0,0],[0,0.16])$
+
 (%i14) p1: [0,1.6]$
+
 (%i15) p2: [0,1.6]$
+
 (%i16) p3: [0,0.44]$
+
 (%i17) p4: [0,0]$
+
 (%i18) w: [85,92,99,100]$
-(%i19) ifs(w,[a1,a2,a3,a4],[p1,p2,p3,p4],[5,0],50000,[pointsize,0.9]);
+
+(%i19) ifs(w, [a1,a2,a3,a4], [p1,p2,p3,p4], [5,0], 50000, [style,dots]);
 @end example
 
 @ifnotinfo

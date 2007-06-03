@@ -1,10 +1,10 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
-@c /Debugging.texi/1.17/Mon Feb 19 14:23:07 2007/-ko/
+@c /Debugging.texi/1.19/Sat Jun  2 00:12:37 2007/-ko/
 @c end concepts Debugging
 @menu
 * Depurando o C@'{o}digo Fonte::
 * Comandos Palavra Chave::
-* Defini@value{cedilha}@~{o}es para Depura@value{cedilha}@~{a}o::   
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Depura@value{cedilha}@~{a}o::   
 @end menu
 
 @node Depurando o C@'{o}digo Fonte, Comandos Palavra Chave, , Depurando
@@ -84,8 +84,8 @@ bar(x,y) := (
 USO DO DEPURADOR ATRAV@'{E}S DO EMACS
 
 Se o usu@'{a}rio estiver rodando o c@'{o}digo sob o GNU emacs em uma janela
-shell (shel dbl), ou est@'{a} rodando a vers@~{a}o de interface gr@'{a}fica,
-@code{xmaxima}, ent@~{a}o se ele para em um ponto de parada, ele ver@'{a} sua
+shell (shell dbl), ou est@'{a} rodando a vers@~{a}o de interface gr@'{a}fica,
+Xmaxima, ent@~{a}o se ele para em um ponto de parada, ele ver@'{a} sua
 posi@value{cedilha}@~{a}o corrente no arquivo fonte a qua ser@'{a} mostrada na
 outra metade da janela, ou em vermelho brilhante, ou com um pequeno
 seta apontando na direita da linha.  Ele pode avan@value{cedilha}ar uma linha por
@@ -95,7 +95,7 @@ Sob Emacs voc@^{e} pode executar em um shell @code{dbl}, o qual requer o
 arquivo @code{dbl.el} no diret@'{o}rio elisp.
 Tenha certeza que instalou os arquivos elisp ou adicionou o diret@'{o}rio elisp do Macima ao
 seu caminho:
-e.g., adicione o seguinte ao seu arquivo @file{.emacs} ou ao seu arquivo @code{site-init.el}
+e.g., adicione o seguinte ao seu arquivo @file{.emacs} ou ao seu arquivo @file{site-init.el}
 
 @example
 (setq load-path (cons "/usr/share/maxima/5.9.1/emacs" load-path))
@@ -122,13 +122,13 @@ maxima-mode.el habilitado na janela na qual o arquivo @code{foobar.mac} estiver 
 Existe comandos adicional dispon@'{i}veis naquela janela de arquivo, tais como
 avaliando a fun@value{cedilha}@~{a}o dentro do Maxima, atrav@'{e}s da digita@value{cedilha}@~{a}o de @code{Alt-Control-x}.
 
-@node Comandos Palavra Chave, Defini@value{cedilha}@~{o}es para Depura@value{cedilha}@~{a}o, Depurando o C@'{o}digo Fonte, Depurando
+@node Comandos Palavra Chave, Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Depura@value{cedilha}@~{a}o, Depurando o C@'{o}digo Fonte, Depurando
 @section Comandos Palavra Chave
 
 Comandos palavra chave s@~{a}o palavras chaves especiais que n@~{a}o s@~{a}o interpretadas como express@~{o}es do Maxima.
 Um comando palavra chave pode ser inserido na linha de comando do Maxima ou na linha de comando do depurador,
 embora n@~{a}o possa ser inserido na linha de comando de parada.
-Comandos palavra chave iniciam com um dois pontos Keyword commands start with a colon, ':'.
+Comandos palavra chave iniciam com um dois pontos, @code{:}.
 Por exemplo, para avaliar uma forma Lisp voc@^{e}
 pode digitar @code{:lisp} seguido pela forma a ser avaliada.  
 
@@ -190,8 +190,8 @@ completar a computa@value{cedilha}@~{a}o
 @end table 
 
 
-@node Defini@value{cedilha}@~{o}es para Depura@value{cedilha}@~{a}o, , Comandos Palavra Chave, Depurando
-@section Defini@value{cedilha}@~{o}es para Depura@value{cedilha}@~{a}o
+@node Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Depura@value{cedilha}@~{a}o, , Comandos Palavra Chave, Depurando
+@section Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Depura@value{cedilha}@~{a}o
 
 @defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} refcheck
 Valor padr@~{a}o: @code{false}

@@ -313,8 +313,8 @@ Fun@value{cedilha}@~{o}es Especiais
 Fun@value{cedilha}@~{o}es El@'{i}pticas
 
 * Introdu@value{cedilha}@~{a}o a Fun@value{cedilha}@~{o}es El@'{i}pticas e Integrais::
-* Defini@value{cedilha}@~{o}es para Fun@value{cedilha}@~{o}es El@'{i}pticas::
-* Defini@value{cedilha}@~{o}es para Integrais El@'{i}pticas::
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Fun@value{cedilha}@~{o}es El@'{i}pticas::
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Integrais El@'{i}pticas::
 
 Limites
 
@@ -369,7 +369,7 @@ itensor
 ctensor
 
 * Introdu@value{cedilha}@~{a}o a ctensor::     
-* Defini@value{cedilha}@~{o}es para ctensor::     
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para ctensor::     
 
 Pacote atensor
 
@@ -434,11 +434,11 @@ Fluxo de Programa
 
 Depurando
 
-* Defini@value{cedilha}@~{o}es para Depura@value{cedilha}@~{a}o::   
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Depura@value{cedilha}@~{a}o::   
 
 augmented_lagrangian
 
-* Defini@value{cedilha}@~{o}es para augmented_lagrangian::
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para augmented_lagrangian::
 
 bode
 
@@ -447,10 +447,10 @@ bode
 descriptive
 
 * Introdu@value{cedilha}@~{a}o ao pacote descriptive::
-* Defini@value{cedilha}@~{o}es para manipula@value{cedilha}@~{a}o da dados::
-* Defini@value{cedilha}@~{o}es para estat@'{i}stica descritiva::
-* Defini@value{cedilha}@~{o}es espec@'{i}ficas para estat@'{i}stica descritiva de v@'{a}rias vari@'{a}veis::
-* Defini@value{cedilha}@~{o}es para gr@'{a}ficos estat@'{i}sticos::
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para manipula@value{cedilha}@~{a}o da dados::
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para estat@'{i}stica descritiva::
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas espec@'{i}ficas para estat@'{i}stica descritiva de v@'{a}rias vari@'{a}veis::
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para gr@'{a}ficos estat@'{i}sticos::
 
 diag
 
@@ -459,8 +459,8 @@ diag
 distrib
 
 * Introdu@value{cedilha}@~{a}o a distrib::
-* Defini@value{cedilha}@~{o}es para distribui@value{cedilha}@~{o}es cont@'{i}nuas::
-* Defini@value{cedilha}@~{o}es para distribui@value{cedilha}@~{o}es discretas::
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para distribui@value{cedilha}@~{o}es cont@'{i}nuas::
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para distribui@value{cedilha}@~{o}es discretas::
 
 draw
 
@@ -470,7 +470,7 @@ draw
 dynamics
 
 * Introdu@value{cedilha}@~{a}o a dynamics::
-* Defini@value{cedilha}@~{o}es para dynamics::
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para dynamics::
 
 eval_string
 

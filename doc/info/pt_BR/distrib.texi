@@ -1,12 +1,12 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
-@c /distrib.texi/1.4/Sat Feb 17 06:34:15 2007//
+@c /distrib.texi/1.5/Sat Jun  2 00:13:18 2007//
 @menu
 * Introdu@value{cedilha}@~{a}o a distrib::
-* Defini@value{cedilha}@~{o}es para distribui@value{cedilha}@~{o}es cont@'{i}nuas::
-* Defini@value{cedilha}@~{o}es para distribui@value{cedilha}@~{o}es discretas::
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para distribui@value{cedilha}@~{o}es cont@'{i}nuas::
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para distribui@value{cedilha}@~{o}es discretas::
 @end menu
 
-@node Introdu@value{cedilha}@~{a}o a distrib, Defini@value{cedilha}@~{o}es para distribui@value{cedilha}@~{o}es cont@'{i}nuas, distrib, distrib
+@node Introdu@value{cedilha}@~{a}o a distrib, Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para distribui@value{cedilha}@~{o}es cont@'{i}nuas, distrib, distrib
 @section Introdu@value{cedilha}@~{a}o a distrib
 
 
@@ -415,8 +415,8 @@ tornar esse pacote dispon@'{i}vel para uso escrevendo
 Para coment@'{a}rios, melhorias ou sugest@~{o}es, por favor contacte o autor em
 @var{'mario AT edu DOT xunta DOT es'}.
 
-@node Defini@value{cedilha}@~{o}es para distribui@value{cedilha}@~{o}es cont@'{i}nuas, Defini@value{cedilha}@~{o}es para distribui@value{cedilha}@~{o}es discretas, Introdu@value{cedilha}@~{a}o a distrib, distrib
-@section Defini@value{cedilha}@~{o}es para distribui@value{cedilha}@~{o}es cont@'{i}nuas
+@node Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para distribui@value{cedilha}@~{o}es cont@'{i}nuas, Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para distribui@value{cedilha}@~{o}es discretas, Introdu@value{cedilha}@~{a}o a distrib, distrib
+@section Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para distribui@value{cedilha}@~{o}es cont@'{i}nuas
 
 @deffn {Fun@value{cedilha}@~{a}o} pdf_normal (@var{x},@var{m},@var{s})
 Retorna o valor em @var{x} da fun@value{cedilha}@~{a}o densidade de probabilidade
@@ -2341,8 +2341,8 @@ escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@node Defini@value{cedilha}@~{o}es para distribui@value{cedilha}@~{o}es discretas,  , Defini@value{cedilha}@~{o}es para distribui@value{cedilha}@~{o}es cont@'{i}nuas, distrib
-@section Defini@value{cedilha}@~{o}es para distribui@value{cedilha}@~{o}es discretas
+@node Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para distribui@value{cedilha}@~{o}es discretas,  , Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para distribui@value{cedilha}@~{o}es cont@'{i}nuas, distrib
+@section Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para distribui@value{cedilha}@~{o}es discretas
 
 
 @deffn {Fun@value{cedilha}@~{a}o} pdf_binomial (@var{x},@var{n},@var{p})

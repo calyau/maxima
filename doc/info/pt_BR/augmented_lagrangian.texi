@@ -1,11 +1,11 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
-@c /augmented_lagrangian.texi/1.2/Wed Sep 27 07:36:26 2006//
+@c /augmented_lagrangian.texi/1.4/Sat Jun  2 00:13:11 2007//
 @menu
-* Defini@value{cedilha}@~{o}es para augmented_lagrangian::
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para augmented_lagrangian::
 @end menu
 
-@node Defini@value{cedilha}@~{o}es para augmented_lagrangian,  , augmented_lagrangian, augmented_lagrangian
-@section Defini@value{cedilha}@~{o}es para augmented_lagrangian
+@node Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para augmented_lagrangian,  , augmented_lagrangian, augmented_lagrangian
+@section Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para augmented_lagrangian
 
 @deffn {Fun@value{cedilha}@~{a}o} augmented_lagrangian_method (@var{FOM}, @var{xx}, @var{C}, @var{yy})
 @deffnx {Fun@value{cedilha}@~{a}o} augmented_lagrangian_method (@var{FOM}, @var{xx}, @var{C}, @var{yy}, args_opcionais)
@@ -26,9 +26,9 @@ N@'{u}mero de itera@value{cedilha}@~{o}es do algor@'{i}tmo do Langrangiano aumen
 @item lbfgs_tolerance
 Toler@^{a}ncia forneceida a LBFGS (Limited-memory, Broyden, Fletcher, Goldfarb, Shanno)
 @item iprint
-par@^{a}metro IPRINT (uma lista de dois inteiros que controlam o n@'{i}vel de informa@value{cedilha}@~{a}o) fornecido a LBFGS
+Par@^{a}metro IPRINT (uma lista de dois inteiros que controlam o n@'{i}vel de informa@value{cedilha}@~{a}o) fornecido a LBFGS
 @item %lambda
-valor inicial de @code{%lambda} a ser usado durante o c@'{a}lculo do Lagrangiano aumentado
+Valor inicial de @code{%lambda} a ser usado durante o c@'{a}lculo do Lagrangiano aumentado
 @end table
 
 Essa implementa@value{cedilha}@~{a}o minimiza o Lagrangiano aumentado pela
@@ -48,7 +48,6 @@ References:
 Exemplo:
 
 @c ===beg===
-@c load (lbfgs);
 @c load (augmented_lagrangian);
 @c FOM: x^2 + 2*y^2;
 @c xx: [x, y];
@@ -57,9 +56,6 @@ Exemplo:
 @c augmented_lagrangian_method (FOM, xx, C, yy, iprint = [-1, 0]);
 @c ===end===
 @example
-(%i1) load (lbfgs);
-(%o1) /home/robert/tmp/maxima-release-branch/maxima/share/lbfgs/\
-lbfgs.mac
 (%i2) load (augmented_lagrangian);
 (%o2) /home/robert/tmp/maxima-release-branch/maxima/share/contri\
 b/augmented_lagrangian.mac

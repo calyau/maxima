@@ -1,14 +1,14 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
-@c /Elliptic.texi/1.8/Tue Aug 16 07:43:22 2005/
+@c /Elliptic.texi/1.9/Sat Jun  2 00:12:39 2007//
 @menu
 * Introdu@value{cedilha}@~{a}o a Fun@value{cedilha}@~{o}es El@'{i}pticas e Integrais::
-* Defini@value{cedilha}@~{o}es para Fun@value{cedilha}@~{o}es El@'{i}pticas::
-* Defini@value{cedilha}@~{o}es para Integrais El@'{i}pticas::
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Fun@value{cedilha}@~{o}es El@'{i}pticas::
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Integrais El@'{i}pticas::
 @end menu
 
 
 
-@node Introdu@value{cedilha}@~{a}o a Fun@value{cedilha}@~{o}es El@'{i}pticas e Integrais, Defini@value{cedilha}@~{o}es para Fun@value{cedilha}@~{o}es El@'{i}pticas, , top
+@node Introdu@value{cedilha}@~{a}o a Fun@value{cedilha}@~{o}es El@'{i}pticas e Integrais, Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Fun@value{cedilha}@~{o}es El@'{i}pticas, , top
 @comment  node-name,  next,  previous,  up
 
 @section Introdu@value{cedilha}@~{a}o a Fun@value{cedilha}@~{o}es El@'{i}pticas e Integrais
@@ -125,10 +125,10 @@ Suporte a fun@value{cedilha}@~{o}es el@'{i}pticas e integrais el@'{i}pticas foi 
 Toy.  Foi colocado sob os termos da Licen@value{cedilha}@~{a} P@'{u}blica Geral (GPL)
 que governa a distribui@value{cedilha}@~{a}o do Maxima.
 
-@node Defini@value{cedilha}@~{o}es para Fun@value{cedilha}@~{o}es El@'{i}pticas, Defini@value{cedilha}@~{o}es para Integrais El@'{i}pticas, Introdu@value{cedilha}@~{a}o a Fun@value{cedilha}@~{o}es El@'{i}pticas e Integrais, top
+@node Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Fun@value{cedilha}@~{o}es El@'{i}pticas, Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Integrais El@'{i}pticas, Introdu@value{cedilha}@~{a}o a Fun@value{cedilha}@~{o}es El@'{i}pticas e Integrais, top
 @comment  node-name,  next,  previous,  up
 
-@section Defini@value{cedilha}@~{o}es para Fun@value{cedilha}@~{o}es El@'{i}pticas
+@section Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Fun@value{cedilha}@~{o}es El@'{i}pticas
 
 @deffn {Fun@value{cedilha}@~{a}o} jacobi_sn (@var{u}, @var{m})
 A Fun@value{cedilha}@~{a}o el@'{i}ptica Jacobiana @math{sn(u,m)}.
@@ -227,10 +227,10 @@ A inversa da fun@value{cedilha}@~{a}o el@'{i}ptica Jacobiana @math{dc(u,m)}.
 @end deffn
 
 
-@node Defini@value{cedilha}@~{o}es para Integrais El@'{i}pticas, , Defini@value{cedilha}@~{o}es para Fun@value{cedilha}@~{o}es El@'{i}pticas, top
+@node Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Integrais El@'{i}pticas, , Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Fun@value{cedilha}@~{o}es El@'{i}pticas, top
 @comment  node-name,  next,  previous,  up
 
-@section Defini@value{cedilha}@~{o}es para Integrais El@'{i}pticas
+@section Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Integrais El@'{i}pticas
 
 @anchor{elliptic_f}
 @deffn {Fun@value{cedilha}@~{a}o} elliptic_f (@var{phi}, @var{m})
