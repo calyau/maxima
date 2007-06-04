@@ -39,7 +39,7 @@
 (defun polynomialp (p vars coeffp exponp)
   (or
    (mfuncall coeffp p)
-   (if (member p vars :test #'eq) t nil)
+   (if (member p vars :test #'equal) t nil)
    (and (op-equalp p 'mtimes 'mplus)
 	(every #'(lambda (s) (polynomialp s vars coeffp exponp)) (margs p)))
    (and (op-equalp p 'mexpt) (polynomialp (car (margs p)) vars coeffp exponp)
