@@ -90,6 +90,8 @@
 (setf (get '%asin 'conjugate-function) 'conjugate-asin)
 (setf (get '%acos 'conjugate-function) 'conjugate-acos)
 (setf (get '%atan 'conjugate-function) 'conjugate-atan)
+(setf (get '%atanh 'conjugate-function) 'conjugate-atanh)
+
 ;;(setf (get '$asec 'conjugate-function) 'conjugate-asec)
 ;;(setf (get '$acsc 'conjugate-function) 'conjugate-acsc)
 (setf (get '%bessel_j 'conjugate-function) 'conjugate-bessel-j)
@@ -166,6 +168,13 @@
     (setq xx (mul '$%i (car x)))
     (if (in-domain-of-asin xx) (simplify `((%atan) ,(take '($conjugate) (car x))))
       `(($conjugate simp) ((%atan) ,x)))))
+
+;; atanh and asin are entire on the same set; see A&S Fig. 4.4 and 4.7.
+
+(defun conjugate-atanh (x)
+  (setq x (car x))
+  (if (in-domain-of-asin x) (simplify `((%atanh) ,(mfuncall '$conjugate x)))
+    `(($conjugate simp) ((%atanh) ,x))))
 
 ;; Integer order Bessel functions are entire; thus they commute with the
 ;; conjugate (Schwartz refection principle).  But non-integer order Bessel
