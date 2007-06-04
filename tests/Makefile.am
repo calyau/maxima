@@ -100,6 +100,40 @@ rtest_round.mac \
 rtest_map.mac \
 rtest_sign.mac \
 README.how-to \
-testsuite.lisp
+testsuite.lisp \
+wester_problems/wester-gpl-permission-message.txt \
+wester_problems/test_algebra.mac \
+wester_problems/test_boolean_logic.mac \
+wester_problems/test_calculus.mac \
+wester_problems/test_combinatorics.mac \
+wester_problems/test_complex_domain.mac \
+wester_problems/test_definite_integrals.mac \
+wester_problems/test_equations.mac \
+wester_problems/test_indefinite_integrals.mac \
+wester_problems/test_inequalities.mac \
+wester_problems/test_limits.mac \
+wester_problems/test_math_vs_cs_local.mac \
+wester_problems/test_math_vs_cs_match.mac \
+wester_problems/test_matrix_theory.mac \
+wester_problems/test_numbers.mac \
+wester_problems/test_number_theory.mac \
+wester_problems/test_numerical_analysis.mac \
+wester_problems/test_odes.mac \
+wester_problems/test_operators.mac \
+wester_problems/test_pdes.mac \
+wester_problems/test_pdes_heat.mac \
+wester_problems/test_products.mac \
+wester_problems/test_programming.mac \
+wester_problems/test_programming_dif.mac \
+wester_problems/test_series.mac \
+wester_problems/test_set_theory.mac \
+wester_problems/test_special_functions.mac \
+wester_problems/test_statistics.mac \
+wester_problems/test_sums.mac \
+wester_problems/test_tensor_analysis.mac \
+wester_problems/test_transforms.mac \
+wester_problems/test_trigonometry.mac \
+wester_problems/test_vector_analysis.mac \
+wester_problems/test_zero_equivalence.mac
 
 EXTRA_DIST = $(genericdirDATA)
