@@ -180,20 +180,22 @@
 (defprop $equal t binary)
 (defprop $notequal t binary)
 
-;; The following definitions of ONEP and ONEP1 are bummed for speed, and should
-;; be moved to a special place for implementation dependent code.
-;; ONEP is the same as (EQUAL A 1), but does the check inline rather than
-;; calling EQUAL (uses more instructions, so this isn't done by default).  ONEP
-;; seems to be used very rarely, so it seems hardly worth the effort.  On the
-;; Lisp Machine, this is probably more efficient as simply (EQUAL A 1).
+(defun $bfloatp (x) 
+  (and (consp x)
+       (consp (car x))
+       (eq (caar x) 'bigfloat)))
 
-;; (defmacro onep (a) `(eql ,a 1))
+(defun zerop1 (x)
+  (or
+   (and (integerp x) (= 0 x))
+   (and (floatp x) (= 0.0 x))
+   (and ($bfloatp x) (= 0 (second x)))))
 
-(defmfun onep1 (a) (or (and (numberp a) (= a 1)) (equal a bigfloatone)))
-
-(defmfun zerop1 (a) (if (numberp a) (zerop a) (alike1 a bigfloatzero)))
-
-(defmfun $bfloatp (x) (and (not (atom x)) (eq (caar x) 'bigfloat)))
+(defun onep1 (x)
+  (or
+   (and (integerp x) (= 1 x))
+   (and (floatp x) (= 1.0 x))
+   (and ($bfloatp x) (zerop1 (sub x 1)))))
 
 (defmfun mnump (x)
   (or (numberp x)
