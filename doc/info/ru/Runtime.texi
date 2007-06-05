@@ -1,0 +1,287 @@
+@c Language=Russian
+@c Encoding=CP1251
+@c File=Runtime.texi 
+@c OriginalRevision=1.21
+
+@menu
+* Введение в окружение времени выполнения::  
+* Прерывания::                  
+* Функции и переменные времени выполнения::  
+@end menu
+
+
+@node Введение в окружение времени выполнения, Прерывания, Окружение времени выполнения, Окружение времени выполнения
+@section Введение в окружение времени выполнения
+@c THIS DISCUSSION OF maxima-init.mac REPLACES AN EARLIER WRITE-UP. !!!
+@c HOWEVER IT SEEMS THAT THIS TEXT REALLY WANTS TO BE UNDER A DIFFERENT HEADING. !!!
+Файл @code{maxima-init.mac} загружается автоматически при каждом запуске Maxima.
+Можно использовать @code{maxima-init.mac} для настройки своего персонального Maxima окружения.
+Файл @code{maxima-init.mac} обычно размещается в директории,
+определяемой переменной @code{maxima_userdir}, хотя может находиться и в любой другой
+директории, просматриваемой функцией @code{file_search}.
+
+Пример содержимого файла @code{maxima-init.mac}:
+
+@example
+setup_autoload ("specfun.mac", ultraspherical, assoc_legendre_p);
+showtime:all;
+@end example
+
+Здесь, @code{setup_autoload} заставляет Maxima загружать файл @code{specfun.mac},
+если функции @code{ultraspherical} или @code{assoc_legendre_p} вызываются,
+но не определены в момент вызова.  При этом нет нужды помнить 
+о необходимости загружать соответствующий файл до вызова данных функций.
+
+Команда @code{showtime: all} устанавливает значение переменной @code{showtime}.
+Файл @code{maxima-init.mac} может содержать любые присваивания и другие команды Maxima.
+
+@node Прерывания, Функции и переменные времени выполнения, Введение в окружение времени выполнения, Окружение времени выполнения
+@section Прерывания
+
+Пользователь может остановить длительное вычисление, нажав на ^C (Control-C).
+По умолчанию, текущее вычисление прекращается и выводится
+новое приглашение.  Невозможно возобновить прерванные вычисления.
+
+Если Lisp переменная @code{*debugger-hook*} установлена равной @code{nil}
+при помощи
+
+@example
+:lisp (setq *debugger-hook* nil)
+@end example
+
+@noindent
+то после получения ^C, Maxima запускает Lisp отладчик,
+и пользователь может исследовать Lisp окружение.
+Остановленное вычисление может быть продолжено вводом
+команды @code{continue} в Lisp отладчике .
+Способы возврата в Maxima из Lisp отладчика, другие кроме
+продолжение вычисления до его завершения, различны для разных
+версий Lisp.
+
+В системах типа Unix нажатие ^Z (Сontrol-Z) вызывает полную приостановку 
+работы Maxima с возвращением управления в командную строку.
+Команда @code{fg} вызывает возобновление работы остановленной Maxima
+с точки, на которой она была остановлена.
+
+@c end concepts Runtime Environment
+@node Функции и переменные времени выполнения,  , Прерывания, Окружение времени выполнения
+@section Функции и переменные времени выполнения
+
+@c NEEDS EXPANSION AND CLARIFICATION
+@defvr {Декларация} feature
+Maxima понимает два различных типа свойств: системные свойства и свойства,
+относящиеся к математическим выражениям.
+См. @code{status} по поводу системных свойств.
+См. @code{features} и @code{featurep} по поводу математических свойств.
+@c PROPERTIES, DECLARATIONS FALL UNDER THIS HEADING AS WELL
+@c OTHER STUFF ??
+
+@code{feature} само по себе не является именем функции или переменной.
+
+@end defvr
+
+@c NEEDS CLARIFICATION, ESPECIALLY WRT THE EXTENT OF THE FEATURE SYSTEM
+@c (I.E. WHAT KINDS OF THINGS ARE FEATURES ACCORDING TO featurep)
+@deffn {Функция} featurep (@var{a}, @var{f})
+Пытается определить имеет ли объект @var{a} свойство @var{f}, используя факты,
+находящиеся в текущей базе данных.  Если да, то возвращается @code{true}, 
+иначе возвращается @code{false}.
+
+Отметим, что @code{featurep} возвращает @code{false} если даже ни @var{f},
+ни отрицание @var{f} не могут быть установлены.
+
+Функция @code{featurep} вычисляет свои аргументы.
+
+См. также @code{declare} и @code{features}.
+
+@example
+(%i1) declare (j, even)$
+(%i2) featurep (j, integer);
+(%o2)                           true
+@end example
+
+@end deffn
+
+@defvr {Системная переменная} maxima_tempdir
+
+Переменная @code{maxima_tempdir} обозначает директорию, в которой Maxima создает некоторые
+временные файлы.  Например, временные файлы с данными для графиков 
+создаются в @code{maxima_tempdir}.
+
+Начальное значение @code{maxima_tempdir} является домашней директорией пользователя,
+если Maxima может ее определить. В противном случае Maxima делает догадку о расположении
+подходящей директории.
+
+Переменной @code{maxima_tempdir} можно присвоить строку с именем директории.
+
+@end defvr
+
+@defvr {Системная переменная} maxima_userdir
+
+Переменная @code{maxima_userdir} обозначает директорию, в которой Maxima ищет Maxima и Lisp файлы.
+(Maxima ищет файлы и в некоторых других директориях.  Полный список определяется переменными @code{file_search_maxima} 
+и @code{file_search_lisp}.)
+
+Начальное значение @code{maxima_userdir} является поддиректорией домашней директории 
+пользователя, если Maxima может определить последнюю. В противном случае Maxima 
+делает догадку о расположении подходящей директории.
+
+Переменной @code{maxima_userdir} можно присвоить строку с именем директории.
+Однако, присваивание нового значения @code{maxima_userdir} не меняет автоматически 
+@code{file_search_maxima} и @code{file_search_lisp}.
+Значение этих переменных нужно менять отдельно.
+
+@end defvr
+
+@deffn {Функция} room ()
+@deffnx {Функция} room (true)
+@deffnx {Функция} room (false)
+Выводит информацию о состоянии использования памяти и стека в Maxima. 
+Команда @code{room} вызывает одноименную Lisp функцию.
+
+@itemize @bullet
+@item
+@code{room ()} выводит описание среднего уровня детализации.
+@item
+@code{room (true)} выводит подробное описание.
+@item
+@code{room (false)} выводит краткое описание.
+@end itemize
+
+@end deffn
+
+@deffn {Функция} status (feature)
+@deffnx {Функция} status (feature, @var{putative_feature})
+@deffnx {Функция} status (status)
+Возвращает информацию о наличии или отсутствии определенных 
+системно-зависимых свойств.
+
+@itemize @bullet
+@item
+@code{status (feature)} возвращает список системных свойств.
+Что включает версию Lisp, тип операционной системы и т.д.
+Этот список может варьироваться от одной версии Lisp к другой.
+@item @code{status (feature, @var{putative_feature})} возвращает @code{true}, 
+если @var{putative_feature} присутствует в списке, возвращаемом @code{status (feature)},
+и @code{false} в противном случае.
+Функция @code{status} не вычисляет свои аргументы @var{putative_feature}.
+Оператор кавычка-кавычка @code{'@w{}'} может быть использован для их вычисления.
+Свойства, содержащие в именах специальные символы, такие как тире, могут задаваться
+в форме строки. Например,@code{status (feature, "ansi-cl")}.
+@item
+@code{status (status)} возвращает двухэлементный список @code{[feature, status]}.
+@code{feature} и @code{status} являются двумя аргументами, принимаемыми функцией @code{status}.
+Не ясно, имеет ли этот список какое-либо иное значение.
+@end itemize
+
+Переменная @code{features} содержит список свойств, применимых к математическим
+выражениям. См. @code{features} и @code{featurep} по поводу дополнительной информации.
+
+@end deffn
+
+@deffn {Функция} time (%o1, %o2, %o3, ...)
+Возвращает список времен, в секундах, вычисления результирующих выражений @code{%o1}, @code{%o2}, @code{%o3}, ... . 
+Время является внутренним временем вычисления Maxima, а не временем, прошедшим по реальным часам. 
+Функция @code{time} применима только к меткам результирующих выражений, для других переменных
+@code{time} возвращает @code{unknown}.
+
+Установка @code{showtime: true} заставляет Maxima печатать внутренее время вычисления и время по реальным
+часам для каждого результата.
+
+@end deffn
+
+@deffn {Функция} timedate ()
+Возвращает строку, содержащую текущее время и дату.
+Строка имеет формат @code{HH:MM:SS Day, mm/dd/yyyy (GMT-n)}, где поля есть
+часы, минуты, секунды, день недели, месяц, день месяца, год и сдвиг часового пояса от GMT
+(Стандартное время по Гринвичу).
+
+Возвращаемое значение является Lisp строкой.
+
+Пример:
+
+@c ===beg===
+@c d: timedate ();
+@c print ("timedate reports current time", d)$
+@c ===end===
+@example
+(%i1) d: timedate ();
+(%o1) 08:05:09 Wed, 11/02/2005 (GMT-7)
+(%i2) print ("timedate reports current time", d)$
+timedate reports current time 08:05:09 Wed, 11/02/2005 (GMT-7)
+@end example
+
+@end deffn
+
+@deffn {Функция} absolute_real_time ()
+
+Возвращает число секунд, истекших с полуночи 1 января 1900 года по Универсальному Координированному Времени (UTC).
+Значение является целым числом.
+
+См. также @code{elapsed_real_time} и @code{elapsed_run_time}.
+
+Пример:
+
+@c ===beg===
+@c absolute_real_time ();
+@c 1900 + absolute_real_time () / (365.25 * 24 * 3600);
+@c ===end===
+@example
+(%i1) absolute_real_time ();
+(%o1)                      3385045277
+(%i2) 1900 + absolute_real_time () / (365.25 * 24 * 3600);
+(%o2)                   2007.265612087104
+@end example
+
+@end deffn
+
+@deffn {Функция} elapsed_real_time ()
+
+Возвращает число секунд (включая доли секунды), истекших с последнего запуска или перезапуска Maxima
+по реальным часам.
+Значение является числом с плавающей точкой.
+
+См. также @code{absolute_real_time} и @code{elapsed_run_time}.
+
+Пример:
+
+@c ===beg===
+@c elapsed_real_time ();
+@c expand ((a + b)^500)$
+@c elapsed_real_time ();
+@c ===end===
+@example
+(%i1) elapsed_real_time ();
+(%o1)                       2.559324
+(%i2) expand ((a + b)^500)$
+(%i3) elapsed_real_time ();
+(%o3)                       7.552087
+@end example
+
+@end deffn
+
+@deffn {Функция} elapsed_run_time ()
+
+Возвращает число секунд (включая доли секунды), истекших с последнего запуска или перезапуска Maxima
+по внутренним часам Maxima.
+Значение является числом с плавающей точкой.
+
+См. также @code{absolute_real_time} и @code{elapsed_real_time}.
+
+Пример:
+
+@c ===beg===
+@c elapsed_run_time ();
+@c expand ((a + b)^500)$
+@c elapsed_run_time ();
+@c ===end===
+@example
+(%i1) elapsed_run_time ();
+(%o1)                         0.04
+(%i2) expand ((a + b)^500)$
+(%i3) elapsed_run_time ();
+(%o3)                         1.26
+@end example
+
+@end deffn
+

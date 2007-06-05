@@ -53,7 +53,7 @@ Maxima происходит от системы аналитических вычислений Macsyma,
 разрабатывавшейся в MIT в период 1968 по 1982 в рамках проекта MAC.
 В 1982 году MIT передала копию исходного кода Macsyma Министерству
 энергетики США (Department of Energy). Данная версия известна как
-DOE Macsyma.  Копияия DOE Macsyma поддерживалась профессором Вильямом
+DOE Macsyma.  Копия DOE Macsyma поддерживалась профессором Вильямом
 Шелтером (William F. Schelter) из Техасского Университета с 1982 года
 вплоть до его смерти в 2001 году.  В 1998 году Шелтер получил
 разрешение выпустить исходный код DOE Macsyma под публичной 
@@ -76,7 +76,7 @@ Maxima происходит от системы аналитических вычислений Macsyma,
 разрабатывавшейся в MIT в период 1968 по 1982 в рамках проекта MAC.
 В 1982 году MIT передала копию исходного кода Macsyma Министерству
 энергетики США (Department of Energy). Данная версия известна как
-DOE Macsyma.  Копияия DOE Macsyma поддерживалась профессором Вильямом
+DOE Macsyma.  Копия DOE Macsyma поддерживалась профессором Вильямом
 Шелтером (William F. Schelter) из Техасского Университета с 1982 года
 вплоть до его смерти в 2001 году.  В 1998 году Шелтер получил
 разрешение выпустить исходный код DOE Macsyma под публичной 
@@ -89,95 +89,95 @@ DOE Macsyma.  Копияия DOE Macsyma поддерживалась профессором Вильямом
 @menu
 Структура Maxima
 
-* Введение в Maxima::           Пример сессии Maxima.
-* Работа с ошибками::           Обнаружение ошибок и, как сообщить об ошибках в Maxima.
-* Справка::                     Справочная система в сессии Maxima.
-* Командная строка::            Синтаксис командной строки Maxima.
-* Operators::                   Operators used in Maxima expressions.
-* Expressions::                 Expressions in Maxima.
-* Simplification::              Simplifying expressions.
-* Plotting::                    2D and 3D graphical output.
-* Input and Output::            File input and output.
-* Floating Point::              Low level numerical routines.
-* Контексты::                   Наборы известных фактов.
+* Введение в Maxima::             Пример сессии Maxima.
+* Работа с ошибками::             Обнаружение ошибок и, как сообщить об ошибках в Maxima.
+* Справка::                       Справочная система в сессии Maxima.
+* Командная строка::              Синтаксис командной строки Maxima.
+* Operators::                     Operators used in Maxima expressions.
+* Expressions::                   Expressions in Maxima.
+* Simplification::                Simplifying expressions.
+* Plotting::                      2D and 3D graphical output.
+* Input and Output::              File input and output.
+* Floating Point::                Low level numerical routines.
+* Контексты::                     Наборы известных фактов.
 
 Поддержка специальных разделов математики
 
-* Polynomials::                 Standard forms for polynomials, and
-                                functions operating on them.
-* Константы::                   Числовые и логические константы.
-* Logarithms::                  Manipulation of expressions involving
-                                logarithms.
-* Trigonometric::               Manipulating expressions with trig and
-                                inverse trig functions.
-* Special Functions::           Special functions
-* Elliptic Functions::          Elliptic Functions and Integrals
-* Пределы::                     Вычисление пределов выражений.
-* Differentiation::             Differential calculus.
-* Integration::                 Integral calculus.
-* Equations::                   Defining and solving equations.
-* Differential Equations::      Defining and solving differential equations.
-* Numerical::                   Numerical integration, Fourier
-                                transforms, etc.
-* Массивы::                     Создание массивов и работа с ними.
-* Matrices and Linear Algebra:: Matrix operations.
+* Polynomials::                   Standard forms for polynomials, and
+                                  functions operating on them.
+* Константы::                     Числовые и логические константы.
+* Logarithms::                    Manipulation of expressions involving
+                                    logarithms.
+* Trigonometric::                 Manipulating expressions with trig and
+                                  inverse trig functions.
+* Special Functions::             Special functions
+* Elliptic Functions::            Elliptic Functions and Integrals
+* Пределы::                       Вычисление пределов выражений.
+* Differentiation::               Differential calculus.
+* Integration::                   Integral calculus.
+* Equations::                     Defining and solving equations.
+* Differential Equations::        Defining and solving differential equations.
+* Numerical::                     Numerical integration, Fourier
+                                  transforms, etc.
+* Массивы::                       Создание массивов и работа с ними.
+* Matrices and Linear Algebra::   Matrix operations.
 * Пакет affine::                      
-* Пакет itensor::               Индексные тензорные вычисления.
-* Пакет ctensor::               Компонентные тензорные вычисления.
-* Пакет atensor::               Вычисления с тензорными алгебрами.
-* Series::                      Taylor and power series.
-* Number Theory::               Number theory.
+* Пакет itensor::                 Индексные тензорные вычисления.
+* Пакет ctensor::                 Компонентные тензорные вычисления.
+* Пакет atensor::                 Вычисления с тензорными алгебрами.
+* Series::                        Taylor and power series.
+* Number Theory::                 Number theory.
 * Symmetries::                  
-* Groups::                      Abstract algebra.
+* Groups::                        Abstract algebra.
 
 Продвинутые возможности и программирование
 
-* Runtime Environment::         Customization of the Maxima environment.
-* Вспомогательные опции::       Опции, имеющие глобальное влияние на работу Maxima.
-* Rules and Patterns::          User defined pattern matching and
-                                simplification rules.
-* Списки::                      Работа со списками.
-* Sets::                        Manipulation of sets.
-* Определение функций::         Определение функций.
-* Program Flow::                Defining Maxima programs.
-* Отладка::                     Отладка Maxima программ.
+* Окружение времени выполнения::  Настройка окружения времени выполнения Maxima.
+* Вспомогательные опции::         Опции, имеющие глобальное влияние на работу Maxima.
+* Rules and Patterns::            User defined pattern matching and
+                                  simplification rules.
+* Списки::                        Работа со списками.
+* Множества::                     Работа с множествами.
+* Определение функций::           Определение функций.
+* Программы Maxima::              Написание программ на языке Maxima.
+* Отладка::                       Отладка Maxima программ.
 
 Дополнительные пакеты
 
-* augmented_lagrangian::        augmented_lagrangian package.
-* bode::                        Bode gain and phase plots.
-* contrib_ode::                 Additional routines for ODEs
-* descriptive::                 Descriptive statistics.
-* diag::                        Jordan matrices.
-* distrib::                     Probability distributions.
-* draw::                        A Maxima-Gnuplot interface.
-* dynamics::                    Graphics for dynamical systems and fractals.
-* eval_string::                 Maxima expressions as strings.
-* f90::                         Maxima to fortran translator.
-* ggf::                         Generating function of sequences.
-* grobner::                     Functions for working with Groebner bases.
-* impdiff::                     Implicit derivatives.
-* implicit_plot::               Implicit plots package.
-* interpol::                    Interpolation package.
-* lbfgs::                       L-BFGS unconstrained minimization package.
-* lindstedt::                   Lindstedt package.
-* linearalgebra::               Functions for linear algebra.
-* lsquares::                    Least squares.
-* makeOrders::                  Polynomial utility.
-* mnewton::                     Newton's method.
-* numericalio::                 Reading and writing files.
-* opsubst::                     Substitutions utility.
-* orthopoly::                   Orthogonal polynomials.
-* plotdf::                      Direction fields plots.
-* romberg::                     Romberg method for numerical integration.
-* simplex::                     Linear programming.
-* simplification::              Simplification rules and functions.
-* solve_rec::                   Linear recurrences.
-* stats::                       Statistical inference package.
-* stirling::                    Stirling formula.
-* stringproc::                  String processing.
-* unit::                        Units and dimensions package.
-* zeilberger::                  Functions for hypergeometric summation.
+* augmented_lagrangian::          augmented_lagrangian package.
+* bode::                          Bode gain and phase plots.
+* contrib_ode::                   Additional routines for ODEs
+* descriptive::                   Descriptive statistics.
+* diag::                          Jordan matrices.
+* distrib::                       Probability distributions.
+* draw::                          A Maxima-Gnuplot interface.
+* dynamics::                      Graphics for dynamical systems and fractals.
+* eval_string::                   Maxima expressions as strings.
+* f90::                           Maxima to fortran translator.
+* ggf::                           Generating function of sequences.
+* grobner::                       Functions for working with Groebner bases.
+* impdiff::                       Implicit derivatives.
+* implicit_plot::                 Implicit plots package.
+* interpol::                      Interpolation package.
+* lbfgs::                         L-BFGS unconstrained minimization package.
+* lindstedt::                     Lindstedt package.
+* linearalgebra::                 Functions for linear algebra.
+* lsquares::                      Least squares.
+* makeOrders::                    Polynomial utility.
+* mnewton::                       Newton's method.
+* numericalio::                   Reading and writing files.
+* opsubst::                       Substitutions utility.
+* orthopoly::                     Orthogonal polynomials.
+* plotdf::                        Direction fields plots.
+* romberg::                       Romberg method for numerical integration.
+* simplex::                       Linear programming.
+* simplification::                Simplification rules and functions.
+* solve_rec::                     Linear recurrences.
+* stats::                         Statistical inference package.
+* stirling::                      Stirling formula.
+* stringproc::                    String processing.
+* unit::                          Units and dimensions package.
+* zeilberger::                    Functions for hypergeometric summation.
 
 
 Индекс
@@ -350,11 +350,11 @@ Groups
 
 * Definitions for Groups::      
 
-Runtime Environment
+Окружение времени выполнения
 
-* Introduction for Runtime Environment::  
-* Interrupts::                  
-* Definitions for Runtime Environment::  
+* Введение в окружение времени выполнения::  
+* Прерывания::                  
+* Функции и переменные времени выполнения::  
 
 Вспомогательные опции
 
@@ -372,10 +372,10 @@ Rules and Patterns
 * Введение в работу со спискми::       
 * Функции и переменные для работы со списками::       
 
-Sets
+Множества
 
-* Introduction to Sets::       
-* Definitions for Sets::       
+* Введение в работу с множествами::
+* Функции и переменные для работы с множествами::
 
 Определение функций
 
@@ -384,10 +384,10 @@ Sets
 * Макросы::                      
 * Функции и переменные для определения функций::  
 
-Program Flow
+Программы Maxima
 
-* Introduction to Program Flow::  
-* Definitions for Program Flow::  
+* Введение в программирование на Maxima::  
+* Функции и переменные для программирования на Maxima::  
 
 Отладка
 
