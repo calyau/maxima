@@ -1037,8 +1037,8 @@ relational knowledge is contained in the default context GLOBAL."
      (return sign)))
 
 (defun numer (x)
-  (let ($ratsimpexpons)
-    (car (errset (meval `(($ev) ,x $numer $%enumer)) nil))))
+  (let (($numer t)) ;currently, no effect on $float, but proposed to
+    ($float x)))
 
 (defun constp (x)
   (cond ((floatp x) 'float)
@@ -1141,15 +1141,29 @@ relational knowledge is contained in the default context GLOBAL."
   (when (or (and (numberp xrhs) (minusp xrhs)
 		 (not (atom xlhs)) (eq (sign* xlhs) '$pos))
 					; e.g. sign(a^3+%pi-1) where a>0
-	    (and (mexptp xlhs)		; e.g. sign(%e^x-1) where x>0
-		 (member (sign* (sub 1 xrhs)) '($pos $zero $pz) :test #'eq)
+	    (and (mexptp xlhs)		
+		 ;; e.g. sign(%e^x-1) where x>0
 		 (eq (sign* (caddr xlhs)) '$pos)
-		 (eq (sign* (sub (cadr xlhs) 1)) '$pos))
-	    (and (mexptp xlhs) (mexptp xrhs) ; e.g. sign(2^x-2^y) where x>y
+		 (or (and
+		      ;; Q^Rpos - S, S<=1, Q>1
+		      (memq (sign* (sub 1 xrhs)) '($pos $zero $pz))
+		      (eq (sign* (sub (cadr xlhs) 1)) '$pos))
+		     (and
+		      ;; Qpos ^ Rpos - Spos => Qpos - Spos^(1/Rpos)
+		      (eq (sign* (cadr xlhs)) '$pos)
+		      (eq (sign* xrhs) '$pos)
+		      (eq (sign* (sub (cadr xlhs)
+				      (power xrhs (div 1 (caddr xlhs)))))
+			  '$pos))))
+	    (and (mexptp xlhs) (mexptp xrhs)
+		 ;; Q^R - Q^T, Q>1, (R-T) > 0
+		 ;; e.g. sign(2^x-2^y) where x>y
 		 (alike1 (cadr xlhs) (cadr xrhs))
 		 (eq (sign* (sub (cadr xlhs) 1)) '$pos)
 		 (eq (sign* (sub (caddr xlhs) (caddr xrhs))) '$pos)))
-    (setq sign '$pos minus nil odds nil evens nil) t))
+    (setq sign '$pos minus nil odds nil evens nil)
+    t)
+  )
 
 (defun signsum (x)
   (do ((l (cdr x) (cdr l)) (s '$zero))
