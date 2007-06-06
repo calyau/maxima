@@ -89,7 +89,7 @@
      ;; collect the file-name, if any, and open a port if needed
      (setq texport (cond((null filename) *standard-output* ) ; t= output to terminal
 			(t
-			 (open (string (print-invert-case (stripdollar filename)))
+			 (open (namestring (maxima-string (meval filename)))
 			       :direction :output
 			       :if-exists :append
 			       :if-does-not-exist :create))))

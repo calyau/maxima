@@ -192,14 +192,6 @@
 
 (declaim (special *mread-prompt*))
 
-(defmfun mfilename-onlyp (x)
-  "Returns T iff the argument could only be reasonably taken as a filename."
-  (cond ((macsyma-namestringp x) t)
-	(($listp x) t)
-	((symbolp x)
-	 (char= #\& (char (symbol-name x) 0)))
-	(t nil)))
-
 ;;;; batch & demo search hacks
 
 (defun $batch (filename &optional (demo :batch)

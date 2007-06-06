@@ -26,9 +26,6 @@
       indlist '(evfun evflag bindtest nonarray sp2 sp2subs opers
 		 special autoload assign mode))
 
-(defmspec $unstore (form)
-  (i-$unstore (cdr form)))
-
 (defmfun i-$unstore (x)
   (do ((x x (cdr x))
        (list (ncons '(mlist simp)))
@@ -82,13 +79,10 @@
 (defmfun i-$store (x)
   (dsksetup x t nil '$store))
 
-(defmspec $fassave (form)
-  (dsksetup (cdr form) nil t '$fassave))
-
 (defvar *macsyma-extend-types-saved* nil)
 
 (defun dsksetup (x storefl fasdumpfl fn)
-  (let (prinlength prinlevel file (fname (nsubstring (print-invert-case (car x)) 1))
+  (let (prinlength prinlevel file (fname (namestring (maxima-string (meval (car x)))))
 		   *print-gensym* list fasdeqlist fasdnoneqlist maxima-error)
     (setq savefile
 	  (if (or (eq $file_output_append '$true) (eq $file_output_append t))
@@ -392,6 +386,3 @@
   (let ((dsksavep t))
     (if $dskall (i-$store '($labels $values $functions $macros $arrays))
 	(i-$store '($labels)))))
-
-(defmspec $restore (file)
-  (meval `(($load) ,(cadr file))))

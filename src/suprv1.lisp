@@ -236,7 +236,7 @@
   ($load (to-macsyma-namestring file)))
 
 (defmspec $loadfile (form)
-  (loadfile (filestrip (cdr form)) nil
+  (loadfile (namestring (maxima-string (meval (cadr form)))) nil
 	    (not (member $loadprint '(nil $autoload) :test #'equal))))
 
 
@@ -876,7 +876,7 @@
 (defmspec $stringout (x)
   (setq x (cdr x))
   (let*
-    ((file ($filename_merge (car x)))
+    ((file (namestring (maxima-string (meval (car x)))))
      (filespec (if (or (eq $file_output_append '$true) (eq $file_output_append t))
 	`(savefile ,file :direction :output :if-exists :append :if-does-not-exist :create)
 	`(savefile ,file :direction :output :if-exists :supersede :if-does-not-exist :create))))

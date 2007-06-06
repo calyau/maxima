@@ -61,12 +61,6 @@
       $tr_numer
       $define_variable))
 
-(defmacro compfile-outputname-temp ()
-  '`,(pathname "_cmf_"))
-
-(defmacro compfile-outputname ()
-  '`,(pathname (maybe-invert-string-case (symbol-name (stripdollar $tr_output_file_default)))))
-
 (defmacro trlisp-inputname-d1 () ;; so hacks on DEFAULTF will not
   '`,(pathname "")) ;; stray the target.
 
@@ -93,28 +87,19 @@
 
 (defvar declares nil)
 
-(defun rename-tf (newname)
-  (let ((in-file (truename transl-file)))
-    (close transl-file)
-    (rename-file in-file (maxima-string newname))))
-
 (defmspec $compfile (forms)
-  (let ((newname (second forms)))
     (setq forms (cdr forms))
     (bind-transl-state
      (setq $transcompile t
 	   *in-compfile* t)
-     (let ((out-file-name (cond ((mfilename-onlyp (car forms))
-				 ($filename_merge (pop forms)))
-				(t "")))
-	   (t-error nil)
-	   (*translation-msgs-files* nil))
-       (setq out-file-name (mergef out-file-name (compfile-outputname)))
+     (let
+       ((out-file-name (namestring (maxima-string (meval (car forms)))))
+        (t-error nil)
+        (*translation-msgs-files* nil))
+       (pop forms)
        (unwind-protect
 	    (progn
-	      (setq transl-file (open-out-dsk (mergef (compfile-outputname-temp)
-						      out-file-name)))
-
+	      (setq transl-file (open-out-dsk out-file-name))
 	      (cond ((or (member '$all forms :test #'eq)
 			 (member '$functions forms :test #'eq))
 		     (setq forms (mapcar #'caar (cdr $functions)))))
@@ -137,11 +122,10 @@
 			      (when $compgrind
 				(mformat transl-file "~2%;; Function ~:@M~%" item))
 			      (print* t-item))))))
-	      (setq out-file-name (rename-tf newname))
-	      (to-macsyma-namestring out-file-name))
+          (to-macsyma-namestring out-file-name))
 	 ;; unwind-protected
 	 (if transl-file (close transl-file))
-	 (if t-error (delete-file transl-file)))))))
+	 (if t-error (delete-file transl-file))))))
 
 (defun compile-function (f)
   (mformat  *translation-msgs-files* "~%Translating ~:@M" f)

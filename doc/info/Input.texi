@@ -1132,10 +1132,6 @@ the file extension and as much of the path as needed to find the file.
 @code{loadfile} can process files created by @code{save}, @code{translate_file}, and @code{compile_file}.
 The user may find it more convenient to use @code{load} instead of @code{loadfile}.
 
-@code{loadfile} quotes its argument, so @code{filename} must be a literal string,
-not a string variable.
-The quote-quote operator @code{'@w{}'} defeats quotation.
-
 @end deffn
 
 @c loadprint DOESN'T EXACTLY WORK LIKE THIS, BUT IT HARDLY SEEMS WORTH FIXING
@@ -1507,21 +1503,8 @@ The saved items include system variables,
 such as @code{file_search_maxima} or @code{showtime}, if they have been assigned new values by the user;
 see @code{myoptions}.
 
-@code{save} quotes its arguments. 
-@var{filename} must be a string, not a string variable.
-The first and last labels to save, if specified, must be integers.
-The quote-quote operator @code{'@w{}'} evaluates a string variable to its string value,
-e.g., @code{s: "foo.1"$ save (''s, all)$},
-and integer variables to their integer values, e.g., @code{m: 5$ n: 12$ save ("foo.1", [''m, ''n])$}.
+@code{save} evaluates @var{filename} and quotes all other arguments.
 
-@c ANY USE FOR THE FOLLOWING ???
-@c The following device constructs a list of variables to save and saves them.
-@c 
-@c @example
-@c s: "foo.1"$
-@c l: ['aa, 'bb, 'cc, 'dd]$
-@c apply (save, append ([s], l))$
-@c @end example
 @end deffn
 
 @c NEEDS MORE WORK !!!
@@ -1672,13 +1655,11 @@ The TeX equation label is the same as the Maxima label.
 
 @code{tex (@var{expr}, @var{filename})} appends a TeX representation of @var{expr}
 to the file @var{filename}.
-@code{tex} quotes the @var{filename} argument; quote-quote @code{''} forces evaluation of the argument.
 
 @code{tex (@var{label}, @var{filename})} appends a TeX representation of the
 expression named by @var{label}, with an equation label, to the file @var{filename}.
-@code{tex} quotes the @var{filename} argument; quote-quote @code{''} forces evaluation of the argument.
 
-@code{tex} evaluates its argument after testing it to see if it is a label.
+@code{tex} evaluates its first argument after testing it to see if it is a label.
 Quote-quote @code{''} forces evaluation of the argument, thereby defeating the test
 and preventing the label.
 
