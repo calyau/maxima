@@ -1,19 +1,19 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
-@c /Program.texi/1.24/Sun Apr 22 14:31:48 2007/-ko/
+@c /Program.texi/1.25/Sat Jun  2 00:13:04 2007/-ko/
 @menu
 * Introdu@value{cedilha}@~{a}o a Fluxo de Programa::  
-* Defini@value{cedilha}@~{o}es para Fluxo de Programa::  
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Fluxo de Programa::  
 @end menu
 
-@node Introdu@value{cedilha}@~{a}o a Fluxo de Programa, Defini@value{cedilha}@~{o}es para Fluxo de Programa, Fluxo de Programa, Fluxo de Programa
+@node Introdu@value{cedilha}@~{a}o a Fluxo de Programa, Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Fluxo de Programa, Fluxo de Programa, Fluxo de Programa
 @section Introdu@value{cedilha}@~{a}o a Fluxo de Programa
 
 Maxima fornece um @code{do} para ciclos iterativos, tamb@'{e}m contru@value{cedilha}@~{o}es mais
 primitivas tais como @code{go}.
 
 @c end concepts Fluxo de Programa
-@node Defini@value{cedilha}@~{o}es para Fluxo de Programa,  , Introdu@value{cedilha}@~{a}o a Fluxo de Programa, Fluxo de Programa
-@section Defini@value{cedilha}@~{o}es para Fluxo de Programa
+@node Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Fluxo de Programa,  , Introdu@value{cedilha}@~{a}o a Fluxo de Programa, Fluxo de Programa
+@section Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Fluxo de Programa
 
 @deffn {Fun@value{cedilha}@~{a}o} backtrace ()
 @deffnx {Fun@value{cedilha}@~{a}o} backtrace (@var{n})

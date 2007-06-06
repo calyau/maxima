@@ -1,11 +1,11 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
-@c /zeilberger.texi/1.5/Thu Dec 28 05:44:18 2006//
+@c /zeilberger.texi/1.6/Sat Jun  2 00:13:35 2007//
 @menu
 * Introdu@value{cedilha}@~{a}o a zeilberger::
-* Defini@value{cedilha}@~{o}es para zeilberger::
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para zeilberger::
 @end menu
 
-@node Introdu@value{cedilha}@~{a}o a zeilberger, Defini@value{cedilha}@~{o}es para zeilberger, zeilberger, zeilberger
+@node Introdu@value{cedilha}@~{a}o a zeilberger, Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para zeilberger, zeilberger, zeilberger
 @section Introdu@value{cedilha}@~{a}o a zeilberger
 
 @code{zeilberger} @'{e} uma implementa@value{cedilha}@~{a}o do algor@'{i}tmo de Zeilberger
@@ -62,8 +62,8 @@ Por exemplo:
 @code{ZeilbergerExtra}, @code{AntiDifferenceSummary}.
 
 
-@node Defini@value{cedilha}@~{o}es para zeilberger, , Introdu@value{cedilha}@~{a}o a zeilberger, zeilberger
-@section Defini@value{cedilha}@~{o}es para zeilberger
+@node Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para zeilberger, , Introdu@value{cedilha}@~{a}o a zeilberger, zeilberger
+@section Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para zeilberger
 
 @deffn {Fun@value{cedilha}@~{a}o} AntiDifference (@var{F_k}, @var{k})
 

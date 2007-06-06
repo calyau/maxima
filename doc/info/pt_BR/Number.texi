@@ -1,12 +1,12 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
-@c /Number.texi/1.22/Sat Nov 25 04:02:55 2006/-ko/
+@c /Number.texi/1.23/Sat Jun  2 00:12:58 2007/-ko/
 @c end concepts Number Theory
 @menu
-* Defini@value{cedilha}@~{o}es para Teoria dos N@'{u}meros::  
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Teoria dos N@'{u}meros::  
 @end menu
 
-@node Defini@value{cedilha}@~{o}es para Teoria dos N@'{u}meros,  , Teoria dos N@'{u}meros, Teoria dos N@'{u}meros
-@section Defini@value{cedilha}@~{o}es para Teoria dos N@'{u}meros
+@node Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Teoria dos N@'{u}meros,  , Teoria dos N@'{u}meros, Teoria dos N@'{u}meros
+@section Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Teoria dos N@'{u}meros
 
 @deffn {Fun@value{cedilha}@~{a}o} bern (@var{n})
 Retorna o @var{n}'@'{e}simo n@'{u}mero de Bernoulli para o inteiro @var{n}.

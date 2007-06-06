@@ -1,9 +1,9 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
-@c /Input.texi/1.54/Thu Mar  8 03:54:16 2007/-ko/
+@c /Input.texi/1.55/Sat Jun  2 00:12:49 2007/-ko/
 @menu
 * Coment@'{a}rios::
 * Arquivos::                       
-* Defini@value{cedilha}@~{o}es para Entrada e Sa@'{i}da::  
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Entrada e Sa@'{i}da::  
 @end menu
 
 @node Coment@'{a}rios, Arquivos, Entrada e Sa@'{i}da, Entrada e Sa@'{i}da
@@ -46,7 +46,7 @@ Exemplos:
 @end example
 
 
-@node Arquivos, Defini@value{cedilha}@~{o}es para Entrada e Sa@'{i}da, Coment@'{a}rios, Entrada e Sa@'{i}da
+@node Arquivos, Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Entrada e Sa@'{i}da, Coment@'{a}rios, Entrada e Sa@'{i}da
 @section Arquivos
 Um arquivo @'{e} simplesmente uma @'{a}rea sobre um dispositivo particular de armazenagem que cont@'{e}m dados ou texto.
 Arquivos em disco s@~{a}o figurativamente agrupados dentro de "diret@'{o}rios".
@@ -63,8 +63,8 @@ Comandos que lidam com arquivos s@~{a}o:
 e
 @code{appendfile}.
 
-@node Defini@value{cedilha}@~{o}es para Entrada e Sa@'{i}da,  , Arquivos, Entrada e Sa@'{i}da
-@section Defini@value{cedilha}@~{o}es para Entrada e Sa@'{i}da de Dados
+@node Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Entrada e Sa@'{i}da,  , Arquivos, Entrada e Sa@'{i}da
+@section Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Entrada e Sa@'{i}da de Dados
 @defvr {Vari@'{a}vel de sistema} __
 @ifinfo
 @vrindex Express@~{a}o de entrada atual

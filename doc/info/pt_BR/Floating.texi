@@ -1,13 +1,13 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
-@c /Floating.texi/1.19/Thu Nov  2 05:46:57 2006/-ko/
+@c /Floating.texi/1.20/Sat Jun  2 00:12:44 2007/-ko/
 @c ITEMS IN THIS FILE ARE IN NEED OF EXPANSION, CLARIFICATION, AND EXAMPLES
 
 @menu
-* Defini@value{cedilha}@~{o}es para ponto Flutuante::  
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para ponto Flutuante::  
 @end menu
 
-@node Defini@value{cedilha}@~{o}es para ponto Flutuante,  , Ponto Flutuante, Ponto Flutuante
-@section Defini@value{cedilha}@~{o}es para ponto Flutuante
+@node Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para ponto Flutuante,  , Ponto Flutuante, Ponto Flutuante
+@section Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para ponto Flutuante
 
 @c FOLLOWING FUNCTIONS IN bffac.mac ARE NOT DESCRIBED IN .texi FILES: !!!
 @c obfac, azetb, vonschtoonk, divrlst, obzeta, bfhzeta, bfpsi0 !!!

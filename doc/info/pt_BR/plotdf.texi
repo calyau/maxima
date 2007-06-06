@@ -1,11 +1,11 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
-@c /plotdf.texi/1.6/Tue Dec 26 07:17:12 2006//
+@c /plotdf.texi/1.7/Sat Jun  2 00:13:30 2007//
 @menu
 * Introdu@value{cedilha}@~{a}o a plotdf::
-* Defini@value{cedilha}@~{o}es para plotdf::
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para plotdf::
 @end menu
 
-@node Introdu@value{cedilha}@~{a}o a plotdf, Defini@value{cedilha}@~{o}es para plotdf, plotdf, plotdf
+@node Introdu@value{cedilha}@~{a}o a plotdf, Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para plotdf, plotdf, plotdf
 @section Introdu@value{cedilha}@~{a}o a plotdf
 
 A fun@value{cedilha}@~{a}o @code{plotdf} cria um gr@'{a}fico do campo de dire@value{cedilha}@~{a}o de uma
@@ -54,8 +54,8 @@ Se somente uma EDO for fornecida, @code{plotdf} ir@'{a} admitir implicitamente
 @code{x=t}, e @code{G(x,y)=1}, transformando a equa@value{cedilha}@~{a}o n@~{a}o
 aut@^{o}noma em um sistema de duas equa@value{cedilha}@~{o}es aut@^{o}nomas.
 
-@node Defini@value{cedilha}@~{o}es para plotdf,  , Introdu@value{cedilha}@~{a}o a plotdf, plotdf
-@section Defini@value{cedilha}@~{o}es para plotdf
+@node Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para plotdf,  , Introdu@value{cedilha}@~{a}o a plotdf, plotdf
+@section Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para plotdf
 
 @deffn {Fun@value{cedilha}@~{a}o} plotdf (@var{dydx},...op@value{cedilha}@~{o}es...)
 @deffnx {Fun@value{cedilha}@~{a}o} plotdf (@code{[}@var{dxdt},@var{dydt}@code{]},...op@value{cedilha}@~{o}es...)

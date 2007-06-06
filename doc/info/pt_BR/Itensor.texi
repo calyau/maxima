@@ -1,5 +1,5 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
-@c /Itensor.texi/1.40/Sat Nov  4 16:15:55 2006//
+@c /Itensor.texi/1.41/Sat Jun  2 00:12:54 2007//
 @c RECOMMEND REVISE TEXT THROUGHOUT TO LOSE NOTION OF TIME RELATIVE TO PRESENT
 @c LOOK FOR "NOW", "OLD", "NEW", "RECENT", "EARLIER", DATES
 
@@ -7,10 +7,10 @@
 
 @menu
 * Introdu@value{cedilha}@~{a}o a itensor::
-* Defini@value{cedilha}@~{o}es para itensor::
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para itensor::
 @end menu
 
-@node Introdu@value{cedilha}@~{a}o a itensor, Defini@value{cedilha}@~{o}es para itensor, itensor, itensor
+@node Introdu@value{cedilha}@~{a}o a itensor, Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para itensor, itensor, itensor
 @section Introdu@value{cedilha}@~{a}o a itensor
 
 Maxima implementa a manipula@value{cedilha}@~{a}o de tensores simb@'{o}licos d dois tipos distintos:
@@ -245,9 +245,9 @@ especificando o nome da m@'{e}trica, e executando alguns c@'{a}lculos simples.
 
 @c end concepts itensor
 
-@node Defini@value{cedilha}@~{o}es para itensor,  , Introdu@value{cedilha}@~{a}o a itensor, itensor
+@node Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para itensor,  , Introdu@value{cedilha}@~{a}o a itensor, itensor
 
-@section Defini@value{cedilha}@~{o}es para itensor
+@section Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para itensor
 @subsection Gerenciando objetos indexados
 
 @deffn {Fun@value{cedilha}@~{a}o} entertensor (@var{nome})

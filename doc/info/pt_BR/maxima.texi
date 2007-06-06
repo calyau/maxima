@@ -277,11 +277,11 @@ Entrada e Sa@'{i}da
 
 * Coment@'{a}rios::
 * Arquivos::                       
-* Defini@value{cedilha}@~{o}es para Entrada e Sa@'{i}da::  
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Entrada e Sa@'{i}da::  
 
 Ponto Flutuante
 
-* Defini@value{cedilha}@~{o}es para ponto Flutuante::  
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para ponto Flutuante::  
 
 Contextos
 
@@ -364,7 +364,7 @@ Fun@value{cedilha}@~{o}es Afins
 itensor
 
 * Introdu@value{cedilha}@~{a}o a itensor::      
-* Defini@value{cedilha}@~{o}es para itensor::      
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para itensor::      
 
 ctensor
 
@@ -383,7 +383,7 @@ S@'{e}ries
 
 Teoria dos N@'{u}meros
 
-* Defini@value{cedilha}@~{o}es para Teoria dos N@'{u}meros::  
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Teoria dos N@'{u}meros::  
 
 Simetrias
 
@@ -430,7 +430,7 @@ Defini@value{cedilha}@~{a}o de Fun@value{cedilha}@~{a}o
 Fluxo de Programa
 
 * Introdu@value{cedilha}@~{a}o a Fluxo de Programa::  
-* Defini@value{cedilha}@~{o}es para Fluxo de Programa::  
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Fluxo de Programa::  
 
 Depurando
 
@@ -478,11 +478,11 @@ eval_string
 
 f90
 
-* Defini@value{cedilha}@~{o}es para f90::
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para f90::
 
 ggf
 
-* Defini@value{cedilha}@~{o}es para ggf::
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para ggf::
 
 impdiff
 
@@ -495,12 +495,12 @@ implicit_plot
 interpol
 
 * Introdu@value{cedilha}@~{a}o a interpol::
-* Defini@value{cedilha}@~{o}es para interpol::
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para interpol::
 
 lbfgs
 
 * Introdu@value{cedilha}@~{a}o a lbfgs::
-* Defini@value{cedilha}@~{o}es para lbfgs::
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para lbfgs::
 
 lindstedt
 
@@ -540,7 +540,7 @@ orthopoly
 plotdf
 
 * Introdu@value{cedilha}@~{a}o a plotdf::
-* Defini@value{cedilha}@~{o}es para plotdf::
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para plotdf::
 
 romberg
 
@@ -549,7 +549,7 @@ romberg
 simplex
 
 * Introdu@value{cedilha}@~{a}o a simplex::
-* Defini@value{cedilha}@~{o}es para simplex::
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para simplex::
 
 simplification
 
@@ -559,7 +559,7 @@ simplification
 solve_rec
 
 * Introdu@value{cedilha}@~{a}o a solve_rec::
-* Defini@value{cedilha}@~{o}es para solve_rec::
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para solve_rec::
 
 stats
 
@@ -582,12 +582,12 @@ stringproc
 unit
 
 * Introdu@value{cedilha}@~{a}o a Units::       
-* Defini@value{cedilha}@~{o}es para Units::
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Units::
 
 zeilberger
 
 * Introdu@value{cedilha}@~{a}o a zeilberger::
-* Defini@value{cedilha}@~{o}es para zeilberger::
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para zeilberger::
 
 @comment @end detailmenu
 @end menu

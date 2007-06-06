@@ -1,12 +1,11 @@
-/solve_rec.texi/1.7/Tue Jan 16 15:15:10 2007//
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
-@c /solve_rec.texi/1.7/Tue Jan 16 15:15:10 2007//
+@c /solve_rec.texi/1.8/Sat Jun  2 00:13:31 2007//
 @menu
 * Introdu@value{cedilha}@~{a}o a solve_rec::
-* Defini@value{cedilha}@~{o}es para solve_rec::
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para solve_rec::
 @end menu
 
-@node Introdu@value{cedilha}@~{a}o a solve_rec, Defini@value{cedilha}@~{o}es para solve_rec, solve_rec, solve_rec
+@node Introdu@value{cedilha}@~{a}o a solve_rec, Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para solve_rec, solve_rec, solve_rec
 @section Introdu@value{cedilha}@~{a}o a solve_rec
 
 @code{solve_rec} @'{e} um pacote para resolver recorr@^{e}ncias lineares com coeficientes
@@ -26,8 +25,8 @@ Exemplo:
              n     (n + 1) (n + 2)      (n + 1) (n + 2)
 @end example
 
-@node Defini@value{cedilha}@~{o}es para solve_rec,  , Introdu@value{cedilha}@~{a}o a solve_rec, solve_rec
-@section Defini@value{cedilha}@~{o}es para solve_rec
+@node Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para solve_rec,  , Introdu@value{cedilha}@~{a}o a solve_rec, solve_rec
+@section Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para solve_rec
 
 @deffn {Fun@value{cedilha}@~{a}o} reduce_order (@var{rec}, @var{sol}, @var{var})
 
