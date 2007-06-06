@@ -1,12 +1,11 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
-@c /opsubst.texi/1.1/Mon Feb 27 22:09:17 2006//
-
+@c /opsubst.texi/1.2/Sat Jun  2 00:13:28 2007//
 @menu
-* Defini@value{cedilha}@~{o}es para  opsubst::
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para  opsubst::
 @end menu
 
-@node Defini@value{cedilha}@~{o}es para opsubst,  , opsubst, opsubst
-@section Defini@value{cedilha}@~{o}es para  opsubst
+@node Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para opsubst,  , opsubst, opsubst
+@section Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para  opsubst
 
 @deffn {Fun@value{cedilha}@~{a}o} opsubst (@var{f},@var{g},@var{e})
 @deffnx {Fun@value{cedilha}@~{a}o} opsubst (@var{g}=@var{f},@var{e})

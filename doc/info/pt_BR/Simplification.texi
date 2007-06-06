@@ -1,15 +1,15 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
-@c /Simplification.texi/1.17/Tue Jan  9 09:30:23 2007/-ko/
+@c /Simplification.texi/1.18/Sat Jun  2 00:13:08 2007/-ko/
 @c end concepts Simplification
 @iftex
 @hyphenation{di-fe-ren-te-men-te}
 @end iftex
 @menu
-* Defini@value{cedilha}@~{o}es para Simplifica@value{cedilha}@~{a}o::  
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Simplifica@value{cedilha}@~{a}o::  
 @end menu
 
-@node Defini@value{cedilha}@~{o}es para Simplifica@value{cedilha}@~{a}o,  , Simplifica@value{cedilha}@~{a}o, Simplifica@value{cedilha}@~{a}o
-@section Defini@value{cedilha}@~{o}es para Simplifica@value{cedilha}@~{a}o
+@node Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Simplifica@value{cedilha}@~{a}o,  , Simplifica@value{cedilha}@~{a}o, Simplifica@value{cedilha}@~{a}o
+@section Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Simplifica@value{cedilha}@~{a}o
 
 @c After studying src/compar.lisp, it appears that askexp would
 @c work as advertised, except that it doesn't appear to be possible
@@ -254,8 +254,8 @@ simplificar para @code{g (g (g (a, b), c), d)}.
 @defvr {Declara@value{cedilha}@~{a}o} linear
 Uma das propriedades operativas do Maxima.  Para fun@value{cedilha}@~{o}es de uma @'{u}nica vari@'{a}vel @code{f} ent@~{a}o
 declarada, a "expans@~{a}o" @code{f(x + y)} retorna @code{f(x) + f(y)},
-a "expans@~{a}o" @code{f(a*x)} retorna @code{a*f(x)} e ocorre
-onde @code{a} @'{e} uma "constante".  Para fun@value{cedilha}@~{o}es de dois ou mais argumentos,
+@code{f(a*x)} retorna @code{a*f(x)} tomando
+lugar onde @code{a} for uma "constante".  para fun@value{cedilha}@~{o}es de dois ou mais argumentos,
 "linearidade" @'{e} definida para ser como no caso de @code{sum} ou @code{integrate},
 i.e., @code{f (a*x + b, x)} retorna @code{a*f(x,x) + b*f(1,x)}
 para @code{a} e @code{b} livres de @code{x}.

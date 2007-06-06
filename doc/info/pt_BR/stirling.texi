@@ -1,11 +1,11 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
-@c /stirling.texi/1.1/Mon Feb 27 22:09:17 2006//
+@c /stirling.texi/1.2/Sat Jun  2 00:13:33 2007//
 @menu
-* Defini@value{cedilha}@~{o}es para stirling::
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para stirling::
 @end menu
 
-@node Defini@value{cedilha}@~{o}es para stirling,  , stirling, stirling
-@section Defini@value{cedilha}@~{o}es para stirling
+@node Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para stirling,  , stirling, stirling
+@section Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para stirling
 
 @deffn {Fun@value{cedilha}@~{a}o} stirling (@var{z},@var{n})
 Substitui @code{gamma(x)} pela f@'{o}rmula de Stirling @math{O(1/x^(2n-1))}. Quando @var{n} for

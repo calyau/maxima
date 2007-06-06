@@ -1,11 +1,11 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
-@c /romberg.texi/1.1/Mon Jan  8 01:45:16 2007//
+@c /romberg.texi/1.2/Sat Jun  2 00:13:30 2007//
 @menu
-* Defini@value{cedilha}@~{o}es para romberg::
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para romberg::
 @end menu
 
-@node Defini@value{cedilha}@~{o}es para romberg, , Top, Top
-@section Defini@value{cedilha}@~{o}es para romberg
+@node Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para romberg, , Top, Top
+@section Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para romberg
 
 @deffn {Fun@value{cedilha}@~{a}o} romberg (@var{expr}, @var{x}, @var{a}, @var{b})
 @deffnx {Fun@value{cedilha}@~{a}o} romberg (@var{F}, @var{a}, @var{b})
@@ -150,8 +150,6 @@ Valor padr@~{a}o: 11
 
 @code{romberg} divide ao meio o tamanho do passo no m@'{a}ximo @code{rombergit} vezes antes de interromper;
 o n@'{u}mero m@'{a}ximo de avalia@value{cedilha}@~{o}es de fun@value{cedilha}@~{a}o @'{e} portanto @code{2^rombergit}.
-Se o crit@'{e}rio de erro estabelecido por @code{rombergabs} e por @code{rombergtol}
-n@~{a}o for satisfeito, @code{romberg} mostra uma mensagem de erro.
 @code{romberg} sempre faz ao menos @code{rombergmin} itera@value{cedilha}@~{o}es;
 isso @'{e} uma inten@value{cedilha}@~{a}o eur@'{i}sstica de previnir encerramentos esp@'{u}rios quando o integrando for oscilat@'{o}rio.
 
@@ -183,4 +181,3 @@ somente o erro relativo tem algum efeito sobre @code{romberg}.
 Veja tamb@'{e}m @code{rombergit} e @code{rombergmin}.
 
 @end defvr
-

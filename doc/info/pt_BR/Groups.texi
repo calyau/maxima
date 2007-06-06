@@ -1,11 +1,11 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
-@c /Groups.texi/1.11/Thu Apr 21 04:26:33 2005/-ko/
+@c /Groups.texi/1.12/Sat Jun  2 00:12:46 2007/-ko/
 @menu
-* Defini@value{cedilha}@~{o}es para Grupos::
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Grupos::
 @end menu
 
-@node Defini@value{cedilha}@~{o}es para Grupos,  , Grupos, Grupos
-@section Defini@value{cedilha}@~{o}es para Grupos
+@node Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Grupos,  , Grupos, Grupos
+@section Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Grupos
 
 @deffn {Fun@value{cedilha}@~{a}o} todd_coxeter (@var{rela@value{cedilha}@~{a}o}, @var{subgroupo})
 @deffnx {Fun@value{cedilha}@~{a}o} todd_coxeter (@var{rela@value{cedilha}@~{a}o})

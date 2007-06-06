@@ -267,7 +267,7 @@ Express@~{o}es
 
 Simplifica@value{cedilha}@~{a}o
 
-* Defini@value{cedilha}@~{o}es para Simplifica@value{cedilha}@~{a}o::  
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Simplifica@value{cedilha}@~{a}o::  
 
 Montando Gr@'{a}ficos
 
@@ -298,7 +298,7 @@ Constantes
 
 Logar@'{i}tmos
 
-* Defini@value{cedilha}@~{o}es para Logar@'{i}tmos::  
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Logar@'{i}tmos::  
 
 Trigonometria
 
@@ -318,7 +318,7 @@ Fun@value{cedilha}@~{o}es El@'{i}pticas
 
 Limites
 
-* Defini@value{cedilha}@~{o}es para Limites::      
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Limites::      
 
 Diferencia@value{cedilha}@~{a}o
 
@@ -387,11 +387,11 @@ Teoria dos N@'{u}meros
 
 Simetrias
 
-* Defini@value{cedilha}@~{o}es para Simetrias::  
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Simetrias::  
 
 Grupos
 
-* Defini@value{cedilha}@~{o}es para Grupos::      
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Grupos::      
 
 Ambiente em Tempo de Execu@value{cedilha}@~{a}o
 
@@ -474,7 +474,7 @@ dynamics
 
 eval_string
 
-* Defini@value{cedilha}@~{o}es para eval_string::
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para eval_string::
 
 f90
 
@@ -486,7 +486,7 @@ ggf
 
 impdiff
 
-* Defini@value{cedilha}@~{o}es para impdiff::
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para impdiff::
 
 implicit_plot
 
@@ -504,7 +504,7 @@ lbfgs
 
 lindstedt
 
-* Defini@value{cedilha}@~{o}es para lindstedt::
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para lindstedt::
 
 linearalgebra
 
@@ -513,15 +513,15 @@ linearalgebra
 
 lsquares
 
-* Defini@value{cedilha}@~{o}es para lsquares::
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para lsquares::
 
 makeOrders
 
-* Defini@value{cedilha}@~{o}es para makeOrders::
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para makeOrders::
 
 mnewton
 
-* Defini@value{cedilha}@~{o}es para mnewton::
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para mnewton::
 
 numericalio
 
@@ -530,7 +530,7 @@ numericalio
 
 opsubst
 
-* Defini@value{cedilha}@~{o}es para opsubst::
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para opsubst::
 
 orthopoly
 
@@ -544,7 +544,7 @@ plotdf
 
 romberg
 
-* Defini@value{cedilha}@~{o}es para romberg::
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para romberg::
 
 simplex
 
@@ -570,7 +570,7 @@ stats
 
 stirling
 
-* Defini@value{cedilha}@~{o}es para stirling::
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para stirling::
 
 stringproc
 

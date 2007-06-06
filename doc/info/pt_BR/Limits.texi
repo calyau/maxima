@@ -1,11 +1,11 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
-@c /Limits.texi/1.10/Thu Jun 16 17:05:35 2005/-ko/
+@c /Limits.texi/1.11/Sat Jun  2 00:12:54 2007/-ko/
 @menu
-* Defini@value{cedilha}@~{o}es para Limites::
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Limites::
 @end menu
 
-@node Defini@value{cedilha}@~{o}es para Limites,  , Limites, Limites
-@section Defini@value{cedilha}@~{o}es para Limites
+@node Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Limites,  , Limites, Limites
+@section Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Limites
 
 @defvr {Vari@'{a}vel de Op@value{cedilha}@~{a}o} lhospitallim
 Valor padr@~{a}o: 4

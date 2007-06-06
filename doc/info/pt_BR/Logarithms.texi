@@ -1,11 +1,11 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
-@c /Logarithms.texi/1.16/Sat Jul  8 08:14:48 2006/-ko/
+@c /Logarithms.texi/1.17/Sat Jun  2 00:12:55 2007/-ko/
 @menu
-* Defini@value{cedilha}@~{o}es para Logar@'{i}tmos::
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Logar@'{i}tmos::
 @end menu
 
-@node Defini@value{cedilha}@~{o}es para Logar@'{i}tmos,  , Logar@'{i}tmos, Logar@'{i}tmos
-@section Defini@value{cedilha}@~{o}es para Logar@'{i}tmos
+@node Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Logar@'{i}tmos,  , Logar@'{i}tmos, Logar@'{i}tmos
+@section Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Logar@'{i}tmos
 
 @defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} %e_to_numlog
 Valor padr@~{a}o: @code{false}
@@ -96,7 +96,8 @@ Exemplos:
 @deffn {Fun@value{cedilha}@~{a}o} log (@var{x})
 Representa o logar@'{i}tmo natural (base @math{e}) de @var{x}.
 
-Maxima n@~{a}o possui uma fun@value{cedilha}@~{a}o interna para logar@'{i}tmo de base 10 ou de outras bases. @code{log10(x) := log(x) / log(10)} @'{e} uma defini@value{cedilha}@~{a}o @'{u}til.
+Maxima n@~{a}o possui uma fun@value{cedilha}@~{a}o interna para logar@'{i}tmo de base 10 ou de outras bases.
+@code{log10(x) := log(x) / log(10)} @'{e} uma defini@value{cedilha}@~{a}o @'{u}til.
 
 Simplifica@value{cedilha}@~{a}o e avalia@value{cedilha}@~{a}o de logar@'{i}tmos s@~{a}o governadas por muitos sinalizadores globais:
 
@@ -141,15 +142,9 @@ extremos @'{e} muitas vezes necess@'{a}ria.
 @defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} logarc
 @defvrx {Fun@value{cedilha}@~{a}o} logarc (@var{expr})
 
-Se @code{true} ir@'{a} fazer com que as fun@value{cedilha}@~{o}es circularee inversas e
-hiperb@'{o}licas sejam convertidas em formas logar@'{i}timicas.
-@code{logarc(@var{exp})} ir@'{a} fazer com que essa convers@~{a}o para uma express@~{a}o
-particular @var{exp} sem escolher o comutador ou tendo que
-re-avaliar a express@~{a}o com @code{ev}.
-
 Quando a vari@'{a}vel global @code{logarc} for @code{true},
-fun@value{cedilha}@~{o}es circulares inversas e fun@value{cedilha}@~{o}es hiperb@'{o}licas s@~{a}o substitu@'{i}das por suas
-fun@value{cedilha}@~{o}es logar@'{i}tmicas equivalentes.
+fun@value{cedilha}@~{o}es circulares inversas e fun@value{cedilha}@~{o}es hiperb@'{o}licas ser@~{a}o convertidas
+em fun@value{cedilha}@~{o}es logar@'{i}timicas equivalentes.
 O valor padr@~{a}o de @code{logarc} @'{e} @code{false}.
 
 A fun@value{cedilha}@~{a}o @code{logarc(@var{expr})} realiza aquela substitu@'{i}@value{cedilha}@~{a}o para
@@ -194,7 +189,7 @@ aqueles tais que 2 e @code{n} que satisfazem
 contra@'{i}dos escolhendo a op@value{cedilha}@~{a}o @code{logconcoeffp} para o nome de uma
 fun@value{cedilha}@~{a}o predicado de um argumento.  E.g. se voc@^{e} gosta de gerara
 ra@'{i}zes quadradas, voc@^{e} pode fazer @code{logconcoeffp:'logconfun$
-logconfun(m):=featurep(m,integer) ou ratnump(m)$} .  ent@~{a}o
+logconfun(m):=featurep(m,integer) ou ratnump(m)$} .  Ent@~{a}o
 @code{logcontract(1/2*log(x));} ir@'{a} fornecer @code{log(sqrt(x))}.
 
 @end deffn

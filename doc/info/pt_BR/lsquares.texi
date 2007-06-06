@@ -1,18 +1,16 @@
-/lsquares.texi/1.1/Mon Feb 27 22:09:17 2006//
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
-@c /lsquares.texi/1.1/Mon Feb 27 22:09:17 2006//
+@c /lsquares.texi/1.2/Sat Jun  2 00:13:24 2007//
 @menu
-* Defini@value{cedilha}@~{o}es para lsquares::
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para lsquares::
 @end menu
 
-@node Defini@value{cedilha}@~{o}es para lsquares,  , lsquares, lsquares
-@section Defini@value{cedilha}@~{o}es para lsquares
+@node Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para lsquares,  , lsquares, lsquares
+@section Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para lsquares
 
 
 @defvr {Vari@'{a}vel global} DETCOEF
 
-Essa vari@'{a}vel @'{e} usada pelas fun@value{cedilha}@~{o}es @code{lsquares} e @code{plsquares} para armazenar o Coeficiente de Determina@value{cedilha}@~{a}o que mede o melhor do ajuste. Esse intervalo de 0 (nenhuma correla@value{cedilha}@~{a}o) a 1 (correla@value{cedilha}@~{a}o
-exata). 
+Essa vari@'{a}vel @'{e} usada pelas fun@value{cedilha}@~{o}es @code{lsquares} e @code{plsquares} para armazenar o Coeficiente de Determina@value{cedilha}@~{a}o que mede o melhor do ajuste. Esse intervalo de 0 (nenhuma correla@value{cedilha}@~{a}o) a 1 (correla@value{cedilha}@~{a}o exata). 
 
 Quando @code{plsquares} for chamada com uma lista de vari@'{a}veis independentes, @var{DETCOEF} @'{e} escolhida para uma lista de Coeficientes de Determina@value{cedilha}@~{a}o. Veja @code{plsquares} para detalhes.
 
