@@ -1,19 +1,19 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
-@c /Series.texi/1.16/Sun Jan  7 05:49:50 2007/-ko/
+@c /Series.texi/1.17/Sat Jun  2 00:13:07 2007/-ko/
 @menu
 * Introdu@value{cedilha}@~{a}o a S@'{e}ries::      
-* Defini@value{cedilha}@~{o}es para S@'{e}ries::      
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para S@'{e}ries::      
 @end menu
 
-@node Introdu@value{cedilha}@~{a}o a S@'{e}ries, Defini@value{cedilha}@~{o}es para S@'{e}ries, S@'{e}ries, S@'{e}ries
+@node Introdu@value{cedilha}@~{a}o a S@'{e}ries, Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para S@'{e}ries, S@'{e}ries, S@'{e}ries
 @section Introdu@value{cedilha}@~{a}o a S@'{e}ries
 Maxima cont@'{e}m fun@value{cedilha}@~{o}es @code{taylor} e @code{powerseries} (s@'{e}ries de pot@^{e}ncia) para encontrar as
 s@'{e}ries de fun@value{cedilha}@~{o}es diferenci@'{a}veis.   Maxima tamb@'{e}m tem ferramentas  tais como @code{nusum}
 capazes de encontrar a forma fechada de algumas s@'{e}ries.   Opera@value{cedilha}@~{o}es tais como adi@value{cedilha}@~{a}o e multiplica@value{cedilha}@~{a}o travalham da forma usual sobre s@'{e}ries.  Essa se@value{cedilha}@~{a}o apresenta as vari@'{a}veis globais que controlam a
 expans@~{a}o.
 @c end concepts Series
-@node Defini@value{cedilha}@~{o}es para S@'{e}ries,  , Introdu@value{cedilha}@~{a}o a S@'{e}ries, S@'{e}ries
-@section Defini@value{cedilha}@~{o}es para S@'{e}ries
+@node Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para S@'{e}ries,  , Introdu@value{cedilha}@~{a}o a S@'{e}ries, S@'{e}ries
+@section Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para S@'{e}ries
 
 @defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} cauchysum
 Valor padr@~{a}o: @code{false}

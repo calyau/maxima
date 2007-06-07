@@ -1,9 +1,9 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
-@c /Runtime.texi/1.19/Sun Apr 22 14:31:49 2007/-ko/
+@c /Runtime.texi/1.20/Sat Jun  2 00:13:06 2007/-ko/
 @menu
 * Introdu@value{cedilha}@~{a}o a Ambiente em Tempo de Execu@value{cedilha}@~{a}o::  
 * Interrup@value{cedilha}@~{o}es::                  
-* Defini@value{cedilha}@~{o}es para Ambiente em Tempo de Execu@value{cedilha}@~{a}o::  
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Ambiente em Tempo de Execu@value{cedilha}@~{a}o::  
 @end menu
 
 
@@ -34,7 +34,7 @@ A declara@value{cedilha}@~{a}o @code{showtime: all} diz ao Maxima escolher a var
 O arquivo @code{maxima-init.mac} pode conter qualquer outras atribui@value{cedilha}@~{o}es ou
 outras declara@value{cedilha}@~{o}es do Maxima.
 
-@node Interrup@value{cedilha}@~{o}es, Defini@value{cedilha}@~{o}es para Ambiente em Tempo de Execu@value{cedilha}@~{a}o, Introdu@value{cedilha}@~{a}o a Ambiente em Tempo de Execu@value{cedilha}@~{a}o, Ambiente em Tempo de Execu@value{cedilha}@~{a}o
+@node Interrup@value{cedilha}@~{o}es, Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Ambiente em Tempo de Execu@value{cedilha}@~{a}o, Introdu@value{cedilha}@~{a}o a Ambiente em Tempo de Execu@value{cedilha}@~{a}o, Ambiente em Tempo de Execu@value{cedilha}@~{a}o
 @section Interrup@value{cedilha}@~{o}es
 
 O usu@'{a}rio pode parar uma computa@value{cedilha}@~{a}o que consome muito tempo com o
@@ -64,8 +64,8 @@ O comando @code{fg} faz com que o Maxima
 retorne ao primeiro plano e continue a partir do ponto no qual foi interrompido.
 
 @c end concepts Ambiente em Tempo de Execu@value{cedilha}@~{a}o
-@node Defini@value{cedilha}@~{o}es para Ambiente em Tempo de Execu@value{cedilha}@~{a}o,  , Interrup@value{cedilha}@~{o}es, Ambiente em Tempo de Execu@value{cedilha}@~{a}o
-@section Defini@value{cedilha}@~{o}es para Ambiente em Tempo de Execu@value{cedilha}@~{a}o
+@node Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Ambiente em Tempo de Execu@value{cedilha}@~{a}o,  , Interrup@value{cedilha}@~{o}es, Ambiente em Tempo de Execu@value{cedilha}@~{a}o
+@section Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Ambiente em Tempo de Execu@value{cedilha}@~{a}o
 
 @c NEEDS EXPANSION AND CLARIFICATION
 @defvr {Declara@value{cedilha}@~{a}o} feature

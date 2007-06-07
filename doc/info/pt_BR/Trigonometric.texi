@@ -1,11 +1,11 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
-@c /Trigonometric.texi/1.14/Fri Jun 17 00:57:35 2005/-ko/
+@c /Trigonometric.texi/1.15/Sat Jun  2 00:13:11 2007/-ko/
 @menu
 * Introdu@value{cedilha}@~{a}o ao Pacote Trigonom@'{e}trico::  
-* Defini@value{cedilha}@~{o}es para Trigonometria::  
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Trigonometria::  
 @end menu
 
-@node Introdu@value{cedilha}@~{a}o ao Pacote Trigonom@'{e}trico, Defini@value{cedilha}@~{o}es para Trigonometria, Trigonometria, Trigonometria
+@node Introdu@value{cedilha}@~{a}o ao Pacote Trigonom@'{e}trico, Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Trigonometria, Trigonometria, Trigonometria
 @section Introdu@value{cedilha}@~{a}o ao Pacote Trigonom@'{e}trico
 
 Maxima tem muitas fun@value{cedilha}@~{o}es trigonom@'{e}tricas definidas.  N@~{a}o todas as identidades
@@ -24,8 +24,8 @@ compartilhados extendem as regras de simplifica@value{cedilha}@~{a}o constru@'{i
 @code{ntrig} e @code{atrig1}.  Fa@value{cedilha}a @code{describe(@var{comando})}
 para detalhes.
 
-@node Defini@value{cedilha}@~{o}es para Trigonometria,  , Introdu@value{cedilha}@~{a}o ao Pacote Trigonom@'{e}trico, Trigonometria
-@section Defini@value{cedilha}@~{o}es para Trigonometria
+@node Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Trigonometria,  , Introdu@value{cedilha}@~{a}o ao Pacote Trigonom@'{e}trico, Trigonometria
+@section Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Trigonometria
 
 @deffn {Fun@value{cedilha}@~{a}o} acos (@var{x})
  - Arco Cosseno.

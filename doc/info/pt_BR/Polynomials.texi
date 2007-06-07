@@ -1,12 +1,12 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
-@c /Polynomials.texi/1.22/Sun May 21 07:18:29 2006/-ko/
+@c /Polynomials.texi/1.23/Sat Jun  2 00:13:03 2007/-ko/
 @c FOR THE FUNCTIONS WHICH RETURN A CRE, BE SURE TO MENTION THAT
 @menu
 * Introdu@value{cedilha}@~{a}o a Polin@^{o}mios::  
-* Defini@value{cedilha}@~{o}es para Polin@^{o}mios::  
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Polin@^{o}mios::  
 @end menu
 
-@node Introdu@value{cedilha}@~{a}o a Polin@^{o}mios, Defini@value{cedilha}@~{o}es para Polin@^{o}mios, Polin@^{o}mios, Polin@^{o}mios
+@node Introdu@value{cedilha}@~{a}o a Polin@^{o}mios, Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Polin@^{o}mios, Polin@^{o}mios, Polin@^{o}mios
 @section Introdu@value{cedilha}@~{a}o a Polin@^{o}mios
 
 Polin@^{o}mios s@~{a}o armazenados no Maxima ou na forma geral ou na
@@ -53,8 +53,8 @@ representados internamente por uma forma polinomial recursiva que @'{e} similar
 adicional tal com o grau de trunca@value{cedilha}@~{a}o.  Do mesmo modo que na forma CRE, o
 s@'{i}mbolo /T/ segue o r@'{o}tulo de linha que cont@'{e}m as tais express@~{o}es.
 
-@node Defini@value{cedilha}@~{o}es para Polin@^{o}mios,  , Introdu@value{cedilha}@~{a}o a Polin@^{o}mios, Polin@^{o}mios
-@section Defini@value{cedilha}@~{o}es para Polin@^{o}mios
+@node Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Polin@^{o}mios,  , Introdu@value{cedilha}@~{a}o a Polin@^{o}mios, Polin@^{o}mios
+@section Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Polin@^{o}mios
 
 @defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} algebraic
 Valor Padr@~{a}o: @code{false}

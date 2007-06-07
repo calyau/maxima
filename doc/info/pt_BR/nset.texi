@@ -1,11 +1,11 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
-@c /nset.texi/1.19/Sun Apr 22 14:31:58 2007//
+@c /nset.texi/1.20/Sat Jun  2 00:13:28 2007//
 @menu
 * Introdu@value{cedilha}@~{a}o a Conjuntos::       
-* Defini@value{cedilha}@~{o}es para Conjuntos::       
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Conjuntos::       
 @end menu
 
-@node Introdu@value{cedilha}@~{a}o a Conjuntos, Defini@value{cedilha}@~{o}es para Conjuntos, Conjuntos, Conjuntos
+@node Introdu@value{cedilha}@~{a}o a Conjuntos, Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Conjuntos, Conjuntos, Conjuntos
 @section Introdu@value{cedilha}@~{a}o a Conjuntos
 
 Maxima fornece fun@value{cedilha}@~{o}es de conjunto, tais como intersec@value{cedilha}@~{a}o e
@@ -230,7 +230,7 @@ em um dado conjunto que n@~{a}o depende de uma vari@'{a}vel @code{z}, use
 (%o1)               @{- y + x + 4, y + x - 5@}
 @end example
 
-A se@value{cedilha}@~{a}o @ref{Defini@value{cedilha}@~{o}es para Conjuntos} passui uma lista completa das
+A se@value{cedilha}@~{a}o @ref{Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Conjuntos} passui uma lista completa das
 fun@value{cedilha}@~{o}es de conjunto no Maxima.
 
 @subsection Itera@value{cedilha}@~{o}es entre Elementos de Conjuntos
@@ -412,8 +412,8 @@ Stavros Macrakis de Cambridge, Massachusetts e Barton Willis da
 Universidade e Nebraska e Kearney (UNK) escreveram as fn@value{cedilha}@~{o}es de conjunto do Maxima e sua
 documenta@value{cedilha}@~{a}o. 
 
-@node Defini@value{cedilha}@~{o}es para Conjuntos,  , Introdu@value{cedilha}@~{a}o a Conjuntos, Conjuntos
-@section Defini@value{cedilha}@~{o}es para Conjuntos
+@node Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Conjuntos,  , Introdu@value{cedilha}@~{a}o a Conjuntos, Conjuntos
+@section Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Conjuntos
 
 @anchor{adjoin}
 @deffn {Fun@value{cedilha}@~{a}o} adjoin (@var{x}, @var{a}) 

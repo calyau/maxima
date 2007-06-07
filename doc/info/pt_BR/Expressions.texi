@@ -1,5 +1,5 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
-@c /Expressions.texi/1.52/Sun Mar 11 02:32:14 2007/-ko/
+@c /Expressions.texi/1.53/Sat Jun  2 00:12:43 2007/-ko/
 @menu
 * Introdu@value{cedilha}@~{a}o a Express@~{o}es::  
 * Atribui@value{cedilha}@~{a}o::                  
@@ -9,7 +9,7 @@
 * Seq@"{u}@^{e}ncias de caracteres::
 * Desigualdade::                  
 * Sintaxe::                      
-* Defini@value{cedilha}@~{o}es para Express@~{o}es::  
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Express@~{o}es::  
 @end menu
 
 @node Introdu@value{cedilha}@~{a}o a Express@~{o}es, Atribui@value{cedilha}@~{a}o, Express@~{o}es, Express@~{o}es
@@ -302,7 +302,7 @@ seq@"{u}@^{e}ncia de caracteres.";
 Maxima tem os operadores de desigualdade @code{<}, @code{<=}, @code{>=}, @code{>}, @code{#}, e @code{notequal}.
 Veja @code{if} para uma descri@value{cedilha}@~{a}o de express@~{o}es condicionais.
 
-@node Sintaxe, Defini@value{cedilha}@~{o}es para Express@~{o}es, Desigualdade, Express@~{o}es
+@node Sintaxe, Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Express@~{o}es, Desigualdade, Express@~{o}es
 @section Sintaxe
 @'{E} poss@'{i}vel definir novos operadores com preced@^{e}ncia especificada,
 remover a defini@value{cedilha}@~{a}o de operadores existentes,
@@ -465,8 +465,8 @@ Incorrect syntax: @@ is not an infix operator
 (%o9)                        @@(5, 3)
 @end example
 
-@node Defini@value{cedilha}@~{o}es para Express@~{o}es,  , Sintaxe, Express@~{o}es
-@section Defini@value{cedilha}@~{o}es para Express@~{o}es
+@node Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Express@~{o}es,  , Sintaxe, Express@~{o}es
+@section Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Express@~{o}es
 
 @deffn {Fun@value{cedilha}@~{a}o} at (@var{expr}, [@var{eqn_1}, ..., @var{eqn_n}])
 @deffnx {Fun@value{cedilha}@~{a}o} at (@var{expr}, @var{eqn})

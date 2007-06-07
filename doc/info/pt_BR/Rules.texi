@@ -1,12 +1,11 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
-@c /Rules.texi/1.25/Fri Mar  2 00:44:44 2007/-ko/
-
+@c /Rules.texi/1.26/Sat Jun  2 00:13:06 2007/-ko/
 @menu
 * Introdu@value{cedilha}@~{a}o a Regras e Modelos::  
-* Defini@value{cedilha}@~{o}es para Regras e Modelos::  
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Regras e Modelos::  
 @end menu
 
-@node Introdu@value{cedilha}@~{a}o a Regras e Modelos, Defini@value{cedilha}@~{o}es para Regras e Modelos, Regras e Modelos, Regras e Modelos
+@node Introdu@value{cedilha}@~{a}o a Regras e Modelos, Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Regras e Modelos, Regras e Modelos, Regras e Modelos
 @section Introdu@value{cedilha}@~{a}o a Regras e Modelos
 
 Essa se@value{cedilha}@~{a}o descreve coincid@^{e}ncias de modelos definidos pelo usu@'{a}rio e
@@ -26,8 +25,8 @@ Existe mecanismos adicionais para regras aplicadas a polin@^{o}mios atrav@'{e}s 
 e para @'{a}lgebra comutativa e n@~{a}o comutativa no pacote @code{affine}. 
 
 @c end concepts Rules and Patterns
-@node Defini@value{cedilha}@~{o}es para Regras e Modelos,  , Introdu@value{cedilha}@~{a}o a Regras e Modelos, Regras e Modelos
-@section Defini@value{cedilha}@~{o}es para Regras e Modelos
+@node Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Regras e Modelos,  , Introdu@value{cedilha}@~{a}o a Regras e Modelos, Regras e Modelos
+@section Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Regras e Modelos
 
 @c NEEDS CLARIFICATION AND EXAMPLES
 @deffn {Fun@value{cedilha}@~{a}o} apply1 (@var{expr}, @var{rule_1}, ..., @var{rule_n})
@@ -259,13 +258,11 @@ Se a coincid@^{e}ncia falhar, a fun@value{cedilha}@~{a}o da regra retorna @code{
 Mostra regras com os nomes @var{nomeregra_1}, ..., @var{nomeregra_n},
 como retornado por @code{defrule}, @code{tellsimp}, ou @code{tellsimpafter},
 ou um modelo definido por meio de @code{defmatch}.
-
 Cada regra @'{e} mostrada com um r@'{o}tulo de express@~{a}o intermedi@'{a}ria (@code{%t}).
 
 @code{disprule (all)} mostra todas as regras.
 
 @code{disprule} n@~{a}o avalia seus argumentos.
-
 @code{disprule} retorna a lista de r@'{o}tulos de express@~{o}es intermed@'{a}irias correspondendo @`as regras mostradas.
 
 Veja tamb@'{e}m @code{letrules}, que mostra regras definidas atrav@'{e}s de @code{let}.

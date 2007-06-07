@@ -1,11 +1,12 @@
+/Matrices.texi/1.29/Sat Jun  2 00:12:57 2007/-ko/
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /Matrices.texi/1.28/Fri Mar  2 00:44:39 2007/-ko/
 @menu
 * Introdu@value{cedilha}@~{a}o a Matrizes e @'{A}lgebra Linear::  
-* Defini@value{cedilha}@~{o}es para Matrizes e @'{A}lgebra Linear::  
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Matrizes e @'{A}lgebra Linear::  
 @end menu
 
-@node Introdu@value{cedilha}@~{a}o a Matrizes e @'{A}lgebra Linear, Defini@value{cedilha}@~{o}es para Matrizes e @'{A}lgebra Linear, Matrizes e @'{A}lgebra Linear, Matrizes e @'{A}lgebra Linear
+@node Introdu@value{cedilha}@~{a}o a Matrizes e @'{A}lgebra Linear, Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Matrizes e @'{A}lgebra Linear, Matrizes e @'{A}lgebra Linear, Matrizes e @'{A}lgebra Linear
 @section Introdu@value{cedilha}@~{a}o a Matrizes e @'{A}lgebra Linear
 
 @menu
@@ -86,8 +87,8 @@ As fun@value{cedilha}@~{o}es no pacote @code{eigen} s@~{a}o
 e @code{similaritytransform}.
 
 @c end concepts Matrizes e @'{A}lgebra Linear
-@node Defini@value{cedilha}@~{o}es para Matrizes e @'{A}lgebra Linear,  , Introdu@value{cedilha}@~{a}o a Matrizes e @'{A}lgebra Linear, Matrizes e @'{A}lgebra Linear
-@section Defini@value{cedilha}@~{o}es para Matrizes e @'{A}lgebra Linear
+@node Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Matrizes e @'{A}lgebra Linear,  , Introdu@value{cedilha}@~{a}o a Matrizes e @'{A}lgebra Linear, Matrizes e @'{A}lgebra Linear
+@section Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Matrizes e @'{A}lgebra Linear
 
 @deffn {Fun@value{cedilha}@~{a}o} addcol (@var{M}, @var{list_1}, ..., @var{list_n})
 Anexa a(s) coluna(s) dadas por uma

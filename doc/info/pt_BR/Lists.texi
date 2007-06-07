@@ -1,11 +1,12 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
-@c /Lists.texi/1.28/Mon Jan  8 04:17:44 2007/-ko/
+@c /Lists.texi/1.30/Sat Jun  2 00:12:55 2007/-ko/
+
 @menu
 * Introdu@value{cedilha}@~{a}o a Listas::
-* Defini@value{cedilha}@~{o}es para Listas::
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Listas::
 @end menu
 
-@node Introdu@value{cedilha}@~{a}o a Listas, Defini@value{cedilha}@~{o}es para Listas, Listas, Listas
+@node Introdu@value{cedilha}@~{a}o a Listas, Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Listas, Listas, Listas
 @section Introdu@value{cedilha}@~{a}o a Listas
 
 Listas s@~{a}o o bloco b@'{a}sico de constru@value{cedilha}@~{a}o para Maxima e Lisp.**Todos os outros tipos
@@ -41,8 +42,8 @@ em si mesmo, ap@'{o}s ter sido adicionado o simplificador a lista poder@'{a} tra
 ((MLIST SIMP) 1 2 7 ((MPLUS SIMP) $X $Y))
 @end example
 
-@node Defini@value{cedilha}@~{o}es para Listas,  , Introdu@value{cedilha}@~{a}o a Listas, Listas
-@section Defini@value{cedilha}@~{o}es para Listas
+@node Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Listas,  , Introdu@value{cedilha}@~{a}o a Listas, Listas
+@section Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Listas
 
 @c NEED ANOTHER deffn FOR GENERAL EXPRESSIONS ARGUMENTS
 @c NEEDS CLARIFICATION AND EXAMPLES
@@ -125,8 +126,8 @@ superior do bloco de repeti@value{cedilha}@~{a}o.
 (%o81) [[1,1],[2,1],[2,2],[3,1],[3,2],[3,3]]
 @end example
 
-Note que os limites ou lista para a vari@'{a}vel @var{j} podem
-depender do valor corrente de @var{i}.
+Note que os limites ou lista para a vari@'{a}vel @code{j} podem
+depender do valor corrente de @code{i}.
 
 @end deffn
 
@@ -256,7 +257,7 @@ As listas @var{l} e @var{m} podem conter qualquer tipo de elementos.
 
 Se as listas forem de diferentes comprimentos, @code{join} ignora elementos da lista mais longa.
 
-Maxima reclama se @var{L_1} ou @var{L_2} n@~{a}o for uma lista.
+Maxima reclama se @var{l} ou @var{m} n@~{a}o for uma lista.
 
 Exemplos:
 

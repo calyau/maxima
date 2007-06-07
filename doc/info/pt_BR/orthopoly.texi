@@ -1,11 +1,11 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
-@c /orthopoly.texi/1.10/Fri Mar  2 00:44:47 2007//
+@c /orthopoly.texi/1.11/Sat Jun  2 00:13:29 2007//
 @menu
 * Introdu@value{cedilha}@~{a}o a polin@^{o}mios ortogonais::
-* Defini@value{cedilha}@~{o}es para polin@^{o}mios ortogonais::
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para polin@^{o}mios ortogonais::
 @end menu
 
-@node Introdu@value{cedilha}@~{a}o a polin@^{o}mios ortogonais, Defini@value{cedilha}@~{o}es para polin@^{o}mios ortogonais, orthopoly, orthopoly
+@node Introdu@value{cedilha}@~{a}o a polin@^{o}mios ortogonais, Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para polin@^{o}mios ortogonais, orthopoly, orthopoly
 @section Introdu@value{cedilha}@~{a}o a polin@^{o}mios ortogonais
 
 @code{orthopoly} @'{e} um pacote para avalia@value{cedilha}@~{a}o simb@'{o}lica e num@'{e}rica de
@@ -669,8 +669,8 @@ recursividade para frente. Novamente, as excess@~{o}es s@~{a}o as fun@value{cedi
 e a fun@value{cedilha}@~{a}o de Legendre associada de segundo tipo. Numericamente, 
 as fun@value{cedilha}@~{o}es de Bessel meio inteiras s@~{a}o avaliadas usando o c@'{o}digo SLATEC.
 
-@node Defini@value{cedilha}@~{o}es para polin@^{o}mios ortogonais,  , Introdu@value{cedilha}@~{a}o a polin@^{o}mios ortogonais, orthopoly
-@section Defini@value{cedilha}@~{o}es para polin@^{o}mios ortogonais
+@node Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para polin@^{o}mios ortogonais,  , Introdu@value{cedilha}@~{a}o a polin@^{o}mios ortogonais, orthopoly
+@section Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para polin@^{o}mios ortogonais
 
 @deffn {Fun@value{cedilha}@~{a}o} assoc_legendre_p (@var{n}, @var{m}, @var{x})
 As fun@value{cedilha}@~{o}es de Legendre associadas de primeiro tipo. 
