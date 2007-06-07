@@ -470,11 +470,11 @@ The most common mis-feature is illustrated by:
 @c ===end===
 @example
 (%i1) eq: a > b;
-(%o1)                                a > b
+(%o1)                              a > b
 (%i2) 2*eq;
-(%o2)                              2 (a > b)
+(%o2)                            2 (a > b)
 (%i3) % - eq;
-(%o3)                                a > b
+(%o3)                              a > b
 @end example
 
 Another problem is 0 times an inequality; the default to have this
