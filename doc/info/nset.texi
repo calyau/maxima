@@ -120,7 +120,7 @@ To construct a set from the elements of a list, use @code{setify}.
 @end example
 
 Set members @code{x} and @code{y} are equal provided @code{is(x = y)} 
-evaluates to true. Thus @code{rat(x)} and @code{x} are equal as set members;
+evaluates to @code{true}. Thus @code{rat(x)} and @code{x} are equal as set members;
 consequently, 
 
 @c ===beg===
@@ -131,7 +131,7 @@ consequently,
 (%o1)                          @{x@}
 @end example
 
-Further, since @code{is((x - 1)*(x + 1) = x^2 - 1)} evaluates to false, 
+Further, since @code{is((x - 1)*(x + 1) = x^2 - 1)} evaluates to @code{false}, 
 @code{(x - 1)*(x + 1)} and @code{x^2 - 1} are distinct set members; thus 
 
 @c ===beg===
@@ -775,7 +775,7 @@ Given an empty set @code{@{@}} or empty lists @code{[]} as arguments,
 
 When the global flag @code{maperror} is @code{true}, all lists 
 @var{L_1}, ..., @var{L_n} must have equal lengths.
-When @code{maperror} is false, list arguments are
+When @code{maperror} is @code{false}, list arguments are
 effectively truncated to the length of the shortest list. 
 
 Return values of the predicate @var{f} which evaluate (via @code{is})
@@ -2015,7 +2015,7 @@ Given an empty set @code{@{@}} or empty lists @code{[]} as arguments,
 
 When the global flag @code{maperror} is @code{true}, all lists 
 @var{L_1}, ..., @var{L_n} must have equal lengths.
-When @code{maperror} is false, list arguments are
+When @code{maperror} is @code{false}, list arguments are
 effectively truncated to the length of the shortest list. 
 
 Return values of the predicate @var{f} which evaluate (via @code{is})
