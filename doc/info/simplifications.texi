@@ -463,10 +463,18 @@ unable to decide the sign of a quantity multiplying an inequality.
 
 The most common mis-feature is illustrated by:
 
+@c ===beg===
+@c eq: a > b;
+@c 2*eq;
+@c % - eq;
+@c ===end===
 @example
-eq: a > b;
-2*eq;
-% - eq;
+(%i1) eq: a > b;
+(%o1)                                a > b
+(%i2) 2*eq;
+(%o2)                              2 (a > b)
+(%i3) % - eq;
+(%o3)                                a > b
 @end example
 
 Another problem is 0 times an inequality; the default to have this
