@@ -308,7 +308,7 @@ Trigonometria
 Fun@value{cedilha}@~{o}es Especiais
 
 * Introdu@value{cedilha}@~{a}o a Fun@value{cedilha}@~{o}es Especiais::  
-* Defini@value{cedilha}@~{o}es para Fun@value{cedilha}@~{o}es Especiais::  
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Fun@value{cedilha}@~{o}es Especiais::  
 
 Fun@value{cedilha}@~{o}es El@'{i}pticas
 
@@ -327,7 +327,7 @@ Diferencia@value{cedilha}@~{a}o
 Integra@value{cedilha}@~{a}o
 
 * Introdu@value{cedilha}@~{a}o a Integra@value{cedilha}@~{a}o::  
-* Defini@value{cedilha}@~{o}es para Integra@value{cedilha}@~{a}o::  
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Integra@value{cedilha}@~{a}o::  
 
 Equa@value{cedilha}@~{o}es
 
@@ -342,8 +342,8 @@ Num@'{e}rico
 
 * Introdu@value{cedilha}@~{a}o a Num@'{e}rico::   
 * Pacotes de Fourier::                     
-* Defini@value{cedilha}@~{o}es para Num@'{e}rico::   
-* Defini@value{cedilha}@~{o}es para S@'{e}ries de Fourier::
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Num@'{e}rico::   
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para S@'{e}ries de Fourier::
 
 Arrays
 
@@ -490,7 +490,7 @@ impdiff
 
 implicit_plot
 
-* Defini@value{cedilha}@~{o}es para implicit_plot::
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para implicit_plot::
 
 interpol
 
@@ -564,9 +564,9 @@ solve_rec
 stats
 
 * Introdu@value{cedilha}@~{a}o a stats::
-* Defini@value{cedilha}@~{o}es para inference_result::
-* Defini@value{cedilha}@~{o}es para stats::
-* Defini@value{cedilha}@~{o}es para distribui@value{cedilha}@~{o}es especiais::
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para inference_result::
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para stats::
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para distribui@value{cedilha}@~{o}es especiais::
 
 stirling
 
@@ -575,9 +575,9 @@ stirling
 stringproc
 
 * Introdu@value{cedilha}@~{a}o a manipula@value{cedilha}@~{a}o de seq@"{u}@^{e}ncias de caracteres::
-* Defini@value{cedilha}@~{o}es para entrada e sa@'{i}da::
-* Defini@value{cedilha}@~{o}es para caracteres::
-* Defini@value{cedilha}@~{o}es para seq@"{u}@^{e}ncias de caracteres::
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis para entrada e sa@'{i}da::
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis para caracteres::
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis para seq@"{u}@^{e}ncias de caracteres::
 
 unit
 

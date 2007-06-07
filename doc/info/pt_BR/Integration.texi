@@ -1,13 +1,13 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
-@c /Integration.texi/1.30/Mon Jan  8 04:17:39 2007/-ko/
+@c /Integration.texi/1.31/Sat Jun  2 00:12:51 2007/-ko/
 @menu
 * Introdu@value{cedilha}@~{a}o a Integra@value{cedilha}@~{a}o::  
-* Defini@value{cedilha}@~{o}es para Integra@value{cedilha}@~{a}o::  
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Integra@value{cedilha}@~{a}o::  
 * Introdu@value{cedilha}@~{a}o a QUADPACK::
-* Defini@value{cedilha}@~{o}es para QUADPACK::
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para QUADPACK::
 @end menu
 
-@node Introdu@value{cedilha}@~{a}o a Integra@value{cedilha}@~{a}o, Defini@value{cedilha}@~{o}es para Integra@value{cedilha}@~{a}o, Integra@value{cedilha}@~{a}o, Integra@value{cedilha}@~{a}o
+@node Introdu@value{cedilha}@~{a}o a Integra@value{cedilha}@~{a}o, Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Integra@value{cedilha}@~{a}o, Integra@value{cedilha}@~{a}o, Integra@value{cedilha}@~{a}o
 @section Introdu@value{cedilha}@~{a}o a Integra@value{cedilha}@~{a}o
 
 Maxima tem muitas rotinas para manusear integra@value{cedilha}@~{a}o.
@@ -25,8 +25,8 @@ extens@~{o}es (fun@value{cedilha}@~{a}o de erro, dilogarithm).  Isso n@~{a}o man
 integrais em termos de fun@value{cedilha}@~{o}es desconhecidas tais como @code{g(x)} e @code{h(x)}.
 
 @c end concepts Integration
-@node Defini@value{cedilha}@~{o}es para Integra@value{cedilha}@~{a}o, Introdu@value{cedilha}@~{a}o a QUADPACK, Introdu@value{cedilha}@~{a}o a Integra@value{cedilha}@~{a}o, Integra@value{cedilha}@~{a}o
-@section Defini@value{cedilha}@~{o}es para Integra@value{cedilha}@~{a}o
+@node Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Integra@value{cedilha}@~{a}o, Introdu@value{cedilha}@~{a}o a QUADPACK, Introdu@value{cedilha}@~{a}o a Integra@value{cedilha}@~{a}o, Integra@value{cedilha}@~{a}o
+@section Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Integra@value{cedilha}@~{a}o
 @c NEEDS WORK
 @deffn {Fun@value{cedilha}@~{a}o} changevar (@var{expr}, @var{f(x,y)}, @var{y}, @var{x})
 Faz a mudan@value{cedilha}a de vari@'{a}vel dada por
@@ -556,7 +556,7 @@ Equivalente a @code{ldefint} com @code{tlimswitch} escolhido para @code{true}.
 
 @footnotestyle end
 
-@node Introdu@value{cedilha}@~{a}o a QUADPACK, Defini@value{cedilha}@~{o}es para QUADPACK, Defini@value{cedilha}@~{o}es para Integra@value{cedilha}@~{a}o, Integra@value{cedilha}@~{a}o
+@node Introdu@value{cedilha}@~{a}o a QUADPACK, Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para QUADPACK, Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Integra@value{cedilha}@~{a}o, Integra@value{cedilha}@~{a}o
 @section Introdu@value{cedilha}@~{a}o a QUADPACK
 
 
@@ -637,8 +637,8 @@ modificada de Clenshaw-Curtis @'{e} usada sobre subamplitudes
 que possu@'{i}rem o ponto @math{x = c}.
 @end table
 
-@node Defini@value{cedilha}@~{o}es para QUADPACK, , Introdu@value{cedilha}@~{a}o a QUADPACK, Integra@value{cedilha}@~{a}o
-@section Defini@value{cedilha}@~{o}es para QUADPACK
+@node Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para QUADPACK, , Introdu@value{cedilha}@~{a}o a QUADPACK, Integra@value{cedilha}@~{a}o
+@section Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para QUADPACK
 
 @c THERE ARE OPTIONAL ARGUMENTS WHICH MAKES LISTING THE VARIANTS A LITTLE TEDIOUS
 @c NEED A MORE CONVENIENT (AND NONAMBIGUOUS) NOTATION FOR OPTIONAL ARGUMENTS

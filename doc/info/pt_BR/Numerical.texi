@@ -1,16 +1,16 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
-@c /Numerical.texi/1.24/Mon Feb 19 14:23:08 2007/-ko/
+@c /Numerical.texi/1.25/Sat Jun  2 00:12:59 2007/-ko/
 @menu
 * Introdu@value{cedilha}@~{a}o a Num@'{e}rico::
 * Pacotes de Fourier::
-* Defini@value{cedilha}@~{o}es para Num@'{e}rico::
-* Defini@value{cedilha}@~{o}es para S@'{e}ries de Fourier::
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Num@'{e}rico::
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para S@'{e}ries de Fourier::
 @end menu
 
 @node Introdu@value{cedilha}@~{a}o a Num@'{e}rico, Pacotes de Fourier, Num@'{e}rico, Num@'{e}rico
 @section Introdu@value{cedilha}@~{a}o a Num@'{e}rico
 
-@node Pacotes de Fourier, Defini@value{cedilha}@~{o}es para Num@'{e}rico, Introdu@value{cedilha}@~{a}o a Num@'{e}rico, Num@'{e}rico
+@node Pacotes de Fourier, Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Num@'{e}rico, Introdu@value{cedilha}@~{a}o a Num@'{e}rico, Num@'{e}rico
 @section Pacotes de Fourier
 O pacote @code{fft} compreende fun@value{cedilha}@~{o}es para computa@value{cedilha}@~{a}o num@'{e}rica (n@~{a}o simb@'{o}lica)
 das transforma@value{cedilha}@~{o}es r@'{a}pidas de Fourier.
@@ -22,12 +22,12 @@ de s@'{e}ries de Fourier.
 @code{load ("fourie")} chama esse pacote.
 Existem fun@value{cedilha}@~{o}es no pacote @code{fourie} para calcular coeficientes da
 integral de Fourier e algumas fun@value{cedilha}@~{o}es para manipula@value{cedilha}@~{a}o de express@~{o}es.
-Veja @code{Defini@value{cedilha}@~{o}es para S@'{e}ries}.
+Veja @code{Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para S@'{e}ries}.
 
 @c end concepts Numerical
 
-@node Defini@value{cedilha}@~{o}es para Num@'{e}rico, Defini@value{cedilha}@~{o}es para S@'{e}ries de Fourier, Pacotes de Fourier, Num@'{e}rico
-@section Defini@value{cedilha}@~{o}es para Num@'{e}rico
+@node Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Num@'{e}rico, Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para S@'{e}ries de Fourier, Pacotes de Fourier, Num@'{e}rico
+@section Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Num@'{e}rico
 @c NOTE: Let's keep POLARTORECT, RECTTOPOLAR, and IFT before FFT
 @c in this file. Otherwise DESCRIBE returns the FFT text (because
 @c POLARTORECT, etc are list in the heading of FFT with @defunx).
@@ -427,8 +427,8 @@ Exemplos:
 
 @end deffn
 
-@node Defini@value{cedilha}@~{o}es para S@'{e}ries de Fourier, , Defini@value{cedilha}@~{o}es para Num@'{e}rico, Num@'{e}rico
-@section Defini@value{cedilha}@~{o}es para S@'{e}ries de Fourier
+@node Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para S@'{e}ries de Fourier, , Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Num@'{e}rico, Num@'{e}rico
+@section Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para S@'{e}ries de Fourier
 
 @c REPHRASE
 @deffn {Fun@value{cedilha}@~{a}o} equalp (@var{x}, @var{y})

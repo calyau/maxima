@@ -1,11 +1,11 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
-@c /Special.texi/1.27/Mon Jan 15 06:08:56 2007/-ko/
+@c /Special.texi/1.29/Sat Jun  2 00:13:09 2007/-ko/
 @menu
 * Introdu@value{cedilha}@~{a}o a Fun@value{cedilha}@~{o}es Especiais::  
-* Defini@value{cedilha}@~{o}es para Fun@value{cedilha}@~{o}es Especiais::  
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Fun@value{cedilha}@~{o}es Especiais::  
 @end menu
 
-@node Introdu@value{cedilha}@~{a}o a Fun@value{cedilha}@~{o}es Especiais, Defini@value{cedilha}@~{o}es para Fun@value{cedilha}@~{o}es Especiais, Fun@value{cedilha}@~{o}es Especiais, Fun@value{cedilha}@~{o}es Especiais
+@node Introdu@value{cedilha}@~{a}o a Fun@value{cedilha}@~{o}es Especiais, Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Fun@value{cedilha}@~{o}es Especiais, Fun@value{cedilha}@~{o}es Especiais, Fun@value{cedilha}@~{o}es Especiais
 @section Introdu@value{cedilha}@~{a}o a Fun@value{cedilha}@~{o}es Especiais
 
 A nota@value{cedilha}@~{a}o de fun@value{cedilha}@~{a}o especial segue adiante:
@@ -19,7 +19,7 @@ bessel_k (index, expr)         Fun@value{cedilha}@~{a}o de Bessel modificada, se
 %p[u,v] (z)                    Fun@value{cedilha}@~{a}o de Legendre
 %q[u,v] (z)                    Fun@value{cedilha}@~{a}o de Legendre, segundo tipo
 hstruve[n] (z)                 Fun@value{cedilha}@~{a}o H de Struve H
-lstruve[n] (z)                 Fun@value{cedilha}@~{a}o de L Struve
+lstruve[n] (z)                 Fun@value{cedilha}@~{a}o L de Struve
 %f[p,q] ([], [], expr)         Fun@value{cedilha}@~{a}o Hipergeom@'{e}trica Generalizada
 gamma()                        Fun@value{cedilha}@~{a}o Gamma
 gammagreek(a,z)                Fun@value{cedilha}@~{a}o gama incompleta
@@ -34,8 +34,8 @@ kelliptic (z)                  integral eliptica completa de primeiro tipo (K)
 %d [n] (z)                     Fun@value{cedilha}@~{a}o cil@'{i}ndrica parab@'{o}lica
 @end example
 
-@node Defini@value{cedilha}@~{o}es para Fun@value{cedilha}@~{o}es Especiais,  , Introdu@value{cedilha}@~{a}o a Fun@value{cedilha}@~{o}es Especiais, Fun@value{cedilha}@~{o}es Especiais
-@section Defini@value{cedilha}@~{o}es para Fun@value{cedilha}@~{o}es Especiais
+@node Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Fun@value{cedilha}@~{o}es Especiais,  , Introdu@value{cedilha}@~{a}o a Fun@value{cedilha}@~{o}es Especiais, Fun@value{cedilha}@~{o}es Especiais
+@section Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Fun@value{cedilha}@~{o}es Especiais
 
 @deffn {Fun@value{cedilha}@~{a}o} airy_ai (@var{x})
 A fun@value{cedilha}@~{a}o de Airy Ai, como definida em Abramowitz e Stegun,
@@ -207,7 +207,7 @@ $$\sum_{k=0}^{\infty } {{1\over{k!\,\Gamma
  \left(v+k+1\right)}} {\left(z\over 2\right)^{v+2\,k}}}$$
 @end tex
 
-todavia s@'{e}ries infinitas n@~{a}o s@~{a}o usadas nos c@'{a}lculos.
+embora s@'{e}ries infinitas n@~{a}o s@~{a}o usadas nos c@'{a}lculos.
 
 @end deffn
 
@@ -384,7 +384,7 @@ para adi@value{cedilha}@~{o}es e pot@^{e}ncias de termos de seno e cosseno de um
 @c NEED MORE INFO HERE
 @c NEED EXAMPLES HERE
 @deffn {Fun@value{cedilha}@~{a}o} poisdiff (@var{a}, @var{b})
-Deriva @var{a} com rela@value{cedilha}@~{a}o a @var{b}.  @var{b} deve ocorrer somente
+Deriva @var{a} em rela@value{cedilha}@~{a}o a @var{b}.  @var{b} deve ocorrer somente
 nos argumentos trigonom@'{e}tricos ou somente nos coeficientes.
 
 @end deffn
@@ -531,7 +531,7 @@ retornar resposta simplificada, mesmo se isso for poss@'{i}vel.
 @end defvr
 
 @defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} maxpsifracnum
-Valor padr@~{a}o: 4
+Valor padr@~{a}o: 6
 
 Tomemos @var{x} como sendo um n@'{u}mero racional menor que a unidade e da forma @code{p/q}.
 Se @code{p} for menor que @code{maxpsifracnum}, ent@~{a}o
@@ -540,19 +540,29 @@ simplificado.
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~{a}o} specint (exp(- s*@var{t}) * @var{expr}, @var{t})
+@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} maxpsifracdenom
+Valor padr@~{a}o: 6
 
-Calcula a transformada de Laplace de @var{expr} com rala@value{cedilha}@~{a}o @`a vari@'{a}vel @var{t}.
+Tomemos @var{x} como sendo um n@'{u}mero racional menor que a unidade e da forma @code{p/q}.
+Se @code{q} for maior que @code{maxpsifracdenom}, ent@~{a}o
+@code{psi[@var{n}](@var{x})} n@~{a}o ir@'{a} tentar retornar um valor
+simplificado.
+
+@end defvr
+
+@deffn {Function} specint (exp(- s*@var{t}) * @var{expr}, @var{t})
+
+Calcula a trasformada de Laplace de @var{expr} com rela@value{cedilha}@~{a}o @`{a} vari@'{a}vel @var{t}.
 O integrando @var{expr} pode conter fun@value{cedilha}@~{o}es especiais.
 
-Se @code{specint} n@~{a}o puder calcular a integral, o valore de retorno pode
-conter v@'{a}rios s@'{i}mbolos do Lisp, incluindo
+Se @code{specint} n@~{a}o puder calcular a integral, o valor de retorno pode
+coter v@'{a}rios s@'{i}mbolos do Lisp, incluindo
 @code{other-defint-to-follow-negtest},
 @code{other-lt-exponential-to-follow},
 @code{product-of-y-with-nofract-indices}, etc.; isso @'{e} um erro.  
 @c REPORTED AS SOURCEFORGE BUG # 1162505
 
-@code{demo(hypgeo)} mostra muitos exemplos de transformadas de Laplace calculados por @code{specint}.
+@code{demo(hypgeo)} mostra muitos exemplos de tansformadas de Laplace calculados por meio de @code{specint}.
 
 Exemplos:
 @c ===beg===
@@ -579,14 +589,3 @@ Exemplos:
 @end example
 
 @end deffn
-
-@defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} maxpsifracdenom
-Valor padr@~{a}o: 4
-
-Tomemos @var{x} como sendo um n@'{u}mero racional menor que a unidade e da forma @code{p/q}.
-Se @code{q} for maior que @code{maxpsifracdeonm}, ent@~{a}o
-@code{psi[@var{n}](@var{x})} n@~{a}o ir@'{a} tentar retornar um valor
-simplificado.
-
-
-@end defvr

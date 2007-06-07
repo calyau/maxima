@@ -1,13 +1,13 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
-@c /stats.texi/1.4/Sat Jan 13 04:30:36 2007//
+@c /stats.texi/1.5/Sat Jun  2 00:13:33 2007//
 @menu
 * Introdu@value{cedilha}@~{a}o a stats::
-* Defini@value{cedilha}@~{o}es para inference_result::
-* Defini@value{cedilha}@~{o}es para stats::
-* Defini@value{cedilha}@~{o}es para distribui@value{cedilha}@~{o}es especiais::
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para inference_result::
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para stats::
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para distribui@value{cedilha}@~{o}es especiais::
 @end menu
 
-@node Introdu@value{cedilha}@~{a}o a stats, Defini@value{cedilha}@~{o}es para inference_result, Top, Top
+@node Introdu@value{cedilha}@~{a}o a stats, Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para inference_result, Top, Top
 @section Introdu@value{cedilha}@~{a}o a stats
 
 
@@ -34,8 +34,8 @@ Para coment@'{a}rios, erros ou sugest@~{o}es, por favor contate o autor em
 @var{'mario AT edu DOT xunta DOT es'}.
 
 
-@node Defini@value{cedilha}@~{o}es para inference_result, Defini@value{cedilha}@~{o}es para stats, Introdu@value{cedilha}@~{a}o a stats, Top
-@section Defini@value{cedilha}@~{o}es para inference_result
+@node Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para inference_result, Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para stats, Introdu@value{cedilha}@~{a}o a stats, Top
+@section Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para inference_result
 
 @deffn {Fun@value{cedilha}@~{a}o} inference_result (@var{t@'{i}tulo}, @var{valores}, @var{n@'{u}meros})
 
@@ -49,12 +49,11 @@ indicando que valores ser@~{a}o mostrados por padr@~{a}o.
 Exemplo:
 
 Este @'{e} um exemplo que mostras os resultados associados a um ret@'{a}ngulo. O
-t@'{i}tulo deste bojeto @'{e} a seq@"{u}@^{e}ncia de caraceteres @code{"Ret@^{a}ngulo"}, o qual
-armazena cinco resultados, a saber, @code{'base}, @code{'altura}, 
-@code{'diagonal}, @code{'@'{a}rea} y @code{'per@'{i}metro}, por@'{e}m s@'{o} mostra
-o primeiro, segundo, quinto e quarto resultado. O resultado @code{'diagonal} tamb@'{e}m
-@'{e} armazenado neste objeto, no entanto n@~{a}o @'{e} mostrado por padr@~{a}o; para se ter acesso
-a este valor, faz-se uso da fun@value{cedilha}@~{a}o @code{take_inference}.
+t@'{i}tulo deste objeto @'{e} a seq@"{u}@^{e}ncia de caraceteres @code{"Ret@^{a}ngulo"}, o qual armazena cinco resultados, a saber
+@code{'base}, @code{'altura}, @code{'diagonal}, @code{'@'{a}rea},
+e @code{'per@'{i}metro}, por@'{e}m s@'{o} mostra o primeiro, segundo, quinto e quarto
+resultado. O resultado @code{'diagonal} tamb@'{e}m @'{e} armazenado neste objeto, no entanto n@~{a}o @'{e}
+mostrado por padr@~{a}o; para se ter acesso a este valor, faz-se uso da fun@value{cedilha}@~{a}o @code{take_inference}.
 
 @c ===beg===
 @c load (inference_result)$
@@ -213,8 +212,8 @@ Veja tamb@'{e}m @code{inference_result} e @code{take_inference}.
 
 
 
-@node Defini@value{cedilha}@~{o}es para stats, Defini@value{cedilha}@~{o}es para distribui@value{cedilha}@~{o}es especiais, Defini@value{cedilha}@~{o}es para inference_result, Top
-@section Defini@value{cedilha}@~{o}es para stats
+@node Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para stats, Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para distribui@value{cedilha}@~{o}es especiais, Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para inference_result, Top
+@section Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para stats
 
 
 @defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} stats_numer
@@ -225,6 +224,7 @@ retornam seus resultados em n@'{u}meros com ponto flutuante. Se @code{stats_nume
 resultados s@~{a}o fornecidos em formato simb@'{o}lico e racional.
 
 @end defvr
+
 
 
 @deffn {Fun@value{cedilha}@~{a}o} test_mean (@var{x})
@@ -1289,8 +1289,8 @@ intervalo de confid@^{e}ncia para uma nova previs@~{a}o quando @code{x=113} s@~{
 
 
 
-@node Defini@value{cedilha}@~{o}es para distribui@value{cedilha}@~{o}es especiais, , Defini@value{cedilha}@~{o}es para stats, Top
-@section Defini@value{cedilha}@~{o}es para distribui@value{cedilha}@~{o}es especiais
+@node Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para distribui@value{cedilha}@~{o}es especiais, , Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para stats, Top
+@section Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para distribui@value{cedilha}@~{o}es especiais
 
 
 @deffn {Fun@value{cedilha}@~{a}o} pdf_signed_rank (@var{x}, @var{n})

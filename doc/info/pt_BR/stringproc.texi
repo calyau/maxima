@@ -1,13 +1,13 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
-@c /stringproc.texi/1.7/Sun Apr 22 14:31:58 2007//
+@c /stringproc.texi/1.8/Sat Jun  2 00:13:34 2007//
 @menu
 * Introdu@value{cedilha}@~{a}o a manipula@value{cedilha}@~{a}o de seq@"{u}@^{e}ncias de caracteres::
-* Defini@value{cedilha}@~{o}es para entrada e sa@'{i}da::
-* Defini@value{cedilha}@~{o}es para caracteres::
-* Defini@value{cedilha}@~{o}es para seq@"{u}@^{e}ncias de caracteres::
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis para entrada e sa@'{i}da::
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis para caracteres::
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis para seq@"{u}@^{e}ncias de caracteres::
 @end menu
 
-@node Introdu@value{cedilha}@~{a}o a manipula@value{cedilha}@~{a}o de seq@"{u}@^{e}ncias de caracteres, Defini@value{cedilha}@~{o}es para entrada e sa@'{i}da, stringproc, stringproc
+@node Introdu@value{cedilha}@~{a}o a manipula@value{cedilha}@~{a}o de seq@"{u}@^{e}ncias de caracteres, Fun@value{cedilha}@~{o}es e Vari@'{a}veis para entrada e sa@'{i}da, stringproc, stringproc
 @section Introdu@value{cedilha}@~{a}o a manipula@value{cedilha}@~{a}o de seq@"{u}@^{e}ncias de caracteres
 
 O arquivo @code{stringproc.lisp} amplia a compatibilidade do Maxima de trabalhar com seq@"{u}@^{e}ncias de caracteres 
@@ -17,7 +17,8 @@ Para esclarecimentos e corre@value{cedilha}@~{o}es por favor mande um e-mail par
 
 No Maxima uma seq@"{u}@^{e}ncia de caracteres @'{e} facilmente contru@'{i}da digitando "texto" (qualquer texto desejado entre aspas duplas).
 Note que seq@"{u}@^{e}ncias de caracteres do Maxima n@~{a}o s@~{a}o seq@"{u}@^{e}ncias de caracteres do Lisp e vice-versa.
-Testes podem ser conclu@'{i}dos com @code{stringp} e @code{lstringp}.
+@code{stringp} realiza testes para seq@"{u}@^{e}ncias de caracteres
+do Maxima, e @code{lstringp} realiza testes para seq@"{u}@^{e}ncias de caracteres do Lisp.
 Se por alguma raz@~{a}o voce tiver um valor,
 que @'{e} uma seq@"{u}@^{e}ncia de caracteres do Lisp, talvez quando estiver usando a fun@value{cedilha}@~{a}o @code{sconcat} do Maxima, voc@^{e} pode converter via @code{sunlisp}. 
 
@@ -130,8 +131,8 @@ precisa de @code{parse_string}, que ir@'{a} ser disponibilizada para uso automat
 
 @code{readline} retorna @code{false} quado o fim de arquivo acontecer.
 
-@node Defini@value{cedilha}@~{o}es para entrada e sa@'{i}da, Defini@value{cedilha}@~{o}es para caracteres, Introdu@value{cedilha}@~{a}o a manipula@value{cedilha}@~{a}o de seq@"{u}@^{e}ncias de caracteres, stringproc
-@section Defini@value{cedilha}@~{o}es para entrada e sa@'{i}da
+@node Fun@value{cedilha}@~{o}es e Vari@'{a}veis para entrada e sa@'{i}da, Fun@value{cedilha}@~{o}es e Vari@'{a}veis para caracteres, Introdu@value{cedilha}@~{a}o a manipula@value{cedilha}@~{a}o de seq@"{u}@^{e}ncias de caracteres, stringproc
+@section Fun@value{cedilha}@~{o}es e Vari@'{a}veis para entrada e sa@'{i}da
 
 Exemplo: 
 
@@ -320,8 +321,8 @@ pode ser @'{u}til, se voc@^{e} desejar colocar uma parada de linha intermedi@'{a
 
 @end deffn
 
-@node Defini@value{cedilha}@~{o}es para caracteres, Defini@value{cedilha}@~{o}es para seq@"{u}@^{e}ncias de caracteres, Defini@value{cedilha}@~{o}es para entrada e sa@'{i}da, stringproc
-@section Defini@value{cedilha}@~{o}es para caracteres
+@node Fun@value{cedilha}@~{o}es e Vari@'{a}veis para caracteres, Fun@value{cedilha}@~{o}es e Vari@'{a}veis para seq@"{u}@^{e}ncias de caracteres, Fun@value{cedilha}@~{o}es e Vari@'{a}veis para entrada e sa@'{i}da, stringproc
+@section Fun@value{cedilha}@~{o}es e Vari@'{a}veis para caracteres
 
 @deffn {Fun@value{cedilha}@~{a}o} alphacharp (@var{caractere})    
 Retorna @code{true} se @var{caractere} for um caractere alfab@'{e}tico. 
@@ -452,8 +453,8 @@ Retorna @code{true} se @var{caractere} for um caractere em caixa alta.
 
 @end deffn
 
-@node Defini@value{cedilha}@~{o}es para seq@"{u}@^{e}ncias de caracteres,  , Defini@value{cedilha}@~{o}es para caracteres, stringproc
-@section Defini@value{cedilha}@~{o}es para seq@"{u}@^{e}ncias de caracteres
+@node Fun@value{cedilha}@~{o}es e Vari@'{a}veis para seq@"{u}@^{e}ncias de caracteres,  , Fun@value{cedilha}@~{o}es e Vari@'{a}veis para caracteres, stringproc
+@section Fun@value{cedilha}@~{o}es e Vari@'{a}veis para seq@"{u}@^{e}ncias de caracteres
 
 @deffn {Fun@value{cedilha}@~{a}o} sunlisp (@var{lisp_string}) 
 Converte uma seq@"{u}@^{e}ncia de caracteres do Lisp em uma seq@"{u}@^{e}ncia de caracteres do Maxima.
@@ -491,7 +492,6 @@ O primeiro caractere em @var{seq_caracte} @'{e} retornado com @var{n} = 1.
 Retorna a lsita de todos os caracteres em @var{seq_caracte}. 
 
 @c ===beg===
-@c load("stringproc")$
 @c charlist("Lisp");
 @c %[1];
 @c ===end===
