@@ -1320,8 +1320,8 @@ Some operators evaluate @code{equal} and @code{notequal} to @code{true} or @code
 @c [eq_1 and eq_2, eq_1 or eq_2, not eq_1];
 @c ===end===
 @example
-(%i4) if equal (y, y - 1) then FOO else BAR;
-(%o4)                          BAR
+(%i1) if equal (y, y - 1) then FOO else BAR;
+(%o2)                          BAR
 (%i2) eq_1 : equal (x, x + 1);
 (%o2)                    equal(x, x + 1)
 (%i3) eq_2 : equal (y^2 + 2*y + 1, (y + 1)^2);
