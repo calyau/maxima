@@ -272,7 +272,7 @@ properties associated with the atom @var{a}.
 @c WHAT IS HIDDEN IN THE "etc" HERE ??
 @defvr {Special symbol} props
 @code{props} are atoms which have any property other than those explicitly
-mentioned in @code{infolists}, such as cpecofied by @code{atvalue}, @code{matchdeclare}, etc., 
+mentioned in @code{infolists}, such as specified by @code{atvalue}, @code{matchdeclare}, etc., 
 as well as properties specified in the @code{declare} function.
 
 @end defvr
