@@ -1,11 +1,11 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
-@c /bode.texi/1.1/Mon Feb 27 22:09:17 2006//
+@c /bode.texi/1.2/Sat Jun  2 00:13:11 2007//
 @menu
-* Defini@value{cedilha}@~{o}es para bode::
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para bode::
 @end menu
 
-@node Defini@value{cedilha}@~{o}es para bode,  , bode, bode
-@section Defini@value{cedilha}@~{o}es para bode
+@node Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para bode,  , bode, bode
+@section Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para bode
 
 
 @deffn {Fun@value{cedilha}@~{a}o} bode_gain (@var{H}, @var{range}, ...@var{plot_opts}...)
