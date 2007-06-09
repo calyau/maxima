@@ -1,10 +1,10 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
-@c /Function.texi/1.46/Fri Mar  2 00:44:37 2007/-ko/
+@c /Function.texi/1.48/Sat Jun  2 00:12:46 2007/-ko/
 @menu
 * Introdu@value{cedilha}@~{a}o a Defini@value{cedilha}@~{a}o de Fun@value{cedilha}@~{a}o::  
 * Fun@value{cedilha}@~{a}o::                    
 * Macros::                      
-* Defini@value{cedilha}@~{o}es para Defini@value{cedilha}@~{a}o de Fun@value{cedilha}@~{a}o::  
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis para Defini@value{cedilha}@~{a}o de Fun@value{cedilha}@~{a}o::  
 @end menu
 
 @node Introdu@value{cedilha}@~{a}o a Defini@value{cedilha}@~{a}o de Fun@value{cedilha}@~{a}o, Fun@value{cedilha}@~{a}o, Defini@value{cedilha}@~{a}o de Fun@value{cedilha}@~{a}o, Defini@value{cedilha}@~{a}o de Fun@value{cedilha}@~{a}o
@@ -16,7 +16,7 @@
 @section Fun@value{cedilha}@~{a}o
 @subsection Ordinary functions
 
-Para definir uma fun@value{cedilha}@~{a}o no Maxima voc@^{e} usa o operador :=.
+Para definir uma fun@value{cedilha}@~{a}o no Maxima voc@^{e} usa o operador @code{:=}.
 E.g.
 
 @example
@@ -104,8 +104,8 @@ proteger@'{a} o valor externo de @code{a} de ser alterado, mas
 impedir@'{a} voc@^{e} acessar o valor antigo.   Dessa forma o lado direito
 de atribui@value{cedilha}@~{o}es, @'{e} avaliado no contexto inserido, antes que
 qualquer avalia@value{cedilha}@~{a}o ocorra.
-Usando apenas @code{block ([x], ...} faremos com que o @code{x} ter a si mesmo
-como valor, apenas como tivesse voc@^{e} entrar numa breve sess@~{a}o
+Usando apenas @code{block ([x], ...} faremos com que o @code{x} tenha a si mesmo
+como valor, apenas como x teria se voc@^{e} tivesse entrado numa breve sess@~{a}o do
 @b{Maxima}.
 
 Os atuais argumentos para uma fun@value{cedilha}@~{a}o s@~{a}o tratados exatamente da mesma que
@@ -164,7 +164,7 @@ Todavia, n@~{a}o exite caminho para remover todos os valores armazenados de uma 
 exceto para @code{kill(@var{a})} ou @code{remarray(@var{a})},
 o qual remove tamb@'{e}m remove a defini@value{cedilha}@~{a}o da fun@value{cedilha}@~{a}o de array.
 
-@node Macros, Defini@value{cedilha}@~{o}es para Defini@value{cedilha}@~{a}o de Fun@value{cedilha}@~{a}o, Fun@value{cedilha}@~{a}o, Defini@value{cedilha}@~{a}o de Fun@value{cedilha}@~{a}o
+@node Macros, Fun@value{cedilha}@~{o}es e Vari@'{a}veis para Defini@value{cedilha}@~{a}o de Fun@value{cedilha}@~{a}o, Fun@value{cedilha}@~{a}o, Defini@value{cedilha}@~{a}o de Fun@value{cedilha}@~{a}o
 @section Macros
 
 @deffn {Fun@value{cedilha}@~{a}o} buildq (@var{L}, @var{expr})
@@ -268,15 +268,17 @@ e seus valores sobre o lado direito.
 @c ===beg===
 @c show_values ([L]) ::= buildq ([L], map ("=", 'L, L));
 @c (a: 17, b: 29, c: 1729)$
-@c macroexpand (show_values (a, b, c - a - b));
 @c show_values (a, b, c - a - b);
+@c macroexpand (show_values (a, b, c - a - b));
 @c ===end===
 @example
 (%i1) show_values ([L]) ::= buildq ([L], map ("=", 'L, L));
 (%o1)   show_values([L]) ::= buildq([L], map("=", 'L, L))
 (%i2) (a: 17, b: 29, c: 1729)$
 (%i3) show_values (a, b, c - a - b);
-(%o3)              [a = 17, b = 29, c = 1729]
+(%o3)          [a = 17, b = 29, c - b - a = 1683]
+(%i4) macroexpand (show_values (a, b, c - a - b));
+(%o4)    map(=, '([a, b, c - b - a]), [a, b, c - b - a])
 @end example
 
 @end deffn
@@ -339,7 +341,7 @@ aquela chamada de fun@value{cedilha}@~{a}o de macro n@~{a}o @'{e} expandida.
 
 Veja tamb@'{e}m @code{::=}, @code{macros}, e @code{macroexpand}.
 
-Examples
+Exemplos
 
 @c ===beg===
 @c g (x) ::= x / 99;
@@ -420,9 +422,10 @@ Exemplos
 
 @end deffn
 
+
 @c end concepts Defini@value{cedilha}@~{a}o de Fun@value{cedilha}@~{a}o
-@node Defini@value{cedilha}@~{o}es para Defini@value{cedilha}@~{a}o de Fun@value{cedilha}@~{a}o,  , Macros, Defini@value{cedilha}@~{a}o de Fun@value{cedilha}@~{a}o
-@section Defini@value{cedilha}@~{o}es para Defini@value{cedilha}@~{a}o de Fun@value{cedilha}@~{a}o
+@node Fun@value{cedilha}@~{o}es e Vari@'{a}veis para Defini@value{cedilha}@~{a}o de Fun@value{cedilha}@~{a}o,  , Macros, Defini@value{cedilha}@~{a}o de Fun@value{cedilha}@~{a}o
+@section Fun@value{cedilha}@~{o}es e Vari@'{a}veis para Defini@value{cedilha}@~{a}o de Fun@value{cedilha}@~{a}o
 
 @deffn {Fun@value{cedilha}@~{a}o} apply (@var{F}, [@var{x_1}, ..., @var{x_n}])
 Constr@'{o}i e avalia uma express@~{a}p @code{@var{F}(@var{arg_1}, ..., @var{arg_n})}.
@@ -661,6 +664,7 @@ Quando o primeiro argumento de @code{define} for uma express@~{a}o da forma
 @code{@var{f}(@var{x_1}, ..., @var{x_n})} or @code{@var{f}[@var{x_1}, ..., @var{x_n}]},
 os argumentos s@~{a}o avaliados mas @var{f} n@~{a}o @'{e} avaliada,
 mesmo se j@'{a} existe anteriormente uma fun@value{cedilha}@~{a}o ou vari@'{a}vel com aquele nome.
+
 Quando o primeiro argumento for uma express@~{a}o com operador @code{funmake}, @code{arraymake}, ou @code{ev},
 o primeiro argumento ser@'{a} avaliado;
 isso permite para o nome da fun@value{cedilha}@~{a}o seja calculado, tamb@'{e}m como o corpo.
@@ -916,11 +920,9 @@ Em contraste, @code{fundef} retorna a defini@value{cedilha}@~{a}o de fun@value{c
 
 @code{dispfun} n@~{a}o avalia seus argumentos; 
 O operador ap@'{o}strofo-ap@'{o}strofo @code{'@w{}'} faz com que ocorra avalia@value{cedilha}@~{a}o.
-
 @code{dispfun} retorna a lista de r@'{o}tulos de express@~{o}es intermedi@'{a}rias correspondendo @`as fun@value{cedilha}@~{o}es mostradas.
 
 Exemplos:
-
 
 @c ===beg===
 @c m(x, y) ::= x^(-y);
@@ -988,7 +990,6 @@ Exemplos:
         h (y) := x   , h (y) := --, h  (y) := ---, i (y) := 8   ]
          x              5        y   10         y   8
                                 5             10
-
 @end example
 
 @end deffn
@@ -996,7 +997,7 @@ Exemplos:
 @defvr {Vari@'{a}vel de sistema} functions
 Valor padr@~{a}o: @code{[]}
 
-@code{functions} @'{e} uma lista de todas as fun@value{cedilha}@~{o}es comuns do Maxima
+@code{functions} @'{e} a lista de todas as fun@value{cedilha}@~{o}es comuns do Maxima
 na sess@~{a}o corrente.
 Uma fun@value{cedilha}@~{a}o comum @'{e} uma fun@value{cedilha}@~{a}o constru@'{i}da atrav@'{e}s de
 @code{define} ou de @code{:=} e chamada com par@^{e}ntesis @code{()}.
@@ -1192,6 +1193,7 @@ Exemplos:
 (%i5) ''%;
 (%o5)                         - 284
 @end example
+
 Maxima simplifica o valor de retorno de @code{funmake}.
 
 @c ===beg===
@@ -1405,27 +1407,167 @@ ocorr@^{e}cia @'{e} permitida em cada.
 @defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} macroexpansion
 Valor padr@~{a}o: @code{false}
 
-@code{macroexpansion} controla recursos avan@value{cedilha}ados que
-afetam a efici@^{e}ncia de macros.  Escolhas poss@'{i}veis:
+@code{macroexpansion} controla se a expans@~{a}o (isto @'{e}, o valor de retorno) de uma fun@value{cedilha}@~{a}o de macro
+@'{e} substitu@'{i}do pela chamada @`{a} fun@value{cedilha}@~{a}o de macro.
+Uma substitui@value{cedilha}@~{a}o pode aumentar a velocidade de subseq@"{u}@^{e}nte avalia@value{cedilha}@~{o}es da express@~{a}o,
+ao custo de armazenar a expans@~{a}o.
 
-@itemize @bullet
-@item
-@code{false} -- Macros expandem normalmente cada vez que s@~{a}o chamadas.
-@item
-@code{expand} -- A primeira vez de uma chamada particular @'{e} avaliada, a
-expans@~{a}o @'{e} lembrada internamente, dessa forma n@~{a}o tem como ser
-recalculada em chamadas subseq@"{u}@^{e}nte rapidamente.  A
-macro chama ainda chamadas @code{grind} e @code{display} normalmente.  Todavia, mem@'{o}ria extra @'{e}
-requerida para lembrar todas as expans@~{o}es.
-@item
-@code{displace} -- A primeira vez de uma chamada particular @'{e} avaliada, a
-expans@~{a}o @'{e} substitu@'{i}da pela chamada.  Isso requer levemente menos
-armazenagem que quando @code{macroexpansion} @'{e} escolhida para @code{expand} e @'{e} razo@'{a}velmente r@'{a}pido,
-mas tem a desvantagem de a macro original ser lentamente
-lembrada e da@'{i} a expans@~{a}o ser@'{a} vista se @code{display} ou @code{grind} for
-chamada.  Veja a documenta@value{cedilha}@~{a}o para @code{translate} e @code{macros} para maiores detalhes.
-@end itemize
-@c NEED SOME EXAMPLES HERE.
+@table @code
+@item false
+A expans@~{a}o de uma fun@value{cedilha}@~{a}o de macro n@~{a}o @'{e} substitu@'{i}da pela chamada de fun@value{cedilha}@~{a}o de macro.
+@item expand
+Da primeira vez que a fun@value{cedilha}@~{a}o de macro @'{e} avaliada,
+a expans@~{a}o @'{e} armazenada.
+A expans@~{a}o n@~{a}o @'{e} recalculada sobre chamadas subseq@u}@^{e}ntes;
+qualquer efeito colateral (tais como @code{print} ou atribui@value{cedilha}@~{o}es a vari@'{a}veis globais) ocorrem
+somente quando chamadas @`{a} fun@value{cedilha}@~{a}o de macro forem avaliadas primeiramente.
+Expans@~{o}es em uma express@~{a}o n@~{a}o afetam outras express@~{o}es
+que possuem a mesma chamada @`{a} fun@value{cedilha}@~{a}o de macro.
+@item displace
+Na primeira vez que uma fun@value{cedilha}@~{a}o de macro @'{e} avaliada,
+a expans@~{a}o @'{e} substitu@'{i}da pela chamada,
+dessa forma modificando a express@~{a}o a partir da qual a fun@value{cedilha}@~{a}o de macro foi chamada.
+A expans@~{a}o n@~{a}o @'{e} recalculada nas chamadas subseq@"{u}@^{e}ntes;
+qualquer efeito colateral acontece somente quando a chamada @`{a} fun@value{cedilha}@~{a}o de macro for avaliada primeiramente.
+Expans@~{o}es na express@~{a}o n@~{a}o afetam outras express@~{o}es
+que possuem a mesma chamada @`{a} fun@value{cedilha}@~{a}o de macro.
+@end table
+
+Exemplos
+
+Quandon @code{macroexpansion} for @code{false},
+uma fun@value{cedilha}@~{a}o de macro @'{e} chamada a cada vez que a express@~{a}o que est@'{a} chamando @'{e} avaliada,
+e a express@~{a}o que est@'{a} chamandon@~{a}o @'{e} modificada.
+
+@c ===beg===
+@c f (x) := h (x) / g (x);
+@c g (x) ::= block (print ("x + 99 is equal to", x), return (x + 99));
+@c h (x) ::= block (print ("x - 99 is equal to", x), return (x - 99));
+@c macroexpansion: false;
+@c f (a * b);
+@c dispfun (f);
+@c f (a * b);
+@c ===end===
+@example
+(%i1) f (x) := h (x) / g (x);
+                                  h(x)
+(%o1)                     f(x) := ----
+                                  g(x)
+(%i2) g (x) ::= block (print ("x + 99 is equal to", x), return (x + 99));
+(%o2) g(x) ::= block(print("x + 99 is equal to", x), 
+                                                  return(x + 99))
+(%i3) h (x) ::= block (print ("x - 99 is equal to", x), return (x - 99));
+(%o3) h(x) ::= block(print("x - 99 is equal to", x), 
+                                                  return(x - 99))
+(%i4) macroexpansion: false;
+(%o4)                         false
+(%i5) f (a * b);
+x - 99 is equal to x 
+x + 99 is equal to x 
+                            a b - 99
+(%o5)                       --------
+                            a b + 99
+(%i6) dispfun (f);
+                                  h(x)
+(%t6)                     f(x) := ----
+                                  g(x)
+
+(%o6)                         done
+(%i7) f (a * b);
+x - 99 is equal to x 
+x + 99 is equal to x 
+                            a b - 99
+(%o7)                       --------
+                            a b + 99
+@end example
+
+Quando @code{macroexpansion} for @code{expand},
+uma fun@value{cedilha}@~{a}o de macro @'{e} chamada uma @'{u}nica vez,
+e a express@~{a}o que est@'{a} chamando n@~{a}o @'{e} modificada.
+
+@c ===beg===
+@c f (x) := h (x) / g (x);
+@c g (x) ::= block (print ("x + 99 is equal to", x), return (x + 99));
+@c h (x) ::= block (print ("x - 99 is equal to", x), return (x - 99));
+@c macroexpansion: expand;
+@c f (a * b);
+@c dispfun (f);
+@c f (a * b);
+@c ===end===
+@example
+(%i1) f (x) := h (x) / g (x);
+                                  h(x)
+(%o1)                     f(x) := ----
+                                  g(x)
+(%i2) g (x) ::= block (print ("x + 99 is equal to", x), return (x + 99));
+(%o2) g(x) ::= block(print("x + 99 is equal to", x), 
+                                                  return(x + 99))
+(%i3) h (x) ::= block (print ("x - 99 is equal to", x), return (x - 99));
+(%o3) h(x) ::= block(print("x - 99 is equal to", x), 
+                                                  return(x - 99))
+(%i4) macroexpansion: expand;
+(%o4)                        expand
+(%i5) f (a * b);
+x - 99 is equal to x 
+x + 99 is equal to x 
+                            a b - 99
+(%o5)                       --------
+                            a b + 99
+(%i6) dispfun (f);
+                                  h(x)
+(%t6)                     f(x) := ----
+                                  g(x)
+
+(%o6)                         done
+(%i7) f (a * b);
+                            a b - 99
+(%o7)                       --------
+                            a b + 99
+@end example
+
+Quando @code{macroexpansion} for @code{expand},
+uma fun@value{cedilha}@~{a}o de macro @'{e} chamada uma @'{u}nica vez,
+e a express@~{a}o que est@'{a} chamando @'{e} modificada.
+
+@c ===beg===
+@c f (x) := h (x) / g (x);
+@c g (x) ::= block (print ("x + 99 is equal to", x), return (x + 99));
+@c h (x) ::= block (print ("x - 99 is equal to", x), return (x - 99));
+@c macroexpansion: displace;
+@c f (a * b);
+@c dispfun (f);
+@c f (a * b);
+@c ===end===
+@example
+(%i1) f (x) := h (x) / g (x);
+                                  h(x)
+(%o1)                     f(x) := ----
+                                  g(x)
+(%i2) g (x) ::= block (print ("x + 99 is equal to", x), return (x + 99));
+(%o2) g(x) ::= block(print("x + 99 is equal to", x), 
+                                                  return(x + 99))
+(%i3) h (x) ::= block (print ("x - 99 is equal to", x), return (x - 99));
+(%o3) h(x) ::= block(print("x - 99 is equal to", x), 
+                                                  return(x - 99))
+(%i4) macroexpansion: displace;
+(%o4)                       displace
+(%i5) f (a * b);
+x - 99 is equal to x 
+x + 99 is equal to x 
+                            a b - 99
+(%o5)                       --------
+                            a b + 99
+(%i6) dispfun (f);
+                                 x - 99
+(%t6)                    f(x) := ------
+                                 x + 99
+
+(%o6)                         done
+(%i7) f (a * b);
+                            a b - 99
+(%o7)                       --------
+                            a b + 99
+@end example
 
 @end defvr
 
@@ -1719,6 +1861,7 @@ Valor padr@~{a}o: @code{true}
 
 Quando @code{tr_bound_function_applyp} for @code{true}, Maxima emite um alerta se uma associa@value{cedilha}@~{a}o
 de vari@'{a}vel (tal como um argumento de fun@value{cedilha}@~{a}o) @'{e} achada sendo usada como uma fun@value{cedilha}@~{a}o.
++@c WHAT DOES THIS MEAN ??
 @code{tr_bound_function_applyp} n@~{a}o afeta o c@'{o}digo gerado em tais casos.
 
 Por exemplo, uma express@~{a}o tal como @code{g (f, x) := f (x+1)} ir@'{a} disparar

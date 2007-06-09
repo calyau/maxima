@@ -239,7 +239,7 @@ Ajuda
 * Lisp e Maxima::            
 * Descartando::          
 * Documenta@value{cedilha}@~{a}o::               
-* Defini@value{cedilha}@~{o}es para Ajuda::        
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Ajuda::        
 
 Linha de Comando
 
@@ -271,7 +271,7 @@ Simplifica@value{cedilha}@~{a}o
 
 Montando Gr@'{a}ficos
 
-* Defini@value{cedilha}@~{o}es para Montagem de Gr@'{a}ficos::    
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Montagem de Gr@'{a}ficos::    
 
 Entrada e Sa@'{i}da
 
@@ -403,7 +403,7 @@ Op@value{cedilha}@~{o}es Diversas
 
 * Introdu@value{cedilha}@~{a}o a Op@value{cedilha}@~{o}es Diversas::  
 * Compartilhado::                       
-* Defini@value{cedilha}@~{o}es para Op@value{cedilha}@~{o}es Diversas::  
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Op@value{cedilha}@~{o}es Diversas::  
 
 Regras e Modelos
 
@@ -425,7 +425,7 @@ Defini@value{cedilha}@~{a}o de Fun@value{cedilha}@~{a}o
 * Introdu@value{cedilha}@~{a}o a Defini@value{cedilha}@~{a}o de Fun@value{cedilha}@~{a}o::  
 * Fun@value{cedilha}@~{a}o::                    
 * Macros::                      
-* Defini@value{cedilha}@~{o}es para Defini@value{cedilha}@~{a}o de Fun@value{cedilha}@~{a}o::  
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis para Defini@value{cedilha}@~{a}o de Fun@value{cedilha}@~{a}o::  
 
 Fluxo de Programa
 
@@ -509,7 +509,7 @@ lindstedt
 linearalgebra
 
 * Introdu@value{cedilha}@~{a}o a linearalgebra::
-* Defini@value{cedilha}@~{o}es para linearalgebra::
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para linearalgebra::
 
 lsquares
 

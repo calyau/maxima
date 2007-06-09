@@ -1,9 +1,9 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
-@c /Miscellaneous.texi/1.20/Mon Jan  1 07:27:14 2007/-ko/
+@c /Miscellaneous.texi/1.23/Fri Jun  8 01:15:42 2007/-ko/
 @menu
 * Introdu@value{cedilha}@~{a}o a Op@value{cedilha}@~{o}es Diversas::  
 * Compartilhado::                       
-* Defini@value{cedilha}@~{o}es para Op@value{cedilha}@~{o}es Diversas::  
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Op@value{cedilha}@~{o}es Diversas::  
 @end menu
 
 @node Introdu@value{cedilha}@~{a}o a Op@value{cedilha}@~{o}es Diversas, Compartilhado, Op@value{cedilha}@~{o}es Diversas, Op@value{cedilha}@~{o}es Diversas
@@ -13,7 +13,7 @@ Nessa se@value{cedilha}@~{a}o v@'{a}rias op@value{cedilha}@~{o}es s@~{a}o tratad
 sobre a opera@value{cedilha}@~{a}o do Maxima.   Tamb@'{e}m v@'{a}rias listas tais como a lista de todas as
 fun@value{cedilha}@~{o}es definidas pelo usu@'{a}rio, s@~{a}o discutidas.
 
-@node Compartilhado, Defini@value{cedilha}@~{o}es para Op@value{cedilha}@~{o}es Diversas, Introdu@value{cedilha}@~{a}o a Op@value{cedilha}@~{o}es Diversas, Op@value{cedilha}@~{o}es Diversas
+@node Compartilhado, Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Op@value{cedilha}@~{o}es Diversas, Introdu@value{cedilha}@~{a}o a Op@value{cedilha}@~{o}es Diversas, Op@value{cedilha}@~{o}es Diversas
 @section Compartilhado
 O diret@'{o}rio "share" do Maxima cont@'{e}m programas e outros arquivos 
 de interesse para os usu@'{a}rios do Maxima, mas que n@~{a}o s@~{a}o parte da implementa@value{cedilha}@~{a}o do n@'{u}cleo do Maxima.
@@ -27,8 +27,8 @@ dentro do sistema de arquivos do usu@'{a}rio.
 Usu@'{a}rios podem encontrar isso de forma mais detalhada navegando no diret@'{o}rio compartilhado usando um navegador de sistema de arquivo.
 
 
-@node Defini@value{cedilha}@~{o}es para Op@value{cedilha}@~{o}es Diversas,  , Compartilhado, Op@value{cedilha}@~{o}es Diversas
-@section Defini@value{cedilha}@~{o}es para Op@value{cedilha}@~{o}es Diversas
+@node Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Op@value{cedilha}@~{o}es Diversas,  , Compartilhado, Op@value{cedilha}@~{o}es Diversas
+@section Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Op@value{cedilha}@~{o}es Diversas
 
 @defvr {Vari@'{a}vel de sistema} aliases
 Valor padr@~{a}o: @code{[]}
@@ -54,7 +54,6 @@ Exemplo:
 @c xx~yy`@ + @yy`xx + `xx@@yy~;
 @c listofvars (%);
 @c ===end===
-
 @example
 (%i1) xx\~yy\`\@@ : 1729;
 (%o1)                         1729
@@ -92,9 +91,7 @@ da lista de argumentos.
 A ordem dos @'{i}tens na lista pode depender do sinalizador global @code{inflag}.
 
 @code{args (@var{expr})} @'{e} equivalente a @code{substpart ("[", @var{expr}, 0)}.
-Veja tamb@'{e}m @code{substpart}.
-
-Veja tamb@'{e}m @code{op}.
+Veja tamb@'{e}m @code{substpart} e @code{op}.
 
 @c NEEDS EXAMPLES
 @end deffn
@@ -192,7 +189,7 @@ um n@~{a}o est@'{a} explicitamente escolhido pelo usu@'{a}rio.)
 @deffn {Fun@value{cedilha}@~{a}o} integerp (@var{expr})
 Retorna @code{true} se @var{expr} @'{e} um inteiro num@'{e}rico literal, de outra forma retorna @code{false}.
 
-@code{integerp} retorna falso se seu argumento for um s@'{i}mbolo,
+@code{integerp} retorna @code{false} se seu argumento for um s@'{i}mbolo,
 mesmo se o argumento for declarado inteiro.
 
 Exemplos:
@@ -246,10 +243,11 @@ m1pbranch:false          m1pbranch:true
 Retorna @code{true} se @var{expr} for um inteiro literal, n@'{u}mero racional, 
 n@'{u}mero em ponto flutuante, ou um grande n@'{u}mero em ponto flutuante, de outra forma retorna @code{false}.
 
-@code{numberp} retorna falso se seu argumento for um s@'{i}mbolo,
+@code{numberp} retorna @code{false} se seu argumento for um s@'{i}mbolo,
 mesmo se o argumento for um n@'{u}mero simb@'{o}lico tal como @code{%pi} ou @code{%i},
 ou declarado ser 
-par, @'{i}mpar, inteiro, racional, irracional, real, imagin@'{a}rio, ou complexo.
+@code{even}, @code{odd}, @code{integer}, @code{rational}, @code{irrational}, 
+@code{real}, @code{imaginary}, or @code{complex}. Nota de Tradu@value{cedilha}@~{a}o: par, @'{i}mpar, inteiro, racional, irracional, real, imagin@'{a}rio, ou complexo.
 
 Exemplos:
 
@@ -286,9 +284,9 @@ propriedades associadas com o @'{a}tomo @var{a}.
 @c WHAT IS HIDDEN IN THE "etc" HERE ??
 @defvr {S@'{i}mbolo especial} props
 @code{props} s@~{a}o @'{a}tomos que possuem qualquer propriedade outra como essas explicitamente
-mencionadas em @code{infolists}, tais como atvalues, matchdeclares, etc., tamb@'{e}m
-propriedades especificadas na fun@value{cedilha}@~{a}o  @code{declare}.
-
+mencionadas em @code{infolists}, tais como especificado atrav@'{e}s de @code{atvalue}, @code{matchdeclare}, etc., 
+e tamb@'{e}m propriedades especificadas na fun@value{cedilha}@~{a}o @code{declare}.
+ 
 @end defvr
 
 @c CROSS REF TO WHICH FUNCTION OR FUNCTIONS ESTABLISH PROPERTIES !! (VERY IMPORTANT)

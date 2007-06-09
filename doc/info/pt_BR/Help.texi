@@ -1,5 +1,5 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
-@c /Help.texi/1.21/Thu Mar  8 03:54:16 2007/-ko/
+@c /Help.texi/1.23/Sat Jun  2 00:12:47 2007/-ko/
 @iftex
 @hyphenation{cor-res-pon-de}
 @end iftex
@@ -7,7 +7,7 @@
 * Lisp e Maxima::            
 * Descartando::          
 * Documenta@value{cedilha}@~{a}o::               
-* Defini@value{cedilha}@~{o}es para Ajuda::        
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Ajuda::        
 @end menu
 
 @node Lisp e Maxima, Descartando, Ajuda, Ajuda
@@ -154,7 +154,7 @@ escritas.    Veja a documenta@value{cedilha}@~{a}o da GCL sob ALLOCATE e GBC.   
 ambiente Lisp fazendo (setq si::*notify-gbc* t) ir@'{a} ajudar voc@^{e} a determinar quais
 @'{a}reas podem precisar de mais espa@value{cedilha}o.
 
-@node Documenta@value{cedilha}@~{a}o, Defini@value{cedilha}@~{o}es para Ajuda, Descartando, Ajuda
+@node Documenta@value{cedilha}@~{a}o, Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Ajuda, Descartando, Ajuda
 @section Documenta@value{cedilha}@~{a}o
 
 @c SHOULD TALK ABOUT OTHER FORMS OF DOCUMENTATION ASIDE FROM ON-LINE MANUAL.
@@ -189,8 +189,8 @@ retorna
 
 e sa@'{i}da adicional.
 
-@node Defini@value{cedilha}@~{o}es para Ajuda,  , Documenta@value{cedilha}@~{a}o, Ajuda
-@section Defini@value{cedilha}@~{o}es para Ajuda
+@node Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Ajuda,  , Documenta@value{cedilha}@~{a}o, Ajuda
+@section Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Ajuda
 
 @deffn {Fun@value{cedilha}@~{a}o} demo (@var{nomearquivo})
 Avalia express@~{o}es Maxima em @var{nomearquivo} e mostra os resultados.
@@ -315,28 +315,38 @@ Exemplo:
 
 @example
 (%i1) ?? integ
- 0: (maxima.info)Introduction to Elliptic Functions and Integrals.
- 1: Definitions for Elliptic Integrals.
- 2: Integration.
- 3: Introduction to Integration.
- 4: Definitions for Integration.
- 5: askinteger :Definitions for Simplification.
- 6: integerp :Definitions for Miscellaneous Options.
- 7: integrate :Definitions for Integration.
- 8: integrate_use_rootsof :Definitions for Integration.
- 9: integration_constant_counter :Definitions for Integration.
+ 0: Functions and Variables for Elliptic Integrals
+ 1: Functions and Variables for Integration
+ 2: Introduction to Elliptic Functions and Integrals
+ 3: Introduction to Integration
+ 4: askinteger  (Functions and Variables for Simplification)
+ 5: integerp  (Functions and Variables for Miscellaneous Options)
+ 6: integer_partitions  (Functions and Variables for Sets)
+ 7: integrate  (Functions and Variables for Integration)
+ 8: integrate_use_rootsof  (Functions and Variables for Integration)
+ 9: integration_constant_counter  (Functions and Variables for Integration)
+ 10: nonnegintegerp  (Functions and Variables for linearalgebra)
 Enter space-separated numbers, `all' or `none': 7 8
 
-Info from file /use/local/maxima/doc/info/maxima.info:
- - Function: integrate (expr, var)
- - Function: integrate (expr, var, a, b)
-     Attempts to symbolically compute the integral of `expr' with
-     respect to `var'.  `integrate (expr, var)' is an indefinite
-     integral, while `integrate (expr, var, a, b)' is a definite
+ -- Function: integrate (<expr>, <x>)
+ -- Function: integrate (<expr>, <x>, <a>, <b>)
+     Attempts to symbolically compute the integral of <expr> with
+     respect to <x>.  `integrate (<expr>, <x>)' is an indefinite
+     integral, while `integrate (<expr>, <x>, <a>, <b>)' is a definite
      integral, [...]
+     
+ -- Option variable: integrate_use_rootsof
+     Default value: `false'
+
+     When `integrate_use_rootsof' is `true' and the denominator of a
+     rational function cannot be factored, `integrate' returns the
+     integral in a form which is a sum over the roots (not yet known)
+     of the denominator.
+     [...]
 @end example
 
-Nesse , @'{i}tens 7 e 8 foram selecionados.
+Nesse exemplo, @'{i}tens 7 e 8 foram selecionados
+(a sa@'{i}da foi encurtada por raz@~{o}es tipogr@'{a}ficas e economico-financeiras como indicado por @code{[...]}.
 Todos ou nenhum dos @'{i}tens poderia ter sido selecionado atrav@'{e}s da inser@value{cedilha}@~{a}o de @code{all} ou @code{none},
 que podem ser abreviado para @code{a} ou para @code{n}, respectivamente.
 
