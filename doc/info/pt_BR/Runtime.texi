@@ -1,5 +1,5 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
-@c /Runtime.texi/1.20/Sat Jun  2 00:13:06 2007/-ko/
+@c /Runtime.texi/1.21/Sat Jun  9 01:31:20 2007/-ko/
 @menu
 * Introdu@value{cedilha}@~{a}o a Ambiente em Tempo de Execu@value{cedilha}@~{a}o::  
 * Interrup@value{cedilha}@~{o}es::                  
@@ -43,7 +43,7 @@ A a@value{cedilha}@~{a}o padr@~{a}o @'{e} parar a computa@value{cedilha}@~{a}o
 e mostrar outra linha de comando do usu@'{a}rio.
 Nesse caso, n@~{a}o @'{e} poss@'{i}vel continuar a computa@value{cedilha}@~{a}o interrompida.
 
-Se a vari@'{a}vel @code{*debugger-hook*} @'{e} escolhida para @code{nil}, atrav@'{e}s do comando
+Se a vari@'{a}vel Lisp @code{*debugger-hook*} @'{e} escolhida para @code{nil}, atrav@'{e}s do comando
 
 @example
 :lisp (setq *debugger-hook* nil)

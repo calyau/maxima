@@ -1,5 +1,5 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
-@c /simplifications.texi/1.5/Thu Jun  7 02:03:57 2007//
+@c /simplifications.texi/1.6/Thu Jun  7 02:12:31 2007//
 @menu
 * Introdu@value{cedilha}@~{a}o a simplification::
 * Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para simplification::

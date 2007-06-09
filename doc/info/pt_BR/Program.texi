@@ -1,5 +1,5 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
-@c /Program.texi/1.25/Sat Jun  2 00:13:04 2007/-ko/
+@c /Program.texi/1.26/Sat Jun  9 01:31:20 2007/-ko/
 @menu
 * Introdu@value{cedilha}@~{a}o a Fluxo de Programa::  
 * Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Fluxo de Programa::  
@@ -91,50 +91,50 @@ condi@value{cedilha}@~{o}es de encerramento.  S@~{a}o elas:
       thru @var{limite} do @var{corpo}}
 @item
 @code{for @var{Vari@'{a}vel}: @var{valor_inicial} step @var{incremento}
-      while @var{condition} do @var{corpo}}
+      while @var{condi@value{cedilha}@~{a}o} do @var{corpo}}
 @item
 @code{for @var{Vari@'{a}vel}: @var{valor_inicial} step @var{incremento}
-      unless @var{condition} do @var{corpo}}
+      unless @var{condi@value{cedilha}@~{a}o} do @var{corpo}}
 @end itemize
 
 @c UGH.  DO WE REALLY NEED TO MENTION THIS??
-(Alternativamente, o @code{step} pode ser dado ap@'{o}s a condi@value{cedilha}@~{a}o de encerramento
+(Alternativamente, o @code{step} pode ser dado ap@'{o}s a @var{condi@value{cedilha}@~{a}o} de encerramento
 ou limite.)
 
 @var{valor_inicial}, @var{incremento}, @var{limite}, e @var{corpo} podem ser quaisquer
 express@~{o}es.  Se o incremento for 1 ent@~{a}o "@code{step 1}" pode ser omitido.
 
 A execu@value{cedilha}@~{a}o da declara@value{cedilha}@~{a}o @code{do} processa-se primeiro atribuindo o
-valor_inicial para a vari@'{a}vel (daqui em diante chamada a
+@code{valor_inicial} para a vari@'{a}vel (daqui em diante chamada a
 vari@'{a}vel de controle).  Ent@~{a}o: (1) Se a vari@'{a}vel de controle excede
 o limite de uma especifica@value{cedilha}@~{a}o @code{thru}, ou se a condi@value{cedilha}@~{a}o de @code{unless} for
 @code{true}, ou se a condi@value{cedilha}@~{a}o de @code{while} for @code{false} ent@~{a}o o @code{do}
-ser@'{a} encerrado.  (2) O corpo @'{e} avaliado.  (3) O incremento @'{e} adicionado @`a
+ser@'{a} encerrado.  (2) O @var{corpo} @'{e} avaliado.  (3) O incremento @'{e} adicionado @`a
 vari@'{a}vel de controle.  O processo de (1) a (3) @'{e} executado
 repetidamente at@'{e} que a condi@value{cedilha}@~{a}o de encerramento seja satisfeita.  Pode-se tamb@'{e}m
 dar muitas condi@value{cedilha}@~{o}es de encerramento e nesse caso o @code{do} termina
 quando qualquer delas for satisfeita.
 
 Em geral o teste @code{thru} @'{e} satisfeito quando a vari@'{a}vel de controle for
-maior que o limite se o incremento for n@~{a}o negativo, ou quando a
-vari@'{a}vel de controle for menor que o limite se o incremento for negativo.
-O incremento e o limite podem ser express@~{o}es n@~{a}o num@'{e}ricas enquanto essa
-desigualdade puder ser determinada.  Todavia, a menos que o incremento seja
+maior que o @var{limite} se o incremento for n@~{a}o negativo, ou quando a
+vari@'{a}vel de controle for menor que o @var{limite} se o @var{incremento} for negativo.
+O @var{incremento} e o @var{limite} podem ser express@~{o}es n@~{a}o num@'{e}ricas enquanto essa
+desigualdade puder ser determinada.  Todavia, a menos que o @var{incremento} seja
 sintaticamente negativo (e.g. for um n@'{u}mero negativo) na hora em que a declara@value{cedilha}@~{a}o @code{do}
 for iniciada, Maxima assume que o incremento e o limite ser@~{a}o positivos quando o @code{do} for
 executado.  Se o limite e o incremento n@~{a}o forem positivos, ent@~{a}o o @code{do} pode n@~{a}o terminar
 propriamente.
 
-Note que o limite, incremento, e condi@value{cedilha}@~{a}o de encerramento s@~{a}o
+Note que o @var{limite}, @var{incremento}, e @var{condi@value{cedilha}@~{a}o} de encerramento s@~{a}o
 avaliados cada vez que ocorre um ciclo.  Dessa forma se qualquer desses for respons@'{a}vel por
 muitos c@'{a}lculos, e retornar um resultado que n@~{a}o muda durante todas
-as execu@value{cedilha}@~{o}es do corpo, ent@~{a}o @'{e} mais eficiente escolher uma
-vari@'{a}vel para seu valor anterior para o @code{do} e usar essa vari@'{a}vel na
+as execu@value{cedilha}@~{o}es do @var{corpo}, ent@~{a}o @'{e} mais eficiente escolher uma
+vari@'{a}vel para seu valor pr@'{e}vio para o @code{do} e usar essa vari@'{a}vel na
 forma @code{do}.
 
 O valor normalmente retornado por uma declara@value{cedilha}@~{a}o @code{do} @'{e} o @'{a}tomo @code{done}.
 Todavia, a fun@value{cedilha}@~{a}o
-@code{return} pode ser usada dentro do corpo para sair da delcara@value{cedilha}@~{a}o @code{do} prematuramente e dar
+@code{return} pode ser usada dentro do @var{corpo} para sair da delcara@value{cedilha}@~{a}o @code{do} prematuramente e dar
 a isso qualquer valor desejado.
 Note todavia que um @code{return} dentro de um @code{do} que
 ocorre em um @code{block} encerrar@'{a} somente o @code{do} e n@~{a}o o @code{block}.  Note tamb@'{e}m
@@ -207,7 +207,7 @@ Em lugar de sempre adicionar uma quantidade @`a vari@'{a}vel de controle pode-se
 algumas vezes desejar alterar isso de alguma outra forma para cada itera@value{cedilha}@~{a}o.
 Nesse caso pode-se usar @code{next @var{express@~{a}o}} em lugar de @code{step @var{incremento}}.
 Isso far@'{a} com que a vari@'{a}vel de controle seja escolhida para o
-resultado da express@~{a}o de avalia@value{cedilha}@~{a}o cada vez que o ciclo de repeti@value{cedilha}@~{a}o for executado.
+resultado de avalia@value{cedilha}@~{a}o da @var{express@~{a}o} cada vez que o ciclo de repeti@value{cedilha}@~{a}o for executado.
 
 @example
 (%i6) for count: 2 next 3*count thru 20 do display (count)$
@@ -221,8 +221,8 @@ resultado da express@~{a}o de avalia@value{cedilha}@~{a}o cada vez que o ciclo d
 @c UGH.  DO WE REALLY NEED TO MENTION THIS??
 Como uma alternativa para @code{for @var{Vari@'{a}vel}: @var{valor} ...do...} a sintaxe
 @code{for @var{Vari@'{a}vel} from @var{valor} ...do...}  pode ser usada.  Isso permite o
-@code{from @var{valor}} ser colocado ap@'{o}s o @code{step} ou proximo valor ou ap@'{o}s a
-condi@value{cedilha}@~{a}o de encerramento.  Se @code{from @var{valor}} for omitido ent@~{a}o 1 @'{e} usado como
+@code{from @var{valor}} ser colocado ap@'{o}s o @code{step} ou ap@'{o}s o @var{next} valor ou ap@'{o}s a
+@var{condi@value{cedilha}@~{a}o} de encerramento.  Se @code{from @var{valor}} for omitido ent@~{a}o 1 @'{e} usado como
 o valor inicial.
 
 Algumas vezes se pode estar interessado em executar uma itera@value{cedilha}@~{a}o onde
@@ -241,7 +241,7 @@ ra@'{i}z quadrada de 5 usando uma fraca suposi@value{cedilha}@~{a}o inicial.
 @end example
 
 Se isso for desejado pode-se sempre omitir as condi@value{cedilha}@~{o}es de encerramento
-inteiramente e apenas dar o corpo @code{do @var{corpo}} que continuar@'{a} a ser 
+inteiramente e apenas dar o @code{do @var{corpo}} que o @var{corpo} continuar@'{a} a ser 
 avaliado indefinidamente.  Nesse caso a fun@value{cedilha}@~{a}o @code{return} ser@'{a} usada para
 encerrar a execu@value{cedilha}@~{a}o da declara@value{cedilha}@~{a}o @code{do}.
 
@@ -267,10 +267,10 @@ for @var{Vari@'{a}vel} in @var{list} @var{end_tests} do @var{corpo}
 @end example
 
 Os elementos de @var{list} s@~{a}o quaisquer express@~{o}es que ir@~{a}o
-sucessivamente ser atribu@'{i}das para a vari@'{a}vel a cada itera@value{cedilha}@~{a}o do
-corpo.  O teste opcional @var{end_tests} pode ser usado para encerrar a execu@value{cedilha}@~{a}o da
-declara@value{cedilha}@~{a}o @code{do}; de outra forma o @code{do} terminar@'{a} quando a lista for exaurida ou quando
-um @code{return} for executado no corpo.  (De fato, a lista pode ser qualquer
+sucessivamente ser atribu@'{i}das para a @var{vari@'{a}vel} a cada itera@value{cedilha}@~{a}o do
+@var{corpo}.  O teste opcional @var{end_tests} pode ser usado para encerrar a execu@value{cedilha}@~{a}o da
+declara@value{cedilha}@~{a}o @code{do}; de outra forma o @code{do} terminar@'{a} quando a @var{lista} for exaurida ou quando
+um @code{return} for executado no @var{corpo}.  (De fato, a @var{lista} pode ser qualquer
 express@~{a}o n@~{a}o at@^{o}mica, e partes sucessivas s@~{a}o usadas.)
 
 @example
@@ -415,9 +415,9 @@ o nome de uma fun@value{cedilha}@~{a}o de @math{n} argumentos
 ou @'{e} uma forma @code{lambda} de @math{n} argumentos.
 
 @code{maperror} - se @code{false} far@'{a} com que todas as fun@value{cedilha}@~{o}es mapeadas
-(1) parem quando elas terminarem retornando a menor expi se n@~{a}o forem todas as
-expi do mesmo comprimento e (2) aplique fn a [exp1, exp2,...]
-se expi n@~{a}o forem todas do mesmo tipo de objeto.  Se @code{maperror} for @code{true}
+(1) parem quando elas terminarem retornando a menor @var{exp_i} se n@~{a}o forem todas as
+@var{exp_i} do mesmo comprimento e (2) aplique fn a [exp1, exp2,...]
+se @var{exp_i} n@~{a}o forem todas do mesmo tipo de objeto.  Se @code{maperror} for @code{true}
 ent@~{a}o uma mensagem de erro ser@'{a} dada nas duas inst@^{a}ncias acima.
 
 Um dos usos dessa fun@value{cedilha}@~{a}o @'{e} para mapear (@code{map}) uma fun@value{cedilha}@~{a}o (e.g. @code{partfrac})
@@ -461,12 +461,12 @@ Valor padr@~{a}o: @code{true}
 Quando @code{maperror} @'{e} @code{false}, faz com que todas as fun@value{cedilha}@~{o}es mapeadas, por exemplo
 
 @example
-map (f, expr_1, expr_2, ...))
+map (f, @var{expr_1}, @var{expr_2}, ...)
 @end example
 
-(1) parem quando elas terminarem
-retornando a menor expi se n@~{a}o forem todas as expi do mesmo
-comprimento e (2) aplique @code{f} a @code{[expr_1, expr_2, ...]} se @code{expr_i} n@~{a}o forem todas
+para (1) parar quando elas terminarem
+retornando a menor @var{exp_i} se n@~{a}o forem todas as @var{exp_i} do mesmo
+comprimento e (2) aplique @code{f} a @code{[@var{expr_1}, @var{expr_2}, ...]} se @code{expr_i} n@~{a}o forem todas
 do mesmo tipo de objeto.
 
 Se @code{maperror} for @code{true} ent@~{a}o uma ,mensagem de erro
@@ -503,7 +503,7 @@ Veja tamb@'{e}m @code{is} e @code{maybe}.
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~{a}o} return (valor)
+@deffn {Fun@value{cedilha}@~{a}o} return (@var{valor})
 Pode ser usada para sair explicitamente de um bloco, levando
 seu argumento.  Veja @code{block} para mais informa@value{cedilha}@~{a}o.
 
@@ -526,7 +526,7 @@ desejada, por exemplo:
 Note o caminho atrav@'{e}s do qual @code{scanmap} aplica a dada fun@value{cedilha}@~{a}o @code{factor} para as
 subexpress@~{o}es constituintes de @var{expr}; se outra forma de @var{expr} @'{e} apresentada
 para @code{scanmap} ent@~{a}o o resultado pode ser diferente.  Dessa forma, @code{%o2} n@~{a}o @'{e}
-recuperada quando @code{scanmap} @'{e} aplicada para a forma expandida de exp:
+recuperada quando @code{scanmap} @'{e} aplicada para a forma expandida de @var{exp}:
 
 @example
 (%i3) scanmap(factor,expand(exp));

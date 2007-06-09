@@ -1,5 +1,5 @@
 \input texinfo
-@c /maxima.texi/1.46/Wed Mar 14 00:42:56 2007/-ko/
+@c /maxima.texi/1.49/Sat Jun  2 00:13:25 2007/-ko/
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c -*-texinfo-*-
 
@@ -191,6 +191,7 @@ Pacotes Adicionais
 
 * augmented_lagrangian::        Pacote augmented_lagrangian.
 * bode::                        Gr@'{a}ficos de ganho e fase de Bode.
+* contrib_ode::                 Rotinas adicionais para EDOs
 * descriptive::                 Estat@'{i}stica descritiva.
 * diag::                        Matrizes de Jordan.
 * distrib::                     Distribui@value{cedilha}@~{o}es de probabilidade.
@@ -199,6 +200,7 @@ Pacotes Adicionais
 * eval_string::                 Express@~{o}es do Maxima como cadeias de texto.
 * f90::                         Tradutor do Maxima para o fortran.
 * ggf::                         Fun@value{cedilha}@~{a}o geradora para sequ@^{e}ncias.
+* grobner::                     Fun@value{cedilha}@~{o}es para trabalhar com as bases de Groebner.
 * impdiff::                     Derivadas impl@'{i}citas.
 * implicit_plot::               Gr@'{a}ficos impl@'{i}tos.
 * interpol::                    Pacote de interpola@value{cedilha}@~{a}o.
@@ -444,6 +446,14 @@ bode
 
 * Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para bode::
 
+contrib_ode
+
+* Introduction to contrib_ode::
+* Functions and Variables for contrib_ode::
+* Possible improvements to contrib_ode::
+* Test cases for contrib_ode::
+* References for contrib_ode::
+
 descriptive
 
 * Introdu@value{cedilha}@~{a}o ao pacote descriptive::
@@ -483,6 +493,11 @@ f90
 ggf
 
 * Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para ggf::
+
+grobner
+
+* Introduction to grobner::
+* Functions and Variables for grobner::
 
 impdiff
 
@@ -767,11 +782,15 @@ zeilberger
 @chapter augmented_lagrangian
 @include augmented_lagrangian.texi
 
-@node bode, descriptive, augmented_lagrangian, Top
+@node bode, contrib_ode, augmented_lagrangian, Top
 @chapter bode
 @include bode.texi
 
-@node descriptive, diag, bode, Top
+@node contrib_ode, descriptive, bode, Top
+@chapter contrib_ode
+@include contrib_ode.texi
+
+@node descriptive, diag, contrib_ode, Top
 @chapter descriptive
 @include descriptive.texi
 
@@ -799,11 +818,15 @@ zeilberger
 @chapter f90
 @include f90.texi
 
-@node ggf, impdiff, f90, Top
+@node ggf, grobner, f90, Top
 @chapter ggf
 @include ggf.texi
 
-@node impdiff, implicit_plot, ggf, Top
+@node grobner, impdiff, ggf, Top
+@chapter grobner
+@include grobner.texi
+
+@node impdiff, implicit_plot, grobner, Top
 @chapter impdiff
 @include impdiff.texi
 

@@ -1,5 +1,5 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
-@c /Input.texi/1.55/Sat Jun  2 00:12:49 2007/-ko/
+@c /Input.texi/1.56/Sat Jun  9 01:31:19 2007/-ko/
 @menu
 * Coment@'{a}rios::
 * Arquivos::                       
@@ -65,6 +65,7 @@ e
 
 @node Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Entrada e Sa@'{i}da,  , Arquivos, Entrada e Sa@'{i}da
 @section Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Entrada e Sa@'{i}da de Dados
+
 @defvr {Vari@'{a}vel de sistema} __
 @ifinfo
 @vrindex Express@~{a}o de entrada atual
@@ -553,8 +554,9 @@ chamadas de fun@value{cedilha}@~{a}o.  Veja tamb@'{e}m @code{disp}.
 @defvr {Vari@'{a}vel de op@value{cedilha}@~{a}o} display2d
 Valor padr@~{a}o: @code{true}
 
-Quando @code{display2d} @'{e} @code{false},
-O console visualizador @'{e} unidimensional ao inv@'{e}s de bidimensional.
+Quando @code{display2d} for @code{false},
+O console visualizador @'{e} da forma de uma seq@"{u}@^{e}ncia de caracteres (unidimensional) ao inv@'{e}s da
+forma bidimensional.
 
 @end defvr
 
@@ -728,7 +730,7 @@ file_search ("zeta.mac");
 file_search ("zeta");
 @end example
 
-todos acham o mesmo arquivo, assumindo que o arquivo exista e @code{/home/wfs/special/###.mac}
+todos encontram o mesmo arquivo, assumindo que o arquivo exista e @code{/home/wfs/special/###.mac}
 est@'{a} em @code{file_search_maxima}.
 
 @code{file_search (@var{nomearquivo}, @var{listacaminho})} procura somente nesses diret@'{o}rios
@@ -825,6 +827,7 @@ O valor padr@~{a}o da vari@'{a}vel @code{grind} @'{e} @code{false}.
 Quando @code{grind} est@'{a} presente,
 @code{playback} imprime express@~{o}es de entrada no mesmo formato que a fun@value{cedilha}@~{a}o @code{grind}.
 De outra forma, nenhuma tentativa @'{e} feita para formatar especialmente as express@~{o}es de entrada.
+
 @code{grind} avalia seus argumentos.
 
 Exemplos:
@@ -1130,10 +1133,6 @@ a extens@~{a}o do arquivo e tanto quanto o caminho como necess@'{a}rio para acha
 
 @code{loadfile} pode processar arquivos criados por @code{save}, @code{translate_file}, e @code{compile_file}.
 O usu@'{a}rio pode achar isso mais conveniente para usar @code{load} em lugar de @code{loadfile}.
-
-@code{loadfile} avalia seu argumento, ent@~{a}o @code{nomearquivo} deve obrigat@'{o}riamente ser uma seq@"{u}@^{e}ncia de caracteres literal,
-n@~{a}o uma vari@'{a}vel do tipo seq@"{u}@^{e}ncia de caracteres.
-O operador ap@'{o}strofo-ap@'{o}strofo @code{'@w{}'} n@~{a}o aceita avalia@value{cedilha}@~{a}o.
 
 @end deffn
 
@@ -1506,21 +1505,8 @@ Os @'{i}tes salvos incluem vari@'{a}veis de sistema,
 tais como @code{file_search_maxima} ou @code{showtime}, se a elas tiverem sido atribu@'{i}dos novos valores pelo usu@'{a}rio;
 veja @code{myoptions}.
 
-@code{save} avalia seus argumentos.  
-@var{nomearquivo} deve obrigat@'{o}riamente ser uma seq@"{u}@^{e}ncia de caracteres, n@~{a}o uma vari@'{a}vel tipo seq@"{u}@^{e}ncia de caracteres.
-O primeiro e o @'{u}ltimo r@'{o}tulos a salvar, se especificado, devem obrigat@'{o}riamente serem inteiros.
-O operador ap@'{o}strofo-ap@'{o}strofo @code{'@w{}'} avalia uma vari@'{a}vel tipo seq@"{u}@^{e}ncia de caracteres para seu valor seq@"{u}@^{e}ncia de caracteres,
-e.g., @code{s: "foo.1"$ save (''s, all)$},
-e vari@'{a}veis inteiras para seus valores inteiros, e.g., @code{m: 5$ n: 12$ save ("foo.1", [''m, ''n])$}.
+@code{save} avalia @var{nomearquivo} e n@~{a}o avalia todos os outros argumentos.
 
-@c ANY USE FOR THE FOLLOWING ???
-@c The following device constructs a list of variables to save e saves them.
-@c 
-@c @example
-@c s: "foo.1"$
-@c l: ['aa, 'bb, 'cc, 'dd]$
-@c apply (save, append ([s], l))$
-@c @end example
 @end deffn
 
 @c NEEDS MORE WORK !!!
@@ -1652,7 +1638,6 @@ vari@'{a}veis como declara@value{cedilha}@~{o}es de atribui@value{cedilha}@~{a}o
 
 @end deffn
 
-@c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
 @deffn {Fun@value{cedilha}@~{a}o} tex (@var{expr})
 @deffnx {Fun@value{cedilha}@~{a}o} tex (@var{r@'{o}tulo})
 @deffnx {Fun@value{cedilha}@~{a}o} tex (@var{expr}, @var{momearquivo})
@@ -1661,7 +1646,7 @@ vari@'{a}veis como declara@value{cedilha}@~{o}es de atribui@value{cedilha}@~{a}o
 Imprime uma representa@value{cedilha}@~{a}o de uma express@~{a}o
 adequada para o sistema TeX  de prepara@value{cedilha}@~{a}o de documento.
 O resultado @'{e} um fragmento de um documento,
-que pode ser copiado dentro de um documento maior.
+que pode ser copiado dentro de um documento maior
 Esse fragmento n@~{a}o pode ser processado de forma direta e isolada.
 
 @code{tex (@var{expr})} imprime uma representa@value{cedilha}@~{a}o TeX da @var{expr} no console.
@@ -1672,14 +1657,11 @@ O r@'{o}tulo de equa@value{cedilha}@~{a}o TeX @'{e} o mesmo que o r@'{o}tulo da 
 
 @code{tex (@var{expr}, @var{nomearquivo})} anexa ao final uma representa@value{cedilha}@~{a}o TeX de @var{expr}
 no arquivo @var{nomearquivo}.
-@code{tex} n@~{a}o avalia o argumento @var{nomearquivo}; ap@'{o}strofo-ap@'{o}strofo @code{''} for@value{cedilha}a a avalia@value{cedilha}@~{a}o so argumento.
 
 @code{tex (@var{r@'{o}tulo}, @var{nomearquivo})} anexa ao final uma representa@value{cedilha}@~{a}o TeX da
 express@~{a}o chamada de @var{r@'{o}tulo}, com um r@'{o}tulo de equa@value{cedilha}@~{a}o, ao arquivo @var{nomearquivo}.
 
-
-@code{tex} n@~{a}o avalia o argumento @var{nomearquivo}; ap@'{o}strofo-ap@'{o}strofo @code{''} for@value{cedilha}a a avalia@value{cedilha}@~{a}o so argumento.
-@code{tex} avalia seus argumentos ap@'{o}s testar esse argumento para ver se @'{e} um r@'{o}tulo.
+@code{tex} avalia seu primeiro argumento ap@'{o}s testar esse argumento para ver se @'{e} um r@'{o}tulo.
 duplo ap@'{o}strofo @code{''} for@value{cedilha}a a avalia@value{cedilha}@~{a}o do argumento, desse modo frustrando o teste
 e prevenindo o r@'{o}tulo.
 

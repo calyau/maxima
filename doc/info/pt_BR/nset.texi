@@ -1,5 +1,5 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
-@c /nset.texi/1.20/Sat Jun  2 00:13:28 2007//
+@c /nset.texi/1.21/Sat Jun  9 01:31:23 2007//
 @menu
 * Introdu@value{cedilha}@~{a}o a Conjuntos::       
 * Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Conjuntos::       
@@ -777,7 +777,7 @@ Dado um conjunto vazio @code{@{@}} ou uma lista vazia @code{[]} como argumentos,
 
 Quando o sinalizador global @code{maperror} for @code{true}, todas as listas 
 @var{L_1}, ..., @var{L_n} devem ter o mesmo comprimento. 
-Quando @code{maperror} for falso, argumentos listas s@~{a}o
+Quando @code{maperror} for @code{false}, argumentos listas s@~{a}o
 efetivamente truncados para o comprimento da menor lista. 
 
 Retorna valores do predicado @var{f} que avaliam (via @code{is})
