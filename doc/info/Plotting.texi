@@ -108,7 +108,7 @@ option. The option @var{xlabel} can be used to give a label for the
 horizontal axis; if that option is not used, the horizontal axis will
 be labeled with the name of the variable specified in @var{x_range}, or
 with the expression @var{x_expr} in the case of just one parametric
-expresssion, or it will be left blank otherwise.
+expression, or it will be left blank otherwise.
 
 A label for the vertical axis can be given with the @var{ylabel}
 option. If there is only one expression to be plotted and the
@@ -129,8 +129,8 @@ option is not used, Maxima will create labels from the expressions.
 By default, the expressions are plotted as a set of line segments
 joining adjacent points within a set of points which is either given in
 the @var{discrete} form, or calculated automatically from the expression
-given, using an algorithm that atomatically adapts the steps among
-points using as an intial estimate of the total number of points the
+given, using an algorithm that automatically adapts the steps among
+points using as an initial estimate of the total number of points the
 value set with the @var{nticks} option. The option @var{style} can be
 used to make one of the expressions to be represented as a set of
 isolated points, or as points and line segments.
@@ -513,7 +513,7 @@ The label for the horizontal axis in a 2d plot.
 
 Example:
 @example
-[xlabel, "Time in seconds"]
+[xlabel, "Tempo em segundos"]
 @end example
 
 @item
@@ -1107,7 +1107,7 @@ eps enhanced color solid 24]]
 @deffn {Function} gnuplot_start ()
 
 Opens the pipe to gnuplot used for plotting with the
-@code{gnuplot_pipes} format. Is is not necessary to manually open the
+@code{gnuplot_pipes} format. Is not necessary to manually open the
 pipe before plotting.
 
 @end deffn
