@@ -1418,7 +1418,7 @@ A expans@~{a}o de uma fun@value{cedilha}@~{a}o de macro n@~{a}o @'{e} substitu@'
 @item expand
 Da primeira vez que a fun@value{cedilha}@~{a}o de macro @'{e} avaliada,
 a expans@~{a}o @'{e} armazenada.
-A expans@~{a}o n@~{a}o @'{e} recalculada sobre chamadas subseq@u}@^{e}ntes;
+A expans@~{a}o n@~{a}o @'{e} recalculada sobre chamadas subseq@"{u}@^{e}ntes;
 qualquer efeito colateral (tais como @code{print} ou atribui@value{cedilha}@~{o}es a vari@'{a}veis globais) ocorrem
 somente quando chamadas @`{a} fun@value{cedilha}@~{a}o de macro forem avaliadas primeiramente.
 Expans@~{o}es em uma express@~{a}o n@~{a}o afetam outras express@~{o}es

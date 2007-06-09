@@ -1,5 +1,5 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
-@c /Plotting.texi/1.40/Sat Jun  2 00:13:01 2007/-ko/
+@c /Plotting.texi/1.41/Fri Jun  8 17:19:03 2007/-ko/
 @iftex
 @hyphenation{ca-rac-te-res}
 @end iftex
@@ -10,7 +10,7 @@
 @node Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Montagem de Gr@'{a}ficos,  , Montando Gr@'{a}ficos, Montando Gr@'{a}ficos
 @section Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Montagem de Gr@'{a}ficos
 
-@deffn (Fun@value{cedilha}@~{a}o} contour_plot (@var{expr}, @var{x_range}, @var{y_range}, @var{op@value{cedilha}@~{o}es}, ...)
+@deffn {Fun@value{cedilha}@~{a}o} contour_plot (@var{expr}, @var{x_range}, @var{y_range}, @var{op@value{cedilha}@~{o}es}, ...)
 
 Monta gr@'{a}ficos de contorno (curvas de n@'{i}vel) de @var{expr}
 sobre a regi@~{a}o @var{x_range} por @var{y_range}.
@@ -65,9 +65,9 @@ caso contr@'{a}rio @code{in_netmath} (mesmo se @code{true}) n@~{a}o tem efeito.
 
 @end defvr
 
-@deffn (Fun@value{cedilha}@~{a}o} plot2d (@var{expr}, @var{x_range}, ..., @var{op@value{cedilha}@~{o}es}, ...)
-@deffnx (Fun@value{cedilha}@~{a}o} plot2d ([@var{expr_1}, ..., @var{expr_n}], ..., @var{op@value{cedilha}@~{o}es}, ...)
-@deffnx (Fun@value{cedilha}@~{a}o} plot2d ([@var{expr_1}, ..., @var{expr_n}], @var{x_range},..., @var{op@value{cedilha}@~{o}es}, ...)
+@deffn {Fun@value{cedilha}@~{a}o} plot2d (@var{expr}, @var{x_range}, ..., @var{op@value{cedilha}@~{o}es}, ...)
+@deffnx {Fun@value{cedilha}@~{a}o} plot2d ([@var{expr_1}, ..., @var{expr_n}], ..., @var{op@value{cedilha}@~{o}es}, ...)
+@deffnx {Fun@value{cedilha}@~{a}o} plot2d ([@var{expr_1}, ..., @var{expr_n}], @var{x_range},..., @var{op@value{cedilha}@~{o}es}, ...)
 
 onde @var{expr}, @var{expr_1}, ..., @var{expr_n} pode ser uma entre
 express@~{o}es, ou fun@value{cedilha}@~{o}es do Lisp ou do Maxima ou operadores, ou uma lista com
@@ -204,9 +204,11 @@ do gr@'{a}fico est@~{a}o na propor@value{cedilha}@~{a}o de 4 para 3, usaremos a 
 
 @c ===beg===
 @c plot2d ([parametric, cos(t), sin(t), [t, -%pi, %pi], [nticks, 80]], [x, -4/3, 4/3])$
-@c ===end===@example
+@c ===end===
+@example
 (%i8) plot2d ([parametric, cos(t), sin(t), [t,-%pi,%pi], [nticks,80]],
-           [x, -4/3, 4/3])$@end example
+           [x, -4/3, 4/3])$
+@end example
 @ifnotinfo
 @image{../figures/plotting6,8cm}
 @end ifnotinfo
@@ -226,7 +228,6 @@ do par@^{a}metro para fornecer dois turnos, obteremos o gr@'{a}fico de uma estre
 @image{../figures/plotting7,8cm}
 @end ifnotinfo
 
-@item
 Combina@value{cedilha}@~{a}o de um gr@'{a}fico comum de um polin@^{o}mio c@'{u}bico com um
 gr@'{a}fico param@'{e}trico de um c@'{i}rculo:
 
@@ -657,7 +658,7 @@ Se a op@value{cedilha}@~{a}o
 De outra forma, Esse arquivo @'{e} salvo com o nome @code{maxplot.ps}.
 
 @item
-Valor: qualquer outra especifica@value{cedilha}@~{a}o v@'{a}lida do terminal @code{term] do gnuplot
+Valor: qualquer outra especifica@value{cedilha}@~{a}o v@'{a}lida do terminal @code{term} do gnuplot
 
 Gnuplot pode gerar sa@'{i}das em muitos outros formatos gr@'{a}ficos tais
 como png, jpeg, svg etc.  Paa criar gr@'{a}ficos em todos esses formatos a op@value{cedilha}@~{a}o
@@ -1102,7 +1103,7 @@ eps enhanced color solid 24]]
 
 @subsection Fun@value{cedilha}@~{o}es para trabalhar com o formato @code{gnuplot_pipes}
 
-@deffn (Fun@value{cedilha}@~{a}o} gnuplot_start ()
+@deffn {Fun@value{cedilha}@~{a}o} gnuplot_start ()
 
 Abre o pipe para o gnuplot usado para montar um gr@'{a}fico com o formato
 @code{gnuplot_pipes}. N@~{a}o @'{e} necess@'{a}rio abrir manualmente o
@@ -1110,22 +1111,22 @@ pipe antes de montar o gr@'{a}fico.
 
 @end deffn
 
-@deffn (Fun@value{cedilha}@~{a}o} gnuplot_close ()
+@deffn {Fun@value{cedilha}@~{a}o} gnuplot_close ()
 
 Fecha o pipe para o gnuplot que est@'{a} sendo usado com o formato 
 @code{gnuplot_pipes}.
 
 @end deffn
 
-@deffn (Fun@value{cedilha}@~{a}o} gnuplot_restart ()
+@deffn {Fun@value{cedilha}@~{a}o} gnuplot_restart ()
 
 Fecha o pipe para o gnuplot que @'{e} usado com o formato 
 @code{gnuplot_pipes} e abre um novo pipe.
 
 @end deffn
 
-@deffn (Fun@value{cedilha}@~{a}o} gnuplot_replot ()
-@deffnx (Fun@value{cedilha}@~{a}o} gnuplot_replot (@var{s})
+@deffn {Fun@value{cedilha}@~{a}o} gnuplot_replot ()
+@deffnx {Fun@value{cedilha}@~{a}o} gnuplot_replot (@var{s})
 
 Atualiza a janela gr@'{a}fica do gnuplot. Se @code{gnuplot_replot} for chamado com um
 comando gnuplot em uma seq@"{u}@^{e}ncia de caracteres @var{s}, ent@~{a}o @code{s} @'{e} enviado para o gnuplot
@@ -1133,7 +1134,7 @@ antes de atualizar a janela.
 
 @end deffn
 
-@deffn (Fun@value{cedilha}@~{a}o} gnuplot_reset ()
+@deffn {Fun@value{cedilha}@~{a}o} gnuplot_reset ()
 
 Restaura o estado inicial padr@~{a}o do gnuplot usado com o formato
 @code{gnuplot_pipes}. Para atualizar a janela do gnuplot chama @code{gnuplot_replot} ap@'{o}s
