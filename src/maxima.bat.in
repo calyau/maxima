@@ -11,7 +11,7 @@ set arg7=%7
 set arg8=%8
 set arg9=%9
 
-rem Uncomment line below and set required value to MAXIMA_LANG_SUBDIR 
+rem Uncomment the line below and set required value to MAXIMA_LANG_SUBDIR
 rem to get localized describe in command line Maxima
 rem set MAXIMA_LANG_SUBDIR=es
 
@@ -21,7 +21,7 @@ set prefix=@prefix@
 set maxima_prefix=@prefix@
 set package=@PACKAGE@
 set verbose=false
-set path=%maxima_prefix%\bin;%path%
+set path=%maxima_prefix%\bin;%maxima_prefix%\lib\gcc-lib\mingw32\3.3.1;%path%
 
 if "%USERPROFILE%" == "" goto win9x
 if "%MAXIMA_USERDIR%" == "" set MAXIMA_USERDIR=%USERPROFILE%\maxima

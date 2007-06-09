@@ -271,6 +271,12 @@
     (if maxima-tempdir-env
 	(setq *maxima-tempdir* (maxima-parse-dirstring maxima-tempdir-env))
 	(setq *maxima-tempdir* (default-tempdir)))
+	
+    ; On Windows Vista gcc requires explicit include 
+    #+gcl (when (string= *autoconf-win32* "true")
+	      (setq compiler::*cc* 
+	          (concatenate 'string compiler::*cc* " -I\"" *maxima-prefix* "\\include\"" 
+		                                      " -I\"" *maxima-prefix* "\\lib\\gcc-lib\\mingw32\\3.3.1\\include\" ")))	    		
 
     ; Assign initial values for Maxima shadow variables
     (setq $maxima_userdir *maxima-userdir*)
