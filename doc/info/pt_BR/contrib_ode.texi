@@ -1,59 +1,61 @@
+@c Language: Brazilian Portuguese, Encoding: iso-8859-1
+@c /contrib_ode.texi/1.5/Sat Jun  2 00:13:11 2007//
 @menu
-* Introduction to contrib_ode::
-* Functions and Variables for contrib_ode::
-* Possible improvements to contrib_ode::
-* Test cases for contrib_ode::
-* References for contrib_ode::
+* Introdu@value{cedilha}@~{a}o a contrib_ode::
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para contrib_ode::
+* Possibilidades de melhorias em contrib_ode::
+* Casos de teste para contrib_ode::
+* Refer@^{e}ncias bibliogr@'{a}ficas para contrib_ode::
 @end menu
 
-@node Introduction to contrib_ode, Functions and Variables for contrib_ode, contrib_ode, contrib_ode
+@node Introdu@value{cedilha}@~{a}o a contrib_ode, Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para contrib_ode, contrib_ode, contrib_ode
 
-@section Introduction to contrib_ode 
+@section Introdu@value{cedilha}@~{a}o a contrib_ode 
 
-MAXIMA's ordinary differential equation (ODE) solver @code{ode2} solves
-elementary linear ODEs of first and second order.  The function
-@code{contrib_ode} extends @code{ode2} with additional methods for linear
-and non-linear first order ODEs and linear homogeneous second order ODEs.  
-The code is still under development and the calling sequence may change
-in future releases.  Once the code has stabilized it may be
-moved from the contib directory and integrated into MAXIMA.
+O resolvedor de equa@value{cedilha}@~{o}es diferenciais ordin@'{a}rias (EDO) do MAXIMA, o @code{ode2}, resolve
+EDO's elementares de primeira e segunda ordem.  A fun@value{cedilha}@~{a}o
+@code{contrib_ode} extende @code{ode2} com m@'{e}todos adicionais para EDO's lineares
+e EDO's n@~{a}o lineares de primeira ordem e EDO's lineares homog@^{e}neas de segunda ordem.  
+O c@'{o}digo est@'{a} ainda em desenvolvimemto e a seq@"{u}@^{e}ncia de chamada da fun@value{cedilha}@~{a}o pode mudar
+em futuras vers@~{o}es.  Uma vez que o c@'{o}digo estiver estabilizado essa fun@value{cedilha}@~{a}o pode ser
+movida do diret@'{o}rio contrib e integrada dentro do MAXIMA.
 
-This package must be loaded with the command @code{load('contrib_ode)}
-before use.
+Esse pacote deve torna-se dispon@'{i}vel para uso com o comando @code{load('contrib_ode)}
+em primeiro lugar.
 
-The calling convention for @code{contrib_ode} is identical to @code{ode2}.  
-It takes
-three arguments: an ODE (only the left hand side need be given if the
-right hand side is 0), the dependent variable, and the independent
-variable.  When successful, it returns a list of solutions.
+A conven@value{cedilha}@~{a}o de chamada para @code{contrib_ode} @'{e} id@^{e}ntica a @code{ode2}.  
+Toma
+tr@^{e}s argumentos: uma EDO (somente o lado esquerdo precisa ser fornecido se o
+lado direito for 0), a vari@'{a}vel dependente, e a vari@'{a}vel
+independente.  Quando @code{contrib_ode} obtiver sucesso, retorna uma lista de solu@value{cedilha}@~{o}es.
 
-The form of the solution differs from @code{ode2}.
-As non-linear equations can have multiple solutions, 
-@code{contrib_ode} returns a list of solutions.  Each  solution can 
-have a number of forms:
+A forma de retorno da lista de solu@value{cedilha}@~{a}o difere de @code{ode2}.
+Como equa@value{cedilha}@~{o}es n@~{a}o lineares podem ter m@'{u}ltiplas solu@value{cedilha}@~{o}es, 
+@code{contrib_ode} retorna uma lista de solu@value{cedilha}@~{o}es.  Cada solu@value{cedilha}@~{a}o pode
+ter v@'{a}rias formas:
 @itemize @bullet
 @item
-an explicit solution for the dependent variable,
+uma solu@value{cedilha}@~{a}o expl@'{i}cita para a vari@'{a}vel dependente,
 
 @item
-an implicit solution for the dependent variable,
+uma solu@value{cedilha}@~{a}o impl@'{i}cita para a vari@'{a}vel dependente,
 
 @item
-a parametric solution in terms of variable %t, or
+uma solu@value{cedilha}@~{a}o param@'{e}trica em termos de vari@'{a}vel %t, ou
 
 @item
-a tranformation into another ODE in variable %u.
+uma transfrma@value{cedilha}@~{a}o em outra EDO na vari@'{a}vel %u.
 
 @end itemize
 
-@code{%c} is used to represent the constant of integration for first order equations.
-@code{%k1} and @code{%k2} are the constants for second order equations.  
-If contrib_ode
-cannot obtain a solution for whatever reason, it returns false, after
-perhaps printing out an error message.
+@code{%c} @'{e} usado para representar a constante de integra@value{cedilha}@~{a}o para equa@value{cedilha}@~{o}es de primeira ordem.
+@code{%k1} e @code{%k2} s@~{a}o constantes para equa@value{cedilha}@~{o}es de segunda ordem.  
+Se @code{contrib_ode}
+n@~{a}o puder obter uma solu@value{cedilha}@~{a}o por qualquer raz@~{a}o, @code{false} @'{e} retornado, ap@'{o}s
+talvez mostrar uma mensagem de erro.
 
-It is necessary to return a list of solutions, as even first order
-non-linear ODEs can have multiple solutions.  For example:
+Isso @'{e} necess@'{a}rio para retornar uma lista de solu@value{cedilha}@~{o}es, como mesmo EDO's de primeira
+ordem n@~{a}o lineares podem ter solu@value{cedilha}@~{o}es multiplas.  Por exemplo:
 
 @c ===beg===
 @c load('contrib_ode)$
@@ -78,8 +80,8 @@ non-linear ODEs can have multiple solutions.  For example:
 (%o4)                        factor
 @end example
 
-Nonlinear odes can have singular solutions without constants of
-integration, as in the second solution of the following example:
+EDO's n@~{a}o lineares podem ter solu@value{cedilha}@~{o}es singulares sem constantes de
+integra@value{cedilha}@~{a}o, como na segunda solu@value{cedilha}@~{a}o do seguinte exemplo:
 
 @c ===beg===
 @c load('contrib_ode)$
@@ -107,9 +109,9 @@ integration, as in the second solution of the following example:
 @end example
 
 
-The following ode has two parametric solutions in terms of the dummy
-variable %t.  In this case the parametric solutions can be manipulated
-to give explicit solutions.
+A seguinte EDO possui duas solu@value{cedilha}@~{o}es param@'{e}tricas em termos da vari@'{a}vel
+fict@'{i}cia %t.  Nesse caso as solu@value{cedilha}@~{o}es param@'{e}tricaspodem ser manipuladas
+para fornecer solu@value{cedilha}@~{o}es expl@'{i}citas.
 
 @c ===beg===
 @c load('contrib_ode)$
@@ -134,7 +136,7 @@ to give explicit solutions.
 (%o4)                       lagrange
 @end example
 
-The following example (Kamke 1.112) demonstrates an implicit solution.
+O seguinte exemplo (Kamke 1.112) demonstra uma solu@value{cedilha}@~{a}o impl@'{i}cita.
 
 @c ===beg===
 @c load('contrib_ode)$
@@ -166,9 +168,9 @@ The following example (Kamke 1.112) demonstrates an implicit solution.
 
  
 
-The following Riccati equation is transformed into a linear
-second order ODE in the variable %u.  MAXIMA is unable to
-solve the new ODE, so it is returned unevaluated.
+A seguinte equa@value{cedilha}@~{a}o de Riccati @'{e} transformada em uma EDO linear
+de segunda ordem na vari@'{a}vel %u.  MAXIMA n@~{a}o est@'{a} apto a
+resolver a nova EDO, de forma que essa nova EDO @'{e} retornada sem avalia@value{cedilha}@~{a}o.
 @c ===beg===
 @c load('contrib_ode)$
 @c eqn:x^2*'diff(y,x)=a+b*x^n+c*x^2*y^2;
@@ -197,37 +199,37 @@ solve the new ODE, so it is returned unevaluated.
 @end example
 
 
-For first order ODEs contrib_ode calls @code{ode2}.  It then tries the
-following methods: factorization, Clairault, Lagrange, Riccati,
-Abel and Lie symmetry methods.  The Lie method is not attempted
-on Abel equations if the Abel method fails, but it is tried
-if the Riccati method returns an unsolved second order ODE.
+Para EDO's de primeira ordem @code{contrib_ode} chama @code{ode2}.  @code{ode2} tenta ent@~{a}o os
+seguintes m@'{e}todos: fatora@value{cedilha}@~{a}o, Clairault, Lagrange, Riccati,
+Abel e os m@'{e}todos de simetria de Lie.  O m@'{e}todo de Lie n@~{a}o @'{e} tentado
+sobre equa@value{cedilha}@~{o}es de Abel se o m@'{e}todo de Abel falhar, mas @'{e} tendado
+se o m@'{e}todo de Riccati uma EDO de segunda ordem n@~{a}o resolvida.
 
-For second order ODEs contrib_ode calls @code{ode2} then @code{odelin}.
+Para EDO's de segunda ordem @code{contrib_ode} chama @code{ode2} e em seguida @code{odelin}.
 
-Extensive debugging traces and messages are displayed if the command
-put('contrib_ode,true,'verbose) is executed.
+Rastros extensivos de depura@value{cedilha}@~{a}o mensagens s@~{a}o mostradas se o comando
+@code{put('contrib_ode,true,'verbose)} for executado.
 
-@node Functions and Variables for contrib_ode, Possible improvements to contrib_ode, Introduction to contrib_ode, contrib_ode
-@section Functions and Variables for contrib_ode
+@node Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para contrib_ode, Possibilidades de melhorias em contrib_ode, Introdu@value{cedilha}@~{a}o a contrib_ode, contrib_ode
+@section Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para contrib_ode
 
-@deffn {Function} contrib_ode (@var{eqn}, @var{y}, @var{x})
+@deffn {Fun@value{cedilha}@~{a}o} contrib_ode (@var{eqn}, @var{y}, @var{x})
 
-Returns a list of solutions of the ODE @var{eqn} with 
-independent variable @var{x} and dependent variable @var{y}.
+Retorna uma lista de solu@value{cedilha}@~{o}es da EDO @var{eqn} com
+vari@'{a}vel independente @var{x} e vari@'{a}vel dependente @var{y}.
 
 @end deffn
 
-@deffn {Function} odelin (@var{eqn}, @var{y}, @var{x})
+@deffn {Fun@value{cedilha}@~{a}o} odelin (@var{eqn}, @var{y}, @var{x})
 
-@code{odelin} solves linear homogeneous ODEs of first and 
-second order with 
-independent variable @var{x} and dependent variable @var{y}.  
-It returns a fundamental solution set of the ODE.
+@code{odelin} resolve EDO's lineares homog@^{e}neas de primeira e 
+segunda ordem com
+vari@'{a}vel independente @var{x} e vari@'{a}vel dependente @var{y}.  
+@code{odelin} retorna um conjunto solu@value{cedilha}@~{a}o fundamental da EDO.
 
-For second order ODEs, @code{odelin} uses a method, due to Bronstein
-and Lafaille, that searches for solutions in terms of given 
-special functions. 
+para EDO's de segunda ordem, @code{odelin} usa um m@'{e}todo, devido a Bronstein
+e Lafaille, que busca por solu@value{cedilha}@~{o}es em termos de fun@value{cedilha}@~{o}es 
+especiais dadas. 
 
 @c ===beg===
 @c load('contrib_ode)$
@@ -258,11 +260,11 @@ special functions.
 
 @end deffn
 
-@deffn {Function} ode_check (@var{eqn}, @var{soln})
+@deffn {Fun@value{cedilha}@~{a}o} ode_check (@var{eqn}, @var{sol})
 
-Returns the value of ODE @var{eqn} after substituting a
-possible solution @var{soln}.  The value is equivalent to 
-zero if @var{soln} is a solution of @var{eqn}.
+Retorna o valor da EDO @var{eqn} ap@'{o}s substituir uma
+poss@'{i}vel solu@value{cedilha}@~{a}o @var{sol}.  O valor @'{e} igual a
+zero se @var{sol} for uma solu@value{cedilha}@~{a}o of @var{eqn}.
 
 @c ===beg===
 @c load('contrib_ode)$
@@ -299,155 +301,155 @@ zero if @var{soln} is a solution of @var{eqn}.
 
 @end deffn
 
-@defvr {Global variable} @code{method}
+@defvr {Vari@'{a}vel global} @code{method}
 
-The variable @code{method} is set to the successful solution
-method. 
-
-@end defvr
-
-@defvr {variable} @code{%c}
-
-@code{%c} is the integration constant for first order ODEs
+A vari@'{a}vel @code{method} @'{e} escolhida para o m@'{e}todo que resolver com sucesso
+uma dada EDO.
 
 @end defvr
 
-@defvr {variable} @code{%k1}
+@defvr {Vari@'{a}vel} @code{%c}
 
-@code{%k1} is the first integration constant for second order ODEs.
-
-@end defvr
-
-@defvr {variable} @code{%k2}
-
-@code{%k2} is the second integration constant for second order ODEs.
+@code{%c} @'{e} a constante de integra@value{cedilha}@~{a}o para EDO's de primeira ordem.
 
 @end defvr
 
-@deffn {Function} gauss_a (@var{a}, @var{b}, @var{c}, @var{x})
+@defvr {Vari@'{a}vel} @code{%k1}
 
-@code{gauss_a(a,b,c,x)} and @code{gauss_b(a,b,c,x)} are 2F1 
-geometric functions.  They represent any two independent
-solutions of the hypergeometric differential equation 
+@code{%k1} @'{e} a primeira constante de integra@value{cedilha}@~{a}o para EDO's de segunda ordem.
+
+@end defvr
+
+@defvr {Vari@'{a}vel} @code{%k2}
+
+@code{%k2} @'{e} a segunda constante de integra@value{cedilha}@~{a}o para EDO's de segunda ordem.
+
+@end defvr
+
+@deffn {Fun@value{cedilha}@~{a}o} gauss_a (@var{a}, @var{b}, @var{c}, @var{x})
+
+@code{gauss_a(a,b,c,x)} e @code{gauss_b(a,b,c,x)} s@~{a}o fun@value{cedilha}@~{o}es
+hipergeom@'{e}tricas 2F1.  Elas represetnam quaisquer duas solu@value{cedilha}@~{o}es
+independentes da equa@value{cedilha}@~{a}o diferencial hipergeom@'{e}trica
 @code{x(1-x) diff(y,x,2) + [c-(a+b+1)x diff(y,x) - aby = 0} (A&S 15.5.1).  
 
-The only use of these functions is in solutions of ODEs returned by 
-@code{odelin} and @code{contrib_ode}.  The definition and use of these 
-functions may change in future releases of maxima.
+O @'{u}nico uso dessas fun@value{cedilha}@~{o}es @'{e} em solu@value{cedilha}@~{o}es de EDO's retornadas por
+@code{odelin} e @code{contrib_ode}.  A defini@value{cedilha}@~{a}o e o uso dessas
+fun@value{cedilha}@~{o}es pode mudar em futuras vers@~{o}es do maxima.
 
-See also @code{gauss_b}, @code{dgauss_a} and @code{gauss_b}.
+Veja tamb@'{e}m @code{gauss_b}, @code{dgauss_a} e @code{gauss_b}.
 
 @end deffn
 
-@deffn {Function} gauss_b (@var{a}, @var{b}, @var{c}, @var{x})
-See @code{gauss_a}.
+@deffn {Fun@value{cedilha}@~{a}o} gauss_b (@var{a}, @var{b}, @var{c}, @var{x})
+Veja @code{gauss_a}.
 @end deffn
 
-@deffn {Function} dgauss_a (@var{a}, @var{b}, @var{c}, @var{x})
-The derivative with respect to x of @code{gauss_a(a,b,c,x)}.
+@deffn {Fun@value{cedilha}@~{a}o} dgauss_a (@var{a}, @var{b}, @var{c}, @var{x})
+A derivada em rela@value{cedilha}@~{a}o a x de @code{gauss_a(a,b,c,x)}.
 @end deffn
 
-@deffn {Function} dgauss_b (@var{a}, @var{b}, @var{c}, @var{x})
-The derivative with respect to x of @code{gauss_b(a,b,c,x)}.
+@deffn {Fun@value{cedilha}@~{a}o} dgauss_b (@var{a}, @var{b}, @var{c}, @var{x})
+A derivada em rela@value{cedilha}@~{a}o a x de @code{gauss_b(a,b,c,x)}.
 @end deffn
 
 
-@deffn {Function} kummer_m (@var{a}, @var{b}, @var{x})
+@deffn {Fun@value{cedilha}@~{a}o} kummer_m (@var{a}, @var{b}, @var{x})
 
-Kummer's M function, as defined in Abramowitz and Stegun,
+A fun@value{cedilha}@~{a}o  M de Kummer, como definida em Abramowitz e Stegun,
 @i{Handbook of Mathematical Functions}, Section 13.1.2.
 
-The only use of this function is in solutions of ODEs returned by 
-@code{odelin} and @code{contrib_ode}.  The definition and use of this 
-function may change in future releases of maxima.
+O @'{u}nico uso dessas fun@value{cedilha}@~{o}es @'{e} em solu@value{cedilha}@~{o}es de EDO's retornadas por
+@code{odelin} e @code{contrib_ode}.  A defini@value{cedilha}@~{a}o e o uso dessas
+fun@value{cedilha}@~{o}es pode mudar em futuras vers@~{o}es do maxima.
 
-See also @code{kummer_u}, @code{dkummer_m} and @code{dkummer_u}.
+Veja tamb@'{e}m @code{kummer_u}, @code{dkummer_m} e @code{dkummer_u}.
 @end deffn
 
-@deffn {Function} kummer_u (@var{a}, @var{b}, @var{x})
+@deffn {Fun@value{cedilha}@~{a}o} kummer_u (@var{a}, @var{b}, @var{x})
 
-Kummer's U function, as defined in Abramowitz and Stegun,
+A fun@value{cedilha}@~{a}o U de Kummer, como definida em Abramowitz e Stegun,
 @i{Handbook of Mathematical Functions}, Section 13.1.3.
 
-See @code{kummer_m}.
+Veja @code{kummer_m}.
 @end deffn
 
-@deffn {Function} dkummer_m (@var{a}, @var{b}, @var{x})
-The derivative with respect to x of @code{kummer_m(a,b,x)}.
+@deffn {Fun@value{cedilha}@~{a}o} dkummer_m (@var{a}, @var{b}, @var{x})
+A derivada com rela@value{cedilha}@~{a}o a x de @code{kummer_m(a,b,x)}.
 @end deffn
 
-@deffn {Function} dkummer_u (@var{a}, @var{b}, @var{x})
-The derivative with respect to x of @code{kummer_u(a,b,x)}.
+@deffn {Fun@value{cedilha}@~{a}o} dkummer_u (@var{a}, @var{b}, @var{x})
+A derivada com rela@value{cedilha}@~{a}o a x de  @code{kummer_u(a,b,x)}.
 @end deffn
 
 
 
-@node Possible improvements to contrib_ode, Test cases for contrib_ode, Functions and Variables for contrib_ode, contrib_ode
-@section Possible improvements to contrib_ode
+@node Possibilidades de melhorias em contrib_ode, Casos de teste para contrib_ode, Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para contrib_ode, contrib_ode
+@section Possibilidades de melhorias em contrib_ode
 
 
-These routines are work in progress.  I still need to:
+Essas rotinas aida est@~{a}o sendo aperfei@value{cedilha}oadas.  @'{E} necess@'{a}rio ainda:
 
 @itemize @bullet
 
 @item
-Extend the FACTOR method @code{ode1_factor} to work for multiple roots.
+Extender o m@'{e}todo FACTOR @code{ode1_factor} para trabalhar com ra@'{i}zes multiplas.
 
 @item
-Extend the FACTOR method @code{ode1_factor} to attempt to solve higher
-  order factors.  At present it only attemps to solve linear factors.
+Extender o m@'{e}todo FACTOR  @code{ode1_factor} para tentar resolver fatores
+  de mais alta ordem.  Atualmente somente tenta resolver fatores lineares.
 
 @item
-Fix the LAGRANGE routine @code{ode1_lagrange} to prefer real roots over
-  complex roots.
+Corrigir a rotina de LAGRANGE @code{ode1_lagrange} para preferira@'{i}zes reais a
+  ra@'{i}zes complexas.
 
 @item
-Add additional methods for Riccati equations.
+Aumentar a quantidade de m@'{e}todos adicionais para equa@value{cedilha}@~{o}es de Riccati.
 
 @item
-Improve the detection of Abel equations of second kind.  The exisiting
-  pattern matching is weak.
+Melhorar a detec@value{cedilha}@~{a}o de equa@value{cedilha}@~{o}es de Abel do segundo tipo.  O modelo
+  existente de coincid@^{e}ncia @'{e} fraco.
 
 @item
-Work on the Lie symmetry group routine @code{ode1_lie}.  There are quite a
-  few problems with it: some parts are unimplemented; some test cases
-  seem to run forever; other test cases crash; yet others return very
-  complex "solutions".  I wonder if it really ready for release yet.
+Trabalho sobre a rotina do grupo de simetria de Lie @code{ode1_lie}.  Existem poucos por@'{e}m
+  grandes problemas com essa rotina: algumas partes precisam de implementa@value{cedilha}@~{a}o; alguns casos de teste
+  parecem executar indefinidamente; outros casos de teste abortam inesplicavelmente; outros ainda retorna "solu@value{cedilha}@~{o}es"
+  muito complexas.  Seria surpreendente se estivesse pronto para se liberar uma vers@~{a}o est@'{a}vel.
 
 @item
-Add more test cases.
+Adicionar mais casos de teste.
 
 @end itemize
 
-@node Test cases for contrib_ode, References for contrib_ode, Possible improvements to contrib_ode, contrib_ode
-@section Test cases for contrib_ode
+@node Casos de teste para contrib_ode, Refer@^{e}ncias bibliogr@'{a}ficas para contrib_ode, Possibilidades de melhorias em contrib_ode, contrib_ode
+@section Casos de teste para contrib_ode
 
 
-The routines have been tested on a approximately one thousand  test cases 
-from Murphy,
-Kamke, Zwillinger and elsewhere.  These are included in the tests subdirectory.
+Asrotinas foram tesadas sobre aproximadamente mil casos de teste
+por Murphy,
+Kamke, Zwillinger e outros.  Esses testes est@~{a}o inclu@'{i}dos no subdiret@'{o}rio de testes.
 
 @itemize @bullet
 @item
-The Clairault routine @code{ode1_clairault} finds all known solutions,
-  including singular solutions, of the Clairault equations in Murphy and
+A rotina de Clairault @code{ode1_clairault} encontra todas as solu@value{cedilha}@~{o}es conhecidas,
+  incluindo solu@value{cedilha}@~{o}es singulares, das equa@value{cedilha}@~{o}es de Clairault em Murphy e
   Kamke.
 
 @item
-The other routines often return a single solution when multiple
-  solutions exist.
+As outras rotinas muitas vezes retornam uma solu@value{cedilha}@~{a}o simples quando existem
+  multiplas solu@value{cedilha}@~{o}es.
 
 @item
-Some of the "solutions" from ode1_lie are overly complex and
-  impossible to check.
+Algumas das "solu@value{cedilha}@~{o}es" de @code{ode1_lie} s@~{a}o extremamente complexas e
+  imposs@'{i}veis de verificar.
 
 @item
-There are some crashes.
+Existe algumas interrup@value{cedilha}@~{o}es inexplic@'{a}vies de execu@value{cedilha}@~{a}o.
 
 @end itemize
 
-@node References for contrib_ode, ,Test cases for contrib_ode, contrib_ode
-@section References for contrib_ode
+@node Refer@^{e}ncias bibliogr@'{a}ficas para contrib_ode, ,Casos de teste para contrib_ode, contrib_ode
+@section Refer@^{e}ncias bibliogr@'{a}ficas para contrib_ode
 
 
 @enumerate
@@ -473,11 +475,11 @@ F Schwarz, Algorithmic Solution of Abel's Equation,
 
 @item
 E. S. Cheb-Terrab, A. D. Roche, Symmetries and First Order
-    ODE Patterns, Computer Physics Communications 113 (1998), p 239.
+    EDO Patterns, Computer Physics Communications 113 (1998), p 239.
     (http://lie.uwaterloo.ca/papers/ode_vii.pdf)
 
 @item
-E. S. Cheb-Terrab, T. Koloknikov,  First Order ODEs,
+E. S. Cheb-Terrab, T. Koloknikov,  First Order EDO's,
     Symmetries and Linear Transformations, European Journal of
     Applied Mathematics, Vol. 14, No. 2, pp. 231-246 (2003).
     (http://arxiv.org/abs/math-ph/0007023)
@@ -489,7 +491,7 @@ G W Bluman, S C Anco, Symmetry and Integration Methods for
 
 @item 
 M Bronstein, S Lafaille,
-Solutions of linear ordinary differential equations in terms
+Solutions of linear ordinary equa@value{cedilha}@~{o}es diferenciais in terms
 of special functions,
 Proceedings of ISSAC 2002, Lille, ACM Press, 23-28. 
 (http://www-sop.inria.fr/cafe/Manuel.Bronstein/publications/issac2002.pdf)

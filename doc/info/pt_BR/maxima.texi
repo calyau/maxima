@@ -448,11 +448,11 @@ bode
 
 contrib_ode
 
-* Introduction to contrib_ode::
-* Functions and Variables for contrib_ode::
-* Possible improvements to contrib_ode::
-* Test cases for contrib_ode::
-* References for contrib_ode::
+* Introdu@value{cedilha}@~{a}o a contrib_ode::
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para contrib_ode::
+* Possibilidades de melhorias em contrib_ode::
+* Casos de teste para contrib_ode::
+* Refer@^{e}ncias bibliogr@'{a}ficas para contrib_ode::
 
 descriptive
 
@@ -496,8 +496,8 @@ ggf
 
 grobner
 
-* Introduction to grobner::
-* Functions and Variables for grobner::
+* Introdu@value{cedilha}@~{a}o a grobner::
+* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para grobner::
 
 impdiff
 
