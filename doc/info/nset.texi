@@ -995,7 +995,7 @@ When @var{a} is not a list, it is returned unchanged.
 
 Examples:
 
-In line (%o2), the argument of @code{f} isn't converted to a set
+In line @code{(%o2)}, the argument of @code{f} isn't converted to a set
 because the main operator of @code{f([b])} isn't a list.
 
 @c ===beg===
