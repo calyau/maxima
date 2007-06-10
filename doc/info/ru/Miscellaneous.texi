@@ -1,7 +1,7 @@
 @c Language=Russian
 @c Encoding=CP1251
 @c File=Miscellaneous.texi 
-@c OriginalRevision=1.22
+@c OriginalRevision=1.23
 
 @menu
 * ¬ведение в вспомогательные опции::  
