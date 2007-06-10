@@ -1,0 +1,2502 @@
+@c Language=Russian
+@c Encoding=CP1251
+@c File=nset.texi 
+@c OriginalRevision=1.22
+
+@menu
+* Введение в работу с множествами::       
+* Функции и переменные для работы с множествами::       
+@end menu
+
+@node Введение в работу с множествами, Функции и переменные для работы с множествами, Множества, Множества
+@section Введение в работу с множествами
+
+Maxima предоставляет функции, такие как пересечение или объединение,
+для работы с конечными множествами, определяемыми перечислением элементов.
+Maxima трактует списки и множества как различные объекты.
+Это позволяет работать с множествами, элементами которых сами
+могут быть списками или множествами.
+
+В дополнение к функциям для работы конечными множествами Maxima определяет некоторые
+функции, относящиеся к комбинаторике, что включает: числа Стирлинга первого и второго рода,
+числа Белла, мультиномиальные коэффициенты, разбиения неотрицательных целых чисел и
+некоторые другие.
+Maxima также определяет дельта-функцию Кронекера.
+
+@subsection Использование
+
+Для того, чтобы задать множество с элементами @code{a_1, ..., a_n}, следует написать
+@code{set(a_1, ..., a_n)} или @code{@{a_1, ..., a_n@}};
+для пустого множества надо написать @code{set()} или @code{@{@}}.
+При вводе формы @code{set(...)} и @code{@{ ... @}} эквивалентны.
+При выводе множества всегда печатаются с фигурными скобками.
+
+Если элемент множества присутствует более одного раза, то упрощение
+удалит повторяющиеся элементы.
+
+@c ===beg===
+@c set();
+@c set(a, b, a);
+@c set(a, set(b));
+@c set(a, [b]);
+@c {};
+@c {a, b, a};
+@c {a, {b}};
+@c {a, [b]};
+@c ===end===
+@example
+(%i1) set();
+(%o1)                          @{@}
+(%i2) set(a, b, a);
+(%o2)                        @{a, b@}
+(%i3) set(a, set(b));
+(%o3)                       @{a, @{b@}@}
+(%i4) set(a, [b]);
+(%o4)                       @{a, [b]@}
+(%i5) @{@};
+(%o5)                          @{@}
+(%i6) @{a, b, a@};
+(%o6)                        @{a, b@}
+(%i7) @{a, @{b@}@};
+(%o7)                       @{a, @{b@}@}
+(%i8) @{a, [b]@};
+(%o8)                       @{a, [b]@}
+@end example
+
+Два элемента @var{x} и @var{y} являются повторяющимися 
+(т.е. рассматриваются совпадающими с точки зрения включения в множество),
+тогда и только тогда, когда @code{is(@var{x} = @var{y})} дает @code{true}.
+@c THAT IS BECAUSE THE SET SIMPLIFICATION CODE CALLS THE LISP FUNCTION LIKE,
+@c AND SO DOES THE CODE TO EVALUATE IS (X = Y).
+Заметим, что @code{is(equal(@var{x}, @var{y}))} может давать @code{true},
+тогда как @code{is(@var{x} = @var{y})} дает @code{false}.
+В этом случае элементы @var{x} и @var{y} считаются различными.
+
+@c ===beg===
+@c x: a/c + b/c;
+@c y: a/c + b/c;
+@c z: (a + b)/c;
+@c is (x = y);
+@c is (y = z);
+@c is (equal (y, z));
+@c y - z;
+@c ratsimp (%);
+@c {x, y, z};
+@c ===end===
+@example
+(%i1) x: a/c + b/c;
+                              b   a
+(%o1)                         - + -
+                              c   c
+(%i2) y: a/c + b/c;
+                              b   a
+(%o2)                         - + -
+                              c   c
+(%i3) z: (a + b)/c;
+                              b + a
+(%o3)                         -----
+                                c
+(%i4) is (x = y);
+(%o4)                         true
+(%i5) is (y = z);
+(%o5)                         false
+(%i6) is (equal (y, z));
+(%o6)                         true
+(%i7) y - z;
+                           b + a   b   a
+(%o7)                    - ----- + - + -
+                             c     c   c
+(%i8) ratsimp (%);
+(%o8)                           0
+(%i9) @{x, y, z@};
+                          b + a  b   a
+(%o9)                    @{-----, - + -@}
+                            c    c   c
+@end example
+
+Для того, чтобы создать множество из элементов списка, используется @code{setify}.
+
+@c ===beg===
+@c setify ([b, a]);
+@c ===end===
+@example
+(%i1) setify ([b, a]);
+(%o1)                        @{a, b@}
+@end example
+
+Элементы множества @code{x} и @code{y} равны если @code{is(x = y)}
+вычисляется в @code{true}. Тогда @code{rat(x)} и @code{x} являются равными элементами множества, и,
+следовательно 
+
+@c ===beg===
+@c {x, rat(x)};
+@c ===end===
+@example
+(%i1) @{x, rat(x)@};
+(%o1)                          @{x@}
+@end example
+
+Далее, поскольку @code{is((x - 1)*(x + 1) = x^2 - 1)} вычисляется в @code{false}, то
+@code{(x - 1)*(x + 1)} и @code{x^2 - 1} есть различные элементы, и  
+
+@c ===beg===
+@c {(x - 1)*(x + 1), x^2 - 1};
+@c ===end===
+@example
+(%i1) @{(x - 1)*(x + 1), x^2 - 1@};
+                                       2
+(%o1)               @{(x - 1) (x + 1), x  - 1@}
+@end example
+
+Для приведения этого множества к одноэлементному следует применить @code{rat} 
+к каждому элементу:
+
+@c ===beg===
+@c {(x - 1)*(x + 1), x^2 - 1};
+@c map (rat, %);
+@c ===end===
+@example
+(%i1) @{(x - 1)*(x + 1), x^2 - 1@};
+                                       2
+(%o1)               @{(x - 1) (x + 1), x  - 1@}
+(%i2) map (rat, %);
+                              2
+(%o2)/R/                    @{x  - 1@}
+@end example
+
+Для удаления повторов из множеств другого вида может потребоваться
+применение других упрощающих функций. Вот пример, использующий @code{trigsimp}:
+
+@c ===beg===
+@c {1, cos(x)^2 + sin(x)^2};
+@c map (trigsimp, %);
+@c ===end===
+@example
+(%i1) @{1, cos(x)^2 + sin(x)^2@};
+                            2         2
+(%o1)                @{1, sin (x) + cos (x)@}
+(%i2) map (trigsimp, %);
+(%o2)                          @{1@}
+@end example
+
+Множество является упрощенным если его элементы не повторяются и упорядочены. 
+Текущая реализация Maxima функций для работы с множествами использует
+функцию @code{orderlessp} для упорядочения, однако, @i{будущие версии могут использовать
+другую упорядочивающую функцию}.
+
+Некоторые операции над множествами, такие как подстановки, вызывают автоматическое 
+упрощение.  Например,
+
+@c ===beg===
+@c s: {a, b, c}$
+@c subst (c=a, s);
+@c subst ([a=x, b=x, c=x], s);
+@c map (lambda ([x], x^2), set (-1, 0, 1));
+@c ===end===
+@example
+(%i1) s: @{a, b, c@}$
+(%i2) subst (c=a, s);
+(%o2)                        @{a, b@}
+(%i3) subst ([a=x, b=x, c=x], s);
+(%o3)                          @{x@}
+(%i4) map (lambda ([x], x^2), set (-1, 0, 1));
+(%o4)                        @{0, 1@}
+@end example
+
+Maxima рассматривает списки и множества как различные объекты;
+функции, подобные @code{union} и @code{intersection}, сигнализируют об ошибке
+если их аргументы не являются множествами. Если необходимо применить функцию
+для работы с множествами к списку, то надо сначала использовать @code{setify} 
+для преобразования списка в множество. Таким образом
+
+@c ===beg===
+@c union ([1, 2], {a, b});
+@c union (setify ([1, 2]), {a, b});
+@c ===end===
+@example
+(%i1) union ([1, 2], @{a, b@});
+Function union expects a set, instead found [1,2]
+ -- an error.  Quitting.  To debug this try debugmode(true);
+(%i2) union (setify ([1, 2]), @{a, b@});
+(%o2)                     @{1, 2, a, b@}
+@end example
+
+Для того, чтобы получить все элементы множества @code{s}, удовлетворяющие предикату
+@code{f}, используйте @code{subset(s, f)} (@i{предикат} -- функция дающая логическое 
+значение). Например, чтобы найти в заданном множестве уравнения, которые не зависят от
+переменной @code{z}, используйте
+
+@c ===beg===
+@c subset ({x + y + z, x - y + 4, x + y - 5}, lambda ([e], freeof (z, e)));
+@c ===end===
+@example
+(%i1) subset (@{x + y + z, x - y + 4, x + y - 5@}, lambda ([e], freeof (z, e)));
+(%o1)               @{- y + x + 4, y + x - 5@}
+@end example
+
+Раздел @ref{Функции и переменные для работы с множествами} содержит полный список
+функций Maxima, предназначенных для работы с множествами.
+
+@subsection Итерация по элементам множества
+
+Существует два способа организации цикла по элементам множества. Один способ -- использовать @code{map},
+например:
+
+@c ===beg===
+@c map (f, {a, b, c});
+@c ===end===
+@example
+(%i1) map (f, @{a, b, c@});
+(%o1)                  @{f(a), f(b), f(c)@}
+@end example
+
+Другой способ -- использовать @code{for @var{x} in @var{s} do}
+
+@c ===beg===
+@c s: {a, b, c};
+@c for si in s do print (concat (si, 1));
+@c ===end===
+@example
+(%i1) s: @{a, b, c@};
+(%o1)                       @{a, b, c@}
+(%i2) for si in s do print (concat (si, 1));
+a1 
+b1 
+c1 
+(%o2)                         done
+@end example
+
+Maxima функции @code{first} и @code{rest} правильно работают с множествами.
+Примененная к множеству, @code{first} возвращает первый элемент множества,
+какой именно -- может зависеть от реализации. Если @code{s} является множеством, 
+то @code{rest(s)} эквивалентно @code{disjoin(first(s), s)}.
+В настоящий момент есть другие функции Maxima, корректно работающие с множествами.
+В будущих версиях, функции @code{first} и @code{rest} могут работать на множествах иначе, или
+не работать вовсе.
+
+@subsection Ошибки
+
+Функции для работы с множествами используют Maxima функцию @code{orderlessp} 
+для сортировки элементов множества и Lisp функцию @code{like} для проверки
+равенства элементов. Обе эти функции имеют известные ошибки, которые проявляются при 
+попытке использовать множества, элементы которых являются списками или матрицами,
+включающими выражения в канонической рациональной форме (КРВ).
+Например
+
+@c ===beg===
+@c {[x], [rat (x)]};
+@c ===end===
+@example
+(%i1) @{[x], [rat (x)]@};
+Maxima encountered a Lisp error:
+
+  The value #:X1440 is not of type LIST.
+
+Automatically continuing.
+To reenable the Lisp debugger set *debugger-hook* to nil.
+@end example
+
+Это выражение вызывает ошибку (сообщение об ошибке зависит от версии Lisp и Maxima). 
+Другой пример
+
+@c ===beg===
+@c setify ([[rat(a)], [rat(b)]]);
+@c ===end===
+@example
+(%i1) setify ([[rat(a)], [rat(b)]]);
+Maxima encountered a Lisp error:
+
+  The value #:A1440 is not of type LIST.
+
+Automatically continuing.
+To reenable the Lisp debugger set *debugger-hook* to nil.
+@end example
+
+Эти ошибки вызваны ошибками в @code{orderlessp} и @code{like}, а не ошибками
+в реализации функций работы с множествами. 
+Для иллюстрации попробуем следующие выражения
+
+@c ===beg===
+@c orderlessp ([rat(a)], [rat(b)]);
+@c is ([rat(a)] = [rat(a)]);
+@c ===end===
+@example
+(%i1) orderlessp ([rat(a)], [rat(b)]);
+Maxima encountered a Lisp error:
+
+  The value #:B1441 is not of type LIST.
+
+Automatically continuing.
+To reenable the Lisp debugger set *debugger-hook* to nil.
+(%i2) is ([rat(a)] = [rat(a)]);
+(%o2)                         false
+@end example
+
+До тех пор пока эти ошибки не исправлены, не следует использовать множества
+с элементами в виде списков и матриц, содержащих выражения в формате КРВ.
+Множества, просто содержащие выражения КРВ в качестве элементов
+не создают проблем.
+
+@c ===beg===
+@c {x, rat (x)};
+@c ===end===
+@example
+(%i1) @{x, rat (x)@};
+(%o1)                          @{x@}
+@end example
+
+Maxima функция @code{orderlessp} имеет еще одну ошибку, которая может создать проблемы
+при работе с множествами.  А именно, упорядочивающий предикат @code{orderlessp} не
+является транзитивным. Простейший известный пример, демонстрирующий это 
+
+@c ===beg===
+@c q: x^2$
+@c r: (x + 1)^2$
+@c s: x*(x + 2)$
+@c orderlessp (q, r);
+@c orderlessp (r, s);
+@c orderlessp (q, s);
+@c ===end===
+@example
+(%i1) q: x^2$
+(%i2) r: (x + 1)^2$
+(%i3) s: x*(x + 2)$
+(%i4) orderlessp (q, r);
+(%o4)                         true
+(%i5) orderlessp (r, s);
+(%o5)                         true
+(%i6) orderlessp (q, s);
+(%o6)                         false
+@end example
+
+Эта ошибка вызывает проблемы со всеми функциями для работы с множествами и даже 
+с другими Maxima функциями. Возможно, но точно не известно, что эту ошибку можно обойти, если все элементы
+множества или являются КРВ, или упрощены с помощью @code{ratsimp}.
+
+@c WHAT EXACTLY IS THE EFFECT OF ordergreat AND orderless ON THE SET FUNCTIONS ??
+Механизмы Maxima @code{orderless} и @code{ordergreat} не совместимы с функциями для работы с множествами. 
+Если требуется использовать либо @code{orderless}, либо @code{ordergreat}, 
+то следует вызывать эти функции до формирования множеств, и не следует использовать @code{unorder}. 
+
+@c APPARENTLY THIS NEXT BIT REFERS TO BUG REPORT 798571
+@c EXAMPLE WITH kron_delta (1/sqrt(2), sqrt(2)/2); NOW WORKS AS EXPECTED
+@c COMMENT OUT PENDING CONSTRUCTION OF ANOTHER EXAMPLE WHICH TRIGGERS THE BUG
+@c
+@c Maxima's sign function has a bug that may cause the Kronecker
+@c delta function to misbehave; for example:
+@c 
+@c @c ===beg===
+@c @c kron_delta (1/sqrt(2), sqrt(2)/2);
+@c @c ===end===
+@c @example
+@c (%i1) kron_delta (1/sqrt(2), sqrt(2)/2);
+@c (%o1)                           0
+@c @end example
+@c 
+@c The correct value is 1; the bug is related to the @code{sign} bug
+@c 
+@c @c ===beg===
+@c @c sign (1/sqrt(2) - sqrt(2)/2);
+@c @c ===end===
+@c @example
+@c (%i1) sign (1/sqrt(2) - sqrt(2)/2);
+@c (%o1)                          pos
+@c @end example
+
+Если вы встретите что-то, что может быть ошибкой в функциях работы с множествами, пожалуйста,
+сообщите об этом в базу данных ошибок Maxima. См. @code{bug_report}.
+
+@subsection Авторы
+
+Функции для работы с множествами Maxima и документация к ним написаны Ставросом Макракисом 
+(Stavros Macrakis of Cambridge, Massachusetts) и Бартоном Уиллисом (Barton Willis of the
+University of Nebraska at Kearney (UNK)). 
+
+@node Функции и переменные для работы с множествами,  , Введение в работу с множествами, Множества
+@section Функции и переменные для работы с множествами
+
+@anchor{adjoin}
+@deffn {Функция} adjoin (@var{x}, @var{a}) 
+
+Возвращает объединение множества @var{a} с @code{@{@var{x}@}}.
+
+Функция @code{adjoin} вызывает ошибку, если @var{a} не является множеством.
+
+Вызовы @code{adjoin(@var{x}, @var{a})} и @code{union(set(@var{x}), @var{a})}
+эквивалентны, однако, @code{adjoin} может быть несколько быстрее чем @code{union}.
+
+См. также @code{disjoin}.
+
+Примеры:
+
+@c ===beg===
+@c adjoin (c, {a, b});
+@c adjoin (a, {a, b});
+@c ===end===
+@example
+(%i1) adjoin (c, @{a, b@});
+(%o1)                       @{a, b, c@}
+(%i2) adjoin (a, @{a, b@});
+(%o2)                        @{a, b@}
+@end example
+
+@end deffn
+
+@anchor{belln}
+@deffn {Функция} belln (@var{n})
+
+Представляет @math{n}-ое число Белла.
+@code{belln(n)} есть число разбиений множества с @var{n} элементами.
+
+Для неотрицательного целого @var{n},
+@code{belln(@var{n})} упрощается в @math{n}-ое число Белла.
+Для других значений аргумента @code{belln} не упрощается.
+
+Функция @code{belln} дистрибутивна по отношению к уравнениям, спискам, матрицам и множествам.
+
+Примеры:
+
+Функция @code{belln}, примененная к неотрицательным целым числам.
+
+@c ===beg===
+@c makelist (belln (i), i, 0, 6);
+@c is (cardinality (set_partitions ({})) = belln (0));
+@c is (cardinality (set_partitions ({1, 2, 3, 4, 5, 6})) = belln (6));
+@c ===end===
+@example
+(%i1) makelist (belln (i), i, 0, 6);
+(%o1)               [1, 1, 2, 5, 15, 52, 203]
+(%i2) is (cardinality (set_partitions (@{@})) = belln (0));
+(%o2)                         true
+(%i3) is (cardinality (set_partitions (@{1, 2, 3, 4, 5, 6@})) = belln (6));
+(%o3)                         true
+@end example
+
+Функция @code{belln}, примененная к аргументам, не являющимся неотрицательными 
+целыми числами.
+
+@c ===beg===
+@c [belln (x), belln (sqrt(3)), belln (-9)];
+@c ===end===
+@example
+(%i1) [belln (x), belln (sqrt(3)), belln (-9)];
+(%o1)        [belln(x), belln(sqrt(3)), belln(- 9)]
+@end example
+
+@end deffn
+
+@anchor{cardinality}
+@deffn {Функция} cardinality (@var{a})
+
+Возвращает число различных элементов множества @var{a}. 
+
+Функция @code{cardinality} игнорирует повторяющиеся элементы, даже если упрощение
+отключено.
+
+Примеры:
+
+@c ===beg===
+@c cardinality ({});
+@c cardinality ({a, a, b, c});
+@c simp : false;
+@c cardinality ({a, a, b, c});
+@c ===end===
+@example
+(%i1) cardinality (@{@});
+(%o1)                           0
+(%i2) cardinality (@{a, a, b, c@});
+(%o2)                           3
+(%i3) simp : false;
+(%o3)                         false
+(%i4) cardinality (@{a, a, b, c@});
+(%o4)                           3
+@end example
+
+@end deffn
+
+@anchor{cartesian_product}
+@deffn {Функция} cartesian_product (@var{b_1}, ... , @var{b_n})
+Возвращает множество списков формы @code{[@var{x_1}, ..., @var{x_n}]}, где
+@var{x_1}, ..., @var{x_n} есть элементы множеств @var{b_1}, ... , @var{b_n} соответственно.
+
+Функция @code{cartesian_product} вызывает ошибку, если хотя бы один из ее аргументов
+не является множеством.
+
+Примеры:
+
+@c ===beg===
+@c cartesian_product ({0, 1});
+@c cartesian_product ({0, 1}, {0, 1});
+@c cartesian_product ({x}, {y}, {z});
+@c cartesian_product ({x}, {-1, 0, 1});
+@c ===end===
+@example
+(%i1) cartesian_product (@{0, 1@});
+(%o1)                      @{[0], [1]@}
+(%i2) cartesian_product (@{0, 1@}, @{0, 1@});
+(%o2)           @{[0, 0], [0, 1], [1, 0], [1, 1]@}
+(%i3) cartesian_product (@{x@}, @{y@}, @{z@});
+(%o3)                      @{[x, y, z]@}
+(%i4) cartesian_product (@{x@}, @{-1, 0, 1@});
+(%o4)              @{[x, - 1], [x, 0], [x, 1]@}
+@end example
+@end deffn
+
+
+@anchor{disjoin}
+@deffn {Функция} disjoin (@var{x}, @var{a})
+Возвращает множество @var{a} без элемента @var{x}.
+Если @var{x} не является элементом @var{a}, то @var{a} 
+возвращается неизменным.
+
+Функция @code{disjoin} вызывает ошибку, если @var{a} не является множеством.
+
+@code{disjoin(@var{x}, @var{a})}, @code{delete(@var{x}, @var{a})} и
+@code{setdifference(@var{a}, set(@var{x}))} эквивалентны. 
+Из этих вариантов @code{disjoin} обычно быстрее других.
+
+Примеры:
+
+@c ===beg===
+@c disjoin (a, {a, b, c, d});
+@c disjoin (a + b, {5, z, a + b, %pi});
+@c disjoin (a - b, {5, z, a + b, %pi});
+@c ===end===
+@example
+(%i1) disjoin (a, @{a, b, c, d@});
+(%o1)                       @{b, c, d@}
+(%i2) disjoin (a + b, @{5, z, a + b, %pi@});
+(%o2)                      @{5, %pi, z@}
+(%i3) disjoin (a - b, @{5, z, a + b, %pi@});
+(%o3)                  @{5, %pi, b + a, z@}
+@end example
+
+@end deffn
+
+@anchor{disjointp}
+@deffn {Функция} disjointp (@var{a}, @var{b}) 
+Возвращает @code{true} тогда и только тогда, когда множества @var{a} и @var{b} не пересекаются.
+
+Функция @code{disjointp} вызывает ошибку, если @var{a} или @var{b} не являются множествами.
+
+Примеры:
+
+@c ===beg===
+@c disjointp ({a, b, c}, {1, 2, 3});
+@c disjointp ({a, b, 3}, {1, 2, 3});
+@c ===end===
+@example
+(%i1) disjointp (@{a, b, c@}, @{1, 2, 3@});
+(%o1)                         true
+(%i2) disjointp (@{a, b, 3@}, @{1, 2, 3@});
+(%o2)                         false
+@end example
+
+@end deffn
+
+@anchor{divisors}
+@deffn {Функция} divisors (@var{n})
+
+Представляет множество делителей @var{n}.
+
+Функция @code{divisors(@var{n})} упрощается до множества целых чисел, если
+@var{n} является ненулевым целым числом.
+Множество делителей включает 1 и @var{n}.
+Делители отрицательного числа совпадают с таковыми для его абсолютного значения.
+
+Функция @code{divisors} дистрибутивна по отношению к уравнениям, спискам, матрицам и множествам.
+
+Примеры:
+
+Мы можем проверить, что число 28 является совершенным,
+т.е. сумма делителей, за исключением самого числа, равна 28.
+
+@c ===beg===
+@c s: divisors(28);
+@c lreduce ("+", args(s)) - 28;
+@c ===end===
+@example
+(%i1) s: divisors(28);
+(%o1)                 @{1, 2, 4, 7, 14, 28@}
+(%i2) lreduce ("+", args(s)) - 28;
+(%o2)                          28
+@end example
+
+Функция @code{divisors} является упрощающей.
+Подстановка 8 для @code{a} в @code{divisors(a)}
+дает делители без перевычисления @code{divisors(8)}.
+
+@c ===beg===
+@c divisors (a);
+@c subst (8, a, %);
+@c ===end===
+@example
+(%i1) divisors (a);
+(%o1)                      divisors(a)
+(%i2) subst (8, a, %);
+(%o2)                     @{1, 2, 4, 8@}
+@end example
+
+Функция @code{divisors} дистрибутивна по отношению к уравнениям, спискам, матрицам и множествам.
+
+@c ===beg===
+@c divisors (a = b);
+@c divisors ([a, b, c]);
+@c divisors (matrix ([a, b], [c, d]));
+@c divisors ({a, b, c});
+@c ===end===
+@example
+(%i1) divisors (a = b);
+(%o1)               divisors(a) = divisors(b)
+(%i2) divisors ([a, b, c]);
+(%o2)        [divisors(a), divisors(b), divisors(c)]
+(%i3) divisors (matrix ([a, b], [c, d]));
+                  [ divisors(a)  divisors(b) ]
+(%o3)             [                          ]
+                  [ divisors(c)  divisors(d) ]
+(%i4) divisors (@{a, b, c@});
+(%o4)        @{divisors(a), divisors(b), divisors(c)@}
+@end example
+@end deffn
+
+@anchor{elementp}
+@deffn {Функция} elementp (@var{x}, @var{a})
+Возвращает @code{true} тогда и только тогда, когда @var{x} является элементом множества @var{a}.
+
+Функция @code{elementp} вызывает ошибку, если @var{a} не является множеством.
+
+Примеры:
+
+@c ===beg===
+@c elementp (sin(1), {sin(1), sin(2), sin(3)});
+@c elementp (sin(1), {cos(1), cos(2), cos(3)});
+@c ===end===
+@example
+(%i1) elementp (sin(1), @{sin(1), sin(2), sin(3)@});
+(%o1)                         true
+(%i2) elementp (sin(1), @{cos(1), cos(2), cos(3)@});
+(%o2)                         false
+@end example
+
+@end deffn
+
+@anchor{emptyp}
+@deffn {Функция} emptyp (@var{a})
+Возвращает @code{true} тогда и только тогда, когда @var{a} есть пустое множество или список.
+
+Примеры:
+
+@c ===beg===
+@c map (emptyp, [{}, []]);
+@c map (emptyp, [a + b, {{}}, %pi]);
+@c ===end===
+@example
+(%i1) map (emptyp, [@{@}, []]);
+(%o1)                     [true, true]
+(%i2) map (emptyp, [a + b, @{@{@}@}, %pi]);
+(%o2)                 [false, false, false]
+@end example
+@end deffn
+       
+@anchor{equiv_classes}
+@deffn {Функция} equiv_classes (@var{s}, @var{F})
+Возвращает множество классов эквивалентности множества @var{s} по отношению эквивалентности @var{F}.
+
+@var{F} -- есть функция двух переменных, определенная на Декартовом произведении @var{s} на @var{s}.
+Возвращаемое @var{F} значение есть @code{true} или @code{false},
+либо выражение @var{expr} такое, что @code{is(@var{expr})} дает @code{true} или @code{false}.
+
+Если @var{F} не является отношением эквивалентности, то @code{equiv_classes} 
+применит его без возражения, но результат будет скорее всего неправильным.
+
+@c EXCESSIVE DETAIL HERE. PROBABLY JUST CUT THIS
+@c @var{F} may be a relational operator (built-in or user-defined),
+@c an ordinary Maxima function, a Lisp function, a lambda expression,
+@c a macro, or a subscripted function.
+
+Примеры:
+
+Отношение эквивалентности является лямбда-выражением, возвращающим @code{true} или @code{false}.
+
+@c ===beg===
+@c equiv_classes ({1, 1.0, 2, 2.0, 3, 3.0}, lambda ([x, y], is (equal (x, y))));
+@c ===end===
+@example
+(%i1) equiv_classes (@{1, 1.0, 2, 2.0, 3, 3.0@}, lambda ([x, y], is (equal (x, y))));
+(%o1)            @{@{1, 1.0@}, @{2, 2.0@}, @{3, 3.0@}@}
+@end example
+
+Отношение эквивалентности есть имя реляционной функции @code{is}, дающей @code{true} или @code{false}.
+
+@c ===beg===
+@c equiv_classes ({1, 1.0, 2, 2.0, 3, 3.0}, equal);
+@c ===end===
+@example
+(%i1) equiv_classes (@{1, 1.0, 2, 2.0, 3, 3.0@}, equal);
+(%o1)            @{@{1, 1.0@}, @{2, 2.0@}, @{3, 3.0@}@}
+@end example
+
+Классы эквивалентности -- числа отличающиеся на несколько чисел 3.
+
+@c ===beg===
+@c equiv_classes ({1, 2, 3, 4, 5, 6, 7}, lambda ([x, y], remainder (x - y, 3) = 0));
+@c ===end===
+@example
+(%i1) equiv_classes (@{1, 2, 3, 4, 5, 6, 7@}, lambda ([x, y], remainder (x - y, 3) = 0));
+(%o1)              @{@{1, 4, 7@}, @{2, 5@}, @{3, 6@}@}
+@end example
+@end deffn
+
+@anchor{every}
+@deffn {Функция} every (@var{f}, @var{s})
+@deffnx {Функция} every (@var{f}, @var{L_1}, ..., @var{L_n})
+
+Возвращает @code{true}, если предикат @var{f} дает @code{true} для всех аргументов.
+
+Если второй аргумент является множеством, то  
+@code{every(@var{f}, @var{s})} возвращает @code{true},
+если @code{is(@var{f}(@var{a_i}))} возвращает @code{true} для всех @var{a_i} в @var{s}.
+@code{every} может вычислять @var{f} для всех @var{a_i} в @var{s}, а может и не для всех.
+Т.к. множества не упорядочены, то @code{every} может вычислять @code{@var{f}(@var{a_i})} 
+в произвольном порядке.
+
+Примененная к одному или нескольким спискам,
+@code{every(@var{f}, @var{L_1}, ..., @var{L_n})} возвращает @code{true},
+если @code{is(@var{f}(@var{x_1}, ..., @var{x_n}))} возвращает @code{true} 
+для всех @var{x_1}, ..., @var{x_n} в @var{L_1}, ..., @var{L_n} соответственно.
+@code{every} может вычислять @var{f} для всех комбинаций @var{x_1}, ..., @var{x_n}, а может и не для всех.
+@code{every} вычисляет списки в порядке возрастания индекса.
+
+Для пустого множества @code{@{@}} и пустого списка @code{[]} @code{every} возвращает @code{false}.
+
+Если глобальный флаг @code{maperror} равен @code{true}, то все списки 
+@var{L_1}, ..., @var{L_n} должны иметь одинаковую длину.
+Если @code{maperror} равен @code{false}, то списки обрезаются до длины 
+самого короткого. 
+
+Значение предиката @var{f}, который вычисляется посредством @code{is}
+в значение, отличное от @code{true} или @code{false},
+управляется глобальным флагом @code{prederror}.
+Если @code{prederror} равен @code{true}, то данные
+значения рассматриваются как @code{false}, и возвращаемое
+@code{every} значение есть @code{false}.
+Если  @code{prederror} равен  @code{false}, то такие значения
+рассматриваются как @code{unknown}, и возвращаемое
+@code{every} значение равно @code{unknown}.
+
+Примеры:
+
+@code{every} примененная к одному списку.
+Предикат является функцией одного аргумента.
+
+@c ===beg===
+@c every (integerp, {1, 2, 3, 4, 5, 6});
+@c every (atom, {1, 2, sin(3), 4, 5 + y, 6});
+@c ===end===
+@example
+(%i1) every (integerp, @{1, 2, 3, 4, 5, 6@});
+(%o1)                         true
+(%i2) every (atom, @{1, 2, sin(3), 4, 5 + y, 6@});
+(%o2)                         false
+@end example
+
+@code{every} примененная к двум спискам.
+Предикат -- функция двух аргументов.
+
+@c ===beg===
+@c every ("=", [a, b, c], [a, b, c]);
+@c every ("#", [a, b, c], [a, b, c]);
+@c ===end===
+@example
+(%i1) every ("=", [a, b, c], [a, b, c]);
+(%o1)                         true
+(%i2) every ("#", [a, b, c], [a, b, c]);
+(%o2)                         false
+@end example
+
+Значение предиката @var{f}, вычисляемого в значение,
+отличное от @code{true} или @code{false},
+управляется глобальным флагом @code{prederror}.
+
+@c ===beg===
+@c prederror : false;
+@c map (lambda ([a, b], is (a < b)), [x, y, z], [x^2, y^2, z^2]);
+@c every ("<", [x, y, z], [x^2, y^2, z^2]);
+@c prederror : true;
+@c every ("<", [x, y, z], [x^2, y^2, z^2]);
+@c ===end===
+@example
+(%i1) prederror : false;
+(%o1)                         false
+(%i2) map (lambda ([a, b], is (a < b)), [x, y, z], [x^2, y^2, z^2]);
+(%o2)              [unknown, unknown, unknown]
+(%i3) every ("<", [x, y, z], [x^2, y^2, z^2]);
+(%o3)                        unknown
+(%i4) prederror : true;
+(%o4)                         true
+(%i5) every ("<", [x, y, z], [x^2, y^2, z^2]);
+(%o5)                         false
+@end example
+
+@end deffn
+ 
+@anchor{extremal_subset}
+@deffn {Функция} extremal_subset (@var{s}, @var{f}, max)
+@deffnx {Функция} extremal_subset (@var{s}, @var{f}, min)
+
+Возвращает подмножество @var{s}, на котором функция @var{f} принимает минимальное или максимальное значение.
+
+@code{extremal_subset(@var{s}, @var{f}, max)} возвращает подмножество множества или списка 
+@var{s}, для которого вещественнозначная функция @var{f} принимает максимальное значение.
+
+@code{extremal_subset(@var{s}, @var{f}, min)} возвращает подмножество множества или списка 
+@var{s}, для которого вещественнозначная функция @var{f} принимает минимальное значение.
+
+Примеры:
+
+@c ===beg===
+@c extremal_subset ({-2, -1, 0, 1, 2}, abs, max);
+@c extremal_subset ({sqrt(2), 1.57, %pi/2}, sin, min);
+@c ===end===
+@example
+(%i1) extremal_subset (@{-2, -1, 0, 1, 2@}, abs, max);
+(%o1)                       @{- 2, 2@}
+(%i2) extremal_subset (@{sqrt(2), 1.57, %pi/2@}, sin, min);
+(%o2)                       @{sqrt(2)@}
+@end example
+@end deffn
+
+@anchor{flatten}
+@deffn {Функция} flatten (@var{expr})
+
+Собирает аргументы подвыражений, имеющих оператор верхнего уровня такой же как у @var{expr},
+и строит выражение из этих собранных аргументов.
+
+Аргументы, имеющие оператор верхнего уровня отличный от главного оператора @code{expr},
+копируются без модификации, даже если они, в свою очередь, имеют некоторые подвыражения
+с главным оператором @code{expr}.
+
+Возможно, что @code{flatten} построит выражение с числом аргументов
+недопустимым для данного типа оператора, что может привести к ошибке
+упрощятеля или вычислителя.
+Функция @code{flatten} не пытается определить подобные ситуации.
+
+Выражения, имеющие специальные представления, например, канонические рациональные выражения (КРВ),
+не обрабатываются @code{flatten}.  В этом случае @code{flatten} возвращает аргумент
+без изменения.
+
+Примеры:
+
+Примененная к списку, @code{flatten} собирает все элементы, являющиеся списками.
+
+@c ===beg===
+@c flatten ([a, b, [c, [d, e], f], [[g, h]], i, j]);
+@c ===end===
+@example
+(%i1) flatten ([a, b, [c, [d, e], f], [[g, h]], i, j]);
+(%o1)            [a, b, c, d, e, f, g, h, i, j]
+@end example
+
+Примененная к множеству, @code{flatten} собирает все элементы, являющиеся множествами.
+
+@c ===beg===
+@c flatten ({a, {b}, {{c}}});
+@c flatten ({a, {[a], {a}}});
+@c ===end===
+@example
+(%i1) flatten (@{a, @{b@}, @{@{c@}@}@});
+(%o1)                       @{a, b, c@}
+(%i2) flatten (@{a, @{[a], @{a@}@}@});
+(%o2)                       @{a, [a]@}
+@end example
+
+Функция @code{flatten} похожа на объявление оператора n-арным.
+Однако, @code{flatten} не влияет на подвыражения, имеющие оператор, отличный от 
+главного оператора выражения, тогда как декларация оператора n-арным действует на них.
+
+@c ===beg===
+@c expr: flatten (f (g (f (f (x)))));
+@c declare (f, nary);
+@c ev (expr);
+@c ===end===
+@example
+(%i1) expr: flatten (f (g (f (f (x)))));
+(%o1)                     f(g(f(f(x))))
+(%i2) declare (f, nary);
+(%o2)                         done
+(%i3) ev (expr);
+(%o3)                      f(g(f(x)))
+@end example
+
+@code{flatten} трактует функции с индексом также как любые другие операторы.
+
+@c ===beg===
+@c flatten (f[5] (f[5] (x, y), z));
+@c ===end===
+@example
+(%i1) flatten (f[5] (f[5] (x, y), z));
+(%o1)                      f (x, y, z)
+                            5
+@end example
+
+Функция @code{flatten} может составить выражение в котором число аргументов
+отличается от объявленного числа аргументов оператора.
+
+@c ===beg===
+@c 'mod (5, 'mod (7, 4));
+@c flatten (%);
+@c ''%, nouns;
+@c ===end===
+@example
+(%i1) 'mod (5, 'mod (7, 4));
+(%o1)                   mod(5, mod(7, 4))
+(%i2) flatten (%);
+(%o2)                     mod(5, 7, 4)
+(%i3) ''%, nouns;
+Wrong number of arguments to mod
+ -- an error.  Quitting.  To debug this try debugmode(true);
+@end example
+@end deffn
+
+@anchor{full_listify}
+@deffn {Функция} full_listify (@var{a})
+Заменяет в @var{a} все множества на списки и возвращает результат.
+@code{full_listify} заменяет операторы множества на операторы списка во вложенных подвыражениях,
+даже если главный оператор не есть @code{set}.
+
+Функция @code{listify} заменяет только главный оператор.
+
+Примеры:
+
+@c ===beg===
+@c full_listify ({a, b, {c, {d, e, f}, g}});
+@c full_listify (F (G ({a, b, H({c, d, e})})));
+@c ===end===
+@example
+(%i1) full_listify (@{a, b, @{c, @{d, e, f@}, g@}@});
+(%o1)               [a, b, [c, [d, e, f], g]]
+(%i2) full_listify (F (G (@{a, b, H(@{c, d, e@})@})));
+(%o2)              F(G([a, b, H([c, d, e])]))
+@end example
+
+@end deffn
+
+@anchor{fullsetify}
+@deffn {Функция} fullsetify (@var{a})
+Если @var{a} является списком, то @code{fullsetify} заменяет оператор списка на оператор множества и
+применяет @code{fullsetify} ко всем членам этого множества.
+Если аргумент @var{a} не является списком, то он возвращается неизменным.
+
+Функция @code{setify} заменяет только главный оператор.
+
+Примеры:
+
+В строке @code{(%o2)} аргумент @code{f} не преобразован в множество, т.к.
+главный оператор не является списком @code{f([b])}.
+
+@c ===beg===
+@c fullsetify ([a, [a]]);
+@c fullsetify ([a, f([b])]);
+@c ===end===
+@example
+(%i1) fullsetify ([a, [a]]);
+(%o1)                       @{a, @{a@}@}
+(%i2) fullsetify ([a, f([b])]);
+(%o2)                      @{a, f([b])@}
+@end example
+
+@end deffn
+
+@anchor{identity}
+@deffn {Функция} identity (@var{x})
+
+Возвращает @var{x} для любого аргумента @var{x}.
+
+Примеры:
+
+Функция @code{identity} может использоваться как предикат, если параметры уже
+являются логическими значениями.
+
+@c ===beg===
+@c every (identity, [true, true]);
+@c ===end===
+@example
+(%i1) every (identity, [true, true]);
+(%o1)                         true
+@end example
+@end deffn
+
+@anchor{integer_partitions}
+@deffn {Функция} integer_partitions (@var{n})
+@deffnx {Функция} integer_partitions (@var{n}, @var{len})
+
+Возвращает целочисленные разбиения @var{n}, т.е. списки целых чисел,
+сумма которых равна @var{n}.
+
+Функция @code{integer_partitions(@var{n})} возвращает множество
+всех разбиений @var{n}.
+Каждое разбиение есть список, отсортированный от большего значения к меньшему.
+
+Вызов @code{integer_partitions(@var{n}, @var{len})}
+возвращает все разбиения длины @var{len} или менее. 
+В этом случае к разбиениям, имеющим число членов меньшее чем @var{len},
+добавляются нули, чтобы сделать все возвращаемые разбиения одинаковой
+длины @var{len}.
+
+Список @math{[a_1, ..., a_m]} есть разбиение неотрицательного целого числа 
+@math{n}, если (1) каждое @math{a_i} есть ненулевое положительное число и (2) 
+@math{a_1 + ... + a_m = n}.  Таким образом, 0 не имеет разбиений.
+
+Примеры:
+
+@c ===beg===
+@c integer_partitions (3);
+@c s: integer_partitions (25)$
+@c cardinality (s);
+@c map (lambda ([x], apply ("+", x)), s);
+@c integer_partitions (5, 3);
+@c integer_partitions (5, 2);
+@c ===end===
+@example
+(%i1) integer_partitions (3);
+(%o1)               @{[1, 1, 1], [2, 1], [3]@}
+(%i2) s: integer_partitions (25)$
+(%i3) cardinality (s);
+(%o3)                         1958
+(%i4) map (lambda ([x], apply ("+", x)), s);
+(%o4)                         @{25@}
+(%i5) integer_partitions (5, 3);
+(%o5) @{[2, 2, 1], [3, 1, 1], [3, 2, 0], [4, 1, 0], [5, 0, 0]@}
+(%i6) integer_partitions (5, 2);
+(%o6)               @{[3, 2], [4, 1], [5, 0]@}
+@end example
+
+Для того, чтобы найти все разбиения, удовлетворяющие определенному условию, можно использовать функцию @code{subset}.
+В следующем примере находятся все разбиения 10, состоящие из простых чисел.
+
+@c ===beg===
+@c s: integer_partitions (10)$
+@c cardinality (s);
+@c xprimep(x) := integerp(x) and (x > 1) and primep(x)$
+@c subset (s, lambda ([x], every (xprimep, x)));
+@c ===end===
+@example
+(%i1) s: integer_partitions (10)$
+(%i2) cardinality (s);
+(%o2)                          42
+(%i3) xprimep(x) := integerp(x) and (x > 1) and primep(x)$
+(%i4) subset (s, lambda ([x], every (xprimep, x)));
+(%o4) @{[2, 2, 2, 2, 2], [3, 3, 2, 2], [5, 3, 2], [5, 5], [7, 3]@}
+@end example
+
+@end deffn
+
+@anchor{intersect}
+@deffn {Функция} intersect (@var{a_1}, ..., @var{a_n})
+
+Функция @code{intersect} идентична @code{intersection}.
+
+@end deffn
+
+@anchor{intersection}
+@deffn {Функция} intersection (@var{a_1}, ..., @var{a_n})
+Возвращает множество, содержащие элементы общие для всех множеств @var{a_1}, ..., @var{a_n}.
+
+Функция @code{intersection} вызывает ошибку, если хотя бы один из аргументов не является множеством.
+
+Примеры:
+
+@c ===beg===
+@c S_1 : {a, b, c, d};
+@c S_2 : {d, e, f, g};
+@c S_3 : {c, d, e, f};
+@c S_4 : {u, v, w};
+@c intersection (S_1, S_2);
+@c intersection (S_2, S_3);
+@c intersection (S_1, S_2, S_3);
+@c intersection (S_1, S_2, S_3, S_4);
+@c ===end===
+@example
+(%i1) S_1 : @{a, b, c, d@};
+(%o1)                     @{a, b, c, d@}
+(%i2) S_2 : @{d, e, f, g@};
+(%o2)                     @{d, e, f, g@}
+(%i3) S_3 : @{c, d, e, f@};
+(%o3)                     @{c, d, e, f@}
+(%i4) S_4 : @{u, v, w@};
+(%o4)                       @{u, v, w@}
+(%i5) intersection (S_1, S_2);
+(%o5)                          @{d@}
+(%i6) intersection (S_2, S_3);
+(%o6)                       @{d, e, f@}
+(%i7) intersection (S_1, S_2, S_3);
+(%o7)                          @{d@}
+(%i8) intersection (S_1, S_2, S_3, S_4);
+(%o8)                          @{@}
+@end example
+
+@end deffn
+
+@deffn {Функция} kron_delta (@var{x}, @var{y})
+
+Дельта-функция Кронекера.
+
+@code{kron_delta} упрощается в 1, если @var{x} и @var{y} идентичны или очевидно эквивалентны,
+и упрощается в 0, если @var{x} и @var{y} очевидно не эквивалентны.
+Иначе, если эквивалентность или неэквивалентность @var{x} и @var{y} не ясна,
+то @code{kron_delta} упрощается в невычисляемую форму (noun).
+По отношению к числам с плавающей точкой @code{kron_delta} реализует осторожный подход.
+Если разница @code{@var{x} - @var{y}} является числом с плавающей точкой, то 
+@code{kron_delta} упрощается в невычисляемую форму, даже когда @var{x} по-видимому эквивалентно @var{y}.
+
+Функция
+@code{kron_delta(@var{x}, @var{y})} упрощается в 1,
+если @code{is(x = y)} равно @code{true}.
+@code{kron_delta} тоже упрощается в 1,
+если @code{sign(abs(@var{x} - @var{y}))} есть @code{zero}
+и @code{@var{x} - @var{y}} не является числом с плавающей точкой
+(ни обычное число с плавающей точкой, ни число с плавающей точкой повышенной точности).
+@code{kron_delta} упрощается в 0, если @code{sign(abs(@var{x} - @var{y}))} равно @code{pos}.
+
+Если же @code{sign(abs(@var{x} - @var{y}))} дает
+что-то отличное от @code{pos} или @code{zero},
+или @code{zero} но @code{@var{x} - @var{y}}
+есть число с плавающей точкой,
+то @code{kron_delta} возвращает невычисляемое выражение.
+
+Функция @code{kron_delta} объявлена симметричной.
+Т.е. 
+@code{kron_delta(@var{x}, @var{y})} равно @code{kron_delta(@var{y}, @var{x})}.
+
+Примеры:
+
+Аргументы @code{kron_delta} идентичны.
+@code{kron_delta} упрощается в 1.
+
+@c ===beg===
+@c kron_delta (a, a);
+@c kron_delta (x^2 - y^2, x^2 - y^2);
+@c float (kron_delta (1/10, 0.1));
+@c ===end===
+@example
+(%i1) kron_delta (a, a);
+(%o1)                           1
+(%i2) kron_delta (x^2 - y^2, x^2 - y^2);
+(%o2)                           1
+(%i3) float (kron_delta (1/10, 0.1));
+(%o3)                           1
+@end example
+
+Аргументы @code{kron_delta} эквивалентны, и их
+разница не есть число с плавающей точкой.
+@code{kron_delta} упрощается в 1.
+
+@c ===beg===
+@c assume (equal (x, y));
+@c kron_delta (x, y);
+@c ===end===
+@example
+(%i1) assume (equal (x, y));
+(%o1)                     [equal(x, y)]
+(%i2) kron_delta (x, y);
+(%o2)                           1
+@end example
+
+Аргументы @code{kron_delta} не эквивалентны.
+@code{kron_delta} упрощается в 0.
+
+@c ===beg===
+@c kron_delta (a + 1, a);
+@c assume (a > b)$
+@c kron_delta (a, b);
+@c kron_delta (1/5, 0.7);
+@c ===end===
+@example
+(%i1) kron_delta (a + 1, a);
+(%o1)                           0
+(%i2) assume (a > b)$
+(%i3) kron_delta (a, b);
+(%o3)                           0
+(%i4) kron_delta (1/5, 0.7);
+(%o4)                           0
+@end example
+
+Аргументы @code{kron_delta} могут быть, а могут и не быть эквивалентны.
+@code{kron_delta} упрощается в невычисляемое выражение.
+
+@c ===beg===
+@c kron_delta (a, b);
+@c assume(x >= y)$
+@c kron_delta (x, y);
+@c ===end===
+@example
+(%i1) kron_delta (a, b);
+(%o1)                   kron_delta(a, b)
+(%i2) assume(x >= y)$
+(%i3) kron_delta (x, y);
+(%o3)                   kron_delta(x, y)
+@end example
+
+Аргументы @code{kron_delta} эквивалентны, но их разница
+является числом с плавающей точкой.
+@code{kron_delta} упрощается в невычисляемое выражение.
+
+@c ===beg===
+@c 1/4 - 0.25;
+@c 1/10 - 0.1;
+@c 0.25 - 0.25b0;
+@c kron_delta (1/4, 0.25);
+@c kron_delta (1/10, 0.1);
+@c kron_delta (0.25, 0.25b0);
+@c ===end===
+@example
+(%i1) 1/4 - 0.25;
+(%o1)                          0.0
+(%i2) 1/10 - 0.1;
+(%o2)                          0.0
+(%i3) 0.25 - 0.25b0;
+Warning:  Float to bigfloat conversion of 0.25
+(%o3)                         0.0b0
+(%i4) kron_delta (1/4, 0.25);
+                                  1
+(%o4)                  kron_delta(-, 0.25)
+                                  4
+(%i5) kron_delta (1/10, 0.1);
+                                  1
+(%o5)                  kron_delta(--, 0.1)
+                                  10
+(%i6) kron_delta (0.25, 0.25b0);
+Warning:  Float to bigfloat conversion of 0.25
+(%o6)               kron_delta(0.25, 2.5b-1)
+@end example
+
+Функция @code{kron_delta} симметрична.
+
+@c ===beg===
+@c kron_delta (x, y);
+@c kron_delta (y, x);
+@c kron_delta (x, y) - kron_delta (y, x);
+@c is (equal (kron_delta (x, y), kron_delta (y, x)));
+@c is (kron_delta (x, y) = kron_delta (y, x));
+@c ===end===
+@example
+(%i1) kron_delta (x, y);
+(%o1)                   kron_delta(x, y)
+(%i2) kron_delta (y, x);
+(%o2)                   kron_delta(x, y)
+(%i3) kron_delta (x, y) - kron_delta (y, x);
+(%o3)                           0
+(%i4) is (equal (kron_delta (x, y), kron_delta (y, x)));
+(%o4)                         true
+(%i5) is (kron_delta (x, y) = kron_delta (y, x));
+(%o5)                         true
+@end example
+
+@end deffn
+
+@anchor{listify}
+@deffn {Функция} listify (@var{a})
+
+Возвращает список с элементами @var{a}, если @var{a} есть множество.
+В противном случае @code{listify} возвращает @var{a}.
+
+Функция @code{full_listify} заменяет все операторы множества в @var{a} на операторы списка.
+
+Примеры:
+
+@c ===beg===
+@c listify ({a, b, c, d});
+@c listify (F ({a, b, c, d}));
+@c ===end===
+@example
+(%i1) listify (@{a, b, c, d@});
+(%o1)                     [a, b, c, d]
+(%i2) listify (F (@{a, b, c, d@}));
+(%o2)                    F(@{a, b, c, d@})
+@end example
+
+@end deffn
+
+@anchor{lreduce}
+@deffn {Функция} lreduce (@var{F}, @var{s})
+@deffnx {Функция} lreduce (@var{F}, @var{s}, @var{s_0})
+
+Расширяет бинарную функцию @var{F} до n-арной методом композиции.
+Аргумент @var{s} является списком.
+
+@code{lreduce(@var{F}, @var{s})} возвращает @code{F(... F(F(s_1, s_2), s_3), ... s_n)}.
+Если присутствует необязательный аргумент @var{s_0}, то
+результат эквивалентен @code{lreduce(@var{F}, cons(@var{s_0}, @var{s}))}.
+
+Функция @var{F} сначала применяется к @i{левой} паре элементов списка, 
+откуда происходит название "lreduce" (left reduce). 
+
+См. также @code{rreduce}, @code{xreduce} и @code{tree_reduce}.
+
+Примеры:
+
+@code{lreduce} без необязательного аргумента.
+
+@c ===beg===
+@c lreduce (f, [1, 2, 3]);
+@c lreduce (f, [1, 2, 3, 4]);
+@c ===end===
+@example
+(%i1) lreduce (f, [1, 2, 3]);
+(%o1)                     f(f(1, 2), 3)
+(%i2) lreduce (f, [1, 2, 3, 4]);
+(%o2)                  f(f(f(1, 2), 3), 4)
+@end example
+
+@code{lreduce} с необязательным аргументом.
+
+@c ===beg===
+@c lreduce (f, [1, 2, 3], 4);
+@c ===end===
+@example
+(%i1) lreduce (f, [1, 2, 3], 4);
+(%o1)                  f(f(f(4, 1), 2), 3)
+@end example
+
+@code{lreduce} примененная к встроенным бинарным операторам.
+@code{//} -- есть оператор деления.
+
+@c ===beg===
+@c lreduce ("^", args ({a, b, c, d}));
+@c lreduce ("//", args ({a, b, c, d}));
+@c ===end===
+@example
+(%i1) lreduce ("^", args (@{a, b, c, d@}));
+                               b c d
+(%o1)                       ((a ) )
+(%i2) lreduce ("//", args (@{a, b, c, d@}));
+                                a
+(%o2)                         -----
+                              b c d
+@end example
+
+@end deffn
+
+@anchor{makeset}
+@deffn {Функция} makeset (@var{expr}, @var{x}, @var{s})
+
+Возвращает множество с элементами сгенерированными из выражения @var{expr},
+где @var{x} есть список переменных @var{expr},
+а @var{s} есть множество или список списков.
+Для определения элемента результирующего списка,
+выражение @var{expr} вычисляется при переменных @var{x} равным значениям из @var{s} (параллельное присваивание).
+
+Каждый член @var{s} должен иметь ту же длину, что и @var{x}.
+Список переменных @var{x} должен быть списком символов без индексов.
+Даже если символ только один, то @var{x} должен быть одноэлементным списком,
+а каждый член @var{s} должен быть одноэлементным списком.
+
+@c FOLLOWING EQUIVALENT EXPRESSION IS REALLY TOO COMPLICATED, JUST SKIP IT FOR NOW
+@c @code{makeset(@var{expr}, @var{x}, @var{s})} returns the same result as
+@c @code{setify(map(lambda([L], sublis(map("=", ''@var{x}, L), ''@var{expr})), args(@var{s})))}.
+
+См. также @code{makelist}.
+
+Примеры:
+
+@c ===beg===
+@c makeset (i/j, [i, j], [[1, a], [2, b], [3, c], [4, d]]);
+@c S : {x, y, z}$
+@c S3 : cartesian_product (S, S, S);
+@c makeset (i + j + k, [i, j, k], S3);
+@c makeset (sin(x), [x], {[1], [2], [3]});
+@c ===end===
+@example
+(%i1) makeset (i/j, [i, j], [[1, a], [2, b], [3, c], [4, d]]);
+                           1  2  3  4
+(%o1)                     @{-, -, -, -@}
+                           a  b  c  d
+(%i2) S : @{x, y, z@}$
+(%i3) S3 : cartesian_product (S, S, S);
+(%o3) @{[x, x, x], [x, x, y], [x, x, z], [x, y, x], [x, y, y], 
+[x, y, z], [x, z, x], [x, z, y], [x, z, z], [y, x, x], 
+[y, x, y], [y, x, z], [y, y, x], [y, y, y], [y, y, z], 
+[y, z, x], [y, z, y], [y, z, z], [z, x, x], [z, x, y], 
+[z, x, z], [z, y, x], [z, y, y], [z, y, z], [z, z, x], 
+[z, z, y], [z, z, z]@}
+(%i4) makeset (i + j + k, [i, j, k], S3);
+(%o4) @{3 x, 3 y, y + 2 x, 2 y + x, 3 z, z + 2 x, z + y + x, 
+                                       z + 2 y, 2 z + x, 2 z + y@}
+(%i5) makeset (sin(x), [x], @{[1], [2], [3]@});
+(%o5)               @{sin(1), sin(2), sin(3)@}
+@end example
+@end deffn
+
+@anchor{moebius}
+@deffn {Функция} moebius (@var{n})
+
+Представляет функцию Мебиуса.
+
+Если @var{n} есть произведение @math{k} различных простых чисел, то 
+@code{moebius(@var{n})} упрощается до @math{(-1)^k}.
+Если @math{@var{n} = 1}, то функция упрощается в 1.
+Для всех остальных положительных целых функция упрощается в 0. 
+
+Функция @code{moebius} дистрибутивна по отношению к уравнениям, спискам, матрицам и множествам.
+
+Примеры:
+
+@c ===beg===
+@c moebius (1);
+@c moebius (2 * 3 * 5);
+@c moebius (11 * 17 * 29 * 31);
+@c moebius (2^32);
+@c moebius (n);
+@c moebius (n = 12);
+@c moebius ([11, 11 * 13, 11 * 13 * 15]);
+@c moebius (matrix ([11, 12], [13, 14]));
+@c moebius ({21, 22, 23, 24});
+@c ===end===
+@example
+(%i1) moebius (1);
+(%o1)                           1
+(%i2) moebius (2 * 3 * 5);
+(%o2)                          - 1
+(%i3) moebius (11 * 17 * 29 * 31);
+(%o3)                           1
+(%i4) moebius (2^32);
+(%o4)                           0
+(%i5) moebius (n);
+(%o5)                      moebius(n)
+(%i6) moebius (n = 12);
+(%o6)                    moebius(n) = 0
+(%i7) moebius ([11, 11 * 13, 11 * 13 * 15]);
+(%o7)                      [- 1, 1, 1]
+(%i8) moebius (matrix ([11, 12], [13, 14]));
+                           [ - 1  0 ]
+(%o8)                      [        ]
+                           [ - 1  1 ]
+(%i9) moebius (@{21, 22, 23, 24@});
+(%o9)                      @{- 1, 0, 1@}
+@end example
+
+@end deffn
+ 
+@anchor{multinomial_coeff}
+@deffn {Функция} multinomial_coeff (@var{a_1}, ..., @var{a_n})
+@deffnx {Функция} multinomial_coeff ()
+
+Возвращает мультиномиальный коэффициент.
+
+Если каждое @var{a_k} есть неотрицательное целое число, то мультиномиальный коэффициент
+дает число способов положить @code{@var{a_1} + ... + @var{a_n}} различных объектов
+в @math{n} ящиков с @var{a_k} элементам в @math{k}-ом ящике. 
+В целом, @code{multinomial_coeff (@var{a_1}, ..., @var{a_n})}
+равна @code{(@var{a_1} + ... + @var{a_n})!/(@var{a_1}! ... @var{a_n}!)}.
+
+@code{multinomial_coeff()} (без аргументов) дает 1.
+
+@code{minfactorial} может упрощать значения, возвращаемые @code{multinomial_coeff}.
+
+Примеры:
+
+@c ===beg===
+@c multinomial_coeff (1, 2, x);
+@c minfactorial (%);
+@c multinomial_coeff (-6, 2);
+@c minfactorial (%);
+@c ===end===
+@example
+(%i1) multinomial_coeff (1, 2, x);
+                            (x + 3)!
+(%o1)                       --------
+                              2 x!
+(%i2) minfactorial (%);
+                     (x + 1) (x + 2) (x + 3)
+(%o2)                -----------------------
+                                2
+(%i3) multinomial_coeff (-6, 2);
+                             (- 4)!
+(%o3)                       --------
+                            2 (- 6)!
+(%i4) minfactorial (%);
+(%o4)                          10
+@end example
+@end deffn
+
+@anchor{num_distinct_partitions}
+@deffn {Функция} num_distinct_partitions (@var{n})
+@deffnx {Функция} num_distinct_partitions (@var{n}, list)
+
+Возвращает число целочисленных разбиений с различными частями для @var{n}, если @var{n} -- неотрицательное целое.
+Иначе @code{num_distinct_partitions} возвращает невычисляемую форму.
+
+@code{num_distinct_partitions(@var{n}, list)} возвращает список чисел
+целочисленных разбиений с различными частями для 1, 2, 3, ..., @var{n} . 
+
+Разбиение числа @var{n} с различными частями есть список различных положительных целых
+@math{k_1}, ..., @math{k_m}, таких что @math{@var{n} = k_1 + ... + k_m}.
+
+Примеры:
+
+@c ===beg===
+@c num_distinct_partitions (12);
+@c num_distinct_partitions (12, list);
+@c num_distinct_partitions (n);
+@c ===end===
+@example
+(%i1) num_distinct_partitions (12);
+(%o1)                          15
+(%i2) num_distinct_partitions (12, list);
+(%o2)      [1, 1, 1, 2, 2, 3, 4, 5, 6, 8, 10, 12, 15]
+(%i3) num_distinct_partitions (n);
+(%o3)              num_distinct_partitions(n)
+@end example
+
+@end deffn
+
+@anchor{num_partitions}
+@deffn {Функция} num_partitions (@var{n})
+@deffnx {Функция} num_partitions (@var{n}, list)
+
+Возвращает число целочисленных разбиений числа @var{n},
+если @var{n} -- неотрицательное целое.
+Иначе @code{num_partitions} возвращает невычисляемую форму.
+
+@code{num_partitions(@var{n}, list)} возвращает список чисел
+целочисленных разбиений для 1, 2, 3, ..., @var{n}.
+
+Для неотрицательного целого @var{n}, @code{num_partitions(@var{n})} равна 
+@code{cardinality(integer_partitions(@var{n}))}.
+На самом деле @code{num_partitions} не строит полное множество разбиений
+и поэтому работает значительно быстрее.
+
+Примеры:
+
+@c ===beg===
+@c num_partitions (5) = cardinality (integer_partitions (5));
+@c num_partitions (8, list);
+@c num_partitions (n);
+@c ===end===
+@example
+(%i1) num_partitions (5) = cardinality (integer_partitions (5));
+(%o1)                         7 = 7
+(%i2) num_partitions (8, list);
+(%o2)            [1, 1, 2, 3, 5, 7, 11, 15, 22]
+(%i3) num_partitions (n);
+(%o3)                   num_partitions(n)
+@end example
+
+@end deffn
+
+
+
+@anchor{partition_set}
+@deffn {Функция} partition_set (@var{a}, @var{f})
+
+Разбивает множество @var{a} в соответствии с предикатом @var{f}.
+
+Функция @code{partition_set} возвращает список двух множеств.
+Первое множество состоит из элементов @var{a}, для которых @var{f} равен @code{false},
+а второе включает все остальные элементы @var{a}.
+Функция @code{partition_set} не применяет @code{is} к возвращаемым @var{f} значениям.
+
+@code{partition_set} вызывает ошибку, если @var{a} не является множеством.
+
+См. также @code{subset}.
+
+Примеры:
+
+@c ===beg===
+@c partition_set ({2, 7, 1, 8, 2, 8}, evenp);
+@c partition_set ({x, rat(y), rat(y) + z, 1}, lambda ([x], ratp(x)));
+@c ===end===
+@example
+(%i1) partition_set (@{2, 7, 1, 8, 2, 8@}, evenp);
+(%o1)                   [@{1, 7@}, @{2, 8@}]
+(%i2) partition_set (@{x, rat(y), rat(y) + z, 1@}, lambda ([x], ratp(x)));
+(%o2)/R/              [@{1, x@}, @{y, y + z@}]
+@end example
+@end deffn
+
+@anchor{permutations}
+@deffn {Функция} permutations (@var{a})
+
+Возвращает множество различных перестановок членов списка или множества @var{a}. 
+Каждая перестановка является списком. 
+
+Если @var{a} является списком, то повторные члены @var{a} включаются в перестановки.
+
+@code{permutations} вызывает ошибку, если @var{a} не является списком или множеством.
+
+См. также @code{random_permutation}.
+
+Примеры:
+
+@c ===beg===
+@c permutations ([a, a]);
+@c permutations ([a, a, b]);
+@c ===end===
+@example
+(%i1) permutations ([a, a]);
+(%o1)                       @{[a, a]@}
+(%i2) permutations ([a, a, b]);
+(%o2)           @{[a, a, b], [a, b, a], [b, a, a]@}
+@end example
+
+@end deffn
+
+@anchor{powerset}
+@deffn {Функция} powerset (@var{a})
+@deffnx {Функция} powerset (@var{a}, @var{n})
+
+Возвращает множество всех подмножеств @var{a}, или подмножество этого множества подмножеств.
+
+@code{powerset(@var{a})} возвращает множество всех подмножеств множества @var{a}.
+@code{powerset(@var{a})} имеет @code{2^cardinality(@var{a})} членов.
+
+@code{powerset(@var{a}, @var{n})} возвращает множество подмножеств @var{a}, которые имеют
+мощность @var{n}.
+
+@code{powerset} вызывает ошибку, если @var{a} не является множеством или @var{n} 
+не есть целое число.
+
+Примеры:
+
+@c ===beg===
+@c powerset ({a, b, c});
+@c powerset ({w, x, y, z}, 4);
+@c powerset ({w, x, y, z}, 3);
+@c powerset ({w, x, y, z}, 2);
+@c powerset ({w, x, y, z}, 1);
+@c powerset ({w, x, y, z}, 0);
+@c ===end===
+@example
+(%i1) powerset (@{a, b, c@});
+(%o1) @{@{@}, @{a@}, @{a, b@}, @{a, b, c@}, @{a, c@}, @{b@}, @{b, c@}, @{c@}@}
+(%i2) powerset (@{w, x, y, z@}, 4);
+(%o2)                    @{@{w, x, y, z@}@}
+(%i3) powerset (@{w, x, y, z@}, 3);
+(%o3)     @{@{w, x, y@}, @{w, x, z@}, @{w, y, z@}, @{x, y, z@}@}
+(%i4) powerset (@{w, x, y, z@}, 2);
+(%o4)   @{@{w, x@}, @{w, y@}, @{w, z@}, @{x, y@}, @{x, z@}, @{y, z@}@}
+(%i5) powerset (@{w, x, y, z@}, 1);
+(%o5)                 @{@{w@}, @{x@}, @{y@}, @{z@}@}
+(%i6) powerset (@{w, x, y, z@}, 0);
+(%o6)                         @{@{@}@}
+@end example
+
+@end deffn
+
+@deffn {Функция} random_permutation (@var{a})
+
+Возвращает случайную перестановку множества или списка @var{a},
+построенную при помощи алгоритма тасования Кнута.
+
+Возвращаемое значение есть новый список, который отличен от исходного аргумента даже
+если все элементы совпадают.  Однако, элементы списка не копируются.
+
+Примеры:
+
+@c ===beg===
+@c random_permutation ([a, b, c, 1, 2, 3]);
+@c random_permutation ([a, b, c, 1, 2, 3]);
+@c random_permutation ({x + 1, y + 2, z + 3});
+@c random_permutation ({x + 1, y + 2, z + 3});
+@c ===end===
+@example
+(%i1) random_permutation ([a, b, c, 1, 2, 3]);
+(%o1)                  [c, 1, 2, 3, a, b]
+(%i2) random_permutation ([a, b, c, 1, 2, 3]);
+(%o2)                  [b, 3, 1, c, a, 2]
+(%i3) random_permutation (@{x + 1, y + 2, z + 3@});
+(%o3)                 [y + 2, z + 3, x + 1]
+(%i4) random_permutation (@{x + 1, y + 2, z + 3@});
+(%o4)                 [x + 1, y + 2, z + 3]
+@end example
+
+@end deffn
+
+@anchor{rreduce}
+@deffn {Функция} rreduce (@var{F}, @var{s})
+@deffnx {Функция} rreduce (@var{F}, @var{s}, @var{s_@{n + 1@}})
+
+Расширяет бинарную функцию @var{F} до n-арной методом композиции.
+Аргумент @var{s} является списком.
+
+@code{rreduce(@var{F}, @var{s})} возвращает @code{F(s_1, ... F(s_@{n - 2@}, F(s_@{n - 1@}, s_n)))}.
+Если присутствует необязательный аргумент @var{s_@{n + 1@}}, то
+результат эквивалентен @code{rreduce(@var{F}, endcons(@var{s_@{n + 1@}}, @var{s}))}.
+
+Функция @var{F} сначала применяется к @i{правой} паре элементов списка, 
+откуда происходит название "rreduce" (right reduce). 
+
+См. также @code{lreduce}, @code{tree_reduce} и @code{xreduce}.
+
+Примеры:
+
+@code{rreduce} без необязательного аргумента.
+
+@c ===beg===
+@c rreduce (f, [1, 2, 3]);
+@c rreduce (f, [1, 2, 3, 4]);
+@c ===end===
+@example
+(%i1) rreduce (f, [1, 2, 3]);
+(%o1)                     f(1, f(2, 3))
+(%i2) rreduce (f, [1, 2, 3, 4]);
+(%o2)                  f(1, f(2, f(3, 4)))
+@end example
+
+@code{rreduce} с необязательным аргументом.
+
+@c ===beg===
+@c rreduce (f, [1, 2, 3], 4);
+@c ===end===
+@example
+(%i1) rreduce (f, [1, 2, 3], 4);
+(%o1)                  f(1, f(2, f(3, 4)))
+@end example
+
+@code{rreduce} примененный к встроенным операторам.
+@code{//} -- есть оператор деления.
+
+@c ===beg===
+@c rreduce ("^", args ({a, b, c, d}));
+@c rreduce ("//", args ({a, b, c, d}));
+@c ===end===
+@example
+(%i1) rreduce ("^", args (@{a, b, c, d@}));
+                                 d
+                                c
+                               b
+(%o1)                         a
+(%i2) rreduce ("//", args (@{a, b, c, d@}));
+                               a c
+(%o2)                          ---
+                               b d
+@end example
+
+@end deffn
+
+@anchor{setdifference}
+@deffn {Функция}  setdifference (@var{a}, @var{b})
+
+Возвращает множество, содержащее элементы множества @var{a}, которые
+отсутствуют в множестве @var{b}.
+
+@code{setdifference} вызывает ошибку, если @var{a} или @var{b} не являются множествами.
+
+Примеры:
+
+@c ===beg===
+@c S_1 : {a, b, c, x, y, z};
+@c S_2 : {aa, bb, c, x, y, zz};
+@c setdifference (S_1, S_2);
+@c setdifference (S_2, S_1);
+@c setdifference (S_1, S_1);
+@c setdifference (S_1, {});
+@c setdifference ({}, S_1);
+@c ===end===
+@example
+(%i1) S_1 : @{a, b, c, x, y, z@};
+(%o1)                  @{a, b, c, x, y, z@}
+(%i2) S_2 : @{aa, bb, c, x, y, zz@};
+(%o2)                 @{aa, bb, c, x, y, zz@}
+(%i3) setdifference (S_1, S_2);
+(%o3)                       @{a, b, z@}
+(%i4) setdifference (S_2, S_1);
+(%o4)                     @{aa, bb, zz@}
+(%i5) setdifference (S_1, S_1);
+(%o5)                          @{@}
+(%i6) setdifference (S_1, @{@});
+(%o6)                  @{a, b, c, x, y, z@}
+(%i7) setdifference (@{@}, S_1);
+(%o7)                          @{@}
+@end example
+
+@end deffn
+
+@anchor{setequalp}
+@deffn {Функция} setequalp (@var{a}, @var{b})
+
+Возвращает @code{true} если @var{a} и @var{b} имеют одинаковое количество элементов,
+@c $SETEQUALP CALLS THE LISP FUNCTION LIKE,
+@c AND SO DOES THE CODE TO EVALUATE IS (X = Y).
+и @code{is(@var{x} = @var{y})} равно @code{true}
+для @code{x} из @var{a} и @code{y} из @var{b},
+в порядке, определяемом @code{listify}.
+Иначе @code{setequalp} возвращает @code{false}.
+
+Примеры:
+
+@c ===beg===
+@c setequalp ({1, 2, 3}, {1, 2, 3});
+@c setequalp ({a, b, c}, {1, 2, 3});
+@c setequalp ({x^2 - y^2}, {(x + y) * (x - y)});
+@c ===end===
+@example
+(%i1) setequalp (@{1, 2, 3@}, @{1, 2, 3@});
+(%o1)                         true
+(%i2) setequalp (@{a, b, c@}, @{1, 2, 3@});
+(%o2)                         false
+(%i3) setequalp (@{x^2 - y^2@}, @{(x + y) * (x - y)@});
+(%o3)                         false
+@end example
+
+@end deffn
+
+@anchor{setify}
+@deffn {Функция} setify (@var{a})
+
+Составляет множество из элементов списка @var{a}. Повторяющиеся элементы списка @var{a} 
+удаляются, а элементы результирующего множества сортируются в соответствии с предикатом
+@code{orderlessp}.
+
+@code{setify} вызывает ошибку, если @var{a} не является списком.
+
+Примеры:
+
+@c ===beg===
+@c setify ([1, 2, 3, a, b, c]);
+@c setify ([a, b, c, a, b, c]);
+@c setify ([7, 13, 11, 1, 3, 9, 5]);
+@c ===end===
+@example
+(%i1) setify ([1, 2, 3, a, b, c]);
+(%o1)                  @{1, 2, 3, a, b, c@}
+(%i2) setify ([a, b, c, a, b, c]);
+(%o2)                       @{a, b, c@}
+(%i3) setify ([7, 13, 11, 1, 3, 9, 5]);
+(%o3)                @{1, 3, 5, 7, 9, 11, 13@}
+@end example
+
+@end deffn
+
+@anchor{setp}
+@deffn {Функция} setp (@var{a})
+
+Возвращает @code{true} тогда и только тогда, когда @var{a} является Maxima множеством.
+
+@code{setp} возвращает @code{true} как для неупрощенных множеств (т.е. содержащих излишние элементы),
+так и для упрощенных множеств.
+
+@c NOT SURE WE NEED TO MENTION THIS. OK FOR NOW
+@code{setp} is equivalent to the Maxima function
+@code{setp(a) := not atom(a) and op(a) = 'set}.
+
+Примеры:
+
+@c ===beg===
+@c simp : false;
+@c {a, a, a};
+@c setp (%);
+@c ===end===
+@example
+(%i1) simp : false;
+(%o1)                         false
+(%i2) @{a, a, a@};
+(%o2)                       @{a, a, a@}
+(%i3) setp (%);
+(%o3)                         true
+@end example
+
+@end deffn
+
+@anchor{set_partitions}
+@deffn {Функция} set_partitions (@var{a})
+@deffnx {Функция} set_partitions (@var{a}, @var{n})
+
+Возвращает множество разбиений @var{a}, или подмножество этого множества.
+
+@code{set_partitions(@var{a}, @var{n})} возвращает множество всех разбиений @var{a} в 
+@var{n} непустых непересекающихся подмножеств.
+
+@code{set_partitions(@var{a})} возвращает множество всех разбиений.
+
+@code{stirling2} возвращает мощность множества всех разбиений множества.
+
+Множество множеств @math{P} есть разбиение множества @math{S}, если
+
+@enumerate
+@item
+каждый элемент @math{P} есть непустое множество,
+@item
+различные члены @math{P} не пересекаются,
+@item
+объединение всех членов @math{P} равно @math{S}.
+@end enumerate
+
+Примеры:
+
+Пустое множество есть разбиение самого себя, т.к. условия  1 и 2 очевидно выполняются.
+
+@c ===beg===
+@c set_partitions ({});
+@c ===end===
+@example
+(%i1) set_partitions (@{@});
+(%o1)                         @{@{@}@}
+@end example
+
+Мощность множества разбиений может быть определено при помощи @code{stirling2}.
+
+@c ===beg===
+@c s: {0, 1, 2, 3, 4, 5}$
+@c p: set_partitions (s, 3)$ 
+@c cardinality(p) = stirling2 (6, 3);
+@c ===end===
+@example
+(%i1) s: @{0, 1, 2, 3, 4, 5@}$
+(%i2) p: set_partitions (s, 3)$ 
+(%o3)                        90 = 90
+(%i4) cardinality(p) = stirling2 (6, 3);
+@end example
+
+Каждый элемент @code{p} должен иметь @var{n} = 3 члена. Проверим:
+
+@c ===beg===
+@c s: {0, 1, 2, 3, 4, 5}$
+@c p: set_partitions (s, 3)$ 
+@c map (cardinality, p);
+@c ===end===
+@example
+(%i1) s: @{0, 1, 2, 3, 4, 5@}$
+(%i2) p: set_partitions (s, 3)$ 
+(%o3)                          @{3@}
+(%i4) map (cardinality, p);
+@end example
+
+Наконец, для каждого члена @code{p} объединение всех членов должно совпадать с @code{s}.
+Проверим:
+
+@c ===beg===
+@c s: {0, 1, 2, 3, 4, 5}$
+@c p: set_partitions (s, 3)$ 
+@c map (lambda ([x], apply (union, listify (x))), p);
+@c ===end===
+@example
+(%i1) s: @{0, 1, 2, 3, 4, 5@}$
+(%i2) p: set_partitions (s, 3)$ 
+(%o3)                 @{@{0, 1, 2, 3, 4, 5@}@}
+(%i4) map (lambda ([x], apply (union, listify (x))), p);
+@end example
+@end deffn
+
+@anchor{some}
+@deffn {Функция} some (@var{f}, @var{a})
+@deffnx {Функция} some (@var{f}, @var{L_1}, ..., @var{L_n})
+
+Возвращает @code{true} если предикат @var{f} дает @code{true} для одного или более
+аргументов.
+
+Если второй параметр является множеством, то
+@code{some(@var{f}, @var{s})} возвращает @code{true},
+если @code{is(@var{f}(@var{a_i}))} дает @code{true} для одного или более @var{a_i} из @var{s}.
+@code{some} может вычислять @var{f} для всех или не для всех @var{a_i} из @var{s}.
+Т.к. множества не упорядочены, то
+@code{some} может вычислять @code{@var{f}(@var{a_i})} в любом порядке.
+
+Если аргументы являются одним или несколькими списками, то
+@code{some(@var{f}, @var{L_1}, ..., @var{L_n})} возвращает @code{true},
+если  @code{is(@var{f}(@var{x_1}, ..., @var{x_n}))} дает @code{true} 
+для одного или более @var{x_1}, ..., @var{x_n} из @var{L_1}, ..., @var{L_n} соответственно.
+@code{some} может вычислять а может и не вычислять @var{f} 
+для некоторых комбинаций @var{x_1}, ..., @var{x_n}.
+@code{some} вычисляет списки в порядке возрастания индекса.
+
+Для пустого множества @code{@{@}} или списка @code{[]} 
+@code{some} возвращает @code{false}.
+
+Если глобальный флаг @code{maperror} равен @code{true}, то все списки 
+@var{L_1}, ..., @var{L_n} должны иметь одинаковую длину.
+Если @code{maperror} равен @code{false}, то списки обрезаются
+до длины самого короткого.
+
+Значения предиката @var{f} (вычисляемое посредством @code{is})
+отличное от @code{true} или @code{false}
+управляется глобальным флагом @code{prederror}.
+Если @code{prederror} равен @code{true}, то
+такие значения трактуются как  @code{false}.
+Если @code{prederror} равен @code{false}, то
+такие значения трактуются как @code{unknown}.
+
+Примеры:
+
+Функция @code{some}, примененная к одному множеству.
+Предикат есть функция одного аргумента.
+
+@c ===beg===
+@c some (integerp, {1, 2, 3, 4, 5, 6});
+@c some (atom, {1, 2, sin(3), 4, 5 + y, 6});
+@c ===end===
+@example
+(%i1) some (integerp, @{1, 2, 3, 4, 5, 6@});
+(%o1)                         true
+(%i2) some (atom, @{1, 2, sin(3), 4, 5 + y, 6@});
+(%o2)                         true
+@end example
+
+Функция @code{some}, примененная к спискам.
+Предикат есть функция двух аргументов.
+
+@c ===beg===
+@c some ("=", [a, b, c], [a, b, c]);
+@c some ("#", [a, b, c], [a, b, c]);
+@c ===end===
+@example
+(%i1) some ("=", [a, b, c], [a, b, c]);
+(%o1)                         true
+(%i2) some ("#", [a, b, c], [a, b, c]);
+(%o2)                         false
+@end example
+
+Значение предиката @var{f}, отличное от @code{true} или @code{false}
+управляется глобальным флагом @code{prederror}.
+
+@c ===beg===
+@c prederror : false;
+@c map (lambda ([a, b], is (a < b)), [x, y, z], [x^2, y^2, z^2]);
+@c some ("<", [x, y, z], [x^2, y^2, z^2]);
+@c some ("<", [x, y, z], [x^2, y^2, z + 1]);
+@c prederror : true;
+@c some ("<", [x, y, z], [x^2, y^2, z^2]);
+@c some ("<", [x, y, z], [x^2, y^2, z + 1]);
+@c ===end===
+@example
+(%i1) prederror : false;
+(%o1)                         false
+(%i2) map (lambda ([a, b], is (a < b)), [x, y, z], [x^2, y^2, z^2]);
+(%o2)              [unknown, unknown, unknown]
+(%i3) some ("<", [x, y, z], [x^2, y^2, z^2]);
+(%o3)                        unknown
+(%i4) some ("<", [x, y, z], [x^2, y^2, z + 1]);
+(%o4)                         true
+(%i5) prederror : true;
+(%o5)                         true
+(%i6) some ("<", [x, y, z], [x^2, y^2, z^2]);
+(%o6)                         false
+(%i7) some ("<", [x, y, z], [x^2, y^2, z + 1]);
+(%o7)                         true
+@end example
+@end deffn
+
+@anchor{stirling1}
+@deffn {Функция} stirling1 (@var{n}, @var{m})
+
+Представляет число Стирлинга первого рода.
+
+Для неотрицательных целых @var{n} и @var{m} величина 
+@code{stirling1 (@var{n}, @var{m})} есть число перестановок множества из 
+@var{n} элементов, имеющих @var{m} циклов.
+См. книгу Graham, Knuth and Patashnik @i{Concrete Mathematics} по поводу деталей.
+Для определения @code{stirling1 (@var{n}, @var{m})}, с @var{m}
+меньшим 0, Maxima использует рекуррентное соотношение.  
+Для @var{n} меньше нуля и не целых аргументов функция неопределена.
+
+@code{stirling1} является упрощающей функцией.
+Maxima знает следующие тождества.
+
+@c COPIED VERBATIM FROM SRC/NSET.LISP
+@enumerate
+@item
+@math{stirling1(0, n) = kron_delta(0, n)} (См. [1])
+@item
+@math{stirling1(n, n) = 1} (См. [1])
+@item
+@math{stirling1(n, n - 1) = binomial(n, 2)} (См. [1])
+@item
+@math{stirling1(n + 1, 0) = 0} (См. [1])
+@item
+@math{stirling1(n + 1, 1) = n!} (См. [1])
+@item
+@math{stirling1(n + 1, 2) = 2^n  - 1} (См. [1])
+@end enumerate
+
+Эти тождества применяются если аргументы являются целыми или символами, которые объявлены
+целыми, и первый аргумент неотрицателен.
+Функция @code{stirling1} не упрощается для не целых аргументов.
+
+Ссылки:
+
+[1] Donald Knuth, @i{The Art of Computer Programming,}
+third edition, Volume 1, Section 1.2.6, Equations 48, 49, and 50.
+
+Примеры:
+
+@c ===beg===
+@c declare (n, integer)$
+@c assume (n >= 0)$
+@c stirling1 (n, n);
+@c ===end===
+@example
+(%i1) declare (n, integer)$
+(%i2) assume (n >= 0)$
+(%i3) stirling1 (n, n);
+(%o3)                           1
+@end example
+
+Функция @code{stirling1} не упрощается для нецелых аргументов.
+
+@c ===beg===
+@c stirling1 (sqrt(2), sqrt(2));
+@c ===end===
+@example
+(%i1) stirling1 (sqrt(2), sqrt(2));
+(%o1)              stirling1(sqrt(2), sqrt(2))
+@end example
+
+Maxima применяет тождества для @code{stirling1}.
+
+@c ===beg===
+@c declare (n, integer)$
+@c assume (n >= 0)$
+@c stirling1 (n + 1, n);
+@c stirling1 (n + 1, 1);
+@c ===end===
+@example
+(%i1) declare (n, integer)$
+(%i2) assume (n >= 0)$
+(%i3) stirling1 (n + 1, n);
+                            n (n + 1)
+(%o3)                       ---------
+                                2
+(%i4) stirling1 (n + 1, 1);
+(%o4)                          n!
+@end example
+@end deffn
+
+@anchor{stirling2}
+@deffn {Функция} stirling2 (@var{n}, @var{m})
+
+Представляет число Стирлинга второго рода.
+
+Для неотрицательных целых @var{n} и @var{m} число @code{stirling2 (@var{n}, @var{m})} 
+есть число способов, которыми множество мощности @var{n} может быть разбито
+на @var{m} непересекающихся подмножеств.
+Для определения @code{stirling2 (@var{n}, @var{m})}, с @var{m}
+меньшим 0, Maxima использует рекуррентное соотношение.  
+Для @var{n} меньше нуля и нецелых аргументов функция неопределена.
+
+@code{stirling2} является упрощающей функцией.
+Maxima знает следующие тождества.
+
+@c COPIED VERBATIM FROM SRC/NSET.LISP
+@enumerate
+@item
+@math{stirling2(0, n) = kron_delta(0, n)} (См. [1])
+@item
+@math{stirling2(n, n) = 1} (См. [1])
+@item
+@math{stirling2(n, n - 1) = binomial(n, 2)} (См. [1])
+@item
+@math{stirling2(n + 1, 1) = 1} (См. [1])
+@item
+@math{stirling2(n + 1, 2) = 2^n  - 1} (См. [1])
+@item
+@math{stirling2(n, 0) = kron_delta(n, 0)} (См. [2])
+@item
+@math{stirling2(n, m) = 0} when @math{m > n} (См. [2])
+@item
+@math{stirling2(n, m) = sum((-1)^(m - k) binomial(m k) k^n,i,1,m) / m!}
+если @math{m} и @math{n} целые и @math{n} неотрицательно. (См. [3])
+@end enumerate
+
+Эти тождества применяются если аргументы являются целыми или символами, которые объявлены
+целыми, и первый аргумент неотрицателен.
+Функция @code{stirling2} не упрощается для нецелых аргументов.
+
+Ссылки:
+
+[1] Donald Knuth. @i{The Art of Computer Programming},
+third edition, Volume 1, Section 1.2.6, Equations 48, 49, and 50.
+
+[2] Graham, Knuth, and Patashnik. @i{Concrete Mathematics}, Table 264.
+
+[3] Abramowitz and Stegun. @i{Handbook of Mathematical Functions}, Section 24.1.4.
+
+Примеры:
+
+@c ===beg===
+@c declare (n, integer)$
+@c assume (n >= 0)$
+@c stirling2 (n, n);
+@c ===end===
+@example
+(%i1) declare (n, integer)$
+(%i2) assume (n >= 0)$
+(%i3) stirling2 (n, n);
+(%o3)                           1
+@end example
+
+Функция @code{stirling2} не упрощается для нецелых аргументов.
+
+@c ===beg===
+@c stirling2 (%pi, %pi);
+@c ===end===
+@example
+(%i1) stirling2 (%pi, %pi);
+(%o1)                  stirling2(%pi, %pi)
+@end example
+
+Maxima применяет тождества для @code{stirling2}.
+
+@c ===beg===
+@c declare (n, integer)$
+@c assume (n >= 0)$
+@c stirling2 (n + 9, n + 8);
+@c stirling2 (n + 1, 2);
+@c ===end===
+@example
+(%i1) declare (n, integer)$
+(%i2) assume (n >= 0)$
+(%i3) stirling2 (n + 9, n + 8);
+                         (n + 8) (n + 9)
+(%o3)                    ---------------
+                                2
+(%i4) stirling2 (n + 1, 2);
+                              n
+(%o4)                        2  - 1
+@end example
+@end deffn
+
+@anchor{subset}
+@deffn {Функция} subset (@var{a}, @var{f})
+
+Возвращает подмножество множества @var{a}, которое удовлетворяет предикату @var{f}. 
+
+Функция @code{subset} возвращает множество состоящие из элементов @var{a},
+для которых @var{f} возвращает любое значение, отличное от @code{false}.
+Функция @code{subset} не применяет @code{is} к значению, возвращаемому @var{f}.
+
+Функция @code{subset} вызывает ошибку, если @var{a} не является множеством.
+
+См. также @code{partition_set}.
+
+Примеры:
+
+@c ===beg===
+@c subset ({1, 2, x, x + y, z, x + y + z}, atom);
+@c subset ({1, 2, 7, 8, 9, 14}, evenp);
+@c ===end===
+@example
+(%i1) subset (@{1, 2, x, x + y, z, x + y + z@}, atom);
+(%o1)                     @{1, 2, x, z@}
+(%i2) subset (@{1, 2, 7, 8, 9, 14@}, evenp);
+(%o2)                      @{2, 8, 14@}
+@end example
+
+@end deffn
+
+@anchor{subsetp}
+@deffn {Функция} subsetp (@var{a}, @var{b})
+
+Возвращает @code{true} тогда и только тогда, когда @var{a} есть подмножество @var{b}.
+
+Функция @code{subsetp} вызывает ошибку, если @var{a} или @var{b} не являются множествами.
+
+Примеры:
+
+@c ===beg===
+@c subsetp ({1, 2, 3}, {a, 1, b, 2, c, 3});
+@c subsetp ({a, 1, b, 2, c, 3}, {1, 2, 3});
+@c ===end===
+@example
+(%i1) subsetp (@{1, 2, 3@}, @{a, 1, b, 2, c, 3@});
+(%o1)                         true
+(%i2) subsetp (@{a, 1, b, 2, c, 3@}, @{1, 2, 3@});
+(%o2)                         false
+@end example
+
+@end deffn
+
+@anchor{symmdifference}
+@deffn {Функция} symmdifference (@var{a_1}, ..., @var{a_n})
+
+Возвращает симметричную разницу, т.е. множество, элементы
+которого присутствуют только в одном множестве @var{a_k}.
+
+При задании двух аргументов, @code{symmdifference(@var{a}, @var{b})} 
+эквивалентно @code{union(setdifference(@var{a}, @var{b}), setdifference(@var{b}, @var{a}))}.
+
+Функция @code{symmdifference} вызывает ошибку, если любой из ее аргументов не является множеством.
+
+Примеры:
+
+@c ===beg===
+@c S_1 : {a, b, c};
+@c S_2 : {1, b, c};
+@c S_3 : {a, b, z};
+@c symmdifference ();
+@c symmdifference (S_1);
+@c symmdifference (S_1, S_2);
+@c symmdifference (S_1, S_2, S_3);
+@c symmdifference ({}, S_1, S_2, S_3);
+@c ===end===
+@example
+(%i1) S_1 : @{a, b, c@};
+(%o1)                       @{a, b, c@}
+(%i2) S_2 : @{1, b, c@};
+(%o2)                       @{1, b, c@}
+(%i3) S_3 : @{a, b, z@};
+(%o3)                       @{a, b, z@}
+(%i4) symmdifference ();
+(%o4)                          @{@}
+(%i5) symmdifference (S_1);
+(%o5)                       @{a, b, c@}
+(%i6) symmdifference (S_1, S_2);
+(%o6)                        @{1, a@}
+(%i7) symmdifference (S_1, S_2, S_3);
+(%o7)                        @{1, z@}
+(%i8) symmdifference (@{@}, S_1, S_2, S_3);
+(%o8)                        @{1, z@}
+@end example
+
+@end deffn
+
+@c TREE_REDUCE ACCEPTS A SET OR LIST AS AN ARGUMENT, BUT RREDUCE AND LREDUCE WANT ONLY LISTS; STRANGE
+@anchor{tree_reduce}
+@deffn {Функция} tree_reduce (@var{F}, @var{s})
+@deffnx {Функция} tree_reduce (@var{F}, @var{s}, @var{s_0})
+
+Расширяет бинарную функцию @var{F} до n-арной методом композиции.
+Аргумент @var{s} является множеством или списком.
+
+Функция @code{tree_reduce} действует следующим образом:
+@var{F} применяется к последовательным парам элементов, чтобы сформировать новый список
+@code{[@var{F}(@var{s_1}, @var{s_2}), @var{F}(@var{s_3}, @var{s_4}), ...]}.
+При этом, если число элементов нечетно, то последний элемент остается неизменным.
+Затем процесс повторяется до тех пор пока не останется только один элемент списка,
+который и возвращается в качестве значения.
+
+Если присутствует необязательный элемент @var{s_0}, то
+результат эквивалентен @code{tree_reduce(@var{F}, cons(@var{s_0}, @var{s})}.
+
+Для сложения чисел с плавающей точкой @code{tree_reduce} может возвращать сумму с меньшей
+ошибкой округления, чем @code{rreduce} или @code{lreduce}.
+
+Элементы @var{s} и частичные результаты могут быть представлены в виде бинарного дерева 
+минимальной глубины, откуда происходит название "tree_reduce".
+
+Примеры:
+
+Функция @code{tree_reduce}, примененная к списку с четным числом элементов.
+
+@c ===beg===
+@c tree_reduce (f, [a, b, c, d]);
+@c ===end===
+@example
+(%i1) tree_reduce (f, [a, b, c, d]);
+(%o1)                  f(f(a, b), f(c, d))
+@end example
+
+Функция @code{tree_reduce}, примененная к списку с нечетным числом элементов.
+
+@c ===beg===
+@c tree_reduce (f, [a, b, c, d, e]);
+@c ===end===
+@example
+(%i1) tree_reduce (f, [a, b, c, d, e]);
+(%o1)               f(f(f(a, b), f(c, d)), e)
+@end example
+
+@end deffn
+
+@anchor{union}
+@deffn {Функция} union (@var{a_1}, ..., @var{a_n})
+Возвращает объединение множеств от @var{a_1} до @var{a_n}. 
+
+Вызов @code{union()} (без аргументов) возвращает пустое множество.
+
+Функция @code{union} возвращает ошибку, если любой из ее аргументов не является множеством.
+
+Примеры:
+
+@c ===beg===
+@c S_1 : {a, b, c + d, %e};
+@c S_2 : {%pi, %i, %e, c + d};
+@c S_3 : {17, 29, 1729, %pi, %i};
+@c union ();
+@c union (S_1);
+@c union (S_1, S_2);
+@c union (S_1, S_2, S_3);
+@c union ({}, S_1, S_2, S_3);
+@c ===end===
+@example
+(%i1) S_1 : @{a, b, c + d, %e@};
+(%o1)                   @{%e, a, b, d + c@}
+(%i2) S_2 : @{%pi, %i, %e, c + d@};
+(%o2)                 @{%e, %i, %pi, d + c@}
+(%i3) S_3 : @{17, 29, 1729, %pi, %i@};
+(%o3)                @{17, 29, 1729, %i, %pi@}
+(%i4) union ();
+(%o4)                          @{@}
+(%i5) union (S_1);
+(%o5)                   @{%e, a, b, d + c@}
+(%i6) union (S_1, S_2);
+(%o6)              @{%e, %i, %pi, a, b, d + c@}
+(%i7) union (S_1, S_2, S_3);
+(%o7)       @{17, 29, 1729, %e, %i, %pi, a, b, d + c@}
+(%i8) union (@{@}, S_1, S_2, S_3);
+(%o8)       @{17, 29, 1729, %e, %i, %pi, a, b, d + c@}
+@end example
+
+@end deffn
+
+@c XREDUCE ACCEPTS A SET OR LIST AS AN ARGUMENT, BUT RREDUCE AND LREDUCE WANT ONLY LISTS; STRANGE
+@anchor{xreduce}
+@deffn {Функция} xreduce (@var{F}, @var{s})
+@deffnx {Функция} xreduce (@var{F}, @var{s}, @var{s_0})
+
+Расширяет функцию @var{F} до n-арной методом композиции, или,
+если @var{F} уже n-арная, применяет @var{F} к @var{s}.
+Если @var{F} не является n-арной, то @code{xreduce} работает также как @code{lreduce}.
+Аргумент @var{s} является списком.
+
+Известны следующие n-арные функции: сложение @code{+}, 
+умножение @code{*}, @code{and}, @code{or}, @code{max},
+@code{min} и @code{append}.
+Функции могут быть объявлены n-арными при помощи @code{declare(@var{F}, nary)}.
+Для таких функций, @code{xreduce} работает быстрее, чем @code{rreduce} или @code{lreduce}.
+
+Если задан необязательный аргумент @var{s_0}, то
+результат эквивалентен @code{xreduce(@var{s}, cons(@var{s_0}, @var{s}))}.
+
+@c NOT SURE WHAT IS THE RELEVANCE OF THE FOLLOWING COMMENT
+@c MAXIMA IS NEVER SO CAREFUL ABOUT FLOATING POINT ASSOCIATIVITY SO FAR AS I KNOW
+Сложение чисел с плавающей точкой строго говоря не является ассоциативным.
+Функция @code{xreduce} применяет n-арное сложение, если @var{s} содержит числа с плавающей точкой.
+
+Примеры:
+
+Функция @code{xreduce}, примененная к n-арной функции.
+@code{F} вызывается однажды со всеми аргументами.
+
+@c ===beg===
+@c declare (F, nary);
+@c F ([L]) := L;
+@c xreduce (F, [a, b, c, d, e]);
+@c ===end===
+@example
+(%i1) declare (F, nary);
+(%o1)                         done
+(%i2) F ([L]) := L;
+(%o2)                      F([L]) := L
+(%i3) xreduce (F, [a, b, c, d, e]);
+(%o3)         [[[[[("[", simp), a], b], c], d], e]
+@end example
+
+Функция @code{xreduce}, примененная не n-арной функции.
+@code{G} вызывается несколько раз с двумя аргументами каждый раз.
+
+@c ===beg===
+@c G ([L]) := L;
+@c xreduce (G, [a, b, c, d, e]);
+@c lreduce (G, [a, b, c, d, e]);
+@c ===end===
+@example
+(%i1) G ([L]) := L;
+(%o1)                      G([L]) := L
+(%i2) xreduce (G, [a, b, c, d, e]);
+(%o2)         [[[[[("[", simp), a], b], c], d], e]
+(%i3) lreduce (G, [a, b, c, d, e]);
+(%o3)                 [[[[a, b], c], d], e]
+@end example
+
+@end deffn
+
