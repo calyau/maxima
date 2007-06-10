@@ -21,7 +21,8 @@ set prefix=@prefix@
 set maxima_prefix=@prefix@
 set package=@PACKAGE@
 set verbose=false
-set path=%maxima_prefix%\bin;%maxima_prefix%\lib\gcc-lib\mingw32\3.3.1;%path%
+set mingw_gccver=GCCVER
+set path=%maxima_prefix%\bin;%maxima_prefix%\lib\gcc-lib\mingw32\GCCVER;%path%
 
 if "%USERPROFILE%" == "" goto win9x
 if "%MAXIMA_USERDIR%" == "" set MAXIMA_USERDIR=%USERPROFILE%\maxima
