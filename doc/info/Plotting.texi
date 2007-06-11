@@ -513,7 +513,7 @@ The label for the horizontal axis in a 2d plot.
 
 Example:
 @example
-[xlabel, "Tempo em segundos"]
+[xlabel, "Time in seconds"]
 @end example
 
 @item
