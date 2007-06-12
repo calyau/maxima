@@ -11,7 +11,7 @@ Function to draw Bode gain plots.
 
 Examples (1 through 7 from 
 @example
-http://www.swarthmore.edu/NatSci/echeeve1/Ref/Bode/BodeHow.html,
+@url{http://www.swarthmore.edu/NatSci/echeeve1/Ref/Bode/BodeHow.html},
 @end example
 8 from Ron Crummett):
 @example
@@ -61,7 +61,7 @@ Function to draw Bode phase plots.
 
 Examples (1 through 7 from 
 @example
-http://www.swarthmore.edu/NatSci/echeeve1/Ref/Bode/BodeHow.html,
+@url{http://www.swarthmore.edu/NatSci/echeeve1/Ref/Bode/BodeHow.html},
 @end example
 8 from Ron Crummett):
 @example

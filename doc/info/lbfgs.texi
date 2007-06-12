@@ -21,7 +21,7 @@ References:
 [1] D. Liu and J. Nocedal. "On the limited memory BFGS method for large
 scale optimization". @i{Mathematical Programming B} 45:503--528 (1989)
 
-[2] http://netlib.org/opt/lbfgs_um.shar
+[2] @url{http://netlib.org/opt/lbfgs_um.shar}
 
 @node Functions and Variables for lbfgs, , Introduction to lbfgs, Top
 @section Functions and Variables for lbfgs
@@ -95,7 +95,7 @@ References:
 [1] D. Liu and J. Nocedal. "On the limited memory BFGS method for large
 scale optimization". @i{Mathematical Programming B} 45:503--528 (1989)
 
-[2] http://netlib.org/opt/lbfgs_um.shar
+[2] @url{http://netlib.org/opt/lbfgs_um.shar}
 
 Examples:
 

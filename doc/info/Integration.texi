@@ -572,10 +572,10 @@ and D. Kahaner @footnote{National Bureau of Standards, Washington, D.C., U.S.A}.
 
 The QUADPACK library included in Maxima is an automatic translation
 (via the program @code{f2cl}) of the Fortran source code of QUADPACK as it appears in
-the SLATEC Common Mathematical Library, Version 4.1 @footnote{http://www.netlib.org/slatec}.
+the SLATEC Common Mathematical Library, Version 4.1 @footnote{@url{http://www.netlib.org/slatec}}.
 The SLATEC library is dated July 1993, but the QUADPACK functions
 were written some years before.
-There is another version of QUADPACK at Netlib @footnote{http://www.netlib.org/quadpack};
+There is another version of QUADPACK at Netlib @footnote{@url{http://www.netlib.org/quadpack}};
 it is not clear how that version differs from the SLATEC version.
 
 The QUADPACK functions included in Maxima are all automatic,

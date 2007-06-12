@@ -40,9 +40,9 @@ See also @code{lbfgs}.
 References:
 
 @ifnottex
-[1] http://www-fp.mcs.anl.gov/otc/Guide/OptWeb/continuous/constrained/nonlinearcon/auglag.html
+[1] @url{http://www-fp.mcs.anl.gov/otc/Guide/OptWeb/continuous/constrained/nonlinearcon/auglag.html}
 
-[2] http://www.cs.ubc.ca/spider/ascher/542/chap10.pdf
+[2] @url{http://www.cs.ubc.ca/spider/ascher/542/chap10.pdf}
 @end ifnottex
 @tex
 [1] \texttt{http://\-www-fp.mcs.anl.gov/\-otc/\-Guide/\-OptWeb/\-continuous/\-constrained/\-nonlinearcon/\-auglag.html}
