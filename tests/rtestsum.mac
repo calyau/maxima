@@ -832,3 +832,10 @@ true;
 
 intosum(2*sum(k,k,1,inf));
 sum(2*k,k,1,inf);
+
+/* correct a bug in SUBST-IF-NOT-FREEOF (src/asum.lisp):
+ * array flag in CAR was lost before, but it's OK now
+ */
+(kill (a, i), x : a[i], sum (x, i, 1, 3));
+a[1] + a[2] + a[3];
+

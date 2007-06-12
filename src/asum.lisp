@@ -437,8 +437,7 @@ summation when necessary."
 	  x
 	  (let* ((args (cdr expr))
 		 (L (eval `(mapcar (lambda (a) (subst-if-not-freeof ',x ',y a)) ',args))))
-	    ;; Throw away any flags stored in (CDAR EXPR). OK ??
-	    (cons (list (caar expr)) L)))))
+	    (cons (car expr) L)))))
 
 (defun mevalsumarg (expr ind low hi)
   (if (let (($prederror nil))
