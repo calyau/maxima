@@ -21,7 +21,8 @@ Example:
 @c tellrat (MM [3, 3]);
 @c MM : ratsimp (MM);
 @c nullspace (MM);
-@c M : matrix ([1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16]);
+@c M : matrix ([1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], 
+@c                    [13, 14, 15, 16]);
 @c columnspace (M);
 @c apply ('orthogonal_complement, args (nullspace (transpose (M))));
 @c ===end===
@@ -182,11 +183,11 @@ Return a copy of the Maxima expression @var{e}. Although @var{e} can be any
 Maxima expression, the copy function is the most useful when @var{e} is either 
 a list or a matrix; consider:
 @c ===beg===
-m : [1,[2,3]]$
-mm : m$
-mm[2][1] : x$
-m;
-mm;
+@c m : [1,[2,3]]$
+@c mm : m$
+@c mm[2][1] : x$
+@c m;
+@c mm;
 @c ===end===
 @example 
 (%i1) m : [1,[2,3]]$
@@ -199,11 +200,11 @@ mm;
 @end example
 Let's try the same experiment, but this time let @var{mm} be a copy of @var{m}
 @c ===beg===
-m : [1,[2,3]]$
-mm : copy(m)$
-mm[2][1] : x$
-m;
-mm;
+@c m : [1,[2,3]]$
+@c mm : copy(m)$
+@c mm[2][1] : x$
+@c m;
+@c mm;
 @c ===end===
 @example
 (%i6) m : [1,[2,3]]$
@@ -730,7 +731,8 @@ An example using non-default values for coeffp and exponp:
 
 @c ===beg===
 @c polynomialp ((x + 1)*(x + 2)^(3/2), [x], numberp, numberp);
-@c polynomialp ((x^(1/2) + 1)*(x + 2)^(3/2), [x], numberp, numberp);
+@c polynomialp ((x^(1/2) + 1)*(x + 2)^(3/2), [x], numberp, 
+@c                                                        numberp);
 @c ===end===
 @example
 (%i1) polynomialp ((x + 1)*(x + 2)^(3/2), [x], numberp, numberp);

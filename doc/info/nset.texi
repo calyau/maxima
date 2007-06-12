@@ -221,7 +221,8 @@ boolean-valued function.) For example, to find the equations
 in a given set that do not depend on a variable @code{z}, use
 
 @c ===beg===
-@c subset ({x + y + z, x - y + 4, x + y - 5}, lambda ([e], freeof (z, e)));
+@c subset ({x + y + z, x - y + 4, x + y - 5}, 
+@c                                     lambda ([e], freeof (z, e)));
 @c ===end===
 @example
 (%i1) subset (@{x + y + z, x - y + 4, x + y - 5@},
@@ -461,7 +462,8 @@ Examples:
 @c ===beg===
 @c makelist (belln (i), i, 0, 6);
 @c is (cardinality (set_partitions ({})) = belln (0));
-@c is (cardinality (set_partitions ({1, 2, 3, 4, 5, 6})) = belln (6));
+@c is (cardinality (set_partitions ({1, 2, 3, 4, 5, 6})) = 
+@c                        belln (6));
 @c ===end===
 @example
 (%i1) makelist (belln (i), i, 0, 6);
@@ -722,7 +724,8 @@ Examples:
 The equivalence relation is a lambda expression which returns @code{true} or @code{false}.
 
 @c ===beg===
-@c equiv_classes ({1, 1.0, 2, 2.0, 3, 3.0}, lambda ([x, y], is (equal (x, y))));
+@c equiv_classes ({1, 1.0, 2, 2.0, 3, 3.0}, 
+@c                         lambda ([x, y], is (equal (x, y))));
 @c ===end===
 @example
 (%i1) equiv_classes (@{1, 1.0, 2, 2.0, 3, 3.0@},
@@ -744,7 +747,8 @@ which @code{is} evaluates to @code{true} or @code{false}.
 The equivalence classes are numbers which differ by a multiple of 3.
 
 @c ===beg===
-@c equiv_classes ({1, 2, 3, 4, 5, 6, 7}, lambda ([x, y], remainder (x - y, 3) = 0));
+@c equiv_classes ({1, 2, 3, 4, 5, 6, 7}, 
+@c                      lambda ([x, y], remainder (x - y, 3) = 0));
 @c ===end===
 @example
 (%i1) equiv_classes (@{1, 2, 3, 4, 5, 6, 7@},
@@ -828,7 +832,8 @@ are governed by the global flag @code{prederror}.
 
 @c ===beg===
 @c prederror : false;
-@c map (lambda ([a, b], is (a < b)), [x, y, z], [x^2, y^2, z^2]);
+@c map (lambda ([a, b], is (a < b)), [x, y, z], 
+@c                    [x^2, y^2, z^2]);
 @c every ("<", [x, y, z], [x^2, y^2, z^2]);
 @c prederror : true;
 @c every ("<", [x, y, z], [x^2, y^2, z^2]);
@@ -1617,7 +1622,8 @@ Examples:
 
 @c ===beg===
 @c partition_set ({2, 7, 1, 8, 2, 8}, evenp);
-@c partition_set ({x, rat(y), rat(y) + z, 1}, lambda ([x], ratp(x)));
+@c partition_set ({x, rat(y), rat(y) + z, 1}, 
+@c                      lambda ([x], ratp(x)));
 @c ===end===
 @example
 (%i1) partition_set (@{2, 7, 1, 8, 2, 8@}, evenp);
@@ -2068,7 +2074,8 @@ are governed by the global flag @code{prederror}.
 
 @c ===beg===
 @c prederror : false;
-@c map (lambda ([a, b], is (a < b)), [x, y, z], [x^2, y^2, z^2]);
+@c map (lambda ([a, b], is (a < b)), [x, y, z], 
+@c            [x^2, y^2, z^2]);
 @c some ("<", [x, y, z], [x^2, y^2, z^2]);
 @c some ("<", [x, y, z], [x^2, y^2, z + 1]);
 @c prederror : true;

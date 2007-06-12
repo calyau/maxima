@@ -500,7 +500,8 @@ equal.
 @c load (stats)$
 @c x: [20.4,62.5,61.3,44.2,11.1,23.7]$
 @c y: [1.2,6.9,38.7,20.4,17.2]$
-@c test_means_difference(x,y,'alternative='greater,'varequal=true);
+@c test_means_difference(x,y,'alternative='greater,
+@c                                                  'varequal=true);
 @c ===end===
 @example
 (%i1) load("stats")$
@@ -1212,7 +1213,8 @@ confidence interval for a new prediction when @code{x=113} are also calculated.
 
 @c ===beg===
 @c load (stats)$
-@c s:[[125,140.7],[130,155.1],[135,160.3],[140,167.2],[145,169.8]]$
+@c s:[[125,140.7], [130,155.1], [135,160.3], [140,167.2],
+@c                                                 [145,169.8]]$
 @c z:simple_linear_regression(s,conflevel=0.99);
 @c plot2d([[discrete, s], take_inference(model,z)],
 @c           [x,120,150],

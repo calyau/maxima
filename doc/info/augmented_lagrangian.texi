@@ -59,7 +59,7 @@ Example:
 @c xx: [x, y];
 @c C: [x + y - 1];
 @c yy: [1, 1];
-@c augmented_lagrangian_method (FOM, xx, C, yy, iprint = [-1, 0]);
+@c augmented_lagrangian_method(FOM, xx, C, yy, iprint=[-1,0]);
 @c ===end===
 @example
 (%i1) load (lbfgs);

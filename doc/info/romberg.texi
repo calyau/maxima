@@ -56,7 +56,8 @@ Examples:
 A 1-dimensional integration.
 @c ===beg===
 @c load (romberg);
-@c f(x) := 1/((x - 1)^2 + 1/100) + 1/((x - 2)^2 + 1/1000) + 1/((x - 3)^2 + 1/200);
+@c f(x) := 1/((x - 1)^2 + 1/100) + 1/((x - 2)^2 + 1/1000) 
+@c               + 1/((x - 3)^2 + 1/200);
 @c rombergtol : 1e-6;
 @c rombergit : 15;
 @c estimate : romberg (f(x), x, -5, 5);

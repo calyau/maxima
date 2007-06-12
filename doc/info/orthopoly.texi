@@ -248,7 +248,8 @@ the following expression vanishes for integers @var{n} greater than 1, yet Maxim
 is unable to simplify it to zero.
 
 @c ===beg===
-@c (2*n - 1) * legendre_p (n - 1, x) * x - n * legendre_p (n, x) + (1 - n) * legendre_p (n - 2, x);
+@c (2*n - 1) * legendre_p (n - 1, x) * x - n * legendre_p (n, x) 
+@c       + (1 - n) * legendre_p (n - 2, x);
 @c ===end===
 @example
 (%i1) (2*n - 1) * legendre_p (n - 1, x) * x - n * legendre_p (n, x)
@@ -472,7 +473,8 @@ define interval addition, we can define
 
 @c ===beg===
 @c infix ("@+")$
-@c "@+"(x,y) := interval (part (x, 1) + part (y, 1), part (x, 2) + part (y, 2))$
+@c "@+"(x,y) := interval (part (x, 1) + part (y, 1), part (x, 2) 
+@c       + part (y, 2))$
 @c legendre_p (7, 0.1) @+ legendre_p (8, 0.1);
 @c ===end===
 @example
@@ -535,7 +537,8 @@ Here is an example of how to plot an expression that involves
 a Legendre polynomial.
 
 @c ===beg===
-@c plot2d ('(legendre_p (5, x)), [x, 0, 1]), orthopoly_returns_intervals : false;
+@c plot2d ('(legendre_p (5, x)), [x, 0, 1]), 
+@c                         orthopoly_returns_intervals : false;
 @c ===end===
 @example
 (%i1) plot2d ('(legendre_p (5, x)), [x, 0, 1]),

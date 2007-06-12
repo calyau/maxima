@@ -245,7 +245,8 @@ In this example, @code{lbfgs} computes approximate values for the parameters of 
 and @code{plot2d} displays a comparison of @math{F} with the observed data.
 @c ===beg===
 @c load (lbfgs);
-@c FOM : '((1/length(X))*sum((F(X[i]) - Y[i])^2, i, 1, length(X)));
+@c FOM : '((1/length(X))*sum((F(X[i]) - Y[i])^2, i, 1, 
+@c                                                 length(X)));
 @c X : [1, 2, 3, 4, 5];
 @c Y : [0, 0.5, 1, 1.25, 1.5];
 @c F(x) := A/(1 + exp(-B*(x - C)));

@@ -340,12 +340,13 @@ Returns the character corresponding to the ASCII number @var{int}.
 
 @c ===beg===
 @c for n from 0 thru 255 do ( 
-@c    tmp: ascii(n), if alphacharp(tmp) then sprint(tmp), if n=96 then newline() )$
+@c    tmp: ascii(n), if alphacharp(tmp) then sprint(tmp), 
+@c       if n=96 then newline() )$
 @c ===end===
 @example
 (%i1) for n from 0 thru 255 do ( 
-tmp: ascii(n), if alphacharp(tmp) then sprint(tmp),
-     if n=96 then newline() )$
+   tmp: ascii(n), if alphacharp(tmp) then sprint(tmp),
+      if n=96 then newline() )$
 A B C D E F G H I J K L M N O P Q R S T U V W X Y Z 
 a b c d e f g h i j k l m n o p q r s t u v w x y z
 @end example

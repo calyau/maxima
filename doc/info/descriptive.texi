@@ -843,7 +843,8 @@ Example:
 @c load (descriptive)$
 @c load (numericalio)$
 @c s1 : read_list (file_search ("pidigits.data"))$
-@c /* 1st and 3rd quartiles */ [quantile (s1, 1/4), quantile (s1, 3/4)], numer;
+@c /* 1st and 3rd quartiles */ 
+@c          [quantile (s1, 1/4), quantile (s1, 3/4)], numer;
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c quantile (s2, 1/4);
 @c ===end===
@@ -1816,9 +1817,9 @@ Note that one dimensional data are plotted as a time series. In the next case, s
 @c load (descriptive)$
 @c load (numericalio)$
 @c s1 : read_list (file_search ("pidigits.data"))$
-@c dataplot (makelist (s1[k], k, 1, 50), 'maintitle = "First pi digits",
+@c dataplot (makelist (s1[k], k, 1, 50), 
 @c  'axisnames = ["digit order", "digit value"], 'pointstyle = 2,
-@c  'joined = true)$
+@c  'maintitle = "First pi digits", 'joined = true)$
 @c ===end===
 @example
 (%i1) load (descriptive)$
@@ -1869,10 +1870,12 @@ Points in three dimensional space can be seen as a projection on the plane. In t
 @c load (descriptive)$
 @c load (numericalio)$
 @c s2 : read_matrix (file_search ("wind.data"))$
-@c /* 3D plot */ dataplot (submatrix (s2, 4, 5), 'pointstyle = 2,
+@c /* 3D plot */ 
+@c  dataplot (submatrix (s2, 4, 5), 'pointstyle = 2,
 @c  'maintitle = "Pairs of wind speeds measured in knots",
 @c  'axisnames = ["Station A", "Station B", "Station C"])$
-@c /* Multivariate scatterplot */ dataplot (submatrix (s2, 4, 5),
+@c /* Multivariate scatterplot */ 
+@c  dataplot (submatrix (s2, 4, 5),
 @c  'nclasses = 6, 'threedim = false)$
 @c ===end===
 @example
@@ -1946,8 +1949,9 @@ In the next two examples, histograms are requested for the first 100 digits of n
 @c load (descriptive)$
 @c load (numericalio)$
 @c s1 : read_list (file_search ("pidigits.data"))$
-@c histogram (s1, 'maintitle = "pi digits", 'axisnames = ["", "Absolute frequency"],
-@c  'relbarwidth = 0.2, 'barcolor = 3, 'colorintensity = 0.6)$
+@c histogram (s1, 'maintitle = "pi digits", 
+@c  'axisnames = ["", "Absolute frequency"], 'relbarwidth = 0.2,
+@c  'barcolor = 3, 'colorintensity = 0.6)$
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c histogram (col (s2, 3), 'colorintensity = 0.3)$
 @c ===end===
