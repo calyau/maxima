@@ -63,11 +63,10 @@ Example:
 @c ===end===
 @example
 (%i1) load (lbfgs);
-(%o1) /home/robert/tmp/maxima-release-branch/maxima/share/lbfgs/\
-lbfgs.mac
+(%o1)     /maxima/share/lbfgs/lbfgs.mac
 (%i2) load (augmented_lagrangian);
-(%o2) /home/robert/tmp/maxima-release-branch/maxima/share/contri\
-b/augmented_lagrangian.mac
+(%o2) 
+   /maxima/share/contrib/augmented_lagrangian.mac
 (%i3) FOM: x^2 + 2*y^2;
                                2    2
 (%o3)                       2 y  + x
@@ -77,9 +76,9 @@ b/augmented_lagrangian.mac
 (%o5)                      [y + x - 1]
 (%i6) yy: [1, 1];
 (%o6)                        [1, 1]
-(%i7) augmented_lagrangian_method(FOM, xx, C, yy, iprint=[-1, 0]);
-(%o7) [[x = 0.6478349888525, y = 0.32391749442625], 
-                                 %lambda = [- 1.267422460983745]]
+(%i7) augmented_lagrangian_method(FOM, xx, C, yy, iprint=[-1,0]);
+(%o7) [[x = 0.66665984108002, y = 0.33334027245545], 
+                                 %lambda = [- 1.333337940892525]]
 @end example
 
 @end deffn
