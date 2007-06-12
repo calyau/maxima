@@ -104,6 +104,47 @@ integrate(h(x,y),y);
 trigrat(sin(3*a)/sin(a+%pi/3));
 sqrt(3)*sin(2*a)+cos(2*a)-1;
 
+/* another trigrat from manual
+ * call ratsimp because result is not simplified same as expected result ... strange
+ */
+
+(sin(a)^2*sin(3*b+3*a)^2/sin(b+a)^2
+    -2*sin(a)*sin(3*a)*cos(b)*sin(b+a-%pi/3)*sin(3*b+3*a)
+    /(sin(a-%pi/3)*sin(b+a))
+    +sin(3*a)^2*sin(b+a-%pi/3)^2/sin(a-%pi/3)^2,
+ result : trigrat (%%),
+ expected :
+     (- (sqrt(3)*sin(4*b + 4*a) - cos(4*b + 4*a)
+      - 2*sqrt(3)*sin(4*b + 2*a) + 2*cos(4*b + 2*a)
+      - 2*sqrt(3)*sin(2*b + 4*a) + 2*cos(2*b + 4*a)
+      + 4*sqrt(3)*sin(2*b + 2*a) - 8*cos(2*b + 2*a) - 4*cos(2*b - 2*a)
+      + sqrt(3)*sin(4*b) - cos(4*b) - 2*sqrt(3)*sin(2*b) + 10*cos(2*b)
+      + sqrt(3)*sin(4*a) - cos(4*a) - 2*sqrt(3)*sin(2*a) + 10*cos(2*a)
+      - 9)/4),
+ ratsimp (result - expected));
+0;
+
+/* verify that trigrat distributes over composite objects
+ * resolves SF bug reports # 1732315 and 1562340.
+ */
+
+trigrat (matrix ([1, 2], [3, 4]));
+''(matrix ([trigrat(1), trigrat(2)], [trigrat(3), trigrat(4)]));
+
+trigrat ({1, 2, 3});
+''({trigrat(1), trigrat(2), trigrat(3)});
+
+trigrat ([1, 2, 3]);
+''([trigrat(1), trigrat(2), trigrat(3)]);
+
+(kill (a, b), trigrat ([a < b, a <= b, a = b, a # b, a >= b, a > b]));
+''([trigrat(a) < trigrat(b),
+    trigrat(a) <= trigrat(b),
+    trigrat(a) = trigrat(b),
+    trigrat(a) # trigrat(b),
+    trigrat(a) >= trigrat(b),
+    trigrat(a) > trigrat(b)]);
+
 /* compile() will fail with gcl if gcc not installed */
 f(x):=x+2;
 f(x):=x+2;
