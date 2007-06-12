@@ -36,9 +36,11 @@ Examples:
 (%o3)                  F(x, y) := x  + y
 (%i4) contour_plot (F, [u, -4, 4], [v, -4, 4]);
 (%o4) 
-(%i5) contour_plot (F, [u, -4, 4], [v, -4, 4], [gnuplot_preamble, "set size ratio -1"]);
+(%i5) contour_plot (F, [u, -4, 4], [v, -4, 4], [gnuplot_preamble,
+      "set size ratio -1"]);
 (%o5) 
-(%i6) set_plot_option ([gnuplot_preamble, "set cntrparam levels 12"])$
+(%i6) set_plot_option ([gnuplot_preamble,
+                        "set cntrparam levels 12"])$
 
 (%i7) contour_plot (F, [u, -4, 4], [v, -4, 4]);
 @end example
@@ -201,8 +203,8 @@ option to obtain the same scaling in both axes:
 @c plot2d ([parametric, cos(t), sin(t), [t, -%pi, %pi], [nticks, 80]], [x, -4/3, 4/3])$
 @c ===end===
 @example
-(%i8) plot2d ([parametric, cos(t), sin(t), [t,-%pi,%pi], [nticks,80]],
-           [x, -4/3, 4/3])$
+(%i8) plot2d ([parametric, cos(t), sin(t), [t,-%pi,%pi],
+      [nticks,80]], [x, -4/3, 4/3])$
 @end example
 
 @ifnotinfo
@@ -299,7 +301,8 @@ theoretical function that predicts the data:
 @c ===end===
 @example
 (%i17) plot2d([[discrete,xy], 2*%pi*sqrt(l/980)], [l,0,50],
-        [style, [points,3,5], [lines,1,3]], [legend,"experiment","theory"],
+        [style, [points,3,5], [lines,1,3]],
+        [legend,"experiment","theory"],
         [xlabel,"pendulum's length (cm)"], [ylabel,"period (s)"])$
 @end example
 
@@ -793,8 +796,8 @@ manual were obtained from Postscript files that were generated after
 setting @code{gnuplot_ps_term_command} as:
 
 @example
-[gnuplot_ps_term_command,
-"set size 1.3, 1.3; set term postscript eps color solid lw 2.5 30"]
+[gnuplot_ps_term_command, "set size 1.3, 1.3; \
+        set term postscript eps color solid lw 2.5 30"]
 @end example
 
 @end itemize

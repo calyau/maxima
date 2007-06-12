@@ -154,7 +154,8 @@ respect other arguments usually result in an error message; for example
                                n - 1
 (%i2) diff (hermite (n, x), n);
 
-Maxima doesn't know the derivative of hermite with respect the first argument
+Maxima doesn't know the derivative of hermite with respect the first
+argument
  -- an error.  Quitting.  To debug this try debugmode(true);
 @end example
 
@@ -250,7 +251,8 @@ is unable to simplify it to zero.
 @c (2*n - 1) * legendre_p (n - 1, x) * x - n * legendre_p (n, x) + (1 - n) * legendre_p (n - 2, x);
 @c ===end===
 @example
-(%i1) (2*n - 1) * legendre_p (n - 1, x) * x - n * legendre_p (n, x) + (1 - n) * legendre_p (n - 2, x);
+(%i1) (2*n - 1) * legendre_p (n - 1, x) * x - n * legendre_p (n, x)
+      + (1 - n) * legendre_p (n - 2, x);
 (%o1)  (2 n - 1) P     (x) x - n P (x) + (1 - n) P     (x)
                   n - 1           n               n - 2
 @end example
@@ -476,7 +478,8 @@ define interval addition, we can define
 @example
 (%i1) infix ("@@+")$
 
-(%i2) "@@+"(x,y) := interval (part (x, 1) + part (y, 1), part (x, 2) + part (y, 2))$
+(%i2) "@@+"(x,y) := interval (part (x, 1) + part (y, 1), part (x, 2)
+      + part (y, 2))$
 
 (%i3) legendre_p (7, 0.1) @@+ legendre_p (8, 0.1);
 (%o3) interval(- 0.019172222265624955, 6.5246488395313372E-15)
@@ -535,7 +538,8 @@ a Legendre polynomial.
 @c plot2d ('(legendre_p (5, x)), [x, 0, 1]), orthopoly_returns_intervals : false;
 @c ===end===
 @example
-(%i1) plot2d ('(legendre_p (5, x)), [x, 0, 1]), orthopoly_returns_intervals : false;
+(%i1) plot2d ('(legendre_p (5, x)), [x, 0, 1]),
+                        orthopoly_returns_intervals : false;
 (%o1)
 @end example
 
@@ -811,7 +815,7 @@ of the interval of orthogonality. For example,
                             2
                          - x
 (%o1)                 [%e    , - inf, inf]
-(%i2) integrate (w[1] * hermite (3, x) * hermite (2, x), x, w[2], w[3]);
+(%i2) integrate(w[1]*hermite(3, x)*hermite(2, x), x, w[2], w[3]);
 (%o2)                           0
 @end example
 

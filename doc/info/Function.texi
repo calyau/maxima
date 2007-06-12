@@ -253,9 +253,11 @@ which carries out substitutions sequentially.
 @example
 (%i1) buildq ([a: b, b: a], foo (a, b));
 (%o1)                       foo(b, a)
-(%i2) buildq ([u: v, v: w, w: x, x: y, y: z, z: u], bar (u, v, w, x, y, z));
+(%i2) buildq ([u: v, v: w, w: x, x: y, y: z, z: u],
+              bar (u, v, w, x, y, z));
 (%o2)                 bar(v, w, x, y, z, u)
-(%i3) subst ([u=v, v=w, w=x, x=y, y=z, z=u], bar (u, v, w, x, y, z));
+(%i3) subst ([u=v, v=w, w=x, x=y, y=z, z=u],
+             bar (u, v, w, x, y, z));
 (%o3)                 bar(u, u, u, u, u, u)
 @end example
 
@@ -847,7 +849,8 @@ Error: foo was declared mode boolean, has value: %pi
 (%o1)                           2
 (%i2) qput (bar, prime_test, value_check);
 (%o2)                      prime_test
-(%i3) prime_test (y) := if not primep(y) then error (y, "is not prime.");
+(%i3) prime_test (y) := if not primep(y) then
+                           error (y, "is not prime.");
 (%o3) prime_test(y) := if not primep(y)
 
                                    then error(y, "is not prime.")
@@ -875,7 +878,8 @@ but @code{any_check} enables the @code{value_check} mechanism, and @code{any} do
 @example
 (%i1) define_variable (baz_quux, 'baz_quux, any_check);
 (%o1)                       baz_quux
-(%i2) F: lambda ([y], if y # 'baz_quux then error ("Cannot assign to `baz_quux'."));
+(%i2) F: lambda ([y], if y # 'baz_quux then
+                 error ("Cannot assign to `baz_quux'."));
 (%o2) lambda([y], if y # 'baz_quux
 
                         then error(Cannot assign to `baz_quux'.))
@@ -887,7 +891,8 @@ but @code{any_check} enables the @code{value_check} mechanism, and @code{any} do
 (%o4)                       baz_quux
 (%i5) baz_quux: sqrt(2);
 Cannot assign to `baz_quux'.
-#0: lambda([y],if y # 'baz_quux then error("Cannot assign to `baz_quux'."))(y=sqrt(2))
+#0: lambda([y],if y # 'baz_quux then
+                 error("Cannot assign to `baz_quux'."))(y=sqrt(2))
  -- an error.  Quitting.  To debug this try debugmode(true);
 (%i6) baz_quux;
 (%o6)                       baz_quux
@@ -1451,10 +1456,12 @@ and the calling expression is not modified.
                                   h(x)
 (%o1)                     f(x) := ----
                                   g(x)
-(%i2) g (x) ::= block (print ("x + 99 is equal to", x), return (x + 99));
+(%i2) g (x) ::= block (print ("x + 99 is equal to", x),
+                       return (x + 99));
 (%o2) g(x) ::= block(print("x + 99 is equal to", x), 
                                                   return(x + 99))
-(%i3) h (x) ::= block (print ("x - 99 is equal to", x), return (x - 99));
+(%i3) h (x) ::= block (print ("x - 99 is equal to", x),
+                       return (x - 99));
 (%o3) h(x) ::= block(print("x - 99 is equal to", x), 
                                                   return(x - 99))
 (%i4) macroexpansion: false;
@@ -1497,10 +1504,12 @@ and the calling expression is not modified.
                                   h(x)
 (%o1)                     f(x) := ----
                                   g(x)
-(%i2) g (x) ::= block (print ("x + 99 is equal to", x), return (x + 99));
+(%i2) g (x) ::= block (print ("x + 99 is equal to", x),
+                       return (x + 99));
 (%o2) g(x) ::= block(print("x + 99 is equal to", x), 
                                                   return(x + 99))
-(%i3) h (x) ::= block (print ("x - 99 is equal to", x), return (x - 99));
+(%i3) h (x) ::= block (print ("x - 99 is equal to", x),
+                       return (x - 99));
 (%o3) h(x) ::= block(print("x - 99 is equal to", x), 
                                                   return(x - 99))
 (%i4) macroexpansion: expand;
@@ -1541,10 +1550,12 @@ and the calling expression is modified.
                                   h(x)
 (%o1)                     f(x) := ----
                                   g(x)
-(%i2) g (x) ::= block (print ("x + 99 is equal to", x), return (x + 99));
+(%i2) g (x) ::= block (print ("x + 99 is equal to", x),
+                       return (x + 99));
 (%o2) g(x) ::= block(print("x + 99 is equal to", x), 
                                                   return(x + 99))
-(%i3) h (x) ::= block (print ("x - 99 is equal to", x), return (x - 99));
+(%i3) h (x) ::= block (print ("x - 99 is equal to", x),
+                       return (x - 99));
 (%o3) h(x) ::= block(print("x - 99 is equal to", x), 
                                                   return(x - 99))
 (%i4) macroexpansion: displace;
@@ -1915,7 +1926,7 @@ translated and compiled code with the Maxima interpreter.
 @defvr {Option variable} tr_numer
 Default value: @code{false}
 
-When @code{tr_numer} is @code{true} @code{numer} properties are used for
+When @code{tr_numer} is @code{true}, @code{numer} properties are used for
 atoms which have them, e.g. @code{%pi}.
 
 @end defvr

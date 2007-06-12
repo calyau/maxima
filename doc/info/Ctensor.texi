@@ -159,35 +159,47 @@ Sets up a predefined coordinate system and metric. The argument
 
 @example
 
-  SYMBOL               Dim Coordinates       Description/comments
-  --------------------------------------------------------------------------
-  cartesian2d           2  [x,y]             Cartesian 2D coordinate system
-  polar                 2  [r,phi]           Polar coordinate system
-  elliptic              2  [u,v]             Elliptic coordinate system
-  confocalelliptic      2  [u,v]             Confocal elliptic coordinates
-  bipolar               2  [u,v]             Bipolar coordinate system
-  parabolic             2  [u,v]             Parabolic coordinate system
-  cartesian3d           3  [x,y,z]           Cartesian 3D coordinate system
-  polarcylindrical      3  [r,theta,z]       Polar 2D with cylindrical z
-  ellipticcylindrical   3  [u,v,z]           Elliptic 2D with cylindrical z
-  confocalellipsoidal   3  [u,v,w]           Confocal ellipsoidal
-  bipolarcylindrical    3  [u,v,z]           Bipolar 2D with cylindrical z
-  paraboliccylindrical  3  [u,v,z]           Parabolic 2D with cylindrical z
-  paraboloidal          3  [u,v,phi]         Paraboloidal coordinates
-  conical               3  [u,v,w]           Conical coordinates
-  toroidal              3  [u,v,phi]         Toroidal coordinates
-  spherical             3  [r,theta,phi]     Spherical coordinate system
-  oblatespheroidal      3  [u,v,phi]         Oblate spheroidal coordinates
-  oblatespheroidalsqrt  3  [u,v,phi]
-  prolatespheroidal     3  [u,v,phi]         Prolate spheroidal coordinates
-  prolatespheroidalsqrt 3  [u,v,phi]
-  ellipsoidal           3  [r,theta,phi]     Ellipsoidal coordinates
-  cartesian4d           4  [x,y,z,t]         Cartesian 4D coordinate system
-  spherical4d           4  [r,theta,eta,phi] Spherical 4D coordinate system
-  exteriorschwarzschild 4  [t,r,theta,phi]   Schwarzschild metric
-  interiorschwarzschild 4  [t,z,u,v]         Interior Schwarzschild metric
-  kerr_newman           4  [t,r,theta,phi]   Charged axially symmetric metric
-
+ SYMBOL             Dim Coordinates     Description/comments
+ ------------------------------------------------------------------
+ cartesian2d           2  [x,y]             Cartesian 2D coordinate
+                                            system
+ polar                 2  [r,phi]           Polar coordinate system
+ elliptic              2  [u,v]             Elliptic coord. system
+ confocalelliptic      2  [u,v]             Confocal elliptic
+                                            coordinates
+ bipolar               2  [u,v]             Bipolar coord. system
+ parabolic             2  [u,v]             Parabolic coord. system
+ cartesian3d           3  [x,y,z]           Cartesian 3D coordinate
+                                            system
+ polarcylindrical      3  [r,theta,z]       Polar 2D with
+                                            cylindrical z
+ ellipticcylindrical   3  [u,v,z]           Elliptic 2D with
+                                            cylindrical z
+ confocalellipsoidal   3  [u,v,w]           Confocal ellipsoidal
+ bipolarcylindrical    3  [u,v,z]           Bipolar 2D with
+                                            cylindrical z
+ paraboliccylindrical  3  [u,v,z]           Parabolic 2D with
+                                            cylindrical z
+ paraboloidal          3  [u,v,phi]         Paraboloidal coords.
+ conical               3  [u,v,w]           Conical coordinates
+ toroidal              3  [u,v,phi]         Toroidal coordinates
+ spherical             3  [r,theta,phi]     Spherical coord. system
+ oblatespheroidal      3  [u,v,phi]         Oblate spheroidal
+                                            coordinates
+ oblatespheroidalsqrt  3  [u,v,phi]
+ prolatespheroidal     3  [u,v,phi]         Prolate spheroidal
+                                            coordinates
+ prolatespheroidalsqrt 3  [u,v,phi]
+ ellipsoidal           3  [r,theta,phi]     Ellipsoidal coordinates
+ cartesian4d           4  [x,y,z,t]         Cartesian 4D coordinate
+                                            system
+ spherical4d           4  [r,theta,eta,phi] Spherical 4D coordinate
+                                            system
+ exteriorschwarzschild 4  [t,r,theta,phi]   Schwarzschild metric
+ interiorschwarzschild 4  [t,z,u,v]         Interior Schwarzschild
+                                            metric
+ kerr_newman           4  [t,r,theta,phi]   Charged axially
+                                            symmetric metric
 @end example
 
 @code{coordinate_system} can also be a list of transformation functions,
@@ -228,11 +240,13 @@ Transformation functions can also be used when @code{cframe_flag} is @code{true}
       r*sin(theta),[r,theta,phi]]);
 (%o3)                                done
 (%i4) fri;
-      [ cos(phi) cos(theta)  - cos(phi) r sin(theta)  - sin(phi) r cos(theta) ]
-      [                                                                       ]
-(%o4) [ sin(phi) cos(theta)  - sin(phi) r sin(theta)   cos(phi) r cos(theta)  ]
-      [                                                                       ]
-      [     sin(theta)            r cos(theta)                   0            ]
+(%o4)
+ [cos(phi)cos(theta) -cos(phi) r sin(theta) -sin(phi) r cos(theta)]
+ [                                                                ]
+ [sin(phi)cos(theta) -sin(phi) r sin(theta)  cos(phi) r cos(theta)]
+ [                                                                ]
+ [    sin(theta)           r cos(theta)                0          ]
+
 (%i5) cmetric();
 (%o5)                                false
 (%i6) lg:trigsimp(lg);
@@ -488,7 +502,8 @@ complex:
 (%o3)                                true
 (%i4) ct_coords:[t,r,theta,phi];
 (%o4)                         [t, r, theta, phi]
-(%i5) lg:matrix([-1,0,0,0],[0,1,0,0],[0,0,r^2,0],[0,0,0,r^2*sin(theta)^2]);
+(%i5) lg:matrix([-1,0,0,0],[0,1,0,0],[0,0,r^2,0],
+                [0,0,0,r^2*sin(theta)^2]);
                         [ - 1  0  0         0        ]
                         [                            ]
                         [  0   1  0         0        ]
@@ -509,15 +524,15 @@ complex:
 (%i7) depends(l,r);
 (%o7)                               [l(r)]
 (%i8) lg:lg+l*h;
-         [ h11 l - 1      0          0                 0            ]
-         [                                                          ]
-         [     0      h22 l + 1      0                 0            ]
-         [                                                          ]
-(%o8)    [                        2                                 ]
-         [     0          0      r  + h33 l            0            ]
-         [                                                          ]
-         [                                    2    2                ]
-         [     0          0          0       r  sin (theta) + h44 l ]
+      [ h11 l - 1      0          0                 0            ]
+      [                                                          ]
+      [     0      h22 l + 1      0                 0            ]
+      [                                                          ]
+(%o8) [                        2                                 ]
+      [     0          0      r  + h33 l            0            ]
+      [                                                          ]
+      [                                    2    2                ]
+      [     0          0          0       r  sin (theta) + h44 l ]
 (%i9) cmetric(false);
 (%o9)                                done
 (%i10) einstein(false);
@@ -585,9 +600,9 @@ linear in the variable @code{l}, we get much simpler expressions:
 (%o22) - (((h11 h22 - h11 ) (l )  r  - 2 h33 l    r ) sin (theta)
                               r               r r
 
-                                2               2      4    2
-                  - 2 h44 l    r  - h33 h44 (l ) )/(4 r  sin (theta))
-                           r r                r
+                            2               2      4    2
+              - 2 h44 l    r  - h33 h44 (l ) )/(4 r  sin (theta))
+                       r r                r
 
 
 
@@ -692,25 +707,25 @@ of the Kerr metric:
 (%i6) nptetrad(true);
 (%t6) np =
 
-       [  sqrt(r - 2 m)           sqrt(r)                                     ]
-       [ ---------------   ---------------------      0             0         ]
-       [ sqrt(2) sqrt(r)   sqrt(2) sqrt(r - 2 m)                              ]
-       [                                                                      ]
-       [  sqrt(r - 2 m)            sqrt(r)                                    ]
-       [ ---------------  - ---------------------     0             0         ]
-       [ sqrt(2) sqrt(r)    sqrt(2) sqrt(r - 2 m)                             ]
-       [                                                                      ]
-       [                                              r      %i r sin(theta)  ]
-       [        0                    0             -------   ---------------  ]
-       [                                           sqrt(2)       sqrt(2)      ]
-       [                                                                      ]
-       [                                              r       %i r sin(theta) ]
-       [        0                    0             -------  - --------------- ]
-       [                                           sqrt(2)        sqrt(2)     ]
+[ sqrt(r - 2 m)           sqrt(r)                                 ]
+[---------------   ---------------------    0            0        ]
+[sqrt(2) sqrt(r)   sqrt(2) sqrt(r - 2 m)                          ]
+[                                                                 ]
+[ sqrt(r - 2 m)            sqrt(r)                                ]
+[---------------  - ---------------------   0            0        ]
+[sqrt(2) sqrt(r)    sqrt(2) sqrt(r - 2 m)                         ]
+[                                                                 ]
+[                                          r      %i r sin(theta) ]
+[       0                    0          -------   --------------- ]
+[                                       sqrt(2)       sqrt(2)     ]
+[                                                                 ]
+[                                          r       %i r sin(theta)]
+[       0                    0          -------  - ---------------]
+[                                       sqrt(2)        sqrt(2)    ]
 
-                             sqrt(r)          sqrt(r - 2 m)
-(%t7) npi = matrix([- ---------------------, ---------------, 0, 0],
-                      sqrt(2) sqrt(r - 2 m)  sqrt(2) sqrt(r)
+                             sqrt(r)         sqrt(r - 2 m)
+(%t7) npi = matrix([- ---------------------,---------------, 0, 0],
+                      sqrt(2) sqrt(r - 2 m) sqrt(2) sqrt(r)
 
           sqrt(r)            sqrt(r - 2 m)
 [- ---------------------, - ---------------, 0, 0],
@@ -852,7 +867,8 @@ below, @code{findde} gives the following independent differential equations:
 (%o2)                                true
 (%i3) dim:4;
 (%o3)                                  4
-(%i4) lg:matrix([a,0,0,0],[0,x^2,0,0],[0,0,x^2*sin(y)^2,0],[0,0,0,-d]);
+(%i4) lg:matrix([a, 0, 0, 0], [ 0, x^2, 0, 0],
+                              [0, 0, x^2*sin(y)^2, 0], [0,0,0,-d]);
                           [ a  0       0        0  ]
                           [                        ]
                           [     2                  ]
@@ -872,12 +888,12 @@ below, @code{findde} gives the following independent differential equations:
 (%o8)                                done
 (%i9) findde(ein,2);
                                             2
-(%o9) [d  x - a d + d, 2 a d d    x - a (d )  x - a  d d  x + 2 a d d
-        x                     x x         x        x    x            x
+(%o9) [d  x - a d + d, 2 a d d    x - a (d )  x - a  d d  x
+        x                     x x         x        x    x
 
-                                                        2          2
-                                                - 2 a  d , a  x + a  - a]
-                                                     x      x
+                                              2          2
+                          + 2 a d d   - 2 a  d , a  x + a  - a]
+                                   x       x      x
 (%i10) deindex;
 (%o10)                     [[1, 1], [2, 2], [4, 4]]
 
@@ -1045,23 +1061,23 @@ the Schwarzschild metric can be viewed as:
 (%i4) riemann(false);
 (%o4)                                done
 (%i5) cdisplay(riem);
-               [ 0               0                    0            0      ]
-               [                                                          ]
-               [                              2                           ]
-               [      3 m (r - 2 m)   m    2 m                            ]
-               [ 0  - ------------- + -- - ----       0            0      ]
-               [            4          3     4                            ]
-               [           r          r     r                             ]
-               [                                                          ]
-    riem     = [                                 m (r - 2 m)              ]
-        1, 1   [ 0               0               -----------       0      ]
-               [                                      4                   ]
-               [                                     r                    ]
-               [                                                          ]
-               [                                              m (r - 2 m) ]
-               [ 0               0                    0       ----------- ]
-               [                                                   4      ]
-               [                                                  r       ]
+          [ 0               0                   0           0     ]
+          [                                                       ]
+          [                              2                        ]
+          [      3 m (r - 2 m)   m    2 m                         ]
+          [ 0  - ------------- + -- - ----      0           0     ]
+          [            4          3     4                         ]
+          [           r          r     r                          ]
+          [                                                       ]
+riem    = [                                m (r - 2 m)            ]
+    1, 1  [ 0               0              -----------      0     ]
+          [                                     4                 ]
+          [                                    r                  ]
+          [                                                       ]
+          [                                           m (r - 2 m) ]
+          [ 0               0                   0     ----------- ]
+          [                                                4      ]
+          [                                               r       ]
 
                                 [    2 m (r - 2 m)       ]
                                 [ 0  -------------  0  0 ]
@@ -1107,22 +1123,22 @@ the Schwarzschild metric can be viewed as:
                                [                         ]
                                [       0         0  0  0 ]
 
-                   [     2 m                                         ]
-                   [ ------------  0        0               0        ]
-                   [  2                                              ]
-                   [ r  (r - 2 m)                                    ]
-                   [                                                 ]
-                   [      0        0        0               0        ]
-                   [                                                 ]
-        riem     = [                         m                       ]
-            2, 2   [      0        0  - ------------        0        ]
-                   [                     2                           ]
-                   [                    r  (r - 2 m)                 ]
-                   [                                                 ]
-                   [                                         m       ]
-                   [      0        0        0         - ------------ ]
-                   [                                     2           ]
-                   [                                    r  (r - 2 m) ]
+             [     2 m                                         ]
+             [ ------------  0        0               0        ]
+             [  2                                              ]
+             [ r  (r - 2 m)                                    ]
+             [                                                 ]
+             [      0        0        0               0        ]
+             [                                                 ]
+  riem     = [                         m                       ]
+      2, 2   [      0        0  - ------------        0        ]
+             [                     2                           ]
+             [                    r  (r - 2 m)                 ]
+             [                                                 ]
+             [                                         m       ]
+             [      0        0        0         - ------------ ]
+             [                                     2           ]
+             [                                    r  (r - 2 m) ]
 
                                 [ 0  0       0        0 ]
                                 [                       ]
@@ -1223,22 +1239,22 @@ the Schwarzschild metric can be viewed as:
                               [ 0  0  - ---------------  0 ]
                               [                r           ]
 
-                 [        2                                             ]
-                 [   m sin (theta)                                      ]
-                 [ - -------------         0                0         0 ]
-                 [         r                                            ]
-                 [                                                      ]
-                 [                         2                            ]
-                 [                    m sin (theta)                     ]
-      riem     = [        0         - -------------         0         0 ]
-          4, 4   [                          r                           ]
-                 [                                                      ]
-                 [                                          2           ]
-                 [                                   2 m sin (theta)    ]
-                 [        0                0         ---------------  0 ]
-                 [                                          r           ]
-                 [                                                      ]
-                 [        0                0                0         0 ]
+           [        2                                             ]
+           [   m sin (theta)                                      ]
+           [ - -------------         0                0         0 ]
+           [         r                                            ]
+           [                                                      ]
+           [                         2                            ]
+           [                    m sin (theta)                     ]
+riem     = [        0         - -------------         0         0 ]
+    4, 4   [                          r                           ]
+           [                                                      ]
+           [                                          2           ]
+           [                                   2 m sin (theta)    ]
+           [        0                0         ---------------  0 ]
+           [                                          r           ]
+           [                                                      ]
+           [        0                0                0         0 ]
 
 (%o5)                                done
 
@@ -1520,7 +1536,7 @@ should not be redefined:
 
 @example
   Name         Description
-  ---------------------------------------
+  ---------------------------------------------------------------------
   _lg()        Evaluates to lfg if frame metric used, lg otherwise
   _ug()        Evaluates to ufg if frame metric used, ug otherwise
   cleanup()    Removes items drom the deindex list
@@ -1553,7 +1569,7 @@ package compatible with the commercial version of Macsyma.
 
 @example
   New Name     Old Name        Description
-  --------------------------------------------------------------------------
+  ---------------------------------------------------------------------
   ctaylor()    DLGTAYLOR()     Taylor-series expansion of an expression
   lgeod[]      EM              Geodesic equations
   ein[]        G[]             Mixed Einstein-tensor
@@ -1565,7 +1581,7 @@ package compatible with the commercial version of Macsyma.
   ctayvar      PARAM           Taylor-series expansion variable
   lriem[]      R[]             Covariant Riemann-tensor
   uriemann()   RAISERIEMANN()  Compute the contravariant Riemann-tensor
-  ratriemann   RATRIEMAN       Rational simplification of the Riemann-tensor
+  ratriemann   RATRIEMAN       Rational simplif. of the Riemann-tensor
   uric[]       RICCI[]         Contravariant Ricci-tensor
   uricci()     RICCICOM()      Compute the contravariant Ricci-tensor
   cmetric()    SETMETRIC()     Set up the metric

@@ -40,7 +40,8 @@ The question mark @code{?} (exact search) and double question mark @code{??}
  6: integer_partitions  (Functions and Variables for Sets)
  7: integrate  (Functions and Variables for Integration)
  8: integrate_use_rootsof  (Functions and Variables for Integration)
- 9: integration_constant_counter  (Functions and Variables for Integration)
+ 9: integration_constant_counter  (Functions and Variables for
+    Integration)
  10: nonnegintegerp  (Functions and Variables for linearalgebra)
 Enter space-separated numbers, `all' or `none': 5 4
 
@@ -179,7 +180,8 @@ functions:
 (%o1) 
 (%i2) plot2d ([atan(x), erf(x), tanh(x)], [x, -5, 5]);
 (%o2) 
-(%i3) plot3d (sin(sqrt(x^2 + y^2))/sqrt(x^2 + y^2), [x, -12, 12], [y, -12, 12]);
+(%i3) plot3d (sin(sqrt(x^2 + y^2))/sqrt(x^2 + y^2), [x, -12, 12],
+      [y, -12, 12]);
 (%o3) 
 @end example
 

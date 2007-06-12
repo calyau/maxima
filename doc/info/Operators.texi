@@ -594,7 +594,8 @@ printing message (2).
 (%o2)                         1234
 (%i3) z: 1729 * w;
 (%o3)                        1729 w
-(%i4) printq1 (x) ::= block (print ("(1) x is equal to", x), '(print ("(2) x is equal to", x)));
+(%i4) printq1 (x) ::= block (print ("(1) x is equal to", x),
+      '(print ("(2) x is equal to", x)));
 (%o4) printq1(x) ::= block(print("(1) x is equal to", x), 
                                 '(print("(2) x is equal to", x)))
 (%i5) printq1 (y - z);
@@ -622,7 +623,8 @@ until the explicit evaluation @code{''%}.
 (%o2)                         1234
 (%i3) z: 1729 * w;
 (%o3)                        1729 w
-(%i4) printe1 (x) := block (print ("(1) x is equal to", x), '(print ("(2) x is equal to", x)));
+(%i4) printe1 (x) := block (print ("(1) x is equal to", x),
+      '(print ("(2) x is equal to", x)));
 (%o4) printe1(x) := block(print("(1) x is equal to", x), 
                                 '(print("(2) x is equal to", x)))
 (%i5) printe1 (y - z);
@@ -852,7 +854,8 @@ Some operators evaluate @code{=} and @code{#} to @code{true} or @code{false}.
 @c [eq_3 and eq_4, eq_3 or eq_4, not eq_3];
 @c ===end===
 @example
-(%i1) if expand ((x + y)^2) = x^2 + 2 * x * y + y^2 then FOO else BAR;
+(%i1) if expand ((x + y)^2) = x^2 + 2 * x * y + y^2 then FOO else
+      BAR;
 (%o1)                          FOO
 (%i2) eq_3 : 2 * x = 3 * x;
 (%o2)                       2 x = 3 x
@@ -1321,7 +1324,7 @@ Some operators evaluate @code{equal} and @code{notequal} to @code{true} or @code
 @c ===end===
 @example
 (%i1) if equal (y, y - 1) then FOO else BAR;
-(%o2)                          BAR
+(%o1)                          BAR
 (%i2) eq_1 : equal (x, x + 1);
 (%o2)                    equal(x, x + 1)
 (%i3) eq_2 : equal (y^2 + 2*y + 1, (y + 1)^2);
@@ -1896,18 +1899,20 @@ Example use:
 @c ===end===
 @example
 (%i1) unitfrac(r) := block([uf : [], q],
-    if not(ratnump(r)) then error("The input to 'unitfrac' must be a rational number"),
+    if not(ratnump(r)) then
+       error("The input to 'unitfrac' must be a rational number"),
     while r # 0 do (
         uf : cons(q : 1/ceiling(1/r), uf),
         r : r - q),
     reverse(uf));
 (%o1) unitfrac(r) := block([uf : [], q], 
-if not ratnump(r) then error("The input to 'unitfrac' must be a rational number"
-                                     1
-), while r # 0 do (uf : cons(q : ----------, uf), r : r - q), 
-                                         1
-                                 ceiling(-)
-                                         r
+if not ratnump(r) then
+   error("The input to 'unitfrac' must be a rational number"),
+                                  1
+while r # 0 do (uf : cons(q : ----------, uf), r : r - q), 
+                                      1
+                              ceiling(-)
+                                      r
 reverse(uf))
 (%i2) unitfrac (9/10);
                             1  1  1
@@ -1998,11 +2003,13 @@ Examples:
 @c sort (my_list, lambda ([a, b], orderlessp (reverse (a), reverse (b))));
 @c ===end===
 @example
-(%i1) sort ([11, -17, 29b0, 7.55, 3, -5/2, b + a, 9 * c, 19 - 3 * x]);
+(%i1) sort ([11, -17, 29b0, 7.55, 3, -5/2, b + a, 9 * c,
+      19 - 3 * x]);
                5
 (%o1) [- 17, - -, 3, 7.55, 11, 2.9b1, b + a, 9 c, 19 - 3 x]
                2
-(%i2) sort ([11, -17, 29b0, 7.55, 3, -5/2, b + a, 9 * c, 19 - 3 * x], ordergreatp);
+(%i2) sort ([11, -17, 29b0, 7.55, 3, -5/2, b + a, 9*c, 19 - 3*x],
+      ordergreatp);
                                                    5
 (%o2) [19 - 3 x, 9 c, b + a, 2.9b1, 11, 7.55, 3, - -, - 17]
                                                    2
@@ -2010,11 +2017,12 @@ Examples:
 (%o3)                [3, 4, %e, %gamma, %pi]
 (%i4) sort ([%pi, 3, 4, %e, %gamma], "<");
 (%o4)                [%gamma, %e, 3, %pi, 4]
-(%i5) my_list : [[aa, hh, uu], [ee, cc], [zz, xx, mm, cc], [%pi, %e]];
+(%i5) my_list: [[aa,hh,uu], [ee,cc], [zz,xx,mm,cc], [%pi,%e]];
 (%o5) [[aa, hh, uu], [ee, cc], [zz, xx, mm, cc], [%pi, %e]]
 (%i6) sort (my_list);
 (%o6) [[%pi, %e], [aa, hh, uu], [ee, cc], [zz, xx, mm, cc]]
-(%i7) sort (my_list, lambda ([a, b], orderlessp (reverse (a), reverse (b))));
+(%i7) sort (my_list, lambda ([a, b], orderlessp (reverse (a),
+      reverse (b))));
 (%o7) [[%pi, %e], [ee, cc], [zz, xx, mm, cc], [aa, hh, uu]]
 @end example
 

@@ -506,7 +506,8 @@ equal.
 (%i1) load("stats")$
 (%i2) x: [20.4,62.5,61.3,44.2,11.1,23.7]$
 (%i3) y: matrix([1.2],[6.9],[38.7],[20.4],[17.2])$
-(%i4) test_means_difference(x,y,'alternative='greater,'varequal=true);
+(%i4) test_means_difference(x,y,'alternative='greater,
+                                                 'varequal=true);
             |              DIFFERENCE OF MEANS TEST
             |
             |         diff_estimate = 20.31999999999999
@@ -1222,7 +1223,8 @@ confidence interval for a new prediction when @code{x=113} are also calculated.
 @c ===end===
 @example
 (%i1) load("stats")$
-(%i2) s:[[125,140.7],[130,155.1],[135,160.3],[140,167.2],[145,169.8]]$
+(%i2) s:[[125,140.7], [130,155.1], [135,160.3], [140,167.2],
+                                                [145,169.8]]$
 (%i3) z:simple_linear_regression(s,conflevel=0.99);
            |               SIMPLE LINEAR REGRESSION
            |
@@ -1242,8 +1244,8 @@ confidence interval for a new prediction when @code{x=113} are also calculated.
            |
            |             p_value = 0.0038059549413203
 (%i4) plot2d([[discrete, s], take_inference(model,z)],
-              [x,120,150],
-              [gnuplot_curve_styles, ["with points","with lines"]] )$
+        [x,120,150],
+        [gnuplot_curve_styles, ["with points","with lines"]] )$
 (%i5) take_inference(model,z), x=133;
 (%o5)                         155.808
 (%i6) take_inference(means,z);

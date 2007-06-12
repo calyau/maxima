@@ -452,11 +452,11 @@ integral will be expressed as a summation over the roots of the denominator of t
 (%o4) ----------------------------------------------------------
                7
 
-                                                             2 x + 1
-                                         2            5 atan(-------)
-                                    log(x  + x + 1)          sqrt(3)
-                                  - --------------- + ---------------
-                                          14             7 sqrt(3)
+                                                      2 x + 1
+                                  2            5 atan(-------)
+                             log(x  + x + 1)          sqrt(3)
+                           - --------------- + ---------------
+                                   14             7 sqrt(3)
 @end example
 
 Alternatively the user may compute the roots of the denominator separately,
@@ -979,7 +979,8 @@ Examples:
 @example
 (%i1) quad_qawc (2^(-5)*((x-1)^2+4^(-5))^(-1), x, 2, 0, 5);
 (%o1)    [- 3.130120337415925, 1.306830140249558E-8, 495, 0]
-(%i2) integrate (2^(-alpha)*(((x-1)^2 + 4^(-alpha))*(x-2))^(-1), x, 0, 5);
+(%i2) integrate (2^(-alpha)*(((x-1)^2 + 4^(-alpha))*(x-2))^(-1),
+      x, 0, 5);
 Principal Value
                        alpha
         alpha       9 4                 9
@@ -990,13 +991,13 @@ Principal Value
                         alpha
                      2 4      + 2
 
-         3 alpha                       3 alpha
-         -------                       -------
-            2            alpha/2          2          alpha/2
-      2 4        atan(4 4       )   2 4        atan(4       )   alpha
-    - --------------------------- - -------------------------)/2
-                alpha                        alpha
-             2 4      + 2                 2 4      + 2
+       3 alpha                       3 alpha
+       -------                       -------
+          2            alpha/2          2          alpha/2
+    2 4        atan(4 4       )   2 4        atan(4       )   alpha
+  - --------------------------- - -------------------------)/2
+              alpha                        alpha
+           2 4      + 2                 2 4      + 2
 (%i3) ev (%, alpha=5, numer);
 (%o3)                    - 3.130120337415917
 @end example
@@ -1194,7 +1195,8 @@ Examples:
 @example
 (%i1) quad_qawo (x^(-1/2)*exp(-2^(-2)*x), x, 1d-8, 20*2^2, 1, cos);
 (%o1)     [1.376043389877692, 4.72710759424899E-11, 765, 0]
-(%i2) rectform (integrate (x^(-1/2)*exp(-2^(-alpha)*x) * cos(x), x, 0, inf));
+(%i2) rectform (integrate (x^(-1/2)*exp(-2^(-alpha)*x) * cos(x),
+      x, 0, inf));
                    alpha/2 - 1/2            2 alpha
         sqrt(%pi) 2              sqrt(sqrt(2        + 1) + 1)
 (%o2)   -----------------------------------------------------

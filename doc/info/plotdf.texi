@@ -11,8 +11,9 @@ first-order Ordinary Differential Equation (ODE) or a system of two
 autonomous first-order ODE's.
 
 Since this is an additional package, in order to use it you must first
-load it with @code{load("plotdf")}. You also need Xmaxima to be
-installed, even if you run Maxima from a different interface.
+load it with @code{load("plotdf")}. Plotdf requires Openmath, which is
+provided by the package Xmaxima (Xmaxima is not only used as a graphical
+console for Maxima but also to plot graphs in the Openmath format).
 
 To plot the direction field of a single ODE, the ODE must be written in
 the form:
@@ -28,9 +29,10 @@ $${{dy}\over{dx}} = F(x,y)$$
 @end tex
 
 and the function @var{F} should be given as the argument for
-@code{plotdf}. The independent variable is always identified as @var{x},
-and the dependent variable as @var{y}. Those two variables should not
-have any values assigned to them.
+@code{plotdf}. If the independent and dependent variables are not @var{x},
+and @var{y}, as in the equation above, then those two variables should
+be named explicitly in a list given as an argument to the plotdf command
+(see the examples).
 
 To plot the direction field of a set of two autonomous ODE's, they must
 be written in the form
@@ -46,7 +48,14 @@ $${{dx}\over{dt}} = G(x,y) \qquad {{dy}\over{dt}} = F(x,y)$$
 @end tex
 
 and the argument for @code{plotdf} should be a list with the two
-functions @var{F} and @var{G}, in any order.
+functions @var{G} and @var{F}, in that order; namely, the first
+expression in the list will be taken to be the time derivative of the
+variable represented on the horizontal axis, and the second expression
+will be the time derivative of the variable represented on the vertical
+axis. Those two variables do not have to be @var{x} and @var{y}, but if
+they are not, then the second argument given to plotdf must be another
+list naming the two variables, first the one on the horizontal axis and
+then the one on the vertical axis.
 
 If only one ODE is given, @code{plotdf} will implicitly admit
 @code{x=t}, and @code{G(x,y)=1}, transforming the non-autonomous
@@ -55,16 +64,19 @@ equation into a system of two autonomous equations.
 @node Functions and Variables for plotdf,  , Introduction to plotdf, plotdf
 @section Functions and Variables for plotdf
 
-@deffn {Function} plotdf (@var{dydx},...options...)
-@deffnx {Function} plotdf (@code{[}@var{dxdt},@var{dydt}@code{]},...options...)
+@deffn {Function} plotdf (@var{dydx}, ...options...)
+@deffnx {Function} plotdf (@var{dvdu}, @code{[}@var{u},@var{v}@code{]}, ...options...)
+@deffnx {Function} plotdf (@code{[}@var{dxdt},@var{dydt}@code{]}, ...options...)
+@deffnx {Function} plotdf (@code{[}@var{dudt},@var{dvdt}@code{]}, @code{[}@var{u},@var{v}@code{]}, ...options...)
 
 Displays a direction field in two dimensions @var{x} and @var{y}.
 
-@var{dydx}, @var{dxdt} and @var{dydt} are expressions that depend
-on @var{x} and @var{y}. In addition to those two variables, the
-expressions can also depend on a set of parameters, with numerical
-values given with the @code{parameters} option (the option syntax is
-given below), or with an range of allowed values specified by a
+@var{dydx}, @var{dxdt} and @var{dydt} are expressions that depend on
+@var{x} and @var{y}. @var{dvdu}, @var{dudt} and @var{dvdt} are
+expressions that depend on @var{u} and @var{v}. In addition to those two
+variables, the expressions can also depend on a set of parameters, with
+numerical values given with the @code{parameters} option (the option
+syntax is given below), or with a range of allowed values specified by a
 @var{sliders} option.
 
 Several other options can be given within the command, or selected in
@@ -101,12 +113,8 @@ used to drag the plot sideways or up and down. Additional
 parameters such as the number of steps, the initial value of @var{t}
 and the x and y centers and radii, may be set in the Config menu.
 
-A copy of the plot can be printed to a Postscript printer, or saved as a
-postscript file, using the menu option @emph{Save}. To switch between
-printing and saving to a Postscript file, @emph{Print Options} should be
-selected in the dialog window of @emph{Config}. After the settings in the
-@emph{Save} dialog window are entered, "Save'' must be selected in the first
-menu, to create the file or print the plot.
+A copy of the plot can be saved as a postscript file, using the menu
+option @emph{Save}.
 
 @b{Plot options:}
 
@@ -180,48 +188,29 @@ of functions of @var{x} to be displayed, on top of the direction field.
 Those functions will be parsed by Tcl and not by Maxima.
 
 @item
-@dfn{xradius} is half of the length of the range of values that
-will be shown in the x direction.
-The default value is 10.
+@dfn{x} should be followed by two numbers, which will set up the minimum
+and maximum values shown on the horizontal axis. If the variable on the
+horizontal axis is not @var{x}, then this option should have the name of
+the variable on the horizontal axis.
+The default horizontal range is from -10 to 10.
 
 @item
-@dfn{yradius} is half of the length of the range of values that
-will be shown in the y direction.
-The default value is 10.
-
-@item
-@dfn{xcenter} is the x coordinate of the point at the center of
-the plot.
-The default value is 0.
-
-@item
-@dfn{ycenter} is the y coordinate of the point at the center of
-the plot.
-The default value is 0.
-
-@item
-@dfn{width} defines the width of the plot window, in pixels.
-The default value is 500.
-
-@item
-@dfn{height} defines the height of the plot window, in pixels.
-The default value is 500.
+@dfn{y} should be followed by two numbers, which will set up the minimum
+and maximum values shown on the vertical axis. If the variable on the
+vertical axis is not @var{y}, then this option should have the name of
+the variable on the vertical axis.
+The default vertical range is from -10 to 10.
 @end itemize
 
 @b{Examples:}
 
-NOTE: Depending on the interface used to run Maxima, the functions that
-use @code{openmath}, in particular @code{plotdf}, might trigger a bug if
-they are ended with a semicolon and not with a dollar sign. To avoid
-problems, we will use a dollar sign in all the examples below.
-  
 @itemize @bullet
 @item
 To show the direction field of the differential equation @math{y' = exp(-x) + y} and the solution that goes through @math{(2, -0.1)}:
 @example
 (%i1) load("plotdf")$
 
-(%i2) plotdf(exp(-x)+y,[trajectory_at,2,-0.1]);
+(%i2) plotdf(exp(-x)+y,[trajectory_at,2,-0.1])$
 @end example
 
 @ifnotinfo
@@ -233,7 +222,7 @@ To obtain the direction field for the equation @math{diff(y,x) = x - y^2} and th
 @example
 (%i3) plotdf(x-y^2,[xfun,"sqrt(x);-sqrt(x)"],
           [trajectory_at,-1,3], [direction,forward],
-          [yradius,5],[xcenter,6]);
+          [y,-5,5], [x,-4,16])$
 @end example
 The graph also shows the function @math{y = sqrt(x)}. 
 
@@ -243,13 +232,13 @@ The graph also shows the function @math{y = sqrt(x)}.
 
 @item
 The following example shows the direction field of a harmonic oscillator,
-defined by the two equations @math{dx/dt = y} and @math{dy/dt = -k*x/m},
-and the integral curve through @math{(x,y) = (6,0)}, with a slider that
+defined by the two equations @math{dz/dt = v} and @math{dv/dt = -k*z/m},
+and the integral curve through @math{(z,v) = (6,0)}, with a slider that
 will allow you to change the value of @math{m} interactively (@math{k} is
 fixed at 2):
 @example
-(%i4) plotdf([y,-k*x/m],[parameters,"m=2,k=2"],
-            [sliders,"m=1:5"], [trajectory_at,6,0]);
+(%i4) plotdf([v,-k*z/m], [z,v], [parameters,"m=2,k=2"],
+            [sliders,"m=1:5"], [trajectory_at,6,0])$
 @end example
 
 @ifnotinfo
@@ -261,7 +250,7 @@ To plot the direction field of the Duffing equation, @math{m*x''+c*x'+k*x+b*x^3 
 @example
 (%i5) plotdf([y,-(k*x + c*y + b*x^3)/m],
               [parameters,"k=-1,m=1.0,c=0,b=1"],
-              [sliders,"k=-2:2,m=-1:1"],[tstep,0.1]);
+              [sliders,"k=-2:2,m=-1:1"],[tstep,0.1])$
 @end example
 
 @ifnotinfo
@@ -275,12 +264,11 @@ can be used to change the value of the mass @math{m}, and with a plot of
 the two state variables as a function of time:
 
 @example
-(%i6) plotdf([y,-g*sin(x)/l - b*y/m/l],
+(%i6) plotdf([w,-g*sin(a)/l - b*w/m/l], [a,w],
          [parameters,"g=9.8,l=0.5,m=0.3,b=0.05"],
          [trajectory_at,1.05,-9],[tstep,0.01],
-         [xradius,6],[yradius,14],
-         [xcenter,-4],[direction,forward],[nsteps,300],
-         [sliders,"m=0.1:1"], [versus_t,1]);
+         [a,-10,2], [w,-14,14], [direction,forward],
+         [nsteps,300], [sliders,"m=0.1:1"], [versus_t,1])$
 @end example
 
 @ifnotinfo

@@ -150,7 +150,8 @@ because the pattern argument @code{x} is given to @code{defmatch}.
 @c x;
 @c ===end===
 @example
-(%i1) matchdeclare (a, lambda ([e], e#0 and freeof(x, e)), b, freeof(x));
+(%i1) matchdeclare (a, lambda ([e], e#0 and freeof(x, e)), b,
+                    freeof(x));
 (%o1)                         done
 (%i2) defmatch (linearp, a*x + b, x);
 (%o2)                        linearp
@@ -179,7 +180,8 @@ not any other variable, because no pattern argument is given to @code{defmatch}.
 @c linearp (3*x + (y + 1)*x + y^2);
 @c ===end===
 @example
-(%i1) matchdeclare (a, lambda ([e], e#0 and freeof(x, e)), b, freeof(x));
+(%i1) matchdeclare (a, lambda ([e], e#0 and freeof(x, e)), b,
+                    freeof(x));
 (%o1)                         done
 (%i2) defmatch (linearp, a*x + b);
 (%o2)                        linearp
@@ -588,12 +590,14 @@ or a sum or product (respectively) of such expressions.
 @example
 (%i1) matchdeclare (aa, atom, bb, lambda ([x], not atom(x)));
 (%o1)                         done
-(%i2) defrule (r1, aa + bb, ["all atoms" = aa, "all nonatoms" = bb]);
+(%i2) defrule (r1, aa + bb, ["all atoms" = aa, "all nonatoms" =
+               bb]);
 bb + aa partitions `sum'
 (%o2)  r1 : bb + aa -> [all atoms = aa, all nonatoms = bb]
 (%i3) r1 (8 + a*b + sin(x));
 (%o3)     [all atoms = 8, all nonatoms = sin(x) + a b]
-(%i4) defrule (r2, aa * bb, ["all atoms" = aa, "all nonatoms" = bb]);
+(%i4) defrule (r2, aa * bb, ["all atoms" = aa, "all nonatoms" =
+               bb]);
 bb aa partitions `product'
 (%o4)   r2 : aa bb -> [all atoms = aa, all nonatoms = bb]
 (%i5) r2 (8 * (a + b) * sin(x));
@@ -615,13 +619,15 @@ as one match predicate cannot accept terms matched by another.
 @example
 (%i1) matchdeclare (aa, atom, bb, lambda ([x], not atom(x)));
 (%o1)                         done
-(%i2) defrule (r1, aa + bb, ["all atoms" = aa, "all nonatoms" = bb]);
+(%i2) defrule (r1, aa + bb, ["all atoms" = aa, "all nonatoms" =
+               bb]);
 bb + aa partitions `sum'
 (%o2)  r1 : bb + aa -> [all atoms = aa, all nonatoms = bb]
 (%i3) r1 (8 + a*b + %pi + sin(x) - c + 2^n);
                                                      n
 (%o3) [all atoms = %pi + 8, all nonatoms = sin(x) + 2  - c + a b]
-(%i4) defrule (r2, aa * bb, ["all atoms" = aa, "all nonatoms" = bb]);
+(%i4) defrule (r2, aa * bb, ["all atoms" = aa, "all nonatoms" =
+               bb]);
 bb aa partitions `product'
 (%o4)   r2 : aa bb -> [all atoms = aa, all nonatoms = bb]
 (%i5) r2 (8 * (a + b) * %pi * sin(x) / c * 2^n);
@@ -842,7 +848,8 @@ Examples:
 (%o5)                  [quuxrule1, false]
 (%i6) tellsimpafter (quux (%e, %pi), %pi + %e);
 (%o6)             [quuxrule2, quuxrule1, false]
-(%i7) [foo (aa, bb), aa + bb, aa @@ bb, quux (%pi, %e), quux (%e, %pi)];
+(%i7) [foo (aa, bb), aa + bb, aa @@ bb, quux (%pi, %e),
+       quux (%e, %pi)];
                                      bb
 (%o7) [bb - aa, special_add(aa, bb), --, %pi - %e, %pi + %e]
                                      aa
@@ -854,9 +861,10 @@ Examples:
 (%o10)                         @@
 (%i11) remrule (quux, all);
 (%o11)                        quux
-(%i12) [foo (aa, bb), aa + bb, aa @@ bb, quux (%pi, %e), quux (%e, %pi)];
+(%i12) [foo (aa, bb), aa + bb, aa @@ bb, quux (%pi, %e),
+        quux (%e, %pi)];
 (%o12) [foo(aa, bb), bb + aa, aa @@ bb, quux(%pi, %e), 
-                                                   quux(%e, %pi)]
+                                         quux(%e, %pi)]
 @end example
 
 @end deffn

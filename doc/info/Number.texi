@@ -227,7 +227,7 @@ last (column 1) and next-to-last (column 2) convergents of the continued fractio
 @example
 (%i1) cf (rat (ev (%pi, numer)));
 
-`rat' replaced 3.141592653589793 by 103993//33102 = 3.141592653011902
+`rat' replaced 3.141592653589793 by 103993/33102 =3.141592653011902
 (%o1)                  [3, 7, 15, 1, 292]
 (%i2) cfexpand (%); 
                          [ 103993  355 ]

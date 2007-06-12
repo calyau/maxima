@@ -13,7 +13,7 @@ command. The primary difference is the way long lines are broken.
 In the next example, notice how the fortran command breaks lines within symbols. The @code{f90}
 command never breaks within a symbol.
 
-@example
+@verbatim
 (%i1) load("f90")$
 
 (%i2) expr:expand((xxx+yyy+7)^4);
@@ -34,7 +34,8 @@ yyy**4+4*xxx*yyy**3+28*yyy**3+6*xxx**2*yyy**2+84*xxx*yyy**2+294* &
      yyy**2+4*xxx**3*yyy+84*xxx**2*yyy+588*xxx*yyy+1372*yyy+xxx** &
      4+28*xxx**3+294*xxx**2+1372*xxx+2401
 (%o4)                       done
-@end example
+@end verbatim
+@sp 1
 
 The @code{f90} implementation was done as a quick hack. It is not a
 necessarily a good example upon which to base other language

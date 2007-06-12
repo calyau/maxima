@@ -651,7 +651,8 @@ The elements may be any expressions, which are evaluated.
 (%i1) n: 3$
 (%i2) m: entermatrix (n, n)$
 
-Is the matrix  1. Diagonal  2. Symmetric  3. Antisymmetric  4. General
+Is the matrix  1. Diagonal  2. Symmetric  3. Antisymmetric 
+4. General
 Answer 1, 2, 3 or 4 : 
 1$
 Row 1 Column 1: 
@@ -1200,7 +1201,8 @@ Examples:
                         [ transpose(a) ]
 (%o6)                   [              ]
                         [ transpose(b) ]
-(%i7) matrix_element_transpose: lambda ([x], realpart(x) - %i*imagpart(x))$
+(%i7) matrix_element_transpose: lambda ([x], realpart(x)
+      - %i*imagpart(x))$
 (%i8) m: matrix ([1 + 5*%i, 3 - 2*%i], [7*%i, 11]);
                      [ 5 %i + 1  3 - 2 %i ]
 (%o8)                [                    ]

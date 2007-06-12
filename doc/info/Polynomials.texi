@@ -865,7 +865,8 @@ into the functional composition of polynomials in @var{x}.
 @code{polydecomp} returns a list @code{[@var{p_1}, ..., @var{p_n}]} such that
 
 @example
-lambda ([x], p_1) (lambda ([x], p_2) (... (lambda ([x], p_n) (x)) ...))
+lambda ([x], p_1) (lambda ([x], p_2) (... (lambda ([x], p_n) (x))
+  ...))
 @end example
 
 is equal to @var{p}.
@@ -992,7 +993,8 @@ Examples:
 @c rat (%, y, a, x);
 
 @example
-(%i1) ((x - 2*y)^4/(x^2 - 4*y^2)^2 + 1)*(y + a)*(2*y + x) /(4*y^2 + x^2);
+(%i1) ((x - 2*y)^4/(x^2 - 4*y^2)^2 + 1)*(y + a)*(2*y + x) /
+      (4*y^2 + x^2);
                                            4
                                   (x - 2 y)
               (y + a) (2 y + x) (------------ + 1)

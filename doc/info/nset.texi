@@ -120,8 +120,8 @@ To construct a set from the elements of a list, use @code{setify}.
 @end example
 
 Set members @code{x} and @code{y} are equal provided @code{is(x = y)} 
-evaluates to @code{true}. Thus @code{rat(x)} and @code{x} are equal as set members;
-consequently, 
+evaluates to @code{true}. Thus @code{rat(x)} and @code{x} are equal as set
+members; consequently, 
 
 @c ===beg===
 @c {x, rat(x)};
@@ -224,7 +224,8 @@ in a given set that do not depend on a variable @code{z}, use
 @c subset ({x + y + z, x - y + 4, x + y - 5}, lambda ([e], freeof (z, e)));
 @c ===end===
 @example
-(%i1) subset (@{x + y + z, x - y + 4, x + y - 5@}, lambda ([e], freeof (z, e)));
+(%i1) subset (@{x + y + z, x - y + 4, x + y - 5@},
+                                    lambda ([e], freeof (z, e)));
 (%o1)               @{- y + x + 4, y + x - 5@}
 @end example
 
@@ -467,7 +468,8 @@ Examples:
 (%o1)               [1, 1, 2, 5, 15, 52, 203]
 (%i2) is (cardinality (set_partitions (@{@})) = belln (0));
 (%o2)                         true
-(%i3) is (cardinality (set_partitions (@{1, 2, 3, 4, 5, 6@})) = belln (6));
+(%i3) is (cardinality (set_partitions (@{1, 2, 3, 4, 5, 6@})) =
+                       belln (6));
 (%o3)                         true
 @end example
 
@@ -723,7 +725,8 @@ The equivalence relation is a lambda expression which returns @code{true} or @co
 @c equiv_classes ({1, 1.0, 2, 2.0, 3, 3.0}, lambda ([x, y], is (equal (x, y))));
 @c ===end===
 @example
-(%i1) equiv_classes (@{1, 1.0, 2, 2.0, 3, 3.0@}, lambda ([x, y], is (equal (x, y))));
+(%i1) equiv_classes (@{1, 1.0, 2, 2.0, 3, 3.0@},
+                        lambda ([x, y], is (equal (x, y))));
 (%o1)            @{@{1, 1.0@}, @{2, 2.0@}, @{3, 3.0@}@}
 @end example
 
@@ -744,7 +747,8 @@ The equivalence classes are numbers which differ by a multiple of 3.
 @c equiv_classes ({1, 2, 3, 4, 5, 6, 7}, lambda ([x, y], remainder (x - y, 3) = 0));
 @c ===end===
 @example
-(%i1) equiv_classes (@{1, 2, 3, 4, 5, 6, 7@}, lambda ([x, y], remainder (x - y, 3) = 0));
+(%i1) equiv_classes (@{1, 2, 3, 4, 5, 6, 7@},
+                     lambda ([x, y], remainder (x - y, 3) = 0));
 (%o1)              @{@{1, 4, 7@}, @{2, 5@}, @{3, 6@}@}
 @end example
 @end deffn
@@ -832,7 +836,8 @@ are governed by the global flag @code{prederror}.
 @example
 (%i1) prederror : false;
 (%o1)                         false
-(%i2) map (lambda ([a, b], is (a < b)), [x, y, z], [x^2, y^2, z^2]);
+(%i2) map (lambda ([a, b], is (a < b)), [x, y, z],
+                   [x^2, y^2, z^2]);
 (%o2)              [unknown, unknown, unknown]
 (%i3) every ("<", [x, y, z], [x^2, y^2, z^2]);
 (%o3)                        unknown
@@ -1617,7 +1622,8 @@ Examples:
 @example
 (%i1) partition_set (@{2, 7, 1, 8, 2, 8@}, evenp);
 (%o1)                   [@{1, 7@}, @{2, 8@}]
-(%i2) partition_set (@{x, rat(y), rat(y) + z, 1@}, lambda ([x], ratp(x)));
+(%i2) partition_set (@{x, rat(y), rat(y) + z, 1@},
+                     lambda ([x], ratp(x)));
 (%o2)/R/              [@{1, x@}, @{y, y + z@}]
 @end example
 @end deffn
@@ -2072,7 +2078,8 @@ are governed by the global flag @code{prederror}.
 @example
 (%i1) prederror : false;
 (%o1)                         false
-(%i2) map (lambda ([a, b], is (a < b)), [x, y, z], [x^2, y^2, z^2]);
+(%i2) map (lambda ([a, b], is (a < b)), [x, y, z],
+           [x^2, y^2, z^2]);
 (%o2)              [unknown, unknown, unknown]
 (%i3) some ("<", [x, y, z], [x^2, y^2, z^2]);
 (%o3)                        unknown
@@ -2322,8 +2329,8 @@ Examples:
 Returns the symmetric difference, that is,
 the set of members that occur in exactly one set @var{a_k}.
 
-Given two arguments, @code{symmdifference(@var{a}, @var{b})} is
-the same as @code{union(setdifference(@var{a}, @var{b}), setdifference(@var{b}, @var{a}))}.
+Given two arguments, @code{symmdifference ( @var{a}, @var{b})} is
+the same as @code{union ( setdifference ( @var{a}, @var{b}), setdifference(@var{b}, @var{a}))}.
 
 @code{symmdifference} complains if any argument is not a literal set.
 

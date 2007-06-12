@@ -205,7 +205,7 @@ quoting an argument defeats evaluation.
 
 Examples:
 
-@example
+@verbatim
 (%i1) expr: (a + b)^12$
 (%i2) fortran (expr);
       (b+a)**12                                                                 
@@ -214,9 +214,9 @@ Examples:
       x = (b+a)**12                                                             
 (%o3)                         done
 (%i4) fortran ('x=expand (expr));
-      x = b**12+12*a*b**11+66*a**2*b**10+220*a**3*b**9+495*a**4*b**8+792        
-     1   *a**5*b**7+924*a**6*b**6+792*a**7*b**5+495*a**8*b**4+220*a**9*b        
-     2   **3+66*a**10*b**2+12*a**11*b+a**12                                     
+      x = b**12+12*a*b**11+66*a**2*b**10+220*a**3*b**9+495*a**4*b**8+792
+     1   *a**5*b**7+924*a**6*b**6+792*a**7*b**5+495*a**8*b**4+220*a**9*b
+     2   **3+66*a**10*b**2+12*a**11*b+a**12
 (%o4)                         done
 (%i5) fortran ('x=7+5*%i);
       x = (7,5)                                                                 
@@ -228,7 +228,7 @@ Examples:
 (%i8) fortran (f);
       f                                                                         
 (%o8)                         done
-@end example
+@end verbatim
 
 @end deffn
 

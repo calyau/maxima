@@ -100,7 +100,8 @@ Example:
 
 @example
 (%i1) load("simplify_sum")$
-(%i2) sum(binom(n+k,k)/2^k, k, 0, n) + sum(binom(2*n, 2*k), k, 0, n);
+(%i2) sum(binom(n+k,k)/2^k, k, 0, n)
+                             + sum(binom(2*n, 2*k), k, 0, n);
          n                            n
         ====                         ====
         \      binomial(n + k, k)    \

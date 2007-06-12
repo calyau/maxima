@@ -367,7 +367,7 @@ Here, the first component is meaningless, since @code{A} and @code{B} are catego
 (%i1) load (descriptive)$
 (%i2) load (numericalio)$
 (%i3) s3 : read_matrix (file_search ("biomed.data"))$
-(%i4) mean (subsample (s3, '(%c[4] # NA and %c[6] # NA), 3, 4, 5, 6));
+(%i4) mean(subsample(s3, '(%c[4] # NA and %c[6] # NA), 3,4,5,6));
 (%o4) [79.4923076923077, 86.2032967032967, 16.93186813186813, 
                                                             2514
                                                             ----]
@@ -851,7 +851,8 @@ Example:
 (%i1) load (descriptive)$
 (%i2) load (numericalio)$
 (%i3) s1 : read_list (file_search ("pidigits.data"))$
-(%i4) /* 1st and 3rd quartiles */ [quantile (s1, 1/4), quantile (s1, 3/4)], numer;
+(%i4) /* 1st and 3rd quartiles */
+         [quantile (s1, 1/4), quantile (s1, 3/4)], numer;
 (%o4)                      [2.0, 7.25]
 (%i5) s2 : read_matrix (file_search ("wind.data"))$
 (%i6) quantile (s2, 1/4);
@@ -1823,9 +1824,9 @@ Note that one dimensional data are plotted as a time series. In the next case, s
 (%i1) load (descriptive)$
 (%i2) load (numericalio)$
 (%i3) s1 : read_list (file_search ("pidigits.data"))$
-(%i4) dataplot (makelist (s1[k], k, 1, 50), 'maintitle = "First pi digits",
+(%i4) dataplot (makelist (s1[k], k, 1, 50),
  'axisnames = ["digit order", "digit value"], 'pointstyle = 2,
- 'joined = true)$
+ 'maintitle = "First pi digits", 'joined = true)$
 @end example
 
 Function @code{dataplot} can be used to plot points in the plane. The next example is a scatterplot of the pairs of wind speeds corresponding to the first and fifth meteorological stations,
@@ -1859,7 +1860,7 @@ If points are stored in a two column matrix, @code{dataplot} can plot them direc
 (%i1) load (descriptive)$
 (%i2) x : [[-1, 2], [5, 7], [5, -3], [-6, -9], [-4, 6]]$
 (%i3) dataplot (apply ('matrix, x), 'maintitle = "Points",
- 'joined = true, 'axisnames = ["", ""], 'picturescales = [0.5, 1.0])$
+ 'joined=true, 'axisnames=["", ""], 'picturescales=[0.5, 1.0])$
 @end example
 
 Points in three dimensional space can be seen as a projection on the plane. In this example, plots of wind speeds corresponding to  three meteorological stations are requested, first in a 3D plot and then in a multivariate scatterplot.
@@ -1878,11 +1879,12 @@ Points in three dimensional space can be seen as a projection on the plane. In t
 (%i1) load (descriptive)$
 (%i2) load (numericalio)$
 (%i3) s2 : read_matrix (file_search ("wind.data"))$
-(%i4) /* 3D plot */ dataplot (submatrix (s2, 4, 5), 'pointstyle = 2,
+(%i4) /* 3D plot */
+ dataplot (submatrix (s2, 4, 5), 'pointstyle = 2,
  'maintitle = "Pairs of wind speeds measured in knots",
  'axisnames = ["Station A", "Station B", "Station C"])$
-(%i5) /* Multivariate scatterplot */ dataplot (submatrix (s2, 4, 5),
- 'nclasses = 6, 'threedim = false)$
+(%i5) /* Multivariate scatterplot */
+ dataplot (submatrix (s2, 4, 5), 'nclasses = 6, 'threedim = false)$
 @end example
 Note that in the last example, the number of classes in the histograms of the diagonal is set to 6, and that option @code{'threedim} is set to @code{false}.
 
@@ -1953,8 +1955,9 @@ In the next two examples, histograms are requested for the first 100 digits of n
 (%i1) load (descriptive)$
 (%i2) load (numericalio)$
 (%i3) s1 : read_list (file_search ("pidigits.data"))$
-(%i4) histogram (s1, 'maintitle = "pi digits", 'axisnames = ["", "Absolute frequency"],
- 'relbarwidth = 0.2, 'barcolor = 3, 'colorintensity = 0.6)$
+(%i4) histogram (s1, 'maintitle = "pi digits",
+ 'axisnames = ["", "Absolute frequency"], 'relbarwidth = 0.2,
+ 'barcolor = 3, 'colorintensity = 0.6)$
 (%i5) s2 : read_matrix (file_search ("wind.data"))$
 (%i6) histogram (col (s2, 3), 'colorintensity = 0.3)$
 @end example
@@ -2010,7 +2013,7 @@ This example plots the barchart for groups @code{A} and @code{B} of patients in 
 (%i2) load (numericalio)$
 (%i3) s3 : read_matrix (file_search ("biomed.data"))$
 (%i4) barsplot (col (s3, 1), 'maintitle = "Groups of patients",
- 'axisnames = ["Group", "# of individuals"], 'colorintensity = 0.2)$
+ 'axisnames=["Group", "# of individuals"], 'colorintensity=0.2)$
 @end example
 The first column in sample @code{s3} stores the categorical values @code{A} and @code{B}, also known sometimes as factors. On the other hand, the positive integer numbers in the second column are ages, in years, which is a discrete variable, so we can plot the absolute frequencies for these values,
 

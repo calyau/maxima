@@ -347,7 +347,8 @@ which must be a first order, linear polynomial in (for this case)
 @code{@var{g}(@var{t})} and @code{@var{g}(@var{t}+1)}
 
 @example
-(%i1) eqn: (n + 1)*f(n) - (n + 3)*f(n + 1)/(n + 1) = (n - 1)/(n + 2);
+(%i1) eqn: (n + 1)*f(n) - (n + 3)*f(n + 1)/(n + 1) =
+      (n - 1)/(n + 2);
                             (n + 3) f(n + 1)   n - 1
 (%o1)        (n + 1) f(n) - ---------------- = -----
                                  n + 1         n + 2
@@ -515,9 +516,11 @@ Examples:
 (%o2)                        bb + aa
 (%i3) rhs (e);
 (%o3)                          cc
-(%i4) [lhs (aa < bb), lhs (aa <= bb), lhs (aa >= bb), lhs (aa > bb)];
+(%i4) [lhs (aa < bb), lhs (aa <= bb), lhs (aa >= bb),
+       lhs (aa > bb)];
 (%o4)                   [aa, aa, aa, aa]
-(%i5) [lhs (aa = bb), lhs (aa # bb), lhs (equal (aa, bb)), lhs (notequal (aa, bb))];
+(%i5) [lhs (aa = bb), lhs (aa # bb), lhs (equal (aa, bb)),
+       lhs (notequal (aa, bb))];
 (%o5)                   [aa, aa, aa, aa]
 (%i6) e1: '(foo(x) := 2*x);
 (%o6)                     foo(x) := 2 x
@@ -810,9 +813,11 @@ Examples:
 (%o2)                        bb + aa
 (%i3) rhs (e);
 (%o3)                          cc
-(%i4) [rhs (aa < bb), rhs (aa <= bb), rhs (aa >= bb), rhs (aa > bb)];
+(%i4) [rhs (aa < bb), rhs (aa <= bb), rhs (aa >= bb),
+       rhs (aa > bb)];
 (%o4)                   [bb, bb, bb, bb]
-(%i5) [rhs (aa = bb), rhs (aa # bb), rhs (equal (aa, bb)), rhs (notequal (aa, bb))];
+(%i5) [rhs (aa = bb), rhs (aa # bb), rhs (equal (aa, bb)),
+       rhs (notequal (aa, bb))];
 (%o5)                   [bb, bb, bb, bb]
 (%i6) e1: '(foo(x) := 2*x);
 (%o6)                     foo(x) := 2 x
@@ -916,7 +921,7 @@ Examples:
                     *sqrt(sqrt(1 + x) - sqrt(x)));
 (%o11)                          1
 (%i12) rootsconmode: true$
-(%i13) rootscontract (sqrt(5 + sqrt(5)) - 5^(1/4)*sqrt(1 + sqrt(5)));
+(%i13) rootscontract (sqrt(5+sqrt(5)) - 5^(1/4)*sqrt(1+sqrt(5)));
 (%o13)                          0
 @end example
 

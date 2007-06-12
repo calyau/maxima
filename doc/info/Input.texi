@@ -39,7 +39,7 @@ Examples:
 (%o3)                           b
 (%i4) /* Parses same as a b c, not abc */  a/* foo */b/* bar */c;
 (%o4)                         a b c
-(%i5) /* Comments /* can be nested /* to arbitrary depth */ */ */  1 + xyz;
+(%i5) /* Comments /* can be nested /* to any depth */ */ */  1 + xyz;
 (%o5)                        xyz + 1
 @end example
 
@@ -214,7 +214,8 @@ For example,
 
 @example
 block (integrate (x^5, x), ev (%%, x=2) - ev (%%, x=1));
-block ([prev], prev: integrate (x^5, x), ev (prev, x=2) - ev (prev, x=1));
+block ([prev], prev: integrate (x^5, x),
+               ev (prev, x=2) - ev (prev, x=1));
 @end example
 
 yield the same result, namely @code{21/2}.
@@ -901,10 +902,12 @@ bb^10+10*aa*bb^9+45*aa^2*bb^8+120*aa^3*bb^7+210*aa^4*bb^6
 +252*aa^5*bb^5+210*aa^6*bb^4+120*aa^7*bb^3+45*aa^8*bb^2+10*aa^9*\
 bb+aa^10
 (%i14) cholesky (A):= block ([n : length (A), L : copymatrix (A),
-p : makelist (0, i, 1, length (A))], for i thru n do for j : i thru n do
-(x : L[i, j], x : x - sum (L[j, k] * L[i, k], k, 1, i - 1), if i = j then
-p[i] : 1 / sqrt(x) else L[j, i] : x * p[i]), for i thru n do L[i, i] : 1 / p[i],
-for i thru n do for j : i + 1 thru n do L[i, j] : 0, L)$
+  p : makelist (0, i, 1, length (A))], for i thru n do
+  for j : i thru n do
+  (x : L[i, j], x : x - sum (L[j, k] * L[i, k], k, 1, i - 1),
+  if i = j then p[i] : 1 / sqrt(x) else L[j, i] : x * p[i]),
+  for i thru n do L[i, i] : 1 / p[i],
+  for i thru n do for j : i + 1 thru n do L[i, j] : 0, L)$
 (%i15) grind (cholesky);
 cholesky(A):=block(
          [n:length(A),L:copymatrix(A),
@@ -1255,14 +1258,16 @@ to display two or more expressions per line.
 To display the contents of a file, see @code{printfile}.
 
 @example
-(%i1) r: print ("(a+b)^3 is", expand ((a+b)^3), "log (a^10/b) is", radcan (log (a^10/b)))$
+(%i1) r: print ("(a+b)^3 is", expand ((a+b)^3), "log (a^10/b) is",
+      radcan (log (a^10/b)))$
             3        2      2      3
 (a+b)^3 is b  + 3 a b  + 3 a  b + a  log (a^10/b) is 
 
                                               10 log(a) - log(b) 
 (%i2) r;
 (%o2)                  10 log(a) - log(b)
-(%i3) disp ("(a+b)^3 is", expand ((a+b)^3), "log (a^10/b) is", radcan (log (a^10/b)))$
+(%i3) disp ("(a+b)^3 is", expand ((a+b)^3), "log (a^10/b) is",
+      radcan (log (a^10/b)))$
                            (a+b)^3 is
 
                      3        2      2      3
@@ -1581,7 +1586,8 @@ Examples:
 (%i1) stringdisp: false$
 (%i2) "This is an example string.";
 (%o2)              This is an example string.
-(%i3) foo () := print ("This is a string in a function definition.");
+(%i3) foo () :=
+      print ("This is a string in a function definition.");
 (%o3) foo() := 
               print("This is a string in a function definition.")
 (%i4) stringdisp: true$
@@ -1851,7 +1857,8 @@ $$ \langle a \rangle $$
 (%i4) tex (<<a, b>>);
 $$ \langle a , b \rangle $$
 (%o4)                         false
-(%i5) texput ("<<", [" \\langle ", " \\rangle ", " \\, | \\,"], matchfix);
+(%i5) texput ("<<", [" \\langle ", " \\rangle ", " \\, | \\,"],
+      matchfix);
 (%o5)           [ \langle ,  \rangle ,  \, | \,]
 (%i6) tex (<<a>>);
 $$ \langle a \rangle $$
@@ -1935,7 +1942,8 @@ See also @code{writefile}.
 @c       do print (x, at (f, var=x))),
 @c  system ("echo \"set data style lines; set title '", f,"' ;plot '/tmp/gnu'
 @c ;pause 10 \" | gnuplot"))$
-(%i1) with_stdout ("tmp.out", for i:5 thru 10 do print (i, "! yields", i!))$
+(%i1) with_stdout ("tmp.out", for i:5 thru 10 do
+      print (i, "! yields", i!))$
 (%i2) printfile ("tmp.out")$
 5 ! yields 120 
 6 ! yields 720 

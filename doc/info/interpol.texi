@@ -227,8 +227,8 @@ Examples:
       g(x):=''%$
 (%i9) /* Plotting both functions together */
       plot2d(['(f(x)),'(g(x)),[discrete,p]],[x,0,10],
-           [gnuplot_curve_styles,
-              ["with lines","with lines","with points pointsize 3"]])$
+       [gnuplot_curve_styles,
+       ["with lines","with lines","with points pointsize 3"]])$
 @end example
 
 @end deffn

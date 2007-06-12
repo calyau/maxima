@@ -8,7 +8,7 @@
 @section Introduction to Lists
 
 Lists are the basic building block for Maxima and Lisp.   All data types
-other than arrays, hash tables, numbers are represented as Lisp lists.
+other than arrays, hash tables, numbers are represented as Lisp lists,
 These Lisp lists have the form
 
 @example
@@ -451,11 +451,13 @@ Examples:
 @c ===end===
 
 @example
-(%i1) sublist_indices ('[a, b, b, c, 1, 2, b, 3, b], lambda ([x], x='b));
+(%i1) sublist_indices ('[a, b, b, c, 1, 2, b, 3, b],
+                       lambda ([x], x='b));
 (%o1)                     [2, 3, 7, 9]
 (%i2) sublist_indices ('[a, b, b, c, 1, 2, b, 3, b], symbolp);
 (%o2)                  [1, 2, 3, 4, 7, 9]
-(%i3) sublist_indices ([1 > 0, 1 < 0, 2 < 1, 2 > 1, 2 > 0], identity);
+(%i3) sublist_indices ([1 > 0, 1 < 0, 2 < 1, 2 > 1, 2 > 0],
+                       identity);
 (%o3)                       [1, 4, 5]
 (%i4) assume (x < -1);
 (%o4)                       [x < - 1]

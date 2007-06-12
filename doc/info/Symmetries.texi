@@ -159,7 +159,8 @@ decomposes a multi-symmetric polynomial in the multi-contracted form
 @c multi_elem ([[2, e1, e2], [2, f1, f2]], a*x + a^2 + x^3, [[x, y], [a, b]]);
 @c ratsimp (%);
 @example
-(%i1) multi_elem ([[2, e1, e2], [2, f1, f2]], a*x + a^2 + x^3, [[x, y], [a, b]]);
+(%i1) multi_elem ([[2, e1, e2], [2, f1, f2]], a*x + a^2 + x^3,
+      [[x, y], [a, b]]);
                                                   3
 (%o1)         - 2 f2 + f1 (f1 + e1) - 3 e1 e2 + e1
 (%i2) ratsimp (%);
@@ -180,7 +181,8 @@ the function @code{elem}.
 @c GENERATED FROM THE FOLLOWING
 @c multi_pui ([[2, p1, p2], [2, t1, t2]], a*x + a^2 + x^3, [[x, y], [a, b]]);
 @example
-(%i1) multi_pui ([[2, p1, p2], [2, t1, t2]], a*x + a^2 + x^3, [[x, y], [a, b]]);
+(%i1) multi_pui ([[2, p1, p2], [2, t1, t2]], a*x + a^2 + x^3,
+      [[x, y], [a, b]]);
                                             3
                                 3 p1 p2   p1
 (%o1)              t2 + p1 t1 + ------- - ---
@@ -659,7 +661,8 @@ element is kept per orbit, under the action of @var{SD}.
 
     3  3  3  3       4  2  4  2      5    5        6  6
 40 a  b  x  y  + 15 a  b  x  y  + 6 a  b x  y + 2 a  x ]
-(%i4) pui_direct ([y + x + 2*c, y + x + 2*b, y + x + 2*a], [[x, y], [a, b, c]], [2, 3]);
+(%i4) pui_direct ([y + x + 2*c, y + x + 2*b, y + x + 2*a],
+      [[x, y], [a, b, c]], [2, 3]);
                              2              2
 (%o4) [3 x + 2 a, 6 x y + 3 x  + 4 a x + 4 a , 
 
@@ -948,9 +951,11 @@ the flag of @code{resolvante} may be, respectively:
 @c resolvante (x^5 - 4*x^2 + x + 1, x, a, []);
 @example
 (%i1) resolvante: unitaire$
-(%i2) resolvante (x^7 - 14*x^5 + 56*x^3 - 56*x + 22, x, x^3 - 1, [x]);
+(%i2) resolvante (x^7 - 14*x^5 + 56*x^3 - 56*x + 22, x, x^3 - 1,
+      [x]);
 
-" resolvante unitaire " [7, 0, 28, 0, 168, 0, 1120, - 154, 7840, - 2772, 56448, - 33880, 
+" resolvante unitaire " [7, 0, 28, 0, 168, 0, 1120, - 154, 7840,
+                         - 2772, 56448, - 33880, 
 
 413952, - 352352, 3076668, - 3363360, 23114112, - 30494464, 
 

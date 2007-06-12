@@ -200,13 +200,14 @@ a matrix. This computation is based on Cauchy's integral formula, which states t
 if @code{f(x)} is analytic and
 
 @example
-mat=diag([JF(m1,n1),...,JF(mk,nk)]),
+mat = diag([JF(m1,n1),...,JF(mk,nk)]),
 @end example
 
 then
 
 @example
-f(mat)=ModeMatrix*diag([f(JF(m1,n1)),...,f(JF(mk,nk))])*ModeMatrix^^(-1)
+f(mat) = ModeMatrix*diag([f(JF(m1,n1)), ..., f(JF(mk,nk))])
+                                              *ModeMatrix^^(-1)
 @end example
 
 Note that there are about 6 or 8 other methods for this calculation.

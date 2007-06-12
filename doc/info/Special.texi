@@ -13,7 +13,8 @@ bessel_j (index, expr)         Bessel function, 1st kind
 bessel_y (index, expr)         Bessel function, 2nd kind
 bessel_i (index, expr)         Modified Bessel function, 1st kind
 bessel_k (index, expr)         Modified Bessel function, 2nd kind
-%he[n] (z)                     Hermite polynomial (Nota bene: @code{he}, not @code{h}. See A&S 22.5.18)
+%he[n] (z)                     Hermite polynomial (Nota bene: @code{he},
+                               not @code{h}. See A&S 22.5.18)
 %p[u,v] (z)                    Legendre function
 %q[u,v] (z)                    Legendre function, 2nd kind
 hstruve[n] (z)                 Struve H function
@@ -28,7 +29,8 @@ slommel
 %w[u,k] (z)                    Whittaker function, 2nd kind
 erfc (z)                       Complement of the erf function
 ei (z)                         Exponential integral (?)
-kelliptic (z)                  Complete elliptic integral of the first kind (K)
+kelliptic (z)                  Complete elliptic integral of the first
+                               kind (K)
 %d [n] (z)                     Parabolic cylinder function
 @end example
 
@@ -578,7 +580,8 @@ Examples:
                                  a 3/2
                           2 (p + -)
                                  4
-(%i3) specint (t^(1/2) * bessel_j(1, 2 * a^(1/2) * t^(1/2)) * exp(-p*t), t);
+(%i3) specint (t^(1/2) * bessel_j(1, 2 * a^(1/2) * t^(1/2))
+              * exp(-p*t), t);
                                    - a/p
                          sqrt(a) %e
 (%o3)                    ---------------

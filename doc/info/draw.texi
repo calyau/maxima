@@ -815,8 +815,8 @@ Example:
 @example
 (%i1) load(draw)$
 (%i2) draw2d(points(makelist([random(20),random(50)],k,1,10)),
-             point_size = 5,
-             points(makelist(k,k,1,20),makelist(random(30),k,1,20)))$
+        point_size = 5,
+        points(makelist(k,k,1,20),makelist(random(30),k,1,20)))$
 @end example
 @end defvr
 
@@ -1577,13 +1577,13 @@ Example:
 
 @example
 (%i1) load(draw)$
-(%i2) draw2d(key           = "Small points",
-             points(makelist([random(20),random(50)],k,1,10)),
-             point_type    = 6,
-             point_size    = 3,
-             points_joined = true,
-             key           = "Great points",
-             points(makelist(k,k,1,20),makelist(random(30),k,1,20)))$
+(%i2) draw2d(key = "Small points",
+       points(makelist([random(20),random(50)],k,1,10)),
+       point_type    = 6,
+       point_size    = 3,
+       points_joined = true,
+       key           = "Great points",
+       points(makelist(k,k,1,20),makelist(random(30),k,1,20)))$
 @end example
 
 @item
@@ -1625,7 +1625,7 @@ Example:
              line_type   = dots,
              transparent = false,
              fill_color  = blue,
-             rectangle([-2,-2],[8,-1]),   /* opposite vertices */
+             rectangle([-2,-2],[8,-1]), /* opposite vertices */
              transparent = true,
              line_type   = solid,
              line_width  = 1,
@@ -1654,7 +1654,8 @@ Example:
              color       = gray30,
              transparent = false,
              line_width  = 5,
-             ellipse(0,6,3,2,270,-270),  /* center (x,y), a, b, start & end in degrees */
+             ellipse(0,6,3,2,270,-270),
+             /* center (x,y), a, b, start & end in degrees */
              transparent = true,
              color       = blue,
              line_width  = 3,
@@ -1683,7 +1684,8 @@ These colors may change in different terminals.
              label("Label in red",0,0.3),
              color = "#0000ff",
              label("Label in blue",0,0.6),
-             color = "light-blue", /* double quotes if - is used */
+             color = "light-blue",
+                     /* double quotes if - is used */
              label("Label in light-blue",0,0.9)  )$
 @end example
 
@@ -1755,7 +1757,7 @@ Example:
                implicit(y^2=x^3-2*x+1, x, -4,4, y, -4,4),
              line_type = dots,
              key       = "x^3+y^3 = 3*x*y^2-x-1",
-              implicit(x^3+y^3 = 3*x*y^2-x-1, x, -4,4, y, -4,4),
+              implicit(x^3+y^3 = 3*x*y^2-x-1, x,-4,4, y,-4,4),
              title     = "Two implicit functions" )$
 @end example
 
@@ -1824,7 +1826,8 @@ onto red, green and blue colors, respectively:
 21: 3x             22: 3x-1         23: 3x-2
 24: |3x-1|         25: |3x-2|       26: (3x-1)/2
 27: (3x-2)/2       28: |(3x-1)/2|   29: |(3x-2)/2|
-30: x/0.32-0.78125 31: 2*x-0.84     32: 4x;1;-2x+1.84;x/0.08-11.5
+30: x/0.32-0.78125                  31: 2*x-0.84
+32: 4x;1;-2x+1.84;x/0.08-11.5
 33: |2*x - 0.5|    34: 2*x          35: 2*x - 0.5
 36: 2*x - 1
 @end example
@@ -1901,8 +1904,8 @@ This is the list of @i{graphic objects} available for scenes in three dimensions
 
 @itemize @bullet
 @item
-@code{points([[x1,y1,z1], [x2,y2,z2], [x3,y3,z3],...])} or 
-@code{points([x1,x2,x3,...], [y1,y2,y3,...], [z1,z2,z3,...])}:
+@code{points([[x1, y1, z1], [x2, y2, z2], [x3, y3, z3], ...])} or 
+@code{points([x1, x2, x3, ...], [y1, y2, y3, ...], [z1, z2, z3, ...])}:
 allocates points @code{[x1,y1,z1]}, @code{[x2,y2,z2]}, @code{[x2,y2,z3]}, ....
 
 This object is affected by the following @i{graphic options}: @code{point_size}, 
@@ -1916,7 +1919,7 @@ One tridimensional sample,
 (%i1) load(draw)$
 (%i2) load (numericalio)$
 (%i3) s2 : read_matrix (file_search ("wind.data"))$
-(%i4) draw3d(title      = "Daily average wind speeds",
+(%i4) draw3d(title = "Daily average wind speeds",
              point_size = 2,
              points(args(submatrix (s2, 4, 5))) )$
 @end example
@@ -1926,13 +1929,14 @@ Two tridimensional samples,
 (%i1) load(draw)$
 (%i2) load (numericalio)$
 (%i3) s2 : read_matrix (file_search ("wind.data"))$
-(%i4) draw3d(title      = "Daily average wind speeds. Two data sets",
-             point_size = 2,
-             key        = "Sample from stations 1, 2 and 3",
-             points(args(submatrix (s2, 4, 5))),
-             point_type = 4,
-             key        = "Sample from stations 1, 4 and 5",
-             points(args(submatrix (s2, 2, 3))) )$
+(%i4) draw3d(
+         title = "Daily average wind speeds. Two data sets",
+         point_size = 2,
+         key        = "Sample from stations 1, 2 and 3",
+         points(args(submatrix (s2, 4, 5))),
+         point_type = 4,
+         key        = "Sample from stations 1, 4 and 5",
+         points(args(submatrix (s2, 2, 3))) )$
 @end example
 
 
@@ -1955,8 +1959,6 @@ Example:
 @end example
 
 
-
-
 @item
 @code{vector([x,y,z], [dx,dy,dz])}:
 plots vector @code{[dx,dy,dz]} with origin in @code{[x,y,z]}.
@@ -1974,8 +1976,6 @@ Example:
              vector([0,0,0],[1,-1,0]/sqrt(2)),
              vector([0,0,0],[1,1,-2]/sqrt(6)) )$
 @end example
-
-
 
 @item
 @code{explicit(fcn,var1,minval1,maxval1,var2,minval2,maxval2)}:
@@ -2025,7 +2025,8 @@ Example:
 
 
 @item
-@code{parametric_surface(xfun,yfun,zfun,par1,par1min,par1max,par2,par2min,par2max)}:
+@code{parametric_surface(xfun, yfun, zfun, par1, par1min, par1max,
+par2,par2min, par2max)}:
 plots parametric surface @code{[xfun,yfun,zfun]}, with parameter @code{par1}
 taking values from @code{par1min} to @code{par1max} and parameter @code{par2}
 taking values from @code{par2min} to @code{par2max}.
@@ -2044,9 +2045,9 @@ Example:
              rot_horizontal = 20,
              surface_hide   = true,
              parametric_surface(0.5*u*cos(u)*(cos(v)+1),
-                                0.5*u*sin(u)*(cos(v)+1),
-                                u*sin(v) - ((u+3)/8*%pi)^2 - 20,
-                                u, 0, 13*%pi, v, -%pi, %pi) )$
+                           0.5*u*sin(u)*(cos(v)+1),
+                           u*sin(v) - ((u+3)/8*%pi)^2 - 20,
+                           u, 0, 13*%pi, v, -%pi, %pi) )$
 @end example
 
 @end itemize

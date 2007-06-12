@@ -474,7 +474,12 @@ F Schwarz, Algorithmic Solution of Abel's Equation,
 @item
 E. S. Cheb-Terrab, A. D. Roche, Symmetries and First Order
     ODE Patterns, Computer Physics Communications 113 (1998), p 239.
-    (http://lie.uwaterloo.ca/papers/ode_vii.pdf)
+@ifnottex
+    (@url{http://lie.uwaterloo.ca/papers/ode_vii.pdf})
+@end ifnottex
+@tex
+    (\texttt{http://lie.uwaterloo.ca/\-papers/\-ode\_vii.pdf})
+@end tex
 
 @item
 E. S. Cheb-Terrab, T. Koloknikov,  First Order ODEs,

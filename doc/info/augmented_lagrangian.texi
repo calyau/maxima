@@ -39,13 +39,21 @@ See also @code{lbfgs}.
 
 References:
 
+@ifnottex
 [1] http://www-fp.mcs.anl.gov/otc/Guide/OptWeb/continuous/constrained/nonlinearcon/auglag.html
 
 [2] http://www.cs.ubc.ca/spider/ascher/542/chap10.pdf
+@end ifnottex
+@tex
+[1] \texttt{http://\-www-fp.mcs.anl.gov/\-otc/\-Guide/\-OptWeb/\-continuous/\-constrained/\-nonlinearcon/\-auglag.html}
+
+[2] \texttt{http://\-www.cs.ubc.ca/\-spider/\-ascher/\-542/\-chap10.pdf}
+@end tex
 
 Example:
 
 @c ===beg===
+@c load (lbfgs);
 @c load (augmented_lagrangian);
 @c FOM: x^2 + 2*y^2;
 @c xx: [x, y];
@@ -54,6 +62,9 @@ Example:
 @c augmented_lagrangian_method (FOM, xx, C, yy, iprint = [-1, 0]);
 @c ===end===
 @example
+(%i1) load (lbfgs);
+(%o1) /home/robert/tmp/maxima-release-branch/maxima/share/lbfgs/\
+lbfgs.mac
 (%i2) load (augmented_lagrangian);
 (%o2) /home/robert/tmp/maxima-release-branch/maxima/share/contri\
 b/augmented_lagrangian.mac
@@ -66,7 +77,7 @@ b/augmented_lagrangian.mac
 (%o5)                      [y + x - 1]
 (%i6) yy: [1, 1];
 (%o6)                        [1, 1]
-(%i7) augmented_lagrangian_method (FOM, xx, C, yy, iprint = [-1, 0]);
+(%i7) augmented_lagrangian_method(FOM, xx, C, yy, iprint=[-1, 0]);
 (%o7) [[x = 0.6478349888525, y = 0.32391749442625], 
                                  %lambda = [- 1.267422460983745]]
 @end example

@@ -102,42 +102,43 @@ or limit.)
 @var{initial_value}, @var{increment}, @var{limit}, and @var{body} can be any
 expressions.  If the increment is 1 then "@code{step 1}" may be omitted.
 
-The execution of the @code{do} statement proceeds by first assigning the
-@code{initial_value} to the @code{variable} (henceforth called the
+The execution of the @code{do} statement proceeds by first assigning
+the @code{initial_value} to the @code{variable} (henceforth called the
 control-variable). Then: (1) If the control-variable has exceeded the
-limit of a @code{thru} specification, or if the condition of the @code{unless} is
-@code{true}, or if the condition of the @code{while} is @code{false} then the @code{do}
-terminates. (2) The @var{body} is evaluated.  (3) The increment is added to
-the control-variable.  The process from (1) to (3) is performed
-repeatedly until the termination condition is satisfied.  One may also
-give several termination conditions in which case the @code{do} terminates
-when any of them is satisfied.
+limit of a @code{thru} specification, or if the condition of the
+@code{unless} is @code{true}, or if the condition of the @code{while}
+is @code{false} then the @code{do} terminates. (2) The @code{body} is
+evaluated.  (3) The increment is added to the control-variable.  The
+process from (1) to (3) is performed repeatedly until the termination
+condition is satisfied.  One may also give several termination
+conditions in which case the @code{do} terminates when any of them is
+satisfied.
 
-In general the @code{thru} test is satisfied when the control-variable is
-greater than the @var{limit} if the @var{increment} was non-negative, or when the
-control-variable is less than the @var{limit} if the @var{increment} was negative.
-The @var{increment} and @var{limit} may be non-numeric expressions as long as this
-inequality can be determined.  However, unless the @var{increment} is
-syntactically negative (e.g. is a negative number) at the time the @code{do}
-statement is input, Maxima assumes it will be positive when the @code{do} is
-executed.  If it is not positive, then the @code{do} may not terminate
-properly.
+In general the @code{thru} test is satisfied when the control-variable
+is greater than the @code{limit} if the @code{increment} was
+non-negative, or when the control-variable is less than the
+@code{limit} if the @code{increment} was negative.  The
+@code{increment} and @code{limit} may be non-numeric expressions as
+long as this inequality can be determined.  However, unless the
+@code{increment} is syntactically negative (e.g. is a negative number)
+at the time the @code{do} statement is input, Maxima assumes it will
+be positive when the @code{do} is executed.  If it is not positive,
+then the @code{do} may not terminate properly.
 
-Note that the @var{limit}, @var{increment}, and termination condition are
+Note that the @code{limit}, @code{increment}, and termination condition are
 evaluated each time through the loop.  Thus if any of these involve
 much computation, and yield a result that does not change during all
-the executions of the @var{body}, then it is more efficient to set a
+the executions of the @code{body}, then it is more efficient to set a
 variable to their value prior to the @code{do} and use this variable in the
 @code{do} form.
 
-The value normally returned by a @code{do} statement is the atom @code{done}.
-However, the function
-@code{return} may be used inside the @var{body} to exit the @code{do} prematurely and give
-it any desired value.
-Note however that a @code{return} within a @code{do} that
-occurs in a @code{block} will exit only the @code{do} and not the @code{block}.  Note also
-that the @code{go} function may not be used to exit from a @code{do} into a
-surrounding @code{block}.
+The value normally returned by a @code{do} statement is the atom
+@code{done}.  However, the function @code{return} may be used inside
+the @code{body} to exit the @code{do} prematurely and give it any
+desired value. Note however that a @code{return} within a @code{do}
+that occurs in a @code{block} will exit only the @code{do} and not the
+@code{block}. Note also that the @code{go} function may not be used
+to exit from a @code{do} into a surrounding @code{block}.
 
 The control-variable is always local to the @code{do} and thus any
 variable may be used without affecting the value of a variable with
@@ -206,7 +207,7 @@ Instead of always adding a quantity to the control-variable one
 may sometimes wish to change it in some other way for each iteration.
 In this case one may use @code{next @var{expression}} instead of @code{step @var{increment}}.
 This will cause the control-variable to be set to the
-result of evaluating @var{expression} each time through the loop.
+result of evaluating @code{expression} each time through the loop.
 
 @example
 (%i6) for count: 2 next 3*count thru 20 do display (count)$
@@ -218,11 +219,12 @@ result of evaluating @var{expression} each time through the loop.
 @end example
 
 @c UGH. DO WE REALLY NEED TO MENTION THIS??
-As an alternative to @code{for @var{variable}: @var{value} ...do...} the syntax
-@code{for @var{variable} from @var{value} ...do...}  may be used.  This permits the
-@code{from @var{value}} to be placed after the @code{step} or @code{next} value or after the
-termination condition.  If @code{from @var{value}} is omitted then 1 is used as
-the initial value.
+As an alternative to @code{for @var{variable}: @var{value} ...do...}
+the syntax @code{for @var{variable} from @var{value} ...do...}  may be
+used.  This permits the @code{from @var{value}} to be placed after the
+@code{step} or @code{next} value or after the termination condition.
+If @code{from @var{value}} is omitted then 1 is used as the initial
+value.
 
 Sometimes one may be interested in performing an iteration where
 the control-variable is never actually used.  It is thus permissible
@@ -239,10 +241,10 @@ square-root of 5 using a poor initial guess.
 (%o4)                   2.23606797749979
 @end example
 
-If it is desired one may even omit the termination conditions
-entirely and just give @code{do @var{body}} which will continue to evaluate the
-@var{body} indefinitely.  In this case the function @code{return} should be used to
-terminate execution of the @code{do}.
+If it is desired one may even omit the termination conditions entirely
+and just give @code{do @var{body}} which will continue to evaluate the
+@code{body}x indefinitely.  In this case the function @code{return}
+should be used to terminate execution of the @code{do}.
 
 @example
 (%i1) newton (f, x):= ([y, df, dfx], df: diff (f ('x), 'x),
@@ -265,11 +267,12 @@ One other form of the @code{do} is available in Maxima.  The syntax is:
 for @var{variable} in @var{list} @var{end_tests} do @var{body}
 @end example
 
-The elements of @var{list} are any expressions which will
-successively be assigned to the @var{variable} on each iteration of the
-@var{body}.  The optional termination tests @var{end_tests} can be used to terminate execution of
-the @code{do}; otherwise it will terminate when the @var{list} is exhausted or when
-a @code{return} is executed in the @var{body}.  (In fact, @var{list} may be any
+The elements of @var{list} are any expressions which will successively
+be assigned to the @code{variable} on each iteration of the
+@code{body}.  The optional termination tests @var{end_tests} can be
+used to terminate execution of the @code{do}; otherwise it will
+terminate when the @code{list} is exhausted or when a @code{return} is
+executed in the @code{body}.  (In fact, @code{list} may be any
 non-atomic expression, and successive parts are taken.)
 
 @example
@@ -412,11 +415,13 @@ applying @var{f} to the corresponding subparts of the expressions.  @var{f} is e
 the name of a function of @math{n} arguments
 or is a @code{lambda} form of @math{n} arguments.
 
-@code{maperror} - if @code{false} will cause all of the mapping functions to
-(1) stop when they finish going down the shortest @var{expr_i} if not all of
-the @var{expr_i} are of the same length and (2) apply @var{f} to [@var{expr_1}, @var{expr_2},...]
-if the @var{expr_i} are not all the same type of object. If @code{maperror} is @code{true}
-then an error message will be given in the above two instances.
+@code{maperror} - if @code{false} will cause all of the mapping
+functions to (1) stop when they finish going down the shortest
+@var{expr_i} if not all of the @var{expr_i} are of the same length and
+(2) apply @var{f} to [@var{expr_1}, @var{expr_2}, ...]  if the
+@var{expr_i} are not all the same type of object. If @code{maperror}
+is @code{true} then an error message will be given in the above two
+instances.
 
 One of the uses of this function is to @code{map} a function (e.g. @code{partfrac})
 onto each term of a very large expression where it ordinarily wouldn't
@@ -459,13 +464,13 @@ Default value: @code{true}
 When @code{maperror} is @code{false}, causes all of the mapping functions, for example
 
 @example
-map (f, @var{expr_1}, @var{expr_2}, ...)
+map (f, expr_1, expr_2, ...))
 @end example
 
-to (1) stop when they finish
-going down the shortest @var{expr_i} if not all of the @var{expr_i} are of the same
-length and (2) apply @code{f} to @code{[@var{expr_1}, @var{expr_2}, ...]} if the @code{expr_i} are not all
-the same type of object.
+to (1) stop when they finish going down the shortest @var{expr_i} if
+not all of the @var{expr_i} are of the same length and (2) apply
+@code{f} to [@var{expr_1}, @var{expr_2}, ...] if the @var{expr_i} are
+not all the same type of object.
 
 If @code{maperror} is @code{true} then an error message
 is displayed in the above two instances.
@@ -521,10 +526,11 @@ desired, for example:
 (%o2)                         (a + 1)  y + x
 @end example
 
-Note the way in which @code{scanmap} applies the given function @code{factor} to the
-constituent subexpressions of @var{expr}; if another form of @var{expr} is presented
-to @code{scanmap} then the result may be different.  Thus, @code{%o2} is not
-recovered when @code{scanmap} is applied to the expanded form of @code{exp}:
+Note the way in which @code{scanmap} applies the given function
+@code{factor} to the constituent subexpressions of @var{expr}; if
+another form of @var{expr} is presented to @code{scanmap} then the
+result may be different. Thus, @code{%o2} is not recovered when
+@code{scanmap} is applied to the expanded form of @code{exp}:
 
 @example
 (%i3) scanmap(factor,expand(exp));
@@ -613,10 +619,10 @@ To show the argument combinations more clearly, @code{F} is left undefined.
 @c outermap ("+", [a, b, c], [1, 2, 3]);
 @c ===end===
 @example
-(%i1) outermap (F, [a, b, c], [1, 2, 3]);
+(%i1) outermap(F, [a, b, c], [1, 2, 3]);
 (%o1) [[F(a, 1), F(a, 2), F(a, 3)], [F(b, 1), F(b, 2), F(b, 3)], 
                                      [F(c, 1), F(c, 2), F(c, 3)]]
-(%i2) outermap (F, matrix ([a, b], [c, d]), matrix ([1, 2], [3, 4]));
+(%i2) outermap(F, matrix([a, b],[c, d]), matrix([1, 2],[3, 4]));
          [ [ F(a, 1)  F(a, 2) ]  [ F(b, 1)  F(b, 2) ] ]
          [ [                  ]  [                  ] ]
          [ [ F(a, 3)  F(a, 4) ]  [ F(b, 3)  F(b, 4) ] ]
@@ -666,7 +672,8 @@ and each element of each list is a matrix.
 (%o2)                       [11, 22]
 (%i3) arg_3 : matrix ([xx, yy]);
 (%o3)                      [ xx  yy ]
-(%i4) xx_0 : outermap (lambda ([x, y, z], x / y + z), arg_1, arg_2, arg_3);
+(%i4) xx_0 : outermap(lambda([x, y, z], x / y + z), arg_1,
+                                                   arg_2, arg_3);
                [  [      a        a  ]  [      a        a  ]  ]
                [ [[ xx + --  yy + -- ], [ xx + --  yy + -- ]] ]
                [  [      11       11 ]  [      22       22 ]  ]
@@ -715,7 +722,8 @@ while @code{cartesian_product} does not.
 (%i2) setify (flatten (%));
 (%o2) @{F(a, 1), F(a, 2), F(a, 3), F(b, 1), F(b, 2), F(b, 3), 
                                        F(c, 1), F(c, 2), F(c, 3)@}
-(%i3) map (lambda ([L], apply (F, L)), cartesian_product (@{a, b, c@}, @{1, 2, 3@}));
+(%i3) map(lambda([L], apply(F, L)),
+                     cartesian_product(@{a, b, c@}, @{1, 2, 3@}));
 (%o3) @{F(a, 1), F(a, 2), F(a, 3), F(b, 1), F(b, 2), F(b, 3), 
                                        F(c, 1), F(c, 2), F(c, 3)@}
 (%i4) is (equal (%, %th (2)));

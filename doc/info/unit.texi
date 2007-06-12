@@ -319,7 +319,8 @@ we would see the following behavior:
 ******************************************************************* 
  
 Redefining necessary functions... 
-WARNING: DEFUN/DEFMACRO: redefining function TOPLEVEL-MACSYMA-EVAL ...
+WARNING: DEFUN/DEFMACRO: redefining function
+ TOPLEVEL-MACSYMA-EVAL ...
 WARNING: DEFUN/DEFMACRO: redefining function MSETCHK ...
 WARNING: DEFUN/DEFMACRO: redefining function KILL1 ...
 WARNING: DEFUN/DEFMACRO: redefining function NFORMAT ...
@@ -424,12 +425,12 @@ from the session.  Here are some examples of how these various options work.
                                        2
                                       s
 (%i20) usedimension(N);
-Done.  To have Maxima simplify to this dimension, use setunits([unit]) 
-to select a unit. 
+Done.  To have Maxima simplify to this dimension, use
+setunits([unit]) to select a unit. 
 (%o20)                               true
 (%i21) usedimension(J);
-Done.  To have Maxima simplify to this dimension, use setunits([unit]) 
-to select a unit. 
+Done.  To have Maxima simplify to this dimension, use
+setunits([unit]) to select a unit. 
 (%o21)                               true
 (%i22) kg*m/s^2;
                                      kg m
