@@ -144,9 +144,9 @@ DOE Macsyma.  Копия DOE Macsyma поддерживалась профессором Вильямом
 
 Дополнительные пакеты
 
-* augmented_lagrangian::          augmented_lagrangian package.
-* bode::                          Bode gain and phase plots.
-* contrib_ode::                   Additional routines for ODEs
+* Пакет augmented_lagrangian::    Пакет augmented_lagrangian.
+* Пакет bode::                    Амплитудные и фазовые диаграммы Боде.
+* Пакет contrib_ode::             Дополнительные процедуры для решения ОДУ.
 * descriptive::                   Descriptive statistics.
 * diag::                          Jordan matrices.
 * distrib::                       Probability distributions.
@@ -394,21 +394,21 @@ Rules and Patterns
 * Функции и переменные для отладки::   
 
 
-augmented_lagrangian
+Пакет augmented_lagrangian
 
-* Definitions for augmented_lagrangian::
+* Функции и переменные пакета augmented_lagrangian::
 
-bode
+Пакет bode
 
-* Definitions for bode::
+* Функции и переменные для пакета bode::
 
-contrib_ode
+Пакет contrib_ode
 
-* Introduction to contrib_ode::
-* Definitions for contrib_ode::
-* Possible improvements to contrib_ode::
-* Test cases for contrib_ode::
-* References for contrib_ode::
+* Введение в пакет contrib_ode::
+* Функции и переменные пакета contrib_ode::
+* Возможные улучшения пакета contrib_ode::
+* Тесты пакета contrib_ode::
+* Ссылки для пакета contrib_ode::
 
 descriptive
 
