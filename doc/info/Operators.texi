@@ -584,7 +584,8 @@ printing message (2).
 @c x: %pi;
 @c y: 1234;
 @c z: 1729 * w;
-@c printq1 (x) ::= block (print ("(1) x is equal to", x), '(print ("(2) x is equal to", x)));
+@c printq1 (x) ::= block (print ("(1) x is equal to", x), 
+@c                                 '(print ("(2) x is equal to", x)));
 @c printq1 (y - z);
 @c ===end===
 @example
@@ -612,7 +613,8 @@ until the explicit evaluation @code{''%}.
 @c x: %pi;
 @c y: 1234;
 @c z: 1729 * w;
-@c printe1 (x) := block (print ("(1) x is equal to", x), '(print ("(2) x is equal to", x)));
+@c printe1 (x) := block (print ("(1) x is equal to", x), 
+@c       '(print ("(2) x is equal to", x)));
 @c printe1 (y - z);
 @c ''%;
 @c ===end===
@@ -848,7 +850,8 @@ Expressions can be equivalent and not syntactically equal.
 Some operators evaluate @code{=} and @code{#} to @code{true} or @code{false}.
 
 @c ===beg===
-@c if expand ((x + y)^2) = x^2 + 2 * x * y + y^2 then FOO else BAR;
+@c if expand ((x + y)^2) = x^2 + 2 * x * y + y^2 then FOO else 
+@c       BAR;
 @c eq_3 : 2 * x = 3 * x;
 @c eq_4 : exp (2) = %e^2;
 @c [eq_3 and eq_4, eq_3 or eq_4, not eq_3];
@@ -1885,7 +1888,8 @@ Example use:
 
 @c ===beg===
 @c unitfrac(r) := block([uf : [], q],
-@c     if not(ratnump(r)) then error("The input to 'unitfrac' must be a rational number"),
+@c     if not(ratnump(r)) then 
+@c        error("The input to 'unitfrac' must be a rational number"),
 @c     while r # 0 do (
 @c         uf : cons(q : 1/ceiling(1/r), uf),
 @c         r : r - q),
@@ -1994,13 +1998,16 @@ this is a bug.
 Examples:
 
 @c ===beg===
-@c sort ([11, -17, 29b0, 7.55, 3, -5/2, b + a, 9 * c, 19 - 3 * x]);
-@c sort ([11, -17, 29b0, 7.55, 3, -5/2, b + a, 9 * c, 19 - 3 * x], ordergreatp);
+@c sort ([11, -17, 29b0, 7.55, 3, -5/2, b + a, 9 * c, 
+@c       19 - 3 * x]);
+@c sort ([11, -17, 29b0, 7.55, 3, -5/2, b + a, 9 * c, 19 - 3 * x], 
+@c       ordergreatp);
 @c sort ([%pi, 3, 4, %e, %gamma]);
 @c sort ([%pi, 3, 4, %e, %gamma], "<");
 @c my_list : [[aa, hh, uu], [ee, cc], [zz, xx, mm, cc], [%pi, %e]];
 @c sort (my_list);
-@c sort (my_list, lambda ([a, b], orderlessp (reverse (a), reverse (b))));
+@c sort (my_list, lambda ([a, b], orderlessp (reverse (a), 
+@c       reverse (b))));
 @c ===end===
 @example
 (%i1) sort ([11, -17, 29b0, 7.55, 3, -5/2, b + a, 9 * c,

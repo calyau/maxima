@@ -28,7 +28,7 @@ Examples:
 @c /* Value of bb depends on aa */  bb : aa^2;
 @c /* User-defined infix operator */  infix ("b");
 @c /* Parses same as a b c, not abc */  a/* foo */b/* bar */c;
-@c /* Comments /* can be nested /* to arbitrary depth */ */ */  1 + xyz;
+@c /* Comments /* can be nested /* to any depth */ */ */  1 + xyz;
 @c ===end===
 @example
 (%i1) /* aa is a variable of interest */  aa : 1234;
@@ -52,6 +52,7 @@ A directory is just a list of files.
 Commands which deal with files are:
 @code{save},
 @code{load},
+
 @code{loadfile},
 @code{stringout},
 @code{batch},
@@ -846,10 +847,12 @@ Examples:
 @c grind (expr);
 @c string (expr);
 @c cholesky (A):= block ([n : length (A), L : copymatrix (A),
-@c p : makelist (0, i, 1, length (A))], for i thru n do for j : i thru n do
-@c (x : L[i, j], x : x - sum (L[j, k] * L[i, k], k, 1, i - 1), if i = j then
-@c p[i] : 1 / sqrt(x) else L[j, i] : x * p[i]), for i thru n do L[i, i] : 1 / p[i],
-@c for i thru n do for j : i + 1 thru n do L[i, j] : 0, L)$
+@c   p : makelist (0, i, 1, length (A))], 
+@c   for i thru n do for j : i thru n do
+@c   (x : L[i, j], x : x - sum (L[j, k] * L[i, k], k, 1, i - 1), 
+@c   if i = j then @c   p[i] : 1 / sqrt(x) else L[j, i] : x * p[i]), 
+@c   for i thru n do L[i, i] : 1 / p[i],
+@c   for i thru n do for j : i + 1 thru n do L[i, j] : 0, L)$
 @c grind (cholesky);
 @c string (fundef (cholesky));
 @c ===end===
@@ -1578,7 +1581,8 @@ Examples:
 @c ===beg===
 @c stringdisp: false$
 @c "This is an example string.";
-@c foo () := print ("This is a string in a function definition.");
+@c foo () := 
+@c       print ("This is a string in a function definition.");
 @c stringdisp: true$
 @c "This is an example string.";
 @c ===end===
@@ -1841,7 +1845,8 @@ Assign TeX output for a matchfix operator.
 @c texput ("<<", [" \\langle ", " \\rangle "], matchfix);
 @c tex (<<a>>);
 @c tex (<<a, b>>);
-@c texput ("<<", [" \\langle ", " \\rangle ", " \\, | \\,"], matchfix);
+@c texput ("<<", [" \\langle ", " \\rangle ", " \\, | \\,"], 
+@c       matchfix);
 @c tex (<<a>>);
 @c tex (<<a, b>>);
 @c ===end===

@@ -988,10 +988,11 @@ converted to rational numbers.
 See also @code{ratexpand} and  @code{ratsimp}.
 
 Examples:
-@c FOLLOW GENERATED FROM THESE EXPRESSIONS
-@c ((x - 2*y)^4/(x^2 - 4*y^2)^2 + 1)*(y + a)*(2*y + x) /(4*y^2 + x^2);
+@c ===beg===
+@c ((x - 2*y)^4/(x^2 - 4*y^2)^2 + 1)*(y + a)*(2*y + x) /
+@c       (4*y^2 + x^2);
 @c rat (%, y, a, x);
-
+@c ===end===
 @example
 (%i1) ((x - 2*y)^4/(x^2 - 4*y^2)^2 + 1)*(y + a)*(2*y + x) /
       (4*y^2 + x^2);

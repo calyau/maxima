@@ -499,8 +499,10 @@ Examples:
 @c e: aa + bb = cc;
 @c lhs (e);
 @c rhs (e);
-@c [lhs (aa < bb), lhs (aa <= bb), lhs (aa >= bb), lhs (aa > bb)];
-@c [lhs (aa = bb), lhs (aa # bb), lhs (equal (aa, bb)), lhs (notequal (aa, bb))];
+@c [lhs (aa < bb), lhs (aa <= bb), lhs (aa >= bb), 
+@c        lhs (aa > bb)];
+@c [lhs (aa = bb), lhs (aa # bb), lhs (equal (aa, bb)), 
+@c        lhs (notequal (aa, bb))];
 @c e1: '(foo(x) := 2*x);
 @c e2: '(bar(y) ::= 3*y);
 @c e3: '(x : y);
@@ -796,8 +798,10 @@ Examples:
 @c e: aa + bb = cc;
 @c lhs (e);
 @c rhs (e);
-@c [rhs (aa < bb), rhs (aa <= bb), rhs (aa >= bb), rhs (aa > bb)];
-@c [rhs (aa = bb), rhs (aa # bb), rhs (equal (aa, bb)), rhs (notequal (aa, bb))];
+@c [rhs (aa < bb), rhs (aa <= bb), rhs (aa >= bb), 
+@c        rhs (aa > bb)];
+@c [rhs (aa = bb), rhs (aa # bb), rhs (equal (aa, bb)), 
+@c        rhs (notequal (aa, bb))];
 @c e1: '(foo(x) := 2*x);
 @c e2: '(bar(y) ::= 3*y);
 @c e3: '(x : y);

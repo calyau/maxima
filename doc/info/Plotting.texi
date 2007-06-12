@@ -22,8 +22,10 @@ Examples:
 @c contour_plot (sin(y) * cos(x)^2, [x, -4, 4], [y, -4, 4]);
 @c F(x, y) := x^3 + y^2;
 @c contour_plot (F, [u, -4, 4], [v, -4, 4]);
-@c contour_plot (F, [u, -4, 4], [v, -4, 4], [gnuplot_preamble, "set size ratio -1"]);
-@c set_plot_option ([gnuplot_preamble, "set cntrparam levels 12"])$
+@c contour_plot (F, [u, -4, 4], [v, -4, 4], [gnuplot_preamble, 
+@c       "set size ratio -1"]);
+@c set_plot_option ([gnuplot_preamble, 
+@c       "set cntrparam levels 12"])$
 @c contour_plot (F, [u, -4, 4], [v, -4, 4]);
 @c ===end===
 @example
@@ -200,7 +202,8 @@ lengths are in the 4 to 3 proportion, we will use the @var{xrange}
 option to obtain the same scaling in both axes:
 
 @c ===beg===
-@c plot2d ([parametric, cos(t), sin(t), [t, -%pi, %pi], [nticks, 80]], [x, -4/3, 4/3])$
+@c plot2d ([parametric, cos(t), sin(t), [t, -%pi, %pi], 
+@c       [nticks, 80]], [x, -4/3, 4/3])$
 @c ===end===
 @example
 (%i8) plot2d ([parametric, cos(t), sin(t), [t,-%pi,%pi],
@@ -215,7 +218,8 @@ If we repeat that plot with only 8 points and extending the range
 of the parameter to give two turns, we will obtain the plot of a star:
 
 @c ===beg===
-@c plot2d ([parametric, cos(t), sin(t), [t, -%pi*2, %pi*2], [nticks, 8]], [x, -2, 2], [y, -1.5, 1.5])$
+@c plot2d ([parametric, cos(t), sin(t), [t, -%pi*2, %pi*2], 
+@c         [nticks, 8]], [x, -2, 2], [y, -1.5, 1.5])$
 @c ===end===
 @example
 (%i9) plot2d ([parametric, cos(t), sin(t), [t, -%pi*2, %pi*2],
@@ -230,7 +234,8 @@ Combination of an ordinary plot of a cubic polynomial with a
 parametric plot of a circle:
 
 @c ===beg===
-@c plot2d ([x^3+2, [parametric, cos(t), sin(t), [t, -5, 5], [nticks, 80]]], [x, -3, 3])$
+@c plot2d ([x^3+2, [parametric, cos(t), sin(t), [t, -5, 5], 
+@c         [nticks, 80]]], [x, -3, 3])$
 @c ===end===
 @example
 (%i10) plot2d ([x^3+2, [parametric, cos(t), sin(t), [t, -5, 5],
@@ -297,7 +302,10 @@ The plot of the data points can be shown together with a plot of the
 theoretical function that predicts the data:
 
 @c ===beg===
-@c plot2d([[discrete,xy], 2*%pi*sqrt(l/980)], [l,0,50], [style, [points,3,5], [lines,1,3]], [legend,"experiment","theory"], [xlabel,"pendulum's length (cm)"], [ylabel,"period (s)"])$
+@c plot2d([[discrete,xy], 2*%pi*sqrt(l/980)], [l,0,50], 
+@c         [style, [points,3,5], [lines,1,3]], 
+@c         [legend,"experiment","theory"], 
+@c         [xlabel,"pendulum's length (cm)"], [ylabel,"period (s)"])$
 @c ===end===
 @example
 (%i17) plot2d([[discrete,xy], 2*%pi*sqrt(l/980)], [l,0,50],

@@ -142,7 +142,8 @@ because the pattern argument @code{x} is given to @code{defmatch}.
 @c HOW HARD WILL MAXIMA TRY TO COLLECT TERMS AND DO OTHER MUNGEING TO FIT THE PATTERN ??
 
 @c ===beg===
-@c matchdeclare (a, lambda ([e], e#0 and freeof(x, e)), b, freeof(x));
+@c matchdeclare (a, lambda ([e], e#0 and freeof(x, e)), b, 
+@c                     freeof(x));
 @c defmatch (linearp, a*x + b, x);
 @c linearp (3*z + (y + 1)*z + y^2, z);
 @c a;
@@ -174,7 +175,8 @@ This match function only matches expressions linear in @code{x},
 not any other variable, because no pattern argument is given to @code{defmatch}.
 
 @c ===beg===
-@c matchdeclare (a, lambda ([e], e#0 and freeof(x, e)), b, freeof(x));
+@c matchdeclare (a, lambda ([e], e#0 and freeof(x, e)), b, 
+@c                     freeof(x));
 @c defmatch (linearp, a*x + b);
 @c linearp (3*z + (y + 1)*z + y^2);
 @c linearp (3*x + (y + 1)*x + y^2);
@@ -582,9 +584,11 @@ or a sum or product (respectively) of such expressions.
 
 @c ===beg===
 @c matchdeclare (aa, atom, bb, lambda ([x], not atom(x)));
-@c defrule (r1, aa + bb, ["all atoms" = aa, "all nonatoms" = bb]);
+@c defrule (r1, aa + bb, ["all atoms" = aa, "all nonatoms" = 
+@c                bb]);
 @c r1 (8 + a*b + sin(x));
-@c defrule (r2, aa * bb, ["all atoms" = aa, "all nonatoms" = bb]);
+@c defrule (r2, aa * bb, ["all atoms" = aa, "all nonatoms" = 
+@c                bb]);
 @c r2 (8 * (a + b) * sin(x));
 @c ===end===
 @example
@@ -611,9 +615,11 @@ as one match predicate cannot accept terms matched by another.
 
 @c ===beg===
 @c matchdeclare (aa, atom, bb, lambda ([x], not atom(x)));
-@c defrule (r1, aa + bb, ["all atoms" = aa, "all nonatoms" = bb]);
+@c defrule (r1, aa + bb, ["all atoms" = aa, "all nonatoms" = 
+@c                bb]);
 @c r1 (8 + a*b + %pi + sin(x) - c + 2^n);
-@c defrule (r2, aa * bb, ["all atoms" = aa, "all nonatoms" = bb]);
+@c defrule (r2, aa * bb, ["all atoms" = aa, "all nonatoms" = 
+@c                bb]);
 @c r2 (8 * (a + b) * %pi * sin(x) / c * 2^n);
 @c ===end===
 @example
@@ -828,12 +834,14 @@ Examples:
 @c tellsimp (aa @@ bb, bb/aa);
 @c tellsimpafter (quux (%pi, %e), %pi - %e);
 @c tellsimpafter (quux (%e, %pi), %pi + %e);
-@c [foo (aa, bb), aa + bb, aa @@ bb, quux (%pi, %e), quux (%e, %pi)];
+@c [foo (aa, bb), aa + bb, aa @@ bb, quux (%pi, %e), 
+@c        quux (%e, %pi)];
 @c remrule (foo, foorule1);
 @c remrule ("+", "+rule1");
 @c remrule ("@@", "@@rule1");
 @c remrule (quux, all);
-@c [foo (aa, bb), aa + bb, aa @@ bb, quux (%pi, %e), quux (%e, %pi)];
+@c [foo (aa, bb), aa + bb, aa @@ bb, quux (%pi, %e), 
+@c         quux (%e, %pi)];
 @c ===end===
 @example
 (%i1) tellsimp (foo (aa, bb), bb - aa);

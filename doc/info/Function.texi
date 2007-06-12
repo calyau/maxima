@@ -247,8 +247,10 @@ which carries out substitutions sequentially.
 
 @c ===beg===
 @c buildq ([a: b, b: a], foo (a, b));
-@c buildq ([u: v, v: w, w: x, x: y, y: z, z: u], bar (u, v, w, x, y, z));
-@c subst ([u=v, v=w, w=x, x=y, y=z, z=u], bar (u, v, w, x, y, z));
+@c buildq ([u: v, v: w, w: x, x: y, y: z, z: u], 
+@c               bar (u, v, w, x, y, z));
+@c subst ([u=v, v=w, w=x, x=y, y=z, z=u], 
+@c              bar (u, v, w, x, y, z));
 @c ===end===
 @example
 (%i1) buildq ([a: b, b: a], foo (a, b));
@@ -814,13 +816,13 @@ and otherwise it is the previous value of @code{name}.
 Examples:
 
 @code{foo} is a Boolean variable, with the initial value @code{true}.
-@c GENERATED FROM:
+@c ===beg===
 @c define_variable (foo, true, boolean);
 @c foo;
 @c foo: false;
 @c foo: %pi;
 @c foo;
-
+@c ===end===
 @example
 (%i1) define_variable (foo, true, boolean);
 (%o1)                         true
@@ -836,14 +838,15 @@ Error: foo was declared mode boolean, has value: %pi
 @end example
 
 @code{bar} is an integer variable, which must be prime.
-@c GENERATED FROM:
+@c ===beg===
 @c define_variable (bar, 2, integer);
 @c qput (bar, prime_test, value_check);
-@c prime_test (y) := if not primep(y) then error (y, "is not prime.");
+@c prime_test (y) := if not primep(y) then 
+@c                            error (y, "is not prime.");
 @c bar: 1439;
 @c bar: 1440;
 @c bar;
-
+@c ===end===
 @example
 (%i1) define_variable (bar, 2, integer);
 (%o1)                           2
@@ -867,14 +870,15 @@ Error: foo was declared mode boolean, has value: %pi
 @code{baz_quux} is a variable which cannot be assigned a value.
 The mode @code{any_check} is like @code{any}, 
 but @code{any_check} enables the @code{value_check} mechanism, and @code{any} does not.
-@c GENERATED FROM:
+@c ===beg===
 @c define_variable (baz_quux, 'baz_quux, any_check);
-@c F: lambda ([y], if y # 'baz_quux then error ("Cannot assign to `baz_quux'."));
+@c F: lambda ([y], if y # 'baz_quux then 
+@c                  error ("Cannot assign to `baz_quux'."));
 @c qput (baz_quux, ''F, value_check);
 @c baz_quux: 'baz_quux;
 @c baz_quux: sqrt(2);
 @c baz_quux;
-
+@c ===end===
 @example
 (%i1) define_variable (baz_quux, 'baz_quux, any_check);
 (%o1)                       baz_quux
@@ -1444,8 +1448,10 @@ and the calling expression is not modified.
 
 @c ===beg===
 @c f (x) := h (x) / g (x);
-@c g (x) ::= block (print ("x + 99 is equal to", x), return (x + 99));
-@c h (x) ::= block (print ("x - 99 is equal to", x), return (x - 99));
+@c g (x) ::= block (print ("x + 99 is equal to", x), 
+@c                        return (x + 99));
+@c h (x) ::= block (print ("x - 99 is equal to", x), 
+@c                        return (x - 99));
 @c macroexpansion: false;
 @c f (a * b);
 @c dispfun (f);
@@ -1492,8 +1498,10 @@ and the calling expression is not modified.
 
 @c ===beg===
 @c f (x) := h (x) / g (x);
-@c g (x) ::= block (print ("x + 99 is equal to", x), return (x + 99));
-@c h (x) ::= block (print ("x - 99 is equal to", x), return (x - 99));
+@c g (x) ::= block (print ("x + 99 is equal to", x), 
+@c                        return (x + 99));
+@c h (x) ::= block (print ("x - 99 is equal to", x), 
+@c                        return (x - 99));
 @c macroexpansion: expand;
 @c f (a * b);
 @c dispfun (f);
@@ -1538,8 +1546,10 @@ and the calling expression is modified.
 
 @c ===beg===
 @c f (x) := h (x) / g (x);
-@c g (x) ::= block (print ("x + 99 is equal to", x), return (x + 99));
-@c h (x) ::= block (print ("x - 99 is equal to", x), return (x - 99));
+@c g (x) ::= block (print ("x + 99 is equal to", x), 
+@c                        return (x + 99));
+@c h (x) ::= block (print ("x - 99 is equal to", x), 
+@c                        return (x - 99));
 @c macroexpansion: displace;
 @c f (a * b);
 @c dispfun (f);

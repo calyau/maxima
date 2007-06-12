@@ -656,7 +656,8 @@ and each element of each list is a matrix.
 @c arg_1 :  matrix ([a, b], [c, d]);
 @c arg_2 : [11, 22];
 @c arg_3 : matrix ([xx, yy]);
-@c xx_0 : outermap (lambda ([x, y, z], x / y + z), arg_1, arg_2, arg_3);
+@c xx_0 : outermap (lambda ([x, y, z], x / y + z), arg_1, 
+@c                                                    arg_2, arg_3);
 @c xx_1 : xx_0 [1][1];
 @c xx_2 : xx_0 [1][1] [1];
 @c xx_3 : xx_0 [1][1] [1] [1][1];
@@ -712,7 +713,8 @@ while @code{cartesian_product} does not.
 @c ===beg===
 @c outermap (F, [a, b, c], [1, 2, 3]);
 @c setify (flatten (%));
-@c map (lambda ([L], apply (F, L)), cartesian_product ({a, b, c}, {1, 2, 3}));
+@c map (lambda ([L], apply (F, L)), 
+@c                      cartesian_product ({a, b, c}, {1, 2, 3}));
 @c is (equal (%, %th (2)));
 @c ===end===
 @example

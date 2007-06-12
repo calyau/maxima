@@ -442,9 +442,11 @@ this excludes @code{unknown} as well as @code{false}.
 
 Examples:
 @c ===beg===
-@c sublist_indices ('[a, b, b, c, 1, 2, b, 3, b], lambda ([x], x='b));
+@c sublist_indices ('[a, b, b, c, 1, 2, b, 3, b], 
+@c                        lambda ([x], x='b));
 @c sublist_indices ('[a, b, b, c, 1, 2, b, 3, b], symbolp);
-@c sublist_indices ([1 > 0, 1 < 0, 2 < 1, 2 > 1, 2 > 0], identity);
+@c sublist_indices ([1 > 0, 1 < 0, 2 < 1, 2 > 1, 2 > 0], 
+@c                        identity);
 @c assume (x < -1);
 @c map (maybe, [x > 0, x < 0, x < -2]);
 @c sublist_indices ([x > 0, x < 0, x < -2], identity);

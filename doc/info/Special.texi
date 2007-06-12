@@ -568,7 +568,8 @@ Examples:
 @c ===beg===
 @c assume (p > 0, a > 0);
 @c specint (t^(1/2) * exp(-a*t/4) * exp(-p*t), t);
-@c specint (t^(1/2) * bessel_j(1, 2 * a^(1/2) * t^(1/2)) * exp(-p*t), t);
+@c specint (t^(1/2) * bessel_j(1, 2 * a^(1/2) * t^(1/2)) 
+@c               * exp(-p*t), t);
 @c ===end===
 
 @example
