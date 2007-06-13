@@ -374,28 +374,35 @@
 		       (push i all-differences)
 		       (displa next-result)
 		       (cond ((and *collect-errors* error-log)
-			      (mgrind (third expr) error-log)
+			      (format error-log "/* Problem ~A */~%" i)
+                  (mgrind (third expr) error-log)
 			      (list-variable-bindings (third expr) error-log)
 			      (format error-log ";~%")
-			      (format error-log "//*Erroneous Result?:~%")
-			      (mgrind result error-log) (format error-log "*// ")
+			      (format error-log "/* Erroneous Result?:~%")
+			      (mgrind result error-log) (format error-log " */ ")
 			      (terpri error-log)
+                  (format error-log "/* Expected result: */~%")
 			      (mgrind next-result error-log)
 			      (format error-log ";~%~%"))))))))
       (close strm))
     (cond (error-log
 	   (or (streamp *collect-errors*)
 	       (close error-log))))
-    (cond ((null all-differences)
-	   (format t "~a/~a tests passed.~%" num-problems num-problems) '((mlist)))
-	  (t (progn
-	       (format t "~%~a/~a tests passed.~%" 
-		       (- num-problems (length all-differences)) num-problems)
-	       (let ((s (if (> (length all-differences) 1) "s" "")))
-		 (format t "~%The following ~A problem~A failed: ~A~%" 
-			 (length all-differences) s (reverse all-differences)))
-	       `((mlist),filename ,@ all-differences))))))
-	   
+    (let
+      ((expected-errors-trailer
+         (if (or (null expected-errors) (= (length expected-errors) 0))
+           ""
+           (format nil " (not counting ~a expected errors)" (length expected-errors)))))
+      (cond ((null all-differences)
+           (format t "~a/~a tests passed~a.~%" num-problems num-problems expected-errors-trailer) '((mlist)))
+        (t (progn
+             (format t "~%~a/~a tests passed~a.~%" 
+                 (- num-problems (length all-differences)) num-problems expected-errors-trailer)
+             (let ((s (if (> (length all-differences) 1) "s" "")))
+           (format t "~%The following ~A problem~A failed: ~A~%" 
+               (length all-differences) s (reverse all-differences)))
+             `((mlist),filename ,@(reverse all-differences))))))))
+       
 ;;to keep track of global values during the error:
 (defun list-variable-bindings (expr &optional str &aux tem)
   (loop for v in(cdr ($listofvars  expr))
