@@ -1108,7 +1108,7 @@
 	  (when (and (eq lim1 '$finite) (lim-infp lim1))
 	     (break "Undefined finite*inf in lim-times"))
 	  (setq lim (lim-abs lim2)))
-	 (t (break "Undefined limit product ~A * ~A in lim-times lim1 lim2")))
+	 (t (break "Undefined limit product ~A * ~A in lim-times" lim1 lim2)))
    (if (or (lim-imagp lim1) (lim-imagp lim2))
        (if (lim-infp lim) '$infinity '$im)
       (if (and (lim-plusp lim1) (lim-plusp lim2)) lim (lim-minus lim)))))
