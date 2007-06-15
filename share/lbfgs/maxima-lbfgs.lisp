@@ -77,7 +77,7 @@ estimates : lbfgs ('[F(a, b, c), [F1(a, b, c), F2(a, b, c), F3(a, b, c)]],
   (if
     (or (and (symbolp FOM-expr) (mfboundp FOM-expr))
         (and (consp FOM-expr) (eq (caar FOM-expr) 'lambda)))
-    (merror "lbfgs: figure of merit cannot be a function name or lambda."))
+    (merror "lbfgs: figure of merit, if specified alone, cannot be a function name or lambda."))
 
   (let*
     ((n (length (cdr x-list)))
