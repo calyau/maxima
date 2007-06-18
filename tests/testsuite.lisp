@@ -40,5 +40,5 @@
 	((mlist) "rtest_boolean" 96 100 101)
 	((mlist) "rtest_round")
 	((mlist) "rtest_map" 2 3 4)
-	((mlist) "rtest_sign" 21 25 30 40 62 63 65 72 77 79 84 87 88)
+	((mlist) "rtest_sign" 21 25 30 40 62 63 65 72 77 79 84)
 	))
