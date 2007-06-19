@@ -819,6 +819,8 @@
 	  (t 1.))))
 
 
+;; Carefully substitute the integration limits A and B into the
+;; expression E.
 (defun intsubs (e a b)
   (cond ((easy-subs e a b))
 	(t (setq *current-assumptions*
@@ -843,14 +845,30 @@
 		      (cond ((limit-subs rpart a b))
 			    (t (same-sheet-subs rpart a b)))))))))
 
+;; Try easy substitutions.  Return NIL if we can't.
 (defun easy-subs (e ll ul)
-  (cond ((or (infinityp ll) (infinityp ul)) ())
-	(t (cond ((polyinx e var ())
-		  (let ((ll-val (no-err-sub ll e))
-			(ul-val (no-err-sub ul e)))
-		    (cond ((and ll-val ul-val)  (m- ul-val ll-val))
-			  (t ()))))
-		 (t ())))))
+  (cond ((or (infinityp ll) (infinityp ul))
+	 ;; Infinite limits aren't easy
+	 nil)
+	(t
+	 (cond ((or (polyinx e var ())
+		    (and (not (involve e '(%log %asin %acos %atan %asinh %acosh %atanh %atan2)))
+			 (free ($denom e) var)))
+		;; It's easy if we have a polynomial.  I (rtoy) think
+		;; it's also easy if the denominator is free of the
+		;; integration variable and also if the expression
+		;; doesn't involve inverse functions.
+		;;
+		;; XXX:  Are there other cases we've forgotten about?
+		;;
+		;; So just try to substitute the limits into the
+		;; expression.  If no errors are produced, we're done.
+		(let ((ll-val (no-err-sub ll e))
+		      (ul-val (no-err-sub ul e)))
+		  (cond ((and ll-val ul-val)
+			 (m- ul-val ll-val))
+			(t nil))))
+	       (t nil)))))
 
 (defun limit-subs (e ll ul)
   (cond ((not (free e '%atan))  ())
