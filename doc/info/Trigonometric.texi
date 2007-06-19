@@ -26,6 +26,118 @@ for details.
 @node Functions and Variables for Trigonometric,  , Introduction to Trigonometric, Trigonometric
 @section Functions and Variables for Trigonometric
 
+@defvr {Option variable} %piargs
+Default value: @code{true}
+
+When @code{%piargs} is @code{true},
+trigonometric functions are simplified to algebraic constants
+when the argument is an integer multiple of
+@math{%pi}, @math{%pi/2}, @math{%pi/3}, @math{%pi/4}, or @math{%pi/6}
+
+Maxima knows some identities which can be applied when @math{%pi}, etc.,
+are multiplied by an integer variable (that is, a symbol declared to be integer).
+
+Examples:
+
+@c ===beg===
+@c %piargs : false;
+@c [sin (%pi), sin (%pi/2), sin (%pi/3)];
+@c [sin (%pi/4), sin (%pi/5), sin (%pi/6)];
+@c %piargs : true;
+@c [sin (%pi), sin (%pi/2), sin (%pi/3)];
+@c [sin (%pi/4), sin (%pi/5), sin (%pi/6)];
+@c [cos (%pi/3), cos (10*%pi/3), tan (10*%pi/3), cos (sqrt(2)*%pi/3)];
+@c ===end===
+@example
+(%i1) %piargs : false;
+(%o1)                         false
+(%i2) [sin (%pi), sin (%pi/2), sin (%pi/3)];
+                                %pi       %pi
+(%o2)            [sin(%pi), sin(---), sin(---)]
+                                 2         3
+(%i3) [sin (%pi/4), sin (%pi/5), sin (%pi/6)];
+                      %pi       %pi       %pi
+(%o3)            [sin(---), sin(---), sin(---)]
+                       4         5         6
+(%i4) %piargs : true;
+(%o4)                         true
+(%i5) [sin (%pi), sin (%pi/2), sin (%pi/3)];
+                                sqrt(3)
+(%o5)                    [0, 1, -------]
+                                   2
+(%i6) [sin (%pi/4), sin (%pi/5), sin (%pi/6)];
+                         1         %pi   1
+(%o6)                [-------, sin(---), -]
+                      sqrt(2)       5    2
+(%i7) [cos (%pi/3), cos (10*%pi/3), tan (10*%pi/3), cos (sqrt(2)*%pi/3)];
+                1    1               sqrt(2) %pi
+(%o7)          [-, - -, sqrt(3), cos(-----------)]
+                2    2                    3
+@end example
+
+Some identities are applied when @math{%pi} and @math{%pi/2} are multiplied by an integer variable.
+
+@c ===beg===
+@c declare (n, integer, m, even);
+@c [sin (%pi * n), cos (%pi * m), sin (%pi/2 * m), cos (%pi/2 * m)];
+@c ===end===
+@example
+(%i1) declare (n, integer, m, even);
+(%o1)                         done
+(%i2) [sin (%pi * n), cos (%pi * m), sin (%pi/2 * m), cos (%pi/2 * m)];
+                                      m/2
+(%o2)                  [0, 1, 0, (- 1)   ]
+@end example
+
+@end defvr
+
+@defvr {Option variable} %iargs
+Default value: @code{true}
+
+When @code{%iargs} is @code{true},
+trigonometric functions are simplified to hyperbolic functions
+when the argument is apparently a multiple of the imaginary unit @math{%i}.
+
+Even when the argument is demonstrably real, the simplification is applied;
+Maxima considers only whether the argument is a literal multiple of @math{%i}.
+
+Examples:
+
+@c ===beg===
+@c %iargs : false;
+@c [sin (%i * x), cos (%i * x), tan (%i * x)];
+@c %iargs : true;
+@c [sin (%i * x), cos (%i * x), tan (%i * x)];
+@c ===end===
+@example
+(%i1) %iargs : false;
+(%o1)                         false
+(%i2) [sin (%i * x), cos (%i * x), tan (%i * x)];
+(%o2)           [sin(%i x), cos(%i x), tan(%i x)]
+(%i3) %iargs : true;
+(%o3)                         true
+(%i4) [sin (%i * x), cos (%i * x), tan (%i * x)];
+(%o4)           [%i sinh(x), cosh(x), %i tanh(x)]
+@end example
+
+Even when the argument is demonstrably real, the simplification is applied.
+
+@c ===beg===
+@c declare (x, imaginary);
+@c [featurep (x, imaginary), featurep (x, real)];
+@c sin (%i * x);
+@c ===end===
+@example
+(%i1) declare (x, imaginary);
+(%o1)                         done
+(%i2) [featurep (x, imaginary), featurep (x, real)];
+(%o2)                     [true, false]
+(%i3) sin (%i * x);
+(%o3)                      %i sinh(x)
+@end example
+
+@end defvr
+
 @deffn {Function} acos (@var{x})
  - Arc Cosine.
 
