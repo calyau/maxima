@@ -222,7 +222,7 @@
 	 #+allegro "fasl"
 	 #-(or gcl cmu clisp allegro) ""))
     (if (member type (list bin-ext "lisp" "lsp")  :test 'equalp)
-      #-sbcl (load file :verbose 't) #+sbcl (with-compilation-unit nil (load file :verbose 't))
+      #-sbcl (load file) #+sbcl (with-compilation-unit nil (load file))
       ($batchload file))))
 
 (defvar autoload 'generic-autoload)
