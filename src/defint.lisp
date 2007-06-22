@@ -887,7 +887,19 @@
 
 ;;;This function works only on things with ATAN's in them now.
 (defun same-sheet-subs (exp ll ul &aux ans)
-  (let ((poles (atan-poles exp ll ul)))
+  ;; POLES-IN-INTERVAL doesn't know about the poles of tan(x).  Call
+  ;; trigsimp to convert tan into sin/cos, which POLES-IN-INTERVAL
+  ;; knows how to handle.
+  ;;
+  ;; XXX Should we fix POLES-IN-INTERVAL instead?
+  ;;
+  ;; XXX Is calling trigsimp too much?  Should we just only try to
+  ;; substitute sin/cos for tan?
+  ;;
+  ;; XXX Should the result try to convert sin/cos back into tan?  (A
+  ;; call to trigreduce would do it, among other things.)
+  (let* ((exp (mfuncall '$trigsimp exp))
+	 (poles (atan-poles exp ll ul)))
     ;;POLES -> ((mlist) ((mequal) ((%atan) foo) replacement) ......)
     ;;We can then use $SUBSTITUTE
     (setq ans ($limit exp var ll '$plus))
