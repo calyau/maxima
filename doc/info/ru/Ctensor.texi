@@ -1,7 +1,7 @@
 @c Language=Russian
 @c Encoding=CP1251
 @c File=Ctensor.texi 
-@c OriginalRevision=1.33
+@c OriginalRevision=1.34
 
 
 @menu
@@ -169,34 +169,47 @@ y;
 
 @example
 
-  Символ               Dim Координаты        Описание/комментарии
-  --------------------------------------------------------------------------
-  cartesian2d           2  [x,y]             Декартовы 2D координаты
-  polar                 2  [r,phi]           Полярные координаты
-  elliptic              2  [u,v]             Эллиптические координаты
-  confocalelliptic      2  [u,v]             Конфокальные эллиптические
-  bipolar               2  [u,v]             Биполярные координаты
-  parabolic             2  [u,v]             Параболические координаты
-  cartesian3d           3  [x,y,z]           Декартова 3D система координат
-  polarcylindrical      3  [r,theta,z]       Цилиндрические координаты
-  ellipticcylindrical   3  [u,v,z]           Эллиптические 2D с цилинром z
-  confocalellipsoidal   3  [u,v,w]           Конфокальные эллипсоидальные
-  bipolarcylindrical    3  [u,v,z]           Биполярные 2D с цилиндром z
-  paraboliccylindrical  3  [u,v,z]           Параболические 2D с цилиндром z
-  paraboloidal          3  [u,v,phi]         Параболоидные координаты
-  conical               3  [u,v,w]           Конические координаты
-  toroidal              3  [u,v,phi]         Тороидальные координаты
-  spherical             3  [r,theta,phi]     Сферические координаты
-  oblatespheroidal      3  [u,v,phi]         Сжатые сфероидальные
-  oblatespheroidalsqrt  3  [u,v,phi]
-  prolatespheroidal     3  [u,v,phi]         Вытянутые сфероидальные
-  prolatespheroidalsqrt 3  [u,v,phi]
-  ellipsoidal           3  [r,theta,phi]     Эллипсоидальные координаты
-  cartesian4d           4  [x,y,z,t]         Декартовы 4D координаты
-  spherical4d           4  [r,theta,eta,phi] Сферические 4D координаты
-  exteriorschwarzschild 4  [t,r,theta,phi]   Метрика Шварцшильда
-  interiorschwarzschild 4  [t,z,u,v]         Внутреняя метрика Шрарцшильда
-  kerr_newman           4  [t,r,theta,phi]   Метрика Керра-Ньюмана
+ Символ               Dim Координаты        Описание/комментарии
+ ------------------------------------------------------------------
+ cartesian2d           2  [x,y]             Декартовы 2D координаты
+ polar                 2  [r,phi]           Полярные координаты
+ elliptic              2  [u,v]             Эллиптические 
+                                            координаты
+ confocalelliptic      2  [u,v]             Конфокальные 
+                                            эллиптические
+ bipolar               2  [u,v]             Биполярные координаты
+ parabolic             2  [u,v]             Параболические 
+                                            координаты
+ cartesian3d           3  [x,y,z]           Декартова 3D система 
+                                            координат
+ polarcylindrical      3  [r,theta,z]       Цилиндрические 
+                                            координаты
+ ellipticcylindrical   3  [u,v,z]           Эллиптические 2D 
+                                            с цилинром z
+ confocalellipsoidal   3  [u,v,w]           Конфокальные 
+                                            эллипсоидальные
+ bipolarcylindrical    3  [u,v,z]           Биполярные 2D 
+                                            с цилиндром z
+ paraboliccylindrical  3  [u,v,z]           Параболические 2D 
+                                            с цилиндром z
+ paraboloidal          3  [u,v,phi]         Параболоидные 
+                                            координаты
+ conical               3  [u,v,w]           Конические координаты
+ toroidal              3  [u,v,phi]         Тороидальные координаты
+ spherical             3  [r,theta,phi]     Сферические координаты
+ oblatespheroidal      3  [u,v,phi]         Сжатые сфероидальные
+ oblatespheroidalsqrt  3  [u,v,phi]
+ prolatespheroidal     3  [u,v,phi]         Вытянутые сфероидальные
+ prolatespheroidalsqrt 3  [u,v,phi]
+ ellipsoidal           3  [r,theta,phi]     Эллипсоидальные 
+                                            координаты
+ cartesian4d           4  [x,y,z,t]         Декартовы 4D координаты
+ spherical4d           4  [r,theta,eta,phi] Сферические 4D 
+                                            координаты
+ exteriorschwarzschild 4  [t,r,theta,phi]   Метрика Шварцшильда
+ interiorschwarzschild 4  [t,z,u,v]         Внутреняя метрика 
+                                            Шрарцшильда
+ kerr_newman           4  [t,r,theta,phi]   Метрика Керра-Ньюмана
 
 @end example
 
@@ -239,11 +252,13 @@ y;
       r*sin(theta),[r,theta,phi]]);
 (%o3)                                done
 (%i4) fri;
-      [ cos(phi) cos(theta)  - cos(phi) r sin(theta)  - sin(phi) r cos(theta) ]
-      [                                                                       ]
-(%o4) [ sin(phi) cos(theta)  - sin(phi) r sin(theta)   cos(phi) r cos(theta)  ]
-      [                                                                       ]
-      [     sin(theta)            r cos(theta)                   0            ]
+(%o4)
+ [cos(phi)cos(theta) -cos(phi) r sin(theta) -sin(phi) r cos(theta)]
+ [                                                                ]
+ [sin(phi)cos(theta) -sin(phi) r sin(theta)  cos(phi) r cos(theta)]
+ [                                                                ]
+ [    sin(theta)           r cos(theta)                0          ]
+
 (%i5) cmetric();
 (%o5)                                false
 (%i6) lg:trigsimp(lg);
@@ -524,7 +539,8 @@ lriem[i,j,k,l]*uriem[i,j,k,l].
 (%o3)                                true
 (%i4) ct_coords:[t,r,theta,phi];
 (%o4)                         [t, r, theta, phi]
-(%i5) lg:matrix([-1,0,0,0],[0,1,0,0],[0,0,r^2,0],[0,0,0,r^2*sin(theta)^2]);
+(%i5) lg:matrix([-1,0,0,0],[0,1,0,0],[0,0,r^2,0],
+                [0,0,0,r^2*sin(theta)^2]);
                         [ - 1  0  0         0        ]
                         [                            ]
                         [  0   1  0         0        ]
@@ -545,15 +561,15 @@ lriem[i,j,k,l]*uriem[i,j,k,l].
 (%i7) depends(l,r);
 (%o7)                               [l(r)]
 (%i8) lg:lg+l*h;
-         [ h11 l - 1      0          0                 0            ]
-         [                                                          ]
-         [     0      h22 l + 1      0                 0            ]
-         [                                                          ]
-(%o8)    [                        2                                 ]
-         [     0          0      r  + h33 l            0            ]
-         [                                                          ]
-         [                                    2    2                ]
-         [     0          0          0       r  sin (theta) + h44 l ]
+      [ h11 l - 1      0          0                 0            ]
+      [                                                          ]
+      [     0      h22 l + 1      0                 0            ]
+      [                                                          ]
+(%o8) [                        2                                 ]
+      [     0          0      r  + h33 l            0            ]
+      [                                                          ]
+      [                                    2    2                ]
+      [     0          0          0       r  sin (theta) + h44 l ]
 (%i9) cmetric(false);
 (%o9)                                done
 (%i10) einstein(false);
@@ -621,11 +637,9 @@ lriem[i,j,k,l]*uriem[i,j,k,l].
 (%o22) - (((h11 h22 - h11 ) (l )  r  - 2 h33 l    r ) sin (theta)
                               r               r r
 
-                                2               2      4    2
-                  - 2 h44 l    r  - h33 h44 (l ) )/(4 r  sin (theta))
-                           r r                r
-
-
+                            2               2      4    2
+              - 2 h44 l    r  - h33 h44 (l ) )/(4 r  sin (theta))
+                       r r                r
 
 @end example
 
@@ -732,25 +746,25 @@ np  = (fri  - %i fri ) / sqrt(2)
 (%i6) nptetrad(true);
 (%t6) np =
 
-       [  sqrt(r - 2 m)           sqrt(r)                                     ]
-       [ ---------------   ---------------------      0             0         ]
-       [ sqrt(2) sqrt(r)   sqrt(2) sqrt(r - 2 m)                              ]
-       [                                                                      ]
-       [  sqrt(r - 2 m)            sqrt(r)                                    ]
-       [ ---------------  - ---------------------     0             0         ]
-       [ sqrt(2) sqrt(r)    sqrt(2) sqrt(r - 2 m)                             ]
-       [                                                                      ]
-       [                                              r      %i r sin(theta)  ]
-       [        0                    0             -------   ---------------  ]
-       [                                           sqrt(2)       sqrt(2)      ]
-       [                                                                      ]
-       [                                              r       %i r sin(theta) ]
-       [        0                    0             -------  - --------------- ]
-       [                                           sqrt(2)        sqrt(2)     ]
+[ sqrt(r - 2 m)           sqrt(r)                                 ]
+[---------------   ---------------------    0            0        ]
+[sqrt(2) sqrt(r)   sqrt(2) sqrt(r - 2 m)                          ]
+[                                                                 ]
+[ sqrt(r - 2 m)            sqrt(r)                                ]
+[---------------  - ---------------------   0            0        ]
+[sqrt(2) sqrt(r)    sqrt(2) sqrt(r - 2 m)                         ]
+[                                                                 ]
+[                                          r      %i r sin(theta) ]
+[       0                    0          -------   --------------- ]
+[                                       sqrt(2)       sqrt(2)     ]
+[                                                                 ]
+[                                          r       %i r sin(theta)]
+[       0                    0          -------  - ---------------]
+[                                       sqrt(2)        sqrt(2)    ]
 
-                             sqrt(r)          sqrt(r - 2 m)
-(%t7) npi = matrix([- ---------------------, ---------------, 0, 0],
-                      sqrt(2) sqrt(r - 2 m)  sqrt(2) sqrt(r)
+                             sqrt(r)         sqrt(r - 2 m)
+(%t7) npi = matrix([- ---------------------,---------------, 0, 0],
+                      sqrt(2) sqrt(r - 2 m) sqrt(2) sqrt(r)
 
           sqrt(r)            sqrt(r - 2 m)
 [- ---------------------, - ---------------, 0, 0],
@@ -888,7 +902,8 @@ Maxima поступает, если флаг @code{cnonmet_flag} равен @code{true}, в
 (%o2)                                true
 (%i3) dim:4;
 (%o3)                                  4
-(%i4) lg:matrix([a,0,0,0],[0,x^2,0,0],[0,0,x^2*sin(y)^2,0],[0,0,0,-d]);
+(%i4) lg:matrix([a, 0, 0, 0], [ 0, x^2, 0, 0],
+                              [0, 0, x^2*sin(y)^2, 0], [0,0,0,-d]);
                           [ a  0       0        0  ]
                           [                        ]
                           [     2                  ]
@@ -908,12 +923,12 @@ Maxima поступает, если флаг @code{cnonmet_flag} равен @code{true}, в
 (%o8)                                done
 (%i9) findde(ein,2);
                                             2
-(%o9) [d  x - a d + d, 2 a d d    x - a (d )  x - a  d d  x + 2 a d d
-        x                     x x         x        x    x            x
+(%o9) [d  x - a d + d, 2 a d d    x - a (d )  x - a  d d  x
+        x                     x x         x        x    x
 
-                                                        2          2
-                                                - 2 a  d , a  x + a  - a]
-                                                     x      x
+                                              2          2
+                          + 2 a d d   - 2 a  d , a  x + a  - a]
+                                   x       x      x
 (%i10) deindex;
 (%o10)                     [[1, 1], [2, 2], [4, 4]]
 
@@ -1079,23 +1094,23 @@ R^2. Результат запоминается в массиве @code{inv1}.
 (%i4) riemann(false);
 (%o4)                                done
 (%i5) cdisplay(riem);
-               [ 0               0                    0            0      ]
-               [                                                          ]
-               [                              2                           ]
-               [      3 m (r - 2 m)   m    2 m                            ]
-               [ 0  - ------------- + -- - ----       0            0      ]
-               [            4          3     4                            ]
-               [           r          r     r                             ]
-               [                                                          ]
-    riem     = [                                 m (r - 2 m)              ]
-        1, 1   [ 0               0               -----------       0      ]
-               [                                      4                   ]
-               [                                     r                    ]
-               [                                                          ]
-               [                                              m (r - 2 m) ]
-               [ 0               0                    0       ----------- ]
-               [                                                   4      ]
-               [                                                  r       ]
+          [ 0               0                   0           0     ]
+          [                                                       ]
+          [                              2                        ]
+          [      3 m (r - 2 m)   m    2 m                         ]
+          [ 0  - ------------- + -- - ----      0           0     ]
+          [            4          3     4                         ]
+          [           r          r     r                          ]
+          [                                                       ]
+riem    = [                                m (r - 2 m)            ]
+    1, 1  [ 0               0              -----------      0     ]
+          [                                     4                 ]
+          [                                    r                  ]
+          [                                                       ]
+          [                                           m (r - 2 m) ]
+          [ 0               0                   0     ----------- ]
+          [                                                4      ]
+          [                                               r       ]
 
                                 [    2 m (r - 2 m)       ]
                                 [ 0  -------------  0  0 ]
@@ -1141,22 +1156,22 @@ R^2. Результат запоминается в массиве @code{inv1}.
                                [                         ]
                                [       0         0  0  0 ]
 
-                   [     2 m                                         ]
-                   [ ------------  0        0               0        ]
-                   [  2                                              ]
-                   [ r  (r - 2 m)                                    ]
-                   [                                                 ]
-                   [      0        0        0               0        ]
-                   [                                                 ]
-        riem     = [                         m                       ]
-            2, 2   [      0        0  - ------------        0        ]
-                   [                     2                           ]
-                   [                    r  (r - 2 m)                 ]
-                   [                                                 ]
-                   [                                         m       ]
-                   [      0        0        0         - ------------ ]
-                   [                                     2           ]
-                   [                                    r  (r - 2 m) ]
+             [     2 m                                         ]
+             [ ------------  0        0               0        ]
+             [  2                                              ]
+             [ r  (r - 2 m)                                    ]
+             [                                                 ]
+             [      0        0        0               0        ]
+             [                                                 ]
+  riem     = [                         m                       ]
+      2, 2   [      0        0  - ------------        0        ]
+             [                     2                           ]
+             [                    r  (r - 2 m)                 ]
+             [                                                 ]
+             [                                         m       ]
+             [      0        0        0         - ------------ ]
+             [                                     2           ]
+             [                                    r  (r - 2 m) ]
 
                                 [ 0  0       0        0 ]
                                 [                       ]
@@ -1257,22 +1272,22 @@ R^2. Результат запоминается в массиве @code{inv1}.
                               [ 0  0  - ---------------  0 ]
                               [                r           ]
 
-                 [        2                                             ]
-                 [   m sin (theta)                                      ]
-                 [ - -------------         0                0         0 ]
-                 [         r                                            ]
-                 [                                                      ]
-                 [                         2                            ]
-                 [                    m sin (theta)                     ]
-      riem     = [        0         - -------------         0         0 ]
-          4, 4   [                          r                           ]
-                 [                                                      ]
-                 [                                          2           ]
-                 [                                   2 m sin (theta)    ]
-                 [        0                0         ---------------  0 ]
-                 [                                          r           ]
-                 [                                                      ]
-                 [        0                0                0         0 ]
+           [        2                                             ]
+           [   m sin (theta)                                      ]
+           [ - -------------         0                0         0 ]
+           [         r                                            ]
+           [                                                      ]
+           [                         2                            ]
+           [                    m sin (theta)                     ]
+riem     = [        0         - -------------         0         0 ]
+    4, 4   [                          r                           ]
+           [                                                      ]
+           [                                          2           ]
+           [                                   2 m sin (theta)    ]
+           [        0                0         ---------------  0 ]
+           [                                          r           ]
+           [                                                      ]
+           [        0                0                0         0 ]
 
 (%o5)                                done
 
@@ -1559,15 +1574,18 @@ R^2. Результат запоминается в массиве @code{inv1}.
 @code{ctensor} (не следует их переопределять):
 
 @example
-  Name         Description
-  ---------------------------------------
-  _lg()        Присваивается массиву lfg если используется тетрадная
-               метрика; по умолчанию присваивается  массиву lg
-  _ug()        Присваивается массиву ufg если используется тетрадная
-               метрика;  по умолчанию присваивается массиву ug
+  Наименование Описание
+  ----------------------------------------------------------------
+  _lg()        Присваивается массиву lfg если используется 
+               тетрадная метрика; по умолчанию присваивается  
+	       массиву lg
+  _ug()        Присваивается массиву ufg если используется 
+               тетрадная метрика; по умолчанию присваивается 
+	       массиву ug
   cleanup()    Удаляет элементы drom списка deindex 
   contract4()  используется функцией psi()
-  filemet()    используется функцией csetup() при чтении метрики из файла
+  filemet()    используется функцией csetup() при чтении метрики 
+               из файла
   findde1()    используется функцией findde()
   findde2()    используется функцией findde()
   findde3()    используется функцией findde()
@@ -1577,13 +1595,17 @@ R^2. Результат запоминается в массиве @code{inv1}.
   setflags()   используется функцией init_ctensor()
   readvalue()
   resimp()
-  sermet()     используется функцией csetup() для ввода метрики в виде
-               Тэйлоровского разложения
+  sermet()     используется функцией csetup() для ввода метрики 
+               в виде разложения в ряд Тэйлора
   txyzsum()
-  tmetric()    Метрика тетрады, используется функцией cmetric(), если cframe_flag:true
-  triemann()   Тензор Римана в тетрадном представлении, используется если cframe_flag:true
-  tricci()     Тензор Риччи в тетрадном представлении, используется если cframe_flag:true
-  trrc()       Коэффициенты вращения Риччи, используется  функцией christof()
+  tmetric()    Метрика тетрады, используется функцией cmetric(), 
+               если cframe_flag:true
+  triemann()   Тензор Римана в тетрадном представлении, 
+               используется если cframe_flag:true
+  tricci()     Тензор Риччи в тетрадном представлении, 
+               используется если cframe_flag:true
+  trrc()       Коэффициенты вращения Риччи, используется  
+               функцией christof()
   yesp()
 @end example
 
@@ -1596,9 +1618,10 @@ R^2. Результат запоминается в массиве @code{inv1}.
 
 
 @example
-  New Name     Old Name        Description
-  --------------------------------------------------------------------------
-  ctaylor()    DLGTAYLOR()     Тэйлоровское разложение выражения
+  Новое имя    Статое имя      Описание
+  -----------------------------------------------------------------
+  ctaylor()    DLGTAYLOR()     Разложение выражения в ряд
+                               Тэйлора
   lgeod[]      EM              Уравнения геодезических
   ein[]        G[]             Смешанный тензор Эйнштейна
   ric[]        LR[]            Смешанный тензор Риччи
@@ -1608,17 +1631,22 @@ R^2. Результат запоминается в массиве @code{inv1}.
   ct_coords    OMEGA           метрические координаты
   ctayvar      PARAM           Переменная ряда Тэйлора
   lriem[]      R[]             
-  uriemann()   RAISERIEMANN()  Вычисляет контравариантный тензор Римана 
-  ratriemann   RATRIEMAN       Рациональное упрощение тензора Римана
+  uriemann()   RAISERIEMANN()  Вычисляет контравариантный тензор 
+                               Римана 
+  ratriemann   RATRIEMAN       Рациональное упрощение тензора 
+                               Римана
   uric[]       RICCI[]         Контравариантный тензор Риччи
-  uricci()     RICCICOM()      Вычисляет контравариантный тензор Риччи
+  uricci()     RICCICOM()      Вычисляет контравариантный тензор 
+                               Риччи
   cmetric()    SETMETRIC()     Определяет метрику
-  ctaypt       TAYPT           Центральная точка окрестности ряда Тэйлора
-  ctayswitch   TAYSWITCH       ключ устанавливающий использовать ли
-                                ряды Тэйлора в метрике
-  csetup()     TSETUP()        Вызывает начало интерактивного режима
-                                задания  метрики и пр.       
-  ctransform() TTRANSFORM()    Интерактивное преобразование координат
+  ctaypt       TAYPT           Центральная точка окрестности ряда 
+                               Тэйлора
+  ctayswitch   TAYSWITCH       Ключ, устанавливающий использовать 
+                               ли ряды Тэйлора в метрике
+  csetup()     TSETUP()        Вызывает начало интерактивного 
+                               режима задания метрики и пр.       
+  ctransform() TTRANSFORM()    Интерактивное преобразование 
+                               координат
   uriem[]      UR[]            Контравариантный тензор Римана
   weyl[]       W[]             Тензор Вейля ранга (3,1)
 
