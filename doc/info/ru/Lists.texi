@@ -1,7 +1,7 @@
 @c Language=Russian
 @c Encoding=CP1251
 @c File=Lists.texi 
-@c OriginalRevision=1.30
+@c OriginalRevision=1.32
 
 @menu
 * Ведение в работу со списками::
@@ -443,20 +443,24 @@ x is not numeric.
 Примеры:
 
 @c ===beg===
-@c sublist_indices ('[a, b, b, c, 1, 2, b, 3, b], lambda ([x], x='b));
+@c sublist_indices ('[a, b, b, c, 1, 2, b, 3, b], 
+@c                        lambda ([x], x='b));
 @c sublist_indices ('[a, b, b, c, 1, 2, b, 3, b], symbolp);
-@c sublist_indices ([1 > 0, 1 < 0, 2 < 1, 2 > 1, 2 > 0], identity);
+@c sublist_indices ([1 > 0, 1 < 0, 2 < 1, 2 > 1, 2 > 0], 
+@c                        identity);
 @c assume (x < -1);
 @c map (maybe, [x > 0, x < 0, x < -2]);
 @c sublist_indices ([x > 0, x < 0, x < -2], identity);
 @c ===end===
 
 @example
-(%i1) sublist_indices ('[a, b, b, c, 1, 2, b, 3, b], lambda ([x], x='b));
+(%i1) sublist_indices ('[a, b, b, c, 1, 2, b, 3, b],
+                       lambda ([x], x='b));
 (%o1)                     [2, 3, 7, 9]
 (%i2) sublist_indices ('[a, b, b, c, 1, 2, b, 3, b], symbolp);
 (%o2)                  [1, 2, 3, 4, 7, 9]
-(%i3) sublist_indices ([1 > 0, 1 < 0, 2 < 1, 2 > 1, 2 > 0], identity);
+(%i3) sublist_indices ([1 > 0, 1 < 0, 2 < 1, 2 > 1, 2 > 0],
+                       identity);
 (%o3)                       [1, 4, 5]
 (%i4) assume (x < -1);
 (%o4)                       [x < - 1]
