@@ -1,7 +1,7 @@
 @c Language=Russian
 @c Encoding=CP1251
 @c File=Itensor.texi
-@c OriginalRevision=1.41    
+@c OriginalRevision=1.42    
 
 @menu
 * Введение в пакет itensor::
@@ -201,8 +201,8 @@ ii) В силу специфики способа, при котором тензора и операции над ними
 (%t12) v    - g      v   (e p       + e   p     - e p       - e    p
         i,j           %4     j %5,i    ,i  j %5      i j,%5    ,%5  i j
 
-                                                + e p       + e   p    )/2
-                                                     i %5,j    ,j  i %5
+                                         + e p       + e   p    )/2
+                                              i %5,j    ,j  i %5
 (%i13) iframe_flag:true;
 (%o13)                               true
 (%i14) ishow(covdiff(v([i],[]),j))$
@@ -218,9 +218,9 @@ ii) В силу специфики способа, при котором тензора и операции над ними
 (%t16) - (ifg      v   ifb       + ifg      v   ifb       - 2 v
                     %6    j %8 i             %6    i j %8      i,j
 
-                                                    %6 %8
-                                               - ifg      v   ifb      )/2
-                                                           %6    %8 i j
+                                             %6 %8
+                                        - ifg      v   ifb      )/2
+                                                    %6    %8 i j
 (%i17) ishow(canform(s([i,j],[])-s([j,i])))$
 (%t17)                            s    - s
                                    i j    j i
@@ -354,37 +354,37 @@ ii) В силу специфики способа, при котором тензора и операции над ними
 ichr2([%2,%3],[u])*ichr2([%5,%6],[%1])*ichr2([%7,r],[%2])-
 g([],[%4,%5])*g([],[%6,%7])*ichr2([%1,%2],[u])*
 ichr2([%3,%5],[%1])*ichr2([%4,%6],[%3])*ichr2([%7,r],[%2]),noeval$
-(%i4) exp:ishow(%)$
+(%i4) expr:ishow(%)$
 
        %4 %5  %6 %7      %3         u          %1         %2
 (%t4) g      g      ichr2      ichr2      ichr2      ichr2
                          %1 %4      %2 %3      %5 %6      %7 r
 
-              %4 %5  %6 %7      u          %1         %3         %2
-           - g      g      ichr2      ichr2      ichr2      ichr2
-                                %1 %2      %3 %5      %4 %6      %7 r
+        %4 %5  %6 %7      u          %1         %3         %2
+     - g      g      ichr2      ichr2      ichr2      ichr2
+                          %1 %2      %3 %5      %4 %6      %7 r
 (%i5) flipflag:true;
 (%o5)                                true
-(%i6) ishow(rename(exp))$
+(%i6) ishow(rename(expr))$
        %2 %5  %6 %7      %4         u          %1         %3
 (%t6) g      g      ichr2      ichr2      ichr2      ichr2
                          %1 %2      %3 %4      %5 %6      %7 r
 
-              %4 %5  %6 %7      u          %1         %3         %2
-           - g      g      ichr2      ichr2      ichr2      ichr2
-                                %1 %2      %3 %4      %5 %6      %7 r
+        %4 %5  %6 %7      u          %1         %3         %2
+     - g      g      ichr2      ichr2      ichr2      ichr2
+                          %1 %2      %3 %4      %5 %6      %7 r
 (%i7) flipflag:false;
 (%o7)                                false
 (%i8) rename(%th(2));
 (%o8)                                  0
-(%i9) ishow(rename(exp))$
+(%i9) ishow(rename(expr))$
        %1 %2  %3 %4      %5         %6         %7        u
 (%t9) g      g      ichr2      ichr2      ichr2     ichr2
                          %1 %6      %2 %3      %4 r      %5 %7
 
-              %1 %2  %3 %4      %6         %5         %7        u
-           - g      g      ichr2      ichr2      ichr2     ichr2
-                                %1 %3      %2 %6      %4 r      %5 %7
+        %1 %2  %3 %4      %6         %5         %7        u
+     - g      g      ichr2      ichr2      ichr2     ichr2
+                          %1 %3      %2 %6      %4 r      %5 %7
 @end example
 
 @end deffn
@@ -545,11 +545,15 @@ ichr2([%3,%5],[%1])*ichr2([%4,%6],[%3])*ichr2([%7,r],[%2]),noeval$
 
 @example
 
+(%i1) load(itensor);
+(%o1)      /share/tensor/itensor.lisp
 (%i2) matchdeclare(l1,listp);
 (%o2)                                done
-(%i3) defrule(r1,m(l1,[]),(i1:idummy(),g([l1[1],l1[2]],[])*q([i1],[])*e([],[i1])))$
+(%i3) defrule(r1,m(l1,[]),(i1:idummy(),
+      g([l1[1],l1[2]],[])*q([i1],[])*e([],[i1])))$
 
-(%i4) defrule(r2,m([],l1),(i1:idummy(),w([],[l1[1],l1[2]])*e([i1],[])*q([],[i1])))$
+(%i4) defrule(r2,m([],l1),(i1:idummy(),
+      w([],[l1[1],l1[2]])*e([i1],[])*q([],[i1])))$
 
 (%i5) ishow(m([i,n],[])*m([],[i,m]))$
                                     i m
@@ -560,7 +564,9 @@ ichr2([%3,%5],[%1])*ichr2([%4,%6],[%3])*ichr2([%7,r],[%2]),noeval$
 (%t6)                     e   q   w     q   e   g
                                          %1  %2  %3 n
 
+
 @end example
+
 
 @end deffn
 
@@ -711,11 +717,12 @@ ichr2([%3,%5],[%1])*ichr2([%4,%6],[%3])*ichr2([%7,r],[%2]),noeval$
 
 (%i1) load(itensor);
 (%o1)      /share/tensor/itensor.lisp
-(%i2) exp:ishow('levi_civita([],[i,j])*'levi_civita([k,l],[])*a([j],[k]))$
+(%i2) expr:ishow('levi_civita([],[i,j])
+                 *'levi_civita([k,l],[])*a([j],[k]))$
                                   i j  k
 (%t2)                  levi_civita    a  levi_civita
                                        j            k l
-(%i3) ishow(ev(exp,levi_civita))$
+(%i3) ishow(ev(expr,levi_civita))$
                                   i j  k       1 2
 (%t3)                       kdelta    a  kdelta
                                   1 2  j       k l
@@ -727,7 +734,7 @@ ichr2([%3,%5],[%1])*ichr2([%4,%6],[%3])*ichr2([%7,r],[%2]),noeval$
                                1       2         2       1
                         (kdelta  kdelta  - kdelta  kdelta )
                                k       l         k       l
-(%i5) ishow(lc2kdt(exp))$
+(%i5) ishow(lc2kdt(expr))$
                      k       i       j    k       j       i
 (%t5)               a  kdelta  kdelta  - a  kdelta  kdelta
                      j       k       l    j       k       l
@@ -745,23 +752,28 @@ ichr2([%3,%5],[%1])*ichr2([%4,%6],[%3])*ichr2([%7,r],[%2]),noeval$
 
 @example
 
-(%i7) exp:ishow('levi_civita([],[i,j])*'levi_civita([],[k,l])*a([j,k],[]))$
+(%i7) expr:ishow('levi_civita([],[i,j])
+                 *'levi_civita([],[k,l])*a([j,k],[]))$
                                  i j            k l
 (%t7)                 levi_civita    levi_civita    a
                                                      j k
-(%i8) ishow(lc2kdt(exp))$
+(%i8) ishow(lc2kdt(expr))$
 Maxima encountered a Lisp error:
 
- Error in $IMETRIC [or a callee]: $IMETRIC [or a callee] requires less than two arguments.
+ Error in $IMETRIC [or a callee]:
+ $IMETRIC [or a callee] requires less than two arguments.
 
 Automatically continuing.
 To reenable the Lisp debugger set *debugger-hook* to nil.
 (%i9) imetric(g);
 (%o9)                                done
-(%i10) ishow(lc2kdt(exp))$
-         %3 i       k   %4 j       l     %3 i       l   %4 j       k
-(%t10) (g     kdelta   g     kdelta   - g     kdelta   g     kdelta  ) a
-                    %3             %4               %3             %4   j k
+(%i10) ishow(lc2kdt(expr))$
+         %3 i       k   %4 j       l     %3 i       l   %4 j
+(%t10) (g     kdelta   g     kdelta   - g     kdelta   g    
+                    %3             %4               %3
+              k
+        kdelta  ) a
+              %4   j k
 (%i11) ishow(contract(expand(%)))$
                                   l i      l i
 (%t11)                           a    - a g
@@ -866,26 +878,27 @@ To reenable the Lisp debugger set *debugger-hook* to nil.
 
 (%i1) load(itensor);
 (%o1)      /share/tensor/itensor.lisp
-(%i2) exp:contract(expand(a([i1,j1,k1],[])*kdels([i,j,k],[i1,j1,k1])))$
-(%i3) ishow(exp)$
+(%i2) expr:contract( expand( a([i1, j1, k1], [])
+           *kdels([i, j, k], [i1, j1, k1])))$
+(%i3) ishow(expr)$
 (%t3)         a      + a      + a      + a      + a      + a
                k j i    k i j    j k i    j i k    i k j    i j k
 (%i4) decsym(a,3,0,[sym(all)],[]);
 (%o4)                                done
-(%i5) ishow(canform(exp))$
+(%i5) ishow(canform(expr))$
 (%t5)                              6 a
                                       i j k
 (%i6) remsym(a,3,0);
 (%o6)                                done
 (%i7) decsym(a,3,0,[anti(all)],[]);
 (%o7)                                done
-(%i8) ishow(canform(exp))$
+(%i8) ishow(canform(expr))$
 (%t8)                                  0
 (%i9) remsym(a,3,0);
 (%o9)                                done
 (%i10) decsym(a,3,0,[cyc(all)],[]);
 (%o10)                               done
-(%i11) ishow(canform(exp))$
+(%i11) ishow(canform(expr))$
 (%t11)                        3 a      + 3 a
                                  i k j      i j k
 (%i12) dispsym(a,3,0);
@@ -976,9 +989,9 @@ To reenable the Lisp debugger set *debugger-hook* to nil.
 (%t2) b   (v   a       + v   a     + v   a    )
        ,l       i j,%2    ,j  i %2    ,i  %2 j
 
-                                %1  k        %1  k      %1  k
-                            + (v   b      - b   v    + v   b   ) a
-                                    ,%1 l    ,l  ,%1    ,l  ,%1   i j
+                          %1  k        %1  k      %1  k
+                      + (v   b      - b   v    + v   b   ) a
+                              ,%1 l    ,l  ,%1    ,l  ,%1   i j
 
 @end example
 
@@ -1022,7 +1035,8 @@ To reenable the Lisp debugger set *debugger-hook* to nil.
 (%i2) icurvature([i,j,k],[l],m);
 Maxima encountered a Lisp error:
 
- Error in $ICURVATURE [or a callee]: $ICURVATURE [or a callee] requires less than three arguments.
+ Error in $ICURVATURE [or a callee]: 
+ $ICURVATURE [or a callee] requires less than three arguments.
 
 Automatically continuing.
 To reenable the Lisp debugger set *debugger-hook* to nil.
@@ -1041,9 +1055,9 @@ To reenable the Lisp debugger set *debugger-hook* to nil.
 (%t4) - ichr2        - ichr2     ichr2      - ichr2       ichr2
              i k,j m        %1 j      i k,m        %1 j,m      i k
 
-                l              l         %1           l           %1
-         + ichr2        + ichr2     ichr2      + ichr2       ichr2
-                i j,k m        %1 k      i j,m        %1 k,m      i j
+             l              l         %1           l           %1
+      + ichr2        + ichr2     ichr2      + ichr2       ichr2
+             i j,k m        %1 k      i j,m        %1 k,m      i j
 @end example
 
 ЗАМЕЧАНИЕ: В ранних версиях Maxima, операции производных в определениях
@@ -1297,12 +1311,12 @@ errexp1 has improper indices
 Дает выражение для тензора кривизны Римана через символы Кристоффеля
 2-го рода (@code{ichr2}).  Используется следующее определение:
 @example
-               h             h            h         %1         h
-     icurvature     = - ichr2      - ichr2     ichr2    + ichr2
-               i j k         i k,j        %1 j      i k        i j,k
-                               h          %1
-                        + ichr2      ichr2
-                               %1 k       i j
+            h             h            h         %1         h
+  icurvature     = - ichr2      - ichr2     ichr2    + ichr2
+            i j k         i k,j        %1 j      i k        i j,k
+                            h          %1
+                     + ichr2      ichr2
+                            %1 k       i j
 @end example
 @end deffn
 
@@ -1327,9 +1341,13 @@ Enter a list of the derivative indices: [];
 (%t2)                                a
                                       i j
 (%i3) ishow(covdiff(%,s))$
-             k         %1     k         %1     k            k     %1
-(%t3)     - a     ichr2    - a     ichr2    + a      + ichr2     a
-             i %1      j s    %1 j      i s    i j,s        %1 s  i j
+             k         %1     k         %1     k
+(%t3)     - a     ichr2    - a     ichr2    + a
+             i %1      j s    %1 j      i s    i j,s
+
+             k     %1
+      + ichr2     a
+             %1 s  i j
 (%i4) imetric:g;
 
 (%o4)                                  g
@@ -1381,9 +1399,13 @@ Enter a list of the derivative indices: [];
 (%i1) load(itensor);
 (%o1)      /share/tensor/itensor.lisp
 (%i2) ishow(icurvature([r,s,t],[u]))$
-             u            u         %1         u            u         %1
-(%t2) - ichr2      - ichr2     ichr2    + ichr2      + ichr2     ichr2
-             r t,s        %1 s      r t        r s,t        %1 t      r s
+             u            u         %1         u     
+(%t2) - ichr2      - ichr2     ichr2    + ichr2      
+             r t,s        %1 s      r t        r s,t 
+
+                                              u         %1
+                                       + ichr2     ichr2
+                                              %1 t      r s
 (%i3) ishow(igeodesic_coords(%,ichr2))$
                                  u            u
 (%t3)                       ichr2      - ichr2
@@ -1391,13 +1413,13 @@ Enter a list of the derivative indices: [];
 (%i4) ishow(igeodesic_coords(icurvature([r,s,t],[u]),ichr2)+
             igeodesic_coords(icurvature([s,t,r],[u]),ichr2)+
             igeodesic_coords(icurvature([t,r,s],[u]),ichr2))$
-             u            u            u            u            u
-(%t4) - ichr2      + ichr2      + ichr2      - ichr2      - ichr2
-             t s,r        t r,s        s t,r        s r,t        r t,s
+             u            u            u            u
+(%t4) - ichr2      + ichr2      + ichr2      - ichr2
+             t s,r        t r,s        s t,r        s r,t
 
-                                                                  u
-                                                           + ichr2
-                                                                  r s,t
+                                             u            u
+                                      - ichr2      + ichr2
+                                             r t,s        r s,t
 (%i5) canform(%);
 (%o5)                                  0
 
@@ -1767,7 +1789,8 @@ ikt2   = g   ikt1
 (%o1)      /share/tensor/itensor.lisp
 (%i2) imetric:g;
 (%o2)                                  g
-(%i3) covdiff(covdiff(f([],[]),i),j)-covdiff(covdiff(f([],[]),j),i)$
+(%i3) covdiff( covdiff( f( [], []), i), j)
+                      - covdiff( covdiff( f( [], []), j), i)$
 (%i4) ishow(%)$
                                    %4              %2
 (%t4)                    f    ichr2    - f    ichr2
@@ -1776,7 +1799,8 @@ ikt2   = g   ikt1
 (%o5)                                  0
 (%i6) itorsion_flag:true;
 (%o6)                                true
-(%i7) covdiff(covdiff(f([],[]),i),j)-covdiff(covdiff(f([],[]),j),i)$
+(%i7) covdiff( covdiff( f( [], []), i), j)
+                      - covdiff( covdiff( f( [], []), j), i)$
 (%i8) ishow(%)$
                            %8             %6
 (%t8)             f    icc2    - f    icc2    - f     + f
@@ -2007,10 +2031,10 @@ A       /\ B       = ----- D              A       B
                                    6
 (%i8) ishow(canform(hodge(%)))$
                  %1 %2 %3 %8            %4 %5 %6 %7
-(%t8) levi_civita            levi_civita            g        g
-                                                     %1 %106  %2 %107
-                                            g        g      A        /6
-                                             %3 %108  %4 %8  %5 %6 %7
+(%t8) levi_civita            levi_civita            g       
+                                                     %1 %106
+                             g        g        g      A         /6
+                              %2 %107  %3 %108  %4 %8  %5 %6 %7
 (%i9) lc2kdt(%)$
 
 (%i10) %,kdelta$
@@ -2059,9 +2083,13 @@ A       /\ B       = ----- D              A       B
 (%i3) idummyx:m;
 (%o3)                                  m
 (%i4) ishow(icurvature([j,k,l],[i]))$
-            m1       i           m1       i           i            i
-(%t4)  ichr2    ichr2     - ichr2    ichr2     - ichr2      + ichr2
-            j k      m1 l        j l      m1 k        j l,k        j k,l
+            m1       i           m1       i           i
+(%t4)  ichr2    ichr2     - ichr2    ichr2     - ichr2
+            j k      m1 l        j l      m1 k        j l,k
+
+                                                      i
+                                               + ichr2
+                                                      j k,l
 (%i5) tentex(%)$
 $$\Gamma_@{j\,k@}^@{m_1@}\,\Gamma_@{l\,m_1@}^@{i@}-\Gamma_@{j\,l@}^@{m_1@}\,
  \Gamma_@{k\,m_1@}^@{i@}-\Gamma_@{j\,l,k@}^@{i@}+\Gamma_@{j\,k,l@}^@{i@}$$
@@ -2098,18 +2126,18 @@ $$\Gamma_@{j\,k@}^@{m_1@}\,\Gamma_@{l\,m_1@}^@{i@}-\Gamma_@{j\,l@}^@{m_1@}\,
 @code{ev}.  Пример:
 
 @example
-
 (%i1) load(itensor);
 (%o1)      /share/tensor/itensor.lisp
-(%i2) eqn:ishow(t([i,j],[k])=f([],[])*g([l,m],[])*a([],[m],j)*b([i],[l,k]))$
+(%i2) eqn:ishow(t([i,j],[k])=f([],[])*g([l,m],[])*a([],[m],j)
+      *b([i],[l,k]))$
                              k        m   l k
 (%t2)                       t    = f a   b    g
                              i j      ,j  i    l m
 (%i3) ic_convert(eqn);
-(%o3) for i thru dim do (for j thru dim
-
-do (for k thru dim do t        : f sum(sum(diff(a , ct_coords ) b
-                       i, j, k                   m           j   i, l, k
+(%o3) for i thru dim do (for j thru dim do (
+       for k thru dim do
+        t        : f sum(sum(diff(a , ct_coords ) b
+         i, j, k                   m           j   i, l, k
 
  g    , l, 1, dim), m, 1, dim)))
   l, m
@@ -2118,14 +2146,13 @@ do (for k thru dim do t        : f sum(sum(diff(a , ct_coords ) b
 (%i5) metricconvert:true;
 (%o5)                                true
 (%i6) ic_convert(eqn);
-(%o6) for i thru dim do (for j thru dim
-
-do (for k thru dim do t        : f sum(sum(diff(a , ct_coords ) b
-                       i, j, k                   m           j   i, l, k
+(%o6) for i thru dim do (for j thru dim do (
+       for k thru dim do
+        t        : f sum(sum(diff(a , ct_coords ) b
+         i, j, k                   m           j   i, l, k
 
  lg    , l, 1, dim), m, 1, dim)))
    l, m
-
 @end example
 
 @end deffn
