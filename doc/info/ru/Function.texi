@@ -1,7 +1,7 @@
 @c Language=Russian
 @c Encoding=CP1251
 @c File=Function.texi 
-@c OriginalRevision=1.48
+@c OriginalRevision=1.50
 
 @menu
 * Введение в определение функций::  
@@ -243,15 +243,19 @@ block ([x: 1], expr1, ..., exprn)
 
 @c ===beg===
 @c buildq ([a: b, b: a], foo (a, b));
-@c buildq ([u: v, v: w, w: x, x: y, y: z, z: u], bar (u, v, w, x, y, z));
-@c subst ([u=v, v=w, w=x, x=y, y=z, z=u], bar (u, v, w, x, y, z));
+@c buildq ([u: v, v: w, w: x, x: y, y: z, z: u], 
+@c               bar (u, v, w, x, y, z));
+@c subst ([u=v, v=w, w=x, x=y, y=z, z=u], 
+@c              bar (u, v, w, x, y, z));
 @c ===end===
 @example
 (%i1) buildq ([a: b, b: a], foo (a, b));
 (%o1)                       foo(b, a)
-(%i2) buildq ([u: v, v: w, w: x, x: y, y: z, z: u], bar (u, v, w, x, y, z));
+(%i2) buildq ([u: v, v: w, w: x, x: y, y: z, z: u],
+              bar (u, v, w, x, y, z));
 (%o2)                 bar(v, w, x, y, z, u)
-(%i3) subst ([u=v, v=w, w=x, x=y, y=z, z=u], bar (u, v, w, x, y, z));
+(%i3) subst ([u=v, v=w, w=x, x=y, y=z, z=u],
+             bar (u, v, w, x, y, z));
 (%o3)                 bar(u, u, u, u, u, u)
 @end example
 
@@ -801,13 +805,13 @@ Improper name or value in functional position.
 Примеры:
 
 @code{foo} -- логическая переменная с начальным значением @code{true}.
-@c GENERATED FROM:
+@c ===beg===
 @c define_variable (foo, true, boolean);
 @c foo;
 @c foo: false;
 @c foo: %pi;
 @c foo;
-
+@c ===end===
 @example
 (%i1) define_variable (foo, true, boolean);
 (%o1)                         true
@@ -823,20 +827,22 @@ Error: foo was declared mode boolean, has value: %pi
 @end example
 
 @code{bar} -- целочисленная переменная, которая должна быть простым числом.
-@c GENERATED FROM:
+@c ===beg===
 @c define_variable (bar, 2, integer);
 @c qput (bar, prime_test, value_check);
-@c prime_test (y) := if not primep(y) then error (y, "is not prime.");
+@c prime_test (y) := if not primep(y) then 
+@c                            error (y, "is not prime.");
 @c bar: 1439;
 @c bar: 1440;
 @c bar;
-
+@c ===end===
 @example
 (%i1) define_variable (bar, 2, integer);
 (%o1)                           2
 (%i2) qput (bar, prime_test, value_check);
 (%o2)                      prime_test
-(%i3) prime_test (y) := if not primep(y) then error (y, "is not prime.");
+(%i3) prime_test (y) := if not primep(y) then
+                           error (y, "is not prime.");
 (%o3) prime_test(y) := if not primep(y)
 
                                    then error(y, "is not prime.")
@@ -853,18 +859,20 @@ Error: foo was declared mode boolean, has value: %pi
 @code{baz_quux} -- переменная, которой нельзя присвоить значение.
 Тип @code{any_check} аналогичен @code{any}, но позволяет 
 применять механизм @code{value_check}, в то время как тип @code{any} этого не позволяет.
-@c GENERATED FROM:
+@c ===beg===
 @c define_variable (baz_quux, 'baz_quux, any_check);
-@c F: lambda ([y], if y # 'baz_quux then error ("Cannot assign to `baz_quux'."));
+@c F: lambda ([y], if y # 'baz_quux then 
+@c                  error ("Cannot assign to `baz_quux'."));
 @c qput (baz_quux, ''F, value_check);
 @c baz_quux: 'baz_quux;
 @c baz_quux: sqrt(2);
 @c baz_quux;
-
+@c ===end===
 @example
 (%i1) define_variable (baz_quux, 'baz_quux, any_check);
 (%o1)                       baz_quux
-(%i2) F: lambda ([y], if y # 'baz_quux then error ("Cannot assign to `baz_quux'."));
+(%i2) F: lambda ([y], if y # 'baz_quux then
+                 error ("Cannot assign to `baz_quux'."));
 (%o2) lambda([y], if y # 'baz_quux
 
                         then error(Cannot assign to `baz_quux'.))
@@ -876,7 +884,8 @@ Error: foo was declared mode boolean, has value: %pi
 (%o4)                       baz_quux
 (%i5) baz_quux: sqrt(2);
 Cannot assign to `baz_quux'.
-#0: lambda([y],if y # 'baz_quux then error("Cannot assign to `baz_quux'."))(y=sqrt(2))
+#0: lambda([y],if y # 'baz_quux then
+                 error("Cannot assign to `baz_quux'."))(y=sqrt(2))
  -- an error.  Quitting.  To debug this try debugmode(true);
 (%i6) baz_quux;
 (%o6)                       baz_quux
@@ -1426,8 +1435,10 @@ Maxima упрощает возвращаемое @code{funmake} значение.
 
 @c ===beg===
 @c f (x) := h (x) / g (x);
-@c g (x) ::= block (print ("x + 99 is equal to", x), return (x + 99));
-@c h (x) ::= block (print ("x - 99 is equal to", x), return (x - 99));
+@c g (x) ::= block (print ("x + 99 is equal to", x), 
+@c                        return (x + 99));
+@c h (x) ::= block (print ("x - 99 is equal to", x), 
+@c                        return (x - 99));
 @c macroexpansion: false;
 @c f (a * b);
 @c dispfun (f);
@@ -1438,10 +1449,12 @@ Maxima упрощает возвращаемое @code{funmake} значение.
                                   h(x)
 (%o1)                     f(x) := ----
                                   g(x)
-(%i2) g (x) ::= block (print ("x + 99 is equal to", x), return (x + 99));
+(%i2) g (x) ::= block (print ("x + 99 is equal to", x),
+                       return (x + 99));
 (%o2) g(x) ::= block(print("x + 99 is equal to", x), 
                                                   return(x + 99))
-(%i3) h (x) ::= block (print ("x - 99 is equal to", x), return (x - 99));
+(%i3) h (x) ::= block (print ("x - 99 is equal to", x),
+                       return (x - 99));
 (%o3) h(x) ::= block(print("x - 99 is equal to", x), 
                                                   return(x - 99))
 (%i4) macroexpansion: false;
@@ -1472,8 +1485,10 @@ x + 99 is equal to x
 
 @c ===beg===
 @c f (x) := h (x) / g (x);
-@c g (x) ::= block (print ("x + 99 is equal to", x), return (x + 99));
-@c h (x) ::= block (print ("x - 99 is equal to", x), return (x - 99));
+@c g (x) ::= block (print ("x + 99 is equal to", x), 
+@c                        return (x + 99));
+@c h (x) ::= block (print ("x - 99 is equal to", x), 
+@c                        return (x - 99));
 @c macroexpansion: expand;
 @c f (a * b);
 @c dispfun (f);
@@ -1484,10 +1499,12 @@ x + 99 is equal to x
                                   h(x)
 (%o1)                     f(x) := ----
                                   g(x)
-(%i2) g (x) ::= block (print ("x + 99 is equal to", x), return (x + 99));
+(%i2) g (x) ::= block (print ("x + 99 is equal to", x),
+                       return (x + 99));
 (%o2) g(x) ::= block(print("x + 99 is equal to", x), 
                                                   return(x + 99))
-(%i3) h (x) ::= block (print ("x - 99 is equal to", x), return (x - 99));
+(%i3) h (x) ::= block (print ("x - 99 is equal to", x),
+                       return (x - 99));
 (%o3) h(x) ::= block(print("x - 99 is equal to", x), 
                                                   return(x - 99))
 (%i4) macroexpansion: expand;
@@ -1516,8 +1533,10 @@ x + 99 is equal to x
 
 @c ===beg===
 @c f (x) := h (x) / g (x);
-@c g (x) ::= block (print ("x + 99 is equal to", x), return (x + 99));
-@c h (x) ::= block (print ("x - 99 is equal to", x), return (x - 99));
+@c g (x) ::= block (print ("x + 99 is equal to", x), 
+@c                        return (x + 99));
+@c h (x) ::= block (print ("x - 99 is equal to", x), 
+@c                        return (x - 99));
 @c macroexpansion: displace;
 @c f (a * b);
 @c dispfun (f);
@@ -1528,10 +1547,12 @@ x + 99 is equal to x
                                   h(x)
 (%o1)                     f(x) := ----
                                   g(x)
-(%i2) g (x) ::= block (print ("x + 99 is equal to", x), return (x + 99));
+(%i2) g (x) ::= block (print ("x + 99 is equal to", x),
+                       return (x + 99));
 (%o2) g(x) ::= block(print("x + 99 is equal to", x), 
                                                   return(x + 99))
-(%i3) h (x) ::= block (print ("x - 99 is equal to", x), return (x - 99));
+(%i3) h (x) ::= block (print ("x - 99 is equal to", x),
+                       return (x - 99));
 (%o3) h(x) ::= block(print("x - 99 is equal to", x), 
                                                   return(x - 99))
 (%i4) macroexpansion: displace;
