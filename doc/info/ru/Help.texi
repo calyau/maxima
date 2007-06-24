@@ -1,7 +1,7 @@
 @c Language=Russian
 @c Encoding=CP1251
 @c File=Help.texi 
-@c OriginalRevision=1.23
+@c OriginalRevision=1.24
 
 @menu
 * Lisp è Maxima::            
@@ -323,8 +323,10 @@ _
  5: integerp  (Functions and Variables for Miscellaneous Options)
  6: integer_partitions  (Functions and Variables for Sets)
  7: integrate  (Functions and Variables for Integration)
- 8: integrate_use_rootsof  (Functions and Variables for Integration)
- 9: integration_constant_counter  (Functions and Variables for Integration)
+ 8: integrate_use_rootsof  (Functions and Variables for
+    Integration)
+ 9: integration_constant_counter  (Functions and Variables for
+    Integration)
  10: nonnegintegerp  (Functions and Variables for linearalgebra)
 Enter space-separated numbers, `all' or `none': 7 8
 
@@ -332,16 +334,16 @@ Enter space-separated numbers, `all' or `none': 7 8
  -- Function: integrate (<expr>, <x>, <a>, <b>)
      Attempts to symbolically compute the integral of <expr> with
      respect to <x>.  `integrate (<expr>, <x>)' is an indefinite
-     integral, while `integrate (<expr>, <x>, <a>, <b>)' is a definite
-     integral, [...]
+     integral, while `integrate (<expr>, <x>, <a>, <b>)' is a
+     definite integral, [...]
      
  -- Option variable: integrate_use_rootsof
      Default value: `false'
 
-     When `integrate_use_rootsof' is `true' and the denominator of a
-     rational function cannot be factored, `integrate' returns the
-     integral in a form which is a sum over the roots (not yet known)
-     of the denominator.
+     When `integrate_use_rootsof' is `true' and the denominator of
+     a rational function cannot be factored, `integrate' returns
+     the integral in a form which is a sum over the roots (not yet
+     known) of the denominator.
      [...]
 @end example
 
