@@ -729,23 +729,32 @@ Exemplos:
 @item
 Delimitadores podem ser quase quaisquer sequ@^encia de caracteres.
 @end itemize
+@c ===beg===
+@c matchfix ("@@", "~");
+@c @@ a, b, c ~;
+@c matchfix (">>", "<<");
+@c >> a, b, c <<;
+@c matchfix ("foo", "oof");
+@c foo a, b, c oof;
+@c >> w + foo x, y oof + z << / @@ p, q ~;
+@c ===end===
 @example
-(%i1) matchfix ("@@", "~");
-(%o1)                          "@@"
-(%i2) @@ a, b, c ~;
-(%o2)                       @@a, b, c~
+(%i1) matchfix ("@@@@", "~");
+(%o1)                          @@@@
+(%i2) @@@@ a, b, c ~;
+(%o2)                      @@@@a, b, c~
 (%i3) matchfix (">>", "<<");
-(%o3)                         ">>"
+(%o3)                          >>
 (%i4) >> a, b, c <<;
 (%o4)                      >>a, b, c<<
 (%i5) matchfix ("foo", "oof");
-(%o5)                         "foo"
+(%o5)                          foo
 (%i6) foo a, b, c oof;
 (%o6)                     fooa, b, coof
-(%i7) >> w + foo x, y oof + z << / @@ p, q ~;
+(%i7) >> w + foo x, y oof + z << / @@@@ p, q ~;
                      >>z + foox, yoof + w<<
 (%o7)                ----------------------
-                             @@p, q~
+                            @@@@p, q~
 @end example
 
 @itemize @bullet
@@ -831,27 +840,30 @@ Examples:
 @c tellsimp (aa @@ bb, bb/aa);
 @c tellsimpafter (quux (%pi, %e), %pi - %e);
 @c tellsimpafter (quux (%e, %pi), %pi + %e);
-@c [foo (aa, bb), aa + bb, aa @@ bb, quux (%pi, %e), quux (%e, %pi)];
+@c [foo (aa, bb), aa + bb, aa @@ bb, quux (%pi, %e), 
+@c        quux (%e, %pi)];
 @c remrule (foo, foorule1);
 @c remrule ("+", "+rule1");
 @c remrule ("@@", "@@rule1");
 @c remrule (quux, all);
-@c [foo (aa, bb), aa + bb, aa @@ bb, quux (%pi, %e), quux (%e, %pi)];
+@c [foo (aa, bb), aa + bb, aa @@ bb, quux (%pi, %e), 
+@c         quux (%e, %pi)];
 @c ===end===
 @example
 (%i1) tellsimp (foo (aa, bb), bb - aa);
 (%o1)                   [foorule1, false]
 (%i2) tellsimpafter (aa + bb, special_add (aa, bb));
 (%o2)                   [+rule1, simplus]
-(%i3) infix ("@@");
-(%o3)                          @@
-(%i4) tellsimp (aa @@ bb, bb/aa);
-(%o4)                   [@@rule1, false]
+(%i3) infix ("@@@@");
+(%o3)                          @@@@
+(%i4) tellsimp (aa @@@@ bb, bb/aa);
+(%o4)                   [@@@@rule1, false]
 (%i5) tellsimpafter (quux (%pi, %e), %pi - %e);
 (%o5)                  [quuxrule1, false]
 (%i6) tellsimpafter (quux (%e, %pi), %pi + %e);
 (%o6)             [quuxrule2, quuxrule1, false]
-(%i7) [foo (aa, bb), aa + bb, aa @@ bb, quux (%pi, %e), quux (%e, %pi)];
+(%i7) [foo (aa, bb), aa + bb, aa @@@@ bb, quux (%pi, %e),
+       quux (%e, %pi)];
                                      bb
 (%o7) [bb - aa, special_add(aa, bb), --, %pi - %e, %pi + %e]
                                      aa
@@ -859,13 +871,14 @@ Examples:
 (%o8)                          foo
 (%i9) remrule ("+", "+rule1");
 (%o9)                           +
-(%i10) remrule ("@@", "@@rule1");
-(%o10)                         @@
+(%i10) remrule ("@@@@", "@@@@rule1");
+(%o10)                         @@@@
 (%i11) remrule (quux, all);
 (%o11)                        quux
-(%i12) [foo (aa, bb), aa + bb, aa @@ bb, quux (%pi, %e), quux (%e, %pi)];
-(%o12) [foo(aa, bb), bb + aa, aa @@ bb, quux(%pi, %e), 
-                                                   quux(%e, %pi)]
+(%i12) [foo (aa, bb), aa + bb, aa @@@@ bb, quux (%pi, %e),
+        quux (%e, %pi)];
+(%o12) [foo(aa, bb), bb + aa, aa @@@@ bb, quux(%pi, %e), 
+                                         quux(%e, %pi)]
 @end example
 
 @end deffn

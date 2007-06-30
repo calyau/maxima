@@ -423,46 +423,46 @@ Note que o nome do operador dever estar abra@value{cedilha}ado por aspas duplas.
 
 @c MAYBE COPY THIS EXAMPLE TO remove AND/OR kill
 @c ===beg===
-@c infix ("@");
-@c "@" (a, b) := a^b;
-@c 5 @ 3;
-@c remove ("@", op);
-@c 5 @ 3;
-@c "@" (5, 3);
-@c infix ("@");
-@c 5 @ 3;
-@c kill ("@");
-@c 5 @ 3;
-@c "@" (5, 3);
+@c infix ("##");
+@c "##" (a, b) := a^b;
+@c 5 ## 3;
+@c remove ("##", op);
+@c 5 ## 3;
+@c "##" (5, 3);
+@c infix ("##");
+@c 5 ## 3;
+@c kill ("##");
+@c 5 ## 3;
+@c "##" (5, 3);
 @c ===end===
 @example
-(%i1) infix ("@@");
-(%o1)                           @@
-(%i2) "@@" (a, b) := a^b;
+(%i1) infix ("##");
+(%o1)                          ##
+(%i2) "##" (a, b) := a^b;
                                      b
-(%o2)                      a @@ b := a
-(%i3) 5 @@ 3;
+(%o2)                     a ## b := a
+(%i3) 5 ## 3;
 (%o3)                          125
-(%i4) remove ("@@", op);
+(%i4) remove ("##", op);
 (%o4)                         done
-(%i5) 5 @@ 3;
-Incorrect syntax: @@ is not an infix operator
-5 @@
- ^
-(%i5) "@@" (5, 3);
+(%i5) 5 ## 3;
+Incorrect syntax: # is not a prefix operator
+5 ##
+  ^
+(%i5) "##" (5, 3);
 (%o5)                          125
-(%i6) infix ("@@");
-(%o6)                           @@
-(%i7) 5 @@ 3;
+(%i6) infix ("##");
+(%o6)                          ##
+(%i7) 5 ## 3;
 (%o7)                          125
-(%i8) kill ("@@");
+(%i8) kill ("##");
 (%o8)                         done
-(%i9) 5 @@ 3;
-Incorrect syntax: @@ is not an infix operator
-5 @@
- ^
-(%i9) "@@" (5, 3);
-(%o9)                        @@(5, 3)
+(%i9) 5 ## 3;
+Incorrect syntax: # is not a prefix operator
+5 ##
+  ^
+(%i9) "##" (5, 3);
+(%o9)                       ##(5, 3)
 @end example
 
 @node Defini@value{cedilha}@~oes para Express@~oes,  , Sintaxe, Express@~oes
@@ -1440,38 +1440,55 @@ Veja tamb@'em @code{Syntax}.
 
 Exemplos:
 
-@itemize @bullet
-@item
 Se os expoentes associados esquerdo e direito de @var{op} forem ambos maiores
 que os expoentes associados @`a direita e @`a esquerda de algum outro operador,
 ent@~ao @var{op} tem preced@^encia sobre o outro operador.
-@end itemize
+
+@c ===beg===
+@c :lisp (get '$+ 'lbp)
+@c :lisp (get '$+ 'rbp)
+@c infix ("##", 101, 101);
+@c "##"(a, b) := sconcat("(", a, ",", b, ")");
+@c 1 + a ## b + 2;
+@c infix ("##", 99, 99);
+@c 1 + a ## b + 2;
+@c ===end===
 @example
-(%i1) "@@"(a, b) := sconcat("(", a, ",", b, ")")$
-(%i2) :lisp (get '$+ 'lbp)
+(%i1) :lisp (get '$+ 'lbp)
 100
-(%i2) :lisp (get '$+ 'rbp)
+(%i1) :lisp (get '$+ 'rbp)
 100
-(%i2) infix ("@@", 101, 101)$
-(%i3) 1 + a@@b + 2;
+(%i1) infix ("##", 101, 101);
+(%o1)                          ##
+(%i2) "##"(a, b) := sconcat("(", a, ",", b, ")");
+(%o2)       (a ## b) := sconcat("(", a, ",", b, ")")
+(%i3) 1 + a ## b + 2;
 (%o3)                       (a,b) + 3
-(%i4) infix ("@@", 99, 99)$
-(%i5) 1 + a@@b + 2;
+(%i4) infix ("##", 99, 99);
+(%o4)                          ##
+(%i5) 1 + a ## b + 2;
 (%o5)                       (a+1,b+2)
 @end example
 
-@itemize @bullet
-@item
 grande @var{eae} torna @var{op} associativa @`a direita,
 enquanto grande @var{ead} torna @var{op} associativa @`a esquerda.
-@end itemize
+
+@c ===beg===
+@c infix ("##", 100, 99);
+@c "##"(a, b) := sconcat("(", a, ",", b, ")")$
+@c foo ## bar ## baz;
+@c infix ("##", 100, 101);
+@c foo ## bar ## baz;
+@c ===end===
 @example
-(%i1) "@@"(a, b) := sconcat("(", a, ",", b, ")")$
-(%i2) infix ("@@", 100, 99)$
-(%i3) foo @@ bar @@ baz;
+(%i1) infix ("##", 100, 99);
+(%o1)                          ##
+(%i2) "##"(a, b) := sconcat("(", a, ",", b, ")")$
+(%i3) foo ## bar ## baz;
 (%o3)                    (foo,(bar,baz))
-(%i4) infix ("@@", 100, 101)$
-(%i5) foo @@ bar @@ baz;
+(%i4) infix ("##", 100, 101);
+(%o4)                          ##
+(%i5) foo ## bar ## baz;
 (%o5)                    ((foo,bar),baz)
 @end example
 

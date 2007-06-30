@@ -1490,17 +1490,17 @@ $$a \times b$$
 
 Asigna c@'odigo TeX para un operador postfijo..
 @c ===beg===
-@c postfix ("@");
-@c texput ("@", "!!", postfix);
-@c tex (x @);
+@c postfix ("##");
+@c texput ("##", "!!", postfix);
+@c tex (x ##);
 @c ===end===
 
 @example
-(%i1) postfix ("@@");
-(%o1)                           @@
-(%i2) texput ("@@", "!!", postfix);
+(%i1) postfix ("##");
+(%o1)                          ##
+(%i2) texput ("##", "!!", postfix);
 (%o2)                          !!
-(%i3) tex (x @@);
+(%i3) tex (x ##);
 $$x!!$$
 (%o3)                         false
 @end example
