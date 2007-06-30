@@ -38,53 +38,64 @@
   '$done)
 
 
-(defun $read_hashed_array (file-name A &optional sep-ch-flag)
-  (setq file-name (require-string file-name))
-  (with-open-file (in file-name :if-does-not-exist nil)
-    (cond
-      ((not (null in))
-        (let (key L (sep-ch (get-input-sep-ch sep-ch-flag file-name)))
-          (loop
-            (setq L (read-line in nil 'eof))
-            (if (eq L 'eof) (return))
-            (setq L (make-mlist-from-string L sep-ch))
-            (cond
-              ((> ($length L) 0)
-               (setq key ($first L))
-               (if (= ($length L) 1)
-                 (arrstore (list (list A 'array) key) nil)
-                 (arrstore (list (list A 'array) key) ($rest L))))))))
-      (t (merror "read_hashed_array: ~S: no such file" file-name))))
-  '$done)
+(defun $read_hashed_array (stream-or-filename A &optional sep-ch-flag)
+  (if (streamp stream-or-filename)
+    (read-hashed-array-from-stream stream-or-filename A sep-ch-flag)
+    (let ((file-name (require-string stream-or-filename)))
+      (with-open-file (in file-name :if-does-not-exist nil)
+        (if (not (null in))
+          (read-hashed-array-from-stream in A sep-ch-flag)
+          (merror "read_hashed_array no such file `~a'" file-name))))))
 
-
-(defun $read_nested_list (file-name &optional sep-ch-flag)
-  (let ((A '()) (L))
-    (setq file-name (require-string file-name))
-    (with-open-file (in file-name :if-does-not-exist nil)
-      (cond ((not (null in))
-          (let ((sep-ch (get-input-sep-ch sep-ch-flag file-name)))
-            (loop
-              (setq L (read-line in nil 'eof))
-              (if (eq L 'eof) (return (cons '(mlist simp) (nreverse A))))
-              (setq A (cons (make-mlist-from-string L sep-ch) A)))))
-        (t (merror "read_nested_list: ~S: no such file" file-name))))))
-
-
-(defun $read_list (file-name &optional sep-ch-flag)
-  (let ((A '()) (L))
-    (setq file-name (require-string file-name))
-    (with-open-file (in file-name :if-does-not-exist nil)
+(defun read-hashed-array-from-stream (in A sep-ch-flag)
+  (let (key L (sep-ch (get-input-sep-ch sep-ch-flag (truename in))))
+    (loop
+      (setq L (read-line in nil 'eof))
+      (if (eq L 'eof) (return))
+      (setq L (make-mlist-from-string L sep-ch))
       (cond
-       ((not (null in))
-	(let ((sep-ch (get-input-sep-ch sep-ch-flag file-name)))
-	  (loop
-	   (setq L (read-line in nil 'eof))
-	   (if (eq L 'eof)
-	       (return (cons '(mlist simp) (nreverse A))))
-	   ;; use nreconc accumulation to avoid n^2 cons's
-	   (setq A (nreconc (cdr (make-mlist-from-string L sep-ch)) A)))))
-       (t (merror "read_list: ~S: no such file" file-name))))))
+        ((> ($length L) 0)
+         (setq key ($first L))
+         (if (= ($length L) 1)
+           (arrstore (list (list A 'array) key) nil)
+           (arrstore (list (list A 'array) key) ($rest L)))))))
+  A)
+
+(defun $read_nested_list (stream-or-filename &optional sep-ch-flag)
+  (if (streamp stream-or-filename)
+    (read-nested-list-from-stream stream-or-filename sep-ch-flag)
+    (let ((file-name (require-string stream-or-filename)))
+      (with-open-file (in file-name :if-does-not-exist nil)
+        (if (not (null in))
+          (read-nested-list-from-stream in sep-ch-flag)
+          (merror "read_nested_list: no such file `~a'" file-name))))))
+
+(defun read-nested-list-from-stream (in sep-ch-flag)
+  (let (A L (sep-ch (get-input-sep-ch sep-ch-flag (truename in))))
+    (loop
+      (setq L (read-line in nil 'eof))
+      (if (eq L 'eof)
+        (return (cons '(mlist simp) (nreverse A))))
+      (setq A (cons (make-mlist-from-string L sep-ch) A)))))
+
+
+(defun $read_list (stream-or-filename &optional sep-ch-flag)
+  (if (streamp stream-or-filename)
+    (read-list-from-stream stream-or-filename sep-ch-flag)
+    (let ((file-name (require-string stream-or-filename)))
+      (with-open-file (in file-name :if-does-not-exist nil)
+        (if (not (null in))
+          (read-list-from-stream in sep-ch-flag)
+          (merror "read_list: no such file `~a'" file-name))))))
+
+(defun read-list-from-stream (in sep-ch-flag)
+  (let (A L (sep-ch (get-input-sep-ch sep-ch-flag (truename in))))
+    (loop
+      (setq L (read-line in nil 'eof))
+      (if (eq L 'eof)
+        (return (cons '(mlist simp) (nreverse A))))
+      ;; use nreconc accumulation to avoid n^2 cons's
+      (setq A (nreconc (cdr (make-mlist-from-string L sep-ch)) A)))))
 
 ;; Usage: (make-mlist-from-string "1 2 3 foo bar baz")
 
@@ -135,40 +146,41 @@
 
 ;; -------------------- write functions -------------------
 
-(defun $write_data (X file-name &optional sep-ch-flag)
-  (cond (($matrixp X)
-      (write-matrix X file-name sep-ch-flag))
-    ((arrayp X)
-      (write-lisp-array X file-name sep-ch-flag))
-    ((mget X 'array)
-      (write-maxima-array X file-name sep-ch-flag))
-    ((mget X 'hashar)
-      (write-hashed-array X file-name sep-ch-flag))
-    (($listp X)
-      (write-list X file-name sep-ch-flag))
-    (t (merror "write_data: don't know what to do with a ~M" (type-of X))))
-  '$done)
+(defun open-file-appropriately (file-name)
+  (open file-name
+        :direction :output
+        :if-exists (if (or (eq $file_output_append '$true) (eq $file_output_append t)) :append :supersede)
+        :if-does-not-exist :create))
 
-; Thanks to William Bland on comp.lang.lisp for help writing this macro.
-(defmacro with-open-file-appropriately ((out fname) &body body)
-  `(with-open-file (,out ,fname :direction :output
-    :if-exists (if (or (eq $file_output_append '$true) (eq $file_output_append t)) :append :supersede)
-    :if-does-not-exist :create)
-    ,@body))
+(defun $write_data (X stream-or-filename &optional sep-ch-flag)
+  (let
+    ((out
+       (if (streamp stream-or-filename)
+         stream-or-filename
+         (open-file-appropriately (require-string stream-or-filename)))))
+    (cond
+      (($matrixp X)
+        (write-matrix X out sep-ch-flag))
+      ((arrayp X)
+        (write-lisp-array X out sep-ch-flag))
+      ((mget X 'array)
+        (write-maxima-array X out sep-ch-flag))
+      ((mget X 'hashar)
+        (write-hashed-array X out sep-ch-flag))
+      (($listp X)
+        (write-list X out sep-ch-flag))
+      (t (merror "write_data: don't know what to do with a ~M" (type-of X))))
+    (if (not (streamp stream-or-filename))
+      (close out))
+    '$done))
 
-(defun write-matrix (M file-name &optional sep-ch-flag)
-  (setq file-name (require-string file-name))
-  (with-open-file-appropriately (out file-name)
-    (let ((sep-ch (get-output-sep-ch sep-ch-flag file-name)))
-      (mapcar #'(lambda (x) (write-list-lowlevel (cdr x) out sep-ch)) (cdr M)))))
+(defun write-matrix (M out sep-ch-flag)
+  (let ((sep-ch (get-output-sep-ch sep-ch-flag (truename out))))
+    (mapcar #'(lambda (x) (write-list-lowlevel (cdr x) out sep-ch)) (cdr M))))
 
-
-(defun write-lisp-array (A file-name &optional sep-ch-flag)
-  (setq file-name (require-string file-name))
-  (with-open-file-appropriately (out file-name)
-    (let ((sep-ch (get-output-sep-ch sep-ch-flag file-name)) (d (array-dimensions A)))
-      (write-lisp-array-helper A d '() out sep-ch))))
-
+(defun write-lisp-array (A out sep-ch-flag)
+  (let ((sep-ch (get-output-sep-ch sep-ch-flag (truename out))) (d (array-dimensions A)))
+    (write-lisp-array-helper A d '() out sep-ch)))
 
 (defun write-lisp-array-helper (A d indices out sep-ch)
   (cond ((equalp (length d) 1)
@@ -182,44 +194,37 @@
         (write-lisp-array-helper A (cdr d) (cons i indices) out sep-ch)
         (cond ((> (length d) 2) (terpri out)))))))
 
+(defun write-maxima-array (A out sep-ch-flag)
+  (write-lisp-array (symbol-array (mget A 'array)) out sep-ch-flag))
 
-(defun write-maxima-array (A file-name &optional sep-ch-flag)
-  (write-lisp-array (symbol-array (mget A 'array)) file-name sep-ch-flag))
-
-
-(defun write-hashed-array (A file-name &optional sep-ch-flag)
-  (setq file-name (require-string file-name))
-  (let ((keys (cdddr (meval (list '($arrayinfo) A)))) (L))
-    (with-open-file-appropriately (out file-name)
-      (let ((sep-ch (get-output-sep-ch sep-ch-flag file-name)))
-        (loop
-          (if (not keys) (return))
-          (setq L ($arrayapply A (car keys)))
-          (cond ((listp L) (pop L))
+(defun write-hashed-array (A out sep-ch-flag)
+  (let
+    ((keys (cdddr (meval (list '($arrayinfo) A))))
+     (sep-ch (get-output-sep-ch sep-ch-flag (truename out)))
+     L)
+    (loop
+      (if (not keys) (return))
+      (setq L ($arrayapply A (car keys)))
+      (cond ((listp L) (pop L))
             (t (setq L (list L))))
-          (write-list-lowlevel (append (cdr (pop keys)) L) out sep-ch))))))
+      (write-list-lowlevel (append (cdr (pop keys)) L) out sep-ch))))
 
+(defun write-list (L out sep-ch-flag)
+  (let ((sep-ch (get-output-sep-ch sep-ch-flag (truename out))))
+    (write-list-lowlevel (cdr L) out sep-ch)))
 
-(defun write-list (L file-name &optional sep-ch-flag)
-  (setq file-name (require-string file-name))
-  (with-open-file-appropriately (out file-name)
-    (let ((sep-ch (get-output-sep-ch sep-ch-flag file-name)))
-      (write-list-lowlevel (cdr L) out sep-ch))))
-
-
-(defun write-list-lowlevel (L stream sep-ch)
+(defun write-list-lowlevel (L out sep-ch)
   (setq sep-ch (cond ((symbolp sep-ch) (cadr (exploden sep-ch))) (t sep-ch)))
   (cond ((not (null L))
       (loop 
         (if (not L) (return))
         (let ((e (pop L)))
           (cond (($listp e)
-              (write-list-lowlevel (cdr e) stream sep-ch))
-            (t (mgrind e stream)
-              (cond ((null L) (terpri stream))
-                (t (write-char sep-ch stream)))))))))
-  (finish-output stream))
-
+              (write-list-lowlevel (cdr e) out sep-ch))
+            (t (mgrind e out)
+              (cond ((null L) (terpri out))
+                (t (write-char sep-ch out)))))))))
+  (finish-output out))
 
 (defun get-input-sep-ch (sep-ch-flag file-name)
   (cond
@@ -227,7 +232,6 @@
      (format t "numericalio: separator flag ``tab'' not recognized for input; assume ``space'' instead.~%")
      #\space)
     (t (get-output-sep-ch sep-ch-flag file-name))))
-
 
 (defun get-output-sep-ch (sep-ch-flag file-name)
   (cond
@@ -243,7 +247,6 @@
     (t
       (format t "numericalio: separator flag ~S not recognized; assume ``space''.~%" (stripdollar sep-ch-flag))
       #\space)))
-
 
 (defun require-string (s)
   (cond
