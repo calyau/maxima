@@ -270,41 +270,47 @@ To reenable the Lisp debugger set *debugger-hook* to nil.
 
 @end deffn
 
-@c NEEDS WORK
-@deffn {Function} find_root (@var{f}(@var{x}), @var{x}, @var{a}, @var{b})
+@deffn {Function} find_root (@var{expr}, @var{x}, @var{a}, @var{b})
 @deffnx {Function} find_root (@var{f}, @var{a}, @var{b})
-Finds the zero of function @var{f} as variable @var{x} varies over the range @code{[@var{a}, @var{b}]}.
-The function must have a
-different sign at each endpoint.  If this condition is not met, the
-action of the function is governed by @code{find_root_error}.  If
-@code{find_root_error} is @code{true} then an error occurs, otherwise the value of
-@code{find_root_error} is returned (thus for plotting @code{find_root_error} might be set to
-0.0).  Otherwise (given that Maxima can evaluate the first argument
-in the specified range, and that it is continuous) @code{find_root} is
-guaranteed to come up with the zero (or one of them if there is more
-than one zero).  The accuracy of @code{find_root} is governed by
-@code{find_root_abs} and @code{find_root_rel} which must be non-negative floating
-point numbers.  @code{find_root} will stop when the first arg evaluates to
-something less than or equal to @code{find_root_abs} or if successive
-approximants to the root differ by no more than @code{find_root_rel * <one of the approximants>}.
-The default values of @code{find_root_abs} and @code{find_root_rel} are
-0.0 so @code{find_root} gets as good an answer as is possible with the
-single precision arithmetic we have.  The first arg may be an
-equation.  The order of the last two args is irrelevant.  Thus
+@deffnx {Option variable} find_root_error
+@deffnx {Option variable} find_root_abs
+@deffnx {Option variable} find_root_rel
 
-@example
-find_root (sin(x) = x/2, x, %pi, 0.1);
-@end example
+Finds a root of the expression @var{expr} or the function @var{f}
+over the closed interval @math{[@var{a}, @var{b}]}.
+The expression @var{expr} may be an equation,
+in which case @code{find_root} seeks a root of @code{lhs(@var{expr}) - rhs(@var{expr})}.
 
-is equivalent to
+Given that Maxima can evaluate @var{expr} or @var{f} over @math{[@var{a}, @var{b}]}
+and that @var{expr} or @var{f} is continuous,
+@code{find_root} is guaranteed to find the root,
+or one of the roots if there is more than one.
 
-@example
-find_root (sin(x) = x/2, x, 0.1, %pi);
-@end example
+@code{find_root} initially applies binary search.
+If the function in question appears to be smooth enough,
+@code{find_root} applies linear interpolation instead.
 
-The method used is a binary search in the range specified by the last
-two args.  When it thinks the function is close enough to being
-linear, it starts using linear interpolation.
+The accuracy of @code{find_root} is governed by @code{find_root_abs} and @code{find_root_rel}.
+@code{find_root} stops when the function in question
+evaluates to something less than or equal to @code{find_root_abs},
+or if successive approximants @var{x_0}, @var{x_1} differ by no more than
+@code{find_root_rel * max(abs(x_0), abs(x_1))}.
+The default values of @code{find_root_abs} and @code{find_root_rel} are both zero.
+
+@code{find_root} expects the function in question to have a different sign at the endpoints
+of the search interval.
+If this condition is not met,
+the behavior of @code{find_root} is governed by @code{find_root_error}.
+When @code{find_root_error} is @code{true},
+@code{find_root} prints an error message.
+Otherwise @code{find_root} returns the value of @code{find_root_error}.
+The default value of @code{find_root_error} is @code{true}.
+
+If @var{f} evaluates to something other than a number at any step in the search algorithm,
+@code{find_root} returns a partially-evaluated @code{find_root} expression.
+
+The order of @var{a} and @var{b} is ignored;
+the region in which a root is sought is @math{[min(@var{a}, @var{b}), max(@var{a}, @var{b})]}.
 
 Examples:
 @c PREVIOUS EXAMPLE STUFF -- MAY WANT TO BRING TRANSLATE BACK INTO THE EXAMPLE
@@ -321,6 +327,9 @@ Examples:
 @c find_root (sin(x) = x/2, x, 0.1, %pi);
 @c find_root (f(x), x, 0.1, %pi);
 @c find_root (f, 0.1, %pi);
+@c find_root (exp(x) = y, x, 0, 100);
+@c find_root (exp(x) = y, x, 0, 100), y = 10;
+@c log (10.0);
 @c ===end===
 @example
 (%i1) f(x) := sin(x) - x/2;
@@ -335,52 +344,16 @@ Examples:
 (%o4)                   1.895494267033981
 (%i5) find_root (f, 0.1, %pi);
 (%o5)                   1.895494267033981
+(%i6) find_root (exp(x) = y, x, 0, 100);
+                            x
+(%o6)           find_root(%e  = y, x, 0.0, 100.0)
+(%i7) find_root (exp(x) = y, x, 0, 100), y = 10;
+(%o7)                   2.302585092994046
+(%i8) log (10.0);
+(%o8)                   2.302585092994046
 @end example
 
 @end deffn
-
-@defvr {Option variable} find_root_abs
-Default value: 0.0
-
-@code{find_root_abs} is the accuracy of the @code{find_root} command is
-governed by @code{find_root_abs} and @code{find_root_rel} which must be
-non-negative floating point numbers.  @code{find_root} will stop when the
-first arg evaluates to something less than or equal to @code{find_root_abs} or if
-successive approximants to the root differ by no more than @code{find_root_rel * <one of the approximants>}.
-The default values of @code{find_root_abs} and
-@code{find_root_rel} are 0.0 so @code{find_root} gets as good an answer as is possible
-with the single precision arithmetic we have.
-
-@end defvr
-
-@defvr {Option variable} find_root_error
-Default value: @code{true}
-
-@code{find_root_error} governs the behavior of @code{find_root}.
-When @code{find_root} is called, it determines whether or not the function
-to be solved satisfies the condition that the values of the
-function at the endpoints of the interpolation interval are opposite
-in sign.  If they are of opposite sign, the interpolation proceeds.
-If they are of like sign, and @code{find_root_error} is @code{true}, then an error is
-signaled.  If they are of like sign and @code{find_root_error} is not @code{true}, the
-value of @code{find_root_error} is returned.  Thus for plotting, @code{find_root_error}
-might be set to 0.0.
-
-@end defvr
-
-@defvr {Option variable} find_root_rel
-Default value: 0.0
-
-@code{find_root_rel} is the accuracy of the @code{find_root} command is
-governed by @code{find_root_abs} and @code{find_root_rel} which must be
-non-negative floating point numbers.  @code{find_root} will stop when the
-first arg evaluates to something less than or equal to @code{find_root_abs} or if
-successive approximants to the root differ by no more than @code{find_root_rel * <one of the approximants>}.
-The default values of @code{find_root_abs} and
-@code{find_root_rel} are 0.0 so @code{find_root} gets as good an answer as is possible
-with the single precision arithmetic we have.
-
-@end defvr
 
 @deffn {Function} newton (@var{expr}, @var{x}, @var{x_0}, @var{eps})
 Returns an approximate solution of @code{@var{expr} = 0} by Newton's method,
