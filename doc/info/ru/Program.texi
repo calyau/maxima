@@ -1,7 +1,7 @@
 @c Language=Russian
 @c Encoding=CP1251
 @c File=Program.texi 
-@c OriginalRevision=1.26
+@c OriginalRevision=1.29
 
 @menu
 * ¬ведение в программирование на Maxima::  
@@ -108,7 +108,7 @@ Maxima предоставл€ет цикл @code{do}, дл€ итерации, а также более простые управл€
 могут быть произвольными выражени€ми.  ≈сли приращение равно 1, то команда
 "@code{step 1}" может быть опущена.
 
-ѕеред выполнение команды @code{do}, переменной @code{variable} 
+ѕеред выполнение команды @code{do}, переменной @var{variable} 
 (далее называемой управл€ющей переменной) присваиваетс€ начальное значение @var{initial_value}. 
 ƒалее: (1) если значение управл€ющей переменной превышает верхнюю границу,
 задаваемую @code{thru}, или если условие @code{unless} равно @code{true}, 
@@ -360,7 +360,7 @@ block ([x], x:1, loop, x+1, ..., go(loop), ...)
 @code{if @var{cond_1} then @var{expr_1} elseif @var{cond_2} then @var{expr_2} elseif ... else @var{expr_0}}
 вычисл€ет и возвращает значение @var{expr_k}, если @var{cond_k} равно @code{true} 
 а все предыдущие услови€ равны @code{false}.
-≈сли не одно из условий не равно @code{true}, то вычисл€етс€ и возвращаетс€ значение @code{expr_0}.
+≈сли не одно из условий не равно @code{true}, то вычисл€етс€ и возвращаетс€ значение @var{expr_0}.
 
 ≈сли завершающее @code{else} отсутствует, то в конце подразумеваетс€ @code{else false}.
 “.е. @code{if @var{cond_1} then @var{expr_1}} эквивалентно 
@@ -461,7 +461,7 @@ block ([x], x:1, loop, x+1, ..., go(loop), ...)
 ≈сли переменна€ @code{maperror} равна @code{false}, то все @code{map} функции, например:
 
 @example
-map (f, expr_1, expr_2, ...)
+map (@var{f}, @var{expr_1}, @var{expr_2}, ...)
 @end example
 
 (1) остановитс€ на самом коротком выражении @var{expr_i}, если не все @var{expr_i} 
@@ -644,7 +644,8 @@ scanmap(f,a*x+b,bottomup) -> f(a)*f(x)+f(b)
 @c arg_1 :  matrix ([a, b], [c, d]);
 @c arg_2 : [11, 22];
 @c arg_3 : matrix ([xx, yy]);
-@c xx_0 : outermap (lambda ([x, y, z], x / y + z), arg_1, arg_2, arg_3);
+@c xx_0 : outermap (lambda ([x, y, z], x / y + z), arg_1, 
+@c                                                    arg_2, arg_3);
 @c xx_1 : xx_0 [1][1];
 @c xx_2 : xx_0 [1][1] [1];
 @c xx_3 : xx_0 [1][1] [1] [1][1];
@@ -660,7 +661,8 @@ scanmap(f,a*x+b,bottomup) -> f(a)*f(x)+f(b)
 (%o2)                       [11, 22]
 (%i3) arg_3 : matrix ([xx, yy]);
 (%o3)                      [ xx  yy ]
-(%i4) xx_0 : outermap (lambda ([x, y, z], x / y + z), arg_1, arg_2, arg_3);
+(%i4) xx_0 : outermap (lambda ([x, y, z], x / y + z), arg_1, 
+                                                     arg_2, arg_3);
                [  [      a        a  ]  [      a        a  ]  ]
                [ [[ xx + --  yy + -- ], [ xx + --  yy + -- ]] ]
                [  [      11       11 ]  [      22       22 ]  ]
@@ -698,7 +700,8 @@ scanmap(f,a*x+b,bottomup) -> f(a)*f(x)+f(b)
 @c ===beg===
 @c outermap (F, [a, b, c], [1, 2, 3]);
 @c setify (flatten (%));
-@c map (lambda ([L], apply (F, L)), cartesian_product ({a, b, c}, {1, 2, 3}));
+@c map (lambda ([L], apply (F, L)), 
+@c                      cartesian_product ({a, b, c}, {1, 2, 3}));
 @c is (equal (%, %th (2)));
 @c ===end===
 @example
@@ -708,7 +711,8 @@ scanmap(f,a*x+b,bottomup) -> f(a)*f(x)+f(b)
 (%i2) setify (flatten (%));
 (%o2) @{F(a, 1), F(a, 2), F(a, 3), F(b, 1), F(b, 2), F(b, 3), 
                                        F(c, 1), F(c, 2), F(c, 3)@}
-(%i3) map (lambda ([L], apply (F, L)), cartesian_product (@{a, b, c@}, @{1, 2, 3@}));
+(%i3) map (lambda ([L], apply (F, L)), 
+@c                     cartesian_product (@{a, b, c@}, @{1, 2, 3@}));
 (%o3) @{F(a, 1), F(a, 2), F(a, 3), F(b, 1), F(b, 2), F(b, 3), 
                                        F(c, 1), F(c, 2), F(c, 3)@}
 (%i4) is (equal (%, %th (2)));
