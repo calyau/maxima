@@ -103,11 +103,11 @@ or limit.)
 expressions.  If the increment is 1 then "@code{step 1}" may be omitted.
 
 The execution of the @code{do} statement proceeds by first assigning
-the @code{initial_value} to the @code{variable} (henceforth called the
+the @var{initial_value} to the @var{variable} (henceforth called the
 control-variable). Then: (1) If the control-variable has exceeded the
 limit of a @code{thru} specification, or if the condition of the
 @code{unless} is @code{true}, or if the condition of the @code{while}
-is @code{false} then the @code{do} terminates. (2) The @code{body} is
+is @code{false} then the @code{do} terminates. (2) The @var{body} is
 evaluated.  (3) The increment is added to the control-variable.  The
 process from (1) to (3) is performed repeatedly until the termination
 condition is satisfied.  One may also give several termination
@@ -115,26 +115,26 @@ conditions in which case the @code{do} terminates when any of them is
 satisfied.
 
 In general the @code{thru} test is satisfied when the control-variable
-is greater than the @code{limit} if the @code{increment} was
+is greater than the @var{limit} if the @var{increment} was
 non-negative, or when the control-variable is less than the
-@code{limit} if the @code{increment} was negative.  The
-@code{increment} and @code{limit} may be non-numeric expressions as
+@var{limit} if the @var{increment} was negative.  The
+@var{increment} and @var{limit} may be non-numeric expressions as
 long as this inequality can be determined.  However, unless the
-@code{increment} is syntactically negative (e.g. is a negative number)
+@var{increment} is syntactically negative (e.g. is a negative number)
 at the time the @code{do} statement is input, Maxima assumes it will
 be positive when the @code{do} is executed.  If it is not positive,
 then the @code{do} may not terminate properly.
 
-Note that the @code{limit}, @code{increment}, and termination condition are
+Note that the @var{limit}, @var{increment}, and termination condition are
 evaluated each time through the loop.  Thus if any of these involve
 much computation, and yield a result that does not change during all
-the executions of the @code{body}, then it is more efficient to set a
+the executions of the @var{body}, then it is more efficient to set a
 variable to their value prior to the @code{do} and use this variable in the
 @code{do} form.
 
 The value normally returned by a @code{do} statement is the atom
 @code{done}.  However, the function @code{return} may be used inside
-the @code{body} to exit the @code{do} prematurely and give it any
+the @var{body} to exit the @code{do} prematurely and give it any
 desired value. Note however that a @code{return} within a @code{do}
 that occurs in a @code{block} will exit only the @code{do} and not the
 @code{block}. Note also that the @code{go} function may not be used
@@ -207,7 +207,7 @@ Instead of always adding a quantity to the control-variable one
 may sometimes wish to change it in some other way for each iteration.
 In this case one may use @code{next @var{expression}} instead of @code{step @var{increment}}.
 This will cause the control-variable to be set to the
-result of evaluating @code{expression} each time through the loop.
+result of evaluating @var{expression} each time through the loop.
 
 @example
 (%i6) for count: 2 next 3*count thru 20 do display (count)$
@@ -243,7 +243,7 @@ square-root of 5 using a poor initial guess.
 
 If it is desired one may even omit the termination conditions entirely
 and just give @code{do @var{body}} which will continue to evaluate the
-@code{body}x indefinitely.  In this case the function @code{return}
+@var{body} indefinitely.  In this case the function @code{return}
 should be used to terminate execution of the @code{do}.
 
 @example
@@ -269,10 +269,10 @@ for @var{variable} in @var{list} @var{end_tests} do @var{body}
 
 The elements of @var{list} are any expressions which will successively
 be assigned to the @code{variable} on each iteration of the
-@code{body}.  The optional termination tests @var{end_tests} can be
+@var{body}.  The optional termination tests @var{end_tests} can be
 used to terminate execution of the @code{do}; otherwise it will
-terminate when the @code{list} is exhausted or when a @code{return} is
-executed in the @code{body}.  (In fact, @code{list} may be any
+terminate when the @var{list} is exhausted or when a @code{return} is
+executed in the @var{body}.  (In fact, @code{list} may be any
 non-atomic expression, and successive parts are taken.)
 
 @example
@@ -355,7 +355,7 @@ Represents conditional evaluation. Various forms of @code{if} expressions are re
 
 @code{if @var{cond_1} then @var{expr_1} else @var{expr_0}}
 evaluates to @var{expr_1} if @var{cond_1} evaluates to @code{true},
-otherwise the expression evaluates to @code{expr_0}.
+otherwise the expression evaluates to @var{expr_0}.
 
 @code{if @var{cond_1} then @var{expr_1} elseif @var{cond_2} then @var{expr_2} elseif ... else @var{expr_0}}
 evaluates to @var{expr_k} if @var{cond_k} is @code{true} and all preceding conditions are @code{false}.
@@ -464,12 +464,12 @@ Default value: @code{true}
 When @code{maperror} is @code{false}, causes all of the mapping functions, for example
 
 @example
-map (f, expr_1, expr_2, ...))
+map (@var{f}, @var{expr_1}, @var{expr_2}, ...)
 @end example
 
 to (1) stop when they finish going down the shortest @var{expr_i} if
 not all of the @var{expr_i} are of the same length and (2) apply
-@code{f} to [@var{expr_1}, @var{expr_2}, ...] if the @var{expr_i} are
+@var{f} to [@var{expr_1}, @var{expr_2}, ...] if the @var{expr_i} are
 not all the same type of object.
 
 If @code{maperror} is @code{true} then an error message
