@@ -157,14 +157,6 @@
   (setf (get f 'autoload) "stringproc"))
 
 
-;; src/autol.lisp/autof causes warnings in some Lisps
-(defun autof2 (fun file)
-  (unless (fboundp fun)
-    (mputprop fun
-              `((lambda) ((mlist) ((mlist) |_l|))
-      ((mprogn) ((aload) ',file ) (($apply) ',fun |_l|)))
-         'mexpr)))
-
 (auto-mspec '$romberg "romberg")
 
 (dolist (f       
@@ -175,10 +167,10 @@
        $read_nested_list
        $read_list
        $write_data ))
-  (autof2 f "numericalio"))
+  (setf (get f 'autoload) "numericalio"))
 
-(autof2 '$eval_string "eval_string")
-(autof2 '$parse_string "eval_string")
+(setf (get '$eval_string 'autoload) "eval_string")
+(setf (get '$parse_string 'autoload) "eval_string")
 
 
 ;; functions from share/linearalgebra 
