@@ -71,6 +71,14 @@
   (if (or ($listp x) ($setp x)) (cdr x)
     (merror "Function ~:M expects a list or a set, instead found ~:M" context-string x)))
 
+;; When a is a list, return a list of the unique elements of a.
+;; Otherwise just return a.
+
+(defun $unique (x)
+  (if ($listp x)
+    `((mlist) ,@(sorted-remove-duplicates (sort (copy-list (cdr x)) '$orderlessp)))
+    x))
+
 ;; When a is a list, setify(a) is equivalent to apply(set, a). When a 
 ;; isn't a list, signal an error. 
 
