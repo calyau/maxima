@@ -223,7 +223,7 @@
 	 #-(or gcl cmu clisp allegro) ""))
     (if (member type (list bin-ext "lisp" "lsp")  :test 'equalp)
       #-sbcl (load file) #+sbcl (with-compilation-unit nil (load file))
-      ($batchload file))))
+      ($load file))))
 
 (defvar autoload 'generic-autoload)
 
