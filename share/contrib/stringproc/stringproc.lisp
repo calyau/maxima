@@ -183,11 +183,17 @@
 
 ;;  converts maxima-string into lisp-string
 (defun $lstring (mstr) (l-string mstr)) ;; for testing only (avoid lisp string in maxima)
-(defun l-string (mstr) (strip& (maybe-invert-string-case (string mstr))))
+(defun l-string (mstr)
+  (if (stringp mstr)
+    mstr
+    (strip& (maybe-invert-string-case (string mstr)))))
 
 ;;  converts lisp-string back into maxima-string
 (defun $sunlisp (lstr) (m-string lstr))
-(defun m-string (lstr) (intern (maybe-invert-string-case (concatenate 'string "&" lstr))))
+(defun m-string (lstr)
+  (if (mstringp lstr)
+    lstr
+    (intern (maybe-invert-string-case (concatenate 'string "&" lstr)))))
 
 
 ;;  tests, if object is lisp-string
