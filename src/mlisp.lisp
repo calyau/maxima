@@ -1245,8 +1245,10 @@ wrapper for this."
 	argl
 	(cons header (cdr argl)))))
 
-(defmspec $outermap (l)
-  (apply (if (= (length l) 3) #'fmapl1 #'outermap1) (mmapev l)))
+(defun $outermap (x y &rest z)
+  (if z
+    (apply #'outermap1 `(,x ,y ,@z))
+    (fmapl1 x y)))
 
 (defmfun outermap1 n
   (let (outargs1 outargs2)
@@ -2023,14 +2025,13 @@ wrapper for this."
 (defun mapply (a b c)
   (mapply1 a b c nil))
 
-(defmspec $apply (l)
-  (twoargcheck l)
-  (let ((fun (meval (cadr l))) (arg (meval (caddr l))))
-    (unless ($listp arg)
-      (merror "Attempt to apply ~:M to ~M~
-	 ~%Second argument to `apply' must be a list." fun arg))
-    (autoldchk (setq fun (getopr fun)))
-    (mapply1 fun (cdr arg) (cadr l) l)))
+(defun $apply (fun arg)
+  (unless ($listp arg)
+    (merror "Attempt to apply ~:M to ~M~
+            ~%Second argument to `apply' must be a list." fun arg))
+  (let ((fun-opr (getopr fun)))
+    (autoldchk fun-opr)
+    (mapply1 fun-opr (cdr arg) fun `(($apply) ,fun ,arg))))
 
 (defun autoldchk (fun)
   (if (and (symbolp fun)
