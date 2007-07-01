@@ -1,7 +1,7 @@
 @c Language=Russian
 @c Encoding=CP1251
 @c File=nset.texi 
-@c OriginalRevision=1.22
+@c OriginalRevision=1.24
 
 @menu
 * Введение в работу с множествами::       
@@ -227,10 +227,12 @@ Function union expects a set, instead found [1,2]
 переменной @code{z}, используйте
 
 @c ===beg===
-@c subset ({x + y + z, x - y + 4, x + y - 5}, lambda ([e], freeof (z, e)));
+@c subset ({x + y + z, x - y + 4, x + y - 5}, 
+@c                                     lambda ([e], freeof (z, e)));
 @c ===end===
 @example
-(%i1) subset (@{x + y + z, x - y + 4, x + y - 5@}, lambda ([e], freeof (z, e)));
+(%i1) subset (@{x + y + z, x - y + 4, x + y - 5@},
+                                    lambda ([e], freeof (z, e)));
 (%o1)               @{- y + x + 4, y + x - 5@}
 @end example
 
@@ -461,14 +463,16 @@ University of Nebraska at Kearney (UNK)).
 @c ===beg===
 @c makelist (belln (i), i, 0, 6);
 @c is (cardinality (set_partitions ({})) = belln (0));
-@c is (cardinality (set_partitions ({1, 2, 3, 4, 5, 6})) = belln (6));
+@c is (cardinality (set_partitions ({1, 2, 3, 4, 5, 6})) = 
+@c                        belln (6));
 @c ===end===
 @example
 (%i1) makelist (belln (i), i, 0, 6);
 (%o1)               [1, 1, 2, 5, 15, 52, 203]
 (%i2) is (cardinality (set_partitions (@{@})) = belln (0));
 (%o2)                         true
-(%i3) is (cardinality (set_partitions (@{1, 2, 3, 4, 5, 6@})) = belln (6));
+(%i3) is (cardinality (set_partitions (@{1, 2, 3, 4, 5, 6@})) =
+                       belln (6));
 (%o3)                         true
 @end example
 
@@ -719,10 +723,12 @@ University of Nebraska at Kearney (UNK)).
 Отношение эквивалентности является лямбда-выражением, возвращающим @code{true} или @code{false}.
 
 @c ===beg===
-@c equiv_classes ({1, 1.0, 2, 2.0, 3, 3.0}, lambda ([x, y], is (equal (x, y))));
+@c equiv_classes ({1, 1.0, 2, 2.0, 3, 3.0}, 
+@c                         lambda ([x, y], is (equal (x, y))));
 @c ===end===
 @example
-(%i1) equiv_classes (@{1, 1.0, 2, 2.0, 3, 3.0@}, lambda ([x, y], is (equal (x, y))));
+(%i1) equiv_classes (@{1, 1.0, 2, 2.0, 3, 3.0@},
+                        lambda ([x, y], is (equal (x, y))));
 (%o1)            @{@{1, 1.0@}, @{2, 2.0@}, @{3, 3.0@}@}
 @end example
 
@@ -739,10 +745,12 @@ University of Nebraska at Kearney (UNK)).
 Классы эквивалентности -- числа отличающиеся на несколько чисел 3.
 
 @c ===beg===
-@c equiv_classes ({1, 2, 3, 4, 5, 6, 7}, lambda ([x, y], remainder (x - y, 3) = 0));
+@c equiv_classes ({1, 2, 3, 4, 5, 6, 7}, 
+@c                      lambda ([x, y], remainder (x - y, 3) = 0));
 @c ===end===
 @example
-(%i1) equiv_classes (@{1, 2, 3, 4, 5, 6, 7@}, lambda ([x, y], remainder (x - y, 3) = 0));
+(%i1) equiv_classes (@{1, 2, 3, 4, 5, 6, 7@},
+                     lambda ([x, y], remainder (x - y, 3) = 0));
 (%o1)              @{@{1, 4, 7@}, @{2, 5@}, @{3, 6@}@}
 @end example
 @end deffn
@@ -820,7 +828,8 @@ University of Nebraska at Kearney (UNK)).
 
 @c ===beg===
 @c prederror : false;
-@c map (lambda ([a, b], is (a < b)), [x, y, z], [x^2, y^2, z^2]);
+@c map (lambda ([a, b], is (a < b)), [x, y, z], 
+@c                    [x^2, y^2, z^2]);
 @c every ("<", [x, y, z], [x^2, y^2, z^2]);
 @c prederror : true;
 @c every ("<", [x, y, z], [x^2, y^2, z^2]);
@@ -828,7 +837,8 @@ University of Nebraska at Kearney (UNK)).
 @example
 (%i1) prederror : false;
 (%o1)                         false
-(%i2) map (lambda ([a, b], is (a < b)), [x, y, z], [x^2, y^2, z^2]);
+(%i2) map (lambda ([a, b], is (a < b)), [x, y, z],
+                   [x^2, y^2, z^2]);
 (%o2)              [unknown, unknown, unknown]
 (%i3) every ("<", [x, y, z], [x^2, y^2, z^2]);
 (%o3)                        unknown
@@ -1604,12 +1614,14 @@ Warning:  Float to bigfloat conversion of 0.25
 
 @c ===beg===
 @c partition_set ({2, 7, 1, 8, 2, 8}, evenp);
-@c partition_set ({x, rat(y), rat(y) + z, 1}, lambda ([x], ratp(x)));
+@c partition_set ({x, rat(y), rat(y) + z, 1}, 
+@c                      lambda ([x], ratp(x)));
 @c ===end===
 @example
 (%i1) partition_set (@{2, 7, 1, 8, 2, 8@}, evenp);
 (%o1)                   [@{1, 7@}, @{2, 8@}]
-(%i2) partition_set (@{x, rat(y), rat(y) + z, 1@}, lambda ([x], ratp(x)));
+(%i2) partition_set (@{x, rat(y), rat(y) + z, 1@},
+                     lambda ([x], ratp(x)));
 (%o2)/R/              [@{1, x@}, @{y, y + z@}]
 @end example
 @end deffn
@@ -2051,7 +2063,8 @@ Warning:  Float to bigfloat conversion of 0.25
 
 @c ===beg===
 @c prederror : false;
-@c map (lambda ([a, b], is (a < b)), [x, y, z], [x^2, y^2, z^2]);
+@c map (lambda ([a, b], is (a < b)), [x, y, z], 
+@c            [x^2, y^2, z^2]);
 @c some ("<", [x, y, z], [x^2, y^2, z^2]);
 @c some ("<", [x, y, z], [x^2, y^2, z + 1]);
 @c prederror : true;
@@ -2061,7 +2074,8 @@ Warning:  Float to bigfloat conversion of 0.25
 @example
 (%i1) prederror : false;
 (%o1)                         false
-(%i2) map (lambda ([a, b], is (a < b)), [x, y, z], [x^2, y^2, z^2]);
+(%i2) map (lambda ([a, b], is (a < b)), [x, y, z],
+           [x^2, y^2, z^2]);
 (%o2)              [unknown, unknown, unknown]
 (%i3) some ("<", [x, y, z], [x^2, y^2, z^2]);
 (%o3)                        unknown
@@ -2312,7 +2326,7 @@ Maxima применяет тождества для @code{stirling2}.
 которого присутствуют только в одном множестве @var{a_k}.
 
 При задании двух аргументов, @code{symmdifference(@var{a}, @var{b})} 
-эквивалентно @code{union(setdifference(@var{a}, @var{b}), setdifference(@var{b}, @var{a}))}.
+эквивалентно @code{union ( setdifference (@var{a}, @var{b} ), setdifference (@var{b}, @var{a}))}.
 
 Функция @code{symmdifference} вызывает ошибку, если любой из ее аргументов не является множеством.
 
