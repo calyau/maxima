@@ -453,6 +453,8 @@ false$
  *  Maxima string
  *  Lisp string
  *  Lisp array
+ *  Maxima declared array
+ *  Maxima undeclared array
  */
 
 (mstring1a : "FOO",
@@ -471,6 +473,49 @@ false$
  fillarray (larray2, makelist (i^2, i, 1, 5)),
  larray3 : make_array (any, 10),
  fillarray (larray3, makelist (i, i, 1, 10)),
+
+ array (marray_declared_1, fixnum, 3, 4),
+ fillarray (marray_declared_1, makelist (i, i, 1, 20)),
+ array (marray_declared_2, fixnum, 3, 4),
+ fillarray (marray_declared_2, makelist (i, i, 1, 20)),
+ array (marray_declared_3, flonum, 3, 4),
+ fillarray (marray_declared_3, makelist (float(i), i, 1, 20)),
+ array (marray_declared_4, fixnum, 4, 3),
+ fillarray (marray_declared_4, makelist (2*i, i, 1, 20)),
+
+ marray_undeclared_1 [foo, bar] : 1234,
+ marray_undeclared_1 [baz, quux] : 2345,
+ marray_undeclared_2 [foo, bar] : 1234,
+ marray_undeclared_2 [baz, quux] : 2345,
+ marray_undeclared_3 [foo, bar] : 3456,
+ marray_undeclared_3 [baz, quux] : 4567,
+ marray_undeclared_4 [foo, bar, baz] : 5678,
+
+ marray_array_fcn_1 [u, v, w] := u*v*w,
+ marray_array_fcn_1 [2, 3, 4],
+ marray_array_fcn_1 [a, b, c],
+ marray_array_fcn_2 [u, v, w] := u*v*w,
+ marray_array_fcn_2 [2, 3, 4],
+ marray_array_fcn_2 [a, b, c],
+ marray_array_fcn_3 [u, v, w] := u*v*w,
+ marray_array_fcn_3 [7, x, 4],
+ marray_array_fcn_3 [a, 3, c],
+ marray_array_fcn_4 [u, v, w] := u + v + w,
+ marray_array_fcn_4 [2, 3, 4],
+ marray_array_fcn_4 [a, b, c],
+
+ marray_subscripted_fcn_1 [a, b] (x, y) := x^a + y^b,
+ marray_subscripted_fcn_1 [3, 2] (u, 7),
+ marray_subscripted_fcn_1 [m, n] (2, z),
+ marray_subscripted_fcn_2 [a, b] (x, y) := x^a + y^b,
+ marray_subscripted_fcn_2 [3, 2] (u, 7),
+ marray_subscripted_fcn_2 [m, n] (2, z),
+ marray_subscripted_fcn_3 [a, b] (x, y) := x^a + y^b,
+ marray_subscripted_fcn_3 [2, 5] (8, q),
+ marray_subscripted_fcn_3 [1, t] (9, e),
+ marray_subscripted_fcn_4 [a, b] (x, y) := a*x - b*y,
+ marray_subscripted_fcn_4 [3, 2] (u, 7),
+ marray_subscripted_fcn_4 [m, n] (2, z),
 
  0);
 0;
@@ -498,6 +543,49 @@ false;
 is (equal (larray1a, larray3));
 false;
 
+is (equal (marray_declared_1, marray_declared_2));
+true;
+
+is (equal (marray_declared_1, marray_declared_3));
+true;
+
+is (equal (marray_declared_1, marray_declared_4));
+false;
+
+is (equal (marray_undeclared_1, marray_undeclared_2));
+true;
+
+is (equal (marray_undeclared_1, marray_undeclared_3));
+false;
+
+is (equal (marray_undeclared_1, marray_undeclared_4));
+false;
+
+is (equal (marray_array_fcn_1, marray_array_fcn_2));
+true;
+
+/* This test fails at present because array functions are
+ * compared via arrayinfo and listarray output,
+ * but array functions should be compared via their AEXPR properties.
+ */
+is (equal (marray_array_fcn_1, marray_array_fcn_3));
+true;
+
+is (equal (marray_array_fcn_1, marray_array_fcn_4));
+false;
+
+is (equal (marray_subscripted_fcn_1, marray_subscripted_fcn_2));
+true;
+
+/* This test fails at present because subscripted functions are
+ * compared via arrayinfo and listarray output,
+ * but subscripted functions should be compared via their AEXPR properties.
+ */
+is (equal (marray_subscripted_fcn_1, marray_subscripted_fcn_3));
+true;
+
+is (equal (marray_subscripted_fcn_1, marray_subscripted_fcn_4));
+unknown; /* comparison of non-identical lambda expressions yields unknown */
 
 /* Comparisons to different type */
 
@@ -552,6 +640,28 @@ false;
 is (equal (larray1a, sin('x)));
 false;
 
+/* No automatic conversions between array types */
+
+(similar_lisp_array : make_array (fixnum, 4, 5),
+ fillarray (similar_lisp_array, makelist (i, i, 1, 20)),
+ is (equal (marray_declared_1, similar_lisp_array)));
+false;
+
+(for i:0 thru 3
+   do for j:0 thru 4
+     do similar_undeclared_marray [i, j] : i*5 + j + 1,
+ is (equal (marray_declared_1, similar_undeclared_marray)));
+false;
+
+/* No automatic conversions between array and list or matrix */
+
+(similar_nested_list : [[1, 2, 3, 4, 5], [6, 7, 8, 9, 10], [11, 12, 13, 14, 15], [16, 17, 18, 19, 20]],
+ is (equal (marray_declared_1, similar_nested_list)));
+false;
+
+(similar_matrix : apply (matrix, similar_nested_list),
+ is (equal (marray_declared_1, similar_matrix)));
+false;
 
 /* Comparisons via = */
 

@@ -848,21 +848,41 @@ relational knowledge is contained in the default context GLOBAL."
       (if (op-equalp fi '$equal)
 	  (setq e ($ratsubst (nth 2 fi) (nth 1 fi) e))))))
 
+(defun maxima-declared-arrayp (x)
+  (and
+    (symbolp x)
+    (mget x 'array)
+    (get (mget x 'array) 'array)))
+
+(defun maxima-undeclared-arrayp (x)
+  (and
+    (symbolp x)
+    (mget x 'hashar)
+    (get (mget x 'hashar) 'array)))
+
 (defun meqp (a b)
   ;; Check for some particular types before falling into the general case.
   (cond
     ((stringp a)
      (and (stringp b) (equal a b)))
-    ((stringp b)
-     (and (stringp a) (equal b a)))
+    ((stringp b) nil)
+
     ((mstringp a)
      (and (mstringp b) (equal a b)))
-    ((mstringp b)
-     (and (mstringp a) (equal b a)))
+    ((mstringp b) nil)
+
     ((arrayp a)
      (and (arrayp b) (array-meqp a b)))
-    ((arrayp b)
-     (and (arrayp a) (array-meqp b a)))
+    ((arrayp b) nil)
+
+    ((maxima-declared-arrayp a)
+     (and (maxima-declared-arrayp b) (maxima-declared-array-meqp a b)))
+    ((maxima-declared-arrayp b) nil)
+
+    ((maxima-undeclared-arrayp a)
+     (and (maxima-undeclared-arrayp b) (maxima-undeclared-array-meqp a b)))
+    ((maxima-undeclared-arrayp b) nil)
+
     (t
       (let ((z))
         (setq a (specrepcheck a))
@@ -895,12 +915,20 @@ relational knowledge is contained in the default context GLOBAL."
     (equal (array-dimensions p) (array-dimensions q))
     (progn
       (dotimes (i (array-total-size p))
-        (let ((z (meqp (row-major-aref p i) (row-major-aref q i))))
+        (let ((z (let ($ratprint) (meqp (row-major-aref p i) (row-major-aref q i)))))
           (cond
             ((eq z nil) (return-from array-meqp nil))
             ((eq z t))
             (t (return-from array-meqp `(($equal) ,p ,q))))))
       t)))
+
+(defun maxima-declared-array-meqp (p q)
+  (array-meqp (get (mget p 'array) 'array) (get (mget q 'array) 'array)))
+
+(defun maxima-undeclared-array-meqp (p q)
+  (and
+    (alike1 (mfuncall '$arrayinfo p) (mfuncall '$arrayinfo q))
+    (let ($ratprint) (meqp ($listarray p) ($listarray q)))))
 
 (defun list-meqp (p q)
   (let ((z))

@@ -32,24 +32,24 @@
 0;
 
 (read_lisp_array (file_search ("array.data"), a2),
- is (a = a2));
+ is (equal (a, a2)));
 true;
 
 (read_maxima_array (file_search ("array.data"), b2),
- [is (arrayinfo (b) = arrayinfo (b2)), is (listarray (b) = listarray (b2))]);
-[true, true];
+ is (equal (b, b2)));
+true;
 
 (write_data (a2, "tmp-lisp-array.data"),
  a3: make_array('any, 3, 4, 5),
  read_lisp_array ("tmp-lisp-array.data", a3), 
- is (a2 = a3));
+ is (equal (a2, a3)));
 true;
 
 (write_data (b2, "tmp-maxima-array.data"),
  array (b3, 2, 3, 4),
  read_maxima_array ("tmp-maxima-array.data", b3),
- [is (arrayinfo (b2) = arrayinfo (b3)), is (listarray (b2) = listarray (b3))]);
-[true, true];
+ is (equal (b2, b3)));
+true;
 
 /* Test read/write comma-separated data */
 
@@ -102,8 +102,8 @@ true;
  write_data (a, "tmp-array.csv"),
  array (a2, 10, 6),
  read_maxima_array ("tmp-array.csv", a2),
- [is (arrayinfo (a) = arrayinfo (a2)), is (listarray (a) = listarray (a2))]);
-[true, true];
+ is (equal (a, a2)));
+true;
 
 /* Test read/write variable-length lines */
 
@@ -154,8 +154,8 @@ true;
 true;
 
 (read_hashed_array (file_search ("ragged.data"), h2),
- [is (arrayinfo(h) = arrayinfo(h2)), is (listarray(h) = listarray(h2))]);
-[true, true];
+ is (equal (h, h2)));
+true;
 
 (AA16: 16,
  AA22: 22,
@@ -201,8 +201,8 @@ true;
 true;
 
 (read_hashed_array (file_search ("rectangular.data"), h2),
- [is (arrayinfo (h) = arrayinfo (h2)), is (listarray (h) = listarray (h2))]);
-[true, true];
+ is (equal (h, h2)));
+true;
 
 (l2_nested : read_nested_list (file_search ("rectangular.data")),
  is (l_nested = l2_nested));
@@ -219,8 +219,8 @@ true;
 
 (write_data (h2, "tmp-hashed-array.data"),
  read_hashed_array ("tmp-hashed-array.data", h3),
- [is (arrayinfo (h2) = arrayinfo (h3)), is (listarray (h2) = listarray (h3))]);
-[true, true];
+ is (equal (h2, h3)));
+true;
 
 (write_data (l2_nested, "tmp-nested-list.data"),
  m3 : read_matrix ("tmp-nested-list.data"),
@@ -307,7 +307,7 @@ true;
  s : openr (file_search ("array.data")),
  read_lisp_array (s, a2),
  close (s),
- is (a1 = a2));
+ is (equal (a1, a2)));
 true;
 
 (s : openw ("tmp-lisp-array.data"),
@@ -317,7 +317,7 @@ true;
  s : openr ("tmp-lisp-array.data"),
  read_lisp_array (s, a3),
  close (s),
- is (a1 = a3));
+ is (equal (a1, a3)));
 true;
 
 (b1 : array (b, 2, 3, 4),
@@ -326,7 +326,7 @@ true;
  s : openr (file_search ("array.data")),
  read_lisp_array (s, b2),
  close (s),
- is (b1 = b2));
+ is (equal (b1, b2)));
 true;
 
 (s : openw ("tmp-maxima-array.data"),
@@ -336,7 +336,7 @@ true;
  s : openr ("tmp-maxima-array.data"),
  read_maxima_array (s, b3),
  close (s),
- is (b1 = b3));
+ is (equal (b1, b3)));
 true;
 
 (m1 : read_matrix (file_search ("rectangular.data")),
@@ -391,8 +391,8 @@ true;
  s : openr (file_search ("ragged.data")),
  read_hashed_array (s, h2),
  close (s),
- [is (arrayinfo (h1) = arrayinfo (h2)), is (listarray (h1) = listarray (h2))]);
-[true, true];
+ is (equal (h1, h2)));
+true;
 
 (s : openw ("tmp-hashed-array.data"),
  write_data (h2, s),
@@ -400,6 +400,6 @@ true;
  s : openr ("tmp-hashed-array.data"),
  read_hashed_array (s, h3),
  close (s),
- [is (arrayinfo (h1) = arrayinfo (h3)), is (listarray (h1) = listarray (h3))]);
-[true, true];
+ is (equal (h1, h3)));
+true;
 

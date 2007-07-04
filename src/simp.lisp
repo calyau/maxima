@@ -1980,9 +1980,18 @@
 (defmfun alike1 (x y)
   (cond ((eq x y))
 	((atom x)
-     (if (arrayp x)
-       (and (arrayp y) (array-alike1 x y))
-       (equal x y)))
+     (cond
+       ((arrayp x)
+        (and (arrayp y) (lisp-array-alike1 x y)))
+
+    ;; NOT SURE IF WE WANT TO ENABLE COMPARISON OF MAXIMA ARRAYS
+    ;; ASIDE FROM THAT, ADD2LNC CALLS ALIKE1 (VIA MEMALIKE) AND THAT CAUSES TROUBLE
+    ;; ((maxima-declared-arrayp x)
+    ;;  (and (maxima-declared-arrayp y) (maxima-declared-array-alike1 x y)))
+    ;; ((maxima-undeclared-arrayp x)
+    ;;  (and (maxima-undeclared-arrayp y) (maxima-undeclared-array-alike1 x y)))
+
+       (t (equal x y))))
 	((atom y) nil)
 	(t (and (not (atom (car x)))
 		(not (atom (car y)))
@@ -1990,14 +1999,22 @@
 		(eq (memqarr (cdar x)) (memqarr (cdar y)))
 		(alike (cdr x) (cdr y)))))) 
 
-(defun array-alike1 (x y)
+(defun lisp-array-alike1 (x y)
   (and
     (equal (array-dimensions x) (array-dimensions y))
     (progn
       (dotimes (i (array-total-size x))
         (if (not (alike1 (row-major-aref x i) (row-major-aref y i)))
-          (return-from array-alike1 nil)))
+          (return-from lisp-array-alike1 nil)))
       t)))
+
+(defun maxima-declared-array-alike1 (x y)
+  (lisp-array-alike1 (get (mget x 'array) 'array) (get (mget y 'array) 'array)))
+
+(defun maxima-undeclared-array-alike1 (x y)
+  (and
+    (alike1 (mfuncall '$arrayinfo x) (mfuncall '$arrayinfo y))
+    (alike1 ($listarray x) ($listarray y))))
 
 ;; Maps ALIKE1 down two lists.
 
