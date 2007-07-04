@@ -325,8 +325,8 @@
 		     #+gcl (cl::error () nil))))
 	   (when error-log
 	     (format t "~%Error log on ~a" error-log)
-	     (format error-log "~%/*    maxima-error log for testing of ~A" filename)
-	     (format error-log "*/~2%"))))
+	     (format error-log "~%/* maxima-error log from tests in ~A" filename)
+	     (format error-log " */~2%"))))
  
     (unwind-protect 
 	(progn
