@@ -75,8 +75,8 @@
 ;;                                                                           ;;
 ;; - pivot_count_sx: the number of pivots in last computation                ;;
 ;; - pivot_max_sx:   the maximum number of pivots in computation             ;;
-;; - epsilon_sx:     epsilon for numeric computation (default: 1e-8)         ;;
-;; - scale_sx:       should maxima scale the problem: can be used in         ;;
+;; - epsilon_lp:     epsilon for numeric computation (default: 1e-8)         ;;
+;; - scale_lp:       should maxima scale the problem: can be used in         ;;
 ;;                   Klee-Minty problem to speed-up computation or in some   ;;
 ;;                   cases to improve numerical stability (default: false);  ;;
 ;;                   uses equilibratium scaling                              ;;
@@ -92,8 +92,8 @@
 
 (defmvar $pivot_count_sx     0  "Number of pivots in last problem."   fixnum)
 (defmvar $pivot_max_sx   15000  "Maximum number of pivots allowed."   fixnum)
-(defmvar $epsilon_sx      1e-8  "Epsilon for numerical computation."  flonum)
-(defmvar $scale_sx         nil  "Should we scale the input."         boolean)
+(defmvar $epsilon_lp      1e-8  "Epsilon for numerical computation."  flonum)
+(defmvar $scale_lp         nil  "Should we scale the input."         boolean)
 (defmvar $warn_rank_sx     nil  "Print warnings about rank."         boolean)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -167,7 +167,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
     (dotimes (i n)
       (setq sc-fac (append sc-fac (list 1))))
-    (if $scale_sx
+    (if $scale_lp
         (scale-sx Tab (+ 2 m) (1+ n) sc-fac))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -178,7 +178,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-    (if (mlsp $epsilon_sx (aref Tab (1+ m) n))
+    (if (mlsp $epsilon_lp (aref Tab (1+ m) n))
         "Problem not feasible!"
         (let ((is-bounded))
 
@@ -245,7 +245,7 @@
             (progn
               (setq tmp (aref Tab (1- m) j))
               (setq jp j))))
-      (if (mgqp $epsilon_sx tmp)
+      (if (mgqp $epsilon_lp tmp)
           (progn
             (setq is-bounded t)
             (setq have-solution t))
@@ -258,7 +258,7 @@
             (setq tmp nil)
             (setq ip 0)
             (dotimes (i Am)
-              (if (mlsp $epsilon_sx (aref Tab i jp))
+              (if (mlsp $epsilon_lp (aref Tab i jp))
                   (if (or (null tmp) (mlsp (div (aref Tab i (1- n))
                                                 (aref Tab i jp))
                                            tmp))
@@ -291,7 +291,7 @@
         (progn
           ($print "Maximum number of pivots reached.")
           ($print "Try setting a bigger value for pivot_max_sx.")
-          ($print "Try setting scale_sx to true.")
+          ($print "Try setting scale_lp to true.")
           ($print "")
           ($error "linear_program: maximum number of pivots reached.")))
     (if (meqp piv 0)
@@ -348,7 +348,7 @@
                (ta (if (mlsp tij 0) (neg tij) tij)))
           (if (mlsp r ta)
               (setq r ta))))
-      (if (mlsp $epsilon_sx r)
+      (if (mlsp $epsilon_lp r)
           (dotimes (j n)
             (setf (aref Tab i j) (div (aref Tab i j) r)))))
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -361,7 +361,7 @@
                (ta (if (mlsp tij 0) (neg tij) tij)))
           (if (mlsp r ta)
               (setq r ta))))
-      (if (mlsp $epsilon_sx r)
+      (if (mlsp $epsilon_lp r)
           (progn
             (dotimes (i m)
               (setf (aref Tab i j) (div (aref Tab i j) r)))

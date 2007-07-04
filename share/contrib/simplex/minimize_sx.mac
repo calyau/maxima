@@ -7,7 +7,7 @@
  * ***               A simple implementation of the simplex              *** *
  * ***             algorithm for Linear Programming for Maxima.          *** *
  * ***                                                                   *** *
- * ***   This file provides functions minimize_sx and maximize_sx. This  *** *
+ * ***   This file provides functions minimize_lp and maximize_lp. This  *** *
  * ***   file is part of the simplex package for Maxima.                 *** *
  * ***                                                                   *** *
  * ***                                                                   *** *
@@ -26,33 +26,33 @@
  * Solution:                                                                 *
  *                                                                           *
  * load("simplex");                                                          *
- * minimize_sx(x, [y>=x-1, y>=-x-1, y<=x+1, y<=1-x, y=x/2]);                 *
+ * minimize_lp(x, [y>=x-1, y>=-x-1, y<=x+1, y<=1-x, y=x/2]);                 *
  * => [-3/2, [x=-2/3, y=-1/3]]                                               *
  *                                                                           *
  *                                                                           *
  * 2) If any variable is known to be positive, you should add an optional    *
- *    argument to minimize_sx/maximize_sx.                                   *
+ *    argument to minimize_lp/maximize_lp.                                   *
  *    We want to maximize x+y subject to x>=0, y>=0, y<=-x/2+3, y<=-x+4.     *
  *                                                                           *
  * Solution:                                                                 *
  *                                                                           *
- * maximize_sx(x+y, [y<=-x/2+3, y<=-x+4], [x, y])                            *
+ * maximize_lp(x+y, [y<=-x/2+3, y<=-x+4], [x, y])                            *
  * => [4, [x = 2, y = 2]]                                                    *
  *                                                                           *
  *****************************************************************************/
 
-define_variable(nonegative_sx,   false, boolean,
+define_variable(nonegative_lp,   false, boolean,
                "Assume all variables are nonegative!")$
-define_variable(return_input_sx, false, boolean,
+define_variable(return_input_lp, false, boolean,
                "Return the input to linear program, not solution!")$
 
 /*****************************************************************************
  *                                                                           *
- * The minimize_sx function.                                                 *
+ * The minimize_lp function.                                                 *
  *                                                                           *
  *****************************************************************************/
 
-minimize_sx(target, constraints, [pozitive]) := block(
+minimize_lp(target, constraints, [pozitive]) := block(
   [var : [], A, b, c, inequalities:0, count, eq, t:expand(target), sol, s,
    nonpozitive : 0, j, tmpvar, keepfloat:true],
 
@@ -69,7 +69,7 @@ minimize_sx(target, constraints, [pozitive]) := block(
 
   if length(pozitive)>0 and listp(pozitive[1]) then pozitive : pozitive[1],
 
-  if nonegative_sx=true then
+  if nonegative_lp=true then
     pozitive : copylist(var),
 
   for v in var do
@@ -132,7 +132,7 @@ minimize_sx(target, constraints, [pozitive]) := block(
   if not(floatp_sx(t)) then
     error("Error: cost funtion not linear in constrained variables."),
 
-  if return_input_sx then return([A, b, c]),
+  if return_input_lp then return([A, b, c]),
 
 /*******************************************************************
  * Solve the linear program                                        *
@@ -167,8 +167,8 @@ floatp_sx(x) := block(
   floatnump(xx)
 )$
 
-maximize_sx(target, constraints, [pozitive]) := block(
-  [sol : apply(minimize_sx, append([-target], [constraints], pozitive))],
+maximize_lp(target, constraints, [pozitive]) := block(
+  [sol : apply(minimize_lp, append([-target], [constraints], pozitive))],
   if not(listp(sol)) then sol
   else [-sol[1], sol[2]]
 )$
