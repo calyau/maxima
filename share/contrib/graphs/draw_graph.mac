@@ -35,7 +35,7 @@ circular_positions(G) := block(
 
 write_file(G) := block(
   [display2d:false, file, e],
-  file : openw(gp_file_in),
+  file : openw(sunlisp(gp_file_in)),
   printf(file, "graph {"),
   for e in edges(G) do (
     printf(file, "~s -- ~s~%", e[1], e[2])

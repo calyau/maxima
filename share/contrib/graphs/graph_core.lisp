@@ -1814,4 +1814,5 @@
 (defun $temp_filename (file)
   (unless ($stringp file)
     ($error "Argument to `temp_filename' is not a string"))
-  (plot-temp-file ($concat file)))
+  (plot-temp-file (maybe-invert-string-case (symbol-name (stripdollar file)))))
+
