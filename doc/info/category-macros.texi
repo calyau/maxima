@@ -14,10 +14,10 @@ Categories:
 \name\
 @end ifinfo
 @ifhtml
-@ref{Category: \name\}
 @html
 &sdot;
 @end html
+@ref{Category: \name\}
 @end ifhtml
 @end macro
 
