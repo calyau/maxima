@@ -29,10 +29,6 @@
 
 ($put '$graphs 1.0 '$version)
 
-(format t "Loading graph theory package 'graphs', version ~a.~%"
-	($get '$graphs '$version))
-
-
 (defstruct (graph
 	     (:print-function
 	      (lambda (stru strm depth)
