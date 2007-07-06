@@ -411,7 +411,7 @@
      (setq temp (mapcar #'noterms tppl))
      (setq tppl (mapcar #'(lambda (x y) (list x y))
 			temp tppl))
-     (setq tppl (bbsort tppl (quote (lambda(x y) (> (car x) (car y))))))
+     (setq tppl (bbsort tppl #'(lambda(x y) (> (car x) (car y)))))
      (setq tppl (mapcar #'cadr tppl))
      skip (setq small1 (car tppl))
      (setq small2 (cadr tppl))
