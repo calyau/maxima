@@ -6,14 +6,12 @@
 @node Introduction to numericalio, Functions and Variables for numericalio, numericalio, numericalio
 @section Introduction to numericalio
 
-@code{numericalio} is a collection of functions to read and write data files.
-The entire file is read to construct one object;
-partial reads are not supported.
+@code{numericalio} is a collection of functions to read and write data files and streams.
 
-It is assumed that each item to read or write is atomic:
+It is assumed that each item to read or write is an atom:
 an integer, float, bigfloat, string, or symbol,
 and not a rational or complex number or any other kind of nonatomic expression.
-These functions may attempt to do something sensible faced with nonatomic expressions,
+The @code{numericalio} functions may attempt to do something sensible faced with nonatomic expressions,
 but the results are not specified here and subject to change.
 
 Atoms in both input and output files have the same format as
@@ -27,6 +25,8 @@ No continuation character (to join broken lines) is recognized.
 @var{separator_flag} tells which character separates elements.
 It is an optional argument for all read and write functions.
 
+@subsection Separator flag values for input
+
 For input, these values of @var{separator_flag} are recognized:
 @code{comma} for comma separated values,
 @code{pipe} for values separated by the vertical bar character @code{|},
@@ -37,14 +37,18 @@ If the file name ends in @code{.csv} and @var{separator_flag} is not specified,
 If the file name ends in something other than @code{.csv} and @code{separator_flag} is not specified,
 @code{space} is assumed.
 
-For output, the same four flags are recognized as for input,
-and also @code{tab}, for values separated by the tab character.
-
 In input, multiple successive space and tab characters count as a single separator.
 However, multiple comma, pipe, or semicolon characters are significant.
 Successive comma, pipe, or semicolon characters (with or without intervening spaces or tabs)
 are considered to have @code{false} between the separators.
 For example, @code{1234,,Foo} is treated the same as @code{1234,false,Foo}.
+
+@subsection Separator flag values for output
+
+For output, @code{tab}, for values separated by the tab character,
+is recognized as a value of @var{separator_flag},
+as well as @code{comma}, @code{pipe}, @code{semicolon}, and @code{space}.
+
 In output, @code{false} atoms are written as such;
 a list @code{[1234, false, Foo]} is written @code{1234,false,Foo},
 and there is no attempt to collapse the output to @code{1234,,Foo}.
@@ -54,7 +58,10 @@ and there is no attempt to collapse the output to @code{1234,,Foo}.
 
 @deffn {Function} read_matrix (@var{file_name})
 @deffnx {Function} read_matrix (@var{file_name}, @var{separator_flag})
-Reads the file @var{file_name} and returns its entire content as a matrix.
+@deffnx {Function} read_matrix (@var{S})
+@deffnx {Function} read_matrix (@var{S}, @var{separator_flag})
+
+Reads the file @var{file_name} or file stream @var{S} and returns its entire content as a matrix.
 If @var{separator_flag} is not specified, the file is assumed space-delimited.
 
 @code{read_matrix} infers the size of the matrix from the input data.
@@ -65,11 +72,16 @@ If some lines have different lengths, @code{read_matrix} complains.
 
 @deffn {Function} read_lisp_array (@var{file_name}, @var{A})
 @deffnx {Function} read_lisp_array (@var{file_name}, @var{A}, @var{separator_flag})
+@deffnx {Function} read_lisp_array (@var{S}, @var{A})
+@deffnx {Function} read_lisp_array (@var{S}, @var{A}, @var{separator_flag})
+
+Reads the file @var{file_name} or file stream @var{S} and returns its entire content as a Lisp array.
+If @var{separator_flag} is not specified, the file is assumed space-delimited.
 
 @code{read_lisp_array} requires that the array
 be declared by @code{make_array} before calling
 the read function. (This obviates the need to infer the array 
-dimensions, which could be a hassle for arrays with multiple dimensions.)
+dimensions, which could be a problem for arrays with multiple dimensions.)
 
 @code{read_lisp_array} does not check to see that the 
 input file conforms in some way to the array dimensions; the input
@@ -79,6 +91,11 @@ is read as a flat list, then the array is filled using @code{fillarray}.
 
 @deffn {Function} read_maxima_array (@var{file_name}, @var{A})
 @deffnx {Function} read_maxima_array (@var{file_name}, @var{A}, @var{separator_flag})
+@deffnx {Function} read_maxima_array (@var{S}, @var{A})
+@deffnx {Function} read_maxima_array (@var{S}, @var{A}, @var{separator_flag})
+
+Reads the file @var{file_name} or file stream @var{S} and returns its entire content as a Maxima array.
+If @var{separator_flag} is not specified, the file is assumed space-delimited.
 
 @code{read_maxima_array} requires that the array
 be declared by @code{array} before calling
@@ -93,6 +110,11 @@ is read as a flat list, then the array is filled using @code{fillarray}.
 
 @deffn {Function} read_hashed_array (@var{file_name}, @var{A})
 @deffnx {Function} read_hashed_array (@var{file_name}, @var{A}, @var{separator_flag})
+@deffnx {Function} read_hashed_array (@var{S}, @var{A})
+@deffnx {Function} read_hashed_array (@var{S}, @var{A}, @var{separator_flag})
+
+Reads the file @var{file_name} or file stream @var{S} and returns its entire content as a hashed array.
+If @var{separator_flag} is not specified, the file is assumed space-delimited.
 
 @code{read_hashed_array} treats the first item on a line as a
 hash key, and associates the remainder of the line (as a list) with the key.
@@ -104,6 +126,11 @@ Lines need not have the same numbers of elements.
 
 @deffn {Function} read_nested_list (@var{file_name})
 @deffnx {Function} read_nested_list (@var{file_name}, @var{separator_flag})
+@deffnx {Function} read_nested_list (@var{S})
+@deffnx {Function} read_nested_list (@var{S}, @var{separator_flag})
+
+Reads the file @var{file_name} or file stream @var{S} and returns its entire content as a nested list.
+If @var{separator_flag} is not specified, the file is assumed space-delimited.
 
 @code{read_nested_list} returns a list which has a sublist for each
 line of input. Lines need not have the same numbers of elements.
@@ -113,16 +140,20 @@ Empty lines are @i{not} ignored: an empty line yields an empty sublist.
 
 @deffn {Function} read_list (@var{file_name})
 @deffnx {Function} read_list (@var{file_name}, @var{separator_flag})
+@deffnx {Function} read_list (@var{S})
+@deffnx {Function} read_list (@var{S}, @var{separator_flag})
 
-@code{read_list} reads all input into a flat list.
-@code{read_list} ignores end-of-line characters.
+Reads the file @var{file_name} or file stream @var{S} and returns its entire content as a flat list.
+If @var{separator_flag} is not specified, the file is assumed space-delimited.
 
 @end deffn
 
 @deffn {Function} write_data (@var{X}, @var{file_name})
 @deffnx {Function} write_data (@var{object}, @var{file_name}, @var{separator_flag})
+@deffnx {Function} write_data (@var{X}, @var{S})
+@deffnx {Function} write_data (@var{object}, @var{S}, @var{separator_flag})
 
-@code{write_data} writes the object @var{X} to the file @var{file_name}.
+@code{write_data} writes the object @var{X} to the file @var{file_name} or file stream @var{S}.
 
 @code{write_data} writes matrices in row-major form,
 with one line per row.
@@ -138,8 +169,13 @@ the associated list on each line.
 
 @code{write_data} writes a flat list all on one line.
 
-Whether @code{write_data} appends or truncates its output file
-is governed by the global variable @code{file_output_append}.
+When @code{write_data} writes to a file,
+the global variable @code{file_output_append} governs
+whether the output file is appended or truncated.
+
+No special action concerning appending or truncating
+is taken when @code{write_data} writes to a file stream.
+The file stream is not closed by @code{write_data}.
 
 @end deffn
 
