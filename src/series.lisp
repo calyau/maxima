@@ -13,7 +13,7 @@
 (macsyma-module series)
 
 (declare-top (special var *n *a *m *c *index $cauchysum *gcd*
-		      nn* dn* $ratsimpexpons *infsumsimp
+		      nn* dn* $ratsimpexpons *infsumsimp *roots *failures
 		      *ratexp splist *var usexp $verbose ans *trigred
 		      *form indl *noexpand $ratexpand))
 
@@ -148,6 +148,14 @@
                  (t (m// n d))))
             ((not (equal 1 (setq *gcd* (ggcd (nconc (exlist n) (exlist d))))))
              (sratsubst *gcd* n d))
+
+	    ; rational expansion theorem for distinct roots
+	    ((and (poly? n var)
+		  (poly? d var)
+		  (> ($hipow d var) ($hipow n var))
+		  (has-distinct-nonzero-roots-p d var))
+	     (expand-distinct-roots n d))
+
             ((and (equal n 1)
                 (prog2 (setq d (let (($ratfac t))
                               (ratdisrep ($rat (factor d) var))))
@@ -161,13 +169,93 @@
              (m// (srbinexpnd (cdr ans)) (cdr (assoc 'cc (cdr ans) :test #'eq))))
             (t
              (and *ratexp (throw 'psex nil))
-             (if (not (eq (caar d) 'mtimes)) (ratexand1 n d))
-             (do ((p (cdr d) (cdr p)))
+             (if (not (eq (caar d) 'mtimes)) 
+		 (ratexand1 n d)
+	       (do ((p (cdr d) (cdr p)))	; denom is a product
                ((null p) (ratexand1 n d))
+		 ; look for power of var (zero root) as term of denom
                (cond ((or (eq (car p) var)
                         (and (mexptp (car p)) (eq (cadaar p) var)))
                     (return (m* (sratexpnd n (meval (div* d (car p))))
-				(list '(mexpt) (car p) -1))))))))))
+				    (list '(mexpt) (car p) -1)))))))))))
+
+; is a sum with index and bounds from psp2form
+(defun psp2formp (exp)
+  (and (listp exp) 
+       (listp (car exp))
+       (eq (caar exp) '%sum)
+       (eq (caddr exp) *index)
+       (eq (cadddr exp) 0)
+       (eq (cadr (cdddr exp)) '$inf)))
+
+; turns (%sum ...) + (%sum ...) + (%sum ...)
+; into   %sum ... + ... + ...
+(defun psp2foldsum (exp)
+  (and $verbose
+       (prog2 (mtell "preparing to fold sums~%")
+	   (show-exp exp)))
+  (if (and (eq (caar exp) 'mplus)
+	   (every #'(lambda (e) 
+		      (or (psp2formp e)
+			  (and (mtimesp e)
+			       (psp2formp (caddr e)))))
+		  (cdr exp)))
+      (list '(%sum) (m+l (mapcar #'(lambda (e)
+				     (if (eq (caar e) 'mtimes) 
+					 (m* (cadr e) (cadr (caddr e)))
+				       (cadr e)))
+				 (cdr exp)))
+	    *index 0 '$inf)
+    exp))
+
+; solve returns a list: (soln mult soln mult ...)
+; distinct-nonzero-roots-p returns true if every
+;  soln is not nonzero and every mult is 1
+(defun distinct-nonzero-roots-p (roots)
+  (or (null roots)
+      (and (not (zerop1 (caddar roots)))	; root must not be zero
+	   (eq 1 (cadr roots))			; multiplicity of root must be one
+	   (distinct-nonzero-roots-p (cddr roots)))))
+
+; returns t if polynomial poly in variable var has all distinct roots
+(defun has-distinct-nonzero-roots-p (poly var)
+  (let ((*roots nil)
+	(*failures nil))
+    (solve poly var 1)
+    (cond (*failures nil)
+	  ((distinct-nonzero-roots-p *roots) t)
+	  (t nil))))
+
+; Rational Expansion Theorem for Distinct Roots
+; Graham, Knuth, Patashnik, "Concrete Math" 2nd ed, p 340
+; 
+; If R(z) = P(z)/Q(z), where Q(z) = q0*(1-r_1*z)*...*(1-r_l*z) and the
+; numbers (r_1 ... r_l) are distinct, and if P(z) is a polynomial of degree less
+; than l, then
+;  [z^n]R(z) = a_1*r_1^n + ... + a_l*r_l^n,  where a_k = -r_k*P(1/r_k)/Q'(1/r_k)
+(defun expand-distinct-roots (num den)
+  (let ((*roots nil)
+	(*failures nil))
+    (solve den var 1)
+    (cond (*failures (error "couldn't solve"))
+	  ((distinct-nonzero-roots-p *roots)
+	   (psp2form (m+l (mapcar #'(lambda (r) 
+				      (and $verbose
+					   (prog2
+					       (mtell "for root:~%")
+					       (show-exp r)
+					       (mtell "numerator at root =~%")
+					       (show-exp (maxima-substitute r var num))
+					       (mtell "first derivative of denominator at root =~%")
+					       (show-exp (maxima-substitute r var ($diff den var)))))
+				      (m* -1
+					  (m// 1 r)
+					  (maxima-substitute r var num)
+					  (m// 1 (maxima-substitute r var ($diff den var)))
+					  (m^ (m// 1 r) *index)))
+				  (mapcar #'caddr (deletmult *roots))))
+		     *index 0))
+	  (t (error "roots are not distinct~%")))))
 
 (defun ratexand1 (n d)
   (and $verbose
@@ -175,17 +263,21 @@
 	   (show-exp (list '(mquotient) n d))
 	 (terpri)))
   (funcall #'(lambda (*ratexp) 
-	       (m+l (mapcar #'ratexp
-			    (funcall #'(lambda (l)
+	       (let ((l ($partfrac (div* n d) var)))
 					 (cond ((eq (caar l) 'mplus)
 						(and $verbose
-						     (mtell "which is ")
-						     (show-exp l))
-						(cdr l))
+			     (prog2 (mtell "which is ~%")
+				 (show-exp l)))
+			(psp2foldsum
+			 (m+l (mapcar #'ratexp
+				      (cdr l)))))
+		       ((poly? n var)
+			(and $verbose
+			     (mtell "Partial fraction expansion failed, expanding denominator only~%"))
+			(m* n (ratexp (m// 1 d))))
 					       (t (throw 'psex
 						    '(err (mtext)
-						      "Partial fraction expansion failed")))))
-				     ($partfrac (div* n d) var)))))
+				       "Partial fraction expansion failed"))))))
 	   t))
 
 (defun sratsubst (gcd num den)
