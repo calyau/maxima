@@ -55,6 +55,25 @@ Pour résoudre le problème:
      GUI pourrait apparaître comme "Tcl/Tk" (c'est le nom de la boite à outils de
      la GUI pour xmaxima)
 
+
+Prévention de l'Exécution des Données (PED) 
+------------------------------------------- 
+
+Il arrive que non seulement l'interface graphique de Maxima mais même Maxima 
+en ligne de commandes ne fonctionne pas (maxima.bat se lance et quitte 
+aussitôt).  Le problème vient très probablement de la PED de Windows. Quelques 
+implémentations de LISP exécutent du code dans des secteurs de données de la 
+mémoire. La PED de Windows le voit et le bloque (car certains programmes 
+malveillants exécutent aussi du code dans des secteurs de données). 
+
+Solution : 
+
+Inclure le chemin complet du programme exécutable Maxima, par exemple : 
+C:\Program Files\Maxima-5.12.0\lib\maxima\5.12.0\binary-gcl\maxima.exe 
+dans la liste des exceptions PED 
+(Panneau de configuration - > Système - > Avancé - > Performances - > PED) 
+
+
 Espace d'environnement insuffisant
 ----------------------------------
 

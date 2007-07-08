@@ -6,4 +6,11 @@
    lesen Sie bitte in der Liesmich-Datei den 
    Abschnitt über die Firewall.
 
+3. Falls sowohl Maxima GUI als auch 
+   Kommandozeilen-Maxima nicht ausgeführt 
+   werden können, lesen Sie den Abschnitt
+   über "Datenausführungsverhinderung" (DEP) 
+   in der Readme-Datei.
+
+
 

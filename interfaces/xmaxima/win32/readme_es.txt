@@ -57,6 +57,24 @@ Para resolver el problema:
     xmaxima.
 
 
+Prevención en la ejecución de datos (DEP)
+-----------------------------------------
+
+Algunas veces no sólo la interfaz gráfica de Maxima sino también la
+interfaz en línea de comandos pueden no trabajar  (maxima.bat inicia y
+termina inmediatamente). Probablemente el problema es causado por el sistema
+DEP de Windows. Algunas implementaciones de Lisp ejecutan código en áreas
+de datos en memoria. El sistema DEP de Windows bloquea estos códigos
+(debido a que algunos programas maliciiosos ejecutan código en éstas
+áreas también)
+
+Solución:
+
+Incluya la ruta completa del ejecutable de Maxima, por ejemplo:
+C:\Program Files\Maxima-5.12.0\lib\maxima\5.12.0\binary-gcl\maxima.exe
+en la lista de excepciones del sistema DEP:
+(Panel de Control -> Sistema -> Avanzado -> Desempeño -> DEP)
+
 
 Mensaje de fuera de espacio de entorno
 --------------------------------------

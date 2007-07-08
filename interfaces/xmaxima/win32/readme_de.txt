@@ -59,6 +59,25 @@ Zur Lösung des Problems:
     (der Name des GUI-Werkzeugsatzes für xmaxima).
 
 
+Datenausführungsverhinderung (DEP)
+----------------------------------
+
+In einigen Fällen funktioniert weder Maxima GUI noch 
+Kommandozeilen-Maxima (maxima.bat startet und beendet sich sofort wieder).
+Sehr wahrscheinlich hängt das Problem mit Windwos DEP zusammen.
+Einige Lisp-Implementierungen führen Code in Datenbereichen des 
+Arbeitsspeichers aus. Windows DEP bemerkt und blockiert dies (weil
+einige schädliche Programme ebenfalls Code in Datenbereichen ausführen).
+
+Lösung:
+
+   Fügen Sie den vollen Programmpfad von Maxima (z.B. 
+   C:\Programme\Maxima-5.12.0\lib\maxima\5.12.0\binary-gcl\maxima.exe)
+   in die Liste von DEP-Ausnahmen ein  
+   (Systemsteuerung -> System ->  Erweitert -> Systemleistung "Einstellung" 
+    -> Datenausführungsverhinderung)
+
+
 Zu wenig Umgebungsspeicher
 --------------------------
 
