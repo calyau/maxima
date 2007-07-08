@@ -10,13 +10,13 @@
 
 @section Introduction to contrib_ode 
 
-MAXIMA's ordinary differential equation (ODE) solver @code{ode2} solves
+Maxima's ordinary differential equation (ODE) solver @code{ode2} solves
 elementary linear ODEs of first and second order.  The function
 @code{contrib_ode} extends @code{ode2} with additional methods for linear
 and non-linear first order ODEs and linear homogeneous second order ODEs.  
 The code is still under development and the calling sequence may change
 in future releases.  Once the code has stabilized it may be
-moved from the contib directory and integrated into MAXIMA.
+moved from the contib directory and integrated into Maxima.
 
 This package must be loaded with the command @code{load('contrib_ode)}
 before use.
@@ -39,17 +39,17 @@ an explicit solution for the dependent variable,
 an implicit solution for the dependent variable,
 
 @item
-a parametric solution in terms of variable %t, or
+a parametric solution in terms of variable @code{%t}, or
 
 @item
-a tranformation into another ODE in variable %u.
+a tranformation into another ODE in variable @code{%u}.
 
 @end itemize
 
 @code{%c} is used to represent the constant of integration for first order equations.
 @code{%k1} and @code{%k2} are the constants for second order equations.  
-If contrib_ode
-cannot obtain a solution for whatever reason, it returns false, after
+If @code{contrib_ode}
+cannot obtain a solution for whatever reason, it returns @code{false}, after
 perhaps printing out an error message.
 
 It is necessary to return a list of solutions, as even first order
@@ -78,7 +78,7 @@ non-linear ODEs can have multiple solutions.  For example:
 (%o4)                        factor
 @end example
 
-Nonlinear odes can have singular solutions without constants of
+Nonlinear ODEs can have singular solutions without constants of
 integration, as in the second solution of the following example:
 
 @c ===beg===
@@ -107,8 +107,8 @@ integration, as in the second solution of the following example:
 @end example
 
 
-The following ode has two parametric solutions in terms of the dummy
-variable %t.  In this case the parametric solutions can be manipulated
+The following ODE has two parametric solutions in terms of the dummy
+variable @code{%t}.  In this case the parametric solutions can be manipulated
 to give explicit solutions.
 
 @c ===beg===
@@ -167,7 +167,7 @@ The following example (Kamke 1.112) demonstrates an implicit solution.
  
 
 The following Riccati equation is transformed into a linear
-second order ODE in the variable %u.  MAXIMA is unable to
+second order ODE in the variable @code{%u}.  Maxima is unable to
 solve the new ODE, so it is returned unevaluated.
 @c ===beg===
 @c load('contrib_ode)$
@@ -197,16 +197,16 @@ solve the new ODE, so it is returned unevaluated.
 @end example
 
 
-For first order ODEs contrib_ode calls @code{ode2}.  It then tries the
+For first order ODEs @code{contrib_ode} calls @code{ode2}.  It then tries the
 following methods: factorization, Clairault, Lagrange, Riccati,
 Abel and Lie symmetry methods.  The Lie method is not attempted
 on Abel equations if the Abel method fails, but it is tried
 if the Riccati method returns an unsolved second order ODE.
 
-For second order ODEs contrib_ode calls @code{ode2} then @code{odelin}.
+For second order ODEs @code{contrib_ode} calls @code{ode2} then @code{odelin}.
 
 Extensive debugging traces and messages are displayed if the command
-put('contrib_ode,true,'verbose) is executed.
+@code{put('contrib_ode,true,'verbose)} is executed.
 
 @node Functions and Variables for contrib_ode, Possible improvements to contrib_ode, Introduction to contrib_ode, contrib_ode
 @section Functions and Variables for contrib_ode
@@ -299,26 +299,26 @@ zero if @var{soln} is a solution of @var{eqn}.
 
 @end deffn
 
-@defvr {Global variable} @code{method}
+@defvr {System variable} @code{method}
 
 The variable @code{method} is set to the successful solution
 method. 
 
 @end defvr
 
-@defvr {variable} @code{%c}
+@defvr {Variable} @code{%c}
 
-@code{%c} is the integration constant for first order ODEs
+@code{%c} is the integration constant for first order ODEs.
 
 @end defvr
 
-@defvr {variable} @code{%k1}
+@defvr {Variable} @code{%k1}
 
 @code{%k1} is the first integration constant for second order ODEs.
 
 @end defvr
 
-@defvr {variable} @code{%k2}
+@defvr {Variable} @code{%k2}
 
 @code{%k2} is the second integration constant for second order ODEs.
 
@@ -333,7 +333,7 @@ solutions of the hypergeometric differential equation
 
 The only use of these functions is in solutions of ODEs returned by 
 @code{odelin} and @code{contrib_ode}.  The definition and use of these 
-functions may change in future releases of maxima.
+functions may change in future releases of Maxima.
 
 See also @code{gauss_b}, @code{dgauss_a} and @code{gauss_b}.
 
@@ -344,11 +344,11 @@ See @code{gauss_a}.
 @end deffn
 
 @deffn {Function} dgauss_a (@var{a}, @var{b}, @var{c}, @var{x})
-The derivative with respect to x of @code{gauss_a(a,b,c,x)}.
+The derivative with respect to @var{x} of @code{gauss_a(@var{a}, @var{b}, @var{c}, @var{x})}.
 @end deffn
 
 @deffn {Function} dgauss_b (@var{a}, @var{b}, @var{c}, @var{x})
-The derivative with respect to x of @code{gauss_b(a,b,c,x)}.
+The derivative with respect to @var{x} of @code{gauss_b(@var{a}, @var{b}, @var{c}, @var{x})}.
 @end deffn
 
 
@@ -359,7 +359,7 @@ Kummer's M function, as defined in Abramowitz and Stegun,
 
 The only use of this function is in solutions of ODEs returned by 
 @code{odelin} and @code{contrib_ode}.  The definition and use of this 
-function may change in future releases of maxima.
+function may change in future releases of Maxima.
 
 See also @code{kummer_u}, @code{dkummer_m} and @code{dkummer_u}.
 @end deffn
@@ -373,11 +373,11 @@ See @code{kummer_m}.
 @end deffn
 
 @deffn {Function} dkummer_m (@var{a}, @var{b}, @var{x})
-The derivative with respect to x of @code{kummer_m(a,b,x)}.
+The derivative with respect to @var{x} of @code{kummer_m(@var{a}, @var{b}, @var{x})}.
 @end deffn
 
 @deffn {Function} dkummer_u (@var{a}, @var{b}, @var{x})
-The derivative with respect to x of @code{kummer_u(a,b,x)}.
+The derivative with respect to @var{x} of @code{kummer_u(@var{a}, @var{b}, @var{x})}.
 @end deffn
 
 
@@ -438,7 +438,7 @@ The other routines often return a single solution when multiple
   solutions exist.
 
 @item
-Some of the "solutions" from ode1_lie are overly complex and
+Some of the "solutions" from @code{ode1_lie} are overly complex and
   impossible to check.
 
 @item
@@ -452,23 +452,23 @@ There are some crashes.
 
 @enumerate
 @item
-E Kamke, Differentialgleichungen Losungsmethoden und Losungen, Vol 1,
+E. Kamke, Differentialgleichungen Losungsmethoden und Losungen, Vol 1,
     Geest & Portig, Leipzig, 1961
 
 @item
-G M Murphy, Ordinary Differential Equations and Their Solutions,
+G. M. Murphy, Ordinary Differential Equations and Their Solutions,
     Van Nostrand, New York, 1960
 
 @item
-D Zwillinger, Handbook of Differential Equations, 3rd edition,
+D. Zwillinger, Handbook of Differential Equations, 3rd edition,
     Academic Press, 1998
 
 @item
-F Schwarz, Symmetry Analysis of Abel's Equation, Studies in
+F. Schwarz, Symmetry Analysis of Abel's Equation, Studies in
     Applied Mathematics, 100:269-294 (1998)
 
 @item
-F Schwarz, Algorithmic Solution of Abel's Equation,
+F. Schwarz, Algorithmic Solution of Abel's Equation,
     Computing 61, 39-49 (1998)
 
 @item
@@ -495,11 +495,11 @@ E. S. Cheb-Terrab, T. Koloknikov,  First Order ODEs,
 @end tex
 
 @item
-G W Bluman, S C Anco, Symmetry and Integration Methods for
+G. W. Bluman, S. C. Anco, Symmetry and Integration Methods for
     Differential Equations, Springer, (2002)
 
 @item 
-M Bronstein, S Lafaille,
+M. Bronstein, S. Lafaille,
 Solutions of linear ordinary differential equations in terms
 of special functions,
 Proceedings of ISSAC 2002, Lille, ACM Press, 23-28. 
