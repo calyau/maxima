@@ -1,0 +1,88 @@
+@c Language=Russian
+@c Encoding=CP1251
+@c File=augmented_lagrangian.texi 
+@c OriginalRevision=1.8
+
+@menu
+* Функции и переменные пакета augmented_lagrangian::
+@end menu
+
+@node Функции и переменные пакета augmented_lagrangian,  , Пакет augmented_lagrangian, Пакет augmented_lagrangian
+@section Функции и переменные пакета augmented_lagrangian
+
+@deffn {Функция} augmented_lagrangian_method (@var{FOM}, @var{xx}, @var{C}, @var{yy})
+@deffnx {Функция} augmented_lagrangian_method (@var{FOM}, @var{xx}, @var{C}, @var{yy}, optional_args)
+
+Возвращает приближенный минимум выражения @var{FOM}
+по переменным @var{xx}, при связях @var{C}, равных нулю.
+@var{yy} -- список затравочных начальных значений @var{xx}.
+Для нахождения минимума используется метод расширенного лагранжиана (см. [1] и [2]).
+
+@code{optional_args} -- дополнительные аргументы,
+задаваемые в форме @code{@var{symbol} = @var{value}}.
+Допустимы следующие дополнительные аргументы:
+
+@table @code
+@item niter
+Число итераций алгоритма расширенного лагранжиана
+@item lbfgs_tolerance
+Допустимое отклонение для LBFGS
+@item iprint
+Параметр IPRINT (список двух целых чисел, которые управляют уровнем вывода) для LBFGS
+@item %lambda
+Начальное значение @code{%lambda} для вычисления расширенного лагранжиана
+@end table
+
+Данная реализация минимизирует расширенный лагранжиан методом 
+BFGS с ограничением памяти (LBFGS), являющимся квази-нюьтоновым алгоритмом.
+
+Команда @code{load(augmented_lagrangian)} загружает данную функцию.
+
+См. также @code{lbfgs}.
+
+Ссылки:
+
+@ifnottex
+[1] @url{http://www-fp.mcs.anl.gov/otc/Guide/OptWeb/continuous/constrained/nonlinearcon/auglag.html}
+
+[2] @url{http://www.cs.ubc.ca/spider/ascher/542/chap10.pdf}
+@end ifnottex
+@tex
+[1] \texttt{http://\-www-fp.mcs.anl.gov/\-otc/\-Guide/\-OptWeb/\-continuous/\-constrained/\-nonlinearcon/\-auglag.html}
+
+[2] \texttt{http://\-www.cs.ubc.ca/\-spider/\-ascher/\-542/\-chap10.pdf}
+@end tex
+
+Пример:
+
+@c ===beg===
+@c load (lbfgs);
+@c load (augmented_lagrangian);
+@c FOM: x^2 + 2*y^2;
+@c xx: [x, y];
+@c C: [x + y - 1];
+@c yy: [1, 1];
+@c augmented_lagrangian_method(FOM, xx, C, yy, iprint=[-1,0]);
+@c ===end===
+@example
+(%i1) load (lbfgs);
+(%o1)     /maxima/share/lbfgs/lbfgs.mac
+(%i2) load (augmented_lagrangian);
+(%o2) 
+   /maxima/share/contrib/augmented_lagrangian.mac
+(%i3) FOM: x^2 + 2*y^2;
+                               2    2
+(%o3)                       2 y  + x
+(%i4) xx: [x, y];
+(%o4)                        [x, y]
+(%i5) C: [x + y - 1];
+(%o5)                      [y + x - 1]
+(%i6) yy: [1, 1];
+(%o6)                        [1, 1]
+(%i7) augmented_lagrangian_method(FOM, xx, C, yy, iprint=[-1,0]);
+(%o7) [[x = 0.66665984108002, y = 0.33334027245545], 
+                                 %lambda = [- 1.333337940892525]]
+@end example
+
+@end deffn
+
