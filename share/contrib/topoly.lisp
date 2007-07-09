@@ -16,6 +16,9 @@
 ;;  along with this program; if not, write to the Free Software 		 
 ;;  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
+(defmacro opapply (op args)
+  `(simplify (cons (list ,op) ,args)))
+
 ;; The next three functions convert max and min to abs functions.
 
 (defun max-to-abs (e)
@@ -28,29 +31,21 @@
   (cond (($mapatom e) e)
 	((op-equalp e '$max) (max-to-abs (mapcar 'convert-from-max-min-to-abs (margs e))))
 	((op-equalp e '$min) (min-to-abs (mapcar 'convert-from-max-min-to-abs (margs e))))
-	(t (simplifya `((,(mop e)) ,@(mapcar 'convert-from-max-min-to-abs (margs e))) nil))))
+	(t (opapply (mop e) (mapcar 'convert-from-max-min-to-abs (margs e))))))
 
 (defun maxima-variable-p (e)
   (or (symbolp e) ($subvarp e)))
 
-;; Orphaned, but might still be useful.
-
-(defun suppress-multiple-zeros (q)
-  (let ((acc 1) ($factorflag nil))
-    (setq q ($sqfr q))
-    (setq q (if (mtimesp q) (margs q) (list q)))
-    (dolist (qi q acc)
-      (setq acc (mul acc (cond ((mnump qi) (if (eq t (meqp qi 0)) 0 1))
-			       ((mexptp qi) (nth 1 qi))
-			       (t qi)))))))
-  	   
+(defun list-subst (l p)
+  (if (null l) p (list-subst (rest l) ($substitute (first l) p))))
+ 
 ;; to_poly(p,vars) returns a polynomial in the variables 'vars' that has a zero whenever
 ;; p has a zero. When 1 is a member of vars, constant terms, such as sqrt(5) also get
 ;; converted to polynomial form. The value of vars defaults to all variables including 
 ;; constants.
 
 (defun $to_poly (p &optional (vars 'convert-all-vars))
-  (let (($listconstvars t) (subs) (q) (convert-cnst nil) (nv `(($set)))) ;; new variables
+  (let (($listconstvars t) (q) (convert-cnst nil))
 
     (if (eq vars 'convert-all-vars) (setq vars ($cons 1 ($listofvars p))))
     
@@ -64,75 +59,254 @@
     (setq p (meqhk p))
     (setq q ($ratdenom p))
     (if (not ($constantp q)) (mtell "Assuming that ~:M " `((mnotequal) ,q 0)))
-    (setq p ($ratdisrep ($ratnumer p))) ;;($radcan p))))
-
+   
     ;; It's OK to send every expression through convert-from-max-min-to-abs.
     ;; I put in the conditional to skip the ratsimp for expressions that don't
     ;; involve max or min.
 
     (setq p (if ($freeof '$max '$min p) p ($ratsimp (convert-from-max-min-to-abs p))))
     
-    (setq p (to-polynomial p nil vars convert-cnst nil))
-    (setq q (third p))
+    (setq p (to-polynomial p vars convert-cnst))
     `((mlist) ((mlist) ,(first p) ,@(second p)) ((mlist) ,@(third p)))))))
    
-(defun to-polynomial (p acc vars convert-cnst inequal)
-  (cond ((or (maxima-variable-p p)
-	     (mnump p)
-	     (and ($emptyp vars) (not convert-cnst))
-	     (and (not ($constantp p)) ($lfreeof vars p))
-	     (and ($constantp p) (not convert-cnst)))
-	 (list p acc inequal))
-	     
-	((mexptp p)
-	 (let ((n (nth 2 p)) (b (nth 1 p)) (nv))
-	   (cond ((integerp n) 
-		  (setq b (to-polynomial b nil vars convert-cnst nil))
-		  (setq acc (append (second b) acc))
-		  (setq inequal (append (third b) inequal))
-		  (setq b (first b))
-		  (if (> n 0) (list (power b n) acc inequal) 
-		    (merror "Unable to convert to polynomial form")))
-		 
+(defun to-polynomial (p vars convert-cnst)
+  (let ((n) (b) (nv) (acc nil) (subs nil) (pk) (q) (inequal) (np-subs))
+    (cond ((or (maxima-variable-p p)
+	       (mnump p)
+	       (and ($emptyp vars) (not convert-cnst))
+	       (and (not ($constantp p)) ($lfreeof vars p))
+	       (and ($constantp p) (not convert-cnst)))
+	   (list p nil nil nil))
+	
+	  ((mexptp p)
+	   (setq n (nth 2 p))
+	   (setq b (nth 1 p)) 
+	   (cond ((and (integerp n) (> n 0))
+		  (list p nil nil nil))
+
 		 (($ratnump n)
-		  (setq b (to-polynomial b nil vars convert-cnst nil))
-		  (setq acc (append (second b) acc))
-		  (setq inequal (append (third b) inequal))
+		  (setq b (to-polynomial b vars convert-cnst))
+		  (setq subs (second b))
+		  (setq inequal (third b))
+		  (setq np-subs (fourth b))
 		  (setq b (first b))
 		  (setq nv (gentemp "$%G"))
-		  (setq inequal (cons `((mleqp) (($carg) ,nv) ((mtimes) ,n $%pi)) inequal))
-		  (setq inequal (cons `((mlessp) ((mtimes) -1 $%pi ,n) (($carg) ,nv)) inequal)) 
-		  (setq acc (cons (sub (power nv ($denom n)) (power b ($num n))) acc))
-		  (list nv acc inequal))
-		 (t (merror "Nonalgebraic argument given to 'topoly'")))))
+		  (cond ((or (mgrp n 0) (mnump b))
+			 (push (take '(mleqp) (take '($carg) nv) (mul n '$%pi)) inequal)
+			 (push (take '(mlessp) (mul -1 '$%pi n) (take '($carg) nv)) inequal)
+			 (push (take '(mequal) (power b ($num n)) (power nv ($denom n))) subs)
+			 (push (take '(mequal) p nv) np-subs)
+			 (list nv subs inequal np-subs))
 
-	((op-equalp p 'mabs)
-	 (let ((b) (nv))
-	   (setq b (to-polynomial (first (margs p)) nil vars convert-cnst nil))
-	   (setq acc (append (second b) acc))
-	   (setq inequal (append (third b) inequal))
+			(t
+			 (setq n (neg n))
+			 (push (take '(mequal) 1 (mul (power nv ($denom n)) (power b ($num n)))) subs)
+			 (push (take '(mlessp) (take '($carg) nv) (mul n '$%pi)) inequal)
+			 (push (take '(mleqp) (mul -1 '$%pi n) (take '($carg) nv)) inequal)
+			 (push (take '(mnotequal) nv 0) inequal)
+			 (list nv subs inequal np-subs))))
+			 
+		 (t (merror "Nonalgebraic argument given to 'topoly'"))))
+
+	  ((op-equalp p 'mabs)
+	   (setq b (to-polynomial (first (margs p)) vars convert-cnst))
+	   (setq acc (second b))
+	   (setq inequal (third b))
+	   (setq np-subs (fourth b))
 	   (setq b (first b))
 	   (setq nv (gentemp "$%G"))
-	   (list nv (cons (sub (power nv 2) (power b 2)) acc) (cons `((mequal) (($carg) ,nv) 0) inequal))))
-	 
+	   (list nv (cons (take '(mequal) (power b 2) (power nv 2)) acc)
+		 (cons (take '(mequal) (take '($carg) nv) 0)  inequal) np-subs))
+			 
+	  ((mtimesp p)
+	   (setq acc 1)
+	   (setq p (margs p))
+	   (while p
+	     (setq pk (first p))
+	     (setq p (rest p))
+	     (setq q (to-polynomial pk vars convert-cnst))
+	     (setq acc (mul acc (first q)))
+	     (setq subs (append (second q) subs))
+	     (setq inequal (append inequal (third q)))
+	     (setq np-subs (append np-subs (fourth q)))
+	     (setq vars ($append vars ($listofvars `((mlist) ,@subs))))
+	     
+	     (setq p (mapcar #'(lambda (s) (list-subst np-subs s)) p)))
+	   (list acc subs inequal np-subs))
+
+	  ((mplusp p)
+	   (setq acc 0)
+	   (setq p (margs p))
+	   (while p
+	     (setq pk (first p))
+	     (setq p (rest p))
+	     (setq q (to-polynomial pk vars convert-cnst))
+	     (setq acc (add acc (first q)))
+	     (setq subs (append (second q) subs))
+	     (setq inequal (append (third q) inequal))
+	     (setq np-subs (append (fourth q) np-subs))
+	     (setq vars ($append vars ($listofvars `((mlist) ,@subs))))
+	     (setq p (mapcar #'(lambda (s) (list-subst np-subs s)) p)))
+	     
+	   (list acc subs inequal np-subs))
+
+	  (t (merror "Nonalgebraic argument given to 'topoly'")))))
+
+
+#|
+  Things I don't like about eliminate:
+
+(1)  eliminate([x + x*y + z-4, x+y+z-12, x^2 + y^2 + z^2=7],[x,y,z]) -> [4]
+
+Here Maxima solves for z. There are more than one solution for z, but Maxima returns
+just one solution. A user might think that there is one solution or that
+the equations are inconsistent.
+
+(2)  eliminate([x+y-1,x+y-8],[x,y]) -> Argument to `last' is empty.
+
+Here the equations are inconsistent, but we get an error (from solve) instead
+of a clear message about what happened.
+
+(3) eliminate([a],[x]) -> Can't eliminate from only one equation -- an error.  
+but eliminate([a,a],[x]) -> [a,a]. This is silly.
+
+(4) eliminate([x],[]) -> Can't eliminate from only one equation.
+but eliminate([x,x],[]) -> [x,x]. Again, this is silly.
+
+(5) elim([x^3-y^2,x^7 + y+z*p,q*q-23+ x+y,p-q,x+y+z-5],[x,y,z,p]) takes 0.3 second
+but eliminate([x^3-y^2,x^7 + y+z*p,q*q-23+ x+y,p-q,x+y+z-5],[x,y,z,p]) takes 
+a long time (I never let it run to completion). Unlike 'eliminate,' the function 'elim' 
+makes some guesses about which polynomial to use as the pivot and which variable
+to eliminate.
+|#
+
+(defun maxima-variable-p (e)
+  (or (symbolp e) ($subvarp e)))
+
+(defun require-maxima-variable (x context-string)
+  (setq x (ratdisrep x))
+  (if (maxima-variable-p x) x
+    (merror "Function ~:M expects a symbol, instead found ~:M" context-string x)))
+
+;; Simplify a polynomial equation p = 0 by 
+
+;;   (1) nonzero constant * p --> p,
+;;   (2) p^n --> p.
+
+;; If you want to use $factor instead of $sqfr, go ahead. But if you do that, you might want to
+;; locally set factorflag to false.
+
+(defun suppress-multiple-zeros (q)
+  (setq q ($sqfr q))
+  (cond ((mnump q) (if (zerop1 q) 0 1))
+	((mtimesp q) (muln (mapcar 'suppress-multiple-zeros (margs q)) t))
+	((and (mexptp q) (integerp (third q)) (> (third q) 0)) (second q))
+	(($constantp q) 1) ; takes care of things like (1 + sqrt(5)) * x --> x.
+	(t q)))
+
+;; Using eq as the "pivot," eliminate x from the list or set of equations eqs. 
+
+(defun $eliminate_using (eqs eq x)
+  (if (or ($listp eqs) ($setp eqs))
+      (progn
+	(setq eqs (mapcar #'(lambda (s) ($ratexpand (meqhk s))) (margs eqs)))
+	(setq eqs (margs (simplify (cons '($set) eqs)))))
+    (merror "The first argument to 'eliminate_using' must be a list or a set"))
+
+  (setq x (require-maxima-variable x "$eliminate_using"))
+  
+  (if (not (every #'(lambda (s) ($polynomialp s `((mlist) ,x) 
+					      `((lambda) ((mlist) s) (($freeof) ,x s)))) eqs))
+      (merror "The first argument to 'eliminate_using' must be a set or list of polynomials"))
+
+  (setq eq ($ratexpand (meqhk eq)))
+  (if (not ($polynomialp eq `((mlist) ,x) `((lambda) ((mlist) s) (($freeof) ,x s))))
+      (merror "The second argument to 'eliminate_using' must be a polynomial"))
+   
+  (setq eqs (mapcar #'suppress-multiple-zeros eqs))
+  (setq eq (suppress-multiple-zeros eq))
+  (simplify `(($set) ,@(eliminate-using eqs eq x))))
+   
+(defun eliminate-using (eqs eq x)
+  (delete 0 (mapcar #'(lambda (s) (suppress-multiple-zeros ($resultant s eq x))) eqs)))
+
+;; Return an upper bound for the total degree of the polynomial p in the variables vars.
+;; When p is fully expanded, the bound is exact.
+
+(defun degree-upper-bound (p vars)
+  (cond ((maxima-variable-p p) (if (member p vars :test #'equal) 1 0))
+
+	((mnump p) 0)
+
+	((and (mexptp p) (integerp (third p)) (> (third p) 0))
+	 (* (degree-upper-bound (nth 1 p) vars) (nth 2 p)))
+
 	((mtimesp p)
-	 (let ((z 1) (acc nil))
-	   (setq p (mapcar #'(lambda (s) (to-polynomial s nil vars convert-cnst nil)) (margs p)))
-	   (dolist (pk p)
-	     (setq z (mul z (first pk)))
-	     (setq acc (append acc (second pk)))
-	     (setq inequal (append inequal (third pk))))
-	   (list z acc inequal)))
+	 (reduce '+ (mapcar #'(lambda (s) (degree-upper-bound s vars)) (margs p))))
 
 	((mplusp p)
-	  (let ((z 0) (acc nil))
-	    (setq p (mapcar #'(lambda (s) (to-polynomial s nil vars convert-cnst nil)) (margs p)))
-	    (dolist (pk p)
-	      (setq z (add z (first pk)))
-	      (setq acc (append acc (second pk)))
-	      (setq inequal (append inequal (third pk))))
-	    (list z acc inequal)))
+	 (simplify `(($max) ,@(mapcar #'(lambda (s) (degree-upper-bound s vars)) (margs p)))))
 
-	(t (merror "Nonalgebraic argument given to 'topoly'"))))
+	((apply '$freeof (append vars (list p))) 0)
+	(t (merror "Nonpolynomial argument given to degree-upper-bound"))))
 
+(defun unk-eliminate (eqs vars &optional (pivots nil))
+   (let ((ni) (n-min nil) (xeqs `(($set))) (pivot-var) (pivot-eq) (acc `(($set))) ($ratfac nil))
+     (cond ((or (null vars) (null eqs)) (list eqs pivots))
+	   (t
 
+	    ;; The pivot is a nonconstant member of eqs with minimal total degree.
+	    ;; The  constant members of eqs get adjoined into acc -- all other  members get
+	    ;; adjoined into xeqs. Since each member of eqs has been ratexpanded,
+	    ;; the degree bound is exact.
+	    
+	    (dolist (ei eqs)
+	      (setq ei ($ratexpand (suppress-multiple-zeros ei)))
+	      (setq ni (degree-upper-bound ei vars))
+
+	      (if (and (or (null n-min) (< ni n-min)) (> ni 0))
+		  (setq n-min ni pivot-eq ei))
+	      
+	      (if (and (> ni 0) (not (equal 0 ei))) (setq xeqs ($adjoin ei xeqs)) (setq acc ($adjoin ei acc))))
+	    	    
+	    (setq xeqs (margs xeqs))
+	    (setq acc (margs acc))
+	    ;; Now we'll decide which variable to eliminate. The pivot variable
+	    ;; is the variable that has the least (but nonzero) degree in pivot-eq.
+	    
+	    (setq n-min nil)
+	    (dolist (vi vars)
+	      (setq ni (degree-upper-bound pivot-eq (list vi)))
+	      (if (and (or (null n-min) (< ni n-min)) (> ni 0))
+		  (setq pivot-var vi n-min ni)))
+	  
+	    (if (null pivot-var) (list eqs pivots)
+	      (unk-eliminate (append acc (eliminate-using xeqs pivot-eq pivot-var)) (delete pivot-var vars) 
+			     (cons pivot-eq pivots)))))))
+
+(defun $elim (eqs x)
+  (if (or ($listp eqs) ($setp eqs))
+      (progn
+	(setq eqs (mapcar #'(lambda (s) ($ratexpand (suppress-multiple-zeros (meqhk s)))) (margs eqs)))
+	(setq eqs (margs (opapply '$set eqs))))
+    (merror "The first argument to 'elim' must be a list or a set"))
+  
+  (setq x (margs (cond (($listp x) ($setify x))
+		       (($setp x) x)
+		       (t (merror "The second argument to 'elim' must be a list or a set")))))
+  
+  (setq x (mapcar #'(lambda (s) (require-maxima-variable s "$elim")) x)) 
+  
+  (setq x (opapply 'mlist x))
+  (if (not (every #'(lambda (s) ($polynomialp s x `((lambda) ((mlist) s) (($lfreeof) ,x s)))) eqs))
+      (merror "Each member of the first argument to 'elim' must be a polynomial"))
+
+  (setq x (margs x))
+  (opapply 'mlist (mapcar #'(lambda (s) (opapply 'mlist s)) (unk-eliminate eqs x)))))
+
+(defun $elim_allbut (eqs x)
+  (let (($listconstvars nil) (v))
+    (setq v ($listofvars eqs))
+    (setq x (if ($listp x) ($setify x) (take '($set) x)))
+    (setq v ($setdifference ($setify v) x))
+    ($elim eqs ($listify v))))
