@@ -1,12 +1,12 @@
-@c version 1.18
+@c version 1.21
 @menu
-* Introducci@'on al Entorno de Ejecuci@'on::   
+* Introducci@'on al entorno de ejecuci@'on::   
 * Interrupciones::  
-* Definiciones para el Entorno de Ejecuci@'on::
+* Funciones y variables para el entorno de ejecuci@'on::
 @end menu
 
-@node Introducci@'on al Entorno de Ejecuci@'on, Interrupciones, Entorno de Ejecuci@'on, Entorno de Ejecuci@'on
-@section Introducci@'on al Entorno de Ejecuci@'on
+@node Introducci@'on al entorno de ejecuci@'on, Interrupciones, Entorno de Ejecuci@'on, Entorno de Ejecuci@'on
+@section Introducci@'on al entorno de ejecuci@'on
 
 El fichero @code{maxima-init.mac} se carga autom@'aticamente cada vez que se empieza a ejecutar Maxima.
 Se puede utilizar @code{maxima-init.mac} para personalizar el entorno de Maxima. Si existe, @code{maxima-init.mac} se almacena normalmente en el directorio indicado por @code{maxima_userdir}, aunque puede estar alojado en cualquier otro directorio que est@'e al alcance de la funci@'on  @code{file_search}.
@@ -23,12 +23,12 @@ En este ejemplo, @code{setup_autoload} le dice a Maxima que cargue en memoria el
 La sentencia  @code{showtime: all} le dice a Maxima que haga una asignaci@'on a la variable @code{showtime}.
 El fichero  @code{maxima-init.mac} puede contener cualesquiera otras asignaciones o sentencias de Maxima.
 
-@node Interrupciones, Definiciones para el Entorno de Ejecuci@'on, Introducci@'on al Entorno de Ejecuci@'on, Entorno de Ejecuci@'on
+@node Interrupciones, Funciones y variables para el entorno de ejecuci@'on, Introducci@'on al entorno de ejecuci@'on, Entorno de Ejecuci@'on
 @section Interrupciones
 
 El usuario puede detener un c@'omputo que est@'e consumiendo recursos excesivos con el car@'acter ^C (control-C). La acci@'on que se sigue por defecto es la detenci@'on del c@'omputo y la impresi@'on de otro prompt. En este caso, no ser@'a posible reiniciar la tarea interrumpida.
 
-Si a la variable @code{*debugger-hook*} se le asigna @code{nil} haciendo
+Si a la variable Lisp @code{*debugger-hook*} se le asigna @code{nil} haciendo
 
 @example
 :lisp (setq *debugger-hook* nil)
@@ -40,8 +40,8 @@ entonces tras recibir ^C, Maxima entra en el depurador de Lisp y el usuario podr
 En sistemas Unix el car@'acter ^Z (control-Z) hace que Maxima deje de ejecutarse devolviendo el control al terminal del sistema. El comando @code{fg} hace que la ejecuci@'on de Maxima se reanude en el punto que lo dej@'o.
 
 
-@node Definiciones para el Entorno de Ejecuci@'on,  , Interrupciones, Entorno de Ejecuci@'on
-@section Definiciones para el Entorno de Ejecuci@'on
+@node Funciones y variables para el entorno de ejecuci@'on,  , Interrupciones, Entorno de Ejecuci@'on
+@section Funciones y variables para el entorno de ejecuci@'on
 
 @defvr {Declaraci@'on} feature
 
@@ -171,3 +171,82 @@ timedate reports current time 08:05:09 Wed, 11/02/2005 (GMT-7)
 @end example
 
 @end deffn
+
+
+@deffn {Funci@'on} absolute_real_time ()
+
+Devuelve el n@'umero de segundos transcurridos desde la medianoche
+del 1 de enero de 1900 UTC. Este valor es un n@'umero entero
+positivo.
+
+V@'eanse tambi@'en @code{elapsed_real_time} y @code{elapsed_run_time}.
+
+Ejemplo:
+
+@c ===beg===
+@c absolute_real_time ();
+@c 1900 + absolute_real_time () / (365.25 * 24 * 3600);
+@c ===end===
+@example
+(%i1) absolute_real_time ();
+(%o1)                      3385045277
+(%i2) 1900 + absolute_real_time () / (365.25 * 24 * 3600);
+(%o2)                   2007.265612087104
+@end example
+
+@end deffn
+
+@deffn {Funci@'on} elapsed_real_time ()
+
+Devuelve los segundos (incluyendo fracciones de segundo) 
+transcurridos desde que Maxima se inici@'o (o reinici@'o) la sesi@'on de
+Maxima. Este valor es un decimal en coma flotante.
+
+V@'eanse tambi@'en @code{absolute_real_time} y @code{elapsed_run_time}.
+
+Ejemplo:
+
+@c ===beg===
+@c elapsed_real_time ();
+@c expand ((a + b)^500)$
+@c elapsed_real_time ();
+@c ===end===
+@example
+(%i1) elapsed_real_time ();
+(%o1)                       2.559324
+(%i2) expand ((a + b)^500)$
+(%i3) elapsed_real_time ();
+(%o3)                       7.552087
+@end example
+
+@end deffn
+
+@deffn {Funci@'on} elapsed_run_time ()
+
+Devuelve una estimaci@'on en segundos (incluyendo fracciones de segundo) 
+durante los cuales Maxima ha estado realizando c@'alculos desde que se
+inici@'o (o reinici@'o) la sesi@'on actual. 
+Este valor es un decimal en coma flotante.
+
+V@'eanse tambi@'en @code{absolute_real_time} y @code{elapsed_real_time}.
+
+Ejemplo:
+
+@c ===beg===
+@c elapsed_run_time ();
+@c expand ((a + b)^500)$
+@c elapsed_run_time ();
+@c ===end===
+@example
+(%i1) elapsed_run_time ();
+(%o1)                         0.04
+(%i2) expand ((a + b)^500)$
+(%i3) elapsed_run_time ();
+(%o3)                         1.26
+@end example
+
+@end deffn
+
+
+
+

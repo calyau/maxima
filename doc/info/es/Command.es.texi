@@ -1,10 +1,10 @@
-@c english version 1.43
+@c english version 1.44
 @menu
 * Introducci@'on a la L@'{@dotless{i}}nea de Comandos::  
-* Definiciones para  la L@'{@dotless{i}}nea de Comandos::  
+* Funciones y variables para  la L@'{@dotless{i}}nea de Comandos::  
 @end menu
 
-@node Introducci@'on a la L@'{@dotless{i}}nea de Comandos, Definiciones para la L@'{@dotless{i}}nea de Comandos, L@'{@dotless{i}}nea de Comandos, L@'{@dotless{i}}nea de Comandos
+@node Introducci@'on a la L@'{@dotless{i}}nea de Comandos, Funciones y variables para la L@'{@dotless{i}}nea de Comandos, L@'{@dotless{i}}nea de Comandos, L@'{@dotless{i}}nea de Comandos
 
 @section Introducci@'on a la L@'{@dotless{i}}nea de Comandos
 
@@ -335,9 +335,9 @@ definici@'on de funciones, expresiones lambda y expresiones comentadas con una c
 
 @end deffn
 
-@node Definiciones para la L@'{@dotless{i}}nea de Comandos,  , Introducci@'on a la L@'{@dotless{i}}nea de Comandos, L@'{@dotless{i}}nea de Comandos
+@node Funciones y variables para la L@'{@dotless{i}}nea de Comandos,  , Introducci@'on a la L@'{@dotless{i}}nea de Comandos, L@'{@dotless{i}}nea de Comandos
 
-@section Definiciones para la L@'{@dotless{i}}nea de Comandos
+@section Funciones y variables para la L@'{@dotless{i}}nea de Comandos
 
 @c NEEDS WORK, ESPECIALLY EXAMPLES
 @deffn {Funci@'on} alias (@var{new_name_1}, @var{old_name_1}, ..., @var{new_name_n}, @var{old_name_n})

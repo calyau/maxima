@@ -1,11 +1,11 @@
-@c version 1.12
+@c version 1.13
 @menu
-* Definiciones para Afines::      
+* Funciones y variables para Afines::      
 @end menu
 
-@node Definiciones para Afines,  , Afines, Afines
+@node Funciones y variables para Afines,  , Afines, Afines
 
-@section Definiciones para Afines
+@section Funciones y variables para Afines
 
 @deffn {Funci@'on} fast_linsolve ([@var{expr_1}, ..., @var{expr_m}], [@var{x_1}, ..., @var{x_n}])
 Resuelve las ecuaciones lineales simult@'aneas @var{expr_1}, ..., @var{expr_m}

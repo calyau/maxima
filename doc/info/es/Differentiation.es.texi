@@ -1,10 +1,10 @@
-@c version 1.19
+@c version 1.20
 @menu
-* Definiciones para Diferenciaci@'on::  
+* Funciones y variables para la diferenciaci@'on::  
 @end menu
 
-@node Definiciones para Diferenciaci@'on,  , Diferenciaci@'on, Diferenciaci@'on
-@section Definiciones para Diferenciaci@'on
+@node Funciones y variables para la diferenciaci@'on,  , Diferenciaci@'on, Diferenciaci@'on
+@section Funciones y variables para la diferenciaci@'on
 
 @deffn {Funci@'on} antid (@var{expr}, @var{x}, @var{u(x)}) 
 Devuelve una lista con dos elementos, de manera que se pueda calcular la antiderivada de @var{expr} respecto de  @var{x} a partir de la lista. La expresi@'on @var{expr} puede contener una funci@'on no especificada @var{u} y sus derivadas.

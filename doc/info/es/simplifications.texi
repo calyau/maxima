@@ -1,10 +1,10 @@
-@c english version 1.3
+@c english version 1.6
 @menu
 * Introducci@'on a simplification::
-* Definiciones para simplification::
+* Funciones y variables para simplification::
 @end menu
 
-@node Introducci@'on a simplification, Definiciones para simplification, simplification, simplification
+@node Introducci@'on a simplification, Funciones y variables para simplification, simplification, simplification
 @section Introducci@'on a simplification
 
 El directorio @code{maxima/share/simplification} contiene programas que
@@ -12,8 +12,8 @@ implementan algunas reglas y funciones para simplificar expresiones,
 as@'{@dotless{i}} como ciertas funciones no relacionadas con la simplificaci@'on.
 
 
-@node Definiciones para simplification,  , Introducci@'on a simplification, simplification
-@section Definiciones para simplification
+@node Funciones y variables para simplification,  , Introducci@'on a simplification, simplification
+@section Funciones y variables para simplification
 
 @c Adapted from absimp.usg ----------------------
 

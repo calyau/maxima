@@ -1,17 +1,17 @@
-@c english version 1.16
+@c english version 1.17
 @menu
-* Introducci@'on a las Series::      
-* Definiciones para las Series::      
+* Introducci@'on a las series::      
+* Funciones y variables para las series::      
 @end menu
 
-@node Introducci@'on a las Series, Definiciones para las Series, Series, Series
-@section Introducci@'on a las Series
+@node Introducci@'on a las series, Funciones y variables para las series, Series, Series
+@section Introducci@'on a las series
 
 Maxima dispone de las funciones @code{taylor} y @code{powerseries} para calcular las series de las funciones diferenciables. Tambi@'en tiene herramientas como @code{nusum} capaces de encontrar la expresi@'on compacta de algunas series. Operaciones como la suma y la multiplicaci@'on operan de la forma habitual en el contexto de las series. Esta secci@'on presenta las variables globales que controlan la expansi@'on.
 @c end concepts Series
 
-@node Definiciones para las Series,  , Introducci@'on a las Series, Series
-@section Definiciones para las Series
+@node Funciones y variables para las series,  , Introducci@'on a las series, Series
+@section Funciones y variables para las series
 
 @defvr {Variable opcional} cauchysum
 Valor por defecto: @code{false}

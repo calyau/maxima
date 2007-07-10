@@ -1,12 +1,12 @@
-@c version 1.21
+@c version 1.24
 @menu
 * Lisp y Maxima::            
-* Recolector de Basura::          
+* Recolector de basura::          
 * Documentaci@'on::               
-* Definiciones para la Ayuda::        
+* Funciones y variables para la ayuda::        
 @end menu
 
-@node Lisp y Maxima, Recolector de Basura, Ayuda, Ayuda
+@node Lisp y Maxima, Recolector de basura, Ayuda, Ayuda
 @section Lisp y Maxima
 
 Maxima fue escrito en Lisp, y es muy f@'acil tener acceso a funciones y variables Lisp desde Maxima y viceversa. 
@@ -126,15 +126,15 @@ Algunas funciones Lisp son compartidas en el paquete Maxima, las cuales se lista
 @code{break},
 y @code{gcd}.
 
-@node Recolector de Basura, Documentaci@'on, Lisp y Maxima, Ayuda
-@section Recolector de Basura
+@node Recolector de basura, Documentaci@'on, Lisp y Maxima, Ayuda
+@section Recolector de basura
 
 La computaci@'on simb@'olica tiende a crear una buena cantidad de basura, y un manejo efectivo de esto puede ser crucial para el t@'ermino exitoso de algunos programas. 
 
 Bajo GCL (GNU Common Lisp), en los sistemas UNIX donde la llamada al  sistema mprotect esta disponible (incluyendo SUN OS 4.0 y algunas variantes de BSD) un recolector de basura estratificado est@'a disponible. Estos l@'{@dotless{i}}mites de colecci@'on para memoria virtual, han sido escritos recientemente. Mire la documentaci@'on de GCL bajo ALLOCATE y GBC.  En el nivel lisp haga (setq si::*notify-gbc* t) eso le ayudar@'a a determinar cuales @'areas necesitan m@'as espacio.
 
 
-@node Documentaci@'on, Definiciones para la Ayuda, Recolector de Basura, Ayuda
+@node Documentaci@'on, Funciones y variables para la ayuda, Recolector de basura, Ayuda
 @section Documentaci@'on
 
 El manual en l@'{@dotless{i}}nea del usuario de Maxima puede ser visto en diferentes formas. 
@@ -167,8 +167,8 @@ produce:
 y salidas adicionales. 
 
 
-@node Definiciones para la Ayuda,  , Documentaci@'on, Ayuda
-@section Definiciones para la Ayuda
+@node Funciones y variables para la ayuda,  , Documentaci@'on, Ayuda
+@section Funciones y variables para la ayuda
 
 @deffn {Funci@'on} demo (@var{archivo})
 Evalua las expresiones Maxima contenidas en @var{archivo} y muestra los resultados. 
@@ -295,28 +295,40 @@ Ejemplo:
 
 @example
 (%i1) ?? integ
- 0: (maxima.info)Introduction to Elliptic Functions and Integrals.
- 1: Definitions for Elliptic Integrals.
- 2: Integration.
- 3: Introduction to Integration.
- 4: Definitions for Integration.
- 5: askinteger :Definitions for Simplification.
- 6: integerp :Definitions for Miscellaneous Options.
- 7: integrate :Definitions for Integration.
- 8: integrate_use_rootsof :Definitions for Integration.
- 9: integration_constant_counter :Definitions for Integration.
+ 0: Functions and Variables for Elliptic Integrals
+ 1: Functions and Variables for Integration
+ 2: Introduction to Elliptic Functions and Integrals
+ 3: Introduction to Integration
+ 4: askinteger  (Functions and Variables for Simplification)
+ 5: integerp  (Functions and Variables for Miscellaneous Options)
+ 6: integer_partitions  (Functions and Variables for Sets)
+ 7: integrate  (Functions and Variables for Integration)
+ 8: integrate_use_rootsof  (Functions and Variables for
+    Integration)
+ 9: integration_constant_counter  (Functions and Variables for
+    Integration)
+ 10: nonnegintegerp  (Functions and Variables for linearalgebra)
 Enter space-separated numbers, `all' or `none': 7 8
 
-Info from file /use/local/maxima/doc/info/maxima.info:
- - Function: integrate (expr, var)
- - Function: integrate (expr, var, a, b)
-     Attempts to symbolically compute the integral of `expr' with
-     respect to `var'.  `integrate (expr, var)' is an indefinite
-     integral, while `integrate (expr, var, a, b)' is a definite
-     integral, [...]
+ -- Function: integrate (<expr>, <x>)
+ -- Function: integrate (<expr>, <x>, <a>, <b>)
+     Attempts to symbolically compute the integral of <expr> with
+     respect to <x>.  `integrate (<expr>, <x>)' is an indefinite
+     integral, while `integrate (<expr>, <x>, <a>, <b>)' is a
+     definite integral, [...]
+     
+ -- Option variable: integrate_use_rootsof
+     Default value: `false'
+
+     When `integrate_use_rootsof' is `true' and the denominator of
+     a rational function cannot be factored, `integrate' returns
+     the integral in a form which is a sum over the roots (not yet
+     known) of the denominator.
+     [...]
 @end example
 
-En este ejemplo fueron seleccionadas las opciones 7 y 8 . 
+En este ejemplo fueron seleccionadas las opciones 7 y 8 
+(la salida ha sido recortada, tal como indica @code{[...]}).
 Todas o ninguna de las opciones pueden ser seleccionadas escribiendo
 @code{all} o @code{none}, las cuales pueden ser abreviadas por
 @code{a} o @code{n}, respectivamente. 

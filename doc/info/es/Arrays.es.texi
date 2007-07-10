@@ -1,10 +1,10 @@
-@c english version 1.14
+@c english version 1.15
 @menu
-* Definiciones para Arrays::  
+* Funciones y variables para Arrays::  
 @end menu
 
-@node Definiciones para Arrays,  , Arrays, Arrays
-@section Definiciones para Arrays
+@node Funciones y variables para Arrays,  , Arrays, Arrays
+@section Funciones y variables para Arrays
 
 @deffn {Funci@'on} array (@var{nombre}, @var{dim_1}, ..., @var{dim_n})
 @deffnx {Funci@'on} array (@var{nombre}, @var{type}, @var{dim_1}, ..., @var{dim_n})

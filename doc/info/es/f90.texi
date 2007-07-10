@@ -1,9 +1,9 @@
 @menu
-* Definiciones para f90::
+* Funciones y variables para f90::
 @end menu
 
-@node Definiciones para f90,  , f90, f90
-@section Definiciones para f90
+@node Funciones y variables para f90,  , f90, f90
+@section Funciones y variables para f90
 
 
 @deffn {Funci@'on} f90 (@var{expr})
@@ -16,7 +16,7 @@ En el siguiente ejemplo, n@'otese como la instrucci@'on @code{fortran}
 interrumpe las l@'{@dotless{i}}neas dentro de los s@'{@dotless{i}}mbolos.
 La instrucci@'on @code{f90}, en cambio, nunca corta s@'{@dotless{i}}mbolos.
 
-@example
+@verbatim
 (%i1) load("f90")$
 
 (%i2) expr:expand((xxx+yyy+7)^4);
@@ -37,7 +37,8 @@ yyy**4+4*xxx*yyy**3+28*yyy**3+6*xxx**2*yyy**2+84*xxx*yyy**2+294* &
      yyy**2+4*xxx**3*yyy+84*xxx**2*yyy+588*xxx*yyy+1372*yyy+xxx** &
      4+28*xxx**3+294*xxx**2+1372*xxx+2401
 (%o4)                       done
-@end example
+@end verbatim
+@sp 1
 
 La implementaci@'on de la funci@'on @code{f90} se ha hecho como
 un parche inmediato. No es en modo alguno un buen ejemplo a utilizar

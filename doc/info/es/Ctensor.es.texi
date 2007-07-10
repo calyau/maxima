@@ -1,10 +1,10 @@
-@c version 1.30
+@c version 1.34
 @menu
 * Introducci@'on a ctensor::     
-* Definiciones para ctensor::     
+* Funciones y variables para ctensor::     
 @end menu
 
-@node Introducci@'on a ctensor, Definiciones para ctensor, ctensor, ctensor
+@node Introducci@'on a ctensor, Funciones y variables para ctensor, ctensor, ctensor
 @section Introducci@'on a ctensor
 
 El paquete @code{ctensor} dispone de herramientas para manipular componentes de tensores. Para poder hacer uso de @code{ctensor} es necesario cargarlo previamente en memoria ejecutando  @code{load(ctensor)}. Para comenzar una sesi@'on interactiva con @code{ctensor}, ejecutar la funci@'on @code{csetup()}. Primero se le pregunta al usuario la dimensi@'on de la variedad. Si la dimensi@'on es 2, 3 o 4, entonces la lista de coordenadas ser@'a por defecto  @code{[x,y]}, @code{[x,y,z]}
@@ -105,8 +105,8 @@ y;
 @end example
 
 
-@node Definiciones para ctensor,  , Introducci@'on a ctensor, ctensor
-@section Definiciones para ctensor
+@node Funciones y variables para ctensor,  , Introducci@'on a ctensor, ctensor
+@section Funciones y variables para ctensor
 
 @subsection Inicializaci@'on y preparaci@'on
 

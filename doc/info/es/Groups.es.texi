@@ -1,10 +1,10 @@
-@c version 1.11
+@c version 1.12
 @menu
-* Definiciones para Grupos::
+* Funciones y variables para grupos::
 @end menu
 
-@node Definiciones para Grupos,  , Grupos, Grupos
-@section Definiciones para Grupos
+@node Funciones y variables para grupos,  , Grupos, Grupos
+@section Funciones y variables para grupos
 
 @deffn {Funci@'on} todd_coxeter (@var{relaciones}, @var{subgrupo})
 @deffnx {Funci@'on} todd_coxeter (@var{relaciones})

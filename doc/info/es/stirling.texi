@@ -1,9 +1,10 @@
+@c English version 1.2
 @menu
-* Definiciones para stirling::
+* Funciones y variables para stirling::
 @end menu
 
-@node Definiciones para stirling,  , stirling, stirling
-@section Definiciones para stirling
+@node Funciones y variables para stirling,  , stirling, stirling
+@section Funciones y variables para stirling
 
 
 @deffn {Funci@'on} stirling (@var{z},@var{n})

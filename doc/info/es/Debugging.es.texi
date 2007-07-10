@@ -1,8 +1,8 @@
-@c version 1.17
+@c version 1.19
 @menu
 * Depuraci@'on del c@'odigo fuente::
 * Claves de depuraci@'on::
-* Definiciones para Depurado::
+* Funciones y variables para depurado::
 @end menu
 
 @node Depuraci@'on del c@'odigo fuente, Claves de depuraci@'on, , Depurado
@@ -90,7 +90,7 @@ Maxima, gcl, gdb, etc.  En esta ventana tambi@'en se puede ejecutar el depurador
 El usuario puede colocar un punto de referencia en una l@'{@dotless{i}}nea determinada sin m@'as que teclear @code{C-x space}. Con esto se le hace saber al depurador en qu@'e funci@'on est@'a el cursor y en qu@'e l@'{@dotless{i}}nea del mismo. Si el cursor est@'a en la l@'{@dotless{i}}nea 2 de @code{foo}, entonces insertar@'a en la otra ventana la instrucci@'on ``@code{:br foo 2}'', a fin de detener @code{foo} justo en la segunda l@'{@dotless{i}}nea. Para tener esto operativo, el usuario debe tener activo maxima-mode.el (modo-maxima.el) en la ventana en la que est@'a @code{foobar.mac}. Hay otros comandos disponibles en la ventana, como evaluar la funci@'on dentro de Maxima tecleando @code{Alt-Control-x}.
 
 
-@node Claves de depuraci@'on, Definiciones para Depurado, Depuraci@'on del c@'odigo fuente, Depurado
+@node Claves de depuraci@'on, Funciones y variables para depurado, Depuraci@'on del c@'odigo fuente, Depurado
 @section Claves de depuraci@'on
 
 Las claves de depuraci@'on son palabras que no son interpretadas como expresiones de Maxima. Una clave de depuraci@'on puede introducirse dentro de Maxima o del depurador. Las claves de depuraci@'on comienzan con dos puntos, ':'. Por ejemplo, para evaluar una expresi@'on Lisp, se puede teclear @code{:lisp} seguido de la expresi@'on a ser evaluada.
@@ -140,8 +140,8 @@ Retorna a Maxima desde cualquier nivel del depurador sin completar el c@'omputo.
 @end table 
 
 
-@node Definiciones para Depurado, , Claves de depuraci@'on, Depurado
-@section Definiciones para Depurado
+@node Funciones y variables para depurado, , Claves de depuraci@'on, Depurado
+@section Funciones y variables para depurado
 
 @defvr {Variable opcional} refcheck
 Valor por defecto: @code{false}

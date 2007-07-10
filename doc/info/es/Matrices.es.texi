@@ -1,11 +1,11 @@
-@c english version 1.28
+@c english version 1.30
 @menu
-* Introducci@'on a las Matrices y al @'Algebra Lineal::
-* Definiciones para las Matrices y el @'Algebra Lineal::
+* Introducci@'on a las matrices y el @'algebra lineal::
+* Funciones y variables para las matrices y el @'algebra lineal::
 @end menu
 
-@node Introducci@'on a las Matrices y al @'Algebra Lineal, Definiciones para las Matrices y el @'Algebra Lineal, Matrices y @'Algebra Lineal, Matrices y @'Algebra Lineal
-@section Introducci@'on a las Matrices y al @'Algebra Lineal
+@node Introducci@'on a las matrices y el @'algebra lineal, Funciones y variables para las matrices y el @'algebra lineal, Matrices y @'Algebra Lineal, Matrices y @'Algebra Lineal
+@section Introducci@'on a las matrices y el @'algebra lineal
 
 @menu
 * Operador punto::                         
@@ -13,7 +13,7 @@
 * Paquete eigen::
 @end menu
 
-@node Operador punto, Vectores, Introducci@'on a las Matrices y al @'Algebra Lineal, Introducci@'on a las Matrices y al @'Algebra Lineal
+@node Operador punto, Vectores, Introducci@'on a las matrices y el @'algebra lineal, Introducci@'on a las matrices y el @'algebra lineal
 @subsection Operador punto
 El operador  @code{.} realiza la multiplicaci@'on matricial y el producto escalar.
 Cuando los operandos son dos matrices columna o matrices fila @code{a} y @code{b},
@@ -39,7 +39,7 @@ contengan al operador @code{.}, a saber,
 @code{dotconstrules}, @code{dotdistrib}, @code{dotexptsimp}, @code{dotident},
 y @code{dotscrules}.
 
-@node Vectores, Paquete eigen, Operador punto, Introducci@'on a las Matrices y al @'Algebra Lineal
+@node Vectores, Paquete eigen, Operador punto, Introducci@'on a las matrices y el @'algebra lineal
 @subsection Vectores
 El paquete @code{vect} define funciones para an@'alisis vectorial. Para cargar el paquete en memoria se debe hacer
 @code{load ("vect")}  y con @code{demo ("vect")} se presenta una demostraci@'on sobre las funciones del paquete.
@@ -61,7 +61,7 @@ El paquete @code{vect} contiene las siguientes funciones:
 
 Aviso: el paquete @code{vect} declara el operador @code{.} como conmutativo.
 
-@node Paquete eigen, , Vectores, Introducci@'on a las Matrices y al @'Algebra Lineal
+@node Paquete eigen, , Vectores, Introducci@'on a las matrices y el @'algebra lineal
 @subsection Paquete eigen
 
 El paquete @code{eigen} contiene funciones para el c@'alculo 
@@ -80,8 +80,8 @@ Las funciones del paquete @code{eigen} son
 y @code{similaritytransform}.
 
 @c end concepts Matrices and Linear Algebra
-@node Definiciones para las Matrices y el @'Algebra Lineal,  , Introducci@'on a las Matrices y al @'Algebra Lineal, Matrices y @'Algebra Lineal
-@section Definiciones para las Matrices y el @'Algebra Lineal
+@node Funciones y variables para las matrices y el @'algebra lineal,  , Introducci@'on a las matrices y el @'algebra lineal, Matrices y @'Algebra Lineal
+@section Funciones y variables para las matrices y el @'algebra lineal
 
 @deffn {Funci@'on} addcol (@var{M}, @var{lista_1}, ..., @var{lista_n})
 A@~nade la/s columna/s dada/s por la/s lista/s (o matrices) a la matriz @var{M}.
@@ -615,7 +615,8 @@ expresi@'on, que en todo caso ser@'a evaluada.
 (%i1) n: 3$
 (%i2) m: entermatrix (n, n)$
 
-Is the matrix  1. Diagonal  2. Symmetric  3. Antisymmetric  4. General
+Is the matrix  1. Diagonal  2. Symmetric  3. Antisymmetric  
+   4. General
 Answer 1, 2, 3 or 4 : 
 1$
 Row 1 Column 1: 
@@ -1081,7 +1082,8 @@ Ejemplos:
                         [ transpose(a) ]
 (%o6)                   [              ]
                         [ transpose(b) ]
-(%i7) matrix_element_transpose: lambda ([x], realpart(x) - %i*imagpart(x))$
+(%i7) matrix_element_transpose: 
+           lambda ([x], realpart(x) - %i*imagpart(x))$
 (%i8) m: matrix ([1 + 5*%i, 3 - 2*%i], [7*%i, 11]);
                      [ 5 %i + 1  3 - 2 %i ]
 (%o8)                [                    ]

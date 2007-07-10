@@ -1,10 +1,10 @@
-@c english version 1.10
+@c english version 1.13
 @menu
 * Introducci@'on a dynamics::
-* Definiciones para dynamics::
+* Funciones y variables para dynamics::
 @end menu
 
-@node Introducci@'on a dynamics, Definiciones para dynamics, dynamics, dynamics
+@node Introducci@'on a dynamics, Funciones y variables para dynamics, dynamics, dynamics
 @section Introducci@'on a dynamics
 
 El paquete adicional @code{dynamics} incluye varias funciones para crear
@@ -16,8 +16,8 @@ Para usar las funciones en este paquete ser@'a necesario primero que todo
 cargarlo con @code{load("dynamics")}, y las funciones que crean
 gr@'aficas necesitan que Xmaxima est@'e instalado.
 
-@node Definiciones para dynamics,  , Introducci@'on a dynamics, dynamics
-@section Definiciones para dynamics
+@node Funciones y variables para dynamics,  , Introducci@'on a dynamics, dynamics
+@section Funciones y variables para dynamics
 
 @deffn {Funci@'on} chaosgame (@code{[[}@var{x1}, @var{y1}@code{]}...@code{[}@var{xm}, @var{ym}@code{]]}, @code{[}@var{x0}, @var{y0}@code{]}, @var{b}, @var{n}, ...opciones...);
 

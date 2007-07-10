@@ -1,10 +1,10 @@
-@c english version 1.6
+@c english version 1.7
 @menu
 * Introducci@'on a plotdf::
-* Definiciones para plotdf::
+* Funciones y variables para plotdf::
 @end menu
 
-@node Introducci@'on a plotdf, Definiciones para plotdf, plotdf, plotdf
+@node Introducci@'on a plotdf, Funciones y variables para plotdf, plotdf, plotdf
 @section Introducci@'on a plotdf
 
 La funci@'on @code{plotdf} crea un gr@'afico del campo de direcciones para una
@@ -54,8 +54,8 @@ Cuando se trabaja con una @'unica ecuaci@'on, @code{plotdf} asume
 impl@'{@dotless{i}}citamente que @code{x=t} y @code{G(x,y)=1}, transformando la
 ecuaci@'on en un sistema aut@'onomo con dos ecuaciones.
 
-@node Definiciones para plotdf,  , Introducci@'on a plotdf, plotdf
-@section Definiciones para plotdf
+@node Funciones y variables para plotdf,  , Introducci@'on a plotdf, plotdf
+@section Funciones y variables para plotdf
 
 @deffn {Function} plotdf (@var{dydx},...opciones...)
 @deffnx {Function} plotdf (@code{[}@var{dxdt},@var{dydt}@code{]},...opciones...)

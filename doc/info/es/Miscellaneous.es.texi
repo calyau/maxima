@@ -1,8 +1,8 @@
-@c version 1.20
+@c version 1.23
 @menu
 * Introducci@'on a la miscel@'anea de opciones::  
 * Share::  
-* Definiciones para la miscel@'anea de opciones::
+* Funciones y variables para la miscel@'anea de opciones::
 @end menu
 
 @node Introducci@'on a la miscel@'anea de opciones, Share, Miscel@'anea de opciones, Miscel@'anea de opciones
@@ -11,7 +11,7 @@
 
 En esta secci@'on se comentan varias opciones que tienen un efecto global sobre le comportamiento de Maxima. Tambi@'en se comentan varias listas, como la de las funciones definidas por el usuario.
 
-@node Share, Definiciones para la miscel@'anea de opciones, Introducci@'on a la miscel@'anea de opciones, Miscel@'anea de opciones
+@node Share, Funciones y variables para la miscel@'anea de opciones, Introducci@'on a la miscel@'anea de opciones, Miscel@'anea de opciones
 
 @section Share
 
@@ -21,8 +21,8 @@ La llamada @code{:lisp *maxima-sharedir*} muestra la localizaci@'on del director
 
 La llamada @code{printfile ("share.usg")} muestra una lista actualizada de paquetes en "share". Los usuarios pueden encontrar m@'as informaci@'on accediendo directamente a los contenidos del directorio "share".
 
-@node Definiciones para la miscel@'anea de opciones,  , Share, Miscel@'anea de opciones
-@section Definiciones para la miscel@'anea de opciones
+@node Funciones y variables para la miscel@'anea de opciones,  , Share, Miscel@'anea de opciones
+@section Funciones y variables para la miscel@'anea de opciones
 
 @defvr {Variable del sistema} aliases
 Valor por defecto: @code{[]}
@@ -71,9 +71,8 @@ Devuelve la lista de argumentos de @code{expr}, que puede ser cualquier tipo de 
 El orden de los miembros de la lista puede depender de la variable global @code{inflag}.
 
 La llamada @code{args (@var{expr})} es equivalente a @code{substpart ("[", @var{expr}, 0)}.
-V@'ease tambi@'en @code{substpart}.
 
-V@'ease asimismo @code{op}.
+V@'eanse tambi@'en @code{substpart} y @code{op}.
 
 @end deffn
 
@@ -195,7 +194,7 @@ m1pbranch:false          m1pbranch:true
 Devuelve @code{true} si @var{expr} es un en@'umero entero, racional, 
 de coma flotante o "bigfloat", en caso contrario devuelve @code{false}.
 
-La funci@'on @code{numberp} devuelve @code{false} si su argumento es un s@'{@dotless{i}}mbolo, incluso cuando el argumento es un n@'umero simb@'olico como @code{%pi} o @code{%i}, o aunque haya sido declarado como "even" (par), "odd" (impar), "integer" (entero), "rational" (racional), "irrational" (irracional), "real" (real), "imaginary" (imaginario) o "complex" (complejo).
+La funci@'on @code{numberp} devuelve @code{false} si su argumento es un s@'{@dotless{i}}mbolo, incluso cuando el argumento es un n@'umero simb@'olico como @code{%pi} o @code{%i}, o aunque haya sido declarado como @code{even} (par), @code{odd} (impar), @code{integer} (entero), @code{rational} (racional), @code{irrational} (irracional), @code{real} (real), @code{imaginary} (imaginario) o @code{complex} (complejo).
 
 Ejemplos:
 
@@ -227,7 +226,10 @@ Devuelve una lista con los nombres de propiedades asociadas con el @'atomo @var{
 
 @defvr {S@'{@dotless{i}}mbolo especial} props
 
-@code{props} son @'atomos que tienen cualquier propiedad diferente de las mencionadas expl@'{@dotless{i}}citamente en @code{infolists}, tales como atvalues, matchdeclares, etc., as@'{@dotless{i}} como las propiedades especificadas en la funci@'on  @code{declare}.
+@code{props} son @'atomos que tienen cualquier propiedad diferente de las mencionadas
+expl@'{@dotless{i}}citamente en @code{infolists}, tales como las especificadas por
+@code{atvalues}, @code{matchdeclares}, etc., as@'{@dotless{i}} como las propiedades
+especificadas mediante la funci@'on @code{declare}.
 
 @end defvr
 

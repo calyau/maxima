@@ -1,11 +1,11 @@
-@c version 1.3
+@c version 1.6
 @menu
 * Introducci@'on a distrib::
-* Definiciones para distribuciones continuas::
-* Definiciones para distribuciones discretas::
+* Funciones y variables para distribuciones continuas::
+* Funciones y variables para distribuciones discretas::
 @end menu
 
-@node Introducci@'on a distrib, Definiciones para distribuciones continuas, distrib, distrib
+@node Introducci@'on a distrib, Funciones y variables para distribuciones continuas, distrib, distrib
 @section Introducci@'on a distrib
 
 
@@ -14,7 +14,7 @@ El paquete @code{distrib} contiene un conjunto de funciones para la realizaci@'o
 A continuaci@'on un breve recordatorio de las deficiones b@'asicas sobre distribuciones de probabilidad.
 
 Sea @math{f(x)} la @var{funci@'on de densidad} de una variable aleatoria @math{X} absolutamente continua. La @var{funci@'on de distribuci@'on} se define como
-@ifhtml
+@ifnottex
 @example
                        x
                       /
@@ -24,25 +24,14 @@ Sea @math{f(x)} la @var{funci@'on de densidad} de una variable aleatoria @math{X
                       /
                        minf
 @end example
-@end ifhtml
-@ifinfo
-@example
-                       x
-                      /
-                      [
-               F(x) = I     f(u) du
-                      ]
-                      /
-                       minf
-@end example
-@end ifinfo
+@end ifnottex
 @tex
 $$F\left(x\right)=\int_{ -\infty }^{x}{f\left(u\right)\;du}$$
 @end tex
 que es igual a la probabilidad @var{Pr(X <= x)}.
 
 La @var{media} es un par@'ametro de localizaci@'on y se define como
-@ifhtml
+@ifnottex
 @example
                      inf
                     /
@@ -52,24 +41,13 @@ La @var{media} es un par@'ametro de localizaci@'on y se define como
                     /
                      minf
 @end example
-@end ifhtml
-@ifinfo
-@example
-                     inf
-                    /
-                    [
-           E[X]  =  I   x f(x) dx
-                    ]
-                    /
-                     minf
-@end example
-@end ifinfo
+@end ifnottex
 @tex
 $$E\left[X\right]=\int_{ -\infty }^{\infty }{x\,f\left(x\right)\;dx}$$
 @end tex
 
 La  @var{varianza} es una medida de dispersi@'on,
-@ifhtml
+@ifnottex
 @example
                  inf
                 /
@@ -79,18 +57,7 @@ La  @var{varianza} es una medida de dispersi@'on,
                 /
                  minf
 @end example
-@end ifhtml
-@ifinfo
-@example
-                 inf
-                /
-                [                    2
-         V[X] = I     f(x) (x - E[X])  dx
-                ]
-                /
-                 minf
-@end example
-@end ifinfo
+@end ifnottex
 @tex
 $$V\left[X\right]=\int_{ -\infty }^{\infty }{f\left(x\right)\,\left(x
  -E\left[X\right]\right)^2\;dx}$$
@@ -98,7 +65,7 @@ $$V\left[X\right]=\int_{ -\infty }^{\infty }{f\left(x\right)\,\left(x
 que es un n@'umero real positivo. La ra@'{@dotless{i}}z cuadrada de la varianza es la @var{desviaci@'on t@'{@dotless{i}}pica}, @math{D[X]=sqrt(V[X])}, siendo otra medida de dispersi@'on.
 
 El @var{coeficiente de asimetr@'{@dotless{i}}a} es una medida de forma,
-@ifhtml
+@ifnottex
 @example
                  inf
                 /
@@ -108,25 +75,14 @@ El @var{coeficiente de asimetr@'{@dotless{i}}a} es una medida de forma,
           D[X]  /
                  minf
 @end example
-@end ifhtml
-@ifinfo
-@example
-                 inf
-                /
-            1   [                    3
-  SK[X] = ----- I     f(x) (x - E[X])  dx
-              3 ]
-          D[X]  /
-                 minf
-@end example
-@end ifinfo
+@end ifnottex
 @tex
 $$SK\left[X\right]={{\int_{ -\infty }^{\infty }{f\left(x\right)\,
  \left(x-E\left[X\right]\right)^3\;dx}}\over{D\left[X\right]^3}}$$
 @end tex
 
 Y el @var{coeficiente de curtosis} mide el apuntamiento de la densidad,
-@ifhtml
+@ifnottex
 @example
                  inf
                 /
@@ -136,18 +92,7 @@ Y el @var{coeficiente de curtosis} mide el apuntamiento de la densidad,
           D[X]  /
                  minf
 @end example
-@end ifhtml
-@ifinfo
-@example
-                 inf
-                /
-            1   [                    4
-  KU[X] = ----- I     f(x) (x - E[X])  dx - 3
-              4 ]
-          D[X]  /
-                 minf
-@end example
-@end ifinfo
+@end ifnottex
 @tex
 $$KU\left[X\right]={{\int_{ -\infty }^{\infty }{f\left(x\right)\,
  \left(x-E\left[X\right]\right)^4\;dx}}\over{D\left[X\right]^4}}-3$$
@@ -155,7 +100,7 @@ $$KU\left[X\right]={{\int_{ -\infty }^{\infty }{f\left(x\right)\,
 Si @math{X} es normal, @math{KU[X]=0}. De hecho, tanto la asimetr@'{@dotless{i}}a como la curtosis son par@'ametros de forma para medir la no normalidad de una distribuci@'on.
 
 Si la variable aleatoria @math{X} es discreta, su funci@'on de densidad, o de @var{probabiliad},  @math{f(x)} toma valores positivos dentro de un conjunto numerable de valores @math{x_i}, y cero en cualquier otro lugar. En este caso, la funci@'on de distribuci@'on es
-@ifhtml
+@ifnottex
 @example
                        ====
                        \
@@ -165,24 +110,13 @@ Si la variable aleatoria @math{X} es discreta, su funci@'on de densidad, o de @v
                       x <= x
                        i
 @end example
-@end ifhtml
-@ifinfo
-@example
-                       ====
-                       \
-                F(x) =  >    f(x )
-                       /        i
-                       ====
-                      x <= x
-                       i
-@end example
-@end ifinfo
+@end ifnottex
 @tex
 $$F\left(x\right)=\sum_{x_{i}\leq x}{f\left(x_{i}\right)}$$
 @end tex
 
 La media, varianza, desviaci@'on t@'{@dotless{i}}pica y los coeficientes de asimetr@'{@dotless{i}}a y curtosis adquieren las formas
-@ifhtml
+@ifnottex
 @example
                        ====
                        \
@@ -192,23 +126,12 @@ La media, varianza, desviaci@'on t@'{@dotless{i}}pica y los coeficientes de asim
                         x 
                          i
 @end example
-@end ifhtml
-@ifinfo
-@example
-                       ====
-                       \
-                E[X] =  >  x  f(x ) ,
-                       /    i    i
-                       ====
-                        x 
-                         i
-@end example
-@end ifinfo
+@end ifnottex
 @tex
 $$E\left[X\right]=\sum_{x_{i}}{x_{i}f\left(x_{i}\right)},$$
 @end tex
 
-@ifhtml
+@ifnottex
 @example
                 ====
                 \                     2
@@ -218,37 +141,21 @@ $$E\left[X\right]=\sum_{x_{i}}{x_{i}f\left(x_{i}\right)},$$
                  x
                   i
 @end example
-@end ifhtml
-@ifinfo
-@example
-                ====
-                \                     2
-        V[X] =   >    f(x ) (x - E[X])  ,
-                /        i    i
-                ====
-                 x
-                  i
-@end example
-@end ifinfo
+@end ifnottex
 @tex
 $$V\left[X\right]=\sum_{x_{i}}{f\left(x_{i}\right)\left(x_{i}-E\left[X\right]\right)^2},$$
 @end tex
 
-@ifhtml
+@ifnottex
 @example
                D[X] = sqrt(V[X]),
 @end example
-@end ifhtml
-@ifinfo
-@example
-               D[X] = sqrt(V[X]),
-@end example
-@end ifinfo
+@end ifnottex
 @tex
 $$D\left[X\right]=\sqrt{V\left[X\right]},$$
 @end tex
 
-@ifhtml
+@ifnottex
 @example
                      ====
               1      \                     3
@@ -258,24 +165,13 @@ $$D\left[X\right]=\sqrt{V\left[X\right]},$$
                       x
                        i
 @end example
-@end ifhtml
-@ifinfo
-@example
-                     ====
-              1      \                     3
-  SK[X] =  -------    >    f(x ) (x - E[X])  
-           D[X]^3    /        i    i
-                     ====
-                      x
-                       i
-@end example
-@end ifinfo
+@end ifnottex
 @tex
 $$SK\left[X\right]={{\sum_{x_{i}}{f\left(x\right)\,
  \left(x-E\left[X\right]\right)^3\;dx}}\over{D\left[X\right]^3}}$$
 @end tex
 y
-@ifhtml
+@ifnottex
 @example
                      ====
               1      \                     4
@@ -285,18 +181,7 @@ y
                       x
                        i
 @end example
-@end ifhtml
-@ifinfo
-@example
-                     ====
-              1      \                     4
-  KU[X] =  -------    >    f(x ) (x - E[X])   - 3 ,
-           D[X]^4    /        i    i
-                     ====
-                      x
-                       i
-@end example
-@end ifinfo
+@end ifnottex
 @tex
 $$KU\left[X\right]={{\sum_{x_{i}}{f\left(x\right)\,
  \left(x-E\left[X\right]\right)^4\;dx}}\over{D\left[X\right]^4}}-3,$$
@@ -310,7 +195,8 @@ El paquete @code{distrib} incluye funciones para la simulaci@'on de variables al
 (%i2) load(descriptive)$
 (%i3) showtime: true$
 Evaluation took 0.00 seconds (0.00 elapsed) using 32 bytes.
-(%i4) random_chi2_algorithm: 'ahrens_cheng$ histogram(random_chi2(10,500))$
+(%i4) random_chi2_algorithm: 'ahrens_cheng$ 
+      histogram(random_chi2(10,500))$
 Evaluation took 0.00 seconds (0.00 elapsed) using 40 bytes.
 Evaluation took 0.69 seconds (0.71 elapsed) using 5.694 MB.
 (%i6) random_chi2_algorithm: 'inverse$ histogram(random_chi2(10,500))$
@@ -378,8 +264,8 @@ Para poder hacer uso del paquete @code{distrib} es necesario cargarlo primero te
 
 Para comentarios, errores o sugerencias, por favor cont@'actese conmigo en @var{'mario ARROBA edu PUNTO xunta PUNTO es'}.
 
-@node Definiciones para distribuciones continuas, Definiciones para distribuciones discretas, Introducci@'on a distrib, distrib
-@section Definiciones para distribuciones continuas
+@node Funciones y variables para distribuciones continuas, Funciones y variables para distribuciones discretas, Introducci@'on a distrib, distrib
+@section Funciones y variables para distribuciones continuas
 
 
 @deffn {Funci@'on} pdf_normal (@var{x},@var{m},@var{s})
@@ -1927,8 +1813,8 @@ S@'olo se ha programado el m@'etodo inverso. Para hacer uso de esta funci@'on, e
 @end deffn
 
 
-@node Definiciones para distribuciones discretas,  , Definiciones para distribuciones continuas, distrib
-@section Definiciones para distribuciones discretas
+@node Funciones y variables para distribuciones discretas,  , Funciones y variables para distribuciones continuas, distrib
+@section Funciones y variables para distribuciones discretas
 
 
 @deffn {Funci@'on} pdf_binomial (@var{x},@var{n},@var{p})

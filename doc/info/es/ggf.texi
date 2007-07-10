@@ -1,9 +1,10 @@
+@c english version 1.4
 @menu
-* Definiciones para ggf::
+* Funciones y variables para ggf::
 @end menu
 
-@node Definiciones para ggf,  , ggf, ggf
-@section Definiciones para ggf
+@node Funciones y variables para ggf,  , ggf, ggf
+@section Funciones y variables para ggf
 
 
 @defvr {Variable opcional} GGFINFINITY

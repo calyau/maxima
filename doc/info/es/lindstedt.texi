@@ -1,9 +1,10 @@
+@c English version 1.2
 @menu
-* Definiciones para lindstedt::
+* Funciones y variables para lindstedt::
 @end menu
 
-@node Definiciones para lindstedt,  , lindstedt, lindstedt
-@section Definiciones para lindstedt
+@node Funciones y variables para lindstedt,  , lindstedt, lindstedt
+@section Funciones y variables para lindstedt
 
 
 @deffn {Funci@'on} Lindstedt (@var{eq},@var{pvar},@var{torder},@var{ic})

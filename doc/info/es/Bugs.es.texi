@@ -1,11 +1,11 @@
-@c version 1.10
+@c version 1.11
 @menu
-* Definiciones para la detecci@'on e informe de fallos::
+* Funciones y variables para la detecci@'on e informe de fallos::
 @end menu
 
 
-@node Definiciones para la detecci@'on e informe de fallos
-@section Definiciones para la detecci@'on e informe de fallos
+@node Funciones y variables para la detecci@'on e informe de fallos
+@section Funciones y variables para la detecci@'on e informe de fallos
 @deffn {Funci@'on} run_testsuite ()
 @deffnx {Funci@'on} run_testsuite (@var{boolean})
 @deffnx {Funci@'on} run_testsuite (@var{boolean}, @var{boolean})

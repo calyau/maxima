@@ -1,9 +1,10 @@
+@c English version 1.2
 @menu
-* Definiciones para opsubst::
+* Funciones y variables para opsubst::
 @end menu
 
-@node Definiciones para opsubst,  , opsubst, opsubst
-@section Definiciones para opsubst
+@node Funciones y variables para opsubst,  , opsubst, opsubst
+@section Funciones y variables para opsubst
 
 
 @deffn {Funci@'on} opsubst (@var{f},@var{g},@var{e})

@@ -1,10 +1,12 @@
-@c version 1.9
+@c version 1.13
+@c Esta es traduccion del original en frances;
+@c Queda pendiente cotejar con la version inglesa.
 @menu
-* Definiciones para Simetr@'{@dotless{i}}as::  
+* Funciones y variables para simetr@'{@dotless{i}}as::  
 @end menu
 
-@node Definiciones para Simetr@'{@dotless{i}}as,  , Simetr@'{@dotless{i}}as, Simetr@'{@dotless{i}}as
-@section Definiciones para Simetr@'{@dotless{i}}as
+@node Funciones y variables para simetr@'{@dotless{i}}as,  , Simetr@'{@dotless{i}}as, Simetr@'{@dotless{i}}as
+@section Funciones y variables para simetr@'{@dotless{i}}as
 
 @deffn {Funci@'on} comp2pui (@var{n}, @var{l})
 Realiza el paso de las funciones sim@'etricas completas

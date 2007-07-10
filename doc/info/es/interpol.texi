@@ -1,10 +1,10 @@
-@c english version 1.1
+@c english version 1.5
 @menu
 * Introducci@'on a interpol::
-* Definiciones para interpol::
+* Funciones y variables para interpol::
 @end menu
 
-@node Introducci@'on a interpol, Definiciones para interpol, interpol, interpol
+@node Introducci@'on a interpol, Funciones y variables para interpol, interpol, interpol
 @section Introducci@'on a interpol
 
 El paquete @code{interpol} desarrolla los m@'etodos de interpolaci@'on polin@'omica de Lagrange, lineal y de @i{splines} c@'ubicos.
@@ -14,8 +14,8 @@ Para comentarios, fallos o sugerencias, contactar con @var{'mario ARROBA edu PUN
 
 
 
-@node Definiciones para interpol,  , Introducci@'on a interpol, interpol
-@section Definiciones para interpol
+@node Funciones y variables para interpol,  , Introducci@'on a interpol, interpol
+@section Funciones y variables para interpol
 
 
 @deffn {Funci@'on} lagrange (@var{points})
@@ -35,10 +35,13 @@ En los dos primeros casos los pares se ordenan con respecto a la primera coorden
 
 Mediante el argumento @var{option} es posible seleccionar el nombre de la variable independiente, que por defecto es @code{'x}; para definir otra, escr@'{@dotless{i}}base algo como @code{varname='z}.
 
+T@'engase en cuenta que cuando se trabaja con polinomios de grado alto, los
+c@'alculos con n@'umeros decimales en coma flotante pueden ser muy inestables.
+
 Ejemplos:
 
 @example
-(%i1) load("interpol")$
+(%i1) load(interpol)$
 (%i2) p:[[7,2],[8,2],[1,5],[3,2],[6,7]]$
 (%i3) lagrange(p);
                  4        3         2
@@ -61,15 +64,21 @@ Ejemplos:
                      420       210         420        105       5
 (%i6) %,numer;
 (%o6) [- 1.567534999999992, 10.9366573451538, 2.89319655125692]
-(%i7) /* Plot the polynomial together with points */
-      plot2d([f(x),[discrete,p]],[x,0,10],
-           [gnuplot_curve_styles,
-                 ["with lines","with points pointsize 3"]])$
-(%i8) /* Change variable name */
+(%i7) load(draw)$  /* load draw package */
+(%i8) /* Plot the polynomial together with points */
+      draw2d(
+        color      = red,
+        key        = "Lagrange polynomial",
+        explicit(f(x),x,0,10),
+        point_size = 3,
+        color      = blue,
+        key        = "Sample points",
+        points(p))$
+(%i9) /* Change variable name */
       lagrange(p, varname=w);
                  4        3         2
              73 w    701 w    8957 w    5288 w   186
-(%o8)        ----- - ------ + ------- - ------ + ---
+(%o9)        ----- - ------ + ------- - ------ + ---
               420     210       420      105      5
 @end example
 
@@ -101,7 +110,7 @@ Mediante el argumento @var{option} es posible seleccionar el nombre de la variab
 Ejemplos:
 
 @example
-(%i1) load("interpol")$
+(%i1) load(interpol)$
 (%i2) p: matrix([7,2],[8,3],[1,5],[3,2],[6,7])$
 (%i3) linearinterpol(p);
         13   3 x
@@ -127,14 +136,20 @@ Ejemplos:
                             21    3
 (%i6) %,numer;
 (%o6)  [2.3, 2.952380952380953, 2.235987755982989]
-(%i7)  /* Plot the polynomial together with points */
-       plot2d(['(f(x)),[discrete,args(p)]],[x,-5,20],
-           [gnuplot_curve_styles,
-                 ["with lines","with points pointsize 3"]])$
-(%i8)  /* Change variable name */
+(%i7) load(draw)$  /* load draw package */
+(%i8)  /* Plot the polynomial together with points */
+       draw2d(
+         color      = red,
+         key        = "Linear interpolator",
+         explicit(f(x),x,-5,20),
+         point_size = 3,
+         color      = blue,
+         key        = "Sample points",
+         points(args(p)))$
+(%i9)  /* Change variable name */
        linearinterpol(p, varname='s);
        13   3 s
-(%o8) (-- - ---) charfun2(s, minf, 3)
+(%o9) (-- - ---) charfun2(s, minf, 3)
        2     2
  + (s - 5) charfun2(s, 7, inf) + (37 - 5 s) charfun2(s, 6, 7)
     5 s
@@ -177,7 +192,7 @@ Esta funci@'on dispone de tres opciones para acomodarse a necesidades concretas:
 Ejemplos:
 
 @example
-(%i1) load("interpol")$
+(%i1) load(interpol)$
 (%i2) p:[[7,2],[8,2],[1,5],[3,2],[6,7]]$
 (%i3) /* Unknown first derivatives at the extremes
          is equivalent to natural cubic splines */
@@ -203,15 +218,21 @@ Ejemplos:
 (%i5) /* Some evaluations */
       map(f,[2.3,5/7,%pi]), numer;
 (%o5) [1.991460766423356, 5.823200187269903, 2.227405312429507]
-(%i6) /* Plotting interpolating function */
-      plot2d(['(f(x)),[discrete,p]],[x,0,10],
-          [gnuplot_curve_styles,
-               ["with lines","with points pointsize 3"]])$
-(%i7) /* New call, but giving values at the derivatives */
+(%i6) load(draw)$  /* load draw package */
+(%i7) /* Plotting interpolating function */
+      draw2d(
+        color      = red,
+        key        = "Cubic splines",
+        explicit(f(x),x,0,10),
+        point_size = 3,
+        color      = blue,
+        key        = "Sample points",
+        points(p))$
+(%i8) /* New call, but giving values at the derivatives */
       cspline(p,d1=0,dn=0);
               3          2
         1949 x    11437 x    17027 x   1247
-(%o7)  (------- - -------- + ------- + ----) charfun2(x, minf, 3)
+(%o8)  (------- - -------- + ------- + ----) charfun2(x, minf, 3)
          2256       2256      2256     752
             3          2
       1547 x    35581 x    68068 x   173546
@@ -228,9 +249,17 @@ Ejemplos:
 (%i8) /* Defining new interpolating function */
       g(x):=''%$
 (%i9) /* Plotting both functions together */
-      plot2d(['(f(x)),'(g(x)),[discrete,p]],[x,0,10],
-           [gnuplot_curve_styles,
-              ["with lines","with lines","with points pointsize 3"]])$
+      draw2d(
+        color      = black,
+        key        = "Cubic splines (default)",
+        explicit(f(x),x,0,10),
+        color      = red,
+        key        = "Cubic splines (d1=0,dn=0)",
+        explicit(g(x),x,0,10),
+        point_size = 3,
+        color      = blue,
+        key        = "Sample points",
+        points(p))$
 @end example
 
 @end deffn

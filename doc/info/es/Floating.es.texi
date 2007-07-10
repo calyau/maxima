@@ -1,11 +1,11 @@
-@c version 1.18
+@c version 1.20
 @menu
-* Definiones para aritm@'etica de punto flotante::
+* Funciones y variables para la aritm@'etica de punto flotante::
 @end menu
 
-@node Definiones para aritm@'etica de punto flotante, , Aritm@'etica de punto flotante, Aritm@'etica de punto flotante
+@node Funciones y variables para la aritm@'etica de punto flotante, , Aritm@'etica de punto flotante, Aritm@'etica de punto flotante
 
-@section Definiones para aritm@'etica de punto flotante
+@section Funciones y variables para la aritm@'etica de punto flotante
 
 @c FOLLOWING FUNCTIONS IN bffac.mac ARE NOT DESCRIBED IN .texi FILES: !!!
 @c obfac, azetb, vonschtoonk, divrlst, obzeta, bfhzeta, bfpsi0 !!!

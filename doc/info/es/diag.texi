@@ -1,9 +1,10 @@
+@c English version 1.3
 @menu
-* Definiciones para diag::
+* Funciones y variables para diag::
 @end menu
 
-@node Definiciones para diag,  , diag, diag
-@section Definiciones para diag
+@node Funciones y variables para diag,  , diag, diag
+@section Funciones y variables para diag
 
 
 @deffn {Funci@'on} diag (@var{lm})
@@ -220,7 +221,8 @@ mat=diag([JF(m1,n1),...,JF(mk,nk)]),
 entonces
 
 @example
-f(mat)=ModeMatrix*diag([f(JF(m1,n1)),...,f(JF(mk,nk))])*ModeMatrix^^(-1)
+f(mat)=ModeMatrix*diag([f(JF(m1,n1)),...,f(JF(mk,nk))])
+          * ModeMatrix^^(-1)
 @end example
 
 N@'otese que hay otros m@'etodos alternativos para

@@ -1,13 +1,14 @@
+@c English version 1.3
 @menu
-* Definiciones para mnewton::
+* Funciones y variables para mnewton::
 @end menu
 
 
-@node Definiciones para mnewton,  , mnewton, mnewton
-@section Definiciones para mnewton
+@node Funciones y variables para mnewton,  , mnewton, mnewton
+@section Funciones y variables para mnewton
 
 
-@defvr {Variable opcional} NEWTONEPSILON
+@defvr {Variable opcional} newtonepsilon
 Valor por defecto:  @code{10.0^(-fpprec/2)}
 
 Precisi@'on que determina cuando la funci@'on @code{mnewton} ha conseguido una convergencia aceptable.
@@ -16,7 +17,7 @@ V@'ease tambi@'en @code{mnewton}.
 @end defvr
 
 
-@defvr {Variable opcional} NEWTONMAXITER
+@defvr {Variable opcional} newtonmaxiter
 Valor por defecto:  @code{50}
 
 N@'umero m@'aximo de iteraciones para la funci@'on @code{mnewton} en caso de que no se produzca convergencia, o de que @'esta se haga muy lenta.
@@ -34,7 +35,7 @@ Resoluci@'on de sistemas de ecuaciones no lineales por el m@'etodo de Newton.
 La soluci@'on se devuelve en el mismo formato que lo hace la funci@'on @code{solve()}.
 Si no se le encuentra soluci@'on al sistema, se obtiene @code{[]} como respuesta.
 
-Esta funci@'on se controla con las variables globales @code{NEWTONEPSILON} y @code{NEWTONMAXITER}.
+Esta funci@'on se controla con las variables globales @code{newtonepsilon} y @code{newtonmaxiter}.
 
 @example
 (%i1) load("mnewton")$
@@ -48,7 +49,7 @@ Esta funci@'on se controla con las variables globales @code{NEWTONEPSILON} y @co
 (%o4) [[u = 1.066618389595407, v = 1.552564766841786]]
 @end example
 
-Antes de hacer uso de esta funci@'on ejec@'utese  @code{load("mnewton")}. V@'eanse tambi@'en @code{NEWTONEPSILON} y @code{NEWTONMAXITER}.
+Antes de hacer uso de esta funci@'on ejec@'utese  @code{load("mnewton")}. V@'eanse tambi@'en @code{newtonepsilon} y @code{newtonmaxiter}.
 @end deffn
 
 

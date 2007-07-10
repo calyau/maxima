@@ -1,10 +1,10 @@
-@c english version 1.22
+@c english version 1.24
 @menu
-* Definiciones para Teor@'{@dotless{i}}a de N@'umeros::  
+* Funciones y variables para teor@'{@dotless{i}}a de n@'umeros::  
 @end menu
 
-@node Definiciones para Teor@'{@dotless{i}}a de N@'umeros,  , Teor@'{@dotless{i}}a de N@'umeros, Teor@'{@dotless{i}}a de N@'umeros
-@section Definiciones para Teor@'{@dotless{i}}a de N@'umeros
+@node Funciones y variables para teor@'{@dotless{i}}a de n@'umeros,  , Teor@'{@dotless{i}}a de N@'umeros, Teor@'{@dotless{i}}a de N@'umeros
+@section Funciones y variables para teor@'{@dotless{i}}a de n@'umeros
 
 
 @deffn {Funci@'on} bern (@var{n})
@@ -197,7 +197,7 @@ Devuelve la matriz con los numeradores y denominadores de la @'ultima (columna 1
 @example
 (%i1) cf (rat (ev (%pi, numer)));
 
-`rat' replaced 3.141592653589793 by 103993//33102 = 3.141592653011902
+`rat' replaced 3.141592653589793 by 103993/33102 =3.141592653011902
 (%o1)                  [3, 7, 15, 1, 292]
 (%i2) cfexpand (%); 
                          [ 103993  355 ]

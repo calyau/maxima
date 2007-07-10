@@ -1,11 +1,11 @@
-@c version 1.10
+@c version 1.11
 @menu
-* Definiciones para L@'{@dotless{i}}mites::      
+* Funciones y variables para l@'{@dotless{i}}mites::      
 @end menu
 
-@node Definiciones para L@'{@dotless{i}}mites,  ,L@'{@dotless{i}}mites,L@'{@dotless{i}}mites 
+@node Funciones y variables para l@'{@dotless{i}}mites,  ,L@'{@dotless{i}}mites,L@'{@dotless{i}}mites 
 
-@section Definiciones para L@'{@dotless{i}}mites
+@section Funciones y variables para l@'{@dotless{i}}mites
 
 @defvr {Variable optativa} lhospitallim
 Valor por defecto: 4

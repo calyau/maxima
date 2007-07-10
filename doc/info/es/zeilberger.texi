@@ -1,10 +1,10 @@
-@c english version 1.5
+@c english version 1.6
 @menu
 * Introducci@'on a zeilberger::
-* Definiciones para zeilberger::
+* Funciones y variables para zeilberger::
 @end menu
 
-@node Introducci@'on a zeilberger, Definiciones para zeilberger, zeilberger, zeilberger
+@node Introducci@'on a zeilberger, Funciones y variables para zeilberger, zeilberger, zeilberger
 @section Introducci@'on a zeilberger
 
 El paquete @code{zeilberger} implementa el algoritmo de Zeilberger
@@ -66,8 +66,8 @@ Por ejemplo:
 @code{ZeilbergerExtra}, @code{AntiDifferenceSummary}.
 
 
-@node Definiciones para zeilberger,  , Introducci@'on a zeilberger, zeilberger
-@section Definiciones para zeilberger
+@node Funciones y variables para zeilberger,  , Introducci@'on a zeilberger, zeilberger
+@section Funciones y variables para zeilberger
 
 @deffn {Funci@'on} AntiDifference (@var{F_k}, @var{k})
 

@@ -1,4 +1,4 @@
-@c version 1.5
+@c version 1.8
 Se puede iniciar Maxima con el comando "maxima". Maxima desplegar@'a alguna informaci@'on importante acerca de la versi@'on que se est@'a usando y un prompt. Cada comando que vaya a ser ejecutado por Maxima debe terminar con un punto y coma. Para finalizar una sesi@'on en Maxima se emplea el comando "quit();". A continuaci@'on se presenta un breve ejemplo de sesi@'on:
 
 @example
@@ -22,43 +22,71 @@ provides bug reporting information.
 [wfs@@chromium]$
 @end example
 
-Maxima puede buscar en las p@'aginas info. Para ello puede usar el comando @kbd{describe} que mostrar@'a todos los comandos y variables asociadas con la cadena o argumento de este comando. Opcionalmente puede mostrar la documentaci@'on respectiva. El signo de cierre de interrogaci@'on @code{?} es una abreviaci@'on del comando @code{describe}: 
+Maxima puede buscar en las p@'aginas info. La instrucci@'on @kbd{describe} mostrar@'a 
+el comando o comandos que contengan una cierta cadena. La interrogaci@'on @code{?} 
+(b@'usqueda exacta) y la doble interrogaci@'on @code{??} (b@'usqueda aproximada)
+son abreviaturas de la instrucci@'on @code{describe}: 
+
 
 @example
-(%i1) ? integ
+(%i1) ?? integ
+ 0: Functions and Variables for Elliptic Integrals
+ 1: Functions and Variables for Integration
+ 2: Introduction to Elliptic Functions and Integrals
+ 3: Introduction to Integration
+ 4: askinteger  (Functions and Variables for Simplification)
+ 5: integerp  (Functions and Variables for Miscellaneous Options)
+ 6: integer_partitions  (Functions and Variables for Sets)
+ 7: integrate  (Functions and Variables for Integration)
+ 8: integrate_use_rootsof  (Functions and Variables for Integration)
+ 9: integration_constant_counter  (Functions and Variables for
+    Integration)
+ 10: nonnegintegerp  (Functions and Variables for linearalgebra)
+Enter space-separated numbers, `all' or `none': 5 4
 
- 0: (maxima.info)Introduction to Elliptic Functions and Integrals.
- 1: Definitions for Elliptic Integrals.
- 2: Integration.
- 3: Introduction to Integration.
- 4: Definitions for Integration.
- 5: askinteger :Definitions for Simplification.
- 6: integerp :Definitions for Miscellaneous Options.
- 7: integrate :Definitions for Integration.
- 8: integrate_use_rootsof :Definitions for Integration.
- 9: integration_constant_counter :Definitions for Integration.
-Enter space-separated numbers, `all' or `none': 6 5
+ -- Function: integerp (<expr>)
+     Returns `true' if <expr> is a literal numeric integer, otherwise
+     `false'.
 
-Info from file /usr/local/info/maxima.info:
- - Function: integerp (<expr>)
-     Returns `true' if <expr> is an integer, otherwise `false'.
+     `integerp' returns false if its argument is a symbol, even if the
+     argument is declared integer.
 
+     Examples:
 
- - Function: askinteger (expr, integer)
- - Function: askinteger (expr)
- - Function: askinteger (expr, even)
- - Function: askinteger (expr, odd)
-     `askinteger (expr, integer)' attempts to determine from the
-     `assume' database whether `expr' is an integer.  `askinteger' will
-     ask the user if it cannot tell otherwise, and attempt to install
-     the information in the database if possible.  `askinteger (expr)'
-     is equivalent to `askinteger (expr, integer)'.
+          (%i1) integerp (0);
+          (%o1)                         true
+          (%i2) integerp (1);
+          (%o2)                         true
+          (%i3) integerp (-17);
+          (%o3)                         true
+          (%i4) integerp (0.0);
+          (%o4)                         false
+          (%i5) integerp (1.0);
+          (%o5)                         false
+          (%i6) integerp (%pi);
+          (%o6)                         false
+          (%i7) integerp (n);
+          (%o7)                         false
+          (%i8) declare (n, integer);
+          (%o8)                         done
+          (%i9) integerp (n);
+          (%o9)                         false
 
-     `askinteger (expr, even)' and `askinteger (expr, odd)' likewise
-     attempt to determine if `expr' is an even integer or odd integer,
-     respectively.
+ -- Function: askinteger (<expr>, integer)
+ -- Function: askinteger (<expr>)
+ -- Function: askinteger (<expr>, even)
+ -- Function: askinteger (<expr>, odd)
+     `askinteger (<expr>, integer)' attempts to determine from the
+     `assume' database whether <expr> is an integer.  `askinteger'
+     prompts the user if it cannot tell otherwise, and attempt to
+     install the information in the database if possible.  `askinteger
+     (<expr>)' is equivalent to `askinteger (<expr>, integer)'.
 
-(%o1)                         false
+     `askinteger (<expr>, even)' and `askinteger (<expr>, odd)'
+     likewise attempt to determine if <expr> is an even integer or odd
+     integer, respectively.
+
+(%o1)                                true
 @end example
 
 Para usar un resultado de forma posterior, usted puede asignar dicho resultado a una variable o referirse a @'el por medio de la etiqueta asociada (%i* o %o*). Adicionalmente  puede usar @kbd{%} para referirse al @'ultimo resultado obtenido.  
@@ -147,7 +175,8 @@ Bajo un sistema X window, (es decir que poseea interfaz gr@'afica), Maxima puede
 (%o1) 
 (%i2) plot2d ([atan(x), erf(x), tanh(x)], [x, -5, 5]);
 (%o2) 
-(%i3) plot3d (sin(sqrt(x^2 + y^2))/sqrt(x^2 + y^2), [x, -12, 12], [y, -12, 12]);
+(%i3) plot3d (sin(sqrt(x^2 + y^2))/sqrt(x^2 + y^2), [x, -12, 12],
+      [y, -12, 12]);
 (%o3) 
 @end example
 

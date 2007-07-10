@@ -1,9 +1,10 @@
+@c English version 1.2
 @menu
-* Definiciones para lsquares::
+* Funciones y variables para lsquares::
 @end menu
 
-@node Definiciones para lsquares,  , lsquares, lsquares
-@section Definiciones para lsquares
+@node Funciones y variables para lsquares,  , lsquares, lsquares
+@section Funciones y variables para lsquares
 
 
 @defvr {Variable global} DETCOEF

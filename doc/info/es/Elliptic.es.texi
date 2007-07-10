@@ -1,12 +1,12 @@
-@c version 1.8
+@c version 1.9
 @menu
 * Introducci@'on a las funciones e integrales el@'{@dotless{i}}pticas::
-* Definiciones para funciones el@'{@dotless{i}}pticas::
-* Definiciones para integrales el@'{@dotless{i}}pticas::
+* Funciones y variables para funciones el@'{@dotless{i}}pticas::
+* Funciones y variables para integrales el@'{@dotless{i}}pticas::
 @end menu
 
 
-@node Introducci@'on a las funciones e integrales el@'{@dotless{i}}pticas, Definiciones para funciones el@'{@dotless{i}}pticas, Funciones el@'{@dotless{i}}pticas, Funciones el@'{@dotless{i}}pticas
+@node Introducci@'on a las funciones e integrales el@'{@dotless{i}}pticas, Funciones y variables para funciones el@'{@dotless{i}}pticas, Funciones el@'{@dotless{i}}pticas, Funciones el@'{@dotless{i}}pticas
 @comment  node-name,  next,  previous,  up
 
 @section Introducci@'on a las funciones e integrales el@'{@dotless{i}}pticas
@@ -112,10 +112,10 @@ Algunos ejemplos de integrales el@'{@dotless{i}}pticas:
 
 El paquete para funciones e integrales el@'{@dotless{i}}pticas fue programado por Raymond Toy. Se distribuye, igual que Maxima, bajo la General Public License (GPL).
 
-@node Definiciones para funciones el@'{@dotless{i}}pticas, Definiciones para integrales el@'{@dotless{i}}pticas, Introducci@'on a las funciones e integrales el@'{@dotless{i}}pticas, Funciones el@'{@dotless{i}}pticas
+@node Funciones y variables para funciones el@'{@dotless{i}}pticas, Funciones y variables para integrales el@'{@dotless{i}}pticas, Introducci@'on a las funciones e integrales el@'{@dotless{i}}pticas, Funciones el@'{@dotless{i}}pticas
 @comment  node-name,  next,  previous,  up
 
-@section Definiciones para funciones el@'{@dotless{i}}pticas
+@section Funciones y variables para funciones el@'{@dotless{i}}pticas
 
 @deffn {Funci@'on} jacobi_sn (@var{u}, @var{m})
 Funci@'on el@'{@dotless{i}}ptica jacobiana @math{sn(u,m)}.
@@ -214,10 +214,10 @@ Inversa de la funci@'on el@'{@dotless{i}}ptica jacobiana @math{dc(u,m)}.
 @end deffn
 
 
-@node Definiciones para integrales el@'{@dotless{i}}pticas, , Definiciones para funciones el@'{@dotless{i}}pticas, Funciones el@'{@dotless{i}}pticas
+@node Funciones y variables para integrales el@'{@dotless{i}}pticas, , Funciones y variables para funciones el@'{@dotless{i}}pticas, Funciones el@'{@dotless{i}}pticas
 @comment  node-name,  next,  previous,  up
 
-@section Definiciones para integrales el@'{@dotless{i}}pticas
+@section Funciones y variables para integrales el@'{@dotless{i}}pticas
 
 
 @deffn {Funci@'on} elliptic_f (@var{phi}, @var{m})

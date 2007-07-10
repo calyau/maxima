@@ -1,14 +1,14 @@
-@c version 1.12
+@c version 1.14
 @menu
 * Introducci@'on a draw::
-* Definiciones para draw::
+* Funciones y variables para draw::
 @end menu
 
 
 
 
 
-@node Introducci@'on a draw, Definiciones para draw, draw, draw
+@node Introducci@'on a draw, Funciones y variables para draw, draw, draw
 @section Introducci@'on a draw
 
 
@@ -28,8 +28,8 @@ Se necesita tener instalado Gnuplot 4.2 para ejecutar este paquete.
 
 
 
-@node Definiciones para draw,  , Introducci@'on a draw, draw
-@section Definiciones para draw
+@node Funciones y variables para draw,  , Introducci@'on a draw, draw
+@section Funciones y variables para draw
 
 
 
@@ -836,9 +836,10 @@ Ejemplo:
 
 @example
 (%i1) load(draw)$
-(%i2) draw2d(points(makelist([random(20),random(50)],k,1,10)),
-             point_size = 5,
-             points(makelist(k,k,1,20),makelist(random(30),k,1,20)))$
+(%i2) draw2d(
+        points(makelist([random(20),random(50)],k,1,10)),
+        point_size = 5,
+        points(makelist(k,k,1,20),makelist(random(30),k,1,20)))$
 @end example
 @end defvr
 
@@ -1614,13 +1615,15 @@ Ejemplo:
 
 @example
 (%i1) load(draw)$
-(%i2) draw2d(key           = "puntitos",
-             points(makelist([random(20),random(50)],k,1,10)),
-             point_type    = 6,
-             point_size    = 3,
-             points_joined = true,
-             key           = "puntazos",
-             points(makelist(k,k,1,20),makelist(random(30),k,1,20)))$
+(%i2) draw2d(
+        key           = "puntitos",
+        points(makelist([random(20),random(50)],k,1,10)),
+        point_type    = 6,
+        point_size    = 3,
+        points_joined = true,
+        key           = "puntazos",
+        points(makelist(k,k,1,20),
+               makelist(random(30),k,1,20)))$
 @end example
 
 
@@ -1638,12 +1641,13 @@ Ejemplo:
 
 @example
 (%i1) load(draw)$
-(%i2) draw2d(color      = "#e245f0",
-             line_width = 8,
-             polygon([[3,2],[7,2],[5,5]]),
-             border      = false,
-             fill_color  = yellow,
-             polygon([[5,2],[9,2],[7,5]]) )$
+(%i2) draw2d(
+        color      = "#e245f0",
+        line_width = 8,
+        polygon([[3,2],[7,2],[5,5]]),
+        border      = false,
+        fill_color  = yellow,
+        polygon([[5,2],[9,2],[7,5]]) )$
 @end example
 
 
@@ -1659,18 +1663,19 @@ Ejemplo:
 
 @example
 (%i1) load(draw)$
-(%i2) draw2d(fill_color  = red,
-             line_width  = 6,
-             line_type   = dots,
-             transparent = false,
-             fill_color  = blue,
-             rectangle([-2,-2],[8,-1]),   /* opposite vertices */
-             transparent = true,
-             line_type   = solid,
-             line_width  = 1,
-             rectangle([9,4],[2,-1.5]),
-             xrange      = [-3,10],
-             yrange      = [-3,4.5] )$
+(%i2) draw2d(
+        fill_color  = red,
+        line_width  = 6,
+        line_type   = dots,
+        transparent = false,
+        fill_color  = blue,
+        rectangle([-2,-2],[8,-1]), /* opposite vertices */
+        transparent = true,
+        line_type   = solid,
+        line_width  = 1,
+        rectangle([9,4],[2,-1.5]),
+        xrange      = [-3,10],
+        yrange      = [-3,4.5] )$
 @end example
 
 
@@ -1693,7 +1698,8 @@ Ejemplo:
              color       = gray30,
              transparent = false,
              line_width  = 5,
-             ellipse(0,6,3,2,270,-270),  /* center (x,y), a, b, start & end in degrees */
+             ellipse(0,6,3,2,270,-270),
+             /* center (x,y), a, b, start & end in degrees */
              transparent = true,
              color       = blue,
              line_width  = 3,
@@ -1722,7 +1728,8 @@ construir la escena. Estos colores pueden cambiar en diferentes terminales.
              label("Label in red",0,0.3),
              color = "#0000ff",
              label("Label in blue",0,0.6),
-             color = "light-blue", /* double quotes if - is used */
+             color = "light-blue",
+             /* double quotes if - is used */
              label("Label in light-blue",0,0.9)  )$
 @end example
 
@@ -1790,15 +1797,16 @@ Ejemplo:
 
 @example
 (%i1) load(draw)$
-(%i2) draw2d(terminal  = eps,
-             grid      = true,
-             line_type = solid,
-             key       = "y^2=x^3-2*x+1",
-               implicit(y^2=x^3-2*x+1, x, -4,4, y, -4,4),
-             line_type = dots,
-             key       = "x^3+y^3 = 3*x*y^2-x-1",
-              implicit(x^3+y^3 = 3*x*y^2-x-1, x, -4,4, y, -4,4),
-             title     = "Two implicit functions" )$
+(%i2) draw2d(
+        terminal  = eps,
+        grid      = true,
+        line_type = solid,
+        key       = "y^2=x^3-2*x+1",
+        implicit(y^2=x^3-2*x+1, x, -4,4, y, -4,4),
+        line_type = dots,
+        key       = "x^3+y^3 = 3*x*y^2-x-1",
+        implicit(x^3+y^3 = 3*x*y^2-x-1, x, -4,4, y, -4,4),
+        title     = "Two implicit functions" )$
 @end example
 
 
@@ -1869,7 +1877,8 @@ num@'ericos en las componentes crom@'aticas rojo, verde y azul:
 21: 3x             22: 3x-1         23: 3x-2
 24: |3x-1|         25: |3x-2|       26: (3x-1)/2
 27: (3x-2)/2       28: |(3x-1)/2|   29: |(3x-2)/2|
-30: x/0.32-0.78125 31: 2*x-0.84     32: 4x;1;-2x+1.84;x/0.08-11.5
+30: x/0.32-0.78125 31: 2*x-0.84
+32: 4x;1;-2x+1.84;x/0.08-11.5
 33: |2*x - 0.5|    34: 2*x          35: 2*x - 0.5
 36: 2*x - 1
 @end example
@@ -1948,7 +1957,7 @@ dimensiones:
 @itemize @bullet
 @item
 @code{points([[x1,y1,z1], [x2,y2,z2], [x3,y3,z3],...])} o 
-@code{points([x1,x2,x3,...], [y1,y2,y3,...], [z1,z2,z3,...])}:
+@code{points([x1,x2, x3,...], [y1,y2,y3,...], [z1,z2,z3,...])}:
 dibuja los puntos @code{[x1,y1,z1]}, @code{[x2,y2,z2]}, @code{[x2,y2,z3]}, ....
 
 Este objeto depende de las siguientes @i{opciones gr@'aficas}: @code{point_size}, 
@@ -1972,13 +1981,14 @@ Dos muestras tridimensionales,
 (%i1) load(draw)$
 (%i2) load (numericalio)$
 (%i3) s2 : read_matrix (file_search ("wind.data"))$
-(%i4) draw3d(title      = "Daily average wind speeds. Two data sets",
-             point_size = 2,
-             key        = "Sample from stations 1, 2 and 3",
-             points(args(submatrix (s2, 4, 5))),
-             point_type = 4,
-             key        = "Sample from stations 1, 4 and 5",
-             points(args(submatrix (s2, 2, 3))) )$
+(%i4) draw3d(
+       title      = "Daily average wind speeds. Two data sets",
+       point_size = 2,
+       key        = "Sample from stations 1, 2 and 3",
+       points(args(submatrix (s2, 4, 5))),
+       point_type = 4,
+       key        = "Sample from stations 1, 4 and 5",
+       points(args(submatrix (s2, 2, 3))) )$
 @end example
 
 
@@ -2068,7 +2078,7 @@ Ejemplo:
 
 
 @item
-@code{parametric_surface(xfun,yfun,zfun,par1,par1min,par1max,par2,par2min,par2max)}:
+@code{parametric_surface(xfun,yfun,zfun,par1,par1min,par1max, par2,par2min,par2max)}:
 dibuja la superficie param@'etrica @code{[xfun,yfun,zfun]}, con el par@'ametro @code{par1}
 tomando valores desde @code{par1min} hasta @code{par1max} y el par@'ametro @code{par2}
 tomando valores desde @code{par2min} hasta @code{par2max}.
@@ -2080,16 +2090,18 @@ Ejemplo:
 
 @example
 (%i1) load(draw)$
-(%i2) draw3d(title          = "Sea shell",
-             xu_grid        = 100,
-             yv_grid        = 25,
-             rot_vertical   = 100,
-             rot_horizontal = 20,
-             surface_hide   = true,
-             parametric_surface(0.5*u*cos(u)*(cos(v)+1),
-                                0.5*u*sin(u)*(cos(v)+1),
-                                u*sin(v) - ((u+3)/8*%pi)^2 - 20,
-                                u, 0, 13*%pi, v, -%pi, %pi) )$
+(%i2) draw3d(
+        title          = "Sea shell",
+        xu_grid        = 100,
+        yv_grid        = 25,
+        rot_vertical   = 100,
+        rot_horizontal = 20,
+        surface_hide   = true,
+        parametric_surface(
+          0.5*u*cos(u)*(cos(v)+1),
+          0.5*u*sin(u)*(cos(v)+1),
+          u*sin(v) - ((u+3)/8*%pi)^2 - 20,
+          u, 0, 13*%pi, v, -%pi, %pi) )$
 @end example
 
 @end itemize

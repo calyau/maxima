@@ -1,10 +1,10 @@
-@c version 1.15
+@c version 1.19
 @menu
-* Definiciones para Constantes::   
+* Funciones y variables para Constantes::   
 @end menu
 
-@node Definiciones para Constantes,  , Constantes, Constantes
-@section Definiciones para Constantes
+@node Funciones y variables para Constantes,  , Constantes, Constantes
+@section Funciones y variables para Constantes
 
 @defvr {Constante} %e
 @ifinfo
@@ -76,8 +76,7 @@ Tras evaluar @code{tellrat(%phi^2 - %phi - 1)} y @code{algebraic: true},
 
 Ejemplos:
 
-La funci@'on @code{fibtophi} expresa los n@'umeros de Fibonacci @code{fib(n)} en
-t@'erminos de @code{%phi}.
+@code{fibtophi} expresa el n@'umero de Fibonacci @code{fib(n)} en t@'erminos de @code{%phi}.
 
 @c ===beg===
 @c fibtophi (fib (n));
@@ -107,8 +106,10 @@ t@'erminos de @code{%phi}.
 @end example
 
 Por defecto, Maxima desconoce las propiedades algebraicas de @code{%phi}.
-Tras evaluar @code{tellrat(%phi^2 - %phi - 1)} y @code{algebraic: true},
-@code{ratsimp} puede simplificar algunas expresiones que contengan @code{%phi}.
+Despu@'es de evaluar @code{tellrat (%phi^2 - %phi - 1)} y
+@code{algebraic: true}, @code{ratsimp} puede simplificar algunas expresiones
+que contengan @code{%phi}.
+
 
 @c ===beg===
 @c e : expand ((%phi^2 - %phi - 1) * (A + 1));

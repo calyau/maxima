@@ -1,10 +1,10 @@
-@c version 1.8
+@c version 1.9
 @menu
 * Introducci@'on a atensor::
-* Definiciones para atensor::
+* Funciones y variables para atensor::
 @end menu
 
-@node Introducci@'on a atensor, Definiciones para atensor, atensor, atensor
+@node Introducci@'on a atensor, Funciones y variables para atensor, atensor, atensor
 @section Introducci@'on a atensor
 
 El paquete @code{atensor} contiene funciones para la manipulaci@'on algebraica de tensores. Para hacer uso de @code{atensor} es necesario cargarlo en memoria haciendo @code{load(atensor)}, seguido de una llamada a la funci@'on  @code{init_atensor}.
@@ -78,9 +78,9 @@ Si se quiere experimentar con una @'algebra no asociativa, tambi@'en se puede ig
 
 
 @c end concepts atensor
-@node Definiciones para atensor,  , Introducci@'on a atensor, atensor
+@node Funciones y variables para atensor,  , Introducci@'on a atensor, atensor
 
-@section Definiciones para atensor
+@section Funciones y variables para atensor
 
 @deffn {Funci@'on} init_atensor (@var{alg_type}, @var{opt_dims})
 @deffnx {Funci@'on} init_atensor (@var{alg_type})

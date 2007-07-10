@@ -1,10 +1,10 @@
-@c english version 1.16
+@c english version 1.17
 @menu
-* Definiciones para Logaritmos::  
+* Funciones y variables para logaritmos::  
 @end menu
 
-@node Definiciones para Logaritmos,  , Logaritmos, Logaritmos
-@section Definiciones para Logaritmos
+@node Funciones y variables para logaritmos,  , Logaritmos, Logaritmos
+@section Funciones y variables para logaritmos
 
 @defvr {Variable opcional} %e_to_numlog
 Valor por defecto: @code{false}
