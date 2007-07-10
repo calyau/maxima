@@ -1,6 +1,6 @@
 /*               COPYRIGHT NOTICE
 
-Copyright (C) 2005-2006 Mario Rodriguez Riotorto
+Copyright (C) 2005-2007 Mario Rodriguez Riotorto
 
 This program is free software; you can redistribute
 it and/or modify it under the terms of the
@@ -28,9 +28,6 @@ to contact me at
 mario @@@ edu DOT xunta DOT es
 www.biomates.net
 
-2005, october: first release
-2006, february: added linear interpolation and cubic splines, together 
-      with some other changes.
 */
 
 
@@ -79,8 +76,8 @@ interpol_check_input(data):= block([n],
 /* %,numer;                                                                    */
 /* plot2d([f(x),[discrete,p]],[x,0,10],                                        */
 /*        [gnuplot_curve_styles,["with lines","with points pointsize 3"]])$    */
-lagrange(tab,[select]) := block([n,sum:0,prod,options, defaults],
-   tab: interpol_check_input(tab),
+lagrange(tab,[select]) := block([n,sum:0,prod,options, defaults,ratprint:false],
+   tab: rat(interpol_check_input(tab)),
    if numberp(tab) then
       if tab=-1
          then error("Argument to 'lagrange' must be a list or matrix")
@@ -135,7 +132,7 @@ charfun2(z,l1,l2):= charfun(l1 <= z and z < l2)$
 /* %,numer;                                                                    */
 /* plot2d(['(f(x)),[discrete,p]],[x,0,10],                                     */
 /*        [gnuplot_curve_styles,["with lines","with points pointsize 3"]])$    */
-linearinterpol(tab,[select]) := block([n,s:0,a,b,options, defaults],
+linearinterpol(tab,[select]) := block([n,s:0,a,b,options, defaults,ratprint:false],
    tab: interpol_check_input(tab),
    if numberp(tab) then
       if tab=-1
@@ -205,7 +202,7 @@ linearinterpol(tab,[select]) := block([n,s:0,a,b,options, defaults],
 /* plot2d(['(f(x)),'(g(x)),[discrete,p]],[x,0,10],                                     */
 /*      [gnuplot_curve_styles,["with lines","with lines","with points pointsize 3"]])$ */
 cspline(tab,[select]):= block([options, defaults, n, aux, y2, u, sig, p,
-                               qn, un, a, b, s:0, aj, bj, cj, dj, aux],
+                               qn, un, a, b, s:0, aj, bj, cj, dj, aux,ratprint:false],
    tab: interpol_check_input(tab),
    if numberp(tab) then
       if tab=-1
@@ -291,5 +288,3 @@ cspline(tab,[select]):= block([options, defaults, n, aux, y2, u, sig, p,
       s: s + funmake('charfun2,[defaults[3], a, b]) *
              expand(aj * tab[j-1][2] + bj * tab[j][2] + cj * y2[j-1] + dj * y2[j])  ),
    s )$
-
-
