@@ -34,6 +34,18 @@ decigram: decigrams: 1.e-4*kilogram $
 deciliter: deciliters: .0001*meter**3 $
 decimeter: decimeters: .1*meter $
 degree: degrees: deg: .0174532924*radian $
+
+/* Reasoning for not converting between degree fahrenheit, degree celsius
+ * and kelvin: 
+ *
+ * Typically temperatures are absolute values that don't get
+ * summed up. So let everybody use the unit he is happy with.
+ * Of course there are also temperature differences, but these need 
+ * a different conversion formula than absolute temperatures, thus making
+ * a mess which could only be resolved by introducing additional units.
+ *
+ * At least this is what I guess that the original author intended.
+ */
 degreef: degf: degreefahrenheit $
 degreec: degc: degreecentigrade: degreecelsius $
 degreer: degr: degreerankine: degreekelvin/1.8 $
@@ -72,7 +84,7 @@ inchofmercury: inchesofmercury: .03342*atmosphere $
 joules: joule: newton*meter $
 kilograms: kg: kilogram $
 kilometer: kilometers: km: 1000.*meter $
-kilowatts* killowatt: 1000.*watt $
+kilowatts: kilowatt: 1000.*watt $
 knot: knots: 1.8532*kilometer/hour $
 league: leagues: 4827.*meter $
 lightyear: lightyear: 9.46091e15*meter $
@@ -115,7 +127,7 @@ poundal: poundals: .13826*newton $
 poise: gram/centimeter/second $
 pound: pounds: lb: lbf: 4.44823*newton $
 poundmass: poundsmass: lbm: .4536*kilogram $
-ounce: ounces: ounceavoirdupois: poundf/16. $
+ounce: ounces: ounceavoirdupois: poundmass/16. $
 ouncetroy: ouncestroy: 1.09714*ounce $
 quartdry: quartsdry: 67.2*inch**3 $
 quart: quarts: qt: 9.464e-4*meter**3 $
@@ -134,6 +146,22 @@ volts: volt $
 watts: watt: joule/second $
 week: weeks: 7.*day $
 yard: yards: yd: .9144*meter $
+
+assume(coulomb >= 0) $
+assume(kilogram >= 0) $
+assume(meter >= 0) $
+assume(second >= 0) $
+assume(volt >= 0) $
+assume(radian >= 0) $
+assume(steradian >= 0) $
+assume(lambert >= 0) $
+assume(degreefahrenheit >= 0) $
+assume(degreecelsius >= 0) $
+assume(degreekelvin >= 0) $
+assume(farad >= 0) $
+assume(henry >= 0) $
+assume(decibels >= 0) $
+
 matchdeclare(freeofdegreefahrenheit,freeof(degreefahrenheit),
       freeofdegreecelsius, freeof(degreecelsius)) $
 tellsimpafter(freeofdegreefahrenheit*degreefahrenheit, 
