@@ -1,9 +1,9 @@
-@c english version 1.46
+@c english version 1.50
 @menu
 * Introducci@'on a la definici@'on de funciones::  
 * Funciones::                    
 * Macros::                       
-* Definiciones para la definici@'on de funciones::  
+* Funciones y variables para la definici@'on de funciones::  
 @end menu
 
 @node Introducci@'on a la definici@'on de funciones, Funciones, Definici@'on de Funciones, Definici@'on de Funciones
@@ -135,7 +135,7 @@ Sin embargo, no hay forma de borrar todos los valores almacenados de
 una sola vez, excepto mediante @code{kill(@var{a})} o @code{remarray(@var{a})},
 con lo que se borra tambi@'en la definici@'on de la propia funci@'on.
 
-@node Macros, Definiciones para la definici@'on de funciones, Funciones, Definici@'on de Funciones
+@node Macros, Funciones y variables para la definici@'on de funciones, Funciones, Definici@'on de Funciones
 @section Macros
 
 
@@ -199,15 +199,19 @@ Las variables de @var{L} se asocian en paralelo; si se hiciese secuencialmente, 
 
 @c ===beg===
 @c buildq ([a: b, b: a], foo (a, b));
-@c buildq ([u: v, v: w, w: x, x: y, y: z, z: u], bar (u, v, w, x, y, z));
-@c subst ([u=v, v=w, w=x, x=y, y=z, z=u], bar (u, v, w, x, y, z));
+@c buildq ([u: v, v: w, w: x, x: y, y: z, z: u],
+@c         bar (u, v, w, x, y, z));
+@c subst ([u=v, v=w, w=x, x=y, y=z, z=u],
+@c        bar (u, v, w, x, y, z));
 @c ===end===
 @example
 (%i1) buildq ([a: b, b: a], foo (a, b));
 (%o1)                       foo(b, a)
-(%i2) buildq ([u: v, v: w, w: x, x: y, y: z, z: u], bar (u, v, w, x, y, z));
+(%i2) buildq ([u: v, v: w, w: x, x: y, y: z, z: u],
+              bar (u, v, w, x, y, z));
 (%o2)                 bar(v, w, x, y, z, u)
-(%i3) subst ([u=v, v=w, w=x, x=y, y=z, z=u], bar (u, v, w, x, y, z));
+(%i3) subst ([u=v, v=w, w=x, x=y, y=z, z=u],
+             bar (u, v, w, x, y, z));
 (%o3)                 bar(u, u, u, u, u, u)
 @end example
 
@@ -357,8 +361,8 @@ Ejemplos:
 
 @end deffn
 
-@node Definiciones para la definici@'on de funciones, , Macros, Definici@'on de Funciones
-@section Definiciones para la definici@'on de funciones
+@node Funciones y variables para la definici@'on de funciones, , Macros, Definici@'on de Funciones
+@section Funciones y variables para la definici@'on de funciones
 
 @deffn {Funci@'on} apply (@var{F}, [@var{x_1}, ..., @var{x_n}])
 Construye y eval@'ua la expresi@'on @code{@var{F}(@var{arg_1}, ..., @var{arg_n})}.
@@ -648,28 +652,146 @@ Cuando el primer argumento es una expresi@'on con operador @code{funmake},
 @end deffn
 
 
-@c Parece ser que parte de esta definici@'on est@'a obsoleta; he optado por obviarla (Mario).
-@deffn {Funci@'on} define_variable (@var{nombre}, @var{valor_por_defecto}, @var{modo})
 
-Introduce una variable global en el entorno de Maxima. 
+@deffn {Funci@'on} define_variable (@var{name}, @var{default_value}, @var{mode})
 
-La funci@'on @code{define_variable} sigue los siguientes pasos:
+Introduce una variable global en el entorno de Maxima. La funci@'on 
+@code{define_variable} puede ser @'util en los paquetes escritos por
+los usuarios que vayan a ser compilados o traducidos con frecuencia.
+
+La funci@'on @code{define_variable} ejecuta los siguientes pasos:
 
 @enumerate
 @item
-@code{mode_declare (@var{nombre}, @var{modo})} declara el modo de @var{nombre} ala traductor. V@'ease en @code{mode_declare} un listado de los posibles modos.
+@code{mode_declare (@var{name}, @var{mode})} declara el modo de @var{name} al traductor.
+V@'ease @code{mode_declare} para ver la lista de modos aceptables.
 
 @item
-Si la variable no tiene asignado un valor, @var{valor_por_defecto} se le asigna a @var{nombre}.
+Si a@'un no tiene asignaci@'on, se le da a la variable @var{default_value} el valor @var{name}.
 
 @item
-@code{declare (@var{nombre}, special)} la declara como especial.
+@code{declare (@var{name}, special)} la declara como especial.
 
 @item
-Asocia @var{nombre} con una funci@'on test para asegurar que a @var{name} s@'olo se le asignan valores del modo declarado.
+Asocia @var{name} a una funci@'on de comprobaci@'on para asegurar que
+a @var{name} s@'olo se le asignan valores del modo declarado.
 @end enumerate
 
+
+@c FOLLOWING STATEMENT APPEARS TO BE OUT OF DATE.
+@c EXAMINING DEFMSPEC $DEFINE_VARIABLE AND DEF%TR $DEFINE_VARIABLE IN src/trmode.lisp,
+@c IT APPEARS THAT THE 4TH ARGUMENT IS NEVER REFERRED TO.
+@c EXECUTING translate_file ON A MAXIMA BATCH FILE WHICH CONTAINS
+@c define_variable (foo, 2222, integer, "THIS IS FOO");
+@c DOES NOT PUT "THIS IS FOO" INTO THE LISP FILE NOR THE UNLISP FILE.
+@c The optional 4th argument is a documentation string.  When
+@c @code{translate_file} is used on a package which includes documentation
+@c strings, a second file is output in addition to the Lisp file which
+@c will contain the documentation strings, formatted suitably for use in
+@c manuals, usage files, or (for instance) @code{describe}.
+
+La propiedad @code{value_check} se puede asociar a cualquier variable que haya
+sido definida mediante @code{define_variable} en cualquiera de los modos diferentes
+a @code{any}. La propiedad @code{value_check} puede ser una expresi@'on lambda o
+una funci@'on de una variable, que ser@'a invocada al intentar asignar un valor a la
+variable; el argumento pasado a la funci@'on @code{value_check} es el valor que
+se le quiere asignar a la variable.
+
+La funci@'on @code{define_variable} eval@'ua @code{default_value} pero no
+@code{name} ni @code{mode}; el valor que devuelve es el valor actual de 
+@code{name}, el cual es @code{default_value} si a @code{name} no se le ha
+aplicado ninguna asignaci@'on, o el valor de dicha asignaci@'on en caso
+contrario.
+
+Ejemplos:
+
+@code{foo} es una variable booleana con valor inicial @code{true}.
+@c ===beg===
+@c define_variable (foo, true, boolean);
+@c foo;
+@c foo: false;
+@c foo: %pi;
+@c foo;
+@c ===end===
+@example
+(%i1) define_variable (foo, true, boolean);
+(%o1)                         true
+(%i2) foo;
+(%o2)                         true
+(%i3) foo: false;
+(%o3)                         false
+(%i4) foo: %pi;
+Error: foo was declared mode boolean, has value: %pi
+ -- an error.  Quitting.  To debug this try debugmode(true);
+(%i5) foo;
+(%o5)                         false
+@end example
+
+@code{bar} es una variable entera, cuyo valor habr@'a de ser primo.
+@c ===beg===
+@c define_variable (bar, 2, integer);
+@c qput (bar, prime_test, value_check);
+@c prime_test (y) :=
+@c    if not primep(y) then error (y, "is not prime.");
+@c bar: 1439;
+@c bar: 1440;
+@c bar;
+@c ===end===
+@example
+(%i1) define_variable (bar, 2, integer);
+(%o1)                           2
+(%i2) qput (bar, prime_test, value_check);
+(%o2)                      prime_test
+(%i3) prime_test (y) := if not primep(y) then
+                           error (y, "is not prime.");
+(%o3) prime_test(y) := 
+         if not primep(y) then error(y, "is not prime.")
+(%i4) bar: 1439;
+(%o4)                         1439
+(%i5) bar: 1440;
+1440 is not prime.
+#0: prime_test(y=1440)
+ -- an error.  Quitting.  To debug this try debugmode(true);
+(%i6) bar;
+(%o6)                         1439
+@end example
+
+@code{baz_quux} es una variable a la que no se le podr@'a asignar valor alguno.
+El modo @code{any_check} es como @code{any}, 
+pero @code{any_check} activa el mecanismo @code{value_check}, cosa que @code{any}
+no hace.
+@c ===beg===
+@c define_variable (baz_quux, 'baz_quux, any_check);
+@c F: lambda ([y], if y # 'baz_quux 
+@c                   then error ("Cannot assign to `baz_quux'."));
+@c qput (baz_quux, ''F, value_check);
+@c baz_quux: 'baz_quux;
+@c baz_quux: sqrt(2);
+@c baz_quux;
+@c ===end===
+@example
+(%i1) define_variable (baz_quux, 'baz_quux, any_check);
+(%o1)                       baz_quux
+(%i2) F: lambda ([y], if y # 'baz_quux then
+                 error ("Cannot assign to `baz_quux'."));
+(%o2) lambda([y], if y # 'baz_quux
+                   then error(Cannot assign to `baz_quux'.))
+(%i3) qput (baz_quux, ''F, value_check);
+(%o3) lambda([y], if y # 'baz_quux
+                   then error(Cannot assign to `baz_quux'.))
+(%i4) baz_quux: 'baz_quux;
+(%o4)                       baz_quux
+(%i5) baz_quux: sqrt(2);
+Cannot assign to `baz_quux'.
+#0: lambda([y],if y # 'baz_quux then
+             error("Cannot assign to `baz_quux'."))(y=sqrt(2))
+ -- an error.  Quitting.  To debug this try debugmode(true);
+(%i6) baz_quux;
+(%o6)                       baz_quux
+@end example
+
 @end deffn
+
 
 @deffn {Funci@'on} dispfun (@var{f_1}, ..., @var{f_n})
 @deffnx {Funci@'on} dispfun (all)
@@ -1148,8 +1270,10 @@ una funci@'on macro es llamada cada vez que la expresi@'on de llamada es evaluad
 
 @c ===beg===
 @c f (x) := h (x) / g (x);
-@c g (x) ::= block (print ("x + 99 is equal to", x), return (x + 99));
-@c h (x) ::= block (print ("x - 99 is equal to", x), return (x - 99));
+@c g (x) ::= block (print ("x + 99 is equal to", x),
+@c                  return (x + 99));
+@c h (x) ::= block (print ("x - 99 is equal to", x),
+@c                  return (x - 99));
 @c macroexpansion: false;
 @c f (a * b);
 @c dispfun (f);
@@ -1160,12 +1284,14 @@ una funci@'on macro es llamada cada vez que la expresi@'on de llamada es evaluad
                                   h(x)
 (%o1)                     f(x) := ----
                                   g(x)
-(%i2) g (x) ::= block (print ("x + 99 is equal to", x), return (x + 99));
+(%i2) g (x) ::= block (print ("x + 99 is equal to", x),
+                       return (x + 99));
 (%o2) g(x) ::= block(print("x + 99 is equal to", x), 
-                                                  return(x + 99))
-(%i3) h (x) ::= block (print ("x - 99 is equal to", x), return (x - 99));
+                     return(x + 99))
+(%i3) h (x) ::= block (print ("x - 99 is equal to", x),
+                       return (x - 99));
 (%o3) h(x) ::= block(print("x - 99 is equal to", x), 
-                                                  return(x - 99))
+                     return(x - 99))
 (%i4) macroexpansion: false;
 (%o4)                         false
 (%i5) f (a * b);
@@ -1192,8 +1318,10 @@ Si @code{macroexpansion} vale @code{expand}, una funci@'on macro tan solo es lla
 
 @c ===beg===
 @c f (x) := h (x) / g (x);
-@c g (x) ::= block (print ("x + 99 is equal to", x), return (x + 99));
-@c h (x) ::= block (print ("x - 99 is equal to", x), return (x - 99));
+@c g (x) ::= block (print ("x + 99 is equal to", x),
+@c                  return (x + 99));
+@c h (x) ::= block (print ("x - 99 is equal to", x),
+@c                  return (x - 99));
 @c macroexpansion: expand;
 @c f (a * b);
 @c dispfun (f);
@@ -1204,12 +1332,14 @@ Si @code{macroexpansion} vale @code{expand}, una funci@'on macro tan solo es lla
                                   h(x)
 (%o1)                     f(x) := ----
                                   g(x)
-(%i2) g (x) ::= block (print ("x + 99 is equal to", x), return (x + 99));
+(%i2) g (x) ::= block (print ("x + 99 is equal to", x),
+                       return (x + 99));
 (%o2) g(x) ::= block(print("x + 99 is equal to", x), 
-                                                  return(x + 99))
-(%i3) h (x) ::= block (print ("x - 99 is equal to", x), return (x - 99));
+                     return(x + 99))
+(%i3) h (x) ::= block (print ("x - 99 is equal to", x),
+                       return (x - 99));
 (%o3) h(x) ::= block(print("x - 99 is equal to", x), 
-                                                  return(x - 99))
+                     return(x - 99))
 (%i4) macroexpansion: expand;
 (%o4)                        expand
 (%i5) f (a * b);
@@ -1277,7 +1407,6 @@ x + 99 is equal to x
 @defvr {Variable opcional} mode_checkp
 Valor por defecto: @code{true}
 
-@c WHAT DOES THIS MEAN ??
 Cuando @code{mode_checkp} vale @code{true}, @code{mode_declare} chequea los modos de las variables con valores asignados.
 @c NEED SOME EXAMPLES HERE.
 
@@ -1583,6 +1712,6 @@ La funci@'on @code{compile_file} eval@'ua sus argumentos.
 
 @deffn {Funci@'on} declare_translated (@var{f_1}, @var{f_2}, ...)
 
-Cuando se traduce un fichero de c@'odigo Maxima a Lisp, es importante para el traductor saber qu@'e funciones de las que est@'an en el fichero van a ser llamadas como traducidas o compiladas, y cu@'ales son simplemente funciones Maxima o que no est@'an definidas. Se genera el c@'odigo @code{(MFUNCTION-CALL fn arg1 arg2 ...)} cuando el traductor no sabe si fn va a ser una funci@'on lisp.
+Cuando se traduce un fichero de c@'odigo Maxima a Lisp, es importante para el traductor saber qu@'e funciones de las que est@'an en el fichero van a ser llamadas como traducidas o compiladas, y cu@'ales son simplemente funciones Maxima o que no est@'an definidas. Se genera el c@'odigo @code{(MFUNCTION-CALL fn arg1 arg2 ...)} cuando el traductor no sabe si @code{fn} va a ser una funci@'on lisp.
 
 @end deffn

@@ -1,10 +1,10 @@
-@c version 1.28
+@c version 1.32
 @menu
 * Introducci@'on a las listas::       
-* Definiciones para listas::       
+* Funciones y variables para listas::       
 @end menu
 
-@node Introducci@'on a las listas, Definiciones para listas, Listas, Listas
+@node Introducci@'on a las listas, Funciones y variables para listas, Listas, Listas
 @section Introducci@'on a las listas
 
 Las listas son bloques de construcci@'on b@'asica para Maxima y Lisp. Todos los tipos de datos
@@ -39,8 +39,8 @@ El elemento que denota el tipo de expresi@'on en Maxima es tambi@'en una lista, 
 @end example
 
 
-@node Definiciones para listas,  , Introducci@'on a las listas, Listas
-@section Definiciones para listas
+@node Funciones y variables para listas,  , Introducci@'on a las listas, Listas
+@section Funciones y variables para listas
 
 @deffn {Funci@'on} append (@var{lista_1}, ..., @var{lista_n})
 
@@ -107,8 +107,8 @@ Por ejemplo:
 (%o1) [[1, 1], [2, 1], [2, 2], [3, 1], [3, 2], [3, 3]]
 @end example
 
-N@'otese que los l@'{@dotless{i}}mites o lista para la variable @var{j} pueden depender
-del valor actual de @var{i}.
+N@'otese que los l@'{@dotless{i}}mites o lista para la variable @code{j} pueden depender
+del valor actual de @code{i}.
 @end deffn
 
 
@@ -369,20 +369,26 @@ devuelve @code{true}, lo que excluye a @code{unknown} y a @code{false}.
 
 Ejemplos:
 @c ===beg===
-@c sublist_indices ('[a, b, b, c, 1, 2, b, 3, b], lambda ([x], x='b));
-@c sublist_indices ('[a, b, b, c, 1, 2, b, 3, b], symbolp);
-@c sublist_indices ([1 > 0, 1 < 0, 2 < 1, 2 > 1, 2 > 0], identity);
+@c sublist_indices ('[a, b, b, c, 1, 2, b, 3, b],
+@c                  lambda ([x], x='b));
+@c sublist_indices ('[a, b, b, c, 1, 2, b, 3, b],
+@c                  symbolp);
+@c sublist_indices ([1 > 0, 1 < 0, 2 < 1, 2 > 1, 2 > 0],
+@c                  identity);
 @c assume (x < -1);
 @c map (maybe, [x > 0, x < 0, x < -2]);
 @c sublist_indices ([x > 0, x < 0, x < -2], identity);
 @c ===end===
 
 @example
-(%i1) sublist_indices ('[a, b, b, c, 1, 2, b, 3, b], lambda ([x], x='b));
+(%i1) sublist_indices ('[a, b, b, c, 1, 2, b, 3, b],
+                    lambda ([x], x='b));
 (%o1)                     [2, 3, 7, 9]
-(%i2) sublist_indices ('[a, b, b, c, 1, 2, b, 3, b], symbolp);
+(%i2) sublist_indices ('[a, b, b, c, 1, 2, b, 3, b],
+                    symbolp);
 (%o2)                  [1, 2, 3, 4, 7, 9]
-(%i3) sublist_indices ([1 > 0, 1 < 0, 2 < 1, 2 > 1, 2 > 0], identity);
+(%i3) sublist_indices ([1 > 0, 1 < 0, 2 < 1, 2 > 1, 2 > 0],
+                    identity);
 (%o3)                       [1, 4, 5]
 (%i4) assume (x < -1);
 (%o4)                       [x < - 1]

@@ -1,11 +1,11 @@
-@c version 1.27
+@c version 1.31
 @menu
-* Introducci@'on a las Funciones Especiales::
-* Definiciones para las Funciones Especiales::
+* Introducci@'on a las funciones especiales::
+* Funciones y variables para las funciones especiales::
 @end menu
 
-@node Introducci@'on a las Funciones Especiales, Definiciones para las Funciones Especiales, Funciones Especiales, Funciones Especiales
-@section Introducci@'on a las Funciones Especiales
+@node Introducci@'on a las funciones especiales, Funciones y variables para las funciones especiales, Funciones Especiales, Funciones Especiales
+@section Introducci@'on a las funciones especiales
 
 A continuaci@'on se especifican las notaciones correspondientes a las funciones especiales:
 
@@ -14,7 +14,8 @@ bessel_j (index, expr)    Funci@'on de Bessel de primera especie
 bessel_y (index, expr)    Funci@'on de Bessel de segunda especie
 bessel_i (index, expr)    Funci@'on de Bessel modificada de primera especie
 bessel_k (index, expr)    Funci@'on de Bessel modificada de segunda especie
-%he[n] (z)                Polinomio de Hermite (Ojo: @code{he}, no @code{h}. Ver A&S 22.5.18)
+%he[n] (z)                Polinomio de Hermite (Ojo: @code{he}, no @code{h}.
+                                  Ver A&S 22.5.18)
 %p[u,v] (z)               Funci@'on de Legendre de primera especie
 %q[u,v] (z)               Funci@'on de Legendre de segunda especie
 hstruve[n] (z)            Funci@'on H de Struve
@@ -29,15 +30,16 @@ slommel
 %w[u,k] (z)               Funci@'on de Whittaker de segunda especie
 erfc (z)                  Complemento de la funci@'on de error, erf
 ei (z)                    Integral exponencial (?)
-kelliptic (z)             Integral el@'{@dotless{i}}ptica completa de primera especie (K)
+kelliptic (z)             Integral el@'{@dotless{i}}ptica completa
+                                  de primera especie (K)
 %d [n] (z)                Funci@'on cil@'{@dotless{i}}ndrica parab@'olica
 @end example
 
 
 
 
-@node Definiciones para las Funciones Especiales,  , Introducci@'on a las Funciones Especiales, Funciones Especiales
-@section Definiciones para las Funciones Especiales
+@node Funciones y variables para las funciones especiales,  , Introducci@'on a las funciones especiales, Funciones Especiales
+@section Funciones y variables para las funciones especiales
 
 
 @deffn {Funci@'on} airy_ai (@var{x})
@@ -444,7 +446,7 @@ una respuesta simplificada, aunque supiese c@'omo hacerlo.
 @end defvr
 
 @defvr {Variable opcional} maxpsifracnum
-Valor por defecto: 4
+Valor por defecto: 6
 
 Sea @var{x} un n@'umero racional menor que la unidad de la forma @code{p/q}.
 Si @code{p} es mayor que @code{maxpsifracnum}, entonces
@@ -453,10 +455,74 @@ Si @code{p} es mayor que @code{maxpsifracnum}, entonces
 @end defvr
 
 @defvr {Variable opcional} maxpsifracdenom
-Valor por defecto: 4
+Valor por defecto: 6
 
 Sea @var{x} un n@'umero racional menor que la unidad de la forma @code{p/q}.
 Si @code{q} es mayor que @code{maxpsifracnum}, entonces
 @code{psi[@var{n}](@var{x})} no devolver@'a una respuesta simplificada.
 
 @end defvr
+
+
+@deffn {Funci@'on} specint (exp(- s*@var{t}) * @var{expr}, @var{t})
+
+Calcula la transformada de Laplace de @var{expr} respecto de
+la variable @var{t}. El integrando @var{expr} puede contener
+funciones especiales.
+
+Si @code{specint} no puede calcular la integral, le valor devuelto
+puede contener s@'{@dotless{i}}mbolos de Lisp, incluyendo
+@code{other-defint-to-follow-negtest},
+@code{other-lt-exponential-to-follow},
+@code{product-of-y-with-nofract-indices}, etc.; se trata de un
+fallo pendiente de correcci@'on.
+
+La ejecuci@'on de @code{demo(hypgeo)} muestra algunso ejemplos de
+transformadas de Laplace calculadas con @code{specint}.
+
+Examples:
+@c ===beg===
+@c assume (p > 0, a > 0);
+@c specint (t^(1/2) * exp(-a*t/4) * exp(-p*t), t);
+@c specint (t^(1/2) * bessel_j(1, 2 * a^(1/2) * t^(1/2))
+@c               * exp(-p*t), t);
+@c ===end===
+
+@example
+(%i1) assume (p > 0, a > 0);
+(%o1)                    [p > 0, a > 0]
+(%i2) specint (t^(1/2) * exp(-a*t/4) * exp(-p*t), t);
+                           sqrt(%pi)
+(%o2)                     ------------
+                                 a 3/2
+                          2 (p + -)
+                                 4
+(%i3) specint (t^(1/2) * bessel_j(1, 2 * a^(1/2) * t^(1/2))
+              * exp(-p*t), t);
+                                   - a/p
+                         sqrt(a) %e
+(%o3)                    ---------------
+                                2
+                               p
+@end example
+
+@end deffn
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

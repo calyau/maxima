@@ -1,21 +1,21 @@
-@c version 1.30
+@c version 1.33
 @menu
-* Introducci@'on a la Integraci@'on::
-* Definiciones para Integraci@'on::
+* Introducci@'on a la integraci@'on::
+* Funciones y variables para integraci@'on::
 * Introducci@'on a QUADPACK::
-* Definiciones para QUADPACK::
+* Funciones y variables para QUADPACK::
 @end menu
     
-@node Introducci@'on a la Integraci@'on, Definiciones para Integraci@'on, Integraci@'on, Integraci@'on
+@node Introducci@'on a la integraci@'on, Funciones y variables para integraci@'on, Integraci@'on, Integraci@'on
 
-@section Introducci@'on a la Integraci@'on   
+@section Introducci@'on a la integraci@'on   
 
 Maxima tiene varias rutinas para calcular integrales. La funci@'on @code{integrate} hace uso de la mayor parte de ellas.  Tambi@'en est@'a el paquete @code{antid}, que opera con funciones no especificadas y sus derivadas. Para usos num@'ericos se dispone de la bater@'{@dotless{i}}a de integradores adaptativos de @code{QUADPACK}, como @code{quad_qag}, @code{quad_qags}, etc., que se describen en la secci@'on @code{QUADPACK}.
 Tambi@'en se trabajan funciones hipergeom@'etricas, v@'ease @code{specint} para m@'as detalles. En t@'erminos generales, Maxima s@'olo opera con funciones que son integrables en t@'erminos de funciones elementales, como las racionales, trigonom@'etricas, logar@'{@dotless{i}}tmicas, exponenciales, radicales, etc., y unas pocas extensiones de @'estas, como la funci@'on de error o los dilogaritmos. No opera con integrales en t@'erminos de funciones desconocidas, como  @code{g(x)} o @code{h(x)}.
 
 @c end concepts Integration
-@node Definiciones para Integraci@'on, Introducci@'on a QUADPACK, Introducci@'on a la Integraci@'on, Integraci@'on
-@section Definiciones para Integraci@'on 
+@node Funciones y variables para integraci@'on, Introducci@'on a QUADPACK, Introducci@'on a la integraci@'on, Integraci@'on
+@section Funciones y variables para integraci@'on 
 
 @c NEEDS WORK
 @deffn {Funci@'on} changevar (@var{expr}, @var{f(x,y)}, @var{y}, @var{x})
@@ -424,7 +424,7 @@ Equivale a @code{ldefint} cuando @code{tlimswitch} vale @code{true}.
 
 
 
-@node Introducci@'on a QUADPACK, Definiciones para QUADPACK, Definiciones para Integraci@'on, Integraci@'on
+@node Introducci@'on a QUADPACK, Funciones y variables para QUADPACK, Funciones y variables para integraci@'on, Integraci@'on
 @section Introducci@'on a QUADPACK
 
 @c FOLLOWING TEXT ADAPTED WITH HEAVY MODIFICATION FROM http://www.netlib.org/slatec/src/qpdoc.f
@@ -438,10 +438,10 @@ and D. Kahaner @footnote{National Bureau of Standards, Washington, D.C., U.S.A}.
 
 La librer@'{@dotless{i}}a QUADPACK incluida en Maxima es una traducci@'on autom@'atica
 (mediante el programa @code{f2cl}) del c@'odigo fuente Fortran de QUADPACK tal como
-se encuentra en la SLATEC Common Mathematical Library,Versi@'on 4.1 @footnote{http://www.netlib.org/slatec}.
+se encuentra en la SLATEC Common Mathematical Library,Versi@'on 4.1 @footnote{@url{http://www.netlib.org/slatec}}.
 La librer@'{@dotless{i}}a SLATEC est@'a fechada en julio de 1993,
 pero las funciones QUADPACK fueron escritas algunos a@~nos antes.
-Hay otra versi@'on de QUADPACK en Netlib @footnote{http://www.netlib.org/quadpack},
+Hay otra versi@'on de QUADPACK en Netlib @footnote{@url{http://www.netlib.org/quadpack}},
 pero no est@'a claro hasta qu@'e punto difiere de la que forma parte de la
 librer@'{@dotless{i}}a SLATEC.
 
@@ -509,8 +509,8 @@ La estrategia es global adaptativa, utilizando la integraci@'on de
 Clenshaw-Curtis modificada en los subintervalos que contienen a @math{x = c}.
 @end table
 
-@node Definiciones para QUADPACK, , Introducci@'on a QUADPACK, Integraci@'on
-@section Definiciones para QUADPACK
+@node Funciones y variables para QUADPACK, , Introducci@'on a QUADPACK, Integraci@'on
+@section Funciones y variables para QUADPACK
 
 @c THERE ARE OPTIONAL ARGUMENTS WHICH MAKES LISTING THE VARIANTS A LITTLE TEDIOUS
 @c NEED A MORE CONVENIENT (AND NONAMBIGUOUS) NOTATION FOR OPTIONAL ARGUMENTS
@@ -836,7 +836,8 @@ Ejemplos:
 @example
 (%i1) quad_qawc (2^(-5)*((x-1)^2+4^(-5))^(-1), x, 2, 0, 5);
 (%o1)    [- 3.130120337415925, 1.306830140249558E-8, 495, 0]
-(%i2) integrate (2^(-alpha)*(((x-1)^2 + 4^(-alpha))*(x-2))^(-1), x, 0, 5);
+(%i2) integrate (2^(-alpha)*(((x-1)^2 + 4^(-alpha))*(x-2))^(-1),
+                 x, 0, 5);
 Principal Value
                        alpha
         alpha       9 4                 9
@@ -1037,7 +1038,8 @@ Ejemplos:
 @example
 (%i1) quad_qawo (x^(-1/2)*exp(-2^(-2)*x), x, 1d-8, 20*2^2, 1, cos);
 (%o1)     [1.376043389877692, 4.72710759424899E-11, 765, 0]
-(%i2) rectform (integrate (x^(-1/2)*exp(-2^(-alpha)*x) * cos(x), x, 0, inf));
+(%i2) rectform (integrate (x^(-1/2)*exp(-2^(-alpha)*x) * cos(x),
+                           x, 0, inf));
                    alpha/2 - 1/2            2 alpha
         sqrt(%pi) 2              sqrt(sqrt(2        + 1) + 1)
 (%o2)   -----------------------------------------------------

@@ -1,11 +1,11 @@
-@c english version 1.24
+@c english version 1.27
 @menu
-* Definiciones para Ecuaciones::
+* Funciones y variable para las ecuaciones::
 @end menu
 
-@node Definiciones para Ecuaciones,  , Ecuaciones, Ecuaciones
+@node Funciones y variable para las ecuaciones,  , Ecuaciones, Ecuaciones
 
-@section Definiciones para Ecuaciones
+@section Funciones y variable para las ecuaciones
 
 @defvr {Variable del sistema} %rnum_list
 Valor por defecto: @code{[]}
@@ -271,7 +271,8 @@ Si @code{dispflag} vale @code{false}, entonces se inhibir@'a que Maxima muestre 
 Devuelve @code{[@var{g}(@var{t}) = ...]}  o @code{[]}, dependiendo de que exista o no una funci@'on racional  @code{@var{g}(@var{t})} que satisfaga @var{eqn}, la cual debe ser un polinomio de primer orden, lineal para @code{@var{g}(@var{t})} y @code{@var{g}(@var{t}+1)}
 
 @example
-(%i1) eqn: (n + 1)*f(n) - (n + 3)*f(n + 1)/(n + 1) = (n - 1)/(n + 2);
+(%i1) eqn: (n + 1)*f(n) - (n + 3)*f(n + 1)/(n + 1)
+                 = (n - 1)/(n + 2);
                             (n + 3) f(n + 1)   n - 1
 (%o1)        (n + 1) f(n) - ---------------- = -----
                                  n + 1         n + 2
@@ -387,8 +388,10 @@ Ejemplo:
 @c e: aa + bb = cc;
 @c lhs (e);
 @c rhs (e);
-@c [lhs (aa < bb), lhs (aa <= bb), lhs (aa >= bb), lhs (aa > bb)];
-@c [lhs (aa = bb), lhs (aa # bb), lhs (equal (aa, bb)), lhs (notequal (aa, bb))];
+@c [lhs (aa < bb), lhs (aa <= bb),
+@c  lhs (aa >= bb), lhs (aa > bb)];
+@c [lhs (aa = bb), lhs (aa # bb), lhs (equal (aa, bb)),
+@c  lhs (notequal (aa, bb))];
 @c e1: '(foo(x) := 2*x);
 @c e2: '(bar(y) ::= 3*y);
 @c e3: '(x : y);
@@ -404,9 +407,11 @@ Ejemplo:
 (%o2)                        bb + aa
 (%i3) rhs (e);
 (%o3)                          cc
-(%i4) [lhs (aa < bb), lhs (aa <= bb), lhs (aa >= bb), lhs (aa > bb)];
+(%i4) [lhs (aa < bb), lhs (aa <= bb), 
+       lhs (aa >= bb), lhs (aa > bb)];
 (%o4)                   [aa, aa, aa, aa]
-(%i5) [lhs (aa = bb), lhs (aa # bb), lhs (equal (aa, bb)), lhs (notequal (aa, bb))];
+(%i5) [lhs (aa = bb), lhs (aa # bb), lhs (equal (aa, bb)),
+       lhs (notequal (aa, bb))];
 (%o5)                   [aa, aa, aa, aa]
 (%i6) e1: '(foo(x) := 2*x);
 (%o6)                     foo(x) := 2 x
@@ -676,8 +681,10 @@ Ejemplo:
 @c e: aa + bb = cc;
 @c lhs (e);
 @c rhs (e);
-@c [rhs (aa < bb), rhs (aa <= bb), rhs (aa >= bb), rhs (aa > bb)];
-@c [rhs (aa = bb), rhs (aa # bb), rhs (equal (aa, bb)), rhs (notequal (aa, bb))];
+@c [rhs (aa < bb), rhs (aa <= bb),
+@c  rhs (aa >= bb), rhs (aa > bb)];
+@c [rhs (aa = bb), rhs (aa # bb), rhs (equal (aa, bb)),
+@c  rhs (notequal (aa, bb))];
 @c e1: '(foo(x) := 2*x);
 @c e2: '(bar(y) ::= 3*y);
 @c e3: '(x : y);
@@ -693,9 +700,11 @@ Ejemplo:
 (%o2)                        bb + aa
 (%i3) rhs (e);
 (%o3)                          cc
-(%i4) [rhs (aa < bb), rhs (aa <= bb), rhs (aa >= bb), rhs (aa > bb)];
+(%i4) [rhs (aa < bb), rhs (aa <= bb),
+       rhs (aa >= bb), rhs (aa > bb)];
 (%o4)                   [bb, bb, bb, bb]
-(%i5) [rhs (aa = bb), rhs (aa # bb), rhs (equal (aa, bb)), rhs (notequal (aa, bb))];
+(%i5) [rhs (aa = bb), rhs (aa # bb), rhs (equal (aa, bb)),
+       rhs (notequal (aa, bb))];
 (%o5)                   [bb, bb, bb, bb]
 (%i6) e1: '(foo(x) := 2*x);
 (%o6)                     foo(x) := 2 x

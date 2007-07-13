@@ -1,10 +1,10 @@
-@c english version 1.18
+@c english version 1.24
 @menu
 * Introducci@'on a los conjuntos::       
-* Definiciones para los conjuntos::       
+* Funciones y variables para los conjuntos::       
 @end menu
 
-@node Introducci@'on a los conjuntos, Definiciones para los conjuntos, Conjuntos, Conjuntos
+@node Introducci@'on a los conjuntos, Funciones y variables para los conjuntos, Conjuntos, Conjuntos
 @section Introducci@'on a los conjuntos
 
 Maxima dispone de funciones para realizar operaciones con conjuntos, como la intersecci@'on o la uni@'on. Los conjuntos deben ser finitos y definidos por enumeraci@'on. Maxima trata a los conjuntos y a las listas como objectos de distinta naturaleza, lo que permite trabajar con conjuntos cuyos elementos puedan ser tambi@'en conjuntos o listas.
@@ -202,14 +202,16 @@ Function union expects a set, instead found [1,2]
 Para extraer todos los elementos de un conjunto @code{s} que satisfagan un predicado @code{f}, @'usese @code{subset(s,f)}. (Un @i{predicado} es una funci@'on booleana.) Por ejemplo, para encontrar las ecuaciones en un conjunto dado que no dependan de la variable @code{z}, se har@'a
 
 @c ===beg===
-@c subset ({x + y + z, x - y + 4, x + y - 5}, lambda ([e], freeof (z, e)));
+@c subset ({x + y + z, x - y + 4, x + y - 5}, 
+@c         lambda ([e], freeof (z, e)));
 @c ===end===
 @example
-(%i1) subset (@{x + y + z, x - y + 4, x + y - 5@}, lambda ([e], freeof (z, e)));
+(%i1) subset (@{x + y + z, x - y + 4, x + y - 5@},
+              lambda ([e], freeof (z, e)));
 (%o1)               @{- y + x + 4, y + x - 5@}
 @end example
 
-La secci@'on @code{Definiciones para los conjuntos} incluye una lista completa de funciones para operar con conjuntos en  Maxima.
+La secci@'on @code{Funciones y variables para los conjuntos} incluye una lista completa de funciones para operar con conjuntos en  Maxima.
 
 @subsection Iteraciones con elementos
 
@@ -351,8 +353,8 @@ Se ruega a todo usuario que crea haber encontrado un fallo en las funciones para
 
 Stavros Macrakis de Cambridge, Massachusetts y Barton Willis de la University of Nebraska at Kearney (UNK).
 
-@node Definiciones para los conjuntos,  , Introducci@'on a los conjuntos, Conjuntos
-@section Definiciones para los conjuntos
+@node Funciones y variables para los conjuntos,  , Introducci@'on a los conjuntos, Conjuntos
+@section Funciones y variables para los conjuntos
 
 
 @deffn {Funci@'on} adjoin (@var{x}, @var{a}) 
@@ -402,14 +404,16 @@ Ejemplos:
 @c ===beg===
 @c makelist (belln (i), i, 0, 6);
 @c is (cardinality (set_partitions ({})) = belln (0));
-@c is (cardinality (set_partitions ({1, 2, 3, 4, 5, 6})) = belln (6));
+@c is (cardinality (set_partitions ({1, 2, 3, 4, 5, 6}))
+@c                          = belln (6));
 @c ===end===
 @example
 (%i1) makelist (belln (i), i, 0, 6);
 (%o1)               [1, 1, 2, 5, 15, 52, 203]
 (%i2) is (cardinality (set_partitions (@{@})) = belln (0));
 (%o2)                         true
-(%i3) is (cardinality (set_partitions (@{1, 2, 3, 4, 5, 6@})) = belln (6));
+(%i3) is (cardinality (set_partitions (@{1, 2, 3, 4, 5, 6@}))
+                            = belln (6));
 (%o3)                         true
 @end example
 
@@ -668,10 +672,12 @@ La relaci@'on de equivalencia es una expresi@'on lambda que devuelve
 @code{true} o @code{false},
 
 @c ===beg===
-@c equiv_classes ({1, 1.0, 2, 2.0, 3, 3.0}, lambda ([x, y], is (equal (x, y))));
+@c equiv_classes ({1, 1.0, 2, 2.0, 3, 3.0},
+@c                 lambda ([x, y], is (equal (x, y))));
 @c ===end===
 @example
-(%i1) equiv_classes (@{1, 1.0, 2, 2.0, 3, 3.0@}, lambda ([x, y], is (equal (x, y))));
+(%i1) equiv_classes (@{1, 1.0, 2, 2.0, 3, 3.0@},
+                      lambda ([x, y], is (equal (x, y))));
 (%o1)            @{@{1, 1.0@}, @{2, 2.0@}, @{3, 3.0@}@}
 @end example
 
@@ -689,10 +695,12 @@ en la que @code{is} eval@'ua a @code{true} o @code{false},
 Las clases de equivalencia son n@'umeros que difieren en un m@'ultiplo de 3.
 
 @c ===beg===
-@c equiv_classes ({1, 2, 3, 4, 5, 6, 7}, lambda ([x, y], remainder (x - y, 3) = 0));
+@c equiv_classes ({1, 2, 3, 4, 5, 6, 7}, 
+@c             lambda ([x, y], remainder (x - y, 3) = 0));
 @c ===end===
 @example
-(%i1) equiv_classes (@{1, 2, 3, 4, 5, 6, 7@}, lambda ([x, y], remainder (x - y, 3) = 0));
+(%i1) equiv_classes (@{1, 2, 3, 4, 5, 6, 7@}, 
+              lambda ([x, y], remainder (x - y, 3) = 0));
 (%o1)              @{@{1, 4, 7@}, @{2, 5@}, @{3, 6@}@}
 @end example
 @end deffn
@@ -774,7 +782,8 @@ est@'an controlados por la variable global @code{prederror}.
 
 @c ===beg===
 @c prederror : false;
-@c map (lambda ([a, b], is (a < b)), [x, y, z], [x^2, y^2, z^2]);
+@c map (lambda ([a, b], is (a < b)), [x, y, z],
+@c                [x^2, y^2, z^2]);
 @c every ("<", [x, y, z], [x^2, y^2, z^2]);
 @c prederror : true;
 @c every ("<", [x, y, z], [x^2, y^2, z^2]);
@@ -782,7 +791,8 @@ est@'an controlados por la variable global @code{prederror}.
 @example
 (%i1) prederror : false;
 (%o1)                         false
-(%i2) map (lambda ([a, b], is (a < b)), [x, y, z], [x^2, y^2, z^2]);
+(%i2) map (lambda ([a, b], is (a < b)), [x, y, z],
+                   [x^2, y^2, z^2]);
 (%o2)              [unknown, unknown, unknown]
 (%i3) every ("<", [x, y, z], [x^2, y^2, z^2]);
 (%o3)                        unknown
@@ -956,7 +966,7 @@ La funci@'on @code{setify} sustituye solamente el operador principal.
 
 Ejemplos:
 
-En la salida (%o2) el argumento de @code{f} no se convierte en
+En la salida @code{(%o2)} el argumento de @code{f} no se convierte en
 conjunto porque el operador principal de @code{f([b])} no es una lista.
 
 @c ===beg===
@@ -1579,12 +1589,14 @@ Ejemplos:
 
 @c ===beg===
 @c partition_set ({2, 7, 1, 8, 2, 8}, evenp);
-@c partition_set ({x, rat(y), rat(y) + z, 1}, lambda ([x], ratp(x)));
+@c partition_set ({x, rat(y), rat(y) + z, 1},
+@c                 lambda ([x], ratp(x)));
 @c ===end===
 @example
 (%i1) partition_set (@{2, 7, 1, 8, 2, 8@}, evenp);
 (%o1)                   [@{1, 7@}, @{2, 8@}]
-(%i2) partition_set (@{x, rat(y), rat(y) + z, 1@}, lambda ([x], ratp(x)));
+(%i2) partition_set (@{x, rat(y), rat(y) + z, 1@},
+                  lambda ([x], ratp(x)));
 (%o2)/R/              [@{1, x@}, @{y, y + z@}]
 @end example
 @end deffn
@@ -1601,6 +1613,8 @@ antes de buscar sus permutaciones.
 
 Si @var{a} no es una lista o conjunto, @code{permutations} emite
 un mensaje de error.
+
+V@'ease tambi@'en @code{random_permutation}.
 
 Ejemplos:
 
@@ -1658,6 +1672,40 @@ Ejemplos:
 (%o6)                         @{@{@}@}
 @end example
 @end deffn
+
+
+
+@deffn {Funci@'on} random_permutation (@var{a})
+
+Devuelve una permutaci@'on aleatoria del conjunto o lista
+@var{a}, siguiendo el algoritmo de Knuth.
+
+El valor devuelto es una lista nueva distinta del argumento,
+incluso cuando todos los elementos son iguales. Sin embargo,
+los elementos del argumento no se copian.
+
+Ejemplos:
+
+@c ===beg===
+@c random_permutation ([a, b, c, 1, 2, 3]);
+@c random_permutation ([a, b, c, 1, 2, 3]);
+@c random_permutation ({x + 1, y + 2, z + 3});
+@c random_permutation ({x + 1, y + 2, z + 3});
+@c ===end===
+@example
+(%i1) random_permutation ([a, b, c, 1, 2, 3]);
+(%o1)                  [c, 1, 2, 3, a, b]
+(%i2) random_permutation ([a, b, c, 1, 2, 3]);
+(%o2)                  [b, 3, 1, c, a, 2]
+(%i3) random_permutation (@{x + 1, y + 2, z + 3@});
+(%o3)                 [y + 2, z + 3, x + 1]
+(%i4) random_permutation (@{x + 1, y + 2, z + 3@});
+(%o4)                 [x + 1, y + 2, z + 3]
+@end example
+
+@end deffn
+
+
 
 
 @deffn {Funci@'on} rreduce (@var{f}, @var{s})
@@ -2006,7 +2054,8 @@ est@'an controlados por la variable global @code{prederror}.
 
 @c ===beg===
 @c prederror : false;
-@c map (lambda ([a, b], is (a < b)), [x, y, z], [x^2, y^2, z^2]);
+@c map (lambda ([a, b], is (a < b)), [x, y, z],
+@c                 [x^2, y^2, z^2]);
 @c some ("<", [x, y, z], [x^2, y^2, z^2]);
 @c some ("<", [x, y, z], [x^2, y^2, z + 1]);
 @c prederror : true;
@@ -2016,7 +2065,8 @@ est@'an controlados por la variable global @code{prederror}.
 @example
 (%i1) prederror : false;
 (%o1)                         false
-(%i2) map (lambda ([a, b], is (a < b)), [x, y, z], [x^2, y^2, z^2]);
+(%i2) map (lambda ([a, b], is (a < b)), [x, y, z],
+                     [x^2, y^2, z^2]);
 (%o2)              [unknown, unknown, unknown]
 (%i3) some ("<", [x, y, z], [x^2, y^2, z^2]);
 (%o3)                        unknown

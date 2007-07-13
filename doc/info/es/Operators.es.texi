@@ -1,4 +1,4 @@
-@c english version 1.38
+@c english version 1.41
 @menu
 * n-arios::
 * no-fijos::
@@ -592,7 +592,9 @@ La macroexpansi@'on (es decir, la expresi@'on no evaluada @code{'(print ("(2) x 
 @c x: %pi;
 @c y: 1234;
 @c z: 1729 * w;
-@c printq1 (x) ::= block (print ("(1) x is equal to", x), '(print ("(2) x is equal to", x)));
+@c printq1 (x) ::=
+@c    block (print ("(1) x is equal to", x),
+@c           '(print ("(2) x is equal to", x)));
 @c printq1 (y - z);
 @c ===end===
 @example
@@ -602,7 +604,9 @@ La macroexpansi@'on (es decir, la expresi@'on no evaluada @code{'(print ("(2) x 
 (%o2)                         1234
 (%i3) z: 1729 * w;
 (%o3)                        1729 w
-(%i4) printq1 (x) ::= block (print ("(1) x is equal to", x), '(print ("(2) x is equal to", x)));
+(%i4) printq1 (x) ::=
+         block (print ("(1) x is equal to", x),
+         '(print ("(2) x is equal to", x)));
 (%o4) printq1(x) ::= block(print("(1) x is equal to", x), 
                                 '(print("(2) x is equal to", x)))
 (%i5) printq1 (y - z);
@@ -618,7 +622,9 @@ El valor de retorno no se eval@'ua, por lo que el mensaje (2) no se imprime hast
 @c x: %pi;
 @c y: 1234;
 @c z: 1729 * w;
-@c printe1 (x) := block (print ("(1) x is equal to", x), '(print ("(2) x is equal to", x)));
+@c printe1 (x) :=
+@c     block (print ("(1) x is equal to", x),
+@c            '(print ("(2) x is equal to", x)));
 @c printe1 (y - z);
 @c ''%;
 @c ===end===
@@ -629,7 +635,9 @@ El valor de retorno no se eval@'ua, por lo que el mensaje (2) no se imprime hast
 (%o2)                         1234
 (%i3) z: 1729 * w;
 (%o3)                        1729 w
-(%i4) printe1 (x) := block (print ("(1) x is equal to", x), '(print ("(2) x is equal to", x)));
+(%i4) printe1 (x) :=
+         block (print ("(1) x is equal to", x),
+               '(print ("(2) x is equal to", x)));
 (%o4) printe1(x) := block(print("(1) x is equal to", x), 
                                 '(print("(2) x is equal to", x)))
 (%i5) printe1 (y - z);
@@ -869,13 +877,15 @@ sint@'acticamente iguales.
 Algunos operadores eval@'uan @code{=} y @code{#} a @code{true} o @code{false}.
 
 @c ===beg===
-@c if expand ((x + y)^2) = x^2 + 2 * x * y + y^2 then FOO else BAR;
+@c if expand ((x + y)^2) = x^2 + 2 * x * y + y^2
+@c    then FOO else BAR;
 @c eq_3 : 2 * x = 3 * x;
 @c eq_4 : exp (2) = %e^2;
 @c [eq_3 and eq_4, eq_3 or eq_4, not eq_3];
 @c ===end===
 @example
-(%i1) if expand ((x + y)^2) = x^2 + 2 * x * y + y^2 then FOO else BAR;
+(%i1) if expand ((x + y)^2) = x^2 + 2 * x * y + y^2
+        then FOO else BAR;
 (%o1)                          FOO
 (%i2) eq_3 : 2 * x = 3 * x;
 (%o2)                       2 x = 3 x
@@ -1319,8 +1329,8 @@ a  @code{true} o @code{false}.
 @c [eq_1 and eq_2, eq_1 or eq_2, not eq_1];
 @c ===end===
 @example
-(%i4) if equal (y, y - 1) then FOO else BAR;
-(%o4)                          BAR
+(%i1) if equal (y, y - 1) then FOO else BAR;
+(%o1)                          BAR
 (%i2) eq_1 : equal (x, x + 1);
 (%o2)                    equal(x, x + 1)
 (%i3) eq_2 : equal (y^2 + 2*y + 1, (y + 1)^2);
@@ -1817,7 +1827,8 @@ Ejemplo de uso:
 
 @c ===beg===
 @c unitfrac(r) := block([uf : [], q],
-@c     if not(ratnump(r)) then error("The input to 'unitfrac' must be a rational number"),
+@c     if not(ratnump(r)) then
+@c       error("The input to 'unitfrac' must be a rational number"),
 @c     while r # 0 do (
 @c         uf : cons(q : 1/ceiling(1/r), uf),
 @c         r : r - q),
@@ -1831,15 +1842,17 @@ Ejemplo de uso:
 @c ===end===
 @example
 (%i1) unitfrac(r) := block([uf : [], q],
-    if not(ratnump(r)) then error("The input to 'unitfrac' must be a rational number"),
+    if not(ratnump(r)) then
+      error("The input to 'unitfrac' must be a rational number"),
     while r # 0 do (
         uf : cons(q : 1/ceiling(1/r), uf),
         r : r - q),
     reverse(uf)); 
 (%o1) unitfrac(r) := block([uf : [], q], 
-if not ratnump(r) then error("The input to 'unitfrac' must be a rational number"
+if not ratnump(r) then 
+  error("The input to 'unitfrac' must be a rational number"),
                                      1
-), while r # 0 do (uf : cons(q : ----------, uf), r : r - q), 
+while r # 0 do (uf : cons(q : ----------, uf), r : r - q), 
                                          1
                                  ceiling(-)
                                          r
@@ -1921,19 +1934,22 @@ Ejemplos:
 
 @c ===beg===
 @c sort ([11, -17, 29b0, 7.55, 3, -5/2, b + a, 9 * c, 19 - 3 * x]);
-@c sort ([11, -17, 29b0, 7.55, 3, -5/2, b + a, 9 * c, 19 - 3 * x], ordergreatp);
+@c sort ([11, -17, 29b0, 7.55, 3, -5/2, b + a, 9 * c, 19 - 3 * x],
+@c       ordergreatp);
 @c sort ([%pi, 3, 4, %e, %gamma]);
 @c sort ([%pi, 3, 4, %e, %gamma], "<");
 @c my_list : [[aa, hh, uu], [ee, cc], [zz, xx, mm, cc], [%pi, %e]];
 @c sort (my_list);
-@c sort (my_list, lambda ([a, b], orderlessp (reverse (a), reverse (b))));
+@c sort (my_list, lambda ([a, b],
+@c                        orderlessp (reverse (a), reverse (b))));
 @c ===end===
 @example
 (%i1) sort ([11, -17, 29b0, 7.55, 3, -5/2, b + a, 9 * c, 19 - 3 * x]);
                5
 (%o1) [- 17, - -, 3, 7.55, 11, 2.9b1, b + a, 9 c, 19 - 3 x]
                2
-(%i2) sort ([11, -17, 29b0, 7.55, 3, -5/2, b + a, 9 * c, 19 - 3 * x], ordergreatp);
+(%i2) sort ([11, -17, 29b0, 7.55, 3, -5/2, b + a, 9 * c, 19 - 3 * x],
+          ordergreatp);
                                                    5
 (%o2) [19 - 3 x, 9 c, b + a, 2.9b1, 11, 7.55, 3, - -, - 17]
                                                    2
@@ -1945,7 +1961,8 @@ Ejemplos:
 (%o5) [[aa, hh, uu], [ee, cc], [zz, xx, mm, cc], [%pi, %e]]
 (%i6) sort (my_list);
 (%o6) [[%pi, %e], [aa, hh, uu], [ee, cc], [zz, xx, mm, cc]]
-(%i7) sort (my_list, lambda ([a, b], orderlessp (reverse (a), reverse (b))));
+(%i7) sort (my_list, lambda ([a, b], 
+                             orderlessp (reverse (a), reverse (b))));
 (%o7) [[%pi, %e], [ee, cc], [zz, xx, mm, cc], [aa, hh, uu]]
 @end example
 

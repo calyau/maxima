@@ -1,10 +1,10 @@
-@c version 1.10
+@c version 1.13
 @menu
 * Introducci@'on a polinomios ortogonales::
-* Definiciones para polinomios ortogonales::
+* Funciones y variables para polinomios ortogonales::
 @end menu
 
-@node Introducci@'on a polinomios ortogonales, Definiciones para polinomios ortogonales, orthopoly, orthopoly
+@node Introducci@'on a polinomios ortogonales, Funciones y variables para polinomios ortogonales, orthopoly, orthopoly
 @section Introducci@'on a polinomios ortogonales
 
 El paquete @code{orthopoly} contiene funciones para la evaluaci@'on
@@ -156,7 +156,8 @@ error; por ejemplo,
                                n - 1
 (%i2) diff (hermite (n, x), n);
 
-Maxima doesn't know the derivative of hermite with respect the first argument
+Maxima doesn't know the derivative of hermite with 
+respect the first argument
  -- an error.  Quitting.  To debug this try debugmode(true);
 @end example
 
@@ -250,10 +251,12 @@ siguiente expressi@'on se anula para enteros @var{n} mayores que
 1, no pudiendo Maxima reducirla a cero.
 
 @c ===beg===
-@c (2*n - 1) * legendre_p (n - 1, x) * x - n * legendre_p (n, x) + (1 - n) * legendre_p (n - 2, x);
+@c (2*n - 1) * legendre_p (n - 1, x) * x - n * legendre_p (n, x)
+@c         + (1 - n) * legendre_p (n - 2, x);
 @c ===end===
 @example
-(%i1) (2*n - 1) * legendre_p (n - 1, x) * x - n * legendre_p (n, x) + (1 - n) * legendre_p (n - 2, x);
+(%i1) (2*n - 1) * legendre_p (n - 1, x) * x - n * legendre_p (n, x)
+                + (1 - n) * legendre_p (n - 2, x);
 (%o1)  (2 n - 1) P     (x) x - n P (x) + (1 - n) P     (x)
                   n - 1           n               n - 2
 @end example
@@ -474,14 +477,15 @@ Para definir la suma de intervalos se puede hacer
 
 @c ===beg===
 @c infix ("@+")$
-@c "@+"(x,y) := interval (part (x, 1) + part (y, 1), part (x, 2) + part (y, 2))$
+@c "@+"(x,y) := interval (part (x, 1) + part (y, 1),
+@c                        part (x, 2) + part (y, 2))$
 @c legendre_p (7, 0.1) @+ legendre_p (8, 0.1);
 @c ===end===
 @example
 (%i1) infix ("@@+")$
 
-(%i2) "@@+"(x,y) := interval (part (x, 1) + part (y, 1), part (x, 2) + part (y, 2))$
-
+(%i2) "@@+"(x,y) := interval (part (x, 1) + part (y, 1), 
+                              part (x, 2) + part (y, 2))$
 (%i3) legendre_p (7, 0.1) @@+ legendre_p (8, 0.1);
 (%o3) interval(- 0.019172222265624955, 6.5246488395313372E-15)
 @end example
@@ -539,10 +543,12 @@ de c@'omo se debe hacer para representar gr@'aficamente una expresi@'on que
 contiene un polinomio de Legendre:
 
 @c ===beg===
-@c plot2d ('(legendre_p (5, x)), [x, 0, 1]), orthopoly_returns_intervals : false;
+@c plot2d ('(legendre_p (5, x)), [x, 0, 1]),
+@c orthopoly_returns_intervals : false;
 @c ===end===
 @example
-(%i1) plot2d ('(legendre_p (5, x)), [x, 0, 1]), orthopoly_returns_intervals : false;
+(%i1) plot2d ('(legendre_p (5, x)), [x, 0, 1]),
+      orthopoly_returns_intervals : false;
 (%o1)
 @end example
 
@@ -682,8 +688,8 @@ Las funciones de Bessel de @'{@dotless{i}}ndice semi-entero se eval@'uan
 num@'ericamente con c@'odigo SLATEC.
 
 
-@node Definiciones para polinomios ortogonales,  , Introducci@'on a polinomios ortogonales, orthopoly
-@section Definiciones para polinomios ortogonales
+@node Funciones y variables para polinomios ortogonales,  , Introducci@'on a polinomios ortogonales, orthopoly
+@section Funciones y variables para polinomios ortogonales
 
 @deffn {Funci@'on} assoc_legendre_p (@var{n}, @var{m}, @var{x})
 Funci@'on asociada de Legendre de primera especie.

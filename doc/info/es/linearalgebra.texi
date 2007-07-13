@@ -1,10 +1,10 @@
-@c english version 1.12
+@c english version 1.15
 @menu
 * Introducci@'on a linearalgebra::
-* Definiciones para linearalgebra::
+* Funciones y variables para linearalgebra::
 @end menu
 
-@node Introducci@'on a linearalgebra, Definiciones para linearalgebra, linearalgebra, linearalgebra
+@node Introducci@'on a linearalgebra, Funciones y variables para linearalgebra, linearalgebra, linearalgebra
 @section Introducci@'on a linearalgebra
 
 El paquete @code{linearalgebra} contiene una bater@'{@dotless{i}}a de
@@ -23,7 +23,8 @@ Ejemplo:
 @c tellrat (MM [3, 3]);
 @c MM : ratsimp (MM);
 @c nullspace (MM);
-@c M : matrix ([1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16]);
+@c M : matrix ([1, 2, 3, 4], [5, 6, 7, 8],
+@c             [9, 10, 11, 12], [13, 14, 15, 16]);
 @c columnspace (M);
 @c apply ('orthogonal_complement, args (nullspace (transpose (M))));
 @c ===end===
@@ -91,7 +92,8 @@ Ejemplo:
                         [   z  - 18 z - 12 ]
                         [ - -------------- ]
                         [         12       ]
-(%i11) M : matrix ([1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16]);
+(%i11) M : matrix ([1, 2, 3, 4], [5, 6, 7, 8],
+                   [9, 10, 11, 12], [13, 14, 15, 16]);
                        [ 1   2   3   4  ]
                        [                ]
                        [ 5   6   7   8  ]
@@ -117,8 +119,8 @@ Ejemplo:
                            [ 3 ]  [ - 2 ]
 @end example
 
-@node Definiciones para linearalgebra,  , Introducci@'on a linearalgebra, linearalgebra
-@section Definiciones para linearalgebra
+@node Funciones y variables para linearalgebra,  , Introducci@'on a linearalgebra, linearalgebra
+@section Funciones y variables para linearalgebra
 
 @deffn {Funci@'on} addmatrices (@var{f}, @var{M_1}, ..., @var{M_n})
 
@@ -186,11 +188,11 @@ puede ser cualquier expresi@'on de Maxima, la funci@'on @code{copy} es
 especialmente @'util cuando @var{e} es una lista o una matriz. 
 Consid@'erese el siguiente ejemplo:
 @c ===beg===
-m : [1,[2,3]]$
-mm : m$
-mm[2][1] : x$
-m;
-mm;
+@c m : [1,[2,3]]$
+@c mm : m$
+@c mm[2][1] : x$
+@c m;
+@c mm;
 @c ===end===
 @example 
 (%i1) m : [1,[2,3]]$
@@ -203,11 +205,11 @@ mm;
 @end example
 Veamos el mismo ejemplo siendo ahora @var{mm} una copia de @var{m}
 @c ===beg===
-m : [1,[2,3]]$
-mm : copy(m)$
-mm[2][1] : x$
-m;
-mm;
+@c m : [1,[2,3]]$
+@c mm : copy(m)$
+@c mm[2][1] : x$
+@c m;
+@c mm;
 @c ===end===
 @example
 (%i6) m : [1,[2,3]]$
@@ -769,13 +771,17 @@ Un ejemplo utilizando valores distintos a los utilizados por defecto en
 @var{coeffp} y en @var{exponp}:
 
 @c ===beg===
-@c polynomialp ((x + 1)*(x + 2)^(3/2), [x], numberp, numberp);
-@c polynomialp ((x^(1/2) + 1)*(x + 2)^(3/2), [x], numberp, numberp);
+@c polynomialp ((x + 1)*(x + 2)^(3/2), [x],
+@c              numberp, numberp);
+@c polynomialp ((x^(1/2) + 1)*(x + 2)^(3/2), [x],
+@c              numberp, numberp);
 @c ===end===
 @example
-(%i1) polynomialp ((x + 1)*(x + 2)^(3/2), [x], numberp, numberp);
+(%i1) polynomialp ((x + 1)*(x + 2)^(3/2), [x],
+                   numberp, numberp);
 (%o1)                         true
-(%i2) polynomialp ((x^(1/2) + 1)*(x + 2)^(3/2), [x], numberp, numberp);
+(%i2) polynomialp ((x^(1/2) + 1)*(x + 2)^(3/2), [x],
+                   numberp, numberp);
 (%o2)                         true
 @end example
 

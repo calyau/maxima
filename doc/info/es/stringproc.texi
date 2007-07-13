@@ -1,12 +1,12 @@
-@c english version 1.7
+@c english version 1.10
 @menu
 * Introducci@'on al procesamiento de cadenas::
-* Definiciones para entrada y salida::
-* Definiciones para caracteres::
-* Definiciones para cadenas::
+* Funciones y variables para entrada y salida::
+* Funciones y variables para caracteres::
+* Funciones y variables para cadenas::
 @end menu
 
-@node Introducci@'on al procesamiento de cadenas, Definiciones para entrada y salida, stringproc, stringproc
+@node Introducci@'on al procesamiento de cadenas, Funciones y variables para entrada y salida, stringproc, stringproc
 @section Introducci@'on al procesamiento de cadenas
 
 El paquete @code{stringproc} ampl@'{@dotless{i}}a las capacidades de 
@@ -129,7 +129,8 @@ cargar autom@'aticamente desde @code{eval_string.lisp}.
 (%i10) map( parse_string, list );
 (%o10)           [42, 1.234, sqrt(2), %pi, 0.01, 0.01, 1.0b-2]
 (%i11) float(%);
-(%o11) [42.0, 1.234, 1.414213562373095, 3.141592653589793, 0.01, 0.01, 0.01]
+(%o11) [42.0, 1.234, 1.414213562373095, 3.141592653589793,
+         0.01, 0.01, 0.01]
 (%i12) readline(s);
 (%o12)                               false
 (%i13) close(s)$
@@ -139,8 +140,8 @@ La funci@'on @code{readline} devuelve @code{false} cuando se alcanza el
 final del fichero.
 
 
-@node Definiciones para entrada y salida, Definiciones para caracteres, Introducci@'on al procesamiento de cadenas, stringproc
-@section Definiciones para entrada y salida
+@node Funciones y variables para entrada y salida, Funciones y variables para caracteres, Introducci@'on al procesamiento de cadenas, stringproc
+@section Funciones y variables para entrada y salida
 
 Ejemplo: 
 
@@ -158,7 +159,8 @@ Ejemplo:
 (%i1) s: openw("E:/file.txt");
 (%o1)                     #<output stream E:/file.txt>
 (%i2) control: 
-"~2tAn atom: ~20t~a~%~2tand a list: ~20t~@{~r ~@}~%~2tand an integer: ~20t~d~%"$
+"~2tAn atom: ~20t~a~%~2tand a list: ~20t~@{~r ~@}~%~2t\
+           and an integer: ~20t~d~%"$
 (%i3) printf( s,control, 'true,[1,2,3],42 )$
 (%o3)                                false
 (%i4) close(s);
@@ -317,13 +319,13 @@ La funci@'on @code{newline()}, que se carga autom@'aticamente desde @code{string
 puede ser de utilidad si se quiere intercalar un salto de l@'{@dotless{i}}nea.
 
 @c ===beg===
-@c for n:0 thru 22 do sprint( fib(n) )$
+@c for n:0 thru 20 do sprint( fib(n) )$
 @c for n:0 thru 22 do ( 
 @c    sprint(fib(n)), if mod(n,10)=9 then newline() )$
 @c ===end===
 @example
 (%i1) for n:0 thru 22 do sprint( fib(n) )$
-0 1 1 2 3 5 8 13 21 34 55 89 144 233 377 610 987 1597 2584 4181 6765 10946 17711 
+0 1 1 2 3 5 8 13 21 34 55 89 144 233 377 610 987 1597 2584 4181 6765 
 (%i2) for n:0 thru 22 do ( 
          sprint(fib(n)), if mod(n,10)=9 then newline() )$
 0 1 1 2 3 5 8 13 21 34 
@@ -333,8 +335,8 @@ puede ser de utilidad si se quiere intercalar un salto de l@'{@dotless{i}}nea.
 
 @end deffn
 
-@node Definiciones para caracteres, Definiciones para cadenas, Definiciones para entrada y salida, stringproc
-@section Definiciones para caracteres
+@node Funciones y variables para caracteres, Funciones y variables para cadenas, Funciones y variables para entrada y salida, stringproc
+@section Funciones y variables para caracteres
 
 @deffn {Funci@'on} alphacharp (@var{char})
 Devuelve @code{true} si @var{char} es una car@'acter alfab@'etico.
@@ -351,11 +353,13 @@ debiendo ser @math{-1 < int < 256}.
 
 @c ===beg===
 @c for n from 0 thru 255 do ( 
-@c    tmp: ascii(n), if alphacharp(tmp) then sprint(tmp), if n=96 then newline() )$
+@c   tmp: ascii(n),
+@c   if alphacharp(tmp) then sprint(tmp), if n=96 then newline() )$
 @c ===end===
 @example
 (%i1) for n from 0 thru 255 do ( 
-tmp: ascii(n), if alphacharp(tmp) then sprint(tmp), if n=96 then newline() )$
+  tmp: ascii(n),
+  if alphacharp(tmp) then sprint(tmp), if n=96 then newline() )$
 A B C D E F G H I J K L M N O P Q R S T U V W X Y Z 
 a b c d e f g h i j k l m n o p q r s t u v w x y z
 @end example
@@ -453,8 +457,8 @@ El car@'acter de tabulaci@'on.
 Devuelve @code{true} si @var{char} es un car@'acter en may@'uscula.
 @end deffn
 
-@node Definiciones para cadenas,  , Definiciones para caracteres, stringproc
-@section Definiciones para cadenas
+@node Funciones y variables para cadenas,  , Funciones y variables para caracteres, stringproc
+@section Funciones y variables para cadenas
 
 @deffn {Funci@'on} sunlisp (@var{lisp_string}) 
 Convierte una cadena Lisp en una de Maxima. 

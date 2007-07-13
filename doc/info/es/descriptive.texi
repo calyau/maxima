@@ -1,13 +1,13 @@
-@c english version: 1.9
+@c english version: 1.12
 @menu
 * Introducci@'on a descriptive::
-* Definiciones para el tratamiento de datos::
-* Definiciones de valores descriptivos::
-* Definiciones de valores descriptivos multivariantes::
-* Definiciones para gr@'aficos estad@'{@dotless{i}}sticos::
+* Funciones y variables para el tratamiento de datos::
+* Funciones y variables de valores descriptivos::
+* Funciones y variables de valores descriptivos multivariantes::
+* Funciones y variables para gr@'aficos estad@'{@dotless{i}}sticos::
 @end menu
 
-@node Introducci@'on a descriptive, Definiciones para el tratamiento de datos, descriptive, descriptive
+@node Introducci@'on a descriptive, Funciones y variables para el tratamiento de datos, descriptive, descriptive
 @section Introducci@'on a descriptive
 
 
@@ -174,8 +174,8 @@ Debe tenerse cuidado cuando se trabaje con datos categ@'oricos. En el siguiente 
 @end example
 
 
-@node Definiciones para el tratamiento de datos, Definiciones de valores descriptivos, Introducci@'on a descriptive, descriptive
-@section Definiciones para el tratamiento de datos
+@node Funciones y variables para el tratamiento de datos, Funciones y variables de valores descriptivos, Introducci@'on a descriptive, descriptive
+@section Funciones y variables para el tratamiento de datos
 
 
 @deffn {Funci@'on} continuous_freq (@var{list})
@@ -373,8 +373,8 @@ Aqu@'{@dotless{i}} la primera componente carece de significado, ya que tanto @co
 @end deffn
 
 
-@node Definiciones de valores descriptivos, Definiciones de valores descriptivos multivariantes, Definiciones para el tratamiento de datos, descriptive
-@section Definiciones de valores descriptivos
+@node Funciones y variables de valores descriptivos, Funciones y variables de valores descriptivos multivariantes, Funciones y variables para el tratamiento de datos, descriptive
+@section Funciones y variables de valores descriptivos
 
 
 @deffn {Funci@'on} mean (@var{list})
@@ -848,7 +848,8 @@ Ejemplo:
 (%i1) load (descriptive)$
 (%i2) load (numericalio)$
 (%i3) s1 : read_list (file_search ("pidigits.data"))$
-(%i4) /* 1er and 3er cuartiles */ [quantile (s1, 1/4), quantile (s1, 3/4)], numer;
+(%i4) /* 1er and 3er cuartiles */
+      [quantile (s1, 1/4), quantile (s1, 3/4)], numer;
 (%o4)                      [2.0, 7.25]
 (%i5) s2 : read_matrix (file_search ("wind.data"))$
 (%i6) quantile (s2, 1/4);
@@ -1373,8 +1374,8 @@ V@'ease tambi@'en @code{quantile}.
 @end deffn
 
 
-@node Definiciones de valores descriptivos multivariantes, Definiciones para gr@'aficos estad@'{@dotless{i}}sticos, Definiciones de valores descriptivos, descriptive
-@section Definiciones de valores descriptivos multivariantes
+@node Funciones y variables de valores descriptivos multivariantes, Funciones y variables para gr@'aficos estad@'{@dotless{i}}sticos, Funciones y variables de valores descriptivos, descriptive
+@section Funciones y variables de valores descriptivos multivariantes
 
 
 @deffn {Funci@'on} cov (@var{matrix})
@@ -1748,8 +1749,8 @@ V@'eanse tambi@'en @code{cov} y @code{cov1}.
 @end deffn
 
 
-@node Definiciones para gr@'aficos estad@'{@dotless{i}}sticos,  , Definiciones de valores descriptivos multivariantes, descriptive
-@section Definiciones para gr@'aficos estad@'{@dotless{i}}sticos
+@node Funciones y variables para gr@'aficos estad@'{@dotless{i}}sticos,  , Funciones y variables de valores descriptivos multivariantes, descriptive
+@section Funciones y variables para gr@'aficos estad@'{@dotless{i}}sticos
 
 
 @deffn {Funci@'on} dataplot (@var{list})
@@ -1810,17 +1811,21 @@ N@'otese que las muestras univariantes se representan como series temporales. En
 @c load (descriptive)$
 @c load (numericalio)$
 @c s1 : read_list (file_search ("pidigits.data"))$
-@c dataplot (makelist (s1[k], k, 1, 50), 'maintitle = "First pi digits",
-@c  'axisnames = ["digit order", "digit value"], 'pointstyle = 2,
+@c dataplot (makelist (s1[k], k, 1, 50),
+@c           'maintitle = "First pi digits",
+@c           'axisnames = ["digit order", "digit value"],
+@c           'pointstyle = 2,
 @c  'joined = true)$
 @c ===end===
 @example
 (%i1) load (descriptive)$
 (%i2) load (numericalio)$
 (%i3) s1 : read_list (file_search ("pidigits.data"))$
-(%i4) dataplot (makelist (s1[k], k, 1, 50), 'maintitle = "First pi digits",
- 'axisnames = ["digit order", "digit value"], 'pointstyle = 2,
- 'joined = true)$
+(%i4) dataplot (makelist (s1[k], k, 1, 50),
+               'maintitle = "First pi digits",
+               'axisnames = ["digit order", "digit value"],
+               'pointstyle = 2,
+               'joined = true)$
 @end example
 
 La funci@'on @code{dataplot} puede utilizarse para representar puntos del plano. El siguiente ejemplo es un diagrama de dispersi@'on de los pares formados con las velocidades del viento correspondientes a las estaciones meteorol@'ogicas uno y cinco,
@@ -1863,9 +1868,12 @@ Puntos del espacio tridimensional pueden verse como proyecciones sobre un plano.
 @c load (descriptive)$
 @c load (numericalio)$
 @c s2 : read_matrix (file_search ("wind.data"))$
-@c /* grafico 3D */ dataplot (submatrix (s2, 4, 5), 'pointstyle = 2,
-@c  'maintitle = "Pairs of wind speeds measured in knots",
-@c  'axisnames = ["Station A", "Station B", "Station C"])$
+@c /* grafico 3D */
+@c dataplot (
+@c    submatrix (s2, 4, 5),
+@c    'pointstyle = 2,
+@c    'maintitle = "Pairs of wind speeds measured in knots",
+@c    'axisnames = ["Station A", "Station B", "Station C"])$
 @c /* Dispersion multivariante */ dataplot (submatrix (s2, 4, 5),
 @c  'nclasses = 6, 'threedim = false)$
 @c ===end===
@@ -1873,11 +1881,16 @@ Puntos del espacio tridimensional pueden verse como proyecciones sobre un plano.
 (%i1) load (descriptive)$
 (%i2) load (numericalio)$
 (%i3) s2 : read_matrix (file_search ("wind.data"))$
-(%i4) /* grafico 3D */ dataplot (submatrix (s2, 4, 5), 'pointstyle = 2,
- 'maintitle = "Pairs of wind speeds measured in knots",
- 'axisnames = ["Station A", "Station B", "Station C"])$
-(%i5) /* Dispersion multivariante */ dataplot (submatrix (s2, 4, 5),
- 'nclasses = 6, 'threedim = false)$
+(%i4) /* grafico 3D */
+      dataplot (
+         submatrix (s2, 4, 5),
+         'pointstyle = 2,
+         'maintitle = "Pairs of wind speeds measured in knots",
+         'axisnames = ["Station A", "Station B", "Station C"])$
+(%i5) /* Dispersion multivariante */
+      dataplot (submatrix (s2, 4, 5),
+                'nclasses = 6,
+                'threedim = false)$
 @end example
 
 N@'otese que en este @'ultimo ejemplo, el n@'umero de clases de los histogramas de la diagonal se ajusta a 6, y que a la opci@'on @code{'threedim} se le da el valor @code{false}.
@@ -1941,8 +1954,12 @@ En los siguientes dos ejemplos se solicitan sendos histogramas para los 100 prim
 @c load (descriptive)$
 @c load (numericalio)$
 @c s1 : read_list (file_search ("pidigits.data"))$
-@c histogram (s1, 'maintitle = "pi digits", 'axisnames = ["", "Absolute frequency"],
-@c  'relbarwidth = 0.2, 'barcolor = 3, 'colorintensity = 0.6)$
+@c histogram (s1,
+@c            'maintitle = "pi digits",
+@c            'axisnames = ["", "Absolute frequency"],
+@c            'relbarwidth = 0.2, 
+@c            'barcolor = 3, 
+@c            'colorintensity = 0.6)$
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c histogram (col (s2, 3), 'colorintensity = 0.3)$
 @c ===end===
@@ -1950,8 +1967,12 @@ En los siguientes dos ejemplos se solicitan sendos histogramas para los 100 prim
 (%i1) load (descriptive)$
 (%i2) load (numericalio)$
 (%i3) s1 : read_list (file_search ("pidigits.data"))$
-(%i4) histogram (s1, 'maintitle = "pi digits", 'axisnames = ["", "Absolute frequency"],
- 'relbarwidth = 0.2, 'barcolor = 3, 'colorintensity = 0.6)$
+(%i4) histogram (s1, 
+                 'maintitle = "pi digits", 
+                 'axisnames = ["", "Absolute frequency"],
+                 'relbarwidth = 0.2, 
+                 'barcolor = 3, 
+                 'colorintensity = 0.6)$
 (%i5) s2 : read_matrix (file_search ("wind.data"))$
 (%i6) histogram (col (s2, 3), 'colorintensity = 0.3)$
 @end example

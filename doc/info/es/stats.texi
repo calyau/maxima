@@ -1,12 +1,12 @@
-@c version 1.4
+@c version 1.7
 @menu
 * Introducci@'on a stats::
-* Definiciones para inference_result::
-* Definiciones para stats::
-* Definiciones para distribuciones especiales::
+* Funciones y variables para inference_result::
+* Funciones y variables para stats::
+* Funciones y variables para distribuciones especiales::
 @end menu
 
-@node Introducci@'on a stats, Definiciones para inference_result, Top, Top
+@node Introducci@'on a stats, Funciones y variables para inference_result, Top, Top
 @section Introducci@'on a stats
 
 
@@ -35,8 +35,8 @@ Para comentarios, errores o sugerencias, cont@'actese con el autor en
 @var{'mario ARROBA edu PUNTO xunta PUNTO es'}.
 
 
-@node Definiciones para inference_result, Definiciones para stats, Introducci@'on a stats, Top
-@section Definiciones para inference_result
+@node Funciones y variables para inference_result, Funciones y variables para stats, Introducci@'on a stats, Top
+@section Funciones y variables para inference_result
 
 
 @deffn {Funci@'on} inference_result (@var{title}, @var{values}, @var{numbers})
@@ -215,8 +215,8 @@ V@'eanse tambi@'en @code{inference_result} y @code{take_inference}.
 
 
 
-@node Definiciones para stats, Definiciones para distribuciones especiales, Definiciones para inference_result, Top
-@section Definiciones para stats
+@node Funciones y variables para stats, Funciones y variables para distribuciones especiales, Funciones y variables para inference_result, Top
+@section Funciones y variables para stats
 
 
 @defvr {Variable opcional} stats_numer
@@ -510,13 +510,17 @@ iguales.
 @c load (stats)$
 @c x: [20.4,62.5,61.3,44.2,11.1,23.7]$
 @c y: [1.2,6.9,38.7,20.4,17.2]$
-@c test_means_difference(x,y,'alternative='greater,'varequal=true);
+@c test_means_difference(x,y,
+@c                       'alternative='greater,
+@c                       'varequal=true);
 @c ===end===
 @example
 (%i1) load("stats")$
 (%i2) x: [20.4,62.5,61.3,44.2,11.1,23.7]$
 (%i3) y: matrix([1.2],[6.9],[38.7],[20.4],[17.2])$
-(%i4) test_means_difference(x,y,'alternative='greater,'varequal=true);
+(%i4) test_means_difference(x,y,
+                            'alternative='greater,
+                            'varequal=true);
             |              DIFFERENCE OF MEANS TEST
             |
             |         diff_estimate = 20.31999999999999
@@ -1254,7 +1258,8 @@ cuando @code{x=113}.
 @c ===end===
 @example
 (%i1) load("stats")$
-(%i2) s:[[125,140.7],[130,155.1],[135,160.3],[140,167.2],[145,169.8]]$
+(%i2) s:[[125,140.7],[130,155.1],[135,160.3],
+           [140,167.2],[145,169.8]]$
 (%i3) z:simple_linear_regression(s,conflevel=0.99);
            |               SIMPLE LINEAR REGRESSION
            |
@@ -1317,8 +1322,8 @@ cuando @code{x=113}.
 
 
 
-@node Definiciones para distribuciones especiales, , Definiciones para stats, Top
-@section Definiciones para distribuciones especiales
+@node Funciones y variables para distribuciones especiales, , Funciones y variables para stats, Top
+@section Funciones y variables para distribuciones especiales
 
 
 @deffn {Funci@'on} pdf_signed_rank (@var{x}, @var{n})

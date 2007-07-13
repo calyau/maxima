@@ -1,10 +1,53 @@
-@c english version 1.38
+@c english version 1.44
 @menu
-* Definiciones para Gr@'aficos::    
+* Funciones y variables para gr@'aficos::    
 @end menu
 
-@node Definiciones para Gr@'aficos,  , Gr@'aficos, Gr@'aficos
-@section Definiciones para Gr@'aficos
+@node Funciones y variables para gr@'aficos,  , Gr@'aficos, Gr@'aficos
+@section Funciones y variables para gr@'aficos
+
+@deffn {Funci@'on} contour_plot (@var{expr}, @var{x_range}, @var{y_range}, @var{options}, ...)
+
+Dibuja las curvas de nivel @var{expr}
+en el rect@'angulo @var{x_range} por @var{y_range}.
+Cualesquiera otros argumentos adicionales se tratan como en @code{plot3d}.
+
+@code{contour_plot} s@'olo trabaja cuando se utilizan @code{gnuplot} o @code{gnuplot_pipes}.
+
+V@'ease tambi@'en @code{implicit_plot}.
+
+Ejemplos:
+
+@c ===beg===
+@c contour_plot (x^2 + y^2, [x, -4, 4], [y, -4, 4]);
+@c contour_plot (sin(y) * cos(x)^2, [x, -4, 4], [y, -4, 4]);
+@c F(x, y) := x^3 + y^2;
+@c contour_plot (F, [u, -4, 4], [v, -4, 4]);
+@c contour_plot (F, [u, -4, 4], [v, -4, 4],
+@c              [gnuplot_preamble, "set size ratio -1"]);
+@c set_plot_option ([gnuplot_preamble, "set cntrparam levels 12"])$
+@c contour_plot (F, [u, -4, 4], [v, -4, 4]);
+@c ===end===
+@example
+(%i1) contour_plot (x^2 + y^2, [x, -4, 4], [y, -4, 4]);
+(%o1) 
+(%i2) contour_plot (sin(y) * cos(x)^2, [x, -4, 4], [y, -4, 4]);
+(%o2) 
+(%i3) F(x, y) := x^3 + y^2;
+                                   3    2
+(%o3)                  F(x, y) := x  + y
+(%i4) contour_plot (F, [u, -4, 4], [v, -4, 4]);
+(%o4) 
+(%i5) contour_plot (F, [u, -4, 4], [v, -4, 4],
+         [gnuplot_preamble, "set size ratio -1"]);
+(%o5) 
+(%i6) set_plot_option ([gnuplot_preamble,
+                        "set cntrparam levels 12"])$
+(%i7) contour_plot (F, [u, -4, 4], [v, -4, 4]);
+@end example
+
+@end deffn
+
 
 @defvr {Variable opcional} in_netmath
 Valor por defecto: @code{false}
@@ -162,11 +205,12 @@ se utilizar@'a la opci@'on @var{xrange} para conseguir la misma escala
 en ambos ejes:
 
 @c ===beg===
-@c plot2d ([parametric, cos(t), sin(t), [t, -%pi, %pi], [nticks, 80]], [x, -4/3, 4/3])$
+@c plot2d ([parametric, cos(t), sin(t), [t, -%pi, %pi],
+@c                     [nticks, 80]], [x, -4/3, 4/3])$
 @c ===end===
 @example
-(%i8) plot2d ([parametric, cos(t), sin(t), [t,-%pi,%pi], [nticks,80]],
-           [x, -4/3, 4/3])$
+(%i8) plot2d ([parametric, cos(t), sin(t), [t,-%pi,%pi],
+             [nticks,80]], [x, -4/3, 4/3])$
 @end example
 
 @ifnotinfo
@@ -262,12 +306,18 @@ El gr@'afico de los puntos se puede mostrar conjuntamente con el
 de la funci@'on te@'rica que los predice:
 
 @c ===beg===
-@c plot2d([[discrete,xy], 2*%pi*sqrt(l/980)], [l,0,50], [style, [points,3,5], [lines,1,3]], [legend,"experiment","theory"], [xlabel,"pendulum's length (cm)"], [ylabel,"period (s)"])$
+@c plot2d([[discrete,xy], 2*%pi*sqrt(l/980)], [l,0,50],
+@c      [style, [points,3,5], [lines,1,3]],
+@c      [legend,"experiment","theory"],
+@c      [xlabel,"pendulum's length (cm)"],
+@c      [ylabel,"period (s)"])$
 @c ===end===
 @example
 (%i17) plot2d([[discrete,xy], 2*%pi*sqrt(l/980)], [l,0,50],
-        [style, [points,3,5], [lines,1,3]], [legend,"experiment","theory"],
-        [xlabel,"pendulum's length (cm)"], [ylabel,"period (s)"])$
+        [style, [points,3,5], [lines,1,3]],
+        [legend,"experiment","theory"],
+        [xlabel,"pendulum's length (cm)"],
+        [ylabel,"period (s)"])$
 @end example
 
 @ifnotinfo
@@ -750,8 +800,8 @@ manual se obtuvieron a partir de archivos Postscript generados
 asign@'andole a @code{gnuplot_ps_term_command} el valor
 
 @example
-[gnuplot_ps_term_command,
-"set size 1.3, 1.3; set term postscript eps color solid lw 2.5 30"]
+[gnuplot_ps_term_command,"set size 1.3, 1.3;\
+ set term postscript eps color solid lw 2.5 30"]
 @end example
 
 @end itemize

@@ -1,11 +1,11 @@
-@c english version 1.2
+@c english version 1.4
 @menu
-* Introducci@'on a Units::       
-* Definiciones para Units::       
+* Introducci@'on a units::       
+* Funciones y variables para units::       
 @end menu
 
-@node Introducci@'on a Units, Definiciones para Units, unit, unit
-@section Introducci@'on a Units
+@node Introducci@'on a units, Funciones y variables para units, unit, unit
+@section Introducci@'on a units
 
 El paquete @code{unit} permite al usuario hacer cambios de unidades y
 llevar a cabo el an@'alisis dimensional de las ecuaciones. La forma de operar de
@@ -46,7 +46,8 @@ y se ajusta a las convenciones de Maxima para la carga de paquetes:
 ******************************************************************* 
  
 Redefining necessary functions... 
-WARNING: DEFUN/DEFMACRO: redefining function TOPLEVEL-MACSYMA-EVAL ...
+WARNING: DEFUN/DEFMACRO: 
+         redefining function TOPLEVEL-MACSYMA-EVAL ...
 WARNING: DEFUN/DEFMACRO: redefining function MSETCHK ...
 WARNING: DEFUN/DEFMACRO: redefining function KILL1 ...
 WARNING: DEFUN/DEFMACRO: redefining function NFORMAT ...
@@ -67,8 +68,8 @@ el cual contiene las funciones Lisp necesarias.
 El autor principal de este paquete es Clifford Yapp, quien ha recibido ayuda
 y asistencia, entre otros, de Barton Willis y Robert Dodier.
 
-@node Definiciones para Units,  , Introducci@'on a Units, unit
-@section Definiciones para Units
+@node Funciones y variables para units,  , Introducci@'on a units, unit
+@section Funciones y variables para units
 
 
 @deffn {Funci@'on} setunits (@var{list})
@@ -434,11 +435,12 @@ algunos ejemplos de aplicaci@'on de estas opciones:
                                        2
                                       s
 (%i20) usedimension(N);
-Done.  To have Maxima simplify to this dimension, use setunits([unit]) 
-to select a unit. 
+Done.  To have Maxima simplify to this dimension, 
+  use setunits([unit]) to select a unit. 
 (%o20)                               true
 (%i21) usedimension(J);
-Done.  To have Maxima simplify to this dimension, use setunits([unit]) 
+Done.  To have Maxima simplify to this dimension, 
+  use setunits([unit]) 
 to select a unit. 
 (%o21)                               true
 (%i22) kg*m/s^2;

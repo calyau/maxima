@@ -1,10 +1,10 @@
-@c english version 1.7
+@c english version 1.9
 @menu
 * Introducci@'on a solve_rec::
-* Definiciones para solve_rec::
+* Funciones y variables para solve_rec::
 @end menu
 
-@node Introducci@'on a solve_rec, Definiciones para solve_rec, solve_rec, solve_rec
+@node Introducci@'on a solve_rec, Funciones y variables para solve_rec, solve_rec, solve_rec
 @section Introducci@'on a solve_rec
 
 El paquete @code{solve_rec} resuelve expresiones recurrentes lineales con
@@ -25,9 +25,9 @@ Ejemplo:
              n     (n + 1) (n + 2)      (n + 1) (n + 2)
 @end example
 
-@node Definiciones para solve_rec,  , Introducci@'on a solve_rec, solve_rec
+@node Funciones y variables para solve_rec,  , Introducci@'on a solve_rec, solve_rec
 
-@section Definiciones para solve_rec
+@section Funciones y variables para solve_rec
 
 
 @deffn {Funci@'on} reduce_order (@var{rec}, @var{sol}, @var{var})
@@ -109,7 +109,8 @@ Ejemplo:
 
 @example
 (%i1) load("simplify_sum")$
-(%i2) sum(binom(n+k,k)/2^k, k, 0, n) + sum(binom(2*n, 2*k), k, 0, n);
+(%i2) sum(binom(n+k,k)/2^k, k, 0, n) + 
+          sum(binom(2*n, 2*k), k, 0, n);
          n                            n
         ====                         ====
         \      binomial(n + k, k)    \
