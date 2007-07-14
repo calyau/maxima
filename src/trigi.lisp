@@ -628,12 +628,20 @@
 	(t (eqtest (list '(%atan) y) form))))
 
 (defun %piargs (x ratcoeff)
-  (cond ((and (integerp (car x)) (integerp (cdr x))) 0)
-	((not (mevenp (car x))) 
-	 (cond ((null ratcoeff) nil)
-	       ((alike1 (cdr x) '((rat) 1 2))
-		(power -1 (add ratcoeff -1//2)))))
-	((or (alike1 '((rat) 1 6) (setq x (mmod (cdr x) 2))) (alike1 '((rat) 5 6) x)) 1//2)
+  (let (offset-result)
+    (cond ((and (integerp (car x)) (integerp (cdr x))) 0)
+		   ((not (mevenp (car x))) 
+		    (cond ((null ratcoeff) nil)
+		 		  ((and (integerp (car x)) 
+		 		        (setq offset-result (%piargs-offset (cdr x))))
+		 		   (mul (power -1 (sub ratcoeff (cdr x)))
+		 		        offset-result))))
+		   ((%piargs-offset (mmod (cdr x) 2))))))
+
+; simplifies sin(%pi * x) where x is between 0 and 1 
+; returns nil if can't simplify
+(defun %piargs-offset (x)
+  (cond ((or (alike1 '((rat) 1 6) x) (alike1 '((rat) 5 6) x)) 1//2)
 	((or (alike1 '((rat) 1 4) x) (alike1 '((rat) 3 4) x)) (div (power 2 1//2) 2))
 	((or (alike1 '((rat) 1 3) x) (alike1 '((rat) 2 3) x)) (div (power 3 1//2) 2))
 	((alike1 1//2 x) 1)
