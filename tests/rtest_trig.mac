@@ -304,6 +304,23 @@ true$
 is(maxerror < 1.0e-15);
 true$
 
+(declare(n,integer),0);
+0$
+
+/* see SF bug 1754072 */
+
+subst(n = 1, cos(%pi * n * 31 / 37));
+cos(%pi * 31 / 37);
+
+subst(n = 1, sin(%pi * n * 31 / 37));
+sin(%pi * 31 / 37);
+
+subst(n = 1, tan(%pi * n * 31 / 37));
+tan(%pi * 31 / 37);
+
+(kill(n,declare),0);
+0$
+
 (remfunction(complexfloatp, complexbigfloatp),0);
 0$
 
