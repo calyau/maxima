@@ -4,7 +4,7 @@
 @c Language=Russian
 @c Encoding=CP1251
 @c File=maxima.texi 
-@c OriginalRevision=1.49
+@c OriginalRevision=1.50
 
 @c 2000-04-17 Jim Van Zandt <jrv@vanzandt.mv.com> Added header,
 @c info directory entry, reference to introduction chapter, and menu
@@ -40,6 +40,8 @@ END-INFO-DIR-ENTRY
 <\expr\>
 @end macro
 @end ifinfo
+
+@include category-macros.texi
 
 @titlepage
 @sp 10
