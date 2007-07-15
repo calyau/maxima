@@ -1,63 +1,89 @@
+@c English version 1.8
 @menu
-* Definiciones para augmented_lagrangian::
+* Funciones y variables para augmented_lagrangian::
 @end menu
 
-@node Definiciones para augmented_lagrangian,  , augmented_lagrangian, augmented_lagrangian
-@section Definiciones para augmented_lagrangian
+@node Funciones y variables para augmented_lagrangian,  , augmented_lagrangian, augmented_lagrangian
+@section Funciones y variables para augmented_lagrangian
 
 
+@deffn {Funci@'on} augmented_lagrangian_method (@var{FOM}, @var{xx}, @var{C}, @var{yy})
+@deffnx {Funci@'on} augmented_lagrangian_method (@var{FOM}, @var{xx}, @var{C}, @var{yy}, optional_args)
 
-@defvr {Variable opcional} niter
-Valor por defecto:  10
+Devuelve una aproximaci@'on del valor m@'{@dotless{i}}nimo de
+la expresi@'on @var{FOM} respecto de las variables @var{xx},
+manteniendo las restricciones @var{C} igual a cero. La lista
+@var{yy} contiene las soluciones iniciales para @var{xx}.
+El algoritmo que se utiliza es el m@'etodo del lagrangiano
+aumentado (ver referencias [1] y [2]).
 
-N@'umero de iteraciones para @code{augmented_lagrangian_method}.
-@end defvr
+El argumento @code{optional_args} hace referencia a otros argumentos adicionales,
+los cuales se especifican de la forma @code{@var{symbol} = @var{value}}.
+Los argumentos opcionales reconocidos son:
 
+@table @code
+@item niter
+N@'umero de iteraciones del algoritmo.
+@item lbfgs_tolerance
+Tolerancia que se pasa a LBFGS.
+@item iprint
+Par@'ametro IPRINT (lista de dos enteros que controlan la frecuencia
+de mensajes) que se pasa a LBFGS.
+@item %lambda
+Valor inicial de @code{%lambda} que ser@'a utilizado para calcular el
+lagrangiano aumentado.
+@end table
 
-@deffn {Funci@'on} augmented_lagrangian_method (@var{FOM}, @var{xx}, @var{constraints}, @var{yy})
-M@'etodo de Lagrange aumentado para optimizaci@'on con restricciones.
-@var{FOM} es la funci@'on objetivo, 
-@var{xx} es la lista de variables sobre las que minimizar,
-@var{constraints} es una lista de expresiones iguales a cero y
-@var{yy} es una lista de valores iniciales para @var{xx}.
+Esta funci@'on minimiza el lagrangiano aumentado haciendo uso
+del algoritmo LBFGS, que es un m@'etodo de los llamados
+quasi-Newton.
 
-Este c@'odigo minimiza el lagrangiano aumentado calculando
-un punto estacionario de su gradiente; la t@'ecnica puede ser
-mejorada con un algoritmo de gradiente conjugado o un m@'etodo
-de minimizaci@'on de Newton.
+Antes de hacer uso de esta funci@'on ejec@'utense @code{load("augmented_lagrangian")}.
 
-Para referencias v@'eanse
-@example
-http://www-fp.mcs.anl.gov/otc/Guide/OptWeb/continuous/constrained/nonlinearcon/auglag.html
-@end example
-y
-@example
-http://www.cs.ubc.ca/spider/ascher/542/chap10.pdf
-@end example
+V@'ease tambi@'en @code{lbfgs}.
 
-El paquete @code{mnewton} debe cargarse antes de llamar a la 
-funci@'on @code{augmented_lagrangian_method}, a fin de que pueda
-resolver @math{grad L = 0}.
+Referencias:
+
+@ifnottex
+[1] @url{http://www-fp.mcs.anl.gov/otc/Guide/OptWeb/continuous/constrained/nonlinearcon/auglag.html}
+
+[2] @url{http://www.cs.ubc.ca/spider/ascher/542/chap10.pdf}
+@end ifnottex
+@tex
+[1] \texttt{http://\-www-fp.mcs.anl.gov/\-otc/\-Guide/\-OptWeb/\-continuous/\-constrained/\-nonlinearcon/\-auglag.html}
+
+[2] \texttt{http://\-www.cs.ubc.ca/\-spider/\-ascher/\-542/\-chap10.pdf}
+@end tex
 
 Ejemplo:
+
+@c ===beg===
+@c load (lbfgs);
+@c load (augmented_lagrangian);
+@c FOM: x^2 + 2*y^2;
+@c xx: [x, y];
+@c C: [x + y - 1];
+@c yy: [1, 1];
+@c augmented_lagrangian_method(FOM, xx, C, yy, iprint=[-1,0]);
+@c ===end===
 @example
-(%i1) load (mnewton)$
-
-(%i2) load("augmented_lagrangian")$
-
+(%i1) load (lbfgs);
+(%o1)     /maxima/share/lbfgs/lbfgs.mac
+(%i2) load (augmented_lagrangian);
+(%o2) 
+   /maxima/share/contrib/augmented_lagrangian.mac
 (%i3) FOM: x^2 + 2*y^2;
-                           2    2
-(%o3)                   2 y  + x
+                               2    2
+(%o3)                       2 y  + x
 (%i4) xx: [x, y];
-(%o4)                     [x, y]
+(%o4)                        [x, y]
 (%i5) C: [x + y - 1];
-(%o5)                  [y + x - 1]
+(%o5)                      [y + x - 1]
 (%i6) yy: [1, 1];
-(%o6)                     [1, 1]
-(%i7) augmented_lagrangian_method (FOM, xx, C, yy);
-(%o7)          [0.6478349834, 0.3239174917]
+(%o6)                        [1, 1]
+(%i7) augmented_lagrangian_method(FOM, xx, C, yy, iprint=[-1,0]);
+(%o7) [[x = 0.66665984108002, y = 0.33334027245545], 
+                                 %lambda = [- 1.333337940892525]]
 @end example
 
-Antes de hacer uso de esta funci@'on ejec@'utense  @code{load("mnewton")} y @code{load("augmented_lagrangian")}. 
-V@'ease tambi@'en @code{niter}.
 @end deffn

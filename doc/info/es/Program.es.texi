@@ -1,17 +1,17 @@
-@c version 1.24
+@c version 1.29
 @menu
-* Introducci@'on a la Programaci@'on::  
-* Definiciones para la Programaci@'on::  
+* Introducci@'on a la programaci@'on::  
+* Funciones y variables para la programaci@'on::  
 @end menu
 
-@node Introducci@'on a la Programaci@'on, Definiciones para la Programaci@'on, Programaci@'on, Programaci@'on
-@section Introducci@'on a la Programaci@'on
+@node Introducci@'on a la programaci@'on, Funciones y variables para la programaci@'on, Programaci@'on, Programaci@'on
+@section Introducci@'on a la programaci@'on
 
 Maxima dispone de los bucles @code{do} para hacer iteraciones, as@'{@dotless{i}} como estructuras m@'as primitivas del estilo de @code{go}.
 
 
-@node Definiciones para la Programaci@'on,  , Introducci@'on a la Programaci@'on, Programaci@'on
-@section Definiciones para la Programaci@'on
+@node Funciones y variables para la programaci@'on,  , Introducci@'on a la programaci@'on, Programaci@'on
+@section Funciones y variables para la programaci@'on
 
 @deffn {Funci@'on} backtrace ()
 @deffnx {Funci@'on} backtrace (@var{n})
@@ -298,9 +298,18 @@ no                      not         operador l@'ogico prefijo
 @end deffn
 
 @deffn {Funci@'on} map (@var{f}, @var{expr_1}, ..., @var{expr_n})
-Devuelve una expresi@'on cuyo operador principal es el mismo que aparece en las expresiones @var{expr_1}, ..., @var{expr_n} pero cuyas subpartes son los resultados de aplicar @var{f} a cada una de las subpartes de las expresiones;  @var{f} puede ser tanto el nombre de una funci@'on de @math{n} argumentos o una forma @code{lambda} de @math{n} argumentos.
+Devuelve una expresi@'on cuyo operador principal es el mismo 
+que aparece en las expresiones @var{expr_1}, ..., @var{expr_n} 
+pero cuyas subpartes son los resultados de aplicar @var{f} 
+a cada una de las subpartes de las expresiones;  @var{f} puede ser 
+tanto el nombre de una funci@'on de @math{n} argumentos como
+una expresi@'on @code{lambda} de @math{n} argumentos.
 
-Uno de los usos que tiene @code{map} es la de aplicar (o mapear) una funci@'on (por ejemplo, @code{partfrac}) sobre cada t@'ermino de una expresi@'on extensa en la que normalmente no se podr@'{@dotless{i}}a utilizar la funci@'on debido a insuficiencias en el espacio de almacenamiento durante el curso de un c@'alculo.
+Uno de los usos que tiene @code{map} es la de aplicar (o mapear)
+una funci@'on (por ejemplo, @code{partfrac}) sobre cada t@'ermino
+de una expresi@'on extensa en la que normalmente no se 
+podr@'{@dotless{i}}a utilizar la funci@'on debido a insuficiencias 
+en el espacio de almacenamiento durante el curso de un c@'alculo.
 
 @example
 (%i1) map(f,x+a*y+b*z);
@@ -317,23 +326,28 @@ Uno de los usos que tiene @code{map} es la de aplicar (o mapear) una funci@'on (
 (%i4) map("=",[a,b],[-0.5,3]);
 (%o4)                          [a = - 0.5, b = 3]
 @end example
+
+V@'ease tambi@'en @code{maperror} .
 @end deffn
 
 @deffn {Funci@'on} mapatom (@var{expr})
 Devuelve @code{true} si y s@'olo @var{expr} es tratado por las rutinas de mapeo como un @'atomo.
-
 @end deffn
 
 @defvr {Variable opcional} maperror
 Valor por defecto: @code{true}
 
-Cuando @code{maperror} toma el valor @code{false}, hace que todas las funciones de mapeo, como por ejemplo
+Cuando @code{maperror} toma el valor @code{false}, 
+hace que todas las funciones de mapeo, como por ejemplo
 
 @example
-map (f, expr_1, expr_2, ...))
+map (f, @var{expr_1}, @var{expr_2}, ...)
 @end example
 
-(1) paren cuando hayan terminado de procesar la expi m@'as corta, a menos que todas ellas sean del mismo tama@~no y (2) apliquen  @code{f} a @code{[expr_1, expr_2, ...]} si es el caso que las @code{expr_i} no son todas del mismo tipo de objeto.
+(1) paren cuando hayan terminado de procesar la @var{expr_i} m@'as corta,
+a menos que todas ellas sean del mismo tama@~no y (2) apliquen  @code{f}
+a @code{[expr_1, expr_2, ...]} si es el caso que las @code{expr_i}
+no son todas del mismo tipo de objeto.
 
 Cuando @code{maperror} toma el valor @code{true} entonces se emite un mensaje de error cuando se presenta cualquiera de los dos casos anteriores.
 
@@ -497,7 +511,8 @@ cada elemento de cada una de estas listas es a su vez una matriz.
 @c arg_1 :  matrix ([a, b], [c, d]);
 @c arg_2 : [11, 22];
 @c arg_3 : matrix ([xx, yy]);
-@c xx_0 : outermap (lambda ([x, y, z], x / y + z), arg_1, arg_2, arg_3);
+@c xx_0 : outermap (lambda ([x, y, z], x / y + z), arg_1, 
+@c                                                    arg_2, arg_3);
 @c xx_1 : xx_0 [1][1];
 @c xx_2 : xx_0 [1][1] [1];
 @c xx_3 : xx_0 [1][1] [1] [1][1];
@@ -513,7 +528,8 @@ cada elemento de cada una de estas listas es a su vez una matriz.
 (%o2)                       [11, 22]
 (%i3) arg_3 : matrix ([xx, yy]);
 (%o3)                      [ xx  yy ]
-(%i4) xx_0 : outermap (lambda ([x, y, z], x / y + z), arg_1, arg_2, arg_3);
+(%i4) xx_0 : outermap(lambda([x, y, z], x / y + z), arg_1,
+                                                   arg_2, arg_3);
                [  [      a        a  ]  [      a        a  ]  ]
                [ [[ xx + --  yy + -- ], [ xx + --  yy + -- ]] ]
                [  [      11       11 ]  [      22       22 ]  ]

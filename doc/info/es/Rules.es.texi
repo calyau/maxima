@@ -1,10 +1,10 @@
-@c english version 1.25
+@c english version 1.29
 @menu
 * Introducci@'on a reglas y patrones::  
-* Definiciones sobre reglas y patrones::  
+* Funciones y variables sobre reglas y patrones::  
 @end menu
 
-@node Introducci@'on a reglas y patrones, Definiciones sobre reglas y patrones, Reglas y patrones, Reglas y patrones
+@node Introducci@'on a reglas y patrones, Funciones y variables sobre reglas y patrones, Reglas y patrones, Reglas y patrones
 @section Introducci@'on a reglas y patrones
 
 Esta secci@'on describe las reglas de simplificaci@'on y los patrones de comparaci@'on definidos por el usuario. Hay dos grupos de funciones que implementan diferentes esquemas de comparaci@'on de patrones. En un grupo est@'an @code{tellsimp}, @code{tellsimpafter}, @code{defmatch}, @code{defrule}, @code{apply1}, @code{applyb1} y @code{apply2}. En el otro, se encuentran @code{let} y @code{letsimp}. Ambos esquemas definen patrones en t@'erminos de variables de patrones declaradas mediante  @code{matchdeclare}.
@@ -13,8 +13,8 @@ Las reglas de comparaci@'on de patrones definidas por @code{tellsimp} y @code{te
 
 Hay otros mecanismos para las reglas; las relativas a polinomios se controlan mediante @code{tellrat} y las del @'algebra conmutativa y no conmutativa se definen en el paquete @code{affine}.
 
-@node Definiciones sobre reglas y patrones,  , Introducci@'on a reglas y patrones, Reglas y patrones
-@section Definiciones sobre reglas y patrones
+@node Funciones y variables sobre reglas y patrones,  , Introducci@'on a reglas y patrones, Reglas y patrones
+@section Funciones y variables sobre reglas y patrones
 
 @deffn {Funci@'on} apply1 (@var{expr}, @var{regla_1}, ..., @var{regla_n})
 
@@ -112,7 +112,8 @@ cualquier variable, pues el argumento de patr@'on @code{x} es
 pasado a @code{defmatch}.
 
 @c ===beg===
-@c matchdeclare (a, lambda ([e], e#0 and freeof(x, e)), b, freeof(x));
+@c matchdeclare (a, lambda ([e],e#0 and freeof(x, e)),
+@c               b, freeof(x));
 @c defmatch (linearp, a*x + b, x);
 @c linearp (3*z + (y + 1)*z + y^2, z);
 @c a;
@@ -120,7 +121,8 @@ pasado a @code{defmatch}.
 @c x;
 @c ===end===
 @example
-(%i1) matchdeclare (a, lambda ([e], e#0 and freeof(x, e)), b, freeof(x));
+(%i1) matchdeclare (a, lambda ([e], e#0 and freeof(x, e)),
+                    b, freeof(x));
 (%o1)                         done
 (%i2) defmatch (linearp, a*x + b, x);
 (%o2)                        linearp
@@ -144,13 +146,15 @@ La funci@'on definida s@'olo reconoce expresiones lineales
 nig@'un argumento de patr@'on
 
 @c ===beg===
-@c matchdeclare (a, lambda ([e], e#0 and freeof(x, e)), b, freeof(x));
+@c matchdeclare (a, lambda ([e], e#0 and freeof(x, e)),
+@c               b, freeof(x));
 @c defmatch (linearp, a*x + b);
 @c linearp (3*z + (y + 1)*z + y^2);
 @c linearp (3*x + (y + 1)*x + y^2);
 @c ===end===
 @example
-(%i1) matchdeclare (a, lambda ([e], e#0 and freeof(x, e)), b, freeof(x));
+(%i1) matchdeclare (a, lambda ([e], e#0 and freeof(x, e)),
+                    b, freeof(x));
 (%o1)                         done
 (%i2) defmatch (linearp, a*x + b);
 (%o2)                        linearp
@@ -448,20 +452,24 @@ En el caso de sumas y multiplicaciones, a la variable de comparaci@'on se le pue
 
 @c ===beg===
 @c matchdeclare (aa, atom, bb, lambda ([x], not atom(x)));
-@c defrule (r1, aa + bb, ["all atoms" = aa, "all nonatoms" = bb]);
+@c defrule (r1, aa + bb,
+@c          ["all atoms" = aa, "all nonatoms" = bb]);
 @c r1 (8 + a*b + sin(x));
-@c defrule (r2, aa * bb, ["all atoms" = aa, "all nonatoms" = bb]);
+@c defrule (r2, aa * bb,
+@c          ["all atoms" = aa, "all nonatoms" = bb]);
 @c r2 (8 * (a + b) * sin(x));
 @c ===end===
 @example
 (%i1) matchdeclare (aa, atom, bb, lambda ([x], not atom(x)));
 (%o1)                         done
-(%i2) defrule (r1, aa + bb, ["all atoms" = aa, "all nonatoms" = bb]);
+(%i2) defrule (r1, aa + bb,
+              ["all atoms" = aa, "all nonatoms" = bb]);
 bb + aa partitions `sum'
 (%o2)  r1 : bb + aa -> [all atoms = aa, all nonatoms = bb]
 (%i3) r1 (8 + a*b + sin(x));
 (%o3)     [all atoms = 8, all nonatoms = sin(x) + a b]
-(%i4) defrule (r2, aa * bb, ["all atoms" = aa, "all nonatoms" = bb]);
+(%i4) defrule (r2, aa * bb,
+               ["all atoms" = aa, "all nonatoms" = bb]);
 bb aa partitions `product'
 (%o4)   r2 : aa bb -> [all atoms = aa, all nonatoms = bb]
 (%i5) r2 (8 * (a + b) * sin(x));

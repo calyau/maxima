@@ -99,7 +99,7 @@ Infraestructura de Maxima
 * Expresiones::                        Expresiones de Maxima.
 * Simplificaci@'on::                   Simplificando expresiones.
 * Gr@'aficos::                         Gr@'aficos en dos y tres dimensiones.
-* Entrada y Salida::                   Entrada y salida de archivos
+* Lectura y escritura::                Lectura y escritura de archivos
 * Aritm@'etica de punto flotante::     Rutinas num@'ericas de bajo nivel.
 * Contextos::                          Imposici@'on de restricciones a variables.
 
@@ -216,14 +216,14 @@ Operadores
 
 Expresiones
 
-* Introducci@'on a las Expresiones::
+* Introducci@'on a las expresiones::
 * Asignaci@'on::
 * Expresiones complejas::
 * Nombres y verbos::
 * Identificadores::
 * Desigualdades::
 * Sintaxis::
-* Definiciones para Expresiones::
+* Funciones y variables para expresiones::
 
 Simplificaci@'on
 
@@ -231,13 +231,13 @@ Simplificaci@'on
 
 Gr@'aficos
 
-* Definiciones para Gr@'aficos::
+* Funciones y variables para gr@'aficos::
 
-Entrada y Salida
+Lectura y escritura
 
 * Comentarios::
 * Archivos::
-* Definiciones para Entrada y Salida:: 
+* Funciones y variables para lectura y escritura:: 
 
 Aritm@'etica de punto flotante
 
@@ -249,8 +249,8 @@ Contextos
 
 Polinomios
 
-* Introducci@'on a los Polinomios::
-* Definiciones para Polinomios::
+* Introducci@'on a los polinomios::
+* Funciones y variables para polinomios::
 
 Constantes
 
@@ -262,13 +262,13 @@ Logaritmos
 
 Trigonometr@'{@dotless{i}}a
 
-* Introducci@'on a la Trigonometr@'{@dotless{i}}a::
-* Definiciones para Trigonometr@'{@dotless{i}}a::
+* Introducci@'on a la trigonometr@'{@dotless{i}}a::
+* Funciones y variables para trigonometr@'{@dotless{i}}a::
 
 Funciones Especiales
 
-* Introducci@'on a las Funciones Especiales::
-* Definiciones para las Funciones Especiales::
+* Introducci@'on a las funciones especiales::
+* Funciones y variables para las funciones especiales::
 
 Funciones el@'{@dotless{i}}pticas
 
@@ -286,12 +286,12 @@ Diferenciaci@'on
 
 Integraci@'on
 
-* Introducci@'on a la Integraci@'on::
-* Definiciones para Integraci@'on::
+* Introducci@'on a la integraci@'on::
+* Funciones y variables para integraci@'on::
 
 Ecuaciones
 
-* Definiciones para Ecuaciones::
+* Funciones y variable para las ecuaciones::
 
 Ecuaciones Diferenciales
 
@@ -302,8 +302,8 @@ M@'etodos num@'ericos
 
 * Introducci@'on a los m@'etodos num@'ericos::
 * Series de Fourier::
-* Definiciones para los m@'etodos num@'ericos::
-* Definiciones para las series de Fourier::
+* Funciones y variables para los m@'etodos num@'ericos::
+* Funciones y variables para las series de Fourier::
 
 Arrays
 
@@ -365,29 +365,29 @@ Miscel@'anea de opciones
 Reglas y patrones
 
 * Introducci@'on a reglas y patrones::
-* Definiciones sobre reglas y patrones::
+* Funciones y variables sobre reglas y patrones::
 
 Listas
 
 * Introducci@'on a las listas::
-* Definiciones para listas::
+* Funciones y variables para listas::
 
 Conjuntos
 
 * Introducci@'on a los conjuntos::
-* Definiciones para los conjuntos::
+* Funciones y variables para los conjuntos::
 
 Definici@'on de Funciones
 
 * Introducci@'on a la definici@'on de funciones::
 * Funciones::
 * Macros::
-* Definiciones para la definici@'on de funciones::
+* Funciones y variables para la definici@'on de funciones::
 
 Programaci@'on
 
-* Introducci@'on a la Programaci@'on::
-* Definiciones para la Programaci@'on::
+* Introducci@'on a la programaci@'on::
+* Funciones y variables para la programaci@'on::
 
 Depurado
 
@@ -397,16 +397,16 @@ Depurado
 
 augmented_lagrangian
 
-* Definiciones para augmented_lagrangian::
+* Funciones y variables para augmented_lagrangian::
 
 bode
 
-* Definiciones para bode::
+* Funciones y variables para bode::
 
 contrib_ode
 
 * Introducci@'on a contrib_ode::
-* Definiciones para contrib_ode::
+* Funciones y variables para contrib_ode::
 * Posibles mejoras a contrib_ode::
 * Pruebas realizadas con contrib_ode::
 * Referencias para contrib_ode::
@@ -414,10 +414,10 @@ contrib_ode
 descriptive
 
 * Introducci@'on a descriptive::
-* Definiciones para el tratamiento de datos::
-* Definiciones de valores descriptivos::
-* Definiciones de valores descriptivos multivariantes::
-* Definiciones para gr@'aficos estad@'{@dotless{i}}sticos::
+* Funciones y variables para el tratamiento de datos::
+* Funciones y variables de valores descriptivos::
+* Funciones y variables de valores descriptivos multivariantes::
+* Funciones y variables para gr@'aficos estad@'{@dotless{i}}sticos::
 
 diag
 
@@ -468,7 +468,7 @@ interpol
 lbfgs
 
 * Introducci@'on a lbfgs::
-* Definiciones para lbfgs::
+* Funciones y variables para lbfgs::
 
 lindstedt
 
@@ -477,7 +477,7 @@ lindstedt
 linearalgebra
 
 * Introducci@'on a linearalgebra::
-* Definiciones para linearalgebra::
+* Funciones y variables para linearalgebra::
 
 lsquares
 
@@ -494,7 +494,7 @@ mnewton
 numericalio
 
 * Introducci@'on a numericalio::
-* Definiciones para numericalio::
+* Funciones y variables para numericalio::
 
 opsubst
 
@@ -503,7 +503,7 @@ opsubst
 orthopoly
 
 * Introducci@'on a polinomios ortogonales::
-* Definiciones para polinomios ortogonales::
+* Funciones y variables para polinomios ortogonales::
 
 plotdf
 
@@ -511,12 +511,12 @@ plotdf
 
 romberg
 
-* Definiciones para romberg::
+* Funciones y variables para romberg::
 
 simplex
 
 * Introducci@'on a simplex::
-* Definiciones para simplex::
+* Funciones y variables para simplex::
 
 simplification
 
@@ -526,14 +526,14 @@ simplification
 solve_rec
 
 * Introducci@'on a solve_rec::
-* Definiciones para solve_rec::
+* Funciones y variables para solve_rec::
 
 stats
 
 * Introducci@'on a stats::
-* Definiciones para inference_result::
-* Definiciones para stats::
-* Definiciones para distribuciones especiales::
+* Funciones y variables para inference_result::
+* Funciones y variables para stats::
+* Funciones y variables para distribuciones especiales::
 
 stirling
 
@@ -542,14 +542,14 @@ stirling
 stringproc
 
 * Introducci@'on al procesamiento de cadenas::
-* Definiciones para entrada y salida::
-* Definiciones para caracteres::
-* Definiciones para cadenas::
+* Funciones y variables para entrada y salida::
+* Funciones y variables para caracteres::
+* Funciones y variables para cadenas::
 
 unit
 
-* Introducci@'on a Units::
-* Definiciones para Units::
+* Introducci@'on a units::
+* Funciones y variables para units::
 
 zeilberger
 
@@ -592,15 +592,15 @@ zeilberger
 @chapter Simplificaci@'on
 @include Simplification.es.texi
 
-@node Gr@'aficos, Entrada y Salida, Simplificaci@'on, Top
+@node Gr@'aficos, Lectura y escritura, Simplificaci@'on, Top
 @chapter Gr@'aficos
 @include Plotting.es.texi
 
-@node Entrada y Salida, Aritm@'etica de punto flotante, Gr@'aficos, Top
-@chapter Entrada y Salida
+@node Lectura y escritura, Aritm@'etica de punto flotante, Gr@'aficos, Top
+@chapter Lectura y escritura
 @include Input.es.texi
 
-@node Aritm@'etica de punto flotante, Contextos, Entrada y Salida, Top
+@node Aritm@'etica de punto flotante, Contextos, Lectura y escritura, Top
 @chapter Aritm@'etica de punto flotante
 @include Floating.es.texi
 

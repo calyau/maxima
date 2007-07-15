@@ -1,26 +1,26 @@
-@c version 1.24
+@c version 1.27
 @menu
 * Introducci@'on a los m@'etodos num@'ericos::   
 * Series de Fourier::                     
-* Definiciones para los m@'etodos num@'ericos::   
-* Definiciones para las series de Fourier::
+* Funciones y variables para los m@'etodos num@'ericos::   
+* Funciones y variables para las series de Fourier::
 @end menu
 
 @node Introducci@'on a los m@'etodos num@'ericos, Series de Fourier, M@'etodos num@'ericos, M@'etodos num@'ericos
 @section Introducci@'on a los m@'etodos num@'ericos
 
-@node Series de Fourier, Definiciones para los m@'etodos num@'ericos, Introducci@'on a los m@'etodos num@'ericos, M@'etodos num@'ericos
+@node Series de Fourier, Funciones y variables para los m@'etodos num@'ericos, Introducci@'on a los m@'etodos num@'ericos, M@'etodos num@'ericos
 @section Series de Fourier
 
 El paquete @code{fft} contiene funciones para el c@'alculo num@'erico (no simb@'olico) de la transformada r@'apida de Fourier. La instrucci@'on @code{load ("fft")} carga el paquete. V@'ease @code{fft}.
 
 El paquete @code{fourie} contiene funciones para el c@'alculo simb@'olico de series de Fourier. La instrucci@'on 
-@code{load ("fourie")} carga el paquete. Hay funciones en el paquete @code{fourie} para calcular los coeficientes de Fourier y para la transformaci@'on de expresiones. V@'ease @code{Definiciones para las series de Fourier}.
+@code{load ("fourie")} carga el paquete. Hay funciones en el paquete @code{fourie} para calcular los coeficientes de Fourier y para la transformaci@'on de expresiones. V@'ease @code{Funciones y variables para las series de Fourier}.
 
 @c end concepts M@'etodos num@'ericos
 
-@node Definiciones para los m@'etodos num@'ericos, Definiciones para las series de Fourier, Series de Fourier, M@'etodos num@'ericos
-@section Definiciones para los m@'etodos num@'ericos
+@node Funciones y variables para los m@'etodos num@'ericos, Funciones y variables para las series de Fourier, Series de Fourier, M@'etodos num@'ericos
+@section Funciones y variables para los m@'etodos num@'ericos
 @c NOTE: Let's keep POLARTORECT, RECTTOPOLAR, and IFT before FFT
 @c in this file. Otherwise DESCRIBE returns the FFT text (because
 @c POLARTORECT, etc are list in the heading of FFT with @defunx).
@@ -162,7 +162,7 @@ La funci@'on @code{fortran} siempre devuelve @code{done}.
 
 Ejemplos:
 
-@example
+@verbatim
 (%i1) expr: (a + b)^12$
 (%i2) fortran (expr);
       (b+a)**12                                                                 
@@ -185,7 +185,7 @@ Ejemplos:
 (%i8) fortran (f);
       f                                                                         
 (%o8)                         done
-@end example
+@end verbatim
 
 @end deffn
 
@@ -222,24 +222,50 @@ To reenable the Lisp debugger set *debugger-hook* to nil.
 @end deffn
 
 
-@c NEEDS WORK
-@deffn {Funci@'on} find_root (@var{f}(@var{x}), @var{x}, @var{a}, @var{b})
+@deffn {Funci@'on} find_root (@var{expr}, @var{x}, @var{a}, @var{b})
 @deffnx {Funci@'on} find_root (@var{f}, @var{a}, @var{b})
+@deffnx {Variable opcional} find_root_error
+@deffnx {Variable opcional} find_root_abs
+@deffnx {Variable opcional} find_root_rel
 
-Calcula el cero de la funci@'on @var{f} cuando @var{x} var@'{@dotless{i}}a en el rango @code{[@var{a}, @var{b}]}.
-La funci@'on debe tener signos diferentes en los extremos del intervalo. Si esta condici@'on no se cumple, la acci@'on de esta funci@'on la gobierna la variable @code{find_root_error}.  Si @code{find_root_error} vale @code{true} entonces se emite un mensaje de error, en otro caso se devuelve el valor de @code{find_root_error}. En caso contrario, dado que Maxima pouede evaluar el primer argumento en el rango especificado, el cual es continuo, est@'a garantizado que @code{find_root} encontrar@'a el cero buscado (o uno de ellos en caso de haber varios). La precisi@'on de @code{find_root} est@'a gobernada por @code{find_root_abs} y @code{find_root_rel}, que deben ser n@'umeros no negativos en coma flotante. La funci@'on @code{find_root} se detendr@'a cuando el primer argumento tome un valor menor o igual que @code{find_root_abs}, o cuando sucesivas aproximaciones de la ra@'{@dotless{i}}z se diferencien en menos de @code{find_root_rel * <one of the approximants>}. El valor por defecto de @code{find_root_abs} y @code{find_root_rel} es 0.0 en ambos casos, de forma que @code{find_root} obtiene la mejor aproximaci@'on posible para la aritm@'etica de simple precisi@'on de que se dispone. El primer argumento puede ser una ecuaci@'on. La ordenaci@'on de los dos @'ultimos argumentos es irrelevante. As@'{@dotless{i}},
+Calcula una ra@'{@dotless{i}}z de la expresi@'on @var{expr} o de
+la funci@'on @var{f} en el intervalo cerrado @math{[@var{a}, @var{b}]}.
+La expresi@'on @var{expr} puede ser una ecuaci@'on, en cuyo caso 
+@code{find_root} busca una ra@'{@dotless{i}}z de
+@code{lhs(@var{expr}) - rhs(@var{expr})}.
 
-@example
-find_root (sin(x) = x/2, x, %pi, 0.1);
-@end example
+Dado que Maxima puede evaluar @var{expr} o @var{f} en 
+@math{[@var{a}, @var{b}]}, entonces, si @var{expr} o @var{f} es
+continua, @code{find_root} encuentrar@'a la ra@'{@dotless{i}}z
+buscada; o ra@'{@dotless{i}}ces en caso de existir varias.
 
-equivale a
+La funci@'on @code{find_root} aplica al principio la
+b@'usqueda binaria. Si la expresi@'on es lo suficientemente
+suave, entonces @code{find_root} aplicar@'a el m@'etodo
+de interpolaci@'on lineal.
 
-@example
-find_root (sin(x) = x/2, x, 0.1, %pi);
-@end example
+La precisi@'on del resultado se controla con @code{find_root_abs} y
+@code{find_root_rel}. La b@'usqueda se detiene cuando la funci@'on
+alcanza valores menores o iguales a @code{find_root_abs},
+o cuando dos soluciones sucesivas @var{x_0} y @var{x_1}
+se diferencian en una cantidad menor o igual a
+@code{find_root_rel * max(abs(x_0), abs(x_1))}.
+Los valores por defecto de @code{find_root_abs} y
+@code{find_root_rel} son ambos cero.
 
-El m@'etodo que se aplica es una b@'usqueda binaria en el rango especificado por los dos @'ultimos argumentos. Cuando el algoritmo considera que la funci@'on est@'a lo suficientemente cerca de ser lineal, comienza a utilizar interpolaci@'on lineal.
+@code{find_root} espera que la funci@'on en cuesti@'on tenga signos
+diferentes en los extremos del intervalo. Si esto no se verifica,
+el comportamiento de @code{find_root} se controla con @code{find_root_error}.
+Cuando @code{find_root_error} vale @code{true}, @code{find_root}
+devuelve un mensaje de error; en caso contrario, @code{find_root}
+devuelve el valor de @code{find_root_error}. El valor por defecto
+de @code{find_root_error} es @code{true}.
+
+Si en alg@'un momento del proceso de b@'usqueda @var{f} alcanza un valor
+no num@'erico, @code{find_root} devuelve una expresi@'on parcialmente evaluada.
+
+Se ignora el orden de @var{a} y @var{b}; la regi@'on de b@'usqueda es
+@math{[min(@var{a}, @var{b}), max(@var{a}, @var{b})]}.
 
 
 Ejemplos:
@@ -257,6 +283,9 @@ Ejemplos:
 @c find_root (sin(x) = x/2, x, 0.1, %pi);
 @c find_root (f(x), x, 0.1, %pi);
 @c find_root (f, 0.1, %pi);
+@c find_root (exp(x) = y, x, 0, 100);
+@c find_root (exp(x) = y, x, 0, 100), y = 10;
+@c log (10.0);
 @c ===end===
 @example
 (%i1) f(x) := sin(x) - x/2;
@@ -271,34 +300,16 @@ Ejemplos:
 (%o4)                   1.895494267033981
 (%i5) find_root (f, 0.1, %pi);
 (%o5)                   1.895494267033981
+(%i6) find_root (exp(x) = y, x, 0, 100);
+                            x
+(%o6)           find_root(%e  = y, x, 0.0, 100.0)
+(%i7) find_root (exp(x) = y, x, 0, 100), y = 10;
+(%o7)                   2.302585092994046
+(%i8) log (10.0);
+(%o8)                   2.302585092994046
 @end example
-
-
 @end deffn
 
-@defvr {Variable opcional} find_root_abs
-Valor por defecto: 0.0
-
-La variable @code{find_root_abs} es la precisi@'on de la instrucci@'on @code{find_root}, cuyo comportamiento lo controlan @code{find_root_abs} y @code{find_root_rel}, variables que deben guardar dos n@'umeros no negativos decimales en coma flotante.  La funci@'on @code{find_root} parar@'a cuando su primer argumento tome un valor menor o igual que @code{find_root_abs} o si sucesivas aproximaciones a la ra@'{@dotless{i}}z difieren entre s@'{@dotless{i}} en no m@'as de @code{find_root_rel * <one of the approximants>}.
-El valor por defecto de @code{find_root_abs} y @code{find_root_rel} es 0.0 en ambos casos, de forma que @code{find_root} obtiene la mejor aproximaci@'on posible para la aritm@'etica de simple precisi@'on de que se dispone.
-
-@end defvr
-
-@defvr {Variable opcional} find_root_error
-Valor por defecto: @code{true}
-
-La variable @code{find_root_error} controla el comportamiento de @code{find_root}.
-Cuando se llama a la funci@'on @code{find_root}, @'esta determina si la funci@'on a ser resuelta satisface la condici@'on de que sus valores en los extremos de los intervalos tengan signos diferentes. Si son de signo opuesto, se procede a la interpolaci@'on. Si son del mismo signo, y @code{find_root_error} vale @code{true}, entonces se se@~nala un error. Si son del mismo signo y @code{find_root_error} no vale @code{true}, retornar@'a el valor de @code{find_root_error}. 
-
-@end defvr
-
-@defvr {Variable opcional} find_root_rel
-Valor por defecto: 0.0
-
-La variable @code{find_root_rel} es la precisi@'on de la instrucci@'on @code{find_root}, cuyo comportamiento lo controlan @code{find_root_abs} y @code{find_root_rel}, variables que deben guardar dos n@'umeros no negativos decimales en coma flotante.  La funci@'on @code{find_root} parar@'a cuando su primer argumento tome un valor menor o igual que @code{find_root_abs} o si sucesivas aproximaciones a la ra@'{@dotless{i}}z difieren entre s@'{@dotless{i}} en no m@'as de @code{find_root_rel * <one of the approximants>}.
-El valor por defecto de @code{find_root_abs} y @code{find_root_rel} es 0.0 en ambos casos, de forma que @code{find_root} obtiene la mejor aproximaci@'on posible para la aritm@'etica de simple precisi@'on de que se dispone.
-
-@end defvr
 
 
 @deffn {Funci@'on} newton (@var{expr}, @var{x}, @var{x_0}, @var{eps})
@@ -352,8 +363,8 @@ Ejemplos:
 
 
 
-@node Definiciones para las series de Fourier, , Definiciones para los m@'etodos num@'ericos, M@'etodos num@'ericos
-@section Definiciones para las series de Fourier
+@node Funciones y variables para las series de Fourier, , Funciones y variables para los m@'etodos num@'ericos, M@'etodos num@'ericos
+@section Funciones y variables para las series de Fourier
 
 @c REPHRASE
 @deffn {Funci@'on} equalp (@var{x}, @var{y})

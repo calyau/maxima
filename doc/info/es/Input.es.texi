@@ -1,11 +1,11 @@
-@c english version 1.54
+@c english version 1.59
 @menu
 * Comentarios::
 * Archivos::
-* Definiciones para Entrada y Salida::
+* Funciones y variables para lectura y escritura::
 @end menu
 
-@node Comentarios, Archivos, Entrada y Salida, Entrada y Salida
+@node Comentarios, Archivos, Lectura y escritura, Lectura y escritura
 @section Comentarios
 
 En Maxima, un comentario es cualquier texto encerrado entre las
@@ -29,7 +29,7 @@ Ejemplos:
 @c /* Value of bb depends on aa */  bb : aa^2;
 @c /* User-defined infix operator */  infix ("b");
 @c /* Parses same as a b c, not abc */  a/* foo */b/* bar */c;
-@c /* Comments /* can be nested /* to arbitrary depth */ */ */  1 + xyz;
+@c /* Comments /* can be nested /* to any depth */ */ */  1 + xyz;
 @c ===end===
 @example
 (%i1) /* aa is a variable of interest */  aa : 1234;
@@ -40,12 +40,12 @@ Ejemplos:
 (%o3)                           b
 (%i4) /* Parses same as a b c, not abc */  a/* foo */b/* bar */c;
 (%o4)                         a b c
-(%i5) /* Comments /* can be nested /* to arbitrary depth */ */ */  1 + xyz;
+(%i5) /* Comments /* can be nested /* to any depth */ */ */  1 + xyz;
 (%o5)                        xyz + 1
 @end example
 
 
-@node Archivos, Definiciones para Entrada y Salida, Comentarios, Entrada y Salida
+@node Archivos, Funciones y variables para lectura y escritura, Comentarios, Lectura y escritura
 @section Archivos
 
 Un archivo no es m@'as que una @'area de un cierto dispositivo de almacenamiento que contiene datos o texto.
@@ -61,8 +61,8 @@ Instrucciones que operan con archivos son:
 @code{closefile} y
 @code{appendfile}.
 
-@node Definiciones para Entrada y Salida,  , Archivos, Entrada y Salida
-@section Definiciones para Entrada y Salida
+@node Funciones y variables para lectura y escritura,  , Archivos, Lectura y escritura
+@section Funciones y variables para lectura y escritura
 
 @defvr {Variable del sistema} __
 @ifinfo
@@ -216,7 +216,8 @@ Por ejemplo,
 
 @example
 block (integrate (x^5, x), ev (%%, x=2) - ev (%%, x=1));
-block ([prev], prev: integrate (x^5, x), ev (prev, x=2) - ev (prev, x=1));
+block ([prev], prev: integrate (x^5, x),
+               ev (prev, x=2) - ev (prev, x=1));
 @end example
 
 devuelven el mismo resultado  @code{21/2}.
@@ -721,10 +722,12 @@ Ejemplos:
 @c grind (expr);
 @c string (expr);
 @c cholesky (A):= block ([n : length (A), L : copymatrix (A),
-@c p : makelist (0, i, 1, length (A))], for i thru n do for j : i thru n do
-@c (x : L[i, j], x : x - sum (L[j, k] * L[i, k], k, 1, i - 1), if i = j then
-@c p[i] : 1 / sqrt(x) else L[j, i] : x * p[i]), for i thru n do L[i, i] : 1 / p[i],
-@c for i thru n do for j : i + 1 thru n do L[i, j] : 0, L)$
+@c   p : makelist (0, i, 1, length (A))], 
+@c   for i thru n do for j : i thru n do
+@c   (x : L[i, j], x : x - sum (L[j, k] * L[i, k], k, 1, i - 1), 
+@c   if i = j then @c   p[i] : 1 / sqrt(x) else L[j, i] : x * p[i]), 
+@c   for i thru n do L[i, i] : 1 / p[i],
+@c   for i thru n do for j : i + 1 thru n do L[i, j] : 0, L)$
 @c grind (cholesky);
 @c string (fundef (cholesky));
 @c ===end===
@@ -777,10 +780,12 @@ bb^10+10*aa*bb^9+45*aa^2*bb^8+120*aa^3*bb^7+210*aa^4*bb^6
 +252*aa^5*bb^5+210*aa^6*bb^4+120*aa^7*bb^3+45*aa^8*bb^2+10*aa^9*\
 bb+aa^10
 (%i14) cholesky (A):= block ([n : length (A), L : copymatrix (A),
-p : makelist (0, i, 1, length (A))], for i thru n do for j : i thru n do
-(x : L[i, j], x : x - sum (L[j, k] * L[i, k], k, 1, i - 1), if i = j then
-p[i] : 1 / sqrt(x) else L[j, i] : x * p[i]), for i thru n do L[i, i] : 1 / p[i],
-for i thru n do for j : i + 1 thru n do L[i, j] : 0, L)$
+  p : makelist (0, i, 1, length (A))], for i thru n do
+  for j : i thru n do
+  (x : L[i, j], x : x - sum (L[j, k] * L[i, k], k, 1, i - 1),
+  if i = j then p[i] : 1 / sqrt(x) else L[j, i] : x * p[i]),
+  for i thru n do L[i, i] : 1 / p[i],
+  for i thru n do for j : i + 1 thru n do L[i, j] : 0, L)$
 (%i15) grind (cholesky);
 cholesky(A):=block(
          [n:length(A),L:copymatrix(A),
@@ -978,8 +983,6 @@ Eval@'ua las expresiones Lisp del archivo @var{filename}. La funci@'on
 La funci@'on @code{loadfile} puede procesar ficheros creados por  @code{save}, @code{translate_file} y @code{compile_file}.
 Puede ser m@'as conveniente utilizar @code{load} en lugar de @code{loadfile}.
 
-La funci@'on @code{loadfile} no eval@'ua su argumento, de manera que @code{filename} debe ser una cadena, no una variable que la contenga. La utilizaci@'on del operador comilla-comilla s@'{@dotless{i}} permite la evaluaci@'on.
-
 @end deffn
 
 @defvr {Variable opcional} loadprint
@@ -1076,14 +1079,16 @@ V@'eanse tambi@'en @code{display}, @code{disp}, @code{ldisplay} y @code{ldisp}, 
 Para mostrar el contenido de un archivo v@'ease @code{printfile}.
 
 @example
-(%i1) r: print ("(a+b)^3 is", expand ((a+b)^3), "log (a^10/b) is", radcan (log (a^10/b)))$
+(%i1) r: print ("(a+b)^3 is", expand ((a+b)^3), "log (a^10/b) is",
+      radcan (log (a^10/b)))$
             3        2      2      3
 (a+b)^3 is b  + 3 a b  + 3 a  b + a  log (a^10/b) is 
 
                                               10 log(a) - log(b) 
 (%i2) r;
 (%o2)                  10 log(a) - log(b)
-(%i3) disp ("(a+b)^3 is", expand ((a+b)^3), "log (a^10/b) is", radcan (log (a^10/b)))$
+(%i3) disp ("(a+b)^3 is", expand ((a+b)^3), "log (a^10/b) is",
+      radcan (log (a^10/b)))$
                            (a+b)^3 is
 
                      3        2      2      3
@@ -1249,18 +1254,7 @@ Por ejemplo, @code{save (@var{filename}, aa, bb, cc=42, functions, [11, 17])}.
 La llamada @code{save (@var{filename}, all)} almacena el estado actual de Maxima, lo que incluye todas las variables definidas por el usuario, funciones, arreglos, etc., as@'{@dotless{i}} como algunos objetos definidos autom@'aticamente.
 Los elementos almacenados incluyen variables del sistema, como @code{file_search_maxima} o @code{showtime}, si han sido modificadas por el usuario. V@'ease @code{myoptions}.
 
-La funci@'on @code{save} no eval@'ua sus argumentos.  El argumento @var{filename} debe ser una cadena, no una variable que contenga una cadena. Si se especifican n@'umeros de etiquetas, @'estos deben ser enteros.
-El operador comilla-comilla @code{'@w{}'}  eval@'ua una variable de cadena devolviendo su valor;
-por ejemplo, @code{s: "foo.1"$ save (''s, all)$}, y de las variables enteras devuelve sus valores enteros, como en @code{m: 5$ n: 12$ save ("foo.1", [''m, ''n])$}.
-
-@c ANY USE FOR THE FOLLOWING ???
-@c The following device constructs a list of variables to save and saves them.
-@c 
-@c @example
-@c s: "foo.1"$
-@c l: ['aa, 'bb, 'cc, 'dd]$
-@c apply (save, append ([s], l))$
-@c @end example
+@code{save} eval@'ua @var{filename} pero no el resto de argumentos.
 @end deffn
 
 @defvr {Variable opcional} savedef
@@ -1312,7 +1306,8 @@ Ejemplos:
 @c ===beg===
 @c stringdisp: false$
 @c "This is an example string.";
-@c foo () := print ("This is a string in a function definition.");
+@c foo () := 
+@c       print ("This is a string in a function definition.");
 @c stringdisp: true$
 @c "This is an example string.";
 @c ===end===
@@ -1320,7 +1315,8 @@ Ejemplos:
 (%i1) stringdisp: false$
 (%i2) "This is an example string.";
 (%o2)              This is an example string.
-(%i3) foo () := print ("This is a string in a function definition.");
+(%i3) foo () :=
+      print ("This is a string in a function definition.");
 (%o3) foo() := 
               print("This is a string in a function definition.")
 (%i4) stringdisp: true$
@@ -1365,11 +1361,13 @@ La instrucci@'on @code{tex (@var{expr})} imprime en la consola la representaci@'
 
 La instrucci@'on @code{tex (@var{label})} imprime en la consola la representaci@'on en TeX de la expresi@'on a la que hace referencia la etiqueta @var{label}, asign@'andole a su vez una etiqueta de ecuaci@'on que ser@'a mostrada al lado izquierdo de la misma. La etiqueta de la expresi@'on en TeX es la misma que la de Maxima.
 
-La instrucci@'on @code{tex (@var{expr}, @var{filename})} a@~nade la representaci@'on TeX de @var{expr} al fichero @var{filename}. La funci@'on @code{tex} no eval@'ua el argumento @var{filename}, pero la doble comilla simple @code{''} fuerza su evaluaci@'on.
+La instrucci@'on @code{tex (@var{expr}, @var{filename})} a@~nade la representaci@'on TeX de @var{expr} al fichero @var{filename}. 
 
-La instrucci@'on @code{tex (@var{label}, @var{filename})} a@~nade la representaci@'on TeX de la expresi@'on a la que hace referencia la etiqueta  @var{label}, junto con una etiqueta, al fichero @var{filename}. La funci@'on @code{tex} no eval@'ua el argumento @var{filename}, pero la doble comilla simple @code{''} fuerza su evaluaci@'on.
+La instrucci@'on @code{tex (@var{label}, @var{filename})} a@~nade la representaci@'on TeX de la expresi@'on a la que hace referencia la etiqueta  @var{label}, junto con una etiqueta, al fichero @var{filename}. 
 
-La funci@'on @code{tex} eval@'ua sus argumentos tras comprobar si se trata de una etiqueta. La doble comilla simple @code{''} fuerza la evaluaci@'on del argumento, anulando la comprobaci@'on sobre la etiqueta.
+La funci@'on @code{tex} eval@'ua su primer argumento tras
+comprobar si se trata de una etiqueta. La doble comilla simple @code{''} 
+fuerza la evaluaci@'on del argumento, anulando la comprobaci@'on sobre la etiqueta.
 
 V@'ease tambi@'en @code{texput}.
 
@@ -1545,7 +1543,8 @@ Asigna c@'odigo TeX para un operador "bi-fijo" (matchfix).
 @c texput ("<<", [" \\langle ", " \\rangle "], matchfix);
 @c tex (<<a>>);
 @c tex (<<a, b>>);
-@c texput ("<<", [" \\langle ", " \\rangle ", " \\, | \\,"], matchfix);
+@c texput ("<<", [" \\langle ", " \\rangle ", " \\, | \\,"], 
+@c       matchfix);
 @c tex (<<a>>);
 @c tex (<<a, b>>);
 @c ===end===
@@ -1561,7 +1560,8 @@ $$ \langle a \rangle $$
 (%i4) tex (<<a, b>>);
 $$ \langle a , b \rangle $$
 (%o4)                         false
-(%i5) texput ("<<", [" \\langle ", " \\rangle ", " \\, | \\,"], matchfix);
+(%i5) texput ("<<", [" \\langle ", " \\rangle ", " \\, | \\,"],
+      matchfix);
 (%o5)           [ \langle ,  \rangle ,  \, | \,]
 (%i6) tex (<<a>>);
 $$ \langle a \rangle $$

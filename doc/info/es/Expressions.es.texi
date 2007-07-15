@@ -1,6 +1,6 @@
-@c english version 1.52
+@c english version 1.54
 @menu
-* Introducci@'on a las Expresiones::  
+* Introducci@'on a las expresiones::  
 * Asignaci@'on::
 * Expresiones complejas::
 * Nombres y verbos::
@@ -8,11 +8,11 @@
 * Cadenas de caracteres::
 * Desigualdades::
 * Sintaxis::
-* Definiciones para Expresiones::
+* Funciones y variables para expresiones::
 @end menu
 
-@node Introducci@'on a las Expresiones, Asignaci@'on, Expresiones, Expresiones
-@section Introducci@'on a las Expresiones
+@node Introducci@'on a las expresiones, Asignaci@'on, Expresiones, Expresiones
+@section Introducci@'on a las expresiones
 
 Existe un cierto n@'umero de palabras reservadas que no pueden
 utilizarse como nombres de variables. Su uso podr@'{@dotless{i}}a causar 
@@ -59,7 +59,7 @@ pero quiz@'as se quiera incluir un tercer t@'ermino en la @i{expresi@'on con com
 (%o4)                        3628800
 @end example
 
-@node Asignaci@'on, Expresiones complejas, Introducci@'on a las Expresiones, Expresiones
+@node Asignaci@'on, Expresiones complejas, Introducci@'on a las expresiones, Expresiones
 @section Asignaci@'on
 
 Existen dos operadores de asignaci@'on en Maxima, @code{:} y @code{::}. 
@@ -291,7 +291,7 @@ this string.";
 Maxima dispone de los operadores de desigualdad @code{<}, @code{<=}, @code{>=}, @code{>}, @code{#} y @code{notequal}.
 V@'ease @code{if} para una descripci@'on de las expresiones condicionales.
 
-@node Sintaxis, Definiciones para Expresiones, Desigualdades, Expresiones
+@node Sintaxis, Funciones y variables para expresiones, Desigualdades, Expresiones
 @section Sintaxis
 
 Es posible definir nuevos operadores con una precedencia especificada,
@@ -449,8 +449,8 @@ Incorrect syntax: # is not a prefix operator
 (%o9)                       ##(5, 3)
 @end example
 
-@node Definiciones para Expresiones,  , Sintaxis, Expresiones
-@section Definiciones para Expresiones
+@node Funciones y variables para expresiones,  , Sintaxis, Expresiones
+@section Funciones y variables para expresiones
 
 @deffn {Funci@'on} at (@var{expr}, [@var{eqn_1}, ..., @var{eqn_n}])
 @deffnx {Funci@'on} at (@var{expr}, @var{eqn})

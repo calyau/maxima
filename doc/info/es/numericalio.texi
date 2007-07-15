@@ -1,14 +1,14 @@
+@c English version 1.3
 @menu
 * Introducci@'on a numericalio::
-* Definiciones para numericalio::
+* Funciones y variables para numericalio::
 @end menu
 
-@node Introducci@'on a numericalio, Definiciones para numericalio, numericalio, numericalio
+@node Introducci@'on a numericalio, Funciones y variables para numericalio, numericalio, numericalio
 @section Introducci@'on a numericalio
 
-El paquete @code{numericalio} define funciones para leer y escribir ficheros de datos.
-Se lee el fichero completo a fin de construir un objeto, por lo que el paquete no
-soporta lecturas parciales de archivos.
+El paquete @code{numericalio} define funciones para leer y escribir ficheros de datos
+y flujos.
 
 Cada elemento a leer o escribir en un fichero debe ser necesariamente un @'atomo:
 un n@'umero entero, decimal, decimal grande, una cadena o un s@'{@dotless{i}}mbolo;
@@ -30,6 +30,8 @@ El argumento opcional @var{separator_flag}, com@'un a todas las funciones de
 lectura y escritura, indica qu@'e car@'acter ser@'a el utilizado para
 separar elementos.
 
+@subsection Separadores v@'alidos para lectura
+
 Para la lectura de ficheros se reconocen los siguientes valores de la
 variable @var{separator_flag}: @code{comma} para los valores separados por
 comas, @code{pipe} para los valores separados por el car@'acter de la barra
@@ -40,11 +42,7 @@ especifica el argumento @var{separator_flag}, se tomar@'a por defecto @code{comm
 Si el fichero tiene cualquier otra extensi@'on diferente de @code{.csv} y no se
 especifica @code{separator_flag}, se usar@'a por defecto @code{space}.
 
-Para los ficheros de salida se utilizan los mismos formatos de separaci@'on
-que para los de entrada; a los que se le a@~nade @code{tab} para separar 
-valores con tabulaciones.
-
-En la entrada, varios espacios y tabulaciones sucesivos cuentan como un
+En la lectura, varios espacios y tabulaciones sucesivos cuentan como un
 @'unico separador. Sin embargo, varias comas, barras verticales o punto y comas 
 sucesivos se interpretan que tienen el s@'{@dotless{i}}mbolo @code{false} entre
 ellos; por ejemplo, @code{1234,,Foo} se interpreta lo mismo que si fuese
@@ -52,14 +50,25 @@ ellos; por ejemplo, @code{1234,,Foo} se interpreta lo mismo que si fuese
 escribirse expl@'{@dotless{i}}citamente, por lo que la lista 
 @code{[1234, false, Foo]} debe escribirse @code{1234,false,Foo}.
 
+@subsection Separadores v@'alidos para escritura
+
+Para la escritura, @code{tab}, para valores separados por tabuladores,
+se acepta como valor de @var{separator_flag}, as@'{@dotless{i}} como
+@code{comma}, @code{pipe}, @code{semicolon} y @code{space}.
+
+En la escritura, el @'atomo@code{false} se escribe tal cual y
+una lista @code{[1234, false, Foo]} se escribe @code{1234,false,Foo}.
 
 
-@node Definiciones para numericalio,  , Introducci@'on a numericalio, numericalio
-@section Definiciones para numericalio
+@node Funciones y variables para numericalio,  , Introducci@'on a numericalio, numericalio
+@section Funciones y variables para numericalio
 
 @deffn {Funci@'on} read_matrix (@var{file_name})
 @deffnx {Funci@'on} read_matrix (@var{file_name}, @var{separator_flag})
-Lee el fichero @var{file_name} y devuelve su contenido completo en forma
+@deffnx {Funci@'on} read_matrix (@var{S})
+@deffnx {Funci@'on} read_matrix (@var{S}, @var{separator_flag})
+
+Lee el fichero @var{file_name} o el flujo @var{S} y devuelve su contenido completo en forma
 de matriz. Si no se especifica @var{separator_flag}, se entiende que los 
 valores est@'an separados por espacios.
 
@@ -72,6 +81,9 @@ emite un mensaje de error.
 
 @deffn {Funci@'on} read_lisp_array (@var{file_name}, @var{A})
 @deffnx {Funci@'on} read_lisp_array (@var{file_name}, @var{A}, @var{separator_flag})
+@deffnx {Funci@'on} read_lisp_array (@var{S}, @var{A})
+@deffnx {Funci@'on} read_lisp_array (@var{S}, @var{A}, @var{separator_flag})
+
 La funci@'on @code{read_lisp_array} requiere que el arreglo sea declarado
 por @code{make_array} antes de solicitar la lectura del fichero, lo cual evita la
 necesidad de calcular las dimensiones del arreglo, especialmente en el caso
@@ -87,6 +99,13 @@ se lee como una lista para a continuaci@'on completar el arreglo con
 
 @deffn {Funci@'on} read_maxima_array (@var{file_name}, @var{A})
 @deffnx {Funci@'on} read_maxima_array (@var{file_name}, @var{A}, @var{separator_flag})
+@deffnx {Funci@'on} read_maxima_array (@var{S}, @var{A})
+@deffnx {Funci@'on} read_maxima_array (@var{S}, @var{A}, @var{separator_flag})
+
+Lee el fichero @var{file_name} o el flujo @var{S} y devuelve su contenido completo en forma
+de array de Maxima. Si no se especifica @var{separator_flag}, se entiende que los 
+valores est@'an separados por espacios.
+
 La funci@'on @code{read_maxima_array} requiere que el arreglo sea declarado
 por @code{array} antes de solicitar la lectura del fichero, lo cual evita la
 necesidad de calcular las dimensiones del arreglo, especialmente en el caso
@@ -101,6 +120,13 @@ se lee como una lista para a continuaci@'on completar el arreglo con
 
 @deffn {Funci@'on} read_hashed_array (@var{file_name}, @var{A})
 @deffnx {Funci@'on} read_hashed_array (@var{file_name}, @var{A}, @var{separator_flag})
+@deffnx {Funci@'on} read_hashed_array (@var{S}, @var{A})
+@deffnx {Funci@'on} read_hashed_array (@var{S}, @var{A}, @var{separator_flag})
+
+Lee el fichero @var{file_name} o el flujo @var{S} y devuelve su contenido completo en forma
+de arreglo @i{hash}. Si no se especifica @var{separator_flag}, se entiende que los 
+valores est@'an separados por espacios.
+
 La funci@'on @code{read_hashed_array} considera el primer t@'ermino
 de la l@'{@dotless{i}}nea como un @'{@dotless{i}}ndice, asociando a @'este el
 resto de la l@'{@dotless{i}}nea. Por ejemplo, una fila con el contenido 
@@ -110,6 +136,9 @@ Las filas no necesitan tener el mismo n@'umero de elementos.
 
 @deffn {Funci@'on} read_nested_list (@var{file_name})
 @deffnx {Funci@'on} read_nested_list (@var{file_name}, @var{separator_flag})
+@deffnx {Funci@'on} read_nested_list (@var{S})
+@deffnx {Funci@'on} read_nested_list (@var{S}, @var{separator_flag})
+
 La funci@'on @code{read_nested_list} devuelve una lista con una sublista
 por cada fila de entrada. Las filas no necesitan tener el mismo n@'umero de elementos.
 Las filas vac@'{@dotless{i}}as @i{no} se ignoran, dando lugar a sublistas 
@@ -118,14 +147,22 @@ vac@'{@dotless{i}}as.
 
 @deffn {Funci@'on} read_list (@var{file_name})
 @deffnx {Funci@'on} read_list (@var{file_name}, @var{separator_flag})
-La funci@'on @code{read_list} lee todo el fichero de entrada como
-una lista simple, ignorando los caracteres de fin de l@'{@dotless{i}}nea.
+@deffnx {Funci@'on} read_list (@var{S})
+@deffnx {Funci@'on} read_list (@var{S}, @var{separator_flag})
+
+La funci@'on @code{read_list} o flujo @var{S} y lee todo el fichero de entrada como
+una lista simple. Si no se especifica @var{separator_flag}, se entiende que los 
+valores est@'an separados por espacios.
+
 @end deffn
 
 @deffn {Funci@'on} write_data (@var{X}, @var{file_name})
 @deffnx {Funci@'on} write_data (@var{object}, @var{file_name}, @var{separator_flag})
+@deffnx {Funci@'on} write_data (@var{X}, @var{S})
+@deffnx {Funci@'on} write_data (@var{object}, @var{S}, @var{separator_flag})
+
 La funci@'on @code{write_data} escribe el objeto @var{X} en el fichero
-@var{file_name}.
+@var{file_name} o flujo @var{S}.
 
 @code{write_data} escribe las matrices fila a fila.
 
@@ -142,8 +179,12 @@ l@'{@dotless{i}}nea.
 
 @code{write_data} escribe una lista simple en una @'unica l@'{@dotless{i}}nea.
 
-@code{write_data} a@~nadir@'a o inicializar@'a el fichero de salida
-seg@'un le indique la variable global @code{file_output_append}.
+Cuando @code{write_data} escribe a un fichero, la variable global
+@code{file_output_append} controla si los datos se a@~naden a fichero
+o si @'este es borrado antes de la escritura.
+
+En el caso de flujos, no se toman acciones especiales relacionadas
+con la sobreescritura. La funci@'on @code{write_data} no cierra el flujo.
 
 @end deffn
 
