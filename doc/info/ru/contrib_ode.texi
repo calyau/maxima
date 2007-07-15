@@ -1,0 +1,504 @@
+@c Language=Russian
+@c Encoding=CP1251
+@c File=contrib_ode.texi 
+@c OriginalRevision=1.9
+
+@menu
+* Введение в пакет contrib_ode::
+* Функции и переменные пакета contrib_ode::
+* Возможные улучшения пакета contrib_ode::
+* Тесты пакета contrib_ode::
+* Ссылки для пакета contrib_ode::
+@end menu
+
+@node Введение в пакет contrib_ode, Функции и переменные пакета contrib_ode, Пакет contrib_ode, Пакет contrib_ode
+
+@section Введение в пакет contrib_ode 
+
+Стандартная процедура Maxima для решения обычных дифференциальных уравнений (ОДУ) @code{ode2} 
+решает элементарные линейные ОДУ первого и второго порядка.  
+Функция @code{contrib_ode} расширяет @code{ode2} дополнительными методами для линейных
+и нелинейных ОДУ первого порядка и линейных однородных ОДУ второго порядка.  
+Даная программа находится в состоянии развития и форма вызова функций
+может измениться в последующих релизах.  После стабилизации код может
+быть перемещен из директории contrib и интегрирован в ядро Maxima.
+
+Для использования пакет должен быть загружен с помощью команды @code{load('contrib_ode)}.
+
+Функция @code{contrib_ode} вызывается также, как @code{ode2}.  
+Она имеет три аргумента: ОДУ (если правая часть уравнения равна 0, то достаточно задать
+только левые части уравнений), зависимая переменная и независимая переменная.  
+В случае успеха возвращается список решений.
+
+Представление решений отличается от такового для @code{ode2}.
+Т.к. нелинейные уравнения могут иметь множественные решения., то 
+@code{contrib_ode} возвращает список решений.  Решение может иметь 
+несколько различных форм:
+@itemize @bullet
+@item
+явное решение для зависимой переменной,
+
+@item
+неявное решение для зависимой переменной,
+
+@item
+параметрическое решение с параметром @code{%t}
+
+@item
+преобразование в другое ОДУ для зависимой переменной @code{%u}.
+
+@end itemize
+
+@code{%c} представляет константу интегрирования для уравнений первого порядка.
+@code{%k1} и @code{%k2} -- константы интегрирования для уравнений второго порядка.  
+Если @code{contrib_ode} не может получить решение, то возвращается @code{false},
+возможно, после печати сообщения об ошибке.
+
+Необходимо возвращать список решений, т.к. нелинейные ОДУ первого порядка
+могут иметь множественные решения. Например:
+
+@c ===beg===
+@c load('contrib_ode)$
+@c eqn:x*'diff(y,x)^2-(1+x*y)*'diff(y,x)+y=0;
+@c contrib_ode(eqn,y,x);
+@c method;
+@c ===end===
+@example
+(%i1) load('contrib_ode)$
+
+(%i2) eqn:x*'diff(y,x)^2-(1+x*y)*'diff(y,x)+y=0;
+
+                    dy 2             dy
+(%o2)            x (--)  - (x y + 1) -- + y = 0
+                    dx               dx
+(%i3) contrib_ode(eqn,y,x);
+
+                                             x
+(%o3)             [y = log(x) + %c, y = %c %e ]
+(%i4) method;
+
+(%o4)                        factor
+@end example
+
+Нелинейные ОДУ могут иметь особые решения, не имеющие констант интегрирования, как
+второе решение в следующем примере:
+
+@c ===beg===
+@c load('contrib_ode)$
+@c eqn:'diff(y,x)^2+x*'diff(y,x)-y=0;
+@c contrib_ode(eqn,y,x);
+@c method;
+@c ===end===
+@example
+(%i1) load('contrib_ode)$
+
+(%i2) eqn:'diff(y,x)^2+x*'diff(y,x)-y=0;
+
+                       dy 2     dy
+(%o2)                 (--)  + x -- - y = 0
+                       dx       dx
+(%i3) contrib_ode(eqn,y,x);
+
+                                           2
+                                 2        x
+(%o3)              [y = %c x + %c , y = - --]
+                                          4
+(%i4) method;
+
+(%o4)                       clairault
+@end example
+
+
+Следующее ОДУ имеет два параметрических решение в терминах переменной 
+@code{%t}.  Из этих параметрических решений можно получить явные решения.
+
+@c ===beg===
+@c load('contrib_ode)$
+@c eqn:'diff(y,x)=(x+y)^2;
+@c contrib_ode(eqn,y,x);
+@c method;
+@c ===end===
+@example
+(%i1) load('contrib_ode)$
+
+(%i2) eqn:'diff(y,x)=(x+y)^2;
+
+                          dy          2
+(%o2)                     -- = (y + x)
+                          dx
+(%i3) contrib_ode(eqn,y,x);
+
+(%o3) [[x = %c - atan(sqrt(%t)), y = - x - sqrt(%t)], 
+                     [x = atan(sqrt(%t)) + %c, y = sqrt(%t) - x]]
+(%i4) method;
+
+(%o4)                       lagrange
+@end example
+
+Следующий пример (Камке 1.112) демонстрирует неявное решение.
+
+@c ===beg===
+@c load('contrib_ode)$
+@c assume(x>0,y>0);
+@c eqn:x*'diff(y,x)-x*sqrt(y^2+x^2)-y;
+@c contrib_ode(eqn,y,x);
+@c method;
+@c ===end===
+@example
+(%i1) load('contrib_ode)$
+
+(%i2) assume(x>0,y>0);
+
+(%o2)                    [x > 0, y > 0]
+(%i3) eqn:x*'diff(y,x)-x*sqrt(y^2+x^2)-y;
+
+                     dy           2    2
+(%o3)              x -- - x sqrt(y  + x ) - y
+                     dx
+(%i4) contrib_ode(eqn,y,x);
+
+                                  y
+(%o4)                  [x - asinh(-) = %c]
+                                  x
+(%i5) method;
+
+(%o5)                          lie
+@end example
+
+Следующее уравнение Рикатти преобразуется в линейное ОДУ второго порядка
+для переменной @code{%u}.  Maxima не может решить новое уравнение, и оно 
+возвращается нерешенным.
+@c ===beg===
+@c load('contrib_ode)$
+@c eqn:x^2*'diff(y,x)=a+b*x^n+c*x^2*y^2;
+@c contrib_ode(eqn,y,x);
+@c method;
+@c ===end===
+@example
+(%i1) load('contrib_ode)$
+
+(%i2) eqn:x^2*'diff(y,x)=a+b*x^n+c*x^2*y^2;
+
+                    2 dy      2  2      n
+(%o2)              x  -- = c x  y  + b x  + a
+                      dx
+(%i3) contrib_ode(eqn,y,x);
+
+               d%u
+               ---                            2
+               dx        2     n - 2   a     d %u
+(%o3)  [[y = - ----, %u c  (b x      + --) + ---- c = 0]]
+               %u c                     2      2
+                                       x     dx
+(%i4) method;
+
+(%o4)                        riccati
+@end example
+
+
+Для ОДУ первого порядка @code{contrib_ode} вызывает @code{ode2}.  
+Затем применяются методы: факторизации, Клеро, Лагранжа, Рикатти,
+Абеля и метод симметрий Ли.  Метод Ли не применяется к уравнениям Абеля,
+если метод Абеля не дает результата, но применяется если метод Рикатти
+возвращает нерешенное ОДУ второго порядка.
+
+Для ОДУ второго порядка @code{contrib_ode} вызывает @code{ode2}, а затем @code{odelin}.
+
+Если выполнена команда @code{put('contrib_ode,true,'verbose)}, то 
+печатается подробная отладочная информация.
+
+@node Функции и переменные пакета contrib_ode, Возможные улучшения пакета contrib_ode, Введение в пакет contrib_ode, Пакет contrib_ode
+@section Функции и переменные пакета contrib_ode
+
+@deffn {Функция} contrib_ode (@var{eqn}, @var{y}, @var{x})
+
+Возвращает список решение ОДУ @var{eqn} с независимой переменной 
+@var{x} и зависимой переменной @var{y}.
+
+@end deffn
+
+@deffn {Функция} odelin (@var{eqn}, @var{y}, @var{x})
+
+Функция @code{odelin} решает линейные однородные ОДУ первого и второго
+порядка с независимой переменной @var{x} и зависимой переменной @var{y}.  
+Она возвращает фундаментальный набор решений ОДУ.
+
+Для ОДУ второго порядка @code{odelin} использует метод Бронштейна-Лафаля,
+который ищет решение в терминах заданных специальных функций.
+
+@c ===beg===
+@c load('contrib_ode)$
+@c odelin(x*(x+1)*'diff(y,x,2)+(x+5)*'diff(y,x,1)+(-4)*y,y,x);
+@c ===end===
+@example
+(%i1) load('contrib_ode);
+
+(%i2) odelin(x*(x+1)*'diff(y,x,2)+(x+5)*'diff(y,x,1)+(-4)*y,y,x);
+...trying factor method
+...solving 7 equations in 4 variables
+...trying the Bessel solver
+...solving 1 equations in 2 variables
+...trying the F01 solver
+...solving 1 equations in 3 variables
+...trying the spherodial wave solver
+...solving 1 equations in 4 variables
+...trying the square root Bessel solver
+...solving 1 equations in 2 variables
+...trying the 2F1 solver
+...solving 9 equations in 5 variables
+       gauss_a(- 6, - 2, - 3, - x)  gauss_b(- 6, - 2, - 3, - x)
+(%o2) @{---------------------------, ---------------------------@}
+                    4                            4
+                   x                            x
+
+@end example
+
+@end deffn
+
+@deffn {Функция} ode_check (@var{eqn}, @var{soln})
+
+Возвращает значение ОДУ @var{eqn} после подстановки в него
+возможного решения @var{soln}.  Значение эквивалентно нулю,
+если @var{soln} является решением @var{eqn}.
+
+@c ===beg===
+@c load('contrib_ode)$
+@c eqn:'diff(y,x,2)+(a*x+b)*y;
+@c ans:[y = bessel_y(1/3,2*(a*x+b)^(3/2)/(3*a))*%k2*sqrt(a*x+b)
+@c          +bessel_j(1/3,2*(a*x+b)^(3/2)/(3*a))*%k1*sqrt(a*x+b)];
+@c ode_check(eqn,ans[1]);
+@c ===end===
+@example
+(%i1) load('contrib_ode)$
+
+(%i2) eqn:'diff(y,x,2)+(a*x+b)*y;
+
+                         2
+                        d y
+(%o2)                   --- + (a x + b) y
+                          2
+                        dx
+(%i3) ans:[y = bessel_y(1/3,2*(a*x+b)^(3/2)/(3*a))*%k2*sqrt(a*x+b)
+         +bessel_j(1/3,2*(a*x+b)^(3/2)/(3*a))*%k1*sqrt(a*x+b)];
+
+                                  3/2
+                    1  2 (a x + b)
+(%o3) [y = bessel_y(-, --------------) %k2 sqrt(a x + b)
+                    3       3 a
+                                          3/2
+                            1  2 (a x + b)
+                 + bessel_j(-, --------------) %k1 sqrt(a x + b)]
+                            3       3 a
+(%i4) ode_check(eqn,ans[1]);
+
+(%o4)                           0
+@end example
+
+@end deffn
+
+@defvr {Системная переменная} @code{method}
+
+Переменной @code{method} присваивается название метода успешного решения ОДУ. 
+
+@end defvr
+
+@defvr {Переменная} @code{%c}
+
+@code{%c} -- константа интегрирования для ОДУ первого порядка.
+
+@end defvr
+
+@defvr {Переменная} @code{%k1}
+
+@code{%k1} -- первая константа интегрирования для ОЛУ второго порядка.
+
+@end defvr
+
+@defvr {Переменная} @code{%k2}
+
+@code{%k2} -- вторая константа интегрирования для ОЛУ второго порядка.
+
+@end defvr
+
+@deffn {Функция} gauss_a (@var{a}, @var{b}, @var{c}, @var{x})
+
+Функции @code{gauss_a(a,b,c,x)} и @code{gauss_b(a,b,c,x)} есть 2F1 
+гипергеометрические функции.  Они представляют собой два независимых решения
+гипергеометрического уравнения  
+@code{x(1-x) diff(y,x,2) + [c-(a+b+1)x diff(y,x) - aby = 0} (A&S 15.5.1).  
+
+Эти функции используются только в решениях ОДУ, возвращаемых  
+@code{odelin} и @code{contrib_ode}.  Определение и использование этих
+функций может измениться в последующих релизах Maxima.
+
+См. также @code{gauss_b}, @code{dgauss_a} и @code{gauss_b}.
+
+@end deffn
+
+@deffn {Функция} gauss_b (@var{a}, @var{b}, @var{c}, @var{x})
+См. @code{gauss_a}.
+@end deffn
+
+@deffn {Функция} dgauss_a (@var{a}, @var{b}, @var{c}, @var{x})
+Производная @code{gauss_a(@var{a}, @var{b}, @var{c}, @var{x})} по @var{x}.
+@end deffn
+
+@deffn {Функция} dgauss_b (@var{a}, @var{b}, @var{c}, @var{x})
+Производная @code{gauss_b(@var{a}, @var{b}, @var{c}, @var{x})} по @var{x}.
+@end deffn
+
+
+@deffn {Функция} kummer_m (@var{a}, @var{b}, @var{x})
+
+M-функция Куммера, как она определена в Abramowitz и Stegun,
+@i{Handbook of Mathematical Functions}, Section 13.1.2.
+
+Эта функция используются только в решениях ОДУ, возвращаемых  
+@code{odelin} и @code{contrib_ode}.  Определение и использование этой
+функции может измениться в последующих релизах Maxima.
+
+См. также @code{kummer_u}, @code{dkummer_m} и @code{dkummer_u}.
+@end deffn
+
+@deffn {Функция} kummer_u (@var{a}, @var{b}, @var{x})
+
+U-функция Куммера, как она определена в Abramowitz и Stegun,
+@i{Handbook of Mathematical Functions}, Section 13.1.3.
+
+См. @code{kummer_m}.
+@end deffn
+
+@deffn {Функция} dkummer_m (@var{a}, @var{b}, @var{x})
+Производная @code{kummer_m(@var{a}, @var{b}, @var{x})} по @var{x}.
+@end deffn
+
+@deffn {Функция} dkummer_u (@var{a}, @var{b}, @var{x})
+Производная @code{kummer_u(@var{a}, @var{b}, @var{x})} по @var{x}.
+@end deffn
+
+
+
+@node Возможные улучшения пакета contrib_ode, Тесты пакета contrib_ode, Функции и переменные пакета contrib_ode, Пакет contrib_ode
+@section Возможные улучшения пакета contrib_ode 
+
+
+Данные процедуры находятся в процессе разработки.  Необходимо:
+
+@itemize @bullet
+
+@item
+Расширить метод факторизации @code{ode1_factor} для работы с множественными корнями.
+
+@item
+Расширить метод факторизации @code{ode1_factor} для решения с множителями 
+высокого порядка.  В настоящий момент метод пытается решить только линейные множители.
+
+@item
+Исправить процедуру метода Лагранжа @code{ode1_lagrange} для преимущественного 
+использования вещественных корней по отношению с комплексными.
+
+@item
+Добавить дополнительные методы для уравнений Рикатти.
+
+@item
+Усовершенствовать распознавание уравнений Абеля второго рода.  
+Существующее сопоставление с образцом слабо.
+
+@item
+Работать над процедурой, использующей симметрии групп Ли @code{ode1_lie}.  
+С этой процедурой имеется довольно много проблем:
+некоторые части не реализованы, некоторые тесты зацикливаются,
+некотрые тесты завершаются ошибкой, другие тесты дают слишком сложные
+"решения".  Данная процедура еще не готова для практического 
+использования.
+
+@item
+Добавить больше тестов.
+
+@end itemize
+
+@node Тесты пакета contrib_ode, Ссылки для пакета contrib_ode, Возможные улучшения пакета contrib_ode, Пакет contrib_ode
+@section Тесты пакета contrib_ode
+
+
+Процедуры были протестированы на приблизительно одной тысяче примеров из книг
+Murphy, Kamke, Zwillinger и других.  Эти тесты включены в директорию tests.
+
+@itemize @bullet
+@item
+Метод Клеро @code{ode1_clairault} находит все известные решения,
+включая особые решения уравнения Клеро из книг Murphy и Kamke.
+
+@item
+Другие процедуры часто возвращают одно решение, в то время как на самом деле 
+существуют множественные решения.
+
+@item
+Некоторые решения, возвращаемые @code{ode1_lie}, излишне сложны и их невозможно
+проверить.
+
+@item
+В некоторых случаях процедуры завершаются аварийно.
+
+@end itemize
+
+@node Ссылки для пакета contrib_ode, , Тесты пакета contrib_ode, Пакет contrib_ode
+@section Ссылки для пакета contrib_ode
+
+
+@enumerate
+@item
+E. Kamke, Differentialgleichungen Losungsmethoden und Losungen, Vol 1,
+    Geest & Portig, Leipzig, 1961
+
+@item
+G. M. Murphy, Ordinary Differential Equations and Their Solutions,
+    Van Nostrand, New York, 1960
+
+@item
+D. Zwillinger, Handbook of Differential Equations, 3rd edition,
+    Academic Press, 1998
+
+@item
+F. Schwarz, Symmetry Analysis of Abel's Equation, Studies in
+    Applied Mathematics, 100:269-294 (1998)
+
+@item
+F. Schwarz, Algorithmic Solution of Abel's Equation,
+    Computing 61, 39-49 (1998)
+
+@item
+E. S. Cheb-Terrab, A. D. Roche, Symmetries and First Order
+    ODE Patterns, Computer Physics Communications 113 (1998), p 239.
+@ifnottex
+    (@url{http://lie.uwaterloo.ca/papers/ode_vii.pdf})
+@end ifnottex
+@tex
+    (\texttt{http://lie.uwaterloo.ca/\-papers/\-ode\_vii.pdf})
+@end tex
+
+@item
+E. S. Cheb-Terrab, T. Koloknikov,  First Order ODEs,
+    Symmetries and Linear Transformations, European Journal of
+    Applied Mathematics, Vol. 14, No. 2, pp. 231-246 (2003).
+@ifnottex
+    (@url{http://arxiv.org/abs/math-ph/0007023}, 
+    @url{http://lie.uwaterloo.ca/papers/ode_iv.pdf})
+@end ifnottex
+@tex
+    (\texttt{http://\-arxiv.org/\-abs/\-math-ph/\-0007023},
+    \texttt{http://\-lie.uwaterloo.ca/\-papers/\-ode\_iv.pdf})
+@end tex
+
+@item
+G. W. Bluman, S. C. Anco, Symmetry and Integration Methods for
+    Differential Equations, Springer, (2002)
+
+@item 
+M. Bronstein, S. Lafaille,
+Solutions of linear ordinary differential equations in terms
+of special functions,
+Proceedings of ISSAC 2002, Lille, ACM Press, 23-28. 
+(@url{http://www-sop.inria.fr/cafe/Manuel.Bronstein/publications/issac2002.pdf})
+
+@end enumerate
