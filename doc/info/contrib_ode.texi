@@ -16,7 +16,7 @@ elementary linear ODEs of first and second order.  The function
 and non-linear first order ODEs and linear homogeneous second order ODEs.  
 The code is still under development and the calling sequence may change
 in future releases.  Once the code has stabilized it may be
-moved from the contib directory and integrated into Maxima.
+moved from the contrib directory and integrated into Maxima.
 
 This package must be loaded with the command @code{load('contrib_ode)}
 before use.
