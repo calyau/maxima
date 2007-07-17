@@ -63,7 +63,7 @@
 ;; matrix_sign(matrix([a,b],[b,a])) without the divide by 2.
 
 (defun $matrix_sign (m)
-  (let ((n) (det) (sgn) (p-sgn nil) (n-sgn nil))
+  (let ((n) (det) (p-sgn nil) (n-sgn nil))
     ($require_square_matrix m '$first '$matrix_sign)
     (setq m (div (add m ($ctranspose m)) 2)) ;; see (1)
     (setq n ($first ($matrix_size m)))
