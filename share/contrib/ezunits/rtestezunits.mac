@@ -162,6 +162,7 @@ sqrt(2)/2;
 (declare ([C1, C2], constant), 0);
 0;
 
+/* Constants for Planck's law */
 numerval (%C2, 14390.0, %C1, 3.742E+8);
 [%C2, %C1];
 
@@ -179,13 +180,10 @@ done;
 expr: C1/(l^5*(exp(C2/(l*T)) - 1)), infeval=true;
 %C1/(%l^5*(%e^(%C2/(%l*%T))-1)) ` W/(m^2*µm);
 
-/* COMMENT THIS OUT FOR THE MOMENT
- * (IT IS OK BUT TAKES TOO LONG DUE TO FACTORING (exp(n) - 1)
 ev (expr, numer);
 3.742E+8/(%l^5*(%e^(14390.0/(%l*%T))-1)) ` W/(m^2*µm);
- */
 
-/* Now try this (might take a while to plot) --
+/* Now try this -- should yield a skewed bump.
  * first(%), %T=6000;
  * plot2d (%, [%l, 0.05, 3]);
  */
