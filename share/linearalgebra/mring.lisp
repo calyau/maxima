@@ -223,8 +223,8 @@
    :mring-to-maxima #'(lambda (s) s)
    :maxima-to-mring #'(lambda (s) 
 			(setq s ($rectform ($bfloat s)))
-			(if (or (eq s '$%i) (complex-number-p s '$bfloatp)) s
-			  (merror "Unable to convert matrix entry to a big float")))))
+			(if (or (eq s '$%i) (complex-number-p s 'bigfloat-or-number-p) s
+				(merror "Unable to convert matrix entry to a big float"))))))
 
 (setf (get '$bigfloatfield 'ring) *bigfloatfield*)
 
