@@ -121,6 +121,13 @@
 	 (list (caar rp))
 	 (sort (append b1 b2 b3 nil) 'alphalessp)))))
 
+
+;; Someone removed important macros from shared code... "cleaning up", eh?
+
+(defmacro array (name maclisp-type &rest dimlist)
+  `(*array ',name ',maclisp-type ,@dimlist))
+
+
 ;HOW TO USE ARRAY NAME AS PROG VARIABLE?
 
 (defun asort (l p)

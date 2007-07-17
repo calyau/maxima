@@ -733,6 +733,7 @@ ct_coordsys(coordinate_system, [extra_args]):=
   else if coordinate_system='standard then
   (
     dim:4,
+    remove([a,d],constant),
     depends([a,d],x),
     ct_coords:[x,y,z,t],
     if cframe_flag then error("No frames implementation")
@@ -1341,6 +1342,7 @@ weyl(dis):=block
 cgeodesic(dis):=block
 (
   [s,lgeod],
+  map(lambda([u],apply('remove,[u,constant])),ct_coords),
   depends(ct_coords,s),
   for i thru dim do
     lgeod[i]:if diagmetric then
