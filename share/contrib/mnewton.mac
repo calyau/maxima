@@ -109,7 +109,7 @@ mnewton(FuncList, VarList, GuessList):=
       if field = 'complexfield then
         GuessList: float (GuessList)
       else
-        GueddList: bfloat(GueddList),
+        GuessList: bfloat(GuessList),
 
       if newtondebug
          then print ("DEBUG: Increments:", Increments, "GuessList:", GuessList),
