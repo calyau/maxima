@@ -178,7 +178,7 @@
 ;; returns next non-white non #\> char (or -1?)
 (DEFUN next-char ()
 (DO (c) (NIL)      ; Gobble whitespace
-    (IF (IMEMBER (setq c (TYI *in* -1))
+    (IF (MEMBER (setq c (TYI *in* -1))
            '(#\> #\TAB #\SPACE #\Linefeed #\return #\Page))
         nil
         (RETURN c)
@@ -214,7 +214,7 @@
   (DO ((C (TYI *in* -1) (TYI *in* -1))
        (L () (CONS C L)))
       ( (or (equal c -1) (and endc (char= C endc))
-           (imember c '(#\< #\> #\TAB #\SPACE #\Linefeed #\return #\Page))
+           (member c '(#\< #\> #\TAB #\SPACE #\Linefeed #\return #\Page))
         )
         (NREVERSE (OR L (NCONS (TYI *in* -1))))
       ) ; Read at least one char ...
