@@ -76,7 +76,7 @@
   (let ((w (sratsimp (sp1 e))))
     (when $verbose
       (terpri)
-      (mtell "In the first simplification we have returned:")
+      (mtell "In the first simplification we have returned:~%")
       (show-exp w))
     w))
 
@@ -124,7 +124,7 @@
     (sratexpnd nn* dn*)))
 
 (defun sratexpnd (n d)
-    (let ((ans (list nil))
+  (let ((ans (list nil))
         (splist)
         (linpat
          '((mtimes) ((coefftt) (cc not-zero-free var))
@@ -138,10 +138,10 @@
              (m* n (sratexpnd 1 d)))
             ((free d var)
              (cond ((poly? n var)
-                  (m// n d))
-                 ((m1 n linpat)
-                  (m* (srbinexpnd (cdr ans)) (div* 1 d)))
-                 ((throw 'psex nil))))
+		    (m// n d))
+		   ((m1 n linpat)
+		    (m* (srbinexpnd (cdr ans)) (div* 1 d)))
+		   ((throw 'psex nil))))
             ((smonop d var)
              (cond ((mplusp n)
                   (m+l (mapcar #'(lambda (q) (div* q d)) (cdr n))))
@@ -161,10 +161,8 @@
                               (ratdisrep ($rat (factor d) var))))
                      (m1 d linpat)))
 
-             ;; fix for powerseries(1/sqrt(1+x),x,) bug--------------
-             (cond ((not (integerp (cdr (assoc 'n ans :test #'eq))))
-                  (setf (cdadr ans) (mul -1 (cdadr ans)))))
-             ;; end of bug fix---------------------------------------
+             ;; negate exponent because pattern matched denominator
+	     (setf (cdadr ans) (mul -1 (cdadr ans)))
 
              (m// (srbinexpnd (cdr ans)) (cdr (assoc 'cc (cdr ans) :test #'eq))))
             (t
@@ -316,7 +314,8 @@
 	(a (cdr (assoc 'a ans :test #'eq)))
 	(m (cdr (assoc 'm ans :test #'eq)))
 	(c (cdr (assoc 'c ans :test #'eq))))
-    (cond ((integerp n) (srintegexpd n a m c))
+    (cond ((and (integerp n) (minusp n))
+	   (srintegexpd (neg n) a m c))
 	  (t (list '(%sum)
 		   (m// (m* (m^ (m* c var) (m* m *index))
 			    (m^ a (m- n *index)))
@@ -329,7 +328,7 @@
 
 (defun srintegexpd (n a m c)
   (and $verbose
-       (prog2 (mtell "Using a special rule for expressions of form ")
+       (prog2 (mtell "Using a special rule for expressions of form~%")
 	   (show-exp '((mexpt) ((mplus) $a ((mtimes) $c ((mexpt) $var $m)))
 		       ((mminus) $n)))
 	 (mtell "Here we have")
