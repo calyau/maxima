@@ -46,14 +46,27 @@ newtonepsilon:10.0^(-fpprec/2)$
 newtonmaxiter:50$
 newtondebug:false$
 
+solve_by_lu(eqs, vars, field) := block(
+    [M, b, n : length(vars), sol],
+    M : augcoefmatrix(eqs, vars),
+    b : -col(M, n+1),
+    M : submatrix(M, n+1),
+    sol : linsolve_by_lu(M, b, field),
+    map("=", vars, first(args(transpose(sol[1]))))
+)$
+
 mnewton(FuncList, VarList, GuessList):=
   block([nfunc, Solutions, Increments, solved:false, h, DF,
-         i, j, k, keepfloat:true, ratprint:false],
+         i, j, k, keepfloat:true, ratprint:false, field : 'complexfield, float2bf : true],
     local(h),
+    
+    FuncList : map(lambda([u], lhs(u)-rhs(u)), FuncList),
 
+    /* Decide which field to use */
+    if bfloatp(newtonepsilon) then field : 'bigfloatfield,
+    
     /* Depuration of the function arguments */
    
-    GuessList:float(GuessList),
     nfunc:length(FuncList),
     if length(VarList) # nfunc then (
       print("mnewton: incorrect number of variable names (", nfunc,
@@ -73,7 +86,11 @@ mnewton(FuncList, VarList, GuessList):=
       for j:1 thru nfunc do
         DF[i][j] : diff (FuncList[i], VarList[j]),  /* Jacobian matrix */
 
-    GuessList: float (GuessList),
+    if field = 'complexfield then
+      GuessList: float (GuessList)
+    else
+      GuessList: bfloat(GuessList),
+      
     if newtondebug
        then print ("DEBUG: initial GuessList:", GuessList),
 
@@ -86,10 +103,14 @@ mnewton(FuncList, VarList, GuessList):=
       block
         ([DFx: subst (Solutions, DF),
         Fx: subst (Solutions, FuncList)],
-        Increments: linsolve (transpose (DFx . h + Fx)[1], h)),
+        Increments: solve_by_lu (transpose (DFx . h + Fx)[1], h, field)),
 
       GuessList:GuessList + map ('rhs, Increments),
-      GuessList: float (GuessList),
+      if field = 'complexfield then
+        GuessList: float (GuessList)
+      else
+        GueddList: bfloat(GueddList),
+
       if newtondebug
          then print ("DEBUG: Increments:", Increments, "GuessList:", GuessList),
 
