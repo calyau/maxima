@@ -184,6 +184,10 @@ sum (B(k), k, 0, n-1), simpsum;
 (kill (f), 'sum(1+f(k),k,1,2)), simpsum;
 2 + f(1) + f(2);
 
+is(equal((gcd:subres, ratsimp((-x^3+1)/(2*x^5+2) + (-sqrt(5)+5)/(20*x^2+(-10*sqrt(5)-10)*x+20))),
+         (gcd:spmod,  ratsimp((-x^3+1)/(2*x^5+2) + (-sqrt(5)+5)/(20*x^2+(-10*sqrt(5)-10)*x+20)))));
+true;
+
 /* General tests from here on */
 
 sum (x, x, p, p + 2);

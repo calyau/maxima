@@ -229,11 +229,11 @@
 	(t (setq q (pgcdcofacts (cdr x) (cdr y)))
 	   (setq n (pplus (ptimes (car x)(caddr q))
 			  (ptimes (car y)(cadr q))))
-	   (cond ((pzerop n) (rzero))
-		 ((eqn 1 (car q)) (cons n (ptimes (cdr x) (cdr y))))
-		 (t (setq n (ratreduce n (car q)))
-		    (cons (car n) (ptimes (cdr n)
-					  (ptimes (cadr q) (caddr q)))))))))
+	   (if (cadddr q)		; denom factor from algebraic gcd
+	       (setq n (ptimes n (cadddr q))))
+	   (ratreduce n 
+		      (ptimes (car q)
+			      (ptimes (cadr q) (caddr q)))))))
 
 (defmfun ratquotient (x y)
   (rattimes x (ratinvert y) t)) 

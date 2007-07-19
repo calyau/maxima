@@ -61,6 +61,9 @@
   (list (ptimes (car x) (ptimes (cadr x) (caddr x)))
 	(caddr x) (cadr x)))
 
+; returns list (gcd xx yy alg)
+; where x * y = gcd^2 * xx * yy / alg^2
+; and alg is non-nil only when $algebraic is true
 (defun pgcdcofacts (x y)
   (let ((a (pgcda x y t)))
     (cond ((cdr a) a)
