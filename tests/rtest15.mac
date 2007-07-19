@@ -759,3 +759,16 @@ integrate(1/(sin(x)^2+1),x,1,1+%pi);
 integrate(1/(sin(x)^2+1),x,1,1+4*%pi);
 2*sqrt(2)*%pi;
 
+/*
+ * Bug [ 1690374 ] asin(1 / sqrt(2))
+ *
+ * We return %pi/4 now.
+ */
+asin(1/sqrt(2)),%piargs;
+%pi/4;
+asin(-1/sqrt(2)),%piargs;
+-%pi/4;
+acos(1/sqrt(2)),%piargs;
+%pi/4;
+acos(-1/sqrt(2)),%piargs;
+3*%pi/4;
