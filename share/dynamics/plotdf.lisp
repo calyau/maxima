@@ -22,7 +22,7 @@
 ;; See plotdf.usg (which should come together with this program) for
 ;; a usage summary
 ;;
-;; $Id: plotdf.lisp,v 1.2 2007-04-04 01:07:42 villate Exp $
+;; $Id: plotdf.lisp,v 1.3 2007-07-19 08:14:40 villate Exp $
 
 (in-package :maxima)
 
@@ -76,19 +76,26 @@
   (let (cmd (opts " ") (s1 '$x) (s2 '$y))
     (unless ($listp ode) (setf ode `((mlist) ,ode)))
     ;; parse arguments and prepare string cmd with the equation(s)
-    (if (and (listp (first options)) (= (length (first options)) 3)
-        (symbolp (second (first options))) (symbolp (third (first options))))
-      (progn
-        (setf s1 (second (first options)))
-        (setf s2 (third (first options)))
-        (defun subxy (expr)
-          (if (listp expr)
-              (mapcar #'subxy expr)
-            (cond ((eq expr s1) '$x) ((eq expr s2) '$y) (t expr))))
-        (setf ode (mapcar #'subxy ode))
-        (setf options (cdr options))))
-    (if (delete '$y (delete '$x (rest (mfuncall '$listofvars ode))))
-        (merror "The equation(s) can depend only on 2 variable which must be specified!"))
+    (unless
+	(member (second (first options))
+		'($xradius $yradius $xcenter $ycenter $tinitial $tstep
+			   $width $height $nsteps $versus_t $xfun $parameters
+			   $sliders))
+      (if (and (listp (first options)) (= (length (first options)) 3)
+	       (symbolp (second (first options)))
+	       (symbolp (third (first options))))
+	  (progn
+	    (setf s1 (second (first options)))
+	    (setf s2 (third (first options)))
+	    (defun subxy (expr)
+	      (if (listp expr)
+		  (mapcar #'subxy expr)
+		(cond ((eq expr s1) '$x) ((eq expr s2) '$y) (t expr))))
+	    (setf ode (mapcar #'subxy ode))
+	    (setf options (cdr options)))))
+;; the next two lines should take into account parameters given in the options
+;;    (if (delete '$y (delete '$x (rest (mfuncall '$listofvars ode))))
+;;        (merror "The equation(s) can depend only on 2 variable which must be specified!"))
     (case (length ode)
           (3 (setq cmd (concatenate 'string " -dxdt \""
                                     (expr_to_str (second ode)) "\" -dydt \""
