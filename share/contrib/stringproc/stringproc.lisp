@@ -37,6 +37,21 @@
 
 (defun $openr (file) (open (l-string file)))
 
+(defun $make_string_input_stream (s &optional (start 0) (end nil))
+  (if (not (or (stringp s) (mstringp s)))
+    (merror "make_string_input_stream: argument must be a string."))
+  (make-string-input-stream (l-string s) start end))
+
+(defun $make_string_output_stream ()
+  (make-string-output-stream))
+
+;; Ignore :element-type keyword. 
+;; So we get the default here, namely :element-type character.
+(defun $get_output_stream_string (s)
+  (if (not (streamp s))
+    (merror "get_output_stream_string: argument must be a stream."))
+  (m-string (get-output-stream-string s)))
+
 (defun $close (stream) (close stream))
 
 (defun $flength (stream) (file-length stream))
