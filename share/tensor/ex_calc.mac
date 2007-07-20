@@ -84,6 +84,40 @@ igeowedge_flag:false;
   )
 );
 
+contind(t):=if mapatom(t) then []
+	else if ?rpobj(t) then conti(t)
+	else if op(t)="+" then
+	(
+		indices(t),
+		contind(part(t,1))
+	)
+	else if op(t)="//" then append(contind(part(t,1)),covind(part(t,2)))
+	else if op(t)="*" then
+	block
+	(
+		[l:[]],
+		map(lambda([x],l:append(l,contind(x))),args(t)),
+		l	
+	)
+	else error("Cannot determine list of contravariant indices.");
+
+covind(t):=if mapatom(t) then []
+	else if ?rpobj(t) then append(covi(t),deri(t))
+	else if op(t)="+" then
+	(
+		indices(t),
+		covind(part(t,1))
+	)
+	else if op(t)="//" then append(covind(part(t,1)),contind(part(t,2)))
+	else if op(t)="*" then
+	block
+	(
+		[l:[]],
+		map(lambda([x],l:append(l,covind(x))),args(t)),
+		l	
+	)
+	else error("Cannot determine list of covariant indices.");
+
 extdiff(forma,[optind]):=if not mapatom(forma) and op(forma)=extdiff then 0
 /* A misguided attempt to check for valid forms... DO NOT UNCOMMENT
  *      else if (?rpobj)(forma)#false and length(conti(forma))>0
@@ -106,8 +140,10 @@ extdiff(forma,[optind]):=if not mapatom(forma) and op(forma)=extdiff then 0
  */
         else block
 (
-  [l11,l1s,lk1,lk2,indd,res,l1:first(indices(forma)),div,
-   ind:if length(optind)>0 then optind[1] else idummy()],
+  [l11,l1s,lk1,lk2,indd,res,
+/* l1:listify(intersect(setify(covi(forma)),setify(first(indices(forma))))),*/
+   l1:listify(intersect(setify(covind(forma)),setify(first(indices(forma))))),
+   div,ind:if length(optind)>0 then optind[1] else idummy()],
   if l1=[] then return(idiff(forma,ind))
   else
   (
