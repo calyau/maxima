@@ -4,6 +4,6 @@
   (combine-path (list *maxima-sharedir* "affine")))
 (load (combine-path
        (list *maxima-affinedir* "affine.system")))
-(mk:load-system "affine")
+(mk:compile-system "affine")
 
 ;;; affine.lisp ends here
