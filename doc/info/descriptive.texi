@@ -9,7 +9,7 @@
 @node Introduction to descriptive, Functions and Variables for data manipulation, descriptive, descriptive
 @section Introduction to descriptive
 
-Package @code{descriptive} contains a set of functions for making descriptive statistical computations and graphing. Together with the source code there are three data sets in your Maxima tree: @code{pidigits.data}, @code{wind.data} and @code{biomed.data}. They can be also downloaded from the web site @code{www.biomates.net}.
+Package @code{descriptive} contains a set of functions for making descriptive statistical computations and graphing. Together with the source code there are three data sets in your Maxima tree: @code{pidigits.data}, @code{wind.data} and @code{biomed.data}. They can be also downloaded from the web site @url{http://www.biomates.net}.
 
 Any statistics manual can be used as a reference to the functions in package @code{descriptive}.
 
@@ -228,7 +228,7 @@ The first list gives the sample values and the second their absolute frequencies
 
 
 @deffn {Function} subsample (@var{data_matrix}, @var{logical_expression})
-@deffnx {Function} subsample (@var{data_matrix}, @var{logical_expression}, @var{col_num}, @var{col_num}, ...)
+@deffnx {Function} subsample (@var{data_matrix}, @var{logical_expression}, @var{col_num1}, @var{col_num2}, ...)
 This is a sort of variation of the Maxima @code{submatrix} function. The first argument is the name of the data matrix, the second is a quoted logical expression and optional additional arguments are the numbers of the columns to be taken. Its behaviour is better understood with examples,
 
 @c ===beg===
@@ -834,7 +834,7 @@ Example:
 
 @deffn {Function} quantile (@var{list}, @var{p})
 @deffnx {Function} quantile (@var{matrix}, @var{p})
-This is the @var{p}-@code{quantile}, with @var{p} a number in @math{[0, 1]}, of the sample @var{list}.
+This is the @var{p}-quantile, with @var{p} a number in @math{[0, 1]}, of the sample @var{list}.
 Although there are several definitions for the sample quantile (Hyndman, R. J., Fan, Y. (1996) @var{Sample quantiles in statistical packages}. American Statistician, 50, 361-365), the one based on linear interpolation is implemented in package @code{descriptive}.
 
 Example:
@@ -890,7 +890,7 @@ Example:
 (%o6)         [10.06, 9.855, 10.73, 15.48, 14.105]
 @end example
 
-The median is the 1/2-@code{quantile}.
+The median is the 1/2-quantile.
 
 See also function @code{quantile}.
 @end deffn
@@ -1796,7 +1796,7 @@ Funtion @code{dataplot} permits direct visualization of sample data, both univar
 
 @end itemize
 
-For example, with the following input a simple plot of the first twenty digits of @code{%pi} is requested and the output stored in an eps file.
+For example, with the following input a simple plot of the first twenty digits of @code{%pi} is requested.
 
 @c ===beg===
 @c load (descriptive)$
