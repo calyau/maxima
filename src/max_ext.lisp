@@ -102,6 +102,9 @@
        $opena
        $openr
        $openw
+       $make_string_input_stream
+       $make_string_output_stream
+       $get_output_stream_string
        $printf
        $readline
        $alphacharp
