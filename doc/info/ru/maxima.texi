@@ -41,7 +41,7 @@ END-INFO-DIR-ENTRY
 @end macro
 @end ifinfo
 
-@include category-macros.texi
+@include ../category-macros.texi
 
 @titlepage
 @sp 10
@@ -149,8 +149,8 @@ DOE Macsyma.  Копия DOE Macsyma поддерживалась профессором Вильямом
 * Пакет augmented_lagrangian::    Пакет augmented_lagrangian.
 * Пакет bode::                    Амплитудные и фазовые диаграммы Боде.
 * Пакет contrib_ode::             Дополнительные процедуры для решения ОДУ.
-* descriptive::                   Descriptive statistics.
-* diag::                          Jordan matrices.
+* Пакет descriptive::             Описательная статистика.
+* Пакет diag::                    Жордановы матрицы.
 * distrib::                       Probability distributions.
 * draw::                          A Maxima-Gnuplot interface.
 * dynamics::                      Graphics for dynamical systems and fractals.
@@ -412,17 +412,17 @@ Rules and Patterns
 * Тесты пакета contrib_ode::
 * Ссылки для пакета contrib_ode::
 
-descriptive
+Пакет descriptive
 
-* Introduction to descriptive::
-* Definitions for data manipulation::
-* Definitions for descriptive statistics::
-* Definitions for specific multivariate descriptive statistics::
-* Definitions for statistical graphs::
+* Введение в пакет descriptive::
+* Функции и переменные для манипулирования данными::
+* Функции и переменные для описательной статистики::
+* Функции и переменные для многомерной описательной статистики::
+* Функции и переменные для статистических графиков::
 
-diag
+Пакет diag
 
-* Definitions for diag::
+* Функции и переменные пакета diag::
 
 distrib
 
