@@ -98,8 +98,8 @@
 		       (- (/ (cl:expt (coerce pi 'double-float) 2) 6))))
 		   ((< x 1)
 		    (slatec:dspenc x))
-	   ((= x 1)
-	    (/ (cl:expt (coerce pi 'double-float) 2) 6))
+		   ((= x 1)
+		    (/ (cl:expt (coerce pi 'double-float) 2) 6))
 		   (t
 		    ;; li[2](x) = -li[2](1/x)-log(-x)^2/2-%pi^2/6
 		    (- (+ (li2 (/ x))
