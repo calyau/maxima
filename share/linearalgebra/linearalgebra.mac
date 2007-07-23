@@ -291,14 +291,6 @@ hilbert_matrix(n) := (
   require_posinteger(n,"first","hilbert_matrix"),
   funmake('matrix, makelist(makelist(1/(i + j - 1),i,1, n),j, 1, n)));
 
-/* To avoid a "too many arguments" error, use use funmake('matrix, ....) instead of
-   apply('matrix, ...).
-*/
-
-vandermonde_matrix(vars) := block([n],
-  require_list(vars,"first","vandermonde_matrix"),
-  n : length(vars),
-  funmake('matrix, makelist(makelist(if j=0 then 1 else vars[i]^j,j,0,n-1),i,1,n)));
 
 hankel([q]) := block([col,row,m,n,partswitch : false],
   if length(q) > 2 or length(q) < 1 then error("The function 'hankel' requires one or two arguments"),
@@ -324,7 +316,7 @@ toeplitz([q]) := block([col,row,m,n,partswitch : false],
 
 polytocompanion(p,x) := block([n],
   if not polynomialp(p,[x], lambda([e], freeof(x,e))) then 
-     error("First argument to 'polytocompanion' must be a polynomial"),
+     error("First argument to 'polytocompanion' must be a polynomial"), 
   p : expand(p),
   n : hipow(p,x),
   p : multthru(p / coeff(p,x,n)),

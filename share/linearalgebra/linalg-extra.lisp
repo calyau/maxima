@@ -49,6 +49,21 @@
 	($genmatrix `((lambda) ((mlist) i j) ($diff (nth i ,e) (nth j ,vars))) m n))
     `(($jacobian) ,e ,vars)))
 
+(defun $vandermonde_matrix (l)
+  (let ((x) (row) (acc))
+    (setq l (require-list l "$vandermonde_matrix"))
+    (dolist (li l)
+      (setq x 1 row nil)
+      (dolist (lk l)
+	(push x row)
+	(setq x (mul x li)))
+      (setq row (nreverse row))
+      (push '(mlist) row)
+      (push row acc))
+    (setq acc (nreverse acc))
+    (push '($matrix) acc)
+    acc))
+
 ;; Use Sylvester's criterion to decide if the self-adjoint part of a matrix is 
 ;; negative definite (neg) or positive definite (pos). By the self-adjoint part 
 ;; of a matrix M, I mean (M + M^*) / 2, where ^* is the conjugate transpose. For
