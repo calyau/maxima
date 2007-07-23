@@ -453,19 +453,28 @@
 (defmspec $with_stdout (arg)
   (declare (special $file_output_append))
   (setq arg (cdr arg))
-  (let*
-    ((fname (namestring (maxima-string (meval (car arg)))))
-     (filespec
-       (if (or (eq $file_output_append '$true)
-	       (eq $file_output_append t))
-	 `(*standard-output* ,fname :direction :output :if-exists :append :if-does-not-exist :create)
-	 `(*standard-output* ,fname :direction :output :if-exists :supersede :if-does-not-exist :create))))
-    (eval
-      `(with-open-file ,filespec
-	 (let ((body ',(cdr arg)) res)
-	   (dolist (v body)
-	     (setq res (meval* v)))
-	   res)))))
+  (let ((output (meval (car arg))))
+    (if (streamp output)
+      (let
+        ((*standard-output* output)
+         (body (cdr arg))
+         result)
+        (dolist (v body)
+          (setq result (meval* v)))
+        result)
+      (let*
+        ((fname (namestring (maxima-string output)))
+         (filespec
+           (if (or (eq $file_output_append '$true)
+                   (eq $file_output_append t))
+             `(*standard-output* ,fname :direction :output :if-exists :append :if-does-not-exist :create)
+             `(*standard-output* ,fname :direction :output :if-exists :supersede :if-does-not-exist :create))))
+        (eval
+          `(with-open-file ,filespec
+             (let ((body ',(cdr arg)) result)
+               (dolist (v body)
+                 (setq result (meval* v)))
+               result)))))))
 
 (defun $sconcat (&rest x)
   (let ((ans "") )
