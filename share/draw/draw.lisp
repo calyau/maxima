@@ -15,7 +15,7 @@
 ;;;  GNU General Public License for more details at
 ;;;  http://www.gnu.org/copyleft/gpl.html
 
-;;; This is a maxima-gnuplot interface.
+;;; This is a maxima-gnuplot interface. Loads the picture package.
 
 ;;; Visit
 ;;; http://www.telefonica.net/web2/biomates/maxima/gpdraw
@@ -32,10 +32,7 @@
 
 
 
-
-
-
-(defvar $draw_pipes (not (string= *autoconf-win32* "true")))
+(defvar *windows-OS* (string= *autoconf-win32* "true"))
 
 
 (defvar $draw_command (if (string= *autoconf-win32* "true")
@@ -79,7 +76,7 @@
       (gethash '$ip_grid *gr-options*) '((mlist simp) 50 50)
       (gethash '$ip_grid_in *gr-options*) '((mlist simp) 5 5)
 
-      ; 2d-axis
+      ; axis
       (gethash '$axis_bottom *gr-options*) t
       (gethash '$axis_left *gr-options*)   t
       (gethash '$axis_top *gr-options*)    t
@@ -364,11 +361,11 @@
 
 
 
-
 ;; Object: 'points'
 ;; Usage:
 ;;     points([[x1,y1], [x2,y2], [x3,y3],...])
 ;;     points([x1,x2,x3,...], [y1,y2,y3,...])
+;;     points([y1,y2,y3,...]), abscissas are automatically chosen: 1,2,3,...
 ;; Options:
 ;;     point_size
 ;;     point_type
@@ -380,10 +377,16 @@
 (defun points (arg1 &optional (arg2 nil))
    (let (x y xmin xmax ymin ymax pts)
       (cond ((and ($listp arg1)
+                  (null arg2)
                   (every #'$listp (rest arg1)))     ; xy format
                (let ((tmp (mapcar #'rest (rest arg1))))
                   (setf x (map 'list #'convert-to-float (map 'list #'first tmp))
                         y (map 'list #'convert-to-float (map 'list #'second tmp)) ) ) )
+            ((and ($listp arg1)
+                  (null arg2)
+                  (notany #'$listp (rest arg1)))   ; y format
+               (setf x (loop for xx from 1 to (length (rest arg1)) collect (convert-to-float xx))
+                     y (map 'list #'convert-to-float (rest arg1))))
             ((and ($listp arg1)
                   ($listp arg2)
                   (= (length arg1) (length arg2)))  ; xx yy format
@@ -414,7 +417,9 @@
                                  (get-option '$point_type)
                                  (get-option '$color)) )
          :groups '((2)) ; numbers are sent to gnuplot in groups of 2
-         :points (list pts) ) ))
+         :points (if (arrayp arg1)
+                     (list arg1) 
+                     (list pts) ) ) ))
 
 
 
@@ -707,26 +712,56 @@
 
 
 
-
 ;; Object: 'label'
-;; Usage:
-;;     label(string,x,y)
+;; Usage in 2d:
+;;     label([string1,x1,y1],[string2,x2,y2],...)
+;; Usage in 3d:
+;;     label([string1,x1,y1,z1],[string2,x2,y2,z2],...)
 ;; Options:
 ;;     label_alignment
 ;;     label_orientation
 ;;     color
-(defun label (str x y)
-   (let ((fx (convert-to-float x))
-         (fy (convert-to-float y))
-         (text (coerce (mstring str) 'string)))
-      (if (or (not (floatp fx)) 
-              (not (floatp fy)))
-         (merror "draw (label): non real coordinates"))
-      (update-ranges fx fx fy fy)
-      (make-gr-object
-         :name 'label
-         :command (format nil "set label ~a at ~a, ~a ~a ~a tc rgb '~a'~%"
-                              text fx fy
+(defun label (&rest lab)
+  (let ((n (length lab))
+        (result nil)
+        is2d)
+    (cond ((= n 0)
+            (merror "draw (label): no arguments in object labels"))
+          ((every #'$listp lab)
+            (cond ((every #'(lambda (z) (= 3 ($length z))) lab)   ; labels in 2d
+                    (setf is2d t))
+                  ((every #'(lambda (z) (= 4 ($length z))) lab)   ; labels in 3d
+                    (setf is2d nil))
+                  (t
+                    (merror "draw (label): arguments of not equal length")))
+            (cond (is2d
+                    (let (fx fy text)
+                      (dolist (k lab)
+                        (setf fx   (convert-to-float ($second k))
+                              fy   (convert-to-float ($third k))
+                              text (coerce (mstring ($first k)) 'string))
+                        (if (or (not (floatp fx)) 
+                                (not (floatp fy)))
+                            (merror "draw (label): non real 2d coordinates"))
+                        (update-ranges fx fx fy fy)
+                        (setf result (append (list fx fy text) result)))))
+                  (t ; labels in 3d
+                    (let (fx fy fz text)
+                      (dolist (k lab)
+                        (setf fx   (convert-to-float ($second k))
+                              fy   (convert-to-float ($third k))
+                              fz   (convert-to-float ($fourth k))
+                              text (coerce (mstring ($first k)) 'string))
+                        (if (or (not (floatp fx)) 
+                                (not (floatp fy))
+                                (not (floatp fz)))
+                            (merror "draw (label): non real 3d coordinates"))
+                        (update-ranges fx fx fy fy fz fz)
+                        (setf result (append (list fx fy fz text) result)))))) )
+          (t (merror "draw (label): illegal arguments")))
+    (make-gr-object
+       :name 'label
+       :command (format nil " t '' w labels ~a ~a tc rgb '~a'"
                               (case (get-option '$label_alignment)
                                  ($center "center")
                                  ($left   "left")
@@ -734,47 +769,11 @@
                               (case (get-option '$label_orientation)
                                  ($horizontal "norotate")
                                  ($vertical  "rotate"))
-                              (get-option '$color))
-         :groups nil
-         :points nil)  ))
+                              (get-option '$color) )
+       :groups (if is2d '((3 0)) '((4)))
+       :points (list (make-array (length result) :initial-contents result))) ))
 
 
-
-
-
-
-
-;; Object: 'label3d'
-;; Usage:
-;;     label(string,x,y,z)
-;; Options:
-;;     label_alignment
-;;     label_orientation
-;;     color
-(defun label3d (str x y z)
-   (let ((fx (convert-to-float x))
-         (fy (convert-to-float y))
-         (fz (convert-to-float z))
-         (text (coerce (mstring str) 'string)))
-      (if (or (not (floatp fx)) 
-              (not (floatp fy))
-              (not (floatp fz)))
-         (merror "draw (label): non real coordinates"))
-      (update-ranges fx fx fy fy fz fz)
-      (make-gr-object
-         :name 'label
-         :command (format nil "set label ~a at ~a, ~a, ~a ~a ~a tc rgb '~a'~%"
-                              text fx fy fz
-                              (case (get-option '$label_alignment)
-                                 ($center "center")
-                                 ($left   "left")
-                                 ($right  "right"))
-                              (case (get-option '$label_orientation)
-                                 ($horizontal "norotate")
-                                 ($vertical  "rotate"))
-                              (get-option '$color))
-         :groups nil
-         :points nil)  ))
 
 
 
@@ -1389,11 +1388,13 @@
 
 ;; Object: 'image'
 ;; Usages:
-;;     image(matrix_of_reals,x0,y0,width,height)
+;;     image(matrix_of_numbers,x0,y0,width,height)
 ;;     image(matrix_of_[r,g,b],x0,y0,width,height)
+;;     image(picture_object,x0,y0,width,height)
 ;; Options:
-;;     colorbox (this is global)
-;;     palette  (this is global)
+;;     colorbox
+;;     palette
+(simplify ($load '&picture.lisp))  ; loads picture package
 (defun image (mat x0 y0 width height)
   (let ( (fx0 (convert-to-float x0))
          (fy0 (convert-to-float y0))
@@ -1401,43 +1402,67 @@
          (fheight (convert-to-float height))
          result nrows ncols dx dy n
          )
-    (if (not ($matrixp mat))
-      (merror "draw2d (image): first argument is not a matrix") )
-    (setf nrows (length (cdr mat))
-          ncols (length (cdadr mat)))
-    (setf dx (/ fwidth ncols)
-          dy (/ fheight nrows))
-    (if (not ($listp (cadadr mat)))  ; it's a matrix of reals
-        (setf n 3)   ; 3 numbers to be sent to gnuplot: x,y,value
-        (setf n 5))  ; 5 numbers to be sent: x,y,r,g,b
-    (case n
-      (3 (setf result (make-array (* 3 nrows ncols) :element-type 'double-float))
-         (let ((yi (+ fy0 height (* dy -0.5)))
-               (counter -1)
-                xi)
-            (loop for row on (cdr mat) by #'cdr do
-              (setf xi (+ fx0 (* dx 0.5)))
-              (loop for col on (cdar row) by #'cdr do
-                (setf (aref result (incf counter)) xi
-                      (aref result (incf counter)) yi
-                      (aref result (incf counter)) (convert-to-float (car col)))
-                (setf xi (+ xi dx)))
-              (setf yi (- yi dy)) )))
-      (5 (setf result (make-array (* 5 nrows ncols) :element-type 'double-float))
-         (let ((yi (+ fy0 height (* dy -0.5)))
-               (counter -1)
-                xi colors)
-            (loop for row on (cdr mat) by #'cdr do
-              (setf xi (+ fx0 (* dx 0.5)))
-              (loop for col on (cdar row) by #'cdr do
-                (setf colors (cdar col))
-                (setf (aref result (incf counter)) xi
-                      (aref result (incf counter)) yi
-                      (aref result (incf counter)) (convert-to-float (car colors))
-                      (aref result (incf counter)) (convert-to-float (cadr colors))
-                      (aref result (incf counter)) (convert-to-float (caddr colors)))
-                (setf xi (+ xi dx)))
-              (setf yi (- yi dy)) ))))
+    (cond (($matrixp mat)
+             (setf nrows (length (cdr mat))
+                   ncols (length (cdadr mat)))
+             (setf dx (/ fwidth ncols)
+                   dy (/ fheight nrows))
+             (if (not ($listp (cadadr mat)))  ; it's a matrix of reals
+                 (setf n 3)   ; 3 numbers to be sent to gnuplot: x,y,value
+                 (setf n 5))  ; 5 numbers to be sent: x,y,r,g,b
+             (case n
+               (3 (setf result (make-array (* 3 nrows ncols) :element-type 'double-float))
+                  (let ((yi (+ fy0 height (* dy -0.5)))
+                        (counter -1)
+                         xi)
+                     (loop for row on (cdr mat) by #'cdr do
+                       (setf xi (+ fx0 (* dx 0.5)))
+                       (loop for col on (cdar row) by #'cdr do
+                         (setf (aref result (incf counter)) xi
+                               (aref result (incf counter)) yi
+                               (aref result (incf counter)) (convert-to-float (car col)))
+                         (setf xi (+ xi dx)))
+                       (setf yi (- yi dy)) )))
+               (5 (setf result (make-array (* 5 nrows ncols) :element-type 'double-float))
+                  (let ((yi (+ fy0 height (* dy -0.5)))
+                        (counter -1)
+                         xi colors)
+                     (loop for row on (cdr mat) by #'cdr do
+                       (setf xi (+ fx0 (* dx 0.5)))
+                       (loop for col on (cdar row) by #'cdr do
+                         (setf colors (cdar col))
+                         (setf (aref result (incf counter)) xi
+                               (aref result (incf counter)) yi
+                               (aref result (incf counter)) (convert-to-float (car colors))
+                               (aref result (incf counter)) (convert-to-float (cadr colors))
+                               (aref result (incf counter)) (convert-to-float (caddr colors)))
+                         (setf xi (+ xi dx)))
+                       (setf yi (- yi dy)) )))))
+          (($picturep mat)
+             (setf nrows (nth 3 mat)   ; picture height
+                   ncols (nth 2 mat))  ; picture width
+             (setf dx (/ fwidth ncols)
+                   dy (/ fheight nrows))
+             (if (equal (nth 1 mat) '$level)  ; gray level picture
+                 (setf n 3)   ; 3 numbers to be sent to gnuplot: x,y,value
+                 (setf n 5))  ; 5 numbers to be sent: x,y,r,g,b
+             (setf result (make-array (* n nrows ncols) :element-type 'double-float))
+             (let ((yi (+ fy0 height (* dy -0.5)))
+                   (count1 -1)
+                   (count2 -1)
+                   xi)
+                (loop for r from 0 below nrows do
+                  (setf xi (+ fx0 (* dx 0.5)))
+                  (loop for c from 0 below ncols do
+                    (setf (aref result (incf count1)) xi)
+                    (setf (aref result (incf count1)) yi)
+                    (loop for q from 3 to n do
+                      (setf (aref result (incf count1))
+                            (convert-to-float (aref (nth 4 mat) (incf count2)))))
+                    (setf xi (+ xi dx)))
+                  (setf yi (- yi dy)))))
+          (t
+             (merror "draw2d (image): Argument not recognized")))
     ; update x-y ranges if necessary
     (update-ranges fx0 (+ fx0 fwidth) fy0 (+ fy0 fheight))
     (make-gr-object
@@ -1449,6 +1474,69 @@
                    (3 '((3 0)))   ; numbers are sent to gnuplot in gropus of 3, no blank lines
                    (5 '((5))  ))  ; numbers in groups of 5
        :points (list result)) ) )
+
+
+
+
+
+
+;; Object: 'geomap'
+;; Usage:
+;;     geomap(integer1, integer2,....), where integers correspond to the
+;;           polygonal segments stored in array 'boundaries_array'; by default,
+;;           this global variable equals array 'world_boundaries' defined in
+;;           package 'worldmap'.
+;; Options:
+;;     line_width
+;;     color
+;;     line_type
+(defvar $boundaries_array nil)
+(defun geomap (&rest nums)
+   (if (null $boundaries_array)
+     (merror "draw2d (geomap): variable boundaries_array not yet defined"))
+   (setf nums (rest ($setify ($flatten (cons '(mlist simp) nums)))))
+   (let (res extr
+         (n (length nums))
+         (nsegments (- (array-dimension $boundaries_array 0) 1))  )
+      (when (some #'(lambda (z) (or (not (integerp z))
+                              (< z 0)
+                              (> z nsegments) ))
+                  nums)
+         (merror "draw (geomap): non integer argument or out of range (0-~M)" nsegments))
+      (setf res 
+            (loop for i on nums by #'cdr do
+              (let* ((xmin 1.75555970201398d+305)
+                     (xmax -1.75555970201398d+305)
+                     (ymin 1.75555970201398d+305)
+                     (ymax -1.75555970201398d+305)
+                     (polyseg (aref $boundaries_array (car i)))
+                     (n (/ (- (length polyseg) 1) 2))
+                     x y)
+                  (loop for i from 0 to n do
+                     (setf x (aref polyseg (* 2 i))
+                           y (aref polyseg (+ (* 2 i) 1)))
+                     (when (< x xmin)
+                           (setf xmin x))
+                     (when (> x xmax)
+                           (setf xmax x))
+                     (when (< y ymin)
+                           (setf ymin y))
+                     (when (> y ymax)
+                           (setf ymax y))  )
+                  (setf extr (make-array 4 :element-type 'double-float
+                                           :initial-contents (list xmin xmax ymin ymax))))
+              (update-ranges (aref extr 0) (aref extr 1) (aref extr 2) (aref extr 3))  ; update ranges
+              collect (aref $boundaries_array (car i))))  ; build list of boundaries
+      (make-gr-object
+         :name 'geomap
+         :command (make-list n 
+                     :initial-element
+                        (format nil " t '' w l lw ~a lt ~a lc rgb '~a'"
+                                (get-option '$line_width)
+                                (get-option '$line_type)
+                                (get-option '$color)))
+         :groups (make-list n :initial-element '(2)) ; numbers are sent to gnuplot in groups of 2
+         :points res )  ) )
 
 
 
@@ -1481,6 +1569,7 @@
                                      ($label       (apply #'label (rest x)))
                                      ($polar       (apply #'polar (rest x)))
                                      ($image       (apply #'image (rest x)))
+                                     ($geomap      (apply #'geomap (rest x)))
                                      (otherwise (merror "Graphical 2d object ~M is not recognized" x)))))))))
       ; save in plotcmd the plot command to be sent to gnuplot
       (setf plotcmd
@@ -1566,7 +1655,7 @@
                                      ($vector             (apply #'vect3d (rest x)))
                                      ($parametric         (apply #'parametric3d (rest x)))
                                      ($parametric_surface (apply #'parametric_surface (rest x)))
-                                     ($label              (apply #'label3d (rest x)))
+                                     ($label              (apply #'label (rest x)))
                                      (otherwise (merror "Graphical 3d object ~M is not recognized" x)))))))))
       ; save in plotcmd the plot command to be sent to gnuplot
       (setf plotcmd
@@ -1674,10 +1763,13 @@
   (ini-global-options)
   (let ((scenes nil)
         (counter 0)
-        (scenes-list '((mlist simp)))   ; these two variables will be used
-        scene-short-description         ; to build the output of function draw
-        pltcmd   ; the entire plot command is stored here
-        dest datastorage dataplace is1stobj biglist grouplist ncols nrows width height)
+        (scenes-list '((mlist simp)))  ; these two variables will be used
+        scene-short-description        ; to build the text output
+        cmdstorage  ; file maxout.gnuplot
+        datastorage ; file data.gnuplot
+        datapath    ; path to data.gnuplot
+        ncols nrows width height ; multiplot parameters
+        is1stobj biglist grouplist)
     (dolist (x args)
       (cond ((equal ($op x) '&=)
               (case ($lhs x)
@@ -1696,203 +1788,177 @@
             (t
               (merror "draw: item ~M is not recognized" x)))   )
 
-    (cond ((null $draw_pipes)   ; no pipes
-             (setf dest (open (plot-temp-file "maxout.gnuplot")
-                              :direction :output :if-exists :supersede))
-             (setf datastorage dest)
-             (setf dataplace "'-'"))
-          (t ; if pipes, start gnuplot process
-             (setf $gnuplot_command $draw_command)
-             (check-gnuplot-process)
-             ($gnuplot_reset)
-             (setf dest *gnuplot-stream*)
-             (cond ((> (length scenes) 1)   ; multiplot => pipe code + coordinates 
-                      (setf datastorage dest)
-                      (setf dataplace "'-'"))
-                   (t                       ; one plot => pipe code, file coordinates 
-                      (setf datastorage
-                            (open (plot-temp-file "maxout.gnuplot_pipes")
-                            :direction :output :if-exists :supersede))
-                      (setf dataplace 
-                            (format nil "'~a'" (plot-temp-file "maxout.gnuplot_pipes"))))) ))
+    ; we now create two files: maxout.gnuplot and data.gnuplot
+    (setf cmdstorage
+          (open (plot-temp-file "maxout.gnuplot")
+                :direction :output :if-exists :supersede))
+    (setf datastorage
+          (open (plot-temp-file "data.gnuplot")
+                :direction :output :if-exists :supersede))
+    (setf datapath (format nil "'~a'" (plot-temp-file "data.gnuplot")))
 
     ; write global options
     (case (gethash '$terminal *gr-options*)
-      ($png (format dest "set terminal png size ~a, ~a~%set out '~a.png'~%"
+      ($png (format cmdstorage "set terminal png size ~a, ~a~%set out '~a.png'~%"
                            (get-option '$pic_width)
                            (get-option '$pic_height)
                            (get-option '$file_name)) )
-      ($eps (format dest "set terminal postscript eps size ~acm, ~acm~%set out '~a.eps'~%"
+      ($eps (format cmdstorage "set terminal postscript eps size ~acm, ~acm~%set out '~a.eps'~%"
                            (get-option '$eps_width)
                            (get-option '$eps_height)
                            (get-option '$file_name)))
-      ($eps_color (format dest "set terminal postscript eps color size ~acm, ~acm~%set out '~a.eps'~%"
+      ($eps_color (format cmdstorage "set terminal postscript eps color size ~acm, ~acm~%set out '~a.eps'~%"
                            (get-option '$eps_width)
                            (get-option '$eps_height)
                            (get-option '$file_name)))
-      ($jpg (format dest "set terminal jpeg size ~a, ~a~%set out '~a.jpg'~%"
+      ($jpg (format cmdstorage "set terminal jpeg size ~a, ~a~%set out '~a.jpg'~%"
                            (get-option '$pic_width)
                            (get-option '$pic_height)
                            (get-option '$file_name)))  )
-
     ; compute some parameters for multiplot
     (setf ncols (get-option '$columns))
     (setf nrows (ceiling (/ (length scenes) ncols)))
     (setf width (/ 1.0 ncols))
     (setf height (/ 1.0 nrows))
     (if (> (length scenes) 1)
-      (format dest "set size 1.0, 1.0~%set origin 0.0, 0.0~%set multiplot~%"))
-
+      (format cmdstorage "set size 1.0, 1.0~%set origin 0.0, 0.0~%set multiplot~%"))
     ; write descriptions of 2d and 3d scenes
-    (let ((i 0))
+    (let ((i -1))
       (dolist (scn scenes)
         ; write size and origin
-        (format dest "set size ~a, ~a~%" width height)
-        (format dest "set origin ~a, ~a~%" (* width (mod counter ncols))
+        (format cmdstorage "set size ~a, ~a~%" width height)
+        (format cmdstorage "set origin ~a, ~a~%" (* width (mod counter ncols))
                                          (* height (- nrows 1.0 (floor (/ counter ncols)))))
         (setf is1stobj t
               biglist '()
               grouplist '())
-        (format dest "~a" (second scn))
+        (format cmdstorage "~a" (second scn))
         (cond ((= (first scn) 2)    ; it's a 2d scene
                  (setf scene-short-description '(($gr2d simp)))
-                 (setf pltcmd (format nil "plot ")))
+                 (format cmdstorage "plot "))
               ((= (first scn) 3)    ; it's a 3d scene
                  (setf scene-short-description '(($gr3d simp)))
-                 (setf pltcmd (format nil "splot "))))
+                 (format cmdstorage "splot ")))
+        (dolist (obj (third scn))
+           (setf scene-short-description
+                 (cons (gr-object-name obj) scene-short-description))
+           (if is1stobj
+             (setf is1stobj nil)
+             (format cmdstorage ", \\~%")  )
+           (let ((pcom (gr-object-command obj)))
+             (cond
+               ((listp pcom)
+                  (while (consp pcom)
+                    (format cmdstorage "~a~a~a~a"
+                                       datapath
+                                       (format nil " index ~a" (incf i))
+                                       (pop pcom)
+                                       (if (null pcom)
+                                           ""
+                                           "," )) ) )
+               (t (format cmdstorage "~a~a~a"
+                                     datapath
+                                     (format nil " index ~a" (incf i))
+                                     pcom) )))
+           (setf grouplist (append grouplist (gr-object-groups obj)))
+           (setf biglist (append biglist (gr-object-points obj))) )
 
-          (dolist (obj (third scn))
-             (setf scene-short-description
-                   (cons (gr-object-name obj) scene-short-description))
-             (cond ((not (eql (gr-object-name obj) 'label))
-                    (if is1stobj
-                      (setf is1stobj nil)
-                      (setf pltcmd (concatenate 'string pltcmd (format nil ", "))))
-                    (setf pltcmd (concatenate 'string
-                                               pltcmd
-                                               (let ((pcom (gr-object-command obj))
-                                                     (pipe1scene (and $draw_pipes (= (length scenes) 1))))
-                                                 (cond
-                                                    ((listp pcom)
-                                                       (format nil "~a~a~a, ~a~a~a"
-                                                               dataplace
-                                                               (if pipe1scene
-                                                                 (format nil " index ~a" (incf i))
-                                                                 "")
-                                                               (car pcom)
-                                                               dataplace
-                                                               (if pipe1scene
-                                                                 (format nil " index ~a" i)
-                                                                 "")
-                                                               (cadr pcom)))
-                                                    (t (format nil "~a~a~a"
-                                                               dataplace
-                                                               (if pipe1scene
-                                                                 (format nil " index ~a" i)
-                                                                 "")
-                                                               pcom)
-                                                        )))  ))
-                    (incf i)
-                    (setf grouplist (append grouplist (gr-object-groups obj)))
-                    (setf biglist (append biglist (gr-object-points obj))) )
-                 (t ; if it's a label, write directly to dest, since in gnuplot 4.0
-                    ; labels are in the preamble; this should be changed in future versions
-                    (format dest "~a" (gr-object-command obj))))    )
+        ; command file maxout.gnuplot is now ready
+        (format cmdstorage "~%")
 
-        ; don't remove this print statement
-        ; I use it to check the plot command to be sent to gnuplot
-        ;(print pltcmd)
-
-        (if (and $draw_pipes (= (length scenes) 1))
-           (format dest "~%")
-           (format dest "~a~%" pltcmd) )
-
+        ; let's write data in data.gnuplot
         (do ( (blis biglist (cdr blis))
               (glis grouplist (cdr glis) ))
             ((null blis) 'done)
           (let* ((vect (car blis))
                  (k (length vect)))
             (case (caar glis)
-             (2  ; 2d points
+              (2  ; 2d points and geomap coordinates
                  (do ((cont 0 (+ cont 2)))
                    ((= cont k) 'done)
                    (if (and (numberp (aref vect cont)) (numberp (aref vect (1+ cont))))
                        (format datastorage "~a ~a ~%" (aref vect cont) (aref vect (1+ cont)))
                        (format datastorage "~%")))   )
-             (3  ; 3d points, gray image and palette image
+              (3  ; 3d points, gray image and palette image
                 (let ((l 0)
                       (m (cadar glis)))
                    (cond
                      ((= m 0)     ; 3d points without blank lines
                         (do ((cont 0 (+ cont 3)))
                             ((= cont k) 'done)
-                          (format datastorage "~a ~a ~a ~%" (aref vect cont)
-                                                     (aref vect (1+ cont))
-                                                     (aref vect (+ 2 cont)))  )  )
+                          (format datastorage "~a ~a ~a ~%"
+                                              (aref vect cont)
+                                              (aref vect (1+ cont))
+                                              (aref vect (+ 2 cont)))  )  )
                      (t           ; 3d points with blank lines every m lines
                         (do ((cont 0 (+ cont 3)))
                             ((= cont k) 'done)
                           (when (eql l m)
                                 (format datastorage "~%")
                                 (setf l 0) )
-                          (format datastorage "~a ~a ~a ~%" (aref vect cont)
-                                                     (aref vect (1+ cont))
-                                                     (aref vect (+ 2 cont)))
+                          (format datastorage "~a ~a ~a ~%"
+                                              (aref vect cont)
+                                              (aref vect (1+ cont))
+                                              (aref vect (+ 2 cont)))
                           (incf l)  ))))  )
-             (4  ; for 2d vectors (x,y,dx,dy)
+              (4  ; for 2d vectors (x,y,dx,dy)
                  (do ((cont 0 (+ cont 4)))
                      ((= cont k) 'done)
-                   (format datastorage "~a ~a ~a ~a~%" (aref vect cont)
-                                                (aref vect (1+ cont))
-                                                (aref vect (+ 2 cont))
-                                                (aref vect (+ 3 cont))) ) )
-             (5  ; for rgb images
+                   (format datastorage "~a ~a ~a ~a~%"
+                                       (aref vect cont)
+                                       (aref vect (1+ cont))
+                                       (aref vect (+ 2 cont))
+                                       (aref vect (+ 3 cont))) ) )
+              (5  ; for rgb images
                  (do ((cont 0 (+ cont 5)))
                      ((= cont k) 'done)
-                   (format datastorage "~a ~a ~a ~a ~a~%" (aref vect cont)
-                                                   (aref vect (1+ cont))
-                                                   (aref vect (+ 2 cont))
-                                                   (aref vect (+ 3 cont))
-                                                   (aref vect (+ 4 cont)))))
-             (6  ; for 3d vectors (x,y,z,dx,dy,dz)
+                   (format datastorage "~a ~a ~a ~a ~a~%"
+                                       (aref vect cont)
+                                       (aref vect (1+ cont))
+                                       (aref vect (+ 2 cont))
+                                       (aref vect (+ 3 cont))
+                                       (aref vect (+ 4 cont)))))
+              (6  ; for 3d vectors (x,y,z,dx,dy,dz)
                  (do ((cont 0 (+ cont 6)))
                      ((= cont k) 'done)
-                   (format datastorage "~a ~a ~a ~a ~a ~a~%" (aref vect cont)
-                                                (aref vect (1+ cont))
-                                                (aref vect (+ 2 cont))
-                                                (aref vect (+ 3 cont)) 
-                                                (aref vect (+ 4 cont))
-                                                (aref vect (+ 5 cont)) )))   ))
-          (if (and $draw_pipes (= (length scenes) 1))
-            (if (cdr blis) (format datastorage "~%~%"))
-            (format datastorage "e~%")) )
+                   (format datastorage "~a ~a ~a ~a ~a ~a~%"
+                                       (aref vect cont)
+                                       (aref vect (1+ cont))
+                                       (aref vect (+ 2 cont))
+                                       (aref vect (+ 3 cont)) 
+                                       (aref vect (+ 4 cont))
+                                       (aref vect (+ 5 cont)) )))   ))
+          (format datastorage "~%~%") )
 
         (incf counter)
         (setf scenes-list (cons (reverse scene-short-description) scenes-list)) ))  ; end let-dolist scenes
+    (close datastorage)
 
     (cond ((> (length scenes) 1)
-             (format dest "unset multiplot~%"))
-          ; now, if gnuplot is running in interactive mode
-          ; and we want to save the coordinates in a file,
+             (format cmdstorage "unset multiplot~%"))
+          ; if we want to save the coordinates in a file,
           ; print them when hitting the x key after clicking the mouse button
-          ((and (not (string= (gethash '$xy_file *gr-options*) ""))
-                (or (string= *autoconf-win32* "true") $draw_pipes))
-             (format dest "set print \"~a\" append~%bind x \"print MOUSE_X,MOUSE_Y\"~%"
+          ((not (string= (gethash '$xy_file *gr-options*) ""))
+             (format cmdstorage "set print \"~a\" append~%bind x \"print MOUSE_X,MOUSE_Y\"~%"
                           (gethash '$xy_file *gr-options*))) )
+    (close cmdstorage)
+
 
     ; get the plot
-    (cond ((null $draw_pipes)   ; if no pipes, close the file & call gnuplot
-         (close dest)
-         ($system (if (equal (gethash '$terminal *gr-options*) '$screen)
+    (cond
+       (*windows-OS*
+          ($system (if (equal (gethash '$terminal *gr-options*) '$screen)
                           (format nil "~a ~a"
                                       $draw_command
                                       (format nil $gnuplot_view_args (plot-temp-file "maxout.gnuplot")))
-                          (format nil "~a \"~a\"" $draw_command (plot-temp-file "maxout.gnuplot")))) )
-         ((= (length scenes) 1)   ; pipe 1 plot
-            (close datastorage)
-            (send-gnuplot-command pltcmd))
-         (t                       ; pipe multiplot
-            (force-output dest)) )
+                          (format nil "~a \"~a\"" 
+                                      $draw_command
+                                      (plot-temp-file "maxout.gnuplot")))) )
+       (t  ; non windows operating system
+          (setf $gnuplot_command $draw_command)
+          (check-gnuplot-process)
+          ($gnuplot_reset)
+          (send-gnuplot-command (format nil "load '~a'" (plot-temp-file "maxout.gnuplot"))) ))
 
     ; the output is a simplified description of the scene(s)
     (reverse scenes-list)    ) )

@@ -465,6 +465,9 @@ diffequations/phypgm.mac\
 diffequations/pivtr.mac\
 diffequations/pmain.mac\
 draw/draw.lisp\
+draw/picture.lisp\
+draw/worldmap.mac\
+draw/wbd.lisp\
 dynamics/complex_dynamics.lisp\
 dynamics/dynamics.mac\
 dynamics/plotdf.lisp\
