@@ -843,3 +843,16 @@ sum(2*k,k,1,inf);
 (kill (a, i), x : a[i], sum (x, i, 1, 3));
 a[1] + a[2] + a[3];
 
+/* Restore treatment of definite summations as it was before summation
+ * revisions of December 2005: simplify definite summation to explicit
+ * sum only if simpsum is true.
+ */
+
+(kill (f), sum (f(i), i, 1, 3));
+f(1) + f(2) + f(3);
+
+'sum (f(i), i, 1, 3);
+'sum (f(i), i, 1, 3);
+
+'sum (f(i), i, 1, 3), simpsum;
+f(1) + f(2) + f(3);

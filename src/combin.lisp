@@ -898,7 +898,7 @@
   (cond ((member (asksign lo) '($zero $negative) :test #'eq)
 	 (throw 'isumout '$inf)))
   (and (null (equal lo 1))
-       (let ((sign sign))
+       (let ((sign sign) ($simpsum t))
          (adsum `((%sum)
                   ((mtimes) ,a -1 ((mexpt) ,*var* ,n))
                   ,*var* 1 ((mplus) -1 ,lo)))))

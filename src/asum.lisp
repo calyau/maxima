@@ -517,7 +517,7 @@ summation when necessary."
 			
 		(($freeof i ex) (mult n ex))
 			
-		((and (integerp n) (eq sgn '$pos))
+		((and (integerp n) (eq sgn '$pos) $simpsum)
 		 (unwind-protect 
 		      (dotimes (j n acc)
 			(setq acc (add acc (resimplify (subst (add j lo) i ex)))))
