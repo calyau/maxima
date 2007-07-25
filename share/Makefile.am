@@ -277,6 +277,7 @@ contrib/lurkmathml/mathml_ref_list_for_IE\
 contrib/lurkmathml/mathmltest\
 contrib/lurkmathml/maximadiffs.txt\
 contrib/makeOrders.mac\
+contrib/maxima-server.lisp\
 contrib/maximaMathML/CtMathML.lisp\
 contrib/maximaMathML/PrMathML.lisp\
 contrib/maximaMathML/load-mathml.lisp\
