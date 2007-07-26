@@ -1,7 +1,9 @@
-@c version 1.14
+@c version 1.16
 @menu
 * Introducci@'on a draw::
 * Funciones y variables para draw::
+* Funciones y variables para picture::
+* Funciones y variables para worldmap::
 @end menu
 
 
@@ -14,13 +16,13 @@
 
 @code{draw} es un interfaz para comunicar Maxima con Gnuplot.
 
-Hay tres funciones a utilizar a nivel de Maxima: 
+Tres son las funciones principales a utilizar a nivel de Maxima: 
 @code{draw2d}, @code{draw3d} y @code{draw}.
 
 S@'{@dotless{i}}gase este enlace para ver ejemplos m@'as elaborados
 de este paquete:
 
-@url{http://es.geocities.com/riotorto/maxima/gpdraw}
+@url{http://www.telefonica.net/web2/biomates/maxima/gpdraw}
 
 Se necesita tener instalado Gnuplot 4.2 para ejecutar este paquete.
 
@@ -28,7 +30,7 @@ Se necesita tener instalado Gnuplot 4.2 para ejecutar este paquete.
 
 
 
-@node Funciones y variables para draw,  , Introducci@'on a draw, draw
+@node Funciones y variables para draw, Funciones y variables para picture, Introducci@'on a draw, draw
 @section Funciones y variables para draw
 
 
@@ -872,13 +874,13 @@ Ejemplo:
 (%i2) draw2d(xrange = [0,10],
              yrange = [0,10],
              point_size = 3,
-             point_type = 1,
+             point_type = diamant,
              points([[1,1],[5,1],[9,1]]),
-             point_type = 2,
+             point_type = filled_down_triangle,
              points([[1,2],[5,2],[9,2]]),
              point_type = asterisk,
              points([[1,3],[5,3],[9,3]]),
-             point_type = 4,
+             point_type = filled_diamant,
              points([[1,4],[5,4],[9,4]]),
              point_type = 5,
              points([[1,5],[5,5],[9,5]]),
@@ -916,15 +918,15 @@ Ejemplo:
 (%i2) draw2d(xrange        = [0,10],
              yrange        = [0,4],
              point_size    = 3,
-             point_type    = 1,
-             line_type     = 3,
+             point_type    = up_triangle,
+             color         = blue,
              points([[1,1],[5,1],[9,1]]),
              points_joined = true,
-             point_type    = 3,
-             line_type     = 5,
+             point_type    = square,
+             line_type     = dots,
              points([[1,2],[5,2],[9,2]]),
-             point_type    = 5,
-             line_type     = 8,
+             point_type    = circle,
+             color         = red,
              line_width    = 7,
              points([[1,3],[5,3],[9,3]]) )$
 @end example
@@ -1147,11 +1149,11 @@ Ejemplo:
              points_joined   = true,
              points([[5,0],[5,10]]),
              color           = blue,
-             label("Centered alignment (default)",5,2),
+             label(["Centered alignment (default)",5,2]),
              label_alignment = 'left,
-             label("Left alignment",5,5),
+             label(["Left alignment",5,5]),
              label_alignment = 'right,
-             label("Right alignment",5,8))$
+             label(["Right alignment",5,8]))$
 @end example
 
 V@'eanse tambi@'en @code{label_orientation} y @code{color}. 
@@ -1180,10 +1182,10 @@ construir la escena.
              point_size = 0,
              points([[5,5]]),
              color      = navy,
-             label("Horizontal orientation (default)",5,2),
+             label(["Horizontal orientation (default)",5,2]),
              label_orientation = 'vertical,
              color             = "#654321",
-             label("Vertical orientation",1,5))$
+             label(["Vertical orientation",1,5]))$
 @end example
 
 V@'eanse tambi@'en @code{label_alignment} y @code{color}. 
@@ -1235,7 +1237,7 @@ Ejemplo:
              color = "light-blue", /* double quotes if - is used */
              explicit(1.5 + x^2,x,-1,1),
              color = "#23ab0f",
-             label("This is a label",0,1.2)  )$
+             label(["This is a label",0,1.2])  )$
 @end example
 
 V@'ease tambi@'en @code{fill_color}.
@@ -1380,10 +1382,10 @@ Ejemplo:
 
 @example
 (%i1) load(draw)$
-(%i2) draw2d(key = "Sinus",
+(%i2) draw2d(key   = "Sinus",
              explicit(sin(x),x,0,10),
-             key = "Cosinus",
-             line_type = 3,
+             key   = "Cosinus",
+             color = red,
              explicit(cos(x),x,0,10) )$
 @end example
 @end defvr
@@ -1590,50 +1592,150 @@ Esta opci@'on s@'olo es relevante para funciones de tipo @code{implicit}.
 
 
 
-@deffn {Constructor de escena} gr2d (@var{Opci@'on gr@'afica}, ..., @var{graphic object}, ...)
+@deffn {Constructor de escena} gr2d (@var{Opci@'on gr@'afica}, ..., @var{graphic_object}, ...)
 
 La funci@'on @code{gr2d} construye un objeto que describe una escena 2d. Los
 argumentos son @i{opciones gr@'aficas} y @i{objetos gr@'aficos}. Esta escena
 se interpreta secuencialmente: las @i{opciones gr@'aficas} afectan a aquellos
-@i{objetos gr@'aficos} colocados a su derecha.
+@i{objetos gr@'aficos} colocados a su derecha. Algunas @i{opciones gr@'aficas}
+afectan al aspecto global de la escena.
+
+La lista de @i{objetos gr@'aficos} disponibles para escenas en dos
+dimensiones: @code{points}, @code{polygon}, @code{rectangle}, @code{ellipse}, @code{label},
+@code{vector}, @code{explicit}, @code{implicit}, @code{polar}, @code{parametric},
+@code{image} y @code{geomap}.
 
 Para utilizar esta funci@'on, ejec@'utese primero @code{load(draw)}.
 
-Esta es la lista de @i{objetos gr@'aficos} disponibles para escenas en dos
-dimensiones:
+V@'eanse tambi@'en las siguientes opciones gr@'aficas: @code{xrange}, @code{yrange}, 
+@code{logx}, @code{logy}, @code{terminal}, @code{grid}, @code{title}, 
+@code{xlabel}, @code{ylabel}, @code{xtics}, @code{ytics}, @code{xy_file}, 
+@code{file_name}, @code{pic_width}, @code{pic_height}, 
+@code{eps_width}, @code{eps_height},
+@code{user_preamble}, @code{axis_bottom}, @code{axis_left}, @code{axis_top} 
+y @code{axis_right}.
+@end deffn
 
-@itemize @bullet
-@item
-@code{points([[x1,y1], [x2,y2], [x3,y3],...])} o @code{points([x1,x2,x3,...], [y1,y2,y3,...])}:
-dibuja los puntos @code{[x1,y1]}, @code{[x2,y2]}, @code{[x2,y2]}, ....
 
-Este objeto depende de las siguientes @i{opciones gr@'aficas}: @code{point_size}, 
+@deffn {Constructor de escena} gr3d (@var{Opci@'on gr@'afica}, ..., @var{graphic_object}, ...)
+
+La funci@'on @code{gr3d} construye un objeto que describe una escena 3d. Los
+argumentos son @i{opciones gr@'aficas} y @i{objetos gr@'aficos}. Esta escena
+se interpreta secuencialmente: las @i{opciones gr@'aficas} afectan a aquellos
+@i{objetos gr@'aficos} colocados a su derecha. Algunas @i{opciones gr@'aficas}
+afectan al aspecto global de la escena.
+
+La lista de @i{objetos gr@'aficos} disponibles para escenas en tres
+dimensiones: @code{points}, @code{label}, @code{vector}, @code{explicit}, 
+@code{parametric} y @code{parametric_surface}.
+
+
+V@'eanse tambi@'en las siguientes opciones gr@'aficas: @code{xrange}, @code{yrange}, 
+@code{zrange}, @code{logx}, @code{logy}, @code{logz}, @code{terminal}, 
+@code{grid}, @code{title}, @code{xlabel}, @code{ylabel}, @code{zlabel}, 
+@code{xtics}, @code{ytics}, @code{ztics}, @code{xy_file}, 
+@code{user_preamble}, @code{axis_bottom}, @code{axis_left}, 
+@code{axis_top}, @code{file_name}, @code{pic_width}, @code{pic_height}, 
+@code{eps_width}, @code{eps_height},
+@code{axis_right}, @code{rot_vertical}, @code{rot_horizontal}, 
+@code{axis_3d}, @code{xu_grid}, @code{yv_grid}, @code{surface_hide}, 
+@code{contour}, @code{contour_levels}, @code{palette}, @code{colorbox}
+y @code{enhanced3d}.
+
+Para utilizar esta funci@'on, ejec@'utese primero @code{load(draw)}.
+@end deffn
+
+
+
+
+
+
+
+
+@deffn  {Objeto gr@'afico} points ([[@var{x1},@var{y1}], [@var{x2},@var{y2}],...])
+@deffnx {Objeto gr@'afico} points ([@var{x1},@var{x2},...], [@var{y1},@var{y2},...])
+@deffnx {Objeto gr@'afico} points ([@var{y1},@var{y2},...])
+@deffnx {Objeto gr@'afico} points ([[@var{x1},@var{y1},@var{z1}], [@var{x2},@var{y2},@var{z2}],...])
+@deffnx {Objeto gr@'afico} points ([@var{x1},@var{x2},...], [@var{y1},@var{y2},...], [@var{z1},@var{z2},...])
+Dibuja puntos en 2D y 3D.
+
+Este objeto se ve afectado por las siguientes @i{opciones gr@'aficas}: @code{point_size}, 
 @code{point_type}, @code{points_joined}, @code{line_width}, @code{key},
 @code{line_type} y @code{color}.
+
+@b{2D}
+
+@code{points ([[@var{x1},@var{y1}], [@var{x2},@var{y2}],...])} o 
+@code{points ([@var{x1},@var{x2},...], [@var{y1},@var{y2},...])}
+dibuja los puntos @code{[@var{x1},@var{y1}]}, @code{[@var{x2},@var{y2}]}, etc. Si no se dan las abscisas,
+@'estas se asignan autom@'aticamente a enteros positivos consecutivos, de forma que
+@code{points([@var{y1},@var{y2},...])} dibuja los puntos @code{[1,@var{y1}]}, @code{[2,@var{y2}]}, etc.
 
 Ejemplo:
 
 @example
 (%i1) load(draw)$
 (%i2) draw2d(
-        key           = "puntitos",
+        key = "Small points",
         points(makelist([random(20),random(50)],k,1,10)),
-        point_type    = 6,
+        point_type    = circle,
         point_size    = 3,
         points_joined = true,
-        key           = "puntazos",
-        points(makelist(k,k,1,20),
-               makelist(random(30),k,1,20)))$
+        key           = "Great points",
+        points(makelist(k,k,1,20),makelist(random(30),k,1,20)),
+        point_type    = filled_down_triangle,
+        key           = "Automatic abscissas",
+        color         = red,
+        points([2,12,8]))$
 @end example
 
+@b{3D}
+
+@code{points ([[@var{x1},@var{y1},@var{z1}], [@var{x2},@var{y2},@var{z2}],...])} o 
+@code{points ([@var{x1},@var{x2},...], [@var{y1},@var{y2},...], [@var{z1},@var{z2},...])}
+dibuja los puntos @code{[@var{x1},@var{y1},@var{z1}]}, @code{[@var{x2},@var{y2},@var{z2}]}, etc.
+
+Ejemplo:
+
+Una muestra tridimensional,
+@example
+(%i1) load(draw)$
+(%i2) load (numericalio)$
+(%i3) s2 : read_matrix (file_search ("wind.data"))$
+(%i4) draw3d(title = "Daily average wind speeds",
+             point_size = 2,
+             points(args(submatrix (s2, 4, 5))) )$
+@end example
+
+Dos muestras tridimensionales,
+@example
+(%i1) load(draw)$
+(%i2) load (numericalio)$
+(%i3) s2 : read_matrix (file_search ("wind.data"))$
+(%i4) draw3d(
+         title = "Daily average wind speeds. Two data sets",
+         point_size = 2,
+         key        = "Sample from stations 1, 2 and 3",
+         points(args(submatrix (s2, 4, 5))),
+         point_type = 4,
+         key        = "Sample from stations 1, 4 and 5",
+         points(args(submatrix (s2, 2, 3))) )$
+@end example
+@end deffn
 
 
-@item
-@code{polygon([[x1,y1], [x2,y2], [x3,y3],...])} o @code{polygon([x1,x2,x3,...], [y1,y2,y3,...])}:
-dibuja sobre el plano el pol@'{@dotless{i}}gono de v@'ertices @code{[x1,y1]}, @code{[x2,y2]},
-@code{[x2,y2]}, ....
+@deffn  {Objeto gr@'afico} polygon ([[@var{x1},@var{y1}], [@var{x2},@var{y2}],...])
+@deffnx {Objeto gr@'afico} polygon ([@var{x1},@var{x2},...], [@var{y1},@var{y2},...])
+Dibuja pol@'{@dotless{i}}gonos en 2D.
 
-Este objeto depende de las siguientes @i{opciones gr@'aficas}: @code{transparent}, 
+@b{2D}
+
+@code{polygon ([[@var{x1},@var{y1}], [@var{x2},@var{y2}],...])} o 
+@code{polygon ([@var{x1},@var{x2},...], [@var{y1},@var{y2},...])}:
+dibuja en el plano un pol@'{@dotless{i}}gono de v@'ertices 
+@code{[@var{x1},@var{y1}]}, @code{[@var{x2},@var{y2}]}, etc..
+
+Este objeto se ve afectado por las siguientes @i{opciones gr@'aficas}: @code{transparent}, 
 @code{fill_color}, @code{border}, @code{line_width}, @code{key},
  @code{line_type} y @code{color}.
 
@@ -1641,21 +1743,25 @@ Ejemplo:
 
 @example
 (%i1) load(draw)$
-(%i2) draw2d(
-        color      = "#e245f0",
-        line_width = 8,
-        polygon([[3,2],[7,2],[5,5]]),
-        border      = false,
-        fill_color  = yellow,
-        polygon([[5,2],[9,2],[7,5]]) )$
+(%i2) draw2d(color      = "#e245f0",
+             line_width = 8,
+             polygon([[3,2],[7,2],[5,5]]),
+             border      = false,
+             fill_color  = yellow,
+             polygon([[5,2],[9,2],[7,5]]) )$
 @end example
+@end deffn
 
 
-@item
-@code{rectangle([x1,y1], [x2,y2])}:
-dibuja un rect@'angulo con v@'ertices opuestos @code{[x1,y1]} y @code{[x2,y2]}.
+@deffn  {Objeto gr@'afico} rectangle ([@var{x1},@var{y1}], [@var{x2},@var{y2}])
+Dibuja rect@'angulos en 2D.
 
-Este objeto depende de las siguientes @i{opciones gr@'aficas}: @code{transparent}, 
+@b{2D}
+
+@code{rectangle ([@var{x1},@var{y1}], [@var{x2},@var{y2}])} dibuja un rect@'angulo de v@'ertices opuestos
+@code{[@var{x1},@var{y1}]} y @code{[@var{x2},@var{y2}]}.
+
+Este objeto se ve afectado por las siguientes @i{opciones gr@'aficas}: @code{transparent}, 
 @code{fill_color}, @code{border}, @code{line_width}, @code{key},
 @code{line_type} y @code{color}.
 
@@ -1663,29 +1769,34 @@ Ejemplo:
 
 @example
 (%i1) load(draw)$
-(%i2) draw2d(
-        fill_color  = red,
-        line_width  = 6,
-        line_type   = dots,
-        transparent = false,
-        fill_color  = blue,
-        rectangle([-2,-2],[8,-1]), /* opposite vertices */
-        transparent = true,
-        line_type   = solid,
-        line_width  = 1,
-        rectangle([9,4],[2,-1.5]),
-        xrange      = [-3,10],
-        yrange      = [-3,4.5] )$
+(%i2) draw2d(fill_color  = red,
+             line_width  = 6,
+             line_type   = dots,
+             transparent = false,
+             fill_color  = blue,
+             rectangle([-2,-2],[8,-1]), /* opposite vertices */
+             transparent = true,
+             line_type   = solid,
+             line_width  = 1,
+             rectangle([9,4],[2,-1.5]),
+             xrange      = [-3,10],
+             yrange      = [-3,4.5] )$
 @end example
+@end deffn
 
 
-@item
-@code{ellipse(xc, yc, a, b, ang1, ang2)}:
-dibuja una elipse de centro @code{[xc, yc]} con semiejes horizontal y vertical
-@code{a} y @code{b}, respectivamente, a partir del @'angulo @code{ang1} un
-@'angulo de amplitud @code{ang2}.
+@deffn  {Objeto gr@'afico} ellipse (@var{xc}, @var{yc}, @var{a}, @var{b}, @var{ang1}, @var{ang2})
+Dibuja elipses y c@'{@dotless{i}}rculos en 2D.
 
-Este objeto depende de las siguientes @i{opciones gr@'aficas}: @code{nticks}, 
+
+@b{2D}
+
+@code{ellipse (@var{xc}, @var{yc}, @var{a}, @var{b}, @var{ang1}, @var{ang2})}
+dibuja una elipse de centro @code{[@var{xc}, @var{yc}]} con semiejes horizontal y vertical
+@var{a} y @var{b}, respectivamente, desde el @'angulo @var{ang1} hasta el @'angulo
+@var{ang2}.
+
+Este objeto se ve afectado por las siguientes @i{opciones gr@'aficas}: @code{nticks}, 
 @code{transparent}, @code{fill_color}, @code{border}, @code{line_width}, 
 @code{line_type}, @code{key} y @code{color}.
 
@@ -1707,41 +1818,66 @@ Ejemplo:
              xrange      = [-3,6],
              yrange      = [2,9] )$
 @end example
+@end deffn
 
 
-@item
-@code{label(string,x,y)}:
-escribe el texto @code{string} en la posici@'on @code{[x,y]}.
+@deffn  {Objeto gr@'afico} label ([@var{string},@var{x},@var{y}],...)
+@deffnx {Objeto gr@'afico} label ([@var{string},@var{x},@var{y},@var{z}],...)
+Escribe etiquetas en 2D y 3D.
 
-Este objeto depende de las siguientes @i{opciones gr@'aficas}: @code{label_alignment}, 
+Este objeto se ve afectado por las siguientes @i{opciones gr@'aficas}: @code{label_alignment}, 
 @code{label_orientation} y @code{color}.
+
+@b{2D}
+
+@code{label([@var{string},@var{x},@var{y}])} escribe la cadena de caracteres @var{string} 
+en el punto @code{[@var{x},@var{y}]}.
 
 Ejemplo:
 
-En este ejemplo, el punto ficticio que se a@~nade sirve para obtener
-la imagen, ya que el paquete @code{draw} necesita siempre de datos para
-construir la escena. Estos colores pueden cambiar en diferentes terminales.
 @example
 (%i1) load(draw)$
-(%i2) draw2d(explicit(x^2,x,-1,1),
+(%i2) draw2d(yrange = [0.1,1.4],
              color = "red",
-             label("Label in red",0,0.3),
+             label(["Label in red",0,0.3]),
              color = "#0000ff",
-             label("Label in blue",0,0.6),
+             label(["Label in blue",0,0.6]),
              color = "light-blue",
-             /* double quotes if - is used */
-             label("Label in light-blue",0,0.9)  )$
+             label(["Label in light-blue",0,0.9],
+                   ["Another ligght-blue",0,1.2])  )$
 @end example
 
+@b{3D}
+
+@code{label([@var{string},@var{x},@var{y},@var{z}])} escribe la cadena de caracteres @var{string}
+en el punto @code{[@var{x},@var{y},@var{z}]}.
+
+Ejemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(explicit(exp(sin(x)+cos(x^2)),x,-3,3,y,-3,3),
+             color = red,
+             label(["UP 1",-2,0,3], ["UP 2",1.5,0,4]),
+             color = blue,
+             label(["DOWN 1",2,0,-3]) )$
+@end example
+@end deffn
 
 
-@item
-@code{vector([x,y], [dx,dy])}:
-dibuja el vector @code{[dx,dy]} con origen en @code{[x,y]}.
 
-Este objeto depende de las siguientes @i{opciones gr@'aficas}: @code{head_both}, 
+@deffn  {Objeto gr@'afico} vector ([@var{x},@var{y}], [@var{dx},@var{dy}])
+@deffnx {Objeto gr@'afico} vector ([@var{x},@var{y},@var{z}], [@var{dx},@var{dy},@var{dz}])
+Dibuja vectores en 2D y 3D.
+
+Este objeto se ve afectado por las siguientes @i{opciones gr@'aficas}: @code{head_both}, 
 @code{head_length}, @code{head_angle}, @code{head_type}, @code{line_width}, 
 @code{line_type}, @code{key} y @code{color}.
+
+@b{2D}
+
+@code{vector ([@var{x},@var{y}], [@var{dx},@var{dy}])} dibuja el vector 
+@code{[@var{dx},@var{dy}]} con origen en @code{[@var{x},@var{y}]}.
 
 Ejemplo:
 
@@ -1759,14 +1895,34 @@ Ejemplo:
              vector([6,1],[5,5]))$
 @end example
 
+@b{3D}
+
+@code{vector([@var{x},@var{y},@var{z}], [@var{dx},@var{dy},@var{dz}])}
+dibuja el vector @code{[@var{dx},@var{dy},@var{dz}]} con 
+origen en @code{[@var{x},@var{y},@var{z}]}.
+
+Ejemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(color = cyan,
+             vector([0,0,0],[1,1,1]/sqrt(3)),
+             vector([0,0,0],[1,-1,0]/sqrt(2)),
+             vector([0,0,0],[1,1,-2]/sqrt(6)) )$
+@end example
+@end deffn
 
 
-@item
-@code{explicit(fcn,var,minval,maxval)}:
-dibuja la funci@'on expl@'{@dotless{i}}cita @code{fcn}, con la variable @code{var} 
-tomando valores desde @code{minval} hasta @code{maxval}.
+@deffn  {Objeto gr@'afico} explicit (@var{fcn},@var{var},@var{minval},@var{maxval})
+@deffnx {Objeto gr@'afico} explicit (@var{fcn},@var{var1},@var{minval1},@var{maxval1},@var{var2},@var{minval2},@var{maxval2})
+Dibuja funciones expl@'{@dotless{i}}citas en 2D y 3D.
 
-Este objeto depende de las siguientes @i{opciones gr@'aficas}: @code{nticks}, 
+@b{2D}
+
+@code{explicit (@var{fcn},@var{var},@var{minval},@var{maxval})} dibuja la funci@'on expl@'{@dotless{i}}cita @var{fcn},
+con la variable @var{var} tomando valores desde @var{minval} hasta @var{maxval}.
+
+Este objeto se ve afectado por las siguientes @i{opciones gr@'aficas}: @code{nticks}, 
 @code{adapt_depth}, @code{line_width}, @code{line_type}, @code{key}, 
 @code{filled_func}, @code{fill_color} y @code{color}.
 
@@ -1782,40 +1938,72 @@ Ejemplo:
              explicit(x^2,x,-3,3) )$
 @end example
 
+@b{3D}
+
+@code{explicit (@var{fcn},@var{var1},@var{minval1},@var{maxval1},@var{var2},@var{minval2},@var{maxval2})}
+dibuja la funci@'on expl@'{@dotless{i}}cita @var{fcn}, con la variable 
+@code{var1} tomando valores desde @var{minval1} hasta @var{maxval1} y 
+la variable @var{var2} tomando valores desde @var{minval2} hasta @var{maxval2}.
+
+Este objeto se ve afectado por las siguientes @i{opciones gr@'aficas}: @code{xu_grid}, 
+@code{yv_grid}, @code{line_type}, @code{key} y @code{color}.
+
+Ejemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(key   = "Gauss",
+             color = "#a02c00",
+             explicit(20*exp(-x^2-y^2)-10,x,-3,3,y,-3,3),
+             yv_grid     = 10,
+             color = blue,
+             key   = "Plane",
+             explicit(x+y,x,-5,5,y,-5,5),
+             surface_hide = true)$
+@end example
+@end deffn
 
 
-@item
-@code{implicit(fcn,x-var,x-minval,x-maxval,y-var,y-minval,y-maxval)}:
-dibuja la funci@'on impl@'{@dotless{i}}cita @code{fcn}, con la variable @code{x-var} 
-tomando valores desde @code{x-minval} hasta @code{x-maxval} y la variable @code{y-var}
-tomando valores desde @code{y-minval} hasta @code{y-maxval}.
+@deffn  {Objeto gr@'afico} implicit (@var{fcn},@var{xvar},@var{xminval},@var{xmaxval},@var{yvar},@var{yminval},@var{ymaxval})
+Dibuja funciones impl@'{@dotless{i}}citas en 2D.
 
-Este objeto depende de las siguientes @i{opciones gr@'aficas}: @code{ip_grid}, 
+@b{2D}
+
+@code{implicit (@var{fcn},@var{xvar},@var{xminval},@var{xmaxval},@var{yvar},@var{yminval},@var{ymaxval})}
+dibuja la funci@'on impl@'{@dotless{i}}cita @var{fcn}, con la variable
+@code{xvar} tomando valores desde @var{xminval} hasta @var{xmaxval},
+y la variable @var{yvar} tomando valores desde @var{yminval} hasta @var{ymaxval}.
+
+Este objeto se ve afectado por las siguientes @i{opciones gr@'aficas}: @code{ip_grid}, 
 @code{ip_grid_in}, @code{line_width}, @code{line_type}, @code{key} y @code{color}.
 
 Ejemplo:
 
 @example
 (%i1) load(draw)$
-(%i2) draw2d(
-        terminal  = eps,
-        grid      = true,
-        line_type = solid,
-        key       = "y^2=x^3-2*x+1",
-        implicit(y^2=x^3-2*x+1, x, -4,4, y, -4,4),
-        line_type = dots,
-        key       = "x^3+y^3 = 3*x*y^2-x-1",
-        implicit(x^3+y^3 = 3*x*y^2-x-1, x, -4,4, y, -4,4),
-        title     = "Two implicit functions" )$
+(%i2) draw2d(terminal  = eps,
+             grid      = true,
+             line_type = solid,
+             key       = "y^2=x^3-2*x+1",
+             implicit(y^2=x^3-2*x+1, x, -4,4, y, -4,4),
+             line_type = dots,
+             key       = "x^3+y^3 = 3*x*y^2-x-1",
+             implicit(x^3+y^3 = 3*x*y^2-x-1, x,-4,4, y,-4,4),
+             title     = "Two implicit functions" )$
 @end example
+@end deffn
 
 
-@item
-@code{polar(radius,ang,minang,maxang)}:
-dibuja la funci@'on @code{radius(ang)} definida en coordenadas polares, con la variable @code{ang}
-tomando valores desde @code{minang} hasta @code{maxang}.
+@deffn  {Objeto gr@'afico} polar (@var{radius},@var{ang},@var{minang},@var{maxang})
+dibuja funciones 2D definidas en coordenadas polares.
 
-Este objeto depende de las siguientes @i{opciones gr@'aficas}: @code{nticks}, 
+@b{2D}
+
+@code{polar (@var{radius},@var{ang},@var{minang},@var{maxang})} dibuja la funci@'on
+@code{@var{radius}(@var{ang})} definida en coordenadas polares, con la variable 
+@var{ang} tomando valores desde @var{minang} hasta @var{maxang}.
+
+Este objeto se ve afectado por las siguientes @i{opciones gr@'aficas}: @code{nticks}, 
 @code{line_width}, @code{line_type}, @code{key} y @code{color}.
 
 Ejemplo:
@@ -1826,21 +2014,26 @@ Ejemplo:
              nticks        = 200,
              xrange        = [-5,5],
              yrange        = [-5,5],
-             line_type     = 6,
+             color         = blue,
              line_width    = 3,
              title         = "Hyperbolic Spiral",
              polar(10/theta,theta,1,10*%pi) )$
 @end example
+@end deffn
 
 
+@deffn  {Objeto gr@'afico} parametric (@var{xfun},@var{yfun},@var{par},@var{parmin},@var{parmax})
+@deffnx {Objeto gr@'afico} parametric (@var{xfun},@var{yfun},@var{zfun},@var{par},@var{parmin},@var{parmax})
+Dibuja funciones param@'etricas en 2D y 3D.
 
-@item
-@code{parametric(xfun,yfun,par,parmin,parmax)}:
-dibuja la funci@'on param@'etrica @code{[xfun,yfun]}, con el par@'ametro @code{par}
-tomando valores desde @code{parmin} hasta @code{parmax}.
+Este objeto se ve afectado por las siguientes @i{opciones gr@'aficas}: @code{nticks}, 
+@code{line_width}, @code{line_type}, @code{key} y @code{color}.
 
-Este objeto depende de las siguientes @i{opciones gr@'aficas}: @code{nticks}, 
-@code{line_width}, @code{line_type}, @code{key}and @code{color}.
+@b{2D}
+
+@code{parametric (@var{xfun},@var{yfun},@var{par},@var{parmin},@var{parmax})} dibuja la funci@'on param@'etrica 
+@code{[@var{xfun},@var{yfun}]}, con el par@'ametro @var{par} tomando valores desde 
+@var{parmin} hasta @var{parmax}.
 
 Ejemplo:
 
@@ -1852,15 +2045,40 @@ Ejemplo:
              parametric(2*cos(rrr),rrr^2,rrr,0,2*%pi))$
 @end example
 
+@b{3D}
+
+@code{parametric (@var{xfun},@var{yfun},@var{zfun},@var{par},@var{parmin},@var{parmax})} 
+dibuja la curva param@'etrica @code{[@var{xfun},@var{yfun},@var{zfun}]}, con el par@'ametro
+@var{par} tomando valores desde @var{parmin} hasta @var{parmax}.
+
+Ejemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(explicit(exp(sin(x)+cos(x^2)),x,-3,3,y,-3,3),
+             color = royalblue,
+             parametric(cos(5*u)^2,sin(7*u),u-2,u,0,2),
+             color      = turquoise,
+             line_width = 2,
+             parametric(t^2,sin(t),2+t,t,0,2),
+             surface_hide = true,
+             title = "Surface & curves" )$
+@end example
+@end deffn
 
 
-@item
-@code{image(im,x0,y0,width,height)}:
-dibuja la imagen @code{im} en la regi@'on rectangular desde el v@'ertice @code{(x0,y0)}
-hasta el @code{(x0+width,y0+height)} del plano real. El argumento @code{im} debe ser una
-matriz de n@'umeros reales o una matriz de vectores de longitud tres.
+@deffn  {Objeto gr@'afico} image (@var{im},@var{x0},@var{y0},@var{width},@var{height})
+Reproduce una imagen en 2D.
 
-Si @code{im} es una matriz de n@'umeros reales, los valores de los
+@b{2D}
+
+@code{image (@var{im},@var{x0},@var{y0},@var{width},@var{height})}:
+dibuja la imagen @var{im} en la regi@'on rectangular desde el v@'ertice @var{(@var{x0},@var{y0})}
+hasta el @code{(x0+@var{width},y0+@var{height})} del plano real. El argumento @var{im} debe ser una
+matriz de n@'umeros reales, una matriz de vectores de longitud tres o un objeto
+de tipo @code{picture}.
+
+Si @var{im} es una matriz de n@'umeros reales, los valores de los
 p@'{@dotless{i}}xeles se interpretan seg@'un indique la opci@'on
 gr@'afica @code{palette}, que es un vector de longitud tres con sus componentes tomando
 valores enteros en el rango desde -36 a +36; cada valor es un 
@@ -1888,12 +2106,12 @@ de las componentes crom@'aticas.
 @code{palette = gray} y @code{palette = color} son atajos para
 @code{palette = [3,3,3]} y @code{palette = [7,5,15]}, respectivamente.
 
-Si @code{im} es una matriz de vectores de longitud tres, @'stos se
+Si @var{im} es una matriz de vectores de longitud tres, @'estos se
 interpretar@'an como las componentes crom@'aticas rojo, verde y azul.
 
 Ejemplos:
 
-Si @code{im} es una matriz de n@'umeros reales, los valores de los
+Si @var{im} es una matriz de n@'umeros reales, los valores de los
 p@'{@dotless{i}}xeles se interpretan seg@'un indique la opci@'on
 gr@'afica @code{palette}.
 @example
@@ -1911,7 +2129,7 @@ gr@'afica @code{palette}.
 
 V@'ease tambi@'en @code{colorbox}.
 
-Si @code{im} es una matriz de vectores de longitud tres, @'estos se
+Si @var{im} es una matriz de vectores de longitud tres, @'estos se
 interpretar@'an como las componentes crom@'aticas rojo, verde y azul.
 @example
 (%i1) load(draw)$
@@ -1924,200 +2142,179 @@ interpretar@'an como las componentes crom@'aticas rojo, verde y azul.
 (%i3) draw2d(image(im,0,0,30,30))$
 @end example
 
+El paquete @code{draw} carga autom@'aticamente el paquete @code{picture}. 
+En este ejemplo, una imagen de niveles se define a mano, reproduci@'endola
+a continuaci@'on.
+@example
+(%i1) load(draw)$
+(%i2) im: make_level_picture([45,87,2,134,204,16],3,2);
+(%o2)       picture(level, 3, 2, @{Array:  #(45 87 2 134 204 16)@})
+(%i3) /* default color palette */
+      draw2d(image(im,0,0,30,30))$
+(%i4) /* gray palette */
+      draw2d(palette = gray,
+             image(im,0,0,30,30))$
+@end example
 
+Se lee un fichero xpm y se reproduce.
+@example
+(%i1) load(draw)$
+(%i2) im: read_xpm("myfile.xpm")$
+(%i3) draw2d(image(im,0,0,10,7))$
+@end example
 
-@end itemize
+V@'eanse tambi@'en @code{make_level_picture}, @code{make_rgb_picture} y @code{read_xpm}.
 
-V@'eanse tambi@'en las siguientes opciones gr@'aficas: @code{xrange}, @code{yrange}, 
-@code{logx}, @code{logy}, @code{terminal}, @code{grid}, @code{title}, 
-@code{xlabel}, @code{ylabel}, @code{xtics}, @code{ytics}, @code{xy_file}, 
-@code{file_name}, @code{pic_width}, @code{pic_height}, 
-@code{eps_width}, @code{eps_height},
-@code{user_preamble}, @code{axis_bottom}, @code{axis_left}, @code{axis_top} 
-y @code{axis_right}.
-
+En @url{http://www.telefonica.net/web2/biomates/maxima/gpdraw/image}
+se encuentran ejemplos m@'as elaborados.
 @end deffn
 
 
+@defvr {Global variable} boundaries_array
+Valor por defecto: @code{false}
+
+@code{boundaries_array} es donde el objeto gr@'afico @code{geomap} lee
+las coordenadas de las l@'{@dotless{i}}neas fronterizas.
+
+Cada componente de @code{boundaries_array} es un array de n@'umeros decimales
+en coma flotante representando las coordenadas que definen un segmento
+poligonal o l@'{@dotless{i}}nea fronteriza.
+
+V@'ease tambi@'en @code{geomap}.
+@end defvr
 
 
-@deffn {Constructor de escena} gr3d (@var{Opci@'on gr@'afica}, ..., @var{graphic object}, ...)
+@deffn  {Objeto gr@'afico} geomap (@var{n1},@var{n2},...)
+Dibuja mapas cartogr@'aficos en 2D.
 
-La funci@'on @code{gr3d} construye un objeto que describe una escena 3d. Los
-argumentos son @i{opciones gr@'aficas} y @i{objetos gr@'aficos}. Esta escena
-se interpreta secuencialmente: las @i{opciones gr@'aficas} afectan a aquellos
-@i{objetos gr@'aficos} colocados a su derecha.
+@b{2D}
 
-Para utilizar esta funci@'on, ejec@'utese primero @code{load(draw)}.
+Esta funci@'on trabaja junto con la variable global @code{boundaries_array}.
 
-Esta es la lista de @i{objetos gr@'aficos} disponibles para escenas en tres
-dimensiones:
+Los argumentos son n@'umeros o listas, las cuales a su vez pueden contener
+n@'umeros o listas. Todos estos n@'umeros deben ser enteros mayores o iguales que cero,
+representando las componentes del array global @code{boundaries_array}.
 
+Cada componente de @code{boundaries_array} es un array de decimales en
+coma flotante, las coordenadas de un segmento poligonal o l@'{@dotless{i}}nea
+fronteriza.
 
-@itemize @bullet
-@item
-@code{points([[x1,y1,z1], [x2,y2,z2], [x3,y3,z3],...])} o 
-@code{points([x1,x2, x3,...], [y1,y2,y3,...], [z1,z2,z3,...])}:
-dibuja los puntos @code{[x1,y1,z1]}, @code{[x2,y2,z2]}, @code{[x2,y2,z3]}, ....
+@code{geomap (@var{n1},@var{n2},...)} toma los enteros de sus argumentos y 
+dibuja los segmentos poligonales asociados de @code{boundaries_array}.
 
-Este objeto depende de las siguientes @i{opciones gr@'aficas}: @code{point_size}, 
-@code{point_type}, @code{points_joined}, @code{line_width}, @code{key}, @code{line_type}
-and @code{color}.
+Este objeto se ve afectado por las siguientes @i{opciones gr@'aficas}: @code{line_width}, 
+@code{line_type} y @code{color}.
 
 Ejemplos:
 
-Una muestra tridimensional,
+Un sencillo mapa hecho a mano:
 @example
 (%i1) load(draw)$
-(%i2) load (numericalio)$
-(%i3) s2 : read_matrix (file_search ("wind.data"))$
-(%i4) draw3d(title      = "Daily average wind speeds",
-             point_size = 2,
-             points(args(submatrix (s2, 4, 5))) )$
+(%i2) /* Vertices of boundary #0: @{(1,1),(2,5),(4,3)@} */
+   ( bnd0: make_array(flonum,6),
+     bnd0[0]:1.0, bnd0[1]:1.0, bnd0[2]:2.0,
+     bnd0[3]:5.0, bnd0[4]:4.0, bnd0[5]:3.0 )$
+(%i3) /* Vertices of boundary #1: @{(4,3),(5,4),(6,4),(5,1)@} */
+   ( bnd1: make_array(flonum,8),
+     bnd1[0]:4.0, bnd1[1]:3.0, bnd1[2]:5.0, bnd1[3]:4.0,
+     bnd1[4]:6.0, bnd1[5]:4.0, bnd1[6]:5.0, bnd1[7]:1.0)$
+(%i4) /* Vertices of boundary #2: @{(5,1), (3,0), (1,1)@} */
+   ( bnd2: make_array(flonum,6),
+     bnd2[0]:5.0, bnd2[1]:1.0, bnd2[2]:3.0,
+     bnd2[3]:0.0, bnd2[4]:1.0, bnd2[5]:1.0 )$
+(%i5) /* Vertices of boundary #3: @{(1,1), (4,3)@} */
+   ( bnd3: make_array(flonum,4),
+     bnd3[0]:1.0, bnd3[1]:1.0, bnd3[2]:4.0, bnd3[3]:3.0)$
+(%i6) /* Vertices of boundary #4: @{(4,3), (5,1)@} */
+   ( bnd4: make_array(flonum,4),
+     bnd4[0]:4.0, bnd4[1]:3.0, bnd4[2]:5.0, bnd4[3]:1.0)$
+(%i7) /* Pack all together in boundaries_array */
+   ( boundaries_array: make_array(any,5),
+     boundaries_array[0]: bnd0, boundaries_array[1]: bnd1,
+     boundaries_array[2]: bnd2, boundaries_array[3]: bnd3,
+     boundaries_array[4]: bnd4 )$
+(%i8) draw2d(geomap([0,1,2,3,4]))$
 @end example
 
-Dos muestras tridimensionales,
+El paquete auxiliar @code{worldmap} asigna al array global
+@code{boundaries_array} l@'{@dotless{i}}neas fronterizas
+reales en coordenadas (longitud, latitud). Estos datos son
+de dominio p@'ublico y proceden de
+@url{http://www-cger.nies.go.jp/grid-e/gridtxt/grid19.html}.
+El paquete @code{worldmap} tambi@'en define fronteras 
+de pa@'{@dotless{i}}ses y continentes a partir de las
+componentes de @code{boundaries_array} (v@'ease el
+fichero @code{share/draw/worldmap.mac} para m@'as
+informaci@'on). El paquete @code{draw} no carga
+autom@'aticamente @code{worldmap}.
 @example
 (%i1) load(draw)$
-(%i2) load (numericalio)$
-(%i3) s2 : read_matrix (file_search ("wind.data"))$
-(%i4) draw3d(
-       title      = "Daily average wind speeds. Two data sets",
-       point_size = 2,
-       key        = "Sample from stations 1, 2 and 3",
-       points(args(submatrix (s2, 4, 5))),
-       point_type = 4,
-       key        = "Sample from stations 1, 4 and 5",
-       points(args(submatrix (s2, 2, 3))) )$
+(%i2) load(worldmap)$
+(%i3) c1: gr2d(geomap(Canada,United_States,
+                      Mexico,Cuba))$
+(%i4) c2: gr2d(geomap(Africa))$
+(%i5) c3: gr2d(geomap(Oceania,China,Japan))$
+(%i6) c4: gr2d(geomap(France,Portugal,Spain,
+                      Morocco,Western_Sahara))$
+(%i7) draw(columns  = 2,
+           c1,c2,c3,c4)$
 @end example
 
-
-@item
-@code{label(string,x,y,z)}:
-escribe el texto @code{string} en la posici@'on @code{[x,y,z]}.
-
-Este objeto depende de las siguientes @i{opciones gr@'aficas}: @code{label_alignment}, 
-@code{label_orientation} y @code{color}.
-
-Ejemplo:
-
+@code{worldmap} se puede utilizar para dibujar pa@'{@dotless{i}}ses
+como pol@'{@dotless{i}}gonos. En este caso, ya no ser@'a necesario
+hacer uso del objeto gr@'afico @code{geomap}, pero s@'{@dotless{i}} de
+@code{polygon}. Puesto que en este caso se utilizan listas en lugar de
+arrays, los mapas se reproducir@'an de forma m@'as lenta. V@'eanse
+tambi@'en @code{make_poly_country} y @code{make_poly_continent} para
+comprender el siguiente c@'odigo.
 @example
 (%i1) load(draw)$
-(%i2) draw3d(explicit(exp(sin(x)+cos(x^2)),x,-3,3,y,-3,3),
-             color = red,
-             label("UP",-2,0,3),
-             color = blue,
-             label("DOWN",2,0,-3) )$
+(%i2) load(worldmap)$
+(%i3) mymap: append(
+   [color      = white],  /* borders are white */
+   [fill_color = red],             make_poly_country(Bolivia),
+   [fill_color = cyan],            make_poly_country(Paraguay),
+   [fill_color = green],           make_poly_country(Colombia),
+   [fill_color = blue],            make_poly_country(Chile),
+   [fill_color = "#23ab0f"],       make_poly_country(Brazil),
+   [fill_color = goldenrod],       make_poly_country(Argentina),
+   [fill_color = "midnight-blue"], make_poly_country(Uruguay))$
+(%i4) apply(draw2d, mymap)$
 @end example
 
+En @url{http://www.telefonica.net/web2/biomates/maxima/gpdraw/geomap}
+hay ejemplos m@'as elaborados.
+@end deffn
 
 
-@item
-@code{vector([x,y,z], [dx,dy,dz])}:
-dibuja el vector @code{[dx,dy,dz]} con origen en @code{[x,y,z]}.
+@deffn  {Objeto gr@'afico} parametric_surface (@var{xfun},@var{yfun},@var{zfun},@var{par1},@var{par1min},@var{par1max},@var{par2},@var{par2min},@var{par2max})
+Dibuja superficies param@'etricas en 3D.
 
-Este objeto depende de las siguientes @i{opciones gr@'aficas}: @code{head_both}, 
-@code{head_type}, @code{line_width}, @code{line_type}, @code{key} y @code{color}.
+@b{3D}
 
-Ejemplo:
+@code{parametric_surface (@var{xfun},@var{yfun},@var{zfun},@var{par1},@var{par1min},@var{par1max},@var{par2},@var{par2min},@var{par2max})}
+dibuja la superficie param@'etrica @code{[@var{xfun},@var{yfun},@var{zfun}]}, 
+con el par@'ametro @var{par1} tomando valores desde @var{par1min} hasta @var{par1max}
+y el par@'ametro @var{par2} tomando valores desde @var{par2min} hasta @var{par2max}.
 
-@example
-(%i1) load(draw)$
-(%i2) draw3d(color = cyan,
-             vector([0,0,0],[1,1,1]/sqrt(3)),
-             vector([0,0,0],[1,-1,0]/sqrt(2)),
-             vector([0,0,0],[1,1,-2]/sqrt(6)) )$
-@end example
-
-
-@item
-@code{explicit(fcn,var1,minval1,maxval1,var2,minval2,maxval2)}:
-dibuja la funci@'on expl@'{@dotless{i}}cita @code{fcn}, con la variable @code{var1}
-tomando valores desde @code{minval1} hasta @code{maxval1} y la variable @code{var2}
-tomando valores desde @code{minval2} hasta @code{maxval2}.
-
-Este objeto depende de las siguientes @i{opciones gr@'aficas}: @code{xu_grid}, 
+Este objeto se ve afectado por las siguientes @i{opciones gr@'aficas}: @code{xu_grid}, 
 @code{yv_grid}, @code{line_type}, @code{key} y @code{color}.
 
 Ejemplo:
 
 @example
 (%i1) load(draw)$
-(%i2) draw3d(key   = "Gauss",
-             color = "#a02c00",
-             explicit(20*exp(-x^2-y^2)-10,x,-3,3,y,-3,3),
-             yv_grid = 10,
-             color   = blue,
-             key     = "Plane",
-             explicit(x+y,x,-5,5,y,-5,5),
-             surface_hide = true)$
+(%i2) draw3d(title          = "Sea shell",
+             xu_grid        = 100,
+             yv_grid        = 25,
+             rot_vertical   = 100,
+             rot_horizontal = 20,
+             surface_hide   = true,
+             parametric_surface(0.5*u*cos(u)*(cos(v)+1),
+                           0.5*u*sin(u)*(cos(v)+1),
+                           u*sin(v) - ((u+3)/8*%pi)^2 - 20,
+                           u, 0, 13*%pi, v, -%pi, %pi) )$
 @end example
-
-
-@item
-@code{parametric(xfun,yfun,zfun,par,parmin,parmax)}:
-dibuja la funci@'on param@'etrica @code{[xfun,yfun,zfun]}, con el par@'ametro @code{par}
-tomando valores desde @code{parmin} hasta @code{parmax}.
-
-Este objeto depende de las siguientes @i{opciones gr@'aficas}: @code{nticks}, 
-@code{line_width}, @code{line_type}, @code{key} y @code{color}.
-
-Ejemplo:
-
-@example
-(%i1) load(draw)$
-(%i2) draw3d(explicit(exp(sin(x)+cos(x^2)),x,-3,3,y,-3,3),
-             color = royalblue,
-             parametric(cos(5*u)^2,sin(7*u),u-2,u,0,2),
-             color      = turquoise,
-             line_width = 2,
-             parametric(t^2,sin(t),2+t,t,0,2),
-             surface_hide = true,
-             title = "Surface & curves" )$
-@end example
-
-
-@item
-@code{parametric_surface(xfun,yfun,zfun,par1,par1min,par1max, par2,par2min,par2max)}:
-dibuja la superficie param@'etrica @code{[xfun,yfun,zfun]}, con el par@'ametro @code{par1}
-tomando valores desde @code{par1min} hasta @code{par1max} y el par@'ametro @code{par2}
-tomando valores desde @code{par2min} hasta @code{par2max}.
-
-Este objeto depende de las siguientes @i{opciones gr@'aficas}: @code{xu_grid}, 
-@code{yv_grid}, @code{line_type}, @code{key} y @code{color}.
-
-Ejemplo:
-
-@example
-(%i1) load(draw)$
-(%i2) draw3d(
-        title          = "Sea shell",
-        xu_grid        = 100,
-        yv_grid        = 25,
-        rot_vertical   = 100,
-        rot_horizontal = 20,
-        surface_hide   = true,
-        parametric_surface(
-          0.5*u*cos(u)*(cos(v)+1),
-          0.5*u*sin(u)*(cos(v)+1),
-          u*sin(v) - ((u+3)/8*%pi)^2 - 20,
-          u, 0, 13*%pi, v, -%pi, %pi) )$
-@end example
-
-@end itemize
-
-V@'eanse tambi@'en las siguientes opciones gr@'aficas: @code{xrange}, @code{yrange}, 
-@code{zrange}, @code{logx}, @code{logy}, @code{logz}, @code{terminal}, 
-@code{grid}, @code{title}, @code{xlabel}, @code{ylabel}, @code{zlabel}, 
-@code{xtics}, @code{ytics}, @code{ztics}, @code{xy_file}, 
-@code{user_preamble}, @code{axis_bottom}, @code{axis_left}, 
-@code{axis_top}, @code{file_name}, @code{pic_width}, @code{pic_height}, 
-@code{eps_width}, @code{eps_height},
-@code{axis_right}, @code{rot_vertical}, @code{rot_horizontal}, 
-@code{axis_3d}, @code{xu_grid}, @code{yv_grid}, @code{surface_hide}, 
-@code{contour}, @code{contour_levels}, @code{palette}, @code{colorbox}
-y @code{enhanced3d}.
-
 @end deffn
 
 
@@ -2129,10 +2326,10 @@ y @code{enhanced3d}.
 @deffn {Funci@'on} draw (@var{gr2d}, ..., @var{gr3d}, ..., @var{options}, ...)
 
 Representa gr@'aficamente una serie de escenas; sus argumentos son objetos
-@code{gr2d} y @code{gr3d}, junto con algunas opciones. Por defecto, 
+@code{gr2d} y/o @code{gr3d}, junto con algunas opciones. Por defecto, 
 las escenas se representan en una columna.
 
-La funci@'on @code{draw} acepta dos opciones posibles:@code{terminal} 
+La funci@'on @code{draw} acepta dos opciones posibles: @code{terminal} 
 y @code{columns}.
 
 Las funciones @code{draw2d} y @code{draw3d} son atajos a utilizar
@@ -2155,10 +2352,10 @@ Ejemplo:
 @end deffn
 
 
-@deffn {Funci@'on} draw2d (@var{option}, @var{graphic object}, ...)
+@deffn {Funci@'on} draw2d (@var{option}, @var{graphic_object}, ...)
 
 Esta funci@'on es un atajo para
-@code{draw2d(gr2d(@var{options}, ..., @var{graphic object}, ...))}.
+@code{draw2d(gr2d(@var{options}, ..., @var{graphic_object}, ...))}.
 
 Puede utilizarse para representar una @'unica escena en 2d.
 
@@ -2167,10 +2364,10 @@ Para utilizar esta funci@'on, ejec@'utese primero @code{load(draw)}.
 @end deffn
 
 
-@deffn {Funci@'on} draw3d (@var{option}, @var{graphic object}, ...)
+@deffn {Funci@'on} draw3d (@var{option}, @var{graphic_object}, ...)
 
 Esta funci@'on es un atajo para
-@code{draw3d(gr3d(@var{options}, ..., @var{graphic object}, ...))}.
+@code{draw3d(gr3d(@var{options}, ..., @var{graphic_object}, ...))}.
 
 Puede utilizarse para representar una @'unica escena en 3d.
 
@@ -2180,13 +2377,295 @@ Para utilizar esta funci@'on, ejec@'utese primero @code{load(draw)}.
 
 
 
-@defvr {Variable opcional} draw_pipes
-Valor por defecto: @code{true}
 
-Cuando @code{draw_pipes} vale @code{true}, Maxima se comunica con Gnuplot
-mediante una tuber@'{@dotless{i}}a (@i{pipe}, en ingl@'es). Cuando @code{draw_pipes}
-vale @code{false}, Maxima se comunica con Gnuplot mediante ficheros.
-Esto s@'olo tiene efecto en sistemas que no son Windows.
 
-@end defvr
+
+
+@node Funciones y variables para picture, Funciones y variables para worldmap, Funciones y variables para draw, draw
+@section Funciones y variables para picture
+
+
+
+@deffn  {Funci@'on} make_level_picture (@var{data})
+@deffnx {Funci@'on} make_level_picture (@var{data},@var{width},@var{height})
+Devuelve un objeto @code{picture} consistente en una imagen de niveles.
+@code{make_level_picture (@var{data})} construye el objeto @code{picture}
+a partir de la matriz @var{data}.
+@code{make_level_picture (@var{data},@var{width},@var{height})}
+construye el objeto a partir de una lista de n@'umeros, en cuyo
+caso deben indicarse el ancho @var{width} y la altura @var{height}
+en p@'{@dotless{i}}xeles.
+
+El objeto  @code{picture} devuelto contiene los siguientes cuatro
+elemento:
+
+@enumerate
+@item el s@'{@dotless{i}}mbolo @code{level}
+@item anchura de la imagen
+@item altura de la imagen
+@item un array de enteros con los valores de los p@'{@dotless{i}}xeles
+entre 0 y 255. El argumento @var{data} debe contener s@'olo n@'umeros
+entre 0 y 255; los cantidades negativas se transforman en ceros y las 
+que son mayores de 255 se igualan a este n@'umero.
+@end enumerate
+
+Ejemplo:
+
+Imagen de niveles a partir de una matriz.
+@example
+(%i1) load(draw)$
+(%i2) make_level_picture(matrix([3,2,5],[7,-9,3000]));
+(%o2)         picture(level, 3, 2, @{Array:  #(3 2 5 7 0 255)@})
+@end example
+
+Imagen de niveles a partir de una lista num@'erica.
+@example
+(%i1) load(draw)$
+(%i2) make_level_picture([-2,0,54,%pi],2,2);
+(%o2)            picture(level, 2, 2, @{Array:  #(0 0 54 3)@})
+@end example
+@end deffn
+
+
+@deffn  {Funci@'on} picturep (@var{x})
+Devuelve @code{true} si el argumento es una imagen bien formada,
+o @code{false} en caso contrario.
+@end deffn
+
+
+@deffn  {Funci@'on} picture_equalp (@var{x},@var{y})
+Devuelve @code{true} si los dos argumentos son im@'agenes id@'enticas,
+o @code{false} en caso contrario.
+@end deffn
+
+
+@deffn  {Funci@'on} make_rgb_picture (@var{redlevel},@var{greenlevel},@var{bluelevel})
+Devuelve un objeto @code{picture} conteniendo una imagen en color (RGB).
+Los tres argumentos deben ser im@'agenes de niveles, para el rojo (R),
+verde (G) y azul (B).
+
+El objeto  @code{picture} devuelto contiene los siguientes cuatro
+elemento:
+
+@enumerate
+@item el s@'{@dotless{i}}mbolo @code{rgb}
+@item anchura de la imagen
+@item altura de la imagen
+@item un array de enteros de @code{3*ancho*alto} con los valores de los p@'{@dotless{i}}xeles
+entre 0 y 255. Cada valor de pixel se representa en el array con tres n@'umeros consecutivos
+(rojo, verde, azul).
+@end enumerate
+
+Ejemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) red: make_level_picture(matrix([3,2],[7,260]));
+(%o2)           picture(level, 2, 2, @{Array:  #(3 2 7 255)@})
+(%i3) green: make_level_picture(matrix([54,23],[73,-9]));
+(%o3)           picture(level, 2, 2, @{Array:  #(54 23 73 0)@})
+(%i4) blue: make_level_picture(matrix([123,82],[45,32.5698]));
+(%o4)          picture(level, 2, 2, @{Array:  #(123 82 45 33)@})
+(%i5) make_rgb_picture(red,green,blue);
+(%o5) picture(rgb, 2, 2, 
+              @{Array:  #(3 54 123 2 23 82 7 73 45 255 0 33)@})
+@end example
+@end deffn
+
+
+@deffn  {Funci@'on} take_channel (@var{im},@var{color})
+Si el argumento @var{color} es @var{red}, @var{green} o @var{blue},
+la funci@'on @code{take_channel} devuelve el canal de color correspondiente
+de la imagen @var{im}.
+
+Ejemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) red: make_level_picture(matrix([3,2],[7,260]));
+(%o2)           picture(level, 2, 2, @{Array:  #(3 2 7 255)@})
+(%i3) green: make_level_picture(matrix([54,23],[73,-9]));
+(%o3)           picture(level, 2, 2, @{Array:  #(54 23 73 0)@})
+(%i4) blue: make_level_picture(matrix([123,82],[45,32.5698]));
+(%o4)          picture(level, 2, 2, @{Array:  #(123 82 45 33)@})
+(%i5) make_rgb_picture(red,green,blue);
+(%o5) picture(rgb, 2, 2, 
+              @{Array:  #(3 54 123 2 23 82 7 73 45 255 0 33)@})
+(%i6) take_channel(%,'green);  /* simple quote!!! */
+(%o6)           picture(level, 2, 2, @{Array:  #(54 23 73 0)@})
+@end example
+@end deffn
+
+
+@deffn  {Funci@'on} negative_picture (@var{pic})
+Devuelve el negativo de la imagen, sea @'esta de tipo nivel (@code{level})
+o color (@code{rgb}).
+@end deffn
+
+
+@deffn  {Funci@'on} rgb2level (@var{pic})
+Transforma una imagen en color @code{rgb} a otra de niveles @code{level}
+promediando los niveles.
+@end deffn
+
+
+@deffn  {Funci@'on} get_pixel (@var{pic},@var{x},@var{y})
+Devuelve el pixel de la imagen @var{pic}. Las coordenadas @var{x} e @var{y}
+van desde 0 hasta @code{ancho-1} y @code{alto-1}, respectivamente.
+@end deffn
+
+
+@deffn  {Funci@'on} read_xpm (@var{xpm_file})
+Lee el fichero gr@'afico en formato xpm y devuelve un objeto @code{picture}.
+@end deffn
+
+
+
+
+
+
+
+
+@node Funciones y variables para worldmap,  , Funciones y variables para picture, draw
+@section Funciones y variables para worldmap
+
+
+@deffn  {Funci@'on} region_boundaries (@var{x1},@var{y1},@var{x2},@var{y2})
+Detecta los segmentos poligonales almacenados en la variable global
+@code{boundaries_array} contenidos en el rect@'angulo de v@'ertices
+(@var{x1},@var{y1}) -superior izquierdo- y (@var{x2},@var{y2})
+-inferior derecho-.
+
+Ejemplo:
+
+Devuelve los n@'umeros de los segmentos necesarios para
+dibujar el sur de Italia.
+@example
+(%i1) load(draw)$
+(%i2) load(worldmap)$
+(%i3) region_boundaries(10.4,41.5,20.7,35.4);
+(%o3)                [1846, 1863, 1864, 1881, 1888, 1894]
+(%i4) draw2d(geomap(%))$
+@end example
+@end deffn
+
+
+@deffn  {Funci@'on} numbered_boundaries (@var{nlist})
+Dibuja una lista de segmentos poligonales (l@'{@dotless{i}}neas 
+fronterizas), etiquetadas con sus n@'umeros correspondientes
+(coordenadas de @code{boundaries_array}). Esta funci@'on es
+de mucha ayuda a la hora de definir nuevas entidades
+geogr@'aficas.
+
+Ejemplo:
+
+Mapa de Europa con las fronteras y costas etiquetadas con
+su componente num@'erica de @code{boundaries_array}.
+@example
+(%i1) load(draw)$
+(%i2) load(worldmap)$
+(%i3) european_borders: 
+         region_boundaries(-31.81,74.92,49.84,32.06)$
+(%i4) numbered_boundaries(european_borders)$
+@end example
+@end deffn
+
+
+@deffn  {Funci@'on} make_polygon (@var{nlist})
+Devuelve un objeto @code{polygon} a partie de una lista
+de l@'{@dotless{i}}neas fronterizas y de costas. El
+argumento @var{nlist} debe ser una lista de componentes
+de @code{boundaries_array}.
+
+Ejemplo:
+
+La variable Bhutan (But@'an) est@'a definida con los n@'umeros
+fronterizos 171, 173 y 1143, de manera que @code{make_polygon([171,173,1143])}
+concatena los arrays @code{boundaries_array[171]}, @code{boundaries_array[173]} y
+@code{boundaries_array[1143]} y devuelve un objeto @code{polygon}
+apto para ser dibujado por @code{draw}. A fin de evitar mensajes
+de errores, los arrays deben ser compatibles en el sentido de que dos
+de ellos consecutivos deben tener dos coordenadas comunes en los
+extremos. En este ejemplo, las dos primeras componentes de 
+@code{boundaries_array[171]} son iguales a las dos @'ultimas de
+@code{boundaries_array[173]}, y las dos primeras de @code{boundaries_array[173]}
+coinciden con las dos primeras de @code{boundaries_array[1143]};
+en conclusi@'on, los n@'umeros de segmentos poligonales171, 173 y 1143
+(en este orden) son compatibles y el pol@'{@dotless{i}}gono
+coloreado se podr@'a dibujar.
+@example
+(%i1) load(draw)$
+(%i2) load(worldmap)$
+(%i3) Bhutan;
+(%o3)                        [[171, 173, 1143]]
+(%i4) boundaries_array[171];
+(%o4) @{Array:  
+       #(88.750549 27.14727 88.806351 27.25305 88.901367 27.282221
+         88.917877 27.321039)@}
+(%i5) boundaries_array[173];
+(%o5) @{Array:
+       #(91.659554 27.76511 91.6008 27.66666 91.598022 27.62499
+         91.631348 27.536381 91.765533 27.45694 91.775253 27.4161 
+         92.007751 27.471939 92.11441 27.28583 92.015259 27.168051
+         92.015533 27.08083 92.083313 27.02277 92.112183 26.920271
+         92.069977 26.86194 91.997192 26.85194 91.915253 26.893881
+         91.916924 26.85416 91.8358 26.863331 91.712479 26.799999 
+         91.542191 26.80444 91.492188 26.87472 91.418854 26.873329
+         91.371353 26.800831 91.307457 26.778049 90.682457 26.77417
+         90.392197 26.903601 90.344131 26.894159 90.143044 26.75333
+         89.98996 26.73583 89.841919 26.70138 89.618301 26.72694 
+         89.636093 26.771111 89.360786 26.859989 89.22081 26.81472
+         89.110237 26.829161 88.921631 26.98777 88.873016 26.95499
+         88.867737 27.080549 88.843307 27.108601 88.750549 
+         27.14727)@}
+(%i6) boundaries_array[1143];
+(%o6) @{Array:  
+       #(91.659554 27.76511 91.666924 27.88888 91.65831 27.94805 
+         91.338028 28.05249 91.314972 28.096661 91.108856 27.971109
+         91.015808 27.97777 90.896927 28.05055 90.382462 28.07972
+         90.396088 28.23555 90.366074 28.257771 89.996353 28.32333
+         89.83165 28.24888 89.58609 28.139999 89.35997 27.87166 
+         89.225517 27.795 89.125793 27.56749 88.971077 27.47361
+         88.917877 27.321039)@}
+(%i7) Bhutan_polygon: make_polygon([171,173,1143])$
+(%i8) draw2d(Bhutan_polygon)$
+@end example
+@end deffn
+
+
+@deffn  {Funci@'on} make_poly_country (@var{country_name})
+Construye los pol@'{@dotless{i}}gonos necesarios para dibujar
+un pa@'{@dotless{i}}s coloreado. En caso de contener islas,
+un pa@'{@dotless{i}}s tendr@'a asociados varios pol@'{@dotless{i}}gonos.
+
+Ejemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) load(worldmap)$
+(%i3) make_poly_country(India)$
+(%i4) apply(draw2d, %)$
+@end example
+@end deffn
+
+
+@deffn  {Funci@'on} make_poly_continent (@var{continent_name})
+@deffnx  {Funci@'on} make_poly_continent (@var{country_list})
+Construye los pol@'{@dotless{i}}gonos necesarios para dibujar
+un continente o lista de pa@'{@dotless{i}}ses coloreados.
+
+Ejemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) load(worldmap)$
+(%i3) /* A continent */
+      make_poly_continent(Africa)$
+(%i4) apply(draw2d, %)$
+(%i5) /* A list of countries */
+      make_poly_continent([Germany,Denmark,Poland])$
+(%i6) apply(draw2d, %)$
+@end example
+@end deffn
+
 

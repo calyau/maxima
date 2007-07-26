@@ -433,6 +433,8 @@ draw
 
 * Introducci@'on a draw::
 * Funciones y variables para draw::
+* Funciones y variables para picture::
+* Funciones y variables para worldmap::
 
 dynamics
 
