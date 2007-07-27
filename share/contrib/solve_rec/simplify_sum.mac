@@ -251,16 +251,17 @@ ss_zeilb(expr, %k%, lo, hi, [in_zr]) := block(
   cert : part(zb, 1, 1),
   eq : part(zb, 1, 2) . makelist(sm[%n%+%i%], %i%, 0, deg-1),
 
-  cond : makelist(sm[%i%]=subst(%n%=%i%,
-                                apply(sum, [
-                                              minfactorial(expr),
-                                              %k%,
-                                              ceiling(lo),
-                                              floor(hi)
-                                            ]
-                                      )
-                                ),
-                  %i%, 1, deg-1),
+  block([simpsum:true],
+    cond : makelist(sm[%i%]=subst(%n%=%i%,
+                                  apply(sum, [
+                                                minfactorial(expr),
+                                                %k%,
+                                                ceiling(lo),
+                                                floor(hi)
+                                              ]
+                                        )
+                                  ),
+                    %i%, 1, deg-1)),
   cond : factor(minfactorial(cond)),
 
   if not freeof_sum(cond) then (
@@ -349,7 +350,7 @@ check_sum(expr, %k%, %n%, lo, hi, deg, sm) :=
   if not zeilberger_check then true
   else catch(
     block(
-      [%i%, tmp_sum, real_sum],
+      [%i%, tmp_sum, real_sum, simpsum:true],
       for %i%:check_start thru deg+check_start do(
         real_sum : minfactorial(factcomb(makefact(subst(%n%=%i%, apply(sum,
            [expr, %k%, ceiling(lo) , floor(hi)]))))),
