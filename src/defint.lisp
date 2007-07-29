@@ -1719,6 +1719,7 @@
     (setq a (igprt (m* '((rat) 1. 2.) c)))
     (cons a (m+ r (m*t (m+ c (m* -2. a)) '$%pi)))))
 
+; returns cons of (integer_part . fractional_part) of a
 (defun infr (a)
   ;; I think we really want to compute how many full periods are in a
   ;; and the remainder.
@@ -1730,7 +1731,7 @@
 ;; Return the integer part of r.
 (defun igprt (r)
   ;; r - fpart(r)
-  (m+ r (m* -1 (fpart r))))
+  (pretty-good-floor-or-ceiling r '$floor))
 
 
 ;;;Try making exp(%i*var) --> yy, if result is rational then do integral
@@ -1767,16 +1768,15 @@
 	($%emode t)
 	($trigsign t)
 	(*sin-cos-recur* t))		;recursion stopper
-    (prog (ans d nzp2 l)
-       (when (or (not (mnump (m// limit-diff '$%pi)))
+    (prog (ans d nzp2 l int-zero-to-d int-nzp2 int-zero-to-c)
+       (when (or (not ($constantp limit-diff))
 		 (not (period %pi2 e var)))
-	 ;; Exit if b-a is not a multiple of pi or if the integrand
+	 ;; Exit if b-a is not a constant or if the integrand
 	 ;; doesn't appear to have a period of 2 pi.
 	 (return nil))
        ;; Multiples of 2*%pi in limits.
-       (cond ((eq (ask-integer (setq d (let (($float nil))
-					 (m// limit-diff %pi2))) '$integer)
-		  '$yes)
+       (cond ((integerp (setq d (let (($float nil))
+				 (m// limit-diff %pi2))))
 	      ;; This looks wrong.  We never multiply by d because of
 	      ;; the return!
 	      #+nil
@@ -1788,19 +1788,7 @@
 		    (t (return nil)))))
        ;; The integral is not over a full period (2*%pi) or multiple
        ;; of a full period.  Need to do something special.
-       (when (not (equal a 0.))
-	 ;; Apply the substitution to make the lower limit 0.
-	 (setq e (maxima-substitute (m+ a var) var e))
-	 (setq a 0.)
-	 (setq b limit-diff))
-       (cond ((ratgreaterp %pi2 b)
-	      ;; Less than 1 full period, so intsc can integrate it.
-	      (return (intsc e b var)))
-	     (t
-	      (setq l a)
-	      ;; Why do we need this?  I think if we get here, a is
-	      ;; already 0.
-	      (setq a 0.)))
+
        ;; Wang p. 111: The integral integrate(f(x),x,a,b) can be
        ;; written as:
        ;;
@@ -1813,46 +1801,52 @@
 
        ;; Compute q and c for the upper limit b.
        (setq b (infr b))
+       (setq l a)
        (cond ((null l)
 	      (setq nzp2 (car b))
-	      (setq limit-diff 0.)
+	      (setq int-zero-to-d 0.)
 	      (go out)))
        ;; Compute p and d for the lower limit a.
        (setq l (infr l))
        ;; Compute -integrate(f,x,0,d)
-       (setq limit-diff
-	     (m*t -1 (cond ((setq ans (intsc e (cdr l) var))
-			     ans)
-			    (t (return nil)))))
+       (setq int-zero-to-d
+	     (cond ((setq ans (intsc e (cdr l) var))
+		    (m*t -1 ans))
+		   (t  nil)))
        ;; Compute n = q - p (stored in nzp2)
        (setq nzp2 (m+ (car b) (m- (car l))))
        out
-       ;; Compute n*integrate(f,x,0,2*%pi) + integrate(f,x,0,c) -
-       ;; integrate(f,x,0,d).
-       (setq ans (add* (cond ((zerop1 nzp2)
+       ;; Compute n*integrate(f,x,0,2*%pi)
+       (setq int-nzp2 (cond ((zerop1 nzp2)
 			      ;; n = 0
 			      0.)
 			     ((setq ans (intsc e %pi2 var))
 			      ;; n is not zero, so compute
 			      ;; integrate(f,x,0,2*%pi)
 			      (m*t nzp2 ans))
-			     (t
-			      ;; Unable to compute
-			      ;; integrate(f,x,0,2*%pi), so give up
-			      (return nil)))
-		       (cond ((zerop1 (cdr b))
-			      ;; c = 0 (stored in cdr of b), so
-			      ;; integral is zero.
-			      0.)
-			     ((setq ans (intsc e (cdr b) var))
-			      ;; integrate(f,x,0,c)
-			      ans)
-			     (t
-			      ;; Unable to compute integrate(f,x,0,c)
-			      ;; so give up.
-			      (return nil)))
-		       limit-diff))
-       (return ans))))
+			     ;; Unable to compute integrate(f,x,0,2*%pi)
+			     (t nil)))
+       ;; Compute integrate(f,x,0,c)
+       (setq int-zero-to-c (cond ((zerop1 (cdr b))
+				  ;; c = 0 (stored in cdr of b), so
+				  ;; integral is zero.
+				  0.)
+				 ((setq ans (intsc e (cdr b) var))
+				  ;; integrate(f,x,0,c)
+				  ans)
+				 ;; Unable to compute integrate(f,x,0,c)
+				 (t nil)))
+       (return (cond ((and int-zero-to-d int-nzp2 int-zero-to-c)
+		      ;; All three pieces succeeded.
+		      (add* int-zero-to-d int-nzp2 int-zero-to-c))
+		     ((ratgreaterp %pi2 limit-diff)
+		      ;; Less than 1 full period, so intsc can integrate it.
+		      ;; Apply the substitution to make the lower limit 0.
+		      ;; This is last resort because substitution often causes intsc to fail.
+		      (intsc (maxima-substitute (m+ a var) var e)
+			     limit-diff var))
+		     ;; nothing worked
+		     (t nil))))))
 
 ;; integrate(sc, var, 0, b), where sc is f(sin(x), cos(x)).  I (rtoy)
 ;; think this expects b to be less than 2*%pi.

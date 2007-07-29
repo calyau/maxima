@@ -968,3 +968,14 @@ factor(integrate(r/sqrt(2*e*r^2-a^2-eps^2-2*k*r^4),r));
 integrate(r/sqrt(2*E*r^2-a^2-2*k*r),r);
 sqrt(2*E*r^2-2*k*r-a^2)/(2*E)-k*asin((4*E*r-2*k)/sqrt(4*k^2+8*a^2*E))
 				      /(2*sqrt(2)*sqrt(-E)*E);
+
+/* Bug 1741705 */
+ratsimp(integrate(1/(sin(x)^2+1),x,0,8));
+(atan(sqrt(2)*sin(8)/cos(8))+3*%pi)/sqrt(2);
+
+ratsimp(integrate(1/(sin(x)^2+1),x,-8,0));
+(atan(sqrt(2)*sin(8)/cos(8))+3*%pi)/sqrt(2);
+
+/* Bug 1748168 */
+integrate(1/(2+cos(x)),x,-%pi/2,%pi/2);
+(2/9)*sqrt(3)*%pi;
