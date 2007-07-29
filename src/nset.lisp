@@ -239,25 +239,36 @@
   (set-disjointp a b))
 
 ;; Return the set of elements of the list or set a for which the predicate 
-;; f evaluates to true; signal an error if a isn't a list or a set.
+;; f evaluates to true; signal an error if a isn't a list or a set. Also,
+;; signal an error if the function f doesn't evaluate to true, false, or
+;; unknown.
 
 (defun $subset (a f)
   (setq a (require-set a "$subset"))
-  (let ((acc))
+  (let ((acc nil) (b))
     (dolist (x a `(($set simp) ,@(nreverse acc)))
-      (if (mfuncall f x) (setq acc (cons x acc))))))
-
-;; Return a list of two sets. The first set is the subset of a for which
-;; the predicate f evaluates to true and the second is the subset of a
-;; for which f evaluates to false.
+      (setq b (mfuncall f x))
+      (cond ((eq t b) (push x acc))
+	    ((not (or (eq b nil) (eq b '$unknown)))
+	     (merror "The function ~:M doesn't evaluate to a boolean for ~:M" f x))))))
+	     
+;; Return a list of three sets. The first set is the subset of a for which
+;; the predicate f evaluates to true, the second is the subset of a
+;; for which f evaluates to false, and the third is the subset of a
+;; for which f evalute to unknown.
 
 (defun $partition_set (a f)
   (setq a (require-set a "$partition_set"))
-  (let ((t-acc) (f-acc))
-    (dolist (x a `((mlist simp) (($set simp) ,@(nreverse f-acc)) 
+  (let ((t-acc) (f-acc) (b))
+    (dolist (x a `((mlist simp) 
+		   (($set simp) ,@(nreverse f-acc)) 
 		   (($set simp) ,@(nreverse t-acc))))
-      (if (mfuncall f x) (setq t-acc (cons x t-acc)) (setq f-acc (cons x f-acc))))))
-
+      (setq b (mfuncall f x))
+      (cond ((eq t b) (push x t-acc))
+	    ((or (eq b nil) (eq b '$unknown)) (push x f-acc))
+	    (t 
+	     (merror "The function ~:M doesn't evaluate to a boolean for ~:M" f x))))))
+	       
 ;; Let a = (a1,a2,...,an), where each ai is either a list or a set.
 ;; Return {x | x is a member of exactly one ai}.  When n = 2, this
 ;; is the standard symmdifference of sets; thus symmdifference(a,b)
@@ -1264,7 +1275,7 @@ a positive integer; instead found ~:M" n))))
 ;;  'matrixmap;' similarly, the value of 'maperror' modifies the behavior
 ;;  of 'some' and 'every.'
 ;; 
-;;   (d) 'every' behaves similarly to 'some' expect that 'every' returns
+;;   (d) 'every' behaves similarly to 'some' except that 'every' returns
 ;;   true iff every f evaluates to true for all its inputs.
 ;;
 ;;   (e) If emptyp(e) is true, then some(f,e) --> false and every(f,e) --> true. 
