@@ -14,18 +14,18 @@
                  [1, 2, 0, -1], [0, 2, 1, -2]);
 
     lsquares_mse (M1, [w, x, y, z], w = a*x + b*y + c*z + d);
-        => ('sum ((c*'M1[i, 4] + b*'M1[i, 3] + a*'M1[i, 2] - 'M1[i, 1] + d)^2, i, 1, 5))/5
+        => ('sum ((-c*'M1[i,4] - b*'M1[i,3] - a*'M1[i,2] + 'M1[i,1] - d)^2, i, 1, 5))/5
 
     ''%, nouns;
-        => ((d + c + 2*b - 3*a - 1)^2 + (d + c - 2*b - 4)^2
-        + (d - c + 3*b + a + 2)^2 + (d - c + 2*a - 1)^2
-        + (d - 2*c + b + 2*a)^2)/5
+        => ((-d + 2*c - b - 2*a)^2 + (-d + c - 3*b - a - 2)^2
+          + (-d + c - 2*a + 1)^2 + (- d - c + 2*b + 4)^2
+          + (- d - c - 2*b + 3*a + 1)^2)/5
 
     a1 : lsquares_estimates (M1, [w, x, y, z], w = a*x + b*y + c*z + d, [a, b, c, d]);
         => [[a = -19/34, b = -499/425, c = -181/850, d = 798/425]]
 
     lsquares_residuals (M1, [w, x, y, z], w = a*x + b*y + c*z + d, first (a1));
-        => [-3/425, 4/425, 11/850, -23/850, 1/85]
+        => [3/425, -4/425, -11/850, 23/850, -1/85]
 
     lsquares_residual_mse (M1, [w, x, y, z], w = a*x + b*y + c*z + d, first (a1));
         => 1/4250
@@ -35,11 +35,11 @@
     M2a : matrix ([1, 1, 1], [3/2, 1, 2], [9/4, 2, 1], [3, 2, 2]);
 
     lsquares_mse (M2a, [z, x, y], (z + D)^2 = A*x + B*y + C);
-        => ('sum ((-(D + 'M2a[i, 1])^2 + C + 'M2a[i, 3]*B + 'M2a[i, 2]*A)^2, i, 1, 4))/4
+        => ('sum (((D + 'M2a[i, 1])^2 - C - 'M2a[i, 3] * B - 'M2a[i, 2]*A)^2, i, 1, 4))/4
 
     ''%, nouns;
-        => ((-(D + 3)^2 + C + 2*B + 2*A)^2 + (-(D + 9/4)^2 + C + B + 2*A)^2
-       + (-(D + 3/2)^2 + C + 2*B + A)^2 + (-(D + 1)^2 + C + B + A)^2)/4
+        => (((D + 3)^2 - C - 2*B - 2*A)^2 + ((D + 9/4)^2 - C - B - 2*A)^2
+          + ((D + 3/2)^2 - C - 2*B - A)^2 + ((D + 1)^2 - C - B - A)^2)/4
                                                       
     a2a : lsquares_estimates (M2a, [z, x, y], (z + D)^2 = A*x + B*y + C, [A, B, C, D]);
         => [[A = -75/8, B = -33/8, C = 2089/64, D = -43/8]]
@@ -55,12 +55,12 @@
     M2b : matrix ([1, 1, 1], [3/2, 1, 2], [9/4, 2, 1], [3, 2, 2], [2, 2, 1]);
 
     lsquares_mse (M2b, [z, x, y], (z + D)^2 = A*x + B*y + C);
-        => ('sum ((-(D + 'M2b[i, 1])^2 + C + 'M2b[i, 3]*B + 'M2b[i, 2]*A)^2, i, 1, 5))/5
+        => ('sum (((D + 'M2b[i, 1])^2 - C - 'M2b[i, 3]*B - 'M2b[i, 2]*A)^2, i, 1, 5))/5
     
     ''%, nouns;
-        => ((-(D + 3)^2 + C + 2*B + 2*A)^2 + (-(D + 9/4)^2 + C + B + 2*A)^2
-        + (-(D + 2)^2 + C + B + 2*A)^2 + (-(D + 3/2)^2 + C + 2*B + A)^2
-        + (-(D + 1)^2 + C + B + A)^2)/5
+        => (((D + 3)^2 - C - 2*B - 2*A)^2 + ((D + 9/4)^2 - C - B - 2*A)^2
+          + ((D + 2)^2 - C - B - 2*A)^2 + ((D + 3/2)^2 - C - 2*B - A)^2
+          + ((D + 1)^2 - C - B - A)^2)/5
 
     a2b : lsquares_estimates (M2b, [z, x, y], (z + D)^2 = A*x + B*y + C, [A, B, C, D]);
         => [[A = -59/16, B = -27/16, C = 10921/1024, D = -107/32]]
@@ -92,18 +92,18 @@
     M3 : matrix ([1, 1], [2, 7/4], [3, 11/4], [4, 13/4]);
 
     lsquares_mse (M3, [x, y], y = a*x^b + c);
-        => ('sum ((-'M3[i, 2] + a*'M3[i, 1]^b + c)^2, i, 1, 4))/4 
+        => ('sum (('M3[i, 2] - a*'M3[i, 1]^b - c)^2, i, 1, 4))/4
 
     ''%, nouns;
-        => ((c + a*4^b - 13/4)^2 + (c + a*3^b - 11/4)^2 + (c + a*2^b - 7/4)^2
-        + (c + a - 1)^2)/4
+        => ((- c - a*4^b + 13/4)^2 + (- c - a*3^b + 11/4)^2
+          + (- c - a*2^b + 7/4)^2 +(- c - a + 1)^2)/4
         
     a3 : lsquares_estimates (M3, [x, y], y = a*x^b + c, [a, b, c], initial = [3, 3, 3]);
         => [[a = 1.387365874920709, b = .7110956639593544, c = - .4142705622439636]]
 
     lsquares_residuals (M3, [x, y], y = a*x^b + c, first (a3));
-        => [- .02690468732325513, .1069124575272924,
-            - 0.134080543273408, .05376258426981284]
+        => [.02690468732325513, -.1069124575272924,
+            0.134080543273408, -.05376258426981284]
 
     lsquares_residual_mse (M3, [x, y], y = a*x^b + c, first (a3));
         => .008255535831587049
@@ -257,7 +257,7 @@ lsquares_mse ('data%, variables, equation) := block
 
     makelist ('data% [i, j], j, 1, length (variables)),
     map ("=", variables, %%),
-    sublis (%%, (rhs (equation) - lhs (equation))^2),
+    sublis (%%, (lhs (equation) - rhs (equation))^2),
     buildq
         ([n : length (ev (data%)), summand : %%],
         (1/n) * 'sum (summand, i, 1, n)),
@@ -268,7 +268,7 @@ lsquares_mse ('data%, variables, equation) := block
 lsquares_mse_with_array (data%,variables,equation):=block
    (makelist(data%[i,j],j,0,length(variables)-1),
     map("=",variables,%%),
-    sublis(%%,(rhs(equation)-lhs(equation))^2),
+    sublis(%%,(lhs(equation)-rhs(equation))^2),
     buildq([n:array_nrows(data%),summand:%%],
     ('sum(summand,i,0,n-1))/n));
  *
@@ -316,7 +316,7 @@ lsquares_estimates_approximate (MSE, parameters, [optional_args]) := block
 lsquares_residuals (data, variables, equation, parameters_estimates) :=
 
    (equation : sublis (parameters_estimates, equation),
-    maplist (lambda ([row], (sublis (map ("=", variables, row), equation), rhs (%%) - lhs (%%))), data));
+    maplist (lambda ([row], (sublis (map ("=", variables, row), equation), lhs (%%) - rhs (%%))), data));
 
 lsquares_residual_mse (data, variables, equation, parameters_estimates) :=
 
