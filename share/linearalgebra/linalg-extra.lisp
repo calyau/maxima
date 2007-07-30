@@ -63,6 +63,7 @@
     (dolist (li l)
       (setq x 1 row nil)
       (dolist (lk l)
+        (declare (ignore lk))
 	(push x row)
 	(setq x (mul x li)))
       (setq row (nreverse row))
