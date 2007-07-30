@@ -337,6 +337,7 @@
 	 "contrib/state"
 	 "contrib/stats"
 	 "contrib/stringproc"
+	 "contrib/vector3d"
 	 "contrib/unit"
 	 "contrib/Zeilberger"
 	 "diff_form"

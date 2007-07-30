@@ -434,6 +434,9 @@ contrib/stringproc/stringproc.lisp\
 contrib/stringproc/stringproc.mac\
 contrib/unit/unit-functions.lisp\
 contrib/unit/unit.mac\
+contrib/vector3d/vector3d.dem\
+contrib/vector3d/vector3d.mac\
+contrib/vector3d/vector3d.usg\
 contrib/opsubst.lisp\
 contrib/stirling.mac\
 contrib/tex2ooo.lisp\
