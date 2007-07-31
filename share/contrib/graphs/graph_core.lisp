@@ -98,7 +98,7 @@
 (defun $is_digraph (x)
   (digraph-p x))
 
-(defun $is_graph_or_digrah (x)
+(defun $is_graph_or_digraph (x)
   (or (graph-p x) (digraph-p x)))
 
 (defun $graph_size (gr)
