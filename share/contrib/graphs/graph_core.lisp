@@ -81,7 +81,7 @@
        (dolist (u (neighbors v gr))
 	 (format t " ~2d" u))))
     (t
-     (format t "~%Diraph on ~d vertices with ~d arcs."
+     (format t "~%Digraph on ~d vertices with ~d arcs."
 	     (digraph-size gr) (digraph-order gr))
      (if (> (digraph-size gr) 0 )
 	 (format t "~%Adjacencies:"))
@@ -159,7 +159,12 @@
       ($error "Argument" i "to" m "is not a valid vertex.")))
 
 (defun is-vertex-in-graph (i gr)
-  (not (null (member i (vertices gr)))))
+  (not (equal (gethash i 
+		       (if (graph-p gr)
+			   (graph-neighbors gr)
+			   (digraph-out-neighbors gr))
+		       'not-in-graph)
+	      'not-in-graph)))
 
 (defun require-vertex-in-graph (m i gr)
   (if (not (is-vertex-in-graph i gr))
@@ -406,8 +411,8 @@
 
 (defun is-edge-in-graph (e gr)
   (if (graph-p gr)
-      (not (null (member e (graph-edges gr) :test #'equal)))
-      (not (null (member e (digraph-edges gr) :test #'equal)))))
+      (not (null (member (second e) (neighbors (first e) gr))))
+      (not (null (member (second e) (out-neighbors (first e) gr)))) ))
 
 (defun $add_edge (e gr)
   (require-medge 'add_edge 1 e)
@@ -585,6 +590,43 @@
     (dolist (v sinks)
       ($add_edge `((mlist simp) ,u ,v) gr)))
   '$done)
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;; implementation of a set using hash tables
+;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defstruct ht-set
+  (content (make-hash-table)))
+
+(defun new-set (&rest initial-content)
+  (let ((set (make-ht-set)))
+    (dolist (obj initial-content)
+      (set-add obj set))
+    set))
+
+(defun set-member (obj set)
+  (gethash obj (ht-set-content set)))
+
+(defun set-add (obj set)
+  (setf (gethash obj (ht-set-content set)) t))
+
+(defun set-remove (obj set)
+  (remhash obj (ht-set-content set)))
+
+(defun set-emptyp (set)
+  (= 0 (hash-table-count (ht-set-content set))))
+
+(defun set-elements (set)
+  (let (elts)
+    (maphash #'(lambda (key val)
+		 (declare (ignore val))
+		 (setq elts (cons key elts)))
+	     (ht-set-content set))
+    elts))
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
@@ -900,7 +942,7 @@
     g))
 
 (defun $wheel_graph (n)
-  (if (not (and (integerp n) (> n 3)))
+  (if (not (and (integerp n) (>= n 3)))
       ($error "wheel_graph: first argument is no an integer greater than 3"))
   (let ((g ($cycle_graph n)))
     (add-vertex n g)
@@ -1022,23 +1064,25 @@
   (let ((girth (1+ (graph-size gr))))
     (dolist (v (graph-vertices gr))
       (let
-	  ((visited (list v))
-	   (active (list v))
-	   (next ())
+	  ((visited (new-set v))
+	   (active (new-set v))
+	   (next)
 	   (depth 1))
 	(do ()
-	    ((or (null active) (> (* 2 depth) girth) (<= girth 3)))
-	  (setq next ())
-	  (dolist (u active)
+	    ((or (set-emptyp active)
+		 (> (* 2 depth) girth)
+		 (<= girth 3)))
+	  (setq next (new-set))
+	  (dolist (u (set-elements active))
 	    (dolist (w (neighbors u gr))
-	      (if (not (member w visited))
+	      (if (not (set-member w visited))
 		  (progn
-		    (push w visited)
-		    (push w next))
+		    (set-add w visited)
+		    (set-add w next))
 		  (progn
-		    (if (member w active)
+		    (if (set-member w active)
 			(setq girth (- (* 2 depth) 1)))
-		    (if (and (not odd) (member w next))
+		    (if (and (not odd) (set-member w next))
 			(setq girth (min girth (* 2 depth))))))))
 	  (setq active next)
 	  (setq depth (1+ depth)))))
@@ -1058,19 +1102,18 @@
   (let ((diameter 0))
     (dolist (v (graph-vertices gr))
       (let
-	  ((visited (list v))
-	   (active (list v))
-	   (next ())
+	  ((visited (new-set v))
+	   (active (new-set v))
+	   (next)
 	   (depth -1))
 	(do ()
-	    ((null active))
-	  (setq next ())
-	  (dolist (u active)
+	    ((set-emptyp active))
+	  (setq next (new-set))
+	  (dolist (u (set-elements active))
 	    (dolist (w (neighbors u gr))
-	      (if (not (member w visited))
-		  (progn
-		    (push w visited)
-		    (push w next)))))
+	      (when (not (set-member w visited))
+		(set-add w visited)
+		(set-add w next))))
 	  (setq active next)
 	  (setq depth (1+ depth)))
 	(if (> depth diameter)
@@ -1084,19 +1127,19 @@
   (let ((radius (graph-size gr)))
     (dolist (v (graph-vertices gr))
       (let
-	  ((visited (list v))
-	   (active (list v))
-	   (next ())
+	  ((visited (new-set v))
+	   (active (new-set v))
+	   (next)
 	   (depth -1))
 	(do ()
-	    ((null active))
-	  (setq next ())
-	  (dolist (u active)
+	    ((set-emptyp active))
+	  (setq next (new-set))
+	  (dolist (u (set-elements active))
 	    (dolist (w (neighbors u gr))
-	      (if (not (member w visited))
+	      (if (not (set-member w visited))
 		  (progn
-		    (push w visited)
-		    (push w next)))))
+		    (set-add w visited)
+		    (set-add w next)))))
 	  (setq active next)
 	  (setq depth (1+ depth)))
 	(if (< depth radius)
@@ -1126,7 +1169,7 @@
   (let
       ((A ())
        (B ())
-       (visited ())
+       (visited (new-set))
        (active `(,v))
        (colors (make-hash-table)))
     (setf (gethash v colors) 1)
@@ -1135,12 +1178,12 @@
       (let*
 	  ((w (pop active))
 	   (wc (gethash w colors)))
-	(push w visited)
+	(set-add w visited)
 	(if (= wc 1)
 	    (push w A)
 	    (push w B))
 	(dolist (u (neighbors w gr))
-	  (if (member u visited)
+	  (if (set-member u visited)
 	      (if (= (gethash u colors) wc)
 		  (return-from bi-partition ()))
 	      (if (not (member u active))
