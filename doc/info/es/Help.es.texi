@@ -289,7 +289,7 @@ el manual en l@'{@dotless{i}}nea.
 @code{true} si encuentra la documentaci@'on solicitada y @code{false} en caso
 contrario.
 
-V@'ease tambi@'en @ref{Documentaci@'on}.
+V@'ease tambi@'en @code{Documentaci@'on}.
 
 Ejemplo:
 

@@ -27,9 +27,9 @@ Valor por defecto: @code{true}
 
 Cuando @code{%piargs} vale @code{true}, las funciones trigonom@'etricas
 se simplifican a constantes algebraicas cuando el argumento es m@'ultiplo
-entero de @math{%pi}, @math{%pi/2}, @math{%pi/3}, @math{%pi/4} o @math{%pi/6}.
+entero de @code{%pi}, @code{%pi/2}, @code{%pi/3}, @code{%pi/4} o @code{%pi/6}.
 
-Maxima conoce algunas identidades aplicables cuando @math{%pi}, etc., 
+Maxima conoce algunas identidades aplicables cuando @code{%pi}, etc., 
 se multiplican por una variable entera (esto es, un s@'{@dotless{i}}mbolo
 declarado como entero).
 
@@ -71,7 +71,7 @@ Ejemplo:
                 2    2                    3
 @end example
 
-Se aplican ciertas identidades cuando @math{%pi} o @math{%pi/2}
+Se aplican ciertas identidades cuando @code{%pi} o @code{%pi/2}
 se multiplican por una variable entera.
 
 @c ===beg===
@@ -93,10 +93,10 @@ Valor por defecto: @code{true}
 
 Cuando @code{%iargs} vale @code{true}, las funciones trigonom@'etricas
 se simplifican a funciones hiperb@'olicas si el argumento es aparentemente
-un m@'ultiplo de la unidad imaginaria @math{%i}.
+un m@'ultiplo de la unidad imaginaria @code{%i}.
 
 Maxima aplica esta simplificaci@'on cuando el argumento es un
-m@'ultiplo literal de @math{%i}, aunque el resultado sea reducible a
+m@'ultiplo literal de @code{%i}, aunque el resultado sea reducible a
 real.
 
 Ejemplos:
