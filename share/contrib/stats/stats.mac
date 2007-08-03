@@ -99,7 +99,7 @@ block([numer:stats_numer, options, defaults, m, n, coef, cinterval, aux,
      then statistic: abs(statistic),
 
   /* method */
-  method: sconcat(if /*asymptotic*/ defaults[5] = true
+  method: concat(if /*asymptotic*/ defaults[5] = true
                      then "Large sample z-test. "
                      else "Exact t-test. ",
                   if /*standard_deviation*/ defaults[3] = 'unknown
@@ -127,11 +127,11 @@ block([numer:stats_numer, options, defaults, m, n, coef, cinterval, aux,
 
   /* hypotheses, pvalue (for alternative=greater and alternative=twosided) */
   if /*alternative*/ defaults[2] = 'greater
-     then (hypo: sconcat("H0: mean = ",defaults[1]," , H1: mean > ",defaults[1]),
+     then (hypo: concat("H0: mean = ",defaults[1]," , H1: mean > ",defaults[1]),
            pvalue: 1 - pvalue )
      else if /*alternative*/ defaults[2] = 'less
-             then hypo: sconcat("H0: mean = ",defaults[1]," , H1: mean < ",defaults[1])
-             else (hypo: sconcat("H0: mean = ",defaults[1]," , H1: mean # ",defaults[1]),
+             then hypo: concat("H0: mean = ",defaults[1]," , H1: mean < ",defaults[1])
+             else (hypo: concat("H0: mean = ",defaults[1]," , H1: mean # ",defaults[1]),
                    pvalue: 2 * (1 - pvalue) ),
 
   /* result as an 'inference_result' object*/
@@ -238,7 +238,7 @@ block([numer:stats_numer, options, defaults, dm, n1, n2, v1, v2, coef, cinterval
      then statistic: abs(statistic), 
 
   /* method and Welch approximation */
-  method: sconcat(if /*asymptotic*/ defaults[6] = true
+  method: concat(if /*asymptotic*/ defaults[6] = true
                      then "Asymptotic z-test (for large samples). "
                      else "Exact t-test. ",
                   if /*standard deviations*/ defaults[2] = 'unknown
@@ -365,7 +365,7 @@ block([numer:stats_numer, options, defaults, s2, n, coef, df, cinterval, aux,
   statistic: coef / defaults[3],
 
   /* method */
-  method: sconcat("Variance Chi-square test. ",
+  method: concat("Variance Chi-square test. ",
                   if /*mean*/ defaults[1] = 'unknown
                      then "Unknown mean."
                      else "Known mean."),
@@ -373,11 +373,11 @@ block([numer:stats_numer, options, defaults, s2, n, coef, df, cinterval, aux,
   /* hypotheses, pvalue */
   pvalue: cdf_chi2(statistic,df), /* pvalue for alternative=less */
   if /*alternative*/ defaults[2] = 'greater
-     then (hypo: sconcat("H0: var = ",defaults[3]," , H1: var > ",defaults[3]),
+     then (hypo: concat("H0: var = ",defaults[3]," , H1: var > ",defaults[3]),
            pvalue: 1 - pvalue )
      else if /*alternative*/ defaults[2] = 'less
-             then hypo: sconcat("H0: var = ",defaults[3]," , H1: var < ",defaults[3])
-             else (hypo: sconcat("H0: var = ",defaults[3]," , H1: var # ",defaults[3]),
+             then hypo: concat("H0: var = ",defaults[3]," , H1: var < ",defaults[3])
+             else (hypo: concat("H0: var = ",defaults[3]," , H1: var # ",defaults[3]),
                    if /* compares the sample statistics to the median */
                       statistic <= quantile_chi2(1/2,df)
                      then pvalue: 2 * pvalue
@@ -473,7 +473,7 @@ block([numer:stats_numer, options, defaults, vr, n1, n2, t1, t2, df1, df2, cinte
   statistic: vr,
 
   /* method */
-  method: sconcat("Variance ratio F-test. ",
+  method: concat("Variance ratio F-test. ",
                   if /*means*/ defaults[2] = 'unknown
                      then "Unknown means."
                      else "Known means."),
@@ -561,12 +561,12 @@ block([numer:stats_numer, options, defaults, med, n, npos, aux, xm,
 
   /* hypotheses, pvalue */
   if /*alternative*/ defaults[1] = 'greater
-     then (hypo: sconcat("H0: median = ",defaults[2]," , H1: median > ",defaults[2]),
+     then (hypo: concat("H0: median = ",defaults[2]," , H1: median > ",defaults[2]),
            pvalue: 1 - cdf_binomial(statistic,n,1/2) )
      else if /*alternative*/ defaults[1] = 'less
-             then (hypo: sconcat("H0: median = ",defaults[2]," , H1: median < ",defaults[2]),
+             then (hypo: concat("H0: median = ",defaults[2]," , H1: median < ",defaults[2]),
                    pvalue: cdf_binomial(statistic,n,1/2) )  
-             else (hypo: sconcat("H0: median = ",defaults[2]," , H1: median # ",defaults[2]),
+             else (hypo: concat("H0: median = ",defaults[2]," , H1: median # ",defaults[2]),
                    if statistic < n/2
                       then pvalue: 2 * cdf_binomial(statistic,n,1/2)
                       else pvalue: 2 * (1 - cdf_binomial(statistic,n,1/2)) ),
@@ -669,8 +669,8 @@ block([numer:stats_numer, options, defaults, n, aux, med, zeroes:false, pos, neq
                    else pvalue: cdf_signed_rank(statistic, n) )
     else (/* asymptotic test */
           method: "Asymptotic test",
-          if not noties then method: sconcat(method, ". Ties"),
-          if zeroes then method: sconcat(method, ". Zeroes"),
+          if not noties then method: concat(method, ". Ties"),
+          if zeroes then method: concat(method, ". Zeroes"),
           sigma: sqrt(mu * (2*n + 1) / 6 - apply("+",ties^3-ties) / 48),
           if /*alternative*/ defaults[2] = 'twosided
             then (pvalue: cdf_normal(statistic, mu + signum(statistic - mu)/2, sigma),
@@ -684,10 +684,10 @@ block([numer:stats_numer, options, defaults, n, aux, med, zeroes:false, pos, neq
 
   /* hypotheses */
   if /*alternative*/ defaults[2] = 'greater
-     then hypo: sconcat("H0: med = ",defaults[1]," , H1: med > ",defaults[1])
+     then hypo: concat("H0: med = ",defaults[1]," , H1: med > ",defaults[1])
      else if /*alternative*/ defaults[2] = 'less
-             then hypo: sconcat("H0: med = ",defaults[1]," , H1: med < ",defaults[1])
-             else hypo: sconcat("H0: med = ",defaults[1]," , H1: med # ",defaults[1]),
+             then hypo: concat("H0: med = ",defaults[1]," , H1: med < ",defaults[1])
+             else hypo: concat("H0: med = ",defaults[1]," , H1: med # ",defaults[1]),
 
   /* result as an 'inference_result' object*/
   inference_result("SIGNED RANK TEST",
@@ -790,7 +790,7 @@ block([numer:stats_numer, options, defaults, n1, n2, n, aux, ordered, pos, nequa
                    else pvalue: cdf_rank_sum(statistic, n1, n2) )
     else (/* asymptotic test */
           method: "Asymptotic test",
-          if not noties then method: sconcat(method, ". Ties"),
+          if not noties then method: concat(method, ". Ties"),
           sigma: sqrt(mu / 6 * (n + 1 - apply("+",ties^3-ties) / (n * (n-1)))),
           if /*alternative*/ defaults[1] = 'twosided
             then (pvalue: cdf_normal(statistic, mu + signum(statistic - mu)/2, sigma),
