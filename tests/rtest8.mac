@@ -209,12 +209,13 @@ quad_qags (g (z), z, 1, 3);
  * charfun2 copied from the interpol share package
  */
 
-(charfun2 (z, l1, l2) := charfun (l1 <= z and z < l2),
- (-.329*x^3+.494*x^2 +.559*x+.117) *charfun2(x,minf,1.0)
+block ([expr],
+ charfun2 (z, l1, l2) := charfun (l1 <= z and z < l2),
+ expr : (-.329*x^3+.494*x^2 +.559*x+.117) *charfun2(x,minf,1.0)
     +(.215*x^3-1.94*x^2 +4.85*x-2.77) *charfun2(x,2.5,inf) +(.0933*x^3-1.02*x^2
     +2.56*x-.866) *charfun2(x,2.0,2.5) +(.0195*x^3-.581*x^2
     +1.67*x-.275) *charfun2(x,1.5,2.0) +(.00117*x^3-.498*x^2 +1.55*x -.213)
     *charfun2(x,1.0,1.5),
  block ([float_approx_equal_tolerance : 1e-12],
-    float_approx_equal (find_root (%%, x, 0, 4), 3.127271310605426)));
+    float_approx_equal (find_root (expr, x, 0, 4), 3.127271310605426)));
 true;
