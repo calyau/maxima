@@ -334,7 +334,7 @@
 
 ;;  $sconcat for lists, allows an optional user defined separator string
 ;;  returns maxima-string
-(defun $simplode (lis &optional (ds "&"))
+(defun $simplode (lis &optional (ds ""))
    (setq lis (cdr lis))
    (let ((res ""))
       (setq ds (l-string ds))
