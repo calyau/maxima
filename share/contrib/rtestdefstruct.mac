@@ -1,17 +1,17 @@
 kill (all);
 done;
 
-defstruct (foo ());
-[foo ()];
+defstruct (mumble ());
+[mumble ()];
 
-f: new (foo);
-foo ();
+f: new (mumble);
+mumble ();
 
 defstruct (bar (aa, bb), baz (aa), quux (aa));
 [bar (aa, bb), baz (aa), quux (aa)];
 
 defstruct (foo (aa, bb, cc = bar (2, 3), dd = baz (5), ee = quux (7)));
-[foo (aa, bb, cc = bar (2, 3), dd = baz (5), ee = quux (7))];
+[foo (aa, bb, bar (2, 3), baz (5), quux (7))];
 
 f: new (foo);
 foo (aa, bb, bar (2, 3), baz (5), quux (7));
@@ -43,23 +43,20 @@ f@4@1: %pi - 3;
 f;
 foo (aa, bb, bar (2, blurf (11)), baz (%pi - 3), quux (7));
 
-propvars (defstruct_default);
-[foo, bar, baz, quux];
+structures;
+[mumble(), bar(aa, bb), baz(aa), quux(aa), foo(aa, bb, bar(2, 3), baz(5), quux(7))];
 
-map (lambda ([a], get (a, defstruct_default)), propvars (defstruct_default));
-[foo(aa, bb, bar(2, 3), baz(5), quux(7)), bar(aa, bb), baz(aa), quux(aa)];
+map (lambda ([a], ?get (op (a), ?defstruct\-template)), structures);
+[mumble(), bar(aa, bb), baz(aa), quux(aa), foo(aa, bb, cc, dd, ee)];
 
-map (lambda ([a], get (a, defstruct_template)), propvars (defstruct_default));
-[foo(aa, bb, cc, dd, ee), bar(aa, bb), baz(aa), quux(aa)];
-
-kill (foo, bar, baz);
+kill (mumble, foo, bar, baz);
 done;
 
 errcatch (new (baz));
 [];
 
-propvars (defstruct_default);
-[quux];
+structures;
+[quux(aa)];
 
 new (quux);
 quux (aa);
@@ -91,5 +88,5 @@ quux (aa);
 0;
 
 kgcd (123456, 123);
-gcd (123456, 123);
+''(gcd (123456, 123));
 
