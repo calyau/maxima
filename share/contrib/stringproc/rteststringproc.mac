@@ -3,7 +3,7 @@ m : "text";
 [stringp(m), lstringp(m)];
 [true, false]$
 l : sconcat("text");
-lstring("text")$
+''(lstring("text"))$
 [stringp(l), lstringp(l)];
 [false, true]$
 stringp(sunlisp(l));
