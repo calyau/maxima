@@ -4,7 +4,7 @@ f(x) := if x < 0 then -x else sqrt(x);
 plot2d (f(x), [x, -2, 2]);
  */
 
-(kill (all), 0);
+(kill (all), load (boolsimp), 0);
 0;
 
 /* Test 'if (noun).
