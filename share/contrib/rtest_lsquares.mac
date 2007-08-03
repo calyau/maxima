@@ -1,17 +1,8 @@
-(kill (all), load (lsquares), 
-
- /* Ugly gyrations here to redefine dfloat_approx_equal ... 
-  * If dfloat_approx_equal were called via MFUNCALL in src/mload.lisp,
-  * I could just dfloat_approx_equal(a, b) := ... and be done with it.
-  */
- RTEST_LSQUARES_FLOAT_TOLERANCE : 1e-12,
- my_dfloat_approx_equal (a, b) := (a : float(a), b : float(b), floatnump(a) and floatnump(b) and is (abs (a - b) < RTEST_LSQUARES_FLOAT_TOLERANCE * min (abs(a), abs(b)))),
- my_dfloat_approx_equal : 'my_dfloat_approx_equal,
- ?fmakunbound (dfloat_approx_equal),
- ?defun (dfloat_approx_equal, ''(?cdr ([a, b])), ''(?cdr ([?mfuncall, my_dfloat_approx_equal, a, b]))),
-
- 0
-);
+(kill (all),
+ load (lsquares), 
+ save_tolerance : float_approx_equal_tolerance,
+ float_approx_equal_tolerance : 1e-12,
+ 0);
 0;
 
 /* Example (1) from lsquares.mac comment header */
@@ -70,7 +61,7 @@ lsquares_residual_mse (M2b, [z, x, y], (z + D)^2 = A*x + B*y + C, first (a2b));
 a2c : lsquares_estimates_approximate (mse, [A, B, C, D], iprint = [-1, 0]);
 [[A = -3.67850494740174, B = -1.683070351177813, C = 10.63469950148635, D = -3.340357993175206]];
 
-block ([RTEST_LSQUARES_FLOAT_TOLERANCE : 1e-8], dfloat_approx_equal (lsquares_residual_mse (M2b, [z, x, y], (z + D)^2 = A*x + B*y + C, first (a2c)), .06601644230868757));
+block ([float_approx_equal_tolerance : 1e-8], float_approx_equal (lsquares_residual_mse (M2b, [z, x, y], (z + D)^2 = A*x + B*y + C, first (a2c)), .06601644230868757));
 true;
 
 /* Example (3) from lsquares.mac comment header */
@@ -88,7 +79,7 @@ a3 : lsquares_estimates (M3, [x, y], y = a*x^b + c, [a, b, c], initial = [3, 3, 
 lsquares_residuals (M3, [x, y], y = a*x^b + c, first (a3));
 [.02690468732327345, -.1069124575272633, .1340805432734378, -.05376258426978886];
 
-block ([RTEST_LSQUARES_FLOAT_TOLERANCE : 1e-8], dfloat_approx_equal (lsquares_residual_mse (M3, [x, y], y = a*x^b + c, first (a3)), .008255535831587089));
+block ([float_approx_equal_tolerance : 1e-8], float_approx_equal (lsquares_residual_mse (M3, [x, y], y = a*x^b + c, first (a3)), .008255535831587089));
 true;
 
 /* Example (4) from lsquares.mac comment header */
@@ -159,7 +150,7 @@ lsquares_residual_mse (A, [x, y], y = a*b^x + c, soln [1]);
  soln : lsquares_estimates (B, [x, y], y = a*b^x + c, [a, b, c], initial = [5, 5, 5], tol = 1e-8, iprint = [-1, 0]));
 [[a = 2.799098974486688, b = 2.000000000018375, c = 1.100000000358122]];
 
-block ([RTEST_LSQUARES_FLOAT_TOLERANCE : 1e-3], dfloat_approx_equal (lsquares_residual_mse (B, [x, y], y = a*b^x + c, soln [1]), 7.353419577383337E-21));
+block ([float_approx_equal_tolerance : 1e-3], float_approx_equal (lsquares_residual_mse (B, [x, y], y = a*b^x + c, soln [1]), 7.353419577383337E-21));
 true;
 
 /* Example (7b) from lsquares.mac comment header */
@@ -168,7 +159,7 @@ true;
  soln : lsquares_estimates (B, [x, y], y = a*x^b + c, [a, b, c], initial = [4, 1, 2], tol = 1e-8, iprint = [-1, 0]));
 [[a = 3.17731589660838, b = .4878659751689245, c = .7723843418856658]];
 
-block ([RTEST_LSQUARES_FLOAT_TOLERANCE : 1e-8], dfloat_approx_equal (lsquares_residual_mse (B, [x, y], y = a*x^b + c, soln [1]), 6.822196230278462E-6));
+block ([float_approx_equal_tolerance : 1e-8], float_approx_equal (lsquares_residual_mse (B, [x, y], y = a*x^b + c, soln [1]), 6.822196230278462E-6));
 true;
 
 /* Example (1) from lsquares.mac comment header */
@@ -178,5 +169,8 @@ true;
  soln : lsquares_estimates (data, [m, n, y], y = (A*m + B*n)^(1/3) + C, [A, B, C], initial = [3, 3, 3], tol = 1e-8, iprint = [-1, 0]));
 [[A = 4.999999920039424, B = 3.999999308815936, C = 2.000000105365426]];
 
-block ([RTEST_LSQUARES_FLOAT_TOLERANCE : 1e-6], dfloat_approx_equal (lsquares_residual_mse (data, [m, n, y], y = (A*m + B*n)^(1/3) + C, soln [1]), 1.71963942036564E-16));
+block ([float_approx_equal_tolerance : 1e-6], float_approx_equal (lsquares_residual_mse (data, [m, n, y], y = (A*m + B*n)^(1/3) + C, soln [1]), 1.71963942036564E-16));
 true;
+
+(float_approx_equal_tolerance : save_tolerance, 0);
+0;
