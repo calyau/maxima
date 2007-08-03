@@ -217,16 +217,18 @@
 	   (namestring in-stream)))))
 
 ;; Return true if $float converts both a and b to floats and 
-;; |a - b| <= 8 * double-float-epsilon * min(|a|, |b|). In all
-;; other cases, return false.
+;; |a - b| <= float_approx_equal_tolerance * min(|a|, |b|).
+;; In all other cases, return false.
 
-(defun $dfloat_approx_equal (a b)
+(defmvar $float_approx_equal_tolerance (* 8 double-float-epsilon))
+
+(defun $float_approx_equal (a b)
   (setq a (if (floatp a) a ($float a)))
   (setq b (if (floatp b) b ($float b)))
   (and
    (floatp a)
    (floatp b)
-   (<= (abs (- a b)) (* 8 double-float-epsilon (min (abs a) (abs b))))))
+   (<= (abs (- a b)) (* $float_approx_equal_tolerance (min (abs a) (abs b))))))
 
 ;; Return true if $bfloat converts both a and b to big floats and 
 ;; |a - b| <= 8 * big-float-epsilon * min(|a|, |b|). The big float
@@ -252,7 +254,7 @@
  
 (defun approx-alike (f g)
  
-  (cond ((floatp f) (and (floatp g) ($dfloat_approx_equal f g)))
+  (cond ((floatp f) (and (floatp g) ($float_approx_equal f g)))
 	
 	(($bfloatp f) (and ($bfloatp g) ($bfloat_approx_equal f g)))
 	
