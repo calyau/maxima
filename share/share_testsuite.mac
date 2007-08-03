@@ -1,0 +1,53 @@
+block
+  ([file_search_tests : file_search_maxima,
+    testsuite_files :
+       [rtestflatten,
+        rtestdefstruct,
+        rtest_zeilberger_extreme,
+        rtest_zeilberger,
+        rtest_boolsimp,
+
+     /* These tests of diff eq code mostly fail.
+      * Probably it's just a matter of loading the
+      * appropriate package or packages for each test.
+
+        rtest_ode1_abel,
+        rtest_ode1_riccati,
+        rtest_sym,
+        rtest_sym2,
+        rtestode_kamke_1_1,
+        rtestode_kamke_1_2,
+        rtestode_kamke_1_3,
+        rtestode_kamke_1_4,
+        rtestode_kamke_1_5,
+        rtestode_kamke_1_6,
+        rtestode_murphy_1_1,
+        rtestode_murphy_1_2,
+        rtestode_murphy_1_3,
+        rtestode_murphy_1_4,
+        rtestode_murphy_1_5,
+        rtestode_murphy_1_6,
+        rtestode_murphy_2_1,
+        rtestode_murphy_2_2,
+        rtestode_murphy_2_3,
+        rtestode_murphy_2_4,
+        rtestode_murphy_2_5,
+        rtestode_kamke_2_1,
+        rtestode_kamke_2_2,
+        rtestode_kamke_2_3,
+        rtestode_kamke_2_4,
+        rtestode_kamke_2_5,
+        rtestode_odelin,
+
+     */
+        rtestezunits,
+        rtest_numericalio,
+        rtest_simplify_sum,
+        rteststringproc,
+        rtest_opproperties,
+        rtest_stats,
+        rtest_levin,
+        rtest_fractals,
+        rtest_lsquares]],
+    
+    run_testsuite ());
