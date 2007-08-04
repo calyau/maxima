@@ -372,6 +372,7 @@ contrib/rand/vandpol.mac\
 contrib/rand/vandpol.usg\
 contrib/rtest_opproperties.mac\
 contrib/rtestdefstruct.mac\
+contrib/rtest_lsquares.mac\
 contrib/sarag/aliases.mac\
 contrib/sarag/arag_test.mac\
 contrib/sarag/constants.mac\
@@ -905,6 +906,7 @@ maxima-init.lisp\
 share.usg\
 template.texi\
 builtins-list.txt\
+share_testsuite.mac\
 $(sharefiles)
 
 EXTRA_DIST = $(genericdirDATA)
