@@ -1328,7 +1328,7 @@
      (cond ((null lchar1)
 	    (cond ((not (zerop lmin)) (go out))
 		  (t (merror "Factor ran out of primes."))))
-	   ((> algcont 6)
+	   ((and algfac* minpoly* (> algcont 6))
 	    (cond ((ziredup minpoly*)(setq trl* tr)(setq modulus nil)
 		   (return 'splitcase))
 		  (t (merror "The minimal poly must be irreducible over the integers.")))))
