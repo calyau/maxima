@@ -113,9 +113,9 @@ fixes: fix_maxima_bat
 # Installed maxima.bat must have DOS line termination on win9x
 fix_maxima_bat: 
 		unix2dos "@prefix@/bin/maxima.bat"
-		rm -f foo.bat 2> /dev/null
-		sed -e 's|GCCVER|$(GCCVER)|g' < maxima.bat > foo.bat
-		mv -f foo.bat maxima.bat
+		rm -f "@prefix@/bin/foo.bat" 2> /dev/null
+		sed -e 's|GCCVER|$(GCCVER)|g' < "@prefix@/bin/maxima.bat" > "@prefix@/bin/foo.bat"
+		mv -f "@prefix@/bin/foo.bat" "@prefix@/bin/maxima.bat"
 
 install: xmaxima.exe winkill.exe tclwinkill.dll gnuplot wxmaxima chm fixes
 	cp xmaxima.exe winkill.exe tclwinkill.dll "@prefix@/bin"
