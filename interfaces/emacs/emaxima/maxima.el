@@ -333,7 +333,7 @@ Choices are 'newline, 'newline-and-indent, and 'reindent-then-newline-and-indent
 (defvar maxima-newline-style nil
   "For compatibility.")
 
-(defcustom maxima-command "maxima"
+(defcustom maxima-command "~/maxima/maxima-local"
   "*The command used to start Maxima."
   :group 'maxima
   :type 'string)
@@ -2940,7 +2940,11 @@ Return the last string sent."
            (pmark (progn (goto-char (process-mark inferior-maxima-process))
                          (forward-line 0)
                          (point-marker)))
-           (output (buffer-substring-no-properties inferior-maxima-input-end pmark)))
+           (beg (progn
+                  (goto-char inferior-maxima-input-end)
+                  (forward-line 1)
+                  (point)))
+           (output (buffer-substring-no-properties beg pmark)))
       (goto-char pt)
       output)))
 
