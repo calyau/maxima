@@ -1360,7 +1360,7 @@ Return nil if no name or error in name."
         (cell (emaxima-get-cell-contents)))
     (goto-char (emaxima-cell-end))
     (forward-line 1)
-    (insert "\\maximaoutput\n\n")
+    (insert "\\maximaoutput\n")
     (while (or
             (string-match "[$;]" cell)
             (eq (string-match "[ \n]*:lisp" cell) 0))
@@ -1401,7 +1401,7 @@ Return nil if no name or error in name."
           (cell (emaxima-get-cell-contents)))
       (goto-char (emaxima-cell-end))
       (forward-line 1)
-      (insert "\\maximaoutput\n\n")
+      (insert "\\maximaoutput\n")
       (while (or
               (string-match "[$;]" cell)
               (eq (string-match "[ \n]*:lisp" cell) 0))
@@ -1418,7 +1418,6 @@ Return nil if no name or error in name."
         (insert (substring cell 0 end))
         (unless (string= "\n" (substring cell (- end 1) end))
           (insert "\n"))
-        (insert "\n")
         (insert (maxima-last-output))
         (setq cell (substring cell end))))))
 
