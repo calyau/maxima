@@ -464,6 +464,8 @@
   (declare (fixnum k))
   (if (< k 2) (list 1) (cons k (index* (f1- k)))))
 
+; sets plim to a power of p1 likely to be a large enough modulus for polynomial u
+; returns limk, where plim = p1^(2^(limk+1))
 (defun klim (u p1)
   (prog (bcoef)
      (setq bcoef (* 5 (maxcoefficient u)))
@@ -603,14 +605,6 @@
 	 (or (numberp u) (alg u)))
 	(t (quick-sqfr-check u var))))
 
-(defun logtwo (x)
-  (cond ((eql x 0) 0)
-	((eql x 1) 1)
-	(t (let ((ans (1- (integer-length x))))
-	     (if (> x (expt 2 ans))
-		 (1+ ans)
-		 ans)))))
-
 (declare-top (special p))
 
 (defun fixvl0 (l1 l2 ov)
@@ -717,16 +711,11 @@
    (setq r (cdr r))
    (go loop)))
 
-(defun logn (arg n)
-  (if (> arg n)
-      (1+ (logn (truncate arg n) n))
-      0))
-
 (defun maxcoef (p)
   (maxcoefficient p))
 
 (defun incrlimk (p)
-  (prog (v)
+  (prog (v min-plim)
      (cond (modulu* (setq plim modulu* *prime modulu* limk -1) (return nil))
 	   ((null limk)(setq plim *alpha *prime *alpha limk -1)(return nil)))
      (setq v (butlast (pdegreevector p)))
@@ -745,10 +734,9 @@
 			       (expt b a)))))
 	     v
 	     valist)))
-     (setq v (max 0 (1- (logtwo (logn (* (max (maxcoef p) plim) v) plim)))))
-     (incf limk v)
-     loop (cond ((< v 1) (return nil)))
-     (decf v)
+     (setq min-plim (* (max (maxcoef p) plim) v))
+     loop (cond ((< min-plim plim) (return nil)))
+     (incf limk)
      (setq plim (* plim plim))
      (go loop)))
 
