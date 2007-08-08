@@ -629,6 +629,19 @@
      (let ((form (read)))
        (prin1 (eval form))))))
 
+(defun maxima-read-eval-print-loop ()
+  (setf *debugger-hook* #'maxima-lisp-debugger-repl)
+  (loop
+   (catch 'to-maxima-repl
+     (format t "~a~%~a> ~a" *prompt-prefix*
+	     (package-name *package*) *prompt-suffix*)
+     (finish-output)
+     (let ((form (read)))
+       (let ((results (multiple-value-list (eval form))))
+	 (dolist (r results)
+	   (fresh-line)
+	   (prin1 r)))))))
+
 (defun maxima-lisp-debugger-repl (condition me-or-my-encapsulation)
   (declare (ignore me-or-my-encapsulation))
   (format t "~&Maxima encountered a Lisp error:~%~% ~A" condition)
