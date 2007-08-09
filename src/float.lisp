@@ -257,8 +257,13 @@ One extra decimal digit in actual representation for rounding purposes.")
 (defun floattofp (x)
   (unless $float2bf
     (mtell "Warning:  Float to bigfloat conversion of ~S~%" x))
-  (setq x (fixfloat x))
-  (fpquotient (intofp (car x)) (intofp (cdr x))))
+  (multiple-value-bind (frac exp sign)
+      (integer-decode-float x)
+    ;; Scale frac to the desired number of bits, and adjust the
+    ;; exponent accordingly.
+    (let ((scale (- fpprec (integer-length frac))))
+      (list (ash (* sign frac) scale)
+	    (+ fpprec (- exp scale))))))
 
 ;; Convert a bigfloat into a floating point number.
 (defmfun fp2flo (l)
