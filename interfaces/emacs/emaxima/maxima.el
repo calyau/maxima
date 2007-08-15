@@ -333,7 +333,7 @@ Choices are 'newline, 'newline-and-indent, and 'reindent-then-newline-and-indent
 (defvar maxima-newline-style nil
   "For compatibility.")
 
-(defcustom maxima-command "~/maxima/maxima-local"
+(defcustom maxima-command "maxima"
   "*The command used to start Maxima."
   :group 'maxima
   :type 'string)
