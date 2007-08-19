@@ -5,7 +5,7 @@ EXTRA_DIST = \
   INSTALL.win32 INSTALL.lisp \
   configure.lisp  maxima-local.in xmaxima-local.in \
   ChangeLog-5.9.2 ChangeLog-5.9.3 ChangeLog-5.10.0 ChangeLog-5.11.0 \
-  ChangeLog-5.12.0
+  ChangeLog-5.12.0 ChangeLog-5.13.0
 
 include common.mk
 
