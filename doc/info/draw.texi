@@ -181,7 +181,8 @@ See also @code{logx} and @code{logy}.
 Default value: @code{screen}
 
 Selects the terminal to be used by Gnuplot; possible values are:
-@code{screen} (default), @code{png}, @code{jpg}, @code{eps}, and @code{eps_color}.
+@code{screen} (default), @code{png}, @code{jpg}, @code{eps}, @code{eps_color},
+@code{gif}, @code{animated_gif} and @code{wxt}.
 
 Since this is a global graphics option, its position in the scene description
 does not matter. It can be also used as an argument of function @code{draw}.
@@ -205,9 +206,29 @@ Examples:
       draw2d(file_name = "myfile",
              explicit(x^2,x,-1,1),
              terminal  = 'eps)$
+(%i6) /* wxwidgets window */
+      draw2d(explicit(x^2,x,-1,1),
+             terminal  = 'wxt)$
 @end example
 
-See also @code{file_name}, @code{pic_width}, and @code{pic_height}.
+An animated gif file,
+@example
+(%i1) load(draw)$
+(%i2) draw(
+        delay     = 100,
+        file_name = "zzz",
+        terminal  = 'animated_gif,
+        gr2d(explicit(x^2,x,-1,1)),
+        gr2d(explicit(x^3,x,-1,1)),
+        gr2d(explicit(x^4,x,-1,1)));
+End of animation sequence
+(%o2)          [gr2d(explicit), gr2d(explicit), gr2d(explicit)]
+@end example
+
+Option @code{delay} is only active in animated gif's; it is ignored in
+any other case.
+
+See also @code{file_name}, @code{pic_width}, @code{pic_height} and @code{delay}.
 @end defvr
 
 
@@ -387,6 +408,285 @@ See also @code{xtics}, and @code{ytics}.
 
 
 
+@defvr {Graphic option} xaxis
+Default value: @code{false}
+
+If @code{xaxis} is @code{true}, the @var{x} axis is drawn.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(explicit(x^3,x,-1,1),
+             xaxis       = true,
+             xaxis_color = blue)$
+@end example
+
+See also @code{xaxis_width}, @code{xaxis_type} and @code{xaxis_color}.
+@end defvr
+
+
+
+@defvr {Graphic option} xaxis_width
+Default value: 1
+
+@code{xaxis_width} is the width of the @var{x} axis.
+Its value must be a positive number.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(explicit(x^3,x,-1,1),
+             xaxis       = true,
+             xaxis_width = 3)$
+@end example
+
+See also @code{xaxis}, @code{xaxis_type} and @code{xaxis_color}.
+@end defvr
+
+
+
+@defvr {Graphic option} xaxis_type
+Default value: @code{dots}
+
+@code{xaxis_type} indicates how the @var{x} axis is displayed; 
+possible values are @code{solid} and @code{dots}.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(explicit(x^3,x,-1,1),
+             xaxis       = true,
+             xaxis_type  = solid)$
+@end example
+
+See also @code{xaxis}, @code{xaxis_width} and @code{xaxis_color}.
+@end defvr
+
+
+
+@defvr {Graphic option} xaxis_color
+Default value: @code{"black"}
+
+@code{xaxis_color} specifies the color for the @var{x} axis. See
+@code{color} to know how colors are defined.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(explicit(x^3,x,-1,1),
+             xaxis       = true,
+             xaxis_color = red)$
+@end example
+
+See also @code{xaxis}, @code{xaxis_width} and @code{xaxis_type}.
+@end defvr
+
+
+
+@defvr {Graphic option} yaxis
+Default value: @code{false}
+
+If @code{yaxis} is @code{true}, the @var{y} axis is drawn.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(explicit(x^3,x,-1,1),
+             yaxis       = true,
+             yaxis_color = blue)$
+@end example
+
+See also @code{yaxis_width}, @code{yaxis_type} and @code{yaxis_color}.
+@end defvr
+
+
+
+@defvr {Graphic option} yaxis_width
+Default value: 1
+
+@code{yaxis_width} is the width of the @var{y} axis.
+Its value must be a positive number.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(explicit(x^3,x,-1,1),
+             yaxis       = true,
+             yaxis_width = 3)$
+@end example
+
+See also @code{yaxis}, @code{yaxis_type} and @code{yaxis_color}.
+@end defvr
+
+
+
+@defvr {Graphic option} yaxis_type
+Default value: @code{dots}
+
+@code{yaxis_type} indicates how the @var{y} axis is displayed; 
+possible values are @code{solid} and @code{dots}.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(explicit(x^3,x,-1,1),
+             yaxis       = true,
+             yaxis_type  = solid)$
+@end example
+
+See also @code{yaxis}, @code{yaxis_width} and @code{yaxis_color}.
+@end defvr
+
+
+
+@defvr {Graphic option} yaxis_color
+Default value: @code{"black"}
+
+@code{yaxis_color} specifies the color for the @var{y} axis. See
+@code{color} to know how colors are defined.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(explicit(x^3,x,-1,1),
+             yaxis       = true,
+             yaxis_color = red)$
+@end example
+
+See also @code{yaxis}, @code{yaxis_width} and @code{yaxis_type}.
+@end defvr
+
+
+
+@defvr {Graphic option} zaxis
+Default value: @code{false}
+
+If @code{zaxis} is @code{true}, the @var{z} axis is drawn in 3D plots.
+This option has no effect in 2D scenes.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(explicit(x^2+y^2,x,-1,1,y,-1,1),
+             zaxis       = true,
+             zaxis_type  = solid,
+             zaxis_color = blue)$
+@end example
+
+See also @code{zaxis_width}, @code{zaxis_type} and @code{zaxis_color}.
+@end defvr
+
+
+
+@defvr {Graphic option} zaxis_width
+Default value: 1
+
+@code{zaxis_width} is the width of the @var{z} axis.
+Its value must be a positive number. This option has no effect in 2D scenes.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(explicit(x^2+y^2,x,-1,1,y,-1,1),
+             zaxis       = true,
+             zaxis_type  = solid,
+             zaxis_width = 3)$
+@end example
+
+See also @code{zaxis}, @code{zaxis_type} and @code{zaxis_color}.
+@end defvr
+
+
+
+@defvr {Graphic option} zaxis_type
+Default value: @code{dots}
+
+@code{zaxis_type} indicates how the @var{z} axis is displayed; 
+possible values are @code{solid} and @code{dots}.
+This option has no effect in 2D scenes.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(explicit(x^2+y^2,x,-1,1,y,-1,1),
+             zaxis       = true,
+             zaxis_type  = solid)$
+@end example
+
+See also @code{zaxis}, @code{zaxis_width} and @code{zaxis_color}.
+@end defvr
+
+
+
+@defvr {Graphic option} zaxis_color
+Default value: @code{"black"}
+
+@code{zaxis_color} specifies the color for the @var{z} axis. See
+@code{color} to know how colors are defined. 
+This option has no effect in 2D scenes.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(explicit(x^2+y^2,x,-1,1,y,-1,1),
+             zaxis       = true,
+             zaxis_type  = solid,
+             zaxis_color = red)$
+@end example
+
+See also @code{zaxis}, @code{zaxis_width} and @code{zaxis_type}.
+@end defvr
+
+
+
 @defvr {Graphic option} rot_vertical
 Default value: 60
 
@@ -496,7 +796,34 @@ Example:
 See also @code{terminal}, @code{pic_width}, and @code{pic_height}.
 @end defvr
 
+@defvr {Graphic option} delay
+Default value: 5
 
+This is the delay in 1/100 seconds of frames in animated gif files.
+
+Since this is a global graphics option, its position in the scene description
+does not matter. It can be also used as an argument of function @code{draw}.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw(
+        delay     = 100,
+        file_name = "zzz",
+        terminal  = 'animated_gif,
+        gr2d(explicit(x^2,x,-1,1)),
+        gr2d(explicit(x^3,x,-1,1)),
+        gr2d(explicit(x^4,x,-1,1)));
+End of animation sequence
+(%o2)          [gr2d(explicit), gr2d(explicit), gr2d(explicit)]
+@end example
+
+Option @code{delay} is only active in animated gif's; it is ignored in
+any other case.
+
+See also @code{terminal}, @code{pic_width}, and @code{pic_height}.
+@end defvr
 
 @defvr {Graphic option} pic_width
 Default value: 640
@@ -1586,8 +1913,8 @@ sequentially: @i{graphic options} affect those @i{graphic objects} placed
 on its right. Some @i{graphic options} affect the global appearence of the scene.
 
 This is the list of @i{graphic objects} available for scenes in three dimensions:
-@code{points}, @code{label}, @code{vector}, @code{explicit}, @code{parametric} and
-@code{parametric_surface}.
+@code{points}, @code{label}, @code{vector}, @code{explicit}, @code{parametric},
+@code{parametric_surface} and @code{geomap}.
 
 See also the following graphic options: @code{xrange}, @code{yrange}, 
 @code{zrange}, @code{logx}, @code{logy}, @code{logz}, @code{terminal}, 
@@ -1615,6 +1942,7 @@ To make use of this function, write first @code{load(draw)}.
 @deffnx {Graphic object} points ([@var{y1},@var{y2},...])
 @deffnx {Graphic object} points ([[@var{x1},@var{y1},@var{z1}], [@var{x2},@var{y2},@var{z2}],...])
 @deffnx {Graphic object} points ([@var{x1},@var{x2},...], [@var{y1},@var{y2},...], [@var{z1},@var{z2},...])
+@deffnx {Graphic object} points (@var{matrix})
 Draws points in 2D and 3D.
 
 This object is affected by the following @i{graphic options}: @code{point_size}, 
@@ -1628,6 +1956,9 @@ This object is affected by the following @i{graphic options}: @code{point_size},
 plots points @code{[x1,y1]}, @code{[x2,y2]}, etc. If abscissas
 are not given, they are set to consecutive positive integers, so that 
 @code{points ([@var{y1},@var{y2},...])} draws points @code{[1,@var{y1}]}, @code{[2,@var{y2}]}, etc.
+If @var{matrix} is a two-column or two-row matrix, @code{points (@var{matrix})}
+draws the associated points. If @var{matrix} is a one-column or one-row matrix,
+abscissas are assigned automatically.
 
 Example:
 
@@ -1652,6 +1983,8 @@ Example:
 @code{points ([[@var{x1},@var{y1},@var{z1}], [@var{x2},@var{y2},@var{z2}],...])} or 
 @code{points ([@var{x1},@var{x2},...], [@var{y1},@var{y2},...], [@var{z1},@var{z2},...])}
 plots points @code{[@var{x1},@var{y1},@var{z1}]}, @code{[@var{x2},@var{y2},@var{z2}]}, etc.
+If @var{matrix} is a three-column or three-row matrix, @code{points (@var{matrix})}
+draws the associated points.
 
 Examples:
 
@@ -2136,21 +2469,22 @@ See also @code{geomap}.
 @end defvr
 
 
-@deffn  {Graphic object} geomap (@var{n1},@var{n2},...)
-Draws cartographic maps in 2D.
+@deffn  {Graphic object} geomap (@var{numlist})
+@deffnx {Graphic object} geomap (@var{numlist},@var{3Dprojection})
+Draws cartographic maps in 2D and 3D.
 
 @b{2D}
 
 This function works together with global variable @code{boundaries_array}.
 
-Arguments are numbers or lists containing numbers or lists of numbers.
+Argument @var{numlist} is a list containing numbers or lists of numbers.
 All these numbers must be integers greater or equal than zero, 
 representing the components of global array @code{boundaries_array}.
 
 Each component of @code{boundaries_array} is an array of floating
 point quantities, the coordinates of a polygonal segment or map boundary.
 
-@code{geomap (@var{n1},@var{n2},...)} flattens its arguments and draws the
+@code{geomap (@var{numlist})} flattens its arguments and draws the
 associated boundaries in @code{boundaries_array}.
 
 This object is affected by the following @i{graphic options}: @code{line_width}, 
@@ -2192,8 +2526,8 @@ Auxiliary package @code{worldmap} sets global variable
 (longitude, latitude) coordinates. These data are in the 
 public domain and come from 
 @url{http://www-cger.nies.go.jp/grid-e/gridtxt/grid19.html}.
-Package @code{worldmap} defines also boundaries for countries
-and continents as lists with the necessary components of 
+Package @code{worldmap} defines also boundaries for countries,
+continents and coastlines as lists with the necessary components of 
 @code{boundaries_array} (see file @code{share/draw/worldmap.mac}
 for more information). Package @code{draw} does not
 automatically load @code{worldmap}.
@@ -2231,9 +2565,58 @@ and @code{make_poly_continent} to understand the following code.
 (%i4) apply(draw2d, mymap)$
 @end example
 
+
+@b{3D}
+
+@code{geomap (@var{numlist})} projects map boundaries on the sphere of radius 1
+centered at (0,0,0). It is possible to change the sphere or the projection type
+by using @code{geomap (@var{numlist},@var{3Dprojection})}.
+
+Available 3D projections:
+
+@itemize @bullet
+@item
+@code{[spherical_projection,@var{x},@var{y},@var{z},@var{r}]}: projects map boundaries on the sphere of
+radius @var{r} centered at (@var{x},@var{y},@var{z}).
+@example
+(%i1) load(draw)$
+(%i2) load(worldmap)$
+(%i3) draw3d(geomap(Australia), /* default projection */
+             geomap(Australia,
+                    [spherical_projection,2,2,2,3]))$
+@end example
+
+@item
+@code{[cylindrical_projection,@var{x},@var{y},@var{z},@var{r},@var{rc}]}: re-projects spherical map boundaries on the cylinder of radius
+@var{rc} and axis passing through the poles of the globe of radius @var{r} centered at (@var{x},@var{y},@var{z}).
+@example
+(%i1) load(draw)$
+(%i2) load(worldmap)$
+(%i3) draw3d(geomap([America_coastlines,Eurasia_coastlines],
+                    [cylindrical_projection,2,2,2,3,4]))$
+@end example
+
+@item
+@code{[conic_projection,@var{x},@var{y},@var{z},@var{r},@var{alpha}]}: re-projects spherical map boundaries on the cones of angle @var{alpha},
+with axis passing through the poles of the globe of radius @var{r} centered at (@var{x},@var{y},@var{z}). Both 
+the northern and southern cones are tangent to sphere.
+@example
+(%i1) load(draw)$
+(%i2) load(worldmap)$
+(%i3) draw3d(geomap(World_coastlines,
+                    [conic_projection,0,0,0,1,90]))$
+@end example
+@end itemize
+
 See also @url{http://www.telefonica.net/web2/biomates/maxima/gpdraw/geomap}
 for more elaborated examples.
 @end deffn
+
+
+
+
+
+
 
 
 @deffn  {Graphic object} parametric_surface (@var{xfun},@var{yfun},@var{zfun},@var{par1},@var{par1min},@var{par1max},@var{par2},@var{par2min},@var{par2max})
@@ -2281,8 +2664,9 @@ Plots a series of scenes; its arguments are @code{gr2d} and/or @code{gr3d}
 objects, together with some options. By default, the scenes are put together
 in one column.
 
-Function @code{draw} accepts two possible options: @code{terminal} 
-and @code{columns}.
+Function @code{draw} accepts the following global options: @code{terminal},
+@code{columns}, @code{pic_width}, @code{pic_height}, @code{eps_width},
+@code{eps_height}, @code{file_name} and @code{delay}.
 
 Functions @code{draw2d} and @code{draw3d} are short cuts to be used 
 when only one scene is required, in two or three dimensions, respectively.
@@ -2300,8 +2684,32 @@ Example:
                    polygon([4,5,7],[6,4,2]))$
 (%i4) draw(scene1, scene2, columns = 2)$
 @end example
-@end deffn
 
+The two draw sentences are equivalent:
+@example
+(%i1) load(draw)$
+(%i2) draw(gr3d(explicit(x^2+y^2,x,-1,1,y,-1,1)));
+(%o2)                          [gr3d(explicit)]
+(%i3) draw3d(explicit(x^2+y^2,x,-1,1,y,-1,1));
+(%o3)                          [gr3d(explicit)]
+@end example
+
+An animated gif file:
+@example
+(%i1) load(draw)$
+(%i2) draw(
+        delay     = 100,
+        file_name = "zzz",
+        terminal  = 'animated_gif,
+        gr2d(explicit(x^2,x,-1,1)),
+        gr2d(explicit(x^3,x,-1,1)),
+        gr2d(explicit(x^4,x,-1,1)));
+End of animation sequence
+(%o2)          [gr2d(explicit), gr2d(explicit), gr2d(explicit)]
+@end example
+
+See also @code{draw2d} and @code{draw3d}.
+@end deffn
 
 @deffn {Function} draw2d (@var{option}, @var{graphic_object}, ...)
 
@@ -2323,8 +2731,9 @@ This function is a short cut for
 It can be used to plot a unique scene in 3d.
 
 To make use of this function, write first @code{load(draw)}.
-
 @end deffn
+
+
 
 
 @node Functions and Variables for pictures, Functions and Variables for worldmap, Functions and Variables for draw, draw

@@ -201,9 +201,22 @@ extr_coord(n):=
     [first(li),last(li)])$
 
 
-
-
-
+/*
+This function is very convenient for detecting coastlines,
+taking away repeated indices (boundaries).
+*/
+coastlines(lis):=
+  block([out:[],n:length(lis)-1,temp],
+    lis: sort(lis),
+    if lis[1] # lis[2]
+      then out: cons(lis[1],out),
+    if lis[n+1] # lis[n]
+      then out: cons(lis[n+1],out),
+    for k:2 thru n do(
+      temp: lis[k],
+      if (temp # lis[k-1]) and (temp # lis[k+1])
+        then out: cons(temp,out)),
+  out)$
 
 
 
@@ -1121,6 +1134,8 @@ Zimbabwe:
 /*                                                               */
 /*****************************************************************/
 
+World_boundaries:makelist(k,k,0,2800)$
+
 European_Union:
   [Austria, Belgium, Bulgaria, Cyprus, Czech_Republic, Denmark,
    Estonia, Finland, France, Germany, Greece, Hungary, Ireland,
@@ -1169,3 +1184,31 @@ Africa:
    Swaziland,Benin,Burkina,Cabo_Verde,Cote_Ivoire,Gambia,Ghana,Guinea,
    Guinea_Bissau,Liberia,Mali,Mauritania,Niger,Nigeria,Senegal,Sierra_Leone,
    Togo,Zaire,Sao_Tome_and_Principe]$
+
+
+/******************************/
+/*                            */
+/*     C O A S T L I N E S    */
+/*                            */
+/******************************/
+
+America_coastlines:coastlines(flatten([North_America,Central_America,South_America]))$
+
+Eurasia_coastlines:coastlines(flatten([Europe,San_Marino,Asia]))$
+
+Africa_coastlines:coastlines(flatten([Africa,Lesotho]))$
+
+Oceania_coastlines:coastlines(flatten([Oceania]))$
+
+Antarctica_coastlines:coastlines(flatten([Antarctica,[2799,2800]]))$
+
+World_coastlines:flatten([America_coastlines,Eurasia_coastlines,
+                          Africa_coastlines,Oceania_coastlines,
+                          Antarctica_coastlines])$
+
+
+
+
+
+
+

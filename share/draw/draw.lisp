@@ -82,6 +82,18 @@
       (gethash '$axis_top *gr-options*)    t
       (gethash '$axis_right *gr-options*)  t
       (gethash '$axis_3d *gr-options*)     t
+      (gethash '$xaxis *gr-options*)       nil   ; no xaxis by default
+      (gethash '$xaxis_width *gr-options*) 1
+      (gethash '$xaxis_type *gr-options*)  0    ; two options: 1 (solid) and 0 (dots)
+      (gethash '$xaxis_color *gr-options*) "black"
+      (gethash '$yaxis *gr-options*)       nil  ; no yaxis by default
+      (gethash '$yaxis_width *gr-options*) 1
+      (gethash '$yaxis_type *gr-options*)  0    ; two options: 1 (solid) and 0 (dots)
+      (gethash '$yaxis_color *gr-options*) "black"
+      (gethash '$zaxis *gr-options*)       nil  ; no zaxis by default
+      (gethash '$zaxis_width *gr-options*) 1
+      (gethash '$zaxis_type *gr-options*)  0    ; two options: 1 (solid) and 0 (dots)
+      (gethash '$zaxis_color *gr-options*) "black"
 
       ; point options
       (gethash '$point_size *gr-options*)    1
@@ -99,7 +111,7 @@
       (gethash '$head_type *gr-options*)   '$filled ; other options are: $empty and $nofilled
 
       ; label options
-      (gethash '$label_alignment *gr-options*)   '$center ; other options are: $left and $right
+      (gethash '$label_alignment *gr-options*)   '$center     ; other options are: $left and $right
       (gethash '$label_orientation *gr-options*) '$horizontal ; the other option is $vertical
 
       ; line options
@@ -135,7 +147,10 @@
       (gethash '$pic_height *gr-options*) 480    ; points for bitmap pictures
       (gethash '$eps_width *gr-options*)  12     ; cm for eps pictures
       (gethash '$eps_height *gr-options*) 8      ; cm for eps pictures
-      (gethash '$file_name *gr-options*)  "maxima_out"         ) )
+
+      (gethash '$file_name *gr-options*)  "maxima_out"
+      (gethash '$delay *gr-options*)  5          ; delay for animated gif's, default 5*(1/100) sec
+   ) )
 
 
 ;; Initialize defaults
@@ -166,7 +181,8 @@
                      (<= val 360 ))
                 (setf (gethash opt *gr-options*) val)
                 (merror "~M must be angle in [0, 360]" val)))
-      (($line_width $head_length $head_angle $eps_width $eps_height) ; defined as positive numbers
+      (($line_width $head_length $head_angle $eps_width $eps_height
+        $xaxis_width $yaxis_width $zaxis_width) ; defined as positive numbers
             (if (and (numberp val)
                      (> val 0 ))
                 (setf (gethash opt *gr-options*) val)
@@ -176,7 +192,7 @@
                      (>= val 0 ))
                 (setf (gethash opt *gr-options*) val)
                 (merror "Negative number: ~M " val)))
-      ($line_type ; defined as $solid and $dots
+      (($line_type $xaxis_type $yaxis_type $zaxis_type) ; defined as $solid or $dots
             (case val
                ($solid (setf (gethash opt *gr-options*) 1))
                ($dots  (setf (gethash opt *gr-options*) 0))
@@ -193,20 +209,20 @@
                         (setf (gethash opt *gr-options*) (- (position val shapes) 1))
                         (merror "Illegal point type: ~M " val))))) )
       (($columns $nticks $adapt_depth $pic_width $pic_height     ; defined as positive integers
-        $xu_grid $yv_grid $contour_levels)
+        $xu_grid $yv_grid $contour_levels $delay)
             (if (and (integerp val)
                      (> val 0 ))
                 (setf (gethash opt *gr-options*) val)
                 (merror "Non positive integer: ~M " val)))
       (($points_joined $transparent $border $logx $logy $logz $head_both $grid $xtics $ytics $ztics
         $axis_bottom $axis_left $axis_top $axis_right $axis_3d $surface_hide $colorbox $filled_func
-        $enhanced3d ) ; true or false
+        $enhanced3d $xaxis $yaxis $zaxis ) ; true or false
             (if (or (equal val t)
                     (equal val nil))
                 (setf (gethash opt *gr-options*) val)
                 (merror "Non boolean value: ~M " val)))
-      ($terminal ; defined as screen, png, jpg, eps or eps_color
-            (if (member val '($screen $png $jpg $eps $eps_color))
+      ($terminal ; defined as screen, png, jpg, gif, eps, eps_color or wxt
+            (if (member val '($screen $png $jpg $gif $eps $eps_color $wxt $animated_gif))
                 (setf (gethash opt *gr-options*) val)
                 (merror "This is not a terminal: ~M" val)))
       ($head_type ; defined as $filled, $empty and $nofilled
@@ -225,7 +241,7 @@
             (if (member val '($horizontal $vertical))
                 (setf (gethash opt *gr-options*) val)
                 (merror "Illegal label orientation: ~M" val)))
-      (($key $title $xlabel $ylabel $zlabel $file_name $xy_file)  ; defined as strings
+      (($key $file_name $xy_file $title $xlabel $ylabel $zlabel)  ; defined as strings
             (setf (gethash opt *gr-options*) (string-trim "\"" (coerce (mstring val) 'string))))
       ($user_preamble ; defined as a string or a Maxima list of strings
             (let ((str ""))
@@ -274,7 +290,8 @@
                     (setf (gethash opt *gr-options*) (list (cadr val) (caddr val) (cadddr val))))
                   (t
                     (merror "Illegal palette description: ~M" val)))  )
-      (($color $fill_color)  ; defined as a color name or hexadecimal #rrggbb
+      (($color $fill_color $xaxis_color $yaxis_color
+        $zaxis_color)  ; defined as a color name or hexadecimal #rrggbb
          (let ((str (string-downcase (string-trim "\"" (coerce (mstring val) 'string)))))
             (cond
               ((some #'(lambda (z) (string= z str))
@@ -366,6 +383,7 @@
 ;;     points([[x1,y1], [x2,y2], [x3,y3],...])
 ;;     points([x1,x2,x3,...], [y1,y2,y3,...])
 ;;     points([y1,y2,y3,...]), abscissas are automatically chosen: 1,2,3,...
+;;     points(matrix), one-column, one-row, two-column or two-row matrix
 ;; Options:
 ;;     point_size
 ;;     point_type
@@ -382,16 +400,37 @@
                (let ((tmp (mapcar #'rest (rest arg1))))
                   (setf x (map 'list #'convert-to-float (map 'list #'first tmp))
                         y (map 'list #'convert-to-float (map 'list #'second tmp)) ) ) )
+            ((and ($matrixp arg1)
+                  (= (length (cadr arg1)) 3)
+                  (null arg2))                 ; two-column matrix
+               (let ((tmp (mapcar #'rest (rest arg1))))
+                  (setf x (map 'list #'convert-to-float (map 'list #'first tmp))
+                        y (map 'list #'convert-to-float (map 'list #'second tmp)) ) ) )
             ((and ($listp arg1)
                   (null arg2)
                   (notany #'$listp (rest arg1)))   ; y format
                (setf x (loop for xx from 1 to (length (rest arg1)) collect (convert-to-float xx))
                      y (map 'list #'convert-to-float (rest arg1))))
+            ((and ($matrixp arg1)
+                  (= (length (cadr arg1)) 2)
+                  (null arg2))                 ; one-column matrix
+               (setf x (loop for xx from 1 to (length (rest arg1)) collect (convert-to-float xx))
+                     y (map 'list #'convert-to-float (map 'list #'second (rest arg1)))))
+            ((and ($matrixp arg1)
+                  (= ($length arg1) 1)
+                  (null arg2))                 ; one-row matrix
+               (setf x (loop for xx from 1 to (length (cdadr arg1)) collect (convert-to-float xx))
+                     y (map 'list #'convert-to-float (cdadr arg1))))
             ((and ($listp arg1)
                   ($listp arg2)
                   (= (length arg1) (length arg2)))  ; xx yy format
                (setf x (map 'list #'convert-to-float (rest arg1))
                      y (map 'list #'convert-to-float (rest arg2))))
+            ((and ($matrixp arg1)
+                  (= ($length arg1) 2)
+                  (null arg2))            ; two-row matrix
+               (setf x (map 'list #'convert-to-float (cdadr arg1))
+                     y (map 'list #'convert-to-float (cdaddr arg1))))
             (t (merror "draw (points2d): bad input format"))  )
       (setf pts (make-array (* 2 (length x)) :element-type 'double-float
                                              :initial-contents (mapcan #'list x y)))
@@ -430,6 +469,7 @@
 ;; Usage:
 ;;     points([[x1,y1,z1], [x2,y2,z2], [x3,y3,z3],...])
 ;;     points([x1,x2,x3,...], [y1,y2,y3,...], [z1,z2,z3,...])
+;;     points(matrix), three-column or three-row matrix
 ;; Options:
 ;;     point_size
 ;;     point_type
@@ -446,6 +486,14 @@
                   (setf x (map 'list #'convert-to-float (map 'list #'first tmp))
                         y (map 'list #'convert-to-float (map 'list #'second tmp))
                         z (map 'list #'convert-to-float (map 'list #'third tmp)) ) ) )
+            ((and ($matrixp arg1)
+                  (= (length (cadr arg1)) 4)
+                  (null arg2)
+                  (null arg3))                 ; three-column matrix
+               (let ((tmp (mapcar #'rest (rest arg1))))
+                  (setf x (map 'list #'convert-to-float (map 'list #'first tmp))
+                        y (map 'list #'convert-to-float (map 'list #'second tmp))
+                        z (map 'list #'convert-to-float (map 'list #'third tmp)) ) ) )
             ((and ($listp arg1)
                   ($listp arg2)
                   ($listp arg3)
@@ -453,6 +501,13 @@
                (setf x (map 'list #'convert-to-float (rest arg1))
                      y (map 'list #'convert-to-float (rest arg2))
                      z (map 'list #'convert-to-float (rest arg3))  ))
+            ((and ($matrixp arg1)
+                  (= ($length arg1) 3)
+                  (null arg2)
+                  (null arg3))            ; two-row matrix
+               (setf x (map 'list #'convert-to-float (cdadr arg1))
+                     y (map 'list #'convert-to-float (cdaddr arg1))
+                     z (map 'list #'convert-to-float (cdaddr (rest arg1)))   ))
             (t (merror "draw (points3d): bad input format"))  )
       (setf pts (make-array (* 3 (length x)) :element-type 'double-float
                                              :initial-contents (mapcan #'list x y z)))
@@ -772,7 +827,6 @@
                               (get-option '$color) )
        :groups (if is2d '((3 0)) '((4)))
        :points (list (make-array (length result) :initial-contents result))) ))
-
 
 
 
@@ -1400,8 +1454,7 @@
          (fy0 (convert-to-float y0))
          (fwidth (convert-to-float width))
          (fheight (convert-to-float height))
-         result nrows ncols dx dy n
-         )
+         result nrows ncols dx dy n)
     (cond (($matrixp mat)
              (setf nrows (length (cdr mat))
                    ncols (length (cdadr mat)))
@@ -1482,61 +1535,183 @@
 
 ;; Object: 'geomap'
 ;; Usage:
-;;     geomap(integer1, integer2,....), where integers correspond to the
-;;           polygonal segments stored in array 'boundaries_array'; by default,
-;;           this global variable equals array 'world_boundaries' defined in
-;;           package 'worldmap'.
+;;     geomap([integer1, integer2,....]), where integers correspond to the
+;;           polygonal segments stored in array 'boundaries_array'.
 ;; Options:
 ;;     line_width
 ;;     color
 ;;     line_type
+
 (defvar $boundaries_array nil)
-(defun geomap (&rest nums)
-   (if (null $boundaries_array)
+
+;; x and y are the longitude and latitude coordinates
+(defun longitude_latitude_projection_2d (lis)
+  (let (res resi
+        (xmin 1.75555970201398d+305)
+        (xmax -1.75555970201398d+305)
+        (ymin 1.75555970201398d+305)
+        (ymax -1.75555970201398d+305) )
+    (setf res
+       (loop for i on lis by #'cdr do
+         (let* ((polyseg (aref $boundaries_array (car i)))
+                (ni (- (/ (length polyseg) 2) 1))
+                x y count)
+           (setf resi (make-array (* 2 (/ (length polyseg) 2)) :element-type 'double-float))
+           (setf count -1)
+           (loop for k from 0 to ni do
+             (setf x (aref polyseg (* 2 k))
+                   y (aref polyseg (+ (* 2 k) 1))  )
+             (cond
+               ((< x xmin) (setf xmin x))
+               ((> x xmax) (setf xmax x)))
+             (cond
+               ((< y ymin) (setf ymin y))
+               ((> y ymax) (setf ymax y)))
+             (setf (aref resi (incf count)) x
+                   (aref resi (incf count)) y)))
+         collect resi))
+     (update-ranges xmin xmax ymin ymax)
+     res ))
+
+;; Mercator cylindrical projection
+;; This is experimental and not documented
+(defun mercator_projection_2d (lis)
+  (let (res resi
+        (xmin 1.75555970201398d+305)
+        (xmax -1.75555970201398d+305)
+        (ymin 1.75555970201398d+305)
+        (ymax -1.75555970201398d+305) )
+    (setf res
+       (loop for i on lis by #'cdr do
+         (let* ((polyseg (aref $boundaries_array (car i)))
+                (ni (- (/ (length polyseg) 2) 1))
+                (c 0.0174532925199433) ; = %pi / 180
+                lon lat x y count)
+           (setf resi (make-array (* 2 (/ (length polyseg) 2)) :element-type 'double-float))
+           (setf count -1)
+           (loop for k from 0 to ni do
+             (setf lon (aref polyseg (* 2 k))
+                   lat (* c (aref polyseg (+ (* 2 k) 1))))
+             (setf x lon
+                   y (log (+ (cl:tan lat) (/ 1 (cos lat)))) )
+             (cond
+               ((< x xmin) (setf xmin x))
+               ((> x xmax) (setf xmax x)))
+             (cond
+               ((< y ymin) (setf ymin y))
+               ((> y ymax) (setf ymax y)))
+             (setf (aref resi (incf count)) x
+                   (aref resi (incf count)) y)))
+         collect resi))
+     (update-ranges xmin xmax ymin ymax)
+     res ))
+
+;; Miller cylindrical projection
+;; This is experimental and not documented
+(defun miller_projection_2d (lis)
+  (let (res resi
+        (xmin 1.75555970201398d+305)
+        (xmax -1.75555970201398d+305)
+        (ymin 1.75555970201398d+305)
+        (ymax -1.75555970201398d+305) )
+    (setf res
+       (loop for i on lis by #'cdr do
+         (let* ((polyseg (aref $boundaries_array (car i)))
+                (ni (- (/ (length polyseg) 2) 1))
+                (c 0.0174532925199433) ; = %pi / 180
+                (c1 .7853981633974483) ; = %pi / 4
+                x y count)
+           (setf resi (make-array (* 2 (/ (length polyseg) 2)) :element-type 'double-float))
+           (setf count -1)
+           (loop for k from 0 to ni do
+             (setf x (aref polyseg (* 2 k))
+                   y (* 1.25 (log (cl:tan (+ c1 (* 0.4 c (aref polyseg (+ (* 2 k) 1))))))))
+             (cond
+               ((< x xmin) (setf xmin x))
+               ((> x xmax) (setf xmax x)))
+             (cond
+               ((< y ymin) (setf ymin y))
+               ((> y ymax) (setf ymax y)))
+             (setf (aref resi (incf count)) x
+                   (aref resi (incf count)) y)))
+         collect resi))
+     (update-ranges xmin xmax ymin ymax)
+     res ))
+
+;; Kavrayskiy VII pseudocylindrical projection
+;; This is experimental and not documented
+(defun kavrayskiy_projection_2d (lis)
+  (let (res resi
+        (xmin 1.75555970201398d+305)
+        (xmax -1.75555970201398d+305)
+        (ymin 1.75555970201398d+305)
+        (ymax -1.75555970201398d+305) )
+    (setf res
+       (loop for i on lis by #'cdr do
+         (let* ((polyseg (aref $boundaries_array (car i)))
+                (ni (- (/ (length polyseg) 2) 1))
+                (c 0.0174532925199433)  ; = %pi / 180
+                (c1 0.4774648292756861) ; = 3 / (2 * %pi)
+                (c2 3.289868133696452)  ; = %pi^2 / 3
+                lon lat x y count)
+           (setf resi (make-array (* 2 (/ (length polyseg) 2)) :element-type 'double-float))
+           (setf count -1)
+           (loop for k from 0 to ni do
+             (setf lon (aref polyseg (* 2 k))
+                   lat (aref polyseg (+ (* 2 k) 1)))
+             (setf x (* c1 lon (sqrt (- c2 (* c c lat lat))))
+                   y lat )
+             (cond
+               ((< x xmin) (setf xmin x))
+               ((> x xmax) (setf xmax x)))
+             (cond
+               ((< y ymin) (setf ymin y))
+               ((> y ymax) (setf ymax y)))
+             (setf (aref resi (incf count)) x
+                   (aref resi (incf count)) y)))
+         collect resi))
+     (update-ranges xmin xmax ymin ymax)
+     res ))
+
+(defun geomap (lis &optional (proj nil))
+   (when (null $boundaries_array)
      (merror "draw2d (geomap): variable boundaries_array not yet defined"))
-   (setf nums (rest ($setify ($flatten (cons '(mlist simp) nums)))))
-   (let (res extr
-         (n (length nums))
-         (nsegments (- (array-dimension $boundaries_array 0) 1))  )
-      (when (some #'(lambda (z) (or (not (integerp z))
-                              (< z 0)
-                              (> z nsegments) ))
-                  nums)
-         (merror "draw (geomap): non integer argument or out of range (0-~M)" nsegments))
-      (setf res 
-            (loop for i on nums by #'cdr do
-              (let* ((xmin 1.75555970201398d+305)
-                     (xmax -1.75555970201398d+305)
-                     (ymin 1.75555970201398d+305)
-                     (ymax -1.75555970201398d+305)
-                     (polyseg (aref $boundaries_array (car i)))
-                     (n (/ (- (length polyseg) 1) 2))
-                     x y)
-                  (loop for i from 0 to n do
-                     (setf x (aref polyseg (* 2 i))
-                           y (aref polyseg (+ (* 2 i) 1)))
-                     (when (< x xmin)
-                           (setf xmin x))
-                     (when (> x xmax)
-                           (setf xmax x))
-                     (when (< y ymin)
-                           (setf ymin y))
-                     (when (> y ymax)
-                           (setf ymax y))  )
-                  (setf extr (make-array 4 :element-type 'double-float
-                                           :initial-contents (list xmin xmax ymin ymax))))
-              (update-ranges (aref extr 0) (aref extr 1) (aref extr 2) (aref extr 3))  ; update ranges
-              collect (aref $boundaries_array (car i))))  ; build list of boundaries
-      (make-gr-object
-         :name 'geomap
-         :command (make-list n 
-                     :initial-element
-                        (format nil " t '' w l lw ~a lt ~a lc rgb '~a'"
-                                (get-option '$line_width)
-                                (get-option '$line_type)
-                                (get-option '$color)))
-         :groups (make-list n :initial-element '(2)) ; numbers are sent to gnuplot in groups of 2
-         :points res )  ) )
+   (when (not ($listp lis))
+     (merror "draw2d (geomap): first argument must be a list of integers"))
+   (when (and (not (null proj))
+              (not ($listp proj)))
+     (merror "draw2d (geomap): second optional argument must be a list"))
+   (setf lis (rest ($setify ($flatten lis))))
+   (let ((nsegments (- (array-dimension $boundaries_array 0) 1)))
+     (when (some #'(lambda (z) (or (not (integerp z))
+                                   (< z 0)
+                                   (> z nsegments) ))
+                  lis)
+         (merror "draw2d (geomap): non integer argument or out of range (0-~M)" nsegments)))
+   (make-gr-object
+      :name 'geomap
+      :command (make-list (length lis) 
+                  :initial-element
+                     (format nil " t '' w l lw ~a lt ~a lc rgb '~a'"
+                             (get-option '$line_width)
+                             (get-option '$line_type)
+                             (get-option '$color)))
+      :groups (make-list (length lis) :initial-element '(2)) ; numbers are sent to gnuplot in groups of 2
+      :points (cond ((or (null proj)
+                         (and (equal (cadr proj) '$longitude_latitude_projection)
+                              (= ($length proj) 1)) )
+                       (longitude_latitude_projection_2d lis))
+                    ((and (equal (cadr proj) '$mercator_projection)
+                          (= ($length proj) 1))
+                       (mercator_projection_2d lis))
+                    ((and (equal (cadr proj) '$miller_projection)
+                          (= ($length proj) 1))
+                       (miller_projection_2d lis))
+                    ((and (equal (cadr proj) '$kavrayskiy_projection)
+                          (= ($length proj) 1))
+                       (kavrayskiy_projection_2d lis))
+                    (t
+                       (merror "draw2d (geomap): unknown projection or not well defined"))) ) )
 
 
 
@@ -1544,8 +1719,192 @@
 
 
 
-;; This function builds a 2d scene by calling the 
-;; graphic objects constructors.
+
+;; Object: 'geomap3d'
+;; Usage:
+;;     geomap([integer1, integer2,....])
+;;     geomap([integer1, integer2,....], [3d_proyection_type,param1,param2,...]), where integers correspond to the
+;;           polygonal segments stored in array 'boundaries_array'. Spherical 3d projection is default.
+;; Options:
+;;     line_width
+;;     color
+;;     line_type
+
+;; sphere of radius r and center (cx,cy,cz)
+(defun spherical_projection_3d (lis cx cy cz r)
+  (let (res resi
+        (xmin 1.75555970201398d+305)
+        (xmax -1.75555970201398d+305)
+        (ymin 1.75555970201398d+305)
+        (ymax -1.75555970201398d+305)
+        (zmin 1.75555970201398d+305)
+        (zmax -1.75555970201398d+305) )
+    (setf res
+       (loop for i on lis by #'cdr do
+         (let* ((polyseg (aref $boundaries_array (car i)))
+                (ni (- (/ (length polyseg) 2) 1))
+                (c 0.0174532925199433) ; = %pi / 180
+                lon lat x y z count)
+           (setf resi (make-array (* 3 (/ (length polyseg) 2)) :element-type 'double-float))
+           (setf count -1)
+           (loop for k from 0 to ni do
+             (setf lon (* c (aref polyseg (* 2 k)))
+                   lat (* c (aref polyseg (+ (* 2 k) 1))))
+             (setf x (+ cx (* r (cos lat) (cos lon)))
+                   y (+ cy (* r (cos lat) (sin lon)))
+                   z (+ cz (* r (sin lat))) )
+             (cond
+               ((< x xmin) (setf xmin x))
+               ((> x xmax) (setf xmax x)))
+             (cond
+               ((< y ymin) (setf ymin y))
+               ((> y ymax) (setf ymax y)))
+             (cond
+               ((< z zmin) (setf zmin z))
+               ((> z zmax) (setf zmax z)))
+             (setf (aref resi (incf count)) x
+                   (aref resi (incf count)) y
+                   (aref resi (incf count)) z)))
+         collect resi))
+     (update-ranges xmin xmax ymin ymax zmin zmax)
+     res ))
+
+;; cylinder of radius rc with its axis passing through the poles of the sphere
+;; of radius r and center (cx,cy,cz). In future versions, the axis should be
+;; selected by the user, giving the coordinates (long,lati) of one of the points
+;; of intersection with the sphere.
+(defun cylindrical_projection_3d (lis cx cy cz r rc)
+  (let (res resi
+        (xmin 1.75555970201398d+305)
+        (xmax -1.75555970201398d+305)
+        (ymin 1.75555970201398d+305)
+        (ymax -1.75555970201398d+305)
+        (zmin 1.75555970201398d+305)
+        (zmax -1.75555970201398d+305) )
+    (setf res
+       (loop for i on lis by #'cdr do
+         (let* ((polyseg (aref $boundaries_array (car i)))
+                (ni (- (/ (length polyseg) 2) 1))
+                (c 0.0174532925199433) ; = %pi / 180
+                lon lat x y z count)
+           (setf resi (make-array (* 3 (/ (length polyseg) 2)) :element-type 'double-float))
+           (setf count -1)
+           (loop for k from 0 to ni do
+             (setf lon (* c (aref polyseg (* 2 k)))
+                   lat (* c (aref polyseg (+ (* 2 k) 1))))
+             (setf x (+ cx (* rc (cos lon)))
+                   y (+ cy (* rc (sin lon)))
+                   z (+ cz (* r (sin lat))) )
+             (cond
+               ((< x xmin) (setf xmin x))
+               ((> x xmax) (setf xmax x)))
+             (cond
+               ((< y ymin) (setf ymin y))
+               ((> y ymax) (setf ymax y)))
+             (cond
+               ((< z zmin) (setf zmin z))
+               ((> z zmax) (setf zmax z)))
+             (setf (aref resi (incf count)) x
+                   (aref resi (incf count)) y
+                   (aref resi (incf count)) z)))
+         collect resi))
+     (update-ranges xmin xmax ymin ymax zmin zmax)
+     res ))
+
+;; cone with angle a and axis passing through the poles of the sphere
+;; of radius r and center (cx,cy,cz). The cone is tangent to the globe.
+(defun conic_projection_3d (lis cx cy cz r a)
+  (let (res resi
+        (xmin 1.75555970201398d+305)
+        (xmax -1.75555970201398d+305)
+        (ymin 1.75555970201398d+305)
+        (ymax -1.75555970201398d+305)
+        (zmin 1.75555970201398d+305)
+        (zmax -1.75555970201398d+305) )
+    (setf res
+       (loop for i on lis by #'cdr do
+         (let* ((polyseg (aref $boundaries_array (car i)))
+                (ni (- (/ (length polyseg) 2) 1))
+                (c 0.0174532925199433)  ; = %pi / 180
+                (cte (- 1.570796326794897 (* c a 0.5))) ; = %pi / 2 - c*a /2
+                north lon lat x y z p count)
+           (setf resi (make-array (* 3 (/ (length polyseg) 2)) :element-type 'double-float))
+           (setf count -1)
+           (loop for k from 0 to ni do
+             (setf lon (* c (aref polyseg (* 2 k)))
+                   lat (* c (aref polyseg (+ (* 2 k) 1))))
+             (setf north (>= lat 0))
+             (setf lat (abs lat))
+             (setf p (/ r
+                        (sin (+ cte lat))))
+             (setf x (+ cx (* p (cos lat) (cos lon)))
+                   y (+ cy (* p (cos lat) (sin lon)))  )
+             (if north
+                (setf z (+ cz (* p (sin lat))))
+                (setf z (+ cz (* -1.0 p (sin lat)))))
+             (cond
+               ((< x xmin) (setf xmin x))
+               ((> x xmax) (setf xmax x)))
+             (cond
+               ((< y ymin) (setf ymin y))
+               ((> y ymax) (setf ymax y)))
+             (cond
+               ((< z zmin) (setf zmin z))
+               ((> z zmax) (setf zmax z)))
+             (setf (aref resi (incf count)) x
+                   (aref resi (incf count)) y
+                   (aref resi (incf count)) z)))
+         collect resi))
+     (update-ranges xmin xmax ymin ymax zmin zmax)
+     res ))
+
+(defun geomap3d (lis &optional (proj nil))
+   (when (null $boundaries_array)
+     (merror "draw3d (geomap): variable boundaries_array not yet defined"))
+   (when (not ($listp lis))
+     (merror "draw3d (geomap): first argument must be a list of integers"))
+   (when (and (not (null proj))
+              (not ($listp proj)))
+     (merror "draw3d (geomap): second optional argument must be a list"))
+   (setf lis (rest ($setify ($flatten lis))))
+   (let ((nsegments (- (array-dimension $boundaries_array 0) 1)))
+     (when (some #'(lambda (z) (or (not (integerp z))
+                                   (< z 0)
+                                   (> z nsegments) ))
+                  lis)
+         (merror "draw3d (geomap): non integer argument or out of range (0-~M)" nsegments)))
+   (make-gr-object
+      :name 'geomap
+      :command (make-list (length lis) 
+                  :initial-element
+                     (format nil " t '' w l lw ~a lt ~a lc rgb '~a'"
+                             (get-option '$line_width)
+                             (get-option '$line_type)
+                             (get-option '$color)))
+      :groups (make-list (length lis) :initial-element '(3 0)) ; numbers are sent to gnuplot in groups of 3
+                                                               ; without blank lines
+      :points (cond ((null proj)   ; default: spherical projection with r=1 and center (0,0,0)
+                       (spherical_projection_3d lis 0 0 0 1))
+                    ((and (equal (cadr proj) '$spherical_projection)
+                          (= ($length proj) 5))
+                       (spherical_projection_3d lis (nth 2 proj) (nth 3 proj) (nth 4 proj) (nth 5 proj)))
+                    ((and (equal (cadr proj) '$cylindrical_projection)
+                          (= ($length proj) 6))
+                       (cylindrical_projection_3d lis (nth 2 proj) (nth 3 proj) (nth 4 proj) (nth 5 proj) (nth 6 proj)))
+                    ((and (equal (cadr proj) '$conic_projection)
+                          (= ($length proj) 6)
+                          (> (nth 6 proj) 0)
+                          (< (nth 6 proj) 180))
+                       (conic_projection_3d lis (nth 2 proj) (nth 3 proj) (nth 4 proj) (nth 5 proj) (nth 6 proj)))
+                    (t
+                       (merror "draw3d (geomap): unknown projection or not well defined"))) ) )
+
+
+
+
+
+
+
 (defun make-scene-2d (args)
    (let ((objects nil)
          plotcmd)
@@ -1596,15 +1955,27 @@
             (if (get-option '$grid)
                 (format nil "set grid~%")
                 (format nil "unset grid~%"))
-            (format nil "set title \"~a\"~%" (get-option '$title))
-            (format nil "set xlabel \"~a\"~%" (get-option '$xlabel))
-            (format nil "set ylabel \"~a\"~%" (get-option '$ylabel))
+            (format nil "set title '~a'~%"  (get-option '$title))
+            (format nil "set xlabel '~a'~%" (get-option '$xlabel))
+            (format nil "set ylabel '~a'~%" (get-option '$ylabel))
             (let ((suma 0))
               (if (get-option '$axis_bottom)  (setf suma (+ suma 1)))
               (if (get-option '$axis_left) (setf suma (+ suma 2)))
               (if (get-option '$axis_top) (setf suma (+ suma 4)))
               (if (get-option '$axis_right) (setf suma (+ suma 8)))
               (format nil "set border ~a~%" suma) )
+            (if (get-option '$xaxis)
+               (format nil "set xzeroaxis lw ~a lt ~a lc rgb '~a'~%"
+                           (get-option '$xaxis_width)
+                           (get-option '$xaxis_type)
+                           (get-option '$xaxis_color) )
+               (format nil "unset xzeroaxis~%"))
+            (if (get-option '$yaxis)
+               (format nil "set yzeroaxis lw ~a lt ~a lc rgb '~a'~%"
+                           (get-option '$yaxis_width)
+                           (get-option '$yaxis_type)
+                           (get-option '$yaxis_color) )
+               (format nil "unset yzeroaxis~%"))
             (if (get-option '$xtics)
                (format nil "set xtics~%")
                (format nil "unset xtics~%"))
@@ -1635,7 +2006,6 @@
 
 
 
-
 ;; This function builds a 3d scene by calling the 
 ;; graphic objects constructors.
 (defun make-scene-3d (args)
@@ -1655,6 +2025,7 @@
                                      ($vector             (apply #'vect3d (rest x)))
                                      ($parametric         (apply #'parametric3d (rest x)))
                                      ($parametric_surface (apply #'parametric_surface (rest x)))
+                                     ($geomap             (apply #'geomap3d (rest x)))
                                      ($label              (apply #'label (rest x)))
                                      (otherwise (merror "Graphical 3d object ~M is not recognized" x)))))))))
       ; save in plotcmd the plot command to be sent to gnuplot
@@ -1688,10 +2059,10 @@
                                       (get-option '$contour_levels) ))
                ($map     (format nil "set contour base~%unset surface~%set cntrparam levels ~a~%"
                                       (get-option '$contour_levels))) )
-            (format nil "set title \"~a\"~%"  (get-option '$title))
-            (format nil "set xlabel \"~a\"~%" (get-option '$xlabel))
-            (format nil "set ylabel \"~a\"~%" (get-option '$ylabel))
-            (format nil "set zlabel \"~a\"~%" (get-option '$zlabel))
+            (format nil "set title '~a'~%"  (get-option '$title))
+            (format nil "set xlabel '~a'~%" (get-option '$xlabel))
+            (format nil "set ylabel '~a'~%" (get-option '$ylabel))
+            (format nil "set zlabel '~a'~%" (get-option '$zlabel))
             (if (get-option '$logx)
                (format nil "set logscale x~%")
                (format nil "unset logscale x~%"))
@@ -1704,6 +2075,24 @@
             (if (get-option '$grid)
                 (format nil "set grid~%")
                 (format nil "unset grid~%"))
+            (if (get-option '$xaxis)
+               (format nil "set xzeroaxis lw ~a lt ~a lc rgb '~a'~%"
+                           (get-option '$xaxis_width)
+                           (get-option '$xaxis_type)
+                           (get-option '$xaxis_color) )
+               (format nil "unset xzeroaxis~%"))
+            (if (get-option '$yaxis)
+               (format nil "set yzeroaxis lw ~a lt ~a lc rgb '~a'~%"
+                           (get-option '$yaxis_width)
+                           (get-option '$yaxis_type)
+                           (get-option '$yaxis_color) )
+               (format nil "unset yzeroaxis~%"))
+            (if (get-option '$zaxis)
+               (format nil "set zzeroaxis lw ~a lt ~a lc rgb '~a'~%"
+                           (get-option '$zaxis_width)
+                           (get-option '$zaxis_type)
+                           (get-option '$zaxis_color) )
+               (format nil "unset zzeroaxis~%"))
             (if (get-option '$xtics)
                (format nil "set xtics~%")
                (format nil "unset xtics~%"))
@@ -1769,7 +2158,7 @@
         datastorage ; file data.gnuplot
         datapath    ; path to data.gnuplot
         ncols nrows width height ; multiplot parameters
-        is1stobj biglist grouplist)
+        isanimatedgif is1stobj biglist grouplist)
     (dolist (x args)
       (cond ((equal ($op x) '&=)
               (case ($lhs x)
@@ -1780,6 +2169,7 @@
                 ($eps_width  (update-gr-option '$eps_width ($rhs x)))
                 ($eps_height (update-gr-option '$eps_height ($rhs x)))
                 ($file_name  (update-gr-option '$file_name ($rhs x)))
+                ($delay      (update-gr-option '$delay ($rhs x)))
                 (otherwise (merror "Unknown global option ~M " ($lhs x)))  ))
             ((equal (caar x) '$gr3d)
               (setf scenes (append scenes (list (funcall #'make-scene-3d (rest x))))))
@@ -1787,6 +2177,9 @@
               (setf scenes (append scenes (list (funcall #'make-scene-2d (rest x))))))
             (t
               (merror "draw: item ~M is not recognized" x)))   )
+
+    (setf isanimatedgif
+          (equal (get-option '$terminal) '$animated_gif))
 
     ; we now create two files: maxout.gnuplot and data.gnuplot
     (setf cmdstorage
@@ -1814,21 +2207,39 @@
       ($jpg (format cmdstorage "set terminal jpeg size ~a, ~a~%set out '~a.jpg'~%"
                            (get-option '$pic_width)
                            (get-option '$pic_height)
-                           (get-option '$file_name)))  )
+                           (get-option '$file_name)))
+      ($gif (format cmdstorage "set terminal gif size ~a, ~a~%set out '~a.gif'~%"
+                           (get-option '$pic_width)
+                           (get-option '$pic_height)
+                           (get-option '$file_name)))
+      ($animated_gif (format cmdstorage "set terminal gif animate size ~a, ~a delay ~a~%set out '~a.gif'~%"
+                           (get-option '$pic_width)
+                           (get-option '$pic_height)
+                           (get-option '$delay)
+                           (get-option '$file_name)))
+      ($wxt (format cmdstorage "set terminal wxt~%" ))  )
+
     ; compute some parameters for multiplot
-    (setf ncols (get-option '$columns))
-    (setf nrows (ceiling (/ (length scenes) ncols)))
-    (setf width (/ 1.0 ncols))
-    (setf height (/ 1.0 nrows))
-    (if (> (length scenes) 1)
-      (format cmdstorage "set size 1.0, 1.0~%set origin 0.0, 0.0~%set multiplot~%"))
+    (when (not isanimatedgif)
+      (setf ncols (get-option '$columns))
+      (setf nrows (ceiling (/ (length scenes) ncols)))
+      (setf width (/ 1.0 ncols))
+      (setf height (/ 1.0 nrows))
+      (if (> (length scenes) 1)
+        (format cmdstorage "set size 1.0, 1.0~%set origin 0.0, 0.0~%set multiplot~%")) )
+
     ; write descriptions of 2d and 3d scenes
     (let ((i -1))
       (dolist (scn scenes)
-        ; write size and origin
-        (format cmdstorage "set size ~a, ~a~%" width height)
-        (format cmdstorage "set origin ~a, ~a~%" (* width (mod counter ncols))
-                                         (* height (- nrows 1.0 (floor (/ counter ncols)))))
+        ; write size and origin if necessary
+        (cond (isanimatedgif
+                (format cmdstorage "~%"))
+              (t ; it's not an animated gif
+                (format cmdstorage "~%set size ~a, ~a~%"
+                                   width height)
+                (format cmdstorage "set origin ~a, ~a~%" 
+                                   (* width (mod counter ncols))
+                                   (* height (- nrows 1.0 (floor (/ counter ncols)))))))
         (setf is1stobj t
               biglist '()
               grouplist '())
@@ -1862,9 +2273,6 @@
                                      pcom) )))
            (setf grouplist (append grouplist (gr-object-groups obj)))
            (setf biglist (append biglist (gr-object-points obj))) )
-
-        ; command file maxout.gnuplot is now ready
-        (format cmdstorage "~%")
 
         ; let's write data in data.gnuplot
         (do ( (blis biglist (cdr blis))
@@ -1917,7 +2325,7 @@
                                        (aref vect (1+ cont))
                                        (aref vect (+ 2 cont))
                                        (aref vect (+ 3 cont))
-                                       (aref vect (+ 4 cont)))))
+                                       (aref vect (+ 4 cont)))) )
               (6  ; for 3d vectors (x,y,z,dx,dy,dz)
                  (do ((cont 0 (+ cont 6)))
                      ((= cont k) 'done)
@@ -1929,36 +2337,44 @@
                                        (aref vect (+ 4 cont))
                                        (aref vect (+ 5 cont)) )))   ))
           (format datastorage "~%~%") )
-
         (incf counter)
         (setf scenes-list (cons (reverse scene-short-description) scenes-list)) ))  ; end let-dolist scenes
     (close datastorage)
 
-    (cond ((> (length scenes) 1)
-             (format cmdstorage "unset multiplot~%"))
-          ; if we want to save the coordinates in a file,
-          ; print them when hitting the x key after clicking the mouse button
-          ((not (string= (gethash '$xy_file *gr-options*) ""))
-             (format cmdstorage "set print \"~a\" append~%bind x \"print MOUSE_X,MOUSE_Y\"~%"
-                          (gethash '$xy_file *gr-options*))) )
-    (close cmdstorage)
+    (cond (isanimatedgif  ; this is an animated gif
+             (format cmdstorage "~%quit~%~%")
+             (close cmdstorage)
+             ($system (format nil "~a \"~a\"" 
+                                  $draw_command
+                                  (plot-temp-file "maxout.gnuplot")) ))
+          (t ; non animated gif
+             ; command file maxout.gnuplot is now ready
+             (format cmdstorage "~%")
 
+             (cond ((> (length scenes) 1)
+                      (format cmdstorage "unset multiplot~%"))
+                   ; if we want to save the coordinates in a file,
+                   ; print them when hitting the x key after clicking the mouse button
+                   ((not (string= (gethash '$xy_file *gr-options*) ""))
+                      (format cmdstorage "set print \"~a\" append~%bind x \"print MOUSE_X,MOUSE_Y\"~%"
+                                   (gethash '$xy_file *gr-options*))) )
+             (close cmdstorage)
 
-    ; get the plot
-    (cond
-       (*windows-OS*
-          ($system (if (equal (gethash '$terminal *gr-options*) '$screen)
-                          (format nil "~a ~a"
-                                      $draw_command
-                                      (format nil $gnuplot_view_args (plot-temp-file "maxout.gnuplot")))
-                          (format nil "~a \"~a\"" 
-                                      $draw_command
-                                      (plot-temp-file "maxout.gnuplot")))) )
-       (t  ; non windows operating system
-          (setf $gnuplot_command $draw_command)
-          (check-gnuplot-process)
-          ($gnuplot_reset)
-          (send-gnuplot-command (format nil "load '~a'" (plot-temp-file "maxout.gnuplot"))) ))
+             ; get the plot
+             (cond
+                (*windows-OS*
+                   ($system (if (equal (gethash '$terminal *gr-options*) '$screen)
+                                   (format nil "~a ~a"
+                                               $draw_command
+                                               (format nil $gnuplot_view_args (plot-temp-file "maxout.gnuplot")))
+                                   (format nil "~a \"~a\"" 
+                                               $draw_command
+                                               (plot-temp-file "maxout.gnuplot")))) )
+                (t  ; non windows operating system
+                   (setf $gnuplot_command $draw_command)
+                   (check-gnuplot-process)
+                   ($gnuplot_reset)
+                   (send-gnuplot-command (format nil "load '~a'" (plot-temp-file "maxout.gnuplot"))) ))))
 
     ; the output is a simplified description of the scene(s)
     (reverse scenes-list)    ) )
@@ -1978,7 +2394,7 @@
 ;; This function transforms an integer number into
 ;; a string, adding zeros at the left side until the
 ;; length of the string equals 10. This function is
-;; useful for animations.
+;; useful to name a sequence of frames.
 (defun $add_zeroes (num)
    (format nil "~10,'0d" num) )
 

@@ -184,13 +184,14 @@ V@'eanse tambi@'en @code{logx} y @code{logy}.
 Valor por defecto: @code{screen}
 
 Selecciona el terminal a utilizar por Gnuplot; valores posibles son:
-@code{screen} (por defecto), @code{png}, @code{jpg}, @code{eps} y @code{eps_color}.
+@code{screen} (por defecto), @code{png}, @code{jpg}, @code{eps}, @code{eps_color},
+@code{gif}, @code{animated_gif} y @code{wxt}.
 
 Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
 descripci@'on de la escena no reviste importancia. Tambi@'en puede
 usarse como argumento de la funci@'on @code{draw}.
 
-Examples:
+Ejemplos:
 
 @example
 (%i1) load(draw)$
@@ -209,9 +210,29 @@ Examples:
       draw2d(file_name = "myfile",
              explicit(x^2,x,-1,1),
              terminal  = 'eps)$
+(%i6) /* ventana wxwidgets */
+      draw2d(explicit(x^2,x,-1,1),
+             terminal  = 'wxt)$
 @end example
 
-V@'eanse tambi@'en @code{file_name}, @code{pic_width} y @code{pic_height}.
+Un fichero gif animado,
+@example
+(%i1) load(draw)$
+(%i2) draw(
+        delay     = 100,
+        file_name = "zzz",
+        terminal  = 'animated_gif,
+        gr2d(explicit(x^2,x,-1,1)),
+        gr2d(explicit(x^3,x,-1,1)),
+        gr2d(explicit(x^4,x,-1,1)));
+End of animation sequence
+(%o2)          [gr2d(explicit), gr2d(explicit), gr2d(explicit)]
+@end example
+
+La opci@'ob @code{delay} s@'olo se activa en caso de gifs animados; se ignora en
+cualquier otro caso.
+
+V@'eanse tambi@'en @code{file_name}, @code{pic_width}, @code{pic_height} y @code{delay}.
 @end defvr
 
 
@@ -395,6 +416,283 @@ V@'eanse tambi@'en @code{xtics} y @code{ytics}.
 @end defvr
 
 
+@defvr {Opci@'on gr@'afica} xaxis
+Valor por defecto: @code{false}
+
+Si @code{xaxis} vale @code{true}, se dibujar@'a el eje @var{x}.
+
+Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
+descripci@'on de la escena no reviste importancia.
+
+Ejemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(explicit(x^3,x,-1,1),
+             xaxis       = true,
+             xaxis_color = blue)$
+@end example
+
+V@'eanse tambi@'en @code{xaxis_width}, @code{xaxis_type} y @code{xaxis_color}.
+@end defvr
+
+
+
+@defvr {Opci@'on gr@'afica} xaxis_width
+Valor por defecto: 1
+
+@code{xaxis_width} is the width of the @var{x} axis.
+Its value must be a positive number.
+
+Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
+descripci@'on de la escena no reviste importancia.
+
+Ejemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(explicit(x^3,x,-1,1),
+             xaxis       = true,
+             xaxis_width = 3)$
+@end example
+
+V@'eanse tambi@'en @code{xaxis}, @code{xaxis_type} y @code{xaxis_color}.
+@end defvr
+
+
+
+@defvr {Opci@'on gr@'afica} xaxis_type
+Valor por defecto: @code{dots}
+
+@code{xaxis_type} indicates how the @var{x} axis is displayed; 
+possible values are @code{solid} and @code{dots}.
+
+Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
+descripci@'on de la escena no reviste importancia.
+
+Ejemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(explicit(x^3,x,-1,1),
+             xaxis       = true,
+             xaxis_type  = solid)$
+@end example
+
+V@'eanse tambi@'en @code{xaxis}, @code{xaxis_width} y @code{xaxis_color}.
+@end defvr
+
+
+
+@defvr {Opci@'on gr@'afica} xaxis_color
+Valor por defecto: @code{"black"}
+
+@code{xaxis_color} specifies the color for the @var{x} axis. See
+@code{color} to know how colors are defined.
+
+Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
+descripci@'on de la escena no reviste importancia.
+
+Ejemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(explicit(x^3,x,-1,1),
+             xaxis       = true,
+             xaxis_color = red)$
+@end example
+
+V@'eanse tambi@'en @code{xaxis}, @code{xaxis_width} y @code{xaxis_type}.
+@end defvr
+
+
+
+@defvr {Opci@'on gr@'afica} yaxis
+Valor por defecto: @code{false}
+
+Si @code{yaxis} vale @code{true}, se dibujar@'a el eje @var{y}.
+
+Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
+descripci@'on de la escena no reviste importancia.
+
+Ejemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(explicit(x^3,x,-1,1),
+             yaxis       = true,
+             yaxis_color = blue)$
+@end example
+
+V@'eanse tambi@'en @code{yaxis_width}, @code{yaxis_type} y @code{yaxis_color}.
+@end defvr
+
+
+
+@defvr {Opci@'on gr@'afica} yaxis_width
+Valor por defecto: 1
+
+@code{yaxis_width} is the width of the @var{y} axis.
+Its value must be a positive number.
+
+Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
+descripci@'on de la escena no reviste importancia.
+
+Ejemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(explicit(x^3,x,-1,1),
+             yaxis       = true,
+             yaxis_width = 3)$
+@end example
+
+V@'eanse tambi@'en @code{yaxis}, @code{yaxis_type} y @code{yaxis_color}.
+@end defvr
+
+
+
+@defvr {Opci@'on gr@'afica} yaxis_type
+Valor por defecto: @code{dots}
+
+@code{yaxis_type} indicates how the @var{y} axis is displayed; 
+possible values are @code{solid} and @code{dots}.
+
+Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
+descripci@'on de la escena no reviste importancia.
+
+Ejemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(explicit(x^3,x,-1,1),
+             yaxis       = true,
+             yaxis_type  = solid)$
+@end example
+
+V@'eanse tambi@'en @code{yaxis}, @code{yaxis_width} y @code{yaxis_color}.
+@end defvr
+
+
+
+@defvr {Opci@'on gr@'afica} yaxis_color
+Valor por defecto: @code{"black"}
+
+@code{yaxis_color} specifies the color for the @var{y} axis. See
+@code{color} to know how colors are defined.
+
+Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
+descripci@'on de la escena no reviste importancia.
+
+Ejemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(explicit(x^3,x,-1,1),
+             yaxis       = true,
+             yaxis_color = red)$
+@end example
+
+V@'eanse tambi@'en @code{yaxis}, @code{yaxis_width} y @code{yaxis_type}.
+@end defvr
+
+
+
+@defvr {Opci@'on gr@'afica} zaxis
+Valor por defecto: @code{false}
+
+Si @code{zaxis} vale @code{true}, se dibujar@'a el eje @var{z} en
+escenas 3D. Esta opci@'on no tiene efecto alguno en escenas 2D.
+
+Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
+descripci@'on de la escena no reviste importancia.
+
+Ejemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(explicit(x^2+y^2,x,-1,1,y,-1,1),
+             zaxis       = true,
+             zaxis_type  = solid,
+             zaxis_color = blue)$
+@end example
+
+V@'eanse tambi@'en @code{zaxis_width}, @code{zaxis_type} y @code{zaxis_color}.
+@end defvr
+
+
+
+@defvr {Opci@'on gr@'afica} zaxis_width
+Valor por defecto: 1
+
+@code{zaxis_width} is the width of the @var{z} axis.
+Its value must be a positive number. This option has no effect in 2D scenes.
+
+Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
+descripci@'on de la escena no reviste importancia.
+
+Ejemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(explicit(x^2+y^2,x,-1,1,y,-1,1),
+             zaxis       = true,
+             zaxis_type  = solid,
+             zaxis_width = 3)$
+@end example
+
+V@'eanse tambi@'en @code{zaxis}, @code{zaxis_type} y @code{zaxis_color}.
+@end defvr
+
+
+
+@defvr {Opci@'on gr@'afica} zaxis_type
+Valor por defecto: @code{dots}
+
+@code{zaxis_type} indicates how the @var{z} axis is displayed; 
+possible values are @code{solid} and @code{dots}.
+This option has no effect in 2D scenes.
+
+Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
+descripci@'on de la escena no reviste importancia.
+
+Ejemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(explicit(x^2+y^2,x,-1,1,y,-1,1),
+             zaxis       = true,
+             zaxis_type  = solid)$
+@end example
+
+V@'eanse tambi@'en @code{zaxis}, @code{zaxis_width} y @code{zaxis_color}.
+@end defvr
+
+
+
+@defvr {Opci@'on gr@'afica} zaxis_color
+Valor por defecto: @code{"black"}
+
+@code{zaxis_color} specifies the color for the @var{z} axis. See
+@code{color} to know how colors are defined. 
+This option has no effect in 2D scenes.
+
+Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
+descripci@'on de la escena no reviste importancia.
+
+Ejemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(explicit(x^2+y^2,x,-1,1,y,-1,1),
+             zaxis       = true,
+             zaxis_type  = solid,
+             zaxis_color = red)$
+@end example
+
+V@'eanse tambi@'en @code{zaxis}, @code{zaxis_width} y @code{zaxis_type}.
+@end defvr
+
 
 @defvr {Opci@'on gr@'afica} rot_vertical
 Valor por defecto: 60
@@ -510,7 +808,36 @@ Ejemplo:
 V@'eanse tambi@'en @code{terminal}, @code{pic_width} y @code{pic_height}.
 @end defvr
 
+@defvr {Opci@'on gr@'afica} delay
+Valor por defecto: 5
 
+Este es el retraso en cent@'esimas de segundo entre im@'agenes
+en los ficheros gif animados.
+
+Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
+descripci@'on de la escena no reviste importancia. Tambi@'en puede
+usarse como argumento de la funci@'on @code{draw}.
+
+Ejemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw(
+        delay     = 100,
+        file_name = "zzz",
+        terminal  = 'animated_gif,
+        gr2d(explicit(x^2,x,-1,1)),
+        gr2d(explicit(x^3,x,-1,1)),
+        gr2d(explicit(x^4,x,-1,1)));
+End of animation sequence
+(%o2)          [gr2d(explicit), gr2d(explicit), gr2d(explicit)]
+@end example
+
+La opci@'ob @code{delay} s@'olo se activa en caso de gifs animados; se ignora en
+cualquier otro caso.
+
+See also @code{terminal}, @code{pic_width}, and @code{pic_height}.
+@end defvr
 
 @defvr {Opci@'on gr@'afica} pic_width
 Valor por defecto: 640
@@ -1627,7 +1954,7 @@ afectan al aspecto global de la escena.
 
 La lista de @i{objetos gr@'aficos} disponibles para escenas en tres
 dimensiones: @code{points}, @code{label}, @code{vector}, @code{explicit}, 
-@code{parametric} y @code{parametric_surface}.
+@code{parametric}, @code{parametric_surface} y @code{geomap}.
 
 
 V@'eanse tambi@'en las siguientes opciones gr@'aficas: @code{xrange}, @code{yrange}, 
@@ -1657,6 +1984,7 @@ Para utilizar esta funci@'on, ejec@'utese primero @code{load(draw)}.
 @deffnx {Objeto gr@'afico} points ([@var{y1},@var{y2},...])
 @deffnx {Objeto gr@'afico} points ([[@var{x1},@var{y1},@var{z1}], [@var{x2},@var{y2},@var{z2}],...])
 @deffnx {Objeto gr@'afico} points ([@var{x1},@var{x2},...], [@var{y1},@var{y2},...], [@var{z1},@var{z2},...])
+@deffnx {Objeto gr@'afico} points (@var{matrix})
 Dibuja puntos en 2D y 3D.
 
 Este objeto se ve afectado por las siguientes @i{opciones gr@'aficas}: @code{point_size}, 
@@ -1670,6 +1998,8 @@ Este objeto se ve afectado por las siguientes @i{opciones gr@'aficas}: @code{poi
 dibuja los puntos @code{[@var{x1},@var{y1}]}, @code{[@var{x2},@var{y2}]}, etc. Si no se dan las abscisas,
 @'estas se asignan autom@'aticamente a enteros positivos consecutivos, de forma que
 @code{points([@var{y1},@var{y2},...])} dibuja los puntos @code{[1,@var{y1}]}, @code{[2,@var{y2}]}, etc.
+Si @var{matrix} es una matriz de dos columnas o de dos filas, @code{points (@var{matrix})}
+dibuja los puntos asociados.
 
 Ejemplo:
 
@@ -1694,6 +2024,9 @@ Ejemplo:
 @code{points ([[@var{x1},@var{y1},@var{z1}], [@var{x2},@var{y2},@var{z2}],...])} o 
 @code{points ([@var{x1},@var{x2},...], [@var{y1},@var{y2},...], [@var{z1},@var{z2},...])}
 dibuja los puntos @code{[@var{x1},@var{y1},@var{z1}]}, @code{[@var{x2},@var{y2},@var{z2}]}, etc.
+Si @var{matrix} es una matriz de tres columnas o de tres filas, @code{points (@var{matrix})}
+dibuja los puntos asociados. Si @var{matrix} es una matriz columna o fila, las abscisas 
+se asignan autom@'aticamente. 
 
 Ejemplo:
 
@@ -2184,22 +2517,23 @@ V@'ease tambi@'en @code{geomap}.
 @end defvr
 
 
-@deffn  {Objeto gr@'afico} geomap (@var{n1},@var{n2},...)
-Dibuja mapas cartogr@'aficos en 2D.
+@deffn  {Objeto gr@'afico} geomap (@var{numlist})
+@deffnx {Objeto gr@'afico} geomap (@var{numlist},@var{3Dprojection})
+Dibuja mapas cartogr@'aficos en 2D y 3D.
 
 @b{2D}
 
 Esta funci@'on trabaja junto con la variable global @code{boundaries_array}.
 
-Los argumentos son n@'umeros o listas, las cuales a su vez pueden contener
-n@'umeros o listas. Todos estos n@'umeros deben ser enteros mayores o iguales que cero,
+El argumento @var{numlist} es una lista de n@'umeros o de listas de 
+n@'umeros. Todos estos n@'umeros deben ser enteros mayores o iguales que cero,
 representando las componentes del array global @code{boundaries_array}.
 
 Cada componente de @code{boundaries_array} es un array de decimales en
 coma flotante, las coordenadas de un segmento poligonal o l@'{@dotless{i}}nea
 fronteriza.
 
-@code{geomap (@var{n1},@var{n2},...)} toma los enteros de sus argumentos y 
+@code{geomap (@var{numlist})} toma los enteros de sus argumentos y 
 dibuja los segmentos poligonales asociados de @code{boundaries_array}.
 
 Este objeto se ve afectado por las siguientes @i{opciones gr@'aficas}: @code{line_width}, 
@@ -2242,7 +2576,8 @@ reales en coordenadas (longitud, latitud). Estos datos son
 de dominio p@'ublico y proceden de
 @url{http://www-cger.nies.go.jp/grid-e/gridtxt/grid19.html}.
 El paquete @code{worldmap} tambi@'en define fronteras 
-de pa@'{@dotless{i}}ses y continentes a partir de las
+de pa@'{@dotless{i}}ses, continentes y l@'{@dotless{i}}neas
+costeras a partir de las
 componentes de @code{boundaries_array} (v@'ease el
 fichero @code{share/draw/worldmap.mac} para m@'as
 informaci@'on). El paquete @code{draw} no carga
@@ -2282,9 +2617,60 @@ comprender el siguiente c@'odigo.
 (%i4) apply(draw2d, mymap)$
 @end example
 
+@b{3D}
+
+@code{geomap (@var{numlist})} proyecta los mapas sobre la esfera de radio 1
+y centro (0,0,0). Es posible cambiar la esfera o el tipo de proyecci@'on haciendo
+uso de @code{geomap (@var{numlist},@var{3Dprojection})}.
+
+Proyecciones 3D disponibles:
+
+@itemize @bullet
+@item
+@code{[spherical_projection,@var{x},@var{y},@var{z},@var{r}]}: proyecta los mapas sobre la esfera de radio
+@var{r} y centro (@var{x},@var{y},@var{z}).
+@example
+(%i1) load(draw)$
+(%i2) load(worldmap)$
+(%i3) draw3d(geomap(Australia), /* default projection */
+             geomap(Australia,
+                    [spherical_projection,2,2,2,3]))$
+@end example
+
+@item
+@code{[cylindrical_projection,@var{x},@var{y},@var{z},@var{r},@var{rc}]}: re-proyecta mapas esf@'ericos
+sobre el cilindro de radio @var{rc} cuyo eje pasa a trav@'es de los polos del globo
+de radio @var{r} y centro (@var{x},@var{y},@var{z}).
+@example
+(%i1) load(draw)$
+(%i2) load(worldmap)$
+(%i3) draw3d(geomap([America_coastlines,Eurasia_coastlines],
+                    [cylindrical_projection,2,2,2,3,4]))$
+@end example
+
+@item
+@code{[conic_projection,@var{x},@var{y},@var{z},@var{r},@var{alpha}]}: re-proyecta mapas esf@'ericos sobre los
+conos de @'angulo @var{alpha}, cuyos ejes pasan a trav@'es de los polos del globo de radio @var{r} 
+y centro (@var{x},@var{y},@var{z}). Ambos conos, norte y sur, son tangentes a la esfera.
+@example
+(%i1) load(draw)$
+(%i2) load(worldmap)$
+(%i3) draw3d(geomap(World_coastlines,
+                    [conic_projection,0,0,0,1,90]))$
+@end example
+@end itemize
+
 En @url{http://www.telefonica.net/web2/biomates/maxima/gpdraw/geomap}
 hay ejemplos m@'as elaborados.
 @end deffn
+
+
+
+
+
+
+
+
 
 
 @deffn  {Objeto gr@'afico} parametric_surface (@var{xfun},@var{yfun},@var{zfun},@var{par1},@var{par1min},@var{par1max},@var{par2},@var{par2min},@var{par2max})
@@ -2329,8 +2715,9 @@ Representa gr@'aficamente una serie de escenas; sus argumentos son objetos
 @code{gr2d} y/o @code{gr3d}, junto con algunas opciones. Por defecto, 
 las escenas se representan en una columna.
 
-La funci@'on @code{draw} acepta dos opciones posibles: @code{terminal} 
-y @code{columns}.
+La funci@'on @code{draw} acepta las siguientes opciones globales: @code{terminal},
+@code{columns}, @code{pic_width}, @code{pic_height}, @code{eps_width},
+@code{eps_height}, @code{file_name} y @code{delay}.
 
 Las funciones @code{draw2d} y @code{draw3d} son atajos a utilizar
 cuando se quiere representar una @'unica escena en dos o tres
@@ -2349,6 +2736,31 @@ Ejemplo:
                    polygon([4,5,7],[6,4,2]))$
 (%i4) draw(scene1, scene2, columns = 2)$
 @end example
+
+Las dos sentencias gr@'aficas siguientes son equivalentes:
+@example
+(%i1) load(draw)$
+(%i2) draw(gr3d(explicit(x^2+y^2,x,-1,1,y,-1,1)));
+(%o2)                          [gr3d(explicit)]
+(%i3) draw3d(explicit(x^2+y^2,x,-1,1,y,-1,1));
+(%o3)                          [gr3d(explicit)]
+@end example
+
+Un fichero gif animado:
+@example
+(%i1) load(draw)$
+(%i2) draw(
+        delay     = 100,
+        file_name = "zzz",
+        terminal  = 'animated_gif,
+        gr2d(explicit(x^2,x,-1,1)),
+        gr2d(explicit(x^3,x,-1,1)),
+        gr2d(explicit(x^4,x,-1,1)));
+End of animation sequence
+(%o2)          [gr2d(explicit), gr2d(explicit), gr2d(explicit)]
+@end example
+
+V@'eanse tambi@'en @code{draw2d} y @code{draw3d}.
 @end deffn
 
 
@@ -2374,6 +2786,7 @@ Puede utilizarse para representar una @'unica escena en 3d.
 Para utilizar esta funci@'on, ejec@'utese primero @code{load(draw)}.
 
 @end deffn
+
 
 
 
