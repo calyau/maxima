@@ -86,8 +86,6 @@
 (in-package :maxima)
 (macsyma-module simplex)
 
-(proclaim '(optimize (speed 3) (safety 0) (space 0) (compilation-speed 0)))
-
 ($put '$simplex 1.02 '$version)
 
 (defmvar $pivot_count_sx     0  "Number of pivots in last problem."   fixnum)
