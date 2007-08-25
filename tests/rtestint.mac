@@ -979,3 +979,7 @@ ratsimp(integrate(1/(sin(x)^2+1),x,-8,0));
 /* Bug 1748168 */
 integrate(1/(2+cos(x)),x,-%pi/2,%pi/2);
 (2/9)*sqrt(3)*%pi;
+
+/* Bug 1781537 */
+integrate(cos(x-c),x,c,%pi/2+c);
+1;

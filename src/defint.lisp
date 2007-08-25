@@ -1769,9 +1769,10 @@
 	($trigsign t)
 	(*sin-cos-recur* t))		;recursion stopper
     (prog (ans d nzp2 l int-zero-to-d int-nzp2 int-zero-to-c)
-       (when (or (not ($constantp limit-diff))
-		 (not (period %pi2 e var)))
-	 ;; Exit if b-a is not a constant or if the integrand
+       (when (or (not (period %pi2 e var))
+		 (not (and ($constantp a)
+			   ($constantp b))))
+	 ;; Exit if b or a is not a constant or if the integrand
 	 ;; doesn't appear to have a period of 2 pi.
 	 (return nil))
        ;; Multiples of 2*%pi in limits.
@@ -1786,8 +1787,9 @@
 	      (cond ((setq ans (intsc e %pi2 var))
 		     (return (m* d ans)))
 		    (t (return nil)))))
+       
        ;; The integral is not over a full period (2*%pi) or multiple
-       ;; of a full period.  Need to do something special.
+       ;; of a full period.  
 
        ;; Wang p. 111: The integral integrate(f(x),x,a,b) can be
        ;; written as:
