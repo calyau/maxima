@@ -772,3 +772,7 @@ acos(1/sqrt(2)),%piargs;
 %pi/4;
 acos(-1/sqrt(2)),%piargs;
 3*%pi/4;
+
+/* Bug [ 1045287 ] */
+floatnump(float(exp(exp(2))));
+true$
