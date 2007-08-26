@@ -1112,6 +1112,10 @@
 	 (ip-grid (gethash '$ip_grid *gr-options*))
 	 (ip-grid-in (gethash '$ip_grid_in *gr-options*))
 	 e pltcmd
+         (xmin (convert-to-float xmin))
+         (xmax (convert-to-float xmax))
+         (ymin (convert-to-float ymin))
+         (ymax (convert-to-float ymax))
 	 (xdelta (/ (- xmax xmin) ($first ip-grid)))
 	 (ydelta (/ (- ymax ymin) ($second ip-grid)))
 	 (sample (make-array `(,(1+ ($first ip-grid))
