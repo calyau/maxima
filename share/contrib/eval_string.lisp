@@ -12,44 +12,55 @@
 ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ;; GNU General Public License for more details.
 
-;; eval_string (s)  --  parse the Maxima string s as a Maxima expression and evaluate it.
-;; s is a Maxima string. It may or may not have a terminator (dollar sign `$' or semicolon `;').
+;; eval_string (s)  --  parse the string s as a Maxima expression and evaluate it.
+;; s is a Lisp or Maxima string. It may or may not have a terminator
+;; (dollar sign `$' or semicolon `;').
 ;; Only the first expression is parsed and evaluated, if there is more than one.
 ;; e.g.
 ;; eval_string ("foo: 42; bar: foo^2 + baz")  =>  42
 ;; eval_string ("(foo: 42, bar: foo^2 + baz)")  =>  baz + 1764
-;; Complain if s is not a Maxima string.
+;; Complain if s is not a string.
 
 (defun $eval_string (s)
   (cond
     ((mstringp s)
-     (meval (parse-string s)))
+     (meval (parse-maxima-string s)))
+    ((stringp s)
+     (meval (parse-lisp-string s)))
     (t
-      (merror "eval_string: ~M is not a Maxima string." s))))
+      (merror "eval_string: ~M is not a string." s))))
 
-;; parse_string (s)  --  parse the Maxima string s as a Maxima expression (do not evaluate it).
-;; s is a Maxima string. It may or may not have a terminator (dollar sign `$' or semicolon `;').
+;; parse_string (s)  --  parse the string s as a Maxima expression (do not evaluate it).
+;; s is a Lisp or Maxima string. It may or may not have a terminator
+;; (dollar sign `$' or semicolon `;').
 ;; Only the first expression is parsed, if there is more than one.
 ;; e.g.
 ;; parse_string ("foo: 42; bar: foo^2 + baz")  =>  foo : 42
 ;; parse_string ("(foo: 42, bar: foo^2 + baz)")  =>  (foo : 42, bar : foo^2 + baz)
-;; Complain if s is not a Maxima string.
+;; Complain if s is not a string.
 
 (defun $parse_string (s)
   (cond
     ((mstringp s)
-     (parse-string s))
+     (parse-maxima-string s))
+    ((stringp s)
+     (parse-lisp-string s))
     (t
-      (merror "parse_string: ~M is not a Maxima string." s))))
+      (merror "parse_string: ~M is not a string." s))))
 
-;; (PARSE-STRING S)  --  parse the Maxima string as a Maxima expression.
-;; Assume S is a Maxima string (do not test).
+;; (PARSE-LISP-STRING S)  --  parse the Lisp string as a Maxima expression.
 ;; Do not evaluate the parsed expression.
 
-(defun parse-string (s)
+(defun parse-lisp-string (s)
   (with-input-from-string
-    (ss (ensure-terminator (print-invert-case (stripdollar s))))
+    (ss (ensure-terminator s))
     (third (mread ss))))
+
+;; (PARSE-MAXIMA-STRING S) -- parse the Maxima string as a Maxima expression.
+;; Do not evaluate the parsed expression.
+
+(defun parse-maxima-string (s)
+  (parse-lisp-string (print-invert-case (stripdollar s))))
 
 ;; (ENSURE-TERMINATOR S)  -- if the Lisp string S does not contain dollar sign `$' or semicolon `;'
 ;; then append a dollar sign to the end of S.
