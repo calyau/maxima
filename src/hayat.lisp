@@ -1901,12 +1901,12 @@
 
 (defun parse-tay-args (l)
    (cond ((null l) )
+	 ((numberp (car l))
+	  (merror "Variable of expansion cannot be a number: ~M"
+	 	  (car l)))
 	 ((or (symbolp (car l)) (not (eq (caaar l) 'mlist)))
 	  (parse-tay-args1 (list (car l) ($ratdisrep (cadr l)) (caddr l)))
 	  (parse-tay-args (cdddr l)))
-	 ;((or (numberp (car l)) (null (eq (caaar l) 'MLIST)))
-	 ; (merror "Variable of expansion not atomic: ~M"
-	 ;	  (CAR L)))
 	 ((do ((l (cddar l) (cdr l)))
 	      ((null l) () )
 	     (and (or (mnump (car l)) (eq (car l) '$inf))
