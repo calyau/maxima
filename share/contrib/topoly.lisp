@@ -302,7 +302,7 @@ to eliminate.
       (merror "Each member of the first argument to 'elim' must be a polynomial"))
 
   (setq x (margs x))
-  (opapply 'mlist (mapcar #'(lambda (s) (opapply 'mlist s)) (unk-eliminate eqs x)))))
+  (opapply 'mlist (mapcar #'(lambda (s) (opapply 'mlist s)) (unk-eliminate eqs x))))
 
 (defun $elim_allbut (eqs x)
   (let (($listconstvars nil) (v))
