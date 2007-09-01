@@ -1010,9 +1010,12 @@
 	((or (atom e) (member 'array (cdar e) :test #'eq)) e)
 	((eq (caar e) 'rat) (fpcofrat e))
 	((eq (caar e) 'bigfloat) (fp2flo e))
-	((and (member (caar e) '(mexpt mncexpt) :test #'eq)
-	      (integerp (caddr e))) ; avoid x^2 -> x^2.0
-	 (list (ncons (caar e)) ($float (cadr e)) (caddr e)))
+	((member (caar e) '(mexpt mncexpt) :test #'eq)
+	 ;; avoid x^2 -> x^2.0, allow %e^%pi -> 23.14
+	 (let ((res (recur-apply #'$float e)))
+	   (if (floatp res)
+	       res
+	     (list (ncons (caar e)) ($float (cadr e)) (caddr e)))))
 	(t (recur-apply #'$float e))))
 
 (defmfun $coeff (e x &optional (n 1))
