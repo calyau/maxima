@@ -163,7 +163,7 @@
 
 ;;  ascii-char <-> index
 (defun $cint (mch) (char-int (l-char mch)))
-(defun $ascii (int) (m-char (character int)))
+(defun $ascii (int) (m-char (code-char int)))
 
 ;;  comparison - test functions - at Maxima level
 (defun $cequal (ch1 ch2)          (char= (l-char ch1) (l-char ch2)))
