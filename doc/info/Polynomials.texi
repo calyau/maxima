@@ -603,11 +603,9 @@ for all @var{x}.  Many functions (e.g.  @code{ratsimp}, @code{factor}, etc.) cau
 to be taken implicitly.  For homogeneous polynomials it is recommended
 that @code{gcd} equal to @code{subres} be used.  To take the gcd when an algebraic is
 present, e.g., @code{gcd (@var{x}^2 - 2*sqrt(2)*@var{x} + 2, @var{x} - sqrt(2))}, @code{algebraic} must be
-@code{true} and @code{gcd} must not be @code{ez}.  @code{subres} is a new algorithm, and people
-who have been using the @code{red} setting should probably change it to
-@code{subres}.
+@code{true} and @code{gcd} must not be @code{ez}.
 
-The @code{gcd} flag, default: @code{subres}, if @code{false} will also prevent the greatest
+The @code{gcd} flag, default: @code{spmod}, if @code{false} will also prevent the greatest
 common divisor from being taken when expressions are converted to canonical rational expression (CRE)
 form.  This will sometimes speed the calculation if gcds are not
 required.
