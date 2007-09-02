@@ -1647,9 +1647,11 @@ variables as assignment statements.
 @end deffn
 
 @deffn {Function} tex (@var{expr})
-@deffnx {Function} tex (@var{label})
 @deffnx {Function} tex (@var{expr}, @var{filename})
+@deffnx {Function} tex (@var{expr}, false)
+@deffnx {Function} tex (@var{label})
 @deffnx {Function} tex (@var{label}, @var{filename})
+@deffnx {Function} tex (@var{label}, false)
 
 Prints a representation of an expression
 suitable for the TeX document preparation system.
@@ -1663,11 +1665,11 @@ but not processed by itself.
 and assigns it an equation label (to be displayed to the left of the expression).
 The TeX equation label is the same as the Maxima label.
 
-@code{tex (@var{expr}, @var{filename})} appends a TeX representation of @var{expr}
-to the file @var{filename}.
+@code{tex (@var{expr}, @var{filename})} and @code{tex (@var{label}, @var{filename})}
+append their TeX output to the file @var{filename}.
 
-@code{tex (@var{label}, @var{filename})} appends a TeX representation of the
-expression named by @var{label}, with an equation label, to the file @var{filename}.
+@code{tex (@var{expr}, false)} and @code{tex (@var{label}, false)}
+return their TeX output as a Lisp string.
 
 @code{tex} evaluates its first argument after testing it to see if it is a label.
 Quote-quote @code{''} forces evaluation of the argument, thereby defeating the test
@@ -1694,6 +1696,19 @@ $$-\cos x$$
 (%o3)                           false
 (%i4) tex (%o1, "foo.tex");
 (%o4)                          (\%o1)
+@end example
+
+@code{tex (@var{expr}, false)} returns its TeX output as a Lisp string.
+
+@c ===beg===
+@c S : tex (x * y * z, false);
+@c S;
+@c ===end===
+@example
+(%i1) S : tex (x * y * z, false);
+(%o1) $$x\,y\,z$$
+(%i2) S;
+(%o2) $$x\,y\,z$$
 @end example
 
 @end deffn
