@@ -244,5 +244,9 @@ inf;
 limit(atanh(a-1)-log(a)/2,a,0,'plus),logarc:true;
 -log(2)/2;
 
+/* [ 1606731 ] limit of algebraic when algebraic : true */
+limit(x*(sqrt(1+x^2)-x),x,inf), algebraic : true, gcd : subres;
+1/2;
+
 end;
 end$

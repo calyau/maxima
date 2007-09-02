@@ -453,19 +453,16 @@ errcatch(taylor(x^3,x,0,2)/taylor(x^3,x,0,2));
 (remvalue(tp),0);
 0$
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+/* [ 696818 ] Taylor internal error (rat problem?) */
+taylor(log(sqrt(e*%e^x+1)+e),x,0,2),gcd:subres;
+log(sqrt(e+1)+e)+sqrt(e+1)*e*x/(2*e^2+(2*sqrt(e+1)+2)*e+2*sqrt(e+1))
+                      +((sqrt(e+1)+1)*e^5+(3*sqrt(e+1)+6)*e^4
+                                         +(4*sqrt(e+1)+9)*e^3
+                                         +(4*sqrt(e+1)+4)*e^2+2*sqrt(e+1)*e)
+                       *x^2
+                       /(8*e^6+(24*sqrt(e+1)+48)*e^5+(80*sqrt(e+1)+120)*e^4
+                              +(104*sqrt(e+1)+152)*e^3+(72*sqrt(e+1)+96)*e^2
+                              +(32*sqrt(e+1)+24)*e+8*sqrt(e+1))$
 
 
 

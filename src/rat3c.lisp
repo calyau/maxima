@@ -233,19 +233,23 @@
 (defun redgcd (p q &aux (d 0))
   (loop until (zerop (pdegree q (p-var p)))
 	 do (psetq p q
-		   q (pquotientchk (prem p q) (pexpt (p-lc p) d))
+		   q (eztestdivide (prem p q) (pexpt (p-lc p) d))
 		   d (+ (p-le p) 1 (- (p-le q))))
+	 (if (< d 1) (return 1))
 	 finally (return (if (pzerop q) p 1))))
 
-;;computes gcd's using subresultant prs TOMS Sept. 1978
+;;computes gcd's using subresultant prs
+;;ACM Transactions On Mathematical Software Sept. 1978
 
 (defun subresgcd (p q)
   (loop for g = 1 then (p-lc p)
-	 for h = 1 then (pquotient (pexpt g d) h^1-d)
+	 for h = 1 then (eztestdivide (pexpt g d) h^1-d)
 	 for d = (- (p-le p) (p-le q))
-	 for h^1-d = (if (equal h 1) 1 (pexpt h (1- d)))
+	 for h^1-d = 1 then (if (< d 1)
+				(return 1)
+			      (pexpt h (1- d)))
 	 do (psetq p q
-		   q (pquotientchk (prem p q) (ptimes g (ptimes h h^1-d))))
+		   q (eztestdivide (prem p q) (ptimes g (ptimes h h^1-d))))
 	 if (zerop (pdegree q (p-var p))) return (if (pzerop q) p 1)))
 
 ;;*** THIS COMPUTES PSEUDO REMAINDERS
