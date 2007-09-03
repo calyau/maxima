@@ -39,15 +39,15 @@ true;
  is (equal (b, b2)));
 true;
 
-(write_data (a2, "tmp-lisp-array.data"),
+(write_data (a2, sconcat (maxima_tempdir, "/tmp-lisp-array.data")),
  a3: make_array('any, 3, 4, 5),
- read_lisp_array ("tmp-lisp-array.data", a3), 
+ read_lisp_array (sconcat (maxima_tempdir, "/tmp-lisp-array.data"), a3), 
  is (equal (a2, a3)));
 true;
 
-(write_data (b2, "tmp-maxima-array.data"),
+(write_data (b2, sconcat (maxima_tempdir, "/tmp-maxima-array.data")),
  array (b3, 2, 3, 4),
- read_maxima_array ("tmp-maxima-array.data", b3),
+ read_maxima_array (sconcat (maxima_tempdir, "/tmp-maxima-array.data"), b3),
  is (equal (b2, b3)));
 true;
 
@@ -82,26 +82,26 @@ true;
  is (m = m4));
 true;
 
-(write_data (m2, "tmp-matrix.csv"),
- m5 : read_matrix("tmp-matrix.csv"),
+(write_data (m2, sconcat (maxima_tempdir, "/tmp-matrix.csv")),
+ m5 : read_matrix(sconcat (maxima_tempdir, "/tmp-matrix.csv")),
  is (m2 = m5));
 true;
 
-(write_data (m2, "tmp-matrix.data", 'comma),
- m6 : read_matrix("tmp-matrix.data", 'comma),
+(write_data (m2, sconcat (maxima_tempdir, "/tmp-matrix.data", 'comma)),
+ m6 : read_matrix(sconcat (maxima_tempdir, "/tmp-matrix.data", 'comma)),
  is (m2 = m6));
 true;
 
-(write_data (m2, "tmp-matrix-2.csv", 'space),
- m7 : read_matrix("tmp-matrix-2.csv", 'space),
+(write_data (m2, sconcat (maxima_tempdir, "/tmp-matrix-2.csv", 'space)),
+ m7 : read_matrix(sconcat (maxima_tempdir, "/tmp-matrix-2.csv", 'space)),
  is (m2 = m7));
 true;
 
 (array (a, 10, 6),
  read_maxima_array (file_search ("rectangular.data"), a),
- write_data (a, "tmp-array.csv"),
+ write_data (a, sconcat (maxima_tempdir, "/tmp-array.csv")),
  array (a2, 10, 6),
- read_maxima_array ("tmp-array.csv", a2),
+ read_maxima_array (sconcat (maxima_tempdir, "/tmp-array.csv"), a2),
  is (equal (a, a2)));
 true;
 
@@ -212,23 +212,23 @@ true;
  is (l = l2));
 true;
 
-(write_data (m2, "tmp-matrix.data"),
- l3_nested : read_nested_list ("tmp-matrix.data"),
+(write_data (m2, sconcat (maxima_tempdir, "/tmp-matrix.data")),
+ l3_nested : read_nested_list (sconcat (maxima_tempdir, "/tmp-matrix.data")),
  is (l2_nested = l3_nested));
 true;
 
-(write_data (h2, "tmp-hashed-array.data"),
- read_hashed_array ("tmp-hashed-array.data", h3),
+(write_data (h2, sconcat (maxima_tempdir, "/tmp-hashed-array.data")),
+ read_hashed_array (sconcat (maxima_tempdir, "/tmp-hashed-array.data"), h3),
  is (equal (h2, h3)));
 true;
 
-(write_data (l2_nested, "tmp-nested-list.data"),
- m3 : read_matrix ("tmp-nested-list.data"),
+(write_data (l2_nested, sconcat (maxima_tempdir, "/tmp-nested-list.data")),
+ m3 : read_matrix (sconcat (maxima_tempdir, "/tmp-nested-list.data")),
  is (m2 = m3));
 true;
 
-(write_data (l2, "tmp-list.data"),
- l3 : read_list ("tmp-list.data"),
+(write_data (l2, sconcat (maxima_tempdir, "/tmp-list.data")),
+ l3 : read_list (sconcat (maxima_tempdir, "/tmp-list.data")),
  is (l2 = l3));
 true;
 
@@ -290,8 +290,8 @@ true;
  is (l_nested = l_nested_3));
 true;
 
-(write_data (l_nested_2, "tmp-tab.data", 'tab),
- l_nested_4: read_nested_list ("tmp-tab.data", 'tab),
+(write_data (l_nested_2, sconcat (maxima_tempdir, "/tmp-tab.data"), 'tab),
+ l_nested_4: read_nested_list (sconcat (maxima_tempdir, "/tmp-tab.data"), 'tab),
  is (l_nested = l_nested_4));
 true;
 
@@ -310,11 +310,11 @@ true;
  is (equal (a1, a2)));
 true;
 
-(s : openw ("tmp-lisp-array.data"),
+(s : openw (sconcat (maxima_tempdir, "/tmp-lisp-array.data")),
  write_data (a2, s),
  close (s),
  a3 : make_array ('any, 3, 4, 5),
- s : openr ("tmp-lisp-array.data"),
+ s : openr (sconcat (maxima_tempdir, "/tmp-lisp-array.data")),
  read_lisp_array (s, a3),
  close (s),
  is (equal (a1, a3)));
@@ -329,11 +329,11 @@ true;
  is (equal (b1, b2)));
 true;
 
-(s : openw ("tmp-maxima-array.data"),
+(s : openw (sconcat (maxima_tempdir, "/tmp-maxima-array.data")),
  write_data (b2, s),
  close (s),
  b3 : array (b, 2, 3, 4),
- s : openr ("tmp-maxima-array.data"),
+ s : openr (sconcat (maxima_tempdir, "/tmp-maxima-array.data")),
  read_maxima_array (s, b3),
  close (s),
  is (equal (b1, b3)));
@@ -346,10 +346,10 @@ true;
  is (m1 = m2));
 true;
 
-(s : openw ("tmp-matrix.data"),
+(s : openw (sconcat (maxima_tempdir, "/tmp-matrix.data")),
  write_data (m2, s),
  close (s),
- s : openr ("tmp-matrix.data"),
+ s : openr (sconcat (maxima_tempdir, "/tmp-matrix.data")),
  m3 : read_matrix (s),
  close (s),
  is (m1 = m3));
@@ -362,10 +362,10 @@ true;
  is (l1 = l2));
 true;
 
-(s : openw ("tmp-list.data"),
+(s : openw (sconcat (maxima_tempdir, "/tmp-list.data")),
  write_data (l2, s),
  close (s),
- s : openr ("tmp-list.data"),
+ s : openr (sconcat (maxima_tempdir, "/tmp-list.data")),
  l3 : read_list (s),
  close (s),
  is (l1 = l3));
@@ -378,10 +378,10 @@ true;
  is (l1 = l2));
 true;
 
-(s : openw ("tmp-nested-list.data"),
+(s : openw (sconcat (maxima_tempdir, "/tmp-nested-list.data")),
  write_data (l2, s),
  close (s),
- s : openr ("tmp-nested-list.data"),
+ s : openr (sconcat (maxima_tempdir, "/tmp-nested-list.data")),
  l3 : read_nested_list (s),
  close (s),
  is (l1 = l3));
@@ -394,10 +394,10 @@ true;
  is (equal (h1, h2)));
 true;
 
-(s : openw ("tmp-hashed-array.data"),
+(s : openw (sconcat (maxima_tempdir, "/tmp-hashed-array.data")),
  write_data (h2, s),
  close (s),
- s : openr ("tmp-hashed-array.data"),
+ s : openr (sconcat (maxima_tempdir, "/tmp-hashed-array.data")),
  read_hashed_array (s, h3),
  close (s),
  is (equal (h1, h3)));
