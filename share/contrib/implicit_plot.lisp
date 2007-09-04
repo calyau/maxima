@@ -68,8 +68,8 @@
 	  (format file "~f ~f~%" x1 y1)
 	  (format file "~f ~f~%~%" x2 y2))
 	(progn
-	  (format file "  { ~f ~f ~f }~%" x1 (/ (+ x1 x2) 2) x2)
-	  (format file "  { ~f ~f ~f }~%" y1 (/ (+ y1 y2) 2) y2)))))
+	  (format file "  { ~f ~f ~f }~%" (float x1) (float (/ (+ x1 x2) 2)) (float x2))
+	  (format file "  { ~f ~f ~f }~%" (float y1) (float (/ (+ y1 y2) 2)) (float y2)))) ))
 	
 
 (defun print-square (file xmin xmax ymin ymax sample grid)
