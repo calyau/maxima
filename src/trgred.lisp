@@ -28,12 +28,9 @@
 ;;	*NOEXPAND	indicates that trig functions of sums of
 ;;			angles are not to be used.
 
-(defmfun $trigreduce n
-  (let ((*trigred t) (*noexpand t) var $trigexpand $verbose $ratprint)
-    (cond ((= n 2) (setq var (arg 2)))
-	  ((= n 1) (setq var '*novar))
-	  (t (merror "Wrong number of args to `trigreduce'")))
-    (gcdred (sp1 (arg 1)))))
+(defmfun $trigreduce (exp &optional (var '*novar))
+  (let ((*trigred t) (*noexpand t) $trigexpand $verbose $ratprint)
+    (gcdred (sp1 exp))))
 
 (defun sp1 (e)
   (cond ((atom e) e)
