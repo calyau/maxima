@@ -12,45 +12,30 @@
 
 (macsyma-module polyrz)
 
-(declare-top (special errrjfflag $programmode varlist 
+(declare-top (special errrjfflag $programmode varlist
 		      $ratepsilon $ratprint $factorflag genvar
 		      equations $keepfloat $ratfac $rootsepsilon
 		      $multiplicities))
 
 (load-macsyma-macros ratmac)
 
-
 ;;	PACKAGE FOR FINDING REAL ZEROS OF UNIVARIATE POLYNOMIALS
 ;;	WITH INTEGER COEFFICIENTS USING STURM SEQUENCES.
 
-;; Better programming technology.  To be installed with new argument
-;; checking scheme.
-;; (DEFMFUN $REALROOTS (EXP (EPS $ROOTSEPSILON))
-;;        (SETQ EXP (MEQHK EXP))
-;;        (IF ($RATP EXP) (SETQ EXP ($RATDISREP EXP)))
-;;        (COND ((OR (NOT (MNUMP EPS)) (MNEGP EPS) (EQUAL EPS 0))
-;; 	      (DISPLA EPS)
-;; 	      (MERROR "Second argument must be a positive number - `realroots'")))
-;;        (LET (($KEEPFLOAT NIL)) (STURMSEQ EXP EPS)))
+(defmfun $realroots (exp &optional (eps $rootsepsilon))
+  (setq exp (meqhk exp))
+  (when ($ratp exp)
+    (setq exp ($ratdisrep exp)))
+  (when (or (not (mnump eps)) (mnegp eps) (equal eps 0))
+    (merror "Second argument to `realroots' was not a positive number: ~M" eps))
+  (let (($keepfloat nil))
+    (sturmseq exp eps)))
 
-(defmfun $realroots n
-  (let ((exp nil) (eps nil)) 
-    (cond ((= n 1) (setq eps $rootsepsilon))
-	  ((= n 2) (setq eps (arg 2)))
-	  (t (merror "Wrong number of arguments - `realroots'")))
-    (setq exp (meqhk (arg 1)))
-    (if ($ratp exp) (setq exp ($ratdisrep exp)))
-    (cond ((or (not (mnump eps)) (mnegp eps) (equal eps 0))
-	   (merror "Second argument to `realroots' was not a~
-		      positive number: ~M" eps)))
-    (let (($keepfloat nil)) (sturmseq exp eps))))
-
-(defun unipoly (exp) 
+(defun unipoly (exp)
   (setq exp (cadr (ratf exp)))
   (cond ((and (not (atom exp))
 	      (loop for v in (cdr exp)
 		     when (not (atom v))
-
 		     do (return nil)
 		     finally (return t)))
 	 ;;(EVERY #'ATOM (CDR EXP)))
@@ -92,7 +77,7 @@
      (setq logb 1)
      loop (cond ((null (setq p (cddr p))) (return (expt 2 logb)))
 		((< (setq coef (abs (cadr p))) lcf) (go loop)))
-     (setq logb (max logb (1+ (ceil (- (integer-length coef) loglcf 1) (- n (car p)))))) 
+     (setq logb (max logb (1+ (ceil (- (integer-length coef) loglcf 1) (- n (car p))))))
      (go loop)))
 
 (defun ceil (a b)
@@ -102,7 +87,7 @@
 (defun sturmapc (fn llist multiplicity)
   (cond ((null llist) nil)
 	(t  (cons (funcall fn (car llist))
-		  (cons  multiplicity 
+		  (cons  multiplicity
 			 (sturmapc fn (cdr llist) multiplicity)))) ))
 
 (defun findroots (l eps)
@@ -185,12 +170,9 @@
 	((eq pt '$minf) -1)
 	(t (makrat ((lambda ($numer) (meval pt)) t)))))
 
-(defmfun $nroots n
-  (prog (varlist $keepfloat $ratfac l r)
-     (cond ((= n 1) (setq l '$minf r '$inf))
-	   ((= n 3) (setq l (arg 2) r (arg 3)))
-	   (t (merror "Wrong number of arguments - `nroots'")))
-     (return (nroots (unipoly (meqhk (arg 1))) (makpoint l) (makpoint r)))))
+(defmfun $nroots (exp &optional (l '$minf) (r '$inf))
+  (let (varlist $keepfloat $ratfac)
+    (nroots (unipoly (meqhk exp)) (makpoint l) (makpoint r))))
 
 (defun nroots (p l r)
   (rootaddup (psqfr p) l r))
@@ -246,7 +228,7 @@
 
 (defun rhalf (r) (rreduce (car r) (* 2 (cdr r))))
 
-(defun rreduce (a b) 
+(defun rreduce (a b)
   (let ((g (abs (gcd a b))))
     (cons (truncate a g) (truncate b g))) )
 
