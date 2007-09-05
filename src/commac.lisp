@@ -319,9 +319,11 @@ values")
     (cond ((symbolp symb)
 	   (setq string (print-invert-case symb)))
 	  ((floatp symb)
-	   (let
-	 ((a (abs symb))
-	  (effective-printprec (if (or (= $fpprintprec 0) (> $fpprintprec 16)) 16 $fpprintprec)))
+	   (let ((a (abs symb))
+		 (effective-printprec (if (or (= $fpprintprec 0)
+					      (> $fpprintprec 16))
+					  16
+					  $fpprintprec)))
 	     ;; When printing out something for Fortran, we want to be
 	     ;; sure to print the exponent marker so that Fortran
 	     ;; knows what kind of number it is.  It turns out that
@@ -356,17 +358,17 @@ values")
 		  ans rem tem
 		  (chunks
 		   (loop
-		    do (multiple-value-setq (big rem)
-			 (floor big tentochunksize))
-		    collect rem
-		    while (not (eql 0 big)))))
+		      do (multiple-value-setq (big rem)
+			   (floor big tentochunksize))
+		      collect rem
+		      while (not (eql 0 big)))))
 	     (setq chunks (nreverse chunks))
 	     (setq ans (coerce (format nil "~d" (car chunks)) 'list))
 	     (loop for v in (cdr chunks)
-		    do (setq tem (coerce (format nil "~d" v) 'list))
-		    (loop for i below (- big-chunk-size (length tem))
-			   do (setq tem (cons #\0 tem)))
-		    (setq ans (nconc ans tem)))
+		do (setq tem (coerce (format nil "~d" v) 'list))
+		(loop for i below (- big-chunk-size (length tem))
+		   do (setq tem (cons #\0 tem)))
+		(setq ans (nconc ans tem)))
 	     (return-from exploden ans)))
 	  (t (setq string (format nil "~A" symb))))
     (assert (stringp string))
