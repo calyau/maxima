@@ -52,9 +52,10 @@
 ;; Do not evaluate the parsed expression.
 
 (defun parse-lisp-string (s)
+  (declare (special *mread-prompt*))
   (with-input-from-string
     (ss (ensure-terminator s))
-    (third (mread ss))))
+    (third (let ((*mread-prompt*)) (mread ss)))))
 
 ;; (PARSE-MAXIMA-STRING S) -- parse the Maxima string as a Maxima expression.
 ;; Do not evaluate the parsed expression.
