@@ -128,11 +128,11 @@
       ((null l))
     (declmode (car l) (ir-or-extend (cadr l)) t)))
 
-(defmfun ass-eq-ref n
-  (let ((val (assoc (arg 2) (arg 1) :test #'eq)))
+(defmfun ass-eq-ref (table key &optional dflt)
+  (let ((val (assoc key table :test #'eq)))
     (if val
 	(cdr val)
-	(if (= n 3) (arg 3) nil))))
+	dflt)))
 
 (defmfun ass-eq-set (val table key)
   (let ((cell (assoc key table :test #'eq)))

@@ -33,13 +33,11 @@
 (macsyma-module askp)
 
 (declare-top (special limitp integer-info))
-   
-(defmfun $askinteger n
-  (if (or (> n 2) (< n 1)) (wna-err '$askinteger))
-  (if (= n 1) (ask-integer (arg 1) '$integer)
-      (if (member (arg 2) '($even $odd $integer) :test #'eq)
-	  (ask-integer (arg 1) (arg 2))
-	  (improper-arg-err (arg 2) '$askinteger))))
+
+(defmfun $askinteger (x &optional (mode '$integer))
+  (if (member mode '($even $odd $integer) :test #'eq)
+      (ask-integer x mode)
+      (improper-arg-err mode '$askinteger)))
 
 (defmfun ask-integer (x even-odd)
   (setq x (sratsimp (sublis '((z** . 0) (*z* . 0)) x)))
