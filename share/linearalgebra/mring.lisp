@@ -331,10 +331,6 @@
 
 (setf (get '$noncommutingring 'ring) *noncommutingring*)
 
-(defmspec $ringeval (e)
-  (let ((fld (get (or (car (member (nth 2 e) $%mrings)) '$generalring) 'ring)))
-    (funcall (mring-mring-to-maxima fld) (ring-eval (nth 1 e) fld))))
- 
 (defun ring-eval (e fld)
   (let ((fadd (mring-add fld))
 	(fnegate (mring-negate fld))
@@ -371,3 +367,6 @@
 	  
 	  (t (merror "Unable to evaluate ~:M in the ring '~:M'" e (mring-name fld))))))
   
+(defmspec $ringeval (e)
+  (let ((fld (get (or (car (member (nth 2 e) $%mrings)) '$generalring) 'ring)))
+    (funcall (mring-mring-to-maxima fld) (ring-eval (nth 1 e) fld))))
