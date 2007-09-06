@@ -1,0 +1,331 @@
+/* -*- Mode: MACSYMA; Package: MAXIMA -*- */
+
+/*
+ * This is an implementation of Jenkins-Traub polynomial root finder, as
+ * described in "A Three-Stage Variable-Shift Iteration for Polynomial
+ * Zeros and Its Relation to Generalized Rayleigh Iteraion", Numer. Math.,
+ * 14, 252-263 (1970).
+ *
+ * http://dz-srv1.sub.uni-goettingen.de/sub/digbib/loader?did=D196932
+ *
+ * I, Raymond Toy, the author, hereby place this in the public domain.
+ */
+
+/* Max number of iterations to use in stage2 and stage3 iterations */
+max_polyroot_iter : 20;
+
+/* Max number of major passes */
+max_polyroot_passes : 2;
+
+/*
+ * Compute p/(x-r), returning p(r) and the new polynomial
+ * p is a list of the coefficients of the polynomial, arranged
+ * in descending powers.
+ */
+
+syndiv(p, r) :=
+  block([q : [], term : first(p)],
+    for c in rest(p) do
+      block([],
+        q : cons(term, q),
+        term : expand(rectform(r * term + c))
+        ),
+    [term, reverse(q)]);
+
+/* Evaluate polynomial at z */
+poly_eval(a, z) :=
+  block([term : first(a)],
+    for c in rest(a) do
+      block([],
+        term : expand(rectform(z * term + c))
+        ),
+    term);
+
+/* Evaluate polynomial at z and also derivative of polynomial */
+poly_eval_2(a, z) :=
+  block([q : 0, p : first(a)],
+    for c in rest(a) do
+      block([],
+        q : expand(rectform(p + z * q)),
+        p : expand(rectform(z * p + c))
+        ),
+    [p, q]);
+
+/* Evaluate polynomial at z, derivative of polynomial at z
+ * and an error bound.  This is based on an algorithm given by Kahan
+ * http://www.cs.berkeley.edu/~wkahan/Math128/Poly.pdf.
+ */
+poly_eval_bound(a, z) :=
+  block([r : abs(z), q : 0, p : first(a), e : abs(first(a)) / 2],
+    for c in rest(a) do
+      block([],
+        q : expand(rectform(p + z * q)),
+        p : expand(rectform(z * p + c)),
+        e : expand(rectform(r * e + abs(p)))
+        ),
+    e : expand(rectform((e - abs(p)) + e)),  
+    [p, q, e]);
+
+/*
+ * Given a polynomial P in X, extract the coefficients of the polynomial,
+ * in descending powers of X.
+*/
+
+coeff_list(p,x) :=
+  if ratp(p) then
+    makelist(ratcoef(p,x,k),k,0,hipow(p,x))
+  else
+    (p : expand(p),
+      makelist(coeff(p,x,k),k,0,hipow(p,x)));
+
+/* Compute estimates on the accuracy of the roots */
+poly_root_error1(a, z) :=
+  block([r : abs(z), q : 0, p : first(a), e : abs(first(a)), d],
+    if is(z - 0b0 = 0b0)
+    then
+      false
+    else
+      (d : -e/r,
+        for c in rest(a) do
+        block([],
+          q : expand(rectform(p + z * q)),
+          d : expand(rectform(r*d + e + abs(q + q) - abs(p))),
+          p : expand(rectform(z * p + c)),
+          e : expand(rectform(r * e + abs(p)))
+          ),
+        e : expand(rectform(e - abs(p))),
+        d : expand(rectform(d - abs(q))),
+        [p, q, e, d]));
+
+/* Let roots be a list of the (estimated) roots of the polynomial
+ * A in X.  Return a list of the estimated error in the roots.
+ * If the error cannot be estimated for a particular root, set the error
+ * to be false.
+*/
+poly_root_error(x, a, roots) :=
+  block([p : coeff_list(a, x)],
+    map(lambda([z],
+        if is(z - 0b0 = 0b0)
+        then
+          false
+        else
+          block([bounds : poly_root_error1(p, z),
+                           eps : 2*10b0^(-fpprec),
+                           err],
+             err : (abs(bounds[1]) + eps*bounds[3]) / (abs(bounds[2]) - eps*bounds[4]),
+             if is(err > 0) then err else false)),
+         roots));
+      
+new_poly(a) :=
+  block([p : map(lambda([c], expand(rectform(abs(c)))), a)],
+    p[length(p)] : -p[length(p)],
+    p);
+  
+/*
+ * Compute a lower bound on the roots of the polynomial a
+ *
+ * If the polynomial a is sum a[k]*x^(n-k), k = 0,...,n, then this
+ * bound is the positive real root of the polynomial
+ *
+ * |a[0]|*x^n + |a[1]|*x^(n-1) + ... + |a[n-1]|*x - |a[n]|
+ *
+ * Use Newton-Raphson to find this root.
+ */
+lower_bound(a) :=
+  block([p : new_poly(a), root, f],
+    root : -p[length(p)]/p[length(p)-1],
+    do
+      (f : poly_eval_bound(p, root),
+        /* We don't need really good accuracy for the root here.*/
+        if is(abs(f[1]) < 2*f[3]*10b0^(-fpprec/4)) then return (root),
+        root : root - f[1]/f[2]
+        )
+      );
+
+/*
+ * Stage 1 shifts
+ *
+ * H(z) = [H(z) - H(0)/P(0)*P(z)]/z
+ *
+ * where we start with H(z) = P'(z), the derivative of the polynomial P.
+ */
+ 
+stage1(p, nshifts) :=
+  block([p0 : p[length(p)], deg : length(p) - 1, h, mult, maperror:false],
+    /* Compute derivative of p */
+    h : map(lambda([c,n], expand(c * (deg - n))),
+                    p, makelist(i,i,0,deg-1)),
+    for k : 1 thru nshifts
+      do
+        (mult : expand(rectform(h[length(h)] / p0)),
+         /* 1/z*[H(z) - H(0)/P(0)*P(z)] */
+         h : map(lambda([hh,pp, nn], expand(hh - mult * pp)),
+                 cons(0,h),
+                 p,
+                 makelist(i,i,1,length(p)-1))
+         ),
+       h
+       );
+
+/*
+ * Stage 2 shifts
+ *
+ * H(z) = [H(z) - H(s)/P(s)*P(z)]/(z-s)
+ *
+ * We start with H(z) computed from stage 1.
+ *
+ * s = b*exp(%i*phi), where b is the lower bound on the roots of P(z), and
+ * phi is some random phase.
+ */
+stage2(p, h, s, nshifts) :=
+  block([p0 : poly_eval(p, s),
+         t0 : 0,
+         t1 : 0,
+         t2, mult, hv,
+         w, result : []],
+    for k : 1 thru nshifts do
+      (hv : poly_eval(h, s),
+        mult : expand(rectform(hv/p0)),
+        w : map(lambda([hh, pp], expand(hh - mult * pp)),
+                cons(0,h),
+                p),
+        t2 : s - expand(rectform(poly_eval(p, s) / (hv / h[1]))),
+        if (k >= 2) and (abs(t1 - t0) < abs(t0)/2) and (abs(t2 - t1) < abs(t1)/2) then
+          (result : [h, t2, k], return (result)),
+        t0 : t1, t1 : t2,
+        h : syndiv(w, s)[2]
+        ),
+      result);
+
+/* Determine if root is really a root of p.
+ *
+ * Return true if it is a root, and also the corresponding value of P(r).
+ */
+converged(p, root) :=
+  block([vals : poly_eval_bound(p, root)],
+    [is(abs(vals[1]) < 2*vals[3]*(10*10b0^(-fpprec))), vals[1]]);
+
+/*
+ * Stage 3 shifts
+ *
+ * Starting with the value of H(z) computed in stage 2, and
+ * s as the same value as in stage 2, perform the iteration:
+ *
+ * H(z) = [H(z) - H(s)/P(s)*P(z)]/(z-s)
+ *
+ * s = s - P(s)/(H(s)/h0)
+ *
+ * where h0 is the leading (highest power) coefficent of H(z).
+ *
+ * Perform this iteration until P(s) is as close to 0 as possible
+ * given roundoff errors.
+ */
+stage3(p, h, s, nshifts) :=
+  block([result : [], w, mult, root, vals],
+    for k : 1 thru nshifts do
+      (root : s - expand(rectform(poly_eval(p,s)/(poly_eval(h,s)/h[1]))),
+       /*print("root = ", root),*/
+       vals : converged(p, root),
+       /*print("conv = ", vals),*/
+       if vals[1] then (result : [root, h, k], return (result)),
+       mult : expand(rectform(poly_eval(h, root) / vals[2])),
+       w : map(lambda([hh, pp], expand(hh - mult * pp)),
+               cons(0,h),
+               p),
+       h : syndiv(w, root)[2]),
+     result);
+
+/*
+ * Main Jenkins-Traub iteration.  Perform all three stages of iteration
+ *
+ * This needs more error checking in case one of the stages fails to converge.
+ * We should then either chose more iterations, or select a new shift s.
+ */
+jt_aux(p) :=
+  block([beta : lower_bound(p), r : bfloat(rectform(exp(%i*%pi*94/180))),
+         s, h, h2, h3, result : []],
+    s : beta,
+    /* Perform 2 major passes with different sequences */        
+    for pass : 1 thru max_polyroot_passes do
+      for k : 1 thru 9 do
+        (s : expand(rectform(s * r)),
+         /* Perform 5 stage 1 shifts, then stage2 shifts */
+         h : stage1(p, 5),
+         /*
+          * I think the number of iterations for stage2 and 3 might
+          * depend on the desired precision.  Don't know how though.
+          */
+         h2 : stage2(p, h, s, max_polyroot_iter*pass),
+         if h2 # [] then
+           (h3 : stage3(p, h2[1], s, max_polyroot_iter),
+            if h3 # [] then (result : h3[1], return(result)))),
+  result);
+
+/*
+ * Find one root of a polynomial P.  It does the obvious thing if
+ * the degree of the polynomial is 2 or less.  For higher degrees,
+ * Jenkins-Traub is used.
+ */
+find_one_root(p) :=
+  block([degree : length(p) - 1],
+    if is(degree = 0) then
+      []
+    elseif is(p[degree+1] = 0b0) then
+      0
+    elseif is(degree = 1) then
+      rectform(-p[2]/p[1])
+    elseif is(degree = 2) then
+      block([a: p[1], b: p[2], c: p[3], s, discr],
+        s : if is(realpart(b) > 0) then 1 else -1,
+        discr : bfloat(expand(rectform(sqrt(b*b - 4*a*c)))),
+        expand(rectform((-b + s*discr)/(2*a)))
+        )
+    else
+      jt_aux(p)
+      );
+
+/*
+ * Find all roots of a polynomial p, if possible.
+ *
+ * P should be a list of the coefficients of the polynomial,
+ * arranged in descending powers.  They should also be bfloats, but
+ * we don't check for that.
+ *
+ * A list of the roots, in the order in which they were computed.
+ * Multiple roots are listed multiple times.  The roots are roughly in
+ * ascending order of magnitude.
+ */
+polyroots(p, x) :=
+  block([roots : [], nroots,
+         r,
+         poly : coeff_list(p, x)],
+    nroots : length(poly) - 1,
+    for k : 1 thru nroots do
+      (r : find_one_root(poly),
+       if r = [] then return(reverse(roots)),
+       roots: cons(r, roots),
+       poly : syndiv(poly, r)[2]),
+    reverse(roots));
+
+/* Here are some simple tests, from TOMS Algorithm 419 */
+
+test1() :=
+  block([roots : sort(polyroots(product(x-k,k,1,10),x), "<")],
+    roots);
+
+test2() :=
+  block([roots : sort(polyroots((x-%i)*(x-10000*%i)*(x-1/10000*%i),x), "<")],
+    roots);
+
+test3() :=
+  block([p : product(x-(1+%i)/2^k,k,0,9), roots],
+    roots : sort(polyroots(p,x), "<"));
+
+test4() :=
+  block([p : (x-1)^4*(x-2*%i)^3*(x-3)^2*(x-4*%i), roots],
+    roots : sort(polyroots(p,x), "<"));
+
+test5() :=
+  block([p : ((x-2*%i)^12+1), roots],
+    roots : sort(polyroots(p,x), "<"));
+    
