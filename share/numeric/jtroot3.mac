@@ -144,10 +144,10 @@ prt_new_poly(a) :=
 prt_lower_bound(a) :=
   block([p : prt_new_poly(a), root, f],
     /* 
-     * Our initial guess is |a[n]|/|a[0]|.  We should probably do 
+     * Our initial guess is (|a[n]|/|a[0]|)^(1/n).  We should probably do 
      * something better than that.
      */
-    root : -p[length(p)]/p[1],
+    root : (-p[length(p)]/p[1])^(1/length(p)),
     do
       (f : prt_eval_bound(p, root),
         /* We don't need really good accuracy for the root here.*/
@@ -205,8 +205,8 @@ prt_stage2(p, h, s, nshifts) :=
                 p),
         /*
          * In some cases the leading coefficient of H can be zero, but this 
-         * only seems to happen on the first iteration, because stage1 can produce
-         * such polynomials.  So skip it.
+         * only seems to happen on the first iteration, because stage1 can
+         * produce such polynomials.  So skip it.
          */
 	if (k > 1) then
           t2 : s - expand(rectform(prt_eval(p, s) / (hv / h[1]))),
@@ -214,7 +214,8 @@ prt_stage2(p, h, s, nshifts) :=
          * t0, t1, t2 are successive estimates of the root.  We can 
          * stop stage 2 when the differences between the roots are small enough.
          */
-        if (k >= 2) and (abs(t1 - t0) < abs(t0)/2) and (abs(t2 - t1) < abs(t1)/2) then
+        if (k >= 2) and (abs(t1 - t0) < abs(t0)/2)
+            and (abs(t2 - t1) < abs(t1)/2) then
           (result : [h, t2, k], return (result)),
         t0 : t1, t1 : t2,
         h : prt_syndiv(w, s)[2]
