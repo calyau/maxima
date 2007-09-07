@@ -1163,7 +1163,7 @@ APPLY means like APPLY.")
 	(cond ((eq '$fixnum mode) (pushnew var fx :test #'eq))
 	      ((eq '$float mode)  (pushnew var fl :test #'eq)))))
     (if fx (pushnew `(fixnum  . ,fx) dl :test #'eq))
-    (if fl (pushnew `(flonum  . ,fl) dl :test #'eq))
+    (if fl (pushnew `(type flonum  . ,fl) dl :test #'eq))
     (if specs (pushnew `(special  . ,specs) dl :test #'eq))
     (if dl `(declare . ,dl))))
 

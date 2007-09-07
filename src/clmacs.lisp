@@ -318,3 +318,7 @@
 
 (defmacro float (x &optional (y 1d0))
   `(cl:float ,x ,y))
+
+;; Tell Lisp that a flonum is really a double-float.
+(deftype flonum ()
+  'double-float)
