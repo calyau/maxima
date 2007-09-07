@@ -34,7 +34,7 @@
 
 ;; External variables
 
-(defmvar $float2bf nil
+(defmvar $float2bf t
   "If TRUE, no MAXIMA-ERROR message is printed when a floating point number is
 converted to a bigfloat number.")
 
@@ -45,10 +45,12 @@ relatively small rational numbers).  If TRUE, the rational number generated
 will accurately represent the bigfloat.")
 
 (defmvar $bftrunc t
-  "Needs to be documented")
+  "If TRUE, printing of bigfloat numbers will truncate trailing zeroes.
+  Otherwise, all trailing zeroes are printed.")
 
 (defmvar $fpprintprec 0
-  "Needs to be documented"
+  "Controls the number of significant digits printed for floats.  If
+  0, then full precision is used."
   fixnum)
 
 (defmvar $fpprec 16.
