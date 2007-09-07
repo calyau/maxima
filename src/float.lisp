@@ -12,7 +12,7 @@
 
 (macsyma-module float)
 
-;; EXPERIMENTAL BIGFLOAT PACKAGE VERSION 2- USING BINARY MANTISSA
+;; EXPERIMENTAL BI
 ;; AND POWER-OF-2 EXPONENT.
 ;; EXPONENTS MAY BE BIG NUMBERS NOW (AUG. 1975 --RJF)
 ;; Modified:	July 1979 by CWH to run on the Lisp Machine and to comment
@@ -608,14 +608,15 @@ One extra decimal digit in actual representation for rounding purposes.")
 (defun fpposp (x)
   (> (car x) 0))
 
-(defmfun fpmin na
-  (prog (min)
-     (setq min (arg 1))
-     (do ((i 2 (1+ i)))
-	 ((> i na))
-       (if (fplessp (arg i) min)
-	   (setq min (arg i))))
-     (return min)))
+(defmfun fpmin (arg1 &rest args)
+  (let ((min arg1))
+    (mapc #'(lambda (u) (if (fplessp u min) (setq min u))) args)
+    min))
+
+(defmfun fpmax (arg1 &rest args)
+  (let ((max arg1))
+    (mapc #'(lambda (u) (if (fpgreaterp u max) (setq max u))) args)
+    max))
 
 ;; (FPE) RETURN BIG FLOATING POINT %E.  IT RETURNS (CDR BIGFLOAT%E) IF RIGHT
 ;; PRECISION.  IT RETURNS TRUNCATED BIGFLOAT%E IF POSSIBLE, ELSE RECOMPUTES.
@@ -767,15 +768,6 @@ One extra decimal digit in actual representation for rounding purposes.")
 (defun fpgamma1 ()
   ;; Use a few extra bits of precision
   (bcons (list (fpround (first (comp-bf%gamma (+ fpprec 8)))) 0)))
-
-(defmfun fpmax na
-  (prog (max)
-     (setq max (arg 1))
-     (do ((i 2 (1+ i)))
-	 ((> i na))
-       (if (fpgreaterp (arg i) max)
-	   (setq max (arg i))))
-     (return max)))
 
 (defun fpdifference (a b)
   (fpplus a (fpminus b)))
