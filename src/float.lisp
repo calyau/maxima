@@ -12,7 +12,7 @@
 
 (macsyma-module float)
 
-;; EXPERIMENTAL BI
+;; EXPERIMENTAL BIGFLOAT PACKAGE VERSION 2- USING BINARY MANTISSA
 ;; AND POWER-OF-2 EXPONENT.
 ;; EXPONENTS MAY BE BIG NUMBERS NOW (AUG. 1975 --RJF)
 ;; Modified:	July 1979 by CWH to run on the Lisp Machine and to comment
