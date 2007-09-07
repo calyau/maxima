@@ -19,6 +19,10 @@
     (defvar *old-read-base* *read-base*)
     (setq *read-base* 10.))
 
+(defmvar $mapprint t
+  "If TRUE, messages about map/fullmap truncating on the shortest list
+or if apply is being used are printed.")
+  
 (declare-top (special mspeclist mproplist bindlist loclist nounsflag
 		      derivflag derivlist mprogp mdop evp aexprp mlocp $labels
 		      $values $functions $arrays $rules $gradefs $dependencies $aliases
@@ -29,7 +33,7 @@
 		      $translate $transrun $maperror outargs1 outargs2 fmaplvl mopl
 		      $powerdisp $subscrmap $dispflag $optionset dsksetp fexprerrp
 		      $features *alphabet* $%enumer $infeval $savedef $%% %e-val
-		      $mapprint featurel outfiles fundefsimp mfexprp transp
+		      featurel outfiles fundefsimp mfexprp transp
 		      $macros linel $ratfac $ratwtlvl
 		      $operators noevalargs $piece $partswitch *gcdl*
 		      scanmapp *builtin-$props* $infolists))
@@ -42,7 +46,7 @@
       $subscrmap nil $translate nil $transrun t $savedef t aexprp nil
       $maperror t fmaplvl 0 $optionset nil
       $setcheckbreak nil dsksetp nil aryp nil msump nil evarrp nil
-      $infeval nil factlist nil $mapprint t fundefsimp nil
+      $infeval nil factlist nil fundefsimp nil
       mfexprp t nounsflag nil opexprp nil
       transp nil noevalargs nil
       $piece '$piece $setval '$setval fexprerrp nil rulefcnl nil

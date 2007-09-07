@@ -477,6 +477,17 @@ is displayed in the above two instances.
 
 @end defvr
 
+@defvr {Option variable} mapprint
+Default value: @code{true}
+
+When @code{mapprint} is @code{true}, various information messages from
+@code{map}, @code{mapl}, and @code{fullmap} are produced in certain
+situations.  These include situations where @code{map} would use
+@code{apply}, or @code{map} is truncating on the shortest list.
+
+If @code{mapprint} is @code{false}, these messages are suppressed.
+@end defvr
+
 @c NEEDS CLARIFICATION
 @deffn {Function} maplist (@var{f}, @var{expr_1}, ..., @var{expr_n})
 Returns a list of the applications of @var{f}
