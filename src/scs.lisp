@@ -12,10 +12,8 @@
 
 (macsyma-module scs)
 
-(defmfun $scsimp n 
-  (do ((i n (1- i)) (zrs)) ((= 1 i) (scs (arg 1) zrs))
-    (setq zrs (cons (meqhk (arg i)) zrs))))
-
+(defmfun $scsimp (expr &rest rules)
+  (scs expr (mapcar #'meqhk rules)))
 
 (defun scs (x zrs)
   (do ((flag t) (sz (conssize x)) (nx) (nsz))
@@ -37,6 +35,9 @@
 (defun subsc (a b c)
   ($expand ($ratsubst a b c)))
 
+(defun dstrb (x l nl)
+  (revappend (mapcar #'(lambda (u) (mul x u)) l) nl))
+
 (defmfun $distrib (exp)
   (cond ((or (mnump exp) (symbolp exp)) exp)
 	((eq 'mtimes (caar exp))
@@ -53,10 +54,7 @@
 	((eq 'mrat (caar exp)) ($distrib (ratdisrep exp)))
 	(t exp)))
 
-(defun dstrb (x l nl)
-  (do () ((null l) nl)
-    (setq nl (cons (mul x (car l)) nl) l (cdr l))))
-
 (defmfun $facout (x y)
-  (if (mplusp y) (mul x (addn (mapcar #'(lambda (l) (div l x)) (cdr y)) t)) y))
- 
+  (if (mplusp y)
+      (mul x (addn (mapcar #'(lambda (l) (div l x)) (cdr y)) t))
+      y))
