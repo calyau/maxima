@@ -165,7 +165,9 @@ prt_lower_bound(a) :=
  */
 
 prt_stage1(p, nshifts) :=
-  block([p0 : p[length(p)], deg : length(p) - 1, h, mult, maperror:false],
+  block([p0 : p[length(p)], deg : length(p) - 1, h, mult,
+         /* We want map to truncate silently */
+         mapprint : false],
     /* Compute derivative of p */
     h : map(lambda([c,n], expand(c * (deg - n))),
                     p, makelist(i,i,0,deg-1)),
