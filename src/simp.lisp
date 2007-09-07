@@ -47,7 +47,7 @@
 (defmvar $simp t "Enables simplification.")
 
 (defmvar $sumexpand nil
-  "If TRUE, products of sums and exponentiated sums go into nested 
+  "If TRUE, products of sums and exponentiated sums go into nested
 	 sums.")
 
 (defmvar $numer_pbranch nil)
@@ -116,7 +116,7 @@
 		      $false $on $off $logabs rischpf $limitdomain rischp rp-polylogp ))
 
 (setq $rootsepsilon 1d-7 $%rnum 0
-      $grindswitch nil $algepsilon 100000000 $algdelta 1d-5) 
+      $grindswitch nil $algepsilon 100000000 $algdelta 1d-5)
 
 (defmvar $listarith t)
 
@@ -130,7 +130,7 @@
       rischp nil rp-polylogp nil *const* 0)
 
 (eval-when
-        #+gcl (load)
+	#+gcl (load)
 	#-gcl (:load-toplevel)
 	(mapc #'(lambda (x) (mputprop x t '$constant) (setf (get x 'sysconst) t))
 	'($%pi $%i $%e $%phi %i $%gamma	;numeric constants
@@ -153,7 +153,7 @@
 	    (and (consp y)
 		 (symbolp (car y))
 		 (setf (get (car y) 'lisp-no-simp) t))))))
-  
+
 
 (dolist (x '(mplus mtimes mnctimes mexpt mncexpt %sum))
   (setf (get x 'msimpind) (cons x '(simp))))
@@ -168,8 +168,8 @@
 	(mabs simpabs) (%signum simpsignum)
 	(%integrate simpinteg) (%limit simp-limit) ($exp simpexp)
 	(bigfloat simpbigfloat) (lambda simplambda) (mdefine simpmdef)
-	(mqapply simpmqapply) (%gamma simpgamma) (%erf simperf) 
-	($beta simpbeta) (%sum simpsum) (%binomial simpbinocoef) 
+	(mqapply simpmqapply) (%gamma simpgamma) (%erf simperf)
+	($beta simpbeta) (%sum simpsum) (%binomial simpbinocoef)
 	(%plog simpplog) (%product simpprod) (%genfact simpgfact)
 	($atan2 simpatan2) ($matrix simpmatrix) (%matrix simpmatrix)
 	($bern simpbern) ($euler simpeuler)))
@@ -180,7 +180,7 @@
 (defprop $equal t binary)
 (defprop $notequal t binary)
 
-(defun $bfloatp (x) 
+(defun $bfloatp (x)
   (and (consp x)
        (consp (car x))
        (eq (caar x) 'bigfloat)))
@@ -244,7 +244,7 @@
   (or (integerp x)
       (and ($ratp x) (integerp (cadr x)) (equal (cddr x) 1))))
 
-;; The call to $INTEGERP in the following two functions checks for a CRE 
+;; The call to $INTEGERP in the following two functions checks for a CRE
 ;; rational number with an integral numerator and a unity denominator.
 
 (defmfun $oddp (x)
@@ -270,16 +270,16 @@
   (and (not (atom x)) (eq (caar x) 'mrat) (memq 'trunc (cdar x)) t))
 
 (defmfun specrepcheck (e) (if (specrepp e) (specdisrep e) e))
-  
+
 ;; Note that the following two functions are carefully coupled.
 
 (defmfun specrepp (e) (and (not (atom e)) (memq (caar e) '(mrat mpois))))
-  
+
 (defmfun specdisrep (e)
   (cond ((eq (caar e) 'mrat) (ratdisrep e))
 	;;      ((EQ (CAAR E) 'MPOIS) ($OUTOFPOIS E))
 	(t ($outofpois e))))
-  
+
 (defmfun $polysign (x) (setq x (cadr (ratf x)))
 	 (cond ((equal x 0) 0) ((pminusp x) -1) (t 1)))
 
@@ -442,7 +442,7 @@
 
 (defmfun simplifya (x y)
   (cond ((atom x) (cond ((and (eq x '$%pi) $numer) %pi-val) (t x)))
-	((not $simp) x)				
+	((not $simp) x)
 	((atom (car x))
 	 (cond ((and (cdr x) (atom (cdr x)))
 		(merror "~%~S is a cons with an atomic cdr - `simplifya'" x))
@@ -489,7 +489,7 @@
 		    (funcall w x 1 y))
 		   (t (simpargs x y)))))))
 
-  
+
 (defmfun eqtest (x check)
   ((lambda (y)
      (cond ((or (atom x) (eq (caar x) 'rat) (eq (caar x) 'mrat)
@@ -552,7 +552,7 @@
 					   (* (cadr y) a))
 				     (* a b))))
 	      (return (cond ((numberp g) g)
-			    ((equal (caddr g) 1) (cadr g)) 
+			    ((equal (caddr g) 1) (cadr g))
 			    ($float (fpcofrat g))
 			    (t g)))))))
 
@@ -610,10 +610,10 @@
 ;;  simply computing (quotient (float nu) (float d)) may cause one of
 ;;  the floats to overflow even if the quotient is within the floating
 ;;  point range.
-;;  If both nu and d are bignums, then the smaller one is reduced to the 
+;;  If both nu and d are bignums, then the smaller one is reduced to the
 ;;  'machine-mantissa-precision' most significant bits.  The other one is
 ;;  then reduced by stripping off the exact same number of rightmost bits.
-;;  'machine-mantissa-precision' is related to the length of the significand 
+;;  'machine-mantissa-precision' is related to the length of the significand
 ;;  in the floating point representation: it doesn't make sense to maintain
 ;;  any more bits than can be represented in the significand of a floating
 ;;  point number.
@@ -621,7 +621,7 @@
 (eval-when
     #+gcl (compile load)
     #-gcl (:compile-toplevel :load-toplevel)
-    
+
     (defconstant machine-mantissa-precision (float-digits 1d0)))
 
 (defun fpcofrat1 (nu d)
@@ -687,7 +687,7 @@
 			     (add2 (cadr eqnflag) (cadr w))
 			     (add2 (caddr eqnflag) (caddr w)))))
 	     (go start))
-	    ((memq (caar w) '(mlist $matrix)) 
+	    ((memq (caar w) '(mlist $matrix))
 	     (setq matrixflag
 		   (cond ((not matrixflag) w)
 			 ((and (or $doallmxops $domxmxops $domxplus
@@ -803,7 +803,7 @@
 	((and (memq $logexpand '($all $super)) (mtimesp y))
 	 (prog (b)
 	    (setq y (cdr y))
-	    loop (setq b (cons (cond ((not (mexptp (car y))) 
+	    loop (setq b (cons (cond ((not (mexptp (car y)))
 				      (simplifya (list '(%log) (car y)) t))
 				     (t (simpln1 (car y)))) b))
 	    (cond ((null (setq y (cdr y)))
@@ -1023,7 +1023,7 @@
 				     (list '(mtimes) res sumflag))
 				    (t (nconc res (list sumflag)))))))
      (cond ((or (atom res)
-		(not (memq (caar res) '(mexpt mtimes)))		  
+		(not (memq (caar res) '(mexpt mtimes)))
 		(and (zerop $expop) (zerop $expon))
 		expandflag))
 	   ((eq (caar res) 'mtimes) (setq res (expandtimes res)))
@@ -1032,9 +1032,9 @@
 		 (not (or (> (caddr res) $expop)
 			  (> (- (caddr res)) $expon))))
 	    (setq res (expandexpt (cadr res) (caddr res)))))
-     (cond (matrixflag 
+     (cond (matrixflag
 	    (setq res (cond ((null res) matrixflag)
-			    ((and (or ($listp matrixflag) $doallmxops 
+			    ((and (or ($listp matrixflag) $doallmxops
 				      (and $doscmxops (not (member res '(-1 -1.0) :test #'equal)))
 			;;; RES should only be -1 here (not = 1)
 				      (and $domxmxops (member res '(-1 -1.0) :test #'equal)))
@@ -1056,22 +1056,22 @@
 			   (not (memq 'trunc (cdar e)))))
 	(return t))))
 
-(defun mxtimesc (sc mx) 
+(defun mxtimesc (sc mx)
   (let (sign out)
-    (and (mtimesp sc) (member (cadr sc) '(-1 -1.0) :test #'equal) 
+    (and (mtimesp sc) (member (cadr sc) '(-1 -1.0) :test #'equal)
 	 $doscmxops (not (or $doallmxops $domxmxops $domxtimes))
 	 (setq sign (cadr sc)) (rplaca (cdr sc) nil))
-    (setq out ((lambda (scp*) 
+    (setq out ((lambda (scp*)
 		 (cond  ((null scp*) (list '(mtimes simp) sc mx))
 			((and (not (atom scp*)) (null (car scp*)))
 			 (append '((mtimes)) (cadr scp*) (list mx)))
-			((or (atom scp*) (and (null (cdr scp*)) 
+			((or (atom scp*) (and (null (cdr scp*))
 					      (not (null (cdr sc)))
 					      (setq scp* (cons '(mtimes) (car scp*))))
 			     (not (mtimesp sc)))
 			 (simplifya (outermap1 'mtimes scp* mx) nil))
 			(t (append '((mtimes))
-				   (list (simplifya 
+				   (list (simplifya
 					  (outermap1 'mtimes
 						     (cons '(mtimes) (car scp*)) mx)
 					  t))
@@ -1084,7 +1084,7 @@
 	  ((mtimesp out) (testt out))
 	  (t out))))
 
-(defun stimex (x y) 
+(defun stimex (x y)
   (let (($doscmxops t) ($domxmxops t) ($listarith t))
     (simplify (fmapl1 'mtimes x y))))
 
@@ -1106,7 +1106,7 @@
 	   ((and (null product)
 		 (or (and (mtimesp factor) (equal power 1))
 		     (and (setq product (list '(mtimes) 1)) nil)))
-	    (setq tem (append '((mtimes)) (cond ((mnump (cadr factor)) nil) (t '(1))) 
+	    (setq tem (append '((mtimes)) (cond ((mnump (cadr factor)) nil) (t '(1)))
 			      (cdr factor) nil))
 	    (cond ((eql (length tem) 1)(setq tem (copy-list tem)))
 		  (t tem))
@@ -1171,9 +1171,9 @@
 (defun mult (x y) (cond ((and (mnump x) (mnump y)) (timesk x y))
 			(t (mul2 x y))))
 
-(defmfun simp-limit (x vestigial z) 
+(defmfun simp-limit (x vestigial z)
   (declare (ignore vestigial))
-  ((lambda (l1 y) 
+  ((lambda (l1 y)
      (cond ((not (or (= l1 2) (= l1 4) (= l1 5))) (wna-err '%limit)))
      (setq y (simpmap (cdr x) z))
      (cond ((and (= l1 5) (not (memq (cadddr y) '($plus $minus))))
@@ -1185,9 +1185,9 @@
 	   (t (eqtest (cons '(%limit) y) x))))
    (length x) nil))
 
-(defmfun simpinteg (x vestigial z) 
+(defmfun simpinteg (x vestigial z)
   (declare (ignore vestigial))
-  ((lambda (l1 y) 
+  ((lambda (l1 y)
      (cond ((not (or (= l1 3) (= l1 5)))
 	    (merror "Wrong number of arguments to '`integrate'")))
      (setq y (simpmap (cdr x) z))
@@ -1321,22 +1321,22 @@
 
 (defmfun signum1 (x)
   (cond ((mnump x)
-	 (setq x (num1 x)) (cond ((plusp x) 1) ((minusp x) -1) (t 0))) 
+	 (setq x (num1 x)) (cond ((plusp x) 1) ((minusp x) -1) (t 0)))
 	((atom x) 1)
 	((mplusp x) (if expandp 1 (signum1 (car (last x)))))
 	((mtimesp x) (if (mplusp (cadr x)) 1 (signum1 (cadr x))))
 	(t 1)))
 
-(defmfun simpsignum (x y z) 
+(defmfun simpsignum (x y z)
   (oneargcheck x)
   (setq y (simpcheck (cadr x) z))
   (cond ((mnump y)
-	 (setq y (num1 y)) (cond ((plusp y) 1) ((minusp y) -1) (t 0))) 
+	 (setq y (num1 y)) (cond ((plusp y) 1) ((minusp y) -1) (t 0)))
 	((eq (setq z (csign y)) t) (eqtest (list '(%signum) y) x))
-	((eq z '$pos) 1) 
-	((eq z '$neg) -1) 
-	((eq z '$zero) 0) 
-	((mminusp y) (mul2 -1 (list '(%signum simp) (neg y)))) 
+	((eq z '$pos) 1)
+	((eq z '$neg) -1)
+	((eq z '$zero) 0)
+	((mminusp y) (mul2 -1 (list '(%signum simp) (neg y))))
 	(t (eqtest (list '(%signum) y) x))))
 
 (defmfun exptrl (r1 r2)
@@ -1551,7 +1551,7 @@
 			      (return ($bfloat z)))))))
 		 (cond ;; (($bfloatp pot) (return ($bfloat (list '(mexpt) '$%e pot))))
 		       ;; ((or (floatp pot) (and $numer (integerp pot)))
-		       ;; 	(return (exp pot)))
+		       ;;	(return (exp pot)))
 		       ((and $logsimp (among '%log pot)) (return (%etolog pot)))
 		       ((and $demoivre (setq z (demoivre pot))) (return z))
 		       ((and $%emode (setq z (%especial pot))) (return z))))
@@ -1703,7 +1703,7 @@
      ;;   (format t "LESS: x = ~A~%" x)
      ;;   (format t "     fm = ~A~%" fm))
      (cond ((and (eq (car x) '$%i)
-		 (fixnump w)) 
+		 (fixnump w))
 	    (go %i))
 	   ((and (eq (car x) '$%e)
 		 $numer
@@ -1830,11 +1830,11 @@
      (if (minusp (setq w (rem w 4)))
 	 (incf w 4))
      (return (cond ((zerop w)
-		    fm) 
+		    fm)
 		   ((= w 2)
 		    (rplaca y (timesk -1 (car y))))
 		   ((= w 3)
-		    (rplaca y (timesk -1 (car y))) 
+		    (rplaca y (timesk -1 (car y)))
 		    (rplacd fm (cons '$%i (cdr fm))))
 		   (t
 		    (rplacd fm (cons '$%i (cdr fm))))))))
@@ -1867,12 +1867,12 @@
 	      (not (atom (caddr pot))) (eq (caar (caddr pot)) '%log)
 	      (null (cdddr pot)))
 	 (power (cadr (caddr pot)) (cadr pot)))))
- 
+
 (defun mnlog (pot)
   (prog (a b c)
    loop (cond ((null pot)
 	       (cond (a (setq a (cons '(mtimes) a))))
-	       (cond (c (setq c (list '(mexpt simp) '$%e (addn c nil))))) 
+	       (cond (c (setq c (list '(mexpt simp) '$%e (addn c nil)))))
 	       (return (cond ((null c) (simptimes a 1 nil))
 			     ((null a) c)
 			     (t (simptimes (append a (list c)) 1 nil)))))
@@ -1884,7 +1884,7 @@
 
 (defun %etolog (pot) (cond ((mnlogp pot))
 			   ((eq (caar pot) 'mplus) (mnlog (cdr pot)))
-			   (t (list '(mexpt simp) '$%e pot)))) 
+			   (t (list '(mexpt simp) '$%e pot))))
 
 (defun zerores (r1 r2)
   (cond ((or ($bfloatp r1) ($bfloatp r2)) bigfloatzero)
@@ -1945,7 +1945,7 @@
 		       (cond ((mget y '$scalar) (alphalessp y x)) (t (maxima-constantp y))))
 		      ((mget x '$mainvar)
 		       (cond ((mget y '$mainvar) (alphalessp y x)) (t t)))
-		      (t (or (maxima-constantp y) (mget y '$scalar) 
+		      (t (or (maxima-constantp y) (mget y '$scalar)
 			     (and (not (mget y '$mainvar)) (alphalessp y x))))))
 	       (t (not (ordfna y x)))))
 	((atom y) (ordfna x y))
@@ -1982,7 +1982,7 @@
 	((atom x)
      (cond
        ((arrayp x)
-        (and (arrayp y) (lisp-array-alike1 x y)))
+	(and (arrayp y) (lisp-array-alike1 x y)))
 
     ;; NOT SURE IF WE WANT TO ENABLE COMPARISON OF MAXIMA ARRAYS
     ;; ASIDE FROM THAT, ADD2LNC CALLS ALIKE1 (VIA MEMALIKE) AND THAT CAUSES TROUBLE
@@ -1997,15 +1997,15 @@
 		(not (atom (car y)))
 		(eq (caar x) (caar y))
 		(eq (memqarr (cdar x)) (memqarr (cdar y)))
-		(alike (cdr x) (cdr y)))))) 
+		(alike (cdr x) (cdr y))))))
 
 (defun lisp-array-alike1 (x y)
   (and
     (equal (array-dimensions x) (array-dimensions y))
     (progn
       (dotimes (i (array-total-size x))
-        (if (not (alike1 (row-major-aref x i) (row-major-aref y i)))
-          (return-from lisp-array-alike1 nil)))
+	(if (not (alike1 (row-major-aref x i) (row-major-aref y i)))
+	  (return-from lisp-array-alike1 nil)))
       t)))
 
 (defun maxima-declared-array-alike1 (x y)
@@ -2044,10 +2044,10 @@
 	     (and (not (atom e)) (memq (caar e) '(mplus mtimes))))
 	 (let ((u (car (last e)))) (or (eq u a) (great u a))))
 	((eq e a))
-	(t (great e a)))) 
+	(t (great e a))))
 
 (defun ordlist (a b cx cy)
-  (prog (l1 l2 c d) 
+  (prog (l1 l2 c d)
      (setq l1 (length a) l2 (length b))
      loop (cond ((= l1 0)
 		 (return (cond ((= l2 0) (eq cx 'mplus))
@@ -2060,7 +2060,7 @@
      (go loop)))
 
 (defun ordfn (x y)
-  (let ((cx (caar x)) (cy (caar y)) u) 
+  (let ((cx (caar x)) (cy (caar y)) u)
     (cond ((eq cx '%del) (if (eq cy '%del) (great (cadr x) (cadr y)) t))
 	  ((eq cy '%del) nil)
 	  ((memq cx '(mplus mtimes))
@@ -2100,27 +2100,28 @@
 	((mnump (caddr x)) (great (cadr x) y))
 	(t (great (simpln1 x) (simpln (list '(%log) y) 1 t)))))
 
-(defmfun $multthru nargs
+(defmfun $multthru (e1 &optional e2)
   (let (arg1 arg2)
-    (cond ((= nargs 2)
-	   (setq arg1 (specrepcheck (arg 1)) arg2 (specrepcheck (arg 2)))
+    (cond (e2				;called with two args
+	   (setq arg1 (specrepcheck e1)
+		 arg2 (specrepcheck e2))
 	   (cond ((or (atom arg2) (not (memq (caar arg2) '(mplus mequal))))
 		  (mul2 arg1 arg2))
 		 ((eq (caar arg2) 'mequal)
 		  (list (car arg2) ($multthru arg1 (cadr arg2))
 			($multthru arg1 (caddr arg2))))
 		 (t (expandterms arg1 (cdr arg2)))))
-	  ((= nargs 1)
-	   (prog (l1) 
-	      (setq arg1 (setq arg2 (specrepcheck (arg 1))))
+	  (t 				;called with only one arg
+	   (prog (l1)
+	      (setq arg1 (setq arg2 (specrepcheck e1)))
 	      (cond ((atom arg1) (return arg1))
 		    ((eq (caar arg1) 'mnctimes)
 		     (setq arg1 (cdr arg1)) (go nct))
 		    ((not (eq (caar arg1) 'mtimes)) (return arg1)))
 	      (setq arg1 (reverse (cdr arg1)))
-	      times(when (mplusp (car arg1))
-		     (setq l1 (nconc l1 (cdr arg1)))
-		     (return (expandterms (muln l1 t) (cdar arg1))))
+	      times (when (mplusp (car arg1))
+		      (setq l1 (nconc l1 (cdr arg1)))
+		      (return (expandterms (muln l1 t) (cdar arg1))))
 	      (setq l1 (cons (car arg1) l1))
 	      (setq arg1 (cdr arg1))
 	      (if (null arg1) (return arg2))
@@ -2128,19 +2129,17 @@
 	      nct  (when (mplusp (car arg1))
 		     (setq l1 (nreverse l1))
 		     (return (addn (mapcar
-				    #'(lambda (u) 
+				    #'(lambda (u)
 					(simplifya
-					 (cons '(mnctimes) 
-					       (append l1 (ncons u) (cdr arg1)))
+					 (cons '(mnctimes) (append l1 (ncons u) (cdr arg1)))
 					 t))
 				    (cdar arg1))
 				   t)))
 	      (setq l1 (cons (car arg1) l1))
 	      (setq arg1 (cdr arg1))
 	      (if (null arg1) (return arg2))
-	      (go nct)))
-	  (t (wna-err '$multthru)))))
- 
+	      (go nct))))))
+
 ;;  EXPANDEXPT computes the expansion of (x1 + x2 + ... + xm)^n
 ;;  taking a sum and integer power as arguments.
 ;;  Its theory is to recurse down the binomial expansion of
@@ -2151,7 +2150,7 @@
 ;;             -------
 ;;              \         / n \    k                     (n - k)
 ;;               >        |   |  x1  (x2 + x3 + ... + xm)
-;;              /         \ k / 
+;;              /         \ k /
 ;;             -------
 ;;               k=0
 ;;
@@ -2179,12 +2178,12 @@
 					    (power (car terms) i)) t))))
 	       ((> i rpower) result)
 	     (declare (fixnum i))))))
-					
+
 ;;  Computes the combination of n elements taken m at a time by the formula
-;;  
+;;
 ;;     (n * (n-1) * ... * (n - m + 1)) / m! =
-;;  	(n / 1) * ((n - 1) / 2) * ... * ((n - m + 1) / m)
-;;  
+;;	(n / 1) * ((n - 1) / 2) * ... * ((n - m + 1) / m)
+;;
 ;;  Checks for the case when m is greater than n/2 and translates
 ;;  to an equivalent expression.
 
@@ -2197,7 +2196,7 @@
 	       ((> m1 m) result)
 	     (declare (fixnum  n1 m1))))))
 
-(defun expandsums (a b) 
+(defun expandsums (a b)
   (addn (prog (c)
 	   (setq a (fixexpand a) b (cdr b))
 	   loop (cond ((null a) (return c)))
@@ -2206,7 +2205,7 @@
 	   (go loop))
 	t))
 
-(defun expandterms (a b) 
+(defun expandterms (a b)
   (addn (prog (c)
 	 loop (cond ((null b) (return c)))
 	 (setq c (cons (mul2 a (car b)) c))
@@ -2214,7 +2213,7 @@
 	 (go loop))
 	t))
 
-(defun genexpands (l) 
+(defun genexpands (l)
   (prog nil
    loop (setq l (cdr l))
    (cond ((null l)
@@ -2236,8 +2235,8 @@
 	 (t (setq prods (cons (car l) prods))))
    (go loop)))
 
-(defun expandtimes (a) 
-  (prog (prods negprods sums negsums expsums expnegsums) 
+(defun expandtimes (a)
+  (prog (prods negprods sums negsums expsums expnegsums)
      (genexpands a)
      (setq prods (cond ((null prods) 1)
 		       ((null (cdr prods)) (car prods))
@@ -2278,18 +2277,12 @@
     (merror "Maxnegex must be a non-negative-integer: ~%~M" $expon))
   (ssimplifya (specrepcheck exp)))
 
-;; When the arg-count checking code is implemented ...
-;; (DEFMFUN $EXPAND (EXP &OPTIONAL ($EXPOP $MAXPOSEX) ($EXPON $MAXNEGEX))
-;;   (SSIMPLIFYA (SPECREPCHECK EXP)))
+(defmfun $expand (exp &optional (expop $maxposex) (expon $maxnegex))
+  (expand1 exp expop expon))
 
-(defmfun $expand nargs
-  (cond ((= nargs 1) (expand1 (arg 1) $maxposex $maxnegex))
-	((= nargs 2) (expand1 (arg 1) (arg 2) $maxnegex))
-	((= nargs 3) (expand1 (arg 1) (arg 2) (arg 3)))
-	(t (wna-err '$expand))))
-
-(defun fixexpand (a) (cond ((not (mplusp a)) (ncons a)) (t (cdr a))))
-
+(defun fixexpand (a)
+  (cond ((not (mplusp a)) (ncons a))
+	(t (cdr a))))
 
 (defmfun simpnrt (x *n)			; computes X^(1/*N)
   (prog (*in *out varlist genvar $factorflag $dontfactor)
@@ -2304,14 +2297,14 @@
 			  (nrthk *in *n))
 		     (t 1)))
      (return
-       ((lambda ($%emode) 
+       ((lambda ($%emode)
 	  (simplifya (list '(mtimes) *in *out)
 		     (not (or (atom *in)
 			      (atom (cadr *in))
 			      (memq (caaadr *in) '(mplus mtimes rat))))))
 	t))))
 
-(defun simpnrt1 (x) 
+(defun simpnrt1 (x)
   (do ((x x (cddr x)) (y)) ((null x))
     (cond ((not (equal 1 (setq y (gcd (cadr x) *n))))
 	   (push (simpnrt (list '(mexpt) (car x) (quotient (cadr x) y))
@@ -2324,7 +2317,7 @@
 		    (push (list '(mexpt) (car x) (quotient (cadr x) *n)) *out)))
 	     (push (list '(mexpt) (car x) (rem (cadr x) *n)) *in)))))
 
-(defun nrthk (in *n) 
+(defun nrthk (in *n)
   (cond ((equal in 1) 1)
 	((equal in -1)
 	 (cond ((equal *n 2) '$%i)
@@ -2332,7 +2325,7 @@
 		(cond ((even *n) (nrthk2 -1 *n))
 		      (t -1)))
 	       ($m1pbranch
-		((lambda ($%emode) 
+		((lambda ($%emode)
 		   (power* '$%e (list '(mtimes) (list '(rat) 1 *n) '$%pi '$%i)))
 		 t))
 	       (t (nrthk2 -1 *n))))
@@ -2347,20 +2340,20 @@
 
 (defun nrthk2 (in *n) (power* in (list '(rat) 1 *n))) ; computes IN^(1/*N)
 
-;; The following was formerly in SININT.  This code was placed here because 
+;; The following was formerly in SININT.  This code was placed here because
 ;; SININT is now an out-of-core file on MC, and this code is needed in-core
 ;; because of the various calls to it. - BMT & JPG
 
-(declare-top (special var $ratfac ratform context))	
+(declare-top (special var $ratfac ratform context))
 
-(defmfun $integrate nargs
+(defmfun $integrate (expr x &optional lo hi)
   (let ($ratfac)
-    (cond ((= nargs 2)
-	   (with-new-context (context)
-	     (if (memq '%risch nounl) (rischint (arg 1) (arg 2))
-		 (sinint (arg 1) (arg 2)))))
-	  ((= nargs 4) ($defint (arg 1) (arg 2) (arg 3) (arg 4)))
-	  (t (wna-err '$integrate))))) 
+    (if (not hi)
+	(with-new-context (context)
+	  (if (member '%risch nounl :test #'eq)
+	      (rischint expr x)
+	      (sinint expr x)))
+	($defint expr x lo hi))))
 
 (defmfun ratp (a var)
   (cond ((atom a) t)
@@ -2378,7 +2371,7 @@
 	((atom (cdr r)) (car r))
 	((numberp (cadr r)) r)
 	(t (car r))))
-	 
+
 (defmfun ratdenominator (r)
   (cond ((atom r) 1)
 	((atom (cdr r)) (cdr r))
@@ -2429,12 +2422,12 @@
 
 (defmfun ratpl (a b) (ratplus (ratfix a) (ratfix b)))
 
-(defmfun ratti (a b c) (rattimes (ratfix a) (ratfix b) c)) 
+(defmfun ratti (a b c) (rattimes (ratfix a) (ratfix b) c))
 
-(defmfun ratqu (a b) (ratquotient (ratfix a) (ratfix b))) 
+(defmfun ratqu (a b) (ratquotient (ratfix a) (ratfix b)))
 
 (defmfun ratfix (a) (cond ((equal a (ratnumerator a)) (cons a 1)) (t a)))
-	 
+
 (defmfun ratdivide (f g)
   (destructuring-let* (((fnum . fden) (ratfix f))
 		       ((gnum . gden) (ratfix g))
@@ -2453,8 +2446,8 @@
 (declare-top (unspecial var))
 
 
-;; The following was formerly in MATRUN.  This code was placed here because 
-;; MATRUN is now an out-of-core file on MC, and this code is needed in-core 
+;; The following was formerly in MATRUN.  This code was placed here because
+;; MATRUN is now an out-of-core file on MC, and this code is needed in-core
 ;; so that MACSYMA SAVE files will work. - JPG
 
 (defvar *afterflag nil)
