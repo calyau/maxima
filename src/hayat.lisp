@@ -1092,7 +1092,7 @@
   (member lim '($im $infinity) :test #'eq))
 
 (defun lim-minus (lim)
-  (cdr (assoc lim '(($zeroa . $zerob) ($zerob . $zeroa) ($pos . $neg)
+  (cdr (assoc lim '(($zeroa . $zerob) ($zerob . $zeroa) ($pos . $neg) ($zero . $zero)
 		    ($neg . $pos) ($inf . $minf) ($minf . $inf)
 		    ($im . $im) ($infinity . $infinity) ($finite . $finite)) :test #'eq)))
 (defun lim-abs (lim)
@@ -1101,7 +1101,8 @@
 
 (defun lim-times (lim1 lim2)
   (let (lim)
-   (cond ((and (lim-infp lim1) (lim-infp lim2)) (setq lim '$inf))
+   (cond ((or (eq lim1 '$zero) (eq lim2 '$zero)) (setq lim '$zero))
+	 ((and (lim-infp lim1) (lim-infp lim2)) (setq lim '$inf))
 	 ((and (lim-zerop lim1) (lim-zerop lim2)) (setq lim '$pos))
 	 ((or (when (lim-finitep lim2) (exch lim1 lim2) 't)
 	      (lim-finitep lim1))
@@ -1128,7 +1129,7 @@
 
 (defun lim-exp (lim)
    (case lim
-      (($zeroa $zerob $pos $neg $minf) '$zeroa)
+      (($zeroa $zerob $zero $pos $neg $minf) '$zeroa)
       (($inf $finite) lim)
       ($infinity '$infinity) ; actually only if Re lim = inf
       (t (break "Unhandled limit in lim-exp"))))
@@ -1357,7 +1358,8 @@
        (())
       (cond ((null vars1*)
 	     (if (null vars2*)
-		 (break "two equal vars generated")
+		 ;; two equal vars generated
+		 (return 't)
 		(let ((lim (tvar-lim (car vars2*))))
 		   (return
 		    (cond ((lim-infp lim) ())
@@ -2196,7 +2198,8 @@
  (let ((last-exp e))	    ;; lexp-non0 should be bound here when needed
   (cond ((assolike e tlist) (var-expand e 1 () ))
 	((or (mnump e) (atom e) (mfree e tvars))
-	 (if (e> (rczero) (current-trunc mainvar-datum))
+	 (if (or (e> (rczero) (current-trunc mainvar-datum))
+		 (lim-zerop e))
 	     (pszero (data-gvar-o mainvar-datum)
 		     (current-trunc mainvar-datum))
 	    (if (and taylor_simplifier (not (atom e)))
@@ -2288,7 +2291,7 @@
 (defun var-expand (var exp dont-truncate?)
   (let (($keepfloat) ($float) (modulus))
      (setq exp (prep1 exp)))		;; exp must be a rational integer
-  (let ((temp (get-datum var)))
+  (let ((temp (get-datum var 't)))
      (cond ((null temp) (merror "Invalid call to var-expand"))
 	   ((switch 'multi temp)
 	    (psexpt (psplus

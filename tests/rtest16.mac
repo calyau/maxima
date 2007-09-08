@@ -248,5 +248,31 @@ limit(atanh(a-1)-log(a)/2,a,0,'plus),logarc:true;
 limit(x*(sqrt(1+x^2)-x),x,inf), algebraic : true, gcd : subres;
 1/2;
 
+/* [ 1097982 ] limit(x/(x^(log(x)))); returns wrong answer */
+/* should be zero, someday */
+limit(x/(x^log(x)), x, inf);
+'limit(%e^((1-log(x))*log(x)),x,inf);
+
+/* [ 1039965 ] limit(4^n/2^(2*n),n,inf) is wrong */
+/* shouldn't need radcan, someday */
+radcan(limit(4^n/2^(2*n),n,inf));
+1;
+
+/* [ 1731127 ] limit((1 + 1/x)*(sqrt(x + 1) + 1), x, inf) => 0 (not inf) */
+limit((1 + 1/x)*(sqrt(x + 1) + 1), x, inf);
+inf;
+
+/* [ 1593083 ] tlimit(t^2*exp(-4*t/3-8*exp(-t)),t,inf) gives error */
+tlimit(t^2*exp(-4*t/3-8*exp(-t)),t,inf);
+0;
+
+/* [ 1786774 ] tlimit((5^x + 3^x)^(1/x), x, inf) => Error */
+tlimit((5^x + 3^x)^(1/x), x, inf);
+5;
+
+/* [ 1603900 ] taylor/tlimit (4^n+1)/2^(2*n) internal error */
+tlimit((4^n+1)/2^(2*n),n,inf);
+1;
+
 end;
 end$
