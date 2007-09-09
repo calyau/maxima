@@ -1,3 +1,6 @@
+(kill (all), 0);
+0;
+
 m : "text";
 "text"$
 [stringp(m), lstringp(m)];
@@ -56,26 +59,43 @@ cint("$");
 [true, false]$
 [lowercasep("e"),lowercasep("E")];
 [true, false]$
-2*parsetoken("1.234 5.678");
+
+2*parse_string ("1.234; 5.678");
 2.468$
-2*parsetoken("1/2");
-1$
-parsetoken("2.3e10");
+
+3*parse_string ("1/2");
+3/2$
+
+parse_string ("2.3e10");
 2.3e10$
-parsetoken(".25e-1");
+
+parse_string (".25e-1");
 0.025$
-2*parsetoken("2.3b1");
+
+2*parse_string ("2.3b1");
 4.6b1$
-parsetoken(".25b-1");
+
+parse_string (".25b-1");
 2.5b-2$
-parsetoken("");
-false$
-parsetoken("foo");
-false$
-parsetoken("2.3e");
-false$
-parsetoken("[2]");
-false$
+
+parse_string ("foo");
+foo$
+
+parse_string ("[2]");
+[2];
+
+parse_string ("(foo : 1234, expand ((foo + bar)^2))");
+(foo : 1234, expand ((foo + bar)^2));
+
+eval_string ("(foo : 1234, expand ((foo + bar)^2))");
+bar^2 + 2468*bar + 1522756;
+
+(kill (bar), parse_string ("bar (x) := x^2"), bar (7));
+bar (7);
+
+(eval_string ("bar (x) := x^2"), bar (7));
+49;
+
 s: sconc("xx[", 3, "]:", expand((y + x)^3));
 "xx[3]:y^3+3*x*y^2+3*x^2*y+x^3"$
 scopy("Original");
@@ -140,5 +160,5 @@ tokens("24 October 2005");
 ["24","October","2005"]$
 tokens("05-10-24", 'digitcharp);
 ["05","10","24"]$
-map(parsetoken, %);
+map(parse_string, %);
 [5,10,24]$

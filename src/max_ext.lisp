@@ -129,7 +129,6 @@
        $stringp
        $charat
        $charlist
-       $parsetoken
        $sconc
        $scopy
        $sdowncase

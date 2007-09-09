@@ -308,30 +308,6 @@
 	      (cons (m-string ss) (splitrest str dc m p1))))
 	(list str)))))
 
-;;  parser for numbers  
-(defun $parsetoken (mstr)  
-  (if (not (mstringp mstr)) (merror "parsetoken needs a string argument: ~M" mstr))
-  (let ((res (with-input-from-string
-               (lstr (l-string mstr))
-               (handler-case (read lstr)
-                             (error nil nil)))) ; ignore errors
-         bf)
-    (cond ((or (integerp res)
-               (typep res 'long-float))
-             ;; Maxima does not accept complex numbers, etc.
-             ;; parsetoken will still accept Lisp syntax, e.g. #C(2 `,0)
-             ;; but we're not fixing that for now
-           res)
-          ((rationalp res)
-           (list '(rat simp) (numerator res) (denominator res)))
-          ((and (symbolp res) 
-                (setf bf (car (or (maxima-nregex::regex "^[+-]?[0-9]+\\.?[0-9]*[bB][+-]?[0-9]+$" (string res))
-                                  (maxima-nregex::regex "^[+-]?\\.[0-9]+[bB][+-]?[0-9]+$" (string res)) ))))
-             (with-input-from-string 
-               (s (concatenate 'string bf "$"))
-               (third (mread s)) ))
-          (t nil) )))
-
 ;;  $sconcat for lists, allows an optional user defined separator string
 ;;  returns maxima-string
 (defun $simplode (lis &optional (ds ""))

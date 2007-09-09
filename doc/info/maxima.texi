@@ -147,7 +147,6 @@ Additional packages
 * distrib::                     Probability distributions.
 * draw::                        A Maxima-Gnuplot interface.
 * dynamics::                    Graphics for dynamical systems and fractals.
-* eval_string::                 Maxima expressions as strings.
 * f90::                         Maxima to fortran translator.
 * ggf::                         Generating function of sequences.
 * grobner::                     Functions for working with Groebner bases.
@@ -434,10 +433,6 @@ dynamics
 
 * Introduction to dynamics::
 * Functions and Variables for dynamics::
-
-eval_string
-
-* Functions and Variables for eval_string::
 
 f90
 
@@ -759,15 +754,11 @@ zeilberger
 @chapter draw
 @include draw.texi
 
-@node dynamics, eval_string, draw, Top
+@node dynamics, f90, draw, Top
 @chapter dynamics
 @include dynamics.texi
 
-@node eval_string, f90, dynamics, Top
-@chapter eval_string
-@include eval_string.texi
-
-@node f90, ggf, eval_string, Top
+@node f90, ggf, dynamics, Top
 @chapter f90
 @include f90.texi
 

@@ -110,22 +110,14 @@ now offers a lot of functions for manipulating strings. Tokenizing can be done b
 (%o7)               42 1.234 sqrt(2) %pi 0.01 1.0E-2 1.0b-2
 (%i8) list: tokens(line);
 (%o8)           [42, 1.234, sqrt(2), %pi, 0.01, 1.0E-2, 1.0b-2]
-(%i9) map( parsetoken, list );
-(%o9)           [42, 1.234, false, false, 0.01, 0.01, false]
-@end example
-
-@code{parsetoken} only parses integer and float numbers. Parsing symbols or bigfloats 
-needs @code{parse_string}, which will be autoloaded from @code{eval_string.lisp}.
-
-@example 
-(%i10) map( parse_string, list );
-(%o10)           [42, 1.234, sqrt(2), %pi, 0.01, 0.01, 1.0b-2]
-(%i11) float(%);
-(%o11) [42.0, 1.234, 1.414213562373095, 3.141592653589793, 0.01,
+(%i9) map( parse_string, list );
+(%o9)            [42, 1.234, sqrt(2), %pi, 0.01, 0.01, 1.0b-2]
+(%i10) float(%);
+(%o10) [42.0, 1.234, 1.414213562373095, 3.141592653589793, 0.01,
                                                      0.01, 0.01]
-(%i12) readline(s);
-(%o12)                               false
-(%i13) close(s)$
+(%i11) readline(s);
+(%o11)                               false
+(%i12) close(s)$
 @end example
 
 @code{readline} returns @code{false} when the end of file occurs.
@@ -506,21 +498,51 @@ Returns the list of all characters in @var{string}.
 
 @end deffn
 
-@deffn {Function} parsetoken (@var{string})  
-@code{parsetoken} converts the first token in @var{string} to the corresponding number or returns @code{false} if the number cannot be determined .
-The delimiter set for tokenizing is @code{@{space, comma, semicolon, tab, newline@}}.
+@deffn {Function} eval_string (@var{str})
+Parse the Maxima or Lisp string @var{str} as a Maxima expression and evaluate it.
+The string @var{str} may or may not have a terminator (dollar sign @code{$} or semicolon @code{;}).
+Only the first expression is parsed and evaluated, if there is more than one.
+
+Complain if @var{str} is not a Maxima or Lisp string.
+
+Examples:
 
 @c ===beg===
-@c 2*parsetoken("1.234 5.678");
+@c eval_string ("foo: 42; bar: foo^2 + baz");
+@c eval_string ("(foo: 42, bar: foo^2 + baz)");
 @c ===end===
 @example
-(%i1) 2*parsetoken("1.234 5.678");
-(%o1)                         2.468
+(%i1) eval_string ("foo: 42; bar: foo^2 + baz");
+(%o1)                       42
+(%i2) eval_string ("(foo: 42, bar: foo^2 + baz)");
+(%o2)                   baz + 1764
 @end example
 
-For parsing you can also use function parse_string.
-See description in file 'share\contrib\eval_string.lisp'. 
+See also @code{parse_string}.
+@end deffn
 
+@deffn {Function} parse_string (@var{str})
+Parse the Maxima or Lisp string @var{str} as a Maxima expression (do not evaluate it).
+The string @var{str} may or may not have a terminator (dollar sign @code{$} or semicolon @code{;}).
+Only the first expression is parsed, if there is more than one.
+
+Complain if @var{str} is not a Maxima or Lisp string.
+
+Examples:
+
+@c ===beg===
+@c parse_string ("foo: 42; bar: foo^2 + baz");
+@c parse_string ("(foo: 42, bar: foo^2 + baz)");
+@c ===end===
+@example
+(%i1) parse_string ("foo: 42; bar: foo^2 + baz");
+(%o1)                    foo : 42
+(%i2) parse_string ("(foo: 42, bar: foo^2 + baz)");
+                                   2
+(%o2)          (foo : 42, bar : foo  + baz)
+@end example
+
+See also @code{eval_string}.
 @end deffn
 
 @deffn {Function} sconc (@var{expr_1}, ..., @var{expr_n})
@@ -873,14 +895,14 @@ If test is not given, @var{constituent} is used as the default test.
 @c ===beg===
 @c tokens("24 October 2005");
 @c tokens("05-10-24",'digitcharp);
-@c map(parsetoken,%);
+@c map(parse_string,%);
 @c ===end===
 @example
 (%i1) tokens("24 October 2005");
 (%o1)                  [24, October, 2005]
 (%i2) tokens("05-10-24",'digitcharp);
 (%o2)                     [05, 10, 24]
-(%i3) map(parsetoken,%);
+(%i3) map(parse_string,%);
 (%o3)                      [5, 10, 24]
 @end example
 
