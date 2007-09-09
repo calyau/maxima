@@ -172,7 +172,6 @@ contrib/diffequations/tests/rtestode_odelin.mac\
 contrib/diffequations/tests/testsuite.lisp\
 contrib/distrib/distrib.mac\
 contrib/distrib/numdistrib.lisp\
-contrib/eval_string.lisp\
 contrib/ezunits/ezunits.mac\
 contrib/ezunits/rtestezunits.mac\
 contrib/floatproperties.lisp\
@@ -431,6 +430,7 @@ contrib/stats/numstats.lisp\
 contrib/stats/rtest_stats.mac\
 contrib/stats/stats.mac\
 contrib/stringproc/rteststringproc.mac\
+contrib/stringproc/eval_string.lisp\
 contrib/stringproc/stringproc.lisp\
 contrib/stringproc/stringproc.mac\
 contrib/unit/unit-functions.lisp\
