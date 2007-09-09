@@ -32,7 +32,7 @@ Default value: @code{true}
 When @code{%piargs} is @code{true},
 trigonometric functions are simplified to algebraic constants
 when the argument is an integer multiple of
-@math{%pi}, @math{%pi/2}, @math{%pi/3}, @math{%pi/4}, or @math{%pi/6}
+@math{%pi}, @math{%pi/2}, @math{%pi/3}, @math{%pi/4}, or @math{%pi/6}.
 
 Maxima knows some identities which can be applied when @math{%pi}, etc.,
 are multiplied by an integer variable (that is, a symbol declared to be integer).
