@@ -4,7 +4,7 @@
 @c Language=Russian
 @c Encoding=CP1251
 @c File=maxima.texi 
-@c OriginalRevision=1.51
+@c OriginalRevision=1.52
 
 @c 2000-04-17 Jim Van Zandt <jrv@vanzandt.mv.com> Added header,
 @c info directory entry, reference to introduction chapter, and menu
@@ -118,7 +118,7 @@ DOE Macsyma.  Копия DOE Macsyma поддерживалась профессором Вильямом
 * Differentiation::               Differential calculus.
 * Integration::                   Integral calculus.
 * Equations::                     Defining and solving equations.
-* Differential Equations::        Defining and solving differential equations.
+* Дифференциальные уравнения::    Определение и решение дифференциальных уравнений.
 * Numerical::                     Numerical integration, Fourier
                                   transforms, etc.
 * Массивы::                       Создание массивов и работа с ними.
@@ -154,7 +154,6 @@ DOE Macsyma.  Копия DOE Macsyma поддерживалась профессором Вильямом
 * Пакет distrib::                 Распределения вероятности.
 * draw::                          A Maxima-Gnuplot interface.
 * dynamics::                      Graphics for dynamical systems and fractals.
-* eval_string::                   Maxima expressions as strings.
 * f90::                           Maxima to fortran translator.
 * ggf::                           Generating function of sequences.
 * grobner::                       Functions for working with Groebner bases.
@@ -292,10 +291,10 @@ Equations
 
 * Definitions for Equations::   
 
-Differential Equations
+Дифференциальные уравнения
 
-* Introduction to Differential Equations::  
-* Definitions for Differential Equations::  
+* Дифференциальные уравнения в Maxima::  
+* Функции и переменные для дифференциальных уравнений::  
 
 Numerical
 
@@ -441,10 +440,6 @@ dynamics
 
 * Introduction to dynamics::
 * Definitions for dynamics::
-
-eval_string
-
-* Definitions for eval_string::
 
 f90
 
@@ -766,15 +761,11 @@ zeilberger
 @chapter draw
 @include draw.texi
 
-@node dynamics, eval_string, draw, Top
+@node dynamics, f90, draw, Top
 @chapter dynamics
 @include dynamics.texi
 
-@node eval_string, f90, dynamics, Top
-@chapter eval_string
-@include eval_string.texi
-
-@node f90, ggf, eval_string, Top
+@node f90, ggf, dynamics, Top
 @chapter f90
 @include f90.texi
 
