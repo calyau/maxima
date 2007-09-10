@@ -1,7 +1,7 @@
 @c Language=Russian
 @c Encoding=CP1251
 @c File=Program.texi 
-@c OriginalRevision=1.29
+@c OriginalRevision=1.30
 
 @menu
 * Введение в программирование на Maxima::  
@@ -471,6 +471,18 @@ map (@var{f}, @var{expr_1}, @var{expr_2}, ...)
 Если @code{maperror} равна @code{true},
 то в оба вышеуказанных случая считаются ошибками.
 
+@end defvr
+
+
+@defvr {Управляющая переменная} mapprint
+Значение по умолчанию: @code{true}
+
+Если переменная @code{mapprint} равна @code{true}, то функции 
+@code{map}, @code{mapl} и @code{fullmap} в определенных ситуациях 
+выдают различные сообщения.  Включая ситуации, когда @code{map} использует
+@code{apply} или @code{map} обрезает до самого короткого списка.
+
+Если @code{mapprint} равна @code{false}, то данные сообщения подавляются.
 @end defvr
 
 @c NEEDS CLARIFICATION

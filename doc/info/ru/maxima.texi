@@ -4,7 +4,7 @@
 @c Language=Russian
 @c Encoding=CP1251
 @c File=maxima.texi 
-@c OriginalRevision=1.50
+@c OriginalRevision=1.51
 
 @c 2000-04-17 Jim Van Zandt <jrv@vanzandt.mv.com> Added header,
 @c info directory entry, reference to introduction chapter, and menu
@@ -151,7 +151,7 @@ DOE Macsyma.  Копия DOE Macsyma поддерживалась профессором Вильямом
 * Пакет contrib_ode::             Дополнительные процедуры для решения ОДУ.
 * Пакет descriptive::             Описательная статистика.
 * Пакет diag::                    Жордановы матрицы.
-* distrib::                       Probability distributions.
+* Пакет distrib::                 Распределения вероятности.
 * draw::                          A Maxima-Gnuplot interface.
 * dynamics::                      Graphics for dynamical systems and fractals.
 * eval_string::                   Maxima expressions as strings.
@@ -424,16 +424,18 @@ Rules and Patterns
 
 * Функции и переменные пакета diag::
 
-distrib
+Пакет distrib
 
-* Introduction to distrib::
-* Definitions for continuous distributions::
-* Definitions for discrete distributions::
+* Введение в пакет distrib::
+* Функции и переменные для непрерывных распределений::
+* Функции и переменные для дискретных распределений::
 
 draw
 
 * Introduction to draw::
-* Definitions for draw::
+* Functions and Variables for draw::
+* Functions and Variables for pictures::
+* Functions and Variables for worldmap::
 
 dynamics
 
