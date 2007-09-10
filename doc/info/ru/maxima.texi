@@ -175,7 +175,7 @@ DOE Macsyma.  Копия DOE Macsyma поддерживалась профессором Вильямом
 * simplification::                Simplification rules and functions.
 * solve_rec::                     Linear recurrences.
 * stats::                         Statistical inference package.
-* stirling::                      Stirling formula.
+* Пакет stirling::                Формула Стирлинга.
 * stringproc::                    String processing.
 * unit::                          Units and dimensions package.
 * zeilberger::                    Functions for hypergeometric summation.
@@ -538,9 +538,9 @@ stats
 * Definitions for stats::
 * Definitions for special distributions::
 
-stirling
+Пакет stirling
 
-* Definitions for stirling::
+* Формула Стирлинга::
 
 stringproc
 
