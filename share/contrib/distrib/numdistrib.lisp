@@ -1144,7 +1144,7 @@
             (type double-float p))
    (let (u)
      (setf u ($random 1.0d0))
-     (mfunction-call $qbinomial u n p)))
+     (mfunction-call $quantile_binomial u n p)))
 
 
 ;;  Handles random binomial variates at top level.
@@ -1221,13 +1221,13 @@
           (setf *rpos-muprev* mu)
           (setf *rpos-s* (sqrt mu))
           (setf *rpos-d* (* 6.0d0 mu mu))
-          (setf *rpos-l* (round (- mu 1.1484d0)))
+          (setf *rpos-l* (floor (- mu 1.1484d0)))
 
           s10
           ;; Step n. Normal sample
           (setf g (+ mu (* *rpos-s* (rndnormal 0))))
           (if (< g 0.0d0) (go s20))
-          (setf ignpoi (round g))
+          (setf ignpoi (floor g))
 
           ;; Step I. Immediate acceptance if ignpoi is large enough
           (if (>= ignpoi *rpos-l*) (go s200))
@@ -1279,7 +1279,7 @@
                                 (- e)
                                  e)))
           (if (<= tt -0.6744d0) (go s50))
-          (setf ignpoi (round (+ mu (* *rpos-s* tt))))
+          (setf ignpoi (floor (+ mu (* *rpos-s* tt))))
           (setf fk (coerce ignpoi 'double-float))
           (setf difmuk (- mu fk))
 
@@ -1334,7 +1334,7 @@
           (setf *rpos-muprev* 0.0d0)
           (if (= mu *rpos-muold*) (go s130))
           (setf *rpos-muold* mu)
-          (setf *rpos-m* (max 1 (round mu)))
+          (setf *rpos-m* (max 1 (floor mu)))
           (setf *rpos-l* 0)
           (setf *rpos-p* (exp (- mu)))
           (setf *rpos-p0* *rpos-p*)
@@ -1383,7 +1383,7 @@
    (declare (type double-float m))
    (let (u)
      (setf u ($random 1.0d0))
-     (mfunction-call $qpoisson u m)))
+     (mfunction-call $quantile_poisson u m)))
 
 
 ;;  Handles random Poisson variates at top level.
@@ -1439,7 +1439,7 @@
    (declare (type double-float p))
    (let (u)
      (setf u ($random 1.0d0))
-     (mfunction-call $qgeo u p)))
+     (mfunction-call $quantile_geometric u p)))
 
 
 ;;  Handles random geometric variates at top level.
@@ -1733,7 +1733,7 @@
    (declare (type integer n1 n2 n))
    (let (u)
      (setf u ($random 1.0d0))
-     (mfunction-call $qhypergeo u n1 n2 n)))
+     (mfunction-call $quantile_hypergeometric u n1 n2 n)))
 
 
 ;;  Handles random hypergeometric variates at top level.
@@ -1791,7 +1791,7 @@
             (type double-float p))
    (let (u)
      (setf u ($random 1.0d0))
-     (mfunction-call $qnegbinom u n p)))
+     (mfunction-call $quantile_negative_binomial u n p)))
 
 
 ;;  Handles random negative binomial variates at top level.
