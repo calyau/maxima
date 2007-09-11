@@ -147,6 +147,12 @@ It appears in LIMIT and DEFINT.......")
 		(when (limunknown exp)
 		  (return `((%limit) ,@(cons exp1 (cdr args))))))
 	      (setq varlist (ncons var) genvar nil origval val)
+	      ;; Transform limits to minf to limits to inf by
+	      ;; replacing var with -var everywhere.
+	      (when (eq val '$minf)
+		(setq val '$inf
+		      origval '$inf
+		      exp (subin (m* -1 var) exp)))
 	      ;; Limit is going to want to make its own assumptions
 	      ;; about the variable based on what the calling program
 	      ;; knows. Old assumptions are saved for restoration upon
@@ -161,12 +167,6 @@ It appears in LIMIT and DEFINT.......")
 				((eq dr '$minus) '$zerob)
 				(t 0)))
 		(setq origval 0))
-	      ;; Transform limits to minf to limits to inf by
-	      ;; replacing var with -var everywhere.
-	      (when (eq val '$minf)
-		(setq val '$inf
-		      origval '$inf
-		      exp (subin (m* -1 var) exp)))
 	      (setq exp (resimplify (factosimp (tansc (lfibtophi (limitsimp
 								  ($expand (hide exp) 1 0) var))))))
 	      ;; Resimplify in light of new assumptions.
