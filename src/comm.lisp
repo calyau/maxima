@@ -953,11 +953,13 @@
   (atomchk (setq l (specrepcheck l)) '$delete t)
   (setq x (specrepcheck x)
 	l (cons (delsimp (car l)) (copy-list (cdr l))))
-  (do ((l1 (if (eq (caar l) 'mqapply) (cdr l) l) (cdr l1)))
+  (do ((l1 (if (eq (caar l) 'mqapply) (cdr l) l)))
       ((or (null (cdr l1)) (zerop n)) l)
-     (when (alike1 x (specrepcheck (cadr l1)))
-       (decf n)
-       (rplacd l1 (cddr l1)))))
+    (if (alike1 x (specrepcheck (cadr l1)))
+	(progn
+	  (decf n)
+	  (rplacd l1 (cddr l1)))
+	(setq l1 (cdr l1)))))
 
 (defmfun $length (e)
   (setq e (cond (($listp e) e)
