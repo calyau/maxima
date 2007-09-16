@@ -700,6 +700,13 @@ declares the argument part-of-speech @var{arg_pos}
 and result part-of-speech @var{pos}, 
 and the delimiters @var{ldelimiter} and @var{rdelimiter}.
 
+"Part of speech", in reference to operator declarations, means expression type.
+Three types are recognized: @code{expr}, @code{clause}, and @code{any},
+indicating an algebraic expression, a Boolean expression, or any kind of expression,
+respectively.
+Maxima can detect some syntax errors by comparing the
+declared part of speech to an actual expression.
+
 @c DUNNO IF WE REALLY NEED TO MENTION BINDING POWER HERE -- AS NOTED IT'S IRRELEVANT
 @c An operator declared by @code{matchfix} is assigned a low binding power.
 @c Since a matchfix operator must be evaluated before any expression

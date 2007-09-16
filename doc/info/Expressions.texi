@@ -1407,7 +1407,16 @@ and default parts of speech (left and right both equal to @code{any}).
 
 @code{infix (@var{op}, @var{lbp}, @var{rbp}, @var{lpos}, @var{rpos}, @var{pos})}
 declares @var{op} to be an infix operator
-with stated left and right binding powers and parts of speech.
+with stated left and right binding powers
+and parts of speech @var{lpos}, @var{rpos}, and @var{pos}
+for the left operand, the right operand, and the operator result, respectively.
+
+"Part of speech", in reference to operator declarations, means expression type.
+Three types are recognized: @code{expr}, @code{clause}, and @code{any},
+indicating an algebraic expression, a Boolean expression, or any kind of expression,
+respectively.
+Maxima can detect some syntax errors by comparing the
+declared part of speech to an actual expression.
 
 The precedence of @var{op} with respect to other operators
 derives from the left and right binding powers of the operators in question.
@@ -1480,6 +1489,28 @@ while greater @var{rbp} makes @var{op} left-associative.
 (%o4)                          ##
 (%i5) foo ## bar ## baz;
 (%o5)                    ((foo,bar),baz)
+@end example
+
+Maxima can detect some syntax errors by comparing the
+declared part of speech to an actual expression.
+
+@c ===beg===
+@c infix ("##", 100, 99, expr, expr, expr);
+@c if x ## y then 1 else 0;
+@c infix ("##", 100, 99, expr, expr, clause);
+@c if x ## y then 1 else 0;
+@c ===end===
+@example
+(%i1) infix ("##", 100, 99, expr, expr, expr);
+(%o1)                          ##
+(%i2) if x ## y then 1 else 0;
+Incorrect syntax: Found algebraic expression where logical expression expected
+if x ## y then 
+             ^
+(%i2) infix ("##", 100, 99, expr, expr, clause);
+(%o2)                          ##
+(%i3) if x ## y then 1 else 0;
+(%o3)                if x ## y then 1 else 0
 @end example
 
 @end deffn
