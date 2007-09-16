@@ -10,7 +10,7 @@
 \setlength{\parindent}{0pt}
 
 \title{Minimal Maxima\\
-{\small Released under the terms of the GNU Public License, Version 2}}
+{\small Released under the terms of the GNU General Public License, Version 2}}
 \author{Robert Dodier}
 \date{\today}
 
@@ -24,7 +24,7 @@ Maxima\footnote
 Documents: \url{http://maxima.sourceforge.net/docs.shtml} \\
 Reference manual: \url{http://maxima.sourceforge.net/docs/manual/en/maxima.html}}
 is a system for working with expressions,
-such as $x + y$, $sin (a + b \pi)$, and $u \cdot v - v \cdot u$.
+such as $x + y$, $\sin (a + b \pi)$, and $u \cdot v - v \cdot u$.
 
 Maxima is not much worried about the meaning of an expression.
 Whether an expression is meaningful is for the user to decide.
@@ -723,8 +723,8 @@ The most important built-in object types are lists, matrices, and sets.
 \item Maxima understands explicitly-defined finite sets.
     Sets are not the same as lists; an explicit conversion is needed to change one into the other.
     
-\item A set is specified like this:
-    $\mathbf{set}(a, b, c, \ldots)$ where the set elements are $a, b, c, \ldots$.
+\item A set is specified within curly braces ${ }$ like this:
+    ${a, b, c, \ldots}$ where the set elements are $a, b, c, \ldots$.
 
 \item $\mathbf{union} (A, B)$ is the union of the sets $A$ and $B$.
 
@@ -1098,16 +1098,29 @@ $FOO
 
 \item {\bf :lisp} $\mathrm{(}\mathbf{defmspec\ } \mathrm{\$foo\ (e)\ (\ldots))}$
 defines a Lisp function $\mathbf{foo}$ which quotes its arguments.
-% :lisp (defmspec $bar (e) (let ((a (cdr e))) `((mplus) ((mtimes) ,@a) $%pi)))
+% to_lisp ();
+% (defmspec $bar (e) (let ((a (cdr e))) `((mplus) ((mtimes) ,@a) $%pi)))
+% (to-maxima)
+% (p: x + y, q: x - y);
 % bar (p, q);
 % bar (''p, ''q);
 \begin{verbatim}
-(%i1) :lisp (defmspec $bar (e) (let ((a (cdr e))) `((mplus) ((mtimes) ,@a) $%pi)))
-#<CLOSURE LAMBDA (E) (LET ((A (CDR E))) `((MPLUS) ((MTIMES) ,@A) $%PI))>
-(%i1) bar (p, q);
-(%o1)                       p q + %pi
-(%i2) bar (''p, ''q);
-(%o2)                       p q + %pi
+(%i1) to_lisp ();
+
+Type (to-maxima) to restart, ($quit) to quit Maxima.
+
+MAXIMA> (defmspec $bar (e) (let ((a (cdr e)))
+          `((mplus) ((mtimes) ,@a) $%pi)))
+#<FUNCTION (LAMBDA (E)) {B59873D}>
+MAXIMA> (to-maxima)
+Returning to Maxima
+(%o1)                         true
+(%i2) (p: x + y, q: x - y);
+(%o2)                         x - y
+(%i3) bar (p, q);
+(%o3)                       p q + %pi
+(%i4) bar (''p, ''q);
+(%o4)                 (x - y) (y + x) + %pi
 \end{verbatim}
 
 \item From Lisp, the construct $(\mathbf{mfuncall\ '\$}\mathrm{foo\ }a_1 \ldots a_n)$
