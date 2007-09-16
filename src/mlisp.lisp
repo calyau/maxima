@@ -2284,7 +2284,8 @@ wrapper for this."
   (|''MAKE| $acot %acot) (|''MAKE| $asec %asec) (|''MAKE| $acsc %acsc)
   (|''MAKE| $asinh %asinh) (|''MAKE| $acosh %acosh) (|''MAKE| $atanh %atanh)
   (|''MAKE| $acoth %acoth) (|''MAKE| $asech %asech) (|''MAKE| $acsch %acsch)
-  (|''MAKE| $erf %erf) (|''MAKE| $gamma %gamma))
+  (|''MAKE| $round %round) (|''MAKE| $truncate %truncate) (|''MAKE| $plog %plog)
+  (|''MAKE| $signum %signum) (|''MAKE| $erf %erf) (|''MAKE| $gamma %gamma))
 
 (defmfun $binomial (x y)
   (let (($numer t) ($float t))
