@@ -39,10 +39,13 @@ control : "~:(~r~) bird~p ~[is~;are~] singing.";
 "~:(~r~) bird~p ~[is~;are~] singing."$
 printf(false, control, n, n, if n = 1 then 0 else 1), n = 2;
 "Two birds are singing."$
-block([res:[],tmp],for n from 0 thru 255 do (tmp : ascii(n), if alphacharp(tmp) then res:cons(tmp,res)), reverse(res));
-["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"]$
-block([res:[],tmp],for n from 0 thru 255 do (tmp : ascii(n), if constituent(tmp) then res:cons(tmp,res)), reverse(res));
-["!","\"","#","$","%","&","'","(",")","*","+",",","-",".","/","0","1","2","3","4","5","6","7","8","9",":",";","<","=",">","?","@","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","[","\\","]","^","_","`","a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","{","|","}","~"]$
+
+block([res:{},tmp],for n from 0 thru 255 do (tmp : ascii(n), if alphacharp(tmp) then res : adjoin (tmp, res)), subsetp ({"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"}, res));
+true;
+
+block([res:{},tmp],for n from 0 thru 255 do (tmp : ascii(n), if constituent(tmp) then res : adjoin (tmp, res)), subsetp ({"!","\"","#","$","%","&","'","(",")","*","+",",","-",".","/","0","1","2","3","4","5","6","7","8","9",":",";","<","=",">","?","@","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","[","\\","]","^","_","`","a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","{","|","}","~"}, res));
+true;
+
 charat("Lisp", 1);
 "L"$
 l: charlist("Lisp");
