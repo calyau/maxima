@@ -274,5 +274,9 @@ tlimit((5^x + 3^x)^(1/x), x, inf);
 tlimit((4^n+1)/2^(2*n),n,inf);
 1;
 
+/* [ 1281736 ] limit((x/log(x))*(x^(1/x)-1),x,inf) - wrong result */
+limit((x/log(x))*(x^(1/x)-1),x,inf);
+'limit(%e^((1/x+1)*log(x))/log(x)-x/log(x),x,inf);
+
 end;
 end$
