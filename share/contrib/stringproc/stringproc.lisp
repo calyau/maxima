@@ -162,7 +162,7 @@
       (and (> nr 47) (< nr 58))))
 
 ;;  ascii-char <-> index
-(defun $cint (mch) (char-int (l-char mch)))
+(defun $cint (mch) (char-code (l-char mch)))
 (defun $ascii (int) (m-char (code-char int)))
 
 ;;  comparison - test functions - at Maxima level
@@ -459,7 +459,7 @@
 
 (defun $ssort (mstr &optional (test '$clessp))
    (let ((copy (copy-seq (l-string mstr))))
-      (m-string (sort copy (stripdollar test)))))
+      (m-string (stable-sort copy (stripdollar test)))))
 
 
 (defun $smismatch (mstr1 mstr2 &optional (test '$sequal))  ;; 1-indexed!
