@@ -14,7 +14,7 @@
 
 (macsyma-module intpol)
 
-(load-macsyma-macros transm numerm)
+(load-macsyma-macros transm)
 
 (declare-top (special $find_root_rel $find_root_abs $find_root_error)) 
 
@@ -35,11 +35,8 @@ Perhaps you meant to enter `~a'.~%"
       (declare (fixnum lin))
       (let (($numer t) ($%enumer t))
         (setq
-          ;; Uh-oh. LEFT and RIGHT are evaluated twice !! So burn me at the stake already.
-          ;; $FLOAT has a special case for exponents; float(%pi^%e) => 3.14^%e, believe it or not.
-          ;; But this MEVAL formulation tries harder, so just do it.
-          a (meval `(($float) ,left))
-          b (meval `(($float) ,right))))
+          a ($float left)
+          b ($float right)))
       (if (not (and (numberp a) (numberp b)))
         (return (values nil a b)))
       (or (> b a) (setq a (prog1 b (setq b a))))
