@@ -278,5 +278,9 @@ tlimit((4^n+1)/2^(2*n),n,inf);
 limit((x/log(x))*(x^(1/x)-1),x,inf);
 'limit(%e^((1/x+1)*log(x))/log(x)-x/log(x),x,inf);
 
+/* [ 1036901 ] tlimit(7^(n^2)/8^n,n,inf); wrong result */
+tlimit(7^(n^2)/8^n, n, inf);
+inf;
+
 end;
 end$

@@ -1432,8 +1432,7 @@
 			   (break "Invalid trig kernel in tvar-lim"))
 			'$finite)
 		       (t (break "Unhandled kernel in tvar-lim"))))
-	   (when datum (push (cons (data-gvar datum) lim) tvar-limits))
-	   lim)))))
+	  lim)))))
 
 (defun coef-sign (coef)
    (if (not ($freeof '$%i coef)) '$im ($asksign coef)))
