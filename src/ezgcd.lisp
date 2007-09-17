@@ -12,13 +12,12 @@
 
 (macsyma-module ezgcd)
 
-(declare-top (special varlist genvar lcprod svals svars oldsvars oldsvals
-		      valflag $gcd pl0 d0 degd0 subvar subval var
-		      many*  tempprime ovarlist valist modulus klim
-		      zl *prime plim nn* ne nn*-1 blist1 dlp *alpha
+(declare-top (special genvar lcprod svals svars oldsvars oldsvals
+		      valflag $gcd pl0 d0 degd0 var
+		      many* tempprime ovarlist valist modulus
+		      zl *prime plim nn* ne nn*-1 dlp
 		      ez1skip svalsl nsvals errrjfflag $algebraic
-		      lc1 oldlc df1 df2 res limk *ab* *alpha
-		      *sharpa *sharpb fact1 fact2 hmodulus $ratfac))
+		      lc1 oldlc limk *alpha $ratfac))
 
 (load-macsyma-macros ratmac)
 
@@ -57,8 +56,6 @@
 (defun non0rand (modulus)
   (do ((r))
       ((not (zerop (setq r (cmod (random 1000))))) r)))
-
-(declare-top (special tempprime))
 
 (defun getgoodvals (varl lcp)
   (mapcar #'(lambda (v) (do ((val 0 (non0rand tempprime)) (temp))
@@ -109,7 +106,7 @@
 
 (defun ez1call (builder factrs lc1 valist ovarlist)
   (prog (*prime plim nn* ne nn*-1 zl zfactr oldlc lcd0
-	 blist1 dlp limk genvar subvar subval mult)
+	 dlp limk genvar mult)
      (setq oldlc (caddr builder))
      (cond ((not (equal 1 lc1))
 	    (setq builder (ptimes builder lc1))))
@@ -306,31 +303,34 @@
        (setq allvars (union* allvars (car l))))
      (return allvars)))
 
-(defmfun $ezgcd nargs
+(defmfun $ezgcd (&rest args)
   (prog (pfl allvars presult flag genvar denom pfl2)
      ;;need if genvar doesn't shrink
-     (if (= nargs 0) (wna-err '$ezgcd))
-     (do ((i nargs (1- i)))
-	 ((= i 0))
-       (if ($ratp (arg i)) (return (setq flag t))))
-     (setq pfl (mapcar #'(lambda (h) (cdr (ratf h))) (listify nargs)))
+     (when (null args)
+       (wna-err '$ezgcd))
+     (when (some #'$ratp args)
+       (return (setq flag t)))
+     (setq pfl (mapcar #'(lambda (h) (cdr (ratf h))) args))
      (setq pfl2 (list 1))
      (do ((lcm (cdar pfl))
 	  (l (cdr pfl) (cdr l))
-	  (cof1) (cof2))
+	  (cof1)
+	  (cof2))
 	 ((null l) (setq denom lcm))
        (desetq (lcm cof1 cof2) (plcmcofacts lcm (cdar l)))
-       (or (equal cof1 1)
-	   (mapcar #'(lambda (x) (ptimes x cof1)) pfl2))
+       (unless (equal cof1 1)
+	 (mapcar #'(lambda (x) (ptimes x cof1)) pfl2))
        (push cof2 pfl2))
      (setq pfl (mapcar #'car pfl))
      (setq allvars (sort (listovarsl pfl) #'pointergp))
-     (setq presult
-	   (cond ($ratfac ((lambda ($gcd) (facmgcd pfl)) '$ez))
-		 (t (ezgcd pfl allvars modulus))))
+     (setq presult (if $ratfac
+		       (let (($gcd '$ez))
+			 (facmgcd pfl))
+		       (ezgcd pfl allvars modulus)))
      (setq presult (cons (cons (car presult) denom)
-			 (cond ((equal denom 1) (cdr presult))
-			       (t (mapcar #'ptimes (cdr presult) pfl2)))))
+			 (if (equal denom 1)
+			     (cdr presult)
+			     (mapcar #'ptimes (cdr presult) pfl2))))
      (setq presult (cons '(mlist)
 			 (cons (rdis* (car presult))
 			       (mapcar #'pdis* (cdr presult)))))
@@ -428,9 +428,6 @@
      (return (list tcont p))))
 
 (declare-top (unspecial lcprod svals svars oldsvars oldsvals
-			valflag pl0 d0 degd0 subvar subval var
-			many* tempprime ovarlist valist klim
-			zl *prime plim nn* ne nn*-1 blist1 dlp
-			ez1skip svalsl nsvals
-			lc1 oldlc df1 df2 res limk *ab*
-			*sharpa *sharpb fact1 fact2))
+			valflag pl0 d0 degd0 var many* tempprime ovarlist valist
+			zl *prime plim nn* ne nn*-1 dlp
+			ez1skip svalsl nsvals lc1 oldlc limk))
