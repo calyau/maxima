@@ -159,7 +159,7 @@
   (setf (get f 'autoload) "stringproc"))
 
 
-(auto-mspec '$romberg "romberg")
+(setf (get '$romberg 'autoload) "romberg")
 
 (dolist (f       
      '($read_matrix
