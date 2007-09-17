@@ -1,3 +1,5 @@
+load("topoly");
+
 to_poly_solve(e,vars) := block([listconstantvars : false, x, v, ineq : [], eq, eqs : [], sol, acc : [],gg],
   vars : if listp(vars) then vars else [vars],
   e : if listp(e) then e else [e],
