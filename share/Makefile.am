@@ -176,6 +176,7 @@ contrib/ezunits/ezunits.mac\
 contrib/ezunits/rtestezunits.mac\
 contrib/floatproperties.lisp\
 contrib/topoly.lisp\
+contrib/topoly_solver.mac\
 contrib/f90.lisp\
 contrib/format/README\
 contrib/format/autoload-m.macsyma\
