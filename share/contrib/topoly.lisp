@@ -16,6 +16,8 @@
 ;;  along with this program; if not, write to the Free Software 		 
 ;;  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
+($load '$polynomialp)
+
 (defmacro opapply (op args)
   `(simplify (cons (list ,op) ,args)))
 
@@ -67,7 +69,7 @@
     (setq p (if ($freeof '$max '$min p) p ($ratsimp (convert-from-max-min-to-abs p))))
     
     (setq p (to-polynomial p vars convert-cnst))
-    `((mlist) ((mlist) ,(first p) ,@(second p)) ((mlist) ,@(third p)))))))
+    `((mlist) ((mlist) ,(first p) ,@(second p)) ((mlist) ,@(third p)))))
    
 (defun to-polynomial (p vars convert-cnst)
   (let ((n) (b) (nv) (acc nil) (subs nil) (pk) (q) (inequal) (np-subs))
