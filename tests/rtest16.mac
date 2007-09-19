@@ -9,7 +9,7 @@ limit(7^(n^2)/8^n,n,inf);
 inf$
 limit((10^n+9^n+8^n)^(1/n),n,inf);
 10$
-/* maxima currently (2004/10/05) gets this wrong */
+
 limit(4^n/2^(2*n),n,inf);
 1$
 /* Test from Bug 1052308 */
@@ -254,8 +254,7 @@ limit(x/(x^log(x)), x, inf);
 'limit(%e^((1-log(x))*log(x)),x,inf);
 
 /* [ 1039965 ] limit(4^n/2^(2*n),n,inf) is wrong */
-/* shouldn't need radcan, someday */
-radcan(limit(4^n/2^(2*n),n,inf));
+limit(4^n/2^(2*n),n,inf);
 1;
 
 /* [ 1731127 ] limit((1 + 1/x)*(sqrt(x + 1) + 1), x, inf) => 0 (not inf) */
@@ -276,11 +275,15 @@ tlimit((4^n+1)/2^(2*n),n,inf);
 
 /* [ 1281736 ] limit((x/log(x))*(x^(1/x)-1),x,inf) - wrong result */
 limit((x/log(x))*(x^(1/x)-1),x,inf);
-'limit(%e^((1/x+1)*log(x))/log(x)-x/log(x),x,inf);
+1;
 
 /* [ 1036901 ] tlimit(7^(n^2)/8^n,n,inf); wrong result */
 tlimit(7^(n^2)/8^n, n, inf);
 inf;
+
+/* [ 1665657 ] limit fails to find easy limit */
+limit(x/(x-1)-1/log(x),x,1,plus);
+1/2;
 
 end;
 end$

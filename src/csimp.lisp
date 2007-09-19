@@ -24,7 +24,7 @@
 
 
 (setq $demoivre nil rsn* nil $nointegrate nil $lhospitallim 4 
-      $tlimswitch nil $limsubst nil $abconvtest nil
+      $tlimswitch t $limsubst nil $abconvtest nil
       complex-limit nil plogabs nil $intanalysis t)
 
 (defmvar %p%i '((mtimes) $%i $%pi))

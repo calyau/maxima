@@ -19,13 +19,13 @@
 (declare-top (special exp var val ll ul))
 
 (defmfun $tlimit (&rest args)
-  (let (($tlimswitch t))
-    (declare (special $tlimswitch))
+  (let ((limit-using-taylor t))
+    (declare (special limit-using-taylor))
     (apply #'$limit args)))
 
 (defmfun $tldefint (exp var ll ul)
-  (let (($tlimswitch t))
-    (declare (special $tlimswitch))
+  (let ((limit-using-taylor t))
+    (declare (special limit-using-taylor))
     ($ldefint exp var ll ul)))
 
 (defun tlimp (exp)		; TO BE EXPANDED TO BE SMARTER (MAYBE)

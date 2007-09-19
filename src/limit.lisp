@@ -58,6 +58,9 @@ It appears in LIMIT and DEFINT.......")
 (defmvar limit-answers ()
   "An association list for storing limit answers.")
 
+(defmvar limit-using-taylor ()
+  "Is the current limit computation using taylor expansion?")
+
 (defmvar preserve-direction () "Makes `limit' return Direction info.")
 
 (unless (boundp 'integer-info) (setq integer-info ()))
@@ -188,12 +191,21 @@ It appears in LIMIT and DEFINT.......")
 			 (return (nounlimit exp var val))))
 		    (t (setq exp d)))
 	      (setq ans (limit-catch exp var val))
-	      (if (null ans)
-		  (if (or (real-epsilonp val)
-			  (real-infinityp val))
-		      (return (nounlimit exp var val)))
-		  (return (clean-limit-exp ans)))
-	      (if (setq ans (both-side exp var val))
+
+	      (if (and (null ans)
+		       (not (or (real-epsilonp val)
+				(real-infinityp val))))
+		  (setq ans (both-side exp var val)))
+
+	      ;; try taylor series expansion if simple limit didn't work
+	      (if (and (null ans)		;; if no limit found and
+		       $tlimswitch		;; user says ok to use taylor and
+		       (not limit-using-taylor));; not already doing taylor
+		  (let ((limit-using-taylor t))
+		    (declare (special limit-using-taylor))
+		    (setq ans (limit-catch exp var val))))
+
+	      (if ans
 		  (return (clean-limit-exp ans))
 		  (return (nounlimit exp var val)))))
       (restore-assumptions))))
@@ -444,7 +456,7 @@ It appears in LIMIT and DEFINT.......")
 	    (simpinf exp))
 	   (t exp)))
     ((getlimval exp))
-    (t (putlimval exp (cond ((and $tlimswitch
+    (t (putlimval exp (cond ((and limit-using-taylor
 				  (null taylored)
 				  (tlimp exp))
 			     (taylim exp *i*))
@@ -2323,7 +2335,7 @@ It appears in LIMIT and DEFINT.......")
 		 (mapcar #'rdsget (cdr e))))))
 
 (defun rdtay (rd)
-  (cond ($tlimswitch ($ratdisrep ($taylor rd var val 1.)))
+  (cond (limit-using-taylor ($ratdisrep ($taylor rd var val 1.)))
 	(t (lrdtay rd))))
 
 (defun lrdtay (rd)
