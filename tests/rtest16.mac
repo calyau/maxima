@@ -285,5 +285,23 @@ inf;
 limit(x/(x-1)-1/log(x),x,1,plus);
 1/2;
 
+/* [ 611411 ] limit asks sign of IND */
+limit(abs(sin(x)),x,inf);
+ind;
+
+/* [ 782099 ] limit returns expression in IND */
+limit(sinh(exp(%i*x)),x,inf);
+ind;
+
+/* [ 1528607 ] limit(a^x,x,inf) can't solve for a : abs(a) < 1 */
+limit((-2/3)^x,x,inf);
+0;
+
+tlimit(exp(%i*t), t, inf);
+ind;
+
+tlimit(exp(-t+%i*t),t,inf);
+0;
+
 end;
 end$

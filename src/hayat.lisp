@@ -1207,16 +1207,12 @@
     (if (and (eq (caar kernel) 'mexpt) (eq (cadr kernel) '$%e)
 	     (not (atom (setq expt (caddr kernel))))
 	     (eq (caar expt) 'mtimes) (not (mfree expt (ncons '$%i))))
-	(if (not (and (eq (cadr expt) '$%i)
-		      (mfree (cddr expt) (ncons '$%i))))
-	    (break "bad exponential in adjoin-pvar")
-	    (progn
-	      (break "now")
-	      (setq expt (m// expt '$%i))
-	      (cons (psplus (adjoin-tvar `((%cos) ,expt))
-			    (pstimes (prep1 '$%i)
-				     (adjoin-tvar `((%sin) ,expt))))
-		    pow)))
+	(destructuring-let (((rpart . ipart) (trisplit expt)))
+	   (cons (pstimes (prep1 (m^ '$%e rpart))
+			  (psplus (adjoin-tvar `((%cos) ,ipart))
+				  (pstimes (prep1 '$%i)
+					   (adjoin-tvar `((%sin) ,ipart)))))
+			  pow))
 	(progn
 	  (when (eq (caar kernel) 'mexpt)
 	    (when (and (not (atom (setq expt (caddr kernel))))
@@ -1435,7 +1431,9 @@
 	  lim)))))
 
 (defun coef-sign (coef)
-   (if (not ($freeof '$%i coef)) '$im ($asksign coef)))
+   (if (not ($freeof '$%i ($rectform coef)))
+       '$im
+     ($asksign coef)))
 
 (defun gvar-lim (gvar)
    (or (cdr (assoc gvar tvar-limits :test #'eq))
