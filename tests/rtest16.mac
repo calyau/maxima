@@ -289,6 +289,10 @@ limit(x/(x-1)-1/log(x),x,1,plus);
 limit(abs(sin(x)),x,inf);
 ind;
 
+/* [ 1629723 ] bug in limit, asks sign of IND, encountered in integrator */
+limit(abs(sin(x))/x, x, inf);
+0;
+
 /* [ 782099 ] limit returns expression in IND */
 limit(sinh(exp(%i*x)),x,inf);
 ind;
