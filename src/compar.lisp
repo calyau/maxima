@@ -94,45 +94,43 @@ relational knowledge is contained in the default context GLOBAL."
 
 ;;; This "turns on" a context, making its facts visible.
 
-(defmfun $activate n
-  (do ((i 1 (1+ i)))
-      ((> i n))
-    (cond ((not (symbolp (arg i))) (nc-err))
-	  ((member (arg i) (cdr $activecontexts) :test #'eq))
-	  ((member (arg i) (cdr $contexts) :test #'eq)
-	   (setq $activecontexts (mcons (arg i) $activecontexts))
-	   (activate (arg i)))
-	  (t (merror "There is no context with the name ~:M" (arg i)))))
+(defmfun $activate (&rest args)
+  (dolist (c args)
+    (cond ((not (symbolp c)) (nc-err))
+	  ((member c (cdr $activecontexts) :test #'eq))
+	  ((member c (cdr $contexts) :test #'eq)
+	   (setq $activecontexts (mcons c $activecontexts))
+	   (activate c))
+	  (t (merror "There is no context named ~:M" c))))
   '$done)
 
-;;; This "turns off" a context, keeping the facts, but making them
-;;; invisible
+;;; This "turns off" a context, keeping the facts, but making them invisible
 
-(defmfun $deactivate n
-  (do ((i 1 (1+ i))) ((> i n))
-    (cond ((not (symbolp (arg i))) (nc-err))
-	  ((member (arg i) (cdr $contexts) :test #'eq)
-	   (setq $activecontexts ($delete (arg i) $activecontexts))
-	   (deactivate (arg i)))
-	  (t (merror "There is no context with the name ~:M" (arg i)))))
+(defmfun $deactivate (&rest args)
+  (dolist (c args)
+    (cond ((not (symbolp c)) (nc-err))
+	  ((member c (cdr $contexts) :test #'eq)
+	   (setq $activecontexts ($delete c $activecontexts))
+	   (deactivate c))
+	  (t (merror "There is no context named ~:M" c))))
   '$done)
 
-;;; This function of 0 or 1 argument prints out a list of the facts
-;;; in the specified context.  No argument implies the current context.
+;;; This function prints out a list of the facts in the specified context.
+;;; No argument implies the current context.
 
-(defmfun $facts n
-  (cond ((= n 0) (facts1 $context))
-	((= n 1) (facts1 (arg n)))
-	(t (merror "`facts' takes zero or one argument only."))))
+(defmfun $facts (&optional (ctxt $context))
+  (facts1 ctxt))
 
 (defun facts1 (con)
   (contextmark)
-  (do ((l (zl-get con 'data) (cdr l)) (nl) (u))
+  (do ((l (zl-get con 'data) (cdr l))
+       (nl)
+       (u))
       ((null l) (cons '(mlist) nl))
     (when (visiblep (car l))
       (setq u (intext (caaar l) (cdaar l)))
       (unless (memalike u nl)
-	(setq nl (cons u nl))))))
+	(push u nl)))))
 
 (defun intext (rel body)
   (setq body (mapcar #'doutern body))
@@ -184,13 +182,12 @@ relational knowledge is contained in the default context GLOBAL."
 
 ;;; This function kills a context or a list of contexts
 
-(defmfun $killcontext n
-  (do ((i 1 (1+ i)))
-      ((> i n))
-    (if (symbolp (arg i))
-	(killcontext (arg i))
+(defmfun $killcontext (&rest args)
+  (dolist (c args)
+    (if (symbolp c)
+	(killcontext c)
 	(nc-err)))
-  (if (and (= n 1) (eq (arg 1) '$global))
+  (if (and (= (length args) 1) (eq (car args) '$global))
       '$not_done
       '$done))
 
@@ -978,7 +975,7 @@ relational knowledge is contained in the default context GLOBAL."
   (let ((sgn (csign a)))
     (cond ((eq sgn '$pos) t)
 	  ((eq sgn t) nil) ;; csign thinks a - b isn't real
-	  ((memq sgn '($neg $zero $nz)) nil)
+	  ((member sgn '($neg $zero $nz) :test #'eq) nil)
 	  (t `((mgreaterp) ,a 0)))))
 
 (defun mlsp (x y)
@@ -987,7 +984,7 @@ relational knowledge is contained in the default context GLOBAL."
 (defun mgqp (a b)
   (setq a (sub a b))
   (let ((sgn (csign a)))
-    (cond ((memq sgn '($pos $zero $pz)) t)
+    (cond ((member sgn '($pos $zero $pz) :test #'eq) t)
 	  ((eq sgn t) nil) ;; csign thinks a - b isn't real 
 	  ((eq sgn '$neg) nil)
 	  (t `((mgeqp) ,a 0)))))
@@ -1169,12 +1166,12 @@ relational knowledge is contained in the default context GLOBAL."
   (when (or (and (numberp xrhs) (minusp xrhs)
 		 (not (atom xlhs)) (eq (sign* xlhs) '$pos))
 					; e.g. sign(a^3+%pi-1) where a>0
-	    (and (mexptp xlhs)		
+	    (and (mexptp xlhs)
 		 ;; e.g. sign(%e^x-1) where x>0
 		 (eq (sign* (caddr xlhs)) '$pos)
 		 (or (and
 		      ;; Q^Rpos - S, S<=1, Q>1
-		      (memq (sign* (sub 1 xrhs)) '($pos $zero $pz))
+		      (member (sign* (sub 1 xrhs)) '($pos $zero $pz) :test #'eq)
 		      (eq (sign* (sub (cadr xlhs) 1)) '$pos))
 		     (and
 		      ;; Qpos ^ Rpos - Spos => Qpos - Spos^(1/Rpos)
