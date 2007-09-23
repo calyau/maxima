@@ -2,6 +2,7 @@
 @c Encoding=CP1251
 @c File=Differential.texi
 @c OriginalRevision=1.11
+@c TranslatedBy: (c) 2007-09-05 Alexey V. Beshenov <al@beshenov.ru>
 
 @menu
 * Дифференциальные уравнения в Maxima::  

@@ -2,6 +2,8 @@
 @c Encoding=CP1251
 @c File=Introduction.texi 
 @c OriginalRevision=1.8
+@c TranslatedBy: (c) 2007-01 Andrey Siver <ihep-2005@yandex.ru>
+
 Запустите Maxima с помощью команды "maxima". Maxima покажет информацию о версии 
 и приглашение на ввод. Завершайте каждую команду Maxima символом ";" (или 
 "$" в случае, если хотите подавить вывод команды). 
