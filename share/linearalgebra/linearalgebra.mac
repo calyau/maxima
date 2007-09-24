@@ -244,7 +244,7 @@ mat_norm(m, p) := block([listarith : true, d],
     for ri in m do (
       d : max(d, tree_reduce("+", map('cabs, ri)))),
     d)
-  else if p = 'frobenius then tree_reduce("+", lreduce('append, args(cabs(m)^2)))
+  else if p = 'frobenius then sqrt(tree_reduce("+", lreduce('append, args(cabs(m)^2))))
   else error("Not able to compute the ",p," norm"));
 
 mat_fullunblocker(m) := block(
