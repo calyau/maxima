@@ -67,16 +67,7 @@ simplify_sum(expr) :=
   /* Check if we have a sum - if not then simplify all arguments.       */
   if mapatom(expr) then expr
   else if part(expr, 0)#nounify(sum) then map(simplify_sum, expr)
-/*
-  else if part(expr, 3)=-inf or part(expr, 3)=minf then block(
-    [sm, old_var : part(expr, 2), var__],
-    if part(expr, 4)#inf then sm : simplify_sum(changevar(expr, var__=-old_var, var__, old_var))
-    else sm : simplify_sum(
-      apply(sum, [subst(old_var = -old_var, part(expr, 1)), old_var, 1, inf]) +
-      apply(sum, [part(expr, 1), old_var, 0, inf])
-    )
-  )
-*/
+
   else block(
     [summand : part(expr, 1), var : part(expr, 2),
      lo : part(expr, 3), hi : part(expr, 4),
@@ -129,18 +120,25 @@ simplify_sum(expr) :=
           ratfun : part(expr1, 1),
           lo1 : part(expr1, 3),
           hi1 : part(expr1, 4),
-          if hipow(num(ratfun), new_var) <= hipow(denom(ratfun), new_var)-2 then (
+          if hipow(num(ratfun), new_var) <= hipow(denom(ratfun), new_var)-2
+          then (
             ss_print_message(2, "calling ratfun_to_psi"),
             sm1 : ratfun_to_psi(ratfun, new_var),
             ss_print_message(2, "ratfun -> psi returns", sm1)
           )
+          else
+            sm1 : inf
         )
-        else (
+        else block(
+          [expr1, ratfun, new_var : ?gensym(), expr0],
           ss_print_message(2, "Splitting sum"),
-          sm1 : simplify_sum(
-            apply(sum, [summand, var, lo, inf]) -
-            apply(sum, [summand, var, hi+1, inf])
-          )
+          expr0 : substpart(inf, expr, 4),
+          expr1 : intosum(changevar(expr0, new_var=var-lo+1, new_var, var)),
+          ratfun : part(expr1, 1),
+          sm1 : ratfun_to_psi(ratfun, new_var),
+          expr1 : intosum(changevar(expr0, new_var=var-hi, new_var, var)),
+          ratfun : part(expr1, 1),
+          sm1 : sm1 - ratfun_to_psi(ratfun, new_var)
         )
       )
     ) = [] then sm1 : expr,
@@ -149,7 +147,7 @@ simplify_sum(expr) :=
     if errcatch(
       if not(atom(sm1)) and not( freeof_sum(sm1) ) and
          ?ratp(ratsimp(summand/(-1)^var), var) and hi = inf
-      then (
+      then block(
         [ratfun, new_var : ?gensym(), expr1],
         ss_print_message(1, "Trying ratfun -> psi ..."),
         expr1 : intosum(changevar(expr, new_var=var-lo+1, new_var, var)),
