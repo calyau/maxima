@@ -321,6 +321,7 @@
 	 "contrib/fractals"
 	 "contrib/gentran"
 	 "contrib/gentran/test"
+     "contrib/graphs"
 	 "contrib/Grobner"
      "contrib/levin"
 	 "contrib/lurkmathml"
