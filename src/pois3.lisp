@@ -15,7 +15,7 @@
 ;; GENERAL POISSON SERIES
 
 (declare-top (special *argc *coef poisvals b* a* *a ss cc h* poishift
-		      poistsm poissiz poists $poisz $pois1))
+		      poistsm poists $poisz $pois1))
 
 (defvar trim nil)
 
@@ -79,7 +79,9 @@
 	   (t (return nil)))))
 
 (defmfun $poissimp (x)
-  (if (mbagp x) (cons (car x) (mapcar #'$poissimp (cdr x))) ($outofpois x)))
+  (if (mbagp x)
+      (cons (car x) (mapcar #'$poissimp (cdr x)))
+      ($outofpois x)))
 
 ;;;********
 
@@ -130,8 +132,8 @@
 	(t (list '(mpois simp) (list m 1) nil))))
 
 (defmfun $intopois (x)
-  (prog (*a)
-     (return (intopois x))))
+  (let (*a)
+    (intopois x)))
 
 (defun intopois (a)
   (cond ((atom a)
@@ -153,8 +155,9 @@
 	(t (list '(mpois simp) nil (list poishift (intopoisco a))))))
 
 (defun tcons (r s)
-  (cond ((poispzero (car s)) (cdr s))
-	(t (cons r s))))
+  (if (poispzero (car s))
+      (cdr s)
+      (cons r s)))
 
 (defun poisnegpred ($n)
   (prog ($r)
@@ -172,30 +175,20 @@
 (declare-top (special $u $v $w $x $y $z))
 
 (defun poisencode (h*)
-  (cond ((not (checkencode h*))
-	 (merror "Illegal arg to `poissimp':~%~M" h*)))
+  (unless (checkencode h*)
+    (merror "Illegal arg to `poissimp':~%~M" h*))
   (apply #'(lambda ($z $y $x $w $v $u)
 	     (declare (special $u $v $w $x $y $z))
 	     (setq h* (meval h*))
-	     (cond ((not (integerp h*)) (merror  "Illegal trig arg to `poisson' form")))
+	     (unless (integerp h*) (merror  "Illegal trig arg to `poisson' form"))
 	     (+ poishift  h*))
 	 poisvals))
 
-(prog (n)
-   (setq n 5)
-   (setq poisvals nil)
-   (setq poists (expt 2 n))
-   (do ((j 0 (1+ j)))
-       ((> j 5))
-     (push (expt poists j) poisvals))
-   (setq poissiz n
+(let ((n 5))
+   (setq poists (expt 2 n)
+	 poisvals (loop for i from 5 downto 0 collect (expt poists i))
 	 poistsm (expt 2 (1- n))
-	 poishift (prog (sum)
-		     (setq sum 0)
-		     (do ((i 0 (1+ i)))
-			 ((> i 5))
-		       (incf sum (* poistsm (expt poists i))))
-		     (return sum))
+	 poishift (loop for i from 0 to 5 sum (* poistsm (expt poists i)))
 	 $poisz '((mpois simp) nil nil)
 	 $pois1 (list '(mpois simp) nil (list poishift 1)))
    n)
@@ -637,51 +630,48 @@
 
 (defun poissubsta (a b* c)
   (prog (ss cc)
-     (setq h* (- (poisencode (list '(mplus) a (list '(mtimes) -1. b*)))
-			  poishift))
+     (setq h* (- (poisencode (list '(mplus) a (list '(mtimes) -1 b*))) poishift))
      (poissubst1s (cadr c))
      (poissubst1c (caddr c))
      (return (list (car c) ss cc))))
 
 (defun poissubst1s (c)
   (cond ((null c) nil)
-	(t (setq ss (poismerges (cadr c) (argsubst (car c)) ss)) (poissubst1s (cddr c)))))
+	(t (setq ss (poismerges (cadr c) (argsubst (car c)) ss))
+	   (poissubst1s (cddr c)))))
 
 (defun poissubst1c (c)
   (cond ((null c) nil)
-	(t (setq cc (poismergec (cadr c) (argsubst (car c)) cc)) (poissubst1c (cddr c)))))
+	(t (setq cc (poismergec (cadr c) (argsubst (car c)) cc))
+	   (poissubst1c (cddr c)))))
 
 (defun argsubst (c)
   (+ c (* h* (poisxcoef c b*))))
 
-(defmfun $poissubst n
-  (cond ((not (or (equal n 3) (equal n 5))) (merror  "Wrong number of args to `poissubst'"))
-	((equal n 5)
-	 (fancypoissubst (arg 1) (arg 2) (intopois (arg 3)) (intopois (arg 4)) (arg 5)))
-	(t ((lambda (a* b* c)
-	      (cond ((member b* '($u $v $w $x $y $z) :test #'eq) (poissubsta a* b* c))
-		    (t (list (car c) (poissubstco1 (cadr c)) (poissubstco1 (caddr c))))))
-	    (arg 1)
-	    (arg 2)
-	    (intopois (arg 3))))))
+(defmfun $poissubst (aa bb cc &optional dd nn)
+  (if (and dd nn)
+      (fancypoissubst aa bb (intopois cc) (intopois dd) nn)
+      (let ((a* aa) (b* bb) (c (intopois cc)))
+	(if (member b* '($u $v $w $x $y $z) :test #'eq)
+	    (poissubsta a* b* c)
+	    (list (car c) (poissubstco1 (cadr c)) (poissubstco1 (caddr c)))))))
 
 (declare-top (unspecial $u $v $w $x $y $z))
 
 (defun poissubstco1 (c)
-  (cond ((null c) nil)
-	(t (tcons (car c) (cons (poissubstco a* b* (cadr c)) (poissubstco1 (cddr c)))))))
+  (if (null c)
+      nil
+      (tcons (car c) (cons (poissubstco a* b* (cadr c)) (poissubstco1 (cddr c))))))
 
 (declare-top (special dc ds *ans))
 
 (defun fancypoissubst (a b* c d n)
-
   ;;SUBSTITUTES A+D FOR B IN C, WHERE D IS EXPANDED IN POWERSERIES TO ORDER N
   (prog (h* dc ds *ans)
      (setq *ans (list '(mpois simp) nil nil) d (intopois d) dc (intopois 1) ds (intopois 0))
-     (cond ((equal n 0) (return ($poissubst a b* c))))
+     (when (equal n 0) (return ($poissubst a b* c)))
      (fancypois1s d 1 1 n)
-     (setq h* (- (poisencode (list '(mplus) a (list '(mtimes) -1 b*)))
-			  poishift))
+     (setq h* (- (poisencode (list '(mplus) a (list '(mtimes) -1 b*))) poishift))
      (fancypas (cadr c))
      (fancypac (caddr c))
      (return *ans)))
