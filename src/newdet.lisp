@@ -26,30 +26,15 @@
 (defvar *binom*)
 (defvar *input*)
 
-(defmfun $newdet n
-  (let (a)
-    (cond ((= n 2)
-	   (unless (integerp (arg 2))
-	     (merror "Wrong arg to `newdet': ~M" (arg 2)))
-	   (setq a (arg 1) n (arg 2)))
-	  ((and (= n 1) ($matrixp (setq a (arg 1))))
-	   (setq n (length (cdr (arg 1)))))
-	  (t (merror "Wrong number of args to `newdet'")))
-    (newdet a n nil)))
 
-(defmfun $permanent n		
-  (let (a)
-    (cond ((= n 2)
-	   (unless (integerp (arg 2))
-	     (merror "Wrong arg to `perm': ~M" (arg 2)))
-	   (setq a (arg 1) n (arg 2)))
-	  ((and (= n 1) ($matrixp (setq a (arg 1))))
-	   (setq n (length (cdr (arg 1)))))
-	  (t (merror "Wrong number of args to `perm'")))
-    (newdet a n t)))
+(defmfun $newdet (a &optional (n (length (cdr a))))
+  (newdet a n nil))
+
+(defmfun $permanent (a &optional (n (length (cdr a))))
+  (newdet a n t))
 
 (defun newdet (a n perm)
-  (prog (rr k j old new vlist m loc addr sign) 
+  (prog (rr k j old new vlist m loc addr sign)
      (when (> n 50)
        (merror "Array too big - `newdet': ~M" n))
      (setq  *binom* (make-array (list (1+ n) (1+ n)) :element-type 'integer))
@@ -126,13 +111,13 @@
      (if (> (aref *i* (1- j)) (aref *i* j))
 	 (go nextminor)
 	 (setf (aref *i* j) (- m j)))
-	
+
      (decf j)
      (go back)
-     ret 
+     ret
      (return (cons (list 'mrat 'simp varlist genvar) (aref *minor1* old 0)))))
 
-(defun pascal (n) 
+(defun pascal (n)
   (setf (aref *binom* 0 0) 1)
   (do ((h 1 (1+ h)))
       ((> h n) (1- (aref *binom* n (ash n -1))))
