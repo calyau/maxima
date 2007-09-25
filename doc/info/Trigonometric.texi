@@ -32,9 +32,19 @@ Default value: @code{true}
 When @code{%piargs} is @code{true},
 trigonometric functions are simplified to algebraic constants
 when the argument is an integer multiple of
+@iftex
+@math{\pi}, @math{\pi/2}, @math{\pi/3}, @math{\pi/4}, or @math{\pi/6}.
+@end iftex
+@ifnottex
 @math{%pi}, @math{%pi/2}, @math{%pi/3}, @math{%pi/4}, or @math{%pi/6}.
+@end ifnottex
 
+@iftex
+Maxima knows some identities which can be applied when @math{\pi}, etc.,
+@end iftex
+@ifnottex
 Maxima knows some identities which can be applied when @math{%pi}, etc.,
+@end ifnottex
 are multiplied by an integer variable (that is, a symbol declared to be integer).
 
 Examples:
@@ -75,7 +85,12 @@ Examples:
                 2    2                    3
 @end example
 
+@iftex
+Some identities are applied when @math{\pi} and @math{\pi/2} are multiplied by an integer variable.
+@end iftex
+@ifnottex
 Some identities are applied when @math{%pi} and @math{%pi/2} are multiplied by an integer variable.
+@end ifnottex
 
 @c ===beg===
 @c declare (n, integer, m, even);
@@ -96,10 +111,20 @@ Default value: @code{true}
 
 When @code{%iargs} is @code{true},
 trigonometric functions are simplified to hyperbolic functions
+@iftex
+when the argument is apparently a multiple of the imaginary unit @math{i}.
+@end iftex
+@ifnottex
 when the argument is apparently a multiple of the imaginary unit @math{%i}.
+@end ifnottex
 
 Even when the argument is demonstrably real, the simplification is applied;
+@iftex
+Maxima considers only whether the argument is a literal multiple of @math{i}.
+@end iftex
+@ifnottex
 Maxima considers only whether the argument is a literal multiple of @math{%i}.
+@end ifnottex
 
 Examples:
 
