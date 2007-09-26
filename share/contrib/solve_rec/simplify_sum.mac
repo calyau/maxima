@@ -156,6 +156,7 @@ simplify_sum(expr) :=
           sm1 : ratfun_to_psi(subst(new_var=2*new_var, ratfun), new_var) -
                 ratfun_to_psi(subst(new_var=2*new_var-1, ratfun), new_var)
         )
+        else sm1 : und
       )
     ) = [] then sm1 : expr,
 
