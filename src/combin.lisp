@@ -866,11 +866,11 @@
 	((and (or (mtimesp e) (mexptp e) (mplusp e))
 	      (fsgeo e y)))
 	(t
-     (adusum e)
+	 (adusum e)
 	 nil)))
 
 (defun isum (e)
-  (cond ((member (setq e (catch 'isumout (isum1 e))) '($inf $undefined $minf) :test #'eq)
+  (cond ((member (setq e (catch 'isumout (isum1 e))) '($inf $und $minf) :test #'eq)
 	 (setq sum (list e) usum nil))))
 
 (defun isum1 (e)
@@ -904,7 +904,7 @@
                   ,*var* 1 ((mplus) -1 ,lo)))))
   (cond ((eq sign '$negative)
 	 (list '(mtimes) a ($zeta (meval (list '(mtimes) -1 n)))))
-	((throw 'isumout '$inf))))
+	((throw 'isumout (if (mgrp a 0) '$inf '$minf)))))
 
 (defun fsgeo (e y)
   (let ((r ($ratsimp (div* (maxima-substitute (list '(mplus) *var* 1) *var* e) e))))
@@ -925,10 +925,11 @@
 
 (defun isgeo1 (a r sign)
   (cond ((eq sign '$positive)
-	 (cond ((mgrp a 0) (throw 'isumout '$inf))
-	       ((throw 'isumout '$minf))))
+	 (if (mgrp a 0)
+	     (throw 'isumout (if (mgrp r 0) '$inf '$und))
+	     (throw 'isumout '$und)))
 	((eq sign '$zero)
-	 (throw 'isumout '$undefined))
+	 (throw 'isumout '$und))
 	((eq sign '$negative)
 	 (adsum (list '(mtimes) a
 		      (list '(mexpt) (list '(mplus) 1 (list '(mtimes) -1 r)) -1))))))
