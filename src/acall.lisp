@@ -11,14 +11,14 @@
 (in-package :maxima)
 
 ;;; Run-time support for translated code.
-;;; GJC: Experimental macsyma array lisp level support for translated
-;;; code.
+
+;;; GJC: Experimental macsyma array lisp level support for translated code.
 ;;; To quickly handle the array reference and setting syntax in macsyma,
 
-;;; In macsyma arrays go by an atomic name. Lists and matricies
+;;; In macsyma arrays go by an atomic name. Lists and matrices
 ;;; may be hacked with the array syntax, which is convient.
 
-;;;additions for handling arrays in value cell on cl --wfs
+;;; additions for handling arrays in value cell on cl --wfs
 
 (macsyma-module acall)
 
@@ -359,7 +359,7 @@
       (- x)
       (simplify (list '(mminus) x))))
 
-(defmfun retlist_tr n
-  (do ((j (1- n) (- j 2))
-       (l () (cons (list '(mequal simp) (arg j) (arg (1+ j))) l)))
+(defmfun retlist_tr (&rest args)
+  (do ((j (- (length args) 2) (- j 2))
+       (l () (cons (list '(mequal simp) (nth j args) (nth (1+ j) args)) l)))
       ((< j 0) (cons '(mlist simp) l))))
