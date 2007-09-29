@@ -264,6 +264,7 @@
 (defprop %round simp-round operators)
 (setf (get '$round 'integer-valued) t)
 (setf (get '$round 'reflection-rule) #'odd-function-reflect)
+(setf (get '$round 'alias) '%round)
 
 (defun simp-round (e yy z)
   (declare (ignore yy))
@@ -289,6 +290,7 @@
 (defprop %truncate simp-truncate operators)
 (setf (get '$truncate 'integer-valued) t)
 (setf (get '$truncate 'reflection-rule) #'odd-function-reflect)
+(setf (get '$truncate 'alias) '%truncate)
 
 (defun simp-truncate (e yy z)
   (declare (ignore yy))
