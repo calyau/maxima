@@ -2382,23 +2382,9 @@ Examples:
                            /     k + 1
                            ====
                            k = 1
-(%i12) sum (if k <= 5 then a^k else b^k, k, 1, 10));
-Incorrect syntax: Too many )'s
-else b^k, k, 1, 10))
-                  ^
-(%i12) linenum:11;
-(%o11)                         11
-(%i12) sum (integrate (x^k, x, 0, 1), k, 1, n);
-                            n
-                           ====
-                           \       1
-(%o12)                      >    -----
-                           /     k + 1
-                           ====
-                           k = 1
-(%i13) sum (if k <= 5 then a^k else b^k, k, 1, 10);
+(%i12) sum (if k <= 5 then a^k else b^k, k, 1, 10);
           10    9    8    7    6    5    4    3    2
-(%o13)   b   + b  + b  + b  + b  + a  + a  + a  + a  + a
+(%o12)   b   + b  + b  + b  + b  + a  + a  + a  + a  + a
 @end example
 
 @end deffn
