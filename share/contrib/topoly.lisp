@@ -66,7 +66,7 @@
     ;; I put in the conditional to skip the ratsimp for expressions that don't
     ;; involve max or min.
 
-    (setq p (if ($freeof '$max '$min p) p ($ratsimp (convert-from-max-min-to-abs p))))
+    (setq p (if ($freeof '$max '$min p) p (sratsimp (convert-from-max-min-to-abs p))))
     
     (setq p (to-polynomial p vars convert-cnst))
     `((mlist) ((mlist) ,(first p) ,@(second p)) ((mlist) ,@(third p)))))
