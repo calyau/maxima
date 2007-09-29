@@ -1532,8 +1532,5 @@ inf$
 min(1/(1-x),minf);
 minf$
 
-/* FPPREC1 sets some special variables;
- * it is invoked via assignment to fpprec
- */
-(reset (fpprec), fpprec : fpprec, 0);
+(reset (fpprec), 0);
 0;

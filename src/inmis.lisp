@@ -84,7 +84,7 @@
         (let ((displa-val (if non-maxima `((mprogn) ,@val) val)))
           (displa `((mtext) "reset: bind " ,key " to " ,displa-val))))
       (nconc actually-reset (list key))
-      (setf (symbol-value key) val))))
+      (meval `((msetq) ,key ,val)))))
 
 (defmspec $reset_verbosely (L)
   (reset-do-the-work (cdr L) t))

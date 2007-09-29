@@ -194,10 +194,7 @@ fpprec:25;
 25$
 sin(5.0b-1);
 4.794255386042030002732879b-1$
-/* FPPREC1 sets some special variables;
- * it is invoked via assignment to fpprec
- */
-(reset (fpprec), fpprec : fpprec, 0);
+(reset (fpprec), 0);
 0;
 /*begin fix */
  exp:cos(x)^2-sin(x)^2;
