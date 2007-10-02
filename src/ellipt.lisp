@@ -489,14 +489,10 @@
 	
 (defun complexify (x)
   ;; Convert a Lisp number to a maxima number
-  (if (realp x)
-      x
-      (if (zerop (realpart x))
-	  `((mtimes) ,(imagpart x) $%i)
-	  `((mplus simp) ,(realpart x)
-	    ((mtimes simp) ,(imagpart x) $%i)))))
-
-
+  (cond ((realp x) x)
+	((complexp x) (add (realpart x) (mul '$%i (imagpart x))))
+	(t (merror "Complexify called on ~:M" x))))
+   
 (defun kc-arg (exp m)
   ;; Replace elliptic_kc(m) in the expression with sym.  Check to see
   ;; if the resulting expression is linear in sym and the constant
