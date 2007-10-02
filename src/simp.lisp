@@ -865,6 +865,10 @@
 	((memq z '($pos $pz)) y)
 	((memq z '($neg $nz)) (neg y))
 	((eq z '$zero) 0)
+	
+	;; If csign(y) = pn, we have abs(signum(y)) = 1.
+	((and (eq z '$pn) (op-equalp y '%signum)) 1)
+	
 	((and (mexptp y) ($featurep (caddr y) '$integer))
 	 ;;(list (car y) (simpabs (list '(mabs) (cadr y)) nil t) (caddr y)))
 	 (list (car y) (simplifya (list '(mabs) (cadr y)) nil) (caddr y)))
