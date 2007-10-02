@@ -14,27 +14,23 @@
 (macsyma-module evalw)
 
 ;;; Assuming that this will only be a top-level form, it will
-;;; only be see by MEVAL when a file is batched.
+;;; only be seen by MEVAL when a file is batched.
 
 ;;; EVAL_WHEN(TRANSLATE,FOO(ME),BAZ())$
 ;;; EVAL_WHEN([LOADFILE,BATCH],INITIALIZE())$
-
-(declare-top (special $version state-pdl batconl))
 
 ;; Gosh. Seems it was really stupid to have EVAL_WHEN for BATCH and DEMO,
 ;; people use it for the most random things. -gjc
 
 (defmspec $eval_when (argl)
   (setq argl (cdr argl))
-  (cond ((or (< (length argl) 2)
-	     (not (or (atom (car argl))
-		      ($listp (car argl)))))
-	 (merror "Bad whens form to `eval_when'~%~M" (car argl))))
-  (let ((whens (if ($listp (car argl))
-		   (cdar argl)
-		   (list (car argl)))))
-    (cond ((member '$batch whens :test #'eq)
-	   `(($evaluated_when) ,@(mapcar 'meval (cdr argl))))
-	  (t
-	   '$not_evaluated_when))))
+  (when (or (< (length argl) 2)
+	    (not (or (atom (car argl))
+		     ($listp (car argl)))))
+    (merror "Bad whens form to `eval_when'~%~M" (car argl)))
+  (if (member '$batch (if ($listp (car argl))
+			  (cdar argl)
+			  (list (car argl))))
+      `(($evaluated_when) ,@(mapcar #'meval (cdr argl)))
+      '$not_evaluated_when))
 
