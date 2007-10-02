@@ -2199,28 +2199,28 @@
       ($png (format cmdstorage "set terminal png size ~a, ~a~%set out '~a.png'~%"
                            (get-option '$pic_width)
                            (get-option '$pic_height)
-                           (get-option '$file_name)) )
+                           (plot-temp-file (get-option '$file_name))) )
       ($eps (format cmdstorage "set terminal postscript eps size ~acm, ~acm~%set out '~a.eps'~%"
                            (get-option '$eps_width)
                            (get-option '$eps_height)
-                           (get-option '$file_name)))
+                           (plot-temp-file (get-option '$file_name))))
       ($eps_color (format cmdstorage "set terminal postscript eps color size ~acm, ~acm~%set out '~a.eps'~%"
                            (get-option '$eps_width)
                            (get-option '$eps_height)
-                           (get-option '$file_name)))
+                           (plot-temp-file (get-option '$file_name))))
       ($jpg (format cmdstorage "set terminal jpeg size ~a, ~a~%set out '~a.jpg'~%"
                            (get-option '$pic_width)
                            (get-option '$pic_height)
-                           (get-option '$file_name)))
+                           (plot-temp-file (get-option '$file_name))))
       ($gif (format cmdstorage "set terminal gif size ~a, ~a~%set out '~a.gif'~%"
                            (get-option '$pic_width)
                            (get-option '$pic_height)
-                           (get-option '$file_name)))
+                           (plot-temp-file (get-option '$file_name))))
       ($animated_gif (format cmdstorage "set terminal gif animate size ~a, ~a delay ~a~%set out '~a.gif'~%"
                            (get-option '$pic_width)
                            (get-option '$pic_height)
                            (get-option '$delay)
-                           (get-option '$file_name)))
+                           (plot-temp-file (get-option '$file_name))))
       ($wxt (format cmdstorage "set terminal wxt~%" ))  )
 
     ; compute some parameters for multiplot
@@ -2361,7 +2361,7 @@
                    ; print them when hitting the x key after clicking the mouse button
                    ((not (string= (gethash '$xy_file *gr-options*) ""))
                       (format cmdstorage "set print \"~a\" append~%bind x \"print MOUSE_X,MOUSE_Y\"~%"
-                                   (gethash '$xy_file *gr-options*))) )
+                                   (plot-temp-file (gethash '$xy_file *gr-options*)))) )
              (close cmdstorage)
 
              ; get the plot
