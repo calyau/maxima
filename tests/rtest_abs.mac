@@ -217,6 +217,9 @@ abs(rat(1));
 
 /*-- misc -----*/
 
+abs(signum(1/x));
+1$
+
 is(equal(op(abs(a.b)), abs));
 true$
 
