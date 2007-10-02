@@ -11,6 +11,7 @@
   `(coerce-float-fun ,fun `((mlist) ,,var)))
 
 (defun $quad_qag (fun var a b key &optional (epsrel 1d-8) (limit 200))
+  (quad_argument_check fun var a b) 
   (let* ((lenw (* 4 limit))
 	 (work (make-array lenw :element-type 'double-float))
 	 (iwork (make-array limit :element-type 'f2cl-lib:integer4))
@@ -29,6 +30,7 @@
       (list '(mlist) result abserr neval ier))))
   
 (defun $quad_qags (fun var a b &optional (epsrel 1d-8) (limit 200))
+  (quad_argument_check fun var a b) 
   (let* ((lenw (* 4 limit))
 	 (work (make-array lenw :element-type 'double-float))
 	 (iwork (make-array limit :element-type 'f2cl-lib:integer4))
@@ -47,6 +49,7 @@
       (list '(mlist) result abserr neval ier))))
 
 (defun $quad_qagi (fun var bound inf-type  &optional (epsrel 1d-8) (limit 200))
+  (quad_argument_check fun var bound inf-type) 
   (let* ((lenw (* 4 limit))
 	 (work (make-array lenw :element-type 'double-float))
 	 (iwork (make-array limit :element-type 'f2cl-lib:integer4))
@@ -75,6 +78,7 @@
       (list '(mlist) result abserr neval ier))))
 
 (defun $quad_qawc (fun var c a b &optional (epsrel 1d-8) (limit 200))
+  (quad_argument_check fun var a b) 
   (let* ((lenw (* 4 limit))
 	 (work (make-array lenw :element-type 'double-float))
 	 (iwork (make-array limit :element-type 'f2cl-lib:integer4))
@@ -95,6 +99,7 @@
 
 (defun $quad_qawf (fun var a omega trig &optional (epsabs 1d-10) (limit 200)
 		       (maxp1 100) (limlst 10))
+  (quad_argument_check fun var a omega) 
   (let* ((leniw limit)
 	 (lenw (+ (* 2 leniw) (* 25 maxp1)))
 	 (work (make-array lenw :element-type 'double-float))
@@ -120,6 +125,7 @@
 
 (defun $quad_qawo (fun var a b omega trig &optional (epsrel 1d-10) (limit 200)
 		       (maxp1 100))
+  (quad_argument_check fun var a b) 
   (let* ((leniw limit)
 	 (lenw (+ (* 2 leniw) (* 25 maxp1)))
 	 (work (make-array lenw :element-type 'double-float))
@@ -146,6 +152,7 @@
       (list '(mlist) result abserr neval ier))))
 
 (defun $quad_qaws (fun var a b alfa beta wfun &optional (epsrel 1d-10) (limit 200))
+  (quad_argument_check fun var a b) 
   (let* ((lenw (* 4 limit))
 	 (work (make-array lenw :element-type 'double-float))
 	 (iwork (make-array limit :element-type 'f2cl-lib:integer4))
@@ -168,6 +175,25 @@
 		       z-limit z-lenw last))
       (list '(mlist) result abserr neval ier))))
 
+;; error checking similar to that done by $defint
+(defun quad_argument_check (exp var ll ul) 
+  (setq exp (ratdisrep exp))
+  (setq var (ratdisrep var))
+  (setq ll (ratdisrep ll))
+  (setq ul (ratdisrep ul))
+  (cond (($constantp var)
+	 (merror "Variable of integration not a variable: ~M"
+		 var)))
+  (cond ((not (or ($subvarp var) (atom var)))
+	 (merror "Improper variable of integration: ~M" var))
+	((or (among var ul)
+	     (among var ll))
+	 (merror "Limit contains variable of integration: ~M" var)))
+  (cond ((not (equal ($ratsimp ($imagpart ll)) 0))
+	 (merror "Lower limit of integration must be real."))
+	((not (equal ($ratsimp ($imagpart ul)) 0))
+	 (merror
+	  "Upper limit of integration must be real."))))
 
 ;; Tests
 ;;
