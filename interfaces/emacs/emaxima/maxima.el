@@ -1805,7 +1805,7 @@ which is in a comment which begins on a previous line."
 (defun maxima-uncomment-region (beg end)
   "`uncomment-region' to use with the menu."
   (interactive "r")
-  (comment-region beg end (universal-argument)))
+  (uncomment-region beg end (universal-argument)))
 
 ;;;; Help functions
 
