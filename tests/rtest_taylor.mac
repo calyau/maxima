@@ -464,9 +464,12 @@ log(sqrt(e+1)+e)+sqrt(e+1)*e*x/(2*e^2+(2*sqrt(e+1)+2)*e+2*sqrt(e+1))
                               +(104*sqrt(e+1)+152)*e^3+(72*sqrt(e+1)+96)*e^2
                               +(32*sqrt(e+1)+24)*e+8*sqrt(e+1))$
 
+taylor(exp(x), x, minf, 1);
+exp(x)$
 
-
-
+/* [ 1682435 ] taylor of rat(factor(1+x)) gives internal error */
+taylor(rat(factor(1+x)),x,0,1);
+1+x
 
 
 
