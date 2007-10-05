@@ -275,9 +275,31 @@ Do @code{load(atrig1);} to use them.
 Default value: @code{false}
 
 When @code{halfangles} is @code{true},
-half-angles are simplified away.
-@c WHAT DOES THIS STATEMENT MEAN EXACTLY ??
-@c NEEDS EXAMPLES
+trigonometric functions of arguments @code{@var{expr}/2}
+are simplified to functions of @var{expr}.
+
+Examples:
+
+@c ===beg===
+@c halfangles : false;
+@c sin (x / 2);
+@c halfangles : true;
+@c sin (x / 2);
+@c ===end===
+@example
+(%i1) halfangles : false;
+(%o1)                         false
+(%i2) sin (x / 2);
+                                 x
+(%o2)                        sin(-)
+                                 2
+(%i3) halfangles : true;
+(%o3)                         true
+(%i4) sin (x / 2);
+                        sqrt(1 - cos(x))
+(%o4)                   ----------------
+                            sqrt(2)
+@end example
 
 @end defvr
 
