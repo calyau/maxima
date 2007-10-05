@@ -355,11 +355,13 @@
 ;;
 (defprop %inverse_jacobi_cn
     ((x m)
-     ;; -1/sqrt(1-x^2)/sqrt(1-m*x^2)
+     ;; -1/sqrt(1-x^2)/sqrt(1-m+m*x^2)
      ((mtimes simp) -1
       ((mexpt simp) ((mplus simp) 1 ((mtimes simp) -1 ((mexpt simp) x 2)))
        ((rat simp) -1 2))
-      ((mexpt simp) ((mplus simp) 1 ((mtimes simp) -1 m ((mexpt simp) x 2)))
+      ((mexpt simp)
+       ((mplus simp) 1 ((mtimes simp) -1 m)
+	             ((mtimes simp) m ((mexpt simp) x 2)))
        ((rat simp) -1 2)))
      ((mtimes simp) ((mexpt simp) ((mplus simp) 1 ((mtimes simp) -1 m)) -1)
       ((mplus simp)
