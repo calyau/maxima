@@ -403,14 +403,81 @@ and the result becomes the body of @code{f_2}.
 
 @end deffn
 
+@defvr {System variable} integration_constant
+Default value: @code{%c}
+
+When a constant of integration is introduced by indefinite integration of an equation,
+the name of the constant is constructed by concatenating @code{integration_constant}
+and @code{integration_constant_counter}.
+
+@code{integration_constant} may be assigned any symbol.
+
+Examples:
+
+@c ===beg===
+@c integrate (x^2 = 1, x);
+@c integration_constant : 'k;
+@c integrate (x^2 = 1, x);
+@c ===end===
+@example
+(%i1) integrate (x^2 = 1, x);
+                           3
+                          x
+(%o1)                     -- = x + %c1
+                          3
+(%i2) integration_constant : 'k;
+(%o2)                           k
+(%i3) integrate (x^2 = 1, x);
+                            3
+                           x
+(%o3)                      -- = x + k2
+                           3
+@end example
+
+@end defvr
+
 @defvr {System variable} integration_constant_counter
 Default value: 0
 
-@c WHEN DOES integrationconstant1 SHOW UP IN THE OUTPUT OF integrate ???
-@c integrate (a, x) YIELDS "a x", NOT "a x + integrationconstant1" !!!
-@code{integration_constant_counter} is a counter which is updated each time a
-constant of integration (named by Maxima, e.g., @code{integrationconstant1})
-is introduced into an expression by indefinite integration of an equation.
+When a constant of integration is introduced by indefinite integration of an equation,
+the name of the constant is constructed by concatenating @code{integration_constant}
+and @code{integration_constant_counter}.
+
+@code{integration_constant_counter} is incremented before constructing the next integration constant.
+
+Examples:
+
+@c ===beg===
+@c integrate (x^2 = 1, x);
+@c integrate (x^2 = 1, x);
+@c integrate (x^2 = 1, x);
+@c reset (integration_constant_counter);
+@c integrate (x^2 = 1, x);
+@c ===end===
+@example
+(%i1) integrate (x^2 = 1, x);
+                           3
+                          x
+(%o1)                     -- = x + %c1
+                          3
+(%i2) integrate (x^2 = 1, x);
+                           3
+                          x
+(%o2)                     -- = x + %c2
+                          3
+(%i3) integrate (x^2 = 1, x);
+                           3
+                          x
+(%o3)                     -- = x + %c3
+                          3
+(%i4) reset (integration_constant_counter);
+(%o4)            [integration_constant_counter]
+(%i5) integrate (x^2 = 1, x);
+                           3
+                          x
+(%o5)                     -- = x + %c1
+                          3
+@end example
 
 @end defvr
 
