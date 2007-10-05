@@ -29,7 +29,8 @@
 
 (setq breaklist nil $canterm nil)
 
-(defun brek (i) (cond  ((member i breaklist :test #'equal) t) ))
+(defun brek (i)
+  (cond  ((member i breaklist :test #'equal) t) ))
 
 ; This package blindly rearranges the indices of RPOBJs, even those for
 ; which such index mangling is forbidden, like our special tensors. To
@@ -87,13 +88,15 @@
 (defun boun (l) (intersect l bouni))
 
 
-(defun grade (rp) (f+ (length (covi rp))
-		   (f+ (length (conti rp)) (length (deri rp))) ) )
+(defun grade (rp)
+  (+ (length (covi rp))
+     (length (conti rp))
+     (length (deri rp))))
 
 ;MON IS A MONOMIAL WHOSE "APPARENT" RANK IS ARANK
 
 (defun arank (mon)
-  (do ( (i 0 (f+ (length (allind (car l))) i))
+  (do ( (i 0 (+ (length (allind (car l))) i))
 	(l (cdr mon) (cdr l) ) )
 	((null l)  i)  ))
 
@@ -109,24 +112,14 @@
 
 (defun catenate (lis)  (implode (exploden lis)))
 
-(defun indlis (rp) (prog (f1 f2 f3 b1 b2 b3)
- (setq f1 (fre (covi rp))
-       f2 (fre (conti rp))
-       f3 (fre (deri rp))
-       b1 (boun (covi rp))
-       b2 (boun (conti rp))
-       b3 (boun (deri rp)))
-(return
- (append (sort (append f1 f2 f3 nil) 'alphalessp)
-	 (list (caar rp))
-	 (sort (append b1 b2 b3 nil) 'alphalessp)))))
-
-
-;; Someone removed important macros from shared code... "cleaning up", eh?
-
-(defmacro array (name maclisp-type &rest dimlist)
-  `(*array ',name ',maclisp-type ,@dimlist))
-
+(defun indlis (rp)
+  (append (sort (append (fre (covi rp))
+			(fre (conti rp))
+			(fre (deri rp))) 'alphalessp)
+	  (list (caar rp))
+	  (sort (append (boun (covi rp))
+			(boun (conti rp))
+			(boun (deri rp))) 'alphalessp)))
 
 ;HOW TO USE ARRAY NAME AS PROG VARIABLE?
 
@@ -134,7 +127,7 @@
   (cond ((< (length l) 2) l)
 	(t
 	 (prog (i j k az)
-	    (setq i 0 j 0 k (length l) az (array nil t k))
+	    (setq i 0 j 0 k (length l) az (make-array k))
 	    (fillarray az l)
 	    a  (cond ((equal j (1- k))
 		      (return (listarray az)))
@@ -155,7 +148,8 @@
     ((equal (grade rp1) (grade rp2)) (alphadi rp1 rp2))  ))
 
 
-(defun sa (x) (sort (append x nil) 'alphalessp))
+(defun sa (x)
+  (sort (copy-list x) 'alphalessp))
 
 (defun top (rp) (cdaddr rp))
 (defun bot (rp) (append (cdadr rp) (cdddr rp)))
@@ -223,8 +217,8 @@
 	  frei (car d) bouni (cadr d)
 	  a (sort (append (car (rpobs (cdr e))) nil) 'prank)
 	  l (length a)
-	  b (array nil t l)
-	  c (array nil t l 4))
+	  b (make-array l)
+	  c (make-array (list l 4)))
     (fillarray b a) (when (eq t (brek 7)) (break "7"))
     (do  ((i 0 (1+ i)))
 	 ((equal i l))
@@ -244,7 +238,7 @@
      (setf (aref c ct 1) nil)
 
  a (cond
-    ((equal ct (f+ -1 l))
+    ((equal ct (1- l))
      (when (eq t (brek 1)) (break "1"))
      (setf (aref c ct 1) cil)
      (return
@@ -255,20 +249,22 @@
 
     ((zl-get (aref c ct 0) 'nodown)
      (setf (aref c ct 1) cil)
-     (setq ct (f+ 1 ct) cil (aref c ct 1)
+     (incf ct)
+     (setq cil (aref c ct 1)
 	   ocil (append (aref c ct 2) ocil))
      (setf (aref c ct 1) nil) (go a))
 
     ((null cil)
      (when (eq t (brek 2)) (break "2"))
-     (setq ct (f+ 1 ct) cil (aref c ct 1)
+     (incf ct)
+     (setq cil (aref c ct 1)
 	   ocil (append (aref c ct 2) ocil) )
      (setf (aref c ct 1) nil) (go a) )
 
     (t (setq cci (car cil))  (when (eq t (brek 5)) (break "5"))
        (cond ((not (member cci ocil :test #'eq))
 	     (when (eq t (brek 3)) (break "3"))
-	      (setq coi (do  ((i (f+ 1 ct) (f+ 1 i) ) )
+	      (setq coi (do  ((i (1+ ct) (1+ i) ) )
 			     ((member cci (aref c i 2) :test #'eq) i)))
 
 	      (setf (aref c ct 2)
@@ -330,7 +326,7 @@
      (setq  a  lis
 	    b  nil
 	    c  (cdr a)
-	    d  (array nil t (length a))
+	    d  (make-array (length a))
 	   ct  (canform (car a))
 	  cnt  (canform (car c))
 	    i  1)
@@ -353,7 +349,7 @@ a   (cond ((null a)
 		  ct (canform (car a))
 		 cnt (canform (car c)) )
 	    (cond ((null a) (return b))
-		  (t (setq d (array nil t (length a)))
+		  (t (setq d (make-array (length a)))
 		     (fillarray d a)))
 	    (go a))
 
