@@ -48,13 +48,6 @@
 (autof '$igeodesic_coords '|gener|)
 (autof '$conmetderiv '|gener|)
 (autof '$name '|canten|)
-  
-
-
-(eval-when
-    #+gcl (eval compile)
-    #-gcl (:execute :compile-toplevel)
-    (defmacro fixp (x) `(typep ,x 'fixnum)))
 
 (declare-top (special smlist $idummyx $vect_coords $imetric $icounter $dim
 		      $contractions $coord $allsym $metricconvert $iframe_flag
@@ -190,8 +183,9 @@
 (defmspec $remcon (a) (setq a (cdr a))
   ;;Removes contraction definitions
        (and (eq (car a) '$all) (setq a (cdr $contractions)))
-       (cons smlist (mapc (function (lambda (e) (zl-remprop e 'contractions)
-					    (delete e $contractions :test #'eq)))
+       (cons smlist (mapc #'(lambda (e)
+			      (zl-remprop e 'contractions)
+			      (setq $contractions (delete e $contractions :test #'eq)))
 			  a)))
 
 (defun getcon (e)
@@ -1077,27 +1071,11 @@
   )
 )
 
-;; Test for membership using EQUAL, to catch member lists
-(defun memlist (e l)
-  (cond ((null l) nil)
-        ((equal e (car l)) l)
-        (t (memlist e (cdr l)))
-  )
-)
-
 ;; Substitute using EQUAL, to catch member lists
 (defun substlist (b a l)
   (cond ((null l) l)
         ((equal a (car l)) (cons b (cdr l)))
         (t (cons (car l) (substlist b a (cdr l))))
-  )
-)
-
-;; And delete an element from a list, again using EQUAL
-(defun dellist (e l)
-  (cond ((null l) l)
-        ((equal e (car l)) (dellist e (cdr l)))
-        (t (cons (car l) (dellist e (cdr l))))
   )
 )
 
@@ -1124,8 +1102,9 @@
   (do
     ((i (minusi c) (cdr i)))
     ((null i))
-    (and (memlist (car i) c) (memlist (list '(mtimes simp) -1 (car i)) c)
-         (setq c (delete (car i) (dellist (list '(mtimes simp) -1 (car i)) c)))
+    (and (member (car i) c :test #'equal)
+	 (member (list '(mtimes simp) -1 (car i)) c :test #'equal)
+         (setq c (delete (car i) (delete (list '(mtimes simp) -1 (car i)) c :test #'equal)))
     )
   )
   c
@@ -1187,7 +1166,7 @@
               )
               (
                 (and (cdr c) (not (numberp a))
-                     (memlist (list '(mtimes simp) -1 a) (cdr c))
+                     (member (list '(mtimes simp) -1 a) (cdr c) :test #'equal)
                 )
                 (setq c (substlist (list '(mtimes simp) -1 b)
                                    (list '(mtimes simp) -1 a)
@@ -1508,7 +1487,7 @@
 	(t (nconc (splice2 (car l))(cons '| | (splice1 (cdr l)))))))
 
 (defun splice2 (x)
-  (cond ((fixp x)(explode x))
+  (cond ((fixnump x)(explode x))
 	(t (cdr (explodec x)))))
 ;	(t (cdr (explodec (print-invert-case x))))))
 
@@ -1526,12 +1505,12 @@
 		   (t (go noun)))
 	doit (cond ((null (cddr z))
 		    (merror "Wrong number of args to DERIVATIVE"))
-		   ((not (fixp (setq count (caddr z)))) (go noun))
+		   ((not (fixnump (setq count (caddr z)))) (go noun))
 		   ((< count 0.)
 		    (merror "Improper count to DIFF: ~M"
 			    count)))
 	loop1(setq v (cadr z))
-	     (and (fixp v)
+	     (and (fixnump v)
 		  $vect_coords
 		  (> v 0.)
 		  (not (> v $dim))
@@ -1606,7 +1585,7 @@
 ;;				   (cons smlist (ncons dummy)))))
 ;;	       nil))
 	     ((not (depends e x))
-	      (cond ((fixp x) (list '(%derivative) e x))
+	      (cond ((fixnump x) (list '(%derivative) e x))
 		    ((atom x) 0.)
 		    (t (list '(%derivative) e x))))
 							  ;This line moved down
@@ -1775,7 +1754,9 @@
             args)
            t)))))
 
-(defmfun $idiff n (let (derivlist) (ideriv (listify n))))
+(defmfun $idiff (&rest args)
+  (let (derivlist)
+    (ideriv args)))
 
 (defmfun idiff (e x)
   (cond
@@ -1874,7 +1855,7 @@
 	     (setq a (cdr l1))
 	     (ifnot (and a (cdr a)) (return (list '(%levi_civita) l1)))
 	     (setq b a)
-	loop1(ifnot (fixp (car a)) (return (list '(%levi_civita) l1)))
+	loop1(ifnot (fixnump (car a)) (return (list '(%levi_civita) l1)))
 	     (and (setq a (cdr a)) (go loop1))
 	loop3(setq a (car b) b (cdr b) c b)
 	loop2(cond ((= (car c) a) (return 0.))
@@ -2187,7 +2168,7 @@ indexed objects")) (t (return (flush (arg 1) l nil))))))
 
 
 (defun allfixed (l) 
-       (and l (fixp (car l)) (or (null (cdr l)) (allfixed (cdr l))))) 
+       (and l (fixnump (car l)) (or (null (cdr l)) (allfixed (cdr l))))) 
 
 (defun tensoreval (tensor indxs)
   ((lambda (der con)
@@ -2419,40 +2400,29 @@ indexed objects")) (t (return (flush (arg 1) l nil))))))
 	   (merror "~M is not a valid name." a))
 	  (t (add2lnc a $coord)))))
 
-(defmfun $remcoord n
-  (cond ((and (equal n 1) (eq (arg 1) '$all))
-	 (setq $coord '((mlist))) '$done)
-	(t (do ((l (listify n) (cdr l)))
-	       ((null l) '$done)
-	     (delete (car l) $coord :test #'eq)))))
+(defmfun $remcoord (&rest args)
+  (cond ((and (= (length args) 1)
+	      (eq (car args) '$all))
+	 (setq $coord '((mlist)))
+	 '$done)
+	(t (dolist (c args '$done)
+	     (setq $coord (delete c $coord :test #'eq))))))
 
 
 ;; Additions on 5/19/2004 -- VTT
-
-(defun memberlist (e l)
-	(cond ((null l) nil)
-	      ((equal e (car l)) t)
-	      (t (memberlist e (cdr l)))))
-
-(defun unionlist (l1 l2)
-	(cond ((null l1) l2)
-	      ((memberlist (car l1) l2) (unionlist (cdr l1) l2))
-	      (t (cons (car l1) (unionlist (cdr l1) l2)))))
 
 (defmfun $listoftens (e)
   (itensor-sort (cons smlist (listoftens e))))
 
 (defun listoftens (e)
-  (cond
-    ((atom e) nil)
-    ((rpobj e) (list e))
-    (t (prog (l) (setq l nil)
-	     (mapcar (lambda (x) (setq l (unionlist l (listoftens x)))) (cdr e))
-	     (return l)))))
+  (cond ((atom e) nil)
+	((rpobj e) (list e))
+	(t (let (l)
+	     (mapcar #'(lambda (x) (setq l (union l (listoftens x) :test #'equal))) (cdr e))
+	     l))))
 
-(defun numlist (&optional (n '1))
-  (cond ((>= n $dim) (list n))
-	(t (cons n (numlist (1+ n))))))
+(defun numlist (&optional (n 1))
+  (loop for i from n upto $dim collect i))
 
 ;;showcomps(tensor):=block([i1,i2,ind:indices(tensor)[1]],
 ;;	if length(ind)=0 then ishow(ev(tensor))
@@ -2522,14 +2492,15 @@ indexed objects")) (t (return (flush (arg 1) l nil))))))
 ; non-existent symmetries. Used by $idim below.
 
 (defun remsym (name ncov ncontr)
-  (prog (tensor)
-    (setq tensor (implode (nconc (exploden name) (ncons 45)
+  (declare (special $symmetries))
+  (let ((tensor (implode (nconc (exploden name) (ncons 45)
                                  (exploden ncov) (ncons 45)
-                                 (exploden ncontr))))
-    (cond ((member tensor (cdr $symmetries) :test #'equal)
-	   (delete tensor $symmetries :test #'equal)
-	   (zl-remprop tensor '$sym) (zl-remprop tensor '$anti)
-	   (zl-remprop tensor '$cyc)))))
+                                 (exploden ncontr)))))
+    (when (member tensor (cdr $symmetries) :test #'equal)
+      (setq $symmetries (delete tensor $symmetries :test #'equal))
+      (zl-remprop tensor '$sym)
+      (zl-remprop tensor '$anti)
+      (zl-remprop tensor '$cyc))))
 
 ; This function sets the metric dimensions and Levi-Civita symmetries.
 
