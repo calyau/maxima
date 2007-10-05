@@ -356,11 +356,38 @@ default for @var{row} is the zero vector with the same length as @var{col}.
 
 @end deffn
 
-@deffn {Function} hessian (@var{f},@var{vars})
+@deffn {Function} hessian (@var{f}, @var{x})
 
-Return the hessian matrix of @var{f} with respect to the variables in the list
-@var{vars}.  The @var{i},@var{j} entry of the hessian matrix is 
-@var{diff(f vars[i],1,vars[j],1)}.
+Returns the Hessian matrix of @var{f} with respect to the list of variables @var{x}.
+The @code{(i, j)}-th element of the Hessian matrix is @code{diff(@var{f}, @var{x}[i], 1, @var{x}[j], 1)}.
+
+Examples:
+
+@c ===beg===
+@c hessian (x * sin (y), [x, y]);
+@c depends (F, [a, b]);
+@c hessian (F, [a, b]);
+@c ===end===
+@example
+(%i1) hessian (x * sin (y), [x, y]);
+                     [   0       cos(y)   ]
+(%o1)                [                    ]
+                     [ cos(y)  - x sin(y) ]
+(%i2) depends (F, [a, b]);
+(%o2)                       [F(a, b)]
+(%i3) hessian (F, [a, b]);
+                        [   2      2   ]
+                        [  d F    d F  ]
+                        [  ---   ----- ]
+                        [    2   da db ]
+                        [  da          ]
+(%o3)                   [              ]
+                        [   2      2   ]
+                        [  d F    d F  ]
+                        [ -----   ---  ]
+                        [ da db     2  ]
+                        [         db   ]
+@end example
 
 @end deffn
 
@@ -392,6 +419,37 @@ See also @code{zerofor}
 
 Invert a matrix @var{M} by using the LU factorization.  The LU factorization
 is done using the ring @var{rng}.
+
+@end deffn
+
+@deffn {Function} jacobian (@var{f}, @var{x})
+
+Returns the Jacobian matrix of the list of functions @var{f} with respect to the list of variables @var{x}.
+The @code{(i, j)}-th element of the Jacobian matrix is @code{diff(@var{f}[i], @var{x}[j])}.
+
+Examples:
+
+@c ===beg===
+@c jacobian ([sin (u - v), sin (u * v)], [u, v]);
+@c depends ([F, G], [y, z]);
+@c jacobian ([F, G], [y, z]);
+@c ===end===
+@example
+(%i1) jacobian ([sin (u - v), sin (u * v)], [u, v]);
+                  [ cos(v - u)  - cos(v - u) ]
+(%o1)             [                          ]
+                  [ v cos(u v)   u cos(u v)  ]
+(%i2) depends ([F, G], [y, z]);
+(%o2)                  [F(y, z), G(y, z)]
+(%i3) jacobian ([F, G], [y, z]);
+                           [ dF  dF ]
+                           [ --  -- ]
+                           [ dy  dz ]
+(%o3)                      [        ]
+                           [ dG  dG ]
+                           [ --  -- ]
+                           [ dy  dz ]
+@end example
 
 @end deffn
 
