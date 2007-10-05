@@ -355,7 +355,7 @@
 			      (cons integrand stack)
 			      integrand))
 		       '%integrate)))
-	    (return (add2* (list '(mtimes) const w arcpart)
+	    (return (add (list '(mtimes) const w arcpart)
 			   (list '(mtimes) -1 const y))))
 	   (t
 	    ;;(format t "t part~%")
@@ -467,7 +467,7 @@
 		   ,@(cddr wrt)))
 	     `((%derivative) ,expr	;Higher order, reduce order
 	       ,.(nreverse old-wrt)
-	       ,(car wrt) ,(add2* (cadr wrt) -1)
+	       ,(car wrt) ,(add (cadr wrt) -1)
 	       ,@ (cddr wrt))))
 	((null (cddr wrt)) () )		;Say it doesn't apply here
 	(t (checkderiv1 expr (cddr wrt)	;Else we check later terms
@@ -516,9 +516,9 @@
 	       ((or (equal (caddr exp) -1)
 		    (and (not (mnump (caddr exp)))
 			 (freeof '$%i (caddr exp))
-			 (eq (asksign (power (add2 (caddr exp) 1) 2)) '$zero)))
+			 (eq (asksign (power (add (caddr exp) 1) 2)) '$zero)))
 		(maxima-substitute (cadr exp) 'x (logmabs 'x)))
-	       (t (maxima-substitute (add2* (caddr exp) 1)
+	       (t (maxima-substitute (add (caddr exp) 1)
 				     'n
 				     (maxima-substitute (cadr exp)
 							'x
@@ -869,7 +869,7 @@
 						   ((mtimes) -1 c1))
 						  r1))))
 			    var))))
-       ((integerp2 (add2* r1 r2))
+       ((integerp2 (add r1 r2))
 	#+nil (format t "integer r1+r2~%")
 	;; If we're here,  (r1-q+1)/q+r2 is an integer.
 	;;
@@ -1397,6 +1397,9 @@
      get2 (setq y (simplify y))
      (return (substint repl 'x (integrator y 'x)))))
 
+(defmvar $integration_constant_counter 0)
+(defmvar $integration_constant '$%c)
+
 (defmfun sinint (exp var)
   ;; *integrator-level* is a recursion counter for INTEGRATOR.  See
   ;; INTEGRATOR for more details.  Initialize it here.
@@ -1410,8 +1413,8 @@
 		 (mapcar #'(lambda (y) (sinint y var)) (cdr exp))))
 	  ((mequalp exp)
 	   (list (car exp) (sinint (cadr exp) var)
-		 (add2 (sinint (caddr exp) var)
-		       (gentemp (symbol-name '$integrationconstant)))))
+		 (add (sinint (caddr exp) var)
+              ($concat $integration_constant (incf $integration_constant_counter)))))
 	  ((and (atom var)
 		(isinop exp var))
 	   (list '(%integrate) exp var))
@@ -1454,8 +1457,8 @@
 		(eq (caddr pair) var))
        (setq val (maxima-substitute ll idx (cadddr pair)))
        (cond ((equal val -1)
-	      (return (add2 (integrator (maxima-substitute ll idx exp) var)
-			    (intsum1 exp idx (add2 1 ll) ul var))))
+	      (return (add (integrator (maxima-substitute ll idx exp) var)
+			    (intsum1 exp idx (add 1 ll) ul var))))
 	     ((mlsp val -1)
 	      (return (list '(%integrate) form var)))))
      (return (intsum1 exp idx ll ul var))))
