@@ -3175,7 +3175,7 @@ first kind:
       ((mexpt) ((mplus) -1 ((mexpt) x 2)) ((rat) -1 2))
       ((mexpt)
        ((mplus) m
-	((mtimes) -1 ((mplus) -1 $m) ((mexpt) x 2)))
+	((mtimes) -1 ((mplus) -1 m) ((mexpt) x 2)))
        ((rat) -1 2)))
      ;; wrt m
      ((%derivative) ((%inverse_jacobi_nc) x m) m 1))
