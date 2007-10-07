@@ -113,7 +113,7 @@ DOE Macsyma.  Копия DOE Macsyma поддерживалась профессором Вильямом
 * Тригонометрия::                 Работа с выражениями, содержащими тригонометрические и
                                   обратные тригонометрические функции.
 * Special Functions::             Special functions
-* Elliptic Functions::            Elliptic Functions and Integrals
+* Эллиптические функции::         Эллиптические функции и интегралы.
 * Пределы::                       Вычисление пределов выражений.
 * Differentiation::               Differential calculus.
 * Integration::                   Integral calculus.
@@ -268,11 +268,11 @@ Special Functions
 * Introduction to Special Functions::  
 * Definitions for Special Functions::  
 
-Elliptic Functions
+Эллиптические функции
 
-* Introduction to Elliptic Functions and Integrals::
-* Definitions for Elliptic Functions::
-* Definitions for Elliptic Integrals::
+* Эллиптические функции и интегралы в Maxima::
+* Функции и переменные для эллиптических функций::
+* Функции и переменные для эллиптических интегралов::
 
 Пределы
 
