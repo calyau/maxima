@@ -1,8 +1,7 @@
-;;  Author: Robert Dodier
+;;  Copyright 2005 by Robert Dodier
 
 ;;  This program is free software; you can redistribute it and/or
-;;  modify it under the terms of the GNU General Public License,
-;;  http://www.gnu.org/copyleft/gpl.html.
+;;  modify it under the terms of the GNU General Public License, version 2.
 
 ;;  This program has NO WARRANTY, not even the implied warranty of
 ;;  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
@@ -21,6 +20,15 @@
 ;;   write_data (X, file_name, sep_ch_flag)$
 
 ;; See numericalio.texi for a lengthier description.
+
+(defun $assign_io_endianness (x)
+  (cond
+    ((eq x '$little_endian)
+     (define-io-endianness :little-endian))
+    ((eq x '$big_endian)
+     (define-io-endianness :big-endian))
+    (t
+      (merror "assign_io_endianness: unrecognized endianness"))))
 
 ;; -------------------- read functions --------------------
 
@@ -146,58 +154,66 @@
 
 ;; -------------------- write functions -------------------
 
-(defun open-file-appropriately (file-name)
+(defun open-file-appropriately (file-name mode)
   (open file-name
         :direction :output
+        :element-type (if (eq mode 'text) 'character '(unsigned-byte 8))
         :if-exists (if (or (eq $file_output_append '$true) (eq $file_output_append t)) :append :supersede)
         :if-does-not-exist :create))
 
 (defun $write_data (X stream-or-filename &optional sep-ch-flag)
+  (write-data X stream-or-filename sep-ch-flag 'text))
+
+(defun $write_binary_data (X stream-or-filename)
+  (write-data X stream-or-filename nil 'binary))
+
+(defun write-data (X stream-or-filename sep-ch-flag mode)
   (let
     ((out
        (if (streamp stream-or-filename)
          stream-or-filename
-         (open-file-appropriately (require-string stream-or-filename)))))
+         (open-file-appropriately (require-string stream-or-filename) mode))))
     (cond
       (($matrixp X)
-        (write-matrix X out sep-ch-flag))
+        (write-matrix X out sep-ch-flag mode))
       ((arrayp X)
-        (write-lisp-array X out sep-ch-flag))
+        (write-lisp-array X out sep-ch-flag mode))
       ((mget X 'array)
-        (write-maxima-array X out sep-ch-flag))
+        (write-maxima-array X out sep-ch-flag mode))
       ((mget X 'hashar)
-        (write-hashed-array X out sep-ch-flag))
+        (write-hashed-array X out sep-ch-flag mode))
       (($listp X)
-        (write-list X out sep-ch-flag))
+        (write-list X out sep-ch-flag mode))
       (t (merror "write_data: don't know what to do with a ~M" (type-of X))))
     (if (not (streamp stream-or-filename))
       (close out))
     '$done))
 
-(defun write-matrix (M out sep-ch-flag)
+(defun write-matrix (M out sep-ch-flag mode)
   (let ((sep-ch (get-output-sep-ch sep-ch-flag (truename out))))
-    (mapcar #'(lambda (x) (write-list-lowlevel (cdr x) out sep-ch)) (cdr M))))
+    (mapcar #'(lambda (x) (write-list-lowlevel (cdr x) out sep-ch mode)) (cdr M))))
 
-(defun write-lisp-array (A out sep-ch-flag)
+(defun write-lisp-array (A out sep-ch-flag mode)
   (let ((sep-ch (get-output-sep-ch sep-ch-flag (truename out))) (d (array-dimensions A)))
-    (write-lisp-array-helper A d '() out sep-ch)))
+    (write-lisp-array-helper A d '() out sep-ch mode)))
 
-(defun write-lisp-array-helper (A d indices out sep-ch)
+(defun write-lisp-array-helper (A d indices out sep-ch mode)
   (cond ((equalp (length d) 1)
       (let ((L '()))
         (sloop for i from 0 to (- (car d) 1) do
           (let ((x (apply 'aref (append (list A) (reverse (cons i indices))))))
             (setq L (cons x L))))
-        (write-list-lowlevel (reverse L) out sep-ch)))
+        (write-list-lowlevel (reverse L) out sep-ch mode)))
     (t
       (sloop for i from 0 to (- (car d) 1) do
-        (write-lisp-array-helper A (cdr d) (cons i indices) out sep-ch)
-        (cond ((> (length d) 2) (terpri out)))))))
+        (write-lisp-array-helper A (cdr d) (cons i indices) out sep-ch mode)
+        (if (and (eq mode 'text) (> (length d) 2))
+          (terpri out))))))
 
-(defun write-maxima-array (A out sep-ch-flag)
-  (write-lisp-array (symbol-array (mget A 'array)) out sep-ch-flag))
+(defun write-maxima-array (A out sep-ch-flag mode)
+  (write-lisp-array (symbol-array (mget A 'array)) out sep-ch-flag mode))
 
-(defun write-hashed-array (A out sep-ch-flag)
+(defun write-hashed-array (A out sep-ch-flag mode)
   (let
     ((keys (cdddr (meval (list '($arrayinfo) A))))
      (sep-ch (get-output-sep-ch sep-ch-flag (truename out)))
@@ -207,23 +223,33 @@
       (setq L ($arrayapply A (car keys)))
       (cond ((listp L) (pop L))
             (t (setq L (list L))))
-      (write-list-lowlevel (append (cdr (pop keys)) L) out sep-ch))))
+      (write-list-lowlevel (append (cdr (pop keys)) L) out sep-ch mode))))
 
-(defun write-list (L out sep-ch-flag)
+(defun write-list (L out sep-ch-flag mode)
   (let ((sep-ch (get-output-sep-ch sep-ch-flag (truename out))))
-    (write-list-lowlevel (cdr L) out sep-ch)))
+    (write-list-lowlevel (cdr L) out sep-ch mode)))
 
-(defun write-list-lowlevel (L out sep-ch)
+(defun write-list-lowlevel (L out sep-ch mode)
   (setq sep-ch (cond ((symbolp sep-ch) (cadr (exploden sep-ch))) (t sep-ch)))
   (cond ((not (null L))
       (loop 
         (if (not L) (return))
         (let ((e (pop L)))
           (cond (($listp e)
-              (write-list-lowlevel (cdr e) out sep-ch))
-            (t (mgrind e out)
-              (cond ((null L) (terpri out))
-                (t (write-char sep-ch out)))))))))
+              (write-list-lowlevel (cdr e) out sep-ch mode))
+            (t
+              (cond
+                ((eq mode 'text)
+                 (mgrind e out)
+                 (cond
+                   ((null L) (terpri out))
+                   (t (write-char sep-ch out))))
+                ((eq mode 'binary)
+                 (if ($numberp e)
+                   (write-float-64 ($float e) out)
+                   (merror "write_data: encountered non-numeric data in binary output")))
+                (t
+                  (merror "write_data: unrecognized mode")))))))))
   (finish-output out))
 
 (defun get-input-sep-ch (sep-ch-flag file-name)
