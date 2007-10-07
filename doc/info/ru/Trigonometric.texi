@@ -1,0 +1,550 @@
+@c Language=Russian
+@c Encoding=CP1251
+@c File=Trigonometric.texi
+@c OriginalRevision=1.19
+@c TranslatedBy: (c) 2007-09-22 Alexey V. Beshenov <al@beshenov.ru>
+
+@menu
+* Тригонометрия в Maxima::  
+* Функции и переменные из тригонометрии::  
+@end menu
+
+@node Тригонометрия в Maxima, Функции и переменные из тригонометрии, Тригонометрия, Тригонометрия
+@section Тригонометрия в Maxima
+
+В Maxima определено много тригонометрических функций. Запрограммированны не все
+тригонометрические тождества, но пользователь может добавить большинство из
+них благодаря возможностям системы по поиску совпадений с шаблонами (подстановки). 
+В Maxima определены следующие тригонометрические функции @code{acos}, @code{acosh}, @code{acot},
+@code{acoth}, @code{acsc}, @code{acsch}, @code{asec}, @code{asech}, @code{asin},
+@code{asinh}, @code{atan}, @code{atanh}, @code{cos},
+@code{cosh}, @code{cot}, @code{coth}, @code{csc}, @code{csch},
+@code{sec}, @code{sech}, @code{sin}, @code{sinh}, @code{tan} и
+@code{tanh}. Для работы с тригонометрическими функциями есть ряд особых команд, см.
+@code{trigexpand}, @code{trigreduce} и @code{trigsign}. Два встроенных пакета
+расширяют правила упрощения Maxima: @code{ntrig} и @code{atrig1}. Для подробностей
+запустите @code{describe(@var{command})}.
+
+@node Функции и переменные из тригонометрии,  , Тригонометрия в Maxima, Тригонометрия
+@section Функции и переменные из тригонометрии
+
+@defvr {Управляющая переменная} %piargs
+Значение по умолчанию: @code{true}
+
+Если @code{%piargs} равно @code{true}, то тригонометрические функции упрощаются до
+алгебраических констант, если аргумент кратен
+@iftex
+@math{\pi}, @math{\pi/2}, @math{\pi/3}, @math{\pi/4} или @math{\pi/6}.
+@end iftex
+@ifnottex
+@math{%pi}, @math{%pi/2}, @math{%pi/3}, @math{%pi/4} или @math{%pi/6}.
+@end ifnottex
+
+@iftex
+Maxima использует некоторые тождества, применимые, если @math{\pi} домножается
+@end iftex
+@ifnottex
+Maxima использует некоторые тождества, применимые, если @math{%pi} домножается
+@end ifnottex
+на целую переменную (символ, определенный как целое число).
+
+Примеры:
+
+@c ===beg===
+@c %piargs : false;
+@c [sin (%pi), sin (%pi/2), sin (%pi/3)];
+@c [sin (%pi/4), sin (%pi/5), sin (%pi/6)];
+@c %piargs : true;
+@c [sin (%pi), sin (%pi/2), sin (%pi/3)];
+@c [sin (%pi/4), sin (%pi/5), sin (%pi/6)];
+@c [cos (%pi/3), cos (10*%pi/3), tan (10*%pi/3), cos (sqrt(2)*%pi/3)];
+@c ===end===
+@example
+(%i1) %piargs : false;
+(%o1)                         false
+(%i2) [sin (%pi), sin (%pi/2), sin (%pi/3)];
+                                %pi       %pi
+(%o2)            [sin(%pi), sin(---), sin(---)]
+                                 2         3
+(%i3) [sin (%pi/4), sin (%pi/5), sin (%pi/6)];
+                      %pi       %pi       %pi
+(%o3)            [sin(---), sin(---), sin(---)]
+                       4         5         6
+(%i4) %piargs : true;
+(%o4)                         true
+(%i5) [sin (%pi), sin (%pi/2), sin (%pi/3)];
+                                sqrt(3)
+(%o5)                    [0, 1, -------]
+                                   2
+(%i6) [sin (%pi/4), sin (%pi/5), sin (%pi/6)];
+                         1         %pi   1
+(%o6)                [-------, sin(---), -]
+                      sqrt(2)       5    2
+(%i7) [cos (%pi/3), cos (10*%pi/3), tan (10*%pi/3), cos (sqrt(2)*%pi/3)];
+                1    1               sqrt(2) %pi
+(%o7)          [-, - -, sqrt(3), cos(-----------)]
+                2    2                    3
+@end example
+
+Некоторые тождества применяются, если @math{%pi} и @math{%pi/2} домножается
+на целую переменную (символ, определенный как целое число):
+
+@c ===beg===
+@c declare (n, integer, m, even);
+@c [sin (%pi * n), cos (%pi * m), sin (%pi/2 * m), cos (%pi/2 * m)];
+@c ===end===
+@example
+(%i1) declare (n, integer, m, even);
+(%o1)                         done
+(%i2) [sin (%pi * n), cos (%pi * m), sin (%pi/2 * m), cos (%pi/2 * m)];
+                                      m/2
+(%o2)                  [0, 1, 0, (- 1)   ]
+@end example
+
+@end defvr
+
+@defvr {Управляющая переменная} %iargs
+Значение по умолчанию: @code{true}
+
+Если @code{%iargs} равно @code{true}, то тригонометрические функции упрощаются
+@iftex
+до гиперболических, если аргумент явно домножается на мнимую единицу @math{i}.
+@end iftex
+@ifnottex
+до гиперболических, если аргумент явно домножается на мнимую единицу @math{%i}.
+@end ifnottex
+
+Упрощение производится, даже если аргумент явно является вещественным;
+@iftex
+Maxima лишь проверяет, просматривается ли явно в аргументе множитель @math{i}.
+@end iftex
+@ifnottex
+Maxima лишь проверяет, просматривается ли явно в аргументе множитель @math{%i}.
+@end ifnottex
+
+Примеры:
+
+@c ===beg===
+@c %iargs : false;
+@c [sin (%i * x), cos (%i * x), tan (%i * x)];
+@c %iargs : true;
+@c [sin (%i * x), cos (%i * x), tan (%i * x)];
+@c ===end===
+@example
+(%i1) %iargs : false;
+(%o1)                         false
+(%i2) [sin (%i * x), cos (%i * x), tan (%i * x)];
+(%o2)           [sin(%i x), cos(%i x), tan(%i x)]
+(%i3) %iargs : true;
+(%o3)                         true
+(%i4) [sin (%i * x), cos (%i * x), tan (%i * x)];
+(%o4)           [%i sinh(x), cosh(x), %i tanh(x)]
+@end example
+
+Упрощение проводится, даже если аргумент явно является вещественным:
+
+@c ===beg===
+@c declare (x, imaginary);
+@c [featurep (x, imaginary), featurep (x, real)];
+@c sin (%i * x);
+@c ===end===
+@example
+(%i1) declare (x, imaginary);
+(%o1)                         done
+(%i2) [featurep (x, imaginary), featurep (x, real)];
+(%o2)                     [true, false]
+(%i3) sin (%i * x);
+(%o3)                      %i sinh(x)
+@end example
+
+@end defvr
+
+@deffn {Функция} acos (@var{x})
+ - Арккосинус.
+
+@end deffn
+
+@deffn {Функция} acosh (@var{x})
+ - Ареакосинус (гиперболический арккосинус).
+
+@end deffn
+
+@deffn {Функция} acot (@var{x})
+ - Арккотангенс.
+
+@end deffn
+
+@deffn {Функция} acoth (@var{x})
+ - Ареакотангенс (гиперболический арккотангенс).
+
+@end deffn
+
+@deffn {Функция} acsc (@var{x})
+ - Арккосеканс.
+
+@end deffn
+
+@deffn {Функция} acsch (@var{x})
+ - Ареакосеканс (гиперболический арккосеканс).
+
+@end deffn
+
+@deffn {Функция} asec (@var{x})
+ - Арксеканс.
+
+@end deffn
+
+@deffn {Функция} asech (@var{x})
+ - Ареасеканс (гиперболический арксеканс).
+
+@end deffn
+
+@deffn {Функция} asin (@var{x})
+ - Арксинус.
+
+@end deffn
+
+@deffn {Функция} asinh (@var{x})
+ - Ареасинус (гиперболический арксинус).
+
+@end deffn
+
+@deffn {Функция} atan (@var{x})
+ - Арктангенс.
+
+@end deffn
+
+@deffn {Функция} atan2 (@var{y}, @var{x})
+ - соответствует значению @code{atan(@var{y}/@var{x})} на интервале
+(@code{-%pi}, @code{%pi}).
+
+@end deffn
+
+@deffn {Функция} atanh (@var{x})
+ - Ареатангенс (гиперболический арктангенс).
+
+@end deffn
+
+@c IS THIS DESCRIPTION ACCURATE ??
+@c LET'S BE EXPLICIT ABOUT EXACTLY WHAT ARE THE RULES IMPLEMENTED BY THIS PACKAGE
+@defvr {Пакет} atrig1
+Пакет @code{atrig1} содержит несколько дополнительных правил упрощения
+для обратных тригонометрических функций. Вместе с уже известными Maxima правилами,
+полностью реализована работа с углами @code{0}, @code{%pi/6}, @code{%pi/4},
+@code{%pi/3} и @code{%pi/2}, а также соответствующими углами в трех других четвертях.
+Для использования пакета выполните @code{load(atrig1);}.
+
+@end defvr
+
+@deffn {Функция} cos (@var{x})
+ - Косинус.
+
+@end deffn
+
+@deffn {Функция} cosh (@var{x})
+ - Ареакосинус (гиперболический арккосинус).
+
+@end deffn
+
+@deffn {Функция} cot (@var{x})
+ - Котангенс.
+
+@end deffn
+
+@deffn {Функция} coth (@var{x})
+ - Ареакотангенс (гиперболический арккотангенс).
+
+@end deffn
+
+@deffn {Функция} csc (@var{x})
+ - Косеканс.
+
+@end deffn
+
+@deffn {Функция} csch (@var{x})
+ - Ареакосеканс (гиперболический арккосеканс).
+
+@end deffn
+
+@defvr {Управляющая переменная} halfangles
+Значение по умолчанию: @code{false}
+
+Если @code{halfangles} равно @code{true}, то тригонометрические функции 
+аргументов @code{@var{expr}/2} упрощаются в функции от @var{expr}.
+
+Примеры:
+
+@c ===beg===
+@c halfangles : false;
+@c sin (x / 2);
+@c halfangles : true;
+@c sin (x / 2);
+@c ===end===
+@example
+(%i1) halfangles : false;
+(%o1)                         false
+(%i2) sin (x / 2);
+                                 x
+(%o2)                        sin(-)
+                                 2
+(%i3) halfangles : true;
+(%o3)                         true
+(%i4) sin (x / 2);
+                        sqrt(1 - cos(x))
+(%o4)                   ----------------
+                            sqrt(2)
+@end example
+
+@end defvr
+
+@c IS THIS DESCRIPTION ACCURATE ??
+@c LET'S BE EXPLICIT ABOUT EXACTLY WHAT ARE THE RULES IMPLEMENTED BY THIS PACKAGE
+@defvr {Пакет} ntrig
+Пакет @code{ntrig} содержит набор правил упрощения для тригонометрических
+функций с аргументами вида @code{@var{f}(@var{n} %pi/10)}, где @var{f} - одна из
+функций @code{sin}, @code{cos}, @code{tan}, @code{csc}, @code{sec} и @code{cot}.
+@c NEED TO LOAD THIS PACKAGE ??
+
+@end defvr
+
+@deffn {Функция} sec (@var{x})
+ - Секанс.
+
+@end deffn
+
+@deffn {Функция} sech (@var{x})
+ - Гиперболический секанс.
+
+@end deffn
+
+@deffn {Функция} sin (@var{x})
+ - Синус.
+
+@end deffn
+
+@deffn {Функция} sinh (@var{x})
+ - Гиперболический синус.
+
+@end deffn
+
+@deffn {Функция} tan (@var{x})
+ - Тангенс.
+
+@end deffn
+
+@deffn {Функция} tanh (@var{x})
+ - Гиперболический тангенс.
+
+@end deffn
+
+@c NEEDS CLARIFICATION AND EXAMPLES
+@deffn {Функция} trigexpand (@var{expr})
+Раскрывает тригонометрические и гиперболические функции суммы или произведения углов в
+@var{expr}. Для получения лучших результатов нужно сначала раскрыть @var{expr}. Для
+повышения пользовательского контроля за упрощением функция раскрывает только один
+уровень сумм/произведений за раз. Для полного раскрытия в синусы и косинусы укажите
+@code{trigexpand: true}.
+
+@code{trigexpand} управляется следующими глобальными флагами:
+
+@table @code
+@item trigexpand
+Раскрывать все получающиеся в последствии выражения с синусами и косинусами.
+@item halfangles
+Раскрывать функции половинных углов в функции полных углов.
+@item trigexpandplus
+Раскрывать функции сумм аргументов (например, @code{sin(x + y)}).
+@item trigexpandtimes
+Раскрывать функции кратных аргументов (например, @code{sin(2 x)}).
+@end table
+
+Примеры:
+
+@c ===beg===
+@c x+sin(3*x)/sin(x),trigexpand=true,expand;
+@c trigexpand(sin(10*x+y));
+@c ===end===
+@example
+(%i1) x+sin(3*x)/sin(x),trigexpand=true,expand;
+                         2           2
+(%o1)               - sin (x) + 3 cos (x) + x
+(%i2) trigexpand(sin(10*x+y));
+(%o2)          cos(10 x) sin(y) + sin(10 x) cos(y)
+
+@end example
+
+@end deffn
+
+@defvr {Управляющая переменная} trigexpandplus
+Значение по умолчанию: @code{true}
+
+@code{trigexpandplus} управляет раскрытием функций от сумм аргументов в @code{trigexpand}
+(если @code{trigexpand} равно @code{true}, либо в функции @code{trigexpand}), например,
+@code{sin(x+y)}. Упрощение производится, только если @code{trigexpandplus} равно @code{true}.
+
+@end defvr
+
+@defvr {Управляющая переменная} trigexpandtimes
+Значение по умолчанию: @code{true}
+
+@code{trigexpandplus} управляет раскрытием функций от произведений аргументов в
+@code{trigexpand} (если @code{trigexpand} равно @code{true}, либо в функции @code{trigexpand}),
+например, @code{sin(2*x)}. Упрощение производится, только если @code{trigexpandtimes} равно
+@code{true}.
+
+@end defvr
+
+@defvr {Управляющая переменная} triginverses
+Значение по умолчанию: @code{all}
+
+@code{triginverses} управляет раскрытием композиций тригонометрических и гиперболических
+функций со своими обратными функциями.
+
+Если @code{all}, то и @code{atan(tan(@var{x}))}, и @code{tan(atan(@var{x}))}
+упрощается в @var{x}.
+
+Если @code{true}, то упрощение @code{@var{arcfun}(@var{fun}(@var{x}))} не производится.
+
+Если @code{false}, то ни @code{@var{arcfun}(@var{fun}(@var{x}))}, ни
+@code{@var{fun}(@var{arcfun}(@var{x}))} не будет упрощено.
+
+@end defvr
+
+@deffn {Функция} trigreduce (@var{expr}, @var{x})
+@deffnx {Функция} trigreduce (@var{expr})
+
+Раскрывает произведения и степени @code{sin}, @code{cos}, @code{sinh}, @code{cosh} в
+функции кратных аргументов @var{x}. Также производится попытка исключить такие функции из
+знаменателей. Если @var{x} не указано, будут использоваться все переменные из @var{expr}.
+
+См. также @code{poissimp}.
+
+@c ===beg===
+@c trigreduce(-sin(x)^2+3*cos(x)^2+x);
+@c ===end===
+@example
+(%i1) trigreduce(-sin(x)^2+3*cos(x)^2+x);
+               cos(2 x)      cos(2 x)   1        1
+(%o1)          -------- + 3 (-------- + -) + x - -
+                  2             2       2        2
+
+@end example
+
+В некоторых простых случаях команды упрощения используют информацию о переменных,
+объявленную следующим образом:
+
+@c ===beg===
+@c declare(j, integer, e, even, o, odd)$
+@c sin(x + (e + 1/2)*%pi);
+@c sin(x + (o + 1/2)*%pi);
+@c ===end===
+@example
+(%i1) declare(j, integer, e, even, o, odd)$
+(%i2) sin(x + (e + 1/2)*%pi);
+(%o2)                        cos(x)
+(%i3) sin(x + (o + 1/2)*%pi);
+(%o3)                       - cos(x)
+
+@end example
+
+@end deffn
+
+@defvr {Управляющая переменная} trigsign
+Значение по умолчанию: @code{true}
+
+Если @code{trigsign} равно @code{true}, допускается упрощение отрицательных аргументов
+тригонометрических функций. Например, @code{sin(-x)} раскроется в @code{-sin(x)}.
+
+@end defvr
+
+@deffn {Функция} trigsimp (@var{expr})
+Применяет тождества @math{sin(x)^2 + cos(x)^2 = 1} и @math{cosh(x)^2 - sinh(x)^2 = 1}
+для упрощения выражений с @code{tan}, @code{sec}, и так далее, до выражений с @code{sin},
+@code{cos}, @code{sinh}, @code{cosh}.
+
+Результат может упрощаться далее с @code{trigreduce}, @code{ratsimp}, и @code{radcan}.
+
+@code{demo ("trgsmp.dem")} показывает несколько примеров для @code{trigsimp}.
+@c MERGE EXAMPLES INTO THIS ITEM
+
+@end deffn
+
+@c NEEDS CLARIFICATION
+@deffn {Функция} trigrat (@var{expr})
+Возвращает канонический упрощенный квазилинейный вид тригонометрического выражения;
+@var{expr} - рациональная дробь с функциями @code{sin}, @code{cos} или @code{tan},
+аргументы которых - линейные формы некоторых переменных и @code{%pi/@var{n}}
+(@var{n} - целое) с целыми коэффициентами. Результат - упрощенная дробь с линейным
+числителем и знаменателем с @code{sin} и @code{cos}. Таким образом, @code{trigrat}
+переходит к линейному виду, только если это возможно.
+
+@c ===beg===
+@c trigrat(sin(3*a)/sin(a+%pi/3));
+@c ===end===
+@example
+(%i1) trigrat(sin(3*a)/sin(a+%pi/3));
+(%o1)            sqrt(3) sin(2 a) + cos(2 a) - 1
+
+@end example
+
+Следующий пример взят из раздела 1.5.5, "Теорема Морлея", книги Davenport, Siret,
+Tournier, @i{Calcul Formel}, изд-во Masson (английский перевод - Addison-Wesley).
+
+@c ===beg===
+@c c: %pi/3 - a - b;
+@c bc: sin(a)*sin(3*c)/sin(a+b);
+@c ba: bc, c=a, a=c$
+@c ac2: ba^2 + bc^2 - 2*bc*ba*cos(b);
+@c trigrat (ac2);
+@c ===end===
+@example
+(%i1) c: %pi/3 - a - b;
+                                    %pi
+(%o1)                     - b - a + ---
+                                     3
+(%i2) bc: sin(a)*sin(3*c)/sin(a+b);
+                      sin(a) sin(3 b + 3 a)
+(%o2)                 ---------------------
+                           sin(b + a)
+(%i3) ba: bc, c=a, a=c$
+(%i4) ac2: ba^2 + bc^2 - 2*bc*ba*cos(b);
+         2       2
+      sin (a) sin (3 b + 3 a)
+(%o4) -----------------------
+               2
+            sin (b + a)
+
+                                        %pi
+   2 sin(a) sin(3 a) cos(b) sin(b + a - ---) sin(3 b + 3 a)
+                                         3
+ - --------------------------------------------------------
+                           %pi
+                   sin(a - ---) sin(b + a)
+                            3
+
+      2         2         %pi
+   sin (3 a) sin (b + a - ---)
+                           3
+ + ---------------------------
+             2     %pi
+          sin (a - ---)
+                    3
+(%i5) trigrat (ac2);
+(%o5) - (sqrt(3) sin(4 b + 4 a) - cos(4 b + 4 a)
+
+ - 2 sqrt(3) sin(4 b + 2 a) + 2 cos(4 b + 2 a)
+
+ - 2 sqrt(3) sin(2 b + 4 a) + 2 cos(2 b + 4 a)
+
+ + 4 sqrt(3) sin(2 b + 2 a) - 8 cos(2 b + 2 a) - 4 cos(2 b - 2 a)
+
+ + sqrt(3) sin(4 b) - cos(4 b) - 2 sqrt(3) sin(2 b) + 10 cos(2 b)
+
+ + sqrt(3) sin(4 a) - cos(4 a) - 2 sqrt(3) sin(2 a) + 10 cos(2 a)
+
+ - 9)/4
+
+@end example
+
+@end deffn
+

@@ -4,7 +4,7 @@
 @c Language=Russian
 @c Encoding=CP1251
 @c File=maxima.texi 
-@c OriginalRevision=1.52
+@c OriginalRevision=1.53
 
 @c 2000-04-17 Jim Van Zandt <jrv@vanzandt.mv.com> Added header,
 @c info directory entry, reference to introduction chapter, and menu
@@ -41,7 +41,7 @@ END-INFO-DIR-ENTRY
 @end macro
 @end ifinfo
 
-@include ../category-macros.texi
+@c @include ../category-macros.texi
 
 @titlepage
 @sp 10
@@ -110,8 +110,8 @@ DOE Macsyma.  Копия DOE Macsyma поддерживалась профессором Вильямом
 * Константы::                     Числовые и логические константы.
 * Logarithms::                    Manipulation of expressions involving
                                     logarithms.
-* Trigonometric::                 Manipulating expressions with trig and
-                                  inverse trig functions.
+* Тригонометрия::                 Работа с выражениями, содержащими тригонометрические и
+                                  обратные тригонометрические функции.
 * Special Functions::             Special functions
 * Elliptic Functions::            Elliptic Functions and Integrals
 * Пределы::                       Вычисление пределов выражений.
@@ -258,10 +258,10 @@ Logarithms
 
 * Definitions for Logarithms::  
 
-Trigonometric
+Тригонометрия
 
-* Introduction to Trigonometric::  
-* Definitions for Trigonometric::  
+* Тригонометрия в Maxima::  
+* Функции и переменные из тригонометрии::  
 
 Special Functions
 
