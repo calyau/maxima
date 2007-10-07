@@ -128,7 +128,7 @@ DOE Macsyma.  Копия DOE Macsyma поддерживалась профессором Вильямом
 * Пакет ctensor::                 Компонентные тензорные вычисления.
 * Пакет atensor::                 Вычисления с тензорными алгебрами.
 * Series::                        Taylor and power series.
-* Number Theory::                 Number theory.
+* Теория чисел::                  Теория чисел.
 * Symmetries::                  
 * Groups::                        Abstract algebra.
 
@@ -261,7 +261,7 @@ Logarithms
 Тригонометрия
 
 * Тригонометрия в Maxima::  
-* Функции и переменные из тригонометрии::  
+* Функции и переменные для тригонометрии::  
 
 Special Functions
 
@@ -339,9 +339,9 @@ Series
 * Introduction to Series::      
 * Definitions for Series::      
 
-Number Theory
+Теория чисел
 
-* Definitions for Number Theory::  
+* Функции и переменные для теории чисел::  
 
 Symmetries
 
