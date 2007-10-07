@@ -32,7 +32,7 @@ but bounded) and @code{infinity} (complex infinity).
 is used in @code{limit}.  This prevents infinite looping in cases like
 @code{limit (cot(x)/csc(x), x, 0)}.
 
-@code{tlimswitch} when true will allow the limit command to use
+@code{tlimswitch} when true will allow the @code{limit} command to use
 Taylor series expansion when necessary.
 
 @code{limsubst} prevents @code{limit} from attempting substitutions on
@@ -70,7 +70,7 @@ at @code{val} from direction @code{dir}.
 @defvr {Option variable} tlimswitch
 Default value: @code{true}
 
-When @code{tlimswitch} is @code{true}, the limit command will
+When @code{tlimswitch} is @code{true}, the @code{limit} command will
 use a Taylor series expansion if the limit of the input expression cannot be computed directly.
 This allows evaluation of limits such as @code{limit(x/(x-1)-1/log(x),x,1,plus)}.
 When @code{tlimswitch} is @code{false} and the limit of input expression 
