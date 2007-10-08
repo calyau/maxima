@@ -46,7 +46,8 @@
   (write-unsigned-integer (smash-float-64-into-integer x) 8 s))
 
 (defun read-float-64 (s)
-  (construct-float-64-from-integer (read-unsigned-integer 8 s)))
+  (let ((x (read-unsigned-integer 8 s)))
+    (if (eq x 'eof) 'eof (construct-float-64-from-integer x))))
 
 ;; READ-UNSIGNED-INTEGER, WRITE-UNSIGNED-INTEGER, and associated
 ;; endianness stuff adapted from read-bytes-standalone.lisp,
@@ -66,18 +67,19 @@
 
 (defun read-unsigned-integer (nb-bytes s)
   "Read an unsigned integer of size NB-BYTES bytes from input stream S."
-  (if
-    (zerop nb-bytes)
-    0
-    (case *io-endianness*
-      (:little-endian
-        (+
-          (read-byte s)
-          (ash (read-unsigned-integer (1- nb-bytes)) 8)))
-      (:big-endian
-        (+
-          (ash (read-unsigned-integer (1- nb-bytes)) 8)
-          (read-byte s))))))
+  (if (zerop nb-bytes) 0
+    (let (bytes (y 0))
+      (dotimes (i nb-bytes)
+        (let ((x (read-byte s nil 'eof)))
+          (if (eq x 'eof)
+            (return-from read-unsigned-integer 'eof)
+            (setq bytes (nconc bytes (list x))))))
+      (case *io-endianness*
+        (:little-endian
+          (mapc #'(lambda (x) (setq y (+ x (ash y 8)))) (nreverse bytes)))
+        (:big-endian
+          (mapc #'(lambda (x) (setq y (+ x (ash y 8)))) bytes)))
+      y)))
 
 (defun write-unsigned-integer (quantity nb-bytes s)
   "Write an unsigned integer of size NB-BYTES bytes to output stream S."

@@ -9,15 +9,29 @@
 (in-package :maxima)
 
 ;; Read functions:
-;;   M: read_matrix (file_name, sep_ch_flag)$
-;;   read_lisp_array (file_name, A, sep_ch_flag)$
-;;   read_maxima_array (file_name, A, sep_ch_flag)$
-;;   read_hashed_array (file_name, A, sep_ch_flag)$
-;;   L: read_nested_list (file_name, sep_ch_flag)$
-;;   L: read_list (file_name, sep_ch_flag)$
 ;;
-;; Write function:
-;;   write_data (X, file_name, sep_ch_flag)$
+;;   M: read_matrix (source, sep_ch_flag)
+;;   read_lisp_array (source, A, sep_ch_flag)
+;;   read_binary_lisp_array (source, A)
+;;   read_maxima_array (source, A, sep_ch_flag)
+;;   read_binary_maxima_array (source, A)
+;;   read_hashed_array (source, A, sep_ch_flag)
+;;   L: read_nested_list (source, sep_ch_flag)
+;;   L: read_list (source, sep_ch_flag)
+;;   L: read_binary_list (source)
+;;
+;; `source' is a file name or input stream.
+;;
+;; Write functions:
+;;
+;;   write_data (X, sink, sep_ch_flag)
+;;   write_binary_data (X, sink)
+;;
+;; `sink' is a file name or output stream.
+;;
+;; assign_io_endianness sets the endianness for reading and writing
+;; binary floats. The endianness values recognized are big_endian
+;; and little_endian.
 
 ;; See numericalio.texi for a lengthier description.
 
@@ -35,16 +49,21 @@
 (defun $read_matrix (file-name &optional sep-ch-flag)
   `(($matrix) ,@(cdr ($read_nested_list file-name sep-ch-flag))))
 
-
 (defun $read_lisp_array (file-name A &optional sep-ch-flag)
   ($fillarray A ($read_list file-name sep-ch-flag))
   '$done)
 
+(defun $read_binary_lisp_array (file-name A)
+  ($fillarray A ($read_binary_list file-name))
+  '$done)
 
 (defun $read_maxima_array (file-name A &optional sep-ch-flag)
   ($fillarray A ($read_list file-name sep-ch-flag))
   '$done)
 
+(defun $read_binary_maxima_array (file-name A)
+  ($fillarray A ($read_binary_list file-name))
+  '$done)
 
 (defun $read_hashed_array (stream-or-filename A &optional sep-ch-flag)
   (if (streamp stream-or-filename)
@@ -88,22 +107,40 @@
 
 
 (defun $read_list (stream-or-filename &optional sep-ch-flag)
+  (read-list stream-or-filename sep-ch-flag 'text))
+
+(defun read-list (stream-or-filename sep-ch-flag mode)
   (if (streamp stream-or-filename)
-    (read-list-from-stream stream-or-filename sep-ch-flag)
+    (read-list-from-stream stream-or-filename sep-ch-flag mode)
     (let ((file-name (require-string stream-or-filename)))
-      (with-open-file (in file-name :if-does-not-exist nil)
+      (with-open-file
+        (in file-name
+            :if-does-not-exist nil
+            :element-type (if (eq mode 'text) 'character '(unsigned-byte 8)))
         (if (not (null in))
-          (read-list-from-stream in sep-ch-flag)
+          (read-list-from-stream in sep-ch-flag mode)
           (merror "read_list: no such file `~a'" file-name))))))
 
-(defun read-list-from-stream (in sep-ch-flag)
-  (let (A L (sep-ch (get-input-sep-ch sep-ch-flag (truename in))))
-    (loop
-      (setq L (read-line in nil 'eof))
-      (if (eq L 'eof)
-        (return (cons '(mlist simp) (nreverse A))))
-      ;; use nreconc accumulation to avoid n^2 cons's
-      (setq A (nreconc (cdr (make-mlist-from-string L sep-ch)) A)))))
+(defun read-list-from-stream (in sep-ch-flag mode)
+  (cond
+    ((eq mode 'text)
+     (let (A L (sep-ch (get-input-sep-ch sep-ch-flag (truename in))))
+       (loop
+         (setq L (read-line in nil 'eof))
+         (if (eq L 'eof)
+           (return (cons '(mlist simp) (nreverse A))))
+         ;; use nreconc accumulation to avoid n^2 cons's
+         (setq A (nreconc (cdr (make-mlist-from-string L sep-ch)) A)))))
+    ((eq mode 'binary)
+     (let (A x)
+       (loop
+         (setq x (read-float-64 in))
+         (if (eq x 'eof)
+           (return (cons '(mlist simp) (nreverse A))))
+         (setq A (nconc (list x) A)))))))
+
+(defun $read_binary_list (stream-or-filename)
+  (read-list stream-or-filename nil 'binary))
 
 ;; Usage: (make-mlist-from-string "1 2 3 foo bar baz")
 
