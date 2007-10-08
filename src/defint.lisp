@@ -2388,60 +2388,47 @@
 
 (defun logcpj (n d i)
   (setq n (append
-	   (cond (plm* (list (mul* (m*t '$%i %pi2)
-				   (m+l
-				    (residue (m* (m^ `((%plog) ,var) i)
-						 n)
-					     d
-					     plm*))))))
+	   (if plm*
+	       (list (mul* (m*t '$%i %pi2)
+			   (m+l
+			    (residue (m* (m^ `((%plog) ,var) i)	 n)
+				     d
+				     plm*)))))
 	   (lognx2 i (m*t '$%i %pi2) pl* rl*)
 	   (lognx2 i %p%i pl*1 rl*1)))
-  (cond ((null n) 0)
-	(t (simplify (m+l n)))))
-
-
-;;should replace these references to *i* and *j* to symbol-value arrays.
-;;here and in SUMI, and LOGCPI.  These are the only references in this file.
-;;I did change I to *I*
-
-#-cl	      ;in case other lisps don't understand internal declares.
-(declare-top(special *i* *j*))
+  (if (null n)
+      0
+      (simplify (m+l n))))
 
 ;; Handle integral(n(x)/d(x)*log(x)^m,x,0,inf).  n and d are
 ;; polynomials.
 (defun log*rat (n d m)
-  (prog (leadcoef factors c plm* pl* rl* pl*1 rl*1 rlm*)
-     (declare (special *i* *j*))
-     ;;	(ARRAY *I* T (M+ 1 M))
-     ;;	(ARRAY *J* T (M+ 1 M))
-     (setq *i* (*array nil t (m+ 1 m)))
-     (setq *j* (*array nil t (m+ 1 m)))
-     (setq c 0.)
-     (setf (aref *j* c) 0.)
-     (do ((c 0. (m+ 1 c)))
-	 ((equal c m)
-	  (return (logcpi n d m)))
+  (declare (special *i* *j*))
+  (setq *i* (make-array (1+ m)))
+  (setq *j* (make-array (1+ m)))
+  (setf (aref *j* 0) 0)
+  (prog (leadcoef factors plm* pl* rl* pl*1 rl*1 rlm*)
+     (dotimes (c m (return (logcpi n d m)))
        (setf (aref *i* c) (logcpi n d c))
        (setf (aref *j* c) (logcpj n factors c)))))
 
 (defun logcpi (n d c)
   (declare (special *j*))
-  (cond ((equal c 0.)
-	 (logcpi0 n d))
-	(t (m* '((rat) 1. 2.)
-	       (m+ (aref *j* c) (m* -1 (sumi c)))))))
+  (if (zerop c)
+      (logcpi0 n d)
+      (m* '((rat) 1 2) (m+ (aref *j* c) (m* -1 (sumi c))))))
 
 (defun sumi (c)
   (declare (special *i*))
-  (do ((k 1. (m+ 1 k))
+  (do ((k 1 (1+ k))
        (ans ()))
-      ((equal k c)
+      ((= k c)
        (m+l ans))
-    (setq ans (cons (mul* ($makegamma `((%binomial) ,c ,k))
-			  (m^t '$%pi k)
-			  (m^t '$%i k)
-			  (aref *i* (m+ c (m- k))))
-		    ans))))
+    (push (mul* ($makegamma `((%binomial) ,c ,k))
+		(m^t '$%pi k)
+		(m^t '$%i k)
+		(aref *i* (- c k)))
+	  ans)))
 
 (defun fan (p m a n b)
   (let ((povern (m// p n))
