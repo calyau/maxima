@@ -34,11 +34,13 @@
     (* sign (scale-float (float significand 1d0) exponent))))
 
 (defun extract-smashed-float-64-from-integer (x)
-  (let
-    ((significand (dpb x (byte 52 0) #x10000000000000))
-     (exponent (- (ldb (byte 11 52) x) 1023 52))
-     (sign (if (>= x 0) 1 -1)))
-    (values significand exponent sign)))
+  (if (eq x 0)
+    (values 0 0 0)
+    (let
+      ((significand (dpb x (byte 52 0) #x10000000000000))
+       (exponent (- (ldb (byte 11 52) x) 1023 52))
+       (sign (if (eq (ldb (byte 1 63) x) 0) 1 -1)))
+      (values significand exponent sign))))
 
 ;; Stream input and output
 
