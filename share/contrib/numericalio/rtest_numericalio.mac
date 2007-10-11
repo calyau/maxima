@@ -403,3 +403,52 @@ true;
  is (equal (h1, h3)));
 true;
 
+/* Write and read binary data */
+
+(tmp_big_endian : sconcat (maxima_tempdir, "/tmp-binary.f8-big-endian"),
+ tmp_little_endian : sconcat (maxima_tempdir, "/tmp-binary.f8-little-endian"),
+ L : makelist (11.0^(3*i), i, 1, 98),
+ L4 : append ([?most\-negative\-double\-float], - reverse (L), [- 1.0], -1 / L, [?least\-negative\-normalized\-double\-float, 0.0, ?least\-positive\-normalized\-double\-float], reverse (1 / L), [1.0], L, [?most\-positive\-double\-float]),
+ 0);
+0;
+
+(assign_io_endianness (little_endian),
+ write_binary_data (L4, tmp_little_endian));
+done;
+
+(L4b : read_binary_list (tmp_little_endian),
+ is (L4b = L4));
+true;
+
+(assign_io_endianness (big_endian),
+ write_binary_data (L4, tmp_big_endian));
+done;
+
+(L4c : read_binary_list (tmp_big_endian),
+ is (L4c = L4));
+true;
+
+(A4 : make_array (any, 3, 7, 19),
+ fillarray (A4, L4),
+ 0);
+0;
+
+(tmp2_big_endian : sconcat (maxima_tempdir, "/tmp2-binary.f8-big-endian"),
+ tmp2_little_endian : sconcat (maxima_tempdir, "/tmp2-binary.f8-little-endian"),
+ assign_io_endianness (big_endian),
+ write_binary_data (A4, tmp2_big_endian));
+done;
+
+(A4b : make_array (any, 3, 7, 19),
+ read_binary_lisp_array (tmp2_big_endian, A4b),
+ is (A4b = A4b));
+true;
+
+(assign_io_endianness (little_endian),
+ write_binary_data (A4, tmp2_little_endian));
+done;
+
+(A4c : make_array (any, 3, 7, 19),
+ read_binary_lisp_array (tmp2_little_endian, A4c),
+ is (A4c = A4));
+true;
