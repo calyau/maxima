@@ -116,18 +116,16 @@
 		    aarray) val))
     ((symbol)
      (cond ((setq ap (get aarray 'array))
-	    (cond ((null inds)
-		   (store (funcall ap ind1) val))
-		  (t
-		   (setf (apply #'aref ap all-inds) val))))
+	    (if (null inds)
+		(setf (aref ap ind1) val)
+		(setf (apply #'aref ap all-inds) val)))
 	   ((setq ap (mget aarray 'array))
 	    ;; the macsyma ARRAY frob is NOT an array pointer, it
 	    ;; is a GENSYM with a lisp array property, don't
 	    ;; ask me why.
-	    (cond ((null inds)
-		   (store (funcall ap ind1) val))
-		  (t
-		   (setf (apply #'aref ap all-inds) val))))
+	    (if (null inds)
+		(setf (aref ap ind1) val)
+		(setf (apply #'aref ap all-inds) val)))
 	   ((setq ap (mget aarray 'hashar))
 	    (arrstore `((,aarray ,'array)
 			,@(mapcar #'(lambda (u) `((mquote simp) ,u)) all-inds))
@@ -190,7 +188,7 @@
 	     ;; if the ANS evaluats to something with an "="
 	     ;; allready then of course he really meant to use
 	     ;; DISP, but we might as well do what he means right?
-	     (setq ans (caddr ans))))
+<	     (setq ans (caddr ans))))
       (when labelsp
 	(unless (checklabel $linechar)
 	  (incf $linenum))
@@ -229,11 +227,13 @@
 			(length (cdr (arraydims (cadr ary)))))
 		    number-of-args)
 	   (merror "~:@M Array already defined with different dimensions" fnname)))
-	(t (mputprop fnname (setq ary (gensym)) 'hashar)
-	   (*array ary t 7)
-	   (store (funcall ary 0) 4)
-	   (store (funcall ary 1) 0)
-	   (store (funcall ary 2) number-of-args))))
+	(t
+	 (setq ary (gensym))
+	 (mputprop fnname ary 'hashar)
+	 (setf (symbol-array ary) (make-array 7 :initial-element nil))
+	 (setf (aref (symbol-array ary) 0) 4)
+	 (setf (aref (symbol-array ary) 1) 0)
+	 (setf (aref (symbol-array ary) 2) number-of-args))))
 
 ;;; An entry point to $APPLY for translated code.
 
@@ -245,7 +245,6 @@
 (defmfun assign-check (var val)
   (let ((a (get var 'assign)))
     (if a (funcall a var val))))
-
 
 (declare-top (special maplp))
 
