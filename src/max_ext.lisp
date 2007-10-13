@@ -168,7 +168,11 @@
        $read_hashed_array
        $read_nested_list
        $read_list
-       $write_data ))
+       $read_binary_lisp_array
+       $read_binary_maxima_array
+       $read_binary_list
+       $write_data
+       $write_binary_data))
   (setf (get f 'autoload) "numericalio"))
 
 (setf (get '$eval_string 'autoload) "eval_string")
