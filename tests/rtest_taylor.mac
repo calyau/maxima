@@ -469,7 +469,7 @@ exp(x)$
 
 /* [ 1682435 ] taylor of rat(factor(1+x)) gives internal error */
 taylor(rat(factor(1+x)),x,0,1);
-1+x
+1+x$
 
 
 
