@@ -307,5 +307,9 @@ ind;
 tlimit(exp(-t+%i*t),t,inf);
 0;
 
+/* [ 1811503 ] computing a wrong result */
+limit((((1+1/x)^(x^2))+1)^(1/x),x,inf);
+%e;
+
 end;
 end$
