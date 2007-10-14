@@ -44,26 +44,62 @@
     (t
       (merror "assign_io_endianness: unrecognized endianness"))))
 
+(defun lisp-or-declared-maxima-array-p (x)
+  (or (arrayp x) (mget x 'array)))
+
+;; THESE FILE-OPENING FUNCTIONS WANT TO BE MOVED TO STRINGPROC (HOME OF OTHER SUCH FUNCTIONS) !!
+
+(defun $openw_binary (file)
+   (open
+      file
+      :direction :output
+      :if-exists :supersede
+      :element-type '(unsigned-byte 8)
+      :if-does-not-exist :create))
+
+(defun $opena_binary (file)
+   (open
+      file
+      :direction :output
+      :if-exists :append
+      :element-type '(unsigned-byte 8)
+      :if-does-not-exist :create))
+
+(defun $openr_binary (file) (open file :element-type '(unsigned-byte 8)))
+
 ;; -------------------- read functions --------------------
 
 (defun $read_matrix (file-name &optional sep-ch-flag)
   `(($matrix) ,@(cdr ($read_nested_list file-name sep-ch-flag))))
 
 (defun $read_lisp_array (file-name A &optional sep-ch-flag)
-  ($fillarray A ($read_list file-name sep-ch-flag))
-  '$done)
+  (read-array file-name A sep-ch-flag 'text))
 
 (defun $read_binary_lisp_array (file-name A)
-  ($fillarray A ($read_binary_list file-name))
-  '$done)
+  (read-array file-name A nil 'binary))
 
 (defun $read_maxima_array (file-name A &optional sep-ch-flag)
-  ($fillarray A ($read_list file-name sep-ch-flag))
-  '$done)
+  (read-array file-name A sep-ch-flag 'text))
 
 (defun $read_binary_maxima_array (file-name A)
-  ($fillarray A ($read_binary_list file-name))
-  '$done)
+  (read-array file-name A nil 'binary))
+
+(defun read-array (file-name A sep-ch-flag mode)
+  (if (lisp-or-declared-maxima-array-p A)
+    (let*
+      ((dimensions
+         (if (arrayp A)
+           (array-dimensions A)
+           (cdr (third (cdr (mfuncall '$arrayinfo A))))))
+       (n
+         (apply #'* (mapcar #'(lambda (m) (1+ m)) dimensions)))
+       (L
+         (if (eq mode 'text)
+           ($read_list file-name sep-ch-flag n)
+           ($read_binary_list file-name n))))
+      ($fillarray A L)
+      '$done)
+    (merror "read-array: expected a declared array, found ~a instead" (type-of A))))
 
 (defun $read_hashed_array (stream-or-filename A &optional sep-ch-flag)
   (if (streamp stream-or-filename)
@@ -105,44 +141,63 @@
         (return (cons '(mlist simp) (nreverse A))))
       (setq A (cons (make-mlist-from-string L sep-ch) A)))))
 
+(defun $read_list (stream-or-filename &optional sep-ch-flag n)
+  (read-list stream-or-filename sep-ch-flag 'text n))
 
-(defun $read_list (stream-or-filename &optional sep-ch-flag)
-  (read-list stream-or-filename sep-ch-flag 'text))
-
-(defun read-list (stream-or-filename sep-ch-flag mode)
+(defun read-list (stream-or-filename sep-ch-flag mode n)
   (if (streamp stream-or-filename)
-    (read-list-from-stream stream-or-filename sep-ch-flag mode)
+    (read-list-from-stream stream-or-filename sep-ch-flag mode n)
     (let ((file-name (require-string stream-or-filename)))
       (with-open-file
         (in file-name
             :if-does-not-exist nil
             :element-type (if (eq mode 'text) 'character '(unsigned-byte 8)))
         (if (not (null in))
-          (read-list-from-stream in sep-ch-flag mode)
+          (read-list-from-stream in sep-ch-flag mode n)
           (merror "read_list: no such file `~a'" file-name))))))
 
-(defun read-list-from-stream (in sep-ch-flag mode)
-  (cond
-    ((eq mode 'text)
-     (let (A L (sep-ch (get-input-sep-ch sep-ch-flag (truename in))))
-       (loop
-         (setq L (read-line in nil 'eof))
-         (if (eq L 'eof)
-           (return (cons '(mlist simp) (nreverse A))))
-         ;; use nreconc accumulation to avoid n^2 cons's
-         (setq A (nreconc (cdr (make-mlist-from-string L sep-ch)) A)))))
-    ((eq mode 'binary)
-     (let (A x)
-       (loop
-         (setq x (read-float-64 in))
-         (if (eq x 'eof)
-           (return (cons '(mlist simp) (nreverse A))))
-         (setq A (nconc (list x) A)))))))
+(defun read-list-from-stream (in sep-ch-flag mode n)
+  (let (A x (sep-ch (if (eq mode 'text) (get-input-sep-ch sep-ch-flag (truename in)))))
+    (loop
+      (if
+        (or
+          (and n (eq n 0))
+          (eq (setq x (if (eq mode 'text) (parse-next-element in sep-ch) (read-float-64 in)))
+              'eof))
+        (return (cons '(mlist simp) (nreverse A))))
+      (setq A (nconc (list x) A))
+      (if n (decf n)))))
 
-(defun $read_binary_list (stream-or-filename)
-  (read-list stream-or-filename nil 'binary))
+(defun $read_binary_list (stream-or-filename &optional n)
+  (read-list stream-or-filename nil 'binary n))
 
-;; Usage: (make-mlist-from-string "1 2 3 foo bar baz")
+(let (pushback-sep-ch)
+  (defun parse-next-element (in sep-ch)
+    (let
+      ((*parse-stream* in)
+       (sign 1)
+       (initial-pos (file-position in))
+       token
+       found-sep-ch)
+      (loop
+        (if pushback-sep-ch
+          (setq token pushback-sep-ch pushback-sep-ch nil)
+          (setq token (scan-one-token-g t 'eof)))
+        (cond
+          ((eq token 'eof)
+           (if found-sep-ch
+             (return nil)
+             (return 'eof)))
+          ((and (eq token sep-ch) (not (eq sep-ch #\space)))
+           (if (or found-sep-ch (eq initial-pos 0))
+             (progn
+               (setq pushback-sep-ch token)
+               (return nil))
+             (setq found-sep-ch token)))
+          ((member token '($- $+))
+           (setq sign (* sign (if (eq token '$-) -1 1))))
+          (t
+            (return (m* sign token))))))))
 
 (defun make-mlist-from-string (s sep-ch)
   ; scan-one-token-g isn't happy with symbol at end of string.
@@ -180,7 +235,6 @@
                    (setq LL nil))
                   (t
                     (setq LL (append LL (list token)))))))))))))
-
 
 (defun appropriate-append (L LL)
   (cond
@@ -315,7 +369,5 @@
   (cond
     ((stringp s)
      s)
-    ((mstringp s)
-     (print-invert-case (stripdollar s)))
     (t
       (merror "numericalio: expected a string, instead found a ~:M" (type-of s)))))
