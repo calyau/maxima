@@ -1,0 +1,1151 @@
+% v. 1.6
+% (c) 2005 Robert Dodier
+% (c) 2007 Алексей Бешенов (al@beshenov.ru), русский перевод
+
+\documentclass[11pt,oneside]{article}
+%\documentclass[12pt]{article}
+\usepackage[russian]{babel}
+
+\usepackage{cmap}
+\usepackage[koi8-r]{inputenc}
+\usepackage[T2A]{fontenc}
+
+\usepackage[colorlinks]{hyperref}
+
+% С полями по умолчанию ширины текста не хватает, чтобы вместить код
+% примеров к последнему разделу. Из тех же соображений текст набран
+% в 11 пунктов (в оригинале --- 12).
+\setlength{\textwidth}{18cm}
+\setlength{\textheight}{23cm}
+\setlength{\headheight}{0cm}
+\setlength{\headsep}{0cm}
+\setlength{\topskip}{0cm}
+\setlength{\voffset}{-1in}
+\setlength{\oddsidemargin}{-1in}
+\setlength{\evensidemargin}{-1in}
+\addtolength{\voffset}{1.5cm}
+\addtolength{\oddsidemargin}{2cm}
+\addtolength{\evensidemargin}{2cm}
+
+\title{Коротко о Maxima}
+\author{Роберт Додиер}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{figure}[b]
+{\flushleft\tiny
+\rule{50pt}{0.5pt}
+
+\copyright~2005 Robert Dodier.\\
+\copyright~2007 Алексей Бешенов (\href{mailto:al@beshenov.ru}{al@beshenov.ru}), русский перевод.\\
+Домашняя страница Maxima: \url{http://maxima.sourceforge.net/ru/}.\\
+}
+\end{figure}
+
+\section{Что такое Maxima?}
+
+\noindent Maxima~--- система для работы с выражениями, такими как $x + y$, $\sin (a + b \pi)$ и
+$u \cdot v - v \cdot u$.
+
+Maxima не особо заботится о смысле выражения. Только пользователь решает, какой
+смысл несет выражение.
+
+Иногда требуется задать значения неизвестным и вычислить выражение~--- Maxima
+с радостью сделает это. Но система с той же радостью отложит присваивание
+конкретных значений, так что вы можете провести с выражением некоторые преобразования,
+после чего уже определить неизвестные (или не определять их вовсе).
+
+Рассмотрим несколько примеров.
+
+\begin{enumerate}
+
+\item Нужно найти объем шара:
+% V: 4/3 * %pi * r^3;
+\begin{verbatim}
+(%i1) V: 4/3 * %pi * r^3;
+                                   3
+                            4 %pi r
+(%o1)                       --------
+                               3
+\end{verbatim}
+
+\item Радиус равен 10:
+% r: 10;
+\begin{verbatim}
+(%i2) r: 10;
+(%o2)                          10
+\end{verbatim}
+
+\item $V$~--- то же, что и было; Maxima не поменяет $V$, если это не указать:
+% V;
+\begin{verbatim}
+(%i3) V;
+                                   3
+                            4 %pi r
+(%o3)                       --------
+                               3
+\end{verbatim}
+
+\item <<Maxima, пересчитай, пожалуйста, $V$>>:
+% ''V;
+\begin{verbatim}
+(%i4) ''V;
+                            4000 %pi
+(%o4)                       --------
+                               3
+\end{verbatim}
+
+\item Вместо выражения хотелось бы видеть численное значение:
+% ''V, numer;
+\begin{verbatim}
+(%i5) ''V, numer;
+(%o5)                   4188.79020478639
+\end{verbatim}
+
+\end{enumerate}
+
+\section{Выражения}
+
+\noindentВсё в Maxima является выражениями, в том числе математические выражения, объекты
+и программные блоки. Выражение~--- атом либо оператор с аргументами.
+
+Атом~--- символ (имя), строка в кавычках, либо число (целое или с плавающей точкой).
+
+Все выражения не-атомы представляются в виде $\mathit{op}(a_1, \ldots, a_n)$, где
+$\mathit{op}$~--- имя оператора, а $a_1, \ldots, a_n$~--- его аргументы.
+Выражения могут отображаться по-разному, но внутреннее представление всегда одинаково.
+Аргументы выражения могут быть атомами либо выражениями не-атомами.
+
+Математические выражения включают математические операторы, такие как
+\[
++ \; - \; * \; / \; < \; = \; >
+\]
+\noindentлибо вычисление функции вроде
+$\mathbf{sin}(x), \mathbf{bessel\_j}(n, x)$. В таких случаях оператором является функция.
+
+Объекты в Maxima~--- тоже выражения.
+Список $[a_1, \ldots, a_n]$~--- выражение $\mathbf{list}(a_1, \ldots, a_n)$.
+Матрица~--- выражение
+\[
+\mathbf{matrix}(\mathbf{list}(a_{1,1}, \ldots, a_{1,n}), \ldots, \mathbf{list}(a_{m,1}, \ldots, a_{m,n}))
+\]
+
+Программными блоками являются выражения.
+Блок кода $\mathbf{block} (a_1, \ldots, a_n)$~--- выражение с оператором $\mathbf{block}$
+и аргументами $a_1, \ldots, a_n$. Условная конструкция \mbox{$\mathbf{if\ } a \mathbf{\ then\ } b \mathbf{\ elseif\ } c \mathbf{\ then\ } d$}~--- выражение $\mathbf{if}(a, b, c, d)$.
+Цикл $\mathbf{for\ } a \mathbf{\ in\ } L \mathbf{\ do\ } S$~--- выражение, соответствующее
+$\mathbf{do}(a, L, S)$.
+
+Функция Maxima $\mathbf{op}$ возвращает оператор выражения-не-атома.
+Функция $\mathbf{args}$ врзвращает аргументы выражения-не-атома.
+Функция $\mathbf{atom}$ указывает, является ли выражение атомом.
+
+Рассмотрим другие примеры.
+
+\begin{enumerate}
+
+\item Атомы~--- символы, строки и числа. Вот список с элементами-атомами:
+% [a, foo, foo_bar, "Hello, world!", 42, 17.29];
+
+\begin{verbatim}
+(%i2) [a, foo, foo_bar, "Hello, world!", 42, 17.29];
+(%o2)      [a, foo, foo_bar, Hello, world!, 42, 17.29]
+\end{verbatim}
+
+\item Математические выражения:
+% [a + b + c, a * b * c, foo = bar, a*b < c*d];
+
+\begin{verbatim}
+(%i1) [a + b + c, a * b * c, foo = bar, a*b < c*d];
+(%o1)       [c + b + a, a b c, foo = bar, a b < c d]
+\end{verbatim}
+
+\item Списки и матрицы.
+Элементами списка или матрицы могут быть любые выражения, в том числе списки или
+матрицы:
+% L: [a, b, c, %pi, %e, 1729, 1/(a*d - b*c)];
+% L2: [a, b, [c, %pi, [%e, 1729], 1/(a*d - b*c)]];
+% L [7];
+% L2 [3];
+% M: matrix ([%pi, 17], [29, %e]);
+% M2: matrix ([[%pi, 17], a*d - b*c], [matrix ([1, a], [b, 7]), %e]);
+% M [2][1];
+% M2 [2][1];
+
+\begin{verbatim}
+(%i1) L: [a, b, c, %pi, %e, 1729, 1/(a*d - b*c)];
+                                            1
+(%o1)          [a, b, c, %pi, %e, 1729, ---------]
+                                        a d - b c
+\end{verbatim}
+% (Иначе дробь будет разорвана на две страницы)
+\begin{verbatim}
+(%i2) L2: [a, b, [c, %pi, [%e, 1729], 1/(a*d - b*c)]];
+                                             1
+(%o2)        [a, b, [c, %pi, [%e, 1729], ---------]]
+                                         a d - b c
+(%i3) L [7];
+                                1
+(%o3)                       ---------
+                            a d - b c
+(%i4) L2 [3];
+                                          1
+(%o4)            [c, %pi, [%e, 1729], ---------]
+                                      a d - b c
+(%i5) M: matrix ([%pi, 17], [29, %e]);
+                           [ %pi  17 ]
+(%o5)                      [         ]
+                           [ 29   %e ]
+(%i6) M2: matrix ([[%pi, 17], a*d - b*c], [matrix ([1, a], [b, 7]), %e]);
+                    [ [%pi, 17]  a d - b c ]
+                    [                      ]
+(%o6)               [ [ 1  a ]             ]
+                    [ [      ]      %e     ]
+                    [ [ b  7 ]             ]
+(%i7) M [2][1];
+(%o7)                          29
+(%i8) M2 [2][1];
+                            [ 1  a ]
+(%o8)                       [      ]
+                            [ b  7 ]
+\end{verbatim}
+
+\item Программные блоки~--- выражения.
+$x : y$ означает присваивание $y$ к $x$; значение выражения присваивания~---  $y$.
+$\mathbf{block}$ объединяет несколько выражений и последовательно их вычисляет;
+значение блока соответствует значению его последнего выражения.
+% (a: 42) - (b: 17);
+% [a, b];
+% block ([a], a: 42, a^2 - 1600) + block ([b], b: 5, %pi^b);
+% (if a > 1 then %pi else %e) + (if b < 0 then 1/2 else 1/7);
+
+\begin{verbatim}
+(%i1) (a: 42) - (b: 17);
+(%o1)                          25
+(%i2) [a, b];
+(%o2)                       [42, 17]
+(%i3) block ([a], a: 42, a^2 - 1600) + block ([b], b: 5, %pi^b);
+                              5
+(%o3)                      %pi  + 164
+(%i4) (if a > 1 then %pi else %e) + (if b < 0 then 1/2 else 1/7);
+                                   1
+(%o4)                        %pi + -
+                                   7
+\end{verbatim}
+
+\item $\mathbf{op}$ возвращает оператор, $\mathbf{args}$ возвращает аргументы,
+$\mathbf{atom}$ определяет, является ли выражение атомом:
+% op (p + q);
+% op (p + q > p*q);
+% op (sin (p + q));
+% op (foo (p, q));
+% op (foo (p, q) := p - q);
+% args (p + q);
+% args (p + q > p*q);
+% args (sin (p + q));
+% args (foo (p, q));
+% args (foo (p, q) := p - q);
+% atom (p);
+% atom (p + q);
+% atom (sin (p + q));
+
+\begin{verbatim}
+(%i1) op (p + q);
+(%o1)                           +
+(%i2) op (p + q > p*q);
+(%o2)                           >
+(%i3) op (sin (p + q));
+(%o3)                          sin
+(%i4) op (foo (p, q));
+(%o4)                          foo
+(%i5) op (foo (p, q) := p - q);
+(%o5)                          :=
+(%i6) args (p + q);
+(%o6)                        [q, p]
+(%i7) args (p + q > p*q);
+(%o7)                     [q + p, p q]
+(%i8) args (sin (p + q));
+(%o8)                        [q + p]
+(%i9) args (foo (p, q));
+(%o9)                       [p, - q]
+(%i10) args (foo (p, q) := p - q);
+(%o10)                 [foo(p, q), p - q]
+(%i11) atom (p);
+(%o11)                        true
+(%i12) atom (p + q);
+(%o12)                        false
+(%i13) atom (sin (p + q));
+(%o13)                        false
+\end{verbatim}
+
+\item Операторы и аргументы программных блоков.
+Одинарная кавычка указывает Maxima создать выражение, но отложить его вычисление.
+Мы еще рассмотрим это позже.
+% op ('(block ([a], a: 42, a^2 - 1600)));
+% op ('(if p > q then p else q));
+% op ('(for x in L do print (x)));
+% args ('(block ([a], a: 42, a^2 - 1600)));
+% args ('(if p > q then p else q));
+% args ('(for x in L do print (x)));
+
+\begin{verbatim}
+(%i1) op ('(block ([a], a: 42, a^2 - 1600)));
+(%o1)                         block
+(%i2) op ('(if p > q then p else q));
+(%o2)                          if
+(%i3) op ('(for x in L do print (x)));
+(%o3)                         mdoin
+(%i4) args ('(block ([a], a: 42, a^2 - 1600)));
+                                   2
+(%o4)               [[a], a : 42, a  - 1600]
+(%i5) args ('(if p > q then p else q));
+(%o5)                  [p > q, p, true, q]
+(%i6) args ('(for x in L do print (x)));
+(%o6)     [x, L, false, false, false, false, print(x)]
+\end{verbatim}
+
+\end{enumerate}
+
+\section{Вычисление}
+
+\noindentЗначение символа~--- выражение, связанное с этим символом.
+Каждый символ имеет значение; если значение не задавалось, символ вычисляется
+сам в себя. Например, $x$ имеет значение $x$, если символу не присваивалось
+значение.
+
+Числа и строки совпадают со своими значениями.
+
+Выражение-не-атом вычисляется приблизительно таким образом:
+
+\begin{enumerate}
+\item Вычисляется каждый аргумент оператора.
+\item Если оператор связан с вызовом функции, то значение, возвращенное функцией,
+является значением выражения.
+\end{enumerate}
+
+Вычисление может проходить по-разному. Некоторые изменения уменьшают объем
+вычислений:
+
+\begin{enumerate}
+\item Некоторые функции не вычисляют свои аргументы или часть из них, либо
+меняют ход вычисления аргументов.
+    % Examples: $\mathbf{kill}$, $\mathbf{save}$, $\mathbf{sum}$, $\mathbf{:=}$ (function definition).
+\item Одиночная кавычка $'$ предотвращает вычисление:
+    \begin{enumerate}
+    \item[---] $'a$ вычисляется как $a$. Все другие значения $a$ игнорируются.
+    \item[---] $'f(a_1, \ldots, a_n)$ вычисляется в
+$f(\mathbf{ev}(a_1), \ldots, \mathbf{ev}(a_n))$. Таким образом, вычисляются аргументы,
+но $f$ не вызывается.
+    \item[---] $'(\ldots)$ предотвращает вычисление любых выражений внутри $(\ldots)$.
+    \end{enumerate}
+\end{enumerate}
+
+Некоторые изменения увеличивают объем вычислений:
+
+\begin{enumerate}
+\item Две одиночные кавычки $''a$ вызывают дополнительное вычисление в момент обработки $a$.
+\item $\mathbf{ev}(a)$ вызывает дополнительное вычисление $a$ при каждом вычислении
+    $\mathbf{ev}(a)$.
+\item Запись $\mathbf{apply}(f, [a_1, \ldots, a_n])$ вызывает вычисление
+    аргументов $a_1, \ldots, a_n$, даже если $f$ ставит перед ними одиночные
+    кавычки.
+\item $\mathbf{define}$ соответствует определению функции вроде $\mathbf{:=}$,
+    но вычисляет тело функции, в то время как $\mathbf{:=}$ откладывает
+    вычисление.
+\end{enumerate}
+
+Рассмотрим, как вычисляются некоторые выражения.
+
+\begin{enumerate}
+
+\item Символ вычисляется сам в себя, если ему не присваивалось значение:
+% block (a: 1, b: 2, e: 5);
+% [a, b, c, d, e];
+
+\begin{verbatim}
+(%i1) block (a: 1, b: 2, e: 5);
+(%o1)                           5
+(%i2) [a, b, c, d, e];
+(%o2)                    [1, 2, c, d, 5]
+\end{verbatim}
+
+\item Аргументы операторов вычисляются обычным путем (если вычисление не отложено
+тем или иным образом):
+% block (x: %pi, y: %e);
+% sin (x + y);
+% x > y; 
+% x!;
+
+\begin{verbatim}
+(%i1) block (x: %pi, y: %e);
+(%o1)                          %e
+(%i2) sin (x + y);
+(%o2)                       - sin(%e)
+(%i3) x > y; 
+(%o3)                       %pi > %e
+(%i4) x!;
+(%o4)                         %pi!
+\end{verbatim}
+
+\item Если оператор связан с вызовом функции, значение, возвращенное функцией,
+является значением выражения (если вычисление не отложено); иначе вычисление дает
+другое выражение с тем же оператором:
+% foo (p, q) := p - q;
+% p: %phi;
+% foo (p, q);
+% bar (p, q);
+
+\begin{verbatim}
+(%i1) foo (p, q) := p - q;
+(%o1)                  foo(p, q) := p - q
+(%i2) p: %phi;
+(%o2)                         %phi
+(%i3) foo (p, q);
+(%o3)                       %phi - q
+(%i4) bar (p, q);
+(%o4)                     bar(%phi, q)
+\end{verbatim}
+
+\item Некоторые функции откладывают вычисление аргументов, например,
+$\mathbf{save}$, $\mathbf{:=}$, $\mathbf{kill}$:
+% block (a: 1, b: %pi, c: x + y);
+% [a, b, c];
+% save ("tmp.save", a, b, c);
+% f (a) := a^b;
+% f (7);
+% kill (a, b, c);
+% [a, b, c];
+
+\begin{verbatim}
+(%i1) block (a: 1, b: %pi, c: x + y);
+(%o1)                         y + x
+(%i2) [a, b, c];
+(%o2)                    [1, %pi, y + x]
+(%i3) save ("tmp.save", a, b, c);
+(%o3)                       tmp.save
+(%i4) f (a) := a^b;
+                                    b
+(%o4)                      f(a) := a
+(%i5) f (7);
+                               %pi
+(%o5)                         7
+(%i6) kill (a, b, c);
+(%o6)                         done
+(%i7) [a, b, c];
+(%o7)                       [a, b, c]
+\end{verbatim}
+
+\item Одиночная кавычка предотвращает вычисление, даже если оно должно производиться:
+% foo (x, y) := y - x;
+% block (a: %e, b: 17);
+% foo (a, b);
+% foo ('a, 'b);
+% 'foo (a, b);
+% '(foo (a, b));
+
+\begin{verbatim}
+(%i1) foo (x, y) := y - x;
+(%o1)                  foo(x, y) := y - x
+(%i2) block (a: %e, b: 17);
+(%o2)                          17
+(%i3) foo (a, b);
+(%o3)                        17 - %e
+(%i4) foo ('a, 'b);
+(%o4)                         b - a
+(%i5) 'foo (a, b);
+(%o5)                      foo(%e, 17)
+(%i6) '(foo (a, b));
+(%o6)                       foo(a, b)
+\end{verbatim}
+
+\item Две одиночные кавычки вызывают дополнительное вычисление во время обработки
+выражения:
+% diff (sin (x), x);
+% foo (x) := diff (sin (x), x);
+% foo (x) := ''(diff (sin (x), x));
+
+\begin{verbatim}
+(%i1) diff (sin (x), x);
+(%o1)                        cos(x)
+(%i2) foo (x) := diff (sin (x), x);
+(%o2)               foo(x) := diff(sin(x), x)
+(%i3) foo (x) := ''(diff (sin (x), x));
+(%o3)                   foo(x) := cos(x)
+\end{verbatim}
+
+\item $\mathbf{ev}$ всякий раз вызывает дополнительное вычисление (сравните
+это с поведением для двух кавычек):
+% block (xx: yy, yy: zz);
+% [xx, yy];
+% foo (x) := ''x;
+% foo (xx);
+% bar (x) := ev (x);
+% bar (xx);
+
+\begin{verbatim}
+(%i1) block (xx: yy, yy: zz);
+(%o1)                          zz
+(%i2) [xx, yy];
+(%o2)                       [yy, zz]
+(%i3) foo (x) := ''x;
+(%o3)                      foo(x) := x
+(%i4) foo (xx);
+(%o4)                          yy
+(%i5) bar (x) := ev (x);
+(%o5)                    bar(x) := ev(x)
+(%i6) bar (xx);
+(%o6)                          zz
+\end{verbatim}
+
+\item $\mathbf{apply}$ вызывает вычисление аргументов, даже если перед ними стоят кавычки:
+% block (a: aa, b: bb, c: cc);
+% block (aa: 11, bb: 22, cc: 33);
+% [a, b, c, aa, bb, cc];
+% apply (kill, [a, b, c]);
+% [a, b, c, aa, bb, cc];
+% kill (a, b, c);
+% [a, b, c, aa, bb, cc];
+
+\begin{verbatim}
+(%i1) block (a: aa, b: bb, c: cc);
+(%o1)                          cc
+(%i2) block (aa: 11, bb: 22, cc: 33);
+(%o2)                          33
+(%i3) [a, b, c, aa, bb, cc];
+(%o3)               [aa, bb, cc, 11, 22, 33]
+(%i4) apply (kill, [a, b, c]);
+(%o4)                         done
+(%i5) [a, b, c, aa, bb, cc];
+(%o5)               [aa, bb, cc, aa, bb, cc]
+(%i6) kill (a, b, c);
+(%o6)                         done
+(%i7) [a, b, c, aa, bb, cc];
+(%o7)                 [a, b, c, aa, bb, cc]
+\end{verbatim}
+
+\item $\mathbf{define}$ вычисляет тело определения функции:
+% integrate (sin (a*x), x, 0, %pi);
+% foo (x) := integrate (sin (a*x), x, 0, %pi);
+% define (foo (x), integrate (sin (a*x), x, 0, %pi));
+
+\begin{verbatim}
+(%i1) integrate (sin (a*x), x, 0, %pi);
+                         1   cos(%pi a)
+(%o1)                    - - ----------
+                         a       a
+(%i2) foo (x) := integrate (sin (a*x), x, 0, %pi);
+(%o2)       foo(x) := integrate(sin(a x), x, 0, %pi)
+(%i3) define (foo (x), integrate (sin (a*x), x, 0, %pi));
+                              1   cos(%pi a)
+(%o3)               foo(x) := - - ----------
+                              a       a
+\end{verbatim}
+
+\end{enumerate}
+
+\section{Упрощение}
+
+\noindentПосле вычисления выражения, Maxima пытается найти эквивалентное ему <<более простое>>,
+для чего применяется ряд правил, связанных с условным понятием простоты.
+Так, $1 + 1$ упрощается до $2$, $x + x$~--- до $2 x$, а
+$\mathbf{sin}(\mathbf{\%pi})$~--- до $0$.
+
+Однако многие известные тождества не применяются автоматически. Например, не
+используются формулы двойного угла для тригонометрических функций и не производится
+приведение дробей вида $a/b + c/b \rightarrow (a + c)/b$. Для применения тождеств
+существуют отдельные функции.
+
+Упрощение всегда применяется, если не было явно отложено, даже в том случае, когда
+выражение не вычисляется.
+
+$\mathbf{tellsimpafter}$ вводит пользовательские правила упрощения.
+
+Рассмотрим несколько примеров.
+
+\begin{enumerate}
+
+\item Знак кавычки откладывает вычисление, но не упрощение;
+Если для глобального флага $\mathbf{simp}$ установлено $\mathbf{false}$,
+то упрощение не производится, но производится вычисление:
+
+% '[1 + 1, x + x, x * x, sin (%pi)];
+% simp: false$ 
+% block ([x: 1], x + x);
+% simp: true$
+
+\begin{verbatim}
+(%i1) '[1 + 1, x + x, x * x, sin (%pi)];
+                                   2
+(%o1)                    [2, 2 x, x , 0]
+(%i2) simp: false$ 
+(%i3) block ([x: 1], x + x);
+(%o3)                         1 + 1
+\end{verbatim}
+
+\item Некоторые тождества не применяются автоматически.
+$\mathbf{expand}$, $\mathbf{ratsimp}$, $\mathbf{trigexpand}$, $\mathbf{demoivre}$~---
+примеры функций, применяющих тождества:
+
+% (a + b)^2;
+% expand (%);
+% a/b + c/b;
+% ratsimp (%);
+% sin (2*x);
+% trigexpand (%);
+% a * exp (b * %i);
+% demoivre (%);
+
+\begin{verbatim}
+(%i1) (a + b)^2;
+                                   2
+(%o1)                       (b + a)
+(%i2) expand (%);
+                          2            2
+(%o2)                    b  + 2 a b + a
+(%i3) a/b + c/b;
+                              c   a
+(%o3)                         - + -
+                              b   b
+(%i4) ratsimp (%);
+                              c + a
+(%o4)                         -----
+                                b
+(%i5) sin (2*x);
+(%o5)                       sin(2 x)
+(%i6) trigexpand (%);
+(%o6)                    2 cos(x) sin(x)
+(%i7) a * exp (b * %i);
+                                %i b
+(%o7)                       a %e
+(%i8) demoivre (%);
+(%o8)                a (%i sin(b) + cos(b))
+\end{verbatim}
+
+\end{enumerate}
+
+\section{apply, map и lambda}
+
+\begin{enumerate}
+
+\item $\mathbf{apply}$ создает и вычисляет выражение. Аргументы выражения
+всегда вычисляются (даже, если бы они не вычислялись при других обстоятельствах):
+
+% apply (sin, [x * %pi]);
+% L: [a, b, c, x, y, z];
+% apply ("+", L);
+
+\begin{verbatim}
+(%i1) apply (sin, [x * %pi]);
+(%o1)                      sin(%pi x)
+(%i2) L: [a, b, c, x, y, z];
+(%o2)                  [a, b, c, x, y, z]
+(%i3) apply ("+", L);
+(%o3)                 z + y + x + c + b + a
+\end{verbatim}
+
+\item $\mathbf{map}$ создает и вычисляет выражение для каждого элемента списка
+аргументов. Аргументы выражения всегда вычисляются (даже, если бы они не вычислялись
+при других обстоятельствах). В качестве результата возвращается список:
+
+% map (foo, [x, y, z]);
+% map ("+", [1, 2, 3], [a, b, c]);
+% map (atom, [a, b, c, a + b, a + b + c]);
+
+\begin{verbatim}
+(%i1) map (foo, [x, y, z]);
+(%o1)               [foo(x), foo(y), foo(z)]
+(%i2) map ("+", [1, 2, 3], [a, b, c]);
+(%o2)                 [a + 1, b + 2, c + 3]
+(%i3) map (atom, [a, b, c, a + b, a + b + c]);
+(%o3)           [true, true, true, false, false]
+\end{verbatim}
+
+\item $\mathbf{lambda}$ создает лямбда-выражение (безымянную функцию). Лямбда-выражение
+может использоваться в некоторых случаях как обычная функция. $\mathbf{lambda}$
+не вычисляет тело функции:
+
+% f: lambda ([x, y], (x + y)*(x - y));
+% f (a, b);
+% apply (f, [p, q]);
+% map (f, [1, 2, 3], [a, b, c]);
+%% apply (lambda ([x, y], (x + y)*(x - y)), [p, q]);
+%% map (lambda ([x, y], (x + y)*(x - y)), [1, 2, 3], [a, b, c]);
+
+\begin{verbatim}
+(%i1) f: lambda ([x, y], (x + y)*(x - y));
+(%o1)            lambda([x, y], (x + y) (x - y))
+(%i2) f (a, b);
+(%o2)                    (a - b) (b + a)
+(%i3) apply (f, [p, q]);
+(%o3)                    (p - q) (q + p)
+(%i4) map (f, [1, 2, 3], [a, b, c]);
+(%o4)  [(1 - a) (a + 1), (2 - b) (b + 2), (3 - c) (c + 3)]
+\end{verbatim}
+
+\end{enumerate}
+
+\section{Встроенные типы объектов}
+
+\noindentОбъект представляется в виде выражения. Как и другие выражения, объект содержит оператор
+и его аргументы.
+
+Основные встроенные типы объектов~--- списки, матрицы и множества.
+
+\subsection{Списки}
+
+\begin{enumerate}
+
+\item Список задается в виде $[a, b, c]$.
+
+\item В списке $L$ $L[i]$~--- $i$-й элемент. $L[1]$~--- первый элемент.
+
+\item $\mathbf{map}(\mathit{f}, L)$ применяет $\mathit{f}$ к каждому элементу $L$.
+
+\item $\mathbf{apply}(\mathbf{"+"}, L)$~--- сумма всех элементов $L$.
+
+\item $\mathbf{for\ } x \mathbf{\ in \ } L \mathbf{\ do \ } \mathit{expr}$ вычисляет
+$\mathit{expr}$ для каждого элемента $L$.
+
+\item $\mathbf{length}(L)$~--- число элементов $L$.
+
+\end{enumerate}
+
+\subsection{Матрицы}
+
+\begin{enumerate}
+
+\item Матрица задается в виде $\mathbf{matrix}(L_1, \ldots, L_n)$, где
+$L_1, \ldots, L_n$~--- списки элементов строк.
+
+\item Если $M$~--- матрица, то $M[i, j]$ или $M[i][j]$~--- ее $(i, j)$-й элемент.
+    $M[1,1]$~--- элемент в верхнем левом углу.
+
+\item Оператор $\mathbf{.}$ представляет некоммутативное умножение. $M . L$, $L . M$ и
+$M . N$~--- некоммутативные произведения, где $L$~--- список, а $M$ и $N$~--- матрицы.
+
+% \item $M\mathbf{\hat{ }\hat{ }}n$ is the noncommutative exponent, i.e., $M . M . \ldots . M$.
+
+\item $\mathbf{transpose}(M)$~--- транспонированная матрица $M^T$.
+
+\item $\mathbf{eigenvalues}(M)$ возвращает собственные значения $M$.
+
+\item $\mathbf{eigenvectors}(M)$ возвращает собственные векторы $M$.
+
+\item $\mathbf{length}(M)$ возвращает число строк $M$.
+
+\item $\mathbf{length}(\mathbf{transpose}(M))$ возвращает число столбцов $M$.
+
+\end{enumerate}
+
+\subsection{Множества}
+
+\begin{enumerate}
+
+\item Maxima работает с явно заданными конечными множествами. Множества~--- не то
+же самое, что и списки, и преобразование множества в список и наоборот должно
+производиться в явном виде.
+
+\item Множество задается в виде
+    $\mathbf{set}(a, b, c, \ldots)$, где $a, b, c, \ldots$~--- его элементы.
+
+\item $\mathbf{union} (A, B)$~--- объединение множеств $A$ и $B$.
+
+\item $\mathbf{intersection} (A, B)$~--- пересечение множеств $A$ и $B$.
+
+\item $\mathbf{cardinality} (A)$~--- число элементов множества $A$.
+
+\end{enumerate}
+
+\section{Типичные задачи}
+
+\subsection{Определение функции}
+
+\begin{enumerate}
+
+\item Функция определяется оператором $\mathbf{:=}$, при этом вычисление тела функции
+откладывается.
+
+\noindentВ примере ниже $\mathbf{diff}$ пересчитывается при каждом вызове функции.
+Аргумент подставляется вместо $x$, и вычисляется результирующее выражение.
+Когда аргумент представляет собой нечто отличное от символа, происходит ошибка:
+для $\mathbf{foo} (1)$ Maxima пытается вычислить $\mathbf{diff} (\mathbf{sin}(1)^2, 1)$.
+% foo (x) := diff (sin(x)^2, x);
+% foo (u);
+% foo (1);
+
+\begin{verbatim}
+(%i1) foo (x) := diff (sin(x)^2, x);
+                                     2
+(%o1)              foo(x) := diff(sin (x), x)
+(%i2) foo (u);
+(%o2)                    2 cos(u) sin(u)
+(%i3) foo (1);
+Non-variable 2nd argument to diff:
+1
+#0: foo(x=1)
+ -- an error.
+\end{verbatim}
+
+\item $\mathbf{define}$ определяет функцию и вычисляет ее тело.
+
+\noindentВ следующем примере $\mathbf{diff}$ вычисляется единожды (при определении), поэтому
+$\mathbf{foo} (1)$ не вызывает ошибки:
+% define (foo (x), diff (sin(x)^2, x));
+% foo (u);
+% foo (1);
+
+\begin{verbatim}
+(%i1) define (foo (x), diff (sin(x)^2, x));
+(%o1)               foo(x) := 2 cos(x) sin(x)
+(%i2) foo (u);
+(%o2)                    2 cos(u) sin(u)
+(%i3) foo (1);
+(%o3)                    2 cos(1) sin(1)
+\end{verbatim}
+
+\end{enumerate}
+
+\subsection{Решение уравнений}
+% eq_1: a * x + b * y + z = %pi;
+% eq_2: z - 5*y + x = 0;
+% s: solve ([eq_1, eq_2], [x, z]);
+% length (s);
+% [subst (s[1], eq_1), subst (s[1], eq_2)];
+% ratsimp (%);
+
+\begin{verbatim}
+(%i1) eq_1: a * x + b * y + z = %pi;
+(%o1)                  z + b y + a x = %pi
+(%i2) eq_2: z - 5*y + x = 0;
+(%o2)                    z - 5 y + x = 0
+(%i3) s: solve ([eq_1, eq_2], [x, z]);
+                (b + 5) y - %pi      (b + 5 a) y - %pi
+(%o3)   [[x = - ---------------, z = -----------------]]
+                     a - 1                 a - 1
+(%i4) length (s);
+(%o4)                           1
+(%i5) [subst (s[1], eq_1), subst (s[1], eq_2)];
+       (b + 5 a) y - %pi   a ((b + 5) y - %pi)
+(%o5) [----------------- - ------------------- + b y = %pi, 
+             a - 1                a - 1
+                   (b + 5 a) y - %pi   (b + 5) y - %pi
+                   ----------------- - --------------- - 5 y = 0]
+                         a - 1              a - 1
+(%i6) ratsimp (%);
+(%o6)                  [%pi = %pi, 0 = 0]
+\end{verbatim}
+
+\subsection{Интегрирование и дифференцирование}
+
+$\mathbf{integrate}$ вычисляет определенные и неопределенные интегралы:
+% integrate (1/(1 + x), x, 0, 1);
+% integrate (exp(-u) * sin(u), u, 0, inf);
+% assume (a > 0);
+% integrate (1/(1 + x), x, 0, a);
+% integrate (exp(-a*u) * sin(a*u), u, 0, inf);
+% integrate (exp (sin (t)), t, 0, %pi);
+% 'integrate (exp(-u) * sin(u), u, 0, inf);
+
+\begin{verbatim}
+(%i1) integrate (1/(1 + x), x, 0, 1);
+(%o1)                        log(2)
+(%i2) integrate (exp(-u) * sin(u), u, 0, inf);
+                                1
+(%o2)                           -
+                                2
+(%i3) assume (a > 0);
+(%o3)                        [a > 0]
+(%i4) integrate (1/(1 + x), x, 0, a);
+(%o4)                      log(a + 1)
+(%i5) integrate (exp(-a*u) * sin(a*u), u, 0, inf);
+                                1
+(%o5)                          ---
+                               2 a
+(%i6) integrate (exp (sin (t)), t, 0, %pi);
+                         %pi
+                        /
+                        [      sin(t)
+(%o6)                   I    %e       dt
+                        ]
+                        /
+                         0
+(%i7) 'integrate (exp(-u) * sin(u), u, 0, inf);
+                       inf
+                      /
+                      [      - u
+(%o7)                 I    %e    sin(u) du
+                      ]
+                      /
+                       0
+\end{verbatim}
+
+$\mathbf{diff}$ вычисляет производные и дифференциалы:
+% diff (sin (y*x));
+% diff (sin (y*x), x);
+% diff (sin (y*x), y);
+% diff (sin (y*x), x, 2);
+% 'diff (sin (y*x), x, 2);
+
+\begin{verbatim}
+(%i1) diff (sin (y*x));
+(%o1)         x cos(x y) del(y) + y cos(x y) del(x)
+(%i2) diff (sin (y*x), x);
+(%o2)                      y cos(x y)
+(%i3) diff (sin (y*x), y);
+(%o3)                      x cos(x y)
+(%i4) diff (sin (y*x), x, 2);
+                             2
+(%o4)                     - y  sin(x y)
+(%i5) 'diff (sin (y*x), x, 2);
+                          2
+                         d
+(%o5)                    --- (sin(x y))
+                           2
+                         dx
+\end{verbatim}
+
+\subsection{Построение графиков}
+
+$\mathbf{plot2d}$ строит двумерные графики:
+% plot2d (exp(-u) * sin(u), [u, 0, 2*%pi]);
+% plot2d ([exp(-u), exp(-u) * sin(u)], [u, 0, 2*%pi]);
+% xx: makelist (i/2.5, i, 1, 10);
+% yy: map (lambda ([x], exp(-x) * sin(x)), xx);
+% plot2d ([discrete, xx, yy]);
+% plot2d ([discrete, xx, yy], [gnuplot_curve_styles, ["with points"]]);
+
+\begin{verbatim}
+(%i1) plot2d (exp(-u) * sin(u), [u, 0, 2*%pi]);
+(%o1) 
+(%i2) plot2d ([exp(-u), exp(-u) * sin(u)], [u, 0, 2*%pi]);
+(%o2) 
+(%i3) xx: makelist (i/2.5, i, 1, 10);
+(%o3)  [0.4, 0.8, 1.2, 1.6, 2.0, 2.4, 2.8, 3.2, 3.6, 4.0]
+(%i4) yy: map (lambda ([x], exp(-x) * sin(x)), xx);
+(%o4) [0.261034921143457, 0.322328869227062, .2807247779692679, 
+.2018104299334517, .1230600248057767, .0612766372619573, 
+.0203706503896865, - .0023794587414574, - .0120913057698414, 
+- 0.013861321214153]
+(%i5) plot2d ([discrete, xx, yy]);
+(%o5) 
+(%i6) plot2d ([discrete, xx, yy], [gnuplot_curve_styles, ["with points"]]);
+(%o6)
+\end{verbatim}
+
+См. также $\mathbf{plot3d}$.
+
+\subsection{Сохранение и загрузка файлов}
+
+$\mathbf{save}$ записывает выражения в файл:
+% a: foo - bar;
+% b: foo^2 * bar;
+% save ("my.session", a, b);
+% save ("my.session", all);
+
+\begin{verbatim}
+(%i1) a: foo - bar;
+(%o1)                       foo - bar
+(%i2) b: foo^2 * bar;
+                                   2
+(%o2)                       bar foo
+(%i3) save ("my.session", a, b);
+(%o3)                      my.session
+(%i4) save ("my.session", all);
+(%o4)                      my.session
+\end{verbatim}
+
+$\mathbf{load}$ читает выражения из файла.
+% load ("my.session");
+% a;
+% b;
+
+\begin{verbatim}
+(%i1) load ("my.session");
+(%o4)                      my.session
+(%i5) a;
+(%o5)                       foo - bar
+(%i6) b;
+                                   2
+(%o6)                       bar foo
+\end{verbatim}
+
+См. также $\mathbf{stringout}$ и $\mathbf{batch}$.
+
+\section{Программирование под Maxima}
+
+% dynamic scope
+% argument-quoting and argument-evaluating functions
+% directory organization: src, tests, share, doc
+
+Существует одно пространство имен, содержащее все символы Maxima. Другое
+пространство имен создать нельзя.
+
+Все переменные глобальны, если не определены локально~--- в функциях, лямбда-выражениях
+и блоках.
+
+Значением переменной считается то, что было присвоено в последний раз, в явном виде,
+либо через присваивание значения локальной переменной в блоке, функции или лямбда-выражении.
+Эта концепция известна как {\it динамическая область видимости}.
+
+Если переменная является локальной внутри функции, лямбда-выражения или блока, ее
+значение локально, но остальные свойства (заданные $\mathbf{declare}$) глобальны.
+Функция $\mathbf{local}$ делает переменную локальной в отношении всех свойств.
+
+По умолчанию, определение функции глобально, даже если оно содержится внутри функции,
+лямбда-выражения или блока.
+$\mathbf{local}(f), f(x) \mathbf{\ :=\ } \ldots$ создает локальное определение функции.
+
+$\mathbf{trace}(\mathit{foo})$ указывает Maxima печатать сообщение при входе в функцию
+$\mathit{foo}$ и выходе из нее.
+
+Рассмотрим некоторые примеры программирования под Maxima.
+
+\begin{enumerate}
+
+\item Все переменные глобальны, если не определены локально~--- в функциях,
+лямбда-выражениях и блоках:
+
+% (x: 42, y: 1729, z: foo*bar);
+% f (x, y) := x*y*z;
+% f (aa, bb);
+% lambda ([x, z], (x - z)/y);
+% apply (%, [uu, vv]);
+% block ([y, z], y: 65536, [x, y, z]);
+
+\begin{verbatim}
+(%i1) (x: 42, y: 1729, z: foo*bar);
+(%o1)                        bar foo
+(%i2) f (x, y) := x*y*z;
+(%o2)                   f(x, y) := x y z
+(%i3) f (aa, bb);
+(%o3)                     aa bar bb foo
+(%i4) lambda ([x, z], (x - z)/y);
+                                     x - z
+(%o4)                 lambda([x, z], -----)
+                                       y
+(%i5) apply (%, [uu, vv]);
+                             uu - vv
+(%o5)                        -------
+                              1729
+(%i6) block ([y, z], y: 65536, [x, y, z]);
+(%o6)                    [42, 65536, z]
+\end{verbatim}
+
+\item Значением переменной считается то, что было присвоено в последний раз, в явном виде,
+либо через присваивание значения локальной переменной:
+
+% foo (y) := x - y;
+% x: 1729;
+% foo (%pi);
+% bar (x) := foo (%e);
+% bar (42);
+
+\begin{verbatim}
+(%i1) foo (y) := x - y;
+(%o1)                    foo(y) := x - y
+(%i2) x: 1729;
+(%o2)                         1729
+(%i3) foo (%pi);
+(%o3)                      1729 - %pi
+(%i4) bar (x) := foo (%e);
+(%o4)                   bar(x) := foo(%e)
+(%i5) bar (42);
+(%o5)                        42 - %e
+\end{verbatim}
+
+\end{enumerate}
+
+\section{Lisp и Maxima}
+
+% symbols, $ and ?
+% defining an argument-evaluating function in lisp
+% defining an argument-quoting function in lisp
+% calling a function defined in maxima from lisp
+% useful lisp fcns: meval, simplifya, displa
+
+\noindentЗапись {\bf :lisp} $\mathit{expr}$ вычисляет $\mathit{expr}$ в интерпретаторе Lisp.
+Эта запись распознается в строке ввода и файлах, обрабатываемых $\mathbf{batch}$,
+но не $\mathbf{load}$.
+
+Символ $\mathbf{foo}$ в Maxima соответствует символу \$foo в Lisp,
+а символ Lisp foo соответсвует символу Maxima $\mathbf{?foo}$.
+
+{\bf :lisp} $\mathrm{(}\mathbf{defun\ } \mathrm{\$foo\ (a)\ (\ldots))}$
+задает функцию Lisp $\mathrm{foo}$, вычисляющую свои аргументы.
+Из Maxima функция вызывается записью $\mathbf{foo}(a)$.
+
+{\bf :lisp} $\mathrm{(}\mathbf{defmspec\ } \mathrm{\$foo\ (e)\ (\ldots))}$
+задает функцию Lisp $\mathbf{foo}$, откладывающую вычисление аргументов.
+Из Maxima функция вызывается записью $\mathbf{foo}(a)$.
+Аргументами $\mathrm{\$foo}$ являются $(\mathbf{cdr\ } e)$, а
+$(\mathbf{caar\ } e)$ всегда совпадает с $\mathrm{\$foo}$.
+
+Запись $(\mathbf{mfuncall\ '\$}\mathrm{foo\ }a_1 \ldots a_n)$
+вызывает из Lisp функцию $\mathbf{foo}$, определенную в Maxima.
+
+Обратимся к Lisp из Maxima и наоборот.
+
+\begin{enumerate}
+
+\item Запись {\bf :lisp} $\mathit{expr}$ вычисляет $\mathit{expr}$ в интерпретаторе Lisp:
+
+% (aa + bb)^2;
+% :lisp $%
+\begin{verbatim}
+(%i1) (aa + bb)^2;
+                                    2
+(%o1)                      (bb + aa)
+(%i2) :lisp $%
+((MEXPT SIMP) ((MPLUS SIMP) $AA $BB) 2)
+\end{verbatim}
+
+\item {\bf :lisp} $\mathrm{(}\mathbf{defun\ } \mathrm{\$foo\ (a)\ (\ldots))}$
+задает функцию Lisp $\mathrm{foo}$, вычисляющую свои аргументы:
+
+% :lisp (defun $foo (a b) `((mplus) ((mtimes) ,a ,b) $%pi))
+% (p: x + y, q: x - y);
+% foo (p, q);
+\begin{verbatim}
+(%i1) :lisp (defun $foo (a b) `((mplus) ((mtimes) ,a ,b) $%pi))
+$FOO
+(%i1) (p: x + y, q: x - y);
+(%o1)                         x - y
+(%i2) foo (p, q);
+(%o2)                 (x - y) (y + x) + %pi
+\end{verbatim}
+
+\item {\bf :lisp} $\mathrm{(}\mathbf{defmspec\ } \mathrm{\$foo\ (e)\ (\ldots))}$
+задает функцию Lisp $\mathbf{foo}$, откладывающую вычисление аргументов:
+
+% :lisp (defmspec $bar (e) (let ((a (cdr e))) `((mplus) ((mtimes) ,@a) $%pi)))
+% bar (p, q);
+% bar (''p, ''q);
+\begin{verbatim}
+(%i1) :lisp (defmspec $bar (e) (let ((a (cdr e))) `((mplus) ((mtimes) ,@a) $%pi)))
+#<CLOSURE LAMBDA (E) (LET ((A (CDR E))) `((MPLUS) ((MTIMES) ,@A) $%PI))>
+(%i1) bar (p, q);
+(%o1)                       p q + %pi
+(%i2) bar (''p, ''q);
+(%o2)                       p q + %pi
+\end{verbatim}
+
+\item Запись $(\mathbf{mfuncall\ '\$}\mathrm{foo\ }a_1 \ldots a_n)$
+вызывает из Lisp функцию $\mathbf{foo}$, определенную в Maxima:
+
+% blurf (x) := x^2;
+% :lisp (displa (mfuncall '$blurf '((mplus) $grotz $mumble)))
+\begin{verbatim}
+(%i1) blurf (x) := x^2;
+                                      2
+(%o1)                    blurf(x) := x
+(%i2) :lisp (displa (mfuncall '$blurf '((mplus) $grotz $mumble)))
+                2
+(mumble + grotz)
+NIL
+\end{verbatim}
+
+\end{enumerate}
+
+\end{document}
