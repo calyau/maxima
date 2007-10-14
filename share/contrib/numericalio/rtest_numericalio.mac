@@ -452,3 +452,32 @@ done;
  read_binary_lisp_array (tmp2_little_endian, A4c),
  is (A4c = A4));
 true;
+
+/* Read specific number of data via optional argument */
+
+(l1 : read_list (file_search ("ragged.data")),
+ l2 : read_list (file_search ("ragged.data"), false, 20));
+''(makelist (l1 [i], i, 1, 20));
+
+(s : openr (file_search ("ragged.data")),
+ l2 : read_list (s, false, 20),
+ l3 : read_list (s, false, 12),
+ l4 : read_list (s),
+ close (s),
+ [length (l2), length (l3), length (l4), append (l2, l3, l4)]);
+''([20, 12, length (l1) - (20 + 12), l1]);
+
+(assign_io_endianness (little_endian),
+ l1 : read_binary_list (tmp2_little_endian),
+ l2 : read_binary_list (tmp2_little_endian, 50));
+''(makelist (l1 [i], i, 1, 50));
+
+(s : openr_binary (tmp2_little_endian),
+ l2 : read_binary_list (s, 50),
+ l3 : read_binary_list (s, 30),
+ l4 : read_binary_list (s),
+ close (s),
+ [length (l2), length (l3), length (l4), append (l2, l3, l4)]);
+''([50, 30, length (l1) - (50 + 30), l1]);
+
+/* NEED ADDITIONAL TESTS HERE FOR PARTIAL READS TO PRODUCE ARRAYS */
