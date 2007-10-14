@@ -421,7 +421,7 @@ the numerator, denominator, and their quotient are simplified in that order.
 @deffnx {Function} letrules (@var{package_name})
 Displays the rules in a rule package.
 @code{letrules ()} displays the rules in the current rule package.
-@code{letrules (@var{package_name})} displays the rules in @code{package_name}.
+@code{letrules (@var{package_name})} displays the rules in @var{package_name}.
 
 The current rule package is named by @code{current_let_rule_package}.
 If not otherwise specified, @code{current_let_rule_package}
