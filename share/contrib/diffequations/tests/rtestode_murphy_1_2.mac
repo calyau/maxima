@@ -49,7 +49,7 @@ assume(a>0,b>0);
 (pn_(104),ans:contrib_ode(eqn:'diff(y,x)=sqrt(a+b*y^2),y,x));
 [asinh(sqrt(b)*y/sqrt(a))/sqrt(b)=x+%c];
 ans:first(solve(ans[1],y));
-y=sqrt(a)*sinh(sqrt(b)*(x+%c))/sqrt(b);
+y = sqrt(a)*sinh(sqrt(b)*x+%c*sqrt(b))/sqrt(b);
 [method,trigsimp(radcan(ode_check(eqn,%)))];
 [separable,0];
 forget(a>0,b>0);
@@ -184,7 +184,7 @@ solve(%,y);
 (ans:expand(2*ans[1]),ans:subst(%c,2*%c,ans));
 cos(2*y)=%c-cos(2*x); /* This is correct */
 solve(%,y);
-[y = -(acos(cos(2*x)-%c)-%pi)/2];
+[y = -((acos(cos(2*x)-%c)-%pi)/2)];
 [method,trigsimp(ode_check(eqn,%[1]))];
 [separable,0];
 
@@ -202,7 +202,7 @@ separable;
 
 /* 125 */
 (pn_(125),ans:contrib_ode(eqn:'diff(y,x)=sec(x)^2*sec(y)^3,y,x));
-[-(sin(y)^3-3*sin(y))/3=tan(x)+%c];
+[-((sin(y)^3-3*sin(y))/3)=tan(x)+%c];
 (ans:3*ans[1],ans:subst(%c,3*%c,expand(ans)));
 3*sin(y)-sin(y)^3=3*tan(x)+%c;
 trigsimp(lhs(ans))=rhs(ans);
