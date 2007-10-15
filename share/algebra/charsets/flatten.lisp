@@ -65,7 +65,7 @@
 
 (defun $charsets_flatten (e)
   (setq e (ratdisrep e))
-  (cond ((or ($atom e) ($subvarp e)(or (member ($inpart e 0) (list '&^ '&=))))
+  (cond ((or ($atom e) ($subvarp e) (or (member ($inpart e 0) (list "^" "=") :test #'equal)))
 	 e)
 	(t
 	 (let ((op (multiple-value-list (get-op-and-arg e))))

@@ -24,7 +24,7 @@
 	(solved-des) (unsolved-des) (total-time 0)
 	(longest-time 0))
 
-    (setq fn (string-left-trim "&" (string fn)))
+    (setq fn (string fn))
     (setq fn (make-pathname :name fn))
     ($load "odelin")
 

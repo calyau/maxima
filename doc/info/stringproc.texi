@@ -14,38 +14,23 @@ and adds some useful functions for file in/output.
 For questions and bugs please mail to van.nek at arcor.de .
 
 In Maxima a string is easily constructed by typing "text".
-Note that Maxima-strings are no Lisp-strings and vice versa.
-@code{stringp} tests for Maxima
-strings, and @code{lstringp} tests for Lisp strings.
-If for some reasons you have a value,
-that is a Lisp-string, maybe when using Maxima-function @code{sconcat}, you can convert via @code{sunlisp}. 
-
+@code{stringp} tests for strings.
 
 @c ===beg===
 @c m: "text";
-@c [stringp(m),lstringp(m)];
-@c l: sconcat("text");
-@c [stringp(l),lstringp(l)];
-@c stringp( sunlisp(l) );
+@c stringp(m);
 @c ===end===
 @example
 (%i1) m: "text";
 (%o1)                         text
-(%i2) [stringp(m),lstringp(m)];
-(%o2)                     [true, false]
-(%i3) l: sconcat("text");
-(%o3)                         text
-(%i4) [stringp(l),lstringp(l)];
-(%o4)                     [false, true]
-(%i5) stringp( sunlisp(l) );
-(%o5)                         true
+(%i2) stringp(m);
+(%o2)                         true
 @end example
 
-All functions in @code{stringproc.lisp}, that return strings, return Maxima-strings.
-
-Characters are introduced as Maxima-strings of length 1.
-Of course, these are no Lisp-characters.
-Tests can be done with @code{charp} (respectively @code{lcharp} and conversion from Lisp to Maxima with @code{cunlisp}).
+Characters are represented as strings of length 1.
+These are not Lisp characters.
+Tests can be done with @code{charp} (respectively @code{lcharp}
+and conversion from Lisp to Maxima characters with @code{cunlisp}).
 
 
 @c ===beg===
@@ -65,7 +50,7 @@ Tests can be done with @code{charp} (respectively @code{lcharp} and conversion f
 (%o4)                         true
 @end example
 
-Again, all functions in @code{stringproc.lisp}, that return characters, return Maxima-characters.
+All functions in @code{stringproc.lisp} that return characters, return Maxima-characters.
 Due to the fact, that the introduced characters are strings of length 1,
 you can use a lot of string functions also for characters.
 As seen, @code{supcase} is one example.
@@ -450,20 +435,8 @@ Returns @code{true} if @var{char} is an uppercase character.
 @node Functions and Variables for strings,  , Functions and Variables for characters, stringproc
 @section Functions and Variables for strings
 
-@deffn {Function} sunlisp (@var{lisp_string}) 
-Converts a Lisp-string into a Maxima-string.
-(In general you won't need it.)
-
-@end deffn
-
-@deffn {Function} lstringp (@var{obj}) 
-Returns @code{true} if @var{obj} is a Lisp-string.
-(In general you won't need it.)
-
-@end deffn
-
 @deffn {Function} stringp (@var{obj}) 
-Returns @code{true} if @var{obj} is a Maxima-string.
+Returns @code{true} if @var{obj} is a string.
 See introduction for example.
 
 @end deffn
@@ -499,11 +472,11 @@ Returns the list of all characters in @var{string}.
 @end deffn
 
 @deffn {Function} eval_string (@var{str})
-Parse the Maxima or Lisp string @var{str} as a Maxima expression and evaluate it.
+Parse the string @var{str} as a Maxima expression and evaluate it.
 The string @var{str} may or may not have a terminator (dollar sign @code{$} or semicolon @code{;}).
 Only the first expression is parsed and evaluated, if there is more than one.
 
-Complain if @var{str} is not a Maxima or Lisp string.
+Complain if @var{str} is not a string.
 
 Examples:
 
@@ -522,11 +495,11 @@ See also @code{parse_string}.
 @end deffn
 
 @deffn {Function} parse_string (@var{str})
-Parse the Maxima or Lisp string @var{str} as a Maxima expression (do not evaluate it).
+Parse the string @var{str} as a Maxima expression (do not evaluate it).
 The string @var{str} may or may not have a terminator (dollar sign @code{$} or semicolon @code{;}).
 Only the first expression is parsed, if there is more than one.
 
-Complain if @var{str} is not a Maxima or Lisp string.
+Complain if @var{str} is not a string.
 
 Examples:
 
@@ -543,23 +516,6 @@ Examples:
 @end example
 
 See also @code{eval_string}.
-@end deffn
-
-@deffn {Function} sconc (@var{expr_1}, ..., @var{expr_n})
-Evaluates its arguments and concatenates them into a string.
-@code{sconc} is like @code{sconcat} but returns a Maxima string.
-
-@c ===beg===
-@c sconc("xx[",3,"]:",expand((x+y)^3));
-@c stringp(%);
-@c ===end===
-@example
-(%i1) sconc("xx[",3,"]:",expand((x+y)^3));
-(%o1)             xx[3]:y^3+3*x*y^2+3*x^2*y+x^3
-(%i2) stringp(%);
-(%o2)                         true
-@end example
-
 @end deffn
 
 @deffn {Function} scopy (@var{string}) 
@@ -592,7 +548,7 @@ Like @code{sequal} but ignores case.
 @deffn {Function} simplode (@var{list})  
 @deffnx {Function} simplode (@var{list}, @var{delim})  
 @code{simplode} takes a list of expressions and concatenates them into a string.
-If no delimiter @var{delim} is used, @code{simplode} is like @code{sconc} and uses no delimiter.
+If no delimiter @var{delim} is specified, @code{simplode} uses no delimiter.
 @var{delim} can be any string.
 
 @c ===beg===
@@ -618,12 +574,12 @@ Note that the first character in @var{string} is in position 1.
 
 @c ===beg===
 @c s: "A submarine."$
-@c sconc( substring(s,1,3),"yellow ",substring(s,3) );
+@c concat( substring(s,1,3),"yellow ",substring(s,3) );
 @c sinsert("hollow ",s,3);
 @c ===end===
 @example
 (%i1) s: "A submarine."$
-(%i2) sconc( substring(s,1,3),"yellow ",substring(s,3) );
+(%i2) concat( substring(s,1,3),"yellow ",substring(s,3) );
 (%o2)                  A yellow submarine.
 (%i3) sinsert("hollow ",s,3);
 (%o3)                  A hollow submarine.

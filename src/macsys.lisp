@@ -411,7 +411,7 @@
 
 (defmfun $appendfile (name)
   (if (and (symbolp name)
-	   (member (char (symbol-name name) 0) '(#\& #\$) :test #'char=))
+	   (member (char (symbol-name name) 0) '(#\$) :test #'char=))
       (setq name (maxima-string name)))
   (if $appendfile (merror "already in appendfile, use closefile first"))
   (let ((stream  (open name :direction :output
@@ -480,8 +480,7 @@
   (let ((ans "") )
     (dolist (v x)
       (setq ans (concatenate 'string ans
-			     (cond ((and (symbolp v) (char= (char (symbol-name v) 0) #\&))
-				    (subseq (print-invert-case v) 1))
+			     (cond
 				   ((stringp v) v)
 				   (t
 				    (coerce (mstring v) 'string))))))

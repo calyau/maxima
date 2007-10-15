@@ -13,8 +13,7 @@
 ;; GNU General Public License for more details.
 
 ;; eval_string (s)  --  parse the string s as a Maxima expression and evaluate it.
-;; s is a Lisp or Maxima string. It may or may not have a terminator
-;; (dollar sign `$' or semicolon `;').
+;; It may or may not have a terminator (dollar sign `$' or semicolon `;').
 ;; Only the first expression is parsed and evaluated, if there is more than one.
 ;; e.g.
 ;; eval_string ("foo: 42; bar: foo^2 + baz")  =>  42
@@ -23,16 +22,13 @@
 
 (defun $eval_string (s)
   (cond
-    ((mstringp s)
-     (meval (parse-maxima-string s)))
     ((stringp s)
-     (meval (parse-lisp-string s)))
+     (meval (parse-string s)))
     (t
       (merror "eval_string: ~M is not a string." s))))
 
 ;; parse_string (s)  --  parse the string s as a Maxima expression (do not evaluate it).
-;; s is a Lisp or Maxima string. It may or may not have a terminator
-;; (dollar sign `$' or semicolon `;').
+;; It may or may not have a terminator (dollar sign `$' or semicolon `;').
 ;; Only the first expression is parsed, if there is more than one.
 ;; e.g.
 ;; parse_string ("foo: 42; bar: foo^2 + baz")  =>  foo : 42
@@ -41,29 +37,21 @@
 
 (defun $parse_string (s)
   (cond
-    ((mstringp s)
-     (parse-maxima-string s))
     ((stringp s)
-     (parse-lisp-string s))
+     (parse-string s))
     (t
       (merror "parse_string: ~M is not a string." s))))
 
-;; (PARSE-LISP-STRING S)  --  parse the Lisp string as a Maxima expression.
+;; (PARSE-STRING S)  --  parse the string as a Maxima expression.
 ;; Do not evaluate the parsed expression.
 
-(defun parse-lisp-string (s)
+(defun parse-string (s)
   (declare (special *mread-prompt*))
   (with-input-from-string
     (ss (ensure-terminator s))
     (third (let ((*mread-prompt*)) (mread ss)))))
 
-;; (PARSE-MAXIMA-STRING S) -- parse the Maxima string as a Maxima expression.
-;; Do not evaluate the parsed expression.
-
-(defun parse-maxima-string (s)
-  (parse-lisp-string (print-invert-case (stripdollar s))))
-
-;; (ENSURE-TERMINATOR S)  -- if the Lisp string S does not contain dollar sign `$' or semicolon `;'
+;; (ENSURE-TERMINATOR S)  -- if the string S does not contain dollar sign `$' or semicolon `;'
 ;; then append a dollar sign to the end of S.
 
 (defun ensure-terminator (s)

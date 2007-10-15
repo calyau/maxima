@@ -200,10 +200,8 @@
   (append l
 	  (list (cond ((numberp x) (texnumformat x))
 		      ((and (symbolp x) (get x 'texword)))
-                      ((stringp x) (tex-string x))
-                      ((mstringp x)
-                       (let ((s (maybe-invert-string-case (symbol-name (stripdollar x)))))
-                         (tex-string (quote-% (if $stringdisp (concatenate 'string "``" s "''") s)))))
+                      ((stringp x)
+                       (tex-string (quote-% (if $stringdisp (concatenate 'string "``" x "''") x))))
                       ((characterp x) (tex-char x))
 		      (t (tex-stripdollar x))))
 	  r))
@@ -938,24 +936,6 @@
 (defprop | --> | "\\longrightarrow " texsym)
 (defprop #.(intern (format nil " ~A " 'where)) "\\;\\mathbf{where}\\;" texsym)
 
-(defprop &>= ("\\ge ") texsym)
-(defprop &>= tex-infix tex)
-
-(defprop &> (">") texsym)
-(defprop &> tex-infix tex)
-
-(defprop &<= ("\\le ") texsym)
-(defprop &<= tex-infix tex)
-
-(defprop &< ("<") texsym)
-(defprop &< tex-infix tex)
-
-(defprop &= ("=") texsym)
-(defprop &= tex-infix tex)
-
-(defprop |&#| ("\\ne ") texsym)
-(defprop |&#| tex-infix tex)
-
 ;; end of additions by Marek Rychlik
 
 (defun tex-try-sym (x)
@@ -1004,13 +984,8 @@
 ;;  The texput function was written by Barton Willis.
 
 (defun $texput (e s &optional tx)
-  (when (mstringp e)
-    (setq e (define-symbol (string-left-trim '(#\&) e))))
-
   (setq s (if ($listp s) (margs s) (list s)))
   
-  (setq s (mapcar #'(lambda (x) (maybe-invert-string-case (symbol-name (stripdollar x)))) s))
-
   (cond ((null tx)
 	 (putprop e (nth 0 s) 'texword))
 	((eq tx '$matchfix)

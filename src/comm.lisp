@@ -21,20 +21,37 @@
 
 ;; op and opr properties
 
-(mapc #'(lambda (x) (putprop (car x) (cadr x) 'op) (putprop (cadr x) (car x) 'opr))
-      '((mplus &+) (mminus &-) (mtimes &*) (mexpt &**) (mexpt &^)
-	(mnctimes |&.|) (rat &//) (mquotient &//) (mncexpt &^^)
-	(mequal &=) (mgreaterp &>) (mlessp &<) (mleqp &<=) (mgeqp &>=)
-	(mnotequal |&#|) (mand &and) (mor &or) (mnot &not) (msetq |&:|)
-	(mdefine |&:=|) (mdefmacro |&::=|) (mquote |&'|) (mlist &[)
-	(mset |&::|) (mfactorial &!) (marrow &->) (mprogn |&(|)
-	(mcond &if)))
+(defvar *opr-table* (make-hash-table :test #'equal))
+
+(defmfun getopr0 (x)
+  (or
+    (and (symbolp x) (get x 'opr))
+    (and (stringp x) (gethash x *opr-table*))))
+
+(defmfun getopr (x)
+  (or (getopr0 x) x))
+
+(defmfun putopr (x y)
+  (or
+    (and (symbolp x) (setf (get x 'opr) y))
+    (and (stringp x) (setf (gethash x *opr-table*) y))))
+
+(defmfun remopr (x)
+  (or
+    (and (symbolp x) (remprop x 'opr))
+    (and (stringp x) (remhash x *opr-table*))))
+
+(mapc #'(lambda (x) (putprop (car x) (cadr x) 'op) (putopr (cadr x) (car x)))
+      '((mplus "+") (mminus "-") (mtimes "*") (mexpt "**") (mexpt "^")
+	(mnctimes ".") (rat "//") (mquotient "//") (mncexpt "^^")
+	(mequal "=") (mgreaterp ">") (mlessp "<") (mleqp "<=") (mgeqp ">=")
+	(mnotequal "#") (mand "and") (mor "or") (mnot "not") (msetq ":")
+	(mdefine ":=") (mdefmacro "::=") (mquote "'") (mlist "[")
+	(mset "::") (mfactorial "!") (marrow "-->") (mprogn "(")
+	(mcond "if")))
 
 (mapc #'(lambda (x) (putprop (car x) (cadr x) 'op))
       '((mqapply $subvar) (bigfloat $bfloat)))
-
-(mapc #'(lambda (x) (putprop (car x) (cadr x) 'opr))
-      '((|&and| mand) (|&or| mor) (|&not| mnot) (|&if| mcond)))
 
 
 (setq $exptsubst nil
@@ -42,11 +59,10 @@
       $inflag nil
       $gradefs '((mlist simp))
       $dependencies '((mlist simp))
-      atvars '(&@1 &@2 &@3 &@4)
+      atvars '($@1 $@2 $@3 $@4)
       atp nil
       islinp nil
       lnorecurse nil
-      &** '&^
       $derivsubst nil
       timesp nil
       $opsubst t
@@ -523,7 +539,7 @@
        (latvrs (length atvars))
        (l))
       ((not (< latvrs largl)) (nconc atvars l))
-    (setq l (cons (implode (cons '& (cons '@ (mexploden largl)))) l))))
+    (setq l (cons (implode (cons '$ (cons '@ (mexploden largl)))) l))))
 
 (defmfun notloreq (x)
   (or (atom x)
@@ -828,9 +844,6 @@
 
 (defmfun getop (x)
   (or (and (symbolp x) (get x 'op)) x))
-
-(defmfun getopr (x)
-  (or (and (symbolp x) (get x 'opr)) x))
 
 (defmfun $listp (x)
   (and (not (atom x))

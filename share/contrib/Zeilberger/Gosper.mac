@@ -133,13 +133,13 @@ GosperVerboseOpt(f,k,mode) :=
   Gpoly : 0,
 
   if AnsatzDegree >= 0 then
-    Gpoly: expand(GosperPoly(p,q,r,k,"c",AnsatzDegree)),
+    Gpoly: expand(GosperPoly(p,q,r,k,'c,AnsatzDegree)),
   if mode>=verbose then 
      print("Gosper polynomial created! : " , Gpoly),
   if Gpoly = 0 then
      return(NO_HYP_SOL),
   
-  sysSol: SolveSysVerboseOpt(Gpoly,"c",AnsatzDegree+1,k,mode-1),
+  sysSol: SolveSysVerboseOpt(Gpoly,'c,AnsatzDegree+1,k,mode-1),
   
   if mode>=very_verbose then
      print("System of equations solved! :  " , sysSol),

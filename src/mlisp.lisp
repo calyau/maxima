@@ -80,9 +80,9 @@ or if apply is being used are printed.")
 	 (cond ((atom fn)
 		(cond ((functionp fn)
 		       (apply fn args))
-              ((and (fboundp fn) (not (macro-function fn)))
+              ((and (symbolp fn) (fboundp fn) (not (macro-function fn)))
                (mapply1 (symbol-function fn) args fn form))
-		      ((symbol-array fn)
+		      ((and (symbolp fn) (symbol-array fn))
 		       (mapply1 (symbol-array fn) args fn form))
 		      (t
 		       (setq fn (getopr fn))
@@ -593,8 +593,7 @@ wrapper for this."
      (cond ((atom x)
 	    (when (or (not (symbolp x))
 		      (member x '(t nil) :test #'eq)
-		      (mget x '$numer)
-		      (char= (char (symbol-name x) 0) #\&))
+		      (mget x '$numer))
 	      (if munbindp (return nil))
 	      (if (mget x '$numer)
 		  (merror "~:M improper value assignment to a numerical quantity" x)
@@ -800,11 +799,11 @@ wrapper for this."
 ;; Following property assignments comprise the Lisp code equivalent to infix("@", 190, 191)
 
 (defprop $@ %@ verb) 
-(defprop $@ &@ op) 
-(defprop &@ $@ opr) 
+(defprop $@ "@" op) 
+(putopr "@" '$@) 
 ;; !! FOLLOWING LINE MOVED TO NPARSE.LISP TO AVOID COMPILER ERROR
 ;; !! (MOVING SUPRV1.LISP HIGHER IN MAXIMA.SYSTEM CAUSES MYSTERIOUS ERROR)
-;; !! (define-symbol '&@) 
+;; !! (define-symbol "@") 
 (defprop $@ dimension-infix dimension) 
 (defprop $@ (#\@) dissym) 
 (defprop $@ msize-infix grind) 
@@ -1171,7 +1170,7 @@ wrapper for this."
        (nreverse ans))))
 
 (defun mapatom (x)
-  (or (symbolp x) (mnump x) ($subvarp x)))
+  (or (symbolp x) (mnump x) ($subvarp x) (stringp x)))
 
 (defmfun $mapatom (x)
   (if (mapatom (specrepcheck x)) t))
@@ -1337,17 +1336,19 @@ wrapper for this."
 (defun declare1 (vars val prop mpropp)
   (dolist (var vars)
     (setq var (getopr var))
-    (nonsymchk var '$declare)
+    (unless (or (symbolp var) (stringp var))
+      (merror "declare: argument must be a symbol or a string."))
     (cond ((eq mpropp 'kind) (declarekind var prop))
 	  ((eq mpropp 'opers)
 	   (putprop (setq var (linchk var)) t prop) (putprop var t 'opers)
-	   (if (not (get var 'operators)) (putprop var 'simpargs1 'operators)))
+	   (if (and (symbolp var) (not (get var 'operators)))
+         (putprop var 'simpargs1 'operators)))
 
 	  ((eq mpropp '$alphabetic)
        ; Explode var into characters and put each one on the *alphabet* list,
        ; which is used by src/nparse.lisp .
-       (dolist (1-char (cdr (coerce (print-invert-case var) 'list)))
-	 (add2lnc 1-char *alphabet*)))
+       (dolist (1-char (coerce var 'list))
+         (add2lnc 1-char *alphabet*)))
 
 	  ((eq prop 'special)(proclaim (list 'special var))
 	   (fluidize var))
@@ -1357,7 +1358,7 @@ wrapper for this."
 	       (merror "Inconsistent Declaration: ~:M" `(($declare) ,var ,prop)))
 	   (mputprop var val prop))
 	  (t (putprop var val prop)))
-    (if (and (get var 'op) (operatorp1 var)
+    (if (and (safe-get var 'op) (operatorp1 var)
 	     (not (member (setq var (get var 'op)) (cdr $props) :test #'eq)))
 	(setq mopl (cons var mopl)))
     (add2lnc (getop var) $props)))
@@ -1377,7 +1378,8 @@ wrapper for this."
     (cond (($listp (cadr l))
 	   (do ((l1 (cdadr l) (cdr l1))) ((if (null l1) (setq flag t)))
 	     (i-$remove (list (car l) (car l1)))))
-	  ((nonsymchk (cadr l) '$remove))
+      ((unless (or (symbolp (cadr l)) (stringp (cadr l)))
+        (merror "remove: argument must be a symbol or a string.")))
 	  (t (setq vars (declsetup (car l) '$remove))))
     (cond (flag)
 	  ((eq (cadr l) '$value) (i-$remvalue vars))
@@ -1424,24 +1426,26 @@ wrapper for this."
 (defmfun remove1 (vars prop mpropp info funp)
   (do ((vars vars (cdr vars)) (allflg))
       ((null vars))
-    (nonsymchk (car vars) '$remove)
+    (unless (or (symbolp (car vars)) (stringp (car vars)))
+      (merror "remove: argument must be a symbol or a string."))
     (cond ((and (eq (car vars) '$all) (null allflg))
 	   (setq vars (append vars (cond ((atom info) (cdr $props))
 					 (funp (mapcar #'caar (cdr info)))
 					 (t (cdr info))))
 		 allflg t))
 	  (t
-	   (let ((var  (getopr (car vars)))( flag  nil))
+        (if (and (stringp (car vars)) (eq prop '$op) (getopr0 (car vars)))
+          (kill-operator (getopr0 (car vars))))
 
+	   (let ((var  (getopr (car vars)))( flag  nil))
 	     (cond (mpropp (mremprop var prop)
 			   (when (member prop '(mexpr mmacro) :test #'eq)
 			     (mremprop var 'mlexprp)
 			     (mremprop var 'mfexprp)
 			     (if (mget var 'trace)
 				 (macsyma-untrace var))))
-		   ((eq prop '$op) (kill-operator var))
-		   ((and (eq prop '$alphabetic) (mstringp var))
-	    (dolist (1-char (cdr (coerce (print-invert-case var) 'list)))
+		   ((and (eq prop '$alphabetic) (stringp var))
+	    (dolist (1-char (coerce var 'list))
 	      (setf *alphabet* (delete 1-char *alphabet* :count 1 :test #'equal))))
 		   ((eq prop '$transfun)
 		    (remove-transl-fun-props var)
@@ -1477,12 +1481,16 @@ wrapper for this."
     (if (not (fboundp fun)) (zl-remprop fun 'translated))))
 
 (defmfun rempropchk (var)
-  (if (and (not (mgetl var '($constant $nonscalar $scalar $mainvar $numer
-			     matchdeclare $atomgrad atvalues t-mfexpr)))
-	   (not (getl var '(evfun evflag translated nonarray bindtest
-			    opr sp2 operators opers special data autoload mode)))
-	   (not (member var *builtin-$props* :test #'eq)))
-      (delete var $props :count 1 :test #'eq)))
+  (if (and 
+        (or
+          (not (symbolp var))
+          (and
+            (not (mgetl var '($constant $nonscalar $scalar $mainvar $numer
+                                        matchdeclare $atomgrad atvalues t-mfexpr)))
+            (not (getl var '(evfun evflag translated nonarray bindtest
+                                   sp2 operators opers special data autoload mode)))))
+	   (not (member var *builtin-$props* :test #'equal)))
+      (delete var $props :count 1 :test #'equal)))
 
 (defun rem-verbify (fnname)
   (nonsymchk fnname '$remove)
@@ -1980,8 +1988,8 @@ wrapper for this."
     (error "~a is already a hash table.  Make it a function first" fun))
   (cond ((and (null args) (not mqdef)) (mputprop fun (mdefine1 subs body) 'aexpr))
 	((null (dolist (u subs)
-		 (unless (or (consp u) ($constantp u) (char= (char (symbol-name u) 0) #\&))
-		   (return t))))
+		 (unless (or (consp u) ($constantp u) (stringp u))
+		     (return t))))
 	 (arrstore (cons (ncons fun) subs) (mdefine1 args body)))
 	(t (mdefchk fun subs t nil)
 	   (mputprop fun (mdefine1 subs (mdefine1 args body)) 'aexpr))))
@@ -2017,7 +2025,7 @@ wrapper for this."
 	(merror "Improper parameter in function definition for ~:M:~%~M" fun (car l)))))
 
 (defun mdefparam (x)
-  (and (atom x) (not (maxima-constantp x)) (not (char= (char (symbol-name x) 0) #\&))))
+  (and (atom x) (not (maxima-constantp x)) (not (stringp x))))
 
 (defun mdeflistp (l)
   (and (null (cdr l)) ($listp (car l)) (cdar l) (null (cddar l))))
@@ -2098,7 +2106,7 @@ wrapper for this."
 
 
 (defmfun $funmake (fun args)
-  (if (not (or (symbolp fun) ($subvarp fun)
+  (if (not (or (stringp fun) (symbolp fun) ($subvarp fun)
 	       (and (not (atom fun)) (eq (caar fun) 'lambda))))
       (merror "Bad first argument to `funmake': ~M" fun))
   (if (not ($listp args)) (merror "Bad second argument to `funmake': ~M" args))

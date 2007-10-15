@@ -46,7 +46,6 @@ algebra/gcdex.mac\
 algebra/grob1.lisp\
 algebra/nusum.mac\
 algebra/recur.dem\
-algebra/recur.lisp\
 algebra/recur.mac\
 algebra/recur.transcript\
 algebra/solver/linsolve.mac\
@@ -115,7 +114,6 @@ contrib/bode.mac\
 contrib/boolsimp/boolsimp.lisp\
 contrib/boolsimp/rtest_boolsimp.mac\
 contrib/clebsch_gordan.mac\
-contrib/defstruct.lisp\
 contrib/descriptive/biomed.data\
 contrib/descriptive/descriptive.mac\
 contrib/descriptive/pidigits.data\

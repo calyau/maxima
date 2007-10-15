@@ -255,7 +255,7 @@ Example:
 @defvr {Graphic option} title
 Default value: @code{""} (empty string)
 
-Option @code{title} stores a Maxima string with the main title for the scene.
+Option @code{title}, a string, is the main title for the scene.
 By default, no title is written.
 
 Since this is a global graphics option, its position in the scene description
@@ -275,7 +275,7 @@ Example:
 @defvr {Graphic option} xlabel
 Default value: @code{""} (empty string)
 
-Option @code{xlabel} stores a Maxima string with the label for the @var{x} axis.
+Option @code{xlabel}, a string, is the label for the @var{x} axis.
 By default, no label is written.
 
 Since this is a global graphics option, its position in the scene description
@@ -298,7 +298,7 @@ See also @code{ylabel}, and @code{zlabel}.
 @defvr {Graphic option} ylabel
 Default value: @code{""} (empty string)
 
-Option @code{ylabel} stores a Maxima string with the label for the @var{y} axis.
+Option @code{ylabel}, a string, is the label for the @var{y} axis.
 By default, no label is written.
 
 Since this is a global graphics option, its position in the scene description
@@ -321,7 +321,7 @@ See also @code{xlabel}, and @code{zlabel}.
 @defvr {Graphic option} zlabel
 Default value: @code{""} (empty string)
 
-Option @code{zlabel} stores a Maxima string with the label for the @var{z} axis.
+Option @code{zlabel}, a string, is the label for the @var{z} axis.
 By default, no label is written.
 
 Since this is a global graphics option, its position in the scene description
@@ -341,22 +341,78 @@ See also @code{xlabel}, and @code{ylabel}.
 @end defvr
 
 
-
 @defvr {Graphic option} xtics
-Default value: @code{true}
+Default value: @code{auto}
 
-If @code{xtics} is @code{true}, tics will be written in the @var{x} axis.
+This graphic option controls the way tic marks are drawn on the @var{x} axis.
+
+@itemize @bullet
+@item
+When option @code{xtics} is bounded to symbol @var{auto}, tic marks are
+drawn automatically.
+
+@item
+When option @code{xtics} is bounded to symbol @var{none}, tic marks are
+not drawn.
+
+@item
+When option @code{xtics} is bounded to a positive number, this is the distance
+between two consecutive tic marks.
+
+@item
+When option @code{xtics} is bounded to a list of length three of the
+form @code{[start,incr,end]}, tic marks are plotted from @code{start} 
+to @code{end} at intervals of length @code{incr}.
+
+@item
+When option @code{xtics} is bounded to a set of numbers of the
+form @code{@{n1, n2, ...@}}, tic marks are plotted at values @code{n1},
+@code{n2}, ...
+
+@item
+When option @code{xtics} is bounded to a set of pairs of the
+form @code{@{["label1", n1], ["label2", n2], ...@}}, tic marks corresponding to values @code{n1},
+@code{n2}, ... are labeled with @code{"label1"}, @code{"label2"}, ..., respectively.
+@end itemize
 
 Since this is a global graphics option, its position in the scene description
 does not matter.
 
-Example:
+Examples:
 
+Disable tics.
 @example
 (%i1) load(draw)$
-(%i2) /* No tics in the x-axis */
-      draw2d(xtics = false,
-             explicit(exp(u),u,-2,2))$
+(%i2) draw2d(xtics = 'none,
+             explicit(x^3,x,-1,1)  )$
+@end example
+
+Tics every 1/4 units.
+@example
+(%i1) load(draw)$
+(%i2) draw2d(xtics = 1/4,
+             explicit(x^3,x,-1,1)  )$
+@end example
+
+Tics from -3/4 to 3/4 in steps of 1/8.
+@example
+(%i1) load(draw)$
+(%i2) draw2d(xtics = [-3/4,1/8,3/4],
+             explicit(x^3,x,-1,1)  )$
+@end example
+
+Tics at points -1/2, -1/4 and 3/4.
+@example
+(%i1) load(draw)$
+(%i2) draw2d(xtics = @{-1/2,-1/4,3/4@},
+             explicit(x^3,x,-1,1)  )$
+@end example
+
+Labeled tics.
+@example
+(%i1) load(draw)$
+(%i2) draw2d(xtics = @{["High",0.75],["Medium",0],["Low",-0.75]@},
+             explicit(x^3,x,-1,1)  )$
 @end example
 
 See also @code{ytics}, and @code{ztics}.
@@ -365,47 +421,86 @@ See also @code{ytics}, and @code{ztics}.
 
 
 @defvr {Graphic option} ytics
-Default value: @code{true}
+Default value: @code{auto}
 
-If @code{ytics} is @code{true}, tics will be written in the @var{y} axis.
+This graphic option controls the way tic marks are drawn on the @var{y} axis.
 
-Since this is a global graphics option, its position in the scene description
-does not matter.
-
-Example:
-
-@example
-(%i1) load(draw)$
-(%i2) draw2d(ytics = false,
-             explicit(exp(u),u,-2,2),
-             xtics = false)$
-@end example
-
-See also @code{xtics}, and @code{ztics}.
+See @code{xtics} for a complete description.
 @end defvr
 
 
 
 @defvr {Graphic option} ztics
-Default value: @code{true}
+Default value: @code{auto}
 
-If @code{ztics} is @code{true}, tics will be written in the @var{z} axis.
+This graphic option controls the way tic marks are drawn on the @var{z} axis.
+
+See @code{xtics} for a complete description.
+@end defvr
+
+
+@defvr {Graphic option} xtics_rotate
+Default value: @code{false}
+
+If @code{xtics_rotate} is @code{true}, tic marks on the @var{x} axis are rotated 
+90 degrees.
 
 Since this is a global graphics option, its position in the scene description
 does not matter.
-
-Example:
-
-@example
-(%i1) load(draw)$
-(%i2) /* No tics in the z-axis */
-      draw3d(ztics = false,
-             explicit(sin(x^2+y^2),x,-2,2,y,-2,2) )$
-@end example
-
-See also @code{xtics}, and @code{ytics}.
 @end defvr
 
+
+@defvr {Graphic option} ytics_rotate
+Default value: @code{false}
+
+If @code{ytics_rotate} is @code{true}, tic marks on the @var{y} axis are rotated 
+90 degrees.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+@end defvr
+
+
+@defvr {Graphic option} ztics_rotate
+Default value: @code{false}
+
+If @code{ztics_rotate} is @code{true}, tic marks on the @var{z} axis are rotated 
+90 degrees.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+@end defvr
+
+
+@defvr {Graphic option} xtics_axis
+Default value: @code{false}
+
+If @code{xtics_axis} is @code{true}, tic marks and their labels are plotted just
+along the @var{x} axis, if it is @code{false} tics are plotted on the border.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+@end defvr
+
+@defvr {Graphic option} ytics_axis
+Default value: @code{false}
+
+If @code{ytics_axis} is @code{true}, tic marks and their labels are plotted just
+along the @var{y} axis, if it is @code{false} tics are plotted on the border.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+@end defvr
+
+@defvr {Graphic option} ztics_axis
+Default value: @code{false}
+
+If @code{ztics_axis} is @code{true}, tic marks and their labels are plotted just
+along the @var{z} axis, if it is @code{false} tics are plotted on the border.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+@end defvr
 
 
 @defvr {Graphic option} xaxis
@@ -1241,13 +1336,20 @@ Example:
 @defvr {Graphic option} filled_func
 Default value: @code{false}
 
-@code{filled_func} indicates whether a function is filled (@code{true})
-or not (@code{false}).
+Option @code{filled_func} controls how regions limited by functions
+should be filled. When @code{filled_func} is @code{true}, the region
+bounded by the function defined with object @code{explicit} and the
+bottom of the graphic window is filled with @code{fill_color}. When 
+@code{filled_func} contains a function expression, then the region bounded
+by this function and the function defined with object @code{explicit} 
+will be filled. By default, explicit functions are not filled. 
 
 This option affects only the 2d graphic object @code{explicit}.
 
 Example:
 
+Region bounded by an @code{explicit} object and the bottom of the
+graphic window.
 @example
 (%i1) load(draw)$
 (%i2) draw2d(fill_color  = red,
@@ -1255,7 +1357,17 @@ Example:
              explicit(sin(x),x,0,10) )$
 @end example
 
-See also @code{fill_color}.
+Region bounded by an @code{explicit} object and the function
+defined by option @code{filled_func}. Note that the variable in
+@code{filled_func} must be the same as that used in @code{explicit}.
+@example
+(%i1) load(draw)$
+(%i2) draw2d(fill_color  = grey,
+             filled_func = sin(x),
+             explicit(-sin(x),x,0,%pi));
+@end example
+
+See also @code{fill_color} and @code{explicit}.
 @end defvr
 
 
@@ -1430,6 +1542,29 @@ Example:
 See also @code{head_both}, @code{head_angle}, and @code{head_length}. 
 @end defvr
 
+
+@defvr {Graphic option} unit_vectors
+Default value: @code{false}
+
+If @code{unit_vectors} is @code{true}, vectors are plotted with module 1.
+This is useful for plotting vector fields. If @code{unit_vectors} is @code{false},
+vectors are plotted with its original length.
+
+This option is relevant only for @code{vector} objects.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(xrange      = [-1,6],
+             yrange      = [-1,6],
+             head_length = 0.1,
+             vector([0,0],[5,2]),
+             unit_vectors = true,
+             color        = red,
+             vector([0,3],[5,2]))$
+@end example
+@end defvr
 
 
 @defvr {Graphic option} label_alignment
@@ -1813,20 +1948,65 @@ Example:
 @defvr {Graphic option} contour_levels
 Default value: 5
 
-@code{contour_levels} is the number of levels in contour plots.
+This graphic option controls the way contours are drawn. 
+@code{contour_levels} can be set to a positive integer number, a list of three
+numbers or an arbitrary set of numbers:
+
+@itemize @bullet
+@item
+When option @code{contour_levels} is bounded to positive integer @var{n},
+@var{n} contour lines will be drawn at equal intervals. By default, five
+equally spaced contours are plotted.
+
+@item
+When option @code{contour_levels} is bounded to a list of length three of the
+form @code{[lowest,s,highest]}, contour lines are plotted from @code{lowest} 
+to @code{highest} in steps of @code{s}.
+
+@item
+When option @code{contour_levels} is bounded to a set of numbers of the
+form @code{@{n1, n2, ...@}}, contour lines are plotted at values @code{n1},
+@code{n2}, ...
+@end itemize
 
 Since this is a global graphics option, its position in the scene description
 does not matter.
 
-Example:
+Examples:
 
+Ten equally spaced contour lines. The actual number of
+levels can be adjusted to give simple labels.
 @example
 (%i1) load(draw)$
-(%i2) draw3d(explicit(20*exp(-x^2-y^2)-10,x,0,2,y,-3,3),
-             contour_levels = 15,
+(%i2) draw3d(color = green,
+             explicit(20*exp(-x^2-y^2)-10,x,0,2,y,-3,3),
+             contour_levels = 10,
              contour        = both,
              surface_hide   = true) $
 @end example
+
+
+From -8 to 8 in steps of 4.
+@example
+(%i1) load(draw)$
+(%i2) draw3d(color = green,
+             explicit(20*exp(-x^2-y^2)-10,x,0,2,y,-3,3),
+             contour_levels = [-8,4,8],
+             contour        = both,
+             surface_hide   = true) $
+@end example
+
+Isolines at levels -7, -6, 0.8 and 5.
+@example
+(%i1) load(draw)$
+(%i2) draw3d(color = green,
+             explicit(20*exp(-x^2-y^2)-10,x,0,2,y,-3,3),
+             contour_levels = @{-7, -6, 0.8, 5@},
+             contour        = both,
+             surface_hide   = true) $
+@end example
+
+See also @code{contour}.
 @end defvr
 
 
@@ -2251,6 +2431,8 @@ Example:
              explicit(x+y,x,-5,5,y,-5,5),
              surface_hide = true)$
 @end example
+
+See also @code{filled_func} for filled functions.
 @end deffn
 
 
@@ -2309,6 +2491,50 @@ Example:
              line_width    = 3,
              title         = "Hyperbolic Spiral",
              polar(10/theta,theta,1,10*%pi) )$
+@end example
+@end deffn
+
+
+@deffn  {Graphic object} spherical (@var{radius},@var{azi},@var{minazi},@var{maxazi},@var{zen},@var{minzen},@var{maxzen})
+Draws 3D functions defined in spherical coordinates.
+
+@b{3D}
+
+@code{spherical (@var{radius},@var{azi},@var{minazi},@var{maxazi},@var{zen},@var{minzen},@var{maxzen})}
+plots function @code{@var{radius}(@var{azi},@var{zen})} defined in spherical coordinates, with @i{azimuth}
+@var{azi} taking values from @var{minazi} to @var{maxazi} and @i{zenith} @var{zen} taking values from
+@var{minzen} to @var{maxzen}.
+
+This object is affected by the following @i{graphic options}: @code{xu_grid}, 
+@code{yv_grid}, @code{line_type}, @code{key} and @code{color}.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(spherical(1,a,0,2*%pi,z,0,%pi))$
+@end example
+@end deffn
+
+
+@deffn  {Graphic object} cylindrical (@var{radius},@var{z},@var{minz},@var{maxz},@var{azi},@var{minazi},@var{maxazi})
+Draws 3D functions defined in cylindrical coordinates.
+
+@b{3D}
+
+@code{cylindrical (@var{radius},@var{z},@var{minz},@var{maxz},@var{azi},@var{minazi},@var{maxazi})}
+plots function @code{@var{radius}(@var{z},@var{azi})} defined in cylindrical coordinates, with variable
+@var{z} taking values from @var{minz} to @var{maxz} and @i{azimuth} @var{azi} taking values from
+@var{minazi} to @var{maxazi}.
+
+This object is affected by the following @i{graphic options}: @code{xu_grid}, 
+@code{yv_grid}, @code{line_type}, @code{key} and @code{color}.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(cylindrical(1,z,-2,2,az,0,2*%pi))$
 @end example
 @end deffn
 

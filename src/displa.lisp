@@ -69,10 +69,10 @@
 ;; Parameters which control how boxes, absolute value signs,
 ;; evaluation-at-a-point bars, and matrices are drawn.
 
-(defmvar $boxchar '|&"|  "Character used for drawing boxes.")
-(defmvar $absboxchar '|&!| "Character used for drawing absolute value signs and 'evaluation at' signs.")
-(defmvar $lmxchar '|&[|  "Character used for drawing the left edge of a matrix.")
-(defmvar $rmxchar '|&]|  "Character used for drawing the right edge of a matrix.")
+(defmvar $boxchar "\""  "Character used for drawing boxes.")
+(defmvar $absboxchar "!" "Character used for drawing absolute value signs and 'evaluation at' signs.")
+(defmvar $lmxchar "["  "Character used for drawing the left edge of a matrix.")
+(defmvar $rmxchar "]"  "Character used for drawing the right edge of a matrix.")
 
 ;; These variables are bound within Macsyma Listeners since they are different
 ;; for each window.  Set them here, anyway, so that RETRIEVE can be called from
@@ -219,20 +219,22 @@
 (defmfun makestring (atom)
   (let (dummy)
     (cond ((numberp atom) (exploden atom))
+      ((stringp atom)
+       (setq dummy (coerce atom 'list))
+       (if $stringdisp
+         (cons #\" (nconc dummy (list #\")))
+         dummy))
 	  ((not (symbolp atom)) (exploden atom))
 	  ((and (setq dummy (get atom 'reversealias))
 		(not (and (member atom $aliases :test #'eq) (get atom 'noun))))
 	   (exploden dummy))
 	  ((not (eq (getop atom) atom))
-	   (setq dummy (exploden (getop atom)))
-	   (if (char= #\& (car dummy))
-	       (cons #\" (nconc (cdr dummy) (list #\")))
-	       (cdr dummy)))
+       (makestring (getop atom)))
 	  (t (setq dummy (exploden atom))
-	     (cond ((char= #\$ (car dummy)) (cdr dummy))
-		   ((and $stringdisp (char= #\& (car dummy)))
-		    (cons #\" (nconc (cdr dummy) (list #\"))))
-		   ((or (char= #\% (car dummy)) (char= #\& (car dummy))) (cdr dummy))
+	     (cond
+           ((null dummy) nil)
+           ((char= #\$ (car dummy)) (cdr dummy))
+		   ((char= #\% (car dummy)) (cdr dummy))
 		   ($lispdisp (cons #\? dummy))
 		   (t dummy))))))
 
@@ -681,7 +683,7 @@
      (unless (checkfit (+ 1 w width))
        (return (dimension-function form result)))
      (setq result (cons (cons 0 (cons (- 0 1 d) eqs))
-			(cons `(d-vbar ,(1+ h) ,(1+ d) ,(char (symbol-name $absboxchar) 1)) exp))
+			(cons `(d-vbar ,(1+ h) ,(1+ d) ,(car (coerce $absboxchar 'list))) exp))
 	   width (+ 1 w width)
 	   height (1+ h)
 	   depth (+ 1 d depth))
@@ -928,7 +930,7 @@
 	 (dimension-function form result))
 	(t (setq width (+ 2 width))
 	   (update-heights height depth)
-	   (setq bar `(d-vbar ,height ,depth ,(char (symbol-name $absboxchar) 1)))
+	   (setq bar `(d-vbar ,height ,depth ,(car (coerce $absboxchar 'list))))
 	   (cons bar (nconc arg (cons bar result))))))
 
 (displa-def $matrix dim-$matrix)
@@ -1026,7 +1028,7 @@
      (cond ((not (checkfit (+ 2 width)))
 	    (return (dimension-function (cons '($box) (cdr form)) result))))
      (setq width (+ 2 width) height (1+ height) depth (1+ depth))
-     (setq ch (char (symbol-name $boxchar) 1))
+     (setq ch (car (coerce $boxchar 'list)))
      (setq result
 	   (cons (do ((l (mapcar #'(lambda (l) (char (symbol-name l) 0))
 				 (makstring (caddr form))) (cdr l))
@@ -1373,14 +1375,14 @@
 ;; dimension strings.
 
 (defun d-matrix (linear? direction h d)
-  (d-vbar linear? h d (char (symbol-name (if (eq direction 'right)
+  (d-vbar linear? h d (car (coerce (if (eq direction 'right)
 					     $rmxchar
-					     $lmxchar)) 1)))
+					     $lmxchar) 'list))))
 
 ;; There is wired knowledge of character offsets here.
 
 (defun d-box (linear? h d w body &aux (char 0) dmstr) ;char a char?
-  (setq char (char (symbol-name $boxchar) 1))
+  (setq char (car (coerce $boxchar 'list)))
   (setq dmstr `((0 ,h (d-hbar ,(+ 2 w) ,char))
 		(,(- (+ w 2)) 0)
 		(d-vbar ,h ,d ,char)

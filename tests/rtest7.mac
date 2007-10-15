@@ -13,7 +13,7 @@ linechar:%t;
 atvalue(f(x,y),[x = 0,y = 1],a^2);
 a^2$
 atvalue('diff(f(x,y),x),x = 0,y+1);
-"@2"+1$
+\@2+1$
 printprops(all,atvalue);
 done$
 diff(4*f(x,y)^2-u(x,y)^2,x);
@@ -23,7 +23,7 @@ at(%,[x = 0,y = 1]);
 atvalue(f(x,y),[x = 0,y = 1],a^2);
 a^2$
 atvalue('diff(f(x,y),x),x = 0,y+1);
-"@2"+1$
+\@2+1$
 printprops(all,atvalue);
 done$
 diff(4*f(x,y)^2-u(x,y)^2,x);

@@ -39,7 +39,7 @@ For comments, bugs or suggestions, please contact the author at
 
 Constructs an @code{inference_result} object of the type returned by the
 stats functions. Argument @var{title} is a
-Maxima string with the name of the procedure; @var{values} is a list with
+string with the name of the procedure; @var{values} is a list with
 elements of the form @code{symbol = value} and @var{numbers} is a list
 with positive integer numbers ranging from one to @code{length(@var{values})},
 indicating which values will be shown by default.

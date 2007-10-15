@@ -864,10 +864,6 @@ relational knowledge is contained in the default context GLOBAL."
      (and (stringp b) (equal a b)))
     ((stringp b) nil)
 
-    ((mstringp a)
-     (and (mstringp b) (equal a b)))
-    ((mstringp b) nil)
-
     ((arrayp a)
      (and (arrayp b) (array-meqp a b)))
     ((arrayp b) nil)

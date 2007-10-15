@@ -87,7 +87,8 @@
 (defun zl-remprop (sym indicator)
   (if (symbolp sym)
       (remprop sym indicator)
-      (remf (cdr sym) indicator)))
+      (unless (atom sym)
+        (remf (cdr sym) indicator))))
 
 (defmfun unmrk (x)
   (zl-remprop x 'mark))

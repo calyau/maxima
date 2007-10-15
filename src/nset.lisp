@@ -36,7 +36,7 @@
     #+gcl (compile load eval)
     #-gcl (:compile-toplevel :load-toplevel :execute)
     ;; matchfix ("{", "}")
-    (meval '(($matchfix) &{ &}))
+    (meval '(($matchfix) "{" "}"))
     ;; "{" ([L]) ::= buildq ([L], set (splice (L)));
     (let ((new-defn
 	   (meval '((mdefmacro) ((${) ((mlist) $l)) (($buildq) ((mlist) $l) (($set) (($splice) $l)))))))

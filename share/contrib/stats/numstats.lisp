@@ -276,7 +276,7 @@
 
       ; the result is an 'inference_result' Maxima object
       ($inference_result
-         '|&shapiro - wilk test|
+         "SHAPIRO - WILK TEST"
          (list '(mlist) (list '(mlist) '$statistic w)
                         (list '(mlist) '$p_value pw))
          (list '(mlist) 1 2) )  ))

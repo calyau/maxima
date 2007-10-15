@@ -23,24 +23,24 @@
 
 (defun $openw (file)
    (open
-      (l-string file)
+      file
       :direction :output
       :if-exists :supersede
       :if-does-not-exist :create))
 
 (defun $opena (file)
    (open
-      (l-string file)
+      file
       :direction :output
       :if-exists :append
       :if-does-not-exist :create))
 
-(defun $openr (file) (open (l-string file)))
+(defun $openr (file) (open file))
 
 (defun $make_string_input_stream (s &optional (start 0) (end nil))
-  (if (not (or (stringp s) (mstringp s)))
+  (unless (stringp s)
     (merror "make_string_input_stream: argument must be a string."))
-  (make-string-input-stream (l-string s) start end))
+  (make-string-input-stream s start end))
 
 (defun $make_string_output_stream ()
   (make-string-output-stream))
@@ -50,7 +50,7 @@
 (defun $get_output_stream_string (s)
   (if (not (streamp s))
     (merror "get_output_stream_string: argument must be a stream."))
-  (m-string (get-output-stream-string s)))
+  (get-output-stream-string s))
 
 (defun $close (stream) (close stream))
 
@@ -65,7 +65,7 @@
 (defun $readline (stream)
    (let ((line (read-line stream nil nil)))
       (if line
-	 (m-string line))))
+	 line)))
 
 (defun $freshline (&optional (stream)) (fresh-line stream))
 
@@ -74,9 +74,9 @@
 
 ;;  $printf makes almost all features of CL-function format available
 (defmacro $printf (stream mstring &rest args)
-  (let (;;(string (l-string ($ssubst "~a" "~s" (meval mstring) 'sequalignore)))
+  (let (
 	;; needs a fix for directives like ~20s
-	(string (l-string (meval mstring)))
+	(string (meval mstring))
 	(bracket ($ssearch "~{" (meval mstring)))
 	body)
     (dolist (arg args)
@@ -84,7 +84,7 @@
 	 (setq arg (meval arg))
 	 (setq arg
 	   (cond ((numberp arg) arg)
-		 ((mstringp arg) (l-string arg))
+		 ((stringp arg) arg)
 		 ((and (symbolp arg) (not (boundp arg)))
 		    `(quote ,(maybe-invert-string-case (subseq (string arg) 1))))
 		 ((and (listp arg) (listp (car arg)) (eq (caar arg) 'mlist))
@@ -97,7 +97,7 @@
 	 (setq body (append body (list arg)))))
    (if stream
       `(format ,stream ,string ,@body)
-      `(m-string (format ,stream ,string ,@body)))))
+      `(format ,stream ,string ,@body))))
 
 ;;  cltree converts a Maxima-tree into a CL-tree on lisp level
 ;;  helper-function for $printf
@@ -116,7 +116,7 @@
        (progn
 	  (setq obj (meval obj))
 	  (cond ((numberp obj) obj)
-		((mstringp obj) (maxima-string obj))
+		((stringp obj) obj)
 		(t (if (and (symbolp obj) (not (boundp obj)))
 		      (maybe-invert-string-case (subseq (string obj) 1))
 		      ($sconcat obj)))))))
@@ -130,7 +130,7 @@
 (defun $lchar (mch) (l-char mch));; for testing only
 
 (defun l-char (mch)
-  (let ((smch (l-string mch)))
+  (let ((smch mch))
     (if (= (length smch) 1)
       (character smch)
       (merror
@@ -141,15 +141,14 @@
 (defun $cunlisp (lch) (m-char lch));; for testing only
 
 (defun m-char (lch)
-   (m-string
-      (make-string 1 :initial-element lch)))
+  (make-string 1 :initial-element lch))
 
 ;;  tests, if object is lisp-character
 (defun $lcharp (obj) (characterp obj));; for testing only
 
 ;;  tests, if object is maxima-character
 (defun $charp (obj)
-   (and (mstringp obj) (= 1 (length (l-string obj)))))
+   (and (stringp obj) (= 1 (length obj))))
 
 ;;  tests for different maxima-characters
 (defun $constituent (mch)   (constituent (l-char mch)))
@@ -190,70 +189,31 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;  3. strings
 
-(defmfun strip& (str)
-   (let ((c1 (string (getcharn str 1))))
-      (if (equal c1 "&")
-	 (subseq str 1)
-	 str)))
-
-;;  converts maxima-string into lisp-string
-(defun $lstring (mstr) (l-string mstr)) ;; for testing only (avoid lisp string in maxima)
-(defun l-string (mstr)
-  (if (stringp mstr)
-    mstr
-    (strip& (maybe-invert-string-case (string mstr)))))
-
-;;  converts lisp-string back into maxima-string
-(defun $sunlisp (lstr) (m-string lstr))
-(defun m-string (lstr)
-  (if (mstringp lstr)
-    lstr
-    (intern (maybe-invert-string-case (concatenate 'string "&" lstr)))))
-
-
-;;  tests, if object is lisp-string
-(defun $lstringp (obj) (stringp obj))
-
-;;  tests, if object is maxima-string
-(defun $stringp (obj) (mstringp obj))
+;;  tests, if object is a string
+(defun $stringp (obj) (stringp obj))
 
 
 ;;  copy
-(defun $scopy (mstr)
-   (m-string
-      (copy-seq (l-string mstr))))
+(defun $scopy (mstr) (copy-seq mstr))
 
 ;;  make
 (defun $smake (n mch)
-   (m-string
-      (make-string n :initial-element (l-char mch))))
+  (make-string n :initial-element (l-char mch)))
 
 
 ;;  returns a maxima-string of length 1
 (defun $charat (mstr index) ;; 1-indexed!
-   (m-string
-      (subseq (l-string mstr) (1- index) index)))
+  (subseq mstr (1- index) index))
 
-(defun $charlist (mstr) ;; 1-indexed!
-   (let* ((str (l-string mstr))
-	  (len (length str))
-	  lis)
-      (do ((n 1 (1+ n)))
-	  ((> n len) lis)
-	  (setq lis (cons (m-string
-				(subseq str (1- n) n))
-			  lis)))
-      (cons '(mlist) (reverse lis))))
+(defun $charlist (s)
+  (cons '(mlist) (mapcar #'(lambda (c) (m-char c)) (coerce s 'list))))
 
 (putprop '$sexplode '$charlist 'alias)
 
 
 ;;  $tokens implements Paul Grahams function tokens in Maxima
 (defun $tokens (mstr &optional (test '$constituent))
-  (cons '(mlist)
-	(tokens (l-string mstr)
-		(intern (string (stripdollar test)))
-		0)))
+  (cons '(mlist) (tokens mstr (stripdollar test) 0)))
 
 (defun tokens (str test start) ;; Author: Paul Graham - ANSI Common Lisp, 1996, page 67
   (let ((p1 (position-if test str :start start)))
@@ -261,7 +221,7 @@
        (let ((p2 (position-if #'(lambda (ch)
 				  (not (funcall test ch)))
 			      str :start p1)))
-	 (cons (m-string (subseq str p1 p2)) ;; modified: conses maxima-strings
+	 (cons (subseq str p1 p2)
 	       (if p2
 		   (tokens str test p2)
 		   nil)))
@@ -285,8 +245,8 @@
 ;;  optional flag for multiple delimiter chars
 (defun $split (mstr &optional (dc " ") (m t))
   (cons '(mlist)
-	(split (l-string mstr)
-	       (character (stripdollar dc))
+	(split mstr
+	       (character dc)
 	       m)))
 
 (defun split (str dc &optional (m t))
@@ -298,14 +258,14 @@
 		   (ss (subseq str (1+ p1) p2)))
 	       (if (and m (string= ss ""))
 		 (if p2 (splitrest str dc m p2) nil)
-		 (cons (m-string ss) (if p2 (splitrest str dc m p2) nil))))
+		 (cons ss (if p2 (splitrest str dc m p2) nil))))
 	    nil))))
    (let ((p1 (position dc str)))
      (if p1
 	(let ((ss (subseq str 0 p1)))
 	   (if (and m (string= ss ""))
 	      (splitrest str dc m p1)
-	      (cons (m-string ss) (splitrest str dc m p1))))
+	      (cons ss (splitrest str dc m p1))))
 	(list str)))))
 
 ;;  $sconcat for lists, allows an optional user defined separator string
@@ -313,48 +273,38 @@
 (defun $simplode (lis &optional (ds ""))
    (setq lis (cdr lis))
    (let ((res ""))
-      (setq ds (l-string ds))
       (dolist (mstr lis)
 	 (setq res (concatenate 'string res ($sconcat mstr) ds)))
-      (m-string (string-right-trim ds res))))
+      (string-right-trim ds res)))
 
 
 ;;  modified version of $sconcat, returns maxima-string
 (defun $sconc (&rest args)
-  (let ((ans "") )
-    (dolist (elt args)
-       (setq ans
-	  (concatenate 'string ans
-	     (cond ((and (symbolp elt) (eql (getcharn elt 1) #\&))
-		      (l-string elt))
-		   ((stringp elt) elt)
-		   (t (coerce (mstring elt) 'string))))))
-    (m-string ans)))
+  (format t "$SCONC: PUNT TO $CONCAT. REPLACE CALLS TO THIS FUNCTION WITH CALLS TO CONCAT.~%")
+  (apply #'$concat args))
 
 
 
 (defun $slength (mstr)
-   (length (l-string mstr)))
+   (length mstr))
 
 (defun $sposition (mch mstr) ;; 1-indexed!
-   (let ((pos (position (l-char mch) (l-string mstr))))
+   (let ((pos (position (l-char mch) mstr)))
      (if pos (1+ pos))))
 
 (defun $sreverse (mstr)
-   (m-string
-      (reverse (l-string mstr))))
+  (reverse mstr))
 
 (defun $substring (mstr start &optional (end)) ;; 1-indexed!
-   (m-string
-      (subseq (l-string mstr) (1- start) (if end (1- end)))))
+  (subseq mstr (1- start) (if end (1- end))))
 
 
 ;;  comparison - test functions - at Maxima level
 (defun $sequalignore (mstr1 mstr2)
-   (string-equal (l-string mstr1) (l-string mstr2)))
+   (string-equal mstr1 mstr2))
 
 (defun $sequal (mstr1 mstr2)
-   (string= (l-string mstr1) (l-string mstr2)))
+   (string= mstr1 mstr2))
 
 ;;  comparison - test functions - at Lisp level
 (defun sequalignore (str1 str2)
@@ -366,9 +316,9 @@
 
 ;;  functions for string manipulation
 (defun $ssubstfirst (news olds mstr &optional (test '$sequal) (s 1) (e)) ;; 1-indexed!
-   (let* ((str (l-string mstr))
-	  (new (l-string news))
-	  (old (l-string olds))
+   (let* ((str mstr)
+	  (new news)
+	  (old olds)
 	  (len (length old))
 	  (pos (search old str
 		  :test (if (numberp test)
@@ -377,18 +327,17 @@
 			   (stripdollar test))
 		  :start2 (1- s)
 		  :end2 (if e (1- e)))))
-      (m-string
 	 (if (null pos)
 	    str
 	    (concatenate 'string
 	       (subseq str 0 pos)
 	       new
-	       (subseq str (+ pos len)))))))
+	       (subseq str (+ pos len))))))
 
 (defun $ssubst (news olds mstr &optional (test '$sequal) (s 1) (e)) ;; 1-indexed!
-   (let* ((str (l-string mstr))
-	  (new (l-string news))
-	  (old (l-string olds))
+   (let* ((str mstr)
+	  (new news)
+	  (old olds)
 	  (pos (search old str
 		  :test (if (numberp test)
 			   (merror
@@ -397,11 +346,11 @@
 		  :start2 (1- s)
 		  :end2 (if e (1- e)))))
       (if (null pos)
-	 (m-string str)
+        str
 	 ($ssubst
-	    (m-string new)
-	    (m-string old)
-	    ($ssubstfirst (m-string new) (m-string old)
+	    new
+	    old
+	    ($ssubstfirst new old
 			  mstr (stripdollar test) (1+ pos) (if e (1+ e)))
 	    (stripdollar test)
 	    (1+ pos)
@@ -418,8 +367,8 @@
 	    (sq1 (subseq str 0 pos))
 	    (sq2 (subseq str (+ pos len))))
 	(concatenate 'string sq1 sq2))))
-   (let* ((str (l-string mstr))
-	  (sss (l-string seq))
+   (let* ((str mstr)
+	  (sss seq)
 	  (end (if e (1- e)))
 	  (start (search sss str
 		    :test (if (numberp test)
@@ -429,14 +378,14 @@
 		    :start2 (1- s)
 		    :end2 end)))
       (do ()
-	  ((null start) (m-string str))
+	  ((null start) str)
 	  (progn
 	     (setq str (sremovefirst sss str (stripdollar test) start end))
 	     (setq start (search sss str :test (stripdollar test) :start2 start :end2 end)))))))
 
 (defun $sremovefirst (seq mstr &optional (test '$sequal) (s 1) (e))  ;; 1-indexed!
-   (let* ((str (l-string mstr))
-	  (sss (l-string seq))
+   (let* ((str mstr)
+	  (sss seq)
 	  (len (length sss))
 	  (pos (search sss str
 		  :test (if (numberp test)
@@ -447,31 +396,31 @@
 		  :end2 (if e (1- e))))
 	  (sq1 (subseq str 0 pos))
 	  (sq2 (if pos (subseq str (+ pos len)) "")))
-      (m-string (concatenate 'string sq1 sq2))))
+      (concatenate 'string sq1 sq2)))
 
 
 (defun $sinsert (seq mstr pos)  ;; 1-indexed!
-   (let* ((str (l-string mstr))
+   (let* ((str mstr)
 	  (sq1 (subseq str 0 (1- pos)))
 	  (sq2 (subseq str (1- pos))))
-      (m-string (concatenate 'string sq1 (l-string seq) sq2))))
+      (concatenate 'string sq1 seq sq2)))
 
 
 (defun $ssort (mstr &optional (test '$clessp))
-   (let ((copy (copy-seq (l-string mstr))))
-      (m-string (stable-sort copy (stripdollar test)))))
+   (let ((copy (copy-seq mstr)))
+      (stable-sort copy (stripdollar test))))
 
 
 (defun $smismatch (mstr1 mstr2 &optional (test '$sequal))  ;; 1-indexed!
-   (1+ (mismatch (l-string mstr1)
-		 (l-string mstr2)
+   (1+ (mismatch mstr1
+		 mstr2
 		 :test (stripdollar test))))
 
 (defun $ssearch (seq mstr &optional (test '$sequal) (s 1) (e))  ;; 1-indexed!
    (let ((pos
 	   (search
-	     (l-string seq)
-	     (l-string mstr)
+	     seq
+	     mstr
 	     :test (if (numberp test)
 		     (merror
 		       "ssearch: Order of optional arguments: test, start, end")
@@ -483,26 +432,21 @@
 
 
 (defun $strim (seq mstr)
-   (m-string
-      (string-trim (l-string seq) (l-string mstr))))
+  (string-trim seq mstr))
 
 (defun $striml (seq mstr)
-   (m-string
-      (string-left-trim (l-string seq) (l-string mstr))))
+  (string-left-trim seq mstr))
 
 (defun $strimr (seq mstr)
-   (m-string
-      (string-right-trim (l-string seq) (l-string mstr))))
+  (string-right-trim seq mstr))
 
 
 
 (defun $supcase (mstr &optional (s 1) (e))  ;; 1-indexed!
-   (m-string
-      (string-upcase (l-string mstr) :start (1- s) :end (if e (1- e)))))
+  (string-upcase mstr :start (1- s) :end (if e (1- e))))
 
 (defun $sdowncase (mstr &optional (s 1) (e))  ;; 1-indexed!
-   (m-string
-      (string-downcase (l-string mstr) :start (1- s) :end (if e (1- e)))))
+  (string-downcase mstr :start (1- s) :end (if e (1- e))))
 
 
 (defun invert-char (ch) (setf ch (character ch))
@@ -516,16 +460,15 @@
       (concatenate 'string (map 'list #'invert-char cl2))))
 
 (defun $sinvertcase (mstr &optional (s 1) (e))  ;; 1-indexed!
-   (let* ((str (l-string mstr))
+   (let* ((str mstr)
 	  (s1 (subseq str 0 (1- s)))
 	  (s2 (subseq str (1- s) (if e (1- e))))
 	  (s3 (if e (subseq str (1- e)) "")))
-   (m-string
-      (concatenate 'string s1 (invert-string-case s2) s3))))
+      (concatenate 'string s1 (invert-string-case s2) s3)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; this character definitions must be placed beneath the definition of m-string
+;; this character definitions must be placed beneath the definition of m-char
 (defmvar $newline  (m-char #\newline))
 (defmvar $tab      (m-char #\tab))
 (defmvar $space    (m-char #\space))

@@ -94,9 +94,9 @@
 	(setq new-max t)
 	(dolist (ai acc)
 	  (setq sgn ($compare x ai))
-	  (setq new-max (and new-max (memq sgn '(&> &>=))))
+	  (setq new-max (and new-max (member sgn '(">" ">=") :test #'equal)))
 	  (if (eq sgn '$notcomparable) (setq issue-warning t))
-	  (if (memq sgn '(&< &= &<=)) (throw 'done t)))
+	  (if (member sgn '("<" "=" "<=") :test #'equal) (throw 'done t)))
 	(if new-max (setq acc (list x)) (push x acc))))
     
     ;; Fourth, when when trylevel is 2 or higher e and -e are members of acc, replace e by |e|.
@@ -175,15 +175,15 @@
 
 (defun $compare (a b)
   (cond ((or (not (lenient-extended-realp a)) (not (lenient-extended-realp b)))
-	 (if (eq t (meqp a b)) '&= '$notcomparable))
+	 (if (eq t (meqp a b)) "=" '$notcomparable))
 	(t
 	 (let ((sgn (csign (specrepcheck (sub a b)))))
-	   (cond ((eq sgn '$neg) '&<)
-		 ((eq sgn '$nz) '&<=)
-		 ((eq sgn '$zero) '&=)
-		 ((eq sgn '$pz) '&>=)
-		 ((eq sgn '$pos) '&>)
-		 ((eq sgn '$pn) '&#)
+	   (cond ((eq sgn '$neg) "<")
+		 ((eq sgn '$nz) "<=")
+		 ((eq sgn '$zero) "=")
+		 ((eq sgn '$pz) ">=")
+		 ((eq sgn '$pos) ">")
+		 ((eq sgn '$pn) "#")
 		 ((eq sgn '$pnz) '$unknown)
 		 (t '$unknown))))))
 

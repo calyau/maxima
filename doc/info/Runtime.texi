@@ -193,8 +193,6 @@ The string has the format @code{HH:MM:SS Day, mm/dd/yyyy (GMT-n)},
 where the fields are
 hours, minutes, seconds, day of week, month, day of month, year, and hours different from GMT.
 
-The return value is a Lisp string.
-
 Example:
 
 @c ===beg===

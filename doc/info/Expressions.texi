@@ -247,18 +247,12 @@ except by embedding the literal character in the string.
 There is no character type in Maxima;
 a single character is represented as a one-character string.
 
-Maxima strings are implemented as Lisp symbols, not Lisp strings;
-that may change in a future version of Maxima.
-Maxima can display Lisp strings and Lisp characters,
-although some other operations (for example, equality tests) may fail.
-@c DISCOMFORT WITH LISP STRINGS AND CHARACTERS IS A BUG.
-
 The @code{stringproc} add-on package contains many functions for working with strings.
 
 Examples:
 
 @c ===beg===
-@c s_1 : "This is a Maxima string.";
+@c s_1 : "This is a string.";
 @c s_2 : "Embedded \"double quotes\" and backslash \\ characters.";
 @c s_3 : "Embedded line termination
 @c in this string.";
@@ -272,8 +266,8 @@ Examples:
 @c s_1;
 @c ===end===
 @example
-(%i1) s_1 : "This is a Maxima string.";
-(%o1)               This is a Maxima string.
+(%i1) s_1 : "This is a string.";
+(%o1)               This is a string.
 (%i2) s_2 : "Embedded \"double quotes\" and backslash \\ characters.";
 (%o2) Embedded "double quotes" and backslash \ characters.
 (%i3) s_3 : "Embedded line termination
@@ -288,11 +282,11 @@ this string.";
 (%i5) stringdisp : false;
 (%o5)                         false
 (%i6) s_1;
-(%o6)               This is a Maxima string.
+(%o6)                   This is a string.
 (%i7) stringdisp : true;
 (%o7)                         true
 (%i8) s_1;
-(%o8)              "This is a Maxima string."
+(%o8)                  "This is a string."
 @end example
 
 @node Inequality, Syntax, Strings, Expressions

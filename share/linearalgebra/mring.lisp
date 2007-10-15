@@ -293,14 +293,14 @@
    :great #'(lambda (a b) (declare (ignore a)) (eq t (meqp b 0)))
    :add #'(lambda (a b) (add a b))
    :div #'(lambda (a b) (progn
-			  (let (($matrix_element_mult '&.)
+			  (let (($matrix_element_mult ".")
 				($matrix_element_transpose '$transpose))
 			    (setq b (if ($matrixp b) ($invert_by_lu b '$noncommutingring)
 				      (take '(mncexpt) b -1)))
 			    (take '(mnctimes) a b))))
    
    :rdiv #'(lambda (a b) (progn
-			   (let (($matrix_element_mult '&.)
+			   (let (($matrix_element_mult ".")
 				 ($matrix_element_transpose '$transpose))
 			     (setq b (if ($matrixp b) ($invert_by_lu b '$noncommutingring)
 				       (take '(mncexpt) b -1)))
@@ -308,13 +308,13 @@
 				
 
    :reciprocal #'(lambda (s) (progn
-			       (let (($matrix_element_mult '&.)
+			       (let (($matrix_element_mult ".")
 				     ($matrix_element_transpose '$transpose))
 				 (if ($matrixp s) ($invert_by_lu s '$noncommutingring) 
 				   (take '(mncexpt) s -1)))))
 
    :mult #'(lambda (a b) (progn 
-			   (let (($matrix_element_mult '&.)
+			   (let (($matrix_element_mult ".")
 				 ($matrix_element_transpose '$transpose))
 			     (take  '(mnctimes) a b))))
 

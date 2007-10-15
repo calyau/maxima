@@ -153,7 +153,7 @@
   (when (and $dskuse (not $nolabels) (> (incf dcount) $filesize))
     (setq dcount 0)
     (dsksave))
-  (setq linelable (intern (format nil "~a~d" x $linenum)))
+  (setq linelable ($concat '|| x $linenum))
   (unless $nolabels
     (when (or (null (cdr $labels))
 	      (when (member linelable (cddr $labels) :test #'equal)
@@ -244,7 +244,7 @@
   (let ((file ($file_search filename)))
     (dolist (func functions)
       (nonsymchk func '$setup_autoload)
-      (putprop (setq func (dollarify-name func)) file 'autoload)
+      (putprop (setq func ($verbify func)) file 'autoload)
       (add2lnc func $props)))
   '$done)
 
@@ -372,6 +372,7 @@
       (if z (kill1 z)))))
 
 (defmfun kill1 (x)
+  (if (and (stringp x) (not (getopr0 x))) (return-from kill1 nil))
   (funcall
    #'(lambda (z)
        (cond ((and allbutl (member x allbutl :test #'equal)))
@@ -733,7 +734,7 @@
 	((numberp x) x)
 	((null x) 'false)
 	((eq x t) 'true)
-	((member (getchar x 1) '($ % &) :test #'equal)
+	((member (getchar x 1) '($ %) :test #'equal)
 	 (intern (subseq (string x) 1)))
 	(t x)))
 
@@ -771,7 +772,8 @@
 ;;; been disabled for now.
 ;;;
 (defmfun $nounify (x)
-  (nonsymchk x '$nounify)
+  (if (not (or (symbolp x) (stringp x)))
+    (merror "nounify: argument must be a symbol or a string."))
   (setq x (amperchk x))
   (cond ((get x 'verb))
 	((get x 'noun) x)
@@ -785,7 +787,8 @@
 		 (t x))))))
 
 (defmfun $verbify (x)
-  (nonsymchk x '$verbify)
+  (if (not (or (symbolp x) (stringp x)))
+    (merror "verbify: argument must be a symbol or a string."))
   (setq x (amperchk x))
   (cond ((get x 'noun))
 	((and (char= (char (symbol-name x) 0) #\%)
@@ -794,26 +797,11 @@
 		  (get x 'noun))))
 	(t x)))
 
-
-(defmfun dollarify-name (name)
-  (let ((n (char (symbol-name name) 0)))
-    (cond ((char= n #\&)
-	   (or (get name 'opr)
-	       (let ((namel (casify-exploden name)) ampname dolname)
-		 (cond ((get (setq ampname (implode (cons #\& namel))) 'opr))
-		       (t (setq dolname (implode (cons #\$ namel)))
-			  (putprop dolname ampname 'op)
-			  (putprop ampname dolname 'opr)
-			  (add2lnc ampname $props)
-			  dolname)))))
-	  ((char= n #\%) ($verbify name))
-	  (t name))))
-
 (defmspec $string (form)
   (setq form (strmeval (fexprcheck form)))
   (setq form (if $grind (strgrind form) (mstring form)))
   (setq st (reverse form) rephrase t)
-  (implode (cons #\& form)))
+  (coerce form 'string))
 
 (defmfun makstring (x)
   (setq x (mstring x))
@@ -846,32 +834,10 @@
 	($bothcoeff $bothcoef)))
 
 (defmfun amperchk (name)
-  " $AB ==> $AB,
-   $aB ==> $aB,
-   &AB ==> $AB,
-   &aB ==> $aB,
-   |aB| ==> |aB| "
-  (if (char= (char (symbol-name name) 0) #\&)
-      (getalias (or (get name 'opr)
-		    (implode (cons #\$ (casify-exploden name)))))
-      name))
-
-
-#+(and cl (not scl) (not allegro))
-(defun casify-exploden (x)
-  (cond ((char= (char (symbol-name x) 0) #\&)
-	 (cdr (exploden (maybe-invert-string-case (string x)))))
-	(t (exploden x))))
-
-#+(or scl allegro)
-(defun casify-exploden (x)
-  (cond ((char= (char (symbol-name x) 0) #\&)
-	 (let ((string (string x)))
-	   (unless #+scl (eq ext:*case-mode* :lower)
-		   #+allegro (eq excl:*current-case-mode* :case-sensitive-lower)
-	     (setf string (maybe-invert-string-case string)))
-	   (cdr (exploden string))))
-	(t (exploden x))))
+  (cond
+    ((symbolp name) name)
+    ((stringp name)
+     (getalias (or (getopr0 name) (implode (cons #\$ (coerce name 'list))))))))
 
 (defmspec $stringout (x)
   (setq x (cdr x))
@@ -1047,11 +1013,14 @@
   (let* ((keyword (car form))
 	 (feature (cadr form)))
     (assert (symbolp keyword))
-    (assert (symbolp feature))
+    (assert (or (stringp feature) (symbolp feature)))
     (case keyword
       ($feature (cond ((null feature) (dollarify *features*))
-		      ((member (intern (symbol-name
-				      (fullstrip1 feature)) 'keyword)
+		      ((member (intern
+                         (if (stringp feature)
+                           (maybe-invert-string-case feature)
+                           (symbol-name (fullstrip1 feature)))
+                         'keyword)
 			     *features* :test #'equal) t)))
       ($status '((mlist simp) $feature $status))
       (t (merror "Unknown argument - `status':~%~M" keyword)))))

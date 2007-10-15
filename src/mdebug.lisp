@@ -552,8 +552,7 @@ Command      Description~%~
   (unless *mdebug*
     (format t "~&Turning on debugging debugmode(true)")
     (setq *mdebug* t))
-  (cond ((or (stringp fun)
-	     (and (mstringp fun) (setq fun ($sconcat fun))))
+  (cond ((stringp fun)
 	 (let ((file fun)  start)
 	   (loop named joe for vv being the symbols of 'maxima with tem with linfo
 		  when (and (typep (setq tem (set-full-lineinfo vv))

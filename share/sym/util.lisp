@@ -496,13 +496,9 @@
 (add2lnc '(($card_stab) $part $egal) $functions)
 ;------------------------------------------------------------------------
 
-; Il faut se debarasser du "&" devant le symbol $egal que MACSYMA a mis.
-; Puis transformer la string en symbol pour l'utiliser dans sort
-; Si on tape "<" sous MACSYMA cela arrive sous la forme &< sous LISP 
-
 (defun $card_stab_init ($part $egal)
   (card_stab (cdr $part)
-             (find-symbol (string-left-trim "&" $egal))))
+             (find-symbol (string $egal))))
 
 (defun card_stab (s egal)
   (let ((lmultip (sort (multiplicites s egal) '<)))

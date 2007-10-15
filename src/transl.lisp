@@ -952,14 +952,15 @@ APPLY means like APPLY.")
 ;;; Some atoms, soley by usage, are self evaluating. 
 
 (defun implied-quotep (atom)
-  (cond ((get atom 'implied-quotep)
-	 atom)
-	((char= (char (symbol-name atom) 0) #\&) ;;; mstring hack
-	 (cond ((eq atom '|&**|) ;;; foolishness. The PARSER should do this.
+  (cond
+	((stringp atom)
+	 (cond
+       ((equal atom "**") ;;; foolishness. The PARSER should do this.
 		;; Losing Fortran hackers.
 		(tr-format "~% `**' is obsolete, use `^' !!!")
-		'|&^|)
-	       (t atom)))
+		"^")
+       (t atom)))
+    ((get atom 'implied-quotep) atom)
 	(t nil)))
 
 (defun translate-atoms (form)
@@ -1628,10 +1629,10 @@ APPLY means like APPLY.")
 
 (defun tboundp (var)
   ;; really LEXICAL-VARP.
-  (and (get var 'tbind) (not (get var 'special))))
+  (and (symbolp var) (get var 'tbind) (not (get var 'special))))
 
 (defun teval (var)
-  (or (get var 'tbind) var))
+  (or (and (symbolp var) (get var 'tbind)) var))
 
 ;; Local Modes:
 ;; Mode: LISP

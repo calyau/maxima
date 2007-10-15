@@ -1015,10 +1015,10 @@ The rule constructed by @code{tellsimpafter} is named after the main operator of
 Rules for built-in operators, 
 and user-defined operators 
 defined by @code{infix}, @code{prefix}, @code{postfix}, @code{matchfix}, and @code{nofix},
-have names which are Maxima strings.
+have names which are Lisp identifiers.
 @c SLIGHTLY TOO MUCH DETAIL
-@c (that is, the name begins with ampersand @code{&}).
-Rules for other functions have names which are ordinary Maxima identifiers.
+@c (that is, the name is written with a leading question mark @code{?} in Maxima).
+Rules for other functions have names which are Maxima identifiers.
 @c SLIGHTLY TOO MUCH DETAIL
 @c (that is, the name begins with dollar sign @code{$}).
 
@@ -1145,8 +1145,8 @@ Error: bb was declared mode boolean, has value: %e
 @end example
 
 Rules are named after main operators.
-Names of rules for built-in and user-defined operators are strings,
-while names for other functions are ordinary identifiers.
+Names of rules for built-in and user-defined operators are Lisp identifiers,
+while names for other functions are Maxima identifiers.
 
 @c ===beg===
 @c tellsimpafter (foo (%pi + %e), 3*%pi);
@@ -1158,10 +1158,9 @@ while names for other functions are ordinary identifiers.
 @c rules;
 @c foorule_name: first (%o1);
 @c plusrule_name: first (%o4);
-@c [?mstringp (foorule_name), symbolp (foorule_name)];
-@c [?mstringp (plusrule_name), symbolp (plusrule_name)];
 @c remrule (foo, foorule1);
-@c remrule ("^", "^rule1");
+@c remrule ("^", ?\^rule1);
+@c rules;
 @c ===end===
 @example
 (%i1) tellsimpafter (foo (%pi + %e), 3*%pi);
@@ -1177,21 +1176,17 @@ while names for other functions are ordinary identifiers.
 (%i6) tellsimpafter (foo (9) ^ foo (13), mumble (22));
 (%o6)                  [^rule1, simpexpt]
 (%i7) rules;
-(%o7) [trigrule0, trigrule1, trigrule2, trigrule3, trigrule4, 
-htrigrule1, htrigrule2, htrigrule3, htrigrule4, foorule1, 
-foorule2, foorule3, +rule1, *rule1, ^rule1]
+(%o7) [foorule1, foorule2, foorule3, +rule1, *rule1, ^rule1]
 (%i8) foorule_name: first (%o1);
 (%o8)                       foorule1
 (%i9) plusrule_name: first (%o4);
 (%o9)                        +rule1
-(%i10) [?mstringp (foorule_name), symbolp (foorule_name)];
-(%o10)                    [false, true]
-(%i11) [?mstringp (plusrule_name), symbolp (plusrule_name)];
-(%o11)                    [true, true]
-(%i12) remrule (foo, foorule1);
-(%o12)                         foo
-(%i13) remrule ("^", "^rule1");
-(%o13)                          ^
+(%i10) remrule (foo, foorule1);
+(%o10)                         foo
+(%i11) remrule ("^", ?\^rule1);
+(%o11)                          ^
+(%i12) rules;
+(%o12)        [foorule2, foorule3, +rule1, *rule1]
 @end example
 
 A worked example: anticommutative multiplication.

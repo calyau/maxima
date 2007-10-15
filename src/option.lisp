@@ -1061,6 +1061,6 @@
 (subc %asech (c) $float $numer $bfloat $%piargs $%iargs $triginverses
       $trigsign $logarc)
 
-(subc |&.| (c) $dotassoc $dotscrules $dotconstrules $dotexptsimp
+(subc |.| (c) $dotassoc $dotscrules $dotconstrules $dotexptsimp
       $dotdistrib $assumescalar)
 

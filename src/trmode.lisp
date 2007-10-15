@@ -255,8 +255,8 @@ maybe you want ~:M mode.~%"
 	 mode
 	 (case mode
 	   (($integer $integerp) '$fixnum)
-	   (($complex) "&to ask about this")
-	   (t "&to see the documentation on"))))
+	   (($complex) "to ask about this")
+	   (t "to see the documentation on"))))
 
 (defmfun fluidize (variable)
   (mapc #'(lambda (v) (or (boundp v) (setf (symbol-value v) nil)))

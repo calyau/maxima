@@ -441,7 +441,7 @@ collapse the elements of the array @code{A} by doing
 Concatenates its arguments.
 The arguments must evaluate to atoms.
 The return value is a symbol if the first argument is a symbol
-and a Maxima string otherwise.
+and a string otherwise.
 
 @code{concat} evaluates its arguments.
 The single quote @code{'} prevents evaluation.
@@ -474,7 +474,7 @@ The @code{::} (double colon) assignment operator evaluates its left-hand side.
 (%o9)                         b
 @end example
 
-Note that although @code{concat (1, 2)} looks like a number, it is a Maxima string.
+Note that although @code{concat (1, 2)} looks like a number, it is a string.
 
 @example
 (%i10) concat (1, 2) + 3;
@@ -487,9 +487,6 @@ Note that although @code{concat (1, 2)} looks like a number, it is a Maxima stri
 
 Concatenates its arguments into a string.
 Unlike @code{concat}, the arguments do @i{not} need to be atoms.
-
-The result is a Lisp string.
-@c THAT'S ODD; WHY NOT A MAXIMA STRING ??
 
 @example
 (%i1) sconcat ("xx[", 3, "]:", expand ((x+y)^3));
@@ -703,8 +700,7 @@ If the final component of @var{path} is of the form @code{###.@var{something}},
 the component is replaced with @code{@var{filename}.@var{something}}.
 Otherwise, the final component is simply replaced by @var{filename}.
 
-@c SAY SOMETHING ABOUT ARG TYPE -- LISP STRINGS WORK BETTER THAN MAXIMA STRINGS
-@c SAY SOMETHING ABOUT RETURN TYPE
+The result is a Lisp pathname object.
 @end deffn
 
 @deffn {Function} file_search (@var{filename})
@@ -1669,7 +1665,7 @@ The TeX equation label is the same as the Maxima label.
 append their TeX output to the file @var{filename}.
 
 @code{tex (@var{expr}, false)} and @code{tex (@var{label}, false)}
-return their TeX output as a Lisp string.
+return their TeX output as a string.
 
 @code{tex} evaluates its first argument after testing it to see if it is a label.
 Quote-quote @code{''} forces evaluation of the argument, thereby defeating the test
@@ -1698,7 +1694,7 @@ $$-\cos x$$
 (%o4)                          (\%o1)
 @end example
 
-@code{tex (@var{expr}, false)} returns its TeX output as a Lisp string.
+@code{tex (@var{expr}, false)} returns its TeX output as a string.
 
 @c ===beg===
 @c S : tex (x * y * z, false);

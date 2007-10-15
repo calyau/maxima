@@ -518,7 +518,7 @@
 
 (defun announce-rule-firing (rulename expr simplified-expr)
   (let (($display2d nil) ($stringdisp nil))
-    ($print (make-mstring "By") rulename '|&,| expr '|&-->| simplified-expr))
+    ($print "By" rulename "," expr "-->" simplified-expr))
   simplified-expr)
 
 (defmspec $defrule (form)

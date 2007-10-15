@@ -160,7 +160,7 @@ simplify_sum(expr) :=
       )
     ) = [] then sm1 : expr,
 
-    supcontext("ss_context"),
+    supcontext(ss_context),
     
     /* If everything else fails let's try the Zeilberger algorithm .    */
     if errcatch(
@@ -175,7 +175,7 @@ simplify_sum(expr) :=
     if sm1=false then
       sm1 : apply(sum, [summand, var, lo, hi]),
 
-    killcontext("ss_context"),
+    killcontext('ss_context),
 
     sm1
   )$
@@ -328,13 +328,13 @@ summand_to_rec(expr, k, n) := block(
     k : k[1]
   ),
 
-  supcontext("ss_context"),
+  supcontext(ss_context),
 
   if errcatch(
     zr : ss_zeilb(expr, k, lo, hi, n)
   ) = [] then zr : 'failed,
 
-  killcontext("ss_context"),
+  killcontext('ss_context),
 
   zr
 )$

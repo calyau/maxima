@@ -39,9 +39,6 @@
 
 (defun shadow-string-assignment (var value)
   (cond
-    ((mstringp value)
-     (set (get var 'lisp-shadow) (maybe-invert-string-case (symbol-name (stripdollar value))))
-     value)
     ((stringp value)
      (set (get var 'lisp-shadow) value)
      value)
@@ -667,7 +664,7 @@
   (do-symbols (s maxima-package)
     (when (and (eql (symbol-package s) maxima-package)
 	       (not (eq s '||))
-	       (member (char (symbol-name s) 0) '(#\$ #\% #\&) :test #'char=))
+	       (member (char (symbol-name s) 0) '(#\$ #\%) :test #'char=))
       (push s *builtin-symbols*)
       (unless (member s problematic-symbols :test #'eq)
 	(setf (gethash s *builtin-symbol-props*)

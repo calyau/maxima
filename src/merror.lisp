@@ -17,7 +17,7 @@
 
 (defvar *mdebug* t "Enter the lisp debugger on an error if this is true")
 
-(defmvar $error `((mlist simp) ,(make-mstring "No error."))
+(defmvar $error `((mlist simp) "No error.")
   "During an MAXIMA-ERROR break this is bound to a list
   of the arguments to the call to MAXIMA-ERROR, with the message
   text in a compact format.")
@@ -186,7 +186,7 @@
       (throw 'raterr nil)
       (apply #'merror args)))
 
-;;; The user-error function is called on |&foo| "strings" and expressions.
+;;; The user-error function is called on "strings" and expressions.
 ;;; Cons up a format string so that $ERROR can be bound.
 ;;; This might also be done at code translation time.
 ;;; This is a bit crude.
@@ -198,12 +198,12 @@
        (setq sl (maknam sl))
        (cons sl (nreverse se)))
     (setq s (pop l))
-    (cond ((and (symbolp s) (char= (char (symbol-name s) 0) #\&))
+    (cond ((stringp s)
 	   (setq sb (mapcan #'(lambda (x)
 				(if (char= x #\~)
 				    (list x x)
 				    (list x)))
-			    (cdr (exploden s)))))
+			    (coerce s 'list))))
 	  (t
 	   (push s se)
 	   (setq sb (list #\~ #\M))))

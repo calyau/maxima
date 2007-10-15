@@ -502,12 +502,6 @@
  
 (defprop | --> | " rightarrow " texsym)
 (defprop | WHERE | "` bold where`" texsym)
-(defprop &>= (" ge ") texsym)
-(defprop &> (" > ") texsym)
-(defprop &<= (" le ") texsym)
-(defprop &< (" < ") texsym)
-(defprop &= (" = ") texsym)
-(defprop |&#| (" neq ") texsym)
  
 (defun tex-mlable (x l r)
   (tex (caddr x)

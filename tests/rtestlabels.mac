@@ -138,7 +138,7 @@ false;
  0);
 0;
 
-(ensure_string (x) := if ?mstringp (x) then x else string (x),
+(ensure_string (x) := if stringp (x) then x else string (x),
  my_every (p, L) := apply ("and", map (is, map (p, L))),
  my_some (p, L) := apply ("or", map (is, map (p, L))),
  my_none (p, L) := apply ("and", map ("not", map (is, map (p, L)))),

@@ -74,8 +74,8 @@
     (8 "eighth")
     (9 "ninth")
     (10 "tenth")
-    (otherwise (format nil "~A-th" 
-		       (string-left-trim "&" (mfuncall '$string i))))))
+    (otherwise
+      (format nil "~A-th" (mfuncall '$string i)))))
     
 ;; If variablep(v) evaluates to false, signal an error saying that
 ;; the i-th argument of the function f requires a symbol; otherwise, 

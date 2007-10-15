@@ -20,8 +20,8 @@
 (defmvar $detout nil)
 (defmvar top* nil)
 (defmvar $ratmx nil)
-(defmvar $matrix_element_mult '|&*|)  ;;; Else, most useful when '|&.|
-(defmvar $matrix_element_add '|&+|)
+(defmvar $matrix_element_mult "*")  ;;; Else, most useful when "."
+(defmvar $matrix_element_add "+")
 (defmvar $matrix_element_transpose nil)
 
 ;;I believe that all the code now stores arrays in the value cell 
@@ -193,8 +193,8 @@
 	   ((equal (setq minor (assoo (delete d (copy-tree id) :test #'equal) mdl)) 0)
 	    (go loop)))
      (setq ans
-	   (if (and (eq $matrix_element_mult '|&*|)
-		    (eq $matrix_element_add '|&+|))
+	   (if (and (equal $matrix_element_mult "*")
+		    (equal $matrix_element_add "+"))
 	       (add ans (mul sign e minor)) ;fast common case
 	     (mapply $matrix_element_add
 		     (list ans
@@ -490,18 +490,18 @@
      (go loop2)))
 
 ;;; This actually takes the inner product of the two vectors.
-;;; I check for the most common cases for speed. '|&*| is a slight
+;;; I check for the most common cases for speed. "*" is a slight
 ;;; violation of data abstraction here. The parser should turn "*" into
 ;;; MTIMES, well, it may someday, which will break this code. Don't
 ;;; hold your breath.
 
 (defun multl (a b)
-  (cond ((eq $matrix_element_add '|&+|)
+  (cond ((equal $matrix_element_add "+")
 	 (do ((ans (if (not $ratmx) 0 '(0 . 1))
 		   (cond ((not $ratmx)
-			  (cond ((eq $matrix_element_mult '|&*|)
+			  (cond ((equal $matrix_element_mult "*")
 				 (add ans (mul (car a) (car b))))
-				((eq $matrix_element_mult '|&.|)
+				((equal $matrix_element_mult ".")
 				 (add ans (ncmul (car a) (car b))))
 				(t
 				 (add ans

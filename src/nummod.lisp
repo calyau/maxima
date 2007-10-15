@@ -189,8 +189,8 @@
 	;; handle 0 < e < 1 implies floor(e) = 0 and
 	;; -1 < e < 0 implies floor(e) = -1.
 
-	((and (eq ($compare 0 e) '&<) (eq ($compare e 1) '&<)) 0)
-	((and (eq ($compare -1 e) '&<) (eq ($compare e 0) '&<)) -1)
+	((and (equal ($compare 0 e) "<") (equal ($compare e 1) "<")) 0)
+	((and (equal ($compare -1 e) "<") (equal ($compare e 0) "<")) -1)
 	(t `(($floor simp) ,e))))
 
 
@@ -233,8 +233,8 @@
 	;; handle 0 < e < 1 implies ceiling(e) = 1 and
 	;; -1 < e < 0 implies ceiling(e) = 0.
 
-	((and (eq ($compare 0 e) '&<) (eq ($compare e 1) '&<)) 1)
-	((and (eq ($compare -1 e) '&<) (eq ($compare e 0) '&<)) 0)
+	((and (equal ($compare 0 e) "<") (equal ($compare e 1) "<")) 1)
+	((and (equal ($compare -1 e) "<") (equal ($compare e 0) "<")) 0)
 	(t `(($ceiling simp) ,e))))
 
 (defprop $mod simp-nummod operators)
@@ -260,15 +260,16 @@
 ;; The function 'round' rounds a number to the nearest integer. For a tie, round to the 
 ;; nearest even integer. 
 
-(defprop $round simp-round operators)
 (defprop %round simp-round operators)
-(setf (get '$round 'integer-valued) t)
-(setf (get '$round 'reflection-rule) #'odd-function-reflect)
+(setf (get '%round 'integer-valued) t)
+(setf (get '%round 'reflection-rule) #'odd-function-reflect)
 (setf (get '$round 'alias) '%round)
+(setf (get '$round 'verb) '%round)
+(setf (get '%round 'noun) '$round)
 
 (defun simp-round (e yy z)
-  (declare (ignore yy))
   (oneargcheck e)
+  (setq yy (caar e)) ;; find a use for the otherwise unused YY.
   (setq e (simplifya (specrepcheck (second e)) z))
   (cond (($featurep e '$integer) e) ;; takes care of round(round(x)) --> round(x).
 	((memq e '($inf $minf $und $ind)) e)
@@ -276,25 +277,26 @@
 	 (let* ((lb (take '($floor) e))
 		(ub (take '($ceiling) e))
 		(sgn (csign (sub (sub ub e) (sub e lb)))))
-	   (cond ((eq sgn t) `(($round simp) ,e))
+	   (cond ((eq sgn t) `((,yy simp) ,e))
 		 ((eq sgn '$neg) ub)
 		 ((eq sgn '$pos) lb)
 		 ((and (eq sgn '$zero) ($featurep lb '$even)) lb)
 		 ((and (eq sgn '$zero) ($featurep ub '$even)) ub)
-		 ((apply-reflection-simp '$round e t))
-		 (t `(($round simp) ,e)))))))
+		 ((apply-reflection-simp yy e t))
+		 (t `((,yy simp) ,e)))))))
  
 ;; Round a number towards zero.
 
-(defprop $truncate simp-truncate operators)
 (defprop %truncate simp-truncate operators)
-(setf (get '$truncate 'integer-valued) t)
-(setf (get '$truncate 'reflection-rule) #'odd-function-reflect)
+(setf (get '%truncate 'integer-valued) t)
+(setf (get '%truncate 'reflection-rule) #'odd-function-reflect)
 (setf (get '$truncate 'alias) '%truncate)
+(setf (get '$truncate 'verb) '%truncate)
+(setf (get '%truncate 'noun) '$truncate)
 
 (defun simp-truncate (e yy z)
-  (declare (ignore yy))
   (oneargcheck e)
+  (setq yy (caar e)) ;; find a use for the otherwise unused YY.
   (setq e (simplifya (specrepcheck (second e)) z))
   (cond (($featurep e '$integer) e) ;; takes care of truncate(truncate(x)) --> truncate(x).
 	((memq e '($inf $minf $und $ind)) e)
@@ -302,6 +304,6 @@
 	 (let ((sgn (csign e)))
 	   (cond ((memq sgn '($neg $nz)) (take '($ceiling) e))
 		 ((memq sgn '($zero $pz $pos)) (take '($floor) e))
-		 ((apply-reflection-simp '$truncate e t))
-		 (t `(($truncate simp) ,e)))))))
+		 ((apply-reflection-simp yy e t))
+		 (t `((,yy simp) ,e)))))))
 	

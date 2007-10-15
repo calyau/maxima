@@ -513,7 +513,7 @@
 (defun box-label (x)
   (if (atom x)
       x
-      (implode (cons #\& (mstring x)))))
+      (coerce (mstring x))) 'string)
 
 (declare-top (special label))
 
@@ -775,15 +775,11 @@
 
 ;;;; CONCAT
 
-(defmfun $concat (&rest l)
+(defun $concat (&rest l)
   (when (null l)
-    (merror "`concat' needs at least one argument."))
-  (getalias (implode
-	     (cons (cond ((not (atom (car l))))
-			 ((or (numberp (car l)) (char= (char (symbol-name (car l)) 0) #\&)) #\&)
-			 (t #\$))
-		   (mapcan #'(lambda (x)
-			       (unless (atom x)
-				 (merror "Argument to `concat' not an atom: ~M" x))
-			       (string* x))
-			   l)))))
+    (merror "concat: I need at least one argument."))
+  (let ((result-is-a-string (or (numberp (car l)) (stringp (car l)))))
+    (setq l (mapcan #'(lambda (x) (unless (atom x) (merror "concat: argument is not an atom: ~M" x)) (string* x)) l))
+    (if result-is-a-string
+      (coerce l 'string)
+      (getalias (implode (cons '#\$ l))))))

@@ -62,7 +62,7 @@ done;
 [px (yy), p1 (2), ps ("string2"), pfloat (29.0), ptrue (truly), pfalse (falsely)];
 [false, false, false, false, false, false];
 
-(matchdeclare (aa, atom, ii, integerp, ss, ?mstringp, ff, floatnump, bb, booleanp),
+(matchdeclare (aa, atom, ii, integerp, ss, stringp, ff, floatnump, bb, booleanp),
  booleanp (e) := atom (e) and (e = true or e = false),
 
  defrule (ra, aa, [aa]),

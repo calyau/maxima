@@ -457,13 +457,9 @@ false$
  *  Maxima undeclared array
  */
 
-(mstring1a : "FOO",
- mstring1b : "FOO",
- mstring2 : "BAR",
-
- lstring1a : sconcat ("FOO"),
- lstring1b : sconcat ("FOO"),
- lstring2 : sconcat ("BAR"),
+(string1a : "FOO",
+ string1b : "FOO",
+ string2 : "BAR",
 
  larray1a : make_array (any, 5),
  fillarray (larray1a, makelist (i, i, 1, 5)),
@@ -522,16 +518,10 @@ false$
 
 /* Comparisons to same type */
 
-is (equal (mstring1a, mstring1b));
+is (equal (string1a, string1b));
 true;
 
-is (equal (mstring1a, mstring2));
-false;
-
-is (equal (lstring1a, lstring1b));
-true;
-
-is (equal (lstring1a, lstring2));
+is (equal (string1a, string2));
 false;
 
 is (equal (larray1a, larray1b));
@@ -590,45 +580,21 @@ unknown; /* comparison of non-identical lambda expressions yields unknown */
 /* Comparisons to different type */
 
 /* No automatic type conversion */
-is (equal (mstring1a, lstring1a));
+is (equal (string1a, larray1a));
 false;
 
-is (equal (mstring1a, larray1a));
-false;
-
-is (equal (mstring1a, 1234));
+is (equal (string1a, 1234));
 false;
 
 /* No automatic type conversion */
-is (equal (mstring1a, 'FOO));
+is (equal (string1a, 'FOO));
 false;
 
-is (equal (mstring1a, sin('x)));
-false;
-
-
-/* No automatic type conversion */
-is (equal (lstring1a, mstring1a));
-false;
-
-is (equal (lstring1a, larray1a));
-false;
-
-is (equal (lstring1a, 1234));
-false;
-
-/* No automatic type conversion */
-is (equal (lstring1a, 'FOO));
-false;
-
-is (equal (lstring1a, sin('x)));
+is (equal (string1a, sin('x)));
 false;
 
 
-is (equal (larray1a, mstring1a));
-false;
-
-is (equal (larray1a, lstring1a));
+is (equal (larray1a, string1a));
 false;
 
 is (equal (larray1a, 1234));
@@ -667,16 +633,10 @@ false;
 
 /* Comparisons to same type */
 
-is (mstring1a = mstring1b);
+is (string1a = string1b);
 true;
 
-is (mstring1a = mstring2);
-false;
-
-is (lstring1a = lstring1b);
-true;
-
-is (lstring1a = lstring2);
+is (string1a = string2);
 false;
 
 is (larray1a = larray1b);
@@ -692,45 +652,22 @@ false;
 /* Comparisons to different type */
 
 /* No automatic type conversion */
-is (mstring1a = lstring1a);
+is (string1a = larray1a);
 false;
 
-is (mstring1a = larray1a);
-false;
-
-is (mstring1a = 1234);
+is (string1a = 1234);
 false;
 
 /* No automatic type conversion */
-is (mstring1a = 'FOO);
+is (string1a = 'FOO);
 false;
 
-is (mstring1a = sin('x));
+is (string1a = sin('x));
 false;
 
 
 /* No automatic type conversion */
-is (lstring1a = mstring1a);
-false;
-
-is (lstring1a = larray1a);
-false;
-
-is (lstring1a = 1234);
-false;
-
-/* No automatic type conversion */
-is (lstring1a = 'FOO);
-false;
-
-is (lstring1a = sin('x));
-false;
-
-
-is (larray1a = mstring1a);
-false;
-
-is (larray1a = lstring1a);
+is (larray1a = string1a);
 false;
 
 is (larray1a = 1234);

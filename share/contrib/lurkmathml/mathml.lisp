@@ -150,7 +150,7 @@
 (defun mathml-atom (x l r) 
   (append l
 	  (list (cond ((numberp x) (mathmlnumformat x))
-                      ((mstringp x) (maybe-invert-string-case (string-left-trim '(#\&) x)))
+                      ((stringp x) x)
 		      ((and (symbolp x) (get x 'mathmlword)))
 		      (t (mathml-stripdollar x))))
 	  r))

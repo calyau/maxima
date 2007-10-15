@@ -238,7 +238,7 @@ levin_u_complex(a__,terms__,[mode__]):=block([n__,re__,im__,
 
 
 /* Robert Dodier: */
-levin_check_lvalue(e__):=(symbolp(e__) or (subvarp(e__) and levin_check_lvalue(part(e__,0)))) and not ?mstringp(e__);
+levin_check_lvalue(e__):=(symbolp(e__) or (subvarp(e__) and levin_check_lvalue(part(e__,0)))) and not stringp(e__);
 
 /* User friendly version.
 

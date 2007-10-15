@@ -3,14 +3,12 @@
 
 m : "text";
 "text"$
-[stringp(m), lstringp(m)];
-[true, false]$
-l : sconcat("text");
-''(lstring("text"))$
-[stringp(l), lstringp(l)];
-[false, true]$
-stringp(sunlisp(l));
-true$
+stringp(m);
+true;
+l : sconcat("\"", "text", "\"");
+''(string("text"))$
+stringp(l);
+true;
 c : "e";
 "e"$
 [charp(c), lcharp(c)];
@@ -99,7 +97,7 @@ bar (7);
 (eval_string ("bar (x) := x^2"), bar (7));
 49;
 
-s: sconc("xx[", 3, "]:", expand((y + x)^3));
+s: sconcat ("xx[", 3, "]:", expand((y + x)^3));
 "xx[3]:y^3+3*x*y^2+3*x^2*y+x^3"$
 scopy("Original");
 "Original"$
@@ -115,7 +113,7 @@ simplode(["One", "more", "coffee."], " ");
 "One more coffee."$
 s: "A submarine.";
 "A submarine."$
-sconc(substring(s, 1, 3), "yellow ", substring(s, 3));
+sconcat (substring(s, 1, 3), "yellow ", substring(s, 3));
 "A yellow submarine."$
 sinsert("hollow ", s, 3);
 "A hollow submarine."$

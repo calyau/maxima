@@ -116,7 +116,7 @@ makeSpec(p) :=
    block(
    Spec : p,
    for i : 0 thru length(ZAnsatzCoeff)-1 do
-     Spec : subst(factor(expand(ZAnsatzCoeff[i+1])),"_z"[i],Spec),
+     Spec : subst(factor(expand(ZAnsatzCoeff[i+1])),'_z[i],Spec),
    return(Spec)
    );
 
@@ -185,7 +185,7 @@ if ZAnsatzDegree = 0 then
       return([[GosperSol,[1]]])
   ),
 
-nFTrivial : niceForm(f,n,"_z",ZAnsatzDegree,k),
+nFTrivial : niceForm(f,n,'_z,ZAnsatzDegree,k),
 
 if nFTrivial = [] then
   (
@@ -256,7 +256,7 @@ GAnsatzDegree: AnsatzDegreeVerboseOpt(p,q,r,k,mode-1),
   Gpoly : 0,
 
   if GAnsatzDegree >= 0 then
-    Gpoly: GosperPoly(p,q,r,k,"_g",GAnsatzDegree),
+    Gpoly: GosperPoly(p,q,r,k,'_g,GAnsatzDegree),
 
 
 if mode >= very_verbose then
@@ -283,7 +283,7 @@ if mod_test and (ZAnsatzDegree<=mod_threshold) then
   if mode>= very_verbose then 
     print("modulus : ", modulus),
   sysSol : SolveZSysVerboseOpt(test_Gpoly,
-                              "_g",GAnsatzDegree+1,"_z",ZAnsatzDegree+1,k,
+                              '_g,GAnsatzDegree+1,'_z,ZAnsatzDegree+1,k,
                               modular_linear_solver,mode-1),
   
   MODULUS : false,
@@ -306,7 +306,7 @@ if mod_test and (ZAnsatzDegree<=mod_threshold) then
 /* --------------------------------------------------------------------- */
 
 
-sysSol : SolveZSysVerboseOpt(Gpoly,"_g",GAnsatzDegree+1,"_z",ZAnsatzDegree+1,k,
+sysSol : SolveZSysVerboseOpt(Gpoly,'_g,GAnsatzDegree+1,'_z,ZAnsatzDegree+1,k,
                              linear_solver,mode-1),
 
 if mode>= very_verbose then

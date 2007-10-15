@@ -67,20 +67,24 @@
       (setq symbols-defined (copy-list ',symbols-defined))
       (setq macsyma-operators (subst () () ',macsyma-operators)))))
 
-(defun undefine-symbol (op)
-  (*define-initial-symbols (delete (stripdollar op) symbols-defined :test #'eq)))
+(defun undefine-symbol (opr)
+  (*define-initial-symbols (delete opr symbols-defined :test #'equal)))
 
 (defun define-symbol (x)
-  (setq x (stripdollar x))
   (*define-initial-symbols (cons x symbols-defined))
-  (symbolconc '$ x))
+  (symbolconc '$ (maybe-invert-string-case x)))
 
 (defun cstrsetup (arg)
   (do ((arg arg (cdr arg))
        (tree nil))
       ((null arg) (list* () '(ans ()) tree))
     (if (atom (car arg))
-	(setq tree (add2cstr (car arg) tree (symbolconc '$ (car arg))))
+	(setq tree (add2cstr (car arg)
+                         tree
+                         (symbolconc '$
+                                     (if (stringp (car arg))
+                                       (maybe-invert-string-case (car arg))
+                                       (car arg)))))
 	(setq tree (add2cstr (caar arg) tree (cadar arg))))))
 
 ;;; (ADD2CSTR <name> <tree> <translation>)

@@ -260,7 +260,7 @@ Ejemplo:
 @defvr {Opci@'on gr@'afica} title
 Valor por defecto: @code{""} (cadena vac@'{@dotless{i}}a)
 
-La opci@'on @code{title} almacena una cadena de Maxima con el 
+La opci@'on @code{title} almacena una cadena con el 
 t@'{@dotless{i}}tulo de la escena. Por defecto, no se escribe
 t@'{@dotless{i}}tulo alguno.
 
@@ -281,7 +281,7 @@ Ejemplo:
 @defvr {Opci@'on gr@'afica} xlabel
 Valor por defecto: @code{""} (cadena vac@'{@dotless{i}}a)
 
-La opci@'on @code{xlabel} almacena una cadena de Maxima con la
+La opci@'on @code{xlabel} almacena una cadena con la
 etiqueta del eje @var{x}. Por defecto, el eje no tiene etiqueta.
 
 Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
@@ -304,7 +304,7 @@ V@'eanse tambi@'en @code{ylabel} y @code{zlabel}.
 @defvr {Opci@'on gr@'afica} ylabel
 Valor por defecto: @code{""} (cadena vac@'{@dotless{i}}a)
 
-La opci@'on @code{ylabel} almacena una cadena de Maxima con la
+La opci@'on @code{ylabel} almacena una cadena con la
 etiqueta del eje @var{y}. Por defecto, el eje no tiene etiqueta.
 
 Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
@@ -327,7 +327,7 @@ V@'eanse tambi@'en @code{xlabel} y @code{zlabel}.
 @defvr {Opci@'on gr@'afica} zlabel
 Valor por defecto: @code{""} (cadena vac@'{@dotless{i}}a)
 
-La opci@'on @code{zlabel} almacena una cadena de Maxima con la
+La opci@'on @code{zlabel} almacena una cadena con la
 etiqueta del eje @var{z}. Por defecto, el eje no tiene etiqueta.
 
 Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
@@ -349,70 +349,167 @@ V@'eanse tambi@'en @code{xlabel} y @code{ylabel}.
 
 
 @defvr {Opci@'on gr@'afica} xtics
-Valor por defecto: @code{true}
+Valor por defecto: @code{auto}
 
-Cuando @code{xtics} vale @code{true}, se dibujar@'an las marcas 
+Esta opci@'on gr@'afica controla la forma en la que se dibujar@'an las marcas
 del eje @var{x}.
+
+@itemize @bullet
+@item
+Cuando a @code{xtics} se le da el valor @var{auto}, las marcas se dibujar@'an de
+forma autom@'atica.
+
+@item
+Cuando a @code{xtics} se le da el valor @var{none}, no habr@'a marcas en los ejes.
+
+@item
+Cuando a @code{xtics} se le da un valor num@'erico positivo, se interpretar@'a como la
+distancia entre dos marcas consecutivas.
+
+@item
+Cuando a @code{xtics} se le da una lista de longitud tres de la forma 
+@code{[start,incr,end]}, las marcas se dibujar@'an desde @code{start} 
+hasta @code{end} a intervalos de longitud @code{incr}.
+
+@item
+Cuando a @code{xtics} se le da un conjunto de n@'umeros de la forma
+@code{@{n1, n2, ...@}}, las marcas se dibujar@'an exactamente en los valores
+@code{n1}, @code{n2}, ...
+
+@item
+Cuando a @code{xtics} se le da un conjunto de pares de la forma
+@code{@{["label1", n1], ["label2", n2], ...@}}, las marcas correspondientes a los valores
+@code{n1}, @code{n2}, ... se etiquetar@'an con @code{"label1"}, @code{"label2"}, ..., respectivamente.
+@end itemize
 
 Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
 descripci@'on de la escena no reviste importancia.
 
-Ejemplo:
+Ejemplos:
 
+Marcas desactivadas.
 @example
 (%i1) load(draw)$
-(%i2) /* No tics in the x-axis */
-      draw2d(xtics = false,
-             explicit(exp(u),u,-2,2))$
+(%i2) draw2d(xtics = 'none,
+             explicit(x^3,x,-1,1)  )$
 @end example
 
-V@'eanse tambi@'en @code{ytics} y @code{ztics}.
+Marcas cada 1/4 unidades.
+@example
+(%i1) load(draw)$
+(%i2) draw2d(xtics = 1/4,
+             explicit(x^3,x,-1,1)  )$
+@end example
+
+Marcas desde -3/4 hasta 3/4 en saltos de 1/8.
+@example
+(%i1) load(draw)$
+(%i2) draw2d(xtics = [-3/4,1/8,3/4],
+             explicit(x^3,x,-1,1)  )$
+@end example
+
+Marcas en los puntos -1/2, -1/4 y 3/4.
+@example
+(%i1) load(draw)$
+(%i2) draw2d(xtics = @{-1/2,-1/4,3/4@},
+             explicit(x^3,x,-1,1)  )$
+@end example
+
+Marcas etiquetadas.
+@example
+(%i1) load(draw)$
+(%i2) draw2d(xtics = @{["High",0.75],["Medium",0],["Low",-0.75]@},
+             explicit(x^3,x,-1,1)  )$
+@end example
 @end defvr
 
 
 
 @defvr {Opci@'on gr@'afica} ytics
-Valor por defecto: @code{true}
+Valor por defecto: @code{auto}
 
-Cuando @code{ytics} vale @code{true}, se dibujar@'an las marcas 
+Esta opci@'on gr@'afica controla la forma en la que se dibujar@'an las marcas
 del eje @var{y}.
 
-Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
-descripci@'on de la escena no reviste importancia.
-
-Ejemplo:
-
-@example
-(%i1) load(draw)$
-(%i2) draw2d(ytics = false,
-             explicit(exp(u),u,-2,2),
-             xtics = false)$
-@end example
-
-V@'eanse tambi@'en @code{xtics} y @code{ztics}.
+V@'ease @code{xtics} para una descripci@'on completa.
 @end defvr
 
 
 
 @defvr {Opci@'on gr@'afica} ztics
-Valor por defecto: @code{true}
+Valor por defecto: @code{auto}
 
-Cuando @code{ztics} vale @code{true}, se dibujar@'an las marcas 
+Esta opci@'on gr@'afica controla la forma en la que se dibujar@'an las marcas
 del eje @var{z}.
+
+V@'ease @code{xtics} para una descripci@'on completa.
+@end defvr
+
+
+@defvr {Opci@'on gr@'afica} xtics_rotate
+Valor por defecto: @code{false}
+
+Si @code{xtics_rotate} vale @code{true}, las marcas del eje @var{x} se giran 
+90 grados.
 
 Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
 descripci@'on de la escena no reviste importancia.
+@end defvr
 
-Ejemplo:
 
-@example
-(%i1) load(draw)$
-(%i2) /* No tics in the z-axis */
-      draw3d(ztics = false,
-             explicit(sin(x^2+y^2),x,-2,2,y,-2,2) )$
-@end example
+@defvr {Opci@'on gr@'afica} ytics_rotate
+Valor por defecto: @code{false}
 
-V@'eanse tambi@'en @code{xtics} y @code{ytics}.
+Si @code{ytics_rotate} vale @code{true}, las marcas del eje @var{y} se giran 
+90 grados.
+
+Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
+descripci@'on de la escena no reviste importancia.
+@end defvr
+
+
+@defvr {Opci@'on gr@'afica} ztics_rotate
+Valor por defecto: @code{false}
+
+Si @code{ztics_rotate} vale @code{true}, las marcas del eje @var{z} se giran 
+90 grados.
+
+Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
+descripci@'on de la escena no reviste importancia.
+@end defvr
+
+
+@defvr {Opci@'on gr@'afica} xtics_axis
+Valor por defecto: @code{false}
+
+Si @code{xtics_axis} vale @code{true}, las marcas y sus etiquetas se dibujan sobre
+el propio eje @var{x}, si vale @code{false} las marcas se colocan a lo largo del borde
+del gr@'afico.
+
+Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
+descripci@'on de la escena no reviste importancia.
+@end defvr
+
+@defvr {Opci@'on gr@'afica} ytics_axis
+Valor por defecto: @code{false}
+
+Si @code{ytics_axis} vale @code{true}, las marcas y sus etiquetas se dibujan sobre
+el propio eje @var{y}, si vale @code{false} las marcas se colocan a lo largo del borde
+del gr@'afico.
+
+Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
+descripci@'on de la escena no reviste importancia.
+@end defvr
+
+@defvr {Opci@'on gr@'afica} ztics_axis
+Valor por defecto: @code{false}
+
+Si @code{ztics_axis} vale @code{true}, las marcas y sus etiquetas se dibujan sobre
+el propio eje @var{z}, si vale @code{false} las marcas se colocan a lo largo del borde
+del gr@'afico.
+
+Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
+descripci@'on de la escena no reviste importancia.
 @end defvr
 
 
@@ -1264,13 +1361,21 @@ Ejemplo:
 @defvr {Opci@'on gr@'afica} filled_func
 Valor por defecto: @code{false}
 
-@code{filled_func} indica si la funci@'on se debe rellenar (@code{true})
-o no (@code{false}).
+La opci@'on @code{filled_func} establece c@'omo se van a rellenar las regiones
+limitadas por funciones. Si @code{filled_func} vale @code{true}, la
+regi@'on limitada por la funci@'on definida en el objeto @code{explicit}
+y el borde inferior del la ventana gr@'afica se rellena con @code{fill_color}.
+Si @code{filled_func} guarda la expresi@'on de una funci@'on, entonces la
+regi@'on limitada por esta funci@'on y la definida en el objeto @code{explicit}
+ser@'a la que se rellene. Por defecto, las funciones expl@'{@dotless{i}}citas
+no se rellenan.
 
 Esta opci@'on s@'olo afecta al objeto gr@'afico bidimensional @code{explicit}.
 
 Ejemplo:
 
+Regi@'on limitada por un objeto @code{explicit} y el borde inferior
+de la ventana gr@'afica.
 @example
 (%i1) load(draw)$
 (%i2) draw2d(fill_color  = red,
@@ -1278,7 +1383,18 @@ Ejemplo:
              explicit(sin(x),x,0,10) )$
 @end example
 
-V@'ease tambi@'en @code{fill_color}.
+Regi@'on limitada por un objeto @code{explicit} y la funci@'on
+definida en la opci@'on @code{filled_func}. N@'otese que la 
+variable en @code{filled_func} debe ser la misma que la utilizada en 
+@code{explicit}.
+@example
+(%i1) load(draw)$
+(%i2) draw2d(fill_color  = grey,
+             filled_func = sin(x),
+             explicit(-sin(x),x,0,%pi));
+@end example
+
+V@'eanse tambi@'en @code{fill_color} y @code{explicit}.
 @end defvr
 
 
@@ -1456,6 +1572,29 @@ Ejemplo:
 V@'eanse tambi@'en @code{head_both}, @code{head_angle} y @code{head_length}. 
 @end defvr
 
+
+@defvr {Opci@'on gr@'afica} unit_vectors
+Valor por defecto: @code{false}
+
+Cuando @code{unit_vectors} vale @code{true}, los vectores se dibujan con m@'odulo unidad.
+Esta opci@'on es @'util para representar campos vectoriales. Cuando @code{unit_vectors} vale @code{false},
+los vectores se dibujan con su longitud original.
+
+Esta opci@'on s@'olo es relevante para objetos de tipo @code{vector}.
+
+Ejemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(xrange      = [-1,6],
+             yrange      = [-1,6],
+             head_length = 0.1,
+             vector([0,0],[5,2]),
+             unit_vectors = true,
+             color        = red,
+             vector([0,3],[5,2]))$
+@end example
+@end defvr
 
 
 @defvr {Opci@'on gr@'afica} label_alignment
@@ -1845,27 +1984,74 @@ V@'ease tambi@'en @code{contour_levels}.
 @end defvr
 
 
-
 @defvr {Opci@'on gr@'afica} contour_levels
 Valor por defecto: 5
 
-@code{contour_levels} is the number of levels in contour plots.
+Esta opci@'on gr@'afica controla c@'omo se dibujar@'an las l@'{@dotless{i}}neas
+de nivel. A @code{contour_levels} se le puede asignar un n@'umero entero
+positivo, una lista de tres n@'umeros o un conjunto num@'erico arbitrario:
+
+@itemize @bullet
+@item
+Si a @code{contour_levels} se le asigna un entero positivo @var{n},
+entonces se dibujar@'an @var{n} l@'{@dotless{i}}neas de nivel a intervalos
+iguales. Por defecto, se dibuja@'an cinco isol@'{@dotless{i}}neas.
+
+@item
+Si a @code{contour_levels} se le asigna una lista de tres n@'umeros de la
+forma @code{[inf,p,sup]}, las isol@'{@dotless{i}}neas se dibujar@'an
+desde @code{inf} hasta @code{sup} en pasos de amplitud @code{p}.
+
+@item
+Si a @code{contour_levels} se le asigna un conjunto de n@'umeros de la
+forma @code{@{n1, n2, ...@}}, entonces se dibujar@'an las
+isol@'{@dotless{i}}neas correspondientes a los niveles @code{n1},
+@code{n2}, ...
+@end itemize
 
 Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
-descripci@'on de la escena no reviste importancia.
+descripci@'on de la escena no reviste importancia. 
 
-Ejemplo:
+Ejemplos:
 
+Diez isol@'{@dotless{i}}neas igualmente espaciadas. El n@'umero
+real puede ajustarse a fin de poder conseguir etiquetas m@'as
+sencillas.
 @example
 (%i1) load(draw)$
-(%i2) draw3d(explicit(20*exp(-x^2-y^2)-10,x,0,2,y,-3,3),
-             contour_levels = 15,
+(%i2) draw3d(color = green,
+             explicit(20*exp(-x^2-y^2)-10,x,0,2,y,-3,3),
+             contour_levels = 10,
+             contour        = both,
+             surface_hide   = true) $
+@end example
+
+
+Desde -8 hasta 8 en pasos de amplitud 4.
+@example
+(%i1) load(draw)$
+(%i2) draw3d(color = green,
+             explicit(20*exp(-x^2-y^2)-10,x,0,2,y,-3,3),
+             contour_levels = [-8,4,8],
+             contour        = both,
+             surface_hide   = true) $
+@end example
+
+L@'{@dotless{i}}neas correspondientes a los niveles -7, -6, 0.8 y 5.
+@example
+(%i1) load(draw)$
+(%i2) draw3d(color = green,
+             explicit(20*exp(-x^2-y^2)-10,x,0,2,y,-3,3),
+             contour_levels = @{-7, -6, 0.8, 5@},
              contour        = both,
              surface_hide   = true) $
 @end example
 
 V@'ease tambi@'en @code{contour}.
 @end defvr
+
+
+
 
 
 
@@ -2294,6 +2480,8 @@ Ejemplo:
              explicit(x+y,x,-5,5,y,-5,5),
              surface_hide = true)$
 @end example
+
+V@'ease tambi@'en @code{filled_func} para el relleno de curvas.
 @end deffn
 
 
@@ -2328,7 +2516,7 @@ Ejemplo:
 
 
 @deffn  {Objeto gr@'afico} polar (@var{radius},@var{ang},@var{minang},@var{maxang})
-dibuja funciones 2D definidas en coordenadas polares.
+Dibuja funciones 2D definidas en coordenadas polares.
 
 @b{2D}
 
@@ -2351,6 +2539,51 @@ Ejemplo:
              line_width    = 3,
              title         = "Hyperbolic Spiral",
              polar(10/theta,theta,1,10*%pi) )$
+@end example
+@end deffn
+
+
+
+@deffn  {Objeto gr@'afico} spherical (@var{radius},@var{azi},@var{minazi},@var{maxazi},@var{zen},@var{minzen},@var{maxzen})
+Dibuja funciones 3D definidas en coordenadas esf@'ericas.
+
+@b{3D}
+
+@code{spherical (@var{radius},@var{azi},@var{minazi},@var{maxazi},@var{zen},@var{minzen},@var{maxzen})}
+dibuja la funci@'on @code{@var{radius}(@var{azi},@var{zen})} definida en coordenadas esf@'ericas, con el @i{azimut}
+@var{azi} tomando valores desde @var{minazi} hasta @var{maxazi} y el @i{zenit} @var{zen} tomando valores desde
+@var{minzen} hasta @var{maxzen}.
+
+Este objeto se ve afectado por las siguientes @i{opciones gr@'aficas}: @code{xu_grid}, 
+@code{yv_grid}, @code{line_type}, @code{key} y @code{color}.
+
+Ejemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(spherical(1,a,0,2*%pi,z,0,%pi))$
+@end example
+@end deffn
+
+
+@deffn  {Objeto gr@'afico} cylindrical (@var{radius},@var{z},@var{minz},@var{maxz},@var{azi},@var{minazi},@var{maxazi})
+Dibuja funciones 3D definidas en coordenadas cil@'{@dotless{i}}ndricas.
+
+@b{3D}
+
+@code{cylindrical (@var{radius},@var{z},@var{minz},@var{maxz},@var{azi},@var{minazi},@var{maxazi})}
+dibuja la funci@'on @code{@var{radius}(@var{z},@var{azi})} definida en coordenadas cil@'{@dotless{i}}ndricas, con la variable
+@var{z} tomando valores desde @var{minz} hasta @var{maxz} y el @i{azimut} @var{azi} tomando valores desde
+@var{minazi} hasta @var{maxazi}.
+
+Este objeto se ve afectado por las siguientes @i{opciones gr@'aficas}: @code{xu_grid}, 
+@code{yv_grid}, @code{line_type}, @code{key} y @code{color}.
+
+Ejemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(cylindrical(1,z,-2,2,az,0,2*%pi))$
 @end example
 @end deffn
 
