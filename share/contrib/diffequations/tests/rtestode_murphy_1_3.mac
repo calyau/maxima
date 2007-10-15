@@ -55,9 +55,9 @@ genhom;
 
 /* 268 */
 (pn_(268),ans:contrib_ode(eqn:x^2*'diff(y,x)+2+a*x*(1-x*y)-x^2*y^2=0,y,x));
- [y = -(%c*a^3*x^3*%e^(a*x)-%c*a^2*x^2*%e^(a*x)+2*%c*a*x*%e^(a*x)
+ [y = -((%c*a^3*x^3*%e^(a*x)-%c*a^2*x^2*%e^(a*x)+2*%c*a*x*%e^(a*x)
                                  -2*%c*%e^(a*x)-1)
-          /(x*(2*%c*%e^(a*x)+1)+%c*a^2*x^3*%e^(a*x)-2*%c*a*x^2*%e^(a*x))];
+          /(x*(2*%c*%e^(a*x)+1)+%c*a^2*x^3*%e^(a*x)-2*%c*a*x^2*%e^(a*x)))];
 [method,ode_check(eqn,ans[1])];
 [riccati,0];
 
