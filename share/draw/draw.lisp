@@ -64,6 +64,7 @@
       ; colors are specified by name
       (gethash '$color *gr-options*)      "black"   ; for lines, points, borders and labels
       (gethash '$fill_color *gr-options*) "red"     ; for filled regions
+      (gethash '$fill_density *gr-options*) 0       ; in [0,1], only for object 'bars
 
       ; implicit plot options
       (gethash '$ip_grid *gr-options*) '((mlist simp) 50 50)
@@ -183,13 +184,19 @@
                      (>= val 0 )
                      (<= val 180 ))
                 (setf (gethash opt *gr-options*) val)
-                (merror "~M must be angle in [0, 180]" val)))
+                (merror "rot_vertical must be angle in [0, 180]")))
       ($rot_horizontal ; in range [0, 360]
             (if (and (numberp val)
                      (>= val 0 )
                      (<= val 360 ))
                 (setf (gethash opt *gr-options*) val)
-                (merror "~M must be angle in [0, 360]" val)))
+                (merror "rot_horizontal must be angle in [0, 360]")))
+      ($fill_density ; in range [0, 1]
+            (if (and (numberp val)
+                     (>= val 0 )
+                     (<= val 1 ))
+                (setf (gethash opt *gr-options*) val)
+                (merror "fill_density must be a number in [0, 1]")))
       (($line_width $head_length $head_angle $eps_width $eps_height
         $xaxis_width $yaxis_width $zaxis_width) ; defined as positive numbers
             (if (and (numberp val)
@@ -903,6 +910,56 @@
                                  ($vertical  "rotate"))
                               (get-option '$color) )
        :groups (if is2d '((3 0)) '((4)))
+       :points (list (make-array (length result) :initial-contents result))) ))
+
+
+
+
+
+
+
+
+;; Object: 'bars'
+;;     bars([x1,h1,w1],[x2,h2,w2],...), x, height and width 
+;; Options:
+;;     key
+;;     fill_color
+;;     fill_density
+;;     line_width
+(defun bars (&rest boxes)
+  (let ((n (length boxes))
+        (count -1)
+        (xmin 1.75555970201398d+305)
+        (xmax -1.75555970201398d+305)
+        (ymin 1.75555970201398d+305)
+        (ymax -1.75555970201398d+305)
+        result x h w w2)
+    (when (= n 0) 
+      (merror "draw2d (bars): no arguments in object bars"))
+    (when (not (every #'(lambda (z) (and ($listp z) (= 3 ($length z)))) boxes))
+      (merror "draw2d (bars): arguments must be lists of length three"))
+    (setf result (make-array (* 3 n) :element-type 'double-float))
+    (dolist (k boxes)
+       (setf x (convert-to-float ($first k))
+             h (convert-to-float ($second k))
+             w (convert-to-float ($third k)))
+       (setf w2 (/ w 2))
+       (setf (aref result (incf count)) x
+             (aref result (incf count)) h
+             (aref result (incf count)) w)
+       (setf xmin (min xmin (- x w2))
+             xmax (max xmax (+ x w2))
+             ymin (min ymin h)
+             ymax (max ymax h)) )
+    (update-ranges xmin xmax ymin ymax)
+    (make-gr-object
+       :name 'bars
+       :command (format nil " ~a w boxes fs solid ~a border lw ~a lc rgb '~a'"
+                            (make-obj-title (get-option '$key))
+                            (get-option '$fill_density)
+                            (get-option '$line_width)
+                            (get-option '$fill_color) )
+       :groups '((3 0))  ; numbers are sent to gnuplot in groups of 3, without blank lines
        :points (list (make-array (length result) :initial-contents result))) ))
 
 
@@ -2116,6 +2173,7 @@
                                      ($parametric  (apply #'parametric (rest x)))
                                      ($vector      (apply #'vect (rest x)))
                                      ($label       (apply #'label (rest x)))
+                                     ($bars        (apply #'bars (rest x)))
                                      ($polar       (apply #'polar (rest x)))
                                      ($image       (apply #'image (rest x)))
                                      ($geomap      (apply #'geomap (rest x)))
@@ -2411,7 +2469,7 @@
       ($png (format cmdstorage "set terminal png size ~a, ~a~%set out '~a.png'~%"
                            (get-option '$pic_width)
                            (get-option '$pic_height)
-                           (plot-temp-file (get-option '$file_name))) )
+                           (plot-temp-file (get-option '$file_name)) ) )
       ($eps (format cmdstorage "set terminal postscript eps size ~acm, ~acm~%set out '~a.eps'~%"
                            (get-option '$eps_width)
                            (get-option '$eps_height)

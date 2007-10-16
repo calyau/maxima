@@ -1689,6 +1689,17 @@ See @code{color} to learn how colors are specified.
 
 
 
+@defvr {Graphic option} fill_density
+Default value: 0
+
+@code{fill_density} is a number between 0 and 1 that specifies
+the intensity of the @code{fill_color} in @code{bars} objects.
+
+See @code{bars} for examples.
+@end defvr
+
+
+
 @defvr {Graphic option} line_width
 Default value: 1
 
@@ -2070,16 +2081,21 @@ sequentially: @i{graphic options} affect those @i{graphic objects} placed
 on its right. Some @i{graphic options} affect the global appearence of the scene.
 
 This is the list of @i{graphic objects} available for scenes in two dimensions:
-@code{points}, @code{polygon}, @code{rectangle}, @code{ellipse}, @code{label},
+@code{points}, @code{polygon}, @code{rectangle}, @code{bars}, @code{ellipse}, @code{label},
 @code{vector}, @code{explicit}, @code{implicit}, @code{polar}, @code{parametric},
 @code{image} and @code{geomap}.
 
 See also the following global @i{graphic options}: @code{xrange}, @code{yrange}, 
 @code{logx}, @code{logy}, @code{terminal}, @code{grid}, @code{title}, 
-@code{xlabel}, @code{ylabel}, @code{xtics}, @code{ytics}, @code{xy_file}, 
+@code{xlabel}, @code{ylabel}, @code{xtics}, @code{ytics}, @code{xtics_rotate}, 
+@code{ytics_rotate}, @code{xtics_axis}, @code{ytics_axis}, @code{xaxis}, @code{yaxis}, 
+@code{xaxis_width}, @code{yaxis_width}, 
+@code{xaxis_type}, @code{yaxis_type}, 
+@code{xaxis_color}, @code{yaxis_color}, @code{xy_file}, 
 @code{file_name}, @code{pic_width}, @code{pic_height}, 
-@code{eps_width}, @code{eps_height}, @code{user_preamble}, @code{axis_bottom},
-@code{axis_left}, @code{axis_top} and @code{axis_right}.
+@code{eps_width}, @code{eps_height},
+@code{user_preamble}, @code{axis_bottom}, @code{axis_left}, @code{axis_top} 
+and @code{axis_right}.
 
 To make use of this function, write first @code{load(draw)}.
 @end deffn
@@ -2099,7 +2115,12 @@ This is the list of @i{graphic objects} available for scenes in three dimensions
 See also the following graphic options: @code{xrange}, @code{yrange}, 
 @code{zrange}, @code{logx}, @code{logy}, @code{logz}, @code{terminal}, 
 @code{grid}, @code{title}, @code{xlabel}, @code{ylabel}, @code{zlabel}, 
-@code{xtics}, @code{ytics}, @code{ztics}, @code{xy_file}, 
+@code{xtics}, @code{ytics}, @code{ztics}, @code{xtics_rotate}, 
+@code{ytics_rotate}, @code{ztics_rotate}, @code{xtics_axis}, @code{ytics_axis}, 
+@code{ztics_axis}, @code{xaxis}, @code{yaxis}, @code{zaxis}, 
+@code{xaxis_width}, @code{yaxis_width}, @code{zaxis_width}, 
+@code{xaxis_type}, @code{yaxis_type}, @code{zaxis_type},
+@code{xaxis_color}, @code{yaxis_color}, @code{zaxis_color}, @code{xy_file}, 
 @code{user_preamble}, @code{axis_bottom}, @code{axis_left}, 
 @code{axis_top}, @code{file_name}, @code{pic_width}, @code{pic_height}, 
 @code{eps_width}, @code{eps_height},
@@ -2253,6 +2274,39 @@ Example:
              yrange      = [-3,4.5] )$
 @end example
 @end deffn
+
+
+
+@deffn  {Graphic object} bars ([@var{x1},@var{h1},@var{w1}], [@var{x2},@var{h2},@var{w2}, ...])
+Draws vertical bars in 2D.
+
+@b{2D}
+
+@code{bars ([@var{x1},@var{h1},@var{w1}], [@var{x2},@var{h2},@var{w2}, ...])} 
+draws bars centered at values @var{x1}, @var{x2}, ... with heights @var{h1}, @var{h2}, ...
+and widths @var{w1}, @var{w2}, ...
+
+This object is affected by the following @i{graphic options}: @code{key}, 
+@code{fill_color}, @code{fill_density} and @code{line_width}.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(
+       key          = "Group A",
+       fill_color   = blue,
+       fill_density = 0.2,
+       bars([0.8,5,0.4],[1.8,7,0.4],[2.8,-4,0.4]),
+       key          = "Group B",
+       fill_color   = red,
+       fill_density = 0.6,
+       line_width   = 4,
+       bars([1.2,4,0.4],[2.2,-2,0.4],[3.2,5,0.4]),
+       xaxis = true);
+@end example
+@end deffn
+
 
 
 @deffn  {Graphic object} ellipse (@var{xc}, @var{yc}, @var{a}, @var{b}, @var{ang1}, @var{ang2})
