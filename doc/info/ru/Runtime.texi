@@ -1,7 +1,7 @@
 @c Language=Russian
 @c Encoding=CP1251
 @c File=Runtime.texi 
-@c OriginalRevision=1.21
+@c OriginalRevision=1.22
 @c TranslatedBy: (c) 2007-06 Vadim V. Zhytnikov <vvzhyt@gmail.com>
 
 @menu
@@ -196,8 +196,6 @@ Maxima понимает два различных типа свойств: системные свойства и свойства,
 —трока имеет формат @code{HH:MM:SS Day, mm/dd/yyyy (GMT-n)}, где пол€ есть
 часы, минуты, секунды, день недели, мес€ц, день мес€ца, год и сдвиг часового по€са от GMT
 (—тандартное врем€ по √ринвичу).
-
-¬озвращаемое значение €вл€етс€ Lisp строкой.
 
 ѕример:
 
