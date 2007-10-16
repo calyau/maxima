@@ -303,13 +303,13 @@ theoretical function that predicts the data:
 
 @c ===beg===
 @c plot2d([[discrete,xy], 2*%pi*sqrt(l/980)], [l,0,50], 
-@c         [style, [points,3,5], [lines,1,3]], 
-@c         [legend,"experiment","theory"], 
+@c         [style, [points,5,2,6], [lines,1,1]],
+@c         [legend,"experiment","theory"],
 @c         [xlabel,"pendulum's length (cm)"], [ylabel,"period (s)"])$
 @c ===end===
 @example
 (%i17) plot2d([[discrete,xy], 2*%pi*sqrt(l/980)], [l,0,50],
-        [style, [points,3,5], [lines,1,3]],
+        [style, [points,5,2,6], [lines,1,1]],
         [legend,"experiment","theory"],
         [xlabel,"pendulum's length (cm)"], [ylabel,"period (s)"])$
 @end example
@@ -318,7 +318,14 @@ theoretical function that predicts the data:
 @image{figures/plotting12,8cm}
 @end ifnotinfo
 
-See also @code{plot_options}, which describes plotting options and has more examples.
+The meaning of the three numbers after the ``points'' style option
+are as follows; 5: radius of the points, 2: index of color used (red),
+6: type of objects used (solid squares). The two numbers after the
+``lines'' style option give the thickness of the line (1 point) and
+the color (1 corresponds to blue).
+
+See also @code{plot_options}, which describes plotting options and has
+more examples.
 
 @end deffn
 
@@ -554,13 +561,25 @@ Option: @code{legend}
 
 The labels for the various expressions in a 2d plot with several
 expressions. If there are more expressions than the number of labels
-given, they will be repeated. By default, the names of the expressions
-or functions will be used, or the words discrete1, discrete2, ..., for
-discrete sets of points.
+given, they will be repeated. If legend is followed by the word
+@emph{false}, no legend will be shown. By default, the names of the
+expressions or functions will be used, or the words discrete1,
+discrete2, ..., for discrete sets of points.
 
 Example:
 @example
 [legend, "Set 1", "Set 2", "Set 3"]
+@end example
+
+@item
+Option: @code{box}       
+                 
+Currently, this option can only be followed by the word @emph{false},    
+and it will be used to supress the box around the plot.
+
+Example:
+@example
+[box, false]
 @end example
 
 @item
@@ -576,26 +595,35 @@ isolated dots. Gnuplot accepts also an @var{impulses} style.
 
 Each of the styles can be enclosed inside a list with some aditional
 parameters. @var{lines} accepts one or two numbers: the width of the
-line and an integer that identifies a color. @var{points} accepts one
-or two parameters; the first parameter is the radius of the points and
-the second parameter is an integer that in Gnuplot selects different
-shapes and colors for the points and in Openmath changes the color
-used for the points. @var{linesdots} accepts up to four parameters;
-the first two are the same as for @var{lines} and the last two are the
-same as for @var{points}.
+line and an integer that identifies a color. The default color codes
+are: 1: blue, 2: red, 3: magenta, 4: orange, 5: brown, 6: lime and 7:
+aqua. If you use Gnuplot with a terminal different than X11,
+those colors might be different; for example, if you use the option
+[@var{gnuplot_term},@var{ps}], color index 4 will correspond to black,
+instead of orange.
+
+@var{points} accepts one two or three parameters; the first parameter
+is the radius of the points, the second parameter is an integer that
+selects the color, using the same code used for @var{lines} and the
+third parameter is currently used only by Gnuplot and it corresponds
+to several objects instead of points. The default types of
+objects are: 1: filled circles, 2: open circles, 3: plus signs, 4: x,
+5: *, 6: filled squares, 7: open squares, 8: filled triangles, 9: open
+triangles, 10: filled inverted triangles, 11: open inverted triangles,
+12: filled lozenges and 13: open lozenges.
+
+@var{linesdots} accepts up to four parameters: line width, points
+radius, color and type of object to replace the points.
 
 Example:
 @example
-[style,[lines,2,3],[points,1,4]]
+[style,[lines,2,3],[points,1,4,3]]
 @end example
 
-In Gnuplot, this will plot the first (and third, fifth, etc)
-expression with blue line segments of width 2, and the second (and
-fourth, sixth, etc) expression with green squares of size 1. In
-Openmath, the first expression will be plotted with magenta lines of
-width 2, and the second with orange points of radius 1; notice that
-openmath_color(3) and openmath_color(4) return ``magenta'' and
-``orange''.
+This will plot the first (and third, fifth, etc) expression with
+magenta line segments of width 2, and the second (and fourth, sixth,
+etc) expression with orange plus signs of size 1 (orange circles in
+the case of Openmath).
 
 The default for the style option is @var{lines} with a width of 1, and
 different colors.
