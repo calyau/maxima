@@ -125,11 +125,11 @@ solve(expand(%),y);
 
 /* 116 */
 (pn_(116),ans:contrib_ode(eqn:x*'diff(y,x)^2-(3*x-y)*'diff(y,x)+y=0,y,x));
-[[x=%c*(%t+1)*%e^-(3*log(%t)/2),y=-(%t^2-3*%t)*x/(%t+1)]];
+[[x=%c*(%t+1)*%e^-(3*log(%t)/2),y=-((%t^2-3*%t)*x/(%t+1))]];
 ans:map(radcan,ans);
-[[x=(%c*%t+%c)/%t^(3/2),y=-(%t^2-3*%t)*x/(%t+1)]];
+[[x=(%c*%t+%c)/%t^(3/2),y=-((%t^2-3*%t)*x/(%t+1))]];
 ans[1][2],ans[1][1];
-y=-(%c*%t+%c)*(%t^2-3*%t)/(%t^(3/2)*(%t+1));
+y=-((%c*%t+%c)*(%t^2-3*%t)/(%t^(3/2)*(%t+1)));
 (ans[1][2]:factor(%),ans);
 [[x=(%c*%t+%c)/%t^(3/2),y=-%c*(%t-3)/sqrt(%t)]]; /* correct */
 method;
@@ -149,9 +149,9 @@ lie;
 
 /* 119 */
 (pn_(119),ans:contrib_ode(eqn:x*'diff(y,x)^2+2*y*'diff(y,x)-x=0,y,x));
-[[x=%c*%t*%e^-(2*log(3*%t^2-1)/3),y=-(%t^2-1)*x/(2*%t)]];
+[[x=%c*%t*%e^-(2*log(3*%t^2-1)/3),y=-((%t^2-1)*x/(2*%t))]];
 ans:map(radcan,ans); 
-[[x=%c*%t/(3*%t^2-1)^(2/3),y=-(%t^2-1)*x/(2*%t)]];  /*CHECKME*/
+[[x=%c*%t/(3*%t^2-1)^(2/3),y=-((%t^2-1)*x/(2*%t))]];  /*CHECKME*/
 method;
 lagrange;
 
@@ -198,7 +198,7 @@ lie;
 
 /* 125 */
 (pn_(125),ans:contrib_ode(eqn:x*'diff(y,x)^2+a*y*'diff(y,x)+b*x=0,y,x));
-[[x=%c*%t*%e^-((a+2)*log(b+%t^2*(a+1))/(2*a+2)),y=-(b+%t^2)*x/(%t*a)]];
+[[x=%c*%t*%e^-((a+2)*log(b+%t^2*(a+1))/(2*a+2)),y=-((b+%t^2)*x/(%t*a))]];
 /* CHECKME:  Looks ok but ... */
 method;
 lagrange;
@@ -257,7 +257,7 @@ false; */
 
 /* 136 */
 (pn_(134),ans:contrib_ode(eqn:(5+3*x)*'diff(y,x)^2-(x+3*y)*'diff(y,x)+y=0,y,x));
-[y=((3*%c^2-%c)*x+5*%c^2)/(3*%c-1),y=-(2*sqrt(5)*sqrt(3*x+5)-3*x-10)/9,y=(2*sqrt(5)*sqrt(3*x+5)+3*x+10)/9];
+[y=((3*%c^2-%c)*x+5*%c^2)/(3*%c-1),y=-((2*sqrt(5)*sqrt(3*x+5)-3*x-10)/9),y=(2*sqrt(5)*sqrt(3*x+5)+3*x+10)/9];
 [method,ode_check(eqn,ans[1]),ode_check(eqn,ans[2]),ode_check(eqn,ans[3])];
 [clairault,0,0,0];
 
@@ -284,7 +284,7 @@ ans:solve(%,y);
 
 /* 139  ode1_lie finds symmetry but returns long complex "answer" */
 (pn_(139),ans:contrib_ode(eqn:4*x*'diff(y,x)^2-3*y*'diff(y,x)+3=0,y,x));
-[-(3*log((sqrt(3*y^2-16*x)-sqrt(3)*y)/(sqrt(3*y^2-16*x)+sqrt(3)*y))+2*log(sqrt(3)*sqrt(3*y^2-16*x)+y)-3*log(-16*x))/2=%c];
+[-((3*log((sqrt(3*y^2-16*x)-sqrt(3)*y)/(sqrt(3*y^2-16*x)+sqrt(3)*y))+2*log(sqrt(3)*sqrt(3*y^2-16*x)+y)-3*log(-16*x))/2)=%c];
 method;
 lie;
 
@@ -520,7 +520,7 @@ lie;
 
 /* 177 */
 (pn_(177),ans:contrib_ode(eqn:4*x^2*'diff(y,x)^2-4*x*y*'diff(y,x)=8*x^3-y^2,y,x));
-[-(2*log(y+sqrt(x)*(sqrt(2)*x-%c))-log(x))/2=%c];
+[-((2*log(y+sqrt(x)*(sqrt(2)*x-%c))-log(x))/2)=%c];
 solve(ans[1],y);
 [y=%e^(log(x)/2-%c)-sqrt(2)*x^(3/2)+%c*sqrt(x)];
 [method,ode_check(eqn,%[1])];
@@ -600,7 +600,7 @@ forget(y>0);
 assume(a>0);
 [a>0];
 (pn_(189),ans:contrib_ode(eqn:x^2*(a^2-x^2)*'diff(y,x)^2+1=0,y,x));
-[-(a*y-asin(a/abs(x)))/a = %c];
+[-((a*y-asin(a/abs(x)))/a) = %c];
 solve(ans[1],y);
 [y = (asin(a/abs(x))-%c*a)/a];
 [method,ode_check(eqn,%[1])];
@@ -646,7 +646,7 @@ ans:solve(%,y);
 assume(x>0);
 [x>0];
 (pn_(193),ans:contrib_ode(eqn:x^8*'diff(y,x)^2+3*x*'diff(y,x)+9*y=0,y,x));
-[-(2*sqrt(1-4*x^6*y)+2)/(sqrt(2)*sqrt(3)*x^3) = %c];
+[-((2*sqrt(1-4*x^6*y)+2)/(sqrt(2)*sqrt(3)*x^3)) = %c];
 /* it works, and the solution can be tidied up */
 expand(ans[1]*sqrt(3)*x^3/sqrt(2));
 -sqrt(1-4*x^6*y)-1=sqrt(3)*%c*x^3/sqrt(2);
@@ -655,7 +655,7 @@ expand(ans[1]*sqrt(3)*x^3/sqrt(2));
 %^2;
 1-4*x^6*y=(%c*x^3+1)^2;
 solve(%,y);
-[y=-(%c^2*x^3+2*%c)/(4*x^3)];
+[y=-((%c^2*x^3+2*%c)/(4*x^3))];
 [method,ode_check(eqn,%[1])];
 [lie,0];
 forget(x>0);
@@ -668,7 +668,7 @@ forget(x>0);
 ans[1]/a^2;
 4*y^3+a*(-9*x^2+18*%c*x-9*%c^2)=0;
 solve(%,y);
-[y = (sqrt(3)*9^(1/3)*%i-9^(1/3))*a^(1/3)*(x-%c)^(2/3)/(2*4^(1/3)),y = -(sqrt(3)*9^(1/3)*%i+9^(1/3))*a^(1/3)*(x-%c)^(2/3)/(2*4^(1/3)),y=9^(1/3)*a^(1/3)*(x-%c)^(2/3)/4^(1/3)];
+[y = (sqrt(3)*9^(1/3)*%i-9^(1/3))*a^(1/3)*(x-%c)^(2/3)/(2*4^(1/3)),y = -((sqrt(3)*9^(1/3)*%i+9^(1/3))*a^(1/3)*(x-%c)^(2/3)/(2*4^(1/3))),y=9^(1/3)*a^(1/3)*(x-%c)^(2/3)/4^(1/3)];
 [method,ode_check(eqn,%[1]),ode_check(eqn,%[2]),ode_check(eqn,%[3])];
 [lagrange,0,0,0];
 
@@ -687,7 +687,7 @@ lagrange;
 (pn_(197),ans:contrib_ode(eqn:y*'diff(y,x)^2+2*a*x*'diff(y,x)-a*y=0,y,x));
 [[x=%c*%e^(2*(log(%t^2-a)/(2*a)-log(%t)/a)*a),y=-2*%t*a*x/(%t^2-a)]];
 radcan(%);
-[[x=-(%c*a-%c*%t^2)/%t^2,y=2*%t*a*x/(a-%t^2)]];
+[[x=-((%c*a-%c*%t^2)/%t^2),y=2*%t*a*x/(a-%t^2)]];
 method;
 lagrange;
 
