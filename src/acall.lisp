@@ -188,7 +188,7 @@
 	     ;; if the ANS evaluats to something with an "="
 	     ;; allready then of course he really meant to use
 	     ;; DISP, but we might as well do what he means right?
-<	     (setq ans (caddr ans))))
+	     (setq ans (caddr ans))))
       (when labelsp
 	(unless (checklabel $linechar)
 	  (incf $linenum))
