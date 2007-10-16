@@ -21,11 +21,6 @@
 
 (transl-module trdata)
 
-(eval-when
-    #+gcl (compile)
-    #-gcl (:compile-toplevel)
-    (setq *def%tr-produces-autoload-file* nil))
-
 ;;; MODEDECLARE(FUNCTION(LENGTH),FIXNUM)
 
 ;;I think all this can be done at load time only:--wfs

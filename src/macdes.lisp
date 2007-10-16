@@ -8,8 +8,6 @@
 
 (in-package :maxima)
 
-(defconstant *doc-start* (code-char 31))
-
 (defvar $manual_demo "manual.demo")
 
 (defvar *maxima-demodir*)
