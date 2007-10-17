@@ -21,9 +21,9 @@ if get('ctensor,'version)=false then load(ctensor);
 dim:4;
 ct_coords:[t,r,u,v];
 lg:ident(4);
-lg[2,2]:a^2/(1-k*r^2);
-lg[3,3]:a^2*r^2;
-lg[4,4]:a^2*r^2*sin(u)^2;
+lg[2,2]:-a^2/(1-k*r^2);
+lg[3,3]:-a^2*r^2;
+lg[4,4]:-a^2*r^2*sin(u)^2;
 dependencies(a(t));
 cmetric();
 ("Let us review the contravariant and covariant metric tensor:")$
