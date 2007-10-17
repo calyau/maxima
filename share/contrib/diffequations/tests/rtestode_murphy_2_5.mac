@@ -28,7 +28,7 @@ y = log(-1/x)+a-1;
 
 /* 405 */
 (pn_(405),ans:contrib_ode(eqn:log('diff(y,x))+a*(x*'diff(y,x)-y)=0,y,x));
-[y=(%c*a*x+log(%c))/a,[-a*y+a*%t*x+log(%t)=0,(a*%t*x+1)/%t=0]];
+[y = (%c*a*x+log(%c))/a,[a*(%t*x-y)+log(%t) = 0,(%t*a*x+1)/%t = 0]];
 /* Eliminate parameter t from singular solution */
 /* (s:first(solve((ans[2])[2],%t)),s:first(solve(ev(first(ans[2]),s),y))); */
 s:elim_(ans[2],x,y,%t);
@@ -38,7 +38,7 @@ y=(log(-1/(a*x))-1)/a;
 
 /* 408 */
 (pn_(408),ans:contrib_ode(eqn:'diff(y,x)*log('diff(y,x))-(1+x)*'diff(y,x)+y=0,y,x));
-[y=%c*x-%c*log(%c)+%c,[y-%t*x+%t*log(%t)-%t=0,log(%t)-x=0]];
+[y = %c*x-%c*log(%c)+%c,[y-%t*(x+1)+%t*log(%t) = 0,log(%t)-x = 0]];
 /* Eliminate parameter %t from singular solution */
 (s:first(solve((ans[2])[2],%t)),s:first(solve(ev(first(ans[2]),s),y)));
 y = %e^x;
@@ -47,7 +47,7 @@ y = %e^x;
 
 /* 409 */
 (pn_(409),ans:contrib_ode(eqn:log('diff(y,x)*x-y)='diff(y,x),y,x));
-[y=%c*x-%e^%c,[log(%t*x-y)-%t=0,-(-y+%t*x-x)/(%t*x-y)=0]];
+[y=%c*x-%e^%c,[log(%t*x-y)-%t=0,-((-y+%t*x-x)/(%t*x-y))=0]];
 /* eliminate parameter %t from singular solution */
 (s:first(solve((ans[2])[2],%t)),s:first(solve(ev(first(ans[2]),s),y)));
 y = x*log(x)-x;
