@@ -809,7 +809,7 @@ Matchfix operators are ordinary user-defined functions.
 @deffnx {Function} remlet ()
 @deffnx {Function} remlet (all)
 @deffnx {Function} remlet (all, @var{name})
-Deletes the substitution rule, prod --> repl, most
+Deletes the substitution rule, @var{prod} --> repl, most
 recently defined by the @code{let} function.  If name is supplied the rule is
 deleted from the rule package name.
 
@@ -832,7 +832,7 @@ See also @code{remrule}, which removes a rule defined by @code{tellsimp} or @cod
 Removes rules defined by @code{tellsimp} or @code{tellsimpafter}.
 
 @code{remrule (@var{op}, @var{rulename})}
-removes the rule with the name @code{rulename} from the operator @var{op}.
+removes the rule with the name @var{rulename} from the operator @var{op}.
 When @var{op} is a built-in or user-defined operator
 (as defined by @code{infix}, @code{prefix}, etc.),
 @var{op} and @var{rulename} must be enclosed in double quote marks.
