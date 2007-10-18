@@ -1002,6 +1002,9 @@ or macro functions (created by @code{::=}).
 @code{remfunction} returns a list of the symbols for which the function definition was unbound.
 @code{false} is returned in place of any symbol for which there is no function definition.
 
+@code{remfunction} does not apply to array functions or subscripted functions.
+@code{remarray} applies to those types of functions.
+
 @end deffn
 
 @deffn {Function} reset ()
