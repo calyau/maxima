@@ -204,6 +204,8 @@ ss_zeilb(expr, %k%, lo, hi, [in_zr]) := block(
    upper_bound_implicit : false, lower_bound_implicit : false,
    solve_rec_warn : false],
 
+  if lo=-inf then lo:minf,
+  
   /* Convert binomials to factorials.                                   */
   expr1 : factor(minfactorial(factcomb(makefact(expr)))),
   ss_print_message(2, "Summand:", expr),
@@ -231,13 +233,13 @@ ss_zeilb(expr, %k%, lo, hi, [in_zr]) := block(
   if ss_max(lo, support[1])=support[1] then lower_bound_implicit : true,
   if ss_min(hi, support[2])=support[2] then upper_bound_implicit : true,
 
-  if lo=-inf then lo : support[1],
+  if lo=minf then lo : support[1],
   if hi=inf then hi : support[2],
 
   ss_print_message(2, "Found support:", support),
 
   /* We don't handle sums over infinite support yet!                     */
-  if (support[1]=-inf and lower_bound_implicit) or
+  if (support[1]=minf and lower_bound_implicit) or
      (support[2]=inf and upper_bound_implicit) then (
     ss_print_message(3, "Support not finite!"),
     return(false)
@@ -320,7 +322,7 @@ ss_zeilb(expr, %k%, lo, hi, [in_zr]) := block(
  *******************/
 
 summand_to_rec(expr, k, n) := block(
-  [zr, linsolvewarn:false, lo:-inf, hi:inf],
+  [zr, linsolvewarn:false, lo:minf, hi:inf],
   
   if listp(k) then (
     lo : k[2],
@@ -372,7 +374,7 @@ check_sum(expr, %k%, %n%, lo, hi, deg, sm) :=
  *******************/
 
 ss_support(expr, %k%) := block(
-  if freeof(%k%, expr) or expr=%k% then [-inf, inf]
+  if freeof(%k%, expr) or expr=%k% then [minf, inf]
   else if member(part(expr, 0), ["+", "-"]) then
     lreduce(ss_union, map(lambda([u], ss_support(u,%k%)), args(expr)))
   else if member(part(expr, 0), ["*", "//"]) then
@@ -380,7 +382,7 @@ ss_support(expr, %k%) := block(
   else if member(part(expr, 0), ["^"]) then ss_support(part(expr, 1), %k%)
   else if part(expr, 0)=binomial then ss_support_binomial(expr, %k%)
   else if part(expr, 0)="!" then ss_support_factorial(expr, %k%)
-  else [-inf, inf]
+  else [minf, inf]
 )$
 
 /* we assume here that k!=0 if k<0 */
@@ -408,11 +410,11 @@ solve_lin_ineq(eq, k) := block(
 
   bc : bothcoef(expand(eq1), k), a:bc[1], b:bc[2],
 
-  if a=0 then [-inf, inf]
-  else if not freeof(k, b) then [-inf, inf]
-  else if not numberp(a) then [-inf, inf]
+  if a=0 then [minf, inf]
+  else if not freeof(k, b) then [minf, inf]
+  else if not numberp(a) then [minf, inf]
   else if a>0 then [-b/a, inf]
-  else [-inf, -b/a]
+  else [minf, -b/a]
 )$
 
 ss_union(l1, l2) := [ss_min(first(l1), first(l2)), ss_max(second(l1), second(l2))]$
@@ -429,10 +431,6 @@ ss_min(e1, e2) := block(
   if pnz='neg or pnz='zero then e1
   else e2
 )$
-
-eval_when(batch,
-          ttyoff : false,
-          nolabels : false)$
 
 /********************
  *
@@ -570,3 +568,7 @@ check_for_expx(expr, var, lo, hi) := block(
   )
 )$
 
+
+eval_when(batch,
+          ttyoff : false,
+          nolabels : false)$
