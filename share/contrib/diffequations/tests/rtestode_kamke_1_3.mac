@@ -18,7 +18,7 @@ true;
 
 /*  201  */ 
 (pn_(201),ans:contrib_ode(eqn:2*f(x)*'diff(y,x,1)+2*f(x)*y^2-'diff(f(x),x,1)*y-2*f(x)^2,y,x));
-[y=sqrt(f(x))*(%c*sinh('integrate(sqrt(f(x)),x))+%i*cosh('integrate(sqrt(f(x)),x)))/(%i*sinh('integrate(sqrt(f(x)),x))+%c*cosh('integrate(sqrt(f(x)),x)))];
+[y=sqrt(f(x))*(%c*sinh('integrate(sqrt(f(x)),x))+%i*cosh('integrate(sqrt(f(x)),x)))/(%i*sinh(integrate(sqrt(f(x)),x))+%c*cosh('integrate(sqrt(f(x)),x)))];
 [method,ode_check(eqn,ans[1])];
 [riccati,0];
 
@@ -131,7 +131,7 @@ homogeneous;
 assume(ynew>-2);
 [ynew>-2];
 (pn_(222),ans:contrib_ode(eqn:(2*y+x+7)*'diff(y,x,1)-y+2*x+4,y,x));
-[-(atan((x+3)/(y+2))-log(y^2+4*y+x^2+6*x+13))/5=%c];
+[-((atan((x+3)/(y+2))-log(y^2+4*y+x^2+6*x+13))/5)=%c];
 [method,ode_check(eqn,ans[1])];
 [exact,0];
 forget(ynew>-2);
@@ -169,7 +169,7 @@ forget(ynew>-2);
 
 /*  228  */ 
 (pn_(228),ans:contrib_ode(eqn:(4*y+11*x-11)*'diff(y,x,1)-25*y-8*x+62,y,x));
-[(log(3-(25*(11*x-11)+4*(62-8*x))/(9*(4*y+11*x-11)))-3*log(1-(25*(11*x-11)+4*(62-8*x))/(9*(4*y+11*x-11)))+2*log(-(25*(11*x-11)+4*(62-8*x))/(36*(4*y+11*x-11))))/18=log(9*x-1)/9+%c];
+[(log(3-((25*(11*x-11)+4*(62-8*x))/(9*(4*y+11*x-11))))-3*log(1-((25*(11*x-11)+4*(62-8*x))/(9*(4*y+11*x-11))))+2*log(-((25*(11*x-11)+4*(62-8*x))/(36*(4*y+11*x-11)))))/18=log(9*x-1)/9+%c];
 [method,ode_check(eqn,ans[1])];
 [abel2,0];
 
@@ -293,7 +293,7 @@ genhom;
 
 /*  252  */ 
 (pn_(252),ans:contrib_ode(eqn:(x^2*y-1)*'diff(y,x,1)-x*y^2+1,y,x));
-[-(log(-3*x^2*y+x^3+2)-3*log(x-y))/6=%c];
+[-((log(-3*x^2*y+x^3+2)-3*log(x-y))/6)=%c];
 [method,ode_check(eqn,ans[1])];
 [lie,0];
 
@@ -341,7 +341,7 @@ false;
 (pn_(260),ans:contrib_ode(eqn:(2*x^2*y+x)*'diff(y,x,1)-x^2*y^3+2*x*y^2+y,y,x));
 [x=%c*%e^-((4*x*y+1)/(2*x^2*y^2))];
 map(log,ans[1]/%c);
-log(x/%c)=-(4*x*y+1)/(2*x^2*y^2);
+log(x/%c)=-((4*x*y+1)/(2*x^2*y^2));
 [method,ode_check(eqn,%)];                                              
 [genhom,0];
 
@@ -411,7 +411,7 @@ exact;
 (pn_(272),ans:contrib_ode(eqn:(y^2+x^2)*'diff(y,x,1)-y^2,y,x));
 [%c*x=%e^-((2*atan((2*y-x)/(sqrt(3)*x))+sqrt(3)*log(y/x))/sqrt(3))];
 map(log,ans[1]);
-log(%c*x)=-(2*atan((2*y-x)/(sqrt(3)*x))+sqrt(3)*log(y/x))/sqrt(3);
+log(%c*x)=-((2*atan((2*y-x)/(sqrt(3)*x))+sqrt(3)*log(y/x))/sqrt(3));
 [method,ode_check(eqn,%)];
 [homogeneous,0];
 
@@ -445,7 +445,7 @@ false;
 
 /*  278  */ 
 (pn_(278),ans:contrib_ode(eqn:(y^2+4*sin(x))*'diff(y,x,1)-cos(x),y,x));
-[-(8*y^2+4*y+32*sin(x)+1)*%e^-(4*y)/32=%c];
+[-((8*y^2+4*y+32*sin(x)+1)*%e^-(4*y)/32)=%c];
 [method,ode_check(eqn,ans[1])];
 [exact,0];
 
@@ -461,7 +461,7 @@ false;
 
 /*  281  */ 
 (pn_(281),ans:contrib_ode(eqn:(y^2+2*x*y-x^2)*'diff(y,x,1)-y^2+2*x*y+x^2,y,x));
-[-(y+x)/(2*y^2+2*x^2)=%c];
+[-((y+x)/(2*y^2+2*x^2))=%c];
 [method,ode_check(eqn,ans[1])];
 [exact,0];
 
@@ -497,7 +497,7 @@ false;
 
 /*  287  */ 
 (pn_(287),ans:contrib_ode(eqn:(2*y-4*x+1)^2*'diff(y,x,1)-(y-2*x)^2,y,x));
-[-(4*sqrt(2)*log(7*y^2+(8-28*x)*y+28*x^2-16*x+2)+9*log((7*y-14*x+sqrt(2)+4)/(7*y-14*x-sqrt(2)+4))-56*sqrt(2)*y+14*sqrt(2)*x)/(98*sqrt(2))=%c];
+[-((4*sqrt(2)*log(7*y^2+(8-28*x)*y+28*x^2-16*x+2)+9*log((7*y-14*x+sqrt(2)+4)/(7*y-14*x-sqrt(2)+4))-56*sqrt(2)*y+14*sqrt(2)*x)/(98*sqrt(2)))=%c];
 [method,ode_check(eqn,ans[1])];
 [lie,0];
 
