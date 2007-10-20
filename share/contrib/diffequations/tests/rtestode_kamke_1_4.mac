@@ -246,7 +246,7 @@ exact;
 
 /*  344  */ 
 (pn_(344),ans:contrib_ode(eqn:(log(y)+2*x-1)*'diff(y,x,1)-2*y,y,x));
-[-(log(y)+2*x)/y=%c];
+[-((log(y)+2*x)/y)=%c];
 [method,ode_check(eqn,ans[1])];
 [exact,0];
 
@@ -302,7 +302,7 @@ false;
 
 /*  354  */ 
 (pn_(354),ans:contrib_ode(eqn:(x*sin(y)-1)*'diff(y,x,1)+cos(y),y,x));
-[-(cos(y)*tan(y)-x)/cos(y)=%c];
+[-((cos(y)*tan(y)-x)/cos(y))=%c];
 [method,trigsimp(ode_check(eqn,ans[1]))];
 [exact,0];
 
@@ -424,25 +424,25 @@ forget(a>0);
 
 /*  375  */ 
 (pn_(375),ans:contrib_ode(eqn:('diff(y,x,1))^2+a*'diff(y,x,1)+b*x,y,x));
-[-(12*b*y+sqrt(a^2-4*b*x)*(4*b*x-a^2)+6*a*b*x)/(12*b)=%c];
+[-((12*b*y+sqrt(a^2-4*b*x)*(4*b*x-a^2)+6*a*b*x)/(12*b))=%c];
 [method,ode_check(eqn,ans[1])];
 [lie,0];
 
 /*  376  */ 
 (pn_(376),ans:contrib_ode(eqn:('diff(y,x,1))^2+a*'diff(y,x,1)+b*y,y,x));
-[[x=%c-(log(%t)*a+2*%t)/b,y=-(%t*a+%t^2)/b]];
+[[x=%c-((log(%t)*a+2*%t)/b),y=-((%t*a+%t^2)/b)]];
 method;
 lagrange;
 
 /*  377  */ 
 (pn_(377),ans:contrib_ode(eqn:('diff(y,x,1))^2+(x-2)*'diff(y,x,1)-y+1,y,x));
-[y=%c*x+%c^2-2*%c+1,y=-(x^2-4*x)/4];
+[y=%c*x+%c^2-2*%c+1,y=-((x^2-4*x)/4)];
 [method,ode_check(eqn,ans[1]),ode_check(eqn,ans[2])];
 [clairault,0,0];
 
 /*  378  */ 
 (pn_(378),ans:contrib_ode(eqn:('diff(y,x,1))^2+(x+a)*'diff(y,x,1)-y,y,x));
-[y=%c*x+%c*a+%c^2,y=-(x^2+2*a*x+a^2)/4];
+[y=%c*x+%c*a+%c^2,y=-((x^2+2*a*x+a^2)/4)];
 [method,ode_check(eqn,ans[1]),ode_check(eqn,ans[2])];
 [clairault,0,0];
 
@@ -468,7 +468,7 @@ lagrange;
 assume(4*b+a^2>0,c>0);
 [4*b+a^2>0,c>0];
 (pn_(382),ans:contrib_ode(eqn:('diff(y,x,1))^2+a*x*'diff(y,x,1)-b*x^2-c,y,x));
-[-(sqrt(4*b+a^2)*(4*y+a*x^2)+4*c*asinh(sqrt(4*b+a^2)*x/(2*sqrt(c)))+sqrt(4*b+a^2)*x*sqrt((4*b+a^2)*x^2+4*c))/(4*sqrt(4*b+a^2))=%c];
+[-((sqrt(4*b+a^2)*(4*y+a*x^2)+4*c*asinh(sqrt(4*b+a^2)*x/(2*sqrt(c)))+sqrt(4*b+a^2)*x*sqrt((4*b+a^2)*x^2+4*c))/(4*sqrt(4*b+a^2)))=%c];
 [method,ode_check(eqn,ans[1])];
 [lie,0];
 forget(4*b+a^2>0,c>0);
@@ -480,7 +480,7 @@ forget(4*b+a^2>0,c>0);
 
 /*  384  */ 
 (pn_(384),ans:contrib_ode(eqn:('diff(y,x,1))^2+(a*x+b)*'diff(y,x,1)-a*y+c,y,x));
-[y=(%c*a*x+c+%c*b+%c^2)/a,y=-(a^2*x^2+2*a*b*x-4*c+b^2)/(4*a)];
+[y=(%c*a*x+c+%c*b+%c^2)/a,y=-((a^2*x^2+2*a*b*x-4*c+b^2)/(4*a))];
 [method,ode_check(eqn,ans[1]),ode_check(eqn,ans[2])];
 [clairault,0,0];
 
@@ -490,7 +490,7 @@ forget(4*b+a^2>0,c>0);
 
 /*  386  */ 
 (pn_(386),ans:contrib_ode(eqn:('diff(y,x,1))^2+a*x^3*'diff(y,x,1)-2*a*x^2*y,y,x));
-[-(sqrt(8*a*y+a^2*x^4)+a*x^2)/(sqrt(3)*sqrt(-a))=%c];
+[-((sqrt(8*a*y+a^2*x^4)+a*x^2)/(sqrt(3)*sqrt(-a)))=%c];
 [method,ode_check(eqn,ans[1])];
 [lie,0];
 
@@ -505,7 +505,7 @@ false;
 
 /*  389  */ 
 (pn_(389),ans:contrib_ode(eqn:('diff(y,x,1))^2-(4*y+1)*'diff(y,x,1)+y*(4*y+1),y,x));
-[[x=log(sqrt(8*%t+1)+1)+%c,y=-(sqrt(8*%t+1)-4*%t+1)/8],[x=log(sqrt(8*%t+1)-1)+%c,y=(sqrt(8*%t+1)+4*%t-1)/8]];
+[[x=log(sqrt(8*%t+1)+1)+%c,y=-((sqrt(8*%t+1)-4*%t+1)/8)],[x=log(sqrt(8*%t+1)-1)+%c,y=(sqrt(8*%t+1)+4*%t-1)/8]];
 method;
 lagrange;
 
@@ -552,13 +552,13 @@ false;
 /* (pn_( 398 ),ans:contrib_ode(eqn: ('diff(y,x,1))^2-3*x*y^(2/3)*'diff(y,x,1)+9*y^(5/3) ,y,x)); */ 
 /*  399  */ 
 (pn_(399),ans:contrib_ode(eqn:2*('diff(y,x,1))^2+(x-1)*'diff(y,x,1)-y,y,x));
-[y=%c*x+2*%c^2-%c,y=-(x^2-2*x+1)/8];
+[y=%c*x+2*%c^2-%c,y=-((x^2-2*x+1)/8)];
 [method,ode_check(eqn,ans[1]),ode_check(eqn,ans[2])];
 [clairault,0,0];
 
 /*  400  */ 
 (pn_(400),ans:contrib_ode(eqn:2*('diff(y,x,1))^2-2*x^2*'diff(y,x,1)+3*x*y,y,x));
-[-(2*sqrt(x^4-6*x*y)-2*x^2)/(3*sqrt(x)) = %c];
+[-((2*sqrt(x^4-6*x*y)-2*x^2)/(3*sqrt(x))) = %c];
 /* Simplifies to [y=-(3*%c^2*x-4*%c*x^(5/2))/(8*x)] when 3*%c*sqrt(x)-2*x^2 < 0 */
 [method,ode_check(eqn,ans[1])];
 [lie,0];
