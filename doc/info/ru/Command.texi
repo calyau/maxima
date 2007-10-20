@@ -1,7 +1,7 @@
 @c Language=Russian
 @c Encoding=CP1251
 @c File=Command.texi
-@c OriginalRevision=1.44
+@c OriginalRevision=1.45
 @c TranslatedBy: (c) 2005-12 Vadim V. Zhytnikov <vvzhyt@gmail.ru>
 
 @menu
@@ -1049,6 +1049,9 @@ Solution
 было удалено определение функции.  Для символов, у которых
 не было соответствующих определений функций, возвращается
 @code{false}.
+
+Функция @code{remfunction} не применима к функциям массивам и переменным с индексом,
+к этим типам функций применима @code{remarray}.
 
 @end deffn
 
