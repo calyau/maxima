@@ -91,58 +91,64 @@ DOE Macsyma.  Копия DOE Macsyma поддерживалась профессором Вильямом
 @menu
 Структура Maxima
 
-* Введение в Maxima::             Пример сессии Maxima.
-* Работа с ошибками::             Обнаружение ошибок и, как сообщить об ошибках в Maxima.
-* Справка::                       Справочная система в сессии Maxima.
-* Командная строка::              Синтаксис командной строки Maxima.
-* Operators::                     Operators used in Maxima expressions.
-* Expressions::                   Expressions in Maxima.
-* Simplification::                Simplifying expressions.
-* Plotting::                      2D and 3D graphical output.
-* Input and Output::              File input and output.
-* Floating Point::                Low level numerical routines.
-* Контексты::                     Наборы известных фактов.
+* Введение в Maxima::                Пример сессии Maxima.
+* Работа с ошибками::                Обнаружение ошибок и, как сообщить 
+                                     об ошибках в Maxima.
+* Справка::                          Справочная система в сессии Maxima.
+* Командная строка::                 Синтаксис командной строки Maxima.
+* Operators::                        Operators used in Maxima expressions.
+* Expressions::                      Expressions in Maxima.
+* Simplification::                   Simplifying expressions.
+* Plotting::                         2D and 3D graphical output.
+* Input and Output::                 File input and output.
+* Floating Point::                   Low level numerical routines.
+* Контексты::                        Наборы известных фактов.
 
 Поддержка специальных разделов математики
 
-* Polynomials::                   Standard forms for polynomials, and
-                                  functions operating on them.
-* Константы::                     Числовые и логические константы.
-* Logarithms::                    Manipulation of expressions involving
-                                    logarithms.
-* Тригонометрия::                 Работа с выражениями, содержащими тригонометрические и
-                                  обратные тригонометрические функции.
-* Special Functions::             Special functions
-* Эллиптические функции::         Эллиптические функции и интегралы.
-* Пределы::                       Вычисление пределов выражений.
-* Differentiation::               Differential calculus.
-* Integration::                   Integral calculus.
-* Equations::                     Defining and solving equations.
-* Дифференциальные уравнения::    Определение и решение дифференциальных уравнений.
-* Numerical::                     Numerical integration, Fourier
-                                  transforms, etc.
-* Массивы::                       Создание массивов и работа с ними.
-* Matrices and Linear Algebra::   Matrix operations.
+* Polynomials::                      Standard forms for polynomials, and
+                                     functions operating on them.
+* Константы::                        Числовые и логические константы.
+* Logarithms::                       Manipulation of expressions involving
+                                     logarithms.
+* Тригонометрия::                    Работа с выражениями, содержащими 
+                                     тригонометрические и братные 
+				     тригонометрические функции.
+* Special Functions::                Special functions
+* Эллиптические функции::            Эллиптические функции и интегралы.
+* Пределы::                          Вычисление пределов выражений.
+* Differentiation::                  Differential calculus.
+* Integration::                      Integral calculus.
+* Equations::                        Defining and solving equations.
+* Дифференциальные уравнения::       Определение и решение дифференциальных
+                                     уравнений.
+* Numerical::                        Numerical integration, Fourier
+                                     transforms, etc.
+* Массивы::                          Создание массивов и работа с ними.
+* Matrices and Linear Algebra::      Matrix operations.
 * Пакет affine::                      
-* Пакет itensor::                 Индексные тензорные вычисления.
-* Пакет ctensor::                 Компонентные тензорные вычисления.
-* Пакет atensor::                 Вычисления с тензорными алгебрами.
-* Series::                        Taylor and power series.
-* Теория чисел::                  Теория чисел.
+* Пакет itensor::                    Индексные тензорные вычисления.
+* Пакет ctensor::                    Компонентные тензорные вычисления.
+* Пакет atensor::                    Вычисления с тензорными алгебрами.
+* Series::                           Taylor and power series.
+* Теория чисел::                     Теория чисел.
 * Symmetries::                  
-* Groups::                        Abstract algebra.
+* Groups::                           Abstract algebra.
 
 Продвинутые возможности и программирование
 
-* Окружение времени выполнения::  Настройка окружения времени выполнения Maxima.
-* Вспомогательные опции::         Опции, имеющие глобальное влияние на работу Maxima.
-* Rules and Patterns::            User defined pattern matching and
-                                  simplification rules.
-* Списки::                        Работа со списками.
-* Множества::                     Работа с множествами.
-* Определение функций::           Определение функций.
-* Программы Maxima::              Написание программ на языке Maxima.
-* Отладка::                       Отладка Maxima программ.
+* Окружение времени выполнения::     Настройка окружения времени выполнения 
+                                     Maxima.
+* Вспомогательные опции::            Опции, имеющие глобальное влияние 
+                                     на работу Maxima.
+* Правила преобразования и шаблоны:: Определяемые пользователем правила 
+                                     сопоставления с образцом и правила 
+				     упрощения.
+* Списки::                           Работа со списками.
+* Множества::                        Работа с множествами.
+* Определение функций::              Определение функций.
+* Программы Maxima::                 Написание программ на языке Maxima.
+* Отладка::                          Отладка Maxima программ.
 
 Дополнительные пакеты
 
@@ -363,10 +369,10 @@ Groups
 * Библиотека Share::                       
 * Вспомогательные функции и переменные::  
 
-Rules and Patterns
+Правила преобразования и шаблоны
 
-* Introduction to Rules and Patterns::  
-* Definitions for Rules and Patterns::  
+* Введение в правила преобразований и шаблоны::  
+* Функции и переменные для правил преобразования и шаблонов::  
 
 Списки
 
