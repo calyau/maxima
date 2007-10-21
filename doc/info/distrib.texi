@@ -192,7 +192,7 @@ $$KU\left[X\right]={{\sum_{x_{i}}{f\left(x\right)\,
 @end tex
 respectively.
 
-Package @code{distrib} includes functions for simulating random variates. Some of these functions make use of optional variables indicating the algorithm to be used. The general inverse method (based on the fact that if @var{u} is an uniform random number in @math{(0,1)}, then @var{F^(-1)(u)} is a random variate with distribution @math{F}) is implemented in most cases; this is a suboptimal method in terms of timing, but useful for comparing with other algorithms. In this example, the perandom_formance of algorithms @code{ahrens_cheng} and @code{inverse} for simulating chi-square variates are compared by means of their histograms:
+Package @code{distrib} includes functions for simulating random variates. Some of these functions make use of optional variables indicating the algorithm to be used. The general inverse method (based on the fact that if @var{u} is an uniform random number in @math{(0,1)}, then @var{F^(-1)(u)} is a random variate with distribution @math{F}) is implemented in most cases; this is a suboptimal method in terms of timing, but useful for comparing with other algorithms. In this example, the performance of algorithms @code{ahrens_cheng} and @code{inverse} for simulating chi-square variates are compared by means of their histograms:
 
 @example
 (%i1) load(distrib)$
