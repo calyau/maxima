@@ -1011,7 +1011,7 @@ However,
 as with all atoms in Maxima,
 the properties of pattern variables (as declared by @code{put} and related functions) are global.
 
-The rule constructed by @code{tellsimpafter} is named after the main operator of @code{pattern}.
+The rule constructed by @code{tellsimpafter} is named after the main operator of @var{pattern}.
 Rules for built-in operators, 
 and user-defined operators 
 defined by @code{infix}, @code{prefix}, @code{postfix}, @code{matchfix}, and @code{nofix},
