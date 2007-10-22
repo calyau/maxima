@@ -639,7 +639,8 @@ It appears in LIMIT and DEFINT.......")
   (prog (n1 d1 lim-sign gcp sheur-ans)
      (setq n (hyperex n) dn (hyperex dn))
 ;;;Change to uniform limit call.
-     (cond ((infinityp val)  (setq d1 (limit dn var val nil))
+     (cond ((infinityp val)
+	    (setq d1 (limit dn var val nil))
 	    (setq n1 (limit n var val nil)))
 	   (t (cond ((setq n1 (simplimsubst val n)) nil)
 		    (t (setq n1 (limit n var val nil))))
@@ -864,6 +865,16 @@ It appears in LIMIT and DEFINT.......")
 	   nil)
 	  (t (limit (m// n1 d1) var val 'think)))))
 
+;; takes expression and returns operator at front with all flags removed
+;; except array flag.
+;; array flag must match for alike1 to consider two things to be the same.
+;;   ((MTIMES SIMP) ... ) => (MTIMES)
+;;   ((PSI SIMP ARRAY) 0) => (PSI ARRAY)
+(defun operator-with-array-flag (exp)
+  (cond ((member 'array (car exp) :test #'eq)
+	 (list (caar exp) 'array))
+	(t (list (caar exp)))))
+
 (defun reflect0 (exp var val)
   (cond ((atom exp) exp)
 	((and (eq (caar exp) 'mfactorial)
@@ -872,7 +883,7 @@ It appears in LIMIT and DEFINT.......")
 		    (and (numberp argval)
 			 (> 0 argval)))))
 	 (reflect (cadr exp)))
-	(t (cons (ncons (caar exp))
+	(t (cons (operator-with-array-flag exp)
 		 (mapcar (function
 			  (lambda (term)
 			   (reflect0 term var val)))
@@ -918,6 +929,7 @@ It appears in LIMIT and DEFINT.......")
 		       ((mexpt simp) $%pi ((rat simp) 1 2))
 		       ((mexpt simp) $z ((mplus simp) ((rat simp) -1 2) $z))
 		       ((mexpt simp) $%e ((mtimes simp) -1 $z)))))
+
 
 (defun no-err-sub (v e &aux ans)
   (let ((errorsw t) (errrjfflag t) (*zexptsimp? t)
@@ -1270,11 +1282,18 @@ It appears in LIMIT and DEFINT.......")
     (setq lhp? (and (null ind) (cons n d)))
     (desetq (nconst . n) (var-or-const n))
     (desetq (dconst . d) (var-or-const d))
-    (setq n (sdiff n var) d (sdiff d var))
+
+    (setq n (stirling0 n))	;; replace factorial and %gamma
+    (setq d (stirling0 d))  	;;  with approximations
+    
+    (setq n (sdiff n var)	;; take derivatives for l'hospital
+	  d (sdiff d var))
+
     (if (or (not (free n '%derivative)) (not (free d '%derivative)))
 	(throw 'lhospital ()))
     (setq n (expand-trigs (tansc n) var))
     (setq d (expand-trigs (tansc d) var))
+
     (desetq (const . (n . d)) (remove-singularities n d))
     (setq const (m* const (m// nconst dconst)))
     (simpinf
@@ -1652,13 +1671,10 @@ It appears in LIMIT and DEFINT.......")
 		   (cdr exp)))
      exp)				;LIMIT(B[I],B,INF); -> B[I]
     (t (if $limsubst
-	   (let ((head (cond ((member 'array (car exp) :test #'eq)
-			      (list (caar exp) 'array))
-			     (t (list (caar exp))))))
-	     (simplify (cons head
-			     (mapcar #'(lambda (a)
-					 (limit a var val 'think))
-				     (cdr exp)))))
+	   (simplify (cons (operator-with-array-flag exp)
+			   (mapcar #'(lambda (a)
+				       (limit a var val 'think))
+				   (cdr exp))))
 	   (nounlimit exp var val)))))
 
 (defun liminv (e)
@@ -1758,7 +1774,9 @@ It appears in LIMIT and DEFINT.......")
      (do ((exp (cdr exp) (cdr exp)) (f))
 	 ((or y (null exp)) nil)
        (setq f (limit (car exp) var val 'think))
-       (cond ((eq f '$und) (setq y t))
+       (cond ((null f)
+	      (throw 'limit t))
+	     ((eq f '$und) (setq y t))
 	     ((not (member f '($inf $minf $infinity $ind) :test #'eq))
 	      (setq sum (m+ sum f)))
 	     ((eq f '$ind)  (push (car exp) indl))
@@ -2091,7 +2109,10 @@ It appears in LIMIT and DEFINT.......")
 	  ((and (eq ta tb) (eq ta 'exp))
 	   ;; Both are exponential order of infinity.  Check the
 	   ;; exponents to determine which exponent is bigger.
-	   (ratgreaterp (third (second a)) (third (second b))))
+	   ;(ratgreaterp (third (second a)) (third (second b))))
+	   (ratgreaterp (limit (m- (third (second a)) (third (second b)))
+			       var val 'think)
+			0))
 	  ((member ta (cdr (member tb '(num log var exp fact gen) :test #'eq)) :test #'eq)))))
 
 (defun ismax (l)
@@ -2155,8 +2176,7 @@ It appears in LIMIT and DEFINT.......")
 		(let ((compare2 (limit (m// hi-term (car l)) var val 'think)))
 		  (cond ((zerop2 compare2)
 			 (setq total 1)
-			 (setq hi-terms (ncons (setq hi-term (car l))))
-			 (mtell "maxi ~M // ~M = ~M~%" (car l) hi-term compare))
+			 (setq hi-terms (ncons (setq hi-term (car l)))))
 			(t nil))))
 	       ((zerop2 compare)  nil)
 	       ;; COMPARE IS IND OR FINITE-VALUED
@@ -2478,12 +2498,16 @@ It appears in LIMIT and DEFINT.......")
   ;; it's not identically zero, we compute the limit of the real and
   ;; imaginary parts and combine them.  Otherwise, we can use the
   ;; original method for real limits.
-  (let* ((log-form `((%log) ,arg))
-	 (rp ($realpart log-form))
-	 (ip (simplify ($imagpart log-form))))
+  (let* ((arglim (limit arg var val 'think))
+	 (log-form `((%log) ,arg))
+	 (rp (if (eq arglim '$inf)	; if we know limit is real pos inf
+		 '$inf			; avoid asking user q's
+		 ($realpart log-form)))	; otherwise find real part
+	 (ip (if (eq arglim '$inf)
+		 0
+	         (simplify ($imagpart log-form)))))
     (cond ((and (numberp ip) (zerop ip))
-	   (let* ((arglim (limit arg var val 'think))
-		  (real-lim (ridofab arglim)))
+	   (let* ((real-lim (ridofab arglim)))
 	     (if (=0 real-lim)
 		 (cond ((eq arglim '$zeroa)  '$minf)
 		       ((eq arglim '$zerob)  '$infinity)

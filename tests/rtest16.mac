@@ -311,5 +311,12 @@ tlimit(exp(-t+%i*t),t,inf);
 limit((((1+1/x)^(x^2))+1)^(1/x),x,inf);
 %e;
 
+/* [ 1760232 ] limit(1/n * n!^(1/n), n, inf); */
+limit(1/n * n!^(1/n), n, inf);
+%e^-1;
+
+limit(x*gamma(x), x, 0);
+1;
+
 end;
 end$
