@@ -729,6 +729,10 @@
 	   `(($sech) ,u))
 	  ((and $trigsign (mminusp* u))
 	   (cons-exp '%jacobi_dn (neg u) m))
+	  ((zerop1 ($ratsimp (sub u (pow (sub 1 m) 1//2))))
+	   ;; A&S 16.5.3
+	   ;; dn(sqrt(1-m),m) = K(m)
+	   ($elliptic_kc m))
 	  ;; A&S 16.20.2 (Jacobi's Imaginary transformation)
 	  ((and $%iargs (multiplep u '$%i))
 	   (cons-exp '%jacobi_dc (coeff u '$%i 1)
@@ -871,6 +875,13 @@
 	  ((onep1 m)
 	   ;; x = dn(u,1) = sech(u).  so u = asech(x)
 	   `((%asech) ,u))
+	  ((onep1 u)
+	   ;; jacobi_dn(0,m) = 1
+	   0)
+	  ((zerop1 ($ratsimp (sub u (pow (sub 1 m) 1//2))))
+	   ;; jacobi_dn(K(m),m) = sqrt(1-m) so
+	   ;; inverse_jacobi_dn(sqrt(1-m),m) = K(m)
+	   ($elliptic_kc m))
 	  (t
 	   ;; Nothing to do
 	   (eqtest (list '(%inverse_jacobi_dn) u m) form)))))
@@ -3237,7 +3248,11 @@ first kind:
 	       (and $numer (numberp u) (numberp m)))
 	   ($inverse_jacobi_dn (/ u) m))
 	  ((onep1 u)
-	   `((%elliptic_kc) ,m))
+	   0)
+	  ((onep1 ($ratsimp (mul (pow (sub 1 m) 1//2) u)))
+	   ;; jacobi_nd(1/sqrt(1-m),m) = K(m).  This follows from
+	   ;; jacobi_dn(sqrt(1-m),m) = K(m).
+	   ($elliptic_kc m))
 	  (t
 	   ;; Nothing to do
 	   (eqtest (list '(%inverse_jacobi_nd) u m) form)))))
@@ -3285,6 +3300,9 @@ first kind:
     (cond ((or (and (floatp u) (floatp m))
 	       (and $numer (numberp u) (numberp m)))
 	   ($inverse_jacobi_sn (/ u (sqrt (+ 1 (* u u)))) m))
+	  ((zerop1 u)
+	   ;; jacobi_sc(0,m) = 0
+	   0)
 	  (t
 	   ;; Nothing to do
 	   (eqtest (list '(%inverse_jacobi_sc) u m) form)))))
@@ -3506,6 +3524,8 @@ first kind:
     (cond ((or (and (floatp u) (floatp m))
 	       (and $numer (numberp u) (numberp m)))
 	   ($inverse_jacobi_cd (/ u) m))
+	  ((onep1 u)
+	   0)
 	  (t
 	   ;; Nothing to do
 	   (eqtest (list '(%inverse_jacobi_dc) u m) form)))))
