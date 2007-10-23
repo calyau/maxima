@@ -553,6 +553,12 @@
 	   `((%tanh) ,u))
 	  ((and $trigsign (mminusp* u))
 	   (neg (cons-exp '%jacobi_sn (neg u) m)))
+	  ((and $triginverses
+		(listp u)
+		(eq (caar u) '%inverse_jacobi_sn)
+		(alike1 (third u) m))
+	   ;; jacobi_sn(inverse_jacobi_sn(u,m), m) = u
+	   (second u))
 	  ;; A&S 16.20.1 (Jacobi's Imaginary transformation)
 	  ((and $%iargs (multiplep u '$%i))
 	   (mul '$%i
@@ -639,6 +645,12 @@
 	   `((%sech) ,u))
 	  ((and $trigsign (mminusp* u))
 	   (cons-exp '%jacobi_cn (neg u) m))
+	  ((and $triginverses
+		(listp u)
+		(eq (caar u) '%inverse_jacobi_cn)
+		(alike1 (third u) m))
+	   ;; jacobi_cn(inverse_jacobi_cn(u,m), m) = u
+	   (second u))
 	  ;; A&S 16.20.2 (Jacobi's Imaginary transformation)
 	  ((and $%iargs (multiplep u '$%i))
 	   (cons-exp '%jacobi_nc (coeff u '$%i 1) (add 1 (neg m))))
@@ -729,6 +741,12 @@
 	   `(($sech) ,u))
 	  ((and $trigsign (mminusp* u))
 	   (cons-exp '%jacobi_dn (neg u) m))
+	  ((and $triginverses
+		(listp u)
+		(eq (caar u) '%inverse_jacobi_dn)
+		(alike1 (third u) m))
+	   ;; jacobi_dn(inverse_jacobi_dn(u,m), m) = u
+	   (second u))
 	  ((zerop1 ($ratsimp (sub u (pow (sub 1 m) 1//2))))
 	   ;; A&S 16.5.3
 	   ;; dn(sqrt(1-m),m) = K(m)
