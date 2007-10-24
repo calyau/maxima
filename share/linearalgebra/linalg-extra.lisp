@@ -63,7 +63,7 @@
     (dolist (li l)
       (setq x 1 row nil)
       (dolist (lk l)
-        (declare (ignore lk))
+	(declare (ignore lk))
 	(push x row)
 	(setq x (mul x li)))
       (setq row (nreverse row))
@@ -74,22 +74,13 @@
     acc))
 
 ;; Use Sylvester's criterion to decide if the self-adjoint part of a matrix is 
-;; negative definite (neg) or positive definite (pos). By the self-adjoint part 
-;; of a matrix M, I mean (M + M^*) / 2, where ^* is the conjugate transpose. For
-;; all other cases, return pnz. This algorithm is unable to determine if a matrix
-;; is negative semidefinite or positive semidefinite.
+;; negative definite (neg) or positive definite (pos). For all other cases, return 
+;; pnz. This algorithm is unable to determine if a matrix is negative semidefinite 
+;; or positive semidefinite. The argument to this function must be a selfadjoint
+;; matrix.
 
-;; For purely numerical matrices, there more efficient algorithms; for symbolic
-;; matrices, things like matrix([a,b],[b,a]), assume(a > 0, a^2 > b^2), I think
-;; this is the best we can do.
-
-;; (1) The divide by 2 isn't needed, but try assume(a > 0, a^2 > b^2),
-;; matrix_sign(matrix([a,b],[b,a])) without the divide by 2.
-
-(defun $matrix_sign (m)
+(defun matrix-sign-sylvester (m)
   (let ((n) (det) (p-sgn nil) (n-sgn nil))
-    ($require_square_matrix m '$first '$matrix_sign)
-    (setq m (div (add m ($ctranspose m)) 2)) ;; see (1)
     (setq n ($first ($matrix_size m)))
     
     (loop for i from 1 to n do
@@ -101,6 +92,51 @@
 	  ((every #'(lambda (s) (eq s '$pos)) n-sgn) '$neg)
 	  (t '$pnz))))
 
+(defun order-of-root (p x pt)
+  (let ((order 0))
+    (setq p ($expand p))
+    (while (and (alike 0 ($substitute pt x p)) (not (alike 0 p)))
+      (incf order)
+      (setq p ($expand ($diff p x))))
+    order))
+	
+;; Let M be the self-adjoint part of mat. By the self-adjoint part 
+;; of a matrix M, I mean (M + M^*) / 2, where ^* is the conjugate transpose
+;; Return 
 
+;;  (a) neg if M is negative definite,
+;;  (b) nz if M is negative semidefinite,
+;;  (c) pz if M is positive semidefinite,
+;;  (d) pos if M is positive definite,
+;;  (e) pnz if M isn't a--d or if Maxima isn't able determine the matrix sign.
 
- 
+;; When M is a matrix of rational numbers, look at the zeros of the characteristic polynomial;
+;; otherwise, use Sylvester's criterion.
+
+(defun $matrix_sign (mat)
+  (let ((z (gensym)) (p) (n) (nbr-zero-roots) (nbr-neg-roots) (nbr-pos-roots))
+
+    ($require_square_matrix mat '$first '$matrix_sign)
+    (setq mat (div (add mat ($ctranspose mat)) 2))
+    (cond (($some '((lambda) ((mlist) $s) ((mnot) (($ratnump) $s))) mat)
+	   (matrix-sign-sylvester mat))
+	  (t
+	   (setq n ($first ($matrix_size mat)))
+	   (cond (($zeromatrixp mat) '$zero)
+		 (t
+		  (setq p ($charpoly mat z))
+		  
+		  ;; number of roots of characteristic poly in {0}
+		  (setq nbr-zero-roots (order-of-root p z 0))
+		  
+		  ;; number of roots of characteristic poly in (-inf,0)
+		  (setq nbr-neg-roots (- ($nroots p '$minf 0) nbr-zero-roots))
+
+		  ;; number of roots of characteristic poly in (0,inf)
+		  (setq nbr-pos-roots ($nroots p 0 '$inf))
+		  
+		  (cond ((= n nbr-neg-roots) '$neg)
+			((= 0 nbr-pos-roots) '$nz)
+			((= n nbr-pos-roots) '$pos)
+			((= n (+ nbr-pos-roots nbr-zero-roots)) '$pz)
+			(t '$pnz))))))))
