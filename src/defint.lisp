@@ -640,17 +640,31 @@
   (let ((e (pqr exp)))
     ;; PQR divides the rational expression and returns the quotient
     ;; and remainder
-    (cond ((equal 0. (car e))
-	   ;; No polynomial part
-	   (cv exp))
-	  ((equal 0. (cdr e))
-	   ;; Only polynomial part
-	   (eezz (car e) ll ul))
-	  (t
-	   ;; A non-zero quotient and remainder.  Combine the results
-	   ;; together.
-	   (m+t (eezz (car e) ll ul)
-		(cv (m// (cdr e) dn*)))))))
+    (flet ((try-antideriv (e lo hi)
+	     (let ((ans (antideriv e)))
+	       (when ans
+		 (m- ($substitute hi var ans)
+		     ($substitute lo var ans))))))
+
+      (cond ((equal 0. (car e))
+	     ;; No polynomial part
+	     (let ((ans (try-antideriv exp ll ul)))
+	       (if ans
+		   ans
+		   (cv exp))))
+	    ((equal 0. (cdr e))
+	     ;; Only polynomial part
+	     (eezz (car e) ll ul))
+	    (t
+	     ;; A non-zero quotient and remainder.  Combine the results
+	     ;; together.
+	     (let ((ans (try-antideriv (m// (cdr e) dn*) ll ul)))
+	       (cond (ans
+		      (m+t (eezz (car e) ll ul)
+			   ans))
+		     (t
+		      (m+t (eezz (car e) ll ul)
+			   (cv (m// (cdr e) dn*)))))))))))
 
 ;; I think this takes a rational expression E, and finds the
 ;; polynomial part.  A cons is returned.  The car is the quotient and

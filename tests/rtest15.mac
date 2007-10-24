@@ -464,8 +464,8 @@ integrate(log(x)/(x^2+1)^2,x,0,inf);
  * Bug 941457: integrate(1/x^5,x,1,2^(1/78))
  * Fixed 2006/03/13.  Solution needs work, though.
  */
-multthru(factor(integrate(1/x^5,x,1,2^(1/78))));
-1/4 - (1/8 ) * (2^(37/39));
+integrate(1/x^5,x,1,2^(1/78));
+1/4-1/(4*2^(2/39));
 
 /*
  * Bug 938235: integrate((1/2)*u^2-1/u^5,u,1,sqrt(2))
@@ -592,11 +592,12 @@ integrate(1/(sin(x)^2+1),x,0,3*%pi);
  *
  * The call to factor is to get rid of some numerical factors.
  */
-logcontract(ratsimp(factor(integrate(1/(x^8-1),x,0,1/2)))),algebraic;
--((sqrt(2)*log((20*sqrt(2)+33)/17)+2*sqrt(2)*atan((2*sqrt(2)+1)/7)
-				 +2*sqrt(2)*atan((2*sqrt(2)-1)/7)+log(9)
-				 +4*atan(1/2))
- /16)$
+ratsimp(ev(logcontract((integrate(1/(x^8-1),x,0,1/2))),algebraic) + 
+(sqrt(2)*log((20*sqrt(2)+33)/17)+2*sqrt(2)*atan((sqrt(2)+2)/2)
+                                 +2*sqrt(2)*atan((sqrt(2)-2)/2)+log(9)
+                                 +4*atan(1/2))
+ /16);
+0;
 
 /*
  * Bug [ 1582625 ] integrate(t^2*log(t)/((t^2-1)*(t^4+1)), t, 0, 1) wrong?
@@ -776,3 +777,13 @@ acos(-1/sqrt(2)),%piargs;
 /* Bug [ 1045287 ] */
 floatnump(float(exp(exp(2))));
 true$
+
+/*
+ * Bug [ 1778796 ] integrate( (x^3+1)/(x^4 + 4*x + 1), 0, 1) 
+ *
+ * Not really a bug, but maxima takes way to long to compute the 
+ * integral, and the result is extremely long.  The fix is it try 
+ * the antiderivative first before trying the keyhole contour.
+ */
+integrate( (x^3+1)/(x^4 + 4*x + 1), x, 0, 1);
+log(6)/4;
