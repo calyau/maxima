@@ -747,7 +747,7 @@
 		(alike1 (third u) m))
 	   ;; jacobi_dn(inverse_jacobi_dn(u,m), m) = u
 	   (second u))
-	  ((zerop1 ($ratsimp (sub u (pow (sub 1 m) 1//2))))
+	  ((zerop1 ($ratsimp (sub u (power (sub 1 m) 1//2))))
 	   ;; A&S 16.5.3
 	   ;; dn(sqrt(1-m),m) = K(m)
 	   ($elliptic_kc m))
@@ -896,7 +896,7 @@
 	  ((onep1 u)
 	   ;; jacobi_dn(0,m) = 1
 	   0)
-	  ((zerop1 ($ratsimp (sub u (pow (sub 1 m) 1//2))))
+	  ((zerop1 ($ratsimp (sub u (power (sub 1 m) 1//2))))
 	   ;; jacobi_dn(K(m),m) = sqrt(1-m) so
 	   ;; inverse_jacobi_dn(sqrt(1-m),m) = K(m)
 	   ($elliptic_kc m))
@@ -3267,7 +3267,7 @@ first kind:
 	   ($inverse_jacobi_dn (/ u) m))
 	  ((onep1 u)
 	   0)
-	  ((onep1 ($ratsimp (mul (pow (sub 1 m) 1//2) u)))
+	  ((onep1 ($ratsimp (mul (power (sub 1 m) 1//2) u)))
 	   ;; jacobi_nd(1/sqrt(1-m),m) = K(m).  This follows from
 	   ;; jacobi_dn(sqrt(1-m),m) = K(m).
 	   ($elliptic_kc m))
