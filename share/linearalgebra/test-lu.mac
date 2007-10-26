@@ -98,7 +98,7 @@ true$
 0$
 
 lu_backsub(lu_factor(m,crering), b);
-matrix([x],[y],[z])$
+''(rat(matrix([x],[y],[z])))$
 
 (m : matrix([0,2,3],[0,5,6],[7,8,10]),0);
 0$
@@ -107,7 +107,7 @@ matrix([x],[y],[z])$
 0$
 
 lu_backsub(lu_factor(m, crering), b);
-matrix([x],[y],[z])$
+''(rat(matrix([x],[y],[z])))$
 
 (m : matrix([0,2,3],[0,5,6],[7,8,10]),0);
 0$
@@ -116,7 +116,7 @@ matrix([x],[y],[z])$
 0$
 
 lu_backsub(lu_factor(m, crering), b);
-matrix([x],[y],[z])$
+''(rat(matrix([x],[y],[z])))$
 
 
 (m : matrix([0,1,2],[1,0,1],[0,0,8]),0);
@@ -126,7 +126,7 @@ matrix([x],[y],[z])$
 0$
 
 lu_backsub(lu_factor(m, crering), b);
-matrix([x],[y],[z])$
+''(rat(matrix([x],[y],[z])))$
 
 (m : matrix([matrix([0,1],[1,0]), matrix([1,0],[%i,0])], 
             [matrix([1,0],[0,1]), matrix([1,1],[-1,1])]),0);
