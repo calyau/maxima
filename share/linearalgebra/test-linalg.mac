@@ -395,7 +395,7 @@ matrix([a,b],[c,d])$
 0$
 
 nullspace(m);
-funmake('span, sort([matrix([1],[0],[0]),matrix([0],[1],[-1])]))$
+''(funmake('span, sort([matrix([1],[0],[0]),matrix([0],[1],[-1])])))$
 
 columnspace(m);
 span(matrix([1],[0],[0]))$
@@ -431,7 +431,7 @@ kronecker_product(matrix([a]),matrix([b]));
 matrix([a*b]);
 
 kronecker_product(matrix([1,2],[3,4]),matrix([a,b],[c,d]));
-mat_unblocker(matrix([matrix([a,b],[c,d]), 2*matrix([a,b],[c,d])],[3*matrix([a,b],[c,d]),4*matrix([a,b],[c,d])]))$
+''(mat_unblocker(matrix([matrix([a,b],[c,d]), 2*matrix([a,b],[c,d])],[3*matrix([a,b],[c,d]),4*matrix([a,b],[c,d])])))$
 
 every(lambda([e], is(e < 0)), [-1,-2,3]);
 false$
@@ -510,7 +510,7 @@ matrix([0,1,0,1],[1,0,1,0],[0,1,0,1],[1,0,1,0])$
 0$
 
 mat_unblocker(m2);
-matrix([m,m,m,m],[m,m,m,m],[m,m,m,m],[m,m,m,m])$
+''(matrix([m,m,m,m],[m,m,m,m],[m,m,m,m],[m,m,m,m]))$
 
 mat_fullunblocker(m2);
  matrix([0,1,0,1,0,1,0,1],[1,0,1,0,1,0,1,0],[0,1,0,1,0,1,0,1],[1,0,1,0,1,0,1,0],[0,1,0,1,0,1,0,1],[1,0,1,0,1,0,1,0],[0,1,0,1,0,1,0,1],[1,0,1,0,1,0,1,0])$
@@ -584,10 +584,10 @@ diag_matrix(diag_matrix(1,2),diag_matrix(3,4));
 matrix([matrix([1,0],[0,2]),matrix([0,0],[0,0])],[matrix([0,0],[0,0]),matrix([3,0],[0,4])])$
 
 identfor(diag_matrix(diag_matrix(1,2),diag_matrix(3,4)));
-diag_matrix(diag_matrix(1,1),diag_matrix(1,1))$
+''(diag_matrix(diag_matrix(1,1),diag_matrix(1,1)))$
 
 zerofor(diag_matrix(diag_matrix(1,2),diag_matrix(3,4)));
-diag_matrix(diag_matrix(0,0),diag_matrix(0,0))$
+''(diag_matrix(diag_matrix(0,0),diag_matrix(0,0)))$
 
 (m : diag_matrix(diag_matrix(5,6),diag_matrix(8,10)),0);
 0$
@@ -619,8 +619,8 @@ false$
 every(lambda([x], is (x < 5)), [4,5,6,7]);
 false$
 
-every('integerp, false);
-false$
+errcatch(every('integerp, false));
+[]$
 
 every(lambda([x], is(x < 1932)), matrix([1,2,3],[8,8,74]));
 true$
