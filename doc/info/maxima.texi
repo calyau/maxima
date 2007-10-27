@@ -149,6 +149,7 @@ Additional packages
 * dynamics::                    Graphics for dynamical systems and fractals.
 * f90::                         Maxima to fortran translator.
 * ggf::                         Generating function of sequences.
+* graphs::                      Graph theory package.
 * grobner::                     Functions for working with Groebner bases.
 * impdiff::                     Implicit derivatives.
 * implicit_plot::               Implicit plots package.
@@ -441,6 +442,11 @@ f90
 ggf
 
 * Functions and Variables for ggf::
+
+graphs
+
+* Introduction to graphs::
+* Functions and Variables for graphs::
 
 grobner
 
@@ -762,11 +768,15 @@ zeilberger
 @chapter f90
 @include f90.texi
 
-@node ggf, grobner, f90, Top
+@node ggf, graphs, f90, Top
 @chapter ggf
 @include ggf.texi
 
-@node grobner, impdiff, ggf, Top
+@node graphs, grobner, ggf, Top
+@chapter graphs
+@include graphs.texi
+
+@node grobner, impdiff, graphs, Top
 @chapter grobner
 @include grobner.texi
 

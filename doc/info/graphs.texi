@@ -1,0 +1,1577 @@
+@menu
+* Introduction to graphs::
+* Functions and Variables for graphs::
+@end menu
+
+@node Introduction to graphs, Functions and Variables for graphs, graphs, graphs
+@section Introduction to graphs
+
+The graphs package provides graph and digraph data structure for
+Maxima. Graphs and digraphs are simple (have no multiple edges nor
+loops), although digraphs can have a directed edge from @var{u} to
+@var{v} and a directed edge from @var{v} to @var{u}.
+
+Internally graphs are represented by adjacency lists and implemented as
+a lisp structures. Vertices are identified by their ids (an id is an
+integer). Edges/arcs are represented by lists of length 2. Labels can be
+assigned to vertices of graphs/digraphs and weights can be assigned to
+edges/arcs of graphs/digraphs.
+
+There is a @code{draw_graph} function for drawing graphs. Graphs are
+drawn using a force based vertex positioning
+algorithm. @code{draw_graph} can also use graphviz programs available
+from www.graphviz.org. @code{draw_graph} is based on the maxima
+@code{draw} package.
+
+To use the graphs package, first load it with load(``graphs/graphs'');.
+
+@node Functions and Variables for graphs, , Introduction to graphs, graphs
+@section Functions and Variables for graphs
+
+@subsection Building graphs
+
+@deffn {Function} create_graph (@var{v_list}, @var{e_list})
+@deffnx {Function} create_graph (@var{n}, @var{e_list})
+@deffnx {Function} create_graph (@var{v_list}, @var{e_list}, @var{directed})
+Creates a new graph on the set of vertices @var{v_list} and with edges @var{e_list}.
+
+@var{v_list} is a list of vertices or (@code{[v1, v2,..., vn]}) or a
+list of vertices together with vertex labels (@code{[[v1,l1],
+[v2,l2],...,[vn,ln]]}.
+
+@var{n} is the number of vertices. Vertices will be identified by integers from 0 to n-1.
+
+@var{e_list} is a list of edges (@code{[e1, e2,..., em]}) or a list of
+edges together with edge-weights (@code{[[e1, w1], ..., [em, wm]]}).
+
+If @var{directed} is not @code{false}, a directed graph will be returned.
+
+Example 1: create a cycle on 3 vertices:
+@example
+(%i2) g : create_graph([1,2,3], [[1,2], [2,3], [1,3]])$
+(%i3) print_graph(g)$
+Graph on 3 vertices with 3 edges.
+Adjacencies:
+  3 :  1  2
+  2 :  3  1
+  1 :  3  2
+@end example
+
+Example 2: create a cycle on 3 vertices with edge weights:
+@example
+(%i4) g : create_graph([1,2,3], [[[1,2], 1.0], [[2,3], 2.0], [[1,3], 3.0]])$
+(%i5) get_edge_weight([2,3], g);
+(%o5)                                 2.0
+@end example
+
+Example 3: create a directed graph:
+@example
+(%i2) d : create_graph(
+       [1,2,3,4], 
+       [
+        [1,3], [1,4],
+        [2,3], [2,4]
+       ],
+       'directed = true)$
+(%i3) print_graph(d)$
+Digraph on 4 vertices with 4 arcs.
+Adjacencies:
+  4 :
+  3 :
+  2 :  4  3
+  1 :  4  3
+@end example
+@end deffn
+
+@deffn {Function} copy_graph (@var{g})
+Returns a copy of the graph @var{g}.
+@end deffn
+
+@deffn {Function} circulant_graph (@var{n}, @var{d})
+Returns the circulant graph with parameters @var{n} and @var{d}.
+
+Example:
+@example
+(%i2) g : circulant_graph(10, [1,3])$
+(%i3) print_graph(g)$
+Graph on 10 vertices with 20 edges.
+Adjacencies:
+  9 :  2  6  0  8
+  8 :  1  5  9  7
+  7 :  0  4  8  6
+  6 :  9  3  7  5
+  5 :  8  2  6  4
+  4 :  7  1  5  3
+  3 :  6  0  4  2
+  2 :  9  5  3  1
+  1 :  8  4  2  0
+  0 :  7  3  9  1
+@end example
+@end deffn
+
+@deffn {Function} clebsch_graph ()
+Returns the Clebsch graph.
+@end deffn
+
+@deffn {Function} complement_graph (@var{g})
+Returns the complement of the graph @var{g}.
+@end deffn
+
+@deffn {Function} complete_bipartite_graph (@var{n}, @var{m})
+Returns the complete bipartite graph on @var{n+m} vertices.
+@end deffn
+
+@deffn {Function} complete_graph (@var{n})
+Returns the complete graph on @var{n} vertices.
+@end deffn
+
+@deffn {Function} cycle_digraph (@var{n})
+Returns the directed cycle on @var{n} vertices.
+@end deffn
+
+@deffn {Function} cycle_graph (@var{n})
+Returns the cycle on @var{n} vertices.
+@end deffn
+
+@deffn {Function} cube_graph (@var{n})
+Returns the @var{n}-dimensional cube.
+@end deffn
+
+@deffn {Function} dodecahedron_graph ()
+Returns the dodecahedron graph.
+@end deffn
+
+@deffn {Function} empty_graph (@var{n})
+Returns the empty graph on @var{n} vertices.
+@end deffn
+
+@deffn {Function} flower_snark (@var{n})
+Returns the flower graph on @var{4n} vertices.
+
+Example:
+@example
+(%i2) f5 : flower_snark(5)$
+(%i3) chromatic_index(f5);
+(%o3)                                  4
+@end example
+@end deffn
+
+@deffn {Function} from_adjacency_matrix (@var{A})
+Returns the graph represented by its adjacency matrix @var{A}.
+@end deffn
+
+@deffn {Function} frucht_graph ()
+Returns the Frucht graph.
+@end deffn
+
+@deffn {Function} graph_product (@var{g1}, @var{g1})
+Returns the direct product of graphs @var{g1} and @var{g2}.
+
+Example:
+@example
+(%i4) grid : graph_product(path_graph(3), path_graph(4))$
+(%i5) draw_graph(grid)$
+@end example
+@end deffn
+
+@ifhtml
+@image{figures/graphs01,6cm}
+@end ifhtml
+
+@deffn {Function} graph_union (@var{g1}, @var{g1})
+Returns the union (sum) of graphs @var{g1} and @var{g2}.
+@end deffn
+
+@deffn {Function} grid_graph (@var{n}, @var{m})
+Returns the @var{n x m} grid.
+@end deffn
+
+@deffn {Function} grotzch_graph ()
+Returns the Grotzch graph.
+@end deffn
+
+@deffn {Function} heawood_graph ()
+Returns the Heawood graph.
+@end deffn
+
+@deffn {Function} icosahedron_graph ()
+Returns the icosahedron graph.
+@end deffn
+
+@deffn {Function} induced_subgraph (@var{V}, @var{g})
+Returns the graph induced on the subset @var{V} of vertices of the graph
+@var{g}.
+
+Example:
+@example
+(%i2) p : petersen_graph()$
+(%i3) V : [0,1,2,3,4]$
+(%i4) g : induced_subgraph(V, p)$
+(%i5) print_graph(g)$
+Graph on 5 vertices with 5 edges.
+Adjacencies:
+  4 :  3  0
+  3 :  2  4
+  2 :  1  3
+  1 :  0  2
+  0 :  1  4
+@end example
+@end deffn
+
+@deffn {Function} line_graph (@var{g})
+Returns the line graph of the graph @var{g}.
+@end deffn
+
+@deffn {Function} mycielski_graph (@var{g})
+Returns the mycielskian graph of the graph @var{g}.
+@end deffn
+
+@deffn {Function} new_graph ()
+Returns the graph with no vertices and no edges.
+@end deffn
+
+@deffn {Function} path_digraph (@var{n})
+Returns the directed path on @var{n} vertices.
+@end deffn
+
+@deffn {Function} path_graph (@var{n})
+Returns the path on @var{n} vertices.
+@end deffn
+
+@deffn {Function} petersen_graph ()
+@deffnx {Function} petersen_graph (@var{n}, @var{d})
+Returns the petersen graph @var{P_@{n,d@}}. The default values for
+@var{n} and @var{d} are @code{n=5} and @code{d=2}.
+@end deffn
+
+@deffn {Function} random_digraph (@var{n}, @var{p})
+Returns a random directed graph on @var{n} vertices. Each arc is present
+with probability @var{p}.
+@end deffn
+
+@deffn {Function} random_regular_graph (@var{n})
+@deffnx {Function} random_regular_graph (@var{n}, @var{d})
+Returns a random @var{d}-regular graph on @var{n} vertices. The default
+value for @var{d} is @code{d=3}.
+@end deffn
+
+@deffn {Function} random_graph (@var{n}, @var{p})
+Returns a random graph on @var{n} vertices. Each edge is present with
+probability @var{p}.
+@end deffn
+
+@deffn {Function} random_graph1 (@var{n}, @var{m})
+Returns a random graph on @var{n} vertices and random @var{m} edges.
+@end deffn
+
+@deffn {Function} random_network (@var{n}, @var{p}, @var{w})
+Returns a random network on @var{n} vertices. Each arc is present with
+probability @var{p} and has a weight in the range @code{[0,w]}. The
+function returns a list @code{[network, source, sink]}.
+
+Example:
+@example
+(%i3) [net, s, t] : random_network(50, 0.2, 10.0);
+(%o3)                         [DIGRAPH, 50, 51]
+(%i4) max_flow(net, s, t)$
+(%i5) first(%);
+(%o5)                          36.458293875923
+@end example
+@end deffn
+
+@deffn {Function} random_tournament (@var{n})
+Returns a random tournament on @var{n} vertices.
+@end deffn
+
+@deffn {Function} random_tree (@var{n})
+Returns a random tree on @var{n} vertices.
+@end deffn
+
+@deffn {Function} underlying_graph (@var{g})
+Returns the underlying graph of the directed graph @var{g}.
+@end deffn
+
+@deffn {Function} wheel_graph (@var{n})
+Returns the wheel graph on @var{n+1} vertices.
+@end deffn
+
+@subsection Graph properties
+
+@deffn {Function} adjacency_matrix (@var{gr})
+Returns the adjacency matrix of the graph @var{gr}.
+
+Example:
+@example
+(%i2) c5 : cycle_graph(4)$
+(%i3) adjacency_matrix(c5);
+                                [ 0  1  0  1 ]
+                                [            ]
+                                [ 1  0  1  0 ]
+(%o3)                           [            ]
+                                [ 0  1  0  1 ]
+                                [            ]
+                                [ 1  0  1  0 ]
+@end example
+@end deffn
+
+@deffn {Function} average_degree (@var{gr})
+Returns the average degree of vertices in the graph @var{gr}.
+
+Example:
+@example
+(%i2) average_degree(grotzch_graph());
+                                      40
+(%o2)                                 --
+                                      11
+@end example
+@end deffn
+
+@deffn {Function} biconected_components (@var{gr})
+Returns the (vertex sets of) 2-connected components of the graph
+@var{gr}.
+
+Example:
+@example
+(%i4) g : create_graph(
+            [1,2,3,4,5,6,7],
+            [
+             [1,2],[2,3],[2,4],[3,4],
+             [4,5],[5,6],[4,6],[6,7]
+            ])$
+(%i5) biconnected_components(g);
+(%o5)               [[6, 7], [4, 5, 6], [1, 2], [2, 3, 4]]
+@end example
+
+@ifhtml
+@image{figures/graphs13,6cm}
+@end ifhtml
+@end deffn
+
+@deffn {Function} bipartition (@var{gr})
+Returns a bipartition of the vertices of the graph @var{gr} or an empty
+list if @var{gr} is not bipartite.
+
+Example:
+@example
+(%i2) h : heawood_graph()$
+(%i3) [A,B]:bipartition(h);
+(%o3)         [[8, 12, 6, 10, 0, 2, 4], [13, 5, 11, 7, 9, 1, 3]]
+(%i4) draw_graph(h, show_vertices=A, program=circular)$
+@end example
+@end deffn
+
+@ifhtml
+@image{figures/graphs02,6cm}
+@end ifhtml
+
+@deffn {Function} chromatic_index (@var{gr})
+Returns the chromatic index of the graph @var{gr}.
+
+Example:
+@example
+(%i2) p : petersen_graph()$
+(%i3) chromatic_index(p);
+(%o4)                                  4
+@end example
+@end deffn
+
+@deffn {Function} chromatic_number (@var{gr})
+Returns the chromatic number of the graph @var{gr}.
+
+Example:
+@example
+(%i2) chromatic_number(cycle_graph(5));
+(%o2)                                  3
+(%i3) chromatic_number(cycle_graph(6));
+(%o3)                                  2
+@end example
+@end deffn
+
+@deffn {Function} clear_edge_weight (@var{e}, @var{gr})
+Removes the weight of the edge  @var{e} in the graph @var{gr}.
+
+Example:
+@example
+(%i2) g : create_graph(3, [[[0,1], 1.5], [[1,2], 1.3]])$
+(%i3) get_edge_weight([0,1], g);
+(%o3)                                 1.5
+(%i4) clear_edge_weight([0,1], g)$
+(%i5) get_edge_weight([0,1], g);
+(%o5)                                  1
+@end example
+@end deffn
+
+@deffn {Function} clear_vertex_label (@var{v}, @var{gr})
+Removes the label of the vertex @var{v} in the graph @var{gr}.
+
+Example:
+@example
+(%i1) g : create_graph([[0,"Zero"], [1, "One"]], [[0,1]])$
+(%i2) get_vertex_label(0, g);
+(%o2)                               Zero
+(%i3) clear_vertex_label(0, g);
+(%o3)                               done
+(%i4) get_vertex_label(0, g);
+(%o4)                               false
+@end example
+@end deffn
+
+@deffn {Function} connected_components (@var{gr})
+Returns the (vertex sets of) connected components of the graph @var{gr}.
+
+Example:
+@example
+(%i2) g: graph_union(cycle_graph(5), path_graph(4))$
+(%i3) connected_components(g);
+(%o3)                  [[1, 2, 3, 4, 0], [8, 7, 6, 5]]
+@end example
+@end deffn
+
+@deffn {Function} diameter (@var{gr})
+Returns the diameter of the graph @var{gr}.
+
+Example:
+@example
+(%i1) diameter(dodecahedron_graph());
+(%o1)                                 5
+@end example
+@end deffn
+
+@deffn {Function} edge_coloring (@var{gr})
+Returns an optimal coloring of the edges of the graph @var{gr}.
+
+The function returns the chromatic index and a list representing the
+coloring of the edges of @var{g}.
+
+Example:
+@example
+(%i2) p : petersen_graph()$
+(%i3) [ch_index, col] : edge_coloring(p);
+(%o3) [4, [[[0, 5], 3], [[5, 7], 1], [[0, 1], 1], [[1, 6], 2], [[6, 8], 1], 
+[[1, 2], 3], [[2, 7], 4], [[7, 9], 2], [[2, 3], 2], [[3, 8], 3], [[5, 8], 2], 
+[[3, 4], 1], [[4, 9], 4], [[6, 9], 3], [[0, 4], 2]]]
+(%i4) assoc([0,1], col);
+(%o4)                                 1
+(%i5) assoc([0,5], col);
+(%o5)                                 3
+@end example
+@end deffn
+
+@deffn {Function} degree_sequence (@var{gr})
+Returns the list of vertex degrees of the graph @var{gr}.
+
+Example:
+@example
+(%i2) degree_sequence(random_graph(10, 0.4));
+(%o2)                  [3, 3, 3, 4, 4, 4, 5, 5, 6, 7]
+@end example
+@end deffn
+
+@deffn {Function} edges (@var{gr})
+Returns the list of edges (arcs) in a (directed) graph @var{gr}.
+
+Example:
+@example
+(%i2) edges(complete_graph(4));
+(%o2)         [[2, 3], [1, 3], [1, 2], [0, 3], [0, 2], [0, 1]]
+@end example
+@end deffn
+
+@deffn {Function} get_edge_weight (@var{e}, @var{gr})
+@deffnx {Function} get_edge_weight (@var{e}, @var{gr}, @var{ifnot})
+Returns the weight of the edge @var{e} in the graph @var{gr}.
+
+If there is no weight assigned to the edge, the function returns 1. If
+the edge is not present in the graph, the function signals an error or
+returns the optional argument @var{ifnot}.
+
+Example:
+@example
+(%i1) c5 : cycle_graph(5)$
+(%i2) get_edge_weight([1,2], c5);
+(%o2)                                 1
+(%i3) set_edge_weight([1,2], 2.0, c5);
+(%o3)                               done
+(%i4) get_edge_weight([1,2], c5);
+(%o4)                                2.0
+@end example
+@end deffn
+
+@deffn {Function} get_vertex_label (@var{v}, @var{gr})
+Returns the label of the vertex @var{v} in the graph @var{gr}.
+
+Example:
+@example
+(%i1) g : create_graph([[0,"Zero"], [1, "One"]], [[0,1]])$
+(%i2) get_vertex_label(0, g);
+(%o2)                               Zero
+@end example
+@end deffn
+
+@deffn {Function} graph_charpoly (@var{gr}, @var{x})
+Returns the characteristic polynomial (in variable @var{x}) of the graph
+@var{gr}.
+
+Example:
+@example
+(%i2) p : petersen_graph()$
+(%i2) graph_charpoly(p, x), factor;
+                                         5        4
+(%o2)                     (x - 3) (x - 1)  (x + 2)
+@end example
+@end deffn
+
+@deffn {Function} graph_center (@var{gr})
+Returns the center of the graph @var{gr}.
+
+Example:
+@example
+(%i2) g : grid_graph(5,5)$
+(%i3) graph_center(g);
+(%o3)                               [12]
+@end example
+@end deffn
+
+@deffn {Function} graph_eigenvalues (@var{gr})
+Returns the eigenvalues of the graph @var{gr}. The function returns
+eigenvalues in the same format as maxima eigenvalue function.
+
+Example:
+@example
+(%i2) p : petersen_graph()$
+(%i3) graph_eigenvalues(p);
+(%o3)                     [[3, - 2, 1], [1, 4, 5]]
+@end example
+@end deffn
+
+@deffn {Function} graph_periphery (@var{gr})
+Returns the periphery of the graph @var{gr}.
+
+Example:
+@example
+(%i2) g : grid_graph(5,5)$
+(%i3) graph_periphery(g);
+(%o3)                          [24, 20, 4, 0]
+@end example
+@end deffn
+
+@deffn {Function} graph_size (@var{gr})
+Returns the number of vertices in the graph @var{gr}.
+
+Example:
+@example
+(%i2) p : petersen_graph()$
+(%i2) graph_size(p);
+(%o2)                                10
+@end example
+@end deffn
+
+@deffn {Function} graph_order (@var{gr})
+Returns the number of edges in the graph @var{gr}.
+
+Example:
+@example
+(%i2) p : petersen_graph()$
+(%i2) graph_order(p);
+(%o2)                                15
+@end example
+@end deffn
+
+@deffn {Function} girth (@var{gr})
+Returns the length of the shortest cycle in @var{gr}.
+
+Example:
+@example
+(%i2) h : heawood_graph()$
+(%i3) girth(g);
+(%o3)                                 5
+@end example
+@end deffn
+
+@deffn {Function} hamilton_cycle (@var{gr})
+Returns the Hamilton cycle of the graph @var{gr} or an empty list if
+@var{gr} is not hamiltonian.
+
+Example:
+@example
+(%i2) c : cube_graph(3)$
+(%i3) hc : hamilton_cycle(h);
+(%o3)        [7, 3, 2, 6, 4, 0, 1, 5, 7]
+(%i4) draw_graph(c, show_edges=vertices_to_cycle(hc))$
+@end example
+@end deffn
+
+@ifhtml
+@image{figures/graphs03,6cm}
+@end ifhtml
+
+@deffn {Function} hamilton_path (@var{gr})
+Returns the Hamilton path of the graph @var{gr} or an empty list if
+@var{gr} does not have a Hamilton path.
+
+Example:
+@example
+(%i2) p : petersen_graph()$
+(%i3) hp : hamilton_path(p);
+(%o3)                  [0, 5, 7, 2, 1, 6, 8, 3, 4, 9]
+(%i4) draw_graph(p, show_edges=vertices_to_path(hp))$
+@end example
+@end deffn
+
+@ifhtml
+@image{figures/graphs04,6cm}
+@end ifhtml
+
+@deffn {Function} isomorphism (@var{gr1}, @var{gr2})
+
+Returns a hash table representing an isomorphism between graphs/digraphs
+@var{gr1} and @var{gr2}. If @var{gr1} and @var{gr2} are not isomorphic,
+it returns false.
+
+Example:
+@example
+(%i2) clk5:complement_graph(line_graph(complete_graph(5)))$
+(%i2) hash_table_data(isomorphism(clk5, petersen_graph()));
+(%o2) [9 -> 0, 2 -> 1, 6 -> 2, 5 -> 3, 0 -> 4, 1 -> 5, 3 -> 6, 
+                                               4 -> 7, 7 -> 8, 8 -> 9]
+@end example
+@end deffn
+
+@deffn {Function} in_neighbors (@var{v}, @var{gr})
+Returns the list of in-neighbors of the vertex @var{v} in the directed
+graph @var{gr}.
+
+Example:
+@example
+(%i2) p : path_digraph(3)$
+(%i3) in_neighbors(2, p);
+(%o3)                                 [1]
+(%i4) out_neighbors(2, p);
+(%o4)                                 []
+@end example
+@end deffn
+
+@deffn {Function} is_biconnected (@var{gr})
+Returns true if @var{gr} is 2-connected and false otherwise.
+
+Example:
+@example
+(%i3) is_biconnected(cycle_graph(5));
+(%o3)                               true
+(%i4) is_biconnected(path_graph(5));
+(%o4)                               false
+@end example
+@end deffn
+
+@deffn {Function} is_bipartite (@var{gr})
+Returns true if @var{gr} is bipartite (2-colorable) and false otherwise.
+
+Example:
+@example
+(%i2) is_bipartite(petersen_graph());
+(%o2)                               false
+(%i3) is_bipartite(heawood_graph());
+(%o3)                               true
+@end example
+@end deffn
+
+@deffn {Function} is_connected (@var{gr})
+Returns true if the graph @var{gr} is connected and false otherwise.
+
+Example:
+@example
+(%i2) is_connected(graph_union(cycle_graph(4), path_graph(3)));
+(%o2)                               false
+@end example
+@end deffn
+
+@deffn {Function} is_digraph (@var{gr})
+Returns true if @var{gr} is a directed graph and false otherwise.
+
+Example:
+@example
+(%i2) is_digraph(path_graph(5));
+(%o2)                               false
+(%i3) is_digraph(path_digraph(5));
+(%o3)                               true
+@end example
+@end deffn
+
+@deffn {Function} is_edge_in_graph (@var{e}, @var{gr})
+Returns true if @var{e} is an edge (arc) in the (directed) graph @var{g}
+and false otherwise.
+
+Example:
+@example
+(%i2) c4 : cycle_graph(4)$
+(%i3) is_edge_in_graph([2,3], c4);
+(%o3)                               true
+(%i4) is_edge_in_graph([3,2], c4);
+(%o4)                               true
+(%i5) is_edge_in_graph([2,4], c4);
+(%o5)                               false
+(%i6) is_edge_in_graph([3,2], cycle_digraph(4));
+(%o6)                               false
+@end example
+@end deffn
+
+@deffn {Function} is_graph (@var{gr})
+Returns true if @var{gr} is a graph and false otherwise.
+
+Example:
+@example
+(%i2) is_graph(path_graph(5));
+(%o2)                               true
+(%i3) is_graph(path_digraph(5));
+(%o3)                               false
+@end example
+@end deffn
+
+@deffn {Function} is_graph_or_digraph (@var{gr})
+Returns true if @var{gr} is a graph or a directed graph and false otherwise.
+
+Example:
+@example
+(%i2) is_graph_or_digraph(path_graph(5));
+(%o2)                               true
+(%i3) is_graph_or_digraph(path_digraph(5));
+(%o3)                               true
+@end example
+@end deffn
+
+@deffn {Function} is_isomorphic (@var{gr1}, @var{gr2})
+
+Returns true if graphs/digraphs @var{gr1} and @var{gr2} are isomorphic
+and false other-vise.
+
+See also @code{isomorphism}.
+
+Example:
+@example
+(%i2) clk5:complement_graph(line_graph(complete_graph(5)))$
+(%i3) is_isomorphic(clk5, petersen_graph());
+(%o3)                              true
+@end example
+@end deffn
+
+@deffn {Function} is_planar (@var{gr})
+
+Returns true if @var{gr} is a planar graph and false otherwise.
+
+The algorithm used is the Demoucron's algorithm, which is a quadratic time
+algorithm.
+
+Example:
+@example
+(%i2) is_planar(dodecahedron_graph());
+(%o2)                                true
+(%i3) is_planar(petersen_graph());
+(%o3)                                false
+(%i4) is_planar(petersen_graph(10,2));
+(%o4)                                true
+@end example
+@end deffn
+
+@deffn {Function} is_sconnected (@var{gr})
+Returns true if the directed graph @var{gr} is strongly connected and
+false otherwise.
+
+Example:
+@example
+(%i2) is_sconnected(cycle_digraph(5));
+(%o2)                               true
+(%i3) is_sconnected(path_digraph(5));
+(%o3)                               false
+@end example
+@end deffn
+
+@deffn {Function} is_vertex_in_graph (@var{v}, @var{gr})
+Returns true if @var{v} is a vertex in the graph @var{g} and false otherwise.
+
+Example:
+@example
+(%i2) c4 : cycle_graph(4)$
+(%i3) is_vertex_in_graph(0, c4);
+(%o3)                               true
+(%i4) is_vertex_in_graph(6, c4);
+(%o4)                               false
+@end example
+@end deffn
+
+@deffn {Function} is_tree (@var{gr})
+Returns true if @var{gr} is a tree and false otherwise.
+
+Example:
+@example
+(%i3) is_tree(random_tree(4));
+(%o3)                               true
+(%i4) is_tree(graph_union(random_tree(4), random_tree(5)));
+(%o4)                               false
+@end example
+@end deffn
+
+@deffn {Function} laplacian_matrix (@var{gr})
+Returns the laplacian matrix of the graph @var{gr}.
+
+Example:
+@example
+(%i3) laplacian_matrix(cycle_graph(5));
+                          [  2   - 1   0    0   - 1 ]
+                          [                         ]
+                          [ - 1   2   - 1   0    0  ]
+                          [                         ]
+(%o3)                     [  0   - 1   2   - 1   0  ]
+                          [                         ]
+                          [  0    0   - 1   2   - 1 ]
+                          [                         ]
+                          [ - 1   0    0   - 1   2  ]
+@end example
+@end deffn
+
+@deffn {Function} max_clique (@var{gr})
+Returns a maximal clique of the graph @var{gr}.
+
+Example:
+@example
+(%i2) g : random_graph(100, 0.5)$
+(%i3) max_clique(g);
+(%o3)                 [2, 6, 13, 17, 21, 23, 31, 62, 65]
+@end example
+@end deffn
+
+@deffn {Function} max_degree (@var{gr})
+Returns the maximal degree of vertices of the graph @var{gr} and a
+vertex of maximal degree.
+
+Example:
+@example
+(%i2) g : random_graph(100, 0.02)$
+(%i3) max_degree(g);
+(%o3)                               [5, 95]
+(%i4) vertex_degree(95, g);
+(%o4)                                  5
+@end example
+@end deffn
+
+@deffn {Function} max_flow (@var{net}, @var{s}, @var{t})
+Returns a maximal flow through the network @var{net} with the source
+@var{s} and the sink @var{t}.
+
+The function returns the value of the maximal flow and a list
+representing the weights of the arcs in the optimal flow.
+
+Example:
+@example
+(%i2) net : create_graph(
+  [1,2,3,4,5,6],
+  [[[1,2], 1.0],
+   [[1,3], 0.3],
+   [[2,4], 0.2],
+   [[2,5], 0.3],
+   [[3,4], 0.1],
+   [[3,5], 0.1],
+   [[4,6], 1.0],
+   [[5,6], 1.0]],
+  directed=true)$
+(%i3) [flow_value, flow] : max_flow(net, 1, 6);
+(%o3) [0.7, [[[1, 2], 0.5], [[1, 3], 0.2], [[2, 4], 0.2], [[2, 5], 0.3], 
+                   [[3, 4], 0.1], [[3, 5], 0.1], [[4, 6], 0.3], [[5, 6], 0.4]]]
+(%i4) fl : 0$
+(%i5) for u in out_neighbors(1, net) do fl : fl + assoc([1, u], flow)$
+(%i6) fl;
+(%o6)                                 0.7
+@end example
+@end deffn
+
+@deffn {Function} max_independent_set (@var{gr})
+Returns a maximal independent set of the graph @var{gr}.
+
+Example:
+@example
+(%i3) d : dodecahedron_graph()$
+(%i4) mi : max_independent_set(d);
+(%o4)                   [0, 3, 5, 9, 10, 11, 18, 19]
+(%i5) draw_graph(d, show_vertices=mi)$
+@end example
+@end deffn
+
+@ifhtml
+@image{figures/graphs05,6cm}
+@end ifhtml
+
+@deffn {Function} max_matching (@var{gr})
+Returns a maximal matching of the graph @var{gr}.
+
+Example:
+@example
+(%i2) d : dodecahedron_graph()$
+(%i3) m : max_matching(d);
+(%o3) [[5, 7], [8, 9], [6, 10], [14, 19], [13, 18], [12, 17], [11, 16], 
+                                                       [0, 15], [3, 4], [1, 2]]
+(%i4) draw_graph(d, show_edges=m)$
+@end example
+@end deffn
+
+@ifhtml
+@image{figures/graphs06,6cm}
+@end ifhtml
+
+@deffn {Function} min_degree (@var{gr})
+Returns the maximal degree of vertices of the graph @var{gr} and a
+vertex of maximal degree.
+
+Example:
+@example
+(%i2) g : random_graph(100, 0.1)$
+(%i3) min_degree(g);
+(%o3)                              [4, 21]
+(%i4) vertex_degree(21, g);
+(%o4)                                 4
+@end example
+@end deffn
+
+@deffn {Function} minimum_spanning_tree (@var{gr})
+Returns the minimum spanning tree of the graph @var{gr}.
+
+Example:
+@example
+(%i8) g : graph_product(path_graph(10), path_graph(10))$
+(%i9) t : minimum_spanning_tree(g)$
+(%i10) draw_graph(g, show_edges=edges(t))$
+@end example
+@end deffn
+
+@ifhtml
+@image{figures/graphs07,6cm}
+@end ifhtml
+
+@deffn {Function} neighbors (@var{v}, @var{gr})
+Returns the list of neighbors of the vertex @var{v} in the graph @var{gr}.
+
+Example:
+@example
+(%i2) p : petersen_graph()$
+(%i3) neighbors(3, p);
+(%o3)                             [4, 8, 2]
+@end example
+@end deffn
+
+@deffn {Function} odd_girth (@var{gr})
+Returns the length of the shortest odd cycle in the graph @var{gr}.
+
+Example:
+@example
+(%i2) g : graph_product(cycle_graph(4), cycle_graph(7))$
+(%i3) girth(g);
+(%o3)                                 4
+(%i4) odd_girth(g);
+(%o4)                                 7
+@end example
+@end deffn
+
+@deffn {Function} out_neighbors (@var{v}, @var{gr})
+Returns the list of out-neighbors of the vertex @var{v} in the directed
+graph @var{gr}.
+
+Example:
+@example
+(%i2) p : path_digraph(3)$
+(%i3) in_neighbors(2, p);
+(%o3)                                 [1]
+(%i4) out_neighbors(2, p);
+(%o4)                                 []
+@end example
+@end deffn
+
+@deffn {Function} planar_embedding (@var{gr})
+
+Returns the list of facial walks in a planar embedding of @var{gr} and
+false if @var{gr} is not a planar graph.
+
+The graph @var{gr} must be biconnected.
+
+The algorithm used is the Demoucron's algorithm, which is a quadratic time
+algorithm.
+
+Example:
+@example
+(%i2) planar_embedding(grid_graph(3,3));
+(%o2) [[6, 3, 4, 7], [3, 0, 1, 4], [5, 8, 7, 4], 
+                               [2, 1, 0, 3, 6, 7, 8, 5], [4, 1, 2, 5]]
+@end example
+@end deffn
+
+@deffn {Function} print_graph (@var{gr})
+Prints some information about the graph @var{gr}.
+
+Example:
+@example
+(%i2) c5 : cycle_graph(5)$
+(%i3) print_graph(c5)$
+Graph on 5 vertices with 5 edges.
+Adjacencies:
+  4 :  0  3
+  3 :  4  2
+  2 :  3  1
+  1 :  2  0
+  0 :  4  1
+(%i4) dc5 : cycle_digraph(5)$
+(%i5) print_graph(dc5)$
+Digraph on 5 vertices with 5 arcs.
+Adjacencies:
+  4 :  0
+  3 :  4
+  2 :  3
+  1 :  2
+  0 :  1
+(%i6) out_neighbors(0, dc5);
+(%o6)                                [1]
+@end example
+@end deffn
+
+@deffn {Function} radius (@var{gr})
+Returns the radius of the graph @var{gr}.
+
+Example:
+@example
+(%i2) radius(dodecahedron_graph());
+(%o2)                                 5
+@end example
+@end deffn
+
+@deffn {Function} set_edge_weight (@var{e}, @var{w}, @var{gr})
+Assigns the weight @var{w} to the edge @var{e} in the graph @var{gr}.
+
+Example:
+@example
+(%i2) g : create_graph([1, 2], [[[1,2], 1.2]])$
+(%i3) get_edge_weight([1,2], g);
+(%o3)                                1.2
+(%i4) set_edge_weight([1,2], 2.1, g);
+(%o4)                               done
+(%i5) get_edge_weight([1,2], g);
+(%o5)                                2.1
+@end example
+@end deffn
+
+@deffn {Function} set_vertex_label (@var{v}, @var{l}, @var{gr})
+Assigns the label @var{l} to the vertex @var{v} in the graph @var{gr}.
+
+Example:
+@example
+(%i2) g : create_graph([[1, "One"], [2, "Two"]], [[1,2]])$
+(%i3) get_vertex_label(1, g);
+(%o3)                                One
+(%i4) set_vertex_label(1, "oNE", g);
+(%o4)                               done
+(%i5) get_vertex_label(1, g);
+(%o5)                                oNE
+@end example
+@end deffn
+
+@deffn {Function} shortest_path (@var{u}, @var{v}, @var{gr})
+Returns the shortest path from @var{u} to @var{v} in the graph @var{gr}.
+
+Example:
+@example
+(%i2) d : dodecahedron_graph()$
+(%i3) path : shortest_path(0, 7, d);
+(%o3)                          [0, 1, 19, 13, 7]
+(%i4) draw_graph(d, show_edges=vertices_to_path(path))$
+@end example
+@end deffn
+
+@ifhtml
+@image{figures/graphs08,6cm}
+@end ifhtml
+
+@deffn {Function} strong_components (@var{gr})
+Returns the strong components of a directed graph @var{gr}.
+
+Example:
+@example
+(%i2) t : random_tournament(4)$
+(%i3) strong_components(t);
+(%o3)                         [[2, 0, 1], [3]]
+(%i4) vertex_out_degree(3, t);
+(%o4)                                 0
+@end example
+@end deffn
+
+@deffn {Function} topological_sort (@var{dag})
+
+Returns a topological sorting of the vertices of a directed graph
+@var{dag} or an empty list if @var{dag} is not a directed acyclic graph.
+
+Example:
+@example
+(%i2) g:create_graph(
+         [1,2,3,4,5],
+         [
+          [1,2], [2,5], [5,3],
+          [5,4], [3,4], [1,3]
+         ],
+         directed=true)$
+(%i3) topological_sort(g);
+(%o4)                           [1, 2, 5, 3, 4]
+@end example
+@end deffn
+
+@deffn {Function} vertex_degree (@var{v}, @var{gr})
+Returns the degree of the vertex @var{v} in the graph @var{gr}.
+@end deffn
+
+@deffn {Function} vertex_distance (@var{u}, @var{v}, @var{gr})
+Returns the length of the shortest path between @var{u} and @var{v} in
+the (directed) graph @var{gr}.
+
+Example:
+@example
+(%i2) d : dodecahedron_graph()$
+(%i3) vertex_distance(0, 7, d);
+(%o3)                                 4
+(%i4) shortest_path(0, 7, d);
+(%o4)                         [0, 1, 19, 13, 7]
+@end example
+@end deffn
+
+@deffn {Function} vertex_eccentricity (@var{v}, @var{gr})
+
+Returns the eccentricity of the vertex @var{v} in the graph @var{gr}.
+
+Example:
+@example
+(%i3) g:cycle_graph(7)$
+(%i4) vertex_eccentricity(0, g);
+(%o4)                                  3
+@end example
+@end deffn
+
+@deffn {Function} vertex_in_degree (@var{v}, @var{gr})
+Returns the in-degree of the vertex @var{v} in the directed graph @var{gr}.
+
+Example:
+@example
+(%i2) p5 : path_digraph(5)$
+(%i3) print_graph(p5)$
+Digraph on 5 vertices with 4 arcs.
+Adjacencies:
+  4 :
+  3 :  4
+  2 :  3
+  1 :  2
+  0 :  1
+(%i4) vertex_in_degree(4, p5);
+(%o4)                                 1
+(%i5) in_neighbors(4, p5);
+(%o5)                                [3]
+@end example
+@end deffn
+
+@deffn {Function} vertex_out_degree (@var{v}, @var{gr})
+Returns the out-degree of the vertex @var{v} in the directed graph @var{gr}.
+
+Example:
+@example
+(%i2) t : random_tournament(10)$
+(%i3) vertex_out_degree(0, t);
+(%o3)                                 3
+(%i4) out_neighbors(0, t);
+(%o4)                             [7, 4, 2]
+@end example
+@end deffn
+
+@deffn {Function} vertices (@var{gr})
+Returns the list of vertices in the graph @var{gr}.
+
+Example
+@example
+(%i2) vertices(complete_graph(4));
+(%o2)                           [3, 2, 1, 0]
+@end example
+@end deffn
+
+@subsection Modifying graphs
+
+@deffn {Function} add_edge (@var{e}, @var{gr})
+Adds the edge @var{e} to the graph @var{gr}.
+
+Example:
+@example
+(%i2) p : path_graph(4)$
+(%i3) neighbors(0, p);
+(%o3)                                [1]
+(%i4) add_edge([0,3], p);
+(%o4)                               done
+(%i5) neighbors(0, p);
+(%o5)                              [3, 1]
+@end example
+@end deffn
+
+@deffn {Function} add_edges (@var{e_list}, @var{gr})
+Adds all edges in the list @var{e_list} to the graph @var{gr}.
+
+Example:
+@example
+(%i2) g : empty_graph(3)$
+(%i3) add_edges([[0,1],[1,2]], g)$
+(%i4) print_graph(g)$
+Graph on 3 vertices with 2 edges.
+Adjacencies:
+  2 :  1
+  1 :  2  0
+  0 :  1
+@end example
+@end deffn
+
+@deffn {Function} add_vertex (@var{v}, @var{gr})
+Adds the vertex @var{v} to the graph @var{gr}.
+
+Example:
+@example
+(%i2) g : path_graph(2)$
+(%i3) add_vertex(2, g)$
+(%i4) print_graph(g)$
+Graph on 3 vertices with 1 edges.
+Adjacencies:
+  2 :
+  1 :  0
+  0 :  1
+@end example
+@end deffn
+
+@deffn {Function} add_vertices (@var{v_list}, @var{gr})
+Adds all vertices in the list @var{v_list} to the graph @var{gr}.
+@end deffn
+
+@deffn {Function} connect_vertices (@var{v_list}, @var{u_list}, @var{gr})
+Connects all vertices from the list @var{v_list} with the vertices in
+the list @var{u_list} in the graph @var{gr}.
+
+@var{v_list} and @var{u_list} can be single vertices of lists of
+vertices.
+
+Example:
+@example
+(%i2) g : empty_graph(4)$
+(%i3) connect_vertices(0, [1,2,3], g)$
+(%i4) print_graph(g)$
+Graph on 4 vertices with 3 edges.
+Adjacencies:
+  3 :  0
+  2 :  0
+  1 :  0
+  0 :  3  2  1
+@end example
+@end deffn
+
+@deffn {Function} contract_edge (@var{e}, @var{gr})
+Contracts the edge @var{e} in the graph @var{gr}.
+
+Example:
+@example
+(%i1) load("graphs/graphs")$
+(%i2) g: create_graph(8, [[0,3],[1,3],[2,3],[3,4],[4,5],[4,6],[4,7]])$
+(%i3) print_graph(g)$
+Graph on 8 vertices with 7 edges.
+Adjacencies:
+  7 :  4
+  6 :  4
+  5 :  4
+  4 :  7  6  5  3
+  3 :  4  2  1  0
+  2 :  3
+  1 :  3
+  0 :  3
+(%i4) contract_edge([3,4], g)$
+(%i5) print_graph(g)$
+Graph on 7 vertices with 6 edges.
+Adjacencies:
+  7 :  3
+  6 :  3
+  5 :  3
+  3 :  5  6  7  2  1  0
+  2 :  3
+  1 :  3
+  0 :  3
+@end example
+@end deffn
+
+@deffn {Function} remove_edge (@var{e}, @var{gr})
+Removes the edge @var{e} from the graph @var{gr}.
+
+@example
+(%i2) c3 : cycle_graph(3)$
+(%i3) remove_edge([0,1], c3)$
+(%i4) print_graph(c3)$
+Graph on 3 vertices with 2 edges.
+Adjacencies:
+  2 :  0  1
+  1 :  2
+  0 :  2
+@end example
+@end deffn
+
+@deffn {Function} remove_vertex (@var{v}, @var{gr})
+Removes the vertex @var{v} from the graph @var{gr}.
+@end deffn
+
+@deffn {Function} vertex_coloring (@var{gr})
+Returns an optimal coloring of the vertices of the graph @var{gr}.
+
+The function returns the chromatic number and a list representing the
+coloring of the vertices of @var{g}.
+
+Example:
+@example
+(%i2) p:petersen_graph()$
+(%i3) vertex_coloring(p);
+(%o3) [3, [[0, 2], [1, 3], [2, 2], [3, 3], [4, 1], [5, 3], [6, 1], [7, 1], 
+                                                               [8, 2], [9, 2]]]
+@end example
+@end deffn
+
+@subsection Reading and writing to files
+
+@deffn {Function} dimacs_export (@var{gr}, @var{fl})
+@deffnx {Function} dimacs_export (@var{gr}, @var{fl}, @var{comment1}, ..., @var{commentn})
+
+Exports the graph into the file @var{fl} in the DIMACS format. Optional
+comments will be added to the top of the file.
+@end deffn
+
+@deffn {Function} dimacs_import (@var{fl})
+
+Returns the graph from file @var{fl} in the DIMACS format.
+@end deffn
+
+@deffn {Function} graph6_decode (@var{str})
+
+Returns the graph encoded in the graph6 format in the string @var{str}.
+@end deffn
+
+@deffn {Function} graph6_encode (@var{gr})
+
+Returns a string which encodes the graph @var{gr} in the graph6 format.
+@end deffn
+
+@deffn {Function} graph6_export (@var{gr_list}, @var{fl})
+
+Exports graphs in the list @var{gr_list} to the file @var{fl} in the
+graph6 format.
+@end deffn
+
+@deffn {Function} graph6_import (@var{fl})
+
+Returns a list of graphs from the file @var{fl} in the graph6 format.
+@end deffn
+
+@deffn {Function} sparse6_decode (@var{str})
+
+Returns the graph encoded in the sparse6 format in the string @var{str}.
+@end deffn
+
+@deffn {Function} sparse6_encode (@var{gr})
+
+Returns a string which encodes the graph @var{gr} in the sparse6 format.
+@end deffn
+
+@deffn {Function} sparse6_export (@var{gr_list}, @var{fl})
+
+Exports graphs in the list @var{gr_list} to the file @var{fl} in the
+sparse6 format.
+@end deffn
+
+@deffn {Function} sparse6_import (@var{fl})
+
+Returns a list of graphs from the file @var{fl} in the sparse6 format.
+@end deffn
+
+@subsection Visualization
+
+@deffn {Function} draw_graph (@var{graph})
+@deffnx {Function} draw_graph (@var{graph}, @var{option1}, ..., @var{optionk})
+Draws the graph using the draw package.
+
+The algorithm used to position vertices is specified by the optional
+argument @var{program}. The default value is
+@code{program=spring_embedding}. Draw can also use the graphviz programs
+for positioning vertices, but graphviz must be installed separately.
+
+Optional arguments to the @var{draw_graph} function can be:
+@itemize @bullet
+@item
+@dfn{show_id=show}: if @var{show} is @var{true} then ids of the
+vertices are displayed.
+@item
+@dfn{show_label=show}: if @var{show} is @var{true} then labels of the
+vertices are displayed.
+@item
+@dfn{label_alignment=pos}: how to align the label/id of the vertex. Can
+be left, center or right. The default is left.
+@item
+@dfn{show_weight=show}: if @var{show} is @var{true} then weights of the
+edges are displayed.
+@item
+@dfn{vertex_type=type}: defines how vertices are displayed. See the
+@var{point_type} option for the draw package.
+@item
+@dfn{vertex_size=size}: the size of vertices.
+@item
+@dfn{vertex_color=c}: color used for displaying vertices.
+@item
+@dfn{show_vertices=v_list}: display vertices in the list @var{v_list}
+using a different color.
+@item
+@dfn{show_vertex_type=type}: defines how vertices in @var{show_vertices}
+are displayed. See the @var{point_type} option for the draw package.
+@item
+@dfn{show_vertex_size=size}: the size of vertices in @var{show_vertices}.
+@item
+@dfn{show_vertex_color=c}: color used for displaying vertices in the
+@var{show_vertices} list.
+@item
+@dfn{edge_color=c}: color used for displaying edges.
+@item
+@dfn{edge_width=width}: the width of edges.
+@item
+@dfn{edge_type=type}: defines how edges are displayed. See the
+@var{line_type} option for the draw package.
+@item
+@dfn{show_edges=e_list}: display edges in the list @var{e_list}
+using a different color.
+@item
+@dfn{show_edge_color=c}: color used for displaying edges in the
+@var{show_edges} list.
+@item
+@dfn{show_edge_width=width}: the width of edges in @var{show_edges}.
+@item
+@dfn{show_edge_type=type}: defines how edges in @var{show_edges} are
+displayed. See the @var{line_type} option for the draw package.
+@item
+@dfn{redraw=r}: if @var{redraw} is true, vertex positions are recomputed
+even if the positions have been saved from a previous drawing of the
+graph.
+@item
+@dfn{head_angle=angle}: the angle for the arrows displayed on arcs (in
+directed graphs). Default value: 15.
+@item
+@dfn{head_length=len}: the length for the arrows displayed on arcs (in
+directed graphs). Default value: 0.1.
+@item
+@dfn{spring_embedding_depth=depth}: the number of iterations in the
+spring embedding graph drawing algorithm. Default value: 50.
+@item
+@dfn{terminal=term}: the terminal used for drawing (see the
+@var{terminal} option in the draw package).
+@item
+@dfn{file_name=file}: the filename of the drawing if terminal is not
+screen.
+@item
+@dfn{program=prg}: defines the program used for positioning vertices of
+the graph. Can be one of the graphviz programs (dot, neato, twopi, circ,
+fdp), @var{circular} or @var{spring_embedding}.
+@end itemize
+
+Examples:
+
+@example
+g:grid_graph(10,10)$
+m:max_matching(g)$
+draw_graph(g,
+   spring_embedding_depth=100,
+   show_edges=m, edge_type=dots,
+   vertex_size=0)$
+@end example
+
+@ifhtml
+@image{figures/graphs09,6cm}
+@end ifhtml
+
+@example
+g:create_graph(16,
+    [
+     [0,1],[1,3],[2,3],[0,2],[3,4],[2,4],
+     [5,6],[6,4],[4,7],[6,7],[7,8],[7,10],[7,11],
+     [8,10],[11,10],[8,9],[11,12],[9,15],[12,13],
+     [10,14],[15,14],[13,14]
+    ])$
+t:minimum_spanning_tree(g)$
+draw_graph(
+    g,
+    show_edges=edges(t),
+    show_edge_width=4,
+    show_edge_color=green,
+    vertex_type=filled_square,
+    vertex_size=2
+)$
+@end example
+
+@ifhtml
+@image{figures/graphs10,6cm}
+@end ifhtml
+
+@example
+mi : max_independent_set(g)$
+draw_graph(
+    g,
+    show_vertices=mi,
+    show_vertex_type=filled_up_triangle,
+    show_vertex_size=2,
+    edge_color=cyan,
+    edge_width=3,
+    show_id=true,
+    text_color=brown
+)$
+@end example
+
+@ifhtml
+@image{figures/graphs11,6cm}
+@end ifhtml
+
+@example
+net : create_graph(
+    [0,1,2,3,4,5],
+    [
+     [[0,1], 3], [[0,2], 2],
+     [[1,3], 1], [[1,4], 3],
+     [[2,3], 2], [[2,4], 2],
+     [[4,5], 2], [[3,5], 2]
+    ],
+    directed=true
+)$
+draw_graph(
+    net,
+    show_weight=true,
+    vertex_size=0,
+    show_vertices=[0,5],
+    show_vertex_type=filled_square,
+    head_length=0.2,
+    head_angle=10,
+    edge_color="dark-green",
+    text_color=blue
+)$
+@end example
+
+@ifhtml
+@image{figures/graphs12,6cm}
+@end ifhtml
+
+@end deffn
+
+@defvr {Option variable} draw_graph_program
+Default value: @var{spring_embedding}.
+
+The default value for the program used to position vertices in
+@code{draw_graph} program.
+@end defvr
+
+@deffn {Function} vertices_to_path (@var{v_list})
+Converts a list of vertices to a list of edges of the path defined by
+the list.
+@end deffn
+
+@deffn {Function} vertices_to_cycle (@var{v_list})
+Converts a list of vertices to a list of edges of the cycle defined by
+the list.
+@end deffn
