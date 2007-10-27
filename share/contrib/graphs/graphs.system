@@ -1,0 +1,43 @@
+;;; -*- Mode: lisp -*-
+
+#-gcl
+(progn
+  (defun graphs-source-pathname (subdir)
+    (merge-pathnames (make-pathname :directory (list :relative subdir))
+		     (make-pathname :directory (pathname-directory *load-truename*))))
+  (defun graphs-binary-pathname (subdir)
+    (merge-pathnames
+     (make-pathname
+      :name (concatenate 'string "binary-"
+			 #+clisp "clisp"
+			 #+cmu "cmucl"
+			 #+scl "scl"
+			 #+sbcl "sbcl"
+			 #+allegro "acl"
+			 #+openmcl "openmcl"
+			 #-(or clisp cmu scl sbcl gcl allegro openmcl) "unknownlisp")
+      :directory (list :relative subdir))
+     (make-pathname :directory (pathname-directory *load-truename*))))
+  )
+
+#+gcl
+(progn
+  (defun graphs-source-pathname (subdir)
+    (merge-pathnames (make-pathname :directory (list subdir))
+		     (make-pathname :directory (pathname-directory sys:*load-pathname*))))
+  (defun graphs-binary-pathname (subdir)
+    (merge-pathnames (make-pathname :directory (list subdir))
+		     (make-pathname :directory (pathname-directory sys:*load-pathname*))))
+  )
+
+(mk:defsystem graphs
+  :source-pathname (graphs-source-pathname ".")
+  :binary-pathname (graphs-binary-pathname ".")
+  :source-extension "lisp"
+  :components
+  ((:file "graph_core")
+   (:file "spring_embedding")
+   (:file "isomorphism")
+   (:file "matching")
+   (:file "graph6")
+   (:file "demoucron")))

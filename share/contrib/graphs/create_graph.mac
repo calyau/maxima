@@ -32,23 +32,15 @@ random_network(n, p, w) := block(
       if i#j then (
         if random(1.0)<p then (
           add_edge([i, j], net),
-          set_edge_weight([i, j], random(w), net)
-        )
-      )
-    )
-  ),
+          set_edge_weight([i, j], random(w), net)) ))),
   for i:0 thru n-1 do (
     if random(1.0)<p then (
       add_edge([i, n+1], net),
-      set_edge_weight([i, n+1], random(w), net)
-      ),
+      set_edge_weight([i, n+1], random(w), net)),
     if random(1.0)<p then (
       add_edge([n, i], net),
-      set_edge_weight([n, i], random(w), net)
-    )
-  ),
-  [net, source, sink]
-)$
+      set_edge_weight([n, i], random(w), net))),
+  [net, source, sink])$
 
 random_regular_graph(n, [d]) := block(
   [m, D, edg, i, j, e, i0],
@@ -57,8 +49,7 @@ random_regular_graph(n, [d]) := block(
   m: d*n,
   if mod(m,2)#0 then (
     m: m+d,
-    n: n+1
-  ),
+    n: n+1),
   U: 1,
   while U=1 do (
     U: makelist(i0-1,i0,1,m),
@@ -72,10 +63,137 @@ random_regular_graph(n, [d]) := block(
       j: divide(j, d)[1],
       e: [min(i,j), max(i,j)],
       if i=j or member(e, edg) then U=[]
-      else edg: cons(e, edg)
-    ),
+      else edg: cons(e, edg)),
     if 2*length(edg)<d*n then U: 1
-    else U: 0
-  ),
-  create_graph(makelist(i0-1,i0,1,n), edg)
-)$
+    else U: 0),
+  create_graph(makelist(i0-1,i0,1,n), edg))$
+
+mycielski_graph(g) := block(
+  [mapping:hash_table(), ng, i:0, edges:[], vertices],
+  if not is_graph(g) then error("`mycielsky_graph': argument is not a graph"),
+  for v in vertices(g) do (
+    set_hash(v, mapping, i),
+    i : i+1),
+  vertices : makelist(i, i, 0, 2*i),
+  for e in edges(g) do (
+    edges : cons([get_hash(e[1], mapping), get_hash(e[2], mapping)], edges),
+    edges : cons([get_hash(e[1], mapping)+i, get_hash(e[2], mapping)], edges),
+    edges : cons([get_hash(e[1], mapping), get_hash(e[2], mapping)+i], edges)),
+  for j:0 thru i-1 do edges : cons([i+j, 2*i], edges),
+  create_graph(vertices, edges))$
+
+grotzch_graph() := block(
+  [g:mycielski_graph(cycle_graph(5)), positions:[]],
+  for i:0 thru 4 do (
+    positions : cons([i, [sin(2.0*i*%pi/5), cos(2.0*i*%pi/5)]], positions),
+    positions : cons([i+5, [0.5*sin(2.0*i*%pi/5), 0.5*cos(2.0*i*%pi/5)]],
+      positions)),
+  positions : cons([10, [0,0]], positions),
+  set_positions(positions, g),
+  g)$
+
+complete_bipartite_graph(n, m) := block(
+  [edges, A, B],
+  if not (integerp(n) and integerp(m)) or
+       n<=0 or m<=0 then
+     error("`complete_bipartite_graph': arguments are not positive integers"),
+  A : makelist(i-1, i, 1, n),
+  B : makelist(i+n-1, i, 1, m),
+  edges : create_list([i,j], i, A, j, B),
+  create_graph(append(A, B), edges))$
+
+grid_graph(n, m) :=
+  if not (integerp(n) and integerp(m)) or
+       n<=0 or m<=0 then
+     error("`grid_graph': arguments are not positive integers")
+  else block(
+    [g:graph_product(path_graph(n), path_graph(m)),numer:true, pos:[]],
+    for i:0 thru n-1 do
+      for j:0 thru m-1 do
+        pos:cons([n*j+i, [i/n, j/m]], pos),
+    set_positions(pos, g),
+    g)$
+  
+cube_graph(n) := 
+  if n=1 then path_graph(2)
+  else block(
+    [k,r,g],
+    [k,r]:divide(n, 2),
+    g:graph_product(cube_graph(k), cube_graph(k)),
+    if r=1 then g:graph_product(g, path_graph(2)),
+    g)$
+
+icosahedron_graph() := create_graph(
+  12,
+  [
+   [0,1],[1,2],[2,3],[3,4],[0,4],
+   [5,6],[6,7],[7,8],[8,9],[5,9],
+   [0,5],[5,1],[1,6],[6,2],[2,7],
+   [7,3],[3,8],[8,4],[4,9],[0,9],
+   [0,10],[1,10],[2,10],[3,10],[4,10],
+   [5,11],[6,11],[7,11],[8,11], [9,11]
+  ])$
+
+dodecahedron_graph() := create_graph(
+  20,
+  [
+   [0,1],[1,2],[2,3],[3,4],[0,4],[0,15],[1,19],
+   [2,18],[3,17],[4,16],[10,15],[10,16],[11,16],
+   [11,17],[12,17],[12,18],[13,18],[13,19],[14,15],
+   [14,19],[6,10],[8,11],[9,12],[7,13],[5,14],[5,6],
+   [6,8],[8,9],[7,9],[5,7]
+  ])$
+
+heawood_graph() := block(
+  [g],
+  g:create_graph(
+    14,
+    [
+     [0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[6,7],[7,8],
+     [8,9],[9,10],[10,11],[11,12],[12,13],[0,13],
+     [0,9],[1,6],[2,11],[3,8],[4,13],[5,10],[7,12]
+    ]),
+  set_positions(circular_positions(g), g),
+  g)$
+
+frucht_graph() := create_graph(
+  12,
+  [
+   [0,1],[1,2],[2,3],
+   [3,4],[4,5],[5,6],
+   [0,6],[0,7],[7,1],
+   [2,8],[8,3],[4,9],
+   [9,5],[6,10],[10,9],
+   [11,10],[11,7],[11,8]
+  ]);
+
+clebsch_graph() := block(
+  [g, positions : []],
+  g : create_graph(
+    16,
+    [
+     [0,1],[1,2],[2,3],[3,4],[0,4],
+     [0,10],[1,11],[2,12],[3,13],[4,14],
+     [0,6],[1,7],[2,8],[3,9],[4,5],
+     [0,8],[1,9],[2,5],[3,6],[4,7],
+     [5,11],[6,12],[7,13],[8,14],[9,10],
+     [5,10],[6,11],[7,12],[8,13],[9,14],
+     [5,15],[6,15],[7,15],[8,15],[9,15],
+     [10,12],[11,13],[12,14],[13,10],[14,11]
+    ]
+    ),
+  for i:0 thru 4 do (
+    positions : cons([i, [sin(2*i*%pi/5.0), cos(2*i*%pi/5.0)]], positions),
+    positions : cons([i+5,
+      [0.7*sin(2*i*%pi/5.0+%pi/5.0), 0.7*cos(2*i*%pi/5+%pi/5.0)]],
+      positions),
+    positions : cons([i+10,
+      [0.3*sin(2*i*%pi/5.0), 0.3*cos(2*i*%pi/5)]],
+      positions)),
+  positions : cons([15, [0,0]], positions),
+  set_positions(positions, g),
+  g)$
+
+induced_subgraph1(e_list, gr) := block(
+  [v_list : setify(xreduce(append, e_list))],
+  create_graph(listify(v_list), e_list))$
