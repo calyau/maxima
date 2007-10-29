@@ -302,7 +302,9 @@ contrib/nset/announce-1.2.txt\
 contrib/nset/changes_1.0_to_1.2.txt\
 contrib/numericalio/README\
 contrib/numericalio/array.data\
+contrib/numericalio/encode-decode-float.lisp\
 contrib/numericalio/numericalio.lisp\
+contrib/numericalio/numericalio.mac\
 contrib/numericalio/pipe.data\
 contrib/numericalio/ragged.data\
 contrib/numericalio/really-csv.data\
