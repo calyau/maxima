@@ -296,7 +296,7 @@
 (defun scan-digits (data continuation? continuation &optional exponent-p)
   (do ((c (parse-tyipeek) (parse-tyipeek))
        (l () (cons c l)))
-      ((not (digit-char-p c))
+      ((not (and (characterp c) (digit-char-p c)))
        (cond ((member c continuation?)
 	      (funcall continuation (list* (ncons (char-upcase
 						   (parse-tyi)))
