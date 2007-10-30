@@ -30,10 +30,11 @@
 ;;; www.biomates.net
 
 
+(defvar $draw_loaded t)
 
+(defvar $draw_compound t)
 
 (defvar *windows-OS* (string= *autoconf-win32* "true"))
-
 
 (defvar $draw_command (if (string= *autoconf-win32* "true")
                               "wgnuplot"
@@ -343,20 +344,23 @@
                 (t (merror "Illegal user preamble especification")))
               (setf (gethash opt *gr-options*) str))  )
       (($xrange $yrange $zrange) ; defined as a Maxima list with two numbers in increasing order
-            (if (or (not ($listp val))
-                    (not (member ($length val) '(2 3))))
-                (merror "Illegal range: ~M " val))
-            (let ((fval1 (convert-to-float (cadr val)))
-                  (fval2 (convert-to-float (caddr val))))
-               (cond
-                  ((or (not (floatp fval1))
-                       (not (floatp fval2))
-                       (< fval2 fval1))
-                     (merror "Illegal values in range specification"))
-                  ((= ($length val) 2)  ; it's a trick: length 2 => user change
-                     (setf (gethash opt *gr-options*) (list fval1 fval2)))
-                  (t  ; should be length 3 or nil option => automatic computation of ranks
-                     (setf (gethash opt *gr-options*) (list fval1 fval2 0))))  ) )
+            (cond ((member val '($auto nil))     ; nil is maintained for back-portability
+                     (setf (gethash opt *gr-options*) nil))
+                  ((or (not ($listp val))
+                       (not (member ($length val) '(2 3))))
+                     (merror "Illegal range: ~M " val))
+                  (t
+                     (let ((fval1 (convert-to-float (cadr val)))
+                           (fval2 (convert-to-float (caddr val))))
+                       (cond
+                         ((or (not (floatp fval1))
+                              (not (floatp fval2))
+                              (< fval2 fval1))
+                            (merror "Illegal values in range specification"))
+                         ((= ($length val) 2)  ; it's a trick: length 2 => user change
+                            (setf (gethash opt *gr-options*) (list fval1 fval2)))
+                         (t  ; should be length 3 or nil option => automatic computation of ranks
+                            (setf (gethash opt *gr-options*) (list fval1 fval2 0)) ))  ))) )
       (($ip_grid $ip_grid_in)
        (if (not ($listp val))
 	   (merror "Illegal value for grid")
@@ -539,7 +543,7 @@
                                  (get-option '$point_size)
                                  (get-option '$point_type)
                                  (get-option '$color)) )
-         :groups '((2)) ; numbers are sent to gnuplot in groups of 2
+         :groups '((2 0)) ; numbers are sent to gnuplot in groups of 2
          :points (if (arrayp arg1)
                      (list arg1) 
                      (list pts) ) ) ))
@@ -669,7 +673,7 @@
                                       (get-option '$line_width)
                                       (get-option '$line_type)
                                       (get-option '$color)))
-             (setf grps '((2)))  ; numbers are sent to gnuplot in groups of 2
+             (setf grps '((2 0)))  ; numbers are sent to gnuplot in groups of 2
              (setf pts (list (make-array (+ (* 2 (length x)) 2)
                                          :element-type 'double-float
                                          :initial-contents (append (mapcan #'list x y)
@@ -678,7 +682,7 @@
              (setf pltcmd (format nil " ~a w filledcurves lc rgb '~a'"
                                       (make-obj-title (get-option '$key))
                                       (get-option '$fill_color)))
-             (setf grps '((2)))  ; numbers are sent to gnuplot in groups of 2
+             (setf grps '((2 0)))  ; numbers are sent to gnuplot in groups of 2
              (setf pts (list (make-array (* 2 (length x))
                                          :element-type 'double-float
                                          :initial-contents (mapcan #'list x y)) ) ))
@@ -691,7 +695,7 @@
                                         (get-option '$line_type)
                                         (get-option '$color))))
 
-             (setf grps '((2) (2)))  ; both sets of vertices (interior and border)
+             (setf grps '((2 0) (2 0)))  ; both sets of vertices (interior and border)
                                      ; are sent to gnuplot in groups of 2
              (setf pts (list (make-array (* 2 (length x))
                                          :element-type 'double-float
@@ -814,7 +818,7 @@
                                     (get-option '$line_width)
                                     (get-option '$line_type)
                                     (get-option '$color)))
-           (setf grps '((2)))
+           (setf grps '((2 0)))
            (setf pts `( ,(make-array (length result) :element-type 'double-float
                                                     :initial-contents result)))  )
        ((not (get-option '$border)) ; no transparent, no border
@@ -822,7 +826,7 @@
                                     (make-obj-title (get-option '$key))
                                     fxc fyc
                                     (get-option '$fill_color)))
-           (setf grps '((2)))
+           (setf grps '((2 0)))
            (setf pts `( ,(make-array (length result) :element-type 'double-float
                                                     :initial-contents result)))  )
        (t ; no transparent with border
@@ -834,7 +838,7 @@
                                             (get-option '$line_width)
                                             (get-option '$line_type)
                                             (get-option '$color))))
-           (setf grps '((2) (2)))
+           (setf grps '((2 0) (2 0)))
            (setf pts (list (make-array (length result) :element-type 'double-float
                                                        :initial-contents result)
                            (make-array (length result) :element-type 'double-float
@@ -883,7 +887,7 @@
                                 (not (floatp fy)))
                             (merror "draw (label): non real 2d coordinates"))
                         (update-ranges fx fx fy fy)
-                        (setf result (append (list fx fy text) result)))))
+                        (setf result (append (list fx fy (format nil "\"~a\"" text)) result)))))
                   (t ; labels in 3d
                     (let (fx fy fz text)
                       (dolist (k lab)
@@ -961,7 +965,6 @@
                             (get-option '$fill_color) )
        :groups '((3 0))  ; numbers are sent to gnuplot in groups of 3, without blank lines
        :points (list (make-array (length result) :initial-contents result))) ))
-
 
 
 
@@ -1157,7 +1160,7 @@
                (make-gr-object
                   :name   'explicit
                   :command pltcmd
-                  :groups '((2))  ; numbers are sent to gnuplot in groups of 2
+                  :groups '((2 0))  ; numbers are sent to gnuplot in groups of 2
                   :points  (list result-array )) )
             ((equal (get-option '$filled_func) t)
                (do ((y (cdr result) (cddr y)))
@@ -1175,7 +1178,7 @@
                (make-gr-object
                   :name   'explicit
                   :command pltcmd
-                  :groups '((2))  ; numbers are sent to gnuplot in groups of 2
+                  :groups '((2 0))  ; numbers are sent to gnuplot in groups of 2
                   :points  (list result-array )))
             (t
                (let (fcn2 yy2 (count -1))
@@ -1248,8 +1251,7 @@
 	 (y1 (coerce (+ ymin (/ (* ydelta (+ (cadr point1) (cadddr point1))) 2)) 'double-float) )
 	 (x2 (coerce (+ xmin (/ (* xdelta (+ (car point2) (caddr point2))) 2)) 'double-float) )
 	 (y2 (coerce (+ ymin (/ (* ydelta (+ (cadr point2) (cadddr point2))) 2)) 'double-float) ))
-    (setq pts (nconc (list x1 y1 x2 y2 t t) pts))))
-	
+    (setq pts (nconc (list x1 y1 x2 y2) pts))))	
 
 (defun print-square (xmin xmax ymin ymax sample grid)
   (let* ((xdelta (/ (- xmax xmin) ($first grid)))
@@ -1336,9 +1338,8 @@
     (make-gr-object
        :name   'implicit
        :command pltcmd
-       :groups '((2))
-       :points  `(,(make-array (length pts) ; element-type 'double-float removed,
-                                            ; since pts contains non floats
+       :groups '((2 2))
+       :points  `(,(make-array (length pts) :element-type 'double-float
                                             :initial-contents pts)) ) ))
 
 
@@ -1459,7 +1460,7 @@
                             (get-option '$line_width)
                             (get-option '$line_type)
                             (get-option '$color))
-       :groups '((2))
+       :groups '((2 0))
        :points `(,(make-array (length result) :element-type 'double-float
                                               :initial-contents result)))   ) )
 
@@ -1943,7 +1944,7 @@
                              (get-option '$line_width)
                              (get-option '$line_type)
                              (get-option '$color)))
-      :groups (make-list (length lis) :initial-element '(2)) ; numbers are sent to gnuplot in groups of 2
+      :groups (make-list (length lis) :initial-element '(2 0)) ; numbers are sent to gnuplot in groups of 2
       :points (cond ((or (null proj)
                          (and (equal (cadr proj) '$longitude_latitude_projection)
                               (= ($length proj) 1)) )
@@ -2556,6 +2557,22 @@
                  (k (length vect))
                  (ncol (caar glis)))
             (case ncol
+              (2  ; 2d points
+                (let ((l 0)
+                      (m (cadar glis)))
+                   (cond
+                     ((= m 0)     ; 2d points without blank lines
+                        (do ((cont 0 (+ cont 2)))
+                            ((= cont k) 'done)
+                          (write-subarray (subseq vect cont (+ cont 2)) datastorage))  )
+                     (t           ; 2d points with blank lines every m lines
+                        (do ((cont 0 (+ cont 2)))
+                            ((= cont k) 'done)
+                          (when (eql l m)
+                                (format datastorage "~%")
+                                (setf l 0) )
+                          (write-subarray (subseq vect cont (+ cont 2)) datastorage)
+                          (incf l)  ))))  )
               (3  ; 3d points, gray image and palette image
                 (let ((l 0)
                       (m (cadar glis)))

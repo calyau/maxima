@@ -37,9 +37,9 @@ Se necesita tener instalado Gnuplot 4.2 para ejecutar este paquete.
 
 
 @defvr {Opci@'on gr@'afica} xrange
-Valor por defecto: @code{false}
+Valor por defecto: @code{auto}
 
-Cuando @code{xrange} vale @code{false}, el rango de la coordenada @var{x}
+Cuando @code{xrange} vale @code{auto}, el rango de la coordenada @var{x}
 se calcula de forma autom@'atica.
 
 Si el usuario quiere especificar un intervalo para @var{x}, @'este debe
@@ -62,9 +62,9 @@ V@'eanse tambi@'en @code{yrange} y @code{zrange}.
 
 
 @defvr {Opci@'on gr@'afica} yrange
-Valor por defecto: @code{false}
+Valor por defecto: @code{auto}
 
-Cuando @code{yrange} vale @code{false}, el rango de la coordenada @var{y}
+Cuando @code{yrange} vale @code{auto}, el rango de la coordenada @var{y}
 se calcula de forma autom@'atica.
 
 Si el usuario quiere especificar un intervalo para @var{y}, @'este debe
@@ -88,9 +88,9 @@ V@'eanse tambi@'en @code{xrange} y @code{zrange}.
 
 
 @defvr {Opci@'on gr@'afica} zrange
-Valor por defecto: @code{false}
+Valor por defecto: @code{auto}
 
-Cuando @code{zrange} vale @code{false}, el rango de la coordenada @var{z}
+Cuando @code{zrange} vale @code{auto}, el rango de la coordenada @var{z}
 se calcula de forma autom@'atica.
 
 Si el usuario quiere especificar un intervalo para @var{z}, @'este debe
