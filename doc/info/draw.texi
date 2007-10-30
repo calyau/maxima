@@ -34,9 +34,9 @@ You need Gnuplot 4.2 to run this program.
 
 
 @defvr {Graphic option} xrange
-Default value: @code{false}
+Default value: @code{auto}
 
-If @code{xrange} is @code{false}, the range for the @var{x} coordinate is
+If @code{xrange} is @code{auto}, the range for the @var{x} coordinate is
 computed automatically.
 
 If the user wants a specific interval for @var{x}, it must be given as a 
@@ -59,9 +59,9 @@ See also @code{yrange} and @code{zrange}.
 
 
 @defvr {Graphic option} yrange
-Default value: @code{false}
+Default value: @code{auto}
 
-If @code{yrange} is @code{false}, the range for the @var{y} coordinate is
+If @code{yrange} is @code{auto}, the range for the @var{y} coordinate is
 computed automatically.
 
 If the user wants a specific interval for @var{y}, it must be given as a 
@@ -85,9 +85,9 @@ See also @code{xrange} and @code{zrange}.
 
 
 @defvr {Graphic option} zrange
-Default value: @code{false}
+Default value: @code{auto}
 
-If @code{zrange} is @code{false}, the range for the @var{z} coordinate is
+If @code{zrange} is @code{auto}, the range for the @var{z} coordinate is
 computed automatically.
 
 If the user wants a specific interval for @var{z}, it must be given as a 
