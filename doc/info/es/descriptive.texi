@@ -1,4 +1,4 @@
-@c english version: 1.12
+@c english version: 1.14
 @menu
 * Introducci@'on a descriptive::
 * Funciones y variables para el tratamiento de datos::
@@ -11,7 +11,10 @@
 @section Introducci@'on a descriptive
 
 
-El paquete @code{descriptive} contiene funciones para realizar c@'lculos y gr@'aficos estad@'{@dotless{i}}sticos descriptivos. Junto con el c@'odigo fuente se distribuyen tres conjuntos de datos: @code{pidigits.data}, @code{wind.data} y @code{biomed.data}, los cuales tambi@'en se pueden descargar desde el sitio web @code{www.biomates.net}.
+El paquete @code{descriptive} contiene funciones para realizar 
+c@'lculos y gr@'aficos estad@'{@dotless{i}}sticos descriptivos. 
+Junto con el c@'odigo fuente se distribuyen tres conjuntos de datos: 
+@code{pidigits.data}, @code{wind.data} y @code{biomed.data}.
 
 Cualquier manual de estad@'{@dotless{i}}stica se puede utilizar como referencia al paquete @code{descriptive}.
 
@@ -840,7 +843,8 @@ Ejemplo:
 @c load (descriptive)$
 @c load (numericalio)$
 @c s1 : read_list (file_search ("pidigits.data"))$
-@c /* 1er and 3er cuartiles */ [quantile (s1, 1/4), quantile (s1, 3/4)], numer;
+@c /* 1st and 3rd quartiles */ 
+@c          [quantile (s1, 1/4), quantile (s1, 3/4)], numer;
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c quantile (s2, 1/4);
 @c ===end===
@@ -1753,234 +1757,172 @@ V@'eanse tambi@'en @code{cov} y @code{cov1}.
 @section Funciones y variables para gr@'aficos estad@'{@dotless{i}}sticos
 
 
-@deffn {Funci@'on} dataplot (@var{list})
-@deffnx {Funci@'on} dataplot (@var{list}, @var{option_1}, @var{option_2}, ...)
-@deffnx {Funci@'on} dataplot (@var{matrix})
-@deffnx {Funci@'on} dataplot (@var{matrix}, @var{option_1}, @var{option_2}, ...)
-La funci@'on @code{dataplot} permite la visualizaci@'on directa de datos muestrales, tanto univariantes (@var{list}) como multivariantes (@var{matrix}). Asignando valores a las siguientes opciones (@var{options}) se pueden controlar ciertos aspectos del gr@'afico:
 
-@itemize @bullet
+@defvr {Variable opcional} histogram_nclasses
+Valor por defecto: 10
 
-@item
-@code{'outputdev}, @code{"x"} por defecto, indica el dispositivo de salida; valores aceptados son @code{"x"}, @code{"eps"} y @code{"png"}, para la pantalla, y los formatos de ficheros postscript y png, respectivamente.
+N@'umero de clases a utilizar en los histogramas.
 
-@item
-@code{'maintitle}, @code{""} por defecto, es el t@'{@dotless{i}}tulo principal entre comillas dobles.
-
-@item
-@code{'axisnames}, @code{["x","y","z"]} por defecto, es una lista con nombres para los ejes @code{x}, @code{y} y @code{z}.
-
-@item
-@code{'joined}, @code{false} por defecto, un valor l@'ogico que indica si los puntos en 2D deben unirse por segmentos o no.
-
-@item
-@code{'picturescales}, @code{[1.0, 1.0]} por defecto, factores de escala para el tama@~no del gr@'afico.
-
-@item
-@code{'threedim}, @code{true} por defecto, indica a Maxima si debe dibujar una matriz de tres columnas como un diagrama tridimensional o como un diagrama de dispersi@'on multivariante. V@'eanse ejemplos m@'as abajo.
-
-@item
-@code{'axisrot}, @code{[60, 30]} por defecto, cambia el punto de vista cuando @code{'threedim} toma el valor @code{true} y los datos se suministran en una matriz de tres columnas. El primer n@'umero es el @'angulo de rotaci@'on del eje @var{x}, siendo el segundo el @'angulo de rotaci@'on del eje @var{z}, ambos medidos en grados sexagesimales.
-
-@item
-@code{'nclasses}, @code{10} por defecto, es el n@'umero de clases a considerar en los histogramas de la diagonal de los diagramas de dispersi@'on multivariantes.
-
-@item
-@code{'pointstyle}, @code{1} por defecto, es un entero que indica c@'omo dibujar los puntos muestrales.
-
-@end itemize
-
-Por ejemplo, con el siguiente c@'odigo se realiza un gr@'afico con los veinte primeros d@'{@dotless{i}}gitos del n@'umero @code{%pi} y el resultado se guarda en un fichero en formato eps.
-
-@c ===beg===
-@c load (descriptive)$
-@c load (numericalio)$
-@c s1 : read_list (file_search ("pidigits.data"))$
-@c dataplot (makelist (s1[k], k, 1, 20), 'pointstyle = 3)$
-@c ===end===
-@example
-(%i1) load (descriptive)$
-(%i2) load (numericalio)$
-(%i3) s1 : read_list (file_search ("pidigits.data"))$
-(%i4) dataplot (makelist (s1[k], k, 1, 20), 'pointstyle = 3)$
-@end example
-
-N@'otese que las muestras univariantes se representan como series temporales. En el siguiente ejemplo se utilizan m@'as datos y con diferentes opciones,
-
-@c ===beg===
-@c load (descriptive)$
-@c load (numericalio)$
-@c s1 : read_list (file_search ("pidigits.data"))$
-@c dataplot (makelist (s1[k], k, 1, 50),
-@c           'maintitle = "First pi digits",
-@c           'axisnames = ["digit order", "digit value"],
-@c           'pointstyle = 2,
-@c  'joined = true)$
-@c ===end===
-@example
-(%i1) load (descriptive)$
-(%i2) load (numericalio)$
-(%i3) s1 : read_list (file_search ("pidigits.data"))$
-(%i4) dataplot (makelist (s1[k], k, 1, 50),
-               'maintitle = "First pi digits",
-               'axisnames = ["digit order", "digit value"],
-               'pointstyle = 2,
-               'joined = true)$
-@end example
-
-La funci@'on @code{dataplot} puede utilizarse para representar puntos del plano. El siguiente ejemplo es un diagrama de dispersi@'on de los pares formados con las velocidades del viento correspondientes a las estaciones meteorol@'ogicas uno y cinco,
-
-@c ===beg===
-@c load (descriptive)$
-@c load (numericalio)$
-@c s2 : read_matrix (file_search ("wind.data"))$
-@c dataplot (submatrix (s2, 2, 3, 4), 'pointstyle = 2,
-@c  'maintitle = "Pairs of wind speeds measured in knots",
-@c  'axisnames = ["Wind speed in A", "Wind speed in E"])$
-@c ===end===
-@example
-(%i1) load (descriptive)$
-(%i2) load (numericalio)$
-(%i3) s2 : read_matrix (file_search ("wind.data"))$
-(%i4) dataplot (submatrix (s2, 2, 3, 4), 'pointstyle = 2,
- 'maintitle = "Pairs of wind speeds measured in knots",
- 'axisnames = ["Wind speed in A", "Wind speed in E"])$
-@end example
-
-Si los puntos est@'an almacenados en una matriz de dos columnas, @code{dataplot} los puede dibujar directamente, pero si est@'an guardados como una lista de pares deben transformarse previamente a una matriz, tal como se hace en el siguiente ejemplo.
-
-@c ===beg===
-@c load (descriptive)$
-@c x : [[-1, 2], [5, 7], [5, -3], [-6, -9], [-4, 6]]$
-@c dataplot (apply ('matrix, x), 'maintitle = "Points",
-@c  'joined = true, 'axisnames = ["", ""], 'picturescales = [0.5, 1.0])$
-@c ===end===
-@example
-(%i1) load (descriptive)$
-(%i2) x : [[-1, 2], [5, 7], [5, -3], [-6, -9], [-4, 6]]$
-(%i3) dataplot (apply ('matrix, x), 'maintitle = "Points",
- 'joined = true, 'axisnames = ["", ""], 'picturescales = [0.5, 1.0])$
-@end example
-
-Puntos del espacio tridimensional pueden verse como proyecciones sobre un plano. Es este ejemplo se piden gr@'aficos de las velocidades del viento correspondientes a tres estaciones meteorol@'ogicas, primero una representaci@'on tridimensional y luego como diagrama de dispersi@'on multivariante.
-
-@c ===beg===
-@c load (descriptive)$
-@c load (numericalio)$
-@c s2 : read_matrix (file_search ("wind.data"))$
-@c /* grafico 3D */
-@c dataplot (
-@c    submatrix (s2, 4, 5),
-@c    'pointstyle = 2,
-@c    'maintitle = "Pairs of wind speeds measured in knots",
-@c    'axisnames = ["Station A", "Station B", "Station C"])$
-@c /* Dispersion multivariante */ dataplot (submatrix (s2, 4, 5),
-@c  'nclasses = 6, 'threedim = false)$
-@c ===end===
-@example
-(%i1) load (descriptive)$
-(%i2) load (numericalio)$
-(%i3) s2 : read_matrix (file_search ("wind.data"))$
-(%i4) /* grafico 3D */
-      dataplot (
-         submatrix (s2, 4, 5),
-         'pointstyle = 2,
-         'maintitle = "Pairs of wind speeds measured in knots",
-         'axisnames = ["Station A", "Station B", "Station C"])$
-(%i5) /* Dispersion multivariante */
-      dataplot (submatrix (s2, 4, 5),
-                'nclasses = 6,
-                'threedim = false)$
-@end example
-
-N@'otese que en este @'ultimo ejemplo, el n@'umero de clases de los histogramas de la diagonal se ajusta a 6, y que a la opci@'on @code{'threedim} se le da el valor @code{false}.
-
-Para m@'as de tres dimensiones s@'olo son posibles los diagramas de dispersi@'on multivariantes, como en
-
-@c ===beg===
-@c load (descriptive)$
-@c load (numericalio)$
-@c s2 : read_matrix (file_search ("wind.data"))$
-@c dataplot (s2)$
-@c ===end===
-@example
-(%i1) load (descriptive)$
-(%i2) load (numericalio)$
-(%i3) s2 : read_matrix (file_search ("wind.data"))$
-(%i4) dataplot (s2)$
-@end example
-
-@end deffn
-
+V@'ease tambi@'en @code{histogram}.
+@end defvr
 
 
 @deffn {Funci@'on} histogram (@var{list})
 @deffnx {Funci@'on} histogram (@var{list}, @var{option_1}, @var{option_2}, ...)
 @deffnx {Funci@'on} histogram (@var{one_column_matrix})
 @deffnx {Funci@'on} histogram (@var{one_column_matrix}, @var{option_1}, @var{option_2}, ...)
-Dibuja un histograma. Los datos muestrales deben suministrarse como una lista de n@'umeros o como una matriz columna. Asignando valores a las siguientes opciones (@var{options}) se pueden controlar ciertos aspectos del gr@'afico:
+@deffnx {Funci@'on} histogram (@var{one_row_matrix})
+@deffnx {Funci@'on} histogram (@var{one_row_matrix}, @var{option_1}, @var{option_2}, ...)
+Esta funci@'on dibuja el histograma de una muestra constante.
+Los datos muestrales se deben almacenar en una lista de n@'umeros o en
+una matriz unidimensional. Las opciones disponibles son las mismas
+que las definidas en el paquete @code{draw}.
+El n@'umero de clases a utilizar se controla con la variable global
+@code{histogram_nclasses}·
 
-@itemize @bullet
+Ejemplos:
 
-@item
-@code{'outputdev}, @code{"x"} por defecto, indica el dispositivo de salida; valores aceptados son @code{"x"}, @code{"eps"} y @code{"png"}, para la pantalla, y los formatos de ficheros postscript y png, respectivamente.
-
-@item
-@code{'maintitle}, @code{""} por defecto, es el t@'{@dotless{i}}tulo principal entre comillas dobles.
-
-@item
-@code{'axisnames}, @code{["x", "Fr."]} por defecto, es una lista con nombres para los ejes @code{x} e @code{y}.
-
-@item
-@code{'picturescales}, @code{[1.0, 1.0]} por defecto, factores de escala para el tama@~no del gr@'afico.
-
-@item
-@code{'nclasses}, @code{10} por defecto, es el n@'umero de intervalos de clase.
-
-@item
-@code{'relbarwidth}, @code{0.9} por defecto, es un n@'umero decimal entre 0 y 1 para controlar el ancho de las barras.
-
-@item
-@code{'barcolor}, @code{1} por defecto, es un entero que indica el color de las barras.
-
-@item
-@code{'colorintensity}, @code{1} por defecto, es un n@'umero decimal entre 0 y 1 para establecer la intensidad del color.
-
-@end itemize
-
-En los siguientes dos ejemplos se solicitan sendos histogramas para los 100 primeros d@'{@dotless{i}}gitos del n@'umero @math{pi} y para las velocidades del viento en la estaci@'on meteorol@'ogica n@'umero 3.
+Un histograma de ocho clases.
 
 @c ===beg===
 @c load (descriptive)$
-@c load (numericalio)$
 @c s1 : read_list (file_search ("pidigits.data"))$
-@c histogram (s1,
-@c            'maintitle = "pi digits",
-@c            'axisnames = ["", "Absolute frequency"],
-@c            'relbarwidth = 0.2, 
-@c            'barcolor = 3, 
-@c            'colorintensity = 0.6)$
-@c s2 : read_matrix (file_search ("wind.data"))$
-@c histogram (col (s2, 3), 'colorintensity = 0.3)$
+@c histogram_nclasses: 8 $
+@c histogram (
+@c      s1,
+@c      title        = "pi digits",
+@c      xlabel       = "digits",
+@c      ylabel       = "Absolute frequency",
+@c      fill_color   = grey,
+@c      fill_density = 0.6)$
 @c ===end===
 @example
 (%i1) load (descriptive)$
-(%i2) load (numericalio)$
-(%i3) s1 : read_list (file_search ("pidigits.data"))$
-(%i4) histogram (s1, 
-                 'maintitle = "pi digits", 
-                 'axisnames = ["", "Absolute frequency"],
-                 'relbarwidth = 0.2, 
-                 'barcolor = 3, 
-                 'colorintensity = 0.6)$
-(%i5) s2 : read_matrix (file_search ("wind.data"))$
-(%i6) histogram (col (s2, 3), 'colorintensity = 0.3)$
+(%i2) s1 : read_list (file_search ("pidigits.data"))$
+(%i3) histogram_nclasses: 8 $
+(%i4) histogram (
+        s1,
+        title        = "pi digits",
+        xlabel       = "digits",
+        ylabel       = "Absolute frequency",
+        fill_color   = grey,
+        fill_density = 0.6)$
 @end example
 
-N@'otese que en el primer caso, @code{s1} es una lista y que en el segundo @code{col(s2,3)} es una matriz.
-
+Para las opciones relacionadas con los histogramas, v@'ease @code{bars}.
 V@'ease tambi@'en @code{barsplot}.
 @end deffn
+
+
+
+@deffn {Funci@'on} scatterplot (@var{list})
+@deffnx {Funci@'on} scatterplot (@var{list}, @var{option_1}, @var{option_2}, ...)
+@deffnx {Funci@'on} scatterplot (@var{matrix})
+@deffnx {Funci@'on} scatterplot (@var{matrix}, @var{option_1}, @var{option_2}, ...)
+Dibuja diagramas de dispersi@'on, tanto de muestras univariantes (@var{list})
+como multivariantes (@var{matrix}). Las opciones disponibles son las mismas
+que las definidas en el paquete @code{draw}.
+
+Ejemplos:
+
+Diagrama de dispersi@'on univariante a partir de una muestra normal
+simulada. 
+
+@c ===beg===
+@c load (descriptive)$
+@c load (distrib)$
+@c scatterplot(
+@c   random_normal(0,1,200),
+@c   xaxis      = true,
+@c   point_size = 2,
+@c   terminal   = eps,
+@c   eps_width  = 10,
+@c   eps_height = 2)$
+@c ===end===
+@example
+(%i1) load (descriptive)$
+(%i2) load (distrib)$
+(%i3) scatterplot(
+        random_normal(0,1,200),
+        xaxis      = true,
+        point_size = 2,
+        terminal   = eps,
+        eps_width  = 10,
+        eps_height = 2)$
+@end example
+
+Diagrama de dispersi@'on bidimensional.
+
+@c ===beg===
+@c load (descriptive)$
+@c s2 : read_matrix (file_search ("wind.data"))$
+@c scatterplot(
+@c  submatrix(s2, 1,2,3),
+@c  title      = "Data from stations #4 and #5",
+@c  point_type = diamant,
+@c  point_size = 2,
+@c  color      = blue)$
+@c ===end===
+@example
+(%i1) load (descriptive)$
+(%i2) s2 : read_matrix (file_search ("wind.data"))$
+(%i3) scatterplot(
+        submatrix(s2, 1,2,3),
+        title      = "Data from stations #4 and #5",
+        point_type = diamant,
+        point_size = 2,
+        color      = blue)$
+@end example
+
+Diagrama de dispersi@'on tridimensional.
+
+@c ===beg===
+@c load (descriptive)$
+@c s2 : read_matrix (file_search ("wind.data"))$
+@c scatterplot(submatrix (s2, 1,2))$
+@c ===end===
+@example
+(%i1) load (descriptive)$
+(%i2) s2 : read_matrix (file_search ("wind.data"))$
+(%i3) scatterplot(submatrix (s2, 1,2))$
+@end example
+
+Diagrama de dispersi@'on de cinco dimensiones.
+
+@c ===beg===
+@c load (descriptive)$
+@c s2 : read_matrix (file_search ("wind.data"))$
+@c scatterplot(
+@c   s2,
+@c   fill_color   = blue,
+@c   fill_density = 0.3,
+@c   xtics        = 5)$
+@c ===end===
+@example
+(%i1) load (descriptive)$
+(%i2) s2 : read_matrix (file_search ("wind.data"))$
+(%i3) scatterplot(
+        s2,
+        fill_color   = blue,
+        fill_density = 0.3,
+        xtics        = 5)$
+@end example
+
+Para dibujar puntos aislados o unidos por segmentos, tanto en dos
+como en tres dimensiones, v@'ease @code{points}.
+Para las opciones relacionadas con los histogramas, v@'ease @code{bars}.
+
+V@'ease tambi@'en @code{histogram}.
+@end deffn
+
+
+@defvr {Variable opcional} barsplot_width
+Valor por defecto: @code{3/4}
+
+Ancho relativo para las barras de @code{barsplot}·
+
+V@'ease tambi@'en @code{barsplot}.
+@end defvr
 
 
 
@@ -1988,103 +1930,158 @@ V@'ease tambi@'en @code{barsplot}.
 @deffnx {Funci@'on} barsplot (@var{list}, @var{option_1}, @var{option_2}, ...)
 @deffnx {Funci@'on} barsplot (@var{one_column_matrix})
 @deffnx {Funci@'on} barsplot (@var{one_column_matrix}, @var{option_1}, @var{option_2}, ...)
-Similar a @code{histogram} pero para muestras discretas, num@'ericas o categ@'oricas. Estas son las variables,
+@deffnx {Funci@'on} barsplot (@var{one_row_matrix})
+@deffnx {Funci@'on} barsplot (@var{one_row_matrix}, @var{option_1}, @var{option_2}, ...)
+Similar a @code{histogram}, pero para variables estad@'{@dotless{i}}sticas
+discretas, num@'ericas o categ@'oricas. Las opciones disponibles son las mismas
+que las definidas en el paquete @code{draw}.
+El ancho de las barras se controla con las variable global @code{barsplot_width}·
 
-@itemize @bullet
-
-@item
-@code{'outputdev}, @code{"x"} por defecto, indica el dispositivo de salida; valores aceptados son @code{"x"}, @code{"eps"} y @code{"png"}, para la pantalla, y los formatos de ficheros postscript y png, respectivamente.
-
-@item
-@code{'maintitle}, @code{""} por defecto, es el t@'{@dotless{i}}tulo principal entre comillas dobles.
-
-@item
-@code{'axisnames}, @code{["x", "Fr."]} por defecto, es una lista con nombres para los ejes @code{x} e @code{y}.
-
-@item
-@code{'picturescales}, @code{[1.0, 1.0]} por defecto, factores de escala para el tama@~no del gr@'afico.
-
-@item
-@code{'relbarwidth}, @code{0.9} por defecto, es un n@'umero decimal entre 0 y 1 para controlar el ancho de las barras.
-
-@item
-@code{'barcolor}, @code{1} por defecto, es un entero que indica el color de las barras.
-
-@item
-@code{'colorintensity}, @code{1} por defecto, es un n@'umero decimal entre 0 y 1 para establecer la intensidad del color.
-
-@end itemize
-
-En este ejemplo se representa el gr@'afico de barras correspondiente a los grupos @code{A} y @code{B} de los pacientes de la muestra @code{s3},
+Ejemplo:
 
 @c ===beg===
 @c load (descriptive)$
-@c load (numericalio)$
 @c s3 : read_matrix (file_search ("biomed.data"))$
-@c barsplot (col (s3, 1), 'maintitle = "Groups of patients",
-@c  'axisnames = ["Group", "# of individuals"], 'colorintensity = 0.2)$
+@c barsplot_width: 1/2 $
+@c barsplot(col(s3,2),
+@c   title        = "Ages",
+@c   xlabel       = "years",
+@c   fill_density = 0.3)$
 @c ===end===
 @example
 (%i1) load (descriptive)$
-(%i2) load (numericalio)$
-(%i3) s3 : read_matrix (file_search ("biomed.data"))$
-(%i4) barsplot (col (s3, 1), 'maintitle = "Groups of patients",
- 'axisnames = ["Group", "# of individuals"], 'colorintensity = 0.2)$
+(%i2) s3 : read_matrix (file_search ("biomed.data"))$
+(%i3) barsplot_width: 1/2 $
+(%i4) barsplot(col(s3,2),
+         title        = "Ages",
+         xlabel       = "years",
+         fill_density = 0.3)$
 @end example
 
-La primera columna de la muestra @code{s3} almacena los valores categ@'oricos @code{A} y @code{B}, llamados tambi@'en factores. Por otro lado, los n@'umeros enteros positivos en la segunda columna son las edades en a@~nos, que es una variable discreta, por lo que podemos representar las frecuencias absolutas de estos valores,
+Para las opciones relacionadas con los diagramas de barras, v@'ease @code{bars}
+del paquete @code{draw}.
 
-@c ===beg===
-@c load (descriptive)$
-@c load (numericalio)$
-@c s3 : read_matrix (file_search ("biomed.data"))$
-@c barsplot (col (s3, 2), 'maintitle = "Ages",
-@c  'axisnames = ["Years", "# of individuals"], 'colorintensity = 0.2,
-@c  'relbarwidth = 0.6)$
-@c ===end===
-@example
-(%i1) load (descriptive)$
-(%i2) load (numericalio)$
-(%i3) s3 : read_matrix (file_search ("biomed.data"))$
-(%i4) barsplot (col (s3, 2), 'maintitle = "Ages",
- 'axisnames = ["Years", "# of individuals"], 'colorintensity = 0.2,
- 'relbarwidth = 0.6)$
-@end example
-
-V@'ease tambi@'en @code{histogram}.
+V@'eanse tambi@'en las funciones @code{histogram} y @code{piechart}.
 @end deffn
+
+
+@defvr {Variable opcional} piechart_center
+Valor por defecto: @code{[0,0]}
+
+Centro del diagrama de sectores·
+
+V@'ease tambi@'en @code{piechart}.
+@end defvr
+
+
+@defvr {Variable opcional} piechart_radius
+Valor por defecto: 1
+
+Radio del diagrama de sectores·
+
+V@'ease tambi@'en @code{piechart}.
+@end defvr
+
+
+@deffn {Funci@'on} piechart (@var{list})
+@deffnx {Funci@'on} piechart (@var{list}, @var{option_1}, @var{option_2}, ...)
+@deffnx {Funci@'on} piechart (@var{one_column_matrix})
+@deffnx {Funci@'on} piechart (@var{one_column_matrix}, @var{option_1}, @var{option_2}, ...)
+@deffnx {Funci@'on} piechart (@var{one_row_matrix})
+@deffnx {Funci@'on} piechart (@var{one_row_matrix}, @var{option_1}, @var{option_2}, ...)
+Similar a @code{barsplot}, pero dibuja sectores en lugar de rect@'angulos.
+Las opciones disponibles son las mismas
+que las definidas en el paquete @code{draw}.
+El centro se controla con la variable global @code{piechart_center} 
+y el radio con @code{piechart_radius}·
+
+Ejemplo:
+
+@c ===beg===
+@c load (descriptive)$
+@c s1 : read_list (file_search ("pidigits.data"))$
+@c piechart(
+@c   s1,
+@c   xrange      = [-1.1, 1.3],
+@c   yrange      = [-1.1, 1.1],
+@c   axis_top    = false,
+@c   axis_right  = false,
+@c   axis_left   = false,
+@c   axis_bottom = false,
+@c   xtics       = none,
+@c   ytics       = none,
+@c   title       = "Digit frequencies in pi")$
+@c ===end===
+@example
+(%i1) load (descriptive)$
+(%i2) s1 : read_list (file_search ("pidigits.data"))$
+(%i3) piechart(
+        s1,
+        xrange      = [-1.1, 1.3],
+        yrange      = [-1.1, 1.1],
+        axis_top    = false,
+        axis_right  = false,
+        axis_left   = false,
+        axis_bottom = false,
+        xtics       = none,
+        ytics       = none,
+        title       = "Digit frequencies in pi")$
+@end example
+
+V@'ease tambi@'en la funci@'on @code{barsplot}.
+@end deffn
+
+
+@defvr {Variable opcional} boxplot_width
+Valor por defecto: @code{3/4}
+
+Ancho relativo de las cajas de @code{boxplot}·
+
+V@'ease tambi@'en @code{boxplot}.
+@end defvr
 
 
 
 @deffn {Funci@'on} boxplot (@var{data})
 @deffnx {Funci@'on} boxplot (@var{data}, @var{option_1}, @var{option_2}, ...)
-Dibuja diagramas de cajas. El argumento @var{data} puede ser una lista, lo cual no es de gram inter@'es puesto que estos gr@'aficos se utilizan fundamentalmente para comparar varias muestras, o una matriz, de manera que es posible comparar dos o m@'as componentes de una variable estad@'{@dotless{i}}stica multivariante. Tambi@'en se permite que @var{data} sea una lista de muestras con tama@~nos muestrales diferentes; de hecho esta es la @'unica funci@'on del paquete
-@code{descriptive} que admite este tipo de estructura. V@'ease ejemplo m@'as abajo. Estas son las opciones v@'alidas:
-
-@itemize @bullet
-
-@item
-@code{'outputdev}, @code{"x"} por defecto, indica el dispositivo de salida; valores aceptados son @code{"x"}, @code{"eps"} y @code{"png"}, para la pantalla, y los formatos de ficheros postscript y png, respectivamente.
-
-@item
-@code{'maintitle}, @code{""} por defecto, es el t@'{@dotless{i}}tulo principal entre comillas dobles.
-
-@item
-@code{'axisnames}, @code{["sample", "y"]} por defecto, es una lista con nombres para los ejes @code{x} e @code{y}.
-
-@item
-@code{'picturescales}, @code{[1.0, 1.0]} por defecto, factores de escala para el tama@~no del gr@'afico.
-
-@end itemize
+Dibuja diagramas de cajas (box-and-whishker). El argumento @var{data} puede
+ser una lista, lo cual no es de gran inter@'es, puesto que estos gr@'aficos 
+se utilizan principalmente para comparar distintas muestras, o una matriz,
+de manera que sea posible comparar dos o m@'as componentes de una muestra
+multivariante. Tambi@'en se permite que @var{data} sea una lista de muestras
+con posibles tama@~nos diferentes; de hecho, esta es la @'unica funci@'on
+del paquete @code{descriptive} que admite esta estructura de datos.
+Los anchos de las cajas se controlan con la variable global @code{boxplot_width}·
 
 Ejemplos:
 
+Diagrama de cajas de una muestra multivariante.
+
 @c ===beg===
 @c load (descriptive)$
-@c load (numericalio)$
-@c s2 : read_matrix (file_search ("wind.data"))$
-@c boxplot (s2, 'maintitle = "Windspeed in knots",
-@c  'axisnames = ["Seasons", ""])$
+@c s2 : read_matrix(file_search("wind.data"))$
+@c boxplot_width: 0.2 $
+@c boxplot(s2,
+@c   title      = "Windspeed in knots",
+@c   xlabel     = "Stations",
+@c   color      = red,
+@c   line_width = 2)$
+@c ===end===
+@example
+(%i1) load (descriptive)$
+(%i2) s2 : read_matrix(file_search("wind.data"))$
+(%i3) boxplot_width: 0.2 $
+(%i4) boxplot(s2,
+        title      = "Windspeed in knots",
+        xlabel     = "Stations",
+        color      = red,
+        line_width = 2) $
+@end example
+
+Diagrama de cajas de tres muestras de tama@~nos diferentes.
+
+@c ===beg===
+@c load (descriptive)$
 @c A :
 @c  [[6, 4, 6, 2, 4, 8, 6, 4, 6, 4, 3, 2],
 @c   [8, 10, 7, 9, 12, 8, 10],
@@ -2093,16 +2090,11 @@ Ejemplos:
 @c ===end===
 @example
 (%i1) load (descriptive)$
-(%i2) load (numericalio)$
-(%i3) s2 : read_matrix (file_search ("wind.data"))$
-(%i4) boxplot (s2, 'maintitle = "Windspeed in knots",
- 'axisnames = ["Seasons", ""])$
-(%i5) A :
- [[6, 4, 6, 2, 4, 8, 6, 4, 6, 4, 3, 2],
-  [8, 10, 7, 9, 12, 8, 10],
-  [16, 13, 17, 12, 11, 18, 13, 18, 14, 12]]$
-(%i6) boxplot (A)$
+(%i2) A :
+       [[6, 4, 6, 2, 4, 8, 6, 4, 6, 4, 3, 2],
+        [8, 10, 7, 9, 12, 8, 10],
+        [16, 13, 17, 12, 11, 18, 13, 18, 14, 12]]$
+(%i3) boxplot (A)$
 @end example
-
 @end deffn
 

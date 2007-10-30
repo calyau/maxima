@@ -126,6 +126,10 @@ www.biomates.net
 /*            AUXILIARY FUCTIONS                   */
 
 
+/* If draw package is not loaded, load it */
+if not draw_loaded = true then load(draw)$
+
+
 /* Computes the trace of a matrix */
 matrixtrace(m):=block([n:length(m)],
    if matrixp(m) and n=length(m[1])
@@ -507,30 +511,223 @@ list_correlations(x,[aredata]):=block([s,p,len,s1,d,out:[],listarith:true],
 		      -d.s1.d]                             /* part. corr. */   ))$
 
 
+
+
+
+
 /*          PLOTTING FUNCTIONS           */
 
 
-/* Plots discrete data, argument 'm' must be a list of numbers or a matrix.   */
-/* Admits the following options:                                              */
-/*   'outputdev="x": output device, correct values are "x", "eps" and "png",  */
-/*               the default value is "x", the screen                         */
-/*   'maintitle="": the main title in double quotes                           */
-/*   'axisnames=["x","y","z"]: a list of three strings, the names for axis    */
-/*               x, y and z                                                   */
-/*   'joined=false: true or false, to select joined or isolated points in 2D  */
-/*   'picturescales=[1.0, 1.0]: scaling factors for the size of the plot      */
-/*   'threedim=true: if true, plots a 3D diagram with the rows of a three     */
-/*               column matrix; if false, a multivariate scatterplot          */
-/*   'axisrot=[60, 30]: changes the point of view when 'threedim=true and     */
-/*               'm' is a three column matrix. The first number is the        */
-/*               degrees of rotation for x-axis, and the second number the    */
-/*               degrees for z-axis (see gnuplot docs)                        */
-/*   'nclasses=10: number of classes for the histograms in the diagonal       */
-/*   'pointstyle=1: an integer to indicate how to display points              */
-/*                                                                            */
-/* Examples:                                                                  */
-/*   dataplot([3,4,....],'outputdev="eps",'pointstyle=3)$                     */
-/*   dataplot(matrix([4,3,6],[7,3,5],...), 'threedim=false, 'nclasses=6)$     */
+
+/* Plots scatter diagrams.                                                 */
+scatterplot(m,[select]):=
+  block([scen],
+    if listofnumbersp(m) or matrixp(m) and (length(m)=1 or length(m[1])=1)
+      then  (/* m is a list of numbers or a column or a row matrix */
+             if matrixp(m)
+               then if length(m)=1
+                      then m: m[1]
+                      else m: transpose(m)[1],
+             scen: append(select,
+                          [points(makelist([x,0],x,m))]),
+             if draw_compound
+               then apply('draw2d,scen)
+               else scen )
+      elseif listp(m) and every('identity,map(lambda([z],listofnumbersp(z) and length(z)=2),m)) or
+             matrixp(m) and length(m[1])=2 then
+             /* m is a two-dimensional sample */
+             (scen: append(select,[points(args(m))]),
+              if draw_compound
+                then apply('draw2d,scen)
+                else scen)
+      elseif matrixp(m) and length(m[1])>2 then
+             /* m is an d-dimensional (d>2) sample */
+             (scen: block([n: length(m[1]), draw_compound:false, gr],
+                     gr: ['columns = n],
+                     for i:1 thru n do
+                       for j:1 thru n do
+                         gr: endcons(if i=j
+                                       then apply('gr2d,append(select,histogram(col(m,i))))
+                                       else apply('gr2d,append(select,scatterplot(subsample(m,true,i,j),'point_type='dot))) ,
+                                     gr),
+                     gr),
+             if draw_compound
+               then apply('draw,scen)
+               else scen )
+      else error("sorry, can't plot the scatter diagram for these data")) $
+
+
+
+/* Plots histograms. Argument 'm' must be a list, a one column matrix or a     */
+/* one row matrix. The second and consecutive arguments are  draw              */
+/* options. Global variable histogram_nclasses sets the number of classes to   */
+/* used by default.                                                            */
+histogram_nclasses: 10$
+histogram(m,[select]):=
+   block([fr,amp,scen],
+      if not intergerp(histogram_nclasses) or histogram_nclasses < 3
+        then error("histogram: number of classes must be an integer greater than two"),
+
+      /* if m is a list of numbers or a column or a row matrix then */
+      /* plots a simple histogram.                                  */
+      if listofnumbersp(m) or matrixp(m) and (length(m)=1 or length(m[1])=1)
+        then (/* transform input data into a list */
+              if matrixp(m)
+                then if length(m)=1
+                       then m: m[1]
+                       else m: transpose(m)[1],
+
+               /* frequency table */
+               fr: continuous_freq(m,histogram_nclasses),
+               amp: fr[1][2]-fr[1][1],
+               scen:append(select,
+                           [apply('bars,
+                                  makelist([(fr[1][k]+fr[1][k+1])/2, fr[2][k], amp],k,1,histogram_nclasses)),
+                            'xrange = [fr[1][1]-amp/2, fr[1][histogram_nclasses+1]+amp/2],
+                            'yrange = tree_reduce('max,fr[2])*[-0.05, 1.05]  ] ),
+              if draw_compound
+                then apply('draw2d,scen)
+                else scen )
+        else error("sorry, can't plot the histogram for these data") )$
+
+
+
+/* Plots bar charts for discrete or categorical data, argument 'm' must be a   */
+/* list, a one column matrix or a one row matrix.                              */
+barsplot_width: 3/4$
+barsplot(m,[select]):=
+   block([fr,tot,scen],
+      if barsplot_width > 1 or barsplot_width < 0
+         then error("barsplot_width is out of range"),
+      if listofnumbersp(m) or matrixp(m) and (length(m)=1 or length(m[1])=1)
+        then (/* transform input data into a list */
+              if matrixp(m)
+                then if length(m)=1
+                       then m: m[1]
+                       else m: transpose(m)[1],
+
+               /* frequency table */
+               fr: discrete_freq(m),
+               tot: length(fr[1]),
+               scen:append(select,
+                           [apply('bars,
+                                  makelist([k, fr[2][k], barsplot_width],k,1,tot)),
+                            'xtics = setify(map("[", map('string, fr[1]), makelist(k,k,1,tot))),   
+                            'xrange = (tot-1)*0.05*[-1,+1.5]+[0.5,tot+0.5],
+                            'yrange = tree_reduce('max,fr[2])*[-0.05, 1.05] ] ),
+              if draw_compound
+                then apply('draw2d,scen)
+                else scen )
+        else error("sorry, can't plot the barsplot for these data") )$
+
+
+random_color():=
+  block([obase:16],
+    concat("#",
+           random(16),random(16),  /* red */
+           random(16),random(16),  /* green */
+           random(16),random(16))  /* blue */    )$
+
+
+/* Plotspie charts for discrete or categorical data, argument 'm' must be a   */
+/* list, a one column matrix or a one row matrix.                             */
+piechart_center: [0,0]$
+piechart_radius: 1$
+piechart(m,[select]):=
+   block([fr,tot,scen,degrees,ini,end:0,alpha,hexcolor,conver:float(%pi/180),sectors],
+      if piechart_radius <= 0
+         then error("piechart_radius must be greater than zero"),
+      if listofnumbersp(m) or matrixp(m) and (length(m)=1 or length(m[1])=1)
+        then (/* transform input data into a list */
+              if matrixp(m)
+                then if length(m)=1
+                       then m: m[1]
+                       else m: transpose(m)[1],
+
+               /* frequency table */
+               fr: discrete_freq(m),
+               tot: length(fr[1]),
+               degrees: 360.0 * fr[2] / apply("+", fr[2]),
+               sectors: makelist((ini: end,
+                                  end: ini + degrees[i],
+                                  alpha: ini+degrees[i]/2.0,
+                                  hexcolor: random_color(),
+                                  [/* 'color = black,
+                                    label([fr[1][i],
+                                           piechart_radius*1.1*cos(alpha*conver),
+                                           piechart_radius*1.1*sin(alpha*conver)]),*/
+                                    'color = hexcolor,  
+                                    'fill_color = hexcolor,
+                                    'key = concat(fr[1][i]),
+                                    ellipse(piechart_center[1],piechart_center[2],
+                                            piechart_radius,piechart_radius,
+                                            ini,degrees[i]) ])
+                                  ,i,1,tot),
+               scen:append(select, flatten(sectors)),
+              if draw_compound
+                then apply('draw2d,scen)
+                else scen )
+        else error("sorry, can't plot the piechart for these data") )$
+
+
+
+/* Plots box-whisker diagrams, argument 'm' must be a list of numbers or a matrix. */
+boxplot_width: 3/4$
+boxplot(m,[select]):=
+   block([fr,tot,scen,top:0,bot:inf],
+      if boxplot_width > 1 or barsplot_width < 0
+         then error("boxplot_width is out of range"),
+      /* if m is not a row matrix, transpose it */
+      if matrixp(m) and length(m)>1
+         then m: transpose(m),
+      /* if m is a list of numbers, transform it */
+      /* to the form [[n1,n2,....]]              */
+      if listofnumbersp(m) then m: [m],
+
+      /* plot boxes */
+      if listoflistsp(m) or matrixp(m)
+        then(
+          tot: length(m),
+          scen: append(select,
+                       ['points_joined = true,
+                        'point_size = 0,
+                        'point_type = 'dot],
+                       flatten(
+                         makelist(map('points,
+                                      block([mi: float(mini(m[x])),
+                                             ma: float(maxi(m[x])),
+                                             q1: float(quantile(m[x],0.25)),
+                                             q2: float(quantile(m[x],0.5)),
+                                             q3: float(quantile(m[x],0.75)),
+                                             w:  float(boxplot_width),
+                                             w2: boxplot_width/2,
+                                             w4: boxplot_width/4,
+                                             A,B,C,D,E,F,G,H,I,J,K,L,M,N],
+                                        top: max(top,ma),
+                                        bot: min(bot,mi),
+                                        A: [x-w2,q1],     B: [x-w2,q3],     C: [x+w2,q3],
+                                        D: [x+w2,q1],     E: [x-w2,q2],     F: [x+w2,q2],
+                                        G: [x,q3],        H: [x,ma],        I: [x-w4,ma],
+                                        J: [x+w4,ma],     K: [x,q1],        L: [x,mi],
+                                        M: [x-w4,mi],     N: [x+w4,mi],
+                                        [[A,B,C,D,A],[E,F],[G,H],[I,J],[K,L],[M,N]])),
+                                x,1,tot)),
+                       ['xtics  = setify(makelist(k,k,1,tot)),
+                        'xrange = (tot-1)*0.05*[-1,+1.5]+[0.5,tot+0.5],
+                        'yrange = (top-bot)*0.05*[-1,+1]+[bot,top] ] ),
+              if draw_compound
+                then apply('draw2d,scen)
+                else scen )
+        else error("sorry, can't plot the box-whisker plot for these data") )$
+
+
+
+/************** O L D    P L O T T I N G    F U N C T I O N S **************/
+
+/* I have not renamed dataplot, but I have attached an extra 2 to the names of */
+/* the old versions of histogram, barsplot and boxplot. Sooner or later I'll  */
+/* remove these functions, since new versions take advantage of draw's options.*/
+
 dataplot(m,[select]):=
    block([numer:true,display2d:false,options,defaults,aux,dim,ampx,ampy,x,y,fr,offs,listarith:true],
 
@@ -681,25 +878,7 @@ dataplot(m,[select]):=
       else error("sorry, can't plot these data") )$
 
 
-/* Plots histograms, argument 'm' must be a list, a one column matrix or a    */
-/* one row matrix.                                                             */
-/* Admits the following options:                                               */
-/*   'outputdev="x": output device, correct values are "x", "eps" and "png",   */
-/*               the default value is "x", the screen                          */
-/*   'maintitle="": the main title in double quotes                            */
-/*   'axisnames=["x", "Fr."]: a list of two strings, the names for axis        */
-/*               x and y                                                       */
-/*   'picturescales=[1.0, 1.0]: scaling factors for the size of the plot       */
-/*   'nclasses=10: number of classes for the histograms                        */
-/*   'relbarwidth=0.9: a decimal number between 0 an 1 to control bar width    */
-/*   'barcolor=1: an integer to indicate bars color                            */
-/*   'colorintensity=1: a decimal number between 0 an 1 to fix color           */
-/*               intensity                                                     */
-/*                                                                             */
-/* Examples:                                                                   */
-/*   histogram([7,4,...],'relbarwidth=0.7,'outputdev="png")$                   */
-/*   histogram(matrix([5],[2],...),'colorintensity=0.6)$                       */
-histogram(m,[select]):=
+histogram2(m,[select]):=
    block([numer:true,display2d:false,options,defaults,aux,fr,amp],
 
       /* updating options */
@@ -759,24 +938,7 @@ histogram(m,[select]):=
          else error("sorry, can't plot the histogram for these data") )$
 
 
-/* Plots bar charts for discrete or categorical data , argument 'm' must be a  */
-/* list, a one column matrix or a one row matrix.                              */
-/* Admits the following options:                                               */
-/*   'outputdev="x": output device, correct values are "x", "eps" and "png",   */
-/*               the default value is "x", the screen                          */
-/*   'maintitle="": the main title in double quotes                            */
-/*   'axisnames=["x", "Fr."]: a list of two strings, the names for axis        */
-/*               x and y                                                       */
-/*   'picturescales=[1.0, 1.0]: scaling factors for the size of the plot       */
-/*   'relbarwidth=0.9: a decimal number between 0 an 1 to control bar width    */
-/*   'barcolor=1: an integer to indicate bars color                            */
-/*   'colorintensity=1: a decimal number between 0 an 1 to fix color           */
-/*               intensity                                                     */
-/*                                                                             */
-/* Examples:                                                                   */
-/*   barsplot([Y,Y,N,...],'relbarwidth=0.7,'outputdev="png")$                  */
-/*   barsplot(matrix([1],[2],...),'colorintensity=0.6)$                        */
-barsplot(m,[select]):=
+barsplot2(m,[select]):=
    block([display2d:false,options,defaults,aux,fr,amp,str],
 
       /* updating options */
@@ -839,20 +1001,7 @@ barsplot(m,[select]):=
          else error("sorry, can't plot the bars for these data") )$
 
 
-/* Plots box diagrams, argument 'm' must be a list of numbers or a matrix      */
-/* Admits the following options:                                               */
-/*   'outputdev="x": output device, correct values are "x", "eps" and "png",   */
-/*               the default value is "x", the screen                          */
-/*   'maintitle="": the main title in double quotes                            */
-/*   'axisnames=["sample", "y"]: a list of two strings, the names for axis     */
-/*               x and y                                                       */
-/*   'picturescales=[1.0, 1.0]: scaling factors for the size of the plot       */
-/*                                                                             */
-/* Example:                                                                    */
-/*   boxplot(matrix([4,3,5,6],[7,4,6,9],...),                                  */
-/*           'axisnames=["1st name","2nd name"],'maintitle="Uuh")$             */
-/*                                                                             */
-boxplot(m,[select]):=block([numer:true,display2d:false,options,defaults,aux],
+boxplot2(m,[select]):=block([numer:true,display2d:false,options,defaults,aux],
 
       /* updating options */
       options: ['outputdev, 'maintitle, 'axisnames,'picturescales],
