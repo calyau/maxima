@@ -1826,7 +1826,7 @@
        (setq l (infr l))
        ;; Compute -integrate(f,x,0,d)
        (setq int-zero-to-d
-	     (cond ((setq ans (intsc e (cdr l) var))
+	     (cond ((setq ans (try-intsc e (cdr l) var))
 		    (m*t -1 ans))
 		   (t  nil)))
        ;; Compute n = q - p (stored in nzp2)
@@ -1836,22 +1836,15 @@
        (setq int-nzp2 (cond ((zerop1 nzp2)
 			      ;; n = 0
 			      0.)
-			     ((setq ans (intsc e %pi2 var))
+			     ((setq ans (try-intsc e %pi2 var))
 			      ;; n is not zero, so compute
 			      ;; integrate(f,x,0,2*%pi)
 			      (m*t nzp2 ans))
 			     ;; Unable to compute integrate(f,x,0,2*%pi)
 			     (t nil)))
        ;; Compute integrate(f,x,0,c)
-       (setq int-zero-to-c (cond ((zerop1 (cdr b))
-				  ;; c = 0 (stored in cdr of b), so
-				  ;; integral is zero.
-				  0.)
-				 ((setq ans (intsc e (cdr b) var))
-				  ;; integrate(f,x,0,c)
-				  ans)
-				 ;; Unable to compute integrate(f,x,0,c)
-				 (t nil)))
+       (setq int-zero-to-c (try-intsc e (cdr b) var))
+
        (return (cond ((and int-zero-to-d int-nzp2 int-zero-to-c)
 		      ;; All three pieces succeeded.
 		      (add* int-zero-to-d int-nzp2 int-zero-to-c))
@@ -1863,6 +1856,16 @@
 			     limit-diff var))
 		     ;; nothing worked
 		     (t nil))))))
+
+;; integrate(sc, var, 0, b), where sc is f(sin(x), cos(x)).
+;; calls intsc with a wrapper to just return nil if integral is divergent,
+;;  rather than generating an error.
+(defun try-intsc (sc b var)
+  (let* ((*nodiverg t)
+	 (ans (catch 'divergent (intsc sc b var))))
+    (if (eq ans 'divergent)
+	nil
+      ans)))
 
 ;; integrate(sc, var, 0, b), where sc is f(sin(x), cos(x)).  I (rtoy)
 ;; think this expects b to be less than 2*%pi.
