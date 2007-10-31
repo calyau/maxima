@@ -56,29 +56,33 @@ A problem for which an exact solution is found.
 
 @c ===beg===
 @c load (lsquares)$
-@c M : matrix ([1, 1, 1], [3/2, 1, 2], [9/4, 2, 1], [3, 2, 2], [2, 2, 1]);
-@c lsquares_estimates (M, [z, x, y], (z + D)^2 = A*x + B*y + C, [A, B, C, D]);
+@c M : matrix (
+@c         [1,1,1], [3/2,1,2], [9/4,2,1], [3,2,2], [2,2,1]);
+@c lsquares_estimates (
+@c          M, [z,x,y], (z+D)^2 = A*x+B*y+C, [A,B,C,D]);
 @c ===end===
 @example
 (%i1) load (lsquares)$
-(%i2) M : matrix ([1, 1, 1], [3/2, 1, 2], [9/4, 2, 1], [3, 2, 2], [2, 2, 1]);
-                           [ 1  1  1 ]
-                           [         ]
-                           [ 3       ]
-                           [ -  1  2 ]
-                           [ 2       ]
-                           [         ]
-(%o2)                      [ 9       ]
-                           [ -  2  1 ]
-                           [ 4       ]
-                           [         ]
-                           [ 3  2  2 ]
-                           [         ]
-                           [ 2  2  1 ]
-(%i3) lsquares_estimates (M, [z, x, y], (z + D)^2 = A*x + B*y + C, [A, B, C, D]);
-                  59        27      10921        107
-(%o3)     [[A = - --, B = - --, C = -----, D = - ---]]
-                  16        16      1024         32
+(%i2) M : matrix (
+        [1,1,1], [3/2,1,2], [9/4,2,1], [3,2,2], [2,2,1]);
+                                  [ 1  1  1 ]
+                                  [         ]
+                                  [ 3       ]
+                                  [ -  1  2 ]
+                                  [ 2       ]
+                                  [         ]
+(%o2)                             [ 9       ]
+                                  [ -  2  1 ]
+                                  [ 4       ]
+                                  [         ]
+                                  [ 3  2  2 ]
+                                  [         ]
+                                  [ 2  2  1 ]
+(%i3) lsquares_estimates (
+         M, [z,x,y], (z+D)^2 = A*x+B*y+C, [A,B,C,D]);
+                         59        27      10921        107
+(%o3)            [[A = - --, B = - --, C = -----, D = - ---]]
+                         16        16      1024         32
 @end example
 
 A problem for which no exact solution is found,
@@ -87,25 +91,27 @@ so @code{lsquares_estimates} resorts to numerical approximation.
 @c ===beg===
 @c load (lsquares)$
 @c M : matrix ([1, 1], [2, 7/4], [3, 11/4], [4, 13/4]);
-@c lsquares_estimates (M, [x, y], y = a*x^b + c, [a, b, c], initial = [3, 3, 3], iprint = [-1, 0]);
+@c lsquares_estimates (
+@c   M, [x,y], y=a*x^b+c, [a,b,c], initial=[3,3,3], iprint=[-1,0]);
 @c ===end===
 @example
 (%i1) load (lsquares)$
 (%i2) M : matrix ([1, 1], [2, 7/4], [3, 11/4], [4, 13/4]);
-                            [ 1  1  ]
-                            [       ]
-                            [    7  ]
-                            [ 2  -  ]
-                            [    4  ]
-                            [       ]
-(%o2)                       [    11 ]
-                            [ 3  -- ]
-                            [    4  ]
-                            [       ]
-                            [    13 ]
-                            [ 4  -- ]
-                            [    4  ]
-(%i3) lsquares_estimates (M, [x, y], y = a*x^b + c, [a, b, c], initial = [3, 3, 3], iprint = [-1, 0]);
+                                   [ 1  1  ]
+                                   [       ]
+                                   [    7  ]
+                                   [ 2  -  ]
+                                   [    4  ]
+                                   [       ]
+(%o2)                              [    11 ]
+                                   [ 3  -- ]
+                                   [    4  ]
+                                   [       ]
+                                   [    13 ]
+                                   [ 4  -- ]
+                                   [    4  ]
+(%i3) lsquares_estimates (
+  M, [x,y], y=a*x^b+c, [a,b,c], initial=[3,3,3], iprint=[-1,0]);
 (%o3) [[a = 1.387365874920637, b = .7110956639593767, 
                                         c = - .4142705622439105]]
 @end example
@@ -135,13 +141,15 @@ Example:
 
 @c ===beg===
 @c load (lsquares)$
-@c M : matrix ([1, 1, 1], [3/2, 1, 2], [9/4, 2, 1], [3, 2, 2], [2, 2, 1]);
+@c M : matrix (
+@c          [1,1,1], [3/2,1,2], [9/4,2,1], [3,2,2], [2,2,1]);
 @c mse : lsquares_mse (M, [z, x, y], (z + D)^2 = A*x + B*y + C);
 @c lsquares_estimates_exact (mse, [A, B, C, D]);
 @c ===end===
 @example
 (%i1) load (lsquares)$
-(%i2) M : matrix ([1, 1, 1], [3/2, 1, 2], [9/4, 2, 1], [3, 2, 2], [2, 2, 1]);
+(%i2) M : matrix (
+         [1,1,1], [3/2,1,2], [9/4,2,1], [3,2,2], [2,2,1]);
                            [ 1  1  1 ]
                            [         ]
                            [ 3       ]
@@ -209,13 +217,16 @@ Example:
 
 @c ===beg===
 @c load (lsquares)$
-@c M : matrix ([1, 1, 1], [3/2, 1, 2], [9/4, 2, 1], [3, 2, 2], [2, 2, 1]);
+@c M : matrix (
+@c          [1,1,1], [3/2,1,2], [9/4,2,1], [3,2,2], [2,2,1]);
 @c mse : lsquares_mse (M, [z, x, y], (z + D)^2 = A*x + B*y + C);
-@c lsquares_estimates_approximate (mse, [A, B, C, D], iprint = [-1, 0]);
+@c lsquares_estimates_approximate (
+@c         mse, [A, B, C, D], iprint = [-1, 0]);
 @c ===end===
 @example
 (%i1) load (lsquares)$
-(%i2) M : matrix ([1, 1, 1], [3/2, 1, 2], [9/4, 2, 1], [3, 2, 2], [2, 2, 1]);
+(%i2) M : matrix (
+         [1,1,1], [3/2,1,2], [9/4,2,1], [3,2,2], [2,2,1]);
                            [ 1  1  1 ]
                            [         ]
                            [ 3       ]
@@ -239,7 +250,8 @@ Example:
           i = 1
 (%o3)     ---------------------------------------------
                                 5
-(%i4) lsquares_estimates_approximate (mse, [A, B, C, D], iprint = [-1, 0]);
+(%i4) lsquares_estimates_approximate (
+              mse, [A, B, C, D], iprint = [-1, 0]);
 (%o4) [[A = - 3.67850494740174, B = - 1.683070351177813, 
                  C = 10.63469950148635, D = - 3.340357993175206]]
 @end example
@@ -274,14 +286,16 @@ Example:
 
 @c ===beg===
 @c load (lsquares)$
-@c M : matrix ([1, 1, 1], [3/2, 1, 2], [9/4, 2, 1], [3, 2, 2], [2, 2, 1]);
+@c M : matrix (
+@c          [1,1,1], [3/2,1,2], [9/4,2,1], [3,2,2], [2,2,1]);
 @c mse : lsquares_mse (M, [z, x, y], (z + D)^2 = A*x + B*y + C);
 @c diff (mse, D);
 @c ''mse, nouns;
 @c ===end===
 @example
 (%i1) load (lsquares)$
-(%i2) M : matrix ([1, 1, 1], [3/2, 1, 2], [9/4, 2, 1], [3, 2, 2], [2, 2, 1]);
+(%i2) M : matrix (
+         [1,1,1], [3/2,1,2], [9/4,2,1], [3,2,2], [2,2,1]);
                            [ 1  1  1 ]
                            [         ]
                            [ 3       ]
@@ -355,34 +369,41 @@ Example:
 
 @c ===beg===
 @c load (lsquares)$
-@c M : matrix ([1, 1, 1], [3/2, 1, 2], [9/4, 2, 1], [3, 2, 2], [2, 2, 1]);
-@c a : lsquares_estimates (M, [z, x, y], (z + D)^2 = A*x + B*y + C, [A, B, C, D]);
-@c lsquares_residuals (M, [z, x, y], (z + D)^2 = A*x + B*y + C, first (a));
+@c M : matrix (
+@c          [1,1,1], [3/2,1,2], [9/4,2,1], [3,2,2], [2,2,1]);
+@c a : lsquares_estimates (
+@c           M, [z,x,y], (z+D)^2 = A*x+B*y+C, [A,B,C,D]);
+@c lsquares_residuals (
+@c           M, [z,x,y], (z+D)^2 = A*x+B*y+C, first(a));
 @c ===end===
 @example
 (%i1) load (lsquares)$
-(%i2) M : matrix ([1, 1, 1], [3/2, 1, 2], [9/4, 2, 1], [3, 2, 2], [2, 2, 1]);
-                           [ 1  1  1 ]
-                           [         ]
-                           [ 3       ]
-                           [ -  1  2 ]
-                           [ 2       ]
-                           [         ]
-(%o2)                      [ 9       ]
-                           [ -  2  1 ]
-                           [ 4       ]
-                           [         ]
-                           [ 3  2  2 ]
-                           [         ]
-                           [ 2  2  1 ]
-(%i3) a : lsquares_estimates (M, [z, x, y], (z + D)^2 = A*x + B*y + C, [A, B, C, D]);
-                  59        27      10921        107
-(%o3)     [[A = - --, B = - --, C = -----, D = - ---]]
-                  16        16      1024         32
-(%i4) lsquares_residuals (M, [z, x, y], (z + D)^2 = A*x + B*y + C, first (a));
-                     13    13    13  13  13
-(%o4)               [--, - --, - --, --, --]
-                     64    64    32  64  64
+(%i2) M : matrix (
+         [1,1,1], [3/2,1,2], [9/4,2,1], [3,2,2], [2,2,1]);
+                                  [ 1  1  1 ]
+                                  [         ]
+                                  [ 3       ]
+                                  [ -  1  2 ]
+                                  [ 2       ]
+                                  [         ]
+(%o2)                             [ 9       ]
+                                  [ -  2  1 ]
+                                  [ 4       ]
+                                  [         ]
+                                  [ 3  2  2 ]
+                                  [         ]
+                                  [ 2  2  1 ]
+(%i3) a : lsquares_estimates (
+          M, [z,x,y], (z+D)^2 = A*x+B*y+C, [A,B,C,D]);
+                         59        27      10921        107
+(%o3)            [[A = - --, B = - --, C = -----, D = - ---]]
+                         16        16      1024         32
+(%i4) lsquares_residuals (
+          M, [z,x,y], (z+D)^2 = A*x+B*y+C, first(a));
+                            13    13    13  13  13
+(%o4)                      [--, - --, - --, --, --]
+                            64    64    32  64  64
+@end example
 @end example
 
 @end deffn
@@ -416,13 +437,17 @@ Example:
 
 @c ===beg===
 @c load (lsquares)$
-@c M : matrix ([1, 1, 1], [3/2, 1, 2], [9/4, 2, 1], [3, 2, 2], [2, 2, 1]);
-@c a : lsquares_estimates (M, [z, x, y], (z + D)^2 = A*x + B*y + C, [A, B, C, D]);
-@c lsquares_residual_mse (M, [z, x, y], (z + D)^2 = A*x + B*y + C, first (a));
+@c M : matrix (
+@c          [1,1,1], [3/2,1,2], [9/4,2,1], [3,2,2], [2,2,1]);
+@c a : lsquares_estimates (
+@c        M, [z,x,y], (z+D)^2 = A*x+B*y+C, [A,B,C,D]);
+@c lsquares_residual_mse (
+@c        M, [z,x,y], (z + D)^2 = A*x + B*y + C, first (a));
 @c ===end===
 @example
 (%i1) load (lsquares)$
-(%i2) M : matrix ([1, 1, 1], [3/2, 1, 2], [9/4, 2, 1], [3, 2, 2], [2, 2, 1]);
+(%i2) M : matrix (
+         [1,1,1], [3/2,1,2], [9/4,2,1], [3,2,2], [2,2,1]);
                            [ 1  1  1 ]
                            [         ]
                            [ 3       ]
@@ -436,11 +461,14 @@ Example:
                            [ 3  2  2 ]
                            [         ]
                            [ 2  2  1 ]
-(%i3) a : lsquares_estimates (M, [z, x, y], (z + D)^2 = A*x + B*y + C, [A, B, C, D]);
+(%i3) a : lsquares_estimates (
+             M, [z,x,y], (z+D)^2 = A*x+B*y+C, [A,B,C,D]);
+
                   59        27      10921        107
 (%o3)     [[A = - --, B = - --, C = -----, D = - ---]]
                   16        16      1024         32
-(%i4) lsquares_residual_mse (M, [z, x, y], (z + D)^2 = A*x + B*y + C, first (a));
+(%i4) lsquares_residual_mse (
+             M, [z,x,y], (z + D)^2 = A*x + B*y + C, first (a));
                               169
 (%o4)                         ----
                               2560
