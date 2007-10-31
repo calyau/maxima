@@ -898,7 +898,7 @@
 	 (mtell "~&Dependent equations eliminated:  ~A~%" (car ans)))
      (if (cadr ans)
 	 (if $solve_inconsistent_error
-	     (merror "Inconsistent equations:  ~A" (cadr ans))
+	     (merror "Inconsistent equations:  ~M" (cons '(mlist) (cadr ans)))
 	     (return '((mlist simp)))))
      (do ((j 0 (1+ j)))
 	 ((> j xm*))
