@@ -146,14 +146,14 @@ eigenvectors."
 	      (format t "vr = ~A~%" vr))
 	    (let ((e-val (make-eigval wr wi))
 		  (e-vec-right (if right-vec-p
-					 (list (make-eigvec n vr wi))
-					 nil))
+				   (make-eigvec n vr wi)
+				   nil))
 		  (e-vec-left (if left-vec-p
-					(list (make-eigvec n vl wi))
-					nil)))
-	      `((mlist) ,e-val ,@e-vec-right ,@e-vec-left))))))))
+				  (make-eigvec n vl wi)
+				  nil)))
+	      `((mlist) ,e-val ,e-vec-right ,e-vec-left))))))))
 
-(defun $dgesvd (a jobu jobvt)
+(defun $dgesvd (a &optional jobu jobvt)
   "
 DGESVD computes the singular value decomposition (SVD) of a real
 M-by-N matrix A, optionally computing the left and/or right singular
@@ -171,8 +171,9 @@ U and V are the left and right singular vectors of A.
 Note that the routine returns V**T, not V.
 
 A list of three items is returned.  The first is a list containing the
-non-zero elements of SIGMA.  The second is the matrix U.  The third is
-V**T."
+non-zero elements of SIGMA.  If jobu is not false, The second element
+is the matrix U.  Otherwise it is false.  Similarly, the third element
+is V**T or false, depending on jobvt."
   
   (flet ((maxify-vector (v)
 	   `((mlist) ,@(coerce v 'list)))
@@ -221,8 +222,12 @@ V**T."
 				0)
 	      (declare (ignore z-jobu z-jobvt z-m z-n z-a z-lda z-s z-u z-ldu
 			       z-vt z-ldvt z-work z-lwork info))
-	      (let ((u-max (lapack-maxify-matrix nrow nrow u1))
-		    (vt-max (lapack-maxify-matrix ncol ncol vt1))
+	      (let ((u-max (if jobu
+			       (lapack-maxify-matrix nrow nrow u1)
+			       nil))
+		    (vt-max (if jobvt
+				(lapack-maxify-matrix ncol ncol vt1)
+				nil))
 		    (s-max (maxify-vector s)))
 		`((mlist) ,s-max ,u-max ,vt-max)))))))))
 
