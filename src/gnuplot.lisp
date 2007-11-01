@@ -107,4 +107,4 @@
        (if (integerp (fifth style))
 	 (format st " pt ~d" ($gnuplot_pointtype (fifth style)))
 	 (format st " pt ~d" ($gnuplot_pointtype i))))
-      (t (format st "with lines ~d" ($gnuplot_color i))))))
+      (t (format st "with lines lt ~d" ($gnuplot_color i))))))
