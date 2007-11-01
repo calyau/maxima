@@ -404,7 +404,6 @@ Example:
 (%o4)                      [--, - --, - --, --, --]
                             64    64    32  64  64
 @end example
-@end example
 
 @end deffn
 
