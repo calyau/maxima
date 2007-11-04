@@ -412,9 +412,9 @@
 
 
 (defun $smismatch (mstr1 mstr2 &optional (test '$sequal))  ;; 1-indexed!
-   (1+ (mismatch mstr1
-		 mstr2
-		 :test (stripdollar test))))
+   (let ((pos 
+      (mismatch mstr1 mstr2 :test (stripdollar test))))
+     (if pos (1+ pos)) ))
 
 (defun $ssearch (seq mstr &optional (test '$sequal) (s 1) (e))  ;; 1-indexed!
    (let ((pos
