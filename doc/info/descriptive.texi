@@ -1792,15 +1792,6 @@ See also @code{cov} and @code{cov1}.
 
 
 
-@defvr {Option variable} histogram_nclasses
-Default value: 10
-
-Number of classes used in histograms.
-
-See also @code{histogram}.
-@end defvr
-
-
 @deffn {Function} histogram (@var{list})
 @deffnx {Function} histogram (@var{list}, @var{option_1}, @var{option_2}, ...)
 @deffnx {Function} histogram (@var{one_column_matrix})
@@ -1809,9 +1800,15 @@ See also @code{histogram}.
 @deffnx {Function} histogram (@var{one_row_matrix}, @var{option_1}, @var{option_2}, ...)
 This function plots an histogram from a continuous sample.
 Sample data must be stored in a list of numbers or a one dimensional matrix.
-Available options are those defined in package @code{draw}.
-The number of classes to be used is controlled by global variable 
-@code{histogram_nclasses}·
+
+Available options are:
+
+@itemize @bullet
+@item
+Those defined in the @code{draw} package. See also @code{bars} and @code{barsplot}.
+@item
+@var{nclasses}: number of classes of the histogram (10 by default).
+@end itemize
 
 Examples:
 
@@ -1820,9 +1817,9 @@ A simple histogram with eight classes.
 @c ===beg===
 @c load (descriptive)$
 @c s1 : read_list (file_search ("pidigits.data"))$
-@c histogram_nclasses: 8 $
 @c histogram (
 @c      s1,
+@c      nclasses     = 8,
 @c      title        = "pi digits",
 @c      xlabel       = "digits",
 @c      ylabel       = "Absolute frequency",
@@ -1832,18 +1829,15 @@ A simple histogram with eight classes.
 @example
 (%i1) load (descriptive)$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
-(%i3) histogram_nclasses: 8 $
-(%i4) histogram (
+(%i3) histogram (
         s1,
+        nclasses     = 8,
         title        = "pi digits",
         xlabel       = "digits",
         ylabel       = "Absolute frequency",
         fill_color   = grey,
         fill_density = 0.6)$
 @end example
-
-For histogram related options, see @code{bars}. See also @code{barsplot}.
-
 @end deffn
 
 
@@ -1853,7 +1847,16 @@ For histogram related options, see @code{bars}. See also @code{barsplot}.
 @deffnx {Function} scatterplot (@var{matrix})
 @deffnx {Function} scatterplot (@var{matrix}, @var{option_1}, @var{option_2}, ...)
 Plots scatter diagrams both for univariate (@var{list}) and multivariate 
-(@var{matrix}) samples. Available options are those defined in package @code{draw}.
+(@var{matrix}) samples.
+
+Available options are:
+
+@itemize @bullet
+@item
+Those defined in the @code{draw} package.
+@item
+@var{nclasses}: number of classes of the histogram (10 by default).
+@end itemize
 
 Examples:
 
@@ -1918,13 +1921,14 @@ Three dimensional scatter plot.
 (%i3) scatterplot(submatrix (s2, 1,2))$
 @end example
 
-Five dimensional scatter plot.
+Five dimensional scatter plot, with five classes histograms.
 
 @c ===beg===
 @c load (descriptive)$
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c scatterplot(
 @c   s2,
+@c   nclasses     = 5,
 @c   fill_color   = blue,
 @c   fill_density = 0.3,
 @c   xtics        = 5)$
@@ -1934,6 +1938,7 @@ Five dimensional scatter plot.
 (%i2) s2 : read_matrix (file_search ("wind.data"))$
 (%i3) scatterplot(
         s2,
+        nclasses     = 5,
         fill_color   = blue,
         fill_density = 0.3,
         xtics        = 5)$
@@ -1947,16 +1952,6 @@ See also @code{histogram}.
 @end deffn
 
 
-@defvr {Option variable} barsplot_width
-Default value: @code{3/4}
-
-Relative width of rectangles in @code{barsplot}·
-
-See also @code{barsplot}.
-@end defvr
-
-
-
 @deffn {Function} barsplot (@var{list})
 @deffnx {Function} barsplot (@var{list}, @var{option_1}, @var{option_2}, ...)
 @deffnx {Function} barsplot (@var{one_column_matrix})
@@ -1964,52 +1959,42 @@ See also @code{barsplot}.
 @deffnx {Function} barsplot (@var{one_row_matrix})
 @deffnx {Function} barsplot (@var{one_row_matrix}, @var{option_1}, @var{option_2}, ...)
 Similar to @code{histogram} but for discrete, numeric or categorical, statistical variables.
-Available options are those defined in package @code{draw}.
-Bars width is controlled by global variable @code{barsplot_width}·
+
+Available options are:
+
+@itemize @bullet
+@item
+Those defined in the @code{draw} package.
+@item
+@var{box_width}: relative width of rectangles (@code{3/4} by default). This 
+value must be in the range @code{[0,1]}.
+@end itemize
 
 Example:
 
 @c ===beg===
 @c load (descriptive)$
 @c s3 : read_matrix (file_search ("biomed.data"))$
-@c barsplot_width: 1/2 $
 @c barsplot(col(s3,2),
 @c   title        = "Ages",
 @c   xlabel       = "years",
+@c   box_width    = 1/2,
 @c   fill_density = 0.3)$
 @c ===end===
 @example
 (%i1) load (descriptive)$
 (%i2) s3 : read_matrix (file_search ("biomed.data"))$
-(%i3) barsplot_width: 1/2 $
-(%i4) barsplot(col(s3,2),
+(%i3) barsplot(col(s3,2),
          title        = "Ages",
          xlabel       = "years",
+         box_width    = 1/2,
          fill_density = 0.3)$
 @end example
 
 For bars diagrams related options, see @code{bars} of package @code{draw}.
-See also function @code{histogram} and @code{piechart}.
+See also functions @code{histogram} and @code{piechart}.
 
 @end deffn
-
-
-@defvr {Option variable} piechart_center
-Default value: @code{[0,0]}
-
-Center of pie diagrams·
-
-See also @code{piechart}.
-@end defvr
-
-
-@defvr {Option variable} piechart_radius
-Default value: 1
-
-Radius of pie diagrams·
-
-See also @code{piechart}.
-@end defvr
 
 
 @deffn {Function} piechart (@var{list})
@@ -2019,9 +2004,17 @@ See also @code{piechart}.
 @deffnx {Function} piechart (@var{one_row_matrix})
 @deffnx {Function} piechart (@var{one_row_matrix}, @var{option_1}, @var{option_2}, ...)
 Similar to @code{barsplot}, but plots sectors instead of rectangles.
-Available options are those defined in package @code{draw}.
-The center is controlled by @code{piechart_center} 
-and the radius by @code{piechart_radius}·
+
+Available options are:
+
+@itemize @bullet
+@item
+Those defined in the @code{draw} package.
+@item
+@var{pie_center}: diagram's center (@code{[0,0]} by default).
+@item
+@var{pie_radius}: diagram's radius (1 by default).
+@end itemize
 
 Example:
 
@@ -2061,16 +2054,6 @@ See also function @code{barsplot}.
 @end deffn
 
 
-@defvr {Option variable} boxplot_width
-Default value: @code{3/4}
-
-Relative width of boxes in @code{boxplot}·
-
-See also @code{boxplot}.
-@end defvr
-
-
-
 @deffn {Function} boxplot (@var{data})
 @deffnx {Function} boxplot (@var{data}, @var{option_1}, @var{option_2}, ...)
 This function plots box-and-whishker diagrams. Argument @var{data} can be a list,
@@ -2082,6 +2065,16 @@ possible different sample sizes, in fact this is the only function
 in package @code{descriptive} that admits this type of data structure.
 Boxes width is controlled by global variable @code{boxplot_width}·
 
+Available options are:
+
+@itemize @bullet
+@item
+Those defined in the @code{draw} package.
+@item
+@var{box_width}: relative width of boxes (@code{3/4} by default). This 
+value must be in the range @code{[0,1]}.
+@end itemize
+
 Examples:
 
 Box-and-whishker diagram from a multivariate sample.
@@ -2089,8 +2082,8 @@ Box-and-whishker diagram from a multivariate sample.
 @c ===beg===
 @c load (descriptive)$
 @c s2 : read_matrix(file_search("wind.data"))$
-@c boxplot_width: 0.2 $
 @c boxplot(s2,
+@c   box_width  = 0.2,
 @c   title      = "Windspeed in knots",
 @c   xlabel     = "Stations",
 @c   color      = red,
@@ -2099,8 +2092,8 @@ Box-and-whishker diagram from a multivariate sample.
 @example
 (%i1) load (descriptive)$
 (%i2) s2 : read_matrix(file_search("wind.data"))$
-(%i3) boxplot_width: 0.2 $
-(%i4) boxplot(s2,
+(%i3) boxplot(s2,
+        box_width  = 0.2,
         title      = "Windspeed in knots",
         xlabel     = "Stations",
         color      = red,

@@ -519,9 +519,25 @@ list_correlations(x,[aredata]):=block([s,p,len,s1,d,out:[],listarith:true],
 
 
 
+
+
+/* This auxiliary function helps to separate draw and specific local options */
+extract_options(s,[mo]):=
+  block([ss:[],mmo:[]],
+    for k in s do
+      if member(lhs(k), mo)
+        then mmo: endcons(k,mmo)
+        else ss : endcons(k,ss),
+    [ss,mmo] )$
+
+
 /* Plots scatter diagrams.                                                 */
 scatterplot(m,[select]):=
-  block([scen],
+  block([scen,localopts,nclass:10],
+    [select, localopts]: extract_options(select,'nclasses),
+    for k in localopts do
+      if lhs(k) = 'nclasses then nclass: rhs(k),
+
     if listofnumbersp(m) or matrixp(m) and (length(m)=1 or length(m[1])=1)
       then  (/* m is a list of numbers or a column or a row matrix */
              if matrixp(m)
@@ -547,8 +563,8 @@ scatterplot(m,[select]):=
                      for i:1 thru n do
                        for j:1 thru n do
                          gr: endcons(if i=j
-                                       then apply('gr2d,append(select,histogram(col(m,i))))
-                                       else apply('gr2d,append(select,scatterplot(subsample(m,true,i,j),'point_type='dot))) ,
+                                       then apply('gr2d,append(apply('histogram, append([col(m,i)],select,localopts))))
+                                       else apply('gr2d,append(apply('scatterplot, append([subsample(m,true,i,j)],select)))) ,
                                      gr),
                      gr),
              if draw_compound
@@ -558,14 +574,16 @@ scatterplot(m,[select]):=
 
 
 
-/* Plots histograms. Argument 'm' must be a list, a one column matrix or a     */
-/* one row matrix. The second and consecutive arguments are  draw              */
-/* options. Global variable histogram_nclasses sets the number of classes to   */
-/* used by default.                                                            */
-histogram_nclasses: 10$
+/* Plots histograms. Argument 'm' must be a list, a one column matrix or a       */
+/* one row matrix. The second and consecutive arguments are either draw options  */
+/* or the specific 'nclasses' option (10 by default) to control number of classes*/
 histogram(m,[select]):=
-   block([fr,amp,scen],
-      if not intergerp(histogram_nclasses) or histogram_nclasses < 3
+   block([fr,amp,scen,localopts,nclass:10],
+      [select, localopts]: extract_options(select,'nclasses),
+      for k in localopts do
+        if lhs(k) = 'nclasses then nclass: rhs(k),
+
+      if not intergerp(nclass) or nclass < 3
         then error("histogram: number of classes must be an integer greater than two"),
 
       /* if m is a list of numbers or a column or a row matrix then */
@@ -578,12 +596,12 @@ histogram(m,[select]):=
                        else m: transpose(m)[1],
 
                /* frequency table */
-               fr: continuous_freq(m,histogram_nclasses),
+               fr: continuous_freq(m,nclass),
                amp: fr[1][2]-fr[1][1],
                scen:append(select,
                            [apply('bars,
-                                  makelist([(fr[1][k]+fr[1][k+1])/2, fr[2][k], amp],k,1,histogram_nclasses)),
-                            'xrange = [fr[1][1]-amp/2, fr[1][histogram_nclasses+1]+amp/2],
+                                  makelist([(fr[1][k]+fr[1][k+1])/2, fr[2][k], amp],k,1,nclass)),
+                            'xrange = [fr[1][1]-amp/2, fr[1][nclass+1]+amp/2],
                             'yrange = tree_reduce('max,fr[2])*[-0.05, 1.05]  ] ),
               if draw_compound
                 then apply('draw2d,scen)
@@ -592,13 +610,18 @@ histogram(m,[select]):=
 
 
 
-/* Plots bar charts for discrete or categorical data, argument 'm' must be a   */
-/* list, a one column matrix or a one row matrix.                              */
-barsplot_width: 3/4$
+/* Plots bar charts for discrete or categorical data. Argument 'm' must be a   */
+/* list, a one column matrix or a one row matrix. The second and consecutive   */
+/* arguments are either draw options or the specific 'box_width' option (3/4   */
+/*  by default) to control boxes widths.                                       */
 barsplot(m,[select]):=
-   block([fr,tot,scen],
-      if barsplot_width > 1 or barsplot_width < 0
-         then error("barsplot_width is out of range"),
+   block([fr,tot,scen,localopts,boxwidth:3/4],
+      [select, localopts]: extract_options(select,'box_width),
+      for k in localopts do
+        if lhs(k) = 'box_width then boxwidth: float(rhs(k)),
+
+      if boxwidth > 1 or boxwidth < 0
+         then error("boxes width is out of range"),
       if listofnumbersp(m) or matrixp(m) and (length(m)=1 or length(m[1])=1)
         then (/* transform input data into a list */
               if matrixp(m)
@@ -611,7 +634,7 @@ barsplot(m,[select]):=
                tot: length(fr[1]),
                scen:append(select,
                            [apply('bars,
-                                  makelist([k, fr[2][k], barsplot_width],k,1,tot)),
+                                  makelist([k, fr[2][k], boxwidth],k,1,tot)),
                             'xtics = setify(map("[", map('string, fr[1]), makelist(k,k,1,tot))),   
                             'xrange = (tot-1)*0.05*[-1,+1.5]+[0.5,tot+0.5],
                             'yrange = tree_reduce('max,fr[2])*[-0.05, 1.05] ] ),
@@ -629,14 +652,21 @@ random_color():=
            random(16),random(16))  /* blue */    )$
 
 
-/* Plotspie charts for discrete or categorical data, argument 'm' must be a   */
-/* list, a one column matrix or a one row matrix.                             */
-piechart_center: [0,0]$
-piechart_radius: 1$
+/* Plots pie charts for discrete or categorical data. Argument 'm' must be a  */
+/* list, a one column matrix or a one row matrix. The second and consecutive  */
+/* arguments are either draw options or the specific 'pie_center' ([0,0] by   */
+/* default) or 'pie_radius' (1 by default) options to control the center and  */
+/* the radius of the diagram, respectively.                                   */
 piechart(m,[select]):=
-   block([fr,tot,scen,degrees,ini,end:0,alpha,hexcolor,conver:float(%pi/180),sectors],
-      if piechart_radius <= 0
-         then error("piechart_radius must be greater than zero"),
+   block([fr,tot,scen,degrees,ini,end:0,alpha,hexcolor,conver:float(%pi/180),
+          sectors,localopts,piecent:[0,0],pierad:1],
+      [select, localopts]: extract_options(select,'pie_center,'pie_radius),
+      for k in localopts do
+        if     lhs(k) = 'pie_center then piecent: float(rhs(k))
+        elseif lhs(k) = 'pie_radius then pierad: float(rhs(k)),
+
+      if pierad <= 0
+         then error("pie radius must be greater than zero"),
       if listofnumbersp(m) or matrixp(m) and (length(m)=1 or length(m[1])=1)
         then (/* transform input data into a list */
               if matrixp(m)
@@ -654,13 +684,13 @@ piechart(m,[select]):=
                                   hexcolor: random_color(),
                                   [/* 'color = black,
                                     label([fr[1][i],
-                                           piechart_radius*1.1*cos(alpha*conver),
-                                           piechart_radius*1.1*sin(alpha*conver)]),*/
+                                           pierad*1.1*cos(alpha*conver),
+                                           pierad*1.1*sin(alpha*conver)]),*/
                                     'color = hexcolor,  
                                     'fill_color = hexcolor,
                                     'key = concat(fr[1][i]),
-                                    ellipse(piechart_center[1],piechart_center[2],
-                                            piechart_radius,piechart_radius,
+                                    ellipse(piecent[1],piecent[2],
+                                            pierad,pierad,
                                             ini,degrees[i]) ])
                                   ,i,1,tot),
                scen:append(select, flatten(sectors)),
@@ -671,12 +701,17 @@ piechart(m,[select]):=
 
 
 
-/* Plots box-whisker diagrams, argument 'm' must be a list of numbers or a matrix. */
-boxplot_width: 3/4$
+/* Plots box-whisker diagrams. Argument 'm' must be a list of numbers or a matrix. */
+/* The second and consecutive arguments are either draw options or the specific    */
+/* 'box_width' option (3/4 by default) to control boxes widths.                     */
 boxplot(m,[select]):=
-   block([fr,tot,scen,top:0,bot:inf],
-      if boxplot_width > 1 or barsplot_width < 0
-         then error("boxplot_width is out of range"),
+   block([fr,tot,scen,top:0,bot:inf,localopts,boxwidth:3/4],
+      [select, localopts]: extract_options(select,'box_width),
+      for k in localopts do
+        if lhs(k) = 'box_width then boxwidth: float(rhs(k)),
+
+      if boxwidth > 1 or boxwidth < 0
+         then error("boxes width is out of range"),
       /* if m is not a row matrix, transpose it */
       if matrixp(m) and length(m)>1
          then m: transpose(m),
@@ -700,8 +735,8 @@ boxplot(m,[select]):=
                                              q2: float(quantile(m[x],0.5)),
                                              q3: float(quantile(m[x],0.75)),
                                              w:  float(boxplot_width),
-                                             w2: boxplot_width/2,
-                                             w4: boxplot_width/4,
+                                             w2: boxwidth/2,
+                                             w4: boxwidth/4,
                                              A,B,C,D,E,F,G,H,I,J,K,L,M,N],
                                         top: max(top,ma),
                                         bot: min(bot,mi),
