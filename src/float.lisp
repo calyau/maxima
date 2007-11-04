@@ -630,7 +630,7 @@ One extra decimal digit in actual representation for rounding purposes.")
 	 (cdr (setq bigfloat%e (bigfloatp bigfloat%e))))
 	((< fpprec (caddar max-bfloat-%e))
 	 (cdr (setq bigfloat%e (bigfloatp max-bfloat-%e))))
-	(t (cdr (setq max-bfloat-%e (setq bigfloat%e (*fpexp 1)))))))
+   (t (cdr (setq max-bfloat-%e (setq bigfloat%e (fpe1)))))))
 
 (defun fppi ()
   (cond ((= fpprec (caddar bigfloat%pi)) (cdr bigfloat%pi))
@@ -655,22 +655,89 @@ One extra decimal digit in actual representation for rounding purposes.")
 	((= fpprec (caddar bigfloatone)) (cdr bigfloatone))
 	(t (intofp 1))))
 
-;; COMPPI computes PI to N bits.
-;; That is, (COMPPI N)/(2.0^N) is an approximation to PI.
+;;....................................................................................................... ;;
+;;
+;; (fpe1) returns a bigfloat approximation to E.
+;; fpe1 is the bigfloat part of the bfloat(%e) computation
+;;
+(defun fpe1 nil
+  (bcons (list (fpround (compe (+ fpprec 12))) (+ -12 *m))))
+;;
+;; compe is the bignum part of the bfloat(%e) computation  
+;; (compe N)/(2.0^N) is an approximation to E
+;; The algorithm is based on the series
+;;
+;; %e = sum( 1/i! ,i,0,inf )
+;; 
+;; but sums up 1001 terms to one.
+;; 
+(defun compe (prec)
+  (let (s h (n 1) d (k 1001))
+     (setq h (ash 1 prec))
+     (setq s h)
+     (do ((i k (+ i k)))
+              ((zerop h))
+       (setq d (do ((j 1 (1+ j)) (p i))
+                   ((> j (1- k)) (* p n))
+                 (setq p (* p (- i j)))) )
+       (setq n (do ((j (- k 2) (1- j)) (p 1))
+                   ((< j 0) p)  
+                 (setq p (1+ (* p (- i j))))) )
+       (setq h (*quo (* h n) d))
+       (setq s (+ s h)))
+     s))
+;;................................................................................ Volker van Nek 2007 .. ;;
 
-(defun comppi (n)
-  (prog (a b c)
-     (setq a (expt 2 n))
-     (setq c (+ (* 3 a) (setq b (*quo a 8.))))
-     (do ((i 4 (+ i 2)))
-	 ((zerop b))
-       (setq b (*quo (* b (1- i) (1- i))
-		     (* 4 i (1+ i))))
-       (setq c (+ c b)))
-     (return c)))
-
+;;....................................................................................................... ;;
+;;
+;; (fppi1) returns a bigfloat approximation to PI.
+;; fppi1 is the bigfloat part of the bfloat(%pi) computation
+;;
 (defun fppi1 nil
-  (bcons (list (fpround (comppi (+ fpprec 3))) (+ -3 *m))))
+  (bcons 
+    (fpquotient 
+      (fprt18231_)
+      (list (fpround (comppi (+ fpprec 12))) (+ -12 *m)) )))
+;;
+;; comppi is the bignum part of the bfloat(%pi) computation  
+;; (comppi N)/(2.0^N) is an approximation to 640320^(3/2)/12 * 1/PI
+;;
+;; Chudnovsky & Chudnovsky (1987):
+;;
+;; 640320^(3/2) / (12 * %pi) = 
+;;
+;; sum( (-1)^i*(6*i)!*(545140134*i+13591409) / (i!^3*(3*i)!*640320^(3*i)) ,i,0,inf )
+;; 
+(defun comppi (prec)
+  (let (s h n d)     
+     (setq s (ash 13591409 prec))
+     (setq h (neg (*quo (ash 67047785160 prec) 262537412640768000)))
+     (setq s (+ s h))
+     (do ((i 2 (1+ i)))
+         ((zerop h))
+       (setq n (* 12 (- (* 6 i) 5) (- (* 6 i) 4) (- (* 2 i) 1) (- (* 6 i) 1) (+ (* i 545140134) 13591409) ))
+       (setq d (* (- (* 3 i) 2) (expt i 3) (- (* i 545140134) 531548725) 262537412640768000))
+       (setq h (neg (*quo (* h n) d)))
+       (setq s (+ s h)))
+     s ))
+;;     
+;; fprt18231_ computes sqrt(640320^3/12^2).
+;;                                   n[0]   n[i+1] = n[i]^2+a*d[i]^2            n[inf]
+;; quadratic Heron algorithm: x[0] = ----,                          , sqrt(a) = ------
+;;                                   d[0]   d[i+1] = 2*n[i]*d[i]                d[inf]
+(defun fprt18231_ nil  
+  (let (a n d h)     
+     (setq a 1823176476672000)
+     (setq n 42698670666) 
+     (setq d 1000)     
+     (do ((prec 10 (* 2 prec)))
+         ((> prec $fpprec))
+       (setq h n)
+       (setq n (+ (* n n) (* a d d)))
+       (setq d (* 2 h d)) )
+     (fpquotient (intofp n) (intofp d)) ))
+;;................................................................................ Volker van Nek 2007 .. ;;
+
 
 ;; Compute the main part of the Euler-Mascheroni constant using the
 ;; Bessel function approach.  See
