@@ -1323,7 +1323,7 @@ Returns the @var{q}-quantile of a @math{Logistic(a,b)} random variable , with @m
 @end deffn
 
 
-@deffn {Function} meanlog (@var{a},@var{b})
+@deffn {Function} mean_logistic (@var{a},@var{b})
 Returns the mean of a @math{Logistic(a,b)} random variable , with @math{b>0}. To make use of this function, write first @code{load(distrib)}.
 @end deffn
 
