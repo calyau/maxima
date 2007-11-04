@@ -1,7 +1,7 @@
 @c Language=Russian
 @c Encoding=CP1251
 @c File=descriptive.texi 
-@c OriginalRevision=1.13
+@c OriginalRevision=1.14
 @c TranslatedBy: (c) 2007-07 Vadim V. Zhytnikov <vvzhyt@gmail.com>
 
 @menu
@@ -17,11 +17,12 @@
 
 Пакет @code{descriptive} содержит набор функций для выполнения вычислений и визуализации данных в рамках описательной 
 статистики.  Вместе с исходным кодом пакета Maxima включает также три набора данных: @code{pidigits.data}, 
-@code{wind.data} и @code{biomed.data}. Они также могут быть загружены с сайта @url{http://www.biomates.net}.
+@code{wind.data} и @code{biomed.data}. 
 
 Для справки по функциям пакета @code{descriptive} можно использовать любое статистическое руководство.
 
-Для комментариев, сообщений об ошибках и предложений обращайтесь к автору пакета по адресу @var{'mario AT edu DOT xunta DOT es'}.
+Для комментариев, сообщений об ошибках и предложений обращайтесь к автору пакета по адресу 
+@var{'mario AT edu DOT xunta DOT es'}.
 
 Ниже приведен простой пример использования функций пакета @code{descriptive} в зависимости
 от природы своих аргументов
@@ -1821,251 +1822,173 @@ $${r_{ij.rest}}={-{{s^{ij}}\over \sqrt{s^{ii}s^{jj}}}}$$
 @end deffn
 
 
-
 @node Функции и переменные для статистических графиков,  , Функции и переменные для многомерной описательной статистики, Пакет descriptive
 @section Функции и переменные для статистических графиков
 
 
+@defvr {Управляющая переменная} histogram_nclasses
+Значение по умолчанию: 10
 
-@deffn {Функция} dataplot (@var{list})
-@deffnx {Функция} dataplot (@var{list}, @var{option_1}, @var{option_2}, ...)
-@deffnx {Функция} dataplot (@var{matrix})
-@deffnx {Функция} dataplot (@var{matrix}, @var{option_1}, @var{option_2}, ...)
-Функция @code{dataplot} производит визуализацию данных выборки,
-как одномерной (@var{list}), так и многомерной (@var{matrix}). 
-Следующие управляющие параметры @var{option} позволяют управлять различными аспектами графика:
+Число классов в гистограммах.
 
-@itemize @bullet
-
-@item
-@code{'outputdev}, по умолчанию @code{"x"}, определяет устройство вывода; 
-допустимы значения @code{"x"}, @code{"eps"} и @code{"png"}, что означает соответственно
-экран, постскрипт файл и png файл.
-
-@item
-@code{'maintitle}, по умолчанию @code{""}, главный заголовок в двойных кавычках.
-
-@item
-@code{'axisnames}, по умолчанию @code{["x","y","z"]}, список имен переменных @code{x}, @code{y} и @code{z}.
-
-@item
-@code{'joined}, по умолчанию @code{false}, логическое значение, которое определяет
-будут ли точки двумерного графика изолированы или соединены.
-
-@item
-@code{'picturescales}, по умолчанию @code{[1.0, 1.0]}, масштабные факторы размера графика.
-
-@item
-@code{'threedim}, по умолчанию @code{true}, определяет каким образом изображать 
-матрицу из трех колонок -- в виде 3-х мерной диаграммы или в виде диаграммы разброса 
-(корреляционное поле). См. пример ниже.
-
-@item
-@code{'axisrot}, по умолчанию @code{[60, 30]}, изменяет точку наблюдения, если 
-@code{'threedim} установлен равным @code{true} и данные представлены в виде
-матрицы с тремя колонками. Первое число -- угол вращения по оси @var{x} а второе число -- угол вращения
-по оси @var{z}, оба угла задаются в градусах.
-
-@item
-@code{'nclasses}, по умолчанию @code{10}, число столбцов в гистограммах на диагонали
-многомерной диаграммы разброса.
-
-@item
-@code{'pointstyle}, по умолчанию @code{1}, целое число, которое определяет каким 
-образом отображаются точки выборки.
-
-@end itemize
-
-Например, следующая команда строит простой график первых 20 цифр числа @code{%pi}.
-
-@c ===beg===
-@c load (descriptive)$
-@c load (numericalio)$
-@c s1 : read_list (file_search ("pidigits.data"))$
-@c dataplot (makelist (s1[k], k, 1, 20), 'pointstyle = 3)$
-@c ===end===
-@example
-(%i1) load (descriptive)$
-(%i2) load (numericalio)$
-(%i3) s1 : read_list (file_search ("pidigits.data"))$
-(%i4) dataplot (makelist (s1[k], k, 1, 20), 'pointstyle = 3)$
-@end example
-
-Отметим, что одномерные данные изображаются в виде временного ряда. 
-Другие данные с различными настройками
-
-@c ===beg===
-@c load (descriptive)$
-@c load (numericalio)$
-@c s1 : read_list (file_search ("pidigits.data"))$
-@c dataplot (makelist (s1[k], k, 1, 50), 
-@c  'axisnames = ["digit order", "digit value"], 'pointstyle = 2,
-@c  'maintitle = "First pi digits", 'joined = true)$
-@c ===end===
-@example
-(%i1) load (descriptive)$
-(%i2) load (numericalio)$
-(%i3) s1 : read_list (file_search ("pidigits.data"))$
-(%i4) dataplot (makelist (s1[k], k, 1, 50),
- 'axisnames = ["digit order", "digit value"], 'pointstyle = 2,
- 'maintitle = "First pi digits", 'joined = true)$
-@end example
-
-Функция @code{dataplot} может быть использована для изображения точек на плоскости
-В следующем примере строится диаграмма разброса для пары скоростей ветра, 
-соответствующим первой и пятой метеостанциям.
-
-@c ===beg===
-@c load (descriptive)$
-@c load (numericalio)$
-@c s2 : read_matrix (file_search ("wind.data"))$
-@c dataplot (submatrix (s2, 2, 3, 4), 'pointstyle = 2,
-@c  'maintitle = "Pairs of wind speeds measured in knots",
-@c  'axisnames = ["Wind speed in A", "Wind speed in E"])$
-@c ===end===
-@example
-(%i1) load (descriptive)$
-(%i2) load (numericalio)$
-(%i3) s2 : read_matrix (file_search ("wind.data"))$
-(%i4) dataplot (submatrix (s2, 2, 3, 4), 'pointstyle = 2,
- 'maintitle = "Pairs of wind speeds measured in knots",
- 'axisnames = ["Wind speed in A", "Wind speed in E"])$
-@end example
-
-Если точки представлены в форме матрицы с двумя колонками, то @code{dataplot} может
-быть использован непосредственно.  Но если данные представлены в виде списка пар,
-то они должны быть сначала преобразованы в матрицу.
-
-@c ===beg===
-@c load (descriptive)$
-@c x : [[-1, 2], [5, 7], [5, -3], [-6, -9], [-4, 6]]$
-@c dataplot (apply ('matrix, x), 'maintitle = "Points",
-@c  'joined = true, 'axisnames = ["", ""], 'picturescales = [0.5, 1.0])$
-@c ===end===
-@example
-(%i1) load (descriptive)$
-(%i2) x : [[-1, 2], [5, 7], [5, -3], [-6, -9], [-4, 6]]$
-(%i3) dataplot (apply ('matrix, x), 'maintitle = "Points",
- 'joined=true, 'axisnames=["", ""], 'picturescales=[0.5, 1.0])$
-@end example
-
-Точки в трех измерениям могут изображаться в виде проекции на плоскость.
-В следующем примере строится график скоростей ветра для трех метеостанций,
-сначала в виде 3-х мерного графика а затем в форме многомерной диаграммы разброса.
-
-@c ===beg===
-@c load (descriptive)$
-@c load (numericalio)$
-@c s2 : read_matrix (file_search ("wind.data"))$
-@c /* 3D plot */ 
-@c  dataplot (submatrix (s2, 4, 5), 'pointstyle = 2,
-@c  'maintitle = "Pairs of wind speeds measured in knots",
-@c  'axisnames = ["Station A", "Station B", "Station C"])$
-@c /* Multivariate scatterplot */ 
-@c  dataplot (submatrix (s2, 4, 5),
-@c  'nclasses = 6, 'threedim = false)$
-@c ===end===
-@example
-(%i1) load (descriptive)$
-(%i2) load (numericalio)$
-(%i3) s2 : read_matrix (file_search ("wind.data"))$
-(%i4) /* 3D plot */
- dataplot (submatrix (s2, 4, 5), 'pointstyle = 2,
- 'maintitle = "Pairs of wind speeds measured in knots",
- 'axisnames = ["Station A", "Station B", "Station C"])$
-(%i5) /* Multivariate scatterplot */
- dataplot (submatrix (s2, 4, 5), 'nclasses = 6, 'threedim = false)$
-@end example
-Заметим, что в последнем примере число столбцов в гистограммах на диагонали установлено равным 6
-а опция @code{'threedim} равна @code{false}.
-
-Для более чем трех измерений возможны только многомерные диаграммы разброса, например
-
-@c ===beg===
-@c load (descriptive)$
-@c load (numericalio)$
-@c s2 : read_matrix (file_search ("wind.data"))$
-@c dataplot (s2)$
-@c ===end===
-@example
-(%i1) load (descriptive)$
-(%i2) load (numericalio)$
-(%i3) s2 : read_matrix (file_search ("wind.data"))$
-(%i4) dataplot (s2)$
-@end example
-@end deffn
-
+См. также @code{histogram}.
+@end defvr
 
 
 @deffn {Функция} histogram (@var{list})
 @deffnx {Функция} histogram (@var{list}, @var{option_1}, @var{option_2}, ...)
 @deffnx {Функция} histogram (@var{one_column_matrix})
 @deffnx {Функция} histogram (@var{one_column_matrix}, @var{option_1}, @var{option_2}, ...)
-Эта функция выводит гистограмму. Данные выборки должны быть представлены в виде списка или
-матрицы с одной колонкой. 
-Следующие управляющие параметры @var{option} позволяют управлять различными аспектами графика:
+@deffnx {Функция} histogram (@var{one_row_matrix})
+@deffnx {Функция} histogram (@var{one_row_matrix}, @var{option_1}, @var{option_2}, ...)
+Эта функция строит гистограмму для непрерывной выборки.
+Данные выборки должны быть представлены в виде списка или одномерной матрицы.
+Доступны опции, определенные в пакете @code{draw}.
+Число классов в гистограмме определяется глобальной переменной @code{histogram_nclasses}·
 
-@itemize @bullet
+Примеры:
 
-@item
-@code{'outputdev}, по умолчанию @code{"x"}, определяет устройство вывода; 
-допустимы значения @code{"x"}, @code{"eps"} и @code{"png"}, что означает соответственно
-экран, постскрипт файл и png файл.
-
-@item
-@code{'maintitle}, по умолчанию @code{""}, главный заголовок в двойных кавычках.
-
-@item
-@code{'axisnames}, по умолчанию @code{["x","Fr."]}, список имен осей @code{x} и @code{y}.
-
-@item
-@code{'picturescales}, по умолчанию @code{[1.0, 1.0]}, масштабные факторы для размера графика.
-
-@item
-@code{'nclasses}, по умолчанию @code{10}, число разных столбцов в гистограмме.
-
-@item
-@code{'relbarwidth}, по умолчанию @code{0.9}, вещественное число в пределах от 0 до 1,
-определяющее ширину столбца.
-
-@item
-@code{'barcolor}, по умолчанию @code{1}, целое число, определяющее цвет столбца.
-
-@item
-@code{'colorintensity}, по умолчанию @code{1}, 
-вещественное число в пределах от 0 до 1,
-определяющее интенсивность цвета.
-
-@end itemize
-
-В следующих двух примерах строятся гистограммы для первых 100 цифр числа @code{%pi} 
-и для скоростей ветра трех метеостанций.
+Простая гистограмма с восемью классами.
 
 @c ===beg===
 @c load (descriptive)$
-@c load (numericalio)$
 @c s1 : read_list (file_search ("pidigits.data"))$
-@c histogram (s1, 'maintitle = "pi digits", 
-@c  'axisnames = ["", "Absolute frequency"], 'relbarwidth = 0.2,
-@c  'barcolor = 3, 'colorintensity = 0.6)$
-@c s2 : read_matrix (file_search ("wind.data"))$
-@c histogram (col (s2, 3), 'colorintensity = 0.3)$
+@c histogram_nclasses: 8 $
+@c histogram (
+@c      s1,
+@c      title        = "pi digits",
+@c      xlabel       = "digits",
+@c      ylabel       = "Absolute frequency",
+@c      fill_color   = grey,
+@c      fill_density = 0.6)$
 @c ===end===
 @example
 (%i1) load (descriptive)$
-(%i2) load (numericalio)$
-(%i3) s1 : read_list (file_search ("pidigits.data"))$
-(%i4) histogram (s1, 'maintitle = "pi digits",
- 'axisnames = ["", "Absolute frequency"], 'relbarwidth = 0.2,
- 'barcolor = 3, 'colorintensity = 0.6)$
-(%i5) s2 : read_matrix (file_search ("wind.data"))$
-(%i6) histogram (col (s2, 3), 'colorintensity = 0.3)$
+(%i2) s1 : read_list (file_search ("pidigits.data"))$
+(%i3) histogram_nclasses: 8 $
+(%i4) histogram (
+        s1,
+        title        = "pi digits",
+        xlabel       = "digits",
+        ylabel       = "Absolute frequency",
+        fill_color   = grey,
+        fill_density = 0.6)$
 @end example
-Отметим, что в первом случае @code{s1} является списком, а во втором @code{col(s2,3)} 
-является матрицей.
 
-См. также функцию @code{barsplot}.
+См. @code{bars} по поводу опций, управляющих выводом гистограмм. 
+См. также @code{barsplot}.
+
 @end deffn
+
+
+
+@deffn {Функция} scatterplot (@var{list})
+@deffnx {Функция} scatterplot (@var{list}, @var{option_1}, @var{option_2}, ...)
+@deffnx {Функция} scatterplot (@var{matrix})
+@deffnx {Функция} scatterplot (@var{matrix}, @var{option_1}, @var{option_2}, ...)
+Строит корреляционную диаграмму (scatter diagrams) для одномерной (@var{list}) или
+многомерной (@var{matrix}) выборки. 
+Доступны опции, определенные в пакете @code{draw}.
+
+Примеры:
+
+Одномерная корреляционная диаграмма для гауссовой выборки. 
+
+@c ===beg===
+@c load (descriptive)$
+@c load (distrib)$
+@c scatterplot(
+@c   random_normal(0,1,200),
+@c   xaxis      = true,
+@c   point_size = 2,
+@c   terminal   = eps,
+@c   eps_width  = 10,
+@c   eps_height = 2)$
+@c ===end===
+@example
+(%i1) load (descriptive)$
+(%i2) load (distrib)$
+(%i3) scatterplot(
+        random_normal(0,1,200),
+        xaxis      = true,
+        point_size = 2,
+        terminal   = eps,
+        eps_width  = 10,
+        eps_height = 2)$
+@end example
+
+Двумерная корреляционная диаграмма.
+
+@c ===beg===
+@c load (descriptive)$
+@c s2 : read_matrix (file_search ("wind.data"))$
+@c scatterplot(
+@c  submatrix(s2, 1,2,3),
+@c  title      = "Data from stations #4 and #5",
+@c  point_type = diamant,
+@c  point_size = 2,
+@c  color      = blue)$
+@c ===end===
+@example
+(%i1) load (descriptive)$
+(%i2) s2 : read_matrix (file_search ("wind.data"))$
+(%i3) scatterplot(
+        submatrix(s2, 1,2,3),
+        title      = "Data from stations #4 and #5",
+        point_type = diamant,
+        point_size = 2,
+        color      = blue)$
+@end example
+
+Трехмерная корреляционная диаграмма.
+
+@c ===beg===
+@c load (descriptive)$
+@c s2 : read_matrix (file_search ("wind.data"))$
+@c scatterplot(submatrix (s2, 1,2))$
+@c ===end===
+@example
+(%i1) load (descriptive)$
+(%i2) s2 : read_matrix (file_search ("wind.data"))$
+(%i3) scatterplot(submatrix (s2, 1,2))$
+@end example
+
+Пятимерная корреляционная диаграмма.
+
+@c ===beg===
+@c load (descriptive)$
+@c s2 : read_matrix (file_search ("wind.data"))$
+@c scatterplot(
+@c   s2,
+@c   fill_color   = blue,
+@c   fill_density = 0.3,
+@c   xtics        = 5)$
+@c ===end===
+@example
+(%i1) load (descriptive)$
+(%i2) s2 : read_matrix (file_search ("wind.data"))$
+(%i3) scatterplot(
+        s2,
+        fill_color   = blue,
+        fill_density = 0.3,
+        xtics        = 5)$
+@end example
+
+По поводу построения точек в двух или трех измерениях, соединенных линиями, см. @code{points}. 
+См. @code{bars} по поводу опций, управляющих выводом гистограмм. 
+
+См. также @code{histogram}.
+
+@end deffn
+
+
+@defvr {Управляющая переменная} barsplot_width
+Значение по умолчанию: @code{3/4}
+
+Относительная ширина прямоугольников в @code{barsplot}·
+
+См. также @code{barsplot}.
+@end defvr
 
 
 
@@ -2073,119 +1996,157 @@ $${r_{ij.rest}}={-{{s^{ij}}\over \sqrt{s^{ii}s^{jj}}}}$$
 @deffnx {Функция} barsplot (@var{list}, @var{option_1}, @var{option_2}, ...)
 @deffnx {Функция} barsplot (@var{one_column_matrix})
 @deffnx {Функция} barsplot (@var{one_column_matrix}, @var{option_1}, @var{option_2}, ...)
-Аналогична @code{histogram}, но предназначена для дискретных числовых или
-категоризированных данных. Имеет следующие опции:
+@deffnx {Функция} barsplot (@var{one_row_matrix})
+@deffnx {Функция} barsplot (@var{one_row_matrix}, @var{option_1}, @var{option_2}, ...)
+Аналогична @code{histogram} но для дискретных, численных или категоризированных,
+статистических переменных.
+Доступны опции, определенные в пакете @code{draw}.
+Ширина прямоугольников управляется глобальной переменной @code{barsplot_width}·
 
-@itemize @bullet
-
-@item
-@code{'outputdev}, по умолчанию @code{"x"}, определяет устройство вывода; 
-допустимы значения @code{"x"}, @code{"eps"} и @code{"png"}, что означает соответственно
-экран, постскрипт файл и png файл.
-
-@item
-@code{'maintitle}, по умолчанию @code{""}, главный заголовок в двойных кавычках.
-
-@item
-@code{'axisnames}, по умолчанию @code{["x","Fr."]}, список имен осей @code{x} и @code{y}.
-
-@item
-@code{'picturescales}, по умолчанию @code{[1.0, 1.0]}, масштабные факторы для размера графика.
-
-@item
-@code{'relbarwidth}, по умолчанию @code{0.9}, вещественное число в пределах от 0 до 1,
-определяющее ширину столбца.
-
-@item
-@code{'barcolor}, по умолчанию @code{1}, целое число, определяющее цвет столбца.
-
-@item
-@code{'colorintensity}, по умолчанию @code{1}, 
-вещественное число в пределах от 0 до 1,
-определяющее интенсивность цвета.
-
-@end itemize
-
-В этом примере строится график для пациентов групп @code{A} и @code{B} в выборке @code{s3}.
+Пример:
 
 @c ===beg===
 @c load (descriptive)$
-@c load (numericalio)$
 @c s3 : read_matrix (file_search ("biomed.data"))$
-@c barsplot (col (s3, 1), 'maintitle = "Groups of patients",
-@c  'axisnames = ["Group", "# of individuals"], 'colorintensity = 0.2)$
+@c barsplot_width: 1/2 $
+@c barsplot(col(s3,2),
+@c   title        = "Ages",
+@c   xlabel       = "years",
+@c   fill_density = 0.3)$
 @c ===end===
 @example
 (%i1) load (descriptive)$
-(%i2) load (numericalio)$
-(%i3) s3 : read_matrix (file_search ("biomed.data"))$
-(%i4) barsplot (col (s3, 1), 'maintitle = "Groups of patients",
- 'axisnames=["Group", "# of individuals"], 'colorintensity=0.2)$
-@end example
-Первая солонка выборки @code{s3} содержит категорию @code{A} или @code{B}. 
-Позитивные целые во второй колонке являются возрастом в полных годах, что 
-является дискретными данными, и мы можем изобразить абсолютные частоты для этих 
-значений.
-
-@c ===beg===
-@c load (descriptive)$
-@c load (numericalio)$
-@c s3 : read_matrix (file_search ("biomed.data"))$
-@c barsplot (col (s3, 2), 'maintitle = "Ages",
-@c  'axisnames = ["Years", "# of individuals"], 'colorintensity = 0.2,
-@c  'relbarwidth = 0.6)$
-@c ===end===
-@example
-(%i1) load (descriptive)$
-(%i2) load (numericalio)$
-(%i3) s3 : read_matrix (file_search ("biomed.data"))$
-(%i4) barsplot (col (s3, 2), 'maintitle = "Ages",
- 'axisnames = ["Years", "# of individuals"], 'colorintensity = 0.2,
- 'relbarwidth = 0.6)$
+(%i2) s3 : read_matrix (file_search ("biomed.data"))$
+(%i3) barsplot_width: 1/2 $
+(%i4) barsplot(col(s3,2),
+         title        = "Ages",
+         xlabel       = "years",
+         fill_density = 0.3)$
 @end example
 
+По поводу опций, управляющих выводом диаграмм, см. @code{bars} пакета @code{draw}.
+См. также функции @code{histogram} и @code{piechart}.
 
-См. также функцию @code{histogram}.
 @end deffn
+
+
+@defvr {Управляющая переменная} piechart_center
+Значение по умолчанию: @code{[0,0]}
+
+Центр круговой диаграммы.
+
+См. также @code{piechart}.
+@end defvr
+
+
+@defvr {Управляющая переменная} piechart_radius
+Значение по умолчанию: 1
+
+Радиус круговой диаграммы.
+
+См. также @code{piechart}.
+@end defvr
+
+
+@deffn {Функция} piechart (@var{list})
+@deffnx {Функция} piechart (@var{list}, @var{option_1}, @var{option_2}, ...)
+@deffnx {Функция} piechart (@var{one_column_matrix})
+@deffnx {Функция} piechart (@var{one_column_matrix}, @var{option_1}, @var{option_2}, ...)
+@deffnx {Функция} piechart (@var{one_row_matrix})
+@deffnx {Функция} piechart (@var{one_row_matrix}, @var{option_1}, @var{option_2}, ...)
+Аналогична @code{barsplot}, но вместо прямоугольников строит сектора, т.е. круговую диаграмму.
+Доступны опции, определенные в пакете @code{draw}.
+Центр и радиус круговой диаграммы управляются переменными @code{piechart_center} 
+и @code{piechart_radius}.
+
+Пример:
+
+@c ===beg===
+@c load (descriptive)$
+@c s1 : read_list (file_search ("pidigits.data"))$
+@c piechart(
+@c   s1,
+@c   xrange      = [-1.1, 1.3],
+@c   yrange      = [-1.1, 1.1],
+@c   axis_top    = false,
+@c   axis_right  = false,
+@c   axis_left   = false,
+@c   axis_bottom = false,
+@c   xtics       = none,
+@c   ytics       = none,
+@c   title       = "Digit frequencies in pi")$
+@c ===end===
+@example
+(%i1) load (descriptive)$
+(%i2) s1 : read_list (file_search ("pidigits.data"))$
+(%i3) piechart(
+        s1,
+        xrange      = [-1.1, 1.3],
+        yrange      = [-1.1, 1.1],
+        axis_top    = false,
+        axis_right  = false,
+        axis_left   = false,
+        axis_bottom = false,
+        xtics       = none,
+        ytics       = none,
+        title       = "Digit frequencies in pi")$
+@end example
+
+См. также @code{barsplot}.
+
+@end deffn
+
+
+@defvr {Управляющая переменная} boxplot_width
+Значение по умолчанию: @code{3/4}
+
+Относительная ширина ящиков в @code{boxplot}.
+
+См. также @code{boxplot}.
+@end defvr
 
 
 
 @deffn {Функция} boxplot (@var{data})
 @deffnx {Функция} boxplot (@var{data}, @var{option_1}, @var{option_2}, ...)
-Эта функция строит коробчатую диаграмму. Аргумент @var{data} может быть списком,
-что не представляет большого интереса, поскольку данный тип диаграмм применяется главным 
-образом для сравнения различных выборок, или матрицей, что позволяет сравнить 
-две и более компоненты многомерной статистической переменной.
-Допустимо, чтобы @var{data} являлся списком выборок, возможно различного размера.
-Это единственная функция в пакете @code{descriptive}, которая работает
-с такими типом структур данных. См. пример ниже.  Имеет следующие опции:
-
-@itemize @bullet
-
-@item
-@code{'outputdev}, по умолчанию @code{"x"}, определяет устройство вывода; 
-допустимы значения @code{"x"}, @code{"eps"} и @code{"png"}, что означает соответственно
-экран, постскрипт файл и png файл.
-
-@item
-@code{'maintitle}, по умолчанию @code{""}, главный заголовок в двойных кавычках.
-
-@item
-@code{'axisnames}, по умолчанию @code{["sample","y"]}, список имен осей @code{x} и @code{y}.
-
-@item
-@code{'picturescales}, по умолчанию @code{[1.0, 1.0]}, масштабные факторы для размера графика.
-
-@end itemize
+Эта функция строит диаграмму типа "ящик-с-усами" (box-and-whishker). 
+Аргумент @var{data} может быть списком, что не представляет большого
+интереса, т.к. подобные диаграммы в основном используются для
+сравнения различных выборок или матриц, чтобы сравнить две или более 
+компонент многомерной выборки.
+Но @var{data} также может быть списком выборок, возможно различной длины 
+(это единственная функция в пакете @code{descriptive}, которая допускает
+такой тип данных). Ширина ящиков управляется глобальной переменной @code{boxplot_width}·
 
 Примеры:
 
+Диаграмма "ящик-с-усами" для многомерной выборки.
+
 @c ===beg===
 @c load (descriptive)$
-@c load (numericalio)$
-@c s2 : read_matrix (file_search ("wind.data"))$
-@c boxplot (s2, 'maintitle = "Windspeed in knots",
-@c  'axisnames = ["Seasons", ""])$
+@c s2 : read_matrix(file_search("wind.data"))$
+@c boxplot_width: 0.2 $
+@c boxplot(s2,
+@c   title      = "Windspeed in knots",
+@c   xlabel     = "Stations",
+@c   color      = red,
+@c   line_width = 2)$
+@c ===end===
+@example
+(%i1) load (descriptive)$
+(%i2) s2 : read_matrix(file_search("wind.data"))$
+(%i3) boxplot_width: 0.2 $
+(%i4) boxplot(s2,
+        title      = "Windspeed in knots",
+        xlabel     = "Stations",
+        color      = red,
+        line_width = 2) $
+@end example
+
+Диаграмма "ящик-с-усами" для трех выборок различной длины.
+
+@c ===beg===
+@c load (descriptive)$
 @c A :
 @c  [[6, 4, 6, 2, 4, 8, 6, 4, 6, 4, 3, 2],
 @c   [8, 10, 7, 9, 12, 8, 10],
@@ -2194,15 +2155,12 @@ $${r_{ij.rest}}={-{{s^{ij}}\over \sqrt{s^{ii}s^{jj}}}}$$
 @c ===end===
 @example
 (%i1) load (descriptive)$
-(%i2) load (numericalio)$
-(%i3) s2 : read_matrix (file_search ("wind.data"))$
-(%i4) boxplot (s2, 'maintitle = "Windspeed in knots",
- 'axisnames = ["Seasons", ""])$
-(%i5) A :
- [[6, 4, 6, 2, 4, 8, 6, 4, 6, 4, 3, 2],
-  [8, 10, 7, 9, 12, 8, 10],
-  [16, 13, 17, 12, 11, 18, 13, 18, 14, 12]]$
-(%i6) boxplot (A)$
+(%i2) A :
+       [[6, 4, 6, 2, 4, 8, 6, 4, 6, 4, 3, 2],
+        [8, 10, 7, 9, 12, 8, 10],
+        [16, 13, 17, 12, 11, 18, 13, 18, 14, 12]]$
+(%i3) boxplot (A)$
 @end example
+
 @end deffn
 
