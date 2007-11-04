@@ -153,6 +153,7 @@ Paquetes adicionales
 * eval_string::                 Expresiones de Maxima en formato de cadena.
 * f90::                         Traductor de Maxima fortran.
 * ggf::                         Expresi@'on general de sucesiones.
+* graphs::                      Teor@'{@dotless{i}}a de grafos.
 * grobner::                     Funciones para trabajar con bases de Groebner.
 * impdiff::                     Derivadas impl@'{@dotless{i}}citas.
 * interpol::                    Interpolaci@'on.
@@ -452,6 +453,11 @@ f90
 ggf
 
 * Funciones y variables para ggf::
+
+graphs
+
+* Introducci@'on a graphs::
+* Funciones y variables para graphs::
 
 grobner
 
@@ -770,11 +776,15 @@ zeilberger
 @chapter f90
 @include f90.texi
 
-@node ggf, grobner, f90, Top
+@node ggf, graphs, f90, Top
 @chapter ggf
 @include ggf.texi
 
-@node grobner, impdiff, ggf, Top
+@node graphs, grobner, ggf, Top
+@chapter graphs
+@include graphs.texi
+
+@node grobner, impdiff, graphs, Top
 @chapter grobner
 @include grobner.texi
 

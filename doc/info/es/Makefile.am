@@ -7,8 +7,8 @@ maxima_TEXINFOS = \
 Affine.es.texi           Equations.es.texi     Lists.es.texi          Rules.es.texi \
 Arrays.es.texi           Expressions.es.texi   Logarithms.es.texi     Runtime.es.texi \
 Atensor.es.texi          Floating.es.texi      Matrices.es.texi       Series.es.texi \
-Bugs.es.texi             Function.es.texi      grobner.texi           Simplification.es.texi \
-Command.es.texi          Groups.es.texi        Miscellaneous.es.texi \
+Bugs.es.texi             Function.es.texi      graphs.texi            grobner.texi           \
+Simplification.es.texi   Command.es.texi       Groups.es.texi         Miscellaneous.es.texi \
 Constants.es.texi        Help.es.texi          nset.es.texi           Special.es.texi \
 Contexts.es.texi         Indices.es.texi       Number.es.texi         \
 Ctensor.es.texi          Input.es.texi         Numerical.es.texi      Symmetries.es.texi \
