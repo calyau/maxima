@@ -1,4 +1,4 @@
-@c version 1.29
+@c version 1.30
 @menu
 * Introducci@'on a la programaci@'on::  
 * Funciones y variables para la programaci@'on::  
@@ -352,6 +352,21 @@ no son todas del mismo tipo de objeto.
 Cuando @code{maperror} toma el valor @code{true} entonces se emite un mensaje de error cuando se presenta cualquiera de los dos casos anteriores.
 
 @end defvr
+
+
+
+@defvr {Variable opcional} mapprint
+Valor por defecto: @code{true}
+
+Si @code{mapprint} vale @code{true}, se producir@'an ciertos mensajes
+por parte de las funciones @code{map}, @code{mapl} y @code{fullmap}
+en determinadas situaciones, como cuando @code{map} hace uso de
+@code{apply}.
+
+Si @code{mapprint} vale @code{false}, no se emitir@'an tales mensajes.
+@end defvr
+
+
 
 @deffn {Funci@'on} maplist (@var{f}, @var{expr_1}, ..., @var{expr_n})
 Devuelve una lista con las aplicaciones de @var{f} a las partes de las expresiones @var{expr_1}, ..., @var{expr_n}; @var{f} es el nombre de una funci@'on ou una expresi@'on lambda.
