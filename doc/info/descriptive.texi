@@ -2063,7 +2063,6 @@ two or more components of a multivariate statistical variable.
 But it is also allowed @var{data} to be a list of samples with 
 possible different sample sizes, in fact this is the only function 
 in package @code{descriptive} that admits this type of data structure.
-Boxes width is controlled by global variable @code{boxplot_width}·
 
 Available options are:
 
