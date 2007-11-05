@@ -1,7 +1,7 @@
 @c Language=Russian
 @c Encoding=CP1251
 @c File=descriptive.texi 
-@c OriginalRevision=1.14
+@c OriginalRevision=1.16
 @c TranslatedBy: (c) 2007-07 Vadim V. Zhytnikov <vvzhyt@gmail.com>
 
 @menu
@@ -1826,15 +1826,6 @@ $${r_{ij.rest}}={-{{s^{ij}}\over \sqrt{s^{ii}s^{jj}}}}$$
 @section Функции и переменные для статистических графиков
 
 
-@defvr {Управляющая переменная} histogram_nclasses
-Значение по умолчанию: 10
-
-Число классов в гистограммах.
-
-См. также @code{histogram}.
-@end defvr
-
-
 @deffn {Функция} histogram (@var{list})
 @deffnx {Функция} histogram (@var{list}, @var{option_1}, @var{option_2}, ...)
 @deffnx {Функция} histogram (@var{one_column_matrix})
@@ -1843,8 +1834,15 @@ $${r_{ij.rest}}={-{{s^{ij}}\over \sqrt{s^{ii}s^{jj}}}}$$
 @deffnx {Функция} histogram (@var{one_row_matrix}, @var{option_1}, @var{option_2}, ...)
 Эта функция строит гистограмму для непрерывной выборки.
 Данные выборки должны быть представлены в виде списка или одномерной матрицы.
-Доступны опции, определенные в пакете @code{draw}.
-Число классов в гистограмме определяется глобальной переменной @code{histogram_nclasses}·
+
+Доступны следующие опции:
+
+@itemize @bullet
+@item
+Опции, определенные в пакете @code{draw}. См. также @code{bars} и @code{barsplot}.
+@item
+@var{nclasses} - число классов в гистограмме (10 по умолчанию).
+@end itemize
 
 Примеры:
 
@@ -1853,9 +1851,9 @@ $${r_{ij.rest}}={-{{s^{ij}}\over \sqrt{s^{ii}s^{jj}}}}$$
 @c ===beg===
 @c load (descriptive)$
 @c s1 : read_list (file_search ("pidigits.data"))$
-@c histogram_nclasses: 8 $
 @c histogram (
 @c      s1,
+@c      nclasses     = 8,
 @c      title        = "pi digits",
 @c      xlabel       = "digits",
 @c      ylabel       = "Absolute frequency",
@@ -1865,19 +1863,15 @@ $${r_{ij.rest}}={-{{s^{ij}}\over \sqrt{s^{ii}s^{jj}}}}$$
 @example
 (%i1) load (descriptive)$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
-(%i3) histogram_nclasses: 8 $
-(%i4) histogram (
+(%i3) histogram (
         s1,
+        nclasses     = 8,
         title        = "pi digits",
         xlabel       = "digits",
         ylabel       = "Absolute frequency",
         fill_color   = grey,
         fill_density = 0.6)$
 @end example
-
-См. @code{bars} по поводу опций, управляющих выводом гистограмм. 
-См. также @code{barsplot}.
-
 @end deffn
 
 
@@ -1888,7 +1882,15 @@ $${r_{ij.rest}}={-{{s^{ij}}\over \sqrt{s^{ii}s^{jj}}}}$$
 @deffnx {Функция} scatterplot (@var{matrix}, @var{option_1}, @var{option_2}, ...)
 Строит корреляционную диаграмму (scatter diagrams) для одномерной (@var{list}) или
 многомерной (@var{matrix}) выборки. 
-Доступны опции, определенные в пакете @code{draw}.
+
+Доступны следующие опции:
+
+@itemize @bullet
+@item
+Опции, определенные в пакете @code{draw}.
+@item
+@var{nclasses} - число классов в гистограмме (10 по умолчанию).
+@end itemize
 
 Примеры:
 
@@ -1953,13 +1955,14 @@ $${r_{ij.rest}}={-{{s^{ij}}\over \sqrt{s^{ii}s^{jj}}}}$$
 (%i3) scatterplot(submatrix (s2, 1,2))$
 @end example
 
-Пятимерная корреляционная диаграмма.
+Пятимерная корреляционная диаграмма, с гистограммой, содержащей пать классов.
 
 @c ===beg===
 @c load (descriptive)$
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c scatterplot(
 @c   s2,
+@c   nclasses     = 5,
 @c   fill_color   = blue,
 @c   fill_density = 0.3,
 @c   xtics        = 5)$
@@ -1969,6 +1972,7 @@ $${r_{ij.rest}}={-{{s^{ij}}\over \sqrt{s^{ii}s^{jj}}}}$$
 (%i2) s2 : read_matrix (file_search ("wind.data"))$
 (%i3) scatterplot(
         s2,
+        nclasses     = 5,
         fill_color   = blue,
         fill_density = 0.3,
         xtics        = 5)$
@@ -1982,16 +1986,6 @@ $${r_{ij.rest}}={-{{s^{ij}}\over \sqrt{s^{ii}s^{jj}}}}$$
 @end deffn
 
 
-@defvr {Управляющая переменная} barsplot_width
-Значение по умолчанию: @code{3/4}
-
-Относительная ширина прямоугольников в @code{barsplot}·
-
-См. также @code{barsplot}.
-@end defvr
-
-
-
 @deffn {Функция} barsplot (@var{list})
 @deffnx {Функция} barsplot (@var{list}, @var{option_1}, @var{option_2}, ...)
 @deffnx {Функция} barsplot (@var{one_column_matrix})
@@ -2000,27 +1994,36 @@ $${r_{ij.rest}}={-{{s^{ij}}\over \sqrt{s^{ii}s^{jj}}}}$$
 @deffnx {Функция} barsplot (@var{one_row_matrix}, @var{option_1}, @var{option_2}, ...)
 Аналогична @code{histogram} но для дискретных, численных или категоризированных,
 статистических переменных.
-Доступны опции, определенные в пакете @code{draw}.
-Ширина прямоугольников управляется глобальной переменной @code{barsplot_width}·
+
+Доступны следующие опции:
+
+@itemize @bullet
+@item
+Опции, определенные в пакете @code{draw}.
+@item
+@var{box_width} -- относительная ширина прямоугольников (@code{3/4} по умолчанию).
+Это число должно быть в интервале @code{[0,1]}.
+@end itemize
+
 
 Пример:
 
 @c ===beg===
 @c load (descriptive)$
 @c s3 : read_matrix (file_search ("biomed.data"))$
-@c barsplot_width: 1/2 $
 @c barsplot(col(s3,2),
 @c   title        = "Ages",
 @c   xlabel       = "years",
+@c   box_width    = 1/2,
 @c   fill_density = 0.3)$
 @c ===end===
 @example
 (%i1) load (descriptive)$
 (%i2) s3 : read_matrix (file_search ("biomed.data"))$
-(%i3) barsplot_width: 1/2 $
-(%i4) barsplot(col(s3,2),
+(%i3) barsplot(col(s3,2),
          title        = "Ages",
          xlabel       = "years",
+         box_width    = 1/2,
          fill_density = 0.3)$
 @end example
 
@@ -2030,24 +2033,6 @@ $${r_{ij.rest}}={-{{s^{ij}}\over \sqrt{s^{ii}s^{jj}}}}$$
 @end deffn
 
 
-@defvr {Управляющая переменная} piechart_center
-Значение по умолчанию: @code{[0,0]}
-
-Центр круговой диаграммы.
-
-См. также @code{piechart}.
-@end defvr
-
-
-@defvr {Управляющая переменная} piechart_radius
-Значение по умолчанию: 1
-
-Радиус круговой диаграммы.
-
-См. также @code{piechart}.
-@end defvr
-
-
 @deffn {Функция} piechart (@var{list})
 @deffnx {Функция} piechart (@var{list}, @var{option_1}, @var{option_2}, ...)
 @deffnx {Функция} piechart (@var{one_column_matrix})
@@ -2055,9 +2040,17 @@ $${r_{ij.rest}}={-{{s^{ij}}\over \sqrt{s^{ii}s^{jj}}}}$$
 @deffnx {Функция} piechart (@var{one_row_matrix})
 @deffnx {Функция} piechart (@var{one_row_matrix}, @var{option_1}, @var{option_2}, ...)
 Аналогична @code{barsplot}, но вместо прямоугольников строит сектора, т.е. круговую диаграмму.
-Доступны опции, определенные в пакете @code{draw}.
-Центр и радиус круговой диаграммы управляются переменными @code{piechart_center} 
-и @code{piechart_radius}.
+
+Доступны следующие опции:
+
+@itemize @bullet
+@item
+Опции, определенные в пакете @code{draw}.
+@item
+@var{pie_center} -- центр диаграммы (@code{[0,0]} по умолчанию).
+@item
+@var{pie_radius} -- радиус диаграммы (1 по умолчанию).
+@end itemize
 
 Пример:
 
@@ -2097,16 +2090,6 @@ $${r_{ij.rest}}={-{{s^{ij}}\over \sqrt{s^{ii}s^{jj}}}}$$
 @end deffn
 
 
-@defvr {Управляющая переменная} boxplot_width
-Значение по умолчанию: @code{3/4}
-
-Относительная ширина ящиков в @code{boxplot}.
-
-См. также @code{boxplot}.
-@end defvr
-
-
-
 @deffn {Функция} boxplot (@var{data})
 @deffnx {Функция} boxplot (@var{data}, @var{option_1}, @var{option_2}, ...)
 Эта функция строит диаграмму типа "ящик-с-усами" (box-and-whishker). 
@@ -2116,7 +2099,17 @@ $${r_{ij.rest}}={-{{s^{ij}}\over \sqrt{s^{ii}s^{jj}}}}$$
 компонент многомерной выборки.
 Но @var{data} также может быть списком выборок, возможно различной длины 
 (это единственная функция в пакете @code{descriptive}, которая допускает
-такой тип данных). Ширина ящиков управляется глобальной переменной @code{boxplot_width}·
+такой тип данных). 
+
+Доступны следующие опции:
+
+@itemize @bullet
+@item
+Опции, определенные в пакете @code{draw}.
+@item
+@var{box_width} - относительная ширина ящиков (@code{3/4} по умолчанию). 
+Это число должно быть в интервале @code{[0,1]}.
+@end itemize
 
 Примеры:
 
@@ -2125,8 +2118,8 @@ $${r_{ij.rest}}={-{{s^{ij}}\over \sqrt{s^{ii}s^{jj}}}}$$
 @c ===beg===
 @c load (descriptive)$
 @c s2 : read_matrix(file_search("wind.data"))$
-@c boxplot_width: 0.2 $
 @c boxplot(s2,
+@c   box_width  = 0.2,
 @c   title      = "Windspeed in knots",
 @c   xlabel     = "Stations",
 @c   color      = red,
@@ -2135,8 +2128,8 @@ $${r_{ij.rest}}={-{{s^{ij}}\over \sqrt{s^{ii}s^{jj}}}}$$
 @example
 (%i1) load (descriptive)$
 (%i2) s2 : read_matrix(file_search("wind.data"))$
-(%i3) boxplot_width: 0.2 $
-(%i4) boxplot(s2,
+(%i3) boxplot(s2,
+        box_width  = 0.2,
         title      = "Windspeed in knots",
         xlabel     = "Stations",
         color      = red,
