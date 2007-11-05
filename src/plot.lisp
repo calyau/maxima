@@ -1194,12 +1194,14 @@
              ($printfile view-file)
              (merror "Plot option `gnuplot_out_file' not defined."))))) 
     (if gnuplot-out-file
-        (format t "Output file \"~a\".~%" gnuplot-out-file-string))))
+	gnuplot-out-file-string
+	"")))
 
 (defun $plot2d (fun &optional range &rest options)
   (let (($numer t) ($display2d nil) ($float t) ($%enumer t)
         (*plot-realpart* *plot-realpart*)
-        ($plot_options $plot_options) (i 0) 
+        ($plot_options $plot_options) (i 0)
+	(output-file "")
         plot-format gnuplot-term gnuplot-out-file file plot-name
         log-x log-y xmin xmax ymin ymax styles style legend
         xlabel ylabel box)
@@ -1483,7 +1485,7 @@
     
     (case plot-format
       ($gnuplot 
-       (gnuplot-process file))
+       (setq output-file (gnuplot-process file)))
       ($gnuplot_pipes
        (send-gnuplot-command *gnuplot-command*))
       ($mgnuplot 
@@ -1492,7 +1494,7 @@
       ($xgraph
        ($system (format nil "xgraph -t 'Maxima Plot' < \"~a\" &" file)))
       )
-    ""))
+    output-file))
 
 ;;(defun maxima-bin-search (command)
 ;;  (or ($file_search command
@@ -1794,6 +1796,7 @@
                 plot-format gnuplot-term gnuplot-out-file file
                 orig-fun
                 const-expr
+		(output-file "")
                 )
   (declare (special *original-points*))
   (setf orig-fun fun)
@@ -1891,7 +1894,7 @@
                         (get-plot-option-string '$gnuplot_curve_styles 1)))
               (output-points pl (third grid)))
              ($gnuplot_pipes
-              (check-gnuplot-process)
+              (setq output-file (check-gnuplot-process))
               ($gnuplot_reset)
               (gnuplot-print-header *gnuplot-stream* :const-expr const-expr)
               (let ((title (get-plot-option-string '$gnuplot_curve_titles 1))
@@ -1990,7 +1993,7 @@
                               (format nil " -parametric3d \"~a\"" file)))
                    ))))
       ))
-  "")
+  output-file)
   
 
 #|
