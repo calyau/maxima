@@ -1,0 +1,53 @@
+(
+  kill(all),
+  load(solve_rec),
+  test_solve_rec(eq, res) := ratsimp(rhs(apply(solve_rec, eq))-res),
+  test_solve_rec_rat(eq, res) := ratsimp(rhs(apply(solve_rec_rat, eq))-res),
+  0
+);
+0;
+
+test_solve_rec(
+  [a[n]=n/(n+1)*a[n-1], a[n], a[1]=1],
+  2/(n+1));
+0;
+
+test_solve_rec(
+  [a[n]=n*a[n-1]/(n-2)+1, a[n]],
+  %k[1]*(n-1)*n+(n-2)*(n-1)/2);
+0;
+
+test_solve_rec(
+  [a[n]=3*a[n-1]-2*a[n-2]+(n^2-1)/4^n, a[n], a[1]=1, a[2]=1],
+  n^2/(21*4^n)+(104*n)/(441*4^n)+2531/(9261*4^n)+(443*2^(n-5))/343+337/432);
+0;
+
+test_solve_rec(
+  [a[n]=3*a[n-1]-3*a[n-2]+a[n-3]+n+n*2^n, a[n]],
+  8*n*2^n-24*2^n+n^4/24+n^3/4+%k[3]*n^2+%k[2]*n+%k[1]);
+0;
+
+test_solve_rec(
+  [9*(n+2)*s[n+2] - 3*(n+4)*s[n+1] - 2*(n+3)*s[n], s[n]],
+  %k[1]*(3*n+4)*2^n/3^n+%k[2]*(-1)^n/3^n);
+0;
+
+test_solve_rec(
+  [(n+3)*s[n+2]-3*(n+2)*s[n+1]+2*(n+1)*s[n],s[n]],
+  %k[1]*2^n/(n+1)+%k[2]/(n+1));
+0;
+
+test_solve_rec_rat(
+  [a[x+2]-2*(x+5)*(x-4)/((x+6)*(x-3))*a[x+1]+(x+4)*(x-5)/((x+6)*(x-3))*a[x], a[x]],
+  (%k[2]*x+%k[1])/((x-5)*(x+4)));
+0;
+
+test_solve_rec(
+  [y[x+1]*y[x] = y[x]-y[x+1]+2, y[x], y[1]=5],
+  ((sqrt(2)+1)^(x+1)+(1-sqrt(2))^(x+1)*(24*sqrt(2)+41)/23)
+  /((sqrt(2)+1)^x+(1-sqrt(2))^x*(24*sqrt(2)+41)/23)
+  -1);
+0;
+
+solve_rec(a[n+1]*a[n]+2*a[n]-n*a[n+1]-2*n, a[n]);
+[a[n] = n,a[n] = -2];

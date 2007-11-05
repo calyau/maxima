@@ -43,6 +43,7 @@ block
         rtestezunits,
         rtest_numericalio,
         rtest_simplify_sum,
+        rtest_solve_rec,
         rteststringproc,
         rtest_opproperties,
         rtest_stats,

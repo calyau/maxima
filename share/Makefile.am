@@ -425,6 +425,7 @@ contrib/solve_rec/simplify_sum_test.mac\
 contrib/solve_rec/rtest_simplify_sum.mac\
 contrib/solve_rec/solve_rec.mac\
 contrib/solve_rec/solve_rec.dem\
+contrib/solve_rec/rtest_solve_rec.mac\
 contrib/state/matrix2.mac\
 contrib/state/a.cir\
 contrib/state/b.cir\
