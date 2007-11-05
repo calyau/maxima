@@ -502,7 +502,7 @@ which returns an expression with the same main operator as @var{expr_i} has
 
 @c NEEDS CLARIFICATION
 @defvr {Option variable} prederror
-Default value: @code{true}
+Default value: @code{false}
 
 When @code{prederror} is @code{true}, an error message is displayed
 whenever the predicate of an @code{if} statement or an @code{is} function fails to
