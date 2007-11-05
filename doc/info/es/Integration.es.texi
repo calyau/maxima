@@ -1,4 +1,4 @@
-@c version 1.33
+@c version 1.34
 @menu
 * Introducci@'on a la integraci@'on::
 * Funciones y variables para integraci@'on::
@@ -305,13 +305,82 @@ El operador comilla-comilla @code{'@w{}'} hace que se eval@'ue la integral y su 
 
 @end deffn
 
+@defvr {Variable del sistema} integration_constant
+Valor por defecto: @code{%c}
+
+Cuando una constante de integraci@'on se crea durante la integraci@'on definida
+de una ecuaci@'on, el nombre de la constante se construye concatenando
+@code{integration_constant} y @code{integration_constant_counter}.
+
+A @code{integration_constant} se le puede asignar un s@'{@dotless{i}}mbolo cualquiera.
+
+Ejemplos:
+
+@c ===beg===
+@c integrate (x^2 = 1, x);
+@c integration_constant : 'k;
+@c integrate (x^2 = 1, x);
+@c ===end===
+@example
+(%i1) integrate (x^2 = 1, x);
+                           3
+                          x
+(%o1)                     -- = x + %c1
+                          3
+(%i2) integration_constant : 'k;
+(%o2)                           k
+(%i3) integrate (x^2 = 1, x);
+                            3
+                           x
+(%o3)                      -- = x + k2
+                           3
+@end example
+
+@end defvr
+
 @defvr {Variable del sistema} integration_constant_counter
 Valor por defecto: 0
 
-@c WHEN DOES integrationconstant1 SHOW UP IN THE OUTPUT OF integrate ???
-@c integrate (a, x) YIELDS "a x", NOT "a x + integrationconstant1" !!!
-La variable @code{integration_constant_counter} es un contador que se actualiza cada vez que se introduce una constante de integraci@'on en una expresi@'on como resultado de una integraci@'on indefinida.
+Cuando una constante de integraci@'on se crea durante la integraci@'on definida
+de una ecuaci@'on, el nombre de la constante se construye concatenando
+@code{integration_constant} y @code{integration_constant_counter}.
 
+La variable @code{integration_constant_counter} se incrementa antes de construir la
+constante de integraci@'on siguiente.
+
+Ejemplos:
+
+@c ===beg===
+@c integrate (x^2 = 1, x);
+@c integrate (x^2 = 1, x);
+@c integrate (x^2 = 1, x);
+@c reset (integration_constant_counter);
+@c integrate (x^2 = 1, x);
+@c ===end===
+@example
+(%i1) integrate (x^2 = 1, x);
+                           3
+                          x
+(%o1)                     -- = x + %c1
+                          3
+(%i2) integrate (x^2 = 1, x);
+                           3
+                          x
+(%o2)                     -- = x + %c2
+                          3
+(%i3) integrate (x^2 = 1, x);
+                           3
+                          x
+(%o3)                     -- = x + %c3
+                          3
+(%i4) reset (integration_constant_counter);
+(%o4)            [integration_constant_counter]
+(%i5) integrate (x^2 = 1, x);
+                           3
+                          x
+(%o5)                     -- = x + %c1
+                          3
+@end example
 @end defvr
 
 @defvr {Variable optativa} integrate_use_rootsof

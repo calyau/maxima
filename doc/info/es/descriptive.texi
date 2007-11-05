@@ -1,4 +1,4 @@
-@c english version: 1.15
+@c english version: 1.16
 @menu
 * Introducci@'on a descriptive::
 * Funciones y variables para el tratamiento de datos::
@@ -2033,7 +2033,6 @@ de manera que sea posible comparar dos o m@'as componentes de una muestra
 multivariante. Tambi@'en se permite que @var{data} sea una lista de muestras
 con posibles tama@~nos diferentes; de hecho, esta es la @'unica funci@'on
 del paquete @code{descriptive} que admite esta estructura de datos.
-Los anchos de las cajas se controlan con la variable global @code{boxplot_width}·
 
 Opciones disponibles:
 

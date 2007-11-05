@@ -1,4 +1,4 @@
-@c version 1.6
+@c version 1.7
 @menu
 * Introducci@'on a distrib::
 * Funciones y variables para distribuciones continuas::

@@ -1,4 +1,4 @@
-@c version 1.16
+@c version 1.19
 @menu
 * Introducci@'on a la trigonometr@'{@dotless{i}}a::  
 * Funciones y variables para trigonometr@'{@dotless{i}}a:: 
@@ -27,9 +27,20 @@ Valor por defecto: @code{true}
 
 Cuando @code{%piargs} vale @code{true}, las funciones trigonom@'etricas
 se simplifican a constantes algebraicas cuando el argumento es m@'ultiplo
-entero de @code{%pi}, @code{%pi/2}, @code{%pi/3}, @code{%pi/4} o @code{%pi/6}.
+entero de 
+@iftex
+@math{\pi}, @math{\pi/2}, @math{\pi/3}, @math{\pi/4} o @math{\pi/6}.
+@end iftex
+@ifnottex
+@math{%pi}, @math{%pi/2}, @math{%pi/3}, @math{%pi/4} o @math{%pi/6}.
+@end ifnottex
 
-Maxima conoce algunas identidades aplicables cuando @code{%pi}, etc., 
+@iftex
+Maxima conoce algunas identidades aplicables cuando @math{\pi}, etc.,
+@end iftex
+@ifnottex
+Maxima conoce algunas identidades aplicables cuando @math{%pi}, etc.,
+@end ifnottex
 se multiplican por una variable entera (esto es, un s@'{@dotless{i}}mbolo
 declarado como entero).
 
@@ -71,8 +82,12 @@ Ejemplo:
                 2    2                    3
 @end example
 
-Se aplican ciertas identidades cuando @code{%pi} o @code{%pi/2}
-se multiplican por una variable entera.
+@iftex
+Se aplican ciertas identidades cuando @math{\pi} o @math{\pi/2} se multiplican por una variable entera.
+@end iftex
+@ifnottex
+Se aplican ciertas identidades cuando @math{%pi} o @math{%pi/2} se multiplican por una variable entera.
+@end ifnottex
 
 @c ===beg===
 @c declare (n, integer, m, even);
@@ -92,12 +107,21 @@ se multiplican por una variable entera.
 Valor por defecto: @code{true}
 
 Cuando @code{%iargs} vale @code{true}, las funciones trigonom@'etricas
-se simplifican a funciones hiperb@'olicas si el argumento es aparentemente
-un m@'ultiplo de la unidad imaginaria @code{%i}.
+se simplifican a funciones hiperb@'olicas
+@iftex
+si el argumento es aparentemente un m@'ultiplo de la unidad imaginaria @math{i}.
+@end iftex
+@ifnottex
+si el argumento es aparentemente un m@'ultiplo de la unidad imaginaria @math{%i}.
+@end ifnottex
 
-Maxima aplica esta simplificaci@'on cuando el argumento es un
-m@'ultiplo literal de @code{%i}, aunque el resultado sea reducible a
-real.
+La simplificaci@'on se lleva a cabo incluso cuando el argumento es manifiestamente real;
+@iftex
+Maxima s@'olo se fija en si el argumento es un m@'ultiplo literal de @math{i}.
+@end iftex
+@ifnottex
+Maxima s@'olo se fija en si el argumento es un m@'ultiplo literal de @math{%i}.
+@end ifnottex
 
 Ejemplos:
 
@@ -241,7 +265,39 @@ Cosecante hiperb@'olica.
 
 @end deffn
 
-@c AQUI FALTA DEFINICION DE  halfangles
+
+@defvr {Variable opcional} halfangles
+Valor por defecto: @code{false}
+
+Si @code{halfangles} vale @code{true}, las funciones
+trigonom@'etricas con argumentos del tipo @code{@var{expr}/2}
+se simplifican a funciones con argumentos @var{expr}.
+
+Ejemplos:
+
+@c ===beg===
+@c halfangles : false;
+@c sin (x / 2);
+@c halfangles : true;
+@c sin (x / 2);
+@c ===end===
+@example
+(%i1) halfangles : false;
+(%o1)                         false
+(%i2) sin (x / 2);
+                                 x
+(%o2)                        sin(-)
+                                 2
+(%i3) halfangles : true;
+(%o3)                         true
+(%i4) sin (x / 2);
+                        sqrt(1 - cos(x))
+(%o4)                   ----------------
+                            sqrt(2)
+@end example
+
+@end defvr
+
 
 @defvr {Paquete} ntrig
 El paquete @code{ntrig} contiene un conjunto de reglas de simplificaci@'on que se pueden usar para simplificar funciones trigonom@'etricas cuyos argumentos son de la forma

@@ -1,4 +1,4 @@
-@c version 1.30
+@c version 1.31
 @menu
 * Introducci@'on a la programaci@'on::  
 * Funciones y variables para la programaci@'on::  
@@ -376,7 +376,7 @@ La funci@'on @code{maplist} difiere de @code{map (@var{f}, @var{expr_1}, ..., @v
 @end deffn
 
 @defvr {Variable opcional} prederror
-Valor por defecto: @code{true}
+Valor por defecto: @code{false}
 
 Cuando @code{prederror} toma el valor @code{true}, se emite un mensaje de error siempre que el predicado de una sentencia  @code{if} o de una funci@'on @code{is} no se pueda evaluar ni a verdadero (@code{true}) ni  a falso (@code{false}).
 

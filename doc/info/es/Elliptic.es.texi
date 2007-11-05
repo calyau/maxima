@@ -1,4 +1,4 @@
-@c version 1.9
+@c English version 1.10
 @menu
 * Introducci@'on a las funciones e integrales el@'{@dotless{i}}pticas::
 * Funciones y variables para funciones el@'{@dotless{i}}pticas::
@@ -30,13 +30,13 @@ Las funciones e integrales el@'{@dotless{i}}pticas en Maxima tienen como objetiv
 Sin embargo, la mayor@'{@dotless{i}}a de las propiedades no realacionadas con las derivadas de las funciones e integrales el@'{@dotless{i}}pticas  todav@'{@dotless{i}}a no han sido programadas en Maxima.
 
 Algunos ejemplos de funciones el@'{@dotless{i}}pticas:
-@c GENERATED FROM THE FOLLOWING
+@c ===beg===
 @c jacobi_sn (u, m);
 @c jacobi_sn (u, 1);
 @c jacobi_sn (u, 0);
 @c diff (jacobi_sn (u, m), u);
 @c diff (jacobi_sn (u, m), m);
-
+@c ===end===
 @example
 (%i1) jacobi_sn (u, m);
 (%o1)                    jacobi_sn(u, m)
@@ -60,7 +60,7 @@ Algunos ejemplos de funciones el@'{@dotless{i}}pticas:
 @end example
 
 Algunos ejemplos de integrales el@'{@dotless{i}}pticas:
-@c GENERATED FROM THE FOLLOWING
+@c ===beg===
 @c elliptic_f (phi, m);
 @c elliptic_f (phi, 0);
 @c elliptic_f (phi, 1);
@@ -70,7 +70,7 @@ Algunos ejemplos de integrales el@'{@dotless{i}}pticas:
 @c makegamma (%);
 @c diff (elliptic_f (phi, m), phi);
 @c diff (elliptic_f (phi, m), m);
-
+@c ===end===
 @example
 (%i1) elliptic_f (phi, m);
 (%o1)                  elliptic_f(phi, m)

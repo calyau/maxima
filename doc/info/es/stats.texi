@@ -1,4 +1,4 @@
-@c version 1.7
+@c version 1.8
 @menu
 * Introducci@'on a stats::
 * Funciones y variables para inference_result::
@@ -42,7 +42,7 @@ Para comentarios, errores o sugerencias, cont@'actese con el autor en
 @deffn {Funci@'on} inference_result (@var{title}, @var{values}, @var{numbers})
 
 Construye un objeto @code{inference_result} del tipo devuelto por las funciones
-estad@'{@dotless{i}}sticas. El argumento @var{title} es una cadena de Maxima con
+estad@'{@dotless{i}}sticas. El argumento @var{title} es una cadena con
 el nombre del procedimiento; @var{values} es una lista con elementos de la
 forma @code{symbol = value} y @var{numbers} es una lista con enteros positivos
 desde uno hasta @code{length(@var{values})}, que indican qu@'e valores ser@'an

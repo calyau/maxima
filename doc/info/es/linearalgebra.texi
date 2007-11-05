@@ -1,4 +1,4 @@
-@c english version 1.15
+@c english version 1.16
 @menu
 * Introducci@'on a linearalgebra::
 * Funciones y variables para linearalgebra::
@@ -375,12 +375,39 @@ n@'umero de elementos que @var{col}.
 
 @end deffn
 
-@deffn {Funci@'on} hessian (@var{f},@var{vars})
+@deffn {Funci@'on} hessian (@var{f}, @var{x})
 
-Devuelve la matriz hessiana de @var{f} con respecto de las variables de
-la lista @var{vars}. El elemento @var{i},@var{j}-@'esimo de la matriz
-hessiana es @var{diff(f vars[i],1,vars[j],1)}.
+Devuelve la matriz hessiana de @var{f} con respecto de la lista de variables
+@var{x}. El elemento @code{(i, j)}-@'esimo de la matriz
+hessiana es @code{diff(@var{f}, @var{x}[i], 1, @var{x}[j], 1)}.
 
+Ejemplos:
+
+@c ===beg===
+@c hessian (x * sin (y), [x, y]);
+@c depends (F, [a, b]);
+@c hessian (F, [a, b]);
+@c ===end===
+@example
+(%i1) hessian (x * sin (y), [x, y]);
+                     [   0       cos(y)   ]
+(%o1)                [                    ]
+                     [ cos(y)  - x sin(y) ]
+(%i2) depends (F, [a, b]);
+(%o2)                       [F(a, b)]
+(%i3) hessian (F, [a, b]);
+                        [   2      2   ]
+                        [  d F    d F  ]
+                        [  ---   ----- ]
+                        [    2   da db ]
+                        [  da          ]
+(%o3)                   [              ]
+                        [   2      2   ]
+                        [  d F    d F  ]
+                        [ -----   ---  ]
+                        [ da db     2  ]
+                        [         db   ]
+@end example
 @end deffn
 
 @deffn {Funci@'on} hilbert_matrix (@var{n})
@@ -413,6 +440,39 @@ Invierte la matriz @var{M} mediante la factorizaci@'on LU, la cual
 se hace utilizando el anillo @var{rng}.
 
 @end deffn
+
+
+@deffn {Funci@'on} jacobian (@var{f}, @var{x})
+
+Devuelve la matriz jacobiana de la lista de funciones @var{f} respecto
+de la lista de variables @var{x}. El elemento @code{(i, j)}-@'esimo de
+la matriz jacobiana es @code{diff(@var{f}[i], @var{x}[j])}.
+
+Ejemplos:
+
+@c ===beg===
+@c jacobian ([sin (u - v), sin (u * v)], [u, v]);
+@c depends ([F, G], [y, z]);
+@c jacobian ([F, G], [y, z]);
+@c ===end===
+@example
+(%i1) jacobian ([sin (u - v), sin (u * v)], [u, v]);
+                  [ cos(v - u)  - cos(v - u) ]
+(%o1)             [                          ]
+                  [ v cos(u v)   u cos(u v)  ]
+(%i2) depends ([F, G], [y, z]);
+(%o2)                  [F(y, z), G(y, z)]
+(%i3) jacobian ([F, G], [y, z]);
+                           [ dF  dF ]
+                           [ --  -- ]
+                           [ dy  dz ]
+(%o3)                      [        ]
+                           [ dG  dG ]
+                           [ --  -- ]
+                           [ dy  dz ]
+@end example
+@end deffn
+
 
 @deffn {Funci@'on} kronecker_product (@var{A}, @var{B})
 
