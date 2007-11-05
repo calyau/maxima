@@ -158,7 +158,7 @@ DOE Macsyma.  Копия DOE Macsyma поддерживалась профессором Вильямом
 * Пакет descriptive::             Описательная статистика.
 * Пакет diag::                    Жордановы матрицы.
 * Пакет distrib::                 Распределения вероятности.
-* draw::                          A Maxima-Gnuplot interface.
+* Пакет draw::                    Интерфейс Maxima к прогрпмме Gnuplot.
 * dynamics::                      Graphics for dynamical systems and fractals.
 * f90::                           Maxima to fortran translator.
 * ggf::                           Generating function of sequences.
@@ -436,12 +436,12 @@ Groups
 * Функции и переменные для непрерывных распределений::
 * Функции и переменные для дискретных распределений::
 
-draw
+Пакет draw
 
-* Introduction to draw::
-* Functions and Variables for draw::
-* Functions and Variables for pictures::
-* Functions and Variables for worldmap::
+* Введение в пакет draw::
+* Функции и переменные пакета draw::
+* Функции и переменные для изображений::
+* Функции и переменные для карты мира::
 
 dynamics
 
