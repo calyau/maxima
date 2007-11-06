@@ -82,9 +82,9 @@
 ;; For an example, see pretty-good-floor-or-ceiling. Code courtesy of Stavros Macrakis.
 
 (defmacro bind-fpprec (val &rest exprs)
-  `(let ($fpprec fpprec bigfloatzero bigfloatone bfhalf bfmhalf)
-     (fpprec1 nil ,val)
-     ,@exprs))
+  `(let (fpprec bigfloatzero bigfloatone bfhalf bfmhalf)
+     (let (($fpprec (fpprec1 nil ,val)))
+       ,@exprs)))
 
 ;; When constantp(x) is true, we use bfloat evaluation to try to determine
 ;; the ceiling or floor. If numerical evaluation of e is ill-conditioned, this function
