@@ -569,13 +569,13 @@ Examples:
 
 @example
 User     part       inpart
-a-b;      A - B     A + (- 1) B
+a-b;      a - b     a + (- 1) b
 
-           A            - 1
-a/b;       -         A B
-           B
+           a            - 1
+a/b;       -         a b
+           b
                        1/2
-sqrt(x);   sqrt(X)    X
+sqrt(x);   sqrt(x)    x
 
           4 X        4
 X*4/3;    ---        - X
