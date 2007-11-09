@@ -86,7 +86,7 @@ print("2. Proving Cartan's identities      12. Verifying Reissner-Nordstrom"),
 print("3. The Kaluza-Klein metric          13. Petrov classification of metrics"),
 print("4. The double divergence of R       14. Using a tetrad base"),
 print("5. Helicity in hydrodynamics        15. The Friedmann equations"),
-print("6. Magnetic field in plasma"),
+print("6. Magnetic field in plasma         16. Papapetrou's nonsymmetric metric"),
 print("7. Spinor algebra"),
 print("8. The EM field tensor"),
 print("9. The Hodge star operator"),
@@ -134,6 +134,7 @@ sel:read("Select an option by its number followed by a semicolon (;)"),
    )
    else if sel=14 then demo(tetrad)
    else if sel=15 then demo(friedmann)
+   else if sel=16 then demo(papapetrou)
    else if sel#X and sel#x then print("*** Invalid entry, please try again")
    else sel:0
 )

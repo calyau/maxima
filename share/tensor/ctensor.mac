@@ -300,15 +300,16 @@ cmetric([dis]):=if cframe_flag then tmetric(if dis#[] then dis[1] else false)
 (
   [],
   if length(lg)#dim or length(transpose(lg))#dim then
-    error("The rank of the metric is not equal to the dimension of the space")
-  else if not symmetricp(lg,dim) then
-    error("The metric tensor must be symmetric!"),
+    error("The rank of the metric is not equal to the dimension of the space"),
+/*  else if not symmetricp(lg,dim) then
+    error("The metric tensor must be symmetric!"),*/
 
   diagmetric:diagmatrixp(lg,dim),
   gdet:factor(determinant(lg)),
   ug:ident(length(first(lg))),
   if diagmetric then for ii:1 thru length(first(lg)) do ug[ii,ii]:1/lg[ii,ii]
-  else ug:block([detout:true],lg^^(-1)),
+  else ug:block([detout:true],transpose(lg^^(-1))),
+  if ratfac then ug:ratsimp(ug),
   if dis#[] and dis[1]#false then
     if yesp("Do you wish to see the metric inverse?") then ldisp(ug),
   ug:resimp(ug),
@@ -931,6 +932,8 @@ ct_coordsys(coordinate_system, [extra_args]):=
 trrc(disp):=block
 (
   [l,a,b,c,d],
+  if not symmetricp(_lg(),dim) then
+    error("Frame base calculations require a symmetric metric."),
   for a thru dim do for b thru dim do for c from b thru dim do
   if b=c then l[a,b,c]:0
   else
@@ -963,43 +966,93 @@ trrc(disp):=block
    rotation coefficients and place them in the arrays lcs[] and mcs[] */
 christof(dis):=block
 (
-  if cframe_flag then trrc(dis),
+  [symmmetric:symmetricp(_lg(),dim)],
+  if cframe_flag then
+  (
+    if not symmmetric then
+      error("Frame base calculations require a symmetric metric."),
+    trrc(dis)
+  ),
+  if (not symmmetric and dis = lcs) then
+    error("Christoffel symbols of the first kind require a symmetric metric"),
+  if (not symmmetric and ctorsion_flag) then
+    error("Torsion requires a symmetric metric"),
+  if (not symmmetric and cnonmet_flag) then
+    error("Nonmetricity requires a symmetric metric"),
   if ctorsion_flag and not member('kt,arrays) then contortion(tr),
   if cnonmet_flag and not member('nmc,arrays) then nonmetricity(nm),
-  for i thru dim do
+  if symmmetric then
   (
-    for j from i thru dim do
+    for i thru dim do
     (
-      if not cframe_flag then for k thru dim do
-        lcs[j,i,k]:lcs[i,j,k]:(diff(lg[j,k],ct_coords[i])
-          +diff(lg[i,k],ct_coords[j])-diff(lg[i,j],ct_coords[k]))/2,
-      for k thru dim do
+      for j from i thru dim do
       (
-        mcs[j,i,k]:mcs[i,j,k]:ctaylor
+        if not cframe_flag then for k thru dim do
         (
-          if diagmetric then ratsimp(_ug()[k,k]*lcs[i,j,k])
-          else sum(_ug()[k,l%]*lcs[i,j,l%],l%,1,dim)
+          lcs[i,j,k]:(diff(lg[j,k],ct_coords[i])
+            +diff(lg[k,i],ct_coords[j])-diff(lg[i,j],ct_coords[k]))/2,
+          lcs[j,i,k]:lcs[i,j,k]
         ),
-        if ratchristof then mcs[j,i,k]:mcs[i,j,k]:ratsimp(mcs[i,j,k]),
-        if ctorsion_flag then
+        for k thru dim do
         (
-          mcs[i,j,k]:mcs[i,j,k]-kt[i,j,k],
-          if j#i then mcs[j,i,k]:mcs[j,i,k]-kt[j,i,k]
-        ),
-        if cnonmet_flag then
-        (
-          mcs[i,j,k]:mcs[i,j,k]-nmc[i,j,k],
-          if j#i then mcs[j,i,k]:mcs[j,i,k]-nmc[j,i,k]
+          mcs[i,j,k]:ctaylor
+          (
+            if diagmetric then ratsimp(_ug()[k,k]*lcs[i,j,k])
+            else sum(_ug()[l%,k]*lcs[i,j,l%],l%,1,dim)
+          ),
+          if ratchristof then mcs[i,j,k]:ratsimp(mcs[i,j,k]),
+          mcs[j,i,k]:mcs[i,j,k],
+          if ctorsion_flag then
+          (
+            mcs[i,j,k]:mcs[i,j,k]-kt[i,j,k],
+            if j#i then mcs[j,i,k]:mcs[j,i,k]-kt[j,i,k]
+          ),
+          if cnonmet_flag then
+          (
+            mcs[i,j,k]:mcs[i,j,k]-nmc[i,j,k],
+            if j#i then mcs[j,i,k]:mcs[j,i,k]-nmc[j,i,k]
+          )
         )
       )
     )
+  )
+  else block
+  (
+    /* This is a direct solution of the field equations,
+       g_{ab,c}-g_{bd}Gamma^d_{ac}-g_{dc}Gamma^d_{ba}=0.
+       See, e.g., Moffat & Boal, Phys Rev D V11 N6 p1375, Eq 2.5 */
+    [_mcs:zeromatrix(dim^3,dim^3),_ucs,_abc,_gam,a,b,c,d],
+    for a thru dim do
+      for b thru dim do
+        for c thru dim do
+          for d thru dim do
+    (
+      _mcs[(a-1)*dim^2+(b-1)*dim+c,(a-1)*dim^2+(c-1)*dim+d]:_mcs[(a-1)*dim^2+(b-1)*dim+c,(a-1)*dim^2+(c-1)*dim+d]+lg[b,d],
+      _mcs[(a-1)*dim^2+(b-1)*dim+c,(b-1)*dim^2+(a-1)*dim+d]:_mcs[(a-1)*dim^2+(b-1)*dim+c,(b-1)*dim^2+(a-1)*dim+d]+lg[d,c]
+    ),
+    _ucs:_mcs^^(-1),
+    if ratchristof then _ucs:ratsimp(_ucs),
+    _abc:zeromatrix(dim^3,1),
+    for a thru dim do
+      for b thru dim do
+        for c thru dim do
+    (
+      _abc[(a-1)*dim^2+(b-1)*dim+c,1]:diff(lg[b,c],ct_coords[a]),
+      if ratchristof then _abc[(a-1)*dim^2+(b-1)*dim+c,1]:ratsimp(_abc[(a-1)*dim^2+(b-1)*dim+c,1])
+    ),
+    _gam:_ucs._abc,
+    if ratchristof then _gam:ratsimp(_gam),
+    for a thru dim do
+      for b thru dim do
+        for c thru dim do
+      mcs[a,b,c]:_gam[(a-1)*dim^2+(b-1)*dim+c][1]
   ),
   if dis = all or dis = lcs then for i thru dim do
-    for j:i thru dim do
+    for j from i thru dim do
       for k thru dim do
         if lcs[i,j,k]#0 then ldisplay(lcs[i,j,k]),
   if dis = mcs or dis = all then for i thru dim do
-    for j:i thru dim do
+    for j from (if symmmetric then i else 1) thru dim do
       for k thru dim do
         if mcs[i,j,k]#0 then ldisplay(mcs[i,j,k]),
   done
@@ -1010,6 +1063,8 @@ christof(dis):=block
 tricci(disp):=block
 (
   [df],
+  if not symmetricp(_lg(),dim) then
+    error("Frame base calculations require a symmetric metric."),
   if not member('lriem,arrays) then triemann(false),
   kill(ric),
   df:true,
@@ -1035,28 +1090,38 @@ tricci(disp):=block
    second kind are used. */
 ricci(dis):=if cframe_flag then tricci(dis) else block
 (
-  [suma,sumb,flat:true],
+  [suma,sumb,flat:true,symmmetric:symmetricp(_lg(),dim)],
   modedeclare(flat,boolean),
   if not member('mcs,arrays) then christof(false),
-  for i thru dim do
+  if symmmetric then for i thru dim do
   (
     for j from i thru dim do
     (
       suma:0,sumb:0,
       for k thru dim do
       (
-        if k#i then suma:suma+(diff(mcs[i,j,k],ct_coords[k])
+        if k#i then suma:suma+(diff(mcs[j,i,k],ct_coords[k])
                                -diff(mcs[j,k,k],ct_coords[i])),
-        sumb:sumb+sum(mcs[k,l%,k]*mcs[i,j,l%]-mcs[i,k,l%]*mcs[j,l%,k],l%,1,dim)
+        sumb:sumb+sum(mcs[l%,k,k]*mcs[i,j,l%]-mcs[k,i,l%]*mcs[j,l%,k],l%,1,dim)
       ),
       ric[i,j]:ctaylor(suma+sumb),
       if ratfac then ric[i,j]:factor(ctaylor(ratsimp(ric[i,j]))),
       ric[j,i]:ric[i,j]
     )
+  )
+  else
+  (
+    for m thru dim do for n thru dim do
+      ric[m,n]:ctaylor(sum(diff(mcs[m,n,a],ct_coords[a])-
+                               (diff(mcs[m,a,a]+mcs[a,m,a],ct_coords[n])+
+                                diff(mcs[n,a,a]+mcs[a,n,a],ct_coords[m]))/4+
+                       sum(-mcs[m,o,a]*mcs[a,n,o]+mcs[m,n,a]*mcs[a,o,o],o,1,dim)
+                      ,a,1,dim)),
+      if ratfac then ric[i,j]:factor(ctaylor(ratsimp(ric[i,j])))
   ),
   if dis#false then
   (
-    for i thru dim do for j from i thru dim do if ric[i,j]#0 then
+    for i thru dim do for j from (if symmmetric then i else 1) thru dim do if ric[i,j]#0 then
     (
       flat:false,
       ldisplay(ric[i,j])
@@ -1192,6 +1257,8 @@ else block
 triemann(disp):=block
 (
   [df],
+  if not symmetricp(_lg(),dim) then
+    error("Frame base calculations require a symmetric metric."),
   if not member('lcs,arrays) then trrc(false),
   kill(lriem),
   df:true,
@@ -1225,6 +1292,7 @@ triemann(disp):=block
 /* This function computes the covariant Riemann tensor */
 lriemann(dis):=if cframe_flag then triemann(dis) else block
 (
+  [symmmetric:symmetricp(_lg(),dim)],
   if not member('riem,arrays) then riemann(false),
   for i thru dim do
     for j thru dim do
@@ -1232,17 +1300,20 @@ lriemann(dis):=if cframe_flag then triemann(dis) else block
         for l thru dim do lriem[i,j,k,l]:0,
   for i thru dim do
     for j thru dim do
-      for k thru j do
-        for l thru i do
+      for k thru (if symmmetric then j else dim) do
+        for l thru (if symmmetric then i else dim) do
   (
     lriem[i,j,k,l] : if diagmetric then ratsimp(riem[i,j,k,l]*lg[l,l])
                      else sum(riem[i,j,k,m%]*lg[m%,l], m%, 1, dim),
     if ratriemann then lriem[i,j,k,l] : ratsimp(lriem[i,j,k,l]),
-    if j # k then lriem[i,k,j,l] : -lriem[i,j,k,l],
-    if l # i then
+    if symmmetric then
     (
-      lriem[l,j,k,i] : -lriem[i,j,k,l],
-      if j # k then lriem[l,k,j,i] : lriem[i,j,k,l]
+      if j # k then lriem[i,k,j,l] : -lriem[i,j,k,l],
+      if l # i then
+      (
+        lriem[l,j,k,i] : -lriem[i,j,k,l],
+        if j # k then lriem[l,k,j,i] : lriem[i,j,k,l]
+      )
     ),
     if dis#false and lriem[i,j,k,l] # 0 then ldisplay(lriem[i,j,k,l])
   ),
@@ -1252,6 +1323,7 @@ lriemann(dis):=if cframe_flag then triemann(dis) else block
 /* This function computes the contravariant Riemann tensor */
 uriemann(dis):=block
 (
+  [symmmetric:symmetricp(_lg(),dim)],
   if not member('riem,arrays) then riemann(false),
   for i thru dim do
     for j thru dim do
@@ -1259,8 +1331,8 @@ uriemann(dis):=block
         for l thru dim do uriem[i,j,k,l]:0,
   for i thru dim do
     for j thru dim do
-      for k thru j do
-        for l thru i do
+      for k thru (if symmmetric then j else dim) do
+        for l thru (if symmmetric then i else dim) do
   (
     uriem[i,j,k,l] : if diagmetric then
                       ratsimp(riem[i,j,k,l]*_ug()[i,i]*_ug()[j,j]*_ug()[k,k])
@@ -1268,11 +1340,14 @@ uriemann(dis):=block
                            riem[m%,n%,o%,l]*_ug()[i,m%]*_ug()[j,n%]*_ug()[k,o%],
                            m%, 1, dim), n%, 1, dim), o%, 1, dim),
     if ratriemann then uriem[i,j,k,l] : ratsimp(uriem[i,j,k,l]),
-    if j # k then uriem[i,k,j,l] : -uriem[i,j,k,l],
-    if l # i then
+    if symmmetric then
     (
-      uriem[l,j,k,i] : -uriem[i,j,k,l],
-      if j # k then uriem[l,k,j,i] : uriem[i,j,k,l]
+      if j # k then uriem[i,k,j,l] : -uriem[i,j,k,l],
+      if l # i then
+      (
+        uriem[l,j,k,i] : -uriem[i,j,k,l],
+        if j # k then uriem[l,k,j,i] : uriem[i,j,k,l]
+      )
     ),
     if dis#false and uriem[i,j,k,l] # 0 then ldisplay(uriem[i,j,k,l])
   ),
@@ -1287,7 +1362,7 @@ rinvariant():=kinvariant:sum(sum(sum(sum(lriem[i%,j%,k%,l%]*uriem[i%,j%,k%,l%],
    for index ordering. */
 weyl(dis):=block
 (
-  [flat:true],
+  [flat:true,symmmetric:symmetricp(_lg(),dim)],
   modedeclare(flat,boolean),
   if dim=2 then
   (
@@ -1305,9 +1380,9 @@ weyl(dis):=block
       for k thru dim do
         for l thru dim do weyl[i,j,k,l]:0,
   for i thru dim do
-    for j from i+1 thru dim do
-      for k from i thru dim do
-        for l from k+1 thru (if k=i then j else dim) do
+    for j from (if symmmetric then i+1 else 1) thru dim do
+      for k from (if symmmetric then i else 1) thru dim do
+        for l from (if symmmetric then k+1 else 1) thru (if (symmmetric and k=i) then j else dim) do
   (
     weyl[l,j,i,k]:ctaylor(lriem[l,j,i,k]+
                           1/(dim-2)*(_lg()[i,l]*ric[j,k]-_lg()[i,k]*ric[l,j]
@@ -1317,12 +1392,15 @@ weyl(dis):=block
                          ),
     if ratfac then weyl[l,j,i,k]:factor(ratsimp(weyl[l,j,i,k]))
     else if ratweyl then weyl[l,j,i,k]:ratsimp(weyl[l,j,i,k]),
-    weyl[k,i,j,l]:weyl[l,j,i,k],
-    weyl[k,j,i,l]:weyl[l,i,j,k]:-weyl[l,j,i,k],
-    if i#k or j>l then
+    if symmmetric then
     (
-      weyl[j,l,k,i]:weyl[i,k,l,j]:weyl[l,j,i,k],
-      weyl[j,k,l,i]:weyl[i,l,k,j]:-weyl[l,j,i,k]
+      weyl[k,i,j,l]:weyl[l,j,i,k],
+      weyl[k,j,i,l]:weyl[l,i,j,k]:-weyl[l,j,i,k],
+      if i#k or j>l then
+      (
+        weyl[j,l,k,i]:weyl[i,k,l,j]:weyl[l,j,i,k],
+        weyl[j,k,l,i]:weyl[i,l,k,j]:-weyl[l,j,i,k]
+      )
     ),
     if dis#false and weyl[l,j,i,k]#0 then
     (
