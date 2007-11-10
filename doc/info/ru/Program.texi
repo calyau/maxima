@@ -1,7 +1,7 @@
 @c Language=Russian
 @c Encoding=CP1251
 @c File=Program.texi 
-@c OriginalRevision=1.30
+@c OriginalRevision=1.31
 @c TranslatedBy: (c) 2007-06 Vadim V. Zhytnikov <vvzhyt@gmail.com>
 
 @menu
@@ -500,7 +500,7 @@ map (@var{f}, @var{expr_1}, @var{expr_2}, ...)
 
 @c NEEDS CLARIFICATION
 @defvr {Управляющая переменная} prederror
-Значение по умолчанию: @code{true}
+Значение по умолчанию: @code{false}
 
 Если @code{prederror} равна @code{true}, то ошибка случается всякий раз, как только
 вычисленное значение предиката команды @code{if} или функции @code{is} отлично от 
