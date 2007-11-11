@@ -14,7 +14,7 @@
 An @code{nary} operator is used to denote a function of any number of
 arguments, each of which is separated by an occurrence of the
 operator, e.g. A+B or A+B+C.  The @code{nary("x")} function is a syntax
-extension function to declare x to be an @code{nary} operator.
+extension function to declare @code{x} to be an @code{nary} operator.
 Functions may be declared to be
 @code{nary}.  If @code{declare(j,nary);} is done, this tells the simplifier to
 simplify, e.g. @code{j(j(a,b),j(c,d))} to @code{j(a, b, c, d)}.
@@ -28,7 +28,7 @@ The mere presence of such an operator in a command will cause the
 corresponding function to be evaluated.  For example, when one types
 "exit;" to exit from a Maxima break, "exit" is behaving similar to a
 @code{nofix} operator.  The function @code{nofix("x")} is a syntax extension
-function which declares x to be a @code{nofix} operator. 
+function which declares @code{x} to be a @code{nofix} operator. 
 
 See also @code{syntax}.
 
@@ -37,7 +37,7 @@ See also @code{syntax}.
 @code{postfix} operators like the @code{prefix} variety denote functions
 of a single argument, but in this case the argument immediately
 precedes an occurrence of the operator in the input string, e.g. 3! .
-The @code{postfix("x")} function is a syntax extension function to declare x
+The @code{postfix("x")} function is a syntax extension function to declare @code{x}
 to be a @code{postfix} operator.
 
 See also @code{syntax}.
@@ -46,7 +46,7 @@ See also @code{syntax}.
 @section prefix
 A @code{prefix} operator is one which signifies a function of one
 argument, which argument immediately follows an occurrence of the
-operator.  @code{prefix("x")} is a syntax extension function to declare x to
+operator.  @code{prefix("x")} is a syntax extension function to declare @code{x} to
 be a @code{prefix} operator.
 
 See also @code{syntax}.
@@ -509,8 +509,8 @@ Examples:
 @fnindex Noncommutative multiplication
 @end ifinfo
 The dot operator, for matrix (non-commutative) multiplication.
-When "." is used in this way, spaces should be left on both sides of
-it, e.g. A . B.  This distinguishes it plainly from a decimal point in
+When @code{"."} is used in this way, spaces should be left on both sides of
+it, e.g. @code{A . B}.  This distinguishes it plainly from a decimal point in
 a floating point number.
 
 See also
@@ -532,7 +532,7 @@ and
 @ifinfo
 @fnindex Assignment operator
 @end ifinfo
-The assignment operator.  E.g. A:3 sets the variable A to 3.
+The assignment operator.  E.g. @code{A:3} sets the variable @code{A} to @code{3}.
 
 @end deffn
 
@@ -540,7 +540,7 @@ The assignment operator.  E.g. A:3 sets the variable A to 3.
 @ifinfo
 @fnindex Assignment operator (evaluates left-hand side)
 @end ifinfo
-Assignment operator.  :: assigns the value of the expression
+Assignment operator.  @code{::} assigns the value of the expression
 on its right to the value of the quantity on its left, which must
 evaluate to an atomic variable or subscripted variable.
 
@@ -1150,7 +1150,7 @@ simplify to @code{h(x, y, z)}.  This is the same as @code{symmetric}.
 
 Return a comparison operator @var{op}
 (@code{<}, @code{<=}, @code{>}, @code{>=}, @code{=}, or @code{#}) such that
-@code{is (@var{x} @var{op} @var{y})} evaluates to true;
+@code{is (@var{x} @var{op} @var{y})} evaluates to @code{true};
 when either @var{x} or @var{y} depends on @code{%i} and
 @code{@var{x} # @var{y}}, return @code{notcomparable};
 when there is no such operator or
@@ -1192,6 +1192,7 @@ its arguments are nonempty; thus
 (%o1)                           <
 @end example
 
+@c IT IS NOT QUITE TRUE, WHAT ABOUT x=0 ?
 The real domain of @code{acos (x^2 + 1)} is empty.
 
 @end deffn
@@ -1360,7 +1361,7 @@ is less than or equal to @var{x}.
 
 If @var{x} is a constant expression (@code{10 * %pi}, for example), 
 @code{floor} evaluates @var{x} using big floating point numbers, and 
-applies floor to the resulting big float. Because floor uses
+applies @code{floor} to the resulting big float. Because @code{floor} uses
 floating point evaluation, it's possible, although unlikely, 
 that @code{floor} could return  an erroneous value for constant 
 inputs.  To guard against errors, the floating point evaluation
@@ -2094,7 +2095,9 @@ Example:
 @end deffn
 
 @defvr {Option variable} sublis_apply_lambda
-Default value: @code{true} - controls whether @code{lambda}'s
+Default value: @code{true}
+
+Controls whether @code{lambda}'s
 substituted are applied in simplification after @code{sublis} is used or
 whether you have to do an @code{ev} to get things to apply. @code{true} means do the
 application.
@@ -2177,7 +2180,7 @@ Examples:
 (%o3)                       f1(x + 1)
 @end example
 
-If the last argument to a part function is a list of indices then
+If the last argument to a @code{part} function is a list of indices then
 several subexpressions are picked out, each one corresponding to an
 index of the list.  Thus
 
@@ -2190,7 +2193,7 @@ index of the list.  Thus
 @end example
 
 @code{piece} holds the value of the last expression selected when using the
-part functions.  It is set during the execution of the function and
+@code{part} functions.  It is set during the execution of the function and
 thus may be referred to in the function itself as shown below.
 If @code{partswitch} is set to @code{true} then @code{end} is returned when a
 selected part of an expression doesn't exist, otherwise an error
