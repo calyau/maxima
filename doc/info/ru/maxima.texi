@@ -96,7 +96,7 @@ DOE Macsyma.  Копия DOE Macsyma поддерживалась профессором Вильямом
                                      об ошибках в Maxima.
 * Справка::                          Справочная система в сессии Maxima.
 * Командная строка::                 Синтаксис командной строки Maxima.
-* Operators::                        Operators used in Maxima expressions.
+* Операторы::                        Операторы, используемые в выражениях Maxima.
 * Expressions::                      Expressions in Maxima.
 * Simplification::                   Simplifying expressions.
 * Plotting::                         2D and 3D graphical output.
@@ -211,15 +211,15 @@ DOE Macsyma.  Копия DOE Macsyma поддерживалась профессором Вильямом
 * Введение в командную строку::  
 * Функции и переменные для работы в командной строке::  
 
-Operators
+Операторы
 
-* nary::                        
-* nofix::                       
-* postfix::                     
-* prefix::                      
-* Arithmetic operators::    
-* Relational operators::   
-* General operators::
+* Операторы nary::                        
+* Операторы nofix::                       
+* Операторы postfix::                     
+* Операторы prefix::                      
+* Арифметические операторы::   
+* Операторы сравнения::   
+* Общие операторы::   
 
 Expressions
 
