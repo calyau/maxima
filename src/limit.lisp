@@ -302,8 +302,8 @@ It appears in LIMIT and DEFINT.......")
     (let ((la ($limit exp var val '$plus))
 	  (lb ($limit exp var val '$minus)))
       (cond ((alike1 (ridofab la) (ridofab lb))  (ridofab la))
-	    ((and (not (free la '%limit))
-		  (not (free la '%limit)))  ())
+	    ((or (not (free la '%limit))
+		 (not (free lb '%limit)))  ())
 	    (t '$und)))))
 
 ;; Warning:  (CATCH NIL ...) will catch all throws.
@@ -675,8 +675,7 @@ It appears in LIMIT and DEFINT.......")
 					((equal d1 0) '$und)
 					(t '$ind)))) ;SET LB
 	   ((and (real-infinityp d1) (member n1 '($inf $und $minf) :test #'eq))
-	    (cond ((expfactorp n dn)  (return (expfactor n dn var)))
-		  ((and (not (atom dn)) (not (atom n))
+	    (cond ((and (not (atom dn)) (not (atom n))
 			(cond ((not (equal (setq gcp (gcpower n dn)) 1))
 			       (return (colexpt n dn gcp)))
 			      ((and (eq '$inf val)
@@ -693,13 +692,13 @@ It appears in LIMIT and DEFINT.......")
      (cond ((mplusp n)
 	    (let ((new-n (m+l (maxi (cdr n)))))
 	      (cond ((not (alike1 new-n n))
-		     (return (limit (m// new-n dn) var '$inf 'think))))
+		     (return (limit (m// new-n dn) var val 'think))))
 	      (setq n1 new-n)))
 	   (t (setq n1 n)))
      (cond ((mplusp dn)
 	    (let ((new-dn (m+l (maxi (cdr dn)))))
 	      (cond ((not (alike1 new-dn dn))
-		     (return (limit (m// n new-dn) var '$inf 'think))))
+		     (return (limit (m// n new-dn) var val 'think))))
 	      (setq d1 new-dn)))
 	   (t (setq d1 dn)))
      (setq sheur-ans (sheur0 n1 d1))
@@ -727,50 +726,49 @@ It appears in LIMIT and DEFINT.......")
 	    (return n1)))
      (throw 'limit t)))
 
+;; Test whether both n and dn have form
+;; product of poly^poly
 (defun expfactorp (n dn)
   (do ((llist (append (cond ((mtimesp n) (cdr n))
 			    (t (ncons n)))
 		      (cond ((mtimesp dn) (cdr dn))
 			    (t (ncons dn))))
 	      (cdr llist))
-       (ratexp? t)		  ;IS EVERY ELEMENT SO FAR A POLY^RAT?
-       (one-rat? nil)	  ;IS THERE AT LEAST ONE POLY^RAT WHICH IS NOT
+       (exp? t)		  ;IS EVERY ELEMENT SO FAR
        (factor nil))			;A POLY^POLY?
       ((or (null llist)
-	   (not ratexp?))
-       (and ratexp? one-rat?))
+	   (not exp?))
+       exp?)
     (setq factor (car llist))
-    (setq ratexp? (or (polyp factor)
-		      (and (mexptp factor)
-			   (polyp (cadr factor))
-			   (ratp (caddr factor) var))))
-    (setq one-rat? (or one-rat?
-		       (and (mexptp factor)
-			    (ratp (caddr factor) var)
-			    (not (polyp (caddr factor))))))))
+    (setq exp? (or (polyinx factor var ())
+		   (and (mexptp factor)
+			(polyinx (cadr factor) var ())
+			(polyinx (caddr factor) var ()))))))
 
-(defun expfactor (n dn var)	;ATTEMPS TO EVALUATE LIMIT BY GROUPING
-  (prog (highest-deg)		       ; TERMS WITH SIMILAR EXPONENTS.
-     (let ((new-exp (exppoly n)))	;EXPPOLY UNRATS EXPON
-       (setq n (car new-exp)		;AND RTNS DEG OF EXPONS
+(defun expfactor (n dn var)	;Attempts to evaluate limit by grouping
+  (prog (highest-deg)		       ; terms with similar exponents.
+     (let ((new-exp (exppoly n)))	;exppoly unrats expon
+       (setq n (car new-exp)		;and rtns deg of expons
 	     highest-deg (cdr new-exp)))
-     (cond ((null n) (return nil)))	;NIL MEANS EXPON IS NOT
-     (let ((new-exp (exppoly dn)))	;A RAT FUNC.
+     (cond ((null n) (return nil)))	;nil means expon is not
+     (let ((new-exp (exppoly dn)))	;a rat func.
        (setq dn (car new-exp)
 	     highest-deg (max highest-deg (cdr new-exp))))
-     (cond ((null dn) (return nil)))
+     (cond ((or (null dn)
+		(= highest-deg 0))	; prevent infinite recursion
+	    (return nil)))
      (return
        (do ((answer 1)
 	    (degree highest-deg (1- degree))
 	    (numerator n)
-	    (denomenator dn)
+	    (denominator dn)
 	    (numfactors nil)
 	    (denfactors nil))
 	   ((= degree -1)
 	    (m* answer
-		(limit (m// numerator denomenator)
+		(limit (m// numerator denominator)
 		       var
-		       '$inf
+		       val
 		       'think)))
 	 (let ((newnumer-factor (get-newexp&factors
 				 numerator
@@ -779,21 +777,22 @@ It appears in LIMIT and DEFINT.......")
 	   (setq numerator (car newnumer-factor)
 		 numfactors (cdr newnumer-factor)))
 	 (let ((newdenom-factor (get-newexp&factors
-				 denomenator
+				 denominator
 				 degree
 				 var)))
-	   (setq denomenator (car newdenom-factor)
+	   (setq denominator (car newdenom-factor)
 		 denfactors (cdr newdenom-factor)))
-	 (setq answer (limit (m^ (m* answer
-				     (m// numfactors denfactors))
-				 (cond ((> degree 0) var)
-				       (t 1)))
-			     var
-			     '$inf 'think))
-	 (cond ((eq answer '$und) (return nil))
+	 (setq answer (simplimit (list '(mexpt)
+				       (m* answer
+					   (m// numfactors denfactors))
+				       (cond ((> degree 0) var)
+					     (t 1)))
+				 var
+				 val))
+	 (cond ((member answer '($ind $und) :test #'equal)
+		(return nil))
 	       ((member answer '($inf $minf 0) :test #'equal) ;Really? ZEROA ZEROB?
-		(return answer))
-	       (t nil))))))
+		(return answer)))))))
 
 (defun exppoly (exp)	   ;RETURNS EXPRESSION WITH UNRATTED EXPONENTS
   (do ((factor nil)
@@ -963,7 +962,7 @@ It appears in LIMIT and DEFINT.......")
 			  (t ans))))
 	   (t (return ans)))))
 
-;;;returns (cons numerator denomenator)
+;;;returns (cons numerator denominator)
 (defun numden* (e)
   (let ((e (factor (simplify e)))
 	(numer ())  (denom ()))
@@ -1049,7 +1048,7 @@ It appears in LIMIT and DEFINT.......")
 			    (limroot x power))
 			(cdr exp))))))
 
-;;NUMERATOR AND DENOMENATOR HAVE EXPONENTS WITH GCD OF GCP.
+;;NUMERATOR AND DENOMINATOR HAVE EXPONENTS WITH GCD OF GCP.
 ;;; Used to call simplimit but some of the transformations used here
 ;;; were not stable w.r.t. the simplifier, so try keeping exponent separate
 ;;; from bas.
@@ -1701,6 +1700,13 @@ It appears in LIMIT and DEFINT.......")
 
 (defun simplimtimes (exp)
   (prog (sign prod y num denom flag zf flag2 exp1)
+     (if (expfactorp (cons '(mtimes) exp) 1)
+	 ;; handles        (-1)^x * 2^x => (-2)^x => $infinity
+	 ;; want to avoid  (-1)^x * 2^x => $ind * $inf => $und
+	 (let ((ans (expfactor (cons '(mtimes) exp) 1 var)))
+	   (if ans
+	       (return ans))))
+	
      (setq prod (setq num (setq denom 1)) exp1 exp)
      loop
      (setq y (let ((loginprod? (involve (car exp1) '(%log))))
@@ -2035,7 +2041,7 @@ It appears in LIMIT and DEFINT.......")
 		(or (equal ($radcan (m// (cadr ans) (cadr d))) 1.)
 		    (and (polyp (cadr ans))
 			 (polyp (cadr d))
-			 (equal (limit (m// (cadr ans) (cadr d)) var '$inf 'think)
+			 (equal (limit (m// (cadr ans) (cadr d)) var val 'think)
 				1.))))
 	   (let ((new-term1 (m// t1 (cadr ans)))
 		 (new-term2 (m// t2 (cadr d))))

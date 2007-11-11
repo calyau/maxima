@@ -301,6 +301,9 @@ ind;
 limit((-2/3)^x,x,inf);
 0;
 
+limit((-1/%pi)^x,x,inf);
+0;
+
 tlimit(exp(%i*t), t, inf);
 ind;
 
@@ -315,8 +318,42 @@ limit((((1+1/x)^(x^2))+1)^(1/x),x,inf);
 limit(1/n * n!^(1/n), n, inf);
 %e^-1;
 
+/* it would be nice to handle these someday
+  limit(t*(erf((t))-1),t,inf);
+  0;
+
+  limit(n - exp(psi[0](n)), n, inf);
+  1/2;
+*/
+
 limit(x*gamma(x), x, 0);
 1;
+
+/* [ 744679 ] limit overflows memory? */
+(assume(x>1), limit((x^(1/n)+1)^n/2^n, n, inf));
+'sqrt(x);
+
+/* [ 702512 ] limit(1/(1/a*2^(%i*a)+1),a,inf) =&gt; UND */
+limit(1/(1/a*2^(%i*a)+1),a,inf);
+1;
+
+/* [ 923407 ] limit(atan(sqrt(x))/sqrt(x),x,0) wrong */
+limit(atan(sqrt(x))/sqrt(x),x,0);
+1;
+
+/* [ 1102908 ] limit/atan/exp returns complex expr with wrong principal val */
+limit(atan(x)/(1/exp(1)-exp(-(1+x)^2)),x,inf,plus);
+%e*%pi/2;
+
+limit( (3^(1/x) + 5^(1/x))^x, x, 0, minus);
+3;
+
+limit( (3^(1/x) + 5^(1/x))^x, x, 0, plus);
+5;
+
+limit( (3^(1/x) + 5^(1/x))^x, x, 0);
+und;
+
 
 end;
 end$

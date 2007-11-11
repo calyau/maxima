@@ -355,7 +355,7 @@ integrate(1/((1+x)*sqrt(x)),x,0,inf);
  * maxima k is not an integer.  Then maxima can evaluate this integral. 
  */
 /* Tests ztoinf and batapp */
-(assume(kj<0,kj+1>0),0);
+(assume(kj<0,kj+1>0,exp(kj)<1),0);
 0;
 (declare(kj,noninteger),0);
 0;
