@@ -2221,10 +2221,13 @@ wrapper for this."
 		       (merror "No such tag as ~:M" x)))
 		(if retp (setq prog '(nil)))))))
 
-(defmfun mreturn (x)
-  (if (and (not mprogp) (not mdop))
-      (merror "`return' not in `block':~%~M" x))
-  (throw 'mprog (ncons x)))
+(defmfun mreturn (&optional (x nil) &rest args)
+  (cond 
+    ((not (null args))
+       (merror "Too many arguments supplied to `return':~%~M" `((mlist) ,x ,@args) ))
+    ((and (not mprogp) (not mdop))
+       (merror "`return' not in `block':~%~M" x))
+    (t (throw 'mprog (ncons x)) ) ))
 
 (defmspec mgo (tag)
   (setq tag (fexprcheck tag))
