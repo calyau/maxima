@@ -1,4 +1,4 @@
-@c english version 1.54
+@c english version 1.57
 @menu
 * Introducci@'on a las expresiones::  
 * Asignaci@'on::
@@ -237,18 +237,13 @@ forma que no sea incluy@'endolos literalmente en la cadena.
 No existe en Maxima el tipo de variable car@'acter, debi@'endose
 representar un car@'acter simple como una cadena de un solo car@'acter.
 
-En Maxima, las cadenas de caracteres se implementan como s@'{@dotless{i}}mbolos
-de Lisp, no como cadenas de Lisp, lo cual puede cambiar en versiones futuras de Maxima.
-Maxima puede representar cadenas y caracteres de Lisp, aunque algunas operaciones,
-como las pruebas de igualdad, pueden no funcionar correctamente.
-
 El paquete adicional @code{stringproc} contiene muchas funciones que
 permiten trabajar con cadenas.
 
 Ejemplos:
 
 @c ===beg===
-@c s_1 : "This is a Maxima string.";
+@c s_1 : "This is a string.";
 @c s_2 : "Embedded \"double quotes\" and backslash \\ characters.";
 @c s_3 : "Embedded line termination
 @c in this string.";
@@ -262,8 +257,8 @@ Ejemplos:
 @c s_1;
 @c ===end===
 @example
-(%i1) s_1 : "This is a Maxima string.";
-(%o1)               This is a Maxima string.
+(%i1) s_1 : "This is a string.";
+(%o1)               This is a string.
 (%i2) s_2 : "Embedded \"double quotes\" and backslash \\ characters.";
 (%o2) Embedded "double quotes" and backslash \ characters.
 (%i3) s_3 : "Embedded line termination
@@ -278,11 +273,11 @@ this string.";
 (%i5) stringdisp : false;
 (%o5)                         false
 (%i6) s_1;
-(%o6)               This is a Maxima string.
+(%o6)               This is a string.
 (%i7) stringdisp : true;
 (%o7)                         true
 (%i8) s_1;
-(%o8)              "This is a Maxima string."
+(%o8)              "This is a string."
 @end example
 
 @node Desigualdades, Sintaxis, Cadenas de caracteres, Expresiones
@@ -1329,8 +1324,14 @@ y partes izquierda y derecha iguales a @code{any}.
 con fuerzas de ligadura por la izquierda y por la derecha declaradas en los argumentos, siendo las partes izquierda y derecha iguales a @code{any}.
 
 @code{infix (@var{op}, @var{lbp}, @var{rbp}, @var{lpos}, @var{rpos}, @var{pos})}
-declara @var{op} como operador infijo
-con fuerzas de ligadura por la izquierda y por la derecha y partes declaradas en los argumentos.
+declara @var{op} como operador infijo con fuerzas de ligadura por la 
+izquierda y por la derecha, junto con los tipos de expresiones correspondientes
+a @var{lpos}, @var{rpos} y @var{pos}, que son el operando de la izquierda,
+el de la derecha y el operador del resultado; los tipos reconocidos son:
+@code{expr}, @code{clause} y @code{any}, que indican expresi@'on algebraica,
+expresi@'on booleana o cualquier otra, respectivamente. Maxima puede detectar
+algunos errores sint@'acticos comparando los tipos declarados con los de la expresi@'on
+actual.
 
 La precedencia de @var{op} con respecto a otros operadores deriva de las fuerzas de ligadura de los operadores en cuesti@'on.
 Si las fuerzas de ligadura a izquierda y derecha de @var{op} son ambas mayores que las fuerzas de ligadura a izquierda y derecha de otro operador, entonces @var{op} tiene preferencia sobre el otro operador. Si las fuerzas de ligadura no son ambas mayores o menores, se aplican otras relaciones m@'as complejas.
@@ -1393,6 +1394,27 @@ mientras que mayor  @var{rbp} hace a @var{op} asociativo por la izquierda.
 (%o5)                    ((foo,bar),baz)
 @end example
 
+Maxima puede detectar algunos errores sint@'acticos comparando
+los tipos declarados con los de la expresi@'on actual.
+
+@c ===beg===
+@c infix ("##", 100, 99, expr, expr, expr);
+@c if x ## y then 1 else 0;
+@c infix ("##", 100, 99, expr, expr, clause);
+@c if x ## y then 1 else 0;
+@c ===end===
+@example
+(%i1) infix ("##", 100, 99, expr, expr, expr);
+(%o1)                          ##
+(%i2) if x ## y then 1 else 0;
+Incorrect syntax: Found algebraic expression where logical expression expected
+if x ## y then 
+             ^
+(%i2) infix ("##", 100, 99, expr, expr, clause);
+(%o2)                          ##
+(%i3) if x ## y then 1 else 0;
+(%o3)                if x ## y then 1 else 0
+@end example
 @end deffn
 
 @defvr {Variable opcional} inflag
@@ -2167,22 +2189,8 @@ Ejemplos:
                            ====
                            k = 1
 (%i12) sum (if k <= 5 then a^k else b^k, k, 1, 10));
-Incorrect syntax: Too many )'s
-else b^k, k, 1, 10))
-                  ^
-(%i12) linenum:11;
-(%o11)                         11
-(%i12) sum (integrate (x^k, x, 0, 1), k, 1, n);
-                            n
-                           ====
-                           \       1
-(%o12)                      >    -----
-                           /     k + 1
-                           ====
-                           k = 1
-(%i13) sum (if k <= 5 then a^k else b^k, k, 1, 10);
           10    9    8    7    6    5    4    3    2
-(%o13)   b   + b  + b  + b  + b  + a  + a  + a  + a  + a
+(%o12)   b   + b  + b  + b  + b  + a  + a  + a  + a  + a
 @end example
 
 @end deffn

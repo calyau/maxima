@@ -1,4 +1,4 @@
-@c version 1.21
+@c version 1.22
 @menu
 * Introducci@'on al entorno de ejecuci@'on::   
 * Interrupciones::  
@@ -154,8 +154,6 @@ H@'agase @code{showtime: true} para que Maxima devuelva el tiempo de ejecuci@'on
 
 @deffn {Funci@'on} timedate ()
 Devuelve una cadena alfanum@'erica con la hora y fecha actuales. La cadena tiene el formato @code{HH:MM:SS Day, mm/dd/yyyy (GMT-n)}, donde los campos son: las horas, minutos, segundos, d@'{@dotless{i}}a de de la semana, mes, d@'{@dotless{i}}a del mes, a@~no y n@'umero de horas de diferencia con respecto a la hora GMT.
-
-El valor que devuelve es una cadena Lisp.
 
 Ejemplo
 

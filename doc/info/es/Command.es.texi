@@ -1,4 +1,4 @@
-@c english version 1.44
+@c english version 1.45
 @menu
 * Introducci@'on a la L@'{@dotless{i}}nea de Comandos::  
 * Funciones y variables para  la L@'{@dotless{i}}nea de Comandos::  
@@ -998,14 +998,21 @@ Vea tambi@'en: @code{debugging}.
 @deffn {Funci@'on} remfunction (@var{f_1}, ..., @var{f_n})
 @deffnx {Funci@'on} remfunction (all)
 Desliga las definiciones de funci@'on de sus s@'{@dotless{i}}mbolos @var{f_1}, ..., @var{f_n}.
-Los argumentos pueden ser nombres de funciones ordinarias (creadas con @code{:=} o @code{define}) o de funciones macro (creadas con @code{::=}).
+Los argumentos pueden ser nombres de funciones ordinarias 
+(creadas con @code{:=} o @code{define}) o de funciones macro (creadas con @code{::=}).
 
 La instrucci@'on @code{remfunction (all)} desliga todas las definiciones de funciones.
 
 La funci@'on @code{remfunction} no eval@'ua sus argumentos.
 
-La funci@'on @code{remfunction} devuelve una lista con los s@'{@dotless{i}}mbolos para los que la definici@'on de funci@'on fue desligada. Devuelve @code{false} en el lugar de cualquier s@'{@dotless{i}}mbolo para el que no hay funci@'on definida.
+La funci@'on @code{remfunction} devuelve una lista con los
+s@'{@dotless{i}}mbolos para los que la definici@'on de funci@'on
+fue desligada. Devuelve @code{false} en el lugar de cualquier 
+s@'{@dotless{i}}mbolo para el que no hay funci@'on definida.
 
+La funci@'on @code{remfunction} no se puede aplicar a arrays de funciones ni a
+funciones subindicadas. S@'{@dotless{i}} es aplicable en tales casos la 
+funci@'on @code{remarray}.
 @end deffn
 
 @deffn {Funci@'on} reset ()

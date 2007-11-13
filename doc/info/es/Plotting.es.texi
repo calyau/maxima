@@ -1,4 +1,4 @@
-@c english version 1.44
+@c english version 1.45
 @menu
 * Funciones y variables para gr@'aficos::    
 @end menu
@@ -306,23 +306,27 @@ El gr@'afico de los puntos se puede mostrar conjuntamente con el
 de la funci@'on te@'rica que los predice:
 
 @c ===beg===
-@c plot2d([[discrete,xy], 2*%pi*sqrt(l/980)], [l,0,50],
-@c      [style, [points,3,5], [lines,1,3]],
-@c      [legend,"experiment","theory"],
-@c      [xlabel,"pendulum's length (cm)"],
-@c      [ylabel,"period (s)"])$
+@c plot2d([[discrete,xy], 2*%pi*sqrt(l/980)], [l,0,50], 
+@c         [style, [points,5,2,6], [lines,1,1]],
+@c         [legend,"experiment","theory"],
+@c         [xlabel,"pendulum's length (cm)"], [ylabel,"period (s)"])$
 @c ===end===
 @example
 (%i17) plot2d([[discrete,xy], 2*%pi*sqrt(l/980)], [l,0,50],
-        [style, [points,3,5], [lines,1,3]],
+        [style, [points,5,2,6], [lines,1,1]],
         [legend,"experiment","theory"],
-        [xlabel,"pendulum's length (cm)"],
-        [ylabel,"period (s)"])$
+        [xlabel,"pendulum's length (cm)"], [ylabel,"period (s)"])$
 @end example
 
 @ifnotinfo
 @image{../figures/plotting12,8cm}
 @end ifnotinfo
+
+El significado de los tres n@'umeros despu@'es de la opci@'on
+``points'' es el siguiente: 5, radio de los puntos; 2, @'{@dotless{i}}ndice
+del color (rojo); 6, tipo de objeto utilizado (cuadrados s@'olidos). Los
+dos n@'umeros despu@'es de la opci@'on ``lines'' hacen referencia al ancho
+de la l@'{@dotless{i}}nea (1 punto) y al color (1 para el azul).
 
 V@'ease tambi@'en @code{plot_options}, que describe las opciones
 gr@'aficas, junto con m@'as ejemplos.
@@ -561,6 +565,19 @@ Ejemplo:
 @end example
 
 @item
+Opci@'on: @code{box}       
+
+Actualmente esta opci@'on s@'olo puede ir seguida del s@'{@dotless{i}}mbolo
+@emph{false}, pero ser@'a utilizada en el futuro para eliminar el
+marco alrededor del gr@'afico.
+
+Ejemplo:
+
+@example
+[box, false]
+@end example
+
+@item
 Opci@'on: @code{style}
 
 Estilos a utilizar para las funciones o conjuntos de datos en
@@ -572,37 +589,46 @@ para segmentos lineales, @var{points} para puntos aislados,
 peque@~nos puntos aislados. Gnuplot tambi@'en acepta el estilo
 @var{impulses}.
 
-Cada estilo puede ir encerrado en una lista con par@'ametros 
-adicionales: @var{lines} acepta uno o dos n@'umeros: el ancho del
-segmento y un entero que identifica el color; @var{points} acepta
-uno o dos par@'ametros, el primero es el radio de los puntos y el
-segundo un entero que en Gnuplot selecciona diferentes formas y
-colores para los puntos y que en Openmath cambia el color de @'estos;
-@var{linesdots} acepta hasta cuatro par@'ametros, los dos primeros
-son lo mismo que en @var{lines} y los dos @'ultimos son lo mismo que 
-en @var{points}.
+Los estilos se pueden escribir como elementos de una lista, junto
+con algunos par@'ametros adicionales. @var{lines} acepta uno o dos
+n@'umeros: el ancho de la l@'{@dotless{i}}nea y un entero que identifica
+el color. Los c@'odigos de color por defecto son: 1, azul; 2, rojo;
+3, magenta; 4, naranja; 5, marr@'on; 6, verde lima; 7, aguamarina.
+En caso de utilizar Gnuplot con un terminal diferente de X11, estos
+colores pueden cambiar; por ejemplo, bajo la opci@'on 
+[@var{gnuplot_term},@var{ps}], el @'{@dotless{i}}ndice 4
+se corresponde con el negro en lugar del naranja.
+
+@var{points} acepta uno, dos o tres par@'ametros; el primer par@'ametro
+es el radio de los puntos, el segundo es un entero para seleccionar el color,
+con igual codificaci@'on que en @var{lines} y el tercer par@'ametro s@'olo
+es utilizado por Gnuplot y hace referencia a varios objetos para representar
+los puntos. Los tipos de objetos disponibles son: 1, c@'{@dotless{i}}rculos
+rellenos; 2, circunferencias; 3, +; 4, x; 5, *; 6, cuadrados rellenos;
+7, cuadrados huecos; 8, tri@'angulos rellenos; 9, tri@'angulos huecos;
+10, tri@'angulos rellenos invertidos; 11, tri@'angulos huecos invertidos;
+12, rombos rellenos; 13, rombos huecos.
+
+@var{linesdots} acepta hasta cuatro par@'ametros: ancho de l@'{@dotless{i}}nea,
+radio de los puntos, color y tipo de objetos para representar puntos.
 
 Ejemplo:
-
 @example
-[style,[lines,2,3],[points,1,4]]
+[style,[lines,2,3],[points,1,4,3]]
 @end example
 
-En Gnuplot, con este c@'odigo se representar@'{@dotless{i}}a la
-primera (tercera, quinta, etc.) expresi@'on con segmentos azules
-de ancho 2, y la segunda (cuarta, sexta, etc.) expresi@'on con cuadrados 
-verdes de tama24no 1. En Openmath, la primera expresi@'on se
-representar@'{@dotless{i}}a con segmentos magenta de ancho 2, y 
-la segunda con puntos naranja de radio 1. N@'otese que 
-@code{openmath_color(3)} y @code{openmath_color(4)} devuelven
-@code{magenta} y @code{orange}, respectivamente.
+En este ejemplo se representar@'a la primera (tercera, quinta, etc. ) expresi@'on
+con segmentos rectil@'{@dotless{i}}neos magenta de ancho 2, la segunda (cuarta,
+sexta, etc.) expresi@'on con s@'{@dotless{i}}mbolos de suma naranja de taman@~o 1
+(c@'{@dotless{i}}rculos naranja en el caso de Openmath).
 
 El estilo por defecto es @var{lines} de ancho 1 y diferentes colores.
 
 
 @item
 Opci@'on: @code{grid}
-Establece el n@'umero de puntos de la ret@'{@dotless{i}}cula a utilizar en las direcciones x e y en los gr@'aficos de tres dimensiones.
+Establece el n@'umero de puntos de la ret@'{@dotless{i}}cula a utilizar 
+en las direcciones x e y en los gr@'aficos de tres dimensiones.
 
 Ejemplo:
 

@@ -1,4 +1,4 @@
-@c english version 1.10
+@c english version 1.12
 @menu
 * Introducci@'on al procesamiento de cadenas::
 * Funciones y variables para entrada y salida::
@@ -16,43 +16,25 @@ funciones @'utiles para la lectura y escritura de ficheros.
 Para dudas y fallos, por favor cont@'actese con van.nek at arcor.de .
 
 En Maxima, una cadena de caracteres se construye f@'acilmente 
-escribi@'endola entre comillas dobles (@code{"}). T@'engase en
-cuenta que las cadenas de Maxima no son cadenas de Lisp,
-pudi@'endose ejecutar las funciones de chequeo @code{stringp}
-y @code{lstringp} con el fin de dilucidar qu@'e tipo de cadena
-es su argumento. Si por cualquier motivo el usuario tiene una
-cadena de Lisp, quiz@'as por haber hecho uso de la funci@'on @code{sconcat},
-y la quiere convertir a una cadena de Maxima habr@'a
-de utilizar la funci@'on conversora @code{sunlisp}.
-
+escribi@'endola entre comillas dobles, como en @code{"texto"}.
+La funci@'on @code{stringp} comprueba si el argumento es una cadena.
 
 @c ===beg===
 @c m: "text";
-@c [stringp(m),lstringp(m)];
-@c l: sconcat("text");
-@c [stringp(l),lstringp(l)];
-@c stringp( sunlisp(l) );
+@c stringp(m);
 @c ===end===
 @example
 (%i1) m: "text";
 (%o1)                         text
-(%i2) [stringp(m),lstringp(m)];
-(%o2)                     [true, false]
-(%i3) l: sconcat("text");
-(%o3)                         text
-(%i4) [stringp(l),lstringp(l)];
-(%o4)                     [false, true]
-(%i5) stringp( sunlisp(l) );
-(%o5)                         true
+(%i2) stringp(m);
+(%o2)                         true
 @end example
 
-Todas las cadenas devueltas por las funciones de @code{stringproc} son cadenas
-de Maxima. 
-
-Los caracteres individuales se introducen como cadenas de Maxima de longitud
-igual a la unidad. Estos caracteres no son caracteres de Lisp y se pueden
-chequear con las funciones @code{charp} y @code{lcharp}, pudi@'endose
-convertir los caracteres de Lisp a Maxima mediante @code{cunlisp}.
+Los caracteres se representan como cadenas de longitud unidad.
+No se tratan como caracteres Lisp. Se pueden chequear con la
+funci@'on @code{charp} (o con @code{lcharp} para los caracteres Lisp).
+La conversi@'on de caracteres Lisp a caracteres Maxima se realiza con
+la funci@'on @code{cunlisp}.
 
 @c ===beg===
 @c c: "e";
@@ -126,14 +108,22 @@ decimales grandes (@i{big floats}) necesita @code{parse_string}, que se
 cargar autom@'aticamente desde @code{eval_string.lisp}.
 
 @example 
-(%i10) map( parse_string, list );
-(%o10)           [42, 1.234, sqrt(2), %pi, 0.01, 0.01, 1.0b-2]
-(%i11) float(%);
-(%o11) [42.0, 1.234, 1.414213562373095, 3.141592653589793,
-         0.01, 0.01, 0.01]
-(%i12) readline(s);
-(%o12)                               false
-(%i13) close(s)$
+(%i5) s: openr("E:/file.txt");
+(%o5)                     #<input stream E:/file.txt>
+(%i6) readline(s);
+(%o6)                     0 1 1 2 3 5 8 13 21 34 55 
+(%i7) line: readline(s);
+(%o7)               42 1.234 sqrt(2) %pi 0.01 1.0E-2 1.0b-2
+(%i8) list: tokens(line);
+(%o8)           [42, 1.234, sqrt(2), %pi, 0.01, 1.0E-2, 1.0b-2]
+(%i9) map( parse_string, list );
+(%o9)            [42, 1.234, sqrt(2), %pi, 0.01, 0.01, 1.0b-2]
+(%i10) float(%);
+(%o10) [42.0, 1.234, 1.414213562373095, 3.141592653589793, 0.01,
+                                                     0.01, 0.01]
+(%i11) readline(s);
+(%o11)                               false
+(%i12) close(s)$
 @end example
 
 La funci@'on @code{readline} devuelve @code{false} cuando se alcanza el
@@ -460,18 +450,8 @@ Devuelve @code{true} si @var{char} es un car@'acter en may@'uscula.
 @node Funciones y variables para cadenas,  , Funciones y variables para caracteres, stringproc
 @section Funciones y variables para cadenas
 
-@deffn {Funci@'on} sunlisp (@var{lisp_string}) 
-Convierte una cadena Lisp en una de Maxima. 
-El uso de esta funci@'on por parte del usuario no ser@'a necesario.
-@end deffn
-
-@deffn {Funci@'on} lstringp (@var{obj}) 
-Devuelve @code{true} si @var{obj} es una cadena de Lisp.
-El uso de esta funci@'on por parte del usuario no ser@'a necesario.
-@end deffn
-
 @deffn {Funci@'on} stringp (@var{obj}) 
-Devuelve @code{true} si @var{obj} es una cadena de Maxima.
+Devuelve @code{true} si @var{obj} es una cadena.
 V@'ease un ejemplo en la introducci@'on.
 @end deffn
 
@@ -505,40 +485,53 @@ Devuelve una lista con todos los caracteres de @var{string}.
 
 @end deffn
 
-@deffn {Funci@'on} parsetoken (@var{string})  
-La funci@'on @code{parsetoken} convierte el primer lexema de @var{string}
-a su forma num@'erica, devolviendo @code{false} si no se puede determinar este
-n@'umero. El conjunto de delimitadores de lexemas es
-@code{@{space, comma, semicolon, tab, newline@}}.
+@deffn {Funci@'on} eval_string (@var{str})
+Analiza sint@'acticamente la cadena @var{str} como una expresi@'on de Maxima
+y la eval@'ua. La cadena @var{str} puede terminar o no con cualquiera de los 
+s@'{@dotless{i}}mbolos de final de sentencia (d@'olar @code{$} o punto y coma @code{;}).
+S@'olo se analiza la primera expresi@'on si hay m@'as de una.
+
+Se emitir@'a un mensaje de error si @var{str} no es una cadena.
+
+Ejemplos:
 
 @c ===beg===
-@c 2*parsetoken("1.234 5.678");
+@c eval_string ("foo: 42; bar: foo^2 + baz");
+@c eval_string ("(foo: 42, bar: foo^2 + baz)");
 @c ===end===
 @example
-(%i1) 2*parsetoken("1.234 5.678");
-(%o1)                         2.468
+(%i1) eval_string ("foo: 42; bar: foo^2 + baz");
+(%o1)                       42
+(%i2) eval_string ("(foo: 42, bar: foo^2 + baz)");
+(%o2)                   baz + 1764
 @end example
 
-Tambi@'en se puede utilizar la funci@'on @code{parse_string} para
-el an@'alisis sint@'actico.
+V@'ease tambi@'en @code{parse_string}.
 @end deffn
 
-@deffn {Funci@'on} sconc (@var{expr_1}, ..., @var{expr_n})
-Eval@'ua sus argumentos y los yuxtapone para formar una cadena.
-Esta funci@'on es similar a @code{sconcat}, pero devuelve una cadena
-de Maxima.
+@deffn {Funci@'on} parse_string (@var{str})
+Analiza sint@'acticamente la cadena @var{str} como una expresi@'on de Maxima,
+pero no la eval@'ua. La cadena @var{str} puede terminar o no con cualquiera de los 
+s@'{@dotless{i}}mbolos de final de sentencia (d@'olar @code{$} o punto y coma @code{;}).
+S@'olo se analiza la primera expresi@'on si hay m@'as de una.
+
+Se emitir@'a un mensaje de error si @var{str} no es una cadena.
+
+Ejemplos:
 
 @c ===beg===
-@c sconc("xx[",3,"]:",expand((x+y)^3));
-@c stringp(%);
+@c parse_string ("foo: 42; bar: foo^2 + baz");
+@c parse_string ("(foo: 42, bar: foo^2 + baz)");
 @c ===end===
 @example
-(%i1) sconc("xx[",3,"]:",expand((x+y)^3));
-(%o1)             xx[3]:y^3+3*x*y^2+3*x^2*y+x^3
-(%i2) stringp(%);
-(%o2)                         true
+(%i1) parse_string ("foo: 42; bar: foo^2 + baz");
+(%o1)                    foo : 42
+(%i2) parse_string ("(foo: 42, bar: foo^2 + baz)");
+                                   2
+(%o2)          (foo : 42, bar : foo  + baz)
 @end example
 
+V@'ease tambi@'en @code{eval_string}.
 @end deffn
 
 @deffn {Funci@'on} scopy (@var{string}) 
@@ -570,7 +563,7 @@ El nombre @code{sexplode} es un seud@'onimo de la funci@'on @code{charlist}.
 @deffnx {Funci@'on} simplode (@var{list}, @var{delim})  
 La funci@'on @code{simplode} admite como entrada una lista de expresiones para
 luego convertirla en una cadena de caracteres. Si no se utiliza la opci@'on @var{delim}
-para indicar el delimitador, entonces @code{simplode} act@'ua como @code{sconc} y no 
+para indicar el delimitador, entonces @code{simplode} no 
 hace uso de ninguno. El valor de @var{delim} puede ser cualquier cadena.
 
 @c ===beg===
@@ -596,12 +589,12 @@ N@'otese que al primer car@'acter de @var{string} le corresponde la posici@'on 1
 
 @c ===beg===
 @c s: "A submarine."$
-@c sconc( substring(s,1,3),"yellow ",substring(s,3) );
+@c concat( substring(s,1,3),"yellow ",substring(s,3) );
 @c sinsert("hollow ",s,3);
 @c ===end===
 @example
 (%i1) s: "A submarine."$
-(%i2) sconc( substring(s,1,3),"yellow ",substring(s,3) );
+(%i2) concat( substring(s,1,3),"yellow ",substring(s,3) );
 (%o2)                  A yellow submarine.
 (%i3) sinsert("hollow ",s,3);
 (%o3)                  A hollow submarine.
@@ -895,14 +888,14 @@ Si no se suministra el argumento @var{test}, se utilizar@'a la condici@'on
 @c ===beg===
 @c tokens("24 October 2005");
 @c tokens("05-10-24",'digitcharp);
-@c map(parsetoken,%);
+@c map(parse_string,%);
 @c ===end===
 @example
 (%i1) tokens("24 October 2005");
 (%o1)                  [24, October, 2005]
 (%i2) tokens("05-10-24",'digitcharp);
 (%o2)                     [05, 10, 24]
-(%i3) map(parsetoken,%);
+(%i3) map(parse_string,%);
 (%o3)                      [5, 10, 24]
 @end example
 

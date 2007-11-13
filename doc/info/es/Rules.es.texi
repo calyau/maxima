@@ -1,4 +1,4 @@
-@c english version 1.29
+@c english version 1.34
 @menu
 * Introducci@'on a reglas y patrones::  
 * Funciones y variables sobre reglas y patrones::  
@@ -335,7 +335,7 @@ Cuando @code{letrat} vale @code{true}, se simplifican el numerador, denominador 
 @deffn {Funci@'on} letrules ()
 @deffnx {Funci@'on} letrules (@var{nombre_paquete})
 
-Muestra las reglas de un paquete de reglas. La llamada @code{letrules ()} muestra las reglas del paquete de reglas actual. La llamada @code{letrules (@var{nombre_paquete})} muestra las reglas de @code{nombre_paquete}.
+Muestra las reglas de un paquete de reglas. La llamada @code{letrules ()} muestra las reglas del paquete de reglas actual. La llamada @code{letrules (@var{nombre_paquete})} muestra las reglas de @var{nombre_paquete}.
 
 El paquete de reglas actual tiene su nombre almacenado en by @code{current_let_rule_package}. A menos que se indique de otra manera, @code{current_let_rule_package} toma por defecto el valor de @code{default_let_rule_package}.
 
@@ -490,7 +490,16 @@ Un delimitador de la izquierda s@'olo puede asociarse con un @'unico delimitador
 
 Un operador ya existente puede declararse como operador "matchfix" sin necesidad de que cambie el resto de propiedades. En particular, los operadores de Maxima tales como la suma @code{+} pueden ser declarados como "matchfix".
 
-La llamada @code{matchfix (@var{ldelimiter}, @var{rdelimiter}, @var{arg_pos}, @var{pos})}  declara el argumento @var{arg_pos} y el resultado @var{pos}, as@'{@dotless{i}} como los delimitadores  @var{ldelimiter} y @var{rdelimiter}.
+La llamada @code{matchfix (@var{ldelimiter}, @var{rdelimiter}, @var{arg_pos}, @var{pos})} 
+declara el argumento @var{arg_pos} y el resultado @var{pos}, as@'{@dotless{i}}
+como los delimitadores  @var{ldelimiter} y @var{rdelimiter}.
+
+Los argumentos @var{arg_pos} y @var{pos} son tipos de funciones,
+reconoci@'endose como tales: @code{expr}, @code{clause} y @code{any},
+los cuales hacen referencia a una expresi@'on algebraica, booleana o
+de cualquier otro tipo, respectivamente.
+Maxima puede detectar ciertos errores sint@'acticos comparando el
+tipo de expresi@'on declarado con el de la expresi@'on actual.
 
 La funci@'on que ejecutar@'a una operaci@'on "matchfix" ser@'a una t@'{@dotless{i}}pica funci@'on definida por el usuario. La funci@'on de operador se define por el m@'etodo habitual con  @code{:=} o @code{define}. Los argumentos pueden escribirse entre los delimitadores, o con el delimitador izquierdo como una cadena precedida de ap@'ostrofo y seguidamente los argumentos entre par@'entesis. La llamada @code{dispfun (@var{ldelimiter})} muestra la definici@'on de la funci@'on.
 
@@ -572,7 +581,7 @@ Los operadores "matchfix" son funciones definidas por el usuario.
 @deffnx {Funci@'on} remlet (all)
 @deffnx {Funci@'on} remlet (all, @var{nombre})
 
-Elimina la @'ultima regla de sustituci@'on prod --> repl que haya sido definida por la funci@'on @code{let}. Si se suministar el nombre la regla ser@'a borrada del paquete con ese mismo nombre.
+Elimina la @'ultima regla de sustituci@'on @var{prod} --> repl que haya sido definida por la funci@'on @code{let}. Si se suministar el nombre la regla ser@'a borrada del paquete con ese mismo nombre.
 
 Las llamadas @code{remlet()} y @code{remlet(all)} eliminan todas las reglas de sustituci@'on del paquete de reglas actual. Si se suministra el nombre de un paquete de reglas, como en @code{remlet (all, @var{nombre})}, el paquete de reglas con ese  @var{nombre} es tambi@'en eliminado.
 
@@ -587,7 +596,7 @@ V@'ease tambi@'en @code{remrule}, que elimina una regla definida por  @code{tell
 
 Elimina las reglas previamente definidas por @code{tellsimp} o @code{tellsimpafter}.
 
-La llamada @code{remrule (@var{op}, @var{nombre_regla})} elimina la regla de nombre  @code{nombre_regla} del operador @var{op}.
+La llamada @code{remrule (@var{op}, @var{nombre_regla})} elimina la regla de nombre  @var{nombre_regla} del operador @var{op}.
 
 Independientemente de que  @var{op} sea un operador propio de Maxima o haya sido definido por el usario (como los establecidos por @code{infix}, @code{prefix}, etc.), tanto @var{op} como @var{rulename} deben ir encerrados entre comillas dobles.
 
@@ -715,7 +724,7 @@ Las reglas de simplificaci@'on se aplican tras las evaluaciones (a menos que se 
 
 Las variables de patr@'on se tratan como variables locales en las reglas de simplificaci@'on. Una vez definida una regla, el valor de una variable de patr@'on no afecta a la regla, ni se ve influenciada poe @'esta. Una asignaci@'on a una variable de patr@'on que resulta de la aplicaci@'on exitosa de una regla no afecta a la asignaci@'on actual de la variable de patr@'on. Sin embargo, como cualquier otro @'atomo de Maxima, las propiedades de las variables de patr@'on (tal como se definen con @code{put} y sus funciones relacionadas) son globales.
 
-La regla construida por  @code{tellsimpafter} es nombrada detr@'as del operador principal de @code{patr@'on}. Reglas para operadores de Maxima y operadores definidos por el usuario con @code{infix}, @code{prefix}, @code{postfix}, @code{matchfix} y @code{nofix}, tienen nombres que son cadenas alfanum@'ericas de Maxima. Reglas para otras funciones tienen nombres que son identificadores ordinarios de Maxima.
+La regla construida por  @code{tellsimpafter} es nombrada detr@'as del operador principal de @var{patr@'on}. Reglas para operadores de Maxima y operadores definidos por el usuario con @code{infix}, @code{prefix}, @code{postfix}, @code{matchfix} y @code{nofix}, tienen nombres que son cadenas alfanum@'ericas de Maxima. Reglas para otras funciones tienen nombres que son identificadores ordinarios de Maxima.
 
 El tratamiento de formas nominales y verbales es hasta cierto punto confuso. Si se define una regla para una forma nominal (o verbal)  y ya existe una regla para la correspondiente forma verbal (o nominal), la regla reci@'en definida se aplica a ambas formas (nominal y verbal). Si no existe regla para una forma verbal (o nominal) la regla reci@'en definida se aplica @'unicamente a la forma nominal (o verbal).
 

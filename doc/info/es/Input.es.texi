@@ -1,4 +1,4 @@
-@c english version 1.59
+@c english version 1.63
 @menu
 * Comentarios::
 * Archivos::
@@ -396,7 +396,7 @@ La funci@'on @code{closefile} cierra los archivos abiertos por @code{appendfile}
 
 @deffn {Funci@'on} concat (@var{arg_1}, @var{arg_2}, ...)
 Concatena sus argumentos, que deben ser todos @'atomos.
-El valor devuelto es un s@'{@dotless{i}}mbolo si el primer argumento es a su vez un s@'{@dotless{i}}mbolo, o una cadena de Maxima en caso contrario.
+El valor devuelto es un s@'{@dotless{i}}mbolo si el primer argumento es a su vez un s@'{@dotless{i}}mbolo, o una cadena en caso contrario.
 
 La funci@'on @code{concat} eval@'ua sus argumentos.
 El ap@'atrofo  @code{'} evita la evaluaci@'on.
@@ -428,7 +428,7 @@ La asignaci@'on con el operador @code{::} eval@'ua su expresi@'on izquierda.
 (%o9)                         b
 @end example
 
-N@'otese que aunque @code{concat (1, 2)} parezca un n@'umero, se trata de una cadena de Maxima.
+N@'otese que aunque @code{concat (1, 2)} parezca un n@'umero, se trata de una cadena.
 
 @example
 (%i10) concat (1, 2) + 3;
@@ -442,8 +442,7 @@ N@'otese que aunque @code{concat (1, 2)} parezca un n@'umero, se trata de una ca
 Concatena sus argumentos para producir una cadena.
 Al contrario que @code{concat}, sus argumentos @i{no} necesitan ser @'atomos.
 
-El resultado es una cadena de Lisp.
-@c THAT'S ODD; WHY NOT A MAXIMA STRING ??
+El resultado es una cadena.
 
 @example
 (%i1) sconcat ("xx[", 3, "]:", expand ((x+y)^3));
@@ -494,13 +493,13 @@ Ejemplos:
 
 @example
 User     part       inpart
-a-b;      A - B     A + (- 1) B
+a-b;      a - b     a + (- 1) b
 
-           A            - 1
-a/b;       -         A B
-           B
+           a            - 1
+a/b;       -         a b
+           b
                        1/2
-sqrt(x);   sqrt(X)    X
+sqrt(x);   sqrt(x)    x
 
           4 X        4
 X*4/3;    ---        - X
@@ -598,8 +597,7 @@ Si la componente final de @var{path} es de la forma @code{###.@var{something}},
 la componente se reemplaza con @code{@var{filename}.@var{something}}.
 En otro caso, la componente final se reemplaza simplemente por @var{filename}.
 
-@c SAY SOMETHING ABOUT ARG TYPE -- LISP STRINGS WORK BETTER THAN MAXIMA STRINGS
-@c SAY SOMETHING ABOUT RETURN TYPE
+El resultado es un objeto Lisp de tipo @i{pathname}.
 @end deffn
 
 @deffn {Funci@'on} file_search (@var{filename})
@@ -1349,9 +1347,11 @@ La forma especial @code{stringout (@var{filename}, values)} escribe todas las va
 @end deffn
 
 @deffn {Funci@'on} tex (@var{expr})
-@deffnx {Funci@'on} tex (@var{label})
 @deffnx {Funci@'on} tex (@var{expr}, @var{filename})
+@deffnx {Funci@'on} tex (@var{expr}, false)
+@deffnx {Funci@'on} tex (@var{label})
 @deffnx {Funci@'on} tex (@var{label}, @var{filename})
+@deffnx {Funci@'on} tex (@var{label}, false)
 
 Devuelve la expresi@'on en un formato apropiado para para ser incorporado a un documento basado en TeX.
 El resultado que se obtiene es un fragmento de c@'odigo que puede incluirse en un documento mayor, pero que
@@ -1361,9 +1361,11 @@ La instrucci@'on @code{tex (@var{expr})} imprime en la consola la representaci@'
 
 La instrucci@'on @code{tex (@var{label})} imprime en la consola la representaci@'on en TeX de la expresi@'on a la que hace referencia la etiqueta @var{label}, asign@'andole a su vez una etiqueta de ecuaci@'on que ser@'a mostrada al lado izquierdo de la misma. La etiqueta de la expresi@'on en TeX es la misma que la de Maxima.
 
-La instrucci@'on @code{tex (@var{expr}, @var{filename})} a@~nade la representaci@'on TeX de @var{expr} al fichero @var{filename}. 
+Las instrucciones @code{tex (@var{expr}, @var{filename})} y 
+@code{tex (@var{label},@var{filename})} a@~naden la codificaci@'on TeX de @var{expr} al fichero @var{filename}. 
 
-La instrucci@'on @code{tex (@var{label}, @var{filename})} a@~nade la representaci@'on TeX de la expresi@'on a la que hace referencia la etiqueta  @var{label}, junto con una etiqueta, al fichero @var{filename}. 
+Las instrucciones @code{tex (@var{expr}, false)} y @code{tex (@var{label}, false)}
+devuelven el c@'odigo TeX en formato de cadena.
 
 La funci@'on @code{tex} eval@'ua su primer argumento tras
 comprobar si se trata de una etiqueta. La doble comilla simple @code{''} 
@@ -1392,6 +1394,18 @@ $$-\cos x$$
 (%o4)                          (\%o1)
 @end example
 
+@code{tex (@var{expr}, false)} devuelve el c@'odigo TeX en formato de cadena.
+
+@c ===beg===
+@c S : tex (x * y * z, false);
+@c S;
+@c ===end===
+@example
+(%i1) S : tex (x * y * z, false);
+(%o1) $$x\,y\,z$$
+(%i2) S;
+(%o2) $$x\,y\,z$$
+@end example
 @end deffn
 
 
@@ -1606,11 +1620,21 @@ no se ven afectadas por @code{ttyoff}.
 
 @end defvr
 
-@deffn {Macro} with_stdout (@var{filename}, @var{expr_1}, @var{expr_2}, @var{expr_3}, ...)
-Abre el archivo @var{filename} y a continuaci@'on eval@'ua @var{expr_1}, @var{expr_2}, @var{expr_3}, ....
-Los valores de los argumentos no se almacenan @var{filename}, pero cualquier resultado a imprimir por @code{print}, @code{display}, @code{disp} o @code{grind}, va a parar al archivo @var{filename} en lugar de a la consola.
 
-La macro @code{with_stdout} devuelve el valor de su @'ultimo argumento.
+@deffn {Funci@'on} with_stdout (@var{f}, @var{expr_1}, @var{expr_2}, @var{expr_3}, ...)
+@deffnx {Funci@'on} with_stdout (@var{s}, @var{expr_1}, @var{expr_2}, @var{expr_3}, ...)
+Eval@'ua  @var{expr_1}, @var{expr_2}, @var{expr_3}, ...
+y escribe los resultados en el fichero @var{f} o flujo de salida @var{s}.
+Las expresiones que se eval@'uan no se escriben. La salida puede generarse por medio
+de @code{print}, @code{display}, @code{grind} entre otras funciones.
+
+La variable global @code{file_output_append} controla si @code{with_stdout}
+a@~nade o reinicia el contenido del fichero de salida @var{f}.
+Si @code{file_output_append} vale @code{true}, @code{with_stdout} a@~nade
+contenido al fichero de salida. En cualquier caso, @code{with_stdout}
+crea el fichero si @'este no existe.
+
+La funci@'on @code{with_stdout} devuelve el valor de su @'ultimo argumento.
 
 V@'ease tambi@'en @code{writefile}.
 

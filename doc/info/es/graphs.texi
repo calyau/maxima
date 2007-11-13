@@ -36,7 +36,7 @@ Para hacer uso de este paquete, ejec@'utese primero @code{load(graphs)}.
 @deffnx {Funci@'on} create_graph (@var{n}, @var{e_list})
 @deffnx {Funci@'on} create_graph (@var{v_list}, @var{e_list}, @var{directed})
 
-Crea un nuevo grafo sobre el conjunto de v@'ertices @var{v_list} con arista
+Crea un nuevo grafo sobre el conjunto de v@'ertices @var{v_list} con aristas
 @var{e_list}.
 
 @var{v_list} es una lista de v@'ertices (@code{[v1, v2,..., vn]}) o una lista de
@@ -323,6 +323,7 @@ por defecto para @var{d} es @code{d=3}.
 
 @deffn {Funci@'on} random_graph (@var{n}, @var{p})
 Devuelve un grafo aleatorio de @var{n} v@'ertices. Cada arco se presenta
+con una probabilidad @var{p}.
 @end deffn
 
 @deffn {Funci@'on} random_graph1 (@var{n}, @var{m})
