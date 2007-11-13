@@ -1,4 +1,4 @@
-@c version 1.19
+@c version 1.20
 @menu
 * Introducci@'on a draw::
 * Funciones y variables para draw::
@@ -3046,31 +3046,33 @@ End of animation sequence
 (%o2)          [gr2d(explicit), gr2d(explicit), gr2d(explicit)]
 @end example
 
-V@'eanse tambi@'en @code{draw2d} y @code{draw3d}.
+V@'eanse tambi@'en @code{gr2d}, @code{gr3d}, @code{draw2d} y @code{draw3d}.
 @end deffn
 
 
 @deffn {Funci@'on} draw2d (@var{option}, @var{graphic_object}, ...)
 
 Esta funci@'on es un atajo para
-@code{draw2d(gr2d(@var{options}, ..., @var{graphic_object}, ...))}.
+@code{draw(gr2d(@var{options}, ..., @var{graphic_object}, ...))}.
 
 Puede utilizarse para representar una @'unica escena en 2d.
 
 Para utilizar esta funci@'on, ejec@'utese primero @code{load(draw)}.
 
+V@'eanse tambi@'en @code{draw} y @code{gr2d}.
 @end deffn
 
 
 @deffn {Funci@'on} draw3d (@var{option}, @var{graphic_object}, ...)
 
 Esta funci@'on es un atajo para
-@code{draw3d(gr3d(@var{options}, ..., @var{graphic_object}, ...))}.
+@code{draw(gr3d(@var{options}, ..., @var{graphic_object}, ...))}.
 
 Puede utilizarse para representar una @'unica escena en 3d.
 
 Para utilizar esta funci@'on, ejec@'utese primero @code{load(draw)}.
 
+V@'eanse tambi@'en @code{draw} y @code{gr3d}.
 @end deffn
 
 

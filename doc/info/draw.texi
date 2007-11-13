@@ -2988,29 +2988,32 @@ End of animation sequence
 (%o2)          [gr2d(explicit), gr2d(explicit), gr2d(explicit)]
 @end example
 
-See also @code{draw2d} and @code{draw3d}.
+See also @code{gr2d}, @code{gr3d}, @code{draw2d} and @code{draw3d}..
 @end deffn
 
 @deffn {Function} draw2d (@var{option}, @var{graphic_object}, ...)
 
 This function is a short cut for
-@code{draw2d(gr2d(@var{options}, ..., @var{graphic_object}, ...))}.
+@code{draw(gr2d(@var{options}, ..., @var{graphic_object}, ...))}.
 
 It can be used to plot a unique scene in 2d.
 
 To make use of this function, write first @code{load(draw)}.
 
+See also @code{draw} and @code{gr2d}.
 @end deffn
 
 
 @deffn {Function} draw3d (@var{option}, @var{graphic_object}, ...)
 
 This function is a short cut for
-@code{draw3d(gr3d(@var{options}, ..., @var{graphic_object}, ...))}.
+@code{draw(gr3d(@var{options}, ..., @var{graphic_object}, ...))}.
 
 It can be used to plot a unique scene in 3d.
 
 To make use of this function, write first @code{load(draw)}.
+
+See also @code{draw} and @code{gr3d}.
 @end deffn
 
 
