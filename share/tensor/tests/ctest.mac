@@ -81,7 +81,11 @@ rinvariant();
 /* TODO: Frames, torsion, nonmetricity */
 
 /* Algebraic classification */
-(init_ctensor(),cframe_flag:true,gcd:spmod,ctrgsimp:true,ratfac:true,ct_coordsys(exteriorschwarzschild,all),ug:lg^^-1,weyl(false),nptetrad(false),psi(false));
+(init_ctensor(),cframe_flag:true,gcd:spmod,ctrgsimp:true,ratfac:true);
+true;
+ct_coordsys(exteriorschwarzschild,all);
+done;
+(ug:lg^^-1,weyl(false),nptetrad(false),psi(false));
 done;
 psi[0];
 0;
