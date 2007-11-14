@@ -178,7 +178,7 @@ isPolynomial(expr,k) :=
 
 rationalp(expr,k) :=
   if not(isPolynomial(expr,k)) and
-     not(zb_op(expr) = "//" and
+     not(zb_op(expr) = "/" and
                  isPolynomial(expand(num(expr)),k) and
                  isPolynomial(expand(denom(expr)), k)) then
      (
@@ -218,7 +218,7 @@ block([sq_num,sq_den,sq_base,sq_exp],
        return(product(shiftQuoHypCheckAux(part(expr,i__),k,hyp_flag),
               i__,1,length(expr)))
      else
-     if zb_op(expr) = "//" then
+     if zb_op(expr) = "/" then
        (
        sq_num : shiftQuoHypCheckAux(first(expr),k,hyp_flag),
        sq_den : shiftQuoHypCheckAux(second(expr),k,hyp_flag),

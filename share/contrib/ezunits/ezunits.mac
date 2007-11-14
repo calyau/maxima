@@ -100,7 +100,7 @@ unitp (e%) :=
 constantp_not1 (x%) := constantp(x%) and x% # 1;
 constantp_not0 (x%) := constantp(x%) and x% # 0;
 nonconstantp (x%) := not constantp (x%);
-mult_exprp (e%) := not atom(e%) and atom (op(e%)) and (nounify (op(e%)) = nounify ("*") or nounify (op(e%)) = nounify ("//"));
+mult_exprp (e%) := not atom(e%) and atom (op(e%)) and (nounify (op(e%)) = nounify ("*") or nounify (op(e%)) = nounify ("/"));
 mult_expr_nontrivialconstfactorsp (e%) := mult_exprp (e%) and constant_factors (e%) # 1;
 nondimensional (e%) := atom(e%) or (op(e%) # "`" and apply ("and", map (nondimensional, args(e%))));
 nondimensional_not1 (e%) := e% # 1 and nondimensional (e%);

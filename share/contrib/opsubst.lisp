@@ -41,7 +41,7 @@ operators, substituting for these operators will not work; examples:
 (%o1) a-b
 (%i2) opsubst("f","-",-a);
 (%o2) -a
-(%i3) opsubst("^^","//",a/b);
+(%i3) opsubst("^^","/",a/b);
 (%o3) a/b
 
 The internal representation of -a*b is *(-1,a,b); thus

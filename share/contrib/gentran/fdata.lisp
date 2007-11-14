@@ -1,7 +1,7 @@
 (defun fortdata (stmt)
-  (append (list (mkforttab) "data " (cadr stmt) "//")
+  (append (list (mkforttab) "data " (cadr stmt) "/")
 	  (addcom (cddr stmt))
-	  (list "//"))
+	  (list "/"))
 )
 
 (setq COMMA* ",")

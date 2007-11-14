@@ -1,5 +1,5 @@
 /* not found
-(kill(all),example("//"));
+(kill(all),example("/"));
 done; */
 
 (kill(all),example(additive));

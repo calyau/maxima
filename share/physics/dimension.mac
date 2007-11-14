@@ -136,7 +136,7 @@ dimension (e) := block([op, dim, var, i, n],
    else if op = "*" or op = "." or op = "~" then (
      apply ("*", map ('dimension, args (e))))
 
-  else if op = "//" or op = "/" then (
+  else if op = "/" then (
      dimension(num(e)) / dimension(denom(e)))
       /* apply (op, map ('dimension, args (e)))) */
 

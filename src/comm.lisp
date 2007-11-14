@@ -43,7 +43,7 @@
 
 (mapc #'(lambda (x) (putprop (car x) (cadr x) 'op) (putopr (cadr x) (car x)))
       '((mplus "+") (mminus "-") (mtimes "*") (mexpt "**") (mexpt "^")
-	(mnctimes ".") (rat "//") (mquotient "//") (mncexpt "^^")
+	(mnctimes ".") (rat "/") (mquotient "/") (mncexpt "^^")
 	(mequal "=") (mgreaterp ">") (mlessp "<") (mleqp "<=") (mgeqp ">=")
 	(mnotequal "#") (mand "and") (mor "or") (mnot "not") (msetq ":")
 	(mdefine ":=") (mdefmacro "::=") (mquote "'") (mlist "[")

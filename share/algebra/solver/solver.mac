@@ -1971,7 +1971,7 @@ SetProp( 'atanh, 'Valuation, 12 )$
 SetProp( "+",    'Valuation,  1 )$
 SetProp( "-",    'Valuation,  1 )$
 SetProp( "*",    'Valuation,  4 )$
-SetProp( "//",   'Valuation,  4 )$
+SetProp( "/",    'Valuation,  4 )$
 SetProp( "^",    'Valuation, 10 )$
 SetProp( 'sqrt,  'Valuation, 10 )$
 SetProp( 'exp,   'Valuation, 10 )$

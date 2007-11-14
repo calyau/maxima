@@ -90,7 +90,7 @@ change_to_shift_op(expr, %f, %n) :=
     if numberp(first(k%)) then expr
     else funmake('shift_op, [%f, %n, k%[1]-%n])
   )
-  else if member(part(expr, 0), ["+", "*", "//", "^", "-"]) then
+  else if member(part(expr, 0), ["+", "*", "/", "^", "-"]) then
     apply(part(expr, 0),
       map(lambda([%u], change_to_shift_op(%u, %f, %n)), args(expr)))
   else expr$
@@ -117,7 +117,7 @@ differ_degree(expr) :=
     else if db=0 then 0
     else db*part(expr, 2)
   )
-  else if part(expr, 0)="//" then block(
+  else if part(expr, 0)="/" then block(
     [dd : differ_degree(denom(expr)), nd : differ_degree(num(expr))],
     if dd#0 then inf
     else nd
@@ -142,7 +142,7 @@ to_standard_form1(expr, %n, %m) :=
                                                  part(expr, 3)-%m])
     else expr
   )
-  else if member(part(expr, 0), ["+", "-", "*", "//", "^"]) then
+  else if member(part(expr, 0), ["+", "-", "*", "/", "^"]) then
   apply(part(expr, 0), map(lambda([u], to_standard_form1(u, %n, %m)),
                                   args(expr)))
   else subst(%n=%n-%m, expr)$
@@ -501,7 +501,7 @@ get_exps(expr, %n) :=
     else if not(freeof(%n, pow)) and not(freeof(%n, base)) then []
     else [expr]
   )
-  else if part(expr, 0)="//" then block(
+  else if part(expr, 0)="/" then block(
     [nu : get_exps(part(expr, 1), %n),
      de : 1/get_exps(part(expr, 2), %n)],
     append(de, nu)
@@ -710,7 +710,7 @@ monic_factors_fac(p, %n) := block(
   [zeros, factors, sol : [1], f, d, tmp, i, pol, fac, lcoeff, %%n, deg],
   factors : factor(p),
   if atom(factors) then return([1, factors]),
-  if part(factors, 0)="//" then factors : part(factors, 1),
+  if part(factors, 0)="/" then factors : part(factors, 1),
   if part(factors, 0)="-" then factors : factors*(-1),
 
   /* This is a dirty trick to get a product */
@@ -915,7 +915,7 @@ simplify_product(prod) := block(
    deg : simplify_products_deg],
   if simplify_products=false then return(prod),
   if atom(prod) then return(prod),
-  if member(part(prod, 0), ["+", "-", "*", "//", "^"]) then
+  if member(part(prod, 0), ["+", "-", "*", "/", "^"]) then
     return(apply(part(prod, 0), map('simplify_product, args(prod)))),
   if part(prod, 0)#nounify('product) then return(prod),
 
@@ -937,7 +937,7 @@ simplify_product(prod) := block(
                      args(term)))
 
   /* Take care of fractions. */
-  else if part(term, 0)="//" then block(
+  else if part(term, 0)="/" then block(
     [nu : num(term), de : denom(term)],
     /* Check for cancelations. */
     for %kk:-deg thru deg do block(
@@ -1028,7 +1028,7 @@ normalize_product(%expr) :=
     else
       %expr
   )
-  else if member(part(%expr, 0), ["+", "-", "*", "//", "^", "="]) then
+  else if member(part(%expr, 0), ["+", "-", "*", "/", "^", "="]) then
     apply(part(%expr, 0), map(' normalize_product, args(%expr)))
   else
     %expr$

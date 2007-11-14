@@ -377,7 +377,7 @@ ss_support(expr, %k%) := block(
   if freeof(%k%, expr) or expr=%k% then [minf, inf]
   else if member(part(expr, 0), ["+", "-"]) then
     lreduce(ss_union, map(lambda([u], ss_support(u,%k%)), args(expr)))
-  else if member(part(expr, 0), ["*", "//"]) then
+  else if member(part(expr, 0), ["*", "/"]) then
     lreduce(ss_intersection, map(lambda([u], ss_support(u,%k%)), args(expr)))
   else if member(part(expr, 0), ["^"]) then ss_support(part(expr, 1), %k%)
   else if part(expr, 0)=binomial then ss_support_binomial(expr, %k%)
@@ -522,7 +522,7 @@ factor_with_solve(expr, n) := block(
 find_exponent(expr, var) :=
   if atom(expr) then 1
   else if part(expr, 0)="*" then apply("*", map(lambda([u], find_exponent(u, var)), args(expr)))
-  else if part(expr, 0)="//" then find_exponent(num(expr), var)/find_exponent(denom(expr), var)
+  else if part(expr, 0)="/" then find_exponent(num(expr), var)/find_exponent(denom(expr), var)
   else if part(expr, 0)="^" then block(
     [a,b],
     a : bothcoef(part(expr, 2), var),

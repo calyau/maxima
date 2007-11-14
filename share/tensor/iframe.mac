@@ -108,7 +108,7 @@ simpmetderiv(exp):=
     if atom(exp) then exp
     else if op(exp)="-" then -simpmetderiv(-exp)
     else if op(exp)="+" then funmake("+", map(simpmetderiv, args(exp)))
-    else if op(exp)="//" then
+    else if op(exp)="/" then
         simpmetderiv(part(exp,1))/simpmetderiv(part(exp,2))
     else if op(exp)="*" then
     block([sign:1,args:args(exp)],
@@ -149,7 +149,7 @@ simpmetderiv(exp,[stop]):=
     else if op(exp)="-" then -apply(simpmetderiv,cons(-exp,stop))
     else if op(exp)="+" then
       funmake("+", map(lambda([x],apply(simpmetderiv,cons(x,stop))), args(exp)))
-    else if op(exp)="//" then apply(simpmetderiv,cons(part(exp,1),stop))/
+    else if op(exp)="/" then apply(simpmetderiv,cons(part(exp,1),stop))/
                               apply(simpmetderiv,cons(part(exp,2),stop))
     else if op(exp)="*" then
     block([sign:1,args:args(exp)],

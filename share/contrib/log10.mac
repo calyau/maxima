@@ -121,7 +121,7 @@ Warning:  Float to bigfloat conversion of 0.22212133718530744
 
 multp (e) := not atom(e) and op(e) = "*";
 
-divp (e) := not atom(e) and op(e) = "//";
+divp (e) := not atom(e) and op(e) = "/";
 
 exponp (e) := not atom(e) and op(e) = "^";
 
