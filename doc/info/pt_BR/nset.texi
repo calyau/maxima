@@ -1368,17 +1368,17 @@ Exemplos:
 @end example
 
 @code{lreduce} aplicada a operadores de dois argumentos internos (j@'{a} definidos por padr@~{a}o) do Maxima.
-@code{//} @'{e} o operador de divis@~{a}o.
+@code{/} @'{e} o operador de divis@~{a}o.
 
 @c ===beg===
 @c lreduce ("^", args ({a, b, c, d}));
-@c lreduce ("//", args ({a, b, c, d}));
+@c lreduce ("/", args ({a, b, c, d}));
 @c ===end===
 @example
 (%i1) lreduce ("^", args (@{a, b, c, d@}));
                                b c d
 (%o1)                       ((a ) )
-(%i2) lreduce ("//", args (@{a, b, c, d@}));
+(%i2) lreduce ("/", args (@{a, b, c, d@}));
                                 a
 (%o2)                         -----
                               b c d
@@ -1766,11 +1766,11 @@ Exemplos:
 @end example
 
 @code{rreduce} aplicada a operadores de dois argumentos internos ( definidos por padr@~{a}o) ao Maxima.
-@code{//} @'{e} o operadro de divis@~{a}o.
+@code{/} @'{e} o operadro de divis@~{a}o.
 
 @c ===beg===
 @c rreduce ("^", args ({a, b, c, d}));
-@c rreduce ("//", args ({a, b, c, d}));
+@c rreduce ("/", args ({a, b, c, d}));
 @c ===end===
 @example
 (%i1) rreduce ("^", args (@{a, b, c, d@}));
@@ -1778,7 +1778,7 @@ Exemplos:
                                 c
                                b
 (%o1)                         a
-(%i2) rreduce ("//", args (@{a, b, c, d@}));
+(%i2) rreduce ("/", args (@{a, b, c, d@}));
                                a c
 (%o2)                          ---
                                b d

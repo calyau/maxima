@@ -68,7 +68,7 @@ V@'ease tambi@'en @code{syntax}.
 
 Los s@'{@dotless{i}}mbolos @code{+} @code{*} @code{/} y @code{^} representan
 la suma, resta, multiplicaci@'on, divisi@'on y exponenciaci@'on, respectivamente.
-Los nombres de estos operadores son @code{"+"} @code{"*"} @code{"//"} y @code{"^"},
+Los nombres de estos operadores son @code{"+"} @code{"*"} @code{"/"} y @code{"^"},
 que pueden aparecer all@'a donde se requiera el nombre de una funci@'on u operador.
 
 Los s@'{@dotless{i}}mbolos @code{+} y @code{-} representan el positivo y negativo unario,
@@ -81,7 +81,7 @@ el nombre del operador de resta binaria.
 
 La divisi@'on @code{a / b} se representa en maxima como la multiplicaci@'on
 @code{a * b^(- 1)}. Expresiones tales como @code{a * b^(- 1)} se muestran 
-como divisiones. Maxima reconoce @code{"//"} como el nombre del operador
+como divisiones. Maxima reconoce @code{"/"} como el nombre del operador
 de divisi@'on.
 
 La suma y la multiplicaci@'on son operadores conmutativos n-arios. La 
@@ -155,11 +155,11 @@ representaci@'on can@'onica. Los nombres de estos operadores son
 @end example
 
 La divisi@'on y la exponenciaci@'on son operadores no conmutativos binarios.
-Los nombres de estos operadores son @code{"//"} y @code{"^"}.
+Los nombres de estos operadores son @code{"/"} y @code{"^"}.
 @c ===beg===
 @c [a / b, a ^ b];
 @c [map (op, %), map (args, %)];
-@c [apply ("//", [a, b]), apply ("^", [a, b])];
+@c [apply ("/", [a, b]), apply ("^", [a, b])];
 @c ===end===
 
 @example
@@ -168,8 +168,8 @@ Los nombres de estos operadores son @code{"//"} y @code{"^"}.
 (%o1)                        [-, a ]
                               b
 (%i2) [map (op, %), map (args, %)];
-(%o2)              [[//, ^], [[a, b], [a, b]]]
-(%i3) [apply ("//", [a, b]), apply ("^", [a, b])];
+(%o2)              [[/, ^], [[a, b], [a, b]]]
+(%i3) [apply ("/", [a, b]), apply ("^", [a, b])];
                               a   b
 (%o3)                        [-, a ]
                               b

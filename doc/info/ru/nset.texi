@@ -1370,17 +1370,17 @@ Warning:  Float to bigfloat conversion of 0.25
 @end example
 
 @code{lreduce} примененная к встроенным бинарным операторам.
-@code{//} -- есть оператор деления.
+@code{/} -- есть оператор деления.
 
 @c ===beg===
 @c lreduce ("^", args ({a, b, c, d}));
-@c lreduce ("//", args ({a, b, c, d}));
+@c lreduce ("/", args ({a, b, c, d}));
 @c ===end===
 @example
 (%i1) lreduce ("^", args (@{a, b, c, d@}));
                                b c d
 (%o1)                       ((a ) )
-(%i2) lreduce ("//", args (@{a, b, c, d@}));
+(%i2) lreduce ("/", args (@{a, b, c, d@}));
                                 a
 (%o2)                         -----
                               b c d
@@ -1767,11 +1767,11 @@ Warning:  Float to bigfloat conversion of 0.25
 @end example
 
 @code{rreduce} примененный к встроенным операторам.
-@code{//} -- есть оператор деления.
+@code{/} -- есть оператор деления.
 
 @c ===beg===
 @c rreduce ("^", args ({a, b, c, d}));
-@c rreduce ("//", args ({a, b, c, d}));
+@c rreduce ("/", args ({a, b, c, d}));
 @c ===end===
 @example
 (%i1) rreduce ("^", args (@{a, b, c, d@}));
@@ -1779,7 +1779,7 @@ Warning:  Float to bigfloat conversion of 0.25
                                 c
                                b
 (%o1)                         a
-(%i2) rreduce ("//", args (@{a, b, c, d@}));
+(%i2) rreduce ("/", args (@{a, b, c, d@}));
                                a c
 (%o2)                          ---
                                b d

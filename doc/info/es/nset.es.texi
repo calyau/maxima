@@ -1338,17 +1338,17 @@ La funci@'on @code{lreduce} con el argumento opcional,
 @end example
 
 La funci@'on @code{lreduce} aplicada a operadores binarios de Maxima.
-El s@'{@dotless{i}}mbolo @code{//} es el operador divisi@'on.
+El s@'{@dotless{i}}mbolo @code{/} es el operador divisi@'on.
 
 @c ===beg===
 @c lreduce ("^", args ({a, b, c, d}));
-@c lreduce ("//", args ({a, b, c, d}));
+@c lreduce ("/", args ({a, b, c, d}));
 @c ===end===
 @example
 (%i1) lreduce ("^", args (@{a, b, c, d@}));
                                b c d
 (%o1)                       ((a ) )
-(%i2) lreduce ("//", args (@{a, b, c, d@}));
+(%i2) lreduce ("/", args (@{a, b, c, d@}));
                                 a
 (%o2)                         -----
                               b c d
@@ -1751,11 +1751,11 @@ La funci@'on @code{rreduce} con el argumento opcional,
 @end example
 
 La funci@'on @code{rreduce} aplicada a operadores binarios de Maxima.
-El s@'{@dotless{i}}mbolo @code{//} es el operador divisi@'on.
+El s@'{@dotless{i}}mbolo @code{/} es el operador divisi@'on.
 
 @c ===beg===
 @c rreduce ("^", args ({a, b, c, d}));
-@c rreduce ("//", args ({a, b, c, d}));
+@c rreduce ("/", args ({a, b, c, d}));
 @c ===end===
 @example
 (%i1) rreduce ("^", args (@{a, b, c, d@}));
@@ -1763,7 +1763,7 @@ El s@'{@dotless{i}}mbolo @code{//} es el operador divisi@'on.
                                 c
                                b
 (%o1)                         a
-(%i2) rreduce ("//", args (@{a, b, c, d@}));
+(%i2) rreduce ("/", args (@{a, b, c, d@}));
                                a c
 (%o2)                          ---
                                b d

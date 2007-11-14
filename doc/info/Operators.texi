@@ -77,7 +77,7 @@ See also @code{syntax}.
 
 The symbols @code{+} @code{*} @code{/} and @code{^} represent
 addition, multiplication, division, and exponentiation, respectively.
-The name of these operators are @code{"+"} @code{"*"} @code{"//"} and @code{"^"},
+The name of these operators are @code{"+"} @code{"*"} @code{"/"} and @code{"^"},
 which may appear where the name of a function or operator is required.
 
 The symbols @code{+} and @code{-} represent unary addition and negation, respectively,
@@ -90,7 +90,7 @@ and not as the name of the binary subtraction operator.
 
 Division @code{a / b} is represented within Maxima as multiplication, @code{a * b^(- 1)}.
 Expressions such as @code{a * b^(- 1)} are displayed as division.
-Maxima recognizes @code{"//"} as the name of the division operator.
+Maxima recognizes @code{"/"} as the name of the division operator.
 
 Addition and multiplication are n-ary, commutative operators.
 Division and exponentiation are binary, noncommutative operators.
@@ -152,11 +152,11 @@ The names of these operators are @code{"+"} and @code{"*"}.
 @end example
 
 Division and exponentiation are binary, noncommutative operators.
-The names of these operators are @code{"//"} and @code{"^"}.
+The names of these operators are @code{"/"} and @code{"^"}.
 @c ===beg===
 @c [a / b, a ^ b];
 @c [map (op, %), map (args, %)];
-@c [apply ("//", [a, b]), apply ("^", [a, b])];
+@c [apply ("/", [a, b]), apply ("^", [a, b])];
 @c ===end===
 
 @example
@@ -165,8 +165,8 @@ The names of these operators are @code{"//"} and @code{"^"}.
 (%o1)                        [-, a ]
                               b
 (%i2) [map (op, %), map (args, %)];
-(%o2)              [[//, ^], [[a, b], [a, b]]]
-(%i3) [apply ("//", [a, b]), apply ("^", [a, b])];
+(%o2)              [[/, ^], [[a, b], [a, b]]]
+(%i3) [apply ("/", [a, b]), apply ("^", [a, b])];
                               a   b
 (%o3)                        [-, a ]
                               b

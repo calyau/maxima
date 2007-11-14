@@ -82,7 +82,7 @@ Veja tamb@'em @code{syntax}.
 
 Os s@'{@dotless{i}}mbolos @code{+} @code{*} @code{/} e @code{^} representam
 adi@value{cedilha}@~ao, multiplica@value{cedilha}@~ao, divis@~ao, e exponencia@value{cedilha}@~ao, respectivamente.
-O nome desses operadores s@~ao @code{"+"} @code{"*"} @code{"//"} e @code{"^"},
+O nome desses operadores s@~ao @code{"+"} @code{"*"} @code{"/"} e @code{"^"},
 os quais podem aparecer em lugares onde o nome da fun@value{cedilha}@~ao ou operador @'e requerido.
 
 Os s@'{@dotless{i}}mbolos @code{+} e @code{-} representam a adi@value{cedilha}@~ao un@'aria e a nega@value{cedilha}@~ao un@'aria, respectivamente,
@@ -95,7 +95,7 @@ e n@~ao como o nome do operador bin@'ario de subra@value{cedilha}@~ao.
 
 A divis@~ao @code{a / b} @'e representada dentro do Maxima como multiplica@value{cedilha}@~ao, @code{a * b^(- 1)}.
 Express@~oes tais como @code{a * b^(- 1)} s@~ao mostradas como divis@~ao.
-Maxima reconhece @code{"//"} como o nome do operador de divis@~ao.
+Maxima reconhece @code{"/"} como o nome do operador de divis@~ao.
 
 A adi@value{cedilha}@~ao e a multiplica@value{cedilha}@~ao s@~ao operadores en@'arios e comutativos.
 a divis@~ao e a exponencia@value{cedilha}@~ao s@~ao operadores bin@'arios e n@~ao comutativos.
@@ -157,11 +157,11 @@ Os nomes desses operadores s@~ao @code{"+"} e @code{"*"}.
 @end example
 
 Divis@~ao e exponencia@value{cedilha}@~ao s@~ao operadores bin@'arios e n@~ao comutativos.
-Os nomes desses operadores s@~ao @code{"//"} e @code{"^"}.
+Os nomes desses operadores s@~ao @code{"/"} e @code{"^"}.
 @c ===beg===
 @c [a / b, a ^ b];
 @c [map (op, %), map (args, %)];
-@c [apply ("//", [a, b]), apply ("^", [a, b])];
+@c [apply ("/", [a, b]), apply ("^", [a, b])];
 @c ===end===
 
 @example
@@ -170,8 +170,8 @@ Os nomes desses operadores s@~ao @code{"//"} e @code{"^"}.
 (%o1)                        [-, a ]
                               b
 (%i2) [map (op, %), map (args, %)];
-(%o2)              [[//, ^], [[a, b], [a, b]]]
-(%i3) [apply ("//", [a, b]), apply ("^", [a, b])];
+(%o2)              [[/, ^], [[a, b], [a, b]]]
+(%i3) [apply ("/", [a, b]), apply ("^", [a, b])];
                               a   b
 (%o3)                        [-, a ]
                               b

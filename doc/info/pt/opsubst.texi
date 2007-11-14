@@ -45,7 +45,7 @@ divis@~ao, ou de subtra@value{cedilha}@~ao; dessa forma:
 (%o8)                     a - b
 (%i9) opsubst("f","-",-a);
 (%o9)                      - a
-(%i10) opsubst("^^","//",a/b);
+(%i10) opsubst("^^","/",a/b);
                              a
 (%o10)                       -
                              b

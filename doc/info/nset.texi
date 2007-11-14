@@ -1376,17 +1376,17 @@ Examples:
 @end example
 
 @code{lreduce} applied to built-in binary operators.
-@code{//} is the division operator.
+@code{/} is the division operator.
 
 @c ===beg===
 @c lreduce ("^", args ({a, b, c, d}));
-@c lreduce ("//", args ({a, b, c, d}));
+@c lreduce ("/", args ({a, b, c, d}));
 @c ===end===
 @example
 (%i1) lreduce ("^", args (@{a, b, c, d@}));
                                b c d
 (%o1)                       ((a ) )
-(%i2) lreduce ("//", args (@{a, b, c, d@}));
+(%i2) lreduce ("/", args (@{a, b, c, d@}));
                                 a
 (%o2)                         -----
                               b c d
@@ -1776,11 +1776,11 @@ Examples:
 @end example
 
 @code{rreduce} applied to built-in binary operators.
-@code{//} is the division operator.
+@code{/} is the division operator.
 
 @c ===beg===
 @c rreduce ("^", args ({a, b, c, d}));
-@c rreduce ("//", args ({a, b, c, d}));
+@c rreduce ("/", args ({a, b, c, d}));
 @c ===end===
 @example
 (%i1) rreduce ("^", args (@{a, b, c, d@}));
@@ -1788,7 +1788,7 @@ Examples:
                                 c
                                b
 (%o1)                         a
-(%i2) rreduce ("//", args (@{a, b, c, d@}));
+(%i2) rreduce ("/", args (@{a, b, c, d@}));
                                a c
 (%o2)                          ---
                                b d
