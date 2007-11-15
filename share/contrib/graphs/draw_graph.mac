@@ -22,7 +22,7 @@ define_variable(gp_file_out, "out.txt", any)$
 define_variable(gp_file_in, "in.txt", any)$
 define_variable(draw_graph_program, 'spring_embedding, any)$
 
-load("draw")$
+if draw_loaded#true then load("draw")$
 
 circular_positions(G) := block(
   [v_list, numer : true, n : graph_size(G)],
