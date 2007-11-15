@@ -532,18 +532,164 @@ and
 @ifinfo
 @fnindex Assignment operator
 @end ifinfo
-The assignment operator.  E.g. @code{A:3} sets the variable @code{A} to @code{3}.
+Assignment operator.
 
+When the left-hand side is an atom or subscripted variable,
+@code{:} evaluates its right-hand side (but not the left-hand side)
+and associates that value with the left-hand side.
+
+When the left-hand side is a subscripted element of a list, matrix, declared Maxima array, or Lisp array,
+the right-hand side is assigned to that element.
+The subscript must name an existing element;
+such objects cannot be extended by naming nonexistent elements.
+
+When the left-hand side is a subscripted element of an undeclared Maxima array,
+the right-hand side is assign to that element, if it already exists,
+or a new element is allocated, if it does not already exist.
+
+When the left-hand side is a list of atoms and/or subscripted variables,
+the right-hand must evaluate to a list,
+and the elements of the right-hand side are assigned to the elements of the left-hand side,
+in parallel.
+
+See also @code{kill} and @code{remvalue},
+which undo the association between the left-hand side and its value.
+
+Examples:
+
+Assignment to a symbol.
+
+@c ===beg===
+@c a;
+@c a : 123;
+@c a;
+@c ===end===
+@example
+(%i1) a;
+(%o1)                           a
+(%i2) a : 123;
+(%o2)                          123
+(%i3) a;
+(%o3)                          123
+@end example
+
+Assignment to an element of a list.
+
+@c ===beg===
+@c b : [1, 2, 3];
+@c b[3] : 456;
+@c b;
+@c ===end===
+@example
+(%i1) b : [1, 2, 3];
+(%o1)                       [1, 2, 3]
+(%i2) b[3] : 456;
+(%o2)                          456
+(%i3) b;
+(%o3)                      [1, 2, 456]
+@end example
+
+Assignment creates an undeclared array.
+
+@c ===beg===
+@c c[99] : 789;
+@c c[99];
+@c c;
+@c arrayinfo (c);
+@c listarray (c);
+@c ===end===
+@example
+(%i1) c[99] : 789;
+(%o1)                          789
+(%i2) c[99];
+(%o2)                          789
+(%i3) c;
+(%o3)                           c
+(%i4) arrayinfo (c);
+(%o4)                   [hashed, 1, [99]]
+(%i5) listarray (c);
+(%o5)                         [789]
+@end example
+
+Multiple assignment.
+
+@c ===beg===
+@c [a, b, c] : [45, 67, 89];
+@c a;
+@c b;
+@c c;
+@c ===end===
+@example
+(%i1) [a, b, c] : [45, 67, 89];
+(%o1)                     [45, 67, 89]
+(%i2) a;
+(%o2)                          45
+(%i3) b;
+(%o3)                          67
+(%i4) c;
+(%o4)                          89
+@end example
+
+Multiple assignment is carried out in parallel.
+The values of @code{a} and @code{b} are exchanged in this example.
+
+@c ===beg===
+@c [a, b] : [33, 55];
+@c [a, b] : [b, a];
+@c a;
+@c b;
+@c ===end===
+@example
+(%i1) [a, b] : [33, 55];
+(%o1)                       [33, 55]
+(%i2) [a, b] : [b, a];
+(%o2)                       [55, 33]
+(%i3) a;
+(%o3)                          55
+(%i4) b;
+(%o4)                          33
+@end example
 @end deffn
 
 @deffn {Operator} ::
 @ifinfo
 @fnindex Assignment operator (evaluates left-hand side)
 @end ifinfo
-Assignment operator.  @code{::} assigns the value of the expression
-on its right to the value of the quantity on its left, which must
-evaluate to an atomic variable or subscripted variable.
+Assignment operator.
 
+@code{::} is the same as @code{:} (which see)
+except that @code{::} evaluates its left-hand side as well as its right-hand side.
+
+Examples:
+
+@c ===beg===
+@c x : 'foo;
+@c x :: 123;
+@c foo;
+@c x : '[a, b, c];
+@c x :: [11, 22, 33];
+@c a;
+@c b;
+@c c;
+@c ===end===
+@example
+(%i1) x : 'foo;
+(%o1)                          foo
+(%i2) x :: 123;
+(%o2)                          123
+(%i3) foo;
+(%o3)                          123
+(%i4) x : '[a, b, c];
+(%o4)                       [a, b, c]
+(%i5) x :: [11, 22, 33];
+(%o5)                     [11, 22, 33]
+(%i6) a;
+(%o6)                          11
+(%i7) b;
+(%o7)                          22
+(%i8) c;
+(%o8)                          33
+@end example
 @end deffn
 
 @deffn {Operator} ::=
