@@ -827,7 +827,7 @@ relational knowledge is contained in the default context GLOBAL."
 (defun meqp-by-csign (z a b)
   (let ((sgn) ($niceindicespref `((mlist) ,(gensym) ,(gensym) ,(gensym))))
     (setq z ($niceindices z))
-    (setq sgn (csign z))
+    (setq sgn (csign (sratsimp z)))
     (cond ((eq '$zero sgn) t)
 	  ((eq sgn t)
 	   (setq z ($rectform z))
@@ -897,7 +897,7 @@ relational knowledge is contained in the default context GLOBAL."
 
           ((and (op-equalp a 'lambda) (op-equalp b 'lambda)) (lambda-meqp a b))
           (($setp a) (set-meqp a b))
-          (t (meqp-by-csign (equal-facts-simp ($ratsimp (sub a b))) a b)))))))
+          (t (meqp-by-csign (equal-facts-simp (sratsimp (sub a b))) a b)))))))
 
 ;; Two arrays are equal (according to MEQP)
 ;; if (1) they have the same dimensions,
