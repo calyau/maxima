@@ -1,7 +1,6 @@
 @c english version 1.57
 @menu
 * Introducci@'on a las expresiones::  
-* Asignaci@'on::
 * Expresiones complejas::
 * Nombres y verbos::
 * Identificadores::
@@ -11,7 +10,7 @@
 * Funciones y variables para expresiones::
 @end menu
 
-@node Introducci@'on a las expresiones, Asignaci@'on, Expresiones, Expresiones
+@node Introducci@'on a las expresiones, Expresiones complejas, Expresiones, Expresiones
 @section Introducci@'on a las expresiones
 
 Existe un cierto n@'umero de palabras reservadas que no pueden
@@ -59,13 +58,7 @@ pero quiz@'as se quiera incluir un tercer t@'ermino en la @i{expresi@'on con com
 (%o4)                        3628800
 @end example
 
-@node Asignaci@'on, Expresiones complejas, Introducci@'on a las expresiones, Expresiones
-@section Asignaci@'on
-
-Existen dos operadores de asignaci@'on en Maxima, @code{:} y @code{::}. 
-Por ejemplo, @code{a: 3} asigna a la variable @code{a} el valor de 3. Por otro lado, @code{::} asigna el valor de la expresi@'on de su derecha al valor de la cantidad de su izquierda, el cual debe evaluarse a una variable de tipo @'atomo o una variable subindicada. 
-
-@node Expresiones complejas, Nombres y verbos, Asignaci@'on, Expresiones
+@node Expresiones complejas, Nombres y verbos, Introducci@'on a las expresiones, Expresiones
 @section Expresiones complejas
 
 Una expresi@'on compleja se especifica en Maxima a@~nadiendo a la parte

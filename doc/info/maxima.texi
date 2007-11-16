@@ -211,7 +211,6 @@ Operators
 Expressions
 
 * Introduction to Expressions::  
-* Assignment::                  
 * Complex::                     
 * Inequality::                  
 * Syntax::                      

@@ -2,7 +2,6 @@
 @c /Expressions.texi/1.53/Sat Jun  2 00:12:43 2007/-ko/
 @menu
 * Introdu@value{cedilha}@~{a}o a Express@~{o}es::  
-* Atribui@value{cedilha}@~{a}o::                  
 * Complexo::                     
 * Substantivos e Verbos::
 * Identificadores::
@@ -12,7 +11,7 @@
 * Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Express@~{o}es::  
 @end menu
 
-@node Introdu@value{cedilha}@~{a}o a Express@~{o}es, Atribui@value{cedilha}@~{a}o, Express@~{o}es, Express@~{o}es
+@node Introdu@value{cedilha}@~{a}o a Express@~{o}es, Complexo, Express@~{o}es, Express@~{o}es
 @section Introdu@value{cedilha}@~{a}o a Express@~{o}es
 
 Existe um conjunto de palavras reservadas que n@~{a}o pode ser usado como
@@ -62,15 +61,8 @@ termo na @i{express@~{a}o com v@'{i}rgula} que fornece de volta o valor atualiza
 
 
 
-@node Atribui@value{cedilha}@~{a}o, Complexo, Introdu@value{cedilha}@~{a}o a Express@~{o}es, Express@~{o}es
-@section Atribui@value{cedilha}@~{a}o
-Existem dois operadores de atribui@value{cedilha}@~{a}o no Maxima, "@code{:}" e "@code{::}".
-E.g., @code{a: 3} escolhe a vari@'{a}vel @code{a} para 3. @code{::} atribui o valor da
-express@~{a}o sobre seu lado direito para o valor da quantidade sobre seu lado esquerdo,
-que deve avaliar para uma vari@'{a}vel at@^{o}mica ou para uma vari@'{a}vel com subscrito.
-
 @c THIS REALLY NEEDS EXPANSION
-@node Complexo, Substantivos e Verbos, Atribui@value{cedilha}@~{a}o, Express@~{o}es
+@node Complexo, Substantivos e Verbos, Introdu@value{cedilha}@~{a}o a Express@~{o}es, Express@~{o}es
 @section Complexo
 Uma express@~{a}o complexa @'{e} especificada no Maxima atrav@'{e}s da adi@value{cedilha}@~{a}o da
 parte real da express@~{a}o a @code{%i} vezes a parte imagin@'{a}ria.  Dessa forma as

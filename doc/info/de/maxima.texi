@@ -201,7 +201,6 @@ Operators
 Ausdr@"ucke
 
 * Einf@"uhrung in Ausdr@"ucke::  
-* Zuweisung::                  
 * Komplex::                     
 * Substantive und Verben::
 * Bezeichner::

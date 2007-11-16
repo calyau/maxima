@@ -3,7 +3,6 @@
 
 @menu
 * Einf@"uhrung in Ausdr@"ucke::  
-* Zuweisung::                  
 * Komplex::                     
 * Substantive und Verben::
 * Bezeichner::
@@ -13,7 +12,7 @@
 * Definitionen f@"ur Ausdr@"ucke::  
 @end menu
 
-@node Einf@"uhrung in Ausdr@"ucke, Zuweisung, , Ausdr@"ucke
+@node Einf@"uhrung in Ausdr@"ucke, Komplex, , Ausdr@"ucke
 @section Einf@"uhrung in Ausdr@"ucke
 
 Es gibt eine Anzahl an reservierten Bezeichnern, die nicht als Variablennamen 
@@ -64,16 +63,8 @@ gew@"unschten Wert zur@"uck gibt.
 (%o4)                        3628800
 @end example
 
-@node Zuweisung, Komplex, Einf@"uhrung in Ausdr@"ucke, Ausdr@"ucke
-@section Zuweisung
-Es gibt zwei Zuweisungsoperatoren in Maxima, @code{:} und @code{::}. 
-Z.B. setzt @code{a: 3} die Variable @code{a} auf 3. 
-@code{::} weist den Wert des Ausdrucks auf seiner Rechten dem Wert 
-der Gr@"o@ss{}e auf seiner Linken zu, wobei diese den Wert 
-einer atomaren oder indizierten Variable haben muss.
-
 @c THIS REALLY NEEDS EXPANSION
-@node Komplex, Substantive und Verben, Zuweisung, Ausdr@"ucke
+@node Komplex, Substantive und Verben, Einf@"uhrung in Ausdr@"ucke, Ausdr@"ucke
 @section Komplex
 Ein komplexer Ausdruck ist in Maxima durch die Addition 
 von Realteil und @code{%i} mal Imagin@"arteil des Ausdrucks gekennzeichnet.

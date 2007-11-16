@@ -218,7 +218,6 @@ Operadores
 Expresiones
 
 * Introducci@'on a las expresiones::
-* Asignaci@'on::
 * Expresiones complejas::
 * Nombres y verbos::
 * Identificadores::

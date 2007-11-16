@@ -261,7 +261,6 @@ Operadores
 Express@~{o}es
 
 * Introdu@value{cedilha}@~{a}o a Express@~{o}es::  
-* Atribui@value{cedilha}@~{a}o::                  
 * Complexo::                    
 * Desigualdade::      
 * Sintaxe::                     

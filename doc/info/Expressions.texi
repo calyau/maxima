@@ -1,6 +1,5 @@
 @menu
 * Introduction to Expressions::  
-* Assignment::                  
 * Complex::                     
 * Nouns and Verbs::
 * Identifiers::
@@ -10,7 +9,7 @@
 * Functions and Variables for Expressions::  
 @end menu
 
-@node Introduction to Expressions, Assignment, Expressions, Expressions
+@node Introduction to Expressions, Complex, Expressions, Expressions
 @section Introduction to Expressions
 
 There are a number of reserved words which cannot be used as
@@ -60,15 +59,8 @@ term in the @i{comma expression} which actually gives back the value.
 
 
 
-@node Assignment, Complex, Introduction to Expressions, Expressions
-@section Assignment
-There are two assignment operators in Maxima, @code{:} and @code{::}.
-E.g., @code{a: 3} sets the variable @code{a} to 3. @code{::} assigns the value of the
-expression on its right to the value of the quantity on its left,
-which must evaluate to an atomic variable or subscripted variable.
-
 @c THIS REALLY NEEDS EXPANSION
-@node Complex, Nouns and Verbs, Assignment, Expressions
+@node Complex, Nouns and Verbs, Introduction to Expressions, Expressions
 @section Complex
 A complex expression is specified in Maxima by adding the
 real part of the expression to @code{%i} times the imaginary part.  Thus the

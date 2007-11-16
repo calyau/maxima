@@ -1,6 +1,5 @@
 @menu
 * Introduction to Expressions::  
-* Assignment::                  
 * Complex::                     
 * Nouns and Verbs::
 * Identifiers::
@@ -10,13 +9,10 @@
 * Definitions for Expressions::  
 @end menu
 
-@node Introduction to Expressions, Assignment, Expressions, Expressions
+@node Introduction to Expressions, Complex, Expressions, Expressions
 @section Introduction to Expressions
 
-@node Assignment, Complex, Introduction to Expressions, Expressions
-@section Assignment
-
-@node Complex, Nouns and Verbs, Assignment, Expressions
+@node Complex, Nouns and Verbs, Introduction to Expressions, Expressions
 @section Complex
 
 @node Nouns and Verbs, Identifiers, Complex, Expressions
