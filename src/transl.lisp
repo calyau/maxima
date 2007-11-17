@@ -897,7 +897,7 @@ APPLY means like APPLY.")
 
 (defun attempt-translate-random-special-op (form typel)
   (warn-fexpr form)
-  `($any . (meval ',(translate-atoms form))))
+  `(,(function-mode (caar form)) . (meval ',(translate-atoms form))))
 
 
 (defun tr-lisp-function-call (form type)
@@ -1008,10 +1008,10 @@ APPLY means like APPLY.")
 (defmspec $declare_translated (fns)
   (setq fns (cdr fns))
   (loop for v in fns
-	when (symbolp v)
+	when (or (symbolp v) (and (stringp v) (setq v ($verbify v))))
 	do (setf (get v 'once-translated) t)
 	(pushnew v *declared-translated-functions*)
-	else do (merror "Declare_translated needs symbolic args")))
+	else do (merror "declare_translated: Arguments should be symbols or strings.")))
 
 (def%tr $declare (form)
   (do ((l (cdr form) (cddr l)) (nl))
@@ -1473,7 +1473,8 @@ APPLY means like APPLY.")
 	  ((member 'array (car var) :test #'eq)
 	   (tr-arraysetq var val))
 	  (t
-	   (tr-format "~%Dubious first LHS argument to ~:@M~%~:M" (caar form) var)
+	   (unless (safe-get (caar var) 'mset_extension_operator)
+         (tr-format "~%Dubious first LHS argument to ~:@M~%~:M" (caar form) var))
 	   (setq val (translate val))
 	   `(,(car val) mset ',(translate-atoms var) ,(cdr val))))))
 
