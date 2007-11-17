@@ -661,6 +661,7 @@ wrapper for this."
 ;; (11) EXTEND KILL TO RECOGNIZE KILL(X@Y)
 ;; (12) EVALUATE INITIALIZERS IN $DEFSTRUCT AND IN $NEW
 ;; (13) DISPLAY FIELDS WHICH HAVE BEEN ASSIGNED VALUES AS FOO(X = BAR, Y = BAZ)
+;; (14) ASSIGN TRANSLATION PROPERTY TO 'DEFSTRUCT AND DEF-SAME%TR ALL STRUCTURES
 
 (setf (get '$@ 'mset_extension_operator) 'mrecord-assign)
 
@@ -749,6 +750,10 @@ wrapper for this."
 
 (defvar $structures '((mlist)))
 
+(defun defstruct-translate (form)
+  (let ((translated-args (mapcar #'translate (cdr form))))
+    `($any simplify (list '(,(caar form)) ,@(mapcar #'cdr translated-args)))))
+
 (defun defstruct1 (z) ;; z will look like (($whatever) $a $b $c)
    ;; store the template
   (putprop (caar z) (namesonly z) 'defstruct-template)
@@ -756,6 +761,7 @@ wrapper for this."
   (putprop (caar z) (initializersmostly z) 'defstruct-default)
   (setf (get (caar z) 'dimension) 'dimension-defstruct)
   (nconc $structures (list (get (caar z) 'defstruct-default)))
+  (setf (get (caar z) 'translate) #'defstruct-translate)
   (get (caar z) 'defstruct-default))
 
 (defun namesonly(r)			; f(a,b,c) unchanged, f(a=3,b=4,c=5) -> f(a,b,c)
