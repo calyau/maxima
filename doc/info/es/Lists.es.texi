@@ -1,4 +1,4 @@
-@c version 1.32
+@c version 1.33
 @menu
 * Introducci@'on a las listas::       
 * Funciones y variables para listas::       
@@ -326,6 +326,29 @@ Ejemplos:
 Devuelve el noveno elemento de la lista o expresi@'on @var{expr}. V@'ease @code{first} para m@'as detalles.
 
 @end deffn
+
+@deffn {Funci@'on} unique (@var{L})
+
+Devuelve la lista @var{L} sin redundancias, es decir, sin
+elementos repetidos
+
+Cuando ninguno de los elementos de @var{L} est@'a repetido,
+@code{unique} devuelve una r@'eplica de @var{L}, no la
+propia @var{L}.
+
+Si @var{L} no es una lista, @code{unique} devuelve @var{L}.
+
+Ejemplo:
+
+@c ===beg===
+@c unique ([1, %pi, a + b, 2, 1, %e, %pi, a + b, [1]]);
+@c ===end===
+@example
+(%i1) unique ([1, %pi, a + b, 2, 1, %e, %pi, a + b, [1]]);
+(%o1)              [1, 2, %e, %pi, [1], b + a]
+@end example
+@end deffn
+
 
 @deffn {Funci@'on} rest (@var{expr}, @var{n})
 @deffnx {Funci@'on} rest (@var{expr})

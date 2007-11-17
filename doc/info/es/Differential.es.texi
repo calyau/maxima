@@ -1,4 +1,4 @@
-@c version 1.11
+@c version 1.12
 @menu
 * Introducci@'on a las ecuaciones diferenciales::
 * Funciones y variables para ecuaciones diferenciales::  
@@ -28,7 +28,7 @@ Aqu@'{@dotless{i}}, @var{soluc} es una soluci@'on general de la ecuaci@'on, como
 @deffn {Funci@'on} desolve (@var{ecu}, @var{x})
 @deffnx {Funci@'on} desolve ([@var{eqn_1}, ..., @var{eqn_n}], [@var{x_1}, ..., @var{x_n}])
 
-La funci@'on @code{dsolve} resuelve sistemas de ecuaciones diferenciales ordinarias lineales utilizando la transformada de Laplace.  Aqu@'{@dotless{i}} las @var{eqi} (@code{i}=1,..,n) son ecuaciones diferenciales con variables dependientes @var{x_1}, ..., @var{x_n}. La dependencia funcional de @var{x_1}, ..., @var{x_n} respecto de una variable independiente, por ejemplo @var{x}, debe indicarse expl@'{@dotless{i}}citamente, tanto en las variables como en las derivadas. Por ejemplo, 
+La funci@'on @code{desolve} resuelve sistemas de ecuaciones diferenciales ordinarias lineales utilizando la transformada de Laplace.  Aqu@'{@dotless{i}} las @var{eqi} (@code{i}=1,..,n) son ecuaciones diferenciales con variables dependientes @var{x_1}, ..., @var{x_n}. La dependencia funcional de @var{x_1}, ..., @var{x_n} respecto de una variable independiente, por ejemplo @var{x}, debe indicarse expl@'{@dotless{i}}citamente, tanto en las variables como en las derivadas. Por ejemplo, 
 
 
 @example
