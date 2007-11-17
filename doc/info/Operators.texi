@@ -544,7 +544,7 @@ The subscript must name an existing element;
 such objects cannot be extended by naming nonexistent elements.
 
 When the left-hand side is a subscripted element of an undeclared Maxima array,
-the right-hand side is assign to that element, if it already exists,
+the right-hand side is assigned to that element, if it already exists,
 or a new element is allocated, if it does not already exist.
 
 When the left-hand side is a list of atoms and/or subscripted variables,
