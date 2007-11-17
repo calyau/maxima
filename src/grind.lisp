@@ -25,8 +25,10 @@
     (cond
       ((null x))
       ((cdr x) (mapc #'(lambda (xx) (funcall (get '$grind 'mfexpr*) `(($grind) ,xx))) x))
-      ((symbolp (setq x (strmeval (car x))))
-       (unless (stringp x) (setq x ($verbify x)))
+      ((or
+         (symbolp (setq x (strmeval (car x))))
+         (and (stringp x) (symbolp (getopr x))))
+       (setq x ($verbify x))
        (cond ((setq y (mget x 'mexpr))
 	      (mgrind (list '(mdefine) (cons (list x) (cdadr y)) (caddr y)) nil))
 	     ((setq y (mget x 'mmacro))
