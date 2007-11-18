@@ -4,7 +4,7 @@
 @c Language=Russian
 @c Encoding=CP1251
 @c File=maxima.texi 
-@c OriginalRevision=1.54
+@c OriginalRevision=1.55
 
 @c 2000-04-17 Jim Van Zandt <jrv@vanzandt.mv.com> Added header,
 @c info directory entry, reference to introduction chapter, and menu

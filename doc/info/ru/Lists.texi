@@ -1,7 +1,7 @@
 @c Language=Russian
 @c Encoding=CP1251
 @c File=Lists.texi 
-@c OriginalRevision=1.32
+@c OriginalRevision=1.33
 @c TranslatedBy: (c) 2007-06 Vadim V. Zhytnikov <vvzhyt@gmail.com>
 
 @menu
@@ -394,6 +394,28 @@ x is not numeric.
 Возвращает девятый элемент выражения или списка @var{expr}.
 См. @code{first} по поводу подробностей.
 
+@end deffn
+
+
+@deffn {Функция} unique (@var{L})
+
+Возвращает уникальные элементы списка @var{L}.
+
+Если все элементы списка @var{L} уникальны, то
+@code{unique} возвращает копию верхнего уровня
+списка @var{L}, а не сам список @var{L}.
+
+Если @var{L} не является списком, то @code{unique} возвращает @var{L}.
+
+Пример:
+
+@c ===beg===
+@c unique ([1, %pi, a + b, 2, 1, %e, %pi, a + b, [1]]);
+@c ===end===
+@example
+(%i1) unique ([1, %pi, a + b, 2, 1, %e, %pi, a + b, [1]]);
+(%o1)              [1, 2, %e, %pi, [1], b + a]
+@end example
 @end deffn
 
 @c NEEDS EXAMPLES
