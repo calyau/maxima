@@ -106,7 +106,7 @@ Example:
              xrange = [-3,3])$
 @end example
 
-See also @code{yrange} and @code{zrange}.
+See also @code{xrange} and @code{yrange}.
 @end defvr
 
 
@@ -1682,7 +1682,7 @@ See also @code{fill_color}.
 Default value: @code{"red"}
 
 @code{fill_color} specifies the color for filling polygons and
-2d explicit functions.
+2d @code{explicit} functions.
 
 See @code{color} to learn how colors are specified.
 @end defvr
@@ -2112,7 +2112,7 @@ This is the list of @i{graphic objects} available for scenes in three dimensions
 @code{points}, @code{label}, @code{vector}, @code{explicit}, @code{parametric},
 @code{parametric_surface} and @code{geomap}.
 
-See also the following graphic options: @code{xrange}, @code{yrange}, 
+See also the following global @i{graphic options}: @code{xrange}, @code{yrange}, 
 @code{zrange}, @code{logx}, @code{logy}, @code{logz}, @code{terminal}, 
 @code{grid}, @code{title}, @code{xlabel}, @code{ylabel}, @code{zlabel}, 
 @code{xtics}, @code{ytics}, @code{ztics}, @code{xtics_rotate}, 
@@ -2648,7 +2648,7 @@ region from vertex @code{(@var{x0},@var{y0})} to @code{(x0+@var{width},y0+@var{h
 plane. Argument @var{im} must be a matrix of real numbers, a matrix of
 vectors of length three or a @var{picture} object.
 
-If @var{im} is a matrix of real numbers or a @code{levels picture} object,
+If @var{im} is a matrix of real numbers or a @var{levels picture} object,
 pixel values are interpreted according to graphic option @code{palette}, 
 which is a vector of length three with components 
 ranging from -36 to +36; each value is an index for a formula mapping the levels
@@ -2674,7 +2674,7 @@ negative numbers mean negative colour component.
 @code{palette = gray} and @code{palette = color} are short cuts for
 @code{palette = [3,3,3]} and @code{palette = [7,5,15]}, respectively.
 
-If @var{im} is a matrix of vectors of length three or an @code{rgb picture} object,
+If @var{im} is a matrix of vectors of length three or an @var{rgb picture} object,
 they are interpreted as red, green and blue color components.
 
 Examples:
@@ -3026,13 +3026,13 @@ See also @code{draw} and @code{gr3d}.
 
 @deffn  {Function} make_level_picture (@var{data})
 @deffnx {Function} make_level_picture (@var{data},@var{width},@var{height})
-Returns a levels @code{picture} object. @code{make_level_picture (@var{data})}
-builds the @code{picture} object from matrix @var{data}.
+Returns a levels @var{picture} object. @code{make_level_picture (@var{data})}
+builds the @var{picture} object from matrix @var{data}.
 @code{make_level_picture (@var{data},@var{width},@var{height})}
 builds the object from a list of numbers; in this case, both the
 @var{width} and the @var{height} must be given.
 
-The returned @code{picture} object contains the following 
+The returned @var{picture} object contains the following 
 four parts:
 
 @enumerate
@@ -3075,17 +3075,17 @@ Returns @code{true} in case of equal pictures, and @code{false} otherwise.
 
 
 @deffn  {Function} make_rgb_picture (@var{redlevel},@var{greenlevel},@var{bluelevel})
-Returns an rgb-coloured @code{picture} object. All three arguments must
+Returns an rgb-coloured @var{picture} object. All three arguments must
 be levels picture; with red, green and blue levels.
 
-The returned @code{picture} object contains the following 
+The returned @var{picture} object contains the following 
 four parts:
 
 @enumerate
 @item symbol @code{rgb}
 @item image width
 @item image height
-@item an integer array of length @code{3*width*height} with pixel data ranging
+@item an integer array of length @var{3*width*height} with pixel data ranging
 from 0 to 255. Each pixel is represented by three consecutive numbers
 (red, green, blue).
 @end enumerate
@@ -3108,7 +3108,7 @@ Example:
 
 
 @deffn  {Function} take_channel (@var{im},@var{color})
-If argument @var{color} is @var{red}, @var{green} or @var{blue},
+If argument @var{color} is @code{red}, @code{green} or @code{blue},
 function @code{take_channel} returns the corresponding color channel of
 picture @var{im}.
 Example:
@@ -3131,12 +3131,12 @@ Example:
 
 
 @deffn  {Function} negative_picture (@var{pic})
-Returns the negative of a (@code{level} or @code{rgb}) picture.
+Returns the negative of a (@var{level} or @var{rgb}) picture.
 @end deffn
 
 
 @deffn  {Function} rgb2level (@var{pic})
-Transforms an @code{rgb} picture into a @code{level} one by
+Transforms an @var{rgb} picture into a @var{level} one by
 averaging the red, green and blue channels.
 @end deffn
 
