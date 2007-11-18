@@ -1,0 +1,3273 @@
+@c Language=Russian
+@c Encoding=CP1251
+@c File=draw.texi 
+@c OriginalRevision=1.22
+@c TranslatedBy: (c) 2007-11 Vadim V. Zhytnikov <vvzhyt@gmail.com>
+
+
+@menu
+* Введение в пакет draw::
+* Функции и переменные пакета draw::
+* Функции и переменные для картин::
+* Функции и переменные для карты мира::
+@end menu
+
+
+
+
+
+@node Введение в пакет draw, Функции и переменные пакета draw, Пакет draw, Пакет draw
+@section Введение в пакет draw
+
+
+@code{draw} является интерфейсом Maxima к программе Gnuplot.
+
+На уровне Maxima есть три основные функции: 
+@code{draw2d}, @code{draw3d} и @code{draw}.
+
+Более сложные примеры использования пакета можно найти по ссылке:
+
+@url{http://www.telefonica.net/web2/biomates/maxima/gpdraw}
+
+
+Для работы программы требуется Gnuplot 4.2.
+
+
+
+
+@node Функции и переменные пакета draw, Функции и переменные для картин, Введение в пакет draw, Пакет draw
+@section Функции и переменные пакета draw
+
+
+
+
+@defvr {Графическая опция} xrange
+Значение по умолчанию: @code{auto}
+
+Если @code{xrange} равно @code{auto}, то диапазон координаты @var{x} вычисляется автоматически.
+
+Если требуется определенный интервал @var{x}, он должен быть задан в форме списка,
+например @code{xrange=[-2, 3]}.
+
+Поскольку это глобальная графическая опция, ее расположение в описании сцены не имеет значения.
+
+
+Пример:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(xrange = [-3,5],
+             explicit(x^2,x,-1,1))$
+@end example
+
+См. @code{yrange} и @code{zrange}.
+@end defvr
+
+
+
+@defvr {Графическая опция} yrange
+Значение по умолчанию: @code{auto}
+
+Если @code{yrange} равно @code{auto}, то диапазон координаты @var{y} вычисляется автоматически.
+
+Если требуется определенный интервал @var{y}, он должен быть задан в форме списка,
+например @code{yrange=[-2, 3]}.
+
+Поскольку это глобальная графическая опция, ее расположение в описании сцены не имеет значения.
+
+
+Пример:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(yrange = [-2,3],
+             explicit(x^2,x,-1,1),
+             xrange = [-3,3])$
+@end example
+
+См. @code{xrange} и @code{zrange}.
+@end defvr
+
+
+
+@defvr {Графическая опция} zrange
+Значение по умолчанию: @code{auto}
+
+Если @code{zrange} равно @code{auto}, то диапазон координаты @var{z} вычисляется автоматически.
+
+Если требуется определенный интервал @var{z}, он должен быть задан в форме списка,
+например @code{zrange=[-2, 3]}.
+
+Поскольку это глобальная графическая опция, ее расположение в описании сцены не имеет значения.
+
+
+Пример:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(yrange = [-3,3],
+             zrange = [-2,5],
+             explicit(x^2+y^2,x,-1,1,y,-1,1),
+             xrange = [-3,3])$
+@end example
+
+См. @code{xrange} и @code{yrange}.
+@end defvr
+
+
+
+@defvr {Графическая опция} logx
+Значение по умолчанию: @code{false}
+
+Если @code{logx} равно @code{true}, то ось @var{x} будет изображаться в логарифмической шкале.
+
+Поскольку это глобальная графическая опция, ее расположение в описании сцены не имеет значения.
+
+
+Пример:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(explicit(log(x),x,0.01,5),
+             logx = true)$
+@end example
+
+См. @code{logy} и @code{logz}.
+@end defvr
+
+
+
+@defvr {Графическая опция} logy
+Значение по умолчанию: @code{false}
+
+Если @code{logy} равно @code{true}, то ось @var{y} будет изображаться в логарифмической шкале.
+
+Поскольку это глобальная графическая опция, ее расположение в описании сцены не имеет значения.
+
+
+Пример:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(logy = true,
+             explicit(exp(x),x,0,5))$
+@end example
+
+См. @code{logx} и @code{logz}.
+@end defvr
+
+
+
+@defvr {Графическая опция} logz
+Значение по умолчанию: @code{false}
+
+Если @code{logz} равно @code{true}, то ось @var{z} будет изображаться в логарифмической шкале.
+
+Поскольку это глобальная графическая опция, ее расположение в описании сцены не имеет значения.
+
+
+Пример:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(logz = true,
+             explicit(exp(u^2+v^2),u,-2,2,v,-2,2))$
+@end example
+
+См. @code{logx} и @code{logy}.
+@end defvr
+
+
+
+@defvr {Графическая опция} terminal
+Значение по умолчанию: @code{screen}
+
+Выбирает терминал, используемый программой Gnuplot. Возможные значения:
+@code{screen} (умолчание), @code{png}, @code{jpg}, @code{eps}, @code{eps_color},
+@code{gif}, @code{animated_gif} и @code{wxt}.
+
+Поскольку это глобальная графическая опция, ее расположение в описании сцены не имеет значения.
+Она также может использоваться как аргумент функции @code{draw}.
+
+Примеры:
+
+@example
+(%i1) load(draw)$
+(%i2) /* screen terminal (default) */
+      draw2d(explicit(x^2,x,-1,1))$
+(%i3) /* png file */
+      draw2d(terminal  = 'png,
+             pic_width = 300,
+             explicit(x^2,x,-1,1))$
+(%i4) /* jpg file */
+      draw2d(terminal   = 'jpg,
+             pic_width  = 300,
+             pic_height = 300,
+             explicit(x^2,x,-1,1))$
+(%i5) /* eps file */
+      draw2d(file_name = "myfile",
+             explicit(x^2,x,-1,1),
+             terminal  = 'eps)$
+(%i6) /* wxwidgets window */
+      draw2d(explicit(x^2,x,-1,1),
+             terminal  = 'wxt)$
+@end example
+
+Файл анимированного gif:
+@example
+(%i1) load(draw)$
+(%i2) draw(
+        delay     = 100,
+        file_name = "zzz",
+        terminal  = 'animated_gif,
+        gr2d(explicit(x^2,x,-1,1)),
+        gr2d(explicit(x^3,x,-1,1)),
+        gr2d(explicit(x^4,x,-1,1)));
+End of animation sequence
+(%o2)          [gr2d(explicit), gr2d(explicit), gr2d(explicit)]
+@end example
+
+Опция @code{delay} возможна тоько для анимированного gif. В других случаях она игнорируется.
+
+См. @code{file_name}, @code{pic_width}, @code{pic_height} и @code{delay}.
+@end defvr
+
+
+
+@defvr {Графическая опция} grid
+Значение по умолчанию: @code{false}
+
+Если @code{grid} равно @code{true}, то на плоскости @var{xy} будет изображена сетка.
+
+Поскольку это глобальная графическая опция, ее расположение в описании сцены не имеет значения.
+
+
+Пример:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(grid = true,
+             explicit(exp(u),u,-2,2))$
+@end example
+@end defvr
+
+
+
+@defvr {Графическая опция} title
+Значение по умолчанию: @code{""} (пустая строка)
+
+Опция @code{title} -- строка, содержащая основной заголовок сцены.
+По умолчанию заголовок отсутствует.
+
+Поскольку это глобальная графическая опция, ее расположение в описании сцены не имеет значения.
+
+
+Пример:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(explicit(exp(u),u,-2,2),
+             title = "Exponential function")$
+@end example
+@end defvr
+
+
+
+@defvr {Графическая опция} xlabel
+Значение по умолчанию: @code{""} (пустая строка)
+
+Опция @code{xlabel} -- строка, содержащая метку для оси @var{x}.
+По умолчанию метка отсутствует.
+
+Поскольку это глобальная графическая опция, ее расположение в описании сцены не имеет значения.
+
+
+Пример:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(xlabel = "Time",
+             explicit(exp(u),u,-2,2),
+             ylabel = "Population")$
+@end example
+
+См. @code{ylabel} и @code{zlabel}.
+@end defvr
+
+
+
+@defvr {Графическая опция} ylabel
+Значение по умолчанию: @code{""} (пустая строка)
+
+Опция @code{ylabel} -- строка, содержащая метку для оси @var{y}.
+По умолчанию метка отсутствует.
+
+Поскольку это глобальная графическая опция, ее расположение в описании сцены не имеет значения.
+
+
+Пример:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(xlabel = "Time",
+             ylabel = "Population",
+             explicit(exp(u),u,-2,2) )$
+@end example
+
+См. @code{xlabel} и @code{zlabel}.
+@end defvr
+
+
+
+@defvr {Графическая опция} zlabel
+Значение по умолчанию: @code{""} (пустая строка)
+
+Опция @code{zlabel} -- строка, содержащая метку для оси @var{z}.
+По умолчанию метка отсутствует.
+
+Поскольку это глобальная графическая опция, ее расположение в описании сцены не имеет значения.
+
+
+Пример:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(zlabel = "Z variable",
+             ylabel = "Y variable",
+             explicit(sin(x^2+y^2),x,-2,2,y,-2,2),
+             xlabel = "X variable" )$
+@end example
+
+См. @code{xlabel} и @code{ylabel}.
+@end defvr
+
+
+@defvr {Графическая опция} xtics
+Значение по умолчанию: @code{auto}
+
+Управляет методом изображения делений на оси @var{x}.
+
+@itemize @bullet
+@item
+Если @code{xtics} равно @var{auto}, то деления изображаются автоматически.
+
+@item
+Если @code{xtics} равно @var{none}, то деления не изображаются.
+
+@item
+Если @code{xtics} равно положительному числу, то это задает расстояние между соседними делениями.
+
+@item
+Если @code{xtics} равно списку длины три вида @code{[start,incr,end]}, 
+то деления изображаются от отметки @code{start} до @code{end} с интервалом @code{incr}.
+
+@item
+Если @code{xtics} равно набору чисел @code{@{n1, n2, ...@}}, то деления изображаются
+для значений @code{n1}, @code{n2}, ...
+
+@item
+Если @code{xtics} равно набору пар чисел вида @code{@{["label1", n1], ["label2", n2], ...@}}, 
+то деления со значением @code{n1}, @code{n2}, ... 
+обозначаются метками @code{"label1"}, @code{"label2"}, ... соответственно.
+@end itemize
+
+Поскольку это глобальная графическая опция, ее расположение в описании сцены не имеет значения.
+
+
+Примеры:
+
+Деления отключены.
+@example
+(%i1) load(draw)$
+(%i2) draw2d(xtics = 'none,
+             explicit(x^3,x,-1,1)  )$
+@end example
+
+Деления на каждой 1/4.
+@example
+(%i1) load(draw)$
+(%i2) draw2d(xtics = 1/4,
+             explicit(x^3,x,-1,1)  )$
+@end example
+
+Деления на значениях от -3/4 до 3/4 с шагом 1/8.
+@example
+(%i1) load(draw)$
+(%i2) draw2d(xtics = [-3/4,1/8,3/4],
+             explicit(x^3,x,-1,1)  )$
+@end example
+
+Деления в точках -1/2, -1/4 и 3/4.
+@example
+(%i1) load(draw)$
+(%i2) draw2d(xtics = @{-1/2,-1/4,3/4@},
+             explicit(x^3,x,-1,1)  )$
+@end example
+
+Деления с метками.
+@example
+(%i1) load(draw)$
+(%i2) draw2d(xtics = @{["High",0.75],["Medium",0],["Low",-0.75]@},
+             explicit(x^3,x,-1,1)  )$
+@end example
+
+См. @code{ytics} и @code{ztics}.
+@end defvr
+
+
+
+@defvr {Графическая опция} ytics
+Значение по умолчанию: @code{auto}
+
+Управляет методом изображения делений на оси @var{y}.
+
+См. @code{xtics} для полного описания.
+@end defvr
+
+
+
+@defvr {Графическая опция} ztics
+Значение по умолчанию: @code{auto}
+
+Управляет методом изображения делений на оси @var{z}.
+
+См. @code{xtics} для полного описания.
+@end defvr
+
+
+@defvr {Графическая опция} xtics_rotate
+Значение по умолчанию: @code{false}
+
+Если @code{xtics_rotate} равно @code{true}, то деления на оси @var{x} поворачиваются на 90 градусов.
+
+Поскольку это глобальная графическая опция, ее расположение в описании сцены не имеет значения.
+
+@end defvr
+
+
+@defvr {Графическая опция} ytics_rotate
+Значение по умолчанию: @code{false}
+
+Если @code{ytics_rotate} равно @code{true}, то деления на оси @var{y} поворачиваются на 90 градусов.
+
+Поскольку это глобальная графическая опция, ее расположение в описании сцены не имеет значения.
+
+@end defvr
+
+
+@defvr {Графическая опция} ztics_rotate
+Значение по умолчанию: @code{false}
+
+Если @code{ztics_rotate} равно @code{true}, то деления на оси @var{z} поворачиваются на 90 градусов.
+
+Поскольку это глобальная графическая опция, ее расположение в описании сцены не имеет значения.
+
+@end defvr
+
+
+@defvr {Графическая опция} xtics_axis
+Значение по умолчанию: @code{false}
+
+Если @code{xtics_axis} равно @code{true}, то деления и их метки изображаются вдоль оси @var{x}, 
+если @code{false}, то деления изображаются на границе.
+
+Поскольку это глобальная графическая опция, ее расположение в описании сцены не имеет значения.
+
+@end defvr
+
+@defvr {Графическая опция} ytics_axis
+Значение по умолчанию: @code{false}
+
+Если @code{ytics_axis} равно @code{true}, то деления и их метки изображаются вдоль оси @var{y}, 
+если @code{false}, то деления изображаются на границе.
+
+Поскольку это глобальная графическая опция, ее расположение в описании сцены не имеет значения.
+
+@end defvr
+
+@defvr {Графическая опция} ztics_axis
+Значение по умолчанию: @code{false}
+
+Если @code{ztics_axis} равно @code{true}, то деления и их метки изображаются вдоль оси @var{z}, 
+если @code{false}, то деления изображаются на границе.
+
+Поскольку это глобальная графическая опция, ее расположение в описании сцены не имеет значения.
+
+@end defvr
+
+
+@defvr {Графическая опция} xaxis
+Значение по умолчанию: @code{false}
+
+Если @code{xaxis} равно @code{true}, то ось @var{x} изображается.
+
+Поскольку это глобальная графическая опция, ее расположение в описании сцены не имеет значения.
+
+
+Пример:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(explicit(x^3,x,-1,1),
+             xaxis       = true,
+             xaxis_color = blue)$
+@end example
+
+См. @code{xaxis_width}, @code{xaxis_type} и @code{xaxis_color}.
+@end defvr
+
+
+
+@defvr {Графическая опция} xaxis_width
+Значение по умолчанию: 1
+
+@code{xaxis_width} -- толщина оси @var{x}.
+Значение должно быть положительным числом.
+
+Поскольку это глобальная графическая опция, ее расположение в описании сцены не имеет значения.
+
+
+Пример:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(explicit(x^3,x,-1,1),
+             xaxis       = true,
+             xaxis_width = 3)$
+@end example
+
+См. @code{xaxis}, @code{xaxis_type} и @code{xaxis_color}.
+@end defvr
+
+
+
+@defvr {Графическая опция} xaxis_type
+Значение по умолчанию: @code{dots}
+
+@code{xaxis_type} -- задает стиль изображения оси @var{x}. 
+Возможные значения: @code{solid} и @code{dots}.
+
+Поскольку это глобальная графическая опция, ее расположение в описании сцены не имеет значения.
+
+
+Пример:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(explicit(x^3,x,-1,1),
+             xaxis       = true,
+             xaxis_type  = solid)$
+@end example
+
+См. @code{xaxis}, @code{xaxis_width} и @code{xaxis_color}.
+@end defvr
+
+
+
+@defvr {Графическая опция} xaxis_color
+Значение по умолчанию: @code{"black"}
+
+@code{xaxis_color} -- определяет цвет оси @var{x} axis. 
+См. @code{color} для способа задания цвета.
+
+Поскольку это глобальная графическая опция, ее расположение в описании сцены не имеет значения.
+
+
+Пример:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(explicit(x^3,x,-1,1),
+             xaxis       = true,
+             xaxis_color = red)$
+@end example
+
+См. @code{xaxis}, @code{xaxis_width} и @code{xaxis_type}.
+@end defvr
+
+
+
+@defvr {Графическая опция} yaxis
+Значение по умолчанию: @code{false}
+
+Если @code{yaxis} равно @code{true}, то ось @var{y} изображается.
+
+Поскольку это глобальная графическая опция, ее расположение в описании сцены не имеет значения.
+
+
+Пример:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(explicit(x^3,x,-1,1),
+             yaxis       = true,
+             yaxis_color = blue)$
+@end example
+
+См. @code{yaxis_width}, @code{yaxis_type} и @code{yaxis_color}.
+@end defvr
+
+
+
+@defvr {Графическая опция} yaxis_width
+Значение по умолчанию: 1
+
+@code{yaxis_width} -- толщина оси @var{y}.
+Значение должно быть положительным числом.
+
+Поскольку это глобальная графическая опция, ее расположение в описании сцены не имеет значения.
+
+
+Пример:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(explicit(x^3,x,-1,1),
+             yaxis       = true,
+             yaxis_width = 3)$
+@end example
+
+См. @code{yaxis}, @code{yaxis_type} и @code{yaxis_color}.
+@end defvr
+
+
+
+@defvr {Графическая опция} yaxis_type
+Значение по умолчанию: @code{dots}
+
+@code{yaxis_type} -- задает стиль изображения @var{y}. 
+Возможные значения: @code{solid} и @code{dots}.
+
+Поскольку это глобальная графическая опция, ее расположение в описании сцены не имеет значения.
+
+
+Пример:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(explicit(x^3,x,-1,1),
+             yaxis       = true,
+             yaxis_type  = solid)$
+@end example
+
+См. @code{yaxis}, @code{yaxis_width} и @code{yaxis_color}.
+@end defvr
+
+
+
+@defvr {Графическая опция} yaxis_color
+Значение по умолчанию: @code{"black"}
+
+@code{yaxis_color} -- определяет цвет оси @var{y} axis. 
+См. @code{color} для способа задания цвета.
+
+Поскольку это глобальная графическая опция, ее расположение в описании сцены не имеет значения.
+
+
+Пример:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(explicit(x^3,x,-1,1),
+             yaxis       = true,
+             yaxis_color = red)$
+@end example
+
+См. @code{yaxis}, @code{yaxis_width} и @code{yaxis_type}.
+@end defvr
+
+
+
+@defvr {Графическая опция} zaxis
+Значение по умолчанию: @code{false}
+
+Если @code{zaxis} равно @code{true}, то ось @var{x} изображается на трехмерных графиках.
+Эта опция не влияет на двумерные графики.
+
+Поскольку это глобальная графическая опция, ее расположение в описании сцены не имеет значения.
+
+
+Пример:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(explicit(x^2+y^2,x,-1,1,y,-1,1),
+             zaxis       = true,
+             zaxis_type  = solid,
+             zaxis_color = blue)$
+@end example
+
+См. @code{zaxis_width}, @code{zaxis_type} и @code{zaxis_color}.
+@end defvr
+
+
+
+@defvr {Графическая опция} zaxis_width
+Значение по умолчанию: 1
+
+@code{zaxis_width} -- толщина оси @var{z}.
+Значение должно быть положительным числом.
+Эта опция не влияет на двумерные графики.
+
+Поскольку это глобальная графическая опция, ее расположение в описании сцены не имеет значения.
+
+
+Пример:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(explicit(x^2+y^2,x,-1,1,y,-1,1),
+             zaxis       = true,
+             zaxis_type  = solid,
+             zaxis_width = 3)$
+@end example
+
+См. @code{zaxis}, @code{zaxis_type} и @code{zaxis_color}.
+@end defvr
+
+
+
+@defvr {Графическая опция} zaxis_type
+Значение по умолчанию: @code{dots}
+
+@code{zaxis_type} -- задает стиль изображения оси @var{z}. 
+Возможные значения: @code{solid} и @code{dots}.
+Эта опция не влияет на двумерные графики.
+
+Поскольку это глобальная графическая опция, ее расположение в описании сцены не имеет значения.
+
+
+Пример:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(explicit(x^2+y^2,x,-1,1,y,-1,1),
+             zaxis       = true,
+             zaxis_type  = solid)$
+@end example
+
+См. @code{zaxis}, @code{zaxis_width} и @code{zaxis_color}.
+@end defvr
+
+
+
+@defvr {Графическая опция} zaxis_color
+Значение по умолчанию: @code{"black"}
+
+@code{zaxis_color} -- определяет цвет оси @var{z} axis. 
+См. @code{color} для способа задания цвета.
+Эта опция не влияет на двумерные графики.
+
+Поскольку это глобальная графическая опция, ее расположение в описании сцены не имеет значения.
+
+
+Пример:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(explicit(x^2+y^2,x,-1,1,y,-1,1),
+             zaxis       = true,
+             zaxis_type  = solid,
+             zaxis_color = red)$
+@end example
+
+См. @code{zaxis}, @code{zaxis_width} и @code{zaxis_type}.
+@end defvr
+
+
+
+@defvr {Графическая опция} rot_vertical
+Значение по умолчанию: 60
+
+@code{rot_vertical} -- угол поворота (в градусах) вокруг оси @var{x} 
+точки наблюдения в трехмерных сценах.
+
+Угол может быть в интервале @math{[0, 180]}.
+
+Поскольку это глобальная графическая опция, ее расположение в описании сцены не имеет значения.
+
+
+Пример:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(rot_vertical = 170,
+             explicit(sin(x^2+y^2),x,-2,2,y,-2,2) )$
+@end example
+
+См. @code{rot_horizontal}.
+@end defvr
+
+
+
+@defvr {Графическая опция} rot_horizontal
+Значение по умолчанию: 30
+
+@code{rot_horizontal} -- угол поворота (в градусах) вокруг оси @var{z} 
+точки наблюдения в трехмерных сценах.
+
+Угол может быть в интервале @math{[0, 360]}.
+
+Поскольку это глобальная графическая опция, ее расположение в описании сцены не имеет значения.
+
+
+Пример:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(rot_vertical = 170,
+             rot_horizontal = 360,
+             explicit(sin(x^2+y^2),x,-2,2,y,-2,2) )$
+@end example
+
+См. @code{rot_vertical}.
+@end defvr
+
+
+
+@defvr {Графическая опция} xy_file
+Значение по умолчанию: @code{""} (пустая строка)
+
+@code{xy_file} -- имя файла, в котором будут сохранены координаты после щелчка мышкой и нажатия 
+клавиши 'x'. По умолчанию координаты не сохраняются.
+
+Поскольку это глобальная графическая опция, ее расположение в описании сцены не имеет значения.
+
+@end defvr
+
+
+
+@defvr {Графическая опция} user_preamble
+Значение по умолчанию: @code{""} (пустая строка)
+
+Опытные пользователи Gnuplot могут использовать эту опцию для тонкой
+настройке поведения Gnuplot путем задания установок до 
+комманд @code{plot} или @code{splot}.
+
+Значение этой опции должно быть строкой или списком строк (по одной на строку).
+
+Поскольку это глобальная графическая опция, ее расположение в описании сцены не имеет значения.
+
+
+Пример:
+
+Терминал @i{dumb} не поддерживается пакетом @code{draw},
+но можно задать его при помощи опции @code{user_preamble},
+@example
+(%i1) load(draw)$
+(%i2) draw2d(explicit(exp(x)-1,x,-1,1),
+             parametric(cos(u),sin(u),u,0,2*%pi),
+             user_preamble="set terminal dumb")$
+@end example
+@end defvr
+
+
+
+@defvr {Графическая опция} file_name
+Значение по умолчанию: @code{"maxima_out"}
+
+Это имя файла, в котром терминалы @code{png}, @code{jpg}, @code{eps}
+и @code{eps_color} сохраняют графику.
+
+Поскольку это глобальная графическая опция, ее расположение в описании сцены не имеет значения.
+Она также может использоваться как аргумент функции @code{draw}.
+
+Пример:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(file_name = "myfile",
+             explicit(x^2,x,-1,1),
+             terminal  = 'png)$
+@end example
+
+См. @code{terminal}, @code{pic_width} и @code{pic_height}.
+@end defvr
+
+@defvr {Графическая опция} delay
+Значение по умолчанию: 5
+
+Это задержка в 1/100 секунды между кадрами анимированного gif.
+
+Поскольку это глобальная графическая опция, ее расположение в описании сцены не имеет значения.
+Она также может использоваться как аргумент функции @code{draw}.
+
+Пример:
+
+@example
+(%i1) load(draw)$
+(%i2) draw(
+        delay     = 100,
+        file_name = "zzz",
+        terminal  = 'animated_gif,
+        gr2d(explicit(x^2,x,-1,1)),
+        gr2d(explicit(x^3,x,-1,1)),
+        gr2d(explicit(x^4,x,-1,1)));
+End of animation sequence
+(%o2)          [gr2d(explicit), gr2d(explicit), gr2d(explicit)]
+@end example
+
+Опция @code{delay} применима только для анимированного gif.
+Для других случаев она игнорируется.
+
+См. @code{terminal}, @code{pic_width} и @code{pic_height}.
+@end defvr
+
+@defvr {Графическая опция} pic_width
+Значение по умолчанию: 640
+
+Это ширина изображения, создаваемого терминалами @code{png} и @code{jpg}.
+
+Поскольку это глобальная графическая опция, ее расположение в описании сцены не имеет значения.
+Она также может использоваться как аргумент функции @code{draw}.
+
+Пример:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(terminal   = 'png,
+             pic_width  = 300,
+             pic_height = 300,
+             explicit(x^2,x,-1,1))$
+@end example
+
+См. @code{terminal}, @code{file_name} и @code{pic_height}.
+@end defvr
+
+
+
+@defvr {Графическая опция} pic_height
+Значение по умолчанию: 640
+
+Это высота изображения, создаваемого терминалами @code{png} и @code{jpg}.
+
+Поскольку это глобальная графическая опция, ее расположение в описании сцены не имеет значения.
+Она также может использоваться как аргумент функции @code{draw}.
+
+Пример:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(terminal   = 'png,
+             pic_width  = 300,
+             pic_height = 300,
+             explicit(x^2,x,-1,1))$
+@end example
+
+См. @code{terminal}, @code{file_name} и @code{pic_width}.
+@end defvr
+
+
+
+@defvr {Графическая опция} eps_width
+Значение по умолчанию: 12
+
+Это ширина изображения Postscript (в сантиметрах),
+создаваемого терминалами @code{eps} и @code{eps_color}.
+
+Поскольку это глобальная графическая опция, ее расположение в описании сцены не имеет значения.
+Она также может использоваться как аргумент функции @code{draw}.
+
+Пример:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(terminal   = 'eps,
+             eps_width  = 3,
+             eps_height = 3,
+             explicit(x^2,x,-1,1))$
+@end example
+
+См. @code{terminal}, @code{file_name} и @code{eps_height}.
+@end defvr
+
+
+
+@defvr {Графическая опция} eps_height
+Значение по умолчанию: 8
+
+Это высота изображения Postscript (в сантиметрах),
+создаваемого терминалами @code{eps} и @code{eps_color}.
+
+Поскольку это глобальная графическая опция, ее расположение в описании сцены не имеет значения.
+Она также может использоваться как аргумент функции @code{draw}.
+
+Пример:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(terminal   = 'eps,
+             eps_width  = 3,
+             eps_height = 3,
+             explicit(x^2,x,-1,1))$
+@end example
+
+См. @code{terminal}, @code{file_name} и @code{eps_width}.
+@end defvr
+
+
+
+@defvr {Графическая опция} axis_bottom
+Значение по умолчанию: @code{true}
+
+Если @code{axis_bottom} равно @code{true}, то на двумерных сценах изображается
+нижняя ось.
+
+Поскольку это глобальная графическая опция, ее расположение в описании сцены не имеет значения.
+
+
+Пример:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(axis_bottom = false,
+             explicit(x^3,x,-1,1))$
+@end example
+
+См. @code{axis_left},  @code{axis_top}, @code{axis_right} и @code{axis_3d}.
+@end defvr
+
+
+
+@defvr {Графическая опция} axis_left
+Значение по умолчанию: @code{true}
+
+Если @code{axis_left} равно @code{true}, то на двумерных сценах изображается левая ось.
+
+Поскольку это глобальная графическая опция, ее расположение в описании сцены не имеет значения.
+
+
+Пример:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(axis_left = false,
+             explicit(x^3,x,-1,1))$
+@end example
+
+См. @code{axis_bottom},  @code{axis_top}, @code{axis_right} и @code{axis_3d}.
+@end defvr
+
+
+
+@defvr {Графическая опция} axis_top
+Значение по умолчанию: @code{true}
+
+Если @code{axis_top} равно @code{true}, то на двумерных сценах отображается верхняя ось.
+
+Поскольку это глобальная графическая опция, ее расположение в описании сцены не имеет значения.
+
+
+Пример:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(axis_top = false,
+             explicit(x^3,x,-1,1))$
+@end example
+
+См. @code{axis_bottom},  @code{axis_left}, @code{axis_right} и @code{axis_3d}.
+@end defvr
+
+
+
+@defvr {Графическая опция} axis_right
+Значение по умолчанию: @code{true}
+
+Если @code{axis_right} равно @code{true}, то на двумерных сценах отображается правая ось.
+
+Поскольку это глобальная графическая опция, ее расположение в описании сцены не имеет значения.
+
+
+Пример:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(axis_right = false,
+             explicit(x^3,x,-1,1))$
+@end example
+
+См. @code{axis_bottom},  @code{axis_left}, @code{axis_top} и @code{axis_3d}.
+@end defvr
+
+
+
+@defvr {Графическая опция} axis_3d
+Значение по умолчанию: @code{true}
+
+Если @code{axis_3d} равно @code{true}, то оси @var{x}, @var{y} и @var{z} изображаются на 
+трехмерных сценах.
+
+Поскольку это глобальная графическая опция, ее расположение в описании сцены не имеет значения.
+
+
+Пример:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(axis_3d = false,
+             explicit(sin(x^2+y^2),x,-2,2,y,-2,2) )$
+@end example
+
+См. @code{axis_bottom},  @code{axis_left}, @code{axis_top} и @code{axis_right} для двух измерений.
+@end defvr
+
+
+
+
+
+@defvr {Графическая опция} palette
+Значение по умолчанию: @code{color}
+
+@code{palette} определяет, как отобразить реальные значения матрицы,
+передаваемые в объект @code{image}, в компоненты цвета.
+
+@code{palette} -- вектор тремя компонентами со значеним в пределах от -36 до +36.
+Каждое значение является индексом для формулы, отображающей уровни в красный,
+зеленый и синий цвета соответственно:
+@example
+ 0: 0               1: 0.5           2: 1
+ 3: x               4: x^2           5: x^3
+ 6: x^4             7: sqrt(x)       8: sqrt(sqrt(x))
+ 9: sin(90x)       10: cos(90x)     11: |x-0.5|
+12: (2x-1)^2       13: sin(180x)    14: |cos(180x)|
+15: sin(360x)      16: cos(360x)    17: |sin(360x)|
+18: |cos(360x)|    19: |sin(720x)|  20: |cos(720x)|
+21: 3x             22: 3x-1         23: 3x-2
+24: |3x-1|         25: |3x-2|       26: (3x-1)/2
+27: (3x-2)/2       28: |(3x-1)/2|   29: |(3x-2)/2|
+30: x/0.32-0.78125 31: 2*x-0.84     32: 4x;1;-2x+1.84;x/0.08-11.5
+33: |2*x - 0.5|    34: 2*x          35: 2*x - 0.5
+36: 2*x - 1
+@end example
+Отрицательные числа означают отрицательные цветовые компоненты.
+
+@code{palette = gray} и @code{palette = color} являются сокращениями 
+для @code{palette = [3,3,3]} и @code{palette = [7,5,15]} соответственно.
+
+Поскольку это глобальная графическая опция, ее расположение в описании сцены не имеет значения.
+
+
+Примеры:
+
+@example
+(%i1) load(draw)$
+(%i2) im: apply(
+           'matrix,
+            makelist(makelist(random(200),i,1,30),i,1,30))$
+(%i3) /* palette = color, default */
+      draw2d(image(im,0,0,30,30))$
+(%i4) draw2d(palette = gray, image(im,0,0,30,30))$
+(%i5) draw2d(palette = [15,20,-4],
+             colorbox=false,
+             image(im,0,0,30,30))$
+@end example
+
+См. @code{colorbox}. 
+@end defvr
+
+
+
+
+@defvr {Графическая опция} colorbox
+Значение по умолчанию: @code{true}
+
+Если @code{colorbox} равно @code{true}, то палитра цветов изображается вместе с 
+объектами изображения @code{image}.
+
+Поскольку это глобальная графическая опция, ее расположение в описании сцены не имеет значения.
+
+
+Пример:
+
+@example
+(%i1) load(draw)$
+(%i2) im: apply('matrix,
+                 makelist(makelist(random(200),i,1,30),i,1,30))$
+(%i3) draw2d(image(im,0,0,30,30))$
+(%i4) draw2d(colorbox=false, image(im,0,0,30,30))$
+@end example
+
+См. @code{palette}.
+@end defvr
+
+
+
+@defvr {Графическая опция} enhanced3d
+Значение по умолчанию: @code{false}
+
+Если @code{enhanced3d} равно @code{true}, то поверхности в трехмерных графиках окрашиваются,
+другими словами, включается Gnuplot мода pm3d.
+
+См. @code{palette} для того, чтобы узнать как задается палитра.
+
+Пример:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(surface_hide = true,
+             enhanced3d   = true,
+             palette      = gray,
+             explicit(20*exp(-x^2-y^2)-10,x,-3,3,y,-3,3))$
+@end example
+@end defvr
+
+
+
+@defvr {Графическая опция} point_size
+Значение по умолчанию: 1
+
+@code{point_size} -- устанавливает размер изображаемых точек. 
+Значение должно быть неотрицательным числом.
+
+Эта опция влияет на следующие графические объекты:
+@itemize @bullet
+@item
+@code{gr2d}: @code{points}.
+
+@item
+@code{gr3d}: @code{points}.
+@end itemize
+
+Пример:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(points(makelist([random(20),random(50)],k,1,10)),
+        point_size = 5,
+        points(makelist(k,k,1,20),makelist(random(30),k,1,20)))$
+@end example
+@end defvr
+
+
+
+@defvr {Графическая опция} point_type
+Значение по умолчанию: 1
+
+@code{point_type} определяет то, как изображаются изолированные точки.
+Значение этой опции может быть целое число больше или равное -1, 
+или имя стиля точки: @code{$none} (-1), @code{dot} (0), @code{plus} (1), @code{multiply} (2),
+@code{asterisk} (3), @code{square} (4), @code{filled_square} (5), @code{circle} (6),
+@code{filled_circle} (7), @code{up_triangle} (8), @code{filled_up_triangle} (9),
+@code{down_triangle} (10), @code{filled_down_triangle} (11), @code{diamant} (12) и
+@code{filled_diamant} (13).
+
+Эта опция влияет на следующие графические объекты:
+@itemize @bullet
+@item
+@code{gr2d}: @code{points}.
+
+@item
+@code{gr3d}: @code{points}.
+@end itemize
+
+Пример:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(xrange = [0,10],
+             yrange = [0,10],
+             point_size = 3,
+             point_type = diamant,
+             points([[1,1],[5,1],[9,1]]),
+             point_type = filled_down_triangle,
+             points([[1,2],[5,2],[9,2]]),
+             point_type = asterisk,
+             points([[1,3],[5,3],[9,3]]),
+             point_type = filled_diamant,
+             points([[1,4],[5,4],[9,4]]),
+             point_type = 5,
+             points([[1,5],[5,5],[9,5]]),
+             point_type = 6,
+             points([[1,6],[5,6],[9,6]]),
+             point_type = filled_circle,
+             points([[1,7],[5,7],[9,7]]),
+             point_type = 8,
+             points([[1,8],[5,8],[9,8]]),
+             point_type = filled_diamant,
+             points([[1,9],[5,9],[9,9]]) )$
+@end example
+@end defvr
+
+
+
+@defvr {Графическая опция} points_joined
+Значение по умолчанию: @code{false}
+
+Если @code{points_joined} равно @code{true}, то точки соединяются линиями.
+
+Эта опция влияет на следующие графические объекты:
+@itemize @bullet
+@item
+@code{gr2d}: @code{points}.
+
+@item
+@code{gr3d}: @code{points}.
+@end itemize
+
+Пример:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(xrange        = [0,10],
+             yrange        = [0,4],
+             point_size    = 3,
+             point_type    = up_triangle,
+             color         = blue,
+             points([[1,1],[5,1],[9,1]]),
+             points_joined = true,
+             point_type    = square,
+             line_type     = dots,
+             points([[1,2],[5,2],[9,2]]),
+             point_type    = circle,
+             color         = red,
+             line_width    = 7,
+             points([[1,3],[5,3],[9,3]]) )$
+@end example
+@end defvr
+
+
+
+@defvr {Графическая опция} filled_func
+Значение по умолчанию: @code{false}
+
+Опция @code{filled_func} управляет то, как заполняются области,
+ограниченные функциями. Если @code{filled_func} равно @code{true}, 
+то область, ограниченная функцией, определенной объектом @code{explicit} 
+и низом графического окна, заполняется цветом @code{fill_color}. 
+Если @code{filled_func} содержит функциональное выражение, то будет заполнена область,
+ограниченная этой функцией и функцией, определенной объектом @code{explicit}.
+По умолчанию явные функции не заполняются. 
+
+Эта опция влияет только на двумерные графические объекты @code{explicit}.
+
+Пример:
+
+Область, ограниченная объектом @code{explicit} и низом графического окна.
+@example
+(%i1) load(draw)$
+(%i2) draw2d(fill_color  = red,
+             filled_func = true,
+             explicit(sin(x),x,0,10) )$
+@end example
+
+Область, ограниченная объектом @code{explicit} и функцией, определенной
+в @code{filled_func}. Отметим, что переменная в @code{filled_func} 
+должна быть той же, что и в @code{explicit}.
+@example
+(%i1) load(draw)$
+(%i2) draw2d(fill_color  = grey,
+             filled_func = sin(x),
+             explicit(-sin(x),x,0,%pi));
+@end example
+
+См. @code{fill_color} и @code{explicit}.
+@end defvr
+
+
+
+@defvr {Графическая опция} transparent
+Значение по умолчанию: @code{false}
+
+Если @code{transparent} равно @code{true}, то внутренняя область многоугольников
+заполняется в соответствии с @code{fill_color}.
+
+Эта опция влияет на следующие графические объекты:
+@itemize @bullet
+@item
+@code{gr2d}: @code{polygon}, @code{rectangle} и @code{ellipse}.
+@end itemize
+
+Пример:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(polygon([[3,2],[7,2],[5,5]]),
+             transparent = true,
+             color       = blue,
+             polygon([[5,2],[9,2],[7,5]]) )$
+@end example
+@end defvr
+
+
+
+@defvr {Графическая опция} border
+Значение по умолчанию: @code{true}
+
+Если @code{border} равно @code{true}, то границы многоугольников изображаются в
+соответствии с опциями @code{line_type} и @code{line_width}.
+
+Эта опция влияет на следующие графические объекты:
+@itemize @bullet
+@item
+@code{gr2d}: @code{polygon}, @code{rectangle} и @code{ellipse}.
+@end itemize
+
+Пример:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(color       = brown,
+             line_width  = 8,
+             polygon([[3,2],[7,2],[5,5]]),
+             border      = false,
+             fill_color  = blue,
+             polygon([[5,2],[9,2],[7,5]]) )$
+@end example
+@end defvr
+
+
+
+@defvr {Графическая опция} head_both
+Значение по умолчанию: @code{false}
+
+Если @code{head_both} равно @code{true}, то векторы изображаются со окончаниями в форме двух стрелок.
+Если @code{false}, то изображается только одна стрелка.
+
+Эта опция влияет только на объекты типа @code{vector}.
+
+Пример:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(xrange      = [0,8],
+             yrange      = [0,8],
+             head_length = 0.7,
+             vector([1,1],[6,0]),
+             head_both   = true,
+             vector([1,7],[6,0]) )$
+@end example
+
+См. @code{head_length}, @code{head_angle} и @code{head_type}. 
+@end defvr
+
+
+
+@defvr {Графическая опция} head_length
+Значение по умолчанию: 2
+
+@code{head_length} задает длину наконечника стрелок в единицах оси @var{x}.
+
+Эта опция влияет только на объекты типа @code{vector}.
+
+Пример:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(xrange      = [0,12],
+             yrange      = [0,8],
+             vector([0,1],[5,5]),
+             head_length = 1,
+             vector([2,1],[5,5]),
+             head_length = 0.5,
+             vector([4,1],[5,5]),
+             head_length = 0.25,
+             vector([6,1],[5,5]))$
+@end example
+
+См. @code{head_both}, @code{head_angle} и @code{head_type}. 
+@end defvr
+
+
+
+@defvr {Графическая опция} head_angle
+Значение по умолчанию: 45
+
+@code{head_angle} задает угол в градусах между стронами наконечника стрелки и ее осью.
+
+Эта опция влияет только на объекты типа @code{vector}.
+
+Пример:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(xrange      = [0,10],
+             yrange      = [0,9],
+             head_length = 0.7,
+             head_angle  = 10,
+             vector([1,1],[0,6]),
+             head_angle  = 20,
+             vector([2,1],[0,6]),
+             head_angle  = 30,
+             vector([3,1],[0,6]),
+             head_angle  = 40,
+             vector([4,1],[0,6]),
+             head_angle  = 60,
+             vector([5,1],[0,6]),
+             head_angle  = 90,
+             vector([6,1],[0,6]),
+             head_angle  = 120,
+             vector([7,1],[0,6]),
+             head_angle  = 160,
+             vector([8,1],[0,6]),
+             head_angle  = 180,
+             vector([9,1],[0,6]) )$
+@end example
+
+См. @code{head_both}, @code{head_length} и @code{head_type}. 
+@end defvr
+
+
+
+@defvr {Графическая опция} head_type
+Значение по умолчанию: @code{filled}
+
+@code{head_type} задает способ изображения наконечника стрелок. 
+Возможны значения: @code{filled} (замкнутые и заполненные наконечники), @code{empty}
+(замкнутые и пустые наконечники) и @code{nofilled} (открытые наконечники).
+
+Эта опция влияет только на объекты типа @code{vector}.
+
+Пример:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(xrange      = [0,12],
+             yrange      = [0,10],
+             head_length = 1,
+             vector([0,1],[5,5]), /* default type */
+             head_type = 'empty,
+             vector([3,1],[5,5]),
+             head_type = 'nofilled,
+             vector([6,1],[5,5]))$
+@end example
+
+См. @code{head_both}, @code{head_angle} и @code{head_length}. 
+@end defvr
+
+
+@defvr {Графическая опция} unit_vectors
+Значение по умолчанию: @code{false}
+
+Если @code{unit_vectors} равно @code{true}, все вектора изображаются с единичной длиной.
+Это полезно при изображении векторных полей. Если @code{unit_vectors} равно @code{false},
+то вектора изображаются с их настоящей длиной.
+
+Эта опция влияет только на объекты типа @code{vector}.
+
+Пример:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(xrange      = [-1,6],
+             yrange      = [-1,6],
+             head_length = 0.1,
+             vector([0,0],[5,2]),
+             unit_vectors = true,
+             color        = red,
+             vector([0,3],[5,2]))$
+@end example
+@end defvr
+
+
+@defvr {Графическая опция} label_alignment
+Значение по умолчанию: @code{center}
+
+@code{label_alignment} определяет положение меток, по отношению к заданным координатам. 
+Возможны значения: @code{center},
+@code{left} и @code{right}.
+
+Эта опция влияет только на объекты типа @code{label}.
+
+Пример:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(xrange          = [0,10],
+             yrange          = [0,10],
+             points_joined   = true,
+             points([[5,0],[5,10]]),
+             color           = blue,
+             label(["Centered alignment (default)",5,2]),
+             label_alignment = 'left,
+             label(["Left alignment",5,5]),
+             label_alignment = 'right,
+             label(["Right alignment",5,8]))$
+@end example
+
+См. @code{label_orientation} и @code{color}. 
+@end defvr
+
+
+
+@defvr {Графическая опция} label_orientation
+Значение по умолчанию: @code{horizontal}
+
+@code{label_orientation} определяет ориентацию меток.
+Возможны значения: @code{horizontal} и @code{vertical}.
+
+Эта опция влияет только на объекты типа @code{label}.
+
+Пример:
+
+В этом примере к изображению добавлена фиктивная точка.
+Пакет @code{draw} требует непустые данные, чтобы изобразить сцену.
+@example
+(%i1) load(draw)$
+(%i2) draw2d(xrange     = [0,10],
+             yrange     = [0,10],
+             point_size = 0,
+             points([[5,5]]),
+             color      = navy,
+             label(["Horizontal orientation (default)",5,2]),
+             label_orientation = 'vertical,
+             color             = "#654321",
+             label(["Vertical orientation",1,5]))$
+@end example
+
+См. @code{label_alignment} и @code{color}. 
+@end defvr
+
+
+
+@defvr {Графическая опция} color
+Значение по умолчанию: @code{"black"}
+
+@code{color} задает цвет линий, точек, границ многоугольников и меток.
+
+Цвет может быть задан как наименование или как шестнадцатиричный @i{rgb} код.
+
+Доступны следующие наименования цветов: 
+@code{"white"}, @code{"black"}, @code{"gray0"}, @code{"grey0"}, @code{"gray10"},
+@code{"grey10"}, @code{"gray20"}, @code{"grey20"}, @code{"gray30"}, @code{"grey30"},
+@code{"gray40"}, @code{"grey40"}, @code{"gray50"}, @code{"grey50"}, @code{"gray60"},
+@code{"grey60"}, @code{"gray70"}, @code{"grey70"}, @code{"gray80"}, @code{"grey80"},
+@code{"gray90"}, @code{"grey90"}, @code{"gray100"}, @code{"grey100"}, @code{"gray"},
+@code{"grey"}, @code{"light-gray"}, @code{"light-grey"}, @code{"dark-gray"},
+@code{"dark-grey"}, @code{"red"}, @code{"light-red"}, @code{"dark-red"}, @code{"yellow"},
+@code{"light-yellow"}, @code{"dark-yellow"}, @code{"green"}, @code{"light-green"},
+@code{"dark-green"}, @code{"spring-green"}, @code{"forest-green"}, @code{"sea-green"},
+@code{"blue"}, @code{"light-blue"}, @code{"dark-blue"}, @code{"midnight-blue"}, 
+@code{"navy"}, @code{"medium-blue"}, @code{"royalblue"}, @code{"skyblue"}, 
+@code{"cyan"}, @code{"light-cyan"}, @code{"dark-cyan"}, @code{"magenta"}, 
+@code{"light-magenta"}, @code{"dark-magenta"}, @code{"turquoise"}, 
+@code{"light-turquoise"}, @code{"dark-turquoise"}, @code{"pink"}, @code{"light-pink"},
+@code{"dark-pink"}, @code{"coral"}, @code{"light-coral"}, @code{"orange-red"},
+@code{"salmon"}, @code{"light-salmon"}, @code{"dark-salmon"}, @code{"aquamarine"},
+@code{"khaki"}, @code{"dark-khaki"}, @code{"goldenrod"}, @code{"light-goldenrod"},
+@code{"dark-goldenrod"}, @code{"gold"}, @code{"beige"}, @code{"brown"}, @code{"orange"},
+@code{"dark-orange"}, @code{"violet"}, @code{"dark-violet"}, @code{"plum"} и @code{"purple"}.
+
+Цветовые компоненты в шестнадцатиричном коде представляются в форме @code{"#rrggbb"}.
+
+Пример:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(explicit(x^2,x,-1,1), /* default is black */
+             color = "red",
+             explicit(0.5 + x^2,x,-1,1),
+             color = blue,
+             explicit(1 + x^2,x,-1,1),
+             color = "light-blue", /* double quotes if - is used */
+             explicit(1.5 + x^2,x,-1,1),
+             color = "#23ab0f",
+             label(["This is a label",0,1.2])  )$
+@end example
+
+См. @code{fill_color}.
+@end defvr
+
+
+
+@defvr {Графическая опция} fill_color
+Значение по умолчанию: @code{"red"}
+
+@code{fill_color} определяет цвет для заполнения многоугольников и двумерных @code{explicit} функций.
+
+См. @code{color} для способа задания цвета.
+@end defvr
+
+
+
+@defvr {Графическая опция} fill_density
+Значение по умолчанию: 0
+
+@code{fill_density} -- число от 0 до 1, которое задает интенсивность 
+цвета @code{fill_color} в объектах @code{bars}.
+
+См. @code{bars} для примеров.
+@end defvr
+
+
+
+@defvr {Графическая опция} line_width
+Значение по умолчанию: 1
+
+@code{line_width} -- ширина изображаемых линий.
+Значение должно быть положительным числом.
+
+Эта опция влияет на следующие графические объекты:
+@itemize @bullet
+@item
+@code{gr2d}: @code{points}, @code{polygon}, @code{rectangle}, 
+@code{ellipse}, @code{vector}, @code{explicit}, @code{implicit}, 
+@code{parametric} и @code{polar}.
+
+@item
+@code{gr3d}: @code{points} и @code{parametric}.
+@end itemize
+
+Пример:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(explicit(x^2,x,-1,1), /* default width */
+             line_width = 5.5,
+             explicit(1 + x^2,x,-1,1),
+             line_width = 10,
+             explicit(2 + x^2,x,-1,1))$
+@end example
+
+См. @code{line_type}.
+@end defvr
+
+
+
+@defvr {Графическая опция} line_type
+Значение по умолчанию: @code{solid}
+
+@code{line_type} -- задает стиль изображения линий.
+Возможные значения: @code{solid} и @code{dots}.
+
+Эта опция влияет на следующие графические объекты:
+@itemize @bullet
+@item
+@code{gr2d}: @code{points}, @code{polygon}, @code{rectangle}, 
+@code{ellipse}, @code{vector}, @code{explicit}, @code{implicit}, 
+@code{parametric} и @code{polar}.
+
+@item
+@code{gr3d}: @code{points}, @code{explicit}, @code{parametric} и @code{parametric_surface}.
+@end itemize
+
+Пример:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(line_type = dots,
+             explicit(1 + x^2,x,-1,1),
+             line_type = solid, /* default */
+             explicit(2 + x^2,x,-1,1))$
+@end example
+
+См. @code{line_width}.
+@end defvr
+
+
+
+@defvr {Графическая опция} nticks
+Значение по умолчанию: 30
+
+@code{nticks} -- число пробных точек, используемых в графических процедурах.
+
+Эта опция влияет на следующие графические объекты:
+@itemize @bullet
+@item
+@code{gr2d}: @code{ellipse}, @code{explicit}, @code{parametric} и @code{polar}.
+
+@item
+@code{gr3d}: @code{parametric}.
+@end itemize
+
+Пример:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(transparent = true,
+             ellipse(0,0,4,2,0,180),
+             nticks = 5,
+             ellipse(0,0,4,2,180,180) )$
+@end example
+@end defvr
+
+
+
+@defvr {Графическая опция} adapt_depth
+Значение по умолчанию: 10
+
+@code{adapt_depth} -- максимальное число разбиений, используемое в адаптивных графиках.
+
+Эта опция влияет только на двумерные @code{explicit} функции.
+@end defvr
+
+
+
+@defvr {Графическая опция} key
+Значение по умолчанию: @code{""} (пустая строка)
+
+@code{key} -- наименование функции в легенде. Если @code{key} -- пустая строка, то ничего не изображается.
+
+Эта опция влияет на следующие графические объекты:
+@itemize @bullet
+@item
+@code{gr2d}: @code{points}, @code{polygon}, @code{rectangle},
+@code{ellipse}, @code{vector}, @code{explicit}, @code{implicit},
+@code{parametric} и @code{polar}.
+
+@item
+@code{gr3d}: @code{points}, @code{explicit}, @code{parametric}
+и @code{parametric_surface}.
+@end itemize
+
+Пример:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(key   = "Sinus",
+             explicit(sin(x),x,0,10),
+             key   = "Cosinus",
+             color = red,
+             explicit(cos(x),x,0,10) )$
+@end example
+@end defvr
+
+
+
+@defvr {Графическая опция} xu_grid
+Значение по умолчанию: 30
+
+@code{xu_grid} -- число координат первой переменной
+(@code{x} в явной и @code{u} в параметрической трехмерной поверхности) 
+для построения сетки пробных точек.
+
+Эта опция влияет на следующие графические объекты:
+@itemize @bullet
+@item
+@code{gr3d}: @code{explicit} и @code{parametric_surface}.
+@end itemize
+
+Пример:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(xu_grid = 10,
+             yv_grid = 50,
+             explicit(x^2+y^2,x,-3,3,y,-3,3) )$
+@end example
+
+См. @code{yv_grid}.
+@end defvr
+
+
+
+@defvr {Графическая опция} yv_grid
+Значение по умолчанию: 30
+
+@code{yv_grid} -- число координат второй переменной
+(@code{y} в явной и @code{v} в параметрической трехмерной поверхности) 
+для построения сетки пробных точек.
+
+Эта опция влияет на следующие графические объекты:
+@itemize @bullet
+@item
+@code{gr3d}: @code{explicit} и @code{parametric_surface}.
+@end itemize
+
+Пример:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(xu_grid = 10,
+             yv_grid = 50,
+             explicit(x^2+y^2,x,-3,3,y,-3,3) )$
+@end example
+
+См. @code{xu_grid}.
+@end defvr
+
+
+
+@defvr {Графическая опция} surface_hide
+Значение по умолчанию: @code{false}
+
+Если @code{surface_hide} равно @code{true}, то скрытые части на трехмерных поверхностях не изображаются.
+
+Поскольку это глобальная графическая опция, ее расположение в описании сцены не имеет значения.
+
+
+Пример:
+
+@example
+(%i1) load(draw)$
+(%i2) draw(columns=2,
+           gr3d(explicit(exp(sin(x)+cos(x^2)),x,-3,3,y,-3,3)),
+           gr3d(surface_hide = true,
+                explicit(exp(sin(x)+cos(x^2)),x,-3,3,y,-3,3)) )$
+@end example
+@end defvr
+
+
+
+@defvr {Графическая опция} contour
+Значение по умолчанию: @code{none}
+
+Опция @code{contour} позволяет пользователю выбрать, где изображать контурные линии.
+Доступны следующие значения:
+
+@itemize @bullet
+
+@item
+@code{none}:
+нет контурных линий.
+
+@item
+@code{base}:
+контурные линии изображаются на xy плоскости.
+
+@item
+@code{surface}:
+контурные линии изображаются на поверхности.
+
+@item
+@code{both}:
+две контурные линии -- на поверхности и на плоскости xy.
+
+@item
+@code{map}:
+контурные линии проецируются на плоскость xy, а точка наблюдения расположена
+вертикально над этой плоскостью.
+
+@end itemize
+
+Поскольку это глобальная графическая опция, ее расположение в описании сцены не имеет значения.
+
+
+Пример:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(explicit(20*exp(-x^2-y^2)-10,x,0,2,y,-3,3),
+             contour_levels = 15,
+             contour        = both,
+             surface_hide   = true) $
+@end example
+@end defvr
+
+
+
+@defvr {Графическая опция} contour_levels
+Значение по умолчанию: 5
+
+Эта опция управляет способом изображения контуров. 
+@code{contour_levels} может иметь значение в виде положительного целого числа, 
+списка трех чисел или произвольного набора чисел:
+
+@itemize @bullet
+@item
+Если @code{contour_levels} равно положительному целому числу @var{n},
+то будет изображено @var{n} контурных линий через равный интервал. 
+По умолчанию изображается пять равноудаленных контурных линий.
+
+@item
+Если @code{contour_levels} равно списку трех чисел @code{[lowest,s,highest]}, 
+то контурные линии изображаются с @code{lowest} по @code{highest} с шагом @code{s}.
+
+@item
+Если @code{contour_levels} равно набору чисел   @code{@{n1, n2, ...@}}, 
+то контурные линии изображаются для значений @code{n1}, @code{n2}, ...
+@end itemize
+
+Поскольку это глобальная графическая опция, ее расположение в описании сцены не имеет значения.
+
+
+Примеры:
+
+Контурные линии, расположенные на равном расстоянии. 
+Число уровней можно настраивать.
+@example
+(%i1) load(draw)$
+(%i2) draw3d(color = green,
+             explicit(20*exp(-x^2-y^2)-10,x,0,2,y,-3,3),
+             contour_levels = 10,
+             contour        = both,
+             surface_hide   = true) $
+@end example
+
+
+Контурные линии от -8 до 8 с шагом 4.
+@example
+(%i1) load(draw)$
+(%i2) draw3d(color = green,
+             explicit(20*exp(-x^2-y^2)-10,x,0,2,y,-3,3),
+             contour_levels = [-8,4,8],
+             contour        = both,
+             surface_hide   = true) $
+@end example
+
+Контурные линии на уровне -7, -6, 0.8 и 5.
+@example
+(%i1) load(draw)$
+(%i2) draw3d(color = green,
+             explicit(20*exp(-x^2-y^2)-10,x,0,2,y,-3,3),
+             contour_levels = @{-7, -6, 0.8, 5@},
+             contour        = both,
+             surface_hide   = true) $
+@end example
+
+См. @code{contour}.
+@end defvr
+
+
+
+@defvr {Графическая опция} columns
+Значение по умолчанию: 1
+
+@code{columns} число колонок в множественных графиках.
+
+Поскольку это глобальная графическая опция, ее расположение в описании сцены не имеет значения.
+Она также может использоваться как аргумент функции @code{draw}.
+
+Пример:
+
+@example
+(%i1) load(draw)$
+(%i2) scene1: gr2d(title="Ellipse",
+                   nticks=30,
+                   parametric(2*cos(t),5*sin(t),t,0,2*%pi))$
+(%i3) scene2: gr2d(title="Triangle",
+                   polygon([4,5,7],[6,4,2]))$
+(%i4) draw(scene1, scene2, columns = 2)$
+@end example
+
+@end defvr
+
+
+
+@defvr {Графическая опция} ip_grid
+Значение по умолчанию: @code{[50, 50]}
+
+@code{ip_grid} задает решетку для первой пробной выборки для неявных графиков.
+
+Эта опция влияет только на объекты типа @code{implicit}.
+@end defvr
+
+
+
+@defvr {Графическая опция} ip_grid_in
+Значение по умолчанию: @code{[5, 5]}
+
+@code{ip_grid_in} задает решетку для второй пробной выборки для неявных графиков.
+
+Эта опция влияет только на объекты типа @code{implicit}.
+@end defvr
+
+
+@deffn {Конструктор сцены} gr2d (@var{графическая опция}, ..., @var{графический объект}, ...)
+
+Функция @code{gr2d} строит объект, который описывает двумерную сцену. 
+Аргументы есть @i{графические опции} и @i{графические объекты}. 
+Эта сцена интерпретируется последовательно: @i{графические опции} влияет на @i{графические объекты},
+расположенные справа от них. Некоторые @i{графические опции} глобально влияют на вид сцены.
+
+Это список @i{графических объектов}, доступных для сцены в двух измерениях:
+@code{points}, @code{polygon}, @code{rectangle}, @code{bars}, @code{ellipse}, @code{label},
+@code{vector}, @code{explicit}, @code{implicit}, @code{polar}, @code{parametric},
+@code{image} и @code{geomap}.
+
+См. следующие глобальные @i{графические опции}: @code{xrange}, @code{yrange}, 
+@code{logx}, @code{logy}, @code{terminal}, @code{grid}, @code{title}, 
+@code{xlabel}, @code{ylabel}, @code{xtics}, @code{ytics}, @code{xtics_rotate}, 
+@code{ytics_rotate}, @code{xtics_axis}, @code{ytics_axis}, @code{xaxis}, @code{yaxis}, 
+@code{xaxis_width}, @code{yaxis_width}, 
+@code{xaxis_type}, @code{yaxis_type}, 
+@code{xaxis_color}, @code{yaxis_color}, @code{xy_file}, 
+@code{file_name}, @code{pic_width}, @code{pic_height}, 
+@code{eps_width}, @code{eps_height},
+@code{user_preamble}, @code{axis_bottom}, @code{axis_left}, @code{axis_top} 
+и @code{axis_right}.
+
+Для того, чтобы использовать эту функцию, ее следует загрузить командой @code{load(draw)}.
+@end deffn
+
+
+@deffn {Конструктор сцены} gr3d (@var{графическая опция}, ..., @var{графический объект}, ...)
+
+Функция @code{gr3d} строит объект, который описывает трехмерную сцену. 
+Аргументы есть @i{графические опции} и @i{графические объекты}. 
+Эта сцена интерпретируется последовательно: @i{графические опции} влияет на @i{графические объекты},
+неположенные справа от них. Некоторые @i{графические опции} глобально влияют на вид сцены.
+
+Это список @i{графических объектов}, доступных для сцены в трех измерениях:
+@code{points}, @code{label}, @code{vector}, @code{explicit}, @code{parametric},
+@code{parametric_surface} и @code{geomap}.
+
+См. следующие @i{графические опции}: @code{xrange}, @code{yrange}, 
+@code{zrange}, @code{logx}, @code{logy}, @code{logz}, @code{terminal}, 
+@code{grid}, @code{title}, @code{xlabel}, @code{ylabel}, @code{zlabel}, 
+@code{xtics}, @code{ytics}, @code{ztics}, @code{xtics_rotate}, 
+@code{ytics_rotate}, @code{ztics_rotate}, @code{xtics_axis}, @code{ytics_axis}, 
+@code{ztics_axis}, @code{xaxis}, @code{yaxis}, @code{zaxis}, 
+@code{xaxis_width}, @code{yaxis_width}, @code{zaxis_width}, 
+@code{xaxis_type}, @code{yaxis_type}, @code{zaxis_type},
+@code{xaxis_color}, @code{yaxis_color}, @code{zaxis_color}, @code{xy_file}, 
+@code{user_preamble}, @code{axis_bottom}, @code{axis_left}, 
+@code{axis_top}, @code{file_name}, @code{pic_width}, @code{pic_height}, 
+@code{eps_width}, @code{eps_height},
+@code{axis_right}, @code{rot_vertical}, @code{rot_horizontal}, 
+@code{axis_3d}, @code{xu_grid}, @code{yv_grid}, @code{surface_hide}, 
+@code{contour}, @code{contour_levels}, @code{palette}, @code{colorbox}
+и @code{enhanced3d}.
+
+Для того, чтобы использовать эту функцию, ее следует загрузить командой @code{load(draw)}.
+@end deffn
+
+
+
+
+
+
+
+@deffn  {Графический объект} points ([[@var{x1},@var{y1}], [@var{x2},@var{y2}],...])
+@deffnx {Графический объект} points ([@var{x1},@var{x2},...], [@var{y1},@var{y2},...])
+@deffnx {Графический объект} points ([@var{y1},@var{y2},...])
+@deffnx {Графический объект} points ([[@var{x1},@var{y1},@var{z1}], [@var{x2},@var{y2},@var{z2}],...])
+@deffnx {Графический объект} points ([@var{x1},@var{x2},...], [@var{y1},@var{y2},...], [@var{z1},@var{z2},...])
+@deffnx {Графический объект} points (@var{matrix})
+Строит точки в двух и трех измерениях.
+
+Этот объект зависит от следующих @i{графических опций}: @code{point_size}, 
+@code{point_type}, @code{points_joined}, @code{line_width}, @code{key},
+@code{line_type} и @code{color}.
+
+@b{Два измерения}
+
+@code{points ([[@var{x1},@var{y1}], [@var{x2},@var{y2}],...])} или
+@code{points ([@var{x1},@var{x2},...], [@var{y1},@var{y2},...])}
+строит точки с координатами @code{[x1,y1]}, @code{[x2,y2]}, и т.д. 
+Если абсциссы не заданы, то они принимаются равными последовательным
+положительным числам, так что 
+@code{points ([@var{y1},@var{y2},...])} строит точки @code{[1,@var{y1}]}, @code{[2,@var{y2}]}, и т.д.
+Если @var{matrix} -- матрица из двух строк или столбцов, то @code{points (@var{matrix})}
+строит соответствующие точки. Если @var{matrix} -- матрица из одной строки или одного столбца,
+то абсциссы выбираются автоматически.
+
+Пример:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(
+        key = "Small points",
+        points(makelist([random(20),random(50)],k,1,10)),
+        point_type    = circle,
+        point_size    = 3,
+        points_joined = true,
+        key           = "Great points",
+        points(makelist(k,k,1,20),makelist(random(30),k,1,20)),
+        point_type    = filled_down_triangle,
+        key           = "Automatic abscissas",
+        color         = red,
+        points([2,12,8]))$
+@end example
+
+@b{Три измерения}
+
+@code{points ([[@var{x1},@var{y1},@var{z1}], [@var{x2},@var{y2},@var{z2}],...])} или
+@code{points ([@var{x1},@var{x2},...], [@var{y1},@var{y2},...], [@var{z1},@var{z2},...])}
+строит точки с координатами @code{[@var{x1},@var{y1},@var{z1}]}, @code{[@var{x2},@var{y2},@var{z2}]}, и т.д.
+Если @var{matrix} -- матрица из трех строк или трех столбцов, то @code{points (@var{matrix})}
+строит соответствующие точки.
+
+Примеры:
+
+Одна трехмерная выборка:
+@example
+(%i1) load(draw)$
+(%i2) load (numericalio)$
+(%i3) s2 : read_matrix (file_search ("wind.data"))$
+(%i4) draw3d(title = "Daily average wind speeds",
+             point_size = 2,
+             points(args(submatrix (s2, 4, 5))) )$
+@end example
+
+Две трехмерные выборки:
+@example
+(%i1) load(draw)$
+(%i2) load (numericalio)$
+(%i3) s2 : read_matrix (file_search ("wind.data"))$
+(%i4) draw3d(
+         title = "Daily average wind speeds. Two data sets",
+         point_size = 2,
+         key        = "Sample from stations 1, 2 and 3",
+         points(args(submatrix (s2, 4, 5))),
+         point_type = 4,
+         key        = "Sample from stations 1, 4 and 5",
+         points(args(submatrix (s2, 2, 3))) )$
+@end example
+@end deffn
+
+
+@deffn  {Графический объект} polygon ([[@var{x1},@var{y1}], [@var{x2},@var{y2}],...])
+@deffnx {Графический объект} polygon ([@var{x1},@var{x2},...], [@var{y1},@var{y2},...])
+Строит многоугольник в двух измерениях.
+
+@b{Два измерения}
+
+@code{polygon ([[@var{x1},@var{y1}], [@var{x2},@var{y2}],...])} или 
+@code{polygon ([@var{x1},@var{x2},...], [@var{y1},@var{y2},...])}:
+строит на плоскости многоугольник с вершинами @code{[@var{x1},@var{y1}]}, @code{[@var{x2},@var{y2}]}, и т.д.
+
+Этот объект зависит от следующих @i{графических опций}: @code{transparent}, 
+@code{fill_color}, @code{border}, @code{line_width}, @code{key},
+@code{line_type} и @code{color}.
+
+Пример:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(color      = "#e245f0",
+             line_width = 8,
+             polygon([[3,2],[7,2],[5,5]]),
+             border      = false,
+             fill_color  = yellow,
+             polygon([[5,2],[9,2],[7,5]]) )$
+@end example
+@end deffn
+
+
+@deffn  {Графический объект} rectangle ([@var{x1},@var{y1}], [@var{x2},@var{y2}])
+Строит прямоугольники в двух измерениях.
+
+@b{Два измерения}
+
+@code{rectangle ([@var{x1},@var{y1}], [@var{x2},@var{y2}])} строит прямоугольник с противоположными вершинами
+@code{[@var{x1},@var{y1}]} и @code{[@var{x2},@var{y2}]}.
+
+Этот объект зависит от следующих @i{графических опций}: @code{transparent}, 
+@code{fill_color}, @code{border}, @code{line_width}, @code{key},
+@code{line_type} и @code{color}.
+
+Пример:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(fill_color  = red,
+             line_width  = 6,
+             line_type   = dots,
+             transparent = false,
+             fill_color  = blue,
+             rectangle([-2,-2],[8,-1]), /* opposite vertices */
+             transparent = true,
+             line_type   = solid,
+             line_width  = 1,
+             rectangle([9,4],[2,-1.5]),
+             xrange      = [-3,10],
+             yrange      = [-3,4.5] )$
+@end example
+@end deffn
+
+
+
+@deffn  {Графический объект} bars ([@var{x1},@var{h1},@var{w1}], [@var{x2},@var{h2},@var{w2}, ...])
+Строит вертикальные полоски в двух измерениях.
+
+@b{Два измерения}
+
+@code{bars ([@var{x1},@var{h1},@var{w1}], [@var{x2},@var{h2},@var{w2}, ...])} 
+Строит полоски с центрами на @var{x1}, @var{x2}, ... с высотами @var{h1}, @var{h2}, ...
+и ширинами @var{w1}, @var{w2}, ...
+
+Этот объект зависит от следующих @i{графических опций}: @code{key}, 
+@code{fill_color}, @code{fill_density} и @code{line_width}.
+
+Пример:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(
+       key          = "Group A",
+       fill_color   = blue,
+       fill_density = 0.2,
+       bars([0.8,5,0.4],[1.8,7,0.4],[2.8,-4,0.4]),
+       key          = "Group B",
+       fill_color   = red,
+       fill_density = 0.6,
+       line_width   = 4,
+       bars([1.2,4,0.4],[2.2,-2,0.4],[3.2,5,0.4]),
+       xaxis = true);
+@end example
+@end deffn
+
+
+
+@deffn  {Графический объект} ellipse (@var{xc}, @var{yc}, @var{a}, @var{b}, @var{ang1}, @var{ang2})
+Строит эллипсы и круги в двух измерениях.
+
+
+@b{Два измерения}
+
+@code{ellipse (@var{xc}, @var{yc}, @var{a}, @var{b}, @var{ang1}, @var{ang2})}
+строит эллипс с центром в @code{[@var{xc}, @var{yc}]} с горизонтальной и вертикальной 
+полу-осями @var{a} и @var{b} соответственно от угла @var{ang1} до угла
+@var{ang2}.
+
+Этот объект зависит от следующих @i{графических опций}: @code{nticks}, 
+@code{transparent}, @code{fill_color}, @code{border}, @code{line_width}, 
+@code{line_type}, @code{key} и @code{color}.
+
+Пример:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(transparent = false,
+             fill_color  = red,
+             color       = gray30,
+             transparent = false,
+             line_width  = 5,
+             ellipse(0,6,3,2,270,-270),
+             /* center (x,y), a, b, start & end in degrees */
+             transparent = true,
+             color       = blue,
+             line_width  = 3,
+             ellipse(2.5,6,2,3,30,-90),
+             xrange      = [-3,6],
+             yrange      = [2,9] )$
+@end example
+@end deffn
+
+
+@deffn  {Графический объект} label ([@var{string},@var{x},@var{y}],...)
+@deffnx {Графический объект} label ([@var{string},@var{x},@var{y},@var{z}],...)
+Изображает текстовую метку в двух или трех измерениях.
+
+Этот объект зависит от следующих @i{графических опций}: @code{label_alignment}, 
+@code{label_orientation} и @code{color}.
+
+@b{Два измерения}
+
+@code{label([@var{string},@var{x},@var{y}])} изображает текст @var{string} в точке
+@code{[@var{x},@var{y}]}.
+
+Пример:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(yrange = [0.1,1.4],
+             color = "red",
+             label(["Label in red",0,0.3]),
+             color = "#0000ff",
+             label(["Label in blue",0,0.6]),
+             color = "light-blue",
+             label(["Label in light-blue",0,0.9],
+                   ["Another ligght-blue",0,1.2])  )$
+@end example
+
+@b{Три измерения}
+
+@code{label([@var{string},@var{x},@var{y},@var{z}])} изображает текст @var{string} в точке
+@code{[@var{x},@var{y},@var{z}]}.
+
+Пример:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(explicit(exp(sin(x)+cos(x^2)),x,-3,3,y,-3,3),
+             color = red,
+             label(["UP 1",-2,0,3], ["UP 2",1.5,0,4]),
+             color = blue,
+             label(["DOWN 1",2,0,-3]) )$
+@end example
+@end deffn
+
+
+
+@deffn  {Графический объект} vector ([@var{x},@var{y}], [@var{dx},@var{dy}])
+@deffnx {Графический объект} vector ([@var{x},@var{y},@var{z}], [@var{dx},@var{dy},@var{dz}])
+Строит вектор в двух или трех измерениях.
+
+Этот объект зависит от следующих @i{графических опций}: @code{head_both}, 
+@code{head_length}, @code{head_angle}, @code{head_type}, @code{line_width}, 
+@code{line_type}, @code{key} и @code{color}.
+
+@b{Два измерения}
+
+@code{vector([@var{x},@var{y}], [@var{dx},@var{dy}])} строит вектор
+@code{[@var{dx},@var{dy}]} с началом в точке @code{[@var{x},@var{y}]}.
+
+Пример:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(xrange      = [0,12],
+             yrange      = [0,10],
+             head_length = 1,
+             vector([0,1],[5,5]), /* default type */
+             head_type = 'empty,
+             vector([3,1],[5,5]),
+             head_both = true,
+             head_type = 'nofilled,
+             line_type = dots,
+             vector([6,1],[5,5]))$
+@end example
+
+@b{Три измерения}
+
+@code{vector([@var{x},@var{y},@var{z}], [@var{dx},@var{dy},@var{dz}])} 
+строит вектор @code{[@var{dx},@var{dy},@var{dz}]} с
+началом в точке @code{[@var{x},@var{y},@var{z}]}.
+
+Пример:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(color = cyan,
+             vector([0,0,0],[1,1,1]/sqrt(3)),
+             vector([0,0,0],[1,-1,0]/sqrt(2)),
+             vector([0,0,0],[1,1,-2]/sqrt(6)) )$
+@end example
+@end deffn
+
+
+@deffn  {Графический объект} explicit (@var{fcn},@var{var},@var{minval},@var{maxval})
+@deffnx {Графический объект} explicit (@var{fcn},@var{var1},@var{minval1},@var{maxval1},@var{var2},@var{minval2},@var{maxval2})
+Строит явную функцию в двух или трех измерениях.
+
+@b{Два измерения}
+
+@code{explicit(@var{fcn},@var{var},@var{minval},@var{maxval})} строит явную функцию @var{fcn}
+переменной @var{var}, принимающей значения от @var{minval} до @var{maxval}.
+
+Этот объект зависит от следующих @i{графических опций}: @code{nticks}, 
+@code{adapt_depth}, @code{line_width}, @code{line_type}, @code{key}, 
+@code{filled_func}, @code{fill_color} и @code{color}.
+
+Пример:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(line_width = 3,
+             color      = blue,
+             explicit(x^2,x,-3,3) )$
+(%i3) draw2d(fill_color  = brown,
+             filled_func = true,
+             explicit(x^2,x,-3,3) )$
+@end example
+
+@b{Три измерения}
+
+@code{explicit(@var{fcn},@var{var1},@var{minval1},@var{maxval1},@var{var2},@var{minval2},@var{maxval2})}
+строит явную функцию @var{fcn} переменной @var{var1} в пределах
+от @var{minval1} до @var{maxval1}, и переменной @var{var2} в пределах
+от @var{minval2} до @var{maxval2}.
+
+Этот объект зависит от следующих @i{графических опций}: @code{xu_grid}, 
+@code{yv_grid}, @code{line_type}, @code{key} и @code{color}.
+
+Пример:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(key   = "Gauss",
+             color = "#a02c00",
+             explicit(20*exp(-x^2-y^2)-10,x,-3,3,y,-3,3),
+             yv_grid     = 10,
+             color = blue,
+             key   = "Plane",
+             explicit(x+y,x,-5,5,y,-5,5),
+             surface_hide = true)$
+@end example
+
+См. @code{filled_func} по поводу функций с заполнением.
+@end deffn
+
+
+@deffn  {Графический объект} implicit (@var{fcn},@var{xvar},@var{xminval},@var{xmaxval},@var{yvar},@var{yminval},@var{ymaxval})
+Строит неявную функцию в двух измерениях.
+
+@b{Два измерения}
+
+@code{implicit(@var{fcn},@var{xvar},@var{xminval},@var{xmaxval},@var{yvar},@var{yminval},@var{ymaxval})}
+строит неявную функцию, определенную @var{fcn} с переменной @var{xvar}, имеющей значения 
+от  @var{xminval} до @var{xmaxval}, и переменной @var{yvar}, имеющей значения
+от @var{yminval} до @var{ymaxval}.
+
+Этот объект зависит от следующих @i{графических опций}: @code{ip_grid}, 
+@code{ip_grid_in}, @code{line_width}, @code{line_type}, @code{key} и @code{color}.
+
+Пример:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(terminal  = eps,
+             grid      = true,
+             line_type = solid,
+             key       = "y^2=x^3-2*x+1",
+             implicit(y^2=x^3-2*x+1, x, -4,4, y, -4,4),
+             line_type = dots,
+             key       = "x^3+y^3 = 3*x*y^2-x-1",
+             implicit(x^3+y^3 = 3*x*y^2-x-1, x,-4,4, y,-4,4),
+             title     = "Two implicit functions" )$
+@end example
+@end deffn
+
+
+@deffn  {Графический объект} polar (@var{radius},@var{ang},@var{minang},@var{maxang})
+Строит двумерную функцию в полярных координатах.
+
+@b{Два измерения}
+
+@code{polar (@var{radius},@var{ang},@var{minang},@var{maxang})} изображает функцию 
+@code{@var{radius}(@var{ang})} в полярных координатах переменной  
+@var{ang} в пределах от @var{minang} до @var{maxang}.
+
+Этот объект зависит от следующих @i{графических опций}: @code{nticks}, 
+@code{line_width}, @code{line_type}, @code{key} и @code{color}.
+
+Пример:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(user_preamble = "set grid polar",
+             nticks        = 200,
+             xrange        = [-5,5],
+             yrange        = [-5,5],
+             color         = blue,
+             line_width    = 3,
+             title         = "Hyperbolic Spiral",
+             polar(10/theta,theta,1,10*%pi) )$
+@end example
+@end deffn
+
+
+@deffn  {Графический объект} spherical (@var{radius},@var{azi},@var{minazi},@var{maxazi},@var{zen},@var{minzen},@var{maxzen})
+Строит трехмерную функцию в сферических координатах.
+
+@b{Три измерения}
+
+@code{spherical (@var{radius},@var{azi},@var{minazi},@var{maxazi},@var{zen},@var{minzen},@var{maxzen})}
+строит функцию @code{@var{radius}(@var{azi},@var{zen})} в сферических координатах с @i{азимутом}
+@var{azi} в пределах от @var{minazi} до @var{maxazi} и @i{возвышением} @var{zen} в пределах от
+@var{minzen} до @var{maxzen}.
+
+Этот объект зависит от следующих @i{графических опций}: @code{xu_grid}, 
+@code{yv_grid}, @code{line_type}, @code{key} и @code{color}.
+
+Пример:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(spherical(1,a,0,2*%pi,z,0,%pi))$
+@end example
+@end deffn
+
+
+@deffn  {Графический объект} cylindrical (@var{radius},@var{z},@var{minz},@var{maxz},@var{azi},@var{minazi},@var{maxazi})
+Строит трехмерную функцию в цилиндрических координатах.
+
+@b{Три измерения}
+
+@code{cylindrical (@var{radius},@var{z},@var{minz},@var{maxz},@var{azi},@var{minazi},@var{maxazi})}
+строит функцию @code{@var{radius}(@var{z},@var{azi})} в цилиндрических координатах с
+@var{z} в пределах от @var{minz} до @var{maxz} и @i{азимутом} @var{azi} в пределах от
+@var{minazi} до @var{maxazi}.
+
+Этот объект зависит от следующих @i{графических опций}: @code{xu_grid}, 
+@code{yv_grid}, @code{line_type}, @code{key} и @code{color}.
+
+Пример:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(cylindrical(1,z,-2,2,az,0,2*%pi))$
+@end example
+@end deffn
+
+
+@deffn  {Графический объект} parametric (@var{xfun},@var{yfun},@var{par},@var{parmin},@var{parmax})
+@deffnx {Графический объект} parametric (@var{xfun},@var{yfun},@var{zfun},@var{par},@var{parmin},@var{parmax})
+Строит параметрическую функцию в двух и трех переменных.
+
+Этот объект зависит от следующих @i{графических опций}: @code{nticks}, 
+@code{line_width}, @code{line_type}, @code{key} и @code{color}.
+
+@b{Два измерения}
+
+@code{parametric (@var{xfun},@var{yfun},@var{par},@var{parmin},@var{parmax})} строит параметрическую функцию 
+@code{[@var{xfun},@var{yfun}]} с параметром @var{par}, принимающим значения от  
+@var{parmin} до @var{parmax}.
+
+Пример:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(explicit(exp(x),x,-1,3),
+             color = red,
+             key   = "This is the parametric one!!",
+             parametric(2*cos(rrr),rrr^2,rrr,0,2*%pi))$
+@end example
+
+@b{Три измерения}
+
+@code{parametric (@var{xfun},@var{yfun},@var{zfun},@var{par},@var{parmin},@var{parmax})} строит параметрическую кривую
+@code{[@var{xfun},@var{yfun},@var{zfun}]} с параметром @var{par}, принимающем значения от 
+@var{parmin} до @var{parmax}.
+
+Пример:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(explicit(exp(sin(x)+cos(x^2)),x,-3,3,y,-3,3),
+             color = royalblue,
+             parametric(cos(5*u)^2,sin(7*u),u-2,u,0,2),
+             color      = turquoise,
+             line_width = 2,
+             parametric(t^2,sin(t),2+t,t,0,2),
+             surface_hide = true,
+             title = "Surface & curves" )$
+@end example
+@end deffn
+
+
+@deffn  {Графический объект} image (@var{im},@var{x0},@var{y0},@var{width},@var{height})
+Строит в двух измерениях.
+
+@b{Два измерения}
+
+@code{image (@var{im},@var{x0},@var{y0},@var{width},@var{height})} строит изображение @var{im} 
+в прямоугольной области от угла @code{(@var{x0},@var{y0})} до @code{(x0+@var{width},y0+@var{height})} 
+на вещественной плоскости. Параметр @var{im} должен быть матрицей вещественных чисел, или матрицей
+векторов длины 3, или объект типа @var{картина}.
+
+Если @var{im} -- матрица вещественных чисел или объект @var{картина уровней},
+то значения пикселов интерпретируются в соответствии с графической опцией @code{palette},
+которая является вектором длины 3 с компонентами, принимающими значение от -36 до +36.
+Каждое значение является индексом формулы, преобразующей значение уровня в красный,
+зеленый и синий цвета соответственно:
+@example
+ 0: 0               1: 0.5           2: 1
+ 3: x               4: x^2           5: x^3
+ 6: x^4             7: sqrt(x)       8: sqrt(sqrt(x))
+ 9: sin(90x)       10: cos(90x)     11: |x-0.5|
+12: (2x-1)^2       13: sin(180x)    14: |cos(180x)|
+15: sin(360x)      16: cos(360x)    17: |sin(360x)|
+18: |cos(360x)|    19: |sin(720x)|  20: |cos(720x)|
+21: 3x             22: 3x-1         23: 3x-2
+24: |3x-1|         25: |3x-2|       26: (3x-1)/2
+27: (3x-2)/2       28: |(3x-1)/2|   29: |(3x-2)/2|
+30: x/0.32-0.78125                  31: 2*x-0.84
+32: 4x;1;-2x+1.84;x/0.08-11.5
+33: |2*x - 0.5|    34: 2*x          35: 2*x - 0.5
+36: 2*x - 1
+@end example
+Отрицательные числа означают отрицательные цветовые компоненты.
+
+@code{palette = gray} и @code{palette = color} являются сокращениями 
+для @code{palette = [3,3,3]} и @code{palette = [7,5,15]} соответственно.
+
+Если @var{im} -- матрица векторов длины 3 или объект @var{rgb-картина},
+то они интерпретируются как красный, зеленый и синий цвета.
+
+Примеры:
+
+Если @var{im} -- матрица вещественных чисел или объект @var{картина уровней},
+то значения пикселов интерпретируются в соответствии с графической опцией @code{palette}.
+@example
+(%i1) load(draw)$
+(%i2) im: apply(
+           'matrix,
+            makelist(makelist(random(200),i,1,30),i,1,30))$
+(%i3) /* palette = color, default */
+      draw2d(image(im,0,0,30,30))$
+(%i4) draw2d(palette = gray, image(im,0,0,30,30))$
+(%i5) draw2d(palette = [15,20,-4],
+             colorbox=false,
+             image(im,0,0,30,30))$
+@end example
+
+См. @code{colorbox}.
+
+Если @var{im} -- матрица векторов длины 3 или объект @var{rgb-картина},
+то они интерпретируются как красный, зеленый и синий цвета.
+@example
+(%i1) load(draw)$
+(%i2) im: apply(
+            'matrix,
+             makelist(
+               makelist([random(300),
+                         random(300),
+                         random(300)],i,1,30),i,1,30))$
+(%i3) draw2d(image(im,0,0,30,30))$
+@end example
+
+Пакет @code{draw} автоматически загружает пакет @code{picture}. 
+В данном примере,  объект типа @var{картина уровней} строится вручную
+и потом изображается.
+@example
+(%i1) load(draw)$
+(%i2) im: make_level_picture([45,87,2,134,204,16],3,2);
+(%o2)       picture(level, 3, 2, @{Array:  #(45 87 2 134 204 16)@})
+(%i3) /* default color palette */
+      draw2d(image(im,0,0,30,30))$
+(%i4) /* gray palette */
+      draw2d(palette = gray,
+             image(im,0,0,30,30))$
+@end example
+
+Файл xpm читается и изображается.
+@example
+(%i1) load(draw)$
+(%i2) im: read_xpm("myfile.xpm")$
+(%i3) draw2d(image(im,0,0,10,7))$
+@end example
+
+См. @code{make_level_picture}, @code{make_rgb_picture} и @code{read_xpm}.
+
+По ссылке URL @url{http://www.telefonica.net/web2/biomates/maxima/gpdraw/image}
+находятся более развернутые примеры.
+@end deffn
+
+
+@defvr {Глобальная переменная} boundaries_array
+Значение по умолчанию: @code{false}
+
+@code{boundaries_array} -- это массив, в котором графический объект @code{geomap} 
+ищет координаты границ.
+
+Каждая компонента @code{boundaries_array} есть массив чисел с плавающей точкой --
+координат многоугольного сегмента или границы карты.
+
+См. @code{geomap}.
+@end defvr
+
+
+@deffn  {Графический объект} geomap (@var{numlist})
+@deffnx {Графический объект} geomap (@var{numlist},@var{3Dprojection})
+Строит карты в двух и трех измерениях.
+
+@b{Два измерения}
+
+Эта функция работает вместе с глобальной переменной @code{boundaries_array}.
+
+Аргумент @var{numlist} -- список, содержащий числа или списки чисел.
+Все числа должны быть неотрицательными  целыми,
+которые представляют компоненты глобального массива @code{boundaries_array}.
+
+Каждая компонента @code{boundaries_array} есть массив чисел с плавающей точкой --
+координат многоугольного сегмента или границы карты.
+
+Функция @code{geomap (@var{numlist})} проецирует свои аргументы на плоскость и
+строит соответствующую границу из @code{boundaries_array}.
+
+Этот объект зависит от следующих @i{графических опций}: @code{line_width}, 
+@code{line_type} и @code{color}.
+
+Примеры:
+
+Простая карта, определенная вручную:
+@example
+(%i1) load(draw)$
+(%i2) /* Vertices of boundary #0: @{(1,1),(2,5),(4,3)@} */
+   ( bnd0: make_array(flonum,6),
+     bnd0[0]:1.0, bnd0[1]:1.0, bnd0[2]:2.0,
+     bnd0[3]:5.0, bnd0[4]:4.0, bnd0[5]:3.0 )$
+(%i3) /* Vertices of boundary #1: @{(4,3),(5,4),(6,4),(5,1)@} */
+   ( bnd1: make_array(flonum,8),
+     bnd1[0]:4.0, bnd1[1]:3.0, bnd1[2]:5.0, bnd1[3]:4.0,
+     bnd1[4]:6.0, bnd1[5]:4.0, bnd1[6]:5.0, bnd1[7]:1.0)$
+(%i4) /* Vertices of boundary #2: @{(5,1), (3,0), (1,1)@} */
+   ( bnd2: make_array(flonum,6),
+     bnd2[0]:5.0, bnd2[1]:1.0, bnd2[2]:3.0,
+     bnd2[3]:0.0, bnd2[4]:1.0, bnd2[5]:1.0 )$
+(%i5) /* Vertices of boundary #3: @{(1,1), (4,3)@} */
+   ( bnd3: make_array(flonum,4),
+     bnd3[0]:1.0, bnd3[1]:1.0, bnd3[2]:4.0, bnd3[3]:3.0)$
+(%i6) /* Vertices of boundary #4: @{(4,3), (5,1)@} */
+   ( bnd4: make_array(flonum,4),
+     bnd4[0]:4.0, bnd4[1]:3.0, bnd4[2]:5.0, bnd4[3]:1.0)$
+(%i7) /* Pack all together in boundaries_array */
+   ( boundaries_array: make_array(any,5),
+     boundaries_array[0]: bnd0, boundaries_array[1]: bnd1,
+     boundaries_array[2]: bnd2, boundaries_array[3]: bnd3,
+     boundaries_array[4]: bnd4 )$
+(%i8) draw2d(geomap([0,1,2,3,4]))$
+@end example
+
+Вспомогательный пакет @code{worldmap} заносит в 
+@code{boundaries_array} реальные границы (долгота, широта). 
+Эти данные публично доступны и получены из 
+@url{http://www-cger.nies.go.jp/grid-e/gridtxt/grid19.html}.
+Пакет @code{worldmap} также определяет границы стран,
+континентов и береговых линий в форме списков с необходимыми 
+компонентами @code{boundaries_array} (см. файл @code{share/draw/worldmap.mac}
+для дальнейшей информации). 
+Пакет @code{draw} не загружает автоматически пакет @code{worldmap}.
+@example
+(%i1) load(draw)$
+(%i2) load(worldmap)$
+(%i3) c1: gr2d(geomap(Canada,United_States,
+                      Mexico,Cuba))$
+(%i4) c2: gr2d(geomap(Africa))$
+(%i5) c3: gr2d(geomap(Oceania,China,Japan))$
+(%i6) c4: gr2d(geomap(France,Portugal,Spain,
+                      Morocco,Western_Sahara))$
+(%i7) draw(columns  = 2,
+           c1,c2,c3,c4)$
+@end example
+
+Пакет @code{worldmap} также полезен для изображения
+стран в виде многоугольников. В этом случае графический объект
+@code{geomap} не нужен и вместо его используется объект @code{polygon}. 
+Т.к. в этом случае используются списки а не массивы, то изображение 
+карт будет мудреннее. См. @code{make_poly_country}
+и @code{make_poly_continent}, чтобы понять следующий код.
+@example
+(%i1) load(draw)$
+(%i2) load(worldmap)$
+(%i3) mymap: append(
+   [color      = white],  /* borders are white */
+   [fill_color = red],             make_poly_country(Bolivia),
+   [fill_color = cyan],            make_poly_country(Paraguay),
+   [fill_color = green],           make_poly_country(Colombia),
+   [fill_color = blue],            make_poly_country(Chile),
+   [fill_color = "#23ab0f"],       make_poly_country(Brazil),
+   [fill_color = goldenrod],       make_poly_country(Argentina),
+   [fill_color = "midnight-blue"], make_poly_country(Uruguay))$
+(%i4) apply(draw2d, mymap)$
+@end example
+
+
+@b{Три измерения}
+
+@code{geomap (@var{numlist})} проецирует границы карты на сферу единичного радиуса с центром (0,0,0). 
+Сферу и тип проекции можно изменить при помощи @code{geomap (@var{numlist},@var{3Dprojection})}.
+
+Доступны следующие трехмерные проекции:
+
+@itemize @bullet
+@item
+@code{[spherical_projection,@var{x},@var{y},@var{z},@var{r}]}: проецирует границы карты на сферу
+радиуса @var{r} с центром в (@var{x},@var{y},@var{z}).
+@example
+(%i1) load(draw)$
+(%i2) load(worldmap)$
+(%i3) draw3d(geomap(Australia), /* default projection */
+             geomap(Australia,
+                    [spherical_projection,2,2,2,3]))$
+@end example
+
+@item
+@code{[cylindrical_projection,@var{x},@var{y},@var{z},@var{r},@var{rc}]}: ре-проецирует сферические границы карты
+на цилиндр радиуса @var{rc} и осью, проходящей через полюса глобуса радиуса @var{r} с центром в 
+(@var{x},@var{y},@var{z}).
+@example
+(%i1) load(draw)$
+(%i2) load(worldmap)$
+(%i3) draw3d(geomap([America_coastlines,Eurasia_coastlines],
+                    [cylindrical_projection,2,2,2,3,4]))$
+@end example
+
+@item
+@code{[conic_projection,@var{x},@var{y},@var{z},@var{r},@var{alpha}]}: ре-проецирует сферические границы карты
+на конус с углом @var{alpha} с осью, 
+проходящей через полюса глобуса радиуса @var{r} с центром в 
+(@var{x},@var{y},@var{z}). Оба северный и южный конусы касательны к сфере.
+@example
+(%i1) load(draw)$
+(%i2) load(worldmap)$
+(%i3) draw3d(geomap(World_coastlines,
+                    [conic_projection,0,0,0,1,90]))$
+@end example
+@end itemize
+
+См. @url{http://www.telefonica.net/web2/biomates/maxima/gpdraw/geomap}
+для более сложных примеров.
+@end deffn
+
+
+
+
+
+
+
+
+@deffn  {Графический объект} parametric_surface (@var{xfun},@var{yfun},@var{zfun},@var{par1},@var{par1min},@var{par1max},@var{par2},@var{par2min},@var{par2max})
+Строит параметрическую поверхность в трех измерениях.
+
+@b{Три измерения}
+
+@code{parametric_surface (@var{xfun},@var{yfun},@var{zfun},@var{par1},@var{par1min},@var{par1max},@var{par2},@var{par2min},@var{par2max})}
+строит параметрическую поверхность @code{[@var{xfun},@var{yfun},@var{zfun}]}, с параметром @var{par1},
+принимающем значения от @var{par1min} до @var{par1max} и параметром @var{par2},
+принимающем значения от @var{par2min} до @var{par2max}.
+
+Этот объект зависит от следующих @i{графических опций}: @code{xu_grid}, 
+@code{yv_grid}, @code{line_type}, @code{key} и @code{color}.
+
+Пример:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(title          = "Sea shell",
+             xu_grid        = 100,
+             yv_grid        = 25,
+             rot_vertical   = 100,
+             rot_horizontal = 20,
+             surface_hide   = true,
+             parametric_surface(0.5*u*cos(u)*(cos(v)+1),
+                           0.5*u*sin(u)*(cos(v)+1),
+                           u*sin(v) - ((u+3)/8*%pi)^2 - 20,
+                           u, 0, 13*%pi, v, -%pi, %pi) )$
+@end example
+@end deffn
+
+
+
+
+
+
+
+
+
+
+@deffn {Функция} draw (@var{gr2d}, ..., @var{gr3d}, ..., @var{options}, ...)
+
+Изображает серию графических сцен.  Ее аргументы есть @code{gr2d} и/или @code{gr3d} 
+графические объекты вместе с некоторыми опциями. По умолчанию сцены собираются вместе в одну колонку.
+
+Функция @code{draw} принимает следующие глобальные опции: @code{terminal},
+@code{columns}, @code{pic_width}, @code{pic_height}, @code{eps_width},
+@code{eps_height}, @code{file_name} и @code{delay}.
+
+Функции @code{draw2d} и @code{draw3d} -- сокращения, которые используются,
+когда требуется изобразить только одну сцену в двух или трех измерениях соответственно.
+
+Для того, чтобы использовать эту функцию, ее следует загрузить командой @code{load(draw)}.
+
+Пример:
+
+@example
+(%i1) load(draw)$
+(%i2) scene1: gr2d(title="Ellipse",
+                   nticks=30,
+                   parametric(2*cos(t),5*sin(t),t,0,2*%pi))$
+(%i3) scene2: gr2d(title="Triangle",
+                   polygon([4,5,7],[6,4,2]))$
+(%i4) draw(scene1, scene2, columns = 2)$
+@end example
+
+Эти две команды эквивалентны:
+@example
+(%i1) load(draw)$
+(%i2) draw(gr3d(explicit(x^2+y^2,x,-1,1,y,-1,1)));
+(%o2)                          [gr3d(explicit)]
+(%i3) draw3d(explicit(x^2+y^2,x,-1,1,y,-1,1));
+(%o3)                          [gr3d(explicit)]
+@end example
+
+Анимированный файл gif:
+@example
+(%i1) load(draw)$
+(%i2) draw(
+        delay     = 100,
+        file_name = "zzz",
+        terminal  = 'animated_gif,
+        gr2d(explicit(x^2,x,-1,1)),
+        gr2d(explicit(x^3,x,-1,1)),
+        gr2d(explicit(x^4,x,-1,1)));
+End of animation sequence
+(%o2)          [gr2d(explicit), gr2d(explicit), gr2d(explicit)]
+@end example
+
+См. @code{gr2d}, @code{gr3d}, @code{draw2d} и @code{draw3d}.
+@end deffn
+
+@deffn {Функция} draw2d (@var{option}, @var{graphic_object}, ...)
+
+Эта функция является сокращением для 
+@code{draw(gr2d(@var{options}, ..., @var{graphic_object}, ...))}.
+
+Она может использоваться для изображения одиночной двумерной сцены.
+
+Для того, чтобы использовать эту функцию, ее следует загрузить командой @code{load(draw)}.
+
+См. также @code{draw} и @code{gr2d}.
+@end deffn
+
+
+@deffn {Функция} draw3d (@var{option}, @var{graphic_object}, ...)
+
+Эта функция является сокращением для 
+@code{draw(gr3d(@var{options}, ..., @var{graphic_object}, ...))}.
+
+Она может использоваться для изображения одиночной трехмерной сцены.
+
+Для того, чтобы использовать эту функцию, ее следует загрузить командой @code{load(draw)}.
+
+См. также @code{draw} и @code{gr3d}.
+@end deffn
+
+
+
+
+@node Функции и переменные для картин, Функции и переменные для карты мира, Функции и переменные пакета draw, Пакет draw
+@section Функции и переменные для картин
+
+
+
+@deffn  {Функция} make_level_picture (@var{data})
+@deffnx {Функция} make_level_picture (@var{data},@var{width},@var{height})
+Возвращает объект типа @var{картина} уровней. @code{make_level_picture (@var{data})}
+строит объект @var{картина} из матрицы @var{data}.
+@code{make_level_picture (@var{data},@var{width},@var{height})}
+строит объект из списка чисел; в этом случае должны быть заданы оба параметра 
+@var{width} и @var{height}.
+
+Возвращает объект типа @var{картина}, содержащий следующие четыре части:
+
+@enumerate
+@item символ @code{level}
+@item ширина картины
+@item высота картины
+@item массив целых чисел в пределах от 0 до 255, описывающих пикселы.
+Аргумент @var{data} должен содержать только числа в пределах от 0 до 255;
+отрицательные числа заменяются 0, а те, что превышают 255, заменяются на 255.
+@end enumerate
+
+Пример:
+
+Картина уровней из матрицы.
+@example
+(%i1) load(draw)$
+(%i2) make_level_picture(matrix([3,2,5],[7,-9,3000]));
+(%o2)         picture(level, 3, 2, @{Array:  #(3 2 5 7 0 255)@})
+@end example
+
+Картина уровней из числового списка.
+@example
+(%i1) load(draw)$
+(%i2) make_level_picture([-2,0,54,%pi],2,2);
+(%o2)            picture(level, 2, 2, @{Array:  #(0 0 54 3)@})
+@end example
+@end deffn
+
+
+@deffn  {Функция} picturep (@var{x})
+Возвращает @code{true}, если аргумент является правильно сформированной картиной,
+и @code{false} в противном случае.
+@end deffn
+
+
+@deffn  {Функция} picture_equalp (@var{x},@var{y})
+Возвращает @code{true}, если картины совпадают, и @code{false} в противном случае.
+@end deffn
+
+
+@deffn  {Функция} make_rgb_picture (@var{redlevel},@var{greenlevel},@var{bluelevel})
+Возвращает rgb-цветную @var{картину}. Все три аргумента должны быть картинами уровней,
+с уровнями, задающими красный, зеленый и синий цвета соответственно.
+
+Возвращаемый объект @var{картина} содержит следующие четыре части:
+
+@enumerate
+@item символ @code{rgb}
+@item ширина картины
+@item высота картины
+@item целый массив длины @var{3*width*height} с данными о пикселах со значениями 
+от 0 до 255. Каждый пиксел представляется тремя последовательными числами
+(красный, зелены, синий).
+@end enumerate
+
+Пример:
+
+@example
+(%i1) load(draw)$
+(%i2) red: make_level_picture(matrix([3,2],[7,260]));
+(%o2)           picture(level, 2, 2, @{Array:  #(3 2 7 255)@})
+(%i3) green: make_level_picture(matrix([54,23],[73,-9]));
+(%o3)           picture(level, 2, 2, @{Array:  #(54 23 73 0)@})
+(%i4) blue: make_level_picture(matrix([123,82],[45,32.5698]));
+(%o4)          picture(level, 2, 2, @{Array:  #(123 82 45 33)@})
+(%i5) make_rgb_picture(red,green,blue);
+(%o5) picture(rgb, 2, 2, 
+              @{Array:  #(3 54 123 2 23 82 7 73 45 255 0 33)@})
+@end example
+@end deffn
+
+
+@deffn  {Функция} take_channel (@var{im},@var{color})
+Если параметр @var{color} равен @code{red}, @code{green} или @code{blue},
+то функция @code{take_channel} возвращает соответствующий цветовой канал картины @var{im}.
+Пример:
+
+@example
+(%i1) load(draw)$
+(%i2) red: make_level_picture(matrix([3,2],[7,260]));
+(%o2)           picture(level, 2, 2, @{Array:  #(3 2 7 255)@})
+(%i3) green: make_level_picture(matrix([54,23],[73,-9]));
+(%o3)           picture(level, 2, 2, @{Array:  #(54 23 73 0)@})
+(%i4) blue: make_level_picture(matrix([123,82],[45,32.5698]));
+(%o4)          picture(level, 2, 2, @{Array:  #(123 82 45 33)@})
+(%i5) make_rgb_picture(red,green,blue);
+(%o5) picture(rgb, 2, 2, 
+              @{Array:  #(3 54 123 2 23 82 7 73 45 255 0 33)@})
+(%i6) take_channel(%,'green);  /* simple quote!!! */
+(%o6)           picture(level, 2, 2, @{Array:  #(54 23 73 0)@})
+@end example
+@end deffn
+
+
+@deffn  {Функция} negative_picture (@var{pic})
+Возвращает негатив картины (@var{уровней} или @var{rgb}).
+@end deffn
+
+
+@deffn  {Функция} rgb2level (@var{pic})
+Преобразует @var{rgb} картину в картину @var{уровней}
+усреднением красного, зеленого и синего каналов.
+@end deffn
+
+
+@deffn  {Функция} get_pixel (@var{pic},@var{x},@var{y})
+Возвращает пиксел из картины. Координаты @var{x} и @var{y} должны быть от 0 до
+@code{width-1} и @code{height-1} соответственно.
+@end deffn
+
+
+@deffn  {Функция} read_xpm (@var{xpm_file})
+Читает файл в формате xpm и возвращает объект типа картина.
+@end deffn
+
+
+
+
+
+
+
+
+@node Функции и переменные для карты мира,  , Функции и переменные для картин, Пакет draw
+@section Функции и переменные для карты мира
+
+
+@deffn  {Функция} region_boundaries (@var{x1},@var{y1},@var{x2},@var{y2})
+Определяет многоугольные сегменты из глобальной переменной @code{boundaries_array},
+содержащиеся внутри прямоугольника с вершинами (@var{x1},@var{y1}) (верхний левый) 
+и (@var{x2},@var{y2}) (нижний правый).
+
+Пример:
+
+Возвращает номера сегментов для северной Италии.
+@example
+(%i1) load(draw)$
+(%i2) load(worldmap)$
+(%i3) region_boundaries(10.4,41.5,20.7,35.4);
+(%o3)                [1846, 1863, 1864, 1881, 1888, 1894]
+(%i4) draw2d(geomap(%))$
+@end example
+@end deffn
+
+
+@deffn  {Функция} numbered_boundaries (@var{nlist})
+Строит многоугольные сегменты (границы), обозначаемые числами (координаты в @code{boundaries_array}). 
+Эта функция очень полезна при создании географических объектов.
+
+Пример:
+
+Карта Европы, с границами, обозначенными номерами компонент в 
+@code{boundaries_array}.
+@example
+(%i1) load(draw)$
+(%i2) load(worldmap)$
+(%i3) european_borders: 
+           region_boundaries(-31.81,74.92,49.84,32.06)$
+(%i4) numbered_boundaries(european_borders)$
+@end example
+@end deffn
+
+
+@deffn  {Функция} make_polygon (@var{nlist})
+Возвращает объект @code{polygon}, построенный из индексов границ. Аргумент
+@var{nlist} -- список компонент в массиве @code{boundaries_array}.
+
+Пример:
+
+Бутан определяется номерами компонент 171, 173
+и 1143, так что @code{make_polygon([171,173,1143])}
+добавляет массив координат @code{boundaries_array[171]},
+@code{boundaries_array[173]} и @code{boundaries_array[1143]} и 
+возвращает объект @code{polygon}, пригодный для изображения функцией 
+@code{draw}. Для того чтобы избежать сообщений о ошибках, массивы должны быть
+совместимы в том смысле, что два последовательных массива имеют общие предельные
+координаты. В этом примере, две первые компоненты @code{boundaries_array[171]} равны
+двум последним компонентам @code{boundaries_array[173]}, и две первые компоненты  
+@code{boundaries_array[173]} равны двум первым компонентам  @code{boundaries_array[1143]}.
+В целом, числа 171, 173 и 1143 (именно в этом порядке) совместимы и цветной
+многоугольник может быть построен.
+@example
+(%i1) load(draw)$
+(%i2) load(worldmap)$
+(%i3) Bhutan;
+(%o3)                        [[171, 173, 1143]]
+(%i4) boundaries_array[171];
+(%o4) @{Array:  
+       #(88.750549 27.14727 88.806351 27.25305 88.901367 27.282221
+         88.917877 27.321039)@}
+(%i5) boundaries_array[173];
+(%o5) @{Array:
+       #(91.659554 27.76511 91.6008 27.66666 91.598022 27.62499
+         91.631348 27.536381 91.765533 27.45694 91.775253 27.4161 
+         92.007751 27.471939 92.11441 27.28583 92.015259 27.168051
+         92.015533 27.08083 92.083313 27.02277 92.112183 26.920271
+         92.069977 26.86194 91.997192 26.85194 91.915253 26.893881
+         91.916924 26.85416 91.8358 26.863331 91.712479 26.799999 
+         91.542191 26.80444 91.492188 26.87472 91.418854 26.873329
+         91.371353 26.800831 91.307457 26.778049 90.682457 26.77417
+         90.392197 26.903601 90.344131 26.894159 90.143044 26.75333
+         89.98996 26.73583 89.841919 26.70138 89.618301 26.72694 
+         89.636093 26.771111 89.360786 26.859989 89.22081 26.81472
+         89.110237 26.829161 88.921631 26.98777 88.873016 26.95499
+         88.867737 27.080549 88.843307 27.108601 88.750549 
+         27.14727)@}
+(%i6) boundaries_array[1143];
+(%o6) @{Array:  
+       #(91.659554 27.76511 91.666924 27.88888 91.65831 27.94805 
+         91.338028 28.05249 91.314972 28.096661 91.108856 27.971109
+         91.015808 27.97777 90.896927 28.05055 90.382462 28.07972
+         90.396088 28.23555 90.366074 28.257771 89.996353 28.32333
+         89.83165 28.24888 89.58609 28.139999 89.35997 27.87166 
+         89.225517 27.795 89.125793 27.56749 88.971077 27.47361
+         88.917877 27.321039)@}
+(%i7) Bhutan_polygon: make_polygon([171,173,1143])$
+(%i8) draw2d(Bhutan_polygon)$
+@end example
+@end deffn
+
+
+@deffn  {Функция} make_poly_country (@var{country_name})
+Строит многоугольники, необходимые для изображения страны в цвете.
+Если есть острова, то страна определяется более чем одним многоугольником.
+
+Пример:
+
+@example
+(%i1) load(draw)$
+(%i2) load(worldmap)$
+(%i3) make_poly_country(India)$
+(%i4) apply(draw2d, %)$
+@end example
+@end deffn
+
+
+@deffn  {Функция} make_poly_continent (@var{continent_name})
+@deffnx  {Функция} make_poly_continent (@var{country_list})
+Строит многоугольники, необходимые для изображение континента или списка
+стран в цвете.
+
+Пример:
+
+@example
+(%i1) load(draw)$
+(%i2) load(worldmap)$
+(%i3) /* A continent */
+      make_poly_continent(Africa)$
+(%i4) apply(draw2d, %)$
+(%i5) /* A list of countries */
+      make_poly_continent([Germany,Denmark,Poland])$
+(%i6) apply(draw2d, %)$
+@end example
+@end deffn
+
+
+
+
+
+
