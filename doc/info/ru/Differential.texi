@@ -1,7 +1,7 @@
 @c Language=Russian
 @c Encoding=CP1251
 @c File=Differential.texi
-@c OriginalRevision=1.11
+@c OriginalRevision=1.12
 @c TranslatedBy: (c) 2007-09-05 Alexey V. Beshenov <al@beshenov.ru>
 
 @menu
@@ -39,7 +39,7 @@
 
 @deffn {Функция} desolve (@var{eqn}, @var{x})
 @deffnx {Функция} desolve ([@var{eqn_1}, ..., @var{eqn_n}], [@var{x_1}, ..., @var{x_n}])
-Функция @code{dsolve} решает линейные системы обыкновенных дифференциальных уравнений
+Функция @code{desolve} решает линейные системы обыкновенных дифференциальных уравнений
 при помощи преобразования Лапласа. Здесь @var{eqn} - дифференциальные уравнения со
 связанными переменными @var{x_1}, ..., @var{x_n}. Функциональная зависимость между
 @var{x_1}, ..., @var{x_n} или от независимой переменной, например, @var{x},
