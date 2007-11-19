@@ -480,6 +480,7 @@ diffequations/phypgm.mac\
 diffequations/pivtr.mac\
 diffequations/pmain.mac\
 draw/draw.lisp\
+draw/implicit3d.lisp\
 draw/picture.lisp\
 draw/worldmap.mac\
 draw/wbd.lisp\

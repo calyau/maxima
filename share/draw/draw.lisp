@@ -68,8 +68,11 @@
       (gethash '$fill_density *gr-options*) 0       ; in [0,1], only for object 'bars
 
       ; implicit plot options
-      (gethash '$ip_grid *gr-options*) '((mlist simp) 50 50)
+      (gethash '$ip_grid *gr-options*)    '((mlist simp) 50 50)
       (gethash '$ip_grid_in *gr-options*) '((mlist simp) 5 5)
+      (gethash '$x_voxel *gr-options*)       10
+      (gethash '$y_voxel *gr-options*)       10
+      (gethash '$z_voxel *gr-options*)       10
 
       ; tics
       (gethash '$grid *gr-options*)         nil
@@ -226,7 +229,7 @@
                         (setf (gethash opt *gr-options*) (- (position val shapes) 1))
                         (merror "Illegal point type: ~M " val))))) )
       (($columns $nticks $adapt_depth $pic_width $pic_height     ; defined as positive integers
-        $xu_grid $yv_grid  $delay)
+        $xu_grid $yv_grid $delay $x_voxel $y_voxel $z_voxel)
             (if (and (integerp val)
                      (> val 0 ))
                 (setf (gethash opt *gr-options*) val)
@@ -1347,6 +1350,182 @@
 
 
 
+;; Object: 'implicit3d'
+;; Usage:
+;;     implicit(expr,x,xmin,xmax,y,ymin,ymax,z,zmin,zmax)
+;; Options:
+;;     key
+;;     x_voxel
+;;     y_voxel
+;;     z_voxel
+;;     line_width
+;;     line_type
+;;     color
+(simplify ($load "implicit3d.lisp"))
+
+;; Copies multidimensional arrays.
+(defun copy-array (array)
+  (let ((dims (array-dimensions array)))
+    (adjust-array
+      (make-array
+         dims
+         :element-type (array-element-type array)
+         :displaced-to array)
+      dims)))
+
+;; Calculates surface-edge intersection by interpolation
+(defun edge-interpolation (x1 y1 z1 x2 y2 z2 v1 v2)
+  (cond ((or (< (abs v1) 0.00001)
+             (< (abs (- v1 v2)) 0.00001))
+          (list x1 y1 z1))
+        ((< (abs v2) 0.00001)
+          (list x2 y2 z2))
+        (t
+          (let ((m (/ (- v1) (- v2 v1))))
+            (list
+              (+ x1 (* m (- x2 x1)))
+              (+ y1 (* m (- y2 y1)))
+              (+ z1 (* m (- z2 z1))))))))
+
+(defmacro make-triangle-vertices (i1 j1 k1 i2 j2 k2 e1 e2)
+  `(edge-interpolation
+       (aref px ,i1) (aref py ,j1) (aref pz ,k1)
+       (aref px ,i2) (aref py ,j2) (aref pz ,k2)
+       (aref val ,e1) (aref val ,e2)))
+
+(defun flatten (lis)
+  (cond ((atom lis) lis)
+        ((listp (car lis))
+          (append (flatten (car lis)) (flatten (cdr lis))))
+        (t
+          (append (list (car lis)) (flatten (cdr lis))))))
+
+(defun implicit3d (expr x xmin xmax y ymin ymax z zmin zmax)
+  (let* ((nx (gethash '$x_voxel  *gr-options*))
+         (ny (gethash '$y_voxel  *gr-options*))
+         (nz (gethash '$z_voxel  *gr-options*))
+         (xmin (convert-to-float xmin))
+         (xmax (convert-to-float xmax))
+         (ymin (convert-to-float ymin))
+         (ymax (convert-to-float ymax))
+         (zmin (convert-to-float zmin))
+         (zmax (convert-to-float zmax))
+         (dx (convert-to-float (/ (- xmax xmin) nx)))
+         (dy (convert-to-float (/ (- ymax ymin) ny)))
+         (dz (convert-to-float (/ (- zmax zmin) nz)))
+         (fcn (coerce-float-fun (m- ($lhs expr) ($rhs expr)) `((mlist),x ,y ,z)))
+         ($numer t)
+         (vertices '())
+         (pts '())
+         pltcmd
+         (grouping '())
+         (px (make-array (+ nx 1) :element-type 'double-float))
+         (py (make-array (+ ny 1) :element-type 'double-float))
+         (pz (make-array (+ nz 1) :element-type 'double-float))
+         (oldval (make-array `(,(+ nx 1) ,(+ ny 1)) :element-type 'double-float))
+         (newval (make-array `(,(+ nx 1) ,(+ ny 1)) :element-type 'double-float)) )
+
+    ; initialize coordinate arrays
+    (loop for i to nx do (setf (aref px i) (+ xmin (* i dx))))
+    (loop for j to ny do (setf (aref py j) (+ ymin (* j dy))))
+    (loop for k to nz do (setf (aref pz k) (+ zmin (* k dz))))
+
+    ; initialize first layer
+    (loop for i to nx do
+      (loop for j to ny do
+        (setf (aref oldval i j) (funcall fcn (aref px i) (aref py j) (aref pz 0)))
+        (when (not (floatp (aref oldval i j)))
+          (merror "draw3d (implicit): non real value")) ))
+
+    ; begin triangularization process
+    (loop for k from 1 to nz do
+
+      ; calculate node values in new layer
+      (loop for i to nx do
+        (loop for j to ny do
+          (setf (aref newval i j) (funcall fcn (aref px i) (aref py j) (aref pz k)))
+          (when (not (floatp (aref oldval i j)))
+            (merror "draw3d (implicit): check surface definition; non real value")) ))
+
+      ; analyze voxels in this slide
+      (loop for i below nx do
+        (loop for j below ny do
+          (let* (triangles
+                 (cubidx 0)
+                 (k-1 (- k 1))
+                 (i+1 (+ i 1))
+                 (j+1 (+ j 1))
+                 (val (make-array 8 :element-type
+                                       'double-float
+                                    :initial-contents
+                                       `(,(aref oldval i j+1) ,(aref oldval i+1 j+1)
+                                         ,(aref oldval i+1 j) ,(aref oldval i j)
+                                         ,(aref newval i j+1) ,(aref newval i+1 j+1)
+                                         ,(aref newval i+1 j) ,(aref newval i j)))))
+            (when (< (aref val 0) 0.0) (setf cubidx (logior cubidx 1)))
+            (when (< (aref val 1) 0.0) (setf cubidx (logior cubidx 2)))
+            (when (< (aref val 2) 0.0) (setf cubidx (logior cubidx 4)))
+            (when (< (aref val 3) 0.0) (setf cubidx (logior cubidx 8)))
+            (when (< (aref val 4) 0.0) (setf cubidx (logior cubidx 16)))
+            (when (< (aref val 5) 0.0) (setf cubidx (logior cubidx 32)))
+            (when (< (aref val 6) 0.0) (setf cubidx (logior cubidx 64)))
+            (when (< (aref val 7) 0.0) (setf cubidx (logior cubidx 128)))
+            (setf triangles (aref *i3d_triangles* cubidx))   ; edges intersecting the surface
+            (do ((e 0 (1+ e)))
+                ((= (aref triangles e) -1) 'done)
+              (push 
+                (case (aref triangles e)
+                  (0  (make-triangle-vertices i j+1 k-1 i+1 j+1 k-1 0 1))
+                  (1  (make-triangle-vertices i+1 j+1 k-1 i+1 j k-1 1 2))
+                  (2  (make-triangle-vertices i+1 j k-1 i j k-1 2 3))
+                  (3  (make-triangle-vertices i j k-1 i j+1 k-1 3 0))
+                  (4  (make-triangle-vertices i j+1 k i+1 j+1 k 4 5))
+                  (5  (make-triangle-vertices i+1 j+1 k i+1 j k 5 6))
+                  (6  (make-triangle-vertices i+1 j k i j k 6 7))
+                  (7  (make-triangle-vertices i j k i j+1 k 7 4))
+                  (8  (make-triangle-vertices i j+1 k-1 i j+1 k 0 4))
+                  (9  (make-triangle-vertices i+1 j+1 k-1 i+1 j+1 k 1 5))
+                  (10 (make-triangle-vertices i+1 j k-1 i+1 j k 2 6))
+                  (11 (make-triangle-vertices i j k-1 i j k 3 7)) )
+                vertices)))))
+
+      ; make oldval a copy of newval
+      (setf oldval (copy-array newval)))
+
+
+    (when (null vertices)
+      (merror "draw3d (implicit): no surface within these ranges"))
+    (update-ranges xmin xmax ymin ymax zmin zmax)
+    (setf pltcmd
+          (cons (format nil " ~a w l lt ~a lc rgb '~a'"
+                        (make-obj-title (get-option '$key))
+                        (get-option '$line_type)
+                        (get-option '$color))
+                (make-list (- (/ (length vertices) 3) 1)
+                           :initial-element (format nil " t '' w l lw ~a lt ~a lc rgb '~a'"
+                                              (get-option '$line_width)
+                                              (get-option '$line_type)
+                                              (get-option '$color)))))
+    (do ((v vertices (cdddr v)))
+        ((null v) 'done)
+      (push (make-array 12 :element-type 'double-float
+                          :initial-contents (flatten (list (first v) (second v) (first v) (third v))))
+            pts)
+      (push '(3 2)
+            grouping) )
+
+    (make-gr-object
+       :name    'implicit
+       :command pltcmd
+       :groups  grouping
+       :points  pts)))
+
+
+
+
+
+
+
 
 ;; Object: 'explicit3d'
 ;; Usage:
@@ -2277,6 +2456,7 @@
                             (list (case (caar x)
                                      ($points             (apply #'points3d (rest x)))
                                      ($explicit           (apply #'explicit3d (rest x)))
+                                     ($implicit           (apply #'implicit3d (rest x)))
                                      ($vector             (apply #'vect3d (rest x)))
                                      ($parametric         (apply #'parametric3d (rest x)))
                                      ($parametric_surface (apply #'parametric_surface (rest x)))
