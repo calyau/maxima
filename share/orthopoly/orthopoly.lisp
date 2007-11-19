@@ -12,14 +12,6 @@
 (in-package :maxima)
 ($put '$orthopoly 1.0 '$version)
 
-;; A while loop taken from nset.lisp. Someday it should be placed
-;; in a file with other Maxima macros and deleted from here and from nset.
-
-(defmacro while (cond &rest body)
-  `(do ()
-       ((not ,cond))
-     ,@body))
-
 ;; If the input can be evaluated to a floating point number (either
 ;; real or complex), convert the input to a Common Lisp complex number.
 ;; When the input doesn't evaluate to a float, return the input.
@@ -244,29 +236,40 @@
 ;; When n is an integer with n > -1, return the product 
 ;; x (x + 1) (x + 2) ... (x + n - 1).  This is the same as
 ;; gamma(x + n) / gamma(x).  See A&S 6.1.22, page 256.  When
-;; n isn't an integer or n < 0, return the form (($pochhammer) x n).
+;; n isn't an integer or n < 0, return the form (($pochhammer) x n))
 ;; Also notice that pochhammer(1,n) = n!.
 
-;; We trap the case x is a complex float; otherwise, Maxima has to..
-
+(meval `(($declare) $pochhammer $complex))
 (defmvar $pochhammer_max_index 100)
+(defprop $pochhammer simp-pochhammer operators)
 
 (defun $pochhammer (x n)
-  (cond ((mminusp n)
-	 (div (power -1 n) ($pochhammer (sub 1 x) (neg n))))
+  (simplify `(($pochhammer) ,x ,n)))
 
-	((and (integerp n) (use-float x))
-	 (let ((acc 1.0d0))
-	   (setq x (maxima-to-lisp-complex-float x))
-	   (dotimes (i n (lisp-float-to-maxima-float acc))
-	     (setq acc (* acc (+ i x))))))
+(defun simp-pochhammer (e y z)
+  (declare (ignore y))
+  (let ((x) (n))
+    (twoargcheck e)
+    (setq x (simplifya (specrepcheck (second e)) z))
+    (setq n (simplifya (specrepcheck (third e)) z))
+ 
+    (cond ((eq t (meqp n 0)) 1)
+	  
+	  ;; Use reflection rule when (great (neg n) n) is true or when n is a negative integer.
+	  
+	  ((and (integerp n) (< n 0))
+	   (div (power -1 n) (simplify `(($pochhammer) ,(sub 1 x) ,(neg n)))))
+	  
+	  ((eq t (eq x 1)) (take '(mfactorial) n))
 
-	((and (integerp n) (<= n $pochhammer_max_index))
-	 (let ((acc 1))
-	   (dotimes (i n acc)
-	     (setq acc (mul acc (add i x))))))
+	  ((and (integerp n) (> n -1) (<=  n $pochhammer_max_index)) 
+	   (let ((acc 1))
+	     (dotimes (i n)
+	       (setq acc (mul acc (add i x))))
+	     (if (complex-number-p x #'(lambda (s) (or (floatp s) ($bfloatp s)))) ($expand acc) acc)))
 
-	(t `(($pochhammer simp) ,x ,n))))
+	  (t `(($pochhammer simp) ,x ,n)))))
+
 
 (putprop '$pochhammer
 	 '((x n)
