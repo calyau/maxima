@@ -615,10 +615,11 @@
 ;;; If you think this is a hack, well, realize that the hack is
 ;;; actually the fact that TRANSPOSE can return a noun form.
 
+
+
 (defmfun $transpose (mat)
   (cond ((not (mxorlistp mat))
-	 (cond ((and (not (atom mat))
-		     (eq (caar mat) '%transpose))
+	 (cond ((and (not (atom mat)) (memq (mop mat) '($transpose %transpose)))
 		(cadr mat))
 	       (($scalarp mat) mat)
 	       ((mplusp mat)
