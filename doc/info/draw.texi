@@ -2064,7 +2064,29 @@ Default value: @code{[5, 5]}
 This option is relevant only for @code{implicit} objects.
 @end defvr
 
+@defvr {Graphic option} x_voxel
+Default value: 10
 
+@code{x_voxel} is the number of voxels in the x direction to
+be used by the @i{marching cubes algorithm} implemented
+by the 3d @code{implicit} object.
+@end defvr
+
+@defvr {Graphic option} y_voxel
+Default value: 10
+
+@code{y_voxel} is the number of voxels in the y direction to
+be used by the @i{marching cubes algorithm} implemented
+by the 3d @code{implicit} object.
+@end defvr
+
+@defvr {Graphic option} z_voxel
+Default value: 10
+
+@code{z_voxel} is the number of voxels in the z direction to
+be used by the @i{marching cubes algorithm} implemented
+by the 3d @code{implicit} object.
+@end defvr
 
 
 
@@ -2109,8 +2131,8 @@ sequentially: @i{graphic options} affect those @i{graphic objects} placed
 on its right. Some @i{graphic options} affect the global appearence of the scene.
 
 This is the list of @i{graphic objects} available for scenes in three dimensions:
-@code{points}, @code{label}, @code{vector}, @code{explicit}, @code{parametric},
-@code{parametric_surface} and @code{geomap}.
+@code{points}, @code{label}, @code{vector}, @code{explicit}, @code{implicit},
+@code{parametric}, @code{parametric_surface} and @code{geomap}.
 
 See also the following global @i{graphic options}: @code{xrange}, @code{yrange}, 
 @code{zrange}, @code{logx}, @code{logy}, @code{logz}, @code{terminal}, 
@@ -2490,15 +2512,16 @@ See also @code{filled_func} for filled functions.
 @end deffn
 
 
-@deffn  {Graphic object} implicit (@var{fcn},@var{xvar},@var{xminval},@var{xmaxval},@var{yvar},@var{yminval},@var{ymaxval})
-Draws implicit functions in 2D.
+@deffn  {Graphic object} implicit (@var{fcn},@var{x},@var{xmin},@var{xmax},@var{y},@var{ymin},@var{ymax})
+@deffnx {Graphic object} implicit (@var{fcn},@var{x},@var{xmin},@var{xmax},@var{y},@var{ymin},@var{ymax},@var{z},@var{zmin},@var{zmax})
+Draws implicit functions in 2D and 3D.
 
 @b{2D}
 
-@code{implicit(@var{fcn},@var{xvar},@var{xminval},@var{xmaxval},@var{yvar},@var{yminval},@var{ymaxval})}
-plots the implicit function defined by @var{fcn}, with variable @var{xvar} taking values
-from @var{xminval} to @var{xmaxval}, and variable @var{yvar} taking values
-from @var{yminval} to @var{ymaxval}.
+@code{implicit(@var{fcn},@var{x},@var{xmin},@var{xmax},@var{y},@var{ymin},@var{ymax})}
+plots the implicit function defined by @var{fcn}, with variable @var{x} taking values
+from @var{xmin} to @var{xmax}, and variable @var{y} taking values
+from @var{ymin} to @var{ymax}.
 
 This object is affected by the following @i{graphic options}: @code{ip_grid}, 
 @code{ip_grid_in}, @code{line_width}, @code{line_type}, @code{key} and @code{color}.
@@ -2516,6 +2539,28 @@ Example:
              key       = "x^3+y^3 = 3*x*y^2-x-1",
              implicit(x^3+y^3 = 3*x*y^2-x-1, x,-4,4, y,-4,4),
              title     = "Two implicit functions" )$
+@end example
+
+@b{3D}
+
+@code{implicit (@var{fcn},@var{x},@var{xmin},@var{xmax}, @var{y},@var{ymin},@var{ymax}, @var{z},@var{zmin},@var{zmax})}
+plots the implicit surface defined by @var{fcn}, with variable @var{x} taking values
+from @var{xmin} to @var{xmax}, variable @var{y} taking values
+from @var{ymin} to @var{ymax} and variable @var{z} taking values
+from @var{zmin} to @var{zmax}. This object implements the @i{marching cubes algorithm}.
+
+This object is affected by the following @i{graphic options}: @code{x_voxel}, 
+@code{y_voxel}, @code{z_voxel}, @code{line_width}, @code{line_type}, @code{key} and @code{color}.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(
+        color=blue,
+        implicit((x^2+y^2+z^2-1)*(x^2+(y-1.5)^2+z^2-0.5)=0.015,
+                 x,-1,1,y,-1.2,2.3,z,-1,1),
+        surface_hide=true);
 @end example
 @end deffn
 
