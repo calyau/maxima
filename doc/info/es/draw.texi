@@ -1,4 +1,4 @@
-@c version 1.20
+@c version 1.23
 @menu
 * Introducci@'on a draw::
 * Funciones y variables para draw::
@@ -109,7 +109,7 @@ Ejemplo:
              xrange = [-3,3])$
 @end example
 
-V@'eanse tambi@'en @code{yrange} y @code{zrange}.
+V@'eanse tambi@'en @code{xrange} y @code{yrange}.
 @end defvr
 
 
@@ -2090,8 +2090,6 @@ Ejemplo:
 
 @end defvr
 
-
-
 @defvr {Opci@'on gr@'afica} ip_grid
 Valor por defecto: @code{[50, 50]}
 
@@ -2101,8 +2099,6 @@ gr@'aficos de funciones impl@'{@dotless{i}}citas.
 Esta opci@'on s@'olo es relevante para funciones de tipo @code{implicit}.
 @end defvr
 
-
-
 @defvr {Opci@'on gr@'afica} ip_grid_in
 Valor por defecto: @code{[5, 5]}
 
@@ -2111,6 +2107,31 @@ gr@'aficos de funciones impl@'{@dotless{i}}citas.
 
 Esta opci@'on s@'olo es relevante para funciones de tipo @code{implicit}.
 @end defvr
+
+@defvr {Opci@'on gr@'afica} x_voxel
+Valor por defecto: 10
+
+@code{x_voxel} es el n@'umero de voxels en la direcci@'on x a utilizar
+por el algoritmo @i{marching cubes} implementado por el objeto 
+@code{implicit} tridimensional.
+@end defvr
+
+@defvr {Opci@'on gr@'afica} y_voxel
+Valor por defecto: 10
+
+@code{y_voxel} es el n@'umero de voxels en la direcci@'on y a utilizar
+por el algoritmo @i{marching cubes} implementado por el objeto 
+@code{implicit} tridimensional.
+@end defvr
+
+@defvr {Opci@'on gr@'afica} z_voxel
+Valor por defecto: 10
+
+@code{z_voxel} es el n@'umero de voxels en la direcci@'on z a utilizar
+por el algoritmo @i{marching cubes} implementado por el objeto 
+@code{implicit} tridimensional.
+@end defvr
+
 
 
 
@@ -2132,7 +2153,7 @@ dimensiones: @code{points}, @code{polygon}, @code{rectangle}, @code{ellipse}, @c
 
 Para utilizar esta funci@'on, ejec@'utese primero @code{load(draw)}.
 
-V@'eanse tambi@'en las siguientes opciones gr@'aficas: @code{xrange}, @code{yrange}, 
+V@'eanse tambi@'en las siguientes @i{opciones gr@'aficas}: @code{xrange}, @code{yrange}, 
 @code{logx}, @code{logy}, @code{terminal}, @code{grid}, @code{title}, 
 @code{xlabel}, @code{ylabel}, @code{xtics}, @code{ytics}, @code{xtics_rotate}, 
 @code{ytics_rotate}, @code{xtics_axis}, @code{ytics_axis}, @code{xaxis}, @code{yaxis}, 
@@ -2156,10 +2177,10 @@ afectan al aspecto global de la escena.
 
 La lista de @i{objetos gr@'aficos} disponibles para escenas en tres
 dimensiones: @code{points}, @code{label}, @code{vector}, @code{explicit}, 
-@code{parametric}, @code{parametric_surface} y @code{geomap}.
+@code{implicit}, @code{parametric}, @code{parametric_surface} y @code{geomap}.
 
 
-V@'eanse tambi@'en las siguientes opciones gr@'aficas: @code{xrange}, @code{yrange}, 
+V@'eanse tambi@'en las siguientes @i{opciones gr@'aficas}: @code{xrange}, @code{yrange}, 
 @code{zrange}, @code{logx}, @code{logy}, @code{logz}, @code{terminal}, 
 @code{grid}, @code{title}, @code{xlabel}, @code{ylabel}, @code{zlabel}, 
 @code{xtics}, @code{ytics}, @code{ztics}, @code{xtics_rotate}, 
@@ -2538,15 +2559,16 @@ V@'ease tambi@'en @code{filled_func} para el relleno de curvas.
 @end deffn
 
 
-@deffn  {Objeto gr@'afico} implicit (@var{fcn},@var{xvar},@var{xminval},@var{xmaxval},@var{yvar},@var{yminval},@var{ymaxval})
-Dibuja funciones impl@'{@dotless{i}}citas en 2D.
+@deffn  {Objeto gr@'afico} implicit (@var{fcn},@var{x},@var{xmin},@var{xmax},@var{y},@var{ymin},@var{ymax})
+@deffnx {Objeto gr@'afico} implicit (@var{fcn},@var{x},@var{xmin},@var{xmax},@var{y},@var{ymin},@var{ymax},@var{z},@var{zmin},@var{zmax})
+Dibuja funciones impl@'{@dotless{i}}citas en 2D y 3D.
 
 @b{2D}
 
-@code{implicit (@var{fcn},@var{xvar},@var{xminval},@var{xmaxval},@var{yvar},@var{yminval},@var{ymaxval})}
+@code{implicit (@var{fcn},@var{x},@var{xmin},@var{xmax},@var{y},@var{ymin},@var{ymax})}
 dibuja la funci@'on impl@'{@dotless{i}}cita @var{fcn}, con la variable
-@code{xvar} tomando valores desde @var{xminval} hasta @var{xmaxval},
-y la variable @var{yvar} tomando valores desde @var{yminval} hasta @var{ymaxval}.
+@code{x} tomando valores desde @var{xmin} hasta @var{xmax},
+y la variable @var{y} tomando valores desde @var{ymin} hasta @var{ymax}.
 
 Este objeto se ve afectado por las siguientes @i{opciones gr@'aficas}: @code{ip_grid}, 
 @code{ip_grid_in}, @code{line_width}, @code{line_type}, @code{key} y @code{color}.
@@ -2564,6 +2586,29 @@ Ejemplo:
              key       = "x^3+y^3 = 3*x*y^2-x-1",
              implicit(x^3+y^3 = 3*x*y^2-x-1, x,-4,4, y,-4,4),
              title     = "Two implicit functions" )$
+@end example
+
+@b{3D}
+
+@code{implicit (@var{fcn},@var{x},@var{xmin},@var{xmax}, @var{y},@var{ymin},@var{ymax}, @var{z},@var{zmin},@var{zmax})}
+dibuja la funci@'on impl@'{@dotless{i}}cita @var{fcn}, con la variable @var{x} 
+tomando valores desde @var{xmin} hasta @var{xmax}, la variable @var{y} tomando 
+valores desde @var{ymin} hasta @var{ymax} y la variable @var{z} tomando 
+valores desde @var{zmin} hasta @var{zmax}. Este objeto est@'a programado con el 
+algoritmo @i{marching cubes}.
+
+Este objeto se ve afectado por las siguientes @i{opciones gr@'aficas}: @code{x_voxel}, 
+@code{y_voxel}, @code{z_voxel}, @code{line_width}, @code{line_type}, @code{key} y @code{color}.
+
+Ejemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(
+        color=blue,
+        implicit((x^2+y^2+z^2-1)*(x^2+(y-1.5)^2+z^2-0.5)=0.015,
+                 x,-1,1,y,-1.2,2.3,z,-1,1),
+        surface_hide=true);
 @end example
 @end deffn
 
@@ -3141,18 +3186,18 @@ o @code{false} en caso contrario.
 
 
 @deffn  {Funci@'on} make_rgb_picture (@var{redlevel},@var{greenlevel},@var{bluelevel})
-Devuelve un objeto @code{picture} conteniendo una imagen en color (RGB).
+Devuelve un objeto @var{picture} conteniendo una imagen en color (RGB).
 Los tres argumentos deben ser im@'agenes de niveles, para el rojo (R),
 verde (G) y azul (B).
 
-El objeto  @code{picture} devuelto contiene los siguientes cuatro
+El objeto  @var{picture} devuelto contiene los siguientes cuatro
 elemento:
 
 @enumerate
 @item el s@'{@dotless{i}}mbolo @code{rgb}
 @item anchura de la imagen
 @item altura de la imagen
-@item un array de enteros de @code{3*ancho*alto} con los valores de los p@'{@dotless{i}}xeles
+@item un array de enteros de @var{3*ancho*alto} con los valores de los p@'{@dotless{i}}xeles
 entre 0 y 255. Cada valor de pixel se representa en el array con tres n@'umeros consecutivos
 (rojo, verde, azul).
 @end enumerate
@@ -3175,7 +3220,7 @@ Ejemplo:
 
 
 @deffn  {Funci@'on} take_channel (@var{im},@var{color})
-Si el argumento @var{color} es @var{red}, @var{green} o @var{blue},
+Si el argumento @var{color} es @code{red}, @code{green} o @code{blue},
 la funci@'on @code{take_channel} devuelve el canal de color correspondiente
 de la imagen @var{im}.
 
@@ -3199,13 +3244,13 @@ Ejemplo:
 
 
 @deffn  {Funci@'on} negative_picture (@var{pic})
-Devuelve el negativo de la imagen, sea @'esta de tipo nivel (@code{level})
-o color (@code{rgb}).
+Devuelve el negativo de la imagen, sea @'esta de tipo nivel (@var{level})
+o color (@var{rgb}).
 @end deffn
 
 
 @deffn  {Funci@'on} rgb2level (@var{pic})
-Transforma una imagen en color @code{rgb} a otra de niveles @code{level}
+Transforma una imagen en color @var{rgb} a otra de niveles @var{level}
 promediando los niveles.
 @end deffn
 
