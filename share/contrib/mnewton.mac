@@ -56,7 +56,7 @@ solve_by_lu(eqs, vars, field) := block(
 )$
 
 mnewton(FuncList, VarList, GuessList):=
-  block([nfunc, Solutions, Increments, solved:false, h, DF, numer:true,
+  block([nfunc, Solutions, Increments, solved:false, h, DF, numer:numer,
          i, j, k, keepfloat:true, ratprint:false, field : 'complexfield, float2bf : true],
     local(h),
 
@@ -64,17 +64,16 @@ mnewton(FuncList, VarList, GuessList):=
     if (not(listp(VarList))) then VarList: [VarList],    
     if (not(listp(GuessList))) then GuessList: [GuessList],    
 
-    if field = 'bigfloatfield then
-       FuncList : map(lambda([u], lhs(u)-rhs(u)), float(FuncList))
-    else (
-       numer : true,
-       FuncList : map(lambda([u], lhs(u)-rhs(u)), bfloat(FuncList))),
-
     /* Decide which field to use */
     if bfloatp(newtonepsilon) then field : 'bigfloatfield,
-    
-    /* Depuration of the function arguments */
-   
+
+    if field = 'bigfloatfield then
+       FuncList : map(lambda([u], lhs(u)-rhs(u)), bfloat(FuncList))
+    else (
+       numer : true,
+       FuncList : map(lambda([u], lhs(u)-rhs(u)), float(FuncList))),
+
+    /* Depuration of the function arguments */   
     nfunc:length(FuncList),
     if length(VarList) # nfunc then (
       print("mnewton: incorrect number of variable names (", nfunc,
