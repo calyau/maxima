@@ -59,10 +59,14 @@ mnewton(FuncList, VarList, GuessList):=
   block([nfunc, Solutions, Increments, solved:false, h, DF, numer:true,
          i, j, k, keepfloat:true, ratprint:false, field : 'complexfield, float2bf : true],
     local(h),
-    
-     if field = 'bigfloatfield then
+
+    if (not(listp(FuncList))) then FuncList: [FuncList],    
+    if (not(listp(VarList))) then VarList: [VarList],    
+    if (not(listp(GuessList))) then GuessList: [GuessList],    
+
+    if field = 'bigfloatfield then
        FuncList : map(lambda([u], lhs(u)-rhs(u)), float(FuncList))
-     else (
+    else (
        numer : true,
        FuncList : map(lambda([u], lhs(u)-rhs(u)), bfloat(FuncList))),
 
