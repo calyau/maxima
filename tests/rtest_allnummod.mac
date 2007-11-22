@@ -1507,6 +1507,9 @@ rationalize(0.09375 < 0.3984375);
 rationalize(0.09375b0 < 0.3984375b0);
 3/32 < 51/128$
 
+(reset (fpprec), 0);
+0;
+
 /* SF bug 1703298  max leads to UND error */
 
 max(1/(q-1));
@@ -1532,5 +1535,7 @@ inf$
 min(1/(1-x),minf);
 minf$
 
-(reset (fpprec), 0);
-0;
+/* SF bug 1764114  signum misses simp rule */
+
+(tellsimpafter (signum(x), zzz), signum(-x));
+-zzz;
