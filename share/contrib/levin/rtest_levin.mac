@@ -98,7 +98,7 @@ a[n]:=n^2$
 levin_u_sum(a[n],n,1,2);
 5$
 sort(arrays);
-sort([a,levin_options])$
+[a,levin_options]$
 kill(a);
 done$
 sort(listofvars(levin_u_sum(start[n],n,1,2)));
@@ -108,7 +108,7 @@ start[n]:=n^3$
 levin_u_sum(start[n],n,1,2);
 9$
 sort(arrays);
-sort([start,levin_options])$
+[levin_options,start]$
 kill(start);
 done$
 sort(listofvars(levin_u_sum(index_var[n],n,1,2)));
@@ -118,7 +118,7 @@ index_var[n]:=n^4$
 levin_u_sum(index_var[n],n,1,2);
 17$
 sort(arrays);
-sort([index_var,levin_options])$
+[index_var,levin_options]$
 kill(index_var);
 done$
 sort(listofvars(levin_u_sum(a[n],n,0,10)));
@@ -156,8 +156,8 @@ check_prec(levin_u_sum(1/n-log(1+1/n),n,1,31),%gamma,27);
 true$
 fpprec:16;
 16$
-omega:%e^(2*%pi*%i/10);
-omega:%e^(2*%pi*%i/10)$
+(omega:%e^(2*%pi*%i/10),0);
+0;
 check_prec(levin_u_sum(omega^n/n,n,1,20),-log(1-omega),11);
 true$
 check_prec(bflevin_u_sum(1/n-log(1+1/n),n,1),%gamma,fpprec-1);
