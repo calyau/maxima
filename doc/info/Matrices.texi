@@ -805,17 +805,17 @@ Gram-Schmidt algorithm using a specified inner product function.
 
 @c ===beg===
 @c load (eigen)$
-@c ip (f, g) := integrate (f * g, 'x, a, b);
-@c y : gramschmidt ([1, sin(x), cos(x)], ip), a= -%pi/2, b=%pi/2;
+@c ip (f, g) := integrate (f * g, u, a, b);
+@c y : gramschmidt ([1, sin(u), cos(u)], ip), a= -%pi/2, b=%pi/2;
 @c map (ip, [y[1], y[2], y[3]], [y[2], y[3], y[1]]), a= -%pi/2, b=%pi/2;
 @c ===end===
 @example
 (%i1) load (eigen)$
-(%i2) ip (f, g) := integrate (f * g, 'x, a, b);
-(%o2)         ip(f, g) := integrate(f g, 'x, a, b)
-(%i3) y : gramschmidt ([1, sin(x), cos(x)], ip), a= -%pi/2, b=%pi/2;
-                               %pi cos(x) - 2
-(%o3)              [1, sin(x), --------------]
+(%i2) ip (f, g) := integrate (f * g, u, a, b);
+(%o2)          ip(f, g) := integrate(f g, u, a, b)
+(%i3) y : gramschmidt ([1, sin(u), cos(u)], ip), a= -%pi/2, b=%pi/2;
+                               %pi cos(u) - 2
+(%o3)              [1, sin(u), --------------]
                                     %pi
 (%i4) map (ip, [y[1], y[2], y[3]], [y[2], y[3], y[1]]), a= -%pi/2, b=%pi/2;
 (%o4)                       [0, 0, 0]
