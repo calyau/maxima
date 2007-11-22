@@ -752,10 +752,13 @@ Examples:
 @end deffn
 
 @deffn {Function} gramschmidt (@var{x})
-@deffnx {Function} gschmit (@var{x})
+@deffnx {Function} gramschmidt (@var{x}, @var{F})
+
 Carries out the Gram-Schmidt orthogonalization algorithm on @var{x},
 which is either a matrix or a list of lists.
 @var{x} is not modified by @code{gramschmidt}.
+The inner product employed by @code{gramschmidt} is @var{F}, if present,
+otherwise the inner product is the function @code{innerproduct}.
 
 If @var{x} is a matrix, the algorithm is applied to the rows of @var{x}.
 If @var{x} is a list of lists, the algorithm is applied to the sublists,
@@ -769,16 +772,20 @@ some sublists of the return value are zero.
 @code{factor} is called at each stage of the algorithm to simplify intermediate results.
 As a consequence, the return value may contain factored integers.
 
-@code{gschmit} (note spelling) is a synonym for @code{gramschmidt}.
-
-@code{load ("eigen")} loads this function.
+@code{load(eigen)} loads this function.
 
 Example:
 
+Gram-Schmidt algorithm using default inner product function.
+
+@c ===beg===
+@c load (eigen)$
+@c x: matrix ([1, 2, 3], [9, 18, 30], [12, 48, 60]);
+@c y: gramschmidt (x);
+@c map (innerproduct, [y[1], y[2], y[3]], [y[2], y[3], y[1]]);
+@c ===end===
 @example
-(%i1) load ("eigen")$
-Warning - you are redefining the Macsyma function eigenvalues
-Warning - you are redefining the Macsyma function eigenvectors
+(%i1) load (eigen)$
 (%i2) x: matrix ([1, 2, 3], [9, 18, 30], [12, 48, 60]);
                          [ 1   2   3  ]
                          [            ]
@@ -790,9 +797,28 @@ Warning - you are redefining the Macsyma function eigenvectors
                       3      3   3 5      2  3  2  3
 (%o3)  [[1, 2, 3], [- ---, - --, ---], [- ----, ----, 0]]
                       2 7    7   2 7       5     5
-(%i4) i: innerproduct$
-(%i5) [i (y[1], y[2]), i (y[2], y[3]), i (y[3], y[1])];
-(%o5)                       [0, 0, 0]
+(%i4) map (innerproduct, [y[1], y[2], y[3]], [y[2], y[3], y[1]]);
+(%o4)                       [0, 0, 0]
+@end example
+
+Gram-Schmidt algorithm using a specified inner product function.
+
+@c ===beg===
+@c load (eigen)$
+@c ip (f, g) := integrate (f * g, 'x, a, b);
+@c y : gramschmidt ([1, sin(x), cos(x)], ip), a= -%pi/2, b=%pi/2;
+@c map (ip, [y[1], y[2], y[3]], [y[2], y[3], y[1]]), a= -%pi/2, b=%pi/2;
+@c ===end===
+@example
+(%i1) load (eigen)$
+(%i2) ip (f, g) := integrate (f * g, 'x, a, b);
+(%o2)         ip(f, g) := integrate(f g, 'x, a, b)
+(%i3) y : gramschmidt ([1, sin(x), cos(x)], ip), a= -%pi/2, b=%pi/2;
+                               %pi cos(x) - 2
+(%o3)              [1, sin(x), --------------]
+                                    %pi
+(%i4) map (ip, [y[1], y[2], y[3]], [y[2], y[3], y[1]]), a= -%pi/2, b=%pi/2;
+(%o4)                       [0, 0, 0]
 @end example
 
 @end deffn

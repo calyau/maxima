@@ -1,0 +1,18 @@
+(kill (all), load (eigen), 0);
+0;
+
+(x : matrix ([1, 2, 3], [9, 18, 30], [12, 48, 60]),
+ y : gramschmidt (x),
+ expand (y, 0, 0));
+''([[1,2,3],[-3^2/(2*7),-3^2/7,3*5/(2*7)],[-2^4*3/5,2^3*3/5,0]]);
+
+map (innerproduct, [y[1], y[2], y[3]], [y[2], y[3], y[1]]);
+[0, 0, 0];
+
+(kill (x),
+ ip (f, g) := integrate (f * g, 'x, a, b),
+ ev (y : gramschmidt ([1, sin(x), cos(x)], ip), a= -%pi/2, b=%pi/2));
+[1, sin(x), (%pi*cos(x) - 2)/%pi];
+
+map (ip, [y[1], y[2], y[3]], [y[2], y[3], y[1]]), a= -%pi/2, b=%pi/2;
+[0, 0, 0];

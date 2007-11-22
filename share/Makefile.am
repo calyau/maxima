@@ -720,6 +720,7 @@ matrix/pfaff.dem\
 matrix/pfaff.mac\
 matrix/pfaff.usg\
 matrix/rateig.mac\
+matrix/rtest_eigen.mac\
 misc/arrfun.mac\
 misc/declin.dem\
 misc/declin.mac\
