@@ -164,7 +164,6 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
 @deffn {Function} gramschmidt (@var{x})
-@deffnx {Function} gschmit (@var{x})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 

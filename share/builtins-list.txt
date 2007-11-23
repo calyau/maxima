@@ -436,7 +436,6 @@ gradefs
 gramschmidt
 grind
 grobner_basis
-gschmit
 hach
 halfangles
 hermite
