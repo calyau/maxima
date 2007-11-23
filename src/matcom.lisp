@@ -477,7 +477,9 @@
       (list
        'lambda
        '(x ans a3)
-       (if oldstuff (list 'setq 'x (list oldstuff 'x 'ans 'a3)))
+       (if oldstuff
+         (list 'setq 'x (list oldstuff 'x 'ans 'a3))
+         '(declare (ignore a3)))
        (list
 	'cond
 	'(*afterflag x)
