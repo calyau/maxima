@@ -272,7 +272,7 @@ if Gpoly = 0 then
 /* Numerical test                                                        */
 if mod_test and (ZAnsatzDegree<=mod_threshold) then
   (
-  MODULUS : mod_big_prime,
+  modulus : mod_big_prime,
   test_Gpoly : polymod(subst(ev_point,n,Gpoly),mod_big_prime),
 
 
@@ -286,7 +286,7 @@ if mod_test and (ZAnsatzDegree<=mod_threshold) then
                               '_g,GAnsatzDegree+1,'_z,ZAnsatzDegree+1,k,
                               modular_linear_solver,mode-1),
   
-  MODULUS : false,
+  modulus : false,
   if mode>= very_verbose then
      print("numerical sysSol : ", sysSol),
   if sysSol = [] then
