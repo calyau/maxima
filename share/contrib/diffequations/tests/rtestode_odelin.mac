@@ -119,7 +119,7 @@ odelin(x^2*'diff(y,x,2)+x*'diff(y,x,1)+(x^2-1)*y,y,x);
 set (bessel_j(1,-x),bessel_y(1,-x));
 
 odelin(x^2*'diff(y,x,2)+x*'diff(y,x,1)+(x^2-4)*y,y,x);
-set (bessel_j(-2,-x),bessel_y(-2,-x));
+set (bessel_j(2,-x),bessel_y(2,-x));
 
 odelin('diff(y,x,2)+5*'diff(y,x,1)+6*y,y,x);
 set (%e^-(3*x),%e^-(2*x));
@@ -171,9 +171,9 @@ forget(x > 0);
 [x > 0];
 
 odelin(x^2*'diff(y,x,2)+2*'diff(y,x,1)+(-3)*y,y,x);
-set (kummer_m((sqrt(13)+3)/2,sqrt(13)+1,-2/x)*x*%e^(2/x)
+set (kummer_m((sqrt(13)+3)/2,sqrt(13)+1,-(2/x))*x*%e^(2/x)
 	 /(-x)^(sqrt(13)/2+1/2),
-	kummer_u((sqrt(13)+3)/2,sqrt(13)+1,-2/x)*x*%e^(2/x)
+	kummer_u((sqrt(13)+3)/2,sqrt(13)+1,-(2/x))*x*%e^(2/x)
 	 /(-x)^(sqrt(13)/2+1/2));
 
 odelin(4*x^2*'diff(y,x,2)+2*x^2*'diff(y,x,1)+(-(x+3))*y,y,x);
@@ -233,7 +233,7 @@ odelin('diff(y,x,2)+(1-n)*'diff(y,x,1)/x+y/(4*x),y,x);
 set (bessel_j(n,sqrt(x))*x^(n/2),bessel_y(n,sqrt(x))*x^(n/2));
 
 odelin('diff(y,x,1) = (-((x^9+4*x^7+6*x^5+4*x^3+x)*'diff(y,x,2)+((-100)*x^7-200*x^5+(-96)*x^3)*y))/(x^8+2*x^6+(-2)*x^2-1),y,x);
-set (bessel_j(-5,-(1/(x^2+1))),bessel_y(-5,-(1/(x^2+1))));
+set (-bessel_j(5,-(1/(x^2+1))),-bessel_y(5,-(1/(x^2+1))));
 
 odelin('diff(y,x,2) = (-((x^10+x^8+(-10)*x^6+14*x^4+(-7)*x^2+1)*'diff(y,x,1)+(x^7+3*x^5+3*x^3+x)*y))/(x^11-3*x^9+2*x^7+2*x^5+(-3)*x^3+x),y,x);
 set (bessel_j(0,-(x/(x^2-1))),bessel_y(0,-(x/(x^2-1))));
@@ -257,7 +257,7 @@ odelin('diff(y,x,2) = ((4*a*x^4-8*a*x^3+(7*a-4)*x^2+(4-3*a)*x-1)*'diff(y,x,1)+(8
 set (kummer_m(a,1/a,(x-1)*x),kummer_u(a,1/a,(x-1)*x));
 
 odelin('diff(y,x,2) = (((8*a-6)*x^6+(24*a-18)*x^5+(42*a-34)*x^4+(44*a-38)*x^3+(30*a-27)*x^2+(12*a-11)*x+2*a-1)*'diff(y,x,1)+(8*a*x^3+12*a*x^2+6*a*x+a)*y)/(2*x^7+7*x^6+15*x^5+20*x^4+19*x^3+12*x^2+5*x+1),y,x);
-set (bessel_j(-((2*a-1))/2,-(%i/(2*(x^2+x+1))))
+set (bessel_j(-((2*a-1)/2),-(%i/(2*(x^2+x+1))))
 	 *(x^2+x+1)^((2*a-1)/2)*%e^(1/(2*x^2+2*x+2)),
 	bessel_y(-((2*a-1)/2),-(%i/(2*(x^2+x+1))))
 	 *(x^2+x+1)^((2*a-1)/2)*%e^(1/(2*x^2+2*x+2)));
@@ -361,7 +361,7 @@ odelin('diff(y,x,2)-2*x*'diff(y,x,1)+n*y,y,x);
 set (kummer_m((n+2)/4,1/2,-x^2)*%e^x^2,kummer_u((n+2)/4,1/2,-x^2)*%e^x^2);
 
 odelin((1-x^2)*'diff(y,x,2)-2*x*'diff(y,x,1)+n*(n+1)*y,y,x);
-set (gauss_a(-n,n+1,1,-(x-1)/2),gauss_b(-n,n+1,1,-(x-1)/2));
+set (gauss_a(-n,n+1,1,-((x-1)/2)),gauss_b(-n,n+1,1,-((x-1)/2)));
 
 odelin(x*'diff(y,x,2)+(1-x)*'diff(y,x,1)+n*y,y,x);
 set (kummer_m(n+1,1,-x)*%e^x,kummer_u(n+1,1,-x)*%e^x);
