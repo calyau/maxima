@@ -133,7 +133,16 @@ It appears in LIMIT and DEFINT.......")
 		     (setq var (second args))
 		       (when ($constantp var)
 			 (merror "Second argument cannot be a constant - `limit'"))
-		       (setq val (third args))
+		       (when (not (or ($subvarp var)
+				      (atom var)))
+			 (merror "Improper limit variable - `limit'"))
+		       (setq val (infsimp (third args)))
+		       ;; infsimp converts -inf to minf.  it also converts -infinity to
+		       ;; infinity, although perhaps this should generate the error below.
+		       (when (and (not (atom val))
+				  (some #'(lambda (x) (not (freeof x val)))
+					infinities))
+			 (merror "Third argument must be a finite value or one of: inf, minf, infinity - `limit'"))
 		       (when (eq val '$zeroa) (setq dr '$plus))
 		       (when (eq val '$zerob) (setq dr '$minus))))
 	      (cond ((= lenargs 4)
@@ -221,7 +230,8 @@ It appears in LIMIT and DEFINT.......")
 
 (defun limit-context (var val direction) ;Only works on entry!
   (cond (limit-top
-	 (mapc #'forget (setq global-assumptions (cdr ($facts var))))
+	 (if (atom var)	; declare and facts don't work on subscripted vars
+	     (mapc #'forget (setq global-assumptions (cdr ($facts var)))))
 	 (assume '((mgreaterp) epsilon 0))
 	 (assume '((mlessp) epsilon 1d-8))
 	 (assume '((mgreaterp) prin-inf 1d+8))
@@ -987,6 +997,7 @@ It appears in LIMIT and DEFINT.......")
 ;;;Setq's the special vars numer and denom from numden*
 (defun forq (e)
   (cond ((and (mexptp e)
+	      (not (freeof var e))
 	      (null (pos-neg-p (caddr e))))
 	 (setq denom (cons (m^ (cadr e) (m* -1. (caddr e))) denom)))
 	(t (setq numer (cons e numer)))))
@@ -2519,14 +2530,13 @@ It appears in LIMIT and DEFINT.......")
   ;; it's not identically zero, we compute the limit of the real and
   ;; imaginary parts and combine them.  Otherwise, we can use the
   ;; original method for real limits.
-  (let* ((arglim (limit arg var val 'think))
-	 (log-form `((%log) ,arg))
-	 (rp (if (eq arglim '$inf)	; if we know limit is real pos inf
-		 '$inf			; avoid asking user q's
-		 ($realpart log-form)))	; otherwise find real part
-	 (ip (if (eq arglim '$inf)
-		 0
-	         (simplify ($imagpart log-form)))))
+  (destructuring-let* ((arglim (limit arg var val 'think))
+		       (log-form `((%log) ,arg))
+		       ((rp . ip) (if (or (and (mnump arglim)
+					       (ratgreaterp arglim 0))
+					  (eq arglim '$inf))	; if limit is real pos
+				      (cons arglim 0)		; avoid asking user q's
+				    (trisplit log-form))))	; otherwise find real part
     (cond ((and (numberp ip) (zerop ip))
 	   (let* ((real-lim (ridofab arglim)))
 	     (if (=0 real-lim)
