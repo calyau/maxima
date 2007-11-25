@@ -1113,7 +1113,7 @@
          (x-step (/ (- xend xstart) (convert-to-float nticks) 2))
          (ymin 1.75555970201398d+305)
          (ymax -1.75555970201398d+305)
-         x-samples y-samples result yy pltcmd result-array)
+         x-samples y-samples yy result pltcmd result-array)
     (setq fcn (coerce-float-fun fcn `((mlist), var)))
     (if (< xend xstart)
        (merror "draw2d (explicit): illegal range"))
@@ -1135,16 +1135,16 @@
            (y-end (cddr y-samples) (cddr y-end)))
           ((null x-end))
         ;; The region is x-start to x-end, with mid-point x-mid.
-        (setf result
-              (if result
-                  (append result
-                          (cddr
-                           (adaptive-plot #'fun (car x-start) (car x-mid) (car x-end)
-                                          (car y-start) (car y-mid) (car y-end)
+        (let ((sublst (adaptive-plot #'fun (car x-start) (car x-mid) (car x-end)
+                                         (car y-start) (car y-mid) (car y-end)
                                           depth 1d-5)))
-                  (adaptive-plot #'fun (car x-start) (car x-mid) (car x-end)
-                                 (car y-start) (car y-mid) (car y-end)
-                                 depth 1d-5)))  ))
+          (when (not (null result))
+            (setf sublst (cddr sublst)))
+          ;; clean non numeric pairs
+          (do ((lst sublst (cddr lst)))
+              ((null lst) 'done)
+            (when (numberp (second lst))
+              (setf result (append result (list (first lst) (second lst)))))))))
       (cond ((null (get-option '$filled_func))
                (do ((y (cdr result) (cddr y)))
                    ((null y))
