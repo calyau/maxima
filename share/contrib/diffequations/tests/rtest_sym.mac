@@ -22,12 +22,12 @@ symtest(ev(phi,x=t,y=u),u^2,u^2,u,t);
 /* E. S. Cheb-Terrab, T. Koloknikov,  First Order ODEs, 
    Symmetries and Linear Transformations, Equation 41 */
 sym:lie_FxHx(phi:u*t+a*b*t^(a+1)*exp(u)-a/t+a*t*(log(t)+c),u,t);
-[1/t,-a/t^2];
+[1/t,-(a/t^2)];
 symtest(phi,xi:sym[1],eta:sym[2],u,t);
 0;
 /* Equation 40 */
 sym:ode1_a(phi:b*exp(a*x*y)*x^a+(x^2-1)*y/x-1/x^2+log(x)+c,y,x);
-[1/x,-(x*y+1)/x^3];
+[1/x,-((x*y+1)/x^3)];
 symtest(phi,xi:sym[1],eta:sym[2],y,x);
 0;
 
@@ -61,7 +61,7 @@ symtest(phi:y*(x*log(x^2/y)+2)/x,xi:1,eta:2*y/x,y,x);
    E. S. Cheb-Terrab, T. Koloknikov,  First Order ODEs, 
    Symmetries and Linear Transformations, Equation 28 */
 sym:ode1_a(phi:(f(x)*g(x^a*y)-a*y)/x,y,x);
-[x^(1-a)/f(x),-a*y/(x^a*f(x))];
+[x^(1-a)/f(x),-(a*y/(x^a*f(x)))];
 symtest(phi,xi:sym[1],eta:sym[2],y,x);
 0;
 
@@ -86,20 +86,20 @@ symtest(phi,xi:sym[1],eta:sym[2],y,x);
 symtest(phi,x,y/2,y,x);
 0; /* The expected answer is OK too */
 mu:lie_integrating_factor(phi,xi,eta);
--x^2/y^3;
+-(x^2/y^3);
 ans:lie_exact(phi,mu,y,x);
--(2*x*y^2-x^2)/(2*y^2)=%c;
+-((2*x*y^2-x^2)/(2*y^2))=%c;
 ans:first(solve(ans,y));
 y=-x/(sqrt(2)*sqrt(x+%c));
 ode_check('diff(y,x)=phi,ans);
 0;
 /* and the whole thing in one go */
 ode1_lie(phi,y,x);
--(2*x*y^2-x^2)/(2*y^2)=%c;
+-((2*x*y^2-x^2)/(2*y^2))=%c;
 
 /* This is a subcase of the case above.  It seems OK */
 sym:lie_FxHx(phi:(x-%e^(2*u))/x^2,u,x);
-[-1,-1/x];
+[-1,-(1/x)];
 symtest(phi,xi:sym[1],eta:sym[2],u,x);
 0;
 
@@ -161,7 +161,7 @@ mu:lie_integrating_factor(phi,xi,eta);
 ans:lie_exact(phi,mu,y,x);
 2*x-log(-2*y+2*%c*%e^(2*x)-1) = %c;
 solve(ans,y);
-[y = -(%e^(2*x-%c)-2*%c*%e^(2*x)+1)/2];
+[y = -((%e^(2*x-%c)-2*%c*%e^(2*x)+1)/2)];
 ode_check('diff(y,x)=phi,%[1]);
 0;
 
@@ -174,7 +174,7 @@ mu:lie_integrating_factor(phi,xi,eta);
 ans:lie_exact(phi,mu,y,x);
 x-log(2*y+sin(x)+cos(x)-2*%c*%e^x+2*x+2) = %c;
 solve(ans,y);
-[y = -(sin(x)+cos(x)-%e^(x-%c)-2*%c*%e^x+2*x+2)/2];
+[y = -((sin(x)+cos(x)-%e^(x-%c)-2*%c*%e^x+2*x+2)/2)];
 ode_check('diff(y,x)=phi,%[1]);
 0;
 

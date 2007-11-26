@@ -24,8 +24,8 @@ true;
 
 /* Kamke 2. 103  */ 
 (pn_(103),ans:contrib_ode(eqn:x*'diff(y,x,2)-2*'diff(y,x,1)+a*y,y,x));
-[y = bessel_y(-3,2*sqrt(a)*sqrt(x))*%k2*x^(3/2)
-    +bessel_j(-3,2*sqrt(a)*sqrt(x))*%k1*x^(3/2)];
+[y = -bessel_y(3,2*sqrt(a)*sqrt(x))*%k2*x^(3/2)
+     -bessel_j(3,2*sqrt(a)*sqrt(x))*%k1*x^(3/2)];
 [method,ode_check(eqn,ans[1])];
 [odelin,0];
 
@@ -38,8 +38,8 @@ true;
 
 /* Kamke 2. 105  */ 
 (pn_(105),ans:contrib_ode(eqn:x*'diff(y,x,2)+a*'diff(y,x,1)+b*x*y,y,x));
- [y = %k2*bessel_y(-(a-1)/2,-sqrt(b)*x)/x^(a/2-1/2)
-     +%k1*bessel_j(-(a-1)/2,-sqrt(b)*x)/x^(a/2-1/2)];
+ [y = %k2*bessel_y(-((a-1)/2),-sqrt(b)*x)/x^(a/2-1/2)
+     +%k1*bessel_j(-((a-1)/2),-sqrt(b)*x)/x^(a/2-1/2)];
 [method,ode_check(eqn,ans[1])];
 [odelin,0];
 
@@ -274,8 +274,8 @@ xformtoconstcoeff;
 
 /* Kamke 2. 139  */ 
 (pn_(139),ans:contrib_ode(eqn:16*x*'diff(y,x,2)+8*'diff(y,x,1)+(-x-a)*y,y,x));
-[y = %k2*kummer_u(-(a-6)/8,3/2,-x/2)*sqrt(x)*%e^(x/4)
-    +%k1*kummer_m(-(a-6)/8,3/2,-x/2)*sqrt(x)*%e^(x/4)];
+[y = %k2*kummer_u(-((a-6)/8),3/2,-(x/2))*sqrt(x)*%e^(x/4)
+    +%k1*kummer_m(-((a-6)/8),3/2,-(x/2))*sqrt(x)*%e^(x/4)];
 [method, ode_check(eqn,ans[1])];
 [odelin,0];
 
@@ -389,8 +389,8 @@ forget(a>0,a>1/4);
 
 /* Kamke 2. 153  */ 
 (pn_(153),ans:contrib_ode(eqn:x^2*'diff(y,x,2)+(a*x^2-(v-1)*v)*y,y,x));
-[y = %k2*bessel_y(-(2*v-1)/2,-sqrt(a)*x)*sqrt(-x)
-    +%k1*bessel_j(-(2*v-1)/2,-sqrt(a)*x)*sqrt(-x)];
+[y = %k2*bessel_y(-((2*v-1)/2),-sqrt(a)*x)*sqrt(-x)
+    +%k1*bessel_j(-((2*v-1)/2),-sqrt(a)*x)*sqrt(-x)];
 [method, ode_check(eqn,ans[1])];
 [odelin,0];
 
@@ -540,10 +540,10 @@ odelin;
 
 /* Kamke 2. 173  */ 
 (pn_(173),ans:contrib_ode(eqn:x^2*'diff(y,x,2)+2*(x+a)*'diff(y,x,1)-(b-1)*b*y,y,x));
- [y = %k2*bessel_y(-(2*b-1)/2,-%i*a/x)*%e^(a/x)/sqrt(-x)
-     +%k1*bessel_j(-(2*b-1)/2,-%i*a/x)*%e^(a/x)/sqrt(-x)];
-method;
-odelin;
+ [y = %k2*bessel_y(-((2*b-1)/2),-(%i*a/x))*%e^(a/x)/sqrt(-x)
+     +%k1*bessel_j(-((2*b-1)/2),-(%i*a/x))*%e^(a/x)/sqrt(-x)];
+[method, ode_check(eqn,ans[1])];
+[odelin,0];
 
 /* Kamke 2. 174  */ 
 (pn_(174),ans:contrib_ode(eqn:x^2*'diff(y,x,2)-2*x*'diff(y,x,1)+2*y-x^5*log(x),y,x));
@@ -730,7 +730,7 @@ false;
 
 /* Kamke 2. 200  */ 
 (pn_(200),ans:contrib_ode(eqn:x^2*'diff(y,x,2)+2*x^2*'diff(y,x,1)-(v-1)*v*y,y,x));
-[y = %k2*bessel_y(-(2*v-1)/2,-%i*x)*sqrt(-x)*%e^-x
-    +%k1*bessel_j(-(2*v-1)/2,-%i*x)*sqrt(-x)*%e^-x];
+[y = %k2*bessel_y(-((2*v-1)/2),-%i*x)*sqrt(-x)*%e^-x
+    +%k1*bessel_j(-((2*v-1)/2),-%i*x)*sqrt(-x)*%e^-x];
 [method, ode_check(eqn,ans[1])];
 [odelin,0];
