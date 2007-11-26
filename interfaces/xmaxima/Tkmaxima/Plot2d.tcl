@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Plot2d.tcl,v 1.12 2006-07-30 19:27:22 villate Exp $
+#       $Id: Plot2d.tcl,v 1.13 2007-11-26 22:34:09 villate Exp $
 #
 ###### Plot2d.tcl ######
 ############################################################
@@ -400,7 +400,7 @@ proc replot2d {win } {
 
     }
     # Write down the axes labels
-    $c create text [expr {$x1 - 50}] [expr {$y1 + 20}] -anchor ne \
+    $c create text [expr {$x1 - 50}] [expr {$y1 - 5}] -anchor sw \
 	           -text [oget $win yaxislabel] -font {helvetica 20 normal}
     $c create text [expr {$x2 - 20}] [expr {$y2 + 30}] -anchor ne \
                    -text [oget $win xaxislabel] -font {helvetica 20 normal}
@@ -718,7 +718,7 @@ proc drawPlot {win listpts args } {
 		    set res "$win create line "
 		    #puts npts:[llength $pts]
 		    if { $n >= 6 } {
-			eval $c create line $pts  	-tags [list $tags] -width $linewidth -fill $fill
+			eval $c create line $pts -tags [list $tags] -width $linewidth -fill $fill
 		    }
 		}
 	    }
