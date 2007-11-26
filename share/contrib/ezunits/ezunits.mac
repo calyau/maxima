@@ -69,10 +69,19 @@ matchdeclare
     ccn1%, constantp_not1,
     mm%, mult_expr_nontrivialconstfactorsp,
     nd%, nondimensional,
+    /* ss%, lambda ([e%], not atom (e%) and op (e%) = "+"), */
     uu%, unitp,
     xx%, nonconstantp);
 
 simp: false$
+/* tellsimpafter (ss% ` nd%, map (lambda ([e%], e% ` nd%), ss%)); */
+/* tellsimpafter (uu% ` nd%, qty(uu%) ` (nd% * conversion_factor (units(uu%), nd%))); */
+tellsimpafter
+ (uu% ` nd%,
+  (conversion_factor (units(uu%), nd%),
+   if constantp (%%)
+   then qty(uu%) ` (nd% * %%)
+   else uu% ` nd%));
 tellsimpafter (uu%^ccn1%, (qty(uu%)^ccn1%) ` simplify_units (units(uu%)^ccn1%));
 tellsimpafter (nd% * uu%, multiply_with_units (nd%, uu%));
 tellsimpafter (nd% + uu%, add_with_units (nd%, uu%));
@@ -146,3 +155,77 @@ simplify_units (e%) := block
 
 /* Compile matchdeclare predicate functions in hopes of greater speed */
 compile (constantp_not0, constantp_not1, mult_expr_nontrivialconstfactorsp, nondimensional, unitp, nonconstantp);
+
+/* A small database of elementary unit conversions */
+
+/* Undefined and therefore treated as basic units:
+ *
+ * m kg s A K mol
+ *
+ */
+
+known_unit_conversions : 
+   [
+
+    /* SI derived units */
+
+    km = 1000*m,
+    cm = m/100,
+    mm = m/1000,
+    micron = m/1000000,
+
+    kg = 1000*g,
+
+    l = m^3/1000,
+
+    Hz = 1/s,           /* hertz:   Frequency            */
+    N = kg*m/s^2,       /* newton:  Force                */
+    Pa = N/m^2,         /* pascal:  Pressure             */
+    J = N*m,            /* joule:   Work, energy         */
+    W = J/s,            /* watt:    Power                */
+    C = s*A,            /* coulomb: Electric charge      */
+    V = J/C,            /* volt:    Electromotive force  */
+    F = C^2/J,          /* farad:   Electric capacitance */
+    Ohm = J*s/C^2,      /* ohm:     Electric resistance  */
+    S = 1/Ohm,          /* siemens: Electric conductance */
+    Wb = J/A,           /* weber:   Magnetic flux        */
+    T = J/m^2/A,        /* tesla:   Magnetic flux density*/
+    H = J/A^2,          /* henry:   Inductance           */
+
+    /* "English" units --> SI */
+
+    ft = 1000/3218*m,
+    lbm = 1000/2205*kg,
+    minute = 60*s,
+    Btu = 1055*J,
+    R = 5/9*K,
+    gallon = 3785/1000*l,
+
+    /* "English" --> "English" */
+
+    in = ft/12,
+    yard = 3*ft,
+    mile = 5280*ft,
+    /* slug = ???, */
+    ounce = lbm/16,
+    /* grain = ???, */
+    hour = 60*minute,
+    day = 24*hour,
+    lbf = lbm*32*ft/s^2,
+    acre = 55*88*yd^2,
+    psi = lbf/in^2,
+    cfm = ft^3/minute
+
+   ];
+
+compute_conversion_factor (u1%, u2%) :=
+ (cons (%%a = u1% / u2%, known_unit_conversions),
+  ev (map (lambda ([e], map (log, e)), %%), logexpand=all),
+  linsolve (%%, map (lhs, %%)),
+  exp (rhs (first (%%))));
+  
+conversion_factor (u1%, u2%) :=
+ (conversion_factor_table [u1%, u2%],
+  if atom (%%) or op (%%) # conversion_factor_table then %%
+  else conversion_factor_table [u1%, u2%] : compute_conversion_factor (u1%, u2%));
+  
