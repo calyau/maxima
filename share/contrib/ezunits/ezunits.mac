@@ -69,19 +69,11 @@ matchdeclare
     ccn1%, constantp_not1,
     mm%, mult_expr_nontrivialconstfactorsp,
     nd%, nondimensional,
-    /* ss%, lambda ([e%], not atom (e%) and op (e%) = "+"), */
     uu%, unitp,
     xx%, nonconstantp);
 
 simp: false$
-/* tellsimpafter (ss% ` nd%, map (lambda ([e%], e% ` nd%), ss%)); */
-/* tellsimpafter (uu% ` nd%, qty(uu%) ` (nd% * conversion_factor (units(uu%), nd%))); */
-tellsimpafter
- (uu% ` nd%,
-  (conversion_factor (units(uu%), nd%),
-   if constantp (%%)
-   then qty(uu%) ` (nd% * %%)
-   else uu% ` nd%));
+tellsimpafter (uu% ` nd%, convert_units [units(uu%), nd%] (qty(uu%)) ` nd%);
 tellsimpafter (uu%^ccn1%, (qty(uu%)^ccn1%) ` simplify_units (units(uu%)^ccn1%));
 tellsimpafter (nd% * uu%, multiply_with_units (nd%, uu%));
 tellsimpafter (nd% + uu%, add_with_units (nd%, uu%));
@@ -194,38 +186,47 @@ known_unit_conversions :
 
     /* "English" units --> SI */
 
-    ft = 1000/3218*m,
-    lbm = 1000/2205*kg,
-    minute = 60*s,
+    ft = m/(3218/1000),
+    lbm = kg/(2205/1000),
+    min = 60*s,
     Btu = 1055*J,
     R = 5/9*K,
-    gallon = 3785/1000*l,
+    gallon = (3785/1000)*l,
 
     /* "English" --> "English" */
 
     in = ft/12,
-    yard = 3*ft,
-    mile = 5280*ft,
+    yd = 3*ft,
+    mi = 5280*ft,
     /* slug = ???, */
-    ounce = lbm/16,
+    oz = lbm/16,
     /* grain = ???, */
-    hour = 60*minute,
-    day = 24*hour,
+    h = 60*min,
+    d = 24*h,
     lbf = lbm*32*ft/s^2,
     acre = 55*88*yd^2,
     psi = lbf/in^2,
-    cfm = ft^3/minute
+    cfm = ft^3/min
 
    ];
 
-compute_conversion_factor (u1%, u2%) :=
- (cons (%%a = u1% / u2%, known_unit_conversions),
-  ev (map (lambda ([e], map (log, e)), %%), logexpand=all),
+declare_unit_conversion ([L]) := (known_unit_conversions : append (known_unit_conversions, L), done);
+
+compute_conversion_factor (u1%, u2%) := block ([e%],
+  e% : cons (%%a = u1% / u2%, known_unit_conversions),
+  block ([logexpand : all], map (lambda ([e], map (log, e)), e%)),
   linsolve (%%, map (lhs, %%)),
   exp (rhs (first (%%))));
   
-conversion_factor (u1%, u2%) :=
- (conversion_factor_table [u1%, u2%],
-  if atom (%%) or op (%%) # conversion_factor_table then %%
-  else conversion_factor_table [u1%, u2%] : compute_conversion_factor (u1%, u2%));
-  
+convert_units [u1%, u2%] := block ([a%],
+  a% : compute_conversion_factor (u1%, u2%),
+  if constantp (a%)
+    then buildq ([a%], lambda ([x], a% * x))
+    else buildq ([u1%], lambda ([x], x ` u1%)));
+
+convert_units [degF, degC] : lambda ([x], 5/9*(x - 32));
+convert_units [degC, degF] : lambda ([x], 32 + 9/5*x);
+convert_units [degC, K] : lambda ([x], 27315/100 + x);
+convert_units [degF, R] : lambda ([x], 45967/100 + x);
+convert_units [K, degC] : lambda ([x], x - 27315/100);
+convert_units [R, degF] : lambda ([x], x - 45967/100);

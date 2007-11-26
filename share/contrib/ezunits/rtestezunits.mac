@@ -279,3 +279,29 @@ oops ('cc, bar[k]);
 
 cc: bar[11] * (57 ` s/kg) * (10 ` acre);
 570 * qty(bar[11]) ` s;
+
+/* Unit conversions */
+
+100 ` degC ` degF;
+212 ` degF;
+
+-40 ` degF ` degC;
+-40 ` degC;
+
+1 ` acre*ft ` m^3;
+5445000000000/4165509529 ` m^3;
+
+/* Stefan-Boltzmann constant */
+56697/10000/10^8 ` W/m^2/K^4 ` Btu/h/ft^2/R^4;
+18899/10619175641040 ` Btu/h/ft^2/R^4;
+
+declare_unit_conversion (MMBtu = 10^6*Btu, kW = 1000*W, kWh = kW*h, MWh = 1000*kWh);
+done;
+
+1 ` MMBtu ` MWh;
+211/720 ` MWh;
+
+1 ` MMBtu/d ` kW;
+5275/432 ` kW;
+
+
