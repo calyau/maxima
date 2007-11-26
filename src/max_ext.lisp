@@ -37,6 +37,7 @@
 ($auto_mexpr '$ic2 "ode2.mac")
 ($auto_mexpr '$bc2 "ode2.mac")
 ($auto_mexpr '$desimp "ode2.mac")
+($auto_mexpr '$linear2 "ode2")
 
 (dolist (v       
 	  '($arite
