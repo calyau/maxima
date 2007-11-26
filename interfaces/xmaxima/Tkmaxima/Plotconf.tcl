@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Plotconf.tcl,v 1.17 2006-12-16 02:47:08 villate Exp $
+#       $Id: Plotconf.tcl,v 1.18 2007-11-26 22:25:19 villate Exp $
 #
 ###### plotconf.tcl ######
 ############################################################
@@ -101,7 +101,10 @@ proc makeFrame { w type } {
     #    $c config -width $wid
     #	    oset $win width $wid
     #    }
-    place $w.position -in $w.c -x 2 -y 2 -anchor nw
+
+    # place the coordinates in the lower left corner.
+    place $w.position -in $w.c -x 2 -rely 0.99 -anchor sw
+
     raise $w.position
     focus $w
     bind $w <Configure> "resizePlotWindow $w %w %h"
